@@ -1,0 +1,20 @@
+OS PROGRAMMING RULES:
+  1) Only change FS,DS,SS with IRQ's off and preserve them
+  2) Only do STD with IRQ's off and clear it
+  3) When interacting with compiled code, preserve EBP,ESI,EDI,ECX
+     You are free to trash EAX,EBX,EDX
+Departures from C/C++ which will be maintained:
+  1) Parameters are pushed in PASCAL order, not C 
+  2) No conditional compilation (It clutters code)
+  3) No fancy pointer arithmetic based on size of objects
+  4) No typechecking
+
+FILE LOCATIONS
+1) All files lie in the /HOPPY directory, to group them
+   in case users wish to place Windows files on the same partition
+2) /HOPPY/KERNEL is for files included at start-up,
+   including common utility commands
+3) /HOPPY/UTILS  is for utility files which don't need to be included
+   at start-up because they are rarely used
+4) /HOPPY/APPS   is for applications and subdirectories
+   are encouraged

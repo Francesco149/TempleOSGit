@@ -1,0 +1,15 @@
+0000 Nothing
+0007 Toggle Line Nums  ^N
+0001 Find              ^F
+0002 Find & Replace    ^R
+0000   
+0000   
+0000 The following are macro's you can select
+0000  
+9999 cd("/HOPPY/KERNEL/CPP");
+9999 cd("/HOPPY/KERNEL/ASM");
+9999 cd("/HOPPY/APPS");
+9999 cd("/HOPPY/UTILS");
+9999 #include "BOOTINS.CPP"
+9999 edit("STARNBAR.CPP");
+9999 #include "STARNBAR.CPP" 

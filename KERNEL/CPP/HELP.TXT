@@ -1,0 +1,31 @@
+Fundamentals:
+     HOPPY command line interface is based on C/C++. 
+Explore the ".CPP" files to learn which commands are
+available and what parameters they take.
+A command which takes no parameters may be executed
+by typing the name and a semicolon.  Commands with
+parameters require placing the parameter in parentheses.
+
+dir("*");           Will list files in the current directory
+dir;                Uses default of "*"
+cd("/HOPPY/APPS");  Will change directories
+Directories are referenced with "/" not "\"
+
+
+Some Hot Keys are:
+CTRL ALT DEL    Reboots
+CTRL ALT ESC    Spawns New Task
+CTRL ALT TAB    Switches tasks
+CTRL ALT X      Kills user
+WINDOWS KEY     Activates Menu/Help
+
+edit("ROOT.CPP"); will invoke the editor. 
+
+Description of files
+/HOPPY/KERNEL/CPP/ROOT.CPP      :First file included during boot
+                                :It is similar to AUTOEXEC.BAT
+                                :The master copy is stored in OS.EXE
+/HOPPY/KERNEL/CPP/FAT32.CPP     :Disk routines, also stored in OS.EXE
+/HOPPY/KERNEL/CPP/ROOT2.CPP     :File included in root task startup
+/HOPPY/KERNEL/CPP/USER.CPP      :Similar to AUTOEXEC.BAT but called
+                                :each time a new user is created

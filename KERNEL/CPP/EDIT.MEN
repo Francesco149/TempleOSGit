@@ -1,0 +1,14 @@
+0007 Toggle Line numbers  CTRL N
+9999   
+9999 Select Text          CTRL UP/DOWN 
+0008 Cut to Clipboard     CTRL X
+0009 Copy to Clipboard    CTRL C
+0010 Paste from Clipboard CTRL V
+9999  
+0001 Find                 CTRL F Not implemented
+0002 Find & Replace       CTRL R Not implemented
+0003 Save                 CTRL S Not implemented
+0004 Save As
+0005 Quit No Save         CTRL Q
+0006 Quit and Save        ESC
+ 

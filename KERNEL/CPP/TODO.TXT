@@ -1,0 +1,59 @@
+  Lock "window_to_top" for coprocess update screen
+  Coordinates relative to window (and no outside)
+GENERAL
+  Separate code and data in case someone wants to put it in flash
+EDIT
+  Implement macros.
+  finalize calc_cur_data_col
+  Select ranges
+KEYBD
+  Finish scan tables
+HELP
+  Implement jumps to links in ".MEN" files
+GRAPHICS
+  Mouse
+  Merge line and plot for faster lines
+DEBUGGER
+  IRQ
+    Handle exceptions
+ASSEMBLER
+TCP/IP
+COMPILE
+  case statements
+  do while
+  Variable parameter counts
+  Multidimensional arrays (this might be done);
+  += -= *= ect
+  casting
+  typedefs
+  doubles/quads? RTL
+  Error reporting includes new line
+  optimization: const+mul/div?,register vars,offset[eax*4]
+  initialize arrays and structs
+LEX
+  Investigate why don't_free_buffer needed on MAP.ASM
+  #define functions
+  \nnn
+  \0 
+  Arbitrary ident/string len
+IRQHAND
+  Suspend tasks when they crash
+SPAWN
+  Pass stack block count and heap block limit
+MEMORY
+  Add adjustable limits for task memory.  Abort tasks if they exceed limits.  Restart root if it crashes.
+  For MALLOC, move small ones to CACHE instead of leaving in free_list
+  Garbage collection
+ARCHIVE
+  Compress buffer
+  Expand buffer
+
+LIVING ON BORROWED TIME:
+  1) FAT32 will be obsolete in the end when a new filesystem is born.  Tentatively, the new system will allocate 
+     contiguous files with no FAT and rely on periodic compaction.
+
+
+ 
+ 
+ 
+ 
