@@ -47,9 +47,9 @@ void init_comm_8n1(DWORD port,DWORD baud)
 
   outp(base+UART_MCR,4);
   outp(base+UART_IER,0);     //DIsable all IRQ
-  outp(base+UART_MCR,0xA);       //out2 and rts
+  outp(base+UART_MCR,0xA);	 //out2 and rts
   outp(0x21,inp(0x21) & (0xFF-0x18)); //Enable 8259 IRQ 3 & 4
-  outp(base+UART_IER,1);         //Enable RX IRQ
+  outp(base+UART_IER,1);	 //Enable RX IRQ
   set_flags(old_flags);
 }
 
@@ -92,11 +92,11 @@ void comm_busy_write_block(DWORD port,BYTE *buf,DWORD count)
 void irq03_handler()
 {
   DWORD base=comm_base[2];
-  if ((inp(base+UART_IIR) & 0xFE)==8)   //RX IRQ
+  if ((inp(base+UART_IIR) & 0xFE)==8)	//RX IRQ
     byte_fifo_insert(comm_fifos[2],inp(base+UART_RDR));
 
   base=comm_base[4];
-  if ((inp(base+UART_IIR) & 0xFE)==8)   //RX IRQ
+  if ((inp(base+UART_IIR) & 0xFE)==8)	//RX IRQ
     byte_fifo_insert(comm_fifos[4],inp(base+UART_RDR));
   outp(0x20,0x20);
 }
@@ -104,11 +104,11 @@ void irq03_handler()
 void irq04_handler()
 {
   DWORD base=comm_base[1];
-  if ((inp(base+UART_IIR) & 0xFE)==8)   //RX IRQ
+  if ((inp(base+UART_IIR) & 0xFE)==8)	//RX IRQ
     byte_fifo_insert(comm_fifos[1],inp(base+UART_RDR));
 
   base=comm_base[3];
-  if ((inp(base+UART_IIR) & 0xFE)==8)   //RX IRQ
+  if ((inp(base+UART_IIR) & 0xFE)==8)	//RX IRQ
     byte_fifo_insert(comm_fifos[3],inp(base+UART_RDR));
   outp(0x20,0x20);
 }
@@ -116,5 +116,5 @@ void irq04_handler()
 defext(ext_irq03,&irq03_handler);
 defext(ext_irq04,&irq04_handler);
 
- 
- 
+
+

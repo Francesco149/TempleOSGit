@@ -2,26 +2,26 @@ void d_common(BYTE *buf,DWORD count,bool memory)  //Hex Dump
 {
   DWORD i,j,k;
   for (i=0;i<count;i=i+16) {
-    if (memory) 
+    if (memory)
       ? buf+i," ";
     else
       ? i," ";
     for (j=0;j<16;j++) {
       if (j==8) ? "- ";
       k=i+j;
-      if (k<count) 
-        ? buf[k]," ";
+      if (k<count)
+	? buf[k]," ";
       else
-        ? "   ";
+	spaces(3);
     }
     space;
     for (j=0;j<16;j++) {
       k=i+j;
       if (k<count) {
-        if (buf[k]>=0x20 && buf[k]<=0x7E)
-          putchar(buf[k]);
-        else
-          ? ".";
+	if (buf[k]>=0x20 && buf[k]<=0x7E)
+	  putchar(buf[k]);
+	else
+	  ? ".";
       }
     }
     crlf;
@@ -41,7 +41,7 @@ void d(BYTE *buf,DWORD count=0x80)
 void patch(DWORD block)
 {
   BYTE buf[BLOCK_SIZE];
-  rblocks(buf,block,1);
+  rblocks(fs->current_partition,buf,block,1);
   d(buf,BLOCK_SIZE);
 }
 
@@ -57,22 +57,38 @@ BYTE *sym(char *name)
   return h->user0;
 }
 
-void split()
+void vsplit()
 {
   int i;
   tss_struct *user2_tss;
   cursor_off;
-  user2_tss=spawn(COMMAND_LINE,"USER CMD PROMPT");
-  for (i=0;i<10;i++) 
+  user2_tss=spawn(USER_COMMAND_LINE,"USER CMD PROMPT");
+  for (i=0;i<10;i++)
     swap_in_next;
   fs->window_top=40;
   fs->text_attribute=WHITE*16+CYAN;
   fs->border_attribute=WHITE*16+CYAN;
-  fs->menu_attribute=WHITE*16+GREEN;
   clear_crt;
   cursor_home;
   user2_tss->window_bottom=39;
-  bts(&fs->task_flags,TSSF_SUSPENDED);
+  btr(&fs->task_flags,TSSF_FOCUS);
+}
+
+void hsplit()
+{
+  int i;
+  tss_struct *user2_tss;
+  cursor_off;
+  user2_tss=spawn(USER_COMMAND_LINE,"USER CMD PROMPT");
+  for (i=0;i<10;i++)
+    swap_in_next;
+  fs->window_top=1;
+  fs->window_right=48;
+  clear_crt;
+  cursor_home;
+  user2_tss->window_top=1;
+  user2_tss->window_left=51;
+  btr(&fs->task_flags,TSSF_FOCUS);
 }
 
 void shell()
@@ -100,7 +116,9 @@ DWORD to_hex8(char *st)
 
 void taskstat_line(tss_struct *tss)
 {
-  ? tss," ",tss->task_descriptor,"\r\n";
+  printf("%08X %31s TASKF:%04X CRTF:%04X\r\n",
+    tss,tss->task_descriptor,
+    tss->task_flags,tss->crt_flags);
 }
 
 void taskstat()
@@ -118,5 +136,5 @@ defext(ext_dump,&d);
 
 
 
- 
- 
+
+

@@ -1,47 +1,61 @@
-  Fix bug with root("") function
-  Lock "window_to_top" for coprocess update screen
-  Coordinates relative to window (and no outside)
+BUGS
+  update master debug bar instantly
+  protection fault screen image
+  spurious "_" key
+  node->struct (once global find and replace done)
+  pop-up form
+  input buffer
+  timer chain
+  faults
 GENERAL
-  Separate code and data in case someone wants to put it in flash
+  Printer Log
+  ESCAPE codes for colors and links/anchors
+  Separate code and data in case someone wants to put it in flash??
 EDIT
   Implement macros.
-  finalize calc_cur_data_col
-  Select ranges
+  finalize calc_cur_data_col, do patch
 KEYBD
-  Finish scan tables
+  Finish scan tables(num pad)
 HELP
   Implement jumps to links in ".MEN" files
 GRAPHICS
   Mouse
-  Merge line and plot for faster lines
-  Animated borders? Scroll bars
+  Merge line and plot for faster lines??
+  Scroll bars
+  gr_line coordinates relative to window (and no outside writes)
+
+DISK
+  Access whole disk
+  IDE disk errors
+  Report just one error per read track
+FILE
+  cd .. on fat12
+  copy command
+  make dir command
 DEBUGGER
   IRQ
     Handle exceptions
-ASSEMBLER
 TCP/IP
 IDE
   Show code size/cpu cycles
+ASSEMBLER
+  record all absolute references and patch
 COMPILE
-  replace new_strings with memcpy (fomat_data)
+  replace new_strings with memcpy (format_data)
   case statements
   do while
+  recursion/function declarations?
   Multidimensional arrays
   += -= *= ect
   casting
   typedefs
   doubles/quads? RTL
-  Error reporting includes new line
   optimization: const+mul/div?,register vars,offset[eax*4]
   initialize arrays and structs
 LEX
-  Investigate why don't_free_buffer needed on OS.MAP
-  #define functions
-  Arbitrary ident/string len
+  #define functions?
 IRQHAND
   Suspend tasks when they crash
-SPAWN
-  Pass stack block count and heap block limit
 MEMORY
   Add adjustable limits for task memory.  Abort tasks if they exceed limits.  Restart root if it crashes.
   For MALLOC, move small ones to CACHE instead of leaving in free_list
@@ -50,9 +64,6 @@ ARCHIVE
   Compress buffer
   Expand buffer
 
-LIVING ON BORROWED TIME:
-  1) FAT32 will be obsolete in the end when a new filesystem is born.  Tentatively, the new system will allocate 
-     contiguous files with no FAT and rely on periodic compaction.
 
 
  

@@ -1,8 +1,8 @@
 
-#define p1_color            0x0107
-#define p2_color            0x0104
-#define jn1_color           0x010A
-#define jn2_color           0x0109
+#define p1_color	    0x0107
+#define p2_color	    0x0104
+#define jn1_color	    0x010A
+#define jn2_color	    0x0109
 #define enemy_fire_color    0x0109
 #define friendly_fire_color 0x010F
 
@@ -20,11 +20,11 @@ int jn;
 int text_area_size=(screen_height/font_height)*(screen_width/font_width);
 
 
-#define mm_none               1
+#define mm_none 	      1
 #define mm_friendly_firepower 2
-#define mm_laps_time          3
+#define mm_laps_time	      3
 int map_mode=mm_none;
-DWORD *map_values;
+WORD *map_values;
 
 
 #define ai_nothing 1
@@ -35,41 +35,46 @@ int ai;
 void update_map()
 {
   int i,j;
-  WORD *ptr=*SYS_TEXT_BASE+fs->window_left+fs->window_top*fs->crt_width;
-  for (i=fs->window_top;i<=fs->window_bottom;i++)
-    for (j=fs->window_left;j<=fs->window_right;j++)
-      ptr[i*fs->crt_width/2+j/2]=(map_values[i*fs->crt_width/2+j/2]*128 & 0xF000)+0x20;
+  for (i=fs->window_top;i<=fs->window_bottom;i++) {
+    memcpy(*SYS_TEXT_BASE+i*fs->crt_width+fs->window_left,
+	   map_values+i*fs->crt_width+fs->window_left,
+	   fs->window_right+2-fs->window_left);
+  }
 }
 
 void clear_map_values()
 {
-  memset(map_values,0,text_area_size*sizeof(DWORD));
+  memset(map_values,0,text_area_size*sizeof(WORD));
 }
 
 void display_friendly_firepower()
 {
   int i,d,x,y,dx,dy;
-  DWORD *ptr=map_values;
-  for (y=0;y<=fs->window_bottom-fs->window_top;y++) 
-    for (x=0;x<=fs->window_right-fs->window_left;x++) {
-      ptr[(y+fs->window_top)*fs->crt_width/2+(x+fs->window_left)/2]=0;
-      for (i=0;i<num_troopers;i++) 
-        if (tr[i].def>0 && tr[i].fire_end_time<*JIFFIES) {
-          dx=(tr[i].x>>16)-(x*font_width+font_width/2);
-          dy=(tr[i].y>>16)-(y*font_height+font_height/2);
-          d=dx*dx+dy*dy;
-          if (d<tr[i].rng)
-            ptr[(y+fs->window_top)*fs->crt_width/2+(x+fs->window_left)/2]=
-            ptr[(y+fs->window_top)*fs->crt_width/2+(x+fs->window_left)/2]+
-              tr[i].att;
-        }
+  int  lt=fs->window_left/2,rt=fs->window_right/2,
+       tp=fs->window_top,   bm=fs->window_bottom;
+  WORD *ptr;
+  DWORD v;
+  for (y=0;y<=bm-tp;y++) {
+    ptr=map_values+(y+tp)*fs->crt_width+fs->window_left;
+    for (x=0;x<=rt-lt;x++) {
+      v=0;
+      for (i=0;i<num_troopers;i++)
+	if (tr[i].def>0 && tr[i].fire_end_time<*JIFFIES) {
+	  dx=(tr[i].x>>16)-(x*font_width+font_width/2);
+	  dy=(tr[i].y>>16)-(y*font_height+font_height/2);
+	  d=dx*dx+dy*dy;
+	  if (d<tr[i].rng)
+	    v=v+tr[i].att;
+	}
+      ptr[x]=(v*128 & 0xF000)+0x20;
     }
+  }
 }
 
 void draw_trooper(trooper *t,DWORD color)
 {
   int x,y,s,fire_col;
-  
+
   if (map_mode==mm_laps_time) {
     x=(t->x+500*t->dx)>>16;
     y=(t->y+500*t->dy)>>16;
@@ -96,19 +101,38 @@ void draw_trooper(trooper *t,DWORD color)
   }
 }
 
+int cursor_col;
+void output_dec(int i)
+{
+  WORD *ptr=*SYS_TEXT_BASE+cursor_col*2;
+  ptr[3]=0x0F00+i%10+'0'; i=i/10;
+  ptr[2]=0x0F00+i%10+'0'; i=i/10;
+  ptr[1]=0x0F00+i%10+'0'; i=i/10;
+  ptr[0]=0x0F00+i%10+'0'; i=i/10;
+  cursor_col=cursor_col+5;
+}
+
 void draw_all_troopers()
 {
   int i,j,c,x=joycx-fs->window_pixel_left,y=joycy-fs->window_pixel_top;
-  clear_crt();
+  DWORD old_jiffies=0;
+  if (*JIFFIES==old_jiffies)
+    return;
+  old_jiffies=*JIFFIES;
   gr_clear();
-  clear_map_values;
-  if (map_mode==mm_friendly_firepower)
-    display_friendly_firepower;
+  if (!(*JIFFIES & 7)) {
+    if (map_mode==mm_friendly_firepower)
+      display_friendly_firepower;
+    else {
+      clear_crt();
+      clear_map_values;
+    }
+  }
   update_map;
-  
+
   count1=0;
   count2=0;
-  for (i=0;i<num_troopers;i++) 
+  for (i=0;i<num_troopers;i++)
     if (tr[i].def>0) {
       draw_trooper(&tr[i],p1_color);
       count1++;
@@ -134,6 +158,9 @@ void draw_all_troopers()
     gr_line(x+jn,y+jn,x-jn,y+jn,c);
     gr_line(x-jn,y+jn,x-jn,y-jn,c);
   }
+  cursor_col=(fs->window_top-1)*fs->crt_width+fs->window_left+10;
+  output_dec(count1);
+  output_dec(count2);
 }
 
 int targets[10];
@@ -162,8 +189,8 @@ void init_troopers()
       t->dx=0;
       t->dy=0;
       if (ai==ai_random) {
-        t->dx=dx;
-        t->dy=dy;
+	t->dx=dx;
+	t->dy=dy;
       }
       t->fire_end_time=*JIFFIES;
       t->att=3;
@@ -211,21 +238,21 @@ void resolve_firing()
   for (i=0;i<num_troopers;i++)
     for (j=num_troopers;j<num_troopers*2;j++) {
       if (tr[i].def>0 && tr[j].def>0) {
-        dx=(tr[i].x-tr[j].x)>>16;
-        dy=(tr[i].y-tr[j].y)>>16;
-        d=dx*dx+dy*dy;
-        if (d<tr[i].rng && tr[i].fire_end_time<*JIFFIES) {
-          tr[i].fire_end_time=*JIFFIES+10;
-          tr[i].fx=tr[j].x;
-          tr[i].fy=tr[j].y;
-          tr[j].def=tr[j].def-tr[i].att;
-        }
-        if (d<tr[j].rng && tr[j].fire_end_time<*JIFFIES) {
-          tr[j].fire_end_time=*JIFFIES+10;
-          tr[j].fx=tr[i].x;
-          tr[j].fy=tr[i].y;
-          tr[i].def=tr[i].def-tr[j].att;
-        }
+	dx=(tr[i].x-tr[j].x)>>16;
+	dy=(tr[i].y-tr[j].y)>>16;
+	d=dx*dx+dy*dy;
+	if (d<tr[i].rng && tr[i].fire_end_time<*JIFFIES) {
+	  tr[i].fire_end_time=*JIFFIES+10;
+	  tr[i].fx=tr[j].x;
+	  tr[i].fy=tr[j].y;
+	  tr[j].def=tr[j].def-tr[i].att;
+	}
+	if (d<tr[j].rng && tr[j].fire_end_time<*JIFFIES) {
+	  tr[j].fire_end_time=*JIFFIES+10;
+	  tr[j].fx=tr[i].x;
+	  tr[j].fy=tr[i].y;
+	  tr[i].def=tr[i].def-tr[j].att;
+	}
       }
     }
 }
@@ -248,92 +275,73 @@ void update_velocities()
   }
 }
 
-int cursor_col;
-void output_dec(int i)
-{
-  WORD *ptr=*SYS_TEXT_BASE+cursor_col*2;
-  ptr[3]=0x0F00+i%10+'0'; i=i/10;
-  ptr[2]=0x0F00+i%10+'0'; i=i/10;
-  ptr[1]=0x0F00+i%10+'0'; i=i/10;
-  ptr[0]=0x0F00+i%10+'0'; i=i/10;
-  cursor_col=cursor_col+5;
-}
 
 void stars_n_bars()
 {
+  bool cont1=true,cont2;
   char ch=0,*st;
-  DWORD start_time,jif=0,old_text_attr=fs->text_attribute;
-  linked_text_file *m,*old_l=fs->current_ltf,*old_m=fs->menu_ltf;
+  DWORD sc=0,jif=0,ms=0,old_ip=input_pointer,
+	old_update_window=fs->update_window,
+	old_text_attr=fs->text_attribute;
+  linked_text_file *m;
+  bool old_menu=assign_bit(&fs->crt_flags,CRTF_HAS_MENU,1);
 
+  input_pointer=ip_joystick0;
   map_values=malloc(text_area_size*sizeof(DWORD));
 
-  fs->text_attribute=WHITE*16+BLACK;
-  fs->current_ltf=NULL;
   cursor_off;
-
-  fs->menu_ltf=new_linked_text_file;
-  m=fs->menu_ltf;
+  m=new_linked_text_file;
   m->line_start_col=5;
   m->cur_data_col=5;
   st=load_text_file("/HOPPY/APPS/STARNBAR.MEN");
   to_linked_text_file(st,m);
   free(st);
 
+  clear_crt();
+  clear_map_values;
   srand(*JIFFIES);
-  fs->menu_selection=0;
   fs->update_window=&draw_all_troopers;
-  while (ch!=27 && fs->menu_selection!=101) {
+  while (cont1) {
     ai=rand*3/MAX_RAND+1;
     init_troopers();
-    start_time=*JIFFIES;
-    ch=0;
-    btr(SYS_CURRENT_SCAN_CODE,SCF_NEW_KEY);
-    while (ch!=27 && ch!=13 && ch!=32 && 
-           fs->menu_selection!=101 && fs->menu_selection!=100) {
+    cont2=true;
+    while (cont2) {
       rand();
-      if (bt(SYS_CURRENT_SCAN_CODE,SCF_NEW_KEY)) 
-        ch=getkey;
-      if (fs->menu_selection==1 || ch=='1') {
-        map_mode=mm_none;
-        fs->menu_selection=0;
-        ch=0;
-      }
-      if (fs->menu_selection==2 || ch=='2') {
-        map_mode=mm_friendly_firepower;
-        fs->menu_selection=0;
-        ch=0;
-      }
-      if (fs->menu_selection==3 || ch=='3') {
-        map_mode=mm_laps_time;
-        fs->menu_selection=0;
-        ch=0;
+      sc=0;ms=0;ch=0;
+      if (scanchar(&sc,&ch)) {
+	if ((sc & 0x17F)==SC_L_GUI || (sc & 0x17F)==SC_R_GUI) {
+	  gr_clear;
+	  ms=do_menu(m);
+        }
+        if (ms==1 || ch=='1') 
+	  map_mode=mm_none;
+        else if (ms==2 || ch=='2') 
+	  map_mode=mm_friendly_firepower;
+        else if (ms==3 || ch=='3')
+  	  map_mode=mm_laps_time;
       }
       jif=*JIFFIES;
       while (*JIFFIES==jif)
-        swap_in_next;
+	swap_in_next;
       if (ai==ai_target)
-        do_ai_target;
+	do_ai_target;
       update_velocities;
       update_positions;
       resolve_firing;
-      cursor_col=2;
-      output_dec(count1);
-      output_dec(count2);
-      output_dec((*JIFFIES-start_time)/10);
+      if (ch==27 || ch==13 || ch==32 || ms==101 || ms==100)
+        cont2=false;
     }
-    if (fs->menu_selection==100)
-      fs->menu_selection=0;
+    if (ms==101 || ch==27)
+      cont1=false;
   }
   gr_clear;
   cursor_on;
 
-  fs->menu_ltf=old_m;
   delete_ltf(m);
-
-  fs->text_attribute=old_text_attr;
-  fs->current_ltf=old_l;
-
+  fs->update_window=old_update_window;
   free(map_values);
+  input_pointer=old_ip;
+  assign_bit(&fs->crt_flags,CRTF_HAS_MENU,old_menu);
 }
 
 stars_n_bars;;

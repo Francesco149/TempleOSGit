@@ -2,17 +2,58 @@
 0007 Toggle Line Nums  ^N
 0001 Find              ^F
 0002 Find & Replace    ^R
-0000   
-0000   
-0000 The following are macro's you can select
 0000  
-9999 cd("/HOPPY/KERNEL/CPP");
-9999 cd("/HOPPY/KERNEL/ASM");
-9999 cd("/HOPPY/APPS");
+9999 drive('A');
+9999 drive('D');
+9999 drive('E');
 9999 cd("/HOPPY/UTILS");
-9999 #include "BOOTINS.CPP"
+9999 edit("DISASM.CPP");
+9999 #include "DISASM.CPP";
+9999 #include "ASM.CPP";
+9999 edit("ASM.CPP");
+9999 edit("ASM.TXT");
+9999 edit("GREP.CPP");
+9999 edit("S2T.CPP");
+0000 
+9999 cd("/HOPPY/KERNEL/CPP");
+9999 edit("QSORT.CPP");
+9999 edit("USER.MEN");
+9999 edit("ROOT.CPP");
+9999 edit("ROOT2.CPP");
+9999 edit("EDIT.CPP");
+9999 edit("DISK1.CPP");
+9999 edit("FAT.CPP");
+9999 edit("SYSTEXT.CPP");
+9999 edit("USER.CPP");
+9999 edit("WINDOW.CPP");
+0000 
+9999 cd("/HOPPY/KERNEL/ASM");
+9999 edit("CALLS.ASM");
+9999 edit("CHARIO.ASM");
+9999 edit("CMD.ASM");
+9999 edit("CODE.ASM");
+9999 edit("COMPILE.ASM");
+9999 edit("CRT.ASM");
+9999 edit("GRMODE.ASM");
+9999 edit("IRQHAND.ASM");
+9999 edit("KEYBD.ASM");
+9999 edit("LEX.ASM");
+9999 edit("LTF.ASM");
+9999 edit("MAP.ASM");
+9999 edit("MEMORY.ASM");
+9999 edit("OPT.ASM");
+9999 edit("OSINC.ASM");
+9999 edit("OSMAIN.ASM");
+9999 edit("PARSE.ASM");
+9999 edit("SCHED.ASM");
+9999 edit("STRING.ASM");
+9999 edit("SYSUTILS.ASM");
+9999 #include "OS.CPP";
+9999 edit("BOOTINS.CPP");
+9999 install_hd_boot('D','D');
+9999 edit("BOOTFD.ASM");
+9999 edit("BOOTHD.ASM");
+0000 
+9999 cd("/HOPPY/APPS");
 9999 edit("STARNBAR.CPP");
 9999 #include "STARNBAR.CPP"
-9999 edit("GTPORT.CPP");
-9999 #include "GTPORT.CPP"
- 

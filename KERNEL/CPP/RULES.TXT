@@ -18,5 +18,5 @@ FILE LOCATIONS
    including common utility commands
 3) /HOPPY/UTILS  is for utility files which don't need to be included
    at start-up because they are rarely used
-4) /HOPPY/APPS   is for applications and subdirectories
+4) /HOPPY/APPS	 is for applications and subdirectories
    are encouraged
