@@ -16,10 +16,10 @@ Some Hot Keys are:
 CTRL ALT DEL    Reboots
 CTRL ALT ESC    Spawns New Task
 CTRL ALT TAB    Switches tasks
-CTRL ALT X      Kills user
+CTRL ALT X      Kills current task
 WINDOWS KEY     Activates Menu/Help
 
-edit("ROOT.CPP"); will invoke the editor. 
+edit("FILENAME.TXT"); will invoke the editor. 
 
 Description of files
 /HOPPY/KERNEL/CPP/ROOT.CPP      :First file included during boot

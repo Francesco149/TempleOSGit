@@ -31,50 +31,50 @@ FIL_STRINGS_CPP:
         DB 'z',39,') ',13,10,'    return ch-',39,'a',39
         DB '+',39,'A',39,';',13,10,'  else',13,10,'   '
         DB ' return ch;',13,10,'}',13,10,13,10,'int ma'
-        DB 'tch_list_entry(char *src, char *lst,int flags,in'
-        DB 't *ambiguity_overkill_ptr)',13,10,'/* RETURNS:'
-        DB ' -2 if Ambiguous, -1 if not found, else entry_nu'
-        DB 'mber */',13,10,'{',13,10,'  int l,entry_num='
-        DB '0,result=-1,unutilized_src;',13,10,'  char *s;'
-        DB 13,10,'  bool exact_match=false;',13,10,13,10
-        DB '  l=strlen(src);',13,10,'  if (ambiguity_overk'
-        DB 'ill_ptr)',13,10,'    *ambiguity_overkill_ptr=l'
-        DB ';',13,10,'  while (*lst) {',13,10,'    if (*'
-        DB 'lst==',39,'@',39,') { /* Check for ',39,'@',39
-        DB ' alias list entry*/',13,10,'      entry_num--;'
-        DB 13,10,'      lst++;',13,10,'    }',13,10,13
-        DB 10,'    s=src;',13,10,'    if (flags & mle_ign'
-        DB 'ore_case) ',13,10,'      while (*s && (toupper'
-        DB '(*s) == toupper(*lst))) {',13,10,'        s++;'
-        DB 13,10,'        lst++;',13,10,'      }',13,10
-        DB '    else',13,10,'      while (*s && (*s == *ls'
-        DB 't)) {',13,10,'        s++;',13,10,'        l'
-        DB 'st++;',13,10,'      }',13,10,'    unutilized'
-        DB '_src=l-(s-src);',13,10,'    if (!(*s)) {    /*'
-        DB ' Did we reach end of source? */',13,10,'      '
-        DB 'if (!(*lst)) {  /* Did we reach end of list entr'
-        DB 'y? */',13,10,'        if (!ambiguity_overkill_'
-        DB 'ptr)',13,10,'          return entry_num;  /* F'
-        DB 'ound Exact match */',13,10,'        result=ent'
-        DB 'ry_num;',13,10,'        exact_match=true;',13
-        DB 10,'      } else {',13,10,'        if (result!'
-        DB '=-1) {',13,10,'          if (ambiguity_overkil'
-        DB 'l_ptr)',13,10,'            *ambiguity_overkill'
-        DB '_ptr=0;',13,10,'          if (!exact_match)',13
-        DB 10,'            result=-2; /* AMBIGUOUS RESPONSE'
-        DB ' unless later exact match*/',13,10,'        } '
-        DB 'else ',13,10,'          result=entry_num;',13
-        DB 10,'      }',13,10,'    } else {',13,10,'   '
-        DB '   if (ambiguity_overkill_ptr && *ambiguity_over'
-        DB 'kill_ptr>(unutilized_src-1)) ',13,10,'        '
-        DB '*ambiguity_overkill_ptr=unutilized_src-1;',13,10
-        DB '    }',13,10,13,10,'    while (*lst)  /* Adv'
-        DB 'ance to end of current entry. */',13,10,'     '
-        DB ' lst++;',13,10,'    lst++;    /* Skip trailing'
-        DB ' zero */',13,10,'    entry_num++;',13,10,'  '
-        DB '}',13,10,'  if (ambiguity_overkill_ptr && resu'
-        DB 'lt==-1) ',13,10,'    *ambiguity_overkill_ptr=0'
-        DB ';',13,10,'  return result;',13,10,'}',13,10
+        DB 'tch_list_entry(char *src, char *lst,int flags=0,'
+        DB 'int *ambiguity_overkill_ptr=NULL)',13,10,'/* R'
+        DB 'ETURNS: -2 if Ambiguous, -1 if not found, else e'
+        DB 'ntry_number */',13,10,'{',13,10,'  int l,ent'
+        DB 'ry_num=0,result=-1,unutilized_src;',13,10,'  c'
+        DB 'har *s;',13,10,'  bool exact_match=false;',13
+        DB 10,13,10,'  l=strlen(src);',13,10,'  if (amb'
+        DB 'iguity_overkill_ptr)',13,10,'    *ambiguity_ov'
+        DB 'erkill_ptr=l;',13,10,'  while (*lst) {',13,10
+        DB '    if (*lst==',39,'@',39,') { /* Check for ',39
+        DB '@',39,' alias list entry*/',13,10,'      entr'
+        DB 'y_num--;',13,10,'      lst++;',13,10,'    }',13
+        DB 10,13,10,'    s=src;',13,10,'    if (flags &'
+        DB ' mle_ignore_case) ',13,10,'      while (*s && '
+        DB '(toupper(*s) == toupper(*lst))) {',13,10,'    '
+        DB '    s++;',13,10,'        lst++;',13,10,'    '
+        DB '  }',13,10,'    else',13,10,'      while (*s'
+        DB ' && (*s == *lst)) {',13,10,'        s++;',13,10
+        DB '        lst++;',13,10,'      }',13,10,'    u'
+        DB 'nutilized_src=l-(s-src);',13,10,'    if (!(*s)'
+        DB ') {    /* Did we reach end of source? */',13,10
+        DB '      if (!(*lst)) {  /* Did we reach end of lis'
+        DB 't entry? */',13,10,'        if (!ambiguity_ove'
+        DB 'rkill_ptr)',13,10,'          return entry_num;'
+        DB '  /* Found Exact match */',13,10,'        resu'
+        DB 'lt=entry_num;',13,10,'        exact_match=true'
+        DB ';',13,10,'      } else {',13,10,'        if '
+        DB '(result!=-1) {',13,10,'          if (ambiguity'
+        DB '_overkill_ptr)',13,10,'            *ambiguity_'
+        DB 'overkill_ptr=0;',13,10,'          if (!exact_m'
+        DB 'atch)',13,10,'            result=-2; /* AMBIGU'
+        DB 'OUS RESPONSE unless later exact match*/',13,10
+        DB '        } else ',13,10,'          result=entry'
+        DB '_num;',13,10,'      }',13,10,'    } else {',13
+        DB 10,'      if (ambiguity_overkill_ptr && *ambigui'
+        DB 'ty_overkill_ptr>(unutilized_src-1)) ',13,10,' '
+        DB '       *ambiguity_overkill_ptr=unutilized_src-1;'
+        DB 13,10,'    }',13,10,13,10,'    while (*lst)'
+        DB '  /* Advance to end of current entry. */',13,10
+        DB '      lst++;',13,10,'    lst++;    /* Skip tra'
+        DB 'iling zero */',13,10,'    entry_num++;',13,10
+        DB '  }',13,10,'  if (ambiguity_overkill_ptr && re'
+        DB 'sult==-1) ',13,10,'    *ambiguity_overkill_ptr'
+        DB '=0;',13,10,'  return result;',13,10,'}',13,10
         DB 13,10,'int occurrences(char *src, char ch)',13
         DB 10,'{',13,10,'  int i=0;',13,10,'  while (*s'
         DB 'rc)',13,10,'    if (*src++ == ch) i++;',13,10

@@ -256,7 +256,7 @@ LEX_GET_CHAR PROC NEAR
         MOV     EDI,ECX
 
         PUSH    ESI             ;-****
-        MOV     ESI,DWORD PTR FS:TSS_CONSOLE_LTF
+        MOV     ESI,DWORD PTR FS:TSS_CURRENT_LTF
         OR      ESI,ESI
         JZ      @@20
         PUSH    EAX                     ;-****
@@ -275,11 +275,11 @@ LEX_GET_CHAR PROC NEAR
 @@21E:  XOR     EAX,EAX
 @@21G:  PUSH    EAX                     ;-****
 
-        PUSH    DWORD PTR FS:TSS_CONSOLE_LTF
+        PUSH    DWORD PTR FS:TSS_MENU_SELECTION
+        PUSH    DWORD PTR SYS_CURRENT_SCAN_CODE
         AND     EAX,0FFh
         PUSH    EAX
-        PUSH    DWORD PTR SYS_CURRENT_SCAN_CODE
-        PUSH    DWORD PTR FS:TSS_MENU_SELECTION
+        PUSH    DWORD PTR FS:TSS_CURRENT_LTF
         MOV     EAX,DWORD PTR SYSTEM_EXTERN_TABLE
         CALL    DWORD PTR EXT_LTF_PUTCHAR*4[EAX]
         ADD     ESP,16
@@ -299,10 +299,10 @@ LEX_GET_CHAR PROC NEAR
 @@21C:  LODSB
         AND     EAX,0FFh
         JZ      @@21A
-        PUSH    DWORD PTR FS:TSS_CONSOLE_LTF
-        PUSH    EAX
-        PUSH    0               ;SCAN CODE
         PUSH    0               ;MENU SELECT
+        PUSH    0               ;SCAN CODE
+        PUSH    EAX
+        PUSH    DWORD PTR FS:TSS_CURRENT_LTF
         MOV     EAX,DWORD PTR SYSTEM_EXTERN_TABLE
         CALL    DWORD PTR EXT_LTF_PUTCHAR*4[EAX]
         ADD     ESP,16
@@ -311,7 +311,7 @@ LEX_GET_CHAR PROC NEAR
 @@21A:  POP     EAX                     ;+****
         CMP     AL,13
         JNE     @@21
-        MOV     ESI,DWORD PTR FS:TSS_CONSOLE_LTF
+        MOV     ESI,DWORD PTR FS:TSS_CURRENT_LTF
         MOV     ESI,DWORD PTR LTF_CUR_LINE[ESI]
         MOV     ESI,DWORD PTR LTFL_LAST[ESI]
         MOV     ESI,DWORD PTR LTFL_LINE_DATA[ESI]
@@ -362,7 +362,7 @@ LEX_GET_CHAR PROC NEAR
 @@14:   INC     EDI        
 @@15:   MOV     EAX,0A0Dh
         STOSD   
-        MOV     EDI,DWORD PTR FS:TSS_CONSOLE_LTF
+        MOV     EDI,DWORD PTR FS:TSS_CURRENT_LTF
         OR      EDI,EDI
         JNZ     @@16
         CALL    CRLF
@@ -577,10 +577,26 @@ LEX_SKIP_EOL:
         MOV     BYTE PTR [EBP+EBX],'\'
         JMP     @@50
 @@56:   CMP     AL,'t'
-        JNE     @@69
+        JNE     @@57
         MOV     BYTE PTR [EBP+EBX],9
         JMP     @@50
-                                           ;TODO: Add \## (Be careful \0)
+@@57:   PUSH    EDX
+        XOR     EDX,EDX
+@@58:   CMP     AL,'0'
+        JB      @@59
+        CMP     AL,'7'
+        JA      @@59
+        SHL     EDX,1
+        SHL     EDX,1
+        SHL     EDX,1
+        SUB     AL,'0'
+        ADD     DL,AL
+        CALL    LEX_GET_CHAR
+        JMP     @@58
+@@59:   OR      LEX_FLAGS[EDI],LF_USE_LAST_CHAR
+        MOV     BYTE PTR[EBP+EBX],DL
+        POP     EDX
+        JMP     @@50
 
 @@69:   MOV     EAX,TK_STRING
         JMP     @@98
@@ -677,7 +693,7 @@ LEX_SKIP_EOL:
         MOV     DWORD PTR LEX_LOCAL_VAR_ENTRY[EDI],EDX
         POP     EBP
         MOV     LEX_HASH_ENTRY[EDI],0
-        JMP     @@93A
+        JMP     @@97
 @@99A:  POP     EBP
 
         PUSH    EDI     ;-****
@@ -695,28 +711,36 @@ LEX_SKIP_EOL:
         CMP     DWORD PTR HTE_TYPE[ESI],HTT_STRING_CONSTANT
         JE      @@250
 @@94A:  MOV     LEX_HASH_ENTRY[EDI],ESI
-        MOV     EAX,TK_IDENT
         JMP     @@97
 @@94:   MOV     EDI,DWORD PTR HT_NEXT[EDI]
         JMP     @@96
 @@93:   POP     EDI     ;+****
-@@93A:  MOV     EAX,TK_IDENT
-        JMP     @@97
         
-
-@@98:   MOV     BYTE PTR [EBP+EBX],0
-@@97:   PUSH    EDI                     ;-****
-        MOV     BX,SS
-        MOV     ES,BX
-        MOV     ESI,EBP
-        CALL    NEW_STRING
-        POP     ESI                     ;+****
-        PUSH    ESI                     ;-****
-        MOV     ESI,DWORD PTR LEX_IDENT[ESI]
+@@97:   MOV     ESI,EBP
+        CALL    STRLEN
+        MOV     EBX,EAX
+        MOV     EAX,TK_IDENT
+@@98:   PUSH    EAX     ;-****
+        PUSH    ECX     ;-****
+        PUSH    EDI     ;-****
+        MOV     BYTE PTR [EBP+EBX],0
+        MOV     ESI,DWORD PTR LEX_IDENT[EDI]
         CALL    FREE
-        POP     ESI                     ;+****
-        MOV     DWORD PTR LEX_IDENT[ESI],EDI
+        INC     EBX
+        MOV     EAX,EBX
+
+;NEW_STRING
+        CALL    MALLOC
         MOV     EDI,ESI
+        MOV     ESI,EBP
+        MOV     ECX,EBX
+        PUSH    EDI     ;-****
+        REP     MOVSB
+        POP     EAX     ;+****
+        POP     EDI     ;+****
+        MOV     DWORD PTR LEX_IDENT[EDI],EAX
+        POP     ECX     ;+****
+        POP     EAX     ;+****
 
 @@100:  MOV     DWORD PTR LEX_TOKEN[EDI],EAX
         ADD     ESP,LEX_MAX_IDENT       ;-****

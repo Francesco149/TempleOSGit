@@ -77,6 +77,16 @@ SYMBOL_TABLE:
         DB      'sizeof',0
         DD      HTT_KEYWORD,KW_INTERNAL,0,0
         DB      'internal',0
+        DD      HTT_KEYWORD,KW_TYPEOF,0,0
+        DB      'typeof',0
+        DD      HTT_KEYWORD,KW_FORMAT_STR,0,0
+        DB      'format_str',0
+        DD      HTT_KEYWORD,KW_FORMAT_DATA,0,0
+        DB      'format_data',0
+        DD      HTT_KEYWORD,KW_OUTPUT_FUN,0,0
+        DB      'output_fun',0
+        DD      HTT_KEYWORD,KW_INPUT_FUN,0,0
+        DB      'input_fun',0
 
         DD      HTT_INTERNAL_TYPE,IT_BYTE,1,EC_ZBD+100h+65536*(EC_ASSIGN8+700h)
         DB      'BYTE',0
@@ -242,8 +252,8 @@ CONT_INIT_OS:
         MOV     DWORD PTR SYS_GRAPHICS_HIDDEN,ESI
 
         CALL    INIT_CRT
-        MOV     BYTE PTR FS:TSS_TEXT_ATTRIBUTE,017H
-        MOV     BYTE PTR FS:TSS_BORDER_ATTRIBUTE,01FH
+        MOV     BYTE PTR FS:TSS_TEXT_ATTRIBUTE,0F1H
+        MOV     BYTE PTR FS:TSS_BORDER_ATTRIBUTE,0F9H
         BTS     WORD PTR FS:TSS_CRT_FLAGS,CRTF_WRAP_AROUND
         CALL    CLEAR_CRT
         CALL    CURSOR_OFF

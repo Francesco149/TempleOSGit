@@ -32,6 +32,7 @@ IT_STRUCT_SIZE  EQU     $
 
 MLF_DEFAULT_AVAILABLE   EQU     1
 MLF_FUNCTION            EQU     2
+MLF_DOT_DOT_DOT         EQU     4
 
 MEMBER_LIST_NODE STRUC
 ML_NEXT         DD      ?
@@ -42,6 +43,10 @@ ML_OFFSET       DD      ?
 ML_PARAM_COUNT  DW      ?       ;FOR FUNCTIONS
 ML_FLAGS        DW      ?
 ML_DEFAULT      DD      ?
+ML_FORMAT_STR   DD      ?
+ML_FORMAT_DATA  DD      ?
+ML_OUTPUT_FUN   DD      ?
+ML_INPUT_FUN    DD      ?
 ML_STRUCT_SIZE  EQU     $
                 ENDS
 
@@ -75,6 +80,11 @@ KW_SYSFUN       DB      ?
 KW_RETURN       DB      ?
 KW_SIZEOF       DB      ?
 KW_INTERNAL     DB      ?
+KW_TYPEOF       DB      ?
+KW_FORMAT_STR   DB      ?
+KW_FORMAT_DATA  DB      ?
+KW_OUTPUT_FUN   DB      ?
+KW_INPUT_FUN    DB      ?
                 ENDS        
 
 INTERMEDIATE_CODE  STRUC

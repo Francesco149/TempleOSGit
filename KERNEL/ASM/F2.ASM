@@ -23,13 +23,12 @@ FIL_ROOT_CPP:
         DB '         3',13,10,'#define ext_dump           '
         DB '      4',13,10,'#define ext_read_file         '
         DB '   5',13,10,'#define ext_ltf_putchar          '
-        DB '6',13,10,'#define ext_ltf_update_screen    7',13
-        DB 10,'#define ext_blank_crt_text       8',13,10,'#'
-        DB 'define ext_irq03                9',13,10,'#def'
-        DB 'ine ext_irq04                10',13,10,'#defin'
-        DB 'e ext_select_default_drive 11',13,10,13,10,'#'
-        DB 'define HTT_INVALID             0',13,10,'#defi'
-        DB 'ne HTT_ALL                 0xFFFFFFFF',13,10,'#'
+        DB '6',13,10,'#define ext_blank_crt_text       7',13
+        DB 10,'#define ext_irq03                8',13,10,'#'
+        DB 'define ext_irq04                9',13,10,'#def'
+        DB 'ine ext_select_default_drive 10',13,10,13,10
+        DB '#define HTT_INVALID             0',13,10,'#def'
+        DB 'ine HTT_ALL                 0xFFFFFFFF',13,10,'#'
         DB 'define HTT_FILE                1',13,10,'#defi'
         DB 'ne HTT_SYS_SYMBOL          2',13,10,'#define H'
         DB 'TT_LOCAL_VARIABLE      4',13,10,'#define HTT_G'
@@ -42,17 +41,53 @@ FIL_ROOT_CPP:
         DB 10,'{',13,10,'  sys_hash_entry *next;',13,10
         DB '  char *string;',13,10,'  DWORD type;',13,10
         DB '  DWORD user0,user1,user2;',13,10,'};',13,10
-        DB 13,10,'// TSS task flags',13,10,'#define TSSF'
-        DB '_MALLOC_TRACE     0',13,10,'#define TSSF_HEAP_'
-        DB 'IN_USE      1',13,10,'#define TSSF_LEX_TRACE  '
-        DB '      2',13,10,'#define TSSF_PARSE_TRACE      '
-        DB '3',13,10,'#define TSSF_COMPILE_TRACE    4',13
-        DB 10,'#define TSSF_RUN_TRACE        5',13,10,'#d'
-        DB 'efine TSSF_ECHO             6',13,10,'#define '
-        DB 'TSSF_SUSPENDED        7',13,10,'#define TSSF_L'
-        DB 'OCAL_USER       8',13,10,'#define TSSF_OPT_TRA'
-        DB 'CE        9',13,10,13,10,'#define tss_desc_l'
-        DB 'ength 31',13,10,'class tss_struct ',13,10,'{'
+        DB 13,10,'#define mlf_default_available 1',13,10
+        DB '#define mlf_function          2',13,10,'class '
+        DB 'member_list_node',13,10,'{',13,10,'  member_'
+        DB 'list_node *next;',13,10,'  char *string;',13,10
+        DB '  DWORD *member_class;',13,10,'  DWORD count; '
+        DB '//for arrays',13,10,'  DWORD offset;',13,10,' '
+        DB ' WORD parameter_count;',13,10,'  WORD flags;',13
+        DB 10,'  DWORD default_value;',13,10,'  char *for'
+        DB 'mat_str;',13,10,'  char *format_data;',13,10
+        DB '  void output_fun(char *buf,BYTE *d);',13,10,' '
+        DB ' void input_fun(char *buf,BYTE *d);',13,10,'};'
+        DB 13,10,13,10,'#define cf_internal 0',13,10,'c'
+        DB 'lass class_node',13,10,'{',13,10,'  sys_hash'
+        DB '_entry *next;',13,10,'  char *string;',13,10
+        DB '  DWORD type;',13,10,'  WORD member_count;',13
+        DB 10,'  WORD parameter_count;',13,10,'  DWORD si'
+        DB 'ze;',13,10,'  WORD dereference_code;',13,10,' '
+        DB ' WORD assign_code;',13,10,'  member_list_node '
+        DB '*member_list;',13,10,'  member_list_node *last'
+        DB '_in_member_list;',13,10,'  DWORD *executable_a'
+        DB 'ddress;',13,10,'  class_node *return_class;',13
+        DB 10,'  BYTE pointer_count;',13,10,'  BYTE flags'
+        DB '[3];',13,10,'};',13,10,13,10,'#define it_c'
+        DB 'har    0',13,10,'#define it_BYTE    1',13,10
+        DB '#define it_short   2',13,10,'#define it_WORD  '
+        DB '  3',13,10,'#define it_int     4',13,10,'#de'
+        DB 'fine it_DWORD   5',13,10,'#define it_double  6'
+        DB 13,10,'#define it_udouble 7',13,10,13,10,'c'
+        DB 'lass global_variable_node',13,10,'{',13,10,' '
+        DB ' sys_hash_entry *next;',13,10,'  char *string;'
+        DB 13,10,'  DWORD type;',13,10,'  class_node *va'
+        DB 'riable_class;',13,10,'  WORD flags;',13,10,' '
+        DB ' WORD parameter_count;',13,10,'  DWORD data;',13
+        DB 10,'};',13,10,13,10,'// TSS task flags',13,10
+        DB '#define TSSF_MALLOC_TRACE     0',13,10,'#defin'
+        DB 'e TSSF_HEAP_IN_USE      1',13,10,'#define TSSF'
+        DB '_LEX_TRACE        2',13,10,'#define TSSF_PARSE'
+        DB '_TRACE      3',13,10,'#define TSSF_COMPILE_TRA'
+        DB 'CE    4',13,10,'#define TSSF_RUN_TRACE        '
+        DB '5',13,10,'#define TSSF_ECHO             6',13
+        DB 10,'#define TSSF_SUSPENDED        7',13,10,'#d'
+        DB 'efine TSSF_LOCAL_USER       8',13,10,'#define '
+        DB 'TSSF_OPT_TRACE        9',13,10,13,10,'#defin'
+        DB 'e CRTF_CURSOR_ON        0',13,10,'#define CRTF'
+        DB '_WRAP_AROUND      1',13,10,'#define CRTF_SHOW '
+        DB '            2',13,10,13,10,'#define tss_desc'
+        DB '_length 31',13,10,'class tss_struct ',13,10,'{'
         DB 13,10,'  DWORD backlink;',13,10,'  DWORD esp0'
         DB ';',13,10,'  DWORD ss0;',13,10,'  DWORD esp1;'
         DB 13,10,'  DWORD ss1;',13,10,'  DWORD esp2;',13
@@ -68,30 +103,35 @@ FIL_ROOT_CPP:
         DB 'ORD  task_switch_trap;',13,10,'  WORD  io_bitm'
         DB 'ap_ptr;',13,10,'  BYTE  io_bitmap[0x800/8];',13
         DB 10,13,10,'  char  task_descriptor[tss_desc_len'
-        DB 'gth+1];',13,10,13,10,'  DWORD *console_ltf;',13
-        DB 10,'  DWORD *menu_ltf;',13,10,'  DWORD menu_se'
-        DB 'lection;',13,10,'  DWORD cursor_offset;',13,10
-        DB '  DWORD crt_size;',13,10,'  int   crt_width;',13
+        DB 'gth+1];',13,10,13,10,'  void  update_window('
+        DB ');',13,10,'  DWORD *current_ltf;',13,10,'  D'
+        DB 'WORD *menu_ltf;',13,10,'  DWORD menu_selection'
+        DB ';',13,10,'  DWORD cursor_offset;',13,10,'  D'
+        DB 'WORD crt_size;',13,10,'  int   crt_width;',13
         DB 10,'  int   crt_height;',13,10,'  WORD  crt_se'
         DB 'lect;',13,10,'  BYTE  text_attribute;',13,10
         DB '  BYTE  border_attribute;',13,10,'  BYTE  menu'
         DB '_attribute;',13,10,'  BYTE  reserved_attribute'
-        DB 's[3];',13,10,'  int   window_right;',13,10,' '
-        DB ' int   window_left;',13,10,'  int   window_top'
-        DB ';',13,10,'  int   window_bottom;',13,10,'  i'
-        DB 'nt   cursor_hor;',13,10,'  int   cursor_vert;',13
-        DB 10,'  WORD  crt_flags;',13,10,13,10,'  WORD '
-        DB ' task_flags;',13,10,'  DWORD selector;',13,10
-        DB '  tss_struct *absolute_address;',13,10,'  tss_'
-        DB 'struct *parent_tss;',13,10,'  tss_struct *next'
-        DB '_tss;',13,10,'  tss_struct *last_tss;',13,10
-        DB '  DWORD memory_block_list;',13,10,'  BYTE  hea'
-        DB 'p_cache[512];',13,10,'  DWORD malloc_free_list'
-        DB ';',13,10,'  DWORD trap_list;',13,10,'  sys_h'
-        DB 'ash_entry **hash_table;',13,10,'  char **strin'
-        DB 'g_table;',13,10,'  DWORD optimization;',13,10
-        DB '  char *startup_cmd;',13,10,'  DWORD system_re'
-        DB 'sult;',13,10,'  DWORD current_partition;',13,10
+        DB 's[3];',13,10,'  int   window_left;',13,10,' '
+        DB ' int   window_right;',13,10,'  int   window_to'
+        DB 'p;',13,10,'  int   window_bottom;',13,10,'  '
+        DB 'int   cursor_hor;',13,10,'  int   cursor_vert;'
+        DB 13,10,13,10,'  int   window_pixel_left;  //Th'
+        DB 'ese are derived',13,10,'  int   window_pixel_r'
+        DB 'ight;',13,10,'  int   window_pixel_top;',13,10
+        DB '  int   window_pixel_bottom;',13,10,13,10,' '
+        DB ' WORD  crt_flags;',13,10,13,10,'  WORD  task'
+        DB '_flags;',13,10,'  DWORD selector;',13,10,'  '
+        DB 'tss_struct *absolute_address;',13,10,'  tss_st'
+        DB 'ruct *parent_tss;',13,10,'  tss_struct *next_t'
+        DB 'ss;',13,10,'  tss_struct *last_tss;',13,10,' '
+        DB ' DWORD memory_block_list;',13,10,'  BYTE  heap'
+        DB '_cache[512];',13,10,'  DWORD malloc_free_list;'
+        DB 13,10,'  DWORD trap_list;',13,10,'  sys_hash_'
+        DB 'entry **hash_table;',13,10,'  char **string_ta'
+        DB 'ble;',13,10,'  DWORD optimization;',13,10,' '
+        DB ' char *startup_cmd;',13,10,'  DWORD system_res'
+        DB 'ult;',13,10,'  DWORD current_partition;',13,10
         DB '  char *current_directory;',13,10,'  DWORD cur'
         DB 'rent_dir_cluster;',13,10,13,10,'  DWORD user'
         DB '_aux0;',13,10,'  DWORD user_aux1;',13,10,'  '
@@ -188,27 +228,30 @@ FIL_ROOT_CPP:
         DB 'e,DWORD mask);',13,10,'sys_hash_entry *find_sy'
         DB 's_hash(char *st,DWORD mask)',13,10,'{',13,10
         DB '  return find_hash_entry(st,*SYS_HASH_TABLE,mask'
-        DB ');',13,10,'}',13,10,13,10,'DWORD sysfun CM'
-        DB 'D_ROOT    root(char *cmd);          //Run cmd as'
-        DB ' root',13,10,'void sysfun CMD_QUEUE_ROOT qroot'
-        DB '(char *cmd);       //Queue cmd for root  ',13,10
-        DB 'DWORD sysfun CMD_SYSTEM system(char *cmd);      '
-        DB '   //system() cmd',13,10,'tss_struct *sysfun C'
-        DB 'MD_QSYSTEM qsystem(char *cmd); //Queue system() '
-        DB 'cmd',13,10,'char sysfun TRANSLATE_SCAN_CODE tr'
-        DB 'anslate_scan_code(); //no echo',13,10,'bool kb'
-        DB 'hit()  //Not clears flag',13,10,'  return btr('
-        DB 'SYS_CURRENT_SCAN_CODE,SCF_NEW_KEY);',13,10,'vo'
-        DB 'id sysfun CMD_GET_STRING gets(char *buf,DWORD si'
-        DB 'ze);',13,10,'char *sysfun CMD_LOAD_TEXT_FILE l'
-        DB 'oad_text_file(char *filename);',13,10,'void sy'
-        DB 'sfun CMD_SLEEP    sleep(DWORD mS);',13,10,'voi'
-        DB 'd sysfun CMD_REBOOT   reboot();',13,10,'void s'
-        DB 'ysfun CRLF         crlf();',13,10,'void sysfun'
-        DB ' SPACE        space();',13,10,'void sysfun INI'
-        DB 'T_CRT     init_crt();',13,10,'void sysfun CLEA'
-        DB 'R_CRT    clear_crt();',13,10,'void sysfun CMD_'
-        DB 'CRT_LINE_OUT crt_line_out(char *st);',13,10,'v'
+        DB ');',13,10,'}',13,10,13,10,'sys_hash_entry '
+        DB '*find_local_hash(char *st,DWORD mask)',13,10,'{'
+        DB 13,10,'  return find_hash_entry(st,fs->hash_tab'
+        DB 'le,mask);',13,10,'}',13,10,13,10,'DWORD sy'
+        DB 'sfun CMD_ROOT    root(char *cmd);          //Run'
+        DB ' cmd as root',13,10,'void sysfun CMD_QUEUE_ROO'
+        DB 'T qroot(char *cmd);       //Queue cmd for root  '
+        DB 13,10,'DWORD sysfun CMD_SYSTEM system(char *cmd'
+        DB ');         //system() cmd',13,10,'tss_struct *'
+        DB 'sysfun CMD_QSYSTEM qsystem(char *cmd); //Queue s'
+        DB 'ystem() cmd',13,10,'char sysfun TRANSLATE_SCAN'
+        DB '_CODE translate_scan_code(); //no echo',13,10,'b'
+        DB 'ool kbhit()  //Not clears flag',13,10,'  retur'
+        DB 'n btr(SYS_CURRENT_SCAN_CODE,SCF_NEW_KEY);',13,10
+        DB 'void sysfun CMD_GET_STRING gets(char *buf,DWORD '
+        DB 'size);',13,10,'char *sysfun CMD_LOAD_TEXT_FILE'
+        DB ' load_text_file(char *filename);',13,10,'void '
+        DB 'sysfun CMD_SLEEP    sleep(DWORD mS);',13,10,'v'
+        DB 'oid sysfun CMD_REBOOT   reboot();',13,10,'void'
+        DB ' sysfun CRLF         crlf();',13,10,'void sysf'
+        DB 'un SPACE        space();',13,10,'void sysfun I'
+        DB 'NIT_CRT     init_crt();',13,10,'void sysfun CL'
+        DB 'EAR_CRT    clear_crt();',13,10,'void sysfun CM'
+        DB 'D_CRT_LINE_OUT crt_line_out(char *st);',13,10,'v'
         DB 'oid sysfun CURSOR_HOME  cursor_home();',13,10,'v'
         DB 'oid sysfun CURSOR_ON    cursor_on();',13,10,'v'
         DB 'oid sysfun CURSOR_OFF   cursor_off();',13,10,'v'
@@ -223,34 +266,45 @@ FIL_ROOT_CPP:
         DB 'rt_add,char *desc="GENERIC"); //Spawn Task  ',13
         DB 10,'void sysfun CMD_KILL  kill(tss_struct *task)'
         DB '; //Kill Task  ',13,10,'//Note: "void exit()" '
-        DB 'is a keyword',13,10,13,10,'#define screen_wi'
-        DB 'dth 800',13,10,'#define screen_height 600',13
-        DB 10,'#define font_width  8',13,10,'#define font'
-        DB '_height 8',13,10,'void sysfun CMD_GR_CLEAR gr_'
-        DB 'clear();',13,10,'void sysfun CMD_GR_PLOT  gr_p'
-        DB 'lot(DWORD x,DWORD y,DWORD color);',13,10,'void'
-        DB ' sysfun CMD_GR_LINE  gr_line(DWORD x1,DWORD y1,D'
-        DB 'WORD x2,DWORD y2,DWORD color);',13,10,'#define'
-        DB ' MAX_RAND 0x7FFF',13,10,'void sysfun CMD_SRAND'
-        DB ' srand(WORD v);',13,10,'void sysfun CMD_RAND r'
-        DB 'and();',13,10,'int abs(int i) ',13,10,'{',13
-        DB 10,'  if (i<0)',13,10,'    return -i;',13,10
-        DB '  else',13,10,'    return i;',13,10,'}',13,10
-        DB 13,10,'int sign(int i)',13,10,'{',13,10,'  '
-        DB 'if (i<0)',13,10,'    return -1;',13,10,'  el'
-        DB 'se if (!i)',13,10,'    return 0;',13,10,'  e'
-        DB 'lse',13,10,'    return 1;',13,10,'}',13,10
-        DB 13,10,'#include "FIL_SYSTEXT_CPP"',13,10,';',13
-        DB 10,'load_sys_strings;',13,10,13,10,'#include'
-        DB ' "FIL_STRINGS_CPP"',13,10,'#include "FIL_FAT32'
-        DB '_CPP"',13,10,'read_partition_info;',13,10,'s'
-        DB 'elect_default_drive;',13,10,13,10,'cd_FAT32('
-        DB '"HOPPY");',13,10,'cd_FAT32("KERNEL");',13,10
-        DB 'cd_FAT32("CPP");',13,10,'free(fs->current_dire'
-        DB 'ctory);',13,10,'fs->current_directory=new_stri'
-        DB 'ng("/HOPPY/KERNEL/CPP");',13,10,13,10,13,10
-        DB '#include "DISK.CPP"',13,10,'#include "ROOT2.CP'
-        DB 'P"',13,10
+        DB 'is a keyword',13,10,13,10,'#define BLACK    '
+        DB '  0',13,10,'#define BLUE       1',13,10,'#de'
+        DB 'fine GREEN      2',13,10,'#define CYAN       3'
+        DB 13,10,'#define RED        4',13,10,'#define P'
+        DB 'URPLE     5',13,10,'#define BROWN      6',13,10
+        DB '#define LTGRAY     7',13,10,'#define DKGRAY   '
+        DB '  8',13,10,'#define LTBLUE     9',13,10,'#de'
+        DB 'fine LTGREEN    10',13,10,'#define LTCYAN     '
+        DB '11',13,10,'#define LTRED      12',13,10,'#de'
+        DB 'fine LTPURPLE   13',13,10,'#define YELLOW     '
+        DB '14',13,10,'#define WHITE      15',13,10,13,10
+        DB '#define screen_width 800',13,10,'#define scree'
+        DB 'n_height 600',13,10,'#define font_width  8',13
+        DB 10,'#define font_height 8',13,10,'void sysfun '
+        DB 'GR_UPDATE_SCREEN gr_update_screen();',13,10,'v'
+        DB 'oid sysfun CMD_GR_CLEAR gr_clear();',13,10,'vo'
+        DB 'id sysfun CMD_GR_PLOT  gr_plot(DWORD x,DWORD y,D'
+        DB 'WORD color);',13,10,'void sysfun CMD_GR_LINE  '
+        DB 'gr_line(DWORD x1,DWORD y1,DWORD x2,DWORD y2,DWOR'
+        DB 'D color);',13,10,'#define MAX_RAND 0x7FFF',13
+        DB 10,'void sysfun CMD_SRAND srand(WORD v);',13,10
+        DB 'void sysfun CMD_RAND rand();',13,10,'int abs(i'
+        DB 'nt i) ',13,10,'{',13,10,'  if (i<0)',13,10
+        DB '    return -i;',13,10,'  else',13,10,'    re'
+        DB 'turn i;',13,10,'}',13,10,13,10,'int sign(i'
+        DB 'nt i)',13,10,'{',13,10,'  if (i<0)',13,10,' '
+        DB '   return -1;',13,10,'  else if (!i)',13,10,' '
+        DB '   return 0;',13,10,'  else',13,10,'    retu'
+        DB 'rn 1;',13,10,'}',13,10,13,10,'#include "FI'
+        DB 'L_SYSTEXT_CPP"',13,10,';',13,10,'load_sys_st'
+        DB 'rings;',13,10,13,10,'#include "FIL_STRINGS_C'
+        DB 'PP"',13,10,'#include "FIL_FAT32_CPP"',13,10,'r'
+        DB 'ead_partition_info;',13,10,'select_default_dri'
+        DB 've;',13,10,13,10,'cd_FAT32("HOPPY");',13,10
+        DB 'cd_FAT32("KERNEL");',13,10,'cd_FAT32("CPP");',13
+        DB 10,'free(fs->current_directory);',13,10,'fs->c'
+        DB 'urrent_directory=new_string("/HOPPY/KERNEL/CPP")'
+        DB ';',13,10,13,10,13,10,'#include "DISK.CPP"',13
+        DB 10,'#include "ROOT2.CPP"',13,10
         DB 0
         ENDS
         END

@@ -33,7 +33,7 @@ char toupper(char ch)
     return ch;
 }
 
-int match_list_entry(char *src, char *lst,int flags,int *ambiguity_overkill_ptr)
+int match_list_entry(char *src, char *lst,int flags=0,int *ambiguity_overkill_ptr=NULL)
 /* RETURNS: -2 if Ambiguous, -1 if not found, else entry_number */
 {
   int l,entry_num=0,result=-1,unutilized_src;

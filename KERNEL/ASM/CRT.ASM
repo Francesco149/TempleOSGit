@@ -273,14 +273,14 @@ CRT_OUT PROC NEAR
 @@1A:   PUSH    EAX                     ;-****
         PUSH    EBX                     ;-****
         PUSH    EDX                     ;-****
-        MOV     EBX,DWORD PTR FS:TSS_CONSOLE_LTF
+        MOV     EBX,DWORD PTR FS:TSS_CURRENT_LTF
         OR      EBX,EBX
         JZ      @@10
-        PUSH    EBX                     ;LTF
+        PUSH    0                       ;Menu Selection
+        PUSH    0                       ;Scan Code
         AND     EAX,0FFh
         PUSH    EAX                     ;CH
-        PUSH    0                       ;Scan Code
-        PUSH    0                       ;Menu Selection
+        PUSH    EBX                     ;LTF
         MOV     EAX,DWORD PTR SYSTEM_EXTERN_TABLE
         CALL    DWORD PTR EXT_LTF_PUTCHAR*4[EAX]
         ADD     ESP,16
@@ -400,9 +400,10 @@ CRT_LINE_OUT ENDP
 INIT_CRT        PROC NEAR
         MOV     WORD PTR FS:TSS_CRT_SELECT,CRT_SEL
         MOV     WORD PTR FS:TSS_CRT_FLAGS,0
-        MOV     BYTE PTR FS:TSS_TEXT_ATTRIBUTE,017H
-        MOV     BYTE PTR FS:TSS_BORDER_ATTRIBUTE,01FH
-        MOV     BYTE PTR FS:TSS_MENU_ATTRIBUTE,02FH
+        BTS     WORD PTR FS:TSS_CRT_FLAGS,CRTF_SHOW
+        MOV     BYTE PTR FS:TSS_TEXT_ATTRIBUTE,0F1H
+        MOV     BYTE PTR FS:TSS_BORDER_ATTRIBUTE,0F9H
+        MOV     BYTE PTR FS:TSS_MENU_ATTRIBUTE,0F2H
         MOV     DWORD PTR FS:TSS_CRT_WIDTH,SCREEN_COLS*2
         MOV     DWORD PTR FS:TSS_CRT_HEIGHT,SCREEN_LINES
         MOV     DWORD PTR FS:TSS_CRT_SIZE,SCREEN_COLS*SCREEN_LINES*2

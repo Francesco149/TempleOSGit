@@ -72,6 +72,10 @@ SOURCE=..\..\APPS\GO.CPP
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\APPS\GTport.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\APPS\STARNBAR.CPP
 # End Source File
 # Begin Source File

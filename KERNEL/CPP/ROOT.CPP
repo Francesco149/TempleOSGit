@@ -22,11 +22,10 @@
 #define ext_dump                 4
 #define ext_read_file            5
 #define ext_ltf_putchar          6
-#define ext_ltf_update_screen    7
-#define ext_blank_crt_text       8
-#define ext_irq03                9
-#define ext_irq04                10
-#define ext_select_default_drive 11
+#define ext_blank_crt_text       7
+#define ext_irq03                8
+#define ext_irq04                9
+#define ext_select_default_drive 10
 
 #define HTT_INVALID             0
 #define HTT_ALL                 0xFFFFFFFF
@@ -48,6 +47,63 @@ class sys_hash_entry
   DWORD user0,user1,user2;
 };
 
+#define mlf_default_available 1
+#define mlf_function          2
+class member_list_node
+{
+  member_list_node *next;
+  char *string;
+  DWORD *member_class;
+  DWORD count; //for arrays
+  DWORD offset;
+  WORD parameter_count;
+  WORD flags;
+  DWORD default_value;
+  char *format_str;
+  char *format_data;
+  void output_fun(char *buf,BYTE *d);
+  void input_fun(char *buf,BYTE *d);
+};
+
+#define cf_internal 0
+class class_node
+{
+  sys_hash_entry *next;
+  char *string;
+  DWORD type;
+  WORD member_count;
+  WORD parameter_count;
+  DWORD size;
+  WORD dereference_code;
+  WORD assign_code;
+  member_list_node *member_list;
+  member_list_node *last_in_member_list;
+  DWORD *executable_address;
+  class_node *return_class;
+  BYTE pointer_count;
+  BYTE flags[3];
+};
+
+#define it_char    0
+#define it_BYTE    1
+#define it_short   2
+#define it_WORD    3
+#define it_int     4
+#define it_DWORD   5
+#define it_double  6
+#define it_udouble 7
+
+class global_variable_node
+{
+  sys_hash_entry *next;
+  char *string;
+  DWORD type;
+  class_node *variable_class;
+  WORD flags;
+  WORD parameter_count;
+  DWORD data;
+};
+
 // TSS task flags
 #define TSSF_MALLOC_TRACE     0
 #define TSSF_HEAP_IN_USE      1
@@ -59,6 +115,10 @@ class sys_hash_entry
 #define TSSF_SUSPENDED        7
 #define TSSF_LOCAL_USER       8
 #define TSSF_OPT_TRACE        9
+
+#define CRTF_CURSOR_ON        0
+#define CRTF_WRAP_AROUND      1
+#define CRTF_SHOW             2
 
 #define tss_desc_length 31
 class tss_struct 
@@ -94,7 +154,8 @@ class tss_struct
 
   char  task_descriptor[tss_desc_length+1];
 
-  DWORD *console_ltf;
+  void  update_window();
+  DWORD *current_ltf;
   DWORD *menu_ltf;
   DWORD menu_selection;
   DWORD cursor_offset;
@@ -106,12 +167,18 @@ class tss_struct
   BYTE  border_attribute;
   BYTE  menu_attribute;
   BYTE  reserved_attributes[3];
-  int   window_right;
   int   window_left;
+  int   window_right;
   int   window_top;
   int   window_bottom;
   int   cursor_hor;
   int   cursor_vert;
+
+  int   window_pixel_left;  //These are derived
+  int   window_pixel_right;
+  int   window_pixel_top;
+  int   window_pixel_bottom;
+
   WORD  crt_flags;
 
   WORD  task_flags;
@@ -234,6 +301,11 @@ sys_hash_entry *find_sys_hash(char *st,DWORD mask)
   return find_hash_entry(st,*SYS_HASH_TABLE,mask);
 }
 
+sys_hash_entry *find_local_hash(char *st,DWORD mask)
+{
+  return find_hash_entry(st,fs->hash_table,mask);
+}
+
 DWORD sysfun CMD_ROOT    root(char *cmd);          //Run cmd as root
 void sysfun CMD_QUEUE_ROOT qroot(char *cmd);       //Queue cmd for root  
 DWORD sysfun CMD_SYSTEM system(char *cmd);         //system() cmd
@@ -263,10 +335,28 @@ tss_struct *sysfun CMD_SPAWN spawn(BYTE *start_add,char *desc="GENERIC"); //Spaw
 void sysfun CMD_KILL  kill(tss_struct *task); //Kill Task  
 //Note: "void exit()" is a keyword
 
+#define BLACK      0
+#define BLUE       1
+#define GREEN      2
+#define CYAN       3
+#define RED        4
+#define PURPLE     5
+#define BROWN      6
+#define LTGRAY     7
+#define DKGRAY     8
+#define LTBLUE     9
+#define LTGREEN    10
+#define LTCYAN     11
+#define LTRED      12
+#define LTPURPLE   13
+#define YELLOW     14
+#define WHITE      15
+
 #define screen_width 800
 #define screen_height 600
 #define font_width  8
 #define font_height 8
+void sysfun GR_UPDATE_SCREEN gr_update_screen();
 void sysfun CMD_GR_CLEAR gr_clear();
 void sysfun CMD_GR_PLOT  gr_plot(DWORD x,DWORD y,DWORD color);
 void sysfun CMD_GR_LINE  gr_line(DWORD x1,DWORD y1,DWORD x2,DWORD y2,DWORD color);

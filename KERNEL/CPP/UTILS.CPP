@@ -66,9 +66,9 @@ void split()
   for (i=0;i<10;i++) 
     swap_in_next;
   fs->window_top=40;
-  fs->text_attribute=0x37;
-  fs->border_attribute=0x3F;
-  fs->menu_attribute=0x2F;
+  fs->text_attribute=WHITE*16+CYAN;
+  fs->border_attribute=WHITE*16+CYAN;
+  fs->menu_attribute=WHITE*16+GREEN;
   clear_crt;
   cursor_home;
   user2_tss->window_bottom=39;

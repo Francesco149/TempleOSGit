@@ -9,4 +9,5 @@ cd "\TDL5\simstructure Website"
 copy e:\HOPPY.ZIP
 copy e:\HOPPY\upload.ftp
 ftp -s:upload.ftp www.simstructure.hare.com
+ftp -s:upload.ftp www.simstructure.hare.com
 

@@ -67,9 +67,9 @@ CMD_FIND_HASH_ENTRY PROC NEAR
         MOV     EBP,ESP
         PUSH    EDI
         PUSH    ESI
-        MOV     ESI,SF_PARAM3[EBP]
+        MOV     ESI,SF_PARAM1[EBP]
         MOV     EDI,SF_PARAM2[EBP]
-        MOV     EBX,SF_PARAM1[EBP]
+        MOV     EBX,SF_PARAM3[EBP]
         CALL    FIND_HASH_ENTRY
         MOV     EAX,ESI
         POP     ESI
@@ -98,8 +98,8 @@ CMD_TO_LINKED_TEXT_FILE PROC NEAR
         MOV     EBP,ESP
         PUSH    EDI
         PUSH    ESI
-        MOV     EDI,DWORD PTR SF_PARAM1[EBP]
-        MOV     ESI,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDI,DWORD PTR SF_PARAM2[EBP]
+        MOV     ESI,DWORD PTR SF_PARAM1[EBP]
         CALL    TO_LINKED_TEXT_FILE
         POP     ESI
         POP     EDI
@@ -272,8 +272,8 @@ CMD_GET_STRING PROC NEAR
         MOV     EBP,ESP
         PUSH    EDI
         PUSH    ECX
-        MOV     EDI,DWORD PTR SF_PARAM2[EBP]
-        MOV     ECX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EDI,DWORD PTR SF_PARAM1[EBP]
+        MOV     ECX,DWORD PTR SF_PARAM2[EBP]
         CALL    GET_STRING
         POP     ECX
         POP     EDI

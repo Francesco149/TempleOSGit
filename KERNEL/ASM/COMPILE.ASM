@@ -105,10 +105,14 @@ NEW_CLASS PROC NEAR
         POP     EAX
         RET
 NEW_CLASS ENDP
+
 ;;**************************PROCEDURE*************************
         ALIGN   4
 ;IN:    EBP=CLASS_MEMBER_NODE
 ;       EAX=0 LOCAL VAR, 1 FUN PARAM, 2 CLASS
+TXT_ARGC        DB      'argc',0
+TXT_ARGV        DB      'argv',0
+
 PARSE_VAR_LIST PROC NEAR
         PUSH    EAX
         OR      EAX,EAX
@@ -127,7 +131,76 @@ PARSE_VAR_LIST PROC NEAR
         CMP     DWORD PTR LEX_TOKEN[EDI],')'
         JE      @@100
 
-        CMP     DWORD PTR LEX_TOKEN[EDI],TK_IDENT
+        CMP     DWORD PTR LEX_TOKEN[EDI],'.'    ;unfinished--double const
+        JNE     @@2B
+        CALL    LEX
+        CMP     DWORD PTR LEX_TOKEN[EDI],'.'
+        JNE     @@140
+        CALL    LEX
+        CMP     DWORD PTR LEX_TOKEN[EDI],'.'
+        JNE     @@140
+        CALL    LEX
+        CMP     DWORD PTR LEX_TOKEN[EDI],')'
+        JNE     @@180
+
+        MOV     EAX,ML_STRUCT_SIZE
+        CALL    MALLOC
+        MOV     WORD PTR ML_FLAGS[ESI],MLF_DOT_DOT_DOT
+        XOR     EAX,EAX
+        MOV     DWORD PTR ML_FORMAT_STR[ESI],EAX
+        MOV     DWORD PTR ML_FORMAT_DATA[ESI],EAX
+        MOV     DWORD PTR ML_OUTPUT_FUN[ESI],EAX
+        MOV     DWORD PTR ML_INPUT_FUN[ESI],EAX
+        MOV     WORD PTR ML_PARAM_COUNT[ESI],AX
+        MOV     DWORD PTR ML_COUNT[ESI],EAX
+        MOV     DWORD PTR ML_NEXT[ESI],EAX
+        MOV     EBX,DWORD PTR SYS_INTERNAL_TYPES+(4*IT_int)
+        MOV     DWORD PTR ML_CLASS[ESI],EBX
+        PUSH    EDI
+        PUSH    ESI
+        LEA     ESI,TXT_ARGC
+        CALL    NEW_STRING
+        MOV     EAX,EDI
+        POP     ESI
+        POP     EDI
+        MOV     DWORD PTR ML_STRING[ESI],EAX
+        MOV     ECX,DWORD PTR C_MEM_LIST_LAST[EBP]
+        MOV     DWORD PTR ML_NEXT[ECX],ESI
+        MOV     DWORD PTR C_MEM_LIST_LAST[EBP],ESI
+        MOV     EAX,DWORD PTR C_SIZE[EBP]       ;FUN PARAM
+        MOV     DWORD PTR ML_OFFSET[ESI],EAX
+        ADD     DWORD PTR C_SIZE[EBP],4
+
+        MOV     EAX,ML_STRUCT_SIZE
+        CALL    MALLOC
+        MOV     WORD PTR ML_FLAGS[ESI],MLF_DOT_DOT_DOT
+        XOR     EAX,EAX
+        MOV     DWORD PTR ML_FORMAT_STR[ESI],EAX
+        MOV     DWORD PTR ML_FORMAT_DATA[ESI],EAX
+        MOV     DWORD PTR ML_OUTPUT_FUN[ESI],EAX
+        MOV     DWORD PTR ML_INPUT_FUN[ESI],EAX
+        MOV     WORD PTR ML_PARAM_COUNT[ESI],AX
+        MOV     DWORD PTR ML_COUNT[ESI],127
+        MOV     DWORD PTR ML_NEXT[ESI],EAX
+        MOV     EBX,DWORD PTR SYS_INTERNAL_TYPES+(4*IT_int)
+        MOV     DWORD PTR ML_CLASS[ESI],EBX
+        PUSH    EDI
+        PUSH    ESI
+        LEA     ESI,TXT_ARGV
+        CALL    NEW_STRING
+        MOV     EAX,EDI
+        POP     ESI
+        POP     EDI
+        MOV     DWORD PTR ML_STRING[ESI],EAX
+        MOV     ECX,DWORD PTR C_MEM_LIST_LAST[EBP]
+        MOV     DWORD PTR ML_NEXT[ECX],ESI
+        MOV     DWORD PTR C_MEM_LIST_LAST[EBP],ESI
+        MOV     EAX,DWORD PTR C_SIZE[EBP]       ;FUN PARAM
+        MOV     DWORD PTR ML_OFFSET[ESI],EAX
+        ADD     DWORD PTR C_SIZE[EBP],4
+        JMP     @@100
+
+@@2B:   CMP     DWORD PTR LEX_TOKEN[EDI],TK_IDENT
         JNE     @@140
         MOV     EBX,DWORD PTR LEX_HASH_ENTRY[EDI]
         OR      EBX,EBX
@@ -147,6 +220,10 @@ PARSE_VAR_LIST PROC NEAR
         XOR     EAX,EAX
         MOV     WORD PTR ML_FLAGS[ESI],AX
         MOV     WORD PTR ML_PARAM_COUNT[ESI],AX
+        MOV     DWORD PTR ML_FORMAT_STR[ESI],EAX
+        MOV     DWORD PTR ML_FORMAT_DATA[ESI],EAX
+        MOV     DWORD PTR ML_OUTPUT_FUN[ESI],EAX
+        MOV     DWORD PTR ML_INPUT_FUN[ESI],EAX
         MOV     DWORD PTR ML_CLASS[ESI],EBX
         MOV     EAX,DWORD PTR LEX_IDENT[EDI]
         MOV     DWORD PTR ML_STRING[ESI],EAX
@@ -236,6 +313,44 @@ PARSE_VAR_LIST PROC NEAR
 @@76:   MOV     ECX,DWORD PTR C_SIZE[EBP]       ;CLASS
         MOV     DWORD PTR ML_OFFSET[ESI],ECX
         ADD     DWORD PTR C_SIZE[EBP],EAX
+        PUSH    EDX
+@@10:   CMP     DWORD PTR LEX_TOKEN[EDI],TK_IDENT
+        JNE     @@9
+        MOV     EDX,DWORD PTR LEX_HASH_ENTRY[EDI]
+        OR      EDX,EDX
+        JZ      @@9
+        CMP     DWORD PTR HTE_TYPE[EDX],HTT_KEYWORD
+        JNE     @@9
+        CMP     DWORD PTR HTE_USER0[EDX],KW_FORMAT_STR
+        JNE     @@11
+        CALL    LEX     ;SKIP KEYWORD
+        CMP     EAX,TK_STRING
+        JNE     @@190
+        MOV     EAX,DWORD PTR LEX_IDENT[EDI]
+        MOV     DWORD PTR ML_FORMAT_STR[ESI],EAX
+        MOV     DWORD PTR LEX_IDENT[EDI],0
+        CALL    LEX
+        JMP     @@10
+@@11:   CMP     DWORD PTR HTE_USER0[EDX],KW_FORMAT_DATA
+        JNE     @@12
+        CALL    LEX     ;SKIP KEYWORD
+        CALL    GET_EXPRESSION
+        MOV     DWORD PTR ML_FORMAT_DATA[ESI],EAX
+        JMP     @@10
+@@12:   CMP     DWORD PTR HTE_USER0[EDX],KW_OUTPUT_FUN
+        JNE     @@13
+        CALL    LEX     ;SKIP KEYWORD
+        CALL    GET_EXPRESSION
+        MOV     DWORD PTR ML_OUTPUT_FUN[ESI],EAX
+        JMP     @@10
+@@13:   CMP     DWORD PTR HTE_USER0[EDX],KW_INPUT_FUN
+        JNE     @@9
+        CALL    LEX     ;SKIP KEYWORD
+        CALL    GET_EXPRESSION
+        MOV     DWORD PTR ML_INPUT_FUN[ESI],EAX
+        JMP     @@10
+
+@@9:    POP     EDX
         JMP     @@98
 
 @@98:   CALL    LEX_SUB_STACK_PTR       ;(GROWS UP)
@@ -270,6 +385,10 @@ PARSE_VAR_LIST PROC NEAR
 @@140:  MOV     EAX,ST_EXPECTING_TYPE
         JMP     TRAP
 @@170:  MOV     EAX,ST_EXPECTING_LEFT_BRACE
+        JMP     TRAP
+@@180:  MOV     EAX,ST_MISSING_RIGHT_PAREN
+        JMP     TRAP
+@@190:  MOV     EAX,ST_EXPECTING_STRING
         JMP     TRAP
 PARSE_VAR_LIST ENDP
 ;;**************************PROCEDURE*************************
@@ -435,13 +554,9 @@ PARSE_FUN_COMMON2 PROC NEAR
         MOV     AX,WORD PTR C_MEM_COUNT[EBP]
         MOV     WORD PTR C_PARAM_COUNT[EBP],AX
         MOV     EDX,DWORD PTR C_MEM_LIST[EBP]
-        MOV     EBX,DWORD PTR C_SIZE[EBP]
-        ADD     EBX,SF_EIP
 @@10:   OR      EDX,EDX
         JZ      @@20
-        MOV     EAX,EBX
-        SUB     EAX,DWORD PTR ML_OFFSET[EDX]
-        MOV     DWORD PTR ML_OFFSET[EDX],EAX
+        ADD     DWORD PTR ML_OFFSET[EDX],SF_PARAM1
         MOV     EDX,DWORD PTR ML_NEXT[EDX]
         JMP     @@10
 @@20:   MOV     DWORD PTR C_SIZE[EBP],0

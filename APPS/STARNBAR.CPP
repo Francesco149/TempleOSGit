@@ -35,7 +35,7 @@ int ai;
 void update_map()
 {
   int i,j;
-  WORD *ptr=*SYS_TEXT_BASE;
+  WORD *ptr=*SYS_TEXT_BASE+fs->window_left+fs->window_top*fs->crt_width;
   for (i=fs->window_top;i<=fs->window_bottom;i++)
     for (j=fs->window_left;j<=fs->window_right;j++)
       ptr[i*fs->crt_width/2+j/2]=(map_values[i*fs->crt_width/2+j/2]*128 & 0xF000)+0x20;
@@ -50,18 +50,19 @@ void display_friendly_firepower()
 {
   int i,d,x,y,dx,dy;
   DWORD *ptr=map_values;
-  for (y=0;y<screen_height/font_height;y++) 
-    for (x=0;x<screen_width/font_width;x++) {
-      *ptr=0;
+  for (y=0;y<=fs->window_bottom-fs->window_top;y++) 
+    for (x=0;x<=fs->window_right-fs->window_left;x++) {
+      ptr[(y+fs->window_top)*fs->crt_width/2+(x+fs->window_left)/2]=0;
       for (i=0;i<num_troopers;i++) 
         if (tr[i].def>0 && tr[i].fire_end_time<*JIFFIES) {
           dx=(tr[i].x>>16)-(x*font_width+font_width/2);
           dy=(tr[i].y>>16)-(y*font_height+font_height/2);
           d=dx*dx+dy*dy;
           if (d<tr[i].rng)
-            *ptr=*ptr+tr[i].att;
+            ptr[(y+fs->window_top)*fs->crt_width/2+(x+fs->window_left)/2]=
+            ptr[(y+fs->window_top)*fs->crt_width/2+(x+fs->window_left)/2]+
+              tr[i].att;
         }
-      ptr=ptr+sizeof(DWORD);
     }
 }
 
@@ -97,7 +98,8 @@ void draw_trooper(trooper *t,DWORD color)
 
 void draw_all_troopers()
 {
-  int i,j,c,x=joycx,y=joycy;
+  int i,j,c,x=joycx-fs->window_pixel_left,y=joycy-fs->window_pixel_top;
+  clear_crt();
   gr_clear();
   clear_map_values;
   if (map_mode==mm_friendly_firepower)
@@ -230,7 +232,7 @@ void resolve_firing()
 
 void update_velocities()
 {
-  int i,j,x=joycx,y=joycy,dx,dy,d;
+  int i,j,x=joycx-fs->window_pixel_left,y=joycy-fs->window_pixel_top,dx,dy,d;
   trooper *t;
   if (joyb[0]) {
     for (i=0;i<num_troopers;i++) {
@@ -261,12 +263,12 @@ void stars_n_bars()
 {
   char ch=0,*st;
   DWORD start_time,jif=0,old_text_attr=fs->text_attribute;
-  linked_text_file *m,*old_l=fs->console_ltf,*old_m=fs->menu_ltf;
+  linked_text_file *m,*old_l=fs->current_ltf,*old_m=fs->menu_ltf;
 
   map_values=malloc(text_area_size*sizeof(DWORD));
 
-  fs->text_attribute=0x0F;
-  fs->console_ltf=NULL;
+  fs->text_attribute=WHITE*16+BLACK;
+  fs->current_ltf=NULL;
   cursor_off;
 
   fs->menu_ltf=new_linked_text_file;
@@ -277,8 +279,9 @@ void stars_n_bars()
   to_linked_text_file(st,m);
   free(st);
 
-  srand(0x1234);
+  srand(*JIFFIES);
   fs->menu_selection=0;
+  fs->update_window=&draw_all_troopers;
   while (ch!=27 && fs->menu_selection!=101) {
     ai=rand*3/MAX_RAND+1;
     init_troopers();
@@ -317,7 +320,6 @@ void stars_n_bars()
       output_dec(count1);
       output_dec(count2);
       output_dec((*JIFFIES-start_time)/10);
-      draw_all_troopers;
     }
     if (fs->menu_selection==100)
       fs->menu_selection=0;
@@ -329,7 +331,7 @@ void stars_n_bars()
   delete_ltf(m);
 
   fs->text_attribute=old_text_attr;
-  fs->console_ltf=old_l;
+  fs->current_ltf=old_l;
 
   free(map_values);
 }

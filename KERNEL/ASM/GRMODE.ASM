@@ -423,17 +423,16 @@ GR_UPDATE_SCREEN   PROC NEAR
         JE      @@30
         MOV     EAX,DWORD PTR TSS_FS[EDI]
         MOV     FS,AX
-        MOV     EAX,DWORD PTR FS:TSS_CONSOLE_LTF
+        BT      WORD PTR FS:TSS_CRT_FLAGS,CRTF_SHOW
+        JNC     @@20
+        PUSH    ESI             ;-****
+        MOV     EAX,DWORD PTR FS:TSS_UPDATE_WINDOW
         OR      EAX,EAX
         JZ      @@25
-        PUSH    ESI
-        PUSH    EAX
-        MOV     EAX,DWORD PTR SYSTEM_EXTERN_TABLE
-        CALL    DWORD PTR EXT_LTF_UPDATE_SCREEN*4[EAX]
-        ADD     ESP,4
-        CALL    DRAW_BORDER
-        POP     ESI
-@@25:   JMP     @@20
+        CALL    EAX
+@@25:   CALL    DRAW_BORDER
+        POP     ESI             ;+****
+        JMP     @@20
 @@30:   MOV     EAX,DWORD PTR TSS_FS[ESI]
         MOV     FS,AX
         POPFD
@@ -620,14 +619,6 @@ GR_UPDATE_SCREEN   PROC NEAR
         RET
 GR_UPDATE_SCREEN ENDP
 ;;**************************PROCEDURE*************************
-        PUBLIC  TSK_GR_UPDATE_SCREEN
-        ALIGN   4
-TSK_GR_UPDATE_SCREEN PROC NEAR     
-@@1:    CALL    GR_UPDATE_SCREEN
-        CALL    SWAP_IN_NEXT
-        JMP     @@1
-TSK_GR_UPDATE_SCREEN ENDP
-;;**************************PROCEDURE*************************
         PUBLIC  CMD_GR_CLEAR
         ALIGN   4
 CMD_GR_CLEAR PROC NEAR  
@@ -651,12 +642,18 @@ CMD_GR_PLOT PROC NEAR
         MOV     EBP,ESP
         PUSHAD
         MOV     EDI,DWORD PTR SYS_GRAPHICS_BASE
-        MOV     EBX,DWORD PTR SF_PARAM3[EBP]    ;X
-        CMP     EBX,SCREEN_WIDTH
-        JAE     @@100
+        MOV     EBX,DWORD PTR SF_PARAM1[EBP]    ;X
+        OR      EBX,EBX
+        JS      @@100
+        ADD     EBX,DWORD PTR FS:TSS_WINDOW_PIXEL_LEFT
+        CMP     EBX,DWORD PTR FS:TSS_WINDOW_PIXEL_RIGHT
+        JG      @@100
         MOV     EAX,DWORD PTR SF_PARAM2[EBP]    ;Y
-        CMP     EAX,SCREEN_HEIGHT
-        JAE     @@100
+        OR      EAX,EAX
+        JS      @@100
+        ADD     EAX,DWORD PTR FS:TSS_WINDOW_PIXEL_TOP
+        CMP     EAX,DWORD PTR FS:TSS_WINDOW_PIXEL_BOTTOM
+        JG      @@100
         MOV     ECX,SCREEN_WIDTH
         MUL     ECX
         ADD     EAX,EBX
@@ -669,7 +666,7 @@ CMD_GR_PLOT PROC NEAR
         SUB     ECX,EBX
         MOV     EAX,1
         SHL     EAX,CL
-        MOV     EBX,DWORD PTR SF_PARAM1[EBP] ;COLOR
+        MOV     EBX,DWORD PTR SF_PARAM3[EBP] ;COLOR
         OR      BH,BH
         JZ      @@20
         JS      @@10    
@@ -729,10 +726,10 @@ CMD_GR_LINE PROC NEAR
         MOV     EBP,ESP
         PUSHAD
 
-        MOV     EAX,DWORD PTR SF_PARAM5[EBP]
-        MOV     EBX,DWORD PTR SF_PARAM4[EBP]
+        MOV     EAX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM2[EBP]
         MOV     ECX,DWORD PTR SF_PARAM3[EBP]
-        MOV     EDX,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDX,DWORD PTR SF_PARAM4[EBP]
 
         SUB     EBX,EDX
         JNC     @@1
@@ -744,10 +741,10 @@ CMD_GR_LINE PROC NEAR
         JA      @@50
         JNE     @@20
 ;dx=dy
-        MOV     EAX,DWORD PTR SF_PARAM5[EBP]
-        MOV     EBX,DWORD PTR SF_PARAM4[EBP]
+        MOV     EAX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM2[EBP]
         MOV     ECX,DWORD PTR SF_PARAM3[EBP]
-        MOV     EDX,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDX,DWORD PTR SF_PARAM4[EBP]
         
         MOV     ESI,1
         CMP     EAX,ECX
@@ -761,9 +758,9 @@ CMD_GR_LINE PROC NEAR
         XCHG    EBX,EDX
 @@11:   SUB     EBX,EDX         ;EBX=dy and (ECX,EDX)=start
         INC     EBX
-@@12:   PUSH    ECX
+@@12:   PUSH    DWORD PTR SF_PARAM5[EBP]
         PUSH    EDX
-        PUSH    DWORD PTR SF_PARAM1[EBP]
+        PUSH    ECX
         CALL    CMD_GR_PLOT
         ADD     ESP,12
         INC     EDX
@@ -773,17 +770,17 @@ CMD_GR_LINE PROC NEAR
         JMP     @@100
 
 ;Y LONGEST, EBX=RISE EAX=RUN
-@@20:   MOV     EAX,DWORD PTR SF_PARAM5[EBP]
-        MOV     EBX,DWORD PTR SF_PARAM4[EBP]
+@@20:   MOV     EAX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM2[EBP]
 
         CMP     EBX,EDX
         JAE     @@20A
         XCHG    EAX,ECX
         XCHG    EBX,EDX
-        MOV     DWORD PTR SF_PARAM5[EBP],EAX
-        MOV     DWORD PTR SF_PARAM4[EBP],EBX
+        MOV     DWORD PTR SF_PARAM1[EBP],EAX
+        MOV     DWORD PTR SF_PARAM2[EBP],EBX
         MOV     DWORD PTR SF_PARAM3[EBP],ECX
-        MOV     DWORD PTR SF_PARAM2[EBP],EDX
+        MOV     DWORD PTR SF_PARAM4[EBP],EDX
 
 @@20A:  SUB     EBX,EDX
         XOR     EDI,EDI
@@ -800,17 +797,17 @@ CMD_GR_LINE PROC NEAR
         JNS     @@22
         NEG     ESI
 
-@@22:   MOV     EAX,DWORD PTR SF_PARAM5[EBP]
-        MOV     EBX,DWORD PTR SF_PARAM4[EBP]
+@@22:   MOV     EAX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM2[EBP]
         MOV     ECX,DWORD PTR SF_PARAM3[EBP]
-        MOV     EDX,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDX,DWORD PTR SF_PARAM4[EBP]
 
         SUB     EBX,EDX         ;EBX=dy and (ECX,EDX)=start
         INC     EBX
         XOR     EAX,EAX
-@@30:   PUSH    ECX
+@@30:   PUSH    DWORD PTR SF_PARAM5[EBP]
         PUSH    EDX
-        PUSH    DWORD PTR SF_PARAM1[EBP]
+        PUSH    ECX
         CALL    CMD_GR_PLOT
         ADD     ESP,12
         INC     EDX
@@ -821,17 +818,17 @@ CMD_GR_LINE PROC NEAR
         JMP     @@100
 
 ;X LONGEST
-@@50:   MOV     EAX,DWORD PTR SF_PARAM5[EBP]
-        MOV     EBX,DWORD PTR SF_PARAM4[EBP]
+@@50:   MOV     EAX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM2[EBP]
 
         CMP     EAX,ECX
         JAE     @@70A
         XCHG    EAX,ECX
         XCHG    EBX,EDX
-        MOV     DWORD PTR SF_PARAM5[EBP],EAX
-        MOV     DWORD PTR SF_PARAM4[EBP],EBX
+        MOV     DWORD PTR SF_PARAM1[EBP],EAX
+        MOV     DWORD PTR SF_PARAM2[EBP],EBX
         MOV     DWORD PTR SF_PARAM3[EBP],ECX
-        MOV     DWORD PTR SF_PARAM2[EBP],EDX
+        MOV     DWORD PTR SF_PARAM4[EBP],EDX
 
 @@70A:  SUB     EAX,ECX
         XOR     EDI,EDI
@@ -849,17 +846,17 @@ CMD_GR_LINE PROC NEAR
         JNS     @@72
         NEG     ESI
 
-@@72:   MOV     EAX,DWORD PTR SF_PARAM5[EBP]
-        MOV     EBX,DWORD PTR SF_PARAM4[EBP]
+@@72:   MOV     EAX,DWORD PTR SF_PARAM1[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM2[EBP]
         MOV     ECX,DWORD PTR SF_PARAM3[EBP]
-        MOV     EDX,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDX,DWORD PTR SF_PARAM4[EBP]
 
         SUB     EAX,ECX         ;EAX=dx and (ECX,EDX)=start
         XOR     EBX,EBX
         INC     EAX
-@@80:   PUSH    ECX
+@@80:   PUSH    DWORD PTR SF_PARAM5[EBP]
         PUSH    EDX
-        PUSH    DWORD PTR SF_PARAM1[EBP]
+        PUSH    ECX
         CALL    CMD_GR_PLOT
         ADD     ESP,12
         INC     ECX

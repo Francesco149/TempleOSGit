@@ -15,6 +15,12 @@ void joystick_tsk()
   int i, j;
   int mask = 15;
   int scale2=3;
+  init_crt;
+  btr(&fs->crt_flags,CRTF_SHOW);
+  fs->window_left=0;
+  fs->window_right=(screen_width/font_width)*2;
+  fs->window_top=0;
+  fs->window_bottom=(screen_height/font_height);
   while(true) {
     cli;
     for (i=0;i<4;i++)

@@ -88,8 +88,8 @@ void set_cursor_position(tss_struct *tss)
   linked_text_file *l;
   if (tss->window_top<=ipty && tss->window_bottom>=ipty &&
     tss->window_left<=iptx && tss->window_right>=iptx) {
-    if (tss->console_ltf) {
-      l=tss->console_ltf;
+    if (tss->current_ltf) {
+      l=tss->current_ltf;
       l->cur_line=l->cur_top_line;
       y=ipty-tss->window_top;
       for (i=0;i<y &&l->cur_line->next!=l;i++) 
@@ -103,6 +103,14 @@ void set_cursor_position(tss_struct *tss)
   }
 }
 
+void update_derived_tss_values(tss_struct *tss)
+{
+  tss->window_pixel_left=font_width*tss->window_left/2;
+  tss->window_pixel_right=font_width*tss->window_right/2;
+  tss->window_pixel_top=font_height*tss->window_top;
+  tss->window_pixel_bottom=font_height*tss->window_bottom;
+}
+
 void window_manager_tsk()
 {
   tss_struct *tss;
@@ -111,10 +119,12 @@ void window_manager_tsk()
   char ch;
   bool ip_lb_last=false,ip_rb_last=false;
   DWORD sc,menu_attribute,text_attribute;
+  blank_crt_text;
   cli;
   while (true) {
     tss=fs->next_tss;
     while (tss!=fs) {
+      update_derived_tss_values(tss);
       if (ip_lb) {
         if (tss->window_top==ipty+1 &&
             (iptx*2>=tss->window_left-2 && iptx*2<=tss->window_right+2)) {
@@ -124,6 +134,8 @@ void window_manager_tsk()
             set_window_vert(tss,ipty+1,tss->window_bottom+ipty+1-tss->window_top);
             blank_crt_text;
             window_to_top(tss);
+            update_derived_tss_values(tss);
+            gr_update_screen;
             swap_in_next;
           }
         }
@@ -135,6 +147,8 @@ void window_manager_tsk()
             set_window_vert(tss,ipty-y,tss->window_bottom+(ipty-y)-tss->window_top);
             blank_crt_text;
             window_to_top(tss);
+            update_derived_tss_values(tss);
+            gr_update_screen;
             swap_in_next;
           }
         }
@@ -144,6 +158,8 @@ void window_manager_tsk()
             set_window_vert(tss,tss->window_top,ipty-1);
             blank_crt_text;
             window_to_top(tss);
+            update_derived_tss_values(tss);
+            gr_update_screen;
             swap_in_next;
           }
         }
@@ -152,6 +168,8 @@ void window_manager_tsk()
           while (ip_lb) {
             set_window_vert(tss,tss->window_top,ipty-1);
             blank_crt_text;
+            update_derived_tss_values(tss);
+            gr_update_screen;
             window_to_top(tss);
             swap_in_next;
           }
@@ -162,6 +180,8 @@ void window_manager_tsk()
             set_window_hor(tss,tss->window_left,2*iptx-2);
             blank_crt_text;
             window_to_top(tss);
+            update_derived_tss_values(tss);
+            gr_update_screen;
             swap_in_next;
           }
         }
@@ -170,11 +190,11 @@ void window_manager_tsk()
         if (tss->window_top<=ipty && tss->window_bottom>=ipty &&
           tss->window_left<=iptx && tss->window_right>=iptx) {
           if (tss->menu_ltf) {
-            l=tss->console_ltf;
+            l=tss->current_ltf;
             text_attribute=tss->text_attribute;
             m=tss->menu_ltf;
             menu_attribute=tss->menu_attribute;
-            tss->console_ltf=m;
+            tss->current_ltf=m;
             tss->text_attribute=menu_attribute;
             while (ip_rb || bt(SYS_CURRENT_SCAN_CODE,SCF_WIN)) {
               window_to_top(tss);
@@ -184,25 +204,29 @@ void window_manager_tsk()
                 if (btr(SYS_CURRENT_SCAN_CODE,SCF_NEW_KEY)) {
                   sc=*SYS_CURRENT_SCAN_CODE & 0xFF;
                   ch=translate_scan_code;
-                  ltf_putchar(tss->console_ltf,ch,sc,0);
+                  ltf_putchar(tss->current_ltf,ch,sc,0);
                 }
               }
               ip_lb_last=ip_lb;
               ip_rb_last=ip_rb;
+              update_derived_tss_values(tss);
+              gr_update_screen;
               swap_in_next;
             }
             fill_menu_selection(tss);
             tss->text_attribute=text_attribute;
-            tss->console_ltf=l;
+            tss->current_ltf=l;
           }
         }
       }
       if (ip_lb_last && !ip_lb) 
         set_cursor_position(tss);
+      update_derived_tss_values(tss);
       tss=tss->next_tss;
     }
     ip_lb_last=ip_lb;
     ip_rb_last=ip_rb;
+    gr_update_screen;
     swap_in_next;
   }
 }

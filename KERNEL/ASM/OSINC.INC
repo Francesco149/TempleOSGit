@@ -135,6 +135,7 @@ ST_EXPECTING_EQUAL      DB      ?
 ST_NOT_POINTER_TYPE     DB      ?
 ST_EXPECTING_COMMA      DB      ?
 ST_EXPECTING_SYS_SYMBOL DB      ?
+ST_EXPECTING_STRING     DB      ?
                         ENDS
 
 SCREEN_COLS     EQU 100
@@ -183,7 +184,8 @@ TSS_IO_BITMAP           DB      (MAXIO/8) DUP (?)
 
 TSS_TASK_DESCRIPTOR     DB      (TSS_DESC_LENGTH+1) DUP (?)
 
-TSS_CONSOLE_LTF         DD      ?
+TSS_UPDATE_WINDOW       DD      ?
+TSS_CURRENT_LTF         DD      ?
 TSS_MENU_LTF            DD      ?
 TSS_MENU_SELECTION      DD      ?
 TSS_CURSOR_OFFSET       DD      ?
@@ -195,15 +197,21 @@ TSS_TEXT_ATTRIBUTE      DB      ?
 TSS_BORDER_ATTRIBUTE    DB      ?
 TSS_MENU_ATTRIBUTE      DB      ?
 TSS_RESERVED_ATTRIBUTES DB      ?,?,?
-TSS_WINDOW_RIGHT        DD      ?
 TSS_WINDOW_LEFT         DD      ?
+TSS_WINDOW_RIGHT        DD      ?
 TSS_WINDOW_TOP          DD      ?
 TSS_WINDOW_BOTTOM       DD      ?
 TSS_CURSOR_HOR          DD      ?
 TSS_CURSOR_VERT         DD      ?
 
+TSS_WINDOW_PIXEL_LEFT   DD      ? ;These are derived
+TSS_WINDOW_PIXEL_RIGHT  DD      ?
+TSS_WINDOW_PIXEL_TOP    DD      ?
+TSS_WINDOW_PIXEL_BOTTOM DD      ?
+
 CRTF_CURSOR_ON          EQU     0
 CRTF_WRAP_AROUND        EQU     1        
+CRTF_SHOW               EQU     2
 TSS_CRT_FLAGS           DW      ?
 
 TSSF_MALLOC_TRACE       EQU     0
@@ -450,7 +458,6 @@ EXT_IRQ0E               DB  ?
 EXT_DUMP                DB  ?
 EXT_READ_FILE           DB  ?
 EXT_LTF_PUTCHAR         DB  ?
-EXT_LTF_UPDATE_SCREEN   DB  ?
 EXT_BLANK_CRT_TEXT      DB  ?
 EXT_IRQ03               DB  ?
 EXT_IRQ04               DB  ?

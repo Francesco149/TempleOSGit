@@ -1,3 +1,4 @@
+  Fix bug with root("") function
   Lock "window_to_top" for coprocess update screen
   Coordinates relative to window (and no outside)
 GENERAL
@@ -13,16 +14,19 @@ HELP
 GRAPHICS
   Mouse
   Merge line and plot for faster lines
+  Animated borders? Scroll bars
 DEBUGGER
   IRQ
     Handle exceptions
 ASSEMBLER
 TCP/IP
+IDE
+  Show code size/cpu cycles
 COMPILE
+  replace new_strings with memcpy (fomat_data)
   case statements
   do while
-  Variable parameter counts
-  Multidimensional arrays (this might be done);
+  Multidimensional arrays
   += -= *= ect
   casting
   typedefs
@@ -31,10 +35,8 @@ COMPILE
   optimization: const+mul/div?,register vars,offset[eax*4]
   initialize arrays and structs
 LEX
-  Investigate why don't_free_buffer needed on MAP.ASM
+  Investigate why don't_free_buffer needed on OS.MAP
   #define functions
-  \nnn
-  \0 
   Arbitrary ident/string len
 IRQHAND
   Suspend tasks when they crash

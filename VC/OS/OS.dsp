@@ -110,6 +110,10 @@ SOURCE=..\..\KERNEL\CPP\FIFO.CPP
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\KERNEL\CPP\FORM.CPP
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\KERNEL\CPP\HELP.TXT
 # End Source File
 # Begin Source File
@@ -131,6 +135,10 @@ SOURCE=..\..\KERNEL\CPP\ROOT2.CPP
 # Begin Source File
 
 SOURCE=..\..\KERNEL\CPP\RULES.TXT
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\KERNEL\CPP\SPRINTF.CPP
 # End Source File
 # Begin Source File
 

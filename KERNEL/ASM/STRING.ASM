@@ -43,9 +43,10 @@ LOAD_TEXT_FILE  PROC NEAR
         POP     ESI
         PUSH    ESI
         PUSH    0
+        PUSH    ESI
         MOV     EAX,DWORD PTR SYSTEM_EXTERN_TABLE
         CALL    DWORD PTR EXT_READ_FILE*4[EAX]
-        ADD     ESP,4
+        ADD     ESP,8
         OR      EAX,EAX
         JZ      @@60
         MOV     EDI,EAX
@@ -89,13 +90,13 @@ CMD_STRCAT  PROC NEAR
         MOV     EBP,ESP
         PUSH    ESI
         PUSH    EDI
-        MOV     ESI,DWORD PTR SF_PARAM2[EBP]
+        MOV     ESI,DWORD PTR SF_PARAM1[EBP]
 @@2:    LODSB
         OR      AL,AL
         JNZ     @@2
         MOV     EDI,ESI
         DEC     EDI
-        MOV     ESI,DWORD PTR SF_PARAM1[EBP]
+        MOV     ESI,DWORD PTR SF_PARAM2[EBP]
 @@1:    LODSB
         STOSB
         OR      AL,AL
@@ -113,8 +114,8 @@ CMD_STRCPY  PROC NEAR
         MOV     EBP,ESP
         PUSH    ESI
         PUSH    EDI
-        MOV     ESI,DWORD PTR SF_PARAM1[EBP]
-        MOV     EDI,DWORD PTR SF_PARAM2[EBP]
+        MOV     ESI,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDI,DWORD PTR SF_PARAM1[EBP]
 @@1:    LODSB
         STOSB
         OR      AL,AL
@@ -132,8 +133,8 @@ CMD_STRCMP  PROC NEAR
         MOV     EBP,ESP
         PUSH    ESI
         PUSH    EDI
-        MOV     ESI,DWORD PTR SF_PARAM1[EBP]
-        MOV     EDI,DWORD PTR SF_PARAM2[EBP]
+        MOV     ESI,DWORD PTR SF_PARAM2[EBP]
+        MOV     EDI,DWORD PTR SF_PARAM1[EBP]
 @@1:    LODSB
         OR      AL,AL
         JZ      @@100
@@ -471,8 +472,8 @@ CMD_LOADSTR PROC NEAR
         PUSH    EDX
         PUSH    ESI
         PUSH    EDI
-        MOV     EDX,SF_PARAM2[EBP]
-        MOV     ESI,SF_PARAM1[EBP]
+        MOV     EDX,SF_PARAM1[EBP]
+        MOV     ESI,SF_PARAM2[EBP]
         CALL    NEW_STRING
         MOV     ESI,DWORD PTR FS:TSS_STRING_TABLE
         MOV     DWORD PTR [ESI+EDX*4],EDI
@@ -489,7 +490,7 @@ CMD_DEFINE_EXTERN PROC NEAR
         PUSH    EBP
         MOV     EBP,ESP
         MOV     EAX,DWORD PTR SYSTEM_EXTERN_TABLE
-        MOV     EBX,SF_PARAM2[EBP]
+        MOV     EBX,DWORD PTR SF_PARAM1[EBP]
         OR      EBX,EBX
         JZ      @@5
         CMP     EBX,EXT_TABLE_SIZE
@@ -499,7 +500,7 @@ CMD_DEFINE_EXTERN PROC NEAR
         RET
 
 @@10:   LEA     EBX,DWORD PTR [EAX+4*EBX]
-        MOV     EAX,SF_PARAM1[EBP]
+        MOV     EAX,DWORD PTR SF_PARAM2[EBP]
         MOV     DWORD PTR [EBX],EAX
         POP     EBP
         RET

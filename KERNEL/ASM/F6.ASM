@@ -56,9 +56,10 @@ FIL_SYSTEXT_CPP:
         DB '  loadstr(i++,"not pointer type at ");',13,10,' '
         DB ' loadstr(i++,"expecting ',39,',',39,' at ");',13
         DB 10,'  loadstr(i++,"expecting system symbol at ")'
-        DB ';',13,10,13,10,'  i=0x200;  //Start of next '
-        DB 'block of system text',13,10,13,10,'  i=0x400'
-        DB ';  //Start of user messages',13,10,'}',13,10
+        DB ';',13,10,'  loadstr(i++,"expecting string at "'
+        DB ');',13,10,13,10,'  i=0x200;  //Start of next'
+        DB ' block of system text',13,10,13,10,'  i=0x40'
+        DB '0;  //Start of user messages',13,10,'}',13,10
         DB 13,10,13,10,'char *systext(DWORD num)',13,10
         DB '{',13,10,'  char *result;',13,10,'  if (!num'
         DB ' || num>=4096) {',13,10,'    ? fs->string_tabl'

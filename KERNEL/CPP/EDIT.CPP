@@ -190,12 +190,14 @@ void DWORD_to_st(DWORD d;char *buf)
 }
 
 
-void ltf_update_screen(linked_text_file *l)
+void ltf_update_window(linked_text_file *l)
 {
-  int cc,vert,c_vert,c_hor,bottom,top;
+  int line_num,cc,vert,c_vert,c_hor,bottom,top;
   ltf_line *cl;
   char *temp,*temp2,buf[5],*temp3;
-  WORD line_num=l->cur_top_line_num;
+
+  if (!l) return;
+  line_num=l->cur_top_line_num;
 
   clear_crt;
   cursor_home;
@@ -493,6 +495,123 @@ void edit_paste_clipboard(linked_text_file *l)
   }
 }
 
+
+
+void do_form(BYTE *d,char *class_name)
+{
+  char ch=0,buf[512];
+  DWORD sc=0,ms=0;
+  class_node *cl=find_local_hash(class_name,HTT_CLASS);
+  member_list_node *ml;
+  linked_text_file *old_l,*l;
+  ltf_line *ll;
+  void my_ltf_putchar(linked_text_file *l,char ch, DWORD sc,DWORD ms);
+  DWORD *ext=*SYSTEM_EXTERN_TABLE;
+  int *i_ptr;
+  class_node *cn;
+
+  my_ltf_putchar=ext[ext_ltf_putchar];
+  if (!cl) return;
+  l=new_linked_text_file;
+  to_linked_text_file("\r\n",l);
+  ml=cl->member_list;
+  while (ml) {
+    if (ml->format_str) {
+      ll=malloc(sizeof(ltf_line));
+      i_ptr=d+ml->offset;
+      cn=ml->member_class;
+      if (cn->type==HTT_INTERNAL_TYPE && ml->count==0) {
+        if (ml->format_data)
+          sprintf(buf,ml->format_str,*i_ptr,ml->format_data);
+        else
+          sprintf(buf,ml->format_str,*i_ptr);
+      } else {
+        if (ml->format_data)
+          sprintf(buf,ml->format_str,i_ptr,ml->format_data);
+        else
+          sprintf(buf,ml->format_str,i_ptr);
+      }
+      ll->data=new_string(buf);
+      ll->flags=0;
+      insque(ll,l->last);
+    }
+    ml=ml->next;
+  }
+  l->cur_line=l->next;
+  l->cur_top_line=l->next;
+  old_l=fs->current_ltf;
+  fs->current_ltf=l;
+  while (ch!=27 && ch!=0x11) {
+    ms=get_key_or_menu(&sc,&ch);
+    my_ltf_putchar(l,ch,sc,ms);
+  }
+  fs->current_ltf=old_l;
+  if (ch==27) {
+    ml=cl->member_list;
+    ll=l->next->next;
+    while (ml) {
+      if (ml->format_str) {
+        i_ptr=d+ml->offset;
+        cn=ml->member_class;
+        if (cn->type==HTT_INTERNAL_TYPE && ml->count==0) {
+          if (ml->format_data)
+            getf(ll->data,ml->format_str,i_ptr,ml->format_data);
+          else
+            getf(ll->data,ml->format_str,i_ptr);
+        } else {
+          if (ml->format_data)
+            getf(ll->data,ml->format_str,i_ptr,ml->format_data);
+          else
+            getf(ll->data,ml->format_str,i_ptr);
+        }
+      }
+      ml=ml->next;
+      ll=ll->next;
+    }
+  }
+  delete_ltf(l);
+}
+
+class edit_find_text_record
+{
+  char  text_to_find[64]   format_str "FIND      \"%63s\"";
+  DWORD scan_forward       format_str "FORWARD   %1d";
+  DWORD scan_selected_text format_str "SELECTION %1d";
+  DWORD match_case         format_str "CASE      %1d";
+}
+
+void edit_find(linked_text_file *l)
+{
+  edit_find_text_record d;
+  d.text_to_find[0]=0;
+  d.scan_forward=1;
+  d.scan_selected_text=0;
+  d.match_case=1;
+  do_form(&d,"edit_find_text_record");
+  edit_string(d.text_to_find,ed_remove_leading+ed_remove_trailing);
+
+  int i,j,len;
+  len=strlen(d.text_to_find);
+  bool cont=true,cont2;
+  ltf_line *ll;
+  ll=l->cur_line;
+  while (ll!=l  && cont) {
+    cont2=false;
+    for (i=0;i<strlen(ll->data) && !cont2;i++) {
+      cont2=true;
+      for (j=0;j<len && cont2;j++)
+        if (d.text_to_find[j]!=ll->data[i+j])
+          cont2=false;
+    }
+    if (cont2) {
+      l->cur_line=ll;
+      l->cur_top_line=ll;
+      cont=false;
+    }
+    ll=ll->next;
+  }
+}
+
 #define MU_FIND        1
 #define MU_REPLACE     2
 #define MU_SAVE        3
@@ -563,6 +682,8 @@ char *ltf_putchar(linked_text_file *l,char ch,DWORD sc,DWORD ms)
       edit_cut_to_clipboard(l);
     else if (ch==22 || ms==MU_PASTE) //CTRL V
       edit_paste_clipboard(l);
+    else if (ch==6 || ms==MU_FIND) //CTRL F
+      edit_find(l);
     else if (ms==0)
       edit_insert_char(ch,l);
 
@@ -574,6 +695,7 @@ char *ltf_putchar(linked_text_file *l,char ch,DWORD sc,DWORD ms)
   }
   set_flags(old_flags);
 }
+defext(ext_ltf_putchar,&ltf_putchar);
 
 char *edit_string_file(char *st, DWORD *save_flag)
 {
@@ -586,7 +708,7 @@ char *edit_string_file(char *st, DWORD *save_flag)
     to_linked_text_file("\r\n",l);
   else
     to_linked_text_file(st,l);
-  old_l=fs->console_ltf;
+  old_l=fs->current_ltf;
   old_menu=fs->menu_ltf;
   old_menu_attr=fs->menu_attribute;
   
@@ -597,12 +719,12 @@ char *edit_string_file(char *st, DWORD *save_flag)
   free(temp);
 
   fs->menu_ltf=m;
-  fs->console_ltf=l;
+  fs->current_ltf=l;
   while (ch!=27 && ch!=0x11 && ms!=MU_ABORT && ms!=MU_EXIT) {
     ms=get_key_or_menu(&sc,&ch);
     ltf_putchar(l,ch,sc,ms);
   }
-  fs->console_ltf=old_l;
+  fs->current_ltf=old_l;
   fs->menu_ltf=old_menu;
   delete_ltf(m);
   if (ch==0x11 || ms==MU_ABORT) {
@@ -632,14 +754,20 @@ void edit(char *filename)
   free(st_out);
 }
 
+void ltf_update_current_ltf_window()
+{
+  ltf_update_window(fs->current_ltf);
+}
+
 void use_console_ltf(char *menu_file)
 {
   DWORD old_flags=get_flags;
   char *st;
   linked_text_file *l;
   cli;
-  fs->console_ltf=new_linked_text_file;
-  l=fs->console_ltf;
+  fs->current_ltf=new_linked_text_file;
+  fs->update_window=&ltf_update_current_ltf_window;
+  l=fs->current_ltf;
   to_linked_text_file("\r\n",l);
   l->max_lines=200;
 
@@ -654,17 +782,4 @@ void use_console_ltf(char *menu_file)
   }
   set_flags(old_flags);
 }
- 
-defext(ext_ltf_putchar,&ltf_putchar);
-defext(ext_ltf_update_screen,&ltf_update_screen);
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  

@@ -643,34 +643,34 @@ ECT_BT:
         MOV     EBX,EAX
         POP     EDX
         XOR     EAX,EAX
-        BT      DWORD PTR [EDX],EBX
+        BT      DWORD PTR [EBX],EDX
         ADC     EAX,0
 ECT_BTS:
         MOV     EBX,EAX
         POP     EDX
         XOR     EAX,EAX
-        BTS     DWORD PTR [EDX],EBX
+        BTS     DWORD PTR [EBX],EDX
         ADC     EAX,0
 ECT_BTR:
         MOV     EBX,EAX
         POP     EDX
         XOR     EAX,EAX
-        BTR     DWORD PTR [EDX],EBX
+        BTR     DWORD PTR [EBX],EDX
         ADC     EAX,0
 ECT_INSQUE:
         POP     EDX
-        MOV     EBX,[EAX]
-        MOV     [EAX],EDX
-        MOV     [EDX],EBX
-        MOV     4[EDX],EAX
-        MOV     4[EBX],EDX
+        MOV     EBX,[EDX]
+        MOV     [EDX],EAX
+        MOV     [EAX],EBX
+        MOV     4[EAX],EDX
+        MOV     4[EBX],EAX
 ECT_INSQUE_REV:
         POP     EDX
-        MOV     EBX,4[EAX]
-        MOV     [EBX],EDX
-        MOV     [EDX],EAX
-        MOV     4[EDX],EBX
-        MOV     4[EAX],EDX
+        MOV     EBX,4[EDX]
+        MOV     [EBX],EAX
+        MOV     [EAX],EDX
+        MOV     4[EAX],EBX
+        MOV     4[EDX],EAX
 ECT_REMQUE:    
         MOV     EBX,[EAX]
         MOV     EDX,4[EAX]
@@ -681,15 +681,16 @@ ECT_INP:
         XOR     EAX,EAX
         IN      AL,DX
 ECT_OUTP:    
-        POP     EDX
+        MOV     EDX,EAX
+        POP     EAX
         OUT     DX,AL
 ECT_REP_INSB:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    EDI
-        MOV     EDI,8[EBP]
+        MOV     EDI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP INSB
         POP     EDI
@@ -697,12 +698,12 @@ ECT_REP_INSB:
         POP     EBP
         ADD     ESP,8
 ECT_REP_INSW:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    EDI
-        MOV     EDI,8[EBP]
+        MOV     EDI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP INSW
         POP     EDI
@@ -710,12 +711,12 @@ ECT_REP_INSW:
         POP     EBP
         ADD     ESP,8
 ECT_REP_OUTSB:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    ESI
-        MOV     ESI,8[EBP]
+        MOV     ESI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP OUTSB
         POP     ESI
@@ -723,12 +724,12 @@ ECT_REP_OUTSB:
         POP     EBP
         ADD     ESP,8
 ECT_REP_OUTSW:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    ESI
-        MOV     ESI,8[EBP]
+        MOV     ESI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP OUTSW
         POP     ESI
@@ -742,9 +743,9 @@ ECT_MEMCPY:
         PUSH    ECX
         PUSH    ESI
         PUSH    EDI
-        MOV     EDI,12[EBP]
+        MOV     EDI,4[EBP]
         MOV     ESI,8[EBP]
-        MOV     ECX,4[EBP]
+        MOV     ECX,12[EBP]
         OR      ECX,ECX
         JZ      @@1
         REP MOVSB
@@ -759,8 +760,8 @@ ECT_MEMSET:
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    EDI
-        MOV     EDI,12[EBP]
-        MOV     ECX,4[EBP]
+        MOV     EDI,4[EBP]
+        MOV     ECX,12[EBP]
         MOV     EAX,8[EBP]
         OR      ECX,ECX
         JZ      @@2
@@ -774,7 +775,8 @@ ECT_INPW:
         XOR     EAX,EAX
         IN      AX,DX
 ECT_OUTPW:    
-        POP     EDX
+        MOV     EDX,EAX
+        POP     EAX
         OUT     DX,AX
 ECT_PP_DWORD:
         INC     DWORD PTR [EAX]
@@ -810,7 +812,8 @@ ECT_INPD:
         MOV     EDX,EAX
         IN      EAX,DX
 ECT_OUTPD:    
-        POP     EDX
+        MOV     EAX,EDX
+        POP     EAX
         OUT     DX,EAX
 ECT_ENTER:    
         PUSH    EBP
@@ -1091,34 +1094,34 @@ UECT_BT:
         MOV     EBX,EAX
         POP     EDX
         XOR     EAX,EAX
-        BT      DWORD PTR [EDX],EBX
+        BT      DWORD PTR [EBX],EDX
         ADC     EAX,0
 UECT_BTS:
         MOV     EBX,EAX
         POP     EDX
         XOR     EAX,EAX
-        BTS     DWORD PTR [EDX],EBX
+        BTS     DWORD PTR [EBX],EDX
         ADC     EAX,0
 UECT_BTR:
         MOV     EBX,EAX
         POP     EDX
         XOR     EAX,EAX
-        BTR     DWORD PTR [EDX],EBX
+        BTR     DWORD PTR [EBX],EDX
         ADC     EAX,0
 UECT_INSQUE:
         POP     EDX
-        MOV     EBX,[EAX]
-        MOV     [EAX],EDX
-        MOV     [EDX],EBX
-        MOV     4[EDX],EAX
-        MOV     4[EBX],EDX
+        MOV     EBX,[EDX]
+        MOV     [EDX],EAX
+        MOV     [EAX],EBX
+        MOV     4[EAX],EDX
+        MOV     4[EBX],EAX
 UECT_INSQUE_REV:
         POP     EDX
-        MOV     EBX,4[EAX]
-        MOV     [EBX],EDX
-        MOV     [EDX],EAX
-        MOV     4[EDX],EBX
-        MOV     4[EAX],EDX
+        MOV     EBX,4[EDX]
+        MOV     [EBX],EAX
+        MOV     [EAX],EDX
+        MOV     4[EAX],EBX
+        MOV     4[EDX],EAX
 UECT_REMQUE:    
         MOV     EBX,[EAX]
         MOV     EDX,4[EAX]
@@ -1129,15 +1132,16 @@ UECT_INP:
         XOR     EAX,EAX
         IN      AL,DX
 UECT_OUTP:    
-        POP     EDX
+        MOV     EDX,EAX
+        POP     EAX
         OUT     DX,AL
 UECT_REP_INSB:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    EDI
-        MOV     EDI,8[EBP]
+        MOV     EDI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP INSB
         POP     EDI
@@ -1145,12 +1149,12 @@ UECT_REP_INSB:
         POP     EBP
         ADD     ESP,8
 UECT_REP_INSW:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    EDI
-        MOV     EDI,8[EBP]
+        MOV     EDI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP INSW
         POP     EDI
@@ -1158,12 +1162,12 @@ UECT_REP_INSW:
         POP     EBP
         ADD     ESP,8
 UECT_REP_OUTSB:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    ESI
-        MOV     ESI,8[EBP]
+        MOV     ESI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP OUTSB
         POP     ESI
@@ -1171,12 +1175,12 @@ UECT_REP_OUTSB:
         POP     EBP
         ADD     ESP,8
 UECT_REP_OUTSW:    
-        MOV     EDX,EAX
         PUSH    EBP
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    ESI
-        MOV     ESI,8[EBP]
+        MOV     ESI,EAX
+        MOV     EDX,8[EBP]
         MOV     ECX,4[EBP]
         REP OUTSW
         POP     ESI
@@ -1190,9 +1194,9 @@ UECT_MEMCPY:
         PUSH    ECX
         PUSH    ESI
         PUSH    EDI
-        MOV     EDI,12[EBP]
+        MOV     EDI,4[EBP]
         MOV     ESI,8[EBP]
-        MOV     ECX,4[EBP]
+        MOV     ECX,12[EBP]
         OR      ECX,ECX
         JZ      @@1
         REP MOVSB
@@ -1207,8 +1211,8 @@ UECT_MEMSET:
         MOV     EBP,ESP
         PUSH    ECX
         PUSH    EDI
-        MOV     EDI,12[EBP]
-        MOV     ECX,4[EBP]
+        MOV     EDI,4[EBP]
+        MOV     ECX,12[EBP]
         MOV     EAX,8[EBP]
         OR      ECX,ECX
         JZ      @@2
@@ -1222,7 +1226,8 @@ UECT_INPW:
         XOR     EAX,EAX
         IN      AX,DX
 UECT_OUTPW:    
-        POP     EDX
+        MOV     EDX,EAX
+        POP     EAX
         OUT     DX,AX
 UECT_PP_DWORD:
         INC     DWORD PTR [EAX]
@@ -1258,7 +1263,8 @@ UECT_INPD:
         MOV     EDX,EAX
         IN      EAX,DX
 UECT_OUTPD:    
-        POP     EDX
+        MOV     EDX,EAX
+        POP     EAX
         OUT     DX,EAX
 UECT_ENTER:    
         PUSH    EBP

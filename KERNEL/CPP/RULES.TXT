@@ -4,10 +4,12 @@ OS PROGRAMMING RULES:
   3) When interacting with compiled code, preserve EBP,ESI,EDI,ECX
      You are free to trash EAX,EBX,EDX
 Departures from C/C++ which will be maintained:
-  1) Parameters are pushed in PASCAL order, not C 
-  2) No conditional compilation (It clutters code)
-  3) No fancy pointer arithmetic based on size of objects
-  4) No typechecking
+  1) No conditional compilation (It clutters code)
+  2) No fancy pointer arithmetic based on size of objects
+  3) No typechecking
+  4) Variable parameter counts are accessed with "argc" and "argv[]"
+  5) The "?" operator is used similar to "cout".
+  6) Function addresses are preceeded by "&"
 
 FILE LOCATIONS
 1) All files lie in the /HOPPY directory, to group them

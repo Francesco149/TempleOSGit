@@ -51,6 +51,7 @@ void load_sys_strings()
   loadstr(i++,"not pointer type at ");
   loadstr(i++,"expecting ',' at ");
   loadstr(i++,"expecting system symbol at ");
+  loadstr(i++,"expecting string at ");
 
   i=0x200;  //Start of next block of system text
 

@@ -12,4 +12,7 @@
 9999 cd("/HOPPY/UTILS");
 9999 #include "BOOTINS.CPP"
 9999 edit("STARNBAR.CPP");
-9999 #include "STARNBAR.CPP" 
+9999 #include "STARNBAR.CPP"
+9999 edit("GTPORT.CPP");
+9999 #include "GTPORT.CPP"
+ 

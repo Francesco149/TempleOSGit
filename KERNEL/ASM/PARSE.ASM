@@ -30,6 +30,7 @@
         EXTRN   LEX_CB_POP              :NEAR
         EXTRN   GET_KEY                 :NEAR
         EXTRN   ZEROS                   :DWORD
+        EXTRN   LEX_CB_APPEND           :NEAR
 ;;***************************SEGMENT**************************
 SYSCODE SEGMENT DWORD USE32 PUBLIC
         ASSUME  CS:SYSCODE,DS:SYSCODE
@@ -288,11 +289,42 @@ UNARY_TERM2:
 
 @@10A:  CMP     DWORD PTR HTE_TYPE[ESI],HTT_FUNCTION
         JNE     @@15
+        PUSH    0               ;VARIABLE PARAM COUNT
+        PUSH    0               ;VARIABLE PARAM LOC
         CALL    LEX     ;SKIP FUNCTION NAME
+        CALL    LEX_CB_PUSH
+        PUSH    DWORD PTR LEX_CB_STACK[EDI]
+        MOV     DWORD PTR LEX_CB_STACK[EDI],0
         MOVZX   ECX,WORD PTR C_PARAM_COUNT[ESI]
         OR      ECX,ECX
         JNZ     @@11B
+        MOV     EBX,DWORD PTR C_MEM_LIST[ESI]
+        OR      EBX,EBX
+        JZ      @@13C
+        TEST    WORD PTR ML_FLAGS[EBX],MLF_DOT_DOT_DOT
+        JZ      @@13C
         CMP     DWORD PTR LEX_TOKEN[EDI],'('
+        JE      @@13B
+        PUSH    EBX             ;ARGC=0 
+        PUSH    ECX
+        PUSH    ESI
+        CALL    INIT_CB_OUT_PTRS
+        MOV     EAX,EC_INT32
+        MOV     ECX,DWORD PTR ML_CLASS[EBX]
+        MOV     EBX,0
+        CALL    ADD_INTERMEDIATE_CODE
+        MOV     ECX,DWORD PTR LEX_CB_LAST_OUT_PTR[EDI]
+        MOV     ESI,ESP
+        MOV     16[ESI],ECX
+        XOR     EAX,EAX
+        CALL    ADD_INTERMEDIATE_CODE
+        CALL    LEX_CB_PUSH
+        POP     ESI
+        POP     ECX
+        POP     EBX
+        JMP     @@14
+
+@@13C:  CMP     DWORD PTR LEX_TOKEN[EDI],'('
         JNE     @@14
         CALL    LEX ;SKIP (
         JMP     @@14B
@@ -312,12 +344,88 @@ UNARY_TERM2:
         JNZ     @@13A    
 @@6F:   MOV     EAX,ST_EXPECTING_COMMA
         JMP     TRAP
+
+@@12A:  CALL    LEX     ;SKIP ,
+@@13:   PUSH    EBX
+        PUSH    ECX
+        PUSH    ESI
+        CALL    INIT_CB_OUT_PTRS
+        CALL    CONT_PARSE_EXPRESSION
+        XOR     EAX,EAX
+        CALL    ADD_INTERMEDIATE_CODE
+        CALL    LEX_CB_PUSH
+        POP     ESI
+        POP     ECX
+        POP     EBX
+        MOV     EBX,DWORD PTR ML_NEXT[EBX]
+        LOOP    @@12
+        OR      EBX,EBX
+        JZ      @@14B
+        TEST    WORD PTR ML_FLAGS[EBX],MLF_DOT_DOT_DOT
+        JZ      @@14B
+        CMP     DWORD PTR LEX_TOKEN[EDI],','
+        JE      @@13B
+        JMP     @@13H
+
+@@13B:  CALL    LEX             ;skip '('
+@@13H:  PUSH    EBX             ;ARGC=0 
+        PUSH    ECX
+        PUSH    ESI
+        CALL    INIT_CB_OUT_PTRS
+        MOV     EAX,EC_INT32
+        MOV     ECX,DWORD PTR ML_CLASS[EBX]
+        MOV     EBX,0
+        CALL    ADD_INTERMEDIATE_CODE
+        MOV     ECX,DWORD PTR LEX_CB_LAST_OUT_PTR[EDI]
+        MOV     ESI,ESP
+        MOV     16[ESI],ECX
+        XOR     EAX,EAX
+        CALL    ADD_INTERMEDIATE_CODE
+        CALL    LEX_CB_PUSH
+        POP     ESI
+        POP     ECX
+        POP     EBX
+        CMP     DWORD PTR LEX_TOKEN[EDI],')'
+        JE      @@14B
+        JMP     @@13E
+
+@@13D:  CMP     DWORD PTR LEX_TOKEN[EDI],','
+        JNE     @@14B
+
+        CALL    LEX     ;SKIP ,
+@@13E:  PUSH    EBX
+        PUSH    ECX
+        PUSH    ESI
+        CALL    INIT_CB_OUT_PTRS
+        CALL    CONT_PARSE_EXPRESSION
+        XOR     EAX,EAX
+        CALL    ADD_INTERMEDIATE_CODE
+        CALL    LEX_CB_PUSH
+        MOV     ESI,ESP
+        INC     DWORD PTR 20[ESI]
+        POP     ESI
+        POP     ECX
+        POP     EBX
+        JMP     @@13D
+
+
+@@14B:  CMP     DWORD PTR LEX_TOKEN[EDI],')'
+        JNE     @@3
+        CALL    LEX     ;SKIP )
+        JMP     @@14
+
 @@13A:  PUSH    EBX             ;LOAD DEFAULT PARAMS
         PUSH    ECX
+        PUSH    ESI
+        CALL    INIT_CB_OUT_PTRS
         MOV     EAX,EC_INT32
         MOV     ECX,DWORD PTR ML_CLASS[EBX]
         MOV     EBX,DWORD PTR ML_DEFAULT[EBX]
         CALL    ADD_INTERMEDIATE_CODE
+        XOR     EAX,EAX
+        CALL    ADD_INTERMEDIATE_CODE
+        CALL    LEX_CB_PUSH
+        POP     ESI
         POP     ECX
         POP     EBX
         MOV     EBX,DWORD PTR ML_NEXT[EBX]
@@ -325,23 +433,32 @@ UNARY_TERM2:
         CMP     DWORD PTR LEX_TOKEN[EDI],')'
         JNE     @@14
         CALL    LEX     ;SKIP )
-        JMP     @@14
 
-@@12A:  CALL    LEX     ;SKIP ,
-@@13:   PUSH    EBX
-        PUSH    ECX
+@@14:   POP     EAX     
+        POP     ECX     ;ADDRESS OF ARGC
+        POP     EBX     ;ARGC VALUE
+        OR      ECX,ECX
+        JZ      @@14H
+        MOV     DWORD PTR IC_DATA[ECX],EBX
+        INC     EBX
+@@14H:  PUSH    EBX
         PUSH    ESI
-        CALL    CONT_PARSE_EXPRESSION
+        MOV     ESI,EAX
+        PUSH    DWORD PTR LEX_CB_STACK[ESI]
+        MOV     EAX,DWORD PTR LEX_CB_STACK[EDI]
+        MOV     DWORD PTR LEX_CB_STACK[ESI],EAX
+        MOV     DWORD PTR LEX_CB_STACK[EDI],ESI
+        CALL    LEX_CB_POP
+        MOV     ESI,DWORD PTR LEX_CB_STACK[EDI]
+        POP     DWORD PTR LEX_CB_STACK[EDI]
+@@14E:  OR      ESI,ESI
+        JZ      @@14F
+        PUSH    DWORD PTR LEX_CB_STACK[ESI]
+        CALL    LEX_CB_APPEND
         POP     ESI
-        POP     ECX
-        POP     EBX
-        MOV     EBX,DWORD PTR ML_NEXT[EBX]
-        LOOP    @@12
-@@14B:  CMP     DWORD PTR LEX_TOKEN[EDI],')'
-        JNE     @@3
-        CALL    LEX     ;SKIP )
-
-@@14:   BT      DWORD PTR C_FLAGS[ESI],CF_INTERNAL
+        JMP     @@14E
+@@14F:  POP     ESI
+        BT      DWORD PTR C_FLAGS[ESI],CF_INTERNAL
         JNC     @@14A
         MOV     EAX,DWORD PTR C_STATEMENTS[ESI]
         XOR     EBX,EBX
@@ -350,10 +467,12 @@ UNARY_TERM2:
         MOV     EBX,DWORD PTR C_STATEMENTS[ESI]
 @@14C:  MOV     ECX,C_RETURN_CLASS[ESI]
         CALL    ADD_INTERMEDIATE_CODE
-        BT      DWORD PTR C_FLAGS[ESI],CF_INTERNAL
+        POP     EBX
+@@14G:  BT      DWORD PTR C_FLAGS[ESI],CF_INTERNAL
         JC      @@14D
+        MOVZX   EAX,WORD PTR C_PARAM_COUNT[ESI]
+        ADD     EBX,EAX
         MOV     EAX,EC_ADD_ESP
-        MOVZX   EBX,C_PARAM_COUNT[ESI]
         SHL     EBX,1        
         SHL     EBX,1        
         CALL    ADD_INTERMEDIATE_CODE
@@ -526,6 +645,9 @@ UNARY_MODIFIERS:
 @@34:   POP     EDX
         CALL    LEX ;SKIP (
         PUSH    ECX             ;-****
+        CALL    LEX_CB_PUSH
+        PUSH    DWORD PTR LEX_CB_STACK[EDI]
+        MOV     DWORD PTR LEX_CB_STACK[EDI],0
         MOV     ECX,EDX
         OR      ECX,ECX
         JZ      @@6D
@@ -536,7 +658,11 @@ UNARY_MODIFIERS:
 @@6E:   PUSH    ECX
         PUSH    EDX
         PUSH    ESI
+        CALL    INIT_CB_OUT_PTRS
         CALL    CONT_PARSE_EXPRESSION
+        XOR     EAX,EAX
+        CALL    ADD_INTERMEDIATE_CODE
+        CALL    LEX_CB_PUSH
         POP     ESI
         POP     EDX
         POP     ECX
@@ -544,7 +670,24 @@ UNARY_MODIFIERS:
 @@6D:   CMP     DWORD PTR LEX_TOKEN[EDI],')'
         JNE     @@3
         CALL    LEX     ;SKIP )
-@@6C:   MOV     EAX,EC_CALL_INDIRECT
+@@6C:   POP     EAX
+        PUSH    ESI
+        MOV     ESI,EAX
+        PUSH    DWORD PTR LEX_CB_STACK[ESI]
+        MOV     EAX,DWORD PTR LEX_CB_STACK[EDI]
+        MOV     DWORD PTR LEX_CB_STACK[ESI],EAX
+        MOV     DWORD PTR LEX_CB_STACK[EDI],ESI
+        CALL    LEX_CB_POP
+        MOV     ESI,DWORD PTR LEX_CB_STACK[EDI]
+        POP     DWORD PTR LEX_CB_STACK[EDI]
+@@6Z:   OR      ESI,ESI
+        JZ      @@6Y
+        PUSH    DWORD PTR LEX_CB_STACK[ESI]
+        CALL    LEX_CB_APPEND
+        POP     ESI
+        JMP     @@6Z
+@@6Y:   POP     ESI
+        MOV     EAX,EC_CALL_INDIRECT
         MOV     EBX,EDX
         SHL     EBX,1        
         SHL     EBX,1        
