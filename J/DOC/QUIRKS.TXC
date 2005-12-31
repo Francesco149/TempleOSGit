@@ -1,0 +1,22 @@
+* Call [::/J/KERNEL/DISK3.CPZ,387] ChangeDisk() when you insert a new
+removable media.
+* Don't put "//" comments on defines--use "/* */" (maybe someone can fix 
+this.)
+* switch/case statements allocate a single jump table--do not use with wide, 
+sparce ranges of case values.  Eventually, this might be fixed.
+* Don't use default string constant parameters on functions compiled in 
+[::/J/DOC/GLOSS.GLZ,Static Compiled Mode] Static Compiled Mode because there
+is a bug.
+* A [::/J/KERNEL/DISK4.CPZ,39] Cd() cmd must be followed by two semicolons if
+a #include is after it.  
+This is because the precompiler processes the next instruction early.
+* The last semicolon on the cmd line is converted to a double semicolon 
+because the compiler looks ahead before doing a cmd.  This normally has no 
+negative effect, but when entering "if" statements with "else" clauses it 
+presents problems.
+* Don't "return" out of a try{}
+* You cannot use $IB$,$IT$ or $IS$ at the command line or before the EDIT.CPZ 
+file has been included.
+* The assembler error messages are often off by a line and undefines are 
+cryptic
+

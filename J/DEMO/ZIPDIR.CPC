@@ -1,0 +1,45 @@
+void ZipDir(char *wild=TEXT_FILE_MASK)
+{
+  BYTE *file_buf;
+  JDirEntry *tempm1=NULL,*tempm2;
+  DWORD my_flags=0;
+  JFileAccess *fa=NewJFileAccess(wild);
+  if (fa) {
+    tempm1=FindFiles(fa->mask,&my_flags);
+    tempm2=tempm1;
+    while (tempm1) {
+      tempm2=tempm1->next;
+      file_buf=ReadTextFile(tempm1->name);
+      Del(tempm1->name);
+      tempm1->name[StrLen(tempm1->name)-1]='Z';
+      WriteTextFile(tempm1->name,file_buf);
+      Free(file_buf);
+      DelJDirEntry(tempm1);
+      tempm1=tempm2;
+    }
+    DelJFileAccess(fa);
+  }
+}
+
+void Unzip_TXZ(char *wild="*.TXZ")
+{
+  BYTE *file_buf;
+  JDirEntry *tempm1=NULL,*tempm2;
+  DWORD my_flags=0;
+  JFileAccess *fa=NewJFileAccess(wild);
+  if (fa) {
+    tempm1=FindFiles(fa->mask,&my_flags);
+    tempm2=tempm1;
+    while (tempm1) {
+      tempm2=tempm1->next;
+      file_buf=ReadTextFile(tempm1->name);
+      Del(tempm1->name);
+      tempm1->name[StrLen(tempm1->name)-1]='T';
+      WriteTextFile(tempm1->name,file_buf);
+      Free(file_buf);
+      DelJDirEntry(tempm1);
+      tempm1=tempm2;
+    }
+    DelJFileAccess(fa);
+  }
+}

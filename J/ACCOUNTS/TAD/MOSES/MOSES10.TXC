@@ -1,0 +1,69 @@
+
+
+
+
+         Are you sure the Egyptians 
+         aren't after us?
+
+                                                        There are oceans between you.
+
+
+
+
+
+
+ <3> (image)
+
+
+ <1> (image)
+
+
+
+
+          Oh, Good... Hey, wait a minute...
+          Nevermind.
+
+
+
+
+
+
+ <2> (image) <4> (image)
+
+
+
+
+
+
+
+ster Name
+Fields and Flags
+Shared/
+Unique1 Bit Description
+Hex Dec
+B-5
+MODEL-SPECIFIC REGISTERS (MSRS)
+2CH 44 MSR_EBC_
+FREQUENCY_ID
+Shared Processor Frequency Configuration. The
+bit field layout of this MSR varies according to
+the MODEL value of the CPUID version
+information. The following bit field layout
+applies to Pentium 4 and Xeon Processors
+with MODEL encoding less than 2. (R)
+Indicates current processor frequency
+configuration.
+20:0 Reserved.
+23:21 Scalable Bus Speed. (R/W) Indicates the
+intended scalable bus speed:
+Encoding Scalable Bus Speed
+000B 100 MHz
+All Others Reserved
+63:24 Reserved.
+79H 121 IA32_BIOS_UPDT_
+TRIG
+Shared BIOS Update Trigger Register. (R/W
+Triggers the loading of a microcode update.
+Executing a WRMSR instruction to this MSR
+causes a microcode update to be loade
+watery baggage unjustly knots LTFT_SHIFTED_X EC_OUTPD Torts my_LtfRead conventionally 

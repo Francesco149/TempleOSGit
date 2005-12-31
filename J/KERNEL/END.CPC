@@ -1,0 +1,317 @@
+void InitSysGlbls()
+{
+  sys_timer_lo=0;
+  sys_timer_hi=0;
+  rnd_SEED = 93186752;
+  sys_cur_focus_task=Fs;
+  num_spawned_users=0;
+  ext[EXT_IRQ00]=&SimpleTimerIrq;
+
+  StrCpy(sys_temp_filename,"::/J/DOC/TEMP.TXZ");
+
+  sys_macro_queue.next=&sys_macro_queue;
+  sys_macro_queue.last=&sys_macro_queue;
+  sys_macro_ptr=NULL;
+  macro_util_tss=NULL;
+  gr_just_cleared=TRUE; //For cursor
+
+  JDCBase=NULL;
+  JDCHashTable=NULL;
+
+  exe {
+    char buf[64],buf2[256];
+    JDate jd;
+
+    coutln "Start-up Accnt(ENTER will prompt):";
+    GetS(buf,32);
+    coutln "Wordstat directory list(separated by ';'):";
+    GetS(buf2,256);
+    ExePrintF("sys_startup_account=\"%s\";\r\n",buf);
+    ExePrintF("wordstat_mask=\"%s\";\r\n",buf2);
+    jd.d=GetCurTimeJDate;
+    ExePrintF("sys_compile_time=\"%D %T\";\r\n",jd.dt.date,jd.dt.time);
+    cout "Disk Cache Size (ENTER will use default of 0x1000000 Bytes):";
+    GetS(buf,64);
+    if (!*buf)
+      StrCpy(buf,"0x1000000");
+    ExePrintF("JDCInitCache(%s);",buf);
+  }
+}
+
+
+void AddModuleHash(char *name,DWORD base)
+{
+  SysHashEntry *temph,**temph1;
+  temph=MAllocZ(sizeof(SysHashEntry));
+  temph->type=HTT_MODULE|HTT_PUBLIC;
+  temph->use_cnt=0;
+  temph->user0=base;
+  temph->source_link=NULL;
+  temph->string=NewString(name);
+  temph1=FindHashBucket(temph->string,Fs->hash_table);
+  temph->next=*temph1;
+  *temph1=temph;
+}
+
+void AddOsMapSymbols()
+{
+  SysHashEntry *temph,**temph1;
+  char *sptr;
+  BYTE *ptr;
+  DWORD *dd,type;
+  int i,code;
+
+  code=sys_boot_base;
+  AddModuleHash("/J/KERNEL/OS",code);
+  ptr=sys_boot_header_base;
+  while ((type=*ptr++)!=EIE_END) { //PASS 1
+    dd=ptr;
+    ptr+=4;
+    i=*dd;
+    sptr=ptr;
+    ptr+=StrLen(sptr)+1;
+    if (type<=EIE_LIT_EXPORT) {
+      temph=MAllocZ(sizeof(SysHashEntry));
+      temph->type=HTT_SYS_SYMBOL;
+      temph->use_cnt=0;
+      temph->user0=i+code;
+      temph->source_link=NULL;
+      temph->string=NewString(sptr);
+      temph1=FindHashBucket(temph->string,sys_hash_table);
+      temph->next=*temph1;
+      *temph1=temph;
+    } else if (type<EIE_MAIN) {
+    } else if (type==EIE_MAIN) {
+    } else if (type==EIE_ABSOLUTE_ADDRESS) {
+      ptr+=i*sizeof(DWORD);
+    }
+  }
+}
+
+BYTE *Load(char *filename,BOOL no_abs=FALSE)
+{
+  char *fbuf,*fbuf2;
+  BYTE *code,*ptr,etype,*bb;
+  char *sptr,*absname;
+  WORD *ww;
+  DWORD *dd,size,cnt;
+  BinFileHeaderStruct *bfh;
+  int i,j;
+  SysHashEntry *temph,**temph1,*saved_hash_ptr=NULL;
+  ClassStruct *tempc;
+  GlblVarStruct *tempg;
+
+  fbuf=DefaultExtension(filename,"BIZ");
+  bfh=ReadFile(fbuf,&size); //TODO: align to para
+  code=bfh+sizeof(BinFileHeaderStruct);
+
+  if (ArcCheckSum(bfh,bfh->file_size)!=J_XSUM)
+    throw(TRP_ARC_XSUM);
+
+  absname=AbsoluteFileName(fbuf);
+  Free(fbuf);
+  fbuf=NewString(absname);
+  fbuf2=NewString(absname);
+  RemoveLastSeg(fbuf,".",fbuf2);
+  if (fbuf[1]==':' && StrLen(fbuf)>2)
+    AddModuleHash(fbuf+2,code);
+  Free(fbuf);
+  Free(fbuf2);
+
+  ptr=bfh+bfh->header_offset;
+  while ((etype=*ptr++)!=EIE_END) { //PASS 1
+    dd=ptr;
+    ptr+=sizeof(DWORD);
+    i=*dd;
+    sptr=ptr;
+    ptr+=StrLen(sptr)+1;
+    if (etype<=EIE_LIT_EXPORT) {
+      temph=MAllocZ(sizeof(SysHashEntry));
+      temph->string=NewString(sptr);
+      temph->type=HTT_SYS_SYMBOL;
+      temph->use_cnt=0;
+      temph->source_link=MSPrintF("FI:%s",absname);
+      if (etype==EIE_LIT_EXPORT)
+	temph->user0=i;
+      else
+	temph->user0=i+code;
+      temph1=FindHashBucket(temph->string,Fs->hash_table);
+      temph->next=*temph1;
+      *temph1=temph;
+    } else if (etype<EIE_MAIN) {
+      if (*sptr)
+	saved_hash_ptr=FindLocalHash(sptr,HTT_ALL);
+      if (!saved_hash_ptr)
+	coutln SysText("ST_UNRESOLVED_REFERENCE"),sptr;
+      else {
+	bb=code+i;
+	ww=code+i;
+	dd=code+i;
+	if (saved_hash_ptr->type & HTT_FUNCTION) {
+	  tempc=saved_hash_ptr;
+	  if (etype & 1)
+	    i=tempc->executable_address;
+	  else
+	    i=tempc->executable_address-code;
+	} else if (saved_hash_ptr->type & HTT_GLBL_VAR) {
+	  tempg=saved_hash_ptr;
+	  if (etype & 1)
+	    i=tempg->data_address;
+	  else
+	    i=tempg->data_address-code;
+	} else {
+	  if (etype & 1)
+	    i=saved_hash_ptr->user0;
+	  else
+	    i=saved_hash_ptr->user0-code;
+	}
+	if (etype<=EIE_LIT_BYTE)
+	  *bb=i+*bb;
+	else if (etype<=EIE_LIT_WORD)
+	  *ww=i+*ww;
+	else if (etype<=EIE_LIT_DWORD)
+	  *dd=i+*dd;
+      }
+    } else if (etype==EIE_ABSOLUTE_ADDRESS) {
+      if (no_abs)
+	ptr+=i*sizeof(DWORD);
+      else {
+	cnt=i;
+	for (j=0;j<cnt;j++) {
+	  dd=ptr;
+	  ptr+=sizeof(DWORD);
+	  dd=code+*dd;
+	  *dd+=code;
+	}
+      }
+    }
+  }
+
+  ptr=bfh+bfh->header_offset;
+  while ((etype=*ptr++)!=EIE_END) { //PASS 2
+    dd=ptr;
+    ptr+=sizeof(DWORD);
+    i=*dd;
+    sptr=ptr;
+    ptr+=StrLen(sptr)+1;
+    if (etype<=EIE_LIT_EXPORT) {
+    } else if (etype<EIE_MAIN) {
+    } else if (etype==EIE_MAIN) {
+      Run(i+code);
+    } else if (etype==EIE_ABSOLUTE_ADDRESS) {
+      ptr+=sizeof(DWORD)*i;
+    }
+  }
+  Free(absname);
+  return bfh;
+}
+
+
+void InitTimer()
+{
+  OutP(0x43,0x34);
+  OutP(0x40,SYS_TIMER0_PERIOD);
+  OutP(0x40,SYS_TIMER0_PERIOD/256);
+}
+
+void InitIrqs()
+{ //Init 8259
+  OutP(0x20,0x11); //IW1
+  OutP(0xA0,0x11); //IW1
+  PortNop;
+  OutP(0x21,0x20); //IW2
+  OutP(0xA1,0x28); //IW2
+  PortNop;
+  OutP(0x21,0x04); //IW3
+  OutP(0xA1,0x02); //IW3
+  PortNop;
+  OutP(0x21,0x0D); //IW4
+  OutP(0xA1,0x09); //IW4
+  PortNop;
+  OutP(0x21,0x20); //Mask
+  OutP(0xA1,0x2F); //Mask
+}
+
+GrBitMap *GrBitMapNew(DWORD type,DWORD width,DWORD height)
+{
+  GrBitMap *result=MAllocZ(sizeof(GrBitMap));
+  result->type=type;
+  result->width=width;
+  result->height=height;
+  result->left_margin=0;
+  result->right_margin=width;
+  result->top_margin=0;
+  result->bottom_margin=height;
+  result->body=MAllocZ(height*width/8*4);
+  result->pen_width=1;
+  result->r=MAllocZ(9*2*4);
+  result->r[1]=1;
+  result->r[9]=1;
+  result->r[17]=1;
+  return result;
+}
+
+void InitGraphics(int mode)
+{
+//TODO reinit VGA without BIOS
+  grmode=mode;
+  switch (grmode) {
+    case 1:
+      grwidth=640;
+      grheight=480;
+      break;
+    case 2:
+      grwidth=800;
+      grheight=600;
+      break;
+  }
+//TODO free old allocated stuff
+  grbase=GrBitMapNew(BMT_COLOR4,grwidth,grheight);
+  grbase2=GrBitMapNew(BMT_COLOR4,grwidth+64,grheight+64);
+  grbase2->left_margin=32;
+  grbase2->right_margin=grbase2->width-32;
+  grbase2->top_margin=32;
+  grbase2->bottom_margin=grbase2->height-32;
+  textbase=MAlloc(grwidth/FONT_WIDTH*grheight/FONT_HEIGHT*4);
+  GrClear2(grbase);
+  ClearWindowText;
+}
+
+asm {CP_OS_MAIN:}
+void OsMain()
+{
+  void my_RootStartUpFile();
+  root_tss=Fs;
+  OutP(VGA_SC_INDEX,VGA_MAP_MASK);
+  OutP(VGA_SC_DATA,0x0F);
+  MemSet(0xA0000,0x55,grheight*grwidth/8);
+  InitTimer;
+  InitIrqs;
+  ext=MAllocZ(EXT_TABLE_SIZE*4);
+  sys_hash_table=NewHashTable(0x4000);
+  Fs->hash_table->next=sys_hash_table;
+  InitGraphics(grmode);
+  //**WARNING** do not do cout before here (null ext)
+  coutln "InitSysTask";
+  InitSysTask;
+  coutln "AddOsMapSymbols";
+  AddOsMapSymbols;
+  coutln "InitSysGlbls";
+  InitSysGlbls;
+  coutln "LoadSysStrings";
+  LoadSysStrings;
+  coutln "ENABLE IRQ's";
+  SetFlags(SYS_DEFAULT_FLAGS);
+  coutln "InitAllBlkDevs";
+  InitAllBlkDevs;
+  SelectDefaultDrive;
+  cout "Loading Compiler...";
+  Load("/J/COMPILE/CMP.BIZ");
+  coutln "Done";
+  my_RootStartUpFile=FindExtern("RootStartUpFile");
+  my_RootStartUpFile();
+  ContinueServantTask; //Never to return
+}
+
+asm {	ALIGN	16,0
+SYS_CS_SIZE::}

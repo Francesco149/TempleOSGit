@@ -1,0 +1,315 @@
+-] **LEGAL STUFF:**
+  	This file is where I set my plans.  There are no guarentees.  I work 
+"iteratively" when programming--often writing bad code to experiment with 
+and later changing it on a priority basis.  I often change my mind and since 
+no one has returned an email or sent money, I feel little obligation to keep 
+promises, especially when they seem like bad ideas later.  The order things 
+are listed does not necessarily reflect the order they will be done--I often 
+do stuff when I'm in the mood.
+-] HANDY FILE LINKS
+  
+[::/J/KERNEL/SYSTEXT.CPZ,OS_SYSTEXT] Goto OS Systext
+[::/J/COMPILE/COMPILE.CPZ,COMPILE_SYSTEXT] Goto Compiler Systext
+
+[::/J/DOC/HELP.TXZ] ::/J/DOC/HELP.TXZ
+[::/J/DOC/RULES.TXZ] ::/J/DOC/RULES.TXZ
+[::/J/DOC/GLOSS.GLZ] ::/J/DOC/GLOSS.GLZ
+[::/J/DOC/GRAPH.TXZ] ::/J/DOC/GRAPH.TXZ
+[::/J/DOC/QUIRKS.TXZ] ::/J/DOC/QUIRKS.TXZ
+[::/J/DOC/INSTALL.TXZ] ::/J/DOC/INSTALL.TXZ
+[::/J/DOC/TIPS.TXZ] ::/J/DOC/TIPS.TXZ 
+[::/J/DOC/DOLLAR.TXZ] ::/J/DOC/DOLLAR.TXZ 
+[::/J/DOC/NEWS.TXZ] ::/J/DOC/NEWS.TXZ
+[::/J/ROOT/EDIT.MUZ] ::/J/ROOT/EDIT.MUZ
+[::/TAD/CRYPT/BLOG.TXY] ::/TAD/CRYPT/BLOG.TXY
+[::/TAD/TEXT/BRIEF/GLOSS.GLZ] ::/TAD/TEXT/BRIEF/GLOSS.GLZ
++] LONG-TERM
+  * Add Floating point and eventually vector processing (SIMD--probably much
+  later).
+* 64 bit: If I get the money, I'll get a 64-bit Pentium.  I plan on making
+  the compiler convert all values to 64-bit, the way they are currently
+  converted to 32-bit in all intermediate calculations.  The stack will hold
+  only 64-bit values in function parameter calls.  This will probably result in
+  decreased performance, but I don't think it's worth the added complexity to
+  pick and choose between 64 and 32 bit.
++] Duel Processing
+    I want to put some thought into parallel processing.  If I get a CPU
+    made, taking advantage of all the simplifications (no virtual memory, no
+    protected instructions, mostly 64-bit values, RISC instructions based on my
+    intermediate code...[::/J/COMPILE/CODE.ASZ] ::/J/COMPILE/CODE.ASZ) the
+    savings on transistor count could be used to add parallel processors.  I'll
+    have to think about balancing loads.  Obvious ideas might be putting a sound
+    or graphics tasks onto one processor, but ultimately a more automatic
+    strategy would be best, banking on the notion that parallel processing is the
+    direction computing will take once speed improvements diminish.
+  +] Graphics
+    I eventually plan to implement 24-bit graphics. I plan to keep text the
+    way it is, more or less and stick to just 16 text colors.  **I discovered I
+    may have a problem**, however, since 640x480x4 bit color takes-up 7% of the
+    CPU time! (1600x1200x24 bit would take 37 times as much!)  Maybe, I could
+    have a graphics card taylor made with layering to fit my approach.  One idea
+    would be using depth buffers to handle window layering.  Another reason not
+    to do this anytime soon is that graphics cards are not very standard... are
+    they?  This taylor made graphics card should be 24-bit, perhaps with a color
+    value reserved for transparent.  One layer would be persistent, not cleared
+    every refresh.  Another layer would be redrawn each refresh with depth
+    bufferes used for window layering.  A clear operation might be good on this
+    * Optimize Compiler (This is a low priority, especially, since I hope to
+  have a CPU made... kinda a pipe dream.)
+* A graphical user interfaced could be layered on-top.
+* Add SimStructure's (program I wrote when I had a company called H.A.R.E.)
+  Nonlinear Differential Equation integrator for use with windows and forms and
+  games.  Basically, forms and stuff can be set-up with rubber-band-like links
+  similar to XDesigner.  This would be an alternative to text mode... One
+  feature from SimStructure's C++ was a way to designate code to run on a
+  schedule.  I might add that to C+.
+* Add sound support.  Will be something like SimStructure's technique which
+  is similar to the old Commodore 64, duplicated in SimStructure.  My main
+  gripe with Windows on this topic is it's designed for .WAV files instead of
+  sounds calculated on the fly.  .WAV files raise the bar for making games and
+  stuff, since you need a studio to record.  I like the old days when you could
+  generate waveforms.
+* Add dictionary--these should be standard with operating systems.  I have a
+  random gibberish program which uses the word-stat matrices and it can produce
+  poetry, but rhyming and syllable count is tough.
++] Dream CPU
+     I'd like to have a 64-bit CPU taylor made.
+* The compiler makes reverse-Polish code, so there could be a stack similar
+    to the floating point 80x86 used, but for both floating and integer values. 
+    This stack would be in a high-speed cache and it could be fetched and stored
+    in the background as the stack grew or shrunk.  Look at the intermediate code
+    using [::/J/KERNEL/MISC.CPZ,112] OTrace(ON) when you compile stuff to see
+    what the instruction-set might look like.
+* No protected mode, virtual memory, segment registers or most of the other
+    features would be needed.  It would be possible to use just absolute
+    addresses, but that's probably too extreme (As it is, code is patched upon
+    loading.  Dynamic compilation doesn't even need patching, though.)  The Fs
+    register could be implemented as a memory location if needs-be.
+* It could be RISC, but I really like atomic InsQue and RemQue instructions. 
+    Another pet instructions might be one that returns the current CPU cycle
+    number.
+* I'd also like support in floating point operations for +/- Infinity. 
+    SimStructure fudges on infinity.  (Infinity in simstructure can be used to
+    describe the "viscosity" of the ground, for example, rendering objects fixed.
+     It might not be worth the trouble of defining how all floating operations
+    treat infinity, but at least a standard representation would be nice--one of
+    the "not a number" values or something.)
+* I don't see a need for 10-byte floating point numbers.  When I say the
+    intermediate code would make a nice instruction set, obviously I want
+    floating instructions, too.  There might be a few needed instructions in some
+    of the assembly code, so don't take me too literally. See
+    [::/J/COMPILE/CODE.ASZ] ::/J/COMPILE/CODE.ASZ for the instructions.  It might
+    be nice to have "+=,*=,/=" etc, too, but variants are needed for all
+    different size arguments--might be worth just skipping them.
+* I just realized there should be instructions for extended length
+    operations.  The NEG instruction should invert the Carry flag, so you can do
+    a NEG EAX, SBB EDX,0  NOT EDX. 
+  
+* My Rich text format might be an alternative to html.  With right margins
+  added and cursor movement, you could place text in columns and leave room for
+  graphics.
++] THINGS WHICH MIGHT CHANGE
+  * When I convert to 64-bit, I might move to the U1,U2,U4,U8,I1,I2,I4,I8
+  labels instead of BYTE,WORD,DWORD, etc.  Aliases could be kept for the old
+  names.  I'm not sure what the union names would be.  It sure would be nice if
+  you could use "DWORD", for example and automatically have available union
+  labels to get at sub-bytes.
+*  Currently, message handling uses a 32-bit bitmask.  I don't have messages
+  for window resize and stuff like that.  I hope I don't run-out of bits. 
+  Naturally, it will become a 64-bit value, but I still might run-out.
+* I'm undecided on filenames.  I could very easily create a new filesystem
+  for longer names or use the extended name thing they already have... however,
+  there are major advantages to keeping spaces and funny charaters out of names
+  when it comes to parsing them.  Ironically, I was planning on adding bits for
+  compression, encryption, contiguity, "fixed", etc, but now I like my system
+  of putting the flags in the filename itself.
+* As much as it annoys me, I think international characters will have to be
+  supported.
+
+-] HIGH PRIORITY
+  
+* make sure CTRL-R works with pgms
+* numbers of $PI$ change?
+
+* edit pictures--needed for animation.
+* Animation?
+* Might do incremental based animation where differences from frame to frame 
+are recorded, saving space. 
+* Autofile tours, speed of autofile execution, option. **Autofiles will have 
+to be overhauled**, since you need to be able to drive pop-up window's.
+
+* Various prompting functions for different data-types with range 
+enforcement and, default values and text displayed.
+
+* fix compiler to import C+ function's
+* fix reExtern in dynamic-compiled mode, might invent new varient of 
+"extern".
+
+* Is there a problem with Ltf's not using mem_tss?
+
+* Bug with Move("NAME","../CRYPT/NAME"); ?
+* remove TAD directory and replace with demo
+* clickable-Links within same file
+* Out of RAM trap, merge large memory chucks when Free'd.
+* Make driveutil with maps and adddrive and partition report
+* bug with exe{} local variables, fix "ii"
+* exe block: defer execution until end of block;?
+* Do something about extended ASCII in fonts.
+* Make font selectable, demo character graphics.
+* Add mouse and other cmds to macro capture?
++] EXCEPTIONS
+  * disk routines:catch TRP_ARC_XSUM
+* divide by zero
+* hardware IRQ's
++] DOCUMENTATION
+  * no WORD branch in 32 bit segments?
+* Add help to CTRL-L
+* Document LTF callbacks
++] PERPETUAL TASKS
+  * Change hardcoded stuff to SysText
+* go through locking everywhere
+* abbreviations block,counter
+* Too much preemption turned off
+* Look for mem leaks... InstallHdBoot seems to leak now?
+* use switch/case statements, now that they are available
+* Shift Stuff around in files, move stuff out of kernel.  Might put font in a
+  file.
++] COMPATIBILITY
+    * UNIT detect on CD-Boots
+* TAD5 CD-ROM doesn't close
+* Mom's floppy
+* allow Hd boots to secondary IDE or slave drives
+* mouse IRQ doesn't work on TAD4.
+  +] IDIOT PROOFING
+    * compiler crashes on /J/* missing
+  +] CLEAN_UP
+    *
++] GRAPHICS
+  * 24 Bit (except would be incompatible)
+* scaling GrElems(wait for floating point)
+* blank window sized graphic area on grbase2 before update (low priority)
+* Add Nonlinear Differential Equation integrator as part of OS with
+  capabilities of annimating stuff.
++] DISK
+  * Improve ATAPI read-ahead
+* Clear unused portion of clusters on disk writes
+* try not using FDCreadtrack on Mom's computer
+* read diskdrive id info (set_native address) to handle more drive types,
+  implement controls to prevent out-of-partition-range writes.
+* removable media id  (critical for resident files)
+* Flash cards: Flash mem cards might offer a removable, bootable media which
+  will enable people to run without repartitioning--floppy is kinda small.  DVD
+  doesn't allow writing.  Problem with flash is it is not standard equipment on
+  computers.  Would be very convenient for developing and distributing
+  operating systems.  I think LILO will allow Flash booting.
+* Report just one error per read track (Floppy)
++] FILE
+  * CurDir per partition?
+* do something about fat32 long name compares
+* Make use of flag potential in FindFiles and possibly JFileAccess
+* Use comma in wildcard filename specs (is this done already?)
+* New file system?  Have Directory bit for main programs and automatically
+  collect into start menu thingy.  Add more support for dedicated filename
+  extension types.
+* Throw exception on invalid [::/J/KERNEL/SPRINTF.CPZ,376] GetFFlags() or
+  filename.
++] C+ LIBRARY
+  * FPrintF? FRead FWrite
+* Improve Random number generator.
+* add field overflow char "t='*'"
+* Integer Money value for printf/getf--in pennies
+* Implement format codes into GetF
+* More date-time subcodes
+* Date Input
+* flag for comma's in numeric output (printf). eg "1,000,000" instead of
+  "1000000".
++] APPLICATIONS
+  * Budget Program
++] EDITOR
+  * Might allow constantly centered mode--cursor stays centered on
+  screen(vertically).
+* Maybe allow SearchString flags in Links
+* Make "Find" work same as "Replace" instead of going to start of line,
+  possibly merge two with replace option.  Would free-up CTRL-R.
+* Add write protect mode with indicator and toggle
+* Undo would be nice--could do differences and save(in mermory) compressed
+  after each change
++] INTERNET
+  * TCP/IP (Very long-way off)
++] IDE
+  * In editor, color C+ keywords, comments, etc. (unlikely to be implimented
+  any time soon)
+* Show code size/cpu cycles in editor column, next to code. (not soon)
++] ASSEMBLER
+  * 64 bit instructions
+* 16 bit Dasm is bad
+* Bug: patched value in DD after DD with '?';
++] DEBUGGING
+  * Improve fault handling--has inaccuracies--would be nice to display mem
+  access violation addresses.
++] COMPILER
+  * Quads
+* Floating point library
+* typeof()
+* function returns are not converted to return type
+* BUG:FindExtern to a char function copys 1 byte address.
+* reinclude of recursive functions fails
+* Switch statement with sparce cases
+* switch to arbitrary named attributes like "fmtdata" or "fmtstr".  Might
+  allow arbitrary supplimental data in class definitions.
+* do more error handling in parse_var_list
+* goto labels scope issues
+* weed-out unused imports
+* No string default function parameters inside [::/J/DOC/GLOSS.GLZ,Static
+  Compiled Mode] Static Compiled Mode. 
+* Multidimensional arrays (currently you must declare classes for rows)
+* ic_line in fix-up--kinda kludged right now.  Macro's generate bad linenums.
+* casting
+* typedefs
+* var declarations after class definitions (Not a priority)
+* optimization: const+mul/div?,register vars, offset[eax*4]
+* initialize arrays and structs
+* Convert to correct C pointer arithmetic
+* In Static compiled mode, do away with indirect extern calls.  (low priority)
+* Make so TSS_ABSOLUTE_ADDRESS can be moved (not a priority).  Currently in
+  CODE.ASZ, the "Fs" code has old value
+* glbl vars--function ptrs, and local function variables with argc (Not a
+  priority)
++] MEM
+  * Redo mem Garbage collection on task and do one on system... but these
+  don't help, so probably won't do it.
++] LOW PRIORITY
+  * Finish scan tables(num pad,caps lock)
+* faster F2 macro execution
+* Nestle AutoFile--probably won't do it at all.
+* sort options for findfiles
+* Fix mouse speed, m_speed (wait for floating point)
+* add alarm feature
+* possibly make TAD/distrib.cpz work with links.
+* Strip cursors,etc from WORDSTAT and tabs from DIFF processing (Might be
+  fixed)
+* fix file password lock-up--make password pop-up
++] TESTING
+  * Tabs2Spaces
++] INVESTIGATE
+  *
++] BUGS
+  * Find and replace in editor on plain text--might have been a fluke
+  involving '$'?
+* Editor doesnt work well with overstrike mode (tabs especially?)
+* Dasm doesn't always show "FS:"?
+
++] NASTY BUGS
+  * Burning CD and copying files simultaneously crashed.
++] BUGS WHICH MIGHT EXIST
+  * Prof() with cnt is broken?
+* Saw evidence of space-to-tab error
++] BUGS WHICH MIGHT BE FIXED
+  * Diff overreports differences, possibly after a mergechk "cancel"
+* Occassionally stalls on boot.
+* update_and_compile writing files gave disk errors.  Might be better.  Might
+  need error checking in ATA
++] MIGHT BE BUGS
+  * recalc_start probably needs to be more accurate before recalculating.
+* probably have issues with high-speed cursor movements and recalc_start
+* In LtfPutS, might need to alloc extendstring, ect from different heap.

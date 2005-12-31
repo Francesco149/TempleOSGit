@@ -1,0 +1,62 @@
+BYTE *RMAlloc(DWORD size)
+{
+  BYTE *result=MAlloc(size,root_tss);
+  return result;
+}
+
+void RFree(DWORD *add)
+{
+  Free(add,root_tss);
+}
+
+BYTE *RMAllocIdentical(BYTE *src)
+{
+  DWORD size=MSize(src);
+  BYTE *result=MAlloc(size,root_tss);
+  MemCpy(result,src,size);
+}
+
+BYTE *MAllocIdentical(BYTE *src,TssStruct *tss=NULL)
+{
+  DWORD size=MSize(src);
+  BYTE *result=MAlloc(size,tss);
+  MemCpy(result,src,size);
+}
+
+char *RNewString(char *buf)
+{
+  DWORD size=StrLen(buf)+1;
+  BYTE *result=MAlloc(size,root_tss);
+  MemCpy(result,buf,size);
+}
+
+char *NewString(char *buf,TssStruct *tss=NULL)
+{
+  DWORD size=StrLen(buf)+1;
+  BYTE *result=MAlloc(size,tss);
+  MemCpy(result,buf,size);
+}
+
+BYTE *RMAllocZ(DWORD size)
+{
+  BYTE *result=MAlloc(size,root_tss);
+  MemSet(result,0,size);
+  return result;
+}
+
+BYTE *MAllocZ(DWORD size,TssStruct *tss=NULL)
+{
+  BYTE *result=MAlloc(size,tss);
+  MemSet(result,0,size);
+  return result;
+}
+
+void DelLinkedList(DWORD *list)
+{
+  DWORD *d;
+  while (list) {
+    d=*list;
+    Free(list);
+    list=d;
+  }
+}

@@ -1,0 +1,112 @@
+Left-click on the word "MENU" in the window title bar to pull-up the menu. 
+Underlined text is usually a link.  Left click with the mouse or press 'l' 
+when the cursor is on top of them to edit/view them.  Right click or press
+'r' 
+to #include them, often causing them to execute.  
+  ESC		Exits and saves
+  CTRL Q	Aborts
+  Window's Key	Views the Menu/Help/Macro area
+Double mouse clicks send ESC or CTRLQ.
+
+Remember to terminate commands with a semicolon.
+
++] USER HELP
+  
+See [::/J/DOC/GLOSS.GLZ,1] ::/J/DOC/GLOSS.GLZ for a glossary.
+
++] DOLLAR SIGN COMMANDS
+    [::/J/DOC/DOLLAR.TXZ] Dollar Sign Commands are rich-text commands. The
+    editor, compiler, assembler and operating system are seamlessly equiped to
+    handle J rich text. Commands like [::/J/KERNEL/DISK4.CPZ,225] Dir() and
+    [T:/J/UTILS/GREP.CPZ,103] Grep() can output links to the command line.
+
+  +] COMMAND PROMPT
+    The J command line interface is based on C/C++. Explore the ".CPZ" files
+    or Click Here
+    `HFunsRep;View;`
+     to learn which commands are available. A command which takes no parameters
+    may be executed by typing the name and a semicolon.  Commands with parameters
+    require placing the parameter in parentheses like a function call.
+
+
+Dir("*");
+    `Dir("*");`
+     will list files in the current directory.
+
+Dir;
+    `Dir;`
+     uses default of "*".
+
+Cd("::/J/APPS");
+    `Cd("::/J/APPS");`
+     will change directories
+Directories are referenced with "/" not "\".  The Boot drive is referred to
+    with "::". Other drives are referred to by a letter and a colon. Your user
+    account directory is referred to with "HOME". 
+
+Edit("FILENAME.TXZ"); Invokes the editor.  See [::/J/ROOT/EDIT.MUZ] Editor
+    cmds.  Note that editor commands work practically everywhere--like at the
+    command prompt or within help.
+
+  +] BURNING CD-ROMs/DVDs
+    0) Prepare a partition (drive) with the files you wish to burn.
+1) Use [T:/J/ROOT/DISK10.CPZ,620] CreateCDFile() to make an ISO image file of
+    a partition.
+2) Use [::/J/KERNEL/DISK4.CPZ,932] WriteCDImage() to burn an ISO file onto a
+    CD or DVD.
+
+Note:  You can create a [::/J/DOC/GLOSS.GLZ,File Partition] File Partition on
+    an ordinary partition, copy files into it, create an image and burn it. 
+  
+See [::/J/DOC/QUIRKS.TXZ] ::/J/DOC/QUIRKS.TXZ for things to watch for.
+
++] ADMIN HELP
+  
++] ADDING DRIVES
+    Use [::/J/KERNEL/DISK3.CPZ,550] AddDrives() to enable disk drives.  
+
+See [::/J/DOC/GLOSS.GLZ,File Partition] File Partition for a definition.
+  
+See [::/J/DOC/INSTALL.TXZ] ::/J/DOC/INSTALL.TXZ for details on installing to
+  a hard drive.
+
+See [::/J/KERNEL/ROOTK.CPZ] for the "J" equivalent of the AUTOEXEC.BAT.
+
++] ACCOUNTS
+    
+You can add and remove accounts by making or removing directories in the
+    ::/J/ACCOUNTS directory.  You'll have to copy start-up files into them.
+
+See [HOME/USER.CPZ] for the user start-up file.
+
+See [HOME/USER.MUZ] for a personalizable menu/macro area which can be viewed
+    at the command line with the windows key or by clicking "MENU" in the upper
+    left border area of a window.
+
+See [HOME/FAVOR.MUZ] for a handy "favorites" file which can be reached by
+    pressing CTRL-SHIFT-F, pretty-much anywhere. Users can place links and todo
+    lists or any text within this.
+
+See [HOME/ROOT3.CPZ] for the user files that get loaded into the root task. 
+    These are only loaded once.
+
+See [HOME/SYSTEM.CPZ] for the start-up file used when a
+    [::/J/KERNEL/CMD.CPZ,457] System() command is used.
+
+See [HOME/SERVANT.CPZ] for the start-up file other commands which
+    [::/J/KERNEL/CMD.CPZ,146] Spawn() tasks. 
+
+See [HOME/FAULT.CPZ] for a start-up file called when a fault occurs.  When
+    debugging you might place data display commands here.
+
+  
++] DEVELOPER HELP
+  
+See [::/J/DOC/RULES.TXZ] for some programming guidelines.
+
+See [::/J/DOC/GRAPH.TXZ] ::/J/DOC/GRAPH.TXZ for details on graphics
+  programming.
+
+See **[::/J/DOC/MYSTERY.TXZ] ::/J/DOC/MYSTERY.TXZ** for mysteries explained.
+See **[::/J/DOC/NEWS.TXZ,1] ::/J/DOC/NEWS.TXZ** for the latest news.
+

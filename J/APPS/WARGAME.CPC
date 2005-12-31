@@ -1,0 +1,337 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x00000054
+#define __BIN_1 "\x05\x00\x00\x00\xFD\xFF\xFF\xFF\x0B\x00\x00\x00\x03\x00\x00\x00\x05\x00\x00\x00\x05\x00\x00\x00\x03\x00\x00\x00\x05\x00\x00\x00\x0A\x00\x00\x00\x0C\x00\x00\x00\x05\x00\x00\x00\x03\x00\x00\x00\x05\x00\x00\x00\x04\x00\x00\x00\xF8\xFF\xFF\xFF\x05\x00\x00\x00\xFD\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x09\x00\x00\x00\xFE\xFF\xFF\xFF\x00\x00\x00\x00"
+
+#define p1_color	    (ROP_OR+GR_LTGREEN)
+#define p2_color	    (ROP_OR+GR_YELLOW)
+#define jn1_color	    (ROP_OR+GR_LTGREEN)
+#define jn2_color	    (ROP_OR+GR_LTBLUE)
+#define enemy_fire_color    (ROP_OR+GR_LTBLUE)
+#define friendly_fire_color (ROP_OR+GR_WHITE)
+
+GrBitMap *WG_base=GrNew(grbase);
+
+/* + <1> (image) */
+
+BYTE *GrTrooper=__BIN_1;
+
+class Trooper
+{
+  int x,y,dx,dy,fx,fy,att,def,rng,player;
+  DWORD fire_end_time;
+};
+
+#define num_troopers 100
+
+Trooper tr[num_troopers*2];
+DWORD cnt1,cnt2;
+int jn;
+int text_area_size=(grheight/FONT_HEIGHT)*(grwidth/FONT_WIDTH);
+
+
+#define mm_none 	      1
+#define mm_friendly_firepower 2
+#define mm_laps_time	      3
+int map_mode=mm_none;
+WORD *map_values;
+
+
+#define ai_nothing 1
+#define ai_target  2
+#define ai_random  3
+DWORD ai;
+
+void UpdateMap()
+{
+  int i;
+  for (i=Fs->window_top;i<=Fs->window_bottom;i++) {
+    MemCpy(textbase+i*Fs->crt_width+Fs->window_left,
+	   map_values+i*Fs->crt_width+Fs->window_left,
+	   Fs->window_right+4-Fs->window_left);
+  }
+}
+
+void ClearMapValues()
+{
+  MemSet(map_values,0,text_area_size*sizeof(DWORD));
+}
+
+void PutFriendlyFirepower()
+{
+  int i,D,x,y,dx,dy;
+  int  lt=Fs->window_left/4,rt=Fs->window_right/4,
+       tp=Fs->window_top,   bm=Fs->window_bottom;
+  DWORD *ptr;
+  DWORD v;
+  for (y=0;y<=bm-tp;y++) {
+    ptr=map_values+(y+tp)*Fs->crt_width+Fs->window_left;
+    for (x=0;x<=rt-lt;x++) {
+      v=0;
+      for (i=0;i<num_troopers;i++)
+	if (tr[i].def>0 && tr[i].fire_end_time<jiffies) {
+	  dx=(tr[i].x>>16)-(x*FONT_WIDTH+FONT_WIDTH/2);
+	  dy=(tr[i].y>>16)-(y*FONT_HEIGHT+FONT_HEIGHT/2);
+	  D=dx*dx+dy*dy;
+	  if (D<tr[i].rng)
+	    v+=tr[i].att;
+	}
+      ptr[x]=(v*128 & 0xF000)+0x20;
+    }
+  }
+}
+
+void DrawTrooper(Trooper *t,DWORD color)
+{
+  int x,y,s,fire_col;
+
+  if (map_mode==mm_laps_time) {
+    x=(t->x+500*t->dx)>>16;
+    y=(t->y+500*t->dy)>>16;
+  } else {
+    x=t->x>>16;
+    y=t->y>>16;
+  }
+  s=t->def;
+
+  if (s>0) {
+    s=s/3;
+    WG_base->color=color;
+    PlotGrElems(WG_base,x,y,0,GrTrooper,0);
+    if (t->player==0)
+      fire_col=friendly_fire_color;
+    else
+      fire_col=enemy_fire_color;
+    if (jiffies<t->fire_end_time) {
+      Sound(2000);
+      WG_base->color=fire_col;
+      GrLine3(WG_base,x,y,0,t->fx>>16,t->fy>>16,0);
+    }
+  }
+}
+
+void DrawAllTroopers()
+{
+  char buf[32];
+  int i,j,c,x=joycx-Fs->window_pixel_left,y=joycy-Fs->window_pixel_top;
+  Ltf *l;
+
+  GrClear();
+  if (map_mode==mm_friendly_firepower)
+    PutFriendlyFirepower;
+  else {
+    ClearWindowText;
+    ClearMapValues;
+  }
+  UpdateMap;
+
+  l=Fs->aux_ltf;
+  LtfUpdateWindowJoin(Fs->aux_ltf,TRUE,FALSE,FALSE,FALSE);
+
+  Sound(0);
+  cnt1=0;
+  cnt2=0;
+  for (i=0;i<num_troopers;i++)
+    if (tr[i].def>0) {
+      DrawTrooper(&tr[i],p1_color);
+      cnt1++;
+    }
+  for (i=num_troopers;i<num_troopers*2;i++)
+    if (tr[i].def>0) {
+      DrawTrooper(&tr[i],p2_color);
+      cnt2++;
+    }
+
+  if (joymax[2]-joymin[2]>joymax[3]-joymin[3])
+    jn=150*(joyv[2]-joyrest[2])/(joymax[2]-joymin[2]+1);
+  else
+    jn=150*(joyv[3]-joyrest[3])/(joymax[3]-joymin[3]+1);
+  if (jn>0)
+    c=jn1_color;
+  else
+    c=jn2_color;
+  j=Abs(jn);
+  WG_base->color=c;
+  GrLine3(WG_base,x-jn,y-jn,0,x+jn,y-jn,0);
+  GrLine3(WG_base,x+jn,y-jn,0,x+jn,y+jn,0);
+  GrLine3(WG_base,x+jn,y+jn,0,x-jn,y+jn,0);
+  GrLine3(WG_base,x-jn,y+jn,0,x-jn,y-jn,0);
+  SPrintF(buf,"%03d %03d",cnt1,cnt2);
+  PlotWindowString(buf,WHITE,0,0);
+}
+
+int targets[10];
+void InitTroopers()
+{
+  int i,j,dx,dy;
+  Trooper *t;
+  for (i=0;i<10;i++) {
+    targets[i]=RandWORD%num_troopers;
+    dx=(RandWORD&0xFFFF)-0x8000;
+    dy=(RandWORD&0xFFFF)-0x8000;
+    for (j=0;j<10;j++) {
+      t=&tr[i*10+j];
+      t->x=(grwidth-100-i*10)*65536;
+      t->y=(grheight/2-50+j*10)*65536;
+      t->dx=0;
+      t->dy=0;
+      t->fire_end_time=jiffies;
+      t->att=3;
+      t->def=10;
+      t->rng=50*50;
+      t->player=0;
+      t=&tr[i*10+j+num_troopers];
+      t->x=(100+i*10)*65536;
+      t->y=(grheight/2-50+j*10)*65536;
+      t->dx=0;
+      t->dy=0;
+      if (ai==ai_random) {
+	t->dx=dx;
+	t->dy=dy;
+      }
+      t->fire_end_time=jiffies;
+      t->att=3;
+      t->def=10;
+      t->rng=50*50;
+      t->player=1;
+    }
+  }
+}
+
+
+void DoAiTarget()
+{
+  int i,j;
+  Trooper *t,*t2;
+  for (i=0;i<10;i++) {
+    t2=&tr[targets[i]];
+    for (j=0;j<10;j++) {
+      t=&tr[i*10+j+num_troopers];
+      t->dx=(t2->x-t->x)/2048;
+      t->dy=(t2->y-t->y)/2048;
+    }
+  }
+}
+
+
+void UpdatePositions()
+{
+  int i;
+  Trooper *t;
+  for (i=0;i<num_troopers*2;i++) {
+    t=&tr[i];
+    t->x+=t->dx;
+    if (t->x>=grwidth<<16) t->x-=grwidth<<16;
+    if (t->x<0) t->x+=grwidth<<16;
+    t->y+=t->dy;
+    if (t->y>=grheight<<16) t->y-=grheight<<16;
+    if (t->y<0) t->y+=grheight<<16;
+  }
+}
+
+void ResolveFiring()
+{
+  int i,j,D,dx,dy;
+  for (i=0;i<num_troopers;i++)
+    for (j=num_troopers;j<num_troopers*2;j++) {
+      if (tr[i].def>0 && tr[j].def>0) {
+	dx=(tr[i].x-tr[j].x)>>16;
+	dy=(tr[i].y-tr[j].y)>>16;
+	D=dx*dx+dy*dy;
+	if (D<tr[i].rng && tr[i].fire_end_time<jiffies) {
+	  tr[i].fire_end_time=jiffies+SYS_TIMER_FREQ/8;
+	  tr[i].fx=tr[j].x;
+	  tr[i].fy=tr[j].y;
+	  tr[j].def=tr[j].def-tr[i].att;
+	}
+	if (D<tr[j].rng && tr[j].fire_end_time<jiffies) {
+	  tr[j].fire_end_time=jiffies+SYS_TIMER_FREQ/8;
+	  tr[j].fx=tr[i].x;
+	  tr[j].fy=tr[i].y;
+	  tr[i].def=tr[i].def-tr[j].att;
+	}
+      }
+    }
+}
+
+void UpdateVelocities()
+{
+  int i,x=joycx-Fs->window_pixel_left,y=joycy-Fs->window_pixel_top,dx,dy,D;
+  Trooper *t;
+  if (joyb[0]) {
+    for (i=0;i<num_troopers;i++) {
+      t=&tr[i];
+      dx=(x-(t->x>>16));
+      dy=(y-(t->y>>16));
+      D=dx*dx+dy*dy+1;
+      dx=jn*1000*dx/D;
+      dy=jn*1000*dy/D;
+      t->dx=t->dx-dx;
+      t->dy=t->dy-dy;
+    }
+  }
+}
+
+
+void WarGame()
+{
+  char ch=0;
+  DWORD sc=0,ms=0,old_ip=ip_pointer_type,
+	old_update_window=Fs->update_window,
+	old_text_attr=Fs->text_attribute;
+  Ltf *m;
+  BOOL old_menu=AssignBit(&Fs->crt_flags,CRTf_HAS_MENU,1);
+
+  MaximizeWindow;
+  Fs->window_top++;
+
+  ip_pointer_type=IP_JOYSTICK0;
+  LoadJoystickCalibration;
+  map_values=MAlloc(text_area_size*sizeof(DWORD));
+
+  CursorOff;
+  m=LtfRead("::/J/APPS/WARGAME.MUZ");
+
+  ClearWindowText;
+  ClearMapValues;
+  rnd_SEED=jiffies*0x654654;
+  Fs->update_window=&DrawAllTroopers;
+  while (ms!=101 && ch!=CH_ESC && ch!=CH_CTRLQ) {
+    ch=0;ms=0;
+    ai=RandWORD%3+1;
+    InitTroopers();
+    while (ch!=CH_ESC && ch!=13 && ch!=32 && ch!=CH_CTRLQ && ms!=101 && ms!=100) {
+      RandWORD;
+      ms=0;
+      if (ScanChar(&sc,&ch)) {
+	if ((sc & 0x17F)==SC_L_GUI || (sc & 0x17F)==SC_R_GUI) {
+	  GrClear;
+	  ms=DoMenu(m);
+	}
+	if (ms==1 || ch=='1')
+	  map_mode=mm_none;
+	else if (ms==2 || ch=='2')
+	  map_mode=mm_friendly_firepower;
+	else if (ms==3 || ch=='3')
+  	  map_mode=mm_laps_time;
+      }
+      Sleep(25);
+      if (ai==ai_target)
+	DoAiTarget;
+      UpdateVelocities;
+      UpdatePositions;
+      ResolveFiring;
+    }
+  }
+  GrClear;
+  CursorOn;
+  Sound(0);
+
+  LtfDel(m);
+  Fs->update_window=old_update_window;
+  Free(map_values);
+  ip_pointer_type=old_ip;
+  AssignBit(&Fs->crt_flags,CRTf_HAS_MENU,old_menu);
+  Auto("\r\r");
+}
+
+WarGame;

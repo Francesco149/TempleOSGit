@@ -1,0 +1,1378 @@
+extern BOOL GetExpression(LexStruct *l,BYTE **exp);
+extern int Lex(LexStruct *l);
+extern DWORD PrsUnaryTerm(LexStruct *l,ParseStack *ps);
+extern DWORD PrsUnaryModifier(LexStruct *l,ParseStack *ps);
+extern DWORD PrsDereferrence(LexStruct *l,ParseStack *ps);
+extern void CmpParseVarList(LexStruct *l,ClassStruct *tempc,
+		     int mode,DWORD union_base=0x7FFFFFFF);
+extern BOOL CmpParseStatement(LexStruct *l,ClassStruct *locals,
+  CbMiscStruct *break_label=NULL,CbMiscStruct *continue_label=NULL,
+  BOOL saved_prs_semicolon=TRUE);
+extern int ExecuteCmdLine(LexStruct *l);
+extern int ExecuteString(char *buf,char *filename=NULL);
+extern int ExecuteFile(char *name);
+extern void ContinueUserTask();
+
+Jextern BINARY_OPS_TABLE WORD binary_ops_table[1];
+Jextern UNARY_OPS_TABLE  WORD unary_ops_table[1];
+Jextern IT_TO_EC_OFFSET BYTE it_to_ec_offset[1];
+Jextern DEREF_BITMAP BYTE deref_bitmap[1];
+Jextern ASSIGN_BITMAP BYTE assign_bitmap[1];
+Jextern DUEL_CHAR_TOKENS1 WORD duel_char_tokens1[1];
+Jextern DUEL_CHAR_TOKENS2 WORD duel_char_tokens2[1];
+Jextern DUEL_CHAR_TOKENS3 WORD duel_char_tokens3[1];
+Jextern CODE_TABLE DWORD code_table[1];
+Jextern UNSIGNED_CODE_TABLE DWORD unsigned_code_table[1];
+Jextern CODE_TEXT_TABLE char code_text_table[1];
+Jextern FIX_UP_8_TABLE short fix_up_8_table[1];
+Jextern FIX_UP_32_TABLE short fix_up_32_table[1];
+Jextern FIX_UP_32_JMP_TABLE short fix_up_32_jmp_table[1];
+Jextern FIX_UP_8_JMP_TABLE short fix_up_8_jmp_table[1];
+Jextern INTERNAL_TYPES_TABLE BYTE internal_types_table[1];
+
+SysHashTable *asm_hash;
+
+
+LexStruct *LexNew(char *buf,DWORD flags=LF_DONT_FREE_BUFFER+LF_ASM_EXPRESSIONS)
+{
+  LexStruct *l=MAllocZ(sizeof(LexStruct));
+  LexFileStruct *tempf=&l->lfns[0];
+  l->flags=flags;
+  l->hash_mask=HTT_ALL;
+  l->hash_table_list=Fs->hash_table;
+  l->define_hash_table=Fs->hash_table;
+  l->cur_lfn=tempf;
+  l->stack_ptr=&l->stack[0];
+  l->next_exe_blk=&l->next_exe_blk;
+  l->last_exe_blk=&l->next_exe_blk;
+  if (flags & LF_PROMPT) {
+    buf=MAlloc(1);
+    *buf=0;
+    tempf->name=NewString(sys_temp_filename);
+  }
+  tempf->buf=buf;
+  tempf->buf_ptr=buf;
+  tempf->line_start=buf;
+  tempf->line_num=1;
+  l->cur_buf_ptr=buf;
+  progress1=0;
+  return l;
+}
+
+void LexDel(LexStruct *l)
+{
+  int i=(l->flags & LF_DONT_FREE_BUFFER) ? 1:0;
+  if (i==1)
+    Free(l->lfns[0].name);
+
+  while (i<LFN_CNT) {
+    Free(l->lfns[i].buf);
+    Free(l->lfns[i++].name);
+  }
+  Free(l->ident);
+  Free(l);
+  progress1=0;
+}
+
+
+void SetSourceFileInfo(LexStruct *l,SysHashEntry *h)
+{
+  LexFileStruct *tempf=l->cur_lfn;
+  h->source_link=MSPrintF("FL:%s,%d",tempf->name,tempf->line_num);
+  if (Bt(&l->flags,LFf_KEEP_PRIVATE))
+    h->type|=HTT_PRIVATE;
+}
+
+void LexPutToken(LexStruct *l)
+{
+  PutChar('"');
+  if (l->token==TK_IDENT || l->token==TK_STRING2 ||
+      l->token==TK_STRING)
+    PutS(l->ident);
+  else if (l->token==TK_INTEGER)
+    cout l->cur_i;
+  else if (l->token>=0x20 && l->token<=0x7E)
+    PutChar(l->token);
+  else {
+    cout "T:",l->token;
+  }
+  PutS("\" ");
+}
+
+DWORD lex_zeros=0;
+
+void LexBackupLastChar(LexStruct *l)
+{
+  LtfEntry *cl;
+  Ltf *ltf;
+  LexFileStruct *tempf=l->cur_lfn;
+  tempf->buf_ptr=l->cur_buf_ptr;
+  if (l->flags & LF_USE_LAST_CHAR) {
+    l->flags&=~LF_USE_LAST_CHAR;
+    if (tempf->flags & LFSF_IS_LTF) {
+      ltf=tempf->l;
+      cl=tempf->cur_entry;
+      if (cl->btype==LTFT_TEXT && tempf->buf_ptr!=cl->display)
+	tempf->buf_ptr--;
+      else {
+	while (cl!=ltf) {
+	  if (cl->btype==LTFT_CR || cl->btype==LTFT_TAB || cl->btype==LTFT_PAGE_BREAK) {
+	    tempf->cur_entry=cl->last;
+	    tempf->buf_ptr=&lex_zeros;
+	    break;
+	  } else if (cl->btype==LTFT_TEXT) {
+	    if (StrLen(cl->display)) {
+	      tempf->cur_entry=cl;
+	      tempf->buf_ptr=cl->display+StrLen(cl->display)-1;
+	      break;
+	    }
+	  }
+	  cl=cl->last;
+	}
+      }
+    } else
+      tempf->buf_ptr--;
+  }
+  l->cur_buf_ptr=tempf->buf_ptr;
+}
+
+
+DWORD LexGetChar(LexStruct *l)
+{
+  char *src;
+  LexFileStruct *tempf,*tempf1;
+  DWORD result;
+  char *my_SysPrompt(BOOL double_semicolon);
+  Ltf *ltf;
+  LtfEntry *cl;
+  BYTE *ptr;
+  void my_LtfDel(Ltf *l,BOOL root_mem);
+
+  if (l->flags & LF_USE_LAST_CHAR) {
+    l->flags&=~LF_USE_LAST_CHAR;
+    return l->last_char;
+  }
+  while (TRUE) {
+    src=l->cur_buf_ptr;
+    result=*src++;
+    l->cur_buf_ptr=src;
+    l->last_char=result;
+    if (result!=CH_CURSOR && result!=CH_FORM_FEED) {
+      if (result) {
+	if (Bt(&l->flags,LFf_ECHO))
+  	  PutChar(result);
+	if (result==CH_LINE_FEED) {
+	  tempf=l->cur_lfn;
+	  tempf->line_num++;
+	  progress1++;
+	  tempf->line_start=src;
+	}
+	return result;
+      }
+      tempf=l->cur_lfn;
+      tempf1=l->cur_lfn;
+      if (tempf->flags & LFSF_IS_LTF) {
+	ltf=tempf->l;
+	cl=tempf->cur_entry;
+	cl=cl->next;
+	tempf->line_start=&lex_zeros;
+	while (cl!=ltf) {
+	  if (cl->btype==LTFT_TEXT)
+	    break;
+	  if (cl->btype==LTFT_CR)
+	    break;
+	  if (cl->btype==LTFT_TAB)
+	    break;
+	  if (cl->btype==LTFT_PAGE_BREAK)
+	    break;
+	  if (cl->btype==LTFT_INSERT_BINARY)
+	    break;
+	  if (cl->btype==LTFT_INSERT_BINARY_TYPE)
+	    break;
+	  if (cl->btype==LTFT_INSERT_BINARY_SIZE)
+	    break;
+	  cl=cl->next;
+	}
+	if (cl!=ltf) {
+	  tempf->cur_entry=cl;
+	  if (cl->btype==LTFT_CR) {
+	    l->cur_buf_ptr=&lex_zeros;
+	    tempf->line_num=cl->y;
+	    progress1++;
+	    if (Bt(&l->flags,LFf_ECHO))
+  	      CrLf;
+	    l->last_char=CH_LINE_FEED;
+	    l->flags=l->flags | LF_USE_LAST_CHAR;
+	    return CH_CR;
+	  } else if (cl->btype==LTFT_TAB) {
+	    l->cur_buf_ptr=&lex_zeros;
+	    tempf->line_num=cl->y;
+	    if (Bt(&l->flags,LFf_ECHO))
+  	      PutChar(CH_TAB);
+	    l->last_char=CH_TAB;
+	    return CH_TAB;
+	  } else if (cl->btype==LTFT_PAGE_BREAK) {
+	    l->cur_buf_ptr=&lex_zeros;
+	    tempf->line_num=cl->y;
+	    if (Bt(&l->flags,LFf_ECHO))
+  	      PutChar(CH_FORM_FEED);
+	    l->last_char=CH_FORM_FEED;
+	    return CH_FORM_FEED;
+	  } else if (cl->btype==LTFT_INSERT_BINARY) {
+	    l->cur_buf_ptr=&lex_zeros;
+	    tempf->line_num=cl->y;
+	    Free(l->ident);
+	    l->ident=NULL;
+	    l->ident_len=NULL;
+	    if (cl->bin_data) {
+	      ptr=MAlloc(cl->bin_data->size);
+	      if (cl->bin_data->data)
+		MemCpy(ptr,cl->bin_data->data,cl->bin_data->size);
+	      l->ident=ptr;
+	      l->ident_len=cl->bin_data->size;
+	    }
+	    l->last_char=TK_INSERT_BINARY;
+	    return TK_INSERT_BINARY;
+	  } else if (cl->btype==LTFT_INSERT_BINARY_TYPE) {
+	    l->cur_i=0;
+	    if (cl->bin_data)
+	      l->cur_i=cl->bin_data->type;
+	    l->cur_buf_ptr=&lex_zeros;
+	    tempf->line_num=cl->y;
+	    l->last_char=TK_INSERT_BINARY_TYPE;
+	    return TK_INSERT_BINARY_TYPE;
+	  } else if (cl->btype==LTFT_INSERT_BINARY_SIZE) {
+	    l->cur_i=0;
+	    if (cl->bin_data)
+	      l->cur_i=cl->bin_data->size;
+	    l->cur_buf_ptr=&lex_zeros;
+	    tempf->line_num=cl->y;
+	    l->last_char=TK_INSERT_BINARY_SIZE;
+	    return TK_INSERT_BINARY_SIZE;
+	  } else {
+	    tempf->line_start=cl->display;
+	    tempf->buf=cl->display;
+	    tempf->buf_ptr=cl->display;
+	    l->cur_buf_ptr=cl->display;
+	  }
+	} else {
+	  if (ext[EXT_LTF_DEL]) {
+	    my_LtfDel=ext[EXT_LTF_DEL];
+	    my_LtfDel(ltf,FALSE);
+	  }
+	  tempf->buf=NULL;
+	  Free(tempf->name);
+	  tempf->name=NULL;
+	  goto here;
+	}
+      } else {
+here:
+	if (tempf!=&l->lfns[0]) {
+	  Free(tempf->name);
+	  tempf->name=NULL;
+	  Free(tempf->buf);
+	  tempf->buf=NULL;
+	  tempf=tempf-sizeof(LexFileStruct);
+	  l->cur_lfn=tempf;
+	  l->cur_buf_ptr=tempf->buf_ptr;
+	  if (!(l->flags & LF_NO_INCLUDE_EOF)) {
+	    if (tempf1->flags & LFSF_IS_INCLUDED) {
+	      l->last_char=TK_INCLUDE_EOF;
+	      return TK_INCLUDE_EOF;
+	    }
+	  }
+	} else {
+	  if (!(l->flags & LF_PROMPT)) {
+	    l->cur_buf_ptr=src-1;
+	    l->last_char=TK_EOF;
+	    return TK_EOF;
+	  }
+	  Free(tempf->buf);
+	  my_SysPrompt=FindExtern("SysPrompt");
+	  tempf->buf=my_SysPrompt(TRUE);
+	  tempf->buf_ptr=tempf->buf;
+	  tempf->line_start=tempf->buf;
+	  l->cur_buf_ptr=tempf->buf;
+	}
+      }
+    }
+  }
+}
+
+void LexSkipEol(LexStruct *l)
+{
+  char ch;
+  do ch=LexGetChar(l);
+  while (ch && ch!=CH_CR && ch!=CH_LINE_FEED);
+}
+
+void DelExpression(BYTE *code)
+{
+  Free(code);
+}
+
+
+DWORD EvalExpression(LexStruct *l)
+{
+  BYTE *exp;
+  DWORD result=0;
+  if (!GetExpression(l,&exp))
+    LexSkipEol(l);
+  else {
+    result=Run(exp);
+    DelExpression(exp);
+  }
+  return result;
+}
+
+void LexIncludeString(LexStruct *l,char *filename,
+  char *src,BOOL actual_file)
+{
+  LexFileStruct *tempf;
+  LexBackupLastChar(l);
+  tempf=l->cur_lfn+sizeof(LexFileStruct);
+  l->cur_lfn=tempf;
+  tempf->buf=src;
+  tempf->buf_ptr=src;
+  tempf->line_num=1;
+  tempf->line_start=src;
+  if (actual_file) {
+    tempf->name=AbsoluteFileName(filename);
+    tempf->flags=LFSF_IS_INCLUDED;
+  } else {
+    tempf->name=NewString(sys_temp_filename);
+    tempf->flags=0;
+  }
+  l->cur_buf_ptr=src;
+}
+
+void LexIncludeLtf(LexStruct *l,char *filename)
+{
+  BOOL is_null;
+  LtfEntry *cl;
+  Ltf *my_LtfRead(char *name,DWORD flags);
+  Ltf *ltf;
+  LexFileStruct *tempf;
+
+  LexBackupLastChar(l);
+  tempf=l->cur_lfn+sizeof(LexFileStruct);
+  l->cur_lfn=tempf;
+  tempf->line_start=&lex_zeros;
+  if (!ext[EXT_LTF_READ])
+    throw(TRP_COMPILER,1);  //This should never happen
+  my_LtfRead=ext[EXT_LTF_READ];
+  ltf=my_LtfRead(filename,LTFF_DOUBLE_DOLLARS);
+  if (!ltf)
+    is_null=TRUE;
+  else {
+    tempf->l=ltf;
+    cl=ltf->dummy.next;
+    while (cl!=ltf) {
+      if (cl->btype==LTFT_TEXT)
+	break;
+      if (cl->btype==LTFT_TAB)
+	break;
+      if (cl->btype==LTFT_CR)
+	break;
+      if (cl->btype==LTFT_INSERT_BINARY)
+	break;
+      if (cl->btype==LTFT_INSERT_BINARY_TYPE)
+	break;
+      if (cl->btype==LTFT_INSERT_BINARY_SIZE)
+	break;
+      cl=cl->next;
+    }
+    if (cl!=ltf) {
+      tempf->line_num=cl->y;
+      if (cl->btype==LTFT_TEXT) {
+	tempf->cur_entry=cl;
+	tempf->buf=cl->display;
+	tempf->buf_ptr=cl->display;
+	tempf->line_start=cl->display;
+      } else {
+	tempf->cur_entry=cl->last;  //TODO might be problem at begining of file
+	tempf->buf=&lex_zeros;
+	tempf->buf_ptr=&lex_zeros;
+      }
+      is_null=FALSE;
+    } else
+      is_null=TRUE;
+  }
+  tempf->name=AbsoluteFileName(filename);
+  if (is_null) {
+    tempf->flags=LFSF_IS_INCLUDED;
+    tempf->buf=NULL;
+    tempf->buf_ptr=NULL;
+    tempf->line_num=1;
+  } else
+    tempf->flags=LFSF_IS_INCLUDED|LFSF_IS_LTF;
+  l->cur_buf_ptr=tempf->buf_ptr;
+}
+
+void LexPush(LexStruct *l)
+{
+  LexFileStruct *tempf=l->cur_lfn,
+    *tempf1=l->stack_ptr;
+  LexBackupLastChar(l);
+  MemCpy(tempf1,tempf,sizeof(LexFileStruct));
+  l->stack_ptr=tempf1+sizeof(LexFileStruct);
+}
+
+void LexPop(LexStruct *l)
+{
+  LexFileStruct *tempf=l->cur_lfn,
+    *tempf1=l->stack_ptr-sizeof(LexFileStruct);
+  l->cur_buf_ptr=tempf1->buf_ptr;
+  l->stack_ptr=tempf1;
+  l->flags&=~LF_USE_LAST_CHAR;
+  MemCpy(tempf,tempf1,sizeof(LexFileStruct));
+}
+
+void LexSubStackPtr(LexStruct *l)
+{
+  l->stack_ptr=l->stack_ptr-sizeof(LexFileStruct);
+}
+
+MemberListStruct *FindMember(char *st,ClassStruct *c)
+{
+  MemberListStruct *ml=c->member_list;
+  while (ml) {
+    if (!StrCmp(ml->string,st)) {
+      ml->use_cnt++;
+      return ml;
+    }
+    ml=ml->next;
+  }
+  return NULL;
+}
+
+void DelMemberList(ClassStruct *tempc)
+{
+  MemberListStruct *tempm,*tempm1;
+  tempm=tempc->member_list;
+  while (tempm) {
+    tempm1=tempm->next;
+    Free(tempm->string);
+    Free(tempm);
+    tempm=tempm1;
+  }
+  tempc->size=0;
+  tempc->last_in_member_list=&tempc->member_list;
+  tempc->member_list=NULL;
+  tempc->member_cnt=0;
+  tempc->parameter_cnt=0;
+}
+
+
+int Lex(LexStruct *l)
+{
+  char buf[LEX_MAX_IDENT],*fbuf;
+  int i,j,ch;
+  SysHashEntry *temph,**temph1;
+  BOOL cont;
+
+  while (TRUE) {
+lex_cont:
+    if (!(ch=LexGetChar(l))) return l->token=TK_EOF;
+    if (Bt(alpha_bitmap,ch)) {
+      i=0;
+      buf[i++]=ch;
+      do {
+	if (i>=LEX_MAX_IDENT-1)
+	  break;
+	else {
+	  ch=LexGetChar(l);
+	  if (!ch)
+	    break;
+	  else {
+	    if (Bt(alpha_numeric_bitmap,ch))
+	      buf[i++]=ch;
+	    else {
+	      l->flags|=LF_USE_LAST_CHAR;
+	      break;
+	    }
+	  }
+	}
+      } while (TRUE);
+      buf[i++]=0;
+      temph=NULL;
+      l->local_var_entry=NULL;
+      if (l->local_var_list) {
+	l->local_var_entry=FindMember(buf,
+	    l->local_var_list);
+      }
+      if (!l->local_var_entry)
+	temph=FindHashEntry(buf,
+	    l->hash_table_list,l->hash_mask);
+      if (temph && !(l->flags & LF_NO_DEFINES))
+	j=temph->type;
+      else
+	j=0;
+      if (! (j & HTT_STRING_CONSTANT)) {
+	l->hash_entry=temph;
+	Free(l->ident);
+	l->ident=NewString(buf);
+	l->ident_len=i;
+	l->token=TK_IDENT;
+	goto lex_end;
+      } else  //String constant
+	LexIncludeString(l,
+	  temph->string,NewString(temph->user0),FALSE);
+    } else if (Bt(dec_numeric_bitmap,ch)) {
+      i=ch-'0';
+      while (TRUE) {
+	ch=LexGetChar(l);
+	if (ch=='X' || ch=='x') {
+	  while (TRUE) {
+	    ch=ToUpper(LexGetChar(l));
+	    if (Bt(hex_numeric_bitmap,ch)) {
+	      if (ch<='9')
+		i=i*16+ch-'0';
+	      else
+		i=i*16+ch-'A'+10;
+	    } else {
+	      l->cur_i=i;
+	      l->flags|=LF_USE_LAST_CHAR;
+	      l->token=TK_INTEGER;
+	      goto lex_end;
+	    }
+	  }
+	}
+	if (Bt(dec_numeric_bitmap,ch))
+	  i=i*10+ch-'0';
+	else {
+	  l->cur_i=i;
+	  l->flags|=LF_USE_LAST_CHAR;
+	  l->token=TK_INTEGER;
+	  goto lex_end;
+	}
+      }
+    } else if (ch=='"') {
+      l->flags|=LF_IN_QUOTES;
+      i=0;
+      while (TRUE) {
+	ch=LexGetChar(l);
+	if (!ch) break;
+	else if (ch=='"') break;
+	else if (ch=='\\') {
+	  ch=LexGetChar(l);
+	  if (ch=='n')
+	    buf[i++]=10;
+	  else if (ch=='r')
+	    buf[i++]=13;
+	  else if (ch=='"')
+	    buf[i++]='"';
+	  else if (ch==0x27) // "\'"
+	    buf[i++]=0x27;
+	  else if (ch=='\`')
+	    buf[i++]='\`';
+	  else if (ch=='\\')
+	    buf[i++]='\\';
+	  else if (ch=='t')
+	    buf[i++]=9;
+	  else if (ch=='x') {
+	    j=0;
+	    while (TRUE) {
+	      ch=ToUpper(LexGetChar(l));
+	      if (Bt(hex_numeric_bitmap,ch)) {
+		if (ch<='9')
+		  j=j*16+ch-'0';
+		else
+		  j=j*16+ch-'A'+10;
+	      } else
+		break;
+	    }
+	    buf[i++]=j;
+	    l->flags|=LF_USE_LAST_CHAR;
+	  } else if (ch>='0' && ch<='7') {
+	    j=ch-'0';
+	    do {
+	      ch=LexGetChar(l);
+	      if (ch>='0' && ch<='7')
+		j=8*j+ch-'0';
+	    } while (ch>='0' && ch<='7');
+	    buf[i++]=j;
+	    l->flags|=LF_USE_LAST_CHAR;
+	  } else {
+	    l->flags|=LF_USE_LAST_CHAR;
+	    buf[i++]='\\';
+	  }
+	} else if (ch=='$') {
+	  ch=LexGetChar(l);
+	  buf[i++]='$';
+	  if (ch!='$')
+	    l->flags|=LF_USE_LAST_CHAR;
+	} else
+	  buf[i++]=ch;
+	if (i>=LEX_MAX_IDENT-1)
+	  break;
+      }
+      l->flags&=~LF_IN_QUOTES;
+      buf[i++]=0;
+      Free(l->ident);
+      l->ident=MAlloc(i);
+      MemCpy(l->ident,buf,i);
+      l->ident_len=i;
+      l->token=TK_STRING;
+      goto lex_end;
+    } else if (ch==0x27) { // "'"
+      ch=LexGetChar(l);
+      if (!ch || ch==0x27) i=0x27;
+      else if (ch=='\\') {
+	ch=LexGetChar(l);
+	if (ch=='n')
+	  i=10;
+	else if (ch=='r')
+	  i=13;
+	else if (ch=='"')
+	  i='"';
+	else if (ch==0x27)
+	  i=0x27;
+	else if (ch=='\`')
+	  i='\`';
+	else if (ch=='\\')
+	  i='\\';
+	else if (ch=='t')
+	  i=9;
+	else if (ch=='x') {
+	  i=0;
+	  while (TRUE) {
+	    ch=ToUpper(LexGetChar(l));
+	    if (Bt(hex_numeric_bitmap,ch)) {
+	      if (ch<='9')
+		i=i*16+ch-'0';
+	      else
+		i=i*16+ch-'A'+10;
+	    } else
+	      break;
+	  }
+	  l->flags|=LF_USE_LAST_CHAR;
+	} else if (ch>='0' && ch<='7') {
+	  i=ch-'0';
+	  do {
+	    ch=LexGetChar(l);
+	    if (ch>='0' && ch<='7')
+	      i=8*i+ch-'0';
+	  } while (ch>='0' && ch<='7');
+	  l->flags|=LF_USE_LAST_CHAR;
+	} else {
+	  l->flags|=LF_USE_LAST_CHAR;
+	  i='\\';
+	}
+      } else if (ch=='$') {
+	ch=LexGetChar(l);
+	i='$';
+	if (ch!='$')
+	  l->flags|=LF_USE_LAST_CHAR;
+      } else
+	i=ch;
+      ch=LexGetChar(l);
+      if (ch!=0x27)
+	l->flags|=LF_USE_LAST_CHAR;
+      l->cur_i=i;
+      l->token=TK_INTEGER;
+      goto lex_end;
+    } else if (ch=='#') {
+      if (Lex(l)!=TK_IDENT) 	//skip '#'
+	goto lex_end;
+      if (!(temph=l->hash_entry))
+	goto lex_end;
+      if (!(temph->type & HTT_KEYWORD))
+	goto lex_end;
+      i=temph->user0;
+      if (i==KW_INCLUDE) {
+	if (Lex(l)!=TK_STRING)
+	  goto lex_end;
+	if (l->flags & LF_ASM_EXPRESSIONS)
+	  fbuf=DefaultExtension(l->ident,"ASZ");
+	else
+	  fbuf=DefaultExtension(l->ident,"CPZ");
+	if (ext[EXT_LTF_READ])
+	  LexIncludeLtf(l,fbuf);
+	else
+	  LexIncludeString(l,fbuf,ReadTextFile(fbuf),TRUE);
+	Free(fbuf);
+      } else if (i==KW_DEFINE) {
+	l->flags|=LF_NO_DEFINES;
+	if (Lex(l)==TK_IDENT) {
+	  temph=MAllocZ(sizeof(SysHashEntry));
+	  temph->string=l->ident;
+	  l->ident=0;
+	  temph->use_cnt=0;
+	  temph->type=HTT_STRING_CONSTANT;
+	  SetSourceFileInfo(l,temph);
+	  temph1=FindHashBucket(temph->string,l->define_hash_table);
+	  temph->next=*temph1;
+	  *temph1=temph;
+	  i=0;
+	  do ch=LexGetChar(l);
+	  while (ch && ch<=0x20);
+	  buf[i++]=ch;
+	  while (TRUE) {
+	    if (i>=LEX_MAX_IDENT-1)
+	     break;
+	    else {
+	      ch=LexGetChar(l);
+	      if (ch && ch!=13 && ch!=10)
+		buf[i++]=ch;
+	      else
+		break;
+	    }
+	  }
+	  buf[i++]=0;
+	  temph->user0=NewString(buf);
+	}
+	l->flags&=~LF_NO_DEFINES;
+      }
+    } else if (ch==TK_INCLUDE_EOF) {
+      l->token=ch;
+      goto lex_end;
+    } else if (ch==TK_INSERT_BINARY ||
+	       ch==TK_INSERT_BINARY_TYPE ||
+	       ch==TK_INSERT_BINARY_SIZE) {
+      l->token=ch;
+      goto lex_end;
+    } else if (ch>=0x21 && ch<=0x7E) {
+      i=duel_char_tokens1[ch];
+      if (!i) {
+	if (ch=='$') {
+	  do ch=LexGetChar(l);
+	  while (ch && ch!='$');
+	  goto lex_cont;
+	} else {
+	  l->token=ch;
+	  goto lex_end;
+	}
+      } else {
+	j=LexGetChar(l);
+	if (i & 0xFF==j) {
+	  i>>=8;
+	  if (!i) { // "/*"
+	    cont=TRUE;
+	    while (cont) {
+	      do ch=LexGetChar(l);
+	      while (ch && ch!='*');
+	      while (cont && ch=='*') {
+		ch=LexGetChar(l);
+		if (ch=='/')
+		  cont=FALSE;
+	      }
+	    }
+	    goto lex_cont;
+	  } else {
+	    l->token=i;
+	    goto lex_end;
+	  }
+	}
+	if (i=duel_char_tokens2[ch]) {
+	  if (i & 0xFF==j) {
+	    i>>=8;
+	    if (!i) {  // "//"
+	      LexSkipEol(l);
+	      goto lex_cont;
+	    } else {
+	      if (i==TK_SHL || i==TK_SHR) {
+		j=LexGetChar(l);
+		if (j=='=') {
+		  if (i==TK_SHL)
+		    i=TK_SHL_EQUAL;
+		  else
+		    i=TK_SHR_EQUAL;
+		} else
+		  l->flags|=LF_USE_LAST_CHAR;
+	      }
+	      l->token=i;
+	      goto lex_end;
+	    }
+	  }
+	  if (i=duel_char_tokens3[ch]) {
+	    if (i & 0xFF==j) {
+	      l->token=i>>8;
+	      goto lex_end;
+	    }
+	  }
+	}
+ 	l->flags|=LF_USE_LAST_CHAR;
+	l->token=ch;
+	goto lex_end;
+      }
+    }
+  }
+lex_end:
+  if (Bt(&l->flags,LFf_LEX_TRACE))
+    LexPutToken(l);
+  return l->token;
+}
+
+char *LexExtendString(LexStruct *l,DWORD *size)
+{
+  DWORD len=l->ident_len,len1,len2;
+  char *st=l->ident,*st1,*st2;
+  l->ident=0;
+  while (l->token==TK_STRING) {
+    st1=st;
+    len1=len;
+    if (Lex(l)==TK_STRING) {
+      len2=l->ident_len;
+      st2=l->ident;
+      l->ident=0;
+      len=len1+len2-1;
+      st=MAlloc(len);
+      if (len1>1)
+	MemCpy(st,st1,len1-1);
+      MemCpy(st+len1-1,st2,len2);
+      Free(st1);
+      Free(st2);
+    }
+  }
+  *size=len;
+  return st;
+}
+
+void LexPutLine(char *start)
+{
+  char temp,*ptr;
+  ptr=start;
+  while (*ptr && *ptr!=10 && *ptr!=13)
+    ptr++;
+  temp=*ptr;
+  *ptr=0;
+  PutS(start);
+  CrLf;
+  *ptr=temp;
+}
+
+int LexLineNum(LexStruct *l)
+{
+  return l->cur_lfn->line_num;
+}
+
+void LexPutLink(LexStruct *l)
+{
+  PutFileLink(l->cur_lfn->name,l->cur_lfn->line_num);
+  PutS(" ");
+}
+
+void PutLexError(LexStruct *l,char *name=NULL,char *msg=NULL)
+{
+  PutSysText("ST_ERROR");
+  l->error_cnt++;
+  if (name)
+    PutSysText(name);
+  if (msg)
+    PutS(msg);
+  LexPutToken(l);
+  LexPutLink(l);
+  LexPutLine(l->cur_lfn->line_start);
+}
+
+void PutLexWarning(LexStruct *l,char *name=NULL,char *msg=NULL)
+{
+  PutSysText("ST_WARNING");
+  l->warning_cnt++;
+  if (name)
+    PutSysText(name);
+  if (msg)
+    PutS(msg);
+  LexPutToken(l);
+  LexPutLink(l);
+  LexPutLine(l->cur_lfn->line_start);
+}
+
+void PutAsmError(LexStruct *l,char *name)
+{
+  PutLexError(l,name);
+  LexSkipEol(l);
+  Lex(l);
+}
+
+void PutAsmWarning(LexStruct *l,char *name)
+{
+  PutLexWarning(l,name);
+  LexSkipEol(l);
+  Lex(l);
+}
+
+void PrsTrap(LexStruct *l,char *name=NULL,char *msg=NULL)
+{
+  PutLexError(l,name,msg);
+  throw(TRP_COMPILER,0);
+}
+
+
+
+void CbPutClass(ClassStruct *c)
+{
+  int i;
+  if (!c) return;
+  if (c->pointer_cnt>4) {
+    coutln "ERROR:put_class ptrcnt=",c->pointer_cnt;
+    while (TRUE)
+      SwapInNext;
+  }
+  for (i=0;i<c->pointer_cnt;i++)
+    PutChar('*');
+  c-=sizeof(ClassStruct)*c->pointer_cnt;
+  if (c->string)
+    PutS(c->string);
+  else {
+    coutln "ERROR:put_class string=NULL";
+    while (TRUE)
+      SwapInNext;
+  }
+  PutChar(0x20);
+}
+
+void CbPutIc(DWORD opcode,
+		       DWORD arg,ClassStruct *c)
+{
+  if (opcode!=EC_NOP) {
+    PutS(CODE_TEXT_TABLE+(opcode & 255)*8);
+    cout " ",arg," ",c," ";
+    CbPutClass(c);
+    CrLf;
+  }
+}
+
+void CbInitOutPtrs(LexStruct *l)
+{
+  CodeBlk *cb=MAlloc(sizeof(CodeBlk));
+  cb->next=NULL;
+  l->cb_out_first=cb;
+  l->cb_out_last=cb;
+  l->cb_misc_list=NULL;
+  l->cb_out_end=cb+sizeof(CodeBlk);
+  l->cb_out_ptr=&cb->data;
+  l->cb_last_out_ptr=&cb->data;
+}
+
+void CbInitInPtrs(LexStruct *l)
+{
+  CodeBlk *cb=l->cb_out_first;
+  l->cb_in_first=cb;
+  l->cb_in_end=cb+sizeof(CodeBlk);
+  l->cb_in_ptr=&cb->data;
+}
+
+void CbPutAllIc(LexStruct *l)
+{
+  IntermediateCode *tempi;
+  CrLf;
+  CbInitInPtrs(l);
+  tempi=l->cb_in_ptr;
+  while (tempi->ic_code) {
+    CbPutIc(tempi->ic_code,tempi->ic_data,tempi->ic_class);
+    tempi+=sizeof(IntermediateCode);
+  }
+}
+
+void CbAddIc(LexStruct *l,
+   DWORD opcode,DWORD arg, ClassStruct *c)
+{
+  IntermediateCode *tempi=l->cb_out_ptr;
+  CodeBlk *cb,*cb1;
+  l->cb_last_out_ptr=tempi;
+  tempi->ic_code=opcode;
+  tempi->ic_data=arg;
+  tempi->ic_class=c;
+  tempi->ic_line=l->cur_lfn->line_num;
+  if (Bt(&l->flags,LFf_PARSE_TRACE))
+    CbPutIc(opcode,arg,c);
+  tempi+=sizeof(IntermediateCode);
+  if (tempi==l->cb_out_end) {
+    cb=MAlloc(sizeof(CodeBlk));
+    cb->next=NULL;
+    cb1=l->cb_out_last;
+    cb1->next=cb;
+    l->cb_out_last=cb;
+    tempi=&cb->data;
+    l->cb_out_end=cb+sizeof(CodeBlk);
+  }
+  l->cb_out_ptr=tempi;
+}
+
+IntermediateCode *CbGetIc(LexStruct *l)
+{
+  IntermediateCode *tempi=l->cb_in_ptr,
+      *tempi1=tempi+sizeof(IntermediateCode);
+  CodeBlk *cb;
+  if (tempi1==l->cb_in_end) {
+    cb=tempi1-sizeof(CodeBlk);
+    cb=cb->next;
+    l->cb_in_end=cb+sizeof(CodeBlk);
+    tempi1=&cb->data;
+  }
+  l->cb_in_ptr=tempi1;
+  return tempi;
+}
+
+IntermediateCode *CbGetIc2(LexStruct *l)
+{
+  IntermediateCode *tempi=l->cb_in_ptr,
+      *tempi1=tempi+sizeof(IntermediateCode);
+  l->cb_in_ptr=tempi1;
+  return tempi;
+}
+
+void CbPush(LexStruct *l)
+{
+  LexStruct *templ=MAlloc(sizeof(LexStruct));
+  DWORD size=&l->cb_stack+4-&l->cb_out_first;
+  MemCpy(&templ->cb_out_first,&l->cb_out_first,size);
+  l->cb_stack=templ;
+}
+
+void CbPop(LexStruct *l)
+{
+  LexStruct *templ=l->cb_stack;
+  DWORD size=&l->cb_stack+4-&l->cb_out_first;
+  MemCpy(&l->cb_out_first,&templ->cb_out_first,size);
+  Free(templ);
+}
+
+CbMiscStruct *CbFindGotoLabel(LexStruct *l,char *name)
+{
+  CbMiscStruct *templ=l->cb_misc_list;
+  while (templ) {
+    if (templ->type==CBMT_GOTO_LABEL) {
+      if (!StrCmp(templ->string,name))
+	return templ;
+    }
+    templ=templ->next;
+  }
+  return NULL;
+}
+
+CbMiscStruct *CbMiscNew(LexStruct *l,DWORD t)
+{
+  CbMiscStruct *result=MAllocZ(sizeof(CbMiscStruct));
+  result->next=l->cb_misc_list;
+  result->address=0xFFFFFFFF;
+  l->cb_misc_list=result;
+  result->type=t;
+  return result;
+}
+
+
+void DelCbMiscList(LexStruct *l)
+{
+  CbMiscStruct *mc=l->cb_misc_list,*mc1;
+  while (mc) {
+    mc1=mc->next;
+    if (mc->type==CBMT_GOTO_LABEL &&
+	!mc->address) {
+      l->cb_misc_list=NULL;  //prevent recursion
+      cout SysText("ST_ERROR"),SysText("ST_UNDEFINED_GOTO_LABEL");
+      coutln mc->string;
+      throw(TRP_COMPILER,1);
+    }
+    Free(mc->string);
+    Free(mc->jmp_table);
+    Free(mc);
+    mc=mc1;
+  }
+}
+
+LexStruct *CbPopNoFree(LexStruct *l)
+{
+  LexStruct *templ=l->cb_stack;
+  DWORD size=&l->cb_stack+4-&l->cb_out_first;
+  MemCpy(&l->cb_out_first,&templ->cb_out_first,size);
+  return templ;
+}
+
+void CbAppend(LexStruct *l, LexStruct *ll)
+{
+  IntermediateCode *tempi;
+  CbMiscStruct *mc;
+  CbInitInPtrs(ll);
+  do {
+    tempi=CbGetIc(ll);
+    if (tempi->ic_code) {
+      CbAddIc(l,tempi->ic_code,tempi->ic_data,
+	tempi->ic_class);
+    }
+  } while (tempi->ic_code);
+  DelLinkedList(ll->cb_out_first);
+
+  mc=&l->cb_misc_list;
+  while (mc->next)
+    mc=mc->next;
+  mc->next=ll->cb_misc_list;
+
+  Free(ll);
+}
+
+void CbCombine(LexStruct *l)
+{
+  CodeBlk *cb=l->cb_out_first,*cb1,*cb2;
+  int i=0,j=sizeof(CodeBlk)-4;
+  DWORD *ptr;
+  while (cb) {
+    cb=cb->next;
+    i++;
+  }
+  cb1=MAlloc(i*j+4);
+  cb1->next=NULL;
+  cb=l->cb_out_first;
+  ptr=&cb1->data;
+  while (cb) {
+    cb2=cb->next;
+    MemCpy(ptr,&cb->data,j);
+    ptr=ptr+j;
+    Free(cb);
+    cb=cb2;
+  }
+  l->cb_out_first=cb1;
+}
+
+DWORD CbCountCode(LexStruct *l,int pass,DWORD *min_line,DWORD *max_line)
+{
+  DWORD result=0,code;
+  int i;
+  DWORD min_line2=0xFFFFFFFF,last_line=0;
+  SysHashEntry *temph;
+  IntermediateCode *tempi;
+  CbMiscStruct *lb;
+  CbInitInPtrs(l);
+  do {
+    tempi=CbGetIc2(l);
+    code=tempi->ic_code & 0xFF;
+    if (code) {
+      if (code==EC_LABEL) {
+	lb=tempi->ic_data;
+	lb->address=result;
+      } else if (pass==2 && code>=EC_OR_OR_SKIPZ && code<=EC_JMP) {
+	lb=tempi->ic_data;
+	if (lb->address!=0xFFFFFFFF) {
+	  i=lb->address-result;
+	  if (i<116 && i>-116)	//byte disp
+	    tempi->ic_code= --code;
+	}
+      }
+      temph=tempi->ic_class;
+      if (temph->user0 & 1)
+	i=unsigned_code_table[code+1]-
+	  unsigned_code_table[code];
+      else
+	i=code_table[code+1]-
+	  code_table[code];
+      result+=i;
+      if (pass==2 && i) {
+	i=tempi->ic_line;
+	if (i>=last_line) {
+	  last_line=i;
+	  if (i<*min_line)
+	    *min_line=i;
+	  if (i>*min_line && i<min_line2)
+	    min_line2=i;
+	  if (i>*max_line)
+	    *max_line=i;
+	}
+      }
+    }
+  } while (code);
+  lb=l->cb_misc_list;
+  while (lb) {
+    if (lb->type==CBMT_STRING_CONSTANT) {
+      lb->address=result;
+      result+=lb->st_len;
+    } else if (lb->type==CBMT_JMP_TABLE) {
+      lb->address=result;
+      result+=lb->st_len*4;
+    }
+    lb=lb->next;
+  }
+  if (pass==2) {
+    if (min_line2!=0xFFFFFFFF &&
+	(min_line2-*min_line)>10) //Defines screw things up
+      *min_line=min_line2;
+  }
+  return result;
+}
+
+Jextern CP_OPTIMIZE_CODE void OptimizeCode(LexStruct *l);
+Jextern CP_FIXUP_CODE void FixupCode(LexStruct *l);
+
+BYTE *CbCompile(LexStruct *l,DWORD stk_frame_size,
+		 DWORD *code_size,DbgInfo **dbg_info)
+{
+  short *ss;
+  BYTE *result,*dst,*bb;
+  DWORD min_line=0xFFFFFFF0,max_line=0;
+  DWORD i,code,*p1,*p2,size,*dd;
+  SysHashEntry *temph;
+  IntermediateCode *tempi;
+  CbMiscStruct *lb,*lb1;
+  DbgInfo *my_dbg=NULL;
+  ExeAbsoluteAddressStruct *tempa;
+  AsmCtrlStruct *a=l->a;
+  DWORD Dasm2(BYTE *ip,int cnt,BOOL use16);
+  CbCombine(l);
+  FixupCode(l);
+  OptimizeCode(l);
+  CbCountCode(l,1,NULL,NULL);
+  *code_size=CbCountCode(l,2,&min_line,&max_line);
+  result=MAlloc(*code_size);
+  if (max_line>=min_line && (max_line-min_line<10000)) {
+    my_dbg=MAllocZ(offset(DbgInfo.body)+sizeof(DWORD)*(max_line-min_line+1));
+    my_dbg->min_line=min_line;
+    my_dbg->max_line=max_line;
+  }
+  *dbg_info=my_dbg;
+  dst=result;
+  CbInitInPtrs(l);
+  do {
+    tempi=CbGetIc2(l);
+    code=tempi->ic_code & 0xFF;
+    if (code) {
+      temph=tempi->ic_class;
+      if (temph->user0 & 1)
+	p1=&unsigned_code_table[code];
+      else
+	p1=&code_table[code];
+      p2=p1+4;
+      if (size=*p2-*p1) {
+	MemCpy(dst,*p1,size);
+	if (my_dbg) {
+	  if (tempi->ic_line>=min_line && tempi->ic_line<=max_line) {
+	    i=tempi->ic_line-min_line;
+	    if (!my_dbg->body[i]) {
+	      if (a)
+		my_dbg->body[i]=a->ip+dst-result;
+	      else
+		my_dbg->body[i]=dst;
+	    }
+	  }
+	}
+      }
+      dst+=size;
+      ss=&fix_up_32_jmp_table[code];
+      if (*ss) {
+	lb=tempi->ic_data;
+	if (a)
+	  i=lb->address-(dst-result)-*ss-4;
+	else
+	  i=(result+lb->address)-dst-*ss-4;
+	dd=dst+*ss;
+	*dd=i;
+      } else {
+      ss=&fix_up_8_jmp_table[code];
+      if (*ss) {
+	lb=tempi->ic_data;
+	if (a)
+	  i=lb->address-(dst-result)-*ss-1;
+	else
+	  i=(result+lb->address)-dst-*ss-1;
+	bb=dst+*ss;
+	*bb=i;
+      } else {
+      ss=&fix_up_32_table[code];
+      if (*ss) {
+	switch (code) {
+	  case EC_ENTER:
+	  case EC_LEAVE:
+	    i=-stk_frame_size;
+	    break;
+	  case EC_CALL:
+	    if (a)
+  	      i=tempi->ic_data-(a->ip+dst-result)-*ss-4;
+	    else
+  	      i=tempi->ic_data-dst-*ss-4;
+	    break;
+	  case EC_STRING_CONSTANT:
+	  case EC_GET_LABEL:
+	  case EC_SWITCH:
+	    lb=tempi->ic_data;
+	    if (a)
+  	      i=lb->address+a->ip;
+	    else
+  	      i=lb->address+result;
+	    break;
+	  default:
+	    i=tempi->ic_data;
+	}
+	dd=dst+*ss;
+	*dd=i;
+	if (a && !(l->flags & LF_ASM_EXPRESSIONS))
+	  switch (code) {
+	    case EC_ABSOLUTE_ADDRESS:
+	    case EC_STRING_CONSTANT:
+	    case EC_GET_LABEL:
+	    case EC_CALL_INDIRECT2:
+	    case EC_SWITCH:
+	      tempa=MAllocZ(sizeof(ExeAbsoluteAddressStruct));
+	      tempa->next=a->absolutes;
+	      a->absolutes=tempa;
+	      tempa->ip=a->ip+dd-result;
+	      break;
+	  }
+      } else {
+      ss=&fix_up_8_table[code];
+      if (*ss) {
+	bb=dst+*ss;
+	*bb=tempi->ic_data;
+      }
+      }
+      }
+      }
+    }
+  } while (code);
+  lb=l->cb_misc_list;
+  while (lb) {
+    if (lb->type==CBMT_STRING_CONSTANT)
+      MemCpy(result+lb->address,lb->string,lb->st_len);
+    else if (lb->type==CBMT_JMP_TABLE) {
+      for (i=0;i<lb->st_len;i++) {
+	lb1=lb->jmp_table[i];
+	dd=result+lb->address+i*4;
+	if (a) {
+	  tempa=MAllocZ(sizeof(ExeAbsoluteAddressStruct));
+	  tempa->next=a->absolutes;
+	  a->absolutes=tempa;
+	  tempa->ip=a->ip+dd-result;
+	  *dd=lb1->address+a->ip;
+	} else
+	  *dd=lb1->address+result;
+      }
+    }
+    lb=lb->next;
+  }
+  Free(l->cb_out_first);
+  DelCbMiscList(l);
+  if (Bt(&l->flags,LFf_COMPILE_TRACE)) {
+    if (Dasm2=FindExtern("Dasm2"))
+      Dasm2(result,*code_size,FALSE);
+  }
+  return result;
+}
+
+void DelHashTable(SysHashTable *tempht)
+{
+  int i;
+  SysHashEntry *temph,*temph1;
+  ClassStruct *tempc;
+
+  for (i=0;i<=tempht->mask;i++) {
+    temph=tempht->body[i];
+    while (temph) {
+      temph1=temph->next;
+      Free(temph->string);
+      if (temph->type & (HTT_FUNCTION | HTT_CLASS |
+	 HTT_STRING_CONSTANT | HTT_GLBL_VAR |
+	 HTT_SYS_SYMBOL)) {
+	Free(temph->source_link);
+	if (temph->type & (HTT_FUNCTION | HTT_CLASS)) {
+	  tempc=temph;
+	  Free(tempc->debug);
+	  DelMemberList(tempc);
+	  //assumes code not on heap
+	} else if (temph->type &HTT_STRING_CONSTANT)
+	  Free(temph->user0);
+      }
+      Free(temph);
+      temph=temph1;
+    }
+  }
+  Free(tempht);
+}

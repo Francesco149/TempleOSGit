@@ -1,0 +1,147 @@
+Load("ROOTASM");
+#include "ROOTASM.HPZ"
+#include "GRMODE3"
+
+void PlotScreenString(char *s,DWORD attr,int x,int y)
+{
+  BYTE ch;
+  attr<<=8;
+  while (ch=*s++) {
+    PlotScreenChar(ch+attr,x,y);
+    x+=4;
+  }
+}
+
+void PlotWindowString(char *s,DWORD attr,int x,int y)
+{
+  BYTE ch;
+  attr<<=8;
+  while (ch=*s++) {
+    PlotWindowChar(ch+attr,x,y);
+    x+=4;
+  }
+}
+
+void PlotBorderString(char *s,DWORD attr,int x,int y)
+{
+  BYTE ch;
+  attr<<=8;
+  while (ch=*s++) {
+    PlotBorderChar(ch+attr,x,y);
+    x+=4;
+  }
+}
+
+#include "DISK10"
+#include "FIFO"
+#include "COMM"
+#include "INPTR"
+
+//The following are menu number allocations
+#define MU_NULL 	     0
+
+#define MU_FIRST_USER 1000
+
+#include "LTF"
+#include "UTILS"
+
+sys_clipboard_ltf=LtfNew;
+TssStruct *update_screen_tss;
+#include "MOUSE"
+#include "JOY"
+#include "WINDOW"
+
+public char GetChar()
+{
+  DWORD ch,scan_code;
+  do
+    GetMessage(&ch,&scan_code,(1<<MSG_KEY_DOWN));
+  while (ch==0);
+  PutChar(ch);
+  return ch;
+}
+
+char GetCharNoEcho()  //Use "GetKey()"
+{
+  DWORD ch,scan_code;
+  do
+    GetMessage(&ch,&scan_code,(1<<MSG_KEY_DOWN));
+  while (ch==0);
+  return ch;
+}
+
+public char GetChar2(DWORD *scan_code)
+{
+  DWORD ch;
+  GetMessage(&ch,scan_code,(1<<MSG_KEY_DOWN));
+  return ch;
+}
+
+
+public BOOL ScanChar(DWORD *scan_code,char *ch)
+{
+  DWORD ch1;
+  if (GetMessageNoWait(&ch1,scan_code,(1<<MSG_KEY_DOWN))) {
+    *ch=ch1;
+    return TRUE;
+  } else {
+    *ch=0;
+    return FALSE;
+  }
+}
+
+public void PressAKey()
+{
+  PutSysText("ST_PRESS_A_KEY");
+  GetKey;
+}
+
+#include "EDIT"
+#include "LOGIN"
+#include "WORDSTAT"
+
+public void DuelUsers()
+{
+  Ltf *l;
+  TssStruct *tss;
+
+  Preempt(OFF);
+  tss=Spawn(&UserCmdLine);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tss->window_top=2;
+  tss->window_left=SCREEN_COLS*4/2;
+  l=tss->cur_ltf;
+  l->recalc_start=l;
+  LtfRecalc(l);
+
+  tss=Spawn(&UserCmdLine);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tss->window_top=2;
+  tss->window_right=(SCREEN_COLS-2)*4/2;
+  l=tss->cur_ltf;
+  l->recalc_start=l;
+  LtfRecalc(l);
+  WindowToTop(tss);
+
+  ws_task=Spawn(&WsTsk,"WORDSTAT");
+}
+
+Preempt(ON);
+Bts(&Fs->crt_flags,CRTf_SHOW);
+Btr(&sys_flags,SYSf_RAW_CRT_OUT);
+Echo(OFF);
+UseConsoleLtf(NULL);
+root_tss->window_top=2;
+root_tss->window_bottom=10;
+update_screen_tss=Spawn(&WindowManagerTsk,"WINDOW MANAGER");
+CollectAccntList;
+if (!(Fs->account=FindSysAccnt(sys_startup_account)))
+  Fs->account=PopUpGetSysAccnt;
+WsInit(wordstat_mask);
+
+//This must be spawned because start-up files
+// may invoke the Root() cmd.
+Spawn(&DuelUsers,"SPAWNUSERS");
+coutln "\r\nOS Compile Time:",sys_compile_time;

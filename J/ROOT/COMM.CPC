@@ -1,0 +1,162 @@
+#define UART_THR		0
+#define UART_RDR		0
+#define UART_BRDL		0
+#define UART_IER		1
+#define UART_BRDH		1
+#define UART_IIR		2
+#define UART_LCR		3
+#define UART_MCR		4
+#define UART_LSR		5
+#define UART_MSR		6
+
+
+DWORD comm_base[5];
+comm_base[1]=0x3F8;
+comm_base[2]=0x2F8;
+comm_base[3]=0x3E8;
+comm_base[4]=0x2E8;
+
+ByteFifo *comm_fifos[5];
+MemSet(comm_fifos,0,5*sizeof(DWORD));
+
+public void CommOpen8N1(DWORD port=1,DWORD baud=115200)
+{
+  DWORD old_flags=GetFlags,base=comm_base[port];
+  Cli;
+  if (comm_fifos[port])
+    DelByteFifo(comm_fifos[port]);
+  comm_fifos[port]=NewByteFifo(256);
+  OutP(base+UART_LCR,0);     //Set for IER
+  OutP(base+UART_IER,0);
+  OutP(base+UART_LCR,0x80);  //Enable baud rate control
+  OutP(base+UART_BRDL,(0x180/(baud/300)) & 0xFF); //LSB
+  OutP(base+UART_BRDH,(0x180/(baud/300)) / 256);  //MSB
+  OutP(base+UART_LCR,3);     // 8-none-1
+
+  InP(base+UART_RDR);  //read garbage
+  InP(base+UART_LSR);
+
+  OutP(base+UART_MCR,4);
+  OutP(base+UART_IER,0);     //DIsable all IRQ
+  OutP(base+UART_MCR,0xA);	 //out2 and rts
+  OutP(base+UART_IER,1);	 //Enable RX IRQ
+  SetFlags(old_flags);
+}
+
+public void CommClose(DWORD port)
+{
+  DWORD base=comm_base[port];
+  OutP(base+UART_LCR,0);     //Set for IER
+  OutP(base+UART_IER,0);
+  if (comm_fifos[port])  //Uncertain:Might get RX IRQ
+    DelByteFifo(comm_fifos[port]);
+}
+
+public void CommPutChar(DWORD port,BYTE b)
+{
+  DWORD base=comm_base[port];
+  while (!(InP(base+UART_LSR) & 0x20))
+    SwapInNext;
+  OutP(base+UART_THR,b);
+  while (!(InP(base+UART_LSR) & 0x20))
+    SwapInNext;
+}
+
+
+public void CommPutS(DWORD port,char *src)
+{
+  while (*src)
+    CommPutChar(port,*src++);
+}
+
+public void CommPrintF(DWORD port,char *src,...)
+{
+  char *buf=SPrintFJoin(NULL,src,argc,argv);
+  CommPutS(port,buf);
+  Free(buf);
+}
+
+public void CommPrintBlk(DWORD port,BYTE *buf,DWORD cnt,BOOL hex=FALSE)
+{
+  DWORD base=comm_base[port];
+  BYTE b;
+  char hexbuf[3];
+  while (cnt--) {
+    b=*buf++;
+    if (hex) {
+      SPrintF(hexbuf,"%02X",b);
+      while (!(InP(base+UART_LSR) & 0x20))
+	SwapInNext;
+      OutP(base+UART_THR,hexbuf[0]);
+      while (!(InP(base+UART_LSR) & 0x20))
+	SwapInNext;
+      OutP(base+UART_THR,hexbuf[1]);
+    } else {
+      while (!(InP(base+UART_LSR) & 0x20))
+	SwapInNext;
+      OutP(base+UART_THR,b);
+    }
+  }
+  while (!(InP(base+UART_LSR) & 0x20))
+    SwapInNext;
+}
+
+public void CommSendFile(DWORD port,char *filename,
+  BOOL hex=FALSE,BOOL raw=FALSE)
+{
+  DWORD size;
+  BYTE *buf;
+  buf=ReadFile(filename,&size,NULL,raw);
+  if (buf) {
+    CommPrintBlk(port,buf,size,hex);
+    Free(buf);
+  }
+}
+
+
+void Irq03Handler()
+{
+  DWORD base=comm_base[2];
+  if ((InP(base+UART_IIR) & 0x07)==4)	//RX IRQ
+    ByteFifoInsert(comm_fifos[2],InP(base+UART_RDR));
+
+  base=comm_base[4];
+  if ((InP(base+UART_IIR) & 0x07)==4)	//RX IRQ
+    ByteFifoInsert(comm_fifos[4],InP(base+UART_RDR));
+}
+
+void Irq04Handler()
+{
+  DWORD base=comm_base[1];
+  if ((InP(base+UART_IIR) & 0x07)==4)	//RX IRQ
+    ByteFifoInsert(comm_fifos[1],InP(base+UART_RDR));
+
+  base=comm_base[3];
+  if ((InP(base+UART_IIR) & 0x07)==4)	//RX IRQ
+    ByteFifoInsert(comm_fifos[3],InP(base+UART_RDR));
+}
+
+public BYTE CommGetChar(DWORD port)
+{
+  BYTE ch;
+  while (!ByteFifoRemove(comm_fifos[port],&ch))
+    SwapInNext;
+  return ch;
+}
+
+public BOOL CommScanChar(DWORD port,char *ch)
+{
+  DWORD ch1;
+  if (ByteFifoPeek(comm_fifos[port],&ch1)) {
+    ByteFifoRemove(comm_fifos[port],&ch1);
+    *ch=ch1;
+    return TRUE;
+  } else
+    return FALSE;
+}
+
+ext[EXT_IRQ03]=&Irq03Handler;
+ext[EXT_IRQ04]=&Irq04Handler;
+
+
+

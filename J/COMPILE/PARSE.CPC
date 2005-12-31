@@ -1,0 +1,691 @@
+void PrsPush(ParseStack *ps,DWORD val)
+{
+  ps->stk[ps->ptr++]=val;
+}
+DWORD PrsPop(ParseStack *ps)
+{
+  return ps->stk[--ps->ptr];
+}
+
+#define PRST_UNARY_TERM		0
+#define PRST_UNARY_MODIFIERS	1
+#define PRST_DEREFERRENCE	2
+#define PRST_CHECK_BINARY_OPS	3
+
+BOOL PrsParseExpression(LexStruct *l)
+{
+  BOOL result=TRUE,question_clause=FALSE,
+    cont_unary,cont_check_binary_ops,is_lower;
+  int i,j,k;
+  IntermediateCode *tempi;
+  ClassStruct *tempc;
+  ParseStack *ps=MAlloc(sizeof(ParseStack));
+
+  ps->ptr=0;
+  PrsPush(ps,0); //terminate
+  PrsPush(ps,0); //terminate
+try {
+  do {
+    l->flags=l->flags & ~(LF_PREINC+LF_PREDEC+LF_POSTINC+LF_POSTDEC+
+      LF_FUNCTION);
+    do i=PrsUnaryTerm(l,ps);
+    while (i==PRST_UNARY_TERM);
+
+    while (i==PRST_UNARY_MODIFIERS)
+      i=PrsUnaryModifier(l,ps);
+
+    if (i==PRST_DEREFERRENCE)
+      PrsDereferrence(l,ps);
+
+    //Check for binary Ops
+    do {
+      i=PrsPop(ps);
+      tempc=PrsPop(ps);
+      if (i && (i & 0xFF00)<=0x100) {
+	tempi=l->cb_last_out_ptr;
+	i&=0xFF;
+	tempc=tempi->ic_class;
+	if (Bt(deref_bitmap,i) && tempc->pointer_cnt) {
+	  tempc=tempc-sizeof(ClassStruct);
+	  i=EC_DEREFERRENCE32+0x100;
+	  if (tempc->type==HTT_INTERNAL_TYPE)
+	    i+=it_to_ec_offset[tempc->member_cnt];
+	} else {
+	  if (i==EC_ADDRESS &&
+	     !(l->flags & (LF_EAX+LF_ARRAY))) {
+	    j=tempi->ic_code & 0xFF;
+	    if (!Bt(deref_bitmap,j))
+	      PrsTrap(l,"ST_INVALID_LVALUE");
+	    tempi->ic_code=EC_NOP;
+	    tempc=tempc+sizeof(ClassStruct);
+	  }
+	}
+	CbAddIc(l,i,0,tempc);
+	cont_check_binary_ops=TRUE;
+      } else {
+	PrsPush(ps,tempc);
+	PrsPush(ps,i);
+	i=l->token;
+	k=binary_ops_table[i];
+	if ((k & 0xFF)==EC_QUESTION)
+	  question_clause=TRUE;
+	else if ((k & 0xFF)==EC_COLON) {
+	  if (!question_clause)
+	    k=0;
+	  else
+	    question_clause=FALSE;
+	}
+	if (!(k & 0xFF00)) {
+	  cont_check_binary_ops=FALSE;
+	  cont_unary=FALSE; //DONE
+	} else {
+	  Lex(l); //skip op
+	  if (Bt(assign_bitmap,k & 0xFF)) {
+	    tempi=l->cb_last_out_ptr;
+	    tempc=tempi->ic_class;
+	    j=tempi->ic_code & 0xFF;
+	    if (!Bt(deref_bitmap,j))
+	      PrsTrap(l,"ST_INVALID_LVALUE");
+	    tempi->ic_code=EC_NOP;
+	    if (tempc->type!=HTT_INTERNAL_TYPE) {
+	      k=(k&0xFF)+0x700;
+	    } else
+	      k=(k&0xFF)+0x700+it_to_ec_offset[tempc->member_cnt];
+	  }
+	  do {
+	    i=PrsPop(ps); //pop ops of higher prec
+	    tempc=PrsPop(ps);
+	    is_lower=FALSE;
+	    if (i) {
+	      if ((k&0xFF00)==(i&0xFF00)) {
+		if (!Bt(assign_bitmap,k & 0xFF) ||
+		    !Bt(assign_bitmap,i & 0xFF))
+		  is_lower=TRUE;
+	      } else if ((k&0xFF00)>(i&0xFF00))
+		is_lower=TRUE;
+	    }
+	    if (is_lower)
+	      CbAddIc(l,i,0,tempc);
+	    else {
+	      PrsPush(ps,tempc);
+	      PrsPush(ps,i);
+	      tempi=l->cb_last_out_ptr;
+	      tempc=tempi->ic_class;
+	      PrsPush(ps,tempc);
+	      PrsPush(ps,k);
+	      cont_check_binary_ops=FALSE;
+	      cont_unary=TRUE;
+	      break;
+	    }
+	  } while (TRUE);
+	}
+      }
+    } while (cont_check_binary_ops);
+  } while (cont_unary);
+  while (TRUE) {
+    i=PrsPop(ps);
+    tempc=PrsPop(ps);
+    if (i)
+      CbAddIc(l,i,0,tempc);
+    else
+      break;
+  }
+} catch {
+  if (Fs->trap_argc>0) {
+    if (Fs->trap_argv[0]==TRP_COMPILER) {
+      l->statement_cnt=0;
+      l->braces_cnt=0;
+      result=FALSE;
+      Fs->take_trap=TRUE;
+    }
+  }
+}
+  Free(ps);
+  return result;
+}
+
+
+DWORD PrsUnaryTerm(LexStruct *l,ParseStack *ps)
+{
+  int i,argc_cnt,size;
+  DWORD D;
+  SysHashEntry *temph,**temph1;
+  ClassStruct *tempc;
+  GlblVarStruct *tempg;
+  MemberListStruct *tempm;
+  LexUndefEntry *templu;
+  LexStruct *templ,*templ1;
+  CbMiscStruct *tempmc;
+  IntermediateCode *tempi;
+  BOOL needs_right_paren;
+
+  if (l->token==TK_INTEGER) {
+    if (l->cur_i & 0x80000000)
+      CbAddIc(l,EC_INT32,l->cur_i,sys_internal_types[IT_DWORD]);
+    else
+      CbAddIc(l,EC_INT32,l->cur_i,sys_internal_types[IT_INT]);
+    Lex(l);
+    return PRST_CHECK_BINARY_OPS;
+  }
+  if (l->token==TK_STRING) {
+    D=LexExtendString(l,&size);
+    if (l->flags & LF_ASM_EXPRESSIONS)
+      CbAddIc(l,EC_INT32,D,sys_internal_types[IT_CHAR]+sizeof(ClassStruct));
+    else {
+      tempmc=CbMiscNew(l,CBMT_STRING_CONSTANT);
+      CbAddIc(l,EC_STRING_CONSTANT,tempmc,sys_internal_types[IT_CHAR]+sizeof(ClassStruct));
+      tempmc->st_len=size;
+      tempmc->string=D;
+      l->flags = l->flags | LF_HAS_MISC_DATA;
+    }
+    return PRST_CHECK_BINARY_OPS;
+  }
+  if (l->token==TK_INSERT_BINARY) {
+    if (l->flags & LF_ASM_EXPRESSIONS)
+      CbAddIc(l,EC_INT32,l->ident,sys_internal_types[IT_CHAR]+sizeof(ClassStruct));
+    else {
+      tempmc=CbMiscNew(l,CBMT_STRING_CONSTANT);
+      CbAddIc(l,EC_STRING_CONSTANT,tempmc,sys_internal_types[IT_CHAR]+sizeof(ClassStruct));
+      tempmc->st_len=l->ident_len;
+      tempmc->string=l->ident;
+      l->flags|=LF_HAS_MISC_DATA;
+    }
+    l->ident=NULL;
+    Lex(l);
+    return PRST_CHECK_BINARY_OPS;
+  }
+  if (l->token==TK_INSERT_BINARY_TYPE ||
+      l->token==TK_INSERT_BINARY_SIZE) {
+    CbAddIc(l,EC_INT32,l->cur_i,sys_internal_types[IT_DWORD]);
+    Lex(l);
+    return PRST_CHECK_BINARY_OPS;
+  }
+  if (l->token=='(') {
+    Lex(l); //Skip (
+    if (!PrsParseExpression(l))
+      throw(TRP_COMPILER,2);
+    if (l->token!=')')
+      PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+    Lex(l); //skip )
+    l->flags=(l->flags & ~(LF_ARRAY+LF_FUNCTION)) | LF_EAX;
+    return PRST_UNARY_MODIFIERS;
+  }
+
+  i=unary_ops_table[l->token];
+  if (i & 0xFF00) {
+    Lex(l); //Skip op
+    if ((i & 0xFF)==EC_ADDRESS && l->token==TK_IDENT) {
+      if (tempc=l->hash_entry) {
+	if (tempc->type & HTT_FUNCTION) {
+	  if (!Bt(&tempc->flags,Cf_INTERNAL)) {
+	    Lex(l); //skip fun name
+	    if (Bt(&tempc->flags,Cf_EXTERN)) {
+	      if (l->a)
+		CbAddIc(l,EC_ABSOLUTE_ADDRESS,
+		  tempc->executable_address,sys_internal_types[IT_DWORD]);
+	      else
+		CbAddIc(l,EC_INT32,
+		  &tempc->executable_address,sys_internal_types[IT_DWORD]);
+	      CbAddIc(l,EC_DEREFERRENCE32,0,
+		sys_internal_types[IT_DWORD]);
+	    } else {
+	      if (l->a)
+		CbAddIc(l,EC_ABSOLUTE_ADDRESS,
+		  tempc->executable_address,sys_internal_types[IT_DWORD]);
+	      else
+		CbAddIc(l,EC_INT32,
+		  tempc->executable_address,sys_internal_types[IT_DWORD]);
+	    }
+	    return PRST_CHECK_BINARY_OPS;
+	  }
+	}
+      }
+    }
+    PrsPush(ps,tempc);
+    PrsPush(ps,i);
+    return PRST_UNARY_TERM;
+  }
+  if (l->token=='+') {
+    Lex(l);
+    return PRST_UNARY_TERM;
+  }
+
+  if (l->token!=TK_IDENT) {
+    if (l->token==TK_PLUS_PLUS) {
+      Lex(l);
+      l->flags|=LF_PREINC;
+      return PRST_UNARY_TERM;
+    }
+    if (l->token==TK_MINUS_MINUS) {
+      Lex(l);
+      l->flags|=LF_PREDEC;
+      return PRST_UNARY_TERM;
+    }
+    if (l->token=='$' && (l->flags & LF_ASM_EXPRESSIONS)) {
+      Lex(l);
+      CbAddIc(l,EC_INT32,l->instruction_pointer,sys_internal_types[IT_DWORD]);
+      return PRST_CHECK_BINARY_OPS;
+    }
+    PrsTrap(l,"ST_MISSING_EXPRESSION");
+  }
+
+  if (tempm=l->local_var_entry) {
+    l->flags&=~(LF_EAX+LF_ARRAY+LF_FUNCTION);
+    tempc=tempm->member_class+sizeof(ClassStruct);
+    if (tempm->flags & MLF_FUNCTION) {
+      l->flags|=LF_FUNCTION;
+      PrsPush(ps,0);
+      PrsPush(ps,tempm->parameter_cnt);
+    }
+    if (tempm->cnt) {
+      l->flags|=LF_ARRAY;
+      tempc+=sizeof(ClassStruct);
+    }
+    CbAddIc(l,EC_LOCAL_FRAME_PTR,0,tempc);
+    CbAddIc(l,EC_INT32,tempm->offset,tempc);
+    CbAddIc(l,EC_ADDITION,0,tempc);
+    Lex(l); //skip var name
+    return PRST_UNARY_MODIFIERS;
+  }
+
+  if (!(temph=l->hash_entry)) {
+    if (!(l->flags & LF_ASM_EXPRESSIONS))
+      PrsTrap(l,"ST_INVALID_LVALUE");
+    temph=MAllocZ(sizeof(SysHashEntry));
+    temph->string=l->ident;
+    l->ident=NULL;
+    if (temph->string[0]=='@' &&
+	temph->string[1]=='@') {
+      temph->type=HTT_SYS_SYMBOL | HTT_UNRESOLVED_LOCAL;
+      temph1=FindHashBucket(temph->string,l->local_hash_table);
+    } else {
+      temph->type=HTT_SYS_SYMBOL | HTT_UNRESOLVED_GLBL;
+      temph1=FindHashBucket(temph->string,l->glbl_hash_table);
+    }
+    temph->use_cnt=0;
+    SetSourceFileInfo(l,temph);
+    temph->next=*temph1;
+    *temph1=temph;
+    temph->user0=0;
+  }
+
+  if (temph->type & HTT_SYS_SYMBOL) {
+    if (!(temph->type & HTT_LITERAL) &&
+	!(temph->type & HTT_IMPORT))
+      l->absolute_address_cnt++;
+    if (temph->type & (HTT_UNRESOLVED_LOCAL+HTT_UNRESOLVED_GLBL)) {
+      templu=MAlloc(sizeof(LexUndefEntry));
+      templu->hash=temph;
+      templu->next=l->undef_hash_entry;
+      l->undef_hash_entry=templu;
+      if (temph->type & HTT_UNRESOLVED_LOCAL)
+	l->flags|=LF_UNRESOLVED_LOCAL;
+      else
+	l->flags|=LF_UNRESOLVED_GLBL;
+      CbAddIc(l,EC_INT32,&temph->user0,sys_internal_types[IT_DWORD]);
+      CbAddIc(l,EC_DEREFERRENCE32,0,sys_internal_types[IT_DWORD]);
+    } else {
+      if (l->a && !(temph->type & HTT_LITERAL))
+	CbAddIc(l,EC_ABSOLUTE_ADDRESS,temph->user0,sys_internal_types[IT_DWORD]);
+      else
+	CbAddIc(l,EC_INT32,temph->user0,sys_internal_types[IT_DWORD]);
+    }
+    Lex(l);
+    return PRST_CHECK_BINARY_OPS;
+  }
+
+  if (temph->type & HTT_FUNCTION) {
+    Lex(l);  //skip fun name
+    CbPush(l);
+    templ=l->cb_stack;
+    l->cb_stack=NULL;
+    tempc=temph;
+    i=tempc->parameter_cnt;
+    tempm=tempc->member_list;
+    argc_cnt=0;
+    if (l->token!='(')
+      needs_right_paren=FALSE;
+    else {
+      Lex(l);
+      needs_right_paren=TRUE;
+    }
+    while (i--) {
+      if (l->token==',')
+	Lex(l);
+      CbInitOutPtrs(l);
+      if (tempm->flags & MLF_DEFAULT_AVAILABLE &&
+	(l->token==')' || !needs_right_paren))
+	CbAddIc(l,EC_INT32,tempm->default_value,tempm->member_class);
+      else
+	if (!PrsParseExpression(l))
+	  throw(TRP_COMPILER,3);
+      CbAddIc(l,0,0,0);
+      CbPush(l);
+      tempm=tempm->next;
+    }
+    if (tempm && tempm->flags & MLF_DOT_DOT_DOT) {
+      CbInitOutPtrs(l);
+      CbAddIc(l,EC_INT32,0,tempm->member_class);
+      tempi=l->cb_last_out_ptr;
+      CbAddIc(l,0,0,0);
+      CbPush(l);
+      if (needs_right_paren) {
+	if (l->token!=')') {
+	  do {
+	    if (l->token==',')
+	      Lex(l);
+	    CbInitOutPtrs(l);
+	    if (!PrsParseExpression(l))
+	      throw(TRP_COMPILER,4);
+	    CbAddIc(l,0,0,0);
+	    CbPush(l);
+	    argc_cnt++;
+	  } while (l->token==',');
+	}
+      }
+      tempi->ic_data=argc_cnt++; //++ so add_esp latter works
+    }
+    if (needs_right_paren) {
+      if (l->token!=')')
+	PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+      Lex(l);
+    }
+    templ1=templ->cb_stack;
+    templ->cb_stack=l->cb_stack;
+    l->cb_stack=templ;
+    CbPop(l);
+    templ=l->cb_stack;
+    l->cb_stack=templ1;
+    while (templ) {
+      templ1=templ->cb_stack;
+      CbAppend(l,templ);
+      templ=templ1;
+    }
+    if (Bt(&tempc->flags,Cf_INTERNAL))
+      CbAddIc(l,tempc->executable_address,0,tempc->return_class);
+    else if (Bt(&tempc->flags,Cf_EXTERN)) {
+      if (l->a)
+	CbAddIc(l,EC_CALL_INDIRECT2,tempc->executable_address,tempc->return_class);
+      else
+	CbAddIc(l,EC_CALL_INDIRECT2,&tempc->executable_address,tempc->return_class);
+      CbAddIc(l,EC_ADD_ESP,(argc_cnt+tempc->parameter_cnt)*4,tempc->return_class);
+    } else {
+      CbAddIc(l,EC_CALL,tempc->executable_address,tempc->return_class);
+      CbAddIc(l,EC_ADD_ESP,(argc_cnt+tempc->parameter_cnt)*4,tempc->return_class);
+    }
+    l->flags=(l->flags|LF_EAX) & ~(LF_ARRAY|LF_FUNCTION);
+    return PRST_UNARY_MODIFIERS;
+  }
+  if (temph->type & HTT_GLBL_VAR) {
+    tempg=temph;
+    tempc=tempg->var_class+sizeof(ClassStruct);
+    l->flags&=~(LF_EAX|LF_ARRAY|LF_FUNCTION);
+    if (tempg->cnt) {
+      tempc+=sizeof(ClassStruct);
+      l->flags|=LF_ARRAY;
+    }
+    if (tempg->flags & GVAF_FUNCTION) {
+      //TODO:Not implemented
+      l->flags|=LF_FUNCTION;
+    }
+    if (l->a) {
+      if (tempg->flags & GVAF_EXTERN) { //TODO: Untested
+	CbAddIc(l,EC_INT32,&tempg->data_address,tempc);
+	CbAddIc(l,EC_DEREFERRENCE32,0,tempc);
+      } else {
+	CbAddIc(l,EC_ABSOLUTE_ADDRESS,tempg->data_address,tempc);
+	if (tempg->flags & GVAF_IMPORT)
+	  CbAddIc(l,EC_DEREFERRENCE32,0,tempc);
+      }
+    } else {
+      if (tempg->flags & GVAF_EXTERN) {
+	CbAddIc(l,EC_INT32,&tempg->data_address,tempc);
+	CbAddIc(l,EC_DEREFERRENCE32,0,tempc);
+      } else
+	CbAddIc(l,EC_INT32,tempg->data_address,tempc);
+    }
+    Lex(l);
+    return PRST_UNARY_MODIFIERS;
+  }
+  if (!(temph->type & HTT_KEYWORD))
+    PrsTrap(l,"ST_MISSING_EXPRESSION");
+  if (temph->user0==KW_SIZEOF) {
+    if (Lex(l)!='(') PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+    if (Lex(l)!=TK_IDENT)
+      PrsTrap(l,"ST_INVALID_CLASS");
+    tempc=l->hash_entry;
+    if (!tempc || !(tempc->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+      PrsTrap(l,"ST_INVALID_CLASS");
+    CbAddIc(l,EC_INT32,tempc->size,sys_internal_types[IT_DWORD]);
+    if (Lex(l)!=')')
+      PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+    Lex(l);
+    return PRST_CHECK_BINARY_OPS;
+  } else if (temph->user0==KW_OFFSET) {
+    if (Lex(l)!='(') PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+    if (Lex(l)!=TK_IDENT)
+      PrsTrap(l,"ST_INVALID_CLASS");
+    tempc=l->hash_entry;
+    if (!tempc || !(tempc->type & HTT_CLASS))
+      PrsTrap(l,"ST_INVALID_CLASS");
+    if (Lex(l)!='.')
+      PrsTrap(l,"ST_EXPECTING_DOT");
+    if (Lex(l)!=TK_IDENT)
+      PrsTrap(l,"ST_INVALID_MEMBER");
+    if (!(tempm=FindMember(l->ident,tempc)))
+      PrsTrap(l,"ST_INVALID_MEMBER");
+    CbAddIc(l,EC_INT32,tempm->offset,sys_internal_types[IT_DWORD]);
+    if (Lex(l)!=')')
+      PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+    Lex(l);
+    return PRST_CHECK_BINARY_OPS;
+  }
+  PrsTrap(l,"ST_MISSING_EXPRESSION");
+}
+
+DWORD PrsUnaryModifier(LexStruct *l,ParseStack *ps)
+{
+  int i,j;
+  LexStruct *templ,*templ2,*templl;
+  ClassStruct *tempc,*tempc1;
+  MemberListStruct *tempm;
+  IntermediateCode *tempi;
+  if (l->flags & LF_ASM_EXPRESSIONS)
+    return PRST_CHECK_BINARY_OPS;
+  if (l->token==TK_DEREFERRENCE) {
+    tempi=l->cb_last_out_ptr;
+    if (!(l->flags & (LF_EAX | LF_ARRAY))) {
+      tempc=tempi->ic_class-sizeof(ClassStruct);
+      CbAddIc(l,EC_DEREFERRENCE32+0x100,0,tempc);
+    } else {
+      tempi->ic_class-=sizeof(ClassStruct);
+    }
+  }
+  if (l->token=='.' || l->token==TK_DEREFERRENCE) {
+    tempi=l->cb_last_out_ptr;
+    tempc=tempi->ic_class;
+    if (!(l->flags & LF_EAX))
+      tempc-=sizeof(ClassStruct);
+    if (!(tempc->type & HTT_CLASS))
+      PrsTrap(l,"ST_INVALID_CLASS");
+    if (Lex(l)!=TK_IDENT)
+      PrsTrap(l,"ST_INVALID_MEMBER");
+    if (!(tempm=FindMember(l->ident,tempc)))
+      PrsTrap(l,"ST_INVALID_MEMBER");
+    Lex(l);  //skip member name
+    tempc1=tempm->member_class+sizeof(ClassStruct);
+    CbAddIc(l,EC_INT32,tempm->offset,tempc1);
+    l->flags&=~(LF_EAX|LF_ARRAY|LF_FUNCTION);
+    if (tempm->cnt) {
+      tempc1+=sizeof(ClassStruct);
+      l->flags|=LF_ARRAY;
+    }
+    if(tempm->flags & MLF_FUNCTION) {
+      PrsPush(ps,0);
+      PrsPush(ps,tempm->parameter_cnt);
+      l->flags|=LF_FUNCTION;
+    }
+    CbAddIc(l,EC_ADDITION,0,tempc1);
+    return PRST_UNARY_MODIFIERS;
+  }
+  if (l->token=='[') {
+    Lex(l);
+    tempi=l->cb_last_out_ptr;
+    if (!(l->flags & (LF_ARRAY | LF_EAX))) {
+      tempc=tempi->ic_class-sizeof(ClassStruct);
+      i=EC_DEREFERRENCE32+0x100;
+      if (tempc->type==HTT_INTERNAL_TYPE)
+	i+=it_to_ec_offset[tempc->member_cnt];
+      CbAddIc(l,i,0,tempc);
+    } else {
+      tempc=tempi->ic_class;
+      if (!(l->flags & LF_EAX))
+	tempc-=sizeof(ClassStruct);
+    }
+    tempc1=tempc-sizeof(ClassStruct);
+    CbAddIc(l,EC_INT32,tempc1->size,tempc);
+    if (!PrsParseExpression(l))
+      throw(TRP_COMPILER,5);
+    if (l->token!=']')
+      PrsTrap(l,"ST_MISSING_RIGHT_BRACKET");
+    Lex(l); //skip ]
+    CbAddIc(l,EC_MULTIPLICATION,0,tempc);
+    CbAddIc(l,EC_ADDITION,0,tempc);
+    l->flags&=~(LF_EAX|LF_ARRAY);
+    return PRST_UNARY_MODIFIERS;
+  }
+  if (l->token=='(' && (l->flags & LF_FUNCTION)) {
+    tempi=l->cb_last_out_ptr;
+    if (!(l->flags & (LF_EAX | LF_ARRAY))) {
+      tempc=tempi->ic_class-sizeof(ClassStruct);
+      CbAddIc(l,EC_DEREFERRENCE32+0x100,0,tempc);
+    } else {
+      tempi->ic_class=tempi->ic_class-sizeof(ClassStruct);
+      tempc=tempi;
+    }
+    i=PrsPop(ps);
+    PrsPop(ps);
+    j=i;
+    Lex(l); //skip '('
+    CbPush(l);
+    templ=l->cb_stack;
+    l->cb_stack=NULL;
+    while (i--) {
+      if (l->token==',')
+	Lex(l);
+      CbInitOutPtrs(l);
+      if (!PrsParseExpression(l))
+	throw(TRP_COMPILER,6);
+      CbAddIc(l,0,0,0);
+      CbPush(l);
+    }
+    if (l->token!=')')
+      PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+    Lex(l); //skip ')'
+    templl=templ->cb_stack;
+    templ->cb_stack=l->cb_stack;
+    l->cb_stack=templ;
+    CbPop(l);
+    templ=l->cb_stack;
+    l->cb_stack=templl;
+    while (templ) {
+      templ2=templ->cb_stack;
+      CbAppend(l,templ);
+      templ=templ2;
+    }
+    CbAddIc(l,EC_CALL_INDIRECT,j*4,tempc);
+    CbAddIc(l,EC_ADD_ESP,j*4+4,tempc);
+    l->flags=(l->flags | LF_EAX)&~(LF_ARRAY | LF_FUNCTION);
+    return PRST_UNARY_MODIFIERS;
+  }
+  if (l->token==TK_PLUS_PLUS) {
+    Lex(l);
+    l->flags|=LF_POSTINC;
+    return PRST_DEREFERRENCE;
+  }
+  if (l->token==TK_MINUS_MINUS) {
+    Lex(l);
+    l->flags|=LF_POSTDEC;
+    return PRST_DEREFERRENCE;
+  }
+  return PRST_DEREFERRENCE;
+}
+
+DWORD PrsDereferrence(LexStruct *l,ParseStack *ps)
+{
+  int i;
+  ClassStruct *tempc;
+  IntermediateCode *tempi;
+  if (l->flags & LF_FUNCTION) {
+    i=PrsPop(ps);
+    tempc=PrsPop(ps);
+  }
+  if (l->flags & LF_EAX)
+    return PRST_CHECK_BINARY_OPS;
+  tempi=l->cb_last_out_ptr;
+  tempc=tempi->ic_class-sizeof(ClassStruct);
+  if (l->flags & LF_ARRAY) {
+    tempi->ic_class=tempc;
+    return PRST_CHECK_BINARY_OPS;
+  }
+ 
+  if (l->flags & LF_PREINC) {
+    l->flags&=~LF_PREINC;
+    i=EC_PP_DWORD;
+  } else if (l->flags & LF_PREDEC) {
+    l->flags&=~LF_PREDEC;
+    i=EC_MM_DWORD;
+  } else if (l->flags & LF_POSTINC) {
+    l->flags&=~LF_POSTINC;
+    i=EC_DWORD_PP;
+  } else if (l->flags & LF_POSTDEC) {
+    l->flags&=~LF_POSTDEC;
+    i=EC_DWORD_MM;
+  } else
+    i=EC_DEREFERRENCE32;
+
+  if (tempc->type==HTT_INTERNAL_TYPE)
+    i+=it_to_ec_offset[tempc->member_cnt];
+  CbAddIc(l,i+0x100,0,tempc);
+  return PRST_CHECK_BINARY_OPS;
+}
+
+BYTE *CompileExpression(LexStruct *l)
+{
+  BYTE *result;
+  DWORD size;
+  DbgInfo *dbg=NULL;
+  CbPush(l);
+  CbInitOutPtrs(l);
+  if (PrsParseExpression(l)) {
+    CbAddIc(l,EC_ADD_ESP,4,0);
+    CbAddIc(l,EC_RET,0,0);
+    CbAddIc(l,0,0,0);
+    result=CbCompile(l,0,&size,&dbg);
+  } else
+    result=NULL;
+  CbPop(l);
+  Free(dbg);
+  return result;
+}
+
+BOOL GetExpression(LexStruct *l,BYTE **e) //FALSE=no err
+{
+  *e=CompileExpression(l);
+  if (*e)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+int Expression(LexStruct *l) //FALSE=no err
+{
+  int result;
+  BYTE *e=CompileExpression(l);
+  if (e) {
+    result=Run(e);
+    DelExpression(e);
+  } else
+    result=0;
+  return result;
+}

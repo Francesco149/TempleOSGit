@@ -1,0 +1,112 @@
+public class ByteFifo
+{
+  BYTE *buf;
+  DWORD mask,in_ptr,out_ptr;
+};
+
+public ByteFifo *NewByteFifo(DWORD size)
+{
+  ByteFifo *f;
+  f=MAlloc(sizeof(ByteFifo));
+  f->buf=MAlloc(size);
+  f->mask=size-1;
+  f->in_ptr=0;
+  f->out_ptr=0;
+  return f;
+}
+
+public void DelByteFifo(ByteFifo *f)
+{
+  Free(f->buf);
+  Free(f);
+}
+
+public BOOL ByteFifoInsert(ByteFifo *f,BYTE ch)
+{
+  DWORD new_in_ptr=(f->in_ptr+1)&f->mask;
+  if (new_in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    f->buf[f->in_ptr]=ch;
+    f->in_ptr=new_in_ptr;
+    return TRUE;
+  }
+}
+
+public BOOL ByteFifoRemove(ByteFifo *f,BYTE *ch)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *ch=f->buf[f->out_ptr];
+    f->out_ptr=(f->out_ptr+1)&f->mask;
+    return TRUE;
+  }
+}
+
+public BOOL ByteFifoPeek(ByteFifo *f,BYTE *ch)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *ch=f->buf[f->out_ptr];
+    return TRUE;
+  }
+}
+
+public class DwordFifo
+{
+  DWORD *buf;
+  DWORD mask,in_ptr,out_ptr;
+};
+
+public DwordFifo *NewDwordFifo(DWORD size)
+{
+  DwordFifo *f;
+  f=MAlloc(sizeof(DwordFifo));
+  f->buf=MAlloc(size*sizeof(DWORD));
+  f->mask=size-1;
+  f->in_ptr=0;
+  f->out_ptr=0;
+  return f;
+}
+
+public void DelDwordFifo(DwordFifo *f)
+{
+  Free(f->buf);
+  Free(f);
+}
+
+public BOOL DwordFifoInsert(DwordFifo *f,DWORD D)
+{
+  DWORD new_in_ptr=(f->in_ptr+1)&f->mask;
+  if (new_in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    f->buf[f->in_ptr]=D;
+    f->in_ptr=new_in_ptr;
+    return TRUE;
+  }
+}
+
+public BOOL DwordFifoRemove(DwordFifo *f,DWORD *D)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *D=f->buf[f->out_ptr];
+    f->out_ptr=(f->out_ptr+1)&f->mask;
+    return TRUE;
+  }
+}
+
+public BOOL DwordFifoPeek(DwordFifo *f,DWORD *D)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *D=f->buf[f->out_ptr];
+    return TRUE;
+  }
+}
+

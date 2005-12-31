@@ -1,0 +1,15 @@
+/* To run this, do a directory, right click on
+this file's name and select "Autofile".
+Or, type [::/J/KERNEL/CMD.CPZ,491] AutoFile(filename);
+See [::/J/DOC/GLOSS.GLZ,AutoFile] AutoFile in the glossary for more info.
+*/
+
+
+//This is to demo autofiles.
+int i;
+for (i=0;i<3;i++)
+  PutS("Dir;\r");
+PutS("$FG RED$//Press a letter to complete the mask$FG$\r");
+PutS("Dir(\"*.");
+char ch=GetCharNoEcho; //Prompt for first digit of mask
+PrintF("%c*\");\r",ch);

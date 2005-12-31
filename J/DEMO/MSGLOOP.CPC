@@ -1,0 +1,15 @@
+void MessageLoop()
+{
+  DWORD p1=0,p2=0,cmd=0;
+  coutln "Use $LK \"these\",\"MN:MSG_CMD\"$ defines "
+       "in your programs instead of hardcoded numbers.";
+  coutln "Press ESC to Exit";
+  while (!(cmd==MSG_KEY_DOWN && p1==CH_ESC)) {
+    cmd=GetMessage(&p1,&p2,0xFFFFFFFE);
+    // The following fixes the cursor position
+    LtfBottom(Fs->cur_ltf);
+    PrintF("CMD:%02X P1:%08X P2:%08X\r\n",cmd,p1,p2);
+  }
+}
+
+MessageLoop;

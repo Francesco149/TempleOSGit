@@ -1,0 +1,248 @@
+int CompareHashEntries(SysHashEntry **h1,SysHashEntry **h2)
+{
+  return StrCmp((*h1)->string,(*h2)->string);
+}
+
+//Possible choices for first parameter, "h" include
+// "root_tss->hash_table"
+// "Fs->hash_table"
+// "sys_hash_table"
+public void HashRep(SysHashTable *h=NULL,
+  DWORD mask=HTT_ALL,char *outname=NULL,char *flags="+r+p",char mapfile_drive=0)
+{
+  SysHashTable *tempht;
+  SysHashEntry *temph,**list,*ptr;
+  ClassStruct *tempc;
+  GlblVarStruct *tempg;
+  DWORD cnt,i,j,size;
+  char buf[512],*buf4;
+  Ltf *l;
+  FlagsStruct f;
+  BOOL recurse,publics;
+  LtfBinEntry *tempb;
+  DbgInfo *dbg;
+
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  recurse=Bt(&f.on0,FUf_RECURSE);
+  publics=Bt(&f.on0,FUf_PUBLIC);
+
+  if (!h) h=Fs->hash_table;
+
+  if (outname) {
+    l=LtfNew;
+    l->flags=l->flags|LTFF_PLAIN_TEXT_WITH_TABS;
+    StrCpy(l->filename.name,outname);
+  } else
+    l=NULL;
+
+  cnt=0;
+  tempht=h;
+  while (tempht) {
+    for (i=0;i<=tempht->mask;i++) {
+      temph=tempht->body[i];
+      while (temph) {
+	if (!(temph->type & (HTT_IMPORT | HTT_PRIVATE)) &&
+	     (temph->type & mask) &&
+	 ((temph->type & HTT_PUBLIC) || !publics))
+	  cnt++;
+	temph=temph->next;
+      }
+    }
+    if (recurse)
+      tempht=tempht->next;
+    else
+      break;
+  }
+  if (!cnt) goto end_hash;
+
+  list=MAlloc(cnt*sizeof(DWORD));
+  j=0;
+  tempht=h;
+  while (tempht) {
+    for (i=0;i<=tempht->mask;i++) {
+      temph=tempht->body[i];
+      while (temph) {
+	if (!(temph->type & (HTT_IMPORT | HTT_PRIVATE)) &&
+	     (temph->type & mask) &&
+	 ((temph->type & HTT_PUBLIC) || !publics))
+	  list[j++]=temph;
+	temph=temph->next;
+      }
+    }
+    if (recurse)
+      tempht=tempht->next;
+    else
+      break;
+  }
+
+  QSort(list,cnt,sizeof(DWORD),&CompareHashEntries);
+
+  for (i=0;i<cnt;i++) {
+    ptr=list[i];
+    dbg=NULL;
+    if (ptr->source_link) {
+      buf4=NewString(ptr->source_link);
+      if (mapfile_drive && StrLen(buf4)>3)
+	buf4[3]=mapfile_drive;
+      if (l && (ptr->type & HTT_FUNCTION)) {
+	tempc=ptr;
+	dbg=tempc->debug;
+	if (dbg) {
+	  size=offset(DbgInfo.body)+
+	    sizeof(DWORD)*
+	    (dbg->max_line-dbg->min_line+1);
+	  if (size>MSize(dbg)) {
+	    coutln "Corrupt Map Entry";
+	    dbg=NULL;
+	  } else {
+	    if (dbg->min_line<=dbg->max_line) {
+	      tempb=MAllocZ(sizeof(LtfBinEntry));
+	      tempb->type=LTFBT_GENERIC_DATA;
+	      tempb->size=size;
+	      tempb->data=MAlloc(size);
+	      MemCpy(tempb->data,dbg,size);
+	      tempb->num=l->cur_bin_num;
+	      tempb->use_cnt=1;
+	      InsQue(tempb,l->bin_root.last);
+	    } else
+	      dbg=NULL;
+	  }
+	}
+      }
+      if (dbg)
+	SPrintF(buf,"$LK +BI,\"%-18s \",\"%s\",%d$",
+	  ptr->string,buf4,l->cur_bin_num++);
+      else
+ 	SPrintF(buf,"$LK \"%-18s \",\"%s\"$",
+	  ptr->string,buf4);
+      Free(buf4);
+    } else
+      SPrintF(buf,"%-18ts ",ptr->string);
+
+    if (l)
+      LtfPutS(l,buf);
+    else
+      PutS(buf);
+
+    if (ptr->type & HTT_FUNCTION) {
+      tempc=ptr;
+      SPrintF(buf,"%08X",tempc->executable_address);
+    } else if (ptr->type & HTT_STRING_CONSTANT) {
+      SPrintF(buf,"%-8ts",ptr->user0);
+    } else if (ptr->type & HTT_GLBL_VAR) {
+      tempg=ptr;
+      SPrintF(buf,"%08X",tempg->data_address);
+    } else if (ptr->type & HTT_SYSTEXT) {
+      SPrintF(buf,"%-8ts %04tX",ptr->user0,ptr->user1);
+    } else
+      SPrintF(buf,"%08X",ptr->user0);
+
+    SPrintF(buf+StrLen(buf)," %04X ",ptr->use_cnt);
+
+    for (j=0;j<32;j++)
+      if (Bt(&ptr->type,j))
+	SPrintF(buf+StrLen(buf),"%Z ",j,"ST_HTT_TYPES");
+    StrCat(buf,"\r\n");
+    if (l)
+      LtfPutS(l,buf);
+    else
+      PrintF(buf);
+  }
+  Free(list);
+
+end_hash:
+  if (l) {
+    LtfWrite(l);
+    LtfDel(l);
+  }
+}
+
+public void HFunsRep(char *flags="+r+p")
+{
+  HashRep(Fs->hash_table,HTT_FUNCTION,NULL,flags);
+}
+
+public void HVarsRep(char *flags="+r+p")
+{
+  HashRep(Fs->hash_table,HTT_GLBL_VAR,NULL,flags);
+}
+
+public void HClassesRep(char *flags="+r+p")
+{
+  HashRep(Fs->hash_table,HTT_CLASS,NULL,flags);
+}
+
+public void HDefinesRep(char *flags="+r+p")
+{
+  HashRep(Fs->hash_table,HTT_STRING_CONSTANT,NULL,flags);
+}
+
+public void HSymsRep(char *flags="+r+p")
+{
+  HashRep(Fs->hash_table,HTT_SYS_SYMBOL,NULL,flags);
+}
+
+public void HSysTextsRep(char *flags="+r+p")
+{
+  HashRep(Fs->hash_table,HTT_SYSTEXT,NULL,flags);
+}
+
+public void HAllRep()
+{
+  HashRep(Fs->hash_table,HTT_ALL,NULL,"+r");
+}
+
+public void LoadMapFile(char *filename)
+{
+  char *st,*name=DefaultExtension(filename,"MPZ");
+  char *absname=AbsoluteFileName(name);
+  Ltf *l=LtfRead(name);
+  LtfEntry *cl;
+  SysHashEntry *temph;
+  DWORD i,j,base=0;
+  DbgInfo *dbg;
+
+  st=NewString(absname);
+  RemoveLastSeg(absname,".",st);
+  if (absname[1]==':' && StrLen(absname)>2) {
+    temph=FindLocalHash(absname+2,HTT_MODULE);
+    if (temph)
+      base=temph->user0;
+  }
+  Free(st);
+
+  if (!l) return;
+  cl=l->dummy.next;
+  while (cl!=l) {
+    if (cl->btype==LTFT_LINK) {
+      st=MStringUtil(cl->display,SU_REMOVE_TRAILING);
+      if (temph=FindLocalHash(st,HTT_ALL)) {
+	Free(temph->source_link);
+	temph->source_link=cl->aux_string;
+	cl->aux_string=NULL;
+	dbg=temph->debug;
+	if (!dbg && cl->bin_data) {
+	  dbg=cl->bin_data->data;
+	  if (dbg) {
+	    if (cl->bin_data->size>MSize(dbg))
+	      coutln "Corrupt Map Entry";
+	    else {
+	      cl->bin_data->data=NULL;
+	      temph->debug=dbg;
+	      for (i=dbg->min_line;i<=dbg->max_line;i++) {
+		j=i-dbg->min_line;
+		if (dbg->body[j])
+		  dbg->body[j]=dbg->body[j]+base;
+	      }
+	    }
+	  }
+	}
+      }
+      Free(st);
+    }
+    cl=cl->next;
+  }
+  LtfDel(l);
+  Free(name);
+  Free(absname);
+}

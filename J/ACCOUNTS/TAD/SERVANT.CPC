@@ -1,0 +1,9 @@
+//This is the startup file for servant tasks.
+UseConsoleLtf(NULL);;
+LoadRoot3;
+Fs->EditPlugIns=&TAD_EditPlugIns;
+Ltf *l=Fs->cur_ltf;
+l->EditPlugIns=&TAD_EditPlugIns;
+if (l=l->menu_ltf)
+  l->EditPlugIns=&TAD_EditPlugIns;
+

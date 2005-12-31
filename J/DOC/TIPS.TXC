@@ -1,0 +1,148 @@
+                                     MISC
+
+* You can adjust the number of answers displayed by setting 
+Fs->answers_displayed to a number from 0-8. See
+[HOME/USER.CPZ,answers_displayed] answers_displayed in your 
+[HOME/USER.CPZ] HOME/USER.CPZ file.
+
+* You can use "ans0","ans1", etc in expressions.  You can use the cmd prompt 
+as a calculator by just entering expressions like "1+2*3;".
+
+* You can import and export files to other operating systems that support a 
+FAT file system.  You may have to [T:/J/ROOT/DISK10.CPZ,1] Copy() or
+[T:/J/ROOT/DISK10.CPZ,33] Move() them to a name not ending 
+in "Z".
+
+* Filenames ending in "Z" will be automatically compressed and uncompressed 
+when read or written.  The compression method is not supported elsewhere.
+
+* You can encrypt files by moving them to a "*.??Y" file extension.
+
+* Higher performance file I/O can be achieved with contiguous files.  These 
+have an extension "*.??C".
+
+* The joystick can be recalibrated with [T:/J/ROOT/JOY.CPZ,61]
+JoyCalibration().
+
+* You might speed-up CD-ROM access by changing bdev->max_reads if your drive 
+can handle more. See [InitBlkDev] InitBlkDev() under ATAPI.
+
+* [T:/J/UTILS/GREP.CPZ,158] MergeChk() can be used to see what's changed. 
+The "+d" flag will show 
+differences of files which have changed and allow you to merge code.  (The 
+"+r" flag will recurse.)
+
+* There are handy functions--F(),R(),FD() and RD() which are defined in 
+[::/J/ACCOUNTS/ADMIN/USER.CPZ] ::/J/ACCOUNTS/ADMIN/USER.CPZ.	They will
+perform find-and-replace operations 
+accross multiple files.  The "+l" flag is particularly useful since it limits 
+to whole labels.
+
+* You can save files after making changes, anytime you are within the editor, 
+like when viewing help/macro files.  CTRL-A saves as, CTRL-S saves with the 
+same name in the scrolling title bar.  Hitting ESC will exit and save.  
+(CTRL-Q will exit and not save).
+
+* When using CTRL-"L" to insert links in documents, you can usually leave the 
+"Display Text" blank and it will be filled-in automatically based on other 
+entries.
+
+* There is a feature of the compiler/assembler which allows code to be 
+executed in the middle of compilation and data inserted into the compilation 
+stream.  You do a "exe{}" blk similar to an "asm{}" blk.  Click here for an 
+example: [::/J/KERNEL/END.CPZ,exe {] exe {.
+
+* Use [T:/J/ROOT/LTF.CPZ,2073] LtfSetMax() to adjust the size of the cmd line
+buf.
+
+* If you output to the cmd line and wish to allow users to scroll around and 
+view data, you can use [T:/J/ROOT/EDIT.CPZ,2911] View(). 
+[T:/J/ROOT/WORDSTAT.CPZ,62] Example
+
+* You can access the word under the cursor at [T:/J/ROOT/WORDSTAT.CPZ,43]
+ws_cur_word, but you should 
+probably turn-off preemption or interrupts momentarily to copy it.
+
+* You can reactivate WORDSTAT after closing it by pressing CTRL-FUNCTION KEY.
+
+* Recompile and login with TAD as the account to see my configuration.	See 
+[::/J/ACCOUNTS/TAD/PLUGINS.CPZ] ::/J/ACCOUNTS/TAD/PLUGINS.CPZ for some
+personalized hot keys I use.  ALT-F8 
+should be of interest.
+
+* [::/J/KERNEL/MISC.CPZ,132] Preempt() is used to keep a task from being
+interrupted and swapped-out.  It 
+has a similar effect to turning-off interrupts.  Each task has it's own 
+preemption control.  A task with preemption turned-off can voluntarily 
+[::/J/KERNEL/ROOTK2.HPZ,111] SwapInNext() with preemption off.
+
+* You can set a color for different drives with [T:/J/ROOT/DISK10.CPZ,827]
+SetDriveTextAttr().  Place 
+calls to this in [::HOME/USER.CPZ] ::HOME/USER.CPZ.
+
+* You can add scaling to a BitMap's rotation matrix to expand or shrink the 
+image, but you have to do this by hand.  I'm waiting until I have support for 
+doubles in the compiler.
+
+* If you toggle to plain text when you are working with graphics in a 
+document, you can add duplicate entries for pictures by entering a "PI" 
+command with the same number.
+
+* If you toggle to plain text when working with graphics, you can add a
+string 
+to the $PI$ entry to keep track of it.  Try "$PI,"+",2$" where '2' is the 
+picture number.
+
+*  I use spaces-to-tab operations on all my files to keep them small. You
+have 
+to be careful, though, because spaces in messages will be converted.  I use 
+'_' in such cases.  It might be worth creating a special extended ASCII code 
+for this. See [T:/J/UTILS/S2T.CPZ,62] S2T() for spaces-to-tabs.
+
+                                  DEBUGGING
+
+* While debugging, you specify addresses of assembly kernel asm{} routines 
+with just the label, as in "CP_MALLOC+0x20".  You specify C+ labels with "&" 
+before functions as in "&Printf + 0x10".
+
+[::/J/KERNEL/SPRINTF.CPZ,433] D() [T:/J/ROOT/UTILS.CPZ,13] LtfD() to hex dump
+mem with numbering from zero. With [T:/J/ROOT/UTILS.CPZ,13] LtfD the values
+are 
+updated continually and you can alter mem by editing.
+
+[::/J/KERNEL/SPRINTF.CPZ,460] Dm() [T:/J/ROOT/UTILS.CPZ,1] LtfDm() to hex
+dump mem with addresses showing.
+
+[T:/J/UTILS/DBG.CPZ,547] Dasm() to disassemble mem.
+
+[T:/J/UTILS/DBG.CPZ,589] Prof() and [T:/J/UTILS/DBG.CPZ,601] ProfRep()
+provide code profiling.
+
+* There are flags for various trace options that can help debugging. 
+[::/J/KERNEL/MISC.CPZ,124] Echo() t
+urns on or off raw data going into the lexical analyzer. 
+[::/J/KERNEL/MISC.CPZ,120] LTrace()
+shows the tokens coming out of the lexical analyzer.
+[::/J/KERNEL/MISC.CPZ,116] CTrace() disassembles 
+code generated from the C+ compiler.  [::/J/KERNEL/MISC.CPZ,108] PTrace()
+shows "intermediate code" 
+comming out of the first stage of the compiler (it's not 100% valid because
+it 
+hasn't been fixed-up).  [::/J/KERNEL/MISC.CPZ,112] OTrace() shows
+intermediate code coming-out after 
+optimization.  These flags can be set and reset by placing them in "exe{}" 
+code blks.
+
+* dbgo is an alias for "cout" and can be used to place output.  You can
+easily 
+find and remove them doing a [T:/J/UTILS/GREP.CPZ,103] Grep().
+
+* [T:/J/ROOT/UTILS.CPZ,279] SBpt() to set breakpoints.  When the fault screen
+appears, you can enter 
+"Go;" to continue. (This routine is defined in [HOME/FAULT.CPZ]
+HOME/FAULT.CPZ. You can modify 
+what is displayed each break-point by altering [HOME/FAULT.CPZ]
+HOME/FAULT.CPZ in your account'
+s home directory.
+
+

@@ -1,0 +1,159 @@
+                            OS PROGRAMMING RULES:
+*  Virtual mem is not used.	The stack does not grow, so allocate enough 
+when the task (process) is [::/J/KERNEL/CMD.CPZ,146] Spawned and use the heap
+for most things.  Segment 
+registers are set to 0x00000000 as a base.  
+* FS must always point to the per-TASK's structure.  See
+[::/J/KERNEL/ROOTK.HPZ,TssStruct] C+C++ task
+structFF:::/J/KERNEL/ROOTK.HPZ,TssStruct and [::/J/KERNEL/OSINC.ASZ,TSS_EIP]
+AsmASM task structFF:::/J/KERNEL/OSINC.ASZ,TSS_BACK_LINK.
+* Don't change the segment registers unless IRQ's off.
+* When interacting with compiled code, preserve EBP,ESI,EDI,ECX because the 
+compiler will eventually be optimized and use these for register vars.  You 
+are free to trash EAX,EBX,EDX.
+* I've tried to standardize names see [::/J/DOC/GLOSS.GLZ,Naming convention]
+Naming convention
+
+                                   Overview
+* There are two modes of compiling [::/J/DOC/GLOSS.GLZ,Static Compiled Mode]
+Static Compiled Mode and 
+[::/J/DOC/GLOSS.GLZ,Dynamic Compiled] Dynamic Compiled Mode. Actual
+compilation is done in both--nothing is 
+"interpreted".
+
+                            Departures from C/C++:
+* There is no "unsigned" type.	Instead, use built-in types, "BYTE", "WORD" 
+"DWORD" and "QWORD"(not yet supported, but available for future 
+compatibility--acts like DWORD.)
+* No conditional compilation, except with the exe{} feature.  With this 
+statement blk in your source code, you can place programs that insert text 
+into the stream of code being compiled.  See [::/J/KERNEL/END.CPZ,exe {] exe
+{} for an example where the 
+date/time and compile-time prompting for configuration data is placed into a 
+program.	The [::/J/COMPILE/COMPILE.CPZ,855] ExePrintF() and
+[::/J/COMPILE/COMPILE.CPZ,845] ExePutS() place text into a source program 
+stream following the conclusion of the exe{} blk.
+* No "#define" functions exist (I'm not a fan)
+* Pointer arithmetic is not based on size of objects (I'd have no objections 
+to this changing)
+* No type-checking
+* Variable parameter cnts (...) are accessed with "argc" and "argv[]" which 
+are predefined invisible local variable.
+* "cout" works with commas but not "<<" and and has no "endl" or other codes.
+ 
+An alias for "cout" is "dbgo" and is useful for debugging--I often place
+debug 
+output all over the place and do a [T:/J/UTILS/GREP.CPZ,103] Grep() to locate
+them all.
+* When dealing with function addresses, preceed the name with "&".  This 
+allows functions to be called like Pascal procedure with no "()" if there are 
+no parameters or there are just default parameters.
+* "$" is an escape character.	Two dollar signs signify an ordinary $.  See 
+[::/J/DOC/DOLLAR.TXZ] ::/J/DOC/DOLLAR.TXZ.
+* "`" is reserved for later use
+* There is not "struct" keyword, just "class"
+* "union" is more like a class, so you don't referrence it with a "union" 
+label after you define it.  Some common unions are declared in
+[::/J/KERNEL/ROOTK.HPZ,40] ROOTK.HPZ for 1
+,2 and 4 byte objects.
+* You cannot declare instances of "classes" or "unions" in the same statement 
+where they are defined, but this might change.
+* class vars have two keywords for associating data with member vars -- 
+"fmtstr" and "fmtdata".  All compiler structures are saved and you can access 
+the compiler's info about classes and variables. In the future, I hope to
+have 
+arbitrary named data on class definitions.
+* "static" variables in functions are not allowed and I have no plans for 
+doing them--just use a global variable.
+* See [::/J/DEMO/EXCEPT.CPZ] ::/J/DEMO/EXCEPT.CPZ.  "try{} catch{} and throw"
+are different from C++. 
+  "throw" is a function with variable ("...") parameters.  The values passed 
+in "throw()" can be accessed from within a "catch{}" using the
+"Fs->trap_argc" 
+and "Fs->trap_argv[]" variables.  Within a "catch {}" blk, set the var 
+"Fs->take_trap" to "TRUE" if you want to terminate the search for a handler.  
+By convention, the first parameter of trap_argv[] specifies the exception
+type 
+number.  A list of assigned exception types can be found at
+[::/J/KERNEL/ROOTK.HPZ,1351] TRP_LOCAL. For a h
+andler that will catch all traps, you can use [::/J/COMPILE/COMPILE.CPZ,369]
+CatchAll().
+* A function is available similar to "sizeof" which provides the offset of a 
+member of a class.  It's called "offset()".  You place the class name and 
+member inside as in "offset(classname.membername)".
+* You cannot use sizeof on variables, just classes.
+* There is a function called [::/J/KERNEL/ROOTK2.HPZ,93] MSize() which gives
+the size of an object 
+allocated off the heap.  For larger size allocations, the system rounds-up to 
+a power of two, so MSize() lets you know the real size.
+* You can [::/J/KERNEL/ROOTK2.HPZ,92] Free() a NULL pointer.  Useful variants
+of [::/J/KERNEL/ROOTK2.HPZ,91] MAlloc() can be found 
+[::/J/KERNEL/MEM.CPZ,45] Here.  Each task has a heap and you can MAlloc and
+Free off of other task's 
+heaps.
+
+                                PrintF Family
+
+[::/J/KERNEL/SPRINTF.CPZ,276] MSPrintF() is like
+[::/J/KERNEL/SPRINTF.CPZ,264] SPrintF() but it returns a
+[::/J/KERNEL/ROOTK2.HPZ,91] MAllocated string.  It is vary 
+handy because you don't have to worry about overflow.
+
+[::/J/KERNEL/CMD.CPZ,478] Auto(), [::/J/KERNEL/CMD.CPZ,491] AutoFile() and
+[::/J/KERNEL/SPRINTF.CPZ,284] AutoPrintF() sends text to the keyboard stream
+of the 
+current TASK but can also do mouse commands.
+
+[T:/J/ROOT/LTF.CPZ,1932] LtfPutS() and [T:/J/ROOT/LTF.CPZ,2064] LtfPrintF()
+send text to a linked text file.
+
+[T:/J/ROOT/EDIT.CPZ,1353] Lpt1PutS() and [T:/J/ROOT/EDIT.CPZ,1359]
+Lpt1PrintF() send text to the printer port.
+
+[::/J/COMPILE/COMPILE.CPZ,855] ExePrintF() and [::/J/COMPILE/COMPILE.CPZ,845]
+ExePutS() send text to the stream of code being compiled and 
+must reside in a exe{} blk.
+
+[T:/J/ROOT/COMM.CPZ,66] CommPutS() and [T:/J/ROOT/COMM.CPZ,72] CommPrintF
+send text to the comm ports.
+
+The [::/J/KERNEL/SPRINTF.CPZ,269] PrintF() family supports extended format
+codes.
+  * "%S" will print a systext entry.
+  * "t" is a flag which will truncate to field width.
+  * "%P" will display a PSECT expression which is good for pointers or 
+addresses.
+  * "%T" and "%D" will display a date or time and the format is selected with 
+a subcode, entered after a "h".  Example: "%20h1D" uses date format code "1".
+  * "%z" will display a sub entry of an enumerated list of text entries.	
+It calls [::/J/KERNEL/STRINGS.CPZ,23] PointAtListEntry().
+  * "%Z" will display a SysText sub entry.
+  * "%Q" will convert "\" to "\\" and quote to backslash quote. (For use in 
+creating strings in strings.)
+
+
+
+                             Hash symbol tables:
+
+* See [::/J/UTILS/HASHUTIL.CPZ] ::/J/UTILS/HASHUTIL.CPZ for examples of how
+the hash tables are set-up.  
+Basically, symbols are placed into hash tables and child process hash tables 
+are chained to parents.  This provides scopes for variables and functions.
+* "sys_hash_table" is at the head of the hash table tree and holds mostly the 
+public symbols from the kernel.
+* "root_tss->hash_table" holds the C/C++ symbols loaded in on start-up and 
+when this table is searched, if a symbol is not found, it checks 
+sys_hash_table.
+* "Fs->hash_table" holds user C+ symbols and if a symbol is not found, it 
+checks "root_tss->hash_table" and, then, SYS_HASH_TABLE.  When a duplicate 
+symbol is added to the table, it overshadows the previous symbol.	When d
+eveloping software, typically you include the file at the command prompt,
+make 
+changes and reinclude it. Old symbols are overshadowed but they are still 
+there. Periodically, kill the TASK and start fresh when mem is low.  If you 
+wish your applications to free themselves instead of staying in mem, spawn or 
+[T:/J/ROOT/EDIT.CPZ,1437] PopUp() a task to run the application and kill it
+when it's done.
+* To display the contents of a hash table, use the
+[T:/J/UTILS/HASHUTIL.CPZ,8] HashRep() routine or the 
+varients.

@@ -1,0 +1,14 @@
+This is a handy file which can be accessed with CTRL-SHIFT-F, known as a 
+favorites file.	I use it for links and "TODO" type stuff in my account.
+
+[::/J/KERNEL/STRINGS.CPZ,OS_SYSTEXT] Goto OS Systext
+[::/J/KERNEL/STRINGS.CPZ,COMPILE_SYSTEXT] Goto Compiler Systext
+[::/J/KERNEL/ROOTK.HPZ,OS_SYSTEXT_DEFINES] Goto OS Systext Defines
+[::/J/KERNEL/ROOTK.HPZ,COMPILE_SYSTEXT_DEFINES] Goto Compiler Systext Defines
+
+[::/J/DOC/HELP.TXZ] ::/J/DOC/HELP.TXZ
+[::/J/DOC/RULES.TXZ] ::/J/DOC/RULES.TXZ
+[::/J/DOC/GLOSS.GLZ] ::/J/DOC/GLOSS.GLZ
+[::/J/DOC/TIPS.TXZ] ::/J/DOC/TIPS.TXZ
+[::/J/DOC/DOLLAR.TXZ] ::/J/DOC/DOLLAR.TXZ
+

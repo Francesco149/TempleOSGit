@@ -1,0 +1,56 @@
+GrBitMap *base=GrNew(grbase2);
+
+void DrawIt()
+{
+  ClearWindowText;
+  base->pen_width=2;
+  base->color=GR_RED;
+  GrLine3(base,-100,-100,-100, -100, 100,-100);
+  GrLine3(base,-100, 100,-100,	100, 100,-100);
+  GrLine3(base, 100, 100,-100,	100,-100,-100);
+  GrLine3(base, 100,-100,-100, -100,-100,-100);
+
+  GrLine3(base,-100,-100, 100, -100, 100, 100);
+  GrLine3(base,-100, 100, 100,	100, 100, 100);
+  GrLine3(base, 100, 100, 100,	100,-100, 100);
+  GrLine3(base, 100,-100, 100, -100,-100, 100);
+
+  GrLine3(base,-100,-100, 100, -100,-100,-100);
+  GrLine3(base,-100, 100, 100, -100, 100,-100);
+  GrLine3(base, 100, 100, 100,	100, 100,-100);
+  GrLine3(base, 100,-100, 100,	100,-100,-100);
+
+}
+
+void GrDemo3()
+{
+  int theta=0,phi=0,fo=0;
+  int *r1,*r2,*r3,*r4;
+  DWORD sc,ch,old_update_window=Fs->update_window;
+  Fs->update_window=&DrawIt;
+
+  base->x=200;
+  base->y=200;
+  base->flags|=BMF_TRANSFORMATION;
+  while (TRUE) {
+    if (ScanChar(&sc,&ch)) break;
+    r1=GrThetaInt(theta);
+    r2=GrPhiInt(phi);
+    r3=GrThetaInt(fo);
+    r4=GrMulMat(r1,r2);
+    Free(base->r);
+    base->r=GrMulMat(r4,r3);
+    Free(r1);
+    Free(r2);
+    Free(r3);
+    Free(r4);
+
+    Sleep(60);
+    theta+=MAX_INT/30;
+    phi  +=MAX_INT/20;
+    fo	 +=MAX_INT/80;
+  }
+  Fs->update_window=old_update_window;
+}
+
+GrDemo3;

@@ -1,0 +1,26 @@
+//This is the startup file for new local users
+UseConsoleLtf("USER.MUZ");
+Fs->answers_displayed=2;  //from 0-8
+LoadRoot3;
+PutSysText("ST_USER_STARTUP");
+Type("/J/DOC/HELP.TXZ");
+Bts(&Fs->crt_flags,CRTf_SHOW);;
+
+
+#include "::/J/ACCOUNTS/TAD/MOSES/MOSES.CPZ"
+TssStruct *user2_Fs=NULL;
+
+void StartTsk()
+{
+  Sleep(2000);
+  if (user2_Fs)
+    XTalk(user2_Fs,"DoMoses;\r");
+}
+
+if (Fs->user_num==2)  {
+  user2_Fs=Fs;
+  Spawn(&StartTsk,"TOUR");
+} else
+  Type("/J/DOC/STARTUP.TXZ");
+
+

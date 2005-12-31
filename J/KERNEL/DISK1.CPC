@@ -1,0 +1,168 @@
+void JDCInitCache(DWORD size_in_bytes)
+{
+  JCacheBlk *tempc;
+  DWORD i,cnt;
+  BOOL old_preempt=Preempt(OFF);
+
+  RFree(JDCBase);
+  RFree(JDCHashTable);
+  if (size_in_bytes<0x2000) {
+    JDCBase=NULL;
+    JDCHashTable=NULL;
+    Preempt(old_preempt);
+    return;
+  }
+  JDCBase=RMAlloc(size_in_bytes);
+  JDCNext_lru=&JDCNext_lru;
+  JDCLast_lru=&JDCNext_lru;
+  cnt=MSize(JDCBase)/sizeof(JCacheBlk);
+  for (i=0;i<cnt;i++) {
+    tempc=JDCBase+sizeof(JCacheBlk)*i;
+    InsQue(tempc,JDCLast_lru);
+    tempc->next_hash=tempc;
+    tempc->last_hash=tempc;
+    tempc->flags=0;
+  }
+
+  JDCHashTable=RMAlloc(JDC_TABLE_SIZE*8);
+  for (i=0;i<JDC_TABLE_SIZE;i++) {
+    tempc=JDCHashTable+i*8-offset(JCacheBlk.next_hash);
+    tempc->next_hash=tempc;
+    tempc->last_hash=tempc;
+  }
+  Preempt(old_preempt);
+}
+
+DWORD JDCHash(DWORD blk)
+{
+  DWORD i=blk & (JDC_TABLE_SIZE-1);
+  return JDCHashTable+i*8-offset(JCacheBlk.next_hash);
+}
+
+void JDCRemQue(JCacheBlk *tempc)
+{
+  BOOL old_preempt=Preempt(OFF);
+  if (!JDCBase) {
+    Preempt(old_preempt);
+    return;
+  }
+  RemQue(tempc);
+  tempc->next_hash->last_hash=tempc->last_hash;
+  tempc->last_hash->next_hash=tempc->next_hash;
+  Preempt(old_preempt);
+}
+
+void JDCInsQue(JCacheBlk *tempc)
+{
+  JCacheBlk *temp_n,*temp_l;
+  BOOL old_preempt=Preempt(OFF);
+  if (!JDCBase) {
+    Preempt(old_preempt);
+    return;
+  }
+  InsQue(tempc,JDCLast_lru);
+  temp_l=JDCHash(tempc->blk);
+  temp_n=temp_l->next_hash;
+  tempc->last_hash=temp_l;
+  tempc->next_hash=temp_n;
+  temp_l->next_hash=tempc;
+  temp_n->last_hash=tempc;
+  Preempt(old_preempt);
+}
+
+JCacheBlk *JDCFindBlk(JPartition *p,DWORD blk)
+{
+  BOOL old_preempt=Preempt(OFF);
+  JCacheBlk *tempc,
+	    *tempc1=JDCHash(blk);
+  if (!JDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  tempc=tempc1->next_hash;
+  while (tempc!=tempc1) {
+    if (tempc->p==p && tempc->blk==blk) {
+      Preempt(old_preempt);
+      return tempc;
+    }
+    tempc=tempc->next_hash;
+  }
+  Preempt(old_preempt);
+  return NULL;
+}
+
+void *JDCAdd(JPartition *p,BYTE *buf, DWORD blk, DWORD cnt)
+{
+  JCacheBlk *tempc;
+  BOOL old_preempt=Preempt(OFF);
+  if (!JDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  while (cnt--) {
+    tempc=JDCFindBlk(p,blk);
+    if (!tempc)
+      tempc=JDCNext_lru;
+    JDCRemQue(tempc);
+    MemCpy(&tempc->body,buf,BLK_SIZE);
+    tempc->p=p;
+    tempc->blk=blk++;
+    JDCInsQue(tempc);
+    buf+=BLK_SIZE;
+  }
+  Preempt(old_preempt);
+}
+
+
+void JDCInvalidate(JPartition *p)
+{
+  BOOL old_preempt=Preempt(OFF);
+  JCacheBlk *tempc=JDCLast_lru,*tempc1;
+  if (!JDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  while (tempc!=&JDCNext_lru) {
+    tempc1=tempc->last_lru;
+    if (tempc->p==p) {
+      JDCRemQue(tempc);
+      tempc->p=NULL;
+      tempc->blk=0;
+      tempc->next_hash=tempc;
+      tempc->last_hash=tempc;
+      InsQue(tempc,JDCLast_lru);
+    }
+    tempc=tempc1;
+  }
+  Preempt(old_preempt);
+  return NULL;
+}
+
+void RCache(JPartition *p,BYTE **buf, DWORD *blk, DWORD *cnt)
+{
+  BOOL old_preempt=Preempt(OFF);
+  JCacheBlk *tempc;
+  if (!JDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  while (*cnt) {
+    tempc=JDCFindBlk(p,*blk);
+    if (tempc) {
+      MemCpy(*buf,&tempc->body,BLK_SIZE);
+      *cnt-=1;
+      *buf+=BLK_SIZE;
+      *blk+=1;
+    } else
+      break;
+  }
+  while (*cnt) {
+    tempc=JDCFindBlk(p,*blk+*cnt-1);
+    if (tempc) {
+      MemCpy(*buf+BLK_SIZE*(*cnt-1),&tempc->body,BLK_SIZE);
+      *cnt-=1;
+    } else
+      break;
+  }
+  Preempt(old_preempt);
+}

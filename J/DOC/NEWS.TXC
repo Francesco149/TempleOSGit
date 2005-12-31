@@ -1,0 +1,7 @@
+[::/J/ACCOUNTS/TAD/FAVOR.MUZ,1] ::/J/ACCOUNTS/TAD/FAVOR.MUZ (my TODO list)
+
+* Made so you don't need [::/J/KERNEL/MISC.CPZ,0] Exit
+ for tasks you spawn.  (Pushed &Exit in Spawn()).
+*  **WARNING**: Changed DoMenu and RunLine to return -1 on CTRLQ.  Now
+clicking 
+window close on a LTF task sends CTRLQ.

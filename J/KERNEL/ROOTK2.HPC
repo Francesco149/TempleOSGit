@@ -1,0 +1,139 @@
+Jextern FREE_GDT_LIST DWORD free_gdt_list;
+Jextern GDTTAB DWORD gdttab;
+public Jextern SYS_EXTERN_TABLE DWORD *ext;
+public Jextern SYS_HASH_TABLE SysHashTable *sys_hash_table;
+public Jextern SYS_FLAGS DWORD sys_flags;
+public Jextern SYS_BOOT_BASE DWORD sys_boot_base;
+Jextern SYS_BOOT_CODE U4 sys_boot_code;
+public Jextern SYS_BOOT_HEADER_BASE DWORD sys_boot_header_base;
+public Jextern SYS_IRQ_FLAGS DWORD sys_irq_flags;
+public Jextern SYS_IRQ_BUSY_FLAGS DWORD sys_irq_busy_flags;
+Jextern MEM_FREE_LIST MemBlk *mem_free_list;
+Jextern FREE_PAGE_CACHE MemBlk *free_page_cache[FREE_PAGE_CACHE_SIZE];
+Jextern FREE_PAGE_CACHE2 MemBlk *free_page_cache2[32];
+Jextern SYS_CUR_FOCUS_TASK TssStruct *sys_cur_focus_task;
+Jextern SYS_SWAPS_CNTER DWORD sys_swap_cnter;
+Jextern SYS_CUR_SCAN_CODE DWORD sys_cur_scan_code;
+Jextern FD_BOOT_TEMPLATE FAT12BootStruct fd_boot_template;
+public Jextern PROGRESS1 DWORD progress1;
+public Jextern PROGRESS2 DWORD progress2;
+public Jextern JIFFIES DWORD jiffies;
+Jextern SYS_TEXTBASE DWORD *textbase;
+Jextern SYS_GRBASE GrBitMap *grbase;
+Jextern SYS_GRBASE2 GrBitMap *grbase2;
+Jextern SYS_GRMODE	 int grmode;
+Jextern SYS_GRWIDTH	 int grwidth;
+Jextern SYS_GRHEIGHT	 int grheight;
+Jextern SYS_FONT	 BYTE grfont[256*FONT_WIDTH*FONT_HEIGHT/8];
+public Jextern GET_MACHINE_REGS void GetMachineRegs(
+  MachineRegsStruct *m);
+public Jextern ALPHA_BITMAP BYTE alpha_bitmap[1];
+public Jextern ALPHA_NUMERIC_BITMAP BYTE alpha_numeric_bitmap[1];
+public Jextern DEC_NUMERIC_BITMAP BYTE dec_numeric_bitmap[1];
+public Jextern HEX_NUMERIC_BITMAP BYTE hex_numeric_bitmap[1];
+public Jextern PRINTABLE_CHARS_BITMAP BYTE printable_chars_bitmap[1];
+public Jextern FILENAME_CHARS_BITMAP BYTE filename_chars_bitmap[1];
+public Jextern DISPLAYABLE_CHARS_BITMAP BYTE displayable_chars_bitmap[1];
+public Jintern EC_FS TssStruct *Fs();
+public Jintern EC_CLI void Cli();
+public Jintern EC_STI void Sti();
+public Jintern EC_GET_FLAGS DWORD GetFlags();
+public Jintern EC_SET_FLAGS void SetFlags(DWORD D);
+public Jintern EC_GET_STACK_PTR DWORD GetStackPtr();
+public Jintern EC_SET_STACK_PTR void SetStackPtr(DWORD D);
+public Jintern EC_GET_BASE_PTR DWORD GetBasePtr();
+public Jintern EC_SET_BASE_PTR void SetBasePtr(DWORD D);
+public Jintern EC_BT DWORD Bt(DWORD *bit_field,DWORD bit);
+public Jintern EC_BTS DWORD Bts(DWORD *bit_field,DWORD bit);
+public Jintern EC_BTR DWORD Btr(DWORD *bit_field,DWORD bit);
+public Jintern EC_BTC DWORD Btc(DWORD *bit_field,DWORD bit);
+public Jintern EC_BSF int Bsf(DWORD bit_field);
+public Jintern EC_BSR int Bsr(DWORD bit_field);
+public Jintern EC_INSQUE void InsQue(DWORD *entry,DWORD *pred);
+public Jintern EC_INSQUE_REV void InsQueRev(DWORD *entry,DWORD *succ);
+public Jintern EC_REMQUE void RemQue(DWORD *entry);
+public Jintern EC_INP BYTE InP(WORD port);
+public Jintern EC_OUTP void OutP(WORD port, BYTE val);
+public Jintern EC_REP_INSB void RepInSB(BYTE *buf,DWORD cnt,WORD port);
+public Jintern EC_REP_INSW void RepInSW(BYTE *buf,DWORD cnt,WORD port);
+public Jintern EC_REP_OUTSB void RepOutSB(BYTE *buf,DWORD cnt,WORD port);
+public Jintern EC_REP_OUTSW void RepOutSW(BYTE *buf,DWORD cnt,WORD port);
+public Jintern EC_MEMCPY void MemCpy(BYTE *dst,BYTE *src,DWORD cnt);
+public Jintern EC_MEMSET void MemSet(BYTE *dst,BYTE val,DWORD cnt);
+public Jintern EC_INPW WORD InPW(WORD port);
+public Jintern EC_OUTPW void OutPW(WORD port, WORD val);
+public Jintern EC_INPD DWORD InPD(WORD port);
+public Jintern EC_OUTPD void OutPD(WORD port, DWORD val);
+
+public Jintern EC_FILD void Fild(JQWORD *p);
+public Jintern EC_FISTP void Fistp(JQWORD *p);
+public Jintern EC_FLD void Fld(Jdouble *p);
+public Jintern EC_FSTP void Fstp(Jdouble *p);
+public Jintern EC_FYL2X void Fyl2x();
+public Jintern EC_FABS void Fabs();
+public Jintern EC_FCHS void Fchs();
+public Jintern EC_FSIN void Fsin();
+public Jintern EC_FCOS void Fcos();
+public Jintern EC_FPTAN void Fptan();
+public Jintern EC_FPATAN void Fpatan();
+public Jintern EC_FSQRT void Fsqrt();
+public Jintern EC_FMULP void Fmulp();
+public Jintern EC_FDIVP void Fdivp();
+public Jintern EC_FDIVRP void Fdivrp();
+public Jintern EC_FADDP void Faddp();
+public Jintern EC_FSUBP void Fsubp();
+public Jintern EC_FSUBRP void Fsubrp();
+
+public Jextern OR_WORD_BIT_FIELD void OrWordBitField(
+	 BYTE *bit_field,DWORD bit,WORD pattern);
+public Jextern EXTRACT_WORD_BIT_FIELD void ExtractWordBitField(
+	 BYTE *bit_field,DWORD bit,DWORD size);
+public Jextern DEBUG_SPIN_WAIT void DebugSpinWait();
+Jextern FREE_MEM_BLK_LIST void FreeMemBlkList();
+public Jextern CP_MALLOC BYTE *MAlloc(DWORD size,TssStruct *tss=NULL);
+public Jextern CP_FREE void Free(DWORD *add,TssStruct *tss=NULL);
+public Jextern CP_MSIZE DWORD MSize(BYTE *src);  //size of heap object
+public Jextern CP_HASH_STRING DWORD HashString(char *st);
+public Jextern CP_STRLEN DWORD StrLen(char *st);
+public Jextern CP_STRCMP int StrCmp(char *st1,char *st2);
+public Jextern CP_STRSTR char *StrStr(char *st,char *pattern);
+public Jextern CP_STRISTR char *StrIStr(char *st,char *pattern);
+public Jextern CP_STRCPY void StrCpy(char *dest,char *src);
+public Jextern CP_STRCAT void StrCat(char *dest,char *src);
+public Jextern CP_ATOI int AtoI(char *st);
+public Jextern CP_GET_CHAR char GetChar();
+
+Jextern YEAR_START_DATES WORD year_start_dates[37];
+Jextern MONTH_START_DAYS1 WORD month_start_days1[12];
+Jextern MONTH_START_DAYS2 WORD month_start_days2[12];
+
+Jextern CP_TEST_TRAP void TestTrap();
+Jextern CP_TAKE_TRAP void TakeTrap();
+public Jextern CP_FAULT void Fault(DWORD num);
+public Jextern SWAP_IN_NEXT void SwapInNext();
+public Jextern CP_FIND_HASH_ENTRY SysHashEntry *
+  FindHashEntry(char *st,SysHashTable *table,DWORD mask);
+public Jextern CP_FIND_HASH_BUCKET SysHashEntry **
+  FindHashBucket(char *st,SysHashTable *table);
+
+public Jextern CP_FIND_EXTERN DWORD *FindExtern(char *st);
+
+Jextern TRANSLATE_SCAN_CODE char TranslateScanCode(DWORD sc); //no Echo
+Jextern CP_GET_KEY char GetKey();
+public Jextern CP_REBOOT void Reboot();
+public Jextern CRLF void CrLf();
+Jextern DRAW_CHAR void DrawChar(char ch);
+public Jextern CP_DEACTIVATE_USER TssStruct *DeactivateUser();
+public Jextern CP_ACTIVATE_NEXT_USER void ActivateNextUser();
+
+public Jextern U64_ADD void Add64(DWORD *s_lo,DWORD *s_hi,
+			DWORD a1_lo,DWORD a1_hi,DWORD a2_lo,DWORD a2_hi);
+public Jextern U64_SUB void Sub64(DWORD *d_lo,DWORD *d_hi,
+			DWORD a1_lo,DWORD a1_hi,DWORD a2_lo,DWORD a2_hi);
+public Jextern U64_MUL void Mul64(DWORD *p_lo,DWORD *p_hi,
+			DWORD a1_lo,DWORD a1_hi,DWORD a2_lo,DWORD a2_hi);
+public Jextern U64_DIV DWORD Div64(DWORD m_lo,DWORD m_hi,DWORD d_lo);
+public Jextern I64_MUL void IMul64(DWORD *p_lo,DWORD *p_hi,
+			DWORD a1_lo,DWORD a1_hi,DWORD a2_lo,DWORD a2_hi);
+
+public Jextern CP_RUN_STATEMENT DWORD Run(BYTE *s);

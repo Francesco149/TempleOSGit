@@ -1,0 +1,767 @@
+public class WsHashEntry
+{
+  WsHashEntry *next;
+  char *word;
+  DWORD type,use_cnt;
+  char *source_link;
+  DbgInfo *debug;
+  int num;
+  DWORD hits;
+  WORD last_vowel,last_consonant;
+  char *glossary;
+};
+
+class WsSubstruct
+{
+  int hits,
+      repeats;
+};
+
+#define WS_SUBSTRUCTS_PER_STRUCT 8
+class WsStruct
+{
+  WsStruct *next,*last;
+  int substructs,     //-1 means WsMatrixSide
+      entries;
+  WsSubstruct subs[WS_SUBSTRUCTS_PER_STRUCT];
+};
+
+class WsMatrixSide
+{
+  WsStruct *next,*last;
+  int const_minus_one, //-1 used to header in queue
+      row_hits,col_hits;
+};
+
+#define WS_MAX_MATRIX_WORDS 0x8000
+public class WsMatrix
+{
+  int n;
+  WsMatrixSide side[WS_MAX_MATRIX_WORDS];
+};
+
+public int ws_num_words,ws_num_matrix_words;
+SysHashTable *ws_hash_table=NewHashTable(4096);
+public char *ws_cur_word;
+public BOOL ws_disable=TRUE;
+
+#define NUM_WS_MATRICES 1
+public WsMatrix ws_matrices[NUM_WS_MATRICES];
+public WsHashEntry **ws_sorted_words;
+TssStruct *ws_task=NULL;
+
+class WsFilemaskEntry
+{
+  WsFilemaskEntry *next;
+  char *mask;
+  JDirEntry *flist;
+};
+
+WsFilemaskEntry *ws_filemask_list=NULL,
+		*ws_gloss_filemask_list=NULL;
+
+
+void WsPutMatrix(WsMatrix *m)
+{
+  int i,j;
+  WsMatrixSide *ms;
+  WsStruct *tempw;
+
+  coutln "n:",m->n;
+  for (i=0;i<ws_num_matrix_words;i++) {
+    ms=&m->side[i];
+    coutln "col:",i," rhits:",ms->row_hits," chits:",ms->col_hits;
+    tempw=ms->next;
+    while (tempw!=ms) {
+      coutln "	substructs:",tempw->substructs,
+	"  entries:",tempw->entries;
+      for (j=0;j<tempw->substructs;j++) {
+	PrintF("(%04X %04X) ",
+	  tempw->subs[j].hits,
+	  tempw->subs[j].repeats);
+      }
+      CrLf;
+      tempw=tempw->next;
+    }
+  }
+
+  View;
+}
+
+WsHashEntry *WsAddHash(char *w)
+{
+  WsHashEntry **tempw1,*tempw=FindHashEntry(w,ws_hash_table,HTT_WORD);
+  if (tempw) {
+    tempw->hits++;
+    return tempw;
+  }
+  tempw1=FindHashBucket(w,ws_hash_table);
+  tempw=RMAllocZ(sizeof(WsHashEntry));
+  tempw->word=RNewString(w);
+  tempw->type=HTT_WORD;
+  tempw->use_cnt=1;
+  tempw->hits=1;
+  tempw->num=-1;
+  tempw->next=*tempw1;
+  *tempw1=tempw;
+  ws_num_words++;
+  return tempw;
+}
+
+void WsInitSides(WsMatrix *m)
+{
+  int i;
+  WsStruct *tempa;
+  m->n=0;
+  for (i=0;i<WS_MAX_MATRIX_WORDS;i++) {
+    m->side[i].next=&m->side[i].next;
+    m->side[i].last=&m->side[i].next;
+    m->side[i].const_minus_one=-1;
+    m->side[i].row_hits=0;
+    m->side[i].col_hits=0;
+    tempa=RMAlloc(sizeof(WsStruct));
+    tempa->subs[0].hits=0;
+    tempa->subs[0].repeats=ws_num_matrix_words;
+    tempa->entries=ws_num_matrix_words;
+    tempa->substructs=1;
+    InsQue(tempa,m->side[i].last);
+  }
+}
+
+WsStruct *WsFindStruct(WsMatrix *m,int col,int row,
+			    int *row_base,int *substruct)
+{
+  WsStruct *tempa;
+  if (row>=ws_num_matrix_words ||
+      col>=ws_num_matrix_words)
+    return NULL;
+  if (row<ws_num_matrix_words/2) {
+    tempa=m->side[col].next;
+    *row_base=0;
+    while (row>=tempa->entries) {
+      row-=tempa->entries;
+      *row_base+=tempa->entries;
+      tempa=tempa->next;
+    }
+    for (*substruct=0;row>=tempa->subs[*substruct].repeats;*substruct=*substruct+1) {
+      row-=tempa->subs[*substruct].repeats;
+      *row_base+=tempa->subs[*substruct].repeats;
+    }
+  } else {
+    row=ws_num_matrix_words-row;
+    tempa=m->side[col].last;
+    *row_base=ws_num_matrix_words;
+    while (row>tempa->entries) {
+      row-=tempa->entries;
+      *row_base-=tempa->entries;
+      tempa=tempa->last;
+    }
+    for (*substruct=tempa->substructs-1;row>tempa->subs[*substruct].repeats;
+	 *substruct=*substruct-1) {
+      row-=tempa->subs[*substruct].repeats;
+      *row_base-=tempa->subs[*substruct].repeats;
+    }
+    *row_base-=tempa->subs[*substruct].repeats;
+  }
+  return tempa;
+}
+
+public int WsGetHits(WsMatrix *m,int col,int row)
+{
+  int row_base,substruct;
+  if (row>=ws_num_matrix_words ||
+      col>=ws_num_matrix_words)
+    return 0;
+  WsStruct *tempa=WsFindStruct(m,col,row,
+		    &row_base,&substruct);
+  return tempa->subs[substruct].hits;
+}
+
+WsSubstruct *WsNext(WsSubstruct *s,WsStruct **parent)
+{
+  int i=(s-&(*parent)->subs)/sizeof(WsSubstruct)+1;
+  if (i>=(*parent)->substructs) {
+    i=0;
+    *parent=(*parent)->next;
+    if ((*parent)->substructs==-1)
+      return NULL;
+  }
+  return (*parent)->subs+i*sizeof(WsSubstruct);
+}
+
+WsSubstruct *WsLast(WsSubstruct *s,WsStruct **parent)
+{
+  int i=(s-&(*parent)->subs)/sizeof(WsSubstruct)-1;
+  if (i<0) {
+    *parent=(*parent)->last;
+    if ((*parent)->substructs==-1)
+      return NULL;
+    i=(*parent)->substructs-1;
+  }
+  return (*parent)->subs+i*sizeof(WsSubstruct);
+}
+
+void WsRemove(WsSubstruct *s,WsStruct *parent)
+{
+  int i=(s-&parent->subs)/sizeof(WsSubstruct);
+  if (i<0 || i>=WS_SUBSTRUCTS_PER_STRUCT || parent->substructs<1)
+    return;
+  if (parent->substructs==1) {
+    RemQue(parent);
+    RFree(parent);
+  } else {
+    parent->entries-=s->repeats;
+    parent->substructs--;
+    MemCpy(&parent->subs[i],&parent->subs[i+1],
+	   (parent->substructs-i)*sizeof(WsSubstruct));
+  }
+}
+
+WsSubstruct *WsInsert(WsSubstruct *s,WsStruct **parent,WsSubstruct *last)
+{
+  WsStruct *tempa,*p=*parent;
+  int j,k,i=(last-&p->subs)/sizeof(WsSubstruct)+1;
+  if (i>=WS_SUBSTRUCTS_PER_STRUCT) {
+    i=0;
+    p=p->next;
+    *parent=p;
+    if (p->substructs==-1) {
+      tempa=RMAlloc(sizeof(WsStruct));
+      InsQue(tempa,p->last);
+      p=tempa;
+      *parent=p;
+      tempa->entries=0;
+      tempa->substructs=0;
+    }
+  }
+  if (p->substructs==WS_SUBSTRUCTS_PER_STRUCT) {
+    tempa=p->next;
+    if (tempa->substructs==-1 || tempa->substructs==WS_SUBSTRUCTS_PER_STRUCT) {
+      tempa=RMAlloc(sizeof(WsStruct));
+      tempa->entries=0;
+      tempa->substructs=0;
+      InsQue(tempa,p);
+      k=0;
+      for (j=i;j<p->substructs;j++) {
+	MemCpy(&tempa->subs[k],&p->subs[j],sizeof(WsSubstruct));
+	tempa->entries+=tempa->subs[k++].repeats;
+	tempa->substructs++;
+      }
+      p->entries-=tempa->entries;
+      p->substructs-=tempa->substructs;
+    } else {
+      for (j=tempa->substructs-1;j>=0;j--)
+	MemCpy(&tempa->subs[j+1],&tempa->subs[j],sizeof(WsSubstruct));
+      MemCpy(&tempa->subs[0],
+	&p->subs[WS_SUBSTRUCTS_PER_STRUCT-1],
+	sizeof(WsSubstruct));
+      p->entries-=tempa->subs[0].repeats;
+      p->substructs--;
+      tempa->entries+=tempa->subs[0].repeats;
+      tempa->substructs++;
+      for (j=WS_SUBSTRUCTS_PER_STRUCT-2;j>=i;j--)
+	MemCpy(&p->subs[j+1],
+	       &p->subs[j],sizeof(WsSubstruct));
+    }
+  } else {
+    for (j=p->substructs-1;j>=i;j--)
+      MemCpy(&p->subs[j+1],
+	     &p->subs[j],sizeof(WsSubstruct));
+  }
+  p->entries+=s->repeats;
+  p->substructs++;
+  MemCpy(&p->subs[i],s,sizeof(WsSubstruct));
+  return &p->subs[i];
+}
+
+WsSubstruct *WsCondense(WsSubstruct *s,WsStruct **parent)
+{
+  WsSubstruct *temps,*temps_l,*temps_n;
+  WsStruct *tempa_l,*tempa_n;
+  if ((*parent)->substructs==-1)
+    return NULL;
+  temps=s;
+  tempa_l=*parent;
+  temps_l=WsLast(temps,&tempa_l);
+  if (temps_l && temps_l->hits==temps->hits) {
+    temps_l->repeats+=temps->repeats;
+    tempa_l->entries+=temps->repeats;
+    WsRemove(temps,*parent);
+    *parent=tempa_l;
+    temps=temps_l;
+  }
+  tempa_n=*parent;
+  temps_n=WsNext(temps,&tempa_n);
+  if (temps_n && temps_n->hits==temps->hits) {
+    temps->repeats=temps->repeats+temps_n->repeats;
+    (*parent)->entries=(*parent)->entries+temps_n->repeats;
+    WsRemove(temps_n,tempa_n);
+  }
+  return temps;
+}
+
+int WsIncHits(WsMatrix *m,int col,int row)
+{
+  int row_base,substruct,repeats;
+  WsSubstruct sn,*temps,*temps1,*temps_l;
+  WsStruct    *tempa,*tempa1,*tempa_l;
+
+  if (row>=ws_num_matrix_words ||
+      col>=ws_num_matrix_words)
+    return 0;
+  tempa=WsFindStruct(m,col,row,&row_base,&substruct);
+  temps=&tempa->subs[substruct];
+  repeats=temps->repeats;
+  if (repeats==1) {
+    temps->hits++;
+    temps=WsCondense(temps,&tempa);
+  } else {
+    if (row==row_base) {
+      temps->repeats--;
+      tempa->entries--;
+      sn.hits=1;
+      sn.repeats=1;
+      tempa_l=tempa;
+      if (!(temps_l=WsLast(&tempa->subs[substruct],&tempa_l))) {
+	tempa_l=tempa->last; //header
+	temps_l=&tempa_l->subs[WS_SUBSTRUCTS_PER_STRUCT-1];
+      }
+      temps=WsInsert(&sn,&tempa_l,temps_l);
+      temps=WsCondense(temps,&tempa_l);
+    } else if (row==repeats-1+row_base) {
+      temps->repeats--;
+      tempa->entries--;
+      sn.hits=1;
+      sn.repeats=1;
+      temps=WsInsert(&sn,&tempa,temps);
+      temps=WsCondense(temps,&tempa);
+    } else {
+      tempa->entries-=repeats;
+      sn.hits=temps->hits+1;
+      sn.repeats=1;
+      tempa1=tempa;
+      temps1=temps;
+      temps=WsInsert(&sn,&tempa1,temps1);
+      temps1->repeats=row-row_base;
+      tempa->entries+=temps1->repeats;
+      sn.repeats=row_base+repeats-(row+1);
+      sn.hits=temps1->hits;
+      WsInsert(&sn,&tempa1,temps);
+    }
+  }
+  m->n++;
+  m->side[col].col_hits++;
+  m->side[row].row_hits++;
+  return temps->hits;
+}
+
+#define WS_FIFO_SIZE 2048
+void WsAddSingleFile(JDirEntry *tempd,BOOL compile)
+{
+  char ch,ch1,*buf,*ptr,*ptr2;
+  WsHashEntry **f_ptr,**f_ptr2,
+    **fifo=MAllocZ(WS_FIFO_SIZE*sizeof(DWORD));
+  int i,j,fp=0,k=0;
+  buf=ReadTextFile(tempd->full_name);
+  ptr=buf;
+
+  while (ch=*ptr++) {
+    while (ch && !Bt(alpha_numeric_bitmap,ch))
+      ch=*ptr++;
+    if (!ch) break;
+    ptr--;
+    ptr2=ptr;
+    do ch=*ptr2++;
+    while (Bt(alpha_numeric_bitmap,ch));
+    ptr2--;
+    ch1=*ptr2;
+    *ptr2=0;
+
+    if (*ptr) {
+      if (!compile)
+	WsAddHash(ptr);
+      else {
+	f_ptr=fifo+fp*4;
+	*f_ptr=FindHashEntry(ptr,ws_hash_table,HTT_WORD);
+	if ((*f_ptr)->num<0)
+	  *f_ptr=NULL;
+	else {
+	  for (i=0;i<NUM_WS_MATRICES;i++) {
+	    for (j=0;j<1<<(2*i);j++) {
+	      f_ptr2=fifo+4*((fp-j-1)&(WS_FIFO_SIZE-1));
+	      if (*f_ptr2)
+		WsIncHits(&ws_matrices[i],(*f_ptr2)->num,(*f_ptr)->num);
+	    }
+	  }
+	}
+	fp=(fp+1)&(WS_FIFO_SIZE-1);
+      }
+      ptr=ptr2+1;
+    }
+    if (!ch1) break;
+    *ptr2=ch1;
+  }
+  Free(fifo);
+  Free(buf);
+}
+
+void WsAddGlossFile(JDirEntry *tempd)
+{
+  LtfEntry *ll;
+  WsHashEntry *temph;
+  Ltf *l=LtfRead(tempd->full_name);
+  char *temp;
+
+  ll=l->dummy.next;
+  while (ll!=l) {
+    if (ll->btype==LTFT_ANCHOR) {
+      if (temph=FindHashEntry(ll->aux_string,
+	 ws_hash_table,HTT_WORD)) {
+	temp=MSPrintF("FA:%s,%s",
+	  tempd->full_name,ll->aux_string);
+	RFree(temph->glossary);
+	temph->glossary=RNewString(temp);
+	Free(temp);
+      }
+    }
+    ll=ll->next;
+  }
+  LtfDel(l);
+}
+
+int WsSort(WsHashEntry **e1,WsHashEntry **e2)
+{
+  int r;
+  if (!(r=(*e2)->hits - (*e1)->hits))
+    r=StrCmp((*e1)->word,(*e2)->word);
+  return r;
+}
+
+
+void WsAddFileList(JDirEntry *tempm1,BOOL compile,BOOL gloss)
+{
+  while (tempm1) {
+    coutln tempm1->full_name;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub)
+	WsAddFileList(tempm1->sub,compile,gloss);
+    } else {
+      if (gloss)
+	WsAddGlossFile(tempm1);
+      else
+	WsAddSingleFile(tempm1,compile);
+    }
+    tempm1=tempm1->next;
+  }
+}
+
+int WsSkipCrap(char *src,int len)
+{
+  int j;
+  j=len-1;
+  while (j>=0) {
+    if (Bt(alpha_numeric_bitmap,src[j]))
+      break;
+    else
+      j--;
+  }
+  return j+1;
+}
+
+int WsPriorWordInString(char *src,char *dst,int len,int buf_size)
+{
+  int i,j=0,k;
+  BOOL cont=TRUE;
+  i=len-1;
+  while (i>=0 && cont) {
+    if (!Bt(alpha_numeric_bitmap,src[i]))
+      cont=FALSE;
+    else
+      i--;
+  }
+  if (i>=-1 && len>0)
+    for (k=i+1;k<len && j<buf_size-1;k++)
+      dst[j++]=src[k];
+  dst[j]=0;
+  return i+1;
+}
+
+
+BOOL WsPartialMatch(char *partial,char *complete)
+{
+  int i,l=StrLen(partial);
+  for (i=0;i<l;i++)
+    if (partial[i]!=complete[i])
+      return FALSE;
+  return TRUE;
+}
+
+
+#define MAX_FILLINS 10
+int ws_partial_len=0,fillin_matches[MAX_FILLINS+1];
+int ws_num_fillins=0,fillin_scores[MAX_FILLINS+1],fillin_hits[MAX_FILLINS+1];
+
+void WsFillin(int n)
+{
+  char *s;
+  int len;
+  n--;
+  if (n>=0 && n<ws_num_fillins) {
+    s=ws_sorted_words[fillin_matches[n]]->word;
+    len=StrLen(s);
+    if (len>ws_partial_len)
+      Auto(s+ws_partial_len);
+  }
+}
+
+void WsMan(int n,TssStruct *parent=NULL)
+{
+  char *buf;
+  WsHashEntry *tempw;
+  SysHashEntry *temph;
+  n--;
+  if (n>=0 && n<ws_num_fillins) {
+    tempw=ws_sorted_words[fillin_matches[n]];
+    temph=FindHashEntry(tempw->word,Fs->hash_table,HTT_ALL);
+    buf=tempw->glossary;
+    if (temph)
+      if (temph->source_link)
+	buf=temph->source_link;
+    buf=MSPrintF("Edit(\"%s\");",buf);
+    PopUp(buf,parent);
+    Free(buf);
+  }
+}
+
+void WsAddFillin(int i,int j,int old_num_fillins)
+{
+  BOOL cont;
+  int k;
+  if (ws_num_fillins<MAX_FILLINS || (i>fillin_scores[ws_num_fillins-1]) ||
+      (i==fillin_scores[ws_num_fillins-1] && ws_sorted_words[j]->hits>fillin_hits[ws_num_fillins-1])) {
+    cont=TRUE;
+    for (k=ws_num_fillins-1;k>=old_num_fillins && cont;k--)
+      if (i<=fillin_scores[k] || (i==fillin_scores[k] && ws_sorted_words[j]->hits<=fillin_hits[k])) {
+	cont=FALSE;
+	k++; //offset k--
+      } else {
+	fillin_scores[k+1]=fillin_scores[k];
+	fillin_matches[k+1]=fillin_matches[k];
+	fillin_hits[k+1]=fillin_hits[k];
+      }
+    if (ws_num_fillins<MAX_FILLINS)
+      ws_num_fillins++;
+    fillin_scores[k+1]=i;
+    fillin_hits[k+1]=ws_sorted_words[j]->hits;
+    fillin_matches[k+1]=j;
+  }
+}
+
+void WsPutChoices(Ltf *l,Ltf *aux,Ltf *focus_l,LtfEntry *ll)
+{
+  int i,j,k,data_col;
+  char ch=0,*buf,*buf1,*src=NULL,*st;
+  WsHashEntry *w2;
+  DWORD timeout_jiffies=jiffies+SYS_TIMER_FREQ*20/1000;
+  SysHashEntry *temph;
+  TssStruct *tss;
+
+  src=LtfGetLine(focus_l,ll,&data_col);
+  i=StrLen(src);
+  buf=MAlloc(i+1);
+  buf1=MAlloc(i+1);
+  if (data_col==0xFFFFFFFF)
+    data_col=StrLen(i);
+  data_col=WsPriorWordInString(src,buf,data_col,256);
+  ws_partial_len=StrLen(buf);
+  data_col=WsSkipCrap(src,data_col);
+  data_col=WsPriorWordInString(src,buf1,data_col,256);
+  RFree(ws_cur_word);
+  ws_cur_word=RNewString(buf);
+  if (StrLen(buf1))
+    w2=FindHashEntry(buf1,ws_hash_table,HTT_WORD);
+  else
+    w2=NULL;
+  Free(src);
+  ws_num_fillins=0;
+  if (w2 && w2->num<ws_num_matrix_words)
+    for (j=0;j<ws_num_matrix_words && jiffies<timeout_jiffies;j++)
+      if (WsPartialMatch(buf,ws_sorted_words[j]->word)) {
+	i=WsGetHits(&ws_matrices[0],w2->num,ws_sorted_words[j]->num);
+	WsAddFillin(i,j,0);
+      }
+  k=ws_num_fillins;
+  for (j=0;j<ws_num_words && jiffies<timeout_jiffies;j++)
+    if (WsPartialMatch(buf,ws_sorted_words[j]->word))
+      WsAddFillin(0,j,k);
+  if (ws_num_fillins) {
+    LtfReset(l,TRUE);
+    l->flags|=LTFF_MIN_SIZE;
+    l->text_attribute=(LTBLUE<<4)+BLACK;
+    aux->text_attribute=(LTBLUE<<4)+BLACK;
+    Fs->text_attribute=l->text_attribute;
+    Fs->border_attribute=l->text_attribute;
+
+    LtfPrintF(l,"Word:%-20ts\r\n",ws_cur_word);
+    for (i=0;i<ws_num_fillins;i++) {
+      st=ws_sorted_words[fillin_matches[i]]->word;
+      if (ws_sorted_words[fillin_matches[i]]->glossary)
+	ch='#';
+      else
+	ch=32;
+      if (tss=sys_cur_focus_task) {
+	temph=FindHashEntry(st,tss->hash_table,HTT_ALL);
+	if (temph) {
+	  if (temph->source_link)
+	    ch='*';
+	}
+      }
+      LtfPrintF(l,"%cF%02d %-20ts\r\n",ch,i+1,st);
+    }
+    LtfRecalc(l);
+    Bts(&Fs->crt_flags,CRTf_SHOW);
+    WindowToTop(Fs);
+  }
+  Free(buf);
+  Free(buf1);
+}
+
+void WsTsk()
+{
+  TssStruct *focus_tss;
+  DWORD sc,ch;
+  Ltf *l;
+  LtfEntry *ll;
+  Preempt(OFF);
+  InitLocalTask;
+  UseConsoleLtf(NULL);
+  Fs->window_left=200;
+  Fs->window_bottom=30;
+  do {
+    Sleep(200);
+    if (!ws_disable) {
+      focus_tss=sys_cur_focus_task;
+      if (focus_tss) {
+	l=focus_tss->cur_ltf;
+	if (l && (focus_tss!=Fs)) {
+	  LtfRecalc(l); //TODO: is this needed?
+	  ll=l->cur_entry;
+	  if (ll) {
+	    if (ll==l) ll=ll->last;
+	    while (ll->last!=l && (ll->btype==LTFT_CR ||
+		ll->btype==LTFT_SOFT_CR))
+	      ll=ll->last;
+	    while ((ll->last->btype)!=LTFT_CR && ll->last!=l)
+	      ll=ll->last;
+	    if (!ws_disable)
+ 	      WsPutChoices(Fs->cur_ltf,Fs->aux_ltf,l,ll);
+	  }
+	}
+      }
+    }
+  } while (!ScanChar(&sc,&ch));
+  ws_task=NULL;
+}
+
+
+
+void WsAdd(char *wild=TEXT_FILE_MASK,BOOL gloss)
+{
+  WsFilemaskEntry *tempfm=RMAlloc(sizeof(WsFilemaskEntry));
+  if (gloss) {
+    tempfm->next=ws_gloss_filemask_list;
+    ws_gloss_filemask_list=tempfm;
+  } else {
+    tempfm->next=ws_filemask_list;
+    ws_filemask_list=tempfm;
+  }
+  tempfm->mask=RNewString(wild);
+  tempfm->flist=NULL;
+}
+
+void WsTraverseFilelist(BOOL compile,BOOL gloss)
+{
+  WsFilemaskEntry *tempfm;
+  JFileAccess *fa;
+  DWORD my_flags=(1<<FUf_RECURSE);
+  if (gloss)
+    tempfm=ws_gloss_filemask_list;
+  else
+    tempfm=ws_filemask_list;
+
+  while (tempfm) {
+    if (fa=NewJFileAccess(tempfm->mask)) {
+      if (!compile)
+	tempfm->flist=FindFiles(fa->mask,&my_flags);
+      WsAddFileList(tempfm->flist,compile,gloss);
+      DelJFileAccess(fa);
+    }
+    tempfm=tempfm->next;
+  }
+}
+
+public void WsInit(char *mask)
+{
+  char *buf,buf2[512];
+  ws_disable=TRUE;
+
+//TODO:free old wordstat data
+  ws_num_words=0;
+  ws_num_matrix_words=0;
+  MemSet(&ws_hash_table->body,0,sizeof(DWORD)*(ws_hash_table->mask+1));
+  ws_cur_word=NULL;
+  ws_filemask_list=NULL;
+  ws_gloss_filemask_list=NULL;
+
+  buf=NewString(mask);
+  do {
+    RemoveFirstSeg(buf,";",buf2);
+    if (*buf2) {
+      StrCat(buf2,"/" TEXT_FILE_MASK);
+      WsAdd(buf2,FALSE);
+    }
+  } while (*buf2);
+  Free(buf);
+
+  coutln "\r\n\r\nPass #1";
+  WsTraverseFilelist(FALSE,FALSE);
+  ws_sorted_words=RMAlloc(sizeof(DWORD)*ws_num_words);
+
+  int i,j=0;
+  WsHashEntry *tempw;
+  for (i=0;i<=ws_hash_table->mask;i++) {
+    tempw=ws_hash_table->body[i];
+    while (tempw) {
+      ws_sorted_words[j++]=tempw;
+      tempw=tempw->next;
+    }
+  }
+  QSort(ws_sorted_words,ws_num_words,sizeof(DWORD),&WsSort);
+  for (i=0;i<ws_num_words;i++)
+    ws_sorted_words[i]->num=i;
+  if (ws_num_words<=WS_MAX_MATRIX_WORDS)
+    ws_num_matrix_words=ws_num_words;
+  else
+    ws_num_matrix_words=WS_MAX_MATRIX_WORDS;
+
+  for (i=0;i<NUM_WS_MATRICES;i++)
+    WsInitSides(&ws_matrices[i]);
+  coutln "\r\n\r\nPass #2";
+  WsTraverseFilelist(TRUE,FALSE);
+
+  buf=NewString(mask);
+  do {
+    RemoveFirstSeg(buf,";",buf2);
+    if (*buf2) {
+      StrCat(buf2,"/*.GL?");
+      WsAdd(buf2,TRUE);
+    }
+  } while (*buf2);
+  Free(buf);
+  coutln "\r\n\r\nGlossary Pass";
+  WsTraverseFilelist(FALSE,TRUE);
+
+  ws_disable=FALSE;
+}
+
+

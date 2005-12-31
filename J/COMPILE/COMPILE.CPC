@@ -1,0 +1,1824 @@
+int CmpKeyWord(LexStruct *l)
+{
+  int result=-1;
+  SysHashEntry *temph;
+  if (l->token==TK_IDENT)
+    if (temph=l->hash_entry)
+      if (temph->type == HTT_KEYWORD)
+	result=temph->user0;
+  return result;
+}
+
+#define PVLM_LOCAL_VAR		0
+#define PVLM_FUNCTION_PARAM	1
+#define PVLM_CLASS		2
+#define PVLM_UNION		3
+void CmpParseVarList(LexStruct *l,ClassStruct *tempc,
+		     int mode,DWORD union_base=0x7FFFFFFF)
+{
+  int ptr_cnt,i,j,k,size;
+  ClassStruct *tempc1,*tempc2;
+  SysHashEntry *temph;
+  MemberListStruct *tempm;
+  BYTE *e;
+  if (mode!=PVLM_LOCAL_VAR || union_base!=0x7FFFFFFF) {
+    if (l->token=='(' || l->token=='{')
+      Lex(l);
+  }
+  while (TRUE) {
+    while (l->token==';') Lex(l);
+    if (l->token==')' || l->token=='}') {
+      Lex(l);
+      return;
+    }
+    if (l->token=='.') {
+      if (Lex(l)=='.') {
+	if (Lex(l)=='.') {
+	  Lex(l);
+	  tempm=MAllocZ(sizeof(MemberListStruct));
+	  tempm->flags=MLF_DOT_DOT_DOT;
+	  tempm->member_class=sys_internal_types[IT_INT];
+	  tempm->string=NewString("argc");
+	  tempc2=tempc->last_in_member_list;
+	  tempc2->next=tempm;
+	  tempc->last_in_member_list=tempm;
+	  tempm->offset=tempc->size;
+	  tempc->size=tempc->size+4;
+
+	  tempm=MAllocZ(sizeof(MemberListStruct));
+	  tempm->flags=MLF_DOT_DOT_DOT;
+	  tempm->member_class=sys_internal_types[IT_INT];
+	  tempm->string=NewString("argv");
+	  tempm->cnt=127; //nonzero
+	  tempc2=tempc->last_in_member_list;
+	  tempc2->next=tempm;
+	  tempc->last_in_member_list=tempm;
+	  tempm->offset=tempc->size;
+	  tempc->size=tempc->size+4;
+
+	  if (l->token==')' || l->token=='}')
+	    Lex(l);
+	  return;
+	} else
+	  PrsTrap(l,"ST_EXPECTING_TYPE");
+      } else
+	PrsTrap(l,"ST_EXPECTING_TYPE");
+    }
+    temph=NULL;
+    if (l->token==TK_IDENT) {
+      temph=l->hash_entry;
+      k=CmpKeyWord(l);
+    }
+    if (!temph)
+      PrsTrap(l,"ST_EXPECTING_TYPE");
+    if (k==KW_UNION) {
+      Lex(l);
+      CmpParseVarList(l,tempc,mode,tempc->size);
+    } else {
+      tempc1=temph;
+      if (!(tempc1->type & (HTT_CLASS | HTT_INTERNAL_TYPE)))
+	PrsTrap(l,"ST_EXPECTING_TYPE");
+      do {
+	LexPush(l);
+	Lex(l); //skip type
+	ptr_cnt=0;
+	while (l->token=='*') {
+	  LexSubStackPtr(l);  //grows up
+	  LexPush(l);
+	  Lex(l);
+	  ptr_cnt++;
+	}
+	if (l->token!=TK_IDENT)
+	  PrsTrap(l,"ST_EXPECTING_IDENTIFIER");
+	tempm=MAllocZ(sizeof(MemberListStruct));
+	tempm->member_class=tempc1;
+	tempm->string=l->ident;
+	l->ident=NULL;
+	tempc2=tempc->last_in_member_list;
+	tempc2->next=tempm;
+	tempc->last_in_member_list=tempm;
+	tempc->member_cnt++;
+
+	if (Lex(l)=='(') {
+	  tempm->flags|=MLF_FUNCTION;
+	  if (Lex(l)!=')') {
+	    tempm->parameter_cnt++;
+	    while (l->token!=')') {
+	      if (l->token==',')
+		tempm->parameter_cnt++;
+	      Lex(l);
+	    }
+	  }
+	  Lex(l); //skip )
+	}
+
+	if (l->token=='[') {
+	  Lex(l);
+	  tempm->cnt=Expression(l);
+	  if (l->token!=']')
+	    PrsTrap(l,"ST_MISSING_RIGHT_BRACKET");
+	  Lex(l);
+	}
+	tempm->member_class+=ptr_cnt*sizeof(ClassStruct);
+	tempc2=tempm->member_class;
+	i=(tempm->flags & MLF_FUNCTION) ? 4:tempc2->size;
+	j=(tempm->cnt)? tempm->cnt:1;
+	i=i*j;
+	if (mode==PVLM_LOCAL_VAR) {
+  	  if (union_base!=0x7FFFFFFF) {
+	    if (union_base-tempc->size<i)
+  	      tempc->size=union_base-i;
+	  } else
+ 	    tempc->size=tempc->size-i;
+	  tempm->offset=tempc->size;
+	  if (l->token=='=') {
+	    LexPop(l);
+	    Lex(l);
+	    if (!PrsParseExpression(l))
+	      throw(TRP_COMPILER,7);
+	    CbAddIc(l,EC_ADD_ESP,4,0);
+	  } else
+	    LexSubStackPtr(l);
+	} else if (mode==PVLM_FUNCTION_PARAM) {
+  	  if (union_base!=0x7FFFFFFF) {
+	    tempm->offset=union_base;
+	    if (tempc->size-union_base<4)
+  	      tempc->size=4+union_base;
+	  } else {
+	    tempm->offset=tempc->size;
+  	    tempc->size+=4;
+	  }
+	  if (l->token=='=') {
+	    Lex(l);
+	    l->flags=l->flags & ~LF_HAS_MISC_DATA;
+	    e=CompileExpression(l);
+	    if (!e)
+	      throw(TRP_COMPILER,8);
+	    tempm->default_value=Run(e);	//TODO: if l->a
+	    if (!(l->flags & LF_HAS_MISC_DATA))
+	      DelExpression(e);
+	    else if (l->a)
+	      PrsTrap(l,"ST_STRING_DEFAULT");
+	    tempm->flags=tempm->flags | MLF_DEFAULT_AVAILABLE;
+	  }
+	  LexSubStackPtr(l);
+	} else { //CLASS
+  	  if (union_base!=0x7FFFFFFF) {
+	    tempm->offset=union_base;
+	    if (tempc->size-union_base<i)
+  	      tempc->size=i+union_base;
+	  } else {
+	    tempm->offset=tempc->size;
+  	    tempc->size=tempc->size+i;
+	  }
+	  do {
+	    temph=NULL;
+	    k=CmpKeyWord(l);
+	    if (k==KW_FMTSTR) {
+	      if (Lex(l)!=TK_STRING)
+		PrsTrap(l,"ST_EXPECTING_STRING");
+	      tempm->fmtstr=LexExtendString(l,&size);
+	    } else if (k==KW_FMTDATA) {
+	      if (Lex(l)!=TK_STRING)
+		PrsTrap(l,"ST_EXPECTING_STRING");
+	      tempm->fmtdata=LexExtendString(l,&size);
+	    }
+	  } while (k==KW_FMTSTR || k==KW_FMTDATA);
+	  LexSubStackPtr(l);
+	}
+
+	if (l->token==',') {
+	  if (mode==PVLM_FUNCTION_PARAM && union_base==0x7FFFFFFF) {
+	    Lex(l);
+	    break;
+	  }
+	} else if (l->token==')' || l->token=='}') {
+ 	  Lex(l);
+	  return;
+	} else if (l->token==';') {
+	  Lex(l);
+	  if (mode==PVLM_LOCAL_VAR && union_base==0x7FFFFFFF)
+	    return;
+	  break;
+	} else
+	  PrsTrap(l,"ST_MISSING_SEMICOLON");
+      } while (TRUE);
+    }
+  }
+}
+
+ClassStruct *CmpParseClass(LexStruct *l,BOOL is_union,BOOL is_public)
+{
+  SysHashEntry *temph1;
+  ClassStruct *tempc;
+  if (l->token!=TK_IDENT)
+    PrsTrap(l,"ST_EXPECTING_IDENTIFIER");
+  tempc=CmpClassNew;
+  tempc->string=l->ident;
+  if (is_public)
+    tempc->type|=HTT_PUBLIC;
+  l->ident=NULL;
+  SetSourceFileInfo(l,tempc);
+  tempc->use_cnt=0;
+  if (l->a)
+    temph1=FindHashBucket(tempc->string,l->a->glbl_hash);
+  else
+    temph1=FindHashBucket(tempc->string,l->hash_table_list);
+  tempc->next=temph1->next;
+  temph1->next=tempc;
+  Lex(l);
+  CmpParseVarList(l,tempc,PVLM_CLASS,(is_union)?0:0x7FFFFFFF);
+  return tempc;
+}
+
+void UndefinedExtern()
+{
+  PutSysText("ST_UNDEFINED_EXTERN");
+  throw(TRP_UNDEF_EXTERN);
+}
+
+
+ClassStruct *CmpParseFunctionJoin(LexStruct *l,
+	ClassStruct *temp_return,char *name,BOOL is_public,BOOL needs_abs)
+{
+  MemberListStruct *tempm;
+  AsmCtrlStruct *a=l->a;
+  SysHashEntry *temph1;
+  SysHashTable *tempht;
+  ClassStruct *tempc;
+  ExeAbsoluteAddressStruct *tempa;
+  LexSubStackPtr(l);
+  if (a) {
+    if (tempc=FindHashEntry(name,a->glbl_hash,HTT_ALL)) {
+      if (!(tempc->type & HTT_FUNCTION))
+	tempc=NULL;
+    }
+    if (!tempc) {
+      temph1=FindHashBucket(name,a->glbl_hash);
+    }
+  } else {
+    tempht=l->hash_table_list->next;
+    l->hash_table_list->next=NULL;
+    if (tempc=FindHashEntry(name,l->hash_table_list,HTT_ALL)) {
+      if (!(tempc->type & HTT_FUNCTION))
+	tempc=NULL;
+    }
+    l->hash_table_list->next=tempht;
+    if (!tempc) {
+      temph1=FindHashBucket(name,l->hash_table_list);
+    }
+  }
+  if (!tempc) {
+    tempc=CmpClassNew;
+    tempc->next=temph1->next;
+    temph1->next=tempc;
+    tempc->type=HTT_FUNCTION;
+    tempc->string=name;
+    if (a) {
+      tempc->executable_address=a->ip;
+      if (needs_abs) {
+	tempa=MAllocZ(sizeof(ExeAbsoluteAddressStruct));
+	tempa->next=a->absolutes;
+	a->absolutes=tempa;
+	tempa->ip=a->ip;
+      }
+      AsmStoreCodeByte(a,0);
+      AsmStoreCodeByte(a,0);
+      AsmStoreCodeByte(a,0);
+      AsmStoreCodeByte(a,0);
+    } else
+      tempc->executable_address=&UndefinedExtern;
+    Bts(&tempc->flags,Cf_EXTERN);
+  } else {
+    Free(tempc->source_link);
+    Free(name);
+    DelMemberList(tempc);
+  }
+  if (is_public)
+    tempc->type|=HTT_PUBLIC;
+  else
+    tempc->type&=~HTT_PUBLIC;
+  tempc->return_class=temp_return;
+  tempc->use_cnt=0;
+  SetSourceFileInfo(l,tempc);
+  CmpParseVarList(l,tempc,PVLM_FUNCTION_PARAM);
+  tempc->parameter_cnt=tempc->member_cnt;
+  tempm=tempc->member_list;
+  while (tempm) {
+    tempm->offset+=8; //EBP+RETURN
+    tempm=tempm->next;
+  }
+  tempc->size=0;
+  return tempc;
+}
+
+void CmpParseFunction(LexStruct *l,
+	ClassStruct *temp_return,char *name,BOOL is_public)
+{
+  BYTE *result;
+  AsmCtrlStruct *a=l->a;
+  ClassStruct *tempc;
+  MemberListStruct *tempm;
+  DWORD i,j,size;
+  DbgInfo *dbg=NULL;
+
+  tempc=CmpParseFunctionJoin(l,temp_return,name,is_public,TRUE);
+  l->local_var_list=tempc;
+  CbPush(l);
+  CbInitOutPtrs(l);
+  CbAddIc(l,EC_ENTER,0,0);
+  CmpParseStatement(l,tempc,NULL,NULL,FALSE);
+  CbAddIc(l,EC_LEAVE,0,0);
+  CbAddIc(l,0,0,0);
+  tempc->size&=-4;
+  if (a) {
+    i=a->ip;
+    j=tempc->executable_address;
+    if (Bt(&tempc->flags,Cf_EXTERN)) {
+      AsmStoreCodeByteAt(a,i & 255,j);
+      AsmStoreCodeByteAt(a,(i>>8) & 255,j+1);
+      AsmStoreCodeByteAt(a,(i>>16) & 255,j+2);
+      AsmStoreCodeByteAt(a,(i>>24) & 255,j+3);
+    }
+    tempc->executable_address=i;
+    tempc->type|=HTT_EXPORT;
+    result=CbCompile(l,tempc->size,&size,&dbg);
+    tempc->debug=dbg;
+    if (result) {
+      for (i=0;i<size;i++)
+	AsmStoreCodeByte(a,result[i]);
+      Free(result);
+    }
+  } else {
+    tempc->executable_address=CbCompile(l,tempc->size,&size,&dbg);
+    tempc->debug=dbg;
+  }
+  Btr(&tempc->flags,Cf_EXTERN);
+  CbPop(l);
+  l->local_var_list=NULL;
+  tempm=tempc->member_list;
+  while (tempm) {
+    if (!tempm->use_cnt) {
+      coutln SysText("ST_WARNING"),SysText("ST_UNUSED_VAR");
+      PrintF(" $LK -A \"FL:%s,%d\"$ '",
+	l->cur_lfn->name,l->cur_lfn->line_num);
+      coutln tempm->string,"' in '",tempc->string,"'";
+    }
+    tempm=tempm->next;
+  }
+}
+
+void CatchAll()
+{
+  int i;
+  if (Fs->trap_argc>0) {
+    if (Fs->trap_argv[0]<SysTextSubCount("ST_TRAP_TYPES")) {
+      PrintF("Exception Type :%Z\r\n",Fs->trap_argv[0],"ST_TRAP_TYPES");
+      if (Fs->trap_argv[0]==TRP_UNDEF_SYSTEXT)
+	PrintF("Name:'%s'\r\n",Fs->trap_argv[1]);
+      else {
+	for (i=1;i<Fs->trap_argc;i++)
+	  cout Fs->trap_argv[i]," ";
+	CrLf;
+      }
+    } else {
+      cout "Exception:";
+      for (i=1;i<Fs->trap_argc;i++)
+	cout Fs->trap_argv[i]," ";
+      CrLf;
+    }
+  } else
+    PrintF("Generic Exception\r\n");
+  Fs->take_trap=TRUE;
+}
+
+#define PG_NULL		0
+#define PG_JEXTERN	1
+#define PG_JINTERN	2
+#define PG_JIMPORT	3
+#define PG_EXTERN	4
+#define PG_IMPORT	5
+
+void CmpParseGlblVarList(LexStruct *l,int saved_mode,ClassStruct *saved_tempc,
+  DWORD saved_val,BOOL is_public)
+{
+  int i,j,k,mode;
+  DWORD val;
+  char *st;
+  SysHashEntry *temph,*temph1;
+  GlblVarStruct *tempg,*tempg1;
+  AsmCtrlStruct *a=l->a;
+  ClassStruct *tempc,*tempc1;
+  BYTE *e;
+  while (TRUE) {
+    LexPush(l);
+    Lex(l);
+    tempc=saved_tempc;
+    val=saved_val;
+    mode=saved_mode;
+    while (l->token=='*') {
+      LexSubStackPtr(l);  //grows up
+      LexPush(l);
+      Lex(l);
+      tempc+=sizeof(ClassStruct);
+    }
+    if (l->token!=TK_IDENT)
+      PrsTrap(l,"ST_EXPECTING_IDENTIFIER");
+    if ((temph=l->hash_entry) && (mode==PG_EXTERN && !a)) {
+      if (temph->type & HTT_SYS_SYMBOL) {
+	val=temph->user0;
+	mode=PG_JEXTERN;
+      }
+    }
+    st=l->ident;
+    l->ident=NULL;
+    if (Lex(l)=='(') {
+      if (mode==PG_JINTERN) {
+	tempc1=CmpParseFunctionJoin(l,tempc,st,is_public,FALSE);
+	tempc1->executable_address=val;
+	Bts(&tempc1->flags,Cf_INTERNAL);
+	Btr(&tempc1->flags,Cf_EXTERN);
+	return;
+      } else if (mode==PG_JEXTERN) {
+	tempc1=CmpParseFunctionJoin(l,tempc,st,is_public,FALSE);
+	tempc1->executable_address=val;
+	Btr(&tempc1->flags,Cf_EXTERN);
+	return;
+      } else if (mode==PG_EXTERN) {
+	CmpParseFunctionJoin(l,tempc,st,is_public,TRUE);
+	return;
+      } else if (mode==PG_IMPORT || mode==PG_JIMPORT) {
+	if (!a)
+	  PrsTrap(l,"ST_IMPORT_NOT_NEEDED");
+	else {
+	  tempc1=CmpParseFunctionJoin(l,tempc,st,is_public,FALSE);
+	  tempc1->type|=HTT_IMPORT;
+	  if (mode==PG_JIMPORT)
+	    tempc1->import_name=NewString(val);
+	  else
+	    tempc1->import_name=NewString(st);
+	}
+	return;
+      } else {
+	CmpParseFunction(l,tempc,st,is_public);
+	return;
+      }
+    }
+    i=0;
+    if (l->token=='[') {
+      Lex(l);
+      i=Expression(l);
+      if (l->token!=']')
+	PrsTrap(l,"ST_MISSING_RIGHT_BRACKET");
+      Lex(l);
+    }
+    j=tempc->size;
+    if (i) j*=i;
+    if (mode==PG_JEXTERN) {
+      tempg=MAllocZ(sizeof(GlblVarStruct)-4);
+      tempg->data_address=val;
+      if (a)
+	tempg->type=HTT_GLBL_VAR | HTT_EXPORT;
+      else
+	tempg->type=HTT_GLBL_VAR;
+    } else if (mode==PG_JIMPORT || mode==PG_IMPORT) {
+      if (!a)
+	PrsTrap(l,"ST_IMPORT_NOT_NEEDED");
+      else {
+	tempg=MAllocZ(sizeof(GlblVarStruct)-4);
+	tempg->type=HTT_GLBL_VAR | HTT_IMPORT;
+	if (mode==PG_JIMPORT)
+	  tempg->import_name=NewString(val);
+	else
+	  tempg->import_name=NewString(st);
+	tempg->data_address=a->ip;
+	k=0;
+	AsmStoreCodeByte(a,k & 0xFF);
+	AsmStoreCodeByte(a,(k>>8) & 0xFF);
+	AsmStoreCodeByte(a,(k>>16) & 0xFF);
+	AsmStoreCodeByte(a,(k>>24) & 0xFF);
+      }
+    } else if (mode==PG_EXTERN) {
+      tempg=MAllocZ(sizeof(GlblVarStruct)-4);
+      tempg->data_address=0;
+      tempg->type=HTT_GLBL_VAR;
+    } else {
+      if (a) {
+	tempg=MAllocZ(sizeof(GlblVarStruct)-4);
+	tempg->data_address=a->ip;
+	tempg->type=HTT_GLBL_VAR | HTT_EXPORT;
+	if (temph && (temph->type & HTT_GLBL_VAR)) {
+	  tempg1=temph;
+	  tempg1->data_address=a->ip;
+	}
+	for (k=0;k<j;k++)
+	  AsmStoreCodeByte(a,0);
+      } else {
+	tempg=MAllocZ(j+sizeof(GlblVarStruct)-4);
+	tempg->data_address=&tempg->data;
+	tempg->type=HTT_GLBL_VAR;
+	if (temph && (temph->type & HTT_GLBL_VAR)) {
+	  tempg1=temph;
+	  tempg1->data_address=&tempg->data;
+	}
+      }
+    }
+    if (is_public)
+      tempg->type|=HTT_PUBLIC;
+    tempg->flags=0;
+    tempg->parameter_cnt=0;
+    tempg->var_class=tempc;
+    tempg->string=st;
+    tempg->cnt=i;
+    tempg->use_cnt=0;
+    SetSourceFileInfo(l,tempg);
+    if (mode==PG_IMPORT || mode==PG_JIMPORT)
+      tempg->flags|=GVAF_IMPORT;
+    if (mode==PG_EXTERN)
+      tempg->flags|=GVAF_EXTERN;
+    temph1=(a) ?FindHashBucket(st,a->glbl_hash):
+		FindHashBucket(st,l->hash_table_list);
+    tempg->next=temph1->next;
+    temph1->next=tempg;
+    if (l->token=='=') {
+      LexPop(l);
+      Lex(l);
+      if (a) {
+	if (!PrsParseExpression(l))
+ 	  throw(TRP_COMPILER,9);
+	CbAddIc(l,EC_ADD_ESP,4,0);
+      } else {
+	l->flags&=~LF_HAS_MISC_DATA;
+	e=CompileExpression(l);
+	if (!e)
+	  throw(TRP_COMPILER,10);
+	Run(e);	//TODO: if l->a
+	if (!(l->flags & LF_HAS_MISC_DATA))
+	  DelExpression(e);
+      }
+    } else
+      LexSubStackPtr(l);
+    if (l->token!=',') {
+      if (l->token!=';')
+	PrsTrap(l,"ST_MISSING_SEMICOLON");
+      Lex(l);
+      return;
+    }
+  }
+}
+
+void CmpParseIf(LexStruct *l,ClassStruct *locals,
+  CbMiscStruct *break_label,CbMiscStruct *continue_label)
+{
+  CbMiscStruct *templ,*templ1;
+  int k;
+
+  if (l->token!='(')
+    PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+  Lex(l);
+  if (!PrsParseExpression(l))
+    throw(TRP_COMPILER,11);
+  CbAddIc(l,EC_ADD_ESP,4,0);
+  if (l->token!=')')
+    PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+  Lex(l);
+  templ=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_SKIPZ,templ,0);
+  CmpParseStatement(l,locals,break_label,continue_label);
+  k=CmpKeyWord(l);
+  if (k==KW_ELSE) {
+    Lex(l);
+    templ1=CbMiscNew(l,CBMT_LABEL);
+    CbAddIc(l,EC_JMP,templ1,0);
+    CbAddIc(l,EC_LABEL,templ,0);
+    CmpParseStatement(l,locals,break_label,continue_label);
+    CbAddIc(l,EC_LABEL,templ1,0);
+  } else
+    CbAddIc(l,EC_LABEL,templ,0);
+}
+
+void CmpParseWhile(LexStruct *l,ClassStruct *locals)
+{
+  CbMiscStruct *templ,*templ1;
+
+  if (l->token!='(')
+    PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+  Lex(l);
+  templ=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_LABEL,templ,0);
+  if (!PrsParseExpression(l))
+    throw(TRP_COMPILER,12);
+  CbAddIc(l,EC_ADD_ESP,4,0);
+  if (l->token!=')')
+    PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+  Lex(l);
+
+  templ1=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_SKIPZ,templ1,0);
+  CmpParseStatement(l,locals,templ1,templ);
+  CbAddIc(l,EC_JMP,templ,0);
+  CbAddIc(l,EC_LABEL,templ1,0);
+}
+
+void CmpParseDoWhile(LexStruct *l,ClassStruct *locals)
+{
+  CbMiscStruct *templ,*templ1;
+
+  templ=CbMiscNew(l,CBMT_LABEL);
+  templ1=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_LABEL,templ,0);
+  CmpParseStatement(l,locals,templ1,templ);
+  if (CmpKeyWord(l)!=KW_WHILE)
+    PrsTrap(l,"ST_MISSING_WHILE");
+  if (Lex(l)!='(')
+    PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+  Lex(l);
+  if (!PrsParseExpression(l))
+    throw(TRP_COMPILER,13);
+  CbAddIc(l,EC_ADD_ESP,4,0);
+  if (l->token!=')')
+    PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+  Lex(l);
+  CbAddIc(l,EC_SKIPNZ,templ,0);
+  CbAddIc(l,EC_LABEL,templ1,0);
+}
+
+void CmpParseFor(LexStruct *l,ClassStruct *locals)
+{
+  LexStruct *templs;
+  CbMiscStruct *templ,*templ1,*templ2;
+
+  if (l->token!='(')
+    PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+  Lex(l);
+  CmpParseStatement(l,locals);
+
+  templ=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_LABEL,templ,0);
+  if (!PrsParseExpression(l))
+    throw(TRP_COMPILER,14);
+  CbAddIc(l,EC_ADD_ESP,4,0);
+  templ1=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_SKIPZ,templ1,0);
+  if (l->token!=';')
+    PrsTrap(l,"ST_MISSING_SEMICOLON");
+  Lex(l);
+
+  CbPush(l);
+  CbInitOutPtrs(l);
+  templ2=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_LABEL,templ2,0);
+  CmpParseStatement(l,locals,NULL,NULL,FALSE);
+  CbAddIc(l,0,0,0);
+  CbPush(l);
+  templs=CbPopNoFree(l);
+  CbPop(l);
+  if (l->token!=')')
+    PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+  Lex(l);
+
+  CmpParseStatement(l,locals,templ1,templ2);
+  CbAppend(l,templs);
+  CbAddIc(l,EC_JMP,templ,0);
+  CbAddIc(l,EC_LABEL,templ1,0);
+}
+
+
+class SwitchCaseEntry {
+  SwitchCaseEntry *next;
+  CbMiscStruct *label;
+  DWORD value;
+};
+
+void CmpParseSwitch(LexStruct *l,ClassStruct *locals)
+{
+  SwitchCaseEntry *header=NULL,*temps,*temps1;
+  CbMiscStruct *templ_break,*templ_default,*templ_jmp;
+  IntermediateCode *tempi_sub,*tempi_cmp;
+  AsmCtrlStruct *a=l->a;
+  BOOL default_found=FALSE;
+  int i,k;
+  int lo=0x7FFFFFFF,hi=0x80000000,range;
+  DWORD *jmp_table;
+
+  if (l->token!='(')
+    PrsTrap(l,"ST_EXPECTING_LEFT_PAREN");
+  Lex(l);
+  templ_break=CbMiscNew(l,CBMT_LABEL);
+  templ_default=CbMiscNew(l,CBMT_LABEL);
+  templ_jmp=CbMiscNew(l,CBMT_JMP_TABLE);
+  if (!PrsParseExpression(l))
+    throw(TRP_COMPILER,15);
+  CbAddIc(l,EC_INT32,0,sys_internal_types[IT_INT]);
+  tempi_sub=l->cb_last_out_ptr;
+  CbAddIc(l,EC_SUBTRACTION,0,sys_internal_types[IT_INT]);
+  CbAddIc(l,EC_INT32,0,sys_internal_types[IT_INT]);
+  tempi_cmp=l->cb_last_out_ptr;
+  CbAddIc(l,EC_SWITCH,templ_jmp,0);
+  CbAddIc(l,EC_JMP,templ_default,0);
+  if (l->token!=')')
+    PrsTrap(l,"ST_MISSING_RIGHT_PAREN");
+  if (Lex(l)!='{')
+    PrsTrap(l,"ST_EXPECTING_LEFT_BRACE");
+  Lex(l);
+  while (l->token && l->token!='}') {
+    k=CmpKeyWord(l);
+    if (k==KW_CASE) {
+      Lex(l);
+      temps=MAlloc(sizeof(SwitchCaseEntry));
+      temps->label=CbMiscNew(l,CBMT_LABEL);
+      CbAddIc(l,EC_LABEL,temps->label,0);
+      k=Expression(l);
+      if (l->token!=':')
+	PrsTrap(l,"ST_EXPECTING_COLON");
+      Lex(l);
+      if (k<lo) lo=k;
+      if (k>hi) hi=k;
+      temps->value=k;
+      temps->next=header;
+      header=temps;
+    } else if (k==KW_DEFAULT) {
+      if (Lex(l)==':')
+	Lex(l);
+      CbAddIc(l,EC_LABEL,templ_default,0);
+      default_found=TRUE;
+    } else
+      CmpParseStatement(l,locals,templ_break,NULL);
+  }
+  if (!default_found)
+    CbAddIc(l,EC_LABEL,templ_default,0);
+  CbAddIc(l,EC_LABEL,templ_break,0);
+  if (l->token!='}')
+    PrsTrap(l,"ST_MISSING_RIGHT_BRACE");
+  Lex(l);
+
+  range=hi-lo+1;
+  if (range<=0 || range>0x4000)
+    PrsTrap(l,"ST_CASE_RANGE_ERROR");
+  jmp_table=MAlloc(sizeof(DWORD)*range);
+  for (i=0;i<range;i++)
+    jmp_table[i]=templ_default;
+  tempi_sub->ic_data=lo;
+  tempi_cmp->ic_data=range;
+  temps=header;
+  while (temps) {
+    temps1=temps->next;
+    jmp_table[temps->value-lo]=temps->label;
+    Free(temps);
+    temps=temps1;
+  }
+  templ_jmp->jmp_table=jmp_table;
+  templ_jmp->st_len=range;
+}
+
+
+void CmpParseCout(LexStruct *l,BOOL linefeed)
+{
+  ClassStruct *tempc;
+  SysHashEntry *temph;
+  IntermediateCode *tempi;
+  int cnt=0,i;
+
+  while (l->token!=';') {
+    cnt++;
+    if (!PrsParseExpression(l))
+      throw(TRP_COMPILER,16);
+    tempi=l->cb_last_out_ptr;
+    tempc=tempi->ic_class;
+    temph=tempc-sizeof(ClassStruct)*tempc->pointer_cnt;
+    if (temph->type & HTT_INTERNAL_TYPE)
+      i=temph->user0+tempc->pointer_cnt*IT_NUM_IT;
+    else
+      i=IT_DWORD;
+    CbAddIc(l,EC_TYPE,i,sys_internal_types[IT_DWORD]);
+    if (l->token==',' || l->token==TK_SHL)
+      Lex(l);
+    else {
+      if (l->token!=';')
+	PrsTrap(l,"ST_EXPECTING_COMMA");
+    }
+  }
+  CbAddIc(l,EC_INT32,cnt,sys_internal_types[IT_DWORD]);
+  if (linefeed)
+    CbAddIc(l,EC_IRQ,I_COUTLN,0);
+  else
+    CbAddIc(l,EC_IRQ,I_COUT,0);
+  CbAddIc(l,EC_ADD_ESP,cnt*8+4,0);
+}
+
+void CmpParseExeBlk(LexStruct *l)
+{
+  AsmCtrlStruct *a=l->a;
+  SysHashTable *ht1=l->hash_table_list,
+	       *ht2=l->define_hash_table;
+  DWORD old_hash_mask=l->hash_mask;
+  DWORD old_flags=l->flags & (LF_ASM_EXPRESSIONS | LF_EXE_BLK);
+  ExeBlkStruct *tempe=MAlloc(sizeof(ExeBlkStruct));
+  tempe->body=NewString("");
+  InsQue(tempe,l->last_exe_blk);
+  CbPush(l);  //TODO Misc lists
+  l->hash_mask=HTT_ALL;
+  l->hash_table_list=Fs->hash_table;
+  l->define_hash_table=Fs->hash_table;
+  l->flags=(l->flags & ~LF_ASM_EXPRESSIONS) |
+	   LF_EXE_BLK;
+  l->a=NULL;
+  if (l->token=='{')
+    Lex(l);
+  else
+    PrsTrap(l,"ST_MISSING_RIGHT_BRACE");
+  while (l->token && l->token!='}')
+    ExecuteCmdLine(l);
+  l->a=a;
+  l->hash_table_list=ht1,
+  l->define_hash_table=ht2;
+  l->hash_mask=old_hash_mask;
+  l->flags=(l->flags&~LF_EXE_BLK) | old_flags;
+  CbPop(l);
+  RemQue(tempe);
+  if (*tempe->body)
+    LexIncludeString(l,"ExeBlk",tempe->body,FALSE);
+  else
+    Free(tempe->body);
+  Free(tempe);
+  Lex(l); //Skip "}"
+}
+
+void ExePutS(char *st)
+{
+  LexStruct *l=Fs->last_lex;
+  ExeBlkStruct *tempe=l->last_exe_blk;
+  if (tempe!=&l->next_exe_blk)
+    tempe->body=Add2String(tempe->body,st);
+  else
+    coutln "Error: No exe{} blk";
+}
+
+void ExePrintF(char *src,...)
+{
+  char *buf=SPrintFJoin(NULL,src,argc,argv);
+  ExePutS(buf);
+  Free(buf);
+}
+
+void CmpParseTryBlk(LexStruct *l,ClassStruct *locals)
+{
+  CbMiscStruct *templ,*templ1,*templ2;
+  ClassStruct *d=sys_internal_types[IT_DWORD],
+    *temp_try=FindHashEntry("SysTry",l->hash_table_list,HTT_FUNCTION),
+    *temp_catch=FindHashEntry("SysCatch",l->hash_table_list,HTT_FUNCTION);
+
+  templ=CbMiscNew(l,CBMT_LABEL);
+  templ1=CbMiscNew(l,CBMT_LABEL);
+  templ2=CbMiscNew(l,CBMT_LABEL);
+  CbAddIc(l,EC_GET_STACK_PTR,0,d);
+  CbAddIc(l,EC_GET_BASE_PTR,0,d);
+  CbAddIc(l,EC_GET_LABEL,templ2,d);
+  CbAddIc(l,EC_GET_LABEL,templ,d);
+  if (Bt(&temp_try->flags,Cf_EXTERN)) {
+    if (l->a)
+      CbAddIc(l,EC_CALL_INDIRECT2,temp_try->executable_address,d);
+    else
+      CbAddIc(l,EC_CALL_INDIRECT2,&temp_try->executable_address,d);
+  } else
+    CbAddIc(l,EC_CALL,temp_try->executable_address,d);
+  CbAddIc(l,EC_ADD_ESP,20,d);
+
+  CmpParseStatement(l,locals);
+
+  CbAddIc(l,EC_LABEL,templ2,0);
+  if (Bt(&temp_catch->flags,Cf_EXTERN)) {
+    if (l->a)
+      CbAddIc(l,EC_CALL_INDIRECT2,temp_catch->executable_address,d);
+    else
+      CbAddIc(l,EC_CALL_INDIRECT2,&temp_catch->executable_address,d);
+  } else
+    CbAddIc(l,EC_CALL,temp_catch->executable_address,d);
+  CbAddIc(l,EC_ADD_ESP,4,d);
+
+  CbAddIc(l,EC_JMP,templ1,0);
+
+  if (CmpKeyWord(l)!=KW_CATCH)
+    PrsTrap(l,"ST_MISSING_CATCH");
+  Lex(l);
+
+  CbAddIc(l,EC_LABEL,templ,0);
+  CmpParseStatement(l,locals);
+  CbAddIc(l,EC_RET,0,d);
+  CbAddIc(l,EC_LABEL,templ1,0);
+}
+
+void CmpParseAsmBlk(LexStruct *l)
+{
+  AsmCtrlStruct *a=l->a;
+  int i,j,argcnt;
+  OpcodeHashEntry *tempo;
+  SysHashEntry *temph,**temph1;
+  DWORD saved_ip;
+  BOOL is_literal;
+  BYTE *file_buf,*b;
+  DWORD file_size,old_hash_mask=l->hash_mask;
+  char *next_last_label;
+  ArcCompressStruct *ac;
+
+  if (!a)
+    PutAsmError(l,"ST_ASM_NOT_ALLOWED");
+
+  CbPush(l);
+  a->use16=FALSE;
+  l->flags|=LF_ASM_EXPRESSIONS;
+  l->hash_mask&=~HTT_INTERNAL_TYPE;
+  if (l->token=='{')
+    Lex(l);
+  else
+    PrsTrap(l,"ST_MISSING_RIGHT_BRACE");
+  while (l->token && l->token!='}') {
+    if (a->list && a->last_line && a->last_lfn==l->cur_lfn) {
+      for (i=a->display_col;i<8;i++)
+	cout "___";
+      a->display_col=0;
+      PrintF("%08X ",a->last_ip);
+      LexPutLine(a->last_line);
+      a->cur_entry_num++;
+      if (a->cur_entry_num>(Fs->window_bottom-Fs->window_top-10)) {
+	a->cur_entry_num=0;
+      }
+    }
+    a->last_ip=a->ip;
+    a->last_line=l->cur_lfn->line_start;
+    a->last_lfn=l->cur_lfn;
+    if (l->token==TK_IDENT && l->hash_entry) {
+      if (l->hash_entry->type==HTT_KEYWORD) {
+	i=l->hash_entry->user0;
+	Lex(l); //skip keyword
+	switch (i) {
+	  case AKW_IMPORT:
+	  case AKW_EXPORT:
+	    while (l->token && l->token!=';') {
+	      if (l->token=='#') {
+		is_literal=TRUE;
+		Lex(l);
+	      } else
+		is_literal=FALSE;
+	      if (l->token==TK_IDENT) {
+		if (temph=l->hash_entry) {
+		  temph=FindHashEntry(l->ident,a->glbl_hash,HTT_ALL);
+		  if (temph)
+		    temph->type=HTT_SYS_SYMBOL+HTT_UNRESOLVED_GLBL;
+		}
+		if (!temph) {
+		  temph=MAllocZ(sizeof(SysHashEntry));
+		  temph->string=l->ident;
+		  l->ident=0;
+		  temph->type=HTT_SYS_SYMBOL+HTT_UNRESOLVED_GLBL;
+		  temph->use_cnt=0;
+		  temph->user0=0;
+		  temph->user1=NULL;
+		  SetSourceFileInfo(l,temph);
+		  temph1=FindHashBucket(temph->string,a->glbl_hash);
+		  temph->next=*temph1;
+		  *temph1=temph;
+		}
+		if (i==AKW_IMPORT)
+		  temph->type=temph->type | HTT_IMPORT;
+		else if (i==AKW_EXPORT)
+		  temph->type=temph->type | HTT_EXPORT;
+		if (is_literal)
+		  temph->type=temph->type | HTT_LITERAL;
+		if (Lex(l)==',')
+		  Lex(l); //skip ','
+	      } else {
+		PutAsmError(l,"ST_EXPECTING_IDENTIFIER");
+		break;
+	      }
+	    }
+	    if (l->token!=';')
+	      PutAsmError(l,"ST_MISSING_SEMICOLON");
+	    else
+	      Lex(l); //skip ';';
+	    break;
+	  case AKW_ALIGN:
+	    if (l->token!=TK_INTEGER)
+	      PutAsmError(l,"ST_EXPECTING_INTEGER");
+	    else {
+	      i=(a->ip+l->cur_i-1) & (-l->cur_i);
+	      if (Lex(l)==',')
+		Lex(l);
+	      if (l->token==TK_INTEGER) {
+		for (j=a->ip;j<i;j++)
+	 	  AsmStoreCodeByte(a,l->cur_i);
+		Lex(l);
+	      } else
+		a->ip=i;
+	    }
+	    break;
+	  case AKW_END:
+	    break; //TODO
+	  case KW_EXE:
+	    CmpParseExeBlk(l);
+	    break;
+	  case AKW_DB:
+	    DefineBytes(l,a,1);
+	    break;
+	  case AKW_DW:
+	    DefineBytes(l,a,2);
+	    break;
+	  case AKW_DD:
+	    DefineBytes(l,a,4);
+	    break;
+	  case AKW_INSERT:
+	    if (l->token!=TK_STRING)
+	      PutAsmError(l,"ST_EXPECTING_STRING");
+	    else {
+	      file_buf=ReadFile(l->ident,&file_size);
+	      if (file_buf) {
+		for (i=0;i<file_size;i++)
+		  AsmStoreCodeByte(a,file_buf[i]);
+		Free(file_buf);
+	      }
+	      Lex(l);
+	    }
+	    break;
+	  case AKW_INSERT_COMPRESSED:
+	    if (l->token!=TK_STRING)
+	      PutAsmError(l,"ST_EXPECTING_STRING");
+	    else {
+	      file_buf=ReadFile(l->ident,&file_size);
+	      if (file_buf) {
+		ac=CompressBuf(file_buf,file_size);
+		b=ac;
+		for (i=0;i<ac->compressed_size;i++)
+		  AsmStoreCodeByte(a,b[i]);
+		Free(file_buf);
+		Free(ac);
+	      }
+	      Lex(l);
+	    }
+	    break;
+	  case AKW_LIST:
+	    a->list=TRUE;
+	    break;
+	  case AKW_NOLIST:
+	    a->list=FALSE;
+	    break;
+	  case AKW_ORG:
+	    a->ip=AsmEvalExpression(l);
+	    break;
+	  case AKW_STRUC:
+	    a->flags|=ACSF_IN_STRUCT;
+	    saved_ip=a->ip;
+	    a->ip=AsmEvalExpression(l);
+	    break;
+	  case AKW_ENDS:
+	    a->ip=saved_ip;
+	    a->flags&=~ACSF_IN_STRUCT;
+	    break;
+	  case AKW_USE16:
+	    a->use16=TRUE;
+	    break;
+	  case AKW_USE32:
+	    a->use16=FALSE;
+	    break;
+	  default:
+	    PutAsmError(l,"ST_SYNTAX_ERROR");
+	    break;
+	}
+      } else if (l->hash_entry->type & HTT_OPCODE) {
+	tempo=l->hash_entry;
+	LexPush(l);
+	Lex(l); //skip opcode
+	argcnt=0;
+	if (tempo->ins[0].arg1) {
+	  argcnt++;
+	  ParseAsmArg(l,a,&a->arg1,a->ip);
+	  if (tempo->ins[0].arg2) {
+	    argcnt++;
+	    if (l->token!=',')
+	      PutAsmError(l,"ST_EXPECTING_COMMA");
+	    else {
+	      Lex(l); //skip ','
+	      ParseAsmArg(l,a,&a->arg2,a->ip);
+	    }
+	  }
+	}
+
+	if (AsmCodeInstruction(l,a,tempo,argcnt))
+	  LexSubStackPtr(l);
+      } else if (l->hash_entry->type & HTT_SYS_SYMBOL) {
+	if (a->flags & ACSF_IN_STRUCT)
+	  l->hash_entry->type|=HTT_LITERAL;
+	else
+	  l->hash_entry->type&=~HTT_LITERAL;
+	if (l->hash_entry->type & HTT_UNRESOLVED_LOCAL) {
+	  l->hash_entry->type&=~HTT_UNRESOLVED_LOCAL;
+	  l->hash_entry->user0=a->ip;
+	  if (Lex(l)!=':')
+	    PutAsmError(l,"ST_EXPECTING_COLON");
+	  else
+	    Lex(l);
+	} else if (l->hash_entry->type & HTT_UNRESOLVED_GLBL) {
+	  if (l->hash_entry->type & HTT_IMPORT)
+	    PutAsmError(l,"ST_ATTEMPT_DEFINE_IMPORT");
+	  else {
+	    l->hash_entry->type&=~HTT_UNRESOLVED_GLBL;
+	    l->hash_entry->user0=a->ip;
+	    next_last_label=l->hash_entry->string;
+	    Lex(l); //Skip ident
+	    if (l->token!=':' && l->token!=TK_DOUBLE_COLON)
+	      PutAsmError(l,"ST_EXPECTING_COLON");
+	    else {
+	      if (l->token==TK_DOUBLE_COLON) {
+		l->hash_entry->type|=HTT_EXPORT;
+		ResolveLocals(l,a);
+		a->last_label=next_last_label;
+	      }
+	      if (Lex(l)=='#') {
+		Lex(l);
+		l->hash_entry->type|=HTT_LITERAL | HTT_EXPORT;
+	      }
+	    }
+	  }
+	} else
+	  PutAsmError(l,"ST_REDEFINITION");
+      } else
+	PutAsmError(l,"ST_SYNTAX_ERROR");
+    } else {
+      if (l->token==TK_IDENT) {
+	temph=MAllocZ(sizeof(SysHashEntry));
+	temph->string=l->ident;
+	l->ident=0;
+	temph->type=HTT_SYS_SYMBOL;
+	if (a->flags & ACSF_IN_STRUCT)
+	  temph->type|=HTT_LITERAL;
+	temph->use_cnt=0;
+	SetSourceFileInfo(l,temph);
+	temph->user0=a->ip;
+	temph->user1=NULL;
+	Lex(l);  //Skip ident
+	if (l->token==':' || l->token==TK_DOUBLE_COLON) {
+	  if (temph->string[0]=='@' && temph->string[1]=='@') {
+	    temph1=FindHashBucket(temph->string,a->local_hash);
+	    a->has_locals=TRUE;
+	  } else
+	    temph1=FindHashBucket(temph->string,a->glbl_hash);
+	  temph->next=*temph1;
+	  *temph1=temph;
+	  if (l->token==TK_DOUBLE_COLON) {
+	    temph->type=temph->type | HTT_EXPORT; //Export
+	    ResolveLocals(l,a);
+	    a->last_label=temph->string;
+	    Lex(l);
+	  } else {
+	    if (Lex(l)=='#') {
+	      temph->type=temph->type | HTT_EXPORT | HTT_LITERAL; //Export
+	      ResolveLocals(l,a);
+	      a->last_label=temph->string;
+	      Lex(l);
+	    }
+	  }
+	} else {
+	  PutAsmError(l,"ST_EXPECTING_COLON");
+	  Free(temph->string);
+	  Free(temph);
+	}
+      } else {
+	if (l->token==TK_INCLUDE_EOF)
+	  Lex(l);
+	else
+	  PutAsmError(l,"ST_SYNTAX_ERROR");
+      }
+    }
+  }
+  ResolveLocals(l,a);
+  l->flags&=~LF_ASM_EXPRESSIONS;
+  l->hash_mask=old_hash_mask;
+  CbPop(l);
+  Lex(l); //Skip "}"
+}
+
+BOOL CmpParseStatement(LexStruct *l,ClassStruct *locals,
+  CbMiscStruct *break_label=NULL,CbMiscStruct *continue_label=NULL,
+  BOOL saved_prs_semicolon=TRUE)
+{
+  BOOL prs_exp,cont,prs_semicolon,is_asm=FALSE,
+       is_public=FALSE,last_is_public=FALSE;
+  DWORD i;
+  SysHashEntry *temph;
+  CbMiscStruct *templ;
+  char *import_name;
+  do {
+    is_public=FALSE;
+    cont=FALSE;
+    prs_exp=FALSE;
+    prs_semicolon=saved_prs_semicolon;
+    l->statement_cnt++;
+    while (l->token==',')
+      Lex(l);
+    if (l->token=='{') {
+      l->braces_cnt++;
+      Lex(l);
+      while (l->token!='}')
+	CmpParseStatement(l,locals,break_label,continue_label);
+      l->braces_cnt--;
+      l->statement_cnt--;
+      Lex(l);
+    } else if (l->token==TK_EOF) ;
+    else if (l->token==TK_INCLUDE_EOF)	{
+      Lex(l);
+      cont=TRUE;
+      prs_semicolon=FALSE;
+    } else if (l->token==';') {
+      if (prs_semicolon) {
+	l->statement_cnt--;
+	Lex(l);
+      }
+    } else {
+      if (l->token==TK_IDENT) {
+	if (temph=l->hash_entry) {
+	  if (temph->type & HTT_KEYWORD) {
+	    i=temph->user0;
+	    Lex(l);
+	    switch (i) {
+	      case KW_IF:
+		CmpParseIf(l,locals,break_label,continue_label);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_FOR:
+		CmpParseFor(l,locals);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_WHILE:
+		CmpParseWhile(l,locals);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_DO:
+		CmpParseDoWhile(l,locals);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_SWITCH:
+		CmpParseSwitch(l,locals);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_JEXTERN:
+		if (Bt(&l->flags,LFf_EXTERNS_TO_IMPORTS))
+		  goto keyword_jimport;
+		if (l->token!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_SYS_SYMBOL");
+		if (!(temph=l->hash_entry))
+	  	  PrsTrap(l,"ST_EXPECTING_SYS_SYMBOL");
+		if (!(temph->type & HTT_SYS_SYMBOL))
+		  PrsTrap(l,"ST_EXPECTING_SYS_SYMBOL");
+		i=temph->user0;
+		if (Lex(l)!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph=l->hash_entry))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (locals)
+		  PrsTrap(l,"ST_NOT_ALLOWED_IN_FUNCTION");
+		CmpParseGlblVarList(l,PG_JEXTERN,temph,i,last_is_public);
+		prs_semicolon=FALSE;
+		cont=TRUE;
+		break;
+	      case KW_JIMPORT:
+keyword_jimport:
+		if (l->token!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_SYS_SYMBOL");
+		import_name=l->ident;
+		l->ident=0;
+		if (Lex(l)!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph=l->hash_entry))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (locals)
+		  PrsTrap(l,"ST_NOT_ALLOWED_IN_FUNCTION");
+		CmpParseGlblVarList(l,PG_JIMPORT,temph,import_name,FALSE);
+		Free(import_name);
+		prs_semicolon=FALSE;
+		cont=TRUE;
+		break;
+	      case KW_INTERNAL:
+		if (l->token!=TK_INTEGER)
+	 	  PrsTrap(l,"ST_EXPECTING_INTEGER");
+		i=l->cur_i;
+		if (Lex(l)!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph=l->hash_entry))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (locals)
+		  PrsTrap(l,"ST_NOT_ALLOWED_IN_FUNCTION");
+		CmpParseGlblVarList(l,PG_JINTERN,temph,i,last_is_public);
+		prs_semicolon=FALSE;
+		cont=TRUE;
+		break;
+	      case KW_EXTERN:
+		if (Bt(&l->flags,LFf_EXTERNS_TO_IMPORTS))
+		  goto keyword_import;
+		if (l->token!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph=l->hash_entry))
+	 	  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (locals)
+		  PrsTrap(l,"ST_NOT_ALLOWED_IN_FUNCTION");
+		CmpParseGlblVarList(l,PG_EXTERN,temph,0,last_is_public);
+		prs_semicolon=FALSE;
+		cont=TRUE;
+		break;
+	      case KW_IMPORT:
+keyword_import:
+		if (l->token!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph=l->hash_entry))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		  PrsTrap(l,"ST_EXPECTING_TYPE");
+		if (locals)
+		  PrsTrap(l,"ST_NOT_ALLOWED_IN_FUNCTION");
+		CmpParseGlblVarList(l,PG_IMPORT,temph,0,FALSE);
+		prs_semicolon=FALSE;
+		cont=TRUE;
+		break;
+	      case KW_ASM:
+		CmpParseAsmBlk(l);
+		prs_semicolon=FALSE;
+		is_asm=TRUE;
+		break;
+	      case KW_EXE:
+		CmpParseExeBlk(l);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_TRY:
+		CmpParseTryBlk(l,locals);
+		prs_semicolon=FALSE;
+		break;
+	      case KW_BREAK:
+		if (!break_label)
+		  PrsTrap(l,"ST_BREAK_NOT_ALLOWED");
+	  	CbAddIc(l,EC_JMP,break_label,0);
+		break;
+	      case KW_CONTINUE:
+		if (!continue_label)
+	 	  PrsTrap(l,"ST_CONTINUE_NOT_ALLOWED");
+  		CbAddIc(l,EC_JMP,continue_label,0);
+		break;
+	      case KW_RETURN:
+		if (l->token!=';') {
+		  if (!PrsParseExpression(l))
+		    throw(TRP_COMPILER,17);
+		  CbAddIc(l,EC_ADD_ESP,4,0);
+		}
+		if (locals)
+		  CbAddIc(l,EC_LEAVE,0,0);
+		CbAddIc(l,EC_RET,0,0);
+		break;
+	      case KW_GOTO:
+		if (l->token!=TK_IDENT)
+		  PrsTrap(l,"ST_EXPECTING_IDENTIFIER");
+		if (!(templ=CbFindGotoLabel(l,l->ident))) {
+		  templ=CbMiscNew(l,CBMT_GOTO_LABEL);
+		  templ->string=l->ident;
+		  l->ident=NULL;
+		}
+  		CbAddIc(l,EC_JMP,templ,0);
+		Lex(l);
+		break;
+	      case KW_COUT:
+		CmpParseCout(l,FALSE);
+		break;
+	      case KW_COUTLN:
+		CmpParseCout(l,TRUE);
+		break;
+	      case KW_CLASS:
+		CmpParseClass(l,FALSE,last_is_public);
+		break;
+	      case KW_UNION:
+		CmpParseClass(l,TRUE,last_is_public);
+		break;
+	      case KW_PUBLIC:
+		is_public=TRUE;
+		cont=TRUE;
+		prs_semicolon=FALSE;
+		break;
+	      default:
+		prs_exp=TRUE;
+		break;
+	    }
+	  } else if (temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)) {
+	    if (locals)
+	      CmpParseVarList(l,locals,PVLM_LOCAL_VAR);
+	    else
+	      CmpParseGlblVarList(l,PG_NULL,temph,0,last_is_public);
+	    prs_semicolon=FALSE;
+	    cont=TRUE;
+	  } else prs_exp=TRUE;
+	} else {
+	  if (l->local_var_entry)
+	    prs_exp=TRUE;
+	  else {
+	    if (!(templ=CbFindGotoLabel(l,l->ident))) {
+	      templ=CbMiscNew(l,CBMT_GOTO_LABEL);
+	      templ->string=l->ident;
+	      l->ident=NULL;
+	    }
+  	    CbAddIc(l,EC_LABEL,templ,0);
+	    if (Lex(l)==':') //skip ident
+	      Lex(l); //skip colon
+	    else
+	      PrsTrap(l,"ST_UNDEFINED_IDENTIFIER");
+	    prs_semicolon=FALSE;
+	  }
+	}
+      } else prs_exp=TRUE;
+      if (prs_exp) {
+	if (!PrsParseExpression(l))
+	  throw(TRP_COMPILER,18);
+	CbAddIc(l,EC_ADD_ESP,4,0);
+      }
+      if (l->token!=',')
+	l->statement_cnt--;
+      if (prs_semicolon && l->token!=',') {
+	if (l->token==';') {
+	  Lex(l);
+	} else
+	  PrsTrap(l,"ST_MISSING_SEMICOLON");
+      }
+    }
+    last_is_public=is_public;
+  } while (l->token==',' || cont);
+  return is_asm;
+}
+
+BYTE *CompileStatement(LexStruct *l)
+{
+  BYTE *result=0xFFFFFFFF;
+  AsmCtrlStruct *a=l->a;
+  DWORD size,i,j;
+  DbgInfo *dbg=NULL;
+  CbInitOutPtrs(l);
+  if (!CmpParseStatement(l,NULL)) {
+    CbAddIc(l,EC_RET,0,0);
+    CbAddIc(l,0,0,0);
+    if (result=CbCompile(l,0,&size,&dbg)) {
+      if (a) {
+	if (size!=1) {//not just RET
+	  j=a->ip;
+  	  for (i=0;i<size;i++)
+	    AsmStoreCodeByte(a,result[i]);
+	  Free(result);
+	  result=j;
+	} else {
+	  Free(result);
+	  result=0xFFFFFFFF;
+	}
+      } else {
+	if (size==1) {//just RET
+	  Free(result);
+	  result=0xFFFFFFFF;
+	}
+      }
+    } else
+      result=0xFFFFFFFF;
+  }
+  Free(dbg);
+  return result;
+}
+
+ExeStruct *CompileBuf(BYTE *buf,char *map_name=NULL,
+  int *error_cnt=NULL, int *warning_cnt=NULL,char mapfile_drive=0)
+{
+  BOOL okay=TRUE;
+  LexStruct *l;
+  AsmCtrlStruct *a;
+  int i,j;
+  ExeStruct *result=NULL;
+  AsmCodeBlk *tempc;
+  ExeImportExportStruct *tempe,*tempe1;
+  void my_HashRep(SysHashTable *h,DWORD mask,char *outname,char *flags,char drive);
+  my_HashRep=FindExtern("HashRep");
+  result=MAllocZ(sizeof(ExeStruct));
+  l=LexNew(buf,LF_DONT_FREE_BUFFER);
+  InsQue(l,Fs->last_lex);
+
+  a=MAllocZ(sizeof(AsmCtrlStruct));
+  a->local_hash=NewHashTable(16);
+  a->glbl_hash=NewHashTable(2048);
+  a->glbl_hash->next=asm_hash;
+  a->local_hash->next=a->glbl_hash;
+
+  l->a=a;
+  l->hash_table_list=a->local_hash;
+  l->define_hash_table=a->glbl_hash;
+  l->local_hash_table=a->local_hash;
+  l->glbl_hash_table=a->glbl_hash;
+  Lex(l);
+try {
+  while (l->token!=TK_EOF) {
+    i=CompileStatement(l);
+    if (i!=0xFFFFFFFF) {
+      tempe=MAlloc(sizeof(ExeImportExportStruct));
+      tempe->type=EIE_MAIN;
+      tempe->ip=i;
+      tempe->string=NULL;
+      tempe->next=NULL;
+      tempe1=&result->ie;
+      while (tempe1->next) //TODO:This could be optimized
+	tempe1=tempe1->next;
+      tempe1->next=tempe;
+    }
+  }
+  ResolveGlbls(l,a,result);
+} catch {
+  Fs->take_trap=TRUE;
+  okay=FALSE;
+}
+  if (map_name)
+    my_HashRep(a->glbl_hash,HTT_ALL,map_name,"",mapfile_drive);
+//TODO free debug info and possibly classes
+  if (error_cnt) *error_cnt=l->error_cnt;
+  if (warning_cnt) *warning_cnt=l->warning_cnt;
+  RemQue(l);
+  LexDel(l);
+  DelHashTable(a->local_hash);
+  DelHashTable(a->glbl_hash);
+
+  if (okay) {
+    if (!a->num_code_bytes)
+      result->code=NULL;
+    else {
+      result->code=MAlloc(a->num_code_bytes);
+      result->code_bytes=a->num_code_bytes;
+      tempc=a->code;
+      j=0;
+      l=a->num_code_bytes;
+      while (tempc) {
+	i=l;
+	if (i>ASM_CODE_BLK_SIZE)
+	  i=ASM_CODE_BLK_SIZE;
+	MemCpy(result->code+j,tempc->body,i);
+	j+=i;
+	l-=i;
+	tempc=tempc->next;
+      }
+    }
+  } else {
+    Free(result);
+    result=NULL;
+  }
+  DelLinkedList(a->code);
+  result->absolutes=a->absolutes;
+  Free(a);
+  return result;
+}
+
+int CompileFile(char *filename,char *map_name=NULL,char *out_name=NULL,char mapfile_drive=0)
+{
+  char *fbuf=NULL,*fbuf2=NULL,*fbuf3=NULL;
+  ExeStruct *e;
+  DWORD *dd,size=0;
+  BYTE *header=MAlloc(0x20000),*ptr;
+  BinFileHeaderStruct *bfh;
+  int cnt=0,i,error_cnt=0,warning_cnt=0;
+  ExeImportExportStruct *tempe,*tempe1;
+  ExeAbsoluteAddressStruct *tempa,*tempa1;
+  fbuf=DefaultExtension(filename,"CPZ");
+  fbuf2=MSPrintF("#include \"%s\"",fbuf);
+  if (map_name)
+    fbuf3=DefaultExtension(map_name,"MPZ");
+  e=CompileBuf(fbuf2,fbuf3,&error_cnt,&warning_cnt,mapfile_drive);
+
+  if (e) {
+    ptr=header;
+    tempa=e->absolutes;
+    while (tempa) {
+      cnt++;
+      tempa=tempa->next;
+    }
+    if (cnt) {
+      *ptr++=EIE_ABSOLUTE_ADDRESS;
+      dd=ptr;
+      *dd=cnt;
+      ptr+=sizeof(DWORD);
+      *ptr++=0;
+      tempa=e->absolutes;
+      while (tempa) {
+	tempa1=tempa->next;
+	dd=ptr;
+	*dd=tempa->ip;
+	ptr+=sizeof(DWORD);
+	Free(tempa);
+	tempa=tempa1;
+      }
+    }
+    tempe=e->ie;
+    while (tempe) {
+      tempe1=tempe->next;
+      *ptr++=tempe->type;
+      dd=ptr;
+      *dd=tempe->ip;
+      ptr+=sizeof(DWORD);
+      if (tempe->string) {
+	i=StrLen(tempe->string);
+	MemCpy(ptr,tempe->string,i+1);
+	Free(tempe->string);
+	ptr+=i+1;
+      } else
+	*ptr++=0;
+      Free(tempe);
+      tempe=tempe1;
+    }
+    *ptr++=EIE_END;
+    i=(ptr-header+15) & 0xFFFFFFF0;
+    size=i+e->code_bytes+sizeof(BinFileHeaderStruct);
+    bfh=MAlloc(size);
+    MemCpy(bfh+e->code_bytes+sizeof(BinFileHeaderStruct),header,i);
+    MemCpy(bfh+sizeof(BinFileHeaderStruct),e->code,e->code_bytes);
+    bfh->jmp=0xE9+256*(16-3);
+    bfh->header_offset=e->code_bytes+16;
+    bfh->file_size=i+e->code_bytes+16;
+    bfh->xsum=J_XSUM;
+    bfh->xsum=ArcCheckSum(bfh,i+e->code_bytes+sizeof(BinFileHeaderStruct));
+    Free(fbuf2);
+    if (out_name) {
+      fbuf2=DefaultExtension(out_name,"BIZ");
+    } else
+      fbuf2=ChangeExtension(fbuf,"BIZ");
+    WriteFile(fbuf2,bfh,size);
+    Free(bfh);
+    Free(e->code);
+    Free(e);
+  }
+  Free(header);
+  Free(fbuf);
+  Free(fbuf2);
+  Free(fbuf3);
+  PrintF(SysText("ST_ERRORS_WARNINGS"),error_cnt,warning_cnt,size);
+  return error_cnt;
+}
+
+int ExecuteCmdLine(LexStruct *l)
+{
+  int result=0,i;
+  char *ptr;
+  BYTE *code;
+  while (l->token!=TK_EOF &&
+    (l->token!='}' || !(l->flags & LF_EXE_BLK)) ) {
+    if (ptr=l->cur_lfn->line_start)
+      MemCpy(&Fs->task_descriptor,ptr,TSS_DESC_LENGTH);
+    code=CompileStatement(l);
+    if (code!=0xFFFFFFFF) {
+      result=Run(code);
+      for (i=6;i>=0;i--)
+	Fs->answers[i+1]=Fs->answers[i];
+      Fs->answers[0]=result;
+      Free(code);
+    }
+  }
+  return result;
+}
+
+void ContinueUserTask()
+{
+  LexStruct *l;
+  while (TRUE) {
+    l=LexNew("",LF_PROMPT);
+    InsQue(l,Fs->last_lex);
+    try {
+      Lex(l);
+      ExecuteCmdLine(l);
+    } catch
+      CatchAll;
+    RemQue(l);
+    //LexDel(l);  //Sometimes crashes on BREAK
+  }
+}
+
+int ExecuteString(char *buf,char *filename=NULL)
+{
+  int result;
+  LexStruct *l=LexNew(buf,LF_DONT_FREE_BUFFER);
+  LexFileStruct *tempf=l->cur_lfn;
+  Free(tempf->name);
+  if (!filename)
+    filename=sys_temp_filename;
+  tempf->name=AbsoluteFileName(filename);
+  InsQue(l,Fs->last_lex);
+  try {
+    Lex(l);
+    result=ExecuteCmdLine(l);
+  } catch
+    CatchAll;
+  RemQue(l);
+  LexDel(l);
+  return result;
+}
+
+int ExecuteFile(char *name)
+{
+  int result;
+  char *st=MSPrintF("#include \"%s\";",name);
+  result=ExecuteString(st,name);
+  Free(st);
+  return result;
+}
+
+void LoadCompileSysText()
+{
+  LoadStr("ST_ERROR","ERROR: ");
+  LoadStr("ST_MISSING_SEMICOLON","missing ';' at");
+  LoadStr("ST_MISSING_EXPRESSION","missing Expression at ");
+  LoadStr("ST_MISSING_RIGHT_PAREN","missing ')' at ");
+  LoadStr("ST_MISSING_RIGHT_BRACKET","missing ']' at ");
+  LoadStr("ST_UNDEFINED_SYMBOL","undefined symbol at ");
+  LoadStr("ST_UNDEFINED_IDENTIFIER","undefined identifier at ");
+  LoadStr("ST_INVALID_CLASS","invalid class at ");
+  LoadStr("ST_INVALID_MEMBER","invalid member at ");
+  LoadStr("ST_EXPECTING_TYPE","expecting type at ");
+  LoadStr("ST_EXPECTING_IDENTIFIER","expecting identifier at ");
+  LoadStr("ST_EXPECTING_RIGHT_PAREN","expecting ')' at ");
+  LoadStr("ST_EXPECTING_LEFT_BRACE","expecting '{' at ");
+  LoadStr("ST_MISSING_RIGHT_BRACE","missing '}' at ");
+  LoadStr("ST_INVALID_LVALUE","invalid lvalue at ");
+  LoadStr("ST_EXPECTING_EQUAL","expecting '=' at ");
+  LoadStr("ST_NOT_POINTER_TYPE","not pointer type at ");
+  LoadStr("ST_EXPECTING_COMMA","expecting ',' at ");
+  LoadStr("ST_EXPECTING_SYS_SYMBOL","expecting System symbol at ");
+  LoadStr("ST_EXPECTING_STRING","expecting string at ");
+  LoadStr("ST_MISSING_WHILE","missing 'while' at");
+  LoadStr("ST_UNKNOWN_STATEMENT","unknown statement at ");
+  LoadStr("ST_ALREADY_ONE_IMMEDIATE","already one immediate at ");
+  LoadStr("ST_SYNTAX_ERROR","syntax error at ");
+  LoadStr("ST_EXPECTING_SCALE_FACTOR","expecting scale factor at ");
+  LoadStr("ST_QUESTION_NOT_ALLOWED","'?' not allowed at ");
+  LoadStr("ST_EXPECTING_LEFT_PAREN","expecting '(' at ");
+  LoadStr("ST_UNDEFINED_DUP_CNT","undefined DUP cnt at ");
+  LoadStr("ST_EXPECTING_COLON","expecting ':' at ");
+  LoadStr("ST_EXPECTING_DOUBLE_COLON","expecting '::' at ");
+  LoadStr("ST_EXPECTING_DOT","expecting '.' at ");
+  LoadStr("ST_REDEFINITION","redefinition at ");
+  LoadStr("ST_INVALID_INSTRUCTION","invalid instruction at ");
+  LoadStr("ST_INTERNAL_ERROR","Jintern error at ");
+  LoadStr("ST_BRANCH_OUT_OF_RANGE","branch out of range at ");
+  LoadStr("ST_ATTEMPT_DEFINE_IMPORT","attempt to define import at ");
+  LoadStr("ST_COULD_USE_BYTE_DISP","could use BYTE displacement at ");
+  LoadStr("ST_WARNING","WARNING: ");
+  LoadStr("ST_LINE","line: ");
+  LoadStr("ST_NO_SIZE_SPECIFIED","no size specified at ");
+  LoadList("ST_BYTE_REGS","AL\0CL\0DL\0BL\0AH\0CH\0DH\0BH\0\0");
+  LoadList("ST_WORD_REGS","AX\0CX\0DX\0BX\0SP\0BP\0SI\0DI\0\0");
+  LoadList("ST_DWORD_REGS","EAX\0ECX\0EDX\0EBX\0ESP\0EBP\0ESI\0EDI\0\0");
+  LoadList("ST_OPCODE_MODIFIERS","NO\0R\0CB\0CW\0CD\0CP\0IB\0IW\0ID\0RB\0RW\0RD\0\0");
+  LoadList("ST_ARGUMENT_TYPES","NO\0REL8\0REL16\0REL32\0UIMM8\0UIMM16\0UIMM32\0R8\0R16\0R32\0"
+		"IMM8\0IMM16\0IMM32\0RM8\0RM16\0RM32\0M8\0M16\0M32\0"
+		"M1616\0M1632\0M16N32\0M16N16\0M32N32\0"
+		"MOFFS8\0MOFFS16\0MOFFS32\0CL\0"
+		"AL\0AX\0EAX\0DX\0SS\0DS\0ES\0FS\0GS\0SREG\0CS\0\0");
+  LoadList("ST_SEG_REGS","ES\0CS\0SS\0DS\0FS\0GS\0\0");
+  LoadStr("ST_EXPECTING_INTEGER","expecting integer at ");
+  LoadStr("ST_UNRESOLVED_REFERENCE","Unresolved Reference:");
+  LoadStr("ST_NOT_DEFINED","Not Defined");
+  LoadStr("ST_SCANNING_DIRECTORY","Scanning Directory:");
+  LoadList("ST_LINK_TYPES","FI\0FA\0FF\0FL\0MN\0\0");
+  LoadStr("ST_ASM_NOT_ALLOWED","ASM not allowed");
+  LoadStr("ST_UNUSED_VAR","Unused Var");
+  LoadStr("ST_NOT_ALLOWED_IN_FUNCTION","Not allowed in function");
+  LoadStr("ST_MISSING_CATCH","missing 'catch' at");
+  LoadStr("ST_UNDEFINED_GOTO_LABEL","Undefined goto label:");
+  LoadStr("ST_BREAK_NOT_ALLOWED","'break' not allowed\r\n");
+  LoadStr("ST_CONTINUE_NOT_ALLOWED","'continue' not allowed\r\n");
+  LoadStr("ST_ERRORS_WARNINGS","Errors:%04d Warnings:%04d Size:%08X\r\n");
+  LoadStr("ST_IMPORT_NOT_NEEDED","import not needed at ");
+  LoadStr("ST_EXPECTING_CASE","expecting 'case' at ");
+  LoadStr("ST_CASE_RANGE_ERROR","switch range error at ");
+  LoadStr("ST_STRING_DEFAULT","String defaults not implemented in static mode at ");
+
+
+}
+
+
+#define ROOT_STARTUP_NAME "::/J/KERNEL/ROOTK.CPZ"
+void RootStartUpFile()
+{
+  BYTE *buf=ReadTextFile(ROOT_STARTUP_NAME);
+  LexStruct *l=LexNew(buf,0);
+  LexFileStruct *tempf=l->cur_lfn;
+  LoadCompileSysText;
+  LoadAsmHash;
+  Bts(&l->flags,LFf_ECHO);
+  tempf->name=NewString(ROOT_STARTUP_NAME);
+  InsQue(l,Fs->last_lex);
+  try {
+    Lex(l);
+    ExecuteCmdLine(l);
+  } catch
+    CatchAll;
+  RemQue(l);
+  LexDel(l);
+}
+

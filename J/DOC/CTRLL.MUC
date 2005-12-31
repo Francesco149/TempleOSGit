@@ -1,0 +1,52 @@
+See [::/J/DOC/DOLLAR.TXZ] ::/J/DOC/DOLLAR.TXZ for details of dollar sign cmds.
+
+"Expression" a number or C+ algebraic term with operators and C+ symbols can 
+be entered.
+"Macro" Most entries can behave like macro entries if you assign them macro 
+strings.
+"AutoString" Like a macro except it is an [::/J/DOC/GLOSS.GLZ,AutoFile]
+AutoFile. You cannot have both an 
+autostring and macro text defined.  
+
+Displayed Text is the text that will be displayed for the item. For links,
+you 
+can leave it blank and the details of the link will be shown.
+Hide means display nothing, making an entry invisible.
+
+Left X relative to the left margin.
+Center X relative to the horizontal center of the window.
+Right X relative to the right margin.
+Top Y relative to the top of the window.
+Center Y relative to the vertical center of the window.
+Bottom Y relative to the bottom of the window.
+
+Blink make the text blink.
+Invert make the text inverted.
+Underline make the text underlined. 
+
+Scroll X Length Expression if a value is entered, the text will scroll in an 
+area of this width.
+Y Offset Expression if a value is entered, the text will be shifted
+vertically 
+by this many pixels, so you can make superscripts or subscripts.
+X Offset Expression if a value is entered, the text will be shifted 
+horizontally by this many pixels.
+
+Tree The item will behave like a tree widget, with this as the root.
+Collapsed The tree or hidden widget will begin collapsed.
+Alias For tree entries, the text of the subentry the cursor is on will appear 
+here.  This is for drop-down lists.
+
+Quote Make the result suitable for including in a program, in quotes, 
+especially format_str entries in class definitions.
+
+X Expression For cursor movements, this is the horizontal value.
+Y Expression For cursor movements, this is the vertical value.
+
+PopUp For macro's, run the macro in a PopUp window.
+Escape For macro's, send an ESC char to exit before running the macro.  
+Without this, the macro runs in the wrong window, usually.
+
+Refresh Data  For entries in programs where values are prompted, this flag 
+updates the entry continuously.
+Password When items are prompted, the value will be shown as "*".

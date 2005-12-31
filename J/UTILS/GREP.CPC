@@ -1,0 +1,184 @@
+public int PopUpReplaceSkipAllCancelEdit(char *msg)
+{
+  int i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,msg);
+  LtfPutS(l,"$CM +LX, 2,4$$BT, \"REPLACE\" 0$");
+  LtfPutS(l,"$CM +LX, 18,0$$BT, \"SKIP\" 1$");
+  LtfPutS(l,"$CM +LX, 2,4$$BT, \"ALL\" 2$");
+  LtfPutS(l,"$CM +LX, 18,0$$BT, \"CANCEL\" 3$");
+  LtfPutS(l,"$CM +LX, 2,4$$BT, \"EDIT\" 4$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+
+
+void GrepFile(char *pattern,char *name,DWORD *flags,char *replace_text)
+{
+  BOOL write_this_file=FALSE;
+  char *src,*dst,*dst2,name_buf[256];
+  DWORD ss_flags;
+  Ltf *l=LtfRead(name, LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
+  LtfEntry *cl;
+  int line_num=1,i,j,plen,rlen,dlen;
+
+  ss_flags=(Bt(flags,FUf_IGNORE)) ? SS_IGNORE_CASE :0;
+  if (Bt(flags,FUf_LABEL))
+    ss_flags=ss_flags | SS_WHOLE_LABELS;
+
+  plen=StrLen(pattern);
+  if (replace_text)
+    rlen=StrLen(replace_text);
+  cl=l->dummy.next;
+  while (cl!=l && !Bt(flags,FUf_CANCEL)) {
+    if (cl->btype==LTFT_TEXT) {
+      src=cl->display;
+      while (src && !Bt(flags,FUf_CANCEL)) {
+	src=SearchString(src,pattern,ss_flags);
+	if (src) {
+	  PutFileLink(name,cl->y+1);
+	  SPrintF(name_buf,"%s,%d",name,cl->y+1);
+  	  PrintF(" %s\r\n",cl->display);
+	}
+	if (src && Bt(flags,FUf_REPLACE)) {
+	  if (Bt(flags,FUf_ALL))
+	    i=2;
+	  else {
+	    i=PopUpReplaceSkipAllCancelEdit("");
+	    if (i==3)
+	      Bts(flags,FUf_CANCEL);
+	    else if (i==2)
+	      Bts(flags,FUf_ALL);
+	  }
+	  if (i==0 || i==2) {
+	    dlen=StrLen(cl->display);
+	    dst=MAlloc(dlen+1+rlen-plen);
+	    dst2=dst;
+	    j=src-cl->display;
+	    for (i=0;i<j;i++)
+	      *dst++=cl->display[i];
+	    for (i=0;i<rlen;i++)
+	      *dst++=replace_text[i];
+	    src=dst;
+	    for (i=j+plen;i<=dlen;i++)
+	      *dst++=cl->display[i];
+	    Free(cl->display);
+	    cl->display=dst2;
+	    PrintF("%12s,%04X*%s\r\n",name,cl->y+1,dst2);
+	    write_this_file=TRUE;
+	  } else {
+	    src++;
+	    if (i==4)
+	      Edit(name_buf);
+	  }
+	} else
+	  src=NULL;
+      }
+    }
+    cl=cl->next;
+  }
+  if (write_this_file)
+    LtfWrite(l);
+  LtfDel(l);
+}
+
+void GrepList(char *pattern,JDirEntry *tempm1,DWORD *flags,char *replace_text)
+{
+  JDirEntry *tempm2;
+
+  while (tempm1 && !Bt(flags,FUf_CANCEL)) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub) {
+	PrintF("%S %s\r\n","ST_SCANNING_DIRECTORY",tempm1->full_name);
+	GrepList(pattern,tempm1->sub,flags,replace_text);
+      }
+    } else
+      GrepFile(pattern,tempm1->full_name,flags,replace_text);
+    DelJDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+public void Grep(char *pattern,char *wild=TEXT_FILE_MASK,char *flags="+r+i+l",char *replace_text=NULL)
+//"+r"=recurse "+i"=ignore case
+//"+l"=whole labels only
+{
+  JDirEntry *tempm1=NULL;
+  FlagsStruct f;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  JFileAccess *fa=NewJFileAccess(wild);
+
+  if (fa) {
+    AssignBit(&f.on0,FUf_REPLACE,replace_text);
+
+    tempm1=FindFiles(fa->mask,&f.on0);
+    GrepList(pattern,tempm1,&f.on0,replace_text);
+    DelJFileAccess(fa);
+  }
+}
+
+JDirEntry MCFindMatch(JDirEntry *pattern,JDirEntry *list)
+{
+  while (list) {
+    if (!StrCmp(pattern->name,list->name) && pattern->attr==list->attr)
+      return list;
+    list=list->next;
+  }
+  return NULL;
+}
+
+void MergeChkList(JDirEntry *m1,JDirEntry *m2,DWORD *fuf_flags)
+{
+  int i;
+  JDirEntry *tempm2;
+  while (m1) {
+    tempm2=MCFindMatch(m1,m2);
+    if (!tempm2)
+      coutln "Does Not Exist:",m1->full_name;
+    else {
+      if (m1->attr & J_ATTR_DIR)
+	MergeChkList(m1->sub,tempm2->sub,fuf_flags);
+      else {
+	i=m1->datetime.d-tempm2->datetime.d;
+	if (Abs(i)>20) { //Filedates can shift due to conversion
+	  coutln m1->full_name;
+	  if (Bt(fuf_flags,FUf_DIFF)) {
+	    if (IsTextFile(m1->full_name)) {
+	      Diff(tempm2->full_name,m1->full_name);
+	    }
+	  }
+	}
+      }
+    }
+    m1=m1->next;
+  }
+}
+
+public void MergeChk(char *dst_mask,char *src_mask,char *flags="+r")
+//r=recurse
+//d=diff
+{
+  JDirEntry *tempm1=NULL,*tempm2=NULL;
+  FlagsStruct f;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  JFileAccess *fa;
+
+  coutln "WARNING:This is based strictly on file dates.";
+  fa=NewJFileAccess(src_mask);
+  if (fa) {
+    tempm1=FindFiles(fa->mask,&f.on0);
+    DelJFileAccess(fa);
+  }
+  fa=NewJFileAccess(dst_mask);
+  if (fa) {
+    tempm2=FindFiles(fa->mask,&f.on0);
+    DelJFileAccess(fa);
+  }
+  MergeChkList(tempm1,tempm2,&f.on0);
+  DelJDirList(tempm1);
+  DelJDirList(tempm2);
+}
+

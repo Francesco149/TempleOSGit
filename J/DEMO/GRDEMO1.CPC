@@ -1,0 +1,64 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x000000B4
+#define __BIN_1 "\x02\x00\x00\x00\x02\x00\x00\x00\x05\x00\x00\x00\x16\x00\x00\x00\x05\x00\x00\x00\x23\x00\x00\x00\xF8\xFF\xFF\xFF\x05\x00\x00\x00\x23\x00\x00\x00\xF8\xFF\xFF\xFF\x31\x00\x00\x00\x09\x00\x00\x00\x05\x00\x00\x00\x31\x00\x00\x00\x09\x00\x00\x00\x22\x00\x00\x00\x17\x00\x00\x00\x05\x00\x00\x00\x22\x00\x00\x00\x16\x00\x00\x00\x14\x00\x00\x00\x06\x00\x00\x00\x02\x00\x00\x00\x04\x00\x00\x00\x05\x00\x00\x00\x2A\x00\x00\x00\x00\x00\x00\x00\x2A\x00\x00\x00\x0F\x00\x00\x00\x05\x00\x00\x00\x2A\x00\x00\x00\x0F\x00\x00\x00\x1B\x00\x00\x00\x0E\x00\x00\x00\x05\x00\x00\x00\x1B\x00\x00\x00\x0E\x00\x00\x00\x1B\x00\x00\x00\xFE\xFF\xFF\xFF\x05\x00\x00\x00\x1B\x00\x00\x00\xFE\xFF\xFF\xFF\x2A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+
+//This file uses an image stored in the source
+//code after the text area.  CTRL-R was used to
+//create the image.  A $PI$ enter was generated
+//by CTRL-R.  Then, an insert-binary command
+//was added by toggling to plain text mode
+//with CTRL-T, examining the number in the $PI$
+//command duplicating it in a $IB$ command.
+//
+//The $IB$ command behaves like a string constant
+//when compiled.  That is, you can assign it to
+//a pointer variable.
+//
+//Note: If you press CTRL-T, the text in quotes
+//on $PI$ and $IB$ commands was added to make
+//the commands visible.  The text is ignored by
+//the compiler.  The $PI$ command is also ignored
+//but the $IB$,$IS$ and $IT$ commands generate
+//values.
+//
+//GRDEMO1.CPZ uses the persistent graphic base,grbase,
+//while the other GRDEMO's use grbase2 which must
+//be redrawn each update of the screen by the
+//operating system (25Hz).  This demo is simpler
+//because you do not need a window update routine.
+
+
+/* <PI 1> <1> (image) */
+
+
+
+
+void GrDemo1()
+{
+  BYTE *img=__BIN_1;
+  GrBitMap *base=GrNew(grbase);
+  int i;
+  PutS("$CL$");
+  for (i=0;i<grwidth/4;i++) {
+    GrClear;
+
+//When the image was generated with CTRL-R, no
+//width was specified, so you can change it here.
+//If you enter a width or color in CTRL-R, you
+//can not change them.
+    base->pen_width=3;
+
+//"GR_WHITE" is used here because when working
+//with grbase, the graphic elements are XOR'ed
+//onto the screen and you must undo the text
+//background color.
+    PlotGrElems(base,i,grheight/2,0,img,GR_WHITE);
+
+    Sleep(3);
+  }
+  coutln "Image size:",__BIN_1_SIZE;
+  coutln "Image type:",__BIN_1_TYPE;
+  GrDel(base);
+}
+
+GrDemo1;

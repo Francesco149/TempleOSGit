@@ -1,0 +1,55 @@
+//This is a drawing program
+
+void DoodleUpdateWindow()
+{
+  ClearWindowText;
+}
+
+void Doodle()
+{
+  int cmd,x1,y1,x2,y2,p1,p2,color=GR_BLACK;
+  DWORD old_update_window=Fs->update_window;
+  DWORD old_ltf=Fs->cur_ltf;
+  BOOL old_ip_double=Bts(&Fs->crt_flags,CRTf_NO_DOUBLE_CLICK);
+  BOOL old_inhibit=ip_inhibit_win_operations;
+  GrBitMap *base=GrNew(grbase);
+  base->color=ROP_XOR+(color ^ GR_WHITE);
+  ip_inhibit_win_operations=TRUE;
+  MaximizeWindow;
+  Fs->update_window=&DoodleUpdateWindow;
+  Fs->cur_ltf=NULL;
+  GrClear;
+  PutS("$CL$");
+  while (TRUE) {
+    cmd=GetMessage(&p1,&p2,
+      (1<<MSG_KEY_DOWN)+(1<<MSG_IP_L_DOWN)+
+      (1<<MSG_IP_R_UP));
+    if (cmd==MSG_KEY_DOWN) {
+      Fs->update_window=old_update_window;
+      GrClear;
+      Fs->cur_ltf=old_ltf;
+      AssignBit(&Fs->crt_flags,CRTf_NO_DOUBLE_CLICK,old_ip_double);
+      ip_inhibit_win_operations=old_inhibit;
+      GrDel(base);
+      return;
+    } else if (cmd==MSG_IP_R_UP) {
+      ip_inhibit_win_operations=FALSE;
+      color=PopUpColor;
+      base->color=ROP_XOR+(color ^ GR_WHITE);
+      ip_inhibit_win_operations=TRUE;
+    } else {
+      x1=p1; y1=p2;
+      x2=p1; y2=p2;
+      while (cmd!=MSG_IP_L_UP) {
+	GrLine3(base,x1,y1,0,x2,y2,0);
+	cmd=GetMessage(&p1,&p2,
+  	  (1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE));
+	GrLine3(base,x1,y1,0,x2,y2,0);
+	x2=p1; y2=p2;
+      }
+      GrLine3(base,x1,y1,0,x2,y2,0);
+    }
+  }
+}
+
+Doodle;  //Execute when #included

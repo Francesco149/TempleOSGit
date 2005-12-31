@@ -1,0 +1,50 @@
+Play WarGame
+`Cd("::/J/APPS");;#include "WARGAME"`
+
+DO-TELL (A fractel-like thing)
+`Cd("::/J/DEMO");;#include "DAWG"`
+
+Cd("HOME");Dir;
+`Cd("HOME");Dir;`
+
+Cd("::/J/KERNEL");Dir;
+`Cd("::/J/KERNEL");Dir;`
+
+Cd("::/J/ROOT");Dir;
+`Cd("::/J/ROOT");Dir;`
+
+Cd("::/J/ACCOUNTS/TAD");Dir;
+`Cd("::/J/ACCOUNTS/TAD");Dir;`
+
+Cd("::/J/APPS");Dir;
+`Cd("::/J/APPS");Dir;`
+
+Cd("::/J/DEMO");Dir;
+`Cd("::/J/DEMO");Dir;`
+
+Cd("::/J/UTILS");Dir;
+`Cd("::/J/UTILS");Dir;`
+
+Drive('A');
+`Drive('A');`
+
+Recompile Floppy OS Drive A:
+`InstallFdBoot('A','A');`
+
+
+
+The following can be used if you recompile, adding hard disk support.
+Drive('D');
+`Drive('D');`
+
+Drive('E');
+`Drive('E');`
+
+Recompile Hard Drive D:
+`InstallHdBoot(':','D');`
+
+
+
+List functions
+`HFunsRep;View;`
+ 

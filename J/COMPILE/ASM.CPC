@@ -1,0 +1,1355 @@
+ClassStruct *CmpClassNew()
+{
+  ClassStruct *result=MAllocZ(sizeof(ClassStruct)*4),
+	       *tempc=result;
+
+  tempc->last_in_member_list=&tempc->member_list;
+  tempc->type=HTT_CLASS;
+  tempc->pointer_cnt=0;
+
+  tempc=tempc+sizeof(ClassStruct);
+  tempc->type=HTT_CLASS;
+  tempc->size=4;
+  tempc->pointer_cnt=1;
+
+  tempc=tempc+sizeof(ClassStruct);
+  tempc->type=HTT_CLASS;
+  tempc->size=4;
+  tempc->pointer_cnt=2;
+
+  tempc=tempc+sizeof(ClassStruct);
+  tempc->type=HTT_CLASS;
+  tempc->size=4;
+  tempc->pointer_cnt=3;
+
+  return result;
+}
+
+void LoadAsmHash()
+{
+  DWORD i,*dd,type;
+  char *buf;
+  LexStruct *l;
+  int size,size1;
+  SysHashEntry *temph,**temph1;
+  OpcodeHashEntry *tempo,*tempo1;
+  InstructionEntry *tempi;
+
+  asm_hash=NewHashTable(2048);
+  size1=sizeof(OpcodeHashEntry)+sizeof(InstructionEntry)*31;
+  tempo=MAlloc(size1);
+
+  buf=ReadTextFile("::/J/COMPILE/ASM.TXZ");
+  l=LexNew(buf,0);
+  Lex(l);
+  while (l->token) {
+    if (l->token!=TK_IDENT)
+      PutAsmError(l,"ST_EXPECTING_IDENTIFIER");
+    else {
+      i=MatchListEntry(l->ident,"OPCODE\0KEYWORD\0R8\0R16\0R32\0SEG\0\0",MLE_IGNORE_CASE);
+      Lex(l); //skip keyword
+      if (i==0) { //OPCODE
+	MemSet(tempo,0,size1);
+	tempo->type=HTT_OPCODE;
+	tempo->instruction_entry_cnt=0;
+	tempo->string=l->ident;
+	l->ident=0;
+	Lex(l);  //Skip OPCODE
+	while (l->token && l->token!=';') {
+	  tempi=&tempo->ins[tempo->instruction_entry_cnt];
+	  tempi->ins_entry_num=tempo->instruction_entry_cnt++;
+	  tempi->opcode_cnt=0;
+	  while (l->token==TK_INTEGER) {
+	    tempi->opcode[tempi->opcode_cnt++]=l->cur_i;
+	    Lex(l);
+	  }
+	  if (l->token=='+') {
+	    tempi->plus_opcode=1;
+	    Lex(l);
+	  } else
+	    tempi->plus_opcode=0;
+	  if (l->token=='/') {
+	    if (Lex(l)==TK_INTEGER) {
+	      tempi->slash_value=l->cur_i;
+	      Lex(l);
+	    } else if (l->token==TK_IDENT) {
+	      tempi->slash_value=8;
+	      Lex(l);
+	    }
+	  } else
+	    tempi->slash_value=9;
+	  if (l->token=='*') {
+	    tempi->operand_size16=1;
+	    Lex(l);
+	  } else
+	    tempi->operand_size16=0;
+	  if (l->token=='%') {
+	    tempi->operand_size32=1;
+	    Lex(l);
+	  } else
+	    tempi->operand_size32=0;
+	  if (l->token=='!') {
+	    tempi->dont_switch_modes=1;
+	    Lex(l);
+	  } else
+	    tempi->dont_switch_modes=0;
+	  if (l->token=='&') {
+	    tempi->default=1;
+	    Lex(l);
+	  } else
+	    tempi->default=0;
+	  if (l->token!=TK_IDENT)
+	    PutAsmError(l,"ST_EXPECTING_IDENTIFIER");
+	  else {
+	    tempi->opcode_modifier=MatchSysTextEntry(l->ident,
+		"ST_OPCODE_MODIFIERS",MLE_IGNORE_CASE);
+	    tempi->arg1=0;
+	    tempi->arg2=0;
+	    if (Lex(l)==TK_IDENT) {
+	      tempi->arg1=MatchSysTextEntry(l->ident,
+		  "ST_ARGUMENT_TYPES",MLE_IGNORE_CASE);
+	      if (Lex(l)==TK_IDENT) {
+		tempi->arg2=MatchSysTextEntry(l->ident,
+		  "ST_ARGUMENT_TYPES",MLE_IGNORE_CASE);
+		Lex(l);
+	      }
+	    }
+	  }
+	}
+	if (l->token==';') {
+	  Lex(l); //Skip ';'
+	  size=sizeof(OpcodeHashEntry)+
+	     sizeof(InstructionEntry)*(tempo->instruction_entry_cnt-1);
+	  tempo1=MAlloc(size);
+	  MemCpy(tempo1,tempo,size);
+	  temph1=FindHashBucket(tempo1->string,asm_hash);
+	  tempo1->use_cnt=0;
+	  SetSourceFileInfo(l,tempo1);
+	  tempo1->next=*temph1;
+	  *temph1=tempo1;
+	} else
+	  PutAsmError(l,"ST_MISSING_SEMICOLON");
+      } else if (i>=1 && i<=5) { //KEYWORD,R8,R16,R32,SEG
+	if (l->token!=TK_IDENT)
+	  PutAsmError(l,"ST_EXPECTING_IDENTIFIER");
+	else {
+	  temph=MAllocZ(sizeof(SysHashEntry));
+	  temph->string=l->ident;
+	  l->ident=0;
+	  temph->use_cnt=0;
+	  SetSourceFileInfo(l,temph);
+	  Lex(l); //skip keyword name
+	  if (i==1)
+	    temph->type=HTT_KEYWORD;
+	  else if (i==2)
+	    temph->type=HTT_R8;
+	  else if (i==3)
+	    temph->type=HTT_R16;
+	  else if (i==4)
+	    temph->type=HTT_R32;
+	  else if (i==5)
+	    temph->type=HTT_SEG;
+	  if (l->token!=TK_INTEGER)
+	    PutAsmError(l,"ST_EXPECTING_INTEGER");
+	  else {
+	    temph->user0=l->cur_i;
+	    if (Lex(l)!=';')
+	      PutAsmError(l,"ST_MISSING_SEMICOLON");
+	    else {
+	      Lex(l);  //skip ';'
+	      temph1=FindHashBucket(temph->string,asm_hash);
+	      temph->next=*temph1;
+	      *temph1=temph;
+	    }
+	  }
+	  if (i==1) {
+	    temph=MAllocIdentical(temph);
+	    temph1=FindHashBucket(temph->string,sys_hash_table);
+	    temph->next=*temph1;
+	    *temph1=temph;
+	  }
+	}
+      } else
+	PutAsmError(l,"Unknown Statement");
+    }
+  }
+  Free(tempo);
+  LexDel(l);
+  dd=internal_types_table;
+  while (*dd!=HTT_INVALID) {
+    temph=CmpClassNew;
+    temph->type=*dd; dd+=4;
+    temph->use_cnt=0;
+    temph->source_link=NULL;
+    temph->user0=*dd; dd+=4;
+    temph->user1=*dd; dd+=4;
+    temph->user2=*dd; dd+=4;
+    temph->string=NewString(dd);
+    dd+=StrLen(temph->string)+1;
+    temph1=FindHashBucket(temph->string,asm_hash);
+    temph->next=*temph1;
+    *temph1=temph;
+    sys_internal_types[temph->user0]=temph;
+
+    temph=MAllocIdentical(temph);
+    temph1=FindHashBucket(temph->string,sys_hash_table);
+    temph->next=*temph1;
+    *temph1=temph;
+  }
+}
+
+void AddUnresolved(AsmCtrlStruct *a,BYTE *exp,int type,DWORD ip,DWORD rel_ip,
+		    LexUndefEntry *undef_hash,int line_num,BOOL byte_avail,BOOL glbl)
+{
+  AsmUnresolvedRef *tempu=MAlloc(sizeof(AsmUnresolvedRef));
+  tempu->exp=exp;
+  tempu->type=type;
+  tempu->ip=ip;
+  tempu->rel_ip=rel_ip;
+  tempu->undef_hash=undef_hash;
+  tempu->literal=FALSE;
+  tempu->line_num=line_num;
+  tempu->byte_avail=byte_avail;
+  tempu->string=NULL;
+  if (glbl) {
+    tempu->next=a->glbl_unresolved;
+    a->glbl_unresolved=tempu;
+    if (undef_hash->hash->type & HTT_IMPORT) {
+      tempu->string=NewString(undef_hash->hash->string);
+      if (undef_hash->hash->type & HTT_LITERAL)
+	tempu->literal=TRUE;
+    }
+  } else {
+    tempu->next=a->local_unresolved;
+    a->local_unresolved=tempu;
+    a->has_locals=TRUE;
+  }
+}
+
+void AsmStoreCodeByte(AsmCtrlStruct *a,BYTE b)
+{
+  int i=a->ip/ASM_CODE_BLK_SIZE+1;
+  AsmCodeBlk *tempc=&a->code;
+  while (i--) {
+    if (!*tempc)
+      *tempc=MAllocZ(sizeof(AsmCodeBlk));
+    tempc=tempc->next;
+  }
+  tempc->body[a->ip++ & (ASM_CODE_BLK_SIZE-1)]=b;
+  if (a->list) {
+    PrintF("%02X ",b);
+    a->display_col++;
+    if (a->display_col>=8) {
+      a->display_col=0;
+      CrLf;
+      a->cur_entry_num++;
+      if (a->cur_entry_num>(Fs->window_bottom-Fs->window_top-10)) {
+	a->cur_entry_num=0;
+//	PressAKey;
+      }
+    }
+  }
+  if (a->ip>a->num_code_bytes)
+    a->num_code_bytes=a->ip;
+}
+
+void AsmStoreCodeByteAt(AsmCtrlStruct *a,BYTE b,int ip)
+{
+  int i=ip/ASM_CODE_BLK_SIZE+1;
+  AsmCodeBlk *tempc=&a->code;
+  while (i--) {
+    if (!*tempc) {
+      *tempc=MAlloc(sizeof(AsmCodeBlk));
+      **tempc=NULL;
+    }
+    tempc=tempc->next;
+  }
+  tempc->body[ip & (ASM_CODE_BLK_SIZE-1)]=b;
+  if (ip+1>a->num_code_bytes)
+    a->num_code_bytes=ip+1;
+}
+
+
+DWORD AsmEvalExpression(LexStruct *l)
+{
+  BYTE *exp;
+  DWORD result=0;
+  l->undef_hash_entry=NULL;
+  l->flags&=~(LF_UNRESOLVED_LOCAL+LF_UNRESOLVED_GLBL);
+  l->absolute_address_cnt=0;
+  if (!GetExpression(l,&exp))
+    LexSkipEol(l);
+  else {
+    if (!(l->flags & (LF_UNRESOLVED_LOCAL+LF_UNRESOLVED_GLBL))) {
+      result=Run(exp);
+      DelExpression(exp);
+    } else
+      PutAsmError(l,"ST_UNDEFINED_SYMBOL");
+  }
+  return result;
+}
+
+void ResolveLocals(LexStruct *l,AsmCtrlStruct *a)
+{
+  AsmUnresolvedRef *tempu=a->local_unresolved,*tempu1;
+  int result=0;
+  LexUndefEntry *templu;
+  BOOL undefined;
+  char *label=NULL;
+
+  if (!a->has_locals) return;
+  while (tempu) {
+    undefined=FALSE;
+    tempu1=tempu->next;
+    templu=tempu->undef_hash;
+    while (templu) {
+      if (templu->hash->type & (HTT_UNRESOLVED_LOCAL + HTT_UNRESOLVED_GLBL)) {
+	cout SysText("ST_ERROR"),SysText("ST_UNDEFINED_SYMBOL"),SysText("ST_LINE");
+	PrintF("%04d ",tempu->line_num);
+	if (a->last_label) cout a->last_label," ";
+	coutln templu->hash->string;
+	l->error_cnt++;
+	undefined=TRUE;
+      } else
+	label=templu->hash->string;
+      templu=templu->next;
+    }
+    if (!undefined) {
+      result=Run(tempu->exp);
+      if (!(tempu->type & 1)) {
+	result-=tempu->rel_ip;
+	if ((tempu->type==EIE_REL_BYTE && (result<-128 || result>127)) ||
+	   (tempu->type==EIE_REL_WORD && (result<-0x8000 || result>0x7FFF)) ) {
+	  cout SysText("ST_ERROR"),SysText("ST_BRANCH_OUT_OF_RANGE"),SysText("ST_LINE");
+	  PrintF("%04d ",tempu->line_num);
+	  if (a->last_label)
+	    PrintF("%s ",a->last_label);
+	  if (label) cout label;
+	  CrLf;
+	  l->error_cnt++;
+	}
+	if (tempu->byte_avail && tempu->type>EIE_LIT_BYTE && (result>=-124 && result<=123)) {
+	  cout SysText("ST_WARNING"),SysText("ST_COULD_USE_BYTE_DISP"),SysText("ST_LINE");
+	  PrintF("%04d ",tempu->line_num);
+	  if (a->last_label)
+	    PrintF("%s ",a->last_label);
+	  if (label) cout label;
+	  CrLf;
+	}
+      }
+      AsmStoreCodeByteAt(a,result & 255,tempu->ip);
+      if (tempu->type>=EIE_REL_WORD)
+	AsmStoreCodeByteAt(a,(result>>8) & 255,tempu->ip+1);
+      if (tempu->type>=EIE_REL_DWORD) {
+	AsmStoreCodeByteAt(a,(result>>16) & 255,tempu->ip+2);
+	AsmStoreCodeByteAt(a,(result>>24) & 255,tempu->ip+3);
+      }
+    }
+    DelExpression(tempu->exp);
+    DelLinkedList(tempu->undef_hash);
+    Free(tempu);
+    tempu=tempu1;
+  }
+  DelHashTable(a->local_hash);
+  a->local_hash=NewHashTable(16);
+  a->local_hash->next=a->glbl_hash;
+  l->hash_table_list=a->local_hash;
+  l->local_hash_table=a->local_hash;
+  a->local_unresolved=NULL;
+  a->has_locals=FALSE;
+}
+
+void ResolveGlbls(LexStruct *l,AsmCtrlStruct *a,ExeStruct *e)
+{
+  ClassStruct *tempc;
+  GlblVarStruct *tempg;
+  AsmUnresolvedRef *tempu=a->glbl_unresolved,*tempu1;
+  int result=0;
+  ExeImportExportStruct *tempe,*tempe1;
+  LexUndefEntry *templu;
+  int i;
+  SysHashEntry *temph;
+  char *label;
+  BOOL undefined;
+  l;//Ref so no warning
+  while (tempu) {
+    label=NULL;
+    undefined=FALSE;
+    tempu1=tempu->next;
+    templu=tempu->undef_hash;
+    while (templu) {
+      if (templu->hash->type & (HTT_UNRESOLVED_LOCAL | HTT_UNRESOLVED_GLBL)) {
+	if (!(templu->hash->type & HTT_IMPORT)) {
+	  cout SysText("ST_ERROR"),SysText("ST_UNDEFINED_SYMBOL"),SysText("ST_LINE");
+	  PrintF("%04d ",tempu->line_num);
+	  cout templu->hash->string,"\r\n";
+	  l->error_cnt++;
+	}
+	undefined=TRUE;
+      } else
+	label=templu->hash->string;
+      templu=templu->next;
+    }
+    if (undefined) {
+      templu=tempu->undef_hash;
+      if (templu->hash->type & HTT_IMPORT) {
+	tempe=MAllocZ(sizeof(ExeImportExportStruct));
+	tempe->next=templu->hash->user1;
+	tempe->string=NULL;
+	templu->hash->user1=tempe;
+	tempe->ip=tempu->ip;
+	tempe->type=tempu->type;
+      }
+    } else {
+      result=Run(tempu->exp);
+      if (!(tempu->type & 1)) {
+	result=result-tempu->rel_ip;
+	if ((tempu->type==EIE_REL_BYTE && (result<-128 || result>127)) ||
+	    (tempu->type==EIE_REL_WORD && (result<-0x8000 || result>0x7FFF))) {
+	  cout SysText("ST_ERROR"),SysText("ST_BRANCH_OUT_OF_RANGE"),SysText("ST_LINE");
+	  PrintF("%04d ",tempu->line_num);
+	  if (label) cout label;
+	  CrLf;
+	  l->error_cnt++;
+	}
+	if (tempu->byte_avail && tempu->type>EIE_LIT_BYTE && (result>=-124 && result<=123)) {
+	  cout SysText("ST_WARNING"),SysText("ST_COULD_USE_BYTE_DISP"),SysText("ST_LINE");
+	  PrintF("%04d ",tempu->line_num);
+	  if (a->last_label)
+	    PrintF("%s ",a->last_label);
+	  if (label) cout label;
+	  CrLf;
+	}
+      }
+      AsmStoreCodeByteAt(a,result & 255,tempu->ip);
+      if (tempu->type>=EIE_REL_WORD)
+	AsmStoreCodeByteAt(a,(result>>8) & 255,tempu->ip+1);
+      if (tempu->type>=EIE_REL_DWORD) {
+	AsmStoreCodeByteAt(a,(result>>16) & 255,tempu->ip+2);
+	AsmStoreCodeByteAt(a,(result>>24) & 255,tempu->ip+3);
+      }
+    }
+    DelExpression(tempu->exp);
+    DelLinkedList(tempu->undef_hash);
+    Free(tempu);
+    tempu=tempu1;
+  }
+
+  tempe1=&e->ie;
+  while (tempe1->next)
+    tempe1=tempe1->next;
+
+  for (i=0;i<=a->glbl_hash->mask;i++) {
+    temph=a->glbl_hash->body[i];
+    while (temph) {
+      if (temph->type & HTT_IMPORT) {
+	if (temph->type & HTT_FUNCTION) {
+	  tempe=MAllocZ(sizeof(ExeImportExportStruct));
+	  tempe->type=EIE_LIT_DWORD;
+	  tempc=temph;
+	  tempe->string=(tempc->import_name) ?
+  	    NewString(tempc->import_name):NewString(tempc->string);
+	  tempe->ip=tempc->executable_address;
+	  tempe1->next=tempe;
+	  tempe1=tempe;
+	} else if (temph->type & HTT_GLBL_VAR) {
+	  tempe=MAllocZ(sizeof(ExeImportExportStruct));
+	  tempe->type=EIE_LIT_DWORD;
+	  tempg=temph;
+	  if (tempg->import_name)
+  	    tempe->string=NewString(tempg->import_name);
+	  else
+  	    tempe->string=NewString(tempg->string);
+	  tempe->ip=tempg->data_address;
+	  tempe1->next=tempe;
+	  tempe1=tempe;
+	} else {
+	  tempe=temph->user1;
+	  if (tempe) {
+	    tempe1->next=tempe;
+	    tempe->string=NewString(temph->string);
+	    while (tempe1->next)
+	      tempe1=tempe1->next;
+	  }
+	}
+      } else if (temph->type & HTT_EXPORT) {
+	if (temph->type & HTT_UNRESOLVED_GLBL) {
+	  coutln SysText("ST_ERROR"),SysText("ST_UNDEFINED_SYMBOL"),temph->string;
+	  l->error_cnt++;
+	} else {
+	  tempe=MAlloc(sizeof(ExeImportExportStruct));
+	  tempe->type=EIE_REL_EXPORT;
+	  if (temph->type & HTT_FUNCTION) {
+	    tempc=temph;
+	    tempe->ip=tempc->executable_address;
+	  } else if (temph->type & HTT_GLBL_VAR) {
+	    tempg=temph;
+	    tempe->ip=tempg->data_address;
+	  } else
+	    tempe->ip=temph->user0;
+	  if (temph->type & HTT_LITERAL)
+	    tempe->type++;
+	  *tempe1=tempe;
+	  tempe->next=NULL;
+	  tempe1=tempe;
+	  tempe->string=NewString(temph->string);
+	}
+      }
+      temph=temph->next;
+    }
+  }
+}
+
+BOOL ParseAsmImm(LexStruct *l,AsmCtrlStruct *aa,AsmArgStruct *a,DWORD ip)
+{
+  if (a->imm_or_off_present) {
+    PutAsmError(l,"ST_ALREADY_ONE_IMMEDIATE");
+    return FALSE;
+  } else {
+    a->imm_or_off_present=TRUE;
+    a->undef_local=NULL;
+    a->undef_glbl=NULL;
+    l->instruction_pointer=ip;
+    l->undef_hash_entry=NULL;
+    l->absolute_address_cnt=0;
+    l->flags&=~(LF_UNRESOLVED_LOCAL+LF_UNRESOLVED_GLBL);
+    if (!GetExpression(l,&a->exp))
+      LexSkipEol(l);
+    else {
+      if (!(l->flags & (LF_UNRESOLVED_LOCAL+LF_UNRESOLVED_GLBL))) {
+	a->imm=Run(a->exp);
+	a->undef_glbl=l->undef_hash_entry;
+	l->undef_hash_entry=NULL;
+	DelExpression(a->exp);
+	a->exp=NULL;
+      } else {
+	if (l->flags & LF_UNRESOLVED_GLBL) {
+	  a->undef_glbl=l->undef_hash_entry;
+	  l->undef_hash_entry=NULL;
+	  aa->has_locals=TRUE;
+	} else if (l->flags & LF_UNRESOLVED_LOCAL) {
+	  a->undef_local=l->undef_hash_entry;
+	  l->undef_hash_entry=NULL;
+	}
+      }
+    }
+  }
+  return TRUE;
+}
+
+void ParseAsmArg(LexStruct *l,AsmCtrlStruct *aa,AsmArgStruct *a,DWORD ip)
+{
+  int i,temp;
+  a->size=0;
+  a->absolute_address_cnt=0;
+  a->seg=8;
+  a->reg1=8;
+  a->reg2=8;
+  a->imm=0;
+  a->scale=1;
+  a->indirect=FALSE;
+  a->imm_or_off_present=FALSE;
+  a->undef_local=NULL;
+  a->undef_glbl=NULL;
+  a->just_seg=FALSE;
+  a->exp=NULL;
+  while (TRUE) {
+    if (l->token==TK_IDENT) {
+      if (l->hash_entry) {
+	if (l->hash_entry->type==HTT_R8) {
+	  a->size=1;
+	  a->reg1=l->hash_entry->user0;
+	  Lex(l);
+	  return;
+	} else if (l->hash_entry->type==HTT_R16) {
+	  a->size=2;
+	  a->reg1=l->hash_entry->user0;
+	  Lex(l);
+	  return;
+	} else if (l->hash_entry->type==HTT_R32) {
+	  a->size=4;
+	  a->reg1=l->hash_entry->user0;
+	  Lex(l);
+	  return;
+	} else if (l->hash_entry->type==HTT_SEG) {
+	  a->seg=l->hash_entry->user0;
+	  if (Lex(l)!=':') {
+	    a->just_seg=TRUE;
+	    return;
+	  } else
+	    Lex(l); //skip ":"
+	} else if (l->hash_entry->type==HTT_KEYWORD) {
+	  i=l->hash_entry->user0;
+	  if (i==AKW_BYTE) {
+	    Lex(l); //skip keyword
+	    a->size=1;
+	  } else if (i==AKW_WORD) {
+	    Lex(l); //skip keyword
+	    a->size=2;
+	  } else if (i==AKW_DWORD) {
+	    Lex(l); //skip keyword
+	    a->size=4;
+	  } else {
+	    PutAsmError(l,"ST_SYNTAX_ERROR");
+	    return;
+	  }
+	} else {
+	  ParseAsmImm(l,aa,a,ip);
+	  a->absolute_address_cnt=l->absolute_address_cnt;
+	  if (l->token!='[')
+	    return;
+	}
+      } else {
+	ParseAsmImm(l,aa,a,ip);
+	a->absolute_address_cnt=l->absolute_address_cnt;
+	if (l->token!='[')
+	  return;
+      }
+    } else if (l->token=='[') {
+      a->indirect=TRUE;
+      Lex(l); // skip [
+      while (l->token && l->token!=']') {
+	if (l->token==TK_IDENT) {
+	  if (l->hash_entry) {
+	    if (l->hash_entry->type==HTT_R16 || l->hash_entry->type==HTT_R32) {
+	      if (a->reg1==8)
+		a->reg1=l->hash_entry->user0;
+	      else
+		a->reg2=l->hash_entry->user0;
+	      Lex(l);
+	    } else {
+	      ParseAsmImm(l,aa,a,ip);
+	      a->absolute_address_cnt=l->absolute_address_cnt;
+	    }
+	  } else {
+	    ParseAsmImm(l,aa,a,ip);
+	    a->absolute_address_cnt=l->absolute_address_cnt;
+	  }
+	} else if (l->token=='*') {
+	  if (Lex(l)!=TK_INTEGER)
+	    PutAsmError(l,"ST_EXPECTING_SCALE_FACTOR");
+	  else {
+	    a->scale=l->cur_i;
+	    Lex(l); //skip scale
+	    if (a->reg2!=8) {
+	      temp=a->reg1;
+	      a->reg1=a->reg2;
+	      a->reg2=temp;
+	    }
+	  }
+	} else if (l->token=='+') {
+	  Lex(l); //skip '+'
+	} else {
+	  ParseAsmImm(l,aa,a,ip);
+	  a->absolute_address_cnt=l->absolute_address_cnt;
+	}
+      }
+      if (l->token==']') {
+	Lex(l); //skip ]
+	return;
+      } else
+	PutAsmError(l,"ST_MISSING_RIGHT_BRACKET");
+    } else {
+      ParseAsmImm(l,aa,a,ip);
+      a->absolute_address_cnt=l->absolute_address_cnt;
+      if (l->token!='[')
+	return;
+    }
+  }
+}
+
+void AsmMakeArgMask(AsmArgStruct *a,DWORD *mask)
+{
+  if (a->just_seg) {
+    mask[0]=0;
+    if (a->seg==0)
+      mask[1]=0x24;
+    else if (a->seg==1)
+      mask[1]=0x60;
+    else if (a->seg==2)
+      mask[1]=0x21;
+    else if (a->seg==3)
+      mask[1]=0x22;
+    else if (a->seg==4)
+      mask[1]=0x28;
+    else
+      mask[1]=0x30;
+    return;
+  }
+  mask[1]=0;
+
+  if (a->size==0)
+    mask[0]=0xFF07FFFE;
+  else if (a->size==1)
+    mask[0]=0x19012492;
+  else if (a->size==2)
+    mask[0]=0xA2024924;
+  else if (a->size==4)
+    mask[0]=0x44049248;
+
+  if (a->reg1!=8 && a->imm_or_off_present && a->imm==0) {
+    if (!a->undef_glbl && !a->undef_local)
+      a->imm_or_off_present=FALSE;  //Zero displacement
+  }
+
+  if (a->reg2!=8 || a->scale!=1) {
+    mask[0]&=0x0000E000;
+    return;
+  }
+
+  if (a->indirect) {
+    if (a->imm_or_off_present) {
+      mask[0]&=0x07FFE000;
+    } else
+      mask[0]&=0x00FFE000;
+  } else {
+    if (a->imm_or_off_present)
+      mask[0]&=0x00F81C7E;
+    else
+      mask[0]&=0xF8F8E380;
+  }
+  if (a->seg!=8)
+    mask[0]&=0x07FFE000;
+  if (a->reg1==8) {
+    if (a->indirect)
+      mask[0]&=0x07FFE000;
+    else if (a->imm>=-128 && a->imm<=127)
+      mask[0]&=0x00001C7E;
+    else if (a->imm>=-128 && a->imm<=255)
+      mask[0]&=0x0000187E;
+    else if (a->imm>=-0x8000 && a->imm<=0x7FFF)
+      mask[0]&=0x0000186E;
+    else if (a->imm>=-0x8000 && a->imm<=0xFFFF)
+      mask[0]&=0x0000106E;
+    else
+      mask[0]&=0x0000104E;
+  } else
+    mask[0]&=0xF807E380;
+  if (a->reg1!=0)
+    mask[0]&=0x8FFFFFFF;
+  if (a->reg1!=1)
+    mask[0]&=0xF7FFFFFF;
+  if (a->reg1!=2)
+    mask[0]&=0x7FFFFFFF;
+//  coutln "MASK:",mask[0];
+}
+
+BOOL AsmStoreNum(LexStruct *l,AsmCtrlStruct *a,int num,BOOL is_question,int num_bytes,int cnt,
+		   int num_ip_rel,int num_lit,
+		   BYTE *num_exp,LexUndefEntry *num_local_hash,LexUndefEntry *num_glbl_hash,
+		   BOOL byte_avail,DWORD abs_add_cnt)
+{
+  int i;
+  ExeAbsoluteAddressStruct *tempa;
+  if (!num_lit)
+    num=num-num_ip_rel;
+  for (i=0;i<cnt;i++) {
+    if (num_bytes==1) {
+      if (num_local_hash)
+	AddUnresolved(a,num_exp,EIE_REL_BYTE+num_lit,a->ip,num_ip_rel,
+	  num_local_hash,LexLineNum(l),byte_avail,FALSE);
+      else if (num_glbl_hash)
+	AddUnresolved(a,num_exp,EIE_REL_BYTE+num_lit,a->ip,num_ip_rel,
+	  num_glbl_hash,LexLineNum(l),byte_avail,TRUE);
+      else {
+	if (!num_lit && (num<-128 || num>127)) {
+	  LexPop(l);
+	  PutAsmError(l,"ST_BRANCH_OUT_OF_RANGE");
+	  a->ip++;
+	  return FALSE;
+	}
+      }
+      if (is_question)
+	a->ip++;
+      else
+	AsmStoreCodeByte(a,num & 255);
+
+    } else if (num_bytes==2) {
+      if (num_local_hash)
+	AddUnresolved(a,num_exp,EIE_REL_WORD+num_lit,a->ip,num_ip_rel,
+	  num_local_hash,LexLineNum(l),byte_avail,FALSE);
+      else if (num_glbl_hash)
+	AddUnresolved(a,num_exp,EIE_REL_WORD+num_lit,a->ip,num_ip_rel,
+	  num_glbl_hash,LexLineNum(l),byte_avail,TRUE);
+      else {
+	if (!num_lit && (num <-0x8000 || num>0x7FFF)) {
+	  LexPop(l);
+	  PutAsmError(l,"ST_BRANCH_OUT_OF_RANGE");
+	  a->ip+=2;
+	  return FALSE;
+	}
+      }
+      if (is_question)
+	a->ip+=2;
+      else {
+	AsmStoreCodeByte(a,num & 255);
+	AsmStoreCodeByte(a,(num>>8) & 255);
+      }
+      if (byte_avail && !num_local_hash && !num_glbl_hash &&
+	  !num_lit && (num>=-124 && num<=123)) {
+	LexPop(l);
+	PutAsmWarning(l,"ST_COULD_USE_BYTE_DISP");
+	return FALSE;
+      }
+    } else if (num_bytes==4) {
+      if (num_local_hash)
+	AddUnresolved(a,num_exp,EIE_REL_DWORD+num_lit,a->ip,num_ip_rel,
+	  num_local_hash,LexLineNum(l),byte_avail,FALSE);
+      else if (num_glbl_hash)
+	AddUnresolved(a,num_exp,EIE_REL_DWORD+num_lit,a->ip,num_ip_rel,
+	  num_glbl_hash,LexLineNum(l),byte_avail,TRUE);
+      if (num_lit && (abs_add_cnt & 1)) {
+	tempa=MAllocZ(sizeof(ExeAbsoluteAddressStruct));
+	tempa->next=a->absolutes;
+	a->absolutes=tempa;
+	tempa->ip=a->ip;
+      }
+      if (is_question)
+	a->ip+=4;
+      else {
+	AsmStoreCodeByte(a,num & 255);
+	AsmStoreCodeByte(a,(num>>8) & 255);
+	AsmStoreCodeByte(a,(num>>16) & 255);
+	AsmStoreCodeByte(a,(num>>24) & 255);
+      }
+      if (byte_avail && !num_local_hash && !num_glbl_hash &&
+	  !num_lit && (num>=-124 && num<=123)) {
+	LexPop(l);
+	PutAsmWarning(l,"ST_COULD_USE_BYTE_DISP");
+	return FALSE;
+      }
+    }
+  }
+  return TRUE;
+}
+
+
+BOOL AsmCodeInstruction(LexStruct *l,AsmCtrlStruct *a,
+			  OpcodeHashEntry *tempo,int argcnt)
+{
+  int i,j,a1,a2,om,seg;
+  DWORD arg1mask[2],arg2mask[2];
+  AsmArgStruct *tempa1,*tempa2;
+  BOOL ModrM_complete,byte_avail=FALSE,found_second_possible=FALSE;
+
+  int byte_cnt;
+  BYTE last_opcode_byte;
+  InstructionEntry *tempi;
+  BOOL has_ModrM;
+  BYTE ModrM;
+  BOOL has_SIB;
+  BYTE SIB;
+  BOOL has_address_prefix;
+  BOOL has_operand_prefix;
+  BOOL is_default;
+  int disp,disp_bytes,disp_ip_rel,disp_lit,disp_abs_cnt;
+  int imm, imm_bytes, imm_ip_rel, imm_lit,imm_abs_cnt;
+  BYTE *disp_exp,*imm_exp;
+  LexUndefEntry *disp_local_hash,*disp_glbl_hash;
+  LexUndefEntry *imm_local_hash,*imm_glbl_hash;
+
+  int best_byte_cnt=255;
+  BYTE blast_opcode_byte;
+  InstructionEntry *btempi;
+  BOOL bhas_ModrM;
+  BYTE bModrM;
+  BOOL bhas_SIB;
+  BYTE bSIB;
+  BOOL bhas_address_prefix;
+  BOOL bhas_operand_prefix;
+  BOOL bis_default;
+  int bdisp,bdisp_bytes,bdisp_ip_rel,bdisp_lit,bdisp_abs_cnt;
+  int bimm, bimm_bytes, bimm_ip_rel, bimm_lit,bimm_abs_cnt;
+  BYTE *bdisp_exp,*bimm_exp;
+  LexUndefEntry *bdisp_local_hash,*bdisp_glbl_hash;
+  LexUndefEntry *bimm_local_hash,*bimm_glbl_hash;
+
+
+  if (argcnt>0)
+    AsmMakeArgMask(&a->arg1,arg1mask);
+  else {
+    arg1mask[0]=1;
+    arg1mask[1]=0;
+  }
+  if (argcnt>1)
+    AsmMakeArgMask(&a->arg2,arg2mask);
+  else {
+    arg2mask[0]=1;
+    arg2mask[1]=0;
+  }
+
+  for (i=0;i<tempo->instruction_entry_cnt;i++) {
+    tempi=&tempo->ins[i];
+    if (tempi->arg1==ARGT_REL8 || tempi->arg2==ARGT_REL8)
+      byte_avail=TRUE;
+    if (Bt(arg1mask,tempi->arg1) && Bt(arg2mask,tempi->arg2)) {
+      ModrM_complete=FALSE;
+      last_opcode_byte=0;
+      has_ModrM=FALSE;
+      ModrM=0;
+      has_SIB=FALSE;
+      SIB=0;
+      has_address_prefix=FALSE;
+      has_operand_prefix=FALSE;
+      if (tempi->default)
+	is_default=TRUE;
+      else
+	is_default=FALSE;
+      disp=0; disp_bytes=0; disp_ip_rel=0; disp_lit=1;
+      imm=0; imm_bytes=0; imm_ip_rel=0; imm_lit=1;
+      disp_exp=NULL; imm_exp=NULL;
+      disp_local_hash=NULL; disp_glbl_hash=NULL;
+      disp_abs_cnt=0;
+      imm_local_hash=NULL; imm_glbl_hash=NULL;
+      imm_abs_cnt=0;
+      om=tempi->opcode_modifier;
+      a1=tempi->arg1;
+      a2=tempi->arg2;
+      tempa1=&a->arg1;
+      tempa2=&a->arg2;
+      last_opcode_byte=tempi->opcode[tempi->opcode_cnt-1];
+
+      if (tempi->slash_value<8) {
+	ModrM+=tempi->slash_value<<3;
+	has_ModrM=TRUE;
+      }
+
+      if ((a->use16 && tempi->operand_size32) ||
+	(!a->use16 && tempi->operand_size16))
+	has_operand_prefix=TRUE;
+
+      if (om==OM_IB)	  imm_bytes=1;
+      else if (om==OM_IW) imm_bytes=2;
+      else if (om==OM_ID) imm_bytes=4;
+
+      if (om==OM_CB) {
+	imm_bytes=1;
+	imm_lit=0;
+      } else if (om==OM_CW) {
+	imm_bytes=2;
+	imm_lit=0;
+      } else if (om==OM_CD) {
+	imm_bytes=4;
+	imm_lit=0;
+      }
+
+      if (argcnt==1) {
+	if (best_byte_cnt!=255 && !found_second_possible && !bis_default) {
+	  found_second_possible=TRUE;
+	  if (a->arg1.size==0) {
+	    cout SysText("ST_WARNING"),SysText("ST_NO_SIZE_SPECIFIED");
+	    PrintF("%s,%04d\r\n",l->cur_lfn->name,l->cur_lfn->line_num-1);
+	  }
+	}
+	if (tempi->plus_opcode)
+	  last_opcode_byte=last_opcode_byte+tempa1->reg1;
+	if (a1>=ARGT_RM8 && a1<=ARGT_RM32) {
+	  if (a->use16)
+	    has_address_prefix=TRUE;
+
+	  has_ModrM=TRUE;
+	  if (tempa1->imm_or_off_present && tempa1->indirect && tempa1->reg1==8) {
+	    ModrM=ModrM+5;
+	    disp=tempa1->imm;
+	    disp_exp=tempa1->exp;
+	    disp_local_hash=tempa1->undef_local;
+	    disp_glbl_hash=tempa1->undef_glbl;
+	    disp_bytes=4;
+	    disp_abs_cnt=tempa1->absolute_address_cnt;
+	  } else {
+	    if (tempa1->reg2==8 && tempa1->scale==1)
+	      ModrM+=tempa1->reg1;
+	    else {
+	      ModrM+=4;
+	      has_SIB=TRUE;
+	      if (tempa1->scale==1)
+		SIB=0;
+	      else if (tempa1->scale==2)
+		SIB=0x40;
+	      else if (tempa1->scale==4)
+		SIB=0x80;
+	      else if (tempa1->scale==8)
+		SIB=0xC0;
+	      if (tempa1->reg2==8) {
+		ModrM_complete=TRUE;
+		SIB=SIB+(tempa1->reg1<<3)+5;
+		disp=tempa1->imm;
+		disp_exp=tempa1->exp;
+		disp_local_hash=tempa1->undef_local;
+		disp_glbl_hash=tempa1->undef_glbl;
+		disp_bytes=4;
+		disp_abs_cnt=tempa1->absolute_address_cnt;
+	      } else {
+		SIB=SIB+(tempa1->reg1<<3)+tempa1->reg2;
+		if (tempa1->reg2==5 && !tempa1->imm_or_off_present && tempa1->indirect) {
+		  ModrM+=0x40;
+		  disp_bytes=1;
+		  ModrM_complete=TRUE;
+		}
+	      }
+	    }
+	    if (!ModrM_complete) {
+	      if (tempa1->imm_or_off_present) {
+		disp=tempa1->imm;
+		disp_exp=tempa1->exp;
+		disp_local_hash=tempa1->undef_local;
+		disp_glbl_hash=tempa1->undef_glbl;
+		disp_abs_cnt=tempa1->absolute_address_cnt;
+		if (!disp_exp && (disp>=-128) && (disp<=127)) {
+		  ModrM+=0x40;
+		  disp_bytes=1;
+		} else if (a->use16) {
+		  ModrM+=0x80;
+		  disp_bytes=2;
+		} else {
+		  ModrM+=0x80;
+		  disp_bytes=4;
+		}
+	      } else if (!tempa1->indirect) {
+		has_address_prefix=FALSE;
+		ModrM+=0xC0;
+	      } else {
+		if (tempa1->reg1==5) {
+		  ModrM+=0x40;
+		  disp_bytes=1;
+		}
+	      }
+	    }
+	  }
+	} else if ((a1>=ARGT_REL8 && a1<=ARGT_REL32) ||
+		   (a1>=ARGT_IMM8 && a1<=ARGT_IMM32) ||
+		   (a1>=ARGT_UIMM8 && a1<=ARGT_UIMM32)) {
+	  imm=tempa1->imm;
+	  imm_exp=tempa1->exp;
+	  imm_local_hash=tempa1->undef_local;
+	  imm_glbl_hash=tempa1->undef_glbl;
+	  imm_abs_cnt=tempa1->absolute_address_cnt;
+	}
+      } else if (argcnt==2) {
+	if (best_byte_cnt!=255 && !found_second_possible && !bis_default) {
+	  found_second_possible=TRUE;
+	  if (a->arg1.size==0 && a->arg2.size==0) {
+	    cout SysText("ST_WARNING"),SysText("ST_NO_SIZE_SPECIFIED");
+	    PrintF("%s,%04d\r\n",l->cur_lfn->name,l->cur_lfn->line_num-1);
+	  }
+	}
+	if (tempi->plus_opcode) {
+	  if (om>=OM_RB && om<=OM_RD)
+	    last_opcode_byte+=tempa1->reg1;
+	  else if (tempi->slash_value==8) {
+	    if (a1>=ARGT_AL && a1<=ARGT_EAX)
+	      last_opcode_byte+=tempa2->reg1;
+	    else if (a2>=ARGT_AL && a2<=ARGT_EAX)
+	      last_opcode_byte+=tempa1->reg1;
+	  }
+	}
+	if ((a1>=ARGT_RM8 && a1<=ARGT_RM32) ||(a2>=ARGT_RM8 && a2<=ARGT_RM32)) {
+	  if (a->use16)
+	    has_address_prefix=TRUE;
+	  has_ModrM=TRUE;
+	  if (a2>=ARGT_RM8 && a2<=ARGT_RM32) {
+	    tempa1=&a->arg2;
+	    tempa2=&a->arg1;
+	  }
+	  if (tempi->slash_value==8) {
+	    if (tempa2->just_seg)
+	      ModrM+=(tempa2->seg<<3);
+	    else {
+	      if (tempa2->reg1==8)
+		ModrM+=(tempa1->reg1<<3);
+	      else
+		ModrM+=(tempa2->reg1<<3);
+	    }
+	  }
+	  if (tempa1->reg2==8 && tempa1->scale==1) {
+	    if (tempa1->reg1!=8)
+	      ModrM+=tempa1->reg1;
+	  } else {
+	    ModrM+=4;
+	    has_SIB=TRUE;
+	    if (tempa1->scale==1)
+	      SIB=0;
+	    else if (tempa1->scale==2)
+	      SIB=0x40;
+	    else if (tempa1->scale==4)
+	      SIB=0x80;
+	    else if (tempa1->scale==8)
+	      SIB=0xC0;
+	      if (tempa1->reg2==8) {
+		ModrM_complete=TRUE;
+		SIB+=(tempa1->reg1<<3)+5;
+		disp=tempa1->imm;
+		disp_exp=tempa1->exp;
+		disp_local_hash=tempa1->undef_local;
+		disp_glbl_hash=tempa1->undef_glbl;
+		disp_bytes=4;
+		disp_abs_cnt=tempa1->absolute_address_cnt;
+	      } else {
+		SIB+=(tempa1->reg1<<3)+tempa1->reg2;
+		if (tempa1->reg2==5 && !tempa1->imm_or_off_present && tempa1->indirect) {
+		  ModrM+=0x40;
+		  disp_bytes=1;
+		  ModrM_complete=TRUE;
+		}
+	      }
+	  }
+	  if (!ModrM_complete) {
+	    if (tempa1->imm_or_off_present && tempa1->indirect && tempa1->reg1==8) {
+	      ModrM=(ModrM & 0xF8)+5;
+	      disp=tempa1->imm;
+	      disp_exp=tempa1->exp;
+	      disp_local_hash=tempa1->undef_local;
+	      disp_glbl_hash=tempa1->undef_glbl;
+	      disp_bytes=4;
+	      disp_abs_cnt=tempa1->absolute_address_cnt;
+	    } else {
+	      if (tempa1->imm_or_off_present) {
+		disp=tempa1->imm;
+		disp_exp=tempa1->exp;
+		disp_local_hash=tempa1->undef_local;
+		disp_glbl_hash=tempa1->undef_glbl;
+		disp_abs_cnt=tempa1->absolute_address_cnt;
+		if (!disp_exp && (disp>=-128) && (disp<=127)) {
+		  ModrM+=0x40;
+		  disp_bytes=1;
+		} else if (a->use16) {
+		  ModrM+=0x80;
+		  disp_bytes=2;
+		} else {
+		  ModrM+=0x80;
+		  disp_bytes=4;
+		}
+	      } else if (!tempa1->indirect) {
+		has_address_prefix=FALSE;
+		ModrM+=0xC0;
+	      } else {
+		if (tempa1->reg1==5) {
+		  ModrM+=0x40;
+		  disp_bytes=1;
+		}
+	      }
+	    }
+	  }
+	} else if (a1>=ARGT_MOFFS8 && a1<=ARGT_MOFFS32) {
+	  disp=tempa1->imm;
+	  disp_exp=tempa1->exp;
+	  disp_local_hash=tempa1->undef_local;
+	  disp_glbl_hash=tempa1->undef_glbl;
+	  disp_abs_cnt=tempa1->absolute_address_cnt;
+	  if (a->use16)
+	    disp_bytes=2;
+	  else
+	    disp_bytes=4;
+	  has_address_prefix=FALSE;
+	} else if (a2>=ARGT_MOFFS8 && a2<=ARGT_MOFFS32) {
+	  disp=tempa2->imm;
+	  disp_exp=tempa2->exp;
+	  disp_local_hash=tempa2->undef_local;
+	  disp_glbl_hash=tempa2->undef_glbl;
+	  disp_abs_cnt=tempa2->absolute_address_cnt;
+	  if (a->use16)
+	    disp_bytes=2;
+	  else
+	    disp_bytes=4;
+	  has_address_prefix=FALSE;
+	} else if ((a1>=ARGT_IMM8 && a1<=ARGT_IMM32) ||
+	    (a1>=ARGT_UIMM8 && a1<=ARGT_UIMM32)) {
+	  imm=tempa1->imm;
+	  imm_exp=tempa1->exp;
+	  imm_local_hash=tempa1->undef_local;
+	  imm_glbl_hash=tempa1->undef_glbl;
+	  imm_abs_cnt=tempa1->absolute_address_cnt;
+	  if (a1==ARGT_IMM8 || a1==ARGT_UIMM8) imm_bytes=1;
+	  else if (a1==ARGT_IMM16 || a1==ARGT_UIMM16) imm_bytes=2;
+	  else imm_bytes=4;
+	}
+	if ((a2>=ARGT_IMM8 && a2<=ARGT_IMM32) ||
+	    (a2>=ARGT_UIMM8 && a2<=ARGT_UIMM32)) {
+	  imm=tempa2->imm;
+	  imm_exp=tempa2->exp;
+	  imm_local_hash=tempa2->undef_local;
+	  imm_glbl_hash=tempa2->undef_glbl;
+	  imm_abs_cnt=tempa2->absolute_address_cnt;
+	  if (a2==ARGT_IMM8 || a2==ARGT_UIMM8) imm_bytes=1;
+	  else if (a2==ARGT_IMM16 || a2==ARGT_UIMM16) imm_bytes=2;
+	  else imm_bytes=4;
+	}
+      }
+      byte_cnt=tempi->opcode_cnt+disp_bytes+imm_bytes;
+      if (has_ModrM) byte_cnt++;
+      if (has_SIB) byte_cnt++;
+
+      if (byte_cnt<best_byte_cnt &&
+	 !(tempi->dont_switch_modes &&
+	  (has_address_prefix || has_operand_prefix))) {
+	best_byte_cnt=byte_cnt;
+	blast_opcode_byte=last_opcode_byte;
+	btempi=tempi;
+	bhas_ModrM=has_ModrM;
+	bModrM=ModrM;
+	bhas_SIB=has_SIB;
+	bSIB=SIB;
+	bhas_address_prefix=has_address_prefix;
+	bhas_operand_prefix=has_operand_prefix;
+	bis_default=is_default;
+	bdisp=disp;
+	bdisp_bytes=disp_bytes;
+	bdisp_ip_rel=disp_ip_rel;
+	bdisp_lit=disp_lit;
+	bdisp_abs_cnt=disp_abs_cnt;
+	bimm=imm;
+	bimm_bytes=imm_bytes;
+	bimm_ip_rel=imm_ip_rel;
+	bimm_lit=imm_lit;
+	bimm_abs_cnt=imm_abs_cnt;
+	bdisp_exp=disp_exp;
+	bimm_exp=imm_exp;
+	bdisp_local_hash=disp_local_hash;
+	bdisp_glbl_hash=disp_glbl_hash;
+	bimm_local_hash=imm_local_hash;
+	bimm_glbl_hash=imm_glbl_hash;
+      }
+    }
+  }
+  if (best_byte_cnt<255) {
+    if (bhas_operand_prefix)
+      AsmStoreCodeByte(a,0x66); //Operand size override
+    if (bhas_address_prefix  || (a->use16 && has_SIB))
+      AsmStoreCodeByte(a,0x67); //Operand size override
+
+    seg=8;
+    if (argcnt>1 && a->arg2.seg!=8 && !a->arg2.just_seg)
+      seg=a->arg2.seg;
+    else if (argcnt>0 && a->arg1.seg!=8 && !a->arg1.just_seg)
+      seg=a->arg1.seg;
+    if (seg!=8) {
+      if (seg==0)
+	AsmStoreCodeByte(a,0x26); //ES:
+      else if (seg==1)
+	AsmStoreCodeByte(a,0x2E); //CS:
+      else if (seg==2)
+	AsmStoreCodeByte(a,0x36); //SS:
+      else if (seg==3)
+	AsmStoreCodeByte(a,0x3E); //DS:
+      else if (seg==4)
+	AsmStoreCodeByte(a,0x64); //FS:
+      else
+	AsmStoreCodeByte(a,0x65); //GS:
+    }
+
+    for (j=0;j<btempi->opcode_cnt-1;j++)
+      AsmStoreCodeByte(a,btempi->opcode[j]);
+    AsmStoreCodeByte(a,blast_opcode_byte);
+
+    if (bhas_ModrM)
+      AsmStoreCodeByte(a,bModrM);
+    if (bhas_SIB)
+      AsmStoreCodeByte(a,bSIB);
+
+    if (bdisp_bytes) {
+      bdisp_ip_rel=a->ip+bdisp_bytes+bimm_bytes;
+      if (!AsmStoreNum(l,a,bdisp,FALSE,bdisp_bytes,1,bdisp_ip_rel,bdisp_lit,
+	  bdisp_exp,bdisp_local_hash,bdisp_glbl_hash,byte_avail,bdisp_abs_cnt))
+	return FALSE;
+    }
+
+    if (bimm_bytes) {
+      bimm_ip_rel=a->ip+bimm_bytes;
+      if (!AsmStoreNum(l,a,bimm,FALSE,bimm_bytes,1,bimm_ip_rel,bimm_lit,
+	  bimm_exp,bimm_local_hash,bimm_glbl_hash,byte_avail,bimm_abs_cnt))
+	return FALSE;
+    }
+    return TRUE;
+  }
+  LexPop(l);
+  PutAsmError(l,"ST_INVALID_INSTRUCTION");
+  return FALSE;
+}
+
+
+void DefineBytes(LexStruct *l,AsmCtrlStruct *a,int num_bytes)
+{
+  BOOL is_question,is_dup;
+  int i,dup_value;
+  BYTE *exp;
+  char *ptr;
+  LexUndefEntry *undef_locals,*undef_glbls;
+
+  while (l->token && l->token!=';') {
+    undef_locals=NULL;
+    undef_glbls=NULL;
+    if (l->token==TK_STRING) {
+      ptr=l->ident;
+      i=l->ident_len-1;
+      while (i--)
+	AsmStoreCodeByte(a,*ptr++);
+      Lex(l);  //SKip STRING
+    } else {
+      is_question=FALSE;
+      is_dup=FALSE;
+      l->absolute_address_cnt=0;
+      if (l->token=='?') {
+	is_question=TRUE;
+	Lex(l);
+      } else {
+	l->undef_hash_entry=NULL;
+	l->flags=l->flags & ~(LF_UNRESOLVED_LOCAL+LF_UNRESOLVED_GLBL);
+	if (!GetExpression(l,&exp))
+	  LexSkipEol(l);
+	else {
+	  if (l->flags & (LF_UNRESOLVED_LOCAL + LF_UNRESOLVED_GLBL)) {
+	    if (l->flags & LF_UNRESOLVED_LOCAL) {
+	      undef_locals=l->undef_hash_entry;
+	      l->undef_hash_entry=NULL;
+	      a->has_locals=TRUE;
+	    } else if (l->flags & LF_UNRESOLVED_GLBL) {
+	      undef_glbls=l->undef_hash_entry;
+	      l->undef_hash_entry=NULL;
+	    }
+	  } else {
+	    i=Run(exp);
+	    DelExpression(exp);
+	  }
+	}
+      }
+      if (l->token==TK_IDENT && l->hash_entry) {
+	if ((l->hash_entry->type & HTT_KEYWORD) && (l->hash_entry->user0==AKW_DUP)) {
+	  if (is_question)
+	    PutAsmError(l,"ST_QUESTION_NOT_ALLOWED");
+	  else {
+	    is_dup=TRUE;
+	    if (Lex(l)!='(')
+	      PutAsmError(l,"ST_EXPECTING_LEFT_PAREN");
+	    else {
+	      if (Lex(l)=='?') {
+		is_question=TRUE;
+		Lex(l);  //SKIP "?"
+	      } else
+		dup_value=AsmEvalExpression(l);
+	      if (l->token!=')')
+		PutAsmError(l,"ST_EXPECTING_RIGHT_PAREN");
+	      else
+		Lex(l); //SKIP ')'
+	    }
+	  }
+	}
+      }
+      if (is_dup) {
+	if (undef_locals || undef_glbls)
+	  PutAsmError(l,"ST_UNDEFINED_DUP_CNT");
+	else
+	  AsmStoreNum(l,a,dup_value,is_question,num_bytes,i,0,1,exp,undef_locals,undef_glbls,FALSE,l->absolute_address_cnt);
+      } else
+	AsmStoreNum(l,a,i,is_question,num_bytes,1,0,1,exp,undef_locals,undef_glbls,FALSE,l->absolute_address_cnt);
+    }
+    if (l->token==',')
+      Lex(l);
+  }
+  if (l->token==';')
+    Lex(l);
+  else
+    PutAsmError(l,"ST_MISSING_SEMICOLON");
+}
+
+
+

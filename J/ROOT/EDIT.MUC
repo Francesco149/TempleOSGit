@@ -1,0 +1,83 @@
+Toggle Plain Text	^T
+`Toggle Plain Text	^T`
+
+
+Select Text		SHIFT CURSOR
+Cut to Clipboard	SHIFT DEL
+Copy to Clipboard	^INS
+Paste from Clipboard	SHIFT INS
+Del Line		^Y
+
+Begin/End of Line	^Left/^Right
+Begin/End of File	^Up/^Down
+
+Indent In		^N
+Indent Out		^SHIFT N
+
+Word Wrap On		^W
+Word Wrap Off		^SHIFT W
+
+Underline On		^U
+Underline Off		^SHIFT U
+
+Blink On		^B
+Blink Off		^SHIFT B
+
+Invert Color On		^Z
+Invert Color Off	^SHIFT Z
+
+Superscript		^P
+Normal			^SHIFT P
+Subscript		^ALT P
+
+Insert Dollar Cmd	^L
+Insert Graphic Cmd	^R
+Macro Capture and Play	F2
+
+Page Break		^ENTER
+Print			PrintScreen
+Goto Favorites		^SHIFT F
+
+Find/Replace		^F
+`Find/Replace		^F`
+
+Find Next		F3
+`Find Next		F3`
+
+Go to Line		^G
+`Go to Line		^G`
+
+Save			^S
+`Save			^S`
+
+Save As			^A
+`Save As			^A`
+
+Quit No Save		^Q
+`Quit No Save		^Q`
+
+Quit and Save		ESC
+`Quit and Save		ESC`
+
+ 
+Cmd line issues
+* CTRL-SHIFT-ENTER can be used to insert a carriage return without issuing a 
+cmd.  This is useful when you have scrolled-up and wish to enter a cmd on a 
+blank line.
+
+* The last semicolon on the line is converted to a double semicolon because 
+the compiler looks ahead before doing a cmd.  This normally has no negative 
+effect, but when entering "if" statements with "else" clauses it presents 
+problems.
+
+Some Hot Keys are:
+CTRL ALT DEL	Reboots
+CTRL ALT ESC	Spawns new task
+CTRL ALT TAB	Switches tasks
+CTRL ALT X	Kills current task
+CTRL ALT C	Breaks current program
+WINDOWS KEY	Activates Menu/Help/Macro area
+CTRL FUNCTION KEY Enters autocomplete word
+CTRL SHIFT-FUNCTION KEY Does man page on symbol
+
+* If "MENU" appears on the title bar, you can click it with a mouse.

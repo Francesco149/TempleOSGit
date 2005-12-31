@@ -1,0 +1,16 @@
+void LoadTest(int percent)
+{
+  int i,j,l,sc,ch;
+  l=0x04000000;
+  j=jiffies;
+  for (i=0;i<l;i++)
+    ;
+  l=percent*(l/(jiffies-j))/100;
+  do {
+    j=jiffies;
+    while (j==jiffies)
+      SwapInNext;
+    for (i=0;i<l;i++)
+      ;
+  } while (!ScanChar(&sc,&ch));
+}

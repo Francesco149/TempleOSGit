@@ -1,0 +1,9 @@
+/* To run this, do a directory, right click on
+this file's name and select "Autofile".
+Or, type [::/J/KERNEL/CMD.CPZ,491] AutoFile(filename);
+See [::/J/DOC/GLOSS.GLZ,AutoFile] AutoFile in the glossary for more info.
+*/
+PutS("$FG RED$Prof(&GrUpdateScreen,0x1000);$FG$\r");
+PutS("$FG RED$//Collecting Data, Press A Key$FG$");
+GetChar;
+PutS("\r$FG RED$ProfRep;$FG$\r");

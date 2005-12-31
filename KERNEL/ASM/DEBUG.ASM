@@ -1,2 +1,0 @@
-	ALIGN	4,0x90
-	END

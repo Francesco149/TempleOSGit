@@ -1,0 +1,124 @@
+#define CID_TAD4	4
+#define CID_TAD5	5
+
+int IdComputer()
+{
+  JPartition *p=NULL;
+  try {
+    p=DriveToPartition('E');
+  } catch
+    Fs->take_trap=TRUE;
+  return (p) ? CID_TAD4:CID_TAD5;
+}
+
+int computer_id=IdComputer;
+
+
+public DWORD GodWORD()
+{
+  DWORD lo,hi;
+  PopUpOk("Press to generate a random number");
+  ReadSysTimer(&lo,&hi);
+  return lo & 0xFFFF;
+}
+
+public DWORD GodDWORD()
+{
+  U4 result;
+  result.w.w0=GodWORD;
+  result.w.w1=GodWORD;
+  return result;
+}
+
+WsFilemaskEntry *qu_filemask_list=NULL;
+DWORD qu_total_file_size=0;
+
+void QuAddFileList(JDirEntry *tempm1)
+{
+  char *buf;
+  while (tempm1) {
+    coutln tempm1->full_name;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub)
+	QuAddFileList(tempm1->sub);
+    } else {
+      buf=ReadTextFile(tempm1->full_name);
+      tempm1->user_data=StrLen(buf);
+      qu_total_file_size=qu_total_file_size+
+	tempm1->user_data;
+      Free(buf);
+    }
+    tempm1=tempm1->next;
+  }
+}
+
+void QuAdd(char *wild=TEXT_FILE_MASK)
+{
+  WsFilemaskEntry *tempfm=RMAlloc(sizeof(WsFilemaskEntry));
+  tempfm->next=qu_filemask_list;
+  qu_filemask_list=tempfm;
+  tempfm->mask=RNewString(wild);
+  tempfm->flist=NULL;
+}
+
+void QuTraverseFilelist()
+{
+  WsFilemaskEntry *tempfm;
+  JFileAccess *fa;
+  DWORD my_flags=(1<<FUf_RECURSE);
+  tempfm=qu_filemask_list;
+  while (tempfm) {
+    if (fa=NewJFileAccess(tempfm->mask)) {
+      tempfm->flist=FindFiles(fa->mask,&my_flags);
+      QuAddFileList(tempfm->flist);
+      DelJFileAccess(fa);
+    }
+    tempfm=tempfm->next;
+  }
+}
+
+public void QuInit(char *mask)
+{
+  char *buf,buf2[512];
+  qu_total_file_size=0;
+  qu_filemask_list=NULL;
+
+  buf=NewString(mask);
+  do {
+    RemoveFirstSeg(buf,";",buf2);
+    if (*buf2) {
+      StrCat(buf2,"/" TEXT_FILE_MASK);
+      QuAdd(buf2);
+    }
+  } while (*buf2);
+  Free(buf);
+
+  QuTraverseFilelist;
+}
+
+if (ws_num_words)
+  QuInit("/TAD/TEXT");
+
+
+Cd("/J/UTILS");;
+#include "BOOTINS"
+#include "DBG"
+#include "DIFF"
+#include "GREP"
+#include "S2T"
+#include "HASHUTIL"
+LoadMapFile("::/J/KERNEL/OS.MPZ");  //Enable Man()
+LoadMapFile("::/J/COMPILE/CMP.MPZ");	//Enable Man()
+LoadMapFile("::/J/ROOT/ROOTASM.MPZ");  //Enable Man()
+
+Cd("/J/APPS");;
+#include "TIMECLK"
+
+Cd("/J/ACCOUNTS/TAD");;
+#include "DISTRIB"
+#include "PLUGINS"
+#include "MOSES/MOSES.CPZ"
+
+CommOpen8N1;
+
+CopyTree("::/J","B:/J");

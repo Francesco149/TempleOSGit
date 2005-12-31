@@ -1,0 +1,226 @@
++] Task
+  A "task" is the Intel term for a "process".  Each task has a
+  [::/J/KERNEL/ROOTK.HPZ,1400] TssStruct, the name derived from "Task State
+  Something".  The "Fs" segment register is maintained pointing to the current
+  TssStruct.
++] Root Task
+  This task is created at start-up and appears in a purple window.  On it's
+  heap are all mem objects which are system wide.	When created, it runs the
+  file ROOTK.CPZ.  Normally, ROOTK.CPZ ends by #include "::/J/ROOT/ROOT2.CPZ"
+  where the remainder of the operating system is "#included".  When start-up is
+  finished, the root task enters a server mode where it accepts requests from
+  other tasks.  The [::/J/KERNEL/CMD.CPZ,446] Root("") routine will cause the
+  root task to compile and run text code.  "#include" statements can be sent to
+  the Root() routine, creating system-wide code and data which don't disappear
+  when any particular task ends.
++] Parent/Child Task
+  Often a task will [::/J/KERNEL/CMD.CPZ,146] Spawn() or
+  [T:/J/ROOT/EDIT.CPZ,1437] PopUp() a task as a helper. The helper is known as
+  a Child Task.  A record is usually kept of who Spawned what so that when one
+  task is [::/J/KERNEL/MISC.CPZ,6] Kill()ed the helper tasks disappear,
+  too.	You see a report on current system tasks with [T:/J/ROOT/UTILS.CPZ,271]
+  TaskRep().  There is just one possible window per task, so child tasks are
+  needed.
++] C+
+  The language used by "J" is more than "C" and less than "C++", so it's just
+  "C+".
++] Static Compiled Mode
+  I coined this term to refer to conventional compilation mode, but it is not
+  the primary mode for use in this operating system.  ".BI?" files are created
+  directly, skipping ".OBJ" files.  In this mode, code and data are contiguous.
+   After compiling, you do a [::/J/KERNEL/END.CPZ,89] Load() cmd.  There is no
+  "main()" routine.  Instead, statements outside functions are automatically
+  executed upon loading.  Functions stay in mem and can be called again by
+  entering the function name on the command line.  There is no way to unload
+  except by killing the task.  To invoke Static Compiled Mode, use the 
+  [::/J/COMPILE/COMPILE.CPZ,1578] CompileFile() routine.
+  The kernel and compiler of the operating system are made in static compiled
+  mode and stored in "BOOT.BIC" and "CMP.BIZ".
++] Dynamic Compiled Mode
+  I coined this term to refer to when the compiler allocates objects(code and
+  data) from the heap, noncontiguously.  This mode is used during command-line
+  operations.  When you "#include" a file, it is compiled function by function
+  and objects are placed all over in mem.  The [::/J/COMPILE/COMPILE.CPZ,1720]
+  ExecuteFile() routine is the same as "#include" but can be placed in
+  programs.  [::/J/COMPILE/COMPILE.CPZ,1700] ExecuteString() routine will
+  compile a string. "asm{}" cmds are not allowed in Dynamic mode.
++] Compiler Intermediate Code
+  The compiler generates instructions one step before making actual
+  assembly(machine) language instruction.  This code is reverse polish in
+  nature and can be viewed with [::/J/KERNEL/MISC.CPZ,108] PTrace() or
+  [::/J/KERNEL/MISC.CPZ,112] OTrace(). The compiler does not "interpret" code,
+  except in the process of optimization.  The assembly language can be viewed
+  when it is compiled with the [::/J/KERNEL/MISC.CPZ,116] CTrace() routine, or
+  afterward with [T:/J/UTILS/DBG.CPZ,547] Dasm().
++] AutoFile
+  A C+ script who's stdout goes to a task.  When [::/J/KERNEL/CMD.CPZ,491]
+  AutoFile() or [::/J/KERNEL/CMD.CPZ,486] AutoString() are called, a helper
+  task runs and sends output to the main task.  [::/J/KERNEL/CMD.CPZ,288] Msg()
+  can be included in an autofile to send mouse or other commands.  While an
+  autofile is running, the normal input gets diverted to the autofile task and
+  can be filtered and sent back to the main task using
+  [T:/J/ROOT/WINDOW.CPZ,429] GetMessage() and [::/J/KERNEL/CMD.CPZ,288] Msg(). 
+  Unless you are driving functions which prompt for data, you can probably use
+  an #include file in place of an AutoFile.  Note: [::/J/KERNEL/CMD.CPZ,478]
+  Auto() and [::/J/KERNEL/SPRINTF.CPZ,284] AutoPrintF() are simple routines
+  which call PutS from within an autofile task to send a string to the main
+  task's input stream.	They differs from the other autofile commands in that
+  they send text and not C+ commands.
++] File Partition
+  There are physical partitions on disks and then there are virtual
+  partitions which are stored in files on other partitions.  This is a J
+  feature.  You can create a file partition using AddDrives or at the prompt
+  when you recompile the operating system.  If answer "Yes" to the prompt on
+  reformating, this partition will be reformatted each time you use it for the
+  first time after booting.  The original purpose of file partitions was to use
+  as a holding area to collect files to write to a CD-ROM.  Use the file
+  partition's letter when calling [T:/J/ROOT/DISK10.CPZ,620] CreateCDFile().
++] GrElem (Graphic Element)
+  A graphic element is a line or point or poly-line or whatever, created with
+  CTRL-R. Several graphic elements are clustered by CTRL-R.
++] Hard-coded
+  When you use a raw number instead of a #define'ed label, that's called
+  "hard-coding".  Use labels whenever possible or your programs will fail if
+  numbers change when the operating system is updated.
+
+
+                                  FileNames
+
+Wildcards
+  FileName wild card matching allows "*" to match sequences of arbitrary 
+characters and "?" for a single arbitrary character.  For some commands, you 
+can enter multiple specifiers separated by ";".  You don't need to, but can, 
+use "*.*" instead of "*" for filenames.  You can specify names to exclude by 
+using a "~".
+
+*.??Z
+  Automatically compressed and uncompresses files when read and written.  It 
+has check sums.
+*.??C
+  Contiguous files--NOT compressed.
+*.??Y
+  Encrypted files, compressed.
+*.TX?
+  Text Files
+*.GL?
+  Glossary Files--WordStat will show a "#" next to words which are defined as 
+anchors within glossary files.
+*.CP?
+  C+ source files.  The default C+ compiler type is ".CPZ".
+*.HP?
+  C+ source header files.
+*.AS?
+  Assembly source files.  The default assembler type is ".ASZ".
+*.MU?
+  Menu/Help/Macro files
+*.MP?
+  Compiler "map" files
+*.BI?
+  Binary executable files with check sums, created by
+[::/J/COMPILE/COMPILE.CPZ,1578] CompileFile() and read 
+by [::/J/KERNEL/END.CPZ,89] Load().
+*.DT?
+  Data files
+*.DVC
+  File Drive (A drive stored in a file on another partition)
+*.IS?
+  CD-ROM image file--ISO9660.  To burn on other operating systems, rename 
+".ISO"
+*.AUZ
+  "AutoFile" Basically a C+ program who's stdout goes to the input of a task 
+when [::/J/KERNEL/CMD.CPZ,491] AutoFile() is called.
+
+[::/J/KERNEL/ROOTK.HPZ,1041] SOURCE_FILE_MASK
+  This #define holds a list of source file extensions.
+[::/J/KERNEL/ROOTK.HPZ,1042] TEXT_FILE_MASK
+  This #define holds a list of text file extensions.
+
+
+
+                              Naming conventions
+
+The following are rules I stick to.  If you work on the operating system,
+it'd 
+be good to stick with them for uniformity, but you can do what you like.	
+Since there are no "namespaces" and I don't plan to implement name spaces, I
+highly recommend putting a 2-3 char module code prefix on symbols. e.g.
+"Ws","Ltf","Lex"
+
+ALL_CAPS
+  Assembly Language labels are capitalized with underscores between words. 
+So 
+are #define's.
+
+MixedCaps
+  C+ Functions and class names are MixedCaps.
+
+lower_case
+  Local function vars and glbl vars are lower case.  Class member names are 
+also lower_case.
+
+SYSf_????
+  Flags which are designated with bit numbers instead of bit values are 
+designated with a lower case "f".
+
+CP_????
+  Assembly language routines which are C+ callable have a prefix "CP_".
+
+
+
+Put/PrintF
+  This usually means sending data to a character stream.  I try to use this 
+instead of "Display" or "Dump".
+
+Get
+  This is the opposite of "Put".
+
+Write
+  This usually refers to sending data to disk and not to be confused with 
+"Save".
+
+Read
+  This is the opposite of "Write" and not to be confused with "Load".
+
+Load
+  Refers to doing more than just reading.
+
+Save
+  This is an editor cmd.
+
+Find
+  I try to use this instead of "Locate", etc.
+
+struct
+  I try to use this instead of "Record" or "Node".
+
+Free/Unused
+  "Free" is a verb meaning to return something (to the system) like mem or 
+disk space.  "Unused" is an adjective.
+
+
+                                 Abreviations
+
+Attr	Attribute
+Blk	Block
+Buf	Buffer
+Cb	Call-back
+Cmd	Command
+Cnt	Count
+Ctrl	Control.  The control key is indicated with "^".
+Cur	Current
+Dbg	Debug
+Del	Delete
+Dev	Device
+Dir	Directory
+Elem	Element
+Glbl	Global
+Gr	Graphic
+Lex	Lexical analyser
+Lpt	I think this stands for "line printer port". (It's a DOS term.)
+Ltf	Linked-Text-File (doubly-linked-list of rich text cmds)
+Mem	Memory
+Num	Number
+Ptr	Pointer
+Rep	Report
+Sys	System
+Var	Variable

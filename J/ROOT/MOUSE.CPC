@@ -1,0 +1,224 @@
+#define KEYB_PORT (0x60)
+#define KEYB_CTRL (0x64)
+
+int mxx = grwidth/2,
+    myy = grheight/2, mzz = 0,
+    m_speed=0;
+int mouse_buttons[5];
+DWORD last_mouse_jiffy=0;
+BOOL mouse_installed=FALSE;
+BOOL mouse_has_wheel=FALSE;
+BOOL mouse_has_ext_buttons=FALSE;
+BOOL mouse_evt=FALSE;
+BOOL mouse_irqs_working=FALSE;
+
+void KbdCmdSend(DWORD port, BYTE val)
+{
+  DWORD timeout;
+  for (timeout=10000;
+       (InP(KEYB_CTRL)&2) && timeout;timeout--)
+    if (timeout>4000)
+      PortNop;
+    else
+      SwapInNext;
+  if (timeout)
+    OutP(port, val);
+  else
+    throw(TRP_LOCAL);
+}
+
+int KbdCmdRead()
+{
+  DWORD timeout;
+  for (timeout=10000; timeout; timeout--) {
+    if (InP(KEYB_CTRL) & 1)
+      return InP(KEYB_PORT);
+    else
+      if (timeout>4000)
+	PortNop;
+      else
+	SwapInNext;
+  }
+  return -1;
+}
+
+void KbdCmdFlush()
+{
+  int i;
+  for (i=0;i<1000;i++) {
+    if (InP(KEYB_CTRL) & 1) {
+      InP(KEYB_PORT);
+      i=0;
+    } else
+      PortNop;
+  }
+}
+
+void KbdMouseCmdAck(BYTE val)
+{
+  BYTE b;
+  DWORD timeout=32;
+  do {
+    try {
+      KbdCmdSend(KEYB_CTRL,0xD4);
+      KbdCmdSend(KEYB_PORT,val);
+      b=KbdCmdRead;
+      if (b==0xFA)
+	return;
+    } catch
+      Fs->take_trap=TRUE;
+    timeout--;
+  } while (timeout);
+  throw(TRP_LOCAL);
+}
+
+void MouseGetDeviceType()
+{
+  BYTE b;
+  KbdMouseCmdAck(0xF2);
+  b=KbdCmdRead;
+  if (b==3)
+    mouse_has_wheel=TRUE;
+  else if (b==4)
+    mouse_has_ext_buttons=TRUE;
+}
+
+void MouseReset()
+{
+  KbdCmdFlush;
+  KbdCmdSend(KEYB_CTRL,0xA8); //Enable Mouse
+  KbdCmdFlush;
+  KbdCmdSend(KEYB_CTRL,0xA9); //check for mouse
+  KbdCmdFlush;
+
+  KbdMouseCmdAck(0xFF); //Reset
+  KbdCmdRead;
+  KbdCmdRead;
+  KbdMouseCmdAck(0xFF); //Reset
+  KbdCmdRead;
+  KbdCmdRead;
+  KbdMouseCmdAck(0xF3);
+  KbdMouseCmdAck(0xC8);
+  KbdMouseCmdAck(0xF3); // enable Mouse
+  KbdMouseCmdAck(0x64); // Set Rate
+  KbdMouseCmdAck(0xF3);
+  KbdMouseCmdAck(0x50); //Resolution
+  MouseGetDeviceType; // enable Mouse
+
+  KbdMouseCmdAck(0xF3);
+  KbdMouseCmdAck(0x0A);
+  MouseGetDeviceType; // enable Mouse
+
+  KbdMouseCmdAck(0xE8); //Resolution
+  KbdMouseCmdAck(0x03);
+  KbdMouseCmdAck(0xE6);
+  KbdMouseCmdAck(0xF3); // Set Rate
+  KbdMouseCmdAck(0x28);
+
+  KbdMouseCmdAck(0xF4); // enable Mouse
+}
+
+
+void MouseHandler()
+{
+  int i,dx,dy,dz,dd;
+  BYTE mouse_buf[4];
+
+  try {
+    for (i=0;i<3;i++)
+      mouse_buf[i]=KbdCmdRead;
+    mouse_buf[3]=0;
+    if (mouse_has_wheel || mouse_has_ext_buttons)
+      mouse_buf[3]=KbdCmdRead;
+    else
+      mouse_buf[3]=0;
+    Sti;
+    KbdCmdFlush;
+    mouse_buttons[0] = mouse_buf[0] & 1;
+    mouse_buttons[1] = (mouse_buf[0] & 2) >> 1;
+    mouse_buttons[2] = (mouse_buf[0] & 4) >> 2;
+    mouse_buttons[3] = (mouse_buf[3] & 0x10) >> 4;
+    mouse_buttons[4] = (mouse_buf[3] & 0x20) >> 5;
+    if (mouse_buf[0] & 0x10) dx=mouse_buf[1]-256;
+		else dx=mouse_buf[1];
+    if (mouse_buf[0] & 0x20) dy=256-mouse_buf[2];
+		else dy=0-mouse_buf[2];
+    if (mouse_buf[3] & 0x08) dz=(mouse_buf[3]&7)-8;
+		else dz=mouse_buf[3]&7;
+
+    if (dx<8 && dx>-8 && dy<8 && dy>-8) {
+      dx=Sign(dx);
+      dy=Sign(dy);
+    }
+
+    dd=dx*dx+dy*dy+dz*dz;
+    mxx+=dx;
+    myy+=dy;
+    mzz+=dz;
+//    m_speed=Sqrt(dd);
+ 
+    if (mxx < 0) mxx=0;
+    if (mxx>=grwidth) mxx=grwidth-1;
+    if (myy < 0) myy=0;
+    if (myy>=grheight) myy=grheight-1;
+  } catch {
+    Fs->take_trap=TRUE;
+    try {
+     MouseReset;
+    } catch
+      Fs->take_trap=TRUE;
+  }
+  last_mouse_jiffy=jiffies;
+  mouse_evt=TRUE;
+}
+
+void MouseIrqHandler()
+{
+  mouse_irqs_working=TRUE;
+  MouseHandler;
+}
+
+
+void PollMouse()
+{ //I can't get IRQ's working on some computers
+  DWORD old_flags=GetFlags;
+  if (mouse_irqs_working) return;
+  Cli;
+  if (!Bt(&sys_irq_flags,1)) {//not in keybd IRQ
+    if (InP(KEYB_CTRL) & 1)
+      MouseHandler;
+  }
+  SetFlags(old_flags);
+}
+
+BOOL InstallMouseDriver()
+{
+  BOOL result;
+  int i;
+
+  ext[EXT_IRQ0C]=NULL;
+  mouse_evt=FALSE;
+  for(i=0;i<5;i++)
+    mouse_buttons[i]=0;
+  mouse_has_wheel=FALSE;
+  mouse_has_ext_buttons=FALSE;
+
+  try {
+    MouseReset;
+    result=TRUE;
+    mouse_evt=TRUE;
+    ext[EXT_IRQ0C]=&MouseIrqHandler;
+  } catch {
+    Fs->take_trap=TRUE;
+    result=FALSE;
+  }
+  mouse_installed=result;
+  return result;
+}
+
+void MouseInstallTsk()
+{
+  InstallMouseDriver;
+}
+
+Spawn(&MouseInstallTsk,"MOUSE INSTALL");

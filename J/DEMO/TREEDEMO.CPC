@@ -1,0 +1,63 @@
+/*
+
+This uses LtfPutS/LtfPrintF because updates
+to within a tree while a tree is collapsed get
+messed-up if "live"(like using ordinary PrintF/PutS.)
+The insert point is confused by hiding of
+data in collapsed trees.  Therefore, the window main
+Ltf is taken off-line by disabling preemption so there
+are no screen updates until all data has been inserted.
+
+There is a special Ltf function which is also
+available to take an Ltf off-line.  See [T:/J/ROOT/LTF.CPZ,2079] LtfSafeInsert.
+For this example, however, I wanted to use LtfPrintF
+and disabled Preemption myself.
+
+*/
+
+void TreeSub(JDirEntry *tempm)
+{
+  JDirEntry *tempm1;
+  Ltf *l=Fs->cur_ltf;
+  while (tempm) {
+    tempm1=tempm->next;
+    if (tempm->attr & J_ATTR_DIR) {
+      LtfPutS(l,"$TR \"\"$");
+      LtfPrintF(l,"$MA +A \"%s\",\"Cd(\\\"%s\\\");Dir;\r\"$\r\n",
+      tempm->name,tempm->full_name);
+      if (tempm->sub) {
+	LtfPutS(l,"$ID,+2$");
+	TreeSub(tempm->sub);
+	LtfPutS(l,"$ID,-2$");
+      }
+    } else {
+      LtfPrintF(l,"$LK \"%12s\",\"FI:%s\"$\r\n",
+	tempm->name,tempm->full_name);
+    }
+    DelJDirEntry(tempm);
+    tempm=tempm1;
+  }
+}
+
+void TreeDemo()
+{
+  JFileAccess *fa=NewJFileAccess("/J/*");
+  JDirEntry *tempm;
+  FlagsStruct f;
+  BOOL old_preempt;
+  Ltf *l=Fs->cur_ltf;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS","+r");
+  if (fa) {
+    tempm=FindFiles(fa->mask,&f.on0);
+    old_preempt=Preempt(OFF);
+    LtfPutS(l,"$TR -C+AL,\"\"$\r\n");
+    LtfPutS(l,"$ID,+2$");
+    TreeSub(tempm);
+    LtfPutS(l,"$ID,-2$");
+    LtfRecalc(l);
+    Preempt(old_preempt);
+    DelJFileAccess(fa);
+  }
+}
+ 
+TreeDemo;

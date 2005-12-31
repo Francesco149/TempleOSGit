@@ -1,0 +1,60 @@
+/****************  EXTERNS  *********************/
+extern void PutSysText(char *name);
+extern char *ReadTextFile(char *filename,DWORD *attr=NULL);
+extern void throw(...);
+extern char *MSPrintF(char *src,...);
+extern BOOL Cd(char *name,BOOL make_dirs=FALSE);
+extern void MkDir(char *filename);
+extern void Msg(DWORD code,DWORD p1,DWORD p2);
+extern char PartitionToDrive(JPartition *p=NULL);
+extern BOOL RBlks(JPartition *p,BYTE *buf, DWORD blk, DWORD cnt,BOOL unlock=TRUE);
+extern BOOL WBlks(JPartition *p,BYTE *buf, DWORD blk, DWORD cnt,BOOL unlock=TRUE);
+extern void InvalidateDiskCache(JPartition *p,BOOL unlock=TRUE);
+extern DWORD AllocClusters(JPartition *p,DWORD c=0,DWORD cnt=1,BOOL contiguous=FALSE,BOOL unlock=TRUE);
+extern BOOL Drive(char drive_letter);
+extern JFile *FOpen(char *filename,char *flags,DWORD cnt=0);
+extern DWORD FSize(JFile *f);
+extern void FSync(JFile *f);
+extern void FClose(JFile *f);
+extern BOOL FRBlks(JFile *f,BYTE *buf,DWORD blk=JFB_NEXT_BLK,DWORD cnt=1);
+extern BOOL FWBlks(JFile *f,BYTE *buf,DWORD blk=JFB_NEXT_BLK,DWORD cnt=1);
+extern void DelJFileAccess(JFileAccess *fa);
+extern JFileAccess *NewJFileAccess(char *mask,BOOL make_mask=FALSE,BOOL make_dirs=FALSE);
+extern void ReleaseTaskPartitions();
+/*********** MOST GLBL VARS ***********/
+char sys_temp_filename[80];
+SysAccntStruct sys_accounts;
+TssCmdStruct sys_macro_queue,*sys_macro_ptr;
+TssStruct *macro_util_tss;
+TssStruct *root_tss;
+DWORD num_spawned_users;
+BOOL gr_just_cleared;
+TssStruct *monitor_floppy_tss;
+
+DWORD FDC_retries;
+DWORD FDC_DRIVE_HEADS;
+DWORD FDC_DISK_CYLINDERS;
+DWORD FDC_DISK_SECTORS;
+DWORD FDC_MAX_SECTOR;
+DWORD FDC_DMA_BUF;
+
+JCacheBlk *JDCBase;
+JCacheBlk *JDCNext_lru,*JDCLast_lru;
+JCacheBlk **JDCHashTable;
+ 
+
+DWORD sys_timer_lo,sys_timer_hi;
+U4 rnd_SEED;
+DWORD sys_clipboard_ltf;
+U4 disk_status_display;
+JBlkDev *local_blkdevs,*boot_blkdev;
+JPartition *local_partitions,*default_partition;
+char default_drive;
+JPartition *drive_to_partition[32];
+int num_blkdevs;
+char *sys_startup_account;
+char *wordstat_mask;
+char *sys_compile_time;
+
+SysHashEntry *sys_internal_types[IT_NUM_IT];
+

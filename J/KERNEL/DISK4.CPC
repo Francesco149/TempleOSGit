@@ -1,0 +1,1006 @@
+void MapDrive(char ch,JPartition *p)
+{
+  drive_to_partition[ToUpper(ch)-'A']=p;
+  p->drive=ToUpper(ch);
+}
+
+BOOL Drive(char drive_letter)
+{
+  JPartition *p;
+  JBlkDev *bdev;
+  BOOL different=FALSE;
+  JPartition *new_partition=DriveToPartition(drive_letter);
+  if (!new_partition)  {
+    PutSysText("ST_INVALID_DRIVE");
+    return FALSE;
+  }
+  if (new_partition!=Fs->cur_partition) {
+    different=TRUE;
+    Fs->cur_partition=new_partition;
+  }
+  p=Fs->cur_partition;
+  CheckJPartition(p);
+  bdev=p->bdev;
+  CheckJBlkDev(bdev);
+  if (different) {
+    if ((bdev->flags & JBDF_REMOVABLE) &&
+       !(bdev->flags & JBDF_INITIALIZED) )
+      ChangeDisk(p->drive);
+    if (bdev->type==JBDT_RAM || bdev->type==JBDT_FILE)
+      InitBlkDev(bdev);
+  }
+  Free(Fs->cur_dir);
+  Fs->cur_dir=NewString("/");
+  if (p->type==PT_FAT12 || p->type==PT_FAT32 || p->type==PT_ISO9660) {
+    Fs->cur_dir_cluster=p->root_cluster;
+    return TRUE;
+  }
+  return FALSE;
+}
+
+BOOL Cd(char *name,BOOL make_dirs=FALSE)
+{
+  int maxlen;
+  BOOL result=TRUE;
+  char *buf2,*buf3,*buf,*hdir;
+  JPartition *p;
+  if (*name && name[1]==':') {
+    if (*name==':') {
+      if (Fs->cur_partition!=default_partition)
+	if (!Drive(*name)) return FALSE;
+    } else {
+      if (Fs->cur_partition!=
+	DriveToPartition(*name))
+	  if (!Drive(*name)) return FALSE;
+    }
+    name+=2;
+  }
+  p=Fs->cur_partition;
+  if (*name=='/') {
+    Fs->cur_dir_cluster=p->root_cluster;
+    Free(Fs->cur_dir);
+    Fs->cur_dir=NewString("/");
+    name++;
+  }
+  buf2=MStringUtil(name,
+    SU_TO_UPPER|SU_REMOVE_LEADING|SU_REMOVE_TRAILING|
+    SU_DISCARD_PARITY|SU_REMOVE_CTRL_CHARS);
+  maxlen=StrLen(Fs->cur_dir)+1+StrLen(buf2)+1;
+  buf3=MAlloc(maxlen);
+  buf=MAlloc(maxlen);
+  StrCpy(buf3,Fs->cur_dir);
+  while (*buf2 && result) {
+    RemoveFirstSeg(buf2,"/",buf);
+    if (!*buf) {
+      Fs->cur_dir_cluster=p->root_cluster;
+      StrCpy(buf3,"/"); //TODO
+    } else if (!StrCmp(buf,"..")) {
+      RemoveLastSeg(buf3,"/",buf);
+      if (!*buf3) {
+	Fs->cur_dir_cluster=p->root_cluster;
+	StrCpy(buf3,"/");
+      } else {
+	if (p->type==PT_FAT12) {
+	  if (!CdFAT12(".."))
+	    result=FALSE;
+	} else if (p->type==PT_FAT32) {
+	  if (!CdFAT32(".."))
+	    result=FALSE;
+	} else if (p->type==PT_ISO9660) {
+	  if (!CdISO(".."))
+	    result=FALSE;
+	} else result=FALSE;
+      }
+    } else if (!StrCmp(buf,".")) {
+      ;
+    } else if (*buf) {
+      if (!StrCmp(buf,"HOME")) {
+	hdir=HomeDirString;
+	result=Cd(hdir);
+	Free(buf3);
+	buf3=MAlloc(maxlen+StrLen(hdir));
+	StrCpy(buf3,hdir+2);
+	Free(hdir);
+      } else {
+	if (p->type==PT_FAT12) {
+	  if (!CdFAT12(buf))
+	    result=FALSE;
+	} else if (p->type==PT_FAT32) {
+	  if (!CdFAT32(buf))
+	    result=FALSE;
+	} else if (p->type==PT_ISO9660) {
+	  if (!CdISO(buf))
+	    result=FALSE;
+	} else result=FALSE;
+	if (!result && make_dirs) {
+	  Free(Fs->cur_dir);
+	  Fs->cur_dir=NewString(buf3);
+	  result=TRUE;
+	  if (MkDir(buf)) {
+	    if (p->type==PT_FAT12) {
+	      if (!CdFAT12(buf))
+		result=FALSE;
+	    } else if (p->type==PT_FAT32) {
+	      if (!CdFAT32(buf))
+		result=FALSE;
+	    } else result=FALSE;
+	  } else
+	    result=FALSE;
+	}
+	if (result) {
+	  if (StrCmp(buf3,"/"))
+	    StrCat(buf3,"/");
+	  StrCat(buf3,buf);
+	}
+      }
+    }
+  }
+  Free(Fs->cur_dir);
+  Fs->cur_dir=NewString(buf3);
+  Free(buf);
+  Free(buf2);
+  Free(buf3);
+  return result;
+}
+
+void DelJFileAccess(JFileAccess *fa)
+{
+  JBlkDev *bdev;
+  if (!fa) return;
+  bdev=fa->old_partition->bdev;
+  if (!(bdev->flags & JBDF_INIT_IN_PROGRESS)) {
+    Drive(PartitionToDrive(fa->old_partition));
+    Cd(fa->old_dir);
+  } else {
+    Fs->cur_partition=fa->old_partition;
+    Free(Fs->cur_dir);
+    Fs->cur_dir=NewString("/");
+    Fs->cur_dir_cluster=fa->old_partition->root_cluster;
+  }
+  Free(fa->old_dir);
+  Free(fa->mask);
+  Free(fa);
+}
+
+JFileAccess *NewJFileAccess(char *mask,BOOL make_mask=FALSE,BOOL make_dirs=FALSE)
+{
+  BOOL valid=TRUE;
+  char *buf,*my_mask,*temp_mask;
+  BOOL old_silent;
+  JFileAccess *fa=MAlloc(sizeof(JFileAccess));
+  my_mask=MStringUtil(mask,
+    SU_TO_UPPER|SU_REMOVE_LEADING|SU_REMOVE_TRAILING|
+    SU_DISCARD_PARITY|SU_REMOVE_CTRL_CHARS);
+  temp_mask=my_mask;
+  fa->old_dir=NewString(Fs->cur_dir);
+  fa->old_partition=Fs->cur_partition;
+  if (*my_mask && my_mask[1]==':') {
+    if (Fs->cur_partition!=DriveToPartition(*my_mask))
+      if (!Drive(*my_mask)) valid=FALSE;
+    my_mask+=2;
+  }
+  fa->p=Fs->cur_partition;
+  CheckJPartition(fa->p);
+  buf=NewString(my_mask);
+  fa->mask=MAlloc(StrLen(buf)+1);
+  RemoveLastSeg(buf,"/",fa->mask);
+  if (*my_mask=='/' && !*buf)
+    StrCpy(buf,"/");
+  if (*buf)
+    if (!Cd(buf,make_dirs))
+      valid=FALSE;
+  if (valid && make_mask) {
+    if (!make_dirs || CheckFileName(fa->mask)) {
+      old_silent=Silent(ON);
+      if (Cd(fa->mask,make_dirs)) {
+	Free(fa->mask);
+	fa->mask=NewString("*");
+      }
+      Silent(old_silent);
+    }
+  }
+  Free(buf);
+  Free(temp_mask);
+  if (!valid) {
+    DelJFileAccess(fa);
+    fa=NULL;
+//    throw(TRP_FILE);
+  }
+  return fa;
+}
+
+BOOL IsDir(char *dir_name)
+{
+  BOOL result=FALSE;
+  char *mask=MSPrintF("%s/*",dir_name);
+  BOOL old_silent=Silent(ON);
+  JFileAccess fa=NewJFileAccess(mask);
+  if (fa) {
+    result=TRUE;
+    DelJFileAccess(fa);
+  }
+  Free(mask);
+  Silent(old_silent);
+  return result;
+}
+
+void Dir(char *wild=NULL,BOOL show_clusters=FALSE)
+{
+  char *w;
+  JFileAccess *fa;
+  if (!wild)
+    w=NewString("*");  //We must do this because of bug that prevents string defaults
+  else
+    w=NewString(wild);
+  fa=NewJFileAccess(w,TRUE);
+  if (fa) {
+    DirFAT(fa->mask,show_clusters);
+    DelJFileAccess(fa);
+  }
+  Free(w);
+}
+
+void Del(char *wild)
+{
+  JFileAccess *fa=NewJFileAccess(wild);
+  if (fa) {
+    if (fa->p->type==PT_FAT12)
+      DelFAT12Files(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask);
+    else if (fa->p->type==PT_FAT32)
+      DelFAT32Files(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask);
+    DelJFileAccess(fa);
+  }
+}
+
+BYTE *ReadFile(char *filename,DWORD *size=NULL,DWORD *attr=NULL,BOOL raw=FALSE)
+{
+  SysHashEntry *temph,**temph1;
+  char *absname;
+  BYTE *result=NULL;
+  DWORD size2=0,attr2=0;
+  JFileAccess *fa;
+  ArcCompressStruct *ac=NULL;
+
+  if (attr)
+    *attr=0;
+  absname=AbsoluteFileName(filename);
+  if (!raw && (temph=FindHashEntry(absname,root_tss->hash_table,HTT_FILE))) {
+    if (FileAttr(absname) & J_ATTR_COMPRESSED) {
+      ac=temph->user0;
+      if (size)
+	*size=ac->expanded_size;
+      if (attr)
+	*attr=FileAttr(absname,*attr | ac->flags);
+      result=ExpandBuf(ac);
+    } else { //Not implimented
+      result=MAlloc(temph->user1+1);
+      MemCpy(result,temph->user0,temph->user1);
+      result[temph->user1]=0; //Terminate
+      if (size)
+	*size=temph->user1;
+    }
+  } else {
+    fa=NewJFileAccess(filename);
+    if (fa) {
+      if (fa->p->type==PT_FAT12)
+	result=ReadFAT12File(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,&size2,&attr2,raw,&ac);
+      else if (fa->p->type==PT_FAT32)
+	result=ReadFAT32File(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,&size2,&attr2,raw,&ac);
+      else if (fa->p->type==PT_ISO9660)
+	result=ReadISOFile(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,&size2,&attr2,raw,&ac);
+      DelJFileAccess(fa);
+    }
+    if (size)
+      *size=size2;
+    if (attr)
+      *attr=attr2;
+    if (!raw && (attr2 & J_ATTR_RESIDENT)) {
+      temph=RMAllocZ(sizeof(SysHashEntry));
+      temph->string=RNewString(absname);
+      temph->type=HTT_FILE;
+      temph->use_cnt=0;
+      temph->source_link=NULL;
+      temph->user0=RMAllocIdentical(ac);
+      temph->user1=size2;
+      temph1=FindHashBucket(temph->string,root_tss->hash_table);
+      temph->next=*temph1;
+      *temph1=temph;
+    }
+    Free(ac);
+  }
+  Free(absname);
+  return result;
+}
+
+char *ReadTextFile(char *filename,DWORD *attr=NULL)
+{
+  char *buf=ReadFile(filename,NULL,attr);
+  return buf;
+}
+
+
+BOOL FindFile(char *filename,JDirEntry *rde=NULL,
+      BOOL dir_only=FALSE,BOOL file_only=FALSE,BOOL unlock=TRUE)
+{
+  BOOL result=FALSE;
+  JDirEntry de;
+  JFileAccess *fa=NewJFileAccess(filename);
+  if (fa) {
+    if (fa->p->type==PT_FAT12) {
+      result=FindFAT12File(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,
+			   &de,dir_only,file_only,unlock);
+    } else if (fa->p->type==PT_FAT32) {
+      result=FindFAT32File(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,
+			   &de,dir_only,file_only,unlock);
+    } else if (fa->p->type==PT_ISO9660) {
+      result=FindISOFile(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,
+			   &de,dir_only,file_only,unlock);
+    }
+    DelJFileAccess(fa);
+  }
+  if (result && rde)
+    MemCpy(rde,&de,sizeof(JDirEntry));
+  return result;
+}
+
+
+DWORD WriteFile(char *filename,BYTE *fbuf,
+   DWORD size,DWORD Jdatetime=0,DWORD attr=0,BOOL raw=FALSE)
+{
+  DWORD c=0;
+  SysHashEntry *temph,**temph1;
+  JFileAccess *fa=NewJFileAccess(filename);
+  ArcCompressStruct *ac=NULL;
+  char *absname=AbsoluteFileName(filename);
+  if (fa) {
+    if (fa->p->type==PT_FAT12)
+      c=WriteFAT12File(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,
+	fbuf,size,Jdatetime,attr,raw,&ac);
+    else if (fa->p->type==PT_FAT32)
+      c=WriteFAT32File(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,
+	fbuf,size,Jdatetime,attr,raw,&ac);
+    if (temph=FindHashEntry(absname,root_tss->hash_table,HTT_FILE)) {
+      RFree(temph->user0);
+      if (!raw && ac && (attr & J_ATTR_RESIDENT)) {
+	temph->user0=RMAllocIdentical(ac);
+	temph->user1=size;
+      } else {
+	temph->user0=0;
+	temph->type=HTT_INVALID;
+      }
+    } else if (!raw && ac && (attr & J_ATTR_RESIDENT)) {
+      temph=RMAllocZ(sizeof(SysHashEntry));
+      temph->string=RNewString(absname);
+      temph->type=HTT_FILE;
+      temph->use_cnt=0;
+      temph->source_link=NULL;
+      temph->user0=RMAllocIdentical(ac);
+      temph->user1=size;
+      temph1=FindHashBucket(temph->string,root_tss->hash_table);
+      temph->next=*temph1;
+      *temph1=temph;
+    }
+    Free(ac);
+    DelJFileAccess(fa);
+  }
+  Free(absname);
+  return c;
+}
+
+void WriteTextFile(char *filename,char *st,DWORD attr=0)
+{
+  WriteFile(filename,st,StrLen(st),0,attr);
+}
+
+
+void FAllocFile(JFile *f,DWORD cnt,BOOL contiguous)
+{
+  JPartition *fp=f->p;
+  JFileAccess *fa=NewJFileAccess(f->de.full_name);
+  f->de.cluster=AllocClusters(fp,0,(cnt+fp->spc-1)/fp->spc,contiguous);
+  f->de.size=BLK_SIZE*cnt;
+  if (fa) {
+    NewJDirEntry(Fs->cur_partition,Fs->cur_dir_cluster,&f->de,TRUE);
+    DelJFileAccess(fa);
+  }
+  f->flags&=~JF_NEW_FILE;
+}
+
+DWORD FSize(JFile *f)
+{
+  if (f)
+    return f->de.size;
+  else
+    return 0;
+}
+
+void FSync(JFile *f)
+{
+  if (f->flags & JF_BUF_DIRTY) {
+    WClusters(f->p,f->cluster_buf,f->cluster,1,TRUE);
+    f->flags&=~JF_BUF_DIRTY;
+  }
+  disk_status_display.w.w1=0;
+}
+
+
+JFile *FOpen(char *filename,char *flags,DWORD cnt=0)
+{  //allows flags "r","w","w+" and "c" (contiguous)
+  JFile *f=RMAllocZ(sizeof(JFile));
+  JFileAccess *fa;
+  char *full_name,*full_name2;
+  BOOL contiguous=Occurrences(flags,'c');
+
+  f->cluster=0xFFFFFFFF;
+  f->file_ptr=0;
+  f->fblk_num=0;
+  if (cnt)
+    f->max_blk=cnt-1;
+  else
+    f->max_blk=0xFFFFFFFF;
+  if (contiguous) {
+    f->flags|=JF_CONTIGUOUS;
+    if (!(FileAttr(filename) & J_ATTR_CONTIGUOUS))
+      throw(TRP_FILE,60);
+  }
+  f->file_cluster_num=0xFFFFFFFF;
+  full_name2=AbsoluteFileName(filename);
+  full_name=RNewString(full_name2);
+  Free(full_name2);
+  f->p=DriveToPartition(*full_name);
+  f->cluster_buf=RMAllocZ(f->p->spc*BLK_SIZE);
+  if (Occurrences(flags,'w')) {
+    f->flags=f->flags|JF_WRITE|JF_NEEDS_WRITE;
+    if (Occurrences(flags,'+')) {
+      if (FindFile(full_name,&f->de,FALSE,TRUE)) {
+	f->de.full_name=full_name;
+	if (contiguous)
+	  f->max_blk=(FSize(f)+BLK_SIZE-1)/BLK_SIZE-1;
+	return f;
+      }
+    }
+    f->de.full_name=full_name;
+    f->flags|=JF_NEW_FILE;
+    fa=NewJFileAccess(full_name);
+    if (fa) {
+      StrCpy(f->de.name,fa->mask);
+      DelJFileAccess(fa);
+      if (cnt)
+	FAllocFile(f,cnt,contiguous);
+      if (!contiguous || cnt)
+	return f;
+    }
+  } else {
+    if (FindFile(full_name,&f->de,FALSE,TRUE)) {
+      f->de.full_name=full_name;
+      if (contiguous)
+	f->max_blk=(FSize(f)+BLK_SIZE-1)/BLK_SIZE-1;
+      return f;
+    }
+  }
+  RFree(f->cluster_buf);
+  RFree(full_name);
+  RFree(f);
+  return NULL;
+}
+
+void FClose(JFile *f)
+{
+  JFileAccess *fa;
+  if (f) {
+    FSync(f);
+    if (f->flags & JF_NEEDS_WRITE) {
+      fa=NewJFileAccess(f->de.full_name);
+      if (fa) {
+	if (f->flags & JF_NEW_FILE)
+	  NewJDirEntry(Fs->cur_partition,Fs->cur_dir_cluster,&f->de,TRUE);
+	else
+	  NewJDirEntry(Fs->cur_partition,Fs->cur_dir_cluster,&f->de,FALSE);
+	DelJFileAccess(fa);
+      } else
+	throw(TRP_FILE,40);
+    }
+    RFree(f->cluster_buf);
+    RFree(f->de.full_name);
+    RFree(f);
+  }
+}
+
+DWORD FSetCluster(JFile *f,DWORD c,DWORD blk,BOOL read)
+{
+  if (f->cluster!=c) {
+    if (f->flags & JF_BUF_DIRTY) {
+      WClusters(f->p,f->cluster_buf,f->cluster,1,TRUE);
+      f->flags=f->flags & ~JF_BUF_DIRTY;
+    }
+    f->cluster=c;
+    f->file_cluster_num=blk/f->p->spc;
+    if (read)
+      c=RClusters(f->p,f->cluster_buf,c,1,TRUE);
+  }
+  return c;
+}
+
+BOOL FRBlks(JFile *f,BYTE *buf,DWORD blk=JFB_NEXT_BLK,DWORD cnt=1)
+{
+  JPartition *p=f->p;
+  DWORD spc=p->spc,i,j,c=f->de.cluster;
+
+  if (!f || !p) return FALSE;
+  if (blk==JFB_NEXT_BLK)
+    blk=f->fblk_num;
+  if (blk+cnt-1>f->max_blk)
+    return FALSE;
+  if (!cnt) return TRUE;
+
+  disk_status_display.w.w1=cnt/spc;
+  if (f->flags & JF_CONTIGUOUS) {
+    RBlks(p,buf,ClusterBlk(p,c)+blk,cnt);
+    blk+=cnt;
+  } else {
+    i=blk/spc;
+    if (i>=f->file_cluster_num) {
+      c=f->cluster;
+      i-=f->file_cluster_num;
+    }
+    if (i)
+      c=NextClusterNum(p,c,i);
+
+    i=blk%spc;
+    if (i) {
+      c=FSetCluster(f,c,blk,TRUE);
+      j=(cnt<spc-i) ? cnt : spc-i;
+      MemCpy(buf,f->cluster_buf+BLK_SIZE*i,j*BLK_SIZE);
+      buf+=j*BLK_SIZE;
+      cnt-=j;
+      blk+=j;
+    }
+    while (cnt>=spc) {
+      c=FSetCluster(f,c,blk,TRUE);
+      MemCpy(buf,f->cluster_buf,spc*BLK_SIZE);
+      buf+=spc*BLK_SIZE;
+      cnt-=spc;
+      blk+=spc;
+    }
+    if (cnt) {
+      c=FSetCluster(f,c,blk,TRUE);
+      MemCpy(buf,f->cluster_buf,cnt*BLK_SIZE);
+      buf+=cnt*BLK_SIZE;
+      blk+=cnt;
+    }
+  }
+  f->fblk_num=blk;
+  disk_status_display.w.w1=0;
+  return TRUE;
+}
+
+BOOL FWBlks(JFile *f,BYTE *buf,DWORD blk=JFB_NEXT_BLK,DWORD cnt=1)
+{
+  JPartition *p=f->p;
+  DWORD spc=p->spc,i,j,c=f->de.cluster,c1;
+
+  if (!f || !p) return FALSE;
+  if (blk==JFB_NEXT_BLK)
+    blk=f->fblk_num;
+  if (blk+cnt-1>f->max_blk)
+    return FALSE;
+  if (!(f->flags & JF_WRITE))
+    return FALSE;
+  if (!cnt) return TRUE;
+  disk_status_display.w.w1=0x8000+cnt/spc;
+  if (f->flags & JF_CONTIGUOUS) {
+    WBlks(p,buf,ClusterBlk(p,c)+blk,cnt);
+    blk+=cnt;
+  } else {
+    if (!c) {
+      c=AllocClusters(p);
+      f->file_cluster_num=0;
+      f->cluster=c;
+      f->de.cluster=c;
+      f->flags|=JF_NEEDS_WRITE|JF_NEW_FILE;
+    }
+    i=blk/spc;
+    if (i>=f->file_cluster_num) {
+      c=f->cluster;
+      i-=f->file_cluster_num;
+    }
+    while (i) {
+      c1=c;
+      c=NextClusterNum(p,c1,1);
+      if (c==0xFFFFFFFF) {
+	c=AllocClusters(p,c1,i);
+	if (i>1)
+	  c=NextClusterNum(p,c,i-1);
+	break;
+      } else
+	i--;
+    }
+
+    i=blk%spc;
+    if (i) {
+      FSetCluster(f,c,blk,TRUE);
+      j=(cnt<spc-i) ? cnt : spc-i;
+      MemCpy(f->cluster_buf+BLK_SIZE*i,buf,j*BLK_SIZE);
+      f->flags|=JF_BUF_DIRTY;
+      buf+=j*BLK_SIZE;
+      cnt-=j;
+      blk+=j;
+      if (cnt) {
+	c1=c;
+	c=NextClusterNum(p,c1,1);
+	if (c==0xFFFFFFFF)
+	  c=AllocClusters(p,c1);
+      }
+    }
+    while (cnt>=spc) {
+      FSetCluster(f,c,blk,FALSE);
+      MemCpy(f->cluster_buf,buf,spc*BLK_SIZE);
+      f->flags|=JF_BUF_DIRTY;
+      buf+=spc*BLK_SIZE;
+      cnt-=spc;
+      blk+=spc;
+      if (cnt) {
+	c1=c;
+	c=NextClusterNum(p,c1,1);
+	if (c==0xFFFFFFFF)
+	  c=AllocClusters(p,c1);
+      }
+    }
+    if (cnt) {
+      FSetCluster(f,c,blk,TRUE);
+      MemCpy(f->cluster_buf,buf,cnt*BLK_SIZE);
+      f->flags|=JF_BUF_DIRTY;
+      buf+=cnt*BLK_SIZE;
+      blk+=cnt;
+    }
+    if (f->de.size<blk*BLK_SIZE)
+      f->de.size=blk*BLK_SIZE;
+  }
+  f->fblk_num=blk;
+  disk_status_display.w.w1=0;
+  return TRUE;
+}
+
+void SelectDefaultDrive()
+{
+  char ch;
+  JPartition *p;
+
+  if  (!default_drive)
+    AddDrives(FALSE);
+  while (!default_drive) {
+    cout "\r\nContinue Boot to Which Drive? ";
+    p=DriveToPartition(GetChar);
+    CrLf;
+    if (!p || (p->type!=PT_FAT12 && p->type!=PT_FAT32 &&
+	       p->type!=PT_ISO9660)) {
+      coutln "Invalid Partition";
+      PartitionRep;
+    } else {
+      if (p->bdev->flags & JBDF_REMOVABLE) {
+	ch=p->drive;
+	coutln "Insert Diskette in Drive ",ch;
+      }
+      default_drive=p->drive;
+    }
+  }
+  default_partition=DriveToPartition(default_drive);
+  Fs->cur_partition=0xFFFFFFFF;  //Null screws-up cache
+  ChangeDisk(':');
+}
+
+BOOL CopySingleZ(char *f1,char *f2) //Just one file
+{
+  BYTE *file_buf=NULL;
+  DWORD size,attr=0;
+  JDirEntry de;
+
+  if (FindFile(f1,&de,FALSE,TRUE)) {
+    file_buf=ReadFile(f1,&size,&attr);
+    attr=FileAttr(f2,attr);
+    if (file_buf) {
+      coutln "Copying ",f1," to ",f2;
+      WriteFile(f2,file_buf,size,de.datetime.d,attr);
+      Free(file_buf);
+      return TRUE;
+    } else PutSysText("ST_FILE_NOT_FOUND");
+  } else PutSysText("ST_FILE_NOT_FOUND");
+  return FALSE;
+}
+
+#define COPY_BUF_BLKS	0x400
+BOOL CopySingle(char *f1,char *f2) //Just one file
+{
+  BYTE *buf;
+  DWORD cnt,l,size,attr1=FileAttr(f1),attr2=FileAttr(f2);
+  JFile *in_file=NULL,*out_file=NULL;
+
+  if (!StrCmp(f1,f2))
+    return FALSE;
+  if (attr1!=attr2)
+    return CopySingleZ(f1,f2);
+  buf=MAlloc(COPY_BUF_BLKS*BLK_SIZE);
+  if (attr2 & J_ATTR_CONTIGUOUS)
+    in_file=FOpen(f1,"rc");
+  else
+    in_file=FOpen(f1,"r");
+  if (in_file) {
+    size=FSize(in_file);
+    cnt=(size+BLK_SIZE-1)/BLK_SIZE;
+    if (attr2 & J_ATTR_CONTIGUOUS)
+      out_file=FOpen(f2,"wc",cnt);
+    else
+      out_file=FOpen(f2,"w",cnt);
+    if (out_file) {
+      coutln "Copying ",f1," to ",f2;
+      while (cnt) {
+	if (cnt>COPY_BUF_BLKS)
+	  l=COPY_BUF_BLKS;
+	else
+	  l=cnt;
+	FRBlks(in_file, buf,JFB_NEXT_BLK,l);
+	FWBlks(out_file,buf,JFB_NEXT_BLK,l);
+	cnt-=l;
+      }
+      out_file->de.size=size;
+      out_file->de.datetime.d=in_file->de.datetime.d;
+      out_file->de.attr=FileAttr(f2,in_file->de.attr);
+      FClose(out_file);
+      FClose(in_file);
+      Free(buf);
+      return TRUE;
+    } else PutSysText("ST_FILE_NOT_FOUND");
+    FClose(in_file);
+  } else PutSysText("ST_FILE_NOT_FOUND");
+  Free(buf);
+  return FALSE;
+}
+
+BOOL MkDir(char *filename)
+{
+  DWORD c,size;
+  BYTE	*buf;
+  BOOL result=FALSE;
+  FAT12DirEntry *d12;
+  FAT32DirEntry *d32;
+  char *name;
+  if (FindFile(filename,NULL,TRUE))
+    return FALSE;
+  JFileAccess *fa=NewJFileAccess(filename);
+  if (fa) {
+    if (!CheckFileName(fa->mask))
+      PutSysText("ST_INVALID_FILENAME");
+    else {
+      name=MStringUtil(fa->mask,SU_TO_UPPER);
+      size=fa->p->spc*BLK_SIZE;
+      buf=MAllocZ(size);
+      d12=buf;
+      d32=buf;
+      if (fa->p->type==PT_FAT12) {
+	c=WriteFile(name,buf,size,0,FAT12_ATTR_DIR,FALSE);
+	MemSet(&d12->name,32,11);
+	d12->name[0]='.';
+	d12->attr=FAT12_ATTR_DIR;
+	d12->cluster_lo=c;
+	JDateToDos(&d12->Time,&d12->Date,GetCurTimeJDate);
+	d12+=sizeof(FAT12DirEntry);
+	MemSet(&d12->name,32,11);
+	d12->name[0]='.';
+	d12->name[1]='.';
+	d12->attr=FAT12_ATTR_DIR;
+	d12->cluster_lo=Fs->cur_dir_cluster;
+	JDateToDos(&d12->Time,&d12->Date,GetCurTimeJDate);
+      } else if (fa->p->type==PT_FAT32) {
+	c=WriteFile(name,buf,size,0,FAT32_ATTR_DIR,FALSE);
+	MemSet(&d32->name,32,11);
+	d32->name[0]='.';
+	d32->attr=FAT32_ATTR_DIR;
+	d32->cluster_lo=c & 0xFFFF;
+	d32->cluster_hi=c >> 16;
+	JDateToDos(&d32->WrtTime,&d32->WrtDate,GetCurTimeJDate);
+	d32+=sizeof(FAT32DirEntry);
+	MemSet(&d32->name,32,11);
+	d32->name[0]='.';
+	d32->name[1]='.';
+	d32->attr=FAT32_ATTR_DIR;
+	d32->cluster_lo=Fs->cur_dir_cluster & 0xFFFF;
+	d32->cluster_hi=Fs->cur_dir_cluster >> 16;
+	JDateToDos(&d32->WrtTime,&d32->WrtDate,GetCurTimeJDate);
+      }
+      WClusters(Fs->cur_partition,buf,c);
+      Free(buf);
+      Free(name);
+      result=TRUE;
+    }
+    DelJFileAccess(fa);
+  }
+  return result;
+}
+
+void SysDel(char *wild,BOOL make_mask)	//this is dangerous
+{
+  JFileAccess *fa=NewJFileAccess(wild,make_mask);
+  if (fa) {
+    if (fa->p->type==PT_FAT12)
+      DelFAT12Files(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,TRUE);
+    else if (fa->p->type==PT_FAT32)
+      DelFAT32Files(Fs->cur_partition,Fs->cur_dir_cluster,fa->mask,TRUE);
+    DelJFileAccess(fa);
+  }
+}
+
+void Format(char drive_letter,BOOL quick,BOOL confirm)
+{
+  JPartition *p=DriveToPartition(drive_letter);
+  if (confirm) {
+    cout "Are you sure ";
+    if (!YorN)
+      return;
+  }
+  if (!p)  {
+    PutSysText("ST_INVALID_DRIVE");
+    return;
+  }
+  if (p->type==PT_FAT12) {
+    Drive(drive_letter);
+    FormatFAT12(drive_letter,quick);
+    InvalidateDiskCache(DriveToPartition(drive_letter));
+    Drive(drive_letter);
+  } else if (p->type==PT_FAT32) {
+    Drive(drive_letter);
+    FormatFAT32(drive_letter,quick);
+    InvalidateDiskCache(DriveToPartition(drive_letter));
+    Drive(drive_letter);
+  }
+}
+
+
+void ReadCDImage(char drive,char *out_name)
+{
+  JBlkDev *bdev=DriveToBlkDev(drive);
+  JPartition *p=DriveToPartition(drive);
+  BYTE *buf=MAlloc(COPY_BUF_BLKS*BLK_SIZE);
+  char *out_name2=DefaultExtension(out_name,"ISO");
+  JFile *f=FOpen(out_name2,"w");
+  DWORD l,dv,blk=0,cnt;
+  InitBlkDev(bdev);
+  if (bdev->type!=JBDT_ATAPI)
+    throw(TRP_BLKDEV,3);
+  dv=bdev->blk_size/BLK_SIZE;
+  cnt=((p->size+dv-1)/dv)*dv;
+  while (cnt) {
+    if (cnt>COPY_BUF_BLKS)
+      l=COPY_BUF_BLKS;
+    else
+      l=cnt;
+    if (l>bdev->max_reads)
+      l=bdev->max_reads;
+    if (!Bt(&sys_flags,SYSf_NO_IO_SOUND))
+      Sound(bdev->read_freq);
+    disk_status_display.w.w1=cnt/l;
+    disk_status_display.w.w0=l/dv;
+    ATAPIReadBlks2(bdev,buf,blk/dv,l/dv);
+    disk_status_display.d=0;
+    if (!Bt(&sys_flags,SYSf_NO_IO_SOUND))
+      Sound(0);
+    FWBlks(f,buf,blk,l);
+    cnt-=l;
+    blk+=l;
+  }
+  FClose(f);
+  Free(buf);
+  Free(out_name2);
+}
+
+class JDuelBuf
+{
+  BYTE *buf0,*buf1;
+  DWORD in_buf,out_buf,cnt;
+  char *filename;
+  JBlkDev *CD_bdev;
+};
+
+
+void WriteCDImageTsk()
+{
+  JDuelBuf *d=Fs->user_aux1;
+  BYTE *buf;
+  DWORD l,blk=0,cnt=d->cnt;
+  JFile *f;
+  if (FileAttr(d->filename)&J_ATTR_CONTIGUOUS)
+    f=FOpen(d->filename,"rc");
+  else
+    f=FOpen(d->filename,"r");
+  while (cnt) {
+    if (cnt>COPY_BUF_BLKS)
+      l=COPY_BUF_BLKS;
+    else
+      l=cnt;
+    if (l>d->CD_bdev->max_writes)
+      l=d->CD_bdev->max_writes;
+    buf=(d->in_buf & 1) ? d->buf1:d->buf0;
+    while (d->in_buf>d->out_buf+1)
+      SwapInNext;
+    FRBlks(f,buf,blk,l);
+    if (!Bt(&sys_flags,SYSf_NO_IO_SOUND))
+      Sound(d->CD_bdev->write_freq);
+    d->in_buf++;
+    cnt-=l;
+    blk+=l;
+  }
+  FClose(f);
+}
+
+void WriteCDImage(char drive,char *in_name)
+{
+  JDuelBuf *d=MAllocZ(sizeof(JDuelBuf));
+  BYTE *buf;
+  char *in_name2=DefaultExtension(in_name,"ISO");
+  DWORD l,dv,blk=0,cnt;
+  JPartition *p=DriveToPartition(drive);
+  JBlkDev *bdev=p->bdev;
+  TssStruct *tss;
+  BOOL old_preempt;
+  JFile *f=FOpen(in_name2,"r");
+
+  if (!f) {
+    Free(d);
+    return;
+  }
+  cnt=(FSize(f)+BLK_SIZE-1)/BLK_SIZE;
+  FClose(f);
+  if (bdev->type!=JBDT_ATAPI)
+    throw(TRP_BLKDEV,4);
+  bdev->flags|=JBDF_READ_ONLY_OVERRIDE;
+  InitBlkDev(bdev);
+  dv=bdev->blk_size/BLK_SIZE;
+  if (p->size<cnt)
+    p->size=cnt;
+
+  d->filename=in_name2;
+  d->CD_bdev=bdev;
+  d->buf0=MAlloc(COPY_BUF_BLKS*BLK_SIZE);
+  d->buf1=MAlloc(COPY_BUF_BLKS*BLK_SIZE);
+  d->cnt=cnt;
+
+  old_preempt=Preempt(OFF);
+  tss=Spawn(&WriteCDImageTsk,"WRITE CD");
+  tss->user_aux1=d;
+  Preempt(old_preempt);
+
+  while (d->in_buf<=d->out_buf)
+    SwapInNext;
+  if (!Bt(&sys_flags,SYSf_NO_IO_SOUND))
+    Sound(bdev->write_freq);
+  IDEWaitForDrive(bdev);
+  ATAPIWaitReady(bdev);
+  while (cnt) {
+    if (cnt>COPY_BUF_BLKS)
+      l=COPY_BUF_BLKS;
+    else
+      l=cnt;
+    if (l>bdev->max_writes)
+      l=bdev->max_writes;
+    buf=(d->out_buf&1) ? d->buf1:d->buf0;
+    while (d->in_buf<=d->out_buf)
+      SwapInNext;
+    disk_status_display.w.w1=cnt/l+0x8000;
+    disk_status_display.w.w0=l/dv+0x8000;
+    ATAPIWriteBlks(bdev,buf,blk/dv,(l+dv-1)/dv);
+    disk_status_display.d=0;
+    d->out_buf++;
+    cnt-=l;
+    blk+=l;
+  }
+  ATAPISync(bdev);
+  ATAPIClose(bdev);
+  if (!Bt(&sys_flags,SYSf_NO_IO_SOUND))
+    Sound(0);
+  bdev->flags&=~JBDF_READ_ONLY_OVERRIDE;
+  Btr(&sys_irq_busy_flags,bdev->irq);
+  Free(d->buf0);
+  Free(d->buf1);
+  Free(d);
+  Free(in_name2);
+}
+

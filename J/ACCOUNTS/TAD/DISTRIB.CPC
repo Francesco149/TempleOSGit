@@ -1,0 +1,236 @@
+char *my_hard_drives="DEF";
+
+#define CD_ISO_FILE 	 "D:/TEMP/JCD"
+
+void MyWriteCDImage()
+{
+  WriteCDImage('T',CD_ISO_FILE);
+}
+
+void ShowBootFileDate(char drive)
+{
+  JDirEntry de;
+  char *name=MSPrintF("%c:/BOOT.BIC",drive);
+  if (FindFile(name,&de)) {
+    cout name," ";
+    PrintF("%D %T\r\n",de.datetime.dt.date,de.datetime.dt.time);
+  } else
+    coutln name;
+  Free(name);
+}
+
+void ShowBootFiles()
+{
+  char *ptr=my_hard_drives;
+  coutln "\r\nA:";
+  while (*ptr)
+    ShowBootFileDate(*ptr++);
+}
+
+char SelectMyDrive()
+{
+  char *buf,result=0;
+  coutln "Place the cursor on a line "
+       "after the first character and hit return. "
+       "The first character on the line is "
+       "the partition which will be chosen.";
+  ShowBootFiles;
+  buf=SysGetS();
+  LtfBottom(Fs->cur_ltf);
+  result=*buf;
+  coutln "Drive:",result;
+  Free(buf);
+  return result;
+}
+
+void CompileDrive(char drive=0)
+{
+  if (computer_id==CID_TAD5)
+    Auto("1b12880\rc330t440z5D:/TEMP/CD\rY1500000\r\r\rTAD\r/J;/TAD/TEXT/BRIEF\r\rn");
+  else
+    Auto("2a220b12880\rc330t440s441z5D:/TEMP/CD\rY1500000\r\r\rTAD\r/J;/TAD/TEXT/BRIEF\r\rn");
+  InstallHdBoot(drive,drive);
+}
+
+void BootDrive(char drive=0)
+{
+  Drive(drive);
+  Fs->user_aux1=drive;
+  if (computer_id==CID_TAD5)
+    Auto("1b12880\rc330t440z5D:/TEMP/CD\rY1500000\r\r\rTAD\r/J\r\r");
+  else
+    Auto("2a220b12880\rc330t440s441z5D:/TEMP/CD\rY1500000\r\r\rTAD\r/J\r\r");
+  BootJ;
+}
+
+void QuickBoot(char drive=0)
+{
+  Drive(drive);
+  Fs->user_aux1=drive;
+  if (computer_id==CID_TAD5)
+    Auto("1b12880\rc330t440z5D:/TEMP/CD\rY1500000\r\r\rTAD\r\r\r");
+  else
+    Auto("2a220b12880\rc330t440s441z5D:/TEMP/CD\rY1500000\r\r\rTAD\r\r\r");
+  BootJ;
+}
+
+void TouchUpSource(char src, char *flags)
+{
+  Drive(src);
+  Touch("/J/ACCOUNTS/GENERIC/USER.CPZ",flags);
+  Touch("/J/ACCOUNTS/GENERIC/USER.MUZ",flags);
+  Touch("/J/ACCOUNTS/GENERIC/SERVANT.CPZ",flags);
+  Touch("/J/ACCOUNTS/GENERIC/SYSTEM.CPZ",flags);
+  Touch("/J/ACCOUNTS/GENERIC/FAULT.CPZ",flags);
+
+  Touch("/J/ACCOUNTS/ADMIN/USER.CPZ",flags);
+  Touch("/J/ACCOUNTS/ADMIN/USER.MUZ",flags);
+  Touch("/J/ACCOUNTS/ADMIN/SERVANT.CPZ",flags);
+  Touch("/J/ACCOUNTS/ADMIN/SYSTEM.CPZ",flags);
+  Touch("/J/ACCOUNTS/ADMIN/FAULT.CPZ",flags);
+
+  Touch("/J/ACCOUNTS/TAD/USER.CPZ",flags);
+  Touch("/J/ACCOUNTS/TAD/USER.MUZ",flags);
+  Touch("/J/ACCOUNTS/TAD/SERVANT.CPZ",flags);
+  Touch("/J/ACCOUNTS/TAD/SYSTEM.CPZ",flags);
+  Touch("/J/ACCOUNTS/TAD/FAULT.CPZ",flags);
+
+  Touch("/J/ACCOUNTS/TAD/FAVOR.MUZ",flags);
+  Touch("/J/ROOT/EDIT.MUZ",flags);
+  Touch("/J/DOC/CTRLL.MUZ",flags);
+}
+
+void UpdateDrive(char src,char dst)
+{
+  char buf_s[128],buf_d[128];
+  TouchUpSource(src,"+T");
+  if (src==dst) return;
+  SPrintF(buf_s,"%c:/J",src);
+  SPrintF(buf_d,"%c:/J",dst);
+  DelTree(buf_d);
+  CopyTree(buf_s,buf_d);
+}
+
+void UpdateAndCompile(char src,char dst)
+{
+  UpdateDrive(src,dst);
+  CompileDrive(dst);
+}
+
+void PromptUpdateDrive()
+{
+  char src,dst;
+  coutln "\r\nSource Drive:";
+  src=SelectMyDrive;
+  coutln "\r\nDestination Drive:";
+  dst=SelectMyDrive;
+  UpdateAndCompile(src,dst);
+  ShowBootFiles;
+  Drive(src);
+}
+
+void PromptUpdateDrive2()
+{
+  char src,dst;
+  coutln "\r\nUpdate Source Drive:";
+  src=SelectMyDrive;
+  coutln "\r\nUpdate Destination Drive:";
+  dst=SelectMyDrive;
+  UpdateDrive(src,dst);
+  ShowBootFiles;
+  Drive(src);
+}
+
+void MyMerge()
+{
+  char src,dst,buf_s[128],buf_d[128];
+  coutln "\r\nMerge Source Drive:";
+  src=SelectMyDrive;
+  coutln "\r\nMerge Destination Drive:";
+  dst=SelectMyDrive;
+  SPrintF(buf_s,"%c:/J/*",src);
+  SPrintF(buf_d,"%c:/J/*",dst);
+  MergeChk(buf_d,buf_s,"+r+d");
+  Drive(dst);
+}
+
+void MyCopyDrive()
+{
+  char src,dst,buf_s[128],buf_d[128];
+  cout "$FG RED$\r\nCopy Source Drive:\r\n$FG$";
+  src=SelectMyDrive;
+  cout "$FG RED$\r\nCopy Destination Drive:\r\n$FG$";
+  dst=SelectMyDrive;
+  Format(dst,TRUE,FALSE);
+  SPrintF(buf_s,"%c:/J",src);
+  SPrintF(buf_d,"%c:/J",dst);
+  CopyTree(buf_s,buf_d);
+  SPrintF(buf_s,"%c:/TAD",src);
+  SPrintF(buf_d,"%c:/TAD",dst);
+  CopyTree(buf_s,buf_d);
+  SPrintF(buf_s,"%c:/WINDOWS",src);
+  SPrintF(buf_d,"%c:/WINDOWS",dst);
+  CopyTree(buf_s,buf_d);
+  SPrintF(buf_s,"%c:/0000BOOT",src);
+  SPrintF(buf_d,"%c:/0000BOOT",dst);
+  CopyTree(buf_s,buf_d);
+  SPrintF(buf_d,"%c:/TEMP",dst);
+  MkDir(buf_d);
+  Drive(dst);
+  CompileDrive(dst);
+}
+
+void DistributeDToFloppy(char drive)
+{
+  JPartition *p=DriveToPartition(drive);
+  TouchUpSource('D',"+T");
+  Cd("D:/J");
+  S2T(SOURCE_FILE_MASK,"+r");
+  MapDrive('A',local_partitions+sizeof(JPartition)*(ToUpper(drive)-'A'));
+  if (p->bdev->type!=JBDT_RAM)
+    Format('A',TRUE,FALSE);
+  else
+    Format('A',FALSE,FALSE);
+  Drive('A');
+  CopyTree("D:/J","/J");
+  MkDir("/0000BOOT");
+  Del("/J/ROOT/JOY.DTZ");
+  Auto("1a220b12880\r\ra\r/J\r\rn");
+  InstallFdBoot('A','A');
+  if (p->bdev->type==JBDT_RAM)
+    ReadFloppyImage('A',"D:/TEMP/JFLOPPY.DVC");
+
+  MapDrive('A',local_partitions);
+  MapDrive(drive,local_partitions+sizeof(JPartition)*(ToUpper(drive)-'A'));
+}
+
+void DistributeDToMyCD()
+{
+  Auto("1b12880\rc330t440\r TAD\r/J\r\r");
+  InstallCdBoot('D','D');
+  Drive('Z');
+  DelTree("/J");
+  CopyTree("D:/J","/J");
+  DelTree("/TAD");
+  CopyTree("D:/TAD","/TAD");
+  DelTree("/TEMP");
+  MkDir("/TEMP");
+  Del("/J/ROOT/JOY.DTZ");
+  DelTree("/0000BOOT");
+  CopyTree("D:/0000BOOT","/0000BOOT");
+  CopyTree("D:/WINDOWS","/WINDOWS");
+  CreateCDFile(CD_ISO_FILE,'Z',CD_BOOT);
+}
+
+void DistributeDToCD()
+{
+  Auto("1b12880\rt45\rt\r/J\r\r");
+  InstallCdBoot('D','D');
+  Drive('Z');
+  DelTree("/J");
+  CopyTree("D:/J","/J");
+  Del("/J/ROOT/JOY.DTZ");
+  DelTree("/0000BOOT");
+  CopyTree("D:/0000BOOT","/0000BOOT");
+  CreateCDFile(CD_ISO_FILE,'Z',CD_BOOT);
+}

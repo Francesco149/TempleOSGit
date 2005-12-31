@@ -1,0 +1,12 @@
+void Spy(TssStruct *tss)
+{
+  DWORD sc,ch;
+  Fs->hash_table=tss->hash_table;
+  while (!ScanChar(&sc,&ch)) {
+//syncronize to screen updates
+    WinSync;
+    PrintF("$CL$");
+    TssRep(tss);
+    StackRep(tss->esp);
+  }
+}

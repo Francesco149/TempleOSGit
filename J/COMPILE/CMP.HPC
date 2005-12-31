@@ -1,0 +1,32 @@
+public extern LexStruct *LexNew(char *buf,DWORD flags);
+public extern void LexDel(LexStruct *l);
+public extern void SetSourceFileInfo(LexStruct *l,SysHashEntry *h);
+public extern void LexPutToken(LexStruct *l);
+public extern DWORD LexGetChar(LexStruct *l);
+public extern void LexSkipEol(LexStruct *l);
+public extern void DelExpression(BYTE *code);
+public extern DWORD EvalExpression(LexStruct *l);
+public extern void LexPush(LexStruct *l);
+public extern void LexPop(LexStruct *l);
+public extern void LexSubStackPtr(LexStruct *l);
+public extern MemberListStruct *FindMember(char *st,ClassStruct *c);
+public extern int Lex(LexStruct *l);
+public extern char *LexExtendString(LexStruct *l,DWORD *size);
+public extern void LexPutLine(char *start);
+public extern int LexLineNum(LexStruct *l);
+public extern void LexPutLink(LexStruct *l);
+public extern void PutLexError(LexStruct *l,char *name=NULL,char *msg=NULL);
+public extern void PutLexWarning(LexStruct *l,char *name=NULL,char *msg=NULL);
+public extern void DelHashTable(SysHashTable *table);
+
+public extern BOOL GetExpression(LexStruct *l,BYTE **e); //FALSE=no err
+public extern int Expression(LexStruct *l);
+
+public extern void ExePutS(char *st);
+public extern void ExePrintF(char *src,...);
+public extern int CompileFile(char *filename,char *map_name=NULL,char *out_name=NULL,char mapfile_drive=0);
+public extern int ExecuteCmdLine(LexStruct *l);
+public extern int ExecuteString(char *buf,char *filename=NULL);
+public extern int ExecuteFile(char *name);
+extern SysHashTable *asm_hash;
+public extern void CatchAll();

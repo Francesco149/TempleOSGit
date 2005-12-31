@@ -1,0 +1,146 @@
+Cd("HOME");Dir;
+`Cd("HOME");Dir;`
+
+
+Cd("/J/KERNEL");Dir;
+`Cd("/J/KERNEL");Dir;`
+
+Cd("/J/COMPILE");Dir;
+`Cd("/J/COMPILE");Dir;`
+
+Cd("/J/ROOT");Dir;
+`Cd("/J/ROOT");Dir;`
+
+Cd("/J/ACCOUNTS/TAD");Dir;
+`Cd("/J/ACCOUNTS/TAD");Dir;`
+
+Cd("/J/ACCOUNTS/TAD/MOSES");Dir;
+`Cd("/J/ACCOUNTS/TAD/MOSES");Dir;`
+
+Cd("/J/ACCOUNTS/TOUR");Dir;
+`Cd("/J/ACCOUNTS/TOUR");Dir;`
+
+Cd("/J/ACCOUNTS/ADMIN");Dir;
+`Cd("/J/ACCOUNTS/ADMIN");Dir;`
+
+Cd("/J/ACCOUNTS/GENERIC");Dir;
+`Cd("/J/ACCOUNTS/GENERIC");Dir;`
+
+Cd("/J/APPS");Dir;
+`Cd("/J/APPS");Dir;`
+
+Cd("/J/DEMO");Dir;
+`Cd("/J/DEMO");Dir;`
+
+Cd("/J/UTILS");Dir;
+`Cd("/J/UTILS");Dir;`
+
+Cd("/J/DOC");Dir;
+`Cd("/J/DOC");Dir;`
+
+Cd("/TEMP");Dir;
+`Cd("/TEMP");Dir;`
+
+Cd("/TAD");Dir;
+`Cd("/TAD");Dir;`
+
+DoMoses;
+`DoMoses;`
+
+
+Drive('A');
+`Drive('A');`
+
+Drive('B');
+`Drive('B');`
+
+Drive('D');
+`Drive('D');`
+
+Drive('E');
+`Drive('E');`
+
+Drive('F');
+`Drive('F');`
+
+ChangeDisk('A');
+`ChangeDisk('A');`
+
+ChangeDisk('T');
+`ChangeDisk('T');`
+
+ChangeDisk('S');
+`ChangeDisk('S');`
+
+QBoot D
+`QuickBoot('D');`
+
+Compile D
+`CompileDrive('D');`
+
+
+Send Blog
+`CommSendFile(1,"::/TAD/CRYPT/BLOG.TXY",TRUE,TRUE);`
+
+Send Glossary
+`CommSendFile(1,"::/TAD/CRYPT/GLOSS.GLZ",TRUE,TRUE);`
+
+
+Make Distribution D: to A: Floppy
+`DistributeDToFloppy('A');`
+
+Make Distribution D: to B: RAM disk
+`DistributeDToFloppy('B');`
+
+D:JFLOPPY.DVC to A: Floppy
+`WriteFloppyImage("D:/TEMP/JFLOPPY.DVC",'A');`
+
+Make Distribution D: for CD
+`DistributeDToCD;`
+
+Make My Distribution D: for CD
+`DistributeDToMyCD;`
+
+Write Cd Image
+`MyWriteCDImage;`
+
+
+Update and Compile Drive
+`PromptUpdateDrive;`
+
+Copy Drive
+`MyCopyDrive;`
+
+Merge Drive
+`MyMerge;`
+
+
+Compile Compiler
+`Cd("/J/COMPILE");CompileFile("CMP.ASZ");Load("CMP",`
+
+Boot D
+`BootDrive('D');`
+
+Boot E
+`BootDrive('E');`
+
+Boot F
+`BootDrive('F');`
+
+
+Just Update Drive
+`PromptUpdateDrive2;`
+
+
+Apps:
+Play WarGame
+`Cd("::/J/APPS");;#include "WARGAME"`
+
+DO-TELL (A fractel-like thing)
+`Cd("::/J/DEMO");;#include "DAWG"`
+
+
+
+List functions
+`HFunsRep;View;`
+ 

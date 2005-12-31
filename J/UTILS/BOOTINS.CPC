@@ -1,0 +1,255 @@
+#define BOOT_BIC	"BOOT.BIC"
+#define BOOT1_BIC	"/0000BOOT/BOOT.BIC"
+#define CD_BOOT		"/0000BOOT/CDBOOT.BIZ"
+
+if (DriveIsWritable) {
+  CompileFile("BOOTHD.ASZ");
+  CompileFile("BOOTFD.ASZ");
+  CompileFile("BOOTCD2.ASZ");
+  CompileFile("BOOTRAM");
+}
+Load("BOOTHD",TRUE);
+Load("BOOTFD",TRUE);
+Load("BOOTCD2",TRUE);
+Load("BOOTRAM");
+
+public BOOL CreateCdBootFile()
+{
+  BYTE *br;
+  DWORD d,size;
+  WORD *ww;
+
+  JFile *f=FOpen(BOOT1_BIC,"r");
+  size=FSize(f);
+  FClose(f);
+
+  br=MAllocZ(CD_BLK_SIZE);
+
+  ww=BCD2_BLK_CNT+1;
+  *ww=1+(size+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+
+  d=CD_FILE_OFFSET+4*2;
+  ww=BCD2_BLK_LO+1;
+  *ww=d/(CD_BLK_SIZE/BLK_SIZE);
+  ww=BCD2_BLK_HI+1;
+  *ww=(d/(CD_BLK_SIZE/BLK_SIZE))>>16;
+
+  ww=BCD2_JMP_START;
+  *ww=(d%(CD_BLK_SIZE/BLK_SIZE))*BLK_SIZE;
+  MemCpy(br,BCD2_START,BCD2_END-BCD2_START);
+
+  WriteFile(CD_BOOT,br,CD_BLK_SIZE);
+  Free(br);
+  return TRUE;
+}
+
+if (DriveIsWritable) {
+  CreateCdBootFile;
+}
+
+extern void Boot(char *filename);
+void BootJ()
+{
+  Cd("/J/KERNEL");
+  if (!CompileFile("OS.ASZ","OS",NULL,':'))
+    Boot("OS.BIZ");
+}
+
+void InstallJDir(char src,char dst)
+{
+  char buf_s[64],buf_d[64];
+  if (src==dst) return;
+  SPrintF(buf_s,"%c:/J",src);
+  SPrintF(buf_d,"%c:/J",dst);
+  DelTree(buf_d);
+  CopyTree(buf_s,buf_d);
+}
+
+char CheckWritable(char drive=0)
+{
+  BOOL cont=TRUE;
+  char writable_drive=drive;
+  JPartition *p;
+  JBlkDev *bdev;
+  if (!DriveIsWritable(drive)) {
+    coutln drive,": Drive is read-only.";
+    while (cont) {
+      cout "Enter RAM drive (usually 'B') for temporary files:";
+      writable_drive=ToUpper(GetChar);
+      CrLf;
+      p=DriveToPartition(writable_drive);
+      bdev=p->bdev;
+      if (bdev->type!=JBDT_RAM || p->type!=PT_FAT12 ||
+	  !DriveIsWritable(writable_drive))
+	coutln "Not A RAM Drive";
+      else
+	cont=FALSE;
+    }
+    Format(writable_drive,FALSE,FALSE);
+    InstallJDir(drive,writable_drive);
+  }
+  return writable_drive;
+}
+
+
+BOOL CreateBootImage(char src_drive,char dst_drive,DWORD *out_size,char *filename)
+{
+  JPartition *p;
+  BYTE *buf;
+  Fs->user_aux1=dst_drive;
+  Drive(src_drive);
+
+  Cd("/J/ROOT");
+  if (CompileFile("ROOTASM.ASZ","ROOTASM",NULL,':'))
+    return FALSE;
+
+  Cd("/J/COMPILE");
+  if (CompileFile("CMP.ASZ","CMP",NULL,':'))
+    return FALSE;
+
+  Cd("/J/KERNEL");
+  if (CompileFile("OS.ASZ","OS",NULL,':'))
+    return FALSE;
+
+  buf=ReadFile("OS.BIZ",out_size);
+
+  filename[StrLen(filename)-1]='C';
+  coutln "Creating ",filename," from OS.BIZ";
+  Drive(dst_drive);
+  Cd("/");
+  p=Fs->cur_partition;
+
+  PrintF("Size: %08X\r\n",*out_size);
+  WriteFile(filename,buf,*out_size,0,0,FALSE);
+  Free(buf);
+  Drive(src_drive);
+  Del("/J/KERNEL/OS.BIZ");
+  return TRUE;
+}
+
+
+public BOOL InstallHdBoot(char src_drive,char dst_drive)
+{
+  BOOL result=FALSE;
+  JPartition *p;
+  FAT32BootStruct br;
+  JDirEntry de;
+  DWORD i,*dd,size;
+  BYTE *bb;
+  WORD *ww;
+  Drive(dst_drive);
+  p=Fs->cur_partition;
+  if (p->type!=PT_FAT32)
+    PutSysText("ST_NOT_FAT32");
+  else {
+    src_drive=CheckWritable(src_drive);
+    if (!CreateBootImage(src_drive,dst_drive,&size,BOOT_BIC))
+      return FALSE;
+    cout "Install J Directory(overwrites old /J)";
+    if (YorN)
+      InstallJDir(src_drive,dst_drive);
+    Drive(dst_drive);
+    RBlks(Fs->cur_partition,&br,p->offset,1);
+    if (!FindFile(BOOT_BIC,&de,FALSE,TRUE))
+      coutln "No image";
+    else {
+      coutln "Modifying partition boot record.";
+      ww=BHD2_RESTART+1;
+      *ww=(size+BLK_SIZE-1)/BLK_SIZE;
+      dd=BHD2_BLK;
+      *dd=p->data+de.cluster*p->spc;
+      br.jump_and_nop[0]=0xEB;
+      br.jump_and_nop[1]=0x58;
+      br.jump_and_nop[2]=0x90;
+      bb=BHD2_CODE;
+      for (i=0;i<(BHD2_END-BHD2_CODE);i++)
+	br.code[i]=bb[i];
+      for (;i<420;i++)
+	br.code[i]=0;
+      WBlks(Fs->cur_partition,&br,p->offset,1);
+      result=TRUE;
+    }
+  }
+  return result;
+}
+
+
+public BOOL InstallCdBoot(char src_drive,char dst_drive)
+{
+  DWORD size;
+  if (!CreateBootImage(src_drive,dst_drive,&size,BOOT1_BIC))
+    return FALSE;
+  Drive(dst_drive);
+  CreateCdBootFile;
+  return TRUE;
+}
+
+public BOOL InstallFdBoot(char src_drive,char dst_drive)
+{
+  BOOL result=FALSE;
+  JPartition *p;
+  FAT12BootStruct br;
+  JDirEntry de;
+  DWORD i,size;
+  BYTE *bb;
+  WORD *ww;
+  Drive(dst_drive);
+  p=Fs->cur_partition;
+  if (p->type!=PT_FAT12)
+    PutSysText("ST_NOT_FAT12");
+  else {
+    src_drive=CheckWritable(src_drive);
+    if (!CreateBootImage(src_drive,dst_drive,&size,BOOT_BIC))
+      return FALSE;
+    cout "Install J Directory(overwrites old /J)";
+    if (YorN)
+      InstallJDir(src_drive,dst_drive);
+    Drive(dst_drive);
+    RBlks(Fs->cur_partition,&br,0,1);
+    if (!FindFile(BOOT_BIC,&de,FALSE,TRUE))
+      coutln "No image";
+    else {
+      coutln "Modifying partition boot record.";
+      ww=BFD_RESTART+1;
+      *ww=(size+BLK_SIZE-1)/BLK_SIZE;
+      ww=BFD_RESTART+4;
+      *ww=p->data+de.cluster*p->spc;
+
+      br.jump_and_nop[0]=0xEB;
+      br.jump_and_nop[1]=0x40;
+      br.jump_and_nop[2]=0x90;
+
+      bb=BFD_CODE;
+      for (i=0;i<(BFD_END-BFD_CODE);i++)
+	br.code[i]=bb[i];
+      for (;i<444;i++)
+	br.code[i]=0;
+      WBlks(Fs->cur_partition,&br,0,1);
+      result=TRUE;
+    }
+  }
+  return result;
+}
+
+public void ReadFloppyImage(char src_drive, char *dst_name)
+{
+  BYTE *buf;
+  JPartition *p=DriveToPartition(src_drive);
+  if (p->type==PT_FAT12 || p->type==PT_FAT32) {
+    buf=MAlloc(p->size*BLK_SIZE);
+    RBlks(p,buf,p->offset,p->size);
+    WriteFile(dst_name,buf,p->size*BLK_SIZE);
+    Free(buf);
+  }
+}
+
+public void WriteFloppyImage(char *src_name, char dst_drive)
+{
+  BYTE *buf;
+  JPartition *p=DriveToPartition(dst_drive);
+  if (p->type==PT_FAT12 || p->type==PT_FAT32) {
+    buf=ReadFile(src_name);
+    WBlks(p,buf,p->offset,p->size);
+    Free(buf);
+  }
+}

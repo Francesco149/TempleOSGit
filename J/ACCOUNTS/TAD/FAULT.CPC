@@ -1,0 +1,22 @@
+UseConsoleLtf(NULL);
+Bts(&Fs->crt_flags,CRTf_SHOW);
+
+TssStruct *tss=Fs->user_aux1;
+DWORD *esp=&tss->esp,*eip=&tss->eip;
+
+coutln "Faulting TSS:",tss," IRQ#",Fs->user_aux0;
+MachineRegsRep;
+TssRep(tss);
+StackRep(*esp);
+Dasm(*eip-0x20,0x20);
+
+void Go()  //Continue after breakpoint
+{
+  if (Fs->user_aux0==3) {
+    *eip=*eip-1;
+    RBpt(tss,*eip);
+  }
+  Btr(&tss->task_flags,TSSf_SUSPENDED);
+  Exit;
+}
+

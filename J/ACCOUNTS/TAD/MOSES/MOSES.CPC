@@ -1,0 +1,27 @@
+
+void DoMoses()
+{//we should save cur_partition, too, but I'm lazy
+  char *st=NewString(Fs->cur_dir);
+  JDirEntry *tempm,*tempm1;
+  Ltf *l=LtfNew;
+  Cd("::/J/ACCOUNTS/TAD/MOSES");
+  tempm=FindFiles("*.TXZ");
+  tempm1=tempm;
+  LtfPutS(l,"$FG$Select a Moses comic to view\r\nCheck dates for updates.\r\n$FM RED$");
+  while (tempm1) {
+    LtfPrintF(l,"\r\n$MU,\"%-15s %D\" %d$\r\n",tempm1->name,
+      tempm1->datetime.dt.date,tempm1);
+    tempm1=tempm1->next;
+  }
+  LtfPrintF(l,"\r\n$MU,\"DONE\" %d$\r\n",-1);
+  while (TRUE) {
+    tempm1=PopUpMenu(l);
+    if (tempm1==-1) break;
+    MaximizeWindow;
+    Edit(tempm1->name);
+  }
+  LtfDel(l);
+  Cd(st);
+  Free(st);
+//we should free the dir entries, too, but I'm lazy
+}

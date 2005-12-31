@@ -1,0 +1,51 @@
+void DollarFile(JDirEntry *m1)
+{
+  BOOL changed;
+  char *buf,*ptr,ch;
+  while (m1) {
+    if (m1->attr & J_ATTR_DIR)
+      DollarFile(m1->sub);
+    else {
+      coutln m1->full_name;
+      Sleep(1000);
+      if (buf=ReadTextFile(m1->full_name)) {
+	ptr=buf;
+	changed=FALSE;
+	while (ch=*ptr++) {
+	  if (ch=='$') {
+	    ptr--;
+	    *ptr++='.';
+	    changed=TRUE;
+	  }
+	}
+	if (changed) {
+	  WriteTextFile(m1->full_name,buf);
+	  coutln "Updated";
+	}
+	Free(buf);
+      }
+    }
+    m1=m1->next;
+  }
+}
+
+
+public void Dollar(char *src_mask,char *flags="+r")
+//This is for importing non-"J" text files.
+//**WARNING:**Do not use on files with dollar commands
+// or on binary files.
+//r=recurse
+{
+  JDirEntry *tempm1=NULL;
+  FlagsStruct f;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  JFileAccess *fa;
+
+  fa=NewJFileAccess(src_mask);
+  if (fa) {
+    tempm1=FindFiles(fa->mask,&f.on0);
+    DelJFileAccess(fa);
+  }
+  DollarFile(tempm1);
+  DelJDirList(tempm1);
+}

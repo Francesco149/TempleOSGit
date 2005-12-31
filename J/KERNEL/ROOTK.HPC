@@ -1,0 +1,2071 @@
+#define MAX_INT 0x7FFFFFFF
+#define MIN_INT 0x80000000
+
+public class cBBBB
+{
+  BYTE b0,b1,b2,b3;
+};
+public class cBB
+{
+  BYTE b0,b1;
+};
+public class cWW
+{
+  WORD w0,w1;
+};
+public class cCCCC
+{
+  char c0,c1,c2,c3;
+};
+public class cCC
+{
+  char c0,c1;
+};
+public class cSS
+{
+  short s0,s1;
+};
+public union U4
+{
+  cBBBB b;
+  BYTE ba[4];
+  cWW w;
+  WORD wa[2];
+  cCCCC c;
+  char ca[4];
+  cSS s;
+  short sa[2];
+  DWORD d;
+  int i;
+};
+public union U2
+{
+  cBB b;
+  BYTE ba[2];
+  WORD w;
+  cCC c;
+  char ca[2];
+  short s;
+};
+public union U1
+{
+  BYTE b;
+  char c;
+};
+
+public class Jdouble
+{
+  DWORD lo,hi;
+};
+
+public class JQWORD
+{
+  DWORD lo,hi;
+};
+
+class BinFileHeaderStruct
+{
+  DWORD jmp;
+  DWORD header_offset;
+  DWORD file_size;
+  DWORD xsum;
+};
+
+#define MAXGDT			512
+#define MAXIDT			96
+#define SYS_DEFAULT_FLAGS	0x40200
+#define SYS_DEFAULT_CR3 	0
+
+class GdtTabStruct
+{
+  DWORD lo,hi;
+};
+
+class OsMainStruct  [/J/KERNEL/OSMAIN.ASZ] /J/KERNEL/OSMAIN.ASZ
+{
+  BinFileHeaderStruct h;
+  DWORD jmp;
+  DWORD boot_base;
+  DWORD header_base;
+  DWORD os_32start;
+  GdtTabStruct gdttab[MAXGDT];
+  DWORD boot_code;
+  DWORD sys_memblks;
+};
+
+
+#define NULL	0
+#define TRUE	1
+#define FALSE	0
+#define ON	1
+#define OFF	0
+#define BOOL	DWORD
+
+#define SYS_TIMER_FREQ		10000 /*Hz*/
+#define SYS_TIMER0_PERIOD	(65536*182/10/SYS_TIMER_FREQ)
+
+//SYSFLAGS definitions
+#define SYSf_PREEMPTIVE 	0
+#define SYSf_CLEAR_SCREEN_TEXT	1
+#define SYSf_DEBUG		2
+#define SYSf_RAW_CRT_OUT	3
+#define SYSf_CTRL_ALT_DEL	4
+#define SYSf_CTRL_ALT_C		5
+#define SYSf_CTRL_ALT_ESC	6
+#define SYSf_CTRL_ALT_X 	7
+#define SYSf_CTRL_ALT_TAB	8
+#define SYSf_TASK_LINKS_ALTERED 9
+#define SYSf_RECORD_MACRO	10
+#define SYSf_PLAY_MACRO		11
+#define SYSf_NO_SOUND		12
+#define SYSf_NO_IO_SOUND	13
+
+//Extern calls
+#define EXT_IRQ01		1  /*Keyboard*/
+#define EXT_IRQ03		3  /*Comm*/
+#define EXT_IRQ04		4  /*Comm*/
+#define EXT_IRQ06		6  /*FDC0*/
+#define EXT_IRQ07		7  /*LPT1*/
+#define EXT_IRQ0C		12 /*Mouse*/
+#define EXT_IRQ0E		14 /*IDE0*/
+#define EXT_IRQ0F		15 /*IDE1*/
+#define EXT_IRQ00		32 /*Timer*/
+#define EXT_LTF_PUT_CHAR	33
+#define EXT_LTF_PUTS		34
+#define EXT_LTF_READ		35
+#define EXT_LTF_WRITE		36
+#define EXT_LTF_NEW		37
+#define EXT_LTF_RESET		38
+#define EXT_LTF_DEL		39
+#define EXT_LTF_RECALC		40
+#define EXT_TABLE_SIZE		256
+
+
+//Software Interrupts
+#define I_PUT_SYSTEXT		0x30
+#define I_PUT_CHAR		0x31
+#define I_GET_CHAR		0x32
+#define I_COUT			0x33
+#define I_PEEK_MESSAGE		0x34
+#define I_GET_MESSAGE_NO_WAIT	0x35
+#define I_GET_MESSAGE		0x36
+#define I_PUT_STRING		0x37
+#define I_COUTLN		0x38
+#define FLT_UNDEF_EXTERN	0x100
+
+//Hash table types
+#define HTT_INVALID		0
+#define HTT_ALL 		0xFFFFFFFF
+#define HTT_STRING_CONSTANT	0x001
+#define HTT_SYS_SYMBOL		0x002
+#define HTT_KEYWORD		0x004
+#define HTT_LOCAL_VAR		0x008
+#define HTT_GLBL_VAR		0x010
+#define HTT_CLASS		0x020
+#define HTT_INTERNAL_TYPE	0x040
+#define HTT_FUNCTION		0x080
+#define HTT_WORD		0x100
+#define HTT_OPCODE	      	0x200
+#define HTT_R8		      	0x400
+#define HTT_R16 	      	0x800
+#define HTT_R32 	      	0x1000
+#define HTT_SEG 	      	0x2000
+#define HTT_SYSTEXT 	      	0x4000
+#define HTT_FILE 		0x8000
+#define HTT_MODULE		0x10000
+#define HTT_PRIVATE	      	0x02000000
+#define HTT_PUBLIC	      	0x04000000
+#define HTT_EXPORT	      	0x08000000
+#define HTT_IMPORT	      	0x10000000
+#define HTT_LITERAL	      	0x20000000
+#define HTT_UNRESOLVED_LOCAL	0x40000000
+#define HTT_UNRESOLVED_GLBL	0x80000000
+
+class DbgInfo
+{
+  DWORD min_line,max_line;
+  DWORD body[1];
+};
+
+public class SysHashEntry
+//Don't forget to change WsHashEntry and asm stuff
+{
+  SysHashEntry *next;
+  char *string;
+  DWORD type,use_cnt;
+  char *source_link;
+  DbgInfo *debug;
+  DWORD user0,user1,user2;
+};
+
+public class SysHashTable
+{
+  SysHashTable *next;
+  DWORD mask;
+  SysHashEntry *body[1]; //SysHashTable is var size
+};
+
+#define LTFLT_BLINK		0x10000000
+#define LTFLT_INVERTED		0x20000000
+#define LTFLT_SELECTED		0x40000000
+#define LTFLT_UNDERLINED	0x80000000
+
+#define MLF_DEFAULT_AVAILABLE	1
+#define MLF_FUNCTION		2
+#define MLF_DOT_DOT_DOT		4
+public class MemberListStruct
+{
+  MemberListStruct *next;
+  char *string;
+  DWORD use_cnt;
+  DWORD *member_class;
+  DWORD cnt; //for arrays
+  DWORD offset;
+  WORD parameter_cnt;
+  WORD flags;
+  DWORD default_value;
+  char *fmtstr;
+  char *fmtdata;
+  void output_fun(char *buf,BYTE *D);
+  void input_fun(char *buf,BYTE *D);
+};
+
+#define Cf_INTERNAL 	0 /*Internal function */
+#define Cf_EXTERN	1
+public class ClassStruct //used for classes, functions and internal_data_types
+{
+  SysHashEntry *next;
+  char *string;
+  DWORD type,use_cnt;
+  char *source_link;
+  DbgInfo *debug;
+  WORD member_cnt;
+  WORD parameter_cnt;
+  DWORD size;
+  WORD unused0;
+  WORD unused1;
+  MemberListStruct *member_list;
+  MemberListStruct *last_in_member_list;
+  DWORD *executable_address;
+  ClassStruct *return_class;
+  BYTE pointer_cnt;
+  BYTE flags[3];
+  char *import_name;
+};
+
+#define IT_CHAR		0
+#define IT_BYTE		1
+#define IT_SHORT	2
+#define IT_WORD		3
+#define IT_INT		4
+#define IT_DWORD	5
+#define IT_LONG		6
+#define IT_QWORD	7
+#define IT_DOUBLE	8
+#define IT_UDOUBLE	9  /*fictitious placeholder*/
+#define IT_NUM_IT	10
+
+#define GVAF_FUNCTION	1
+#define GVAF_IMPORT	2
+#define GVAF_EXTERN	4
+public class GlblVarStruct
+{
+  SysHashEntry *next;
+  char *string;
+  DWORD type,use_cnt;
+  char *source_link;
+  DbgInfo *debug;
+  ClassStruct *var_class;
+  DWORD cnt;
+  WORD flags;
+  WORD parameter_cnt;
+  char *import_name;
+  DWORD data_address;
+  DWORD data;
+};
+
+#define SACTf_ROOT3_LOADED	0
+
+public class SysAccntStruct
+{
+  SysAccntStruct *next,*last;
+  char name[32];
+  DWORD flags;
+};
+
+#define TSSCf_WAKE_MASTER	0
+#define TSSCf_FOCUS_MASTER	1
+#define TSSCf_NOT_INPUT		2
+#define TSSCf_EXIT_ON_COMPLETE	3
+#define TSSCf_TEXT		4
+#define TSSCf_DONT_FILTER	5
+
+class TssCmdStruct
+{
+  TssCmdStruct *next,*last;
+  DWORD code,p1,p2;
+  DWORD flags;
+  char *data;
+  DWORD result;
+  DWORD master_tss;
+};
+
+class SysBpt
+{
+  SysBpt *next;
+  DWORD address;
+  BYTE	b;
+};
+
+class MemBlk
+{
+  MemBlk *next,*last;
+  DWORD pages;
+};
+
+class UnusedAllocatedMem
+{
+  UnusedAllocatedMem *next;
+  DWORD size;
+};
+
+//LtfEntry.type codes (Low 8 bits)
+#define LTFT_TEXT		0
+#define LTFT_CR			1
+#define LTFT_SOFT_CR		2
+#define LTFT_CURSOR		3
+#define LTFT_TAB		4
+#define LTFT_CLEAR		5
+#define LTFT_PAGE_BREAK		6
+#define LTFT_DATA		7
+#define LTFT_PAGE_LENGTH	8
+#define LTFT_LEFT_MARGIN	9
+#define LTFT_RIGHT_MARGIN	10
+#define LTFT_HEADER		11
+#define LTFT_FOOTER		12
+#define LTFT_INDENT		13
+#define LTFT_FOREGROUND_COLOR	14
+#define LTFT_BACKGROUND_COLOR	15
+#define LTFT_DEFAULT_FOREGROUND_COLOR 16
+#define LTFT_DEFAULT_BACKGROUND_COLOR 17
+#define LTFT_LINK_FOREGROUND	18
+#define LTFT_LINK_BACKGROUND	19
+#define LTFT_MACRO_FOREGROUND	20
+#define LTFT_MACRO_BACKGROUND	21
+#define LTFT_ANCHOR_FOREGROUND	22
+#define LTFT_ANCHOR_BACKGROUND	23
+#define LTFT_HIDDEN_FOREGROUND	24
+#define LTFT_HIDDEN_BACKGROUND	25
+#define LTFT_TREE_FOREGROUND	26
+#define LTFT_TREE_BACKGROUND	27
+#define LTFT_WORD_WRAP		28
+#define LTFT_UNDERLINED		29
+#define LTFT_INVERTED		30
+#define LTFT_BLINK		31
+#define LTFT_SHIFTED_X		32
+#define LTFT_SHIFTED_Y		33
+#define LTFT_CURSOR_MOVEMENT	34
+#define LTFT_ANCHOR		35
+#define LTFT_LINK		36
+#define LTFT_BUTTON		37
+#define LTFT_CHECK_BOX		38
+#define LTFT_MACRO		39
+#define LTFT_MENU_VALUE		40
+#define LTFT_HEX_EDIT		41
+#define LTFT_HIDE_START		42
+#define LTFT_HIDE_END		43
+#define LTFT_TREE		44
+#define LTFT_PICTURE		45
+#define LTFT_INSERT_BINARY	46
+#define LTFT_INSERT_BINARY_TYPE	47
+#define LTFT_INSERT_BINARY_SIZE	48
+#define LTFT_ERROR		49
+
+//LtfEntry.flag flags
+#define LTFLF_AUX_STRING	1
+#define LTFLF_LEFT_CB		2
+#define LTFLF_LEFT_EXP		4
+#define LTFLF_LEFT_MACRO	8
+#define LTFLF_LEFT_AUTO		0x10
+#define LTFLF_RIGHT_CB		0x20
+#define LTFLF_RIGHT_EXP		0x40
+#define LTFLF_RIGHT_MACRO	0x80
+#define LTFLF_RIGHT_AUTO	0x100
+#define LTFLF_DISPLAY_CB	0x200
+#define LTFLF_HAS_BIN		0x400
+#define LTFLF_ESC		0x800
+#define LTFLF_QUIT		0x1000
+#define LTFLF_LEFT_X		0x2000
+#define LTFLF_CENTER_X		0x4000
+#define LTFLF_RIGHT_X		0x8000
+#define LTFLF_TOP_Y		0x10000
+#define LTFLF_CENTER_Y		0x20000
+#define LTFLF_BOTTOM_Y		0x40000
+#define LTFLF_SHIFTED_X		0x80000
+#define LTFLF_SHIFTED_Y		0x100000
+#define LTFLF_SCROLLING_X	0x200000
+#define LTFLF_SCROLLING_Y	0x400000
+
+#define LTFLf_AUX_STRING	0
+#define LTFLf_LEFT_CB		1
+#define LTFLf_LEFT_EXP		2
+#define LTFLf_LEFT_MACRO	3
+#define LTFLf_LEFT_AUTO		4
+#define LTFLf_RIGHT_CB		5
+#define LTFLf_RIGHT_EXP		6
+#define LTFLf_RIGHT_MACRO	7
+#define LTFLf_RIGHT_AUTO	8
+#define LTFLf_DISPLAY_CB	9
+#define LTFLf_HAS_BIN		10
+#define LTFLf_ESC		11
+#define LTFLf_QUIT		12
+#define LTFLf_LEFT_X		13
+#define LTFLf_CENTER_X		14
+#define LTFLf_RIGHT_X		15
+#define LTFLf_TOP_Y		16
+#define LTFLf_CENTER_Y		17
+#define LTFLf_BOTTOM_Y		18
+#define LTFLf_SHIFTED_X		19
+#define LTFLf_SHIFTED_Y		20
+#define LTFLf_SCROLLING_X	21
+#define LTFLf_SCROLLING_Y	22
+
+#define LTFLF2_HAS_BORDER	1
+#define LTFLF2_SOLID_BORDER	2
+#define LTFLF2_BORDER_PLOT	4
+#define LTFLF2_COLLAPSED	8
+#define LTFLF2_CHECKED		0x10
+#define LTFLF2_REFRESH_DATA	0x20
+#define LTFLF2_DATA_IS_PTR	0x40
+#define LTFLF2_HAS_TERMINATOR	0x80
+#define LTFLF2_ZERO_BASED	0x100
+#define LTFLF2_PASSWORD		0x200
+#define LTFLF2_WORD_WRAP	0x400
+#define LTFLF2_UNDERLINED	0x800
+#define LTFLF2_INVERTED		0x1000
+#define LTFLF2_BLINK		0x2000
+#define LTFLF2_SELECTED		0x4000
+#define LTFLF2_HOLD		0x8000
+#define LTFLF2_TREE		0x10000
+#define LTFLF2_SKIP		0x20000
+#define LTFLF2_ALIAS		0x40000
+#define LTFLF2_POPUP		0x80000
+#define LTFLF2_PAGE_REL_Y	0x100000
+#define LTFLF2_MARGIN_REL_X	0x200000
+
+#define LTFLf2_HAS_BORDER	0
+#define LTFLf2_SOLID_BORDER	1
+#define LTFLf2_BORDER_PLOT	2
+#define LTFLf2_COLLAPSED	3
+#define LTFLf2_CHECKED		4
+#define LTFLf2_REFRESH_DATA	5
+#define LTFLf2_DATA_IS_PTR	6
+#define LTFLf2_HAS_TERMINATOR	7
+#define LTFLf2_ZERO_BASED	8
+#define LTFLf2_PASSWORD		9
+#define LTFLf2_WORD_WRAP	10
+#define LTFLf2_UNDERLINED	11
+#define LTFLf2_INVERTED		12
+#define LTFLf2_BLINK		13
+#define LTFLf2_SELECTED		14
+#define LTFLf2_HOLD		15
+#define LTFLf2_TREE		16
+#define LTFLf2_SKIP		17
+#define LTFLf2_ALIAS		18
+#define LTFLf2_POPUP		19
+#define LTFLf2_PAGE_REL_Y	20
+#define LTFLf2_MARGIN_REL_X	21
+
+#define LTFBT_GENERIC_DATA	1
+#define LTFBT_ELEMENT_GRAPH	2
+public class LtfBinEntry
+{
+  LtfBinEntry *next,*last;
+  DWORD type,num,flags,size,use_cnt;
+  BYTE *data;
+};
+
+#define LTF_DEFAULT 0x80000000
+
+public class LtfEntryBase
+{
+  LtfEntryBase *next,*last;
+  union {
+    DWORD type;
+    BYTE  btype;
+  };
+  DWORD flags,flags2;
+  int  x,y;
+  DWORD min_col,max_col;
+
+  //These are here to allow recalculating the Ltf
+  //from a point other than the beginning.  Without
+  //these, you do not know the current state.
+  //Margins will change to allow multiple columns
+  //of text on the same page.  (cursor move back up the page.)
+  int indent,page_line_num;
+  int left_margin,right_margin;
+
+  BYTE *user_data;
+};
+
+public class LtfEntry
+{
+  LtfEntry *next,*last;
+  union {
+    DWORD type;
+    BYTE  btype;
+  };
+  DWORD flags,flags2;
+  int  x,y;
+  DWORD min_col,max_col;
+  int indent,page_line_num;
+  int left_margin,right_margin;
+  BYTE *user_data;
+
+  BYTE *display;
+  BYTE *plain_text;
+ 
+  union {
+    int attr;
+    int cursor_x_offset;
+    int	left_cb(DWORD *l,BYTE *user,LtfEntry *ll);
+    int left_exp;
+  };
+ 
+  char *left_macro;
+
+  union {
+    int cursor_y_offset;
+    int	right_cb(DWORD *l,BYTE *user,LtfEntry *ll);
+    int right_exp;
+  };
+  char *right_macro;
+
+  char *display_cb(DWORD *l,BYTE *user,LtfEntry *ll,
+		   TssStruct *mem_tss);
+  char *aux_string;
+  BYTE *my_format_data;
+  DWORD scroll_len;
+  DWORD len;
+  DWORD bin_num;
+  LtfBinEntry *bin_data;
+  int eminx,emaxx;  /* extents */
+  int eminy,emaxy;
+
+  BYTE *data;
+};
+
+class EditFindTextStruct
+{
+  char	find_text[132]	    fmtstr "$DA -P 131 \"FIND___:%s\"$\r\n";
+  char	replace_text[132]   fmtstr "$DA -P 131 \"REPLACE:%s\"$\r\n";
+  BOOL	replace		    fmtstr "$CB \"REPLACE\"$\r\n";
+  BOOL	scan_forward	    fmtstr "$CB \"FORWARD\"$\r\n";
+  BOOL	scan_selected_text  fmtstr "$CB \"SELECTION\"$\r\n";
+  BOOL	match_case	    fmtstr "$CB \"CASE\"$\r\n";
+  BOOL	whole_labels	    fmtstr "$CB \"WHOLE LABELS\"$\r\n";
+};
+
+class EditFileNameStruct
+{
+  char name[256] fmtstr "$DA -P 255 \"File Name:%s\"$";
+};
+
+
+// LTF header flags
+#define LTFF_OVERSTRIKE 	  1
+#define LTFF_PLAIN_TEXT 	  2
+#define LTFF_PLAIN_TEXT_WITH_TABS 4
+#define LTFF_MIN_SIZE		  8
+#define LTFF_NO_CURSOR		  0x10 /* Makes LtfInsertStr remove */
+#define LTFF_IN_DOLLAR		  0x20
+#define LTFF_STATEMENT_WAS_RUN	  0x40
+#define LTFF_WORD_WRAP		  0x80
+#define LTFF_UNDERLINED		  0x100
+#define LTFF_INVERTED		  0x200
+#define LTFF_BLINK		  0x400
+#define LTFF_FORM		  0x800
+#define LTFF_ATTR_BY_PARTITION	  0x1000
+#define LTFF_ATTR_BY_FILENAME	  0x2000
+#define LTFF_INHIBIT_LEFT_CLICK	  0x4000
+#define LTFF_DOUBLE_DOLLARS	  0x8000
+
+public class Ltf //Linked Text File header
+{
+  LtfEntryBase dummy;
+  LtfBinEntry  bin_root;
+
+  DWORD flags;
+  int shifted_x,shifted_y;
+  LtfEntry *cur_entry;
+  int cur_data_col,
+      line_start_col,cur_top_line_num;
+  int x,y,min_x,max_x,min_y,max_y,line,col;
+  int indent,page_line_num,page_length;
+  int left_margin,right_margin;
+  int header,footer;
+  DWORD cmd_char;
+  DWORD dollar_buf_size,dollar_buf_ptr;
+  BYTE *dollar_buf;
+  DWORD max_entries,ww_lines_back,cur_bin_num;
+  LtfEntry *recalc_start;
+  EditFindTextStruct *find_replace;
+  LtfEntry *base_select,*limit_select;
+  Ltf *menu_ltf;
+  DWORD *tss,*mem_tss;
+  BYTE text_attribute,link_attribute,
+       macro_attribute,anchor_attribute,
+       hidden_attribute,tree_attribute,pad1[2];
+  EditFileNameStruct filename;
+  DWORD file_attr;
+  BOOL EditPlugIns(Ltf *l,char ch,DWORD sc);
+  BYTE *user_data;
+};
+
+
+class InstructionEntry
+{
+  BYTE ins_entry_num; //This entry num in opcode hash entry
+  BYTE opcode_cnt;
+  BYTE opcode[4],operand_size16,operand_size32,dont_switch_modes;
+  BYTE plus_opcode,slash_value,opcode_modifier,default;
+  BYTE arg1,arg2;
+};
+
+class OpcodeHashEntry
+{
+  SysHashEntry *next;
+  char *string;
+  DWORD type,use_cnt;  //AHT_OPCODE
+  char *source_link;
+  DbgInfo *debug;
+  BYTE instruction_entry_cnt;
+  BYTE reserved[3];
+  InstructionEntry ins[1];
+};
+
+
+#define OM_NO 0
+#define OM_R  1 /*Not used*/
+#define OM_CB 2
+#define OM_CW 3
+#define OM_CD 4
+#define OM_CP 5
+#define OM_IB 6
+#define OM_IW 7
+#define OM_ID 8
+#define OM_RB 9
+#define OM_RW 10
+#define OM_RD 11
+
+#define ARGT_NO      0
+#define ARGT_REL8    1
+#define ARGT_REL16   2
+#define ARGT_REL32   3
+
+#define ARGT_UIMM8   4
+#define ARGT_UIMM16  5
+#define ARGT_UIMM32  6
+#define ARGT_R8      7
+
+#define ARGT_R16     8
+#define ARGT_R32     9
+#define ARGT_IMM8    10
+#define ARGT_IMM16   11
+
+#define ARGT_IMM32   12
+#define ARGT_RM8     13
+#define ARGT_RM16    14
+#define ARGT_RM32    15
+
+#define ARGT_M8      16 /*Not used, needed for LEA, etc */
+#define ARGT_M16     17 /*Not used*/
+#define ARGT_M32     18 /*Not used*/
+#define ARGT_M1616   19 /*Not used*/
+
+#define ARGT_M1632   20 /*Not used*/
+#define ARGT_M16N32  21 /*Not used*/
+#define ARGT_M16N16  22 /*Not used*/
+#define ARGT_M32N32  23 /*Not used*/
+
+#define ARGT_MOFFS8  24
+#define ARGT_MOFFS16 25
+#define ARGT_MOFFS32 26
+#define ARGT_CL      27
+
+#define ARGT_AL      28
+#define ARGT_AX      29
+#define ARGT_EAX     30
+#define ARGT_DX      31
+
+#define ARGT_SS      32
+#define ARGT_DS      33
+#define ARGT_ES      34
+#define ARGT_FS      35
+
+#define ARGT_GS      36
+#define ARGT_SREG    37
+#define ARGT_CS      38
+
+
+#define ASM_CODE_BLK_SIZE 0x8000
+
+
+#define LFSF_IS_INCLUDED	1
+#define LFSF_IS_LTF		2
+class LexFileStruct
+{
+  char *buf;
+  char *buf_ptr;
+  int  line_num,flags;
+  char *name;
+  char *line_start;
+  Ltf  *l;
+  LtfEntry *cur_entry;
+};
+
+class LexUndefEntry
+{
+  LexUndefEntry *next;
+  SysHashEntry *hash;
+};
+
+class IntermediateCode
+{
+  DWORD ic_code,ic_data,ic_class,ic_line;
+};
+
+class ParseStack
+{
+  DWORD ptr;
+  DWORD stk[128];
+};
+
+#define CB_IC_CNT 63
+class CodeBlk
+{
+  CodeBlk *next;
+  IntermediateCode data[CB_IC_CNT];
+};
+
+#define CBMT_LABEL		0
+#define CBMT_GOTO_LABEL		1
+#define CBMT_STRING_CONSTANT	2
+#define CBMT_JMP_TABLE		3
+class CbMiscStruct
+{
+  CbMiscStruct *next;
+  char *string;
+  DWORD type;
+  DWORD address;
+  int st_len;
+  DWORD *jmp_table;
+};
+
+class AsmCodeBlk
+{
+  AsmCodeBlk *next;
+  BYTE body[ASM_CODE_BLK_SIZE];
+};
+
+class AsmArgStruct
+{
+  int seg,size,reg1,reg2;
+  int imm;
+  int scale;
+  int absolute_address_cnt;
+  BOOL indirect,imm_or_off_present,just_seg,reserved;
+  LexUndefEntry *undef_local,*undef_glbl;
+  BYTE *exp;
+};
+
+class AsmUnresolvedRef
+{
+  AsmUnresolvedRef *next;
+  int type,line_num;
+  BYTE *exp;
+  DWORD ip,rel_ip;
+  BOOL byte_avail;
+  char *string;  //Only for import glbls
+  BOOL literal;  //Only for import glbls
+  LexUndefEntry *undef_hash;
+};
+
+#define EIE_REL_EXPORT		0
+#define EIE_LIT_EXPORT		1
+#define EIE_REL_BYTE		2
+#define EIE_LIT_BYTE		3
+#define EIE_REL_WORD		4
+#define EIE_LIT_WORD		5
+#define EIE_REL_DWORD		6
+#define EIE_LIT_DWORD		7
+#define EIE_REL_QWORD		8
+#define EIE_LIT_QWORD		9
+#define EIE_MAIN		16
+#define EIE_ABSOLUTE_ADDRESS	32
+#define EIE_END			0xFF
+
+class ExeImportExportStruct
+{
+  ExeImportExportStruct *next;
+  BYTE type;
+  DWORD ip;
+  char *string;
+};
+
+class ExeAbsoluteAddressStruct
+{
+  ExeAbsoluteAddressStruct *next;
+  BYTE type;
+  DWORD ip;
+};
+
+class ExeStruct
+{
+  BYTE *code;
+  DWORD code_bytes;
+  ExeImportExportStruct *ie;
+  ExeAbsoluteAddressStruct *absolutes;
+};
+
+
+#define KW_INCLUDE	0
+#define KW_DEFINE	1
+#define KW_UNION	2
+#define KW_CATCH	3
+#define KW_CLASS	4
+#define KW_TRY		5
+#define KW_IF		6
+#define KW_ELSE		7
+#define KW_FOR		8
+#define KW_WHILE	9
+#define KW_EXTERN	10
+#define KW_JEXTERN	11
+#define KW_RETURN	12
+#define KW_SIZEOF	13
+#define KW_INTERNAL	14
+#define KW_FMTSTR	15
+#define KW_FMTDATA	16
+#define KW_OUTPUT_FUN	17
+#define KW_INPUT_FUN	18
+#define KW_COUT		19
+#define KW_DO		20
+#define KW_ASM		21
+#define KW_GOTO		22
+#define KW_EXE		23
+#define KW_BREAK	24
+#define KW_CONTINUE	25
+#define KW_SWITCH	26
+#define KW_CASE		27
+#define KW_DEFAULT	28
+#define KW_PUBLIC	29
+#define KW_OFFSET	30
+#define KW_TYPEOF	31
+#define KW_IMPORT	32
+#define KW_JIMPORT	33
+#define KW_COUTLN	34
+
+#define AKW_ALIGN	64
+#define AKW_END		65
+#define AKW_BYTE	66
+#define AKW_WORD	67
+#define AKW_DWORD	68
+#define AKW_DB		69
+#define AKW_DW		70
+#define AKW_DD		71
+#define AKW_DUP		72
+#define AKW_ORG		73
+#define AKW_STRUC	74
+#define AKW_ENDS	75
+#define AKW_USE16	76
+#define AKW_USE32	77
+#define AKW_IMPORT	78
+#define AKW_EXPORT	79
+#define AKW_INSERT	80
+#define AKW_LIST	81
+#define AKW_NOLIST	82
+#define AKW_INSERT_COMPRESSED	83
+
+#define TK_EOF			0
+#define TK_IDENT		1
+#define TK_STRING		2
+#define TK_INTEGER		3
+#define TK_DOUBLE		4
+#define TK_LESS_EQUAL		5
+#define TK_EQUAL_EQUAL		6
+#define TK_GREATER_EQUAL	7
+#define TK_AND_AND		8
+#define TK_OR_OR		9
+#define TK_SHL			0x0B
+#define TK_SHR		 	0x0C
+#define TK_CR			0x0D
+#define TK_DEREFERRENCE		0x0E
+#define TK_NOT_EQUAL		0x0F
+#define TK_PLUS_PLUS		0x10
+#define TK_MINUS_MINUS		0x11
+#define TK_DOUBLE_COLON 	0x12
+#define TK_STRING2		0x13
+#define TK_INCLUDE_EOF		0x14 /*Bogus thing at end of included file*/
+#define TK_INSERT_BINARY	0x15
+#define TK_INSERT_BINARY_TYPE	0x16
+#define TK_INSERT_BINARY_SIZE	0x17
+#define TK_AND_EQUAL		0x18
+#define TK_OR_EQUAL		0x19
+#define TK_XOR_EQUAL		0x1A
+#define TK_ADD_EQUAL		0x1B
+#define TK_SUB_EQUAL		0x1C
+#define TK_MUL_EQUAL		0x1D
+#define TK_DIV_EQUAL		0x1E
+#define TK_SHL_EQUAL		0x1F
+#define TK_SHR_EQUAL		0x7F
+
+#define TK_DOUBLE_QUOTE 	0x22
+#define TK_SINGLE_QUOTE 	0x27
+#define TK_LEFT_BRACE		0x7B
+#define TK_RIGHT_BRACE		0x7D
+
+//Lex flags
+#define LF_EXPECTING_HEX	1
+#define LF_PROMPT		2
+#define LF_DONT_FREE_BUFFER	4
+#define LF_NO_DEFINES		8
+#define LF_NO_INCLUDE_EOF	16
+
+//These are assigned by bit number
+#define LFf_PARSE_TRACE		5
+#define LFf_COMPILE_TRACE	6
+#define LFf_ECHO		7
+#define LFf_OPT_TRACE		8
+#define LFf_LEX_TRACE		9
+#define LFf_EXTERNS_TO_IMPORTS	10
+#define LFf_KEEP_PRIVATE	11
+
+#define LF_IN_QUOTES		0x00020000
+#define LF_EXE_BLK		0x00040000
+#define LF_HAS_MISC_DATA	0x00080000
+#define LF_STRING2		0x00100000
+#define LF_ASM_EXPRESSIONS	0x00200000
+#define LF_UNRESOLVED_LOCAL	0x00400000
+#define LF_UNRESOLVED_GLBL	0x00800000
+#define LF_FUNCTION		0x01000000
+#define LF_POSTINC		0x02000000
+#define LF_POSTDEC		0x04000000
+#define LF_PREINC		0x08000000
+#define LF_PREDEC		0x10000000
+#define LF_ARRAY		0x20000000
+#define LF_EAX			0x40000000
+#define LF_USE_LAST_CHAR	0x80000000
+
+#define LEX_MAX_IDENT		134
+
+#define LFN_CNT		8
+#define LFN_STACK_CNT 	8
+
+#define ACSF_IN_STRUCT		1
+
+class AsmCtrlStruct
+{
+  SysHashTable *local_hash,*glbl_hash;
+  DWORD ip,flags;  //instruction ptr
+  AsmArgStruct arg1,arg2;
+  AsmCodeBlk *code;
+  DWORD num_code_bytes;
+  AsmUnresolvedRef *local_unresolved,*glbl_unresolved;
+  ExeAbsoluteAddressStruct *absolutes;
+  BOOL use16,has_locals,list;
+  int display_col,cur_entry_num,last_ip;
+  char *last_line,*last_label;
+  LexFileStruct *last_lfn;
+};
+
+class ExeBlkStruct
+{
+  ExeBlkStruct *next,*last;
+  char *body;
+};
+
+public class LexStruct
+{
+  LexStruct *next,*last;
+  int token;
+  DWORD flags;
+  int cur_i;
+  DWORD cur_d[3];
+  char *ident;
+  int	ident_len;
+  int	last_char;
+  int	braces_cnt;
+  int	statement_cnt;
+  int	instruction_pointer;  //For asm
+  SysHashTable	 *define_hash_table;
+  SysHashTable	 *local_hash_table;
+  SysHashTable	 *glbl_hash_table;
+  DWORD hash_mask;
+  SysHashTable	 *hash_table_list;
+  SysHashEntry	 *hash_entry;
+  DWORD absolute_address_cnt;
+  LexUndefEntry  *undef_hash_entry;
+  ClassStruct	   *local_var_list;
+  MemberListStruct *local_var_entry;
+  char *cur_buf_ptr;
+  LexFileStruct *cur_lfn;
+  LexFileStruct *stack_ptr;
+  ExeBlkStruct *next_exe_blk,*last_exe_blk;
+  DWORD error_cnt,warning_cnt;
+  CodeBlk 		*cb_out_first;
+  CodeBlk 		*cb_out_last;
+  IntermediateCode 	*cb_out_end;
+  IntermediateCode 	*cb_out_ptr;
+  IntermediateCode 	*cb_last_out_ptr;
+  CodeBlk 		*cb_in_first;
+  IntermediateCode 	*cb_in_end;
+  IntermediateCode 	*cb_in_ptr;
+  CbMiscStruct 	*cb_misc_list;
+  BYTE 			*cb_stack;
+
+  AsmCtrlStruct *a;
+  LexFileStruct lfns[LFN_CNT];
+  LexFileStruct stack[LFN_STACK_CNT];
+};
+
+#define BLK_SIZE 		512
+#define CD_BLK_SIZE 		2048
+#define CD_FILE_OFFSET		80
+
+#define BOOT_CODE_FLOPPY	1
+#define BOOT_CODE_HARDDRIVE	2
+#define BOOT_CODE_CDROM		3
+#define BOOT_CODE_RAM		4
+
+#define J_XSUM			0xA5CF3796
+#define SOURCE_FILE_MASK	"*.CP?;*.HP?;*.AS?;*.AUZ"
+#define TEXT_FILE_MASK		"~*.??Y;*.CP?;*.HP?;*.AS?;*.TX?;*.MU?;*.AU?;*.GL?"
+public class MbrPartitionEntry
+{
+  BYTE active;	//0x80=active  0x00=inactive
+  BYTE start_head;
+  WORD start_cyl;
+  BYTE type;
+  BYTE end_head;
+  WORD end_cyl;
+  DWORD offset;  //Sectors between MBR and first sector
+  DWORD size;	 //Sectors in partition
+};
+
+public class MasterBootStruct
+{
+  BYTE boot_code[446];
+  MbrPartitionEntry p[4];
+  WORD signature;  //55AA
+};
+
+public class FAT32BootStruct
+{
+  BYTE jump_and_nop[3];
+  char OEM_name[8];
+  WORD bytes_per_sector;
+  BYTE sectors_per_cluster;
+  WORD reserved_sectors;
+  BYTE copies_of_FAT;
+  WORD max_root_dir_entries;	  //Not used
+  WORD old_sectors_in_partition;  //Not used
+  BYTE media_descriptor;	  //F8 for hard disk
+  WORD old_sectors_per_FAT;	  //Not used
+  WORD sectors_per_track;
+  WORD num_heads;
+  DWORD hidden_sectors;
+  DWORD sectors;
+  DWORD sectors_per_FAT;
+  WORD flags;
+  WORD version;
+  DWORD root_cluster;
+  WORD file_system_info_sector;
+  WORD backup_boot_sector;
+  BYTE reserved[12];
+  BYTE logical_drive_num;
+  BYTE unused;
+  BYTE extended_signature; //0x29
+  DWORD serial_number;
+  char volume_name[11];
+  char FAT_name[8];
+  BYTE code[420];
+  WORD signature; //0xAA55
+};
+
+public class FAT12BootStruct
+{
+  BYTE jump_and_nop[3];
+  char SysName[8];
+  WORD BytesPerSector;
+  BYTE SectorsPerCluster;
+  WORD ReservedSectors;
+  BYTE FATcnt;
+  WORD MaxRootEntries;
+  WORD TotalSectors1;
+  BYTE MediaDescriptor;
+  WORD SectorsPerFAT;
+  WORD SectorsPerTrack;
+  WORD HeadCount;
+  DWORD HiddenSectors;
+  DWORD TotalSectors2;
+  BYTE DriveNumber;
+  BYTE Reserved1;
+  BYTE ExtBootSignature;
+  DWORD VolumeSerial;
+  char VolumeLabel[11];
+  BYTE Reserved2[12];
+  BYTE code[444];
+  WORD signature; //0xAA55
+};
+
+public class FAT32FileInfoSector
+{
+  DWORD signature1; //52 52 61 41
+  BYTE	unknown[480];
+  DWORD signature2; //72 72 41 61
+  DWORD free_clusters; // -1 if unknown
+  DWORD most_recently_allocated;
+  BYTE	reserved[12];
+  WORD	unknown2;
+  WORD	signature3; //55 AA
+};
+
+
+public class FAT12DirEntry
+{
+  char name[11];
+  BYTE attr;
+  BYTE Reserved[10];
+  WORD Time;
+  WORD Date;
+  WORD cluster_lo;
+  DWORD size;
+};
+
+public class FAT32DirEntry
+{
+  char name[11];
+  BYTE attr;
+  BYTE NTres;
+  BYTE CrtTimeTenth;
+  WORD CrtTime;
+  WORD CrtDate;
+  WORD LstAccDate;
+  WORD cluster_hi;
+  WORD WrtTime;
+  WORD WrtDate;
+  WORD cluster_lo;
+  DWORD size;
+};
+
+public class WORDPalindrome
+{
+  WORD little,big;
+};
+
+public class DWORDPalindrome
+{
+  DWORD little,big;
+};
+
+class ISODate
+{
+  BYTE year,mon,day,hour,min,sec,hund;
+};
+
+class ISODirEntry
+{
+  BYTE length;
+  BYTE ext_attr_length;
+  DWORDPalindrome location;
+  DWORDPalindrome size;
+  ISODate date;
+  BYTE flags;
+  BYTE file_unit_size;
+  BYTE interleave;
+  WORDPalindrome volume_sequence_num;
+  BYTE name_len;
+  BYTE name;
+};
+
+class ISOPathTableEntry
+{
+  BYTE name_len;
+  BYTE zero;
+  DWORD blk;
+  WORD	parent_entry_num;
+  WORD	name[1];  //Aligned to word boundries
+};
+
+#define ISOT_BOOT_RECORD		0
+#define ISOT_PRIMARY_VOLUME_DESC	1
+#define ISOT_SUPPLEMENTARY_DESC		2
+#define ISOT_VOLUME_PARTRITION_DESC	3
+#define ISOT_TERMINATOR			255
+
+public class ISOPrimaryDescriptor
+{
+  BYTE type;
+  char id[5];
+  BYTE version;
+  BYTE unused1;
+  char system_id[32];
+  char volume_id[32];
+  BYTE unused2[8];
+  DWORDPalindrome volume_space_size;
+  BYTE unused3[32];
+  WORDPalindrome volume_set_size;
+  WORDPalindrome volume_sequence_number;
+  WORDPalindrome logical_block_size;
+  DWORDPalindrome path_table_size;
+  DWORD type_l_path_table;
+  BYTE opt_type_l_path_table[4];
+  BYTE type_m_path_table[4];
+  BYTE opt_type_m_path_table[4];
+  ISODirEntry root_directory_record;
+  char volume_set_id[128];
+  char publisher_id[128];
+  char preparer_id[128];
+  char application_id[128];
+  char copyright_file_id[37];
+  char abstract_file_id[37];
+  char bibliographic_file_id[37];
+  char creation_date[17];
+  char modification_date[17];
+  char expiration_date[17];
+  char effective_date[17];
+  BYTE file_structure_version;
+  BYTE unused4;
+  BYTE application_data[512];
+  BYTE unused5[653];
+};
+
+public class DateTime
+{
+  WORD time,date;
+};
+
+public union JDate
+{
+  DWORD d;
+  DateTime dt;
+};
+
+public class JDateStruct
+{
+  BYTE seconds,minutes,hours,
+      day_of_week,day_of_month,month,year,pad;
+};
+
+public class JDirEntry
+{
+  JDirEntry *next,*sub;
+  char name[16];
+  DWORD attr;
+  DWORD cluster,cluster_hi;
+  DWORD size;
+  JDate datetime;
+  char *full_name;
+  BYTE *user_data;
+};
+
+#define JBDT_NULL	0
+#define JBDT_RAM	1
+#define JBDT_FDC	2
+#define JBDT_ATA	3
+#define JBDT_ATAPI	4
+#define JBDT_FILE	5
+
+#define JBDF_REMOVABLE		1
+#define JBDF_INITIALIZED	2
+#define JBDF_READ_ONLY		4
+#define JBDF_READ_ONLY_OVERRIDE	8
+#define JBDF_HAS_BEEN_RESET	16
+#define JBDF_READ_CACHE		32
+#define JBDF_WRITE_CACHE	64
+#define JBDF_FORMAT		128
+#define JBDF_INIT_IN_PROGRESS	256
+
+public class JBlkDev
+{
+  char	partition_base,ch_J,ch_B,ch_D;
+  DWORD type,flags;
+  DWORD unit;
+  DWORD base0,base1,irq,dma;
+  DWORD blk_size;
+  DWORD offset;
+  DWORD min_blk,max_blk;
+  BYTE *RAM_disk;
+  char *filename;
+  DWORD *f; //JFile
+  BYTE *status;
+  DWORD last_jiffy;
+  DWORD max_reads,max_writes;
+  WORD	read_freq,write_freq;
+};
+
+
+#define MPEf_LOCKED	0
+#define PT_FAT12	1
+#define PT_FAT32	0xB
+#define PT_ISO9660	32	/*arbitrary*/
+
+public class JPartition
+{
+  char	drive,ch_J,ch_P,ch_E;
+  DWORD offset;
+  DWORD size;
+  DWORD type;
+  DWORD file_system_info_sector;
+  DWORD FAT1;
+  DWORD FAT2;
+  DWORD root_cluster;
+  DWORD spc; //sectors_per_cluster
+  DWORD data;
+  DWORD flags;
+  DWORD owning_task;
+  JBlkDev *bdev;
+  BYTE	text_attr,pad1,pad2,pad3;
+
+  DWORD num_buffered_FAT_blks;
+  DWORD cur_FAT_blk_num;
+  DWORD *cur_FAT_blk;
+  BYTE	*buffered_FAT_dirty_bits;
+  FAT32FileInfoSector *fis;
+
+  BOOL RBlks(JPartition *p,BYTE *buf,DWORD blk,DWORD cnt);
+  BOOL WBlks(JPartition *p,BYTE *buf,DWORD blk,DWORD cnt);
+};
+
+#define JDC_TABLE_SIZE	0x2000
+
+public class JCacheBlk
+{
+  JCacheBlk *next_lru,*last_lru;
+  JCacheBlk *next_hash,*last_hash;
+  JPartition *p;
+  DWORD blk,blk_hi,flags;
+  BYTE body[BLK_SIZE];
+};
+
+#define TRP_LOCAL		0 /* good for narrow scope user handling */
+#define TRP_COMPILER		1
+#define TRP_ARITHMETIC		2
+#define TRP_UNDEF_SYSTEXT	3
+#define TRP_UNDEF_EXTERN	4
+#define TRP_FILE		5
+#define TRP_BREAK		6
+#define TRP_ARC_XSUM		7
+#define TRP_FDC			8
+#define TRP_PARTITION		9
+#define TRP_BLKDEV		10
+[::/J/KERNEL/SYSTEXT.CPZ,ST_TRAP] TRAP_SYSTEXT
+
+class TrapStruct
+{
+  TrapStruct *next,*last;
+  DWORD handler_start,handler_skip;
+  DWORD *esp,*ebp;
+};
+
+// TSS task flags
+#define TSSf_KILL_TASK		0
+#define TSSf_SUSPENDED		1
+#define TSSf_LOCAL_USER		2
+#define TSSf_PREEMPT 		3
+#define TSSf_IDLE 		4
+#define TSSf_INPUT_FILTER_TASK	5
+#define TSSf_FILTER_INPUT	6
+
+#define CRTf_CURSOR_ON		0
+#define CRTf_WRAP_AROUND	1
+#define CRTf_SHOW		2
+#define CRTf_HAS_MENU		3
+#define CRTf_HAS_CLOSE_WINDOW	4
+#define CRTf_SCROLL_X		5
+#define CRTf_SCROLL_Y		6
+#define CRTf_HAS_BEEN_RESIZED	7
+#define CRTf_SILENT		8
+#define CRTf_NO_DOUBLE_CLICK	9
+
+//MEM RELATED
+#define PAGE_SIZE	0x200
+#define PAGE_BITS	9
+#define DEFAULT_STACK	(PAGE_SIZE*128)
+#define FREE_PAGE_CACHE_SIZE	0x100
+
+#define MAXIO			0x800
+#define HEAP_CACHE_SIZE		1024
+#define TSS_DESC_LENGTH		127
+public class TssStruct
+{
+  DWORD backlink;
+  DWORD *esp0;
+  DWORD ss0;
+  DWORD *esp1;
+  DWORD ss1;
+  DWORD *esp2;
+  DWORD ss2;
+  DWORD cr3;
+  BYTE	*eip	fmtstr "EIP   :%08X";
+  DWORD eflags	fmtstr "EFLAGS:%08X";
+  DWORD eax	fmtstr "EAX   :%08X";
+  DWORD ecx	fmtstr "ECX   :%08X";
+  DWORD edx	fmtstr "EDX   :%08X";
+  DWORD ebx	fmtstr "EBX   :%08X";
+  DWORD *esp	fmtstr "ESP   :%08X";
+  BYTE	*ebp	fmtstr "EBP   :%08X";
+  BYTE	*esi	fmtstr "ESI   :%08X";
+  BYTE	*edi	fmtstr "EDI   :%08X";
+  DWORD es;
+  DWORD cs;
+  DWORD ss;
+  DWORD ds;
+  DWORD fs;
+  DWORD gs;
+  DWORD ldtr;
+  WORD	task_switch_trap;
+  WORD	io_bitmap_ptr;
+  BYTE	io_bitmap[MAXIO/8];
+
+  char	task_descriptor[TSS_DESC_LENGTH+1];
+
+  void	update_window();
+  DWORD *cur_ltf;
+  DWORD *aux_ltf;
+  BOOL	EditPlugIns(DWORD *l,char ch,DWORD sc);
+  int	scroll_speed; //For scrolling Sign like text
+  int	crt_width;
+  int	crt_height;
+  BYTE	text_attribute;
+  BYTE	border_attribute;
+  WORD	unused;		//UNUSED
+  int	window_left;
+  int	window_right;
+  int	window_top;
+  int	window_bottom;
+  int	cursor_hor;
+  int	cursor_vert;
+
+  int	window_pixel_left;  //These are derived
+  int	window_pixel_right;
+  int	window_pixel_top;
+  int	window_pixel_bottom;
+  int	scroll_x,scroll_y;
+  DWORD	crt_flags;
+
+	TssStruct *absolute_address; //Must not move because compiler is fixed
+  TssStruct *parent_tss;
+  TssStruct *next_tss,*last_tss;
+  TssStruct *input_filter_tss;
+  TssStruct *next_sibling_tss,*last_sibling_tss;
+  TssStruct *next_child_tss,*last_child_tss;
+  int	window_border_pixel_left;  //These are derived
+  int	window_border_pixel_right;
+  int	window_border_pixel_top;
+  int	window_border_pixel_bottom;
+  DWORD	task_flags;
+  DWORD stack_bottom;
+  MemBlk *next_mem_blk,*last_mem_blk;
+  DWORD	heap_cache[HEAP_CACHE_SIZE/4];
+  DWORD malloc_free_list;
+  TrapStruct *next_trap,*last_trap;
+  DWORD trap_ebp;  //Stores throw routine's EBP
+  DWORD trap_argc;
+  DWORD *trap_argv;
+  BOOL	take_trap;
+  SysBpt *bpt_list;
+  SysHashTable *hash_table;
+  SysAccntStruct *account;
+  DWORD optimization;
+
+#define MSG_CMD		1
+#define MSG_KEY_DOWN	2
+#define MSG_KEY_UP	3
+#define MSG_IP_MOVE	4
+#define MSG_IP_L_DOWN	5
+#define MSG_IP_L_UP	6
+#define MSG_IP_L_D_DOWN 7
+#define MSG_IP_L_D_UP	8
+#define MSG_IP_R_DOWN	9
+#define MSG_IP_R_UP	10
+#define MSG_IP_R_D_DOWN 11
+#define MSG_IP_R_D_UP	12
+
+  TssCmdStruct *next_servant_cmd,*last_servant_cmd;
+  TssCmdStruct *next_master_cmd,*last_master_cmd;
+  LexStruct *next_lex,*last_lex;
+
+  JPartition *cur_partition;
+  char *cur_dir;
+  DWORD cur_dir_cluster;
+  BYTE	*end_task_cb;  //callback
+  DWORD user_num;
+  DWORD answers[8];
+  DWORD answers_displayed;
+
+  DWORD user_aux0;
+  DWORD user_aux1;
+  DWORD user_aux2;
+  DWORD user_aux3;
+};
+
+
+#define ans (Fs->answers[0])
+#define ans0 (Fs->answers[0])
+#define ans1 (Fs->answers[1])
+#define ans2 (Fs->answers[2])
+#define ans3 (Fs->answers[3])
+#define ans4 (Fs->answers[4])
+#define ans5 (Fs->answers[5])
+#define ans6 (Fs->answers[6])
+#define ans7 (Fs->answers[7])
+
+public class MachineRegsStruct
+{
+  DWORD
+    cr0 fmtstr "CR0 :%08X",
+    cr2 fmtstr "CR2 :%08X",
+    cr3 fmtstr "CR3 :%08X",
+    cr4 fmtstr "CR4 :%08X",
+    dbg0 fmtstr "DBG0:%08X",
+    dbg1 fmtstr "DBG1:%08X",
+    dbg2 fmtstr "DBG2:%08X",
+    dbg3 fmtstr "DBG3:%08X",
+    dbg6 fmtstr "DBG6:%08X",
+    dbg7 fmtstr "DBG7:%08X";
+};
+
+//SYS_CUR_SCAN_CODE FLAGS
+#define SCf_KEY_UP		7
+#define SCf_E0_PREFIX		8
+#define SCf_SHIFT		9
+#define SCf_CTRL		10
+#define SCf_ALT 		11
+#define SCf_CAPS		12
+#define SCf_NUM 		13
+#define SCf_NEW_KEY		16
+#define SCf_PRIOR_E0		17
+
+#define CH_CURSOR		0x05
+#define CH_BACKSPACE		0x08
+#define CH_TAB			0x09
+#define CH_LINE_FEED		0x0A
+#define CH_FORM_FEED		0x0C
+#define CH_CR			0x0D
+#define CH_ESC			27
+#define CH_CTRLQ		0x11
+
+#define SC_CR			0x1C
+#define SC_ESC			0x01
+#define SC_CURSOR_UP		0x48
+#define SC_CURSOR_DOWN		0x50
+#define SC_CURSOR_LEFT		0x4B
+#define SC_CURSOR_RIGHT 	0x4D
+#define SC_PAGE_UP		0x49
+#define SC_PAGE_DOWN		0x51
+#define SC_INSERT		0x52
+#define SC_DELETE		0x53
+#define SC_F1			0x3B
+#define SC_F2			0x3C
+#define SC_F3			0x3D
+#define SC_F4			0x3E
+#define SC_F5			0x3F
+#define SC_F6			0x40
+#define SC_F7			0x41
+#define SC_F8			0x42
+#define SC_F9			0x43
+#define SC_F10			0x44
+#define SC_F11			0x57
+#define SC_F12			0x58
+#define SC_PRT			0x137
+#define SC_SCROLL		0x46
+#define SC_HOME 		0x47
+#define SC_END			0x4F
+#define SC_L_GUI		0x15B
+#define SC_R_GUI		0x15C
+#define SC_PRTSCRN1		0x12A
+#define SC_PRTSCRN2		0x137
+
+//Use these for text
+#define BLACK		0
+#define BLUE		1
+#define GREEN		2
+#define CYAN		3
+#define RED		4
+#define PURPLE		5
+#define BROWN		6
+#define LTGRAY		7
+#define DKGRAY		8
+#define LTBLUE		9
+#define LTGREEN		10
+#define LTCYAN		11
+#define LTRED		12
+#define LTPURPLE	13
+#define YELLOW		14
+#define WHITE		15
+
+#define BMF_RECORD_EXTENTS	1
+#define BMF_TRANSFORMATION	2
+
+#define BMT_COLOR4	1
+#define BMT_COLOR24	2
+class GrBitMap
+{
+  DWORD type,flags,width,height;
+  DWORD color;
+  int left_margin,right_margin,top_margin,bottom_margin;
+  int pen_width;
+  int x,y,z;   //translation
+  int *r;  //rotation matrix of quads decimal in lo
+  int eminx,emaxx;  /* extents */
+  int eminy,emaxy;
+  int eminz,emaxz;
+  BYTE *body;
+};
+
+#define GRET_END	0
+#define GRET_ABORT	1
+#define GRET_COLOR4	2
+#define GRET_COLOR24	3
+#define GRET_POINT	4
+#define GRET_LINE	5
+#define GRET_POLYLINE	6
+#define GRET_POLYPOINT	7
+#define GRET_WIDTH	8
+
+public class GrElem
+{
+  GrElem *next,*last;
+  DWORD type;
+  union {
+    int x1;
+    int color;
+    int num;
+    int width;
+  }
+  int y1,x2,y2;
+};
+
+public class GrRect
+{
+  int minx,maxx,miny,maxy,minz,maxz;
+};
+
+//Use these for graphics, since they will change
+//when 24-bit color is implemented
+#define GR_BLACK	0
+#define GR_BLUE		1
+#define GR_GREEN	2
+#define GR_CYAN		3
+#define GR_RED		4
+#define GR_PURPLE	5
+#define GR_BROWN	6
+#define GR_LTGRAY	7
+#define GR_DKGRAY	8
+#define GR_LTBLUE	9
+#define GR_LTGREEN	10
+#define GR_LTCYAN	11
+#define GR_LTRED	12
+#define GR_LTPURPLE	13
+#define GR_YELLOW	14
+#define GR_WHITE	15
+
+//Raster operations which get added to 24-bit colors
+#define ROP_EQU		0x00000000
+#define ROP_OR		0x01000000
+#define ROP_NAND	0x02000000
+#define ROP_XOR		0xFF000000
+
+#define VGA_MISC_OUTPUT 	0x03c2
+#define VGA_SC_INDEX		0x03c4
+#define VGA_SC_DATA		0x03c5
+#define VGA_PALETTE_INDEX	0x03c8
+#define VGA_PALETTE_DATA	0x03c9
+#define VGA_CRTC_INDEX		0x03d4
+#define VGA_MAP_MASK		0x02
+#define VGA_H_TOTAL		0x00
+#define VGA_H_BLANK_START	0x02
+#define VGA_H_RETRACE_START	0x04
+#define VGA_V_TOTAL		0x06
+#define VGA_MAX_SCAN_LINE	0x09
+#define VGA_V_RETRACE_END	0x11
+#define VGA_OFFSET		0x13
+#define VGA_V_BLANK_START	0x15
+#define VGA_MODE_CONTROL	0x17
+
+#define FONT_WIDTH	8
+#define FONT_HEIGHT	8
+#define SCREEN_COLS	(grwidth/FONT_WIDTH)
+#define SCREEN_LINES	(grheight/FONT_HEIGHT)
+
+
+
+#define ARC_MAX_BITS 12
+#define ARC_MAX_TABLE_ENTRY ((1<<ARC_MAX_BITS)-1)
+
+#define CT_NONE  	0
+#define CT_7_BIT 	1
+#define CT_8_BIT 	2
+
+class ArcTableEntry
+{
+  ArcTableEntry *next;
+  WORD basecode;
+  BYTE ch,pad;
+};
+
+public class ArcCs //control structure
+{
+  DWORD src_size;
+  DWORD src_pos;
+  BYTE *src_buf;
+  DWORD dst_size;
+  DWORD dst_pos;
+  BYTE *dst_buf;
+  DWORD min_bits;
+  DWORD min_table_entry;
+  ArcTableEntry *cur_entry;
+  DWORD cur_bits_in_use;
+  ArcTableEntry *next_entry;
+  DWORD next_bits_in_use;
+  BYTE *stack_ptr;
+  BYTE *stack_base;
+  DWORD free_index;
+  DWORD free_limit;
+  DWORD saved_basecode;
+  BOOL	entry_used;
+  BYTE	last_ch,pad1,pad2,pad3;
+  ArcTableEntry compress[ARC_MAX_TABLE_ENTRY+1];
+  ArcTableEntry *hash[ARC_MAX_TABLE_ENTRY+1];
+};
+
+public class ArcCompressStruct
+{
+  DWORD compressed_size,expanded_size;
+  DWORD compression_type;
+  DWORD checksum,flags;
+  DWORD reserved0,reserved1,reserved2;
+  BYTE body[1];
+};
+
+// Flags for StringUtil and MStringUtil
+#define SU_DISCARD_PARITY	1
+#define SU_REMOVE_SPACES	2
+#define SU_REMOVE_CTRL_CHARS	4
+#define SU_REMOVE_LEADING	8
+#define SU_SINGLE_SPACE		16
+#define SU_TO_UPPER		32
+#define SU_TO_LOWER		64
+#define SU_REMOVE_TRAILING	128
+#define SU_CAP_UNDERSCORES	0x100
+#define SU_S2T			0x200
+#define SU_T2S			0x400 /*Only works with MStringUtil*/
+
+// Flags for SearchString
+#define SS_IGNORE_CASE		1
+#define SS_WHOLE_LABELS		2
+
+//Flags for MatchListEntry
+#define MLE_IGNORE_CASE		1
+#define MLE_EXACT		2
+
+#define FAT12_ATTR_READ_ONLY	1
+#define FAT12_ATTR_HIDDEN	2
+#define FAT12_ATTR_SYSTEM	4
+#define FAT12_ATTR_VOLUME_ID	8
+#define FAT12_ATTR_DIR 		0x10
+#define FAT12_ATTR_ARCHIVE	0x20
+
+#define FAT32_ATTR_READ_ONLY	1
+#define FAT32_ATTR_HIDDEN	2
+#define FAT32_ATTR_SYSTEM	4
+#define FAT32_ATTR_VOLUME_ID	8
+#define FAT32_ATTR_DIR		0x10
+#define FAT32_ATTR_ARCHIVE	0x20
+#define FAT32_ATTR_LONG_NAME	0x0F
+
+#define ISO_ATTR_DIR		2
+
+#define J_ATTR_READ_ONLY	1
+#define J_ATTR_HIDDEN		2
+#define J_ATTR_SYSTEM		4
+#define J_ATTR_VOLUME_ID	8
+#define J_ATTR_DIR		0x10
+#define J_ATTR_ARCHIVE		0x20
+#define J_ATTR_ENCRYPTED	0x10000
+#define J_ATTR_RESIDENT		0x20000
+#define J_ATTR_COMPRESSED	0x40000
+#define J_ATTR_CONTIGUOUS	0x80000
+#define J_ATTR_FIXED		0x100000
+
+public class JFileAccess
+{
+  JPartition *old_partition,*p;
+  char *old_dir,*mask;
+};
+
+#define JFB_NEXT_BLK		0xFFFFFFFF
+
+#define JF_WRITE		1
+#define JF_NEW_FILE		2
+#define JF_BUF_DIRTY		4
+#define JF_NEEDS_WRITE		8
+#define JF_CONTIGUOUS		16
+
+public class JFile
+{
+  DWORD flags;
+  JDirEntry de;
+  JPartition *p;
+  DWORD fblk_num,cluster,file_cluster_num;
+  DWORD max_blk;
+  DWORD file_ptr;
+  BYTE *cluster_buf;
+};
+
+//Intermediate compiler codes
+#define EC_NULL			0
+#define EC_XOR 			1
+#define EC_OR_OR		2
+#define EC_AND_AND		3
+#define EC_LESS_THAN		4
+#define EC_GREATER_THAN		5
+#define EC_EQUAL_EQUAL 		6
+#define EC_NOT_EQUAL_TO		7
+
+#define EC_GREATER_OR_EQUAL	8
+#define EC_LESS_OR_EQUAL	9
+#define EC_ADDITION		0xA
+#define EC_SUBTRACTION	 	0xB
+#define EC_MULTIPLICATION	0xC
+#define EC_DIVISION		0xD
+#define EC_REMAINDER		0xE
+#define EC_UNARY_MINUS	 	0xF
+
+#define EC_NOT	 		0x10
+#define EC_INT32		0x11
+#define EC_DOUBLE		0x12
+#define EC_LOCAL_FRAME_PTR	0x13
+#define EC_CALL			0x15
+#define EC_RET	 		0x16
+#define EC_INC	 		0x17
+
+#define EC_DEC	 		0x18
+#define EC_UNUSED1		0x19 /*unused*/
+#define EC_ADD32		0x1A
+#define EC_SUB32		0x1B
+#define EC_ADD8			0x1C
+#define EC_SUB8			0x1D
+#define EC_MUL32		0x1E
+#define EC_DIV32		0x1F
+
+#define EC_MUL8			0x20
+#define EC_DIV8			0x21
+#define EC_ASSIGN32		0x22
+#define EC_ASSIGN16		0x23
+#define EC_ASSIGN8		0x24
+#define EC_ADD_ESP		0x25
+#define EC_NOP	 		0x26
+#define EC_OR			0x27
+
+#define EC_AND	 		0x28
+#define EC_SHL	 		0x29
+#define EC_SHR	 		0x2A
+#define EC_COM	 		0x2B
+#define EC_IRQ			0x2C
+#define EC_LABEL		0x2D
+#define EC_SKIPZ		0x2E
+#define EC_UNUSED2 		0x2F /*unused*/
+
+#define EC_DEREFERRENCE64 	0x30
+#define EC_DEREFERRENCE32	0x31
+#define EC_DEREFERRENCE16	0x32
+#define EC_DEREFERRENCE8	0x33
+#define EC_DWORD_PP		0x34
+#define EC_WORD_PP		0x35
+#define EC_BYTE_PP		0x36
+
+#define EC_DWORD_MM		0x39
+#define EC_WORD_MM		0x3A
+#define EC_BYTE_MM		0x3B
+#define EC_ADDRESS		0x3E
+#define EC_FS			0x3F
+
+#define EC_CLI	 		0x40
+#define EC_STI	 		0x41
+#define EC_GET_FLAGS		0x42
+#define EC_SET_FLAGS		0x43
+#define EC_BT			0x44
+#define EC_BTS	 		0x45
+#define EC_BTR	 		0x46
+#define EC_INSQUE		0x47
+
+#define EC_INSQUE_REV		0x48
+#define EC_REMQUE		0x49
+#define EC_INP	 		0x4A
+#define EC_OUTP			0x4B
+#define EC_REP_INSB		0x4C
+#define EC_REP_INSW		0x4D
+#define EC_REP_OUTSB		0x4E
+#define EC_REP_OUTSW		0x4F
+
+#define EC_MEMCPY		0x50
+#define EC_MEMSET		0x51
+#define EC_INPW			0x52
+#define EC_OUTPW		0x53
+#define EC_PP_DWORD		0x54
+#define EC_PP_WORD		0x55
+#define EC_PP_BYTE		0x56
+
+#define EC_MM_DWORD		0x59
+#define EC_MM_WORD		0x5A
+#define EC_MM_BYTE		0x5B
+#define EC_INPD			0x5E
+#define EC_OUTPD		0x5F
+
+#define EC_ENTER		0x60
+#define EC_LEAVE		0x61
+#define EC_TYPE			0x62
+#define EC_DS			0x63
+#define EC_ADD_ESP8		0x64
+#define EC_DWORD_DISP32		0x65
+#define EC_WORD_DISP32	 	0x66
+#define EC_BYTE_DISP32	 	0x67
+
+#define EC_DWORD_DISP8	 	0x68
+#define EC_WORD_DISP8		0x69
+#define EC_BYTE_DISP8		0x6A
+#define EC_CALL_INDIRECT	0x6B
+#define EC_BTC	 		0x6C
+#define EC_QUESTION		0x6D
+#define EC_COLON		0x6E
+#define EC_SKIPNZ		0x6F
+
+#define EC_STRING_CONSTANT	0x70
+#define EC_CALL_INDIRECT2	0x71
+#define EC_GET_STACK_PTR	0x72
+#define EC_SET_STACK_PTR	0x73
+#define EC_GET_LABEL		0x74
+#define EC_GET_BASE_PTR		0x75
+#define EC_SET_BASE_PTR		0x76
+#define EC_ABSOLUTE_ADDRESS	0x77
+
+#define EC_SWITCH		0x78
+#define EC_OR_OR_SKIPZ		0x79
+#define EC_OR_OR_SKIPZ2		0x7A
+#define EC_OR_OR_SKIPNZ		0x7B
+#define EC_OR_OR_SKIPNZ2	0x7C
+#define EC_AND_AND_SKIPZ	0x7D
+#define EC_AND_AND_SKIPZ2	0x7E
+#define EC_AND_AND_SKIPNZ	0x7F
+
+#define EC_AND_AND_SKIPNZ2	0x80
+#define EC_LESS_THAN_SKIPZ	0x81
+#define EC_LESS_THAN_SKIPZ2	0x82
+#define EC_LESS_THAN_SKIPNZ	0x83
+#define EC_LESS_THAN_SKIPNZ2	0x84
+#define EC_GREATER_THAN_SKIPZ	0x85
+#define EC_GREATER_THAN_SKIPZ2	0x86
+#define EC_GREATER_THAN_SKIPNZ	0x87
+
+#define EC_GREATER_THAN_SKIPNZ2	0x88
+#define EC_EQUAL_EQUAL_SKIPZ	0x89
+#define EC_EQUAL_EQUAL_SKIPZ2	0x8A
+#define EC_EQUAL_EQUAL_SKIPNZ	0x8B
+#define EC_EQUAL_EQUAL_SKIPNZ2	0x8C
+#define EC_NOT_EQUAL_TO_SKIPZ	0x8D
+#define EC_NOT_EQUAL_TO_SKIPZ2	0x8E
+#define EC_NOT_EQUAL_TO_SKIPNZ	0x8F
+
+#define EC_NOT_EQUAL_TO_SKIPNZ2		0x90
+#define EC_GREATER_OR_EQUAL_SKIPZ	0x91
+#define EC_GREATER_OR_EQUAL_SKIPZ2	0x92
+#define EC_GREATER_OR_EQUAL_SKIPNZ	0x93
+#define EC_GREATER_OR_EQUAL_SKIPNZ2	0x94
+#define EC_LESS_OR_EQUAL_SKIPZ		0x95
+#define EC_LESS_OR_EQUAL_SKIPZ2		0x96
+#define EC_LESS_OR_EQUAL_SKIPNZ		0x97
+
+#define EC_LESS_OR_EQUAL_SKIPNZ2	0x98
+#define EC_SHORT_JMP			0x99
+#define EC_JMP				0x9A
+#define EC_BSF				0x9B
+#define EC_BSR				0x9C
+#define EC_FILD				0x9D
+#define EC_FISTP			0x9E
+#define EC_FLD				0x9F
+
+#define EC_FSTP				0xA0
+#define EC_FYL2X			0xA1
+#define EC_FABS				0xA2
+#define EC_FCHS				0xA3
+#define EC_FSIN				0xA4
+#define EC_FCOS				0xA5
+#define EC_FPTAN			0xA6
+#define EC_FPATAN			0xA7
+
+#define EC_FSQRT			0xA8
+#define EC_FMULP			0xA9
+#define EC_FDIVP			0xAA
+#define EC_FDIVRP			0xAB
+#define EC_FADDP			0xAC
+#define EC_FSUBP			0xAD
+#define EC_FSUBRP			0xAE
+
+#define EC_AND_EQUAL_DWORD	0xAF
+
+#define EC_AND_EQUAL_WORD	0xB0
+#define EC_AND_EQUAL_BYTE	0xB1
+#define EC_OR_EQUAL_DWORD	0xB4
+#define EC_OR_EQUAL_WORD	0xB5
+#define EC_OR_EQUAL_BYTE	0xB6
+
+#define EC_XOR_EQUAL_DWORD	0xB9
+#define EC_XOR_EQUAL_WORD	0xBA
+#define EC_XOR_EQUAL_BYTE	0xBB
+#define EC_ADD_EQUAL_DWORD	0xBE
+#define EC_ADD_EQUAL_WORD	0xBF
+
+#define EC_ADD_EQUAL_BYTE	0xC0
+#define EC_SUB_EQUAL_DWORD	0xC3
+#define EC_SUB_EQUAL_WORD	0xC4
+#define EC_SUB_EQUAL_BYTE	0xC5
+
+#define EC_MUL_EQUAL_DWORD	0xC8
+#define EC_MUL_EQUAL_WORD	0xC9
+#define EC_MUL_EQUAL_BYTE	0xCA
+#define EC_DIV_EQUAL_DWORD	0xCD
+#define EC_DIV_EQUAL_WORD	0xCE
+#define EC_DIV_EQUAL_BYTE	0xCF
+
+#define EC_SHL_EQUAL_DWORD	0xD2
+#define EC_SHL_EQUAL_WORD	0xD3
+#define EC_SHL_EQUAL_BYTE	0xD4
+#define EC_SHR_EQUAL_DWORD	0xD7
+
+#define EC_SHR_EQUAL_WORD	0xD8
+#define EC_SHR_EQUAL_BYTE	0xD9
+
+class PasswordStruct
+{
+  char pw[256] fmtstr "$DA -P +PW,255 \"Password:%s\"$";
+};
+
+//File util flags
+#define FUf_RECURSE		0
+#define FUf_DIFF		1
+#define FUf_IGNORE		2
+#define FUf_LABEL		3
+#define FUf_QUESTION		4
+#define FUf_ALL			5
+#define FUf_CANCEL		6
+#define FUf_REPLACE		7
+#define FUf_PUBLIC		8
+
+class FlagsStruct
+{
+  DWORD on0,on1;
+  DWORD off0,off1;
+};

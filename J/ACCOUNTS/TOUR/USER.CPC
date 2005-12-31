@@ -1,0 +1,41 @@
+//This is the startup file for new local users
+UseConsoleLtf("USER.MUZ");
+Fs->answers_displayed=2;  //from 0-8
+LoadRoot3;
+PutSysText("ST_USER_STARTUP");
+Type("/J/DOC/HELP.TXZ");
+Bts(&Fs->crt_flags,CRTf_SHOW);;
+
+
+void Tour()
+{
+  PopUpOk(
+"Click on underlined text to explore documentation.\r\n"
+"use the ESC key to exiting forms, documents, etc.\r\n"
+"and the lower-case 'L' key for simulating a\r\n"
+"left mouse click. (Sent to whatever you have the\r\n"
+"cursor on, typically underlined text.)\r\n"
+"\r\n"
+"The WINDOW's key will bring-up help/macro/menus\r\n"
+"You'll want to customize the macro area\r\n"
+"with common text you type.\r\n"
+"\r\n"
+"You'll need to become familiar with the CTRL-T\r\n"
+"key as well to toggle between plain-text mode.\r\n");
+
+}
+
+TssStruct *user2_Fs=NULL;
+
+void StartTourTsk()
+{
+  Sleep(2000);
+  if (user2_Fs)
+    XTalk(user2_Fs,"Tour;\r");
+}
+
+if (Fs->user_num==2)  {
+  user2_Fs=Fs;
+  Spawn(&StartTourTsk,"TOUR");
+} else
+  Type("/J/DOC/STARTUP.TXZ");

@@ -1,0 +1,49 @@
+//This is the startup file for new local users
+UseConsoleLtf("USER.MUZ");
+Fs->answers_displayed=2;  //from 0-8
+
+LoadRoot3;
+
+void F(char *pattern,char *flags="+r+i")
+{
+  Grep(pattern,"/J/"TEXT_FILE_MASK,flags);
+}
+
+void R(char *pattern,char *replace_text=NULL,char *flags="+r+l")
+{
+  Grep(pattern,"/J/"TEXT_FILE_MASK,flags,replace_text);
+}
+
+void FD(char *pattern,char *flags="+r+i")
+{
+  Grep(pattern,TEXT_FILE_MASK,flags);
+}
+
+void RD(char *pattern,char *replace_text=NULL,char *flags="+r+l")
+{
+  Grep(pattern,TEXT_FILE_MASK,flags,replace_text);
+}
+
+
+PutSysText("ST_USER_STARTUP");
+Type("/J/DOC/HELP.TXZ");
+Fs->scroll_speed=10;
+Bts(&Fs->crt_flags,CRTf_SHOW);
+
+
+#include "::/J/ACCOUNTS/TAD/MOSES/MOSES.CPZ"
+TssStruct *user2_Fs=NULL;
+
+void StartTsk()
+{
+  Sleep(2000);
+  if (user2_Fs)
+    XTalk(user2_Fs,"DoMoses;\r");
+}
+
+if (Fs->user_num==2)  {
+  user2_Fs=Fs;
+  Spawn(&StartTsk,"TOUR");
+} else
+  Type("/J/DOC/STARTUP.TXZ");
+

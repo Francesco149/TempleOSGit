@@ -1,0 +1,19 @@
+//**Benchmarks**
+
+DWORD i,
+   JIFFIES_START=jiffies,
+   FREEMEM_START=UnusedSysMem,
+   FREEMEM_END;
+
+Prof(COMPILER_START,COMPILER_END-COMPILER_START);
+for (i=0;i<4;i++) {
+  Cd("/J/KERNEL");
+  Auto("2a220b12880\rc330t440s441z5D:/TEMP/CD\rY1500000\r\r TAD\r/J\r\r");
+  CompileFile("OS.ASZ");
+};
+FREEMEM_END=UnusedSysMem;
+
+ProfRep(20);
+
+PrintF("Jiffies:%d\r\n",jiffies-JIFFIES_START);
+coutln "Mem :",FREEMEM_START-FREEMEM_END;

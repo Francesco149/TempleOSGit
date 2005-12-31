@@ -1,0 +1,1084 @@
+InstructionEntry **disasm_table=NULL;
+int disasm_table_entries=0;
+
+int CompareInstructionEntries(InstructionEntry **tempi1,InstructionEntry **tempi2)
+{
+  int i1,i2,j=0,result=0;
+  while (TRUE) {
+    if (j<(*tempi1)->opcode_cnt && j<(*tempi2)->opcode_cnt) {
+      i1=(*tempi1)->opcode[j];
+      i2=(*tempi2)->opcode[j];
+      result=i1-i2;
+      if (result) return result;
+      j++;
+    } else {
+      i1=(*tempi1)->slash_value;
+      i2=(*tempi2)->slash_value;
+      result=i1-i2;
+      if (result) return result;
+
+      i1=(*tempi1)->operand_size32;
+      i2=(*tempi2)->operand_size32;
+      result=i1-i2;
+      if (result) return result;
+
+      return result;
+    }
+  }
+}
+
+void LoadDisasmTable()
+{
+  SysHashTable *h=asm_hash;
+  OpcodeHashEntry *temph;
+  InstructionEntry *tempi;
+  DWORD cnt=0;
+  int i,j,k;
+
+  for (i=0;i<=h->mask;i++) {
+    temph=h->body[i];
+    while (temph) {
+      if (temph->type==HTT_OPCODE)
+	cnt=cnt+temph->instruction_entry_cnt;
+      temph=temph->next;
+    }
+  }
+  disasm_table_entries=cnt;
+
+  j=0;
+  disasm_table=MAlloc(cnt*sizeof(DWORD));
+  for (i=0;i<=h->mask;i++) {
+    temph=h->body[i];
+    while (temph) {
+      if (temph->type==HTT_OPCODE) {
+	tempi=&temph->ins;
+	for (k=0;k<temph->instruction_entry_cnt;k++) {
+	  disasm_table[j++]=tempi;
+	  tempi=tempi+sizeof(InstructionEntry);
+	}
+      }
+      temph=temph->next;
+    }
+  }
+
+  QSort(disasm_table,cnt,sizeof(DWORD),&CompareInstructionEntries);
+}
+
+if (!disasm_table)
+  LoadDisasmTable;
+
+
+BOOL PutSourceLine(DWORD *add,DWORD cnt)
+{
+  ClassStruct *tempc;
+  DWORD i,minl,maxl,offset;
+  DbgInfo *dbg;
+  DWORD *body;
+  char *src,*src2;
+  tempc=FindPSect(add,&offset);
+  if (tempc) {
+    dbg=tempc->debug;
+    if (dbg) {
+      body=dbg->body;
+      minl=dbg->min_line;
+      maxl=dbg->max_line;
+      for (i=minl;i<=maxl;i++) {
+	if ((body[i-minl]>=add) &&
+	  (body[i-minl]<add+cnt)) {
+	  src=NewString(tempc->source_link);
+	  src2=MAlloc(StrLen(src)+1);
+	  RemoveFirstSeg(src,":",src2);
+	  RemoveLastSeg(src,",",src2);
+	  PrintF("$LK -A \"FL:%s,%d\"$",src,i);
+	  Free(src);
+	  Free(src2);
+	  return TRUE;
+	}
+      }
+    }
+  }
+  return FALSE;
+}
+
+public void DasmIns(char *buf,BYTE **add,BOOL use16=FALSE)
+{
+  char buf2[256],buf3[256],seg_overrides[40],arg1_st[256],arg2_st[256],
+       *a1_st,*a2_st,*bin_data_area,*bin_data_area2;
+  BYTE *ip=*add;
+  BYTE b,*bb;
+  WORD *ww;
+  DWORD *dd;
+  int disp,imm;
+  BOOL opsize=FALSE,opadd=FALSE;
+  int i,j,k,l,m,o1,o2,a1,a2,aa1,aa2,arg1_size=0,arg2_size=0,a1_size,a2_size,
+      ModrM=-1,SIB=-1,scale,r1,r2,
+      Mod=-1,RM1=-1,RM2=-1;
+  InstructionEntry *tempi;
+  OpcodeHashEntry *tempo,dummy;
+
+  *arg1_st=0;
+  *arg2_st=0;
+  a1_st=arg1_st;
+  a2_st=arg2_st;
+
+  if (PutSourceLine(ip,1))
+    CrLf;
+  SPrintF(buf,"%16tP ",ip);
+  bin_data_area=buf+StrLen(buf);
+  for (i=0;i<6;i++) {
+    SPrintF(buf2,"%02X",ip[i]);
+    StrCat(buf,buf2);
+  }
+  StrCat(buf," ");
+
+  SPrintF(buf3,"%16tP ",ip+6);
+  bin_data_area2=buf3+StrLen(buf3);
+  for (i=6;i<12;i++) {
+    SPrintF(buf2,"%02X",ip[i]);
+    StrCat(buf3,buf2);
+  }
+
+  *seg_overrides=0;
+  while (TRUE) {
+    b=*(ip++);
+	 if (b==0x2E) StrCat(seg_overrides,"CS:");
+    else if (b==0x36) StrCat(seg_overrides,"SS:");
+    else if (b==0x3E) StrCat(seg_overrides,"DS:");
+    else if (b==0x26) StrCat(seg_overrides,"ES:");
+    else if (b==0x64) StrCat(seg_overrides,"FS:");
+    else if (b==0x65) StrCat(seg_overrides,"GS:");
+    else if (b==0x66) opsize=TRUE;
+    else if (b==0x67) opadd=TRUE;
+    else break;
+  }
+  ip--;
+
+  i=0;
+  j=disasm_table_entries-1;
+  while (i!=j) {
+    k=(i+j)/2;
+    tempi=disasm_table[k];
+    m=0;
+    l=0;
+    while (TRUE) {
+      if (l<tempi->opcode_cnt) {
+	o1=ip[l];
+	o2=tempi->opcode[l];
+	m=o1-o2;
+	l++;
+	if (m)
+	  break;
+      } else {
+	if (tempi->slash_value<8) {
+	  o1=(ip[l] >> 3) & 7;
+	  o2=tempi->slash_value;
+	  m=o1-o2;
+	  if (!m) {
+	    if (use16 ^ opsize) {
+	      if (tempi->operand_size32)
+		m=-1;
+	    } else {
+	      if (tempi->operand_size16)
+		m=1;
+	    }
+	  }
+	  break;
+	} else {
+	  m=0;
+	  if (use16 ^ opsize) {
+	    if (tempi->operand_size32)
+	      m=-1;
+	  } else {
+	    if (tempi->operand_size16)
+	      m=1;
+	  }
+	  break;
+	}
+      }
+    }
+
+    if (m>0) {
+      if (k==i)
+	i=j;
+      else
+	i=k;
+    } else if (m<0) {
+      if (i==j) {
+	k=i-1;
+	if (k<0) k=0;
+	break;
+      } else if (j-i<=2) {
+	k=i;
+	break;
+      } else
+	j=k;
+    } else
+      break;
+  }
+  tempi=disasm_table[k];
+  ip=ip+tempi->opcode_cnt;
+  tempo=tempi-(tempi->ins_entry_num*sizeof(InstructionEntry))+&dummy-&dummy.ins;
+  StrCat(buf,tempo->string);
+
+  a1=tempi->arg1;
+  a2=tempi->arg2;
+  aa1=a1;
+  aa2=a2;
+
+  StrCpy(buf2,SysTextSub(a1,"ST_ARGUMENT_TYPES"));
+  if (StrStr(buf2,"8"))
+    arg1_size=1;
+  else if (StrStr(buf2,"16"))
+    arg1_size=2;
+  else if (StrStr(buf2,"32"))
+    arg1_size=4;
+
+  StrCpy(buf2,SysTextSub(a2,"ST_ARGUMENT_TYPES"));
+  if (StrStr(buf2,"8"))
+    arg2_size=1;
+  else if (StrStr(buf2,"16"))
+    arg2_size=2;
+  else if (StrStr(buf2,"32"))
+    arg2_size=4;
+
+  a1_size=arg1_size;
+  a2_size=arg2_size;
+  if (tempi->plus_opcode && (tempi->slash_value==8 ||
+      (tempi->opcode_modifier>=OM_RB && tempi->opcode_modifier<=OM_RD))) {
+    ip--;
+    RM1=*(ip++) - tempi->opcode[tempi->opcode_cnt-1];
+    *buf2=0;
+    if (a1>=ARGT_R8 && a1<=ARGT_R32) {
+      if (a1_size==1)
+	SPrintF(buf2,"%Z",RM1,"ST_BYTE_REGS");
+      else if (a1_size==2)
+	SPrintF(buf2,"%Z",RM1,"ST_WORD_REGS");
+      else if (a1_size==4)
+	SPrintF(buf2,"%Z",RM1,"ST_DWORD_REGS");
+      StrCat(a1_st,buf2);
+    } else {
+      if (a2_size==1)
+	SPrintF(buf2,"%Z",RM1,"ST_BYTE_REGS");
+      else if (a2_size==2)
+	SPrintF(buf2,"%Z",RM1,"ST_WORD_REGS");
+      else if (a2_size==4)
+	SPrintF(buf2,"%Z",RM1,"ST_DWORD_REGS");
+      StrCat(a2_st,buf2);
+    }
+  }
+  if ((a1>=ARGT_RM8 && a1<=ARGT_RM32) ||
+      (a2>=ARGT_RM8 && a2<=ARGT_RM32)) {
+    if (a2>=ARGT_RM8 && a2<=ARGT_RM32) {
+      a1_st=arg2_st;
+      a2_st=arg1_st;
+      a1_size=arg2_size;
+      a2_size=arg1_size;
+      aa1=a2;
+      aa2=a1;
+    }
+    StrCat(a1_st,seg_overrides);
+    ModrM=*(ip++);
+    Mod=(ModrM>>6) & 3;
+    RM1=ModrM & 7;
+    RM2=(ModrM>>3) & 7;
+    if (Mod<3 && RM1==4) {
+      SIB=*(ip++);
+    }
+    if (Mod==1) {
+      bb=ip;
+      disp=*bb;
+      SPrintF(buf2,"%02X",disp);
+      StrCat(a1_st,buf2);
+      ip++;
+    }
+    if (Mod==2) {
+      dd=ip;
+      disp=*dd;
+      SPrintF(buf2,"%08X",disp);
+      StrCat(a1_st,buf2);
+      ip=ip+4;
+    }
+    if (tempi->slash_value<8)
+      RM2=-1;
+    else {
+      *buf2=0;
+      if (aa2==ARGT_SREG)
+	SPrintF(buf2,"%Z",RM2,"ST_SEG_REGS");
+      else if (!(aa2>=ARGT_IMM8 && aa2<=ARGT_IMM32) &&
+	       !(aa2>=ARGT_UIMM8 && aa2<=ARGT_UIMM32)) {
+	if (a2_size==1)
+	  SPrintF(buf2,"%Z",RM2,"ST_BYTE_REGS");
+	else if (a2_size==2)
+	  SPrintF(buf2,"%Z",RM2,"ST_WORD_REGS");
+	else if (a2_size==4)
+	  SPrintF(buf2,"%Z",RM2,"ST_DWORD_REGS");
+      }
+      StrCat(a2_st,buf2);
+    }
+    if (RM1==5 && Mod==0) {
+      dd=ip;
+      disp=*dd;
+      SPrintF(buf2,"[%X] ",disp);
+      StrCat(a1_st,buf2);
+      ip=ip+4;
+      RM1=-1;
+    } else {
+      if (Mod<3) {
+	if (RM1==4) {
+	  RM1=-1;
+	  r1=SIB & 7;
+	  r2=(SIB >> 3) & 7;
+	  scale=(SIB >> 6) &3;
+	  if (scale==3)
+	    scale=8;
+	  else if (scale==2)
+	    scale=4;
+	  else if (scale==1)
+	    scale=2;
+	  else
+	    scale=1;
+	  if (r1==5 && Mod==0) {
+	    dd=ip;
+	    disp=*dd;
+	    SPrintF(buf2,"%08X",disp);
+	    StrCat(a1_st,buf2);
+	    ip=ip+4;
+	    SPrintF(buf2,"[%Z*%d]",r2,"ST_DWORD_REGS",scale);
+	    StrCat(a1_st,buf2);
+	  } else {
+	    SPrintF(buf2,"[%Z+%Z*%d]",r1,"ST_DWORD_REGS",
+	      r2,"ST_DWORD_REGS",scale);
+	    StrCat(a1_st,buf2);
+	  }
+	} else {
+	  *buf2=0;
+	  if (use16 ^ opadd)
+	    SPrintF(buf2,"[%Z]",RM1,"ST_WORD_REGS");
+	  else
+	    SPrintF(buf2,"[%Z]",RM1,"ST_DWORD_REGS");
+	  StrCat(a1_st,buf2);
+	}
+      } else {
+	*buf2=0;
+	if (a1_size==1)
+	  SPrintF(buf2,"%Z",RM1,"ST_BYTE_REGS");
+	else if (a1_size==2)
+	  SPrintF(buf2,"%Z",RM1,"ST_WORD_REGS");
+	else if (a1_size==4)
+	  SPrintF(buf2,"%Z",RM1,"ST_DWORD_REGS");
+	StrCat(a1_st,buf2);
+      }
+    }
+  }
+  if (a1>=ARGT_MOFFS8 && a1<=ARGT_MOFFS32) {
+    if (arg1_size==1) {
+      bb=ip;
+      disp=*bb;
+      ip++;
+      SPrintF(buf2,"[%X]",disp);
+      StrCat(arg1_st,buf2);
+    } else if (use16 ^ opadd) {
+      ww=ip;
+      disp=*ww;
+      ip=ip+2;
+      SPrintF(buf2,"[%X]",disp);
+      StrCat(arg1_st,buf2);
+    } else {
+      dd=ip;
+      disp=*dd;
+      ip=ip+4;
+      SPrintF(buf2,"[%X]",disp);
+      StrCat(arg1_st,buf2);
+    }
+  }
+
+  if (a2>=ARGT_MOFFS8 && a2<=ARGT_MOFFS32) {
+    if (arg2_size==1) {
+      bb=ip;
+      disp=*bb;
+      ip++;
+      SPrintF(buf2,"[%X]",disp);
+      StrCat(arg2_st,buf2);
+    } else if (use16 ^ opadd) {
+      ww=ip;
+      disp=*ww;
+      ip=ip+2;
+      SPrintF(buf2,"[%X]",disp);
+      StrCat(arg2_st,buf2);
+    } else {
+      dd=ip;
+      disp=*dd;
+      ip=ip+4;
+      SPrintF(buf2,"[%X]",disp);
+      StrCat(arg2_st,buf2);
+    }
+  }
+
+  if (a1==ARGT_IMM8 || a1==ARGT_UIMM8) {
+    bb=ip;
+    imm=*bb;
+    SPrintF(buf2,"%02X",imm);
+    StrCat(arg1_st,buf2);
+    ip++;
+  } else if (a1==ARGT_IMM16 || a1==ARGT_UIMM16) {
+    ww=ip;
+    imm=*ww;
+    SPrintF(buf2,"%04X",imm);
+    StrCat(arg1_st,buf2);
+    ip=ip+2;
+  } else if (a1==ARGT_IMM32 || a1==ARGT_UIMM32) {
+    dd=ip;
+    imm=*dd;
+    SPrintF(buf2,"%08X",imm);
+    StrCat(arg1_st,buf2);
+    ip=ip+4;
+  } else if (a1==ARGT_REL8) {
+    bb=ip;
+    disp=*bb;
+    if (disp>=0x80)
+      disp=disp | 0xFFFFFF00;
+    ip++;
+    disp=disp+ip;
+    SPrintF(buf2,"%P ",disp);
+    StrCat(arg1_st,buf2);
+  } else if (a1==ARGT_REL16) {
+    ww=ip;
+    disp=*ww;
+    if (disp>=0x8000)
+      disp=disp | 0xFFFF0000;
+    ip=ip+2;
+    disp=disp+ip;
+    SPrintF(buf2,"%P ",disp);
+    StrCat(arg1_st,buf2);
+  } else if (a1==ARGT_REL32) {
+    dd=ip;
+    disp=*dd;
+    ip=ip+4;
+    disp=disp+ip;
+    SPrintF(buf2,"%P ",disp);
+    StrCat(arg1_st,buf2);
+  } else if (a1==ARGT_CL)
+    StrCat(arg1_st,"CL");
+  else if (a1==ARGT_AL)
+    StrCat(arg1_st,"AL");
+  else if (a1==ARGT_AX)
+    StrCat(arg1_st,"AX");
+  else if (a1==ARGT_EAX)
+    StrCat(arg1_st,"EAX");
+  else if (a1==ARGT_DX)
+    StrCat(arg1_st,"DX");
+  else if (a1==ARGT_SS)
+    StrCat(arg1_st,"SS");
+  else if (a1==ARGT_DS)
+    StrCat(arg1_st,"DS");
+  else if (a1==ARGT_ES)
+    StrCat(arg1_st,"ES");
+  else if (a1==ARGT_FS)
+    StrCat(arg1_st,"FS");
+  else if (a1==ARGT_GS)
+    StrCat(arg1_st,"GS");
+  else if (a1==ARGT_CS)
+    StrCat(arg1_st,"CS");
+
+  if (a2==ARGT_IMM8 || a2==ARGT_UIMM8) {
+    bb=ip;
+    imm=*bb;
+    SPrintF(buf2,"%02X",imm);
+    StrCat(arg2_st,buf2);
+    ip++;
+  } else if (a2==ARGT_IMM16 || a2==ARGT_UIMM16) {
+    ww=ip;
+    imm=*ww;
+    SPrintF(buf2,"%04X",imm);
+    StrCat(arg2_st,buf2);
+    ip=ip+2;
+  } else if (a2==ARGT_IMM32 || a2==ARGT_UIMM32) {
+    dd=ip;
+    imm=*dd;
+    SPrintF(buf2,"%08X",imm);
+    StrCat(arg2_st,buf2);
+    ip=ip+4;
+  } else if (a2==ARGT_CL)
+    StrCat(arg2_st,"CL");
+  else if (a2==ARGT_AL)
+    StrCat(arg2_st,"AL");
+  else if (a2==ARGT_AX)
+    StrCat(arg2_st,"AX");
+  else if (a2==ARGT_EAX)
+    StrCat(arg2_st,"EAX");
+  else if (a2==ARGT_DX)
+    StrCat(arg2_st,"DX");
+  else if (a2==ARGT_SS)
+    StrCat(arg2_st,"SS");
+  else if (a2==ARGT_DS)
+    StrCat(arg2_st,"DS");
+  else if (a2==ARGT_ES)
+    StrCat(arg2_st,"ES");
+  else if (a2==ARGT_FS)
+    StrCat(arg2_st,"FS");
+  else if (a2==ARGT_GS)
+    StrCat(arg2_st,"GS");
+  else if (a2==ARGT_CS)
+    StrCat(arg2_st,"CS");
+
+  if (*arg1_st) {
+    StrCat(buf,"\t");
+    StrCat(buf,arg1_st);
+  }
+  if (*arg2_st) {
+    StrCat(buf,",");
+    StrCat(buf,arg2_st);
+  }
+  for (i=ip-*add;i<6;i++) {
+    bin_data_area[2*i]=0x20;
+    bin_data_area[2*i+1]=0x20;
+  }
+  for (i=ip-*add;i<12;i++) {
+    bin_data_area2[2*(i-6)]=0x20;
+    bin_data_area2[2*(i-6)+1]=0x20;
+  }
+  StrCat(buf,"\r\n");
+  if (ip-*add>6) {
+    StrCat(buf,buf3);
+    StrCat(buf,"\r\n");
+  }
+  *add=ip;
+}
+
+
+public BYTE *Dasm(BYTE *ip,DWORD cnt=20,BOOL use16=FALSE)
+{
+  char buf[512];
+  int i;
+
+  for (i=0;i<cnt;i++) {
+    DasmIns(buf,&ip,use16);
+    cout buf;
+  }
+
+  return ip;
+}
+
+public int Dasm2(BYTE *ip,DWORD cnt=0x80,BOOL use16=FALSE)
+{
+  char buf[512];
+  int i=0;
+  BYTE *end_ip=ip+cnt;
+
+  while (ip<end_ip) {
+    DasmIns(buf,&ip,use16);
+    cout buf;
+    i++;
+  }
+  return i;
+}
+
+#define PF_ARRAY_CNT 8192
+DWORD pf_jiffies=0,pf_low=0,pf_high=SYS_CS_SIZE,pf_array[PF_ARRAY_CNT],pf_size=PF_ARRAY_CNT;
+DWORD chained_timer_routine=ext[EXT_IRQ00];
+
+void ProfileTimerIrq(DWORD ip)
+{
+  void	my_Chained();
+  DWORD i=(ip-pf_low) * pf_size/(pf_high-pf_low);
+  my_Chained=chained_timer_routine;
+  my_Chained();
+  if (i>=0 && i<pf_size)
+    pf_array[i]++;
+}
+ext[EXT_IRQ00]=&ProfileTimerIrq;
+
+public void Prof(BYTE *start,DWORD cnt=PF_ARRAY_CNT*3)
+{
+  if (cnt<PF_ARRAY_CNT)
+    pf_size=cnt;
+  else
+    pf_size=PF_ARRAY_CNT;
+  pf_low=start;
+  pf_high=start+cnt;
+  MemSet(pf_array,0,PF_ARRAY_CNT*4);
+  pf_jiffies=jiffies;
+}
+
+public void ProfRep(DWORD filter_cnt=1)
+{
+  int i,ip,last_ip=pf_low,hits;
+  DWORD total_time=jiffies-pf_jiffies;
+  if (!total_time) total_time=1;
+  for (i=0;i<pf_size;i++) {
+    if (pf_array[i]>=filter_cnt) {
+      hits=pf_array[i];
+      PrintF("%3d.%02d%% %08X:",hits*100/total_time,
+      hits*10000/total_time%100,hits);
+      ip=pf_low+i*(pf_high-pf_low)/pf_size;
+      if (!PutSourceLine(ip,ip-last_ip+1))
+	PrintF("%P\r\n",ip);
+      else
+	CrLf;
+      last_ip=ip;
+    }
+  }
+}
+
+public void FunRep(char *st)
+{
+  ClassStruct *tempc=FindLocalHash(st,HTT_FUNCTION);
+  MemberListStruct *tempm;
+  if (tempc) {
+    tempm=tempc->member_list;
+    while (tempm) {
+      PrintF("%08X %s\r\n",tempm->offset,tempm->string);
+      tempm=tempm->next;
+    }
+  }
+}
+
+void TreeSub(JDirEntry *tempm)
+{
+  JDirEntry *tempm1;
+  while (tempm) {
+    tempm1=tempm->next;
+    if (tempm->attr & J_ATTR_DIR) {
+      PrintF("$TX +TR+C,\"\"$");
+      PrintF("$MA +A \"%s\",\"Cd(\\\"%s\\\");Dir;\r\"$\r\n",
+      tempm->name,tempm->full_name);
+      if (tempm->sub) {
+	PutS("$ID,2$");
+	TreeSub(tempm->sub);
+	PutS("$ID,-2$");
+      }
+    } else {
+      PrintF("$LK \"%12s\",\"FI:%s\"$\r\n",
+	tempm->name,tempm->full_name);
+    }
+    DelJDirEntry(tempm);
+    tempm=tempm1;
+  }
+}
+
+void ClassRep2(BYTE *d,char *class_name,int depth)
+{
+  DWORD i;
+  MemberListStruct *ml;
+  char ch,*s;
+  U4 *ptr;
+  Ltf *l=Fs->cur_ltf;
+  ClassStruct *cl3,*cl2,*cl=FindLocalHash(class_name,HTT_CLASS);
+  SysHashEntry *temph,*temph1;
+  if (!cl) {
+    LtfPutS(l,"Class Not Found.\r\n");
+    return;
+  }
+  ml=cl->member_list;
+  while (ml) {
+    cl2=ml->member_class;
+    ptr=d+ml->offset;
+    LtfPrintF(l,"%08X ",ptr);
+    temph=cl2;
+    cl3=cl2-cl2->pointer_cnt*sizeof(ClassStruct);
+    temph1=cl3;
+    if (cl3->type & HTT_INTERNAL_TYPE) {
+      LtfPrintF(l,"$FG GREEN$%-20ts:$FG$",ml->string);
+      if (!cl2->pointer_cnt && ml->cnt==0) {
+	switch (temph->user0) {
+	  case IT_CHAR:
+	    LtfPrintF(l,"%02X '%c'",ptr->ba[0],ptr->ba[0]);
+	    break;
+	  case IT_BYTE:
+	    LtfPrintF(l,"%02X",ptr->ba[0]);
+	    break;
+	  case IT_SHORT:
+	    LtfPrintF(l,"%04X",ptr->wa[0]);
+	    break;
+	  case IT_WORD:
+	    LtfPrintF(l,"%04X",ptr->wa[0]);
+	    break;
+	  case IT_INT:
+	    LtfPrintF(l,"%08X",ptr->d);
+	    break;
+	  case IT_DWORD:
+	    LtfPrintF(l,"%08X",ptr->d);
+	    break;
+	  default:
+	    LtfPrintF(l,"%08X",ptr->d);
+	    break;
+	}
+      } else if ((cl2->pointer_cnt==1 || ml->cnt) &&
+		 temph1->user0==IT_CHAR) {
+	if (cl2->pointer_cnt==1) {
+	  if (ptr->d)
+	    LtfPrintF(l,"\"%40ts\"",ptr->d);
+	} else {
+	  if (ml->cnt<40)
+	    s=ptr+ml->cnt;
+	  else
+	    s=ptr+40;
+	  ch=*s;
+	  *s=0;
+	  LtfPrintF(l,"\"%s\"",ptr);
+	  *s=ch;
+	}
+      } else if (ml->cnt>0 && ml->cnt<=32 && cl2->pointer_cnt==0) {
+	for (i=0;i<ml->cnt;i++) {
+	  switch (temph->user0) {
+	    case IT_CHAR:
+	      LtfPrintF(l,"%02X '%c' ",ptr->ba[0],ptr->ba[0]);
+	      ptr=ptr+1;
+	      break;
+	    case IT_BYTE:
+	      LtfPrintF(l,"%02X ",ptr->ba[0]);
+	      ptr=ptr+1;
+	      break;
+	    case IT_SHORT:
+	      LtfPrintF(l,"%04X ",ptr->wa[0]);
+	      ptr=ptr+2;
+	      break;
+	    case IT_WORD:
+	      LtfPrintF(l,"%04X ",ptr->wa[0]);
+	      ptr=ptr+2;
+	      break;
+	    case IT_INT:
+	      LtfPrintF(l,"%08X ",ptr->d);
+	      ptr=ptr+4;
+	      break;
+	    case IT_DWORD:
+	      LtfPrintF(l,"%08X ",ptr->d);
+	      ptr=ptr+4;
+	      break;
+	    default:
+	      LtfPrintF(l,"%08X ",ptr->d);
+	      ptr=ptr+4;
+	      break;
+	  }
+	}
+      } else
+	LtfPrintF(l,"%08X",ptr->d);
+      LtfPutS(l,"\r\n");
+    } else {
+      if (depth<1) {
+	LtfPrintF(l,"$FG GREEN$$TX +TR+C,\"\"$");
+	LtfPrintF(l,"%-20ts$FG$\r\n",ml->string);
+	LtfPutS(l,"$ID,2$");
+	if (!cl2->pointer_cnt)
+	  ClassRep2(ptr,cl3->string,depth+1);
+	else if (cl2->pointer_cnt==1) {
+	  if (ptr->d)
+	    ClassRep2(ptr->d,cl3->string,depth+1);
+	}
+	LtfPutS(l,"$ID,-2$");
+      } else
+	LtfPrintF(l,"%-20ts\r\n",ml->string);
+    }
+    ml=ml->next;
+  }
+}
+
+public void ClassRep(BYTE *d,char *class_name)
+{
+  Ltf *l=Fs->cur_ltf;
+  BOOL old_preempt=Preempt(OFF);
+  ClassRep2(d,class_name,0);
+  LtfRecalc(l);
+  Preempt(old_preempt);
+}
+
+public void MachineRegsRep()
+{
+  ClassStruct *cl,*cn;
+  MemberListStruct *ml;
+  MachineRegsStruct m;
+  int *i_ptr;
+
+  GetMachineRegs(&m);
+  cl=FindLocalHash("MachineRegsStruct",HTT_CLASS);
+  ml=cl->member_list;
+  while (ml) {
+    if (ml->fmtstr) {
+      i_ptr=&m+ml->offset;
+      cn=ml->member_class;
+      if (cn->type==HTT_INTERNAL_TYPE && ml->cnt==0) {
+	if (ml->fmtdata)
+	  PrintF(ml->fmtstr,*i_ptr,ml->fmtdata);
+	else
+	  PrintF(ml->fmtstr,*i_ptr);
+	PrintF(" %P",*i_ptr);
+      } else {
+	if (ml->fmtdata)
+	  PrintF(ml->fmtstr,i_ptr,ml->fmtdata);
+	else
+	  PrintF(ml->fmtstr,i_ptr);
+	PrintF(" %P",*i_ptr);
+      }
+      CrLf;
+    }
+    ml=ml->next;
+  }
+  CrLf;
+}
+
+public void TssRep(TssStruct *tss=NULL)
+{
+  ClassStruct *cl,*cn;
+  MemberListStruct *ml;
+  int *i_ptr;
+
+  if (!tss) tss=Fs;
+  cl=FindLocalHash("TssStruct",HTT_CLASS);
+  ml=cl->member_list;
+  while (ml) {
+    if (ml->fmtstr) {
+      i_ptr=tss+ml->offset;
+      cn=ml->member_class;
+      if ((cn->type & HTT_INTERNAL_TYPE) && ml->cnt==0) {
+	if (ml->fmtdata)
+	  PrintF(ml->fmtstr,*i_ptr,ml->fmtdata);
+	else
+	  PrintF(ml->fmtstr,*i_ptr);
+	PrintF(" %P",*i_ptr);
+      } else {
+	if (ml->fmtdata)
+	  PrintF(ml->fmtstr,i_ptr,ml->fmtdata);
+	else
+	  PrintF(ml->fmtstr,i_ptr);
+	PrintF(" %P",*i_ptr);
+      }
+      CrLf;
+    }
+    ml=ml->next;
+  }
+  CrLf;
+}
+
+public void StackRep(DWORD *esp)
+{
+  DWORD i,my_esp[32];
+  BOOL old_preempt=Preempt(OFF);
+  for (i=0;i<32;i++) {
+    my_esp[i]=*esp;
+    esp=esp+4;
+  }
+  Preempt(old_preempt);
+  for (i=0;i<32;i++)
+    PrintF("[ESP+%04X]: %08X %P\r\n",i*4,my_esp[i],my_esp[i]);
+  CrLf;
+}
+
+void ViewFATUpdate()
+{
+  ClearWindowText;
+}
+
+public void ViewFAT(char drive=0)
+{
+  JPartition *p=DriveToPartition(drive);
+  DWORD old_update_window=Fs->update_window;
+  DWORD old_ltf=Fs->cur_ltf;
+  DWORD c,c1,i,x,y,
+	l=grheight*grwidth,
+	s=(p->size+p->spc-1)/p->spc;
+  DWORD lo,hi,sc,ch;
+  GrBitMap *base=GrNew(grbase);
+  if (p->type!=PT_FAT12 && p->type!=PT_FAT32)
+    return;
+
+  MaximizeWindow;
+  Fs->update_window=&ViewFATUpdate;
+  Fs->cur_ltf=NULL;
+  GrClear;
+  ClearWindowText;
+  try {
+  LockPartition(p);
+  i=0;
+  for (y=0;y<grheight;y++) {
+    if (ScanChar(&sc,&ch))
+      break;
+    for (x=0;x<grwidth;x++) {
+      Mul64(&lo,&hi,i,0,s,0);
+      c1=Div64(lo,hi,l);
+      c=NextClusterNum(p,c1);
+      if (c==0xFFFFFFFF)
+	base->color=ROP_XOR+(GR_YELLOW^GR_WHITE);
+      else if (c) {
+	if (c1+1==c)
+	  base->color=ROP_XOR+(GR_BLUE^GR_WHITE);
+	else
+	  base->color=ROP_XOR+(GR_RED^GR_WHITE);
+      } else
+	  base->color=ROP_XOR+(GR_WHITE^GR_WHITE);
+
+      GrPlot3(base,x,y,0);
+      i++;
+    }
+  }
+  NextClusterNum(p,10);  //TODO:Set to valid
+  UnlockPartition(p);
+  } catch
+    UnlockPartition(p);
+  GetChar;
+  Fs->update_window=old_update_window;
+  GrClear;
+  Fs->cur_ltf=old_ltf;
+}
+
+public void BootRep(char drive=0)
+{
+  JPartition *p=DriveToPartition(drive);
+  BYTE *br=MAlloc(BLK_SIZE);
+  FAT32FileInfoSector *fis=MAlloc(BLK_SIZE);
+  ClassRep(p,"JPartition");
+  RBlks(p,br,p->offset,1);
+  if (p->type==PT_FAT12)
+    ClassRep(br,"FAT12BootStruct");
+  else if (p->type==PT_FAT32) {
+    RBlks(p,fis,p->file_system_info_sector,1,FALSE);
+    ClassRep(fis,"FAT32FileInfoSector");
+    ClassRep(br,"FAT32BootStruct");
+  }
+  Free(fis);
+  Free(br);
+}
+
+public void ListClusters(char *filename)
+{
+  JDirEntry de;
+  char *name;
+  DWORD i=0,c;
+  JPartition *p;
+  name=AbsoluteFileName(filename);
+  if (FindFile(filename,&de)) {
+    p=DriveToPartition(*name);
+    i=de.size;
+    cout "Size(bytes):",i;
+    i=(i+BLK_SIZE-1)/BLK_SIZE;
+    cout " (Blks):",i;
+    i=(i+p->spc-1)/p->spc;
+    coutln " (Clusters):",i;
+    c=de.cluster;
+    i=0;
+    do {
+      coutln i++,":",c;
+      c=NextClusterNum(p,c);
+    } while (c!=0xFFFFFFFF);
+  }
+  Free(name);
+}
+
+void ChkDskFile(char *name,BYTE *bits,DWORD size)
+{
+  DWORD i,j,c,c1;
+  JDirEntry de;
+  JPartition *p;
+  BOOL okay=TRUE;
+  BOOL contiguous;
+  if (FindFile(name,&de)) {
+    if (FileAttr(name)&J_ATTR_CONTIGUOUS)
+      contiguous=TRUE;
+    else
+      contiguous=FALSE;
+    p=DriveToPartition(*name);
+    i=de.size;
+    i=(i+BLK_SIZE-1)/BLK_SIZE;
+    i=(i+p->spc-1)/p->spc;
+    c=de.cluster;
+    if (!i) {
+      if ((p->type==PT_FAT12 && c<0xFF8) ||
+	  (p->type==PT_FAT32 && c<0x0FFFFFF8)) {
+	coutln "Error:",name," Dir entry cluster should be 0xFFFFFFFF.	Is set to ",c,".";
+	okay=FALSE;
+      }
+    } else {
+      for (j=0;j<i-1;j++) {
+	if (c>size) {
+	  coutln "Error:",name," cluster out of range:",c;
+	  okay=FALSE;
+	  break;
+	}
+	if (Bts(bits,c)) {
+	  coutln "Error:",name," doublely allocated cluster:",c;
+	  okay=FALSE;
+	  break;
+	}
+	c1=c;
+	c=NextClusterNum(p,c);
+	if ((c!=c1+1) && contiguous) {
+	  coutln "Error:",name," not contiguous cluster:",c1,".";
+	  okay=FALSE;
+	  break;
+	}
+	if (!c || c==0xFFFFFFFF) {
+	  coutln "Error:",name," missing ",i-1-j," clusters.  Cluster:",c1,".";
+	  okay=FALSE;
+	  break;
+	}
+      }
+      if (okay) {
+	if (c>size) {
+	  coutln "Error:",name," cluster out of range:",c;
+	  okay=FALSE;
+	} else if (Bts(bits,c)) {
+	  coutln "Error:",name," doublely allocated cluster:",c;
+	  okay=FALSE;
+	} else if (p->type==PT_FAT12 || p->type==PT_FAT32) {
+	  c1=c;
+	  c=NextClusterNum(p,c);
+	  if (c!=0xFFFFFFFF) {
+	    coutln "Error:",name," cluster chain not terminated.	Cluster:",c1," followed by ",c,".";
+	    okay=FALSE;
+	  }
+	}
+      }
+    }
+  }
+}
+
+void ChkDskList(JDirEntry *tempm1,BYTE *bits,DWORD size)
+{
+  JDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub) {
+	coutln SysText("ST_SCANNING_DIRECTORY"),tempm1->full_name;
+	ChkDskList(tempm1->sub,bits,size);
+      }
+    } else
+      ChkDskFile(tempm1->full_name,bits,size);
+    DelJDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+public void ChkDsk(char drive=0)
+{
+  JDirEntry *tempm1=NULL;
+  DWORD i,j,l,size,my_flags=(1<<FUf_RECURSE);
+  JPartition *p=DriveToPartition(drive);
+  char *mask=MSPrintF("%c:/*",PartitionToDrive(p));
+  BYTE *bits;
+  DWORD *buf1=MAlloc(BLK_SIZE),*buf2=MAlloc(BLK_SIZE);
+  JFileAccess *fa=NewJFileAccess(mask);
+
+  size=(p->size-(p->data-p->offset))/p->spc;
+  bits=MAllocZ(size);
+  if (fa) {
+    tempm1=FindFiles(fa->mask,&my_flags);
+    ChkDskList(tempm1,bits,size);
+    DelJFileAccess(fa);
+  }
+  Free(mask);
+  Free(bits);
+
+  if (p->type=PT_FAT32) {
+    l=(size+(BLK_SIZE/4)-1)/(BLK_SIZE/4);
+    for (i=0;i<l;i++) {
+      RBlks(p,buf1,p->FAT1+i,1);
+      RBlks(p,buf2,p->FAT2+i,1);
+      for (j=0;j<(BLK_SIZE/4);j++) {
+	if (buf1[j]!=buf2[j])
+	  coutln "FAT mismatch at:",i*(BLK_SIZE/4)+j;
+      }
+    }
+  }
+  Free(buf1);
+  Free(buf2);
+}

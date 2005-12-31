@@ -1,0 +1,130 @@
+//This program does a fractel-like thing with
+//integer arithmetic, since floating is not
+//supported.
+
+class Simplex
+{
+  DWORD x_lo,x_hi,y_lo,y_hi;
+};
+
+void Norm(DWORD *lo,DWORD *hi,Simplex *n1)
+{
+  Add64(lo,hi,n1->x_lo,n1->x_hi,n1->y_lo,n1->y_hi);
+}
+
+Simplex *CopySimplex(Simplex *dst, Simplex *src)
+{
+  MemCpy(dst,src,sizeof(Simplex));
+  return dst;
+}
+
+
+Simplex *Mix(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  Simplex temp;
+  Mul64(&temp.x_lo,&temp.x_hi,n1->x_lo,n1->x_hi,n2->x_lo,n2->x_hi);
+  Mul64(&temp.y_lo,&temp.y_hi,n1->y_lo,n1->y_hi,n2->y_lo,n2->y_hi);
+  MemCpy(result,&temp,sizeof(Simplex));
+  return result;
+}
+
+Simplex *Mangle(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  Simplex temp;
+  Mul64(&temp.x_lo,&temp.x_hi,n1->y_lo,n1->y_hi,n2->x_lo,n2->x_hi);
+  Mul64(&temp.y_lo,&temp.y_hi,n1->x_lo,n1->x_hi,n2->y_lo,n2->y_hi);
+  MemCpy(result,&temp,sizeof(Simplex));
+  return result;
+}
+
+Simplex *Add(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  Simplex temp;
+  Add64(&temp.x_lo,&temp.x_hi,n1->x_lo,n1->x_hi,n2->x_lo,n2->x_hi);
+  Add64(&temp.y_lo,&temp.y_hi,n1->y_lo,n1->y_hi,n2->y_lo,n2->y_hi);
+  MemCpy(result,&temp,sizeof(Simplex));
+  return result;
+}
+
+Simplex *Sub(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  Simplex temp;
+  Sub64(&temp.x_lo,&temp.x_hi,n1->x_lo,n1->x_hi,n2->x_lo,n2->x_hi);
+  Sub64(&temp.y_lo,&temp.y_hi,n1->y_lo,n1->y_hi,n2->y_lo,n2->y_hi);
+  MemCpy(result,&temp,sizeof(Simplex));
+  return result;
+}
+
+
+void DawgUpdate()
+{
+  BYTE old_attr=Fs->text_attribute;
+  Fs->text_attribute=(BLACK<<4)+WHITE;
+  ClearWindowText;
+  Fs->text_attribute=old_attr;
+}
+
+
+void BigDawg()
+{
+  DWORD old_update,d_lo,d_hi,sc,ch;
+  int i,j,k,cnt;
+  Simplex n1,n2,n3,n4,n5,n6,n7,n8;
+  BOOL in_color;
+  GrBitMap *base=GrNew(grbase);
+
+  old_update=Fs->update_window;
+  Fs->update_window=&DawgUpdate;
+
+  MaximizeWindow;
+//  ClearWindowText;
+  GrClear;
+  do {
+    n2.x_lo=RandDWORD;
+    n2.y_lo=RandDWORD;
+    n2.x_hi=0;
+    n2.y_hi=0;
+    cnt=RandDWORD;
+
+    n8.x_lo=RandDWORD;
+    n8.y_lo=RandDWORD;
+    n8.x_hi=0;
+    n8.y_hi=0;
+
+    in_color=RandWORD & 1;
+
+    for (j=0;j<grheight;j++) {
+      if (ScanChar(&sc,&ch))
+	break;
+      for (i=0;i<grwidth;i++) {
+	n1.x_lo=i;
+	n1.y_lo=j;
+	n1.x_hi=0;
+	n1.y_hi=0;
+	CopySimplex(&n3,&n1);
+
+	k=0;
+	Norm(&d_lo,&d_hi,&n3);
+	while (d_lo<cnt && k<0x100) {
+	  Mangle(&n7,Mix(&n4,&n3,&n1),
+		   Add(&n5,&n3,&n2));
+	  k++;
+	  Norm(&d_lo,&d_hi,
+	    Add(&n3,&n7,Mangle(&n6,&n3,&n8)));
+	}
+	if (!in_color)
+	  k=(k!=1)?15:0;
+	base->color=ROP_EQU+k;
+	GrPlot(base,i,j);
+      }
+      SwapInNext;
+    }
+
+    ch=GetChar;
+    GrClear;
+  } while (ch!=CH_ESC);
+  Fs->update_window=old_update;
+  GrDel(base);
+}
+
+BigDawg;  //Autostart when included

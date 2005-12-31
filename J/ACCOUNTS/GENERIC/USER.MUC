@@ -1,0 +1,26 @@
+Toggle Plain Text Mode	^T
+Find			^F
+Find & Replace		^R
+
+These are macros which can be inserted onto the cmd line by cursoring to them 
+and hitting ESC or clicking with the mouse.
+Play WarGame
+`Cd("::/J/APPS");;#include "WARGAME"`
+
+DO-TELL (A fractel-like thing)
+`Cd("::/J/DEMO");;#include "DAWG"`
+
+Drive('A');
+`Drive('A');`
+
+Drive('D');
+`Drive('D');`
+
+Drive('E');
+`Drive('E');`
+
+
+
+List functions
+`HFunsRep;View;`
+ 

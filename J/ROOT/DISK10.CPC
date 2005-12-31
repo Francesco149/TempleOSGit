@@ -1,0 +1,844 @@
+public BOOL Copy(char *f1,char *f2=".")
+{
+  BOOL result=TRUE;
+  JFileAccess *fa;
+  JDirEntry *tempm,*tempm1;
+  DWORD my_flags=0;
+  fa=NewJFileAccess(f1,TRUE);
+  if (fa) {
+    tempm=FindFiles(fa->mask,&my_flags);
+    DelJFileAccess(fa);
+  }
+  if (!tempm)
+    return FALSE;
+  if (IsDir(f2)) {
+    fa=NewJFileAccess(f2,TRUE);
+    if (fa) {
+      while (tempm) {
+	tempm1=tempm->next;
+	if (!(tempm->attr & J_ATTR_DIR)) {
+	  if (!CopySingle(tempm->full_name,tempm->name))
+	    result=FALSE;
+	}
+	DelJDirEntry(tempm);
+	tempm=tempm1;
+      }
+      DelJFileAccess(fa);
+    }
+    return result;
+  } else
+    return CopySingle(f1,f2);
+}
+
+public BOOL Move(char *f1,char *f2)
+{
+  if (Copy(f1,f2)) {
+    Del(f1);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+
+// Not sure if this works
+void MarkBadFAT12Sectors(JPartition *p)
+{
+  DWORD FAT_blk_num,FAT_index,track;
+  int blk,c;
+  BYTE *FAT=p->cur_FAT_blk;
+  BYTE *buf=MAlloc(FDC_DISK_SECTORS*BLK_SIZE);
+  if (p->type!=PT_FAT12)
+    PutSysText("ST_NOT_FAT12");
+  else {
+    try {
+    LockPartition(p);
+    for (track=0;track<p->size/FDC_DISK_SECTORS;track++) {
+      cout "Track:",track;
+      if (RBlks(p,buf,track*FDC_DISK_SECTORS,FDC_DISK_SECTORS,FALSE))
+	coutln " Okay";
+      else {
+	coutln " Bad";
+	for (blk=track*FDC_DISK_SECTORS;
+	     blk<(track+1)*FDC_DISK_SECTORS;blk++) {
+	  c=(blk-p->data)/p->spc;
+	  if (c<0)
+	    coutln "Bad System Sector, disk not usable.";
+	  else {
+	    FAT_index=3*c/2;
+	    FAT_blk_num=FAT_index/BLK_SIZE;
+	    if (c &1) {
+	      FAT[FAT_index+1]=0xFF;
+	      FAT[FAT_index]=FAT[FAT_index] || 0xF0;
+	    }  else {
+	      FAT[FAT_index+1]=FAT[FAT_index+1] || 0x0F;
+	      FAT[FAT_index]=0xFF;
+	    }
+	    Bts(p->buffered_FAT_dirty_bits,FAT_blk_num);
+	    if ((FAT_index & (BLK_SIZE-1))==BLK_SIZE-1)
+	      Bts(p->buffered_FAT_dirty_bits,FAT_blk_num+1);
+	  }
+	}
+      }
+    }
+    CleanFATBuf(p);
+    UnlockPartition(p);
+    } catch
+      UnlockPartition(p);
+  }
+  Free(buf);
+}
+
+// Not sure if this works
+public void MarkBadSectors(char drive_letter=0)
+{
+  Drive(drive_letter);
+  if (Fs->cur_partition->type==PT_FAT12)
+    MarkBadFAT12Sectors(Fs->cur_partition);
+  else
+    coutln "Not implemented ON Drive";
+}
+
+
+
+void PutCopyTree(JDirEntry *tempm1)
+{
+  JDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      MkDir(tempm1->user_data);
+      if (tempm1->sub)
+	PutCopyTree(tempm1->sub);
+    } else
+      CopySingle(tempm1->full_name,tempm1->user_data);
+    Free(tempm1->user_data);
+    DelJDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+void GetCopyTree(JDirEntry *tempm1,char *cur_dir)
+{
+  int i;
+  while (tempm1) {
+    i=StrLen(cur_dir)+1+StrLen(tempm1->name)+1;
+    tempm1->user_data=MAlloc(i);
+    StrCpy(tempm1->user_data,cur_dir);
+    if (StrCmp(cur_dir,"/"))
+      StrCat(tempm1->user_data,"/");
+    StrCat(tempm1->user_data,tempm1->name);
+    if ((tempm1->attr & J_ATTR_DIR) && tempm1->sub)
+      GetCopyTree(tempm1->sub,tempm1->user_data);
+    tempm1=tempm1->next;
+  }
+}
+
+public void CopyTree(char *src_mask,char *dst_mask)
+{ //TODO: use full_name
+  JFileAccess *fa;
+  JDirEntry *tempm=NULL;
+  DWORD my_flags=(1<<FUf_RECURSE);
+
+  fa=NewJFileAccess(src_mask,TRUE);
+  if (fa) {
+    tempm=FindFiles(fa->mask,&my_flags);
+    GetCopyTree(tempm,".");
+    DelJFileAccess(fa);
+  }
+  fa=NewJFileAccess(dst_mask,TRUE,TRUE);
+  if (fa) {
+    PutCopyTree(tempm);
+    DelJFileAccess(fa);
+  }
+}
+
+void DoDelTree(JDirEntry *tempm1)
+{
+  JDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub)
+	DoDelTree(tempm1->sub);
+      SysDel(tempm1->full_name,TRUE);
+    }
+    DelJDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+public BOOL DelTree(char *mask)
+{
+  JFileAccess *fa;
+  JDirEntry *tempm;
+  DWORD my_flags=(1<<FUf_RECURSE);
+  if (!IsDir(mask)) {
+    coutln "Not a Directory";
+    return FALSE;
+  }
+  fa=NewJFileAccess(mask,TRUE);
+  if (fa) {
+    tempm=FindFiles(fa->mask,&my_flags);
+    DoDelTree(tempm);
+    DelJFileAccess(fa);
+    SysDel(mask,TRUE);
+    SysDel(mask,FALSE);
+  }
+  return TRUE;
+}
+
+void DoDelMask(JDirEntry *tempm1)
+{
+  JDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub)
+	DoDelMask(tempm1->sub);
+    } else
+      Del(tempm1->full_name);
+    DelJDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+public BOOL DelMask(char *mask)
+{ //Purges select filetypes from tree
+  JFileAccess *fa;
+  JDirEntry *tempm;
+  DWORD my_flags=(1<<FUf_RECURSE);
+  if (IsDir(mask)) {
+    coutln "Not a Mask";
+    return FALSE;
+  }
+  fa=NewJFileAccess(mask,FALSE);
+  if (fa) {
+    tempm=FindFiles(fa->mask,&my_flags);
+    DoDelMask(tempm);
+    DelJFileAccess(fa);
+  }
+  return TRUE;
+}
+
+
+void TouchFile(char *filename,char *attr) //Just one file
+{
+  BYTE *file_buf=NULL;
+  DWORD size,my_attr;
+  FlagsStruct f;
+  JDirEntry de;
+  char buf[64];
+  if (FindFile(filename,&de,FALSE,TRUE)) {
+    if (!StrCmp(attr,"+?")) {
+      file_buf=ReadFile(filename,&size,&my_attr);
+      if (file_buf) {
+	Free(file_buf);
+	PrintF("%-32ts %s\r\n",filename,SPrintFFlags(buf,"ST_FILE_ATTRS",my_attr));
+      } else PutSysText("ST_FILE_NOT_FOUND");
+    } else {
+      GetFFlags(&f,"ST_FILE_ATTRS",attr);
+      file_buf=ReadFile(filename,&size,&my_attr);
+      if (file_buf) {
+	coutln "Touching ",filename;
+	WriteFile(filename,file_buf,size,0,(my_attr&f.off0)|f.on0);
+	Free(file_buf);
+      } else PutSysText("ST_FILE_NOT_FOUND");
+    }
+  } else PutSysText("ST_FILE_NOT_FOUND");
+}
+
+void TouchList(JDirEntry *tempm1,char *attr)
+{
+  JDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub) {
+	coutln SysText("ST_SCANNING_DIRECTORY"),tempm1->full_name;
+	TouchList(tempm1->sub,attr);
+      }
+    } else
+      TouchFile(tempm1->full_name,attr);
+    DelJDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+//Attr "+?" =show
+//     "+T" = resident
+//flags "+r"=recurse
+public void Touch(char *wild,char *attr="+?",char *flags="")
+{
+  JDirEntry *tempm1=NULL;
+  FlagsStruct f;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  JFileAccess *fa=NewJFileAccess(wild,TRUE);
+  if (fa) {
+    tempm1=FindFiles(fa->mask,&f.on0);
+    TouchList(tempm1,attr);
+    DelJFileAccess(fa);
+  }
+}
+
+void FillBigEndianWORD(U2 *dst,WORD  w)
+{
+  U2 *src=&w;
+  dst->ba[0]=src->ba[1];
+  dst->ba[1]=src->ba[0];
+}
+
+void FillBigEndianDWORD(U4 *dst,DWORD d)
+{
+  U4 *src=&d;
+  dst->ba[0]=src->ba[3];
+  dst->ba[1]=src->ba[2];
+  dst->ba[2]=src->ba[1];
+  dst->ba[3]=src->ba[0];
+}
+
+void FillWORDPalindrome(WORDPalindrome *dst,WORD w)
+{
+  FillBigEndianWORD(&dst->big,w);
+  dst->little=w;
+}
+
+void FillDWORDPalindrome(DWORDPalindrome *dst,DWORD d)
+{
+  FillBigEndianDWORD(&dst->big,d);
+  dst->little=d;
+}
+
+
+class CCdUserData
+{
+  DWORD location,path_entry_num,
+	short_dir_blks,long_dir_blks;
+};
+
+DWORD DoCreateCDFile(JFile *out_file,JDirEntry *tempm,
+		    ISODirEntry *tempi,ISODirEntry *tempi2,
+		    DWORD *cur_blk,
+		    JDirEntry *parent,BOOL write)
+{
+  CCdUserData *tempc;
+  JDirEntry *tempm1,*tempm2;
+  JFile *in_file;
+  BYTE *buf=MAlloc(CD_BLK_SIZE),*ptr1,*ptr2;
+  ISODirEntry *dir_blk_buf=MAllocZ(CD_BLK_SIZE*128),
+	      *de=dir_blk_buf,*de1;
+  ISODirEntry *dir_blk_buf2=MAllocZ(CD_BLK_SIZE*128),
+	      *de2=dir_blk_buf2,*de12;
+  DWORD i,l;
+
+  tempc=parent->user_data;
+
+  de->length=sizeof(ISODirEntry)-1;
+  de->ext_attr_length=0;
+  FillWORDPalindrome(&de->volume_sequence_num,1);
+  JDateToISO(&de->date,tempm->datetime.d);
+  de->flags=ISO_ATTR_DIR;
+  de->name_len=1;
+  de->name=0;
+  de->length+=de->name_len;
+  de+=de->length;
+
+  de->length=sizeof(ISODirEntry)-1;
+  de->ext_attr_length=0;
+  FillDWORDPalindrome(&de->location,tempc->location);
+  FillDWORDPalindrome(&de->size,tempc->short_dir_blks*CD_BLK_SIZE);
+  FillWORDPalindrome(&de->volume_sequence_num,1);
+  JDateToISO(&de->date,parent->datetime.d);
+  de->flags=ISO_ATTR_DIR;
+  de->name_len=1;
+  de->name=1;
+  de->length+=de->name_len;
+  de+=de->length;
+
+  de2->length=sizeof(ISODirEntry)-1;
+  de2->ext_attr_length=0;
+  FillWORDPalindrome(&de2->volume_sequence_num,1);
+  JDateToISO(&de2->date,tempm->datetime.d);
+  de2->flags=ISO_ATTR_DIR;
+  de2->name_len=1;
+  de2->name=0;
+  de2->length=de2->length+de2->name_len;
+  de2+=de2->length;
+
+  de2->length=sizeof(ISODirEntry)-1;
+  de2->ext_attr_length=0;
+  FillDWORDPalindrome(&de2->location,tempc->location+tempc->short_dir_blks);
+  FillDWORDPalindrome(&de2->size,tempc->long_dir_blks*CD_BLK_SIZE);
+  FillWORDPalindrome(&de2->volume_sequence_num,1);
+  JDateToISO(&de2->date,parent->datetime.d);
+  de2->flags=ISO_ATTR_DIR;
+  de2->name_len=1;
+  de2->name=1;
+  de2->length+=de2->name_len;
+  de2+=de2->length;
+
+  tempm1=tempm->sub;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (!write) tempm1->user_data=MAllocZ(sizeof(CCdUserData));
+    de1=de;
+    de12=de2;
+    if (tempm1->attr & J_ATTR_DIR) {
+      l=DoCreateCDFile(out_file,tempm1,de,de2,cur_blk,tempm,write);
+      de+=sizeof(ISODirEntry)-1+l;
+      de2+=sizeof(ISODirEntry)-1+l*2;
+    } else {
+      tempc=tempm1->user_data;
+      de->length=sizeof(ISODirEntry)-1;
+      de->ext_attr_length=0;
+      FillDWORDPalindrome(&de->location,*cur_blk);
+      tempc->location=*cur_blk;
+      if (write)
+	coutln *cur_blk,":",tempm1->full_name;
+      FillDWORDPalindrome(&de->size,tempm1->size);
+      FillWORDPalindrome(&de->volume_sequence_num,1);
+      JDateToISO(&de->date,tempm1->datetime.d);
+      de->flags=0;
+      de->name_len=StrLen(tempm1->name);
+      StrCpy(&de->name,tempm1->name);
+      de->length=de->length+de->name_len;
+      de+=de->length;
+
+      de2->length=sizeof(ISODirEntry)-1;
+      de2->ext_attr_length=0;
+      FillDWORDPalindrome(&de2->location,*cur_blk);
+      FillDWORDPalindrome(&de2->size,tempm1->size);
+      FillWORDPalindrome(&de2->volume_sequence_num,1);
+      JDateToISO(&de2->date,tempm1->datetime.d);
+      de2->flags=0;
+      de2->name_len=StrLen(tempm1->name)*2;
+      ptr1=&de2->name;
+      ptr2=&tempm1->name;
+      for (i=0;i<de2->name_len;i=i+2) {
+	ptr1++;
+	*ptr1++=*ptr2++;
+      }
+      de2->length+=de2->name_len;
+      de2+=de2->length;
+
+      in_file=FOpen(tempm1->full_name,"r");
+      for (i=0;i<(FSize(in_file)+CD_BLK_SIZE-1)/CD_BLK_SIZE;i++) {
+	l=4;
+	if ((i+1)*4>(FSize(in_file)+BLK_SIZE-1)/BLK_SIZE) {
+	  l=((FSize(in_file)+BLK_SIZE-1)/BLK_SIZE)%4;
+	  MemSet(buf,0,CD_BLK_SIZE);
+	}
+	if (write) {
+	  FRBlks(in_file,buf,i*4,l);
+	  FWBlks(out_file,buf,(*cur_blk)*4,l);
+	}
+	*cur_blk+=1;
+      }
+      FClose(in_file);
+    }
+    if ((de1-dir_blk_buf)/CD_BLK_SIZE!=
+	(de -dir_blk_buf)/CD_BLK_SIZE) {
+      i=de1->length;
+      MemCpy(buf,de1,i);
+      MemSet(de1,0,i);
+      de=dir_blk_buf+((de-dir_blk_buf)/CD_BLK_SIZE)*CD_BLK_SIZE;
+      MemCpy(de,buf,i);
+      de+=i;
+    }
+    if ((de12-dir_blk_buf2)/CD_BLK_SIZE!=
+	(de2 -dir_blk_buf2)/CD_BLK_SIZE) {
+      i=de12->length;
+      MemCpy(buf,de12,i);
+      MemSet(de12,0,i);
+      de2=dir_blk_buf2+((de2-dir_blk_buf2)/CD_BLK_SIZE)*CD_BLK_SIZE;
+      MemCpy(de2,buf,i);
+      de2+=i;
+    }
+    tempm1=tempm2;
+  }
+
+  tempc=tempm->user_data;
+
+  tempi->length=sizeof(ISODirEntry)-1;
+  tempi->ext_attr_length=0;
+  tempi->flags=ISO_ATTR_DIR;
+  if (!tempm->name[0]) {
+    tempi->name_len=1;
+    tempi->name=1;
+  } else {
+    tempi->name_len=StrLen(tempm->name);
+    StrCpy(&tempi->name,tempm->name);
+  }
+  tempi->length+=tempi->name_len;
+
+  l=de+1-dir_blk_buf;
+  l=(l+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+  FillDWORDPalindrome(&tempi->size,l*CD_BLK_SIZE);
+  FillDWORDPalindrome(&tempi->location,*cur_blk);
+  tempc->short_dir_blks=l;
+  tempc->location=*cur_blk;
+  FillDWORDPalindrome(&dir_blk_buf->size,l*CD_BLK_SIZE);
+  FillDWORDPalindrome(&dir_blk_buf->location,*cur_blk);
+  FillWORDPalindrome(&tempi->volume_sequence_num,1);
+  JDateToISO(&tempi->date,tempm->datetime.d);
+  if (write)
+    coutln *cur_blk,":",tempm->full_name;
+  if (write)
+    FWBlks(out_file,dir_blk_buf,(*cur_blk)*4,l*4);
+  *cur_blk+=l;
+
+  tempi2->length=sizeof(ISODirEntry)-1;
+  tempi2->ext_attr_length=0;
+  tempi2->flags=ISO_ATTR_DIR;
+  if (!tempm->name[0]) {
+    tempi2->name_len=1;
+    tempi->name=1;
+  } else {
+    tempi2->name_len=2*StrLen(tempm->name);
+    ptr1=&tempi2->name;
+    ptr2=&tempm->name;
+    for (i=0;i<tempi2->name_len;i=i+2) {
+      ptr1++;
+      *ptr1++=*ptr2++;
+    }
+  }
+  tempi2->length+=tempi2->name_len;
+  l=de2+1-dir_blk_buf2;
+  l=(l+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+  FillDWORDPalindrome(&tempi2->size,l*CD_BLK_SIZE);
+  FillDWORDPalindrome(&tempi2->location,*cur_blk);
+  tempc->long_dir_blks=l;
+  FillDWORDPalindrome(&dir_blk_buf2->size,l*CD_BLK_SIZE);
+  FillDWORDPalindrome(&dir_blk_buf2->location,*cur_blk);
+  FillWORDPalindrome(&tempi2->volume_sequence_num,1);
+  JDateToISO(&tempi2->date,tempm->datetime.d);
+  if (write)
+    coutln *cur_blk,":",tempm->full_name;
+  if (write)
+    FWBlks(out_file,dir_blk_buf2,(*cur_blk)*4,l*4);
+  *cur_blk+=l;
+
+  Free(dir_blk_buf);
+  Free(dir_blk_buf2);
+  Free(buf);
+  return tempi->name_len;
+}
+
+DWORD CDTableLength(JDirEntry *tempm,DWORD *size1,DWORD *size2,DWORD cur_depth)
+//returns depth
+{
+  JDirEntry *tempm1=tempm->sub;
+  DWORD max_depth=cur_depth,i;
+  while (tempm1) {
+    if (tempm1->attr & J_ATTR_DIR) {
+      *size1+=sizeof(ISOPathTableEntry)-2+((StrLen(tempm1->name)+1) & 0xFFFFFFFE);
+      *size2+=sizeof(ISOPathTableEntry)-2+2*StrLen(tempm1->name);
+      i=CDTableLength(tempm1,size1,size2,cur_depth+1);
+      if (i>max_depth) max_depth=i;
+    }
+    tempm1=tempm1->next;
+  }
+  return max_depth;
+}
+
+void CDFillPathTable(JDirEntry *tempm,
+  ISOPathTableEntry *itabbuf,ISOPathTableEntry *itabbuf2,
+  DWORD parent_entry_num,BOOL big_endian,DWORD *first_free,int cur_level,int output_level)
+{
+  char *ptr1,*ptr2;
+  DWORD i;
+  ISOPathTableEntry *tabbuf=*itabbuf;
+  ISOPathTableEntry *tabbuf2=*itabbuf2;
+  JDirEntry *tempm1=tempm->sub,*tempm2;
+  CCdUserData *tempc;
+ 
+  if (cur_level==output_level) {
+    while (tempm1) {
+      if (tempm1->attr & J_ATTR_DIR) {
+	tempc=tempm1->user_data;
+	tempc->path_entry_num=*first_free;
+	tabbuf->name_len=StrLen(tempm1->name);
+	if (big_endian) {
+	  FillBigEndianDWORD(&tabbuf->blk,tempc->location);
+	  FillBigEndianWORD(&tabbuf->parent_entry_num,parent_entry_num);
+	} else {
+	  tabbuf->blk=tempc->location;
+	  tabbuf->parent_entry_num=parent_entry_num;
+	}
+	StrCpy(&tabbuf->name,tempm1->name);
+
+	tabbuf+=sizeof(ISOPathTableEntry)-2+
+	  ((StrLen(tempm1->name)+1) & 0xFFFFFFFE);
+
+	tabbuf2->name_len=2*StrLen(tempm1->name);
+	if (big_endian) {
+	  FillBigEndianDWORD(&tabbuf2->blk,tempc->location+tempc->short_dir_blks);
+	  FillBigEndianWORD(&tabbuf2->parent_entry_num,parent_entry_num);
+	} else {
+	  tabbuf2->blk=tempc->location+tempc->short_dir_blks;
+	  tabbuf2->parent_entry_num=parent_entry_num;
+	}
+	ptr1=&tabbuf2->name;
+	ptr2=&tempm1->name;
+	for (i=0;i<tabbuf2->name_len;i=i+2) {
+	  ptr1++;
+	  *ptr1++=*ptr2++;
+	}
+	tabbuf2+=sizeof(ISOPathTableEntry)-2+
+	  2*StrLen(tempm1->name);
+	*first_free+=1;
+      }
+      tempm1=tempm1->next;
+    }
+    *itabbuf=tabbuf;
+    *itabbuf2=tabbuf2;
+  }
+  tempm1=tempm->sub;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & J_ATTR_DIR) {
+      tempc=tempm1->user_data;
+      CDFillPathTable(tempm1,itabbuf,itabbuf2,tempc->path_entry_num,
+	 big_endian,first_free,cur_level+1,output_level);
+    }
+    tempm1=tempm2;
+  }
+}
+
+class ElTorito
+{
+  WORD w[16];
+  BYTE bootable; //88=bootable 00=not bootable
+  BYTE media_type; //0=no emulation 4=hard disk
+  WORD load_seg; //0000->07C0
+  BYTE sys_type;
+  BYTE zero;
+  WORD sector_cnt;
+  DWORD load_rba; //start address of virtual disk
+  BYTE zero2[20];
+};
+
+public DWORD CreateCDFile(char *filename,char src_drive,
+			  char *bootfile=NULL)
+{
+  ISOPrimaryDescriptor *iso =MAllocZ(CD_BLK_SIZE),
+		       *iso1=MAllocZ(CD_BLK_SIZE),
+		       *iso2=MAllocZ(CD_BLK_SIZE),
+		       *iso3=MAllocZ(CD_BLK_SIZE);
+  JFileAccess *fa;
+  JDirEntry *rootdir=MAllocZ(sizeof(JDirEntry));
+  DWORD my_flags=(1<<FUf_RECURSE);
+  DWORD cur_blk=0,*d,bsize,tabsize,tabsize2,first_free,max_depth;
+  char mask[8];
+  char *filename2=DefaultExtension(filename,"ISO");
+  ElTorito *et=MAllocZ(CD_BLK_SIZE);
+  BYTE *buf=MAllocZ(CD_BLK_SIZE),
+       *bootfile_buf=NULL;
+  ISOPathTableEntry *tabbuf=NULL,*tabbuf2=NULL,
+		    *itabbuf,*itabbuf2;
+  BOOL okay=TRUE;
+  DWORD i,j;
+  JFile *out_file=NULL;
+  ISODirEntry *tempi;
+  CCdUserData *tempc;
+
+  SPrintF(mask,"%c:/*",src_drive);
+  if (bootfile)
+    bootfile_buf=ReadFile(bootfile,&bsize);
+  fa=NewJFileAccess(mask);
+  if (fa) {
+    rootdir->attr=J_ATTR_DIR;
+    rootdir->sub=FindFiles(fa->mask,&my_flags);
+    rootdir->datetime.d=GetCurTimeJDate;
+    rootdir->user_data=MAllocZ(sizeof(CCdUserData));
+    tempc=rootdir->user_data;
+    tempc->path_entry_num=1;
+    DelJFileAccess(fa);
+  } else
+    okay=FALSE;
+
+  if (okay) {
+    cur_blk=CD_FILE_OFFSET/4;
+    if (bootfile_buf)
+      cur_blk+=2;
+    DoCreateCDFile(out_file,rootdir,
+	&iso->root_directory_record,
+	&iso2->root_directory_record,
+	&cur_blk,rootdir,FALSE);
+    tabsize=sizeof(ISOPathTableEntry);
+    tabsize2=sizeof(ISOPathTableEntry);
+    max_depth=CDTableLength(rootdir,&tabsize,&tabsize2,1);
+    FillDWORDPalindrome(&iso->path_table_size,tabsize);
+    FillDWORDPalindrome(&iso2->path_table_size,tabsize2);
+    tabsize=(tabsize+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+    cur_blk+=tabsize*2;
+    tabsize2=(tabsize2+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+    cur_blk+=tabsize2*2;
+  }
+  if (okay) {
+    if (FileAttr(filename2) & J_ATTR_CONTIGUOUS)
+      out_file=FOpen(filename2,"wc",cur_blk*4);
+    else
+      out_file=FOpen(filename2,"w",cur_blk*4);
+    if (!out_file)
+      okay=FALSE;
+  }
+  if (okay) {
+    cur_blk=0;
+    while (cur_blk<CD_FILE_OFFSET/4) {
+      FWBlks(out_file,buf,cur_blk*4,4);
+      cur_blk++;
+    }
+    iso->type=ISOT_PRIMARY_VOLUME_DESC;
+    StrCpy(iso->id,"CD001");
+    iso->version=1;
+    FillWORDPalindrome(&iso->volume_set_size,1);
+    FillWORDPalindrome(&iso->volume_sequence_number,1);
+    FillWORDPalindrome(&iso->logical_block_size,CD_BLK_SIZE);
+    iso->file_structure_version=1;
+
+    iso2->type=ISOT_SUPPLEMENTARY_DESC;
+    StrCpy(iso2->id,"CD001");
+    iso2->version=1;
+    FillWORDPalindrome(&iso2->volume_set_size,1);
+    FillWORDPalindrome(&iso2->volume_sequence_number,1);
+    FillWORDPalindrome(&iso2->logical_block_size,CD_BLK_SIZE);
+    iso2->file_structure_version=1;
+
+    iso1->type=ISOT_BOOT_RECORD;
+    StrCpy(iso1->id,"CD001");
+    iso1->version=1;
+    StrCpy(iso1+7,"EL TORITO SPECIFICATION");
+
+    cur_blk=CD_FILE_OFFSET/4;
+
+    if (bootfile_buf) {
+      d=iso1+0x47;
+      *d=cur_blk;
+      et->w[0]=1;
+      et->w[2]='J';
+      et->w[15]=0xAA55;
+      j=0;
+      for (i=0;i<16;i++) //Checksum
+	j+=et->w[i];
+      et->w[14]=-j;
+      if (bootfile_buf)
+	et->bootable=0x88;
+      et->media_type=0;  //0=no emu 2=1.44meg 4=hard drive
+      et->sector_cnt=4;
+      et->load_rba=cur_blk+1;
+      coutln cur_blk,": Pre Boot Blk";
+      FWBlks(out_file,et,cur_blk*4,4);
+      cur_blk++;
+
+      coutln cur_blk,": Boot Blk";
+      FWBlks(out_file,bootfile_buf,cur_blk*4,4);
+      cur_blk++;
+    }
+
+    DoCreateCDFile(out_file,rootdir,
+	&iso->root_directory_record,
+	&iso2->root_directory_record,
+	&cur_blk,rootdir,TRUE);
+
+    tabbuf=MAllocZ(tabsize*CD_BLK_SIZE);
+    iso->type_l_path_table=cur_blk;
+    tabbuf->name_len=2;  //Fill-in root entry
+    tempi=&iso->root_directory_record;
+    tabbuf->blk=tempi->location.little;
+    tabbuf->parent_entry_num=1;
+    tabbuf2=MAllocZ(tabsize2*CD_BLK_SIZE);
+    iso2->type_l_path_table=cur_blk+tabsize;
+    tabbuf2->name_len=2;  //Fill-in root entry
+    tempi=&iso2->root_directory_record;
+    tabbuf2->blk=tempi->location.little;
+    tabbuf2->parent_entry_num=1;
+    itabbuf=tabbuf+sizeof(ISOPathTableEntry);
+    itabbuf2=tabbuf2+sizeof(ISOPathTableEntry);
+    first_free=2;
+    for (i=1;i<=max_depth;i++)
+      CDFillPathTable(rootdir,&itabbuf,&itabbuf2,
+	1,FALSE,&first_free,1,i);
+    coutln cur_blk,": Path Table 0";
+    FWBlks(out_file,tabbuf,cur_blk*4,tabsize*4);
+    cur_blk+=tabsize;
+    coutln cur_blk,": Path Table 1";
+    FWBlks(out_file,tabbuf2,cur_blk*4,tabsize2*4);
+    cur_blk+=tabsize2;
+
+
+    MemSet(tabbuf,0,tabsize*CD_BLK_SIZE);
+    FillBigEndianDWORD(&iso->type_m_path_table,cur_blk);
+    tabbuf->name_len=2;  //Fill-in root entry
+    tempi=&iso->root_directory_record;
+    tabbuf->blk=tempi->location.big;
+    FillBigEndianWORD(&tabbuf->parent_entry_num,1);
+    MemSet(tabbuf2,0,tabsize2*CD_BLK_SIZE);
+    FillBigEndianDWORD(&iso2->type_m_path_table,cur_blk+tabsize);
+    tabbuf2->name_len=2;  //Fill-in root entry
+    tempi=&iso2->root_directory_record;
+    tabbuf2->blk=tempi->location.big;
+    FillBigEndianWORD(&tabbuf2->parent_entry_num,1);
+    itabbuf=tabbuf+sizeof(ISOPathTableEntry);
+    itabbuf2=tabbuf2+sizeof(ISOPathTableEntry);
+    first_free=2;
+    for (i=1;i<=max_depth;i++)
+      CDFillPathTable(rootdir,&itabbuf,&itabbuf2,
+	1,TRUE,&first_free,1,i);
+    coutln cur_blk,": Path Table 2";
+    FWBlks(out_file,tabbuf,cur_blk*4,tabsize*4);
+    cur_blk+=tabsize;
+    coutln cur_blk,": Path Table 3";
+    FWBlks(out_file,tabbuf2,cur_blk*4,tabsize2*4);
+    cur_blk+=tabsize2;
+
+    DelJDirList(rootdir);  //TODO: Free user_data
+    FillDWORDPalindrome(&iso->volume_space_size,cur_blk);
+    FillDWORDPalindrome(&iso2->volume_space_size,cur_blk);
+    FWBlks(out_file,iso,16*4,4);
+
+    iso3->type=ISOT_TERMINATOR;
+    StrCpy(iso3->id,"CD001");
+    iso3->version=1;
+    if (bootfile_buf) {
+      FWBlks(out_file,iso1,17*4,4);
+      FWBlks(out_file,iso2,18*4,4);
+      FWBlks(out_file,iso3,19*4,4);
+    } else {
+      FWBlks(out_file,iso2,17*4,4);
+      FWBlks(out_file,iso3,18*4,4);
+    }
+  } else
+    cur_blk=0;
+
+  FClose(out_file);
+  Free(tabbuf);
+  Free(tabbuf2);
+  Free(et);
+  Free(bootfile_buf);
+  Free(iso);
+  Free(iso1);
+  Free(iso2);
+  Free(iso3);
+  Free(filename2);
+  return cur_blk;
+}
+
+
+public void SetDriveTextAttr(char drive=0,BYTE attr)
+{
+  JPartition *p;
+  try {
+    p=DriveToPartition(drive);
+    p->text_attr=attr;
+  } catch {
+    Fs->take_trap=TRUE;
+  }
+}
+
+public void PrintFDriveTextAttr(char drive=0)
+{
+  JPartition *p=DriveToPartition(drive);
+  BYTE fg=p->text_attr&0xF,bg=p->text_attr>>4;
+  if (fg!=bg)
+    PrintF("$FG %d$$BG %d$",fg,bg);
+}

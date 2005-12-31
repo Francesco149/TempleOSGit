@@ -1,0 +1,73 @@
+                            Preinstallation Notes
+
+1) Make partitions with Windows or Linux.  You used to do it with FDISK, now 
+you do it during installation. 
+
+2) Only LBA 28 bit disk access is supported, so drives of size 120Gig are the 
+limit.  Ancient drives with CHS are not supported.
+
+3) Test your hard drive by adding it with [::/J/KERNEL/DISK3.CPZ,550]
+AddDrives() or, if the AddDrives 
+option is available during boot, add your hard drive there.  The safest thing 
+is to format it as FAT32 from another operating system, but there is a
+[::/J/KERNEL/DISK4.CPZ,830] Format(
+) command now.  Typically, hard drives are "ATA" not "ATAPI", and are found
+at 
+port address 0x1F0, unit 0.  When it displays defined partitions, make sure 
+your partition shows and is listed as FAT32.  Note the drive letter, though 
+you can move them around.  [::/J/KERNEL/DISK3.CPZ,396] PartitionRep() will
+give a report.
+
+4) **WARNING!!!** Each partition has one boot record, so do not attempt to
+boot 
+both "J" and some other operating system from the same partition.
+
+5) More than one "J" partition on a hard drive is very useful for development 
+work (I have three).  You might accidentally change files rendering your 
+partition unbootable, needing to resort to a back-up to fix it. A floppy or
+CD 
+will work.
+
+                          Installing to a hard drive
+
+1) Create a FAT32 partition or two (highly recommended) on your hard drive.  
+You'll need Linux and Linux's LILO present on the hard drive as well.  I have 
+Windows, Linux and "J" all on my hard drive.  (Install Windows before Linux.)
+
+2) Boot to a "J" floppy or CD and add your hard disk with
+[::/J/KERNEL/DISK3.CPZ,550] AddDrives(). Note th
+e partition (drive) letter of the FAT32 hard drive partition you wish to boot 
+from in the future.
+
+3) Copy the "/J" directory to the partition with [T:/J/ROOT/DISK10.CPZ,136]
+CopyTree("T:/J","D:/J");  
+Where "T" is the source drive letter and "D" is the destination.
+
+4) Type "[T:/J/UTILS/BOOTINS.CPZ,129] InstallHdBoot('?','?');" where the
+first question is the source drive 
+and the second "?" is the drive (partition) letter you wish to boot from in 
+the future. Enter the requested prompts during recompilation, making sure to 
+add your hard drive.
+
+5) Boot to Linux and modify LILO.  Go to the "/etc" directory, edit 
+"lilo.conf" and run "lilo".  You'll need to know the Linux name for the "J" 
+partition--something like "hda3" or whatever.
+ 
+                            Postinstallation Notes
+
+1) You can transfer files between operating systems freely, but be aware that 
+"J" has a nonstandard compression technique which is employed on files with 
+filename extensions ending in "Z".  All you need to do is
+[T:/J/ROOT/DISK10.CPZ,1] Copy() or [T:/J/ROOT/DISK10.CPZ,33] Move() fil
+es from a ".TXZ"(or whatever) extention to a ".TXT" extention (from within 
+"J") and it will become uncompressed and readable with other operating 
+systems. If you add rich text (Dollar sign) commands, they won't work (will 
+appear like "$WW 1$") with other operating systems.
+
+2) You can recompile the hard drive kernel with "[T:/J/UTILS/BOOTINS.CPZ,129]
+InstallHdBoot('D','D');" or 
+whatever.  You might want to enter "TAD" as the ACCOUNT to configure your 
+system with my configuration and explore the USER.MUZ entries.  I have
+entries 
+for copying and compiling various partitions, but be careful because it's 
+highly automated and you can easily screw things-up.

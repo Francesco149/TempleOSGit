@@ -1,0 +1,616 @@
+extern BOOL IsPixelCovered(TssStruct *tss,int x,int y);
+extern void PlotInputPointer();
+
+JQWORD GrScale;
+GrScale.lo=0;
+GrScale.hi=1;
+
+public int *GrTheta(Jdouble *theta)
+{
+  Jdouble my_cos,my_sin;
+  DWORD *r=MAllocZ(sizeof(DWORD)*2*9);
+
+  Fld(theta);
+  Fcos;
+  Fstp(&my_cos);
+  Fld(theta);
+  Fsin;
+  Fstp(&my_sin);
+
+  Fld(&my_cos);
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[0]);
+
+  Fld(&my_cos);
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[8]);
+
+  Fld(&my_sin);
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[6]);
+
+  Fld(&my_sin);
+  Fchs;
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[2]);
+
+  r[17]=1;
+  return r;
+}
+
+public int *GrPhi(Jdouble *phi)
+{
+  Jdouble my_cos,my_sin;
+  DWORD *r=MAllocZ(sizeof(DWORD)*2*9);
+
+  Fld(phi);
+  Fcos;
+  Fstp(&my_cos);
+  Fld(phi);
+  Fsin;
+  Fstp(&my_sin);
+
+  Fld(&my_cos);
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[8]);
+
+  Fld(&my_cos);
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[16]);
+
+  Fld(&my_sin);
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[14]);
+
+  Fld(&my_sin);
+  Fchs;
+  Fild(&GrScale);
+  Fmulp;
+  Fistp(&r[10]);
+
+  r[1]=1;
+  return r;
+}
+
+public int *GrThetaInt(int theta)
+{ /* From 0x80000000 (-pi) to 0x7FFFFFFF (pi) */
+  JQWORD t1,q1;
+  Jdouble t2;
+
+  t1.lo=theta;
+  t1.hi=(theta<0) ? -1:0;
+  Fild(&t1);
+
+  q1.lo=683565275;
+  q1.hi=0;
+  Fild(&q1);
+
+  Fdivp;
+  Fstp(&t2);
+  return GrTheta(&t2);
+}
+
+public int *GrPhiInt(int phi)
+{ /* From 0x80000000 (-pi) to 0x7FFFFFFF (pi) */
+  JQWORD p1,q1;
+  Jdouble p2;
+
+  p1.lo=phi;
+  p1.hi=(phi<0) ? -1:0;
+  Fild(&p1);
+
+  q1.lo=683565275;
+  q1.hi=0;
+  Fild(&q1);
+
+  Fdivp;
+  Fstp(&p2);
+  return GrPhi(&p2);
+}
+
+public int *GrMulMat(int *m1,int *m2)
+{  //TODO convert to int arith
+  DWORD *r=MAllocZ(sizeof(DWORD)*2*9);
+  int i,j,k;
+  for (i=0;i<3;i++) {
+    for (j=0;j<3;j++) {
+      for (k=0;k<3;k++) {
+	Fild(&m1[2*(k+3*j)]);
+	Fild(&m2[2*(i+3*k)]);
+	Fmulp;
+	Fild(&GrScale);
+	Fdivp;
+	Fild(&r[2*(i+3*j)]);
+	Faddp;
+	Fistp(&r[2*(i+3*j)]);
+      }
+    }
+  }
+  return r;
+}
+
+void GrSetIdent(int *r)
+{
+  MemSet(r,0,9*2*4);
+  r[1]=1;
+  r[9]=1;
+  r[17]=1;
+}
+
+void GrReset(GrBitMap *base)
+{
+  base->color=GR_BLACK;
+  base->pen_width=1;
+  base->eminx=MAX_INT;
+  base->emaxx=MIN_INT;
+  base->eminy=MAX_INT;
+  base->emaxy=MIN_INT;
+  base->eminz=MAX_INT;
+  base->emaxz=MIN_INT;
+}
+
+GrBitMap *GrNew(GrBitMap *base)
+{
+  GrBitMap *result=MAlloc(sizeof(GrBitMap));
+  MemCpy(result,base,sizeof(GrBitMap));
+  result->r=MAlloc(9*2*4);
+  GrSetIdent(result->r);
+  GrReset(result);
+  return result;
+}
+
+void GrDel(GrBitMap *base)
+{
+  Free(base->r);
+  Free(base);
+}
+
+
+void GrSetupTable(int *table,GrBitMap *hidden)
+{
+  int i,j,k;
+  for (i=-16;i<16;i++) {
+    for (j=-16;j<16;j++) {
+      k=((i>=0) ? i:32+i)*32+((j>=0) ? j:32+j);
+      table[k]=(i*hidden->width+((j>=0)?j:j-7) )/8;
+    }
+  }
+}
+
+////**************************PROCEDURE*************************
+// Format of DWORD text entry
+//   Bits 0-7	ASCII
+//   Bits 8-11	Foreground color
+//   Bits 12-15 Background color
+//   Bits 16-20 Signed X position shift value
+//   Bits 21-25 Signed Y position shift value
+//   Bit  28	Blink
+//   Bit  29	Inverted (Swap foreground and background)
+//   Bit  30	Selected (XOR colors with FF)
+//   Bit  31	Underline
+
+void GrUpdateScreen(GrBitMap *b1,GrBitMap *b2,
+     DWORD *my_textbase)
+{
+  DWORD *src,*src2,row,col,plane,ch_line,d,i,
+    d0=(b2->width+1)*32/8,
+    d1=(b2->width)/8,
+    d2=(b2->width*b2->height-FONT_HEIGHT*b2->width)/8,
+    d3=(b2->width*b2->height*4)/8,
+    d4=(b2->width*FONT_HEIGHT-b1->width)/8,
+    d5=(b1->width)/32,
+    d6=(b2->width)*32/8,
+    num_cols=b1->width/FONT_WIDTH,
+    num_rows=b1->height/FONT_HEIGHT;
+  BOOL old_preempt;
+  BYTE *dst,*font_ptr,saved_font_line;
+  WORD *dst2;
+  DWORD *dst3;
+  U4 cur_ch,u;
+  BOOL GrBlinkFlag=(jiffies/(SYS_TIMER_FREQ/5))&1;
+  int *table=MAlloc(sizeof(int)*1024);
+
+//Update Text Background
+  src=my_textbase;
+  dst=b2->body+d0;
+  for (row=0;row<b1->height/FONT_HEIGHT;row++) {
+    for (col=0;col<b1->width/FONT_WIDTH;col++) {
+      cur_ch.d=*src;
+      src+=4;
+      if (cur_ch.d & LTFLT_SELECTED)
+	cur_ch.ba[1]=cur_ch.ba[1]^0xFF;
+      if (cur_ch.d & LTFLT_INVERTED)
+	cur_ch.ba[1]=(cur_ch.ba[1]<<4)+(cur_ch.ba[1]>>4);
+      if (cur_ch.d & LTFLT_BLINK)
+	if (GrBlinkFlag)
+	  cur_ch.ba[1]=(cur_ch.ba[1]<<4)+(cur_ch.ba[1]>>4);
+      for (plane=0x10;plane!=0x100;plane=plane<<1) {
+	d=(cur_ch.ba[1] & plane) ? 0xFF:0x00;
+	for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	  *dst=d;
+	  dst+=d1;
+	}
+	dst+=d2;
+      }
+      dst+=1-d3;
+    }
+    dst+=d4;
+  }
+
+//Update Text Foreground
+  GrSetupTable(table,b2);
+  src=my_textbase;
+  dst=b2->body+d0;
+  for (row=0;row<b1->height/FONT_HEIGHT;row++) {
+    for (col=0;col<b1->width/FONT_WIDTH;col++) {
+      cur_ch.d=*src;
+      src+=4;
+      if (cur_ch.d & LTFLT_SELECTED)
+	cur_ch.ba[1]=cur_ch.ba[1]^0xFF;
+      if (cur_ch.d & LTFLT_INVERTED)
+	cur_ch.ba[1]=(cur_ch.ba[1]<<4)+(cur_ch.ba[1]>>4);
+      if (cur_ch.d & LTFLT_BLINK)
+	if (GrBlinkFlag)
+	  cur_ch.ba[1]=(cur_ch.ba[1]<<4)+(cur_ch.ba[1]>>4);
+      font_ptr=&grfont[FONT_WIDTH*FONT_HEIGHT/8*cur_ch.ba[0]];
+      if (cur_ch.d & LTFLT_UNDERLINED) {
+	saved_font_line=font_ptr[7];
+	font_ptr[7]=0xFF;
+      }
+      i=cur_ch.wa[1]&0x3FF;
+      dst2=dst+table[i];
+      i=16-(i&7);
+      for (plane=0x01;plane!=0x10;plane=plane<<1) {
+	if (cur_ch.ba[1] & plane) {
+	  for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	    u.d=font_ptr[ch_line]<<i;
+	    *dst2|=u.wa[0] | u.wa[1];
+	    dst2+=d1;
+	  }
+	} else {
+	  for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	    u.d=font_ptr[ch_line]<<i;
+	    *dst2&=~(u.wa[0] | u.wa[1]);
+	    dst2+=d1;
+	  }
+	}
+	dst2+=d2;
+      }
+      if (cur_ch.d & LTFLT_UNDERLINED)
+	 font_ptr[7]=saved_font_line;
+      dst++;
+    }
+    dst+=d4;
+  }
+  Free(table);
+
+  if (Btr(&sys_flags,SYSf_CLEAR_SCREEN_TEXT))
+    MemSet(textbase,0,(grheight/FONT_HEIGHT)*(grwidth/FONT_WIDTH)*4);
+
+  old_preempt=Preempt(OFF);
+  GrUpdateWindows;
+  PlotInputPointer;
+  Preempt(ON);
+
+//Update Graphic Card
+  src=b1->body;
+  src2=b2->body;
+  for (plane=1;plane<0x10;plane=plane<<1) {
+    OutP(VGA_SC_INDEX,VGA_MAP_MASK);
+    OutP(VGA_SC_DATA,plane);
+    dst3=0xA0000;
+    src2+=d6;
+    for (row=0;row<b1->height;row++) {
+      src2+=32/8;
+      for (col=0;col<d5;col++) {
+	*dst3=*src^*src2;
+	dst3+=4;
+	src+=4;
+	src2+=4;
+      }
+      src2+=32/8;
+    }
+    src2+=d6;
+  }
+  Preempt(old_preempt);
+}
+
+public void GrPlot0(GrBitMap *base,int x,int y)
+{
+  DWORD d=base->width*base->height/8,c;
+  BYTE *dst,bit,not_bit;
+  U4 color=base->color;
+ 
+  dst=base->body+(base->left_margin+
+    (y+base->top_margin)*base->width)/8+(x>>3);
+  bit=(1<<(7-(x&7)));
+  not_bit=~bit;
+  c=color.ba[0];
+  if (!color.ba[3]) { 		//ROP_EQU
+    if (c & 1)
+      *dst|=bit;
+    else
+      *dst&=not_bit;
+    dst+=d;
+    if (c & 2)
+      *dst|=bit;
+    else
+      *dst&=not_bit;
+    dst+=d;
+    if (c & 4)
+      *dst|=bit;
+    else
+      *dst&=not_bit;
+    dst+=d;
+    if (c & 8)
+      *dst|=bit;
+    else
+      *dst&=not_bit;
+  } else if (color.ba[3]==0xFF) { //ROP_XOR
+    if (c & 1) *dst^=bit;
+    dst+=d;
+    if (c & 2) *dst^=bit;
+    dst+=d;
+    if (c & 4) *dst^=bit;
+    dst+=d;
+    if (c & 8) *dst^=bit;
+  } else if (color.ba[3]==1) { //ROP_OR
+    if (c & 1) *dst|=bit;
+    dst+=d;
+    if (c & 2) *dst|=bit;
+    dst+=d;
+    if (c & 4) *dst|=bit;
+    dst+=d;
+    if (c & 8) *dst|=bit;
+  } else if (color.ba[3]==2) { //ROP_NAND
+    if (c & 1) *dst&=not_bit;
+    dst+=d;
+    if (c & 2) *dst&=not_bit;
+    dst+=d;
+    if (c & 4) *dst&=not_bit;
+    dst+=d;
+    if (c & 8) *dst&=not_bit;
+  }
+}
+
+
+public void GrPlot(GrBitMap *base,int x,int y)
+{
+  BOOL draw=TRUE;
+ 
+//TODO: for bitmaps besides the screen--don't clip using tss
+  if (x<0) draw=FALSE;
+  x+=Fs->window_pixel_left;
+  if (x>Fs->window_pixel_right) draw=FALSE;
+
+  if (y<0) draw=FALSE;
+  y+=Fs->window_pixel_top;
+  if (y>Fs->window_pixel_bottom) draw=FALSE;
+
+  if (IsPixelCovered(Fs,x,y)) draw=FALSE;
+
+  if (draw)
+    GrPlot0(base,x,y);
+}
+
+public void GrPlot2(GrBitMap *base,int x,int y,int z)
+{
+  if (base->flags & BMF_TRANSFORMATION) {
+    GrRotate(base->r,&x,&y,&z);
+    x+=base->x;
+    y+=base->y;
+    z+=base->z;
+  }
+  if (base->flags & BMF_RECORD_EXTENTS) {
+    if (x>base->emaxx) base->emaxx=x;
+    if (x<base->eminx) base->eminx=x;
+    if (y>base->emaxy) base->emaxy=y;
+    if (y<base->eminy) base->eminy=y;
+    if (z>base->emaxz) base->emaxz=z;
+    if (z<base->eminz) base->eminz=z;
+  }
+  GrPlot(base,x,y);
+}
+
+public void GrPlot3(GrBitMap *base,int x1,int y1,int z1)
+{
+  int i,j,w=base->pen_width/2;
+  if (base->pen_width<=0) return;
+  if (!w)
+    GrPlot(base,x1,y1);
+  else if (base->pen_width & 1) {
+    for (i=-w;i<=w;i++)
+      for (j=-w;j<=w;j++)
+	GrPlot(base,x1+i,y1+j);
+  } else {
+    for (i=-w;i<w;i++)
+      for (j=-w;j<w;j++)
+	GrPlot(base,x1+i,y1+j);
+  }
+}
+
+public void GrPlot4(GrBitMap *base,int x1,int y1,int z1)
+{
+  int i,w=base->pen_width/2;
+  if (base->pen_width<=0) return;
+  if (!w)
+    GrPlot(base,x1,y1);
+  else if (base->pen_width & 1) {
+    for (i=-w;i<=w;i++) {
+      GrPlot(base,x1-w,y1+i);
+      GrPlot(base,x1+w,y1+i);
+      GrPlot(base,x1+i,y1-w);
+      GrPlot(base,x1+i,y1+w);
+    }
+  } else {
+    for (i=-w;i<w;i++) {
+      GrPlot(base,x1-w,y1+i);
+      GrPlot(base,x1+w-1,y1+i);
+      GrPlot(base,x1+i,y1-w);
+      GrPlot(base,x1+i,y1+w-1);
+    }
+  }
+}
+
+
+public void GrPlot5(GrBitMap *base,int x1,int y1,int z1)
+{
+  int i,j,w=base->pen_width/2;
+  if (base->pen_width<=0) return;
+  if (!w)
+    GrPlot2(base,x1,y1,z1);
+  else if (base->pen_width & 1) {
+    for (i=-w;i<=w;i++)
+      for (j=-w;j<=w;j++)
+	GrPlot2(base,x1+i,y1+j,z1);
+  } else {
+    for (i=-w;i<w;i++)
+      for (j=-w;j<w;j++)
+	GrPlot2(base,x1+i,y1+j,z1);
+  }
+}
+
+public void GrPlot6(GrBitMap *base,int x1,int y1,int z1)
+{
+  int i,w=base->pen_width/2;
+  if (base->pen_width<=0) return;
+  if (!w)
+    GrPlot2(base,x1,y1,z1);
+  else if (base->pen_width & 1) {
+    for (i=-w;i<=w;i++) {
+      GrPlot2(base,x1-w,y1+i,z1);
+      GrPlot2(base,x1+w,y1+i,z1);
+      GrPlot2(base,x1+i,y1-w,z1);
+      GrPlot2(base,x1+i,y1+w,z1);
+    }
+  } else {
+    for (i=-w;i<w;i++) {
+      GrPlot2(base,x1-w,y1+i,z1);
+      GrPlot2(base,x1+w-1,y1+i,z1);
+      GrPlot2(base,x1+i,y1-w,z1);
+      GrPlot2(base,x1+i,y1+w-1,z1);
+    }
+  }
+}
+
+public void GrPlot7(GrBitMap *base,int x,int y)
+{
+  BOOL draw=TRUE;
+ 
+//TODO: for bitmaps besides the screen--don't clip using tss
+  if (x<0) draw=FALSE;
+  x+=Fs->window_pixel_left;
+  if (x>Fs->window_pixel_right) draw=FALSE;
+
+  if (y<0) draw=FALSE;
+  y+=Fs->window_pixel_top;
+  if (y>Fs->window_pixel_bottom) draw=FALSE;
+
+  if (draw)
+    GrPlot0(base,x,y);
+}
+
+void GrLinePlot(GrBitMap *base,int x,int y,int z)
+{
+  GrPlot(base,x,y);
+}
+
+public void GrLine(GrBitMap *base,int x1,int y1,int x2,int y2)
+{
+  Line(base,x1,y1,0,x2,y2,0,&GrLinePlot);
+}
+
+public void GrLine2(GrBitMap *base,int x1,int y1,int z1,int x2,int y2,int z2)
+{
+  if (base->flags & BMF_TRANSFORMATION) {
+    GrRotate(base->r,&x1,&y1,&z1);
+    x1+=base->x;
+    y1+=base->y;
+    z1+=base->z;
+  }
+  if (base->flags & BMF_RECORD_EXTENTS) {
+    if (x1>base->emaxx) base->emaxx=x1;
+    if (x1<base->eminx) base->eminx=x1;
+    if (y1>base->emaxy) base->emaxy=y1;
+    if (y1<base->eminy) base->eminy=y1;
+    if (z1>base->emaxz) base->emaxz=z1;
+    if (z1<base->eminz) base->eminz=z1;
+  }
+  if (base->flags & BMF_TRANSFORMATION) {
+    GrRotate(base->r,&x2,&y2,&z2);
+    x2+=base->x;
+    y2+=base->y;
+    z2+=base->z;
+  }
+  if (base->flags & BMF_RECORD_EXTENTS) {
+    if (x2>base->emaxx) base->emaxx=x2;
+    if (x2<base->eminx) base->eminx=x2;
+    if (y2>base->emaxy) base->emaxy=y2;
+    if (y2<base->eminy) base->eminy=y2;
+    if (z2>base->emaxz) base->emaxz=z2;
+    if (z2<base->eminz) base->eminz=z2;
+  }
+  Line(base,x1,y1,0,x2,y2,0,&GrLinePlot);
+}
+
+void GrLine3Plot(GrBitMap *base,int x,int y,int z)
+{
+  GrPlot4(base,x,y,z);
+}
+
+public void GrLine3(GrBitMap *base,int x1,int y1,int z1,int x2,int y2,int z2)
+{
+  if (!base->pen_width)
+    return;
+  if (base->pen_width==1) {
+    GrLine2(base,x1,y1,z1,x2,y2,z2);
+    return;
+  }
+  if (base->flags & BMF_TRANSFORMATION) {
+    GrRotate(base->r,&x1,&y1,&z1);
+    x1+=base->x;
+    y1+=base->y;
+    z1+=base->z;
+  }
+  if (base->flags & BMF_RECORD_EXTENTS) {
+    if (x1>base->emaxx) base->emaxx=x1;
+    if (x1<base->eminx) base->eminx=x1;
+    if (y1>base->emaxy) base->emaxy=y1;
+    if (y1<base->eminy) base->eminy=y1;
+    if (z1>base->emaxz) base->emaxz=z1;
+    if (z1<base->eminz) base->eminz=z1;
+  }
+  if (base->flags & BMF_TRANSFORMATION) {
+    GrRotate(base->r,&x2,&y2,&z2);
+    x2+=base->x;
+    y2+=base->y;
+    z2+=base->z;
+  }
+  if (base->flags & BMF_RECORD_EXTENTS) {
+    if (x2>base->emaxx) base->emaxx=x2;
+    if (x2<base->eminx) base->eminx=x2;
+    if (y2>base->emaxy) base->emaxy=y2;
+    if (y2<base->eminy) base->eminy=y2;
+    if (z2>base->emaxz) base->emaxz=z2;
+    if (z2<base->eminz) base->eminz=z2;
+  }
+  GrPlot3(base,x1,y1,z1);
+  Line(base,x1,y1,z1,x2,y2,z2,&GrLine3Plot);
+}
+
+void GrLinePlot7(GrBitMap *base,int x,int y,int z)
+{
+  GrPlot7(base,x,y);
+}
+
+public void GrLine7(GrBitMap *base,int x1,int y1,int x2,int y2)
+{
+  Line(base,x1,y1,0,x2,y2,0,&GrLinePlot7);
+}

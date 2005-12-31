@@ -1,0 +1,206 @@
+int PopUpFile2SkipCancelAll(char *msg)
+{
+  int i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,msg);
+  LtfPutS(l,"$CM +LX, 2,4$$FG CYAN$$BT, \"FILE2\" 0$");
+  LtfPutS(l,"$CM +LX, 18,0$$FG$$BT, \"SKIP\" 1$");
+  LtfPutS(l,"$CM +LX, 2,4$$FG$$BT, \"CANCEL\" 2$");
+  LtfPutS(l,"$CM +LX, 18,0$$FG$$BT, \"ALL\" 3$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+int CompareDiffEntries(LtfEntry **ll1,LtfEntry **ll2)
+{
+  LtfEntry *cl1=*ll1,*cl2=*ll2;
+  return cl1->x-cl2->x;
+}
+
+void DiffSelect(BOOL *cancel,BOOL *modified,BOOL *not_modified,BOOL *all,int j1_lo,int j1_hi,
+		 int j2_lo,int j2_hi,LtfEntry **usl1,LtfEntry **usl2)
+{
+  int i;
+  LtfEntry *cl,*cl1,*cl2;
+
+  if (!*cancel) {
+    PutS("$FG RED$---------------------$FG$\r\n");
+    i=(j1_lo<=0) ? 0:j1_lo-1;
+    while (i<j1_hi) {
+      PutS(usl1[i++]->display);
+      CrLf;
+    }
+    PutS("$FG CYAN$");
+    i=(j2_lo<=0) ? 0:j2_lo-1;
+    while (i<j2_hi) {
+      PutS(usl2[i++]->display);
+      CrLf;
+    }
+    PutS("$FG$");
+
+    i=PopUpFile2SkipCancelAll("");
+    if (i==3) {
+      *cancel=TRUE;
+      *all=TRUE;
+    } else if (i==2) {
+      *cancel=TRUE;
+      *not_modified=TRUE;
+    } else if (i==0) {
+      *modified=TRUE;
+      cl1=usl1[j1_lo]->last;
+      if (j1_lo<j1_hi) {
+	cl=usl1[j1_lo];
+	while (cl!=usl1[j1_hi]) {
+	  cl2=cl->next;
+	  RemQue(cl);
+	  LtfDelEntry2(cl,Fs);
+	  cl=cl2;
+	}
+      }
+      if (j2_lo<j2_hi) {
+	cl=usl2[j2_lo];
+	while (cl!=usl2[j2_hi]) {
+	  cl2=MAllocIdentical(cl);
+	  if (Bt(ltf_display_types,cl->btype))
+	    cl2->display=MAllocIdentical(cl->display);
+	  InsQue(cl2,cl1);
+	  cl1=cl2;
+	  cl=cl->next;
+	}
+      }
+    } else
+      *not_modified=TRUE;
+  }
+}
+
+void DiffSub(int j1_lo,int j1_hi,int j2_lo,int j2_hi,
+  int cnt1,int cnt2,BOOL *cancel,BOOL *modified,BOOL *not_modified,BOOL *all,
+  LtfEntry **sl1,LtfEntry **sl2,LtfEntry **usl1,LtfEntry **usl2)
+{
+  int i1=0,i2=0,i2b,j1,j2,l;
+  int best_j1,best_j2,best_score=0,score;
+
+  if (j1_lo>=j1_hi || j2_lo>=j2_hi) {
+    if (j1_lo<j1_hi || j2_lo<j2_hi)
+      DiffSelect(cancel,modified,not_modified,all,j1_lo,j1_hi,j2_lo,j2_hi,usl1,usl2);
+    return;
+  }
+
+  //Locate longest matching string in intervals
+  while (i1<cnt1 && i2<cnt2) {
+    if (sl1[i1]->y<j1_lo || sl1[i1]->y>=j1_hi)
+      i1++;
+    else if (sl2[i2]->y<j2_lo || sl2[i2]->y>=j2_hi)
+      i2++;
+    else if (sl1[i1]->x>sl2[i2]->x)
+      i2++;
+    else if (sl1[i1]->x<sl2[i2]->x)
+      i1++;
+    else {
+      i2b=i2;
+      while (sl1[i1]->x==sl2[i2]->x) {
+	if (sl2[i2]->y>=j2_lo && sl2[i2]->y<j2_hi) {
+	  score=0;
+	  j1=sl1[i1]->y;
+	  j2=sl2[i2]->y;
+	  l=j1_hi-j1;
+	  if (j2_hi-j2<l)
+	    l=j2_hi-j2;
+	  while (score<l) {
+	    if (!StrCmp(usl1[j1+score]->display,usl2[j2+score]->display))
+	      score++;
+	    else
+	      break;
+	  }
+	  if (score>best_score) {
+	    best_score=score;
+	    best_j1=j1;
+	    best_j2=j2;
+	  }
+	}
+	i2++;
+      }
+      i2=i2b;
+      i1++;
+    }
+  }
+  if (best_score==0)
+    DiffSelect(cancel,modified,not_modified,all,j1_lo,j1_hi,j2_lo,j2_hi,usl1,usl2);
+  else {
+    DiffSub(j1_lo,best_j1,j2_lo,best_j2,cnt1,cnt2,
+      cancel,modified,not_modified,all,sl1,sl2,usl1,usl2);
+    DiffSub(best_j1+best_score,j1_hi,best_j2+best_score,j2_hi,cnt1,cnt2,
+      cancel,modified,not_modified,all,sl1,sl2,usl1,usl2);
+  }
+}
+
+
+public void Diff(char *dst_file,char *src_file, BOOL cancel=FALSE)
+{
+  Ltf *l1=LtfRead(dst_file, LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
+  Ltf *l2=LtfRead(src_file, LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
+  LtfEntry *cl,**sl1,**sl2,**usl1,**usl2;
+  int i,cnt1=0,cnt2=0;
+  BOOL modified=FALSE,not_modified=FALSE,all=FALSE;
+
+  cl=l1->dummy.next;
+  while (cl!=l1) {
+    if (cl->btype==LTFT_TEXT) {
+      cl->x=HashString(cl->display);
+      cl->y=cnt1++;
+    }
+    cl=cl->next;
+  }
+
+  cl=l2->dummy.next;
+  while (cl!=l2) {
+    if (cl->btype==LTFT_TEXT) {
+      cl->x=HashString(cl->display);
+      cl->y=cnt2++;
+    }
+    cl=cl->next;
+  }
+  sl1=MAlloc(cnt1*sizeof(DWORD));
+  usl1=MAlloc((cnt1+1)*sizeof(DWORD));
+  i=0;
+  cl=l1->dummy.next;
+  while (cl!=l1) {
+    if (cl->btype==LTFT_TEXT) {
+      sl1[i]=cl;
+      usl1[i++]=cl;
+    }
+    cl=cl->next;
+  }
+  usl1[i]=l1;
+  QSort(sl1,cnt1,sizeof(DWORD),&CompareDiffEntries);
+
+  sl2=MAlloc(cnt2*sizeof(DWORD));
+  usl2=MAlloc((cnt2+1)*sizeof(DWORD));
+  i=0;
+  cl=l2->dummy.next;
+  while (cl!=l2) {
+    if (cl->btype==LTFT_TEXT) {
+      sl2[i]=cl;
+      usl2[i++]=cl;
+    }
+    cl=cl->next;
+  }
+  usl2[i]=l2;
+  QSort(sl2,cnt2,sizeof(DWORD),&CompareDiffEntries);
+
+  DiffSub(0,cnt1,0,cnt2,cnt1,cnt2,&cancel,&modified,&not_modified,&all,sl1,sl2,usl1,usl2);
+  if (all || (!not_modified && !cancel && modified))
+    Copy(src_file,dst_file);
+  else if (!cancel && modified)
+    LtfWrite(l1);
+
+  LtfDel(l1);
+  LtfDel(l2);
+  Free(sl1);
+  Free(sl2);
+  Free(usl1);
+  Free(usl2);
+}
+
+

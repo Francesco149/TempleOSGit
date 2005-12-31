@@ -1,0 +1,18 @@
+void CommTerm(DWORD port=1,DWORD baud=115200)
+{
+  DWORD sc;
+  BYTE ch=0;
+  coutln "ESC to exit";
+  CommOpen8N1(port,baud);
+  while (ch!=CH_ESC) {
+    if (CommScanChar(port,&ch))
+      PutChar(ch);
+    ch=0;
+    if (ScanChar(&sc,&ch))
+      CommPutChar(port,ch);
+    SwapInNext;
+  }
+  CommClose(port);
+}
+
+CommTerm;

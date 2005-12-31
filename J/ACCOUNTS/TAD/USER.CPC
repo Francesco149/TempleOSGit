@@ -1,0 +1,56 @@
+//This is the startup file for new local users
+UseConsoleLtf("::/J/ACCOUNTS/TAD/USER.MUZ");
+Fs->answers_displayed=1;  //from 0-8
+LoadRoot3;
+Fs->EditPlugIns=&TAD_EditPlugIns;
+Ltf *l=Fs->cur_ltf;
+l->EditPlugIns=&TAD_EditPlugIns;
+if (l=l->menu_ltf)
+  l->EditPlugIns=&TAD_EditPlugIns;
+
+void F(char *pattern,char *flags="+r+i")
+{
+  Grep(pattern,"/J/"TEXT_FILE_MASK,flags);
+}
+
+void R(char *pattern,char *replace_text=NULL,char *flags="+r+l")
+{
+  Grep(pattern,"/J/"TEXT_FILE_MASK,flags,replace_text);
+}
+
+BYTE *P(DWORD cluster,DWORD cnt=0,BOOL write=FALSE)
+{
+  return Patch(cluster,cnt,write);
+}
+
+void FD(char *pattern,char *flags="+r+i")
+{
+  Grep(pattern,TEXT_FILE_MASK,flags);
+}
+
+void RD(char *pattern,char *replace_text=NULL,char *flags="+r+l")
+{
+  Grep(pattern,TEXT_FILE_MASK,flags,replace_text);
+}
+
+void M(char *src1,char *src2,char *flags="+r")
+{
+  MergeChk(src1,src2,flags);
+}
+SetDriveTextAttr('A',(LTRED<<4)|BLACK);
+SetDriveTextAttr('B',(BLUE<<4)|YELLOW);
+SetDriveTextAttr('D',(WHITE<<4)|BLUE);
+SetDriveTextAttr('E',(WHITE<<4)|RED);
+SetDriveTextAttr('F',(WHITE<<4)|LTPURPLE);
+SetDriveTextAttr('T',(LTGRAY<<4)|BLUE);
+SetDriveTextAttr('S',(LTGRAY<<4)|PURPLE);
+SetDriveTextAttr('Z',(BLUE<<4)|WHITE);
+
+PutSysText("ST_USER_STARTUP");
+Type("::/J/DOC/HELP.TXZ");;
+Bts(&Fs->crt_flags,CRTf_SHOW);;
+Fs->scroll_speed=10;
+Type("::/J/ACCOUNTS/TAD/STARTUP.TXZ");
+Dir;
+
+

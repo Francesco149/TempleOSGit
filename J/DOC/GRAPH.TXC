@@ -1,0 +1,61 @@
+* [::/J/KERNEL/ROOTK2.HPZ,20] grbase is a bitmap for persistent data on the
+screen, not needing to be 
+redrawn. You create an alias for this by using [T:/J/ROOT/GRMODE3.CPZ,159]
+GrNew() and work with that. 
+This image is XORed on top of everything, so the colors you work with, you 
+usually XOR with GR_WHITE to compensate.  (White is usually the text 
+background color. XORing twice gets you to what you started with.)  It's 
+slightly simpler using this bitmap then [::/J/KERNEL/ROOTK2.HPZ,21] grbase2,
+but it's not as good because 
+changes aren't syncronized to the screen update and window borders are not 
+inforced.  
+
+* [::/J/KERNEL/ROOTK2.HPZ,21] grbase2 is a bitmap for the screen, redrawn
+each refresh (25 times a 
+second).  You create an alias with [T:/J/ROOT/GRMODE3.CPZ,159] GrNew() and
+work with that. You must change 
+the "Fs->update_window" variable to point to your update function and must 
+draw everything in the window over and over again.
+ 
+* Use [T:/J/ROOT/GRMODE3.CPZ,159] GrNew() to create your own structure for
+accessing the screen and pass 
+it either [::/J/KERNEL/ROOTK2.HPZ,20] grbase or [::/J/KERNEL/ROOTK2.HPZ,21]
+grbase2.  (Free it with [T:/J/ROOT/GRMODE3.CPZ,169] GrDel() when finished). A 
+[::/J/KERNEL/ROOTK.HPZ,1613] GrBitMap returned by [T:/J/ROOT/GRMODE3.CPZ,159]
+GrNew() stores the pen width and current color.  It also 
+can hold info necessary to rotate the whole image in 3D and shift it around. 
+
+* There are various flavors of line and point plotting routines.
+[T:/J/ROOT/GRMODE3.CPZ,525] GrLine
+() and [T:/J/ROOT/GRMODE3.CPZ,384] GrPlot() are the simplest.  The others
+allow 3 dimensional graphics.
+
+* [T:/J/ROOT/GRMODE3.CPZ,82] GrThetaInt() and [T:/J/ROOT/GRMODE3.CPZ,100]
+GrPhiInt() create matrices for 3 dimensional rotations. You 
+pass them an integer as an angle (-MAX_INT is -180 degrees or -pi radians and 
+MAX_INT is +180 degrees or +pi radians. To make the matrices take effect, 
+assign them to your graphic [::/J/KERNEL/ROOTK.HPZ,1613] GrBitMap's "r"
+variable and set the 
+[BMF_TRANSORMATION] BMF_TRANSFORMATION flag.  Transformations (rotations) can
+be combined using 
+[T:/J/ROOT/GRMODE3.CPZ,118] GrMulMat(). See [::/J/DEMO/GRDEMO3.CPZ]
+::/J/DEMO/GRDEMO3.CPZ.
+
+* You can rotate single points using [T:/J/ROOT/ROOTASM.HPZ,9] GrRotate().
+
+* You can shift the image around by changing a [::/J/KERNEL/ROOTK.HPZ,1613]
+GrBitMap's "x","y" and "z" 
+variables.
+
+* Use CTRL-R to create a picture-like thing called a Graphic Element that can 
+be plotted with [T:/J/ROOT/GRAPH.CPZ,70] PlotGrElems().  Use $IB,"",1$ in a
+source program to insert 
+the address of picture #1.  (After creating a picture with CTRL-R in your 
+source code, toggle to plain text with CTRL-T and check it's number.  Then, 
+make an assignment to a pointer variable with $IB,"",n$ as the value. See 
+[::/J/DEMO/GRDEMO1.CPZ] ::/J/DEMO/GRDEMO1.CPZ and [::/J/DEMO/GRDEMO2.CPZ]
+::/J/DEMO/GRDEMO2.CPZ.) The origin (zero point) for 
+a graphic element is defined by the cursor location when you press CTRL-R.  
+The "x", "y" and "z" values you pass to
+ [T:/J/ROOT/GRAPH.CPZ,70] PlotGrElems() shift it around.
+

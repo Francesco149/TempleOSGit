@@ -1,0 +1,29 @@
+
+void QSort(void *base,DWORD num, DWORD width, DWORD *compare)
+{ //This uses a shell sort
+  int my_compare(void *elem1,void *elem2 );
+  int span=num/2,i;
+  BYTE *b1,*b2,*temp=MAlloc(width);
+  BOOL cont;
+
+  my_compare=compare;
+  while (span) {
+    cont=TRUE;
+    while (cont) {
+      cont=FALSE;
+      for (i=0;i+span<num;i++) {
+	b1=base+width*i;
+	b2=base+width*(i+span);
+	if (my_compare(b1,b2)>0) {
+	  MemCpy(temp,b1,width);
+	  MemCpy(b1,b2,width);
+	  MemCpy(b2,temp,width);
+	  cont=TRUE;
+	}
+      }
+    }
+    span/=2;
+  }
+  Free(temp);
+}
+

@@ -1,0 +1,259 @@
+extern SysAccntStruct sys_accounts;
+public extern TssStruct *root_tss;
+public extern DWORD num_spawned_users;
+extern SysHashEntry *sys_internal_types[IT_NUM_IT];
+extern TssCmdStruct sys_macro_queue,*sys_macro_ptr;
+extern TssStruct *macro_util_tss;
+
+extern DWORD FDC_retries;
+extern DWORD FDC_DRIVE_HEADS;
+extern DWORD FDC_DISK_CYLINDERS;
+extern DWORD FDC_DISK_SECTORS;
+extern DWORD FDC_MAX_SECTOR;
+extern DWORD FDC_DMA_BUF;
+extern JCacheBlk *JDCBase;
+extern JCacheBlk *JDCNext_lru,*JDCLast_lru;
+extern JCacheBlk **JDCHashTable;
+public extern void JDCInitCache(DWORD size_in_bytes);
+
+extern DWORD sys_timer_lo,sys_timer_hi;
+extern U4 rnd_SEED;
+extern char sys_temp_filename[80];
+extern U4 disk_status_display;
+public extern DWORD sys_clipboard_ltf;
+public extern int num_blkdevs;
+extern char *sys_startup_account;
+extern char *wordstat_mask;
+public extern char *sys_compile_time;
+ 
+public extern void PortNop();
+public extern void BusyWait(DWORD uS); //Loosely timed
+public extern void ReadSysTimer(DWORD *lo,DWORD *hi);
+public extern WORD RandWORD();
+public extern DWORD RandDWORD();
+public extern void Sleep(DWORD mS);
+public extern void Sound(WORD freq);
+public extern DWORD GetS(char *buf,DWORD size);
+public extern BOOL YorN();
+public extern void D(BYTE *buf,DWORD cnt=0x80,BOOL show_offset=TRUE);
+public extern void Dm(BYTE *buf,DWORD cnt=0x80);
+
+public extern char ToUpper(char ch);
+public extern BOOL AssignBit(DWORD *field,DWORD bit,BOOL val);
+public extern BOOL Externs2Imports(BOOL val);
+public extern BOOL KeepPrivate(BOOL val);
+public extern BOOL PTrace(BOOL val);
+public extern BOOL OTrace(BOOL val);
+public extern BOOL CTrace(BOOL val);
+public extern BOOL LTrace(BOOL val);
+public extern BOOL Echo(BOOL val);
+public extern BOOL Silent(BOOL val);
+public extern BOOL Preempt(BOOL val);
+
+public extern SysHashEntry *FindSysHash(char *st,DWORD mask);
+public extern SysHashEntry *FindLocalHash(char *st,DWORD mask);
+public extern DWORD Root(char *cmd);
+public extern DWORD System(char *cmd);
+public extern void XTalk(TssStruct *tss,char *st);
+public extern void Auto(char *st);
+public extern void AutoString(char *st);
+public extern void AutoFile(char *filename);
+public extern DWORD ServantUser(char *cmd);
+extern BOOL gr_just_cleared; //For cursor
+public extern void GrClear2(GrBitMap *base);
+public extern void GrClear();
+public extern void CursorHome();
+public extern void CursorOn();
+public extern void CursorOff();
+public extern void ClearWindowText();
+public extern void InitCrt();
+public extern void PutChar(char ch);
+public extern void PutS(char *st);
+public extern int Abs(int i);
+public extern int Sign(int i);
+public extern BYTE *RMAlloc(DWORD size);
+public extern void RFree(DWORD *add);
+public extern BYTE *RMAllocIdentical(BYTE *src);
+public extern BYTE *MAllocIdentical(BYTE *src,TssStruct *tss=NULL);
+public extern char *RNewString(char *buf);
+public extern char *NewString(char *buf,TssStruct *tss=NULL);
+public extern BYTE *RMAllocZ(DWORD size);
+public extern BYTE *MAllocZ(DWORD size,TssStruct *tss=NULL);
+public extern void DelLinkedList(DWORD *list);
+public extern void Exit();
+public extern void Kill(TssStruct *tss);
+
+//Exceptions are thrown through the following funcation call.
+//by convention, the first parameter should be a type code.
+public extern void throw(...);
+//The following are used internally and should not be called directly
+extern void SysTry(DWORD *start_label,DWORD *skip_label,DWORD my_ebp,DWORD my_esp);
+extern void SysCatch();
+
+public extern void Encrypt(BYTE *dst,BYTE *src,int size,char *pw);
+public extern void Decrypt(BYTE *dst,BYTE *src,int size,char *pw);
+public extern DWORD ArcCheckSum(BYTE *buf,DWORD size);
+public extern void ArcCompressBuf(ArcCs *c);
+public extern void ArcFinishCompression(ArcCs *c);
+public extern void ArcExpandBuf(ArcCs *c);
+public extern ArcCs *NewArcCs(BOOL expand,BOOL text_only);
+public extern void DelArcCs(ArcCs *c);
+public extern ArcCompressStruct *
+  CompressBuf(BYTE *src,DWORD size,DWORD flags=0);
+public extern BYTE *ExpandBuf(ArcCompressStruct *r);
+
+
+public extern SysHashEntry *LoadStr(char *name, char *st);
+public extern SysHashEntry *LoadList(char *name, char *st);
+public extern char *SysText(char *name);
+public extern char *SysTextSub(DWORD sub,char *name);
+public extern int SysTextSubCount(char *name);
+public extern void Beeps(DWORD j,BOOL busy);
+public extern void UnrecoverableSysError(DWORD j);
+public extern void PutSysText(char *name);
+public extern SysHashEntry *FindPSect(DWORD add,int *offset);
+
+public extern char *PointAtListEntry(int entry_number, char *lst);
+public extern int MatchListEntry(char *src, char *lst,int flags=0,int *ambiguity_overkill_ptr=NULL);
+public extern int MatchSysTextEntry(char *src, char *lst_name,int flags=0,int *ambiguity_overkill_ptr=NULL);
+public extern int Occurrences(char *src, char ch);
+public extern int SpacesToTabs(char *dst,char *src);
+public extern char *TabsToSpaces(char *src);
+public extern char *StringUtil(char *u, int mask);
+public extern char *MStringUtil(char *u,DWORD flags);
+public extern char *RemoveFirstSeg(char *src, char *marker, char *dst);
+public extern char *RemoveLastSeg(char *src, char *marker, char *dst);
+public extern BOOL WildCardMatch(char *wild_st,char *src_st);
+public extern BOOL WildFileNameList(char *wild_st,char *src_st);
+public extern char *Add2String(char *base,char *addition); //frees base parameter
+public extern char *SearchString(char *src,char *pattern,DWORD flags=0);
+
+public extern char *SPrintFJoin(char *dst2,char *src,int argc,int *argv);
+public extern void SPrintF(char *dst,char *src,...);
+public extern void PrintF(char *src,...);
+public extern char *MSPrintF(char *src,...);
+public extern void AutoPrintF(char *src,...);
+public extern void RootPrintF(char *src,...);
+public extern void GetF(char *src,char *fmt,...);
+
+public extern void QSort(void *base,DWORD num, DWORD width, DWORD *compare);
+
+public extern DWORD ToJDate(JDateStruct *d);
+public extern void ToJDateStruct(JDateStruct *d,JDate jd);
+public extern WORD FirstDayOfMonth(WORD i);
+public extern WORD LastDayOfMonth(WORD i);
+public extern WORD FirstDayOfYear(WORD i);
+public extern WORD LastDayOfYear(WORD i);
+public extern BYTE DayOfWeek(WORD i);
+public extern void GetCurTimeJDateStruct(JDateStruct *r);
+public extern DWORD GetCurTimeJDate();
+public extern void JDateToISO(ISODate *dst,DWORD jdate);
+
+public extern JBlkDev *local_blkdevs,*boot_blkdev;
+public extern JPartition *local_partitions,*default_partition;
+public extern char default_drive;
+public extern JPartition *drive_to_partition[32];
+extern void LockPartition(JPartition *p);
+extern void UnlockPartition(JPartition *p);
+public extern void InvalidateDiskCache(JPartition *p,BOOL unlock=TRUE);
+public extern void ChangeDisk(char drive_letter=0);
+public extern void PartitionRep();
+extern void AddBlkDev(JBlkDev *bd);
+public extern BOOL RBlks(JPartition *p,BYTE *buf, DWORD blk, DWORD cnt,BOOL unlock=TRUE);
+public extern BOOL WBlks(JPartition *p,BYTE *buf, DWORD blk, DWORD cnt,BOOL unlock=TRUE);
+public extern void WZeroBlks(JPartition *p,DWORD blk,DWORD cnt);
+public extern JFile *FOpen(char *filename,char *flags,DWORD cnt=0);
+public extern DWORD FSize(JFile *f);
+public extern void FSync(JFile *f);
+public extern void FClose(JFile *f);
+public extern BOOL FRBlks(JFile *f,BYTE *buf,DWORD blk=JFB_NEXT_BLK,DWORD cnt=1);
+public extern BOOL FWBlks(JFile *f,BYTE *buf,DWORD blk=JFB_NEXT_BLK,DWORD cnt=1);
+public extern void ReadCDImage(char drive,char *out_name,DWORD cnt);
+public extern void WriteCDImage(char drive,char *in_name);
+public extern DWORD NextClusterNum(JPartition *p,DWORD c,DWORD cnt=1);
+public extern DWORD ClusterBlk(JPartition *p,DWORD c);
+public extern DWORD RClusters(JPartition *p,BYTE *buf,DWORD c,DWORD cnt=1,BOOL update_display=FALSE);
+public extern DWORD WClusters(JPartition *p,BYTE *buf,DWORD c,DWORD cnt=1,BOOL update_display=FALSE);
+public extern void CleanFATBuf(JPartition *p);
+extern void FreeFAT12Clusters(JPartition *p,DWORD c,BOOL unlock);
+extern void FreeFAT32Clusters(JPartition *p,DWORD c,BOOL unlock);
+public extern DWORD AllocClusters(JPartition *p,DWORD c=0,DWORD cnt=1,BOOL contiguous=FALSE,BOOL unlock=TRUE);
+public extern BOOL NewJDirEntry(JPartition *p,DWORD cur_dir_cluster,JDirEntry *tempm,BOOL free_old_chain=TRUE);
+
+public extern void DelJDirEntry(JDirEntry *tempm);
+public extern void DelJDirList(JDirEntry *tempm);
+public extern JDirEntry *FindFiles(char *wild,DWORD *fuf_flags=NULL);
+public extern DWORD UnusedDriveSpace(char drive=0);
+
+public extern void PutFileLink(char *name,int line=0);
+public extern void PutDirLink(char *name);
+extern void DirFAT(char *wild,BOOL show_clusters);
+
+
+public extern void CheckJPartition(JPartition *p);
+public extern void CheckJBlkDev(JBlkDev *bdev);
+public extern char PartitionToDrive(JPartition *p=NULL);
+public extern int DriveToPartition(char drive=0);
+public extern JBlkDev *DriveToBlkDev(char drive=0);
+public extern BOOL DriveIsWritable(char drive=0);
+
+public extern char *AbsoluteDirName(char *name);
+public extern char *AbsoluteFileName(char *name);
+public extern BOOL CheckFileName(char *name);
+public extern char *ChangeExtension(char *name,char *extension);
+public extern char *DefaultExtension(char *name,char *extension);
+public extern DWORD FileAttr(char *name,DWORD old_attr=0);
+public extern void GetFFlags(FlagsStruct *f,char *systext_list,char *st);
+public extern char *SPrintFFlags(char *dst,char *systext_list,DWORD flags0,DWORD flags1=0);
+public extern void MapDrive(char ch,JPartition *p);
+public extern BOOL Drive(char drive_letter);
+public extern BOOL Cd(char *name,BOOL make_dirs=FALSE);
+public extern void DelJFileAccess(JFileAccess *fa);
+public extern JFileAccess *NewJFileAccess(char *mask,BOOL make_mask=FALSE,BOOL make_dirs=FALSE);
+public extern void Dir(char *wild=NULL,BOOL show_clusters=FALSE);
+public extern void Del(char *wild);
+public extern BYTE *ReadFile(char *filename,DWORD *size=NULL,DWORD *attr=NULL,BOOL raw=FALSE);
+public extern char *ReadTextFile(char *filename,DWORD *attr=NULL);
+public extern BOOL FindFile(char *filename,JDirEntry *de=NULL,
+      BOOL dir_only=FALSE,BOOL file_only=FALSE,BOOL unlock=TRUE);
+public extern DWORD WriteFile(char *filename,BYTE *fbuf,
+   DWORD size,DWORD Jdatetime=0,DWORD attr=0,BOOL raw=FALSE);
+public extern void WriteTextFile(char *filename,char *st,DWORD attr=0);
+public extern void AddDrives(BOOL show_rep=TRUE);
+public extern void SelectDefaultDrive();
+extern BOOL CopySingle(char *f1,char *f2); //Just one file
+public extern BOOL MkDir(char *filename);
+public extern BOOL IsDir(char *dir_name);
+extern void SysDel(char *wild,BOOL make_mask);	//this is dangerous
+public extern void Format(char drive_letter,BOOL quick,BOOL confirm=TRUE);
+
+
+public extern TssStruct *Spawn(BYTE *start_add,
+	    char *desc=NULL,
+	    TssStruct *parent=NULL, //NULL means root
+	    char *account=NULL,     //Null means use parent's
+	    DWORD stk=DEFAULT_STACK);
+public extern SysHashTable *NewHashTable(DWORD size,TssStruct *mem_tss=NULL);
+public extern void AddTaskToQueue(TssStruct *tss,TssStruct *pred=NULL);
+public extern TssCmdStruct *
+  QueueTaskRequest(TssStruct *servant,TssStruct *master,
+		     char *data,DWORD flags);
+public extern TssCmdStruct *
+  QueueTextInput(TssStruct *servant,TssStruct *master,
+		     char *data,DWORD flags);
+public extern TssCmdStruct *QueueMessage(TssStruct *servant,TssStruct *master,
+		     DWORD code,DWORD p1,DWORD p2,DWORD flags);
+public extern void Msg(DWORD code,DWORD p1,DWORD p2);
+public extern BOOL GetRequestResult(TssCmdStruct *rqst=NULL,DWORD *result=NULL);
+
+public extern void HandleServantCmds();
+public extern void InitUserTask();
+public extern void InitLocalTask();
+public extern void InitSysTask();
+public extern char *HomeDirString();
+public extern void ContinueServantTask();
+public extern void UserCmdLine();
+extern void SysCmdLine();
+extern void ServantUserCmdLine();
+extern void FaultCmdLine();
+public extern BYTE *Load(char *filename,BOOL no_abs=FALSE);

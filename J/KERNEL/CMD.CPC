@@ -1,0 +1,579 @@
+SysHashTable *NewHashTable(DWORD size,TssStruct *mem_tss=NULL)
+{
+  SysHashTable *tempht;
+  tempht=MAllocZ(sizeof(SysHashTable)-4+size*4,mem_tss);
+  tempht->mask=size-1;
+  return tempht;
+}
+
+/*
+DWORD CreateCodeSelector(DWORD phy_add)
+{
+  DWORD result,*d,*d1,old_flags=GetFlags;
+  Cli;
+  result=*FREE_GDT_LIST;
+  d=GDTTAB+result;
+  *FREE_GDT_LIST=*d;
+  d=result+GDTTAB;
+  d1=d+4;
+  *d =0x0000FFFF;
+  *d1=0x00CF9A00;
+  d=d+2;
+  *d =*d +(phy_add & 0x00FFFFFF);
+  *d1=*d1+(phy_add & 0xFF000000);
+  SetFlags(old_flags);
+  return result;
+}
+DWORD CreateTssSelector(DWORD phy_add)
+{
+  DWORD result,*d,*d1,old_flags=GetFlags;
+  Cli;
+  result=*FREE_GDT_LIST;
+  d=GDTTAB+result;
+  *FREE_GDT_LIST=*d;
+  d=result+GDTTAB;
+  d1=d+4;
+  *d =sizeof(TssStruct)-1;
+  *d1=0x00008900;
+  d=d+2;
+  *d =*d +(phy_add & 0x00FFFFFF);
+  *d1=*d1+(phy_add & 0xFF000000);
+  SetFlags(old_flags);
+  return result;
+}
+*/
+
+DWORD CreateMemSelector(DWORD phy_add)
+{
+  DWORD result,*d,*d1,old_flags=GetFlags;
+  Cli;
+  result=free_gdt_list;
+  d=&gdttab+result;
+  free_gdt_list=*d;
+  d1=d+4;
+  *d =0x0000FFFF;
+  *d1=0x00CF9200;
+  d=d+2;
+  *d +=(phy_add & 0x00FFFFFF);
+  *d1+=(phy_add & 0xFF000000);
+  SetFlags(old_flags);
+  return result;
+}
+
+void AddTaskToQueue(TssStruct *tss,TssStruct *pred=NULL)
+{
+  TssStruct *last;
+  DWORD old_flags=GetFlags;
+  if (!pred) pred=Fs;
+  Cli;
+  last=pred->last_tss;
+  last->next_tss=tss;
+  pred->last_tss=tss;
+  tss ->last_tss=last;
+  tss ->next_tss=pred;
+  SetFlags(old_flags);
+}
+
+void AddTaskToChildQueue(TssStruct *tss)
+{
+  TssStruct *last,*pred;
+  DWORD old_flags=GetFlags;
+  Cli;
+  pred=tss->parent_tss->last_child_tss;
+  last=pred->last_sibling_tss;
+  last->next_sibling_tss=tss;
+  pred->last_sibling_tss=tss;
+  tss ->last_sibling_tss=last;
+  tss ->next_sibling_tss=pred;
+  SetFlags(old_flags);
+}
+
+asm {CP_INIT_TSS::}
+DWORD InitTss(TssStruct *tss,DWORD stk)
+{ //Returns Fs of task
+  BYTE *b;
+  DWORD result;
+  MemSet(tss,0,sizeof(TssStruct));
+  tss->cs=SYS_CS_SEL;
+  tss->ds=ZERO_DS_SEL;
+  tss->es=ZERO_DS_SEL;
+  tss->gs=ZERO_DS_SEL;
+  tss->absolute_address=tss;
+  tss->io_bitmap_ptr=TSS_IO_BITMAP;
+  tss->next_tss=tss;
+  tss->last_tss=tss;
+  tss->eflags=SYS_DEFAULT_FLAGS;
+  tss->cr3=SYS_DEFAULT_CR3;
+  tss->optimization=0x7F;
+  b=&tss->next_child_tss-offset(TssStruct.next_sibling_tss);
+  tss->next_child_tss=b;
+  tss->last_child_tss=b;
+  b=&tss->next_servant_cmd;
+  tss->next_servant_cmd=b;
+  tss->last_servant_cmd=b;
+  b=&tss->next_master_cmd;
+  tss->next_master_cmd=b;
+  tss->last_master_cmd=b;
+  b=&tss->next_mem_blk;
+  tss->next_mem_blk=b;
+  tss->last_mem_blk=b;
+  b=&tss->next_lex;
+  tss->next_lex=b;
+  tss->last_lex=b;
+  b=&tss->next_trap;
+  tss->next_trap=b;
+  tss->last_trap=b;
+
+  result=CreateMemSelector(tss);
+  tss->fs=result;
+  tss->hash_table=NewHashTable(0x1000,tss);
+  tss->hash_table->next=sys_hash_table;
+  b=MAlloc(stk,tss);
+  tss->stack_bottom=b;
+  b=b+stk;
+  tss->esp0=b;
+  tss->esp1=b;
+  tss->esp2=b;
+  tss->esp=b;
+  tss->ss0=ZERO_DS_SEL;
+  tss->ss1=ZERO_DS_SEL;
+  tss->ss2=ZERO_DS_SEL;
+  tss->ss=ZERO_DS_SEL;
+  MemSet(tss->io_bitmap,0xFF,MAXIO/8);
+  Bts(&tss->task_flags,TSSf_PREEMPT);
+  return result;
+}
+
+asm {CP_SPAWN_TASK::}
+TssStruct *Spawn(BYTE *start_add,char *desc=NULL,
+	    TssStruct *parent=NULL, //NULL means root
+	    char *account=NULL,
+	    DWORD stk=DEFAULT_STACK)
+{
+  DWORD d;
+  TssStruct *tss=RMAlloc(sizeof(TssStruct));
+  SysAccntStruct *my_FindSysAccnt(char *name);
+  SysAccntStruct *tempa;
+  if (!parent) parent=root_tss;
+  InitTss(tss,stk);
+  tss->eip=start_add;
+  tss->esp-=4;
+  *tss->esp=&Exit;
+  tss->parent_tss=parent;
+  tss->hash_table->next=parent->hash_table;
+  if (!desc) desc="USER CMD";
+  MemCpy(tss->task_descriptor,desc,TSS_DESC_LENGTH);
+  tss->account=tss->parent_tss->account;
+  if (account) {
+    if (d=FindExtern("FindSysAccnt")) {
+      my_FindSysAccnt=d;
+      if (tempa=my_FindSysAccnt(account))
+	tss->account=tempa;
+    }
+  }
+  AddTaskToQueue(tss);
+  AddTaskToChildQueue(tss);
+  Bts(&sys_flags,SYSf_TASK_LINKS_ALTERED);
+  return tss;
+}
+
+
+TssCmdStruct *QueueTaskRequest(TssStruct *servant,TssStruct *master,
+		     char *data,DWORD flags)
+{
+  DWORD old_flags=GetFlags;
+  TssCmdStruct *result;
+  if (!data) return;
+  result=RMAlloc(sizeof(TssCmdStruct));
+  result->master_tss=master;
+  Bts(&flags,TSSCf_TEXT);
+  Bts(&flags,TSSCf_NOT_INPUT);
+  result->flags=flags;
+  result->data=RNewString(data);
+  Cli;
+  InsQue(result,servant->last_servant_cmd);
+  if (Bt(&flags,TSSCf_WAKE_MASTER)) {
+    Bts(&master->task_flags,TSSf_SUSPENDED);
+    SwapInNext;
+  }
+  SetFlags(old_flags);
+  return result;
+}
+
+TssCmdStruct *QueueTextInput(TssStruct *servant,TssStruct *master,
+		     char *data,DWORD flags)
+{
+  DWORD old_flags=GetFlags;
+  DWORD *input_filter_start_add;
+  TssCmdStruct *result;
+  if (!data) return;
+  result=RMAlloc(sizeof(TssCmdStruct));
+  result->master_tss=master;
+  Bts(&flags,TSSCf_TEXT);
+  result->flags=flags;
+  result->data=RNewString(data);
+  if (!servant->input_filter_tss) {
+    if (input_filter_start_add=FindExtern("InputFilterTask")) {
+      servant->input_filter_tss=Spawn(input_filter_start_add,
+	"Input Filter",servant);
+    }
+  }
+  servant=servant->input_filter_tss;
+  if (servant) {
+    Cli;
+    InsQue(result,servant->last_servant_cmd);
+    if (Bt(&flags,TSSCf_WAKE_MASTER)) {
+      Bts(&master->task_flags,TSSf_SUSPENDED);
+      SwapInNext;
+    }
+    SetFlags(old_flags);
+  } else {
+    RFree(result);
+    result=NULL;
+  }
+  return result;
+}
+
+TssCmdStruct *QueueMessage(TssStruct *servant,TssStruct *master,
+		     DWORD code,DWORD p1,DWORD p2,DWORD flags)
+{
+  TssCmdStruct *tempc1,*tempc=RMAlloc(sizeof(TssCmdStruct));
+  DWORD old_flags=GetFlags;
+  tempc->master_tss=master;
+  tempc->code=code;
+  tempc->p1=p1;
+  tempc->p2=p2;
+  tempc->flags=flags;
+  tempc->data=NULL;
+  if (Bt(&sys_flags,SYSf_RECORD_MACRO) &&
+      servant!=macro_util_tss &&
+      code==MSG_KEY_DOWN) {
+    tempc1=RMAllocIdentical(tempc);
+    InsQue(tempc1,sys_macro_queue.last);
+  }
+  Cli;
+  if (Bt(&servant->task_flags,TSSf_FILTER_INPUT) &&
+      !Bt(&flags,TSSCf_DONT_FILTER))
+    servant=servant->input_filter_tss;
+  InsQue(tempc,servant->last_servant_cmd);
+  if (Bt(&flags,TSSCf_WAKE_MASTER)) {
+    Bts(&master->task_flags,TSSf_SUSPENDED);
+    SwapInNext;
+  }
+  SetFlags(old_flags);
+  return tempc;
+}
+
+BOOL GetRequestResult(TssCmdStruct *rqst=NULL,DWORD *result=NULL)
+{
+  DWORD old_flags=GetFlags;
+  TssCmdStruct *tempc,*tempc1;
+  Cli;
+  tempc1=&Fs->next_master_cmd;
+  tempc=tempc1->next;
+  while (tempc!=tempc1) {
+    if (!rqst || rqst==tempc) {
+      RemQue(tempc);
+      if (result)
+	*result=tempc->result;
+      RFree(tempc->data);
+      RFree(tempc);
+      SetFlags(old_flags);
+      return TRUE;
+    }
+    tempc=tempc->next;
+  }
+  SetFlags(old_flags);
+  return FALSE;
+}
+
+void Msg(DWORD code,DWORD p1,DWORD p2)
+{
+  if (Bt(&Fs->task_flags,TSSf_INPUT_FILTER_TASK))
+    QueueMessage(Fs->parent_tss,0,code,p1,p2,
+      (1<<TSSCf_DONT_FILTER));
+  else
+    QueueMessage(Fs,0,code,p1,p2,0);
+}
+
+
+void HandleServantCmds()
+{
+  DWORD old_flags=GetFlags;
+  TssCmdStruct *tempc,*tempc1,*tempc2;
+  TssStruct *master;
+  int my_ExecuteString(char *buf,char *filename);
+start_over:
+  Cli;
+  tempc1=&Fs->next_servant_cmd;
+  tempc=tempc1->next;
+  while (tempc!=tempc1) {
+    tempc2=tempc->next;
+    if (Bt(&tempc->flags,TSSCf_NOT_INPUT)) {
+      RemQue(tempc);
+      SetFlags(old_flags);
+      my_ExecuteString=FindExtern("ExecuteString");
+      tempc->result=my_ExecuteString(tempc->data,sys_temp_filename);
+      if (master=tempc->master_tss) {
+	if (!Bt(&tempc->flags,TSSCf_EXIT_ON_COMPLETE)) {
+	  Cli;
+	  InsQue(tempc,master->last_master_cmd);
+	  SetFlags(old_flags);
+	}
+	if (Bt(&tempc->flags,TSSCf_FOCUS_MASTER) &&
+	    Bt(&master->task_flags,TSSf_LOCAL_USER))
+	  sys_cur_focus_task=master;
+	if (Bt(&tempc->flags,TSSCf_WAKE_MASTER))
+	  Btr(&master->task_flags,TSSf_SUSPENDED);
+	if (!Bt(&tempc->flags,TSSCf_EXIT_ON_COMPLETE))
+	  goto start_over;
+	else {
+	  RFree(tempc->data);
+	  RFree(tempc);
+	  Exit;
+	}
+      } else {
+	if (!Bt(&tempc->flags,TSSCf_EXIT_ON_COMPLETE)) {
+	  RFree(tempc->data);
+	  RFree(tempc);
+	  goto start_over;
+	} else {
+	  RFree(tempc->data);
+	  RFree(tempc);
+	  Exit;
+	}
+      }
+    }  //TODO: figure-out how to handle build-up of input
+    tempc=tempc2;
+  }
+  SetFlags(old_flags);
+}
+
+void ContinueServantTask()
+{
+  while (TRUE) {
+    Btr(&Fs->task_flags,TSSf_IDLE);
+    HandleServantCmds;
+    Bts(&Fs->task_flags,TSSf_IDLE);
+    SwapInNext;
+  }
+}
+
+char *HomeDirString()
+{
+  char *result;
+  SysAccntStruct *sa=Fs->account;
+  if (sa)
+    result=MSPrintF("::/J/ACCOUNTS/%s",sa->name);
+  else
+    result=NewString("::/J/ACCOUNTS/GENERIC");
+  *result=PartitionToDrive(default_partition);
+  return result;
+}
+
+void InitSysTask()
+{
+  InitCrt;
+  CursorOff;
+  Fs->text_attribute=(WHITE<<4)+PURPLE;
+  Fs->border_attribute=(WHITE<<4)+LTPURPLE;
+  Fs->window_top++;
+  CursorHome;
+}
+
+void InitLocalTask()
+{
+  void my_WindowToTop(TssStruct *tss);
+  my_WindowToTop=FindExtern("WindowToTop");
+  InitCrt;
+  Bts(&Fs->crt_flags,CRTf_HAS_CLOSE_WINDOW);
+  CursorOff;
+  Fs->text_attribute=(WHITE<<4)+BLUE;
+  Fs->border_attribute=(WHITE<<4)+LTBLUE;
+  Fs->window_top=13;
+  CursorHome;
+  Cd("HOME");
+  my_WindowToTop(Fs);
+}
+
+void InitUserTask()
+{
+  Bts(&Fs->task_flags,TSSf_LOCAL_USER);
+  InitLocalTask;
+}
+
+int my_ExecuteFile(char *name)
+{
+  int my_my_ExecuteFile(char *name);
+  my_my_ExecuteFile=FindExtern("ExecuteFile");
+  my_my_ExecuteFile(name);
+}
+
+asm {CP_USER_CMD_LINE::}
+void UserCmdLine()
+{
+  void my_ContinueUserTask();
+  InitUserTask;
+  Fs->user_num=++num_spawned_users;
+  my_ExecuteFile("USER.CPZ");
+  my_ContinueUserTask=FindExtern("ContinueUserTask");
+  my_ContinueUserTask();
+}
+
+void SysCmdLine()
+{
+  InitSysTask;
+  Cd("HOME");
+  my_ExecuteFile("SYSTEM.CPZ");
+  ContinueServantTask;
+}
+
+void ServantUserCmdLine()
+{
+  InitUserTask;
+  my_ExecuteFile("SERVANT.CPZ");
+  ContinueServantTask;
+}
+
+asm {CP_FAULT_CMD_LINE::}
+void FaultCmdLine()
+{
+  void my_ContinueUserTask();
+  InitUserTask;
+  my_ExecuteFile("FAULT.CPZ");
+  my_ContinueUserTask=FindExtern("ContinueUserTask");
+  my_ContinueUserTask();
+}
+
+DWORD Root(char *cmd) {
+  DWORD result;
+  TssCmdStruct *tempc;
+  while (!Bt(&root_tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tempc=QueueTaskRequest(root_tss,Fs,cmd,
+    (1<<TSSCf_WAKE_MASTER));
+  GetRequestResult(tempc,&result);
+  return result;
+}
+
+DWORD System(char *cmd) {
+  DWORD result=0;
+  TssCmdStruct *tempc;
+  TssStruct *tss=Spawn(&SysCmdLine,"SYSTEM TASK",Fs);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tempc=QueueTaskRequest(tss,Fs,cmd,
+    (1<<TSSCf_WAKE_MASTER));
+  GetRequestResult(tempc,&result);
+  Kill(tss);
+  return result;
+}
+
+void XTalk(TssStruct *tss,char *st)
+{
+  char *st2;
+  st2=MSPrintF("PutS(\"%Q\");",st);
+  QueueTextInput(tss,0,st2,0);
+  Free(st2);
+}
+
+void Auto(char *st)
+{
+  char *st2;
+  st2=MSPrintF("PutS(\"%Q\");",st);
+  QueueTextInput(Fs,0,st2,0);
+  Free(st2);
+}
+
+void AutoString(char *st)
+{
+  QueueTextInput(Fs,0,st,0);
+}
+
+void AutoFile(char *filename)
+{
+  char *buf=ReadTextFile(filename);
+  if (buf)
+    QueueTextInput(Fs,0,buf,0);
+  Free(buf);
+}
+
+
+DWORD ServantUser(char *cmd)
+{
+  DWORD result=0;
+  TssCmdStruct *tempc;
+  TssStruct *tss=Spawn(&ServantUserCmdLine,"SYSTEM TASK",Fs);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tempc=QueueTaskRequest(tss,Fs,cmd,
+    (1<<TSSCf_WAKE_MASTER)|(1<<TSSCf_FOCUS_MASTER));
+  GetRequestResult(tempc,&result);
+  Kill(tss);
+  return result;
+}
+
+asm {END_TASK::}
+DWORD EndTask()
+{
+  TssStruct *tempt,*tempt1;
+  TssCmdStruct *tempc,*tempc1,*tempc2;
+  DWORD my_fs,*d;
+  if (Fs->end_task_cb) {
+    Btr(&Fs->task_flags,TSSf_KILL_TASK);
+    Fs->eip=Fs->end_task_cb;
+    Fs->end_task_cb=NULL;
+    return Fs->fs;
+  }
+  Cli;
+  if (sys_cur_focus_task==Fs)
+    sys_cur_focus_task=0;
+  ReleaseTaskPartitions;
+  tempt1=&Fs->next_child_tss-offset(TssStruct.next_sibling_tss);
+  tempt=tempt1->next_sibling_tss;
+  if (tempt!=tempt1) {
+    do {
+      Bts(&tempt->task_flags,TSSf_KILL_TASK);
+      tempt=tempt->next_sibling_tss;
+    } while (tempt!=tempt1);
+    return Fs->next_tss->fs;
+  }
+  Btr(&sys_flags,SYSf_PREEMPTIVE);
+  Bts(&sys_flags,SYSf_CLEAR_SCREEN_TEXT);
+
+  tempc1=&Fs->next_servant_cmd;
+  tempc=tempc1->next;
+  while (tempc!=tempc1) {
+    tempc2=tempc->next;
+    RFree(tempc->data);
+    RFree(tempc);
+    tempc=tempc2;
+  }
+
+  tempc1=&Fs->next_master_cmd;
+  tempc=tempc1->next;
+  while (tempc!=tempc1) {
+    tempc2=tempc->next;
+    RFree(tempc->data);
+    RFree(tempc);
+    tempc=tempc2;
+  }
+
+//Remque
+  tempt =Fs->next_sibling_tss;
+  tempt1=Fs->last_sibling_tss;
+  tempt1->next_sibling_tss=tempt;
+  tempt ->last_sibling_tss=tempt1;
+  tempt =Fs->next_tss;
+  tempt1=Fs->last_tss;
+  tempt1->next_tss=tempt;
+  tempt ->last_tss=tempt1;
+  Bts(&sys_flags,SYSf_TASK_LINKS_ALTERED);
+  FreeMemBlkList;
+  my_fs=Fs->fs;
+  RFree(Fs);
+  d=GDTTAB+my_fs;
+  *d=*FREE_GDT_LIST;
+  *FREE_GDT_LIST=my_fs;
+  return tempt->fs;
+}

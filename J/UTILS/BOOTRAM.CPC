@@ -1,0 +1,37 @@
+exe {KeepPrivate(ON);}
+#include "/J/KERNEL/ROOTK.HPZ"
+asm {
+#include "/J/KERNEL/OSINC"
+exe {KeepPrivate(OFF);}
+CP_MY_RUN::
+	PUSH	EBP
+	MOV	EBP,ESP
+	MOV	EBX,BOOT_CODE_RAM
+	JMP	DWORD SF_PARAM1[EBP]
+}
+exe {KeepPrivate(ON);}
+exe {Externs2Imports(ON);}
+#include "/J/KERNEL/ROOTK2.HPZ"
+#include "/J/KERNEL/ROOTK3.HPZ"
+exe {Externs2Imports(OFF);}
+exe {KeepPrivate(OFF);}
+
+Jextern CP_MY_RUN void MyRun(BYTE *s);
+
+public void Boot(char *filename)
+{
+  DWORD size;
+  OsMainStruct *hi_image=ReadFile(filename,&size),
+	       *lo_image=sys_boot_base-sizeof(BinFileHeaderStruct);
+  Cli;
+
+  hi_image->boot_base=lo_image+sizeof(BinFileHeaderStruct);
+  hi_image->header_base=lo_image+hi_image->h.header_offset;
+  hi_image->boot_code=BOOT_CODE_RAM;
+  hi_image->sys_memblks=lo_image->sys_memblks;
+
+  MemCpy(&hi_image->gdttab,&lo_image->gdttab,sizeof(GdtTabStruct)*MAXGDT);
+  MemCpy(lo_image,hi_image,size);
+  MyRun(lo_image+sizeof(BinFileHeaderStruct)+lo_image->os_32start);
+}
+

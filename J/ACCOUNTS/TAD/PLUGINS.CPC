@@ -1,0 +1,152 @@
+void RandFillin()
+{
+  Ltf *l=Fs->cur_ltf;
+  LtfEntry *ll=l->cur_entry;
+  DWORD lo,hi;
+  if (ws_num_words) {
+    ReadSysTimer(&lo,&hi);
+    if (((ll->type & 0xF00)>>8)!=RED)
+      PutS("$FG RED$");
+    PutS(ws_sorted_words[lo%ws_num_words]->word);
+    PutS(" ");
+  }
+}
+
+void FillinTime()
+{
+  JDate jd;
+  jd.d=GetCurTimeJDate;
+  PrintF("$IV 1$----%D %T----$IV 0$\r",jd.dt.date,jd.dt.time);
+}
+
+extern void QuFindOffset(JDirEntry *tempm1,
+  DWORD *in_offset,JDirEntry **out_entry);
+
+void QuFindOffset(JDirEntry *tempm1,
+  DWORD *in_offset,JDirEntry **out_entry)
+{
+  while (tempm1 && !(*out_entry)) {
+    if (tempm1->attr & J_ATTR_DIR) {
+      if (tempm1->sub)
+	QuFindOffset(tempm1->sub,in_offset,out_entry);
+    } else {
+      if (*in_offset>tempm1->user_data)
+	*in_offset=*in_offset-tempm1->user_data;
+      else
+	*out_entry=tempm1;
+    }
+    tempm1=tempm1->next;
+  }
+}
+
+
+void RandQuote()
+{
+  DWORD lo,hi,in_offset;
+  char *body,*out_offset=NULL,
+       *end_ptr;
+  WsFilemaskEntry *tempfm=qu_filemask_list;
+  JDirEntry *out_entry=NULL;
+
+  ReadSysTimer(&lo,&hi);
+  if (lo % 2000<300) {
+    PrintF("$FG LTRED$<Wisdom for the Way p.%d>",(lo%2000)+1);
+    return;
+  }
+  if (qu_total_file_size) {
+    in_offset=GodDWORD % qu_total_file_size;
+    while (tempfm) {
+      QuFindOffset(tempfm->flist,&in_offset,&out_entry);
+      tempfm=tempfm->next;
+    }
+    body=ReadTextFile(out_entry->full_name);
+    out_offset=body+in_offset;
+    end_ptr=out_offset+(lo % 1000+100);
+    if (end_ptr>body+out_entry->user_data)
+      end_ptr=body+out_entry->user_data;
+    *end_ptr=0;
+    PutS("$FG LTRED$");
+    PutS(out_offset);
+    Free(body);
+  }
+}
+
+class RenameSymbolStruct
+{
+  char find[256]    fmtstr "$DA -P ,255 \"Find___:%s\"$\r\n";
+  char replace[256] fmtstr "$DA -P ,255 \"Replace:%s\"$\r\n";
+};
+
+void RenameCurSymbol()
+{
+  char *buf;
+  RenameSymbolStruct r;
+  BOOL old_preempt=Preempt(OFF);
+  StrCpy(r.find,ws_cur_word);
+  StrCpy(r.replace,ws_cur_word);
+  Preempt(old_preempt);
+  if (PopUpDoForm(&r,"RenameSymbolStruct")) {
+    buf=MSPrintF("R(\"%s\",\"%s\",\"+r+l+a\");",r.find,r.replace);
+    PopUp(buf,Fs);
+    Free(buf);
+  }
+}
+
+
+BOOL TAD_EditPlugIns(Ltf *l,char ch,DWORD sc)
+{
+  int sc2,sc3,ms=0;
+  l;ch; //Ref, So not unused Warn
+  sc2=sc & 0x17F;
+  sc3=sc & 0x7F;  //Useful for doubled-up keys
+  if (sc2>=SC_F1 && sc2<=SC_F10 &&
+       Bt(&sc,SCf_ALT) &&
+      !Bt(&sc,SCf_CTRL)) {
+    if (sc2==SC_F1) {
+      if (Bt(&sc,SCf_SHIFT))
+	PutS("$FG LTPURPLE$");
+      else
+	PutS("$FG PURPLE$");
+    } else if (sc2==SC_F2) {
+      if (Bt(&sc,SCf_SHIFT))
+	PutS("$FG LTRED$");
+      else
+	PutS("$FG RED$");
+    } else if (sc2==SC_F3) {
+      if (Bt(&sc,SCf_SHIFT))
+	PutS("$FG LTGREEN$");
+      else
+	PutS("$FG GREEN$");
+    } else if (sc2==SC_F4) {
+      if (Bt(&sc,SCf_SHIFT))
+	PutS("$FG LTBLUE$");
+      else
+	PutS("$FG$");
+    } else if (sc2==SC_F5) {
+      if (Bt(&sc,SCf_SHIFT))
+	RandQuote();
+      else
+	RandFillin();
+    } else if (sc2==SC_F6) {
+      if (Bt(&sc,SCf_SHIFT))
+	PopUp("WsInit(\"/TAD/TEXT/BRIEF\");Edit(\"::/TAD/CRYPT/BLOG.TXY\");",Fs);
+      else
+	PopUp("Edit(\"::/TAD/TEXT/BRIEF/GLOSS.GLZ\");",Fs);
+    } else if (sc2==SC_F7) {
+      if (Bt(&sc,SCf_SHIFT))
+	LtfSafeInsert(Fs->cur_ltf,
+	  "$HS +C$$FG$$HE$");
+      else
+	FillinTime();
+    } else if (sc2==SC_F8)
+      RenameCurSymbol();
+    else if (sc2==SC_F9)
+      PopUp("PunchIn;");
+    else if (sc2==SC_F10)
+      PopUp("PunchOut;");
+    return TRUE;
+  } else
+    return FALSE;
+}
+
+

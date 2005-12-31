@@ -1,0 +1,9 @@
+Jextern CP_LTF_DIST DWORD LtfDist(int x1,int y1,int x2,int y2);
+public Jextern CP_PLOT_SCREEN_CHAR BOOL PlotScreenChar(DWORD w,int x,int y);
+public Jextern CP_PLOT_WINDOW_CHAR BOOL PlotWindowChar(DWORD w,int x,int y);
+public Jextern CP_PLOT_BORDER_CHAR BOOL PlotBorderChar(DWORD w,int x,int y);
+
+Jextern GR_UPDATE_WINDOWS void GrUpdateWindows();
+//The callback is void Plot(aux_data,x,y,z)
+public Jextern CP_LINE void Line(BYTE *aux_data,DWORD x1,DWORD y1,DWORD z1,DWORD x2,DWORD y2,DWORD z2,BYTE *plot_cb);
+public Jextern CP_GR_ROTATE void GrRotate(int *r,int *x,int *y,int *z);

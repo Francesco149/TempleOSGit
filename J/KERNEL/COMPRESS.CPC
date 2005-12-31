@@ -1,0 +1,371 @@
+void Encrypt(BYTE *dst,BYTE *src,int size,char *pw)
+{
+  int i,j=0,l,h;
+  DWORD *pw1,*pw2;
+  BYTE	*pw3,ch;
+  DWORD lo,hi,lo2,hi2;
+
+  if (!pw || !*pw) {
+    MemCpy(dst,src,size);
+    return;
+  }
+  l=StrLen(pw);
+  h=HashString(pw)+size;
+  pw1=MAllocZ(l+4);
+  StrCpy(pw1,pw);
+  lo=h^0x98E7534F;
+  hi=pw1[0]^0x10983209+h%0x78632876;
+  lo2=lo+hi%0x7652-size;
+  hi2=lo2+lo^(hi%0x18761836);
+  for (i=0;i<size;i++) {
+    pw3=pw1+j;
+    *dst = *src ^(*pw3)^h;
+    ch = *src;
+    pw2=pw1+j;
+    Add64(&lo,&hi,lo,hi,
+      *pw2*6541^((h%0x57651237)&0x8762F177)+i,
+      ((ch+*pw2)%((j*5432)%(((h>>3)&0xFA)|33)|0x752))+
+      (lo/((hi&0x1EA5)|5))^(hi+lo));
+    Add64(&lo2,&hi2,lo2,hi2,
+      (lo*(ch&0x5A)+hi)*3+hi2,
+      hi2^(lo+hi*3)^(lo2+*pw2));
+    *pw2=((*pw2)*ch)^0x6A325877-((*pw1)^h)^pw[j]+
+     (lo%((0x16542654^hi)|0x53))+(lo2>>(hi2&3))^hi2;
+    h=(h<<((i&3)+2))^(0x5527810F/(ch|0x11))^(lo&hi);
+    j++; src++; dst++;
+    if (j>=l) j=0;
+  }
+  Free(pw1);
+}
+
+void Decrypt(BYTE *dst,BYTE *src,int size,char *pw)
+{
+  int i,j=0,l,h;
+  DWORD *pw1,*pw2;
+  BYTE	*pw3,ch;
+  DWORD lo,hi,lo2,hi2;
+
+  if (!pw || !*pw) {
+    MemCpy(dst,src,size);
+    return;
+  }
+  l=StrLen(pw);
+  h=HashString(pw)+size;
+  pw1=MAllocZ(l+4);
+  StrCpy(pw1,pw);
+  lo=h^0x98E7534F;
+  hi=pw1[0]^0x10983209+h%0x78632876;
+  lo2=lo+hi%0x7652-size;
+  hi2=lo2+lo^(hi%0x18761836);
+  for (i=0;i<size;i++) {
+    pw3=pw1+j;
+    *dst = *src ^(*pw3)^h;
+    ch = *dst;
+    pw2=pw1+j;
+    Add64(&lo,&hi,lo,hi,
+      *pw2*6541^((h%0x57651237)&0x8762F177)+i,
+      ((ch+*pw2)%((j*5432)%(((h>>3)&0xFA)|33)|0x752))+
+      (lo/((hi&0x1EA5)|5))^(hi+lo));
+    Add64(&lo2,&hi2,lo2,hi2,
+      (lo*(ch&0x5A)+hi)*3+hi2,
+      hi2^(lo+hi*3)^(lo2+*pw2));
+    *pw2=((*pw2)*ch)^0x6A325877-((*pw1)^h)^pw[j]+
+     (lo%((0x16542654^hi)|0x53))+(lo2>>(hi2&3))^hi2;
+    h=(h<<((i&3)+2))^(0x5527810F/(ch|0x11))^(lo&hi);
+    j++; src++; dst++;
+    if (j>=l) j=0;
+  }
+  Free(pw1);
+}
+
+
+
+void ArcGetTableEntry(ArcCs *c)
+{
+  DWORD i;
+  ArcTableEntry *temp,*temp1;
+
+  if (c->entry_used) {
+    i=c->free_index;
+
+    c->entry_used=FALSE;
+    c->cur_entry=c->next_entry;
+    c->cur_bits_in_use=c->next_bits_in_use;
+    if (c->next_bits_in_use<ARC_MAX_BITS) {
+      c->next_entry = &c->compress[i++];
+      if (i==c->free_limit) {
+	c->next_bits_in_use++;
+	c->free_limit=1<<c->next_bits_in_use;
+      }
+    } else {
+      do if (++i==c->free_limit) i=c->min_table_entry;
+      while (c->hash[i]);
+      temp=&c->compress[i];
+      c->next_entry=temp;
+      temp1=&c->hash[temp->basecode];
+      while (temp1 && temp1->next!=temp)
+	temp1=temp1->next;
+      if (temp1)
+	temp1->next=temp->next;
+    }
+    c->free_index=i;
+  }
+}
+
+void ArcCompressBuf(ArcCs *c)
+{
+  ArcTableEntry *temp,*temp1;
+  DWORD basecode;
+  BYTE *src_ptr,*src_limit,ch;
+
+  src_ptr=c->src_buf+c->src_pos;
+  src_limit=c->src_buf+c->src_size;
+
+  if (c->saved_basecode==0xFFFFFFFF)
+    basecode=*src_ptr++;
+  else
+    basecode=c->saved_basecode;
+
+  while (src_ptr<src_limit &&
+    c->dst_pos+c->cur_bits_in_use<=c->dst_size) {
+    ArcGetTableEntry(c);
+
+    arc_start_loop1:
+      if (src_ptr>=src_limit) goto arc_done_compression;
+      ch=*src_ptr++;
+      if (temp=c->hash[basecode])
+	do {
+	  if (temp->ch==ch) {
+	    basecode=(temp-&c->compress[0])>>3;
+	    goto arc_start_loop1;
+	  }
+	} while (temp=temp->next);
+
+    OrWordBitField(c->dst_buf,c->dst_pos,basecode);
+    c->dst_pos+=c->cur_bits_in_use;
+
+    c->entry_used=TRUE;
+    temp=c->cur_entry;
+    temp->basecode=basecode;
+    temp->ch=ch;
+    temp1=&c->hash[basecode];
+    temp->next=temp1->next;
+    temp1->next=temp;
+
+    basecode=ch;
+  }
+arc_done_compression:
+  c->saved_basecode=basecode;
+  c->src_pos=src_ptr-c->src_buf;
+}
+
+void ArcFinishCompression(ArcCs *c)
+{
+  if (c->dst_pos+c->cur_bits_in_use<=c->dst_size) {
+    OrWordBitField(c->dst_buf,c->dst_pos,c->saved_basecode);
+    c->dst_pos+=c->cur_bits_in_use;
+  }
+}
+
+void ArcExpandBuf(ArcCs *c)
+{
+  BYTE *dst_ptr,*dst_limit;
+  DWORD basecode,lastcode,code;
+  ArcTableEntry *temp,*temp1;
+
+  dst_ptr=c->dst_buf+c->dst_pos;
+  dst_limit=c->dst_buf+c->dst_size;
+
+  while (dst_ptr<dst_limit &&
+	 c->stack_ptr!=c->stack_base)
+    *dst_ptr++ = * -- c->stack_ptr;
+
+  if (c->stack_ptr==c->stack_base && dst_ptr<dst_limit) {
+    if (c->saved_basecode==0xFFFFFFFF) {
+      lastcode=ExtractWordBitField(c->src_buf,c->src_pos,
+	 c->next_bits_in_use);
+      c->src_pos=c->src_pos+c->next_bits_in_use;
+      *dst_ptr++=lastcode;
+      ArcGetTableEntry(c);
+      c->last_ch=lastcode;
+    } else
+      lastcode=c->saved_basecode;
+    while (dst_ptr<dst_limit &&
+      c->src_pos+c->next_bits_in_use<=c->src_size) {
+      basecode=ExtractWordBitField(c->src_buf,c->src_pos,
+	 c->next_bits_in_use);
+      c->src_pos+=c->next_bits_in_use;
+      if (c->cur_entry==&c->compress[basecode]) {
+	*c->stack_ptr++=c->last_ch;
+	code=lastcode;
+      } else
+	code=basecode;
+      while (code>=c->min_table_entry) {
+	*c->stack_ptr++=c->compress[code].ch;
+	code=c->compress[code].basecode;
+      }
+      *c->stack_ptr++=code;
+      c->last_ch=code;
+
+      c->entry_used=TRUE;
+      temp=c->cur_entry;
+      temp->basecode=lastcode;
+      temp->ch=c->last_ch;
+      temp1=&c->hash[lastcode];
+      temp->next=temp1->next;
+      temp1->next=temp;
+
+      ArcGetTableEntry(c);
+      while (dst_ptr<dst_limit && c->stack_ptr!=c->stack_base)
+	*dst_ptr++ = * -- c->stack_ptr;
+      lastcode=basecode;
+    }
+    c->saved_basecode=lastcode;
+  }
+  c->dst_pos=dst_ptr-c->dst_buf;
+}
+
+ArcCs *NewArcCs(BOOL expand,BOOL text_only)
+{
+  ArcCs *c;
+  c=MAllocZ(sizeof(ArcCs));
+  if (expand) {
+    c->stack_base=MAlloc(ARC_MAX_TABLE_ENTRY+1);
+    c->stack_ptr=c->stack_base;
+  }
+  if (text_only)
+    c->min_bits=7;
+  else
+    c->min_bits=8;
+  c->min_table_entry=1<<c->min_bits;
+  c->free_index=c->min_table_entry;
+  c->next_bits_in_use=c->min_bits+1;
+  c->free_limit=1<<c->next_bits_in_use;
+  c->saved_basecode=0xFFFFFFFF;
+  c->entry_used=TRUE;
+  ArcGetTableEntry(c);
+  c->entry_used=TRUE;
+  return c;
+}
+
+void DelArcCs(ArcCs *c)
+{
+  Free(c->stack_base);
+  Free(c);
+}
+
+int ArcDetermineCompressionType(BYTE *src,DWORD size)
+{
+  DWORD i,j=0;
+  for (i=0;i<size;i++)
+    j|=src[i];
+  if (j & 0x80)
+    return CT_8_BIT;
+  else
+    return CT_7_BIT;
+}
+
+DWORD ArcCheckSum(BYTE *buf,DWORD size)
+{
+  DWORD *ptr=buf,i,l=size/4,result=0;
+  for (i=0;i<l;i++)
+    result^=ptr[i];
+  return result;
+}
+
+
+ArcCompressStruct *CompressBuf(BYTE *src,DWORD size,
+		DWORD flags=0)
+{
+  DWORD size_out;
+  PasswordStruct *my_PopUpPassword();
+  PasswordStruct *pwd;
+  ArcCompressStruct *result,*result2;
+  BOOL text_only=(ArcDetermineCompressionType(src,size)==CT_7_BIT);
+  ArcCs *c=NewArcCs(FALSE,text_only);
+  c->src_size=size;
+  c->src_buf=src;
+  c->dst_size=(size+sizeof(ArcCompressStruct)-1)*8;
+  c->dst_buf=MAllocZ(c->dst_size/8);
+  c->dst_pos=(sizeof(ArcCompressStruct)-1)*8;
+  ArcCompressBuf(c);
+  ArcFinishCompression(c);
+  if (c->src_pos==c->src_size) {
+    size_out=(c->dst_pos+7)/8;
+    result=MAlloc(size_out);
+    MemCpy(result,c->dst_buf,size_out);
+    result->compression_type=(text_only) ? CT_7_BIT:CT_8_BIT;
+    result->compressed_size=size_out;
+
+  } else {
+    result=MAlloc(size+sizeof(ArcCompressStruct)-1);
+    MemCpy(result->body,src,size);
+    result->compression_type=CT_NONE;
+    result->compressed_size=size+sizeof(ArcCompressStruct)-1;
+  }
+  if (flags & J_ATTR_ENCRYPTED) {
+    my_PopUpPassword=FindExtern("PopUpPassword");
+    pwd=my_PopUpPassword();
+    result2=MAllocIdentical(result);
+    if (pwd)
+      Encrypt(result->body,result2->body,
+	result->compressed_size-(sizeof(ArcCompressStruct)-1),pwd->pw);
+    Free(result2);
+    Free(pwd);
+  }
+  result->expanded_size=size;
+  result->checksum=J_XSUM;
+  result->flags=flags;
+  result->reserved0=0;
+  result->reserved1=0;
+  result->reserved2=0;
+  result->checksum=ArcCheckSum(result,result->compressed_size);
+  Free(c->dst_buf);
+  DelArcCs(c);
+  return result;
+}
+
+BYTE *ExpandBuf(ArcCompressStruct *r)
+{
+  ArcCs *c;
+  ArcCompressStruct *r2=r;
+  BYTE *result;
+  BOOL text_only;
+  PasswordStruct *my_PopUpPassword();
+  PasswordStruct *pwd=NULL;
+
+  if (ArcCheckSum(r,r->compressed_size)!=J_XSUM)
+    throw(TRP_ARC_XSUM);
+  if (r->flags & J_ATTR_ENCRYPTED) {
+    r2=MAllocIdentical(r);
+    my_PopUpPassword=FindExtern("PopUpPassword");
+    pwd=my_PopUpPassword();
+    if (pwd)
+      Decrypt(r2->body,r->body,
+	r2->compressed_size-(sizeof(ArcCompressStruct)-1),pwd->pw);
+  }
+  result=MAlloc(r2->expanded_size+1);
+  result[r2->expanded_size]=0; //terminate
+
+  text_only=(r2->compression_type==CT_7_BIT);
+  if (r2->compression_type==CT_NONE) {
+    MemCpy(result,r2->body,r2->expanded_size);
+    goto expand_end;
+  }
+  c=NewArcCs(TRUE,text_only);
+  c->src_size=r2->compressed_size*8;
+  c->src_pos=(sizeof(ArcCompressStruct)-1)*8;
+  c->src_buf=r2;
+  c->dst_size=r2->expanded_size;
+  c->dst_buf=result;
+  c->dst_pos=0;
+  ArcExpandBuf(c);
+  DelArcCs(c);
+
+expand_end:
+  if (r2!=r)
+    Free(r2);
+  Free(pwd);
+  return result;
+}
+

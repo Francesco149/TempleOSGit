@@ -1,0 +1,11 @@
+Cd("/J/UTILS");;
+#include "BOOTINS"
+#include "DBG"
+#include "DIFF"
+#include "GREP"
+#include "S2T"
+#include "HASHUTIL"
+LoadMapFile("::/J/KERNEL/OS.MPZ");  //Enable Man()
+LoadMapFile("::/J/COMPILE/CMP.MPZ");  //Enable Man()
+LoadMapFile("::/J/ROOT/ROOTASM.MPZ");  //Enable Man()
+

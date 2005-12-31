@@ -1,0 +1,7 @@
+#include "/J/KERNEL/ROOTK.HPZ"
+#include "/J/KERNEL/ROOTK2.HPZ"
+#include "/J/KERNEL/ROOTK3.HPZ"
+#include "/J/COMPILE/CMP.HPZ"
+
+Cd("/J/ROOT");;
+#include "ROOT2"

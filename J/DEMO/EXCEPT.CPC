@@ -1,0 +1,64 @@
+//**WARNING:** Don't return out of a try{}.	This
+//might get fixed.
+
+#define ECP_1	1
+#define ECP_2	2
+#define ECP_3	3
+#define ECP_4	4
+
+void Show()
+{
+  int i;
+  coutln "Fs->trap_argc=",Fs->trap_argc;
+  for (i=0;i<Fs->trap_argc;i++)
+    PrintF("Fs->trap_argv[%d]=%08X\r\n",i,Fs->trap_argv[i]);
+}
+
+
+
+BOOL Pmt(int i)
+{
+  cout i;
+  return YorN;
+}
+
+void D1()
+{
+  coutln "D1";
+  if (Pmt(1)) throw(ECP_1);
+  if (Pmt(2)) throw(ECP_2,33,55,66);
+  if (Pmt(5)) throw;
+}
+
+void D2()
+{
+  coutln "D2";
+  try {
+    D1;
+    if (Pmt(4)) throw(ECP_4);
+  } catch {
+    coutln "D2 handler";
+    Show;
+    if (Fs->trap_argc>0) {
+      if (Fs->trap_argv[0]==ECP_1) {
+	coutln "Caught in D2";
+	Fs->take_trap=TRUE;
+      }
+    }
+  }
+}
+
+void Demo()
+{
+  try {
+    D2;
+    if (Pmt(3)) throw;
+  } catch {
+    coutln "Demo handler";
+    Show;
+    Fs->take_trap=TRUE;
+  }
+}
+
+
+Demo;
