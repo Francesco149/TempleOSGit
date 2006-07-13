@@ -1,0 +1,24 @@
+//has words
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("qCqFeDEetDCCetCCCqDqAqC",
+"Good \0e\0nough \0 \0for \0 \0 \0gov\0ern\0 \0ment \0work.\r\n\0");
+    Play("qCqFeDEetDCCetCCCqDqAqC",
+"Good \0e\0nough \0 \0for \0 \0 \0gov\0ern\0 \0ment \0work.\r\n\0");
+    Play("qFqEetFAFqAqDeGAqEeBC",
+"Trust \0me. \0Duty \0 \0 \0 \0I \0 \0don't \0shirk.\r\n\0");
+    Play("qFqEetFAFqAqDeGAqEeBC",
+"Trust \0me. \0Duty \0 \0 \0 \0I \0 \0don't \0shirk.\r\n\0");
+  }
+}
+
+Song;

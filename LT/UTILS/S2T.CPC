@@ -1,0 +1,62 @@
+//[StringUtil] StringUtil() operations on files
+
+public void SUFile(I1 *name,U8 su_flags)
+{
+  I1 *dst;
+  BoolU4 changed=FALSE;
+  I8 reduced=0;
+  Ltf *l=LtfRead(name,LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
+  LtfEntry *cl;
+  cl=l->dummy.next;
+  while (cl!=l) {
+    if (cl->btype==LTFT_TEXT) {
+      dst=MStringUtil(cl->display,su_flags);
+      if (StrCmp(dst,cl->display)) {
+	reduced=reduced+StrLen(cl->display)-StrLen(dst);
+	changed=TRUE;
+	Free(cl->display);
+	cl->display=dst;
+      } else
+	Free(dst);
+    }
+    cl=cl->next;
+  }
+  if (changed) {
+    PrintF("Reduced %s by %d chars\r\n",name,reduced);
+    StrCpy(l->filename.name,name);
+    LtfWrite(l);
+  }
+  LtfDel(l);
+}
+
+void SUList(LTDirEntry *tempm1,U8 su_flags)
+{
+  LTDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub) {
+	coutln SysText("ST_SCANNING_DIRECTORY"),tempm1->full_name;
+	SUList(tempm1->sub,su_flags);
+      }
+    } else
+      SUFile(tempm1->full_name,su_flags);
+    DelLTDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+//flags +r=recurse
+public void SU(I1 *wild,U8 su_flags,I1 *flags)
+{
+  FlagsStruct f;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  SUList(FindFiles(wild,&f.on),su_flags);
+}
+
+//flags +r=recurse
+public void S2T(I1 *wild,I1 *flags)
+{
+  SU(wild,SU_S2T|SU_REMOVE_TRAILING,flags);
+}
+

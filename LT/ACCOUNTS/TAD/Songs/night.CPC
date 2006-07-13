@@ -1,0 +1,26 @@
+//star,star,star,star
+//I name this one, not God.
+//God called this a dirge.  I freaked
+//out not wanting a dirge so I sped it
+//up.  Then, I got to thinking someone
+//has to write dirges.
+//It is emotionally moving when played slow.
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.0;
+  while (TRUE) {
+    Play("FqDqDeACqEqEqDqDq");
+    Play("FqDqDeACqEqEqDqDq");
+    Play("DqGqFeGFqFqEqEqBq");
+    Play("DqGqFeGFqFqEqEqBq");
+  }
+}
+
+Song;

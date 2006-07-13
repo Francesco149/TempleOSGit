@@ -1,0 +1,24 @@
+//has words,star,star
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("qCqAqAqBqAeAEeCEqB",
+      "Who \0was \0that \0per\0son? \0 \0It \0wasn't \0 \0me?\r\n\0");
+    Play("qCqAqAqBqAeAEeCEqB",
+      "Who \0was \0that \0per\0son? \0 \0It \0wasn't \0 \0me?\r\n\0");
+    Play("etDEDqFetBEDeAFeGEqFqDqE",
+      "Sad \0to \0say, \0 \0I \0guess \0 \0it \0 \0was \0 \0 \0me.\r\n\0");
+    Play("etDEDqFetBEDeAFeGEqFqDqE",
+      "Sad \0to \0say, \0 \0I \0guess \0 \0it \0 \0was \0 \0 \0me.\r\n\0");
+  }
+}
+
+Song;

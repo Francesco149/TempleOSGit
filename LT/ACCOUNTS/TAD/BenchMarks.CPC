@@ -1,0 +1,90 @@
+I1 *BenchLogName()
+{
+  LTDirEntry *tempm;
+  U8 cnt=0;
+  tempm=FindFiles("HOME/BenchLog/*.TXZ");
+  while (tempm) {
+    cnt++;
+    tempm=tempm->next;
+  }
+  return MSPrintF("HOME/BenchLog/BenLog%04d.TXZ",cnt);
+}
+
+void BenchMarks()
+{
+  LTDate start_time,end_time;
+  U8 i,mem_start,mem_end;
+  Ltf *ben_l=LtfNew,*old_ben_l=Fs->cur_ltf;
+  ben_l->max_entries=1000000;
+  Fs->cur_ltf=ben_l;
+  LTDate ltdt=GetCurTimeLTDate;
+  PrintF("$WW+H,1$Date	   :%h2D %h4T\r\n",ltdt.date,ltdt.time);
+  PrintF("FreeMem at Boot:%08X\r\n",UnusedSysMem);
+
+  I8 old_max=win_max_refresh;
+  win_max_refresh=2048;
+  Prof(ADAMASM_START,ADAMASM_END-ADAMASM_START);
+  Sleep(1000);
+  PrintF("Win Refresh	 :%6.3fHz\r\n",win_refresh);
+  ProfRep(64);
+  Prof(&LtfUpdateWindowJoin,0x10000);
+  Sleep(1000);
+  ProfRep(64);
+  Prof(&GrUpdateScreen,0x4000);
+  Sleep(1000);
+  ProfRep(64);
+  win_max_refresh=old_max;
+
+  CompileDrive('D');
+
+  Silent(ON);
+  CopyTree("::/LT","B:/LT");
+  Cd("B:/LT/COMPILE");
+  Prof(COMPILER_START,COMPILER_END-COMPILER_START);
+  mem_start=TaskAllocatedMem-TaskUnusedAllocatedMem;
+  CompileFile("CMP.ASZ");
+  mem_end=TaskAllocatedMem-TaskUnusedAllocatedMem;
+  Silent(OFF);
+  coutln "Compile Module Mem Leak :",mem_end-mem_start;
+  Silent(ON);
+  Cd("B:/LT/OSMain");
+  /* We don't want to count start-up issues */
+  Auto(TAD5_MID_CONFIG);
+  CompileFile("OS.ASZ");
+  start_time=BootTime;
+  for (i=0;i<3;i++) {
+    Silent(ON);
+    mem_start=TaskAllocatedMem-TaskUnusedAllocatedMem;
+    Auto(TAD5_MID_CONFIG);
+    CompileFile("OS.ASZ");
+    mem_end=TaskAllocatedMem-TaskUnusedAllocatedMem;
+    Silent(OFF);
+    coutln "OSMain Mem Leak :",mem_end-mem_start;
+  };
+  end_time=BootTime;
+  PrintF("Compiling OSMain Time:%h17Ts\r\n",DivI8(end_time-start_time,3));
+  ProfRep(64);
+
+  Ltf *stdout_l=LtfNew;
+  Fs->cur_ltf=stdout_l;
+  Prof(&LtfUpdateWindowJoin,0x10000);
+  PrintF("$WW+H,1$");
+  start_time=BootTime;
+  for (i=0;i<5000;i++)
+    coutln i;
+  for (i=0;i<5000;i++)
+    cout i," ";
+  end_time=BootTime;
+  Fs->cur_ltf=ben_l;
+  LtfDel(stdout_l);
+  ProfRep(512);
+  PrintF("StdOut Time:%h17Ts\r\n",end_time-start_time);
+
+  Fs->cur_ltf=old_ben_l;
+  StrCpy(ben_l->filename.name,BenchLogName);
+  LtfWrite(ben_l,FALSE);
+  LtfDel(ben_l);
+  Cd("HOME");
+}
+
+BenchMarks;

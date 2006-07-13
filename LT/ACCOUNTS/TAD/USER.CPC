@@ -1,0 +1,94 @@
+//This is the startup file for new local users
+UseConsoleLtf("::/LT/ACCOUNTS/TAD/USER.MUZ");
+Fs->answers_displayed=1;  //from 0-8
+Adam("BoolU4 is_CDROM=TRUE;");
+LoadAdam3;
+default_partition=DriveToPartition('B');
+Fs->EditPlugIns=&TAD_EditPlugIns;
+Ltf *l=Fs->cur_ltf;
+l->EditPlugIns=&TAD_EditPlugIns;
+if (l=l->menu_ltf)
+  l->EditPlugIns=&TAD_EditPlugIns;
+
+U8 F(I1 *pattern,I1 *flags="+r+i")
+{
+  return Grep(pattern,"/LT/"TEXT_FILE_MASK,flags);
+}
+
+U8 R(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+r+l")
+{
+  return Grep(pattern,"/LT/"TEXT_FILE_MASK,flags,replace_text);
+}
+
+U8 FD(I1 *pattern,I1 *flags="+r+i")
+{
+  return Grep(pattern,TEXT_FILE_MASK,flags);
+}
+
+U8 RD(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+r+l")
+{
+  return Grep(pattern,TEXT_FILE_MASK,flags,replace_text);
+}
+
+U8 FC(I1 *pattern,I1 *flags="+r+i")
+{
+  return Grep(pattern,"/LT/"C_FILE_MASK,flags);
+}
+
+U8 RC(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+r+l")
+{
+  return Grep(pattern,"/LT/"C_FILE_MASK,flags,replace_text);
+}
+
+U8 FCD(I1 *pattern,I1 *flags="+r+i")
+{
+  return Grep(pattern,C_FILE_MASK,flags);
+}
+
+U8 RCD(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+r+l")
+{
+  return Grep(pattern,C_FILE_MASK,flags,replace_text);
+}
+
+U8 FA(I1 *pattern,I1 *flags="+r+i")
+{
+  return Grep(pattern,"/LT/"ASM_FILE_MASK,flags);
+}
+
+U8 RA(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+r+l")
+{
+  return Grep(pattern,"/LT/"ASM_FILE_MASK,flags,replace_text);
+}
+
+U8 FAD(I1 *pattern,I1 *flags="+r+i")
+{
+  return Grep(pattern,ASM_FILE_MASK,flags);
+}
+
+U8 RAD(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+r+l")
+{
+  return Grep(pattern,ASM_FILE_MASK,flags,replace_text);
+}
+
+U1 *P(U8 cluster,U8 cnt=0,BoolU4 write=FALSE)
+{
+  return Patch(cluster,cnt,write);
+}
+
+void M(I1 *src1,I1 *src2,I1 *flags="+r")
+{
+  MergeChk(src1,src2,flags);
+}
+
+SetDriveTextAttr('B',BLUE<<4|YELLOW);
+SetDriveTextAttr('T',LTGRAY<<4|BLUE);
+PutSysText("ST_USER_STARTUP");
+Type("::/LT/DOC/Help.TXZ");
+
+Bts(&Fs->crt_flags,CRTf_SHOW);
+Fs->scroll_speed=10;
+Type("::/LT/DOC/StartUp.TXZ");
+Dir;
+
+if (Fs->user_num==1)
+  PopUp("Sleep(1000);DoSongs;");

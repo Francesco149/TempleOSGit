@@ -1,0 +1,61 @@
+If you modify this file, you should place it
+into your HOME directory.  This version is the
+default for accounts without a version in HOME. 
+
+Cd("HOME");Dir;
+`Cd("HOME");Dir;`
+
+Cd("::/LT/OSMain");Dir;
+`Cd("::/LT/OSMain");Dir;`
+
+Cd("::/LT/ADAM");Dir;
+`Cd("::/LT/ADAM");Dir;`
+
+Cd("::/LT/APPS");Dir;
+`Cd("::/LT/APPS");Dir;`
+
+Cd("::/LT/DEMO");Dir;
+`Cd("::/LT/DEMO");Dir;`
+
+Cd("::/LT/UTILS");Dir;
+`Cd("::/LT/UTILS");Dir;`
+
+Drive('A');
+`Drive('A');`
+
+Recompile Floppy OS Drive A:
+`InstallBoot('A');`
+
+
+Play WarGame
+`Cd("::/LT/APPS");;#include "WARGAME"`
+
+DO-TELL (A fractel-like thing)
+`Cd("::/LT/DEMO");;#include "Dawg"`
+
+StarTrek Game
+`#include "::/LT/DEMO/Graphics/StarTrek2"`
+
+
+Tour
+`Cd("::/LT/ACCOUNTS/TOUR");;AutoFile("TOUR");`
+
+
+The following can be used if you recompile, adding hard disk support.
+Drive('D');
+`Drive('D');`
+
+Drive('E');
+`Drive('E');`
+
+Recompile Hard Drive D:
+`InstallBoot(':','D');`
+
+
+
+List functions in alphabetic order
+`HFunsRep;View;`
+ 
+List functions in numeric address order
+`HMapRep;View;`
+ 

@@ -1,0 +1,21 @@
+//star
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  music_stacatto_factor=.97;
+  while (TRUE) {
+    Play("eFAetEDGqGeGFqBqBqDqC");
+    Play("eFAetEDGqGeGFqBqBqDqC");
+    Play("qEqEqAqFqFeFBetBBGqA");
+    Play("qEqEqAqFqFeFBetBBGqA");
+  }
+}
+
+Song;

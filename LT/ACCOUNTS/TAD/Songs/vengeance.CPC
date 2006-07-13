@@ -1,0 +1,24 @@
+//has words,star,star
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("etFDAqDqAqAqDqCeEGeDC",
+	 "Leave \0it \0to \0God.\r\n\0");
+    Play("etFDAqDqAqAqDqCeEGeDC",
+	 "Leave \0it \0to \0God.\r\n\0");
+    Play("qDqFqGqCqEqCetDGAeAA",
+	 " \0 \0 \0 \0Stand \0back.\r\n\0");
+    Play("qDqFqGqCqEqCetDGAeAA",
+	 " \0 \0 \0 \0Stand \0back.\r\n\0");
+  }
+}
+
+Song;

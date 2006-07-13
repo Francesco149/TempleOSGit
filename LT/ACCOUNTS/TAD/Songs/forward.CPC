@@ -1,0 +1,24 @@
+//has words,star,star
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("qCqAetCACqFeFGqFetACDetGFG",
+      "Jump, \0 \0 \0jump \0in! \0 \0 \0 \0 \0Water's \0fine.\r\n\0");
+    Play("qCqAetCACqFeFGqFetACDetGFG",
+      "Jump, \0 \0 \0jump \0in! \0 \0 \0 \0 \0Water's \0fine.\r\n\0");
+    Play("etBBAqDqFqDetCCAqEetDAFeBB",
+      "Don't \0 \0 \0you \0let \0your \0life \0 \0 \0pass \0by.\r\n\0");
+    Play("etBBAqDqFqDetCCAqEetDAFeBB",
+      "Don't \0 \0 \0you \0let \0your \0life \0 \0 \0pass \0by.\r\n\0");
+  }
+}
+
+Song;

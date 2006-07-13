@@ -1,0 +1,141 @@
+
+
+----07/13/06 09:22:24----
+* Fixed some bugs in disassembler.
+
+----07/12/06 16:47:29----
+* Modified FlagsStruct converting from 128-bit to 64-bit.
+* Fixed bad default flag in [FileOccurrences] FileOccurrences().
+* Fixed bug in FindFile for CD-ROM.  Cd() result was bad.
+
+----07/11/06 17:51:02----
+* Probably fixed problem with SHIFT or CTRL keys getting locked on.
+
+----07/11/06 09:02:06----
+* Fixed bugs with use of HOME directory in Cd() and other spots.  Wasn't 
+changing partitions to the home drive.
+* Moved [FindFiles] FindFiles() to [SysFindFiles] SysFindFiles() and
+enveloped it so it now supports 
+specifying directories.
+
+----07/11/06 04:43:20----
+* Changed [C:/LT/OSMain/Dsk/Dsk1b.CPZ,238] Dir() listing--shortened
+date/time, sorts by filename extension.
+* Moved stuff around in files
+
+----07/10/06 10:46:36----
+* Combined Ltf flags and flags2
+
+----07/10/06 04:24:01----
+* sped-up screen update
+* Enhanced [C:/LT/Adam/Profiler.APZ,106] ProfRep();
+* Increased RAM disk size from 2880 blks to 8192 blks.  This is the 'B' drive.
+
+----07/08/06 05:27:06----
+* Changed music_tempo.  It is now a recripocal and a different scale.
+
+----07/08/06 00:07:23----
+* Changed eigth note tripolets in [C:/LT/Adam/Snd/Music.APZ,78] Play() from
+'S' to "et".
+
+----07/06/06 23:33:18----
+* Fixed [Edit] Edit() menu so that it is active when you click commands.
+* Fixed [WriteCdImage] WriteCdImage() to use proper path in filename.
+
+----07/03/06 23:53:32----
+* Converted some compression routines to asm to speed things up.
+
+----07/01/06 22:30:45----
+* Improved [::/LT/DEMO/WinMgr2.CPZ] ::/LT/DEMO/WinMgr2.CPZ.  You really
+should try it.  It demo's the 
+Ode feature.
+
+----07/01/06 03:55:58----
+* Sped-up compiler
+
+----06/30/06 21:55:59----
+* Fixed some memory leaks in compiler.
+* Changed syntax for type casting.  Now, requires parenthesis.  It's 
+designated with "><(class *)" and it is post-fix.
+----06/30/06 16:40:43----
+* Fixed compiler bugs
+
+----06/29/06 03:32:32----
+* Added [C:/LT/OSMain/Dsk/DskStr.CPZ,120] CurDir() which returns both drive
+and directory.
+* Fixed [C:/LT/Adam/Dsk2a.APZ,109] CopyTree()
+
+----06/28/06 11:13:23----
+* Made major improvement in screen update speed.
+* Sped-up compile time a little
+
+----06/28/06 05:30:34----
+* Added significant compiler optimization
+* Probably fixed bug on Install option for distributed CD-ROMs  (fixed 
+SysGetChar)
+
+----06/27/06 23:32:19----
+* Added minor compiler optimization
+
+----06/27/06 21:20:14----
+* Fixed bug with F2 macro
+* Added minor compiler optimization
+
+----06/27/06 03:50:53----
+* Added compiled_lines to wallpaper
+
+----06/26/06 22:43:23----
+* Fixed [C:/LT/Adam/Gr/GrPrimatives.APZ,449] GrCircle() and
+[C:/LT/Adam/Gr/GrMath.APZ,517] Circle();
+* Added minor compiler optimization.
+* Fixed bug in editor involving cursor-up on nontext widgets.
+* Fixed lacking feature with CTRL-R, adding "END" for text insert points.
+
+
+----06/25/06 19:13:38----
+* Altered the way string constants and Pictures are stored when compiled so 
+that it looks like it is on the heap.  This might fix lots of bugs.  
+* Added [LtfPutGrElem] LtfPutGrElem();
+See [::/LT/DEMO/Graphics/Sprite3.CPZ] ::/LT/DEMO/Graphics/Sprite3.CPZ.
+
+----06/24/06 18:20:28----
+* fixed missed optimization in compiler--code is smaller and faster
+
+----06/20/06 19:36:07----
+* **WARNING**: swapped keyboard scan-code flags SCf_KEY_UP and SCf_E0_PREFIX.
+ If 
+you have a EditPlugIn, you might need to change it. See
+[::/LT/ACCOUNTS/ADAM3.CPZ,My_EditPlugIns] My_EditPlugIns.
+* Added numeric keypad support
+* Added HOME/END keys to editor
+ 
+----06/20/06 13:00:25----
+* **WARNING**: renamed "trap" to "except"
+* renamed "heap_cache" stuff to "heap_hash".
+
+----06/14/06 21:01:01----
+* Fixed a word-wrap bug, pretty-much.
+
+----06/12/06 06:02:07----
+* Fixed bug on cursor movement in forms.
+* Added [::/LT/DEMO/WinMgr2.CPZ] ::/LT/DEMO/WinMgr2.CPZ
+
+----06/10/06 15:29:42----
+* worked on mouse and mouse wheel
+* modified [C:/LT/Opt/Grep.APZ,161] Grep() to return match count.
+* added [FileOccurrences] FileOccurrences() 
+
+----06/07/06 15:08:58----
+* Implemented Scroll-Lock
+* Sets keyboard LEDs
+* Added BSplines
+
+----06/05/06 12:47:59----
+* implemented returns out of catch{}
+----06/05/06 08:51:40----
+* fixed bug in exception handling and implenmented returns out of try{} but 
+not catch {} statements. 
+----06/04/06 07:39:40----
+* Added array nd structure initialization for global variables
+----05/20/06 04:20:38----
+* Added F4 and SHIFT-F4 for picking directories and files.

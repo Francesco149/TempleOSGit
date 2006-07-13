@@ -1,0 +1,206 @@
+/**********************
+	PUSH	EBP
+	MOV	EBP,ESP
+	PUSH	EAX
+	PUSH	EDI
+	MOVZX	EAX,U1 SF_PARAM1[EBP]
+	MOV	AH,0xF0
+	MOV	EDI,U4 [DC_COL]
+	ADD	EDI,2
+	CMP	EDI,80*25*2
+	JNE	@@1234
+	XOR	EDI,EDI
+@@1234:	MOV	U4 [DC_COL],EDI
+	ADD	EDI,0xB8000
+	MOV	U2 [EDI],AX
+	POP	EDI
+	POP	EAX
+	POP	EBP
+	RET
+***********************/
+
+void DrawChar(I8 ch) //Raw I/O
+{
+  I8 i;
+  U1 *ptr,*ptr2;
+  if (ch==CH_TAB) {
+    DrawChar(CH_SPACE);
+    while (dc_col & 7)
+      DrawChar(CH_SPACE);
+  } else if (ch==CH_BACKSPACE) {
+    dc_col--;
+    DrawChar(CH_SPACE);
+    dc_col--;
+  } else if (ch==CH_CR) {
+    DrawChar(CH_SPACE);
+    while (dc_col % (grwidth/FONT_WIDTH))
+      DrawChar(CH_SPACE);
+  } else if (ch==CH_LINE_FEED)
+    ;
+  else if (ch<CH_SHIFT_SPACE || ch>0x7E)
+    DrawChar('.');
+  else {
+    ptr=0xA0000+(dc_col % (grwidth/FONT_WIDTH))+
+     (dc_col/(grwidth/FONT_WIDTH) % (grheight/FONT_HEIGHT))*grwidth;
+    ptr2=&grfont[(ch&0xFF)*8];
+    for (i=0;i<8;i++) {
+      *ptr=*ptr2++;
+      ptr+=grwidth>>3;
+    }
+    dc_col++;
+  }
+}
+
+void GrClear2(GrBitMap *base)
+{
+  switch (base->type) {
+    case BMT_COLOR4:
+      MemSet(base->body,0,(base->internal_width*base->height)>>1);
+      break;
+    case BMT_MONO:
+      MemSet(base->body,0,(base->internal_width*base->height)>>3);
+      break;
+  }
+}
+
+void GrClear(GrBitMap *base=NULL)
+{
+  if (!base)
+    GrClear2(grbase);
+  else
+    GrClear2(base);
+}
+
+BoolU4 CursorOnScreen()
+{
+  I8 t=(Fs->window_top>0)
+       ? Fs->window_top : 0,
+      b=(Fs->window_bottom<SCREEN_LINES)
+       ? Fs->window_bottom : SCREEN_LINES-1,
+      l=(Fs->window_left>0)
+       ? Fs->window_left : 0,
+      r=(Fs->window_right<SCREEN_COLS<<2)
+       ? Fs->window_right : SCREEN_COLS<<2-4;
+  return (Fs->cursor_vert>=t &&
+	  Fs->cursor_vert<=b &&
+	  Fs->cursor_hor>=l &&
+	  Fs->cursor_hor<=r);
+}
+
+void CursorOff()
+{
+  U1 *bptr;
+  if (Btr(&Fs->crt_flags,CRTf_CURSOR_ON)) {
+    if (CursorOnScreen) {
+      bptr=textbase+Fs->cursor_hor+
+	Fs->cursor_vert*Fs->crt_width+1;
+      *bptr^=0xFF;
+    }
+  }
+}
+
+void CursorOn()
+{
+  U1 *bptr;
+  if (!Bts(&Fs->crt_flags,CRTf_CURSOR_ON)) {
+    if (CursorOnScreen) {
+      bptr=textbase+Fs->cursor_hor+
+	Fs->cursor_vert*Fs->crt_width+1;
+      *bptr^=0xFF;
+    }
+  }
+}
+
+void CursorHome()
+{
+  CursorOff;
+  Fs->cursor_hor=Fs->window_left;
+  Fs->cursor_vert=Fs->window_top;
+  CursorOn;
+}
+
+void ClearWindowText()
+{
+  I8 x,y;
+  I8 t=(Fs->window_top>0)
+       ? Fs->window_top : 0,
+      b=(Fs->window_bottom<SCREEN_LINES)
+       ? Fs->window_bottom : SCREEN_LINES-1,
+      l=(Fs->window_left>0)
+       ? Fs->window_left : 0,
+      r=(Fs->window_right<SCREEN_COLS<<2)
+       ? Fs->window_right : SCREEN_COLS<<2-4;
+  U4 *ptr;
+  U8 d=CH_SPACE+(Fs->text_attribute<<8);
+  for (y=t;y<=b;y++) {
+    ptr=textbase+y*Fs->crt_width+l;
+    for (x=l;x<=r;x=x+4) {
+      *ptr=d;
+      ptr+=4;
+    }
+  }
+}
+
+void InitCrt()
+{
+  Fs->crt_flags=(1<<CRTf_WRAP_AROUND);
+  Fs->text_attribute=0xF1;
+  Fs->border_attribute=0xF9;
+  Fs->crt_width=SCREEN_COLS<<2;
+  Fs->crt_height=SCREEN_LINES;
+  Fs->window_right=SCREEN_COLS<<2-8;
+  Fs->window_left=4;
+  Fs->window_top=1;
+  Fs->window_bottom=SCREEN_LINES-2;
+  CursorHome;
+}
+
+asm {CP_PUT_I1::};
+void PutChar(I8 ch)
+{
+  void my_LtfPutChar(Ltf *l,I8 ch, U8 sc,BoolU4 old_preempt);
+  if (!Bt(&Fs->crt_flags,CRTf_SILENT)) {
+    if (sys_cur_scan_code & SCF_SCROLL) {
+      if (sys_cur_focus_task==Fs) {
+	while (sys_cur_scan_code & SCF_SCROLL)
+	  SwapInNext;
+      }
+    }
+    if (IsRaw)
+      DrawChar(ch);
+    else {
+      if (Bt(&Fs->task_flags,TSSf_INPUT_FILTER_TASK))
+	Msg(MSG_KEY_DOWN,ch,0);
+      else {
+	my_LtfPutChar=ext[EXT_LTF_PUT_I1];
+	if (Fs->cur_ltf && my_LtfPutChar)
+	  my_LtfPutChar(Fs->cur_ltf,ch,0,Bt(&sys_flags,SYSf_PREEMPTIVE));
+      }
+    }
+  }
+}
+
+asm {CP_PUT_STRING::};
+void PutS(I1 *st)
+{
+  I1 ch;
+  void my_LtfPutSPartial(Ltf *l,I1 *st);
+  if (!st) return;
+  if (!Bt(&Fs->crt_flags,CRTf_SILENT)) {
+    if (IsRaw) {
+      while (ch=*st++)
+	DrawChar(ch);
+    } else {
+      if (Bt(&Fs->task_flags,TSSf_INPUT_FILTER_TASK)) {
+	while (ch=*st++)
+	  Msg(MSG_KEY_DOWN,ch,0);
+      } else {
+	if (Fs->cur_ltf) {
+	  my_LtfPutSPartial=ext[EXT_LTF_PUTS];
+	  my_LtfPutSPartial(Fs->cur_ltf,st);
+	}
+      }
+    }
+  }
+}
+

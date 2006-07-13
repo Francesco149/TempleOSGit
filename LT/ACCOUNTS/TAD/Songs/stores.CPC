@@ -1,0 +1,24 @@
+//has words,star,star
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("qAqBqFqFqDeEGeFDeDE",
+      "Show \0some \0love.\r\n\0");
+    Play("qAqBqFqFqDeEGeFDeDE",
+      "Show \0some \0love.\r\n\0");
+    Play("eABeFAqFeFDetDBBqGeCGqA",
+      "Clerks \0 \0 \0need \0pay.\0\r\n\0");
+    Play("eABeFAqFeFDetDBBqGeCGqA",
+      "Clerks \0 \0 \0need \0pay.\0\r\n\0");
+  }
+}
+
+Song;

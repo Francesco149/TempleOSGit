@@ -1,0 +1,24 @@
+//star,star,star,star,has words
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("eDDqAqAqBqCetEFCqEetCFD",
+      "Boy,\0 \0 the\0 sun\0 is\0 hot.\0\r\n\0");
+    Play("eDDqAqAqBqCetEFCqEetCFD",
+      "Boy,\0 \0 the\0 sun\0 is\0 hot.\0\r\n\0");
+    Play("qDqBeBGqGqEqEqDeBD",
+      "Boy,\0 \0 the\0 sun\0 is\0 hot.\0\r\n\0");
+    Play("qDqBeBGqGqEqEqDeBD",
+      "Boy,\0 \0 the\0 sun\0 is\0 hot.\0\r\n\0");
+  }
+}
+
+Song;

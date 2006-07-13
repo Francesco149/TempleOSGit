@@ -1,0 +1,68 @@
+TssStruct *SingleSong(I1 *msg,I1 *name)
+{
+  Ltf *l;
+  TssStruct *tss=Spawn(&ServantUserCmdLine,name);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  Bts(&tss->crt_flags,CRTf_SHOW);
+  QueueTaskRequest(tss,NULL,msg,(1<<TSSCf_EXIT_ON_COMPLETE));
+  l=tss->cur_ltf;
+  l->flags|=LTFF_MIN_SIZE;
+  LtfPrintF(l,"$FG GREEN$%s$FG$\r\n",name);
+  tss->window_top=2;
+  return tss;
+}
+
+public void DoSongs()
+{
+  I8 i=0,rating,j;
+  I1 *st,*st2,buf[32];
+  LTDirEntry *tempm,*tempm1;
+  Ltf *l=LtfNew;
+  TssStruct *tss=NULL;
+  tempm=FindFiles("HOME/Songs/*.CPZ");
+  tempm1=tempm;
+  LtfPutS(l,"These songs are written and named by God.  Words are by me.\r\n"
+	    "Make your own songs with ALT-SHIFT-S or ALT-S.\r\n\r\n"
+	    "'w' means has words\r\n"
+	    "'*' means recommended.\r\n$FM GREEN$");
+  LtfPrintF(l,"\r\n$MU,\"Click Here to see Moses Comics\" %d$$FM LTBLUE$",-2);
+  while (tempm1) {
+    if ((i++%5)==0)
+      LtfPutS(l,"\r\n");
+    st2=NewString(tempm1->name);
+    RemoveLastSeg(st2,".",buf);
+    LtfPrintF(l,"$MU,\"%-8ts\" %d$",st2,tempm1);
+
+    rating=FileOccurrences("star",tempm1->full_name);
+    if (rating>3) rating=3;
+    for (j=0;j<rating;j++)
+      LtfPutS(l,"*");
+    for (;j<3;j++)
+      LtfPutS(l," ");
+
+    if (FileOccurrences("has words",tempm1->full_name))
+      LtfPutS(l,"w ");
+    else
+      LtfPutS(l,"  ");
+    Free(st2);
+    tempm1=tempm1->next;
+  }
+  LtfPrintF(l,"\r\n$MU,\"DONE\" %d$\r\n",-1);
+  while (TRUE) {
+    tempm1=PopUpMenu(l);
+    if (tss)
+      Kill(tss);
+    if (tempm1<0) break;
+    st2=NewString(tempm1->name);
+    RemoveLastSeg(st2,".",buf);
+    st=MSPrintF("ExecuteFile(\"%s\");",tempm1->full_name);
+    ResetMusicSettings;
+    tss=SingleSong(st,st2);
+    Free(st2);
+    Free(st);
+  }
+  LtfDel(l);
+  if (tempm1==-2)
+    DoComics;
+}

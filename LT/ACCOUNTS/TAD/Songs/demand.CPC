@@ -1,0 +1,19 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  while (TRUE) {
+    Play("sGAGAsEBEBqCq2G3qCetAGDqGqE");
+    Play("sGAGAsEBEBqCq2G3qCetAGDqGqE");
+    Play("qEe2G3CsADADs2G3C2G3CetDBAeGGeFGsBCBC");
+    Play("qEe2G3CsADADs2G3C2G3CetDBAeGGeFGsBCBC");
+  }
+}
+
+Song;

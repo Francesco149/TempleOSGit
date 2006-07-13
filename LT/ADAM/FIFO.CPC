@@ -1,0 +1,112 @@
+public class U1Fifo
+{
+  U1 *buf;
+  U8 mask,in_ptr,out_ptr;
+};
+
+public U1Fifo *NewU1Fifo(U8 size)
+{
+  U1Fifo *f;
+  f=MAlloc(sizeof(U1Fifo));
+  f->buf=MAlloc(size);
+  f->mask=size-1;
+  f->in_ptr=0;
+  f->out_ptr=0;
+  return f;
+}
+
+public void DelU1Fifo(U1Fifo *f)
+{
+  Free(f->buf);
+  Free(f);
+}
+
+public BoolU4 U1FifoInsert(U1Fifo *f,U1 ch)
+{
+  U8 new_in_ptr=(f->in_ptr+1)&f->mask;
+  if (new_in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    f->buf[f->in_ptr]=ch;
+    f->in_ptr=new_in_ptr;
+    return TRUE;
+  }
+}
+
+public BoolU4 U1FifoRemove(U1Fifo *f,U1 *ch)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *ch=f->buf[f->out_ptr];
+    f->out_ptr=(f->out_ptr+1)&f->mask;
+    return TRUE;
+  }
+}
+
+public BoolU4 U1FifoPeek(U1Fifo *f,U1 *ch)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *ch=f->buf[f->out_ptr];
+    return TRUE;
+  }
+}
+
+public class U4Fifo
+{
+  U4 *buf;
+  U8 mask,in_ptr,out_ptr;
+};
+
+public U4Fifo *NewU4Fifo(U8 size)
+{
+  U4Fifo *f;
+  f=MAlloc(sizeof(U4Fifo));
+  f->buf=MAlloc(size*sizeof(U4));
+  f->mask=size-1;
+  f->in_ptr=0;
+  f->out_ptr=0;
+  return f;
+}
+
+public void DelU4Fifo(U4Fifo *f)
+{
+  Free(f->buf);
+  Free(f);
+}
+
+public BoolU4 U4FifoInsert(U4Fifo *f,U8 d)
+{
+  U8 new_in_ptr=(f->in_ptr+1)&f->mask;
+  if (new_in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    f->buf[f->in_ptr]=d;
+    f->in_ptr=new_in_ptr;
+    return TRUE;
+  }
+}
+
+public BoolU4 U4FifoRemove(U4Fifo *f,U4 *d)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *d=f->buf[f->out_ptr];
+    f->out_ptr=(f->out_ptr+1)&f->mask;
+    return TRUE;
+  }
+}
+
+public BoolU4 U4FifoPeek(U4Fifo *f,U4 *d)
+{
+  if (f->in_ptr==f->out_ptr)
+    return FALSE;
+  else {
+    *d=f->buf[f->out_ptr];
+    return TRUE;
+  }
+}
+

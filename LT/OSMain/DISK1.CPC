@@ -1,0 +1,168 @@
+void LTDCInitCache(U8 size_in_U1s)
+{
+  LTCacheBlk *tempc;
+  U8 i,cnt;
+  BoolU4 old_preempt=Preempt(OFF);
+
+  AFree(LTDCBase);
+  AFree(LTDCHashTable);
+  if (size_in_U1s<0x2000) {
+    LTDCBase=NULL;
+    LTDCHashTable=NULL;
+    Preempt(old_preempt);
+    return;
+  }
+  LTDCBase=AMAlloc(size_in_U1s);
+  LTDCNext_lru=&LTDCNext_lru;
+  LTDCLast_lru=&LTDCNext_lru;
+  cnt=MSize(LTDCBase)/sizeof(LTCacheBlk);
+  for (i=0;i<cnt;i++) {
+    tempc=LTDCBase+sizeof(LTCacheBlk)*i;
+    InsQue(tempc,LTDCLast_lru);
+    tempc->next_hash=tempc;
+    tempc->last_hash=tempc;
+    tempc->flags=0;
+  }
+
+  LTDCHashTable=AMAlloc(LTDC_TABLE_SIZE<<3);
+  for (i=0;i<LTDC_TABLE_SIZE;i++) {
+    tempc=LTDCHashTable+i<<3-offset(LTCacheBlk.next_hash);
+    tempc->next_hash=tempc;
+    tempc->last_hash=tempc;
+  }
+  Preempt(old_preempt);
+}
+
+U8 LTDCHash(U8 blk)
+{
+  U8 i=blk & (LTDC_TABLE_SIZE-1);
+  return LTDCHashTable+i<<3-offset(LTCacheBlk.next_hash);
+}
+
+void LTDCRemQue(LTCacheBlk *tempc)
+{
+  BoolU4 old_preempt=Preempt(OFF);
+  if (!LTDCBase) {
+    Preempt(old_preempt);
+    return;
+  }
+  RemQue(tempc);
+  tempc->next_hash->last_hash=tempc->last_hash;
+  tempc->last_hash->next_hash=tempc->next_hash;
+  Preempt(old_preempt);
+}
+
+void LTDCInsQue(LTCacheBlk *tempc)
+{
+  LTCacheBlk *temp_n,*temp_l;
+  BoolU4 old_preempt=Preempt(OFF);
+  if (!LTDCBase) {
+    Preempt(old_preempt);
+    return;
+  }
+  InsQue(tempc,LTDCLast_lru);
+  temp_l=LTDCHash(tempc->blk);
+  temp_n=temp_l->next_hash;
+  tempc->last_hash=temp_l;
+  tempc->next_hash=temp_n;
+  temp_l->next_hash=tempc;
+  temp_n->last_hash=tempc;
+  Preempt(old_preempt);
+}
+
+LTCacheBlk *LTDCFindBlk(LTPartition *p,U8 blk)
+{
+  BoolU4 old_preempt=Preempt(OFF);
+  LTCacheBlk *tempc,
+	    *tempc1=LTDCHash(blk);
+  if (!LTDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  tempc=tempc1->next_hash;
+  while (tempc!=tempc1) {
+    if (tempc->p==p && tempc->blk==blk) {
+      Preempt(old_preempt);
+      return tempc;
+    }
+    tempc=tempc->next_hash;
+  }
+  Preempt(old_preempt);
+  return NULL;
+}
+
+void *LTDCAdd(LTPartition *p,U1 *buf, U8 blk, U8 cnt)
+{
+  LTCacheBlk *tempc;
+  BoolU4 old_preempt=Preempt(OFF);
+  if (!LTDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  while (cnt--) {
+    tempc=LTDCFindBlk(p,blk);
+    if (!tempc)
+      tempc=LTDCNext_lru;
+    LTDCRemQue(tempc);
+    MemCpy(&tempc->body,buf,BLK_SIZE);
+    tempc->p=p;
+    tempc->blk=blk++;
+    LTDCInsQue(tempc);
+    buf+=BLK_SIZE;
+  }
+  Preempt(old_preempt);
+}
+
+
+void LTDCInvalidate(LTPartition *p)
+{
+  BoolU4 old_preempt=Preempt(OFF);
+  LTCacheBlk *tempc=LTDCLast_lru,*tempc1;
+  if (!LTDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  while (tempc!=&LTDCNext_lru) {
+    tempc1=tempc->last_lru;
+    if (tempc->p==p) {
+      LTDCRemQue(tempc);
+      tempc->p=NULL;
+      tempc->blk=0;
+      tempc->next_hash=tempc;
+      tempc->last_hash=tempc;
+      InsQue(tempc,LTDCLast_lru);
+    }
+    tempc=tempc1;
+  }
+  Preempt(old_preempt);
+  return NULL;
+}
+
+void RCache(LTPartition *p,U1 **buf, U8 *blk, U8 *cnt)
+{
+  BoolU4 old_preempt=Preempt(OFF);
+  LTCacheBlk *tempc;
+  if (!LTDCBase) {
+    Preempt(old_preempt);
+    return NULL;
+  }
+  while (*cnt) {
+    tempc=LTDCFindBlk(p,*blk);
+    if (tempc) {
+      MemCpy(*buf,&tempc->body,BLK_SIZE);
+      *cnt-=1;
+      *buf+=BLK_SIZE;
+      *blk+=1;
+    } else
+      break;
+  }
+  while (*cnt) {
+    tempc=LTDCFindBlk(p,*blk+*cnt-1);
+    if (tempc) {
+      MemCpy(*buf+BLK_SIZE*(*cnt-1),&tempc->body,BLK_SIZE);
+      *cnt-=1;
+    } else
+      break;
+  }
+  Preempt(old_preempt);
+}

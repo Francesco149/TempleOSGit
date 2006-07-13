@@ -1,0 +1,95 @@
+//Practice tracing circles
+
+I1 ct_buf[128];
+double score=0,rad;
+
+void EndSound()
+{
+  Sound(0);
+  Exit;
+}
+
+void SoundTrackTsk()
+{
+  Fs->end_task_cb=&EndSound;
+  while (TRUE) {
+    Play("hEDCARCDECR");
+  }
+}
+
+void DrawIt()
+{
+  ClearWindowText;
+  PlotWindowString(ct_buf,0x0F,0,0);
+}
+
+#define cir_radius 100
+
+
+void CTPlot(GrBitMap *base,I8 x,I8 y,I8 z)
+{
+  GrPlot(base,x,y);
+  rad=Sqrt(Sqr(x-cir_radius-25)+Sqr(y-cir_radius-25));
+  score+=Abs(rad-cir_radius);
+}
+
+
+void CircleTrace()
+{
+  I8 cmd,p1,p2,x1,y1;
+  U4 old_update_window=Fs->update_window;
+  U4 old_ip_double=Bts(&Fs->crt_flags,CRTf_NO_DOUBLE_CLICK);
+  U4 old_inhibit=ip_inhibit_win_operations;
+  U8 start_time;
+  GrBitMap *base=GrNew(grbase);
+  TssStruct *sndtsk=Spawn(&SoundTrackTsk);
+  ip_inhibit_win_operations=TRUE;
+  MaximizeWindow;
+  Fs->update_window=&DrawIt;
+  GrClear;
+  base->color=ROP_XOR+(GR_BLACK ^ GR_WHITE);
+  GrCircle(base,cir_radius+25,cir_radius+25,cir_radius);
+  ct_buf[0]=0;
+  FlushMessages;
+  while (TRUE) {
+    cmd=GetMessage(&p1,&p2,
+      (1<<MSG_KEY_DOWN)+(1<<MSG_IP_L_DOWN)+
+      (1<<MSG_IP_R_UP));
+    if (cmd==MSG_KEY_DOWN || cmd==MSG_IP_R_UP) {
+      Fs->update_window=old_update_window;
+      GrClear;
+      AssignBit(&Fs->crt_flags,CRTf_NO_DOUBLE_CLICK,old_ip_double);
+      ip_inhibit_win_operations=old_inhibit;
+      GrDel(base);
+      Kill(sndtsk);
+      return;
+    } else {
+      GrClear;
+      base->color=ROP_XOR+(GR_BLACK ^ GR_WHITE);
+      GrCircle(base,cir_radius+25,cir_radius+25,cir_radius);
+      base->color=ROP_XOR+(GR_RED ^ GR_WHITE);
+      score=0;
+      start_time=BootTime;
+      x1=p1; y1=p2;
+      while (cmd!=MSG_IP_L_UP) {
+	while (cmd=GetMessageNoWait(&p1,&p2,
+  	  (1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE))) {
+	  if (cmd==MSG_IP_L_UP)
+	    break;
+	  if (x1!=p1 || y1!=p2) {
+	    Line(base,x1,y1,0,p1,p2,0,&CTPlot);
+	    x1=p1;y1=p2;
+	    //undo overlapping pixels on segments
+	    GrPlot(base,x1,y1);
+	    rad=Sqrt(Sqr(x1-cir_radius-25)+Sqr(y1-cir_radius-25));
+	    score-=Abs(rad-cir_radius);
+	  }
+	}
+	SPrintF(ct_buf,"Score:%9.2f Time:%h17T",score/(pi2*cir_radius),BootTime-start_time);
+	Sleep(50);
+      }
+    }
+  }
+}
+
+CircleTrace;  //Execute when #included

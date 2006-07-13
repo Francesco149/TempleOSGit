@@ -1,0 +1,200 @@
+Date	   :Tue 07/11 08:48:18a
+FreeMem at Boot:1C54E000
+Win Refresh	 :233.619Hz
+  0.96% 00000061:GrXorLine,0019
+  3.71% 00000175:GrXorLine,001B
+  2.25% 000000E2:GrXorLine,001F
+  1.29% 00000082:GrXorLine,0022
+ 11.98% 000004B3:GrXorLine
+  4.98% 000001F4:GR_PLOT_CHAR
+  0.86% 00000057:GrPlotBackground,001B
+  0.63% 00000040:GrPlotBackground,0021
+  6.23% 00000272:GrPlotBackground
+  0.77% 0000004D:[D:/LT/ADAM/LTF.CPZ,514]
+  9.26% 0000039E:LtfUpdateWindowJoin
+  0.82% 00000053:[D:/LT/ADAM/GRMODE3.CPZ,528]
+  0.71% 00000048:[D:/LT/ADAM/GRMODE3.CPZ,545]
+  0.65% 00000042:[D:/LT/ADAM/GRMODE3.CPZ,545]
+  0.75% 0000004C:[D:/LT/ADAM/GRMODE3.CPZ,554]
+ 31.78% 00000C6C:GrUpdateScreen
+Errors:0000 Warnings:0000 Size:000005AE
+Errors:0000 Warnings:0000 Size:0003BCBD
+
+1) VGA  640x480x16
+2) SVGA 800x600x16--not supported by all computers
+Video Mode:1
+
+
+**Add drives to this installation so they will be present when you boot.**
+
+****** Add Drives ******
+The base drive letter is the letter
+of the first partition.  If adding
+a hard drive, you should pick 'C'.
+If more than one partition is present
+they will be lettered in sequence.
+
+Base Drive Letter(ENTER to exit):b
+	1=RAM
+	2=FDC(Floppy)
+	3=ATA(Harddisk)
+	4=ATAPI(CD-ROM)
+	5=FILE
+Type:1
+Blks(2880 for floppy):8192
+
+****** Add Drives ******
+The base drive letter is the letter
+of the first partition.  If adding
+a hard drive, you should pick 'C'.
+If more than one partition is present
+they will be lettered in sequence.
+
+Base Drive Letter(ENTER to exit):c
+	1=RAM
+	2=FDC(Floppy)
+	3=ATA(Harddisk)
+	4=ATAPI(CD-ROM)
+	5=FILE
+Type:3
+	2=3F0(Floppy)
+	3=1F0(Primary IDE)
+	4=170(Secondary IDE)
+	5=Use values prompted for CD-ROM during boot
+Port:3
+	0=Master
+	1=Slave
+Unit:0
+
+****** Add Drives ******
+The base drive letter is the letter
+of the first partition.  If adding
+a hard drive, you should pick 'C'.
+If more than one partition is present
+they will be lettered in sequence.
+
+Base Drive Letter(ENTER to exit):t
+	1=RAM
+	2=FDC(Floppy)
+	3=ATA(Harddisk)
+	4=ATAPI(CD-ROM)
+	5=FILE
+Type:4
+	2=3F0(Floppy)
+	3=1F0(Primary IDE)
+	4=170(Secondary IDE)
+	5=Use values prompted for CD-ROM during boot
+Port:4
+	0=Master
+	1=Slave
+Unit:0
+
+****** Add Drives ******
+The base drive letter is the letter
+of the first partition.  If adding
+a hard drive, you should pick 'C'.
+If more than one partition is present
+they will be lettered in sequence.
+
+Base Drive Letter(ENTER to exit):z
+	1=RAM
+	2=FDC(Floppy)
+	3=ATA(Harddisk)
+	4=ATAPI(CD-ROM)
+	5=FILE
+Type:5
+Filename:D:/TEMP/CD
+Reformat (with each boot) (y or n)? YES
+Blks(2880 for floppy):1500000
+
+****** Add Drives ******
+The base drive letter is the letter
+of the first partition.  If adding
+a hard drive, you should pick 'C'.
+If more than one partition is present
+they will be lettered in sequence.
+
+Base Drive Letter(ENTER to exit):
+
+
+Default Drive Letter for phase 2 of boot. Usually it's the same as phase 1. 
+(hitting SPACE will prompt at boot): 
+Using Drive 'D'
+Start-up Accnt(ENTER will prompt):TAD
+Wordstat directory list(separated by ';'):/LT;/TEXT/BRIEF
+Disk Cache Size (ENTER will use default of 0x1000000 Bytes):
+Errors:0000 Warnings:0000 Size:0002B240
+Creating BOOT.BIC from OS.BIZ
+Size: 0002B240
+Del OS.BIZ
+Modifying partition boot record.
+Compile Time:1.5443s
+Compile Module Mem Leak :0000000000000460
+8192
+D:/TEMP/CD
+1500000
+TAD
+/LT
+
+8192
+D:/TEMP/CD
+1500000
+TAD
+/LT
+
+OSMain Mem Leak :000000000000092C
+8192
+D:/TEMP/CD
+1500000
+TAD
+/LT
+
+OSMain Mem Leak :000000000000092C
+8192
+D:/TEMP/CD
+1500000
+TAD
+/LT
+
+OSMain Mem Leak :000000000000092C
+Compiling OSMain Time:0.4128s
+  0.64% 0000008B:CP_OPTNEXT,001C
+  0.66% 00000090:CP_OPTNEXT,0038
+  0.41% 00000059:CP_OPTNEXT,0053
+  1.98% 000001AD:CP_OPTNEXT
+  0.30% 00000041:[::/LT/COMPILE/LEX.CPZ,176]
+  0.31% 00000045:LexGetChar,0088
+  0.37% 00000051:LexGetChar,00A3
+  0.56% 0000007A:[::/LT/COMPILE/LEX.CPZ,188]
+  0.57% 0000007D:[::/LT/COMPILE/LEX.CPZ,189]
+  4.01% 00000364:LexGetChar
+  0.32% 00000046:FindMember
+  0.42% 0000005C:[::/LT/COMPILE/LEX.CPZ,580]
+  0.65% 0000008D:[::/LT/COMPILE/LEX.CPZ,590]
+  5.04% 00000443:Lex
+  0.97% 000000D2:CbAddIc
+  0.43% 0000005D:CbPush
+  0.31% 00000044:CbPop
+  0.30% 00000042:[::/LT/COMPILE/LEX.CPZ,1283]
+  3.10% 0000029F:CbCountCode
+  0.47% 00000067:[::/LT/COMPILE/LEX.CPZ,1451]
+  2.85% 00000269:CbCompile
+  0.37% 00000052:OutChar
+  0.51% 00000070:SPrintFJoin2
+  0.34% 0000004B:[::/LT/COMPILE/ASM.CPZ,268]
+  1.95% 000001A7:AsmStoreCodeU1
+  1.07% 000000E8:AsmCodeInstruction
+  1.36% 00000127:PrsParseExpression
+  0.99% 000000D8:PrsUnaryTerm
+  0.82% 000000B3:OptStart
+  1.31% 0000011D:CmpOptPass1
+  1.43% 00000136:CmpOptPass2
+  0.80% 000000AE:CmpOptPass3
+  1.11% 000000F1:CmpOptPass4
+  0.59% 00000080:CmpParseFunction
+  0.37% 00000052:CmpParseStatement
+  1.75% 0000035D:[D:/LT/ADAM/LTF.CPZ,471]
+  1.52% 000002E9:[D:/LT/ADAM/LTF.CPZ,514]
+  1.08% 00000213:[D:/LT/ADAM/LTF.CPZ,843]
+ 21.83% 000029C7:LtfUpdateWindowJoin
+StdOut Time:4.8819s

@@ -1,0 +1,204 @@
+void RandFillin()
+{
+  Ltf *l=Fs->cur_ltf;
+  LtfEntry *ll=l->cur_entry;
+  LTDate i;
+  OfferingCheck;
+  if (ws_num_words) {
+    i=keyboard_evt_time;
+    if (((ll->type & 0xF00)>>8)!=RED)
+      PutS("$FG RED$");
+    PutS(ws_sorted_words[(i.time)%ws_num_words]->word);
+    PutS(" ");
+  }
+}
+
+
+void FillinTime()
+{
+  LTDate ltdt;
+  ltdt=GetCurTimeLTDate;
+  PrintF("$IV 1$----%D %T----$IV 0$\r",ltdt.date,ltdt.time);
+}
+
+void QuFindOffset(LTDirEntry *tempm1,
+  U8 *in_offset,LTDirEntry **out_entry)
+{
+  while (tempm1 && !(*out_entry)) {
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub)
+	QuFindOffset(tempm1->sub,in_offset,out_entry);
+    } else {
+      if (*in_offset>tempm1->expanded_size)
+	*in_offset=*in_offset-tempm1->expanded_size;
+      else
+	*out_entry=tempm1;
+    }
+    tempm1=tempm1->next;
+  }
+}
+
+
+void RandQuote()
+{
+  LTDate i;
+  U8 in_offset;
+  I1 *body,*out_offset=NULL,
+       *end_ptr;
+  WsFilemaskEntry *tempfm=qu_filemask_list;
+  LTDirEntry *out_entry=NULL;
+
+  OfferingCheck;
+  i=keyboard_evt_time;
+  if ((i.time>>2) % 2000<300) {
+    PrintF("$FG LTRED$<Wisdom for the Way p.%d>",((i.time>>2)%2000)+17);
+    return;
+  }
+  if (qu_total_file_size) {
+    in_offset=GodDWORD % qu_total_file_size;
+    while (tempfm) {
+      QuFindOffset(tempfm->flist,&in_offset,&out_entry);
+      tempfm=tempfm->next;
+    }
+    body=ReadTextFile(out_entry->full_name);
+    out_offset=body+in_offset;
+    end_ptr=out_offset+((i.time>>2) % 1000+100);
+    if (end_ptr>body+out_entry->expanded_size)
+      end_ptr=body+out_entry->expanded_size;
+    *end_ptr=0;
+    PutS("$FG LTRED$");
+    PutS(out_offset);
+    Free(body);
+  }
+}
+
+class RenameSymbolStruct
+{
+  I1 find[256]	  fmtstr "$DA -P ,255 \"Find   :%s\"$\r\n";
+  I1 replace[256] fmtstr "$DA -P ,255 \"Replace:%s\"$\r\n";
+};
+
+void RenameCurSymbol()
+{
+  I1 *buf;
+  RenameSymbolStruct r;
+  BoolU4 old_preempt=Preempt(OFF);
+  StrCpy(r.find,ws_cur_word);
+  StrCpy(r.replace,ws_cur_word);
+  Preempt(old_preempt);
+  if (PopUpDoForm(&r,"RenameSymbolStruct")) {
+    buf=MSPrintF("R(\"%s\",\"%s\",\"+r+l+a\");",r.find,r.replace);
+    PopUp(buf,Fs);
+    Free(buf);
+  }
+}
+
+void RenameFile()
+{
+  I1 *buf;
+  RenameSymbolStruct r;
+  BoolU4 old_preempt=Preempt(OFF);
+  StrCpy(r.find,ws_cur_word);
+  StrCpy(r.replace,ws_cur_word);
+  Preempt(old_preempt);
+  if (PopUpDoForm(&r,"RenameSymbolStruct")) {
+    buf=MSPrintF("R(\"%s\",\"%s\",\"+r+l+a\");",r.find,r.replace);
+    PopUp(buf,Fs);
+    Free(buf);
+  }
+  Move(r.find,r.replace);
+}
+
+void MyScreenShot()
+{
+  I1 *st;
+  LTDirEntry *tempm;
+  U8 cnt=0;
+  tempm=FindFiles("::/TEMP/ScreenShots/*.BMP");
+  while (tempm) {
+    cnt++;
+    tempm=tempm->next;
+  }
+  st=MSPrintF("::/TEMP/ScreenShots/SCRN%04d.BMP",cnt);
+  CaptureScreen4(st);
+  Free(st);
+  Beep;
+}
+
+BoolU4 TAD_EditPlugIns(Ltf *l,I8 ch,U8 sc)
+{
+  U8 sc2,ms=0;
+  l;ch; //Ref, So not unused Warn
+  sc2=sc.u1[0];
+  if (sc2>=SC_F1 && sc2<=SC_F10 &&
+       (sc & SCF_ALT) &&
+      !(sc & SCF_CTRL)) {
+    if (sc2==SC_F1) {
+      if ((sc & SCF_SHIFT))
+	PutS("$FG LTPURPLE$");
+      else
+	PutS("$FG PURPLE$");
+    } else if (sc2==SC_F2) {
+      if ((sc & SCF_SHIFT))
+	PutS("$FG LTRED$");
+      else
+	PutS("$FG RED$");
+    } else if (sc2==SC_F3) {
+      if ((sc & SCF_SHIFT))
+	PutS("$FG LTGREEN$");
+      else
+	PutS("$FG GREEN$");
+    } else if (sc2==SC_F4) {
+      if ((sc & SCF_SHIFT))
+	PutS("$FG LTBLUE$");
+      else
+	PutS("$FG$");
+    } else if (sc2==SC_F5) {
+      if ((sc & SCF_SHIFT))
+	RandQuote();
+      else
+	RandFillin();
+    } else if (sc2==SC_F6) {
+      if ((sc & SCF_SHIFT))
+	PopUp("WsInit(\"/TEXT/BRIEF\");");
+      else
+	PopUp("WsInit(\"/LT\");");
+    } else if (sc2==SC_F7) {
+      if ((sc & SCF_SHIFT))
+	LtfSafeInsert(Fs->cur_ltf,
+	  "$HS +C$$FG$$HE$");
+      else
+	FillinTime();
+    } else if (sc2==SC_F8) {
+      if ((sc & SCF_SHIFT))
+	RenameFile();
+      else
+	RenameCurSymbol();
+    } else if (sc2==SC_F9)
+      PopUp("PunchIn;");
+    else if (sc2==SC_F10)
+      PopUp("PunchOut;");
+    return TRUE;
+  } else {
+    if (sc2==SC_PRTSCRN2 &&
+	 sc & SCF_CTRL) {
+      MyScreenShot();
+      return TRUE;
+    }
+    if (ch=='s' && (sc & SCF_ALT)) {
+      PgmSong;
+      return TRUE;
+    }
+    if (ch=='S' && (sc & SCF_ALT)) {
+      LtfSong;
+      return TRUE;
+    }
+    if (ch=='p' && (sc & SCF_ALT)) {
+      DoSongs;
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
