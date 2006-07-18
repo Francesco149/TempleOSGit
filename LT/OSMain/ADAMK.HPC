@@ -208,6 +208,10 @@ class OsMainStruct  [/LT/OSMain/OSMAIN.ASZ] /LT/OSMain/OSMAIN.ASZ
 #define EXT_EXECUTE_STRING	45
 #define EXT_WINDOW_TO_TOP	46
 #define EXT_CMP_EXE_BLK		47
+#define EXT_RMT_GETMSG		48
+#define EXT_RMT_PUTCHAR		49
+#define EXT_RMT_PUTS		50
+#define EXT_RMT_LTFPUTCHAR	51
 #define EXT_TABLE_SIZE		256
 
 
@@ -216,10 +220,10 @@ class OsMainStruct  [/LT/OSMain/OSMAIN.ASZ] /LT/OSMain/OSMAIN.ASZ
 #define I_PUT_I1		0x31
 #define I_GET_CHAR		0x32
 #define I_COUT			0x33
-#define I_PEEK_MESSAGE		0x34
-#define I_GET_MESSAGE_NO_WAIT	0x35
-#define I_FLUSH_MESSAGES	0x36
-#define I_GET_MESSAGE		0x37
+#define I_PEEK_MSG		0x34
+#define I_GET_MSG_NO_WAIT	0x35
+#define I_FLUSH_MSGS	0x36
+#define I_GET_MSG		0x37
 #define I_PUT_STRING		0x38
 #define I_COUTLN		0x39
 #define I_DEBUG			0x3A
@@ -1449,6 +1453,19 @@ class FPUState
   U1 stack[8*10];
 };
 
+#define LCT_NULL	0
+#define LCT_COMM	1
+
+class LTChnl
+{
+  U8 type;
+  U8 port;
+  U8 baud;
+  U8 null_msg_jiffy;
+  void PutChar(LTChnl *chnl,U1 b);
+  U1 GetChar(LTChnl *chnl);
+  BoolU4 ScanChar(LTChnl *chnl,U1 *ch);
+};
 
 // TSS task flags
 #define TSSf_KILL_TASK		0
@@ -1592,7 +1609,7 @@ public class TssStruct
   U4	answers_displayed;
   TssStruct *dbg_tss;
   TssStruct *popup_tss;
-
+  LTChnl    *rmt_chnl;
   U4	user_aux0;
   U4	user_aux1;
   U4	user_aux2;

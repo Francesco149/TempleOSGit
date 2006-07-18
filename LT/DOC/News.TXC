@@ -1,5 +1,10 @@
 
 
+----07/16/06 11:44:46----
+* Changed "Message" to "Msg"
+* Expanded serial communication
+* Cleaned-up externs in Adam directory
+
 ----07/13/06 09:22:24----
 * Fixed some bugs in disassembler.
 

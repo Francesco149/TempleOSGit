@@ -749,5 +749,72 @@ public void PrintFDriveTextAttr(I1 drive=0)
   LTPartition *p=DriveToPartition(drive);
   U1 fg=p->text_attr&0xF,bg=p->text_attr>>4;
   if (fg!=bg)
-    PrintF("$FG %d$$BG %d$",fg,bg);
+    PrintF("$FG,%d$$BG,%d$",fg,bg);
+}
+
+U8 SizeFlattenLTDirTree(LTDirEntry *tempm)
+{
+  U8 result=0;
+  while (tempm) {
+    result+=sizeof(LTDirEntry)-offset(LTDirEntry.start)+1;
+    if (tempm->attr & LT_ATTR_DIR)
+      result+=SizeFlattenLTDirTree(tempm->sub);
+    tempm=tempm->next;
+  }
+  return result+1;
+}
+
+U8 FillFlattenLTDirTree(LTDirEntry *tempm,U1 *dst)
+{
+  U8 result=0,i;
+  while (tempm) {
+    *dst++=1;
+    result++;
+    i=sizeof(LTDirEntry)-offset(LTDirEntry.start);
+    MemCpy(dst,&tempm->start,i);
+    dst+=i;
+    result+=i;
+    if (tempm->attr & LT_ATTR_DIR) {
+      i=FillFlattenLTDirTree(tempm->sub,dst);
+      dst+=i;
+      result+=i;
+    }
+    tempm=tempm->next;
+  }
+  *dst=0;
+  return result+1;
+}
+
+public U1 *FlattenLTDirTree(LTDirEntry *tempm,U8 *size=NULL)
+{
+  U8 i=SizeFlattenLTDirTree(tempm);
+  U1 *buf=MAlloc(i);
+  FillFlattenLTDirTree(tempm,buf);
+  if (*size) *size=i;
+  return buf;
+}
+
+U1 *DoUnflattenLTDirTree(U1 *src,LTDirEntry **tempm)
+{
+  U8 i;
+  LTDirEntry *tempm1;
+  if (*src++) {
+    tempm1=MAllocZ(sizeof(LTDirEntry));
+    *tempm=tempm1;
+    i=sizeof(LTDirEntry)-offset(LTDirEntry.start);
+    MemCpy(&tempm1->start,src,i);
+    src+=i;
+    if (tempm1->attr & LT_ATTR_DIR)
+      src=DoUnflattenLTDirTree(src,&tempm1->sub);
+    src=DoUnflattenLTDirTree(src,&tempm1->next);
+  } else
+    *tempm=NULL;
+  return src;
+}
+
+public LTDirEntry *UnflattenLTDirTree(U1 *src)
+{
+  LTDirEntry *tempm=NULL;
+  DoUnflattenLTDirTree(src,&tempm);
+  return tempm;
 }

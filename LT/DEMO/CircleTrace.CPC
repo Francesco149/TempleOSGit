@@ -50,9 +50,9 @@ void CircleTrace()
   base->color=ROP_XOR+(GR_BLACK ^ GR_WHITE);
   GrCircle(base,cir_radius+25,cir_radius+25,cir_radius);
   ct_buf[0]=0;
-  FlushMessages;
+  FlushMsgs;
   while (TRUE) {
-    cmd=GetMessage(&p1,&p2,
+    cmd=GetMsg(&p1,&p2,
       (1<<MSG_KEY_DOWN)+(1<<MSG_IP_L_DOWN)+
       (1<<MSG_IP_R_UP));
     if (cmd==MSG_KEY_DOWN || cmd==MSG_IP_R_UP) {
@@ -72,7 +72,7 @@ void CircleTrace()
       start_time=BootTime;
       x1=p1; y1=p2;
       while (cmd!=MSG_IP_L_UP) {
-	while (cmd=GetMessageNoWait(&p1,&p2,
+	while (cmd=GetMsgNoWait(&p1,&p2,
   	  (1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE))) {
 	  if (cmd==MSG_IP_L_UP)
 	    break;

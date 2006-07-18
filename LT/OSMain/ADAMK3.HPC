@@ -271,7 +271,7 @@ public extern TssCmdStruct *
 public extern TssCmdStruct *
   QueueTextInput(TssStruct *servant,TssStruct *master,
 		     I1 *data,U8 flags);
-public extern TssCmdStruct *QueueMessage(TssStruct *servant,TssStruct *master,
+public extern TssCmdStruct *QueueMsg(TssStruct *servant,TssStruct *master,
 		     U8 code,U8 p1,U8 p2,U8 flags);
 public extern void Msg(U8 code,U8 p1,U8 p2,U8 flags=0);
 public extern BoolU4 GetRequestResult(TssCmdStruct *rqst=NULL,U8 *result=NULL);

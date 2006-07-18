@@ -785,7 +785,7 @@ asm {CP_BREAK::}
 void Break()
 {
   ReleaseTaskPartitions;
-  IntFlushMessages;
+  IntFlushMsgs;
   throw(EXCEPT_BREAK);
 }
 

@@ -36,15 +36,24 @@ I'm not sure how intangled the task of updatining screen memory would be.
   
 -] HIGH PRIORITY
   
-* $CL$ might have bugs
 * ellipses and arcs--delayed because I don't see a clear way to do them, 
 efficiently.  Not sure how they should be added to CTRL-R.
+* improve $CL$
 
-* prtscrn
-* boot Cd
-* silent 
+* prtscrn--printer support
+* boot Cd--eliminate prompting
+* Silent() user msgs 
 * log name generator
 * fix demodoc
+
+* sync
+* /WINDOWS
+* telnet/ftp
+* change color when remote
+* ethernet?  I'll see how hard it is.
+* SATA hard drive
+* 64 bit
+* duel processor
 
 * something makes OPtEnd not right
 

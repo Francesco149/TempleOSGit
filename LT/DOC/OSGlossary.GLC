@@ -242,6 +242,7 @@ Attr	Attribute
 Blk	Block
 Buf	Buffer
 Cb	Call-back (or code block)
+Chnl	Channel
 Cmd	Command
 Cnt	Count
 Ctrl	Control.  The control key is indicated with "^" in documentation.
@@ -258,11 +259,15 @@ Lex	Lexical analyser
 Lpt	I think this stands for "line printer port". (It's a DOS term.)
 Ltf	Linked-Text-File (doubly-linked-list of rich text cmds)
 Mem	Memory
+Msg	Message
 Num	Number
 Ode	Ordinary differential equation
 Pmt	Prompt
 Ptr	Pointer
 Rep	Report
+Rmt	Remote
+Rx	Receive
 Str	String
 Sys	System
+Tx	Transmit
 Var	Variable

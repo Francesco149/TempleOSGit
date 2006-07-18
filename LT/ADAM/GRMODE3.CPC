@@ -1,7 +1,3 @@
-extern BoolU4 IsPixelCovered(TssStruct *tss,I8 x,I8 y);
-extern void PlotInputPointer();
-
-
 U8 GrScale;
 GrScale.u4[0]=0;
 GrScale.u4[1]=1;
@@ -412,10 +408,6 @@ void GrDel(GrBitMap *base)
   Free(base);
 }
 
-
-extern void GrCircle(GrBitMap *base,I8 cx,I8 cy,I8 radius,
-  I8 step=1,double start_rad=0,double len_rad=pi2);
-extern void GrPlot0(GrBitMap *base,I8 x,I8 y);
 
 I4 gr_table[1024];
 BoolU4 gr_table_initialized=FALSE;

@@ -158,7 +158,8 @@ void InitCrt()
 asm {CP_PUT_I1::};
 void PutChar(I8 ch)
 {
-  void my_LtfPutChar(Ltf *l,I8 ch, U8 sc,BoolU4 old_preempt);
+  U8 my_LtfPutChar(Ltf *l,I8 ch, U8 sc,BoolU4 old_preempt);
+  U8 my_LtfPutChar2(LTChnl *chnl,I8 ch,U8 sc);
   if (!Bt(&Fs->crt_flags,CRTf_SILENT)) {
     if (sys_cur_scan_code & SCF_SCROLL) {
       if (sys_cur_focus_task==Fs) {
@@ -175,6 +176,10 @@ void PutChar(I8 ch)
 	my_LtfPutChar=ext[EXT_LTF_PUT_I1];
 	if (Fs->cur_ltf && my_LtfPutChar)
 	  my_LtfPutChar(Fs->cur_ltf,ch,0,Bt(&sys_flags,SYSf_PREEMPTIVE));
+	if (Fs->rmt_chnl) {
+	  if (my_LtfPutChar2=ext[EXT_RMT_LTFPUTCHAR])
+	    my_LtfPutChar2(Fs->rmt_chnl,ch,0);
+	}
       }
     }
   }
@@ -185,6 +190,7 @@ void PutS(I1 *st)
 {
   I1 ch;
   void my_LtfPutSPartial(Ltf *l,I1 *st);
+  void my_PutS(LTChnl *cnhl,I1 *st);
   if (!st) return;
   if (!Bt(&Fs->crt_flags,CRTf_SILENT)) {
     if (IsRaw) {
@@ -195,9 +201,12 @@ void PutS(I1 *st)
 	while (ch=*st++)
 	  Msg(MSG_KEY_DOWN,ch,0);
       } else {
-	if (Fs->cur_ltf) {
-	  my_LtfPutSPartial=ext[EXT_LTF_PUTS];
+	my_LtfPutSPartial=ext[EXT_LTF_PUTS];
+	if (Fs->cur_ltf && my_LtfPutSPartial)
 	  my_LtfPutSPartial(Fs->cur_ltf,st);
+	if (Fs->rmt_chnl) {
+	  if (my_PutS=ext[EXT_RMT_PUTS])
+	    my_PutS(Fs->rmt_chnl,st);
 	}
       }
     }

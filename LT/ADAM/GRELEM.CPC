@@ -1,12 +1,3 @@
-extern U8 GetMessage(I8 *param1,I8 *param2,U8 mask=-2,TssStruct *tss=NULL);
-extern void LtfInsert(Ltf *l,LtfEntry *ll);
-extern LtfEntry *LtfPutS(Ltf *l,I1 *st);
-extern I8 PopUpMenu(Ltf *l,I1 *help=NULL);
-extern Ltf *LtfNew();
-extern void LtfDel(Ltf *l,BoolU4 root_mem=FALSE);
-extern LtfEntry *LtfPrintF(Ltf *l,I1 *src,...);
-
-
 I8 PopUpGrElemType(BoolU4 new_picture)
 {
   I8 i;
@@ -475,7 +466,7 @@ BoolU4 GrElemsInsert(LtfBinEntry *tempb,I8 *cur_num,GrElem *root,I8 x,I8 y,BoolU
     if (eletype!=-2) {
       cmd=0;p1=0;p2=0;
       if (eletype!=GRET_END && eletype!=-1) {
-	cmd=GetMessage(&p1,&p2,
+	cmd=GetMsg(&p1,&p2,
 	  (1<<MSG_KEY_DOWN)+(1<<MSG_IP_L_DOWN)+
 	  (1<<MSG_IP_R_UP));
 	if (cmd==MSG_IP_R_UP)
@@ -498,7 +489,7 @@ BoolU4 GrElemsInsert(LtfBinEntry *tempb,I8 *cur_num,GrElem *root,I8 x,I8 y,BoolU
 	    do {
 	      base->color=color&0xFFFFFF|ROP_OR;
 	      GrLine3(base,x1,y1,0,x2,y2,0);
-	      cmd=GetMessage(&p1,&p2,
+	      cmd=GetMsg(&p1,&p2,
   		(1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE));
 	      base->color=color&0xFFFFFF|ROP_NAND;
 	      GrLine3(base,x1,y1,0,x2,y2,0);
@@ -540,7 +531,7 @@ BoolU4 GrElemsInsert(LtfBinEntry *tempb,I8 *cur_num,GrElem *root,I8 x,I8 y,BoolU
 	      do {
 		base->color=color&0xFFFFFF|ROP_OR;
 		GrLine3(base,x1,y1,0,x2,y2,0);
-		cmd=GetMessage(&p1,&p2,
+		cmd=GetMsg(&p1,&p2,
   		  (1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE)+
 		  (1<<MSG_IP_R_UP));
 		base->color=color&0xFFFFFF|ROP_NAND;
@@ -589,7 +580,7 @@ BoolU4 GrElemsInsert(LtfBinEntry *tempb,I8 *cur_num,GrElem *root,I8 x,I8 y,BoolU
 	    x2=p1; y2=p2;
 	    base->color=color&0xFFFFFF|ROP_EQU;
 	    do {
-	      cmd=GetMessage(&p1,&p2,
+	      cmd=GetMsg(&p1,&p2,
   		(1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE));
 	      x2=p1; y2=p2;
 	      GrLine3(base,x1,y1,0,x2,y2,0);
@@ -652,7 +643,7 @@ BoolU4 GrElemsInsert(LtfBinEntry *tempb,I8 *cur_num,GrElem *root,I8 x,I8 y,BoolU
 	      do {
 		base->color=color&0xFFFFFF|ROP_OR;
 		GrLine3(base,x1,y1,0,x2,y2,0);
-		cmd=GetMessage(&p1,&p2,
+		cmd=GetMsg(&p1,&p2,
   		  (1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE)+
 		  (1<<MSG_IP_R_UP));
 		base->color=color&0xFFFFFF|ROP_NAND;
@@ -785,12 +776,12 @@ void EditExistingGraphic(Ltf *l,I8 x,I8 y)
 	break;
       case GED_PICK_GRAPHICALLY:
 	l->cur_GrElem=tempb->data;
-	GetMessage(&p1,&p2,1<<MSG_IP_L_UP);
+	GetMsg(&p1,&p2,1<<MSG_IP_L_UP);
 	cur_num=l->cur_sub_GrElem;
 	l->cur_GrElem=NULL;
 	break;
       case GED_SET_ORIGIN:
-	GetMessage(&p1,&p2,1<<MSG_IP_L_UP);
+	GetMsg(&p1,&p2,1<<MSG_IP_L_UP);
 	GrSetOrigin(root,x-p1,y-p2,0);
 	GrEditUpdate(tempb,root);
 	break;
@@ -803,10 +794,10 @@ void EditExistingGraphic(Ltf *l,I8 x,I8 y)
 	tempg->x1=0;
 	tempg->y1=0;
 	InsQue(tempg,insert_point->last);
-	GetMessage(&p1,&p2,1<<MSG_IP_L_DOWN);
+	GetMsg(&p1,&p2,1<<MSG_IP_L_DOWN);
 	xx=p1; yy=p2;
 	do {
-	  cmd=GetMessage(&p1,&p2,
+	  cmd=GetMsg(&p1,&p2,
   	    (1<<MSG_IP_L_UP)+(1<<MSG_IP_MOVE));
 	  tempg->x1=p1-xx;
 	  tempg->y1=p2-yy;

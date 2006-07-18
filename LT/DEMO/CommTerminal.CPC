@@ -1,5 +1,5 @@
 // COM port Terminal
-void CommTerm(U4 port=1,U4 baud=115200)
+void CommTerm(U4 port=1,U4 baud=9600)
 {
   U8 sc;
   U8 ch=0;

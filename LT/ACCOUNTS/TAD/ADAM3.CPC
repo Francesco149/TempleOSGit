@@ -1,6 +1,8 @@
 #define CID_TAD4	4
 #define CID_TAD5	5
 
+#define CID_TAD6	6
+
 I8 IdComputer()
 {
   LTPartition *p=NULL;
@@ -8,7 +10,7 @@ I8 IdComputer()
     p=DriveToPartition('E');
   } catch
     Fs->catch_except=TRUE;
-  return (p) ? CID_TAD4:CID_TAD5;
+  return (p) ? CID_TAD6:CID_TAD5;
 }
 
 I8 computer_id=IdComputer;
@@ -137,7 +139,5 @@ Cd("/LT/ACCOUNTS/TAD");;
 
 if (is_CDROM)
   CopyTree("::/LT","B:/LT");
-else {
-  CommOpen8N1;
+else
   Del("::/TEMP/ScreenShots/S*.BMP");
-}

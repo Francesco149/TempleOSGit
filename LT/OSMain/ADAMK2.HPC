@@ -156,7 +156,7 @@ public LTextern U64_MUL U8 MulU8(U8 p1,U8 p2);
 public LTextern I64_MUL I8 MulI8(I8 p1,I8 p2);
 
 public LTextern CP_RUN_STATEMENT U8 Run(U1 *s);
-LTextern CP_FLUSH_MESSAGES U8 IntFlushMessages();
+LTextern CP_FLUSH_MSGS U8 IntFlushMsgs();
 LTextern CP_ARC_DETERMINE_COMPRESSION_TYPE
 	I8 ArcDetermineCompressionType(U1 *src,U8 size);
 public LTextern CP_ARC_CHECK_SUM U8 ArcCheckSum(U1 *buf,U8 size);

@@ -80,6 +80,48 @@ void M(I1 *src1,I1 *src2,I1 *flags="+r")
   MergeChk(src1,src2,flags);
 }
 
+void Tx(I1 *filename)
+{
+  LTChnl *chnl;
+  CommClose(1);
+  chnl=CommOpen8N1(1,38400);
+  if (chnl) {
+    RmtTxFile(chnl,filename);
+    CommClose(1);
+  }
+}
+
+void Rx(I1 *filename)
+{
+  LTChnl *chnl;
+  CommClose(1);
+  chnl=CommOpen8N1(1,38400);
+  if (chnl) {
+    RmtRxFile(chnl,filename);
+    CommClose(1);
+  }
+}
+
+void Host()
+{
+  LTChnl *chnl;
+  CommClose(1);
+  chnl=CommOpen8N1(1,38400);
+  if (chnl)
+    TelnetHostOpen(chnl);
+}
+
+void Guest()
+{
+  LTChnl *chnl;
+  CommClose(1);
+  chnl=CommOpen8N1(1,38400);
+  if (chnl) {
+    TelnetGuestOpen(chnl);
+    CommClose(1);
+  }
+}
+
 SetDriveTextAttr('B',BLUE<<4|YELLOW);
 SetDriveTextAttr('T',LTGRAY<<4|BLUE);
 PutSysText("ST_USER_STARTUP");

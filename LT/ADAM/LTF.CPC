@@ -327,7 +327,6 @@ I8 LtfCharDist(Ltf *l,I8 x,I8 y)
   return MulI8(dx,dx)+MulI8(dy,dy);
 }
 
-extern void DrawBorder(BoolU4 solid,I8 l,I8 r,I8 t,I8 b,U1 attr,BoolU4 clip);
 
 public void LtfUpdateWindowJoin(Ltf *l,BoolU4 to_screen,BoolU4 has_cursor,
   BoolU4 recalc,BoolU4 find_cur_entry,
@@ -2230,9 +2229,6 @@ public void LtfSafeInsert(Ltf *l,I1 *st)
   l->flags=old_flags;
   Preempt(old_preempt);
 }
-
-extern void EditInsertLtf(Ltf *l,Ltf *b);
-extern Ltf *LtfRead(I1 *name,U8 flags=0);
 
 public void Type(I1 *name)
 {

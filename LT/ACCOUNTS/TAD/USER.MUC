@@ -98,6 +98,9 @@ Make Distribution D: to B: RAM disk
 Make Distribution D: for CD
 `DistributeDToCD;`
 
+Make Distribution D: for TAD6
+`DistributeDToTAD6CD;`
+
 Make Song Distribution D: for CD
 `DistributeSongs;MyWriteSongCDImage;`
 

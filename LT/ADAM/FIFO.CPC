@@ -23,35 +23,65 @@ public void DelU1Fifo(U1Fifo *f)
 
 public BoolU4 U1FifoInsert(U1Fifo *f,U1 ch)
 {
-  U8 new_in_ptr=(f->in_ptr+1)&f->mask;
-  if (new_in_ptr==f->out_ptr)
+  U8 old_flags=GetFlags,
+     new_in_ptr;
+  Cli;
+  new_in_ptr=(f->in_ptr+1)&f->mask;
+  if (new_in_ptr==f->out_ptr) {
+    SetFlags(old_flags);
     return FALSE;
-  else {
+  } else {
     f->buf[f->in_ptr]=ch;
     f->in_ptr=new_in_ptr;
+    SetFlags(old_flags);
     return TRUE;
   }
 }
 
 public BoolU4 U1FifoRemove(U1Fifo *f,U1 *ch)
 {
-  if (f->in_ptr==f->out_ptr)
+  U8 old_flags=GetFlags;
+  Cli;
+  if (f->in_ptr==f->out_ptr) {
+    SetFlags(old_flags);
     return FALSE;
-  else {
+  } else {
     *ch=f->buf[f->out_ptr];
     f->out_ptr=(f->out_ptr+1)&f->mask;
+    SetFlags(old_flags);
     return TRUE;
   }
 }
 
 public BoolU4 U1FifoPeek(U1Fifo *f,U1 *ch)
 {
-  if (f->in_ptr==f->out_ptr)
+  U8 old_flags=GetFlags;
+  Cli;
+  if (f->in_ptr==f->out_ptr) {
+    SetFlags(old_flags);
     return FALSE;
-  else {
+  } else {
     *ch=f->buf[f->out_ptr];
+    SetFlags(old_flags);
     return TRUE;
   }
+}
+
+public void U1FifoFlush(U1Fifo *f)
+{
+  f->out_ptr=f->in_ptr;
+}
+
+public U8 U1FifoCnt(U1Fifo *f)
+{
+  U8 result,old_flags=GetFlags;
+  Cli;
+  if (f->out_ptr>f->in_ptr)
+    result=f->mask+1-(f->out_ptr-f->in_ptr);
+  else
+    result=f->in_ptr-f->out_ptr;
+  SetFlags(old_flags);
+  return result;
 }
 
 public class U4Fifo
@@ -77,36 +107,66 @@ public void DelU4Fifo(U4Fifo *f)
   Free(f);
 }
 
-public BoolU4 U4FifoInsert(U4Fifo *f,U8 d)
+public BoolU4 U4FifoInsert(U4Fifo *f,U4 d)
 {
-  U8 new_in_ptr=(f->in_ptr+1)&f->mask;
-  if (new_in_ptr==f->out_ptr)
+  U8 old_flags=GetFlags,
+     new_in_ptr;
+  Cli;
+  new_in_ptr=(f->in_ptr+1)&f->mask;
+  if (new_in_ptr==f->out_ptr) {
+    SetFlags(old_flags);
     return FALSE;
-  else {
+  } else {
     f->buf[f->in_ptr]=d;
     f->in_ptr=new_in_ptr;
+    SetFlags(old_flags);
     return TRUE;
   }
 }
 
 public BoolU4 U4FifoRemove(U4Fifo *f,U4 *d)
 {
-  if (f->in_ptr==f->out_ptr)
+  U8 old_flags=GetFlags;
+  Cli;
+  if (f->in_ptr==f->out_ptr) {
+    SetFlags(old_flags);
     return FALSE;
-  else {
+  } else {
     *d=f->buf[f->out_ptr];
     f->out_ptr=(f->out_ptr+1)&f->mask;
+    SetFlags(old_flags);
     return TRUE;
   }
 }
 
-public BoolU4 U4FifoPeek(U4Fifo *f,U4 *d)
+public BoolU4 U4FifoPeek(U1Fifo *f,U4 *d)
 {
-  if (f->in_ptr==f->out_ptr)
+  U8 old_flags=GetFlags;
+  Cli;
+  if (f->in_ptr==f->out_ptr) {
+    SetFlags(old_flags);
     return FALSE;
-  else {
+  } else {
     *d=f->buf[f->out_ptr];
+    SetFlags(old_flags);
     return TRUE;
   }
+}
+
+public void U4FifoFlush(U4Fifo *f)
+{
+  f->out_ptr=f->in_ptr;
+}
+
+public U8 U4FifoCnt(U4Fifo *f)
+{
+  U8 result,old_flags=GetFlags;
+  Cli;
+  if (f->out_ptr>f->in_ptr)
+    result=f->mask+1-(f->out_ptr-f->in_ptr);
+  else
+    result=f->in_ptr-f->out_ptr;
+  SetFlags(old_flags);
+  return result;
 }
 

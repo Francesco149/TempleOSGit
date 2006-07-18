@@ -1025,7 +1025,7 @@ void PutAsmWarning(LexStruct *l,I1 *name)
 void PrsExcept(LexStruct *l,I1 *name=NULL,I1 *msg=NULL)
 {
   PutLexError(l,name,msg);
-  IntFlushMessages;
+  IntFlushMsgs;
   throw(EXCEPT_COMPILER,0);
 }
 

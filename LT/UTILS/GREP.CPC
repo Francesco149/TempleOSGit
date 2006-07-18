@@ -193,7 +193,7 @@ void MergeChkList(LTDirEntry *m1,LTDirEntry *m2,U8 *fuf_flags,U8 *df_flags)
 	MergeChkList(m1->sub,tempm2->sub,fuf_flags,df_flags);
       else {
 	i=m1->datetime-tempm2->datetime;
-	if (AbsI8(i)>20) { //Filedates can shift due to conversion
+	if (AbsI8(i)>LTDATE_FREQ*2) { //Filedates can shift due to conversion
 	  coutln m1->full_name;
 	  if (Bt(fuf_flags,FUf_DIFF)) {
 	    if (IsTextFile(m1->full_name))
@@ -218,6 +218,52 @@ public void MergeChk(I1 *dst_mask,I1 *src_mask,I1 *flags="+r")
   tempm1=FindFiles(src_mask,&f.on);
   tempm2=FindFiles(dst_mask,&f.on);
   MergeChkList(tempm1,tempm2,&f.on,&df_flags);
+  DelLTDirList(tempm1);
+  DelLTDirList(tempm2);
+}
+
+
+
+void CommMergeChkList(U8 port,LTDirEntry *m1,LTDirEntry *m2,U8 *fuf_flags,U8 *df_flags)
+{
+  I8 i;
+  LTDirEntry *tempm2;
+  while (m1 && !(*df_flags & DF_ABORT_ALL_FILES)) {
+    tempm2=MCFindMatch(m1,m2);
+    if (!tempm2)
+      coutln "Does Not Exist:",m1->name;
+    else {
+      if (m1->attr & LT_ATTR_DIR)
+	CommMergeChkList(port,m1->sub,tempm2->sub,fuf_flags,df_flags);
+      else {
+	i=m1->datetime-tempm2->datetime;
+	if (AbsI8(i)>LTDATE_FREQ*2) { //Filedates can shift due to conversion
+	  coutln m1->name;
+	  if (Bt(fuf_flags,FUf_DIFF)) {
+	    if (IsTextFile(m1->name))
+	      *df_flags=Diff(tempm2->name,m1->name,*df_flags);
+	  }
+	}
+      }
+    }
+    m1=m1->next;
+  }
+}
+
+
+//**Not Done**
+public void CommMergeChk(U8 port,I1 *dst_mask,I1 *src_mask,I1 *flags="+r")
+//r=recurse
+//d=diff
+{
+  U8 df_flags=0;
+  LTDirEntry *tempm1=NULL,*tempm2=NULL;
+  FlagsStruct f;
+  GetFFlags(&f,"ST_FILE_UTIL_FLAGS",flags);
+  coutln "WARNING:This is based strictly on file dates.";
+  tempm1=FindFiles(src_mask,&f.on);
+  tempm2=FindFiles(dst_mask,&f.on);
+  CommMergeChkList(port,tempm1,tempm2,&f.on,&df_flags);
   DelLTDirList(tempm1);
   DelLTDirList(tempm2);
 }

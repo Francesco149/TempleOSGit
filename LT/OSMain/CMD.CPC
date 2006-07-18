@@ -275,7 +275,7 @@ TssCmdStruct *QueueTextInput(TssStruct *servant,TssStruct *master,
   return result;
 }
 
-TssCmdStruct *QueueMessage(TssStruct *servant,TssStruct *master,
+TssCmdStruct *QueueMsg(TssStruct *servant,TssStruct *master,
 		     U8 code,U8 p1,U8 p2,U8 flags)
 {
   TssCmdStruct *tempc1,*tempc=AMAlloc(sizeof(TssCmdStruct));
@@ -331,10 +331,10 @@ BoolU4 GetRequestResult(TssCmdStruct *rqst=NULL,U8 *result=NULL)
 void Msg(U8 code,U8 p1,U8 p2,U8 flags=0)
 {
   if (Bt(&Fs->task_flags,TSSf_INPUT_FILTER_TASK)) {
-    QueueMessage(Fs->parent_tss,0,code,p1,p2,
+    QueueMsg(Fs->parent_tss,0,code,p1,p2,
 	flags| 1<<TSSCf_DONT_FILTER);
   } else
-    QueueMessage(Fs,0,code,p1,p2,flags);
+    QueueMsg(Fs,0,code,p1,p2,flags);
 }
 
 

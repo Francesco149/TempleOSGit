@@ -1,8 +1,4 @@
 #define EDIT_MENU_NAME "::/LT/ADAM/EDIT.MUZ"
-extern void LtfPutChar(Ltf *l,I8 ch, U8 sc,BoolU4 old_preempt);
-extern void LeftClickLink(Ltf *l,LtfEntry *cl,BoolU4 old_preempt2);
-extern void RightClickLink(Ltf *l,LtfEntry *cl,BoolU4 old_preempt2);
-
 public void LtfUpdateCurLtfWindow()
 {
   LTPartition *p;
@@ -1017,9 +1013,10 @@ public BoolU4 DoLtf(Ltf *l,BoolU4 home=TRUE,I1 *help=NULL,BoolU4 help_is_file=FA
 {
   Ltf *menu=NULL,*old_ltf=Fs->cur_ltf,*old_aux=Fs->aux_ltf,*aux;
   U8 sc=0;
-  I8 ms=0,old_attribute=Fs->text_attribute;
+  I8 old_attribute=Fs->text_attribute;
   I8 ch=0;
   LtfEntry *ll;
+  U8 my_LtfPutChar(LTChnl *chnl,I8 ch,U8 sc);
   BoolU4 old_update=Fs->update_window;
 
   if (help && !l->menu_ltf) {
@@ -1077,7 +1074,11 @@ public BoolU4 DoLtf(Ltf *l,BoolU4 home=TRUE,I1 *help=NULL,BoolU4 help_is_file=FA
   Bts(&Fs->crt_flags,CRTf_SHOW);
   do {
     ch=GetChar2(&sc);
-    ms=LtfPutChar(l,ch,sc,Bt(&sys_flags,SYSf_PREEMPTIVE));
+    LtfPutChar(l,ch,sc,Bt(&sys_flags,SYSf_PREEMPTIVE));
+    if (Fs->rmt_chnl) {
+      my_LtfPutChar=ext[EXT_RMT_LTFPUTCHAR];
+      my_LtfPutChar(Fs->rmt_chnl,ch,sc);
+    }
     LtfRecalc(l);
   } while (ch!=CH_ESC && ch!=CH_CTRLQ);
   Fs->cur_ltf=old_ltf;
@@ -1271,7 +1272,6 @@ ext[EXT_IRQ07]=&Irq07Handler;
 #define LPT_STROBE	(LPT_ON ^ 1)
 #define LPT_OFF 	0x05
 
-extern void Lpt1PutChar(U1 ch);
 I8 lpt1_col=0;
 
 public void Lpt1On()
@@ -2380,13 +2380,6 @@ void EditInsertDollarCmd()
    }
 }
 
-
-extern void WsFillin(I8 n);
-extern void WsMan(I8 n,TssStruct *parent=NULL);
-extern void WsTsk();
-extern TssStruct *ws_task;
-extern void Edit(I1 *filename);
-
 I1 *FavoritesFileName()
 {
   return MSPrintF("::/LT/ACCOUNTS/%s/FAVOR.MUZ",
@@ -2501,7 +2494,7 @@ void MacroTask()
 	break;
       case 4:
 	if (sys_cur_focus_task)
-	  QueueMessage(sys_cur_focus_task,0,
+	  QueueMsg(sys_cur_focus_task,0,
 	    MSG_KEY_DOWN,0,SC_F2|SCF_SHIFT,0);
 	break;
     }
@@ -2524,11 +2517,6 @@ void EditInsertCapturedMacro()
   Preempt(old_preempt);
 }
 
-extern void ClearAllBpts(Ltf *l);
-extern void ToggleBpt(Ltf *l,I8 line_offset=0,U8 flags=SBPTF_BPT);
-extern void LtfGo();
-extern void LtfStep(Ltf *l);
-
 public U8 LtfPutChar(Ltf *l,I8 ch,U8 sc,BoolU4 old_preempt)
 {
   U8 sc2;
@@ -2536,7 +2524,6 @@ public U8 LtfPutChar(Ltf *l,I8 ch,U8 sc,BoolU4 old_preempt)
   LtfEntry *cl;
   I8 i,x,y,ms=0;
   I1 *st;
-
   if (ch!=CH_ESC && ch!=CH_CTRLQ) {
     cl=l->cur_entry;
     x=l->x; y=l->y;
@@ -2739,10 +2726,10 @@ public U8 LtfPutChar(Ltf *l,I8 ch,U8 sc,BoolU4 old_preempt)
       l->recalc_start=l->cur_entry->last;
   }
   Preempt(old_preempt2);
+
   SwapInNext;
   return ms;
 }
-ext[EXT_LTF_PUT_I1]=&LtfPutChar;
 
 public void LtfPutSPartial(Ltf *l,I1 *st)
 {
@@ -2807,6 +2794,7 @@ public void LtfPutSPartial(Ltf *l,I1 *st)
     SwapInNext;
   }
   Preempt(old_preempt);
+
 }
 
 public void LtfEditFile(I8 type,I1 *filename,
@@ -3032,9 +3020,14 @@ public BoolU4 View()
   I8 ch=0;
   U8 sc=0;
   Ltf *l=Fs->cur_ltf;
+  U8 my_LtfPutChar(LTChnl *chnl,I8 ch,U8 sc);
   while (ch!=CH_ESC && ch!=CH_CTRLQ) {
     ch=GetChar2(&sc);
     LtfPutChar(l,ch,sc,Bt(&sys_flags,SYSf_PREEMPTIVE));
+    if (Fs->rmt_chnl) {
+      my_LtfPutChar=ext[EXT_RMT_LTFPUTCHAR];
+      my_LtfPutChar(Fs->rmt_chnl,ch,sc);
+    }
     LtfRecalc(l);
   }
   return ch==CH_ESC;
@@ -3061,6 +3054,7 @@ I1 *SysGetS()
   BoolU4 old_preempt;
   I1 *result;
   U8 ch,sc;
+  U8 my_LtfPutChar(LTChnl *chnl,I8 ch,U8 sc);
   old_preempt=Preempt(OFF);
   PutS("$FU$$BU$");
   do {
@@ -3075,6 +3069,10 @@ I1 *SysGetS()
       Exit;
     else {
       LtfPutChar(l,ch,sc,old_preempt);
+      if (Fs->rmt_chnl) {
+	my_LtfPutChar=ext[EXT_RMT_LTFPUTCHAR];
+	my_LtfPutChar(Fs->rmt_chnl,ch,sc);
+      }
       LtfRecalc(l);
     }
 //Ctrl shift <CR> is a blank line without entry
@@ -3337,6 +3335,7 @@ public void Man(I1 *st)
   Free(name);
 }
 
+ext[EXT_LTF_PUT_I1]=&LtfPutChar;
 ext[EXT_LTF_PUTS]=&LtfPutSPartial;
 ext[EXT_LTF_READ]=&LtfRead;
 ext[EXT_LTF_WRITE]=&LtfWrite;

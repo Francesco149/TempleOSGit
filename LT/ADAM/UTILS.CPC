@@ -22,8 +22,6 @@ public void LtfD(U1 *buf,U8 cnt=0x80)
   Preempt(old_preempt);
 }
 
-extern BoolU4 View();
-
 public U1 *PatchBlk(U8 blk,BoolU4 write=FALSE)
 {
   U1 *buf=MAlloc(BLK_SIZE);
