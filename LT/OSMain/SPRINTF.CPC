@@ -1,0 +1,277 @@
+I1 *SPrintFJoin(I1 *dst,I1 *fmt,I8i argc,I8i *argv)
+{
+  I1 *my_SPrintFJoin2(I1 *dst,I1 *fmt,I8i argc,I8i *argv);
+  if (ext[EXT_SPRINTF_JOIN]) {
+    my_SPrintFJoin2=ext[EXT_SPRINTF_JOIN];
+    return my_SPrintFJoin2(dst,fmt,argc,argv);
+  } else {
+    cout fmt;
+    coutln "ERROR: SPrintF not Loaded.";
+    return NULL;
+  }
+}
+
+void GetFJoin(I1 *src,I1 *fmt,I8i argc,I8i *argv)
+{
+  void my_GetFJoin2(I1 *src,I1 *fmt,I8i argc,I8i *argv);
+  if (ext[EXT_GETF_JOIN]) {
+    my_GetFJoin2=ext[EXT_GETF_JOIN];
+    my_GetFJoin2(src,fmt,argc,argv);
+  } else {
+    cout fmt;
+    coutln "ERROR: GetF not Loaded.";
+  }
+}
+
+
+
+void SPrintF(I1 *dst,I1 *fmt,...)
+{
+  SPrintFJoin(dst,fmt,argc,argv);
+}
+
+void GetF(I1 *src,I1 *fmt,...)
+//Pass pointer to data,
+//For %s pass pointer to pointer (be careful because address
+//  of array is the same as array--create ptr to array and take address
+{
+  GetFJoin(src,fmt,argc,argv);
+}
+
+void PrintF(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  PutS(buf);
+  Free(buf);
+}
+
+asm {CP_PUT_FLOAT:}
+void PutFloat(double d)
+{
+  PrintF("%15e",d);
+}
+
+
+I1 *MSPrintF(I1 *fmt,...)
+{
+  I1 *result,*buf=SPrintFJoin(NULL,fmt,argc,argv);
+  result=NewString(buf);
+  Free(buf);
+  return result;
+}
+
+//This sends text to the adam task which gets
+//compiled and run.
+U8 Adam(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  U8 result;
+  TssCmdStruct *tempc;
+  while (!Bt(&adam_tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tempc=QueueTaskRequest(adam_tss,Fs,buf,
+    (1<<TSSCf_WAKE_MASTER));
+  GetRequestResult(tempc,&result);
+  Free(buf);
+  return result;
+}
+
+//This sends text to the adam task which gets
+//displayed.
+void AdamLog(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  if (Fs!=adam_tss)
+    Adam("PutS(\"%Q\");",buf);
+  else
+    PutS(buf);
+  Free(buf);
+}
+
+//This sends text to the adam task which gets
+//displayed as red and blinking.
+void AdamErr(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv),
+     *buf1=MSPrintF("%S%s%S",
+       "ST_ERR_START",buf,"ST_ERR_END");
+  if (Fs!=adam_tss)
+    Adam("PutS(\"%Q\");",buf1);
+  else
+    PutS(buf1);
+  Free(buf1);
+  Free(buf);
+}
+
+//This sends text to another task's input buffer
+void XTalk(TssStruct *tss,I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv),
+     *buf1=MSPrintF("PutS(\"%Q\");",buf);
+  QueueTextInput(tss,0,buf1,0);
+  Free(buf1);
+  Free(buf);
+}
+
+//This sends text to one's own input buffer
+void Auto(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv),
+     *buf1=MSPrintF("PutS(\"%Q\");",buf);
+  QueueTextInput(Fs,0,buf1,0);
+  Free(buf1);
+  Free(buf);
+}
+
+
+//This spawns an invisible task and sends text
+//which gets compiled and run.
+U8 System(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  U8 result=0;
+  TssCmdStruct *tempc;
+  TssStruct *tss=Spawn(&SysCmdLine,"SYSTEM TASK",Fs);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  tempc=QueueTaskRequest(tss,Fs,buf,
+    (1<<TSSCf_WAKE_MASTER));
+  GetRequestResult(tempc,&result);
+  Kill(tss);
+  Free(buf);
+  return result;
+}
+
+//This spawns an visible task and sends text
+//which gets compiled and run.
+U8 ServantUser(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  U8 result=0;
+  TssCmdStruct *tempc;
+  TssStruct *tss=Spawn(&ServantUserCmdLine,"SERVANT TASK",Fs);
+  while (!Bt(&tss->task_flags,TSSf_IDLE))
+    SwapInNext;
+  Fs->popup_tss=tss;
+  tempc=QueueTaskRequest(tss,Fs,buf,
+    1<<TSSCf_WAKE_MASTER | 1<<TSSCf_FOCUS_MASTER);
+  GetRequestResult(tempc,&result);
+  Fs->popup_tss=NULL;
+  Kill(tss);
+  Free(buf);
+  return result;
+}
+
+//This sends text of an AutoFile nature to one's
+//own input buffer.
+void AutoString(I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  QueueTextInput(Fs,0,buf,0);
+  Free(buf);
+}
+
+void AutoFile(I1 *name)
+{
+  I1 *name2=DefaultExtension(name,"AUZ");
+  AutoString("%F",name2);
+  Free(name2);
+}
+
+
+//This sends text of an AutoFile nature to a
+//task's input buffer.
+void XTalkString(TssStruct *tss,I1 *fmt,...)
+{
+  I1 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  QueueTextInput(tss,0,buf,0);
+  Free(buf);
+}
+
+
+void GetFFlags(FlagsStruct *f,I1 *systext_list,I1 *st)
+{
+  I1 *st2=MAlloc(StrLen(st)+1),*ptr,*list;
+  I8 i;
+  f->on=0;
+  f->off=ALL_MASK;
+  list=SysText(systext_list);
+  while (*st) {
+    while (*st && *st!='+' && *st!='-')
+      st++;
+    if (*st=='+') {
+      st++;
+      if (*st) {
+	ptr=st2;
+	while (*st && *st!='+' && *st!='-' && *st!=CH_SPACE && *st!=CH_SHIFT_SPACE)
+	  *ptr++=*st++;
+	*ptr=0;
+	i=MatchListEntry(st2,list);
+	if (i>=0)
+	  Bts(&f->on,i);
+      }
+    } else if (*st=='-') {
+      st++;
+      if (*st) {
+	ptr=st2;
+	while (*st && *st!='+' && *st!='-' && *st!=CH_SPACE && *st!=CH_SHIFT_SPACE)
+	  *ptr++=*st++;
+	*ptr=0;
+	i=MatchListEntry(st2,list);
+	if (i>=0)
+	  Btr(&f->off,i);
+      }
+    }
+  }
+}
+
+I1 *SPrintFFlags(I1 *dst,I1 *systext_list,U8 flags0,U8 flags1=0)
+{
+  I8 i;
+  I1 *list;
+  *dst=0;
+  list=SysText(systext_list);
+  for (i=0;i<=31;i++)
+    if (Bt(&flags0,i)) {
+      StrCat(dst,"+");
+      StrCat(dst,PointAtListEntry(i,list));
+    }
+  for (i=0;i<=31;i++)
+    if (Bt(&flags1,i)) {
+      StrCat(dst,"+");
+      StrCat(dst,PointAtListEntry(i+32,list));
+    }
+  return dst;
+}
+
+void D(U1 *buf,U8 cnt=0x80,BoolU4 show_offset=TRUE)
+{  //default is show offset not memory address
+  U8 i,j,ch;
+  U1 *b=buf;
+  while (cnt) {
+    if (show_offset)
+      cout b-buf," ";
+    else
+      cout b," ";
+    j=(cnt>16) ? 16:cnt;
+    for (i=0;i<j;i++)
+      cout b[i]," ";
+    for (;i<16;i++)
+      cout "   ";
+    for (i=0;i<j;i++) {
+      ch=b[i];
+      if (ch<CH_SHIFT_SPACE || ch>0x7E) ch='.';
+      PutChar(ch);
+      if (ch=='$')
+	PutChar(ch);
+    }
+    CrLf;
+    cnt-=j;
+    b+=j;
+  }
+}
+
+void Dm(U1 *buf,U8 cnt=0x80)
+{  //Show memory address, not offset
+  D(buf,cnt,FALSE);
+}

@@ -1,0 +1,4 @@
+ExecuteString("
+exe {OTrace(ON);};
+Bt(&sys_flags,SYSf_DEBUG);
+");

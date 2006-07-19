@@ -1,0 +1,3 @@
+LoadCmp;
+Dir;
+InitCompiler(FALSE);

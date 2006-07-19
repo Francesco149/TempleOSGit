@@ -1,0 +1,201 @@
+                          OS PROGRAMMING GUIDELINES:
+* Virtual mem is not used.  The stack does not grow, so allocate enough when 
+the task (process) is [C:/LT/OSMain/Task1a.CPZ,230] Spawned and use the heap
+for most things.  (The "heap" 
+refers to [C:/LT/OSMain/Memory.CPZ,925] MAlloc() and
+[C:/LT/OSMain/Memory.CPZ,919] Free().)
+* I've tried to standardize names see [::/LT/DOC/OSGlossary.GLZ,Naming
+convention] Naming convention
+* There are two modes of compiling [::/LT/DOC/OSGlossary.GLZ,Static Compiled
+Mode] Static Compiled Mode and 
+[::/LT/DOC/OSGlossary.GLZ,Dynamic Compiled] Dynamic Compiled Mode.  Actual
+compilation is done in both--nothing is 
+"interpreted".
+
+                            Departures from C/C++:
+* Built-in types include I0,I1,I2,I4,I8 for signed ints and U0,U1,U2,U4,U8
+for 
+unsigned ints and double.
+* The "`" operator raises a base to a power.
+* Operator Precidence
+  1) `,>>,<<
+  2) *,/,%
+  3) &
+  4) |,^
+  5) +,-
+  6) ==,!=,<,>,<=,>=
+  7) &&
+  8) ||,^^
+  9) :,?
+  10) =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
+* No conditional compilation, except with the exe{} feature.  With this 
+statement blk in your source code, you can place programs that insert text 
+into the stream of code being compiled.  See [::/LT/OSMain/END.CPZ,exe {] exe
+{} for an example where the 
+date/time and compile-time prompting for configuration data is placed into a 
+program.  The [C:/LT/Compiler/CmpMain.CPZ,559] ExePrintF() and
+[C:/LT/Compiler/CmpMain.CPZ,527] ExePutS() place text into a source program 
+stream following the conclusion of the exe{} blk.  I do hope to add 
+conditional compilation, but it's not a priority.
+* No "#define" functions exist (I'm not a fan)
+* Pointer arithmetic is not based on size of objects (I'd have no objections 
+to this changing)
+* No type-checking
+* Variable parameter cnts (...) are accessed with "argc" and "argv[]" which 
+are predefined invisible local variable.
+* "cout" works with commas but not "<<" and and has no "endl" or other
+codes.  
+Use "coutln" to print a carriage return after other stuff.  An alias for "cout
+" is "dbgo" or "dbgoln" and is useful for debugging--I often place debug 
+output all over the place and do a [C:/LT/Opt/Grep.APZ,161] Grep() to locate
+them all.
+* Type casting is done with "><(classname)" and is postfix.
+* When dealing with function addresses, preceed the name with "&".  This 
+allows functions to be called like Pascal procedure with no "()" if there are 
+no parameters or there are just default parameters.
+* "$" is an escape character.  Two dollar signs signify an ordinary $.  See 
+[::/LT/DOC/Dollar.TXZ] ::/LT/DOC/Dollar.TXZ.
+* There is not a "struct" keyword, just "class".
+* "union" is more like a class, so you don't referrence it with a "union" 
+label after you define it.  Some common unions are declared in [U2] ADAMK.HPZ
+for 
+1,2,4 and 8 byte objects.  If you place a type in front of a union 
+declaration, that is the type when used by itself.
+* You cannot declare instances of "classes" or "unions" in the same statement 
+where they are defined.
+* class member vars have two keywords for associating data with member vars
+-- 
+"fmtstr" and "fmtdata".  All compiler structures are saved and you can access 
+the compiler's info about classes and variables.  In the future, I hope to 
+have arbitrary named data on class definitions.
+* "static" variables in functions are not allowed and I have no plans for 
+doing them--just use a global variable.
+* See [::/LT/DEMO/Exceptions.CPZ] ::/LT/DEMO/Exceptions.CPZ.  "try{} catch{}
+and throw" are different from 
+C++. "throw" is a function with variable ("...") parameters.  The values 
+passed in "throw()" can be accessed from within a "catch{}" using the "Fs->exc
+ept_argc" and "Fs->except_argv[]" variables.  Within a "catch {}" blk, set
+the 
+var "Fs->catch_except" to "TRUE" if you want to terminate the search for a 
+handler.  By convention, the first parameter of except_argv[] specifies the 
+exception type number.  A list of assigned exception types can be found at 
+[C:/LT/OSMain/Adam1a.HPZ,2705] EXCEPT_LOCAL.  For a handler that will catch
+all excepts, you can use 
+[C:/LT/OSMain2/OSMain2.CPZ,15] CatchAll().
+* A function is available similar to "sizeof" which provides the offset of a 
+member of a class.  It's called "offset()".  You place the class name and 
+member inside as in "offset(classname.membername)".  It has nothing to do
+with 
+16-bit code.  sizeof() cannot be applied to variables, just classes.  Also, 
+both sizeof() and offset() only accept one level of member variables.  That
+is 
+you cannot do sizeof(classname.membername.submembername).
+* There is a function called [C:/LT/OSMain/Memory.CPZ,920] MSize() which
+gives the size of an object 
+allocated off the heap.  For larger size allocations, the system rounds-up to 
+a power of two, so MSize() lets you know the real size.
+* You can [C:/LT/OSMain/Memory.CPZ,919] Free() a NULL pointer.  Useful
+variants of [C:/LT/OSMain/Memory.CPZ,925] MAlloc() can be found 
+[MAllocZ] Here.  Each task has a heap and you can MAlloc and Free off of
+other task's 
+heaps.
+
+                                PrintF Family
+
+[C:/LT/OSMain/Str1a.CPZ,1130] MSPrintF() is like
+[C:/LT/OSMain/Str1a.CPZ,1108] SPrintF() but it returns a
+[C:/LT/OSMain/Memory.CPZ,925] MAllocated string.  It is vary 
+handy because you don't have to worry about overflow.
+
+[C:/LT/OSMain/TaskCmd.CPZ,353] Auto(I1 *src,...) and text to the current
+task's input buffer.
+[AutoString] AutoString(I1 *src,...) sends text of an
+[::/LT/DOC/OSGlossary.GLZ,AutoFile] AutoFile to the keyboard stream of 
+the current TASK but can also do mouse commands.
+
+[C:/LT/OSMain/TaskCmd.CPZ,332] XTalk(TssStruct *tss,I1 *src,...) and text to
+another task's input buffer.
+[XTalkString] XTalkString(TssStruct *tss,I1 *src,...) sends text of an
+[::/LT/DOC/OSGlossary.GLZ,AutoFile] AutoFile to the 
+keyboard stream of another TASK but can also do mouse commands.
+
+
+[C:/LT/Adam/Ltf/LtfPlain.APZ,844] LtfPutS(Ltf *l,I1 *src) and
+[C:/LT/Adam/Ltf/LtfPlain.APZ,1000] LtfPrintF(Ltf *l,I1 *src,...) send text to
+a 
+linked text file.  You can buffer to a Ltf and save it, providing the 
+functionality of fprintf.  See [::/LT/DEMO/FPrintF.CPZ]
+::/LT/DEMO/FPrintF.CPZ.
+
+[C:/LT/OSMain/TaskCmd.CPZ,285] Adam(I1 *src,...) send text to the adam task
+to be compiled and run.
+[C:/LT/OSMain/TaskCmd.CPZ,303] AdamLog(I1 *src,...) and
+[C:/LT/OSMain/TaskCmd.CPZ,316] AdamErr(I1 *src,...) send text to the adam
+task to be 
+displayed.
+
+
+[Lpt1PrintF] Lpt1PrintF(I1 *src,...) send text to the printer port.
+
+[C:/LT/Compiler/CmpMain.CPZ,559] ExePrintF(I1 *src,...) and
+[C:/LT/Compiler/CmpMain.CPZ,527] ExePutS(I1 *src) send text to the stream of
+code 
+being compiled and must reside in a exe{} blk.
+
+[CommPrintF] CommPrintF(U4 port,I1 *src,...) sends text to the comm ports.
+
+**Note:** If no PutS variant is available, you can use PrintF("%s",src).
+
+The [C:/LT/OSMain/Str1a.CPZ,1122] PrintF() family supports extended format
+codes.
+  * "%S" will print a systext entry.
+  * "%F" will print a text file.
+  * "t" is a flag which will truncate to field width.
+  * "%P" will display a PSECT expression which is good for pointers or 
+addresses.
+  * "%T" and "%D" will display a date or time and the format is selected with 
+a subcode, entered after a "h".  Example: "%20h1D" uses date format code "1". 
+See [::/LT/OSMain/SPRINTF.CPZ,MSPrintFDate] MSPrintFDate() and
+[::/LT/OSMain/SPRINTF.CPZ,MSPrintFTime] MSPrintFTime() for subcodes.
+  * "%z" will display a sub entry of an enumerated list of text entries. It 
+calls [PointAtListEntry] PointAtListEntry().
+  * "%Z" will display a SysText sub entry.
+  * "%Q" will convert "\" to "\\" and quote to backslash quote. (For use in 
+creating strings in strings.)
+
+
+
+                             Hash symbol tables:
+
+* See [::/LT/UTILS/HASHUTIL.CPZ] ::/LT/UTILS/HASHUTIL.CPZ for examples of how
+the hash tables are set-up. 
+ Basically, symbols are placed into hash tables and child process hash tables 
+are chained to parents.  This provides scopes for variables and functions.
+* "adam_tss->hash_table" holds the C/C++ symbols loaded in on start-up.
+* "Fs->hash_table" holds user C+ symbols and if a symbol is not found, it 
+checks parents.  When a duplicate symbol is added to the table, it
+overshadows 
+the previous symbol.  When developing software, typically you include the
+file 
+at the command prompt, make changes and reinclude it.  Old symbols are 
+overshadowed but they are still there.  Periodically, kill the TASK and start 
+fresh when mem is low.  If you wish your applications to free themselves 
+instead of staying in mem, spawn or [C:/LT/Adam/Ltf/LtfPopUp.APZ,395] PopUp()
+a task to run the application and 
+kill it when it's done.
+* To display the contents of a hash table, use the [C:/LT/Adam/Hash2a.APZ,88]
+HashRep() routine or the 
+varients.
+
+                         Assembly Language Concerns:
+
+* Segment registers except FS are set to 0x00000000 as a base.  
+* FS must always point to the per-TASK's structure.  See
+[::/LT/OSMain/ADAMK.HPZ,TssStruct:2] C+C++ task
+structFF:::/LT/OSMain/ADAMK.HPZ,TssStruct and
+[::/LT/OSMain/OSINC.ASZ,TSS_EIP] AsmASM task
+structFF:::/LT/OSMain/OSINC.ASZ,TSS_BACK_LINK.
+* Don't change the segment registers unless interrupts are off.
+* When interacting with compiled code, preserve EBP, ESI, EDI because the 
+compiler uses these for register vars.  You are free to trash EAX, EBX, ECX, 
+EDX.

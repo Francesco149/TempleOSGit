@@ -1,0 +1,170 @@
+                                     MISC
+
+* Press the WINDOW's key at the command line to access your macro/menu area.  
+Place macros there with CTRL-L.  Use the "Pop-Up" option on macros to
+[C:/LT/OSMain/Task1a.CPZ,230] Spawn a 
+task to run a file.  It dies when it is finished.  This returns memory to the 
+system allocated by programs. Be sure to press CTRL-S to save your macro/menu 
+area after making changes.
+
+* You can adjust the screen refresh rate (software).  It is automatically 
+adjusted based on load.  The range is [C:/LT/Adam/Window.APZ,50]
+win_min_refresh,[win_max_refresh] win_max_refresh.
+
+* You can adjust the number of answers displayed by setting Fs->answers_displa
+yed to a number from 0-8.  See [HOME/USER.CPZ,answers_displayed]
+answers_displayed in your [HOME/USER.CPZ] HOME/USER.CPZ file.
+
+* You can use "ans0","ans1", etc in expressions.  You can use the cmd prompt 
+as a calculator by just entering expressions like "1+2*3;".  double results 
+can be accessed with "ansd0" or "ansd1".
+
+* You can recompile and reinstall the kernel with
+[C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().  You can 
+upgrade to 800x600 VGA resolution if your video chip supports it.  You can 
+turn-off WORDSTAT initialization by entering <ENTER> at the prompt.  To start 
+WORDSTAT later, use [C:/LT/Adam/WordStat/WsMain.APZ,651] WsInit().
+
+* Filenames ending in "Z" will be automatically compressed and uncompressed 
+when read or written.  The compression method is not supported elsewhere.
+
+* The joystick can be recalibrated with [JoyCalibration] JoyCalibration().
+
+* You might speed-up CD-ROM access by changing bdev->max_reads if your drive 
+can handle more. See [InitBlkDev] InitBlkDev() under ATAPI.
+
+* [C:/LT/Opt/Merge.APZ,40] MergeChk() can be used to see what's changed.  The
+"+d" flag will show 
+differences of files which have changed and allow you to merge code.  (The "+r
+" flag will recurse.)
+
+* Use [C:/LT/Adam/Ltf/LtfMain.APZ,149] Plain() to edit a plain text
+file.  You'll need this if your file has $'
+s.
+
+* Use [C:/LT/OSMain/Misc1a.CPZ,411] Silent() to disable output.  Or,
+[C:/LT/OSMain/Adam1b.HPZ,63] Btr(&sys_flags,SYSf_NO_IO_SOUND) to 
+turn-off disk IO feedback.
+
+* There are handy functions--F(),R(),FD() and RD() which are defined in 
+[HOME/USER.CPZ] HOME/USER.CPZ.  They will perform find-and-replace operations
+accross multiple 
+files.  The "+l" flag is particularly useful since it limits to whole labels.
+
+* You can save files after making changes, anytime you are within the editor, 
+like when viewing help/macro files.  CTRL-A saves as, CTRL-S saves with the 
+same name in the scrolling title bar.  Hitting ESC will exit and save.  (CTRL-
+Q will exit and not save).  You can save the cmd line window to a file, too, 
+since you're actually in the editor when you're at the cmd line.
+
+* When using CTRL-L to insert links in documents, you can usually leave the 
+"Display Text" blank and it will be filled-in automatically based on other 
+entries.
+
+* There is a feature of the compiler/assembler which allows code to be 
+executed in the middle of compilation and data inserted into the compilation 
+stream.  You do a "exe{}" blk similar to an "asm{}" blk.  Click here for an 
+example: [::/LT/OSMain/END.CPZ,exe {] exe {.
+
+* Use [LtfSetMax] LtfSetMax() to adjust the size of the cmd line buf.
+
+* If you output to the cmd line and wish to allow users to scroll around and 
+view data, you can use [C:/LT/Adam/Ltf/LtfPopUp.APZ,172]
+View().  [WsPutMatrix] Example
+
+* Use [C:/LT/Adam/Ltf/LtfPopUp.APZ,172] View() in Pop-up macros to linger
+until the user presses ESC or CTRL-Q.
+
+* You can access the word under the cursor at
+[C:/LT/Adam/WordStat/WordStat.APZ,36] ws_cur_word, but you should 
+probably turn-off preemption or interrupts momentarily to copy it.
+
+* You can reactivate WORDSTAT after closing it by pressing CTRL-FUNCTION KEY.
+
+* [C:/LT/OSMain/Adam1b.HPZ,98] Preempt() is used to keep a task from being
+interrupted and swapped-out.  It 
+has a similar effect to turning-off interrupts.  Each task has it's own 
+preemption control.  A task with preemption turned-off can voluntarily 
+[SwapInNext] SwapInNext() with preemption off.
+
+* You can set a color for different drives with [SetDriveTextAttr]
+SetDriveTextAttr().  Place 
+calls to this in [::HOME/USER.CPZ] ::HOME/USER.CPZ.
+
+* If you toggle to plain text when you are working with graphics in a 
+document, you can add duplicate entries for pictures by entering a "PI" 
+command with the same number.
+
+* If you toggle to plain text when working with graphics, you can add a
+string 
+to the $PI$ entry to keep track of it.  Try "$PI,"+",2$" where '2' is the 
+picture number.
+
+* I use spaces-to-tab operations on all my files to keep them small.  You
+have 
+to be careful, though, because spaces in messages will be converted.  I use SH
+IFT-SPACE ' ' in such cases.  See [C:/LT/Opt/S2T.APZ,62] S2T() for
+spaces-to-tabs.
+
+* You can edit an existing Graphic Element by putting the cursor on it and 
+pressing CTRL-R.
+
+* You can customize the "wallpaper" by adding stuff to the
+[C:/LT/Adam/WallPaper.APZ,19] WallPaper() 
+routine. 
+
+                                  DEBUGGING
+
+* While debugging, you specify addresses of assembly OSmain asm{} routines 
+with just the label, as in "CP_MALLOC+0x20".  You specify C+ labels with "&" 
+before functions as in "&Printf+0x10".
+
+[C:/LT/OSMain/Dbg1a.CPZ,269] D() [C:/LT/Adam/Ltf/LtfMain.APZ,698] LtfD() to
+hex dump mem with numbering from zero.  With [C:/LT/Adam/Ltf/LtfMain.APZ,698]
+LtfD the values are 
+updated continually and you can alter mem by editing.
+
+[C:/LT/OSMain/Dbg1a.CPZ,302] Dm() [C:/LT/Adam/Ltf/LtfMain.APZ,682] LtfDm() to
+hex dump mem with addresses showing.
+
+[Dasm] Dasm() to disassemble mem.
+
+[Prof] Prof() and [C:/LT/Adam/Profiler.APZ,106] ProfRep() provide code
+profiling.  See 
+[::/LT/DEMO/AutoFile/Demo2.AUZ] ::/LT/DEMO/AutoFile/Demo2.AUZ (This is an
+"[::/LT/DOC/OSGlossary.GLZ,AutoFile] AutoFile".)
+
+* Use [C:/LT/OSMain/Dbg1a.CPZ,183] DbgNum(), [C:/LT/OSMain/Dbg1a.CPZ,164]
+DbgStr() and [C:/LT/OSMain/Dbg1a.CPZ,219] DbgAdd() to print debug info
+bypassing the window 
+framework.  You can use [C:/LT/OSMain/Misc1a.CPZ,442] Raw(TRUE) to make all
+output bypass the window 
+framework.
+
+* Use [C:/LT/OSMain/Misc1a.CPZ,430] SysDbg() to set a flag which you can read
+with [C:/LT/OSMain/Misc1a.CPZ,436] IsSysDbg() when you wish 
+to trigger some debug activity.
+
+* There are flags for various trace options that can help
+debugging.  [C:/LT/Compiler/Directives.CPZ,65] Echo() 
+turns on or off raw data going into the lexical
+analyzer.  [C:/LT/Compiler/Directives.CPZ,56] LTrace() shows the 
+tokens coming out of the lexical
+analyzer.  [C:/LT/Compiler/Directives.CPZ,51] CTrace() disassembles code 
+generated from the C+ compiler.  [C:/LT/Compiler/Directives.CPZ,33] PTrace()
+shows "intermediate code" comming 
+out of the first stage of the compiler (it's not 100% valid because it hasn't 
+been fixed-up).  [C:/LT/Compiler/Directives.CPZ,38] OTrace() shows
+intermediate code coming-out after 
+optimization.  These flags can be set and reset by placing them in "exe{}" 
+code blks.
+
+* dbgo is an alias for "cout" and can be used to place output.  You can
+easily 
+find and remove them doing a [C:/LT/Opt/Grep.APZ,161] Grep().
+
+* [SBpt] SBpt() to set breakpoints.  When the fault screen appears, use
+[C:/LT/Adam/Dbg2a.APZ,341] Go() to 
+continue.  You can altering modify what is displayed each break-point by 
+[HOME/FAULT.CPZ] HOME/FAULT.CPZ in your account's home directory.
+

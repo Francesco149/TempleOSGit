@@ -1,0 +1,235 @@
+#define BOOT_BIC	"BOOT.BIC"
+#define BOOT1_BIC	"/0000BOOT/BOOT.BIC"
+#define CD_BOOT		"/0000BOOT/CDBOOT.BIZ"
+
+if (DriveIsWritable) {
+  CompileFile("BOOTHD.ASZ");
+  CompileFile("BOOTFD.ASZ");
+  CompileFile("BOOTCD2.ASZ");
+  CompileFile("BOOTRAM");
+}
+
+Load("BOOTHD",TRUE);
+Load("BOOTFD",TRUE);
+Load("BOOTCD2",TRUE);
+Load("BOOTRAM");
+
+public BoolU4 CreateCdBootFile()
+{
+  U1 *br;
+  U8 d,size;
+  U2 *ww;
+
+  LTFile *f=FOpen(BOOT1_BIC,"r");
+  size=FSize(f);
+  FClose(f);
+
+  br=MAllocZ(CD_BLK_SIZE);
+
+  ww=BCD2_BLK_CNT+1;
+  *ww=1+(size+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+
+  d=CD_FILE_OFFSET+4<<1;
+  ww=BCD2_BLK_LO+1;
+  *ww=d/(CD_BLK_SIZE/BLK_SIZE);
+  ww=BCD2_BLK_HI+1;
+  *ww=(d/(CD_BLK_SIZE/BLK_SIZE))>>16;
+
+  ww=BCD2_JMP_START;
+  *ww=(d%(CD_BLK_SIZE/BLK_SIZE))*BLK_SIZE;
+  MemCpy(br,BCD2_START,BCD2_END-BCD2_START);
+
+  WriteFile(CD_BOOT,br,CD_BLK_SIZE);
+  Free(br);
+  return TRUE;
+}
+
+if (DriveIsWritable)
+  CreateCdBootFile;
+
+extern void Boot(I1 *filename);
+public void BootLT()
+{
+  Cd("/LT/OSMain");
+  if (!CompileFile("OS.ASZ","OS",NULL,':'))
+    Boot("OS.BIZ");
+}
+
+void InstallLTDir(I1 src,I1 dst)
+{
+  I1 buf_s[64],buf_d[64];
+  if (src==dst) return;
+  SPrintF(buf_s,"%c:/LT",src);
+  SPrintF(buf_d,"%c:/LT",dst);
+  DelTree(buf_d);
+  CopyTree(buf_s,buf_d);
+}
+
+I1 CheckWritable(I1 drive=0)
+{
+  BoolU4 cont=TRUE;
+  I1 writable_drive=drive;
+  LTPartition *p;
+  LTBlkDev *bdev;
+  if (!DriveIsWritable(drive)) {
+    coutln drive,": Drive is read-only.";
+    while (cont) {
+      cout "Enter RAM drive (usually 'B') for temporary files:";
+      writable_drive=ToUpper(GetChar);
+      CrLf;
+      p=DriveToPartition(writable_drive);
+      bdev=p->bdev;
+      if (bdev->type!=LTBDT_RAM ||
+	  !DriveIsWritable(writable_drive))
+	coutln "Not A RAM Drive";
+      else
+	cont=FALSE;
+    }
+    Format(writable_drive,FALSE,FALSE);
+    InstallLTDir(drive,writable_drive);
+  }
+  return writable_drive;
+}
+
+
+BoolU4 CreateBootImage(I1 src_drive,I1 dst_drive,U8 *out_size,I1 *filename)
+{
+  LTPartition *p;
+  U1 *buf;
+  Fs->user_aux1=dst_drive;
+  I8 my_CompileFile(I1 *filename,I1 *map_name=NULL,I1 *out_name=NULL,I1 mapfile_drive=0);
+
+  my_CompileFile=FindExtern("CompileFile5");  //In case a offline compiler is present
+  if (!my_CompileFile)
+    my_CompileFile=FindExtern("CompileFile");  //In case a offline compiler is present
+
+  Drive(src_drive);
+
+  Cd("/LT/ADAM");
+  if (my_CompileFile("ADAMASM.ASZ","ADAMASM",NULL,':'))
+    return FALSE;
+
+  Cd("/LT/COMPILE");
+  if (my_CompileFile("CMP.ASZ","CMP",NULL,':'))
+    return FALSE;
+
+  Cd("/LT/OSMain");
+  if (my_CompileFile("OS.ASZ","OS",NULL,':'))
+    return FALSE;
+
+  buf=ReadFile("OS.BIZ",out_size);
+
+  filename[StrLen(filename)-1]='C';
+  coutln "Creating ",filename," from OS.BIZ";
+  Drive(dst_drive);
+  Cd("/");
+  p=Fs->cur_partition;
+
+  PrintF("Size: %08X\r\n",*out_size);
+  WriteFile(filename,buf,*out_size,0,LT_ATTR_FIXED,FALSE);
+  Free(buf);
+  Drive(src_drive);
+  Del("/LT/OSMain/OS.BIZ");
+  return TRUE;
+}
+
+
+public BoolU4 InstallBoot(I1 src_drive,I1 dst_drive=0)
+{
+  BoolU4 result=FALSE;
+  LTBlkDev *bd;
+  LTPartition *p;
+  LTBootStruct br;
+  LTDirEntry de;
+  U4 *dd;
+  U8 i,size;
+  U1 *bb;
+  U2 *ww;
+
+  if (!dst_drive) dst_drive=src_drive;
+
+  bd=DriveToBlkDev(dst_drive);
+  switch (bd->type) {
+    case LTBDT_ATAPI:
+      if (!CreateBootImage(src_drive,src_drive,&size,BOOT1_BIC))
+	return FALSE;
+      Drive(src_drive);
+      CreateCdBootFile;
+      return TRUE;
+    case LTBDT_RAM: //TODO
+    case LTBDT_FDC:
+      break;
+    case LTBDT_ATA:
+      break;
+    default:
+      return FALSE;
+  }
+
+  Drive(dst_drive);
+  p=Fs->cur_partition;
+  if (p->type!=PT_LT)
+    PutSysText("ST_NOT_LT");
+  else {
+    src_drive=CheckWritable(src_drive);
+    if (!CreateBootImage(src_drive,dst_drive,&size,BOOT_BIC))
+      return FALSE;
+    Drive(dst_drive);
+    RBlks(Fs->cur_partition,&br,p->offset,1,TRUE);
+    if (!FindFile(BOOT_BIC,&de,FALSE,TRUE))
+      coutln "No image";
+    else {
+      coutln "Modifying partition boot record.";
+      br.jump_and_nop[0]=0xEB;
+      br.jump_and_nop[1]=30;
+      br.jump_and_nop[2]=0x90;
+      switch (bd->type) {
+	case LTBDT_ATA:
+	  ww=BHD2_RESTART+1;
+	  *ww=(size+BLK_SIZE-1)/BLK_SIZE;
+	  dd=BHD2_BLK;
+	  *dd=p->data+de.cluster*p->spc;
+	  bb=BHD2_CODE;
+	  for (i=0;i<(BHD2_END-BHD2_CODE);i++)
+	    br.code[i]=bb[i];
+	  break;
+	case LTBDT_RAM: //TODO
+	case LTBDT_FDC:
+	  ww=BFD_RESTART+1;
+	  *ww=(size+BLK_SIZE-1)/BLK_SIZE;
+	  ww=BFD_RESTART+4;
+	  *ww=p->data+de.cluster*p->spc;
+	  bb=BFD_CODE;
+	  for (i=0;i<(BFD_END-BFD_CODE);i++)
+	    br.code[i]=bb[i];
+	  break;
+      }
+      for (;i<478;i++)
+	br.code[i]=0;
+      WBlks(Fs->cur_partition,&br,p->offset,1,TRUE);
+      result=TRUE;
+    }
+  }
+  return result;
+}
+
+public void ReadFloppyImage(I1 src_drive, I1 *dst_name)
+{
+  U1 *buf;
+  LTPartition *p=DriveToPartition(src_drive);
+  if (p->bdev->type!=LTBDT_FDC &&
+      p->bdev->type!=LTBDT_RAM) return;
+  buf=MAlloc(p->size*BLK_SIZE);
+  RBlks(p,buf,p->offset,p->size,TRUE);
+  WriteFile(dst_name,buf,p->size*BLK_SIZE);
+  Free(buf);
+}
+
+public void WriteFloppyImage(I1 *src_name, I1 dst_drive)
+{
+  U1 *buf;
+  LTPartition *p=DriveToPartition(dst_drive);
+  if (p->bdev->type!=LTBDT_FDC &&
+      p->bdev->type!=LTBDT_RAM) return;
+  buf=ReadFile(src_name);
+  WBlks(p,buf,p->offset,p->size,TRUE);
+}
