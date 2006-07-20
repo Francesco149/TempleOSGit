@@ -42,7 +42,7 @@ void LoadSysStrings()
 		"Floating\0Graphics\0");
   LoadList("ST_FILE_ATTRS","R\0H\0S\0V\0D\0A\0.\0.\0X\0Y\0T\0Z\0"
 	  "C\0F\0");
-  LoadList("ST_FILE_UTIL_FLAGS","r\0d\0i\0l\0?\0a\0c\0R\0p\0m\0D\0");
+  LoadList("ST_FILE_UTIL_FLAGS","r\0d\0i\0l\0?\0a\0c\0R\0p\0m\0D\0t\0");
   LoadList("ST_BLKDEV_TYPES","NULL \0RAM  \0FDC  \0ATA  \0ATAPI\0FILE_\0");
   LoadList("ST_GRELEM_TYPES","End\0.\0Color (4-bit)\0.\0Point\0"
 	  "Line\0PolyLine\0PolyPoint\0Width\0Shift\0"

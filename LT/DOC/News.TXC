@@ -1,5 +1,14 @@
 
 
+----07/19/06 21:44:00----
+* Worked on serial port null modem support.  You can network two computers
+and 
+do a telnet type thing.  There is now a [RmtMergeChk] RmtMergeChk() routine
+which will sync 
+two computers.  One has to have a window running [TelnetHostOpen]
+TelnetHostOpen() which you 
+pass a channel from [CommOpen8N1] CommOpen8N1().
+
 ----07/18/06 10:25:00----
 * Unmask IRQ's during mouse polling.  Might have side-effects.
 

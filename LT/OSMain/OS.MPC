@@ -1,26 +1,26 @@
 [::/LT/OSMain/ADAMK.HPZ,1095] ACSF_IN_STRUCT     1        0000 StrConst 
-[::/LT/OSMain/OSINC.ASZ,283] ACS_COMPRESS       0000005C 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,273] ACS_CUR_BITS_IN_USE 00000034 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,272] ACS_CUR_ENTRY      00000030 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,269] ACS_DST_BUF        00000024 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,268] ACS_DST_POS        0000001C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,267] ACS_DST_SIZE       00000014 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,281] ACS_ENTRY_USED     00000054 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,278] ACS_FREE_INDEX     00000048 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,279] ACS_FREE_LIMIT     0000004C 0003 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,284] ACS_HASH           0000805C 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,282] ACS_LAST_CH        00000058 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,270] ACS_MIN_BITS       00000028 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,271] ACS_MIN_TABLE_ENTRY 0000002C 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,275] ACS_NEXT_BITS_IN_USE 0000003C 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,274] ACS_NEXT_ENTRY     00000038 0003 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,280] ACS_SAVED_BASECODE 00000050 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,266] ACS_SRC_BUF        00000010 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,265] ACS_SRC_POS        00000008 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,264] ACS_SRC_SIZE       00000000 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,277] ACS_STACK_BASE     00000044 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,276] ACS_STACK_PTR      00000040 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,285] ACS_STRUCT_SIZE    0000C05C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,284] ACS_COMPRESS       0000005C 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,274] ACS_CUR_BITS_IN_USE 00000034 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,273] ACS_CUR_ENTRY      00000030 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,270] ACS_DST_BUF        00000024 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,269] ACS_DST_POS        0000001C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,268] ACS_DST_SIZE       00000014 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,282] ACS_ENTRY_USED     00000054 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,279] ACS_FREE_INDEX     00000048 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,280] ACS_FREE_LIMIT     0000004C 0003 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,285] ACS_HASH           0000805C 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,283] ACS_LAST_CH        00000058 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,271] ACS_MIN_BITS       00000028 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,272] ACS_MIN_TABLE_ENTRY 0000002C 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,276] ACS_NEXT_BITS_IN_USE 0000003C 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,275] ACS_NEXT_ENTRY     00000038 0003 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,281] ACS_SAVED_BASECODE 00000050 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,267] ACS_SRC_BUF        00000010 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,266] ACS_SRC_POS        00000008 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,265] ACS_SRC_SIZE       00000000 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,278] ACS_STACK_BASE     00000044 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,277] ACS_STACK_PTR      00000040 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,286] ACS_STRUCT_SIZE    0000C05C 0000 SysSym Lit 
 [::/LT/OSMain/SCHED.ASZ,157] ACTIVATE_NEXT_USER 000044A8 0002 SysSym 
 [::/LT/OSMain/OSMAIN.ASZ,15] ADAM_TSS           0000101C 0002 SysSym Export 
 [::/LT/OSMain/MEM.CPZ,7] AFree              00004B24 001B Funct Export 
@@ -53,8 +53,8 @@
 [::/LT/OSMain/MEM.CPZ,12] AMAllocIdentical   00004B5A 0004 Funct Export 
 [::/LT/OSMain/MEM.CPZ,40] AMAllocZ           00004D8E 0008 Funct Export 
 [::/LT/OSMain/MEM.CPZ,26] ANewString         00004C6C 0007 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1869] ARC_MAX_BITS       12       0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1870] ARC_MAX_TABLE_ENTRY ((1<<ARC 0005 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1876] ARC_MAX_BITS       12       0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1877] ARC_MAX_TABLE_ENTRY ((1<<ARC 0005 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,801] ARGT_AL            28       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,802] ARGT_AX            29       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,799] ARGT_CL            27       0000 StrConst 
@@ -97,51 +97,51 @@
 [::/LT/OSMain/ADAMK.HPZ,816] ASM_CODE_BLK_BITS  15       0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,817] ASM_CODE_BLK_SIZE  (1<<ASM_ 0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1180] ASM_FILE_MASK      "*.AS?"  0000 StrConst 
-[::/LT/OSMain/DISK2.CPZ,491] ATACmd             00014CB5 000B Funct Export 
-[::/LT/OSMain/DISK2.CPZ,483] ATANop             00014C30 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,804] ATAPIClose         0001607A 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,720] ATAPIReadBlks      00015922 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,683] ATAPIReadBlks2     00015617 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,533] ATAPISeek          00014E23 0003 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,549] ATAPIStartStop     00014F59 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,788] ATAPISync          00015F51 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,614] ATAPIWaitReady     0001528F 0003 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,820] ATAPIWriteBlks     000161A4 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,507] ATAPIWritePktWord  00014D1E 002B Funct Export 
-[::/LT/OSMain/DISK2.CPZ,672] ATAReadBlks        00015552 0004 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,638] ATAReadBlks2       0001542B 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,450] ATASelectBlk28     00014AF8 0003 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,764] ATAWriteBlks       00015D88 0002 Funct Export 
-[::/LT/OSMain/OSINC.ASZ,258] ATE_BASECODE       00000004 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,259] ATE_CH             00000006 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,257] ATE_NEXT           00000000 0003 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,260] ATE_STRUCT_SIZE    00000008 0000 SysSym Lit 
+[::/LT/OSMain/DISK2.CPZ,491] ATACmd             00014CB7 000B Funct Export 
+[::/LT/OSMain/DISK2.CPZ,483] ATANop             00014C32 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,804] ATAPIClose         0001607C 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,720] ATAPIReadBlks      00015924 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,683] ATAPIReadBlks2     00015619 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,533] ATAPISeek          00014E25 0003 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,549] ATAPIStartStop     00014F5B 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,788] ATAPISync          00015F53 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,614] ATAPIWaitReady     00015291 0003 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,820] ATAPIWriteBlks     000161A6 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,507] ATAPIWritePktWord  00014D20 002B Funct Export 
+[::/LT/OSMain/DISK2.CPZ,672] ATAReadBlks        00015554 0004 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,638] ATAReadBlks2       0001542D 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,450] ATASelectBlk28     00014AFA 0003 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,764] ATAWriteBlks       00015D8A 0002 Funct Export 
+[::/LT/OSMain/OSINC.ASZ,259] ATE_BASECODE       00000004 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,260] ATE_CH             00000006 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,258] ATE_NEXT           00000000 0003 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,261] ATE_STRUCT_SIZE    00000008 0000 SysSym Lit 
 [::/LT/OSMain/ADAMK2.HPZ,106] ATan               00003F88 0000 Funct Public 
 [::/LT/OSMain/STRINGS.CPZ,552] AbsoluteDirName    0000E692 0004 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,623] AbsoluteFileName   0000EC23 0008 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,153] ActivateNextUser   00004518 0000 Funct Public 
-[::/LT/OSMain/SPRINTF.CPZ,65] Adam               00010652 0002 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,93] AdamErr            000107D3 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,81] AdamLog            00010726 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,65] Adam               00010654 0002 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,93] AdamErr            000107D5 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,81] AdamLog            00010728 0000 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,473] Add2String         0000E0F9 0000 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,535] AddBlkDev          000194C5 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,652] AddDrives          00019EDB 0001 Funct Export 
-[::/LT/OSMain/END.CPZ,40] AddModuleHash      00025E21 0002 Funct Export 
-[::/LT/OSMain/END.CPZ,54] AddOsMapSymbols    00025EFE 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,535] AddBlkDev          000194C7 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,652] AddDrives          00019EDD 0001 Funct Export 
+[::/LT/OSMain/END.CPZ,40] AddModuleHash      00025E23 0002 Funct Export 
+[::/LT/OSMain/END.CPZ,54] AddOsMapSymbols    00025F00 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,106] AddTaskToChildQueue 00009920 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,92] AddTaskToQueue     00009866 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1464] AllocClusters      0001DAEC 0007 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1423] AllocLTClusters    0001D78E 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,36] AllocMAPBuf        00016A1D 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1464] AllocClusters      0001DAEE 0007 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1423] AllocLTClusters    0001D790 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,36] AllocMAPBuf        00016A1F 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,162] ArcCheckSum        00004170 0004 Funct Public 
-[::/LT/OSMain/COMPRESS.CPZ,4] ArcCompressBuf     000119EF 0001 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1909] ArcCompressStruct  00000005 0012 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1883] ArcCs              00000018 000A Class Public 
+[::/LT/OSMain/COMPRESS.CPZ,4] ArcCompressBuf     000119F1 0001 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1916] ArcCompressStruct  00000005 0012 Class Public 
+[::/LT/OSMain/ADAMK.HPZ,1890] ArcCs              00000018 000A Class Public 
 [::/LT/OSMain/ADAMK2.HPZ,161] ArcDetermineCompressionType 00004140 0001 Funct 
-[::/LT/OSMain/COMPRESS.CPZ,59] ArcExpandBuf       00011D4C 0001 Funct Export 
-[::/LT/OSMain/COMPRESS.CPZ,51] ArcFinishCompression 00011CD3 0001 Funct Export 
+[::/LT/OSMain/COMPRESS.CPZ,59] ArcExpandBuf       00011D4E 0001 Funct Export 
+[::/LT/OSMain/COMPRESS.CPZ,51] ArcFinishCompression 00011CD5 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,164] ArcGetTableEntry   00004190 0004 Funct 
-[::/LT/OSMain/ADAMK.HPZ,1877] ArcTableEntry      00000004 0007 Class 
+[::/LT/OSMain/ADAMK.HPZ,1884] ArcTableEntry      00000004 0007 Class 
 [::/LT/OSMain/ADAMK2.HPZ,105] Arg                00003FA8 0000 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,890] AsmArgStruct       0000000E 0001 Class 
 [::/LT/OSMain/ADAMK.HPZ,884] AsmCodeBlk         00000002 0002 Class 
@@ -149,25 +149,25 @@
 [::/LT/OSMain/ADAMK.HPZ,901] AsmUnresolvedRef   0000000A 0002 Class 
 [::/LT/OSMain/MISC.CPZ,1] AssignBit          00006068 0012 Funct Export 
 [::/LT/OSMain/MISC.CPZ,493] AtoI               00007D68 0001 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,117] Auto               0001099B 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,174] AutoFile           00010D71 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,167] AutoString         00010CF3 0001 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,117] Auto               0001099D 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,174] AutoFile           00010D73 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,167] AutoString         00010CF5 0001 Funct Export 
 [::/LT/OSMain/DISK2.CPZ,423] BAD_R_STAT         (BUSY_ST 0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,425] BAD_STAT           (BAD_R_S 0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,424] BAD_W_STAT         (BAD_R_S 0000 StrConst 
 [::/LT/OSMain/SYSUTILS.ASZ,235] BINARY_TO_FIXED_HEX 00003B7D 0001 SysSym 
 [::/LT/OSMain/SYSUTILS.ASZ,233] BINARY_TO_HEX      00003B78 0000 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1728] BLACK              0        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1735] BLACK              0        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1168] BLK_SIZE           512      0082 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1729] BLUE               1        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1748] BMF_ALIAS          8        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1747] BMF_DONT_DRAW      4        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1746] BMF_LOCATE_NEAREST 2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1749] BMF_SCREEN_BITMAP  16       0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1745] BMF_TRANSFORMATION 1        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1752] BMT_COLOR24        2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1751] BMT_COLOR4         1        0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1753] BMT_MONO           3        0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1736] BLUE               1        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1755] BMF_ALIAS          8        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1754] BMF_DONT_DRAW      4        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1753] BMF_LOCATE_NEAREST 2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1756] BMF_SCREEN_BITMAP  16       0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1752] BMF_TRANSFORMATION 1        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1759] BMT_COLOR24        2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1758] BMT_COLOR4         1        0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1760] BMT_MONO           3        0002 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1174] BOOT_CODE_CDROM    3        0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1172] BOOT_CODE_FLOPPY   1        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1173] BOOT_CODE_HARDDRIVE 2        0001 StrConst 
@@ -177,9 +177,9 @@
 [::/LT/OSMain/OSINC.ASZ,69] BPT_NEXT           00000000 0002 SysSym Export Lit 
 [::/LT/OSMain/OSINC.ASZ,72] BPT_U1             0000000C 0002 SysSym Export Lit 
 [::/LT/OSMain/SCHED.ASZ,131] BREAK_ACTIVE_USER  00004406 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1734] BROWN              6        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1741] BROWN              6        0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,421] BUSY_STAT          0x80     0001 StrConst 
-[::/LT/OSMain/OSMAIN.ASZ,31] BUSY_WAIT          000018CF 0001 SysSym Export 
+[::/LT/OSMain/OSMAIN.ASZ,31] BUSY_WAIT          000018D3 0001 SysSym Export 
 [::/LT/OSMain/DATE.CPZ,110] Bcd2Bin            0000BBA2 0001 Funct Export 
 [::/LT/OSMain/MISC.CPZ,575] Beep               000084CD 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,742] Beeps              00008D6D 0001 Funct Export 
@@ -196,7 +196,7 @@
 [::/LT/OSMain/ADAMK2.HPZ,80] Btc                000000D3 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,79] Btr                000000D2 001B Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,78] Bts                000000D1 0023 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,96] BuildLTFreeList    00016F1D 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,96] BuildLTFreeList    00016F1F 0002 Funct Export 
 [::/LT/OSMain/MISC.CPZ,541] BusyWait           000082D8 000D Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,870] CBMT_GOTO_LABEL    1        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,872] CBMT_JMP_TABLE     3        0000 StrConst 
@@ -210,16 +210,18 @@
 [::/LT/OSMain/DISK2.CPZ,364] CFA_TRANSLATE_SECTOR 0x87 /*  0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,384] CFA_WRITE_MULTI_WO_ERASE 0xCD /*  0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,356] CFA_WRITE_SECT_WO_ERASE 0x38 /*  0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1683] CH_BACKSPACE       0x08     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1687] CH_CR              0x0D     0005 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1689] CH_CTRLQ           0x11     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1682] CH_CURSOR          0x05     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1688] CH_ESC             27       0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1686] CH_FORM_FEED       0x0C     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1685] CH_LINE_FEED       0x0A     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1690] CH_SHIFT_SPACE     31       000B StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1691] CH_SPACE           32       0014 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1684] CH_TAB             0x09     0009 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1688] CH_BACKSPACE       0x08     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1692] CH_CR              0x0D     0005 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1694] CH_CTRLB           0x02     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1695] CH_CTRLE           0x05     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1696] CH_CTRLQ           0x11     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1687] CH_CURSOR          0x05     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1693] CH_ESC             0x1B     0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1691] CH_FORM_FEED       0x0C     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1690] CH_LINE_FEED       0x0A     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1697] CH_SHIFT_SPACE     0x1F     000B StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1698] CH_SPACE           0x20     0014 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1689] CH_TAB             0x09     0009 StrConst 
 [::/LT/OSMain/OSMAIN.ASZ,258] CONT_INIT_OS       00002252 0001 SysSym Export 
 [::/LT/OSMain/DISK4.CPZ,720] COPY_BUF_BLKS      0x400    000C StrConst 
 [::/LT/OSMain/IRQHAND.ASZ,425] COUT_JOIN          00002928 0002 SysSym Export 
@@ -260,9 +262,9 @@
 [::/LT/OSMain/SYSUTILS.ASZ,953] CP_LOG2            000040E0 0001 SysSym Export 
 [::/LT/OSMain/MEM.ASZ,155] CP_MALLOC          00002F98 0001 SysSym Export 
 [::/LT/OSMain/MEM.ASZ,278] CP_MSIZE           000030BA 0001 SysSym Export 
-[::/LT/OSMain/OSMAIN.ASZ,297] CP_OS_MAIN         00027242 0001 SysSym 
+[::/LT/OSMain/OSMAIN.ASZ,297] CP_OS_MAIN         00027244 0001 SysSym 
 [::/LT/OSMain/SYSUTILS.ASZ,854] CP_POW10           00004018 0001 SysSym Export 
-[::/LT/OSMain/IRQHAND.ASZ,468] CP_PUT_FLOAT       000105A0 0001 SysSym 
+[::/LT/OSMain/IRQHAND.ASZ,468] CP_PUT_FLOAT       000105A2 0001 SysSym 
 [::/LT/OSMain/SYSUTILS.ASZ,209] CP_PUT_I1          00005CFD 0001 SysSym Export 
 [::/LT/OSMain/SYSUTILS.ASZ,219] CP_PUT_STRING      00005ECB 0001 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,392] CP_PUT_SYSTEXT     0000C8D0 0001 SysSym 
@@ -283,60 +285,60 @@
 [::/LT/OSMain/MISC.CPZ,65] CP_TEST_EXCEPT     0000633A 0001 SysSym Export 
 [::/LT/OSMain/SCHED.ASZ,182] CP_USER_CMD_LINE   0000AC6D 0001 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,617] CRLF               00003EB8 0002 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1480] CRTf_CURSOR_ON     0        0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1487] CRTf_HAS_BEEN_RESIZED 7        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1490] CRTf_HAS_BEEN_RESIZED2 10       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1484] CRTf_HAS_CLOSE_WINDOW 4        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1483] CRTf_HAS_MENU      3        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1489] CRTf_NO_DOUBLE_CLICK 9        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1485] CRTf_SCROLL_X      5        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1486] CRTf_SCROLL_Y      6        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1482] CRTf_SHOW          2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1488] CRTf_SILENT        8        0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1481] CRTf_WRAP_AROUND   1        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1484] CRTf_CURSOR_ON     0        0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1491] CRTf_HAS_BEEN_RESIZED 7        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1494] CRTf_HAS_BEEN_RESIZED2 10       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1488] CRTf_HAS_CLOSE_WINDOW 4        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1487] CRTf_HAS_MENU      3        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1493] CRTf_NO_DOUBLE_CLICK 9        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1489] CRTf_SCROLL_X      5        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1490] CRTf_SCROLL_Y      6        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1486] CRTf_SHOW          2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1492] CRTf_SILENT        8        0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1485] CRTf_WRAP_AROUND   1        0001 StrConst 
 [::/LT/OSMain/CHARIO.ASZ,14] CTRL_KEY_SCAN_DECODE_TABLE 000045D8 0001 SysSym 
-[::/LT/OSMain/ADAMK.HPZ,1873] CT_7_BIT           1        0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1874] CT_8_BIT           2        0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1872] CT_NONE            0        0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1880] CT_7_BIT           1        0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1881] CT_8_BIT           2        0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1879] CT_NONE            0        0002 StrConst 
 [::/LT/OSMain/MISC.CPZ,601] CTrace             00008648 0000 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1731] CYAN               3        0000 StrConst 
-[::/LT/OSMain/OSINC.ASZ,238] C_DEBUG            00000014 0000 SysSym Lit 
+[::/LT/OSMain/ADAMK.HPZ,1738] CYAN               3        0000 StrConst 
+[::/LT/OSMain/OSINC.ASZ,239] C_DEBUG            00000014 0000 SysSym Lit 
 [::/LT/OSMain/ADAMK.HPZ,1179] C_FILE_MASK        "*.CP?;* 0000 StrConst 
-[::/LT/OSMain/OSINC.ASZ,233] C_HASH_NEXT        00000000 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,234] C_HASH_STRING      00000004 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,235] C_HASH_TYPE        00000008 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,239] C_MEM_CNT          00000018 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,242] C_MEM_LIST         00000020 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,243] C_MEM_LIST_LAST    00000024 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,240] C_PARAM_CNT        0000001A 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,241] C_SIZE             0000001C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,237] C_SOURCE_LINK      00000010 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,244] C_STATEMENTS       00000028 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,236] C_USE_CNT          0000000C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,234] C_HASH_NEXT        00000000 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,235] C_HASH_STRING      00000004 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,236] C_HASH_TYPE        00000008 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,240] C_MEM_CNT          00000018 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,243] C_MEM_LIST         00000020 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,244] C_MEM_LIST_LAST    00000024 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,241] C_PARAM_CNT        0000001A 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,242] C_SIZE             0000001C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,238] C_SOURCE_LINK      00000010 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,245] C_STATEMENTS       00000028 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,237] C_USE_CNT          0000000C 0000 SysSym Lit 
 [::/LT/OSMain/MISC.CPZ,649] Caller             000088D2 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,656] CallerCaller       00008910 0000 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,874] CbMiscStruct       00000006 0002 Class 
-[::/LT/OSMain/DISK4.CPZ,40] Cd                 00020BA9 0007 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1345] CdISO              0001D15F 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1330] CdLT               0001D04B 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,40] Cd                 00020BAB 0007 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1345] CdISO              0001D161 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1330] CdLT               0001D04D 0001 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,320] Cf_EXTERN          1        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,319] Cf_INTERNAL        0        0000 StrConst 
-[::/LT/OSMain/DISK3.CPZ,473] ChangeDisk         00018F06 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,473] ChangeDisk         00018F08 0002 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,653] ChangeExtension    0000EEAB 0001 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,693] CheckFileName      0000F1EA 0004 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,517] CheckLTBlkDev      0000E42D 000F Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,490] CheckLTPartition   0000E27F 0017 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,321] ClassStruct        00000011 0006 Class Public 
-[::/LT/OSMain/DISK3.CPZ,49] CleanMAPBuf        00016B0D 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,49] CleanMAPBuf        00016B0F 0003 Funct Export 
 [::/LT/OSMain/CRT.CPZ,122] ClearWindowText    000057D9 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,69] Cli                000000C4 0017 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,917] ClusterBlk         0001ADDC 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,917] ClusterBlk         0001ADDE 0002 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,864] CodeBlk            00000002 0004 Class 
-[::/LT/OSMain/DISK3.CPZ,1824] CompareLTDir       0001FE44 0001 Funct Export 
-[::/LT/OSMain/COMPRESS.CPZ,147] CompressBuf        000123F8 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1824] CompareLTDir       0001FE46 0001 Funct Export 
+[::/LT/OSMain/COMPRESS.CPZ,147] CompressBuf        000123FA 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,391] ContinueServantTask 0000A9BF 0003 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,721] CopySingle         000244B5 0000 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,701] CopySingleZ        000242DE 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,721] CopySingle         000244B7 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,701] CopySingleZ        000242E0 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,103] Cos                00003F50 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,151] CrLf               00003EB8 0007 Funct Public 
 [::/LT/OSMain/CMD.CPZ,74] CreateMemSelector  0000974D 0001 Funct Export 
@@ -345,15 +347,15 @@
 [::/LT/OSMain/CRT.CPZ,90] CursorOff          00005646 0003 Funct Export 
 [::/LT/OSMain/CRT.CPZ,102] CursorOn           000056E1 0001 Funct Export 
 [::/LT/OSMain/CRT.CPZ,74] CursorOnScreen     0000535C 0002 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,247] D                  00011428 0001 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,247] D                  0001142A 0001 Funct Export 
 [::/LT/OSMain/DISK2.CPZ,427] DATA_READY         (DRQ_STA 0008 StrConst 
 [::/LT/OSMain/SCHED.ASZ,155] DEACTIVATE_USER    00004500 0003 SysSym 
 [::/LT/OSMain/SYSUTILS.ASZ,42] DEBUG_SPIN_WAIT    000039F0 0001 SysSym Export 
 [::/LT/OSMain/SYSUTILS.ASZ,9] DEC_NUMERIC_BITMAP 00003930 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1495] DEFAULT_STACK      (PAGE_SI 0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1499] DEFAULT_STACK      (PAGE_SI 0004 StrConst 
 [::/LT/OSMain/DISK2.CPZ,411] DISABLE_SEAGATE    0xFB     0000 StrConst 
 [::/LT/OSMain/SYSUTILS.ASZ,19] DISPLAYABLE_CHARS_BITMAP 000039B0 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1736] DKGRAY             8        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1743] DKGRAY             8        0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,426] DRIVE_READY        (READY_S 0004 StrConst 
 [::/LT/OSMain/DISK2.CPZ,417] DRQ_STAT           0x08     0008 StrConst 
 [::/LT/OSMain/DATE.CPZ,23] DayOfWeek          0000B483 0001 Funct Export 
@@ -367,309 +369,309 @@
 [::/LT/OSMain/ADAMK2.HPZ,152] DeactivateUser     00004528 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,123] DebugSpinWait      000039F0 0000 Funct Public 
 [::/LT/OSMain/STRINGS.CPZ,666] DefaultExtension   0000EFD8 0004 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,233] Del                00021939 0001 Funct Export 
-[::/LT/OSMain/COMPRESS.CPZ,140] DelArcCs           000123B4 0002 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1695] DelLTDirEntry      0001F357 0005 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1703] DelLTDirList       0001F3A2 0001 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,117] DelLTFileAccess    00021208 000D Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1591] DelLTFiles         0001E907 0003 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,233] Del                0002193B 0001 Funct Export 
+[::/LT/OSMain/COMPRESS.CPZ,140] DelArcCs           000123B6 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1695] DelLTDirEntry      0001F359 0005 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1703] DelLTDirList       0001F3A4 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,117] DelLTFileAccess    0002120A 000D Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1591] DelLTFiles         0001E909 0003 Funct Export 
 [::/LT/OSMain/MEM.CPZ,54] DelLinkedList      00004E74 0000 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,216] Dir                00021881 0000 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1937] DirLT              000205DF 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,216] Dir                00021883 0000 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1937] DirLT              000205E1 0001 Funct Export 
 [::/LT/OSMain/MISC.CPZ,385] DivI8              000074EA 0001 Funct Export 
 [::/LT/OSMain/MISC.CPZ,366] DivU8              0000734E 0003 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,274] Dm                 00011735 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,274] Dm                 00011737 0000 Funct Export 
 [::/LT/OSMain/CRT.CPZ,22] DrawChar           00004EC6 0008 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,7] Drive              00020958 0007 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,7] Drive              0002095A 0007 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,534] DriveIsWritable    0000E595 0000 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,526] DriveToBlkDev      0000E53F 0004 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,504] DriveToPartition   0000E389 0012 Funct Export 
 [::/LT/OSMain/DISK2.CPZ,416] ECC_STAT           0x04	/*  0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2215] EC_ABSOLUTE_ADDRESS 0x0CD    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2183] EC_ADD32           0x0B0    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2182] EC_ADD64           0x0AF    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2184] EC_ADD8            0x0B1    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2092] EC_ADDITION        0x066    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1998] EC_ADDRESS         0x013    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2153] EC_ADD_EQUAL_U1    0x096    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2152] EC_ADD_EQUAL_U2    0x095    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2151] EC_ADD_EQUAL_U4    0x094    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2308] EC_ADD_EQUAL_U4_CONSTANT_U1 0x119    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2150] EC_ADD_EQUAL_U8    0x093    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2306] EC_ADD_EQUAL_U8_CONSTANT_U1 0x117    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2198] EC_ADD_ESP32       0x0BD    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2199] EC_ADD_ESP8        0x0BE    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2087] EC_AND             0x063    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2102] EC_AND_AND         0x06E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2267] EC_AND_AND_SKIPNZ  0x0F7    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2268] EC_AND_AND_SKIPNZ2 0x0F8    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2265] EC_AND_AND_SKIPZ   0x0F5    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2266] EC_AND_AND_SKIPZ2  0x0F6    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2138] EC_AND_EQUAL_U1    0x08A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2137] EC_AND_EQUAL_U2    0x089    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2136] EC_AND_EQUAL_U4    0x088    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2135] EC_AND_EQUAL_U8    0x087    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2113] EC_ASSIGN_U1       0x076    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2112] EC_ASSIGN_U2       0x075    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2111] EC_ASSIGN_U4       0x074    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2110] EC_ASSIGN_U8       0x073    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2223] EC_BSF             0x0D4    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2224] EC_BSR             0x0D5    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2219] EC_BT              0x0D0    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2222] EC_BTC             0x0D3    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2301] EC_BTC_CONSTANT    0x114    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2221] EC_BTR             0x0D2    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2300] EC_BTR_CONSTANT    0x113    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2220] EC_BTS             0x0D1    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2299] EC_BTS_CONSTANT    0x112    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2298] EC_BT_CONSTANT     0x111    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2201] EC_CALL            0x0C0    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2202] EC_CALL_INDIRECT   0x0C1    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2203] EC_CALL_INDIRECT2  0x0C2    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2206] EC_CLI             0x0C4    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2107] EC_COLON           0x071    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1995] EC_COM             0x010    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2189] EC_DEC             0x0B6    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2032] EC_DEREF_U1        0x033    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2031] EC_DEREF_U2        0x032    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2030] EC_DEREF_U4        0x031    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2029] EC_DEREF_U8        0x030    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2084] EC_DIVISION        0x061    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2133] EC_DIV_EQUAL_U1    0x086    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2132] EC_DIV_EQUAL_U2    0x085    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2131] EC_DIV_EQUAL_U4    0x084    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2130] EC_DIV_EQUAL_U8    0x083    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1985] EC_DOUBLE          0x008    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1987] EC_EBP             0x00A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1990] EC_EDI             0x00D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2179] EC_EDI_ADD_EQUAL_U4 0x0AD    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2310] EC_EDI_ADD_EQUAL_U4_CONSTANT_U1 0x11B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2176] EC_EDI_AND_EQUAL_U4 0x0AA    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2171] EC_EDI_ASSIGN_U4   0x0A5    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2040] EC_EDI_DEREF_U1    0x03B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2039] EC_EDI_DEREF_U2    0x03A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2038] EC_EDI_DEREF_U4    0x039    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2037] EC_EDI_DEREF_U8    0x038    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2175] EC_EDI_DIV_EQUAL_U4 0x0A9    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2065] EC_EDI_MM_U4       0x053    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2174] EC_EDI_MUL_EQUAL_U4 0x0A8    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2304] EC_EDI_NEXT_EQUAL_U4 0x116    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2177] EC_EDI_OR_EQUAL_U4 0x0AB    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2064] EC_EDI_PP_U4       0x052    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2172] EC_EDI_SHL_EQUAL_U4 0x0A6    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2173] EC_EDI_SHR_EQUAL_U4 0x0A7    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2180] EC_EDI_SUB_EQUAL_U4 0x0AE    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2023] EC_EDI_U1_DISP32   0x02B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2027] EC_EDI_U1_DISP8    0x02F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2022] EC_EDI_U2_DISP32   0x02A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2026] EC_EDI_U2_DISP8    0x02E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2021] EC_EDI_U4_DISP32   0x029    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2025] EC_EDI_U4_DISP8    0x02D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2063] EC_EDI_U4_MM       0x051    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2062] EC_EDI_U4_PP       0x050    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2020] EC_EDI_U8_DISP32   0x028    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2024] EC_EDI_U8_DISP8    0x02C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2178] EC_EDI_XOR_EQUAL_U4 0x0AC    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1978] EC_END_EXP         0x002    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2191] EC_ENTER           0x0B7    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2193] EC_ENTER1          0x0B9    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2195] EC_ENTER2          0x0BB    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2095] EC_EQUAL_EQUAL     0x068    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2247] EC_EQUAL_EQUAL_SKIPZ 0x0E9    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2248] EC_EQUAL_EQUAL_SKIPZ2 0x0EA    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1989] EC_ESI             0x00C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2168] EC_ESI_ADD_EQUAL_U4 0x0A3    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2309] EC_ESI_ADD_EQUAL_U4_CONSTANT_U1 0x11A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2165] EC_ESI_AND_EQUAL_U4 0x0A0    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2160] EC_ESI_ASSIGN_U4   0x09B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2036] EC_ESI_DEREF_U1    0x037    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2035] EC_ESI_DEREF_U2    0x036    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2034] EC_ESI_DEREF_U4    0x035    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2033] EC_ESI_DEREF_U8    0x034    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2164] EC_ESI_DIV_EQUAL_U4 0x09F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2061] EC_ESI_MM_U4       0x04F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2163] EC_ESI_MUL_EQUAL_U4 0x09E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2303] EC_ESI_NEXT_EQUAL_U4 0x115    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2166] EC_ESI_OR_EQUAL_U4 0x0A1    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2060] EC_ESI_PP_U4       0x04E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2161] EC_ESI_SHL_EQUAL_U4 0x09C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2162] EC_ESI_SHR_EQUAL_U4 0x09D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2169] EC_ESI_SUB_EQUAL_U4 0x0A4    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2015] EC_ESI_U1_DISP32   0x023    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2019] EC_ESI_U1_DISP8    0x027    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2014] EC_ESI_U2_DISP32   0x022    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2018] EC_ESI_U2_DISP8    0x026    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2013] EC_ESI_U4_DISP32   0x021    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2017] EC_ESI_U4_DISP8    0x025    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2059] EC_ESI_U4_MM       0x04D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2058] EC_ESI_U4_PP       0x04C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2012] EC_ESI_U8_DISP32   0x020    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2016] EC_ESI_U8_DISP8    0x024    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2167] EC_ESI_XOR_EQUAL_U4 0x0A2    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1988] EC_FS              0x00B    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2011] EC_FS_U1_DISP32    0x01F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2010] EC_FS_U2_DISP32    0x01E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2009] EC_FS_U4_DISP32    0x01D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2008] EC_FS_U8_DISP32    0x01C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2210] EC_GET_BASE_PTR    0x0C8    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2208] EC_GET_FLAGS       0x0C6    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2214] EC_GET_LABEL       0x0CC    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2212] EC_GET_STACK_PTR   0x0CA    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2100] EC_GREATER_OR_EQUAL 0x06D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2262] EC_GREATER_OR_EQUAL_SKIPZ 0x0F3    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2263] EC_GREATER_OR_EQUAL_SKIPZ2 0x0F4    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2098] EC_GREATER_THAN    0x06B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2256] EC_GREATER_THAN_SKIPZ 0x0EF    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2257] EC_GREATER_THAN_SKIPZ2 0x0F0    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2185] EC_INC             0x0B2    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2233] EC_INP             0x0DE    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2231] EC_INPD            0x0DC    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2232] EC_INPW            0x0DD    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2225] EC_INSQUE          0x0D6    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2226] EC_INSQUE_REV      0x0D7    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2204] EC_IRQ             0x0C3    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2238] EC_JMP             0x0E2    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2216] EC_LABEL           0x0CE    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2192] EC_LEAVE           0x0B8    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2194] EC_LEAVE1          0x0BA    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2196] EC_LEAVE2          0x0BC    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2067] EC_LEA_DISP32_EBP  0x054    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2277] EC_LEA_DISP32_EDI  0x0FF    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2275] EC_LEA_DISP32_ESI  0x0FD    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2068] EC_LEA_DISP8_EBP   0x055    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2278] EC_LEA_DISP8_EDI   0x100    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2276] EC_LEA_DISP8_ESI   0x0FE    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2099] EC_LESS_OR_EQUAL   0x06C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2259] EC_LESS_OR_EQUAL_SKIPZ 0x0F1    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2260] EC_LESS_OR_EQUAL_SKIPZ2 0x0F2    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2097] EC_LESS_THAN       0x06A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2253] EC_LESS_THAN_SKIPZ 0x0ED    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2254] EC_LESS_THAN_SKIPZ2 0x0EE    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2229] EC_MEMCPY          0x0DA    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2230] EC_MEMSET          0x0DB    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2056] EC_MM_U1           0x04B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2055] EC_MM_U2           0x04A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2054] EC_MM_U4           0x049    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2053] EC_MM_U8           0x048    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2083] EC_MULTIPLICATION  0x060    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2128] EC_MUL_EQUAL_U1    0x082    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2127] EC_MUL_EQUAL_U2    0x081    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2126] EC_MUL_EQUAL_U4    0x080    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2125] EC_MUL_EQUAL_U8    0x07F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1977] EC_NOP             0x001    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1996] EC_NOT             0x011    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2096] EC_NOT_EQUAL_TO    0x069    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2250] EC_NOT_EQUAL_TO_SKIPZ 0x0EB    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2251] EC_NOT_EQUAL_TO_SKIPZ2 0x0EC    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1976] EC_NULL            0x000    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2312] EC_NUM_ENTRIES     0x11C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2089] EC_OR              0x064    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2143] EC_OR_EQUAL_U1     0x08E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2142] EC_OR_EQUAL_U2     0x08D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2141] EC_OR_EQUAL_U4     0x08C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2140] EC_OR_EQUAL_U8     0x08B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2104] EC_OR_OR           0x06F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2272] EC_OR_OR_SKIPNZ    0x0FB    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2273] EC_OR_OR_SKIPNZ2   0x0FC    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2270] EC_OR_OR_SKIPZ     0x0F9    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2271] EC_OR_OR_SKIPZ2    0x0FA    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2236] EC_OUTP            0x0E1    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2234] EC_OUTPD           0x0DF    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2235] EC_OUTPW           0x0E0    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2081] EC_POWER           0x05F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2052] EC_PP_U1           0x047    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2051] EC_PP_U2           0x046    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2050] EC_PP_U4           0x045    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2049] EC_PP_U8           0x044    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2295] EC_PUSH_DEREF_U8   0x10F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2288] EC_PUSH_DOUBLE     0x108    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2293] EC_PUSH_EDI_U8_DISP32 0x10D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2294] EC_PUSH_EDI_U8_DISP8 0x10E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2291] EC_PUSH_ESI_U8_DISP32 0x10B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2292] EC_PUSH_ESI_U8_DISP8 0x10C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2287] EC_PUSH_NEG_U1     0x107    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2286] EC_PUSH_NEG_U2     0x106    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2285] EC_PUSH_NEG_U4     0x105    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2284] EC_PUSH_U1         0x104    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2283] EC_PUSH_U2         0x103    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2282] EC_PUSH_U4         0x102    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2281] EC_PUSH_U8         0x101    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2289] EC_PUSH_U8_DISP32  0x109    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2296] EC_PUSH_U8_DISP32_SCALED 0x110    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2290] EC_PUSH_U8_DISP8   0x10A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2108] EC_QUESTION        0x072    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2085] EC_REMAINDER       0x062    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2227] EC_REMQUE          0x0D8    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2200] EC_RET             0x0BF    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2211] EC_SET_BASE_PTR    0x0C9    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2209] EC_SET_FLAGS       0x0C7    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2213] EC_SET_STACK_PTR   0x0CB    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2074] EC_SHL             0x059    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2076] EC_SHL_CONSTANT1   0x05B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2077] EC_SHL_CONSTANT2   0x05C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2118] EC_SHL_EQUAL_U1    0x07A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2117] EC_SHL_EQUAL_U2    0x079    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2116] EC_SHL_EQUAL_U4    0x078    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2115] EC_SHL_EQUAL_U8    0x077    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2239] EC_SHORT_JMP       0x0E3    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2075] EC_SHR             0x05A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2078] EC_SHR_CONSTANT1   0x05D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2079] EC_SHR_CONSTANT2   0x05E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2123] EC_SHR_EQUAL_U1    0x07E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2122] EC_SHR_EQUAL_U2    0x07D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2121] EC_SHR_EQUAL_U4    0x07C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2120] EC_SHR_EQUAL_U8    0x07B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2244] EC_SKIPNZ          0x0E7    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2245] EC_SKIPNZ2         0x0E8    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2242] EC_SKIPZ           0x0E5    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2243] EC_SKIPZ2          0x0E6    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2207] EC_STI             0x0C5    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1986] EC_STRING_CONSTANT 0x009    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2228] EC_STRLEN          0x0D9    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2187] EC_SUB32           0x0B4    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2186] EC_SUB64           0x0B3    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2188] EC_SUB8            0x0B5    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2093] EC_SUBTRACTION     0x067    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2158] EC_SUB_EQUAL_U1    0x09A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2157] EC_SUB_EQUAL_U2    0x099    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2156] EC_SUB_EQUAL_U4    0x098    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2155] EC_SUB_EQUAL_U8    0x097    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2307] EC_SUB_EQUAL_U8_CONSTANT_U1 0x118    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2240] EC_SWITCH          0x0E4    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1992] EC_TO_DOUBLE       0x00E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1993] EC_TO_INT          0x00F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2217] EC_TYPE            0x0CF    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1984] EC_U1              0x007    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2003] EC_U1_DISP32       0x017    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2007] EC_U1_DISP8        0x01B    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2048] EC_U1_MM           0x043    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2044] EC_U1_PP           0x03F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1983] EC_U2              0x006    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2002] EC_U2_DISP32       0x016    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2072] EC_U2_DISP32_SCALED 0x058    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2006] EC_U2_DISP8        0x01A    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2047] EC_U2_MM           0x042    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2043] EC_U2_PP           0x03E    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1982] EC_U4              0x005    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2001] EC_U4_DISP32       0x015    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2071] EC_U4_DISP32_SCALED 0x057    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2005] EC_U4_DISP8        0x019    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2046] EC_U4_MM           0x041    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2042] EC_U4_PP           0x03D    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1981] EC_U8              0x004    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2000] EC_U8_DISP32       0x014    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2070] EC_U8_DISP32_SCALED 0x056    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2004] EC_U8_DISP8        0x018    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2045] EC_U8_MM           0x040    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2041] EC_U8_PP           0x03C    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1997] EC_UNARY_MINUS     0x012    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2090] EC_XOR             0x065    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2148] EC_XOR_EQUAL_U1    0x092    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2147] EC_XOR_EQUAL_U2    0x091    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2146] EC_XOR_EQUAL_U4    0x090    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2145] EC_XOR_EQUAL_U8    0x08F    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2105] EC_XOR_XOR         0x070    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1980] EC_ZERO            0x003    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2222] EC_ABSOLUTE_ADDRESS 0x0CD    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2190] EC_ADD32           0x0B0    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2189] EC_ADD64           0x0AF    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2191] EC_ADD8            0x0B1    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2099] EC_ADDITION        0x066    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2005] EC_ADDRESS         0x013    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2160] EC_ADD_EQUAL_U1    0x096    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2159] EC_ADD_EQUAL_U2    0x095    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2158] EC_ADD_EQUAL_U4    0x094    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2315] EC_ADD_EQUAL_U4_CONSTANT_U1 0x119    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2157] EC_ADD_EQUAL_U8    0x093    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2313] EC_ADD_EQUAL_U8_CONSTANT_U1 0x117    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2205] EC_ADD_ESP32       0x0BD    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2206] EC_ADD_ESP8        0x0BE    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2094] EC_AND             0x063    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2109] EC_AND_AND         0x06E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2274] EC_AND_AND_SKIPNZ  0x0F7    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2275] EC_AND_AND_SKIPNZ2 0x0F8    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2272] EC_AND_AND_SKIPZ   0x0F5    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2273] EC_AND_AND_SKIPZ2  0x0F6    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2145] EC_AND_EQUAL_U1    0x08A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2144] EC_AND_EQUAL_U2    0x089    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2143] EC_AND_EQUAL_U4    0x088    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2142] EC_AND_EQUAL_U8    0x087    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2120] EC_ASSIGN_U1       0x076    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2119] EC_ASSIGN_U2       0x075    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2118] EC_ASSIGN_U4       0x074    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2117] EC_ASSIGN_U8       0x073    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2230] EC_BSF             0x0D4    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2231] EC_BSR             0x0D5    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2226] EC_BT              0x0D0    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2229] EC_BTC             0x0D3    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2308] EC_BTC_CONSTANT    0x114    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2228] EC_BTR             0x0D2    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2307] EC_BTR_CONSTANT    0x113    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2227] EC_BTS             0x0D1    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2306] EC_BTS_CONSTANT    0x112    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2305] EC_BT_CONSTANT     0x111    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2208] EC_CALL            0x0C0    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2209] EC_CALL_INDIRECT   0x0C1    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2210] EC_CALL_INDIRECT2  0x0C2    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2213] EC_CLI             0x0C4    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2114] EC_COLON           0x071    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2002] EC_COM             0x010    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2196] EC_DEC             0x0B6    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2039] EC_DEREF_U1        0x033    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2038] EC_DEREF_U2        0x032    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2037] EC_DEREF_U4        0x031    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2036] EC_DEREF_U8        0x030    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2091] EC_DIVISION        0x061    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2140] EC_DIV_EQUAL_U1    0x086    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2139] EC_DIV_EQUAL_U2    0x085    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2138] EC_DIV_EQUAL_U4    0x084    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2137] EC_DIV_EQUAL_U8    0x083    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1992] EC_DOUBLE          0x008    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1994] EC_EBP             0x00A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1997] EC_EDI             0x00D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2186] EC_EDI_ADD_EQUAL_U4 0x0AD    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2317] EC_EDI_ADD_EQUAL_U4_CONSTANT_U1 0x11B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2183] EC_EDI_AND_EQUAL_U4 0x0AA    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2178] EC_EDI_ASSIGN_U4   0x0A5    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2047] EC_EDI_DEREF_U1    0x03B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2046] EC_EDI_DEREF_U2    0x03A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2045] EC_EDI_DEREF_U4    0x039    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2044] EC_EDI_DEREF_U8    0x038    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2182] EC_EDI_DIV_EQUAL_U4 0x0A9    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2072] EC_EDI_MM_U4       0x053    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2181] EC_EDI_MUL_EQUAL_U4 0x0A8    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2311] EC_EDI_NEXT_EQUAL_U4 0x116    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2184] EC_EDI_OR_EQUAL_U4 0x0AB    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2071] EC_EDI_PP_U4       0x052    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2179] EC_EDI_SHL_EQUAL_U4 0x0A6    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2180] EC_EDI_SHR_EQUAL_U4 0x0A7    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2187] EC_EDI_SUB_EQUAL_U4 0x0AE    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2030] EC_EDI_U1_DISP32   0x02B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2034] EC_EDI_U1_DISP8    0x02F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2029] EC_EDI_U2_DISP32   0x02A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2033] EC_EDI_U2_DISP8    0x02E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2028] EC_EDI_U4_DISP32   0x029    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2032] EC_EDI_U4_DISP8    0x02D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2070] EC_EDI_U4_MM       0x051    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2069] EC_EDI_U4_PP       0x050    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2027] EC_EDI_U8_DISP32   0x028    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2031] EC_EDI_U8_DISP8    0x02C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2185] EC_EDI_XOR_EQUAL_U4 0x0AC    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1985] EC_END_EXP         0x002    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2198] EC_ENTER           0x0B7    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2200] EC_ENTER1          0x0B9    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2202] EC_ENTER2          0x0BB    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2102] EC_EQUAL_EQUAL     0x068    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2254] EC_EQUAL_EQUAL_SKIPZ 0x0E9    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2255] EC_EQUAL_EQUAL_SKIPZ2 0x0EA    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1996] EC_ESI             0x00C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2175] EC_ESI_ADD_EQUAL_U4 0x0A3    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2316] EC_ESI_ADD_EQUAL_U4_CONSTANT_U1 0x11A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2172] EC_ESI_AND_EQUAL_U4 0x0A0    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2167] EC_ESI_ASSIGN_U4   0x09B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2043] EC_ESI_DEREF_U1    0x037    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2042] EC_ESI_DEREF_U2    0x036    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2041] EC_ESI_DEREF_U4    0x035    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2040] EC_ESI_DEREF_U8    0x034    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2171] EC_ESI_DIV_EQUAL_U4 0x09F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2068] EC_ESI_MM_U4       0x04F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2170] EC_ESI_MUL_EQUAL_U4 0x09E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2310] EC_ESI_NEXT_EQUAL_U4 0x115    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2173] EC_ESI_OR_EQUAL_U4 0x0A1    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2067] EC_ESI_PP_U4       0x04E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2168] EC_ESI_SHL_EQUAL_U4 0x09C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2169] EC_ESI_SHR_EQUAL_U4 0x09D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2176] EC_ESI_SUB_EQUAL_U4 0x0A4    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2022] EC_ESI_U1_DISP32   0x023    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2026] EC_ESI_U1_DISP8    0x027    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2021] EC_ESI_U2_DISP32   0x022    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2025] EC_ESI_U2_DISP8    0x026    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2020] EC_ESI_U4_DISP32   0x021    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2024] EC_ESI_U4_DISP8    0x025    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2066] EC_ESI_U4_MM       0x04D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2065] EC_ESI_U4_PP       0x04C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2019] EC_ESI_U8_DISP32   0x020    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2023] EC_ESI_U8_DISP8    0x024    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2174] EC_ESI_XOR_EQUAL_U4 0x0A2    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1995] EC_FS              0x00B    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2018] EC_FS_U1_DISP32    0x01F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2017] EC_FS_U2_DISP32    0x01E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2016] EC_FS_U4_DISP32    0x01D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2015] EC_FS_U8_DISP32    0x01C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2217] EC_GET_BASE_PTR    0x0C8    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2215] EC_GET_FLAGS       0x0C6    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2221] EC_GET_LABEL       0x0CC    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2219] EC_GET_STACK_PTR   0x0CA    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2107] EC_GREATER_OR_EQUAL 0x06D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2269] EC_GREATER_OR_EQUAL_SKIPZ 0x0F3    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2270] EC_GREATER_OR_EQUAL_SKIPZ2 0x0F4    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2105] EC_GREATER_THAN    0x06B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2263] EC_GREATER_THAN_SKIPZ 0x0EF    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2264] EC_GREATER_THAN_SKIPZ2 0x0F0    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2192] EC_INC             0x0B2    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2240] EC_INP             0x0DE    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2238] EC_INPD            0x0DC    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2239] EC_INPW            0x0DD    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2232] EC_INSQUE          0x0D6    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2233] EC_INSQUE_REV      0x0D7    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2211] EC_IRQ             0x0C3    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2245] EC_JMP             0x0E2    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2223] EC_LABEL           0x0CE    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2199] EC_LEAVE           0x0B8    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2201] EC_LEAVE1          0x0BA    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2203] EC_LEAVE2          0x0BC    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2074] EC_LEA_DISP32_EBP  0x054    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2284] EC_LEA_DISP32_EDI  0x0FF    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2282] EC_LEA_DISP32_ESI  0x0FD    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2075] EC_LEA_DISP8_EBP   0x055    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2285] EC_LEA_DISP8_EDI   0x100    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2283] EC_LEA_DISP8_ESI   0x0FE    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2106] EC_LESS_OR_EQUAL   0x06C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2266] EC_LESS_OR_EQUAL_SKIPZ 0x0F1    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2267] EC_LESS_OR_EQUAL_SKIPZ2 0x0F2    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2104] EC_LESS_THAN       0x06A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2260] EC_LESS_THAN_SKIPZ 0x0ED    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2261] EC_LESS_THAN_SKIPZ2 0x0EE    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2236] EC_MEMCPY          0x0DA    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2237] EC_MEMSET          0x0DB    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2063] EC_MM_U1           0x04B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2062] EC_MM_U2           0x04A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2061] EC_MM_U4           0x049    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2060] EC_MM_U8           0x048    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2090] EC_MULTIPLICATION  0x060    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2135] EC_MUL_EQUAL_U1    0x082    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2134] EC_MUL_EQUAL_U2    0x081    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2133] EC_MUL_EQUAL_U4    0x080    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2132] EC_MUL_EQUAL_U8    0x07F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1984] EC_NOP             0x001    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2003] EC_NOT             0x011    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2103] EC_NOT_EQUAL_TO    0x069    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2257] EC_NOT_EQUAL_TO_SKIPZ 0x0EB    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2258] EC_NOT_EQUAL_TO_SKIPZ2 0x0EC    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1983] EC_NULL            0x000    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2319] EC_NUM_ENTRIES     0x11C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2096] EC_OR              0x064    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2150] EC_OR_EQUAL_U1     0x08E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2149] EC_OR_EQUAL_U2     0x08D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2148] EC_OR_EQUAL_U4     0x08C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2147] EC_OR_EQUAL_U8     0x08B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2111] EC_OR_OR           0x06F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2279] EC_OR_OR_SKIPNZ    0x0FB    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2280] EC_OR_OR_SKIPNZ2   0x0FC    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2277] EC_OR_OR_SKIPZ     0x0F9    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2278] EC_OR_OR_SKIPZ2    0x0FA    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2243] EC_OUTP            0x0E1    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2241] EC_OUTPD           0x0DF    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2242] EC_OUTPW           0x0E0    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2088] EC_POWER           0x05F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2059] EC_PP_U1           0x047    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2058] EC_PP_U2           0x046    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2057] EC_PP_U4           0x045    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2056] EC_PP_U8           0x044    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2302] EC_PUSH_DEREF_U8   0x10F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2295] EC_PUSH_DOUBLE     0x108    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2300] EC_PUSH_EDI_U8_DISP32 0x10D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2301] EC_PUSH_EDI_U8_DISP8 0x10E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2298] EC_PUSH_ESI_U8_DISP32 0x10B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2299] EC_PUSH_ESI_U8_DISP8 0x10C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2294] EC_PUSH_NEG_U1     0x107    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2293] EC_PUSH_NEG_U2     0x106    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2292] EC_PUSH_NEG_U4     0x105    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2291] EC_PUSH_U1         0x104    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2290] EC_PUSH_U2         0x103    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2289] EC_PUSH_U4         0x102    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2288] EC_PUSH_U8         0x101    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2296] EC_PUSH_U8_DISP32  0x109    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2303] EC_PUSH_U8_DISP32_SCALED 0x110    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2297] EC_PUSH_U8_DISP8   0x10A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2115] EC_QUESTION        0x072    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2092] EC_REMAINDER       0x062    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2234] EC_REMQUE          0x0D8    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2207] EC_RET             0x0BF    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2218] EC_SET_BASE_PTR    0x0C9    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2216] EC_SET_FLAGS       0x0C7    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2220] EC_SET_STACK_PTR   0x0CB    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2081] EC_SHL             0x059    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2083] EC_SHL_CONSTANT1   0x05B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2084] EC_SHL_CONSTANT2   0x05C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2125] EC_SHL_EQUAL_U1    0x07A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2124] EC_SHL_EQUAL_U2    0x079    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2123] EC_SHL_EQUAL_U4    0x078    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2122] EC_SHL_EQUAL_U8    0x077    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2246] EC_SHORT_JMP       0x0E3    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2082] EC_SHR             0x05A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2085] EC_SHR_CONSTANT1   0x05D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2086] EC_SHR_CONSTANT2   0x05E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2130] EC_SHR_EQUAL_U1    0x07E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2129] EC_SHR_EQUAL_U2    0x07D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2128] EC_SHR_EQUAL_U4    0x07C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2127] EC_SHR_EQUAL_U8    0x07B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2251] EC_SKIPNZ          0x0E7    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2252] EC_SKIPNZ2         0x0E8    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2249] EC_SKIPZ           0x0E5    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2250] EC_SKIPZ2          0x0E6    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2214] EC_STI             0x0C5    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1993] EC_STRING_CONSTANT 0x009    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2235] EC_STRLEN          0x0D9    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2194] EC_SUB32           0x0B4    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2193] EC_SUB64           0x0B3    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2195] EC_SUB8            0x0B5    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2100] EC_SUBTRACTION     0x067    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2165] EC_SUB_EQUAL_U1    0x09A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2164] EC_SUB_EQUAL_U2    0x099    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2163] EC_SUB_EQUAL_U4    0x098    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2162] EC_SUB_EQUAL_U8    0x097    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2314] EC_SUB_EQUAL_U8_CONSTANT_U1 0x118    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2247] EC_SWITCH          0x0E4    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1999] EC_TO_DOUBLE       0x00E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2000] EC_TO_INT          0x00F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2224] EC_TYPE            0x0CF    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1991] EC_U1              0x007    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2010] EC_U1_DISP32       0x017    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2014] EC_U1_DISP8        0x01B    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2055] EC_U1_MM           0x043    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2051] EC_U1_PP           0x03F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1990] EC_U2              0x006    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2009] EC_U2_DISP32       0x016    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2079] EC_U2_DISP32_SCALED 0x058    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2013] EC_U2_DISP8        0x01A    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2054] EC_U2_MM           0x042    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2050] EC_U2_PP           0x03E    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1989] EC_U4              0x005    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2008] EC_U4_DISP32       0x015    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2078] EC_U4_DISP32_SCALED 0x057    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2012] EC_U4_DISP8        0x019    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2053] EC_U4_MM           0x041    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2049] EC_U4_PP           0x03D    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1988] EC_U8              0x004    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2007] EC_U8_DISP32       0x014    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2077] EC_U8_DISP32_SCALED 0x056    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2011] EC_U8_DISP8        0x018    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2052] EC_U8_MM           0x040    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2048] EC_U8_PP           0x03C    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2004] EC_UNARY_MINUS     0x012    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2097] EC_XOR             0x065    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2155] EC_XOR_EQUAL_U1    0x092    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2154] EC_XOR_EQUAL_U2    0x091    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2153] EC_XOR_EQUAL_U4    0x090    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2152] EC_XOR_EQUAL_U8    0x08F    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2112] EC_XOR_XOR         0x070    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1987] EC_ZERO            0x003    0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,923] EIE_ABSOLUTE_ADDRESS 32       0003 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,924] EIE_END            0xFF     0003 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,913] EIE_LIT_EXPORT     1        0004 StrConst 
@@ -752,12 +754,12 @@
 [::/LT/OSMain/ADAMK.HPZ,942] ExeStruct          00000004 0000 Class 
 [::/LT/OSMain/MISC.CPZ,17] Exit               00006101 0003 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,113] Exp                00004070 0000 Funct Public 
-[::/LT/OSMain/COMPRESS.CPZ,180] ExpandBuf          000126D9 0005 Funct Export 
+[::/LT/OSMain/COMPRESS.CPZ,180] ExpandBuf          000126DB 0005 Funct Export 
 [::/LT/OSMain/MISC.CPZ,585] Externs2Imports    00008558 0000 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,121] ExtractWordBitField 00003A64 0002 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,81] FALSE              0        00B4 StrConst 
 [::/LT/OSMain/IRQHAND.ASZ,818] FAULT_DESC         00002D10 0001 SysSym 
-[::/LT/OSMain/DISK4.CPZ,397] FAllocFile         0002275F 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,397] FAllocFile         00022761 0001 Funct Export 
 [::/LT/OSMain/OSMAIN.ASZ,323] FC_1               000022FD 0002 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,326] FC_E               00002315 0003 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,329] FC_LOG10_2         0000232D 0002 SysSym Export 
@@ -766,18 +768,18 @@
 [::/LT/OSMain/OSMAIN.ASZ,330] FC_LOGE_2          00002335 0002 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,324] FC_PI              00002305 0002 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,325] FC_PI2             0000230D 0002 SysSym Export 
-[::/LT/OSMain/DISK4.CPZ,492] FClose             00022E3F 0006 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,56] FDCFlushStatus     000135E5 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,108] FDCFree            0001387D 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,136] FDCGet             000139D9 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,218] FDCRBlks           00013FF6 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,170] FDCReadTrack       00013BD6 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,160] FDCReset           00013B4D 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,100] FDCSeek            00013811 0004 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,94] FDCSendCmdU1       000137CD 001A Funct Export 
-[::/LT/OSMain/DISK2.CPZ,311] FDCWBlks           00014858 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,78] FDCWaitIrq         0001375E 0006 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,262] FDCWriteBlk2       000143FE 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,492] FClose             00022E41 0006 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,56] FDCFlushStatus     000135E7 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,108] FDCFree            0001387F 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,136] FDCGet             000139DB 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,218] FDCRBlks           00013FF8 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,170] FDCReadTrack       00013BD8 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,160] FDCReset           00013B4F 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,100] FDCSeek            00013813 0004 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,94] FDCSendCmdU1       000137CF 001A Funct Export 
+[::/LT/OSMain/DISK2.CPZ,311] FDCWBlks           0001485A 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,78] FDCWaitIrq         00013760 0006 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,262] FDCWriteBlk2       00014400 0001 Funct Export 
 [::/LT/OSMain/DISK2.CPZ,46] FDC_DATA           5        0002 StrConst 
 [::/LT/OSMain/DISK2.CPZ,48] FDC_DCR            7        0001 StrConst 
 [::/LT/OSMain/DISK2.CPZ,47] FDC_DIR            7        0000 StrConst 
@@ -799,100 +801,101 @@
 [::/LT/OSMain/OSINC.ASZ,36] FIRST_FREE_SEL     00000028 0002 SysSym Lit 
 [::/LT/OSMain/CHARIO.ASZ,105] FIXED_PUT_HEX      00004717 0003 SysSym Export 
 [::/LT/OSMain/ADAMK.HPZ,231] FLT_UNDEF_EXTERN   0x100    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1863] FONT_HEIGHT        8        0008 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1862] FONT_WIDTH         8        000A StrConst 
-[::/LT/OSMain/DISK4.CPZ,429] FOpen              0002298E 0008 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1870] FONT_HEIGHT        8        0008 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1869] FONT_WIDTH         8        000A StrConst 
+[::/LT/OSMain/DISK4.CPZ,429] FOpen              00022990 0008 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,1443] FPUState           0000000A 0001 Class 
-[::/LT/OSMain/DISK4.CPZ,531] FRBlks             000230E2 0002 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,531] FRBlks             000230E4 0002 Funct Export 
 [::/LT/OSMain/OSMAIN.ASZ,14] FREE_GDT_LIST      00001018 0004 SysSym Export 
 [::/LT/OSMain/MEM.ASZ,94] FREE_MEM_BLKS      00002EA8 0002 SysSym Export 
 [::/LT/OSMain/MEM.ASZ,124] FREE_MEM_BLK_LIST  00002EF0 0001 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,203] FREE_PAGE_HASH     00001D0C 0005 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,204] FREE_PAGE_HASH2    0000210C 0007 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1496] FREE_PAGE_HASH_SIZE 0x100    0004 StrConst 
-[::/LT/OSMain/DISK4.CPZ,516] FSetCluster        00022FBB 0006 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,411] FSize              000228BC 0004 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,419] FSync              00022907 0001 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,2325] FUf_ALL            5        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2326] FUf_CANCEL         6        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2321] FUf_DIFF           1        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2322] FUf_IGNORE         2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2330] FUf_JUST_DIRS      10       0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2323] FUf_LABEL          3        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2329] FUf_MAP            9        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2328] FUf_PUBLIC         8        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2324] FUf_QUESTION       4        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2320] FUf_RECURSE        0        0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,2327] FUf_REPLACE        7        0000 StrConst 
-[::/LT/OSMain/DISK4.CPZ,584] FWBlks             000236D5 0002 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1500] FREE_PAGE_HASH_SIZE 0x100    0004 StrConst 
+[::/LT/OSMain/DISK4.CPZ,516] FSetCluster        00022FBD 0006 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,411] FSize              000228BE 0004 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,419] FSync              00022909 0001 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,2332] FUf_ALL            5        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2333] FUf_CANCEL         6        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2328] FUf_DIFF           1        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2329] FUf_IGNORE         2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2337] FUf_JUST_DIRS      10       0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2338] FUf_JUST_TEXT_FILES 11       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2330] FUf_LABEL          3        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2336] FUf_MAP            9        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2335] FUf_PUBLIC         8        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2331] FUf_QUESTION       4        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2327] FUf_RECURSE        0        0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,2334] FUf_REPLACE        7        0000 StrConst 
+[::/LT/OSMain/DISK4.CPZ,584] FWBlks             000236D7 0002 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,139] Fault              00002D1B 0000 Funct Public 
 [::/LT/OSMain/CMD.CPZ,471] FaultCmdLine       0000AD9A 0000 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,115] Fclex              00004138 0000 Funct Public 
 [::/LT/OSMain/STRINGS.CPZ,677] FileAttr           0000F0A1 0010 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,17] FileRBlks          0001345E 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,29] FileWBlks          0001350D 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,989] FillLTDirISO       0001B44C 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,17] FileRBlks          00013460 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,29] FileWBlks          0001350F 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,989] FillLTDirISO       0001B44E 0002 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,146] FindExtern         00003E80 0006 Funct Public 
-[::/LT/OSMain/DISK4.CPZ,316] FindFile           00022088 0004 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,188] FindFiles          000216EA 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,316] FindFile           0002208A 0004 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,188] FindFiles          000216EC 0000 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,144] FindHashBucket     00003F08 0007 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,142] FindHashEntry      00003EE8 0003 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,1074] FindISOFile        0001BB16 0006 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1771] FindISOFiles       0001F90D 0002 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1012] FindLTFile         0001B638 0007 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1715] FindLTFiles        0001F404 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1074] FindISOFile        0001BB18 0006 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1771] FindISOFiles       0001F90F 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1012] FindLTFile         0001B63A 0007 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1715] FindLTFiles        0001F406 0002 Funct Export 
 [::/LT/OSMain/MISC.CPZ,737] FindLocalHash      00008D29 0004 Funct Export 
 [::/LT/OSMain/MISC.CPZ,803] FindPSect          000090A1 0000 Funct Export 
 [::/LT/OSMain/DATE.CPZ,57] FirstDayOfMonth    0000B866 0000 Funct Export 
 [::/LT/OSMain/DATE.CPZ,84] FirstDayOfYear     0000BA12 0000 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,2333] FlagsStruct        00000002 0001 Class 
+[::/LT/OSMain/ADAMK.HPZ,2341] FlagsStruct        00000002 0001 Class 
 [::/LT/OSMain/ADAMK2.HPZ,114] Fldcw              00004110 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,108] Floor              00003FE0 0000 Funct Public 
-[::/LT/OSMain/DISK4.CPZ,843] Format             00024EC2 0000 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,245] FormatLT           00017B5F 0003 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,843] Format             00024EC4 0000 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,245] FormatLT           00017B61 0003 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,126] Free               00003070 0079 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,1377] FreeLTClusters     0001D3CD 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,76] FreeLTFreeList     00016E0B 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1377] FreeLTClusters     0001D3CF 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,76] FreeLTFreeList     00016E0D 0003 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,124] FreeMemBlkList     00002EF0 0001 Funct 
-[::/LT/OSMain/DISK3.CPZ,960] FromISOName        0001B1D3 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,960] FromISOName        0001B1D5 0002 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,68] Fs                 0000000B 00D1 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,116] Fstcw              00004118 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,117] Fstsw              00004130 0000 Funct Public 
 [::/LT/OSMain/OSMAIN.ASZ,11] GDTTAB             00000010 000D SysSym Export 
-[::/LT/OSMain/OSMAIN.ASZ,33] GET_IP             00001863 0002 SysSym 
+[::/LT/OSMain/OSMAIN.ASZ,33] GET_IP             00001867 0002 SysSym 
 [::/LT/OSMain/IRQHAND.ASZ,411] GET_KEY            00004680 0002 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,858] GET_MACHINE_REGS   00002D8D 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1730] GREEN              2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1787] GRET_BSPLINE2      10       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1789] GRET_BSPLINE2_CLOSED 12       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1788] GRET_BSPLINE3      11       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1790] GRET_BSPLINE3_CLOSED 13       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1780] GRET_COLOR24       3        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1779] GRET_COLOR4        2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1777] GRET_END           0        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1782] GRET_LINE          5        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1781] GRET_POINT         4        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1783] GRET_POLYLINE      6        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1784] GRET_POLYPOINT     7        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1786] GRET_SHIFT         9        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1778] GRET_UNUSED        1        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1785] GRET_WIDTH         8        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1815] GR_BLACK           0        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1816] GR_BLUE            1        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1821] GR_BROWN           6        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1818] GR_CYAN            3        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1823] GR_DKGRAY          8        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1817] GR_GREEN           2        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1824] GR_LTBLUE          9        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1826] GR_LTCYAN          11       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1822] GR_LTGRAY          7        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1825] GR_LTGREEN         10       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1828] GR_LTPURPLE        13       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1827] GR_LTRED           12       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1820] GR_PURPLE          5        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1819] GR_RED             4        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1830] GR_WHITE           15       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1829] GR_YELLOW          14       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1737] GREEN              2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1794] GRET_BSPLINE2      10       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1796] GRET_BSPLINE2_CLOSED 12       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1795] GRET_BSPLINE3      11       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1797] GRET_BSPLINE3_CLOSED 13       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1787] GRET_COLOR24       3        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1786] GRET_COLOR4        2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1784] GRET_END           0        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1789] GRET_LINE          5        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1788] GRET_POINT         4        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1790] GRET_POLYLINE      6        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1791] GRET_POLYPOINT     7        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1793] GRET_SHIFT         9        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1785] GRET_UNUSED        1        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1792] GRET_WIDTH         8        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1822] GR_BLACK           0        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1823] GR_BLUE            1        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1828] GR_BROWN           6        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1825] GR_CYAN            3        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1830] GR_DKGRAY          8        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1824] GR_GREEN           2        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1831] GR_LTBLUE          9        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1833] GR_LTCYAN          11       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1829] GR_LTGRAY          7        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1832] GR_LTGREEN         10       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1835] GR_LTPURPLE        13       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1834] GR_LTRED           12       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1827] GR_PURPLE          5        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1826] GR_RED             4        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1837] GR_WHITE           15       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1836] GR_YELLOW          14       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,357] GVAF_EXTERN        4        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,355] GVAF_FUNCTION      1        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,356] GVAF_IMPORT        2        0000 StrConst 
@@ -900,9 +903,9 @@
 [::/LT/OSMain/ADAMK2.HPZ,75] GetBasePtr         000000C8 0004 Funct Public 
 [::/LT/OSMain/DATE.CPZ,158] GetCurTimeLTDate   0000BF1C 0006 Funct Export 
 [::/LT/OSMain/DATE.CPZ,121] GetCurTimeLTDateStruct 0000BC94 0001 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,33] GetF               000104FB 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,192] GetFFlags          00010E5C 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,14] GetFJoin           000103D6 0001 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,33] GetF               000104FD 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,192] GetFFlags          00010E5E 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,14] GetFJoin           000103D8 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,71] GetFlags           000000C6 0016 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,149] GetKey             000046BE 0002 Funct 
 [::/LT/OSMain/ADAMK2.HPZ,58] GetMachineRegs     00002D8D 0000 Funct Public 
@@ -910,23 +913,23 @@
 [::/LT/OSMain/MISC.CPZ,836] GetS               0000928E 0002 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,73] GetStackPtr        000000CA 0000 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,359] GlblVarStruct      0000000E 0001 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1756] GrBitMap           00000018 0008 Class 
-[::/LT/OSMain/END.CPZ,238] GrBitMapNew        00026C8F 0002 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1763] GrBitMap           00000018 0008 Class 
+[::/LT/OSMain/END.CPZ,238] GrBitMapNew        00026C91 0002 Funct Export 
 [::/LT/OSMain/CRT.CPZ,66] GrClear            00005312 0000 Funct Export 
 [::/LT/OSMain/CRT.CPZ,54] GrClear2           00005237 0003 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1793] GrElem             0000000C 0001 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1809] GrRect             00000006 0000 Class Public 
+[::/LT/OSMain/ADAMK.HPZ,1800] GrElem             0000000C 0001 Class Public 
+[::/LT/OSMain/ADAMK.HPZ,1816] GrRect             00000006 0000 Class Public 
 [::/LT/OSMain/SYSUTILS.ASZ,538] HASH_STRING        00003DD0 0003 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1499] HEAP_HASH_SIZE     1024     0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1503] HEAP_HASH_SIZE     1024     0004 StrConst 
 [::/LT/OSMain/SYSUTILS.ASZ,11] HEX_NUMERIC_BITMAP 00003950 0001 SysSym Export 
 [::/LT/OSMain/SYSUTILS.ASZ,267] HEX_TO_BINARY      00003BA0 0000 SysSym Export 
-[::/LT/OSMain/OSINC.ASZ,203] HTE_DEBUG          00000014 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,198] HTE_NEXT           00000000 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,202] HTE_SOURCE_LINK    00000010 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,199] HTE_STRING         00000004 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,200] HTE_TYPE           00000008 0003 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,204] HTE_USER0          00000018 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,201] HTE_USE_CNT        0000000C 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,204] HTE_DEBUG          00000014 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,199] HTE_NEXT           00000000 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,203] HTE_SOURCE_LINK    00000010 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,200] HTE_STRING         00000004 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,201] HTE_TYPE           00000008 0003 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,205] HTE_USER0          00000018 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,202] HTE_USE_CNT        0000000C 0001 SysSym Lit 
 [::/LT/OSMain/ADAMK.HPZ,235] HTT_ALL            -1       0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,241] HTT_CLASS          0x020    0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,255] HTT_EXPORT         0x080000 0000 StrConst 
@@ -953,9 +956,9 @@
 [::/LT/OSMain/ADAMK.HPZ,259] HTT_UNRESOLVED_GLBL 0x800000 0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,258] HTT_UNRESOLVED_LOCAL 0x400000 0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,244] HTT_WORD           0x100    0000 StrConst 
-[::/LT/OSMain/OSINC.ASZ,194] HT_BODY            00000008 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,193] HT_MASK            00000004 0003 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,192] HT_NEXT            00000000 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,195] HT_BODY            00000008 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,194] HT_MASK            00000004 0003 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,193] HT_NEXT            00000000 0001 SysSym Lit 
 [::/LT/OSMain/CMD.CPZ,341] HandleServantCmds  0000A76A 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,128] HashString         00003ED0 0000 Funct Public 
 [::/LT/OSMain/CMD.CPZ,401] HomeDirString      0000AA26 0002 Funct Export 
@@ -969,17 +972,17 @@
 [::/LT/OSMain/ADAMK.HPZ,841] ICF_TO_INT         2        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,842] ICF_USE_DOUBLE_TEMPLATE 4        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,843] ICF_USE_UNSIGNED_TEMPLATE 8        0000 StrConst 
-[::/LT/OSMain/OSINC.ASZ,251] IC_CLASS           00000010 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,248] IC_CODE            00000000 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,250] IC_DATA            00000008 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,249] IC_FLAGS           00000004 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,252] IC_LINE            00000014 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,253] IC_STRUCT_SIZE     00000018 0000 SysSym Lit 
-[::/LT/OSMain/DISK2.CPZ,565] IDEInit            00015059 0003 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,742] IDERBlks           00015C06 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,872] IDEWBlks           000165E0 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,515] IDEWaitForDrive    00014DBC 0006 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,477] IDEWaitNotBusy     00014BE4 000E Funct Export 
+[::/LT/OSMain/OSINC.ASZ,252] IC_CLASS           00000010 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,249] IC_CODE            00000000 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,251] IC_DATA            00000008 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,250] IC_FLAGS           00000004 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,253] IC_LINE            00000014 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,254] IC_STRUCT_SIZE     00000018 0000 SysSym Lit 
+[::/LT/OSMain/DISK2.CPZ,565] IDEInit            0001505B 0003 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,742] IDERBlks           00015C08 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,872] IDEWBlks           000165E2 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,515] IDEWaitForDrive    00014DBE 0006 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,477] IDEWaitNotBusy     00014BE6 000E Funct Export 
 [::/LT/OSMain/DISK2.CPZ,437] IDE_CMD            7        0003 StrConst 
 [::/LT/OSMain/DISK2.CPZ,438] IDE_CONTROL_REG    0        0006 StrConst 
 [::/LT/OSMain/DISK2.CPZ,429] IDE_DATA_REG       0        0005 StrConst 
@@ -1108,7 +1111,7 @@
 [::/LT/OSMain/ADAMK.HPZ,1258] ISOT_TERMINATOR    255      0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1257] ISOT_VOLUME_PARTRITION_DESC 3        0000 StrConst 
 [::/LT/OSMain/DATE.CPZ,178] ISOToLTDate        0000C057 0001 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1938] ISO_ATTR_DIR       2        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1945] ISO_ATTR_DIR       2        0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1297] ISO_BASE_YEAR      1900     0002 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,351] IT_DOUBLE          10       0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,341] IT_I0              0        0000 StrConst 
@@ -1137,18 +1140,18 @@
 [::/LT/OSMain/ADAMK2.HPZ,86] InP                000000DE 0022 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,92] InPD               000000DC 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,90] InPW               000000DD 0000 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,760] InitAllBlkDevs     0001A85C 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,320] InitBlkDev         00018255 0008 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,760] InitAllBlkDevs     0001A85E 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,320] InitBlkDev         00018257 0008 Funct Export 
 [::/LT/OSMain/CRT.CPZ,144] InitCrt            00005B18 0002 Funct Export 
-[::/LT/OSMain/END.CPZ,270] InitGraphics       00026EEC 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,153] InitISOPartition   00017412 0001 Funct Export 
-[::/LT/OSMain/END.CPZ,219] InitIrqs           00026BB7 0001 Funct Export 
+[::/LT/OSMain/END.CPZ,270] InitGraphics       00026EEE 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,153] InitISOPartition   00017414 0001 Funct Export 
+[::/LT/OSMain/END.CPZ,219] InitIrqs           00026BB9 0001 Funct Export 
 [::/LT/OSMain/MISC.CPZ,212] InitKeyboard       00006AE8 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,133] InitLTPartition    0001721B 0006 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,133] InitLTPartition    0001721D 0006 Funct Export 
 [::/LT/OSMain/CMD.CPZ,424] InitLocalTask      0000AB72 0001 Funct Export 
-[::/LT/OSMain/END.CPZ,1] InitSysGlbls       00025C56 0001 Funct Export 
+[::/LT/OSMain/END.CPZ,1] InitSysGlbls       00025C58 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,414] InitSysTask        0000AAF9 0002 Funct Export 
-[::/LT/OSMain/END.CPZ,212] InitTimer          00026B69 0001 Funct Export 
+[::/LT/OSMain/END.CPZ,212] InitTimer          00026B6B 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,121] InitTss            000099DD 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,437] InitUserTask       0000AC3A 0003 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,83] InsQue             000000D6 000B Funct Public 
@@ -1156,19 +1159,19 @@
 [::/LT/OSMain/ADAMK.HPZ,732] InstructionEntry   0000000C 0001 Class 
 [::/LT/OSMain/ADAMK2.HPZ,159] IntFlushMsgs       00002A92 0001 Funct 
 [::/LT/OSMain/ADAMK.HPZ,848] IntermediateCode   00000005 0006 Class 
-[::/LT/OSMain/DISK3.CPZ,452] InvalidateDiskCache 00018D87 0002 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,50] Irq06Handler       000135BC 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,440] Irq0EHandler       00014AA6 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,445] Irq0FHandler       00014ACF 0001 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,201] IsDir              0002179E 0000 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,452] InvalidateDiskCache 00018D89 0002 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,50] Irq06Handler       000135BE 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,440] Irq0EHandler       00014AA8 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,445] Irq0FHandler       00014AD1 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,201] IsDir              000217A0 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,645] IsRaw              000088A5 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,633] IsSysDbg           00008819 0000 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,165] JIFFY_FREQ         10000    0007 StrConst 
-[::/LT/OSMain/OSMAIN.ASZ,67] J_CONT_START       000018D8 0001 SysSym 
-[::/LT/OSMain/OSMAIN.ASZ,3] J_START2           0000182C 0001 SysSym Export 
-[::/LT/OSMain/OSMAIN.ASZ,41] J_START3           00001875 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1656] KEYB_CTRL          0x64     0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1655] KEYB_PORT          0x60     0008 StrConst 
+[::/LT/OSMain/OSMAIN.ASZ,67] J_CONT_START       000018DC 0001 SysSym 
+[::/LT/OSMain/OSMAIN.ASZ,3] J_START2           00001830 0001 SysSym Export 
+[::/LT/OSMain/OSMAIN.ASZ,41] J_START3           00001879 0001 SysSym Export 
+[::/LT/OSMain/ADAMK.HPZ,1661] KEYB_CTRL          0x64     0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1660] KEYB_PORT          0x60     0008 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,971] KW_ASM             21       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,974] KW_BREAK           24       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,977] KW_CASE            27       0000 StrConst 
@@ -1264,24 +1267,24 @@
 [::/LT/OSMain/ADAMK.HPZ,1338] LTBDT_FILE         5        0004 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1333] LTBDT_NULL         0        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1334] LTBDT_RAM          1        0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1737] LTBLUE             9        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1744] LTBLUE             9        0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1351] LTBlkDev           00000018 0041 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,1202] LTBootStruct       0000000A 0004 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1739] LTCYAN             11       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1746] LTCYAN             11       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1411] LTCacheBlk         00000008 0013 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1460] LTChnl             00000007 0006 Class 
+[::/LT/OSMain/ADAMK.HPZ,1460] LTChnl             0000000B 0007 Class 
 [::/LT/OSMain/ADAMK.HPZ,166] LTDATE_FREQ        49710    0000 StrConst 
-[::/LT/OSMain/DISK1.CPZ,94] LTDCAdd            00012E84 0004 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,94] LTDCAdd            00012E86 0004 Funct Export 
 [::/LT/OSMain/START.CPZ,57] LTDCBase           000049E8 000C GlbVar Export 
-[::/LT/OSMain/DISK1.CPZ,73] LTDCFindBlk        00012D63 0004 Funct Export 
-[::/LT/OSMain/DISK1.CPZ,36] LTDCHash           00012B56 0002 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,73] LTDCFindBlk        00012D65 0004 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,36] LTDCHash           00012B58 0002 Funct Export 
 [::/LT/OSMain/START.CPZ,59] LTDCHashTable      000049F4 0006 GlbVar Export 
-[::/LT/OSMain/DISK1.CPZ,1] LTDCInitCache      000128A4 0001 Funct Export 
-[::/LT/OSMain/DISK1.CPZ,55] LTDCInsQue         00012C65 0001 Funct Export 
-[::/LT/OSMain/DISK1.CPZ,117] LTDCInvalidate     00012FDD 0001 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,1] LTDCInitCache      000128A6 0001 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,55] LTDCInsQue         00012C67 0001 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,117] LTDCInvalidate     00012FDF 0001 Funct Export 
 [::/LT/OSMain/START.CPZ,58] LTDCLast_lru       000049F0 0005 GlbVar Export 
 [::/LT/OSMain/START.CPZ,58] LTDCNext_lru       000049EC 0005 GlbVar Export 
-[::/LT/OSMain/DISK1.CPZ,42] LTDCRemQue         00012BBF 0002 Funct Export 
+[::/LT/OSMain/DISK1.CPZ,42] LTDCRemQue         00012BC1 0002 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,1408] LTDC_TABLE_SIZE    0x2000   0003 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1301] LTDate             00000002 000F Class Public 
 [::/LT/OSMain/ADAMK.HPZ,1307] LTDateStruct       00000009 000B Class Public 
@@ -1290,7 +1293,7 @@
 [::/LT/OSMain/DISK4.CPZ,902] LTDuelBuf          00000007 0003 Class 
 [::/LT/OSMain/ADAMK.HPZ,578] LTFBT_ELEMENT_GRAPH 2        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,577] LTFBT_GENERIC_DATA 1        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1955] LTFB_NEXT_BLK      0xFFFFFF 0008 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1962] LTFB_NEXT_BLK      0xFFFFFF 0008 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,690] LTFF_ATTR_BY_FILENAME 0x2000   0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,689] LTFF_ATTR_BY_PARTITION 0x1000   0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,687] LTFF_BLINK         0x400    0000 StrConst 
@@ -1455,29 +1458,29 @@
 [::/LT/OSMain/ADAMK.HPZ,456] LTFT_USER_BACKGROUND 29       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,455] LTFT_USER_FOREGROUND 28       0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,457] LTFT_WORD_WRAP     30       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1959] LTF_BUF_DIRTY      4        0007 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1961] LTF_CONTIGUOUS     16       0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1966] LTF_BUF_DIRTY      4        0007 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1968] LTF_CONTIGUOUS     16       0003 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,587] LTF_DEFAULT        (-0x7FFF 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1960] LTF_NEEDS_WRITE    8        0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1958] LTF_NEW_FILE       2        0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1962] LTF_USE_OLD_DATETIME 32       0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1957] LTF_WRITE          1        0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1965] LTFile             00000009 0014 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1950] LTFileAccess       00000004 0010 Class Public 
+[::/LT/OSMain/ADAMK.HPZ,1967] LTF_NEEDS_WRITE    8        0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1965] LTF_NEW_FILE       2        0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1969] LTF_USE_OLD_DATETIME 32       0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1964] LTF_WRITE          1        0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1972] LTFile             00000009 0014 Class Public 
+[::/LT/OSMain/ADAMK.HPZ,1957] LTFileAccess       00000004 0010 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,1376] LTFreeList         00000004 0008 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1735] LTGRAY             7        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1738] LTGREEN            10       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1741] LTPURPLE           13       0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1742] LTGRAY             7        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1745] LTGREEN            10       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1748] LTPURPLE           13       0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1382] LTPartition        0000001C 005A Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1740] LTRED              12       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1941] LT_ATTR_ARCHIVE    0x20     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1945] LT_ATTR_COMPRESSED 0x800    0007 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1946] LT_ATTR_CONTIGUOUS 0x1000   000B StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1942] LT_ATTR_DELETED    0x100    0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1940] LT_ATTR_DIR        0x10     0012 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1943] LT_ATTR_ENCRYPTED  0x200    0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1947] LT_ATTR_FIXED      0x2000   0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1944] LT_ATTR_RESIDENT   0x400    0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1747] LTRED              12       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1948] LT_ATTR_ARCHIVE    0x20     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1952] LT_ATTR_COMPRESSED 0x800    0007 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1953] LT_ATTR_CONTIGUOUS 0x1000   000B StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1949] LT_ATTR_DELETED    0x100    0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1947] LT_ATTR_DIR        0x10     0012 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1950] LT_ATTR_ENCRYPTED  0x200    0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1954] LT_ATTR_FIXED      0x2000   0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1951] LT_ATTR_RESIDENT   0x400    0003 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1299] LT_BASE_DAY_OF_WEEK 0        0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1331] LT_DIR_ENTRY_SIZE  (sizeof( 0015 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1314] LT_MAX_FILENAME_LEN 25       000B StrConst 
@@ -1490,11 +1493,11 @@
 [::/LT/OSMain/ADAMK.HPZ,1133] LexStruct          00000023 0002 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,835] LexUndefEntry      00000002 0004 Class 
 [::/LT/OSMain/ADAMK2.HPZ,112] Ln                 000040F8 0000 Funct Public 
-[::/LT/OSMain/END.CPZ,90] Load               00026150 0001 Funct Export 
+[::/LT/OSMain/END.CPZ,90] Load               00026152 0001 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,155] LoadList           0000C9EB 000B Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,141] LoadStr            0000C904 001F Funct Export 
 [::/LT/OSMain/SYSTEXT.CPZ,1] LoadSysStrings     0000F33E 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1] LockPartition      00016836 0017 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1] LockPartition      00016838 0017 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,111] Log10              000040C8 0000 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,110] Log2               000040E0 0000 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,694] Ltf                00000038 0007 Class Public 
@@ -1503,7 +1506,7 @@
 [::/LT/OSMain/ADAMK.HPZ,590] LtfEntryBase       0000000E 0002 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,142] MAXGDT             512      0004 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,143] MAXIDT             96       0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1498] MAXIO              0x800    0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1502] MAXIO              0x800    0003 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,90] MAX_I1             0x7F     0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,94] MAX_I2             0x7FFF   0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,98] MAX_I4             0x7FFFFF 0000 StrConst 
@@ -1530,38 +1533,38 @@
 [::/LT/OSMain/ADAMK.HPZ,97] MIN_U4             0        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,101] MIN_U8             0        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,105] MIN_double         -1.79e30 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1936] MLE_EXACT          2        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1935] MLE_IGNORE_CASE    1        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1943] MLE_EXACT          2        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1942] MLE_IGNORE_CASE    1        0001 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,299] MLF_DEFAULT_AVAILABLE 1        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,301] MLF_DOT_DOT_DOT    4        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,300] MLF_FUNCTION       2        0000 StrConst 
 [::/LT/OSMain/SYSUTILS.ASZ,287] MONTH_START_DAYS1  00003BC0 0001 SysSym Export 
 [::/LT/OSMain/SYSUTILS.ASZ,289] MONTH_START_DAYS2  00003BD8 0001 SysSym Export 
 [::/LT/OSMain/ADAMK.HPZ,1369] MPEf_LOCKED        0        0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1585] MSG_CMD            1        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1589] MSG_CMD            1        0000 StrConst 
 [::/LT/OSMain/IRQHAND.ASZ,557] MSG_FLUSH_MSGS     00003C14 0001 SysSym 
 [::/LT/OSMain/IRQHAND.ASZ,408] MSG_GETCHAR        00003BF0 0001 SysSym 
 [::/LT/OSMain/SYSUTILS.ASZ,297] MSG_GET_CHAR_NO_ECHO 00003C1E 0001 SysSym 
 [::/LT/OSMain/IRQHAND.ASZ,588] MSG_GET_MSG        00003C00 0001 SysSym 
 [::/LT/OSMain/IRQHAND.ASZ,539] MSG_GET_MSG_NO_WAIT 00003C07 0001 SysSym 
-[::/LT/OSMain/ADAMK.HPZ,1589] MSG_IP_L_DOWN      5        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1591] MSG_IP_L_D_DOWN    7        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1592] MSG_IP_L_D_UP      8        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1590] MSG_IP_L_UP        6        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1588] MSG_IP_MOVE        4        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1593] MSG_IP_R_DOWN      9        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1595] MSG_IP_R_D_DOWN    11       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1596] MSG_IP_R_D_UP      12       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1594] MSG_IP_R_UP        10       0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1586] MSG_KEY_DOWN       2        0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1587] MSG_KEY_UP         3        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1593] MSG_IP_L_DOWN      5        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1595] MSG_IP_L_D_DOWN    7        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1596] MSG_IP_L_D_UP      8        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1594] MSG_IP_L_UP        6        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1592] MSG_IP_MOVE        4        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1597] MSG_IP_R_DOWN      9        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1599] MSG_IP_R_D_DOWN    11       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1600] MSG_IP_R_D_UP      12       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1598] MSG_IP_R_UP        10       0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1590] MSG_KEY_DOWN       2        0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1591] MSG_KEY_UP         3        0000 StrConst 
 [::/LT/OSMain/IRQHAND.ASZ,509] MSG_PEEK_MSG       00003BF8 0001 SysSym 
 [::/LT/OSMain/SCHED.ASZ,165] MSG_USER_CMD_DESC  00004448 0001 SysSym 
-[::/LT/OSMain/SPRINTF.CPZ,55] MSPrintF           000105D4 0004 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,55] MSPrintF           000105D6 0004 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,127] MSize              000030BA 0004 Funct Public 
 [::/LT/OSMain/STRINGS.CPZ,334] MStringUtil        0000D977 0005 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1641] MachineRegsStruct  0000000A 0001 Class Public 
-[::/LT/OSMain/DISK4.CPZ,1] MapDrive           000208EF 0000 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1646] MachineRegsStruct  0000000A 0001 Class Public 
+[::/LT/OSMain/DISK4.CPZ,1] MapDrive           000208F1 0000 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,1195] MasterBootStruct   00000003 0002 Class Public 
 [::/LT/OSMain/STRINGS.CPZ,32] MatchListEntry     0000C32E 0003 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,127] MatchSysTextEntry  0000C87B 0000 Funct Export 
@@ -1570,25 +1573,25 @@
 [::/LT/OSMain/ADAMK2.HPZ,88] MemCpy             000000DA 0028 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,89] MemSet             000000DB 0010 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,303] MemberListStruct   0000000D 0004 Class Public 
-[::/LT/OSMain/DISK4.CPZ,780] MkDir              00024A97 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,780] MkDir              00024A99 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,434] ModI8              000078FB 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,415] ModU8              0000775F 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,113] MonitorFDCTsk      000138B8 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,113] MonitorFDCTsk      000138BA 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,331] Msg                0000A6B3 0000 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,156] MulI8              00003AB0 0005 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,155] MulU8              00003A90 0003 Funct Public 
 [::/LT/OSMain/CHARIO.ASZ,2] NORMAL_KEY_SCAN_DECODE_TABLE 00004538 0001 SysSym 
 [::/LT/OSMain/ADAMK.HPZ,79] NULL               0        005B StrConst 
 [::/LT/OSMain/OSINC.ASZ,30] NULL_SEL           00000000 0001 SysSym Lit 
-[::/LT/OSMain/DISK3.CPZ,1133] NameToDirCluster   0001C01A 000C Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1169] NameToParentDirCluster 0001C326 0001 Funct Export 
-[::/LT/OSMain/COMPRESS.CPZ,117] NewArcCs           00012241 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1133] NameToDirCluster   0001C01C 000C Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1169] NameToParentDirCluster 0001C328 0001 Funct Export 
+[::/LT/OSMain/COMPRESS.CPZ,117] NewArcCs           00012243 0002 Funct Export 
 [::/LT/OSMain/CMD.CPZ,29] NewHashTable       000096DA 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1584] NewLTDirEntry      0001E88F 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1475] NewLTDirEntry2     0001DB75 0003 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,137] NewLTFileAccess    00021343 000C Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1584] NewLTDirEntry      0001E891 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1475] NewLTDirEntry2     0001DB77 0003 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,137] NewLTFileAccess    00021345 000C Funct Export 
 [::/LT/OSMain/MEM.CPZ,33] NewString          00004D00 0024 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,899] NextClusterNum     0001AC5E 0006 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,899] NextClusterNum     0001AC60 0006 Funct Export 
 [::/LT/OSMain/MISC.CPZ,609] NoRegVar           000086C0 0000 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,83] OFF                0        0012 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,755] OM_CB              2        0000 StrConst 
@@ -1612,7 +1615,7 @@
 [::/LT/OSMain/ADAMK.HPZ,741] OpcodeHashEntry    00000009 0000 Class 
 [::/LT/OSMain/ADAMK2.HPZ,119] OrWordBitField     00003A00 0002 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,130] Order2D3           00000006 0000 Class Public 
-[::/LT/OSMain/END.CPZ,306] OsMain             00027246 0000 Funct Export 
+[::/LT/OSMain/END.CPZ,306] OsMain             00027248 0000 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,152] OsMainStruct       00000008 0000 Class 
 [::/LT/OSMain/ADAMK2.HPZ,87] OutP               000000E1 0069 Funct Public 
 [::/LT/OSMain/ADAMK2.HPZ,93] OutPD              000000DF 0000 Funct Public 
@@ -1623,8 +1626,8 @@
 [::/LT/OSMain/ADAMK.HPZ,54] P3I4               00000003 0000 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,64] P3I8               00000003 0000 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,74] P3d                00000003 0000 Class Public 
-[::/LT/OSMain/ADAMK.HPZ,1494] PAGE_BITS          9        0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1493] PAGE_SIZE          0x200    0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1498] PAGE_BITS          9        0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1497] PAGE_SIZE          0x200    0006 StrConst 
 [::/LT/OSMain/SYSUTILS.ASZ,13] PRINTABLE_CHARS_BITMAP 00003970 0001 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,205] PROGRESS1          0000218C 0001 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,206] PROGRESS2          00002194 0001 SysSym Export 
@@ -1636,63 +1639,63 @@
 [::/LT/OSMain/ADAMK.HPZ,1372] PT_ISO9660         32       0013 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1373] PT_LT              0x88     0026 StrConst 
 [::/LT/OSMain/MISC.CPZ,593] PTrace             000085D0 0000 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1733] PURPLE             5        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1740] PURPLE             5        0001 StrConst 
 [::/LT/OSMain/IRQHAND.ASZ,445] PUT_HEX            000046F0 0003 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,463] PUT_HEX_U1         0000470A 0001 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,459] PUT_HEX_U2         000046FD 0001 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,401] PUT_I1             00003B58 0002 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,437] PUT_STRING         00003B68 0002 SysSym Export 
 [::/LT/OSMain/ADAMK.HPZ,857] ParseStack         00000002 0000 Class 
-[::/LT/OSMain/DISK3.CPZ,483] PartitionRep       00018FBA 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,483] PartitionRep       00018FBC 0003 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,496] PartitionToDrive   0000E33F 0004 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,2315] PasswordStruct     00000001 0000 Class 
+[::/LT/OSMain/ADAMK.HPZ,2322] PasswordStruct     00000001 0000 Class 
 [::/LT/OSMain/STRINGS.CPZ,17] PointAtListEntry   0000C285 0003 Funct Export 
 [::/LT/OSMain/MISC.CPZ,9] PortNop            000060DE 0009 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,109] Pow10              00004018 0000 Funct Public 
 [::/LT/OSMain/MISC.CPZ,625] Preempt            000087B3 002D Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,41] PrintF             0001053C 0008 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,41] PrintF             0001053E 0008 Funct Export 
 [::/LT/OSMain/CRT.CPZ,159] PutChar            00005D01 0005 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1927] PutDirLink         00020548 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1904] PutFileLink        000203C7 0001 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,49] PutFloat           000105A4 0000 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1927] PutDirLink         0002054A 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1904] PutFileLink        000203C9 0001 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,49] PutFloat           000105A6 0000 Funct Export 
 [::/LT/OSMain/CRT.CPZ,189] PutS               00005ECF 0005 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,135] PutSysText         0000C8D0 001C Funct Export 
-[::/LT/OSMain/QSORT.CPZ,2] QSort              0001176D 0001 Funct Export 
+[::/LT/OSMain/QSORT.CPZ,2] QSort              0001176F 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,278] QueueMsg           0000A365 0002 Funct Export 
 [::/LT/OSMain/CMD.CPZ,219] QueueTaskRequest   0000A00A 0003 Funct Export 
 [::/LT/OSMain/CMD.CPZ,241] QueueTextInput     0000A139 0004 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,1] RAMRBlks           0001331C 0001 Funct Export 
-[::/LT/OSMain/DISK2.CPZ,9] RAMWBlks           000133BD 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,385] RBlks              000186F4 000A Funct Export 
-[::/LT/OSMain/DISK1.CPZ,141] RCache             0001312F 0001 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,923] RClusters          0001AE30 0010 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,1] RAMRBlks           0001331E 0001 Funct Export 
+[::/LT/OSMain/DISK2.CPZ,9] RAMWBlks           000133BF 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,385] RBlks              000186F6 000A Funct Export 
+[::/LT/OSMain/DISK1.CPZ,141] RCache             00013131 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,923] RClusters          0001AE32 0010 Funct Export 
 [::/LT/OSMain/DISK2.CPZ,420] READY_STAT         0x40     0005 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1732] RED                4        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1739] RED                4        0000 StrConst 
 [::/LT/OSMain/MEM.ASZ,104] REMQUE             00003B48 0001 SysSym Export 
 [::/LT/OSMain/SCHED.ASZ,83] REMQUE_TASK        00004348 0000 SysSym 
 [::/LT/OSMain/SCHED.ASZ,41] RESTORE_CONTEXT    000042A0 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,1839] ROPB_EQU           0x00     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1841] ROPB_NAND          0x02     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1840] ROPB_OR            0x01     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1843] ROPB_TRANSPARENT   0x04     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1842] ROPB_XOR           0x03     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1833] ROP_EQU            0x000000 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1835] ROP_NAND           0x020000 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1834] ROP_OR             0x010000 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1837] ROP_TRANSPARENT    0x040000 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1836] ROP_XOR            0x030000 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1846] ROPB_EQU           0x00     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1848] ROPB_NAND          0x02     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1847] ROPB_OR            0x01     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1850] ROPB_TRANSPARENT   0x04     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1849] ROPB_XOR           0x03     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1840] ROP_EQU            0x000000 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1842] ROP_NAND           0x020000 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1841] ROP_OR             0x010000 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1844] ROP_TRANSPARENT    0x040000 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1843] ROP_XOR            0x030000 0000 StrConst 
 [::/LT/OSMain/MEM.ASZ,46] ROUND_UP_TABLE     00002F18 0002 SysSym 
 [::/LT/OSMain/MISC.CPZ,470] RandU2             00007BA9 0002 Funct Export 
 [::/LT/OSMain/MISC.CPZ,477] RandU4             00007C77 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,637] Raw                00008846 000D Funct Export 
-[::/LT/OSMain/DISK4.CPZ,864] ReadCDImage        00024FD8 0000 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,243] ReadFile           000219D8 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1208] ReadISOFile        0001C669 0002 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1268] ReadLTFile         0001CB20 0002 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,864] ReadCDImage        00024FDA 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,243] ReadFile           000219DA 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1208] ReadISOFile        0001C66B 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1268] ReadLTFile         0001CB22 0002 Funct Export 
 [::/LT/OSMain/MISC.CPZ,38] ReadSysTimer       000061D6 0001 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,310] ReadTextFile       0002203B 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,310] ReadTextFile       0002203D 0000 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,150] Reboot             000022D0 0000 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,521] ReleaseTaskPartitions 000193ED 0000 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,521] ReleaseTaskPartitions 000193EF 0000 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,85] RemQue             000000D8 0006 Funct Public 
 [::/LT/OSMain/STRINGS.CPZ,348] RemoveFirstSeg     0000DA48 0005 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,366] RemoveLastSeg      0000DB34 0009 Funct Export 
@@ -1708,61 +1711,61 @@
 [::/LT/OSMain/ADAMK.HPZ,404] SBPTF_BPT          2        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,405] SBPTF_STEP         4        0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,402] SBPTf_DISABLE      0        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1675] SCF_ALT            (1<<SCf_ 0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1676] SCF_CAPS           (1<<SCf_ 0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1674] SCF_CTRL           (1<<SCf_ 0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1671] SCF_E0_PREFIX      (1<<SCf_ 0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1672] SCF_KEY_UP         (1<<SCf_ 0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1679] SCF_NEW_KEY        (1<<SCf_ 0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1677] SCF_NUM            (1<<SCf_ 0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1680] SCF_PRIOR_E0       (1<<SCf_ 0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1678] SCF_SCROLL         (1<<SCf_ 0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1673] SCF_SHIFT          (1<<SCf_ 0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1864] SCREEN_COLS        (grwidth 0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1865] SCREEN_LINES       (grheigh 0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1696] SC_ALT             0x38     0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1697] SC_CAPS            0x3A     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1693] SC_CR              0x1C     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1695] SC_CTRL            0x1D     0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1701] SC_CURSOR_DOWN     0x50     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1702] SC_CURSOR_LEFT     0x4B     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1703] SC_CURSOR_RIGHT    0x4D     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1700] SC_CURSOR_UP       0x48     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1709] SC_DELETE          0x53     0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1707] SC_END             0x4F     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1710] SC_F1              0x3B     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1719] SC_F10             0x44     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1720] SC_F11             0x57     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1721] SC_F12             0x58     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1711] SC_F2              0x3C     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1712] SC_F3              0x3D     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1713] SC_F4              0x3E     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1714] SC_F5              0x3F     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1715] SC_F6              0x40     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1716] SC_F7              0x41     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1717] SC_F8              0x42     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1718] SC_F9              0x43     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1723] SC_GUI             0xDB     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1706] SC_HOME            0x47     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1708] SC_INSERT          0x52     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1698] SC_NUM             0x45     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1705] SC_PAGE_DOWN       0x51     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1704] SC_PAGE_UP         0x49     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1724] SC_PRTSCRN1        0xAA     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1725] SC_PRTSCRN2        0xB7     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1722] SC_SCROLL          0x46     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1699] SC_SCROLL          0x46     0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1694] SC_SHIFT           0x2A     0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1664] SCf_ALT            11       0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1665] SCf_CAPS           12       0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1663] SCf_CTRL           10       0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1660] SCf_E0_PREFIX      7        0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1661] SCf_KEY_UP         8        0008 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1668] SCf_NEW_KEY        16       0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1666] SCf_NUM            13       0003 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1669] SCf_PRIOR_E0       17       0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1667] SCf_SCROLL         14       0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1662] SCf_SHIFT          9        0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1680] SCF_ALT            (1<<SCf_ 0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1681] SCF_CAPS           (1<<SCf_ 0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1679] SCF_CTRL           (1<<SCf_ 0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1676] SCF_E0_PREFIX      (1<<SCf_ 0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1677] SCF_KEY_UP         (1<<SCf_ 0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1684] SCF_NEW_KEY        (1<<SCf_ 0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1682] SCF_NUM            (1<<SCf_ 0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1685] SCF_PRIOR_E0       (1<<SCf_ 0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1683] SCF_SCROLL         (1<<SCf_ 0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1678] SCF_SHIFT          (1<<SCf_ 0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1871] SCREEN_COLS        (grwidth 0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1872] SCREEN_LINES       (grheigh 0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1703] SC_ALT             0x38     0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1704] SC_CAPS            0x3A     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1700] SC_CR              0x1C     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1702] SC_CTRL            0x1D     0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1708] SC_CURSOR_DOWN     0x50     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1709] SC_CURSOR_LEFT     0x4B     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1710] SC_CURSOR_RIGHT    0x4D     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1707] SC_CURSOR_UP       0x48     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1716] SC_DELETE          0x53     0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1714] SC_END             0x4F     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1717] SC_F1              0x3B     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1726] SC_F10             0x44     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1727] SC_F11             0x57     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1728] SC_F12             0x58     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1718] SC_F2              0x3C     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1719] SC_F3              0x3D     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1720] SC_F4              0x3E     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1721] SC_F5              0x3F     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1722] SC_F6              0x40     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1723] SC_F7              0x41     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1724] SC_F8              0x42     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1725] SC_F9              0x43     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1730] SC_GUI             0xDB     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1713] SC_HOME            0x47     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1715] SC_INSERT          0x52     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1705] SC_NUM             0x45     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1712] SC_PAGE_DOWN       0x51     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1711] SC_PAGE_UP         0x49     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1731] SC_PRTSCRN1        0xAA     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1732] SC_PRTSCRN2        0xB7     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1706] SC_SCROLL          0x46     0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1729] SC_SCROLL          0x46     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1701] SC_SHIFT           0x2A     0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1669] SCf_ALT            11       0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1670] SCf_CAPS           12       0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1668] SCf_CTRL           10       0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1665] SCf_E0_PREFIX      7        0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1666] SCf_KEY_UP         8        0008 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1673] SCf_NEW_KEY        16       0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1671] SCf_NUM            13       0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1674] SCf_PRIOR_E0       17       0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1672] SCf_SCROLL         14       0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1667] SCf_SHIFT          9        0003 StrConst 
 [::/LT/OSMain/DISK2.CPZ,418] SEEK_STAT          0x10     0004 StrConst 
 [::/LT/OSMain/OSINC.ASZ,17] SFI_CS             00000008 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,15] SFI_EBP            00000000 0000 SysSym Lit 
@@ -1791,45 +1794,45 @@
 [::/LT/OSMain/SCHED.ASZ,106] SIN_RET            00004405 0001 SysSym 
 [::/LT/OSMain/ADAMK.HPZ,1178] SOURCE_FILE_MASK   "*.CP?;* 0000 StrConst 
 [::/LT/OSMain/SCHED.ASZ,120] SPAWN_USER_AND_ACTIVATE 00004458 0001 SysSym Export 
-[::/LT/OSMain/OSINC.ASZ,215] SP_EAX             0000001C 0007 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,210] SP_EBP             00000008 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,212] SP_EBX             00000010 0003 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,214] SP_ECX             00000018 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,208] SP_EDI             00000000 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,213] SP_EDX             00000014 0007 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,217] SP_EIP             00000020 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,209] SP_ESI             00000004 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,211] SP_ESP             0000000C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,218] SP_PARAM1          00000024 0002 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,227] SP_PARAM10         0000006C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,228] SP_PARAM11         00000074 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,229] SP_PARAM12         0000007C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,219] SP_PARAM2          0000002C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,220] SP_PARAM3          00000034 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,221] SP_PARAM4          0000003C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,222] SP_PARAM5          00000044 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,223] SP_PARAM6          0000004C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,224] SP_PARAM7          00000054 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,225] SP_PARAM8          0000005C 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,226] SP_PARAM9          00000064 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,216] SP_STRUCT_SIZE     00000020 0000 SysSym Lit 
-[::/LT/OSMain/SPRINTF.CPZ,28] SPrintF            000104B6 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,228] SPrintFFlags       0001128F 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,1] SPrintFJoin        000102DB 000C Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1931] SS_IGNORE_CASE     1        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1932] SS_WHOLE_LABELS    2        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1925] SU_CAP_UNDERSCORES 0x100    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1917] SU_DISCARD_PARITY  1        0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1919] SU_REMOVE_CTRL_CHARS 4        0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1920] SU_REMOVE_LEADING  8        0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1918] SU_REMOVE_SPACES   2        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1924] SU_REMOVE_TRAILING 128      0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1926] SU_S2T             0x200    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1928] SU_SAFE_DOLLAR     0x800    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1921] SU_SINGLE_SPACE    16       0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1927] SU_T2S             0x400    0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1923] SU_TO_LOWER        64       0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1922] SU_TO_UPPER        32       0001 StrConst 
+[::/LT/OSMain/OSINC.ASZ,216] SP_EAX             0000001C 0007 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,211] SP_EBP             00000008 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,213] SP_EBX             00000010 0003 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,215] SP_ECX             00000018 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,209] SP_EDI             00000000 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,214] SP_EDX             00000014 0007 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,218] SP_EIP             00000020 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,210] SP_ESI             00000004 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,212] SP_ESP             0000000C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,219] SP_PARAM1          00000024 0002 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,228] SP_PARAM10         0000006C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,229] SP_PARAM11         00000074 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,230] SP_PARAM12         0000007C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,220] SP_PARAM2          0000002C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,221] SP_PARAM3          00000034 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,222] SP_PARAM4          0000003C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,223] SP_PARAM5          00000044 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,224] SP_PARAM6          0000004C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,225] SP_PARAM7          00000054 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,226] SP_PARAM8          0000005C 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,227] SP_PARAM9          00000064 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,217] SP_STRUCT_SIZE     00000020 0000 SysSym Lit 
+[::/LT/OSMain/SPRINTF.CPZ,28] SPrintF            000104B8 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,228] SPrintFFlags       00011291 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,1] SPrintFJoin        000102DD 000C Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1938] SS_IGNORE_CASE     1        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1939] SS_WHOLE_LABELS    2        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1932] SU_CAP_UNDERSCORES 0x100    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1924] SU_DISCARD_PARITY  1        0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1926] SU_REMOVE_CTRL_CHARS 4        0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1927] SU_REMOVE_LEADING  8        0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1925] SU_REMOVE_SPACES   2        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1931] SU_REMOVE_TRAILING 128      0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1933] SU_S2T             0x200    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1935] SU_SAFE_DOLLAR     0x800    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1928] SU_SINGLE_SPACE    16       0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1934] SU_T2S             0x400    0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1930] SU_TO_LOWER        64       0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1929] SU_TO_UPPER        32       0001 StrConst 
 [::/LT/OSMain/SCHED.ASZ,101] SWAP_IN_NEXT       00004370 0002 SysSym Export 
 [::/LT/OSMain/IRQHAND.ASZ,226] SWAP_IN_NEXT_PART2 0000439D 0002 SysSym Export 
 [::/LT/OSMain/SCHED.ASZ,121] SWAP_IN_NEXT_PART3 000043E1 0008 SysSym Export 
@@ -1860,7 +1863,7 @@
 [::/LT/OSMain/OSMAIN.ASZ,194] SYS_IRQ_FLAGS      00001CE8 0001 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,13] SYS_MEMBLKS        00001014 0002 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,209] SYS_SWAPS_CNTER    000021AC 0002 SysSym Export 
-[::/LT/OSMain/OSMAIN.ASZ,16] SYS_TEMP_PTR       00001824 0008 SysSym Export 
+[::/LT/OSMain/OSMAIN.ASZ,16] SYS_TEMP_PTR       00001828 0008 SysSym Export 
 [::/LT/OSMain/OSMAIN.ASZ,196] SYS_TEXTBASE       00001CF0 0001 SysSym Export 
 [::/LT/OSMain/ADAMK.HPZ,169] SYS_TIMER0_PERIOD  (65536*1 0004 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,167] SYS_TIMER_FREQ     (18333*6 0001 StrConst 
@@ -1879,20 +1882,20 @@
 [::/LT/OSMain/ADAMK.HPZ,181] SYSf_TASK_LINKS_ALTERED 9        0003 StrConst 
 [::/LT/OSMain/MISC.CPZ,91] SaveExceptRegs     0000635B 0001 Funct 
 [::/LT/OSMain/STRINGS.CPZ,383] SearchString       0000DC3C 0000 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,673] SelectDefaultDrive 00024083 0001 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,147] ServantUser        00010B88 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,673] SelectDefaultDrive 00024085 0001 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,147] ServantUser        00010B8A 0000 Funct Export 
 [::/LT/OSMain/CMD.CPZ,463] ServantUserCmdLine 0000AD5E 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,76] SetBasePtr         000000C9 0001 Funct Public 
-[::/LT/OSMain/DISK3.CPZ,202] SetDriveType       000177A6 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,202] SetDriveType       000177A8 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,72] SetFlags           000000C7 001A Funct Public 
-[::/LT/OSMain/DISK3.CPZ,65] SetLTBuf           00016D4B 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,743] SetPromptedBaseUnit 0001A756 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,65] SetLTBuf           00016D4D 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,743] SetPromptedBaseUnit 0001A758 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,74] SetStackPtr        000000CB 0000 Funct Public 
 [::/LT/OSMain/MISC.CPZ,621] Silent             00008774 0004 Funct Export 
 [::/LT/OSMain/MISC.CPZ,29] SimpleTimerIrq     00006178 0001 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,102] Sin                00003F38 0000 Funct Public 
 [::/LT/OSMain/MISC.CPZ,548] Sleep              00008336 0005 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1847] SortLTDirFiles     00020019 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1847] SortLTDirFiles     0002001B 0002 Funct Export 
 [::/LT/OSMain/MISC.CPZ,558] Sound              000083D7 000E Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,185] SpacesToTabs       0000CBFD 0001 Funct Export 
 [::/LT/OSMain/CMD.CPZ,179] Spawn              00009DBD 0005 Funct Export 
@@ -1913,9 +1916,9 @@
 [::/LT/OSMain/MISC.CPZ,106] SysCatch           0000644F 0016 Funct Export 
 [::/LT/OSMain/CMD.CPZ,455] SysCmdLine         0000AD06 0001 Funct Export 
 [::/LT/OSMain/MISC.CPZ,629] SysDbg             000087E7 0000 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,833] SysDel             00024E27 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,833] SysDel             00024E29 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,617] SysEcho            00008738 0000 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1884] SysFindFiles       00020267 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1884] SysFindFiles       00020269 0002 Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,135] SysGetChar         000046E9 0005 Funct Public 
 [::/LT/OSMain/ADAMK.HPZ,268] SysHashEntry       00000009 0020 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,279] SysHashTable       00000003 000D Class Public 
@@ -1923,7 +1926,7 @@
 [::/LT/OSMain/STRINGS.CPZ,109] SysTextSub         0000C7A3 0001 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,118] SysTextSubCount    0000C818 0000 Funct Export 
 [::/LT/OSMain/MISC.CPZ,94] SysTry             00006379 0016 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,129] System             00010A55 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,129] System             00010A57 0000 Funct Export 
 [::/LT/OSMain/IRQHAND.ASZ,372] TEST_AND_ENABLE_IRQS 000028C2 000A SysSym 
 [::/LT/OSMain/ADAMK.HPZ,1181] TEXT_FILE_MASK     "*.CP?;* 0000 StrConst 
 [::/LT/OSMain/ADAMK.HPZ,1038] TK_ADD_EQUAL       0x87     0000 StrConst 
@@ -1994,7 +1997,7 @@
 [::/LT/OSMain/OSINC.ASZ,108] TSS_CUR_LTF        000001EC 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,173] TSS_CUR_PARTITION  00000738 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,182] TSS_DBG            000007EC 0001 SysSym Lit 
-[::/LT/OSMain/ADAMK.HPZ,1500] TSS_DESC_LENGTH    127      0003 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1504] TSS_DESC_LENGTH    127      0003 StrConst 
 [::/LT/OSMain/OSINC.ASZ,179] TSS_DOUBLE_ANSWERS 00000788 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,97] TSS_DS             00000054 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,86] TSS_EAX            00000028 0002 SysSym Lit 
@@ -2034,6 +2037,7 @@
 [::/LT/OSMain/OSINC.ASZ,140] TSS_LAST_SIBLING_TSS 00000254 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,137] TSS_LAST_TSS       00000248 0002 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,100] TSS_LDTR           00000060 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,184] TSS_LOCALCHNL      000007F4 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,153] TSS_MALLOC_FREE_LIST 000006EC 0004 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,141] TSS_NEXT_CHILD_TSS 00000258 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,154] TSS_NEXT_EXCEPT    000006F0 0000 SysSym Lit 
@@ -2047,7 +2051,7 @@
 [::/LT/OSMain/OSINC.ASZ,165] TSS_OPTIMIZATION   0000071C 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,135] TSS_PARENT_TSS     00000240 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,183] TSS_POPUP          000007F0 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,184] TSS_RMTCHNL        000007F4 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,185] TSS_RMTCHNL        000007F8 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,111] TSS_SCROLL_SPEED   000001F8 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,129] TSS_SCROLL_X       00000230 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,130] TSS_SCROLL_Y       00000234 0000 SysSym Lit 
@@ -2056,16 +2060,16 @@
 [::/LT/OSMain/OSINC.ASZ,80] TSS_SS1            00000010 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,82] TSS_SS2            00000018 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,149] TSS_STACK_BASE     000002E0 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,189] TSS_STRUCT_SIZE    00000808 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,190] TSS_STRUCT_SIZE    0000080C 0001 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,105] TSS_TASK_DESCRIPTOR 00000168 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,148] TSS_TASK_FLAGS     000002DC 000A SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,101] TSS_TASK_SWITCH_EXCEPT 00000064 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,114] TSS_TEXT_ATTRIBUTE 00000204 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,107] TSS_UPDATE_WINDOW  000001E8 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,185] TSS_USER_AUX0      000007F8 0001 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,186] TSS_USER_AUX1      000007FC 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,187] TSS_USER_AUX2      00000800 0000 SysSym Lit 
-[::/LT/OSMain/OSINC.ASZ,188] TSS_USER_AUX3      00000804 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,186] TSS_USER_AUX0      000007FC 0001 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,187] TSS_USER_AUX1      00000800 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,188] TSS_USER_AUX2      00000804 0000 SysSym Lit 
+[::/LT/OSMain/OSINC.ASZ,189] TSS_USER_AUX3      00000808 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,177] TSS_USER_NUM       00000744 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,147] TSS_WINDOW_BORDER_PIXEL_BOTTOM 000002D8 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,144] TSS_WINDOW_BORDER_PIXEL_LEFT 000002CC 0000 SysSym Lit 
@@ -2079,14 +2083,14 @@
 [::/LT/OSMain/OSINC.ASZ,126] TSS_WINDOW_PIXEL_TOP 00000228 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,118] TSS_WINDOW_RIGHT   0000020C 0000 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,119] TSS_WINDOW_TOP     00000210 0000 SysSym Lit 
-[::/LT/OSMain/ADAMK.HPZ,1477] TSSf_FILTER_INPUT  6        0001 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1478] TSSf_HAS_SONG      7        0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1475] TSSf_IDLE          4        0005 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1476] TSSf_INPUT_FILTER_TASK 5        0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1471] TSSf_KILL_TASK     0        0006 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1473] TSSf_LOCAL_USER    2        0005 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1474] TSSf_PREEMPT       3        0004 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1472] TSSf_SUSPENDED     1        0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1481] TSSf_FILTER_INPUT  6        0001 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1482] TSSf_HAS_SONG      7        0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1479] TSSf_IDLE          4        0005 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1480] TSSf_INPUT_FILTER_TASK 5        0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1475] TSSf_KILL_TASK     0        0006 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1477] TSSf_LOCAL_USER    2        0005 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1478] TSSf_PREEMPT       3        0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1476] TSSf_SUSPENDED     1        0006 StrConst 
 [::/LT/OSMain/STRINGS.CPZ,228] TabsToSpaces       0000CEF1 0001 Funct Export 
 [::/LT/OSMain/MISC.CPZ,90] TakeExcept         0000634D 0001 Funct 
 [::/LT/OSMain/ADAMK2.HPZ,104] Tan                00003F68 0000 Funct Public 
@@ -2095,45 +2099,45 @@
 [::/LT/OSMain/MISC.CPZ,797] ThrowFloating      0000906F 0000 Funct Export 
 [::/LT/OSMain/DATE.CPZ,8] ToLTDate           0000B2DF 0006 Funct Export 
 [::/LT/OSMain/DATE.CPZ,28] ToLTDateStruct     0000B4B4 0005 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,951] ToLTFilename       0001B142 0002 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,951] ToLTFilename       0001B144 0002 Funct Export 
 [::/LT/OSMain/MISC.CPZ,485] ToUpper            00007CDC 000A Funct Export 
 [::/LT/OSMain/ADAMK2.HPZ,148] TranslateScanCode  00004628 0000 Funct 
 [::/LT/OSMain/ADAMK.HPZ,392] TssCmdStruct       00000009 0014 Class 
-[::/LT/OSMain/ADAMK.HPZ,1502] TssStruct          00000069 0033 Class Public 
+[::/LT/OSMain/ADAMK.HPZ,1506] TssStruct          0000006A 0033 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,2] U2                 00000002 0025 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,1216] U2Palindrome       00000002 0004 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,14] U4                 00000004 01B9 Class Public 
 [::/LT/OSMain/ADAMK.HPZ,1221] U4Palindrome       00000002 0004 Class Public 
 [::/LT/OSMain/SYSUTILS.ASZ,90] U64_MUL            00003A90 0001 SysSym Export 
-[::/LT/OSMain/ADAMK.HPZ,30] U8                 00000006 01AD Class Public 
+[::/LT/OSMain/ADAMK.HPZ,30] U8                 00000006 01AF Class Public 
 [::/LT/OSMain/OSINC.ASZ,65] USED_USER_MEM_SIZE -4       0000 StrConst 
 [::/LT/OSMain/OSINC.ASZ,60] UUM_NEXT           00000000 0006 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,61] UUM_SIZE           00000004 0008 SysSym Lit 
 [::/LT/OSMain/OSINC.ASZ,62] UUM_STRUCT_SIZE    00000008 0003 SysSym Lit 
 [::/LT/OSMain/STRINGS.CPZ,92] UndefinedSysText   0000C6DA 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,14] UnlockPartition    000168DF 002D Funct Export 
+[::/LT/OSMain/DISK3.CPZ,14] UnlockPartition    000168E1 002D Funct Export 
 [::/LT/OSMain/MISC.CPZ,773] UnrecoverableSysError 00008F76 0004 Funct Export 
 [::/LT/OSMain/ADAMK.HPZ,421] UnusedAllocatedMem 00000002 0001 Class 
 [::/LT/OSMain/CMD.CPZ,445] UserCmdLine        0000AC71 0000 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1850] VGA_CRTC_INDEX     0x03d4   0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1853] VGA_H_BLANK_START  0x02     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1854] VGA_H_RETRACE_START 0x04     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1852] VGA_H_TOTAL        0x00     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1851] VGA_MAP_MASK       0x02     0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1856] VGA_MAX_SCAN_LINE  0x09     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1845] VGA_MISC_OUTPUT    0x03c2   0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1860] VGA_MODE_CONTROL   0x17     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1858] VGA_OFFSET         0x13     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1849] VGA_PALETTE_DATA   0x03c9   0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1848] VGA_PALETTE_INDEX  0x03c8   0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1847] VGA_SC_DATA        0x03c5   0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1846] VGA_SC_INDEX       0x03c4   0002 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1859] VGA_V_BLANK_START  0x15     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1857] VGA_V_RETRACE_END  0x11     0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1855] VGA_V_TOTAL        0x06     0000 StrConst 
-[::/LT/OSMain/DISK3.CPZ,418] WBlks              00018A31 000E Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1360] WClusters          0001D276 0005 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1743] WHITE              15       0004 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1857] VGA_CRTC_INDEX     0x03d4   0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1860] VGA_H_BLANK_START  0x02     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1861] VGA_H_RETRACE_START 0x04     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1859] VGA_H_TOTAL        0x00     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1858] VGA_MAP_MASK       0x02     0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1863] VGA_MAX_SCAN_LINE  0x09     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1852] VGA_MISC_OUTPUT    0x03c2   0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1867] VGA_MODE_CONTROL   0x17     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1865] VGA_OFFSET         0x13     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1856] VGA_PALETTE_DATA   0x03c9   0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1855] VGA_PALETTE_INDEX  0x03c8   0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1854] VGA_SC_DATA        0x03c5   0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1853] VGA_SC_INDEX       0x03c4   0002 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1866] VGA_V_BLANK_START  0x15     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1864] VGA_V_RETRACE_END  0x11     0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1862] VGA_V_TOTAL        0x06     0000 StrConst 
+[::/LT/OSMain/DISK3.CPZ,418] WBlks              00018A33 000E Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1360] WClusters          0001D278 0005 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1750] WHITE              15       0004 StrConst 
 [::/LT/OSMain/DISK2.CPZ,393] WIN_CHECKPOWERMODE1 0xE5     0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,370] WIN_CHECKPOWERMODE2 0x98     0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,343] WIN_DEV_RESET      0x08     0001 StrConst 
@@ -2200,17 +2204,17 @@
 [::/LT/OSMain/DISK2.CPZ,352] WIN_WRITE_EXT      0x34 /*  0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,358] WIN_WRITE_VERIFY   0x3C /*  0000 StrConst 
 [::/LT/OSMain/DISK2.CPZ,419] WRERR_STAT         0x20     0000 StrConst 
-[::/LT/OSMain/DISK3.CPZ,185] WZeroBlks          00017692 0001 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,185] WZeroBlks          00017694 0001 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,420] WildCardMatch      0000DE09 0002 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,448] WildFileNameList   0000DF91 0003 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,940] WriteCDImage       000255FA 0000 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,910] WriteCDImageTsk    0002537D 0001 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,351] WriteFile          00022393 0003 Funct Export 
-[::/LT/OSMain/DISK3.CPZ,1641] WriteLTFile        0001EE9C 0001 Funct Export 
-[::/LT/OSMain/DISK4.CPZ,391] WriteTextFile      00022701 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,107] XTalk              000108E5 0000 Funct Export 
-[::/LT/OSMain/SPRINTF.CPZ,184] XTalkString        00010DE2 0000 Funct Export 
-[::/LT/OSMain/ADAMK.HPZ,1742] YELLOW             14       0000 StrConst 
+[::/LT/OSMain/DISK4.CPZ,940] WriteCDImage       000255FC 0000 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,910] WriteCDImageTsk    0002537F 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,351] WriteFile          00022395 0003 Funct Export 
+[::/LT/OSMain/DISK3.CPZ,1641] WriteLTFile        0001EE9E 0001 Funct Export 
+[::/LT/OSMain/DISK4.CPZ,391] WriteTextFile      00022703 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,107] XTalk              000108E7 0000 Funct Export 
+[::/LT/OSMain/SPRINTF.CPZ,184] XTalkString        00010DE4 0000 Funct Export 
+[::/LT/OSMain/ADAMK.HPZ,1749] YELLOW             14       0000 StrConst 
 [::/LT/OSMain/DATE.CPZ,1] YearStartDate      0000B1CA 0004 Funct Export 
 [::/LT/OSMain/STRINGS.CPZ,1] YorN               0000C166 0002 Funct Export 
 [::/LT/OSMain/DISK3.CPZ,184] ZERO_BUF_SIZE      2048     0003 StrConst 
@@ -2218,24 +2222,24 @@
 [::/LT/OSMain/START.CPZ,45] adam_tss           000049C0 000F GlbVar Export 
 [::/LT/OSMain/ADAMK2.HPZ,60] alpha_bitmap       000038D0 0000 GlbVar Public Export 
 [::/LT/OSMain/ADAMK2.HPZ,61] alpha_numeric_bitmap 000038F0 0002 GlbVar Public Export 
-[::/LT/OSMain/ADAMK.HPZ,1620] ans                (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1621] ans0               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1622] ans1               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1623] ans2               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1624] ans3               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1625] ans4               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1626] ans5               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1627] ans6               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1628] ans7               (Fs->ans 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1630] ansd               (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1631] ansd0              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1632] ansd1              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1633] ansd2              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1634] ansd3              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1635] ansd4              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1636] ansd5              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1637] ansd6              (Fs->dou 0000 StrConst 
-[::/LT/OSMain/ADAMK.HPZ,1638] ansd7              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1625] ans                (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1626] ans0               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1627] ans1               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1628] ans2               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1629] ans3               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1630] ans4               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1631] ans5               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1632] ans6               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1633] ans7               (Fs->ans 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1635] ansd               (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1636] ansd0              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1637] ansd1              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1638] ansd2              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1639] ansd3              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1640] ansd4              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1641] ansd5              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1642] ansd6              (Fs->dou 0000 StrConst 
+[::/LT/OSMain/ADAMK.HPZ,1643] ansd7              (Fs->dou 0000 StrConst 
 [::/LT/OSMain/START.CPZ,67] boot_blkdev        00004A30 0004 GlbVar Export 
 [::/LT/OSMain/START.CPZ,66] compiled_lines     00004A24 0001 GlbVar Export 
 [::/LT/OSMain/START.CPZ,62] dc_col             000049F8 0009 GlbVar Export 
