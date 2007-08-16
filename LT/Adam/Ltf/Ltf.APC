@@ -1,0 +1,36 @@
+#help_index "Ltf"
+#help_file "::/LT/Doc/Ltf.TXZ"
+
+extern void EditLeftClickLink(Ltf *l,LtfEntry *cl,BoolU4 old_preempt);
+extern void ConsoleRightClickLink(Ltf *l,LtfEntry *cl,BoolU4 old_preempt);
+extern BoolU8 Edit(I1 *filename);
+extern LtfEntry *ParseDollarCmd(Ltf *l,I1 *st);
+
+#include "LtfNew"
+#include "LtfRecalc"
+#include "LtfPlain"
+#include "LtfFile"
+#include "LtfPopUp"
+#include "LtfCtrlL"
+#include "LtfMacro"
+#include "LtfEdit"
+#include "LtfBible"
+#include "LtfMain"
+
+#help_index ""
+
+
+/*
+LoseThos Ltf's can have "cursor movement" commands which can move the cursor 
+up the screen ancd layer on existing text.  It can also have call-back 
+functions which supply live, changing text.  For these reasons, you can't 
+assume you know where the visible portion of the document is and must process 
+an extensive portion of the document each time it is placed on the screen, 
+becoming CPU intensive on big documents.  The l->recalc_start member attempts 
+to limit what is recalculated.  This is tricky, however, and optimizations 
+create minor glitches.  Similarly, an optimization to only refresh the entire 
+document 1 in 10 times it is drawn to the screen creates minor glitches.  
+Since the Ltf handles the command line, it must also be fast when adding text 
+output from programs.  l->recalc_start comes into play here.
+
+*/

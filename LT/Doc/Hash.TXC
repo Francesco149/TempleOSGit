@@ -1,0 +1,10 @@
+There are symbol(hash) tables maintained by each task.  When a symbol is not 
+found, the parent task's symbol table is checked.  All process chain back to 
+the Adam task.
+
+LoseThos symbol tables are implemented with an array of linked-lists.  A 
+number is generated from a string to index into it.  Since multiple strings 
+could generate the same number, a linked-list is built.  Newer entries 
+overshadow older ones and entries are never removed.  There are various types 
+of entries.  See [HTT_SYS_SYMBOL] Hash Entry Types.
+

@@ -1,0 +1,23 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  try {
+  while (!ScanKey) {
+	Play("3etEDDqBsGAGAqB2sG3B2G3BqEGsEDED");
+	Play("etEDDqBsGAGAqB2sG3B2G3BqEGsEDED");
+	Play("etBF2G3qFGGsEAEADFDFqFeFC");
+	Play("etBF2G3qFGGsEAEADFDFqFeFC");
+  }
+  } catch
+    Fs->catch_except=TRUE;
+  Sound(0);
+}
+
+Song;

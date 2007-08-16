@@ -1,0 +1,223 @@
+Cd("HOME");Dir;
+`Cd("HOME");Dir;`
+
+Cd("HOME/BTracks");Dir;
+`Cd("HOME/BTracks");Dir;`
+
+Drive('D');
+`Drive('D');`
+
+Drive('E');
+`Drive('E');`
+
+QBoot D
+`QBoot('D');`
+
+Compile D
+`CompileDrive('D');`
+
+[::/LT/Doc/HelpIndex.TXZ] Help Index
+Cd("/LT/OSMain");Dir;
+`Cd("/LT/OSMain");Dir;`
+
+Cd("/LT/OSMain/Disk");Dir;
+`Cd("/LT/OSMain/Disk");Dir;`
+
+Cd("/LT/Compiler");Dir;
+`Cd("/LT/Compiler");Dir;`
+
+Organ(BTracks) <1> (image)
+Cd("/LT/Adam");Dir;
+`Cd("/LT/Adam");Dir;`
+
+Cd("/LT/Adam/Ltf");Dir;
+`Cd("/LT/Adam/Ltf");Dir;`
+
+Cd("/LT/Adam/WordStat");Dir;
+`Cd("/LT/Adam/WordStat");Dir;`
+
+Cd("/LT/Adam/Gr");Dir;
+`Cd("/LT/Adam/Gr");Dir;`
+
+Cd("/LT/Adam/GrAsm");Dir;
+`Cd("/LT/Adam/GrAsm");Dir;`
+
+Cd("/LT/Accts/TAD");Dir;
+`Cd("/LT/Accts/TAD");Dir;`
+
+Cd("/LT/Accts");Dir;
+`Cd("/LT/Accts");Dir;`
+
+Cd("/LT/Accts/Tour");Dir;
+`Cd("/LT/Accts/Tour");Dir;`
+
+Cd("/LT/Accts/Songs");Dir;
+`Cd("/LT/Accts/Songs");Dir;`
+
+Cd("/LT/Accts/User");Dir;
+`Cd("/LT/Accts/User");Dir;`
+
+Cd("/LT/Accts/Install");Dir;
+`Cd("/LT/Accts/Install");Dir;`
+
+Cd("/LT/Apps");Dir;
+`Cd("/LT/Apps");Dir;`
+
+Cd("/LT/Apps/MusicOrgan");Dir;
+`Cd("/LT/Apps/MusicOrgan");Dir;`
+
+Cd("/LT/Apps/MusicOrgan/Examples");Dir;
+`Cd("/LT/Apps/MusicOrgan/Examples");Dir;`
+
+Cd("/LT/Demo");Dir;
+`Cd("/LT/Demo");Dir;`
+
+Cd("/LT/Demo/Graphics");Dir;
+`Cd("/LT/Demo/Graphics");Dir;`
+
+Cd("/LT/Demo/GameStarters");Dir;
+`Cd("/LT/Demo/GameStarters");Dir;`
+
+Cd("/LT/Utils");Dir;
+`Cd("/LT/Utils");Dir;`
+
+Cd("/LT/Utils/Boot");Dir;
+`Cd("/LT/Utils/Boot");Dir;`
+
+Cd("/LT/Doc");Dir;
+`Cd("/LT/Doc");Dir;`
+
+Cd("/LT/Text");Dir;
+`Cd("/LT/Text");Dir;`
+
+Cd("/Temp");Dir;
+`Cd("/Temp");Dir;`
+
+Cd("/Text");Dir;
+`Cd("/Text");Dir;`
+
+Cd("/Windows");Dir;
+`Cd("/Windows");Dir;`
+
+Cd("/0000Boot");Dir;
+`Cd("/0000Boot");Dir;`
+
+Copy Screen Shots
+`Copy("::/Temp/ScreenShots/*","K:/Temp/ScreenShots");`
+
+Del("K:/Temp/ScreenShots/*");Del("D:/Temp/ScreenShots/*");
+`Del("K:/Temp/ScreenShots/*");Del("D:/Temp/ScreenShots/*");`
+
+-] Dangerous
+  Copy Drive
+`PmtMyCopyDrive;`
+
+  Install From CD to D
+`InstallFromCDToD;`
+
+  UpdateEK
+`Cd("/LT");S2T(SOURCE_FILE_MASK,"+r");UpdateEK;`
+
+  -] Merge Files Stuff
+  M("D:/LT/*","T:/LT/*","+r+d");
+`M("D:/LT/*","T:/LT/*","+r+d");`
+
+  M("D:/LT/*","E:/LT/*","+r+d");
+`M("D:/LT/*","E:/LT/*","+r+d");`
+
+  M("D:/LT/*","K:/LT/*","+r+d");
+`M("D:/LT/*","K:/LT/*","+r+d");`
+
+  ChangeDisk('T');
+`ChangeDisk('T');`
+
+MenuBoot D
+`QMenuBoot('D');`
+
+Take Tour
+`Cd("::/LT/Accts/Tour");;AutoFile("Tour");`
+
+Update and Compile Drive
+`PromptUpdateDrive;`
+
+Just Update Drive
+`PromptUpdateDrive2;`
+
+-] Stuff for Burning CDs
+  Make Inhouse CD Image
+`MakeInhouseCDImage;MyWriteCDImage;`
+
+  Copy Inhouse CD Image
+`CopyInhouseCDImage;`
+
+  Make Production CD Image
+`MakeProductionCDImage;MyWriteCDImage;`
+
+  -] Applications
+  
+  
+  
+  
+  
+  WarGame <2> (image)  JukeBox <3> (image) Rocks <4> (image) Vocab <5> (image) FlightSim <6> (image)
+  
+  
+  
+  
+  
+  
+  
+  Swing <7> (image)  Goons <8> (image)
+  
+  
+  Organ(Examples) <1> (image)
+  Digits (Memory Game)
+`Cd("::/LT/Demo");;#include "Digits"`
+
+  DO-TELL (A fractel-like thing)
+`Cd("::/LT/Demo");;#include "Dawg"`
+
+  Organ(Home    ) <9> (image)
+  
+List functions in alphabetic order
+`HFunsRep;View;`
+ 
+List functions in numeric address order
+`HMapRep;View;`
+ 
+[Genesis,] Bible
+
+Song qCeACqCq2G3qBeBEsA2G3A2G3sD2G3D2G3qCeACqCq2G3qBeBEsA2G3A2G3sD2G3D2G3e2G3Gs2G3F2G3FqBqAqEqAqAqCe2G3Gs2G3F2G3FqBqAqEqAqAqC
+DoCmp55Test;
+`DoCmp55Test;`
+
+DoCmp5Test;
+`DoCmp5Test;`
+
+DoCompareCmp;
+`DoCompareCmp;`
+
+CopyTree("F:/LT/Compiler5","F:/LT/Compiler5");
+`CopyTree("F:/LT/Compiler5","F:/LT/Compiler5");`
+
+Cd("HOME/Testing");Dir;
+`Cd("HOME/Testing");Dir;`
+
+Cd("HOME/BenchMarks");Dir;
+`Cd("HOME/BenchMarks");Dir;`
+
+Cd("/LT/Apps/Rocks");Dir;
+`Cd("/LT/Apps/Rocks");Dir;`
+
+Cd("HOME/Testing/AutoFile");Dir;
+`Cd("HOME/Testing/AutoFile");Dir;`
+
+Play Rocks
+`Cd("::/LT/Apps/Rocks");;#include "Run";`
+
+CPUPlot
+`#include "/LT/Demo/Graphics/CPUPlot.CPZ"`
+
+SpaceShip Game
+`#include "::/LT/Demo/GameStarters/SpaceShip"`
+

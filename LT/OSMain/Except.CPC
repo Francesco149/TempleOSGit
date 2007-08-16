@@ -1,0 +1,154 @@
+U8 ExceptDepth(TssStruct *tss=NULL)
+{
+  U8 result=0;
+  ExceptStruct *tempt;
+  if (!tss) tss=Fs;
+  tempt=tss->next_except;
+  while (tempt!=&tss->next_except) {
+    result++;
+    tempt=tempt->next;
+  }
+  return result;
+}
+
+asm {
+	USE64
+CP_TEST_EXCEPT::
+	XOR	EAX,EAX
+	MOV	RAX,FS:TSS_ABSOLUTE_ADDRESS[RAX]
+	MOV	RAX,U8 TSS_LAST_EXCEPT[RAX]
+	MOV	RBP,U8 EXCEPT_RBP[RAX]
+	MOV	RSI,U8 EXCEPT_RSI[RAX]
+	MOV	RDI,U8 EXCEPT_RDI[RAX]
+	MOV	R12,U8 EXCEPT_R12[RAX]
+	MOV	R13,U8 EXCEPT_R13[RAX]
+	MOV	R14,U8 EXCEPT_R14[RAX]
+	MOV	R15,U8 EXCEPT_R15[RAX]
+	PUSH	U8 EXCEPT_RFLAGS[RAX]
+	POPFD
+	JMP	U8 EXCEPT_HANDLER_START[RAX]
+
+CP_TAKE_EXCEPT::
+	XOR	EAX,EAX
+	MOV	RAX,FS:TSS_ABSOLUTE_ADDRESS[RAX]
+	MOV	RAX,U8 TSS_LAST_EXCEPT[RAX]
+	MOV	RSP,U8 EXCEPT_RSP[RAX]
+	JMP	U8 EXCEPT_HANDLER_SKIP[RAX]
+
+CP_SAVE_EXCEPT_REGS::
+	PUSH	RBP
+	MOV	RBP,RSP
+	MOV	RAX,U8 SF_PARAM1[RBP]
+	MOV	U8 EXCEPT_RSI[RAX],RSI
+	MOV	U8 EXCEPT_RDI[RAX],RDI
+	MOV	U8 EXCEPT_R12[RAX],R12
+	MOV	U8 EXCEPT_R13[RAX],R13
+	MOV	U8 EXCEPT_R14[RAX],R14
+	MOV	U8 EXCEPT_R15[RAX],R15
+	POP	RBP
+	RET
+};
+
+LTextern CP_TEST_EXCEPT void TestExcept();
+LTextern CP_TAKE_EXCEPT void TakeExcept();
+LTextern CP_SAVE_EXCEPT_REGS void SaveExceptRegs(ExceptStruct *t);
+
+#exe {NoRegVar(ON);}
+void SysTry(U1 *start_label,U1 *skip_label)
+{
+  U8 *rsp=GetStackPtr,*rbp=GetBasePtr,old_flags=GetFlags;
+  ExceptStruct *tempt=MAlloc(sizeof(ExceptStruct));
+  tempt->handler_start=start_label;
+  tempt->handler_skip=skip_label;
+  tempt->rsp=rsp+0x40;
+  tempt->rbp=*rbp;
+  tempt->rflags=old_flags;
+  SaveExceptRegs(tempt);
+  Cli;
+  InsQue(tempt,Fs->last_except);
+  SetFlags(old_flags);
+}
+
+void SysCatch()
+{
+  U8 old_flags=GetFlags;
+  ExceptStruct *tempt=Fs->last_except;
+  Cli;
+  RemQue(tempt);
+  SetFlags(old_flags);
+  Free(tempt);
+}
+
+void AdamLogExcept()
+{
+  U8 i;
+  if (!Gs->num) { //TODO
+    AdamLog("Depth:%02X Tsk:%08X throw(",
+      ExceptDepth(Fs),Fs);
+    for (i=0;i<Fs->except_argc;i++)
+      AdamLog("%X,",Fs->except_argv[i]);
+    AdamLog(");\r\n");
+  }
+}
+
+
+void throw_join(I8 argc,I8 *argv)
+{
+  ExceptStruct *tempt=Fs->last_except;
+
+  Fs->except_argc=argc;
+  Fs->except_argv=argv;
+  Fs->except_rbp=GetBasePtr;
+  Fs->catch_except=FALSE;
+  Fs->ignore_except=FALSE;
+  while (Fs->next_except!=&Fs->next_except) {
+    TestExcept;
+    if (Fs->catch_except)
+      TakeExcept;
+    if (Fs->ignore_except)
+      return;
+    SetBasePtr(Fs->except_rbp);
+    tempt=Fs->last_except;
+    RemQue(tempt);
+    Free(tempt);
+  }
+  if (!Gs->num)
+    Debugger("Unhandled Exception");
+  else {
+    //TODO
+    while (TRUE)
+      Beep;
+  }
+}
+
+void throw_no_log(...)
+{
+  throw_join(argc,argv);
+}
+
+void throw(...)
+{
+  AdamLogExcept;
+  throw_join(argc,argv);
+}
+
+#exe {NoRegVar(OFF);}
+
+asm {CP_BREAK::}
+void Break()
+{
+  ReleaseTaskPartitions;
+  CallExtNum(EXT_FLUSH_MSGS,NULL);
+  throw(EXCEPT_BREAK);
+}
+
+void ThrowDivide(void *rip)
+{
+  throw(EXCEPT_ARITHMETIC,rip);
+}
+
+void ThrowFloating(void *rip)
+{
+  throw(EXCEPT_FLOATING,rip);
+}
+

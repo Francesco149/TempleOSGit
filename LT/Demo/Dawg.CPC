@@ -1,0 +1,121 @@
+//This program does a fractel-like thing with
+//integer arithmetic.
+
+class Simplex
+{
+  I8 x,y;
+};
+
+I8 Norm(Simplex *n1)
+{
+  return AbsI8(n1->x)+AbsI8(n1->y);
+}
+
+Simplex *CopySimplex(Simplex *dst, Simplex *src)
+{
+  MemCpy(dst,src,sizeof(Simplex));
+  return dst;
+}
+
+
+Simplex *Mix(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  result->x=n1->x*n2->x;
+  result->y=n1->y*n2->y;
+  return result;
+}
+
+Simplex *Mangle(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  result->x=n1->x*n2->y;
+  result->y=n1->y*n2->x;
+  return result;
+}
+
+Simplex *Add(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  result->x=n1->x+n2->x;
+  result->y=n1->y+n2->y;
+  return result;
+}
+
+Simplex *Sub(Simplex *result,Simplex *n1,Simplex *n2)
+{
+  result->x=n1->x-n2->x;
+  result->y=n1->y-n2->y;
+  return result;
+}
+
+
+void DrawIt(TssStruct *tss)
+{
+  I8 old_attr=tss->text_attribute;
+  tss->text_attribute=(BLACK<<4)+WHITE;
+  ClearWinText(tss);
+  tss->text_attribute=old_attr;
+}
+
+
+void BigDawg()
+{
+  void *old_update=Fs->update_win;
+  I8 ch,d,x,y,color,cnt;
+  Simplex n1,n2,n3,n4,n5,n6,n7,n8;
+  BoolU4 in_color;
+  U8 timeout_time;
+  GrBitMap *base=GrAlias(Gs->grbase,Fs);
+
+  Fs->update_win=&DrawIt;
+  WinMax;
+  do {
+next_dotel:
+    ch=0;
+    cnt=RandU4;
+    n2.x=RandU4+MIN_I4; n2.y=RandU4+MIN_I4;
+    n8.x=RandU4+MIN_I4; n8.y=RandU4+MIN_I4;
+    in_color=RandU2 & 1;
+    timeout_time=GetTimeStamp+time_stamp_freq>>3;
+    for (y=0;y<GR_HEIGHT;y++) {
+      if (y<20)
+	if (GetTimeStamp>timeout_time)
+	  goto next_dotel;
+      if (ScanKey(&ch))
+	goto next_dotel;
+      for (x=0;x<GR_WIDTH;x++) {
+	if (y<20)
+	  if (GetTimeStamp>timeout_time)
+	    goto next_dotel;
+
+	n1.x=x;	n1.y=y;
+	CopySimplex(&n3,&n1);
+
+	color=0;
+	d=Norm(&n3);
+	while (d.u4[0]<cnt && color<WHITE) {
+	  if (y<20)
+	    if (GetTimeStamp>timeout_time)
+	      goto next_dotel;
+	  Mangle(&n7,Mix(&n4,&n3,&n1),
+		   Add(&n5,&n3,&n2));
+	  color++;
+	  d=Norm(Add(&n3,&n7,Mangle(&n6,&n3,&n8)));
+	}
+	if (!in_color) {
+	  if (color==1)
+	    color=WHITE;
+	  else
+	    color=BLACK;
+	}
+	base->color=ROP_EQU+color;
+	GrPlot(base,x,y);
+      }
+      SwapInNext;
+    }
+    ch=GetChar(NULL,FALSE);
+  } while (ch!=CH_ESC && ch!=CH_CTRLQ);
+  Fs->update_win=old_update;
+  GrDel(base);
+  GrClear;
+}
+
+BigDawg;  //Start when included

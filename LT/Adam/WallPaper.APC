@@ -1,0 +1,103 @@
+#help_index "Windows"
+
+U8 last_swap_cnter2[MP_MAX_PROCESSORS]={0,0,0,0};
+U8 last_calc_refresh_cnt=0,
+   last_refresh_delta_time=time_stamp_freq;
+U8 last_unused_sysmem=0;
+
+#define KEYNAME_BUF_SIZE	20
+
+void WallPaper(TssStruct *my_tss)
+{
+  I8 i,j,l=GR_HEIGHT/FONT_HEIGHT-1;
+  TssStruct *tss;
+  CPUStruct *c;
+  LTDate ltdt;
+  U8 old_flags=GetFlags;
+  I1 buf[256],buf2[256],*st;
+  GrBitMap *base=GrAlias(grbase2,my_tss);
+
+  ltdt=GetCurTimeLTDate;
+  SPrintF(buf,"%h2D %h4T Ref:%2tf ",ltdt,ltdt,win_refresh);
+
+  for (i=0;i<mp_cnt;i++) {
+    c=&mp_cpu_structs[i];
+    SPrintF(buf2,"CPU%d:%2tf%% ",i,
+      100.0*(1.0-c->idle_factor));
+    StrCat(buf,buf2);
+  }
+  if (!(win_updates&63))
+    last_unused_sysmem=UnusedSysMem;
+  SPrintF(buf2,"Mem:%08tX",last_unused_sysmem);
+  StrCat(buf,buf2);
+  buf[TEXT_COLS]=0;
+  PlotScreenStr(buf,WHITE,0,0);
+
+  MemSet(buf,CH_SPACE,KEYNAME_BUF_SIZE);
+  buf[KEYNAME_BUF_SIZE]=0;
+  PlotScreenStr(buf,BLACK,80-KEYNAME_BUF_SIZE,0);
+  st=ScanCodeToKeyName(last_down_scan_code);
+  PlotScreenStr(st,LTCYAN,80-KEYNAME_BUF_SIZE,0);
+  Free(st);
+
+  SPrintF(buf,"Reads:%d Writes:%d compiled_lines=%d compiled_functions=%d",
+    disk_reads,disk_writes,
+    compiled_lines,compiled_functions);
+  buf[TEXT_COLS]=0;
+  PlotScreenStr(buf,WHITE,0,l--);
+
+  SPrintF(buf,"progress1=%016tX progress2=%016tX",
+    progress1,progress2);
+  buf[TEXT_COLS]=0;
+  PlotScreenStr(buf,WHITE,0,l--);
+
+  SPrintF(buf,"progress3=%016tX progress4=%016tX",
+    progress3,progress4);
+  buf[TEXT_COLS]=0;
+  PlotScreenStr(buf,WHITE,0,l--);
+
+  l--;
+  for (i=0;i<mp_cnt;i++) {
+    c=&mp_cpu_structs[i];
+    tss=c->cain_tss;
+    do {
+      if (l==0) break;
+      if (!ValidateTss(tss)) break;
+      j=tss->rsp-tss->stack_base;
+      if (tss->user_num)
+	SPrintF(buf2,"#%02td",tss->user_num);
+      else
+	StrCpy(buf2,"   ");
+      if (!(win_updates&63))
+	tss->mem_size=TaskAllocatedMem(tss);
+      SPrintF(buf,"%s %08tX %08tX %08tX %-16ts %04X:%04X %5.2fm",buf2,tss,j,
+	tss->mem_size,tss->task_descriptor,
+	tss->task_flags,tss->crt_flags,
+	tss->total_time/60.0/time_stamp_freq);
+      buf[TEXT_COLS]=0;
+      PlotScreenStr(buf,WHITE,0,l--);
+      tss=tss->next_tss;
+    } while (tss!=c->cain_tss);
+  }
+  PlotScreenStr("____Task____ FreeStk_ UsedMem_ __Description___ __Flags__ _Time_",WHITE,0,l--);
+  l--;
+  for (i=0;i<mp_cnt;i++) {
+    c=&mp_cpu_structs[i];
+    SPrintF(buf,"CPU%02d Swaps/s:%7d",i,
+      (last_swap_cnter[i]-
+      last_swap_cnter2[i])*time_stamp_freq/
+	last_refresh_delta_time);
+    if (win_calc_refresh_cnt!=last_calc_refresh_cnt) {
+      last_refresh_delta_time=refresh_delta_time;
+      last_swap_cnter2[i]=last_swap_cnter[i];
+      last_swap_cnter[i]=c->swap_cnter;
+    }
+    buf[TEXT_COLS]=0;
+    PlotScreenStr(buf,WHITE,0,l--);
+  }
+  last_calc_refresh_cnt=win_calc_refresh_cnt;
+  GrDel(base);
+}
+
+ext[EXT_WALLPAPER]=&WallPaper;
+#help_index ""

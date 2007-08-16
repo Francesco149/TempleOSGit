@@ -1,0 +1,64 @@
+When you turn-on (better term is "power-up"!) a computer or do a hardware 
+reset, it starts in the BIOS.  Sometimes, you must change the BIOS boot order 
+to boot stuff.
+
+The BIOS loads a boot sector from CD-ROM or hard disk or floppy or whatever.  
+The boot sector runs in 16-bit 80x86 mode and often loads-in a second file 
+that's bigger if it can't be done by just one sector.  It's a safe bet that 
+boot sectors are hand-coded assembly language  Most boot sectors use the BIOS 
+to load-in the rest, but I gave-up trying to get that to work and my boot 
+sectors do direct access to hard-drive or CD-ROM to load-in subsequent 
+modules.
+
+Not only do boot sectors have a size limit, 512 bytes or 2048 bytes, the
+files 
+they load have to fit within 640K because they run in 16-bit mode.  This
+means 
+they usually can't just load the whole operating system and start it
+running.  
+The operating system must load the rest of itself.  My OSMain module is what 
+the boot sectors load and I try to put a minimum in it so it will always fit 
+in 640K.  It switches to 32-bit mode, then 64-bit allowing access to more 
+memory, and loads in the rest.
+
+All the boot related stuff for LoseThos is in the /LT/Utils/Boot directory.
+
+[::/LT/Utils/Boot/BootCD.SPZ] BootCD.SPZ
+[::/LT/Utils/Boot/BootFD.SPZ] BootFD.SPZ
+[::/LT/Utils/Boot/BootMHD.SPZ] BootMHD.SPZ
+[::/LT/Utils/Boot/BootMHD2.SPZ] BootMHD2.SPZ
+[::/LT/Utils/Boot/BootHD.SPZ] BootHD.SPZ
+
+BootCD is the CD-ROM boot sector.  If you are curious on the layout of
+ISO9660 
+CD-ROMs, see [::/LT/Adam/DiskCDDVD.APZ] DiskCDDVD.APZ.  To make a custom
+bootable CD-ROM, look here 
+[::/LT/Doc/FileManager.MUZ,BurnProdu] Bootable CD.
+
+BootMHD is the master boot record for a hard drive.  This goes on block
+zero.  
+It loads-in BootMHD2.  It displays a menu and will boot to a partition.  Each 
+partition has it's own partition boot record.  BootHD is the boot record for
+a 
+LoseThos partition.
+
+Boot record code doesn't usually access directories because that would make 
+them too big and would make them depend on a file system layout.  They need 
+raw block addresses to load other stuff.  To update with a new LoseThos
+kernel 
+(OSMain), you must create a binary file and modify the boot loader so it
+knows 
+the blocks to load.  Therefore, you usually recompile the kernel and update 
+the boot sector at the same time.  [C:/LT/Opt/Boot/InsBoot.APZ,185]
+InstallBoot() does this.
+
+With LoseThos , the OSMain module loads the compiler module so it can process 
+start-up scripts and work with source code from then, on.  
+[::/LT/OSMain/AdamK.APZ] ::/LT/OSMain/AdamK.APZ is the starting start-up
+script.  It processes 
+(compiles into memory) the stuff in the /LT/Adam directory and ends by #includ
+eing the [HOME/Adam3.APZ] HOME/Adam3.APZ file.
+
+It is possible to reboot without doing a hardware reset.  This is faster when 
+working on OSMain or your start-up scripts.  See [BootLT] BootLT().
+

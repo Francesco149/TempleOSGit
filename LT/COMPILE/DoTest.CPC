@@ -1,2 +1,0 @@
-CompileFile("Test.CPZ");
-Load("Test");

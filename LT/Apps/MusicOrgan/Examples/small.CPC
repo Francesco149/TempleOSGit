@@ -1,0 +1,27 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  try {
+  while (!ScanKey) {
+	Play("qR3sDEDE2eGR3etGGAqEetDGBsA2G3A2GqR",
+		" \0What \0 \0seem \0 \0large, \0 \0for \0 \0 \0God \0is \0quite \0small.\r\n\0 \0 \0 \0 \0 \0");
+	Play("R3sDEDE2eGR3etGGAqEetDGBsA2G3A2GqR",
+		" \0Hea\0ven\0ly \0 \0host \0 \0waits \0 \0 \0 \0at \0His \0call.\r\n\0 \0 \0 \0 \0 \0");
+	Play("3EsFCFCeG2G3qDCetBCG2sG3C2G3CqG",
+		"So, \0do \0 \0what's \0 \0in \0your \0pow\0er.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0");
+	Play("EsFCFCeG2G3qDCetBCG2sG3C2G3CqG",
+		" \0Then, \0 \0call \0 \0in \0your \0ho\0ur.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0");
+  }
+  } catch
+    Fs->catch_except=TRUE;
+  Sound(0);
+}
+
+Song;

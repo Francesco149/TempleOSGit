@@ -1,0 +1,105 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x000001BF
+#define __BIN_1 "\x02\x00\x00\x00\x04\x08\x00\x00\x00\x02\x00\x00\x00\x05\x00\x00\x00\x0B\x00\x00\x00\x02\x00\x00\x00\x09\x00\x00\x00\x06\x00\x00\x00\x05\x00\x00\x00\x08\x00\x00\x00\x06\x00\x00\x00\x0B\x00\x00\x00\x0F\x00\x00\x00\x05\x00\x00\x00\x0B\x00\x00\x00\x0F\x00\x00\x00\x12\x00\x00\x00\x0F\x00\x00\x00\x05\x00\x00\x00\x12\x00\x00\x00\x0F\x00\x00\x00\x18\x00\x00\x00\x0B\x00\x00\x00\x05\x00\x00\x00\x18\x00\x00\x00\x0B\x00\x00\x00\x19\x00\x00\x00\x05\x00\x00\x00\x05\x00\x00\x00\x19\x00\x00\x00\x05\x00\x00\x00\x16\x00\x00\x00\x01\x00\x00\x00\x05\x00\x00\x00\x16\x00\x00\x00\x00\x00\x00\x00\x11\x00\x00\x00\x03\x00\x00\x00\x05\x00\x00\x00\x11\x00\x00\x00\x03\x00\x00\x00\x0D\x00\x00\x00\x01\x00\x00\x00\x05\x00\x00\x00\x0E\x00\x00\x00\x0C\x00\x00\x00\x0B\x00\x00\x00\x05\x00\x00\x00\x05\x00\x00\x00\x0F\x00\x00\x00\x0B\x00\x00\x00\x16\x00\x00\x00\x02\x00\x00\x00\x05\x00\x00\x00\x11\x00\x00\x00\x0C\x00\x00\x00\x17\x00\x00\x00\x07\x00\x00\x00\x05\x00\x00\x00\x0E\x00\x00\x00\x05\x00\x00\x00\x0D\x00\x00\x00\x02\x00\x00\x00\x05\x00\x00\x00\x0B\x00\x00\x00\x0B\x00\x00\x00\x09\x00\x00\x00\x05\x00\x00\x00\x05\x00\x00\x00\x0C\x00\x00\x00\x0D\x00\x00\x00\x15\x00\x00\x00\x0A\x00\x00\x00\x05\x00\x00\x00\x0F\x00\x00\x00\x07\x00\x00\x00\x0F\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00\x0C\x05\x00\x00\x00\x11\x00\x00\x00\x09\x00\x00\x00\x17\x00\x00\x00\x05\x00\x00\x00\x05\x00\x00\x00\x12\x00\x00\x00\x05\x00\x00\x00\x15\x00\x00\x00\x01\x00\x00\x00\x05\x00\x00\x00\x12\x00\x00\x00\x0C\x00\x00\x00\x17\x00\x00\x00\x09\x00\x00\x00\x02\x00\x00\x00\x02\x05\x00\x00\x00\x0F\x00\x00\x00\x00\x00\x00\x00\x11\x00\x00\x00\xFB\xFF\xFF\xFF\x05\x00\x00\x00\x11\x00\x00\x00\xFB\xFF\xFF\xFF\x16\x00\x00\x00\xFA\xFF\xFF\xFF\x05\x00\x00\x00\x10\x00\x00\x00\xFF\xFF\xFF\xFF\x10\x00\x00\x00\xFC\xFF\xFF\xFF\x00\x00\x00\x00"
+
+
+
+
+/* <1> <1> (image) */
+
+
+
+
+
+#define NUM_APPLES 128
+
+I8 x[NUM_APPLES],y[NUM_APPLES],
+   cur_apple,cur_sub_element,cur_dist,
+   cur_x=0,cur_y=0;
+
+I1 buf[128];
+
+void DrawIt(TssStruct *tss)
+{
+  I8 i,best_dist=MAX_I8,best_apple=0,best_sub_element=0;
+  GrBitMap *base=GrAlias(grbase2,tss);
+ 
+  ClearWinText(tss);
+
+  base->flags|=BMF_LOCATE_NEAREST;
+  base->cur_x=cur_x;
+  base->cur_y=cur_y;
+  base->cur_z=0;
+ 
+  for (i=0;i<NUM_APPLES;i++) {
+    base->nearest_sub_grelem=0;
+    base->nearest_dist=MAX_I8;
+    GrElemsPlot(base,x[i],y[i],0,__BIN_1);
+    if (base->nearest_dist<=best_dist) {
+      //distance to nearest pixel, squared
+      //[C:/LT/OSMain/Adam1b.HPZ,235] Sqrt() is expensive so we work with distance squared.
+      best_dist=base->nearest_dist;
+      best_apple=i;
+
+      //Sub elements are the individual lines or whatever of the GrElem.
+      best_sub_element=base->nearest_sub_grelem;
+    }
+  }
+//Note: window manager does not get preempted and
+//this code runs in the window manger task.
+
+  cur_apple=best_apple;
+  cur_dist=best_dist;
+  cur_sub_element=best_sub_element;
+  base->color=WHITE;
+  GrBox(base,5,5,StrLen(buf)*FONT_WIDTH,FONT_HEIGHT);
+  base->color=BLACK;
+  GrText(base,5,5,buf);
+}
+
+
+void DoIt()
+{
+  I8 i,cmd,p1,p2,best_i=0,old_x,old_y;
+  void *old_update=Fs->update_win;
+  BoolU4 old_ip_double=Bts(&Fs->crt_flags,CRTf_NO_DOUBLE_CLICK);
+  BoolU4 old_inhibit=ip_inhibit_win_operations;
+  ip_inhibit_win_operations=TRUE;
+  for (i=0;i<NUM_APPLES;i++) {
+    x[i]=RandU2%GR_WIDTH;
+    y[i]=RandU2%GR_HEIGHT;
+  }
+  *buf=0;
+  Fs->update_win=&DrawIt;
+  do {
+    cmd=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN);
+
+    //Use screen coordinates, not window (p1,p2)
+    //[C:/LT/OSMain/OSGlbls.CPZ,72] ipx and [C:/LT/OSMain/OSGlbls.CPZ,72] ipy are global variables updated
+    //updated by the window manager to hold the 
+    //screen coordinates of the input pointer (mouse or joystick).
+    cur_x=ipx; cur_y=ipy;
+
+    if (cmd==MSG_IP_L_DOWN) {
+      //Wait for window manager to call DrawIt
+      WinSync;
+      best_i=cur_apple;
+      old_x=x[best_i];
+      old_y=y[best_i];
+      SPrintF(buf,"Sub Elem #%d Dist Squared:%d",cur_sub_element,cur_dist);
+      do {
+	cmd=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_MOVE|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN);
+	if (cmd!=MSG_KEY_DOWN) {
+	  x[best_i]=ipx-cur_x+old_x;
+	  y[best_i]=ipy-cur_y+old_y;
+	}
+      } while (cmd!=MSG_KEY_DOWN && cmd!=MSG_IP_L_UP && cmd!=MSG_IP_R_DOWN);
+    }
+  } while (cmd!=MSG_KEY_DOWN && cmd!=MSG_IP_R_DOWN);
+  Fs->update_win=old_update;
+  AssignBit(&Fs->crt_flags,CRTf_NO_DOUBLE_CLICK,old_ip_double);
+  ip_inhibit_win_operations=old_inhibit;
+}
+
+DoIt;
+

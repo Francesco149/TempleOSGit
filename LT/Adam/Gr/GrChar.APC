@@ -1,0 +1,75 @@
+#help_index "Graphics/Char"
+public void PlotScreenStr(I1 *s,U8 attr,I8 x,I8 y)
+{
+  U1 ch;
+  attr<<=8;
+  while (ch=*s++) {
+    PlotScreenChar(ch+attr,x,y);
+    x++;
+  }
+}
+
+public void PlotWinStr(TssStruct *tss,I1 *s,U8 attr,I8 x,I8 y)
+{
+  U1 ch;
+  attr<<=8;
+  while (ch=*s++) {
+    PlotWinChar(tss,ch+attr,x,y);
+    x++;
+  }
+}
+
+public void PlotBorderStr(TssStruct *tss,I1 *s,U8 attr,I8 x,I8 y)
+{
+  U1 ch;
+  attr<<=8;
+  while (ch=*s++) {
+    PlotBorderChar(tss,ch+attr,x,y);
+    x++;
+  }
+}
+
+public void DrawBorder(TssStruct *tss,BoolU4 solid,I8 l,I8 r,I8 t,I8 b,U8 attr,BoolU4 clip_to_win)
+{
+  I8 i;
+  solid+=attr<<8;
+  if (clip_to_win) {
+    PlotWinChar(tss,132+solid,l-1,t-1);
+    PlotWinChar(tss,134+solid,r+1,t-1);
+    PlotWinChar(tss,136+solid,l-1,b+1);
+    PlotWinChar(tss,138+solid,r+1,b+1);
+    for (i=l;i<=r;i++) {
+      PlotWinChar(tss,130+solid,i,t-1);
+      PlotWinChar(tss,130+solid,i,b+1);
+    }
+    for (i=t;i<=b;i++) {
+      PlotWinChar(tss,128+solid,l-1,i);
+      PlotWinChar(tss,128+solid,r+1,i);
+    }
+  } else {
+    PlotScreenChar(132+solid,l-1,t-1);
+    PlotScreenChar(134+solid,r+1,t-1);
+    PlotScreenChar(136+solid,l-1,b+1);
+    PlotScreenChar(138+solid,r+1,b+1);
+    for (i=l;i<=r;i++) {
+      PlotScreenChar(130+solid,i,t-1);
+      PlotScreenChar(130+solid,i,b+1);
+    }
+    for (i=t;i<=b;i++) {
+      PlotScreenChar(128+solid,l-1,i);
+      PlotScreenChar(128+solid,r+1,i);
+    }
+  }
+}
+
+void DrawTaskBorder(TssStruct *tss)
+{
+  DrawBorder(tss,tss==sys_cur_focus_task,
+    tss->win_left,tss->win_right,
+    tss->win_top,tss->win_bottom,
+    tss->border_attribute,FALSE);
+}
+
+
+
+#help_index "Graphics"

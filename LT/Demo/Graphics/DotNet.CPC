@@ -1,0 +1,13 @@
+void DotNet()
+{
+  I8 i;
+  GrBitMap *base=GrAlias(Gs->grbase,Fs);
+  PrintF("$CL$");  //Clear text
+  base->color=RED^WHITE; //Printed on white background
+  for (i=0;i<600;i+=20)
+    GrLine(base,i,0,0,600-i,3);
+  GrDel(base);
+}
+
+DotNet;  //Run when #included
+//Type "GrClear;" to get rid of it

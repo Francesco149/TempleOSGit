@@ -1,0 +1,7 @@
+Linked Text Files are a [Circular Queue] Circular Queue of document commands
+and graphics.  
+This is the data structure for LoseThos documents. See
+[C:/LT/OSMain/Adam1a.HPZ,1144] LtfEntry.
+
+There is one document format for the editor/ viewer/ browser/ cmd line.
+

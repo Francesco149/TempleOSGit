@@ -1,0 +1,55 @@
+I didn't want to use virtual memory mode, but had to for 64-bit mode to
+work.  
+For all intents and purposes, it's as though virtual memory (paging) is not 
+used except you can mark pages as uncached or write-through for multicore 
+programming.  LoseThos maps pages identically to physical memory.  All cores 
+use the same page table entries.  Page table entries have a resolution of 2 
+Meg.  Currently, 128 Gig total is mapped, though it does not swap or even 
+check if it exists.
+
+LoseThos uses 32-bit signed relative branch instructions in code.  That means 
+if one part of your code calls a function, the function must be located
+within 
+2Gig distance.  Therefore, all code must reside within the lowest 2Gig memory 
+addresses.  The default heap, I call the "code heap" and the
+[C:/LT/OSMain/Memory.CPZ,925] MAlloc() function 
+allocates from within this range.
+
+You can create new heap by first allocating memory with
+[C:/LT/OSMain/Memory.CPZ,432] AllocUncachedMemBlks() 
+or [AllocNonTskMemBlks] AllocNonTskMemBlks(), then calling [InitHeapCtrl]
+InitHeapCtrl() and using [MAllocHC] MAllocHC() and 
+[FreeHC] FreeHC().  If you want to access memory above 0x7FFFFFFF with a
+heap, pass a 
+pointer and size to [InitHeapCtrl] InitHeapCtrl().  There is an uncached 2
+Meg heap useful 
+for multicore with heap control [mp_heap] mp_heap. 
+
+See [::/LT/Doc/MemInfo.TXZ] Mem Usage
+
+                                  Memory Map
+
+0x40000-~0x70000
+  OSMain kernel module, placed here by the boot-loader.
+
+~0x9C000-0x9FFFF
+  Boot block relocated here.  It loads the OSMain module.
+
+0xA0000-0xBFFFF
+  VGA graphics memory, marked as write-through cache.
+
+0x100000-~0x183000
+  Page tables
+
+~0x183000-0x7FFFFFFF
+  Code Heap memory.
+
+0xF0000000-0xFFFFFFFF
+  Various hardware devices have addresses here.
+
+0x80000000-~0xEFFFFFFF
+0x100000000-~0x1FFFFFFFFF
+  Unmanaged memory (pass a number to [InitHeapCtrl] InitHeapCtrl to manage it
+  or do what you 
+like.)
+

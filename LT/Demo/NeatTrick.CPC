@@ -1,0 +1,21 @@
+void DrawIt(TssStruct *tss)
+{
+  ClearWinText(tss);
+  if (win_updates&1)
+    PlotWinStr(tss,"test",RED+WHITE*16,10,3);
+  else
+    PlotWinStr(tss,"test",PURPLE+WHITE*16,10,3);
+  PlotWinStr(tss,"test",RED+WHITE*16,10,2);
+  PlotWinStr(tss,"test",PURPLE+WHITE*16,10,4);
+}
+
+void DoIt()
+{
+  void *old_update=Fs->update_win;
+  Fs->update_win=&DrawIt;
+  GetChar;
+  Fs->update_win=old_update;
+}
+
+DoIt;
+

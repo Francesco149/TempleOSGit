@@ -1,0 +1,83 @@
+                                 MEMORY USAGE
+
+
+Page Tables:
+0x1000*(PML1+PML2+PML3+PML4)
+-----------
+0x83000
+
+Heap Size:
+*SYS_MEMBLKS-0x100000-page_tables
+-----------
+sys_heap_limit+1-sys_heap_base
+
+mp_heap:
+-----------
+0x00200000
+
+Cain Heap CPU #1:
+-----------
+0x00200000*(mp_cnt-1)
+
+
+
+
+
+MAlloc Blk Allocations:
+
+Allocations below 0x200, first one:
+0x1E00+size_rounded_up_to_page
+-----------
+0x2000
+
+Allocations below 0x400, first one:
+0x1E00+size_rounded_up_to_page
+-----------
+0x2200
+
+Allocations below 0x20000:
+size_rounded_up_to_page+0x200
+
+
+Allocations above 0x20000:
+(size-0x400)rounded_up_to_power_2+0x400
+
+
+
+
+Task Usage:
+
+Stack:
+0x20000+0x400
+
+Hash Table:
+0x08000+0x200
+
+First Small Chunk:
+0x2000
+
+
+Adam Task:
+
+Default RAM Drive B (when used):
+0x20000*0x200+0x400
+-----------
+0x04000400
+
+grbase2:
+vga_image:
+gr_merge_base:
+Gs->grbase*mp_cnt:
+(mp_cnt+3)*(0x40000+0x400)
+-----------
+0x00101000
+
+Disk Cache:
+0x8000000+0x400
+-----------
+0x08000400
+
+WordStat:
+-----------
+big--holds a sparse matrix containing statistics on which words follow which 
+other words with what frequency.

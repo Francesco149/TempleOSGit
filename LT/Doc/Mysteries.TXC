@@ -1,0 +1,88 @@
+This is to clearify how several mysterious things happen in this operating 
+system.
+
+1) There are symbol(hash) tables maintained by each task.  When a symbol is 
+not found, the parent task's symbol table is checked.  All process chain back 
+to the adam process.
+
+2) Binary executable files have export symbols which are loaded into the 
+symbol tables.  The operating system OSMain has such an export table.  In 
+addition, some map files are processed to provide more information on symbols 
+-- source file links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,669]
+Man()/WORDSTAT feature can find source 
+lines.
+
+3) The word "public" does very little except allow the
+[::/LT/Doc/HelpIndex.TXZ] help_index and [C:/LT/Adam/Hash2a.APZ,88] HashRep(
+) program varients to exclude meaningless symbols.  If you wish a full report 
+of public and nonpublic symbols Click Here
+`LtfMax(1000000);HAllRep;View;`
+.
+
+4) When compilation takes place "dynamically", the structures used by the 
+compiler stick around.  Data on classes can be accessed.  See
+[C:/LT/Adam/Dbg2a.APZ,137] ClassRep().
+
+5) When the joystick is calibrated, a file is created.  To recalibrate the 
+joystick, you must del the file "HOME/JoyStick.DTZ".
+
+6) Filenames ending in 'Z' are automatically compressed and uncompressed when 
+writing to disk.  File size in directory listing is the compressed size.  You 
+can view uncompressed size with [C:/LT/OSMain/Dsk/Dsk1b.CPZ,238]
+Dir("*",TRUE);  See [::/LT/Doc/LTZ.TXZ] ::/LT/Doc/LTZ.TXZ for 
+uncompressing from WINDOWS.
+
+7) Some memory objects are allocated when needed and will decrease the 
+available memory displayed.  A task keeps memory objects smaller than a
+couple 
+blocks in it's own separate heap when freed and these are not counted in the 
+available system free memory, though they are free.  They get returned to the 
+system when the task is killed.  To get a sense of this, compile the
+operating 
+system and see the amount of memory used.  Then, compile it again and far
+less 
+will be allocated.  This is because it is reusing the small chunks.
+
+8) The cursor location is stored as an ASCII 5 in files.  ASCII 31 is used
+for 
+SHIFT-SPACE, a character which does not get converted to tabs by
+[C:/LT/Opt/S2T.APZ,62] S2T().
+
+9) Binary data is stored beyond the terminating NULL in text files.  Map
+files 
+store debug source lines and other files store pictures.
+
+10) Pictures are stored as line coordinates, instead of bit maps.  If you
+have 
+a drawing with, like 10 lines, 40 numbers are stored, compared to, like 
+200x200 bytes, for a bitmap.  Therefore, graphics don't take much room.  If 
+the number of lines is large, however, it'd be more efficient to store a 
+bitmap, but this is not yet fully supported.
+
+11) If you change code in the /LT/Adam, /LT/Utils or your HOME directory, you 
+don't need to recompile, you just need to reboot because those directories
+get 
+recompiled when you boot.  It uses dynamic compilation.  There is no ".BIN" 
+file for dynamic compilation.
+
+12) If you find crappy code, it might be from before the compiler had
+features 
+like the type cast "><" statement.  Or, it might have been  something done 
+hurriedly just to get results.  Some things I dive into without planning,
+like 
+the dollar sign commands.  After, the idea matures, I cleaned-it-up.
+
+13) The hits on hash entries reflect times they have been searched for and 
+found.  The [FindExtern] FindExtern() function is used to search the hash
+tables for 
+functions which weren't in existence yet.
+
+14) If a file is not found, the parent directories are searched for a file of 
+the same name.
+
+15) LoseThos partitions will appear as FAT32 to other operating systems, but 
+will not work.  Do not access them from other operating systems.  This is to 
+fool my bootloader.
+
+16) The mouse is polled, which is ineffecient and you will see CPU rise when 
+you move the mouse if you plot CPU usage.

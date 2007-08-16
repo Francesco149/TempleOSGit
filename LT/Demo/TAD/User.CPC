@@ -1,0 +1,102 @@
+#help_index "Utils"
+UseConsoleLtf("::/LT/Accts/TAD/User.MUZ");
+U8 F(I1 *pattern,I1 *flags=NULL)
+{
+  return Grep(pattern,"/LT/"TEXT_FILE_MASK,flags);
+}
+
+U8 R(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+l-i")
+{
+  return Grep(pattern,"/LT/"TEXT_FILE_MASK,flags,replace_text);
+}
+
+U8 FD(I1 *pattern,I1 *flags=NULL)
+{
+  return Grep(pattern,TEXT_FILE_MASK,flags);
+}
+
+U8 RD(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+l-i")
+{
+  return Grep(pattern,TEXT_FILE_MASK,flags,replace_text);
+}
+
+U8 FC(I1 *pattern,I1 *flags=NULL)
+{
+  return Grep(pattern,"/LT/"C_FILE_MASK,flags);
+}
+
+U8 RC(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+l-i")
+{
+  return Grep(pattern,"/LT/"C_FILE_MASK,flags,replace_text);
+}
+
+U8 FCD(I1 *pattern,I1 *flags=NULL)
+{
+  return Grep(pattern,C_FILE_MASK,flags);
+}
+
+U8 RCD(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+l-i")
+{
+  return Grep(pattern,C_FILE_MASK,flags,replace_text);
+}
+
+U8 FA(I1 *pattern,I1 *flags=NULL)
+{
+  return Grep(pattern,"/LT/"ASM_FILE_MASK,flags);
+}
+
+U8 RA(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+l-i")
+{
+  return Grep(pattern,"/LT/"ASM_FILE_MASK,flags,replace_text);
+}
+
+U8 FAD(I1 *pattern,I1 *flags=NULL)
+{
+  return Grep(pattern,ASM_FILE_MASK,flags);
+}
+
+U8 RAD(I1 *pattern,I1 *replace_text=NULL,I1 *flags="+l-i")
+{
+  return Grep(pattern,ASM_FILE_MASK,flags,replace_text);
+}
+
+U1 *P(U8 cluster,BoolU4 write=FALSE)
+{
+  return Patch(cluster,write);
+}
+
+void M(I1 *src1,I1 *src2,I1 *flags=NULL)
+{
+  MergeChk(src1,src2,flags);
+}
+
+void T()
+{
+  Auto("7\r");
+  AddTADHD;
+  Drive('E');
+}
+
+SetTypeMatic(0);
+SetDriveTextAttr('B',BLUE<<4|YELLOW);
+SetDriveTextAttr('C',LTRED<<4|BLACK);
+SetDriveTextAttr('D',WHITE<<4|BLUE);
+SetDriveTextAttr('E',WHITE<<4|RED);
+SetDriveTextAttr('F',WHITE<<4|LTPURPLE);
+SetDriveTextAttr('T',LTGRAY<<4|BLUE);
+SetDriveTextAttr('S',LTGRAY<<4|PURPLE);
+SetDriveTextAttr('Z',BLUE<<4|WHITE);
+PutSysText("ST_USER_STARTUP");
+Type("::/LT/Doc/Help.TXZ");
+
+Bts(&Fs->crt_flags,CRTf_SHOW);
+Preempt(ON);
+Fs->scroll_speed=10;
+Dir;
+PrintF("Processors:%d\r\n",mp_cnt);
+
+if (compiler5_installed) {
+  coutln "Installing Compiler5";
+  ExecuteFile("/LT/Compiler5/Interns.HPZ");
+}
+#help_index ""

@@ -1,0 +1,175 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x000000D9
+#define __BIN_1 "\x02\x00\x00\x00\x01\x08\x00\x00\x00\x02\x00\x00\x00\x05\x00\x00\x00\x1E\x00\x00\x00\x1E\x00\x00\x00\x21\x00\x00\x00\x17\x00\x00\x00\x05\x00\x00\x00\x21\x00\x00\x00\x17\x00\x00\x00\x22\x00\x00\x00\x0E\x00\x00\x00\x05\x00\x00\x00\x22\x00\x00\x00\x0E\x00\x00\x00\x26\x00\x00\x00\x19\x00\x00\x00\x05\x00\x00\x00\x26\x00\x00\x00\x19\x00\x00\x00\x26\x00\x00\x00\x1E\x00\x00\x00\x05\x00\x00\x00\x22\x00\x00\x00\x0D\x00\x00\x00\x26\x00\x00\x00\x00\x00\x00\x00\x05\x00\x00\x00\x1E\x00\x00\x00\x06\x00\x00\x00\x2D\x00\x00\x00\x01\x00\x00\x00\x05\x00\x00\x00\x2D\x00\x00\x00\x01\x00\x00\x00\x27\x00\x00\x00\x0A\x00\x00\x00\x05\x00\x00\x00\x1E\x00\x00\x00\x04\x00\x00\x00\x20\x00\x00\x00\x0B\x00\x00\x00\x05\x00\x00\x00\x23\x00\x00\x00\x00\x00\x00\x00\x29\x00\x00\x00\xF8\xFF\xFF\xFF\x05\x00\x00\x00\x24\x00\x00\x00\xFA\xFF\xFF\xFF\x22\x00\x00\x00\xFE\xFF\xFF\xFF\x00\x00\x00\x00"
+
+U8 runner_x=0,runner_y=0;
+
+
+/* <runner1> <1> (image) */
+
+
+
+
+void DrawIt(TssStruct *tss)
+{
+  GrBitMap *base=GrAlias(grbase2,tss);	//not a baseball base
+
+  ClearWinText(tss);
+  PlotWinStr(tss,"Press '1','2','3', or '4'",BLACK+WHITE<<4,0,0);
+  base->bkcolor=BLACK;
+  if (runner_x)
+    GrElemsPlot(base,runner_x,runner_y,0,
+      __BIN_1);
+
+  GrDel(base);
+}
+
+
+void FieldTsk()
+{
+  void *old_update=Fs->update_win;
+  I8 ch,i;
+  Fs->update_win=&DrawIt;
+  WinMax;
+  Fs->win_bottom=TEXT_ROWS/2-2;
+
+  do {
+    ch=GetChar(NULL,FALSE);
+    switch (ch) {
+      case '1':
+	for (i=0;i<40;i++) {
+	  runner_x=40+i;
+	  runner_y=80-i;
+	  Sleep(10);
+	}
+	break;
+      case '2':
+	for (i=0;i<40;i++) {
+	  runner_x=40+i;
+	  runner_y=80-i;
+	  Sleep(10);
+	}
+	for (i=0;i<40;i++) {
+	  runner_x=80-i;
+	  runner_y=40-i;
+	  Sleep(10);
+	}
+	break;
+      case '3':
+	for (i=0;i<40;i++) {
+	  runner_x=40+i;
+	  runner_y=80-i;
+	  Sleep(10);
+	}
+	for (i=0;i<40;i++) {
+	  runner_x=80-i;
+	  runner_y=40-i;
+	  Sleep(10);
+	}
+	for (i=0;i<40;i++) {
+	  runner_x=40-i;
+	  runner_y=i;
+	  Sleep(10);
+	}
+	break;
+      case '4':
+	for (i=0;i<40;i++) {
+	  runner_x=40+i;
+	  runner_y=80-i;
+	  Sleep(10);
+	}
+	for (i=0;i<40;i++) {
+	  runner_x=80-i;
+	  runner_y=40-i;
+	  Sleep(10);
+	}
+	for (i=0;i<40;i++) {
+	  runner_x=40-i;
+	  runner_y=i;
+	  Sleep(10);
+	}
+	for (i=0;i<40;i++) {
+	  runner_x=i;
+	  runner_y=40+i;
+	  Sleep(10);
+	}
+	break;
+    }
+  } while (ch!=CH_CTRLQ && ch!=CH_ESC);
+  Fs->update_win=old_update;
+}
+
+void BushLeague()
+{
+  TssStruct *field_tss;
+  I1 ch,*st;
+  I8 i;
+
+/*
+This spawns a task so that we can do
+graphics while still using the command
+line.  Otherwise, we'd have to put
+text on the screen by hand.
+
+We include the Fs parameter to tell it that
+the current task is the parent so that the
+child will inherit the symbols of the parent.
+In this case, we want it to have knowledge
+of the Field() function.
+
+*/
+  field_tss=Spawn(&UserCmdLine,"Field",Fs);
+
+  WinMax;
+  Fs->win_top=TEXT_ROWS/2+1;
+
+  XTalk(field_tss,"FieldTsk;\r");
+
+  WaitTskIdle(field_tss);
+
+/*
+Inside here, you're supposed to make the game.
+It can interact with the user using the command line,
+which is simple to do.	Then, it can XTalk to the
+graphic task what it's supposed to do.
+
+Some useful routines for interacting are [C:/LT/Adam/Ltf/LtfMain.APZ,468] PmtStr(),
+[C:/LT/OSMain/KbdMouse/Message.CPZ,181] GetChar(), [PmtI8] PmtI8().
+
+
+You can test the graphic task directly, but normally
+it's supposed to be driven by this window.
+*/
+  PutS("$CL$");  //clear text
+  do {
+    WinToTop;
+    st=PmtStr("Single, Double, Triple or Home Run?\r\n"
+	      "'Exit' to quit.\r\n"
+	      "You can abbreviate.  : ");
+    i=MatchListEntry(st,"exit\0single\0double\0triple\0home run\0",MLE_IGNORE_CASE);
+    Free(st);
+    switch (i) {
+      case 0:
+	break;
+      case 1:
+	XTalk(field_tss,"1");
+	break;
+      case 2:
+	XTalk(field_tss,"2");
+	break;
+      case 3:
+	XTalk(field_tss,"3");
+	break;
+      case 4:
+	XTalk(field_tss,"4");
+	break;
+      default:
+	coutln "Invalid";
+    }
+  } while (i!=0);
+  Kill(field_tss);
+  WinMax;
+  coutln "Game Over";
+}
+
+BushLeague;

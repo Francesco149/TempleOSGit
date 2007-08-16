@@ -1,0 +1,27 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  try {
+  while (!ScanKey) {
+	Play("3qAetFBFqBFCetAAFeEDC2G",
+		" \0To \0 \0see \0 \0as \0 \0 \0 \0a \0chi\0ld \0sees...\r\n\0 \0");
+	Play("3qAetFBFqBFCetAAFeEDC2G",
+		" \0To \0 \0see \0 \0as \0 \0 \0 \0a \0chi\0ld \0sees...\r\n\0 \0");
+	Play("3AGetEGGeD2G3etGC2G3sDEDEAAAAqFF",
+		" \0What \0has \0 \0hap\0 \0 \0pened \0 \0 \0to \0 \0in\0 \0no\0 \0 \0 \0cence?\r\n\0 \0");
+	Play("eAGetEGGeD2G3etGC2G3sDEDEAAAAqFF",
+		" \0What \0has \0 \0hap\0 \0 \0pened \0 \0 \0to \0 \0in\0 \0no\0 \0 \0 \0cence?\r\n\0 \0");
+  }
+  } catch
+    Fs->catch_except=TRUE;
+  Sound(0);
+}
+
+Song;

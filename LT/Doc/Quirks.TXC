@@ -1,0 +1,27 @@
+* You run a risk of problems if you do file operations on the same files 
+simultaneously because there is **no file sharing mechanism**.
+* Call [ChangeDisk] ChangeDisk() when you insert a new removable media.
+* You can only extern something once.  There is a varient called LTextern 
+which binds a C+ definition to a asm symbol.  This, too, can only be done 
+once.
+* switch/case statements allocate a single jump table--do not use with wide, 
+sparse ranges of case values.  Eventually, this might be fixed.
+* Don't use default str constant parameters on functions compiled in 
+[::/LT/Doc/OSGlossary.GLZ,Static Compiled Mode] Static Compiled Mode because
+there is a bug.
+* Don't do a goto out of a try{}.
+* Don't attempt to use Fs->ignore_except with CTRL-ALT-C.
+* A [C:/LT/OSMain/Dsk/Dsk1b.CPZ,41] Cd() cmd must be followed by two
+semicolons if a #include is after it.  
+This is because the precompiler processes the next instruction early.
+* The last semicolon on the cmd line is converted to a double semicolon 
+because the compiler looks ahead before doing a cmd.  This normally has no 
+negative effect, but when entering "if" statements with "else" clauses it 
+presents problems.
+* You cannot use $IB$,$IT$ or $IS$ at the command line or before the 
+[::/LT/Adam/Ltf/LtfEdit.APZ] ::/LT/Adam/Ltf/LtfEdit.APZ file has been
+included during start-up.
+* The assembler error messages are often off by a line and undefines are 
+cryptic.
+* You can do a class forward reference by using extern on the first 
+declaration, but you can only do pointer referrences to the class.

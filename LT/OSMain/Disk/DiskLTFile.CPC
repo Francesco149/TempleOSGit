@@ -1,0 +1,271 @@
+void FAllocFile(LTFile *f,U8 cnt,BoolU4 contiguous)
+{
+  LTPartition *fp=f->p;
+  LTFileAccess *fa=NewLTFileAccess(f->de.full_name);
+  f->de.cluster=AllocClusters(fp,0,(cnt+fp->spc-1)/fp->spc,contiguous,TRUE);
+  f->de.size=cnt<<BLK_SIZE_BITS;
+  f->de.expanded_size=f->de.size;
+  if (fa) {
+    NewLTDirEntry(fa->p,Fs->cur_dir,&f->de,TRUE);
+    DelLTFileAccess(fa);
+  }
+  f->flags&=~LTF_NEW_FILE;
+}
+
+U8 FSize(LTFile *f)
+{
+  if (f)
+    return f->de.size;
+  else
+    return 0;
+}
+
+void FSync(LTFile *f)
+{
+  if (f->flags & LTF_BUF_DIRTY) {
+    WClusters(f->p,f->cluster_buf,f->cluster,1,TRUE,TRUE);
+    f->flags&=~LTF_BUF_DIRTY;
+  }
+}
+
+
+LTFile *FOpen(I1 *filename,I1 *flags,U8 cnt=0)
+{  //allows flags "r","w","w+" and "c" (contiguous)
+  LTFile *f=AMAllocZ(sizeof(LTFile));
+  LTFileAccess *fa;
+  I1 *full_name,*full_name2;
+  BoolU4 contiguous=Occurrences(flags,'c');
+
+  f->cluster=INVALID_CLUSTER;
+  f->fblk_num=0;
+  if (cnt)
+    f->max_blk=cnt-1;
+  else
+    f->max_blk=INVALID_CLUSTER;
+  f->file_cluster_num=INVALID_CLUSTER;
+  full_name2=AbsoluteFileName(filename);
+  full_name=ANewStr(full_name2);
+  Free(full_name2);
+  f->p=DriveToPartition(*full_name);
+  if (f->p->type==PT_LT)
+    contiguous=TRUE;
+  if (contiguous) {
+    f->flags|=LTF_CONTIGUOUS;
+    if (f->p->type!=PT_LT) {
+      if (!(FileAttr(filename) & LT_ATTR_CONTIGUOUS))
+	throw(EXCEPT_FILE,60);
+    }
+  }
+  f->cluster_buf=AMAllocZ(f->p->spc<<BLK_SIZE_BITS);
+  if (Occurrences(flags,'w')) {
+    f->flags=f->flags|LTF_WRITE|LTF_NEEDS_WRITE;
+    if (Occurrences(flags,'+')) {
+      if (FindFile(full_name,&f->de,FALSE,TRUE)) {
+	f->de.full_name=full_name;
+	if (contiguous)
+	  f->max_blk=(FSize(f)+BLK_SIZE-1)>>BLK_SIZE_BITS-1;
+	return f;
+      }
+    } else
+      Del(full_name,FALSE);
+    f->de.full_name=full_name;
+    f->flags|=LTF_NEW_FILE;
+    fa=NewLTFileAccess(full_name);
+    if (fa) {
+      StrCpy(f->de.name,fa->mask);
+      DelLTFileAccess(fa);
+      if (cnt)
+	FAllocFile(f,cnt,contiguous);
+      if (!contiguous || cnt)
+	return f;
+    }
+  } else {
+    if (FindFile(full_name,&f->de,FALSE,TRUE)) {
+      f->de.full_name=full_name;
+      if (contiguous)
+	f->max_blk=(FSize(f)+BLK_SIZE-1)>>BLK_SIZE_BITS-1;
+      return f;
+    }
+  }
+  AFree(f->cluster_buf);
+  AFree(full_name);
+  AFree(f);
+  return NULL;
+}
+
+void FClose(LTFile *f)
+{
+  LTFileAccess *fa;
+  if (f) {
+    FSync(f);
+    if (f->flags & LTF_NEEDS_WRITE) {
+      fa=NewLTFileAccess(f->de.full_name);
+      if (fa) {
+	if (!(f->flags & LTF_USE_OLD_DATETIME))
+	  f->de.datetime=GetCurTimeLTDate;
+	if (f->flags & LTF_NEW_FILE)
+	  NewLTDirEntry(fa->p,Fs->cur_dir,&f->de,TRUE);
+	else
+	  NewLTDirEntry(fa->p,Fs->cur_dir,&f->de,FALSE);
+	DelLTFileAccess(fa);
+      } else
+	throw(EXCEPT_FILE,40);
+    }
+    AFree(f->cluster_buf);
+    AFree(f->de.full_name);
+    AFree(f);
+  }
+}
+
+U8 FSetCluster(LTFile *f,U8 c,U8 blk,BoolU4 read)
+{
+  if (f->cluster!=c) {
+    if (f->flags & LTF_BUF_DIRTY) {
+      WClusters(f->p,f->cluster_buf,f->cluster,1,TRUE,TRUE);
+      f->flags=f->flags & ~LTF_BUF_DIRTY;
+    }
+    f->cluster=c;
+    f->file_cluster_num=blk/f->p->spc;
+    if (read)
+      c=RClusters(f->p,f->cluster_buf,c,1,TRUE,TRUE);
+  }
+  return c;
+}
+
+BoolU8 FRBlks(LTFile *f,U1 *buf,U8 blk=LTFB_NEXT_BLK,U8 cnt=1)
+{
+  LTPartition *p=f->p;
+  U8 spc=p->spc,i,j,c=f->de.cluster;
+
+  if (!f || !p) return FALSE;
+  if (blk==LTFB_NEXT_BLK)
+    blk=f->fblk_num;
+  if (blk+cnt-1>f->max_blk)
+    return FALSE;
+  if (!cnt) return TRUE;
+
+  if (f->flags & LTF_CONTIGUOUS) {
+    RBlks(p,buf,ClusterBlk(p,c)+blk,cnt,TRUE);
+    blk+=cnt;
+  } else {
+    i=blk/spc;
+    if (i>=f->file_cluster_num) {
+      c=f->cluster;
+      i-=f->file_cluster_num;
+    }
+    if (i)
+      c=NextClusterNum(p,c,i,TRUE);
+
+    i=blk%spc;
+    if (i) {
+      c=FSetCluster(f,c,blk,TRUE);
+      j=(cnt<spc-i) ? cnt : spc-i;
+      MemCpy(buf,f->cluster_buf+i<<BLK_SIZE_BITS,j<<BLK_SIZE_BITS);
+      buf+=j<<BLK_SIZE_BITS;
+      cnt-=j;
+      blk+=j;
+    }
+    while (cnt>=spc) {
+      c=FSetCluster(f,c,blk,TRUE);
+      MemCpy(buf,f->cluster_buf,spc<<BLK_SIZE_BITS);
+      buf+=spc<<BLK_SIZE_BITS;
+      cnt-=spc;
+      blk+=spc;
+    }
+    if (cnt) {
+      c=FSetCluster(f,c,blk,TRUE);
+      MemCpy(buf,f->cluster_buf,cnt<<BLK_SIZE_BITS);
+      buf+=cnt<<BLK_SIZE_BITS;
+      blk+=cnt;
+    }
+  }
+  f->fblk_num=blk;
+  return TRUE;
+}
+
+BoolU8 FWBlks(LTFile *f,U1 *buf,U8 blk=LTFB_NEXT_BLK,U8 cnt=1)
+{
+  LTPartition *p=f->p;
+  U8 spc=p->spc,i,j,c=f->de.cluster,c1;
+
+  if (!f || !p) return FALSE;
+  if (blk==LTFB_NEXT_BLK)
+    blk=f->fblk_num;
+  if (blk+cnt-1>f->max_blk)
+    return FALSE;
+  if (!(f->flags & LTF_WRITE))
+    return FALSE;
+  if (!cnt) return TRUE;
+  if (f->flags & LTF_CONTIGUOUS) {
+    WBlks(p,buf,ClusterBlk(p,c)+blk,cnt,TRUE);
+    blk+=cnt;
+  } else {
+    if (!c) {
+      c=AllocClusters(p,0,1,FALSE,TRUE);
+      f->file_cluster_num=0;
+      f->cluster=c;
+      f->de.cluster=c;
+      f->flags|=LTF_NEEDS_WRITE|LTF_NEW_FILE;
+    }
+    i=blk/spc;
+    if (i>=f->file_cluster_num) {
+      c=f->cluster;
+      i-=f->file_cluster_num;
+    }
+    while (i) {
+      c1=c;
+      c=NextClusterNum(p,c1,1,TRUE);
+      if (c==INVALID_CLUSTER) {
+	c=AllocClusters(p,c1,i,FALSE,TRUE);
+	if (i>1)
+	  c=NextClusterNum(p,c,i-1,TRUE);
+	break;
+      } else
+	i--;
+    }
+
+    i=blk%spc;
+    if (i) {
+      FSetCluster(f,c,blk,TRUE);
+      j=(cnt<spc-i) ? cnt : spc-i;
+      MemCpy(f->cluster_buf+BLK_SIZE*i,buf,j<<BLK_SIZE_BITS);
+      f->flags|=LTF_BUF_DIRTY;
+      buf+=j<<BLK_SIZE_BITS;
+      cnt-=j;
+      blk+=j;
+      if (cnt) {
+	c1=c;
+	c=NextClusterNum(p,c1,1,TRUE);
+	if (c==INVALID_CLUSTER)
+	  c=AllocClusters(p,c1,1,FALSE,TRUE);
+      }
+    }
+    while (cnt>=spc) {
+      FSetCluster(f,c,blk,FALSE);
+      MemCpy(f->cluster_buf,buf,spc<<BLK_SIZE_BITS);
+      f->flags|=LTF_BUF_DIRTY;
+      buf+=spc<<BLK_SIZE_BITS;
+      cnt-=spc;
+      blk+=spc;
+      if (cnt) {
+	c1=c;
+	c=NextClusterNum(p,c1,1,TRUE);
+	if (c==INVALID_CLUSTER)
+	  c=AllocClusters(p,c1,1,FALSE,TRUE);
+      }
+    }
+    if (cnt) {
+      FSetCluster(f,c,blk,TRUE);
+      MemCpy(f->cluster_buf,buf,cnt<<BLK_SIZE_BITS);
+      f->flags|=LTF_BUF_DIRTY;
+      buf+=cnt<<BLK_SIZE_BITS;
+      blk+=cnt;
+    }
+    if (f->de.size<blk<<BLK_SIZE_BITS)
+      f->de.size=blk<<BLK_SIZE_BITS;
+    if (f->de.expanded_size<blk<<BLK_SIZE_BITS)
+      f->de.expanded_size=blk<<BLK_SIZE_BITS;
+  }
+  f->fblk_num=blk;
+  return TRUE;
+}

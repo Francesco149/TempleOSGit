@@ -1,0 +1,27 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  try {
+  while (!ScanKey) {
+	Play("3etDEDsEDEDeEDqEDsDGDGqGA",
+		"I'll \0 \0 \0be \0 \0 \0 \0there \0 \0by \0eight \0o'\0 \0 \0clock.\r\n\0 \0 \0");
+	Play("etDEDsEDEDeEDqEDsDGDGqGA",
+		"I'll \0 \0 \0be \0 \0 \0 \0there \0 \0by \0eight \0o'\0 \0 \0clock.\r\n\0 \0 \0");
+	Play("DeD2G3etECBsCDCDC2G3C2G3etCGCqFetAAG",
+		"You \0 \0 \0might \0 \0 \0 \0 \0 \0 \0show \0 \0 \0 \0by \0 \0 \0nine.\r\n\0 \0 \0 \0");
+	Play("qDeD2G3etECBsCDCDC2G3C2G3etCGCqFetAAG",
+		"You \0 \0 \0thereby \0 \0 \0 \0 \0 \0 \0show \0 \0 \0 \0you're \0 \0 \0kind?\r\n\0 \0 \0 \0");
+  }
+  } catch
+    Fs->catch_except=TRUE;
+  Sound(0);
+}
+
+Song;

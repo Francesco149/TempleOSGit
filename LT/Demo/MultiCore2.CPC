@@ -1,0 +1,137 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x00000103
+#define __BIN_1 "\x02\x00\x00\x00\x02\x05\x00\x00\x00\x14\x00\x00\x00\x01\x00\x00\x00\x23\x00\x00\x00\xF4\xFF\xFF\xFF\x05\x00\x00\x00\x23\x00\x00\x00\xF4\xFF\xFF\xFF\x2E\x00\x00\x00\x04\x00\x00\x00\x05\x00\x00\x00\x2E\x00\x00\x00\x04\x00\x00\x00\x20\x00\x00\x00\x12\x00\x00\x00\x05\x00\x00\x00\x20\x00\x00\x00\x12\x00\x00\x00\x13\x00\x00\x00\x02\x00\x00\x00\x02\x00\x00\x00\x05\x06\x00\x00\x00\x05\x00\x00\x00\xEC\xFF\xFF\xFF\x13\x00\x00\x00\x4A\x00\x00\x00\x14\x00\x00\x00\x49\x00\x00\x00\xEF\xFF\xFF\xFF\xE9\xFF\xFF\xFF\xF1\xFF\xFF\xFF\xEA\xFF\xFF\xFF\x14\x00\x00\x00\x02\x00\x00\x00\x04\x18\x00\x00\x00\x0F\x00\x00\x00\x0F\x00\x00\x00\x21\x00\x00\x00\x04\x00\x00\x00\xED\xFD\x25\x39\x52\xC1\xF0\xBF\x18\x00\x00\x00\x0D\x00\x00\x00\x0D\x00\x00\x00\x3D\x00\x00\x00\x01\x00\x00\x00\xC5\xFD\xEF\x37\x52\xC1\xF0\xBF\x18\x00\x00\x00\x12\x00\x00\x00\x12\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x6C\x55\x15\x39\x52\xC1\xF0\xBF\x18\x00\x00\x00\x2F\x00\x00\x00\x11\x00\x00\x00\x18\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x80\x00\x00\x00\x00"
+
+
+
+
+
+/* <PI 2> <1> (image) */
+
+
+
+
+
+I8 *r1,*r2;
+
+
+void DrawIt(TssStruct *tss)
+{
+  GrBitMap *mp0base=GrAlias(grbase2,tss);
+  I8 *old_r=mp0base->r;
+
+  ClearWinText(tss);
+
+  mp0base->r=r1;
+  mp0base->x=200;
+  mp0base->y=200;
+  mp0base->flags|=BMF_TRANSFORMATION;
+
+  mp0base->pen_width=2;
+  mp0base->bkcolor=BLACK;
+  GrElemsPlot(mp0base,0,0,0,__BIN_1);
+
+  mp0base->color=BLACK;
+  GrBox3(mp0base,50,75,0,100,50);
+  GrBox3(mp0base,75,50,0,50,100);
+  mp0base->color=GREEN;
+  GrEllipse3(mp0base,100,100,0,50,25);
+  GrEllipse3(mp0base,100,100,0,50,25,pi/2);
+  mp0base->color=LTGREEN;
+  GrEllipse3(mp0base,100,100,0,50,25,pi/6);
+  GrEllipse3(mp0base,100,100,0,50,25,pi/3);
+
+  mp0base->r=old_r;
+  GrDel(mp0base);
+}
+
+
+void MPDrawIt(TssStruct *main_tss)
+{
+  GrBitMap *mp1base=GrAlias(Gs->grbase,Fs);
+  I8 *old_r=mp1base->r;
+
+  mp1base->win_tss=main_tss;
+  mp1base->r=r2;
+  mp1base->x=200;
+  mp1base->y=200;
+  mp1base->flags|=BMF_TRANSFORMATION;
+
+  GrClear(mp1base);
+
+  mp1base->pen_width=2;
+  mp1base->bkcolor=BLACK^WHITE;
+  GrElemsPlot(mp1base,0,0,0,__BIN_1);
+
+  mp1base->color=BLACK^WHITE;
+  GrBox3(mp1base,50,75,0,100,50);
+  GrBox3(mp1base,75,50,0,50,100);
+
+  mp1base->color=GREEN^WHITE;
+  GrEllipse3(mp1base,100,100,0,50,25);
+  GrEllipse3(mp1base,100,100,0,50,25,pi/2);
+  mp1base->color=LTGREEN^WHITE;
+  GrEllipse3(mp1base,100,100,0,50,25,pi/6);
+  GrEllipse3(mp1base,100,100,0,50,25,pi/3);
+  WbInvd;
+
+  mp1base->r=old_r;
+  GrDel(mp1base);
+}
+
+void MPClearIt()
+{
+  GrBitMap *mp1base=GrAlias(Gs->grbase,Fs);
+  GrClear(mp1base);
+  GrDel(mp1base);
+}
+
+void MPDemo2()
+{
+  double theta2=0,phi2=0,theta3=0,phi3=0;
+  I8 *r1_temp,*r2_temp,*temp;
+  U8 swap_time;
+  void *old_update=Fs->update_win;
+  Fs->update_win=&DrawIt;
+
+  while (!ScanKey) {
+    swap_time=GetTimeStamp+time_stamp_freq/33;
+
+    r1_temp=GrTheta(theta2);
+    r2_temp=GrPhi(phi2);
+    temp=r1;
+    r1=GrMulMat(r1_temp,r2_temp);
+    Free(temp);
+    Free(r1_temp);
+    Free(r2_temp);
+
+    r1_temp=GrTheta(theta3);
+    r2_temp=GrPhi(phi3);
+    temp=r2;
+    r2=GrMulMat(r1_temp,r2_temp);
+    Free(temp);
+    Free(r1_temp);
+    Free(r2_temp);
+    WbInvd; //r1 and r2 need to be flushed out of cache
+
+    //Pass the tss of the window as data item to job.
+    MPQueueJob(&MPDrawIt,Fs);
+
+    WinSync; //I don't know if this helps
+    while (GetTimeStamp<swap_time)
+      SwapInNext;
+
+    theta2+=pi2/100;
+    phi2  +=pi2/130;
+    theta3-=pi2/100;
+    phi3  -=pi2/130;
+  }
+  //This works if there is just one
+  //extra core.  Not sure what to do otherwise
+  //except traverse [mp_cpu_structs] mp_cpu_structs.
+  MPQueueJob(&MPClearIt);
+
+  Fs->update_win=old_update;
+}
+
+MPDemo2;

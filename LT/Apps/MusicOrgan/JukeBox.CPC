@@ -1,0 +1,79 @@
+TssStruct *SingleSong(I1 *msg,I1 *name)
+{
+  BoolU4 old_preempt=Preempt(OFF);
+  TssStruct *tss=Spawn(&ServantUserCmdLine,name,Fs);
+  Ltf *l;
+  Bts(&tss->task_flags,TSSf_DONT_CHANGE_DESC);
+  StrCpy(tss->task_descriptor,name);
+  QueueTaskRequest(tss,Fs,";",(1<<TSSCf_WAKE_MASTER));
+  tss->win_top=2;
+  tss->win_bottom=tss->win_top+8;
+  tss->win_right=tss->win_left+46;
+  Preempt(old_preempt);
+  QueueTaskRequest(tss,NULL,msg,(1<<TSSCf_EXIT_ON_COMPLETE));
+  l=tss->cur_ltf;
+  l->max_entries=100;
+  return tss;
+}
+
+public void JukeBox(I1 *dirname=NULL,I1 **filename=NULL)
+{
+  I8 i=0;
+  I1 *st,*st2;
+  LTDirEntry *tempm,*tempm1;
+  Ltf *l=LtfNew;
+  TssStruct *tss=NULL;
+  if (filename)
+    *filename=NULL;
+  if (!dirname)
+    dirname=NewStr("HOME/MusicOrgan");
+  else
+    dirname=NewStr(dirname);
+  st=MSPrintF("%s/*.CPZ",dirname);
+  tempm=FindFiles(st);
+  Free(st);
+  Free(dirname);
+  tempm1=tempm;
+  LtfPutSExt(l,"Make your own songs with\r\n\r\n");
+  LtfPutSExt(l,"$LK,\"MakeSong\",\"MN:MakeSong\"$()\r\n\r\n");
+  LtfPutSExt(l,"$FG,GREEN$Graphics $FG,BLUE$Words $FG,RED$No Words $FG,CYAN$Special$FG$\r\n\r\n");
+  while (tempm1) {
+    if ((i++%5)==0)
+      LtfPutSExt(l,"\r\n");
+    st=NewStr(tempm1->name);
+    RemoveLastSeg(st,".");
+    if (FileOccurrences("has graphics",tempm1->full_name,""))
+      LtfPutSExt(l,"$FM,GREEN$");
+    else if (FileOccurrences("\\0",tempm1->full_name,""))
+      LtfPutSExt(l,"$FM,BLUE$");
+    else if (FileOccurrences("special",tempm1->full_name,""))
+      LtfPutSExt(l,"$FM,CYAN$");
+    else
+      LtfPutSExt(l,"$FM,RED$");
+    LtfPrintF(l,"$MU-UL,\"%-8ts\",%d$ ",st,tempm1);
+    Free(st);
+    tempm1=tempm1->next;
+  }
+  LtfPrintF(l,"\r\n$FM,CYAN$$MU-UL,\"DONE\",%d$\r\n",-1);
+  while (TRUE) {
+    if (filename)
+      tempm1=PopUpMenu(l,NULL,LTFPUF_INTERCEPT_TASK_END);
+    else
+      tempm1=PopUpMenu(l);
+    if (tss)
+      Kill(tss);
+    if (tempm1<0) break;
+    st2=NewStr(tempm1->name);
+    if (filename) {
+      Free(*filename);
+      *filename=NewStr(tempm1->full_name);
+    }
+    RemoveLastSeg(st2,".");
+    st=MSPrintF("ExecuteFile(\"%s\");",tempm1->full_name);
+    ResetMusicSettings;
+    tss=SingleSong(st,st2);
+    Free(st2);
+    Free(st);
+  }
+  LtfDel(l);
+}

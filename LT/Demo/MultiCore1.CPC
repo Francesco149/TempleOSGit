@@ -1,0 +1,31 @@
+BoolU4 stop;
+
+void DoIt(TssStruct *tss)
+{
+  I8 i,j=0;
+  GrBitMap *base=GrAlias(Gs->grbase,tss);
+  stop=FALSE;
+  while (!stop) {
+    GrClear(base);
+    for (i=0;i<256;i++) {
+      base->color=(i+j)&15;
+      GrCircle(base,256,256,i);
+    }
+    WinSync;
+    j++;
+  }
+  GrClear;
+}
+
+void StopIt()
+{
+  stop=TRUE;
+  WbInvd;
+}
+
+coutln "Type 'StopIt;'";
+Sleep(2500);
+
+//Flush code out of cache
+WbInvd;
+MPQueueJob(&DoIt,Fs);

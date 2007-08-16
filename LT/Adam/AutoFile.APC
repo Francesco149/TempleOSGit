@@ -1,0 +1,96 @@
+#help_index "AutoFile;Training"
+
+public void AFPmtStr(I1 *st)
+{
+  U8 ch,sc;
+  I1 buf[80];
+  while (*st) {
+    ch=GetKey(&sc,FALSE);
+    if (sc.u1[0]!=SC_SHIFT &&
+	sc.u1[0]!=SC_ALT &&
+	sc.u1[0]!=SC_CTRL) {
+      if (ch==*st) {
+	PutChar(ch);
+	st++;
+      } else {
+	if (*st==CH_CR)
+	  SPrintF(buf,"Press the '$FG,GREEN$ENTER$FG$' key");
+	else if (*st==CH_SPACE)
+	  SPrintF(buf,"Press the '$FG,GREEN$SPACE$FG$' key");
+	else
+	  SPrintF(buf,"Press the '$FG,GREEN$%c$FG$' key",*st);
+	PopUpOk(buf);
+      }
+    }
+  }
+}
+
+public void AFDelayedPutS(I1 *st,U8 mS_delay=100)
+{
+  U8 ch;
+  while (ch=*st++) {
+    PutChar(ch);
+    Sleep(mS_delay);
+  }
+}
+
+public void AFGetKey(U8 scancode,U8 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
+{
+  U8 sc,ch;
+  I1 buf[128],*st;
+  do {
+    ch=GetKey(&sc);
+    if (sc.u1[0]!=SC_PRTSCRN1 && //TODO this is weird
+	!(sc.u1[0]==SC_SHIFT && scancode&SCF_SHIFT) &&
+	!(sc.u1[0]==SC_CTRL && scancode&SCF_CTRL) &&
+	!(sc.u1[0]==SC_ALT && scancode&SCF_ALT) ) {
+      if (sc&sc_mask!=scancode&sc_mask) {
+	st=ScanCodeToKeyName(scancode);
+	SPrintF(buf,"Press the '$FG,GREEN$%s$FG$' key",st);
+	Free(st);
+	PopUpOk(buf);
+      }
+    }
+  } while (sc&sc_mask!=scancode&sc_mask);
+  Msg(MSG_KEY_DOWN,ch,sc);
+}
+
+public void AFGetChar(U8 ch1)
+{
+  U8 sc,ch;
+  I1 buf[128],*st;
+  while (TRUE) {
+    ch=GetKey(&sc);
+    if (sc.u1[0]!=SC_SHIFT &&
+	sc.u1[0]!=SC_ALT &&
+	sc.u1[0]!=SC_CTRL) {
+      if (ch!=ch1) {
+	st=ASCIIToKeyName(ch1);
+	SPrintF(buf,"Press the '$FG,GREEN$%s$FG$' key",st);
+	Free(st);
+	PopUpOk(buf);
+      } else
+	break;
+    }
+  }
+  Msg(MSG_KEY_DOWN,ch,sc);
+}
+
+public void AFUntilKey(U8 scancode,U8 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
+{
+  U8 sc,ch;
+  do {
+    ch=GetKey(&sc);
+    Msg(MSG_KEY_DOWN,ch,sc);
+  } while (sc&sc_mask!=scancode&sc_mask);
+}
+
+public void AFUntilChar(U8 ch1)
+{
+  U8 sc,ch;
+  do {
+    ch=GetKey(&sc);
+    Msg(MSG_KEY_DOWN,ch,sc);
+  } while (ch!=ch1);
+}
+#help_index ""

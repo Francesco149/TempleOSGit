@@ -1,0 +1,56 @@
+                            Clearing-up Confusions
+
+* LoseThos is 100% independent -- it does not access the files of your
+primary 
+operating system.  It will work as the only operating system on your computer.
+
+* LoseThos is 100% written from scratch.  There is no Linux or GNU or any 
+other code in LoseThos.  Yes, I wrote the compiler from scratch.
+
+* LoseThos does not download anything.  In fact, it does not have network 
+support.  Unplug your network cable and wireless cards if you don't believe.
+
+* LoseThos is an operating system, not a browser.  The command line has
+active 
+links.  They link to local files.
+
+* LoseThos compiles, not "interprets".  I use the word "script" sometimes for 
+stuff, but it's actually compiled.
+
+* I am an evolutionist.  "Adam" is a better term for the father of all tasks 
+than "root" was!
+
+* "I8" means 8-bytes, not bits.
+
+* [C:/LT/OSMain/Adam1b.HPZ,61] Bt() is "bit test", not "bit torrent".
+
+* [C:/LT/OSMain/Adam1b.HPZ,289] Fs is a segment register, not "file system".
+
+* [C:/LT/OSMain/Misc1a.CPZ,289] Sleep() makes a program pause.  It is not
+hybernation for a laptop.
+
+* [SwapInNext] SwapInNext() saves the current task's registers (context) and
+loads in the 
+next task.  When waiting, it's better to do this than check a condition in a 
+loop until you get preempted.  Checking a condition until you get preempted 
+wastes CPU.  LoseThos does not use virtual memory, so [SwapInNext]
+SwapInNext() involves no 
+disk activity.
+
+* I use the term "dynamic compilation".  This means it is compiled and 
+executable code placed into memory, ready to be called.  It has nothing to do 
+with dynamic libraries.
+
+* Files with names ending in "Z" are compressed, not encrypted.
+
+* LoseThos is open source and every bit of the source is included in the 
+distribution.  Use [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot() to compile
+the kernel and compiler.
+
+* LoseThos is not crippleware.  I held nothing back.  See /LT/Demo/TAD for my 
+account customizations to learn stuff.
+
+* LoseThos does not use object files or a linker.
+
+* LoseThos is really only 1.6 Meg including all source.  The dictionary and 
+Bible make it bigger.

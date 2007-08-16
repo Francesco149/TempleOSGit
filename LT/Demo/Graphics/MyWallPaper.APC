@@ -1,0 +1,42 @@
+/*
+
+  This is an APZ instead of a CPZ file because you want the wallpaper routine 
+to stay in memory even if this task is killed.
+
+  Press CTRL-T to see the hidden text needed for graphic elements.
+
+  Press CTRL-R to add a graphic element to a document.
+
+*/
+
+
+
+<PI1> <1> (image)
+
+
+
+U1 *old_wallpaper=ext[EXT_WALLPAPER];
+
+void MyWallPaper(TssStruct *my_tss)
+{
+  void OldWallPaper(TssStruct *tss);
+  I8 i;
+  I8 j=Jiffies*10/JIFFY_FREQ;
+  GrBitMap *base=GrAlias(grbase2,my_tss);
+  SetWinBkColor(my_tss,LTBLUE);
+  base->color=BLUE;
+  for (i=0;i<GR_HEIGHT;i+=20)
+    GrLine(base,i+j%8,0,0,GR_HEIGHT-i-j%8);
+ 
+  base->bkcolor=BLACK;
+  GrElemsPlot(base,j%GR_WIDTH,GR_HEIGHT/2,0,(binary data));
+  GrDel(base);
+  OldWallPaper=old_wallpaper;
+//Uncomment the following if you wish.
+//	OldWallPaper(my_tss);
+}
+
+
+
+ext[EXT_WALLPAPER]=&MyWallPaper;
+

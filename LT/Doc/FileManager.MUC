@@ -1,0 +1,108 @@
+                                 File Manager
+
+SHIFT CURSOR
+  Select files.
+
+CTRL-Y or DELETE KEY
+  Delete file or tree.
+
+CTRL-INSERT
+  Copy selected files to clipboard.
+
+SHIFT-INSERT
+  Paste clipboard.
+
+LEFT-CLICK
+  Drag and drop to move a file or tree to a directory.
+
+RIGHT-CLICK
+  Bring-up menu.
+
+ENTER
+  Rename file.
+
+'m'
+  ChangeDisk (Remount removable media).  Do not do this on blank disks.
+
+'t'
+  Add temporary drive.  Use this to make a temporary drive for burning 
+CD/DVD's.  You should recompile OSMain and make such a drive permanent.  Use 
+[C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot() to recompile.
+
+'f'
+  Format drive.
+
+'M'
+  Make CD/DVD ISO file.  This creates a file holding an image of the
+  specified 
+drive.  The name of the ISO file is [default_iso_name] default_iso_name and
+  can be redefined in 
+your start-up scripts.  You may wish to place it on a different drive.
+
+'B'
+  Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
+[default_iso_name] default_iso_name.
+
+
+Instructions on Using CD/DVD's
+  If you have not recompiled OSMain and defined your CD/DVD drive, exit the 
+file manager and use [AddDrives] AddDrives to define your CD/DVD
+  drive.  Place a CD/DVD 
+in the drive and press 'm' when on top of the CD/DVD drive letter to mount 
+the drive.  This calls [ChangeDisk] ChangeDisk(), the LoseThos command to
+  mount removable 
+media.
+
+
+Instructions on Burning CD/DVD's
+  Create a temporary holding drive in RAM or on disk, copy files into the 
+holding drive.  Make a ISO image of the drive by pressing 'M' when on top of 
+the holding drive.  Press 'B' when on top of the CD/DVD ROM drive to burn 
+the ISO to disk.  If you have not recompiled OSMain and defined your CD/DVD 
+drive, exit the file manager and use [AddDrives] AddDrives.
+
+
+Making a Bootable CD/DVD
+    I have the following code in my start-up script.
+
+'E' is my primary hard drive LoseThos partition
+
+'T' is my CD/DVD drive
+
+'Z' is a RAM temporary drive from which I make an ISO image.  You could 
+use a file partition instead of RAM. 
+
+#define PROD_CDROM_CONFIG	"b10x20000\rt4\r\r\r\r"
+
+void BurnProductionCDImage()
+{
+  Cd("E:/LT");
+
+  //This enters my config
+  //for compiling OSMain.
+  Auto(PROD_CDROM_CONFIG);
+
+  InstallBoot('E','T');
+  Format('Z',TRUE,FALSE);
+  Drive('Z');
+  DelTree("/LT");
+  CopyTree("E:/LT","/LT");
+  DelTree("/Temp");
+  MkDir("/Temp");
+  DelTree("/Windows");
+  CopyTree("E:/Windows",
+    "/Windows");
+  DelTree("/0000Boot");
+  CopyTree("E:/0000Boot",
+    "/0000Boot");
+  CreateCDFile(default_iso_name,
+    'Z',CD_BOOT);
+  WriteCDImage('T',
+    default_iso_name);
+}
+
+You might study the recovery CD maker in  [::/LT/Accts/Install/DoIt.CPZ]
+    ::/LT/Accts/Install/DoIt.CPZ.
+
+  
+

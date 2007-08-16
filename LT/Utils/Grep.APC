@@ -1,0 +1,189 @@
+#help_index "Utils"
+
+I8 PopUpReplaceSkipAllCancelEdit(I1 *msg)
+{
+  I8 i;
+  Ltf *l=LtfNew;
+  LtfPutSExt(l,msg);
+  LtfPutSExt(l,"$CM +LX, 2,4$$BT, \"REPLACE\",0$");
+  LtfPutSExt(l,"$CM +LX, 22,0$$BT, \"SKIP\",1$");
+  LtfPutSExt(l,"$CM +LX, 2,4$$BT, \"ALL\",2$");
+  LtfPutSExt(l,"$CM +LX, 22,0$$BT, \"ABORT ALL\",3$");
+  LtfPutSExt(l,"$CM +LX, 2,4$$BT, \"EDIT\",4$");
+  LtfPutSExt(l,"$CM +LX, 22,0$$BT, \"ABORT FILE\",5$");
+  LtfPutSExt(l,"$CM +LX, 2,4$$BT, \"SKIP FILE\",6$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+
+
+U8 GrepFile(I1 *pattern,I1 *name,U8 *flags,I1 *replace_text)
+{
+  BoolU4 first_on_line,write_this_file=FALSE,cont=!Bt(flags,FUf_CANCEL);
+  I1 *src,*dst,*dst2,*name_buf=NULL;
+  U8 ss_flags;
+  Ltf *l=LtfRead(name, LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
+  LtfEntry *cl;
+  I8 i,j,plen,rlen,dlen;
+  U8 cnt=0,old_flags;
+  Ltf *cur_l;
+
+  ss_flags=(Bt(flags,FUf_IGNORE)) ? SS_IGNORE_CASE :0;
+  if (Bt(flags,FUf_LABEL))
+    ss_flags|=SS_WHOLE_LABELS;
+
+  plen=StrLen(pattern);
+  if (replace_text)
+    rlen=StrLen(replace_text);
+  cl=l->dummy.next;
+  while (cl!=l && cont) {
+    if (cl->btype==LTFT_TEXT) {
+      src=cl->display;
+      first_on_line=TRUE;
+      while (src && cont) {
+	if (src=SearchStr(src,pattern,ss_flags)) {
+	  cnt++;
+	  if (first_on_line || Bt(flags,FUf_REPLACE)) {
+	    first_on_line=FALSE;
+	    PutFileLink(name,cl->y+1,TRUE);
+	    name_buf=MSPrintF("%s,%d",name,cl->y+1);
+	    if (cur_l=Fs->cur_ltf) {
+	      old_flags=cur_l->flags&LTFF_PLAIN_TEXT;
+	      cur_l->flags|=LTFF_PLAIN_TEXT;
+	    }
+  	    PrintF(" %s\r\n",cl->display);
+	    if (cur_l)
+	      cur_l->flags=(cur_l->flags & ~LTFF_PLAIN_TEXT)|old_flags;
+	  }
+	  if (Bt(flags,FUf_REPLACE)) {
+	    if (Bt(flags,FUf_ALL))
+	      i=2;
+	    else {
+	      i=PopUpReplaceSkipAllCancelEdit("");
+	      if (i==3) {
+		Bts(flags,FUf_CANCEL);
+		cont=FALSE;
+		write_this_file=FALSE;
+	      } else if (i==2)
+		Bts(flags,FUf_ALL);
+	      else if (i==5) {
+		cont=FALSE;
+		write_this_file=FALSE;
+	      } else if (i==6)
+		cont=FALSE;
+	    }
+	    if (!i || i==2) {
+	      dlen=StrLen(cl->display);
+	      dst=MAlloc(dlen+1+rlen-plen);
+	      dst2=dst;
+	      j=src-cl->display;
+	      for (i=0;i<j;i++)
+		*dst++=cl->display[i];
+	      for (i=0;i<rlen;i++)
+		*dst++=replace_text[i];
+	      src=dst;
+	      for (i=j+plen;i<=dlen;i++)
+		*dst++=cl->display[i];
+	      Free(cl->display);
+	      cl->display=dst2;
+	      if (cur_l=Fs->cur_ltf) {
+		old_flags=cur_l->flags&LTFF_PLAIN_TEXT;
+		cur_l->flags|=LTFF_PLAIN_TEXT;
+	      }
+	      PrintF("%12s,%04X*%s\r\n",name,cl->y+1,dst2);
+	      if (cur_l)
+		cur_l->flags=(cur_l->flags & ~LTFF_PLAIN_TEXT)|old_flags;
+	      write_this_file=TRUE;
+	    } else {
+	      src++;
+	      if (i==4) {
+		Free(name_buf);
+		name_buf=NewStr(l->filename.name);
+		l->flags&=~LTFF_NO_CURSOR;
+		l->cur_entry=cl;
+		l->cur_data_col=cl->min_col;
+		LtfWrite(l);
+		LtfDel(l);
+		PrintF("Wrote:%s\r\n",name_buf);
+		Edit(name_buf);
+		l=LtfRead(name_buf, LTFF_PLAIN_TEXT_WITH_TABS);
+		cl=l->cur_entry;
+		if (cl->last!=l) cl=cl->last;
+		src=NULL;
+		write_this_file=FALSE;
+	      }
+	    }
+	  } else
+	    src++;
+	  Free(name_buf);
+	  name_buf=NULL;
+	}
+      }
+    }
+    cl=cl->next;
+  }
+  if (write_this_file) {
+    LtfWrite(l);
+    PrintF("Wrote:%s\r\n",l->filename.name);
+  }
+  LtfDel(l);
+  return cnt;
+}
+
+U8 GrepList(I1 *pattern,LTDirEntry *tempm1,U8 *flags,I1 *replace_text)
+{
+  U8 cnt=0;
+  LTDirEntry *tempm2;
+
+  while (tempm1 && !Bt(flags,FUf_CANCEL)) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub) {
+	PrintF("%S %s\r\n","ST_SCANNING_DIRECTORY",tempm1->full_name);
+	cnt+=GrepList(pattern,tempm1->sub,flags,replace_text);
+      }
+    } else
+      cnt+=GrepFile(pattern,tempm1->full_name,flags,replace_text);
+    DelLTDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+  return cnt;
+}
+
+public U8 Grep(I1 *pattern,I1 *wild=TEXT_FILE_MASK,I1 *flags=NULL,I1 *replace_text=NULL)
+
+//This does not do regular expressions--my bad
+//Anyway, it's good for searching and replacing.
+//Let's say it stands for global replace ;-)
+
+//"+r"=recurse
+//"+i"=ignore case
+//"+l"=whole labels only.
+//     This will check for a nonlabel character before
+//     and after.  If you have a variable, "ll" and don't
+//     want to match words like "will" and "wallow", you
+//     set this flag and it will see that the characters
+//     before or after "ll" are label characters.
+
+{
+  U8 cnt=0;
+  U8 f=0;
+  GetFFlags(&f,SysText("ST_FILE_UTIL_FLAGS"),"+r+i");
+  GetFFlags(&f,SysText("ST_FILE_UTIL_FLAGS"),flags);
+  AssignBit(&f,FUf_REPLACE,replace_text);
+  cnt+=GrepList(pattern,FindFiles(wild,f),&f,replace_text);
+  return cnt;
+}
+
+public U8 FileOccurrences(I1 *pattern,I1 *wild=TEXT_FILE_MASK,I1 *flags="+r+i+l")
+{
+  U8 cnt;
+  BoolU4 old_silent=Silent(TRUE);
+  cnt=Grep(pattern,wild,flags);
+  Silent(old_silent);
+  return cnt;
+}
+
+#help_index ""

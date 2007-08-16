@@ -1,0 +1,11 @@
+LoseThos only supports RS232 serial-port communication.  You can connect two 
+computers with a "null-modem" cable.  I made "channels" generic to facilitate 
+more networking in the future, but LoseThos has no security, so it might not 
+be wise.
+
+If you do [TelnetHostOpen] TelnetHostOpen() on one computer you can remotely
+control that task  
+by doing [TelnetGuestOpen] TelnetGuestOpen() on another and do file
+transfers.  This is done 
+with a protocol I created that is not standard.  It supports all keys, not 
+just ASCII.

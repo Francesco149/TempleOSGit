@@ -1,0 +1,5 @@
+#help_index "Sound"
+#include "/LT/Apps/MusicOrgan/MakeSong.CPZ"
+#include "/LT/Apps/MusicOrgan/JukeBox.CPZ"
+#include "/LT/Apps/MusicOrgan/Organ.CPZ"
+#help_index ""

@@ -1,0 +1,286 @@
+#help_index "File/Program Routines"
+
+void OFFlatten(LTDirEntry *tempm,LTDirEntry **a,I8 *i)
+{
+  LTDirEntry *tempm1;
+  while (tempm) {
+    tempm1=tempm->next;
+    if (tempm->attr&LT_ATTR_DIR) {
+      OFFlatten(tempm->sub,a,i);
+      DelLTDirEntry(tempm);
+    } else {
+      a[*i]=tempm;
+      *i=*i+1;
+    }
+    tempm=tempm1;
+  }
+}
+
+
+public I8 LTFileCnt(LTDirEntry *tempm)
+{
+  I8 cnt=0;
+  while (tempm) {
+    if (tempm->attr&LT_ATTR_DIR)
+      cnt+=LTFileCnt(tempm->sub);
+    else
+      cnt++;
+    tempm=tempm->next;
+  }
+  return cnt;
+}
+
+I8 OFCompare(LTDirEntry **e1,LTDirEntry **e2)
+{
+  return (*e1)->cluster-(*e2)->cluster;
+}
+
+public LTDirEntry **OrderFiles(LTDirEntry *tempm,I8 *_cnt=NULL)
+{
+  I8 cnt=LTFileCnt(tempm),i=0;
+  LTDirEntry **a=MAlloc(sizeof(LTDirEntry *)*cnt);
+  OFFlatten(tempm,a,&i);
+  QSort(a,cnt,sizeof(LTDirEntry *),&OFCompare);
+  if (_cnt) *_cnt=cnt;
+  return a;
+}
+
+
+#help_index "File/Cmd Line (Typically)"
+
+public BoolU4 Copy(I1 *f1,I1 *f2=".")
+{
+  BoolU4 result=TRUE;
+  LTFileAccess *fa;
+  LTDirEntry *tempm,*tempm1;
+  if (!(tempm=FindFiles(f1,0)))
+    return FALSE;
+  if (IsDir(f2)) {
+    fa=NewLTFileAccess(f2,TRUE);
+    if (fa) {
+      while (tempm) {
+	tempm1=tempm->next;
+	if (!(tempm->attr & LT_ATTR_DIR)) {
+	  if (!CopySingle(tempm->full_name,tempm->name))
+	    result=FALSE;
+	}
+	DelLTDirEntry(tempm);
+	tempm=tempm1;
+      }
+      DelLTFileAccess(fa);
+    }
+    return result;
+  } else
+    return CopySingle(f1,f2);
+}
+
+public BoolU4 Move(I1 *f1,I1 *f2)
+{
+  if (Copy(f1,f2)) {
+    Del(f1);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+U8 PutCopyTree(LTDirEntry *tempm,U8 src_dir_len,U8 dst_dir_len,I1 *dst_dir)
+{
+  U8 result=0;
+  I1 *st;
+  while (tempm) {
+    st=MAlloc(StrLen(tempm->full_name)+dst_dir_len+2);
+    MemCpy(st,dst_dir,dst_dir_len);
+    StrCpy(st+dst_dir_len,tempm->full_name+src_dir_len);
+    if (tempm->attr & LT_ATTR_DIR) {
+      MkDir(st);
+      result+=PutCopyTree(tempm->sub,src_dir_len,dst_dir_len,dst_dir);
+    } else
+      if (CopySingle(tempm->full_name,st))
+	result++;
+    Free(st);
+    tempm=tempm->next;
+  }
+  return result;
+}
+
+public U8 CopyTree(I1 *src_mask,I1 *dst_mask)
+{  //returns count of copied files (not dirs)
+  LTFileAccess *fa;
+  LTDirEntry *tempm=NULL;
+  U8 result=0,i1,i2;
+  I1 *st1,*st2;
+
+  fa=NewLTFileAccess(src_mask,TRUE);
+  if (fa) {
+    tempm=SysFindFiles(fa->mask,1<<FUf_RECURSE);
+    st1=CurDir;
+    DelLTFileAccess(fa);
+    i1=StrLen(st1);
+    if (i1==3) i1--;
+
+    fa=NewLTFileAccess(dst_mask,TRUE,TRUE);
+    if (fa) {
+      st2=CurDir;
+      i2=StrLen(st2);
+      if (i2==3) i2--;
+      result=PutCopyTree(tempm,i1,i2,st2);
+      DelLTFileAccess(fa);
+      Free(st2);
+    }
+    DelLTDirList(tempm);
+    Free(st1);
+  }
+  return result;
+}
+
+void DoDelTree(LTDirEntry *tempm1)
+{
+  U8 result=0;
+  LTDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub)
+	result+=DoDelTree(tempm1->sub);
+      SysDel(tempm1->full_name,TRUE);
+    }
+    DelLTDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+public BoolU4 DelTree(I1 *mask)
+{
+  if (!IsDir(mask)) {
+    coutln "Not a Directory";
+    return FALSE;
+  }
+  DoDelTree(FindFiles(mask,1<<FUf_RECURSE));
+  SysDel(mask,TRUE);
+  SysDel(mask,FALSE);
+  return TRUE;
+}
+
+void DoDelMask(LTDirEntry *tempm1)
+{
+  LTDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub)
+	DoDelMask(tempm1->sub);
+    } else
+      Del(tempm1->full_name);
+    DelLTDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+public BoolU4 DelMask(I1 *mask)
+{ //Purges select filetypes from tree
+  if (IsDir(mask)) {
+    coutln "Not a Mask";
+    return FALSE;
+  }
+  DoDelMask(FindFiles(mask,1<<FUf_RECURSE));
+  return TRUE;
+}
+
+
+void TouchFile(I1 *filename,I1 *attr) //LTust one file
+{
+  U1 *cur_dir=NewStr(filename);
+  LTPartition *p=DriveToPartition(*filename);
+  LTDirEntry de;
+  I1 buf[64];
+  if (FindFile(filename,&de,FALSE,TRUE)) {
+    if (!StrCmp(attr,"+?"))
+      PrintF("%-32ts %s\r\n",filename,SPrintFFlags(buf,"ST_FILE_ATTRS",de.attr));
+    else {
+      RemoveFirstSeg(cur_dir,":");
+      RemoveLastSeg(cur_dir,"/");
+      if (!*cur_dir)
+	StrCpy(cur_dir,"/");
+      GetFFlags(&de.attr,"ST_FILE_ATTRS",attr);
+      de.datetime=GetCurTimeLTDate;
+      NewLTDirEntry(p,cur_dir,&de,FALSE);
+    }
+  } else PutSysTextErr("ST_FILE_NOT_FOUND");
+}
+
+void TouchList(LTDirEntry *tempm1,I1 *attr)
+{
+  LTDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub) {
+	coutln SysText("ST_SCANNING_DIRECTORY"),tempm1->full_name;
+	TouchList(tempm1->sub,attr);
+      }
+    } else
+      TouchFile(tempm1->full_name,attr);
+    DelLTDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+//Attr "+?" =show
+//     "+T" = resident
+//flags "+r"=recurse
+public void Touch(I1 *wild,I1 *attr="+?",I1 *flags=NULL)
+{
+  U8 f=0;
+  GetFFlags(&f,SysText("ST_FILE_UTIL_FLAGS"),flags);
+  TouchList(FindFiles(wild,f),attr);
+}
+
+U8 FFList(LTDirEntry *tempm1)
+{
+  U8 cnt=0;
+  LTDirEntry *tempm2;
+
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub)
+	cnt+=FFList(tempm1->sub);
+    } else {
+      PrintF("%s\r\n",tempm1->full_name);
+      cnt++;
+    }
+    DelLTDirEntry(tempm1);
+    tempm1=tempm2;
+  }
+  return cnt;
+}
+
+public U8 FF(I1 *wild,I1 *flags=NULL)
+//Find files
+//"+r"=recurse
+{
+  U8 cnt=0,f=0;
+  GetFFlags(&f,SysText("ST_FILE_UTIL_FLAGS"),"+r");
+  GetFFlags(&f,SysText("ST_FILE_UTIL_FLAGS"),flags);
+  cnt+=FFList(FindFiles(wild,f));
+  return cnt;
+}
+
+public void SetDriveTextAttr(I1 drive=0,U1 attr)
+{
+  LTPartition *p;
+  try {
+    p=DriveToPartition(drive);
+    p->text_attr=attr;
+  } catch
+    Fs->catch_except=TRUE;
+}
+
+public void PrintFDriveTextAttr(I1 drive=0)
+{
+  LTPartition *p=DriveToPartition(drive);
+  U1 fg=p->text_attr&0xF,bg=p->text_attr>>4;
+  if (fg!=bg)
+    PrintF("$FG,%d$$BG,%d$",fg,bg);
+}
+#help_index ""

@@ -1,0 +1,61 @@
+                              Installation Notes
+
+The CD-ROM INSTALL option will automate much of this.
+
+See [::/LT/Doc/Boot.TXZ] ::/LT/Doc/Boot.TXZ for an overview of booting.  See
+[::/LT/Doc/Hardware.TXZ] Hardware Supported.
+
+Two LoseThos partitions are highly recommended, so you can boot to a back-up 
+and fix the primary when you work on it.  Odds are, you only need a couple 
+gigabytes for your LoseThos partitions.
+
+1)
+  [AddDrives] AddDrives() use if drive is partitioned
+    This command mounts a drive making it accessible.  For simplicity, select 
+'C' as the base drive letter for your hard drive.  LoseThos needs 4 
+numbers to utilize a hard drive -- base0, base1, irq# and unit.  When you 
+enter a hexadecimal number, do it like in C with a 0x prefix.  Older 
+computers have IDE hard drives and newer ones have SATA.  My SATA numbers 
+are 0xFE00, 0xFE10 and 5.
+  
+
+[PartitionDrive] PartitionDrive() use if drive is not partitioned
+
+    This will perform a special [AddDrives] AddDrives() automatically.
+
+**WARNING:**  This command erases everything on a hard drive.  It
+    repartitions 
+a whole drive and formats the partitions as LoseThos partitions.  This 
+command should be skipped if you already have your hard drive partitioned.
+  
+2) [Format] Format()
+  This command formats a partition with the LoseThos file system type.
+**WARNING:**  If you are reformatting a LoseThos partition, be sure not to
+  lose 
+the file, /0000Boot/OldMBR.BIC.
+
+3) [C:/LT/Adam/Dsk2a.APZ,109] CopyTree()
+  This command is used to copy files onto a hard drive partition from the 
+CD-ROM.  Type something like CopyTree("T:/","D:/"); to copy files.  Use the 
+drive letter of the partition in place of 'D'.
+
+4) [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot()
+  This command recompiles the source code on a partition and writes to the
+  _par
+tition's_ boot record.  You'll need to reenter the [AddDrives] AddDrives
+  information so 
+it can be stored in the kernel.  At the end, it'll ask for base0, base1 and 
+Irq# again.
+
+5) [C:/LT/Opt/Boot/InsBoot.APZ,360] InstallMasterBoot()
+  This command places a boot loader on a drive to boot partitions.  It saves 
+the old master boot record and replaces it.  When you boot, you will have 
+the option of booting the old master boot record.  This command can be 
+skipped if you already have a boot loader.  Be sure not to lose the copy of 
+the old boot record, like if you reformat the partition.  It is stored in 
+the /0000Boot directory.
+
+If you have anti-virus software, it might object to having a different 
+master boot record.
+
+

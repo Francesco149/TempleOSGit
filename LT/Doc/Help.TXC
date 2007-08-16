@@ -1,0 +1,136 @@
+Left-click on the word "MENU" in the window title bar to pull-up the menu.  
+Underlined text is usually a link.  Left click with the mouse or press SPACE 
+when the cursor is on top of them to edit/view them.  Right click or press ENT
+ER to #include them, often causing them to execute.  
+  ESC		Exits and saves
+  CTRL Q	Aborts
+  Win's Key	Views the Menu/Help/Macro area
+Double mouse clicks send ESC or CTRLQ.
+
+Remember to terminate commands with a semicolon.
+
+[::/LT/Doc/Lectures/LoseThos.TXZ] Introduction	[::/LT/Doc/Promises.TXZ]
+Promises
+[::/LT/Doc/News.TXZ] News		[::/LT/Doc/Hardware.TXZ] Supported Hardware
+[::/LT/Doc/Mysteries.TXZ] Mysteries	[::/LT/Doc/Confuse.TXZ] Clearing
+Confusions
+[::/LT/Doc/Differences.TXZ] Differences from C/C++
+	
++] Level 1: USER HELP
+  
+[::/LT/Doc/HelpIndex.TXZ] Help Index
+[::/LT/Doc/OSGlossary.GLZ] Glossary
+[::/LT/Doc/LTZ.TXZ] LTZ Window's Utility
+[::/LT/Doc/Tips.TXZ] Tips
+[::/LT/Doc/Quirks.TXZ] Quirks
+
++] DIRECTORY STRUCTURE
+    /LT/Accts	Each subdirectory is an account.  When you boot, you can select
+    an account to login to, unless you compile OSMain soas to pick one.  Your
+    account directory is your HOME directory and all your user data should be
+    placed in here to ease backing-up your data.  When you Install an application
+    it will create a subdirectory of your HOME directory for storage.
+
+/LT/Apps	Applications are placed in subdirectories of /LT/Apps.  Applications
+    should have a file called Install.CPZ which will install the app for the
+    current user account.  The file, Load.CPZ will load the application into
+    memory.  The file, Run.CPZ, will usually load and execute the app.  To add an
+    app to your menu/macro area, use CTRL-L, insert a macro with the PopUp option
+    checked and invoke the Run.CPZ file.
+
+/LT/Compiler	The compiler module source code is found here.  The compiler is
+    statically compiled to produce a binary file which is loaded at boot.
+
+/LT/Demo	Here you can find lots of sample code to do various things.
+
+/LT/Doc	Here you can find documentation.
+
+/LT/OSMain	The core of the operating system is found here.  Since priviledge
+    levels are not used, calling it a kernel would be confusing, but that's what
+    it is.  It is statically compiled by [C:/LT/Opt/Boot/InsBoot.APZ,185]
+    InstallBoot().
+
+/LT/Adam	The mandatory non-kernel part of the operating system is found
+    here.  It is dynamically compiled during boot, except the GrAsm module.
+
+/LT/Utils	Optional modules are found here.  They are dynamically compiled
+    during boot.
+
+  +] DOLLAR SIGN COMMANDS
+    [::/LT/Doc/Dollar.TXZ] Dollar Sign Commands are rich-text commands.  The
+    editor, compiler, assembler and operating system are seamlessly equiped to
+    handle LoseThos rich text.  Commands like [C:/LT/OSMain/Dsk/Dsk1b.CPZ,238]
+    Dir() and [C:/LT/Opt/Grep.APZ,161] Grep() can output links to the command
+    line.
+
+  +] COMMAND PROMPT
+    The LoseThos command line interface is based on C/C++. Explore the ".CPZ"
+    files.  A command which takes no parameters may be executed by typing the
+    name and a semicolon.  Commands with parameters require placing the parameter
+    in parentheses like a function call.
+
+
+Dir("*");
+    `Dir("*");`
+     will list files in the current directory.
+
+Dir;
+    `Dir;`
+     uses default of "*".
+
+Cd("::/LT/Apps");
+    `Cd("::/LT/Apps");`
+     will change directories
+Directories are referenced with "/" not "\".  The Boot drive is referred to
+    with "::".  Other drives are referred to by a letter and a colon.  Your user
+    account directory is referred to with "HOME".
+
+If a file is not found in one directory, all it's parents are searched. 
+
+Edit("FILENAME.TXZ"); Invokes the editor.  See [::/LT/Doc/Edit.MUZ] Editor
+    cmds.  Note that editor commands work practically everywhere--like at the
+    command prompt or within help.
+
+  +] BURNING CD-ROMs/DVDs
+    0) Prepare a partition (drive) with the files you wish to burn.
+1) Use [CreateCDFile] CreateCDFile() to make an ISO image file of a partition.
+2) Use [WriteCDImage] WriteCDImage() to burn an ISO file onto a CD or DVD.
+
+Note:  You can create a [::/LT/Doc/OSGlossary.GLZ,File Partition] File
+    Partition on an ordinary partition, copy files into it, create an image and
+    burn it.
+
+[::/LT/Doc/FileManager.MUZ,Bootable] Bootable CD-ROMs 
+  
++] Level 2: ADMIN HELP
+    
++] ADDING DRIVES
+      Use [AddDrives] AddDrives() to mount disk drives.  
+
+See [::/LT/Doc/OSGlossary.GLZ,File Partition] File Partition for a special
+      type of "drive".
+    
+[::/LT/Doc/Install.TXZ] Installing
+
+[::/LT/OSMain/AdamK.APZ] the LoseThos equivalent of the AUTOEXEC.BAT.
+
+[::/LT/Doc/GuideLines.TXZ,ACCOUNT FILES] Account Files
+
++] Level 3: HOBBIEST PROGRAMMER HELP
+      
+[::/LT/Doc/GuideLines.TXZ] Guidelines
+[::/LT/Doc/Differences.TXZ] Differences from C/C++
+[::/LT/Doc/Graphics.TXZ] Graphics
+[::/LT/Doc/MultiTasking.TXZ] Multitasking
+[::/LT/Doc/Lectures/Proverbs.TXZ] Programming Proverbs
++] Programming Lessons
+        [::/LT/Doc/Lectures/ScaledInt.CPZ] ::/LT/Doc/Lectures/ScaledInt.CPZ
+      
++] Level 4: APP DEVELOPER HELP
+        +] Level 5: SYSTEM PROGRAMMER HELP
+          +] Ltf
+            [::/LT/Adam/Ltf/Ltf.APZ,Ltf] Ltf
+          +] Compiler
+            
+[::/LT/Compiler/Code.CPZ,1] Backend
+                              

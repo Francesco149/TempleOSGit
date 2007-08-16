@@ -1,0 +1,235 @@
+Notes on upgrading:
+
+* Use the [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("old","new") to rename
+items if I change them.
+
+* You are strongly advised not to make statically compiled modules.  (Static 
+modules produce a .BIZ file which you [C:/LT/OSMain/Hash1a.CPZ,662] Load()
+while dynamicly compiled code is 
+just #included.)   
+
+----08/16/07 02:38:03----
+* Added faster line clipping.
+
+----08/15/07 20:51:55----
+* Fixed feature of scan codes--sc.u4[1] is unconsolidated code. 
+* Made so you can nestle AutoFiles.
+* Modified [C:/LT/OSMain/Hash1a.CPZ,662] Load()... no recognizable changes
+* Modified cout no recognizable changes
+* Made PUSH_C_REGS and POP_C_REGS and made use of it.  Fewer regs are pushed 
+in many places.
+ 
+----08/14/07 14:35:33----
+* Fixed Ltf bug on PAGE DOWN/UP
+* Added [C:/LT/OSMain/Adam1a.HPZ,1252] LTFF_DO_FULL_UPDATE to prevent flicker
+if you like.
+* [C:/LT/OSMain/Adam1a.HPZ,1250] LTFF_DONT_SWAP_OUT, related to swap-outs
+during [C:/LT/OSMain/Str1a.CPZ,1122] PrintF().  Made swap-out 
+less.
+
+----08/13/07 08:38:18----
+* Worked-out scheme to keep from turning preemption off during window updates.
+* Added preempt parameter to [C:/LT/Adam/Ltf/LtfRecalc.APZ,111]
+LtfUpdateWinJoin().
+* Modified poll kbdmouse to spawn separate task when winupdates take too long.
+
+----08/13/07 01:24:12----
+* Modified [C:/LT/Adam/Window.APZ,604] WinSync() to make it more useful.
+* R("nearest_sub_GrElem", "nearest_sub_grelem");
+* R("cur_sub_GrElem", "cur_sub_grelem");
+* Added [::/LT/Demo/Graphics/Pick.CPZ] ::/LT/Demo/Graphics/Pick.CPZ showing
+how to use distance to cursor 
+calculations in graphics routines.
+
+----08/12/07 01:59:17----
+* Added compiler optimizations.
+* Added recovery disk option.
+* Changed B RAM drive size on install CD.
+
+----08/09/07 22:13:41----
+* Adjusted [C:/LT/OSMain/Adam1a.HPZ,3235] TssStruct to optimize for byte
+displacement.  Haven't settled on 
+best.
+* Added compiler optimizations.
+* Fixed editor bugs.
+
+----08/09/07 08:19:49----
+* Got rid of REX 0x40 in assembler
+* Got rid of Ltf password flag.
+
+----08/08/07 10:15:29----
+* Removed .BMP screen capture due to licensing concerns.
+
+----08/08/07 05:10:27----
+* Moved flags in [C:/LT/OSMain/Adam1a.HPZ,3235] TssStruct and
+[C:/LT/OSMain/Adam1a.HPZ,3708] CPUStruct, eliminated CPU preemptive flag
+(It's 
+now a task flag, only.)
+* Made [C:/LT/OSMain/Adam1b.HPZ,98] Preempt() function inline
+* Added compiler opt -- fewer 0x40 bytes
+* Fixed [::LT/Demo/GameStarters/Swing.CPZ] ::LT/Demo/GameStarters/Swing.CPZ
+
+----08/07/07 22:33:38----
+* **Finished Version 3.04**
+* Improved kbd/mouse
+* Replaced U4Fifo with U8Fifo
+
+----08/05/07 22:31:06----
+* Cleaned-up WordStat code
+* Added [OrderFiles] OrderFiles().  See [::/LT/Demo/OrderedIO.CPZ]
+::/LT/Demo/OrderedIO.CPZ
+
+----07/31/07 02:48:11----
+* Adding new feature to compiler to allow "5<i<10" instead of "5<i && i<10".
+* Fixed a horrible compiler bug where "i<5" worked but not "5>=i".  (I always 
+code the former way.)
+ 
+----07/27/07 00:49:50----
+* Improved fault handling
+* Added compiler optimizations
+* Added TSSf_AWAITING_MSG to improve performance.
+* Modified keyboard/mouse routine.  Boots faster and might not hang so much 
+when you use both at the same time.
+
+----07/25/07 03:40:49----
+* **WARNING:** Your [C:/LT/OSMain/TaskCmd.CPZ,353] Auto() entries to
+configure builds must be changed.  I 
+cleaned-up the [AddDrives] AddDrives() prompts, getting rid of "Custom".  All
+ATA and ATAP
+I types require numbers.
+
+----07/24/07 21:55:58----
+* Fixed graphic pen_width brushes.  It slightly affects picture appearance.  
+You might need to increase pen_width.
+  To convert old pictures...
+1) Boot the old LoseThos version
+2) Press CTRL-R when on top of the picture
+3) Select "Insert"
+4) Select "Convert to Bitmap".  If you don't want it drawn on a background, 
+select "transparent bitmap."
+5) Stretch-out a box around the image
+6) Click "End"
+7) Click "End" again
+8) Save your picture in a file
+9) Boot the new version of LoseThos
+
+Another option you might try 
+1) Press CTRL-R
+2) Select "Edit"
+3) find the "Width" entries and change the far right numbers.
+4) Press ESC
+5) Select "End"
+6) Save your picture in a file
+
+----07/24/07 01:13:59----
+* I think I fixed a bug in the CD-ROM install script.
+
+----07/23/07 16:51:15----
+* Added borderless windows.  CTRL-B now toggles the window border and Blink
+is 
+now done with CTRL-K.
+
+----07/21/07 21:46:59----
+* Added [C:/LT/Adam/WordStat/WsMain.APZ,610] WordStat() to replace old
+Spawn(&WsTsk).
+
+----07/21/07 04:00:51----
+* Fixed divide by zero bug in [C:/LT/Adam/Gr/GrPrimatives.APZ,796] GrBlot3() 
+
+----07/20/07 00:41:53----
+* R("ViewDisk","ViewDrive");
+* Added new [ViewDisk] ViewDisk().
+* Fixed horrible **compiler bug** relating to unary minus and double/int 
+conversion.
+
+----07/19/07 17:00:50----
+* Scaled pen_width on GrElem transformations
+* Added lecture on scaled integer arithmetic.  
+[::/LT/Doc/Lectures/ScaledInt.CPZ] ::/LT/Doc/Lectures/ScaledInt.CPZ
+* Added demo MultiCore1
+
+----07/16/07 01:40:23----
+* Added nestled comments to compiler.
+
+----07/13/07 14:54:38----
+* Added some compiler optimizations.
+* Fixed bugs in editor
+
+----07/09/07 07:30:18----
+* Added [kbd_display_special_keys] kbd_display_special_keys.
+* placed sys_cur_raw_scan_code into upper DWORD of sys_cur_scan_code.
+* R("TranslateScanCode", "ScanCodeToASCII");
+* Removed name parameter from [C:/LT/Adam/AutoFile.APZ,37] AFGetKey() and
+[C:/LT/Adam/AutoFile.APZ,58] AFGetChar().
+
+----07/08/07 08:22:53----
+* Added keyname display to wallpaper for making movies.
+
+----07/07/07 02:22:45----
+* Discovered subscript key needed to be changed.  Now, CTRL-P and
+CTRL-SHIFT-P 
+toggle super/sub scripts.
+
+----07/06/07 23:42:59----
+* Decided to make screen size fixed.  Do the following text replacements on 
+your code:
+  R("grwidth","GR_WIDTH");
+R("grheight","GR_HEIGHT");
+R("text_rows","TEXT_ROWS");
+R("text_cols","TEXT_COLS");
+
+R("GR_BLACK","BLACK"); //do all colors
+
+The video mode prompt was removed, so modify [C:/LT/OSMain/TaskCmd.CPZ,353]
+  Auto() strings for compiling 
+the kernel.
+
+----07/02/07 19:18:08----
+* Added [C:/LT/OSMain/Task1a.CPZ,345] SpawnUser().
+* Changed [Edit] Edit() and [DoForm] DoForm() so they run the ltf entry they
+exit on.
+* Changed [C:/LT/Adam/WordStat/WsMain.APZ,651] WsInit() to take full filename
+mask.  Filters-out non text files.
+
+----06/22/07 18:12:48----
+* This is funny--I fixed a bug in the compiler which made ";" on a do while 
+optional.
+
+----06/21/07 16:11:14----
+* Renamed "HeapChk" to "HeapWalk"
+* Renamed "HeapChkOn/HeapChkOff" to "HeapLog(ON/OFF)" and "HeapChkRep" to 
+"HeapLogRep".
+* Made [AbsI8] AbsI8() internal.
+* Improved [C:/LT/Adam/Gr/GrMath.APZ,8] Line().
+* Added [::/LT/Demo/GameStarters/FlightSim.CPZ]
+::/LT/Demo/GameStarters/FlightSim.CPZ
+* Fixed bug in compiler related to mutlidimensional arrays of size less than
+8 
+byte elements.
+
+----06/19/07 00:37:08----
+* **Uploaded V3.03**
+* Made on Gs->grbase for each core and they get merged together, so you can
+do 
+mutlicore screen operations.  See [::/LT/Demo/MultiCore2.CPZ]
+::/LT/Demo/MultiCore2.CPZ.
+
+----06/15/07 05:05:19----
+* Added GrElem transformation.  Doesn't work on some element types.
+
+----06/10/07 17:39:35----
+* **Uploaded V3.02**
+* Added [PicWords] PicWords
+* Changed [mp_heap] mp_heap from write-through to uncached.
+* Modified [C:/LT/OSMain/MultiProc.CPZ,313] MPQueueJob()
+ 
+----05/29/07 18:33:01----
+* Added [GrText] GrText().  Added it to GrElems.
+* Modified [C:/LT/Adam/WallPaper.APZ,19] WallPaper() to calc mem less often.
+
+----05/16/07 01:34:25----
+* Fixed bug where buttons weren't unchecked.
+
+----05/14/07 20:18:26----
+* Added new profiler mode. [C:/LT/Adam/Profiler.APZ,80] ProfAll() and
+[C:/LT/Adam/Profiler.APZ,45] ProfBin().

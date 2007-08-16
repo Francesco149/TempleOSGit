@@ -1,0 +1,9 @@
+Bt:	Bit Test
+Bts:	Bit Test and Set to one
+Btr:	Bit Test and Reset to zero
+Btc:	Bit Test and Compliment (toggle)
+
+These bit test operations are "atomic" meaning they won't be interrupted 
+between the testing of the bit and the alteration.  This is important when 
+multitasking.  With multiprocessing, you should "Lock" these operations.
+

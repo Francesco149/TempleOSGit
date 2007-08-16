@@ -1,0 +1,27 @@
+One difficulty with Multi-Core is cache.  The cores on my machine have 
+separate caches which means updating an address from one core is not 
+recognized by the other core until it is written to memory and reloaded into 
+the other core's cache.
+
+LoseThos offers the ability to allocate either uncached or "write-through" 
+memory with [C:/LT/OSMain/Memory.CPZ,432] AllocUncachedMemBlks() or
+[C:/LT/OSMain/Memory.CPZ,458] AllocWriteThroughMemBlks().  You can 
+set-up a heap after allocating a chunk by passing a pointer and size to 
+[InitHeapCtrl] InitHeapCtrl().  Then, use [MAllocHC] MAllocHC() and [FreeHC]
+FreeHC().  See [::/LT/OSMain/MultiProc.CPZ,InitHeapCtrl:2] InitHeapCtrl.
+
+[mp_heap] mp_heap is a 2Meg heap of uncached memory that you can use unless
+you run-out 
+of room.
+
+Each core beside the first has a "cain task" which has it's own 2 Meg cached 
+heap accessed through conventional [C:/LT/OSMain/Memory.CPZ,925] MAlloc() and
+[C:/LT/OSMain/Memory.CPZ,919] Free().  The cain task is the 
+father of all tasks on that core.  See
+[::/LT/OSMain/MultiProc.CPZ,InitHeapCtrl:1] InitHeapCtrl.
+
+You give a job to a cain task with [C:/LT/OSMain/MultiProc.CPZ,313]
+MPQueueJob().
+
+See [::/LT/Demo/MultiCore.CPZ] ::/LT/Demo/MultiCore.CPZ
+

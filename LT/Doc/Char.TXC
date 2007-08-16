@@ -1,0 +1,14 @@
+A Character is a single byte holding an ASCII code for a letter, number or 
+symbol.  The LoseThos term is an I1.
+
+ASCII values range from 0 to 127.  Values below 32 are control key's.  So, an 
+ASCII #3 is a CTRL-C.  LoseThos uses a few nonstandard values.  In LoseThos 
+ASCII #5 is the cursor location and ASCII #31 is a SHIFT-SPACE.
+
+A Key is typically specified with a scan code.  LoseThos scan codes contain 
+the key value in the lowest U1, and flags in the upper bytes.  See 
+[C:/LT/OSMain/Adam1a.HPZ,3332] Scan Code Flags and
+[C:/LT/OSMain/Adam1a.HPZ,3366] Scan Codes.
+
+A String is a bunch of ASCII characters terminated with a zero.
+

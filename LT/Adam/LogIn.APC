@@ -1,0 +1,91 @@
+#help_index "Task"
+
+void CollectAccntList()
+{
+  U8 f=0;
+  LTDirEntry *tempm1;
+  SysAccntStruct *tempa;
+  sys_accounts.next=&sys_accounts;
+  sys_accounts.last=&sys_accounts;
+  GetFFlags(&f,SysText("ST_FILE_UTIL_FLAGS"),"+r+D");
+  tempm1=FindFiles("/LT/Accts/*",f);
+  while (tempm1) {
+    tempa=MAllocZ(sizeof(SysAccntStruct));
+    StrCpy(tempa->name,tempm1->name);
+    InsQue(tempa,sys_accounts.last);
+    tempm1=tempm1->next;
+  }
+  DelLTDirList(tempm1);
+}
+
+public SysAccntStruct *FindSysAccnt(I1 *name)
+{
+  SysAccntStruct *tempa;
+  tempa=sys_accounts.next;
+  while (tempa!=&sys_accounts) {
+    if (!StrCmp(tempa->name,name))
+      return tempa;
+    tempa=tempa->next;
+  }
+  return NULL;
+}
+
+SysAccntStruct *PopUpGetSysAccnt()
+{
+  Ltf *l=LtfNew;
+  SysAccntStruct *tempa;
+
+  LtfPutSExt(l,"Select Account.\r\nCursor down and press SPACE.\r\n");
+  tempa=sys_accounts.next;
+  while (tempa!=&sys_accounts) {
+    LtfPrintF(l,"$CM+LX,2,3$$BT,\"%s\",%d$",tempa->name,tempa);
+    tempa=tempa->next;
+  }
+  do tempa=PopUpMenu(l);
+  while (tempa<0);
+  LtfDel(l);
+  return tempa;
+}
+
+#define SYS_ACCNT_REGISTRY_FILENAME "HOME/SysRegistry.BIZ"
+
+void LoadAccntRegistry()
+{
+  I8 size=sizeof(SysAccntRegistryStruct);
+  void *buf,*buf2;
+  SysAccntStruct *tempa=Fs->account;
+
+  if (tempa) {
+    if (!tempa->registry) {
+      buf2=AMAllocZ(sizeof(SysAccntRegistryStruct));
+      if (FindFile(SYS_ACCNT_REGISTRY_FILENAME))
+	if (buf=ReadFile(SYS_ACCNT_REGISTRY_FILENAME,&size)) {
+	  MemCpy(buf2,buf,size);
+	  Free(buf);
+	}
+      tempa->registry=buf2;
+    }
+  }
+}
+
+
+void SaveAccntRegistry()
+{
+  SysAccntStruct *tempa=Fs->account;
+  if (tempa && tempa->registry) {
+    tempa->registry->os_version=os_version;
+    WriteFile(SYS_ACCNT_REGISTRY_FILENAME,tempa->registry,sizeof(SysAccntRegistryStruct));
+  }
+}
+
+
+void AccntOneTimePopUp(I8 flag_num,I1 *msg)
+{
+  SysAccntStruct *tempa=Fs->account;
+  if (tempa && tempa->registry)
+    if (!Bts(tempa->registry->flags,flag_num))
+      if (PopUpOk(msg))
+	SaveAccntRegistry;
+}
+
+#help_index ""

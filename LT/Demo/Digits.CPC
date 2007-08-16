@@ -1,0 +1,114 @@
+//This loads a list of zero terminated
+//strings into the symbol table and
+//gives a name to it.  Strings like
+//this are known as SysText entries.
+LoadList("ST_RAINBOW",
+"BLACK\0"
+"BROWN\0"
+"RED\0"
+"LTRED\0" //closest to orange
+"YELLOW\0"
+"GREEN\0"
+"BLUE\0"
+"PURPLE\0"
+"LTGRAY\0"
+"WHITE\0\0");
+
+void ShowDigit(I1 ch)
+{
+//The %Z code displays a systext subentry
+  PrintF("$FG,%Z$%d$FG$",ch-'0',
+    "ST_RAINBOW",ch-'0');
+}
+
+void ShowPattern(I1 *st)
+{
+  I1 ch;
+  while (ch=*st++)
+    ShowDigit(ch);
+  CrLf;
+}
+
+void SongEndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void SongTsk()
+{
+  Fs->end_task_cb=&SongEndTsk;
+  ResetMusicSettings;
+  while (TRUE)
+    Play("qRsCECEsDGDGetACBeRGet2G3EReRDqGqRsCECEsDGDGetACBeRGet2G3EReRDqGqGqAetEAFetREAsAGAGsRDRDsCDCDe2G3BqGqAetEAFetREAsAGAGsRDRDsCDCDe2G3B");
+}
+
+void Digits()
+{
+  I8 num,ch,i;
+  I1 answer[1024];
+  TssStruct *song_tss=Spawn(&SongTsk,"Digits Song",Fs);
+  BoolU4 old_mute=music_mute;
+
+  LtfClear;
+  //Set default background and foreground
+  coutln "$WW,1$$BD,DKGRAY$$FD,WHITE$"
+    "\r\nThis is a memory game.  "
+    "Try to remember the digits and enter them.  "
+    "They are colored based on electrical "
+    "engineering color codes.";
+  for (i=0;i<10;i++) {
+    PrintF("$FG,%Z$%d: %Z\r\n",
+      i,"ST_RAINBOW",
+      i,
+      i,"ST_RAINBOW"
+      );
+  }
+  coutln "$FG$"; //set to default background
+  if (!PressAKey) goto exit;
+
+  while (TRUE) {
+restart:
+    num=0;
+    //Set to zeros so we have terminators
+    MemSet(answer,0,sizeof(answer));
+    while (TRUE) {
+      LtfClear;
+      coutln "$WW,1$$BD,DKGRAY$$FD,WHITE$";
+      PrintF("Pattern\r\nLength:%d\r\n"
+	     "\r\n",
+	num+1);
+      answer[num++]=RandU4%10+'0';
+      ShowPattern(answer);
+      if (!PressAKey) goto exit;
+
+      LtfClear;
+      coutln "$WW,1$$BD,DKGRAY$$FD,WHITE$";
+      PrintF("Guess\r\nLength:%d\r\n"
+	     "\r\n",
+	num);
+      for (i=0;i<num;i++) {
+	ch=GetChar(NULL,FALSE);
+	if (ch==CH_CTRLQ || ch==CH_ESC)
+	  return;
+	ShowDigit(ch);
+	if (ch!=answer[i]) {
+	  music_mute=TRUE;
+	  Sound(0);
+	  PrintF("\r\nScore:%d\r\n",num);
+	  ShowPattern(answer);
+	  Beep;
+	  Beep;
+	  music_mute=old_mute;
+	  if (!PressAKey) goto exit;
+	  goto restart;
+	}
+      }
+    }
+  }
+exit:
+  Kill(song_tss);  //get rid of song task
+  coutln "$CL$";
+}
+
+Digits;

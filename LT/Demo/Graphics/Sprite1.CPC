@@ -1,0 +1,65 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x000000AE
+#define __BIN_1 "\x02\x00\x00\x00\x02\x05\x00\x00\x00\x16\x00\x00\x00\x05\x00\x00\x00\x23\x00\x00\x00\xF8\xFF\xFF\xFF\x05\x00\x00\x00\x23\x00\x00\x00\xF8\xFF\xFF\xFF\x31\x00\x00\x00\x09\x00\x00\x00\x05\x00\x00\x00\x31\x00\x00\x00\x09\x00\x00\x00\x22\x00\x00\x00\x17\x00\x00\x00\x05\x00\x00\x00\x22\x00\x00\x00\x16\x00\x00\x00\x14\x00\x00\x00\x06\x00\x00\x00\x02\x00\x00\x00\x04\x05\x00\x00\x00\x2A\x00\x00\x00\x00\x00\x00\x00\x2A\x00\x00\x00\x0F\x00\x00\x00\x05\x00\x00\x00\x2A\x00\x00\x00\x0F\x00\x00\x00\x1B\x00\x00\x00\x0E\x00\x00\x00\x05\x00\x00\x00\x1B\x00\x00\x00\x0E\x00\x00\x00\x1B\x00\x00\x00\xFE\xFF\xFF\xFF\x05\x00\x00\x00\x1B\x00\x00\x00\xFE\xFF\xFF\xFF\x2A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+
+/*
+
+Graphics can be place into source code
+files.  The actual data is stored in the
+file after the text area.  CTRL-R was used
+to generate the graphic.  A picture $PI$
+entry was created by CTRL-R.  Press CTRL-T to
+toggle to plain text mode and see
+how it is encoded.  You can place any text
+you want in the quotes.  The text doesn't matter,
+but the number does matter.  The number identifies
+the picture and cannot be changed.
+
+You make use of a picture in a program by entering
+"insert binary", $IB$ commands by hand after pressing
+CTRL-T.  They behave like string constants
+when compiled.  That is, they are pointers.
+
+Sprite1.CPZ uses the persistent graphic base, Gs->grbase,
+while the other demo's use grbase2 which must
+be redrawn each update of the screen (by the
+window manager task).  This demo is simpler
+because you do not need a window update routine.
+
+*/
+
+
+/* <PI 1> <1> (image) */
+
+
+
+
+void Sprite1()
+{
+  GrBitMap *base=GrAlias(Gs->grbase,Fs);
+  I8 i;
+  PutS("$CL$");
+  for (i=0;i<GR_WIDTH>>2;i++) {
+    GrClear;
+
+//When the image was generated with CTRL-R, no
+//width was specified, so you can change it here.
+//If you enter a width or color in CTRL-R, you
+//can not change them.
+    base->pen_width=3;
+
+//WHITE is used here because when working
+//with Gs->grbase, the graphic elements are XOR'ed
+//onto the screen and you must undo the text
+//background color.
+    base->bkcolor=WHITE;
+    GrElemsPlot(base,i,GR_HEIGHT>>1,0,__BIN_1);
+
+    Sleep(3);
+  }
+  coutln "Image size:",__BIN_1_SIZE;
+  coutln "Image type:",__BIN_1_TYPE;
+  GrDel(base);
+}
+
+Sprite1;

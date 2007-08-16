@@ -1,0 +1,11 @@
+#exe {KeepPrivate(ON);}
+#include "/LT/OSMain/AdamK.HPZ"
+asm {
+#include "/LT/OSMain/OSDefs.ASZ"
+}
+#exe {Externs2Imports(ON);}
+#include "/LT/OSMain/AdamK2.HPZ"
+#include "/LT/OSMain/AdamK3.HPZ"
+#exe {Externs2Imports(OFF);}
+#exe {KeepPrivate(OFF);}
+

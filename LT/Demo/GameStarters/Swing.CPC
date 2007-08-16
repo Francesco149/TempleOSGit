@@ -1,0 +1,328 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x00000068
+#define __BIN_1 "\x02\x00\x00\x00\x08\x11\x00\x00\x00\xF3\xFF\xFF\xFF\xF2\xFF\xFF\xFF\x0F\x00\x00\x00\x0E\x00\x00\x00\x02\x00\x00\x00\x07\x11\x00\x00\x00\xF7\xFF\xFF\xFF\xF6\xFF\xFF\xFF\x0B\x00\x00\x00\x0A\x00\x00\x00\x02\x00\x00\x00\x08\x11\x00\x00\x00\xFB\xFF\xFF\xFF\xFA\xFF\xFF\xFF\x07\x00\x00\x00\x06\x00\x00\x00\x02\x00\x00\x00\x07\x11\x00\x00\x00\xFF\xFF\xFF\xFF\xFE\xFF\xFF\xFF\x03\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00"
+#define __BIN_2_TYPE 0x00000002
+#define __BIN_2_SIZE 0x00000089
+#define __BIN_2 "\x02\x00\x00\x00\x00\x12\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x00\x00\x0A\x00\x00\x00\x04\x00\x00\x00\xFB\xFF\xFF\xFF\xFA\xFF\xFF\xFF\x00\x00\x00\x00\xFE\xFF\xFF\xFF\x01\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x05\x00\x00\x00\xF9\xFF\xFF\xFF\x00\x00\x00\x00\x0A\x00\x00\x00\x04\x00\x00\x00\xFC\xFF\xFF\xFF\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFD\xFF\xFF\xFF\x00\x00\x00\x00\x04\x00\x00\x00\xFD\xFF\xFF\xFF\x00\x00\x00\x00\x04\x00\x00\x00\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+
+/*
+This game measures your response time.  You swing at the last possible 
+fraction of a second.
+
+I went overboard using the differential equation solver in this example.  It's 
+more like gravitational bodies.
+
+GrElem collision detection is used.
+*/
+
+#define OBJ_BASE	0
+#define NUM_OBJECTS	5
+
+#define A_TRANSITION	-1
+#define A_INACTIVE	0
+#define A_ACTIVE	1
+
+
+class Object
+{
+  I4 active;
+  I4 type;
+  U1 *img;
+  double mass,radius;
+  U8 collision_time;
+};
+
+Order2D3 *ms;
+Object *objs;
+I8 score,total_score,num_scores,best_score;
+
+
+
+/* <base> <1> (image) */
+
+
+
+/* <ball> <2> (image) */
+
+
+void DrawIt(TssStruct *tss)
+{
+  I8 i,cx=(tss->win_pixel_right-tss->win_pixel_left)>>1,
+       cy=(tss->win_pixel_bottom-tss->win_pixel_top)>>1;
+  I1 buf[128];
+  double average=total_score,best=best_score/10.0;
+  if (num_scores)
+    average/=num_scores;
+  else
+    average/=10.0;
+  if (best_score==MAX_I8)
+    best=0;
+  GrBitMap *base=GrAlias(grbase2,tss);
+  ClearWinText(tss);
+  for (i=0;i<NUM_OBJECTS;i++)
+    if (objs[i].active==A_ACTIVE)
+      GrElemsPlot(base,cx+ms[i].x,cy-ms[i].y,0,objs[i].img);
+  SPrintF(buf,"#%d Score:%9.5f Average:%9.5f Best:%9.5f",num_scores,
+    score*1.0/time_stamp_freq,average/time_stamp_freq,best/time_stamp_freq);
+  if (num_scores>9) {
+    base->color=RED;
+    GrText(base,0,0,"Hit a key for a new round.");
+  } else {
+    base->color=BLACK;
+    GrText(base,0,0,"Hit a key at the last possible moment.");
+  }
+  GrText(base,0,FONT_HEIGHT*2,buf);
+  GrDel(base);
+}
+
+void MyDerivative(Ode *ode,double t,Order2D3 *state,Order2D3 *DstateDt)
+{
+  I8 i,j;
+  double dx,dy,d,d1,dd,f;
+  nounusedwarn ode,t;
+
+  MemSet(DstateDt,0,sizeof(Order2D3)*NUM_OBJECTS);
+  for (i=0;i<NUM_OBJECTS;i++) {
+    if (objs[i].active==A_ACTIVE) {
+      DstateDt[i].x=state[i].DxDt;
+      DstateDt[i].y=state[i].DyDt;
+      for (j=0;j<NUM_OBJECTS;j++) {
+	if (i!=j && objs[j].active==A_ACTIVE) {
+	  dx=state[i].x-state[j].x;
+	  dy=state[i].y-state[j].y;
+	  dd=Sqr(dx)+Sqr(dy);
+	  d=Sqrt(dd);
+
+	  if (d) {
+	    dx/=d;
+	    dy/=d;
+	  } else {
+	    dx=0;
+	    dy=0;
+	  }
+
+	  d1=objs[i].radius+objs[j].radius;
+	  f=0;
+	  if (dd<Sqr(d1)) {
+	    f=Sqr(Sqr(Sqr(d1-Abs(d)+0.1))); //spring force
+	    if (f>1000000.0) f=1000000.0;
+	  } else
+	    f=-2.5*objs[i].mass*objs[j].mass/(dd+1.0);
+
+	  DstateDt[i].DxDt+=f*dx/objs[i].mass;
+	  DstateDt[i].DyDt+=f*dy/objs[i].mass;
+	}
+      }
+    }
+  }
+}
+
+void CheckCollisions()
+{
+  I8 i,j;
+  double d,d1,dd,dx,dy;
+  GrBitMap *b;
+  for (i=0;i<NUM_OBJECTS;i++) {
+    if (objs[i].active==A_ACTIVE) {
+      for (j=i+1;j<NUM_OBJECTS;j++) {
+	if (objs[j].active==A_ACTIVE) {
+	  dx=ms[i].x-ms[j].x;
+	  dy=ms[i].y-ms[j].y;
+	  dd=Sqr(dx)+Sqr(dy);
+	  d=Sqrt(dd);
+
+	  if (d) {
+	    dx/=d;
+	    dy/=d;
+	  } else {
+	    dx=0;
+	    dy=0;
+	  }
+
+	  d1=objs[i].radius+objs[j].radius;
+	  if (dd<Sqr(d1)) {
+	    b=GrBitMapNew(BMT_COLOR4,64,64,Fs);
+	    b->color=WHITE;
+	    GrBox(b,0,0,64,64);
+	    GrElemsPlot(b,32,32,0,objs[i].img);
+	    b->bkcolor=ROP_COLLISION+WHITE;
+	    GrElemsPlot(b,ms[j].x-ms[i].x+32,ms[j].x-ms[i].y+32,0,objs[j].img);
+	    if (b->collision_cnt>0) {
+	      objs[i].collision_time=objs[j].collision_time=GetTimeStamp;
+	      objs[i].active=objs[j].active=A_INACTIVE;
+	    }
+	    GrDel(b);
+	  }
+	}
+      }
+    }
+  }
+  for (i=0;i<NUM_OBJECTS;i++)
+    if (objs[i].active==A_TRANSITION)
+      objs[i].active=A_ACTIVE;
+}
+
+void InitObjs()
+{
+  I8 num_balls=0;
+  MemSet(ms,0,sizeof(Order2D3)*NUM_OBJECTS);
+  MemSet(objs,0,sizeof(Object)*NUM_OBJECTS);
+  objs[OBJ_BASE].mass=1000000.0;
+  objs[OBJ_BASE].radius=14.0;
+  objs[OBJ_BASE].active=A_ACTIVE;
+  objs[OBJ_BASE].img=__BIN_1;
+
+    ms[1+num_balls].x=-300;
+    ms[1+num_balls].y=0;
+    ms[1+num_balls].DxDt=RandU4%500;
+    ms[1+num_balls].DyDt=-(RandU4%20)+10;
+  objs[1+num_balls].mass=RandU4%10000+1;
+  if (Abs(ms[1+num_balls].DyDt)>5.0)
+    objs[1+num_balls].mass+=RandU4%100000+10000;
+  if (Abs(ms[1+num_balls].DyDt)>8.0)
+    objs[1+num_balls].mass+=RandU4%100000+10000;
+  objs[1+num_balls].radius=8.0;
+  objs[1+num_balls].active=A_ACTIVE;
+  objs[1+num_balls++].img=__BIN_2;
+
+  if (RandU4%5==0) {
+      ms[1+num_balls].x=300;
+      ms[1+num_balls].y=0;
+      ms[1+num_balls].DxDt=-(RandU4%500);
+      ms[1+num_balls].DyDt=-(RandU4%20)+10;
+    objs[1+num_balls].mass=RandU4%10000+1;
+    if (Abs(ms[1+num_balls].DyDt)>5.0)
+      objs[1+num_balls].mass+=RandU4%100000+10000;
+    if (Abs(ms[1+num_balls].DyDt)>8.0)
+      objs[1+num_balls].mass+=RandU4%100000+10000;
+    objs[1+num_balls].radius=8.0;
+    objs[1+num_balls].active=A_ACTIVE;
+    objs[1+num_balls++].img=__BIN_2;
+  }
+
+  if (RandU4%5==0) {
+      ms[1+num_balls].y=-300;
+      ms[1+num_balls].x=0;
+      ms[1+num_balls].DyDt=RandU4%500;
+      ms[1+num_balls].DxDt=-(RandU4%20)+10;
+    objs[1+num_balls].mass=RandU4%10000+1;
+    if (Abs(ms[1+num_balls].DxDt)>5.0)
+      objs[1+num_balls].mass+=RandU4%100000+10000;
+    if (Abs(ms[1+num_balls].DyDt)>8.0)
+      objs[1+num_balls].mass+=RandU4%100000+10000;
+    objs[1+num_balls].radius=8.0;
+    objs[1+num_balls].active=A_ACTIVE;
+    objs[1+num_balls++].img=__BIN_2;
+  }
+
+  if (RandU4%5==0) {
+      ms[1+num_balls].y=300;
+      ms[1+num_balls].x=0;
+      ms[1+num_balls].DyDt=-(RandU4%500);
+      ms[1+num_balls].DxDt=-(RandU4%20)+10;
+    objs[1+num_balls].mass=RandU4%10000+1;
+    if (Abs(ms[1+num_balls].DxDt)>5.0)
+      objs[1+num_balls].mass+=RandU4%100000+10000;
+    if (Abs(ms[1+num_balls].DyDt)>8.0)
+      objs[1+num_balls].mass+=RandU4%100000+10000;
+    objs[1+num_balls].radius=8.0;
+    objs[1+num_balls].active=A_ACTIVE;
+    objs[1+num_balls++].img=__BIN_2;
+  }
+}
+
+//This routine is called when the task in charge of
+//playing the background music is killed.  It turns off
+//the sound and ends the task with Exit. 
+void SongEndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void SongTsk()
+{
+  //This establishes a function which will be called when
+  //this task is killed.
+  Fs->end_task_cb=&SongEndTsk;
+  ResetMusicSettings;
+  while (TRUE)
+   
+Play("qRe2G32G3etCADqBqBe2G3RetCAReFGqRe2G32G3etCADqBqBe2G3RetCAReFGsRGRGqGeFG
+qEsCGCGetDAFqCqAsRGRGqGeFGqEsCGCGetDAFqCqA");
+}
+
+void Swing()
+{
+  I8 ch,key_time;
+  void *old_update=Fs->update_win;
+  Ode *ode=OdeNew(NUM_OBJECTS*6);
+  BoolU4 old_preempt=Preempt(OFF);
+  BoolU4 old_border=WinBorder(OFF);
+  BoolU4 old_mute=music_mute;
+  TssStruct *song_tss=Spawn(&SongTsk,"Swing Song",Fs);
+  WinMax;
+  objs=MAlloc(sizeof(Object)*NUM_OBJECTS);
+  ode->derivative=&MyDerivative;
+  ode->tolerance_start=.01;
+  ms=ode->state;
+  InitObjs;
+  InsQue(ode,Fs->last_ode);
+  Fs->update_win=&DrawIt;
+  score=0;
+  num_scores=0;
+  total_score=0;
+  best_score=MAX_I8;
+  do {
+    FlushMsgs;
+    InitObjs;
+    ch=0;
+    while (!ch && !objs[OBJ_BASE].collision_time) {
+      CheckCollisions;
+      SwapInNext;
+      ScanKey(&ch);
+    }
+    if (ch!=CH_CTRLQ && ch!=CH_ESC) {
+      if (objs[OBJ_BASE].collision_time) {
+	music_mute=TRUE;
+	Sound(0);
+	Beep;
+	Beep;
+	music_mute=old_mute;
+	score=time_stamp_freq; //penalty
+      } else {
+	key_time=kbd_evt_time;
+	while (!ScanKey(&ch) &&
+	  !objs[OBJ_BASE].collision_time) {
+	  CheckCollisions;
+	  SwapInNext;
+	}
+	score=GetTimeStamp-key_time;
+      }
+      total_score+=score;
+      num_scores++;
+      if (num_scores>9) {
+	music_mute=TRUE;
+	Sound(2000);
+	Sleep(1000);
+	Sound(0);
+	music_mute=old_mute;
+	if (total_score<best_score)
+	  best_score=total_score;
+	FlushMsgs;
+	ch=GetChar;
+	num_scores=0;
+	total_score=0;
+      }
+    }
+  } while (ch!=CH_CTRLQ && ch!=CH_ESC);
+  Kill(song_tss);
+  Fs->update_win=old_update;
+  RemQue(ode);
+  OdeDel(ode);
+  Free(objs);
+  WinBorder(old_border);
+  Preempt(old_preempt);
+}
+
+Swing;

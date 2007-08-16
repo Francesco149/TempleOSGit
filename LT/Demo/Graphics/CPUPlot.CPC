@@ -1,0 +1,74 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x00000040
+#define __BIN_1 "\x05\x00\x00\x00\xFC\xFF\xFF\xFF\x02\x00\x00\x00\xFF\xFF\xFF\xFF\xFC\xFF\xFF\xFF\x05\x00\x00\x00\xFF\xFF\xFF\xFF\xFC\xFF\xFF\xFF\x04\x00\x00\x00\x03\x00\x00\x00\x05\x00\x00\x00\x04\x00\x00\x00\x03\x00\x00\x00\xFD\xFF\xFF\xFF\x01\x00\x00\x00\x00\x00\x00\x00"
+
+#define NUM_DATA_POINTS 256
+
+double CPU0idle[NUM_DATA_POINTS];
+double CPU1idle[NUM_DATA_POINTS];
+double mem[NUM_DATA_POINTS];
+double refresh[NUM_DATA_POINTS];
+
+/* <PI2> <1> (image) */
+void DrawIt(TssStruct *tss)
+{
+  GrBitMap *base=GrAlias(grbase2,tss);
+  I8 i,x1,y1,x2,y2;
+  ClearWinText(tss);
+  for (i=1;i<NUM_DATA_POINTS;i++) {
+    base->color=RED;
+    x1=(i-1)*(tss->win_pixel_right-tss->win_pixel_left)/(NUM_DATA_POINTS-1);
+    y1=(tss->win_pixel_bottom-tss->win_pixel_top)*CPU0idle[i-1];
+    x2=i*(tss->win_pixel_right-tss->win_pixel_left)/(NUM_DATA_POINTS-1);
+    y2=(tss->win_pixel_bottom-tss->win_pixel_top)*CPU0idle[i];
+    GrLine(base,x1,y1,x2,y2);
+    if (mp_cnt>1) {
+      base->color=BLUE;
+      y1=(tss->win_pixel_bottom-tss->win_pixel_top)*CPU1idle[i-1];
+      y2=(tss->win_pixel_bottom-tss->win_pixel_top)*CPU1idle[i];
+      GrLine(base,x1,y1,x2,y2);
+    }
+    base->color=GREEN;
+    y1=(tss->win_pixel_bottom-tss->win_pixel_top)*mem[i-1];
+    y2=(tss->win_pixel_bottom-tss->win_pixel_top)*mem[i];
+    GrLine(base,x1,y1,x2,y2);
+//If you want to get fancy, you mark points with this.
+//    GrElemsPlot(base,x2,y2,0,__BIN_1);
+    base->color=CYAN;
+    y1=(tss->win_pixel_bottom-tss->win_pixel_top)*refresh[i-1];
+    y2=(tss->win_pixel_bottom-tss->win_pixel_top)*refresh[i];
+    GrLine(base,x1,y1,x2,y2);
+  }
+  if (mp_cnt>1)
+    PlotWinStr(tss,"CPU1 %",BLUE+WHITE<<4,0,tss->win_bottom-tss->win_top-4);
+  PlotWinStr(tss,"CPU0 %",RED+WHITE<<4,0,tss->win_bottom-tss->win_top-3);
+  PlotWinStr(tss,"Memory %",GREEN+WHITE<<4,0,tss->win_bottom-tss->win_top-2);
+  PlotWinStr(tss,"Refresh Hz",CYAN+WHITE<<4,0,tss->win_bottom-tss->win_top-1);
+  GrDel(base);
+}
+
+void CPUPlot()
+{
+  CPUStruct *c;
+  void *old_update=Fs->update_win;
+  I8 cur_point=0;
+  MemSet(CPU0idle,0,sizeof(double)*NUM_DATA_POINTS);
+  MemSet(mem,0,sizeof(double)*NUM_DATA_POINTS);
+  Fs->update_win=&DrawIt;
+  while (!ScanKey) {
+    c=mp_cpu_structs+sizeof(CPUStruct)*0;
+    CPU0idle[cur_point]=c->idle_factor;
+    if (mp_cnt>1) {
+      c=mp_cpu_structs+sizeof(CPUStruct)*1;
+      CPU1idle[cur_point]=c->idle_factor;
+    }
+    mem[cur_point]=UnusedSysMem*1.0/(sys_heap_limit-sys_heap_base+1);
+    refresh[cur_point]=1.0-win_refresh/100.0;  //This plots on a scale of 0-100 Hz
+    Sleep(25);
+    cur_point=(++cur_point) % NUM_DATA_POINTS;
+  }
+  Fs->update_win=old_update;
+}
+
+
+CPUPlot; //start when #included

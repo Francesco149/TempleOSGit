@@ -1,0 +1,25 @@
+AutoFiles are used to fake user input to a task to automate operations.  The 
+LoseThos tour is done with an AutoFile.
+
+When an AutoFile runs, a child task is [C:/LT/OSMain/Task1a.CPZ,230]
+Spawn()ed which intercepts real user 
+input and generates fake input.  AutoFiles are C+ scripts run by the child 
+who's stdout goes to the parent's input
+buffer.  [C:/LT/OSMain/TaskCmd.CPZ,214] Msg() can be included in an A
+utoFile to send special keys or mouse commands to the parent.  While an AutoFi
+le is running, the normal input gets diverted to the AutoFile task and can be 
+filtered and sent back to the parent task.  Unless you are driving functions 
+which prompt for data, you can probably use an #include file in place of an Au
+toFile.
+
+See [::/LT/Demo/AutoFile/Demo1.AUZ] ::/LT/Demo/AutoFile/Demo1.AUZ.
+
+Note: [C:/LT/OSMain/TaskCmd.CPZ,353] Auto("") can be used if all you need to
+do is send ASCII characters.  It 
+differs from [C:/LT/OSMain/TaskCmd.CPZ,383] AutoStr().  You'll probably use
+[C:/LT/OSMain/TaskCmd.CPZ,353] Auto() a lot but not
+[C:/LT/OSMain/TaskCmd.CPZ,383] AutoStr().  
+With [C:/LT/OSMain/TaskCmd.CPZ,353] Auto(), for example, you can place
+answers to the prompts for recompiling 
+the OSMain module when doing [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+

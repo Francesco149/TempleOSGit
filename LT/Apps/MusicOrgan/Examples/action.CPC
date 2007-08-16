@@ -1,0 +1,27 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  try {
+  while (!ScanKey) {
+	Play("3qGetDDBeCDBBGAGEqCE",
+		"Get \0off \0 \0the \0stuck\0'en \0couch.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
+	Play("GetDDBeCDBBGAGEqCE",
+		"Fix-\0up \0 \0that \0home\0ly \0slouch.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
+	Play("EeCDqDetCAAqCBeBGqB",
+		"Life \0pass\0es \0by...\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0");
+	Play("EeCDqDetCAAqCBeBGqB",
+		"You've \0got\0ta \0try...\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0");
+  }
+  } catch
+    Fs->catch_except=TRUE;
+  Sound(0);
+}
+
+Song;

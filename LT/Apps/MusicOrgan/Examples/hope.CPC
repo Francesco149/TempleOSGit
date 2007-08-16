@@ -1,0 +1,27 @@
+void EndTsk()
+{
+  Sound(0);
+  Exit;
+}
+
+void Song()
+{
+  Fs->end_task_cb=&EndTsk;
+  music_tempo=2.5;
+  try {
+  while (!ScanKey) {
+	Play("3qBeB2GqG3DBeA2GqR3etGED",
+		"Sees \0the \0 \0end \0from \0the \0start.\r\n\0 \0 \0 \0 \0 \0");
+	Play("qBeB2GqG3DBeA2GqR3etGED",
+		"Got \0Heav\0 \0en \0down \0to \0art.\r\n\0 \0 \0 \0 \0When \0");
+	Play("eB2G3qGRsFEFECBCB2qGG3etDRD",
+		"filled \0with \0doubt.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0It'\0 \0ll \0");
+	Play("eB2G3qGRsFEFECBCB2qGG3etDRD",
+		"all \0work \0out.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+  }
+  } catch
+    Fs->catch_except=TRUE;
+  Sound(0);
+}
+
+Song;

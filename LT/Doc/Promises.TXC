@@ -1,0 +1,46 @@
+                                   Promises
+
+The following promises will be kept, provided hardware changes do not prevent 
+them.
+
+Before you read this, consider how Commodore 64's or Apple II's were used.  
+Then, consider doing the same thing on modern, souped-up hardware.
+
+1) LoseThos will always run everything in kernel mode.  There is no user
+mode. 
+ All programs will have full access to memory, I/O ports, instructions, etc.  
+Yes, this means you can crash LoseThos verily easily.  Yes, this means no 
+security.
+
+2) LoseThos will always "identity map" virtual memory.  Virtual addresses
+will 
+be the same as physical.  All tasks will operate using the same address space 
+map, unless MultiCore or something prevents it.  (Parallel computing might 
+involve unshared memory.)
+
+3) LoseThos will never have networking beyond the RS232 it currently has, or 
+maybe something similar.  With no networking, there is no need for security.
+
+4) LoseThos will never have any kind of security, including passwords or 
+encryption.
+
+5) LoseThos will always have one video mode, 640x480 by 16 colors.  You can 
+assume the screen will be the same for everybody.  It's possible this mode 
+might become unavailable on computers in the future.  On the bright side, 
+there's plenty of CPU for very little screen to update.  Three dimensional 
+support is pointless with only 16 colors.
+
+6) The LoseThos operating system will be free, but I might sell applications 
+or support.
+
+7) LoseThos will be 100% open source will all source included, unless device 
+drivers or something can only be included with non-disclosure agreements.
+
+
+
+                                 Not Promised
+
+1) LoseThos is subject to change and **backward compatibility is NOT
+guarenteed**, 
+however, changes are a pain for me, too.  It's mostly done.
+

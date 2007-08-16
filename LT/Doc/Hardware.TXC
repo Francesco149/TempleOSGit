@@ -1,0 +1,23 @@
+User Skills Required
+* Knowledge of the C programming language.
+
+Supported Hardware
+* IBM PC compatible with 64-bit x86 EM64T
+* VGA graphics
+* Some keyboards and mice.
+* Minimum 256 Meg RAM; Maximum 128 Gig RAM
+* Internal PC Speakers
+* Can boot to IDE CD-ROMs
+* Can access but not boot SATA CD-ROMs
+* ATA and SATA hard drives <=120 Gig
+* RS232 serial ports
+* Game Port Joysticks, not USB.
+
+Unsupported Hardware
+* No Modern graphics cards
+* No Modern sound cards
+* No Networking
+* No USB devices
+* No Printers (There is a feeble attempt to send ASCII to a parallel port
+when 
+you press PRT SCRN.)

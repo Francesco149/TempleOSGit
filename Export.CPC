@@ -136,6 +136,14 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0,BoolI64 debug=FALSE)
   return base;
 }
 
+U0 PassThroughFile(U8 *in_path,U8 *out_path)
+{
+  U64 len;
+  U8 *out=FileRead(in_path,&len);
+  FileWrite(out_path,out,len);
+  Free(out);
+}
+
 //All these string operations are crazy slow because I don't preallocate mem
 //but it's good enough for now.
 //This whole thing should've been designed to do one big allocation and be
@@ -152,6 +160,12 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
   I64 indent=0,line_len=0,prev_len=0;
   U8 *indents=StrNew("");
 
+//Windows stuff should just be passed through with the original extension
+  if (StrStr(out_path,"/Windows/")) {
+    PassThroughFile(in_path,out_path);
+    return;
+  }
+
   buf=out_path+StrLen(out_path)-1;
 //The C suffix means contiguous, uncompressed
   *buf='C';
@@ -159,10 +173,13 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
   buf++;
   ext=buf;
 
+//Temporary monkey patch only for this ISO, not sure why it can't copy this
+//dat to sub-directiories, works if I manually copy it to the root dir though
+  if (StrStr(out_path,"/LT/Adam/WordStat/WsDefs.DAC"))
+    return;
+
   if (!StrCmp(ext,"BIC") || !StrCmp(ext,"DAC") || !StrCmp(ext,"DTC")) {
-    out=FileRead(in_path,&len);
-    FileWrite(out_path,out,len);
-    Free(out);
+    PassThroughFile(in_path,out_path);
     return;
   }
 
@@ -172,17 +189,13 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
   if (!StrCmp(buf,"Bible.TXC") || !StrCmp(buf,"PCIDevices.TXC")) {
 //Special case: I know these large files don't have any Ltf syntax so no point
 //in wasting time parsing them
-    out=FileRead(in_path,&len);
-    FileWrite(out_path,out,len);
-    Free(out);
+    PassThroughFile(in_path,out_path);
     return;
   }
 
   l=LtfRead(in_path);
   if (!l) {
-    out=FileRead(in_path,&len);
-    FileWrite(out_path,out,len);
-    Free(out);
+    PassThroughFile(in_path,out_path);
     return;
   }
 

@@ -1,0 +1,79 @@
+If you modify this file, you should place it into your HOME directory.  This 
+version is the default for accounts without a version in HOME. 
+
+Cd("HOME");Dir;
+`Cd("HOME");Dir;`
+
+Cd("::/LT/OSMain");Dir;
+`Cd("::/LT/OSMain");Dir;`
+
+Cd("::/LT/Adam");Dir;
+`Cd("::/LT/Adam");Dir;`
+
+Cd("::/LT/Apps");Dir;
+`Cd("::/LT/Apps");Dir;`
+
+Cd("::/LT/Demo");Dir;
+`Cd("::/LT/Demo");Dir;`
+
+Cd("::/LT/Utils");Dir;
+`Cd("::/LT/Utils");Dir;`
+
+
+[::/LT/Doc/Lectures/LoseThos.TXZ] Introduction  
+[::/LT/Doc/HelpIndex.TXZ] Help Index
+Take Tour
+`Cd("::/LT/Accts/Tour");;AutoFile("Tour");`
+
+
+-] Applications
+  
+
+
+
+
+WarGame <1> (image)   Rocks <2> (image)   Vocab <3> (image)   Swing <4>
+  (image)
+
+
+
+
+
+
+
+Organ <5> (image)     JukeBox <6> (image)
+
+-] Game Starters
+    
+
+
+
+
+
+
+
+
+
+ SpaceShip <7> (image)  FlightSim <8> (image)  Goons <9> (image)
+
+
+
+  CPUPlot
+  `#include "/LT/Demo/Graphics/CPUPlot.CPZ";`
+  
+
+Digits (Memory Game)
+  `Cd("::/LT/Demo");;#include "Digits"`
+  
+DO-TELL (A fractel-like thing)
+  `Cd("::/LT/Demo");;#include "Dawg"`
+  
+
+CTRL-T	Customize the Song
+qCeACqCq2G3qBeBEsA2G3A2G3sD2G3D2G3qCeACqCq2G3qBeBEsA2G3A2G3sD2G3D2G3e2G3Gs2G3F
+2G3FqBqAqEqAqAqCe2G3Gs2G3F2G3FqBqAqEqAqAqC 
+CTRL-R	Add Graphics with CTRL-R 
+CTRL-L	Add Widgets such as trees
+CTRL-ALT-ESC	Spawn new user shell window
+CTRL-ALT-X	Kill window
+CTRL-ALT-C	Break(interrupt) program

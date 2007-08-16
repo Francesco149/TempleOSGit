@@ -1,0 +1,269 @@
+void InitISOPartition(LTPartition *p,BoolU4 unlock)
+{
+  U8 i=16;
+  ISOPrimaryDescriptor *iso=MAlloc(CD_BLK_SIZE);
+  ISODirEntry *de;
+
+  try {
+  LockPartition(p);
+  p->type=PT_ISO9660;
+  p->spc=CD_BLK_SIZE>>BLK_SIZE_BITS;
+  p->size=CD_FILE_OFFSET;
+  while (TRUE) {
+    RBlks(p,iso,i*p->spc,p->spc,FALSE);
+    if (iso->type==ISOT_SUPPLEMENTARY_DESC)
+      break;
+    else if (iso->type==ISOT_TERMINATOR)
+      throw(EXCEPT_PARTITION,0);
+    else
+      i++;
+  }
+  p->data=0;
+  de=&iso->root_directory_record;
+  p->root_cluster=de->location.little;
+  p->size=iso->volume_space_size.little*CD_BLK_SIZE>>BLK_SIZE_BITS;
+  Free(iso);
+  if (unlock)
+    UnlockPartition(p);
+  } catch
+    if (unlock)
+      UnlockPartition(p);
+}
+
+BoolU8 FromISOName(I1 *dst,U1 *src)
+{
+  BoolU4 result=TRUE;
+  I8 i,j,n;
+  MemSet(dst,0,LT_MAX_FILENAME_LEN+1);
+  n=*src++;
+  if (n==1 && !*src) {
+    dst[0]='.';
+  } else if (n==1 && *src==1) {
+    dst[0]='.';
+    dst[1]='.';
+  } else {
+    n>>=1;
+    j=0;
+    for (i=0;i<n;i++) {
+      src++;
+      if (*src==';')
+	break;
+      if (Bt(filename_chars_bitmap,*src)) {
+	if (j>=LT_MAX_FILENAME_LEN)
+	  return FALSE;
+	dst[j++]=*src++;
+      } else
+	return FALSE;
+    }
+  }
+  return CheckFileName(dst);
+}
+
+BoolU8 FillLTDirISO(LTPartition *p,LTDirEntry *tempm,ISODirEntry *de,BoolU4 unlock)
+{
+  ArcCompressStruct *buf;
+  BoolU4 result;
+  MemSet(tempm,0,sizeof(LTDirEntry));
+  result=FromISOName(tempm->name,&de->name_len);
+  tempm->cluster=de->location.little;
+  tempm->size=de->size.little;
+  tempm->attr=FileAttr(tempm->name);
+  if (de->flags & ISO_ATTR_DIR)
+    tempm->attr|=LT_ATTR_DIR;
+  tempm->datetime=ISOToLTDate(&de->date);
+  if (tempm->attr & LT_ATTR_COMPRESSED) {
+    buf=MAlloc(p->spc<<BLK_SIZE_BITS);
+    RClusters(p,buf,tempm->cluster,1,unlock);
+    tempm->expanded_size=buf->expanded_size;
+    Free(buf);
+  } else
+    tempm->expanded_size=tempm->size;
+  return result;
+}
+
+BoolU8 FindISOFile(LTPartition *p,U8 cur_dir_cluster,I1 *name,LTDirEntry *result,
+		     BoolU4 dir_only,BoolU4 file_only,BoolU4 unlock)
+{
+  ISODirEntry *isoptr,*buf;
+  I1 dname[LT_MAX_FILENAME_LEN+1];
+  BoolU4 res=FALSE;
+  I8 i;
+
+  CheckLTPartition(p);
+  if (p->type!=PT_ISO9660)
+    PutSysTextErr("ST_NOT_ISO9660");
+  else {
+    try {
+    LockPartition(p);
+    isoptr=MAlloc(p->spc<<BLK_SIZE_BITS);
+    RClusters(Fs->cur_partition,isoptr,cur_dir_cluster,1,FALSE);
+    if (isoptr->name_len==1 && isoptr->name==0) { //curdir
+      i=(isoptr->size.little+p->spc<<BLK_SIZE_BITS-1)/(p->spc<<BLK_SIZE_BITS);
+      buf=MAlloc(p->spc<<BLK_SIZE_BITS*i);
+      RClusters(Fs->cur_partition,buf,cur_dir_cluster,i,FALSE);
+      Free(isoptr);
+    } else {
+      buf=isoptr;
+      i=1;
+    }
+    i*=p->spc<<BLK_SIZE_BITS;
+    isoptr=buf;
+    while (i>0) {
+      if (!isoptr->length) {
+	isoptr++;
+	i--;
+      } else {
+	FromISOName(dname,&isoptr->name_len);
+	if (*dname) {
+	  if (!StrCmp(name,dname)) {
+	    res=FillLTDirISO(p,result,isoptr,FALSE);
+	    if (res &&
+		!(dir_only && !(result->attr & LT_ATTR_DIR)) &&
+		!(file_only && result->attr & LT_ATTR_DIR) )
+	      goto exit_this;
+	    else
+	      res=FALSE;
+	  }
+	}
+	i-=isoptr->length;
+	isoptr+=isoptr->length;
+      }
+    }
+exit_this:
+    Free(buf);
+    if (unlock)
+      UnlockPartition(p);
+    } catch
+      if (unlock)
+	UnlockPartition(p);
+  }
+  return res;
+}
+
+U1 *ReadISOFile(LTPartition *p,I1 *cur_dir,I1 *filename,U8 *size,
+  U8 *attr,BoolU4 raw,ArcCompressStruct **ac2)
+{
+  U1 *buf=NULL;
+  LTDirEntry de;
+  U8 c,cluster_size=p->spc<<BLK_SIZE_BITS,cluster_cnt;
+  ArcCompressStruct *ac;
+  U8 cur_dir_cluster=NameToDirCluster(p,cur_dir,TRUE);
+
+  CheckLTPartition(p);
+  if (size)
+    *size=0;
+  if (ac2)
+    *ac2=NULL;
+  if (attr)
+    *attr=0;
+  if (p->type!=PT_ISO9660)
+    PutSysTextErr("ST_NOT_ISO9660");
+  else {
+    try {
+    LockPartition(p);
+    if (FindISOFile(p,cur_dir_cluster,filename,&de,FALSE,TRUE,FALSE)) {
+      if (attr)
+	*attr=de.attr;
+      cluster_cnt=(de.size+cluster_size-1)/cluster_size;
+      buf=MAlloc(cluster_cnt*cluster_size+1);
+      c=de.cluster;
+      c=RClusters(p,buf,c,cluster_cnt,FALSE,TRUE);
+      if ((FileAttr(de.name) & LT_ATTR_COMPRESSED) && !raw) {
+	ac=buf;
+	if (attr)
+	  *attr=FileAttr(de.name,*attr);
+	if (size)
+	  *size=ac->expanded_size;
+	if (ac2) {
+	  *ac2=ac;
+	  buf=ExpandBuf(ac);
+	} else {
+	  buf=ExpandBuf(ac);
+	  Free(ac);
+	}
+      } else {
+	buf[de.size]=0; //Terminate
+	if (size)
+	  *size=de.size;
+      }
+      if (attr)
+	*attr=FileAttr(de.name,*attr);
+    }
+    UnlockPartition(p);
+    } catch
+      UnlockPartition(p);
+  }
+  return buf;
+}
+
+BoolU8 CdISO(I1 *name,U8 cur_dir_cluster)
+{
+  LTDirEntry de;
+  if (Fs->cur_partition->type!=PT_ISO9660)
+    PutSysTextErr("ST_NOT_ISO9660");
+  else {
+    if (FindISOFile(Fs->cur_partition,cur_dir_cluster,
+			name,&de,TRUE,FALSE,TRUE)) {
+      return TRUE;
+    } else {
+      cout name," ";
+      PutSysTextErr("ST_FILE_NOT_FOUND");
+    }
+  }
+  return FALSE;
+}
+
+LTDirEntry *FindISOFiles(I1 *wild,U8 fuf_flags,LTDirEntry *parent=NULL)
+{
+  LTPartition *p=Fs->cur_partition;
+  ISODirEntry *buf,*buf2,*isoptr;
+  U8 cur_dir_cluster=NameToDirCluster(p,Fs->cur_dir,TRUE);
+  LTDirEntry *result=NULL,*tempm;
+  I8 i;
+
+  isoptr=MAlloc(p->spc<<BLK_SIZE_BITS);
+  RClusters(Fs->cur_partition,isoptr,cur_dir_cluster,1,TRUE);
+  if (isoptr->name_len==1 && isoptr->name==0) { //curdir
+    i=(isoptr->size.little+p->spc<<BLK_SIZE_BITS-1)/(p->spc<<BLK_SIZE_BITS);
+    buf=MAlloc(p->spc<<BLK_SIZE_BITS*i);
+    RClusters(Fs->cur_partition,buf,cur_dir_cluster,i,TRUE);
+    Free(isoptr);
+  } else {
+    buf=isoptr;
+    i=1;
+  }
+  buf2=buf;
+  i*=p->spc<<BLK_SIZE_BITS;
+  while (i>0) {
+    if (!buf->length) {
+      buf++;
+      i--;
+    } else {
+      tempm=MAlloc(sizeof(LTDirEntry));
+      if (FillLTDirISO(Fs->cur_partition,tempm,buf,TRUE)) {
+	tempm->parent=parent;
+	if (Bt(&fuf_flags,FUf_RECURSE) && tempm->attr & LT_ATTR_DIR && tempm->name[0]!='.') {
+	  tempm->next=result;
+	  result=tempm;
+	  tempm->full_name=AbsoluteDirName(tempm->name);
+	  Cd(tempm->name);
+	  tempm->sub=FindISOFiles(wild,fuf_flags,tempm);
+	  Cd("..");
+	} else if ((!(tempm->attr & LT_ATTR_DIR) && !Bt(&fuf_flags,FUf_JUST_DIRS)
+		   || !Bt(&fuf_flags,FUf_RECURSE)) &&
+      	   WildFileNameList(wild,tempm->name)) {
+	  tempm->next=result;
+	  result=tempm;
+	  tempm->full_name=AbsoluteFileName(tempm->name);
+	} else
+	  DelLTDirEntry(tempm);
+      } else
+	DelLTDirEntry(tempm);
+      i-=buf->length;
+      buf+=buf->length;
+    }
+  }
+  Free(buf2);
+  return result;
+}
+

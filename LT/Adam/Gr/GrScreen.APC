@@ -1,0 +1,253 @@
+I4 gr_table[1024];
+
+#define GR_NUM_PEN_BRUSHES 64
+GrBitMap *gr_pen_brushes[GR_NUM_PEN_BRUSHES];
+
+void GrSetupTable(GrBitMap *hidden)
+{
+  GrBitMap *b;
+  I8 i,j,k,x,y;
+  double r,rr;
+  for (i=-16;i<16;i++) {
+    for (j=-16;j<16;j++) {
+      k=((i>=0) ? i:32+i)<<5+((j>=0) ? j:32+j);
+      gr_table[k]=(i*hidden->internal_width+j)>>3;
+    }
+  }
+  for (i=0;i<GR_NUM_PEN_BRUSHES;i++) {
+    k=i+1;
+    j=((i+7)>>3)<<3;
+    b=GrBitMapNew(BMT_MONO,j,i);
+    gr_pen_brushes[i]=b;
+    b->color=WHITE;
+    r=k/2.0;
+    rr=r*r;
+    for (y=1;y<k;y++)
+      for (x=1;x<k;x++)
+	if (Sqr(y-r)+Sqr(x-r)<rr)
+	  GrPlot0(b,x-1,y-1);
+  }
+  OutP(VGA_SC_INDEX,VGA_MAP_MASK);
+  OutP(VGA_SC_DATA,0x0F);
+  MemSet(0xA0000,0,GR_HEIGHT*GR_WIDTH>>3);
+  MemSet(vga_image,0,GR_WIDTH*GR_HEIGHT>>1);
+}
+
+U8 gr_win_updates=0;
+
+void GrUpdateWins()
+{
+  TssStruct *tss=Fs;
+  GrBitMap *base=GrAlias(grbase2,Fs);
+  BoolU4 old_suspend;
+
+  if (LBtr(&sys_semas[SYS_SEMA_CLEAR_SCREEN_TEXT],0))
+    MemSet(textbase,0,(GR_HEIGHT/FONT_HEIGHT)*(GR_WIDTH/FONT_WIDTH)<<2);
+
+  try {
+    do {
+      if (!ValidateTss(tss))
+	break;
+      if (tss!=Fs)
+	old_suspend=Bts(&tss->task_flags,TSSf_SUSPENDED);
+      UpdateOdes(tss);
+      if (!ValidateTss(tss))
+	break;
+      if (Bt(&tss->crt_flags,CRTf_SHOW)) {
+	if (!Bt(&tss->crt_flags,CRTf_NO_BORDER))
+	  DrawTaskBorder(tss);
+	if (tss->update_win)
+	  tss->update_win(tss);
+      }
+      if (!ValidateTss(tss))
+	break;
+      if (tss!=Fs)
+	AssignBit(&tss->task_flags,TSSf_SUSPENDED,old_suspend);
+      tss=tss->next_tss;
+    } while (tss!=Fs);
+  } catch
+    Debugger;
+  gr_win_updates++;
+
+  Bts(&Fs->crt_flags,CRTf_ON_TOP);
+  PlotInputPointer(base);
+  Btr(&Fs->crt_flags,CRTf_ON_TOP);
+  GrDel(base);
+}
+
+////**************************PROCEDURE*************************
+// Format of U4 text entry
+//   Bits 0-7	ASCII
+//   Bits 8-11	Foreground color
+//   Bits 12-15 Background color
+//   Bits 16-20 Signed X position shift value
+//   Bits 21-25 Signed Y position shift value
+//   Bit  28	Blink
+//   Bit  29	Inverted (Swap foreground and background)
+//   Bit  30	Selected (XOR colors with FF)
+//   Bit  31	Underline
+
+void GrUpdateScreen(GrBitMap *b1,GrBitMap *b2,
+     U4 *my_textbase)
+{
+  U4 *src,*src2,cur_ch,u;
+  U8 row,col,plane,ch_line,i,
+    d0=(b2->internal_width*b2->top_margin+b2->left_margin)>>3,
+    d1=(b2->internal_width)>>3,
+    d2=(b2->internal_width*b2->height-FONT_HEIGHT*b2->width)>>3,
+    d3=(b2->internal_width*b2->height<<2)>>3,
+    d4=(b2->internal_width*FONT_HEIGHT-b1->width)>>3,
+    d5a=(b1->internal_width)>>5,
+    d5b=(b1->internal_width)>>6,
+    d6=(b2->internal_width*b2->top_margin)>>3,
+    d7=1-d3,
+    num_cols=b1->width/FONT_WIDTH,
+    num_rows=b1->height/FONT_HEIGHT;
+  U2 *dst2;
+  U4 *dst3,*dst4=vga_image;
+  U1 *dst,*font_ptr,*font_ptr2;
+  BoolU4 blink_flag=(Jiffies/(JIFFY_FREQ/5))&1,skip_space;
+  BoolU4 old_preempt=Preempt(ON);
+  U1 saved_font_line;
+
+//Update Text Background
+  src=my_textbase;
+  dst=b2->body+d0;
+  for (row=0;row<num_rows;row++) {
+    for (col=0;col<num_cols;col++) {
+      cur_ch=*src;
+      src+=4;
+      if (cur_ch & (LTFLT_SELECTED | LTFLT_INVERT | LTFLT_BLINK)) {
+	if (cur_ch & LTFLT_SELECTED)
+	  cur_ch.u1[1]=cur_ch.u1[1]^0xFF;
+	if (cur_ch & LTFLT_INVERT)
+	  cur_ch.u1[1]=(cur_ch.u1[1]<<4)+(cur_ch.u1[1]>>4);
+	if (cur_ch & LTFLT_BLINK)
+	  if (blink_flag)
+	    cur_ch.u1[1]=(cur_ch.u1[1]<<4)+(cur_ch.u1[1]>>4);
+      }
+      GrPlotBackground(cur_ch.u1[1],&dst,d1,d2);
+/*
+      for (plane=0x10;plane!=0x100;plane=plane<<1) {
+	d=(cur_ch.u1[1] & plane) ? 0xFF:0x00;
+	for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	  *dst=d;
+	  dst+=d1;
+	}
+	dst+=d2;
+      }
+*/
+      dst+=d7;
+    }
+    dst+=d4;
+  }
+
+  font_ptr=&grfont[FONT_WIDTH*FONT_HEIGHT>>3*CH_SPACE];
+  skip_space=TRUE;
+  for (row=0;row<FONT_HEIGHT;row++)
+    if (font_ptr[row]) {
+      skip_space=FALSE;
+      break;
+    }
+
+//Update Text Foreground
+  src=my_textbase;
+  dst=b2->body+d0;
+  for (row=0;row<num_rows;row++) {
+    for (col=0;col<num_cols;col++) {
+      cur_ch=*src;
+      src+=4;
+      if (cur_ch & (LTFLT_UNDERLINE | LTFLT_SELECTED | LTFLT_INVERT | LTFLT_BLINK)) {
+	if (cur_ch & LTFLT_SELECTED)
+	  cur_ch.u1[1]=cur_ch.u1[1]^0xFF;
+	if (cur_ch & LTFLT_INVERT)
+	  cur_ch.u1[1]=(cur_ch.u1[1]<<4)+(cur_ch.u1[1]>>4);
+	if (cur_ch & LTFLT_BLINK)
+	  if (blink_flag)
+	    cur_ch.u1[1]=(cur_ch.u1[1]<<4)+(cur_ch.u1[1]>>4);
+      } else
+	if (!cur_ch.u1[0] || (skip_space && cur_ch.u1[0]==CH_SPACE))
+	  goto skip_char;
+      font_ptr=&grfont[FONT_WIDTH*FONT_HEIGHT>>3*cur_ch.u1[0]];
+      if (cur_ch & LTFLT_UNDERLINE) {
+	saved_font_line=font_ptr[7];
+	font_ptr[7]=0xFF;
+      }
+      i=cur_ch.u2[1]&0x3FF;
+      dst2=dst+gr_table[i];
+      if (i) {
+	i&=7;
+	for (plane=0x01;plane!=0x10;plane<<=1) {
+	  font_ptr2=font_ptr;
+	  if (cur_ch.u1[1] & plane) {
+	    for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	      u=*font_ptr2++<<i;
+	      *dst2|=u.u2[0] | u.u2[1];
+	      dst2+=d1;
+	    }
+	  } else {
+	    for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	      u=*font_ptr2++<<i;
+	      *dst2&=~(u.u2[0] | u.u2[1]);
+	      dst2+=d1;
+	    }
+	  }
+	  dst2+=d2;
+	}
+      } else {
+	GrPlotChar(font_ptr,cur_ch.u1[1],&dst2,d1,d2);
+/*
+	for (plane=0x01;plane!=0x10;plane<<=1) {
+	  font_ptr2=font_ptr;
+	  if (cur_ch.u1[1] & plane) {
+	    for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	      *dst2|=*font_ptr2++;
+	      dst2+=d1;
+	    }
+	  } else {
+	    for (ch_line=0;ch_line<FONT_HEIGHT;ch_line++) {
+	      *dst2&=~*font_ptr2++;
+	      dst2+=d1;
+	    }
+	  }
+	  dst2+=d2;
+	}
+*/
+      }
+      if (cur_ch & LTFLT_UNDERLINE)
+	 font_ptr[7]=saved_font_line;
+skip_char:
+      dst++;
+    }
+    dst+=d4;
+  }
+
+  GrUpdateWins;
+
+  if (mp_cnt)
+    WbInvd; //We don't want cached versions of other CPU grbase images
+  MemCpy(b1->body,Gs->grbase->body,GR_WIDTH*GR_HEIGHT>>1);
+  for (i=1;i<mp_cnt;i++)
+    GrXorBitMapU8(b1->body,mp_cpu_structs[i].grbase->body,GR_WIDTH*GR_HEIGHT>>4);
+
+//Update Graphic Card
+  src=b1->body;
+  src2=b2->body;
+  for (plane=1;plane<0x10;plane<<=1) {
+    OutP(VGA_SC_INDEX,VGA_MAP_MASK);
+    OutP(VGA_SC_DATA,plane);
+    dst3=0xA0000;
+    src2+=d6;
+    for (row=0;row<b1->height;row++) {
+      src2+=64>>3;
+      GrXorLineU8(&dst3,&src,&src2,d5b,&dst4,reverse_bits_table);
+      src2+=64>>3;
+    }
+    src2+=d6;
+  }
+  if (gr_screen_capture) {
+    MemCpy(gr_screen_capture,vga_image,GR_HEIGHT*GR_WIDTH>>1);
+    gr_screen_capture=NULL;
+  }
+  Preempt(old_preempt);
+}
