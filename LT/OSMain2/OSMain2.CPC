@@ -1,0 +1,223 @@
+/* Project: OSMain2.SPZ */
+
+asm {
+USE64
+_HI_CALL::
+	ENTER	0
+	MOV	RAX,U64 SF_ARG1[RBP]
+	OR	RAX,RAX
+	JZ	@@05
+	CALL	RAX
+@@05:	LEAVE
+	RET1	8
+}
+
+U0 CatchAll()
+{
+  PutExcept;
+  Fs->catch_except=TRUE;
+}
+
+I64 ExeCmdLine(LexStruct *lx)
+{
+  I64 result=0,i,type;
+  U8 *ptr,*ptr2,*ptr3;
+  U8 *code;
+  LtfEntry *cl;
+  Ltf *l;
+  while (lx->token &&
+    (lx->token!='}' || !(lx->flags & LF_EXE_BLK)) ) {
+    if (!Bt(&Fs->task_flags,TASKf_LOCK_TITLE)) {
+      ptr2=&Fs->task_title;
+      ptr3=ptr2+TASK_TITLE_LEN;
+      if (lx->cur_lfn->flags & LFSF_IS_LTF) {
+	cl=lx->cur_lfn->line_start;
+	l=lx->cur_lfn->l;
+	while (cl!=l && ptr2<ptr3) {
+	  switch (cl->type_u8 && ptr2<ptr3) {
+	    case LTFT_TEXT:
+	      ptr=cl->tag;
+	      while (*ptr && ptr2<ptr3)
+		*ptr2++=*ptr++;
+	      break;
+	    case LTFT_TAB:
+	    case LTFT_CR:
+	      *ptr2++='.';
+	      break;
+	  }
+	  cl=cl->next;
+	}
+      } else
+	if (ptr=lx->cur_lfn->line_start)
+	  MemCpy(ptr2,ptr,TASK_TITLE_LEN);
+    }
+    lx->flags&=~LF_HAS_MISC_DATA;
+    code=CmpStatement(lx,&type);
+    if (code!=INVALID_PTR) {
+      if (!(lx->flags&LF_JUST_LOAD)) {
+	result=Call(code);
+	for (i=2;i>=0;i--) {
+	  Fs->answers[i+1]=Fs->answers[i];
+	  Fs->answer_types[i+1]=Fs->answer_types[i];
+	}
+	Fs->answers[0]=result;
+	Fs->answer_types[0]=type;
+      }
+      if (!(lx->flags&LF_HAS_MISC_DATA))
+	Free(code);
+    }
+  }
+  if (lx->flags&LF_JUST_LOAD) {
+    if (lx->error_cnt)
+      return FALSE;
+    else
+      return TRUE;
+  } else
+    return result;
+}
+
+U0 UserTaskCont()
+{
+  LexStruct *lx;
+  Ltf *l;
+  BoolI8 cont=TRUE;
+  do {
+    lx=LexNew(NULL,LF_PROMPT,NULL);
+    InsQue(lx,Fs->last_lex);
+    try {
+      Lex(lx);
+      ExeCmdLine(lx);
+      cont=Bt(&lx->flags,Lf_PROMPT);
+      RemQue(lx);
+      LexDel(lx);
+    } catch {
+      l=Fs->last_ltf;
+      if (l!=(&Fs->next_ltf)><(U8 *)-offset(Ltf.next_ltf) &&
+	  l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL)
+	LtfUnlock(l);
+      CatchAll;
+    }
+  } while (cont);
+}
+
+U8 *CmpMGetS(U64 flags)
+{
+  nounusedwarn flags;
+  U8 buf[512];
+  GetS(buf,512,FALSE);
+  return StrNew(buf);
+}
+
+U0 DefineRegs()
+{
+  I64 i;
+  U8 buf1[8],buf2[8];
+  DefineLoad("RAX","Fs->rax");
+  DefineLoad("RBX","Fs->rbx");
+  DefineLoad("RCX","Fs->rcx");
+  DefineLoad("RDX","Fs->rdx");
+  DefineLoad("RSI","Fs->rsi");
+  DefineLoad("RDI","Fs->rdi");
+  DefineLoad("RBP","Fs->rbp");
+  DefineLoad("RSP","Fs->rsp");
+  DefineLoad("RIP","Fs->rip");
+  for (i=8;i<16;i++) {
+    SPrintF(buf1,"R%d",i);
+    SPrintF(buf2,"Fs->r%d",i);
+    DefineLoad(buf1,buf2);
+  }
+}
+
+U0 CmpDbg(BoolI8 was_in_debugger)
+{
+  BoolI8 old_user_task,old_waiting_msg;
+  U64 i,old_dbg_mgets;
+  U8 buf[200];
+  SysHashTable *tempht;
+
+  if (IsRaw) {
+    i=Fs->rip;
+    Ui(buf,&i,64);
+    PutS(buf);
+  } else
+    U(Fs->rip,1);
+
+  if (!was_in_debugger) {
+    old_waiting_msg=LBtr(&Fs->task_flags,TASKf_AWAITING_MSG);
+    old_user_task=Bt(&Fs->task_flags,TASKf_LOCAL_USER);
+    UserTaskInit;
+    sys_cur_focus_task=Fs;
+    sys_cur_scan_code=0;
+    old_dbg_mgets=fp_mgets;
+    fp_mgets=&CmpMGetS;
+    while (!mouse_install_attempts)
+      OverRideSingleUserSwap;
+
+    tempht=HashTableNew(STD_HASH_SIZE);
+    tempht->next=Fs->hash_table;
+    Fs->hash_table=tempht;
+    DefineRegs;
+    UserTaskCont;
+    Fs->hash_table=tempht->next;
+    HashTableDel(tempht);
+
+    fp_mgets=old_dbg_mgets;
+    LBEqu(&Fs->task_flags,TASKf_LOCAL_USER,old_user_task);
+    LBEqu(&Fs->task_flags,TASKf_AWAITING_MSG,old_waiting_msg);
+  }
+}
+
+U0 CmpExitDbg()
+{
+  if (IsInDbg) {
+    PutS("Exit Dbg\r\n");
+    CmdLineExit;
+  }
+}
+
+#define ADAM_STARTUP_NAME "/LT/OSMain/Adam1.APZ"
+
+U0 DateTimeFmtMapsRst()
+{
+  I64 i;
+  for (i=0;i<NUM_DATE_FMTS;i++)
+    date_fmt_map[i]=i;
+  for (i=0;i<NUM_TIME_FMTS;i++)
+    time_fmt_map[i]=i;
+}
+
+U0 OSMain2()
+{
+  BoolI8 okay=TRUE;
+  LexStruct *lx=LexNew(TextFileRead(ADAM_STARTUP_NAME),1<<Lf_RAW_ERRORS,
+    StrNew(ADAM_STARTUP_NAME));
+  InsQue(lx,Fs->last_lex);
+  psect_cache=CAlloc(PSECT_CACHE_SIZE*sizeof(PSectCacheEntry));
+  psect_cache_index=0;
+
+  date_fmt_map=MAlloc(NUM_DATE_FMTS);
+  time_fmt_map=MAlloc(NUM_TIME_FMTS);
+  DateTimeFmtMapsRst;
+
+  fp_sprintf_join=&SPrintFJoin2;
+  fp_getf_join=&GetFJoin2;
+  ext[EXT_DEBUGGER]=&CmpDbg;
+  ext[EXT_EXIT_DEBUGGER]=&CmpExitDbg;
+
+  LBts(&sys_run_level,RLf_SPRINTF);
+
+  //Continues Here [/LT/OSMain/Adam1.APZ,1] /LT/OSMain/Adam1.APZ
+  try {
+    Lex(lx);
+    ExeCmdLine(lx);
+    RemQue(lx);
+    LexDel(lx);
+  } catch {
+    CatchAll;
+    okay=FALSE;
+  }
+  if (!okay)
+    Dbg("Adam Start-Up Error");
+}
+
+OSMain2;

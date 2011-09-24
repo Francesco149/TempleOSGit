@@ -1,3 +1,0 @@
-ChangeDisk('T');
-
-U1 *buf=P(0xadb);

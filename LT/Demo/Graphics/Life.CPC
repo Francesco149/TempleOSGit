@@ -1,0 +1,97 @@
+GrBitMap *base[2]; //dbl buf
+I64 cur_base,;
+BoolI8 restart;
+
+U0 DrawIt(TaskStruct *task,GrBitMap *b)
+{
+  nounusedwarn task;
+  GrBlot(b,0,0,base[cur_base]);
+}
+
+U0 AnimateTask(U64 dummy=0)
+{
+  nounusedwarn dummy;
+  I64 x,y,x1,y1,cnt,next_base;
+  while (TRUE) {
+    next_base=cur_base^1;
+start_over:
+    restart=FALSE;
+    GrClear(base[next_base]);
+    for (y=1;y<Fs->parent_task->win_pixel_height-1;y++) {
+      for (x=1;x<Fs->parent_task->win_pixel_width-1;x++) {
+	cnt=0;
+	for (y1=y-1;y1<=y+1;y1++)
+	  for (x1=x-1;x1<=x+1;x1++)
+	    if (GrPeek(base[cur_base],x1,y1)==GREEN)
+	      cnt++;
+	if (restart) goto start_over;
+	if (GrPeek(base[cur_base],x,y)==GREEN) {
+	  if (cnt==3) {
+	    base[next_base]->color=GREEN;
+	    GrPlot(base[next_base],x,y);
+	  }
+	} else {
+//	  if (cnt==3) { //Use this for the classic rules
+	  if (cnt==2) {
+	    base[next_base]->color=GREEN;
+	    GrPlot(base[next_base],x,y);
+	  }
+	}
+      }
+      Yield;
+    }
+    Sleep(50);
+    cur_base=next_base;
+  }
+}
+
+public U0 Life()
+{
+  I64 msg_code,cnt,x1,y1,x2,y2,p1,p2;
+
+  base[0]=GrNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  base[1]=GrNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  cur_base=0;
+  restart=FALSE;
+
+  SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  WinMax;
+  GrClear;
+  PutS("$CL$");
+
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
+  WordStat(OFF);
+  Fs->draw_it=&DrawIt;
+  Fs->win_inhibit=WIF_ALL-WIF_BORDER;
+
+  do {
+    msg_code=GetMsg(&p1,&p2,
+      1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN);
+    switch (msg_code) {
+      case MSG_IP_L_DOWN:
+	x1=p1; y1=p2;
+	x2=p1; y2=p2;
+	cnt=0;
+	while (msg_code!=MSG_IP_L_UP) {
+	  restart=TRUE;
+	  base[cur_base]->color=ROP_EQU+GREEN;
+	  GrSpeedLine(base[cur_base],x1,y1,x2,y2,ip_speed);
+	  restart=TRUE;
+	  msg_code=GetMsg(&p1,&p2,
+  	    1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
+	  x1=x2; y1=y2;
+	  x2=p1; y2=p2;
+	}
+	GrLine3(base[cur_base],x1,y1,0,x2,y2,0);
+	break;
+      case MSG_KEY_DOWN:
+	break;
+    }
+  } while (msg_code!=MSG_KEY_DOWN || !p1);
+  SettingsPop;
+  GrClear;
+  GrDel(base[0]);
+  GrDel(base[1]);
+}
+
+Life;

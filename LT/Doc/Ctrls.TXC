@@ -1,0 +1,7 @@
+To create a LoseThos ctrl, you define call-back functions and insert a
+[C:/LT/OSMain/Adam1a.HPZ,2909] Ctrl 
+structure in the [C:/LT/OSMain/Adam1a.HPZ,3081] TaskStruct queue.  See
+[::/LT/Demo/Graphics/MixerCtrl.CPZ] ::/LT/Demo/Graphics/MixerCtrl.CPZ, 
+[::/LT/Demo/Graphics/ScrollBars.CPZ] ::/LT/Demo/Graphics/ScrollBars.CPZ and
+[::/LT/Adam/WallPaper.APZ,TermButtonNew] TermButtonNew.
+

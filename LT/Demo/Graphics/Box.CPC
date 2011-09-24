@@ -1,0 +1,51 @@
+GrBitMap *base=GrAlias(gr_refreshed_base,Fs);
+
+U0 UpdateWin(TaskStruct *task)
+{
+  nounusedwarn task;
+  base->pen_width=2;
+  base->color=RED;
+  GrLine3(base,-100,-100,-100, -100, 100,-100);
+  GrLine3(base,-100, 100,-100,	100, 100,-100);
+  GrLine3(base, 100, 100,-100,	100,-100,-100);
+  GrLine3(base, 100,-100,-100, -100,-100,-100);
+  GrLine3(base,-100,-100, 100, -100, 100, 100);
+  GrLine3(base,-100, 100, 100,	100, 100, 100);
+  GrLine3(base, 100, 100, 100,	100,-100, 100);
+  GrLine3(base, 100,-100, 100, -100,-100, 100);
+  GrLine3(base,-100,-100, 100, -100,-100,-100);
+  GrLine3(base,-100, 100, 100, -100, 100,-100);
+  GrLine3(base, 100, 100, 100,	100, 100,-100);
+  GrLine3(base, 100,-100, 100,	100,-100,-100);
+}
+
+U0 Box()
+{
+  F64 theta=0,phi=0,zeta=0,s=1,s1=1.05;
+
+  SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  Fs->update_win=&UpdateWin;
+  Preempt(OFF); //We don't want matrix used while we're changing it.
+
+  base->x=200;
+  base->y=200;
+  base->flags|=BMF_TRANSFORMATION;
+  while (!ScanChar) {
+    GrIdentEqu(base->r);
+    GrRotZEqu(base->r,theta);
+    GrRotXEqu(base->r,phi);
+    GrRotZEqu(base->r,zeta);
+    GrScaleMatEqu(base->r,s);
+    GrSetRotMat(base,base->r);
+
+    Sleep(20);
+    theta+=2*pi/70;
+    phi  +=2*pi/90;
+    zeta +=2*pi/110;
+    s *=s1;
+    if ( !(0.2<s<1.4) ) s1=1/s1;
+  }
+  SettingsPop;
+}
+
+Box;

@@ -1,0 +1,24 @@
+U0 UpdateWin(TaskStruct *task)
+{
+  I64 i,j;
+  U16 *ptr=gr_win_z_buf;
+  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  base->color=BLACK;
+  GrPutS(base,0,0,"Move the windows around and watch.");
+  for (i=0;i<TEXT_ROWS;i++)
+    for (j=0;j<TEXT_COLS;j++) {
+      base->color=*ptr++&15;
+      GrPlot(base,j,i+FONT_HEIGHT);
+    }
+  GrDel(base);
+}
+
+U0 ScrollBars()
+{
+  SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  Fs->update_win=&UpdateWin;
+  GetChar(NULL,FALSE);
+  SettingsPop;
+}
+
+ScrollBars;

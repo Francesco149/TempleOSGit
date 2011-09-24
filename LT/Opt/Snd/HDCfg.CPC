@@ -1,0 +1,665 @@
+#define MAX_CONNECTS	16
+
+class MyMass:MassStruct
+{
+  F64 radius;
+  U8 nid,type,num_connects,cur_connect;
+  U32 audio_widget_capabilities;
+  U8 connect_list[MAX_CONNECTS];
+  U8 gain_list[MAX_CONNECTS];
+  U32 pin_capabilities,pin_sense,
+     pcm_size_rates,
+     in_amp_cap,out_amp_cap;
+  U8 pin_widget_ctl;
+  BoolI8 disabled;
+};
+
+class MySpring:SpringStruct
+{
+  I64 color;
+};
+
+Ode *ode=NULL;
+
+#define BORDER	10
+
+
+U0 UpdateWin(TaskStruct *task)
+{
+  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  BoolI8 old_suspend,old_preempt;
+  I16 *buf;
+  I64 i,cxx,cyy,
+    cy=task->win_pixel_height>>1;
+  F64 dx,dy,d;
+  MyMass   *tempm;
+  MySpring *temps;
+
+  old_preempt=Preempt(OFF);
+  old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
+  temps=ode->next_spring;
+  while (temps!=&ode->next_spring) {
+    base->color=temps->color;
+    GrLine(base,temps->end1->x,temps->end1->y,
+		temps->end2->x,temps->end2->y);
+    cxx=(temps->end1->x+temps->end2->x)/2;
+    cyy=(temps->end1->y+temps->end2->y)/2;
+    dx=temps->end1->x-temps->end2->x;
+    dy=temps->end1->y-temps->end2->y;
+    d=Sqrt(dx*dx+dy*dy);
+    dx/=d;
+    dy/=d;
+    GrLine(base,cxx,cyy,cxx+3.0*dy-3.0*dx,cyy-3.0*dx-3.0*dy);
+    GrLine(base,cxx,cyy,cxx-3.0*dy-3.0*dx,cyy+3.0*dx-3.0*dy);
+    temps=temps->next;
+  }
+
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    if (tempm->disabled)
+      base->color=BLUE;
+    else
+      base->color=LTBLUE;
+    GrCircle(base,tempm->x,tempm->y,tempm->radius);
+    GrPrintF(base,tempm->x,tempm->y-FONT_HEIGHT/2,"%02X %3tZ",
+	tempm->nid,tempm->type,
+	"ST_AUDIO_WIDGET_TYPES");
+    tempm=tempm->next;
+  }
+  LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
+  Preempt(old_preempt);
+  base->color=BLUE;
+  buf=_hda->istr0_buf[0];
+  for (i=0;i<SND_BUF_LEN;i++)
+    GrPlot(base,i*task->win_pixel_width/SND_BUF_LEN,
+      cy-buf[i]*cy/MAX_I16);
+
+  GrDel(base);
+}
+
+
+U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+{
+//The forces due to springs and drag are
+//automatically handled by the
+//ode code.  We can add new forces
+//here.
+  nounusedwarn t,state,DstateDt;
+  TaskStruct *task=ode->win_task;
+  I64 h=task->win_pixel_width,v=task->win_pixel_height;
+  F64 d,dd;
+  D3 p;
+  MyMass *tempm1,*tempm2;
+
+  tempm1=ode->next_mass;
+  while (tempm1!=&ode->next_mass) {
+    tempm2=tempm1->next;
+    while (tempm2!=&ode->next_mass) {
+      D3Sub(&tempm2->state->x,&tempm1->state->x,&p);
+      dd=D3SqrNorm(&p);
+      if (dd<=Sqr(tempm1->radius+tempm2->radius)) {
+	d=Sqrt(dd)+0.0001;
+	dd=10.0*Sqr(Sqr(Sqr(tempm1->radius+tempm2->radius)-dd));
+	D3MulEqu(&p,dd/d);
+	D3AddEqu(&tempm2->DstateDt->DxDt,&p);
+	D3SubEqu(&tempm1->DstateDt->DxDt,&p);
+      } else {
+	D3MulEqu(&p,100000.0/dd);
+	D3AddEqu(&tempm2->DstateDt->DxDt,&p);
+	D3SubEqu(&tempm1->DstateDt->DxDt,&p);
+      }
+      tempm2=tempm2->next;
+    }
+    if (tempm1->state->x<BORDER)
+      tempm1->DstateDt->DxDt+=1000*Sqr(tempm1->state->x-BORDER);
+    if (tempm1->state->y<BORDER)
+      tempm1->DstateDt->DyDt+=1000*Sqr(tempm1->state->y-BORDER);
+    if (tempm1->state->x>h-BORDER-FONT_WIDTH*6)
+      tempm1->DstateDt->DxDt-=1000*Sqr(tempm1->state->x-(h-BORDER-FONT_WIDTH*6));
+    if (tempm1->state->y>v-BORDER)
+      tempm1->DstateDt->DyDt-=1000*Sqr(tempm1->state->y-(v-BORDER));
+    tempm1=tempm1->next;
+  }
+}
+
+MyMass *PlaceMass(I64 nid)
+{
+  MyMass *tempm=CAlloc(sizeof(MyMass));
+  tempm->mass=1.0;
+  tempm->drag_profile_factor=100.0;
+  tempm->radius=5;
+  tempm->nid=nid;
+  tempm->gain_list[0]=0x7F;
+  MemSet(tempm->gain_list+1,0x80,(MAX_CONNECTS-1)*sizeof(U8));
+  InsQue(tempm,ode->last_mass);
+  return tempm;
+}
+
+MyMass *FindMassByNID(I64 nid)
+{
+  MyMass   *tempm;
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    if (tempm->nid==nid)
+      return tempm;
+    tempm=tempm->next;
+  }
+  return NULL;
+}
+
+MyMass *FindMassByXY(I64 x,I64 y)
+{
+  I64 dd,best_dd=MAX_I64,result=NULL;
+  MyMass   *tempm;
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    dd=SqrI64(tempm->x-x)+SqrI64(tempm->y-y);
+    if (dd<best_dd) {
+      result=tempm;
+      best_dd=dd;
+    }
+    tempm=tempm->next;
+  }
+  return result;
+}
+
+I64 FindConnectIndex(MyMass *tempm,I64 nid)
+{
+  I64 i;
+  for (i=0;i<tempm->num_connects;i++)
+    if (tempm->connect_list[i]==nid)
+      return i;
+  return -1;
+}
+
+
+MySpring *PlaceSpring(MyMass *tempm1,MyMass *tempm2)
+{
+  MySpring *temps=CAlloc(sizeof(MySpring));
+  temps->end1=tempm1;
+  temps->end2=tempm2;
+  temps->constant=10;
+  temps->rest_len=0;
+  temps->color=LTGRAY;
+  InsQue(temps,ode->last_spring);
+  return temps;
+}
+
+U0 RedoSprings()
+{
+  I64 i,k;
+  MyMass   *tempm,*tempm1;
+  MySpring *temps,*temps1;
+
+  temps=ode->next_spring;
+  while (temps!=&ode->next_spring) {
+    temps1=temps->next;
+    RemQue(temps);
+    Free(temps);
+    temps=temps1;
+  }
+
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    for (i=0;i<tempm->num_connects;i++) {
+      if ((k=tempm->connect_list[i]) &&
+	  (tempm1=FindMassByNID(k)) ) {
+	temps=PlaceSpring(tempm,tempm1);
+	switch (tempm->type) {
+	  case AWT_MIXER:
+	    if (!(tempm->gain_list[i]&0x80)) { //If not mute
+	      temps->color=GREEN;
+	      temps->constant=100;
+	    }
+	    break;
+	  case AWT_INPUT:
+	  case AWT_SELECTOR:
+	  case AWT_PIN_COMPLEX:
+	  case AWT_VENDOR:
+	    if (i==tempm->cur_connect) {
+	      temps->color=RED;
+	      temps->constant=100;
+	    }
+	    break;
+	}
+      }
+    }
+    tempm=tempm->next;
+  }
+}
+
+U0 Init()
+{
+  ode=OdeNew(0,1e-4,ODEF_HAS_MASSES);
+  ode->derivative=&MyDerivative;
+  ode->drag_v2=0.002;
+  ode->drag_v3=0.00001;
+  ode->acceleration_limit=5e3;
+
+  InsQue(ode,Fs->last_ode);
+}
+
+U0 CleanUp()
+{
+  MyMass   *tempm,*tempm1;
+  MySpring *temps,*temps1;
+
+  RemQue(ode);
+
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    tempm1=tempm->next;
+    RemQue(tempm);
+    Free(tempm);
+    tempm=tempm1;
+  }
+
+  temps=ode->next_spring;
+  while (temps!=&ode->next_spring) {
+    temps1=temps->next;
+    RemQue(temps);
+    Free(temps);
+    temps=temps1;
+  }
+
+  OdeDel(ode);
+}
+
+U0 HDCfgConnectList(MyMass *tempm,I64 cad,I64 nid)
+{
+  I64 i,j,connection_list_len;
+  j=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_CONNECT_LIST_LEN);
+  connection_list_len=j&127;
+  if (j&128) { //Long form?
+    for (i=0;i<connection_list_len;i+=2) {
+      j=HDWriteCORBSync(cad,nid,VERB_GET_CONNECT_LIST+i);
+      tempm->connect_list[tempm->num_connects++]=j.u16[0];
+      if (i+1<connection_list_len)
+	tempm->connect_list[tempm->num_connects++]=j.u16[1];
+    }
+  } else {
+    for (i=0;i<connection_list_len;i+=4) {
+      j=HDWriteCORBSync(cad,nid,VERB_GET_CONNECT_LIST+i);
+      tempm->connect_list[tempm->num_connects++]=j.u8[0];
+      if (i+1<connection_list_len)
+	tempm->connect_list[tempm->num_connects++]=j.u8[1];
+      if (i+2<connection_list_len)
+	tempm->connect_list[tempm->num_connects++]=j.u8[2];
+      if (i+3<connection_list_len)
+	tempm->connect_list[tempm->num_connects++]=j.u8[3];
+    }
+  }
+}
+
+U0 HDCfgTraverse(I64 cad,I64 nid)
+{
+  I64 i,j;
+  MyMass *tempm=PlaceMass(nid);
+  j=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_SUBNODE_CNT);
+  if (j.u16[0]) {
+    tempm->type=AWT_NODE;
+    for (i=j.u16[1];i<j.u16[1]+j.u16[0];i++)
+      HDCfgTraverse(cad,i);
+  } else {
+    tempm->audio_widget_capabilities=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_AUDIO_WIDGET_CAP);
+    tempm->pcm_size_rates=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_SAMPLE_SIZE_RATE_CAP);
+    tempm->in_amp_cap=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_INPUT_AMP_CAP);
+    tempm->out_amp_cap=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_OUTPUT_AMP_CAP);
+    tempm->type=tempm->audio_widget_capabilities>>20&15;
+    switch (tempm->type) {
+      case AWT_PIN_COMPLEX:
+	tempm->pin_widget_ctl=HDWriteCORBSync(cad,nid,VERB_PIN_WIDGET_CTL_GET);
+	tempm->pin_capabilities=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_PIN_CAP);
+	if (Bt(&tempm->pin_capabilities,0) ||
+	    Bt(&tempm->pin_capabilities,2))
+	  tempm->pin_sense=HDWriteCORBSync(cad,nid,VERB_PIN_SENSE_GET);
+	HDWriteCORBSync(cad,nid,VERB_CONNECT_SELECT_SET+0x00);
+	break;
+      case AWT_INPUT:
+	tempm->disabled=TRUE;
+      case AWT_SELECTOR:
+      case AWT_VENDOR:
+	HDWriteCORBSync(cad,nid,VERB_CONNECT_SELECT_SET+0x00);
+	break;
+    }
+    if (Bt(&tempm->audio_widget_capabilities,8))
+      HDCfgConnectList(tempm,cad,nid);
+  }
+}
+
+U0 HDCfgRandomizeXY()
+{
+  I64 h=Fs->win_pixel_width,v=Fs->win_pixel_height;
+  MyMass   *tempm;
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    tempm->x=RandU32%(h-2*BORDER-FONT_WIDTH*6)+BORDER;
+    tempm->y=RandU32%(v-2*BORDER)+BORDER;
+    tempm=tempm->next;
+  }
+}
+
+U0 HDCfgPopUpInfoTask(MyMass *tempm)
+{
+  I64 i;
+  PrintF("$FG,RED$NID:$FG$0x%02X $FG,RED$Type:$FG$%Z\r\n",
+	tempm->nid,tempm->type,
+	"ST_AUDIO_WIDGET_TYPES");
+
+  i=tempm->audio_widget_capabilities;
+  PutS("\r\n$FG,RED$Audio Widget Capabilities:$FG$\r\n");
+  if (Bt(&i,0))
+     PutS("Stereo, ");
+  if (Bt(&i,1))
+     PutS("In Amp, ");
+  if (Bt(&i,2))
+     PutS("Out Amp, ");
+  if (Bt(&i,3))
+     PutS("Amp Override, ");
+  if (Bt(&i,4))
+     PutS("Fmt Override, ");
+  if (Bt(&i,5))
+     PutS("Stripe, ");
+  if (Bt(&i,6))
+     PutS("Proc Wgt, ");
+  if (Bt(&i,7))
+     PutS("Unsolicited, ");
+  if (Bt(&i,8))
+     PutS("Cnt List, ");
+  if (Bt(&i,9))
+     PutS("Digital, ");
+  if (Bt(&i,10))
+     PutS("Power Ctrl, ");
+  if (Bt(&i,11))
+     PutS("Left/Right Swap, ");
+  PrintF("Delay:%d\r\n",i.u16[1]&0xF);
+
+  i=tempm->in_amp_cap;
+  PutS("\r\n$FG,RED$Input Amp Capabilities:$FG$\r\n");
+  PrintF("Offset:0x%02X Steps:0x%02X StepSize:%5.2fdB Mutable:%d\r\n",
+    i&127,i.u8[1]&127+1,0.25*(i.u16[1]&127),Bt(&i,31));
+
+  i=tempm->out_amp_cap;
+  PutS("\r\n$FG,RED$Output Amp Capabilities:$FG$\r\n");
+  PrintF("Offset:0x%02X Steps:0x%02X StepSize:%5.2fdB Mutable:%d\r\n",
+    i&127,i.u8[1]&127+1,0.25*(i.u16[1]&127),Bt(&i,31));
+
+  PutS("\r\n$FG,RED$Size Rates Capabilities:$FG$\r\n");
+  for (i=0;i<21;i++)
+    if (Bt(&tempm->pcm_size_rates,i))
+      PrintF("%z",i,
+	" 8.0kHz\0 11.025kHz\0 16.0kHz\0 22.05kHz\0"
+	" 32.0kHz\0 44.1kHz\0 48.0kHz\0 88.2kHz\0"
+	" 96.0kHz\0 176.4kHz\0 192.0kHz\0 384kHz\0"
+	" \0 \0 \0 \0"
+	" 8Bit\0 16bit\0 20Bit\0 24Bit\0 32Bit\0");
+  CrLf;
+
+ 
+  PutS("\r\n$FG,RED$Connection List:$FG$\r\n");
+  for (i=0;i<tempm->num_connects;i++)
+    PrintF("%02X,",tempm->connect_list[i]);
+  CrLf;
+
+  PutS("\r\n$FG,RED$Gain List:$FG$\r\n");
+  for (i=0;i<tempm->num_connects;i++)
+    PrintF("%02X,",tempm->gain_list[i]);
+  CrLf;
+
+  switch (tempm->type) {
+    case AWT_PIN_COMPLEX:
+      PutS("\r\n$FG,RED$Pin Capabilities:$FG$\r\n");
+      i=tempm->pin_capabilities;
+      if (Bt(&i,0))
+	PutS("Impedance Sense, ");
+      if (Bt(&i,1))
+	PutS("Trigger Required, ");
+      if (Bt(&i,2))
+	PutS("Presence Detect, ");
+      if (Bt(&i,3))
+	PutS("Headphone Drive, ");
+      if (Bt(&i,4))
+	PutS("Output, ");
+      if (Bt(&i,5))
+	PutS("Input, ");
+      if (Bt(&i,6))
+	PutS("Balanced, ");
+      if (Bt(&i,16))
+	PutS("EAPD, ");
+      PrintF("Vref:%02X\r\n\r\n",i.u8[1]);
+      if (Bt(&tempm->pin_capabilities,0) ||
+	  Bt(&tempm->pin_capabilities,2))
+	tempm->pin_sense=HDWriteCORBSync(_hda->cad,tempm->nid,VERB_PIN_SENSE_GET);
+      if (Bt(&tempm->pin_capabilities,0))
+	PrintF("Impedance Measurement:%08X\r\n",
+	 tempm->pin_sense&0x7FFFFFFF);
+      if (Bt(&tempm->pin_capabilities,2))
+	PrintF("Presence:%d\r\n",Bt(&tempm->pin_sense,31));
+      PutS("\r\n\r\nPin widget ctrl bits:\r\n"
+	     "  7: High phn enable (low impedance output amp)\r\n"
+	     "  6: Output Enable\r\n"
+	     "  5: Input Enable\r\n"
+	     "0-2: Vref 0=HiZ 1=50% 2=Gnd 4=80% 5=100%\r\n");
+      tempm->pin_widget_ctl=PmtI64("Widget Ctrl (0x%02X):",tempm->pin_widget_ctl,0,0xFF);
+      HDWriteCORBSync(_hda->cad,tempm->nid,VERB_PIN_WIDGET_CTL_SET+tempm->pin_widget_ctl);
+      break;
+    case AWT_INPUT:
+      PutS("Disable");
+      if (tempm->disabled=YorN)
+	HDWriteCORBSync(_hda->cad,tempm->nid,VERB_CHAN_STREAM_ID_SET+0x00);
+      else
+	HDWriteCORBSync(_hda->cad,tempm->nid,VERB_CHAN_STREAM_ID_SET+0x20);
+      CrLf;
+      break;
+    case AWT_OUTPUT:
+      PutS("Disable");
+      if (tempm->disabled=YorN)
+	HDWriteCORBSync(_hda->cad,tempm->nid,VERB_CHAN_STREAM_ID_SET+0x00);
+      else
+	HDWriteCORBSync(_hda->cad,tempm->nid,VERB_CHAN_STREAM_ID_SET+0x10);
+      CrLf;
+      break;
+  }
+}
+
+U0 HDCfgPopUpInfo(MyMass *tempm)
+{
+  U8 buf[80];
+  SPrintF(buf,"HDCfgPopUpInfoTask(0x%X);PutS(\"\\r\\nPress SHIFT-ESC\\r\\n\\r\\n\");View;",tempm);
+  PopUp(buf,Fs);
+}
+
+U0 HDCfgEdLink(MyMass *tempm_out,MyMass *tempm_in)
+{
+  I64 i,j;
+  if ((i=FindConnectIndex(tempm_in,tempm_out->nid))>=0) {
+    switch (tempm_in->type) {
+      case AWT_MIXER:
+	MemSet(tempm_in->gain_list,0x80,sizeof(U8)*MAX_CONNECTS);
+	tempm_in->gain_list[i]=0x7F;
+	for (j=0;j<tempm_in->num_connects;j++)
+	  HDWriteCORBSync(_hda->cad,tempm_in->nid,
+	    VERB_AMPLIFIER_GAIN_SET+0x7000+tempm_in->gain_list[j]+j<<8);
+	break;
+      case AWT_INPUT:
+      case AWT_SELECTOR:
+      case AWT_PIN_COMPLEX:
+      case AWT_VENDOR:
+	tempm_in->cur_connect=i;
+	HDWriteCORBSync(_hda->cad,tempm_in->nid,VERB_CONNECT_SELECT_SET+i);
+	break;
+    }
+    RedoSprings;
+  }
+}
+
+U0 HDCfgSave()
+{
+  Ltf *l=LtfNew;
+  I64 i;
+  MyMass   *tempm;
+  LtfPutS(l,"//This file was generated by $LK,\"::/LT/Opt/Snd/HDCfg.CPZ\",\"FI:::/LT/Opt/Snd/HDCfg.CPZ\"$\r\n\r\n"
+	    "U0 MyHDCfg()\r\n{\r\n");
+  tempm=ode->next_mass;
+  while (tempm!=&ode->next_mass) {
+    LtfPrintF(l,"  //0x%02X %Z\r\n",tempm->nid,tempm->type,"ST_AUDIO_WIDGET_TYPES");
+    if (tempm->num_connects) {
+      LtfPutS(l,"  //Connection List:");
+      for (i=0;i<tempm->num_connects;i++) {
+	if (i==tempm->cur_connect)
+	  LtfPutS(l,"*");
+	LtfPrintF(l,"0x%02X ",tempm->connect_list[i]);
+      }
+      LtfPutS(l,"\r\n");
+      if (tempm->type==AWT_MIXER) {
+	LtfPutS(l,"  //Gain List:");
+	for (i=0;i<tempm->num_connects;i++)
+	  LtfPrintF(l,"0x%02X ",tempm->gain_list[i]);
+	LtfPutS(l,"\r\n");
+      }
+    }
+    switch (tempm->type) {
+      case AWT_OUTPUT:
+	if (tempm->disabled)
+	  LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_CHAN_STREAM_ID_SET+0x00);\r\n",
+	    tempm->nid);
+	else
+	  LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_CHAN_STREAM_ID_SET+0x10);\r\n",
+	    tempm->nid);
+	break;
+      case AWT_MIXER:
+	LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_AMPLIFIER_GAIN_SET+0xB07F);\r\n",
+	    tempm->nid);
+	for (i=0;i<tempm->num_connects;i++)
+	  LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_AMPLIFIER_GAIN_SET+0x%04X);\r\n",
+	    tempm->nid,0x7000+tempm->gain_list[i]+i<<8);
+	break;
+      case AWT_INPUT:
+	if (tempm->disabled)
+	  LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_CHAN_STREAM_ID_SET+0x00);\r\n",
+	    tempm->nid);
+	else
+	  LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_CHAN_STREAM_ID_SET+0x20);\r\n",
+	    tempm->nid);
+	goto here;
+      case AWT_PIN_COMPLEX:
+	LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_PIN_WIDGET_CTL_SET+0x%02X);\r\n",
+	   tempm->nid,tempm->pin_widget_ctl);
+      case AWT_SELECTOR:
+      case AWT_VENDOR:
+here:
+	if (tempm->num_connects>1)
+	  LtfPrintF(l,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_CONNECT_SELECT_SET+0x%02X);\r\n",
+	    tempm->nid,tempm->cur_connect);
+	break;
+    }
+    LtfPutS(l,"\r\n");
+    tempm=tempm->next;
+  }
+  LtfPutS(l,"  LBtr(&sys_semas[SYS_SEMA_SND],0);\r\n"
+	    "}\r\n\r\nif (snd_dev==SD_HD_AUDIO)\r\n"
+		     "  MyHDCfg;\r\n");
+  StrCpy(l->filename.name,"HOME/HDAudioCfg.APZ");
+  LtfWrite(l);
+  LtfDel(l);
+}
+
+U0 HDCfg()
+{
+  I64 p1,p2;
+  MyMass *tempm1=NULL,*tempm2=NULL;
+
+  if (snd_dev!=SD_HD_AUDIO) {
+    PutS("HD Audio not detected\r\n");
+    return;
+  }
+  HDAudioInit;
+
+  MenuPush(
+"File {"
+"  Abort(,CH_SHIFT_ESC);"
+"  Exit(,CH_ESC);"
+"}"
+"Edit {"
+"  Randomize(,CH_CR);"
+"  Options(,CH_SPACE);"
+"}"
+  );
+  SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  Preempt(OFF);
+  LtfBottom;
+  LtfClear;
+  WordStat(OFF);
+  WinMax;
+  WinBorder(OFF);
+  LtfCursor(OFF);
+  Fs->win_inhibit|=WIF_DBL_CLICK;
+  Init;
+
+  HDCfgTraverse(_hda->cad,0);
+  HDCfgRandomizeXY;
+  RedoSprings;
+  Fs->update_win=&UpdateWin;
+  PopUpOk(
+"This is a tool to cfgure\r\n"
+"HD Audio.  It creates $FG,RED$HOME/HDAudioCfg.APZ$FG$\r\n"
+"which you should $FG,GREEN$#include$FG$ in your\r\n"
+"$FG,RED$HOME/Adam3cSnd.APZ$FG$ file.\r\n\r\n\r\n"
+"Left click to see info and cfgure a widget.\r\n"
+"Right click drag to connect output to input.\r\n\r\n"
+"You will need to set input and output amplifier\r\n"
+"gains by hand -- edit $FG,RED$HOME/HDAudioCfg.APZ$FG$.\r\n\r\n"
+"The $FG,BLUE$BLUE$FG$ line in the middle is microphone waveform.\r\n\r\n"
+);
+
+  HDRun(TRUE,TRUE); //run input output
+  Snd(500,WF_SINE,0.50);
+
+  try {
+    while (TRUE) {
+      switch (GetMsg(&p1,&p2,1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP|1<<MSG_KEY_DOWN)) {
+	case MSG_IP_L_UP:
+	  if (tempm1=FindMassByXY(p1,p2))
+	    HDCfgPopUpInfo(tempm1);
+	  tempm1=NULL;
+	  break;
+	case MSG_IP_R_DOWN:
+	  tempm1=FindMassByXY(p1,p2);
+	  break;
+	case MSG_IP_R_UP:
+	  tempm2=FindMassByXY(p1,p2);
+	  if (tempm1 && tempm2)
+	    HDCfgEdLink(tempm1,tempm2);
+	  break;
+	case MSG_KEY_DOWN:
+	  switch (p1) {
+	    case CH_SPACE:
+	      if (tempm1=FindMassByXY(ipx-Fs->win_pixel_left-Fs->win_scroll_x,ipy-Fs->win_pixel_top-Fs->win_scroll_y))
+		HDCfgPopUpInfo(tempm1);
+	      tempm1=NULL;
+	      break;
+	    case CH_CR:
+	      HDCfgRandomizeXY;
+	      break;
+	    case CH_ESC:
+	      HDCfgSave;
+	    case CH_SHIFT_ESC:
+	      goto hd_done;
+	  }
+	  break;
+      }
+    }
+hd_done: //Don't goto out of try
+  GetMsg(,,1<<MSG_KEY_UP);
+  } catch
+    Fs->catch_except=TRUE;
+  Snd(0);
+  HDStop(TRUE,FALSE); //stop input
+  SettingsPop;
+  CleanUp;
+  MenuPop;
+  PutS("$BK,1$Note: #include \"HOME/HDAudioCfg.APZ\" in your start-up scripts.$BK,0$\r\n");
+}
+
+HDCfg;
+

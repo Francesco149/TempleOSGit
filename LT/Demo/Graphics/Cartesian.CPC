@@ -1,0 +1,51 @@
+//x must be global.
+//Might as well make y global.
+
+F64 x,y,y_last;
+
+U0 Cartesian()
+{
+  U8 *st;
+  U64 ch=0,h,v;
+  BoolI8 first;
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  do {
+    LtfClear;
+    PutS("Enter algebraic equation to graph.\r\n"
+	"Example: y=2*x\r\n"
+	"y=");
+    if (st=MGetS) {
+      if (*st) {
+	h=Fs->win_pixel_width/2;
+	v=Fs->win_pixel_height/2;
+	base->color=RED;
+	GrLine(base,h,0,h,2*v+1);
+	GrLine(base,0,v,2*h+1,v);
+	first=TRUE;
+	base->color=BLACK;
+	for (x=-h;x<=h;x++) {
+	  y=-ExePrintF("ToF64(%s);",st)><(F64);
+	  if (!first)
+	    GrLine(base,x-1+h,y_last+v,x+h,y+v);
+	  y_last=y;
+	  first=FALSE;
+	}
+	ch=GetChar;
+      } else
+	ch=CH_SHIFT_ESC;
+      Free(st);
+    } else
+       ch=CH_SHIFT_ESC;
+    GrClear;
+  } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
+  GrDel(base);
+}
+
+Cartesian;
+
+/*
+For better performance, compile the expression entered by the user one time 
+with [C:/LT/Compiler/ExpParser.CPZ,1223] CmpExpression() and use
+[C:/LT/OSMain/Adam1b.HPZ,292] Call(). See
+[::/LT/Demo/OldSchool/CompileDemo.CPZ] ::/LT/Demo/OldSchool/CompileDemo.CPZ.
+*/

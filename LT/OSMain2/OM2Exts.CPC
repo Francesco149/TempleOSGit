@@ -1,0 +1,18 @@
+/* Project: OSMain2.SPZ */
+
+import BoolI64 LtfUnlock(Ltf *l);
+import Ltf *EdJoin(U8 *filename,BoolI8 bail);
+
+#exe {
+  KeepPrivate(ON);
+  Externs2Imports(ON);
+};
+
+#include "/LT/Compiler/Compiler.HPZ"
+
+#exe {
+  Externs2Imports(OFF);
+  KeepPrivate(OFF);
+};
+
+

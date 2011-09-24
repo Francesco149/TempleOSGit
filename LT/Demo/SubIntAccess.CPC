@@ -1,0 +1,32 @@
+/*
+  LoseThos has a feat that allows
+  access to bytes and words of larger
+  integers.
+
+  See [::/LT/OSMain/Adam1a.HPZ,U64i union] U64i union
+ 
+  The versions with "i" are internal data types.
+  Use "U64" instead of "U64i" and you
+  will have access to subbytes and
+  subwords.
+
+**	Unfortunately byte access causes the
+  compiler to not use a register for the
+  variable.**
+
+  See [::/LT/Demo/Lectures/FixedPoint.CPZ] ::/LT/Demo/Lectures/FixedPoint.CPZ.
+*/
+
+U64 q=0xFEDCBA9876543210,q1;
+
+PrintF("q\t\t=%016X\r\n",q);
+q1=q.i16[2];
+PrintF("q.i16[2]\t=%016X\r\n",q1);
+q1=q.u8[5];
+PrintF("q.u8[5]\t\t=%016X\r\n",q1);
+q1=q.i32[1].u8[2];
+PrintF("q.i32[1].u8[2]\t=%016X\r\n",q1);
+q1=q.i32[0].i8[1];
+PrintF("q.i32[0].i8[1]\t=%016X\r\n",q1);
+
+

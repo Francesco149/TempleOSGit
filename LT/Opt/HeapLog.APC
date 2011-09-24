@@ -1,0 +1,142 @@
+#help_index "Debugging"
+
+class HeapLogStruct
+{
+  HeapLogStruct *next,*last;
+  U8 *add;
+  U8 *caller1;
+  U8 *caller2;
+  U8 *caller3;
+  U8 *caller4;
+};
+
+class HeapLogHashStruct
+{
+  HeapLogStruct *next,*last;
+};
+
+#define HEAPLOG_HASH_SIZE	0x1000
+
+TaskStruct *heaplog_task=NULL,*heaplog_test_task;
+HeapLogHashStruct *heaplog_root=NULL;
+
+
+U0 HeapLogTask(U64 dummy=0)
+{
+  nounusedwarn dummy;
+  while (TRUE)
+    Yield;
+}
+
+U0 HeapLogMAlloc(U8 *add)
+{
+  HeapLogStruct *temph;
+  U64 i;
+  BoolI8 old_val;
+  if (Fs==heaplog_test_task) {
+    old_val=LBtr(&sys_semas[SYS_SEMA_HEAPLOG],0);
+    temph=MAlloc(sizeof(HeapLogStruct),heaplog_task);
+    LBEqu(&sys_semas[SYS_SEMA_HEAPLOG],0,old_val);
+    temph->add=add;
+    temph->caller1=Caller(2);
+    temph->caller2=Caller(3);
+    temph->caller3=Caller(4);
+    temph->caller4=Caller(5);
+    i=add>>3 &(HEAPLOG_HASH_SIZE-1);
+    PushFD;
+    Cli;
+    InsQue(temph,heaplog_root[i].last);
+    PopFD;
+  }
+}
+
+U0 HeapLogFree(U8 *add)
+{
+  U64 i;
+  HeapLogStruct *temph;
+  BoolI8 old_val;
+  if (!add) return;
+  if (Fs==heaplog_test_task) {
+    i=add>>3 &(HEAPLOG_HASH_SIZE-1);
+    PushFD;
+    Cli;
+    temph=heaplog_root[i].next;
+    while (temph!=&heaplog_root[i]) {
+      if (add==temph->add) {
+	RemQue(temph);
+	PopFD;
+	old_val=LBtr(&sys_semas[SYS_SEMA_HEAPLOG],0);
+	Free(temph);
+	LBEqu(&sys_semas[SYS_SEMA_HEAPLOG],0,old_val);
+	return;
+      }
+      temph=temph->next;
+    }
+    PopFD;
+  }
+}
+
+public U0 HeapLogRep()
+{
+  U64 i,total=0;
+  HeapLogStruct *temph;
+  BoolI8 old_val;
+  if (!heaplog_root) return;
+  old_val=LBtr(&sys_semas[SYS_SEMA_HEAPLOG],0);
+  for (i=0;i<HEAPLOG_HASH_SIZE;i++) {
+    temph=heaplog_root[i].next;
+    while (temph!=&heaplog_root[i]) {
+      PrintF("$FG,PURPLE$%08X$FG$ ",MSize(temph->add));
+
+      if (!PutSrcLink(temph->caller1,64))
+	PrintF("%P",temph->caller1);
+      Spaces;
+      if (!PutSrcLink(temph->caller2,64))
+	PrintF("%P",temph->caller2);
+      Spaces;
+      if (!PutSrcLink(temph->caller3,64))
+	PrintF("%P",temph->caller3);
+      Spaces;
+      if (!PutSrcLink(temph->caller4,64))
+	PrintF("%P",temph->caller4);
+      CrLf;
+
+      total+=MSize(temph->add);
+      temph=temph->next;
+    }
+  }
+  LBEqu(&sys_semas[SYS_SEMA_HEAPLOG],0,old_val);
+  PrintF("\r\n$FG,LTRED$Total:%08X$FG$\r\n",total);
+}
+
+public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
+{
+  U64 i;
+  if (val) {
+    if (Bt(&sys_semas[SYS_SEMA_HEAPLOG],0))
+      PutS("HeapLog Already Active\r\n");
+    else {
+      if (!task) task=Fs;
+      heaplog_test_task=task;
+      heaplog_task=Spawn(&HeapLogTask);
+      ext[EXT_HEAPLOG_MALLOC]=&HeapLogMAlloc;
+      ext[EXT_HEAPLOG_FREE]=&HeapLogFree;
+      heaplog_root=AMAlloc(sizeof(HeapLogHashStruct)*HEAPLOG_HASH_SIZE);
+      for (i=0;i<HEAPLOG_HASH_SIZE;i++)
+	heaplog_root[i].next=heaplog_root[i].last=&heaplog_root[i];
+      LBts(&sys_semas[SYS_SEMA_HEAPLOG],0);
+    }
+  } else {
+    if (!LBtr(&sys_semas[SYS_SEMA_HEAPLOG],0))
+      PutS("HeapLog Not Active\r\n");
+    else {
+      Kill(heaplog_task);
+      heaplog_task=NULL;
+      Free(heaplog_root);
+      ext[EXT_HEAPLOG_MALLOC]=NULL;
+      ext[EXT_HEAPLOG_FREE]=NULL;
+    }
+  }
+}
+
+#help_index ""

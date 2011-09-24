@@ -1,0 +1,76 @@
+                               Acknowledgements
+
+I am a for profit company, not an academic.  I have never seen a commercial 
+product with acknowledgements like an academic paper.  Never-the-less, here 
+are referrences.  (I don't know the original sources on many of these.)
+
+The font, [::/LT/OSMain/Font8x8.CPZ] ::/LT/OSMain/Font8x8.CPZ, is taken from
+FreeDOS.
+
+[::/LT/OSMain/Dsk/ATADef.HPZ] ::/LT/OSMain/Dsk/ATADef.HPZ originally
+from Linux.  I later got the spec.
+
+The heap algorithm, [::/LT/OSMain/Memory.CPZ] ::/LT/OSMain/Memory.CPZ, is
+adapted from one I saw at 
+Ticketmaster when I worked on their VAX operating system.
+
+The LZW compression algorithm, [::/LT/OSMain/Compress.CPZ]
+::/LT/OSMain/Compress.CPZ, came from a magazine 
+and I implemented it when I worked for Ticketmaster.
+
+The adaptive-step-size-Runge-Kutta algorithm, [::/LT/Adam/Ode.APZ]
+::/LT/Adam/Ode.APZ, is adapted 
+from the book, _Numeric Recipies in C_.
+
+The random number generator is from the book, _Numeric Recipies in C_.
+
+The pilgrim game map is from US Geological Survey.  (Screen captured and 
+edited with MS Paint and saved as .BMP and imported into LoseThos and 
+converted with a program I wrote.)
+
+The FAT32 file system is owned by MicroSoft.
+
+A few features were inspired by MATLAB, such as ans in expressions at the 
+command-line.  There is a lot of MSDOS , Windows, VAXTMOS (VAX Ticketmaster 
+O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
+
+I included [::/LT/Text/PCIDevices.TXZ] PCIDevice List File and
+[::/LT/Text/Bible.TXZ] The King James Bible.
+
+Thanks to whoever wrote this CppHtml.CPP.  I'm a novice on web stuff and you 
+helped me with html.
+
+Yahoo Sitebuilder helped with some html code items.
+
+I used MagicISO to burn test CD's to help me understand the ISO9660 file 
+system format.  I mostly used the ISO9660 spec.
+
+I looked at bootable CD boot sects, but didn't learn anything, finding it 
+easier to make my own.
+
+I think I got my original PC speaker code from Borland C.
+
+I found PS/2 keyboard and mouse code on the net and documentation.  My code
+is 
+very different.  I found VGA register info on the net.
+
+Thanks to http://www.osdev.net for a couple tips.
+
+God told me to stick with 640x480x16 color and kept me from blindly making 
+child windows like Windows.  Instead, I made one window per task with no
+child 
+windows.  He also guided my progress, very obviously.
+
+In short, I wrote every one of the 128,470 lines myself, no GPL code, no 
+linkage or dependence on other code.  Anyone who says otherwise is being an 
+ass.
+
+* "MSDOS", "Windows", "MovieMaker" "MS Paint" and "FAT32" are trademarks of 
+MicroSoft Corp.
+* "SiteBuilder" is a trademark of Yahoo! Inc.
+* "MagicISO" is a trademark of MagicISO Corp.
+* "MATLAB" is a trademark of The Math Works, Inc.
+* "FreeDOS" is a trademark of Jim Hall.
+* "VAX" is a trademark of Digital Equipment Corp.
+* "Linux" is probably a trademark owned by Linus Torvalds.
+* "VAXTMOS" is a trademark of Ticketmaster.

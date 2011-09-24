@@ -1,0 +1,31 @@
+                           System Programming Guide
+
+* I avoid the '?' operator.  It's not very efficient with my compiler since
+it 
+executes both expressions and I just don't like it.
+
+* I place "New", "Del", "Init", "Rst", ect. on the end of a function name 
+instead of beginning.  "RstMusicSettings" should be "MusicSettingsRst".
+
+* I often use 64-bit values in function args when smaller would be more 
+appropriate because the compiler generally is more efficient with 64-bit 
+values.  (All value get promoted to 64-bit by the LoseThos compiler, when 
+fetched.)  I return a BoolI64 from functions instead of BoolI8.
+
+* Short circuit logic is assumed.
+
+* I generally avoid boolean expression assignments because TRUE is dangerous 
+with different compilers, though, the LoseThos compiler should use 1 for TRUE 
+values, not just nonzero.  Boolean assignments don't have short circuit logic 
+and are not compiled efficiently.  The BoolI8 type is just an alias for a 1 
+byte int -- nothing forces it to 1 or 0.  There is a
+[C:/LT/OSMain/Adam1b.HPZ,219] ToBool() function.
+
+* If you use floats in your interrupt routine, save and restore the fpu state 
+with [C:/LT/OSMain/Adam1b.HPZ,257] Fxsave() and [C:/LT/OSMain/Adam1b.HPZ,258]
+Fxrstor().  The timer interrupt does this.  The keyboard and 
+mouse don't use floats.
+
+* Bracketing code with PushFD;Cli; and PopFD; will protect against 
+simultaneous accesses from tasks on _one_ core.  To protect against multiple 
+cores, you need a locked semaphore.

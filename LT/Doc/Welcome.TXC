@@ -1,0 +1,211 @@
+                             Welcome to LoseThos
+
+[::/LT/Doc/TrivialSolutions.TXZ] Trivial Solutions's LoseThos operating
+system is for **recreational programming**. 
+ Maybe, you're a professional programmer who does hobby projects?  Maybe, 
+you're a teenager who programs in your spare time?  Maybe, you're an older 
+person who is not a professional, but likes to program for fun?  LoseThos is 
+made to offer joy to programmers.  See the [::/LT/Doc/Constitution.TXZ]
+LoseThos Constitition.
+
+LoseThos is designed with simplicity as a goal.  Simplicity makes it fast in 
+some ways and keeps the line count down.  It never switches privilege levels, 
+never changes addr maps, tends to load whole contiguous files and other, 
+similar things which boost speed.  It's only 128,470 lines of code including 
+the kernel, the 64-bit compiler, the graphics library and the tools.  More 
+importantly, it's designed to keep the user's line count down -- you can do a 
+"hello world" application in one line of code and can put graphics on the 
+screen with a three line program!
+
+It's a kayak, not a Titanic.  It will crash if you do something wrong.  You 
+quickly reboot.  The 8-bit home computers of the 80's worked just fine
+without 
+protection and most computers in the world, the embedded ones, operating 
+without protection.  The resulting simplicity of no protections is why 
+LoseThos has value.  That's the whole point of LoseThos.
+
+The two main things to know about LoseThos are that _tasks_ have
+[C:/LT/OSMain/Memory.CPZ,925] MAlloc/[C:/LT/OSMain/Memory.CPZ,919] Free 
+heap memory, not applications, and tasks have compiler sym tables that 
+persist.  The sym tables are like environment vars in terms of scope, but can 
+include functions.
+
+I hated learning one language for command line scripts and another for 
+programming.  With LoseThos, the command line feeds right into the C+ (more 
+than C, less than C++) compiler, line by line, and it places code into memory 
+it [C:/LT/OSMain/Memory.CPZ,925] MAlloc()s.  The compiler is paused at the
+command line, waiting for input.  
+Naturally, you #include a program to load it into memory and, usually, start 
+it.  During the boot process, many files get compiled before you have access 
+to the command line.  (Don't worry, booting takes only a couple
+seconds.)  All 
+the header declarations for the operating system are compiled and are 
+available for use in your programs without needing to #include them.  
+Everything is truely compiled to native x86_64 code and nothing is 
+"interpreted."
+
+Statements at the global scope (outside the scope of C+ functions) execute 
+immediately.  There is no main() function.  Instead, you give meaningful
+names 
+to what would be main() functions and you invoke them by calling them with a 
+statement in the global scope, usually at the bottom of your file.
+
+I started with C syntax, but didn't like the command line for a directory 
+listing looking like this:
+
+Dir("*.*",FALSE);
+
+So, I added default args from C++ and it looked like this:
+
+Dir();
+
+I didn't like that, so I made parentheses optional on calls with no args and 
+it, now, looks like this:
+
+Dir;
+
+The syntax change created an ambiguity when specifying function addres.  To 
+resolve it, I  made a '&' required in front of function names when specifying 
+an addr of a function, which is better anyway.
+
+Once I was no longer using standard syntax, I decided to change everything I 
+didn't like.  Here are the new [::/LT/Doc/Differences.TXZ,OP_precedence]
+operator precedence rules.  See 
+[::/LT/Doc/Differences.TXZ] Departures from C/C++.  It's Biblical!  See
+[Luke,5:37] Luke,5:37.
+.
+
+There are no object files in LoseThos and, normally, you don't make
+executable 
+files either, but you can.  That's known as "static" compilation.
+
+Tasks have no priority scheme and are never removed from the queue.  Instead, 
+they poll whatever they are waiting on and swap-out.  (Swapping tasks takes 
+half a microsecond.)  See [::/LT/OSMain/Scheduler.CPZ,1] Scheduler.  This
+keeps it simple.  It's might be a 
+problem only if you had lots of tasks busy, which rarely happens on a home 
+computer.  The order of the tasks in the queue determines front-to-back
+window 
+order.  See [::/LT/Doc/MultiTasking.TXZ] LoseThos MultiTasking.
+
+The LoseThos file system is simple.  There is an allocation bitmap and all 
+files are stored contiguously.  You can't grow files.  It's geared toward 
+reading and writing whole files.  Since whole files are processed, checksums 
+and compression are possible.  Filenames ending in 'Z' are automatically 
+compressed or uncompressed when stored or fetched.  LoseThos supports direct 
+block random access into files, however --
+[C:/LT/OSMain/Dsk/DskLTFile.CPZ,150] FRBlks() and
+[C:/LT/OSMain/Dsk/DskLTFile.CPZ,201] FWBlks().  There is no 
+PATH, but parent directories are searched when a file is not found.  This 
+feature is used for default account files.  Note: the FAT32 filesystem is 
+supported, which makes exchanging files with a dual booted other operating 
+system easy.  If you don't have a FAT32 partition, you can use the
+[::/LT/Doc/LTZ.TXZ] LTZ program 
+to transfer files to your primary operating system's partition.
+
+I like being able to turn-off interrupts with [C:/LT/OSMain/Adam1b.HPZ,145]
+Cli() and on with [C:/LT/OSMain/Adam1b.HPZ,146] Sti() when I 
+change a structure used in a multitasking environment.  LoseThos runs all 
+programs in kernel mode, ring 0, so no instructions are off-limits.  
+Turning-off and on preemption with [C:/LT/OSMain/Adam1b.HPZ,98] Preempt() is
+a less drastic measure that is 
+usually sufficient.
+
+The graphic resolution is poor, 640x480 16 color.  I've decided that this is 
+the one and only resolution, forever.  It uses minimal CPU power.  A 1600x1200
+x24 bit screen takes 37 times more memory, implying 37 times the CPU power.  
+Also, a fixed size keeps it simple with everybody machine having the same 
+appearance.  640x480x4 VGA is universal on PC's.  Look on the bright-side -- 
+you won't spend your time twiddling pixels for your games and you'll have
+tons 
+of CPU power available, especially with multicore systems.
+
+LoseThos is for hobbiest programmers on single user (at a time) home 
+computers, not mainframes or servers, but it is multitasking.  The focus task 
+is all-important so symmetrical multiprocessing is almost pointless.  Why
+does 
+it matter if you can run two apps at the same time twice as fast when you 
+really want to run one faster?  You could say LoseThos does master/slave 
+multiprocessing.  The anticipated use for multicore is primarily putting 
+graphics on the screen.  (Hardware graphics acceleration is not used, so this 
+is possible.)  See [::/LT/Doc/MultiCore.TXZ] LoseThos MultiCore.
+
+There is no distinction between "task", "process" or "thread".  All have a 
+task record, [C:/LT/OSMain/Adam1a.HPZ,3081] TaskStruct(), pointed to by the
+FS segment register and are 
+accessed with "Fs->".  "Gs->" points to a [C:/LT/OSMain/Adam1a.HPZ,3708]
+CPUStruct for the current CPU core.  
+Each task can have just one window, but a task can have children with
+windows. 
+ (By the way, the segment registers are just used as extra registers -- there 
+is nothing segmented about LoseThos.)
+
+In LoseThos, "Adam" refers to a task that is the father of all tasks.  He's 
+never supposed to die.  Since tasks inherit the syms of parents, system-wide 
+stuff is associated with Adam.  His heap is like kernel memory in other 
+operating systems.  Since Adam is immortal, it's safe to allocate objects 
+which must not be tied to any mortal task from off Adam's heap.  He stays in
+a 
+server mode, taking requests, so you can ask him to #include something, 
+placing that code system-wide.  A funny story is that originally I called it 
+the "root" task and even had a "/LT/Root" directory ;-)
+
+For easy back-ups, place everything you author in your HOME directory and 
+subdirectories.  Then, use [C:/LT/Adam/Dsk2a.APZ,109] CopyTree().  That
+should make upgrading easy, too.  
+To make an account use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,104] MkDir() to create a
+directory under /LT/Accts.  It will 
+be HOME if you boot to it.  Recompile with [C:/LT/Opt/Boot/InsBoot.APZ,185]
+InstallBoot() and make it boot your 
+acct.  Customizable start-up scripts go in your HOME directory.  The default 
+start-up scripts are in /LT/Accts, the parent of all accounts.  Copy the 
+start-up files you wish to customize into HOME and modify them.  See 
+[::/LT/Doc/GuideLines.TXZ,ACCT FILES] Acct Files.
+
+Typically, your usage pattern through the day will be repeatedly left or
+right 
+clicking on filenames in a cmd line [C:/LT/OSMain/Dsk/Dsk1b.CPZ,238] Dir()
+listing.  You left-click files to 
+edit them and right-click to #include them.  To begin a project, type
+[C:/LT/Adam/Ltf/LtfMain.APZ,122] Ed(""); 
+and supply a filename.  You can also run programs with <F5> when in the 
+editor.  <ESC> to save and exit the file.  You'll need to do a new
+[C:/LT/OSMain/Dsk/Dsk1b.CPZ,238] Dir() cmd, 
+periodically, so make a macro on your personal menu.  Access your personal 
+menu by pressing the <WINDOWS KEY>, cursoring until you are on top of it and 
+pressing <SPACE BAR>.
+
+<CTRL-T> toggles plain text mode, showing format commands, a little like 
+viewing html code.  <CTRL-L> inserts a nongraphic widget.  <CTRL-R> inserts a 
+graphic resource or edits the graphic under the cursor.
+
+<CTRL-D> brings-up the file manager.  It's pretty crappy.  I find I don't
+need 
+it very often, believe it or not.
+
+<CTRL-ALT-E> creates a new terminal window.  <CTRL-ALT-X> kills a window.  
+You'll do these periodically.
+
+[C:/LT/Opt/Grep.APZ,161] Grep() is your best friend.  There's a wrapper
+function called [C:/LT/Accts/TAD/Adam3eWrappers.APZ,8] F() in your HOM
+E/Adam3eWrappers.APZ file.  Feel free to make wrapper functions for functions 
+you use often and customize the args.  By the way, [C:/LT/Opt/Grep.APZ,161]
+Grep() or [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() can be used 
+to replace strings across multiple files.  You can access
+[C:/LT/Opt/Grep.APZ,161] Grep() using <CTRL-S
+HIFT-F>.
+
+As you browse code, use the WordStat window to look-up functions, etc.  <CTRL-
+SHIFT-F1> (or whatever number) to follow a sym to it's source.  You can
+browse 
+deeper and deeper.  You go back with <SHIFT-ESC>.
+
+Use the [::/LT/Doc/HelpIndex.TXZ] Help Index or [::/LT/Doc/DemoIndex.TXZ]
+Demo Index to find-out what exists.  Press F1 for help 
+or use the links on your menu (<WINDOWS KEY>).  Also, look in the /LT/Demo or 
+/LT/Apps directories for inspiration.
+
+
+Take Tour
+`SpawnUser("Cd(\"::/LT/Accts/Tour\");;AutoFile(\"Tour\");");`
+

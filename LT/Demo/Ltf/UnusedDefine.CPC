@@ -1,0 +1,84 @@
+/*
+This scans the sym table and checks
+each [C:/LT/OSMain/Adam1a.HPZ,513] HTT_DEFINE_STR entry to see if
+it only occurs once in files.
+
+It's a brute force solution, but
+gets the job done... slowly.
+
+[C:/LT/Opt/Grep.APZ,161] Grep() returns a count of matches.
+
+[C:/LT/Opt/Grep.APZ,186] FileOcc() is [C:/LT/Opt/Grep.APZ,161] Grep() with
+output [C:/LT/OSMain/Misc1a.CPZ,411] Silent().
+
+*/
+
+U0 UnusedDefineScan()
+{
+  Ltf *old_ltf=LtfCur,*l;
+  I64 cnt=0;
+  SysHashTable *tempht;
+  SysHashEntry *temph;
+  LtfEntry *ll,*ll2;
+  BoolI8 old_silent=IsSilent;
+
+  //Technically, we might want to
+  //turn-off preemption in case the
+  //table was modified.
+
+  try {
+    tempht=Fs->hash_table;
+    while (tempht) {
+      temph=tempht->next_added;
+      while (temph!=tempht) {
+	if (temph->type&HTT_DEFINE_STR)
+	  cnt++;
+	temph=temph->next_added;
+      }
+      tempht=tempht->next;
+    }
+
+    progress1=0;
+    progress1_max=cnt;
+    progress1_desc="Define Scan";
+
+    tempht=Fs->hash_table;
+    while (tempht) {
+      temph=tempht->next_added;
+      while (temph!=tempht) {
+	if (temph->type&HTT_DEFINE_STR) {
+	  progress1++;
+	  if (FileOcc(temph->str,"/LT/"TEXT_FILE_MASK,"+l-i")==1) {
+	    l=LtfNew;
+	    LtfRemQue(old_ltf);
+	    LtfInsQue(l,Fs->last_ltf);
+	    Grep(temph->str,"/LT/"TEXT_FILE_MASK,"+l-i");
+	    LtfRemQue(l);
+	    LtfInsQue(old_ltf,Fs->last_ltf);
+	    ll=l->root.next;
+	    while (ll!=l) {
+	      if (ll->type_u8==LTFT_LINK) {
+		CrLf;
+		PutS(temph->str);
+		ll2=LtfCopyEntry(l,ll);
+		LtfInsert(old_ltf,ll2);
+		CrLf;
+	      }
+	      ll=ll->next;
+	    }
+	    LtfDel(l);
+	  }
+	}
+	temph=temph->next_added;
+      }
+      tempht=tempht->next;
+    }
+  } catch
+    CatchAll;
+
+  Silent(old_silent);
+  CrLf;
+  ProgressBarsRst;
+}
+
+UnusedDefineScan;

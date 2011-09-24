@@ -1,0 +1,54 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x0000009C
+#define __BIN_1 "\x02\x02\x05\x16\x00\x00\x00\x05\x00\x00\x00\x23\x00\x00\x00\xF8\xFF\xFF\xFF\x05\x23\x00\x00\x00\xF8\xFF\xFF\xFF\x31\x00\x00\x00\x09\x00\x00\x00\x05\x31\x00\x00\x00\x09\x00\x00\x00\x22\x00\x00\x00\x17\x00\x00\x00\x05\x22\x00\x00\x00\x16\x00\x00\x00\x14\x00\x00\x00\x06\x00\x00\x00\x02\x04\x05\x2A\x00\x00\x00\x00\x00\x00\x00\x2A\x00\x00\x00\x0F\x00\x00\x00\x05\x2A\x00\x00\x00\x0F\x00\x00\x00\x1B\x00\x00\x00\x0E\x00\x00\x00\x05\x1B\x00\x00\x00\x0E\x00\x00\x00\x1B\x00\x00\x00\xFE\xFF\xFF\xFF\x05\x1B\x00\x00\x00\xFE\xFF\xFF\xFF\x2A\x00\x00\x00\x00\x00\x00\x00\x17\xF5\xFF\xFF\xFF\xF4\xFF\xFF\xFF\x48\x65\x6C\x6C\x6F\x00\x00"
+
+
+
+//This is a test image we are going
+//to draw and determine the extents of.
+
+
+
+/* <1> <1> (image) */
+
+
+
+
+U0 Extents()
+{
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  I64 min_x,max_x,min_y,max_y;
+
+//We want screen, not window coordinates.
+  I64 h=Fs->win_pixel_left+Fs->win_scroll_x,v=Fs->win_pixel_top+Fs->win_scroll_y;
+
+  PutS("$CL$");
+  GrClear;
+
+//This sets a flag to record the
+//extents of what we draw and inits
+//the max's and min's.  Vals are
+//screen coordinates.
+  GrExtentsInit(base);
+
+  base->pen_width=3;
+  GrElemsPlot3(base,40,GR_HEIGHT>>1,0,__BIN_1);
+
+  base->color=LTRED;
+  base->pen_width=1;
+//This box is the extents.
+  GrLine(base,base->min_x-h,base->min_y-v,base->max_x-h,base->min_y-v);
+  GrLine(base,base->min_x-h,base->min_y-v,base->min_x-h,base->max_y-v);
+  GrLine(base,base->max_x-h,base->max_y-v,base->max_x-h,base->min_y-v);
+  GrLine(base,base->max_x-h,base->max_y-v,base->min_x-h,base->max_y-v);
+
+  GrDel(base);
+  PressAKey;
+  GrClear;
+
+  GrElemsExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
+  PrintF("X: %d to %d\r\n",min_x,max_x);
+  PrintF("Y: %d to %d\r\n",min_y,max_y);
+}
+
+Extents;

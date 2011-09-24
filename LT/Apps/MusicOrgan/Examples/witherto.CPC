@@ -1,0 +1,35 @@
+//7 has words
+U0 Song()
+{
+  TaskStruct *task;
+  Fs->task_end_cb=&SndTaskEndCB;
+  music_tempo=2.5;
+  try {
+  task=PopUpViewStr(
+    "[Mark,11:12] Mark,11:12\r\n"
+    "[Matthew,3:10] Matthew,3:10\r\n"
+    "[Matthew,25:18] Matthew,25:18\r\n"
+    );
+  TaskWaitIdle(task);
+  task->win_right=Fs->win_right;
+  task->win_left=Fs->win_left;
+  task->win_top=Fs->win_bottom+3;
+  task->win_bottom=task->win_top+12;
+  TaskDerivedValsUpdate(task);
+  while (!ScanKey) {
+	Play("2qG3sFEFEqDBEetCB2G3qFsBDBD",
+		" \0Damn \0 \0 \0 \0 \0 \0fig \0 \0 \0 \0tree.\r\n\0 \0 \0 \0 \0");
+	Play("2qG3sFEFEqDBEetCB2G3qFsBDBD",
+		" \0On\0ly \0 \0 \0good \0 \0for \0a \0 \0 \0pee.\r\n\0 \0 \0 \0 \0");
+	Play("qC2G3eFC2G3EqACDA",
+		"Has \0no \0fruit.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
+	Play("C2G3eFC2G3EqACDA",
+		"Kill \0the \0root.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
+	PutS("$FG,GREEN$Be sure to bear 'fruit'.$FG$\r\n\r\n");
+  }
+  } catch
+    CatchAll;
+  Snd(0);
+}
+
+Song;

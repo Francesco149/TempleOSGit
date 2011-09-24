@@ -1,0 +1,85 @@
+class MPCtrl
+{
+  TaskStruct *win_task;
+  I64 i;
+  BoolI8 app_done,app_done_ack;
+  BoolI8 refresh_start,refresh_done;
+} mp;
+
+
+U0 UpdateWin(TaskStruct *task)
+{
+  I64 i;
+  F64 t0=tNP,t1;
+  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+
+  mp.refresh_done=FALSE;
+  mp.refresh_start=TRUE;
+  mp.i++;
+
+  for (i=0;i<32;i++) {
+    t1=t0+i*2*pi/64;
+    base->color=(mp.i+i)/10&15;
+    GrEllipse(base,GR_WIDTH/2,GR_HEIGHT/2,
+      GR_WIDTH/4*(Sin(t1)+1.0),GR_HEIGHT/4*(Sin(t1)+1.0),t1*2.0);
+  }
+  GrDel(base);
+  while (!mp.refresh_done)
+    Yield;
+}
+
+U0 MPDrawIt()
+{
+  I64 i;
+  F64 t0=tNP,t1;
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  base->win_task=mp.win_task;
+
+  while (!mp.refresh_start && !mp.app_done)
+    Yield;
+  if (mp.app_done)
+    goto mp_done;
+  mp.refresh_start=FALSE;
+  GrClear;
+  for (i=32;i<64;i++) {
+    t1=t0+i*2*pi/64;
+    base->color=(mp.i+i)/10&15;
+    GrEllipse(base,GR_WIDTH/2,GR_HEIGHT/2,
+      GR_WIDTH/4*(Sin(t1)+1.0),GR_HEIGHT/4*(Sin(t1)+1.0),t1*2.0);
+  }
+mp_done:
+  GrDel(base);
+  mp.refresh_done=TRUE;
+}
+
+U0 MPTask(U64 dummy=0)
+{
+  nounusedwarn dummy;
+  while (!mp.app_done)
+    MPDrawIt;
+  mp.app_done_ack=TRUE;
+  GrClear;
+}
+
+
+U0 DoIt()
+{
+  if (mp_cnt<2) throw(EXCEPT_MULTICORE);
+
+  SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  WinMax;
+  Fs->update_win=&UpdateWin;
+  WinBorder(OFF);
+
+  mp.i=0;
+  mp.app_done=FALSE;
+  mp.win_task=Fs;
+  MPSpawn(&MPTask);
+  GetChar;
+  mp.app_done=TRUE;
+  while (!mp.app_done_ack)
+    Yield;
+  SettingsPop;
+}
+
+DoIt;

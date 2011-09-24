@@ -1,0 +1,270 @@
+Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
+
+----09/22/11 19:08:03----
+* Added inf char support.
+
+----09/21/11 05:58:02----
+* **V7.06 Released**
+* Changed CTRL-ALT-V volume to +/- instead of pop-up.
+
+----09/20/11 02:23:29----
+* Added more err reporting to compiler.
+
+----09/10/11 08:04:21----
+* Improved [::/LT/Demo/GameStarters/ZoneOut.CPZ]
+::/LT/Demo/GameStarters/ZoneOut.CPZ.
+
+----09/08/11 13:56:29----
+* **Warning**: Changed args to [C:/LT/Adam/DskCDDVD.APZ,376]
+CDFileCreate().  Src is now a file mask, not drive 
+letter and there is a file find flag arg.
+* Fixed bug in [::/LT/Opt/ToHtml.APZ] ::/LT/Opt/ToHtml.APZ and
+[::/LT/Opt/ToTXT.APZ] ::/LT/Opt/ToTXT.APZ.  See [::/LT/Doc/Bugs.TXZ,#000019]
+#000019.
+
+----09/04/11 05:30:00----
+* Put key names in <...> and tidied-up.
+
+----09/01/11 06:20:20----
+* Added [::/LT/Apps/AfterEgypt/WaterRock.CPZ]
+::/LT/Apps/AfterEgypt/WaterRock.CPZ.
+
+----08/22/11 02:12:02----
+* Changed default [C:/LT/OSMain/Dsk/Dsk1c.CPZ,163] Fmt() type from native to
+FAT32.
+
+----08/20/11 10:55:56----
+* **V7.05 Released**
+
+----08/14/11 03:22:18----
+* Fixed compiler bug where it was not using 64-bit arithmetic.  See
+[::/LT/Doc/Bugs.TXZ,#000018] #000018.
+* Fixed compiler bug on signed modulo of power of two.  See
+[::/LT/Doc/Bugs.TXZ,#000017] #000017.
+* Added [::/LT/Opt/ToTXT.APZ] ::/LT/Opt/ToTXT.APZ.
+
+----08/13/11 19:17:43----
+* Added [::/LT/Demo/GameStarters/ZoneOut.CPZ]
+::/LT/Demo/GameStarters/ZoneOut.CPZ.
+* Added a few songs to JukeBox.
+* Made <SHIFT-ESC> ASCII 28 and changed <CTRL-Q> to <SHIFT-ESC>.
+
+----08/06/11 02:18:51----
+* Improved [::/LT/Demo/GameStarters/Wenceslas.CPZ]
+::/LT/Demo/GameStarters/Wenceslas.CPZ.
+
+----08/01/11 23:50:43----
+* Added compiler optimization on [C:/LT/OSMain/Adam1b.HPZ,61] Bt() family.
+* Added a compiler optimization on absolute addresses.
+* Added a compiler optimization on Fs-> and Gs->.
+
+----07/16/11 14:58:53----
+* Added FastMP option to OSMain cfg.
+
+----07/06/11 00:03:13----
+* Added <CTRL-ALT-A> for entering extended ASCII.
+* Filled-in extended ASCII screen codes.
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("pi","pi");  ALT 227
+* Improved [::/LT/Apps/MusicOrgan/MakeSong.CPZ]
+::/LT/Apps/MusicOrgan/MakeSong.CPZ.
+
+----06/30/11 08:16:20----
+* Added instance arg to [C:/LT/OSMain/Hash1a.CPZ,378] HashFind() and
+[C:/LT/OSMain/Adam1c.HPZ,560] ExtFind().
+
+----06/25/11 17:28:37----
+* Added flats to MusicOrgan.
+
+----06/20/11 04:55:06----
+* Fixed compiler bug which ruined StaticAdam.HPZ imports.
+
+----06/18/11 13:57:46----
+* **V7.04 Released**
+* Fixed compiler bug: Statements at the glbl scope with string expressions 
+were being freed, leaving a dangling str pointer.
+* Redid [::/LT/Demo/AcctExample/TSAdam.APZ] Acct Example1,
+[::/LT/Demo/AcctExample/TSDistribute.APZ] Acct Example2.
+
+----05/20/11 13:04:37----
+* Added [::/LT/Opt/Utils/CvtBMPDir.CPZ] ::/LT/Opt/Utils/CvtBMPDir.CPZ.
+* GrElem bitmap editor now works with grab-scroll.
+
+----05/17/11 07:33:57----
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Address","Addr");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Absolute","Abs");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Status","Stat");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Control","Ctrl");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Feature","Feat");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Sector","Sect");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Reset","Rst");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Config","Cfg");
+
+----05/14/11 14:14:40----
+* Changed F5 in editor so that exceptions don't kill
+task.  [C:/LT/Adam/Ltf/LtfPopUp.APZ,716] PopUpFile().
+
+----05/14/11 08:52:46----
+* Fixed some harmless floating-point stkptr problems.
+* [C:/LT/OSMain/Str1a.CPZ,1122] PrintF() with %f will not overflow as much.
+
+----04/30/11 13:26:54----
+* Misc minor compiler improvements.
+  - LTintern can be expressions
+  - JIT LTextern can be expressions
+  - [C:/LT/OSMain/Adam1a.HPZ,1401] OPTf_USE_LIT64 (not fully implemented)
+
+----04/27/11 21:27:32----
+* Made 8051 assembler syntax like LoseThos.
+
+----04/22/11 07:28:08----
+* Fixed bug in [C:/LT/OSMain/KbdMouse/Message.CPZ,139] GetKey() affecting dbg
+mode.
+
+----04/11/11 04:29:44----
+* Added ::/LT/Demo/Lectures/OSDev/OSDevPart4.TXZ
+* Made [C:/LT/Adam/Gr/GrMath.APZ,517] Circle() and
+[C:/LT/Adam/Gr/GrMath.APZ,560] Ellipse() work with negative step values.
+
+----04/03/11 22:56:59----
+* Added compiler optimization on bit shifts.
+
+----03/23/11 02:59:10----
+* Added <CTRL-SHIFT-S> to [C:/LT/Adam/WordStat/WsDict.APZ,271]
+WsFindMisspelled().
+
+----03/20/11 22:08:19----
+* **V7.03 Released**
+* Added [C:/LT/Adam/DevInfo.APZ,172] CPURep().
+* Added ::/LT/Demo/Lectures/64BitAsm.TXZ
+* Added ::/LT/Demo/Lectures/OSDev/OSDevPart3.TXZ
+* Added background color to [::/LT/Opt/ToHtml.APZ,ToHtml(] ToHtml().
+* Fixed bug in [::/LT/Opt/Snd/HDCfg.CPZ] ::/LT/Opt/Snd/HDCfg.CPZ.
+* Added limited base class (C++ feature) to compiler.
+
+----03/18/11 17:44:56----
+* Added ::/LT/Demo/Lectures/OSDev/OSDevPart2.TXZ
+* Removed #include_text feature -- not worth it.
+* Added ::/LT/Demo/Lectures/OSDev/OSDevPart1.TXZ
+* Made [::/LT/Apps/Timeout/Timeout.CPZ] ::/LT/Apps/Timeout/Timeout.CPZ just
+one level.  It's better.
+
+----03/10/11 20:25:42----
+* Improved [::/LT/Apps/Timeout/Timeout.CPZ] ::/LT/Apps/Timeout/Timeout.CPZ.
+* Improved [::/LT/Demo/GameStarters/DunGen.CPZ]
+::/LT/Demo/GameStarters/DunGen.CPZ.
+* Changed function pointer syntax to std C.
+
+----03/08/11 13:00:01----
+* Increased precision of [C:/LT/Adam/Gr/GrMath.APZ,517] Circle(),
+[C:/LT/Adam/Gr/GrMath.APZ,560] Ellipse() and [C:/LT/Adam/Gr/GrMath.APZ,632]
+RegPoly().
+* Improved [::/LT/Demo/WebLogExample/LogRep.CPZ]
+::/LT/Demo/WebLogExample/LogRep.CPZ.
+* Cleaned-up <CTRL-R> code.
+
+----03/06/11 14:34:05----
+* **V7.02 Released**
+* Fixed bug in [C:/LT/Adam/Gr/GrElemPlot.APZ,372] GrElemsExtents().
+* Updated [::/LT/Text/PCIDevices.TXZ] ::/LT/Text/PCIDevices.TXZ.
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Vector","Vect");
+* Added BitMap editor to [C:/LT/Adam/Gr/Gr.APZ,54] GrElem editor.
+
+----03/02/11 22:33:01----
+* Fixed bug in [C:/LT/OSMain/Str1a.CPZ,932] WildCardMatch().
+* Added palette option to [::/LT/Opt/BMPFile.APZ,BMPFileRead] BMPFileRead().
+* Improved [::/LT/Demo/GameStarters/MissileDefense.CPZ]
+::/LT/Demo/GameStarters/MissileDefense.CPZ.
+* Improved [::/LT/Demo/GameStarters/RawHide.CPZ]
+::/LT/Demo/GameStarters/RawHide.CPZ.
+
+----02/27/11 18:25:24----
+* Fixed bug in [C:/LT/Adam/Gr/GrPrimatives.APZ,1187] GrFillTriangle0().
+* Improved [::/LT/Demo/GameStarters/EagleDive.CPZ]
+::/LT/Demo/GameStarters/EagleDive.CPZ.
+* Improved [::/LT/Demo/GameStarters/BlackDiamond.CPZ]
+::/LT/Demo/GameStarters/BlackDiamond.CPZ.
+* Improved [::/LT/Demo/GameStarters/SpaceShip.CPZ]
+::/LT/Demo/GameStarters/SpaceShip.CPZ.
+* Improved [::/LT/Demo/Graphics/MyWallPaper.APZ]
+::/LT/Demo/Graphics/MyWallPaper.APZ.
+
+----02/21/11 19:56:34----
+* **V7.01 Released**
+* Added truncate to [C:/LT/OSMain2/SPrintF2.CPZ,490] SPrintFJoin2() for %q
+and %Q.
+* Added [C:/LT/Adam/Gr/GrElemNew.APZ,176] GrElem2Text() and enhanced text in
+GrElem editor.
+* [C:/LT/Opt/BMPFile.APZ,255] BMPFileRead(), now, scan for nearest palette
+entries.
+* Improved [::/LT/Demo/Graphics/GrElem3.CPZ] ::/LT/Demo/Graphics/GrElem3.CPZ.
+* Added [::/LT/Demo/GameStarters/Varoom.CPZ]
+::/LT/Demo/GameStarters/Varoom.CPZ.
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Goons","TheDead");
+* Added [::/LT/Demo/Graphics/GrElem4.CPZ] ::/LT/Demo/Graphics/GrElem4.CPZ.
+* Improved [::/LT/Demo/GameStarters/DunGen.CPZ]
+::/LT/Demo/GameStarters/DunGen.CPZ.
+* Added <CTRL-ALT-V> for sound volume.
+* Added <CTRL-ALT-G> for grid-on/off.
+
+----02/17/11 11:25:32----
+* Improved [::/LT/Demo/Graphics/MyWallPaper.APZ]
+::/LT/Demo/Graphics/MyWallPaper.APZ.
+* Made [::/LT/Opt/Boot/BootMHD2.SPZ] Master Boot Loader check user input.
+* Improved graphics in [::/LT/Demo/GameStarters/TheDead.CPZ]
+::/LT/Demo/GameStarters/TheDead.CPZ, 
+[::/LT/Demo/Graphics/ScrollBars.CPZ] ::/LT/Demo/Graphics/ScrollBars.CPZ, and
+[::/LT/Demo/Graphics/Transform.CPZ] ::/LT/Demo/Graphics/Transform.CPZ.
+* Fixed bug in [::/LT/Opt/Merge.APZ,MergeChk(] MergeChk().
+* Got rid of compiler prefetch and wordstat prefetch because they didn't help 
+and just made things more complicated.
+* [::/LT/Opt/Diff.APZ,Diff(] Diff() reports differences in GrElems or other
+binary data.
+* Improved [C:/LT/OSMain/Str1a.CPZ,989] A2I().
+
+----02/14/11 22:56:44----
+* **Warning**: Got rid of cout and coutln.
+* Improved [::/LT/Demo/GameStarters/Chess.CPZ]
+::/LT/Demo/GameStarters/Chess.CPZ.
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("btype","type_u8");
+
+----02/07/11 09:10:49----
+* Adjusted [C:/LT/Adam/Ltf/LtfPopUp.APZ,879] PopUpSnap().
+* Added low pass audio filter when downsampling to create .SND file.
+
+----02/05/11 09:59:17----
+* Added [C:/LT/OSMain/Adam1b.HPZ,157] Push() and
+[C:/LT/OSMain/Adam1b.HPZ,156] Pop().
+* Added blinking cursor to [C:/LT/OSMain/KbdMouse/Message.CPZ,139] GetKey()
+and [C:/LT/OSMain/KbdMouse/Message.CPZ,181] GetChar() when in
+[C:/LT/OSMain/Misc1a.CPZ,442] Raw() mode.
+
+----02/04/11 16:08:06----
+* Fixed import of asm symbols when #including "[::/LT/OSMain/StaticAdam.HPZ]
+::/LT/OSMain/StaticAdam.HPZ".
+* Added an [::/LT/Compiler/ExpParser.CPZ,ST_ILLEGAL_FORWARD_REF] Illegal
+Forward Ref err to compiler.
+* Fixed bug in ATAPI start-up.  See [::/LT/Doc/Bugs.TXZ,#000016] #000016.
+* Made IRQ start-up more robust.  See [::/LT/Doc/Bugs.TXZ,#000015] #000015.
+
+----01/29/11 05:33:04----
+* No more divide by zero in [C:/LT/OSMain/Misc1a.CPZ,253] Blink().
+* Fixed bug in disk formatting for FAT32.  See [::/LT/Doc/Bugs.TXZ,#000014]
+#000014.
+* Added [::/LT/Demo/Asm/PutDec.CPZ] ::/LT/Demo/Asm/PutDec.CPZ.
+
+----01/12/11 15:02:50----
+* **V7.00 Released**
+* **Warning**: Changed args to [C:/LT/OSMain/KbdMouse/InputPointer.CPZ,3]
+SetSnap(). 
+* Added input pointer (mouse) scaler, noticeable in [C:/LT/Adam/Gr/Gr.APZ,54]
+GrElem editor.  Allows 
+slowing mouse movement for better ctrl.
+* Added Moses Comics
+`Dir("::/LT/Apps/AfterEgypt/Comics/*");View;`
+.
+* Fixed bug in Bible links.  See [::/LT/Doc/Bugs.TXZ,#000013] #000013.
+
+----01/03/11 11:22:45----
+* Added <CTRL-ALT-M> for mute.
+* Added [C:/LT/OSMain/Misc1a.CPZ,393] Mute() and
+[C:/LT/OSMain/Misc1a.CPZ,407] IsMute().

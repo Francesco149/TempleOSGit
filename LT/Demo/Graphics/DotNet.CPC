@@ -1,0 +1,18 @@
+//(The name is a joke.  Certain people
+//like to eclipse words with other words
+//to confuse people.  I'm retaliating.)
+
+U0 DotNet()
+{
+  I64 i;
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  LtfClear;  //Clear text
+  base->color=RED;
+  for (i=0;i<480;i+=20)
+    GrLine(base,i,0,0,480-i,3);
+  GrDel(base);
+  PressAKey;
+  GrClear;
+}
+
+DotNet;  //Run when #included

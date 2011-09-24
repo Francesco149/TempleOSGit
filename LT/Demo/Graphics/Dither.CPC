@@ -1,0 +1,16 @@
+U0 DoIt()
+{
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  base->color=RED+BLACK<<16+ROPF_DITHER;
+  GrCircle(base,100,100,50);
+  GrLine(base,10,10,280,70);
+  base->color=RED+BLUE<<16+ROPF_DITHER;
+  GrFloodFill(base,100,100);
+  base->color=PURPLE+BLUE<<16+ROPF_DITHER;
+  GrRect(base,20,20,100,100);
+  PressAKey;
+  GrClear;
+  GrDel(base);
+}
+
+DoIt;

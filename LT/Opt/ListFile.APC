@@ -1,0 +1,85 @@
+#help_index "Compiler"
+
+I64 LFLineAdd(U8 *fn,I64 line,ClassStruct **hint,I64 *indent_level)
+{
+  U8 buf[256];
+  DbgInfo *dbg;
+  IndentInfo *indent;
+  SrcSymHashEntry *temph;
+  SysHashTable *tempht=Fs->hash_table;
+
+  if (indent_level)
+    *indent_level=0;
+  if (temph=*hint) {
+    if (dbg->min_line<=line<=dbg->max_line)
+      return dbg->body[line-dbg->min_line];
+  }
+
+  while (tempht) {
+    temph=tempht->next_added;
+    while (temph!=tempht) {
+      if (temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM) && temph->src_link) {
+	StrCpy(buf,temph->src_link);
+	StrFirstRem(buf,":");
+	StrLastRem(buf,",");
+	if (*buf==':') *buf=dft_drv;
+	if (!StrCmp(fn,buf)) {
+	  if (indent_level && (indent=temph->indent)) {
+	    if (indent->min_line<=line<=indent->max_line)
+	      *indent_level=indent->body[line-indent->min_line];
+	  }
+	  if (dbg=temph->debug) {
+	    if (dbg->min_line<=line<=dbg->max_line) {
+	      *hint=temph;
+	      return dbg->body[line-dbg->min_line];
+	    }
+	  }
+	}
+      }
+      temph=temph->next_added;
+    }
+    tempht=tempht->next;
+  }
+  return 0;
+}
+
+
+public U0 ListFile(U8 *filename,U8 *flags=NULL)
+//This works on files Loaded into mem.
+//flag +s means size instead of addr.
+{
+
+  I64 i,f=0,last_i=0,indent_level;
+  U8 *fn=DftExt(filename,"CPZ"),*fn2;
+  Ltf *l;
+  LtfEntry *cl;
+  ClassStruct *hint=NULL;
+
+  GetFFlags(&f,"s\0",flags);
+
+  fn2=FileNameAbs(fn);
+  l=LtfRead(fn2);
+  cl=l->root.next;
+  while (cl!=l) {
+    i=LFLineAdd(fn2,cl->y+1,&hint,&indent_level);
+    if (!last_i) last_i=i;
+    PrintF("$FG,GREEN$%d$FG$ ",indent_level);
+    if (i) {
+      if (f&1)
+	PrintF("$FG,RED$%04X$FG$\t",i-last_i);
+      else
+	PrintF("$FG,RED$%08X$FG$\t",i);
+    } else {
+      if (f&1)
+	PutS("    \t");
+      else
+	PutS("        \t");
+    }
+    cl=LtfPutLine(cl);
+    if (i) last_i=i;
+  }
+  LtfDel(l);
+  Free(fn);
+  Free(fn2);
+}
+#help_index ""

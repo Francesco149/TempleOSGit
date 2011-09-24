@@ -1,0 +1,117 @@
+U0 DoIt()
+{
+  F64 theta=0,phi=0,zeta=0;
+  P3I32 poly[4];
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrAllocDepthBuf(base);
+  base->flags|=BMF_TRANSFORMATION|BMF_SYMMETRY;
+  try {
+    while (!ScanChar) {
+      GrDepthBufRst(base);
+      GrSetSymmetry(base,Fs->win_pixel_width/2,Fs->win_pixel_height/2,
+	ipx-Fs->win_pixel_left-Fs->win_scroll_x,
+	ipy-Fs->win_pixel_top-Fs->win_scroll_y);
+      base->color=LTBLUE;
+      GrLine(base,Fs->win_pixel_width/2,Fs->win_pixel_height/2,
+	ipx-Fs->win_pixel_left-Fs->win_scroll_x,
+	ipy-Fs->win_pixel_top-Fs->win_scroll_y);
+ 
+      GrIdentEqu(base->r);
+      GrRotXEqu(base->r,zeta);
+      GrRotYEqu(base->r,phi);
+      GrRotZEqu(base->r,theta);
+      GrSetRotMat(base,base->r);
+
+      base->x=Fs->win_pixel_width/2;
+      base->y=Fs->win_pixel_height/2;
+      base->z=500;
+ 
+      base->color=GREEN;
+      poly[0].x=50;
+      poly[0].y=150;
+      poly[0].z=0;
+      poly[1].x=275;
+      poly[1].y=100;
+      poly[1].z=0;
+      poly[2].x=155;
+      poly[2].y=200;
+      poly[2].z=0;
+      poly[3].x=100;
+      poly[3].y=200;
+      poly[3].z=0;
+      GrFillPoly3(base,4,poly);
+
+      base->color=RED;
+      poly[0].x=50;
+      poly[0].y=150;
+      poly[0].z=50;
+      poly[1].x=275;
+      poly[1].y=100;
+      poly[1].z=50;
+      poly[2].x=155;
+      poly[2].y=200;
+      poly[2].z=50;
+      poly[3].x=100;
+      poly[3].y=200;
+      poly[3].z=50;
+      GrFillPoly3(base,4,poly);
+
+      base->color=BLUE;
+      poly[0].x=50;
+      poly[0].y=150;
+      poly[0].z=-50;
+      poly[1].x=275;
+      poly[1].y=100;
+      poly[1].z=-50;
+      poly[2].x=155;
+      poly[2].y=200;
+      poly[2].z=-50;
+      poly[3].x=100;
+      poly[3].y=200;
+      poly[3].z=-50;
+      GrFillPoly3(base,4,poly);
+
+      base->color=RED+GREEN<<16+ROPF_DITHER;
+      poly[0].x=50;
+      poly[0].y=150;
+      poly[0].z=50;
+      poly[1].x=275;
+      poly[1].y=100;
+      poly[1].z=50;
+      poly[2].x=275;
+      poly[2].y=100;
+      poly[2].z=0;
+      poly[3].x=50;
+      poly[3].y=150;
+      poly[3].z=0;
+      GrFillPoly3(base,4,poly);
+
+      base->color=BLUE+GREEN<<16+ROPF_DITHER;
+      poly[0].x=100;
+      poly[0].y=200;
+      poly[0].z=-50;
+      poly[1].x=155;
+      poly[1].y=200;
+      poly[1].z=-50;
+      poly[2].x=155;
+      poly[2].y=200;
+      poly[2].z=0;
+      poly[3].x=100;
+      poly[3].y=200;
+      poly[3].z=0;
+      GrFillPoly3(base,4,poly);
+
+      WinSync;
+      GrClear;
+      theta+=2.1*pi/180.0;
+      phi+=1.1*pi/180.0;
+      zeta+=0.5*pi/180.0;
+    }
+  } catch
+    CatchAll;
+
+  GrClear;
+  GrDel(base);
+}
+
+DoIt;

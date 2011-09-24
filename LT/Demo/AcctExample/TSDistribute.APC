@@ -1,0 +1,725 @@
+//The CFG defines are [::/LT/Demo/AcctExample/TSAdam.APZ] Here.
+
+U0 TSHDMount()
+{
+  Auto(CFG_HARD_DRVS "\r");
+  Mount;
+}
+
+U0 ShowBootFileDate(U8 drv_let)
+{
+  LTDirEntry de;
+  U8 *name=MSPrintF("%c:/Boot.BIC",drv_let);
+  if (FileFind(name,&de))
+    PrintF("%s %D %T\r\n",name,de.datetime,de.datetime);
+  else
+    PrintF("%s\r\n",name);
+  Free(name);
+}
+
+U0 ShowBootFiles()
+{
+  U8 *ptr=TS_HDS;
+  while (*ptr)
+    ShowBootFileDate(*ptr++);
+}
+
+U8 DrvMySelect()
+{
+  U64 result=0;
+  ShowBootFiles;
+  PutS("Drive:");
+  result=ToUpper(GetChar);
+  CrLf;
+  return result;
+}
+
+U0 CmpDrv(U8 drv_let)
+{
+  drv_let=ToUpper(drv_let);
+  Auto(TS_CFG);
+  InstallBoot(drv_let);
+  if (StrOcc(TS_MASTER_BOOT_DRVS,drv_let))
+    InstallMasterBoot(drv_let);
+}
+
+U0 QMenuBoot(U8 drv_let=0)
+{
+  if (!drv_let)
+    drv_let=Prt2Drv(Fs->cur_prt);
+  Drv(drv_let);
+  Cd("/LT/OSMain");
+  Auto(TS_MENU_CFG);
+  if (!Cmp("OS","OS",NULL,':'))
+    Boot("OS.BIZ");
+}
+
+U0 UpdateAndCompile(U8 src,U8 dst)
+{
+  U8 buf_s[128],buf_d[128];
+  if (src==dst) return;
+
+  SPrintF(buf_s,"%c:/LT",src);
+  SPrintF(buf_d,"%c:/LT",dst);
+  DelTree(buf_d);
+  CopyTree(buf_s,buf_d);
+  CmpDrv(dst);
+}
+
+U0 PromptUpdateDrv()
+{
+  U8 src,dst;
+  PutS("\r\nSrc Drive:\r\n");
+  src=DrvMySelect;
+  PutS("\r\nDst Drive:\r\n");
+  dst=DrvMySelect;
+  UpdateAndCompile(src,dst);
+  ShowBootFiles;
+  Drv(src);
+}
+
+U0 MyMerge()
+{
+  U8 src,dst,buf_s[128],buf_d[128];
+  PutS("\r\nMerge Src Drive:\r\n");
+  src=DrvMySelect;
+  PutS("\r\nMerge Dst Drive:\r\n");
+  dst=DrvMySelect;
+  SPrintF(buf_s,"%c:/LT/*",src);
+  SPrintF(buf_d,"%c:/LT/*",dst);
+  MergeChk(buf_d,buf_s,"+r+d");
+  Drv(dst);
+}
+
+U0 MyCopyDrv(U8 src,U8 dst)
+{
+  U8 buf_s[128],buf_d[128];
+  src=ToUpper(src);
+  dst=ToUpper(dst);
+
+  Fmt(dst,TRUE,FALSE,PT_FAT32);
+
+  SPrintF(buf_s,"%c:/LT",src);
+  SPrintF(buf_d,"%c:/LT",dst);
+  CopyTree(buf_s,buf_d);
+
+  SPrintF(buf_s,"%c:/Text",src);
+  SPrintF(buf_d,"%c:/Text",dst);
+  CopyTree(buf_s,buf_d);
+
+  SPrintF(buf_s,"%c:/Windows",src);
+  SPrintF(buf_d,"%c:/Windows",dst);
+  CopyTree(buf_s,buf_d);
+
+  SPrintF(buf_s,"%c:/Linux",src);
+  SPrintF(buf_d,"%c:/Linux",dst);
+  CopyTree(buf_s,buf_d);
+
+  SPrintF(buf_s,"%c:/0000Boot",src);
+  SPrintF(buf_d,"%c:/0000Boot",dst);
+  CopyTree(buf_s,buf_d);
+
+  SPrintF(buf_d,"%c:/Temp",dst);
+  MkDir(buf_d);
+
+  SPrintF(buf_d,"%c:/Temp/ScreenShots",dst);
+  MkDir(buf_d);
+
+  if (ts_has_tra_drv && dst==TS_TRA_DRV_LET) {
+    SPrintF(buf_d,"%c:/Logs",dst);
+    MkDir(buf_d);
+    SPrintF(buf_d,"%c:/Logs/LTLogs",dst);
+    MkDir(buf_d);
+  }
+
+  Drv(dst);
+  CmpDrv(dst);
+}
+
+U0 PmtMyCopyDrv()
+{
+  U8 src,dst;
+  PutS("$FG,RED$\r\nCopy Src Drive:\r\n$FG$");
+  src=DrvMySelect;
+  PutS("$FG,RED$\r\nCopy Dst Drive:\r\n$FG$");
+  dst=DrvMySelect;
+  MyCopyDrv(src,dst);
+}
+
+public U0 FileCursorRem(U8 *filename)
+{
+  Ltf *l;
+  l=LtfRead(filename,LTFF_PLAIN_TEXT|LTFF_NO_CURSOR);
+  LtfWrite(l);
+  LtfDel(l);
+}
+
+public U0 FileCursorTop(U8 *filename)
+{
+  Ltf *l;
+  l=LtfRead(filename,LTFF_PLAIN_TEXT);
+  l->cur_entry=l->root.next;
+  LtfWrite(l);
+  LtfDel(l);
+}
+
+public U0 FilesCursorRem(U8 *mask="*")
+{
+  U64 fuf_flags=0;
+  GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+t+f+F");
+  LTDirEntry *tempm=FilesFind(mask,fuf_flags),*tempm1;
+  while (tempm) {
+    tempm1=tempm->next;
+    FileCursorRem(tempm->full_name);
+    Touch(tempm->full_name,"","",tempm->datetime);
+    LTDirEntryDel(tempm);
+    tempm=tempm1;
+  }
+}
+
+public U0 FilesCursorTop(U8 *mask="*")
+{
+  U64 fuf_flags=0;
+  GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+t+f+F");
+  LTDirEntry *tempm=FilesFind(mask,fuf_flags),*tempm1;
+  while (tempm) {
+    tempm1=tempm->next;
+    FileCursorTop(tempm->full_name);
+    Touch(tempm->full_name,"","",tempm->datetime);
+    LTDirEntryDel(tempm);
+    tempm=tempm1;
+  }
+}
+
+U0 LinkChgFile(U8 *filename,BoolI8 remove)
+{
+  Ltf *l=LtfRead(filename,LTFF_NO_CURSOR);
+  LtfEntry *ll=l->root.next;
+  U8 *st,*st2;
+  I64 f=0,line_num;
+  BoolI8 modified=FALSE;
+  while (ll!=l) {
+    if (ll->type_u8==LTFT_LINK) {
+      if (ll->flags & LTFLF_AUX_STR)
+	st2=EdLinkFile(ll->aux_str,&line_num);
+      else
+	st2=EdLinkFile(ll->tag,&line_num);
+      if (st2) {
+	st=FileNameAbs(st2);
+	Free(st2);
+	if ((StrStr(st,"/LT/Doc")||StrStr(st,"/LT/Apps")||
+	     StrStr(st,"/LT/Accts/TS/Archive")) && !IsSrcFile(st)) {
+	  st2=MAlloc(StrLen(st)+1);
+	  StrLastRem(st,"/",st2);
+	  Free(st);
+	  FileExtRem(st2);
+	  if (line_num)
+	    st=MSPrintF("http://www.losethos.com/doc/%s.html#l%d",st2,line_num);
+	  else
+	    st=MSPrintF("http://www.losethos.com/doc/%s.html",st2);
+	  Free(st2);
+	  if (ll->flags&LTFLF_HTML_LINK) {
+	    if (!(remove && !StrCmp(ll->html_link,st))) {
+	      if (StrCmp(ll->html_link,st)) {
+		PrintF("$FG,RED$Warning:%s\r\n%s$FG$\r\n",filename,ll->html_link);
+//		Free(ll->html_link);
+//		ll->html_link=st;
+//		st=NULL;
+//		modified=TRUE;
+	      }
+	    } else {
+	      PrintF("%s\r\n$FG,LTRED$%s$FG$\r\n",filename,st);
+	      ll->flags&=~LTFLF_HTML_LINK;
+	      Free(ll->html_link);
+	      ll->html_link=NULL;
+	      modified=TRUE;
+	    }
+	  } else {
+	    if (!remove) {
+	      PrintF("%s\r\n$FG,GREEN$%s$FG$\r\n",filename,st);
+	      ll->flags|=LTFLF_HTML_LINK;
+	      ll->html_link=st;
+	      st=NULL;
+	      modified=TRUE;
+	    }
+	  }
+	} else {
+	  StrFirstRem(st,":");
+	  Silent(ON);
+	  if (GrepFile(st,TS_MAIN_DRV ":/LT/Accts/TS/LoseThos/CodeFiles.TXZ",&f,NULL)) {
+	    Silent(OFF);
+	    st2=MAlloc(StrLen(st)+1);
+	    StrLastRem(st,"/",st2);
+	    Free(st);
+	    FileExtRem(st2);
+	    if (line_num)
+	      st=MSPrintF("http://www.losethos.com/code/%s.html#l%d",st2,line_num);
+	    else
+	      st=MSPrintF("http://www.losethos.com/code/%s.html",st2);
+	    Free(st2);
+	    if (ll->flags&LTFLF_HTML_LINK) {
+	      if (!remove && StrCmp(ll->html_link,st)) {
+		PrintF("$FG,RED$Warning:%s\r\n%s$FG$\r\n",filename,ll->html_link);
+//		Free(ll->html_link);
+//		ll->html_link=st;
+//		st=NULL;
+//		modified=TRUE;
+	      } else if (remove && !StrCmp(ll->html_link,st)) {
+		PrintF("%s\r\n$FG,LTRED$%s$FG$\r\n",filename,st);
+		ll->flags&=~LTFLF_HTML_LINK;
+		Free(ll->html_link);
+		ll->html_link=NULL;
+		modified=TRUE;
+	      }
+	    } else {
+	      if (!remove) {
+		PrintF("%s\r\n$FG,GREEN$%s$FG$\r\n",filename,st);
+		ll->flags|=LTFLF_HTML_LINK;
+		ll->html_link=st;
+		st=NULL;
+		modified=TRUE;
+	      }
+	    }
+	  }
+	  Silent(OFF);
+	}
+	Free(st);
+      }
+    }
+    ll=ll->next;
+  }
+  if (modified)
+    LtfWrite(l);
+  LtfDel(l);
+}
+
+U0 LinkChgList(LTDirEntry *tempm1,BoolI8 remove)
+{
+  LTDirEntry *tempm2;
+  while (tempm1) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub) {
+	PrintF("%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name);
+	LinkChgList(tempm1->sub,remove);
+      }
+    } else {
+      LinkChgFile(tempm1->full_name,remove);
+      Touch(tempm1->full_name,"","",tempm1->datetime);
+    }
+    LTDirEntryDel(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+U0 LinkChg(U8 *files_find_mask=TEXT_FILE_MASK,BoolI8 remove)
+{
+  LinkChgList(FilesFind(files_find_mask,1<<FUf_RECURSE),remove);
+}
+
+U0 UncollapseFile(U8 *filename,U64 *flags)
+{
+  nounusedwarn flags;
+  Ltf *l=LtfRead(filename,LTFF_NO_CURSOR);
+  LtfCollapse(FALSE,l);
+  LtfWrite(l);
+  LtfDel(l);
+}
+
+U0 UncollapseList(LTDirEntry *tempm1,U64 *flags)
+{
+  LTDirEntry *tempm2;
+  while (tempm1 && !Bt(flags,FUf_CANCEL)) {
+    tempm2=tempm1->next;
+    if (tempm1->attr & LT_ATTR_DIR) {
+      if (tempm1->sub) {
+	PrintF("%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name);
+	UncollapseList(tempm1->sub,flags);
+      }
+    } else
+      UncollapseFile(tempm1->full_name,flags);
+    LTDirEntryDel(tempm1);
+    tempm1=tempm2;
+  }
+}
+
+U0 Uncollapse(U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL)
+{
+  U64 f=0;
+  GetFFlags(&f,Define("ST_FILE_UTIL_FLAGS"),"+r");
+  GetFFlags(&f,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
+  UncollapseList(FilesFind(files_find_mask,f),&f);
+}
+
+U8 *losethos_html_header=
+"<title>LoseThos 64-Bit Operating System</title>\r\n"
+"<meta name=\"author\"      content=\"Terry A. Davis\">\r\n"
+"<meta name=\"description\" content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking, Preemptive\">\r\n"
+"<meta name=\"keywords\"    content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking, Preemptive\">\r\n";
+
+U8 *losethos_code_header=
+"<span class=cF5>                               <a href=\"http://www.losethos.com/doc/TrivialSolutions.html\">Trivial Solutions</a>\r\n"
+"                    <a href=\"http://www.losethos.com\">The LoseThos 64-bit PC Operating System</a>\r\n"
+"File:%s\r\n"
+"This, and all LoseThos files, are public domain.  Do whatever you like.\r\n"
+"God is watching; God is just; God is never out-done in generosity.  He talks!\r\n\r\n"
+"LoseThos code compiles with the 64-bit LoseThos compiler/assembler I wrote.\r\n"
+"Boot the LoseThos CD and you can compile it.  Not in Kansas anymore!\r\n\r\n"
+"<a href=\"http://www.losethos.com/code/FixedPoint.html\">Click here for preliminary compiler information you need.</a>"
+"\r\n\r\n</span>";
+
+U0 AllToHtml()
+{
+  I64 i,cnt;
+  LTDirEntry *tempm,**a;
+  U8 *st,*st1;
+  Ltf *l=LtfRead(TS_MAIN_DRV ":/LT/Accts/TS/LoseThos/CodeFiles.TXZ",LTFF_PLAIN_TEXT|LTFF_NO_CURSOR);
+  LtfEntry *ll;
+
+  Cd(TS_MAIN_DRV ":/LT/Doc");
+  FilesCursorTop;
+
+  if (ts_has_tra_drv) {
+    DelTree(TS_TRA_DRV ":/Temp/Html");
+    Cd(TS_TRA_DRV ":/Temp/LTHtml",TRUE);
+  }
+
+  CopyTree(TS_MAIN_DRV ":/LT/Accts/TS/LoseThos","LoseThos");
+  Del("LoseThos/CodeFiles.TXZ");
+
+  MkDir("LoseThos/Code");
+  ll=l->root.next;
+  while (ll!=l) {
+    if (ll->type_u8==LTFT_TEXT && ll->tag[0]=='/') {
+      st=MSPrintF(TS_MAIN_DRV ":%s",ll->tag);
+      StrUtil(st,SUF_REM_TRAILING|SUF_REM_LEADING);
+      Copy(st,"LoseThos/Code");
+      Free(st);
+    }
+    ll=ll->next;
+  }
+
+  MkDir("LoseThos/Doc");
+  Copy(TS_MAIN_DRV ":/LT/Accts/TS/Archive/News*.TXZ","LoseThos/Doc");
+  Copy(TS_MAIN_DRV ":/LT/Apps/AfterEgypt/*.TXZ","LoseThos/Doc");
+  Copy(TS_MAIN_DRV ":/LT/Doc/*.TXZ","LoseThos/Doc");
+
+  LinkChg(TEXT_FILE_MASK,FALSE);
+  Uncollapse(TEXT_FILE_MASK);
+
+  cnt=0;
+  tempm=FilesFind("LoseThos/*",1<<FUf_RECURSE),
+  a=FilesOrder(tempm,&cnt);
+  for (i=0;i<cnt;i++) {
+    ToHtml(a[i]->full_name,,losethos_html_header);
+    LTDirEntryDel(a[i]);
+  }
+  Free(a);
+
+  //This redoes it with code header
+  ll=l->root.next;
+  while (ll!=l) {
+    if (ll->type_u8==LTFT_TEXT && ll->tag[0]=='/') {
+      StrUtil(ll->tag,SUF_REM_TRAILING|SUF_REM_LEADING);
+      st1=StrNew(ll->tag);
+      st=StrNew(ll->tag);
+      StrLastRem(st1,"/",st);
+      Free(st1);
+      st1=MSPrintF("LoseThos/Code/%s",st);
+      Free(st);
+      st=MSPrintF(losethos_code_header,ll->tag);
+      ToHtml(st1,,losethos_html_header,st);
+      Free(st);
+      Free(st1);
+    }
+    ll=ll->next;
+  }
+
+  if (ts_has_tra_drv) {
+    i=Round(os_version*100);
+    st=MSPrintF(TS_TRA_DRV ":/Temp/LTHtml/LoseThos/v%d%02d.html",i/100,i%100);
+    Copy(TS_TRA_DRV ":/Temp/LTHtml/LoseThos/index.html",st);
+    Free(st);
+  }
+
+  LtfDel(l);
+}
+
+
+U0 PrepForDistribution()
+{
+  Touch("/LT/Doc/FileMgr.TXZ","+T");
+  Touch("/LT/Doc/CtrlL.TXZ","+T");
+  Touch("/LT/Accts/PersonalMenu.TXZ","+T");
+
+//Tour
+  Del(	  "/LT/Accts/Tour/Registry.CPZ");
+  DelTree("/LT/Accts/Tour/CfgMgr");
+
+//User
+  DelTree("/LT/Accts/User");
+  MkDir(  "/LT/Accts/User");
+
+//Install
+  Del(	  "/LT/Accts/Install/Registry.CPZ");
+  DelTree("/LT/Accts/Install/CfgMgr");
+
+//SafeMode
+  Del(	  "/LT/Accts/SafeMode/Registry.CPZ");
+  DelTree("/LT/Accts/SafeMode/CfgMgr");
+
+//TAD
+  Touch("/LT/Accts/TAD/PersonalMenu.TXZ","+T");
+
+//Cody
+  Touch("/LT/Accts/Cody/PersonalMenu.TXZ","+T");
+
+//TS
+  Touch("/LT/Accts/TS/PersonalMenu.TXZ","+T");
+
+  Touch("/LT/Doc/Ed.TXZ","+T");
+
+  DelTree("/LT/Demo/AcctExample");
+  MkDir("/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/Adam3*.APZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/TSDistribute.APZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/TSAdam.APZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/TSIDComputer.APZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/TSIDDft.APZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/TestSuite.CPZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TS/PersonalMenu.TXZ","/LT/Demo/AcctExample");
+  Copy("/LT/Accts/TAD/Notes.TXZ","/LT/Demo/AcctExample");
+
+  Cd("/LT/Doc");
+  FilesCursorTop;
+
+  DelTree("/LT/Demo/*.BI?");
+
+  Cd("/LT");
+  S2T(SRC_FILE_MASK,"+r");
+  Move(WSD_DEF_FILENAME,WSD_DEF_FILENAME_Z);
+}
+
+U0 PrepForProduction()
+{
+  Drv(TS_MAIN_DRV_LET);
+  PrepForDistribution;
+  Auto(PROD_CDROM_CFG);
+  InstallBoot(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
+  Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
+  Drv(TS_IMG_DRV_LET);
+  CopyTree(TS_MAIN_DRV ":/LT","/LT");
+  MkDir("/Temp");
+  CopyTree(TS_MAIN_DRV ":/Windows","/Windows");
+  CopyTree(TS_MAIN_DRV ":/Linux","/Linux");
+  DelTree("/LT/Accts/TAD");
+  DelTree("/LT/Accts/Cody");
+  DelTree("/LT/Accts/TS");
+  CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
+  Del("/0000Boot/OldMBR.BIC");
+}
+
+U0 PrepForLite()
+{
+  Drv(TS_MAIN_DRV_LET);
+  PrepForDistribution;
+  Auto(PROD_CDROM_CFG);
+  InstallBoot(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
+  Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
+  Drv(TS_IMG_DRV_LET);
+  CopyTree(TS_MAIN_DRV ":/LT","/LT");
+  MkDir("/Temp");
+  DelTree("/LT/Accts/TAD");
+  DelTree("/LT/Accts/Cody");
+  DelTree("/LT/Accts/TS");
+  Del("/LT/Adam/WordStat/WsDefs.DTZ");
+//  Del("/LT/Text/PCIDevices.TXZ");
+//  Del("/LT/Text/Bible.TXZ");
+  DelTree("/LT/Apps/Vocabulary");
+  CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
+  Del("/0000Boot/OldMBR.BIC");
+}
+
+U0 PrepForSafe()
+{
+  Drv(TS_MAIN_DRV_LET);
+  PrepForDistribution;
+  Auto(SAFE_CDROM_CFG);
+  InstallBoot(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
+  Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
+  Drv(TS_IMG_DRV_LET);
+  CopyTree(TS_MAIN_DRV ":/LT","/LT");
+  MkDir("/Temp");
+  DelTree("/LT/Accts/TAD");
+  DelTree("/LT/Accts/Cody");
+  DelTree("/LT/Accts/TS");
+  Del("/LT/Adam/WordStat/WsDefs.DTZ");
+//  Del("/LT/Text/PCIDevices.TXZ");
+//  Del("/LT/Text/Bible.TXZ");
+  DelTree("/LT/Apps/Vocabulary");
+  CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
+  Del("/0000Boot/OldMBR.BIC");
+}
+
+U0 MakeProductionCDImage()
+{
+  PrepForProduction;
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeLiteCDImage()
+{
+  PrepForLite;
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeSafeCDImage()
+{
+  PrepForSafe;
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeInhouseCDImage()
+{
+  Drv(TS_MAIN_DRV_LET);
+  PrepForDistribution;
+  Auto(TS_CDROM_CFG);
+  InstallBoot(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
+  Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
+  Drv(TS_IMG_DRV_LET);
+  CopyTree(TS_MAIN_DRV ":/LT","/LT");
+  CopyTree(TS_MAIN_DRV ":/Text","/Text");
+  CopyTree(TS_MAIN_DRV ":/Windows","/Windows");
+  CopyTree(TS_MAIN_DRV ":/Linux","/Linux");
+  MkDir("/Temp");
+  MkDir("/Temp/ScreenShots");
+  CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U64 MakeLineCntFile()
+{
+  U64 result;
+  U8 *st;
+  Ltf *l;
+  LtfEntry *tree_branch,*start_indent,*end_indent;
+
+  PrepForLite;
+  Cd(TS_IMG_DRV ":/LT");
+  if (LinkChk) {
+    Drv(TS_MAIN_DRV_LET);
+    throw;
+  }
+  Drv(TS_IMG_DRV_LET);
+  LtfDblBufStart;
+  LtfMax;
+  PutS("$FG,PURPLE$$TX+CX+HTML,\"LoseThos Source Files\",\"http://www.losethos.com\"$\r\n"
+      "Uninteresting files are excluded.\r\n$FG$\r\n\r\n");
+  result=LineCntRep;
+  LtfCollapse(FALSE);
+  l=LtfCur;
+  st=StrNew(l->filename.name);
+  StrCpy(l->filename.name,TS_MAIN_DRV ":/LT/Accts/TS/LoseThos/linecnt.TXZ");
+  LtfWrite(l);
+  StrCpy(l->filename.name,st);
+  Free(st);
+  LtfDblBufSwap;
+  LtfDblBufEnd;
+
+  l=LtfRead(TS_MAIN_DRV ":/LT/Adam/DocDefines.APZ");
+  LtfFindTree(l,"LineCnt",&tree_branch,&start_indent,&end_indent);
+  LtfCut(l,start_indent->next,end_indent->last);
+  l->cur_entry=start_indent->next;
+  l->cur_data_col=0;
+  LtfPrintF(l,"DefinePrintF(\"DOC_LOSETHOS_LOC\",\"%,d\");\r\n",result);
+
+  //That last insertion in [::/LT/Adam/DocDefines.APZ,DOC_LOSETHOS_LOC] DocDefines will not take affect until we
+  //reboot.  The following will overshadow the old val in the
+  //current task's sym table so documents now rendered will
+  //be right.  [::/LT/Doc/TrivialSolutions.TXZ] ::/LT/Doc/TrivialSolutions.TXZ, for example,
+  //has some insertions of define string constants from the
+  //sym table.
+  st=MSPrintF("%,d",result);
+  DefineLoad("DOC_LOSETHOS_LOC",st);
+  Free(st);
+
+  LtfWrite(l);
+  LtfDel(l);
+
+  PrintF("Total LOC:%12,d\r\n\r\n",result);
+  return result;
+}
+
+AcctRegSetDftEntry("/Adam/TS/Distribution","#define DOC_DOWNLOAD_TXT Download LoseThos V1.11 (1.11 Meg)\r\n");
+AcctRegExecuteBranch("/Adam/TS/Distribution");
+
+U0 UpdateBakWin()
+{
+  F64 start;
+  U64 i;
+  PutS("!!!Update All!!!\r\n");
+  if (AreYouSure) {
+    start=tNP;
+    LtfClear;
+    LtfMax;
+    CopySongs;
+    MakeLineCntFile;
+    CmpDrv(TS_MAIN_DRV_LET);
+    UpdateAndCompile(TS_MAIN_DRV_LET,TS_BAK_DRV_LET);
+    if (ts_has_tra_drv) {
+      UpdateAndCompile(TS_MAIN_DRV_LET,TS_TRA_DRV_LET);
+      DelTree(TS_TRA_DRV ":/Temp");
+      CopyTree(TS_MAIN_DRV ":/Temp",TS_TRA_DRV ":/Temp");
+    }
+
+    MakeProductionCDImage;
+    if (ts_has_tra_drv)
+      Copy(TS_ISO_NAME,TS_TRA_DRV ":/LTFull.ISO");
+
+    MakeInhouseCDImage;
+    if (ts_has_tra_drv)
+      Copy(TS_ISO_NAME,TS_TRA_DRV ":/LTTS.ISO");
+
+    MakeLiteCDImage;
+    if (ts_has_tra_drv)
+      Copy(TS_ISO_NAME,TS_TRA_DRV ":/LTCD.ISO");
+
+    MakeSafeCDImage;
+    if (ts_has_tra_drv)
+      Copy(TS_ISO_NAME,TS_TRA_DRV ":/LTSafe.ISO");
+
+    if (ts_has_tra_drv) {
+      Drv(TS_MAIN_DRV_LET);
+      i=FileSize(TS_TRA_DRV ":/LTCD.ISO")*100/1024/1024;
+      //Technically, this creates multiple overshadowed hash entries
+      AcctRegWriteBranch("/Adam/TS/Distribution","#define DOC_DOWNLOAD_TXT Download LoseThos V%4.2f (%d.%02d Meg)\r\n",
+	os_version,i/100,i%100);
+      AcctRegExecuteBranch("/Adam/TS/Distribution");
+      AllToHtml;
+    }
+
+    ChkAll;
+
+    Drv(TS_MAIN_DRV_LET);
+    if (ts_has_tra_drv) {
+      PrintF("LTCD.ISO   %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTCD.ISO"  ));
+      PrintF("LTFull.ISO %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTFull.ISO"));
+      PrintF("LTTS.ISO  %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTTS.ISO" ));
+      PrintF("LTSafe.ISO %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTSafe.ISO"));
+    }
+    PrintF("Benchmark Time:%9.4f\r\n",tNP-start);
+  }
+}
+
+U0 Cody1New()
+{ //From CD-ROM to Cody1
+  TSHDMount;
+  DelTree(TS_MAIN_DRV ":/LT");
+  CopyTree(TS_CDROM_DRV ":/LT",TS_MAIN_DRV ":/LT");
+  CmpDrv(TS_MAIN_DRV_LET);
+}
+

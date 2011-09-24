@@ -1,0 +1,1207 @@
+#define LK_FILE 	0
+#define LK_FILE_ANCHOR	1
+#define LK_FILE_FIND	2
+#define LK_FILE_LINE	3
+#define LK_MAN_PAGE	4
+#define LK_PLAIN 	5
+#define LK_PLAIN_FIND	6
+#define LK_PLAIN_LINE	7
+#define LK_BIBLE_FIND	8
+#define LK_DEF		9
+#define LK_HELP_INDEX	10
+#define LK_ADDR	11
+#define LK_PLACE_ANCHOR	12
+#define LK_PROJECT	13
+
+#define DFT_ADDR_LINK_BIN_SIZE	64
+
+I64 PopUpLinkType(BoolI8 include_anchor)
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"$MU,\"To file\",LK_FILE$\r\n"
+  	"$MU,\"To anchor in file\",LK_FILE_ANCHOR$\r\n"
+	"$MU,\"To str in file\",LK_FILE_FIND$\r\n"
+	"$MU,\"To line in file\",LK_FILE_LINE$\r\n"
+	"$MU,\"To man page\",LK_MAN_PAGE$\r\n"
+	"$MU,\"To plain-text file\",LK_PLAIN$\r\n"
+	"$MU,\"To str in plain-text file\",LK_PLAIN_FIND$\r\n"
+	"$MU,\"To line in plain-text file\",LK_PLAIN_LINE$\r\n"
+	"$MU,\"To Bible chapter line and verse\",LK_BIBLE_FIND$\r\n"
+	"$MU,\"To Dictionary Definition\",LK_DEF$\r\n"
+	"$MU,\"To Help Index\",LK_HELP_INDEX$\r\n"
+	"$MU,\"To Addr\",LK_ADDR$\r\n");
+  if (include_anchor) {
+    LtfPutS(l,"$MU,\"Place Anchor\",LK_PLACE_ANCHOR$\r\n"
+   	"$MU,\"Set Project\",LK_PROJECT$\r\n");
+  }
+  LtfPutS(l,"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+class EdFileLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136]	fmtstr "$DA-P,135,\"File          :%s\"$\r\n";
+  U8	aux[136];
+  I64	num;
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdFileAnchorLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136]	fmtstr "$DA-P,135,\"File          :%s\"$\r\n";
+  U8	aux[136]	fmtstr "$DA-P,135,\"Anchor Label  :%s\"$\r\n";
+  I64	num;
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdFileFindLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136]	fmtstr "$DA-P,135,\"File          :%s\"$\r\n";
+  U8	aux[136]	fmtstr "$DA-P,135,\"Str        :%s\"$\r\n";
+  I64	num		fmtstr "$DA-T,135,\"Occurrence Num:%04d\"$\r\n";
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdFileLineLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136]	fmtstr "$DA-P,135,\"File          :%s\"$\r\n";
+  U8	aux[136];
+  I64	num		fmtstr "$DA-T,135,\"Line Num      :%04d\"$\r\n";
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdManPageLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136];
+  U8	aux[136]	fmtstr "$DA-P,135,\"Label         :%s\"$\r\n";
+  I64	num;
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdAddrLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136];
+  U8	aux[136]	fmtstr "$DA-P,135,\"Addr Exp   :%s\"$\r\n";
+  I64	num		fmtstr "$DA-T,135,\"Bin Size      :%04d\"$\r\n";
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdPlaceAnchorStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136];
+  U8	aux[136]	fmtstr "$DA-P,135,\"Anchor Label  :%s\"$\r\n";
+  I64	num;
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide	fmtstr "$CB,\"Hide\"$\r\n";
+};
+
+class EdBibleLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136];
+  U8	aux[136]	fmtstr "$DA-P,135,\"Chapter Verse :%s\"$\r\n";
+  I64	num;
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdDefLinkStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136];
+  U8	aux[136]	fmtstr "$DA-P,135,\"Word          :%s\"$\r\n";
+  I64	num		fmtstr "$DA-T,135,\"Def Num       :%4d\"$\r\n";
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+class EdProjectStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	file[136]	fmtstr "$DA-P,135,\"File          :%s\"$\r\n";
+  U8	aux[136];
+  I64	num;
+  U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	hide;
+};
+
+
+
+U8 *ctrl_L_header="<WINDOWS KEY> for help\r\n\r\n";
+
+
+BoolI64 PmtLink(I64 type,U8 **_tag,U8 **_link,BoolI8 *_quote,U8 **_html_link)
+{
+  I64 i;
+  BoolI8 result=FALSE;
+  EdFileLinkStruct *el=CAlloc(sizeof(EdFileLinkStruct));
+  if (type>=0) {
+    el->num=1;
+    switch (type) {
+      case LK_FILE:
+	if (LtfFormDo(el,"EdFileLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->file);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("FI:%s",el->file);
+	}
+	break;
+      case LK_PLAIN:
+	if (LtfFormDo(el,"EdFileLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->file);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("PI:%s",el->file);
+	}
+	break;
+      case LK_FILE_ANCHOR:
+	if (LtfFormDo(el,"EdFileAnchorLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->aux);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("FA:%s,%s",el->file,el->aux);
+	}
+	break;
+      case LK_FILE_FIND:
+	if (LtfFormDo(el,"EdFileFindLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (el->num==1) {
+	    if (!*el->tag)
+	      *_tag=StrNew(el->aux);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("FF:%s,%s",el->file,el->aux);
+	  } else {
+	    if (!*el->tag)
+	      *_tag=StrNew(el->aux);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("FF:%s,%s:%d",el->file,el->aux,el->num);
+	  }
+	}
+	break;
+      case LK_PLAIN_FIND:
+	if (LtfFormDo(el,"EdFileFindLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (el->num==1) {
+	    if (!*el->tag)
+	      *_tag=StrNew(el->aux);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("PF:%s,%s",el->file,el->aux);
+	  } else {
+	    if (!*el->tag)
+	      *_tag=StrNew(el->aux);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("PF:%s,%s:%d",el->file,el->aux,el->num);
+	  }
+	}
+	break;
+      case LK_FILE_LINE:
+	if (LtfFormDo(el,"EdFileLineLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->file);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("FL:%s,%d",el->file,el->num);
+	}
+	break;
+      case LK_PLAIN_LINE:
+	if (LtfFormDo(el,"EdFileLineLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->file);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("PL:%s,%d",el->file,el->num);
+	}
+	break;
+      case LK_MAN_PAGE:
+	if (LtfFormDo(el,"EdManPageLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->aux);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("MN:%s",el->aux);
+	}
+	break;
+      case LK_PLACE_ANCHOR:
+	if (LtfFormDo(el,"EdPlaceAnchorStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag) {
+	    if (el->hide)
+	      *_tag=StrNew("");
+	    else
+	      *_tag=StrNew(el->aux);
+	  } else
+	    *_tag=StrNew(el->tag);
+	  *_link=StrNew(el->aux);
+	}
+	break;
+      case LK_BIBLE_FIND: //TODO
+	i=PopUpPickDefineSub("ST_BIBLE_BOOKS");
+	if (i>=0) {
+	  if (LtfFormDo(el,"EdBibleLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	    result=TRUE;
+	    if (!*el->tag)
+	      *_tag=MSPrintF("%Z,%s",i,"ST_BIBLE_BOOKS",el->aux);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("BF:%Z,%s",i,"ST_BIBLE_BOOKS",el->aux);
+	  }
+	}
+	break;
+      case LK_DEF:
+	el->num=-1;
+	if (LtfFormDo(el,"EdDefLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->aux);
+	  else
+	    *_tag=StrNew(el->tag);
+	  if (el->num<0)
+	    *_link=MSPrintF("DF:%s",el->aux);
+	  else
+	    *_link=MSPrintF("DF:%s,%d",el->aux,el->num);
+
+	}
+	break;
+      case LK_HELP_INDEX:
+	if (LtfFormDo(el,"EdManPageLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->aux);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("HI:%s",el->aux);
+	}
+	break;
+      case LK_ADDR:
+	el->num=DFT_ADDR_LINK_BIN_SIZE;
+	if (LtfFormDo(el,"EdAddrLinkStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (el->num==DFT_ADDR_LINK_BIN_SIZE) {
+	    if (!*el->tag)
+	      *_tag=StrNew(el->aux);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("AD:%s",el->aux);
+	  } else {
+	    if (!*el->tag)
+	      *_tag=MSPrintF("%s,%d",el->aux,el->num);
+	    else
+	      *_tag=StrNew(el->tag);
+	    *_link=MSPrintF("AD:%s,%d",el->aux,el->num);
+	  }
+	}
+	break;
+      case LK_PROJECT:
+	if (LtfFormDo(el,"EdProjectStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	  result=TRUE;
+	  if (!*el->tag)
+	    *_tag=StrNew(el->file);
+	  else
+	    *_tag=StrNew(el->tag);
+	  *_link=MSPrintF("%s",el->file);
+	}
+	break;
+    }
+  }
+  if (*el->html_link)
+    *_html_link=StrNew(el->html_link);
+  else
+    *_html_link=NULL;
+  if (el->quote)
+    *_quote=TRUE;
+  else
+    *_quote=FALSE;
+  Free(el);
+  return result;
+}
+
+U0 EdInsertLink()
+{
+  U8 *tag=NULL,*link=NULL,*st=NULL,*html_link=NULL;
+  BoolI8 quote=FALSE;
+  I64 type=PopUpLinkType(TRUE);
+  if (type>=0) {
+    if (PmtLink(type,&tag,&link,&quote,&html_link)) {
+      switch (type) {
+	case LK_PLACE_ANCHOR:
+	  if (html_link)
+	    st=MSPrintF("$AN+HTML,\"%Q\",\"%Q\",\"%Q\"$",tag,link,html_link);
+	  else
+	    st=MSPrintF("$AN,\"%Q\",\"%Q\"$",tag,link);
+	  break;
+	case LK_PROJECT:
+	  if (html_link)
+	    st=MSPrintF("$PJ+HTML,\"%Q\",\"%Q\",\"%Q\"$",tag,link,html_link);
+	  else
+	    st=MSPrintF("$PJ,\"%Q\",\"%Q\"$",tag,link);
+	  break;
+	default:
+	  if (html_link)
+	    st=MSPrintF("$LK+HTML,\"%Q\",\"%Q\",\"%Q\"$",tag,link,html_link);
+	  else
+	    st=MSPrintF("$LK,\"%Q\",\"%Q\"$",tag,link);
+      }
+    }
+  }
+  if (st) {
+    if (quote)
+      PrintF("%Q",st);
+    else
+      PutS(st);
+  }
+  Free(tag);
+  Free(link);
+  Free(html_link);
+  Free(st);
+}
+
+I64 PopUpColorType()
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"$MU,\"Foreground\",LTFT_FOREGROUND$\r\n"
+	"$MU,\"Background\",LTFT_BACKGROUND$\r\n"
+	"$MU,\"Default Foreground\",LTFT_DFT_FOREGROUND$\r\n"
+	"$MU,\"Default Background\",LTFT_DFT_BACKGROUND$\r\n"
+	"$MU,\"Alt Foreground\",LTFT_ALT_FOREGROUND$\r\n"
+	"$MU,\"Link Foreground\",LTFT_LINK_FOREGROUND$\r\n"
+	"$MU,\"Macro Foreground\",LTFT_MACRO_FOREGROUND$\r\n"
+	"$MU,\"Anchor Foreground\",LTFT_ANCHOR_FOREGROUND$\r\n"
+	"$MU,\"Hidden Foreground\",LTFT_HIDDEN_FOREGROUND$\r\n"
+	"$MU,\"Tree Foreground\",LTFT_TREE_FOREGROUND$\r\n"
+	"$MU,\"User Foreground\",LTFT_USER_FOREGROUND$\r\n"
+	"$MU,\"Binary Foreground\",LTFT_BINARY_FOREGROUND$\r\n"
+	"$MU,\"Keyword Foreground\",LTFT_KEYWORD_FOREGROUND$\r\n"
+	"$MU,\"Keyword2 Foreground\",LTFT_KEYWORD2_FOREGROUND$\r\n"
+	"$MU,\"Comment Foreground\",LTFT_COMMENT_FOREGROUND$\r\n"
+	"$MU,\"Quote Foreground\",LTFT_QUOTE_FOREGROUND$\r\n"
+	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+
+I64 PopUpPageSettingType()
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"$MU,\"Page Length\",LTFT_PAGE_LEN$\r\n"
+  	"$MU,\"Page Header\",LTFT_HEADER$\r\n"
+  	"$MU,\"Page Footer\",LTFT_FOOTER$\r\n"
+  	"$MU,\"Left Margin\",LTFT_LEFT_MARGIN$\r\n"
+  	"$MU,\"Right Margin\",LTFT_RIGHT_MARGIN$\r\n"
+  	"$MU,\"Lock To Page\",LTFT_LOCK_TO_PAGE$\r\n"
+  	"$MU,\"Lock To Center\",LTFT_LOCK_TO_CENTER$\r\n");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+U0 EdInsertColor()
+{
+  I64 type=PopUpColorType,col=LTF_DFT;
+  if (type>=0) {
+    col=PopUpColor;
+    if (col==LTF_DFT)
+      PrintF("$%Z$",type,"ST_LTF_CMDS");
+    else if (col>=0)
+      PrintF("$%Z,%d$",type,"ST_LTF_CMDS",col);
+  }
+}
+
+class EdPageSettingStruct
+{
+  U8	val[136]	fmtstr "$DA-P,135,\"Setting Val:%s\"$\r\n";
+};
+
+class EdPageSettingStruct2
+{
+  U8	val[136]	fmtstr "$DA-P,135,\"Setting Val:%s\"$\r\n";
+  BoolI8 winrel	 	fmtstr "$CB,\"Win Relative\"$\r\n";
+};
+
+class EdPageSettingStruct3
+{
+  BoolI8 lock	 	fmtstr "$CB,\"Lock To Page\"$\r\n";
+};
+
+class EdPageSettingStruct4
+{
+  BoolI8 lock	 	fmtstr "$CB,\"Lock To Center\"$\r\n";
+};
+
+
+U0 EdInsertPageSetting()
+{
+  I64 type=PopUpPageSettingType;
+  EdPageSettingStruct *el=CAlloc(sizeof(EdPageSettingStruct));
+  EdPageSettingStruct2 *el2=CAlloc(sizeof(EdPageSettingStruct2));
+  EdPageSettingStruct3 *el3=CAlloc(sizeof(EdPageSettingStruct3));
+  EdPageSettingStruct4 *el4=CAlloc(sizeof(EdPageSettingStruct4));
+  if (type>=0) {
+    if (type==LTFT_RIGHT_MARGIN||type==LTFT_PAGE_LEN) {
+      if (LtfFormDo(el2,"EdPageSettingStruct2")) {
+	if (el2->winrel) {
+	  if (*el2->val)
+	    PrintF("$%Z+WR,%s$",type,"ST_LTF_CMDS",el2->val);
+	  else
+	    PrintF("$%Z+WR,0$",type,"ST_LTF_CMDS");
+	} else {
+	  if (*el2->val)
+	    PrintF("$%Z,%s$",type,"ST_LTF_CMDS",el2->val);
+	  else
+	    PrintF("$%Z$",type,"ST_LTF_CMDS");
+	}
+      }
+    } else if (type==LTFT_LOCK_TO_PAGE) {
+      el3->lock=TRUE;
+      if (LtfFormDo(el3,"EdPageSettingStruct3")) {
+	if (el3->lock)
+	  PrintF("$%Z,1$",type,"ST_LTF_CMDS",el->val);
+	else
+	  PrintF("$%Z,0$",type,"ST_LTF_CMDS");
+      }
+    } else if (type==LTFT_LOCK_TO_CENTER) {
+      el4->lock=TRUE;
+      if (LtfFormDo(el4,"EdPageSettingStruct4")) {
+	if (el4->lock)
+	  PrintF("$%Z,1$",type,"ST_LTF_CMDS",el->val);
+	else
+	  PrintF("$%Z,0$",type,"ST_LTF_CMDS");
+      }
+    } else {
+      if (LtfFormDo(el,"EdPageSettingStruct")) {
+	if (*el->val)
+	  PrintF("$%Z,%s$",type,"ST_LTF_CMDS",el->val);
+	else
+	  PrintF("$%Z$",type,"ST_LTF_CMDS");
+      }
+    }
+  }
+  Free(el4);
+  Free(el3);
+  Free(el2);
+  Free(el);
+}
+
+I64 PopUpDollarType()
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"$MU,\"Link\",LTFT_LINK$\r\n"
+  	"$MU,\"Text\",LTFT_TEXT$\r\n"
+  	"$MU,\"Tree Branch\",LTFT_TREE$\r\n"
+  	"$MU,\"Color\",LTFT_FOREGROUND$\r\n"
+  	"$MU,\"Page Settings\",LTFT_PAGE_LEN$\r\n"
+  	"$MU,\"Cursor Movement\",LTFT_CURSOR_MOVEMENT$\r\n"
+  	"$MU,\"Macro\",LTFT_MACRO$\r\n"
+  	"$MU,\"Button\",LTFT_BUTTON$\r\n"
+  	"$MU,\"Check Box\",LTFT_CHECK_BOX$\r\n"
+  	"$MU,\"Menu Val\",LTFT_MENU_VAL$\r\n"
+  	"$MU,\"Data\",LTFT_DATA$\r\n"
+  	"$MU,\"Hex Edit\",LTFT_HEX_ED$\r\n"
+  	"$MU,\"Hidden Widget\",LTFT_HIDE_START$\r\n"
+  	"$MU,\"Syntax Highlighting\",LTFT_HIGHLIGHT$\r\n"
+  	"$MU,\"HTML\",LTFT_HTML_CODE$\r\n"
+  	"$MU,\"Song\",LTFT_SONG$\r\n"
+  	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+class EdDollarTextStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  BoolI8	left_x	  fmtstr "$CB,\"Left X\"$\r\n";
+  BoolI8	center_x  fmtstr "$CB,\"Center X\"$\r\n";
+  BoolI8	right_x   fmtstr "$CB,\"Right X\"$\r\n";
+  BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\r\n";
+  BoolI8	blink	  fmtstr "$CB,\"Blink\"$\r\n";
+  BoolI8	invert	  fmtstr "$CB,\"Invert\"$\r\n";
+  BoolI8	underline fmtstr "$CB,\"Underline\"$\r\n";
+  BoolI8	tree	  fmtstr "$CB,\"Tree\"$\r\n";
+  BoolI8	collapsed fmtstr "$CB,\"Collapsed\"$\r\n";
+  BoolI8	alias	  fmtstr "$CB,\"Alias\"$\r\n";
+  U8	scroll_x [136]	 fmtstr "$DA-P,135,\"Scroll X Length Expression:%s\"$\r\n";
+  U8	shift_x  [136]	 fmtstr "$DA-P,135,\"X Offset Expression       :%s\"$\r\n";
+  U8	shift_y  [136]	 fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\r\n";
+  U8	define_str[136]	 fmtstr "$DA-P,135,\"Define Str                :%s\"$\r\n";
+  U8	html_link[136]	 fmtstr "$DA-P,135,\"Html Link                 :%s\"$\r\n";
+};
+
+U0 EdInsertDollarText()
+{
+  U8 *st,buf[136];
+  EdDollarTextStruct *dt=CAlloc(sizeof(EdDollarTextStruct));
+  if (LtfFormDo(dt,"EdDollarTextStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (dt->left_x  ) StrCat(buf,"+LX");
+    if (dt->center_x) StrCat(buf,"+CX");
+    if (dt->right_x ) StrCat(buf,"+RX");
+    if (dt->margin_rel) StrCat(buf,"+MRX");
+    if (dt->blink)    StrCat(buf,"+BK");
+    if (dt->invert)   StrCat(buf,"+IV");
+    if (dt->underline) StrCat(buf,"+UL");
+    if (dt->tree)      StrCat(buf,"+TR");
+    if (dt->collapsed) StrCat(buf,"+C");
+    if (dt->alias)     StrCat(buf,"+AL");
+    if (*dt->scroll_x) StrCat(buf,"+SCX");
+    if (*dt->shift_x)  StrCat(buf,"+SX");
+    if (*dt->shift_y)  StrCat(buf,"+SY");
+    if (*dt->define_str) StrCat(buf,"+D");
+    if (*dt->html_link) StrCat(buf,"+HTML");
+    st=MSPrintF("%q",dt->tag);
+    PrintF("$TX%s,\"%Q\"",buf,st);
+    Free(st);
+    if (*dt->shift_x)
+      PrintF(",%s",dt->shift_x);
+    if (*dt->shift_y)
+      PrintF(",%s",dt->shift_y);
+    if (*dt->scroll_x)
+      PrintF(",%s",dt->scroll_x);
+    if (*dt->define_str) {
+      st=MSPrintF("%q",dt->define_str);
+      PrintF(",\"%Q\"",st);
+      Free(st);
+    }
+    if (*dt->html_link) {
+      st=MSPrintF("%q",dt->html_link);
+      PrintF(",\"%Q\"",st);
+      Free(st);
+    }
+    PrintF("$");
+  }
+  Free(dt);
+}
+
+class EdSongStruct
+{
+  U8 tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8 song[512]		fmtstr "$DA-P,511,\"Song          :%s\"$\r\n";
+};
+
+U0 EdInsertSong()
+{
+  EdSongStruct *dt=CAlloc(sizeof(EdSongStruct));
+  if (LtfFormDo(dt,"EdSongStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
+    PrintF("$SO,\"%Q\",\"%s\"$",dt->tag,dt->song);
+  Free(dt);
+}
+
+class EdHighlightStruct
+{
+  BoolI8 highlight_on	fmtstr "$CB,\"Highlight On\"$\r\n";
+};
+
+U0 EdInsertHighlight()
+{
+  EdHighlightStruct *dt=CAlloc(sizeof(EdHighlightStruct));
+  if (LtfFormDo(dt,"EdHighlightStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
+    PrintF("$HL,%d$",dt->highlight_on);
+  Free(dt);
+}
+
+#define HT_CODE		0
+#define HT_IMAGE	1
+#define HT_VIDEO	2
+
+I64 PopUpHtmlType()
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"$MU,\"Html Code\",HT_CODE$\r\n"
+  	"$MU,\"Html Image\",HT_IMAGE$\r\n"
+  	"$MU,\"Html Video\",HT_VIDEO$\r\n"
+  	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+class EdHtmlCodeStruct
+{
+  U8 tag[512]	fmtstr "$DA-P,511,\"Html Code:%s\"$\r\n";
+};
+
+class EdHtmlURLStruct
+{
+  U8 tag[512]	fmtstr "$DA-P,511,\"URL:%s\"$\r\n";
+};
+
+U0 EdInsertHtml()
+{
+  EdHtmlCodeStruct *dt=CAlloc(sizeof(EdHtmlCodeStruct));
+  switch (PopUpHtmlType) {
+    case HT_CODE:
+      if (LtfFormDo(dt,"EdHtmlCodeStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
+	PrintF("$HC,\"%Q\"$",dt->tag);
+      break;
+    case HT_IMAGE:
+      if (LtfFormDo(dt,"EdHtmlURLStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
+	PrintF("$HI,\"%Q\"$",dt->tag);
+      break;
+    case HT_VIDEO:
+      if (LtfFormDo(dt,"EdHtmlURLStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
+	PrintF("$HV,\"%Q\"$",dt->tag);
+      break;
+  }
+  Free(dt);
+}
+
+class EdMacroMenuStruct
+{
+  U8 tag[136]	fmtstr "$DA-P,135,\"Tag Text                  :%s\"$\r\n";
+  U8 left_macro[512]	fmtstr "$DA-P,511,\"Left Click Macro          :%s\"$\r\n";
+  U8 left_exp[136]	fmtstr "$DA-P,135,\"Left Click Expression     :%s\"$\r\n";
+  BoolI8 popup		fmtstr "$CB,\"PopUp\"$\r\n";
+  BoolI8 left_is_auto	fmtstr "$CB,\"Left is AutoStr\"$\r\n";
+  BoolI8 left_x		fmtstr "$CB,\"Left X \"$\r\n";
+  BoolI8 center_x	fmtstr "$CB,\"Center X \"$\r\n";
+  BoolI8 right_x	fmtstr "$CB,\"Right X \"$\r\n";
+  BoolI8 margin_rel	fmtstr "$CB,\"Margin Rel X\"$\r\n";
+  BoolI8 blink		fmtstr "$CB,\"Blink\"$\r\n";
+  BoolI8 invert		fmtstr "$CB,\"Invert\"$\r\n";
+  BoolI8 underline	fmtstr "$CB,\"Underline\"$\r\n";
+  BoolI8 escape		fmtstr "$CB,\"Escape\"$\r\n";
+  U8 scroll_x[136]	fmtstr "$DA-P,135,\"Scroll X Length Expression:%s\"$\r\n";
+  U8 shift_x[136]	fmtstr "$DA-P,135,\"X Offset Expression       :%s\"$\r\n";
+  U8 shift_y[136]	fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\r\n";
+};
+
+U0 EdInsertMacroMenu(BoolI8 is_macro)
+{
+  U8 *st,buf[136];
+  EdMacroMenuStruct *dt=CAlloc(sizeof(EdMacroMenuStruct));
+  dt->underline=TRUE;
+  dt->escape=TRUE;
+  if (LtfFormDo(dt,"EdMacroMenuStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (is_macro && *dt->tag) StrCat(buf,"+A ");
+    if (dt->popup)    StrCat(buf,"+PU-X");
+    if (dt->left_x  ) StrCat(buf,"+LX");
+    if (dt->center_x) StrCat(buf,"+CX");
+    if (dt->right_x ) StrCat(buf,"+RX");
+    if (dt->margin_rel) StrCat(buf,"+MRX");
+    if (dt->blink)    StrCat(buf,"+BK");
+    if (dt->invert)   StrCat(buf,"+IV");
+    if (!dt->underline) StrCat(buf,"-UL");
+    if (!dt->escape)	StrCat(buf,"-X");
+    if (*dt->scroll_x) StrCat(buf,"+SCX");
+    if (*dt->shift_x)  StrCat(buf,"+SX");
+    if (*dt->shift_y)  StrCat(buf,"+SY");
+    if (is_macro) {
+      if (*dt->left_exp)	StrCat(buf,"+LE");
+      if (!*dt->left_macro) StrCat(buf,"-LM");
+    } else {
+      if (!*dt->left_exp)	StrCat(buf,"-LE");
+      if (*dt->left_macro) StrCat(buf,"+LM");
+    }
+    if (dt->left_is_auto) StrCat(buf,"+LA");
+    if (*dt->tag || is_macro) {
+      if (is_macro) {
+	if (*dt->tag) {
+	  st=MSPrintF("%q",dt->tag);
+	  PrintF("$MA%s,\"%Q\"",buf,st);
+	  Free(st);
+	} else
+	  PrintF("$MA%s,",buf);
+      } else {
+	st=MSPrintF("%q",dt->tag);
+	PrintF("$MU%s,\"%Q\"",buf,st);
+	Free(st);
+      }
+      if (*dt->left_exp)
+	PrintF(",%s",dt->left_exp);
+      if (*dt->left_macro) {
+	st=MSPrintF("%q",dt->left_macro);
+	PrintF(",\"%Q\"",st);
+	Free(st);
+      }
+      if (*dt->shift_x)
+	PrintF(",%s",dt->shift_x);
+      if (*dt->shift_y)
+	PrintF(",%s",dt->shift_y);
+      if (*dt->scroll_x)
+	PrintF(",%s",dt->scroll_x);
+      PutS("$");
+    }
+  }
+  Free(dt);
+}
+
+class EdButtonStruct
+{
+  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  BoolI8	popup	fmtstr "$CB,\"PopUp\"$\r\n";
+  BoolI8	left_x	fmtstr "$CB,\"Left X \"$\r\n";
+  BoolI8	center_x fmtstr "$CB,\"Center X \"$\r\n";
+  BoolI8	right_x	fmtstr "$CB,\"Right X \"$\r\n";
+  BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\r\n";
+  BoolI8	escape	fmtstr "$CB,\"Escape\"$\r\n";
+  U8	left_macro  [136]	fmtstr "$DA-P,135,\"Left Click Macro:%s\"$\r\n";
+  BoolI8	left_is_auto	    fmtstr "$CB,\"Left is AutoStr\"$\r\n";
+  U8	left_exp    [136]	fmtstr "$DA-P,135,\"Left Click Expression:%s\"$\r\n";
+  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+};
+
+U0 EdInsertButton()
+{
+  U8 *st,buf[136];
+  EdButtonStruct *dt=CAlloc(sizeof(EdButtonStruct));
+  dt->escape=TRUE;
+  if (LtfFormDo(dt,"EdButtonStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (dt->popup)    StrCat(buf,"+PU-X");
+    if (dt->left_x  ) StrCat(buf,"+LX");
+    if (dt->center_x) StrCat(buf,"+CX");
+    if (dt->right_x ) StrCat(buf,"+RX");
+    if (dt->margin_rel) StrCat(buf,"+MRX");
+    if (!dt->escape)	StrCat(buf,"-X");
+    if (!*dt->left_exp)	StrCat(buf,"-LE");
+    if (*dt->left_macro) StrCat(buf,"+LM");
+    if (dt->left_is_auto) StrCat(buf,"+LA");
+    if (*dt->tag) {
+      if (dt->quote) {
+	st=MSPrintF("%q",dt->tag);
+	PrintF("$$BT%s,\\\"%Q\\\"",buf,st);
+	Free(st);
+	if (*dt->left_exp)
+	  PrintF(",%s",dt->left_exp);
+	if (*dt->left_macro) {
+	  st=MSPrintF("%q",dt->left_macro);
+	  PrintF(",\\\"%Q\\\"",st);
+	  Free(st);
+	}
+	PutS("$$");
+      } else {
+	st=MSPrintF("%q",dt->tag);
+	PrintF("$BT%s,\"%Q\"",buf,st);
+	Free(st);
+	if (*dt->left_exp)
+	  PrintF(",%s",dt->left_exp);
+	if (*dt->left_macro) {
+	  st=MSPrintF("%q",dt->left_macro);
+	  PrintF(",\"%Q\"",st);
+	  Free(st);
+	}
+	PutS("$");
+      }
+    }
+  }
+  Free(dt);
+}
+
+
+class EdCursorMovementStruct
+{
+  U8 left_exp[136]	 fmtstr "$DA-P,135,\"X Expression:%s\"$\r\n";
+  U8 right_exp[136]	 fmtstr "$DA-P,135,\"Y Expression:%s\"$\r\n";
+  BoolI8	left_x	 fmtstr "$CB,\"Left   X \"$\r\n";
+  BoolI8	center_x fmtstr "$CB,\"Center X \"$\r\n";
+  BoolI8	right_x  fmtstr "$CB,\"Right  X \"$\r\n";
+  BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\r\n";
+  BoolI8	top_y	 fmtstr "$CB,\"Top    Y \"$\r\n";
+  BoolI8	center_y fmtstr "$CB,\"Center Y \"$\r\n";
+  BoolI8	bottom_y fmtstr "$CB,\"Bottom Y \"$\r\n";
+  BoolI8	page_rel fmtstr "$CB,\"Page Rel Y\"$\r\n";
+  BoolI8	quote	 fmtstr "$CB,\"Quote\"$\r\n";
+};
+
+U0 EdInsertCursorMovement()
+{
+  U8 buf[136];
+  EdCursorMovementStruct *dt=CAlloc(sizeof(EdCursorMovementStruct));
+  if (LtfFormDo(dt,"EdCursorMovementStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (dt->left_x  ) StrCat(buf,"+LX");
+    if (dt->center_x) StrCat(buf,"+CX");
+    if (dt->right_x ) StrCat(buf,"+RX");
+    if (dt->margin_rel) StrCat(buf,"+MRX");
+    if (dt->top_y   ) StrCat(buf,"+TY");
+    if (dt->center_y) StrCat(buf,"+CY");
+    if (dt->bottom_y) StrCat(buf,"+BY");
+    if (dt->page_rel) StrCat(buf,"+PRY");
+    if (!*dt->left_exp)  StrCat(buf,"-LE");
+    if (!*dt->right_exp) StrCat(buf,"-RE");
+    if (dt->quote)
+      PutS("$");
+    PrintF("$CM%s",buf);
+    if (*dt->left_exp)
+      PrintF(",%s",dt->left_exp);
+    if (*dt->right_exp)
+      PrintF(",%s",dt->right_exp);
+    PutS("$");
+    if (dt->quote)
+      PutS("$");
+  }
+  Free(dt);
+}
+
+class EdDataStruct
+{
+  U8	fmt_str [136]	fmtstr "$DA-P,135,\"Format Str:%s\"$\r\n";
+  U64 len	 fmtstr "$DA,256,\"Length:%d\"$\r\n";
+  BoolI8	term	 fmtstr "$CB,\"Terminator\"$\r\n";
+  BoolI8	str	 fmtstr "$CB,\"Str\"$\r\n";
+  BoolI8	refresh	 fmtstr "$CB,\"Refresh Data\"$\r\n";
+  BoolI8	update	 fmtstr "$CB,\"Update Data\"$\r\n";
+  BoolI8	u8	 fmtstr "$CB,\"U8\"$\r\n";
+  BoolI8	u16	 fmtstr "$CB,\"U16\"$\r\n";
+  BoolI8	u32	 fmtstr "$CB,\"U32\"$\r\n";
+  BoolI8	u64	 fmtstr "$CB,\"U64\"$\r\n";
+};
+
+U0 EdInsertData()
+{
+  U8 *st,buf[136];
+  EdDataStruct *dt=CAlloc(sizeof(EdDataStruct));
+  dt->term=TRUE;
+  dt->len=256;
+  dt->u64=TRUE;
+  if (LtfFormDo(dt,"EdDataStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (dt->str)   StrCat(buf,"-P");
+    if (!dt->term)    StrCat(buf,"-T");
+    if (dt->refresh)  StrCat(buf,"+RD");
+    if (dt->update)   StrCat(buf,"+UD");
+
+    if (dt->u8)       StrCat(buf,"-U64+U8");
+    else if (dt->u16)  StrCat(buf,"-U64+U16");
+    else if (dt->u32)  StrCat(buf,"-U64+U32");
+
+    st=MSPrintF("%q",dt->fmt_str);
+    PrintF("$$DA%s,%d,\\\"%Q\\\"$$",
+      buf,dt->len,st);
+    Free(st);
+  }
+  Free(dt);
+}
+
+class EdCheckBoxStruct
+{
+  U8		label [136]   fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  BoolI8	refresh	 fmtstr "$CB,\"Refresh Data\"$\r\n";
+};
+
+U0 EdInsertCheckBox()
+{
+  U8 *st,buf[136];
+  EdCheckBoxStruct *dt=CAlloc(sizeof(EdCheckBoxStruct));
+  if (LtfFormDo(dt,"EdCheckBoxStruct",DOF_HELP_IS_FILE,CTRL_L_HELP)) {
+    *buf=0;
+    if (dt->refresh)  StrCat(buf,"+RD");
+    st=MSPrintF("%q",dt->label);
+    PrintF("$$CB%s,\\\"%Q\\\"$$",
+      buf,st);
+    Free(st);
+  }
+  Free(dt);
+}
+
+class EdHexEdStruct
+{
+  U64 cnt fmtstr "$DA,256,\"Count:%d\"$\r\n";
+  U64 cols fmtstr "$DA,256,\"Columns:%d\"$\r\n";
+  BoolI8	zero	 fmtstr "$CB,\"Zero Based\"$\r\n";
+  BoolI8	refresh	 fmtstr "$CB,\"Refresh Data\"$\r\n";
+};
+
+U0 EdInsertHexEd()
+{
+  U8 buf[136];
+  EdHexEdStruct *dt=CAlloc(sizeof(EdHexEdStruct));
+  dt->cnt=128;
+  dt->cols=4;
+  dt->zero=TRUE;
+  if (LtfFormDo(dt,"EdHexEdStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (!dt->zero)  StrCat(buf,"-Z");
+    if (dt->refresh)  StrCat(buf,"+RD");
+    PrintF("$$HX%s,%d,%d$$",
+      buf,dt->cnt,dt->cols);
+  }
+  Free(dt);
+}
+
+
+class EdBinaryStruct
+{
+  I64 num fmtstr "$DA,256,\"Num:%d\"$\r\n";
+};
+
+U0 EdInsertBinary(I64 type)
+{
+  EdBinaryStruct *dt=CAlloc(sizeof(EdBinaryStruct));
+  dt->num=1;
+  if (LtfFormDo(dt,"EdBinaryStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    if (LtfFindBin(LtfCur,dt->num))
+      PrintF("$%Z,\"<%d>\",%d$",type,"ST_LTF_CMDS",dt->num,dt->num);
+    else
+      PopUpOk("Invalid Binary Num");
+  }
+  Free(dt);
+}
+
+class EdTreeStruct
+{
+  U8	label[136] fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  I64	indent	   fmtstr "$DA,135,\"Indention:%d\"$\r\n";
+  BoolI8	collapsed  fmtstr "$CB,\"Collapsed\"$\r\n";
+};
+
+U0 EdInsertTree()
+{
+  U8 *st,*st2,buf[136];
+  EdTreeStruct *dt=CAlloc(sizeof(EdTreeStruct));
+  dt->collapsed=TRUE;
+  dt->indent=2;
+  if (LtfFormDo(dt,"EdTreeStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+    *buf=0;
+    if (!dt->collapsed)  StrCat(buf,"-C");
+    st=MSPrintF("%q",dt->label);
+    st2=MSPrintF("$TR%s,\"%Q\"$\r\n$ID,%d$*\r\n$ID,%d$",
+      buf,st,dt->indent,-dt->indent);
+    LtfSafeInsert(LtfCur,st2);
+    Free(st);
+    Free(st2);
+  }
+  Free(dt);
+}
+
+U0 EdInsertHidden()
+{
+  LtfSafeInsert(LtfCur,"$HS$*$HE$");
+}
+
+U0 EdInsertDollarCmd()
+{
+  I64 type=PopUpDollarType;
+  switch (type) {
+    case LTFT_FOREGROUND:
+      EdInsertColor;
+      break;
+    case LTFT_PAGE_LEN:
+      EdInsertPageSetting;
+      break;
+    case LTFT_LINK:
+      EdInsertLink;
+      break;
+    case LTFT_TEXT:
+      EdInsertDollarText;
+      break;
+    case LTFT_TREE:
+      EdInsertTree;
+      break;
+    case LTFT_MACRO:
+      EdInsertMacroMenu(TRUE);
+      break;
+    case LTFT_MENU_VAL:
+      EdInsertMacroMenu(FALSE);
+      break;
+    case LTFT_CURSOR_MOVEMENT:
+      EdInsertCursorMovement;
+      break;
+    case LTFT_BUTTON:
+      EdInsertButton;
+      break;
+    case LTFT_DATA:
+      EdInsertData;
+      break;
+    case LTFT_CHECK_BOX:
+      EdInsertCheckBox;
+      break;
+    case LTFT_HEX_ED:
+      EdInsertHexEd;
+      break;
+    case LTFT_HIDE_START:
+      EdInsertHidden;
+      break;
+    case LTFT_SONG:
+      EdInsertSong;
+      break;
+    case LTFT_HIGHLIGHT:
+      EdInsertHighlight;
+      break;
+    case LTFT_HTML_CODE:
+      EdInsertHtml;
+   }
+}
+
+#define PT_PICTURE		0
+#define PT_PICTURE_MACRO	1
+#define PT_PICTURE_MENU		2
+#define PT_PICTURE_LINK		3
+#define PT_GRELEMS_PTR		4
+#define PT_GRELEMS_SIZE		5
+#define PT_DUP_PICTURE		6
+
+I64 PopUpPictureType()
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"A picture is composed of graphic elements\r\n"
+	"such as lines and colors.  A collection\r\n"
+	"is called $FG,GREEN$GrElems$FG$.\r\n\r\n"
+	"You can place a picture with a payload\r\n"
+	"of code to execute to create an icon.\r\n"
+	"This is a called a picture macro.\r\n"
+	"Check \"Pop-Up\" for icons and \"Esc\" for\r\n"
+	"cmd line macros.\r\n\r\n"
+	"In a program, you first make a picture.\r\n"
+	"Then, you insert a pointer to it.\r\n\r\n"
+  	"$MU,\"Insert just Picture (GrElems)\",PT_PICTURE$\r\n"
+  	"$MU,\"Picture Macro (Icon)\",PT_PICTURE_MACRO$\r\n"
+  	"$MU,\"Picture Menu Item\",PT_PICTURE_MENU$\r\n"
+  	"$MU,\"Picture Link\",PT_PICTURE_LINK$\r\n"
+  	"$MU,\"Pointer to GrElems Data\",PT_GRELEMS_PTR$\r\n"
+  	"$MU,\"GrElems Size (not really needed)\",PT_GRELEMS_SIZE$\r\n"
+  	"$MU,\"Duplicate Picture\",PT_DUP_PICTURE$\r\n"
+  	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$\r\n\r\n"
+  	"The potential exists for binary data\r\n"
+	"besides $FG,GREEN$GrElems$FG$.  This is why\r\n"
+	"the pointer to GrElems is known as\r\n"
+	"\"Insert Binary\".  There is one more\r\n"
+	"option called \"Insert Binary Type\".\r\n"
+	"The only other binary data type is source\r\n"
+	"line info in map files.\r\n\r\n"
+  	"$MU,\"Insert Binary Data Type\",7$\r\n");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
+class EdJustPictureStruct
+{
+  U8 tag[136]	fmtstr "$DA-P,135,\"Tag Text       :%s\"$\r\n";
+};
+
+class EdMacroPictureStruct
+{
+  U8 tag[136]		fmtstr "$DA-P,135,\"Tag Text       :%s\"$\r\n";
+  U8 exp[512]		fmtstr "$DA-P,511,\"Macro          :%s\"$\r\n";
+  BoolI8 escape		fmtstr "$CB,\"Escape\"$\r\n";
+  BoolI8 popup		fmtstr "$CB,\"PopUp\"$\r\n";
+  BoolI8 is_auto	fmtstr "$CB,\"AutoStr\"$\r\n";
+};
+
+class EdMenuPictureStruct
+{
+  U8 tag[136]		fmtstr "$DA-P,135,\"Tag Text       :%s\"$\r\n";
+  U8 exp[512]		fmtstr "$DA-P,511,\"Expression     :%s\"$\r\n";
+  BoolI8 escape		fmtstr "$CB,\"Escape\"$\r\n";
+};
+
+U8 *EdPictureLink(U8 **_html_link)
+{
+  U8 *result=NULL,*tag=NULL,*link=NULL;
+  BoolI8 quote=FALSE;
+  I64 type=PopUpLinkType(FALSE);
+  *_html_link=NULL;
+  if (type>=0) {
+    if (PmtLink(type,&tag,&link,&quote,_html_link))
+      result=MSPrintF("\"%Q\",\"%Q\"",tag,link);
+  }
+  Free(tag);
+  Free(link);
+  return result;
+}
+
+U8 *EdPicture()
+{
+  I64 type=PopUpPictureType;
+  U8 *st,*st1=NULL,*st2=NULL,buf[1024],*html_link=NULL;
+  EdMacroPictureStruct *dt=CAlloc(sizeof(EdMacroPictureStruct));
+  *buf=0;
+  switch (type) {
+    case PT_PICTURE:
+      SPrintF(dt->tag,"<%d>",LtfCur->cur_bin_num);
+      if (LtfFormDo(dt,"EdJustPictureStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
+	st1=MSPrintF("\"%Q\"",dt->tag);
+      break;
+    case PT_PICTURE_MACRO:
+      dt->escape=TRUE;
+      if (LtfFormDo(dt,"EdMacroPictureStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	StrCat(buf,"+LM+UL");
+	if (dt->is_auto)StrCat(buf,"+LA");
+	if (dt->popup)	StrCat(buf,"+PU");
+	if (dt->escape)	StrCat(buf,"+X");
+	st=MSPrintF("%q",dt->exp);
+	st1=MSPrintF("\"%Q\",\"%Q\"",dt->tag,st);
+	Free(st);
+      }
+      break;
+    case PT_PICTURE_MENU:
+      dt->escape=TRUE;
+      if (LtfFormDo(dt,"EdMenuPictureStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
+	StrCat(buf,"+LE");
+	if (dt->escape)	StrCat(buf,"+X");
+	st1=MSPrintF("\"%Q\",\"%Q\"",dt->tag,dt->exp);
+      }
+      break;
+    case PT_PICTURE_LINK:
+      StrCat(buf,"+L+A");
+      st1=EdPictureLink(&html_link);
+      break;
+    case PT_GRELEMS_PTR:
+      EdInsertBinary(LTFT_INSERT_BINARY);
+      break;
+    case PT_GRELEMS_SIZE:
+      EdInsertBinary(LTFT_INSERT_BINARY_SIZE);
+      break;
+    case PT_DUP_PICTURE:
+      EdInsertBinary(LTFT_PICTURE);
+      break;
+  }
+  if (st1) {
+    if (html_link) {
+      StrCat(buf,"+HTML");
+      st2=MSPrintF("$PI-BI%s,%s,\"%Q\"$",buf,st1,html_link);
+    } else
+      st2=MSPrintF("$PI-BI%s,%s$",buf,st1);
+    Free(st1);
+  }
+  Free(dt);
+  Free(html_link);
+  return st2;
+}

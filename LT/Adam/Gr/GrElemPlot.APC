@@ -1,0 +1,571 @@
+#help_index "Graphics/GrElem"
+/*
+[C:/LT/Adam/Gr/Gr.APZ,54] GrElems are stored as a sequence of var
+length operations with a 1-byte type leading
+each operation.  The types available are listed
+here, [C:/LT/Adam/Gr/Gr.APZ,6] GRET_POINT.  They are stored, one after another,
+in a chunk of memory terminated by a type [C:/LT/Adam/Gr/Gr.APZ,2] GRET_END.
+
+[C:/LT/Adam/Gr/GrElemPlot.APZ,27] GrElemsPlot3() and [C:/LT/Adam/Gr/GrElemVect.APZ,223] GrElemVect() shows how the
+unions are used.  It's kind-of a mess using a union.
+
+[C:/LT/Adam/Gr/GrElemNew.APZ,123] GrElemSize() will return the size of a single
+operation, while [C:/LT/Adam/Gr/GrElemNew.APZ,123] GrElemsSize() with an 's' will
+return the size of an entire list.  Look at
+[C:/LT/Adam/Gr/GrElemNew.APZ,4] gr_elem_base_size.
+
+To get familiar, type <CTRL-R> on picture in
+a document and select "Display as Text".  It
+will show the raw data for each GrElem.  This
+is how they are stored in files, as well.
+
+See ::/LT/Apps/GrModels
+`Cd("::/LT/Apps/GrModels");Dir;View;`
+ for an example of
+making GrElems by hand.  Those are type
+[C:/LT/Adam/Gr/Gr.APZ,31] GRET_MESH, one of the most complicated.
+*/
+
+public U0 GrElemsPlot3(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FALSE)
+{
+  GrElem *tempg=elems-offset(GrElem.start);
+  I64 i,j,k;
+  I64 x1,y1,z1,x2,y2;
+  I32 *ptr;
+  I64 cur_grelem_num=0,*old_r,*r2;
+  U64 old_flags=base->flags;
+  ColorROPU32 old_color=base->color,old_bkcolor=base->bkcolor,
+     colorbase=base->bkcolor;
+  I64 old_pen_width=base->pen_width;
+  GrBitMap *img;
+  P3I32 *p;
+  GrSymStruct old_sym;
+  MemCpy(&old_sym,&base->sym,sizeof(GrSymStruct));
+  if (colorbase.c0.rop==ROPB_COLLISION)
+    base->color=colorbase;
+  while (tempg->type) {
+    base->cur_grelem_num=cur_grelem_num++;
+    switch (tempg->type) {
+      case GRET_COLOR4:
+	base->color=colorbase.c0^tempg->color4;
+	break;
+      case GRET_DITHER_COLOR4:
+	base->color=colorbase.c0^tempg->dither_color4&15|
+		   (colorbase.c0^tempg->dither_color4>>4&15)<<16|ROPF_DITHER;
+	break;
+      case GRET_WIDTH:
+	base->pen_width=tempg->width;
+	GrScalePenWidth(base);
+	break;
+      case GRET_TRANSFORM_ON:
+	if (!(base->flags&BMF_TRANSFORMATION)) {
+	  x-=base->x;
+	  y-=base->y;
+	  z-=base->z;
+	}
+	base->flags|=BMF_TRANSFORMATION;
+	break;
+      case GRET_TRANSFORM_OFF:
+	if (base->flags&BMF_TRANSFORMATION) {
+	  x+=base->x;
+	  y+=base->y;
+	  z+=base->z;
+	}
+	base->flags&=~BMF_TRANSFORMATION;
+	break;
+      case GRET_POINT:
+	GrPlot3(base,tempg->x1+x,tempg->y1+y,z);
+	break;
+      case GRET_TEXT:
+	GrPutS3(base,tempg->x1+x,tempg->y1+y,z,tempg->st);
+	break;
+      case GRET_TEXT_BOX:
+	GrTextBox3(base,tempg->x1+x,tempg->y1+y,z,tempg->st);
+	break;
+      case GRET_TEXT_DIAMOND:
+	GrTextDiamond3(base,tempg->x1+x,tempg->y1+y,z,tempg->st);
+	break;
+      case GRET_FLOOD_FILL:
+	GrFloodFill3(base,tempg->x1+x,tempg->y1+y,z,FALSE);
+	break;
+      case GRET_FLOOD_FILL_NOT:
+	i=base->color;
+	base->color=base->color.c0;
+	GrFloodFill3(base,tempg->x1+x,tempg->y1+y,z,TRUE);
+	base->color=i;
+	break;
+      case GRET_SHIFT:
+	x+=tempg->x1;
+	y+=tempg->y1;
+	break;
+      case GRET_LINE:
+	GrLine3(base,tempg->x1+x,tempg->y1+y,z,tempg->x2+x,tempg->y2+y,z);
+	break;
+      case GRET_ARROW:
+	GrArrow3(base,tempg->x1+x,tempg->y1+y,z,tempg->x2+x,tempg->y2+y,z);
+	break;
+      case GRET_PLANAR_SYMMETRY:
+	if (GrSetSymmetry3(base,tempg->x1+x,tempg->y1+y,z,tempg->x2+x,tempg->y2+y,z,tempg->x2+x,tempg->y2+y,z+1))
+	  base->flags|=BMF_SYMMETRY;
+	else
+	  base->flags&=~BMF_SYMMETRY;
+	break;
+      case GRET_BITMAP4:
+      case GRET_BITMAP4_TRANSPARENT:
+	img=CAlloc(sizeof(GrBitMap));
+	img->type=BMT_COLOR4;
+	img->width=tempg->width;
+	img->width_internal=(tempg->width+7)&~7;
+	img->height=tempg->height;
+	img->plane_size=(img->width_internal*img->height)>>3;
+	img->body=tempg><(U8 *)+offset(GrElem.sides);
+	img->bm_signature=BMS_SIGNATURE_VAL;
+	img->bkcolor=tempg->bkcolor;
+	i=base->color;
+	if (colorbase.c0.rop==ROPB_COLLISION)
+	  base->color=colorbase;
+	else if (tempg->type==GRET_BITMAP4_TRANSPARENT)
+	  base->color=ROP_TRANSPARENT+i&COLORROP_NO_ROP0_MASK;
+	GrBlot3(base,tempg->x2+x,tempg->y2+y,z,img);
+	base->color=i;
+	Free(img);
+	break;
+      case GRET_RECT:
+	GrRect3(base,tempg->x1+x,tempg->y1+y,z,tempg->x2-tempg->x1,tempg->y2-tempg->y1);
+	break;
+      case GRET_ROTATED_RECT:
+	x1=tempg->x1+x;
+	y1=tempg->y1+y;
+	z1=z;
+	GrRot(base->r,&x1,&y1,&z1);
+	old_r=base->r;
+	base->flags|=BMF_TRANSFORMATION;
+	r2=GrRotZ(-tempg->rot_angle);
+	GrSetTranslation(r2,x1,y1,z1);
+	GrSetRotMat(base,GrMulMat(old_r,r2));
+	GrRect3(base,0,0,0,tempg->x2-tempg->x1,tempg->y2-tempg->y1);
+	Free(base->r);
+	Free(r2);
+	GrSetRotMat(base,old_r);
+	base->flags=base->flags&~BMF_TRANSFORMATION|old_flags;
+	break;
+      case GRET_CIRCLE:
+	GrCircle3(base,tempg->x1+x,tempg->y1+y,z,tempg->x2);
+	break;
+      case GRET_ELLIPSE:
+	GrEllipse3(base,tempg->x2+x,tempg->y2+y,z,tempg->width,tempg->height,tempg->rot_angle);
+	break;
+      case GRET_REG_POLY:
+	GrRegPoly3(base,tempg->x2+x,tempg->y2+y,z,tempg->width,tempg->height,tempg->sides,tempg->rot_angle);
+	break;
+      case GRET_POLYLINE:
+	ptr=&tempg->y1;
+	x1=ptr[0];
+	y1=ptr[1];
+	for (i=1;i<tempg->num;i++) {
+	  x2=ptr[i<<1];
+	  y2=ptr[i<<1+1];
+	  GrLine3(base,x1+x,y1+y,z,x2+x,y2+y,z);
+	  x1=x2;y1=y2;
+	}
+	break;
+      case GRET_SPEEDLINE:
+	ptr=&tempg->y1;
+	x1=ptr[0];
+	y1=ptr[1];
+	for (i=1;i<tempg->num;i++) {
+	  x2=ptr[i<<2];
+	  y2=ptr[i<<2+1];
+	  GrSpeedLine3(base,x1+x,y1+y,z,x2+x,y2+y,z,ptr[i<<2+2]><(F64));
+	  x1=x2;y1=y2;
+	}
+	break;
+      case GRET_POLYPOINT:
+	ptr=&tempg->y1;
+	x1=ptr[0];
+	y1=ptr[1];
+	ptr+=2;
+	k=tempg->num*3;
+	GrPlot3(base,x1+x,y1+y,z);
+	for (i=0;i<k;i+=3) {
+	  j=BFieldExtU32(ptr,i,3);
+	  x1+=gr_x_offsets[j];
+	  y1+=gr_y_offsets[j];
+	  GrPlot3(base,x1+x,y1+y,z);
+	}
+	break;
+      case GRET_BSPLINE2:
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x+=x;
+	  p->y+=y;
+	  p->z+=z;
+	}
+	Gr2BSpline3(base,&tempg->y1,tempg->num,FALSE);
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x-=x;
+	  p->y-=y;
+	  p->z-=z;
+	}
+	break;
+      case GRET_BSPLINE3:
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x+=x;
+	  p->y+=y;
+	  p->z+=z;
+	}
+	Gr3BSpline3(base,&tempg->y1,tempg->num,FALSE);
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x-=x;
+	  p->y-=y;
+	  p->z-=z;
+	}
+	break;
+      case GRET_BSPLINE2_CLOSED:
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x+=x;
+	  p->y+=y;
+	  p->z+=z;
+	}
+	Gr2BSpline3(base,&tempg->y1,tempg->num,TRUE);
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x-=x;
+	  p->y-=y;
+	  p->z-=z;
+	}
+	break;
+      case GRET_BSPLINE3_CLOSED:
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x+=x;
+	  p->y+=y;
+	  p->z+=z;
+	}
+	Gr3BSpline3(base,&tempg->y1,tempg->num,TRUE);
+	p=&tempg->y1;
+	for (i=0;i<tempg->num;i++,p++) {
+	  p->x-=x;
+	  p->y-=y;
+	  p->z-=z;
+	}
+	break;
+      case GRET_MESH:
+	p=&tempg->x2;
+	for (i=0;i<tempg->vertex_cnt;i++,p++) {
+	  p->x+=x;
+	  p->y+=y;
+	  p->z+=z;
+	}
+	Gr3Mesh(base,tempg->vertex_cnt,&tempg->x2,tempg->triangle_cnt,(&tempg->x2)><(U8 *)+sizeof(P3I32)*tempg->vertex_cnt);
+	p=&tempg->x2;
+	for (i=0;i<tempg->vertex_cnt;i++,p++) {
+	  p->x-=x;
+	  p->y-=y;
+	  p->z-=z;
+	}
+	break;
+      case GRET_SHIFTABLE_MESH:
+	if (base->flags&BMF_TRANSFORMATION) {
+	  base->x+=tempg->x1;
+	  base->y+=tempg->y1;
+	  base->z+=tempg->z1;
+	  x1=x;
+	  y1=y;
+	  z1=z;
+	} else {
+	  x1=tempg->x1+x;
+	  y1=tempg->y1+y;
+	  z1=tempg->z1+z;
+	}
+	p=(&tempg->shiftable_triangle_cnt)><(U8 *)+sizeof(I32);
+	for (i=0;i<tempg->shiftable_vertex_cnt;i++,p++) {
+	  p->x+=x1;
+	  p->y+=y1;
+	  p->z+=z1;
+	}
+	p=(&tempg->shiftable_triangle_cnt)><(U8 *)+sizeof(I32);
+	Gr3Mesh(base,tempg->shiftable_vertex_cnt,p,tempg->shiftable_triangle_cnt,p><(U8 *)+sizeof(P3I32)*tempg->shiftable_vertex_cnt);
+	p=(&tempg->shiftable_triangle_cnt)><(U8 *)+sizeof(I32);
+	for (i=0;i<tempg->shiftable_vertex_cnt;i++,p++) {
+	  p->x-=x1;
+	  p->y-=y1;
+	  p->z-=z1;
+	}
+	if (base->flags&BMF_TRANSFORMATION) {
+	  base->x-=tempg->x1;
+	  base->y-=tempg->y1;
+	  base->z-=tempg->z1;
+	}
+	break;
+    }
+    if (just_one) break;
+    tempg><(U8 *)+=GrElemSize(tempg);
+  }
+  MemCpy(&base->sym,&old_sym,sizeof(GrSymStruct));
+  base->color=old_color;
+  base->bkcolor=old_bkcolor;
+  base->pen_width=old_pen_width;
+  base->flags=base->flags&~(BMF_SYMMETRY|BMF_TRANSFORMATION) |
+	      old_flags&(BMF_SYMMETRY|BMF_TRANSFORMATION);
+}
+
+public U0 GrElemPlot3(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems)
+//**!!!WARNING!!!** This will plot just
+//one element.  You probably do not
+//want this routine.
+//
+//If you do not enter a color or width into
+//a GrElem, you can pass a color and width
+//when you plot it.
+{
+  GrElemsPlot3(base,x,y,z,elems,TRUE);
+}
+
+
+public U0 GrElemsPlot3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems)
+{
+  I64 old_x=base->x,old_y=base->y,old_z=base->z;
+  base->x=x; base->y=y; base->z=z;
+  GrElemsPlot3(base,0,0,0,elems);
+  base->x=old_x; base->y=old_y; base->z=old_z;
+}
+
+public U0 GrElemsPlotRotMat3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
+{
+  I64 *old_r=base->r,old_m[16];
+  U64 old_flags=base->flags&BMF_TRANSFORMATION;
+  MemCpy(old_m,m,16*sizeof(I64));
+  base->flags|=BMF_TRANSFORMATION;
+  GrSetTranslation(m,x,y,z);
+  base->r=GrMulMat(old_r,m);
+  GrElemsPlot3(base,0,0,0,elems);
+  Free(base->r);
+  base->r=old_r;
+  MemCpy(m,old_m,16*sizeof(I64));
+  base->flags=base->flags&~BMF_TRANSFORMATION|old_flags;
+}
+
+public U0 GrElemsPlotRotX3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
+{
+  I64 *r=GrRotX(phi);
+  GrElemsPlotRotMat3b(base,x,y,z,elems,r);
+  Free(r);
+}
+
+public U0 GrElemsPlotRotY3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,F64 zeta=0)
+{
+  I64 *r=GrRotY(zeta);
+  GrElemsPlotRotMat3b(base,x,y,z,elems,r);
+  Free(r);
+}
+
+public U0 GrElemsPlotRotZ3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
+{
+  I64 *r=GrRotZ(theta);
+  GrElemsPlotRotMat3b(base,x,y,z,elems,r);
+  Free(r);
+}
+
+public U0 GrElemsExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
+				   I64 *min_y=NULL,I64 *max_y=NULL)
+{ //Ignores flood fills.
+  GrBitMap *base=GrNew(BMT_COLOR4,MAX_I32,MAX_I32,Fs,TRUE);
+  GrExtentsInit(base);
+  GrElemsPlot3(base,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
+  if (base->min_x<=base->max_x) {
+    base->min_x-=MAX_I32/2;
+    base->max_x-=MAX_I32/2;
+  }
+  if (base->min_y<=base->max_y) {
+    base->min_y-=MAX_I32/2;
+    base->max_y-=MAX_I32/2;
+  }
+  if (min_x) *min_x=base->min_x;
+  if (max_x) *max_x=base->max_x;
+  if (min_y) *min_y=base->min_y;
+  if (max_y) *max_y=base->max_y;
+  GrDel(base);
+}
+
+public GrBitMap *GrElems2GrBitMap(U8 *elems,I64 type=BMT_COLOR4)
+{
+  GrBitMap *result;
+  I64 min_x,max_x,min_y,max_y;
+  GrElemsExtents(elems,&min_x,&max_x,&min_y,&max_y);
+  result=GrNew(type,max_x-min_x+1,max_y-min_y+1);
+  GrElemsPlot3(result,-min_x,-min_y,0,elems);
+  return result;
+}
+
+public U8 *GrElemsInterpolate(U8 *elems0,U8 *elems1,F64 t)
+{
+//The two GrElems should be identical
+//except for points shifted around.
+//t ranges from 0.0 to 1.0
+//
+//See [::/LT/Demo/Graphics/Golf.CPZ] ::/LT/Demo/Graphics/Golf.CPZ for an example.
+  I64 i=GrElemsSize(elems0),
+      t1=gr_scale*t,t0=gr_scale-t1;
+  I32 *ptr0,*ptr1,*ptrr;
+  P3I32 *p0,*p1,*pr;
+  U8 *result=MAlloc(i);
+  GrElem *tempg0=elems0-offset(GrElem.start),
+      *tempg1=elems1-offset(GrElem.start),
+      *tempgr=result-offset(GrElem.start);
+  MemCpy(result,elems0,i);
+  while (tempg0->type) {
+    if (tempg0->type!=tempg1->type)
+      throw(EXCEPT_GRAPHICS,4);
+    switch (tempg0->type) {
+      case GRET_ROTATED_RECT:
+	tempgr->rot_angle=(tempg0->rot_angle*t0+tempg1->rot_angle*t1)/gr_scale;
+      case GRET_RECT:
+      case GRET_LINE:
+      case GRET_ARROW:
+      case GRET_PLANAR_SYMMETRY:
+	tempgr->x2=(tempg0->x2*t0+tempg1->x2*t1)>>32;
+	tempgr->y2=(tempg0->y2*t0+tempg1->y2*t1)>>32;
+      case GRET_TEXT:
+      case GRET_TEXT_BOX:
+      case GRET_TEXT_DIAMOND:
+      case GRET_POINT:
+      case GRET_FLOOD_FILL:
+      case GRET_FLOOD_FILL_NOT:
+      case GRET_SHIFT:
+	tempgr->x1=(tempg0->x1*t0+tempg1->x1*t1)>>32;
+	tempgr->y1=(tempg0->y1*t0+tempg1->y1*t1)>>32;
+	break;
+      case GRET_CIRCLE:
+	tempgr->x2=(tempg0->x2*t0+tempg1->x2*t1)>>32;
+	tempgr->x1=(tempg0->x1*t0+tempg1->x1*t1)>>32;
+	tempgr->y1=(tempg0->y1*t0+tempg1->y1*t1)>>32;
+	break;
+      case GRET_ELLIPSE:
+      case GRET_REG_POLY:
+	tempgr->x2=(tempg0->x2*t0+tempg1->x2*t1)>>32;
+	tempgr->y2=(tempg0->y2*t0+tempg1->y2*t1)>>32;
+	tempgr->width=(tempg0->width*t0+tempg1->width*t1)>>32;
+	tempgr->height=(tempg0->height*t0+tempg1->height*t1)>>32;
+	break;
+      case GRET_BITMAP4:
+      case GRET_BITMAP4_TRANSPARENT:
+	tempgr->x2=(tempg0->x2*t0+tempg1->x2*t1)>>32;
+	tempgr->y2=(tempg0->y2*t0+tempg1->y2*t1)>>32;
+	break;
+      case GRET_SPEEDLINE:
+	ptr0=&tempg0->y1;
+	ptr1=&tempg1->y1;
+	ptrr=&tempgr->y1;
+	for (i=0;i<tempg0->num;i++) {
+	  ptrr[i<<2]=(ptr0[i<<2]*t0+ptr1[i<<2]*t1)>>32;
+	  ptrr[i<<2+1]=(ptr0[i<<2+1]*t0+ptr1[i<<2+1]*t1)>>32;
+	}
+	break;
+      case GRET_POLYLINE:
+	ptr0=&tempg0->y1;
+	ptr1=&tempg1->y1;
+	ptrr=&tempgr->y1;
+	for (i=0;i<tempg0->num;i++) {
+	  ptrr[i<<1]=(ptr0[i<<1]*t0+ptr1[i<<1]*t1)>>32;
+	  ptrr[i<<1+1]=(ptr0[i<<1+1]*t0+ptr1[i<<1+1]*t1)>>32;
+	}
+	break;
+      case GRET_POLYPOINT:
+	ptr0=&tempg0->y1;
+	ptr1=&tempg1->y1;
+	ptrr=&tempgr->y1;
+	ptrr[0]=(ptr0[0]*t0+ptr1[0]*t1)>>32;
+	ptrr[1]=(ptr0[1]*t0+ptr1[1]*t1)>>32;
+	break;
+      case GRET_BSPLINE2:
+      case GRET_BSPLINE3:
+      case GRET_BSPLINE2_CLOSED:
+      case GRET_BSPLINE3_CLOSED:
+	p0=&tempg0->y1;
+	p1=&tempg1->y1;
+	pr=&tempgr->y1;
+	for (i=0;i<tempg0->num;i++) {
+	  pr[i].x=(p0[i].x*t0+p1[i].x*t1)>>32;
+	  pr[i].y=(p0[i].y*t0+p1[i].y*t1)>>32;
+	  pr[i].z=(p0[i].z*t0+p1[i].z*t1)>>32;
+	}
+	break;
+      case GRET_MESH:
+	p0=&tempg0->x2;
+	p1=&tempg1->x2;
+	pr=&tempgr->x2;
+	for (i=0;i<tempg0->vertex_cnt;i++) {
+	  pr[i].x=(p0[i].x*t0+p1[i].x*t1)>>32;
+	  pr[i].y=(p0[i].y*t0+p1[i].y*t1)>>32;
+	  pr[i].z=(p0[i].z*t0+p1[i].z*t1)>>32;
+	}
+	break;
+      case GRET_SHIFTABLE_MESH:
+	p0=(&tempg0->shiftable_triangle_cnt)><(U8 *)+sizeof(I32);
+	p1=(&tempg1->shiftable_triangle_cnt)><(U8 *)+sizeof(I32);
+	pr=(&tempgr->shiftable_triangle_cnt)><(U8 *)+sizeof(I32);
+	for (i=0;i<tempg0->shiftable_vertex_cnt;i++) {
+	  pr[i].x=(p0[i].x*t0+p1[i].x*t1)>>32;
+	  pr[i].y=(p0[i].y*t0+p1[i].y*t1)>>32;
+	  pr[i].z=(p0[i].z*t0+p1[i].z*t1)>>32;
+	}
+	break;
+    }
+    i=GrElemSize(tempg0);
+    tempg0><(U8 *)+=i;
+    tempg1><(U8 *)+=i;
+    tempgr><(U8 *)+=i;
+  }
+  return result;
+}
+
+
+#help_index "Graphics/GrElem;Ltf/Output"
+public LtfEntry *LtfPutGrElems(Ltf *l,U8 *elems,U64 size=0,U8 *txt=NULL)
+{
+//Size is optional.  Set to zero and it
+//will measure.  (Faster if you know it).
+  U8 *st;
+  BoolI8 unlock=LtfLock(l);
+  LtfEntry *ll;
+  LtfBinEntry *tempb;
+  if (!size)
+    size=GrElemsSize(elems);
+  tempb=CAlloc(sizeof(LtfBinEntry),l->mem_task);
+  tempb->type=LTFBT_GRELEM;
+  tempb->size=size;
+  tempb->data=MAlloc(size,l->mem_task);
+  MemCpy(tempb->data,elems,size);
+  tempb->num=l->cur_bin_num;
+  tempb->use_cnt=1;
+  InsQue(tempb,l->bin_root.last);
+  if (txt)
+    st=MSPrintF(txt,l->cur_bin_num++);
+  else
+    st=MSPrintF("$PI,\"\",%d$",l->cur_bin_num++);
+  ll=LtfPutS(l,st);
+  Free(st);
+  ll->bin_data=tempb;
+  if (unlock)
+    LtfUnlock(l);
+  return ll;
+}
+
+public LtfEntry *PutGrElems(U8 *elems,U64 size=0,U8 *txt=NULL)
+{
+//Size is optional.  Set to zero and it
+//will measure.  (Faster if you know it).
+//If you set txt,
+//then include dollarsigns ("$PI ...$")
+//and leave a %d for the number.
+
+  Ltf *l;
+  if (l=LtfCur)
+    return LtfPutGrElems(l,elems,size,txt);
+  return NULL;
+}

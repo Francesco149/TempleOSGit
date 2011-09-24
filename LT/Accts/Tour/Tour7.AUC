@@ -1,0 +1,39 @@
+PutS("Ed(\"::/LT/Accts/Tour/Tour7.AUZ\");\r");
+Sleep(1000);
+
+PopUpOk(
+"$FG,GREEN$<CTRL-F>$FG$ to find.\r\n"
+);
+
+AFGetChar(CH_CTRLF);
+
+PutS("<SHIFT-ESC>");
+
+PopUpOk("Cursor down 8 times.\r\n");
+I64 i;
+for (i=0;i<8;i++)
+  AFGetKey(SC_CURSOR_DOWN);
+
+PopUpOk(
+"Press '$FG,GREEN$1$FG$' to show\r\n"
+"all lines within 1 of a match.\r\n");
+AFPmtStr("1");
+Sleep(1000);
+
+PopUpOk("Press $FG,GREEN$<ESC>$FG$.\r\n");
+AFGetChar(CH_ESC);
+Sleep(500);
+
+PopUpOk(
+"Look around and press $FG,GREEN$<ESC>$FG$\r\n"
+"to turn off filter.\r\n");
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+Sleep(1000);
+
+PopUpOk(
+"You can combine filters to\r\n"
+"effectively do AND searches.\r\n");
+Sleep(1000);
+
+PutChar(CH_SHIFT_ESC);
+

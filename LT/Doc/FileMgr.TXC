@@ -1,0 +1,136 @@
+                                 File Manager
+
+SHIFT CURSOR
+  Select files.
+
+CTRL-Y or DELETE KEY
+  Delete file or tree.
+
+CTRL-INSERT
+  Copy selected files to clipboard.
+
+SHIFT-INSERT
+  Paste clipboard.
+
+LEFT-CLICK,drag-drop
+  Move a file or tree to a directory.
+
+LEFT-CLICK,same file or <SPACE BAR>
+  Edit file.
+
+SHIFT-SPACE KEY
+  Edit Plain Text File.
+
+RIGHT-CLICK or <ENTER>
+  Bring-up menu.
+
+F5
+  #include file.
+
+SHIFT-F5
+  Adam #include file.
+
+'r'
+  Rename file.
+
+'d'
+  Make Directory.
+
+'m'
+  ChgDsk (Remount removable media).  Do not do this on blank disks.
+
+'t'
+  Add holding area temporary drive.  Use this to make a holding area for 
+burning CD/DVD's.  If you wish, you can recompile OSMain and always have a 
+temp drive available.  Use [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot() to
+  recompile.
+
+'f'
+  Format drive.
+
+'M'
+  Make CD/DVD ISO file.  This creates a file image of the specified drive.  
+The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,29] sys_dft_iso_name
+  and can be redefined in your 
+start-up scripts.  You may wish to place it on a different drive.
+
+'B'
+  Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
+[C:/LT/OSMain/OSGlbls.CPZ,29] sys_dft_iso_name.
+
+
+Instructions on Using CD/DVD's
+  If you have not recompiled OSMain and defined your CD/DVD drive, exit the 
+file manager and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,198] Mount to define
+  your CD/DVD drive.  Place a CD/DVD in 
+the drive and press 'm' when on top of the CD/DVD drive letter to mount the 
+drive.  It will call [C:/LT/OSMain/Dsk/Dsk1a.CPZ,393] ChgDsk(), the LoseThos
+  cmd to mount removable media.
+
+
+Instructions on Burning CD/DVD's
+  Create a temporary holding drive in RAM or on disk, copy files into the 
+holding drive.  Make an ISO image of the drive by pressing 'M' when on top 
+of the holding drive.  Press 'B' when on top of the CD/DVD ROM drive to burn 
+the ISO to disk.  If you have not recompiled OSMain and defined your CD/DVD 
+drive, exit the file manager and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,198]
+  Mount.
+
+
+Making a Bootable CD/DVD
+    
+This is a quick way to make an ISO.
+
+#define PROD_CDROM_CFG	"b10x20000\rt3 \r\r\r\r\r"
+
+U0 MakeMyISO()
+{
+  Fmt('B',TRUE,FALSE);
+  CopyTree("::/LT","B:/LT");
+  //Del("B:/LT/Adam/WordStat/WsDefs.DTA");
+  Auto(PROD_CDROM_CFG);
+  InstallBoot('B','T');
+  CDFileCreate(,"B:/*","",CD_BOOT);
+}
+
+
+
+
+I have the following code in my start-up script.
+
+'E' is my main hard drive LoseThos partition
+
+'T' is my CD/DVD drive
+
+'Z' is a RAM temporary drive from which I make an ISO image.  You could 
+use a hard drive "file partition" instead of RAM. 
+
+#define PROD_CDROM_CFG	"b10x20000\rt3 \r\r\r\r\r"
+U0 BurnProductionCDImage()
+{
+  Cd("E:/LT");
+
+  //This enters my cfg
+  //for compiling OSMain.
+  Auto(PROD_CDROM_CFG);
+
+  InstallBoot('E','T');
+  Fmt('Z',TRUE,FALSE);
+  Drv('Z');
+  CopyTree("E:/LT","/LT");
+  MkDir("/Temp");
+  CopyTree("E:/0000Boot",
+    "/0000Boot");
+  CDFileCreate(sys_dft_iso_name,
+    "Z:/*",NULL,CD_BOOT);
+  CDImageWrite('T',
+    sys_dft_iso_name);
+}
+
+Study my account examples [::/LT/Demo/AcctExample/TSAdam.APZ,1] Cfg Strs
+    [::/LT/Demo/AcctExample/TSDistribute.APZ,1] Update Funs and the recovery CD
+    maker 
+in  [::/LT/Accts/Install/DoItOnce.CPZ,MakeRecoveryDsk:2] Recovery Disk Maker.
+
+  
+

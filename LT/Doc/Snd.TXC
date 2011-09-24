@@ -1,0 +1,17 @@
+Uncomment [HOME/Adam3cSnd.APZ,#include "HDAudio"] #include "HDAudio" in your
+/HOME/Adam3cSnd.APZ file to install a 
+driver for HD Audio.  Cfgure it with [::/LT/Opt/Snd/HDCfg.CPZ]
+::/LT/Opt/Snd/HDCfg.CPZ and add the file 
+created, HOME/HDAudioCfg.APZ, to your start-up scripts.  **Comment it out 
+everything if you get no snd -- the PC Speaker should still work.**
+ 
+If you don't have HDAudio, you'll have to live with the PC Speaker.  You
+might 
+write a driver for your snd card following the HDAudio template.
+
+See [::/LT/Demo/Snd/PolyPhonic.CPZ] ::/LT/Demo/Snd/PolyPhonic.CPZ,
+[C:/LT/Opt/Snd/SndFile.APZ,223] SndFileFillBuf() and
+[C:/LT/Opt/Snd/HDAudio.APZ,359] HDFillBuf() for using 
+HD Audio.  The buffers are managed by [C:/LT/Opt/Snd/HDAudio.APZ,375]
+HDAudioTask().
+

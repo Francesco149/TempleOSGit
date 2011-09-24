@@ -1,0 +1,108 @@
+/*
+This is an advanced demo that shows
+that you can place ctrls on the
+wall paper.  So far, I can't think of
+any practical uses except maybe to
+launch a terminal window.  You can do
+that with <CTRL-ALT-E> though.
+
+See [::/LT/Demo/Graphics/MixerCtrl.CPZ] ::/LT/Demo/Graphics/MixerCtrl.CPZ
+and [::/LT/Demo/Graphics/MyWallPaper.APZ] ::/LT/Demo/Graphics/MyWallPaper.APZ
+
+before messing with this program.
+
+It must be "Adam included" and all it
+does it place a mixer ctrl on the
+wall paper.  You could fetch the levels
+from the node if you wanted.
+*/
+
+
+#define MIXER_SPACING 20
+#define MIXER_RANGE   30
+#define MIXER_BORDER  2
+
+class MixerState
+{
+  I64 left_pos,right_pos;
+};
+
+U0 DrawMixerCtrl(GrBitMap *base,Ctrl *c)
+{
+  MixerState *s=c->state;
+
+  base->color=LTRED;
+  GrRect(base, c->left,c->top,MIXER_SPACING*3+2,MIXER_SPACING*2+MIXER_RANGE);
+  base->color=BLUE;
+  GrRect(base, c->left+MIXER_BORDER,c->top+MIXER_BORDER,
+    MIXER_SPACING*3+2-2*MIXER_BORDER,MIXER_SPACING*2+MIXER_RANGE-2*MIXER_BORDER);
+  base->color=BLACK;
+  GrLine(base,c->left+MIXER_SPACING,c->top+MIXER_SPACING,
+	      c->left+MIXER_SPACING,c->top+MIXER_SPACING+MIXER_RANGE-1);
+  GrLine(base,c->left+2*MIXER_SPACING+1,c->top+MIXER_SPACING,
+	      c->left+2*MIXER_SPACING+1,c->top+MIXER_SPACING+MIXER_RANGE-1);
+
+  base->color=LTRED;
+  GrPrintF(base,c->left+MIXER_SPACING-FONT_WIDTH/2,
+	      c->top+MIXER_SPACING+MIXER_RANGE+3,
+    "%d",s->left_pos*10/MIXER_RANGE);
+  GrPrintF(base,c->left+2*MIXER_SPACING+1-FONT_WIDTH/2,
+	      c->top+MIXER_SPACING+MIXER_RANGE+3,
+    "%d",s->right_pos*10/MIXER_RANGE);
+  GrRect(base,c->left+MIXER_SPACING-3,	 c->top+MIXER_SPACING+MIXER_RANGE-1-s->left_pos-2 ,7,5);
+  GrRect(base,c->left+2*MIXER_SPACING+1-3,c->top+MIXER_SPACING+MIXER_RANGE-1-s->right_pos-2,7,5);
+  base->color=YELLOW;
+  GrRect(base,c->left+MIXER_SPACING-2,	 c->top+MIXER_SPACING+MIXER_RANGE-1-s->left_pos-1 ,5,3);
+  GrRect(base,c->left+2*MIXER_SPACING+1-2,c->top+MIXER_SPACING+MIXER_RANGE-1-s->right_pos-1,5,3);
+}
+
+U0 UpdateDerivedMixerCtrl(Ctrl *c)
+{
+  MixerState *s=c->state;
+  c->left=c->win_task->win_pixel_width/2-(MIXER_SPACING*3+2)/2;
+  c->right=c->left+MIXER_SPACING*3+2;
+  c->top=c->win_task->win_pixel_height/2-(MIXER_SPACING*2+MIXER_RANGE)/2;
+  c->bottom=c->top+MIXER_SPACING*2+MIXER_RANGE;
+  s->left_pos =LimitI64(s->left_pos,0,MIXER_RANGE-1);
+  s->right_pos=LimitI64(s->right_pos,0,MIXER_RANGE-1);
+}
+
+U0 LeftClickMixer(Ctrl *c,I64 x,I64 y,BoolI8 down)
+{
+  nounusedwarn down;
+  MixerState *s=c->state;
+  if (x<(c->right+c->left)/2)
+    s->left_pos=MIXER_RANGE-1-(y-(c->top+MIXER_SPACING));
+  else
+    s->right_pos=MIXER_RANGE-1-(y-(c->top+MIXER_SPACING));
+  if (c->update_derived_vals)
+    (*c->update_derived_vals)(c);
+}
+
+Ctrl *MixerNew()
+{
+  BoolI8 old_preempt;
+  Ctrl *c=ACAlloc(sizeof(Ctrl));
+  c->win_task=sys_winmgr_task;
+  c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
+  c->type=CTRLT_GENERIC;
+  c->state=ACAlloc(sizeof(MixerState));
+  c->draw_it=&DrawMixerCtrl;
+  c->left_click=&LeftClickMixer;
+  c->update_derived_vals=&UpdateDerivedMixerCtrl;
+  old_preempt=Preempt(OFF);
+  InsQue(c,sys_winmgr_task->last_ctrl);
+  TaskDerivedValsUpdate(sys_winmgr_task);
+  Preempt(old_preempt);
+  return c;
+}
+
+U0 MixerDel(Ctrl *c)
+{
+  BoolI8 old_preempt=Preempt(OFF);
+  RemQue(c);
+  Preempt(old_preempt);
+  Free(c->state);
+}
+
+MixerNew;

@@ -1,0 +1,24 @@
+//7 has words
+U0 Song()
+{
+  Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
+  music_tempo= 2.480;
+  music_stacatto_factor= 0.902;
+  try {
+  while (!ScanKey) {
+	Play("W13qGBAsED!ED!qCGB!!C",
+		"Fa\0ther, \0 \0what \0 \0 \0 \0You \0been \0do\0ing?\r\n\0");
+	Play("GBAsED!ED!qCGB!!C",
+		"Watch\0-it!  \0 \0Or, \0 \0 \0 \0they'll \0be \0su\0ing.\r\n\0");
+	Play("eG!DD!BG!!BqBeE!A!!ED!FE2qG",
+		"They \0don't \0real\0ly \0un\0der\0stand\r\n\0What \0 \0You're \0 \0up \0 \0to.\r\n\0");
+	Play("3eG!DD!BG!!BqBeE!A!!ED!FE2qG",
+		"High \0a\0bove \0our \0ways,\r\n\0 \0 \0If \0 \0they \0 \0on\0ly \0knew.\r\n\0");
+  }
+  } catch
+    CatchAll;
+  Snd(0);
+}
+
+Song;

@@ -1,0 +1,33 @@
+//LoseThos supports standard [C:/LT/OSMain/Str1a.CPZ,1122] PrintF()
+//codes and extended ones.
+//See [::/LT/Doc/Differences.TXZ,PrintF_Codes] printF codes.
+
+//This file demonstrates [::/LT/Doc/Differences.TXZ,sub_fmt] sub_fmt codes.
+
+
+
+PrintF("%10h?d\r\n",123456789);
+PrintF("%10h?d\r\n",12345);
+
+PrintF("%10h3d\r\n",123456789);
+PrintF("%10h3d\r\n",12345);
+
+PutS("\r\nWith the 'k' flag:\r\n");
+PrintF("%10kh?d\r\n",123456789);
+PrintF("%10kh?d\r\n",12345);
+
+PrintF("%10kh3d\r\n",123456789);
+PrintF("%10kh3d\r\n",12345);
+
+PutS("\r\nWith the ',' flag:\r\n");
+PrintF("%10,kh3d\r\n",123456789);
+PrintF("%10,kh3d\r\n",12345);
+
+PutS("\r\nFloating Point:\r\n");
+PrintF("%16h?n\r\n",.00123456789);
+PrintF("%16h?n\r\n",12345.0);
+
+PrintF("%16.2h-6n\r\n",.00123456789);
+PrintF("%16.2h-6n\r\n",12345.0);
+
+

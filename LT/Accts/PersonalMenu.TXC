@@ -1,0 +1,189 @@
+If you modify this file, you should place it into your HOME directory.  This 
+version is the default for all accts. 
+
+Cd("HOME");Dir;
+`Cd("HOME");Dir;`
+
+Cd("::/LT/Demo");Dir;
+`Cd("::/LT/Demo");Dir;`
+
+Cd("::/LT/Demo/OldSchool");Dir;
+`Cd("::/LT/Demo/OldSchool");Dir;`
+
+Cd("::/LT/Demo/Graphics");Dir;
+`Cd("::/LT/Demo/Graphics");Dir;`
+
+Cd("::/LT/Demo/Snd");Dir;
+`Cd("::/LT/Demo/Snd");Dir;`
+
+Cd("::/LT/Demo/Ltf");Dir;
+`Cd("::/LT/Demo/Ltf");Dir;`
+
+Cd("::/LT/Demo/GameStarters");Dir;
+`Cd("::/LT/Demo/GameStarters");Dir;`
+
+Cd("::/LT/Demo/MultiCore");Dir;
+`Cd("::/LT/Demo/MultiCore");Dir;`
+
+Cd("::/LT/Demo/Asm");Dir;
+`Cd("::/LT/Demo/Asm");Dir;`
+
+Cd("::/LT/Doc");Dir;
+`Cd("::/LT/Doc");Dir;`
+
+Cd("::/LT/Demo/Lectures");Dir;
+`Cd("::/LT/Demo/Lectures");Dir;`
+
+Cd("::/LT/Opt");Dir;
+`Cd("::/LT/Opt");Dir;`
+
+Cd("::/LT/Apps");Dir;
+`Cd("::/LT/Apps");Dir;`
+
+Cd("::/LT/Apps/MusicOrgan/Examples");Dir;
+`Cd("::/LT/Apps/MusicOrgan/Examples");Dir;`
+
+
+This has my acct files which you can examine for tricks and tips.  Be careful 
+because my set-up is different.
+Cd("::/LT/Demo/AcctExample");Dir;
+`Cd("::/LT/Demo/AcctExample");Dir;`
+
+
++] System Src Code
+  
+Compile these with [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+
+This is the kernel, more or less.
+Cd("::/LT/OSMain");Dir;
+  `Cd("::/LT/OSMain");Dir;`
+  
+
+This is the compiler.
+Cd("::/LT/Compiler");Dir;
+  `Cd("::/LT/Compiler");Dir;`
+  
+Cd("::/LT/OSMain2");Dir;
+  `Cd("::/LT/OSMain2");Dir;`
+  
+
+This is the remainder of the mandatory operating system files.
+They are compiled during every boot.
+Cd("::/LT/Adam");Dir;
+  `Cd("::/LT/Adam");Dir;`
+      
+
+
+Quick Reboot
+`Boot("/Boot.BIC");`
+
+
+[::/LT/Doc/Welcome.TXZ] Welcome  
+[::/LT/Doc/HelpIndex.TXZ] Help Index
+Take Tour
+`Cd("::/LT/Accts/Tour");;AutoFile("Tour");`
+
+[::/LT/Doc/DemoIndex.TXZ] Demo Index
+Key Map
+`KeyMap;View;`
+
+
+
+-] Applications
+  
+
+
+
+
+Tanks <1> (image) Logic  <2> (image) WarGame <3> (image) Timeout <4> (image)
+  Span <5> (image)
+
+
+
+
+
+
+
+
+X-Caliber <6> (image) JukeBox <7> (image) Organ <8> (image)  Vocab <9>
+  (image) 
+
+
+
+
+
+KeepAway <10> (image) Models <11> (image) RawHide <12> (image) Chess <13>
+  (image)
+
+
+-] Game Starters
+    
+
+
+
+
+
+
+BigGuns <14> (image) EagleDive <15> (image) MisDef <16> (image) BirdLand <17>
+    (image)
+
+
+
+
+
+
+
+Rocks <18> (image) SpaceShip <19> (image) TheDead <20> (image) FPS <21>
+    (image)
+
+
+
+
+
+
+
+
+
+
+AfterEgypt <22> (image) Pilgrims <23> (image) Wenceslas <24> (image) 
+
+
+  CPUPlot
+  `#include "/LT/Demo/Graphics/CPUPlot.CPZ";`
+   MemRep
+  `MemRep;View;`
+  
+
+Digits (Memory Game)
+  `Cd("::/LT/Demo");;#include "Digits"`
+  
+Bling (A fractel-like thing)
+  `Cd("::/LT/Demo/Graphics");;#include "Bling"`
+  
+
+CTRL-R	Add Graphics with CTRL-R 
+CTRL-L	Add Widgets such as trees
+CTRL-ALT-A	Extended ASCII from menu
+ALT-digit keys	Extended ASCII from code
+CTRL-ALT-C	Break(interrupt) program
+CTRL-ALT-D	Enter Debugger
+CTRL-ALT-E	Spawn new user shell window
+CTRL-ALT-G	Grid On/Off
+CTRL-ALT-M	Mute Sound
+CTRL-ALT-P	Pause program
+CTRL-ALT-V	Sound Volume +
+CTRL-ALT-v	Sound Volume -
+CTRL-ALT-X	Kill window
+ 
+List public functions in alphabetic order
+`LtfMax;HFunsRep;View;`
+
+List all functions in alphabetic order
+`LtfMax;HFunsRep("-p");View;`
+
+List all functions in numeric addr order
+`LtfMax;HMapRep;View;`
+
+List all syms
+`LtfMax;HAllRep;View;`
+

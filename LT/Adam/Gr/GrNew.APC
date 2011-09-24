@@ -1,0 +1,313 @@
+#help_index "Graphics/Bitmaps"
+
+public U0 GrRst(GrBitMap *base)
+{
+  base->color=BLACK;
+  base->color2=BLACK;
+  base->bkcolor=BLACK;
+  base->pen_width=1;
+  base->ls.x=37837; //1<<16/Sqrt(3)
+  base->ls.y=37837;
+  base->ls.z=37837;
+  base->x=0;
+  base->y=0;
+  base->z=0;
+  base->transform=&GrTransform;
+  base->lighting =&GrLighting;
+  base->speedline_scale=0.04;
+  GrIdentEqu(base->r);
+  base->r_norm=gr_scale;
+  base->flags&=~(BMF_SYMMETRY|BMF_TRANSFORMATION|BMF_JUST_MIRROR);
+}
+
+public GrBitMap *GrAlias(GrBitMap *base,TaskStruct *task)
+{
+  GrBitMap *result;
+  if (!base) return NULL;
+  if (base->bm_signature!=BMS_SIGNATURE_VAL)
+    Dbg;
+  result=MAlloc(sizeof(GrBitMap),task);
+  MemCpy(result,base,sizeof(GrBitMap));
+  result->win_task=task;
+  result->mem_task=task;
+  result->r=MAlloc(16*sizeof(I64),task);
+  GrRst(result);
+  result->flags|=BMF_ALIAS;
+  result->alias=base;
+  if (base->mask) {
+    result->mask=GrAlias(base->mask,task);
+    result->mask->color=base->mask->color;
+  }
+  return result;
+}
+
+
+public GrBitMap *GrNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 null_bitmap=FALSE)
+{  //This internally only allows widths which are divisible by 8
+//Don't forget these sizeof(GrBitMap)
+`Grep("sizeof(GrBitMap)","/LT/"TEXT_FILE_MASK);View;`
+.
+  GrBitMap *result;
+  if (!task) task=Fs;
+  result=CAlloc(sizeof(GrBitMap),task);
+  result->win_task=task;
+  result->mem_task=task;
+  result->type=type;
+  result->width=width;
+  result->width_internal=(width+7)&~7;
+  result->height=height;
+  switch (type) {
+    case BMT_COLOR4:
+      result->plane_size=(result->width_internal*result->height)>>3;
+      if (!null_bitmap)
+	result->body=CAlloc(result->plane_size<<2,task);
+      break;
+    case BMT_MONO:
+      result->plane_size=(result->width_internal*result->height)>>3;
+      if (!null_bitmap)
+	result->body=CAlloc(result->plane_size,task);
+      break;
+    default:
+      throw(EXCEPT_GRAPHICS,1);
+  }
+  if (null_bitmap)
+    result->flags|=BMF_DONT_DRAW;
+  result->r=MAlloc(16*sizeof(I64),task);
+  GrRst(result);
+  result->bm_signature=BMS_SIGNATURE_VAL;
+  return result;
+}
+
+public U0 GrDel(GrBitMap *base)
+{
+  if (!base) return;
+  if (base->bm_signature!=BMS_SIGNATURE_VAL)
+    Dbg;
+  base->bm_signature=0;
+  Free(base->r);
+  if (!(base->flags & BMF_ALIAS))
+    Free(base->body);
+  Free(base->depth_buf);
+  GrDel(base->mask);
+  Free(base);
+}
+
+public U0 GrDepthBufRst(GrBitMap *base)
+{
+  if (base->depth_buf)
+    MemSetU32(base->depth_buf,MAX_I32,base->width_internal*base->height);
+}
+
+public U0 GrAllocDepthBuf(GrBitMap *base)
+{
+  Free(base->depth_buf);
+  base->depth_buf=MAlloc(base->width_internal*base->height*sizeof(I32),base->mem_task);
+  GrDepthBufRst(base);
+}
+
+public GrBitMap *GrCopy(GrBitMap *base,TaskStruct *task=NULL)
+{
+  GrBitMap *result;
+  if (!base) return NULL;
+  if (base->bm_signature!=BMS_SIGNATURE_VAL)
+    Dbg;
+  result=MAllocIdentical(base,task);
+  GrSetRotMat(result,MAllocIdentical(base->r,task));
+  result->mem_task=task;
+  result->body=MAllocIdentical(base->body,task);
+  result->mask=GrCopy(base->mask,task);
+  return result;
+}
+
+/* GrBitMaps
+	The format of a stored bitmap includes a
+0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3446] GrBitMap.  The body
+consists of bit planes like VGA except bits
+in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3429] BMT_MONO, there
+is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3428] BMT_COLOR4, there are
+four bit-planes.
+
+If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3388] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3403] WHITE)
+you'll see the color of the planes is as follows:
+
+Plane 0: BLUE
+Plane 1: GREEN
+Plane 2: RED
+Plane 3: INTENSITY
+
+If you are unfamiliar with bit planes, all
+the blue bits for all the pixels are stored,
+for all the green bits for all pixels, etc.  Therefore,
+a single pixel's val is spread-out in mem
+instead of residing in one location.  This
+was done because that is how VGA is stored.
+However, I made the order of the bits suitable
+for doing [C:/LT/OSMain/Adam1b.HPZ,62] Bts() or [C:/LT/OSMain/Adam1b.HPZ,63] Btr() operations instead of
+how VGA stores them.
+
+
+The data for the following bitmap is displayed
+
+width         : 11 pixels
+height        :  8 pixels
+internal width: 16 pixels (rounded-up to multiple of 8)
+plane size    : 16 bytes
+
+ <1> (image)
+
+#define RED		4
+#define YELLOW		14
+
+
+00000000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00000010 00 00 00 00 00 00 F0 07 10 00 10 00 10 00 10 00
+00000020 01 00 01 00 01 00 F1 07 11 00 11 00 11 00 11 00
+00000030 00 00 00 00 00 00 F0 07 10 00 10 00 10 00 10 00
+
+*/
+public U8 *GrSave(GrBitMap *b,U64 *size=NULL,BoolI8 compressed=TRUE)
+{ //stores to mem
+  U8 *ptr,*body,*result;
+  BoolI8 old_preempt;
+  ArcCompressStruct *ac;
+  I64 i,j,old_flags=b->flags;
+
+  nobound_switch (b->type) {
+    case BMT_COLOR4:
+      i=b->plane_size<<2;
+      break;
+    case BMT_MONO:
+      i=b->plane_size;
+      break;
+    default:
+      throw(EXCEPT_GRAPHICS,2);
+  }
+  if (compressed) {
+    ac=CompressBuf(b->body,i);
+    j=ac->compressed_size;
+    body=ac;
+  } else {
+    ac=NULL;
+    j=i;
+    body=b->body;
+  }
+
+  ptr=result=MAlloc(offset(GrBitMap.end_saved_area)-
+      offset(GrBitMap.start_saved_area)+j);
+
+  old_preempt=Preempt(OFF); //in case it is a screen bitmap
+  if (compressed) b->flags|=BMF_COMPRESSED;
+  b->flags&=BMF_COMPRESSED;
+  MemCpy(result,&b->start_saved_area,
+      offset(GrBitMap.end_saved_area)-
+      offset(GrBitMap.start_saved_area));
+  b->flags=old_flags;
+  Preempt(old_preempt);
+
+  ptr+=offset(GrBitMap.end_saved_area)-
+      offset(GrBitMap.start_saved_area);
+  MemCpy(ptr,body,j);
+  ptr+=j;
+
+  Free(ac);
+  if (size)
+    *size=ptr-result;
+  return result;
+}
+
+public GrBitMap *GrLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
+{ //loads from mem
+  I64 i;
+  GrBitMap *result;
+  U8 *ptr=src;
+  ArcCompressStruct *ac;
+  if (!task) task=Fs;
+  result=CAlloc(sizeof(GrBitMap),task);
+  result->win_task=task;
+  result->mem_task=task;
+  MemCpy(&result->start_saved_area,src,
+      offset(GrBitMap.end_saved_area)-
+      offset(GrBitMap.start_saved_area));
+  ptr+=offset(GrBitMap.end_saved_area)-
+      offset(GrBitMap.start_saved_area);
+  nobound_switch (result->type) {
+    case BMT_COLOR4:
+      i=result->plane_size<<2;
+      break;
+    case BMT_MONO:
+      i=result->plane_size;
+      break;
+    default:
+      throw(EXCEPT_GRAPHICS,3);
+  }
+  if (result->flags&BMF_COMPRESSED) {
+    result->flags&=~BMF_COMPRESSED;
+    ac=ptr;
+    result->body=ExpandBuf(ac,task);
+    ptr+=ac->compressed_size;
+  } else {
+    result->body=MAlloc(i,task);
+    MemCpy(result->body,ptr,i);
+  }
+
+  result->pen_width=1;
+  result->r=GrIdent(task);
+  result->r_norm.u32[1]=1;
+  result->speedline_scale=0.04;
+  result->bm_signature=BMS_SIGNATURE_VAL;
+  if (size)
+    *size=ptr-src;
+  return result;
+}
+
+public U64 LGRWrite(U8 *filename,GrBitMap *base)
+{ // LoseThos LGR File
+  U64 size;
+  U8 *st=DftExt(filename,"LGZ"),
+     *src=GrSave(base,&size);
+  FileWrite(st,src,size);
+  Free(st);
+  Free(src);
+  return size;
+}
+
+public GrBitMap *LGRRead(U8 *filename,TaskStruct *task=NULL)
+{ // LoseThos LGR File
+  GrBitMap *base=NULL;
+  U8 *st=DftExt(filename,"LGZ"),
+     *src=FileRead(st);
+  if (src)
+    base=GrLoad(src,NULL,task);
+  Free(src);
+  Free(st);
+  return base;
+}
+
+#help_index "Graphics/Bitmaps;Graphics/Screen"
+
+public GrBitMap *GrCaptureScreen(TaskStruct *task=NULL)
+{
+  WinSync(TRUE);
+  return GrCopy(gr_screen_image,task);
+}
+
+public U64 LGRCaptureScreen(U8 *filename)
+{ // LoseThos LGR File
+  U64 size;
+  GrBitMap *base=GrCaptureScreen;
+  size=LGRWrite(filename,base);
+  GrDel(base);
+  return size;
+}
+
+#help_index "Graphics;Graphics/Bitmaps"
+
+public U0 GrExtentsInit(GrBitMap *base)
+{//See [::/LT/Demo/Graphics/Extents.CPZ] ::/LT/Demo/Graphics/Extents.CPZ
+//You should clear the record flag yourself
+  base->flags|=BMF_RECORD_EXTENTS;
+  base->min_x=MAX_I64;
+  base->max_x=MIN_I64;
+  base->min_y=MAX_I64;
+  base->max_y=MIN_I64;
+}

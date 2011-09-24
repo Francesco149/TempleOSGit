@@ -1,0 +1,1527 @@
+public BoolI64 GrLimits(GrBitMap *base,I64 *left,I64 *top,I64 *right,I64 *bottom,I64 width=0,I64 height=0)
+{ //returns screen, not window coordinates
+  TaskStruct *win_task;
+  *left=0;
+  *top=0;
+  *right=base->width-1;
+  *bottom=base->height-1;
+  if (base->flags & BMF_SCREEN_BITMAP) {
+    win_task=base->win_task;
+    if (GR_WIDTH-1<*right)
+      *right=GR_WIDTH-1;
+    if (GR_HEIGHT-1<*bottom)
+      *bottom=GR_HEIGHT-1;
+    if (win_task->win_pixel_left>*left)
+      *left=win_task->win_pixel_left;
+    if (win_task->win_pixel_top>*top)
+      *top=win_task->win_pixel_top;
+    if (win_task->win_pixel_right<*right)
+      *right=win_task->win_pixel_right;
+    if (win_task->win_pixel_bottom<*bottom)
+      *bottom=win_task->win_pixel_bottom;
+  }
+  *left-=width;
+  *right+=width;
+  *top-=height;
+  *bottom+=height;
+  return *left<=*right && *top<=*bottom;
+}
+
+BoolI64 GrClipLine(GrBitMap *base,I64 *x1,I64 *y1,I64 *x2,I64 *y2,I64 width=0,I64 height=0)
+{ //also converts window to screen coordinates
+  I64 left,top,right,bottom;
+  TaskStruct *win_task;
+  if (GrLimits(base,&left,&top,&right,&bottom,width,height)) {
+    if (base->flags & BMF_SCREEN_BITMAP) {
+      win_task=base->win_task;
+      *x1+=win_task->win_pixel_left+win_task->win_scroll_x;
+      *y1+=win_task->win_pixel_top+win_task->win_scroll_y;
+      *x2+=win_task->win_pixel_left+win_task->win_scroll_x;
+      *y2+=win_task->win_pixel_top+win_task->win_scroll_y;
+    }
+    return ClipLine(x1,y1,x2,y2,left,top,right,bottom);
+  } else
+    return FALSE;
+}
+
+public BoolI64 GrPlot(GrBitMap *base,I64 x,I64 y)
+{  //Clipping but No transformation or pen width
+  I32 *db=base->depth_buf;
+  TaskStruct *win_task;
+  base->depth_buf=NULL;
+  if (base->brush)
+    GrBlot(base,x,y,base->brush);
+  else if (base->flags & BMF_SCREEN_BITMAP) {
+    win_task=base->win_task;
+    x+=win_task->win_pixel_left+win_task->win_scroll_x;
+    y+=win_task->win_pixel_top+win_task->win_scroll_y;
+    if (win_task->win_pixel_left<=x<=win_task->win_pixel_right &&
+	win_task->win_pixel_top <=y<=win_task->win_pixel_bottom &&
+	0<=x<base->width && 0<=y<base->height &&
+	(win_task->next_task==sys_winmgr_task ||
+	base->flags&BMF_ON_TOP ||
+	!IsPixelCovered0(win_task,x,y)))
+      GrPlot0(base,x,y);
+  } else
+    if (0<=x<base->width && 0<=y<base->height)
+    GrPlot0(base,x,y);
+  base->depth_buf=db;
+  return TRUE;
+}
+
+BoolI64 GrPlot1(GrBitMap *base,I64 x,I64 y)
+{  //Clipping but No transformation or pen width, called with db_z set
+  TaskStruct *win_task;
+  if (base->brush) {
+    if (base->depth_buf)
+      GrBlot3(base,x,y,base->db_z,base->brush);
+    else
+      GrBlot(base,x,y,base->brush);
+  } else if (base->flags & BMF_SCREEN_BITMAP) {
+    win_task=base->win_task;
+    x+=win_task->win_pixel_left+win_task->win_scroll_x;
+    y+=win_task->win_pixel_top+win_task->win_scroll_y;
+    if (win_task->win_pixel_left<=x<=win_task->win_pixel_right &&
+	win_task->win_pixel_top <=y<=win_task->win_pixel_bottom &&
+	0<=x<base->width && 0<=y<base->height &&
+	(win_task->next_task==sys_winmgr_task ||
+	base->flags&BMF_ON_TOP ||
+	!IsPixelCovered0(win_task,x,y)))
+      GrPlot0(base,x,y);
+  } else
+    if (0<=x<base->width && 0<=y<base->height)
+    GrPlot0(base,x,y);
+  return TRUE;
+}
+
+public I64 GrPeek(GrBitMap *base,I64 x,I64 y)
+//Returns pixel color or -1 if off-screen or covered.
+{  //Clipping but No transformation
+  TaskStruct *win_task;
+  if (base->flags & BMF_SCREEN_BITMAP) {
+    win_task=base->win_task;
+    x+=win_task->win_pixel_left+win_task->win_scroll_x;
+    y+=win_task->win_pixel_top+win_task->win_scroll_y;
+    if (!(win_task->win_pixel_left<=x<=win_task->win_pixel_right)  ||
+	!(win_task->win_pixel_top <=y<=win_task->win_pixel_bottom) ||
+	!(0<=x<base->width) || !(0<=y<base->height) ||
+	win_task->next_task!=sys_winmgr_task &&
+	!(base->flags&BMF_ON_TOP) &&
+	IsPixelCovered0(win_task,x,y))
+      return -1;
+  } else
+    if (!(0<=x<base->width) || !(0<=y<base->height))
+    return -1;
+  return GrPeek0(base,x,y);
+}
+
+/*
+
+This is an easier to understand
+version of the nonrecursive routine below.
+I64 GrFloodFillRay(GrBitMap *base,I64 x,I64 y,I64 z,I32 *db)
+{
+  I64 result,j,x1,ray_len,ray_len2;
+
+  if (UnusedStk<0x80)
+    StkOverflow(Fs);
+
+  result=ray_len=GrRayLen(base,&x,y,z,db);
+  y--;
+  j=ray_len;
+  x1=x;
+  while (j>0) {
+    if (ray_len2=GrRayLenMinus(base,x1,y))
+      result+=GrFloodFillRay(base,x1,y,z,db);
+    j-=ray_len2+1;
+    x1-=ray_len2+1;
+  }
+  y+=2;
+  j=ray_len;
+  x1=x;
+  while (j>0) {
+    if (ray_len2=GrRayLenMinus(base,x1,y))
+      result+=GrFloodFillRay(base,x1,y,z,db);
+    j-=ray_len2+1;
+    x1-=ray_len2+1;
+  }
+  return result;
+}
+*/
+
+class FFRay
+{
+  I64 state,x,y,j,x1,ray_len,ray_len2;
+};
+
+I64 GrFloodFillRay(GrBitMap *base,I64 x,I64 y,I64 z,I32 *db)
+{//See the above commented-out routine for an easier to understand version.
+//Returns cnt of pixels changed
+  I64 result=0;
+//We don't dynamically calculate the size to avoid
+//fragmentation of memory.
+  FFRay *f_base=MAlloc(sizeof(FFRay)*0x80000),*f=f_base;
+  f->x=x;
+  f->y=y;
+  f->state=0;
+  do {
+    nobound_switch (f->state) {
+      case 0:
+	f->state++;
+	result+=f->ray_len=GrRayLen(base,&f->x,f->y,z,db);
+	f->y--;
+	f->j=f->ray_len;
+	f->x1=f->x;
+	break;
+      case 1:
+	if (f->j>0) {
+	  f->state++;
+	  if (f->ray_len2=GrRayLenMinus(base,f->x1,f->y)) {
+	    f[1].x=f->x1;
+	    f[1].y=f->y;
+	    f[1].state=0;
+	    f++;
+	  }
+	} else
+	  f->state+=2;
+	break;
+      case 2:
+	f->state--;
+	f->j-=f->ray_len2+1;
+	f->x1-=f->ray_len2+1;
+	break;
+      case 3:
+	f->state++;
+	f->y+=2;
+	f->j=f->ray_len;
+	f->x1=f->x;
+	break;
+      case 4:
+	if (f->j>0) {
+	  f->state++;
+	  if (f->ray_len2=GrRayLenMinus(base,f->x1,f->y)) {
+	    f[1].x=f->x1;
+	    f[1].y=f->y;
+	    f[1].state=0;
+	    f++;
+	  }
+	} else
+	  f->state+=2;
+	break;
+      case 5:
+	f->state--;
+	f->j-=f->ray_len2+1;
+	f->x1-=f->ray_len2+1;
+	break;
+      case 6:
+	f--;
+	break;
+    }
+  } while (f>=f_base);
+  Free(f_base);
+  return result;
+}
+
+
+public I64 GrFloodFill(GrBitMap *base,I64 x,I64 y,BoolI8 not_color=FALSE,I64 z=0,I32 *db=NULL)
+{
+//Ignore z and db.
+//not_color=TRUE means fill up to everything which is not the current color.
+//not_color=FALSE means fill all parts equal to the color under the point.
+//Returns cnt of pixels changed
+  I64 result=0,j,old_flags=base->flags;
+  ColorROPU32 c,c2,old_color2=base->color2;
+  GrBitMap *old_brush;
+  if (base->flags & BMF_DONT_DRAW) //TODO
+    return 0;
+  old_brush=base->brush;
+  base->brush=NULL;
+  if ((j=GrPeek(base,x,y))>=0) {
+    nobound_switch (base->type) {
+      case BMT_COLOR4:
+	if (not_color) {
+	  base->color2=base->color.c0.color;
+	  base->flags|=BMF_FILL_NOT_COLOR;
+	} else {
+	  base->color2=j;
+	  if (base->color.c1.rop&ROPBF_DITHER) {
+	    if (base->color2.c0.color==base->color.c0.color &&
+		base->color.c0.color==base->color.c1.color)
+	      break;
+	  } else if (base->color2.c0.color==base->color.c0.color)
+	    break;
+	  base->flags&=~BMF_FILL_NOT_COLOR;
+	}
+	if (not_color && j!=base->color2 ||
+	   !not_color)
+	  result=GrFloodFillRay(base,x,y,z,db);
+	break;
+      case BMT_MONO:
+	c=ToBool(base->color.c0.color);
+	c2=ToBool(base->color.c1.color);
+	if (not_color) {
+	  base->color2=c;
+	  base->flags|=BMF_FILL_NOT_COLOR;
+	} else {
+	  base->color2=j;
+	  if (base->color.c1.rop&ROPBF_DITHER) {
+	    if (base->color2==c && c==c2)
+	      break;
+	  } else if (base->color2==c)
+	    break;
+	  base->flags&=~BMF_FILL_NOT_COLOR;
+	}
+	if (not_color && j!=c ||
+	   !not_color)
+	  result=GrFloodFillRay(base,x,y,z,db);
+	break;
+    }
+  }
+  base->brush=old_brush;
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+  base->color2=old_color2;
+  return result;
+}
+
+public BoolI64 GrPlot3b(GrBitMap *base,I64 x,I64 y,I64 z)
+{  //Clipping and transformation but no pen_width
+  I64 _x,_y,_z;
+  BoolI8 was_transform=FALSE,was_symmetry=FALSE;
+  if (base->flags & BMF_TRANSFORMATION) {
+    (*base->transform)(base,&x,&y,&z);
+    base->flags&=~BMF_TRANSFORMATION;
+    was_transform=TRUE;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    _x=x; _y=y; _z=z;
+    GrReflect(base,&_x,&_y,&_z);
+    base->flags&=~BMF_SYMMETRY;
+    base->db_z=_z;
+    GrPlot1(base,_x,_y);
+    was_symmetry=TRUE;
+    if (base->flags&BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+  base->db_z=z;
+  GrPlot1(base,x,y);
+gr_done:
+  if (was_transform)
+    base->flags|=BMF_TRANSFORMATION;
+  if (was_symmetry)
+    base->flags|=BMF_SYMMETRY;
+  return TRUE;
+}
+
+public BoolI64 GrPlot3(GrBitMap *base,I64 x,I64 y,I64 z)
+{  //clipping and transformation and pen width
+ 
+  I64 _x,_y,_z,i,j,w,dist;
+  ColorROPU32 old_color=base->color;
+  BoolI8 record,was_transform=FALSE,was_symmetry=FALSE;
+  TaskStruct *win_task;
+  if (base->flags & BMF_TRANSFORMATION) {
+    (*base->transform)(base,&x,&y,&z);
+    base->flags&=~BMF_TRANSFORMATION;
+    was_transform=TRUE;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    _x=x; _y=y; _z=z;
+    GrReflect(base,&_x,&_y,&_z);
+    base->flags&=~BMF_SYMMETRY;
+    GrPlot3(base,_x,_y,_z);
+    was_symmetry=TRUE;
+    if (base->flags&BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+  w=base->pen_width>>1;
+  base->db_z=z;
+  if (w<=0)
+    GrPlot1(base,x,y);
+  else if (base->pen_width<GR_NUM_PEN_BRUSHES) {
+    if (base->color.c0.rop==ROPB_EQU)
+      base->color.c0.rop=ROPB_TRANSPARENT;
+    if (base->color.c0.rop==ROPB_CLEAR_MASK_EQU)
+      base->color.c0.rop=ROPB_CLEAR_MASK_TRANSPARENT;
+    if (base->depth_buf) {
+      if (base->color.c1.rop&ROPBF_DITHER) {
+	base->color.c1.rop=base->color.c0.rop;
+	if (((x-w)^(y-w))&1) {
+	  record=GrBlot3(base,x-w,y-w,z,gr_odd_pen_brushes[base->pen_width]);
+	  base->color.c0=base->color.c1;
+	  record=GrBlot3(base,x-w,y-w,z,gr_even_pen_brushes[base->pen_width]);
+	} else {
+	  record=GrBlot3(base,x-w,y-w,z,gr_even_pen_brushes[base->pen_width]);
+	  base->color.c0=base->color.c1;
+	  record=GrBlot3(base,x-w,y-w,z,gr_odd_pen_brushes[base->pen_width]);
+	}
+      } else
+	record=GrBlot3(base,x-w,y-w,z,gr_pen_brushes[base->pen_width]);
+    } else {
+      if (base->color.c1.rop&ROPBF_DITHER) {
+	base->color.c1.rop=base->color.c0.rop;
+	if (((x-w)^(y-w))&1) {
+	  record=GrBlot(base,x-w,y-w,gr_odd_pen_brushes[base->pen_width]);
+	  base->color.c0=base->color.c1;
+	  record=GrBlot(base,x-w,y-w,gr_even_pen_brushes[base->pen_width]);
+	} else {
+	  record=GrBlot(base,x-w,y-w,gr_even_pen_brushes[base->pen_width]);
+	  base->color.c0=base->color.c1;
+	  record=GrBlot(base,x-w,y-w,gr_odd_pen_brushes[base->pen_width]);
+	}
+      } else
+	record=GrBlot(base,x-w,y-w,gr_pen_brushes[base->pen_width]);
+    }
+    if (record) {
+      if (base->flags & BMF_SCREEN_BITMAP) {
+	win_task=base->win_task;
+	x+=win_task->win_pixel_left+win_task->win_scroll_x;
+	y+=win_task->win_pixel_top+win_task->win_scroll_y;
+      }
+      if (base->flags & BMF_LOCATE_NEAREST) {
+	dist=DistI64(x,y,base->cur_x,base->cur_y);
+	if (dist<base->nearest_dist) {
+	  base->nearest_grelem_num=base->cur_grelem_num;
+	  base->nearest_dist=dist;
+	}
+      }
+      if (base->flags & BMF_RECORD_EXTENTS) {
+	if (x-w<base->min_x) base->min_x=x-w;
+	if (y-w<base->min_y) base->min_y=y-w;
+	if (base->pen_width & 1) {
+	  if (x+w>base->max_x) base->max_x=x+w;
+	  if (y+w>base->max_y) base->max_y=y+w;
+	} else {
+	  if (x+w-1>base->max_x) base->max_x=x+w-1;
+	  if (y+w-1>base->max_y) base->max_y=y+w-1;
+	}
+      }
+    }
+  } else if (base->pen_width & 1) { //TODO Dither
+    for (i=-w;i<=w;i++)
+      for (j=-w;j<=w;j++)
+	GrPlot1(base,x+i,y+j);
+  } else {
+    for (i=-w;i<w;i++)
+      for (j=-w;j<w;j++)
+	GrPlot1(base,x+i,y+j);
+  }
+gr_done:
+  base->color=old_color;
+  if (was_transform)
+    base->flags|=BMF_TRANSFORMATION;
+  if (was_symmetry)
+    base->flags|=BMF_SYMMETRY;
+  return TRUE;
+}
+
+BoolI64 GrLinePlot0(GrBitMap *base,I64 x,I64 y,I64 z)
+{
+  TaskStruct *win_task=base->win_task;
+  if (!(base->flags & BMF_SCREEN_BITMAP) ||
+      win_task->next_task==sys_winmgr_task ||
+      base->flags&BMF_ON_TOP ||
+      !IsPixelCovered0(win_task,x,y)) {
+    base->db_z=z;
+    GrPlot0(base,x,y);
+  }
+  return TRUE;
+}
+
+BoolI64 GrLinePlot(GrBitMap *base,I64 x,I64 y,I64 z)
+{
+  base->db_z=z;
+  GrPlot1(base,x,y);
+  return TRUE;
+}
+
+public U0 GrLine(GrBitMap *base,I64 x1,I64 y1,I64 x2,I64 y2,I64 step=1,I64 start=0)
+{
+  I32 *db=base->depth_buf;
+  base->depth_buf=NULL;
+  if (step==1 && !start && !base->brush && !base->depth_buf) {
+    if (GrClipLine(base,&x1,&y1,&x2,&y2))
+      Line(base,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
+  } else
+    Line(base,x1,y1,0,x2,y2,0,&GrLinePlot,step,start);
+  base->depth_buf=db;
+}
+
+public U0 GrCircle(GrBitMap *base,I64 cx,I64 cy,I64 radius,
+  I64 step=1,F64 start_radians=0,F64 len_radians=2*pi)
+{
+  I32 *db=base->depth_buf;
+  base->depth_buf=NULL;
+  Circle(base,cx,cy,0,radius,&GrLinePlot,step,start_radians,len_radians);
+  base->depth_buf=db;
+}
+
+public U0 GrEllipse(GrBitMap *base,
+		I64 cx,I64 cy,
+		I64 x_radius,I64 y_radius,
+		F64 rot_angle=0,
+		I64 step=1,
+		F64 start_radians=0,
+		F64 len_radians=2*pi)
+{
+  I32 *db=base->depth_buf;
+  base->depth_buf=NULL;
+  Ellipse(base,cx,cy,0,x_radius,y_radius,&GrLinePlot,rot_angle,step,start_radians,len_radians);
+  base->depth_buf=db;
+}
+
+public U0 GrRegPoly(GrBitMap *base,
+		I64 cx,I64 cy,
+		I64 x_radius,I64 y_radius,I64 sides,
+		F64 rot_angle=0,
+		I64 step=1,
+		F64 start_radians=0,
+		F64 len_radians=2*pi)
+{
+  I32 *db=base->depth_buf;
+  base->depth_buf=NULL;
+  RegPoly(base,cx,cy,0,x_radius,y_radius,sides,
+    &GrLinePlot,rot_angle,step,start_radians,len_radians);
+  base->depth_buf=db;
+}
+
+public U0 Gr2Bezier(GrBitMap *base,P3I32 *ctrl)
+{
+  Bezier2(base,ctrl,&GrLinePlot);
+}
+
+public U0 Gr3Bezier(GrBitMap *base,P3I32 *ctrl)
+{
+  Bezier3(base,ctrl,&GrLinePlot);
+}
+
+public U0 Gr2BSpline(GrBitMap *base,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
+{
+  BSpline2(base,ctrl,cnt,&GrLinePlot,closed);
+}
+
+public U0 Gr3BSpline(GrBitMap *base,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
+{
+  BSpline3(base,ctrl,cnt,&GrLinePlot,closed);
+}
+
+public U0 GrLine3b(GrBitMap *base,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
+{  //transformation but not pen width
+  I64 _x1,_y1,_z1,_x2,_y2,_z2;
+  BoolI8 was_transform=FALSE,was_symmetry=FALSE;
+  if (base->flags & BMF_TRANSFORMATION) {
+    (*base->transform)(base,&x1,&y1,&z1);
+    (*base->transform)(base,&x2,&y2,&z2);
+    base->flags&=~BMF_TRANSFORMATION;
+    was_transform=TRUE;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    _x1=x1; _y1=y1; _z1=z1;
+    GrReflect(base,&_x1,&_y1,&_z1);
+    _x2=x2; _y2=y2; _z2=z2;
+    GrReflect(base,&_x2,&_y2,&_z2);
+    base->flags&=~BMF_SYMMETRY;
+    if (step==1 && !start && !base->brush && !base->depth_buf) { //TODO: clip z for depth buf
+      if (GrClipLine(base,&_x1,&_y1,&_x2,&_y2))
+	Line(base,_x1,_y1,0,_x2,_y2,0,&GrLinePlot0,step,start);
+    } else
+      Line(base,_x1,_y1,_z1,_x2,_y2,_z2,&GrLinePlot,step,start);
+    was_symmetry=TRUE;
+    if (base->flags&BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+  if (step==1 && !start && !base->brush && !base->depth_buf) { //TODO: clip z for depth buf
+    if (GrClipLine(base,&x1,&y1,&x2,&y2))
+      Line(base,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
+  } else
+    Line(base,x1,y1,z1,x2,y2,z2,&GrLinePlot,step,start);
+gr_done:
+  if (was_transform)
+    base->flags|=BMF_TRANSFORMATION;
+  if (was_symmetry)
+    base->flags|=BMF_SYMMETRY;
+}
+
+public U0 GrLine3(GrBitMap *base,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
+{  //transformation with pen width
+  I64 _x1,_y1,_z1,_x2,_y2,_z2;
+  BoolI8 was_transform=FALSE,was_symmetry=FALSE;
+  if (base->flags & BMF_TRANSFORMATION) {
+    (*base->transform)(base,&x1,&y1,&z1);
+    (*base->transform)(base,&x2,&y2,&z2);
+    base->flags&=~BMF_TRANSFORMATION;
+    was_transform=TRUE;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    _x1=x1; _y1=y1; _z1=z1;
+    GrReflect(base,&_x1,&_y1,&_z1);
+    _x2=x2; _y2=y2; _z2=z2;
+    GrReflect(base,&_x2,&_y2,&_z2);
+    base->flags&=~BMF_SYMMETRY;
+    Line(base,_x1,_y1,_z1,_x2,_y2,_z2,&GrPlot3,step,start);
+    was_symmetry=TRUE;
+    if (base->flags&BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+  Line(base,x1,y1,z1,x2,y2,z2,&GrPlot3,step,start);
+gr_done:
+  if (was_transform)
+    base->flags|=BMF_TRANSFORMATION;
+  if (was_symmetry)
+    base->flags|=BMF_SYMMETRY;
+}
+
+#help_index "Graphics/Char;Char/Graphics"
+
+public BoolI64 GrPutChar3(GrBitMap *base,I64 x1,I64 y1,I64 z1,U8 ch)
+{  //transformation
+//BMF_SYMMETRY is silly.
+  if (base->flags & BMF_TRANSFORMATION)
+    (*base->transform)(base,&x1,&y1,&z1);
+  return GrPutChar(base,x1,y1,ch);
+}
+
+public BoolI64 GrPutS3(GrBitMap *base,I64 x1,I64 y1,I64 z1,U8 *s)
+{  //transformation
+//BMF_SYMMETRY is silly.
+  if (base->flags & BMF_TRANSFORMATION)
+    (*base->transform)(base,&x1,&y1,&z1);
+  return GrPutS(base,x1,y1,s);
+}
+
+public BoolI64 GrVPutS3(GrBitMap *base,I64 x1,I64 y1,I64 z1,U8 *s)
+{ //Vertical text
+//transformation
+//BMF_SYMMETRY is silly.
+  if (base->flags & BMF_TRANSFORMATION)
+    (*base->transform)(base,&x1,&y1,&z1);
+  return GrVPutS(base,x1,y1,s);
+}
+
+public U0 GrPrintF3(GrBitMap *base,I64 x,I64 y,I64 z,U8 *fmt,...)
+{
+  U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  GrPutS3(base,x,y,z,buf);
+  Free(buf);
+}
+
+public U0 GrVPrintF3(GrBitMap *base,I64 x,I64 y,I64 z,U8 *fmt,...)
+{ //Vertical text
+  U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+  GrVPutS3(base,x,y,z,buf);
+  Free(buf);
+}
+
+#help_index "Graphics"
+
+public U0 GrEllipse3(GrBitMap *base,
+		I64 cx,I64 cy,I64 cz,
+		I64 x_radius,I64 y_radius,
+		F64 rot_angle=0,
+		I64 step=1,
+		F64 start_radians=0,
+		F64 len_radians=2*pi)
+{
+  I64 x,y,z;
+  F64 m1,a1,m2,a2,s,c;
+  I64 xx,yy,zz;
+  if (base->flags & BMF_TRANSFORMATION) {
+    base->flags&=~BMF_TRANSFORMATION;
+    (*base->transform)(base,&cx,&cy,&cz);
+
+    c=Cos(rot_angle);
+    s=Sin(rot_angle);
+
+    x_radius<<=16;
+    y_radius<<=16;
+
+    xx=0;
+    yy=0;
+    zz=0;
+    (*base->transform)(base,&xx,&yy,&zz);
+
+    x=x_radius*c;
+    y=x_radius*s;
+    z=0;
+    (*base->transform)(base,&x,&y,&z);
+    x-=xx;
+    y-=yy;
+    z-=zz;
+    R2P(&m1,&a1,x,y);
+
+    x=-y_radius*s;
+    y=y_radius*c;
+    z=0;
+    (*base->transform)(base,&x,&y,&z);
+    x-=xx;
+    y-=yy;
+    z-=zz;
+    R2P(&m2,&a2,x,y);
+    m2*=Abs(Sin(a2-a1));
+
+    Ellipse(base,cx,cy,cz,
+      m1/0x10000,m2/0x10000,&GrPlot3,-a1,step,start_radians,len_radians);
+    base->flags|=BMF_TRANSFORMATION;
+  } else
+    Ellipse(base,cx,cy,cz,x_radius,y_radius,&GrPlot3,rot_angle,step,start_radians,len_radians);
+}
+
+public U0 GrCircle3(GrBitMap *base,I64 cx,I64 cy,I64 cz,I64 radius,
+  I64 step=1,F64 start_radians=0,F64 len_radians=2*pi)
+{ //transformation with pen width
+  if (base->flags & BMF_TRANSFORMATION)
+    GrEllipse3(base,cx,cy,cz,radius,radius,0,step,start_radians,len_radians);
+  else
+    Circle(base,cx,cy,cz,radius,&GrPlot3,step,start_radians,len_radians);
+}
+
+public U0 GrRegPoly3(GrBitMap *base,
+		I64 cx,I64 cy,I64 cz,
+		I64 x_radius,I64 y_radius,I64 sides,
+		F64 rot_angle=0,
+		I64 step=1,
+		F64 start_radians=0,
+		F64 len_radians=2*pi)
+{
+  I64 x,y,z,xx,yy,zz;
+  F64 m1,a1,m2,a2,s,c;
+  if (base->flags & BMF_TRANSFORMATION) {
+    base->flags&=~BMF_TRANSFORMATION;
+    (*base->transform)(base,&cx,&cy,&cz);
+
+    c=Cos(rot_angle);
+    s=Sin(rot_angle);
+
+    x_radius<<=16;
+    y_radius<<=16;
+
+    xx=0;
+    yy=0;
+    zz=0;
+    (*base->transform)(base,&xx,&yy,&zz);
+
+    x=x_radius*c;
+    y=x_radius*s;
+    z=0;
+    (*base->transform)(base,&x,&y,&z);
+    x-=xx;
+    y-=yy;
+    z-=zz;
+    R2P(&m1,&a1,x,y);
+
+    x=-y_radius*s;
+    y=y_radius*c;
+    z=0;
+    (*base->transform)(base,&x,&y,&z);
+    x-=xx;
+    y-=yy;
+    z-=zz;
+    R2P(&m2,&a2,x,y);
+    m2*=Abs(Sin(a2-a1));
+
+    RegPoly(base,cx,cy,cz,
+      m1/0x10000,m2/0x10000,sides,&GrPlot3,-a1,step,start_radians,len_radians);
+    base->flags|=BMF_TRANSFORMATION;
+  } else
+    RegPoly(base,cx,cy,cz,x_radius,y_radius,sides,&GrPlot3,rot_angle,step,start_radians,len_radians);
+}
+
+public I64 GrFloodFill3(GrBitMap *base,I64 x1,I64 y1,I64 z1,BoolI8 not_color=FALSE)
+{  //transformation
+//not_color=TRUE means fill up to everything which is not the current color.
+//not_color=FALSE means fill all parts equal to the color under the point.
+//Returns cnt of pixels changed
+  I64 result,old_flags=base->flags;
+
+  I64 _x,_y,_z;
+  if (base->flags & BMF_TRANSFORMATION) {
+    (*base->transform)(base,&x1,&y1,&z1);
+    base->flags&=~BMF_TRANSFORMATION;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    _x=x1; _y=y1; _z=z1;
+    GrReflect(base,&_x,&_y,&_z);
+    base->flags&=~BMF_SYMMETRY;
+    result=GrFloodFill(base,_x,_y,not_color,_z,base->depth_buf);
+    if (base->flags&BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+  result=GrFloodFill(base,x1,y1,not_color,z1,base->depth_buf);
+gr_done:
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+  return result;
+}
+
+public U0 GrRect3(GrBitMap *base,I64 x,I64 y,I64 z,I64 w,I64 h)
+{  //Clipping and transformation
+  I64 x2,y2,z2,x3,y3,z3;
+  GrBitMap *old_brush=base->brush;
+  if (base->flags & BMF_TRANSFORMATION) {
+    base->brush=NULL;
+    x2=x+w; y2=y; z2=z;
+    x3=x; y3=y+h; z3=z;
+    (*base->transform)(base,&x,&y,&z);
+    (*base->transform)(base,&x2,&y2,&z2);
+    (*base->transform)(base,&x3,&y3,&z3);
+    if (!(base->flags&BMF_JUST_MIRROR) ||
+	!(base->flags&BMF_SYMMETRY))
+      Rect(base,x,y,z,x2,y2,z2,x3,y3,z3,&GrLinePlot);
+    if (base->flags & BMF_SYMMETRY) {
+      GrReflect(base,&x,&y,&z);
+      GrReflect(base,&x2,&y2,&z2);
+      GrReflect(base,&x3,&y3,&z3);
+      Rect(base,x,y,z,x2,y2,z2,x3,y3,z3,&GrLinePlot);
+    }
+    base->brush=old_brush;
+  } else {
+    if (!(base->flags&BMF_JUST_MIRROR)||
+	!(base->flags&BMF_SYMMETRY)) {
+      if (base->depth_buf)
+	Rect(base,x,y,z,x+w,y,z,x,y+h,z,&GrLinePlot);
+      else
+	GrRect(base,x,y,w,h);
+    }
+    if (base->flags & BMF_SYMMETRY) {
+      base->brush=NULL;
+      x2=x+w; y2=y; z2=z;
+      x3=x; y3=y+h; z3=z;
+      GrReflect(base,&x,&y,&z);
+      GrReflect(base,&x2,&y2,&z2);
+      GrReflect(base,&x3,&y3,&z3);
+      Rect(base,x,y,z,x2,y2,z2,x3,y3,z3,&GrLinePlot);
+      base->brush=old_brush;
+    }
+  }
+}
+
+public BoolI64 GrBlot3(GrBitMap *base,I64 x1,I64 y1,I64 z1,GrBitMap *img)
+{  //Clipping and transformation
+//This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
+  ColorROPU32 old_color=base->color;
+  I64  color,reg i,j,w=img->width,h=img->height,
+      d1,dx1,dy1,dz1,
+      reg d2,dx2,dy2,dz2,
+      adx1,ady1,adz1,
+      adx2,ady2,adz2,
+      x2,y2,z2,x3,y3,z3,
+      dw,reg dh,x,y,_x1,_y1,_z1,_x2,_y2,_z2,_x3,_y3,_z3,
+      last_x,last_y;
+  BoolI8 first,result=FALSE;
+  GrBitMap *old_brush=base->brush;
+
+  if (base->depth_buf || base->flags & (BMF_TRANSFORMATION | BMF_SYMMETRY)) {
+    x2=x1+w; y2=y1; z2=z1;
+    x3=x1; y3=y1+h; z3=z1;
+    if (base->flags & BMF_TRANSFORMATION) {
+      (*base->transform)(base,&x1,&y1,&z1);
+      (*base->transform)(base,&x2,&y2,&z2);
+      (*base->transform)(base,&x3,&y3,&z3);
+    }
+    if (base->flags & BMF_SYMMETRY) {
+      _x1=x1; _y1=y1; _z1=z1;
+      GrReflect(base,&_x1,&_y1,&_z1);
+      _x2=x2; _y2=y2; _z2=z2;
+      GrReflect(base,&_x2,&_y2,&_z2);
+      _x3=x3; _y3=y3; _z3=z3;
+      GrReflect(base,&_x3,&_y3,&_z3);
+      dx1=_x2-_x1; dy1=_y2-_y1; dz1=_z2-_z1;
+      dx2=_x3-_x1; dy2=_y3-_y1; dz2=_z3-_z1;
+      adx1=AbsI64(dx1); ady1=AbsI64(dy1); adz1=AbsI64(dz1);
+      adx2=AbsI64(dx2); ady2=AbsI64(dy2); adz2=AbsI64(dz2);
+
+      if (adx1>=ady1)
+	d1=adx1>=adz1 ? adx1:adz1;
+      else
+	d1=ady1>=adz1 ? ady1:adz1;
+      if (adx2>=ady2)
+	d2=adx2>=adz2 ? adx2:adz2;
+      else
+	d2=ady2>=adz2 ? ady2:adz2;
+
+      if (AbsI64(d1)!=w ||AbsI64(d2)!=h) {
+	d1<<=1;
+	d2<<=1;
+      }
+      if (d1) {
+	dx1=dx1<<32/d1;
+	dy1=dy1<<32/d1;
+	dz1=dz1<<32/d1;
+      } else
+	goto normal_image;
+      if (d2) {
+	dx2=dx2<<32/d2;
+	dy2=dy2<<32/d2;
+	dz2=dz2<<32/d2;
+      } else
+	goto normal_image;
+      base->brush=NULL;
+      x=0;y=0;
+      dw=w<<32/d1;
+      dh=h<<32/d2;
+
+      first=TRUE;
+      _x1<<=32; _y1<<=32; _z1<<=32;
+      for (j=0;j<=d1;j++) {
+	_x2=_x1; _y2=_y1; _z2=_z1;
+	y=0;
+	for (i=0;i<=d2;i++) {
+	  if (_x2.i32[1]!=last_x || _y2.i32[1]!=last_y ||first) {
+	    color=GrPeek(img,x.i32[1],y.i32[1]);
+	    if (color>=0 &&
+		(old_color.c0.rop!=ROPB_TRANSPARENT ||
+		color><(ColorROPU32).c0.color!=img->bkcolor.c0.color)) {
+	      if (img->type==BMT_MONO)
+		base->color=old_color;
+	      else
+		base->color=old_color&0xFF00+color;
+	      if (base->depth_buf) {
+		base->db_z=_z2.i32[1];
+		GrPlot1(base,_x2.i32[1],_y2.i32[1]);
+	      } else
+		GrPlot(base,_x2.i32[1],_y2.i32[1]);
+	    }
+	  }
+	  first=FALSE;
+	  last_x=_x2.i32[1]; last_y=_y2.i32[1];
+	  _x2+=dx2; _y2+=dy2; _z2+=dz2;
+	  y+=dh;
+	}
+	_x1+=dx1; _y1+=dy1; _z1+=dz1;
+	x+=dw;
+      }
+      result=TRUE;
+normal_image:
+      if (base->flags&BMF_JUST_MIRROR)
+	goto gr_done;
+    }
+    dx1=x2-x1; dy1=y2-y1; dz1=z2-z1;
+    dx2=x3-x1; dy2=y3-y1; dz2=z3-z1;
+    adx1=AbsI64(dx1); ady1=AbsI64(dy1); adz1=AbsI64(dz1);
+    adx2=AbsI64(dx2); ady2=AbsI64(dy2); adz2=AbsI64(dz2);
+
+    if (adx1>=ady1)
+      d1=adx1>=adz1 ? adx1:adz1;
+    else
+      d1=ady1>=adz1 ? ady1:adz1;
+    if (adx2>=ady2)
+      d2=adx2>=adz2 ? adx2:adz2;
+    else
+      d2=ady2>=adz2 ? ady2:adz2;
+    if (AbsI64(d1)!=w ||AbsI64(d2)!=h) {
+      d1<<=1;
+      d2<<=1;
+    }
+    if (d1) {
+      dx1=dx1<<32/d1;
+      dy1=dy1<<32/d1;
+      dz1=dz1<<32/d1;
+    } else
+      goto gr_done;
+    if (d2) {
+      dx2=dx2<<32/d2;
+      dy2=dy2<<32/d2;
+      dz2=dz2<<32/d2;
+    } else
+      goto gr_done;
+    base->brush=NULL;
+    x=0;y=0;
+    dw=w<<32/d1;
+    dh=h<<32/d2;
+
+    first=TRUE;
+    x1<<=32; y1<<=32; z1<<=32;
+    for (j=0;j<=d1;j++) {
+      x2=x1; y2=y1; z2=z1;
+      y=0;
+      for (i=0;i<=d2;i++) {
+	if (x2.i32[1]!=last_x || y2.i32[1]!=last_y || first) {
+	  color=GrPeek(img,x.i32[1],y.i32[1]);
+	  if (color>=0 &&
+	      (old_color.c0.rop!=ROPB_TRANSPARENT ||
+	      color><(ColorROPU32).c0.color!=img->bkcolor.c0.color)) {
+	    if (img->type==BMT_MONO)
+	      base->color=old_color;
+	    else
+	      base->color=old_color&0xFF00+color;
+	    if (base->depth_buf) {
+	      base->db_z=z2.i32[1];
+	      GrPlot1(base,x2.i32[1],y2.i32[1]);
+	    } else
+	      GrPlot(base,x2.i32[1],y2.i32[1]);
+	  }
+	}
+	first=FALSE;
+	last_x=x2.i32[1]; last_y=y2.i32[1];
+	x2+=dx2; y2+=dy2; z2+=dz2;
+	y+=dh;
+      }
+      x1+=dx1; y1+=dy1; z1+=dz1;
+      x+=dw;
+    }
+    result=TRUE;  //TODO: check off screen
+  } else
+    result=GrBlot(base,x1,y1,img);
+gr_done:
+  base->color=old_color;
+  base->brush=old_brush;
+  return result;
+}
+
+
+public U0 Gr2Bezier3(GrBitMap *base,P3I32 *ctrl)
+{
+  U64 old_flags=base->flags;
+  I64 i,x,y,z;
+  P3I32 *ctrl2=NULL,*ctrl3=NULL;
+  if (base->flags & BMF_TRANSFORMATION) {
+    ctrl2=MAlloc(sizeof(P3I32)*3);
+    for (i=0;i<3;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      (*base->transform)(base,&x,&y,&z);
+      ctrl2[i].x=x;
+      ctrl2[i].y=y;
+      ctrl2[i].z=z;
+    }
+    base->flags&=~BMF_TRANSFORMATION;
+    ctrl=ctrl2;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    ctrl3=MAlloc(sizeof(P3I32)*3);
+    for (i=0;i<3;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      GrReflect(base,&x,&y,&z);
+      ctrl3[i].x=x;
+      ctrl3[i].y=y;
+      ctrl3[i].z=z;
+    }
+    base->flags&=~BMF_SYMMETRY;
+    Bezier2(base,ctrl3,&GrPlot3);
+    if (base->flags & BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+
+  Bezier2(base,ctrl,&GrPlot3);
+gr_done:
+  Free(ctrl2);
+  Free(ctrl3);
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+}
+
+public U0 Gr3Bezier3(GrBitMap *base,P3I32 *ctrl)
+{
+  U64 old_flags=base->flags;
+  I64 i,x,y,z;
+  P3I32 *ctrl2=NULL,*ctrl3=NULL;
+  if (base->flags & BMF_TRANSFORMATION) {
+    ctrl2=MAlloc(sizeof(P3I32)*4);
+    for (i=0;i<4;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      (*base->transform)(base,&x,&y,&z);
+      ctrl2[i].x=x;
+      ctrl2[i].y=y;
+      ctrl2[i].z=z;
+    }
+    base->flags&=~BMF_TRANSFORMATION;
+    ctrl=ctrl2;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    ctrl3=MAlloc(sizeof(P3I32)*4);
+    for (i=0;i<4;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      GrReflect(base,&x,&y,&z);
+      ctrl3[i].x=x;
+      ctrl3[i].y=y;
+      ctrl3[i].z=z;
+    }
+    base->flags&=~BMF_SYMMETRY;
+    Bezier3(base,ctrl3,&GrPlot3);
+    if (base->flags & BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+
+  Bezier3(base,ctrl,&GrPlot3);
+gr_done:
+  Free(ctrl2);
+  Free(ctrl3);
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+}
+
+public U0 Gr2BSpline3(GrBitMap *base,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
+{
+  U64 old_flags=base->flags;
+  I64 i,x,y,z;
+  P3I32 *ctrl2=NULL,*ctrl3=NULL;
+  if (base->flags & BMF_TRANSFORMATION) {
+    ctrl2=MAlloc(sizeof(P3I32)*cnt);
+    for (i=0;i<cnt;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      (*base->transform)(base,&x,&y,&z);
+      ctrl2[i].x=x;
+      ctrl2[i].y=y;
+      ctrl2[i].z=z;
+    }
+    base->flags&=~BMF_TRANSFORMATION;
+    ctrl=ctrl2;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    ctrl3=MAlloc(sizeof(P3I32)*cnt);
+    for (i=0;i<cnt;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      GrReflect(base,&x,&y,&z);
+      ctrl3[i].x=x;
+      ctrl3[i].y=y;
+      ctrl3[i].z=z;
+    }
+    base->flags&=~BMF_SYMMETRY;
+    BSpline2(base,ctrl3,cnt,&GrPlot3,closed);
+    if (base->flags & BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+
+  BSpline2(base,ctrl,cnt,&GrPlot3,closed);
+gr_done:
+  Free(ctrl2);
+  Free(ctrl3);
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+}
+
+public U0 Gr3BSpline3(GrBitMap *base,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
+{
+  U64 old_flags=base->flags;
+  I64 i,x,y,z;
+  P3I32 *ctrl2=NULL,*ctrl3=NULL;
+  if (base->flags & BMF_TRANSFORMATION) {
+    ctrl2=MAlloc(sizeof(P3I32)*cnt);
+    for (i=0;i<cnt;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      (*base->transform)(base,&x,&y,&z);
+      ctrl2[i].x=x;
+      ctrl2[i].y=y;
+      ctrl2[i].z=z;
+    }
+    base->flags&=~BMF_TRANSFORMATION;
+    ctrl=ctrl2;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    ctrl3=MAlloc(sizeof(P3I32)*cnt);
+    for (i=0;i<cnt;i++) {
+      x=ctrl[i].x;
+      y=ctrl[i].y;
+      z=ctrl[i].z;
+      GrReflect(base,&x,&y,&z);
+      ctrl3[i].x=x;
+      ctrl3[i].y=y;
+      ctrl3[i].z=z;
+    }
+    base->flags&=~BMF_SYMMETRY;
+    BSpline3(base,ctrl3,cnt,&GrPlot3,closed);
+    if (base->flags & BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+
+  BSpline3(base,ctrl,cnt,&GrPlot3,closed);
+gr_done:
+  Free(ctrl2);
+  Free(ctrl3);
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+}
+
+public U0 GrSpeedLine(GrBitMap *base,I64 x1,I64 y1,I64 x2,I64 y2,F64 speed)
+{
+  I64 old_pen_width=base->pen_width;
+  I32 *db=base->depth_buf;
+  U64 old_flags=base->flags;
+  base->depth_buf=NULL;
+  base->pen_width=base->speedline_scale*speed;
+  base->flags&=~(BMF_TRANSFORMATION|BMF_SYMMETRY|BMF_JUST_MIRROR);
+  GrLine3(base,x1,y1,0,x2,y2,0);
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+  base->pen_width=old_pen_width;
+  base->depth_buf=db;
+}
+
+public U0 GrSpeedLine3(GrBitMap *base,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,F64 speed)
+{  //transformation
+  U64 old_flags=base->flags;
+  I64 _x1,_y1,_z1,_x2,_y2,_z2;
+  I64 old_pen_width=base->pen_width;
+  base->pen_width=base->speedline_scale*speed;
+  if (base->flags & BMF_TRANSFORMATION) {
+    (*base->transform)(base,&x1,&y1,&z1);
+    (*base->transform)(base,&x2,&y2,&z2);
+    base->flags&=~BMF_TRANSFORMATION;
+  }
+  if (base->flags & BMF_SYMMETRY) {
+    _x1=x1; _y1=y1; _z1=z1;
+    GrReflect(base,&_x1,&_y1,&_z1);
+    _x2=x2; _y2=y2; _z2=z2;
+    GrReflect(base,&_x2,&_y2,&_z2);
+    base->flags&=~BMF_SYMMETRY;
+
+    GrLine3(base,_x1,_y1,_z1,_x2,_y2,_z2);
+
+    if (base->flags & BMF_JUST_MIRROR)
+      goto gr_done;
+  }
+
+  GrLine3(base,x1,y1,z1,x2,y2,z2);
+
+gr_done:
+  base->pen_width=old_pen_width;
+  base->flags=old_flags|base->flags&BMF_DIRTY;
+}
+
+public I64 GrFillTriangle0(GrBitMap *base,P3I32 *p1,P3I32 *p2,P3I32 *p3)
+{
+//This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
+//Returns cnt of pixels changed
+  I64 x1,x2,y,z1,z2,dx1,dy1,dz1,dx2,dy2,dz2,result=0,i,y_min,y_max;
+  TaskStruct *win_task;
+  //p1 is min x
+  if (p3->x<p2->x)
+    SwapU64(&p3,&p2);
+  if (p2->x<p1->x)
+    SwapU64(&p2,&p1);
+
+    //p2 is min y of remainder
+  if (p3->y<p2->y)
+    SwapU64(&p3,&p2);
+
+  y_min=0;
+  y_max=base->height;
+  if (base->flags & BMF_SCREEN_BITMAP) {
+    win_task=base->win_task;
+    y_min-=win_task->win_scroll_y+win_task->win_pixel_top;
+    y_max-=win_task->win_scroll_y+win_task->win_pixel_top;
+    if (y_max>win_task->win_pixel_bottom-(win_task->win_scroll_y+win_task->win_pixel_top))
+      y_max=win_task->win_pixel_bottom-(win_task->win_scroll_y+win_task->win_pixel_top);
+  }
+
+  if ((dy2=p3->y-p1->y)<0) {
+    if (dy1=p2->y-p1->y) {
+      dx1=(p1->x-p2->x)<<32/dy1;
+      dz1=(p1->z-p2->z)<<32/dy1;
+    } else {
+      dx1=0;
+      dz1=0;
+    }
+    dx2=(p1->x-p3->x)<<32/dy2;
+    dz2=(p1->z-p3->z)<<32/dy2;
+    x1=x2=p1->x<<32; y=p1->y; z1=z2=p1->z<<32;
+    if (y+dy2<y_min) {
+      i=y_min-(y+dy2);
+      if (i>-dy2) goto ft_done;
+      dy2+=i;
+    }
+    if (y>=y_max) {
+      i=y-y_max+1;
+      if (i>-dy2)
+	i=-dy2;
+      dy2+=i;
+      y-=i;
+      x1+=dx1*i;
+      x2+=dx2*i;
+      z1+=dz1*i;
+      z2+=dz2*i;
+    }
+    while (dy2++) {
+      result+=GrHLine(base,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
+      y--;
+      x1+=dx1;
+      x2+=dx2;
+      z1+=dz1;
+      z2+=dz2;
+    }
+    if (dy2=p2->y-p3->y) {
+      dx2=(p3->x-p2->x)<<32/dy2;
+      dz2=(p3->z-p2->z)<<32/dy2;
+      if (y+dy2<y_min) {
+	i=y_min-(y+dy2);
+	if (i>-dy2) goto ft_done;
+	dy2+=i;
+      }
+      if (y>=y_max) {
+	i=y-y_max+1;
+	if (i>-dy2) goto ft_done;
+	dy2+=i;
+	y-=i;
+	x1+=dx1*i;
+	x2+=dx2*i;
+	z1+=dz1*i;
+	z2+=dz2*i;
+      }
+    }
+    while (dy2++<=0) {
+      result+=GrHLine(base,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
+      y--;
+      x1+=dx1;
+      x2+=dx2;
+      z1+=dz1;
+      z2+=dz2;
+    }
+  } else if ((dy2=p2->y-p1->y)>0) {
+    if (dy1=p3->y-p1->y) {
+      dx1=(p3->x-p1->x)<<32/dy1;
+      dz1=(p3->z-p1->z)<<32/dy1;
+    } else {
+      dx1=0;
+      dz1=0;
+    }
+    dx2=(p2->x-p1->x)<<32/dy2;
+    dz2=(p2->z-p1->z)<<32/dy2;
+    x1=x2=p1->x<<32; y=p1->y; z1=z2=p1->z<<32;
+    if (y+dy2>=y_max) {
+      i=y+dy2-y_max+1;
+      if (i>dy2) goto ft_done;
+      dy2-=i;
+    }
+    if (y<y_min) {
+      i=y_min-y;
+      if (i>dy2)
+	i=dy2;
+      dy2-=i;
+      y+=i;
+      x1+=dx1*i;
+      x2+=dx2*i;
+      z1+=dz1*i;
+      z2+=dz2*i;
+    }
+    while (dy2--) {
+      result+=GrHLine(base,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
+      y++;
+      x1+=dx1;
+      x2+=dx2;
+      z1+=dz1;
+      z2+=dz2;
+    }
+    if (dy2=p3->y-p2->y) {
+      dx2=(p3->x-p2->x)<<32/dy2;
+      dz2=(p3->z-p2->z)<<32/dy2;
+      if (y+dy2>=y_max) {
+	i=y+dy2-y_max+1;
+	if (i>dy2) goto ft_done;
+	dy2-=i;
+      }
+      if (y<y_min) {
+	i=y_min-y;
+	if (i>dy2) goto ft_done;
+	dy2-=i;
+	y+=i;
+	x1+=dx1*i;
+	x2+=dx2*i;
+	z1+=dz1*i;
+	z2+=dz2*i;
+      }
+    }
+    while (dy2-->=0) {
+      result+=GrHLine(base,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
+      y++;
+      x1+=dx1;
+      x2+=dx2;
+      z1+=dz1;
+      z2+=dz2;
+    }
+  } else {
+    if (dy1=p2->y-p1->y) {
+      dx1=(p2->x-p1->x)<<32/dy1;
+      dz1=(p2->z-p1->z)<<32/dy1;
+      if (dy2=p2->y-p3->y) {
+	dx2=(p2->x-p3->x)<<32/dy2;
+	dz2=(p2->z-p3->z)<<32/dy2;
+      } else {
+	dx2=0;
+	dz2=0;
+      }
+      x1=x2=p2->x<<32; y=p2->y; z1=z2=p2->z<<32;
+      if (y<y_min) {
+	i=y_min-y;
+	if (i>-dy1)
+	  i=-dy1;
+	dy1+=i;
+	y+=i;
+	x1+=dx1*i;
+	x2+=dx2*i;
+	z1+=dz1*i;
+	z2+=dz2*i;
+      }
+      while (dy1++<=0) {
+	if (y<y_max)
+	  result+=GrHLine(base,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
+	y++;
+	x1+=dx1;
+	x2+=dx2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+    }
+    if (dy1=p3->y-p1->y) {
+      dx1=(p1->x-p3->x)<<32/dy1;
+      dz1=(p1->z-p3->z)<<32/dy1;
+      if (dy2=p3->y-p2->y) {
+	dx2=(p2->x-p3->x)<<32/dy2;
+	dz2=(p2->z-p3->z)<<32/dy2;
+      } else {
+	dx2=0;
+	dz2=0;
+      }
+      x1=x2=p3->x<<32; y=p3->y; z1=z2=p3->z<<32;
+      if (y-dy1<y_min) {
+	i=y_min-(y-dy1);
+	if (i>dy1) goto ft_done;
+	dy1-=i;
+      }
+      if (y>=y_max) {
+	i=y-y_max+1;
+	if (i>dy1) goto ft_done;
+	dy1-=i;
+	y-=i;
+	x1+=dx1*i;
+	x2+=dx2*i;
+	z1+=dz1*i;
+	z2+=dz2*i;
+      }
+      while (dy1-->=0) {
+	result+=GrHLine(base,x1.i32[1],x2.i32[1],y,z1.i32[1],z2.i32[1]);
+	y--;
+	x1+=dx1;
+	x2+=dx2;
+	z1+=dz1;
+	z2+=dz2;
+      }
+    }
+  }
+ft_done:
+  return result;
+}
+
+public I64 GrFillPoly3(GrBitMap *base,I64 n,P3I32 *poly)
+{ //Must be convex.
+//Returns cnt of pixels changed
+  P3I32 tri[3];
+  I64 i,j,x0,y0,z0,x1,y1,z1,x2,y2,z2,result=0;
+  if (n<3) return 0;
+  if (base->flags & BMF_SYMMETRY) {
+    for (i=1;i<n-1;i++) {
+      j=i-1;
+      if (i==1) {
+	x0=poly[j].x; y0=poly[j].y; z0=poly[j].z;
+	if (base->flags&BMF_TRANSFORMATION)
+	  (*base->transform)(base,&x0,&y0,&z0);
+	GrReflect(base,&x0,&y0,&z0);
+	tri[0].x=x0; tri[0].y=y0; tri[0].z=z0;
+      }
+
+      j++;
+      if (i==1) {
+	x1=poly[j].x; y1=poly[j].y; z1=poly[j].z;
+	if (base->flags&BMF_TRANSFORMATION)
+	  (*base->transform)(base,&x1,&y1,&z1);
+	GrReflect(base,&x1,&y1,&z1);
+      } else {
+	x1=x2; y1=y2; z1=z2;
+      }
+      tri[1].x=x1; tri[1].y=y1; tri[1].z=z1;
+
+      j++;
+      x2=poly[j].x; y2=poly[j].y; z2=poly[j].z;
+      if (base->flags&BMF_TRANSFORMATION)
+	(*base->transform)(base,&x2,&y2,&z2);
+      GrReflect(base,&x2,&y2,&z2);
+      tri[2].x=x2; tri[2].y=y2; tri[2].z=z2;
+
+      result+=GrFillTriangle0(base,&tri[0],&tri[1],&tri[2]);
+    }
+  }
+  if (base->flags&BMF_JUST_MIRROR)
+    return result;
+  for (i=1;i<n-1;i++) {
+    j=i-1;
+    if (i==1) {
+      x0=poly[j].x; y0=poly[j].y; z0=poly[j].z;
+      if (base->flags&BMF_TRANSFORMATION)
+	(*base->transform)(base,&x0,&y0,&z0);
+      tri[0].x=x0; tri[0].y=y0; tri[0].z=z0;
+    }
+
+    j++;
+    if (i==1) {
+      x1=poly[j].x; y1=poly[j].y; z1=poly[j].z;
+      if (base->flags&BMF_TRANSFORMATION)
+	(*base->transform)(base,&x1,&y1,&z1);
+    } else {
+      x1=x2; y1=y2; z1=z2;
+    }
+    tri[1].x=x1; tri[1].y=y1; tri[1].z=z1;
+
+    j++;
+    x2=poly[j].x; y2=poly[j].y; z2=poly[j].z;
+    if (base->flags&BMF_TRANSFORMATION)
+      (*base->transform)(base,&x2,&y2,&z2);
+    tri[2].x=x2; tri[2].y=y2; tri[2].z=z2;
+
+    result+=GrFillTriangle0(base,&tri[0],&tri[1],&tri[2]);
+  }
+  return result;
+}
+
+#help_index "Graphics/Mesh"
+
+public I64 Gr3Mesh(GrBitMap *base,I64 vertex_cnt,P3I32 *p,I64 triangle_cnt,GrMeshTri *tri)
+{
+//Returns cnt of pixels changed
+  ColorROPU32 old_color=base->color;
+  I64 i,x,y,z,result=0;
+  P3I32 *pt,*pt_sym,*p_sym,*dst;
+  GrMeshTri *tri_sym=tri;
+  if (base->flags&BMF_TRANSFORMATION) {
+    dst=pt=MAlloc(sizeof(P3I32)*vertex_cnt);
+    for (i=0;i<vertex_cnt;i++,p++,dst++) {
+      x=p->x; y=p->y; z=p->z;
+      (*base->transform)(base,&x,&y,&z);
+      dst->x=x; dst->y=y; dst->z=z;
+    }
+    p=pt;
+  } else
+    pt=NULL;
+
+  if (base->flags & BMF_SYMMETRY) {
+    dst=pt_sym=MAlloc(sizeof(P3I32)*vertex_cnt);
+    p_sym=p;
+    for (i=0;i<vertex_cnt;i++,p_sym++,dst++) {
+      x=p_sym->x; y=p_sym->y; z=p_sym->z;
+      GrReflect(base,&x,&y,&z);
+      dst->x=x; dst->y=y; dst->z=z;
+    }
+    p_sym=pt_sym;
+    for (i=0;i<triangle_cnt;i++,tri_sym++) {
+      (*base->lighting)(base,&p_sym[tri_sym->nums[0]],&p_sym[tri_sym->nums[2]],&p_sym[tri_sym->nums[1]],tri_sym->color);
+      result+=GrFillTriangle0(base,&p_sym[tri_sym->nums[0]],&p_sym[tri_sym->nums[2]],&p_sym[tri_sym->nums[1]]);
+    }
+    Free(pt_sym);
+    if (base->flags&BMF_JUST_MIRROR)
+      goto mesh_done;
+  }
+  for (i=0;i<triangle_cnt;i++,tri++) {
+    (*base->lighting)(base,&p[tri->nums[0]],&p[tri->nums[1]],&p[tri->nums[2]],tri->color);
+    result+=GrFillTriangle0(base,&p[tri->nums[0]],&p[tri->nums[1]],&p[tri->nums[2]]);
+  }
+mesh_done:
+  base->color=old_color;
+  Free(pt);
+  return result;
+}
+
+#help_index "Graphics"

@@ -1,0 +1,30 @@
+//Generate "Stadium.LGZ" from "Stadium.TXZ"
+
+
+U0 StadiumGen()
+{
+  U0 (*fp_old_update)(GrBitMap *base);
+  GrBitMap *base;
+
+  WinMax;
+  WinBorder(OFF);
+  LtfClear;
+  Type("::/LT/Demo/GameStarters/Stadium/Stadium.TXZ");
+  PrintF("$CM,0,%d$",TEXT_ROWS-2);
+  LtfCursor(OFF);
+  fp_old_update=fp_final_screen_update; //hide mouse cursor
+  fp_final_screen_update=NULL;
+
+  WinSync(TRUE);
+  base=GrExtractBitMap(gr_screen_image,0,FONT_HEIGHT,GR_WIDTH,GR_HEIGHT);
+
+  LGRWrite("::/LT/Demo/GameStarters/Stadium/Stadium",base);
+  GrDel(base);
+ 
+  LtfCursor(ON);
+  fp_final_screen_update=fp_old_update;
+  LtfClear;
+}
+
+StadiumGen;
+

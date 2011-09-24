@@ -1,0 +1,123 @@
+//This puts the cursor at the bottom
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
+PutS("\r");
+
+PopUpOk(
+"Now, we're going to demonstrate how to work\r\n"
+"with programs.  We'll change to the $FG,GREEN$/LT/Demo/Snd$FG$ \r\n"
+"directory.\r\n\r\n"
+"Note, that directories are specified with\r\n"
+"a forward slash, not a backslash.\r\n"
+"Drives can be specified in a $FG,GREEN$Cd()$FG$ command\r\n"
+"and the boot drive is specified with \"$FG,GREEN$::$FG$\".\r\n\r\n"
+"$FG,GREEN$<ENTER>$FG$ to complete the command.\r\n");
+
+AFDelayedPutS("Cd(\"::/LT/Demo/Snd\");Dir;",25);
+AFPmtStr("\r");
+
+PopUpOk(
+"Now, we're going to edit a file.  Normally,\r\n"
+"you'll probably left-click on a directory\r\n"
+"listing to edit a file, but we're going to\r\n"
+"type it on the command line.\r\n\r\n"
+"$FG,GREEN$<ENTER>$FG$ to complete the command.\r\n");
+
+AFDelayedPutS("Ed(\"ASCIIOrgan.CPZ\");",25);
+AFPmtStr("\r");
+
+Sleep(1000);
+PopUpOk(
+"This program gets keys and plays frequencies.\r\n"
+"It quits when you press $FG,GREEN$<SHIFT-ESC>$FG$.\r\n\r\n"
+"There is no \"$FG,GREEN$main()$FG$\" function in LoseThos\r\n"
+"programs.  Any program statements outside\r\n"
+"functions get executed when you $FG,GREEN$#include$FG$\r\n"
+"them at the command line.\r\n\r\n"
+"The \"$FG,GREEN$ASCIIOrgan;$FG$\" statement at the bottom\r\n"
+"will run the program when we $FG,GREEN$#include$FG$ it.\r\n");
+
+PopUpOk(
+"The editor and most things exit when you press\r\n"
+"$FG,GREEN$<ESC>$FG$.  $FG,GREEN$<SHIFT-ESC>$FG$ will abort (cancel) most things.\r\n\r\n"
+"The $FG,GREEN$<ESC>$FG$ key can be simulated with a left\r\n"
+"double-click, while the $FG,GREEN$<SHIFT-ESC>$FG$ key can be\r\n"
+"simulated with a right double-click.  When\r\n"
+"you browse documentation, you'll left-click\r\n"
+"on links and right double-click to go back,\r\n"
+"unless you want to save changes to documents\r\n"
+"using left double-click.\r\n\r\n"
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort the editor.\r\n"
+);
+
+AFGetChar(CH_SHIFT_ESC,CH_ESC);
+
+PopUpOk(
+"Now, we'll run the ASCIIOrgan.CPZ program.\r\n"
+"$FG,GREEN$<ENTER>$FG$ at the command line to\r\n"
+"$FG,GREEN$#include$FG$ it.  Then press keys to\r\n"
+"cause sounds and $FG,GREEN$<SHIFT-ESC>$FG$ when\r\n"
+"you are done.\r\n");
+
+AFDelayedPutS("#include \"ASCIIOrgan.CPZ\";",25);
+AFPmtStr("\r");
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+
+PopUpOk(
+"The program is still in memory and we\r\n"
+"can start it again by typing \"$FG,GREEN$ASCIIOrgan;$FG$\".\r\n\r\n"
+"$FG,GREEN$<ENTER>$FG$ at the command line to\r\n"
+"run it again.\r\n");
+
+AFDelayedPutS("ASCIIOrgan;",25);
+AFPmtStr("\r");
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+
+
+PopUpOk(
+"$FG,GREEN$<CTRL-ALT-A>$FG$\tExtended ASCII\r\n"
+"$FG,GREEN$<CTRL-ALT-C>$FG$\tBreak(interrupt) program\r\n"
+"$FG,GREEN$<CTRL-ALT-D>$FG$\tEnter debugger\r\n"
+"$FG,GREEN$<CTRL-ALT-E>$FG$\tSpawn new user terminal window\r\n"
+"$FG,GREEN$<CTRL-ALT-G>$FG$\tShow Grid\r\n"
+"$FG,GREEN$<CTRL-ALT-M>$FG$\tMutes sound\r\n"
+"$FG,GREEN$<CTRL-ALT-P>$FG$\tPause program\r\n"
+"$FG,GREEN$<CTRL-ALT-T>$FG$\tSwitch tasks\r\n"
+"$FG,GREEN$<CTRL-ALT-V>$FG$\tSound Volume +\r\n"
+"$FG,GREEN$<CTRL-ALT-v>$FG$\tSound Volume -\r\n"
+"$FG,GREEN$<CTRL-ALT-X>$FG$\tKill task (window)\r\n"
+);
+
+AFDelayedPutS("Ed(\"ASCIIOrgan.CPZ\");\r",50);
+
+PopUpOk(
+"$FG,GREEN$<F5>$FG$\t\t'#include' the current file link\r\n"
+"or the file you are currently editing.\r\n"
+"$FG,GREEN$<SHIFT-F5>$FG$\t'Adam Include' the current file.\r\n\r\n\r\n"
+"$FG,GREEN$<F5>$FG$ in the editor to run the file being edited.\r\n"
+);
+
+AFGetKey(SC_F5);
+Sleep(50);
+TaskStruct *task=sys_cur_focus_task;
+
+PopUpOk(
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort the application.\r\n"
+"Then, $FG,GREEN$<CTRL-ALT-X>$FG$ to kill the task.\r\n"
+);
+WinToTop(task);
+while (TaskValidate(task))
+  Sleep(10);
+
+PopUpOk(
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort the editor.\r\n");
+
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+
+PopUpOk(
+"Explore the $LK,\"DemoIndex\",\"FI:::/LT/Doc/DemoIndex.TXZ\"$.\r\n"
+"You'll find it on your menu.\r\n"
+"It's arranged by increasing difficulty.\r\n"
+"Hit $FG,GREEN$<SPACE BAR>$FG$ on a demo index listing\r\n"
+"and $FG,GREEN$<F5>$FG$ to run from the editor.\r\n"
+);
+ 

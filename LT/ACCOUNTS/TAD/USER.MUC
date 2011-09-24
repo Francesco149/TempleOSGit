@@ -1,151 +1,0 @@
-Cd("HOME");Dir;
-`Cd("HOME");Dir;`
-
-Drive('D');
-`Drive('D');`
-
-QBoot D
-`QuickBoot('D');`
-
-Compile D
-`CompileDrive('D');`
-
-
-Cd("/LT/OSMain");Dir;
-`Cd("/LT/OSMain");Dir;`
-
-Cd("/LT/COMPILE2");Dir;
-`Cd("/LT/COMPILE2");Dir;`
-
-Cd("/LT/COMPILE");Dir;
-`Cd("/LT/COMPILE");Dir;`
-
-Cd("/LT/ADAM");Dir;
-`Cd("/LT/ADAM");Dir;`
-
-Cd("/LT/ACCOUNTS/TAD");Dir;
-`Cd("/LT/ACCOUNTS/TAD");Dir;`
-
-Cd("/LT/ACCOUNTS/TAD/Songs");Dir;
-`Cd("/LT/ACCOUNTS/TAD/Songs");Dir;`
-
-Cd("/LT/ACCOUNTS/TOUR");Dir;
-`Cd("/LT/ACCOUNTS/TOUR");Dir;`
-
-Cd("/LT/ACCOUNTS/USER");Dir;
-`Cd("/LT/ACCOUNTS/USER");Dir;`
-
-Cd("/LT/ACCOUNTS/INSTALL");Dir;
-`Cd("/LT/ACCOUNTS/INSTALL");Dir;`
-
-Cd("/LT/ACCOUNTS/UPGRADE");Dir;
-`Cd("/LT/ACCOUNTS/UPGRADE");Dir;`
-
-Cd("/LT/SCRAPS");Dir;
-`Cd("/LT/SCRAPS");Dir;`
-
-Cd("/LT/APPS");Dir;
-`Cd("/LT/APPS");Dir;`
-
-Cd("/LT/DEMO");Dir;
-`Cd("/LT/DEMO");Dir;`
-
-Cd("/LT/DEMO/Graphics");Dir;
-`Cd("/LT/DEMO/Graphics");Dir;`
-
-Cd("/LT/UTILS");Dir;
-`Cd("/LT/UTILS");Dir;`
-
-Cd("/LT/DOC");Dir;
-`Cd("/LT/DOC");Dir;`
-
-Cd("/TEMP");Dir;
-`Cd("/TEMP");Dir;`
-
-Cd("/TAD");Dir;
-`Cd("/TAD");Dir;`
-
-Cd("HOME/Moses");Dir;
-`Cd("HOME/Moses");Dir;`
-
-DoComics;
-`DoComics;`
-
-DoSongs;
-`DoSongs;`
-
-
-M("D:/LT/*","T:/LT/*","+r+d");
-`M("D:/LT/*","T:/LT/*","+r+d");`
-
-M("D:/LT/COMPILE/*.CPZ","D:/LT/COMPILE2/*.CPZ","+r+d");
-`M("D:/LT/COMPILE/*.CPZ","D:/LT/COMPILE2/*.CPZ","+r+d");`
-
-
-Drive('B');
-`Drive('B');`
-
-ChangeDisk('T');
-`ChangeDisk('T');`
-
-
-Make Distribution D: to A: Floppy
-`DistributeDToFloppy('A');`
-
-Make Distribution D: to B: RAM disk
-`DistributeDToFloppy('B');`
-
-Make Distribution D: for CD
-`DistributeDToCD;`
-
-Make Distribution D: for TAD6
-`DistributeDToTAD6CD;`
-
-Make Song Distribution D: for CD
-`DistributeSongs;MyWriteSongCDImage;`
-
-Make My Distribution D: for CD
-`DistributeDToMyCD;MyWriteCDImage;`
-
-Write Cd Image
-`MyWriteCDImage;`
-
-
-Update and Compile Drive
-`PromptUpdateDrive;`
-
-Copy Drive
-`MyCopyDrive;`
-
-Install From CD to D
-`InstallFromCDToD;`
-
-
-Boot D
-`BootDrive('D');`
-
-
-Just Update Drive
-`PromptUpdateDrive2;`
-
-
-Apps:
-Play WarGame
-`Cd("::/LT/APPS");;#include "WARGAME"`
-
-StarTrek Game
-`#include "::/LT/DEMO/Graphics/StarTrek2"`
-
-DO-TELL (A fractel-like thing)
-`Cd("::/LT/DEMO");;#include "Dawg"`
-
-
-Tour
-`Cd("::/LT/ACCOUNTS/TOUR");;AutoFile("TOUR");`
-
-List functions in alphabetic order
-`HFunsRep;View;`
- 
-List functions in numeric address order
-`HMapRep;View;`
- 

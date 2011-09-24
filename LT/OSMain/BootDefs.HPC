@@ -1,0 +1,27 @@
+#define BOOT_RAM_BASE		0x10000
+#define BOOT_RAM_LIMIT		0x80000
+//9FC00 is EBDA BIOS area
+#define VGA_GRAPHIC_MEM_BASE	0xA0000
+#define VGA_TEXT_MEM_BASE	0xB8000
+
+//See [::/LT/OSMain/Adam1a.HPZ,MP_VECT_ADDR] MP_VECT_ADDR for something
+//else used in low RAM.
+
+#define BLK_SIZE_BITS	9
+#define BLK_SIZE 	(1<<BLK_SIZE_BITS)
+#define CD_BLK_SIZE 	(4*BLK_SIZE)
+#define CD_FILE_OFFSET	80
+
+#define CD_BOOT_LOADER_SIZE	CD_BLK_SIZE*1 //Max 4 CDBlks, I think
+
+//These are the cfguration settings
+//for a standard production CD-Image
+#define PROD_CDROM_CFG	"b10x20000\rt3 \r\r\r\r\r"
+#define SAFE_CDROM_CFG	"b10x20000\rt3 \r\r\r\rDontProbe\r\r"
+
+#define BOOT_STK_SIZE	BLK_SIZE
+
+#define BOOT_CODE_RAM		1
+#define BOOT_CODE_HARDDRV	2
+#define BOOT_CODE_CDROM		3
+

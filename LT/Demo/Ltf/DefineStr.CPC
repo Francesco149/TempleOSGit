@@ -1,0 +1,23 @@
+/*
+The +D flag causes a define-string
+look-up and substitution.
+
+It is available in the <CTRL-L> menu
+under text entries for use in
+documentation.
+ 
+*/
+
+
+DefineLoad("COMPANY","Trivial Solutions");
+PutS("Company: $TX+D,\"\",\"COMPANY\"$\r\n");
+
+
+#exe {
+  StreamPrintF(
+    "#define COMPANY_AGE %h56D\r\n",GetCurTimeLTDate-A2LTDate("8/1/2003"));
+};
+
+PutS("Age: $TX+D,\"\",\"COMPANY_AGE\"$ years\r\n");
+
+

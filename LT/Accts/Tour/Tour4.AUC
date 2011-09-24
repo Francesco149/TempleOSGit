@@ -1,0 +1,37 @@
+//This is an example of your documentation.
+
+
+//This puts the cursor at the bottom
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
+PutS("\rEd(\"::/LT/Accts/Tour/Tour4.AUZ\");\r");
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN);
+PutS("//");
+
+PopUpOk(
+"Now, we'll add a link to a file.\r\n"
+"using the $FG,GREEN$<F4>$FG$ filename chooser.\r\n");
+
+PutChar(CH_CTRLL);
+Sleep(1000);
+PutChar(CH_SPACE);
+Sleep(1000);
+PutChar(CH_SPACE);
+Sleep(1000);
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN);
+Sleep(1000);
+
+PopUpOk(
+"Press $FG,GREEN$<F4>$FG$.\r\n"
+"Pick any file and press $FG,GREEN$<ESC>$FG$.");
+AFGetKey(SC_F4);
+PopUpOk(
+"Press $FG,GREEN$<ESC>$FG$.\r\n");
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+
+PopUpOk(
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\r\n");
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+
+PopUpOk(
+"$FG,GREEN$<SHIFT F4>$FG$ to pick directories.\r\n");

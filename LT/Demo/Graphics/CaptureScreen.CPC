@@ -1,0 +1,27 @@
+//See [::/LT/Demo/GameStarters/Stadium/StadiumGen.CPZ] ::/LT/Demo/GameStarters/Stadium/StadiumGen.CPZ.
+
+U0 ViewScreenCapture(U8 *filename)
+{
+  GrBitMap *base=GrAlias(gr_persistent_base,Fs),
+	   *b=LGRRead(filename);
+  GrBlot(base,0,0,b);
+  GrDel(b);
+  GrDel(base);
+}
+
+
+U0 DoIt()
+{
+  PutS("Capture screen...\r\n");
+  PressAKey;
+  LGRCaptureScreen("HOME/SnapShot.LGZ");
+
+  PutS("View captured screen...\r\n");
+  PressAKey;
+  ViewScreenCapture("HOME/SnapShot.LGZ");
+
+  PressAKey;
+  GrClear(gr_persistent_base);
+}
+
+DoIt;

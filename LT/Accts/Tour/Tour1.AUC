@@ -1,0 +1,108 @@
+//This puts the cursor at the bottom
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
+PutS("\r");
+
+PopUpOk(
+"After clicking $FG,GREEN$[OKAY]$FG$, you will be at the\r\n"
+"command line.\r\n"
+"\r\n"
+"The syntax is like $FG,GREEN$C/C++$FG$ except you\r\n"
+"don't need $FG,GREEN$()$FG$ if there are no args.\r\n"
+"\r\n"
+"Type \"$FG,GREEN$Dir;$FG$\" and press $FG,GREEN$<ENTER>$FG$.\r\n\r\n"
+"You must remember the semicolon.\r\n"
+);
+
+AFPmtStr("Dir;\r");
+Sleep(1000);  //allow user time to see dir
+PutChar(CH_CR);
+
+PopUpOk(
+"After clicking $FG,GREEN$[OKAY]$FG$, you will be at the\r\n"
+"command line.\r\n\r\n"
+"Press $FG,GREEN$<WINDOWS KEY>$FG$.\r\n\r\n"
+"This will access your personal menu.\r\n"
+"You can customize it.  It's like your\r\n"
+"START menu.\r\n");
+
+AFGetKey(SC_GUI);
+Sleep(1000);
+PopUpOk(
+"You can get to your personal menu\r\n"
+"by clicking on the word \"$FG,GREEN$MENU$FG$\" in the\r\n"
+"title bar.\r\n");
+
+PopUpOk(
+"$FG,LTPURPLE$Keyboard$FG$\r\n"
+"$UL,1$$FG,LTBLUE$Blue Underlined Text are Macros$FG$$UL,0$\r\n"
+"\t$FG,GREEN$<SPACE BAR>$FG$\tExecute Macro\r\n"
+"$UL,1$$FG,LTRED$Red Underlined Text are Links$FG$$UL,0$\r\n"
+"\t$FG,GREEN$<SPACE BAR>$FG$\tEdit (view)\r\n"
+"\t$FG,GREEN$<ENTER>$FG$\t\tRight-click menu\r\n\r\n"
+"\t$FG,GREEN$<ESC>$FG$\t\tSave and exit\r\n"
+"\t$FG,GREEN$<SHIFT-ESC>$FG$\tAbort\r\n"
+"\r\n"
+"$FG,LTPURPLE$Mouse$FG$\r\n"
+"$UL,1$$FG,LTBLUE$Blue Underlined Text are Macros$FG$$UL,0$\r\n"
+"\t$FG,GREEN$Left-Click$FG$\tExecute Macro\r\n"
+"$UL,1$$FG,LTRED$Red Underlined Text are Links$FG$$UL,0$\r\n"
+"\t$FG,GREEN$Left-Click$FG$\tEdit (view)\r\n"
+"\t$FG,GREEN$Right-Click$FG$\tRight-click menu\r\n\r\n"
+"\t$FG,GREEN$Double-Left$FG$\tSave and exit\r\n"
+"\t$FG,GREEN$Double-Right$FG$\tAbort\r\n"
+"\r\n"
+);
+
+PopUpOk(
+"After clicking $FG,GREEN$[OKAY]$FG$, you will be back at\r\n"
+"the personal menu.\r\n\r\n"
+"Press $FG,GREEN$<CURSOR-DOWN>$FG$ nine times.\r\n");
+
+//This puts the cursor at the top
+Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
+
+I64 i;
+for (i=0;i<9;i++)
+  AFGetKey(SC_CURSOR_DOWN);
+
+PopUpOk(
+"After clicking $FG,GREEN$[OKAY]$FG$, the cursor will be\r\n"
+"on top of a macro we wish to run.\r\n"
+"\r\n"
+"After clicking $FG,GREEN$[OKAY]$FG$, press $FG,GREEN$<SPACE BAR>$FG$.\r\n");
+AFPmtStr(" ");
+Sleep(1000);
+
+PopUpOk(
+"The macro changed directories and did\r\n"
+"a $FG,GREEN$Dir;$FG$ command.\r\n\r\n"
+"The $FG,RED$RED$FG$ filenames listed are file\r\n"
+"links.  Left-clicking will edit/view them.\r\n"
+"Right-clicking or pressing $FG,GREEN$<ENTER>$FG$\r\n"
+"when the cursor is on top will bring-up a\r\n"
+"menu of options.\r\n\r\n"
+"The $FG,LTBLUE$BLUE$FG$ underline entries \"$FG,LTBLUE$.$FG$\" and \"$FG,LTBLUE$..$FG$\"\r\n"
+"are macros and will change directories.\r\n");
+
+PopUpOk(
+"As you can see, the command line is not\r\n"
+"different from the personal menu.\r\n"
+"Both use the same commands and have the same\r\n"
+"'widgets' available.\r\n\r\n"
+"Both utilize the same underlying document format.\r\n"
+"It is similar to $FG,GREEN$html$FG$ because it has ASCII\r\n"
+"behind it.  LoseThos documents can include graphics.\r\n\r\n"
+"\"$FG,GREEN$<CTRL-T>$FG$\" after clicking $FG,GREEN$[OKAY]$FG$ to toggle\r\n"
+"to plain text mode.\r\n");
+AFGetChar(20);
+Sleep(1000);
+
+PopUpOk(
+"The widgets are bracketed with dollar sign\r\n"
+"characters. \"LK\" stands \"link\" and \"MA\"\r\n"
+"stands for \"macro\".\r\n\r\n"
+"Now, \"$FG,GREEN$<CTRL-T>$FG$\" to toggle back to\r\n"
+"regular mode.\r");
+AFGetChar(20);
+Sleep(1000);
+

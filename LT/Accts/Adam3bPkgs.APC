@@ -1,0 +1,30 @@
+//Change anything you want in this
+//acct file or others.
+
+Cd("/LT/Opt/Boot");;
+#include "InsBoot"
+Cd("/LT/Opt");;
+#include "Dsk3a"
+#include "ChkDsk"
+#include "Diff"
+#include "Grep"
+#include "LineCnt"
+#include "Merge"
+#include "S2T"
+#include "IDE"
+#include "EdFmtFun"
+#include "LinkChk"
+#include "HeapLog"
+#include "ListFile"
+#include "MemRep"
+#include "ToHtml"
+#include "ToTXT"
+#include "BinRep"
+#include "BMPFile"
+Cd("/LT/Apps");;
+
+MapFileLoad("::/LT/OSMain/OS.MPZ");
+MapFileLoad("::/LT/Compiler/Compiler.MPZ");
+MapFileLoad("::/LT/OSMain2/OSMain2.MPZ");
+
+Cd("HOME");;

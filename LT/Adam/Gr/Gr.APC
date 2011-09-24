@@ -1,0 +1,123 @@
+#help_index "Graphics"
+#define GRET_END		0
+//Unused
+#define GRET_COLOR4		2
+//Unused
+#define GRET_POINT		4
+#define GRET_LINE		5
+#define GRET_POLYLINE		6
+#define GRET_POLYPOINT		7
+#define GRET_WIDTH		8
+#define GRET_SHIFT		9
+#define GRET_BSPLINE2		10
+#define GRET_BSPLINE3		11
+#define GRET_BSPLINE2_CLOSED	12
+#define GRET_BSPLINE3_CLOSED	13
+#define GRET_SPEEDLINE		14
+#define GRET_SPEEDLINE_POINT	15
+//Unused
+#define GRET_RECT		17
+#define GRET_CIRCLE		18
+#define GRET_FLOOD_FILL_NOT	19
+#define GRET_FLOOD_FILL		20
+#define GRET_BITMAP4		21
+#define GRET_BITMAP4_TRANSPARENT 22
+#define GRET_TEXT		23
+#define GRET_ELLIPSE		24
+#define GRET_REG_POLY		25
+#define GRET_PLANAR_SYMMETRY	26
+#define GRET_DITHER_COLOR4	27
+#define GRET_ROTATED_RECT	28
+#define GRET_MESH		29
+#define GRET_SHIFTABLE_MESH	30
+#define GRET_TRANSFORM_ON	31
+#define GRET_TRANSFORM_OFF	32
+#define GRET_ARROW		33
+#define GRET_TEXT_BOX		34
+#define GRET_TEXT_DIAMOND	35
+#define GRET_NUM_TYPES		36
+
+DefineListLoad("ST_GRELEM_TYPES","End\0 \0Color 4Bit\0 \0Point\0"
+	"Line\0PolyLine\0PolyPoint\0Width\0Shift\0"
+	"BSpline2\0BSpline3\0BSpline2 Closed\0BSpline3 Closed\0SpeedLine\0"
+	" \0 \0Rect\0Circle\0Flood Fill Not Color\0Flood Fill\0BitMap 4Bit\0"
+	"BitMap 4Bit Trans\0Text\0Ellipse\0Reg Polygon\0Planar Symmetry\0"
+	"Dither Color 4Bit\0Rotated Rect\0Mesh\0Shiftable Mesh\0"
+	"Transform On\0Transform Off\0Arrow\0Text Box\0Text Diamond\0");
+
+class GrMeshTri
+{
+  I32 color; //Give one of 0-7 colors.	Colors 8-15 are 0-7 with intensity bit set.
+  I32 nums[3]; //Vertex number
+};
+
+public class GrElem
+{
+//See [Graphics/GrElem] Graphics/GrElem
+//See [::/LT/Adam/Gr/GrElemPlot.APZ,1] ::/LT/Adam/Gr/GrElemPlot.APZ for how GrElems are stored.
+  GrElem *next,*last;
+
+  U0 start;
+  U8 type;
+  union {
+    U8 color4;
+    U8 dither_color4;
+    I32 x1;
+    I32 num;
+    I32 width;
+    I32 vertex_cnt; //Mesh
+  }
+  union {
+    I32 y1;
+    I32 height;
+    I32 triangle_cnt; //Mesh
+  }
+  union {
+    I32 z1;
+    I32 x2;
+    U8 st[4];
+  }
+  union {
+    I32 y2;
+    I32 shiftable_vertex_cnt //Shiftable Mesh
+  }
+  union {
+    F64 linespeed;
+    F64 rot_angle;
+    ColorROPU32 bkcolor;
+    I32 shiftable_triangle_cnt //Shiftable Mesh
+  }
+  I32 sides;
+};
+
+
+extern GrBitMap *GrNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 null_bitmap=FALSE);
+extern GrBitMap *GrAlias(GrBitMap *base,TaskStruct *task);
+extern U0 GrDel(GrBitMap *base);
+extern U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *import_snap=NULL,F64 *import_ip_scaler=NULL);
+extern GrElem *GrElemsLtf2Queue(Ltf *l,GrElem *root,I64 *cur_num);
+extern BoolI64 GrBlot3(GrBitMap *base,I64 x1,I64 y1,I64 z1,GrBitMap *img);
+extern U0 GrBlotWithMask(GrBitMap *base,GrBitMap *img);
+
+#include "GrCfg"
+#include "GrAsm"
+#include "GrMath"
+#include "GrScreen"
+#include "GrNew"
+#include "GrBitMap"
+#include "GrPrimatives"
+#include "GrComposites"
+#include "GrChar"
+
+#define GE_CANCEL	(-1)
+#define GE_OKAY_DONE	0
+#define GE_OKAY_CONT	1
+
+#include "GrElemNew"
+#include "GrElemPlot"
+#include "GrElemMesh"
+#include "GrElemBitMap"
+#include "GrElemVect"
+#include "GrElemEd"
+#include "GrVectMap"
+#help_index ""

@@ -1,0 +1,17 @@
+//See [D:/LT/OSMain/OSStartUp.CPZ,SYS_GR_MODE:2] SYS_GR_MODE
+//See [C:/LT/OSMain/OSMain.CPZ,62] SysGrInit()
+
+//This allows constants to be used
+//instead of vars.
+#exe {
+  StreamPrintF(
+    "#define GR_MODE %d\r\n"
+    "#define GR_WIDTH %d\r\n"
+    "#define GR_HEIGHT %d\r\n"
+    "#define TEXT_ROWS %d\r\n"
+    "#define TEXT_COLS %d\r\n",
+    gr_mode,
+    gr_width,gr_height,
+    text_rows,text_cols);
+};
+

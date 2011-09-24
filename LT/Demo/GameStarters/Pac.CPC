@@ -1,0 +1,162 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x0000012E
+#define __BIN_1 "\x16\x17\x00\x00\x00\x17\x00\x00\x00\xF5\xFF\xFF\xFF\xF3\xFF\xFF\xFF\x0F\x00\x00\x00\x00\x00\x00\x00\xFF\xFF\x7F\x7F\x00\x7F\x3F\x00\x7C\x1F\x00\x78\x0F\x00\x70\x07\x00\x40\x03\x00\x60\x03\x00\x7C\x03\x00\x7E\x03\x80\x7F\x01\xE0\x7F\x01\xF0\x7F\x03\xE0\x7F\x03\xC0\x7F\x03\x80\x7F\x07\x00\x7E\x07\x00\x7C\x0F\x00\x78\x1F\x00\x78\x3F\x00\x7C\x7F\x00\x7F\xFF\xF7\x7F\xFF\xFF\x7F\xFF\xFF\x7F\x7F\x00\x7F\xBF\xFF\x7C\xDF\xFF\x7B\xEF\xFF\x77\xF7\xFF\x4F\xFB\xFF\x63\xFB\xFF\x7D\xFB\x7F\x7E\xFB\x9F\x7F\xFD\xEF\x7F\xFD\xF7\x7F\xFB\xE7\x7F\xFB\xDF\x7F\xFB\xBF\x7F\xF7\x7F\x7E\xF7\xFF\x7D\xEF\xFF\x7B\xDF\xFF\x7B\x3F\xFF\x7C\x7F\x08\x7F\xFF\xF7\x7F\xFF\xFF\x7F\xFF\xFF\x7F\x7F\x00\x7F\xBF\xFF\x7C\xDF\xFF\x7B\xEF\xFF\x77\xF7\xFF\x4F\xFB\xFF\x63\xFB\xFF\x7D\xFB\x7F\x7E\xFB\x9F\x7F\xFD\xEF\x7F\xFD\xF7\x7F\xFB\xE7\x7F\xFB\xDF\x7F\xFB\xBF\x7F\xF7\x7F\x7E\xF7\xFF\x7D\xEF\xFF\x7B\xDF\xFF\x7B\x3F\xFF\x7C\x7F\x08\x7F\xFF\xF7\x7F\xFF\xFF\x7F\xFF\xFF\x7F\x7F\x00\x7F\xBF\xFF\x7C\xDF\xFF\x7B\xEF\xFF\x77\xF7\xFF\x4F\xFB\xFF\x63\xFB\xFF\x7D\xFB\x7F\x7E\xFB\x9F\x7F\xFD\xEF\x7F\xFD\xF7\x7F\xFB\xE7\x7F\xFB\xDF\x7F\xFB\xBF\x7F\xF7\x7F\x7E\xF7\xFF\x7D\xEF\xFF\x7B\xDF\xFF\x7B\x3F\xFF\x7C\x7F\x08\x7F\xFF\xF7\x7F\xFF\xFF\x7F\x00"
+
+
+
+   /* <1> <1> (image) */
+
+
+class Blips
+{
+  F64 x,y;
+  BoolI8 eaten,pad[7];
+};
+
+#define NUM_BLIPS	100
+
+Blips blips[NUM_BLIPS];
+
+
+F64 theta,speed,move_t,x,y;
+
+
+U0 DrawIt(TaskStruct *task,GrBitMap *base)
+{
+  I64 i,score=0;
+  for (i=0;i<NUM_BLIPS;i++) {
+    if (!blips[i].eaten) {
+      base->color=WHITE;
+      GrRect(base,blips[i].x-2,blips[i].y-1,5,3);
+    } else
+      score++;
+  }
+  GrElemsPlotRotZ3b(base,x,y,0,__BIN_1,theta);
+  base->color=YELLOW;
+  GrPrintF(base,0,0,"Score:%d",score);
+  base->color=LTRED;
+  if (score==NUM_BLIPS && Blink(,tP(task)))
+    GrPutS(base,(task->win_pixel_width-14*FONT_WIDTH)/2,
+		(task->win_pixel_height-FONT_HEIGHT)/2,
+      "Game Completed");
+}
+
+U0 AnimateTask(U64 dummy=0)
+{
+  nounusedwarn dummy;
+  I64 i;
+  F64 snd_t=0;
+  Fs->task_end_cb=&SndTaskEndCB;
+  while (TRUE) {
+    if (tP(Fs->parent_task)-move_t<0.5) {
+      x+=Cos(theta);
+      y+=Sin(theta);
+    }
+    x=Limit(x,0,Fs->parent_task->win_pixel_width-1);
+    y=Limit(y,0,Fs->parent_task->win_pixel_height-1);
+    for (i=0;i<NUM_BLIPS;i++) {
+      if (!blips[i].eaten &&
+	  Abs(x-blips[i].x)<11 &&
+	  Abs(y-blips[i].y)<11) {
+	blips[i].eaten=TRUE;
+	snd_t=tP(Fs->parent_task);
+      }
+    }
+    if (tP(Fs->parent_task)-snd_t<.25)
+      Snd(500);
+    else
+      Snd(0);
+    Sleep(1000/speed);
+  }
+}
+
+U0 Init()
+{
+  BoolI8 old_preempt=Preempt(OFF);
+  I64 i;
+  x=Fs->win_pixel_width/2;
+  y=Fs->win_pixel_height/2;
+  theta=0;
+  speed=150;
+  move_t=0;
+  for (i=0;i<NUM_BLIPS;i++) {
+    blips[i].eaten=FALSE;
+    blips[i].x=RandU16%(Fs->win_pixel_width-20)+10;
+    blips[i].y=RandU16%(Fs->win_pixel_height-20)+10;
+  }
+  Preempt(old_preempt);
+}
+
+U0 Pac()
+{
+  U64 sc;
+
+  PopUpOk(
+  "I refuse to rip-off the original\r\n"
+  "so this is intentionally crappy\r\n"
+  "and included for demonstration\r\n"
+  "purposes.\r\n\r\n"
+      "Write games, don't play them.\r\n");
+
+  MenuPush(
+  "File {"
+  "  Abort(,CH_SHIFT_ESC);"
+  "  Exit(,CH_ESC);"
+  "}"
+  "Play {"
+  "  Restart(,CH_CR);"
+  "  Up(,,SC_CURSOR_UP);"
+  "  Down(,,SC_CURSOR_DOWN);"
+  "  Left(,,SC_CURSOR_LEFT);"
+  "  Right(,,SC_CURSOR_RIGHT);"
+      "}"
+      );
+  SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  WinMax;
+  Init;
+  PutS("$CL$$BG,BLACK$");
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
+  Fs->draw_it=&DrawIt;
+  LtfCursor(OFF);
+  WordStat(OFF);
+
+  try {
+    while (TRUE) {
+      switch (GetKey(&sc)) {
+	case 0:
+	  switch (sc.u8[0]) {
+	    case SC_CURSOR_RIGHT:
+	      move_t=tP;
+	      theta=0;
+	      break;
+	    case SC_CURSOR_LEFT:
+	      move_t=tP;
+	      theta=-pi;
+	      break;
+	    case SC_CURSOR_DOWN:
+	      move_t=tP;
+	      theta=pi/2;
+	      break;
+	    case SC_CURSOR_UP:
+	      move_t=tP;
+	      theta=-pi/2;
+	      break;
+	  }
+	  break;
+	case CH_CR:
+	  Init;
+	  break;
+	case CH_ESC:
+	case CH_SHIFT_ESC:
+	  goto pc_done;
+      }
+    }
+pc_done:
+  } catch
+    CatchAll;
+  SettingsPop;
+  MenuPop;
+  PutS("$CL$$BG$\r\n");
+}
+
+Pac;

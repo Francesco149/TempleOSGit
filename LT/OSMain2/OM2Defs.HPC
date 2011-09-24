@@ -1,0 +1,10 @@
+#define PSECT_CACHE_SIZE	256
+#define PSECT_CACHE_STR_LEN	(64-24)
+class PSectCacheEntry
+{
+  I64 base,limit;
+  U64 timestamp;
+  U8 str[PSECT_CACHE_STR_LEN];
+};
+
+

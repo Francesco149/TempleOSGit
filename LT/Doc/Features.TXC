@@ -1,0 +1,56 @@
+                              LoseThos' Features
+
+* 64-bit x86, preemptive multitasking, kernel with multicore support.  For 
+Core_i7, Core_2_Duo, Pentium_D...  nothing worse than a 
+Pentium_4_Extreme_Edition.
+
+* 64-bit compiler/assembler.  Nothing is "interpreted."
+
+* Free, public domain, and 100% open source.
+
+* Source files and the command line window can have graphics, links, icons, 
+trees, colors, super/sub scripts, margins.  Everything is seamless
+through-out 
+the tool chain.  No need for separate resource files.
+
+* Just-in-time compilation.  No need for object or exe files.
+
+* Graphics in source code.  No need for resource files.
+
+* 64-bit pointers.  All memory, even more than 4 Gig, can be directly
+accessed 
+by all tasks on all cores at all times.
+
+* Highest CPU privileged mode at all times.  No off-limits instructions.  No 
+time lost changing modes or addr maps.  Switches tasks in half a microsecond.
+
+* CD/DVD reading and writing, ISO9660 file system.
+
+* 640x480 16 color VGA graphics.
+
+* Boot loaders for CD-ROM and hard disk.
+
+* Keyboard & mouse support.
+
+* Hard drives, support for FAT32 and LoseThos native file systems with file 
+compression.
+
+* 2D/3D Graphics library
+
+* Real-time fancy differential-equation solver (physics engine) for use in 
+games.  Adaptive step-size Runge-Kutta, interpolated for real-time.
+
+* Tools/utilities including profiler, merge and diff.
+
+* HD Audio and many songs.
+
+* Demos and documentation.
+
+* All source code included.  Only compiles with the included LoseThos
+compiler 
+and assembler.
+
+
+
+* "Core_i7", "Core_2_Duo", "Pentium_D", and "Pentium_4_Extreme_Edition" are 
+trademarks of Intel Corp.

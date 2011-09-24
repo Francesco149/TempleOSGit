@@ -1,0 +1,36 @@
+#help_index "Char/Conversion"
+public extern F64 A2F64(U8 *src,U8 **_end_ptr=NULL);
+
+#help_index "Time/LTDate"
+public extern U8 *date_fmt_map,*time_fmt_map;
+public extern U0 DateTimeFmtMapsRst();
+
+#help_index "Char/Conversion;Time/LTDate"
+public extern LTDate A2LTDate(U8 *src);
+
+#help_index "Hash"
+public extern U64 HashTableSize(SysHashTable *table);
+
+#help_index "Debugging;Hash"
+public extern SysHashEntry *PSectFind(U0 *add,I64 *offset);
+
+#help_index "Debugging"
+public extern U0 EdLite(U8 *filename);
+public extern I64 SrcLineNum(U0 *add,U64 cnt=1);
+public extern U8 *SrcFileName(U0 *add,U64 cnt=1,TaskStruct *mem_task=NULL);
+public extern U8 *SrcEdLink(U0 *add,U64 cnt=1,TaskStruct *mem_task=NULL);
+public extern BoolI64 PutSrcLink(U0 *add,U64 cnt=1,U8 *buf=NULL);
+public extern Ltf *EdAddSrc(U0 *add,U64 cnt=1,BoolI8 bail=FALSE);
+
+#help_index "Call"
+//Call from location in mem above 1 Meg
+LTextern _HI_CALL U64 HiCall(U0 *s);
+
+#help_index "Exceptions"
+public extern U0 CatchAll();
+
+#help_index "Task/Requests;Compiler"
+public extern U0 UserTaskCont();
+public extern I64 ExeCmdLine(LexStruct *lx);
+
+#help_index ""

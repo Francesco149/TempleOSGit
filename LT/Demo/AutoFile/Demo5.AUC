@@ -1,0 +1,25 @@
+U0 DoIt()
+{
+  I64 i;
+  for (i=0;i<3;i++) {
+    PrintF("PopUpNoYes;\r ");
+
+//Necessary after a [C:/LT/Adam/Ltf/LtfPopUp.APZ,1] LtfEntryRun()
+//which occurs when PopUp's close.
+    TaskWaitIdle(Fs);
+
+    PrintF("PutS(\"%d\\r\\n\");\r",i);
+  }
+}
+
+U0 DontDoIt()
+{
+  I64 i;
+  for (i=0;i<3;i++)
+    PrintF("PopUpNoYes;\r PutS(\"%d\\r\\n\");\r",i);
+}
+
+DoIt;
+PutS("//"); PressAKey;
+DontDoIt;
+
