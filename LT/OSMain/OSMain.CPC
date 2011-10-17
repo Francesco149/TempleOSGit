@@ -176,7 +176,7 @@ U0 OSMain()
   MPInit;
   IDTInit;
 
-//Before this point use [C:/LT/OSMain/Misc1a.CPZ,351] Snd() and [C:/LT/OSMain/Misc1a.CPZ,262] BusyWait()
+//Before this point use [C:/LT/OSMain/Misc1a.CPZ,408] Snd() and [C:/LT/OSMain/Misc1a.CPZ,262] BusyWait()
 //to debug.  After this point, use [C:/LT/OSMain/Dbg1a.CPZ,183] DbgNum()
   LBts(&sys_run_level,RLf_RAW);
 

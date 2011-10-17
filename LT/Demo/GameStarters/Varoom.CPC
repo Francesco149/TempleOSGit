@@ -76,7 +76,7 @@ class Bush
 #define TRACK_OUTER	18000
 #define SHOULDER	200
 #define SLICES		500
-#define D_THETA		(2*pi/SLICES)
+#define D_theta		(2*pi/SLICES)
 #define TRACK_POLYS	(3*SLICES)
 #define DIPS		5
 #define DIP_DEPTH	100
@@ -95,7 +95,7 @@ I64 DipY(I64 x,I64 z)
 
 #define CAR_LENGTH	400
 
-F64 DipTheta(I64 x,I64 z)
+F64 Diptheta(I64 x,I64 z)
 {
   F64 y_front,y_back;
   y_front=DipY(x-CAR_LENGTH/2*Cos(theta),z-CAR_LENGTH/2*Sin(theta));
@@ -146,7 +146,7 @@ U0 MPUpdateWin(GrBitMap *base2)
       w=task->win_pixel_width,
       h=task->win_pixel_height,r[16],
       cx=w>>1;
-  F64 s,dip_theta=DipTheta(vx,vz);
+  F64 s,dip_theta=Diptheta(vx,vz);
   P3I32 poly[4];
   TrackPoly *tempt;
   GrBitMap *base=GrAlias(gr_refreshed_base,task);
@@ -203,7 +203,7 @@ U0 UpdateWin(TaskStruct *task)
       w=task->win_pixel_width,
       h=task->win_pixel_height,r[16],
       cx=w>>1;
-  F64 s,dip_theta=DipTheta(vx,vz);
+  F64 s,dip_theta=Diptheta(vx,vz);
 
   GrBitMap *base=GrAlias(gr_refreshed_base,task);
   base->color=LTCYAN;

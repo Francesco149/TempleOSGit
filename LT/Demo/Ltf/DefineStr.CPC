@@ -12,12 +12,14 @@ documentation.
 DefineLoad("COMPANY","Trivial Solutions");
 PutS("Company: $TX+D,\"\",\"COMPANY\"$\r\n");
 
+DefinePrintF(
+  "COMPANY_TIME","%T",GetCurTimeLTDate);
 
 #exe {
   StreamPrintF(
     "#define COMPANY_AGE %h56D\r\n",GetCurTimeLTDate-A2LTDate("8/1/2003"));
 };
 
-PutS("Age: $TX+D,\"\",\"COMPANY_AGE\"$ years\r\n");
 
-
+PutS("Age : $TX+D,\"\",\"COMPANY_AGE\"$ years\r\n");
+PutS("Time: $TX+D,\"\",\"COMPANY_TIME\"$\r\n");

@@ -21,5 +21,5 @@ differs from [C:/LT/OSMain/TaskCmd.CPZ,383] AutoStr().  You'll probably use
 [C:/LT/OSMain/TaskCmd.CPZ,383] AutoStr().  
 With [C:/LT/OSMain/TaskCmd.CPZ,353] Auto(), for example, you can place
 answers to the prompts for recompiling 
-the OSMain module during [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+the OSMain module during [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
 

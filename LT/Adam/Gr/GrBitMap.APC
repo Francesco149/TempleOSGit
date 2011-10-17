@@ -34,7 +34,7 @@ public BoolI64 GrPlot0(GrBitMap *base,I64 x,I64 y)
   }
   if (color.c1.rop&(ROPBF_DITHER|ROPBF_PROBABILITY_DITHER)) {
     if (color.c1.rop&ROPBF_PROBABILITY_DITHER) {
-      if (RandU16<base->dither_probability) {
+      if (Rand2U16<base->dither_probability) {
 	color.c1.rop=color.c0.rop;
 	color.c0=color.c1;
       }
@@ -1216,7 +1216,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
     }
     if (dither) {
       if (probability_dither) {
-	if (RandU16<base->dither_probability)
+	if (Rand2U16<base->dither_probability)
 	  color.c0=dither_colors.c1;
 	else
 	  color.c0=dither_colors.c0;
@@ -1287,7 +1287,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		    win_z_buf_ptr><(U8 *)-=win_z_buf_line_dec;
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1309,7 +1309,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		    *dst=*dst&trailing_bit_mask|color_byte&~trailing_bit_mask;
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1351,7 +1351,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		    win_z_buf_ptr><(U8 *)-=win_z_buf_line_dec;
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1372,7 +1372,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		  }
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1384,7 +1384,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 	      break;
 	  }
 	  if (probability_dither) {
-	    if (RandU16<base->dither_probability)
+	    if (Rand2U16<base->dither_probability)
 	      color.c0=dither_colors.c1;
 	    else
 	      color.c0=dither_colors.c0;
@@ -1395,7 +1395,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 	color=base->color;
 	color.c1.rop=color.c0.rop;
 	if (probability_dither) {
-	  if (RandU16<base->dither_probability)
+	  if (Rand2U16<base->dither_probability)
 	    color.c0=dither_colors.c1;
 	  else
 	    color.c0=dither_colors.c0;
@@ -1441,7 +1441,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		    win_z_buf_ptr><(U8 *)-=win_z_buf_line_dec;
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1463,7 +1463,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		    *dst=*dst&trailing_bit_mask|(*dst|color_byte)&~trailing_bit_mask;
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1495,7 +1495,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		    win_z_buf_ptr><(U8 *)-=win_z_buf_line_dec;
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1516,7 +1516,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		  }
 		  kk1+=base->width_internal;
 		  if (probability_dither) {
-		    if (RandU16<base->dither_probability)
+		    if (Rand2U16<base->dither_probability)
 		      color.c0=dither_colors.c1;
 		    else
 		      color.c0=dither_colors.c0;
@@ -1526,7 +1526,7 @@ public I64 GrRect(GrBitMap *base,I64 _x,I64 _y,I64 w,I64 h)
 		break;
 	  }
 	  if (probability_dither) {
-	    if (RandU16<base->dither_probability)
+	    if (Rand2U16<base->dither_probability)
 	      color.c0=dither_colors.c1;
 	    else
 	      color.c0=dither_colors.c0;
@@ -1951,7 +1951,7 @@ here3a:
 	  c=color.c0.color;
 	  if (dither) {
 	    if (probability_dither) {
-	      if (RandU16<base->dither_probability)
+	      if (Rand2U16<base->dither_probability)
 		c=color.c1.color;
 	    } else
 	      if ((x3^y3)&1)
@@ -2097,7 +2097,7 @@ here4a:
 	  c=color.c0.color;
 	  if (dither) {
 	    if (probability_dither) {
-	      if (RandU16<base->dither_probability)
+	      if (Rand2U16<base->dither_probability)
 		c=color.c1.color;
 	    } else
 	      if ((x3^y3)&1)
@@ -2221,7 +2221,7 @@ here2a:
 	  c=color.c0.color;
 	  if (dither) {
 	    if (probability_dither) {
-	      if (RandU16<base->dither_probability)
+	      if (Rand2U16<base->dither_probability)
 		c=color.c1.color;
 	    } else
 	      if ((x3^y3)&1)
@@ -2320,7 +2320,7 @@ here2a:
 	  c=color.c0.color;
 	  if (dither) {
 	    if (probability_dither) {
-	      if (RandU16<base->dither_probability)
+	      if (Rand2U16<base->dither_probability)
 		c=color.c1.color;
 	    } else
 	      if ((x3^y3)&1)
@@ -2480,7 +2480,7 @@ public I64 GrHLine(GrBitMap *base,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       probability_dither=TRUE;
       color.c1.rop=color.c0.rop;
       dither_colors=color;
-      if (RandU16<base->dither_probability)
+      if (Rand2U16<base->dither_probability)
 	color.c0=dither_colors.c1;
       else
 	color.c0=dither_colors.c0;
@@ -2594,7 +2594,7 @@ public I64 GrHLine(GrBitMap *base,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
     }
     if (dither) {
       if (probability_dither) {
-	if (RandU16<base->dither_probability)
+	if (Rand2U16<base->dither_probability)
 	  color.c0=dither_colors.c1;
 	else
 	  color.c0=dither_colors.c0;

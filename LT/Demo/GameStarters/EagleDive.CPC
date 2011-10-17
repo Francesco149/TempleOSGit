@@ -749,7 +749,7 @@ U0 BSPEagleDive(GrBitMap *base)
   base->flags&=~BMF_TRANSFORMATION;
   GrLine3(base,cx+5,cy,0,cx-5,cy,0);
   GrLine3(base,cx,cy+5,0,cx,cy-5,0);
-  GrPrintF(base,0,0,"Theta1:%5.1f Phi:%5.1f Theta2:%5.1f Box:%5.1f",
+  GrPrintF(base,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Box:%5.1f",
       theta1*180/pi,phi*180/pi,theta2*180/pi,v_grid_size);
   GrPrintF(base,0,FONT_HEIGHT,"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
       ToF64(x)/COORDINATE_SCALE,ToF64(y)/COORDINATE_SCALE,ToF64(z)/COORDINATE_SCALE,

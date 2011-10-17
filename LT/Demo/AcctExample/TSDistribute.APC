@@ -354,8 +354,8 @@ U0 Uncollapse(U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL)
 U8 *losethos_html_header=
 "<title>LoseThos 64-Bit Operating System</title>\r\n"
 "<meta name=\"author\"      content=\"Terry A. Davis\">\r\n"
-"<meta name=\"description\" content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking, Preemptive\">\r\n"
-"<meta name=\"keywords\"    content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking, Preemptive\">\r\n";
+"<meta name=\"description\" content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking\">\r\n"
+"<meta name=\"keywords\"    content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking\">\r\n";
 
 U8 *losethos_code_header=
 "<span class=cF5>                               <a href=\"http://www.losethos.com/doc/TrivialSolutions.html\">Trivial Solutions</a>\r\n"
@@ -452,13 +452,9 @@ U0 PrepForDistribution()
   Touch("/LT/Doc/CtrlL.TXZ","+T");
   Touch("/LT/Accts/PersonalMenu.TXZ","+T");
 
-//Tour
-  Del(	  "/LT/Accts/Tour/Registry.CPZ");
-  DelTree("/LT/Accts/Tour/CfgMgr");
-
 //User
-  DelTree("/LT/Accts/User");
-  MkDir(  "/LT/Accts/User");
+  Del(	  "/LT/Accts/User/Registry.CPZ");
+  DelTree("/LT/Accts/User/CfgMgr");
 
 //Install
   Del(	  "/LT/Accts/Install/Registry.CPZ");
@@ -533,8 +529,8 @@ U0 PrepForLite()
   DelTree("/LT/Accts/Cody");
   DelTree("/LT/Accts/TS");
   Del("/LT/Adam/WordStat/WsDefs.DTZ");
-//  Del("/LT/Text/PCIDevices.TXZ");
-//  Del("/LT/Text/Bible.TXZ");
+//  Del("/LT/Misc/PCIDevices.TXZ");
+//  Del("/LT/Misc/Bible.TXZ");
   DelTree("/LT/Apps/Vocabulary");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
   Del("/0000Boot/OldMBR.BIC");
@@ -554,8 +550,8 @@ U0 PrepForSafe()
   DelTree("/LT/Accts/Cody");
   DelTree("/LT/Accts/TS");
   Del("/LT/Adam/WordStat/WsDefs.DTZ");
-//  Del("/LT/Text/PCIDevices.TXZ");
-//  Del("/LT/Text/Bible.TXZ");
+//  Del("/LT/Misc/PCIDevices.TXZ");
+//  Del("/LT/Misc/Bible.TXZ");
   DelTree("/LT/Apps/Vocabulary");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
   Del("/0000Boot/OldMBR.BIC");

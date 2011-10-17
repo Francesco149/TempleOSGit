@@ -175,7 +175,7 @@ The main reason for the $IB$ cmd at this point is to pass a arg to the
   autoindent <CTRL-C> code reindentation feature can be used.  Recompile the
   file so the indent info is up-to-date before doing <CTRL-C>. 
 +] HC,HI,HV html
-  The [C:/LT/Opt/ToHtml.APZ,240] ToHtml() or [C:/LT/Opt/ToHtml.APZ,59]
+  The [C:/LT/Adam/ToHtml.APZ,252] ToHtml() or [C:/LT/Adam/ToHtml.APZ,71]
   Ltf2Html() routines will generate a html version of a document.  You can
   cause html code to be injected with HC.  If you happen to have a 640x480
   image, you can inject it with HI.  If you happen to have a 640x480 .wmv
@@ -224,7 +224,7 @@ See [::/LT/Adam/Ltf/LtfPlain.APZ,ltf_dft_flags] dft_flags.
     A zero flag on a hex edit(HX) entry will cause the offset from zero.  A
     -X will show the actual memory addr. By default, HX has the zero flag set.
   +] +HTML
-    The [C:/LT/Opt/ToHtml.APZ,240] ToHtml() or [C:/LT/Opt/ToHtml.APZ,59]
+    The [C:/LT/Adam/ToHtml.APZ,252] ToHtml() or [C:/LT/Adam/ToHtml.APZ,71]
     Ltf2Html() routines will generate a html version of a document.  You can
     cause html link on an item with +HTML.
   +] +AL Alias

@@ -13,6 +13,8 @@ public extern U64 HashTableSize(SysHashTable *table);
 
 #help_index "Debugging;Hash"
 public extern SysHashEntry *PSectFind(U0 *add,I64 *offset);
+extern PSectCacheEntry *psect_cache;
+extern I64 psect_cache_index;
 
 #help_index "Debugging"
 public extern U0 EdLite(U8 *filename);

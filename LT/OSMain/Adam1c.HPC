@@ -212,6 +212,7 @@ public extern U8 *MSPrintF(U8 *fmt,...);
 #help_file "::/LT/Doc/Define"
 public extern DefineStrHashEntry *DefineLoad(U8 *name,U8 *st,BoolI8 replace=FALSE);
 public extern DefineStrHashEntry *DefineListLoad(U8 *name,U8 *st,BoolI8 replace=FALSE);
+public extern U0 DefinePrintF(U8 *name,U8 *src,...);
 public extern U8 *Define(U8 *name);
 public extern U8 *DefineSub(U64 sub,U8 *name);
 public extern I64 DefineSubCnt(U8 *name);
@@ -359,13 +360,21 @@ public extern U0 XTalkStrWithWait(TaskStruct *task,U8 *fmt,...);
 public extern U0 ProgressBarsRst();
 
 #help_index "Math"
-public extern U16 RandU16();
+public extern U16 RandU16(); //With timestamp
 public extern U32 RandU32();
 public extern U64 RandU64();
 public extern I16 RandI16();
 public extern I32 RandI32();
 public extern I64 RandI64();
 public extern F64 Rand();
+public extern U16 Rand2U16(); //Without timestamp
+public extern U32 Rand2U32();
+public extern U64 Rand2U64();
+public extern I16 Rand2I16();
+public extern I32 Rand2I32();
+public extern I64 Rand2I64();
+public extern F64 Rand2();
+public extern U0  Randomize(U64 seed=0);
 public extern U64 FloorU64(U64 num,U64 to);
 public extern U64 CeilU64(U64 num,U64 to);
 public extern I64 RoundI64(I64 num,I64 to);

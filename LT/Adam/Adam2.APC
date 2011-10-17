@@ -3,7 +3,7 @@
 
 //Use Dbg("Type 'DbgExit'"); to debug before window manager is running.
 
-public F64 os_version=7.06;
+public F64 os_version=7.07;
 
 #define CFG_LT_MAIN		"LT/Main007"
 

@@ -399,7 +399,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
   if (ex) {
     code_U8s=ex->code_U8s;
     ptr=patch_table;
-    *ptr++=EIE_MODULE_ALIGNMENT; //See [C:/LT/OSMain/Hash1a.CPZ,662] Load() and [C:/LT/Opt/BinRep.APZ,22] BinRep()
+    *ptr++=EIE_MODULE_ALIGNMENT; //See [C:/LT/OSMain/Hash1a.CPZ,733] Load() and [C:/LT/Adam/BinRep.APZ,22] BinRep()
     *ptr><(U32 *)++=ex->max_align;
     *ptr++=0;
     cnt=0;

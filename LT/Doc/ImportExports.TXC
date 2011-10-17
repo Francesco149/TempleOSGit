@@ -23,8 +23,8 @@ name if it exists in the sym table (just in just-in-time code).  It also can
 be used to generate a forward referrence.
 
 import binds a new [C:/LT/OSMain/Adam1a.HPZ,518] HTT_FUN or [C:/LT/OSMain/Adam1a.HPZ,514] HTT_GLBL_VAR sym to a sym of the same name 
-imported from the task's sym table at [C:/LT/OSMain/Hash1a.CPZ,662] Load() time.  If no sym exists to bind 
-to at [C:/LT/OSMain/Hash1a.CPZ,662] Load() time, the code using this sym will be left incomplete until the 
+imported from the task's sym table at [C:/LT/OSMain/Hash1a.CPZ,733] Load() time.  If no sym exists to bind 
+to at [C:/LT/OSMain/Hash1a.CPZ,733] Load() time, the code using this sym will be left incomplete until the 
 sym is defined.
 
 
@@ -36,9 +36,9 @@ asm.
 LTimport binds a new [C:/LT/OSMain/Adam1a.HPZ,518] HTT_FUN or
 [C:/LT/OSMain/Adam1a.HPZ,514] HTT_GLBL_VAR sym to a sym, of a **different**
 name 
-imported from the task's sym table at [C:/LT/OSMain/Hash1a.CPZ,662] Load()
+imported from the task's sym table at [C:/LT/OSMain/Hash1a.CPZ,733] Load()
 time.  If no sym exists to bind 
-to at [C:/LT/OSMain/Hash1a.CPZ,662] Load() time, the code using this sym will
+to at [C:/LT/OSMain/Hash1a.CPZ,733] Load() time, the code using this sym will
 be left incomplete until the 
 sym is defined.  Basically, this binds C to asm from elsewhere.
 

@@ -10,7 +10,7 @@ Load("ODMain");
 ObjDemo("Success");
 
 #ifndef BinRep
-#include "::/LT/Opt/BinRep.APZ"
+#include "::/LT/Adam/BinRep.APZ"
 #endif
 
 PressAKey;

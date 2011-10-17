@@ -1,4 +1,4 @@
-//7 has words
+//8 has words
 U0 Song()
 {
   TaskStruct *task;
@@ -22,7 +22,7 @@ U0 Song()
 	Play("2GeG!3BsD2G3D2G3qBeFCqDeAFqA",
 		"Once, \0 \0 \0once \0 \0for \0 \0good...\r\n\0 \0 \0 \0 \0 \0 \0");
 	Play("!etB!D!EeD!FqEB!sCFCFeC!!FqDsFD!!F!!D",
-		"See, \0 \0 \0the \0em\0bers, \0 \0 \0where \0 \0is \0 \0your \0God?\r\n\0 \0 \0 \0 \0");
+		"See \0 \0 \0the \0em\0bers?  \0 \0 \0Where \0 \0is \0 \0your \0God?\r\n\0 \0 \0 \0 \0");
 	Play("!etB!D!EeD!FqEB!sCFCFeC!!FqDsFD!!F!!D",
 		"Tell, \0 \0 \0tell \0me, \0sirs, \0 \0 \0where \0 \0is \0 \0your \0God?\r\n\0 \0 \0 \0 \0");
   }

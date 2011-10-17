@@ -1,10 +1,10 @@
                               LoseThos MutliCore
 
 LoseThos does master-slave multicore instead of SMP.  Core#0 is the master.  
-The master core hands-off computational jobs to other cores.  It is 
-symmetrical in the sense you can do file access and heap allocations because 
-there are locks.  Call [C:/LT/OSMain/Task1a.CPZ,304] TaskLocalInit to enable
-file access.  See 
+The master core assigns computational jobs to other cores.  It is symmetrical 
+in the sense that you can do file access and heap allocations because there 
+are locks.  Call [C:/LT/OSMain/Task1a.CPZ,304] TaskLocalInit to enable file
+access.  See 
 [::/LT/Demo/MultiCore/LoadTest.CPZ]
 ::/LT/Demo/MultiCore/LoadTest.CPZ.  LoseThos does not move tasks between 
 cores.
@@ -18,6 +18,13 @@ You give a job to a seth task with [C:/LT/OSMain/MultiProc.CPZ,351] MPJob()
 and get the result with 
 [C:/LT/OSMain/MultiProc.CPZ,360] MPJobResult().  You spawn a task on another
 core with [C:/LT/OSMain/MultiProc.CPZ,380] MPSpawn().
+
+Note: you must use the LOCK asm prefix when changing shared structures in a 
+multicore environment.  The [C:/LT/OSMain/Adam1b.HPZ,68] LBts(),
+[C:/LT/OSMain/Adam1b.HPZ,69] LBtr() and [C:/LT/OSMain/Adam1b.HPZ,70] LBtc()
+instructions have LOCK 
+prefixes.  The compiler has a lock{} feature but it doesn't work well.  See 
+[::/LT/Demo/MultiCore/Lock.CPZ] ::/LT/Demo/MultiCore/Lock.CPZ.
 
 See [::/LT/Demo/Graphics/Transform.CPZ] ::/LT/Demo/Graphics/Transform.CPZ.
 See [::/LT/OSMain/MultiProc.CPZ] ::/LT/OSMain/MultiProc.CPZ.

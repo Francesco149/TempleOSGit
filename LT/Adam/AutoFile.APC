@@ -128,4 +128,11 @@ public U0 AFSetIP(U64 mS_delay=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l
   af_l=l; af_r=r; af_c=c;
   Line(mS_delay,ipx,ipy,ipz,x,y,z,&AFSetIPPlot);
 }
+
+public BoolI64 AFView()
+{
+  BoolI64 result=View;
+  LtfBottom;
+  return result;
+}
 #help_index ""

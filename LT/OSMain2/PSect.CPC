@@ -10,7 +10,7 @@ I64 HasLower(U8 *src)
 }
 
 SysHashEntry *PSectFind(U0 *add,I64 *offset)
-{
+{ //See [::/LT/OSMain/Hash1a.CPZ,1] ::/LT/OSMain/Hash1a.CPZ
   ExportSysSymHashEntry *result=NULL,*tempess;
   SysHashTable *h=Fs->hash_table;
   BoolI8 has_lower=FALSE;
@@ -52,7 +52,7 @@ SysHashEntry *PSectFind(U0 *add,I64 *offset)
   return result;
 }
 
-U0 PSectCacheAdd(SysHashEntry *temps)
+U0 PSectCacheAdd(SysHashEntry *temps,U0 *add)
 {
   I64 i;
   DbgInfo *dbg;
@@ -64,7 +64,11 @@ U0 PSectCacheAdd(SysHashEntry *temps)
     lock {i=psect_cache_index++;}
     temppc=&psect_cache[i&(PSECT_CACHE_SIZE-1)];
     temppc->base=dbg->body[0];
+    if (add<temppc->base)
+      temppc->base=add;
     temppc->limit=dbg->body[dbg->max_line-dbg->min_line];
+    if (add>=temppc->limit)
+      temppc->limit=add><(I64)+1;
     i=MinI64(StrLen(temps->str),PSECT_CACHE_STR_LEN-1);
     MemCpy(temppc->str,temps->str,i);
     temppc->str[i]=0;
@@ -106,7 +110,7 @@ U0 SPrintFPSect(U8 *buf,U64 add,U64 field_len)
       if (tempess=PSectFind(add,&offset)) {
 	if (tempess->type&HTT_FUN)
 	  is_fun=TRUE;
-	PSectCacheAdd(tempess);
+	PSectCacheAdd(tempess,add);
 	str=tempess->str;
       }
     }

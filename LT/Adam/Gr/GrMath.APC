@@ -176,11 +176,11 @@ public I64 *GrRotX(F64 phi,TaskStruct *mem_task=NULL)
   return r;
 }
 
-public I64 *GrRotY(F64 zeta,TaskStruct *mem_task=NULL)
+public I64 *GrRotY(F64 omega,TaskStruct *mem_task=NULL)
 {
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
-  F64 my_cos=Cos(zeta)*gr_scale,
-     my_sin=Sin(zeta)*gr_scale;
+  F64 my_cos=Cos(omega)*gr_scale,
+     my_sin=Sin(omega)*gr_scale;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
 
   r[0]=my_cos;
@@ -257,11 +257,11 @@ public I64 *GrRotXEqu(I64 *m1,F64 phi)
   return m1;
 }
 
-public I64 *GrRotYEqu(I64 *m1,F64 zeta)
+public I64 *GrRotYEqu(I64 *m1,F64 omega)
 {
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
-  F64 my_cos=Cos(zeta)*gr_scale,
-     my_sin=Sin(zeta)*gr_scale;
+  F64 my_cos=Cos(omega)*gr_scale,
+     my_sin=Sin(omega)*gr_scale;
   I64 r[16],*r2;
   MemSet(r,0,sizeof(r));
   r[0]=my_cos;

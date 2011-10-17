@@ -43,39 +43,39 @@ game over, however.  A down-side of this
 is you can't use the <CTRL-C> auto-indent feature.
 */
 
+#define HEX_SIDE	11
 #exe {
   TaskStruct *task;
   PopUpFile("/LT/Demo/Graphics/RotateTank.CPZ",FALSE,NULL,&task);
   F64 d;
   if (!PopUpNoYes("Tournament Settings")) {
     d=PopUpRangeF64Log(300,2000,20,"%4f","Map Width In Pixels\r\n");
-    StreamPrintF("#define MAP_WIDTH %f\r\n",d);
-    StreamPrintF("#define MAP_HEIGHT %f\r\n",480.0/640.0*d);
+    DefinePrintF("MAP_WIDTH","%f",d);
+    DefinePrintF("MAP_HEIGHT","%f",480.0/640.0*d);
     d=PopUpRangeF64Exp(8,512,2,"%3f","Player 2 Units\r\n");
-    StreamPrintF("#define MAX_UNITS %f\r\n",d);
+    DefinePrintF("MAX_UNITS","%f",d);
     d=PopUpRangeF64(0.2,1.01,0.05,"%4.2f to 1.00","Player1:Player2 Odds\r\n");
-    StreamPrintF("#define P1_TO_P2_ODDS %4.2f\r\n",d);
+    DefinePrintF("P1_TO_P2_ODDS","%4.2f",d);
     d=PopUpRangeF64(0,100,10,"%3f% %%","Player 1 Armor Percent\r\n");
-    StreamPrintF("#define PLAYER_1_ARMOR_PERCENT %f\r\n",d);
+    DefinePrintF("PLAYER_1_ARMOR_PERCENT","%f",d);
     d=PopUpRangeF64(0,100,10,"%3f% %%","Player 2 Armor Percent\r\n");
-    StreamPrintF("#define PLAYER_2_ARMOR_PERCENT %f\r\n",d);
+    DefinePrintF("PLAYER_2_ARMOR_PERCENT","%f",d);
   }
+  DefinePrintF("DCOS","%12.9f",HEX_SIDE*Cos(60.0/180*pi));
+  DefinePrintF("DSIN","%12.9f",HEX_SIDE*Sin(60.0/180*pi));
+  DefinePrintF("HEX_RADIUS","%12.9f",DSIN+0.01); /*slop*/
   d=PopUpRangeF64(0,100,25,"%3f% %%","Animation Delay\r\n");
-  StreamPrintF("#define ANIMATION_DELAY %5.3f\r\n",d/100.0);
+  DefinePrintF("ANIMATION_DELAY","%5.3f",d/100.0);
   XTalk(task," ");
   TaskWaitIdle(task);
   Kill(task);
 };
 
-#define HEX_SIDE	11
-F64 dc=HEX_SIDE*Cos(60.0/180*pi),
-       ds=HEX_SIDE*Sin(60.0/180*pi),
-       hex_radius=ds+0.01; //slop
 
-I64 map_cols=(MAP_WIDTH-dc)/(2*HEX_SIDE+2*dc),
-   map_rows=ToI64((MAP_HEIGHT-ds)/ds)&~1,
-   map_width=map_cols*(2*HEX_SIDE+2*dc)+dc,
-   map_height=map_rows*ds+ds+1;
+I64 map_cols=(MAP_WIDTH-DCOS)/(2*HEX_SIDE+2*DCOS),
+   map_rows=ToI64((MAP_HEIGHT-DSIN)/DSIN)&~1,
+   map_width=map_cols*(2*HEX_SIDE+2*DCOS)+DCOS,
+   map_height=map_rows*DSIN+DSIN+1;
 
 GrBitMap *map;
 U8 terrain[map_rows][map_cols];
@@ -109,7 +109,7 @@ F64 fire_radius,fire_radius_x,fire_radius_y;
 
 //These display "phase", "turn" and "game over".
 U8 msg_buf[80];
-U64 msg_off_timeout; //Goes away after a time.
+U64 msg_off_timeout; //Jiffies. Goes away after a time.
 
 /*I got tricky by not defining a color
 right away in these [C:/LT/Adam/Gr/Gr.APZ,54] GrElems so they can
@@ -227,11 +227,11 @@ U0 RowColToXY(F64 &x,F64 &y,I64 row,I64 col)
 
 U0 XYToRowCol(I64 &row,I64 &col,F64 x,F64 y)
 {
-  col=(x-dc/2)/(HEX_SIDE+dc);
+  col=(x-DCOS/2)/(HEX_SIDE+DCOS);
   if (col&1)
-    row=ToI64((y-ds)/(2*ds))*2+1;
+    row=ToI64((y-DSIN)/(2*DSIN))*2+1;
   else
-    row=ToI64(y/(2*ds))*2;
+    row=ToI64(y/(2*DSIN))*2;
   col>>=1;
   row=LimitI64(row,0,map_rows-1);
   col=LimitI64(col,0,map_cols-1);
@@ -358,7 +358,7 @@ BoolI64 MPRecalcVisible(MPCtrl1 *job)
   if (job->tempu) {
     row=job->tempu->row;
     col=job->tempu->col;
-    range=job->tempu->range*2*hex_radius;
+    range=job->tempu->range*2*HEX_RADIUS;
     range*=range;
   }
   switch (job->mode) {
@@ -684,7 +684,7 @@ U0 FireShot(Unit *tempu,Unit *target)
   d+=tempu->accuracy;
   PrintF("+%2d.00  Accuracy\r\n",tempu->accuracy);
 
-  range_factor=Sqrt(Sqr(x2-x1)+Sqr(y2-y1))/(tempu->range*2*ds);
+  range_factor=Sqrt(Sqr(x2-x1)+Sqr(y2-y1))/(tempu->range*2*DSIN);
   PrintF("-%5.2f%% of Range\r\n",100*range_factor);
   d-=100*range_factor;
   if (t2==TREES) {
@@ -775,14 +775,14 @@ U0 FireShot(Unit *tempu,Unit *target)
       }
     }
   }
-  while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,351] Snd()
+  while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,408] Snd()
     Yield;
   target_unit=NULL;
 }
 
 U0 DrawHexes()
 {
-  F64 dx=2*HEX_SIDE+2*dc,dy=2*ds,
+  F64 dx=2*HEX_SIDE+2*DCOS,dy=2*DSIN,
       x,y,x1,y1,x2,y2;
   I64 i,j;
   map->color=WHITE;
@@ -790,42 +790,42 @@ U0 DrawHexes()
   map->color=BLACK;
   y=0;
   for (j=0;j<map_rows;j+=2) {
-    x=dc;
-    GrLine(map,x,y,x-dc,y+ds);
-    GrLine(map,x-dc,y+ds,x,y+2*ds);
+    x=DCOS;
+    GrLine(map,x,y,x-DCOS,y+DSIN);
+    GrLine(map,x-DCOS,y+DSIN,x,y+2*DSIN);
     for (i=0;i<map_cols;i++) {
       x1=x; y1=y;
       x2=x1+HEX_SIDE; y2=y1;
       GrLine(map,x1,y1,x2,y2);
       x1=x2; y1=y2;
-      x2+=dc; y2+=ds;
+      x2+=DCOS; y2+=DSIN;
       GrLine(map,x1,y1,x2,y2);
-      GrLine(map,x2,y2,x2-dc,y2+ds);
+      GrLine(map,x2,y2,x2-DCOS,y2+DSIN);
       x1=x2; y1=y2;
       x2+=HEX_SIDE;
       GrLine(map,x1,y1,x2,y2);
-      GrLine(map,x2,y2,x2+dc,y2+ds);
+      GrLine(map,x2,y2,x2+DCOS,y2+DSIN);
       x1=x2; y1=y2;
-      x2+=dc; y2-=ds;
+      x2+=DCOS; y2-=DSIN;
       if (j || i<map_cols-1)
 	GrLine(map,x1,y1,x2,y2);
       x+=dx;
     }
     y+=dy;
   }
-  x=dc;
+  x=DCOS;
   for (i=0;i<map_cols;i++) {
     x1=x; y1=y;
     x2=x1+HEX_SIDE; y2=y1;
     GrLine(map,x1,y1,x2,y2);
     x1=x2; y1=y2;
-    x2+=dc; y2+=ds;
+    x2+=DCOS; y2+=DSIN;
     GrLine(map,x1,y1,x2,y2);
     x1=x2; y1=y2;
     x2+=HEX_SIDE;
     GrLine(map,x1,y1,x2,y2);
     x1=x2; y1=y2;
-    x2+=dc; y2-=ds;
+    x2+=DCOS; y2-=DSIN;
     GrLine(map,x1,y1,x2,y2);
     x+=dx;
   }
@@ -951,10 +951,10 @@ U0 CalcHexCenters()
   F64 x,y;
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
-      x=(2*HEX_SIDE+2*dc)*i+HEX_SIDE/2+dc;
+      x=(2*HEX_SIDE+2*DCOS)*i+HEX_SIDE/2+DCOS;
       if (j&1)
-	x+=HEX_SIDE+dc;
-      y=ds*(j+1);
+	x+=HEX_SIDE+DCOS;
+      y=DSIN*(j+1);
       hex_centers[j][i].x=x;
       hex_centers[j][i].y=y;
     }
@@ -1273,8 +1273,7 @@ U0 DrawUnits(TaskStruct *task,GrBitMap *base)
 U0 UpdateWin(TaskStruct *task)
 {
   F64 x,y;
-  I64 h,v;
-  I64 i,j;
+  I64 h,v,i,j,c;
   BoolI8 old_preempt=IsPreempt;
   GrBitMap *base=GrAlias(gr_refreshed_base,task);
   U8 buf[128];
@@ -1301,12 +1300,14 @@ U0 UpdateWin(TaskStruct *task)
 
 //Roads require multiple cursor fills
   base->color=YELLOW;
-  GrFloodFill(base,x+(HEX_SIDE+dc)/2-h,y-v);
-  GrFloodFill(base,x-(HEX_SIDE+dc)/2-h,y-v);
-  GrFloodFill(base,x+HEX_SIDE/2-h,y+(HEX_SIDE+dc)/2-v);
-  GrFloodFill(base,x+HEX_SIDE/2-h,y-(HEX_SIDE+dc)/2-v);
-  GrFloodFill(base,x-HEX_SIDE/2-h,y+(HEX_SIDE+dc)/2-v);
-  GrFloodFill(base,x-HEX_SIDE/2-h,y-(HEX_SIDE+dc)/2-v);
+  c=terrain[cursor_row][cursor_col];
+  for (i=-(HEX_SIDE+DCOS)/2;i<=(HEX_SIDE+DCOS)/2;i++) {
+    if (GrPeek(base,x+i-h,y-v)==c)
+      GrFloodFill(base,x+i-h,y-v);
+    for (j=-HEX_SIDE/2;j<=HEX_SIDE/2;j++)
+      if (GrPeek(base,x+j-h,y+i-v)==c)
+	GrFloodFill(base,x+j-h,y+i-v);
+  }
 
   DrawUnits(task,base);
   if (firing) {

@@ -1,15 +1,5 @@
 #help_index "Char/Define"
 
-public U0 DefinePrintF(U8 *name,U8 *src,...)
-//Inserts text into the stream of
-//characters being compiled.  Called
-//from withing #exe{} block.
-{
-  U8 *buf=SPrintFJoin(NULL,src,argc,argv);
-  DefineLoad(name,buf);
-  Free(buf);
-}
-
 U0 LoadDocDefines()
 {
 //These are used in documents such as [::/LT/Doc/TrivialSolutions.TXZ] ::/LT/Doc/TrivialSolutions.TXZ
@@ -29,7 +19,7 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distribution.
   //See [::/LT/Demo/AcctExample/TSDistribute.APZ,DOC_LOSETHOS_LOC] DOC_LOSETHOS_LOC.
   -] LineCnt
-    DefinePrintF("DOC_LOSETHOS_LOC","128,470");
+    DefinePrintF("DOC_LOSETHOS_LOC","128,529");
     
   DefinePrintF(
     "DOC_PAGE_TABLE_BASE","%08X",PAGE_TABLE_BASE);

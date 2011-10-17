@@ -3,7 +3,7 @@
 //The file was downloaded from
 //http://www.pcidatabase.com/reports.php?type=tab-delimeted
 
-#define PCI_DEV_FILE "::/LT/Text/PCIDevices.TXZ"
+#define PCI_DEV_FILE "::/LT/Misc/PCIDevices.TXZ"
 
 /****
 public U0 PCIDevFileGen()
@@ -43,7 +43,7 @@ public U0 PCIDevFileGen()
 }
 ****/
 
-//[::/LT/Text/PCIDevices.TXZ] ::/LT/Text/PCIDevices.TXZ
+//[::/LT/Misc/PCIDevices.TXZ] ::/LT/Misc/PCIDevices.TXZ
 U0 PCILookUpSingle(Ltf *l,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 {
   BoolI8 first=TRUE;

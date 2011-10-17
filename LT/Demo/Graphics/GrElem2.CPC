@@ -57,7 +57,7 @@ U0 GrElem2()
     Sleep(40);
 
     theta+=2*pi/100;
-    phi  +=2*pi/130;
+    phi+=2*pi/130;
   }
   SettingsPop;
 }

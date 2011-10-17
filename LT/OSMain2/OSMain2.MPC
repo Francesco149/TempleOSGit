@@ -1,5 +1,5 @@
-[::/LT/OSMain2/SPrintF2.CPZ,1101] A2F64             [A2F64] 000053BA 0001 Funct Export 
-[::/LT/OSMain2/SPrintF2.CPZ,1202] A2LTDate          [A2LTDate] 000055EA 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,1101] A2F64             [A2F64] 000053D2 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,1202] A2LTDate          [A2LTDate] 00005602 0001 Funct Export 
 ACS_COMPRESS      00000098 0000 ExportSysSym Lit 
 ACS_CUR_BITS_IN_US00000050 0000 ExportSysSym Lit 
 ACS_CUR_ENTRY     00000040 0000 ExportSysSym Lit 
@@ -58,12 +58,12 @@ CPU_TOTAL_JIFFIES 00000030 0000 ExportSysSym Lit
 CPU_TR            00000078 0000 ExportSysSym Lit 
 CPU_TSS           00000098 0000 ExportSysSym Lit 
 CPU_WALLPAPER_DATA000000A0 0000 ExportSysSym Lit 
-[::/LT/OSMain2/OSMain2.CPZ,15] CatchAll          [CatchAll] 00006B6D 0002 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,131] CmpDbg            [CmpDbg] 0000707D 0001 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,170] CmpExitDbg        [CmpExitDbg] 00007215 0001 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,103] CmpMGetS          [CmpMGetS] 00006EE5 0001 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,180] DateTimeFmtMapsRst[DateTimeFmtMapsRst] 00007245 0001 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,111] DefineRegs        [DefineRegs] 00006F15 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,15] CatchAll          [CatchAll] 00006B85 0002 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,131] CmpDbg            [CmpDbg] 00007095 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,170] CmpExitDbg        [CmpExitDbg] 0000722D 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,103] CmpMGetS          [CmpMGetS] 00006EFD 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,180] DateTimeFmtMapsRst[DateTimeFmtMapsRst] 0000725D 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,111] DefineRegs        [DefineRegs] 00006F2D 0001 Funct Export 
 EXCEPT_HANDLER_SKI00000018 0000 ExportSysSym Lit 
 EXCEPT_HANDLER_STA00000010 0000 ExportSysSym Lit 
 EXCEPT_LAST       00000008 0000 ExportSysSym Lit 
@@ -80,10 +80,10 @@ EXCEPT_RFLAGS     00000030 0000 ExportSysSym Lit
 EXCEPT_RSI        00000038 0000 ExportSysSym Lit 
 EXCEPT_RSP        00000020 0000 ExportSysSym Lit 
 EXCEPT_STRUCT_SIZE00000078 0001 ExportSysSym Lit 
-[::/LT/OSMain2/PSect.CPZ,239] EdAddSrc          [EdAddSrc] 00000830 0000 Funct Export 
-[::/LT/OSMain2/EdLite.CPZ,60] EdLite            [EdLite] 000060D2 0000 Funct Export 
-[::/LT/OSMain2/EdLite.CPZ,8] EdLiteUpdate      [EdLiteUpdate] 00005F0A 0001 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,21] ExeCmdLine        [ExeCmdLine] 00006B85 0002 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,243] EdAddSrc          [EdAddSrc] 00000848 0000 Funct Export 
+[::/LT/OSMain2/EdLite.CPZ,60] EdLite            [EdLite] 000060EA 0000 Funct Export 
+[::/LT/OSMain2/EdLite.CPZ,8] EdLiteUpdate      [EdLiteUpdate] 00005F22 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,21] ExeCmdLine        [ExeCmdLine] 00006B9D 0002 Funct Export 
 GDTTAB_SIZE       00000880 0001 ExportSysSym Lit 
 GDT_BOOT_CS_SEL   00000020 0000 ExportSysSym Lit 
 GDT_BOOT_DS_SEL   00000010 0000 ExportSysSym Lit 
@@ -95,7 +95,7 @@ GDT_CS_SEL        00000030 0000 ExportSysSym Lit
 GDT_NULL_SEL      00000000 0000 ExportSysSym Lit 
 GDT_ZERO_DS_RING3_00000070 0000 ExportSysSym Lit 
 GDT_ZERO_DS_SEL   00000060 0000 ExportSysSym Lit 
-[::/LT/OSMain2/SPrintF2.CPZ,1267] GetFJoin2         [GetFJoin2] 000058CA 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,1267] GetFJoin2         [GetFJoin2] 000058E2 0001 Funct Export 
 HC_BP             00000000 0000 ExportSysSym Lit 
 HC_FLAGS          00000018 0000 ExportSysSym Lit 
 HC_HEAP_HASH      00000050 0000 ExportSysSym Lit 
@@ -128,7 +128,7 @@ HT_MASK           00000018 0000 ExportSysSym Lit
 HT_NEXT           00000000 0000 ExportSysSym Lit 
 HT_NEXT_ADDED     00000008 0000 ExportSysSym Lit 
 [::/LT/OSMain2/PSect.CPZ,3] HasLower          [HasLower] 00000020 0002 Funct Export 
-[::/LT/OSMain2/EdLite.CPZ,3] LineStruct        31F105EE8 0008 Class 
+[::/LT/OSMain2/EdLite.CPZ,3] LineStruct        31ED75858 0008 Class 
 MB_LAST           00000008 0000 ExportSysSym Lit 
 MB_NEXT           00000000 0000 ExportSysSym Lit 
 MB_SIGNATURE      00000010 0000 ExportSysSym Lit 
@@ -136,19 +136,16 @@ MB_SIZE           00000014 0000 ExportSysSym Lit
 MB_STRUCT_SIZE    00000018 0000 ExportSysSym Lit 
 MP_JMP            00000000 0000 ExportSysSym Lit 
 MP_SYS_TEMP_PTR   00000004 0000 ExportSysSym Lit 
-[::/LT/OSMain2/SPrintF2.CPZ,134] MSPrintFDate      [MSPrintFDate] 00001378 0001 Funct Export 
-[::/LT/OSMain2/SPrintF2.CPZ,319] MSPrintFQ         [MSPrintFQ] 000028E8 0001 Funct Export 
-[::/LT/OSMain2/SPrintF2.CPZ,44] MSPrintFTime      [MSPrintFTime] 000009F0 0001 Funct Export 
-[::/LT/OSMain2/SPrintF2.CPZ,373] MSPrintFq         [MSPrintFq] 00002D60 0001 Funct Export 
-[::/LT/OSMain2/OSMain2.CPZ,189] OSMain2           [OSMain2] 00007285 0001 Funct Export 
-[::/LT/OSMain2/SPrintF2.CPZ,20] OutStr            [OutStr] 00000900 000A Funct Export 
-[::/LT/OSMain2/OM2Defs.HPZ,1] PSECT_CACHE_SIZE  256      FFFF 0003 DefineStr 
-[::/LT/OSMain2/OM2Defs.HPZ,2] PSECT_CACHE_STR_LEN(64-24)  FFFF 0002 DefineStr 
+[::/LT/OSMain2/SPrintF2.CPZ,134] MSPrintFDate      [MSPrintFDate] 00001390 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,319] MSPrintFQ         [MSPrintFQ] 00002900 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,44] MSPrintFTime      [MSPrintFTime] 00000A08 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,373] MSPrintFq         [MSPrintFq] 00002D78 0001 Funct Export 
+[::/LT/OSMain2/OSMain2.CPZ,189] OSMain2           [OSMain2] 0000729D 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,20] OutStr            [OutStr] 00000918 000A Funct Export 
 [::/LT/OSMain2/PSect.CPZ,55] PSectCacheAdd     [PSectCacheAdd] 00000160 0001 Funct Export 
-[::/LT/OSMain2/OM2Defs.HPZ,4] PSectCacheEntry   31DF2C838 0004 Class 
-[::/LT/OSMain2/PSect.CPZ,76] PSectCacheFind    [PSectCacheFind] 00000268 0001 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,80] PSectCacheFind    [PSectCacheFind] 00000280 0001 Funct Export 
 [::/LT/OSMain2/PSect.CPZ,12] PSectFind         [PSectFind] 00000058 0003 Funct Export 
-[::/LT/OSMain2/PSect.CPZ,224] PutSrcLink        [PutSrcLink] 00000798 0000 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,228] PutSrcLink        [PutSrcLink] 000007B0 0000 Funct Export 
 SF_ARG1           00000010 0001 ExportSysSym Lit 
 SF_ARG2           00000018 0000 ExportSysSym Lit 
 SF_ARG3           00000020 0000 ExportSysSym Lit 
@@ -189,12 +186,12 @@ SP_RDX            00000060 0000 ExportSysSym Lit
 SP_RIP            00000078 0000 ExportSysSym Lit 
 SP_RSI            00000048 0000 ExportSysSym Lit 
 SP_STRUCT_SIZE    00000078 0000 ExportSysSym Lit 
-[::/LT/OSMain2/SPrintF2.CPZ,490] SPrintFJoin2      [SPrintFJoin2] 000032E2 0001 Funct Export 
-[::/LT/OSMain2/PSect.CPZ,95] SPrintFPSect      [SPrintFPSect] 00000338 0002 Funct Export 
-[::/LT/OSMain2/SPrintF2.CPZ,2] SPrintFPutChar    [SPrintFPutChar] 00000880 0033 Funct Export 
-[::/LT/OSMain2/PSect.CPZ,210] SrcEdLink         [SrcEdLink] 00000718 0002 Funct Export 
-[::/LT/OSMain2/PSect.CPZ,171] SrcFileName       [SrcFileName] 000005E8 0001 Funct Export 
-[::/LT/OSMain2/PSect.CPZ,139] SrcLineNum        [SrcLineNum] 000004F8 0001 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,490] SPrintFJoin2      [SPrintFJoin2] 000032FA 0001 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,99] SPrintFPSect      [SPrintFPSect] 00000350 0002 Funct Export 
+[::/LT/OSMain2/SPrintF2.CPZ,2] SPrintFPutChar    [SPrintFPutChar] 00000898 0033 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,214] SrcEdLink         [SrcEdLink] 00000730 0002 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,175] SrcFileName       [SrcFileName] 00000600 0001 Funct Export 
+[::/LT/OSMain2/PSect.CPZ,143] SrcLineNum        [SrcLineNum] 00000510 0001 Funct Export 
 TASK_ACCT         00000408 0000 ExportSysSym Lit 
 TASK_ADDR         00000000 0000 ExportSysSym Lit 
 TASK_ANIMATE_TASK 00000470 0000 ExportSysSym Lit 
@@ -340,13 +337,13 @@ UUM_HEAP_CTRL     00000000 0000 ExportSysSym Lit
 UUM_NEXT          00000000 0000 ExportSysSym Lit 
 UUM_SIZE          00000008 0000 ExportSysSym Lit 
 UUM_STRUCT_SIZE   00000010 0000 ExportSysSym Lit 
-[::/LT/OSMain2/OSMain2.CPZ,79] UserTaskCont      [UserTaskCont] 00006DFD 0001 Funct Export 
-_HI_CALL          00006B5A 0000 ExportSysSym Export 
+[::/LT/OSMain2/OSMain2.CPZ,79] UserTaskCont      [UserTaskCont] 00006E15 0001 Funct Export 
+_HI_CALL          00006B72 0000 ExportSysSym Export 
 [::/LT/OSMain2/OM2Glbls.CPZ,6] date_fmt_map      00000010 0003 GlbVar Export 
 [::/LT/OSMain2/OM2Glbls.CPZ,2] psect_cache       00000000 0003 GlbVar Export 
 [::/LT/OSMain2/OM2Glbls.CPZ,3] psect_cache_index 00000008 0002 GlbVar Export 
-[::/LT/OSMain2/SPrintF2.CPZ,485] sprintf_neg_powers_lets000032D0 0001 GlbVar Export 
-[::/LT/OSMain2/SPrintF2.CPZ,483] sprintf_neg_powers_list00003298 0000 GlbVar Export 
-[::/LT/OSMain2/SPrintF2.CPZ,480] sprintf_pos_powers_lets00003280 0001 GlbVar Export 
-[::/LT/OSMain2/SPrintF2.CPZ,478] sprintf_pos_powers_list00003248 0000 GlbVar Export 
+[::/LT/OSMain2/SPrintF2.CPZ,485] sprintf_neg_powers_lets000032E8 0001 GlbVar Export 
+[::/LT/OSMain2/SPrintF2.CPZ,483] sprintf_neg_powers_list000032B0 0000 GlbVar Export 
+[::/LT/OSMain2/SPrintF2.CPZ,480] sprintf_pos_powers_lets00003298 0001 GlbVar Export 
+[::/LT/OSMain2/SPrintF2.CPZ,478] sprintf_pos_powers_list00003260 0000 GlbVar Export 
 [::/LT/OSMain2/OM2Glbls.CPZ,6] time_fmt_map      00000018 0003 GlbVar Export 

@@ -1,4 +1,6 @@
-                           System Programming Guide
+                        System Programming Guide-Lines
+
+* See [::/LT/Doc/Glossary.TXZ,Naming convention] Naming convention.
 
 * I avoid the '?' operator.  It's not very efficient with my compiler since
 it 

@@ -6,10 +6,10 @@ it only occurs once in files.
 It's a brute force solution, but
 gets the job done... slowly.
 
-[C:/LT/Opt/Grep.APZ,161] Grep() returns a count of matches.
+[C:/LT/Adam/Grep.APZ,161] Grep() returns a count of matches.
 
-[C:/LT/Opt/Grep.APZ,186] FileOcc() is [C:/LT/Opt/Grep.APZ,161] Grep() with
-output [C:/LT/OSMain/Misc1a.CPZ,411] Silent().
+[C:/LT/Adam/Grep.APZ,186] FileOcc() is [C:/LT/Adam/Grep.APZ,161] Grep() with
+output [C:/LT/OSMain/Misc1a.CPZ,468] Silent().
 
 */
 

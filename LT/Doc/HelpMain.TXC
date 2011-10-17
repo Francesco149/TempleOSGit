@@ -67,14 +67,14 @@ Top of Screen Pull-down menu
 
 /LT/OSMain The core of the operating system is found here.  Since priviledge
     levels are not used, calling it a "kernel" would be confusing, but that's
-    what it is.  It is statically compiled by [C:/LT/Opt/Boot/InsBoot.APZ,185]
+    what it is.  It is statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,185]
     InstallBoot().  It is loaded by the boot loader and must fit in 640K.  An
     effort is made to limit what goes into OSMain so that it never exceeds the
     640K limit.  OSMain2 has stuff which must be statically compiled but is not
     needed in OSMain.
 
 /LT/OSMain2 Part 2 of the operating system core is found here.  It is
-    statically compiled by [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().  It
+    statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().  It
     contains stuff which is statically compiled but not needed in the 640K
     area.  Just enough is statically compiled in the OSMain, OSMain2, and
     Compiler modules so that you can fix a start-up script error with the
@@ -83,18 +83,16 @@ Top of Screen Pull-down menu
 
 /LT/Compiler The compiler module src code is found here.  The compiler is
     statically compiled to produce a binary file which is loaded at boot.  It is
-    also statically compiled by [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+    also statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
 
-/LT/Adam The mandatory non-kernel part of the operating system is found
-    here.  It is JIT compiled during boot.
-
-/LT/Opt Optional modules are found here.  They are JIT compiled during boot.
+/LT/Adam The non-kernel part of the operating system is found here.  It is
+    JIT compiled during boot.
 
   +] DOLLAR SIGN CMDS
     [::/LT/Doc/Dollar.TXZ] Dollar Sign Cmds are rich-text cmds.  The editor,
     compiler, assembler and operating system are seamlessly equiped to handle
     LoseThos rich text.  Cmds like [C:/LT/OSMain/Dsk/Dsk1b.CPZ,238] Dir() and
-    [C:/LT/Opt/Grep.APZ,161] Grep() can output links to the cmd line.
+    [C:/LT/Adam/Grep.APZ,161] Grep() can output links to the cmd line.
 
   +] CMD PROMPT
     The LoseThos cmd line interface is based on C/C++. Explore the ".CPZ"
@@ -125,7 +123,7 @@ Ed("FILENAME.TXZ"); Invokes the editor.  See [::/LT/Doc/Ed.TXZ] Editor
     cmds.  Note that editor cmds work practically everywhere--like at the cmd
     prompt or within help.
 
-Some cmds like [C:/LT/Opt/Grep.APZ,161] Grep() take a
+Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a
     "find_files_mask".  They begin with the name of a dir tree and end with a
     list of filename masks.  See [C:/LT/OSMain/Dsk/DskStr.CPZ,34]
     FilesFindMatch().
@@ -183,13 +181,14 @@ See [::/LT/Doc/Glossary.TXZ,File Part] Temp File Partition for a special type
 
 +] Level 4: SYSTEM PROGRAMMER HELP
   
-[::/LT/Doc/SysPgmGuide.TXZ] System Programming Guide
+[::/LT/Doc/SysPgmGuide.TXZ] System Programming Guide-Lines
+[::/LT/OSMain/Hash1a.CPZ,1] Hash Tables
 [::/LT/Doc/KeyBoard.TXZ,PutKeyHandling] Keyboard Handling
 [D:/LT/Adam/Gr/GrNew.APZ,GrBitMaps] GrBitMap internal format
 [::/LT/Demo/Lectures/PageTableEntries1.CPZ] Page Table Entries 1
 [::/LT/Demo/Lectures/PageTableEntries2.CPZ] Page Table Entries 2
 [::/LT/Demo/Lectures/PCIInterrupts.CPZ] PCIInterrupts.CPZ
-[C:/LT/Opt/MemRep.APZ,129] MemRep
+[C:/LT/Adam/MemRep.APZ,129] MemRep
 [::/LT/Adam/WallPaper.APZ] WallPaper.APZ
 [::/LT/Doc/NewFileSystem.TXZ] Adding a New File System
 

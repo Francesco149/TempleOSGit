@@ -126,9 +126,9 @@ U0 DoIt()
       Yield;
 
     theta2+=2*pi/100;
-    phi2  +=2*pi/130;
+    phi2	+=2*pi/130;
     theta3-=2*pi/100;
-    phi3  -=2*pi/130;
+    phi3	-=2*pi/130;
   }
   GrClear;
 

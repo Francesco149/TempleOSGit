@@ -335,7 +335,7 @@ public BoolI64 GrPlot3(GrBitMap *base,I64 x,I64 y,I64 z)
   }
   w=base->pen_width>>1;
   base->db_z=z;
-  if (w<=0)
+  if (base->brush || w<=0)
     GrPlot1(base,x,y);
   else if (base->pen_width<GR_NUM_PEN_BRUSHES) {
     if (base->color.c0.rop==ROPB_EQU)

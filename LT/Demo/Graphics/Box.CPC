@@ -21,7 +21,7 @@ U0 UpdateWin(TaskStruct *task)
 
 U0 Box()
 {
-  F64 theta=0,phi=0,zeta=0,s=1,s1=1.05;
+  F64 theta=0,phi=0,omega=0,s=1,s1=1.05;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->update_win=&UpdateWin;
@@ -34,14 +34,14 @@ U0 Box()
     GrIdentEqu(base->r);
     GrRotZEqu(base->r,theta);
     GrRotXEqu(base->r,phi);
-    GrRotZEqu(base->r,zeta);
+    GrRotZEqu(base->r,omega);
     GrScaleMatEqu(base->r,s);
     GrSetRotMat(base,base->r);
 
     Sleep(20);
     theta+=2*pi/70;
     phi  +=2*pi/90;
-    zeta +=2*pi/110;
+    omega +=2*pi/110;
     s *=s1;
     if ( !(0.2<s<1.4) ) s1=1/s1;
   }

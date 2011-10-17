@@ -46,11 +46,11 @@ system and see the amount of mem used.  Then, compile it again and far less
 will be allocated.  This is because it is reusing the small chunks.  See 
 [Memory] Memory.  Click Here
 `MemRep;View;`
- for a [C:/LT/Opt/MemRep.APZ,129] MemRep.
+ for a [C:/LT/Adam/MemRep.APZ,129] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is used for 
 SHIFT-SPACE, a character which does not get converted to tabs by 
-space-to-tabs, [C:/LT/Opt/S2T.APZ,62] S2T().
+space-to-tabs, [C:/LT/Adam/S2T.APZ,62] S2T().
 
 * Binary data is stored beyond the terminating NULL in text files.  Map files 
 store debug src lines and other files store pictures.
@@ -59,7 +59,7 @@ store debug src lines and other files store pictures.
 little 
 room.  They can be converted to bitmaps.
 
-* If you change code in the /LT/Adam, /LT/Opt or your HOME directory, you 
+* If you change code in the /LT/Adam, /LT/Adam or your HOME directory, you 
 don't need to recompile, you just need to reboot because those directories
 get 
 recompiled when you boot.  It uses JIT compilation.  There is no ".BIN" file 

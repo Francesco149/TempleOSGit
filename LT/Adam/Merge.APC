@@ -41,7 +41,7 @@ public U0 MergeChk(
   U8 *dst_files_find_mask="/LT/*",
   U8 *src_files_find_mask="/LT/*",
   U8 *fu_flags=NULL)
-//"+d"=Do [C:/LT/Opt/Diff.APZ,203] Diff() on files
+//"+d"=Do [C:/LT/Adam/Diff.APZ,203] Diff() on files
 {
   U64 df_flags=0,fuf_flags=0;
   LTDirEntry *tempm1=NULL,*tempm2=NULL;

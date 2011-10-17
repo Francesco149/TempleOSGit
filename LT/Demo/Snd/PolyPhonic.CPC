@@ -4,7 +4,7 @@ U0 (*fp_task_end_cb)();
 U0 (*fp_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
 
 U0 PolyFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
-{ //Gets called by HD Audio task -- [C:/LT/Opt/Snd/HDAudio.APZ,375] HDAudioTask().
+{ //Gets called by HD Audio task -- [C:/LT/Adam/Snd/HDAudio.APZ,375] HDAudioTask().
 
 //Note: the buffer is in uncached memory
 //so you might want to avoid multiple

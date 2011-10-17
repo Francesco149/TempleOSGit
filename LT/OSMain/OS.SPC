@@ -1,6 +1,6 @@
 //You should compile this by calling
-//[C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot(), not doing it directly.
-//See [::/LT/Opt/Boot/InsBoot.APZ,Cmp("OS"] Cmp("OS").
+//[C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot(), not doing it directly.
+//See [::/LT/Adam/Boot/InsBoot.APZ,Cmp("OS"] Cmp("OS").
 
 #exe {
 OptOn(OPTf_PAREN_WARN);

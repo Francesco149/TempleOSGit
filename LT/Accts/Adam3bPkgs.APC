@@ -1,9 +1,9 @@
 //Change anything you want in this
 //acct file or others.
 
-Cd("/LT/Opt/Boot");;
+Cd("/LT/Adam/Boot");;
 #include "InsBoot"
-Cd("/LT/Opt");;
+Cd("/LT/Adam");;
 #include "Dsk3a"
 #include "ChkDsk"
 #include "Diff"

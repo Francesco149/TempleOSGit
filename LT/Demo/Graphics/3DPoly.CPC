@@ -1,6 +1,6 @@
 U0 DoIt()
 {
-  F64 theta=0,phi=0,zeta=0;
+  F64 theta=0,phi=0,omega=0;
   P3I32 poly[4];
   GrBitMap *base=GrAlias(gr_persistent_base,Fs);
   GrAllocDepthBuf(base);
@@ -17,7 +17,7 @@ U0 DoIt()
 	ipy-Fs->win_pixel_top-Fs->win_scroll_y);
  
       GrIdentEqu(base->r);
-      GrRotXEqu(base->r,zeta);
+      GrRotXEqu(base->r,omega);
       GrRotYEqu(base->r,phi);
       GrRotZEqu(base->r,theta);
       GrSetRotMat(base,base->r);
@@ -105,7 +105,7 @@ U0 DoIt()
       GrClear;
       theta+=2.1*pi/180.0;
       phi+=1.1*pi/180.0;
-      zeta+=0.5*pi/180.0;
+      omega+=0.5*pi/180.0;
     }
   } catch
     CatchAll;

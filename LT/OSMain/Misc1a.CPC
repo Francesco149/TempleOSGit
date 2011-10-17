@@ -305,9 +305,21 @@ U16 RandU16()
   return sys_rnd_seed.u16[0];
 }
 
+U16 Rand2U16()
+{
+  sys_rnd_seed.i32[0]=1664525*sys_rnd_seed.i32[0]+1013904223;
+  return sys_rnd_seed.u16[0];
+}
+
 I16 RandI16()
 {
   sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  return sys_rnd_seed.i16[0];
+}
+
+I16 Rand2I16()
+{
+  sys_rnd_seed.i32[0]=1664525*sys_rnd_seed.i32[0]+1013904223;
   return sys_rnd_seed.i16[0];
 }
 
@@ -317,9 +329,21 @@ U32 RandU32()
   return sys_rnd_seed.u32[0];
 }
 
+U32 Rand2U32()
+{
+  sys_rnd_seed.i32[0]=1664525*sys_rnd_seed.i32[0]+1013904223;
+  return sys_rnd_seed.u32[0];
+}
+
 I32 RandI32()
 {
   sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  return sys_rnd_seed.i32[0];
+}
+
+I32 Rand2I32()
+{
+  sys_rnd_seed.i32[0]=1664525*sys_rnd_seed.i32[0]+1013904223;
   return sys_rnd_seed.i32[0];
 }
 
@@ -331,10 +355,26 @@ U64 RandU64()
   return result;
 }
 
+U64 Rand2U64()
+{
+  U64 result;
+  result.u32[0]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  return result;
+}
+
 I64 RandI64()
 {
   I64 result;
   result.u32[0]=sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  return result;
+}
+
+I64 Rand2I64()
+{
+  I64 result;
+  result.u32[0]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
   result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
   return result;
 }
@@ -348,10 +388,27 @@ F64 Rand()
   return result/ToF64(0x4000000000000000);
 }
 
+F64 Rand2()
+{ //0.0<=x<1.0
+  U64 result;
+  result.u32[0]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  result&=0x3FFFFFFFFFFFFFFF;
+  return result/ToF64(0x4000000000000000);
+}
+
+U0 Randomize(U64 seed=0)
+{ //Randomizes seed.
+  if (seed)
+    sys_rnd_seed=seed;
+  else
+    sys_rnd_seed^=GetTimeStamp>>4;
+}
+
 U0 Snd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0)
 // The internal PC speaker only does square waves.
 // waveform and amp are for HDAudio.
-// Use [C:/LT/Opt/Snd/SndFile.APZ,264] SndFilePlay() or [::/LT/Demo/Snd/PolyPhonic.CPZ] ::/LT/Demo/Snd/PolyPhonic.CPZ as a template for
+// Use [C:/LT/Adam/Snd/SndFile.APZ,264] SndFilePlay() or [::/LT/Demo/Snd/PolyPhonic.CPZ] ::/LT/Demo/Snd/PolyPhonic.CPZ as a template for
 // doing polyphonic or fancy HD Audio snd.
 {
   U64 p;

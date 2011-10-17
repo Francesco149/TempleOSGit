@@ -269,7 +269,7 @@ Bin files have this 16-byte header,
 followed by code,
 followed by loader patch table.
 
-See [::/LT/Compiler/CmpMain.CPZ,EIE_MODULE_ALIGNMENT] Loader Patch Table Generation and [C:/LT/Opt/BinRep.APZ,22] BinRep().
+See [::/LT/Compiler/CmpMain.CPZ,EIE_MODULE_ALIGNMENT] Loader Patch Table Generation and [C:/LT/Adam/BinRep.APZ,22] BinRep().
 */
   U16 jmp;
   U16 type;
@@ -1667,7 +1667,7 @@ class AsmUnresolvedRef
 #define EIE_ABS_ADDR		32
 #define EIE_HEAP_GLBL		33
 #define EIE_END			0xFF
-//See [::/LT/Opt/BinRep.APZ] ::/LT/Opt/BinRep.APZ
+//See [::/LT/Adam/BinRep.APZ] ::/LT/Adam/BinRep.APZ
 
 class ExeImportExportStruct
 {
@@ -3781,7 +3781,7 @@ POP R8 POP RDI POP RSI POP RBP POP RBX POP RDX POP RCX POP RAX
 #define PAGE_TABLE_SIZE (NUM_PML1+NUM_PML2+NUM_PML3+NUM_PML4)*0x1000
 #define PROTECTED_LOW_PAGE_LIMIT	MP_VECT_ADDR
 
-#define ST_ERR_ST    "$FG,LTRED$$BK,1$ERROR:$FG$$BK,0$ "
+#define ST_ERR_ST   "$FG,LTRED$$BK,1$ERROR:$FG$$BK,0$ "
 #define ST_WARN_ST  "$FG,RED$$BK,1$WARNING:$FG$$BK,0$ "
 
 public class U8Fifo
@@ -3887,3 +3887,12 @@ class LTUSB
 #define RQ_GET_INTERFACE 0xA
 #define RQ_SET_INTERFACE 0xB
 #define RQ_SYNC_FRAME	0xC
+
+#define PSECT_CACHE_SIZE	256
+#define PSECT_CACHE_STR_LEN	(64-24)
+class PSectCacheEntry
+{
+  I64 base,limit;
+  U64 timestamp;
+  U8 str[PSECT_CACHE_STR_LEN];
+};

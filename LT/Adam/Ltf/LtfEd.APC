@@ -24,7 +24,7 @@ public LtfEntry *LtfFindAnchor(Ltf *l,U8 *pattern)
 
 public I64 EdCurU8(Ltf *l)
 {
-//See [C:/LT/Opt/EdFmtFun.APZ,123] EdRenumAsm for an example.
+//See [C:/LT/Adam/EdFmtFun.APZ,123] EdRenumAsm for an example.
   I64 result=-1;
   BoolI8 unlock=LtfLock(l);
   LtfEntry *cl=l->cur_entry;
@@ -41,7 +41,7 @@ public I64 EdCurU8(Ltf *l)
 
 public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
 {//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
-//See [C:/LT/Opt/EdFmtFun.APZ,123] EdRenumAsm for an example.
+//See [C:/LT/Adam/EdFmtFun.APZ,123] EdRenumAsm for an example.
   U8 *dst;
   BoolI8 unlock=LtfLock(l);
   LtfEntry *cl=l->cur_entry,*original_cl=cl,*nl;
@@ -149,7 +149,7 @@ public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
 
 public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
 {//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
-//See [C:/LT/Opt/EdFmtFun.APZ,123] EdRenumAsm for an example.
+//See [C:/LT/Adam/EdFmtFun.APZ,123] EdRenumAsm for an example.
   BoolI8 unlock=LtfLock(l);
   U8 *dst;
   LtfEntry *cl=l->cur_entry,*original_cl=cl,*nl;
@@ -255,7 +255,7 @@ public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
 
 public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
 {//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
-//See [C:/LT/Opt/EdFmtFun.APZ,123] EdRenumAsm for an example.
+//See [C:/LT/Adam/EdFmtFun.APZ,123] EdRenumAsm for an example.
   BoolI8 unlock=LtfLock(l);
   U8 *dst;
   I64 y,x;
@@ -399,7 +399,7 @@ public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
 
 public U0 EdLineDown(Ltf *l,I64 sc=MIN_I64)
 {//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
-//See [C:/LT/Opt/EdFmtFun.APZ,123] EdRenumAsm for an example.
+//See [C:/LT/Adam/EdFmtFun.APZ,123] EdRenumAsm for an example.
   BoolI8 unlock=LtfLock(l);
   U8 *dst;
   I64 y,x,old_flags=0,old_color;
@@ -2115,7 +2115,7 @@ public U0 LtfPutSPartial(Ltf *l,U8 *st)
 #help_index "Ltf"
 Ltf *LtfEdFile(I64 type,U8 *filename,
 	U8 *pattern,I64 num,BoolI8 bail)
-{ //"bail" is for [C:/LT/Opt/LinkChk.APZ,75] LinkChk()
+{ //"bail" is for [C:/LT/Adam/LinkChk.APZ,75] LinkChk()
   U8 *ptr;
   I64 i,j,flags=0;
   LtfEntry *ll;

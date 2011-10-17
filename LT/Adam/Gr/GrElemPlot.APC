@@ -357,9 +357,9 @@ public U0 GrElemsPlotRotX3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0
   Free(r);
 }
 
-public U0 GrElemsPlotRotY3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,F64 zeta=0)
+public U0 GrElemsPlotRotY3b(GrBitMap *base,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
 {
-  I64 *r=GrRotY(zeta);
+  I64 *r=GrRotY(omega);
   GrElemsPlotRotMat3b(base,x,y,z,elems,r);
   Free(r);
 }

@@ -63,9 +63,6 @@ Cd("/LT/Accts/TS");Dir;
 Cd("/LT/Accts/Cody");Dir;
 `Cd("/LT/Accts/Cody");Dir;`
 
-Cd("/LT/Accts/Tour");Dir;
-`Cd("/LT/Accts/Tour");Dir;`
-
 Cd("/LT/Accts/User");Dir;
 `Cd("/LT/Accts/User");Dir;`
 
@@ -89,6 +86,9 @@ Cd("/LT/Apps/AfterEgypt");Dir;
 
 Cd("/LT/Apps/KeepAway");Dir;
 `Cd("/LT/Apps/KeepAway");Dir;`
+
+Cd("/LT/Misc/Tour");Dir;
+`Cd("/LT/Misc/Tour");Dir;`
 
 Cd("/LT/Demo");Dir;
 `Cd("/LT/Demo");Dir;`
@@ -114,11 +114,8 @@ Cd("/LT/Demo/MultiCore");Dir;
 Cd("/LT/Demo/GameStarters");Dir;
 `Cd("/LT/Demo/GameStarters");Dir;`
 
-Cd("/LT/Opt");Dir;
-`Cd("/LT/Opt");Dir;`
-
-Cd("/LT/Opt/Boot");Dir;
-`Cd("/LT/Opt/Boot");Dir;`
+Cd("/LT/Adam/Boot");Dir;
+`Cd("/LT/Adam/Boot");Dir;`
 
 Cd("/LT/Doc");Dir;
 `Cd("/LT/Doc");Dir;`
@@ -126,8 +123,8 @@ Cd("/LT/Doc");Dir;
 Cd("/LT/Demo/Lectures");Dir;
 `Cd("/LT/Demo/Lectures");Dir;`
 
-Cd("/LT/Text");Dir;
-`Cd("/LT/Text");Dir;`
+Cd("/LT/Misc");Dir;
+`Cd("/LT/Misc");Dir;`
 
 Cd("/Temp");Dir;
 `Cd("/Temp");Dir;`
@@ -174,7 +171,7 @@ MenuBoot D
 `QMenuBoot(TS_MAIN_DRV_LET);`
 
 Take Tour
-`Cd("::/LT/Accts/Tour");;AutoFile("Tour");`
+`Cd("::/LT/Misc/Tour");;AutoFile("Tour");`
 
 -] Stuff for Burning CDs
   Make Inhouse CD Image

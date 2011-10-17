@@ -303,7 +303,7 @@ BoolI64 BootCdProbe(LTBlkDev *bdev)
   Spaces(2);
   if (ATAProbe(bdev->base0,bdev->base1,bdev->unit)==LTBDT_ATAPI) {
     //After preboot + CDBoot.BIZ comes Boot.BIC
-    //See [::/LT/Adam/DskCDDVD.APZ,CDBOOT] CDBOOT, See [::/LT/Opt/Boot/BootCD.SPZ,BOOT_CODE_CDROM] CD Boot Blk
+    //See [::/LT/Adam/DskCDDVD.APZ,CDBOOT] CDBOOT, See [::/LT/Adam/Boot/BootCD.SPZ,BOOT_CODE_CDROM] CD Boot Blk
     PutS(" ATAPI");
     if (ATAPIStartStop(bdev,TRUE,BootTime+5*LTDATE_FREQ)) {
       PutS(" Started");

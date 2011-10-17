@@ -42,7 +42,7 @@ U0 StartUpTasks(U64 dummy=0)
     AdamLog(buf);
     XTalk(task1,"#include \"DoItOnce.CPZ\";\r");
  
-    WsInit("/LT/" SRC_FILE_MASK);
+    WsInit("/LT/" TEXT_FILE_MASK ";~*Bible.TXZ");
     WordStat;
 
 //This will prefetch.  You might want

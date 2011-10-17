@@ -155,7 +155,7 @@ Ltf *OSMainCfgAddDev(OSMainCfg *c)
     }
   } while (!num || 0<=drv_let_base<NUM_LTPRTS);
 
-  //See $LK,"InsBootDstDrv","FF:::/LT/Opt/Boot/InsBoot.APZ,InsBootDstDrv"$
+  //See $LK,"InsBootDstDrv","FF:::/LT/Adam/Boot/InsBoot.APZ,InsBootDstDrv"$
   if (!(k=NamedFramePtr("InsBootDstDrv")))
     k=Fs->cur_prt->drv_let;
 

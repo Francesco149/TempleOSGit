@@ -1,7 +1,13 @@
                                    Bug Stat
 
+#000021 Introduced:00/00/0000 Fixed:10/10/2011
+Graphics routines did not work with ->brush when ->pen_width was big.
+
+#000020 Introduced:03/06/2011 Fixed:10/9/2011
+<CTRL-R> menu was broken so that clicking "Vect Object Menu", exited.
+
 #000019 Introduced:00/00/0000 Fixed:9/8/2011
-[::/LT/Opt/ToHtml.APZ] ToHtml() and [::/LT/Opt/ToTXT.APZ] ToTXT() were not
+[::/LT/Adam/ToHtml.APZ] ToHtml() and [::/LT/Adam/ToTXT.APZ] ToTXT() were not
 handling backward column movement well.
 
 #000018 Introduced:00/00/0000 Fixed:8/14/2011

@@ -127,7 +127,7 @@ Wiz	Wizard
   calling routines +/-2 Gig from the current code location.  To prevent
   out-of-range issues, I decided to separate code and data, placing all code
   within the lowest 2 Gig of memory.  The compiler and
-  [C:/LT/OSMain/Hash1a.CPZ,662] Load()er allocate memory from the code heap to
+  [C:/LT/OSMain/Hash1a.CPZ,733] Load()er allocate memory from the code heap to
   store code and glbl vars, unless the compiler option
   [C:/LT/OSMain/Adam1a.HPZ,1398] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/LT/OSMain/Memory.CPZ,925] MAlloc() is comes from the data
@@ -159,7 +159,7 @@ Wiz	Wizard
   I coined this term to refer to conventional AOT compilation mode, but it is
   not the preferred mode for this operating system and is discouraged.  .SP?
   files are compiled to .BI? files, skipping .OBJ files.  After compiling, you
-  do a [C:/LT/OSMain/Hash1a.CPZ,662] Load() cmd which is available from
+  do a [C:/LT/OSMain/Hash1a.CPZ,733] Load() cmd which is available from
   right-clicking on a link (like from [C:/LT/OSMain/Dsk/Dsk1b.CPZ,238]
   Dir()).  There is no main() routine.  Instead, statements outside functions
   are automatically executed upon loading.  There is no way to unload except by
@@ -243,7 +243,7 @@ Be aware of [C:/LT/OSMain/Adam1a.HPZ,2011] TEXT_FILE_MASK and
   Compiler "map" files
 *.BI?
   Binary executable files, created by [C:/LT/Compiler/CmpMain.CPZ,380] Cmp()
-  and read by [C:/LT/OSMain/Hash1a.CPZ,662] Load().
+  and read by [C:/LT/OSMain/Hash1a.CPZ,733] Load().
 *.DT?
   Data files
 *.DVC

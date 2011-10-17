@@ -1,5 +1,51 @@
 Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 
+----10/16/11 12:16:17----
+* Converted [C:/LT/Compiler/CmpMain.CPZ,15] StreamPrintF()'s to
+[C:/LT/OSMain/Str1a.CPZ,1138] DefinePrintF()'s.
+* Improved [::/LT/Apps/Tanks/Tanks.CPZ] ::/LT/Apps/Tanks/Tanks.CPZ.
+* Deleted ::/LT/Demo/GameStarters/Pac.CPZ (Redundant)
+* Deleted ::/LT/Demo/GameStarters/Kings.CPZ (redundant)
+
+----10/16/11 02:32:36----
+* Improved PSectCache.
+
+----10/12/11 17:10:59----
+* Improved ::/LT/Demo/GameStarters/Kings.CPZ
+
+----10/11/11 16:06:08----
+* Overhauled [::/LT/Demo/GameStarters/Rocks.CPZ]
+::/LT/Demo/GameStarters/Rocks.CPZ.
+ 
+----10/11/11 12:02:33----
+* **V7.07 Released**
+* Added graphics to [::/LT/Apps/MusicOrgan/Examples/purpose.CPZ]
+::/LT/Apps/MusicOrgan/Examples/purpose.CPZ.
+* Fixed bug with base->brush in graphics routines.  See
+[::/LT/Doc/Bugs.TXZ,#000021] #000021.
+* Added graphics to [::/LT/Apps/MusicOrgan/Examples/exiled.CPZ]
+::/LT/Apps/MusicOrgan/Examples/exiled.CPZ.
+
+----10/09/11 07:51:39----
+* Fixed bug in <CTRL-R> menus.  See [::/LT/Doc/Bugs.TXZ,#000020] #000020.
+* Added Debugging to tour.
+* Added [C:/LT/Adam/AutoFile.APZ,132] AFView().
+* Moved the Tour account into the /LT/Misc dir.
+* Added ::/LT/Demo/GameStarters/Kings.CPZ
+* Moved /LT/Opt dir to /LT/Adam.
+* Moved /LT/Text and /LT/OptUtils dirs to /LT/Misc.
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("theta","theta");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("phi","phi");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("zeta","omega"); (symbol doesn't
+exist)
+* Added rand function family without timestamp --
+[C:/LT/OSMain/Misc1a.CPZ,320] Rand2I16() ... [C:/LT/OSMain/Misc1a.CPZ,391]
+Rand2().
+* Added [C:/LT/OSMain/Misc1a.CPZ,400] Randomize()
+
+----10/02/11 04:52:00----
+* Added documentation [::/LT/OSMain/Hash1a.CPZ,1] ::/LT/OSMain/Hash1a.CPZ.
+
 ----09/22/11 19:08:03----
 * Added inf char support.
 
@@ -18,9 +64,9 @@ Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 * **Warning**: Changed args to [C:/LT/Adam/DskCDDVD.APZ,376]
 CDFileCreate().  Src is now a file mask, not drive 
 letter and there is a file find flag arg.
-* Fixed bug in [::/LT/Opt/ToHtml.APZ] ::/LT/Opt/ToHtml.APZ and
-[::/LT/Opt/ToTXT.APZ] ::/LT/Opt/ToTXT.APZ.  See [::/LT/Doc/Bugs.TXZ,#000019]
-#000019.
+* Fixed bug in [::/LT/Adam/ToHtml.APZ] ::/LT/Adam/ToHtml.APZ and
+[::/LT/Adam/ToTXT.APZ] ::/LT/Adam/ToTXT.APZ.  See
+[::/LT/Doc/Bugs.TXZ,#000019] #000019.
 
 ----09/04/11 05:30:00----
 * Put key names in <...> and tidied-up.
@@ -41,7 +87,7 @@ FAT32.
 [::/LT/Doc/Bugs.TXZ,#000018] #000018.
 * Fixed compiler bug on signed modulo of power of two.  See
 [::/LT/Doc/Bugs.TXZ,#000017] #000017.
-* Added [::/LT/Opt/ToTXT.APZ] ::/LT/Opt/ToTXT.APZ.
+* Added [::/LT/Adam/ToTXT.APZ] ::/LT/Adam/ToTXT.APZ.
 
 ----08/13/11 19:17:43----
 * Added [::/LT/Demo/GameStarters/ZoneOut.CPZ]
@@ -69,8 +115,8 @@ FAT32.
 ::/LT/Apps/MusicOrgan/MakeSong.CPZ.
 
 ----06/30/11 08:16:20----
-* Added instance arg to [C:/LT/OSMain/Hash1a.CPZ,378] HashFind() and
-[C:/LT/OSMain/Adam1c.HPZ,560] ExtFind().
+* Added instance arg to [C:/LT/OSMain/Hash1a.CPZ,449] HashFind() and
+[C:/LT/OSMain/Adam1c.HPZ,569] ExtFind().
 
 ----06/25/11 17:28:37----
 * Added flats to MusicOrgan.
@@ -86,7 +132,7 @@ were being freed, leaving a dangling str pointer.
 [::/LT/Demo/AcctExample/TSDistribute.APZ] Acct Example2.
 
 ----05/20/11 13:04:37----
-* Added [::/LT/Opt/Utils/CvtBMPDir.CPZ] ::/LT/Opt/Utils/CvtBMPDir.CPZ.
+* Added [::/LT/Misc/CvtBMPDir.CPZ] ::/LT/Misc/CvtBMPDir.CPZ.
 * GrElem bitmap editor now works with grab-scroll.
 
 ----05/17/11 07:33:57----
@@ -137,8 +183,8 @@ WsFindMisspelled().
 * Added [C:/LT/Adam/DevInfo.APZ,172] CPURep().
 * Added ::/LT/Demo/Lectures/64BitAsm.TXZ
 * Added ::/LT/Demo/Lectures/OSDev/OSDevPart3.TXZ
-* Added background color to [::/LT/Opt/ToHtml.APZ,ToHtml(] ToHtml().
-* Fixed bug in [::/LT/Opt/Snd/HDCfg.CPZ] ::/LT/Opt/Snd/HDCfg.CPZ.
+* Added background color to [::/LT/Adam/ToHtml.APZ,ToHtml(] ToHtml().
+* Fixed bug in [::/LT/Adam/Snd/HDCfg.CPZ] ::/LT/Adam/Snd/HDCfg.CPZ.
 * Added limited base class (C++ feature) to compiler.
 
 ----03/18/11 17:44:56----
@@ -165,13 +211,13 @@ RegPoly().
 ----03/06/11 14:34:05----
 * **V7.02 Released**
 * Fixed bug in [C:/LT/Adam/Gr/GrElemPlot.APZ,372] GrElemsExtents().
-* Updated [::/LT/Text/PCIDevices.TXZ] ::/LT/Text/PCIDevices.TXZ.
+* Updated [::/LT/Misc/PCIDevices.TXZ] ::/LT/Misc/PCIDevices.TXZ.
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Vector","Vect");
 * Added BitMap editor to [C:/LT/Adam/Gr/Gr.APZ,54] GrElem editor.
 
 ----03/02/11 22:33:01----
 * Fixed bug in [C:/LT/OSMain/Str1a.CPZ,932] WildCardMatch().
-* Added palette option to [::/LT/Opt/BMPFile.APZ,BMPFileRead] BMPFileRead().
+* Added palette option to [::/LT/Adam/BMPFile.APZ,BMPFileRead] BMPFileRead().
 * Improved [::/LT/Demo/GameStarters/MissileDefense.CPZ]
 ::/LT/Demo/GameStarters/MissileDefense.CPZ.
 * Improved [::/LT/Demo/GameStarters/RawHide.CPZ]
@@ -194,7 +240,7 @@ RegPoly().
 and %Q.
 * Added [C:/LT/Adam/Gr/GrElemNew.APZ,176] GrElem2Text() and enhanced text in
 GrElem editor.
-* [C:/LT/Opt/BMPFile.APZ,255] BMPFileRead(), now, scan for nearest palette
+* [C:/LT/Adam/BMPFile.APZ,255] BMPFileRead(), now, scan for nearest palette
 entries.
 * Improved [::/LT/Demo/Graphics/GrElem3.CPZ] ::/LT/Demo/Graphics/GrElem3.CPZ.
 * Added [::/LT/Demo/GameStarters/Varoom.CPZ]
@@ -209,15 +255,15 @@ entries.
 ----02/17/11 11:25:32----
 * Improved [::/LT/Demo/Graphics/MyWallPaper.APZ]
 ::/LT/Demo/Graphics/MyWallPaper.APZ.
-* Made [::/LT/Opt/Boot/BootMHD2.SPZ] Master Boot Loader check user input.
+* Made [::/LT/Adam/Boot/BootMHD2.SPZ] Master Boot Loader check user input.
 * Improved graphics in [::/LT/Demo/GameStarters/TheDead.CPZ]
 ::/LT/Demo/GameStarters/TheDead.CPZ, 
 [::/LT/Demo/Graphics/ScrollBars.CPZ] ::/LT/Demo/Graphics/ScrollBars.CPZ, and
 [::/LT/Demo/Graphics/Transform.CPZ] ::/LT/Demo/Graphics/Transform.CPZ.
-* Fixed bug in [::/LT/Opt/Merge.APZ,MergeChk(] MergeChk().
+* Fixed bug in [::/LT/Adam/Merge.APZ,MergeChk(] MergeChk().
 * Got rid of compiler prefetch and wordstat prefetch because they didn't help 
 and just made things more complicated.
-* [::/LT/Opt/Diff.APZ,Diff(] Diff() reports differences in GrElems or other
+* [::/LT/Adam/Diff.APZ,Diff(] Diff() reports differences in GrElems or other
 binary data.
 * Improved [C:/LT/OSMain/Str1a.CPZ,989] A2I().
 
@@ -236,7 +282,7 @@ binary data.
 [C:/LT/OSMain/Adam1b.HPZ,156] Pop().
 * Added blinking cursor to [C:/LT/OSMain/KbdMouse/Message.CPZ,139] GetKey()
 and [C:/LT/OSMain/KbdMouse/Message.CPZ,181] GetChar() when in
-[C:/LT/OSMain/Misc1a.CPZ,442] Raw() mode.
+[C:/LT/OSMain/Misc1a.CPZ,499] Raw() mode.
 
 ----02/04/11 16:08:06----
 * Fixed import of asm symbols when #including "[::/LT/OSMain/StaticAdam.HPZ]
@@ -266,5 +312,5 @@ slowing mouse movement for better ctrl.
 
 ----01/03/11 11:22:45----
 * Added <CTRL-ALT-M> for mute.
-* Added [C:/LT/OSMain/Misc1a.CPZ,393] Mute() and
-[C:/LT/OSMain/Misc1a.CPZ,407] IsMute().
+* Added [C:/LT/OSMain/Misc1a.CPZ,450] Mute() and
+[C:/LT/OSMain/Misc1a.CPZ,464] IsMute().

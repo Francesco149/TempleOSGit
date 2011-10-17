@@ -1,4 +1,4 @@
-PutS("Ed(\"::/LT/Accts/Tour/Tour7.AUZ\");\r");
+PutS("Ed(\"::/LT/Misc/Tour/Tour7.AUZ\");\r");
 Sleep(1000);
 
 PopUpOk(

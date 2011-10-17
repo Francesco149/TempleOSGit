@@ -1,4 +1,4 @@
-Cd("/LT/Opt/Snd");;
+Cd("/LT/Adam/Snd");;
 #include "SndFile"
 #include "HDAudio"
 

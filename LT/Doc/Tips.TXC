@@ -82,7 +82,7 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().  You'll 
+[C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().  You'll 
 probably want to make a function for recompiling that uses the
 [C:/LT/OSMain/TaskCmd.CPZ,353] Auto() function 
 to answer the cfg questions.  See my technique
@@ -111,7 +111,7 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [::/LT/Demo/Progress.CPZ] ::/LT/Demo/Progress.CPZ.
 
 * You can save the cmd line doc as text with <CTRL-A>.  For a bitmap screen 
-capture, use [C:/LT/Opt/BMPFile.APZ,296] BMPFileCaptureScreen().  You might
+capture, use [C:/LT/Adam/BMPFile.APZ,296] BMPFileCaptureScreen().  You might
 want to make a hot key.  See 
 [::/LT/Demo/AcctExample/TSAdam.APZ,BMPFileCaptureScreen] BMPFileCaptureScreen.
 
@@ -140,12 +140,12 @@ ending in Z.  See [::/LT/Doc/LTZ.TXZ] ::/LT/Doc/LTZ.TXZ if you want to
 uncompress while in WINDOWS
 .
 
-* [C:/LT/Opt/Merge.APZ,40] MergeChk() can be used to see what's changed.  The
-+d flag will show 
+* [C:/LT/Adam/Merge.APZ,40] MergeChk() can be used to see what's
+changed.  The +d flag will show 
 differences of files which have changed and allow you to merge code.  (The +r 
 flag will recurse.)
 
-* There is a utility [C:/LT/Opt/LinkChk.APZ,75] LinkChk() which will check
+* There is a utility [C:/LT/Adam/LinkChk.APZ,75] LinkChk() which will check
 for broken links in 
 documentation.
 
@@ -155,13 +155,12 @@ parentheses in code.
 
 * Use [C:/LT/Adam/Ltf/LtfMain.APZ,149] Plain() to edit a plain text
 file.  You'll need this if your file has $'
-s.  Use the [::/LT/Opt/Utils/Dollar.CPZ] ::/LT/Opt/Utils/Dollar.CPZ utility
-to strip dollar signs in text 
-files.
+s.  Use the [::/LT/Misc/Dollar.CPZ] ::/LT/Misc/Dollar.CPZ utility to strip
+dollar signs in text files.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,411] Silent() to disable screen text output.
+* Use [C:/LT/OSMain/Misc1a.CPZ,468] Silent() to disable screen text output.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,420] IOSnd() to disable noise from disk access.
+* Use [C:/LT/OSMain/Misc1a.CPZ,477] IOSnd() to disable noise from disk access.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-DRAG}.  Null 
 grab-scrolling with {CTRL-RIGHT}.
@@ -183,7 +182,7 @@ files.  The +l flag is particularly useful since it limits to whole labels.
 You are encouraged to add or modify handy wrapper functions to make cmd line 
 operations easier.
 
-* When using [C:/LT/Opt/Grep.APZ,161] Grep() while modifying code, work from
+* When using [C:/LT/Adam/Grep.APZ,161] Grep() while modifying code, work from
 the bottom-up so that line 
 numbers are correct.  If you work top-down, then inserting or deleting lines 
 causes the lower file links will be incorrect.
@@ -250,7 +249,7 @@ num.
 
 * I use spaces-to-tab operations on all my src files to keep them small.  You 
 have to be careful, though, because spaces in strings will be converted.  I 
-use <SHIFT-SPACE> ' ' in such cases.  See [C:/LT/Opt/S2T.APZ,62] S2T() for
+use <SHIFT-SPACE> ' ' in such cases.  See [C:/LT/Adam/S2T.APZ,62] S2T() for
 spaces-to-tabs.
 
 * You can edit an existing Graphic Element by putting the cursor on it and 
@@ -275,9 +274,9 @@ adjusted based on load.  The range is [C:/LT/Adam/Window.APZ,50]
 win_min_refresh - Fs->win_max_refresh.
 
 * You can make a RAM disk and it will not be reformatted if you reboot with 
-[C:/LT/Opt/Boot/InsBoot.APZ,70] Boot().  You can even boot to a RAM
-disk.  See [C:/LT/Opt/Boot/InsBoot.APZ,492] Install2RAMDrv() and 
-[C:/LT/Opt/Boot/InsBoot.APZ,502] Boot2RAMDrv().
+[C:/LT/Adam/Boot/InsBoot.APZ,70] Boot().  You can even boot to a RAM
+disk.  See [C:/LT/Adam/Boot/InsBoot.APZ,492] Install2RAMDrv() and 
+[C:/LT/Adam/Boot/InsBoot.APZ,502] Boot2RAMDrv().
 
 * try{} catch{} in a function will cause all vars to be non-register.
 
@@ -287,9 +286,9 @@ disk.  See [C:/LT/Opt/Boot/InsBoot.APZ,492] Install2RAMDrv() and
 will restore defaults.  It should plain text, if you want to edit it.  Be 
 careful of tree indentations.
 
-* Study [::/LT/Opt/MemRep.APZ] ::/LT/Opt/MemRep.APZ and
-[C:/LT/Adam/WallPaper.APZ,19] WallPaper() to learn how the system resources 
-are put together.
+* Study [::/LT/Adam/MemRep.APZ] ::/LT/Adam/MemRep.APZ and
+[C:/LT/Adam/WallPaper.APZ,19] WallPaper() to learn how the system 
+resources are put together.
 
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
@@ -301,7 +300,7 @@ expressions involving it might decrease.  Take a snap-shot, like this: timeout
 time_stamp_freq x seconds; and compare against [C:/LT/OSMain/Adam1b.HPZ,206]
 GetTimeStamp().
 
-* Use [C:/LT/Opt/HeapLog.APZ,112] HeapLog() and [C:/LT/Opt/HeapLog.APZ,79]
+* Use [C:/LT/Adam/HeapLog.APZ,112] HeapLog() and [C:/LT/Adam/HeapLog.APZ,79]
 HeapLogRep() to find leaks.  Don't be confused by
 [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf 
 allocations.  Those are generated when text is written to the cmd line buffer.

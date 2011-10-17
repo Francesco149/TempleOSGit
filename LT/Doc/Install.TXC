@@ -30,7 +30,7 @@ drive -- base0, base1, and unit.  When you enter a hexadecimal number, do
 it like in C with a 0x prefix.  If the probe was successful, you can just 
 enter the number in the probe box instead of base0.
   
-[C:/LT/Opt/Dsk3a.APZ,86] PrtDsk('C') use if drive is not partitioned
+[C:/LT/Adam/Dsk3a.APZ,86] PrtDsk('C') use if drive is not partitioned
 
     This will perform a special [C:/LT/OSMain/Dsk/DskAddDev.CPZ,198] Mount()
     automatically.
@@ -42,7 +42,7 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/LT/Opt/Boot/InsBoot.APZ,334] MasterBootZero() to
+You'll need to do a [C:/LT/Adam/Boot/InsBoot.APZ,334] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
@@ -58,16 +58,16 @@ BR.BIC.
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot('D')
+4) [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot('D')
   This command recompiles the source code on a partition and writes to the
   _par
 tition's_ boot record.  You'll need to reenter the
   [C:/LT/OSMain/Dsk/DskAddDev.CPZ,198] Mount information so it 
 can be stored in the kernel.
 
-5) [C:/LT/Opt/Boot/InsBoot.APZ,360] InstallMasterBoot('D')
+5) [C:/LT/Adam/Boot/InsBoot.APZ,360] InstallMasterBoot('D')
   
-The [C:/LT/Opt/Boot/InsBoot.APZ,360] InstallMasterBoot() command places a
+The [C:/LT/Adam/Boot/InsBoot.APZ,360] InstallMasterBoot() command places a
   boot loader on a drive to boot 
 partitions.  It saves the old master boot record to /0000Boot/OldMBR.BIC and 
 replaces it.  When you boot, you will have the option of booting the old 

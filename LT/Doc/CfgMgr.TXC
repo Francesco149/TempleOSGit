@@ -11,7 +11,7 @@ so it won't be overwritten.
 Another option for managing cfgurations is using
 [C:/LT/OSMain/TaskCmd.CPZ,353] Auto() to fill the type ahead 
 buffer with answers to prompts before calling
-[C:/LT/Compiler/CmpMain.CPZ,380] Cmp() or [C:/LT/Opt/Boot/InsBoot.APZ,185]
+[C:/LT/Compiler/CmpMain.CPZ,380] Cmp() or [C:/LT/Adam/Boot/InsBoot.APZ,185]
 InstallBoot().  The 
 [C:/LT/OSMain/TaskCmd.CPZ,353] Auto() technique will override the cfguration
 manager's start-up prompt.  The 

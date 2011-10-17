@@ -1,25 +1,26 @@
 #define GEBM_END		0
-#define GEBM_COLOR		1
-#define GEBM_DITHER_COLOR	2
-#define GEBM_WIDTH		3
-#define GEBM_SNAP		4
-#define GEBM_POINT		5
-#define GEBM_LINE		6
-#define GEBM_ARROW		7
-#define GEBM_RECT		8
-#define GEBM_CIRCLE		9
-#define GEBM_TEXT		10
-#define GEBM_TEXT_BOX		11
-#define GEBM_TEXT_DIAMOND	12
-#define GEBM_FLOOD_FILL		13
-#define GEBM_FLOOD_FILL_NOT	14
-#define GEBM_POLYLINE		15
-#define GEBM_POLYPOINT		16
-#define GEBM_CUT		17
-#define GEBM_DELETE		18
-#define GEBM_PASTE		19
-#define GEBM_PASTE_TRANSPARENT	20
-#define GEBM_UNDO		21
+#define GEBM_CONT		1
+#define GEBM_COLOR		2
+#define GEBM_DITHER_COLOR	3
+#define GEBM_WIDTH		4
+#define GEBM_SNAP		5
+#define GEBM_POINT		6
+#define GEBM_LINE		7
+#define GEBM_ARROW		8
+#define GEBM_RECT		9
+#define GEBM_CIRCLE		10
+#define GEBM_TEXT		11
+#define GEBM_TEXT_BOX		12
+#define GEBM_TEXT_DIAMOND	13
+#define GEBM_FLOOD_FILL		14
+#define GEBM_FLOOD_FILL_NOT	15
+#define GEBM_POLYLINE		16
+#define GEBM_POLYPOINT		17
+#define GEBM_CUT		18
+#define GEBM_DELETE		19
+#define GEBM_PASTE		20
+#define GEBM_PASTE_TRANSPARENT	21
+#define GEBM_UNDO		22
 
 I64 PopUpGrElemBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 {
@@ -58,7 +59,7 @@ I64 PopUpGrElemBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 	"$MU-UL,\"Paste\",GEBM_PASTE$\r\n"
 	"$MU-UL,\"Paste Transparent\",GEBM_PASTE_TRANSPARENT$\r\n"
 	"\r\n$MU-UL,\"Undo\",GEBM_UNDO$\r\n"
-	"\r\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GEBM_END$$FM,LTBLUE$\r\n"
+	"\r\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GEBM_CONT$$FM,LTBLUE$\r\n"
 	"$MU-UL,\"End\",GEBM_END$\r\n"
 	"$MU-UL,\"Cancel\",LTFM_CANCEL$\r\n",st1,st2,width,snap,ip_scaler);
   i=PopUpMenu(l);
@@ -122,6 +123,9 @@ bm_menu:
 	      goto bm_done;
 	    case GEBM_END:
 	      result=GE_OKAY_DONE;
+	      goto bm_done;
+	    case GEBM_CONT:
+	      result=GE_OKAY_CONT;
 	      goto bm_done;
 
 	    case GEBM_COLOR:

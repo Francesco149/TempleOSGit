@@ -37,7 +37,7 @@ void main()
   PrintF("double\t:%d\r\n",sizeof(d));
 }
 
-main; //run main() when [C:/LT/OSMain/Hash1a.CPZ,662] Load()ed.
+main; //run main() when [C:/LT/OSMain/Hash1a.CPZ,733] Load()ed.
 
 
 

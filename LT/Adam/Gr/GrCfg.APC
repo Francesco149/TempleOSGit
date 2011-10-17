@@ -3,15 +3,8 @@
 
 //This allows constants to be used
 //instead of vars.
-#exe {
-  StreamPrintF(
-    "#define GR_MODE %d\r\n"
-    "#define GR_WIDTH %d\r\n"
-    "#define GR_HEIGHT %d\r\n"
-    "#define TEXT_ROWS %d\r\n"
-    "#define TEXT_COLS %d\r\n",
-    gr_mode,
-    gr_width,gr_height,
-    text_rows,text_cols);
-};
-
+DefinePrintF("GR_MODE","%d",gr_mode);
+DefinePrintF("GR_WIDTH","%d",gr_width);
+DefinePrintF("GR_HEIGHT","%d",gr_height);
+DefinePrintF("TEXT_ROWS","%d",text_rows);
+DefinePrintF("TEXT_COLS","%d",text_cols);

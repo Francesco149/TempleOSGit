@@ -10,7 +10,7 @@ LtfHighlightInit;
 
 U32 *LtfHighlight(Ltf *l,BoolI8 full_refresh,LtfEntry *cl,LtfSettingsStruct **_s,
   U8 *src,I64 len,U64 _temp_u32_attr)
-{ //Be aware of [::/LT/Opt/ToHtml.APZ] ::/LT/Opt/ToHtml.APZ.
+{ //Be aware of [::/LT/Adam/ToHtml.APZ] ::/LT/Adam/ToHtml.APZ.
   U32 *result=MAlloc((len+1)*sizeof(U32)),*dst=result;
   U8 *ptr,ch,ch1,last_ch;
   LtfSettingsStruct *s=*_s;

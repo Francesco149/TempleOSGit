@@ -41,7 +41,7 @@ U0 StartUpTasks(U64 dummy=0)
     SPrintF(buf,"Boot Time:%h17Ts\r\n",BootTime);
     AdamLog(buf);
  
-//    WsInit("/LT/" SRC_FILE_MASK);
+//    WsInit("/LT/" TEXT_FILE_MASK ";~*Bible.TXZ");
 //    WordStat;
 
 //This will prefetch.  You might want

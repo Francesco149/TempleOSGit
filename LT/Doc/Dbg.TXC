@@ -44,7 +44,7 @@ ProfAll() and [C:/LT/Adam/Profiler.APZ,106] ProfRep() provide code profiling.
 [::/LT/Demo/AutoFile/Demo2.AUZ] ::/LT/Demo/AutoFile/Demo2.AUZ (This is an
 [::/LT/Doc/Glossary.TXZ,AutoFile] AutoFile.)
 
-* If you recompile OSMain with [C:/LT/Opt/Boot/InsBoot.APZ,185]
+* If you recompile OSMain with [C:/LT/Adam/Boot/InsBoot.APZ,185]
 InstallBoot(), you can modify the handler for 
 faults here: [C:/LT/OSMain/Dbg1a.CPZ,412] Fault2().
 
@@ -52,12 +52,12 @@ faults here: [C:/LT/OSMain/Dbg1a.CPZ,412] Fault2().
 DbgStr() and [C:/LT/OSMain/Dbg1a.CPZ,219] DbgAdd() to print debug info
 bypassing the window 
 framework.  You pass these routines a count in milliseconds for how long it 
-should be displayed.  You can use [C:/LT/OSMain/Misc1a.CPZ,442] Raw(TRUE) to
+should be displayed.  You can use [C:/LT/OSMain/Misc1a.CPZ,499] Raw(TRUE) to
 make all output bypass the 
 window framework.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,430] SysDbg() to set a flag which you can read
-with [C:/LT/OSMain/Misc1a.CPZ,436] IsSysDbg() when you wish 
+* Use [C:/LT/OSMain/Misc1a.CPZ,487] SysDbg() to set a flag which you can read
+with [C:/LT/OSMain/Misc1a.CPZ,493] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
 * There are flags for various trace options that can help debugging when
@@ -84,19 +84,19 @@ compiler (it's not 100% valid because it hasn't been fixed-up).
 
 
 * There is a heap check utility which can find leaks.  Use
-[C:/LT/Opt/HeapLog.APZ,112] HeapLog(), and 
-[C:/LT/Opt/HeapLog.APZ,79] HeapLogRep().  It's a really simple program which
+[C:/LT/Adam/HeapLog.APZ,112] HeapLog(), and 
+[C:/LT/Adam/HeapLog.APZ,79] HeapLogRep().  It's a really simple program which
 intercepts [C:/LT/OSMain/Memory.CPZ,925] MAlloc() and 
 [C:/LT/OSMain/Memory.CPZ,919] Free().  You can customize the code to find
 other heap issues.
 
 * You can define functions for <CTRL-ALT-letter> keys, but they must operate 
 in a interrupt environment or in the window manager when in queues kbd msgs.  
-You can do [C:/LT/OSMain/Misc1a.CPZ,442] Raw() output.  Search for
+You can do [C:/LT/OSMain/Misc1a.CPZ,499] Raw() output.  Search for
 [C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[] and look at the 
 code.  They take scancode as an arg.
 
-* If you recompile OSMain with [C:/LT/Opt/Boot/InsBoot.APZ,185]
+* If you recompile OSMain with [C:/LT/Adam/Boot/InsBoot.APZ,185]
 InstallBoot(), you can set the MemInit, option 
 to initialize memory to a value at boot, the HeapInit option to cause mem 
 allocated off the heap to be initialized or VarInit option so both global and 

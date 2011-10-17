@@ -10,7 +10,8 @@ public I64 PopUpTourPart()
   	"$CM+LX,4,4$$BT,\"Part 5: WordStat\",5$"
   	"$CM+LX,4,4$$BT,\"Part 6: Search (Grep)\",6$"
   	"$CM+LX,4,4$$BT,\"Part 7: Editor filter\",7$"
-  	"$CM+LX,4,4$$BT,\"Part 8: Wow!!\",8$"
+  	"$CM+LX,4,4$$BT,\"Part 8: Debugging\",8$"
+  	"$CM+LX,4,4$$BT,\"Part 9: Wow!!\",9$"
   	"$CM+LX,4,4$$BT,\"Done\",LTFM_CANCEL$\r\n");
   i=PopUpMenu(l);
   LtfDel(l);
@@ -24,7 +25,7 @@ U0 TourMenu()
   while (TRUE) {
     i=PopUpTourPart;
     if (i>=1) {
-      SPrintF(buf,"::/LT/Accts/Tour/Tour%d.AUZ",i);
+      SPrintF(buf,"::/LT/Misc/Tour/Tour%d.AUZ",i);
       ExeFile(buf);
     } else
       break;
@@ -32,3 +33,4 @@ U0 TourMenu()
 }
 
 TourMenu;
+PutS("Cd(\"HOME\");\r");

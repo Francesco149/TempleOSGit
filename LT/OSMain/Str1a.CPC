@@ -1135,6 +1135,13 @@ U8 *MSPrintF(U8 *fmt,...)
   return result;
 }
 
+U0 DefinePrintF(U8 *name,U8 *src,...)
+{
+  U8 *buf=SPrintFJoin(NULL,src,argc,argv);
+  DefineLoad(name,buf);
+  Free(buf);
+}
+
 U0 PrintFErr(U8 *fmt,...)
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);

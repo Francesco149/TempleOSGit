@@ -19,6 +19,18 @@ U0 TXTPutS(Ltf *l,U8 *st,I64 *_col)
 	LtfPutS(l,"pi");
 	*_col=*_col+1;
 	break;
+      case 'theta':
+	LtfPutS(l,"theta");
+	*_col=*_col+1;
+	break;
+      case 'phi':
+	LtfPutS(l,"phi");
+	*_col=*_col+1;
+	break;
+      case 'omega':
+	LtfPutS(l,"omega");
+	*_col=*_col+1;
+	break;
       case 'inf':
 	LtfPutS(l,"inf");
 	*_col=*_col+1;

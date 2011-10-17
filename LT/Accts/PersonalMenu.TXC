@@ -34,9 +34,6 @@ Cd("::/LT/Doc");Dir;
 Cd("::/LT/Demo/Lectures");Dir;
 `Cd("::/LT/Demo/Lectures");Dir;`
 
-Cd("::/LT/Opt");Dir;
-`Cd("::/LT/Opt");Dir;`
-
 Cd("::/LT/Apps");Dir;
 `Cd("::/LT/Apps");Dir;`
 
@@ -52,7 +49,7 @@ Cd("::/LT/Demo/AcctExample");Dir;
 
 +] System Src Code
   
-Compile these with [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+Compile these with [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
 
 This is the kernel, more or less.
 Cd("::/LT/OSMain");Dir;
@@ -81,7 +78,7 @@ Quick Reboot
 [::/LT/Doc/Welcome.TXZ] Welcome  
 [::/LT/Doc/HelpIndex.TXZ] Help Index
 Take Tour
-`Cd("::/LT/Accts/Tour");;AutoFile("Tour");`
+`Cd("::/LT/Misc/Tour");;AutoFile("Tour");`
 
 [::/LT/Doc/DemoIndex.TXZ] Demo Index
 Key Map

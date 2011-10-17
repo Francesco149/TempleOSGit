@@ -20,7 +20,7 @@ executable.  You can use
 
 To run this program, right-click the
 directory entry for the binary and
-select "LOAD".  Or, you can use [C:/LT/OSMain/Hash1a.CPZ,662] Load()
+select "LOAD".  Or, you can use [C:/LT/OSMain/Hash1a.CPZ,733] Load()
 in scripts or whatever.
 
 If you place statements to start
@@ -39,7 +39,7 @@ There still are no object files.
 //Syms not in the OSMain modules
 //can be declared with import or LTimport.
 //There are not currently header files
-//for /LT/Adam or /LT/Opt routines.
+//for /LT/Adam or /LT/Adam routines.
 
 //See [::/LT/Doc/ImportExports.TXZ] Scoping and Linkages for details on
 //extern, import, LTextern, LTimport, etc.
@@ -74,4 +74,4 @@ void main()
   PrintF("double\t:%d\r\n",sizeof(d));
 }
 
-main; //run main() when [C:/LT/OSMain/Hash1a.CPZ,662] Load()ed.
+main; //run main() when [C:/LT/OSMain/Hash1a.CPZ,733] Load()ed.

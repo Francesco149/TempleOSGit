@@ -1,7 +1,7 @@
 [::/LT/Doc/HelpMain.TXZ] Help Main
 [::/LT/Doc/DemoIndex.TXZ] Demo Index
 Take Tour
-`SpawnUser("Cd(\"::/LT/Accts/Tour\");;AutoFile(\"Tour\");");`
+`SpawnUser("Cd(\"::/LT/Misc/Tour\");;AutoFile(\"Tour\");");`
 
 Key Map
 `KeyMap;View;`

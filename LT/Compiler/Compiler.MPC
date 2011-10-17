@@ -290,7 +290,7 @@ HT_NEXT_ADDED     00000008 0000 ExportSysSym Lit
 [::/LT/Compiler/Directives.CPZ,77] ImportHashTable   [ImportHashTable] 00003950 0000 Funct Export 
 [::/LT/Compiler/Directives.CPZ,96] IncludeDepth      [IncludeDepth] 00003A08 0000 Funct Export 
 [::/LT/Compiler/Unassembler.CPZ,3] InstEntriesCompare[InstEntriesCompare] 000007E0 0001 Funct Export 
-[::/LT/Compiler/CmpInit.CPZ,5] InternalType      31D131D58 0002 Class 
+[::/LT/Compiler/CmpInit.CPZ,5] InternalType      31CDE76B8 0002 Class 
 [::/LT/Compiler/Directives.CPZ,69] IsReplaceSyms     [IsReplaceSyms] 00003928 000A Funct Export 
 [::/LT/Compiler/Directives.CPZ,28] KeepPrivate       [KeepPrivate] 00003848 0000 Funct Export 
 [::/LT/Compiler/Directives.CPZ,56] LTrace            [LTrace] 000038E0 0000 Funct Export 
@@ -345,7 +345,7 @@ MP_SYS_TEMP_PTR   00000004 0000 ExportSysSym Lit
 [::/LT/Compiler/OptPass012.CPZ,185] OptLag1           [OptLag1] 00026858 0005 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,196] OptLead1          [OptLead1] 00026898 0002 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,47] OptMVCompare      [OptMVCompare] 0002BA78 0001 Funct Export 
-[::/LT/Compiler/OptPass3.CPZ,42] OptMemberVar      31D26B0B8 0005 Class 
+[::/LT/Compiler/OptPass3.CPZ,42] OptMemberVar      31CEE4B08 0005 Class 
 [::/LT/Compiler/OptPass012.CPZ,141] OptMissing        [OptMissing] 00026628 0004 Funct Export 
 [::/LT/Compiler/CmpAsm.CPZ,603] OptNext           000000A8 0002 Funct 
 [::/LT/Compiler/CmpAsm.CPZ,606] OptNext2          0000011A 0001 Funct 
@@ -468,7 +468,7 @@ SP_STRUCT_SIZE    00000078 0000 ExportSysSym Lit
 [::/LT/Compiler/Lex.CPZ,109] SetSrcFileInfo    [SetSrcFileInfo] 00003EE0 0006 Funct Export 
 [::/LT/Compiler/CmpMain.CPZ,15] StreamPrintF      [StreamPrintF] 000371C6 0000 Funct Export 
 [::/LT/Compiler/CmpMain.CPZ,2] StreamPutS        [StreamPutS] 0003715E 0001 Funct Export 
-[::/LT/Compiler/StmtParser.CPZ,1388] SwitchCaseEntry   3242670B0 0004 Class 
+[::/LT/Compiler/StmtParser.CPZ,1388] SwitchCaseEntry   31EC21FF8 0004 Class 
 [::/LT/Compiler/Directives.CPZ,73] SysEcho           [SysEcho] 00003938 0000 Funct Export 
 TASK_ACCT         00000408 0000 ExportSysSym Lit 
 TASK_ADDR         00000000 0000 ExportSysSym Lit 
@@ -620,7 +620,7 @@ UUM_STRUCT_SIZE   00000010 0000 ExportSysSym Lit
 [::/LT/Compiler/Unassembler.CPZ,58] UnasmHashLoad     [UnasmHashLoad] 00000A08 0001 Funct Export 
 [::/LT/Compiler/StmtParser.CPZ,795] UndefinedExtern   [UndefinedExtern] 00014778 0001 Funct Export 
 [::/LT/Compiler/StmtParser.CPZ,802] UnusedExternWarning[UnusedExternWarning] 000147D0 0004 Funct Export 
-[::/LT/Compiler/StmtParser.CPZ,183] VI16              31E9744F8 0003 Class 
+[::/LT/Compiler/StmtParser.CPZ,183] VI16              31D98BA28 0003 Class 
 _OPTNEXT          000000A8 0001 ExportSysSym Export 
 _OPTNEXT2         0000011A 0001 ExportSysSym Export 
 _OPTNEXT3         0000018C 0001 ExportSysSym Export 

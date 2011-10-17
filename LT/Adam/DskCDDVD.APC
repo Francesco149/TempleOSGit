@@ -496,7 +496,7 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
       et->media_type=emulation;
       et->sect_cnt=4;  //5 seems like the limit, 4 is safer
       et->load_rba=cur_blk+1;
-//CDBOOT See [C:/LT/Opt/Boot/InsBoot.APZ,35] CDBootFileCreate
+//CDBOOT See [C:/LT/Adam/Boot/InsBoot.APZ,35] CDBootFileCreate
 //See [C:/LT/OSMain/BIOS32.CPZ,292] BootCdProbe().
       PrintF("%X: Pre Boot Blk\r\n",cur_blk);
       FWBlks(out_file,et,cur_blk<<2,4);

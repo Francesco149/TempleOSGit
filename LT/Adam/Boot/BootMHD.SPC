@@ -58,12 +58,12 @@ GET_IP:
 
 BMHD_BIOS_DRV_NUM: 	DU8	0;
 BMHD_OLD_CS_IP:		DU16	0,0;
-//Gets patched by [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+//Gets patched by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
 BMHD_BLK_CNT::		DU16	0;
 
 BMHD_DAP:		DU8	16,0,1,0; //One blk at a time
 BMHD_DAP_BUF:		DU16	0,0;
-//Gets patched by [C:/LT/Opt/Boot/InsBoot.APZ,185] InstallBoot().
+//Gets patched by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
 BMHD_DAP_BLK::	//64-bit
 BMHD_DAP_BLK_LO:	DU32	0;
 BMHD_DAP_BLK_HI:	DU32	0;
@@ -101,7 +101,7 @@ BMHD_HISTART:
 //My assembler doesn't support 16-bit very well.
 	DU8	0xEA;	//JMP BOOT_RAM_BASE:0000
 	DU16	0,BOOT_RAM_BASE/16;
-//Continues here [::/LT/Opt/Boot/BootMHD2.SPZ,BMHD2_START] BMHD2_START
+//Continues here [::/LT/Adam/Boot/BootMHD2.SPZ,BMHD2_START] BMHD2_START
 BMHD_END::
 	END
 #assert $<=440

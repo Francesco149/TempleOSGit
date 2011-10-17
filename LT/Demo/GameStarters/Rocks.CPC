@@ -117,7 +117,7 @@ GrBitMap *RK_base=GrAlias(gr_refreshed_base,Fs);
 #define CMD_SPIN_RIGHT	2
 #define CMD_THRUST	3
 #define CMD_FIRE	4
-#define CMD_EXIT	5
+#define CMD_GAME_OVER	5
 I64 cmd_code=CMD_NULL;
 
 #define NUM_STARS	100
@@ -137,7 +137,7 @@ BoolI8 bounce;
 #define A_INACTIVE	0
 #define A_ACTIVE	1
 
-class Order2D2Theta
+class Order2D2theta
 {
   F64 x,y,theta;
   F64 DxDt,DyDt,DthetaDt;
@@ -155,7 +155,7 @@ class Object
 #define NUM_OBJECTS	256
 
 Ode *ode;
-Order2D2Theta *o_state;
+Order2D2theta *o_state;
 Object *objs;
 
 U0 ObjectInit(I64 i, I64 type)
@@ -287,13 +287,15 @@ U0 Init()
 {
   I64 i,j;
 
+  cmd_code=CMD_NULL;
+
   for (i=0;i<NUM_STARS;i++) {
     stars_x[i]=RandU16%GR_WIDTH;
     stars_y[i]=RandU16%GR_HEIGHT;
   }
 
   MemSet(objs,0,sizeof(Object)*NUM_OBJECTS);
-  MemSet(o_state,0,sizeof(Order2D2Theta)*NUM_OBJECTS);
+  MemSet(o_state,0,sizeof(Order2D2theta)*NUM_OBJECTS);
 
   i=ObjectAlloc(OT_SHIP); //always #0
   objs[i].mass=2.0*objs[i].radius*objs[i].radius*objs[i].radius;
@@ -318,13 +320,13 @@ U0 Init()
   }
 }
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D2Theta *state,Order2D2Theta *DstateDt)
+U0 MyDerivative(Ode *ode,F64 t,Order2D2theta *state,Order2D2theta *DstateDt)
 {
   I64 i,j;
   F64 f,d,d1,dd,dx,dy;
   nounusedwarn ode,t;
 
-  MemSet(DstateDt,0,sizeof(Order2D2Theta)*NUM_OBJECTS);
+  MemSet(DstateDt,0,sizeof(Order2D2theta)*NUM_OBJECTS);
   for (i=0;i<NUM_OBJECTS;i++) {
     if (objs[i].active==A_ACTIVE) {
       DstateDt[i].x=state[i].DxDt;
@@ -384,12 +386,12 @@ U0 Collision(I64 i,I64 j)
   switch (objs[i].type) {
     case OT_SHIP:
       if (!bounce) {
-	cmd_code=CMD_EXIT;
+	cmd_code=CMD_GAME_OVER;
 	objs[i].active=A_INACTIVE;
       }
       break;
     case OT_CARGO:
-      cmd_code=CMD_EXIT;
+      cmd_code=CMD_GAME_OVER;
       objs[i].active=A_INACTIVE;
       break;
     case OT_TINY_ROCK:
@@ -466,12 +468,12 @@ U0 Collision(I64 i,I64 j)
   switch (objs[j].type) {
     case OT_SHIP:
       if (!bounce) {
-	cmd_code=CMD_EXIT;
+	cmd_code=CMD_GAME_OVER;
 	objs[j].active=A_INACTIVE;
       }
       break;
     case OT_CARGO:
-      cmd_code=CMD_EXIT;
+      cmd_code=CMD_GAME_OVER;
       objs[j].active=A_INACTIVE;
       break;
     case OT_TINY_ROCK:
@@ -636,7 +638,7 @@ U0 SongTask(U64 dummy=0)
 
 U0 Rocks()
 {
-  U64 ch,msg_code,p1,p2,sc;
+  U64 ch,sc,msg_code;
   MenuEntry *tempse;
 
   PopUpOk(
@@ -682,37 +684,53 @@ U0 Rocks()
   InsQue(ode,Fs->last_ode);
   Fs->update_win=&UpdateWin;
 
-  do {
-    Init;
-    ch=0;
-    cmd_code=CMD_NULL;
-    do {
-      while (msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
-	ch=p1; sc=p2;
-	if (msg_code==MSG_KEY_DOWN) {
-	  if (ch==CH_SPACE)
-	    Fire;
-	  else if (ch=='b') {
-	    tempse=MenuEntryFind(Fs->cur_menu,"Play/ToggleBounce");
-	    tempse->checked=bounce=!bounce;
-	  } else if (sc.u8[0]==SC_CURSOR_RIGHT)
-	    cmd_code=CMD_SPIN_RIGHT;
-	  else if (sc.u8[0]==SC_CURSOR_LEFT)
-	    cmd_code=CMD_SPIN_LEFT;
-	  else if (sc.u8[0]==SC_CURSOR_UP)
-	    cmd_code=CMD_THRUST;
-	} else
+  try {
+    while (TRUE) {
+      while (msg_code=ScanMsg(&ch,&sc,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
+	if (msg_code==MSG_KEY_DOWN)
+	  switch (ch) {
+	    case 0:
+	      switch (sc.u8[0]) {
+		case SC_CURSOR_RIGHT:
+		  cmd_code=CMD_SPIN_RIGHT;
+		  break;
+		case SC_CURSOR_LEFT:
+		  cmd_code=CMD_SPIN_LEFT;
+		  break;
+		case SC_CURSOR_UP:
+		  cmd_code=CMD_THRUST;
+		  break;
+	      }
+	      break;
+	    case CH_SPACE:
+	      Fire;
+	      break;
+	    case CH_CR:
+	      Init;
+	      break;
+	    case CH_ESC:
+	    case CH_SHIFT_ESC:
+	      goto rk_done;
+	    case 'b':
+	      tempse=MenuEntryFind(Fs->cur_menu,"Play/ToggleBounce");
+	      tempse->checked=bounce=!bounce;
+	      break;
+	  }
+	else //MSG_KEY_UP
 	  cmd_code=CMD_NULL;
       }
       CheckCollisions;
       CheckCrazy;
-      if (cmd_code==CMD_EXIT) {
+      if (cmd_code==CMD_GAME_OVER) {
 	Sleep(1000);
-	ch=CH_CR;
+	Init;
       }
       WinSync; //msgs are only queued by winmngr
-    } while (ch!=CH_ESC && ch!=CH_CR && ch!=CH_SHIFT_ESC);
-  } while (ch!=CH_ESC && ch!=CH_SHIFT_ESC);
+    }
+rk_done:
+    GetMsg(,,1<<MSG_KEY_UP);
+  } catch
+    CatchAll;
 
   RemQue(ode);
   OdeDel(ode);

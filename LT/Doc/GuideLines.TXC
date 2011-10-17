@@ -51,17 +51,13 @@ not grow, so allocate enough when the task (process) is
 heap for most things.  (The "heap" refers to [C:/LT/OSMain/Memory.CPZ,925]
 MAlloc() and [C:/LT/OSMain/Memory.CPZ,919] Free().)
 
-* I've tried to standardize names see [::/LT/Doc/Glossary.TXZ,Naming
-convention] Naming convention
+* See [::/LT/Doc/Glossary.TXZ,Naming convention] Naming convention.
 
 * There are two modes of compiling [::/LT/Doc/Glossary.TXZ,Static Compiled
 Mode] Static Compiled Mode and [::/LT/Doc/Glossary.TXZ,JIT] JIT Mode.  Actual 
 compilation is done in both--nothing is "interpreted".
 
 * [::/LT/Doc/Differences.TXZ] Differences from C/C++
-
-* I got rid of continue for loops because I don't use it, don't like it, and 
-it bloats the compiler.  Use goto.
 
 * [::/LT/Doc/SysPgmGuide.TXZ] System Programming Guidelines
 

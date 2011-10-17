@@ -7,8 +7,8 @@ examples of using trivial solutions.
 
 * Everything runs in kernel, ring 0, mode.
 
-* One memory map for all tasks on all cores with virtual addres set equal to 
-physical.
+* One memory map for all tasks on all cores with virtual addresses set equal 
+to physical.
 
 * One platform, 64-bit or better x86_64 PC's, such as Core_i7's,
 Core_2_Duo's, 
@@ -36,7 +36,7 @@ on an 8x8 grid.  It can run in Text mode if graphic initialization fails.
 computations intermediately.  Assembler has minimal 16-bit support, good 
 enough for compiling boot loaders.
 
-* No object files.  Linking can be done at [C:/LT/OSMain/Hash1a.CPZ,662]
+* No object files.  Linking can be done at [C:/LT/OSMain/Hash1a.CPZ,733]
 Load() time for static modules, if 
 you insist on not using JIT.  Modules have imports and exports.
 
@@ -72,7 +72,8 @@ programs by #includeing them, the syms go in the table.  If a sym is not
 found, the parent task's table is checked.  The father of all tasks has the 
 API syms you'll need waiting in it's table.  No need to #include headers.
 
-* No need for namespaces -- scoping occurs automatically.
+* No need for namespaces -- scoping occurs automatically based on task symbol 
+table hierarchy with the Adam task's symbol system-wide global.
 
 * Sometimes, I [::/LT/Doc/CutCorners.TXZ] cut corners in the interest of
 keeping the code beautiful.

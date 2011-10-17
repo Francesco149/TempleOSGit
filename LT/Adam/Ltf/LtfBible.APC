@@ -1,5 +1,5 @@
 #help_index "Ltf/Bible"
-DefineLoad("ST_BIBLE_FILE","::/LT/Text/Bible.TXZ");
+DefineLoad("ST_BIBLE_FILE","::/LT/Misc/Bible.TXZ");
 
 DefineListLoad("ST_BIBLE_BOOKS",
 "Genesis\0"

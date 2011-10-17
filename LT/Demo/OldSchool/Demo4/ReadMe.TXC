@@ -23,5 +23,5 @@ do the following:
   
 
 
-#include the file [::/LT/Opt/BinRep.APZ] ::/LT/Opt/BinRep.APZ and
-call [C:/LT/Opt/BinRep.APZ,22] BinRep() to analyze the .BIZ files.  
+#include the file [::/LT/Adam/BinRep.APZ] ::/LT/Adam/BinRep.APZ and
+call [C:/LT/Adam/BinRep.APZ,22] BinRep() to analyze the .BIZ files.  

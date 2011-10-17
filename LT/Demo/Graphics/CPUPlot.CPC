@@ -60,5 +60,5 @@ U0 CPUPlot()
 
 CPUPlot; //start when #included
 
-//Study [::/LT/Opt/MemRep.APZ] ::/LT/Opt/MemRep.APZ and [C:/LT/Adam/WallPaper.APZ,19] WallPaper() to learn more about
+//Study [::/LT/Adam/MemRep.APZ] ::/LT/Adam/MemRep.APZ and [C:/LT/Adam/WallPaper.APZ,19] WallPaper() to learn more about
 //how the system resources are put together.

@@ -1,7 +1,7 @@
 #help_index "Ltf/Cmd Line (Typically);Cmd Line (Typically)"
 
 Ltf *EdJoin(U8 *filename,BoolI8 bail)
-{ //bail is for [C:/LT/Opt/LinkChk.APZ,75] LinkChk()
+{ //bail is for [C:/LT/Adam/LinkChk.APZ,75] LinkChk()
   U8 *buf=StrNew(filename),
      *temp_filename=StrNew(filename),
      *tfn_ptr=temp_filename,

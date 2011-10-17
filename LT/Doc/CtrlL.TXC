@@ -56,5 +56,5 @@ Refresh Data  updates $DA$ entry continuously.
 
 Html Link  stores a link which will be embedded if you generate a html
 version 
-of a document with [C:/LT/Opt/ToHtml.APZ,240] ToHtml() or
-[C:/LT/Opt/ToHtml.APZ,59] Ltf2Html().
+of a document with [C:/LT/Adam/ToHtml.APZ,252] ToHtml() or
+[C:/LT/Adam/ToHtml.APZ,71] Ltf2Html().

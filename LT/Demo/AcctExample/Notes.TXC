@@ -79,7 +79,7 @@ kbd lights working.
 * Syncronize VGA memory update with the hardware refresh cycle.
 
 * Demo [C:/LT/OSMain/Adam1a.HPZ,3739] TaskKeyDevStruct
-* demo [C:/LT/Opt/ToHtml.APZ,240] ToHtml().
+* demo [C:/LT/Adam/ToHtml.APZ,252] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have
 generated 
@@ -131,9 +131,6 @@ registry-like routines... or registry I guess.
 * New Editor widgets
 
 * Make use of flag potential in SysFilesFind and possibly LTFileAccess
-* Might want to implement | operator in filename masks to OR multiple 
-directory trees.  Might be nice for [C:/LT/Adam/WordStat/WsMain.APZ,651]
-WsInit().
 * implement fixed pos files
 
 * new C+ language feats

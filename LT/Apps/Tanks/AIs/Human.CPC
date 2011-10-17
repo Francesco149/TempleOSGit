@@ -71,7 +71,7 @@ U0 TanksFire()
 	    else {
 	      RVSetUp(cur_player);
 	      RowColToXY(fire_radius_x,fire_radius_y,tempu->row,tempu->col);
-	      fire_radius=tempu->range*2*hex_radius;
+	      fire_radius=tempu->range*2*HEX_RADIUS;
 	      RecalcVisible(RV_ONE_FRIENDLY_UNIT,tempu);
 	    }
 	  }
