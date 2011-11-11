@@ -1,5 +1,6 @@
 /* Project: OSMain */
-//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ
+
+//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (4).
 
 asm {
 USE64
@@ -121,7 +122,7 @@ I64 ArcDetermineCompressionType(U8 *src,U64 size)
 }
 
 U0 ArcCompressBuf(ArcCs *c)
-//Use [C:/LT/OSMain/Compress.CPZ,270] CompressBuf() unless you are doing
+//Use [C:/LT/OSMain/Compress.CPZ,271] CompressBuf() unless you are doing
 //more than one buffer.
 {
   ArcTableEntry *temp,*temp1;
@@ -178,7 +179,7 @@ U0 ArcFinishCompression(ArcCs *c)
 }
 
 U0 ArcExpandBuf(ArcCs *c)
-//Use [C:/LT/OSMain/Compress.CPZ,303] ExpandBuf() unless you know what
+//Use [C:/LT/OSMain/Compress.CPZ,304] ExpandBuf() unless you know what
 //you're doing.
 {
   U8 *dst_ptr,*dst_limit;

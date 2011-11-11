@@ -96,76 +96,76 @@ U0 GrowSeeds(Seed *tempe,I64 w,I64 h)
   }
 }
 
-U0 DrawStem(GrBitMap *base,Seed *tempe,Stem *temps,Stem *parent,I64 w,I64 h)
+U0 DrawStem(GrDC *dc,Seed *tempe,Stem *temps,Stem *parent,I64 w,I64 h)
 {
   I64 i;
-  base->color=GREEN;
-  base->pen_width=2;
+  dc->color=GREEN;
+  dc->pen_width=2;
   while (temps) {
   //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,544] GrLine3() because it has pen_width
     if (parent) {
-      base->color=GREEN;
-      base->pen_width=2;
-      GrLine3(base,temps->x+w/2,h-temps->y,0,parent->x+w/2,h-parent->y,0);
+      dc->color=GREEN;
+      dc->pen_width=2;
+      GrLine3(dc,temps->x+w/2,h-temps->y,0,parent->x+w/2,h-parent->y,0);
     }
-    DrawStem(base,tempe,temps->sub,temps,w,h);
+    DrawStem(dc,tempe,temps->sub,temps,w,h);
     if (temps->flower_size) {
       for (i=0;i<temps->flower_size;i++) {
 	switch (tempe->type) {
 	  case 0:
 	    if (i&1)
-	      base->color=RED;
+	      dc->color=RED;
 	    else
-	      base->color=YELLOW;
+	      dc->color=YELLOW;
 	    break;
 	  case 1:
 	    if (i&1)
-	      base->color=PURPLE;
+	      dc->color=PURPLE;
 	    else
-	      base->color=WHITE;
+	      dc->color=WHITE;
 	    break;
 	  case 2:
 	    if (i&1)
-	      base->color=BLUE;
+	      dc->color=BLUE;
 	    else
-	      base->color=PURPLE;
+	      dc->color=PURPLE;
 	    break;
 	  case 3:
 	    if (i&1)
-	      base->color=RED;
+	      dc->color=RED;
 	    else
-	      base->color=WHITE;
+	      dc->color=WHITE;
 	    break;
 	}
-	base->pen_width=2;
-	GrCircle3(base,temps->x+w/2,h-temps->y,0,i+1);
+	dc->pen_width=2;
+	GrCircle3(dc,temps->x+w/2,h-temps->y,0,i+1);
       }
       }
     temps=temps->next;
   }
 }
 
-U0 DrawSeeds(GrBitMap *base,Seed *tempe,I64 w,I64 h)
+U0 DrawSeeds(GrDC *dc,Seed *tempe,I64 w,I64 h)
 {
   Stem *temps;
   while (tempe) {
-    GrElemsPlot3(base,tempe->x+w/2,h-tempe->y,0,__BIN_1);
+    GrSpritePlot3(dc,tempe->x+w/2,h-tempe->y,0,__BIN_1);
     //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,544] GrLine3() because it has pen_width
     if (temps=tempe->sub) {
-      base->color=GREEN;
-      base->pen_width=2;
-      GrLine3(base,temps->x+w/2,h-temps->y,0,tempe->x+w/2,h-tempe->y,0);
-      DrawStem(base,tempe,temps,temps,w,h);
+      dc->color=GREEN;
+      dc->pen_width=2;
+      GrLine3(dc,temps->x+w/2,h-temps->y,0,tempe->x+w/2,h-tempe->y,0);
+      DrawStem(dc,tempe,temps,temps,w,h);
     }
     tempe=tempe->next;
   }
 }
 
-U0 DrawIt(TaskStruct *task, GrBitMap *base)
+U0 DrawIt(TaskStruct *task, GrDC *dc)
 {
   adjusted_grow_speed=grow_speed/win_actual_refresh;
   GrowSeeds(seed_root,task->win_pixel_width,task->win_pixel_height);
-  DrawSeeds(base,seed_root,task->win_pixel_width,task->win_pixel_height);
+  DrawSeeds(dc,seed_root,task->win_pixel_width,task->win_pixel_height);
 }
 
 U0 StemsDel(Stem *temps)

@@ -21,17 +21,17 @@
 
 F64 t0=tJ;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   F64 dt=(tJ-t0)*music_tempo;
-  base->flags|=BMF_TRANSFORMATION;
-  GrRotZEqu(base->r,0.25*Sin(2*pi*tJ));
-  GrScaleMatEqu(base->r,1.5+0.5*Sin(tJ));
-  GrSetRotMat(base,base->r);
+  dc->flags|=BMF_TRANSFORMATION;
+  GrRotZEqu(dc->r,0.25*Sin(2*pi*tJ));
+  GrScaleMatEqu(dc->r,1.5+0.5*Sin(tJ));
+  GrSetRotMat(dc,dc->r);
   if (Blink(music_tempo/2,tJ))
-    GrElemsPlot3b(base,12.0*dt%task->win_pixel_width,20,0,__BIN_1);
+    GrSpritePlot3b(dc,12.0*dt%task->win_pixel_width,20,0,__BIN_1);
   else
-    GrElemsPlot3b(base,12.0*dt%task->win_pixel_width,20,0,__BIN_2);
+    GrSpritePlot3b(dc,12.0*dt%task->win_pixel_width,20,0,__BIN_2);
 }
 
 U0 Song()

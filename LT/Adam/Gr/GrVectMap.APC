@@ -30,19 +30,19 @@ FloodFillStructList
 #define R_WIDTH		(1<<R_BITS-2*R_BORDER)
 #define R_HEIGHT	(1<<R_BITS-2*R_BORDER)
 
-U0 GrVectMapBlotRect(GrBitMap *base,GrVectMap *vm,I64 bit,F64 scale)
+U0 GrVectMapBlotRect(GrDC *dc,GrVectMap *vm,I64 bit,F64 scale)
 {
   I64 k,cnt,i0,j0,i,j,rect_dft,not_rect_dft;
   U8 *body=vm->body;
   F64 d=scale/2;
-  base->pen_width=scale+0.5;
-  base->color=rect_dft=Bt(body,bit++);
+  dc->pen_width=scale+0.5;
+  dc->color=rect_dft=Bt(body,bit++);
   not_rect_dft=1-rect_dft;
 
-  base->bkcolor=vm->bkcolor;
-  GrRect(base,0,0,base->width,base->height);
+  dc->bkcolor=vm->bkcolor;
+  GrRect(dc,0,0,dc->width,dc->height);
 
-  base->color=not_rect_dft;
+  dc->color=not_rect_dft;
   while (Bt(body,bit++)) {
     j=BFieldExtU32(body,bit,R_BITS);
     bit+=R_BITS;
@@ -51,7 +51,7 @@ U0 GrVectMapBlotRect(GrBitMap *base,GrVectMap *vm,I64 bit,F64 scale)
     cnt=BFieldExtU32(body,bit,vm->poly_line_cnt_bits);
     bit+=vm->poly_line_cnt_bits;
     if (!cnt)
-      GrPlot3(base,(j-R_BORDER)*scale+d,(i-R_BORDER)*scale+d,0);
+      GrPlot3(dc,(j-R_BORDER)*scale+d,(i-R_BORDER)*scale+d,0);
     else {
       i0=i;j0=j;
       while (cnt--) {
@@ -59,7 +59,7 @@ U0 GrVectMapBlotRect(GrBitMap *base,GrVectMap *vm,I64 bit,F64 scale)
 	bit+=3;
 	i+=gr_y_offsets[k];
 	j+=gr_x_offsets[k];
-	GrLine3(base,(j0-R_BORDER)*scale+d,(i0-R_BORDER)*scale+d,0,
+	GrLine3(dc,(j0-R_BORDER)*scale+d,(i0-R_BORDER)*scale+d,0,
 	  	     (j-R_BORDER)*scale+d,(i-R_BORDER)*scale+d,0);
 	i0=i; j0=j;
       }
@@ -70,14 +70,14 @@ U0 GrVectMapBlotRect(GrBitMap *base,GrVectMap *vm,I64 bit,F64 scale)
     bit+=R_BITS+1;
     i=BFieldExtU32(body,bit,R_BITS+1);
     bit+=R_BITS+1;
-    if (GrPeek(base,(j/2.0-R_BORDER)*scale+d,(i/2.0-R_BORDER)*scale+d)==rect_dft)
-      GrFloodFill(base,(j/2.0-R_BORDER)*scale+d,(i/2.0-R_BORDER)*scale+d);
+    if (GrPeek(dc,(j/2.0-R_BORDER)*scale+d,(i/2.0-R_BORDER)*scale+d)==rect_dft)
+      GrFloodFill(dc,(j/2.0-R_BORDER)*scale+d,(i/2.0-R_BORDER)*scale+d);
   }
 }
 
 class MPVMBlotStruct
 {
-  GrBitMap *base,*rect_base;
+  GrDC *dc,*rect_dc;
   GrVectMap *vm;
   I64 bit;
   I64 xx,yy;
@@ -88,20 +88,20 @@ class MPVMBlotStruct
 
 U0 MPGrVectMapBlotRect(MPVMBlotStruct *mp)
 {
-  GrVectMapBlotRect(mp->rect_base,mp->vm,mp->bit,mp->scale);
-  GrBlot(mp->base,mp->xx,mp->yy,mp->rect_base);
+  GrVectMapBlotRect(mp->rect_dc,mp->vm,mp->bit,mp->scale);
+  GrBlot(mp->dc,mp->xx,mp->yy,mp->rect_dc);
   mp->busy=FALSE;
 }
 
 
-public U0 GrVectMapBlotMP(GrBitMap *base,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0,I64 _mp_cnt=0)
+public U0 GrVectMapBlotMP(GrDC *dc,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0,I64 _mp_cnt=0)
 {
   I64 i,i_lo,i_hi,j,j_lo,j_hi,k,cpu,pass,
       w=(vm->width +R_WIDTH-1)/R_WIDTH,
       h=(vm->height+R_HEIGHT-1)/R_HEIGHT;
   F64 xx,yy,r_scale=scale*(R_WIDTH+1.0/scale)/R_WIDTH;
   MPVMBlotStruct *mp;
-  if (!base || !vm) return;
+  if (!dc || !vm) return;
   if (Gs->num)
     _mp_cnt=1; //Only core #0 can be master
   else if (!_mp_cnt)
@@ -113,9 +113,9 @@ public U0 GrVectMapBlotMP(GrBitMap *base,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0
   mp=MAlloc(_mp_cnt*sizeof(MPVMBlotStruct));
 
   for (i=0;i<_mp_cnt;i++) {
-    mp[i].rect_base=GrNew(BMT_MONO,R_WIDTH*r_scale,R_HEIGHT*r_scale,Fs);
-    mp[i].base=GrAlias(base,base->win_task);
-    mp[i].base->color=base->color;
+    mp[i].rect_dc=GrDCNew(BMT_MONO,R_WIDTH*r_scale,R_HEIGHT*r_scale,Fs);
+    mp[i].dc=GrDCAlias(dc,dc->win_task);
+    mp[i].dc->color=dc->color;
     mp[i].vm=vm;
     mp[i].scale=r_scale;
     mp[i].busy=FALSE;
@@ -125,8 +125,8 @@ public U0 GrVectMapBlotMP(GrBitMap *base,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0
     i_lo=-y/(R_HEIGHT*scale);
   else
     i_lo=0;
-  if (R_HEIGHT*scale*h+y>base->height)
-    i_hi=MinI64((base->height-y)/(R_HEIGHT*scale)+1,h);
+  if (R_HEIGHT*scale*h+y>dc->height)
+    i_hi=MinI64((dc->height-y)/(R_HEIGHT*scale)+1,h);
   else
     i_hi=h;
 
@@ -134,8 +134,8 @@ public U0 GrVectMapBlotMP(GrBitMap *base,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0
     j_lo=-x/(R_WIDTH*scale);
   else
     j_lo=0;
-  if (R_WIDTH*scale*w+x>base->width)
-    j_hi=MinI64((base->width-x)/(R_WIDTH*scale)+1,w);
+  if (R_WIDTH*scale*w+x>dc->width)
+    j_hi=MinI64((dc->width-x)/(R_WIDTH*scale)+1,w);
   else
     j_hi=w;
 
@@ -173,30 +173,30 @@ public U0 GrVectMapBlotMP(GrBitMap *base,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0
   for (i=_mp_cnt-1;i>=0;i--) {
     while(mp[i].busy)
       Yield;
-    GrDel(mp[i].rect_base);
-    GrDel(mp[i].base);
+    GrDCDel(mp[i].rect_dc);
+    GrDCDel(mp[i].dc);
   }
   Free(mp);
 }
 
-BoolI64 IsSolidSquare(GrBitMap *base,I64 x,I64 y,I64 edge,ColorROPU32 color)
+BoolI64 IsSolidSquare(GrDC *dc,I64 x,I64 y,I64 edge,ColorROPU32 color)
 {
   I64 i,j;
   edge>>=1;
   for (i=-edge;i<edge;i++)
     for (j=-edge;j<edge;j++)
-      if (GrPeek(base,x+j,y+i)!=color)
+      if (GrPeek(dc,x+j,y+i)!=color)
 	return FALSE;
   return TRUE;
 }
 
-I64 GrVectizeRect(GrBitMap *base,I64 _x,I64 _y,GrVectMap *vm,I64 _bit,
+I64 GrVectizeRect(GrDC *dc,I64 _x,I64 _y,GrVectMap *vm,I64 _bit,
   I64 poly_line_cnt_bits,I64 *_max_poly_line_cnt_bits)
 { //Returns number of bits to represent rect
-  GrBitMap *b_desired	=GrExtractBitMap(base,_x-R_BORDER,_y-R_BORDER,_x+R_WIDTH+R_BORDER*2-1,_y+R_BORDER*2+R_HEIGHT-1),
-      *b_edge=GrNew(BMT_MONO,R_WIDTH+R_BORDER*2,R_HEIGHT+R_BORDER*2,Fs),
+  GrDC *b_desired	=GrExtractDC(dc,_x-R_BORDER,_y-R_BORDER,_x+R_WIDTH+R_BORDER*2-1,_y+R_BORDER*2+R_HEIGHT-1),
+      *b_edge=GrDCNew(BMT_MONO,R_WIDTH+R_BORDER*2,R_HEIGHT+R_BORDER*2,Fs),
       *b_actual,
-      *b_link_check=GrNew(BMT_MONO,R_WIDTH+R_BORDER*2,R_HEIGHT+R_BORDER*2,Fs);
+      *b_link_check=GrDCNew(BMT_MONO,R_WIDTH+R_BORDER*2,R_HEIGHT+R_BORDER*2,Fs);
   I64 step,step_bits,x,y,xx,yy,xx1,yy1,xx2,yy2,cnt=0,k,kk,rect_dft,not_rect_dft,
       cnt_bit,link_bit1,link_bit2,link_bit_limit,bit=_bit,max_poly_line_cnt_bits;
   U8 *body=vm->body;
@@ -336,7 +336,7 @@ I64 GrVectizeRect(GrBitMap *base,I64 _x,I64 _y,GrVectMap *vm,I64 _bit,
 
     for (step_bits=2;step_bits>=1;step_bits-=1) {
       step=1<<step_bits;
-      b_actual=GrNew(BMT_MONO,R_WIDTH/step,R_HEIGHT/step,Fs);
+      b_actual=GrDCNew(BMT_MONO,R_WIDTH/step,R_HEIGHT/step,Fs);
       GrVectMapBlotRect(b_actual,vm,_bit,1.0/step);
 
       b_actual->color=not_rect_dft;
@@ -376,15 +376,15 @@ I64 GrVectizeRect(GrBitMap *base,I64 _x,I64 _y,GrVectMap *vm,I64 _bit,
 	    BFieldOrU32(body,bit,yy1); //Flood fill Y-coordinate in rect
 	    bit+=R_BITS+1;
 	  }
-      GrDel(b_actual);
+      GrDCDel(b_actual);
       Btr(body,bit); //Temp end of flood-fill list
     }
     bit++; //End of flood-fill list
   }
 
-  GrDel(b_desired);
-  GrDel(b_edge);
-  GrDel(b_link_check);
+  GrDCDel(b_desired);
+  GrDCDel(b_edge);
+  GrDCDel(b_link_check);
 
   if (_max_poly_line_cnt_bits) *_max_poly_line_cnt_bits=max_poly_line_cnt_bits;
 
@@ -393,17 +393,17 @@ I64 GrVectizeRect(GrBitMap *base,I64 _x,I64 _y,GrVectMap *vm,I64 _bit,
 
 
 #define TEMP_BODY_SIZE	0x10000
-public GrVectMap *GrBitMap2VectMap(GrBitMap *base,TaskStruct *mem_task=NULL,I64 *_size=NULL)
+public GrVectMap *GrDC2VectMap(GrDC *dc,TaskStruct *mem_task=NULL,I64 *_size=NULL)
 { //Currently does not convert outer 1 pixel border
   I64 i,j,k,cnt,size,
-    w=(base->width-R_BORDER*2+R_WIDTH-1)/R_WIDTH,
-    h=(base->height-R_BORDER*2+R_HEIGHT-1)/R_HEIGHT,
+    w=(dc->width-R_BORDER*2+R_WIDTH-1)/R_WIDTH,
+    h=(dc->height-R_BORDER*2+R_HEIGHT-1)/R_HEIGHT,
     rect_cnt=w*h,poly_line_cnt_bits=12,max_poly_line_cnt_bits=3;
   U32 *rect_start_bits;
   U8 *body;
   GrVectMap *result,tempv;
 
-  if (!base || base->type!=BMT_MONO) {
+  if (!dc || dc->type!=BMT_MONO) {
     PutS("Must be BMT_MONO bitmap\r\n");
     return NULL;
   }
@@ -415,13 +415,13 @@ public GrVectMap *GrBitMap2VectMap(GrBitMap *base,TaskStruct *mem_task=NULL,I64 
     for (j=0;j<w;j++) {
       MemSet(&tempv,0,sizeof(GrVectMap));
       MemSet(body,0,TEMP_BODY_SIZE);
-      tempv.width =base->width-R_BORDER*2;
-      tempv.height=base->height-R_BORDER*2;
+      tempv.width =dc->width-R_BORDER*2;
+      tempv.height=dc->height-R_BORDER*2;
       tempv.body=body;
       tempv.rect_cnt=rect_cnt;
       tempv.r_bits=R_BITS;
       tempv.poly_line_cnt_bits=poly_line_cnt_bits;
-      GrVectizeRect(base,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,&max_poly_line_cnt_bits);
+      GrVectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,&max_poly_line_cnt_bits);
     }
 
   //Pass 2: Get cnt
@@ -431,13 +431,13 @@ public GrVectMap *GrBitMap2VectMap(GrBitMap *base,TaskStruct *mem_task=NULL,I64 
     for (j=0;j<w;j++) {
       MemSet(&tempv,0,sizeof(GrVectMap));
       MemSet(body,0,TEMP_BODY_SIZE);
-      tempv.width =base->width-R_BORDER*2;
-      tempv.height=base->height-R_BORDER*2;
+      tempv.width =dc->width-R_BORDER*2;
+      tempv.height=dc->height-R_BORDER*2;
       tempv.body=body;
       tempv.rect_cnt=rect_cnt;
       tempv.r_bits=R_BITS;
       tempv.poly_line_cnt_bits=poly_line_cnt_bits;
-      cnt+=GrVectizeRect(base,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,NULL);
+      cnt+=GrVectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,NULL);
     }
   Free(body);
 
@@ -446,8 +446,8 @@ public GrVectMap *GrBitMap2VectMap(GrBitMap *base,TaskStruct *mem_task=NULL,I64 
   result=CAlloc(sizeof(GrVectMap),mem_task);
   result->body=CAlloc(size,mem_task);
   rect_start_bits=MAlloc((rect_cnt+1)*sizeof(U32),mem_task);
-  result->width =base->width-R_BORDER*2;
-  result->height=base->height-R_BORDER*2;
+  result->width =dc->width-R_BORDER*2;
+  result->height=dc->height-R_BORDER*2;
   result->rect_cnt=rect_cnt;
   result->r_bits=R_BITS;
   result->poly_line_cnt_bits=poly_line_cnt_bits;
@@ -457,7 +457,7 @@ public GrVectMap *GrBitMap2VectMap(GrBitMap *base,TaskStruct *mem_task=NULL,I64 
   for (i=0;i<h;i++)
     for (j=0;j<w;j++) {
       rect_start_bits[k++]=cnt;
-      cnt+=GrVectizeRect(base,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,result,cnt,poly_line_cnt_bits,NULL);
+      cnt+=GrVectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,result,cnt,poly_line_cnt_bits,NULL);
     }
   rect_start_bits[k]=cnt;
 

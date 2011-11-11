@@ -128,7 +128,7 @@ HT_MASK           00000018 0000 ExportSysSym Lit
 HT_NEXT           00000000 0000 ExportSysSym Lit 
 HT_NEXT_ADDED     00000008 0000 ExportSysSym Lit 
 [::/LT/OSMain2/PSect.CPZ,3] HasLower          [HasLower] 00000020 0002 Funct Export 
-[::/LT/OSMain2/EdLite.CPZ,3] LineStruct        31ED75858 0008 Class 
+[::/LT/OSMain2/EdLite.CPZ,3] LineStruct        31EBD3308 0008 Class 
 MB_LAST           00000008 0000 ExportSysSym Lit 
 MB_NEXT           00000000 0000 ExportSysSym Lit 
 MB_SIGNATURE      00000010 0000 ExportSysSym Lit 

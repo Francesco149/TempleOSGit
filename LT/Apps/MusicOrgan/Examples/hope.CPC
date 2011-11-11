@@ -15,19 +15,19 @@
 
 F64 t0=tJ;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   I64 i,x,y;
   x=30+50*((tJ-t0)%3);
   y=40;
-  GrElemsPlot3(base,x,y,0,__BIN_1);
-  base->color=YELLOW;
+  GrSpritePlot3(dc,x,y,0,__BIN_1);
+  dc->color=YELLOW;
   for (i=0;i<5;i++)
-    GrLine(base,x,y,x+RandI16%100,y+RandI16%50+50);
-  base->color=WHITE;
+    GrLine(dc,x,y,x+RandI16%100,y+RandI16%50+50);
+  dc->color=WHITE;
   for (i=0;i<5;i++)
-    GrLine(base,x,y,x+RandI16%100,y+RandI16%50+50);
+    GrLine(dc,x,y,x+RandI16%100,y+RandI16%50+50);
 }
 
 U0 Song()

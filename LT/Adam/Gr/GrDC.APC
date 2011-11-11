@@ -1,55 +1,55 @@
-#help_index "Graphics/Bitmaps"
+#help_index "Graphics/DCs"
 
-public U0 GrRst(GrBitMap *base)
+public U0 GrDCRst(GrDC *dc)
 {
-  base->color=BLACK;
-  base->color2=BLACK;
-  base->bkcolor=BLACK;
-  base->pen_width=1;
-  base->ls.x=37837; //1<<16/Sqrt(3)
-  base->ls.y=37837;
-  base->ls.z=37837;
-  base->x=0;
-  base->y=0;
-  base->z=0;
-  base->transform=&GrTransform;
-  base->lighting =&GrLighting;
-  base->speedline_scale=0.04;
-  GrIdentEqu(base->r);
-  base->r_norm=gr_scale;
-  base->flags&=~(BMF_SYMMETRY|BMF_TRANSFORMATION|BMF_JUST_MIRROR);
+  dc->color=BLACK;
+  dc->color2=BLACK;
+  dc->bkcolor=BLACK;
+  dc->pen_width=1;
+  dc->ls.x=37837; //1<<16/Sqrt(3)
+  dc->ls.y=37837;
+  dc->ls.z=37837;
+  dc->x=0;
+  dc->y=0;
+  dc->z=0;
+  dc->transform=&GrTransform;
+  dc->lighting =&GrLighting;
+  dc->speedline_scale=0.04;
+  GrIdentEqu(dc->r);
+  dc->r_norm=gr_scale;
+  dc->flags&=~(BMF_SYMMETRY|BMF_TRANSFORMATION|BMF_JUST_MIRROR);
 }
 
-public GrBitMap *GrAlias(GrBitMap *base,TaskStruct *task)
+public GrDC *GrDCAlias(GrDC *dc,TaskStruct *task)
 {
-  GrBitMap *result;
-  if (!base) return NULL;
-  if (base->bm_signature!=BMS_SIGNATURE_VAL)
+  GrDC *result;
+  if (!dc) return NULL;
+  if (dc->bm_signature!=BMS_SIGNATURE_VAL)
     Dbg;
-  result=MAlloc(sizeof(GrBitMap),task);
-  MemCpy(result,base,sizeof(GrBitMap));
+  result=MAlloc(sizeof(GrDC),task);
+  MemCpy(result,dc,sizeof(GrDC));
   result->win_task=task;
   result->mem_task=task;
   result->r=MAlloc(16*sizeof(I64),task);
-  GrRst(result);
+  GrDCRst(result);
   result->flags|=BMF_ALIAS;
-  result->alias=base;
-  if (base->mask) {
-    result->mask=GrAlias(base->mask,task);
-    result->mask->color=base->mask->color;
+  result->alias=dc;
+  if (dc->mask) {
+    result->mask=GrDCAlias(dc->mask,task);
+    result->mask->color=dc->mask->color;
   }
   return result;
 }
 
 
-public GrBitMap *GrNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 null_bitmap=FALSE)
+public GrDC *GrDCNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 null_bitmap=FALSE)
 {  //This internally only allows widths which are divisible by 8
-//Don't forget these sizeof(GrBitMap)
-`Grep("sizeof(GrBitMap)","/LT/"TEXT_FILE_MASK);View;`
+//Don't forget these sizeof(GrDC)
+`Grep("sizeof(GrDC)","/LT/"TEXT_FILE_MASK);View;`
 .
-  GrBitMap *result;
+  GrDC *result;
   if (!task) task=Fs;
-  result=CAlloc(sizeof(GrBitMap),task);
+  result=CAlloc(sizeof(GrDC),task);
   result->win_task=task;
   result->mem_task=task;
   result->type=type;
@@ -73,61 +73,69 @@ public GrBitMap *GrNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI
   if (null_bitmap)
     result->flags|=BMF_DONT_DRAW;
   result->r=MAlloc(16*sizeof(I64),task);
-  GrRst(result);
+  GrDCRst(result);
   result->bm_signature=BMS_SIGNATURE_VAL;
   return result;
 }
 
-public U0 GrDel(GrBitMap *base)
+public U0 GrDCDel(GrDC *dc)
 {
-  if (!base) return;
-  if (base->bm_signature!=BMS_SIGNATURE_VAL)
+  if (!dc) return;
+  if (dc->bm_signature!=BMS_SIGNATURE_VAL)
     Dbg;
-  base->bm_signature=0;
-  Free(base->r);
-  if (!(base->flags & BMF_ALIAS))
-    Free(base->body);
-  Free(base->depth_buf);
-  GrDel(base->mask);
-  Free(base);
+  dc->bm_signature=0;
+  Free(dc->r);
+  if (!(dc->flags & BMF_ALIAS))
+    Free(dc->body);
+  Free(dc->depth_buf);
+  GrDCDel(dc->mask);
+  Free(dc);
 }
 
-public U0 GrDepthBufRst(GrBitMap *base)
+public I64 GrDCSize(GrDC *b)
 {
-  if (base->depth_buf)
-    MemSetU32(base->depth_buf,MAX_I32,base->width_internal*base->height);
+  if (b)
+    return MSize2(b)+MSize2(b->body)+GrDCSize(b->mask)+MSize2(b->depth_buf);
+  else
+    return 0;
 }
 
-public U0 GrAllocDepthBuf(GrBitMap *base)
+public U0 GrDCDepthBufRst(GrDC *dc)
 {
-  Free(base->depth_buf);
-  base->depth_buf=MAlloc(base->width_internal*base->height*sizeof(I32),base->mem_task);
-  GrDepthBufRst(base);
+  if (dc->depth_buf)
+    MemSetU32(dc->depth_buf,MAX_I32,dc->width_internal*dc->height);
 }
 
-public GrBitMap *GrCopy(GrBitMap *base,TaskStruct *task=NULL)
+public U0 GrDCAllocDepthBuf(GrDC *dc)
 {
-  GrBitMap *result;
-  if (!base) return NULL;
-  if (base->bm_signature!=BMS_SIGNATURE_VAL)
+  Free(dc->depth_buf);
+  dc->depth_buf=MAlloc(dc->width_internal*dc->height*sizeof(I32),dc->mem_task);
+  GrDCDepthBufRst(dc);
+}
+
+public GrDC *GrDCCopy(GrDC *dc,TaskStruct *task=NULL)
+{
+  GrDC *result;
+  if (!dc) return NULL;
+  if (dc->bm_signature!=BMS_SIGNATURE_VAL)
     Dbg;
-  result=MAllocIdentical(base,task);
-  GrSetRotMat(result,MAllocIdentical(base->r,task));
+  result=MAllocIdentical(dc,task);
+  GrSetRotMat(result,MAllocIdentical(dc->r,task));
   result->mem_task=task;
-  result->body=MAllocIdentical(base->body,task);
-  result->mask=GrCopy(base->mask,task);
+  result->body=MAllocIdentical(dc->body,task);
+  result->mask=GrDCCopy(dc->mask,task);
   return result;
 }
 
 /* GrBitMaps
 	The format of a stored bitmap includes a
-0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3446] GrBitMap.  The body
+0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC.  The body
 consists of bit planes like VGA except bits
-in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3429] BMT_MONO, there
-is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3428] BMT_COLOR4, there are
+in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3435] BMT_MONO, there
+is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3434] BMT_COLOR4, there are
 four bit-planes.
 
-If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3388] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3403] WHITE)
+If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3394] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3409] WHITE)
 you'll see the color of the planes is as follows:
 
 Plane 0: BLUE
@@ -165,7 +173,7 @@ plane size    : 16 bytes
 00000030 00 00 00 00 00 00 F0 07 10 00 10 00 10 00 10 00
 
 */
-public U8 *GrSave(GrBitMap *b,U64 *size=NULL,BoolI8 compressed=TRUE)
+public U8 *GrDCSave(GrDC *b,U64 *size=NULL,BoolI8 compressed=TRUE)
 { //stores to mem
   U8 *ptr,*body,*result;
   BoolI8 old_preempt;
@@ -192,20 +200,20 @@ public U8 *GrSave(GrBitMap *b,U64 *size=NULL,BoolI8 compressed=TRUE)
     body=b->body;
   }
 
-  ptr=result=MAlloc(offset(GrBitMap.end_saved_area)-
-      offset(GrBitMap.start_saved_area)+j);
+  ptr=result=MAlloc(offset(GrDC.end_saved_area)-
+      offset(GrDC.start_saved_area)+j);
 
   old_preempt=Preempt(OFF); //in case it is a screen bitmap
   if (compressed) b->flags|=BMF_COMPRESSED;
   b->flags&=BMF_COMPRESSED;
   MemCpy(result,&b->start_saved_area,
-      offset(GrBitMap.end_saved_area)-
-      offset(GrBitMap.start_saved_area));
+      offset(GrDC.end_saved_area)-
+      offset(GrDC.start_saved_area));
   b->flags=old_flags;
   Preempt(old_preempt);
 
-  ptr+=offset(GrBitMap.end_saved_area)-
-      offset(GrBitMap.start_saved_area);
+  ptr+=offset(GrDC.end_saved_area)-
+      offset(GrDC.start_saved_area);
   MemCpy(ptr,body,j);
   ptr+=j;
 
@@ -215,21 +223,21 @@ public U8 *GrSave(GrBitMap *b,U64 *size=NULL,BoolI8 compressed=TRUE)
   return result;
 }
 
-public GrBitMap *GrLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
+public GrDC *GrDCLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
 { //loads from mem
   I64 i;
-  GrBitMap *result;
+  GrDC *result;
   U8 *ptr=src;
   ArcCompressStruct *ac;
   if (!task) task=Fs;
-  result=CAlloc(sizeof(GrBitMap),task);
+  result=CAlloc(sizeof(GrDC),task);
   result->win_task=task;
   result->mem_task=task;
   MemCpy(&result->start_saved_area,src,
-      offset(GrBitMap.end_saved_area)-
-      offset(GrBitMap.start_saved_area));
-  ptr+=offset(GrBitMap.end_saved_area)-
-      offset(GrBitMap.start_saved_area);
+      offset(GrDC.end_saved_area)-
+      offset(GrDC.start_saved_area));
+  ptr+=offset(GrDC.end_saved_area)-
+      offset(GrDC.start_saved_area);
   nobound_switch (result->type) {
     case BMT_COLOR4:
       i=result->plane_size<<2;
@@ -260,54 +268,54 @@ public GrBitMap *GrLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
   return result;
 }
 
-public U64 LGRWrite(U8 *filename,GrBitMap *base)
+public U64 LGRWrite(U8 *filename,GrDC *dc)
 { // LoseThos LGR File
   U64 size;
   U8 *st=DftExt(filename,"LGZ"),
-     *src=GrSave(base,&size);
+     *src=GrDCSave(dc,&size);
   FileWrite(st,src,size);
   Free(st);
   Free(src);
   return size;
 }
 
-public GrBitMap *LGRRead(U8 *filename,TaskStruct *task=NULL)
+public GrDC *LGRRead(U8 *filename,TaskStruct *task=NULL)
 { // LoseThos LGR File
-  GrBitMap *base=NULL;
+  GrDC *dc=NULL;
   U8 *st=DftExt(filename,"LGZ"),
      *src=FileRead(st);
   if (src)
-    base=GrLoad(src,NULL,task);
+    dc=GrDCLoad(src,NULL,task);
   Free(src);
   Free(st);
-  return base;
+  return dc;
 }
 
-#help_index "Graphics/Bitmaps;Graphics/Screen"
+#help_index "Graphics/DCs;Graphics/Screen"
 
-public GrBitMap *GrCaptureScreen(TaskStruct *task=NULL)
+public GrDC *GrCaptureScreen(TaskStruct *task=NULL)
 {
   WinSync(TRUE);
-  return GrCopy(gr_screen_image,task);
+  return GrDCCopy(gr_screen_image,task);
 }
 
 public U64 LGRCaptureScreen(U8 *filename)
 { // LoseThos LGR File
   U64 size;
-  GrBitMap *base=GrCaptureScreen;
-  size=LGRWrite(filename,base);
-  GrDel(base);
+  GrDC *dc=GrCaptureScreen;
+  size=LGRWrite(filename,dc);
+  GrDCDel(dc);
   return size;
 }
 
-#help_index "Graphics;Graphics/Bitmaps"
+#help_index "Graphics;Graphics/DCs"
 
-public U0 GrExtentsInit(GrBitMap *base)
+public U0 GrDCExtentsInit(GrDC *dc)
 {//See [::/LT/Demo/Graphics/Extents.CPZ] ::/LT/Demo/Graphics/Extents.CPZ
 //You should clear the record flag yourself
-  base->flags|=BMF_RECORD_EXTENTS;
-  base->min_x=MAX_I64;
-  base->max_x=MIN_I64;
-  base->min_y=MAX_I64;
-  base->max_y=MIN_I64;
+  dc->flags|=BMF_RECORD_EXTENTS;
+  dc->min_x=MAX_I64;
+  dc->max_x=MIN_I64;
+  dc->min_y=MAX_I64;
+  dc->max_y=MIN_I64;
 }

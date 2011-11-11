@@ -39,8 +39,7 @@ U0 ExportBinary(U8 *src_file,LtfBinEntry *b) {
 }
 
 U8 *ResolveLink(U8 *filename)
-{ //Adapted from [C:/LT/Adam/Ltf/LtfMain.APZ,3] EdJoin. Resolves stuff like
-MN:Func to the file
+{ //Adapted from [C:/LT/Adam/Ltf/LtfMain.APZ,3] EdJoin. Resolves stuff like MN:Func to the file
   U8 *buf;
   I64 i;
   SrcSymHashEntry *temph;
@@ -443,8 +442,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/LT/Adam/Dsk2a.APZ,89] PutCopyTree which is internally used
-by [C:/LT/Adam/Dsk2a.APZ,109] CopyTree
+//Adapted from [C:/LT/Adam/Dsk2a.APZ,89] PutCopyTree which is internally used by [C:/LT/Adam/Dsk2a.APZ,109] CopyTree
 U0 PutExportTree(LTDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   U8 *dst_dir,BoolI64 debug=FALSE)
 {

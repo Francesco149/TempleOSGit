@@ -17,13 +17,13 @@ F64 bow_x,bow_y,bow_theta;
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 theta,x,y,dx,dy,
 	   str_w,str_h,draw_len;
   Arrow *tempa;
   P3I32 ctrl[5];
-  base->color=RED;
-  GrLineRect4(base,box_x_min,box_y_min,box_x_max,box_y_max);
+  dc->color=RED;
+  GrLineRect4(dc,box_x_min,box_y_min,box_x_max,box_y_max);
 
   x=LimitI64(ipx-task->win_pixel_left-task->win_scroll_x,box_x_min,box_x_max);
   y=LimitI64(ipy-task->win_pixel_top-task->win_scroll_y, box_y_min,box_y_max);
@@ -41,11 +41,11 @@ U0 UpdateWin(TaskStruct *task)
   str_w=draw_len/3;
   str_h=Sqrt(60*60-str_w*str_w);
 
-  base->color=BLACK;
-  GrLine(base,x-str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta),
+  dc->color=BLACK;
+  GrLine(dc,x-str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta),
 	      y-str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta),
 	      x,y);
-  GrLine(base,x+str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta),
+  GrLine(dc,x+str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta),
 	      y+str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta),
 	      x,y);
 
@@ -61,22 +61,22 @@ U0 UpdateWin(TaskStruct *task)
   ctrl[4].x=x+str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta);
   ctrl[4].y=y+str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta);
 
-  base->color=BROWN;
-  base->pen_width=2;
-  Gr2BSpline3(base,ctrl,5);
-  base->pen_width=1;
+  dc->color=BROWN;
+  dc->pen_width=2;
+  Gr2BSpline3(dc,ctrl,5);
+  dc->pen_width=1;
 
   if (bow_drawn)
-    GrElemsPlotRotZ3b(base,x,y,0,__BIN_1,bow_theta);
+    GrSpritePlotRotZ3b(dc,x,y,0,__BIN_1,bow_theta);
 
   tempa=root.next;
   while (tempa!=&root) {
     theta=Arg(tempa->dx,tempa->dy);
-    GrElemsPlotRotZ3b(base,tempa->x,tempa->y,0,__BIN_1,theta);
+    GrSpritePlotRotZ3b(dc,tempa->x,tempa->y,0,__BIN_1,theta);
     tempa=tempa->next;
   }
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 #define ANIMATE_SLEEP_MS	10

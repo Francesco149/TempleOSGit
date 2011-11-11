@@ -33,7 +33,7 @@ class QuailStruct
 
 F64 t0,t_last;
 
-U0 DrawQuail(TaskStruct *task,GrBitMap *base)
+U0 DrawQuail(TaskStruct *task,GrDC *dc)
 {
   I64 i;
   U8 *inter;
@@ -47,7 +47,7 @@ U0 DrawQuail(TaskStruct *task,GrBitMap *base)
 	q[i].y=SKY_HEIGHT;
 	q[i].dx=0;
       }
-      GrElemsPlot3(base,q[i].x,q[i].y,0,__BIN_3);
+      GrSpritePlot3(dc,q[i].x,q[i].y,0,__BIN_3);
     } else {
       q[i].x+=(t1-t_last)*q[i].dx;
       q[i].y+=(t1-t_last)*q[i].dy;
@@ -55,8 +55,8 @@ U0 DrawQuail(TaskStruct *task,GrBitMap *base)
 	q[i].dy=-q[i].dy;
 	q[i].y+=(t1-t_last)*q[i].dy;
       }
-      inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
-      GrElemsPlot3(base,q[i].x,q[i].y,0,inter);
+      inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
+      GrSpritePlot3(dc,q[i].x,q[i].y,0,inter);
       Free(inter);
       if (q[i].x>0 && t1-t_last>10*Rand)
 	q[i].dead=TRUE;

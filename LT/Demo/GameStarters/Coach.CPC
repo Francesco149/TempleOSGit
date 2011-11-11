@@ -73,22 +73,22 @@ U0 UpdateWin(TaskStruct *task)
   F64 tt=tP(task)-t0;
   I64 i=(NUM_BATTER_IMGS-1)*tt/BATTER_T;
   U8 *inter;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
 
-  base->color=WHITE;
-  base->pen_width=3;
-  GrLine3(base,BASE_X,BASE_Y,0,BASE_X-200,BASE_Y-200,0);
-  GrLine3(base,BASE_X,BASE_Y,0,BASE_X+200,BASE_Y-200,0);
+  dc->color=WHITE;
+  dc->pen_width=3;
+  GrLine3(dc,BASE_X,BASE_Y,0,BASE_X-200,BASE_Y-200,0);
+  GrLine3(dc,BASE_X,BASE_Y,0,BASE_X+200,BASE_Y-200,0);
 
-  GrElemsPlot3(base,BASE_X,BASE_Y,0,__BIN_1);
-  base->color=WHITE;
-  GrCircle(base,ball_x+BASE_X,ball_y+BASE_Y-TEE_HEIGHT,2);
+  GrSpritePlot3(dc,BASE_X,BASE_Y,0,__BIN_1);
+  dc->color=WHITE;
+  GrCircle(dc,ball_x+BASE_X,ball_y+BASE_Y-TEE_HEIGHT,2);
   if (!t0)
-    GrElemsPlot3(base,BASE_X-23,BASE_Y,0,batter_imgs[0]);
+    GrSpritePlot3(dc,BASE_X-23,BASE_Y,0,batter_imgs[0]);
   else if (i<NUM_BATTER_IMGS-1) {
-    inter=GrElemsInterpolate(batter_imgs[i],batter_imgs[i+1],
+    inter=GrSpriteInterpolate(batter_imgs[i],batter_imgs[i+1],
       ((NUM_BATTER_IMGS-1)/BATTER_T)*(tt%(BATTER_T/(NUM_BATTER_IMGS-1))));
-    GrElemsPlot3(base,BASE_X-23,BASE_Y,0,inter);
+    GrSpritePlot3(dc,BASE_X-23,BASE_Y,0,inter);
     Free(inter);
     if (!hit_t0 && tt>BATTER_T/2)
       hit_t0=tP(task);
@@ -96,17 +96,17 @@ U0 UpdateWin(TaskStruct *task)
     tt-=BATTER_T;
     i=(NUM_RUNNER1_IMGS-1)*tt/RUNNER1_T;
     if (i<NUM_RUNNER1_IMGS-1 ) {
-      inter=GrElemsInterpolate(runner1_imgs[i],runner1_imgs[i+1],
+      inter=GrSpriteInterpolate(runner1_imgs[i],runner1_imgs[i+1],
 	((NUM_RUNNER1_IMGS-1)/RUNNER1_T)*(tt%(RUNNER1_T/(NUM_RUNNER1_IMGS-1))));
-      GrElemsPlot3(base,BASE_X-23,BASE_Y,0,inter);
+      GrSpritePlot3(dc,BASE_X-23,BASE_Y,0,inter);
       Free(inter);
     } else {
       tt-=RUNNER1_T;
       i=NUM_RUNNER2_IMGS*tt/RUNNER2_T;
       if (i<30) {
-	inter=GrElemsInterpolate(runner2_imgs[i%NUM_RUNNER2_IMGS],runner2_imgs[(i+1)%NUM_RUNNER2_IMGS],
+	inter=GrSpriteInterpolate(runner2_imgs[i%NUM_RUNNER2_IMGS],runner2_imgs[(i+1)%NUM_RUNNER2_IMGS],
 	  (NUM_RUNNER2_IMGS/RUNNER2_T)*(tt%(RUNNER2_T/NUM_RUNNER2_IMGS)));
-	GrElemsPlot3(base,BASE_X-23-50*tt,BASE_Y-50*tt,0,inter);
+	GrSpritePlot3(dc,BASE_X-23-50*tt,BASE_Y-50*tt,0,inter);
 	Free(inter);
       } else {
 	t0=0;
@@ -116,7 +116,7 @@ U0 UpdateWin(TaskStruct *task)
     }
   }
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 #define BALL_PATH_POINTS	7

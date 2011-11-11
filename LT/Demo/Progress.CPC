@@ -6,7 +6,7 @@
 */
 
 
-U0 DoIt()
+U0 Main()
 {
   ProgressBarsRst;
   StrCpy(progress1_desc,"Progress Demo"); //PROGRESS_DESC_LEN is max
@@ -17,7 +17,7 @@ U0 DoIt()
 }
 
 
-DoIt;
+Main;
 
 PutS("$FG,LTRED$Now, from asm...  It's handy for debugging.$FG$\r\n");
 PutS("$FG,LTRED$Watch the progress on the wallpaper.$FG$\r\n");

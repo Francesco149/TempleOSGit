@@ -1072,8 +1072,8 @@ U0 EdInsertDollarCmd()
 #define PT_PICTURE_MACRO	1
 #define PT_PICTURE_MENU		2
 #define PT_PICTURE_LINK		3
-#define PT_GRELEMS_PTR		4
-#define PT_GRELEMS_SIZE		5
+#define PT_GRSPRITES_PTR		4
+#define PT_GRSPRITES_SIZE		5
 #define PT_DUP_PICTURE		6
 
 I64 PopUpPictureType()
@@ -1082,7 +1082,7 @@ I64 PopUpPictureType()
   Ltf *l=LtfNew;
   LtfPutS(l,"A picture is composed of graphic elements\r\n"
 	"such as lines and colors.  A collection\r\n"
-	"is called $FG,GREEN$GrElems$FG$.\r\n\r\n"
+	"is called $FG,GREEN$GrSprite$FG$.\r\n\r\n"
 	"You can place a picture with a payload\r\n"
 	"of code to execute to create an icon.\r\n"
 	"This is a called a picture macro.\r\n"
@@ -1090,17 +1090,17 @@ I64 PopUpPictureType()
 	"cmd line macros.\r\n\r\n"
 	"In a program, you first make a picture.\r\n"
 	"Then, you insert a pointer to it.\r\n\r\n"
-  	"$MU,\"Insert just Picture (GrElems)\",PT_PICTURE$\r\n"
+  	"$MU,\"Insert just Picture (GrSprite)\",PT_PICTURE$\r\n"
   	"$MU,\"Picture Macro (Icon)\",PT_PICTURE_MACRO$\r\n"
   	"$MU,\"Picture Menu Item\",PT_PICTURE_MENU$\r\n"
   	"$MU,\"Picture Link\",PT_PICTURE_LINK$\r\n"
-  	"$MU,\"Pointer to GrElems Data\",PT_GRELEMS_PTR$\r\n"
-  	"$MU,\"GrElems Size (not really needed)\",PT_GRELEMS_SIZE$\r\n"
+  	"$MU,\"Pointer to GrSprite Data\",PT_GRSPRITES_PTR$\r\n"
+  	"$MU,\"GrSprite Size (not really needed)\",PT_GRSPRITES_SIZE$\r\n"
   	"$MU,\"Duplicate Picture\",PT_DUP_PICTURE$\r\n"
   	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$\r\n\r\n"
   	"The potential exists for binary data\r\n"
-	"besides $FG,GREEN$GrElems$FG$.  This is why\r\n"
-	"the pointer to GrElems is known as\r\n"
+	"besides $FG,GREEN$GrSprite$FG$.  This is why\r\n"
+	"the pointer to GrSprite is known as\r\n"
 	"\"Insert Binary\".  There is one more\r\n"
 	"option called \"Insert Binary Type\".\r\n"
 	"The only other binary data type is source\r\n"
@@ -1183,10 +1183,10 @@ U8 *EdPicture()
       StrCat(buf,"+L+A");
       st1=EdPictureLink(&html_link);
       break;
-    case PT_GRELEMS_PTR:
+    case PT_GRSPRITES_PTR:
       EdInsertBinary(LTFT_INSERT_BINARY);
       break;
-    case PT_GRELEMS_SIZE:
+    case PT_GRSPRITES_SIZE:
       EdInsertBinary(LTFT_INSERT_BINARY_SIZE);
       break;
     case PT_DUP_PICTURE:

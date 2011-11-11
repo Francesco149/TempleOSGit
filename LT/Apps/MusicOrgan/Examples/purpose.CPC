@@ -20,7 +20,7 @@ U0 Song()
   music_tempo=2.5;
   try {
   while (!ScanKey) {
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	CrLf(6);
 	Play("3etD2GRsR3GRGqFetEDCCRCRCB2qGsG3A2G3A",
 		"O\0kay, \0 \0 \0what \0 \0is \0it \0You \0 \0 \0want \0 \0us \0 \0to \0 \0do?\r\n\0 \0 \0 \0 \0");

@@ -74,7 +74,7 @@ _ASM_FLOAT::
 LTextern _ASM_FIXED_POINT I64 AsmFixedPoint();
 LTextern _ASM_FLOAT I64 AsmFloat();
 
-U0 DoIt()
+U0 Main()
 {
   U64 start,end,overhead_time,test_time;
   F64 d1,fsum;
@@ -147,7 +147,7 @@ U0 DoIt()
   Preempt(ON);
 }
 
-DoIt;
+Main;
 
 /*  Program Output
 

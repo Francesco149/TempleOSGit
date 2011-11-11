@@ -17,7 +17,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 
 //You can customize keys.  This routine
 //is called before the main editor
-//key handler [C:/LT/Adam/Ltf/LtfEd.APZ,1398] LtfPutKey().
+//key handler [C:/LT/Adam/Ltf/LtfEd.APZ,1411] LtfPutKey().
 //You can intercept any key.
 
 //Return TRUE if you completely

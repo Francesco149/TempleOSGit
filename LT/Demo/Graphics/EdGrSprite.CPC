@@ -38,13 +38,13 @@
 /*
 
   This will add an outline to these
-GrElems and print them to the cmd
+GrSprite and print them to the cmd
 line.  They can be cut/pasted from
 there.
 
 LTGREEN is supposed to be transparent.
 To make it transparent, the cut/pasted
-GrElems must be edited with <CTRL-R> and
+GrSprite must be edited with <CTRL-R> and
 converted to transparent bitmaps.
 
 */
@@ -109,35 +109,35 @@ U0 OutLine()
 {
   I64 n,minx,maxx,miny,maxy,w,h,i,j,k,c;
   U8 *out_img;
-  GrBitMap *base;
+  GrDC *dc;
   for (n=0;n<NUM;n++) {
-    GrElemsExtents(in_img[n],&minx,&maxx,&miny,&maxy);
+    GrSpriteExtents(in_img[n],&minx,&maxx,&miny,&maxy);
     w=maxx-minx+1+2;
     h=maxy-miny+1+2;
-    base=GrNew(BMT_COLOR4,w,h);
-    base->color=LTGREEN;
-    GrRect(base,0,0,w,h);
-    GrElemsPlot3(base,-minx+1,-miny+1,0,in_img[n]);
+    dc=GrDCNew(BMT_COLOR4,w,h);
+    dc->color=LTGREEN;
+    GrRect(dc,0,0,w,h);
+    GrSpritePlot3(dc,-minx+1,-miny+1,0,in_img[n]);
 
     for (i=0;i<h;i++)
       for (j=0;j<w;j++)
-	if (GrPeek(base,j,i)==LTGREEN) {
+	if (GrPeek(dc,j,i)==LTGREEN) {
 	  for (k=0;k<8;k++) {
-	    c=GrPeek(base,j+gr_x_offsets[k],i+gr_y_offsets[k]);
+	    c=GrPeek(dc,j+gr_x_offsets[k],i+gr_y_offsets[k]);
 	    if (c!=-1 && c!=BLACK && c!=LTGREEN) {
-	      base->color=BLACK;
-	      GrPlot(base,j,i);
+	      dc->color=BLACK;
+	      GrPlot(dc,j,i);
 	      break;
 	    }
 	  }
 	  }
 
-    out_img=GrBitMap2GrElems(base);
+    out_img=GrDC2Sprite(dc);
     CrLf;
-    PutGrElems(out_img);
+    PutGrSprite(out_img);
     CrLf(4);
  
-    GrDel(base);
+    GrDCDel(dc);
     Free(out_img);
   }
 }

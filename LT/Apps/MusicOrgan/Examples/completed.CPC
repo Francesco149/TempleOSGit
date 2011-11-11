@@ -26,7 +26,7 @@ U0 Song()
 	Play("W12etG!!3BC!!qGeDBqC2G3sG!AGAeEFsG!GGG",
 		"It \0is \0 \0finished.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	CrLf(1);
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	CrLf(7);
 	Play("2etG!!3BC!!qGeDBqC2G3sG!AGAeEFsG!GGG",
 		"It \0is \0 \0finished.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");

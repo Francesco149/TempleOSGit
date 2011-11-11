@@ -15,7 +15,7 @@
 
 F64 t0=tJ;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   F64 dt=(tJ-t0)*music_tempo,tt;
@@ -26,8 +26,8 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
     tt=((dt-16)/2)%1;
   else
     tt=1.0;
-  inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
-  GrElemsPlot3(base,180,40,0,inter);
+  inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
+  GrSpritePlot3(dc,180,40,0,inter);
   Free(inter);
 }
 

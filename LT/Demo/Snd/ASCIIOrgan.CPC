@@ -47,7 +47,7 @@ U0 ASCIIOrgan()
 
 //Note the %d in the string for picture number.
   CrLf(7);
-  PutGrElems(__BIN_1,0,"$PI+LM+PU,\"Click for better organ\",\"#include \\\"::/LT/Apps/MusicOrgan/Run\\\";\",%d$");
+  PutGrSprite(__BIN_1,0,"$PI+LM+PU,\"Click for better organ\",\"#include \\\"::/LT/Apps/MusicOrgan/Run\\\";\",%d$");
   CrLf(5);
 
 }

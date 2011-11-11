@@ -60,25 +60,25 @@ U0 UpdateWin(TaskStruct *task)
 {
   U8 buf[128];
   I64 i;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
 
 //<CTLR-T> to see the syntax of the
 //"Insert Binary" statement in the following.
   for (i=0;i<NUM_TREES;i++)
-    GrElemsPlot3(base,trees_x[i],trees_y[i]-cur_screen_y,0,__BIN_2);
+    GrSpritePlot3(dc,trees_x[i],trees_y[i]-cur_screen_y,0,__BIN_2);
 
-  base->collision_cnt=0;
-  base->bkcolor=ROP_COLLISION+WHITE;
-  GrElemsPlot3(base,x,y,0,__BIN_1);
-  if (base->collision_cnt) {
+  dc->collision_cnt=0;
+  dc->bkcolor=ROP_COLLISION+WHITE;
+  GrSpritePlot3(dc,x,y,0,__BIN_1);
+  if (dc->collision_cnt) {
     Snd(400);
     penalty++;
   } else
     Snd(0);
 
-  base->bkcolor=ROP_EQU;
-  GrElemsPlot3(base,x,y,0,__BIN_1);
-  GrDel(base);
+  dc->bkcolor=ROP_EQU;
+  GrSpritePlot3(dc,x,y,0,__BIN_1);
+  GrDCDel(dc);
 
 //Text attr include forground in the
 //lowest 4 bits and background in the upper 4.

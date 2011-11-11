@@ -21,7 +21,7 @@ I64 tree_x[NUM_TREES],tree_y[NUM_TREES];
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,h,v;
 
   task->horz_scroll.min=0;
@@ -33,19 +33,19 @@ U0 UpdateWin(TaskStruct *task)
   h=task->horz_scroll.pos;
   v=task->vert_scroll.pos;
 
-  base->color=BROWN;
-  base->pen_width=4;
-  GrLine3(base,2-h,2-v,0,MAP_WIDTH-3-h,2-v,0);
-  GrLine3(base,2-h,MAP_HEIGHT-3-v,0,MAP_WIDTH-3-h,MAP_HEIGHT-3-v,0);
-  GrLine3(base,2-h,2-v,0,2-h,MAP_HEIGHT-3-v,0);
-  GrLine3(base,MAP_WIDTH-3-h,2-v,0,MAP_WIDTH-3-h,MAP_HEIGHT-3-v,0);
+  dc->color=BROWN;
+  dc->pen_width=4;
+  GrLine3(dc,2-h,2-v,0,MAP_WIDTH-3-h,2-v,0);
+  GrLine3(dc,2-h,MAP_HEIGHT-3-v,0,MAP_WIDTH-3-h,MAP_HEIGHT-3-v,0);
+  GrLine3(dc,2-h,2-v,0,2-h,MAP_HEIGHT-3-v,0);
+  GrLine3(dc,MAP_WIDTH-3-h,2-v,0,MAP_WIDTH-3-h,MAP_HEIGHT-3-v,0);
 
 //Check bounds if you wish better performance.
   for (i=0;i<NUM_TREES;i++)
-    GrElemsPlot3(base,tree_x[i]-h,
+    GrSpritePlot3(dc,tree_x[i]-h,
 		     tree_y[i]-v,0,__BIN_1);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 Init()

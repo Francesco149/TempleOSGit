@@ -2,36 +2,36 @@
 
 F64 t0;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   I64 i;
-  F64 tt=(tJ-t0)*music_tempo%8.0,z,w,x1,y1,z1,x2,y2,z2;
+  F64 dt=(tJ-t0)*music_tempo%8.0,z,w,x1,y1,z1,x2,y2,z2;
   BoolI8 first=TRUE;
-  GrAllocDepthBuf(base);
-  base->flags|=BMF_TRANSFORMATION;
-  base->x=30*tt+20.0*Sin(tt)+25;
-  base->y=10*tt-15;
-  base->z=GR_Z_ALL;
-  GrRotXEqu(base->r,0.75*tt);
-  GrRotYEqu(base->r,0.45*tt);
-  GrRotZEqu(base->r,0.50*tt);
-  GrScaleMatEqu(base->r,0.5);
+  GrDCAllocDepthBuf(dc);
+  dc->flags|=BMF_TRANSFORMATION;
+  dc->x=30*dt+20.0*Sin(dt)+25;
+  dc->y=10*dt-15;
+  dc->z=GR_Z_ALL;
+  GrRotXEqu(dc->r,0.75*dt);
+  GrRotYEqu(dc->r,0.45*dt);
+  GrRotZEqu(dc->r,0.50*dt);
+  GrScaleMatEqu(dc->r,0.5);
   for (i=-50;i<40;i+=2) {
     if (i&2)
-      base->color=LTGRAY;
+      dc->color=LTGRAY;
     else
-      base->color=DKGRAY;
-    z=10*Cos(i/10.0*pi/8.0)*Cos(tt);
+      dc->color=DKGRAY;
+    z=10*Cos(i/10.0*pi/8.0)*Cos(dt);
     w=Tri(100+i,200);
     x1=i-3;y1=0;z1=z;
     if (-30<=i<=40) {
-      GrLine3(base,i,-10*w,z,i-3,0,z);
-      GrLine3(base,i,+10*w,z,i-3,0,z);
+      GrLine3(dc,i,-10*w,z,i-3,0,z);
+      GrLine3(dc,i,+10*w,z,i-3,0,z);
     }
     if (!first) {
-      base->color=DKGRAY;
-      GrLine3(base,x1,y1,z1,x2,y2,z2);
+      dc->color=DKGRAY;
+      GrLine3(dc,x1,y1,z1,x2,y2,z2);
     }
     x2=x1;y2=y1;z2=z1;
     first=FALSE;

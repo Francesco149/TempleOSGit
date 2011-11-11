@@ -106,7 +106,7 @@ F64 t0_down,t0_up;
 BoolI8 down_stroke;
 
 
-U0 DrawWaterRock(TaskStruct *task,GrBitMap *base)
+U0 DrawWaterRock(TaskStruct *task,GrDC *dc)
 {
   I64 i,r,
       cx=task->win_pixel_width>>1,
@@ -118,10 +118,10 @@ U0 DrawWaterRock(TaskStruct *task,GrBitMap *base)
     if (tt>DOWN_TIME) {
       r=SPREAD_RATE*(tt-DOWN_TIME);
       if (r>17) r=17;
-      base->color=BLUE;
-      GrCircle(base,cx-21,cy+22,r);
+      dc->color=BLUE;
+      GrCircle(dc,cx-21,cy+22,r);
       if (r>=2)
-	GrFloodFill(base,cx-21,cy+22);
+	GrFloodFill(dc,cx-21,cy+22);
     }
   }
   if (down_stroke) {
@@ -133,9 +133,9 @@ U0 DrawWaterRock(TaskStruct *task,GrBitMap *base)
     tt=1.0-tt;
   }
   i=(NUM_FRAMES-1)*tt;
-  inter=GrElemsInterpolate(imgs[i],imgs[i+1],(NUM_FRAMES-1)*tt-i);
-  GrElemsPlot3(base,cx,cy,0,inter);
-  GrElemsPlot3(base,cx,cy,0,__BIN_5);
+  inter=GrSpriteInterpolate(imgs[i],imgs[i+1],(NUM_FRAMES-1)*tt-i);
+  GrSpritePlot3(dc,cx,cy,0,inter);
+  GrSpritePlot3(dc,cx,cy,0,__BIN_5);
   Free(inter);
 }
 

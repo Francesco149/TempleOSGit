@@ -17,7 +17,8 @@ PutS("Face:\xFF\r\n");
 //Chars 128-255 are treated as letters
 //by the compiler and everything else.
 //Enter them by holding ALT and
-//pressing a 3 digit decimal number.
+//pressing a 3 digit decimal number or
+//press <CTRL-ALT-A>.
 
 U0 SrcExample()
 {

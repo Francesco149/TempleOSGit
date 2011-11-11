@@ -1,16 +1,16 @@
-U0 DoIt()
+U0 Main()
 {
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
-  base->color=RED+BLACK<<16+ROPF_DITHER;
-  GrCircle(base,100,100,50);
-  GrLine(base,10,10,280,70);
-  base->color=RED+BLUE<<16+ROPF_DITHER;
-  GrFloodFill(base,100,100);
-  base->color=PURPLE+BLUE<<16+ROPF_DITHER;
-  GrRect(base,20,20,100,100);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  dc->color=RED+BLACK<<16+ROPF_DITHER;
+  GrCircle(dc,100,100,50);
+  GrLine(dc,10,10,280,70);
+  dc->color=RED+BLUE<<16+ROPF_DITHER;
+  GrFloodFill(dc,100,100);
+  dc->color=PURPLE+BLUE<<16+ROPF_DITHER;
+  GrRect(dc,20,20,100,100);
   PressAKey;
-  GrClear;
-  GrDel(base);
+  GrDCClear;
+  GrDCDel(dc);
 }
 
-DoIt;
+Main;

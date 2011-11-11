@@ -131,7 +131,7 @@ BoolI8 game_over;
 
 
 
-GrElem *l_imgs[LANDSCAPE_TYPES]=
+GrSprite *l_imgs[LANDSCAPE_TYPES]=
   {__BIN_6,__BIN_7,__BIN_8,__BIN_9};
 
 #define MAX_LANDSCAPE 64
@@ -145,7 +145,7 @@ class LandScapeItem
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i,yy;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 t1;
   Man *tempm;
   Shot *temps;
@@ -153,18 +153,18 @@ U0 UpdateWin(TaskStruct *task)
   for (i=0;i<MAX_LANDSCAPE;i++) {
     yy=(ls[i].y-scroll_y)&(MAP_HEIGHT-1);
     if (-32<=yy<=Fs->win_pixel_bottom+32)
-      GrElemsPlot3(base,ls[i].x,yy,0,ls[i].img);
+      GrSpritePlot3(dc,ls[i].x,yy,0,ls[i].img);
   }
 
-  base->pen_width=3;
-  base->color=BROWN;
-  GrLine3(base,0,  (finish_line-scroll_y)&(MAP_HEIGHT-1),0,
+  dc->pen_width=3;
+  dc->color=BROWN;
+  GrLine3(dc,0,  (finish_line-scroll_y)&(MAP_HEIGHT-1),0,
 	  GR_WIDTH,(finish_line-scroll_y)&(MAP_HEIGHT-1),0);
 
-  base->color=LTRED;
+  dc->color=LTRED;
   for (i=0,temps=s;i<MAX_SHOTS;i++,temps++)
     if (!temps->dead)
-      GrLine(base,temps->x>>32,temps->y>>32,
+      GrLine(dc,temps->x>>32,temps->y>>32,
 	(temps->x+temps->dx*SHOT_LEN)>>32,
 	(temps->y+temps->dy*SHOT_LEN)>>32);
   for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
@@ -174,9 +174,9 @@ U0 UpdateWin(TaskStruct *task)
 	  tP(task)<tempm->corpse_timeout)
 	if (!(RandU16&15)) {
 	  if (tempm->friendly)
-	    GrElemsPlot3(base,tempm->x,yy,0,__BIN_4);
+	    GrSpritePlot3(dc,tempm->x,yy,0,__BIN_4);
 	  else
-	    GrElemsPlot3(base,tempm->x,yy,0,__BIN_5);
+	    GrSpritePlot3(dc,tempm->x,yy,0,__BIN_5);
 	}
    }
   }
@@ -185,32 +185,32 @@ U0 UpdateWin(TaskStruct *task)
     if (-32<=yy<=Fs->win_pixel_bottom+32) {
       if (!tempm->dead) {
 	if (tempm->friendly)
-	  GrElemsPlot3(base,tempm->x,yy,0,__BIN_2);
+	  GrSpritePlot3(dc,tempm->x,yy,0,__BIN_2);
 	else
-	  GrElemsPlot3(base,tempm->x,yy,0,__BIN_3);
+	  GrSpritePlot3(dc,tempm->x,yy,0,__BIN_3);
       }
     }
   }
-  base->bkcolor=BLACK;
-  GrElemsPlotRotZ3b(base,x,y,0,__BIN_1,theta);
+  dc->bkcolor=BLACK;
+  GrSpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
 
   if (tf) {
     t1=tf;
-    base->color=RED;
+    dc->color=RED;
     if (game_over && Blink(,tP(task)))
-      GrPutS(base,task->win_pixel_width/2-9*FONT_WIDTH/2,
+      GrPutS(dc,task->win_pixel_width/2-9*FONT_WIDTH/2,
 		  task->win_pixel_height/2,"Game Over");
   } else {
     t1=tP(task);
     if (!enemy_left || !friendly_left)
      game_over=TRUE;
   }
-  base->color=BROWN;
-  GrPrintF(base,0,0,"Enemy:%d Friends:%d Friendly Fire:%d Time:%6.2f Shots:%d",
+  dc->color=BROWN;
+  GrPrintF(dc,0,0,"Enemy:%d Friends:%d Friendly Fire:%d Time:%6.2f Shots:%d",
     enemy_left,friendly_left,friendly_fire,t1-t0,shots_fired);
-  GrPrintF(base,0,8,"Total Score:%,d High Score:%,d",
+  GrPrintF(dc,0,8,"Total Score:%,d High Score:%,d",
       total_score,best_score);
-  GrDel(base);
+  GrDCDel(dc);
   if (snd_timeout && !snd_timeout2) {
     if (tP(task)>snd_timeout) {
       snd_timeout=0;
@@ -233,33 +233,33 @@ U0 CheckCollisions()
   I64 i,x,y;
   Man *tempm;
   Shot *temps;
-  GrBitMap *base2=GrNew(BMT_MONO,GR_WIDTH,GR_HEIGHT);
-  GrBitMap *friend=GrNew(BMT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
-  GrBitMap *enemy =GrNew(BMT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
+  GrDC *dc2=GrDCNew(BMT_MONO,GR_WIDTH,GR_HEIGHT);
+  GrDC *friend=GrDCNew(BMT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
+  GrDC *enemy =GrDCNew(BMT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
 
-  GrElemsPlot3(friend,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_2);
-  GrElemsPlot3(enemy,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_3);
+  GrSpritePlot3(friend,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_2);
+  GrSpritePlot3(enemy,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_3);
 
-  base2->color=WHITE;
+  dc2->color=WHITE;
   for (i=0,temps=s;i<MAX_SHOTS;i++,temps++)
     if (!temps->dead)
-      GrLine(base2,temps->x>>32,temps->y>>32,
+      GrLine(dc2,temps->x>>32,temps->y>>32,
 	(temps->x+temps->dx*SHOT_LEN)>>32,
 	(temps->y+temps->dy*SHOT_LEN)>>32);
 
-  base2->bkcolor=ROP_COLLISION+BLACK;
-  base2->color=ROP_COLLISION+WHITE;
+  dc2->bkcolor=ROP_COLLISION+BLACK;
+  dc2->color=ROP_COLLISION+WHITE;
   for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
     if (!tempm->dead) {
       x=tempm->x;
       y=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
       if (0<=x<GR_WIDTH && 0<=y<GR_HEIGHT) {
-	base2->collision_cnt=0;
+	dc2->collision_cnt=0;
 	if (tempm->friendly)
-	  GrBlot(base2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,friend);
+	  GrBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,friend);
 	else
-	  GrBlot(base2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,enemy);
-	if (base2->collision_cnt) {
+	  GrBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,enemy);
+	if (dc2->collision_cnt) {
 	  tempm->dead=TRUE;
 	  tempm->corpse_timeout=tP+30.0;
 	  if (tempm->friendly) {
@@ -275,9 +275,9 @@ U0 CheckCollisions()
       }
     }
   }
-  GrDel(friend);
-  GrDel(enemy);
-  GrDel(base2);
+  GrDCDel(friend);
+  GrDCDel(enemy);
+  GrDCDel(dc2);
 }
 
 U0 Init()

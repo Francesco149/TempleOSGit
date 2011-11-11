@@ -165,7 +165,7 @@ public U0 MenuPop()
   MenuDel(m);
 }
 
-U0 DrawMenu(GrBitMap *base)
+U0 DrawMenu(GrDC *dc)
 {
   Menu *m;
   MenuEntry *tempme,*tempse,*cur_submenu=NULL;
@@ -178,20 +178,20 @@ U0 DrawMenu(GrBitMap *base)
     return;
   }
 
-  base->color=m->attr>>4;
-  GrRect(base,0,0,GR_WIDTH,FONT_HEIGHT);
+  dc->color=m->attr>>4;
+  GrRect(dc,0,0,GR_WIDTH,FONT_HEIGHT);
   x0=0;
   tempme=m->sub;
   while (tempme) {
     w=MenuEntryWidth(tempme)*FONT_WIDTH;
     if (x0<=x1<x0+w) {
       if (0<=y1<FONT_HEIGHT) {
-	base->color=m->attr&15;
-	GrRect(base,x0,0,w,FONT_HEIGHT);
-	base->color=m->attr>>4;
+	dc->color=m->attr&15;
+	GrRect(dc,x0,0,w,FONT_HEIGHT);
+	dc->color=m->attr>>4;
       } else
-	base->color=m->attr&15;
-      GrPutS(base,x0,0,tempme->name);
+	dc->color=m->attr&15;
+      GrPutS(dc,x0,0,tempme->name);
       y0=FONT_HEIGHT;
       tempse=tempme->sub;
       while (tempse) {
@@ -206,29 +206,29 @@ U0 DrawMenu(GrBitMap *base)
 	    st=ScanCode2KeyName(tempse->p2);
 	  }
 	  sys_cur_submenu_entry=cur_submenu=tempse;
-	  base->color=i&15;
-	  GrRect(base,x0,y0,w,FONT_HEIGHT);
-	  base->color=i>>4;
-	  GrPutS(base,x0,y0,tempse->name);
+	  dc->color=i&15;
+	  GrRect(dc,x0,y0,w,FONT_HEIGHT);
+	  dc->color=i>>4;
+	  GrPutS(dc,x0,y0,tempse->name);
 	  if (st) {
-	    base->color=i>>4;
-	    GrRect(base,x0+w,y0-FONT_HEIGHT,(StrLen(st)+1)*FONT_WIDTH,FONT_HEIGHT*3);
-	    base->color=i&15;
-	    GrPutS(base,x0+w,y0,st);
+	    dc->color=i>>4;
+	    GrRect(dc,x0+w,y0-FONT_HEIGHT,(StrLen(st)+1)*FONT_WIDTH,FONT_HEIGHT*3);
+	    dc->color=i&15;
+	    GrPutS(dc,x0+w,y0,st);
 	    Free(st);
 	  }
 	} else {
-	  base->color=i>>4;
-	  GrRect(base,x0,y0,w,FONT_HEIGHT);
-	  base->color=i&15;
-	  GrPutS(base,x0,y0,tempse->name);
+	  dc->color=i>>4;
+	  GrRect(dc,x0,y0,w,FONT_HEIGHT);
+	  dc->color=i&15;
+	  GrPutS(dc,x0,y0,tempse->name);
 	}
 	y0+=FONT_HEIGHT;
 	tempse=tempse->next;
       }
     } else {
-      base->color=m->attr&15;
-      GrPutS(base,x0,0,tempme->name);
+      dc->color=m->attr&15;
+      GrPutS(dc,x0,0,tempme->name);
     }
     x0+=w;
     tempme=tempme->next;

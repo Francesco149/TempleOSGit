@@ -56,7 +56,7 @@
 
 
 
-GrBitMap *RK_base=GrAlias(gr_refreshed_base,Fs);
+GrDC *RK_dc=GrDCAlias(gr_dc,Fs);
 
 
 
@@ -227,9 +227,9 @@ U0 UpdateWin(TaskStruct *task)
   nounusedwarn task;
   I64 i,x,y;
 
-  RK_base->color=WHITE;
+  RK_dc->color=WHITE;
   for (i=0;i<NUM_STARS;i++)
-    GrPlot(RK_base,stars_x[i],stars_y[i]);
+    GrPlot(RK_dc,stars_x[i],stars_y[i]);
 
   for (i=0;i<NUM_OBJECTS;i++) {
     if (objs[i].active==A_ACTIVE) {
@@ -257,14 +257,14 @@ U0 UpdateWin(TaskStruct *task)
 	  case OT_SHIP:
 	    if (bounce) {
 	      if (cmd_code==CMD_THRUST && GetTimeStamp&8192)
-		GrElemsPlotRotZ3b(RK_base,x,y,0,__BIN_2,o_state[i].theta);
+		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_2,o_state[i].theta);
 	      else
-		GrElemsPlotRotZ3b(RK_base,x,y,0,__BIN_1,o_state[i].theta);
+		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_1,o_state[i].theta);
 	    } else {
 	      if (cmd_code==CMD_THRUST && GetTimeStamp&8192)
-		GrElemsPlotRotZ3b(RK_base,x,y,0,__BIN_4,o_state[i].theta);
+		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_4,o_state[i].theta);
 	      else
-		GrElemsPlotRotZ3b(RK_base,x,y,0,__BIN_3,o_state[i].theta);
+		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_3,o_state[i].theta);
 	    }
 	    break;
 	  case OT_BULLET:
@@ -273,14 +273,14 @@ U0 UpdateWin(TaskStruct *task)
 	  case OT_MEDIUM_ROCK:
 	  case OT_LARGE_ROCK:
 	  case OT_CARGO:
-	    GrElemsPlotRotZ3b(RK_base,x,y,0,objs[i].img,o_state[i].theta);
+	    GrSpritePlotRotZ3b(RK_dc,x,y,0,objs[i].img,o_state[i].theta);
 	    break;
 	}
       }
     }
   }
-  RK_base->color=WHITE;
-  GrPutS(RK_base,0,0,"Escort the cargo ship.");
+  RK_dc->color=WHITE;
+  GrPutS(RK_dc,0,0,"Escort the cargo ship.");
 }
 
 U0 Init()
@@ -553,7 +553,7 @@ U0 CheckCollisions()
 {
   I64 i,j;
   F64 d,d1,dd,dx,dy;
-  GrBitMap *b;
+  GrDC *b;
   for (i=0;i<NUM_OBJECTS;i++) {
     if (objs[i].active==A_ACTIVE) {
       for (j=i+1;j<NUM_OBJECTS;j++) {
@@ -573,15 +573,15 @@ U0 CheckCollisions()
 
 	  d1=objs[i].radius+objs[j].radius;
 	  if (dd<Sqr(d1)) {
-	    b=GrNew(BMT_COLOR4,64,64,Fs);
-	    GrElemsPlotRotZ3b(b,32,32,0,objs[i].img,o_state[i].theta);
+	    b=GrDCNew(BMT_COLOR4,64,64,Fs);
+	    GrSpritePlotRotZ3b(b,32,32,0,objs[i].img,o_state[i].theta);
 	    b->bkcolor=ROP_COLLISION+BLACK;
-	    GrElemsPlotRotZ3b(b,o_state[j].x-o_state[i].x+32,
+	    GrSpritePlotRotZ3b(b,o_state[j].x-o_state[i].x+32,
 			       o_state[j].y-o_state[i].y+32,0,
 			       objs[j].img,o_state[j].theta);
 	    if (b->collision_cnt>0)
 	      Collision(i,j);
-	    GrDel(b);
+	    GrDCDel(b);
 	  }
 	}
       }

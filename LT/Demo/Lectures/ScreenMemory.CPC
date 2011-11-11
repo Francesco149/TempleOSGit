@@ -9,7 +9,7 @@ U0 PlotXY(I64 x,I64 y)
 
 
 
-U0 DoIt()
+U0 Main()
 {
   U64 i;
   BoolI8 old_preempt=Preempt(OFF);
@@ -49,6 +49,6 @@ That means no read-modify-writes, too.
   LBts(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0);
 }
 
-DoIt;
+Main;
 
 //See [::/LT/Demo/Lectures/GraphicsCPULoad.CPZ] ::/LT/Demo/Lectures/GraphicsCPULoad.CPZ.

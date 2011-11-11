@@ -25,11 +25,11 @@ U0 UpdateWin(TaskStruct *task)
 #define CIRCLE_RADIUS	100
 #define CIRCUMFERENCE	(2*pi*CIRCLE_RADIUS)
 
-BoolI64 CTPlot(GrBitMap *base,I64 x,I64 y,I64 z)
+BoolI64 CTPlot(GrDC *dc,I64 x,I64 y,I64 z)
 {
   nounusedwarn z;
   F64 rad=Sqrt(Sqr(x-cx)+Sqr(y-cy));
-  GrPlot(base,x,y);
+  GrPlot(dc,x,y);
   total_error+=Abs(rad-CIRCLE_RADIUS);
   return TRUE;
 }
@@ -38,7 +38,7 @@ U0 CircleTrace()
 {
   I64 msg_code,p1,p2,x1,y1;
   F64 rad,t0,total_distance;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
@@ -50,9 +50,9 @@ U0 CircleTrace()
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
   Fs->update_win=&UpdateWin;
 
-  GrClear;
-  base->color=ROP_XOR+BLACK;
-  GrCircle(base,cx,cy,CIRCLE_RADIUS);
+  GrDCClear;
+  dc->color=ROP_XOR+BLACK;
+  GrCircle(dc,cx,cy,CIRCLE_RADIUS);
   do {
     msg_code=GetMsg(&p1,&p2,
       1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN);
@@ -60,10 +60,10 @@ U0 CircleTrace()
       case MSG_KEY_UP:
 	break;
       case MSG_IP_L_DOWN:
-	GrClear;
-	base->color=ROP_XOR+BLACK;
-	GrCircle(base,cx,cy,CIRCLE_RADIUS);
-	base->color=ROP_XOR+RED;
+	GrDCClear;
+	dc->color=ROP_XOR+BLACK;
+	GrCircle(dc,cx,cy,CIRCLE_RADIUS);
+	dc->color=ROP_XOR+RED;
 	t0=tP;
 	total_distance=0.001;
 	total_error=0;
@@ -77,10 +77,10 @@ U0 CircleTrace()
 	    case MSG_IP_MOVE:
 	      if (x1!=p1 || y1!=p2) {
 		total_distance+=Sqrt(Sqr(x1-p1)+Sqr(y1-p2));
-		Line(base,x1,y1,0,p1,p2,0,&CTPlot);
+		Line(dc,x1,y1,0,p1,p2,0,&CTPlot);
 		x1=p1;y1=p2;
 		//undo overlapping pixels on segments
-		GrPlot(base,x1,y1);
+		GrPlot(dc,x1,y1);
 		rad=Sqrt(Sqr(x1-cx)+Sqr(y1-cy));
 		total_error-=Abs(rad-CIRCLE_RADIUS);
 	      }
@@ -116,8 +116,8 @@ U0 CircleTrace()
     }
   } while (msg_code!=MSG_KEY_DOWN || p1!=CH_SHIFT_ESC && p1!=CH_ESC);
   SettingsPop;
-  GrClear;
-  GrDel(base);
+  GrDCClear;
+  GrDCDel(dc);
   AcctRegWriteBranch("LT/CircleTrace","F64 best_score=%5.4f;\r\n",best_score);
 }
 

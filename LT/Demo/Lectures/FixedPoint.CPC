@@ -21,7 +21,7 @@ features, see [::/LT/Doc/Differences.TXZ] ::/LT/Doc/Differences.TXZ.
 
 */
 
-U0 DoIt()
+U0 Main()
 {
   F64 t0,f_sum=0,f_val;
   I64 i ,i_sum=0,i_val;
@@ -82,7 +82,7 @@ features, see [::/LT/Doc/Differences.TXZ] ::/LT/Doc/Differences.TXZ.
 }
 
 CPURep;
-DoIt;
+Main;
 DoIt2;
 
 //See [::/LT/Demo/Lectures/FixedPointAdvanced.CPZ] ::/LT/Demo/Lectures/FixedPointAdvanced.CPZ

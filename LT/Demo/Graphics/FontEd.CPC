@@ -21,7 +21,7 @@ U8 cur_ch;
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i,j,k,c;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   k=0;
   for (i=0;i<16;i++)
     for (j=0;j<16;j++) {
@@ -39,14 +39,14 @@ U0 UpdateWin(TaskStruct *task)
   for (i=0;i<FONT_HEIGHT;i++)
     for (j=0;j<FONT_WIDTH;j++) {
       if (Bt(&gr_font[FONT_HEIGHT*cur_ch],k++))
-	base->color=YELLOW;
+	dc->color=YELLOW;
       else
-	base->color=BLUE;
-      GrRect(base,BLOW_UP_CHAR_X+j*FONT_WIDTH,
+	dc->color=BLUE;
+      GrRect(dc,BLOW_UP_CHAR_X+j*FONT_WIDTH,
 		  BLOW_UP_CHAR_Y+i*FONT_HEIGHT,
 	     FONT_WIDTH,FONT_HEIGHT);
     }
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 FESave()

@@ -8,7 +8,7 @@
 /* This demonstrates "interpolation"
 which is generating frames between
 frames.  For interpolation to work,
-your GrElems must not be bitmaps and
+your GrSprite must not be bitmaps and
 must be identical, except shifted
 around.  Cut and paste and use
 "shift points."
@@ -35,16 +35,16 @@ around.  Cut and paste and use
 
 F64 t0;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   U8 *inter;
 
   if (tP(task)-t0<1.0) {
-    inter=GrElemsInterpolate(__BIN_1,__BIN_2,(tP(task)-t0)%1.0);
-    GrElemsPlot3(base,100,100,0,inter);
+    inter=GrSpriteInterpolate(__BIN_1,__BIN_2,(tP(task)-t0)%1.0);
+    GrSpritePlot3(dc,100,100,0,inter);
     Free(inter);
   } else
-    GrElemsPlot3(base,100,100,0,__BIN_1);
+    GrSpritePlot3(dc,100,100,0,__BIN_1);
 }
 
 U0 Golf()

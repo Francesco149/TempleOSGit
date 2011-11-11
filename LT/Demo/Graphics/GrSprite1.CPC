@@ -21,8 +21,8 @@ You make use of a picture in a program by entering
 They behave like string constants when compiled.
 That is, they are ptrs to data.
 
-GrElem1.CPZ uses the persistent graphic base, gr_persistent_base,
-while the other demo's use gr_refreshed_base which must
+GrSprite1.CPZ uses the persistent graphic dc, gr_dc2,
+while the other demo's use gr_dc which must
 be redrawn each update of the screen (by the
 window manager task).  This demo is simpler
 because you do not need a window update routine.
@@ -35,21 +35,21 @@ because you do not need a window update routine.
 
 
 
-U0 GrElem1()
+U0 GrSprite1()
 {
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
   I64 i;
   PutS("$CL$");
   for (i=0;i<GR_WIDTH>>2;i++) {
-    GrClear;
-    GrElemsPlot3(base,i,GR_HEIGHT>>1,0,__BIN_1);
+    GrDCClear;
+    GrSpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
     Sleep(3);
   }
   PrintF("Image size:%d\r\n",__BIN_1_SIZE);
   PrintF("Image type:%d\r\n",__BIN_1_TYPE);
-  GrDel(base);
+  GrDCDel(dc);
   PressAKey;
-  GrClear;
+  GrDCClear;
 }
 
-GrElem1;
+GrSprite1;

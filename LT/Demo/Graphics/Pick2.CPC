@@ -18,7 +18,7 @@ This is a whimsical program which demonstrates some techniques.
 #define PTY_POINT	0
 #define PTY_CIRCLE	1
 #define PTY_LINE	2
-#define PTY_GRELEMS	3
+#define PTY_GRSPRITES	3
 #define PTY_NUM		4
 
 extern class PObject;
@@ -39,7 +39,7 @@ class PLine
   PObject *p1,*p2;
 };
 
-class PGrElems
+class PGrSprite
 {
   PObject *p;
   U8 *img;
@@ -56,7 +56,7 @@ class PObject
     PPoint   p;
     PCircle  c;
     PLine    l;
-    PGrElems g;
+    PGrSprite g;
   };
 };
 
@@ -92,7 +92,7 @@ class PickFrame
 U8 *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
 
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 *r,*old_r;
   PickFrame *pf=NamedFramePtr("PickFrame",task);
@@ -101,40 +101,40 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   pf->cx=task->win_pixel_width>>1;
   pf->cy=task->win_pixel_height>>1;
 
-  GrAllocDepthBuf(base);
+  GrDCAllocDepthBuf(dc);
 
-  base->color=LTRED;
-  base->pen_width=3;
-  GrLineRect4(base,BORDER,BORDER,2*pf->cx-BORDER,2*pf->cy-BORDER);
+  dc->color=LTRED;
+  dc->pen_width=3;
+  GrLineRect4(dc,BORDER,BORDER,2*pf->cx-BORDER,2*pf->cy-BORDER);
 
 
   while (tempo!=&pf->o_root) {
-    base->color=tempo->color;
+    dc->color=tempo->color;
     switch (tempo->type) {
       case PTY_POINT:
-	GrLine(base,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x-2
-,pf->cy+tempo->p.p.y-2);
-	GrLine(base,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x+2
-,pf->cy+tempo->p.p.y-2);
+	GrLine(dc,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x-2,p
+f->cy+tempo->p.p.y-2);
+	GrLine(dc,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x+2,p
+f->cy+tempo->p.p.y-2);
 	break;
       case PTY_CIRCLE:
-	GrCircle(base,pf->cx+tempo->c.p->p.p.x,pf->cy+tempo->c.p->p.p.y,tempo->c.radi
-us);
+	GrCircle(dc,pf->cx+tempo->c.p->p.p.x,pf->cy+tempo->c.p->p.p.y,tempo->c.radius
+);
 	break;
       case PTY_LINE:
-	GrLine(base,pf->cx+tempo->l.p1->p.p.x,pf->cy+tempo->l.p1->p.p.y,pf->cx+tempo-
->l.p2->p.p.x,pf->cy+tempo->l.p2->p.p.y);
+	GrLine(dc,pf->cx+tempo->l.p1->p.p.x,pf->cy+tempo->l.p1->p.p.y,pf->cx+tempo->l
+.p2->p.p.x,pf->cy+tempo->l.p2->p.p.y);
 	break;
-      case PTY_GRELEMS:
-	old_r=base->r;
-	base->r=tempo->g.r;
-	base->x=pf->cx+tempo->g.p->p.p.x;
-	base->y=pf->cy+tempo->g.p->p.p.y;
-	base->z=GR_Z_ALL;
-	base->flags|=BMF_TRANSFORMATION;
-	GrElemsPlot3(base,0,0,0,tempo->g.img);
-	base->flags&=~BMF_TRANSFORMATION;
-	base->r=old_r;
+      case PTY_GRSPRITES:
+	old_r=dc->r;
+	dc->r=tempo->g.r;
+	dc->x=pf->cx+tempo->g.p->p.p.x;
+	dc->y=pf->cy+tempo->g.p->p.p.y;
+	dc->z=GR_Z_ALL;
+	dc->flags|=BMF_TRANSFORMATION;
+	GrSpritePlot3(dc,0,0,0,tempo->g.img);
+	dc->flags&=~BMF_TRANSFORMATION;
+	dc->r=old_r;
 
 	//Updated each refresh, not guarenteed to be uniform.
 	//Rounding error might corrupt, as well.
@@ -162,7 +162,7 @@ U0 PObjectDel(PickFrame *pf,PObject *tempo)
 {
   RemQue(tempo);
   switch (tempo->type) {
-    case PTY_GRELEMS:
+    case PTY_GRSPRITES:
       Free(tempo->g.r);
       Free(tempo->g.dr);
       break;
@@ -223,9 +223,9 @@ PObject *PLineNew(PickFrame *pf,I64 p1_num,I64 p2_num)
   return tempo;
 }
 
-PObject *PGrElemsNew(PickFrame *pf,U8 *img,I64 p_num,I64 *r,I64 *dr)
+PObject *PGrSpriteNew(PickFrame *pf,U8 *img,I64 p_num,I64 *r,I64 *dr)
 {
-  PObject *tempo=PObjectNew(pf,PTY_GRELEMS,BLACK);
+  PObject *tempo=PObjectNew(pf,PTY_GRSPRITES,BLACK);
   tempo->g.p=PPointNum(pf,p_num);
   tempo->g.img=img;
   tempo->g.r=r;
@@ -257,8 +257,8 @@ PLineNew(pf,pf->o_cnts[PTY_POINT]*RandU16/MAX_U16,pf->o_cnts[PTY_POINT]*RandU1
     GrRotYEqu(dr,0.05*2*(Rand-0.5));
     GrRotXEqu(dr,0.05*2*(Rand-0.5));
    
-PGrElemsNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_POINT]*RandU16/MA
-X_U16,r,dr);
+PGrSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_POINT]*RandU16/M
+AX_U16,r,dr);
   }
   NamedFramePtrSet("PickFrame",pf);
   return pf;

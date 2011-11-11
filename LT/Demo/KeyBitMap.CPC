@@ -13,10 +13,10 @@
 
 I64 x=0;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  GrElemsPlot3(base,x%100,100,0,__BIN_1);
+  GrSpritePlot3(dc,x%100,100,0,__BIN_1);
 }
 
 
@@ -36,7 +36,7 @@ U0 KeyDownBitMapDemo()
 //merged scan code.  (left shift and
 //right shift combined for example.)
 //[C:/LT/OSMain/OSGlbls.CPZ,114] key_down_bitmap2 is indexed with the
-//distinct scan code.  See [Char] Char and [C:/LT/OSMain/Adam1a.HPZ,3366] Scan Codes.
+//distinct scan code.  See [Char] Char and [C:/LT/OSMain/Adam1a.HPZ,3372] Scan Codes.
 
   while (Bt(key_down_bitmap,i_sc)) {
     x++;

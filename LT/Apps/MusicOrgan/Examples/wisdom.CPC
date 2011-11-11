@@ -18,12 +18,12 @@
 
 F64 t0=0.0;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  GrElemsPlot3(base,20,8,0,__BIN_1);
+  GrSpritePlot3(dc,20,8,0,__BIN_1);
   if (t0) {
-    GrElemsPlot3(base,20,24,0,__BIN_2);
+    GrSpritePlot3(dc,20,24,0,__BIN_2);
     Snd((tJ-t0)*100);
     if (tJ>t0+0.25)
       t0=0.0;

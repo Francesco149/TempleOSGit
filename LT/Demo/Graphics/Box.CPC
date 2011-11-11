@@ -1,22 +1,22 @@
-GrBitMap *base=GrAlias(gr_refreshed_base,Fs);
+GrDC *dc=GrDCAlias(gr_dc,Fs);
 
 U0 UpdateWin(TaskStruct *task)
 {
   nounusedwarn task;
-  base->pen_width=2;
-  base->color=RED;
-  GrLine3(base,-100,-100,-100, -100, 100,-100);
-  GrLine3(base,-100, 100,-100,	100, 100,-100);
-  GrLine3(base, 100, 100,-100,	100,-100,-100);
-  GrLine3(base, 100,-100,-100, -100,-100,-100);
-  GrLine3(base,-100,-100, 100, -100, 100, 100);
-  GrLine3(base,-100, 100, 100,	100, 100, 100);
-  GrLine3(base, 100, 100, 100,	100,-100, 100);
-  GrLine3(base, 100,-100, 100, -100,-100, 100);
-  GrLine3(base,-100,-100, 100, -100,-100,-100);
-  GrLine3(base,-100, 100, 100, -100, 100,-100);
-  GrLine3(base, 100, 100, 100,	100, 100,-100);
-  GrLine3(base, 100,-100, 100,	100,-100,-100);
+  dc->pen_width=2;
+  dc->color=RED;
+  GrLine3(dc,-100,-100,-100, -100, 100,-100);
+  GrLine3(dc,-100, 100,-100,	100, 100,-100);
+  GrLine3(dc, 100, 100,-100,	100,-100,-100);
+  GrLine3(dc, 100,-100,-100, -100,-100,-100);
+  GrLine3(dc,-100,-100, 100, -100, 100, 100);
+  GrLine3(dc,-100, 100, 100,	100, 100, 100);
+  GrLine3(dc, 100, 100, 100,	100,-100, 100);
+  GrLine3(dc, 100,-100, 100, -100,-100, 100);
+  GrLine3(dc,-100,-100, 100, -100,-100,-100);
+  GrLine3(dc,-100, 100, 100, -100, 100,-100);
+  GrLine3(dc, 100, 100, 100,	100, 100,-100);
+  GrLine3(dc, 100,-100, 100,	100,-100,-100);
 }
 
 U0 Box()
@@ -27,16 +27,16 @@ U0 Box()
   Fs->update_win=&UpdateWin;
   Preempt(OFF); //We don't want matrix used while we're changing it.
 
-  base->x=200;
-  base->y=200;
-  base->flags|=BMF_TRANSFORMATION;
+  dc->x=200;
+  dc->y=200;
+  dc->flags|=BMF_TRANSFORMATION;
   while (!ScanChar) {
-    GrIdentEqu(base->r);
-    GrRotZEqu(base->r,theta);
-    GrRotXEqu(base->r,phi);
-    GrRotZEqu(base->r,omega);
-    GrScaleMatEqu(base->r,s);
-    GrSetRotMat(base,base->r);
+    GrIdentEqu(dc->r);
+    GrRotZEqu(dc->r,theta);
+    GrRotXEqu(dc->r,phi);
+    GrRotZEqu(dc->r,omega);
+    GrScaleMatEqu(dc->r,s);
+    GrSetRotMat(dc,dc->r);
 
     Sleep(20);
     theta+=2*pi/70;

@@ -8,17 +8,17 @@
 /* <1> <1> (image) */
 
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   F64 tt=Unwrap(tJ,0);
-  base->flags|=BMF_TRANSFORMATION;
-  GrRotXEqu(base->r,5*2*pi/180);
+  dc->flags|=BMF_TRANSFORMATION;
+  GrRotXEqu(dc->r,5*2*pi/180);
   if (pi/2<=tt<=3*pi/2) tt=pi-tt;
-  GrRotYEqu(base->r,tt);
-  base->x=325;
-  base->y=35;
-  GrElemsPlot3(base,0,0,0,__BIN_1);
+  GrRotYEqu(dc->r,tt);
+  dc->x=325;
+  dc->y=35;
+  GrSpritePlot3(dc,0,0,0,__BIN_1);
 }
 
 

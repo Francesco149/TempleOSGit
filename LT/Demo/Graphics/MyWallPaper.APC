@@ -5,7 +5,7 @@ to stay in mem even if this task is killed.
 
   <CTRL-T> to see the hidden text needed for graphic elements.
 
-  <CTRL-R> to add a graphic element to a document.
+  <CTRL-R> to add a sprite to a document.
 
 */
 
@@ -67,15 +67,15 @@ U0 (*old_wall_paper)(TaskStruct *task);
 U0 MyWallPaper(TaskStruct *task)
 {
   I64 i,j,x,y;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   Critter *c=wall_crits;
  
   task->text_attr=CYAN<<4+WHITE;
 
-  base->color=YELLOW;
+  dc->color=YELLOW;
   for (i=0;i<GR_HEIGHT;i+=20) {
     j=16*Tri(tNP*10,20);
-    GrLine(base,0,GR_HEIGHT-i-j,GR_HEIGHT-i-j,GR_HEIGHT);
+    GrLine(dc,0,GR_HEIGHT-i-j,GR_HEIGHT-i-j,GR_HEIGHT);
   }
   for (i=0;i<NUM_CRITTERS;i++,c++) {
     j=(tNP*4+c->t_offset)%FRAMES_PER_CRITTER;
@@ -84,14 +84,14 @@ U0 MyWallPaper(TaskStruct *task)
     y=c->y>>16%GR_HEIGHT;
     if (y<0) y+=GR_HEIGHT;
     if (c->dx<0) {
-      base->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
-      GrSetSymmetry(base,x,y-1,x,y+1);
+      dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+      GrSetSymmetry(dc,x,y-1,x,y+1);
     } else
-      base->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
-    GrElemsPlot3(base,x,y,0,imgs[c->type][j]);
+      dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+    GrSpritePlot3(dc,x,y,0,imgs[c->type][j]);
     c->x+=c->dx;  c->y+=c->dy;
   }
-  GrDel(base);
+  GrDCDel(dc);
 
 //Uncomment the following if you wish.
 //old_wall_paper(task);

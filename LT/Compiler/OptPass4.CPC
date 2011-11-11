@@ -341,6 +341,7 @@ U0 OptPass4(LexStruct *lx,OptRegStruct *register_offsets,U64 *_type)
 	  break;
 	case EC_BR_MM_ZERO:
 	case EC_BR_MM_NOT_ZERO:
+	//(branch ++ to zero is unlikely)
 	case EC_DEREF_PP:
 	case EC_DEREF_MM:
 	case EC__PP:

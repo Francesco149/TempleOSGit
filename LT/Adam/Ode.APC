@@ -1,7 +1,7 @@
 #help_index "Math/Ode;Ode"
 #help_file "::/LT/Doc/Ode"
 
-//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ.
+//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (5).
 
 F64 LowPass1(F64 a,F64 y0,F64 y,F64 dt=1.0)
 { //First order low pass filter

@@ -59,7 +59,7 @@ F64 enemy_destroyed_time=0,
    player_destroyed_time=0,
    phasor_time=0;
 I64 x=100,y=100;
-GrBitMap *base=GrAlias(gr_refreshed_base,Fs);
+GrDC *dc=GrDCAlias(gr_dc,Fs);
 
 #define NUM_STARS	100
 I64 stars_x[NUM_STARS],stars_y[NUM_STARS];
@@ -83,47 +83,47 @@ U0 UpdateWin(TaskStruct *task)
   I64 xx=ipx-task->win_pixel_left-task->win_scroll_x,
      yy=ipy-task->win_pixel_top-task->win_scroll_y;
  
-  base->color=WHITE;
+  dc->color=WHITE;
   for (i=0;i<NUM_STARS;i++)
-    GrPlot(base,stars_x[i],stars_y[i]);
+    GrPlot(dc,stars_x[i],stars_y[i]);
 
-  base->bkcolor=BLACK;
+  dc->bkcolor=BLACK;
   if (enemy_destroyed_time) {
-    GrElemsPlot3(base,x,y,0,__BIN_3);
+    GrSpritePlot3(dc,x,y,0,__BIN_3);
     if (tP(task)>=enemy_destroyed_time)
       enemy_destroyed_time=0;
   } else
-    GrElemsPlot3(base,x,y,0,__BIN_1);
+    GrSpritePlot3(dc,x,y,0,__BIN_1);
 
   if (!player_destroyed_time) {
-    base->collision_cnt=0;
-    base->bkcolor=ROP_COLLISION+BLACK;
-    GrElemsPlot3(base,xx,yy,0,__BIN_2);
-    if (base->collision_cnt>0x20) {
+    dc->collision_cnt=0;
+    dc->bkcolor=ROP_COLLISION+BLACK;
+    GrSpritePlot3(dc,xx,yy,0,__BIN_2);
+    if (dc->collision_cnt>0x20) {
       player_destroyed_time=tP(task)+1.0;  //one second
       Noise(700,150,200);
     }
   }
-  base->bkcolor=BLACK;
+  dc->bkcolor=BLACK;
   if (player_destroyed_time) {
-    GrElemsPlot3(base,xx,yy,0,__BIN_3);
+    GrSpritePlot3(dc,xx,yy,0,__BIN_3);
     if (tP(task)>=player_destroyed_time)
       player_destroyed_time=0;
   } else
-    GrElemsPlot3(base,xx,yy,0,__BIN_2);
+    GrSpritePlot3(dc,xx,yy,0,__BIN_2);
 
   if (phasor_time) {
-    base->collision_cnt=0;
-    base->color=ROP_COLLISION;
-    base->bkcolor=ROP_COLLISION+BLACK;
-    GrLine(base,xx+45,yy,xx+300,yy);
-    if (!enemy_destroyed_time && base->collision_cnt>8){
+    dc->collision_cnt=0;
+    dc->color=ROP_COLLISION;
+    dc->bkcolor=ROP_COLLISION+BLACK;
+    GrLine(dc,xx+45,yy,xx+300,yy);
+    if (!enemy_destroyed_time && dc->collision_cnt>8){
       enemy_destroyed_time=tP(task)+1.0;	//one second
       Noise(700,150,200);
     }
 
-    base->color=BLUE;
-    GrLine(base,xx+45,yy,xx+300,yy);
+    dc->color=BLUE;
+    GrLine(dc,xx+45,yy,xx+300,yy);
     if (tP(task)>=phasor_time)
       phasor_time=0;
   }

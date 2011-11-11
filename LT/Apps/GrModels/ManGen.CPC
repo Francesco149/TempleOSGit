@@ -186,20 +186,20 @@ U0 AddBox(ManDefineStruct *md,I64 c,I64 x1,I64 y1,I64 z1,F64 w,F64 h,F64 d,F64 h
 }
 
 
-U8 *Man2GrElem()
+U8 *Man2GrSprite()
 {
-//See [::/LT/Adam/Gr/GrElemPlot.APZ,1] ::/LT/Adam/Gr/GrElemPlot.APZ for how GrElems are stored.
+//See [::/LT/Adam/Gr/GrSpritePlot.APZ,1] ::/LT/Adam/Gr/GrSpritePlot.APZ for how GrSprite are stored.
   U8 *result=MAlloc(sizeof(U8)+2*sizeof(I32)+
-      m->vertex_cnt*sizeof(P3I32)+m->triangle_cnt*sizeof(GrMeshTri)+gr_elem_base_size[GRET_END]),
+      m->vertex_cnt*sizeof(P3I32)+m->triangle_cnt*sizeof(GrMeshTri)+gr_sprite_base_size[GRST_END]),
       *dst=result;
-  *dst><(U8 *)++ =GRET_MESH;
+  *dst><(U8 *)++ =GRST_MESH;
   *dst><(I32 *)++ =m->vertex_cnt;
   *dst><(I32 *)++ =m->triangle_cnt;
   MemCpy(dst,&m->v,m->vertex_cnt*sizeof(P3I32));
   dst+=m->vertex_cnt*sizeof(P3I32);
   MemCpy(dst,&m->t,m->triangle_cnt*sizeof(GrMeshTri));
   dst+=m->triangle_cnt*sizeof(GrMeshTri);
-  *dst><(U8 *)++ =GRET_END;
+  *dst><(U8 *)++ =GRST_END;
   return result;
 }
 
@@ -281,9 +281,9 @@ public U8 *ManGen()
 	md2.leg_rad*2,-md2.foot_len,md2.foot_rad*2,md2.leg_rad,0,
 	md2.l_hip_a2,0,md2.l_ankle_a,&x,&y,&z);
 
-    result=Man2GrElem;
+    result=Man2GrSprite;
     CrLf(7);
-    PutGrElems(result,0,"\t\t$PI,\"<1>\",%d$");
+    PutGrSprite(result,0,"\t\t$PI,\"<1>\",%d$");
     CrLf(7);
     Free(m);
     PutS("Do another");

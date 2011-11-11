@@ -17,11 +17,11 @@
 
 BoolI8 zap_on;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   if (zap_on)
-    GrElemsPlot3(base,20*8,4*8,0,__BIN_2);
+    GrSpritePlot3(dc,20*8,4*8,0,__BIN_2);
 }
 
 
@@ -52,7 +52,7 @@ U0 Song()
   while (!ScanKey) {
 	LtfClear;
 	Spaces(20);
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	CrLf(4);
 	Play("3qEsCBCBqARReGRqA2sG3G2G3G",
 		"Fin\0ger \0 \0of \0 \0God\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");

@@ -12,29 +12,29 @@ Ode *ode=NULL;
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 old_suspend;
   MyMass   *tempm;
   MySpring *temps;
 
   old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
-  base->color=RED;
+  dc->color=RED;
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
-    GrLine(base,temps->end1->x,temps->end1->y,
+    GrLine(dc,temps->end1->x,temps->end1->y,
 		temps->end2->x,temps->end2->y);
     temps=temps->next;
   }
 
-  base->color=BLACK;
+  dc->color=BLACK;
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
-    GrCircle(base,tempm->x,tempm->y,tempm->radius);
+    GrCircle(dc,tempm->x,tempm->y,tempm->radius);
     tempm=tempm->next;
   }
   LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 

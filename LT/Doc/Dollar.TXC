@@ -12,7 +12,7 @@ the cmd takes.
 See [::/LT/Doc/CtrlL.TXZ] ::/LT/Doc/CtrlL.TXZ and
 [::/LT/Demo/Ltf/DemoDoc.TXZ] ::/LT/Demo/Ltf/DemoDoc.TXZ.
 
-See [C:/LT/OSMain/Adam1a.HPZ,860] Ltf Type Defines and
+See [C:/LT/OSMain/Adam1a.HPZ,861] Ltf Type Defines and
 [::/LT/Adam/Ltf/Ltf.APZ,ST_LTF_CMDS] Ltf Type Codes
 +] TX Text
   Normally, text is not bracketed with "$", but if you wish to specify flag
@@ -45,7 +45,7 @@ If there is a ':', the space after the first ':' in the format string marks
   
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/LT/OSMain/Adam1a.HPZ,3388] color defines) to indicate which of the 16
+  [C:/LT/OSMain/Adam1a.HPZ,3394] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 FD Default Foreground Color
 BD Default Background Color
@@ -157,13 +157,13 @@ Hidden text widgets allow text to be placed in collapsable brackets like this
   text to be displayed for the $IB$ cmd.
 
 The main reason for the $IB$ cmd at this point is to pass a arg to the
-  [C:/LT/Adam/Gr/GrElemPlot.APZ,27] GrElemsPlot3() function.  See
-  [::/LT/Demo/Graphics/GrElem1.CPZ] ::/LT/Demo/Graphics/GrElem1.CPZ.
+  [C:/LT/Adam/Gr/GrSpritePlot.APZ,27] GrSpritePlot3() function.  See
+  [::/LT/Demo/Graphics/GrSprite1.CPZ] ::/LT/Demo/Graphics/GrSprite1.CPZ.
 
 +] IT Insert Binary Type
   See $IB$.  This cmd inserts a number into the compiled stream describing
   the type of binary data associated with a num.  See
-  [C:/LT/OSMain/Adam1a.HPZ,1080] LTFBT_GRELEM for the types of binary data in
+  [C:/LT/OSMain/Adam1a.HPZ,1081] LTFBT_GRSPRITE for the types of binary data in
   LTF's.
 +] IS Insert Binary Size
   See $IB$.  This cmd inserts a number into the compiled stream describing
@@ -184,7 +184,7 @@ The main reason for the $IB$ cmd at this point is to pass a arg to the
   When errors are detected in dollar cmds, an ER entry is generated to hold
   the garbage so it is not lost.
 
-See [C:/LT/OSMain/Adam1a.HPZ,1019] Ltf Flag Defines and
+See [C:/LT/OSMain/Adam1a.HPZ,1020] Ltf Flag Defines and
 [::/LT/Adam/Ltf/Ltf.APZ,ST_LTF_FLAGS] Ltf Flag Codes
 See [::/LT/Adam/Ltf/LtfPlain.APZ,ltf_dft_flags] dft_flags.
 +] FLAGS

@@ -7,7 +7,7 @@ U0 Song()
   music_stacatto_factor= 0.902;
   try {
   while (!ScanKey) {
-	PutS("$FG,GREEN$(Talking to God)\r\n$FG$");
+	PutS("$FG,GREEN$To God...\r\n$FG$");
 	Play("W13etCFE!!sDDDDD2G!3D2G!!3qC2eG3EqEetAA!F2qG",
 		"I \0am \0a\0biding \0 \0 \0 \0in \0 \0Your \0 \0presence.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
 	Play("3etCFE!!sDDDDD2G!3D2G!!3qC2eG3EqEetAA!F2qG",

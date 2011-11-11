@@ -79,9 +79,9 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/LT/OSMain/Adam1a.HPZ,2909] Ctrl type for the tempo/stacatto sliders.
+  2) The [C:/LT/OSMain/Adam1a.HPZ,2915] Ctrl type for the tempo/stacatto sliders.
 
-  3) The active [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf picture buttons with macros for left/record/play/right.
+  3) The active [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf picture buttons with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
@@ -90,13 +90,13 @@ This uses four types of ctrls
 
 This uses four types of output
 
-  1) The [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf for the text and buttons and kbdgraphic, drawn by 
+  1) The [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf for the text and buttons and kbdgraphic, drawn by 
 Fs->update_win().
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
 
-  3) The gr_persistent_base persistent layer for the note chooser, meter 
-chooser.  The persistent layer is used during drag-and-drop.
+  3) The gr_dc2 persistent layer for the note chooser, meter chooser.  The 
+persistent layer is used during drag-and-drop.
 
   4) The Fs->next_ctrl for the tempo/stacatto sliders.
 
@@ -149,7 +149,7 @@ class OrgCtrl
   I64 screen_x,
      tool;
   OrgNote *cur_note;
-  GrBitMap *base2;
+  GrDC *dc2;
   BoolI8 playing;
 } oc;
 
@@ -415,25 +415,25 @@ BoolI64 OrgBlink(F64 t)
     return FALSE;
 }
 
-U0 DrawNote(GrBitMap *base,I64 x,I64 y,I64 duration)
+U0 DrawNote(GrDC *dc,I64 x,I64 y,I64 duration)
 {
   if (0<=duration<=ORG_NUM_DURATIONS) {
-    base->bkcolor=WHITE;
-    GrElemsPlot3(base,x,y,0,org_duration_imgs[duration]);
+    dc->bkcolor=WHITE;
+    GrSpritePlot3(dc,x,y,0,org_duration_imgs[duration]);
     if (org_triplet_durations[duration])
-      GrElemsPlot3(base,x,y,0,__BIN_18);
+      GrSpritePlot3(dc,x,y,0,__BIN_18);
     if (OrgIsDotted(duration))
-      GrElemsPlot3(base,x,y,0,__BIN_19);
+      GrSpritePlot3(dc,x,y,0,__BIN_19);
   }
 }
 
-U0 DrawTimeSignature(GrBitMap *base,I64 x,I64 y,I64 top,I64 bottom)
+U0 DrawTimeSignature(GrDC *dc,I64 x,I64 y,I64 top,I64 bottom)
 {
-  GrPrintF(base,x,y,"%d",top);
-  GrPrintF(base,x,y+FONT_HEIGHT,"%d",bottom);
+  GrPrintF(dc,x,y,"%d",top);
+  GrPrintF(dc,x,y+FONT_HEIGHT,"%d",bottom);
 }
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   OrgNote *tempo;
   I64 i,x,y,
@@ -441,11 +441,11 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   F64 measure_len=4,measure_left=measure_len;
   BoolI8 old_preempt=Preempt(OFF);
 
-  base->color=BLACK;
+  dc->color=BLACK;
   for (i=1;i<6;i++)
-    GrLine(base,0,i*8,w,i*8);
+    GrLine(dc,0,i*8,w,i*8);
   for (i=7;i<12;i++)
-    GrLine(base,0,i*8,w,i*8);
+    GrLine(dc,0,i*8,w,i*8);
 
   OrgRecalcNoteXY;
   if (oc.cur_note->x<64) {
@@ -462,54 +462,54 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
     x=tempo->x;
     y=tempo->y;
     if (measure_left<0.001) {
-      base->color=BLACK;
-      GrLine(base,x-ORG_NOTE_SPACING,8,x-ORG_NOTE_SPACING,11*8);
+      dc->color=BLACK;
+      GrLine(dc,x-ORG_NOTE_SPACING,8,x-ORG_NOTE_SPACING,11*8);
       measure_left=measure_len;
     }
     if (tempo->type==OT_METER) {
       if (tempo==oc.cur_note && OrgBlink(tP(task)))
-	base->color=BROWN;
+	dc->color=BROWN;
       else
-	base->color=BLACK;
-      DrawTimeSignature(base,x,5*8,tempo->meter_top,tempo->meter_bottom);
+	dc->color=BLACK;
+      DrawTimeSignature(dc,x,5*8,tempo->meter_top,tempo->meter_bottom);
       measure_len=tempo->meter_top*4.0/tempo->meter_bottom;
       measure_left=0;
     } else {
       if (tempo==oc.cur_note && OrgBlink(tP(task))) {
-	base->color=BROWN;
-	GrPutS(base,x+8,y,tempo->word);
+	dc->color=BROWN;
+	GrPutS(dc,x+8,y,tempo->word);
       } else if (tempo->flags&OF_SELECTED)
-	base->color=RED;
+	dc->color=RED;
       else {
 	if (tempo->octave) //rest?
-	  base->color=BLACK;
+	  dc->color=BLACK;
 	else
-	  base->color=LTGRAY;
+	  dc->color=LTGRAY;
 	if (OrgHasWords(tempo->word))
-	  base->color=GREEN;
+	  dc->color=GREEN;
       }
       if (tempo->accent==1)
-	GrElemsPlot3(base,x,y,0,__BIN_20);
+	GrSpritePlot3(dc,x,y,0,__BIN_20);
       else if (tempo->accent==2)
-	GrElemsPlot3(base,x,y,0,__BIN_21);
-      DrawNote(base,x,y,tempo->duration);
+	GrSpritePlot3(dc,x,y,0,__BIN_21);
+      DrawNote(dc,x,y,tempo->duration);
       if (OrgIsDotted(tempo->duration))
 	x+=ORG_NOTE_SPACING/2;
 
       if (Bt(&tempo->flags,Of_SHARP))
-	GrElemsPlot3(base,x,y,0,__BIN_22);
+	GrSpritePlot3(dc,x,y,0,__BIN_22);
       else if (Bt(&tempo->flags,Of_FLAT))
-	GrElemsPlot3(base,x,y,0,__BIN_23);
+	GrSpritePlot3(dc,x,y,0,__BIN_23);
       measure_left-=org_durations[tempo->duration];
     }
     tempo=tempo->next;
   }
 
   if (oc.cur_note==&oc.root && OrgBlink(tP(task)))
-    base->color=BROWN;
+    dc->color=BROWN;
   else
-    base->color=BLACK;
-  GrElemsPlot3(base,oc.root.x,50,0,__BIN_24);
+    dc->color=BLACK;
+  GrSpritePlot3(dc,oc.root.x,50,0,__BIN_24);
   Preempt(old_preempt);
 }
 
@@ -684,12 +684,12 @@ U0 DrawPickNoteBox()
   for (i=0;i<ORG_NUM_DURATIONS;i++) {
     OrgSetPickNoteBoxX(i,&x);
     if (OrgIsDotted(i))
-      oc.base2->color=RED;
+      oc.dc2->color=RED;
     else if (org_triplet_durations[i])
-      oc.base2->color=LTRED;
+      oc.dc2->color=LTRED;
     else
-      oc.base2->color=BLACK;
-    DrawNote(oc.base2,x,ORG_NOTE_BOX_Y,i);
+      oc.dc2->color=BLACK;
+    DrawNote(oc.dc2,x,ORG_NOTE_BOX_Y,i);
   }
 }
 
@@ -699,18 +699,18 @@ U0 DrawPickNoteBox()
 U0 DrawPickTools()
 {
   if (oc.tool==OTT_BOX_TOOL)
-    oc.base2->color=ROPF_DITHER+WHITE<<16+ROP_EQU+RED;
+    oc.dc2->color=ROPF_DITHER+WHITE<<16+ROP_EQU+RED;
   else
-    oc.base2->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
-  GrLineRect4(oc.base2,ORG_TOOLS_X,ORG_TOOLS_Y,
+    oc.dc2->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
+  GrLineRect4(oc.dc2,ORG_TOOLS_X,ORG_TOOLS_Y,
     ORG_TOOLS_X+10,ORG_TOOLS_Y+10);
 
   if (oc.tool==OTT_PTR_TOOL)
-    oc.base2->color=ROP_EQU+RED;
+    oc.dc2->color=ROP_EQU+RED;
   else
-    oc.base2->color=ROP_EQU+BLACK;
-  (*fp_draw_input_ptr)(oc.base2,ORG_TOOLS_X+15,ORG_TOOLS_Y);
-  oc.base2->color=BLACK;
+    oc.dc2->color=ROP_EQU+BLACK;
+  (*fp_draw_input_ptr)(oc.dc2,ORG_TOOLS_X+15,ORG_TOOLS_Y);
+  oc.dc2->color=BLACK;
 }
 
 
@@ -751,16 +751,16 @@ BoolI64 OrgGetPickMeterBox(I64 xx,I64 yy,I64 *top,I64 *bottom)
 U0 DrawPickMeterBox()
 {
   I64 i;
-  oc.base2->color=BLACK;
+  oc.dc2->color=BLACK;
   for (i=0;i<ORG_NUM_METERS;i++)
    
-DrawTimeSignature(oc.base2,ORG_METER_X+i*ORG_METER_W,ORG_METER_Y,meter_tops[i]
-,meter_bottoms[i]);
+DrawTimeSignature(oc.dc2,ORG_METER_X+i*ORG_METER_W,ORG_METER_Y,meter_tops[i],m
+eter_bottoms[i]);
 }
 
-U0 DrawBase2()
+U0 DrawDC2()
 {
-  GrClear;
+  GrDCClear;
   DrawPickNoteBox;
   DrawPickMeterBox;
   DrawPickTools;
@@ -773,8 +773,8 @@ U0 OrgLeftClickPickNoteBox(I64 duration)
   do {
     msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_UP|1<<MSG_IP_MOVE);
     if (msg_code==MSG_IP_MOVE) {
-      DrawBase2;
-      DrawNote(oc.base2,p1,p2,duration);
+      DrawDC2;
+      DrawNote(oc.dc2,p1,p2,duration);
     }
   } while (msg_code!=MSG_IP_L_UP);
   if (p2<13*FONT_HEIGHT) {
@@ -803,7 +803,7 @@ U0 OrgLeftClickPickNoteBox(I64 duration)
     InsQue(tempo,tempo1);
     oc.cur_note=tempo->next;
   }
-  DrawBase2;
+  DrawDC2;
 }
 
 U0 OrgLeftClickPickMeterBox(I64 top,I64 bottom)
@@ -813,8 +813,8 @@ U0 OrgLeftClickPickMeterBox(I64 top,I64 bottom)
   do {
     msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_UP|1<<MSG_IP_MOVE);
     if (msg_code==MSG_IP_MOVE) {
-      DrawBase2;
-      DrawTimeSignature(oc.base2,p1,p2,top,bottom);
+      DrawDC2;
+      DrawTimeSignature(oc.dc2,p1,p2,top,bottom);
     }
   } while (msg_code!=MSG_IP_L_UP);
   if (p2<13*FONT_HEIGHT) {
@@ -833,7 +833,7 @@ U0 OrgLeftClickPickMeterBox(I64 top,I64 bottom)
     InsQue(tempo,tempo1);
     oc.cur_note=tempo->next;
   }
-  DrawBase2;
+  DrawDC2;
 }
 
 U0 OrgLeftClickStaffPtr(I64 x,I64 y)
@@ -887,15 +887,15 @@ U0 OrgLeftClickStaffBox(I64 x,I64 y)
   I64 msg_code,p1,p2;
   do {
     msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_UP|1<<MSG_IP_MOVE);
-    DrawBase2;
-    oc.base2->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
-    GrLineRect4(oc.base2,x,y,p1,p2);
+    DrawDC2;
+    oc.dc2->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
+    GrLineRect4(oc.dc2,x,y,p1,p2);
     if (msg_code==MSG_IP_L_UP) {
       if (x>p1) SwapU64(&x,&p1);
       OrgMarkSelected(x,p1,TRUE);
     }
   } while (msg_code!=MSG_IP_L_UP);
-  DrawBase2;
+  DrawDC2;
 }
 
 U0 OrgLeftClick(I64 x,I64 y)
@@ -913,7 +913,7 @@ U0 OrgLeftClick(I64 x,I64 y)
     else if (OrgGetPickMeterBox(x,y,&top,&bottom))
       OrgLeftClickPickMeterBox(top,bottom);
     else if (OrgGetPickToolBox(x,y))
-      DrawBase2;
+      DrawDC2;
   }
 }
 
@@ -1482,33 +1482,33 @@ U0 OrgMenu(I64 org_octave,I64 org_waveform)
   LtfBottom;
   LtfClear;
   PutS("$BD,WHITE$$FD,GREEN$$FU,GREEN$$FM,GREEN$$CM,0,12$\r\n");
-  PutGrElems(__BIN_25);
+  PutGrSprite(__BIN_25);
   CrLf(5);
 
-  DrawBase2;
+  DrawDC2;
 
   PutS("$FG,LTGREEN$<SPACE BAR>$FG$\tRest\r\n"
 	"$FG,LTGREEN$<BACKSPACE>$FG$\tDeletes Last Note\r\n"
 	"$FG,LTGREEN$Left Mouse$FG$\tDrag note or shift word\r\n"
 	"$FG,LTGREEN$Right Mouse$FG$\tChange duration or set word\r\n");
  
-PutGrElems(__BIN_6,__BIN_6_SIZE,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|
-SC_CURSOR_LEFT);\",%d$");
+PutGrSprite(__BIN_6,__BIN_6_SIZE,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL
+|SC_CURSOR_LEFT);\",%d$");
   PutS("   ");
   if (oc.playing)
-    PutGrElems(__BIN_9,__BIN_9_SIZE,"$PI+LM,\"\",\"x\",%d$");
+    PutGrSprite(__BIN_9,__BIN_9_SIZE,"$PI+LM,\"\",\"x\",%d$");
   else
-    PutGrElems(__BIN_8,__BIN_8_SIZE,"$PI+LM,\"\",\"x\",%d$");
+    PutGrSprite(__BIN_8,__BIN_8_SIZE,"$PI+LM,\"\",\"x\",%d$");
   PutS("   ");
   if (oc.record_entry->checked) {
     oc.record_entry->checked=TRUE;
-    PutGrElems(__BIN_10,__BIN_10_SIZE,"$PI+LM,\"\",\"z\",%d$");
+    PutGrSprite(__BIN_10,__BIN_10_SIZE,"$PI+LM,\"\",\"z\",%d$");
   } else
-    PutGrElems(__BIN_11,__BIN_11_SIZE,"$PI+LM,\"\",\"z\",%d$");
+    PutGrSprite(__BIN_11,__BIN_11_SIZE,"$PI+LM,\"\",\"z\",%d$");
   PutS("   ");
  
-PutGrElems(__BIN_7,__BIN_7_SIZE,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|
-SC_CURSOR_RIGHT);\",%d$");
+PutGrSprite(__BIN_7,__BIN_7_SIZE,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL
+|SC_CURSOR_RIGHT);\",%d$");
   PutS("$CM+LX,0,6$");
   OrgSetOctave(org_octave);
   OrgSetWaveform(org_waveform);
@@ -1525,7 +1525,7 @@ U0 OrgPushMode(I64 org_octave,I64 org_waveform)
 U0 OrgPopMode()
 {
   Fs->win_inhibit=0;
-  GrClear;
+  GrDCClear;
 }
 
 #define ORGF_CD		1
@@ -1565,7 +1565,7 @@ ut_val2;
   oc.clipboard.next=oc.clipboard.last=&oc.clipboard;
   oc.root.waveform=WF_SQUARE;
   oc.cur_note=&oc.root;
-  oc.base2=GrAlias(gr_persistent_base,Fs);
+  oc.dc2=GrDCAlias(gr_dc2,Fs);
 
   MenuPush(
   "File {"
@@ -2043,8 +2043,8 @@ stamp_freq);
   OrgSongDel(&oc.clipboard);
   TempoDel(c);
   Kill(play_task);
-  GrClear;
-  GrDel(oc.base2);
+  GrDCClear;
+  GrDCDel(oc.dc2);
   SettingsPop;
   if (LtfCur) LtfCur->flags=LtfCur->flags&~LTFF_FORM|old_ltf_flags&LTFF_FORM;
   Free(dirname);

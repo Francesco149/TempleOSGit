@@ -127,6 +127,6 @@ This bit tells LoseThos to update whole screen.
  
 MiniGrLibDemo;
 
-//See [C:/LT/OSMain/Display.CPZ,3] DrawChar() for text.
+//See [C:/LT/OSMain/Display.CPZ,3] RawDrawChar() for text.
 //See [::/LT/Demo/Lectures/ScreenMemory.CPZ] ::/LT/Demo/Lectures/ScreenMemory.CPZ for color.
 //See [::/LT/Demo/Lectures/GraphicsCPULoad.CPZ] ::/LT/Demo/Lectures/GraphicsCPULoad.CPZ.

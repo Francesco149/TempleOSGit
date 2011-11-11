@@ -9,20 +9,20 @@ class CtrlButtonState
 #define CTRL_BUTTON_WIDTH	80
 #define CTRL_BUTTON_HEIGHT	(3*FONT_HEIGHT)
 
-U0 DrawCtrlButton(GrBitMap *base,Ctrl *c)
+U0 DrawCtrlButton(GrDC *dc,Ctrl *c)
 {
   CtrlButtonState *s=c->state;
   I64 l;
   U8 *st;
 
-  base->color=BLACK;
-  GrRect(base,c->left,c->top,c->right-c->left+1,c->bottom-c->top+1);
+  dc->color=BLACK;
+  GrRect(dc,c->left,c->top,c->right-c->left+1,c->bottom-c->top+1);
   st=ListEntryPoint(s->state,s->state_texts);
-  base->color=s->state_colors[s->state];
+  dc->color=s->state_colors[s->state];
   l=StrLen(st);
-  GrRect(base,c->left+2,c->top+2,c->right-c->left+1-4,c->bottom-c->top+1-4);
-  base->color=WHITE;
-  GrPutS(base,c->left+(c->left+c->right+1-l*FONT_WIDTH)>>1,c->top+FONT_HEIGHT,st);
+  GrRect(dc,c->left+2,c->top+2,c->right-c->left+1-4,c->bottom-c->top+1-4);
+  dc->color=WHITE;
+  GrPutS(dc,c->left+(c->left+c->right+1-l*FONT_WIDTH)>>1,c->top+FONT_HEIGHT,st);
 }
 
 U0 LeftClickCtrlButton(Ctrl *c,I64 x,I64 y,BoolI8 down)

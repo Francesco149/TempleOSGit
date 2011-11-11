@@ -37,7 +37,7 @@ U0 Song()
 		"$FG,RED$Throw \0 \0out \0your \0net.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("DetRAFqDGetFC2G3sBCBCqDF",
 		"Make \0 \0you \0a \0bet.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	CrLf(5);
   }
   } catch

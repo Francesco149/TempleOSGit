@@ -380,15 +380,15 @@ U0 AllDel(Ode *ode)
   OdeDel(ode);
 }
 
-BoolI64 LaserPlot(GrBitMap *base,I64 x,I64 y,I64 z)
+BoolI64 LaserPlot(GrDC *dc,I64 x,I64 y,I64 z)
 {
   I64 c;
   nounusedwarn z;
-  c=GrPeek(base,x,y);
+  c=GrPeek(dc,x,y);
   if (c!=BLACK && c!=WHITE)
     return FALSE;
   else {
-    GrPlot(base,x,y);
+    GrPlot(dc,x,y);
     return TRUE;
   }
 }
@@ -397,7 +397,7 @@ BoolI64 LaserPlot(GrBitMap *base,I64 x,I64 y,I64 z)
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i,j;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 arg;
   Ship *temps;
   Bullet *tempb;
@@ -409,26 +409,26 @@ U0 UpdateWin(TaskStruct *task)
 
   if (ode!=task->last_ode) goto done_draw;
 
-  base->color=WHITE;
-  GrPrintF(base,0,0,"Level:%d Score:%d High Score:%d",level,score,best_score);
+  dc->color=WHITE;
+  GrPrintF(dc,0,0,"Level:%d Score:%d High Score:%d",level,score,best_score);
   if (game_over) {
     if (Blink(,tP(task)))
-      GrPutS(base,(task->win_pixel_width-9*FONT_WIDTH)/2,
+      GrPutS(dc,(task->win_pixel_width-9*FONT_WIDTH)/2,
 	  (task->win_pixel_height-FONT_HEIGHT)/2,"Game Over");
   } else if (show_level_msg) {
     if (Blink(,tP(task)))
-      GrPrintF(base,(task->win_pixel_width-8*FONT_WIDTH)/2,
+      GrPrintF(dc,(task->win_pixel_width-8*FONT_WIDTH)/2,
 	  (task->win_pixel_height-FONT_HEIGHT)/2+50,"Level %d",level);
   }
 
   for (i=0;i<NUM_STARS;i++)
-    GrPlot(base,stars_x[i],stars_y[i]);
+    GrPlot(dc,stars_x[i],stars_y[i]);
 
   tempss=ode->next_spring;
   while (tempss!=&ode->next_spring) {
     if (!(tempss->flags&SSF_INACTIVE)) {
-      base->color=tempss->color;
-      GrLine(base,tempss->end1->x,tempss->end1->y,
+      dc->color=tempss->color;
+      GrLine(dc,tempss->end1->x,tempss->end1->y,
 	  tempss->end2->x,tempss->end2->y);
     }
     tempss=tempss->next;
@@ -466,19 +466,19 @@ U0 UpdateWin(TaskStruct *task)
 	  D3Unit(D3Add(&p1,&p2,&p));
 
 	  if (!(temps->s[3].flags&SSF_INACTIVE)) {
-	    base->color=YELLOW;
+	    dc->color=YELLOW;
 	    D3AddEqu(D3Mul(t_left/25,&p,&p1),&temps->p[3].x);
-	    GrLine(base,temps->p[1].x,temps->p[1].y,p1.x,p1.y);
+	    GrLine(dc,temps->p[1].x,temps->p[1].y,p1.x,p1.y);
 	    arg=Arg(p.x,p.y);
-	    GrElemsPlotRotZ3b(base,temps->p[3].x,temps->p[3].y,0,__BIN_1,arg);
+	    GrSpritePlotRotZ3b(dc,temps->p[3].x,temps->p[3].y,0,__BIN_1,arg);
 	  }
 
 	  if (!(temps->s[5].flags&SSF_INACTIVE)) {
-	    base->color=YELLOW;
+	    dc->color=YELLOW;
 	    D3AddEqu(D3Mul(t_right/25,&p,&p2),&temps->p[4].x);
-	    GrLine(base,temps->p[2].x,temps->p[2].y,p2.x,p2.y);
+	    GrLine(dc,temps->p[2].x,temps->p[2].y,p2.x,p2.y);
 	    arg=Arg(p.x,p.y);
-	    GrElemsPlotRotZ3b(base,temps->p[4].x,temps->p[4].y,0,__BIN_1,arg);
+	    GrSpritePlotRotZ3b(dc,temps->p[4].x,temps->p[4].y,0,__BIN_1,arg);
 	  }
 
 	  if (tP(task)>temps->reload_timeout)
@@ -489,19 +489,19 @@ U0 UpdateWin(TaskStruct *task)
 	  switch (level) {
 	    case 3:
 	      if (!(temps->s[3].flags&SSF_INACTIVE))
-		GrElemsPlotRotZ3b(base,temps->p[3].x,temps->p[3].y,0,img,arg);
+		GrSpritePlotRotZ3b(dc,temps->p[3].x,temps->p[3].y,0,img,arg);
 	      if (!(temps->s[5].flags&SSF_INACTIVE))
-		GrElemsPlotRotZ3b(base,temps->p[4].x,temps->p[4].y,0,img,arg);
+		GrSpritePlotRotZ3b(dc,temps->p[4].x,temps->p[4].y,0,img,arg);
 	    case 2:
 	      if (!(temps->s[1].flags&SSF_INACTIVE))
-		GrElemsPlotRotZ3b(base,temps->p[1].x,temps->p[1].y,0,img,arg);
+		GrSpritePlotRotZ3b(dc,temps->p[1].x,temps->p[1].y,0,img,arg);
 	      if (!(temps->s[2].flags&SSF_INACTIVE))
-		GrElemsPlotRotZ3b(base,temps->p[2].x,temps->p[2].y,0,img,arg);
+		GrSpritePlotRotZ3b(dc,temps->p[2].x,temps->p[2].y,0,img,arg);
 	    case 1:
-	      GrElemsPlotRotZ3b(base,temps->p[0].x,temps->p[0].y,0,img,arg);
+	      GrSpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,img,arg);
 	      break;
 	    default:
-	      GrElemsPlotRotZ3b(base,temps->p[0].x,temps->p[0].y,0,__BIN_6,arg);
+	      GrSpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,__BIN_6,arg);
 	      if (temps->lasering && !temps->laser_overheat) {
 		draw_laser_line=TRUE;
 		Snd(1000);
@@ -526,7 +526,7 @@ U0 UpdateWin(TaskStruct *task)
 		x=temps->p[temps->spacewalk_side].x*(1.0-d)+temps->p[0].x*(d);
 		y=temps->p[temps->spacewalk_side].y*(1.0-d)+temps->p[0].y*(d);
 	      }
-	      GrElemsPlotRotZ3b(base,x,y,0,__BIN_4,arg+0.75*Sin(tP(task)*2));
+	      GrSpritePlotRotZ3b(dc,x,y,0,__BIN_4,arg+0.75*Sin(tP(task)*2));
 	    }
 	  } else {
 	    if (ctrl_panel.spacewalk) {
@@ -539,11 +539,11 @@ U0 UpdateWin(TaskStruct *task)
 	  break;
 	case ST_ENEMY2:
 	  for (i=3;i<temps->masses;i++) {
-	    base->color=temps->p[i].color;
-	    GrCircle(base,temps->p[i].x,temps->p[i].y,temps->p[i].radius);
-	    GrFloodFill(base,temps->p[i].x,temps->p[i].y+2,TRUE);
-	    base->color=WHITE;
-	    GrCircle(base,temps->p[i].x,temps->p[i].y,temps->p[i].radius);
+	    dc->color=temps->p[i].color;
+	    GrCircle(dc,temps->p[i].x,temps->p[i].y,temps->p[i].radius);
+	    GrFloodFill(dc,temps->p[i].x,temps->p[i].y+2,TRUE);
+	    dc->color=WHITE;
+	    GrCircle(dc,temps->p[i].x,temps->p[i].y,temps->p[i].radius);
 	  }
 	  case ST_ENEMY1:
 	  D3DivEqu(D3Sub(&temps->p[1].x,&temps->p[0].x,&p1),2.0);
@@ -554,15 +554,15 @@ U0 UpdateWin(TaskStruct *task)
 	  else
 	    img=__BIN_3;
 	  arg=Arg(p.x,p.y);
-	  GrElemsPlotRotZ3b(base,temps->p[0].x,temps->p[0].y,0,img,arg);
+	  GrSpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,img,arg);
 	  arg=Arg(p1.x,p1.y);
-	  GrElemsPlotRotZ3b(base,temps->p[0].x+p1.x,temps->p[0].y+p1.y,0,__BIN_5,arg);
+	  GrSpritePlotRotZ3b(dc,temps->p[0].x+p1.x,temps->p[0].y+p1.y,0,__BIN_5,arg);
 	  arg=Arg(p2.x,p2.y);
-	  GrElemsPlotRotZ3b(base,temps->p[0].x+p2.x,temps->p[0].y+p2.y,0,__BIN_5,arg);
+	  GrSpritePlotRotZ3b(dc,temps->p[0].x+p2.x,temps->p[0].y+p2.y,0,__BIN_5,arg);
 	  for (i=0;i<temps->masses;i++) {
-	    base->color=YELLOW;
+	    dc->color=YELLOW;
 	    if (temps->p[i].temperature>=1.0)
-	      GrCircle(base,temps->p[i].x,temps->p[i].y,temps->p[i].temperature);
+	      GrCircle(dc,temps->p[i].x,temps->p[i].y,temps->p[i].temperature);
 	  }
 	  break;
       }
@@ -572,10 +572,10 @@ U0 UpdateWin(TaskStruct *task)
 	d=7*Sin(pi*d)*(6+j)+1;
 	for (i=1;i<d;i++) {
 	  if (i&1)
-	    base->color=YELLOW;
+	    dc->color=YELLOW;
 	  else
-	    base->color=LTRED;
-	  GrCircle(base,temps->p[j].x,temps->p[j].y,i);
+	    dc->color=LTRED;
+	  GrCircle(dc,temps->p[j].x,temps->p[j].y,i);
 	}
       }
     temps=temps->next;
@@ -588,22 +588,22 @@ U0 UpdateWin(TaskStruct *task)
       d=7*Sin(pi*d)*tempb->radius+1;
       for (i=1;i<d;i++) {
 	if (i&1)
-	  base->color=YELLOW;
+	  dc->color=YELLOW;
 	else
-	  base->color=LTRED;
-	GrCircle(base,tempb->p.x,tempb->p.y,i);
+	  dc->color=LTRED;
+	GrCircle(dc,tempb->p.x,tempb->p.y,i);
       }
       } else {
       if (tempb->radius<1.0) {
-	base->color=LTGREEN;
-	GrPlot(base,tempb->p.x,tempb->p.y);
+	dc->color=LTGREEN;
+	GrPlot(dc,tempb->p.x,tempb->p.y);
       } else {
-	base->color=YELLOW;
-	GrCircle(base,tempb->p.x,tempb->p.y,tempb->radius);
+	dc->color=YELLOW;
+	GrCircle(dc,tempb->p.x,tempb->p.y,tempb->radius);
 	if (tempb->radius>=2.0)
-	  GrFloodFill(base,tempb->p.x,tempb->p.y,TRUE);
-	base->color=LTGREEN;
-	GrCircle(base,tempb->p.x,tempb->p.y,tempb->radius);
+	  GrFloodFill(dc,tempb->p.x,tempb->p.y,TRUE);
+	dc->color=LTGREEN;
+	GrCircle(dc,tempb->p.x,tempb->p.y,tempb->radius);
       }
     }
     tempb=tempb->next;
@@ -613,12 +613,12 @@ U0 UpdateWin(TaskStruct *task)
     D3Sub(&human->p[1].x,&human->p[0].x,&p1);
     D3Sub(&human->p[2].x,&human->p[0].x,&p2);
     D3Unit(D3Add(&p1,&p2,&p));
-    base->color=LTBLUE;
-    Line(base,human->p[0].x-10*p.x,human->p[0].y-10*p.y,0,human->p[0].x-800*p.x,human->p[0].y-800*p.y,0,&LaserPlot);
+    dc->color=LTBLUE;
+    Line(dc,human->p[0].x-10*p.x,human->p[0].y-10*p.y,0,human->p[0].x-800*p.x,human->p[0].y-800*p.y,0,&LaserPlot);
   }
 
 done_draw:
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 Explosion(MyMass *tempm1,F64 r)

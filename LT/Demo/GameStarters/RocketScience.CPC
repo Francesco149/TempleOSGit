@@ -51,7 +51,7 @@ SpringStruct s;
 
   /* <3> <3> (image) */
  
-GrBitMap *base2;
+GrDC *dc2;
 Ode *ode;
 
 #define STATE_NOZZLE_ANGLE		0
@@ -61,7 +61,7 @@ Ode *ode;
 D3 target;
 F64 dbg,antispin_coefficient;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,x,y,cx=task->win_pixel_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
   F64 theta=Arg(m2.x-m1.x,m2.y-m1.y),
@@ -71,38 +71,38 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
     y=m1.y-10*Sin(theta+nozzle_angle);
     for (i=0;i<6;i++) {
       if ((i^gr_screen_updates)&1)
-	base->color=YELLOW;
+	dc->color=YELLOW;
       else
-	base->color=RED;
-      GrLine(base,cx+(m1.x+i*Cos(theta-pi/2)),
+	dc->color=RED;
+      GrLine(dc,cx+(m1.x+i*Cos(theta-pi/2)),
 		  cy-(m1.y+i*Sin(theta-pi/2)),
 		  cx+x,cy-y);
-      GrLine(base,cx+(m1.x+i*Cos(theta+pi/2)),
+      GrLine(dc,cx+(m1.x+i*Cos(theta+pi/2)),
 		  cy-(m1.y+i*Sin(theta+pi/2)),
 		  cx+x,cy-y);
     }
 
     for (i=0;i<10;i++) {
       switch (RandU16&3) {
-	case 0: base2->color=ROP_EQU+WHITE; break;
-	case 1: base2->color=ROP_EQU+LTGRAY; break;
-	case 2: base2->color=ROP_EQU+DKGRAY; break;
-	case 3: base2->color=ROP_EQU+BLACK; break;
+	case 0: dc2->color=ROP_EQU+WHITE; break;
+	case 1: dc2->color=ROP_EQU+LTGRAY; break;
+	case 2: dc2->color=ROP_EQU+DKGRAY; break;
+	case 3: dc2->color=ROP_EQU+BLACK; break;
       }
-      GrPlot(base2,cx+(x+RandU16%12-6),cy-(y+RandU16%12-6));
+      GrPlot(dc2,cx+(x+RandU16%12-6),cy-(y+RandU16%12-6));
     }
   }
 
   if (plane_hit)
-    GrElemsPlot3(base,cx+m3.x,cy-m3.y,0,__BIN_2);
+    GrSpritePlot3(dc,cx+m3.x,cy-m3.y,0,__BIN_2);
   else
-    GrElemsPlot3(base,cx+m3.x,cy-m3.y,0,__BIN_1);
+    GrSpritePlot3(dc,cx+m3.x,cy-m3.y,0,__BIN_1);
 
   if (blast_off && !plane_hit) {
-    base->bkcolor=ROP_COLLISION+LTCYAN;
-    base->collision_cnt=0;
-    GrElemsPlotRotZ3b(base,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
-    if (base->collision_cnt>100) {
+    dc->bkcolor=ROP_COLLISION+LTCYAN;
+    dc->collision_cnt=0;
+    GrSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
+    if (dc->collision_cnt>100) {
       Noise(1000,500,1500);
       plane_hit=TRUE;
     } else
@@ -110,17 +110,17 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   } else if (!plane_hit)
     Snd(0);
 
-  base->bkcolor=LTCYAN;
-  GrElemsPlotRotZ3b(base,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
+  dc->bkcolor=LTCYAN;
+  GrSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
 
-  base->color=RED;
-  GrCircle(base,cx+target.x,cy-target.y,5);
+  dc->color=RED;
+  GrCircle(dc,cx+target.x,cy-target.y,5);
 
-  base->color=BLUE;
-  GrCircle(base,cx+m3.x,cy-m3.y,5);
+  dc->color=BLUE;
+  GrCircle(dc,cx+m3.x,cy-m3.y,5);
 
-  base->color=BLACK;
-  GrPrintF(base,0,FONT_HEIGHT,"%12.6f",dbg);
+  dc->color=BLACK;
+  GrPrintF(dc,0,FONT_HEIGHT,"%12.6f",dbg);
 }
 
 
@@ -231,12 +231,12 @@ U0 Init()
   ode->state[STATE_NOZZLE_ANGLE]=0;
   ode->state[STATE_NOZZLE_ANGLE_VELOCITY]=0;
 
-  GrClear;
+  GrDCClear;
 }
 
 U0 TaskEndCB()
 {
-  GrClear;
+  GrDCClear;
   SndTaskEndCB;
 }
 
@@ -261,7 +261,7 @@ U0 RocketScience()
 );
 
   WinMax;
-  base2=GrAlias(gr_persistent_base,Fs);
+  dc2=GrDCAlias(gr_dc2,Fs);
   Fs->task_end_cb=&TaskEndCB;
 
   PutS("$CL$$BG,LTCYAN$");
@@ -308,8 +308,8 @@ rs_done:
   OdeDel(ode);
   PutS("$CL$$BG$\r\n");
   SettingsPop;
-  GrClear;
-  GrDel(base2);
+  GrDCClear;
+  GrDCDel(dc2);
   MenuPop;
 }
 

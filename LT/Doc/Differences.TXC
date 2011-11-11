@@ -95,11 +95,11 @@ than multiplying by "1.0" to convert to float.)
   :,?
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* Use [C:/LT/Compiler/Directives.CPZ,8] OptOn([C:/LT/OSMain/Adam1a.HPZ,1396]
+* Use [C:/LT/Compiler/Directives.CPZ,8] OptOn([C:/LT/OSMain/Adam1a.HPZ,1397]
 OPTf_STD_C) to use C precedence.
 
 * You can use [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1387] OPTf_PAREN_WARN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1388] OPTf_PAREN_WARN) to find unnecessary
 parentheses in code.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -143,7 +143,7 @@ can be accessed from within a catch{} using the Fs->except_argc and Fs->except
 _argv[] vars.  Within a catch {} blk, set the var Fs->catch_except to TRUE if 
 you want to terminate the search for a handler.  By convention, the first arg 
 of except_argv[] specifies the exception type num.  A list of assigned 
-exception types can be found at [C:/LT/OSMain/Adam1a.HPZ,2705]
+exception types can be found at [C:/LT/OSMain/Adam1a.HPZ,2706]
 EXCEPT_LOCAL.  For a handler that will catch 
 all excepts, you can use [C:/LT/OSMain2/OSMain2.CPZ,15] CatchAll().
 
@@ -178,7 +178,7 @@ IndependentHeapCtrlInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/LT/OSMain/Adam1a.HPZ,2803] DFT_STK and 
+[C:/LT/OSMain/Adam1a.HPZ,2809] DFT_STK and 
 recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,230]
 Spawn().  You can use 
 [C:/LT/OSMain/Task1a.CPZ,67] CallStkGrow(), but it's odd.  See
@@ -250,11 +250,11 @@ to be displayed.
 [C:/LT/Compiler/CmpMain.CPZ,2] StreamPutS(U8 *src) send text to the stream 
 of code being compiled and must reside in a #exe{} blk.
 
-[C:/LT/Adam/Gr/GrBitMap.APZ,1104] GrPrintF(GrBitMap *base,I64 x,I64 y,U8
-*fmtstr,...) and [C:/LT/Adam/Gr/GrBitMap.APZ,1054] GrPutS(GrBitMap 
-*base,I64 x,I64 y,U8 *src) plots text in graphics
-mode.  [C:/LT/Adam/Gr/GrBitMap.APZ,1111] GrVPrintF() and 
-[C:/LT/Adam/Gr/GrBitMap.APZ,1078] GrVPutS() will print vertically.
+[C:/LT/Adam/Gr/GrBitMap.APZ,1104] GrPrintF(GrDC *dc,I64 x,I64 y,U8
+*fmtstr,...) and [C:/LT/Adam/Gr/GrBitMap.APZ,1054] GrPutS(GrDC *dc,I64 x,I64 
+y,U8 *src) plots text in graphics mode.  [C:/LT/Adam/Gr/GrBitMap.APZ,1111]
+GrVPrintF() and [C:/LT/Adam/Gr/GrBitMap.APZ,1078] GrVPutS() will print 
+vertically.
 
 [C:/LT/Compiler/CmpMain.CPZ,559] ExePrintF(U8 *fmtstr,...) and
 [C:/LT/Compiler/CmpMain.CPZ,527] ExePutS(U8 *src) compile and execute a

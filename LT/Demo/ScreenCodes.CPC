@@ -3,7 +3,8 @@
 
 //See [::/LT/Demo/ExtendedChars.CPZ] ::/LT/Demo/ExtendedChars.CPZ
 //and [::/LT/Demo/Graphics/FontEd.CPZ] ::/LT/Demo/Graphics/FontEd.CPZ.
-//Hold ALT and press a 3 digit decimal number.
+//Hold ALT and press a 3 digit decimal number
+//or press <CTRL-ALT-A>.
 
 U0 UpdateWin(TaskStruct *task)
 {

@@ -51,43 +51,43 @@ U0 UpdateWin(TaskStruct *task)
     h=task->win_pixel_width-10,
     v=task->win_pixel_height-10;
   U8 *inter,*inter2,*inter3;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 tt;
   if (h<1) h=1;
   if (v<1) v=1;
   tt=t_flap*t_flap*t_flap;
-  inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
+  inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
   if (eat_timeout && tP(task)<eat_timeout) {
-    inter2=GrElemsInterpolate(__BIN_3,__BIN_4,tt);
-    inter3=GrElemsInterpolate(inter2,inter,1.0-(eat_timeout-tP(task))/EAT_TIME);
+    inter2=GrSpriteInterpolate(__BIN_3,__BIN_4,tt);
+    inter3=GrSpriteInterpolate(inter2,inter,1.0-(eat_timeout-tP(task))/EAT_TIME);
     Free(inter);
     Free(inter2);
     inter=inter3;
   }
-  GrElemsPlot3(base,xx,yy,0,inter);
+  GrSpritePlot3(dc,xx,yy,0,inter);
   Free(inter);
   for (i=0;i<MAX_BUGS;i++)
     if (!bugs_dead[i]) {
       x=(bugs_x[i]+frame_x)%h+5;
       y=bugs_y[i]%v+5;
-      base->color=BLACK;
-      GrPlot(base,x,y);
-      GrPlot(base,x+1,y);
-      base->color=RED;
-      GrPlot(base,x,y-1);
+      dc->color=BLACK;
+      GrPlot(dc,x,y);
+      GrPlot(dc,x+1,y);
+      dc->color=RED;
+      GrPlot(dc,x,y-1);
     }
   if (tf) {
-    base->color=RED;
-    GrPutS(base,(task->win_pixel_width-FONT_WIDTH*14)/2,
+    dc->color=RED;
+    GrPutS(dc,(task->win_pixel_width-FONT_WIDTH*14)/2,
 		(task->win_pixel_height-FONT_HEIGHT)/2,"Game Completed");
     tt=tf;
   } else {
-    base->color=GREEN;
+    dc->color=GREEN;
     tt=tP(task);
   }
-  GrPrintF(base,0,0,"Bugs:%3.1f%% Time:%3.2f Best:%3.2f",
+  GrPrintF(dc,0,0,"Bugs:%3.1f%% Time:%3.2f Best:%3.2f",
     percent_completed,tt-t0,best_score);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 CheckBugs(TaskStruct *task,TaskStruct *song_task)

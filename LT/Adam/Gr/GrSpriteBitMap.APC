@@ -22,7 +22,7 @@
 #define GEBM_PASTE_TRANSPARENT	21
 #define GEBM_UNDO		22
 
-I64 PopUpGrElemBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
+I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 {
   I64 i;
   U8 *st1,*st2;
@@ -69,22 +69,22 @@ I64 PopUpGrElemBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
   return i;
 }
 
-U0 GrBMEdPrepPersistentBase(GrBitMap *base,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrBitMap *img)
+U0 GrBMEdPrepPersistentDC(GrDC *dc,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrDC *img)
 {
-  GrClear(base);
-  base->color=BLACK;
-  GrRect(base,xx1,yy1,xx2-xx1,yy2-yy1);
-  GrBlot(base,xx1,yy1,img);
+  GrDCClear(dc);
+  dc->color=BLACK;
+  GrRect(dc,xx1,yy1,xx2-xx1,yy2-yy1);
+  GrBlot(dc,xx1,yy1,img);
 }
 
 
-I64 GrElemBitMap(GrBitMap *base,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrBitMap *img,ColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
+I64 GrSpriteBitMap(GrDC *dc,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrDC *img,ColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
 {
   I64 i,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,new_snap=1;
   BoolI8 down=FALSE,result;
   F64 new_ip_scaler=1.0;
   U8 *st=NULL;
-  GrBitMap *clipboard=NULL,*undo=NULL;
+  GrDC *clipboard=NULL,*undo=NULL;
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
 
   if (_import_snap) new_snap=*_import_snap;
@@ -95,11 +95,11 @@ I64 GrElemBitMap(GrBitMap *base,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrBitMap *img,Co
 
   while (TRUE) {
     if (sys_cur_scan_code&SCF_CTRL)//grab scroll update?
-      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 
-    base->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
-    base->pen_width=1;
-    GrLineRect4(base,xx1-1,yy1-1,xx2,yy2);//This is done little bit too often.
+    dc->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
+    dc->pen_width=1;
+    GrLineRect4(dc,xx1-1,yy1-1,xx2,yy2);//This is done little bit too often.
 
     while (msg_code=ScanMsg(&p1,&p2,1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|
 	1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN)) {
@@ -116,8 +116,8 @@ I64 GrElemBitMap(GrBitMap *base,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrBitMap *img,Co
 
 	case MSG_IP_R_DOWN:
 bm_menu:
-	  GrClear(base);
-	  switch (i=PopUpGrElemBitMap(color,width,new_snap,new_ip_scaler)) {
+	  GrDCClear(dc);
+	  switch (i=PopUpGrSpriteBitMap(color,width,new_snap,new_ip_scaler)) {
 	    case LTFM_CANCEL:
 	      result=GE_CANCEL;
 	      goto bm_done;
@@ -154,7 +154,7 @@ bm_menu:
 		Beep;
 		img->color=BLACK;
 		GrBlot(img,0,0,undo);
-		GrDel(undo);
+		GrDCDel(undo);
 		undo=NULL;
 	      }
 	      goto bm_menu;
@@ -187,11 +187,11 @@ bm_menu:
 	      break;
 
 	  }
-	  GrDel(undo);
-	  undo=GrExtractBitMap(img,0,0,img->width-1,img->height-1);
+	  GrDCDel(undo);
+	  undo=GrExtractDC(img,0,0,img->width-1,img->height-1);
 	  undo->bkcolor=bkcolor;
 	  WinSync(TRUE);	//Let popup close
-	  GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	  GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	  down=FALSE;
 	  break;
 	case MSG_IP_L_DOWN:
@@ -200,7 +200,7 @@ bm_menu:
 	      img->color=color;
 	      img->pen_width=width;
 	      GrPlot3(img,p1-xx1,p2-yy1,0);
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      break;
 	    case GEBM_LINE:
 	    case GEBM_ARROW:
@@ -209,75 +209,75 @@ bm_menu:
 	    case GEBM_CUT:
 	    case GEBM_DELETE:
 	      if (down)
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      x1=p1; y1=p2;
 	      down=TRUE;
-	      base->color=color;
-	      base->pen_width=width;
+	      dc->color=color;
+	      dc->pen_width=width;
 	      switch (mode) {
 		case GEBM_LINE:
-		  GrLine3(base,x1,y1,0,p1,p2,0);
+		  GrLine3(dc,x1,y1,0,p1,p2,0);
 		  break;
 		case GEBM_ARROW:
-		  GrArrow3(base,x1,y1,0,p1,p2,0);
+		  GrArrow3(dc,x1,y1,0,p1,p2,0);
 		  break;
 		case GEBM_RECT:
-		  GrRect(base,x1,y1,1,1);
+		  GrRect(dc,x1,y1,1,1);
 		  break;
 		case GEBM_CIRCLE:
-		  GrCircle3(base,x1,y1,0,1);
+		  GrCircle3(dc,x1,y1,0,1);
 		  break;
 		case GEBM_CUT:
 		case GEBM_DELETE:
-		  base->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
-		  base->pen_width=1;
-		  GrLineRect4(base,x1,y1,x1,y1);
+		  dc->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
+		  dc->pen_width=1;
+		  GrLineRect4(dc,x1,y1,x1,y1);
 		  break;
 	      }
 	      break;
 	    case GEBM_PASTE:
 	    case GEBM_PASTE_TRANSPARENT:
 	      if (clipboard) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 		if (mode==GEBM_PASTE_TRANSPARENT)
-		  base->color=ROP_TRANSPARENT;
+		  dc->color=ROP_TRANSPARENT;
 		else
-		  base->color=BLACK;
-		GrBlot(base,p1,p2,clipboard);
+		  dc->color=BLACK;
+		GrBlot(dc,p1,p2,clipboard);
 	      }
 	      break;
 	    case GEBM_TEXT:
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-	      base->color=color;
-	      GrPutS(base,p1,p2,st);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+	      dc->color=color;
+	      GrPutS(dc,p1,p2,st);
 	      break;
 	    case GEBM_TEXT_BOX:
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-	      base->color=color;
-	      GrTextBox3(base,p1,p2,0,st);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+	      dc->color=color;
+	      GrTextBox3(dc,p1,p2,0,st);
 	      break;
 	    case GEBM_TEXT_DIAMOND:
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-	      base->color=color;
-	      GrTextDiamond3(base,p1,p2,0,st);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+	      dc->color=color;
+	      GrTextDiamond3(dc,p1,p2,0,st);
 	      break;
 	    case GEBM_FLOOD_FILL:
 	      img->color=color;
 	      GrFloodFill(img,p1-xx1,p2-yy1);
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      break;
 	    case GEBM_FLOOD_FILL_NOT:
 	      img->color=color;
 	      GrFloodFill(img,p1-xx1,p2-yy1,TRUE);
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      break;
 	    case GEBM_POLYLINE:
 	      if (!down) {
 		x1=p1; y1=p2;
 		down=TRUE;
-		base->color=color;
-		base->pen_width=width;
-		GrLine3(base,x1,y1,0,p1,p2,0);
+		dc->color=color;
+		dc->pen_width=width;
+		GrLine3(dc,x1,y1,0,p1,p2,0);
 	      }
 	      break;
 	    case GEBM_POLYPOINT:
@@ -286,7 +286,7 @@ bm_menu:
 	      img->color=color;
 	      img->pen_width=width;
 	      GrLine3(img,x1-xx1,y1-yy1,0,p1-xx1,p2-yy1,0);
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      break;
 	  }
 	  break;
@@ -296,18 +296,18 @@ bm_menu:
 	    case GEBM_ARROW:
 	    case GEBM_POLYLINE:
 	      if (down) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-		base->color=color;
-		base->pen_width=width;
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+		dc->color=color;
+		dc->pen_width=width;
 		if (mode==GEBM_ARROW)
-		  GrArrow3(base,x1,y1,0,p1,p2,0);
+		  GrArrow3(dc,x1,y1,0,p1,p2,0);
 		else
-		  GrLine3(base,x1,y1,0,p1,p2,0);
+		  GrLine3(dc,x1,y1,0,p1,p2,0);
 	      }
 	      break;
 	    case GEBM_RECT:
 	      if (down) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 		if (x1<p1) {
 		  x11=x1;
 		  x22=p1;
@@ -322,14 +322,14 @@ bm_menu:
 		  y11=p2;
 		  y22=y1;
 		}
-		base->color=color;
-		GrRect(base,x11,y11,x22-x11+1,y22-y11+1);
+		dc->color=color;
+		GrRect(dc,x11,y11,x22-x11+1,y22-y11+1);
 	      }
 	      break;
 	    case GEBM_CUT:
 	    case GEBM_DELETE:
 	      if (down) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 		if (x1<p1) {
 		  x11=x1;
 		  x22=p1;
@@ -344,51 +344,51 @@ bm_menu:
 		  y11=p2;
 		  y22=y1;
 		}
-		base->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
-		base->pen_width=1;
-		GrLineRect4(base,x11,y11,x22,y22);
+		dc->color=ROPF_DITHER+WHITE<<16+ROP_EQU+BLACK;
+		dc->pen_width=1;
+		GrLineRect4(dc,x11,y11,x22,y22);
 	      }
 	      break;
 	    case GEBM_CIRCLE:
 	      if (down) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-		base->color=color;
-		base->pen_width=width;
-		GrCircle3(base,x1,y1,0,Sqrt(SqrI64(p1-x1)+SqrI64(p2-y1)));
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+		dc->color=color;
+		dc->pen_width=width;
+		GrCircle3(dc,x1,y1,0,Sqrt(SqrI64(p1-x1)+SqrI64(p2-y1)));
 	      }
 	      break;
 	    case GEBM_PASTE:
 	    case GEBM_PASTE_TRANSPARENT:
 	      if (clipboard) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 		if (mode==GEBM_PASTE_TRANSPARENT)
-		  base->color=ROP_TRANSPARENT;
+		  dc->color=ROP_TRANSPARENT;
 		else
-		  base->color=BLACK;
-		GrBlot(base,p1,p2,clipboard);
+		  dc->color=BLACK;
+		GrBlot(dc,p1,p2,clipboard);
 	      }
 	      break;
 	    case GEBM_TEXT:
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-	      base->color=color;
-	      GrPutS(base,p1,p2,st);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+	      dc->color=color;
+	      GrPutS(dc,p1,p2,st);
 	      break;
 	    case GEBM_TEXT_BOX:
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-	      base->color=color;
-	      GrTextBox3(base,p1,p2,0,st);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+	      dc->color=color;
+	      GrTextBox3(dc,p1,p2,0,st);
 	      break;
 	    case GEBM_TEXT_DIAMOND:
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
-	      base->color=color;
-	      GrTextDiamond3(base,p1,p2,0,st);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
+	      dc->color=color;
+	      GrTextDiamond3(dc,p1,p2,0,st);
 	      break;
 	    case GEBM_POLYPOINT:
 	      if (down) {
 		img->color=color;
 		img->pen_width=width;
 		GrLine3(img,x1-xx1,y1-yy1,0,p1-xx1,p2-yy1,0);
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 		x1=p1; y1=p2;
 	      }
 	      break;
@@ -406,7 +406,7 @@ bm_menu:
 		GrArrow3(img,x1-xx1,y1-yy1,0,p1-xx1,p2-yy1,0);
 	      else
 		GrLine3(img,x1-xx1,y1-yy1,0,p1-xx1,p2-yy1,0);
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      if (mode==GEBM_POLYLINE) {
 		x1=p1; y1=p2;
 	      } else
@@ -430,7 +430,7 @@ bm_menu:
 	      }
 	      GrRect(img,x11-xx1,y11-yy1,x22-x11+1,y22-y11+1);
 	      down=FALSE;
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      break;
 	    case GEBM_CUT:
 	    case GEBM_DELETE:
@@ -448,8 +448,8 @@ bm_menu:
 		y11=p2;
 		y22=y1;
 	      }
-	      GrDel(clipboard);
-	      clipboard=GrExtractBitMap(img,x11-xx1,y11-yy1,x22-xx1,y22-yy1);
+	      GrDCDel(clipboard);
+	      clipboard=GrExtractDC(img,x11-xx1,y11-yy1,x22-xx1,y22-yy1);
 	      clipboard->bkcolor=bkcolor;
 	      if (mode==GEBM_DELETE) {
 		img->color=bkcolor;
@@ -461,18 +461,18 @@ bm_menu:
 	      img->pen_width=width;
 	      GrCircle3(img,x1-xx1,y1-yy1,0,Sqrt(SqrI64(p1-x1)+SqrI64(p2-y1)));
 	      down=FALSE;
-	      GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      break;
 	    case GEBM_PASTE:
 	    case GEBM_PASTE_TRANSPARENT:
 	      if (clipboard) {
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 		if (mode==GEBM_PASTE_TRANSPARENT)
 		  img->color=ROP_TRANSPARENT;
 		else
 		  img->color=BLACK;
 		GrBlot(img,p1-xx1,p2-yy1,clipboard);
-		GrBMEdPrepPersistentBase(base,xx1,yy1,xx2,yy2,img);
+		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      }
 	      break;
 	    case GEBM_TEXT:
@@ -496,10 +496,10 @@ bm_menu:
 bm_key_up_done:
   GetMsg(,,1<<MSG_KEY_UP);
 bm_done:
-  GrDel(clipboard);
-  GrDel(undo);
+  GrDCDel(clipboard);
+  GrDCDel(undo);
   Free(st);
-  GrClear(base);
+  GrDCClear(dc);
   SettingsPop;
   if (_import_snap) *_import_snap=new_snap;
   if (_import_ip_scaler) *_import_ip_scaler=new_ip_scaler;

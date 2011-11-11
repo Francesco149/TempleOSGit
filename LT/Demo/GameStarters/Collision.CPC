@@ -21,11 +21,11 @@ I64 ball_x[NUM_BALLS],ball_y[NUM_BALLS],
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
-  base->color=RED;
+  GrDC *dc=GrDCAlias(gr_dc,task);
+  dc->color=RED;
   for (i=0;i<NUM_BALLS;i++)
-    GrCircle(base,ball_x[i].i32[1],ball_y[i].i32[1],BALL_RADIUS);
-  GrDel(base);
+    GrCircle(dc,ball_x[i].i32[1],ball_y[i].i32[1],BALL_RADIUS);
+  GrDCDel(dc);
 }
 
 

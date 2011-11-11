@@ -110,13 +110,13 @@ class MPCtrl {
   BoolI64 app_done;
 } mp;
 
-U0 FSTransform(GrBitMap *base,I64 *x,I64 *y,I64 *z)
+U0 FSTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
 //I accidentally made the Z coordinate sign backward
 //from the fill-poly depth buf scheme, so it is negated at the end.
 //Negative Z coordinates are the ones we want plotted.
-  GrRot(base->r,x,y,z);
+  GrRot(dc->r,x,y,z);
 
 //We don't want divide by zero or make too monstrous foreground objects.
 //The foreground object boundary is kinda crappy looking when
@@ -128,8 +128,8 @@ U0 FSTransform(GrBitMap *base,I64 *x,I64 *y,I64 *z)
     *x = *x * DISPLAY_SCALE/ zz;
     *y = *y * DISPLAY_SCALE/ zz;
   }
-  *x+=base->x;
-  *y =base->y-*y;
+  *x+=dc->x;
+  *y =dc->y-*y;
 }
 
 
@@ -402,13 +402,13 @@ U0 InitMap()
 }
 
 
-GrBitMap *main_base;
+GrDC *main_dc;
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
-  GrBlot(base,0,0,main_base);
-  GrDel(base);
+  GrDC *dc=GrDCAlias(gr_dc,task);
+  GrBlot(dc,0,0,main_dc);
+  GrDCDel(dc);
 }
 
 
@@ -443,7 +443,7 @@ so we get some glitches.
 
 */
 
-U0 MPDrawIt(TaskStruct *task,GrBitMap *base)
+U0 MPDrawIt(TaskStruct *task,GrDC *dc)
 {
 //This is identical to the previous routine but is run by core#1
   I64 i,j,ww,hh,*s2w,x1,y1,z1, xx,yy,
@@ -458,11 +458,11 @@ U0 MPDrawIt(TaskStruct *task,GrBitMap *base)
   yy=y/(MAP_SCALE*COORDINATE_SCALE);
 
   //World to screen coordinates
-  GrIdentEqu(base->r);
-  GrRotZEqu(base->r,theta2);
-  GrRotXEqu(base->r,phi);
-  GrRotZEqu(base->r,theta1);
-  GrSetRotMat(base,base->r);
+  GrIdentEqu(dc->r);
+  GrRotZEqu(dc->r,theta2);
+  GrRotXEqu(dc->r,phi);
+  GrRotZEqu(dc->r,theta1);
+  GrSetRotMat(dc,dc->r);
 
   //Screen to world coordinates
 
@@ -483,19 +483,19 @@ U0 MPDrawIt(TaskStruct *task,GrBitMap *base)
 //it is persistent.  I have carefully syncronized to the update
 //cycle initiated by core#0 to prevent flicker.
 
-  base->flags|=BMF_TRANSFORMATION;
-  base->transform=&FSTransform;
-  base->x=cx;
-  base->y=cy;
+  dc->flags|=BMF_TRANSFORMATION;
+  dc->transform=&FSTransform;
+  dc->x=cx;
+  dc->y=cy;
 
-//base->x and the translation part of base->r are identical in effect,
+//dc->x and the translation part of dc->r are identical in effect,
 //but we use both to show-off.	We could add offsets together and use one or the other.
 
   x1=-x>>COORDINATE_BITS;
   y1=-y>>COORDINATE_BITS;
   z1=-z>>COORDINATE_BITS;
-  GrRot(base->r,&x1,&y1,&z1);
-  GrSetTranslation(base->r,x1,y1,z1);
+  GrRot(dc->r,&x1,&y1,&z1);
+  GrSetTranslation(dc->r,x1,y1,z1);
 
   //This is a refinement.
   if (Abs(phi*180/pi)>90) {
@@ -539,8 +539,8 @@ U0 MPDrawIt(TaskStruct *task,GrBitMap *base)
       if (0<=x1<MAP_WIDTH && 0<=y1<MAP_HEIGHT) {
 	  if ((tempp=panels[y1][x1*2]) && !LBts(panels_processed_bitmap,tempp->num)) {
 	    if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
-	      base->color=tempp->color;
-	      tempp->cnt=GrFillPoly3(base,tempp->n,tempp->points);
+	      dc->color=tempp->color;
+	      tempp->cnt=GrFillPoly3(dc,tempp->n,tempp->points);
 	    } else
 	      tempp->cnt++;
 	  }
@@ -557,7 +557,7 @@ U0 MPDrawIt(TaskStruct *task,GrBitMap *base)
 
 U0 APEagleDiveTask(TaskStruct *master_task)
 {
-  GrBitMap *base=GrAlias(main_base,master_task);
+  GrDC *dc=GrDCAlias(main_dc,master_task);
   Preempt(ON);
   while (!mp.app_done) {
     LBts(&Fs->task_flags,TASKf_IDLE);
@@ -565,34 +565,34 @@ U0 APEagleDiveTask(TaskStruct *master_task)
       Yield;
     LBtr(&Fs->task_flags,TASKf_IDLE);
     if (!mp.app_done)
-      MPDrawIt(master_task,base);
+      MPDrawIt(master_task,dc);
   }
 
 //We made an alias of this we don't want freed.
-  base->depth_buf=NULL;
+  dc->depth_buf=NULL;
 
-  GrDel(base);
+  GrDCDel(dc);
   LBts(&mp.done_flags,Gs->num);
 }
 
-U0 DrawHorizon(GrBitMap *base)
+U0 DrawHorizon(GrDC *dc)
 {
   I64 x1,y1,z1,x2,y2,z2,xh,yh,zh,*s2w=GrIdent,
       cx=Fs->win_pixel_width>>1,
       cy=Fs->win_pixel_height>>1;
   P3I32 p[4];
-  I32 *old_db=base->depth_buf;
-  base->depth_buf=NULL;
+  I32 *old_db=dc->depth_buf;
+  dc->depth_buf=NULL;
 
-  GrIdentEqu(base->r);
-  GrRotZEqu(base->r,theta2);
-  GrRotXEqu(base->r,phi);
-  GrRotZEqu(base->r,theta1);
-  GrSetRotMat(base,base->r);
-  base->flags&=~BMF_TRANSFORMATION;
-  base->transform=&FSTransform;
-  base->x=cx;
-  base->y=cy;
+  GrIdentEqu(dc->r);
+  GrRotZEqu(dc->r,theta2);
+  GrRotXEqu(dc->r,phi);
+  GrRotZEqu(dc->r,theta1);
+  GrSetRotMat(dc,dc->r);
+  dc->flags&=~BMF_TRANSFORMATION;
+  dc->transform=&FSTransform;
+  dc->x=cx;
+  dc->y=cy;
 
   GrRotZEqu(s2w,-theta1);
   GrRotXEqu(s2w,-phi);
@@ -604,70 +604,70 @@ U0 DrawHorizon(GrBitMap *base)
   Free(s2w);
 
   x1=xh+yh*32; y1=yh-xh*32; z1=0;
-  (*base->transform)(base,&x1,&y1,&z1);
+  (*dc->transform)(dc,&x1,&y1,&z1);
   x2=xh-yh*32; y2=yh+xh*32; z2=0;
-  (*base->transform)(base,&x2,&y2,&z2);
-  GrClipLine(base,&x1,&y1,&x2,&y2);
+  (*dc->transform)(dc,&x2,&y2,&z2);
+  GrDCClipLine(dc,&x1,&y1,&x2,&y2);
 
   MemSet(p,0,sizeof(p));
   if (x2<x1) {
     SwapU64(&x1,&x2);
     SwapU64(&y1,&y2);
   }
-  if (!x1 && x2==base->width-1) {
+  if (!x1 && x2==dc->width-1) {
     p[0].x=0;
     p[0].y=0;
-    p[1].x=base->width-1;
+    p[1].x=dc->width-1;
     p[1].y=0;
-    p[2].x=base->width-1;
+    p[2].x=dc->width-1;
     p[2].y=y2;
     p[3].x=0;
     p[3].y=y1;
     if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
-      base->color=LTCYAN;
+      dc->color=LTCYAN;
     else
-      base->color=LTGREEN;
-    GrFillPoly3(base,4,p);
-    p[0].y=base->height-1;
-    p[1].y=base->height-1;
+      dc->color=LTGREEN;
+    GrFillPoly3(dc,4,p);
+    p[0].y=dc->height-1;
+    p[1].y=dc->height-1;
     if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
-      base->color=LTGREEN;
+      dc->color=LTGREEN;
     else
-      base->color=LTCYAN;
-    GrFillPoly3(base,4,p);
+      dc->color=LTCYAN;
+    GrFillPoly3(dc,4,p);
   } else {
     if (y2<y1) {
       SwapU64(&x1,&x2);
       SwapU64(&y1,&y2);
     }
-    if (!y1 && y2==base->height-1) {
+    if (!y1 && y2==dc->height-1) {
       p[0].x=0;
       p[0].y=0;
       p[1].x=0;
-      p[1].y=base->height-1;
+      p[1].y=dc->height-1;
       p[2].x=x2;
-      p[2].y=base->height-1;
+      p[2].y=dc->height-1;
       p[3].x=x1;
       p[3].y=0;
       if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
-	base->color=LTCYAN;
+	dc->color=LTCYAN;
       else
-	base->color=LTGREEN;
-      GrFillPoly3(base,4,p);
-      p[0].x=base->width-1;
-      p[1].x=base->width-1;
+	dc->color=LTGREEN;
+      GrFillPoly3(dc,4,p);
+      p[0].x=dc->width-1;
+      p[1].x=dc->width-1;
       if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
-	base->color=LTGREEN;
+	dc->color=LTGREEN;
       else
-	base->color=LTCYAN;
-      GrFillPoly3(base,4,p);
+	dc->color=LTCYAN;
+      GrFillPoly3(dc,4,p);
     }
   }
-  base->depth_buf=old_db;
+  dc->depth_buf=old_db;
 }
 
 
-U0 BSPEagleDive(GrBitMap *base)
+U0 BSPEagleDive(GrDC *dc)
 {
   F64 last_t;
   I64  i,xx,yy,height,bkcolor,
@@ -683,9 +683,9 @@ U0 BSPEagleDive(GrBitMap *base)
   height=z/COORDINATE_SCALE-elevations[yy][xx];
   if (height<0) {
     if (elevations[yy][xx]>WATER_ELEVATION*MAP_SCALE) {
-      base->color=bkcolor=BLACK;
+      dc->color=bkcolor=BLACK;
       if (!game_over) {
-	GrRect(base,0,0,base->width,base->height);
+	GrRect(dc,0,0,dc->width,dc->height);
 	music_mute=TRUE;
 	Beep;
 	game_over=TRUE;
@@ -697,8 +697,8 @@ U0 BSPEagleDive(GrBitMap *base)
     bkcolor=LTCYAN;
 
   if (height>=0 && !(-pi/4<=Unwrap(phi-pi)<pi/4)) {
-    DrawHorizon(base);
-    GrDepthBufRst(base);
+    DrawHorizon(dc);
+    GrDCDepthBufRst(dc);
 
   //Signal all cores to start update
     mp.do_update=1<<mp.mp_cnt-1-1;
@@ -707,14 +707,14 @@ U0 BSPEagleDive(GrBitMap *base)
     while (mp.do_update)
       Yield;
 
-    MPDrawIt(Fs,base);
+    MPDrawIt(Fs,dc);
 
     xx=x/COORDINATE_SCALE;
     yy=y/COORDINATE_SCALE;
     tempf=fish_root.next;
     while (tempf!=&fish_root) {
       if (SqrI64(tempf->x-xx)+SqrI64(tempf->y-yy)<MAP_SCALE*MAP_SCALE*20*20)
-	GrElemsPlot3(base,tempf->x,tempf->y,tempf->z,__BIN_1);
+	GrSpritePlot3(dc,tempf->x,tempf->y,tempf->z,__BIN_1);
       tempf=tempf->next;
     }
 
@@ -738,30 +738,30 @@ U0 BSPEagleDive(GrBitMap *base)
     span_factor=Limit(span_factor,.30,3.0);
 
   } else {
-    base->color=bkcolor;
-    GrRect(base,0,0,base->width,base->height);
+    dc->color=bkcolor;
+    GrRect(dc,0,0,dc->width,dc->height);
   }
-  base->pen_width=2;
+  dc->pen_width=2;
   if (bkcolor==BLUE)
-    base->color=WHITE;
+    dc->color=WHITE;
   else
-    base->color=BLACK;
-  base->flags&=~BMF_TRANSFORMATION;
-  GrLine3(base,cx+5,cy,0,cx-5,cy,0);
-  GrLine3(base,cx,cy+5,0,cx,cy-5,0);
-  GrPrintF(base,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Box:%5.1f",
+    dc->color=BLACK;
+  dc->flags&=~BMF_TRANSFORMATION;
+  GrLine3(dc,cx+5,cy,0,cx-5,cy,0);
+  GrLine3(dc,cx,cy+5,0,cx,cy-5,0);
+  GrPrintF(dc,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Box:%5.1f",
       theta1*180/pi,phi*180/pi,theta2*180/pi,v_grid_size);
-  GrPrintF(base,0,FONT_HEIGHT,"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
+  GrPrintF(dc,0,FONT_HEIGHT,"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
       ToF64(x)/COORDINATE_SCALE,ToF64(y)/COORDINATE_SCALE,ToF64(z)/COORDINATE_SCALE,
       height,game_score,best_score);
 
   if (game_over && Blink(,tP)) {
-    base->color=RED;
-    GrPutS(base,(Fs->win_pixel_width-9*FONT_WIDTH)/2,
+    dc->color=RED;
+    GrPutS(dc,(Fs->win_pixel_width-9*FONT_WIDTH)/2,
 	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Game Over");
   } else if (tP-game_t0<5.0 && Blink(,tP)) {
-    base->color=WHITE;
-    GrPutS(base,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
+    dc->color=WHITE;
+    GrPutS(dc,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
 	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Catch Fish");
   }
 
@@ -858,7 +858,7 @@ U0 SongTask(U64 dummy=0)
 U0 Init(I64 _mp_cnt)
 {
   I64 i;
-  main_base=GrNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  main_dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
   critical_section_flag=0;
   game_over=FALSE;
   game_score=0;
@@ -869,7 +869,7 @@ U0 Init(I64 _mp_cnt)
     mp.mp_cnt=mp_cnt;
   fish_root.next=fish_root.last=&fish_root;
   InitMap;
-  GrAllocDepthBuf(main_base);
+  GrDCAllocDepthBuf(main_dc);
 
   Fs->win_max_refresh=30.0;
 
@@ -910,7 +910,7 @@ U0 CleanUp()
     tempp=tempp1;
   }
   Free(panels_processed_bitmap);
-  GrDel(main_base);
+  GrDCDel(main_dc);
 }
 
 U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
@@ -978,7 +978,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
 	phi	=Unwrap(phi);
 	theta2=Unwrap(theta2);
       } else
-	BSPEagleDive(main_base);
+	BSPEagleDive(main_dc);
     } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   catch
     CatchAll;

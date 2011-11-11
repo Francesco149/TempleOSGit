@@ -20,11 +20,11 @@ U0 Song()
   while (!ScanKey) {
     Play("3qECGeECqBBAA",
 	"Stor\0ies \0old \0are \0 \0my \0de\0light.\r\n\0 \0");
-    PutGrElems(__BIN_1);
+    PutGrSprite(__BIN_1);
     CrLf(5);
     Play("ECGeECqBBAA",
 	"No, \0I \0won't \0share \0 \0they're \0p\0light.\r\n\0 \0");
-    PutGrElems(__BIN_1);
+    PutGrSprite(__BIN_1);
     CrLf(5);
     Play("DGCEBGCA",
 	"I \0 \0love \0 \0God.  \0 \0Yes, \0sir.\r\n\0");

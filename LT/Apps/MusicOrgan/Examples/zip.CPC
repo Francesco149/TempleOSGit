@@ -22,14 +22,14 @@
 
 F64 t0=tJ;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   F64 dt=(tJ-t0)*music_tempo;
   U8 *inter;
   if (dt>=16.0) {
-    inter=GrElemsInterpolate(__BIN_1,__BIN_2,Abs((4.0*tJ%2-1)%1));
-    GrElemsPlot3(base,20,20,0,inter);
+    inter=GrSpriteInterpolate(__BIN_1,__BIN_2,Abs((4.0*tJ%2-1)%1));
+    GrSpritePlot3(dc,20,20,0,inter);
     Free(inter);
   }
 }

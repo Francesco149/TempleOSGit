@@ -17,7 +17,7 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/LT/OSMain/Adam1a.HPZ,2803] DFT_STK and 
+[C:/LT/OSMain/Adam1a.HPZ,2809] DFT_STK and 
 recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,230]
 Spawn().
 
@@ -37,22 +37,22 @@ which binds a C+ definition to a asm sym.  This, too, can only be done once.
 I/O.  And, preemption is off by default, so use [C:/LT/OSMain/Adam1b.HPZ,98]
 Preempt(ON) if you wish.
 
-* A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf document structure
+* A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf document structure
 that remains active even when 
 you change Fs->update_win.  See [::/LT/Demo/Ltf/Quirk1.CPZ]
 ::/LT/Demo/Ltf/Quirk1.CPZ.  To prevent links 
-in the [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf from being activated when the user
+in the [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf from being activated when the user
 clicks in the window, do one of 
 three things:
   
 A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1700] LtfBottom() followed by
   [C:/LT/Adam/Ltf/LtfRecalc.APZ,1734] LtfClear() to clear the
-  [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf so it has no active 
+  [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf so it has no active 
 widgets.
 
 B) Disable window manager button click checking with Fs->win_inhibit set to 
-mask [C:/LT/OSMain/Adam1a.HPZ,2958] WIF_IP_L and
-  [C:/LT/OSMain/Adam1a.HPZ,2959] WIF_IP_R.  This inhibits window manager
+mask [C:/LT/OSMain/Adam1a.HPZ,2964] WIF_IP_L and
+  [C:/LT/OSMain/Adam1a.HPZ,2965] WIF_IP_R.  This inhibits window manager
   operations but 
 still generates messages from button clicks.
 

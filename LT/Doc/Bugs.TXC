@@ -1,5 +1,9 @@
                                    Bug Stat
 
+#000022 Introduced:00/00/0000 Fixed:10/29/2011
+In certain cases, the compiler wrongly optimized local variable arrays as reg 
+vars.
+
 #000021 Introduced:00/00/0000 Fixed:10/10/2011
 Graphics routines did not work with ->brush when ->pen_width was big.
 

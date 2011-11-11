@@ -12,7 +12,6 @@ U0 SysGlblsInit()
   sys_rnd_seed = 93186752^GetTimeStamp;
   sys_cur_focus_task=Fs;
   sys_macro_root.next=sys_macro_root.last=&sys_macro_root;
-  kbdmouse_fifo=U8FifoNew(256);
   sys_dft_iso_name="::/Temp/CDDVD.ISO";
   MemSet(mp_apic_ids,0,MP_MAX_PROCESSORS*sizeof(U8));
   MemSet(sys_usb_devs,0,MAX_USB*sizeof(LTUSB));

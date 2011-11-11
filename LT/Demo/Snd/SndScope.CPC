@@ -1,29 +1,29 @@
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   SND_OUT_CONTAINER *buf=_hda->ostr0_buf[0];
   I64 i,x1,y1,x2,y2,
     cy=task->win_pixel_height>>1;
 
-  base->color=BLUE;
+  dc->color=BLUE;
   x2=0;y2=cy;
   for (i=0;i<SND_BUF_LEN;i+=2) {
     x1=i*task->win_pixel_width/SND_BUF_LEN;
     y1=cy-buf[i]*cy/snd_vol/MAX_I32;
-    GrLine(base,x2,y2,x1,y1);
+    GrLine(dc,x2,y2,x1,y1);
     x2=x1;y2=y1;
   }
 
-  base->color=GREEN;
+  dc->color=GREEN;
   x2=0;y2=cy;
   for (i=1;i<SND_BUF_LEN;i+=2) {
     x1=i*task->win_pixel_width/SND_BUF_LEN;
     y1=cy-buf[i]*cy/snd_vol/MAX_I32;
-    GrLine(base,x2,y2,x1,y1);
+    GrLine(dc,x2,y2,x1,y1);
     x2=x1; y2=y1;
   }
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 SndScope()

@@ -1,11 +1,57 @@
 Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 
+----11/11/11 13:35:36----
+
+----11/11/11 11:43:38----
+* **V7.08 Released**
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("gr_refreshed_dc","gr_dc");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("gr_persistent_dc","gr_dc2");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("base","dc");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrElem","GrSprite");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrBitMap","GrDC");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrAlias","GrDCAlias");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrRst","GrDCRst");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrNew","GrDCNew");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrDel","GrDCDel");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrLoad","GrDCLoad");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrSave","GrDCSave");
+
+----11/07/11 14:59:11----
+* Improved [::/LT/Demo/GameStarters/Chess.CPZ]
+::/LT/Demo/GameStarters/Chess.CPZ A.I.
+
+----10/29/11 07:57:53----
+* Fixed compiler bug with local var arrays.  See [::/LT/Doc/Bugs.TXZ,#000022]
+#000022.
+
+----10/27/11 15:31:13----
+* Added graphics to [::/LT/Apps/MusicOrgan/Examples/doing.CPZ]
+::/LT/Apps/MusicOrgan/Examples/doing.CPZ.
+* Separated 2nd stage kbd and mouse packet fifos.
+
+----10/24/11 20:15:54----
+* Added [::/LT/Apps/MusicOrgan/Examples/twins.CPZ]
+::/LT/Apps/MusicOrgan/Examples/twins.CPZ.
+* Added graphics to [::/LT/Apps/MusicOrgan/Examples/elijah.CPZ]
+::/LT/Apps/MusicOrgan/Examples/elijah.CPZ.
+* Added sheep to [::/LT/Apps/AfterEgypt/Horeb.CPZ]
+::/LT/Apps/AfterEgypt/Horeb.CPZ and made movement smoother.
+
+----10/23/11 00:59:28----
+* Added graphics to [::/LT/Apps/MusicOrgan/Examples/awake.CPZ]
+::/LT/Apps/MusicOrgan/Examples/awake.CPZ.
+* Added managed code to <CTRL-C> menu -- Slider.
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Mixer","Slider");
+* Updated [::/LT/Demo/Graphics/SliderCtrl.CPZ]
+::/LT/Demo/Graphics/SliderCtrl.CPZ.
+* Moved IDE code and ReFmtFun code.
+ 
 ----10/16/11 12:16:17----
 * Converted [C:/LT/Compiler/CmpMain.CPZ,15] StreamPrintF()'s to
 [C:/LT/OSMain/Str1a.CPZ,1138] DefinePrintF()'s.
 * Improved [::/LT/Apps/Tanks/Tanks.CPZ] ::/LT/Apps/Tanks/Tanks.CPZ.
 * Deleted ::/LT/Demo/GameStarters/Pac.CPZ (Redundant)
-* Deleted ::/LT/Demo/GameStarters/Kings.CPZ (redundant)
+* Deleted ::/LT/Demo/GameStarters/Kings.CPZ (Redundant)
 
 ----10/16/11 02:32:36----
 * Improved PSectCache.
@@ -21,7 +67,7 @@ Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 * **V7.07 Released**
 * Added graphics to [::/LT/Apps/MusicOrgan/Examples/purpose.CPZ]
 ::/LT/Apps/MusicOrgan/Examples/purpose.CPZ.
-* Fixed bug with base->brush in graphics routines.  See
+* Fixed bug with dc->brush in graphics routines.  See
 [::/LT/Doc/Bugs.TXZ,#000021] #000021.
 * Added graphics to [::/LT/Apps/MusicOrgan/Examples/exiled.CPZ]
 ::/LT/Apps/MusicOrgan/Examples/exiled.CPZ.
@@ -116,7 +162,7 @@ FAT32.
 
 ----06/30/11 08:16:20----
 * Added instance arg to [C:/LT/OSMain/Hash1a.CPZ,449] HashFind() and
-[C:/LT/OSMain/Adam1c.HPZ,569] ExtFind().
+[C:/LT/OSMain/Adam1c.HPZ,568] ExtFind().
 
 ----06/25/11 17:28:37----
 * Added flats to MusicOrgan.
@@ -133,7 +179,7 @@ were being freed, leaving a dangling str pointer.
 
 ----05/20/11 13:04:37----
 * Added [::/LT/Misc/CvtBMPDir.CPZ] ::/LT/Misc/CvtBMPDir.CPZ.
-* GrElem bitmap editor now works with grab-scroll.
+* GrSprite bitmap editor now works with grab-scroll.
 
 ----05/17/11 07:33:57----
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Address","Addr");
@@ -157,7 +203,7 @@ task.  [C:/LT/Adam/Ltf/LtfPopUp.APZ,716] PopUpFile().
 * Misc minor compiler improvements.
   - LTintern can be expressions
   - JIT LTextern can be expressions
-  - [C:/LT/OSMain/Adam1a.HPZ,1401] OPTf_USE_LIT64 (not fully implemented)
+  - [C:/LT/OSMain/Adam1a.HPZ,1402] OPTf_USE_LIT64 (not fully implemented)
 
 ----04/27/11 21:27:32----
 * Made 8051 assembler syntax like LoseThos.
@@ -210,10 +256,10 @@ RegPoly().
 
 ----03/06/11 14:34:05----
 * **V7.02 Released**
-* Fixed bug in [C:/LT/Adam/Gr/GrElemPlot.APZ,372] GrElemsExtents().
+* Fixed bug in [C:/LT/Adam/Gr/GrSpritePlot.APZ,372] GrSpriteExtents().
 * Updated [::/LT/Misc/PCIDevices.TXZ] ::/LT/Misc/PCIDevices.TXZ.
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Vector","Vect");
-* Added BitMap editor to [C:/LT/Adam/Gr/Gr.APZ,54] GrElem editor.
+* Added BitMap editor to [C:/LT/Adam/Gr/Gr.APZ,54] GrSprite editor.
 
 ----03/02/11 22:33:01----
 * Fixed bug in [C:/LT/OSMain/Str1a.CPZ,932] WildCardMatch().
@@ -238,15 +284,16 @@ RegPoly().
 * **V7.01 Released**
 * Added truncate to [C:/LT/OSMain2/SPrintF2.CPZ,490] SPrintFJoin2() for %q
 and %Q.
-* Added [C:/LT/Adam/Gr/GrElemNew.APZ,176] GrElem2Text() and enhanced text in
-GrElem editor.
+* Added [C:/LT/Adam/Gr/GrSpriteNew.APZ,176] GrSprite2Text() and enhanced text
+in GrSprite editor.
 * [C:/LT/Adam/BMPFile.APZ,255] BMPFileRead(), now, scan for nearest palette
 entries.
-* Improved [::/LT/Demo/Graphics/GrElem3.CPZ] ::/LT/Demo/Graphics/GrElem3.CPZ.
+* Improved [::/LT/Demo/Graphics/GrSprite3.CPZ]
+::/LT/Demo/Graphics/GrSprite3.CPZ.
 * Added [::/LT/Demo/GameStarters/Varoom.CPZ]
 ::/LT/Demo/GameStarters/Varoom.CPZ.
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Goons","TheDead");
-* Added [::/LT/Demo/Graphics/GrElem4.CPZ] ::/LT/Demo/Graphics/GrElem4.CPZ.
+* Added [::/LT/Demo/Graphics/GrSprite4.CPZ] ::/LT/Demo/Graphics/GrSprite4.CPZ.
 * Improved [::/LT/Demo/GameStarters/DunGen.CPZ]
 ::/LT/Demo/GameStarters/DunGen.CPZ.
 * Added <CTRL-ALT-V> for sound volume.
@@ -263,7 +310,7 @@ entries.
 * Fixed bug in [::/LT/Adam/Merge.APZ,MergeChk(] MergeChk().
 * Got rid of compiler prefetch and wordstat prefetch because they didn't help 
 and just made things more complicated.
-* [::/LT/Adam/Diff.APZ,Diff(] Diff() reports differences in GrElems or other
+* [::/LT/Adam/Diff.APZ,Diff(] Diff() reports differences in GrSprite or other
 binary data.
 * Improved [C:/LT/OSMain/Str1a.CPZ,989] A2I().
 
@@ -303,7 +350,7 @@ Forward Ref err to compiler.
 * **Warning**: Changed args to [C:/LT/OSMain/KbdMouse/InputPointer.CPZ,3]
 SetSnap(). 
 * Added input pointer (mouse) scaler, noticeable in [C:/LT/Adam/Gr/Gr.APZ,54]
-GrElem editor.  Allows 
+GrSprite editor.  Allows 
 slowing mouse movement for better ctrl.
 * Added Moses Comics
 `Dir("::/LT/Apps/AfterEgypt/Comics/*");View;`

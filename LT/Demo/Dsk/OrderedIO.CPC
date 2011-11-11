@@ -4,7 +4,7 @@ sorts them by cluster num, to speed-up access time by avoiding moving the disk
 head around.
 */
 
-U0 DoIt()
+U0 Main()
 {
   I64 i,cnt=0;
   LTDirEntry *tempm=FilesFind("::/LT/*",1<<FUf_RECURSE),
@@ -16,4 +16,4 @@ U0 DoIt()
   Free(a);
 }
 
-DoIt;
+Main;

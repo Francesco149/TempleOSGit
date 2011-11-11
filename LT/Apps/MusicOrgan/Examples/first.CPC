@@ -38,11 +38,11 @@ U0 Song()
   while (!ScanKey) {
 	Play("3qFeA2G3qBeGBqEetDCBqEeFF",
 	"First, \0lo\0ve \0God \0with \0 \0ALL \0$FG,RED$heart$FG$, \0mind \0and \0soul.\r\n\0 \0 \0");
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	PutS("$CM,0,6$");
 	Play("qFeA2G3qBeGBqEetDCBqEeFF",
 	"First, \0lo\0ve \0God \0with \0 \0ALL \0$FG,RED$heart$FG$, \0mind \0and \0soul.\r\n\0 \0 \0");
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	PutS("$CM,0,6$");
 	Play("GBsADADqE2G3eCDqG2sG3B2G3BetBDB",
 	"What's \0 \0 \0 \0 \0 \0left?  \0 \0I \0don't \0know.\r\n\0 \0 \0 \0 \0 \0 \0 \0");

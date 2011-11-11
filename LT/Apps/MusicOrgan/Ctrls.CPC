@@ -7,35 +7,35 @@ class TempoState
   I64 tempo,stacatto;
 } tempo_state;
 
-U0 DrawTempoCtrl(GrBitMap *base,Ctrl *c)
+U0 DrawTempoCtrl(GrDC *dc,Ctrl *c)
 {
   TempoState *s=c->state;
 
-  base->color=LTGREEN;
-  GrRect(base, c->left,c->top,TEMPO_SPACING*3+2,TEMPO_SPACING*2+TEMPO_RANGE);
-  base->color=BLACK;
-  GrRect(base, c->left+TEMPO_BORDER,c->top+TEMPO_BORDER,
+  dc->color=LTGREEN;
+  GrRect(dc, c->left,c->top,TEMPO_SPACING*3+2,TEMPO_SPACING*2+TEMPO_RANGE);
+  dc->color=BLACK;
+  GrRect(dc, c->left+TEMPO_BORDER,c->top+TEMPO_BORDER,
     TEMPO_SPACING*3+2-2*TEMPO_BORDER,TEMPO_SPACING*2+TEMPO_RANGE-2*TEMPO_BORDER);
-  base->color=WHITE;
-  GrLine(base,c->left+TEMPO_SPACING,c->top+TEMPO_SPACING,
+  dc->color=WHITE;
+  GrLine(dc,c->left+TEMPO_SPACING,c->top+TEMPO_SPACING,
 	      c->left+TEMPO_SPACING,c->top+TEMPO_SPACING+TEMPO_RANGE-1);
-  GrLine(base,c->left+2*TEMPO_SPACING+1,c->top+TEMPO_SPACING,
+  GrLine(dc,c->left+2*TEMPO_SPACING+1,c->top+TEMPO_SPACING,
 	      c->left+2*TEMPO_SPACING+1,c->top+TEMPO_SPACING+TEMPO_RANGE-1);
 
-  base->color=LTGREEN;
-  GrPrintF(base,c->left+TEMPO_SPACING-FONT_WIDTH/2,
+  dc->color=LTGREEN;
+  GrPrintF(dc,c->left+TEMPO_SPACING-FONT_WIDTH/2,
 	      c->top+TEMPO_SPACING+TEMPO_RANGE+3,"%d",s->tempo*10/TEMPO_RANGE);
-  GrPrintF(base,c->left+2*TEMPO_SPACING+1-FONT_WIDTH/2,
+  GrPrintF(dc,c->left+2*TEMPO_SPACING+1-FONT_WIDTH/2,
 	      c->top+TEMPO_SPACING+TEMPO_RANGE+3,"%d",s->stacatto*10/TEMPO_RANGE);
-  GrRect(base,c->left+TEMPO_SPACING-3,	 c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->tempo-2 ,7,5);
-  GrRect(base,c->left+2*TEMPO_SPACING+1-3,c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->stacatto-2,7,5);
-  base->color=YELLOW;
-  GrRect(base,c->left+TEMPO_SPACING-2,	 c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->tempo-1 ,5,3);
-  GrRect(base,c->left+2*TEMPO_SPACING+1-2,c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->stacatto-1,5,3);
+  GrRect(dc,c->left+TEMPO_SPACING-3,	 c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->tempo-2 ,7,5);
+  GrRect(dc,c->left+2*TEMPO_SPACING+1-3,c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->stacatto-2,7,5);
+  dc->color=YELLOW;
+  GrRect(dc,c->left+TEMPO_SPACING-2,	 c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->tempo-1 ,5,3);
+  GrRect(dc,c->left+2*TEMPO_SPACING+1-2,c->top+TEMPO_SPACING+TEMPO_RANGE-1-s->stacatto-1,5,3);
 
-  base->color=GREEN;
-  GrVPutS(base,c->left+TEMPO_BORDER+2,c->top+TEMPO_SPACING+2,"Tempo");
-  GrVPutS(base,c->right-TEMPO_BORDER-2-FONT_WIDTH,c->top+TEMPO_SPACING+2,"Stacatto");
+  dc->color=GREEN;
+  GrVPutS(dc,c->left+TEMPO_BORDER+2,c->top+TEMPO_SPACING+2,"Tempo");
+  GrVPutS(dc,c->right-TEMPO_BORDER-2-FONT_WIDTH,c->top+TEMPO_SPACING+2,"Stacatto");
 }
 
 U0 UpdateDerivedTempoCtrl(Ctrl *c)

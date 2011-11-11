@@ -94,17 +94,17 @@ F64 t0,tf;
 #define SCREEN_SCALE	512
 #define TANK_HEIGHT	32
 
-U0 ZOTransform(GrBitMap *base,I64 *x,I64 *y,I64 *z)
+U0 ZOTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
-  GrRot(base->r,x,y,z);
+  GrRot(dc->r,x,y,z);
   zz=*z;
   if (zz<1) zz=1;
   *x=SCREEN_SCALE/2* *x/zz;
   *y=SCREEN_SCALE/2* (*y+TANK_HEIGHT)/zz;
-  *x+=base->x;
-  *y+=base->y;
-  *z+=base->z;
+  *x+=dc->x;
+  *y+=dc->y;
+  *z+=dc->z;
 }
 
 U0 UpdateWin(TaskStruct *task)
@@ -113,16 +113,16 @@ U0 UpdateWin(TaskStruct *task)
   I64 i,dd,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w>>1,cy=h>>1;
   U8 *img;
   F64 tt;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 old_preempt=Preempt(OFF);
-  GrAllocDepthBuf(base);
-  base->transform=&ZOTransform;
-  base->x=cx;
-  base->y=cy;
-  GrSetTranslation(base->r,-us.x,-us.y,-us.z);
-  GrRotYEqu(base->r,us.theta-pi/2);
-  GrRotXEqu(base->r,pi/16);
-  base->flags|=BMF_TRANSFORMATION;
+  GrDCAllocDepthBuf(dc);
+  dc->transform=&ZOTransform;
+  dc->x=cx;
+  dc->y=cy;
+  GrSetTranslation(dc->r,-us.x,-us.y,-us.z);
+  GrRotYEqu(dc->r,us.theta-pi/2);
+  GrRotXEqu(dc->r,pi/16);
+  dc->flags|=BMF_TRANSFORMATION;
   for (i=0;i<NUM_THEM;i++) {
     y=them[i].y;
     tempo=shots.next;
@@ -145,33 +145,33 @@ U0 UpdateWin(TaskStruct *task)
       img=__BIN_2;
     else
       img=__BIN_1;
-    GrElemsPlotRotY3b(base,them[i].x,y,them[i].z,img,-them[i].theta);
+    GrSpritePlotRotY3b(dc,them[i].x,y,them[i].z,img,-them[i].theta);
   }
   tempo=shots.next;
   while (tempo!=&shots) {
-    GrElemsPlotRotY3b(base,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
+    GrSpritePlotRotY3b(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
     tempo=tempo->next;
   }
-  base->flags&=~BMF_TRANSFORMATION;
-  base->color=LTGREEN;
-  GrLine(base,cx-5,cy,cx+5,cy);
-  GrLine(base,cx,cy-5,cx,cy+5);
+  dc->flags&=~BMF_TRANSFORMATION;
+  dc->color=LTGREEN;
+  GrLine(dc,cx-5,cy,cx+5,cy);
+  GrLine(dc,cx,cy-5,cx,cy+5);
   Preempt(old_preempt);
-  base->color=LTPURPLE;
+  dc->color=LTPURPLE;
   if (tf) {
-    base->color=LTRED;
+    dc->color=LTRED;
     if (Blink(,tP(task)))
-      GrPutS(base,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
+      GrPutS(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
     tt=tf;
   } else {
-    base->color=LTGREEN;
-    GrLine(base,cx-5,cy,cx+5,cy);
-    GrLine(base,cx,cy-5,cx,cy+5);
+    dc->color=LTGREEN;
+    GrLine(dc,cx-5,cy,cx+5,cy);
+    GrLine(dc,cx,cy-5,cx,cy+5);
     tt=tP(task);
   }
-  GrPrintF(base,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
+  GrPrintF(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 Fire()

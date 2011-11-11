@@ -1,7 +1,7 @@
 U0 MsgLoop()
 {
   U64 p1=0,p2=0,msg_code=0;
-  PutS("Use [C:/LT/OSMain/Adam1a.HPZ,3184] these defines "
+  PutS("Use [C:/LT/OSMain/Adam1a.HPZ,3190] these defines "
 	"in your programs instead of hardcoded nums.\r\n"
 	"<ESC> to Exit\r\n");
 

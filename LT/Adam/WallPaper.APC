@@ -26,7 +26,7 @@ U0 WallPaper(TaskStruct *_task)
   BoolI8 old_preempt=Preempt(OFF);
   LTDate ltdt;
   U8 buf[256],buf2[256],*st;
-  GrBitMap *base=GrAlias(gr_refreshed_base,_task);
+  GrDC *dc=GrDCAlias(gr_dc,_task);
   static U64 code_mem=0,data_mem=0;
 
   _task->text_attr=WALLPAPER_ATTR;
@@ -154,7 +154,7 @@ U0 WallPaper(TaskStruct *_task)
 wp_done:
   Fs->hash_table=old_hash;
   last_calc_refresh_cnt=win_calc_refresh_cnt;
-  GrDel(base);
+  GrDCDel(dc);
   Preempt(old_preempt);
 }
 
@@ -166,10 +166,10 @@ fp_wall_paper=&WallPaper;
 
 
 
-U0 DrawTermButton(GrBitMap *base,Ctrl *c)
+U0 DrawTermButton(GrDC *dc,Ctrl *c)
 {
   if (Blink)
-    GrElemsPlot3(base,c->left,c->top,0,(binary data));
+    GrSpritePlot3(dc,c->left,c->top,0,(binary data));
 }
 
 U0 LeftClickTermButton(Ctrl *c,I64 x,I64 y,BoolI8 down)
@@ -191,7 +191,7 @@ Ctrl *TermButtonNew()
   c->draw_it=&DrawTermButton;
   c->left_click=&LeftClickTermButton;
 
-  GrElemsExtents((binary data),&min_x,&max_x,&min_y,&max_y);
+  GrSpriteExtents((binary data),&min_x,&max_x,&min_y,&max_y);
   //min must be zero
   c->left=sys_winmgr_task->win_pixel_width-(max_x-min_x+1);
   c->right=c->left+(max_x-min_x+1)-1;
@@ -213,13 +213,13 @@ TermButtonNew;
 <3> <3> (image)
 
 #help_index "Graphics;Input Pointer/Displayed Image"
-public U0 DrawGrabInputPtr(GrBitMap *base,I64 x,I64 y,BoolI8 closed)
+public U0 DrawGrabInputPtr(GrDC *dc,I64 x,I64 y,BoolI8 closed)
 {
-  base->flags&=~(BMF_TRANSFORMATION|BMF_SYMMETRY);
+  dc->flags&=~(BMF_TRANSFORMATION|BMF_SYMMETRY);
   if (closed)
-    GrElemsPlot3(base,x,y,0,(binary data));
+    GrSpritePlot3(dc,x,y,0,(binary data));
   else
-    GrElemsPlot3(base,x,y,0,(binary data));
+    GrSpritePlot3(dc,x,y,0,(binary data));
 }
 fp_draw_grab_input_ptr=&DrawGrabInputPtr;
 

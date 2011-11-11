@@ -20,81 +20,81 @@ I64 *r1,*r2;
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base;
+  GrDC *dc;
   I64 *old_r;
 
   if (mp.core0_done) return;
 
-  base=GrAlias(gr_refreshed_base,task);
-  old_r=base->r;
-  base->color=BLACK;
-  GrPutS(base,0,0,"This is not art.");
-  GrPutS(base,0,FONT_HEIGHT,"It's just a test pattern.");
+  dc=GrDCAlias(gr_dc,task);
+  old_r=dc->r;
+  dc->color=BLACK;
+  GrPutS(dc,0,0,"This is not art.");
+  GrPutS(dc,0,FONT_HEIGHT,"It's just a test pattern.");
 
-  GrSetRotMat(base,r1);
-  base->x=200;
-  base->y=200;
-  base->flags|=BMF_TRANSFORMATION;
+  GrSetRotMat(dc,r1);
+  dc->x=200;
+  dc->y=200;
+  dc->flags|=BMF_TRANSFORMATION;
 
-  base->pen_width=2;
-  base->bkcolor=BLACK;
-  GrElemsPlot3(base,0,0,0,__BIN_1);
+  dc->pen_width=2;
+  dc->bkcolor=BLACK;
+  GrSpritePlot3(dc,0,0,0,__BIN_1);
 
-  base->color=BLUE;
-  GrRect3(base,50,75,0,100,50);
-  GrRect3(base,75,50,0,50,100);
-  base->color=GREEN;
-  GrEllipse3(base,100,100,0,50,25);
-  GrEllipse3(base,100,100,0,50,25,pi/2);
-  base->color=LTGREEN;
-  GrEllipse3(base,100,100,0,50,25,pi/6);
-  GrEllipse3(base,100,100,0,50,25,pi/3);
+  dc->color=BLUE;
+  GrRect3(dc,50,75,0,100,50);
+  GrRect3(dc,75,50,0,50,100);
+  dc->color=GREEN;
+  GrEllipse3(dc,100,100,0,50,25);
+  GrEllipse3(dc,100,100,0,50,25,pi/2);
+  dc->color=LTGREEN;
+  GrEllipse3(dc,100,100,0,50,25,pi/6);
+  GrEllipse3(dc,100,100,0,50,25,pi/3);
 
-  GrSetRotMat(base,old_r);
-  GrDel(base);
+  GrSetRotMat(dc,old_r);
+  GrDCDel(dc);
   mp.core0_done=TRUE;
 }
 
 
 U0 MPDrawIt(TaskStruct *main_task)
 {
-  GrBitMap *base;
+  GrDC *dc;
   I64 *old_r;
 
   if (mp.core1_done) return;
 
-  base=GrAlias(gr_persistent_base,Fs);
-  old_r=base->r;
-  base->win_task=main_task;
-  GrSetRotMat(base,r2);
-  base->x=200;
-  base->y=200;
-  base->flags|=BMF_TRANSFORMATION;
+  dc=GrDCAlias(gr_dc2,Fs);
+  old_r=dc->r;
+  dc->win_task=main_task;
+  GrSetRotMat(dc,r2);
+  dc->x=200;
+  dc->y=200;
+  dc->flags|=BMF_TRANSFORMATION;
 
-  GrClear(base);
+  GrDCClear(dc);
 
-  base->pen_width=2;
-  base->bkcolor=BLACK;
-  GrElemsPlot3(base,0,0,0,__BIN_1);
+  dc->pen_width=2;
+  dc->bkcolor=BLACK;
+  GrSpritePlot3(dc,0,0,0,__BIN_1);
 
-  base->color=BLUE;
-  GrRect3(base,50,75,0,100,50);
-  GrRect3(base,75,50,0,50,100);
+  dc->color=BLUE;
+  GrRect3(dc,50,75,0,100,50);
+  GrRect3(dc,75,50,0,50,100);
 
-  base->color=GREEN;
-  GrEllipse3(base,100,100,0,50,25);
-  GrEllipse3(base,100,100,0,50,25,pi/2);
+  dc->color=GREEN;
+  GrEllipse3(dc,100,100,0,50,25);
+  GrEllipse3(dc,100,100,0,50,25,pi/2);
 
-  base->color=LTGREEN;
-  GrEllipse3(base,100,100,0,50,25,pi/6);
-  GrEllipse3(base,100,100,0,50,25,pi/3);
+  dc->color=LTGREEN;
+  GrEllipse3(dc,100,100,0,50,25,pi/6);
+  GrEllipse3(dc,100,100,0,50,25,pi/3);
 
-  GrSetRotMat(base,old_r);
-  GrDel(base);
+  GrSetRotMat(dc,old_r);
+  GrDCDel(dc);
   mp.core1_done=TRUE;
 }
 
-U0 DoIt()
+U0 Main()
 {
   F64 theta2=0,phi2=0,theta3=0,phi3=0;
   mp.core0_done=TRUE;
@@ -130,11 +130,11 @@ U0 DoIt()
     theta3-=2*pi/100;
     phi3	-=2*pi/130;
   }
-  GrClear;
+  GrDCClear;
 
   SettingsPop;
   Free(r1);
   Free(r2);
 }
 
-DoIt;
+Main;

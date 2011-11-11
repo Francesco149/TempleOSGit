@@ -125,7 +125,7 @@ U8 *gate_type_list="NULL\0OUTPUT\0INPUT\0"
 
 #define MAX_SELECTED_GATES 128
 
-GrElem *imgs[GT_NUM_ENTRIES]={
+GrSprite *imgs[GT_NUM_ENTRIES]={
 NULL,
 NULL,
 NULL,
@@ -305,7 +305,7 @@ U0 DisplayExtents(U64 output, I64 depth,I64 *x_out,I64 *y_out)
   displayed_design[output]=TRUE;
 }
 
-U0 DisplayDesign(GrBitMap *base,U64 output, I64 depth,I64 *x_out,I64 *y_out)
+U0 DisplayDesign(GrDC *dc,U64 output, I64 depth,I64 *x_out,I64 *y_out)
 {
   I64 type=gate_type_table[output],
     xx=(pass-depth)*64-32,yy,x1,y1,x2,y2,x3,y3;
@@ -315,28 +315,28 @@ U0 DisplayDesign(GrBitMap *base,U64 output, I64 depth,I64 *x_out,I64 *y_out)
   if (y_out) *y_out=y;
 
   if (displayed_design[output] && type!=GT_INPUT) {
-    base->color=GREEN;
-    GrPutS3(base,xx-FONT_WIDTH*3,y-4,0,"Dup");
+    dc->color=GREEN;
+    GrPutS3(dc,xx-FONT_WIDTH*3,y-4,0,"Dup");
     y+=10;
   } else
   switch (type) {
     case GT_INPUT:
-      base->color=GREEN;
-      GrPrintF3(base,xx-FONT_WIDTH-4,y-4,0,"%C",'A'+input1_table[output]);
+      dc->color=GREEN;
+      GrPrintF3(dc,xx-FONT_WIDTH-4,y-4,0,"%C",'A'+input1_table[output]);
       y+=10;
       break;
     case GT_NOT:
       if (!displayed_design[output]) {
 	y+=16;
-	DisplayDesign(base,input1_table[output],depth+1,&x1,&y1);
+	DisplayDesign(dc,input1_table[output],depth+1,&x1,&y1);
 	yy=y1;
 
-	base->color=BLUE;
-	GrElemsPlot3(base,xx,yy,0,
+	dc->color=BLUE;
+	GrSpritePlot3(dc,xx,yy,0,
 	  imgs[type]);
 
-	base->color=RED;
-	GrLine3(base,xx-56,yy,0,x1,y1,0);
+	dc->color=RED;
+	GrLine3(dc,xx-56,yy,0,x1,y1,0);
 
 	if (y_out) *y_out=yy;
       }
@@ -348,16 +348,16 @@ U0 DisplayDesign(GrBitMap *base,U64 output, I64 depth,I64 *x_out,I64 *y_out)
     case GT_XOR:
       if (!displayed_design[output]) {
 	y+=24;
-	DisplayDesign(base,input1_table[output],depth+1,&x1,&y1);
-	DisplayDesign(base,input2_table[output],depth+1,&x2,&y2);
+	DisplayDesign(dc,input1_table[output],depth+1,&x1,&y1);
+	DisplayDesign(dc,input2_table[output],depth+1,&x2,&y2);
 	yy=(y1+y2)/2;
 
-	base->color=BLUE;
-	GrElemsPlot3(base,xx,yy,0,imgs[type]);
+	dc->color=BLUE;
+	GrSpritePlot3(dc,xx,yy,0,imgs[type]);
 
-	base->color=RED;
-	GrLine3(base,xx-56,yy-4,0,x1,y1,0);
-	GrLine3(base,xx-56,yy+4,0,x2,y2,0);
+	dc->color=RED;
+	GrLine3(dc,xx-56,yy-4,0,x1,y1,0);
+	GrLine3(dc,xx-56,yy+4,0,x2,y2,0);
 
 	if (y_out) *y_out=yy;
       }
@@ -368,25 +368,25 @@ U0 DisplayDesign(GrBitMap *base,U64 output, I64 depth,I64 *x_out,I64 *y_out)
     case GT_NOR3:
       if (!displayed_design[output]) {
 	y+=32;
-	DisplayDesign(base,input1_table[output],depth+1,&x1,&y1);
-	DisplayDesign(base,input2_table[output],depth+1,&x2,&y2);
-	DisplayDesign(base,input3_table[output],depth+1,&x3,&y3);
+	DisplayDesign(dc,input1_table[output],depth+1,&x1,&y1);
+	DisplayDesign(dc,input2_table[output],depth+1,&x2,&y2);
+	DisplayDesign(dc,input3_table[output],depth+1,&x3,&y3);
 	yy=(y1+y2+y3)/3;
 
-	base->color=BLUE;
-	GrElemsPlot3(base,xx,yy,0,imgs[type]);
+	dc->color=BLUE;
+	GrSpritePlot3(dc,xx,yy,0,imgs[type]);
 
-	base->color=RED;
-	GrLine3(base,xx-56,yy-8,0,x1,y1,0);
-	GrLine3(base,xx-56,yy  ,0,x2,y2,0);
-	GrLine3(base,xx-56,yy+8,0,x3,y3,0);
+	dc->color=RED;
+	GrLine3(dc,xx-56,yy-8,0,x1,y1,0);
+	GrLine3(dc,xx-56,yy  ,0,x2,y2,0);
+	GrLine3(dc,xx-56,yy+8,0,x3,y3,0);
 
 	if (y_out) *y_out=yy;
       }
       break;
   }
-  base->color=BLACK;
-  GrPrintF3(base,xx,yy+3,0,"%04X",output);
+  dc->color=BLACK;
+  GrPrintF3(dc,xx,yy+3,0,"%04X",output);
 
   displayed_design[output]=TRUE;
 }
@@ -394,21 +394,21 @@ U0 DisplayDesign(GrBitMap *base,U64 output, I64 depth,I64 *x_out,I64 *y_out)
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   task->horz_scroll.min=min_xx-32;
   task->horz_scroll.max=max_xx+32-task->win_pixel_width;
   task->vert_scroll.min=min_yy-32;
   task->vert_scroll.max=max_yy+32-task->win_pixel_height;
   TaskDerivedValsUpdate(task);
 
-  base->flags|=BMF_TRANSFORMATION;
-  base->x=-task->horz_scroll.pos;
-  base->y=-task->vert_scroll.pos;
+  dc->flags|=BMF_TRANSFORMATION;
+  dc->x=-task->horz_scroll.pos;
+  dc->y=-task->vert_scroll.pos;
   y=0;
   for (i=0;i<table_size;i++)
     displayed_design[i]=FALSE;
-  DisplayDesign(base,cur_output,0,NULL,NULL);
-  GrDel(base);
+  DisplayDesign(dc,cur_output,0,NULL,NULL);
+  GrDCDel(dc);
 }
 
 U0 FillNot(BoolI8 *chged,I64 *num_outputs_found)

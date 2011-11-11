@@ -69,16 +69,16 @@ kbd lights working.
 * Fix Mom's secondary CD-ROM, dad's primary
 * pmtstr in install didn't like focus change
 
-*U0 DoIt()
+*U0 Main()
 {
-  U0 (*fp_old_draw_input_ptr)(GrBitMap *base,I64 x,I64 y)=fp_draw_input_ptr;
+  U0 (*fp_old_draw_input_ptr)(GrDC *dc,I64 x,I64 y)=fp_draw_input_ptr;
 }
 
 * Disk write caching is broken. Deadlock.
 
 * Syncronize VGA memory update with the hardware refresh cycle.
 
-* Demo [C:/LT/OSMain/Adam1a.HPZ,3739] TaskKeyDevStruct
+* Demo [C:/LT/OSMain/Adam1a.HPZ,3745] TaskKeyDevStruct
 * demo [C:/LT/Adam/ToHtml.APZ,252] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have
@@ -91,7 +91,8 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 * OVERSTRIKE at cmd line with menu macro.
 
 * lock{} warning on invalid modes.
-* [C:/LT/OSMain/Adam1a.HPZ,3413] BMF_SYMMETRY, before transformation?
+* Local array vars-->reg.
+* [C:/LT/OSMain/Adam1a.HPZ,3419] BMF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -101,9 +102,8 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 * extern glbl var in static module on data heap.
 * Might make FAT32 read in contiguous chunks.
 * make Limit(),Min(),Max() asm routines.
-* Might make GrElem flood fill operate on a separate bitmap and blotted at
-the 
-end.
+* Might make GrSprite flood fill operate on a separate bitmap and blotted at 
+the end.
 * autofile popup of popup
 * cfg mgr bug--change focus
 * <CTRL-R> delete subgrelem in menu near others

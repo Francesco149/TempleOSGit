@@ -6,27 +6,27 @@ F64 refresh[NUM_DATA_POINTS];
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,j,x1,y1,x2,y2;
   U8 buf[32];
   for (i=1;i<NUM_DATA_POINTS;i++) {
     x1=(i-1)*task->win_pixel_width/(NUM_DATA_POINTS-1);
     x2=i*task->win_pixel_width/(NUM_DATA_POINTS-1);
     for (j=0;j<mp_cnt;j++) {
-      base->color=gr_rainbow_10[j];
+      dc->color=gr_rainbow_10[j];
       y1=task->win_pixel_height*CPU_idle[j][i-1];
       y2=task->win_pixel_height*CPU_idle[j][i];
-      GrLine(base,x1,y1,x2,y2);
+      GrLine(dc,x1,y1,x2,y2);
     }
-    base->color=LTCYAN;
+    dc->color=LTCYAN;
     y1=task->win_pixel_height*mem[i-1];
     y2=task->win_pixel_height*mem[i];
-    GrLine(base,x1,y1,x2,y2);
+    GrLine(dc,x1,y1,x2,y2);
 
-    base->color=LTPURPLE;
+    dc->color=LTPURPLE;
     y1=task->win_pixel_height*refresh[i-1];
     y2=task->win_pixel_height*refresh[i];
-    GrLine(base,x1,y1,x2,y2);
+    GrLine(dc,x1,y1,x2,y2);
   }
   for (j=0;j<mp_cnt;j++) {
     SPrintF(buf,"CPU%d",j);
@@ -34,7 +34,7 @@ U0 UpdateWin(TaskStruct *task)
   }
   PlotWinStr(task,"Mem %",LTCYAN+WHITE<<4,0,task->win_height-3);
   PlotWinStr(task,"Refresh Hz",LTPURPLE+WHITE<<4,0,task->win_height-2);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 CPUPlot()

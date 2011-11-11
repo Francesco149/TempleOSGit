@@ -38,30 +38,30 @@ U0 SetDisksRestXY()
   }
 }
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i;
 
   for (i=0;i<3;i++)
     poles_x[i]=(1+i)*task->win_pixel_width/4;
 
-  base->color=BLACK;
-  GrRect(base,poles_x[0]-50,task->win_pixel_height-PEDESTAL_HEIGHT,poles_x[2]-poles_x[0]+100,PEDESTAL_HEIGHT-FONT_HEIGHT);
-  base->color=DKGRAY;
-  GrRect(base,poles_x[0]-49,task->win_pixel_height-PEDESTAL_HEIGHT+1,poles_x[2]-poles_x[0]+98,PEDESTAL_HEIGHT-FONT_HEIGHT-2);
+  dc->color=BLACK;
+  GrRect(dc,poles_x[0]-50,task->win_pixel_height-PEDESTAL_HEIGHT,poles_x[2]-poles_x[0]+100,PEDESTAL_HEIGHT-FONT_HEIGHT);
+  dc->color=DKGRAY;
+  GrRect(dc,poles_x[0]-49,task->win_pixel_height-PEDESTAL_HEIGHT+1,poles_x[2]-poles_x[0]+98,PEDESTAL_HEIGHT-FONT_HEIGHT-2);
 
   for (i=0;i<3;i++) {
-    base->color=BLACK;
-    GrRect(base,poles_x[i]-3,task->win_pixel_height-PEDESTAL_HEIGHT-(NUM_DISKS+1)*(DISK_HEIGHT+1),7,(NUM_DISKS+1)*(DISK_HEIGHT+1));
-    base->color=YELLOW;
-    GrRect(base,poles_x[i]-2,task->win_pixel_height-PEDESTAL_HEIGHT+1-(NUM_DISKS+1)*(DISK_HEIGHT+1),5,(NUM_DISKS+1)*(DISK_HEIGHT+1)-1);
+    dc->color=BLACK;
+    GrRect(dc,poles_x[i]-3,task->win_pixel_height-PEDESTAL_HEIGHT-(NUM_DISKS+1)*(DISK_HEIGHT+1),7,(NUM_DISKS+1)*(DISK_HEIGHT+1));
+    dc->color=YELLOW;
+    GrRect(dc,poles_x[i]-2,task->win_pixel_height-PEDESTAL_HEIGHT+1-(NUM_DISKS+1)*(DISK_HEIGHT+1),5,(NUM_DISKS+1)*(DISK_HEIGHT+1)-1);
   }
 
   for (i=0;i<NUM_DISKS;i++) {
-    base->color=BLACK;
-    GrRect(base,disks_x[i]-(i+1)*DISK_UNIT_WIDTH,disks_y[i]-DISK_HEIGHT/2,(i+1)*(DISK_UNIT_WIDTH*2)+1,DISK_HEIGHT);
-    base->color=gr_rainbow_10[i];
-    GrRect(base,disks_x[i]-(i+1)*DISK_UNIT_WIDTH+1,disks_y[i]-DISK_HEIGHT/2+1,(i+1)*(DISK_UNIT_WIDTH*2)-1,DISK_HEIGHT-2);
+    dc->color=BLACK;
+    GrRect(dc,disks_x[i]-(i+1)*DISK_UNIT_WIDTH,disks_y[i]-DISK_HEIGHT/2,(i+1)*(DISK_UNIT_WIDTH*2)+1,DISK_HEIGHT);
+    dc->color=gr_rainbow_10[i];
+    GrRect(dc,disks_x[i]-(i+1)*DISK_UNIT_WIDTH+1,disks_y[i]-DISK_HEIGHT/2+1,(i+1)*(DISK_UNIT_WIDTH*2)-1,DISK_HEIGHT-2);
   }
 }
 

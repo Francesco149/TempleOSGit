@@ -364,7 +364,7 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
 //This can be used as a kernel panic.
 {
   BoolI8 was_in_dbg,was_single_user,was_raw;
-  U64 old_dc_flags=sys_dc_flags;
+  U64 old_dc_flags=sys_raw_dc_flags;
   PushFD;
   Cli;
   if (Gs->num && mp_crash) {
@@ -380,7 +380,7 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
   was_single_user=SingleUser(ON);
   was_raw=Raw(ON);
   was_in_dbg=InDbg(ON);
-  sys_dc_flags|=DCF_SHOW_DOLLAR|DCF_SCROLL;
+  sys_raw_dc_flags|=RDCF_SHOW_DOLLAR|RDCF_SCROLL;
 
   PutS("\r\n\tLoseThos Debugger\r\n"
 	"Use EdLite(\"name\"); for editing.\r\n"
@@ -403,7 +403,7 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
   InDbg(was_in_dbg);
   SingleUser(was_single_user);
   Raw(was_raw);
-  sys_dc_flags=old_dc_flags;
+  sys_raw_dc_flags=old_dc_flags;
   PopFD;
   if (!fault && LBtr(&Fs->task_flags,TASKf_KILL_AFTER_DBG))
     Exit;
@@ -415,7 +415,7 @@ U0 Fault2()
   BoolI8 was_raw,was_single_user;
   U64  i,old_fault_num=sys_dbg_fault_num;
   U8 *old_fault_rip=sys_dbg_fault_rip;
-  U64 old_dc_flags=sys_dc_flags;
+  U64 old_dc_flags=sys_raw_dc_flags;
   if (Fs->fault_num==I_DIVIDE_BY_ZERO)
     throw(EXCEPT_DIVIDE_BY_ZERO,Fs->rip);
   was_single_user=SingleUser(ON);
@@ -425,10 +425,10 @@ U0 Fault2()
     Fs->rip--;
   sys_dbg_fault_rip=Fs->rip;
   if (Fs->dbg_task)
-    CallExtNum(EXT_RESUME_DBG);  //See [::/LT/Adam/IDE.APZ,IDEResumeDbg] IDEResumeDbg
+    CallExtNum(EXT_RESUME_DBG);  //See [::/LT/Adam/Ltf/LtfIDE.APZ,IDEResumeDbg] IDEResumeDbg
   else {
     was_raw=Raw(ON);
-    sys_dc_flags|=DCF_SHOW_DOLLAR|DCF_SCROLL;
+    sys_raw_dc_flags|=RDCF_SHOW_DOLLAR|RDCF_SCROLL;
     PutS("Task \"");
     PutS(Fs->task_title);
     PutS("\"\r\n");
@@ -444,7 +444,7 @@ U0 Fault2()
     }
     Dbg(NULL,0,TRUE);
     Raw(was_raw);
-    sys_dc_flags=old_dc_flags;
+    sys_raw_dc_flags=old_dc_flags;
   }
   sys_dbg_fault_num=old_fault_num;
   sys_dbg_fault_rip=old_fault_rip;

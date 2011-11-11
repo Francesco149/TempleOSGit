@@ -5,13 +5,10 @@ U0 MousePktRead()
   if (GetTimeStamp>mouse_evt_time+time_stamp_freq>>3)
     U8FifoFlush(mouse_fifo);
   mouse_evt_time=GetTimeStamp;
-  if (!U8FifoCnt(mouse_fifo))
-    U8FifoInsert(mouse_fifo,0x0C);
   U8FifoInsert(mouse_fifo,InU8(KBD_PORT));
-  if (U8FifoCnt(mouse_fifo)==mouse_pkt_size+1) {
+  if (U8FifoCnt(mouse_fifo)==mouse_pkt_size)
     while (U8FifoRem(mouse_fifo,&j))
-      U8FifoInsert(kbdmouse_fifo,j);
-  }
+      U8FifoInsert(mouse2_fifo,j);
 }
 
 interrupt U0 MouseIntHandler()
@@ -209,7 +206,7 @@ U0 MouseHandler()
   for (i=0;i<4;i++)
     mouse_buf[i]=0;
   for (i=0;i<mouse_pkt_size;i++)
-    if (!U8FifoRem(kbdmouse_fifo,&mouse_buf[i]))
+    if (!U8FifoRem(mouse2_fifo,&mouse_buf[i]))
       mouse_buf[i]=0;
 
   mouse_buttons[0] = mouse_buf[0] & 1;
@@ -256,7 +253,8 @@ U0 SetMouseIP(I64 x,I64 y,I64 z,I64 l,I64 r,I64 c)
 U0 KbdMouseRst()
 {
   KbdCmdFlush;
-  U8FifoFlush(kbdmouse_fifo);
+  U8FifoFlush(kbd2_fifo);
+  U8FifoFlush(mouse2_fifo);
   U64FifoFlush(scan_code_fifo);
   sys_cur_scan_code=0;
   kbdmouse_rst=FALSE;
@@ -285,7 +283,6 @@ BoolI64 MouseDriverInstall(U64 dummy=0)
 
 U0 KbdMouseHandler(BoolI8 poll_kbd,BoolI8 poll_mouse)
 {
-  U8 j;
   if (mouse_install_attempt_in_progress) {
     Yield;
     return;
@@ -310,15 +307,13 @@ U0 KbdMouseHandler(BoolI8 poll_kbd,BoolI8 poll_mouse)
     if (kbdmouse_rst)
       KbdMouseRst;
     else {
-      while (U8FifoCnt(kbdmouse_fifo)) {
-	U8FifoRem(kbdmouse_fifo,&j);
-	if (j==0x01)
-	  KbdHandler;
-	else if (j==0x0C && mouse_installed)
+      while (U8FifoCnt(kbd2_fifo))
+	KbdHandler;
+      while (U8FifoCnt(mouse2_fifo))
+	if (mouse_installed)
 	  MouseHandler;
 	else
 	  KbdMouseRst;
-      }
     }
   }
 }
@@ -328,7 +323,9 @@ U0 KbdMouseVarsInit()
   sys_key_cnt=0;
   scan_code_fifo=U64FifoNew(128);
   kbd_fifo=U8FifoNew(8);
+  kbd2_fifo=U8FifoNew(64);
   mouse_fifo=U8FifoNew(8);
+  mouse2_fifo=U8FifoNew(64);
   MemSet(key_down_bitmap,0,256/8);
   MemSet(key_down_bitmap2,0,256/8);
   sys_last_down_scan_code=0;

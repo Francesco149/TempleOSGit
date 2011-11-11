@@ -12,40 +12,40 @@ BoolI8 crash;
 U0 UpdateWin(TaskStruct *task)
 {
   I64 h=task->win_pixel_width,v=task->win_pixel_height;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,x,y,xx;
 
   BoolI8 old_preempt=Preempt(OFF);
   xx=h>>1-car_x+road_x[road_ptr&(NUM_ROAD-1)];
   Preempt(old_preempt);
 
-  base->color=LTGRAY;
+  dc->color=LTGRAY;
   for (i=0;i<NUM_ROAD;i++) {
     x=h>>1-car_x+road_x[(i+road_ptr)&(NUM_ROAD-1)];
     y=v-0.5*i;
     if (y<v/2) break;
-    GrPlot(base,x+ROAD_WIDTH_BY_2-0.4*i,y);
-    GrPlot(base,x-ROAD_WIDTH_BY_2+0.4*i,y);
+    GrPlot(dc,x+ROAD_WIDTH_BY_2-0.4*i,y);
+    GrPlot(dc,x-ROAD_WIDTH_BY_2+0.4*i,y);
   }
-  base->color=WHITE;
+  dc->color=WHITE;
  
   x=h>>1-CAR_WIDTH_BY_2;
   if (x<xx-ROAD_WIDTH_BY_2)
     crash=TRUE;
-  GrLine(base,x-10,v,x-40,v-100);
-  GrLine(base,x+10,v,x+40,v-100);
+  GrLine(dc,x-10,v,x-40,v-100);
+  GrLine(dc,x+10,v,x+40,v-100);
 
   x=h>>1+CAR_WIDTH_BY_2;
   if (x>xx+ROAD_WIDTH_BY_2)
     crash=TRUE;
-  GrLine(base,x-10,v,x-40,v-100);
-  GrLine(base,x+10,v,x+40,v-100);
+  GrLine(dc,x-10,v,x-40,v-100);
+  GrLine(dc,x+10,v,x+40,v-100);
 
-  base->color=YELLOW;
+  dc->color=YELLOW;
   if (crash)
-    GrPutS(base,h>>1-FONT_WIDTH*4,(v-FONT_HEIGHT)>>1,"Game Over");
+    GrPutS(dc,h>>1-FONT_WIDTH*4,(v-FONT_HEIGHT)>>1,"Game Over");
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 UpdateRoad()

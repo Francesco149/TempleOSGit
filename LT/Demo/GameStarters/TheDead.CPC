@@ -73,33 +73,33 @@ U0 UpdateWin(TaskStruct *task)
   I64 i,j;
 
   //This creates an alias to the screen's
-  //bitmap.  gr_refreshed_base is the bitmap which
+  //bitmap.  gr_dc is the bitmap which
   //is redrawn every time the screen is updated.
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
 
   //<CTRL-T> now to see the hidden part
   //where the picture num is encoded. IB stands
   //for "insert ptr to binary object".
-  base->bkcolor=BLACK;
-  GrElemsPlot3(base,x,y,0,__BIN_1);
+  dc->bkcolor=BLACK;
+  GrSpritePlot3(dc,x,y,0,__BIN_1);
 
   i=shots_out;
   while (i!=shots_in) {
     j=i++ &(MAX_SHOTS-1);
-    GrLine(base,sx[j],sy[j],sx[j]-2,sy[j]);
+    GrLine(dc,sx[j],sy[j],sx[j]-2,sy[j]);
   }
   i=dead_out;
   while (i!=dead_in) {
     j=i++ &(MAX_SHOTS-1);
-    base->bkcolor=BLACK;
+    dc->bkcolor=BLACK;
     if (!g_dead[j]) {
       if (gx[j]%10>5)
-	GrElemsPlot3(base,gx[j],gy[j],0,__BIN_2);
+	GrSpritePlot3(dc,gx[j],gy[j],0,__BIN_2);
       else
-	GrElemsPlot3(base,gx[j],gy[j],0,__BIN_3);
+	GrSpritePlot3(dc,gx[j],gy[j],0,__BIN_3);
     }
   }
-  GrDel(base);
+  GrDCDel(dc);
   i=0;
   PlotWinStr(task,"If you aspire to making games,",BLUE<<4+YELLOW,0,i++);
   PlotWinStr(task,"you must learn to make-up rules.",BLUE<<4+YELLOW,0,i++);

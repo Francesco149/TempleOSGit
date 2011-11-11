@@ -52,29 +52,29 @@ F64 t0=tJ;
 #define MAN_X	250
 #define MAN_Y	30
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 tt=(tJ-t0)*music_tempo;
+  F64 dt=(tJ-t0)*music_tempo;
   U8 *inter;
-	 if (tt<PHASE1)
-    GrElemsPlot3(base,MAN_X,MAN_Y,0,__BIN_1);
-  else if (tt<PHASE2) {
-    inter=GrElemsInterpolate(__BIN_1,__BIN_2,(tt-PHASE1)/(PHASE2-PHASE1));
-    GrElemsPlot3(base,MAN_X,MAN_Y,0,inter);
+	 if (dt<PHASE1)
+    GrSpritePlot3(dc,MAN_X,MAN_Y,0,__BIN_1);
+  else if (dt<PHASE2) {
+    inter=GrSpriteInterpolate(__BIN_1,__BIN_2,(dt-PHASE1)/(PHASE2-PHASE1));
+    GrSpritePlot3(dc,MAN_X,MAN_Y,0,inter);
     Free(inter);
-  } else if (tt<PHASE3) {
-    inter=GrElemsInterpolate(__BIN_2,__BIN_3,(tt-PHASE2)/(PHASE3-PHASE2));
-    GrElemsPlot3(base,MAN_X,MAN_Y,0,inter);
+  } else if (dt<PHASE3) {
+    inter=GrSpriteInterpolate(__BIN_2,__BIN_3,(dt-PHASE2)/(PHASE3-PHASE2));
+    GrSpritePlot3(dc,MAN_X,MAN_Y,0,inter);
     Free(inter);
-  } else if (tt<PHASE4)
-    GrElemsPlot3(base,MAN_X,MAN_Y,0,__BIN_3);
-  else if (tt<PHASE5) {
-    inter=GrElemsInterpolate(__BIN_3,__BIN_1,(tt-PHASE4)/(PHASE5-PHASE4));
-    GrElemsPlot3(base,MAN_X-100*(tt-PHASE4),MAN_Y-5*(tt-PHASE4),0,inter);
+  } else if (dt<PHASE4)
+    GrSpritePlot3(dc,MAN_X,MAN_Y,0,__BIN_3);
+  else if (dt<PHASE5) {
+    inter=GrSpriteInterpolate(__BIN_3,__BIN_1,(dt-PHASE4)/(PHASE5-PHASE4));
+    GrSpritePlot3(dc,MAN_X-100*(dt-PHASE4),MAN_Y-5*(dt-PHASE4),0,inter);
     Free(inter);
   } else
-    GrElemsPlot3(base,MAN_X-100*(PHASE5-PHASE4),MAN_Y-5*(PHASE5-PHASE4),0,__BIN_1);
+    GrSpritePlot3(dc,MAN_X-100*(PHASE5-PHASE4),MAN_Y-5*(PHASE5-PHASE4),0,__BIN_1);
 }
 
 U0 Song()

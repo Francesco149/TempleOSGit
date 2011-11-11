@@ -53,7 +53,7 @@ Ode *ode=NULL;
 I64 start_up_timeout;
 
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   BoolI8 old_suspend,first;
   F64 dx,dy,d;
@@ -66,8 +66,8 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   if (start_up_timeout>GetTimeStamp) {
     ode->drag_v2=0.01; //Let hose settle during start-up
     ode->drag_v3=0.0001;
-    base->color=RED;
-    GrPutS(base,(GR_WIDTH-FONT_WIDTH*6)>>1,GR_HEIGHT>>1,"Squirt");
+    dc->color=RED;
+    GrPutS(dc,(GR_WIDTH-FONT_WIDTH*6)>>1,GR_HEIGHT>>1,"Squirt");
     return;
   } else {
     ode->drag_v2=0.0005;
@@ -78,24 +78,24 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
     old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
 
   tempm=faucet;
-  base->color=BLACK;
-  GrRect(base,tempm->x+8,tempm->y,8,GROUND_Y-FAUCET_Y);
-  GrElemsPlot3(base,tempm->x,tempm->y,0,__BIN_1);
-  base->color=BLACK;
-  GrCircle(base,tempm->x,tempm->y,tempm->radius);
-  base->color=GREEN;
-  GrFloodFill(base,tempm->x,tempm->y);
+  dc->color=BLACK;
+  GrRect(dc,tempm->x+8,tempm->y,8,GROUND_Y-FAUCET_Y);
+  GrSpritePlot3(dc,tempm->x,tempm->y,0,__BIN_1);
+  dc->color=BLACK;
+  GrCircle(dc,tempm->x,tempm->y,tempm->radius);
+  dc->color=GREEN;
+  GrFloodFill(dc,tempm->x,tempm->y);
 
   tempm=nozzle;
   tempm1=nozzle->last;
   dx=tempm->x-tempm1->x;
   dy=tempm->y-tempm1->y;
   nozzle_theta=Unwrap(Arg(dx,dy));
-  GrElemsPlotRotZ3b(base,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
-  base->color=BLACK;
-  GrCircle(base,tempm->x,tempm->y,tempm->radius);
-  base->color=GREEN;
-  GrFloodFill(base,tempm->x,tempm->y);
+  GrSpritePlotRotZ3b(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
+  dc->color=BLACK;
+  GrCircle(dc,tempm->x,tempm->y,tempm->radius);
+  dc->color=GREEN;
+  GrFloodFill(dc,tempm->x,tempm->y);
 
   first=TRUE;
   tempm=ode->next_mass;
@@ -115,7 +115,7 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
       if (first)
 	first=FALSE;
       else {
-	base->color=GREEN;
+	dc->color=GREEN;
 	poly[0].x=x1a;
 	poly[0].y=y1a;
 	poly[0].z=0;
@@ -128,18 +128,18 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
 	poly[3].x=x1b;
 	poly[3].y=y1b;
 	poly[3].z=0;
-	GrFillPoly3(base,4,poly);
+	GrFillPoly3(dc,4,poly);
       }
 
       //Fill gaps
-      GrLine(base,x2a,y2a,x2b,y2b);
+      GrLine(dc,x2a,y2a,x2b,y2b);
 
       x1a=x2a;
       y1a=y2a;
       x1b=x2b;
       y1b=y2b;
     } else if (tempm->type==MT_DROPLET)
-      GrElemsPlot3(base,tempm->x,tempm->y,0,__BIN_3);
+      GrSpritePlot3(dc,tempm->x,tempm->y,0,__BIN_3);
     tempm=tempm->next;
   }
 
@@ -151,10 +151,10 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
       d=HOSE_RADIUS/Max(Sqrt(dx*dx+dy*dy),0.001);
       dx*=d;
       dy*=d;
-      base->color=BLACK;
-      GrLine(base,temps->end1->x-dy,temps->end1->y+dx,
+      dc->color=BLACK;
+      GrLine(dc,temps->end1->x-dy,temps->end1->y+dx,
 	  temps->end2->x-dy,temps->end2->y+dx);
-      GrLine(base,temps->end1->x+dy,temps->end1->y-dx,
+      GrLine(dc,temps->end1->x+dy,temps->end1->y-dx,
 	  temps->end2->x+dy,temps->end2->y-dx);
     }
     temps=temps->next;

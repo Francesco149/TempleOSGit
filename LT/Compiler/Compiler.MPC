@@ -28,7 +28,7 @@ ATE_STRUCT_SIZE   00000010 0001 ExportSysSym Lit
 [::/LT/Compiler/Assembler.CPZ,853] AsmCodeInstruction[AsmCodeInstruction] 0000BE68 0001 Funct Export 
 [::/LT/Compiler/Assembler.CPZ,203] AsmExpressionEval [AsmExpressionEval] 0000A298 0004 Funct Export 
 [::/LT/Compiler/Assembler.CPZ,296] AsmGlblsResolve   [AsmGlblsResolve] 0000A700 0001 Funct Export 
-[::/LT/Compiler/CmpInit.CPZ,35] AsmHashLoad       [AsmHashLoad] 00033D36 0001 Funct Export 
+[::/LT/Compiler/CmpInit.CPZ,35] AsmHashLoad       [AsmHashLoad] 00033D66 0001 Funct Export 
 [::/LT/Compiler/Assembler.CPZ,30] AsmLineList       [AsmLineList] 00009C90 0001 Funct Export 
 [::/LT/Compiler/Assembler.CPZ,224] AsmLocalsResolve  [AsmLocalsResolve] 0000A358 0004 Funct Export 
 [::/LT/Compiler/Assembler.CPZ,609] AsmMakeArgMask    [AsmMakeArgMask] 0000B3B8 0002 Funct Export 
@@ -100,23 +100,23 @@ CPU_WALLPAPER_DATA000000A0 0000 ExportSysSym Lit
 [::/LT/Compiler/CodeGen.CPZ,73] CbPutIc           [CbPutIc] 000085D8 0006 Funct Export 
 [::/LT/Compiler/CodeGen.CPZ,28] CbPutIcArg        [CbPutIcArg] 000082C0 0004 Funct Export 
 [::/LT/Compiler/Directives.CPZ,102] CmdLineExit       [CmdLineExit] 00003A38 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,380] Cmp               [Cmp] 000380F6 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,187] CmpBuf            [CmpBuf] 000379DE 0001 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,380] Cmp               [Cmp] 00038126 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,187] CmpBuf            [CmpBuf] 00037A0E 0001 Funct Export 
 [::/LT/Compiler/ExpParser.CPZ,1223] CmpExpression     [CmpExpression] 00012740 0004 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,24] CmpF1PushPop      [CmpF1PushPop] 0002B9C0 0001 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,30] CmpF2PushPop      [CmpF2PushPop] 0002B9F8 0005 Funct Export 
-[::/LT/Compiler/CmpInit.CPZ,591] CmpFillTables     [CmpFillTables] 00036A1E 0001 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,208] CmpFixUpJITAsm    [CmpFixUpJITAsm] 00037AD6 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,314] CmpFixUpStaticAsm [CmpFixUpStaticAsm] 00037E96 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,671] CmpInit           [CmpInit] 00038C16 0001 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,66] CmpJoin           [CmpJoin] 0003737E 0001 Funct Export 
-[::/LT/Compiler/CmpInit.CPZ,248] CmpLoadDefines    [CmpLoadDefines] 00034596 0001 Funct Export 
+[::/LT/Compiler/CmpInit.CPZ,591] CmpFillTables     [CmpFillTables] 00036A4E 0001 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,208] CmpFixUpJITAsm    [CmpFixUpJITAsm] 00037B06 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,314] CmpFixUpStaticAsm [CmpFixUpStaticAsm] 00037EC6 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,671] CmpInit           [CmpInit] 00038C46 0001 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,66] CmpJoin           [CmpJoin] 000373AE 0001 Funct Export 
+[::/LT/Compiler/CmpInit.CPZ,248] CmpLoadDefines    [CmpLoadDefines] 000345C6 0001 Funct Export 
 [::/LT/Compiler/BackEnd.CPZ,227] CmpNoteFloatOp    [CmpNoteFloatOp] 000183A0 000E Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,132] CmpOffset2Reg     [CmpOffset2Reg] 000265E0 0005 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,12] CmpPType          [CmpPType] 0002B978 0006 Funct Export 
 [::/LT/Compiler/Lex.CPZ,2] CmpPmt            [CmpPmt] 00003A60 0001 Funct Export 
 [::/LT/Compiler/BackEnd.CPZ,282] CmpSetFloatOpPushPop[CmpSetFloatOpPushPop] 000185F8 000D Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,25] CmpStatement      [CmpStatement] 000371FE 0001 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,25] CmpStatement      [CmpStatement] 0003722E 0001 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,2] CmpType           [CmpType] 0002B940 0007 Funct Export 
 [::/LT/Compiler/Assembler.CPZ,1284] DefineU8s         [DefineU8s] 0000D378 0004 Funct Export 
 EXCEPT_HANDLER_SKI00000018 0000 ExportSysSym Lit 
@@ -136,15 +136,15 @@ EXCEPT_RSI        00000038 0000 ExportSysSym Lit
 EXCEPT_RSP        00000020 0000 ExportSysSym Lit 
 EXCEPT_STRUCT_SIZE00000078 0001 ExportSysSym Lit 
 [::/LT/Compiler/Directives.CPZ,65] Echo              [Echo] 00003910 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,568] ExeFile           [ExeFile] 000387EE 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,620] ExeFile2          [ExeFile2] 00038A0E 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,660] ExeFile3          [ExeFile3] 00038B9E 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,559] ExePrintF         [ExePrintF] 000387A6 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,611] ExePrintF2        [ExePrintF2] 000389C6 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,650] ExePrintF3        [ExePrintF3] 00038B56 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,527] ExePutS           [ExePutS] 00038656 0002 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,579] ExePutS2          [ExePutS2] 00038866 0002 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,631] ExePutS3          [ExePutS3] 00038A86 0002 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,568] ExeFile           [ExeFile] 0003881E 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,620] ExeFile2          [ExeFile2] 00038A3E 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,660] ExeFile3          [ExeFile3] 00038BCE 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,559] ExePrintF         [ExePrintF] 000387D6 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,611] ExePrintF2        [ExePrintF2] 000389F6 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,650] ExePrintF3        [ExePrintF3] 00038B86 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,527] ExePutS           [ExePutS] 00038686 0002 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,579] ExePutS2          [ExePutS2] 00038896 0002 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,631] ExePutS3          [ExePutS3] 00038AB6 0002 Funct Export 
 [::/LT/Compiler/ExpParser.CPZ,1252] Expression        [Expression] 00012858 0006 Funct Export 
 [::/LT/Compiler/Lex.CPZ,376] ExpressionDel     [ExpressionDel] 00004940 000B Funct Export 
 [::/LT/Compiler/Directives.CPZ,22] Externs2Imports   [Externs2Imports] 00003830 0000 Funct Export 
@@ -290,7 +290,7 @@ HT_NEXT_ADDED     00000008 0000 ExportSysSym Lit
 [::/LT/Compiler/Directives.CPZ,77] ImportHashTable   [ImportHashTable] 00003950 0000 Funct Export 
 [::/LT/Compiler/Directives.CPZ,96] IncludeDepth      [IncludeDepth] 00003A08 0000 Funct Export 
 [::/LT/Compiler/Unassembler.CPZ,3] InstEntriesCompare[InstEntriesCompare] 000007E0 0001 Funct Export 
-[::/LT/Compiler/CmpInit.CPZ,5] InternalType      31CDE76B8 0002 Class 
+[::/LT/Compiler/CmpInit.CPZ,5] InternalType      31BDDAE38 0002 Class 
 [::/LT/Compiler/Directives.CPZ,69] IsReplaceSyms     [IsReplaceSyms] 00003928 000A Funct Export 
 [::/LT/Compiler/Directives.CPZ,28] KeepPrivate       [KeepPrivate] 00003848 0000 Funct Export 
 [::/LT/Compiler/Directives.CPZ,56] LTrace            [LTrace] 000038E0 0000 Funct Export 
@@ -339,13 +339,13 @@ MP_SYS_TEMP_PTR   00000004 0000 ExportSysSym Lit
 [::/LT/Compiler/OptPass012.CPZ,7] OptFixupBinaryOp1 [OptFixupBinaryOp1] 00026248 0013 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,73] OptFixupBinaryOp2 [OptFixupBinaryOp2] 00026468 0001 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,89] OptFixupUnaryOp   [OptFixupUnaryOp] 000264C0 0003 Funct Export 
-[::/LT/Compiler/OptPass4.CPZ,2] OptIc4            [OptIc4] 0002D408 0001 Funct Export 
-[::/LT/Compiler/OptPass6.CPZ,2] OptIc6            [OptIc6] 0002F7F8 0001 Funct Export 
+[::/LT/Compiler/OptPass4.CPZ,2] OptIc4            [OptIc4] 0002D420 0001 Funct Export 
+[::/LT/Compiler/OptPass6.CPZ,2] OptIc6            [OptIc6] 0002F810 0001 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,174] OptLag            [OptLag] 00026828 0004 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,185] OptLag1           [OptLag1] 00026858 0005 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,196] OptLead1          [OptLead1] 00026898 0002 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,47] OptMVCompare      [OptMVCompare] 0002BA78 0001 Funct Export 
-[::/LT/Compiler/OptPass3.CPZ,42] OptMemberVar      31CEE4B08 0005 Class 
+[::/LT/Compiler/OptPass3.CPZ,42] OptMemberVar      31EDDABD8 0005 Class 
 [::/LT/Compiler/OptPass012.CPZ,141] OptMissing        [OptMissing] 00026628 0004 Funct Export 
 [::/LT/Compiler/CmpAsm.CPZ,603] OptNext           000000A8 0002 Funct 
 [::/LT/Compiler/CmpAsm.CPZ,606] OptNext2          0000011A 0001 Funct 
@@ -354,11 +354,11 @@ MP_SYS_TEMP_PTR   00000004 0000 ExportSysSym Lit
 [::/LT/Compiler/Directives.CPZ,8] OptOn             [OptOn] 000037D0 0000 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,538] OptPass012        [OptPass012] 00027668 0000 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,52] OptPass3          [OptPass3] 0002BA98 0000 Funct Export 
-[::/LT/Compiler/OptPass4.CPZ,225] OptPass4          [OptPass4] 0002DC38 0000 Funct Export 
-[::/LT/Compiler/OptPass5.CPZ,2] OptPass5          [OptPass5] 0002F218 0000 Funct Export 
-[::/LT/Compiler/OptPass6.CPZ,149] OptPass6          [OptPass6] 0002FD18 0000 Funct Export 
-[::/LT/Compiler/OptPass6.CPZ,38] OptPass6Lag       [OptPass6Lag] 0002F960 0001 Funct Export 
-[::/LT/Compiler/OptPass789A.CPZ,2] OptPass789A       [OptPass789A] 00030208 0000 Funct Export 
+[::/LT/Compiler/OptPass4.CPZ,225] OptPass4          [OptPass4] 0002DC50 0000 Funct Export 
+[::/LT/Compiler/OptPass5.CPZ,2] OptPass5          [OptPass5] 0002F230 0000 Funct Export 
+[::/LT/Compiler/OptPass6.CPZ,149] OptPass6          [OptPass6] 0002FD30 0000 Funct Export 
+[::/LT/Compiler/OptPass6.CPZ,38] OptPass6Lag       [OptPass6Lag] 0002F978 0001 Funct Export 
+[::/LT/Compiler/OptPass789A.CPZ,2] OptPass789A       [OptPass789A] 00030220 0000 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,151] OptStart          [OptStart] 00026748 0005 Funct Export 
 [::/LT/Compiler/ExpParser.CPZ,24] PRST_CHECK_BINARY_OPS3        FFFF 000F DefineStr 
 [::/LT/Compiler/ExpParser.CPZ,23] PRST_DEREFERRENCE 2        FFFF 0004 DefineStr 
@@ -466,9 +466,9 @@ SP_RIP            00000078 0000 ExportSysSym Lit
 SP_RSI            00000048 0000 ExportSysSym Lit 
 SP_STRUCT_SIZE    00000078 0000 ExportSysSym Lit 
 [::/LT/Compiler/Lex.CPZ,109] SetSrcFileInfo    [SetSrcFileInfo] 00003EE0 0006 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,15] StreamPrintF      [StreamPrintF] 000371C6 0000 Funct Export 
-[::/LT/Compiler/CmpMain.CPZ,2] StreamPutS        [StreamPutS] 0003715E 0001 Funct Export 
-[::/LT/Compiler/StmtParser.CPZ,1388] SwitchCaseEntry   31EC21FF8 0004 Class 
+[::/LT/Compiler/CmpMain.CPZ,15] StreamPrintF      [StreamPrintF] 000371F6 0000 Funct Export 
+[::/LT/Compiler/CmpMain.CPZ,2] StreamPutS        [StreamPutS] 0003718E 0001 Funct Export 
+[::/LT/Compiler/StmtParser.CPZ,1388] SwitchCaseEntry   31D155A28 0004 Class 
 [::/LT/Compiler/Directives.CPZ,73] SysEcho           [SysEcho] 00003938 0000 Funct Export 
 TASK_ACCT         00000408 0000 ExportSysSym Lit 
 TASK_ADDR         00000000 0000 ExportSysSym Lit 
@@ -620,7 +620,7 @@ UUM_STRUCT_SIZE   00000010 0000 ExportSysSym Lit
 [::/LT/Compiler/Unassembler.CPZ,58] UnasmHashLoad     [UnasmHashLoad] 00000A08 0001 Funct Export 
 [::/LT/Compiler/StmtParser.CPZ,795] UndefinedExtern   [UndefinedExtern] 00014778 0001 Funct Export 
 [::/LT/Compiler/StmtParser.CPZ,802] UnusedExternWarning[UnusedExternWarning] 000147D0 0004 Funct Export 
-[::/LT/Compiler/StmtParser.CPZ,183] VI16              31D98BA28 0003 Class 
+[::/LT/Compiler/StmtParser.CPZ,183] VI16              31D4D4010 0003 Class 
 _OPTNEXT          000000A8 0001 ExportSysSym Export 
 _OPTNEXT2         0000011A 0001 ExportSysSym Export 
 _OPTNEXT3         0000018C 0001 ExportSysSym Export 
@@ -649,7 +649,7 @@ _PRSPUSH2         0000024C 0001 ExportSysSym Export
 [::/LT/Compiler/CmpGlbls.CPZ,6] dual_U16_tokens2  000006F0 0002 GlbVar Export 
 [::/LT/Compiler/CmpGlbls.CPZ,6] dual_U16_tokens3  000006F8 0002 GlbVar Export 
 [::/LT/Compiler/CmpGlbls.CPZ,9] fpop_bitmap       00000748 000C GlbVar Export 
-[::/LT/Compiler/CmpInit.CPZ,9] internal_types_table00033C50 0001 GlbVar Export 
+[::/LT/Compiler/CmpInit.CPZ,9] internal_types_table00033C80 0001 GlbVar Export 
 [::/LT/Compiler/CmpGlbls.CPZ,3] is_first_compiler 00000680 0004 GlbVar Export 
 [::/LT/Compiler/Lex.CPZ,140] lex_line_feed     00004044 0001 GlbVar Export 
 [::/LT/Compiler/Lex.CPZ,140] lex_zeros         00004040 000A GlbVar Export 

@@ -490,7 +490,7 @@ U0 MPStart()
     buf[14]+=i;
     task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/LT/OSMain/Adam1a.HPZ,3081] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_queue_signature=TASK_IN_QUEUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TssNew(i);
@@ -548,7 +548,7 @@ U0 MPCrash()
   IntEOI;
   mp_cnt=1;
   Raw(ON);
-  sys_dc_flags|=DCF_SHOW_DOLLAR;
+  sys_raw_dc_flags|=RDCF_SHOW_DOLLAR;
   PutS("MP Crash CPU#");
   PutHex(mp_crash->cpu_num,2);
   PutS(" Task:");

@@ -380,25 +380,25 @@ I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,229] Ode feat,
 just to be different.
 */
 
-U0 DrawObj(GrBitMap *base,Object *o,F64 tt)
+U0 DrawObj(GrDC *dc,Object *o,F64 tt)
 {
   U8 *inter;
   F64 r1=Max(9-0.1*o->z,1),r2=Max(r1/4,1);
 
   if (o==human)
-    base->color=LTRED;
+    dc->color=LTRED;
   else
-    base->color=BLACK;
-  GrEllipse(base,o->x,o->y/2,r1,r2);
-  GrFloodFill(base,o->x,o->y/2);
+    dc->color=BLACK;
+  GrEllipse(dc,o->x,o->y/2,r1,r2);
+  GrFloodFill(dc,o->x,o->y/2);
 
   if (o==ball)
-    GrElemsPlot3(base,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
+    GrSpritePlot3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
   else {
-    inter=GrElemsInterpolate(man_imgs[o->last_img].img[o->team],
+    inter=GrSpriteInterpolate(man_imgs[o->last_img].img[o->team],
 	man_imgs[o->next_img].img[o->team],
 	(tt-o->last_t0)/(o->next_t0-o->last_t0));
-    GrElemsPlotRotY3b(base,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,inter,o->ay);
+    GrSpritePlotRotY3b(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,inter,o->ay);
     Free(inter);
   }
 }
@@ -415,19 +415,19 @@ U0 UpdateWin(TaskStruct *task)
   I64 i;
   Object *o_sort[NUM_OBJS],*o;
 
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
-  GrAllocDepthBuf(base);
-  base->ls.x=10000;
-  base->ls.y=60000;
-  base->ls.z=10000;
-  d=65535/P3I32Norm(&base->ls);
-  base->ls.x*=d;
-  base->ls.y*=d;
-  base->ls.z*=d;
+  GrDC *dc=GrDCAlias(gr_dc,task);
+  GrDCAllocDepthBuf(dc);
+  dc->ls.x=10000;
+  dc->ls.y=60000;
+  dc->ls.z=10000;
+  d=65535/P3I32Norm(&dc->ls);
+  dc->ls.x*=d;
+  dc->ls.y*=d;
+  dc->ls.z*=d;
 
-  base->pen_width=2;
-  base->color=RED;
-  GrLineRect4(base,COURT_BORDER,COURT_BORDER,
+  dc->pen_width=2;
+  dc->color=RED;
+  GrLineRect4(dc,COURT_BORDER,COURT_BORDER,
       task->win_pixel_width -1-COURT_BORDER,
       task->win_pixel_height-1-COURT_BORDER);
   for (i=0;i<NUM_OBJS;i++) {
@@ -498,37 +498,37 @@ U0 UpdateWin(TaskStruct *task)
 
   QSortU64(o_sort,NUM_OBJS,&ObjCompare);
   for (i=0;i<NUM_OBJS;i++)
-    DrawObj(base,o_sort[i],tt);
+    DrawObj(dc,o_sort[i],tt);
   tt=(game_t_end-tP(task))/60;
   if (tt<=0) {
-    base->color=RED;
+    dc->color=RED;
     tt=0;
     if (Blink(,tP(task)))
-      GrPrintF(base,(task->win_pixel_width-FONT_WIDTH*9)>>1,
+      GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
 		    (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
   } else {
     if (tP(task)<foul_t_end) {
-      base->color=LTRED;
+      dc->color=LTRED;
       if (Blink(,tP(task)))
-	GrPrintF(base,(task->win_pixel_width-FONT_WIDTH*4)>>1,
+	GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*4)>>1,
 		     (task->win_pixel_height-FONT_HEIGHT)>>1,"Foul");
     }
-    base->color=BLACK;
+    dc->color=BLACK;
   }
-  GrPrintF(base,0,0,"Time:%d:%04.1f  Score:",ToI64(tt),(tt-ToI64(tt))*60);
-  GrPutS  (base,FONT_WIDTH*27,0,"Best Score:");
+  GrPrintF(dc,0,0,"Time:%d:%04.1f  Score:",ToI64(tt),(tt-ToI64(tt))*60);
+  GrPutS  (dc,FONT_WIDTH*27,0,"Best Score:");
 
-  base->color=LTCYAN;
-  GrPrintF(base,FONT_WIDTH*20,0,"%02d",score0);
-  base->color=LTPURPLE;
-  GrPrintF(base,FONT_WIDTH*23,0,"%02d",score1);
+  dc->color=LTCYAN;
+  GrPrintF(dc,FONT_WIDTH*20,0,"%02d",score0);
+  dc->color=LTPURPLE;
+  GrPrintF(dc,FONT_WIDTH*23,0,"%02d",score1);
 
-  base->color=LTCYAN;
-  GrPrintF(base,FONT_WIDTH*39,0,"%02d",best_score0);
-  base->color=LTPURPLE;
-  GrPrintF(base,FONT_WIDTH*42,0,"%02d",best_score1);
+  dc->color=LTCYAN;
+  GrPrintF(dc,FONT_WIDTH*39,0,"%02d",best_score0);
+  dc->color=LTPURPLE;
+  GrPrintF(dc,FONT_WIDTH*42,0,"%02d",best_score1);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 

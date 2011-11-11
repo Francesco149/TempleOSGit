@@ -8,7 +8,7 @@ U0 UpdateWin(TaskStruct *task)
   PlotWinStr(task,"test",PURPLE+WHITE*16,10,4);
 }
 
-U0 DoIt()
+U0 Main()
 {
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->update_win=&UpdateWin;
@@ -17,4 +17,4 @@ U0 DoIt()
   SettingsPop;
 }
 
-DoIt;
+Main;

@@ -34,7 +34,7 @@ interrupt U0 MyVect43()
 
 U64 vect[4]={&MyVect40,&MyVect41,&MyVect42,&MyVect43};
 
-U0 DoIt()
+U0 Main()
 {
   I64 i;
   U8 *da=IOAPIC_REG;
@@ -70,4 +70,4 @@ U0 DoIt()
   ProgressBarsRst;
 }
 
-DoIt;
+Main;

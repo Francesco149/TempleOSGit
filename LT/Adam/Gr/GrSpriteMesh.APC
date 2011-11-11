@@ -42,7 +42,7 @@ class GrMFrame
   BoolI8 grid_on,flip_y,select_rect,vertex_on,pad[4];
   I64 mp_done_flags; //Used for multiprocessing signaling.
   F64 view_scale;
-  GrBitMap *base;
+  GrDC *dc;
   I64 *w2s,*s2w; //Screen-to-world and world-to-screen transform matrices.
   I64 vertex_cnt,triangle_cnt; //Set by GrMSize
   GrMVertex vertex_root,*cur_vertex;
@@ -380,72 +380,72 @@ U0 GrMScaleZoom(GrMFrame *e,F64 scale)
 U0 MPDrawIt(GrMFrame *e) //Multiprocessing draw it, called by each core.
 {
 
-//Makes a copy of e->base so we can change base->color member and stuff.
-  GrBitMap *base=GrAlias(e->base,e->base->win_task);
+//Makes a copy of e->dc so we can change dc->color member and stuff.
+  GrDC *dc=GrDCAlias(e->dc,e->dc->win_task);
 
   GrMTri *tempt=e->triangle_root.next;
-  I64 i,*old_r=base->r;
+  I64 i,*old_r=dc->r;
 
-//[C:/LT/Adam/Gr/GrNew.APZ,23] GrAlias() allocates a new identity rotation matrix.
-//We want e->base's rotation matrix.
-  base->r=e->base->r;
+//[C:/LT/Adam/Gr/GrDC.APZ,23] GrDCAlias() allocates a new identity rotation matrix.
+//We want e->dc's rotation matrix.
+  dc->r=e->dc->r;
 
-  MemCpy(&base->ls,&e->base->ls,sizeof(P3I32));
+  MemCpy(&dc->ls,&e->dc->ls,sizeof(P3I32));
 
 //... and translation (shift) vals.
-  base->x=e->base->x;
-  base->y=e->base->y;
-  base->z=e->base->z;
-  base->flags|=BMF_TRANSFORMATION;
+  dc->x=e->dc->x;
+  dc->y=e->dc->y;
+  dc->z=e->dc->z;
+  dc->flags|=BMF_TRANSFORMATION;
 
   if (e->grid_on)
     //Draw grid with different cores.
     for (i=-500+25*Gs->num;i<=500;i+=25*mp_cnt) {
       if (i) {
-	base->color=DKGRAY;
-	GrLine3(base,i,-500,0,i,500,0);
-	base->color=LTGRAY;
-	GrLine3(base,-500,i,0,500,i,0);
+	dc->color=DKGRAY;
+	GrLine3(dc,i,-500,0,i,500,0);
+	dc->color=LTGRAY;
+	GrLine3(dc,-500,i,0,500,i,0);
       }
     }
   if (!Gs->num) {
-    base->color=RED;	//Y-Axis red
-    GrLine3(base,0,0,0,0,500,0);
-    base->color=ROPF_DITHER+RED;	 //Y-Axis red
-    GrLine3(base,0,-500,0,0,0,0);
+    dc->color=RED;	//Y-Axis red
+    GrLine3(dc,0,0,0,0,500,0);
+    dc->color=ROPF_DITHER+RED;	 //Y-Axis red
+    GrLine3(dc,0,-500,0,0,0,0);
 
-    base->color=YELLOW;	//X-Axis yellow
-    GrLine3(base,0,0,0,500,0,0);
-    base->color=ROPF_DITHER+YELLOW;	 //X-Axis yellow
-    GrLine3(base,-500,0,0,0,0,0);
+    dc->color=YELLOW;	//X-Axis yellow
+    GrLine3(dc,0,0,0,500,0,0);
+    dc->color=ROPF_DITHER+YELLOW;	 //X-Axis yellow
+    GrLine3(dc,-500,0,0,0,0,0);
 
-    base->color=GREEN;	//Z-Axis green
-    GrLine3(base,0,0,0,0,0,500);
-    base->color=ROPF_DITHER+GREEN;	 //Z-Axis green
-    GrLine3(base,0,0,-500,0,0,0);
+    dc->color=GREEN;	//Z-Axis green
+    GrLine3(dc,0,0,0,0,0,500);
+    dc->color=ROPF_DITHER+GREEN;	 //Z-Axis green
+    GrLine3(dc,0,0,-500,0,0,0);
   }
 
   while (tempt!=&e->triangle_root) {
     if (tempt->cpu_num==Gs->num) {
       if (tempt->flags & TF_SELECTED) {
-	if (Blink(,tP(e->base->win_task)))
-	  base->color=ROPF_DITHER+WHITE<<16+RED;
+	if (Blink(,tP(e->dc->win_task)))
+	  dc->color=ROPF_DITHER+WHITE<<16+RED;
 	else
-	  base->color=ROPF_DITHER+RED<<16+WHITE;
-	GrFillTriangle0(base,&tempt->t[0]->pt,&tempt->t[1]->pt,&tempt->t[2]->pt);
+	  dc->color=ROPF_DITHER+RED<<16+WHITE;
+	GrFillTriangle0(dc,&tempt->t[0]->pt,&tempt->t[1]->pt,&tempt->t[2]->pt);
       } else {
-	(*base->lighting)(base,&tempt->t[0]->pt,&tempt->t[1]->pt,&tempt->t[2]->pt,tempt->mt.color);
-	GrFillTriangle0(base,&tempt->t[0]->pt,&tempt->t[1]->pt,&tempt->t[2]->pt);
+	(*dc->lighting)(dc,&tempt->t[0]->pt,&tempt->t[1]->pt,&tempt->t[2]->pt,tempt->mt.color);
+	GrFillTriangle0(dc,&tempt->t[0]->pt,&tempt->t[1]->pt,&tempt->t[2]->pt);
       }
     }
     tempt=tempt->next;
   }
-  base->r=old_r;
+  dc->r=old_r;
 
-//e->base's depth buf was copied but we don't want it freed during [C:/LT/Adam/Gr/GrNew.APZ,79] GrDel().
-  base->depth_buf=NULL;
+//e->dc's depth buf was copied but we don't want it freed during [C:/LT/Adam/Gr/GrDC.APZ,79] GrDCDel().
+  dc->depth_buf=NULL;
 
-  GrDel(base);
+  GrDCDel(dc);
   LBts(&e->mp_done_flags,Gs->num);
 }
 
@@ -485,7 +485,7 @@ I64 *GrMSetW2S(GrMFrame *e,TaskStruct *task)
   e->w2s=GrMW2S(e,task);
   Free(e->s2w);
   e->s2w=GrMS2W(e,task);
-  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to base->r and will be freed by [C:/LT/Adam/Gr/GrNew.APZ,79] GrDel().
+  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/LT/Adam/Gr/GrDC.APZ,79] GrDCDel().
 }
 
 U0 GrMCursorW(GrMFrame *e,TaskStruct *task,I64 *_x,I64 *_y,I64 *_z)
@@ -647,7 +647,7 @@ GrMClipBoardInit;
 U0 UpdateWin(TaskStruct *task)
 {
   GrMFrame *e=NamedFramePtr("GrMFrame",task);
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   Ctrl *c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES);
   F64 d;
   I64 i,x,y,z;
@@ -660,40 +660,40 @@ U0 UpdateWin(TaskStruct *task)
   TaskDerivedValsUpdate(task);
   GrMRecalcCxCy(task,e);
 
-  base->flags|=BMF_TRANSFORMATION;
+  dc->flags|=BMF_TRANSFORMATION;
 
-  Free(base->r); //Set rotmat doesn't free old base->r matrix.
-  GrSetRotMat(base,GrMSetW2S(e,task));
+  Free(dc->r); //Set rotmat doesn't free old dc->r matrix.
+  GrSetRotMat(dc,GrMSetW2S(e,task));
 
-  base->x=e->cx;
-  base->y=e->cy;
+  dc->x=e->cx;
+  dc->y=e->cy;
 //z-vals less than zero are in front of screen and not drawn.
 //we want to shift all Z-vals into a drawable range.
 //GR_Z_ALL is set to half of the Z-range which is an I32.
-  base->z=GR_Z_ALL;
+  dc->z=GR_Z_ALL;
 
 //Light source set to input pointer (mouse).
   GrMCursorW(e,task,&x,&y,&z);
-  base->ls.x=x;
-  base->ls.y=y;
-  base->ls.z=z;
-  d=1<<16/P3I32Norm(&base->ls); //Light source normalized to 65536.
-  base->ls.x*=d;
-  base->ls.y*=d;
-  base->ls.z*=d;
+  dc->ls.x=x;
+  dc->ls.y=y;
+  dc->ls.z=z;
+  d=1<<16/P3I32Norm(&dc->ls); //Light source normalized to 65536.
+  dc->ls.x*=d;
+  dc->ls.y*=d;
+  dc->ls.z*=d;
 
-  GrAllocDepthBuf(base);
+  GrDCAllocDepthBuf(dc);
 
   tempv=e->vertex_root.next;
   while (tempv!=&e->vertex_root) {
     x=tempv->p.x; y=tempv->p.y; z=tempv->p.z;
-    (*base->transform)(base,&x,&y,&z);
+    (*dc->transform)(dc,&x,&y,&z);
     tempv->pt.x=x; tempv->pt.y=y; tempv->pt.z=z;
     tempv=tempv->next;
   }
 
   e->mp_done_flags=0; //Issue jobs to all cores.
-  e->base=base;
+  e->dc=dc;
   for (i=1;i<mp_cnt;i++)
     MPJob(&MPDrawIt,e,1<<MPCf_FREE_ON_COMPLETE,1<<i);
   MPDrawIt(e); //Do one job ourself.
@@ -703,25 +703,25 @@ U0 UpdateWin(TaskStruct *task)
     x=tempv->pt.x; y=tempv->pt.y; z=tempv->pt.z;
     if (e->vertex_on) {
       if (Blink(10,tP(task))) //This blinks at 10 Hz.
-	base->color=ROPF_DITHER+BLACK<<16+WHITE;
+	dc->color=ROPF_DITHER+BLACK<<16+WHITE;
       else
-	base->color=ROPF_DITHER+WHITE<<16+BLACK;
-      GrLine(base,x-3,y-3,x+3,y+3);
-      GrLine(base,x-3,y+3,x+3,y-3);
+	dc->color=ROPF_DITHER+WHITE<<16+BLACK;
+      GrLine(dc,x-3,y-3,x+3,y+3);
+      GrLine(dc,x-3,y+3,x+3,y-3);
     }
     if (tempv->flags&VF_SELECTED) {
       if (e->mode=='t') {
 	if (Blink(10,tP(task))) //This blinks at 10 Hz.
-	  base->color=ROPF_DITHER+e->cur_color.c0.color<<16+e->cur_color.c0.color^8;
+	  dc->color=ROPF_DITHER+e->cur_color.c0.color<<16+e->cur_color.c0.color^8;
 	else
-	  base->color=ROPF_DITHER+(e->cur_color.c0.color^8)<<16+e->cur_color.c0.color;
+	  dc->color=ROPF_DITHER+(e->cur_color.c0.color^8)<<16+e->cur_color.c0.color;
       } else {
 	if (Blink(,tP(task)))
-	  base->color=ROPF_DITHER+RED<<16+WHITE;
+	  dc->color=ROPF_DITHER+RED<<16+WHITE;
 	else
-	  base->color=ROPF_DITHER+WHITE<<16+RED;
+	  dc->color=ROPF_DITHER+WHITE<<16+RED;
       }
-      GrCircle(base,x,y,3);
+      GrCircle(dc,x,y,3);
     }
     tempv=tempv->next;
   }
@@ -736,29 +736,29 @@ U0 UpdateWin(TaskStruct *task)
 
   GrMCursorW(e,task,&x,&y,&z);
   if (z<0)
-    base->color=ROP_XOR+RED^WHITE;
+    dc->color=ROP_XOR+RED^WHITE;
   else
-    base->color=ROP_XOR+WHITE;
-  GrPrintF(base,0,0,"%6.3f%% (%d,%d,%d)",e->view_scale*100,x,y,z);
-  base->pen_width=1;
-  base->color&=0xF;
+    dc->color=ROP_XOR+WHITE;
+  GrPrintF(dc,0,0,"%6.3f%% (%d,%d,%d)",e->view_scale*100,x,y,z);
+  dc->pen_width=1;
+  dc->color&=0xF;
   if (Blink(10,tP(task)))
-    base->color^=0xF;
-  GrLine3(base,x,y,z,x,y,0);
+    dc->color^=0xF;
+  GrLine3(dc,x,y,z,x,y,0);
 
   if (e->select_rect) {
-    base->flags&=~BMF_TRANSFORMATION;
-    base->pen_width=1;
+    dc->flags&=~BMF_TRANSFORMATION;
+    dc->pen_width=1;
     if (Blink(,tP(task)))
-      base->color=ROPF_DITHER+RED<<16+WHITE;
+      dc->color=ROPF_DITHER+RED<<16+WHITE;
     else
-      base->color=ROPF_DITHER+WHITE<<16+RED;
-    GrLineRect4(base,e->x1,e->y1,e->x2,e->y2);
+      dc->color=ROPF_DITHER+WHITE<<16+RED;
+    GrLineRect4(dc,e->x1,e->y1,e->x2,e->y2);
   }
 //Wait for all cores to complete.
   while (e->mp_done_flags!=1<<mp_cnt-1)
     Yield;
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 GrMInit(GrMFrame *e,BoolI8 flip_y)
@@ -898,7 +898,7 @@ U0 GrMUpdateMenu(GrMFrame *e)
     tempse->checked=ToBool(e->flip_y);
 }
 
-public I32 *GrElemMesh(I32 *root=NULL,I64 *_size=NULL,BoolI8 flip_y=FALSE)
+public I32 *GrSpriteMesh(I32 *root=NULL,I64 *_size=NULL,BoolI8 flip_y=FALSE)
 /*
 
 Fmt for mesh:
@@ -914,7 +914,7 @@ If root points to a mesh, it will load it.
 Returns a newly malloced mesh or NULL.
 
 
-See [::/LT/Demo/Graphics/GrElem2.CPZ] ::/LT/Demo/Graphics/GrElem2.CPZ.
+See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
 
 
 */

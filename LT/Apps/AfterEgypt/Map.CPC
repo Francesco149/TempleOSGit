@@ -10,10 +10,10 @@
 
 I64 x=0,y=0;
 
-U0 DrawMap(TaskStruct *task,GrBitMap *base)
+U0 DrawMap(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  GrElemsPlot3(base,x,y,0,__BIN_1);
+  GrSpritePlot3(dc,x,y,0,__BIN_1);
 }
 
 #define A1_MIN	0.02
@@ -32,7 +32,7 @@ U0 AEMap()
       x_last=x1,y_last=y1;
   F64 a,a1=(A1_MAX+A1_MIN)/2,a2=(A2_MAX+A2_MIN)/2,a2_total=a2,
       x_scale=ToF64(cx)/c_min,y_scale=ToF64(cy)/c_min;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   LtfClear;
@@ -42,7 +42,7 @@ U0 AEMap()
   Fs->draw_it=&DrawMap;
   try {
     while (!ScanChar) {
-      base->color=BLACK;
+      dc->color=BLACK;
       a1=Limit(Unwrap(a1+(A1_MAX+A1_MIN)/5.0*(Rand-0.5)),-A1_MAX,A1_MAX);
       a=a1;
       if ( 0.0<=a<=A1_MIN) a=A1_MIN;
@@ -62,7 +62,7 @@ U0 AEMap()
 
       x=x_scale*x1+cx; y=y_scale*y1+cy;
       if (i++&1)
-	GrLine(base,x_last,y_last,x,y);
+	GrLine(dc,x_last,y_last,x,y);
       x_last=x; y_last=y;
       Sleep(15);
     }
@@ -71,8 +71,8 @@ U0 AEMap()
   PutS("$BG$\r\n");
   SettingsPop(Fs,TSF_SAME_SONG);
   Free(r);
-  GrClear(base);
-  GrDel(base);
+  GrDCClear(dc);
+  GrDCDel(dc);
 }
 
 //This is so I can use this file stand alone

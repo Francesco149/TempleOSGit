@@ -11,8 +11,6 @@ Cd("/LT/Adam");;
 #include "LineCnt"
 #include "Merge"
 #include "S2T"
-#include "IDE"
-#include "EdFmtFun"
 #include "LinkChk"
 #include "HeapLog"
 #include "ListFile"

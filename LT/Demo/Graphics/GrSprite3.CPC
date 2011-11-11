@@ -36,21 +36,21 @@
 
 
 
-U0 GrElem3()
+U0 GrSprite3()
 {
   I64 i;
   for (i=0;i<3;i++) {
     PutS("US Flag:");
-    PutGrElems(__BIN_1);
+    PutGrSprite(__BIN_1);
     CrLf(12);
   }
   PutS("US Map:");
 
 //Size is optional.  Set to zero and it
 //will measure.  (Faster if you know it).
-  PutGrElems(__BIN_2,__BIN_2_SIZE);
+  PutGrSprite(__BIN_2,__BIN_2_SIZE);
   CrLf(10);
 }
 
 //Start program when #included
-GrElem3;
+GrSprite3;

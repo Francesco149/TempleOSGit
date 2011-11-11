@@ -55,40 +55,40 @@ public F64
 #define PROGRESS_BAR_HEIGHT	20
 #define PROGRESS_BAR_WIDTH	(3*GR_WIDTH/4)
 
-U0 DrawProgressBars(GrBitMap *base)
+U0 DrawProgressBars(GrDC *dc)
 {
   I64 i,j,k,m;
   for (i=0;i<NUM_PROGRESS_BARS;i++) {
     if (m=progress_maxes[i]) {
-      base->color=BLACK;
-      GrRect(base,
+      dc->color=BLACK;
+      GrRect(dc,
 	(GR_WIDTH-PROGRESS_BAR_WIDTH)/2,
 	(GR_HEIGHT-(NUM_PROGRESS_BARS*2-1-i*4)*PROGRESS_BAR_HEIGHT)/2,
 	PROGRESS_BAR_WIDTH,PROGRESS_BAR_HEIGHT);
 
-      base->color=LTGREEN;
+      dc->color=LTGREEN;
       k=progress_vals[i];
       if (k>m)
 	k=m;
-      GrRect(base,
+      GrRect(dc,
 	(GR_WIDTH-PROGRESS_BAR_WIDTH)/2+2,
 	(GR_HEIGHT-(NUM_PROGRESS_BARS*2-1-i*4)*PROGRESS_BAR_HEIGHT)/2+2,
 	k*(PROGRESS_BAR_WIDTH-4)/m,
 	PROGRESS_BAR_HEIGHT-4);
 
       if (m>1) {
-	base->color=BLACK;
+	dc->color=BLACK;
 	k=m-1;
 	if (k>19) k=19;
 	for (j=0;j<=k;j++)
-	  GrLine(base,
+	  GrLine(dc,
 	  (GR_WIDTH-PROGRESS_BAR_WIDTH)/2+1+j*(PROGRESS_BAR_WIDTH-4)/ToF64(k+1),
 	  (GR_HEIGHT-(NUM_PROGRESS_BARS*2-1-i*4)*PROGRESS_BAR_HEIGHT)/2+4,
 	  (GR_WIDTH-PROGRESS_BAR_WIDTH)/2+1+j*(PROGRESS_BAR_WIDTH-4)/ToF64(k+1),
 	  (GR_HEIGHT-(NUM_PROGRESS_BARS*2-3-i*4)*PROGRESS_BAR_HEIGHT)/2-4);
       }
-      base->color=WHITE;
-      GrPutS(base,
+      dc->color=WHITE;
+      GrPutS(dc,
 	(GR_WIDTH-FONT_WIDTH*StrLen(progress_descs[i]))/2,
 	(GR_HEIGHT-FONT_HEIGHT-(NUM_PROGRESS_BARS*2-2-i*4)*PROGRESS_BAR_HEIGHT)/2,
 	progress_descs[i]);
@@ -101,15 +101,15 @@ F64 win_grid_spacing=8.0,
     win_grid_x_offset=0,
     win_grid_y_offset=0;
 
-U0 DrawWinGrid(GrBitMap *base)
+U0 DrawWinGrid(GrDC *dc)
 {
   F64 d;
-  base->color=BLACK;
-  base->pen_width=1;
+  dc->color=BLACK;
+  dc->pen_width=1;
   for (d=win_grid_x_offset;d<GR_WIDTH;d+=win_grid_spacing)
-    GrLine(base,d,0,d,GR_HEIGHT-1);
+    GrLine(dc,d,0,d,GR_HEIGHT-1);
   for (d=win_grid_y_offset;d<GR_HEIGHT;d+=win_grid_spacing)
-    GrLine(base,0,d,GR_WIDTH-1,d);
+    GrLine(dc,0,d,GR_WIDTH-1,d);
 }
 
 U0 WinGrid()
@@ -183,7 +183,7 @@ public U0 WinScrollRestore(TaskStruct *task,P3I64 *s)
   task->win_scroll_z=s->z;
 }
 
-U0 DrawInputPtr(GrBitMap *base)
+U0 DrawInputPtr(GrDC *dc)
 {
   I64 x,y;
   PushFD;
@@ -197,31 +197,31 @@ U0 DrawInputPtr(GrBitMap *base)
     else {
       if (fp_draw_input_ptr) {
 	if (ip_lb)
-	  base->color=ROP_XOR+LTPURPLE;
+	  dc->color=ROP_XOR+LTPURPLE;
 	else if (ip_rb)
-	  base->color=ROP_XOR+LTCYAN;
+	  dc->color=ROP_XOR+LTCYAN;
 	else
-	  base->color=ROP_XOR+WHITE;
+	  dc->color=ROP_XOR+WHITE;
 	if (win_grab_scroll && fp_draw_grab_input_ptr)
-	  (*fp_draw_grab_input_ptr)(base,x,y,win_grab_scroll_closed);
+	  (*fp_draw_grab_input_ptr)(dc,x,y,win_grab_scroll_closed);
 	else
-	  (*fp_draw_input_ptr)(base,x,y);
+	  (*fp_draw_input_ptr)(dc,x,y);
       }
     }
   }
 }
 
 BoolI8 win_show_menu=FALSE;
-U0 WinFinalUpdate(GrBitMap *base)
+U0 WinFinalUpdate(GrDC *dc)
 {
   if (win_show_grid)
-    DrawWinGrid(base);
-  DrawProgressBars(base);
+    DrawWinGrid(dc);
+  DrawProgressBars(dc);
   if (win_show_menu)
-    DrawMenu(base);
+    DrawMenu(dc);
   else
     sys_cur_submenu_entry=NULL;
-  DrawInputPtr(base);
+  DrawInputPtr(dc);
 }
 
 fp_final_screen_update=&WinFinalUpdate;
@@ -1101,7 +1101,7 @@ U0 WinManagerTask(U64 dummy=0)
   TaskDerivedValsUpdate;
   LBts(&Fs->display_flags,DISPLAYf_NO_BORDER);
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
-  GrGrInit;
+  GrInit;
   LBts(&sys_run_level,RLf_WINMGR);
   while (TRUE) {
     try {

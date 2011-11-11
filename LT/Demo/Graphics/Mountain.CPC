@@ -17,47 +17,47 @@
 
 
 BoolI8 animate_done;
-GrElem *man_imgs[4]={__BIN_1,__BIN_2,__BIN_3,__BIN_2};
+GrSprite *man_imgs[4]={__BIN_1,__BIN_2,__BIN_3,__BIN_2};
 I64 x=0,y=0;
 
 U0 DrawMountain(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
 //"tP()" is a function holding time since boot, less pauses.
   I64 frame=4*Saw(tP(task),0.5),
       cx=task->win_pixel_width/2,
       cy=task->win_pixel_height/2;
-  base->color=BROWN;
-  base->pen_width=2;
-  GrLine3(base,cx-400,cy,0,    cx-30 ,cy-120,0);
-  GrLine3(base,cx-30,cy-120,0, cx    ,cy-160,0);
-  GrLine3(base,cx+160,cy,0,    cx,cy-160,0);
-  GrLine3(base,cx+80 ,cy-80,0, cx+160,cy-120,0);
-  GrLine3(base,cx+160,cy-120,0,cx+400,cy,0);
+  dc->color=BROWN;
+  dc->pen_width=2;
+  GrLine3(dc,cx-400,cy,0,    cx-30 ,cy-120,0);
+  GrLine3(dc,cx-30,cy-120,0, cx    ,cy-160,0);
+  GrLine3(dc,cx+160,cy,0,    cx,cy-160,0);
+  GrLine3(dc,cx+80 ,cy-80,0, cx+160,cy-120,0);
+  GrLine3(dc,cx+160,cy-120,0,cx+400,cy,0);
 
-  GrLine3(base,cx,cy,0,cx+100,cy-20,0);
-  GrLine3(base,cx+100,cy-20,0,cx-90,cy-40,0);
-  GrLine3(base,cx-90,cy-40,0,cx+70,cy-60,0);
-  GrLine3(base,cx+70,cy-60,0,cx-70,cy-60,0);
-  GrLine3(base,cx-70,cy-60,0,cx+60,cy-80,0);
-  GrLine3(base,cx+60,cy-80,0,cx-50,cy-100,0);
-  GrLine3(base,cx-50,cy-100,0,cx+30,cy-120,0);
-  GrLine3(base,cx+30,cy-120,0,cx-15,cy-140,0);
+  GrLine3(dc,cx,cy,0,cx+100,cy-20,0);
+  GrLine3(dc,cx+100,cy-20,0,cx-90,cy-40,0);
+  GrLine3(dc,cx-90,cy-40,0,cx+70,cy-60,0);
+  GrLine3(dc,cx+70,cy-60,0,cx-70,cy-60,0);
+  GrLine3(dc,cx-70,cy-60,0,cx+60,cy-80,0);
+  GrLine3(dc,cx+60,cy-80,0,cx-50,cy-100,0);
+  GrLine3(dc,cx-50,cy-100,0,cx+30,cy-120,0);
+  GrLine3(dc,cx+30,cy-120,0,cx-15,cy-140,0);
 
-  base->color=LTCYAN;
-  GrRect(base,0,0,task->win_pixel_width,74);
-  GrFloodFill(base,0,75);
+  dc->color=LTCYAN;
+  GrRect(dc,0,0,task->win_pixel_width,74);
+  GrFloodFill(dc,0,75);
 
-  base->color=BROWN;
-  GrCircle(base,cx+70,35,15);
-  base->color=YELLOW;
-  GrFloodFill(base,cx+70,35);
+  dc->color=BROWN;
+  GrCircle(dc,cx+70,35,15);
+  dc->color=YELLOW;
+  GrFloodFill(dc,cx+70,35);
 
-  base->color=BROWN;
-  GrPutS(base,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
+  dc->color=BROWN;
+  GrPutS(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
 
-  GrElemsPlot3(base,x+cx,y+cy,0,man_imgs[frame&3]);
-  GrDel(base);
+  GrSpritePlot3(dc,x+cx,y+cy,0,man_imgs[frame&3]);
+  GrDCDel(dc);
 }
 
 //This is the path of the man.

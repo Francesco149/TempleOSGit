@@ -23,7 +23,7 @@ I64 PopUpFreq()
 #define MU_SND_ON	2
 #define MU_SND_OFF	3
 
-U0 DoIt()
+U0 Main()
 {
   BoolI8 done=FALSE;
   I64 i,j=0,freq=100;
@@ -73,4 +73,4 @@ U0 DoIt()
   Snd(0);
 }
 
-DoIt;
+Main;

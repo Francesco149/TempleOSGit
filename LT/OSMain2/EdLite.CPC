@@ -11,7 +11,7 @@ U0 EdLiteUpdate(LineStruct *root,LineStruct *cur_line,I64 cur_col,I64 line_start
   U8 *st;
   LineStruct *templ=cur_line;
   BoolI8 done_eof=FALSE;
-  sys_dc_col=0;
+  sys_raw_dc_col=0;
   for (i=0;i<text_rows/2;i++)
     if (templ->last!=root)
       templ=templ->last;
@@ -52,8 +52,8 @@ U0 EdLiteUpdate(LineStruct *root,LineStruct *cur_line,I64 cur_col,I64 line_start
       CrLf;
     }
   }
-  sys_dc_col=text_cols*cursor_row+cursor_col-line_start_col;
-  DrawChar(0x7F);
+  sys_raw_dc_col=text_cols*cursor_row+cursor_col-line_start_col;
+  RawDrawChar(0x7F);
 }
 
 
@@ -64,14 +64,14 @@ U0 EdLite(U8 *filename)
   I64 i,ch,sc,size,bin_size=0,line_start_col=0,cur_col=0;
   U8 *buf=FileRead(filename,&size),*bin_data=NULL;
   LineStruct root,*templ,*templ1,*cur_line;
-  U64 old_dc_flags=sys_dc_flags;
+  U64 old_dc_flags=sys_raw_dc_flags;
   BoolI8 old_raw=Raw(ON),
     old_debug=InDbg(ON),
     old_single=SingleUser(ON);
 
   PushFD;
   Cli;
-  sys_dc_flags=sys_dc_flags&~DCF_SCROLL|DCF_SHOW_DOLLAR;
+  sys_raw_dc_flags=sys_raw_dc_flags&~RDCF_SCROLL|RDCF_SHOW_DOLLAR;
   sys_cur_scan_code=0;
   root.next=root.last=&root;
   root.line=StrNew("");
@@ -281,6 +281,6 @@ U0 EdLite(U8 *filename)
   Raw(old_raw);
   InDbg(old_debug);
   SingleUser(old_single);
-  sys_dc_flags=sys_dc_flags&~DCF_SHOW_DOLLAR|old_dc_flags&DCF_SHOW_DOLLAR;
+  sys_raw_dc_flags=sys_raw_dc_flags&~RDCF_SHOW_DOLLAR|old_dc_flags&RDCF_SHOW_DOLLAR;
   PopFD;
 }

@@ -677,15 +677,15 @@ U0 FMRightClick()
 
 
 U8 *fm_ip_str=NULL;
-U0 (*fp_old_final_screen_update)(GrBitMap *base);
+U0 (*fp_old_final_screen_update)(GrDC *dc);
 
-U0 FMFinalScreenUpdate(GrBitMap *base)
+U0 FMFinalScreenUpdate(GrDC *dc)
 {
   if (fm_ip_str) {
-    base->color=LTRED;
-    GrPutS(base,ipx,ipy,fm_ip_str);
+    dc->color=LTRED;
+    GrPutS(dc,ipx,ipy,fm_ip_str);
   }
-  (*fp_old_final_screen_update)(base);
+  (*fp_old_final_screen_update)(dc);
 }
 
 public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)

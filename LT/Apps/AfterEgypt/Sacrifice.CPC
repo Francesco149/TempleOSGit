@@ -30,12 +30,12 @@ Animation is not done properly.  It is
 done in the screen update which should
 be 60Hz, but is not guaranteed.
 */
-U0 DrawSacrifice(TaskStruct *task,GrBitMap *base)
+U0 DrawSacrifice(TaskStruct *task,GrDC *dc)
 {
   I64 i,
     h=task->win_pixel_left+task->win_scroll_x,
     v=task->win_pixel_top+task->win_scroll_y;
-  GrElemsPlot3(base,sheep_x,sheep_y,0,__BIN_1);
+  GrSpritePlot3(dc,sheep_x,sheep_y,0,__BIN_1);
 
   if (ip_lb) {
     bx[bp]=ipx-h;
@@ -45,10 +45,10 @@ U0 DrawSacrifice(TaskStruct *task,GrBitMap *base)
     if (++bp>BLOOD) bp=0;
   }
 
-  base->color=RED;
-  base->pen_width=3;
+  dc->color=RED;
+  dc->pen_width=3;
   for (i=0;i<BLOOD;i++) {
-    GrPlot3(base,bx[i],by[i],0);
+    GrPlot3(dc,bx[i],by[i],0);
     by[i]+=bvy[i];
     bvy[i]+=0.1;
     if (by[i]>sheep_y+bz[i])

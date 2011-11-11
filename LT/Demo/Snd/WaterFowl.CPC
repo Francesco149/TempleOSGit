@@ -69,15 +69,15 @@ F64 t0,t0_s[NUM_GEESE];
 I64 x[NUM_GEESE],y[NUM_GEESE];
 I64 x0[NUM_GEESE],y0[NUM_GEESE];
 
-U0 PutPoem(TaskStruct *task,GrBitMap *base,I64 w,I64 h)
+U0 PutPoem(TaskStruct *task,GrDC *dc,I64 w,I64 h)
 {
   F64 tt=Saw(tP(task)-t0,POEM_TIME);
   I64 i,j=tt*(POEM_LINES+4)*FONT_HEIGHT-h/2,
      x=w>>1-(POEM_COLS*FONT_WIDTH)>>1;
   U8 *st=poem;
-  base->color=DKGRAY;
+  dc->color=DKGRAY;
   for (i=POEM_LINES-1;i>=0;i--) {
-    GrPutS(base,x,
+    GrPutS(dc,x,
       (FONT_HEIGHT*i+j)%((POEM_LINES+4)*FONT_HEIGHT),
       st);
     st+=StrLen(st)+1;
@@ -86,21 +86,21 @@ U0 PutPoem(TaskStruct *task,GrBitMap *base,I64 w,I64 h)
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   U8 *inter;
   I64 i,w=task->win_pixel_width,h=task->win_pixel_height;
   F64 tt;
 
-  PutPoem(task,base,w,h);
+  PutPoem(task,dc,w,h);
 
   for (i=0;i<NUM_GEESE;i++) {
     tt=1.2*Tri(tP(task)-t0_s[i],0.7);
-    inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
-    GrElemsPlot3(base,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
+    inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
+    GrSpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
     Free(inter);
   }
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 Init()

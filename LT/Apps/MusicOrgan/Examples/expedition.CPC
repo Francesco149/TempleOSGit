@@ -33,7 +33,7 @@ U0 Song()
   while (!ScanKey) {
 	Play("3etCFC2qG3DsGDGD2qG3C2sG3D2G3D2G3D2G3D");
 	Play("etCFC2qG3DsGDGD2qG3C2sG3D2G3D2G3D2G3D");
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	PutS("$CM,0,+7$");
 	Play("2qG3EAEADFC",
 		" \0Off \0 \0to \0 \0yon\0der \0star.\r\n\0");

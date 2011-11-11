@@ -46,7 +46,7 @@ system and see the amount of mem used.  Then, compile it again and far less
 will be allocated.  This is because it is reusing the small chunks.  See 
 [Memory] Memory.  Click Here
 `MemRep;View;`
- for a [C:/LT/Adam/MemRep.APZ,129] MemRep.
+ for a [C:/LT/Adam/MemRep.APZ,121] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is used for 
 SHIFT-SPACE, a character which does not get converted to tabs by 

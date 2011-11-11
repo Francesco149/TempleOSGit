@@ -1,6 +1,6 @@
 /* Project: OSMain */
 
-U0 DrawChar(U64 ch)
+U0 RawDrawChar(U64 ch)
 {
 /* This is for RAW output during boot
 before the window manager is running
@@ -25,45 +25,45 @@ See also [C:/LT/Adam/Gr/GrScreen.APZ,736] GrUpdateScreen().
   task=Fs;
   timeout=GetTimeStamp+time_stamp_freq>>7; //8mS
 
-  if (!(sys_dc_flags&DCF_SHOW_DOLLAR)) {
+  if (!(sys_raw_dc_flags&RDCF_SHOW_DOLLAR)) {
     if (ch=='$') {
-      if (sys_dc_flags&DCF_IN_DOLLAR) {
-	sys_dc_flags&=~DCF_IN_DOLLAR;
-	if (!(sys_dc_flags & DCF_LAST_DOLLAR)) {
-	  sys_dc_flags&=~DCF_LAST_DOLLAR;
+      if (sys_raw_dc_flags&RDCF_IN_DOLLAR) {
+	sys_raw_dc_flags&=~RDCF_IN_DOLLAR;
+	if (!(sys_raw_dc_flags & RDCF_LAST_DOLLAR)) {
+	  sys_raw_dc_flags&=~RDCF_LAST_DOLLAR;
 	  return;
 	}
       } else {
-	sys_dc_flags|=DCF_IN_DOLLAR|DCF_LAST_DOLLAR;
+	sys_raw_dc_flags|=RDCF_IN_DOLLAR|RDCF_LAST_DOLLAR;
 	return;
       }
     }
-    sys_dc_flags&=~DCF_LAST_DOLLAR;
-    if (sys_dc_flags&DCF_IN_DOLLAR)
+    sys_raw_dc_flags&=~RDCF_LAST_DOLLAR;
+    if (sys_raw_dc_flags&RDCF_IN_DOLLAR)
       return;
   }
   if (ch==CH_TAB) {
-    DrawChar(CH_SPACE);
-    while (sys_dc_col & 7)
-      DrawChar(CH_SPACE);
+    RawDrawChar(CH_SPACE);
+    while (sys_raw_dc_col & 7)
+      RawDrawChar(CH_SPACE);
   } else if (ch==CH_BACKSPACE) {
-    sys_dc_col--;
-    DrawChar(CH_SPACE);
-    sys_dc_col--;
+    sys_raw_dc_col--;
+    RawDrawChar(CH_SPACE);
+    sys_raw_dc_col--;
   } else if (ch==CH_CR) {
-    DrawChar(CH_SPACE);
-    while (sys_dc_col % text_cols)
-      DrawChar(CH_SPACE);
+    RawDrawChar(CH_SPACE);
+    while (sys_raw_dc_col % text_cols)
+      RawDrawChar(CH_SPACE);
 
   } else if (Bt(displayable_chars_bitmap,ch)) {
-    row=sys_dc_col/text_cols%text_rows;
-    col=sys_dc_col%text_cols;
+    row=sys_raw_dc_col/text_cols%text_rows;
+    col=sys_raw_dc_col%text_cols;
     if (text_mode) {
-      if (sys_dc_flags&DCF_SCROLL && sys_dc_col && !row && !col) {
+      if (sys_raw_dc_flags&RDCF_SCROLL && sys_raw_dc_col && !row && !col) {
 	MemCpy(VGA_TEXT_MEM_BASE,VGA_TEXT_MEM_BASE+text_cols,
 	  text_cols*(text_rows-1)*2);
 	MemSet(VGA_TEXT_MEM_BASE+text_cols*(text_rows-1)*2,0,text_cols*2);
-	sys_dc_col-=text_cols;
+	sys_raw_dc_col-=text_cols;
 	row=text_rows-1;
       }
       ptr=VGA_TEXT_MEM_BASE+(row*text_cols+col)*2;
@@ -72,14 +72,14 @@ See also [C:/LT/Adam/Gr/GrScreen.APZ,736] GrUpdateScreen().
     } else {
       OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
       OutU8(VGA_SC_DATA,0x0F); //All planes -- WHITE
-      if (sys_dc_flags&DCF_SCROLL && sys_dc_col && !row && !col) {
+      if (sys_raw_dc_flags&RDCF_SCROLL && sys_raw_dc_col && !row && !col) {
       //Scroll cached image
 	MemCpy(sys_dc_screen_image,sys_dc_screen_image+gr_width*FONT_HEIGHT>>3,
 	    gr_width*(gr_height-FONT_HEIGHT)>>3);
 	MemSet(sys_dc_screen_image+gr_width*(gr_height-FONT_HEIGHT)>>3,0,gr_width*FONT_HEIGHT>>3);
 
 	MemCpy(VGA_GRAPHIC_MEM_BASE,sys_dc_screen_image,gr_width*gr_height>>3);
-	sys_dc_col-=text_cols;
+	sys_raw_dc_col-=text_cols;
 	row=text_rows-1;
       }
       PushFD;
@@ -95,7 +95,7 @@ See also [C:/LT/Adam/Gr/GrScreen.APZ,736] GrUpdateScreen().
       }
       PopFD;
     }
-    sys_dc_col++;
+    sys_raw_dc_col++;
   }
   Preempt(old_preempt);
 }
@@ -137,7 +137,7 @@ BoolI64 AKDRawDisplayPutKey(U64 ch,U64 scancode)
 {
   nounusedwarn scancode;
   if (IsRaw) {
-    DrawChar(ch);
+    RawDrawChar(ch);
     return TRUE;
   } else
     return FALSE;
@@ -148,7 +148,7 @@ BoolI64 AKDRawDisplayPutS(U8 *st)
   U8 ch;
   if (IsRaw) {
     while (ch=*st++)
-      DrawChar(ch);
+      RawDrawChar(ch);
     return TRUE;
   } else
     return FALSE;

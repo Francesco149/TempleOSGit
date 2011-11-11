@@ -116,19 +116,19 @@ want to make a hot key.  See
 [::/LT/Demo/AcctExample/TSAdam.APZ,BMPFileCaptureScreen] BMPFileCaptureScreen.
 
 * Use [C:/LT/Adam/Ltf/LtfNew.APZ,668] LtfMax() to adjust the size of the cmd
-line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf entries, 
+line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf entries, 
 not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3081]
-TaskStruct, [C:/LT/OSMain/Adam1a.HPZ,1144] LtfEntry and
-[C:/LT/OSMain/Adam1a.HPZ,2535] LTDirEntry 
+to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3087]
+TaskStruct, [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry and
+[C:/LT/OSMain/Adam1a.HPZ,2536] LTDirEntry 
 have them.  You shouldn't encounter conflicts with LoseThos using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
 [C:/LT/OSMain/Task1a.CPZ,230] Spawn(
-), changing [C:/LT/OSMain/Adam1a.HPZ,2803] DFT_STK, and using
+), changing [C:/LT/OSMain/Adam1a.HPZ,2809] DFT_STK, and using
 [C:/LT/Adam/Ltf/LtfNew.APZ,668] LtfMax() to reduce the cmd line buffer size.
 
 * Filenames ending in Z will be automatically compressed and uncompressed
@@ -150,7 +150,7 @@ for broken links in
 documentation.
 
 * You can use [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1387] OPTf_PAREN_WARN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1388] OPTf_PAREN_WARN) to find unnecessary
 parentheses in code.
 
 * Use [C:/LT/Adam/Ltf/LtfMain.APZ,149] Plain() to edit a plain text
@@ -216,9 +216,9 @@ probably turn-off preemption or interrupts momentarily to copy it.
 
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
-lx for [C:/LT/OSMain/Adam1a.HPZ,1941] LexStruct ptrs; l for
-[C:/LT/OSMain/Adam1a.HPZ,1318] Ltf ptrs; ll or cl for
-[C:/LT/OSMain/Adam1a.HPZ,1144] LtfEntry ptrs, etc.
+lx for [C:/LT/OSMain/Adam1a.HPZ,1942] LexStruct ptrs; l for
+[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf ptrs; ll or cl for
+[C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry ptrs, etc.
 
 
 * [C:/LT/OSMain/Adam1b.HPZ,98] Preempt() is used to keep a task from being
@@ -233,7 +233,7 @@ SetDrvTextAttr().  Place calls
 to this in [HOME/Adam3aLocalize.APZ] HOME/Adam3aLocalize.APZ.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/LT/OSMain/Adam1a.HPZ,1318] Ltf cmd under the 
+[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf cmd under the 
 cursor.  See [::/LT/Demo/Ltf/TextDemo.CPZ] ::/LT/Demo/Ltf/TextDemo.CPZ.
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -258,10 +258,10 @@ pressing <CTRL-R>.
 * When editing a Graphic Element, you can cut and paste the elements in the 
 text list window.
 
-* I recommend keeping GrElems in vect format until you are done creating
-them, 
-so you can edit the ctrl points.  Then, convert them to bitmaps, so the flood 
-fills work well.  If you are doing interpolation, however, they must be vect.
+* I recommend keeping GrSprite in vect format until you are done creating 
+them, so you can edit the ctrl points.  Then, convert them to bitmaps, so the 
+flood fills work well.  If you are doing interpolation, however, they must be 
+vect.
 
 * [C:/LT/Adam/Gr/GrPrimatives.APZ,226] GrFloodFill() is
 slow.  [C:/LT/Adam/Gr/GrBitMap.APZ,1119] GrRect() is fast.
@@ -302,8 +302,8 @@ GetTimeStamp().
 
 * Use [C:/LT/Adam/HeapLog.APZ,112] HeapLog() and [C:/LT/Adam/HeapLog.APZ,79]
 HeapLogRep() to find leaks.  Don't be confused by
-[C:/LT/OSMain/Adam1a.HPZ,1318] Ltf 
+[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2756]
+* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2757]
 _CFG_HEAP_DBG.  You're on your own.

@@ -25,7 +25,7 @@ F64 Cost(Ode *ode)
 }
 
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   BoolI8 old_suspend1,old_suspend2;
   I64 i,j;
@@ -39,45 +39,45 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
     if (!(temps->flags&SSF_INACTIVE)) {
-      base->color=temps->color;
-      base->pen_width=temps->pen_width;
-      GrLine3(base,temps->end1->x,temps->end1->y,0,
+      dc->color=temps->color;
+      dc->pen_width=temps->pen_width;
+      GrLine3(dc,temps->end1->x,temps->end1->y,0,
 		temps->end2->x,temps->end2->y,0);
     }
     temps=temps->next;
   }
 
   if (cursor_mass) {
-    base->color=RED;
-    base->pen_width=2;
-    GrLine3(base,ipx-task->win_pixel_left-task->win_scroll_x,ipy-task->win_pixel_top-task->win_scroll_y,0,
+    dc->color=RED;
+    dc->pen_width=2;
+    GrLine3(dc,ipx-task->win_pixel_left-task->win_scroll_x,ipy-task->win_pixel_top-task->win_scroll_y,0,
       cursor_mass->x,cursor_mass->y,0);
   }
 
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     if (!(tempm->flags&MSF_INACTIVE)) {
-      base->color=BLACK;
-      GrCircle(base,tempm->x,tempm->y,tempm->radius);
-      GrFloodFill(base,tempm->x,tempm->y,TRUE);
-      base->color=tempm->color;
-      GrCircle(base,tempm->x,tempm->y,tempm->radius);
-      GrFloodFill(base,tempm->x,tempm->y,TRUE);
-      base->color=BLACK;
-      GrCircle(base,tempm->x,tempm->y,tempm->radius);
+      dc->color=BLACK;
+      GrCircle(dc,tempm->x,tempm->y,tempm->radius);
+      GrFloodFill(dc,tempm->x,tempm->y,TRUE);
+      dc->color=tempm->color;
+      GrCircle(dc,tempm->x,tempm->y,tempm->radius);
+      GrFloodFill(dc,tempm->x,tempm->y,TRUE);
+      dc->color=BLACK;
+      GrCircle(dc,tempm->x,tempm->y,tempm->radius);
     }
     tempm=tempm->next;
   }
 
-  base->color=BLACK;
+  dc->color=BLACK;
   if (snap_button.state)
     for (j=0;j<GR_HEIGHT;j+=SNAP_SIZE)
       for (i=0;i<GR_WIDTH;i+=SNAP_SIZE)
-	GrPlot(base,i,j);
+	GrPlot(dc,i,j);
 
-  base->color=BLACK;
-  GrPrintF(base,90,0,"Cost:%12.2,f",Cost(ode));
-  GrPrintF(base,90,FONT_HEIGHT,"Time:%12.2f",SpanTime(task));
+  dc->color=BLACK;
+  GrPrintF(dc,90,0,"Cost:%12.2,f",Cost(ode));
+  GrPrintF(dc,90,FONT_HEIGHT,"Time:%12.2f",SpanTime(task));
   if (TaskValidate(task))
     LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend1);
   if (TaskValidate(task->animate_task))
@@ -147,23 +147,23 @@ U0 DelMass(MyMass *tempm)
   Free(tempm);
 }
 
-U0 DrawSpring(GrBitMap *base,MyMass *tempm,I64 x,I64 y)
+U0 DrawSpring(GrDC *dc,MyMass *tempm,I64 x,I64 y)
 {
   switch (mode_button.state) {
     case MD_CONCRETE:
-      base->color=LTGRAY;
-      base->pen_width=2;
+      dc->color=LTGRAY;
+      dc->pen_width=2;
       break;
     case MD_STEEL:
-      base->color=DKGRAY;
-      base->pen_width=2;
+      dc->color=DKGRAY;
+      dc->pen_width=2;
       break;
     case MD_WIRE:
-      base->color=RED;
-      base->pen_width=1;
+      dc->color=RED;
+      dc->pen_width=1;
       break;
   }
-  GrLine3(base,tempm->x,tempm->y,0,x,y,0);
+  GrLine3(dc,tempm->x,tempm->y,0,x,y,0);
 }
 
 U0 PlaceSpring(MyMass *tempm1,MyMass *tempm2)
@@ -283,7 +283,7 @@ U0 Span()
   MySpring *temps;
   Ctrl *bt_run,*bt_mode,*bt_snap;
   U8 *src;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
@@ -345,7 +345,7 @@ U0 Span()
     "The lowest cost bridge that\r\n"
     "stays standing wins.\r\n\r\n"
     "For a variation, try without\r\n"
-    "using the center base point.\r\n"
+    "using the center dc point.\r\n"
     "\r\n"
     "Use\r\n"
     "\t$FG,GREEN$'m'$FG$ass\r\n"
@@ -357,7 +357,7 @@ U0 Span()
   try {
     while (TRUE) {
       msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_IP_L_UP|1<<MSG_KEY_DOWN|1<<MSG_IP_MOVE);
-      GrClear(base);
+      GrDCClear(dc);
       switch (msg_code) {
 	case MSG_IP_L_DOWN:
 	  cursor_mass=tempm1=tempm2=NULL;
@@ -411,7 +411,7 @@ U0 Span()
 	    case MD_STEEL:
 	    case MD_WIRE:
 	      if (tempm1) {
-		DrawSpring(base,tempm1,p1,p2);
+		DrawSpring(dc,tempm1,p1,p2);
 	      }
 	      break;
 	  }
@@ -501,8 +501,8 @@ span_done: //Don't goto out of try
   CtrlButtonDel(bt_mode);
   CtrlButtonDel(bt_snap);
   SpanDel(ode);
-  GrClear(base);
-  GrDel(base);
+  GrDCClear(dc);
+  GrDCDel(dc);
   MenuPop;
   LtfBottom;
   PutS("$CL$$BG$\r\n");

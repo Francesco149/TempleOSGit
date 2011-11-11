@@ -21,6 +21,7 @@ Ctrl	Control.  The ctrl key is indicated with "^" in documentation.
 Cur	Current
 Dbg	Debug
 Dbl	Double
+DC	Device Context
 Del	Delete
 Desc	Descriptor or Description
 Dev	Device
@@ -40,6 +41,7 @@ Fun	Function
 Gen	Generate
 Glbl	Global
 Gr	Graphic
+IDE	Integrated Development Environment or Integrated Drive Electronics
 IDT	Interrupt Descriptor Table
 Ins	Insert
 ip_	Input Pointer.  See [::/LT/OSMain/KbdMouse/InputPointer.CPZ]
@@ -54,7 +56,9 @@ Lex	Lexical Analyser
 Loc	Location, Lines of Code
 Log	Logarithm or Logical
 Ltf	Linked-Text-File (doubly-linked-list of rich text and graphic cmds)
+Man	Manual
 Mem	Memory
+Mgd	Managed
 Mgr	Manager
 Mon	Month
 MP	MultiProcessor
@@ -100,7 +104,7 @@ Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between "task", "process" or "thread."  The Fs
   segment register is kept pointing to the current task's
-  [C:/LT/OSMain/Adam1a.HPZ,3081] TaskStruct.  There is only one window per task.
+  [C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct.  There is only one window per task.
 
 +] Adam Task
   This is Adam, as in Adam and Eve, the parent of all tasks.  This task is
@@ -129,7 +133,7 @@ Wiz	Wizard
   within the lowest 2 Gig of memory.  The compiler and
   [C:/LT/OSMain/Hash1a.CPZ,733] Load()er allocate memory from the code heap to
   store code and glbl vars, unless the compiler option
-  [C:/LT/OSMain/Adam1a.HPZ,1398] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  [C:/LT/OSMain/Adam1a.HPZ,1399] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/LT/OSMain/Memory.CPZ,925] MAlloc() is comes from the data
   heap, which in not limited in size, except by how much physical RAM memory
   you have.  You can allocate from any heap you like, or even make independent
@@ -212,15 +216,15 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   collect files to write to a CD-ROM.
 
 [AutoFile] AutoFile
-[Graphics/GrElem] Graphic Element
+[Graphics/GrSprite] Graphic Element
 [Hash] Hash Table
 [Char/Define] Define
 +] files_find_mask
   [C:/LT/OSMain/Dsk/DskStr.CPZ,34] FilesFindMatch().  An optional directory
   plus a list of file name masks, as in /LT/Demo/*.TXZ;*.CPZ.
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2011] TEXT_FILE_MASK and
-  [C:/LT/OSMain/Adam1a.HPZ,2010] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,2012] TEXT_FILE_MASK and
+  [C:/LT/OSMain/Adam1a.HPZ,2011] SRC_FILE_MASK.
 
 +] Filename Extention Types
   
@@ -257,9 +261,9 @@ Be aware of [C:/LT/OSMain/Adam1a.HPZ,2011] TEXT_FILE_MASK and
 *.LG?
   Graphics file
 
-[C:/LT/OSMain/Adam1a.HPZ,2010] SRC_FILE_MASK
+[C:/LT/OSMain/Adam1a.HPZ,2011] SRC_FILE_MASK
   This #define holds a list of src file extensions.
-[C:/LT/OSMain/Adam1a.HPZ,2011] TEXT_FILE_MASK
+[C:/LT/OSMain/Adam1a.HPZ,2012] TEXT_FILE_MASK
   This #define holds a list of text file extensions.
 
 +] Naming Convention
@@ -288,10 +292,10 @@ SYSf_????
   designated with a lower case "f".
 
 Fs The CPU FS segment register.  This register points to the current task's 
-[C:/LT/OSMain/Adam1a.HPZ,3081] TaskStruct.
+[C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct.
 
 Gs The CPU GS segment register.  This register points to the
-[C:/LT/OSMain/Adam1a.HPZ,3708] CPUStruct.
+[C:/LT/OSMain/Adam1a.HPZ,3714] CPUStruct.
 
 Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
   These are bit manipulation functions named after Intel instructions.  They 

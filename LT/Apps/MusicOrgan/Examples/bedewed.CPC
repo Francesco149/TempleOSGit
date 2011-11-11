@@ -36,7 +36,7 @@ U0 Song()
 		"Look \0at \0that!  \0 \0 \0 \0Dew \0 \0 \0on \0flow\0 \0 \0ers.\r\n\0");
 	Play("eEGqACetCFGeEFqGetGFEqA",
 		"Look \0at \0that!  \0 \0 \0 \0Dew \0 \0 \0on \0flow\0 \0 \0ers.\r\n\0");
-	PutGrElems(__BIN_1);
+	PutGrSprite(__BIN_1);
 	PutS("$CM,0,7$");
 	Play("eDEqEAEFCCetCAD",
 		"Pret\0ty \0when \0 \0they \0catch \0the \0light.\r\n\0 \0 \0 \0");

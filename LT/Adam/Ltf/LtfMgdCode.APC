@@ -1,9 +1,35 @@
-#help_index "Ltf/IDE"
+#define EF_DONT_RECOMPILE	0
+#define EF_RECOMPILE		1
+#define EF_RENUM_ASM		2
+#define EF_SLIDER_CTRL		3
+
+I64 PopUpEdFmt()
+{
+  I64 i;
+  Ltf *l=LtfNew;
+  LtfPutS(l,"$FG,PURPLE$Reformat Function$FG$\r\n"
+  "If you enter $FG,GREEN$DONT RECOMPILE$FG$ the stored\r\n"
+  "source line indentation information will\r\n"
+  "be used.  $BK,1$Be sure it is up-to-date!$BK,0$\r\n"
+  "For static projects, enter $FG,GREEN$DONT RECOMPILE$FG$.\r\n"
+  "$MU,\"Recompile\",EF_RECOMPILE$\r\n"
+  "$MU,\"Don't Recompile\",EF_DONT_RECOMPILE$\r\n"
+  "$MU,\"Renum Asm\",EF_RENUM_ASM$\r\n\r\n"
+  "$FG,PURPLE$Insert Managed Code$FG$\r\n"
+  "$MU,\"Slider Ctrl\",EF_SLIDER_CTRL$\r\n\r\n"
+  "$MU,\"CANCEL\",LTFM_CANCEL$\r\n"
+  "$FG,GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\r\n"
+      "with the results.\r\n");
+  i=PopUpMenu(l);
+  LtfDel(l);
+  return i;
+}
+
 
 #define C_INDENT_SPACES		2
 #define ASM_RENUM_SPACING	5
 
-public U0 EdRemFunLeadingSpace(Ltf *l)
+U0 EdRemFunLeadingSpace(Ltf *l)
 {
   BoolI8 unlock=LtfLock(l);
   U8 ch,*ptr;
@@ -54,7 +80,7 @@ public U0 EdRemFunLeadingSpace(Ltf *l)
     ll=ll2;
   } while (ll!=l->cur_entry);
 ls_done:
-  l->recalc_start=l;
+l->recalc_start=l;
   LtfRecalc(l);
   LtfCenter(l);
   if (unlock)
@@ -114,8 +140,8 @@ U0 EdRACollect(Ltf *l,RenumStruct *root)
       }
     }
   }
-//This is needed because we moved the
-//cursor and it didn't recalc.
+  //This is needed because we moved the
+  //cursor and it didn't recalc.
   l->recalc_start=l;
   LtfRecalc(l);
 }
@@ -126,7 +152,7 @@ U0 EdRenumAsm(Ltf *l)
   I64 num=0;
   RenumStruct root,*tempr,*tempr1;
   U8 buf[sizeof(EdFindTextStruct.find_text)],
-     buf2[sizeof(EdFindTextStruct.find_text)];
+  buf2[sizeof(EdFindTextStruct.find_text)];
 
   root.next=root.last=&root;
   EdSelectFun(l,TRUE);
@@ -156,37 +182,11 @@ U0 EdRenumAsm(Ltf *l)
     LtfUnlock(l);
 }
 
+#define AC_ABORT	-1
+#define AC_REINDENT	0
+#define AC_RENUM_ASM	1
 
-#define EF_DONT_RECOMPILE	0
-#define EF_RECOMPILE		1
-#define EF_RENUM_ASM		2
-
-public I64 PopUpEdFmt()
-{
-  I64 i;
-  Ltf *l=LtfNew;
-  LtfPutS(l,"If you enter $FG,GREEN$DONT RECOMPILE$FG$ the stored\r\n"
-	    "source line indentation information will\r\n"
-	    "be used.  $BK,1$Be sure it is up-to-date!$BK,0$\r\n"
-	    "For static projects, enter $FG,GREEN$DONT RECOMPILE$FG$.\r\n"
-	    "$CM+LX,1,4$$BT,\"RECOMPILE\",EF_RECOMPILE$"
-	    "$CM+LX,24,0$$BT,\"DONT RECOMPILE\",EF_DONT_RECOMPILE$"
-	    "$CM+LX,1,4$$BT,\"CANCEL\",LTFM_CANCEL$"
-	    "$CM+LX,24,0$$BT,\"RENUM ASM\",EF_RENUM_ASM$\r\n\r\n\r\n"
-	    "$FG,GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\r\n"
-	    "with the results.\r\n");
-  i=PopUpMenu(l);
-  LtfDel(l);
-  return i;
-}
-
-#define AC_ABORT	0
-#define AC_REINDENT	1
-#define AC_RENUM_ASM	2
-
-//If you load a function with the
-//same name, it will replace this.
-public U0 MyFmtFun(Ltf *l)
+U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 {
   BoolI8 unlock=LtfLock(l),start_of_line=TRUE;
   LtfEntry *ll,*nl;
@@ -202,92 +202,95 @@ public U0 MyFmtFun(Ltf *l)
   old_line_num=l->cur_entry->y+1;
 
   LtfCaptureUndo(l,TRUE);
-  switch (PopUpEdFmt) {
+  switch (fmt_type) {
     case EF_RECOMPILE:
-      EdGoToFun(l,FALSE,FALSE);
-      if (l->flags&LTFF_PLAIN_TEXT)
-	LtfToggleFlags(l,LTFF_PLAIN_TEXT);
-      LtfWrite(l);
-      task=Spawn(&ServantUserCmdLine,NULL,"Servant",Fs);
-      st2=CurDir;
-      st=MSPrintF("Cd(\"%s\");",st2);
-      tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-      Free(st2);
-      Free(st);
-
-      task->win_top=Fs->win_top;
-      task->win_bottom=Fs->win_bottom;
-      task->win_left=Fs->win_left;
-      task->win_right=Fs->win_right;
-      TaskDerivedValsUpdate(task);
-
-      if (GetRequestResult(tempc,&result)) {
-	if (l->project) {
-	  if (StrOcc(l->project->aux_str,'/')) {
-	    st=StrNew(l->project->aux_str);
-	    StrLastRem(st,"/");
-	    st2=DirNameAbs(st);
-	    Free(st);
-	    st=MSPrintF("Cd(\"%s\");",st2);
-	    tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-	    Free(st2);
-	    Free(st);
-	  }
-
-	  st=MSPrintF("PutS(\"$WW,1$\");Cmp(\"%s\",\"SysTemp\",\"SysTemp\");",l->project->aux_str);
-	  tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-	  Free(st);
-	  if (GetRequestResult(tempc,&result))
-	    if (!result) {
-	      tempc=TaskRequestQueue(task,Fs,
-	      "Load(\"SysTemp\",LDF_JUST_LOAD);"
-		  "MapFileLoad(\"SysTemp\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-	      if (GetRequestResult(tempc,&result))
-		action=AC_REINDENT;
-	    }
-	  tempc=TaskRequestQueue(task,Fs,"Del(\"SysTemp.*\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-	  GetRequestResult(tempc,&result);
-	} else {
-	  st=MSPrintF("PutS(\"$WW,1$\");ExeFile(\"%s\",TRUE);",l->filename.name);
-	  tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-	  Free(st);
-	  if (GetRequestResult(tempc,&result))
-	    if (result)
-	      action=AC_REINDENT;
-	}
-      }
-      if (action==AC_REINDENT)	{
-	LtfUnlock(l);
-	st=MSPrintF("DbgFunFind(0x%X,0);",l);
+      if (EdGoToFun(l,FALSE,FALSE)) {
+	if (l->flags&LTFF_PLAIN_TEXT)
+	  LtfToggleFlags(l,LTFF_PLAIN_TEXT);
+	LtfWrite(l);
+	task=Spawn(&ServantUserCmdLine,NULL,"Servant",Fs);
+	st2=CurDir;
+	st=MSPrintF("Cd(\"%s\");",st2);
 	tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	Free(st2);
 	Free(st);
-	if (GetRequestResult(tempc,&result))
-	  temph=result;
-	else
-	  action=AC_ABORT;
-	LtfLock(l);
-      } else
-	PopUpOk("Has Errors");
+
+	task->win_top=Fs->win_top;
+	task->win_bottom=Fs->win_bottom;
+	task->win_left=Fs->win_left;
+	task->win_right=Fs->win_right;
+	TaskDerivedValsUpdate(task);
+
+	if (GetRequestResult(tempc,&result)) {
+	  if (l->project) {
+	    if (StrOcc(l->project->aux_str,'/')) {
+	      st=StrNew(l->project->aux_str);
+	      StrLastRem(st,"/");
+	      st2=DirNameAbs(st);
+	      Free(st);
+	      st=MSPrintF("Cd(\"%s\");",st2);
+	      tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	      Free(st2);
+	      Free(st);
+	    }
+
+	    st=MSPrintF("PutS(\"$WW,1$\");Cmp(\"%s\",\"SysTemp\",\"SysTemp\");",l->project->aux_str);
+	    tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    Free(st);
+	    if (GetRequestResult(tempc,&result))
+	      if (!result) {
+		tempc=TaskRequestQueue(task,Fs,
+		"Load(\"SysTemp\",LDF_JUST_LOAD);"
+		    "MapFileLoad(\"SysTemp\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+		if (GetRequestResult(tempc,&result))
+		  action=AC_REINDENT;
+	      }
+	    tempc=TaskRequestQueue(task,Fs,"Del(\"SysTemp.*\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    GetRequestResult(tempc,&result);
+	  } else {
+	    st=MSPrintF("PutS(\"$WW,1$\");ExeFile(\"%s\",TRUE);",l->filename.name);
+	    tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    Free(st);
+	    if (GetRequestResult(tempc,&result))
+	      if (result)
+		action=AC_REINDENT;
+	  }
+	}
+	if (action==AC_REINDENT)	{
+	  LtfUnlock(l);
+	  st=MSPrintF("DbgFunFind(0x%X,0);",l);
+	  tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	  Free(st);
+	  if (GetRequestResult(tempc,&result))
+	    temph=result;
+	  else
+	    action=AC_ABORT;
+	  LtfLock(l);
+	} else
+	  PopUpOk("Has Errors");
+      }
       break;
     case EF_DONT_RECOMPILE:
-      EdGoToFun(l,FALSE,FALSE);
-      if (temph=DbgFunFind(l,0))
-	action=AC_REINDENT;
+      if (EdGoToFun(l,FALSE,FALSE)) {
+	if (temph=DbgFunFind(l,0))
+	  action=AC_REINDENT;
+      }
       break;
     case EF_RENUM_ASM:
-      EdGoToFun(l,FALSE,TRUE);
-      if (EdCurU8(l)=='{') {
-	EdCursorRight(l);
-	l->recalc_start=l;
-	LtfRecalc(l);
-      } else if (EdCurU8(l)==':') {
-	EdCursorRight(l);
-	if (EdCurU8(l)==':')
+      if (EdGoToFun(l,FALSE,TRUE)) {
+	if (EdCurU8(l)=='{') {
 	  EdCursorRight(l);
-	l->recalc_start=l;
-	LtfRecalc(l);
+	  l->recalc_start=l;
+	  LtfRecalc(l);
+	} else if (EdCurU8(l)==':') {
+	  EdCursorRight(l);
+	  if (EdCurU8(l)==':')
+	    EdCursorRight(l);
+	  l->recalc_start=l;
+	  LtfRecalc(l);
+	}
+	action=AC_RENUM_ASM;
       }
-      action=AC_RENUM_ASM;
       break;
   }
 
@@ -367,4 +370,17 @@ public U0 MyFmtFun(Ltf *l)
     Kill(task,FALSE);
 }
 
-#help_index ""
+U0 EdMgdCode(Ltf *l)
+{
+  I64 fmt_type=PopUpEdFmt;
+  switch (fmt_type) {
+    case EF_DONT_RECOMPILE:
+    case EF_RECOMPILE:
+    case EF_RENUM_ASM:
+      EdRefmtFun(l,fmt_type);
+      break;
+    case EF_SLIDER_CTRL:
+      MgdSliderCtrl(l);
+      break;
+  }
+}

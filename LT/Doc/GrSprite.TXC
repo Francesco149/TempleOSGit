@@ -1,0 +1,18 @@
+A GrSprite, is one of the [C:/LT/Adam/Gr/Gr.APZ,2] following elements,
+created with <CTRL-R>.  Several 
+sprite elements are clustered together by <CTRL-R>.  Normally, they are
+packed 
+together in a list and the addr of the first is passed to routines.
+
+See [::/LT/Demo/Graphics/GrSprite1.CPZ] ::/LT/Demo/Graphics/GrSprite1.CPZ,
+[::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ and 
+[::/LT/Demo/Graphics/GrSprite3.CPZ] ::/LT/Demo/Graphics/GrSprite3.CPZ and
+[C:/LT/Adam/Gr/GrSpriteMesh.APZ,901] GrSpriteMesh().
+
+Be aware that copying PI, IB, or IS entries with the clipboard results in 
+duplicate entries with different nums.  You can manually remove dups by 
+editing with <CTRL-T> and setting to the original num.
+
+See [::/LT/Adam/Gr/GrSpritePlot.APZ,1] ::/LT/Adam/Gr/GrSpritePlot.APZ for how
+GrSprite are stored.
+

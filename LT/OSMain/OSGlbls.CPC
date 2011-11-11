@@ -16,7 +16,7 @@ LTCacheBlk **sys_ltdc_hash_table=NULL;
 U64 sys_ltdc_size;
 TaskStruct *sys_ltdc_write_out_task=NULL;
  
-U64 sys_dc_col=0,sys_dc_flags=0;
+U64 sys_raw_dc_col=0,sys_raw_dc_flags=0;
 U8 *sys_dc_screen_image;
 BoolI8 text_mode;
 I64 text_rows,text_cols,gr_width,gr_height;
@@ -49,7 +49,6 @@ U64 HPET_freq=0,HPET_kHz_freq=0,
    mouse_evt_time=0,kbd_evt_time=0,mouse_pkt_size=3;
 U64 sys_cur_scan_code=0;
 
-U8Fifo *kbdmouse_fifo;
 U8 key_desc[128];
 BoolI8 kbd_irqs_working;
 U0 *key_handler;
@@ -101,7 +100,8 @@ BoolI8	mouse_has_wheel,
 	kbdmouse_rst,
 	mouse_irqs_working;
 U64Fifo	*scan_code_fifo;
-U8Fifo	*kbd_fifo,*mouse_fifo;
+U8Fifo	*kbd_fifo,*kbd2_fifo,
+	*mouse_fifo,*mouse2_fifo;
 U64	sys_key_cnt,
 	sys_last_down_scan_code,
 	mouse_install_attempts,

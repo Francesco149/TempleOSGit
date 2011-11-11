@@ -147,7 +147,7 @@ public U0 MyScreenShot()
 
 #exe {
   if (ts_cid==CID_TAD8)
-    StreamPutS("#define FRAME_DIR_CNT	2000\r\n");
+    StreamPutS("#define FRAME_DIR_CNT	600\r\n");
   else
     StreamPutS("#define FRAME_DIR_CNT	200\r\n");
 };
@@ -331,7 +331,7 @@ public U0 MyHAllRep(U8 *index=NULL)
   HashRep(Fs->hash_table,HTT_SRC_SYM-HTT_DEFINE_STR-HTT_CLASS,NULL,"-p",0,index);
 }
 
-public Ltf *GrBitMap2Ltf(GrBitMap *base,I64 dx=0,I64 dy=0,I64 *_total_score=NULL)
+public Ltf *GrDC2Ltf(GrDC *dc,I64 dx=0,I64 dy=0,I64 *_total_score=NULL)
 {
   U64 *ptr;
   U8 byte_bit_cnts[256],st[2];
@@ -345,13 +345,13 @@ public Ltf *GrBitMap2Ltf(GrBitMap *base,I64 dx=0,I64 dy=0,I64 *_total_score=NULL
       if (Bt(&i,j))
 	byte_bit_cnts[i]++;
 
-  for (row=0;row<base->height/FONT_HEIGHT;row++) {
-    for (col=0;col<base->width/FONT_WIDTH;col++) {
+  for (row=0;row<dc->height/FONT_HEIGHT;row++) {
+    for (col=0;col<dc->width/FONT_WIDTH;col++) {
 
       cur_char_image=0;
       for (i=0;i<FONT_HEIGHT;i++)
 	for (j=0;j<FONT_WIDTH;j++)
-	  if (GrPeek(base,col*FONT_WIDTH+j+dx,row*FONT_HEIGHT+i+dy)!=WHITE)
+	  if (GrPeek(dc,col*FONT_WIDTH+j+dx,row*FONT_HEIGHT+i+dy)!=WHITE)
 	    LBts(&cur_char_image,i*8+j);
 
       best_score=MAX_I64;
@@ -385,17 +385,17 @@ public U0 BMP2TXZ(U8 *_in_name,U8 *_out_name=NULL)
 {
   U8 *in_name,*out_name;
   I64 dx,dy,score,best_score=MAX_I64;
-  GrBitMap *base;
+  GrDC *dc;
   Ltf *l;
   in_name=DftExt(_in_name,"BMP"),
   if (_out_name)
     out_name=DftExt(_out_name,"TXZ");
   else
     out_name=ChgExt(_in_name,"TXZ");
-  if (base=BMPFileRead(in_name)) {
+  if (dc=BMPFileRead(in_name)) {
     for (dy=-3;dy<=4;dy++)
       for (dx=-3;dx<=4;dx++) {
-	l=GrBitMap2Ltf(base,dx,dy,&score);
+	l=GrDC2Ltf(dc,dx,dy,&score);
 	if (score<best_score) {
 	  best_score=score;
 	  StrCpy(&l->filename.name,out_name);

@@ -49,17 +49,17 @@ F64 MPDraw(TaskStruct *task)
   I64 x,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w/2,cy=h/2,
      lo=Gs->num*h/mp_cnt,hi=(Gs->num+1)*h/mp_cnt;
   F64 yy,y_total=0;
-  GrBitMap *base=GrAlias(gr_persistent_base,task);
+  GrDC *dc=GrDCAlias(gr_dc2,task);
   for (y=lo;y<hi;y++) {
     for (x=0;x<w;x++) {
       CEqu(&xx,x-cx,cy-y);
       yy=scale*F(&xx);
-      base->color=Limit(yy,0,14);
+      dc->color=Limit(yy,0,14);
       y_total+=Limit(yy,-14,14);
-      GrPlot(base,x,y);
+      GrPlot(dc,x,y);
     }
     }
-  GrDel(base);
+  GrDCDel(dc);
   return y_total;
 }
 
@@ -68,7 +68,7 @@ U0 Draw()
   MPCmdStruct *tempm[MP_MAX_PROCESSORS];
   F64 y_total,old_y_total=MAX_F64;
   I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height,cx=w/2,cy=h/2;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
   while (TRUE) {
 
     for (i=1;i<mp_cnt;i++)
@@ -83,14 +83,14 @@ U0 Draw()
       break;
     old_y_total=y_total;
   }
-  base->color=15;
-  GrLine(base,0,cy,w,cy);
-  GrLine(base,cx,0,cx,h);
+  dc->color=15;
+  GrLine(dc,0,cy,w,cy);
+  GrLine(dc,cx,0,cx,h);
   for (i=0;i<NUM_ZEROS;i++)
-    GrPutS(base,cx+zeros[i].x-FONT_WIDTH/2,cy-zeros[i].y-FONT_HEIGHT/2,"o");
+    GrPutS(dc,cx+zeros[i].x-FONT_WIDTH/2,cy-zeros[i].y-FONT_HEIGHT/2,"o");
   for (i=0;i<NUM_POLES;i++)
-    GrPutS(base,cx+poles[i].x-FONT_WIDTH/2,cy-poles[i].y-FONT_HEIGHT/2,"x");
-  GrDel(base);
+    GrPutS(dc,cx+poles[i].x-FONT_WIDTH/2,cy-poles[i].y-FONT_HEIGHT/2,"x");
+  GrDCDel(dc);
 }
 
 U0 PoleZeros()
@@ -113,7 +113,7 @@ U0 PoleZeros()
   WordStat(OFF);
   WinBorder(OFF);
 
-  GrClear;
+  GrDCClear;
   LtfClear;
   scale=1.0;
 
@@ -165,7 +165,7 @@ pz_done:
   } catch
     CatchAll;
   SettingsPop;
-  GrClear;
+  GrDCClear;
 }
 
 PoleZeros;

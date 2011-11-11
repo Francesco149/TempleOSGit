@@ -11,7 +11,7 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/Graphics/LowPassFilter.CPZ] ::/LT/Demo/Graphics/LowPassFilter.CPZ
 [::/LT/Demo/Graphics/AudioMathDemo.CPZ] ::/LT/Demo/Graphics/AudioMathDemo.CPZ
 [::/LT/Demo/Graphics/Lines.CPZ] ::/LT/Demo/Graphics/Lines.CPZ
-[::/LT/Demo/Graphics/GrElem1.CPZ] ::/LT/Demo/Graphics/GrElem1.CPZ
+[::/LT/Demo/Graphics/GrSprite1.CPZ] ::/LT/Demo/Graphics/GrSprite1.CPZ
 [::/LT/Demo/MsgLoop.CPZ] ::/LT/Demo/MsgLoop.CPZ
 [::/LT/Demo/Snd/ASCIIOrgan.CPZ] ::/LT/Demo/Snd/ASCIIOrgan.CPZ
 [::/LT/Demo/Graphics/Doodle.CPZ] ::/LT/Demo/Graphics/Doodle.CPZ
@@ -29,10 +29,10 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/Graphics/CPUPlot.CPZ] ::/LT/Demo/Graphics/CPUPlot.CPZ
 [::/LT/Demo/Graphics/Dither.CPZ] ::/LT/Demo/Graphics/Dither.CPZ
 [::/LT/Demo/Graphics/Symmetry.CPZ] ::/LT/Demo/Graphics/Symmetry.CPZ
-[::/LT/Demo/Graphics/GrElem3.CPZ] ::/LT/Demo/Graphics/GrElem3.CPZ
+[::/LT/Demo/Graphics/GrSprite3.CPZ] ::/LT/Demo/Graphics/GrSprite3.CPZ
 [::/LT/Demo/Graphics/Blot.CPZ] ::/LT/Demo/Graphics/Blot.CPZ
 [::/LT/Demo/Graphics/CaptureScreen.CPZ] ::/LT/Demo/Graphics/CaptureScreen.CPZ
-[::/LT/Demo/Graphics/EdGrElems.CPZ] ::/LT/Demo/Graphics/EdGrElems.CPZ
+[::/LT/Demo/Graphics/EdGrSprite.CPZ] ::/LT/Demo/Graphics/EdGrSprite.CPZ
 [::/LT/Demo/PullDownMenu.CPZ] ::/LT/Demo/PullDownMenu.CPZ
 ::/LT/Demo/GameStarters/Stadium
     `Cd("::/LT/Demo/GameStarters/Stadium");Dir;View;`
@@ -56,7 +56,7 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/Graphics/3DPoly.CPZ] ::/LT/Demo/Graphics/3DPoly.CPZ
 [::/LT/Demo/Graphics/BSpline.CPZ] ::/LT/Demo/Graphics/BSpline.CPZ
 [::/LT/Demo/Graphics/Extents.CPZ] ::/LT/Demo/Graphics/Extents.CPZ
-[::/LT/Demo/Graphics/GrElem2.CPZ] ::/LT/Demo/Graphics/GrElem2.CPZ
+[::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ
 [::/LT/Demo/Graphics/Logo.CPZ] ::/LT/Demo/Graphics/Logo.CPZ
 [::/LT/Demo/Graphics/RotateTank.CPZ] ::/LT/Demo/Graphics/RotateTank.CPZ
 [::/LT/Demo/Graphics/Pic2ASCII.CPZ] ::/LT/Demo/Graphics/Pic2ASCII.CPZ
@@ -87,7 +87,7 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/MultiCore/Layers2.CPZ] ::/LT/Demo/MultiCore/Layers2.CPZ
 [::/LT/Demo/MultiCore/Clouds.CPZ] ::/LT/Demo/MultiCore/Clouds.CPZ
 [::/LT/Demo/MultiCore/Noise.CPZ] ::/LT/Demo/MultiCore/Noise.CPZ
-[::/LT/Demo/Graphics/MixerCtrl.CPZ] ::/LT/Demo/Graphics/MixerCtrl.CPZ
+[::/LT/Demo/Graphics/SliderCtrl.CPZ] ::/LT/Demo/Graphics/SliderCtrl.CPZ
 [::/LT/Demo/Graphics/Bling.CPZ] ::/LT/Demo/Graphics/Bling.CPZ
 [::/LT/Demo/Graphics/ScrollBars.CPZ] ::/LT/Demo/Graphics/ScrollBars.CPZ
 [::/LT/Demo/RegistryDemo.CPZ] ::/LT/Demo/RegistryDemo.CPZ
@@ -122,7 +122,7 @@ be used as a tutorial if you start at the beginning and work your way forward.
 ::/LT/Apps/Tanks
     `Cd("::/LT/Apps/Tanks");Dir;View;`
     
-[::/LT/Demo/Graphics/GrElem4.CPZ] ::/LT/Demo/Graphics/GrElem4.CPZ
+[::/LT/Demo/Graphics/GrSprite4.CPZ] ::/LT/Demo/Graphics/GrSprite4.CPZ
 ::/LT/Apps/GrModels
     `Cd("::/LT/Apps/GrModels");Dir;View;`
     
@@ -207,7 +207,7 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/Ltf/CallBack2.CPZ] ::/LT/Demo/Ltf/CallBack2.CPZ
 [::/LT/Demo/Ltf/Quirk1.CPZ] ::/LT/Demo/Ltf/Quirk1.CPZ
 [::/LT/Demo/Define.CPZ] ::/LT/Demo/Define.CPZ
-[C:/LT/Adam/EdFmtFun.APZ,123] EdRenumAsm
+[C:/LT/Adam/Ltf/LtfMgdCode.APZ,149] EdRenumAsm
 [::/LT/Demo/Ltf/UnusedDefine.CPZ] ::/LT/Demo/Ltf/UnusedDefine.CPZ
 [::/LT/Demo/Asm/AsmHelloWorld.CPZ] ::/LT/Demo/Asm/AsmHelloWorld.CPZ
 [::/LT/Demo/Asm/PutDec.CPZ] ::/LT/Demo/Asm/PutDec.CPZ

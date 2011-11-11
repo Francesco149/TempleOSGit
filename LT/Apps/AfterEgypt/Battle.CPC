@@ -66,7 +66,7 @@ BoolI8 held_up;
 #define HACK_PERIOD	0.25
 #define SPACING			45
 
-U0 DrawBattle(TaskStruct *task,GrBitMap *base)
+U0 DrawBattle(TaskStruct *task,GrDC *dc)
 {
   I64 cx=task->win_pixel_width>>1,
      cy=task->win_pixel_height>>1;
@@ -80,8 +80,8 @@ U0 DrawBattle(TaskStruct *task,GrBitMap *base)
     tt*=tt;
     if (tt>1.0) tt=1.0;
   }
-  inter=GrElemsInterpolate(__BIN_3,__BIN_4,tt);
-  GrElemsPlot3(base,cx,cy+SPACING,0,inter);
+  inter=GrSpriteInterpolate(__BIN_3,__BIN_4,tt);
+  GrSpritePlot3(dc,cx,cy+SPACING,0,inter);
   Free(inter);
 
   if (t_last) {
@@ -93,20 +93,20 @@ U0 DrawBattle(TaskStruct *task,GrBitMap *base)
 
   tt=Saw(tP(task)+0.0*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
-  GrElemsPlot3(base,xx+cx+SPACING,cy-SPACING,0,inter);
+  inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
+  GrSpritePlot3(dc,xx+cx+SPACING,cy-SPACING,0,inter);
   Free(inter);
 
   tt=Saw(tP(task)+0.333*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
-  GrElemsPlot3(base,xx+cx+2*SPACING,cy-SPACING,0,inter);
+  inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
+  GrSpritePlot3(dc,xx+cx+2*SPACING,cy-SPACING,0,inter);
   Free(inter);
 
   tt=Saw(tP(task)+0.666*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  inter=GrElemsInterpolate(__BIN_1,__BIN_2,tt);
-  GrElemsPlot3(base,xx+cx+SPACING,cy-2*SPACING,0,inter);
+  inter=GrSpriteInterpolate(__BIN_1,__BIN_2,tt);
+  GrSpritePlot3(dc,xx+cx+SPACING,cy-2*SPACING,0,inter);
   Free(inter);
 
   t_last=tP(task);

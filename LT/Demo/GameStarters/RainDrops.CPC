@@ -9,68 +9,68 @@ class Drop
 } drops[NUM_DROPS];
 
 
-GrBitMap *cur_base;
+GrDC *cur_dc;
 
-U0 DrawFrame(TaskStruct *task,GrBitMap *base)
+U0 DrawFrame(TaskStruct *task,GrDC *dc)
 {
   I64 w=task->win_pixel_width,h=task->win_pixel_height,
      cx=w>>1,cy=h>>1;
 
-  base->color=LTRED;
-  GrLine(base,cx-20,cy-50,cx,cy-150);
-  GrLine(base,cx+20,cy-50,cx,cy-150);
+  dc->color=LTRED;
+  GrLine(dc,cx-20,cy-50,cx,cy-150);
+  GrLine(dc,cx+20,cy-50,cx,cy-150);
 
-  base->color=LTRED;
-  GrLine(base,cx-100,cy-100,cx,cy);
-  GrLine(base,cx+100,cy-100,cx,cy);
+  dc->color=LTRED;
+  GrLine(dc,cx-100,cy-100,cx,cy);
+  GrLine(dc,cx+100,cy-100,cx,cy);
   if (Bt(key_down_bitmap,sc_1)) {
-    base->color=WHITE;
-    GrRect(base,cx-2,cy-2,5,5);
+    dc->color=WHITE;
+    GrRect(dc,cx-2,cy-2,5,5);
   }
-  base->color=BLACK;
-  GrPutS(base,cx+10,cy,"Press '1'");
+  dc->color=BLACK;
+  GrPutS(dc,cx+10,cy,"Press '1'");
 
-  base->color=LTRED;
-  GrRect(base,cx-20,cy+60,41,21);
+  dc->color=LTRED;
+  GrRect(dc,cx-20,cy+60,41,21);
 
-  base->color=LTRED;
-  GrLine(base,cx-200,cy,cx,cy+100);
-  GrLine(base,cx+200,cy,cx,cy+100);
+  dc->color=LTRED;
+  GrLine(dc,cx-200,cy,cx,cy+100);
+  GrLine(dc,cx+200,cy,cx,cy+100);
   if (Bt(key_down_bitmap,sc_2)) {
-    base->color=WHITE;
-    GrRect(base,cx-2,cy+100-2,5,5);
+    dc->color=WHITE;
+    GrRect(dc,cx-2,cy+100-2,5,5);
   }
-  base->color=BLACK;
-  GrPutS(base,cx+10,cy+100,"Press '2'");
+  dc->color=BLACK;
+  GrPutS(dc,cx+10,cy+100,"Press '2'");
 
-  base->color=LTRED;
-  GrLine(base,cx+400,cy+100,cx-250,cy+200);
+  dc->color=LTRED;
+  GrLine(dc,cx+400,cy+100,cx-250,cy+200);
 }
 
-U0 DrawDrops(TaskStruct *task,GrBitMap *base)
+U0 DrawDrops(TaskStruct *task,GrDC *dc)
 {
   I64 i;
-  base->color=BLUE;
+  dc->color=BLUE;
   for (i=0;i<NUM_DROPS;i++)
-    if (drops[i].y>=0 && GrPeek(base,drops[i].x,drops[i].y)==WHITE)
-      GrPlot(base,drops[i].x,drops[i].y);
+    if (drops[i].y>=0 && GrPeek(dc,drops[i].x,drops[i].y)==WHITE)
+      GrPlot(dc,drops[i].x,drops[i].y);
 }
 
-U0 UpdateCurBase(TaskStruct *task,GrBitMap *base)
+U0 UpdateCurBase(TaskStruct *task,GrDC *dc)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  cur_base->color=BLACK;
-  GrBlot(cur_base,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,base);
+  cur_dc->color=BLACK;
+  GrBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
   Preempt(old_preempt);
 }
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
-  DrawFrame(task,base);
-  DrawDrops(task,base);
-  UpdateCurBase(task,base);
-  GrDel(base);
+  GrDC *dc=GrDCAlias(gr_dc,task);
+  DrawFrame(task,dc);
+  DrawDrops(task,dc);
+  UpdateCurBase(task,dc);
+  GrDCDel(dc);
 }
 
 
@@ -103,18 +103,18 @@ U0 AnimateTask(U64 dummy=0)
 	else {
 	  x0=x1=drops[i].x;
 	  y0=y1=drops[i].y;
-	  if (GrPeek(cur_base,x0,y0+1)==WHITE)
+	  if (GrPeek(cur_dc,x0,y0+1)==WHITE)
 	    y1++;
 	  else {
-	    c1=GrPeek(cur_base,x0+1,y0);
-	    c2=GrPeek(cur_base,x0-1,y0);
+	    c1=GrPeek(cur_dc,x0+1,y0);
+	    c2=GrPeek(cur_dc,x0-1,y0);
 	    if (c1==WHITE && c2!=WHITE)
 	      x1++;
 	    else if (c2==WHITE && c1!=WHITE)
 	      x1--;
 	    else if (c1==WHITE && c2==WHITE) {
-	      c1=GrPeek(cur_base,x0+1,y0+1);
-	      c2=GrPeek(cur_base,x0-1,y0+1);
+	      c1=GrPeek(cur_dc,x0+1,y0+1);
+	      c2=GrPeek(cur_dc,x0-1,y0+1);
 	      if (c1==WHITE && c2!=WHITE)
 		x1++;
 	      else if (c2==WHITE && c1!=WHITE)
@@ -124,15 +124,15 @@ U0 AnimateTask(U64 dummy=0)
 	      else
 		x1--;
 	    }
-	    if (GrPeek(cur_base,x1,y1+1)==WHITE)
+	    if (GrPeek(cur_dc,x1,y1+1)==WHITE)
 	      y1++;
 	  }
-	  if (GrPeek(cur_base,x0,y0)==BLUE) {
-	    cur_base->color=WHITE;
-	    GrPlot(cur_base,x0,y0);
+	  if (GrPeek(cur_dc,x0,y0)==BLUE) {
+	    cur_dc->color=WHITE;
+	    GrPlot(cur_dc,x0,y0);
 	  }
-	  cur_base->color=BLUE;
-	  GrPlot(cur_base,x1,y1);
+	  cur_dc->color=BLUE;
+	  GrPlot(cur_dc,x1,y1);
 	  drops[i].x=x1;
 	  drops[i].y=y1;
 	}
@@ -166,7 +166,7 @@ U0 RainDrops()
       );
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  cur_base=GrNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  cur_dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
   sc_1=A2ScanCode('1');
   sc_2=A2ScanCode('2');
   Init;
@@ -187,7 +187,7 @@ U0 RainDrops()
     CatchAll;
   SettingsPop;
   MenuPop;
-  GrDel(cur_base);
+  GrDCDel(cur_dc);
 }
 
 RainDrops;

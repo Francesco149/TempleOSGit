@@ -21,11 +21,11 @@ U0 Song()
   while (!ScanKey) {
     Play("3eDGqGeEGEBqAAeEBetCFB",
 	"Thank \0 \0You, \0God \0 \0for \0a\0bun\0 \0dance.\r\n\0 \0 \0 \0 \0");
-    PutGrElems(__BIN_1);
+    PutGrSprite(__BIN_1);
     CrLf(8);
     Play("eDGqGeEGEBqAAeEBetCFB",
 	"Thank \0 \0You, \0God \0 \0for \0a\0bun\0 \0dance.\r\n\0 \0 \0 \0 \0");
-    PutGrElems(__BIN_1);
+    PutGrSprite(__BIN_1);
     CrLf(7);
     Play("BBBqFeAGqDeBDDFDCqE",
 	" \0 \0 \0What \0a \0mess! \0 \0The \0kit\0chen's \0full \0of \0heat.\r\n\0 \0");

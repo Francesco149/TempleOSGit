@@ -609,14 +609,15 @@ here1:
 		  PrintF("Fun:%s\r\nReg %Z Var \"%s\" %08X[RBP]\r\n",
 		    fun_class->str,tempm->register,"ST_U64_REGS",
 		      tempm->str,register_offsets[tempm->register].offset);
-		mv[i].offset=0;
+		mv[i].offset=0; //flag as reg var
 	      }
 	    }
 	  }
 	}
 	l=0;
 	for (i=0;i<j && l<num_reg_vars;i++) {
-	  if (mv[i].offset) {
+	  //if not just flagged as reg var
+	  if (mv[i].offset && !mv[i].m->dim.next) {
 	    while (l<num_reg_vars &&
 	      Bts(&fun_class->used_reg_mask,to_reg_vars_map[l]))
 	      l++;

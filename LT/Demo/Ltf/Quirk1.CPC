@@ -1,13 +1,13 @@
 /*
-A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf document structure that remains active even when you 
-change Fs->update_win.  To prevent links in the [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf from being activated when 
+A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf document structure that remains active even when you 
+change Fs->update_win.  To prevent links in the [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf from being activated when 
 the user clicks in the window, do one of three things:
   
-  A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1700] LtfBottom() followed by [C:/LT/Adam/Ltf/LtfRecalc.APZ,1734] LtfClear() to clear the [C:/LT/OSMain/Adam1a.HPZ,1318] Ltf so it has no active 
+  A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1700] LtfBottom() followed by [C:/LT/Adam/Ltf/LtfRecalc.APZ,1734] LtfClear() to clear the [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf so it has no active 
   widgets.
   
   B) Disable window manager button click checking with Fs->win_inhibit set to 
-  mask [C:/LT/OSMain/Adam1a.HPZ,2958] WIF_IP_L and [C:/LT/OSMain/Adam1a.HPZ,2959] WIF_IP_R.  Only winmgr operations are inhibited -- 
+  mask [C:/LT/OSMain/Adam1a.HPZ,2964] WIF_IP_L and [C:/LT/OSMain/Adam1a.HPZ,2965] WIF_IP_R.  Only winmgr operations are inhibited -- 
   messages are still generated.
   
   C) Enter this code:

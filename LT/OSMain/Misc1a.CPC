@@ -297,7 +297,7 @@ U0 Sleep(U64 mS)
     SleepUntil(sys_jiffies+mS*JIFFY_FREQ/1000);
 }
 
-//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ.
+//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (6).
 
 U16 RandU16()
 {

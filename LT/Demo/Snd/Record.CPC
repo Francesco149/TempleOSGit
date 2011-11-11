@@ -25,20 +25,20 @@ U0 RecordCopyBuf(SND_IN_CONTAINER *buf,I64 buf_num)
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   SND_IN_CONTAINER *buf=_hda->istr0_buf[0];
   I64 i,x1,y1,x2=0,y2=0,
     cy=task->win_pixel_height>>1;
-  base->color=BLUE;
+  dc->color=BLUE;
   for (i=0;i<SND_BUF_LEN;i++) {
     x1=i*task->win_pixel_width/SND_BUF_LEN;
     y1=cy-buf[i]*cy/MAX_I16;
-    GrLine(base,x2,y2,x1,y1);
+    GrLine(dc,x2,y2,x1,y1);
     x2=x1;
     y2=y1;
   }
-  base->color=RED;
-  GrDel(base);
+  dc->color=RED;
+  GrDCDel(dc);
 }
 
 U0 RecordTaskEndCB()

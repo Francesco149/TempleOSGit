@@ -130,8 +130,8 @@ Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a
 
 Grep("pattern","/LT/Demo/*.CPZ;*.TXZ;");
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2011] TEXT_FILE_MASK and
-    [C:/LT/OSMain/Adam1a.HPZ,2010] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,2012] TEXT_FILE_MASK and
+    [C:/LT/OSMain/Adam1a.HPZ,2011] SRC_FILE_MASK.
 
 
   +] BURNING CD-ROMs/DVDs
@@ -184,11 +184,11 @@ See [::/LT/Doc/Glossary.TXZ,File Part] Temp File Partition for a special type
 [::/LT/Doc/SysPgmGuide.TXZ] System Programming Guide-Lines
 [::/LT/OSMain/Hash1a.CPZ,1] Hash Tables
 [::/LT/Doc/KeyBoard.TXZ,PutKeyHandling] Keyboard Handling
-[D:/LT/Adam/Gr/GrNew.APZ,GrBitMaps] GrBitMap internal format
+[D:/LT/Adam/Gr/GrDC.APZ,GrBitMaps] GrDC internal format
 [::/LT/Demo/Lectures/PageTableEntries1.CPZ] Page Table Entries 1
 [::/LT/Demo/Lectures/PageTableEntries2.CPZ] Page Table Entries 2
 [::/LT/Demo/Lectures/PCIInterrupts.CPZ] PCIInterrupts.CPZ
-[C:/LT/Adam/MemRep.APZ,129] MemRep
+[C:/LT/Adam/MemRep.APZ,121] MemRep
 [::/LT/Adam/WallPaper.APZ] WallPaper.APZ
 [::/LT/Doc/NewFileSystem.TXZ] Adding a New File System
 

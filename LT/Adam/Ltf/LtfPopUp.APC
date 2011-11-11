@@ -823,14 +823,14 @@ BoolI64 PopUpTransform(I64 *r)
 
 
 #define PU_SPACING	10
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,j;
   Ltf *l=LtfCur(task);
   for (j=0;j<16;j++)
     for (i=0;i<16;i++) {
-      base->color=j+i<<16+ROPF_DITHER;
-      GrRect(base,i*PU_SPACING,j*PU_SPACING+NamedFramePtr("DitherDoFrame",task),PU_SPACING,PU_SPACING);
+      dc->color=j+i<<16+ROPF_DITHER;
+      GrRect(dc,i*PU_SPACING,j*PU_SPACING+NamedFramePtr("DitherDoFrame",task),PU_SPACING,PU_SPACING);
     }
   i=(16*PU_SPACING+FONT_WIDTH-1)/FONT_WIDTH;
   if (l->max_x>i) i=l->max_x;

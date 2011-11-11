@@ -5,14 +5,14 @@
 U0 DotNet()
 {
   I64 i;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
   LtfClear;  //Clear text
-  base->color=RED;
+  dc->color=RED;
   for (i=0;i<480;i+=20)
-    GrLine(base,i,0,0,480-i,3);
-  GrDel(base);
+    GrLine(dc,i,0,0,480-i,3);
+  GrDCDel(dc);
   PressAKey;
-  GrClear;
+  GrDCClear;
 }
 
 DotNet;  //Run when #included

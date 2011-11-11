@@ -95,7 +95,7 @@ BoolI64 ELPlot(U0 *aux,I64 x,I64 y,I64 z)
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,x1,y1,x2,y2,
       cy=task->win_pixel_height>>1,
       h_max=task->win_pixel_width-1;
@@ -138,55 +138,55 @@ U0 UpdateWin(TaskStruct *task)
 
   x2=-1;
   if (mode==M_WAVEFORM && Blink(,tNP)) {
-    base->color=ROPF_DITHER+WHITE<<16+RED;
-    GrPutS(base,0,cy-FONT_HEIGHT,"Set Waveform.");
+    dc->color=ROPF_DITHER+WHITE<<16+RED;
+    GrPutS(dc,0,cy-FONT_HEIGHT,"Set Waveform.");
   } else
-    base->color=RED;
+    dc->color=RED;
   for (i=0;i<WF_BUF_LEN;i++) {
     x1=i*task->win_pixel_width/WF_BUF_LEN;
     y1=cy-cy*waveform_buf[i]/WF_Y_SCALE;
     if (x2>=0)
-      GrLine(base,x2,y2,x1,y1);
+      GrLine(dc,x2,y2,x1,y1);
     x2=x1;
     y2=y1;
   }
 
   x2=-1;
   if (mode==M_FREQUENCY && Blink(,tNP)) {
-    base->color=ROPF_DITHER+WHITE<<16+BLUE;
-    GrPutS(base,0,cy-FONT_HEIGHT,"Set Frequency.");
+    dc->color=ROPF_DITHER+WHITE<<16+BLUE;
+    GrPutS(dc,0,cy-FONT_HEIGHT,"Set Frequency.");
   } else
-    base->color=BLUE;
+    dc->color=BLUE;
   for (i=0;i<FQ_BUF_LEN;i++) {
     x1=i*task->win_pixel_width/FQ_BUF_LEN;
     y1=cy-cy*frequency_buf[i]/FQ_Y_SCALE;
     if (x2>=0)
-      GrLine(base,x2,y2,x1,y1);
-    GrLine(base,x2,cy-(y2-cy),x1,cy-(y1-cy));
+      GrLine(dc,x2,y2,x1,y1);
+    GrLine(dc,x2,cy-(y2-cy),x1,cy-(y1-cy));
     x2=x1;
     y2=y1;
   }
 
   x2=-1;
   if (mode==M_ENVELOPE && Blink(,tNP)) {
-    base->color=ROPF_DITHER+WHITE<<16+GREEN;
-    GrPutS(base,0,cy-FONT_HEIGHT,"Set Envelope.");
+    dc->color=ROPF_DITHER+WHITE<<16+GREEN;
+    GrPutS(dc,0,cy-FONT_HEIGHT,"Set Envelope.");
   } else
-    base->color=GREEN;
+    dc->color=GREEN;
   for (i=0;i<EL_BUF_LEN;i++) {
     x1=i*task->win_pixel_width/EL_BUF_LEN;
     y1=cy-cy*envelope_buf[i]/EL_Y_SCALE;
     if (x2>=0)
-      GrLine(base,x2,y2,x1,y1);
-    GrLine(base,x2,cy-(y2-cy),x1,cy-(y1-cy));
+      GrLine(dc,x2,y2,x1,y1);
+    GrLine(dc,x2,cy-(y2-cy),x1,cy-(y1-cy));
     x2=x1;
     y2=y1;
   }
 
-  base->color=BLACK;
-  GrLine(base,0,cy,task->win_pixel_width,cy);
+  dc->color=BLACK;
+  GrLine(dc,0,cy,task->win_pixel_width,cy);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 SetMenu()

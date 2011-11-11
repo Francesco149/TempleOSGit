@@ -15,10 +15,10 @@ SpringStruct s;
 
   /* <1> <1> (image) */
 
-GrBitMap *base2;
+GrDC *dc2;
 
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,x,y,cx=task->win_pixel_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
   BoolI8 engine_on;
@@ -41,30 +41,30 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
     y=m1.y-10*Sin(theta+nozzle_angle);
     for (i=0;i<6;i++) {
       if ((i^gr_screen_updates)&1)
-	base->color=YELLOW;
+	dc->color=YELLOW;
       else
-	base->color=RED;
-      GrLine(base,cx+(m1.x+i*Cos(theta-pi/2)),
+	dc->color=RED;
+      GrLine(dc,cx+(m1.x+i*Cos(theta-pi/2)),
 		  cy-(m1.y+i*Sin(theta-pi/2)),
 		  cx+x,cy-y);
-      GrLine(base,cx+(m1.x+i*Cos(theta+pi/2)),
+      GrLine(dc,cx+(m1.x+i*Cos(theta+pi/2)),
 		  cy-(m1.y+i*Sin(theta+pi/2)),
 		  cx+x,cy-y);
     }
 
     for (i=0;i<10;i++) {
       switch (RandU16&3) {
-	case 0: base2->color=ROP_EQU+WHITE; break;
-	case 1: base2->color=ROP_EQU+LTGRAY; break;
-	case 2: base2->color=ROP_EQU+DKGRAY; break;
-	case 3: base2->color=ROP_EQU+BLACK; break;
+	case 0: dc2->color=ROP_EQU+WHITE; break;
+	case 1: dc2->color=ROP_EQU+LTGRAY; break;
+	case 2: dc2->color=ROP_EQU+DKGRAY; break;
+	case 3: dc2->color=ROP_EQU+BLACK; break;
       }
-      GrPlot(base2,cx+(x+RandU16%12-6),cy-(y+RandU16%12-6));
+      GrPlot(dc2,cx+(x+RandU16%12-6),cy-(y+RandU16%12-6));
     }
     Snd(50);
   } else
     Snd(0);
-  GrElemsPlotRotZ3b(base,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
+  GrSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
 }
 
 U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
@@ -112,12 +112,12 @@ U0 Init()
   s.rest_len=PT_SPAN;
   s.constant=10000;
 
-  GrClear;
+  GrDCClear;
 }
 
 U0 TaskEndCB()
 {
-  GrClear;
+  GrDCClear;
   SndTaskEndCB;
 }
 
@@ -146,7 +146,7 @@ U0 Rocket()
 );
 
   WinMax;
-  base2=GrAlias(gr_persistent_base,Fs);
+  dc2=GrDCAlias(gr_dc2,Fs);
   Fs->task_end_cb=&TaskEndCB;
 
   PutS("$CL$$BG,LTCYAN$$FG,GREEN$Up, Left, Right$FG$");
@@ -189,8 +189,8 @@ rk_done:
   OdeDel(ode);
   PutS("$CL$$BG$$FG$\r\n");
   SettingsPop;
-  GrClear;
-  GrDel(base2);
+  GrDCClear;
+  GrDCDel(dc2);
   MenuPop;
 }
 

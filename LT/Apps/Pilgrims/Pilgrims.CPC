@@ -83,7 +83,7 @@ BoolI8 wave_sound,ship_landed;
 U64 song_time,game_over_time;
 
 F64 view_scale,new_view_scale;
-GrBitMap *master_map;
+GrDC *master_map;
 U8 *vm;
 
 #define NUM_DOLPHINS	5
@@ -148,18 +148,18 @@ U0 BubbleAdd(I64 x,I64 y)
 U0 PosChurch(F64 x,F64 y)
 {
   I64 i;
-  GrBitMap *base=GrAlias(master_map,Fs);
-  base->color  =ROP_COLLISION;
-  base->bkcolor=ROP_COLLISION+BLACK;
+  GrDC *dc=GrDCAlias(master_map,Fs);
+  dc->color  =ROP_COLLISION;
+  dc->bkcolor=ROP_COLLISION+BLACK;
   while (x>0) {
-    base->collision_cnt=0;
-    GrElemsPlot3(base,x,y,0,__BIN_2);
-    if (base->collision_cnt>2350)
+    dc->collision_cnt=0;
+    GrSpritePlot3(dc,x,y,0,__BIN_2);
+    if (dc->collision_cnt>2350)
       break;
     x--;
   }
   church_x=x; church_y=y;
-  GrDel(base);
+  GrDCDel(dc);
   for (i=0;i<NUM_PILGRIMS;i++) {
     pilgrims[i].x=church_x;
     pilgrims[i].y=church_y;
@@ -177,14 +177,14 @@ U0 UpdateWin(TaskStruct *task)
       c=1.05*(MaxI64(cx,cy)+wave_period),
       *ship_r,x,y,z;
   F64 d,xx,yy,dx,dy,dx2,dy2,wave_x,wave_y;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
 
   task->text_attr=LTBLUE<<4;
 
   //Draw Bubbles
-  base->color=BLUE;
+  dc->color=BLUE;
   for (i=0;i<MAX_BUBBLES;i++)
-    GrPlot(base,bubbles[i].x*view_scale-screen_x,bubbles[i].y*view_scale-screen_y);
+    GrPlot(dc,bubbles[i].x*view_scale-screen_x,bubbles[i].y*view_scale-screen_y);
 
 
     //Draw Waves
@@ -196,30 +196,30 @@ U0 UpdateWin(TaskStruct *task)
   dx2=-dy*c;
   dy2=dx*c;
 
-  base->color=BLUE;
+  dc->color=BLUE;
   if (Abs(dx)>Abs(dy)) {
     xx=wave_x; yy=wave_y;
     while (xx>-c) {
-      GrLine(base,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
+      GrLine(dc,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
       if (dx>0) { xx-=dx; yy-=dy;
       } else {	  xx+=dx; yy+=dy; }
     }
     xx=wave_x; yy=wave_y;
     while (xx<w+c) {
-      GrLine(base,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
+      GrLine(dc,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
       if (dx<0) { xx-=dx; yy-=dy;
       } else {	  xx+=dx; yy+=dy; }
     }
   } else {
     xx=wave_x; yy=wave_y;
     while (yy>-c) {
-      GrLine(base,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
+      GrLine(dc,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
       if (dy>0) { xx-=dx; yy-=dy;
       } else {	  xx+=dx; yy+=dy; }
     }
     xx=wave_x; yy=wave_y;
     while (yy<h+c) {
-      GrLine(base,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
+      GrLine(dc,xx-dx2,yy-dy2,xx+dx2,yy+dy2);
       if (dy<0) { xx-=dx; yy-=dy;
       } else {	  xx+=dx; yy+=dy; }
     }
@@ -227,24 +227,24 @@ U0 UpdateWin(TaskStruct *task)
 
   //Draw Dolphins
   for (i=0;i<NUM_DOLPHINS;i++)
-    GrElemsPlotRotZ3b(base,dolphins[i].x*view_scale-screen_x,dolphins[i].y*view_scale-screen_y,0,__BIN_6,dolphins[i].theta);
+    GrSpritePlotRotZ3b(dc,dolphins[i].x*view_scale-screen_x,dolphins[i].y*view_scale-screen_y,0,__BIN_6,dolphins[i].theta);
 
   //Draw Land
-  base->color=ROP_TRANSPARENT+YELLOW;
-  GrVectMapBlotMP(base,-screen_x,-screen_y,vm,view_scale);
+  dc->color=ROP_TRANSPARENT+YELLOW;
+  GrVectMapBlotMP(dc,-screen_x,-screen_y,vm,view_scale);
 
   //Draw Ship
   ship_r=ShipMat;
-  GrElemsPlotRotMat3b(base,ship.x*view_scale-screen_x,ship.y*view_scale-screen_y,0,__BIN_5,ship_r);
+  GrSpritePlotRotMat3b(dc,ship.x*view_scale-screen_x,ship.y*view_scale-screen_y,0,__BIN_5,ship_r);
 
   //Rudder
   x=-AFT_LEN; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
-  base->color=BLACK;
-  base->pen_width=2;
-  GrLine3(base,x-screen_x,y-screen_y,0,x-8*Cos(ship.theta-2.5*ship.d_theta)-screen_x,y-8*Sin(ship.theta-2.5*ship.d_theta)-screen_y,0);
-  base->pen_width=1;
+  dc->color=BLACK;
+  dc->pen_width=2;
+  GrLine3(dc,x-screen_x,y-screen_y,0,x-8*Cos(ship.theta-2.5*ship.d_theta)-screen_x,y-8*Sin(ship.theta-2.5*ship.d_theta)-screen_y,0);
+  dc->pen_width=1;
 
   //Wake
   x=(-(AFT_LEN+2)+RandU16%13-6)/view_scale; y=(RandU16%13-6)/view_scale; z=0;
@@ -272,37 +272,37 @@ U0 UpdateWin(TaskStruct *task)
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
   x-=1.5*Cos(wave_theta); y-=1.5*Sin(wave_theta);
-  base->color=WHITE;
-  GrLine3(base,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  dc->color=WHITE;
+  GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
 
   x=-AFT_MAST; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
-  base->color=BLACK;
-  GrLine3(base,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  dc->color=BLACK;
+  GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
 
   //Bow Sail
   x=BOW_MAST; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
   x-=1.5*Cos(wave_theta); y-=1.5*Sin(wave_theta);
-  base->color=WHITE;
-  GrLine3(base,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  dc->color=WHITE;
+  GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
 
   x=BOW_MAST; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
-  base->color=BLACK;
-  GrLine3(base,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  dc->color=BLACK;
+  GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
 
-  base->color=BLACK;
-  GrPrintF(base,0,0,"Speed:%5.1f Knots",ship.speed);
+  dc->color=BLACK;
+  GrPrintF(dc,0,0,"Speed:%5.1f Knots",ship.speed);
 
   //Check for wreck
   x=BOW_LEN; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
-  if (!ship_landed && GrPeek(base,x-screen_x,y-screen_y)==YELLOW) {
+  if (!ship_landed && GrPeek(dc,x-screen_x,y-screen_y)==YELLOW) {
     Noise(500,500,1000);
     song_time=GetTimeStamp+time_stamp_freq/2;
     game_over_time=GetTimeStamp+time_stamp_freq;
@@ -313,18 +313,18 @@ U0 UpdateWin(TaskStruct *task)
 
   if (ship_landed) {
   //Draw Church
-    GrElemsPlot3(base,church_x*view_scale-screen_x,church_y*view_scale-screen_y,0,__BIN_2);
+    GrSpritePlot3(dc,church_x*view_scale-screen_x,church_y*view_scale-screen_y,0,__BIN_2);
     //Draw Pilgrims
     for (i=0;i<NUM_PILGRIMS;i++)
-      GrElemsPlot3(base,pilgrims[i].x*view_scale-screen_x,pilgrims[i].y*view_scale-screen_y,0,(i&1)?__BIN_3:__BIN_4);
+      GrSpritePlot3(dc,pilgrims[i].x*view_scale-screen_x,pilgrims[i].y*view_scale-screen_y,0,(i&1)?__BIN_3:__BIN_4);
     if (GetTimeStamp>game_over_time && Blink(,tP(task))) {
-      base->color=LTRED;
-      GrPrintF(base,(task->win_pixel_width-14*FONT_WIDTH)/2,
+      dc->color=LTRED;
+      GrPrintF(dc,(task->win_pixel_width-14*FONT_WIDTH)/2,
 	  (task->win_pixel_height-FONT_HEIGHT)/2,"Game Completed");
     }
   }
   Free(ship_r);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 Init()
@@ -518,8 +518,8 @@ U0 Pilgrims()
   U64 msg_code,ch,sc;
 
   PutS("Initializing Maps...\r\n");
-  master_map=LGRRead("NewEngland"); //See [::/LT/Doc/Acknowledgements.TXZ,US Geological] Acknowledgements.
-  vm=GrBitMap2VectMap(master_map);
+  master_map=LGRRead("NewEngland"); //See [::/LT/Doc/Acknowledgements.TXZ,US Geological] Acknowledgements (7).
+  vm=GrDC2VectMap(master_map);
   PopUpOk("This is about the pilgrims who fled\r\n"
 	  "religious persecution in England.\r\n"
 	  "They sailed in 1620 on the Mayflower\r\n"
@@ -591,6 +591,6 @@ pilgrim_done:
   MenuPop;
   SettingsPop;
   GrVectMapDel(vm);
-  GrDel(master_map);
+  GrDCDel(master_map);
 }
 

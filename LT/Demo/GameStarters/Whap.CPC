@@ -15,42 +15,42 @@ U0 UpdateWin(TaskStruct *task)
   I64 i,
     cx=task->win_pixel_width>>1,
     cy=task->win_pixel_height>>1;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 snd_on=FALSE;
-  base->color=BLACK;
-  GrPutS(base,0,0,"Protect your base.");
-  GrRect(base,cx-BASE_SIZE,cy-BASE_SIZE,BASE_SIZE*2,BASE_SIZE*2);
-  base->color=CYAN;
-  GrRect(base,cx-BASE_SIZE+2,cy-BASE_SIZE+2,BASE_SIZE*2-4,BASE_SIZE*2-4);
-  base->color=YELLOW;
-  GrLine(base,balls[0].x,balls[0].y,
+  dc->color=BLACK;
+  GrPutS(dc,0,0,"Protect your dc.");
+  GrRect(dc,cx-BASE_SIZE,cy-BASE_SIZE,BASE_SIZE*2,BASE_SIZE*2);
+  dc->color=CYAN;
+  GrRect(dc,cx-BASE_SIZE+2,cy-BASE_SIZE+2,BASE_SIZE*2-4,BASE_SIZE*2-4);
+  dc->color=YELLOW;
+  GrLine(dc,balls[0].x,balls[0].y,
     ipx-task->win_pixel_left-task->win_scroll_x,
     ipy-task->win_pixel_top-task->win_scroll_y);
   for (i=0;i<NUM_SPRINGS;i++)
-    GrLine(base,springs[i].end1->x,springs[i].end1->y,
+    GrLine(dc,springs[i].end1->x,springs[i].end1->y,
 		springs[i].end2->x,springs[i].end2->y);
 
-  base->color=LTCYAN;
-  GrCircle(base,balls[0].x,balls[0].y,BALL_RADIUS);
-  GrFloodFill(base,balls[0].x,balls[0].y,TRUE);
-  base->color=BLACK;
-  GrCircle(base,balls[0].x,balls[0].y,BALL_RADIUS);
+  dc->color=LTCYAN;
+  GrCircle(dc,balls[0].x,balls[0].y,BALL_RADIUS);
+  GrFloodFill(dc,balls[0].x,balls[0].y,TRUE);
+  dc->color=BLACK;
+  GrCircle(dc,balls[0].x,balls[0].y,BALL_RADIUS);
 
   for (i=1;i<NUM_BALLS;i++) {
-    base->color=LTPURPLE;
-    GrCircle(base,balls[i].x,balls[i].y,BALL_RADIUS);
-    GrFloodFill(base,balls[i].x,balls[i].y,TRUE);
+    dc->color=LTPURPLE;
+    GrCircle(dc,balls[i].x,balls[i].y,BALL_RADIUS);
+    GrFloodFill(dc,balls[i].x,balls[i].y,TRUE);
     if (cx-BASE_SIZE-BALL_RADIUS<=balls[i].x<=cx+BASE_SIZE+BALL_RADIUS &&
 	cy-BASE_SIZE-BALL_RADIUS<=balls[i].y<=cy+BASE_SIZE+BALL_RADIUS)
       snd_on=TRUE;
-    base->color=BLACK;
-    GrCircle(base,balls[i].x,balls[i].y,BALL_RADIUS);
+    dc->color=BLACK;
+    GrCircle(dc,balls[i].x,balls[i].y,BALL_RADIUS);
   }
   if (snd_on)
     Snd(1000);
   else
     Snd(0);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 

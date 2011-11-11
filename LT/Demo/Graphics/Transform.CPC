@@ -11,7 +11,7 @@
 //Scroll bar works.
 
 //The multiplication takes place in the
-//[C:/LT/Adam/Gr/GrElemPlot.APZ,365] GrElemsPlotRotZ3b routine.
+//[C:/LT/Adam/Gr/GrSpritePlot.APZ,365] GrSpritePlotRotZ3b routine.
 
 
 #define SLIDER_SPACING 20
@@ -24,40 +24,40 @@ class SliderState
   F64 a1,a2,scale;
 } s;
 
-U0 DrawSliderCtrl(GrBitMap *base,Ctrl *c)
+U0 DrawSliderCtrl(GrDC *dc,Ctrl *c)
 {
   SliderState *s=c->state;
 
-  base->color=LTGREEN;
-  GrRect(base, c->left,c->top,SLIDER_SPACING*4+3,SLIDER_SPACING*2+SLIDER_RANGE);
-  base->color=BROWN;
-  GrRect(base, c->left+SLIDER_BORDER,c->top+SLIDER_BORDER,
+  dc->color=LTGREEN;
+  GrRect(dc, c->left,c->top,SLIDER_SPACING*4+3,SLIDER_SPACING*2+SLIDER_RANGE);
+  dc->color=BROWN;
+  GrRect(dc, c->left+SLIDER_BORDER,c->top+SLIDER_BORDER,
     SLIDER_SPACING*4+3-2*SLIDER_BORDER,SLIDER_SPACING*2+SLIDER_RANGE-2*SLIDER_BORDER);
-  base->color=BLACK;
-  GrLine(base,c->left+SLIDER_SPACING,c->top+SLIDER_SPACING,
+  dc->color=BLACK;
+  GrLine(dc,c->left+SLIDER_SPACING,c->top+SLIDER_SPACING,
 	      c->left+SLIDER_SPACING,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
-  GrLine(base,c->left+2*SLIDER_SPACING+1,c->top+SLIDER_SPACING,
+  GrLine(dc,c->left+2*SLIDER_SPACING+1,c->top+SLIDER_SPACING,
 	      c->left+2*SLIDER_SPACING+1,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
-  GrLine(base,c->left+3*SLIDER_SPACING+2,c->top+SLIDER_SPACING,
+  GrLine(dc,c->left+3*SLIDER_SPACING+2,c->top+SLIDER_SPACING,
 	      c->left+3*SLIDER_SPACING+2,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
 
-  base->color=LTGREEN;
-  GrPrintF(base,c->left+SLIDER_SPACING-FONT_WIDTH/2,
+  dc->color=LTGREEN;
+  GrPrintF(dc,c->left+SLIDER_SPACING-FONT_WIDTH/2,
 	      c->top+SLIDER_SPACING+SLIDER_RANGE+3,
     "%d",s->s1*10/SLIDER_RANGE);
-  GrPrintF(base,c->left+2*SLIDER_SPACING+1-FONT_WIDTH/2,
+  GrPrintF(dc,c->left+2*SLIDER_SPACING+1-FONT_WIDTH/2,
 	      c->top+SLIDER_SPACING+SLIDER_RANGE+3,
     "%d",s->s2*10/SLIDER_RANGE);
-  GrPrintF(base,c->left+3*SLIDER_SPACING+2-FONT_WIDTH/2,
+  GrPrintF(dc,c->left+3*SLIDER_SPACING+2-FONT_WIDTH/2,
 	      c->top+SLIDER_SPACING+SLIDER_RANGE+3,
     "%d",s->s3*10/SLIDER_RANGE);
-  GrRect(base,c->left+SLIDER_SPACING-3,	 c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s1-2 ,7,5);
-  GrRect(base,c->left+2*SLIDER_SPACING+1-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s2-2,7,5);
-  GrRect(base,c->left+3*SLIDER_SPACING+2-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s3-2,7,5);
-  base->color=GREEN;
-  GrRect(base,c->left+SLIDER_SPACING-2,	 c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s1-1 ,5,3);
-  GrRect(base,c->left+2*SLIDER_SPACING+1-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s2-1,5,3);
-  GrRect(base,c->left+3*SLIDER_SPACING+2-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s3-1,5,3);
+  GrRect(dc,c->left+SLIDER_SPACING-3,	 c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s1-2 ,7,5);
+  GrRect(dc,c->left+2*SLIDER_SPACING+1-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s2-2,7,5);
+  GrRect(dc,c->left+3*SLIDER_SPACING+2-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s3-2,7,5);
+  dc->color=GREEN;
+  GrRect(dc,c->left+SLIDER_SPACING-2,	 c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s1-1 ,5,3);
+  GrRect(dc,c->left+2*SLIDER_SPACING+1-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s2-1,5,3);
+  GrRect(dc,c->left+3*SLIDER_SPACING+2-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s3-1,5,3);
 }
 
 U0 UpdateDerivedSliderCtrl(Ctrl *c)
@@ -140,19 +140,19 @@ class MPCtrl {
 
 U0 MPDrawIt(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,lo=Gs->num*NUM_TREES/mp.mp_cnt,hi=(Gs->num+1)*NUM_TREES/mp.mp_cnt;
-  MemCpy(base->r,mp.r,sizeof(I64)*16);
-  base->flags|=BMF_TRANSFORMATION;
+  MemCpy(dc->r,mp.r,sizeof(I64)*16);
+  dc->flags|=BMF_TRANSFORMATION;
   for (i=lo;i<hi;i++)
-    GrElemsPlotRotZ3b(base,tree_x[i],
+    GrSpritePlotRotZ3b(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,h,v;
   task->horz_scroll.min=-s.scale*MAP_HEIGHT*Sin(s.a1);
   task->horz_scroll.max=s.scale*MAP_WIDTH*Cos(s.a1)-task->win_pixel_width;
@@ -163,26 +163,26 @@ U0 UpdateWin(TaskStruct *task)
   h=task->horz_scroll.pos;
   v=task->vert_scroll.pos;
 
-  GrRotZEqu(base->r,s.a1);
-  GrScaleMatEqu(base->r,s.scale);
-  GrSetRotMat(base,base->r);
-  GrSetTranslation(base->r,-h,-v,0);
-  MemCpy(mp.r,base->r,sizeof(I64)*16);
+  GrRotZEqu(dc->r,s.a1);
+  GrScaleMatEqu(dc->r,s.scale);
+  GrSetRotMat(dc,dc->r);
+  GrSetTranslation(dc->r,-h,-v,0);
+  MemCpy(mp.r,dc->r,sizeof(I64)*16);
   mp.a=s.a2;
 
   for (i=1;i<mp.mp_cnt;i++)
     MPJob(&MPDrawIt,task,1<<MPCf_FREE_ON_COMPLETE,1<<i);
   MPDrawIt(task);
 
-  base->flags|=BMF_TRANSFORMATION;
-  base->color=BROWN;
-  base->pen_width=4;
-  GrLine3(base,2,2,0,MAP_WIDTH-3,2,0);
-  GrLine3(base,2,MAP_HEIGHT-3,0,MAP_WIDTH-3,MAP_HEIGHT-3,0);
-  GrLine3(base,2,2,0,2,MAP_HEIGHT-3,0);
-  GrLine3(base,MAP_WIDTH-3,2,0,MAP_WIDTH-3,MAP_HEIGHT-3,0);
+  dc->flags|=BMF_TRANSFORMATION;
+  dc->color=BROWN;
+  dc->pen_width=4;
+  GrLine3(dc,2,2,0,MAP_WIDTH-3,2,0);
+  GrLine3(dc,2,MAP_HEIGHT-3,0,MAP_WIDTH-3,MAP_HEIGHT-3,0);
+  GrLine3(dc,2,2,0,2,MAP_HEIGHT-3,0);
+  GrLine3(dc,MAP_WIDTH-3,2,0,MAP_WIDTH-3,MAP_HEIGHT-3,0);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 

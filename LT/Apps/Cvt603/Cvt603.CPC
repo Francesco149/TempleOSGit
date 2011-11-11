@@ -1,6 +1,6 @@
-class OldGrElem
+class OldGrSprite
 {
-  OldGrElem *next,*last;
+  OldGrSprite *next,*last;
 
   U0 start;
   U32 type;
@@ -35,57 +35,57 @@ class OldGrElem
   I32 sides;
 };
 
-U64 OldGrElemSize(OldGrElem *tempg)
+U64 OldGrSpriteSize(OldGrSprite *tempg)
 {
-  U64 i=gr_elem_base_size[tempg->type]+3;
+  U64 i=gr_sprite_base_size[tempg->type]+3;
   switch (tempg->type) {
-    case GRET_POLYLINE:
+    case GRST_POLYLINE:
       i+=tempg->num<<1*sizeof(I32);
       break;
-    case GRET_TEXT:
+    case GRST_TEXT:
       i+=StrLen(tempg->st)+1;
       break;
-    case GRET_SPEEDLINE:
+    case GRST_SPEEDLINE:
       i+=tempg->num*(2*sizeof(I32)+sizeof(F64));
       break;
-    case GRET_BITMAP4:
-    case GRET_BITMAP4_TRANSPARENT:
+    case GRST_BITMAP4:
+    case GRST_BITMAP4_TRANSPARENT:
       i+=((tempg->width+7)&~7)*tempg->height*4/8;
       break;
-    case GRET_POLYPOINT:
+    case GRST_POLYPOINT:
 //Backward compatibility kludge: num should num-1
       i+=sizeof(I32)<<1+(tempg->num*3+7)>>3;
       break;
-    case GRET_BSPLINE2:
-    case GRET_BSPLINE3:
-    case GRET_BSPLINE2_CLOSED:
-    case GRET_BSPLINE3_CLOSED:
+    case GRST_BSPLINE2:
+    case GRST_BSPLINE3:
+    case GRST_BSPLINE2_CLOSED:
+    case GRST_BSPLINE3_CLOSED:
       i+=tempg->num*sizeof(P3I32);
       break;
-    case GRET_MESH:
+    case GRST_MESH:
       i+=tempg->vertex_cnt*sizeof(P3I32)+tempg->triangle_cnt*sizeof(GrMeshTri);
       break;
-    case GRET_SHIFTABLE_MESH:
+    case GRST_SHIFTABLE_MESH:
       i+=tempg->shiftable_vertex_cnt*sizeof(P3I32)+tempg->shiftable_triangle_cnt*sizeof(GrMeshTri);
       break;
   }
   return i;
 }
 
-U0 Cvt603GrElem(LtfBinEntry *b)
+U0 Cvt603GrSprite(LtfBinEntry *b)
 {
   U8 *result=MAlloc(b->size),*dst=result;
-  OldGrElem *tempg=b->data-offset(OldGrElem.start);
+  OldGrSprite *tempg=b->data-offset(OldGrSprite.start);
   I64 s,s1;
   while (TRUE) {
-    if (tempg->type>=GRET_NUM_TYPES)
+    if (tempg->type>=GRST_NUM_TYPES)
       ThrowBreak;
-    s=OldGrElemSize(tempg);
+    s=OldGrSpriteSize(tempg);
     if (s>0x1000000)
       ThrowBreak;
-    if (tempg->type==GRET_POLYPOINT) {
+    if (tempg->type==GRST_POLYPOINT) {
       tempg->num--;
-      s1=gr_elem_base_size[tempg->type]+3;
+      s1=gr_sprite_base_size[tempg->type]+3;
       s1+=sizeof(I32)<<1+(tempg->num*3+7)>>3;
     } else
       s1=s;
@@ -111,11 +111,11 @@ BoolI64 Cvt603File(U8 *filename,U64 *_fuf_flags)
   LtfBinEntry *b=l->bin_root.next;
   BoolI8 modified=FALSE;
   while (b!=&l->bin_root) {
-    if (b->type==LTFBT_GRELEM) {
+    if (b->type==LTFBT_GRSPRITE) {
       PrintF("Size:%04X File:%s\r\n",b->size,filename);
       if (b->size>0x1000000)
 	ThrowBreak;
-      Cvt603GrElem(b);
+      Cvt603GrSprite(b);
       modified=TRUE;
     }
     b=b->next;

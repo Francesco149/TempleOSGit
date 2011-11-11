@@ -18,7 +18,7 @@ F64 t0,tf;
 #define MAP_WIDTH	2048
 #define MAP_HEIGHT	2048
 #define MAP_BORDER	3
-GrBitMap *base2;
+GrDC *dc2;
 
 
 #define GE_COW		0
@@ -37,7 +37,7 @@ GrBitMap *base2;
 
 
 
-class RHGrElems
+class RHGrSprite
 {
   U8 *img;
   I64 min_x,max_x,min_y,max_y;
@@ -50,7 +50,7 @@ class RHGrElems
 class Animal
 {
   I64 num,x,y,dx,dy;
-  RHGrElems *ge;
+  RHGrSprite *ge;
   U32 buddy;
   U8 type;
   BoolI8 dead,pad[2];
@@ -110,9 +110,9 @@ U0 RiverMake()
   //Plot sand bar
   x=0; y=0;
   for (i=river_lo;i<=river_hi;i++) {
-    base2->color=YELLOW;
-    base2->pen_width=rw[i]+5;
-    GrPlot3(base2,rx[i]+x.i32[1],ry[i]+y.i32[1],0);
+    dc2->color=YELLOW;
+    dc2->pen_width=rw[i]+5;
+    GrPlot3(dc2,rx[i]+x.i32[1],ry[i]+y.i32[1],0);
 
     x=LimitI64(x+RandI32,-6*MAX_U32,6*MAX_U32);
     y=LimitI64(y+RandI32,-6*MAX_U32,6*MAX_U32);
@@ -120,9 +120,9 @@ U0 RiverMake()
 
   //Plot water
   for (i=river_lo;i<=river_hi;i++) {
-    base2->color=BLUE;
-    base2->pen_width=rw[i];
-    GrPlot3(base2,rx[i],ry[i],0);
+    dc2->color=BLUE;
+    dc2->pen_width=rw[i];
+    GrPlot3(dc2,rx[i],ry[i],0);
   }
 }
 
@@ -172,12 +172,12 @@ U0 RiverDropsNext(TaskStruct *mem_task)
     } else {
       do {
 	if (RandU16&1 &&
-	    GrPeek(base2,rx[tempr->index]+tempr->dx,ry[tempr->index]+tempr->dy)==BLUE)
+	    GrPeek(dc2,rx[tempr->index]+tempr->dx,ry[tempr->index]+tempr->dy)==BLUE)
 	  break;
 	tempr->dx=LimitI64(tempr->dx+RandU16%3-1,-rw[tempr->index]/2,rw[tempr->index]/2);
 	tempr->dy=LimitI64(tempr->dy+RandU16%3-1,-rw[tempr->index]/2,rw[tempr->index]/2);
-      } while (GrPeek(base2,rx[tempr->index]+tempr->dx,ry[tempr->index]+tempr->dy)!=BLUE &&
-	       GrPeek(base2,rx[tempr->index]	      ,ry[tempr->index])	  ==BLUE); //Might be reinitializing
+      } while (GrPeek(dc2,rx[tempr->index]+tempr->dx,ry[tempr->index]+tempr->dy)!=BLUE &&
+	       GrPeek(dc2,rx[tempr->index]	      ,ry[tempr->index])	  ==BLUE); //Might be reinitializing
     }
     tempr=tempr1;
   }
@@ -189,15 +189,15 @@ U0 RiverDropsNext(TaskStruct *mem_task)
   LBtr(&rd_lock,0);
 }
 
-U0 RiverDropsDraw(GrBitMap *base,I64 cx,I64 cy)
+U0 RiverDropsDraw(GrDC *dc,I64 cx,I64 cy)
 {
   RiverDrop *tempr;
-  base->color=LTBLUE;
+  dc->color=LTBLUE;
   while (LBts(&rd_lock,0))
     Yield;
   tempr=rd_root.next;
   while (tempr!=&rd_root) {
-    GrPlot(base,rx[tempr->index]+tempr->dx-cx,ry[tempr->index]+tempr->dy-cy);
+    GrPlot(dc,rx[tempr->index]+tempr->dx-cx,ry[tempr->index]+tempr->dy-cy);
     tempr=tempr->next;
   }
   LBtr(&rd_lock,0);
@@ -221,19 +221,19 @@ U0 UpdateWin(TaskStruct *task)
   if (task->win_scroll_y+cy>MAP_HEIGHT-task->win_pixel_height)
     task->win_scroll_y=MAP_HEIGHT-task->win_pixel_height-cy;
 
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
-  GrBlot(base,-cx,-cy,base2);
+  GrDC *dc=GrDCAlias(gr_dc,task);
+  GrBlot(dc,-cx,-cy,dc2);
 
-  RiverDropsDraw(base,cx,cy);
+  RiverDropsDraw(dc,cx,cy);
 
   for (i=0;i<NUM_ANIMALS;i++)
     if (!a[i].dead) {
       if (a[i].dx<0) {
-	base->flags|=BMF_JUST_MIRROR|BMF_SYMMETRY;
-	GrSetSymmetry(base,a[i].x.i32[1]-cx,0,a[i].x.i32[1]-cx,1);
+	dc->flags|=BMF_JUST_MIRROR|BMF_SYMMETRY;
+	GrSetSymmetry(dc,a[i].x.i32[1]-cx,0,a[i].x.i32[1]-cx,1);
       }
-      GrElemsPlot3(base,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
-      base->flags&=~(BMF_JUST_MIRROR|BMF_SYMMETRY);
+      GrSpritePlot3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
+      dc->flags&=~(BMF_JUST_MIRROR|BMF_SYMMETRY);
     }
 
 
@@ -242,28 +242,28 @@ U0 UpdateWin(TaskStruct *task)
   else if (ipx-last_ipx<0)
     left=TRUE;
   if (left) {
-    base->flags|=BMF_JUST_MIRROR|BMF_SYMMETRY;
-    GrSetSymmetry(base,ipx-task->win_pixel_left-task->win_scroll_x,0,ipx-task->win_pixel_left-task->win_scroll_x,1);
+    dc->flags|=BMF_JUST_MIRROR|BMF_SYMMETRY;
+    GrSetSymmetry(dc,ipx-task->win_pixel_left-task->win_scroll_x,0,ipx-task->win_pixel_left-task->win_scroll_x,1);
   }
-  GrElemsPlot3(base,
+  GrSpritePlot3(dc,
     ipx-task->win_pixel_left-task->win_scroll_x,
     ipy-task->win_pixel_top -task->win_scroll_y,0,rh_grelems[GE_HORSE].img);
-  base->flags&=~(BMF_JUST_MIRROR|BMF_SYMMETRY);
+  dc->flags&=~(BMF_JUST_MIRROR|BMF_SYMMETRY);
   last_ipx=ipx;
 
   if (tf) {
-    base->color=RED;
+    dc->color=RED;
     t=tf-t0;
     if (Blink(,tP(task)))
-      GrPutS(base,(task->win_pixel_width-FONT_WIDTH*9)>>1-task->win_scroll_x,
+      GrPutS(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1-task->win_scroll_x,
 		  (task->win_pixel_height-FONT_HEIGHT)>>1-task->win_scroll_y,
 	"Game Over");
   } else {
-    base->color=BLACK;
+    dc->color=BLACK;
     t=tP(task)-t0;
   }
-  GrPrintF(base,-task->win_scroll_x,-task->win_scroll_y,"Time:%7.2fs  Best:%7.2fs",t,best_score);
-  GrDel(base);
+  GrPrintF(dc,-task->win_scroll_x,-task->win_scroll_y,"Time:%7.2fs  Best:%7.2fs",t,best_score);
+  GrDCDel(dc);
 }
 
 
@@ -344,7 +344,7 @@ U0 AnimateTask(TaskStruct *parent)
 	tempa->dy=0.995*LimitI64(tempa->dy+RandI32/32,-max_speed,max_speed);
 
 //Slow in river
-	if (GrPeek(base2,tempa->x.i32[1],tempa->y.i32[1])!=LTGREEN) {
+	if (GrPeek(dc2,tempa->x.i32[1],tempa->y.i32[1])!=LTGREEN) {
 	  tempa->dx/=4;
 	  tempa->dy/=4;
 	}
@@ -424,14 +424,14 @@ U0 ReInit()
   I64 i;
 
   RiverDropsDel;
-  base2->color=LTGREEN;
-  GrRect(base2,2,2,MAP_WIDTH-4,MAP_HEIGHT-4);
+  dc2->color=LTGREEN;
+  GrRect(dc2,2,2,MAP_WIDTH-4,MAP_HEIGHT-4);
 
   RiverMake;
 
-  base2->pen_width=MAP_BORDER;
-  base2->color=RED;
-  GrLineRect4(base2,MAP_BORDER/2,MAP_BORDER/2,MAP_WIDTH-(MAP_BORDER+1)/2,MAP_HEIGHT-(MAP_BORDER+1)/2);
+  dc2->pen_width=MAP_BORDER;
+  dc2->color=RED;
+  GrLineRect4(dc2,MAP_BORDER/2,MAP_BORDER/2,MAP_WIDTH-(MAP_BORDER+1)/2,MAP_HEIGHT-(MAP_BORDER+1)/2);
 
   for (i=river_lo;i<=river_hi;i++)
     RiverDropsNext(Fs);
@@ -454,27 +454,27 @@ U0 ReInit()
 U0 Init()
 {
   I64 i;
-  RHGrElems *ge;
+  RHGrSprite *ge;
 
   rh_grelems[0].img=__BIN_1;
   rh_grelems[1].img=__BIN_2;
   rh_grelems[2].img=__BIN_3;
   for (i=0;i<GE_NUM;i++) {
     ge=&rh_grelems[i];
-    GrElemsExtents(ge->img,&ge->min_x,&ge->max_x,&ge->min_y,&ge->max_y);
+    GrSpriteExtents(ge->img,&ge->min_x,&ge->max_x,&ge->min_y,&ge->max_y);
   }
 
   RiverNew;
   rd_lock=0;
   rd_root.next=rd_root.last=&rd_root;
-  base2=GrNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+  dc2=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
   a=MAlloc(NUM_ANIMALS*sizeof(Animal));
   ReInit;
 }
 
 U0 CleanUp()
 {
-  GrDel(base2);
+  GrDCDel(dc2);
   Free(a);
   RiverDropsDel;
   RiverDel;

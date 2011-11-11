@@ -139,7 +139,7 @@ U0 PutFrames()
 
 }
 
-U0 DoIt()
+U0 Main()
 {
   USBInitAll; //See [::/LT/OSMain/USB1a.CPZ] ::/LT/OSMain/USB1a.CPZ
   PutStat;
@@ -147,7 +147,7 @@ U0 DoIt()
   PutS("$FG,RED$The BIOS sets-up the USB in PS/2 legacy mode.$FG$\r\n");
 }
 
-DoIt;
+Main;
 
 
 /*  Not Finished

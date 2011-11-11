@@ -109,17 +109,17 @@ class monster
   BoolI8 dead,pad[7];
 } monsters[NUM_MONSTERS];
 
-U0 FPSTransform(GrBitMap *base,I64 *x,I64 *y,I64 *z)
+U0 FPSTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
-  GrRot(base->r,x,y,z);
+  GrRot(dc->r,x,y,z);
   zz=SCREEN_SCALE/3+*z;
   if (zz<1) zz=1;
   *x=SCREEN_SCALE/2* *x/zz;
   *y=SCREEN_SCALE/2* (*y+MAN_HEIGHT)/zz;
-  *x+=base->x;
-  *y+=base->y;
-  *z+=base->z;
+  *x+=dc->x;
+  *y+=dc->y;
+  *z+=dc->z;
 }
 
 #define LOS_SCALE	4
@@ -141,7 +141,7 @@ BoolI64 LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,j,*r1,*r2,*r3,*s2w,xx,yy,zz,x,y,x1,y1,z1,
       x1w,y1w,x1h,y1h,xh,yh,zh,
       cx=task->win_pixel_width/2,
@@ -151,17 +151,17 @@ U0 UpdateWin(TaskStruct *task)
   F64 tt,_man_theta=man_theta;
   P3I32 poly[4];
 
-  GrAllocDepthBuf(base);
+  GrDCAllocDepthBuf(dc);
   MemSet(panels_processed_bitmap,0,(map_width*map_height+7)>>3);
 
   //World to screen
-  GrRotZEqu(base->r,_man_theta+pi/2);
-  GrRotXEqu(base->r,pi/2);
-  GrSetRotMat(base,base->r);
+  GrRotZEqu(dc->r,_man_theta+pi/2);
+  GrRotXEqu(dc->r,pi/2);
+  GrSetRotMat(dc,dc->r);
 
   xh=-_man_xx/SCREEN_SCALE; yh=-_man_yy/SCREEN_SCALE; zh=0;
-  GrRot(base->r,&xh,&yh,&zh);
-  GrSetTranslation(base->r,xh,yh,zh);
+  GrRot(dc->r,&xh,&yh,&zh);
+  GrSetTranslation(dc->r,xh,yh,zh);
 
   //Screen to world
   s2w=GrRotX(-pi/2,task);
@@ -170,14 +170,14 @@ U0 UpdateWin(TaskStruct *task)
   GrRot(s2w,&xh,&yh,&zh);
 
   //Rotate light source
-  xx=base->ls.x; yy=base->ls.y; zz=-base->ls.z;
-  (*base->transform)(base,&xx,&yy,&zz);
-  base->ls.x=xx; base->ls.y=yy; base->ls.z=zz;
+  xx=dc->ls.x; yy=dc->ls.y; zz=-dc->ls.z;
+  (*dc->transform)(dc,&xx,&yy,&zz);
+  dc->ls.x=xx; dc->ls.y=yy; dc->ls.z=zz;
 
-  base->flags|=BMF_TRANSFORMATION;
-  base->transform=&FPSTransform;
-  base->x=cx;
-  base->y=cy;
+  dc->flags|=BMF_TRANSFORMATION;
+  dc->transform=&FPSTransform;
+  dc->x=cx;
+  dc->y=cy;
   r1=GrRotX(-pi/2,task);
   GrRotZEqu(r1,tP(task));
   GrScaleMatEqu(r1,MONSTER_SCALE);
@@ -199,7 +199,7 @@ U0 UpdateWin(TaskStruct *task)
       x=xx*SCREEN_SCALE-_man_xx; y=yy*SCREEN_SCALE-_man_yy;
       if (1<=xx<map_width-1 && 1<=yy<map_height-1 &&
 	  !LBts(panels_processed_bitmap,yy*map_width+xx)) {
-	if ((base->color=map[yy*map_width+xx]) &&
+	if ((dc->color=map[yy*map_width+xx]) &&
 	    LOS(xx*SCREEN_SCALE+SCREEN_SCALE/2,yy*SCREEN_SCALE+SCREEN_SCALE/2,
 		_man_xx,_man_yy)) {
 	  poly[0].x=x;
@@ -214,18 +214,18 @@ U0 UpdateWin(TaskStruct *task)
 	  poly[3].x=x;
 	  poly[3].y=y+SCREEN_SCALE;
 	  poly[3].z=0;
-	  GrFillPoly3(base,4,poly);
-	  if (base->color==GREEN) {
+	  GrFillPoly3(dc,4,poly);
+	  if (dc->color==GREEN) {
 	    x1=x+SCREEN_SCALE/2;
 	    y1=y+SCREEN_SCALE/2;
 	    z1=0;
-	    GrTransform(base,&x1,&y1,&z1);
+	    GrTransform(dc,&x1,&y1,&z1);
 	    if (z1>0)
-	      GrElemsPlotRotMat3b(base,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
+	      GrSpritePlotRotMat3b(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
 	  }
 
 	  if (!map[(yy+1)*map_width+xx]) {
-	    base->color=LTGRAY;
+	    dc->color=LTGRAY;
 	    poly[0].x=x;
 	    poly[0].y=y+SCREEN_SCALE;
 	    poly[0].z=0;
@@ -238,10 +238,10 @@ U0 UpdateWin(TaskStruct *task)
 	    poly[3].x=x;
 	    poly[3].y=y+SCREEN_SCALE;
 	    poly[3].z=SCREEN_SCALE;
-	    GrFillPoly3(base,4,poly);
+	    GrFillPoly3(dc,4,poly);
 	  }
 	  if (!map[yy*map_width+xx+1]) {
-	    base->color=DKGRAY;
+	    dc->color=DKGRAY;
 	    poly[0].x=x+SCREEN_SCALE;
 	    poly[0].y=y;
 	    poly[0].z=0;
@@ -254,10 +254,10 @@ U0 UpdateWin(TaskStruct *task)
 	    poly[3].x=x+SCREEN_SCALE;
 	    poly[3].y=y;
 	    poly[3].z=SCREEN_SCALE;
-	    GrFillPoly3(base,4,poly);
+	    GrFillPoly3(dc,4,poly);
 	  }
 	  if (!map[(yy-1)*map_width+xx]) {
-	    base->color=LTGRAY;
+	    dc->color=LTGRAY;
 	    poly[0].x=x;
 	    poly[0].y=y;
 	    poly[0].z=0;
@@ -270,10 +270,10 @@ U0 UpdateWin(TaskStruct *task)
 	    poly[3].x=x;
 	    poly[3].y=y;
 	    poly[3].z=SCREEN_SCALE;
-	    GrFillPoly3(base,4,poly);
+	    GrFillPoly3(dc,4,poly);
 	  }
 	  if (!map[yy*map_width+xx-1]) {
-	    base->color=DKGRAY;
+	    dc->color=DKGRAY;
 	    poly[0].x=x;
 	    poly[0].y=y;
 	    poly[0].z=0;
@@ -286,7 +286,7 @@ U0 UpdateWin(TaskStruct *task)
 	    poly[3].x=x;
 	    poly[3].y=y;
 	    poly[3].z=SCREEN_SCALE;
-	    GrFillPoly3(base,4,poly);
+	    GrFillPoly3(dc,4,poly);
 	  }
 	}
       }
@@ -307,14 +307,14 @@ U0 UpdateWin(TaskStruct *task)
       xx=x;
       yy=y;
       zz=0;
-      GrTransform(base,&xx,&yy,&zz);
+      GrTransform(dc,&xx,&yy,&zz);
       if (zz>0) {
 	if (monsters[i].dead)
-	  GrElemsPlotRotMat3b(base,x,y,0,__BIN_2,r2);
+	  GrSpritePlotRotMat3b(dc,x,y,0,__BIN_2,r2);
 	else {
 	  tt=Tri(tP(task),1.0);
-	  inter=GrElemsInterpolate(__BIN_3,__BIN_4,tt);
-	  GrElemsPlotRotMat3b(base,x,y,0,inter,r1);
+	  inter=GrSpriteInterpolate(__BIN_3,__BIN_4,tt);
+	  GrSpritePlotRotMat3b(dc,x,y,0,inter,r1);
 	  Free(inter);
 	}
       }
@@ -325,42 +325,42 @@ U0 UpdateWin(TaskStruct *task)
   Free(r3);
 
   //Draw Map heads-up display, scaled 2 pixels
-  Free(base->r);
-  GrSetRotMat(base,GrIdent(task));
-  base->x=task->win_pixel_width -2*map_width;
-  base->y=task->win_pixel_height-2*map_height;
-  base->z=0;
-  base->transform=&GrTransform;
-  base->pen_width=2;
+  Free(dc->r);
+  GrSetRotMat(dc,GrIdent(task));
+  dc->x=task->win_pixel_width -2*map_width;
+  dc->y=task->win_pixel_height-2*map_height;
+  dc->z=0;
+  dc->transform=&GrTransform;
+  dc->pen_width=2;
   for (i=0;i<map_height;i++)
     for (j=0;j<map_width;j++) {
-      base->color=map[(map_height-1-i)*map_width+j];
-      GrPlot3(base,2*j,2*i,0);
+      dc->color=map[(map_height-1-i)*map_width+j];
+      GrPlot3(dc,2*j,2*i,0);
     }
 
     //Draw Things on heads-up Map
-    base->color=LTPURPLE;
+    dc->color=LTPURPLE;
   for (i=0;i<NUM_MONSTERS;i++)
     if (!monsters[i].dead)
-      GrPlot3(base,2*(monsters[i].x/SCREEN_SCALE),2*(map_height-1-monsters[i].y/SCREEN_SCALE),0);
-  base->color=LTCYAN;
-  GrPlot3(base,2*(_man_xx/SCREEN_SCALE),2*(map_height-1-_man_yy/SCREEN_SCALE),0);
+      GrPlot3(dc,2*(monsters[i].x/SCREEN_SCALE),2*(map_height-1-monsters[i].y/SCREEN_SCALE),0);
+  dc->color=LTCYAN;
+  GrPlot3(dc,2*(_man_xx/SCREEN_SCALE),2*(map_height-1-_man_yy/SCREEN_SCALE),0);
 
 
   if (tf) {
-    base->color=LTRED;
+    dc->color=LTRED;
     if (Blink(,tP(task)))
-      GrPutS(base,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
+      GrPutS(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
     tt=tf;
   } else {
-    base->color=LTGREEN;
-    GrLine(base,cx-5,cy,cx+5,cy);
-    GrLine(base,cx,cy-5,cx,cy+5);
+    dc->color=LTGREEN;
+    GrLine(dc,cx-5,cy,cx+5,cy);
+    GrLine(dc,cx,cy-5,cx,cy+5);
     tt=tP(task);
   }
-  GrPrintF(base,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
+  GrPrintF(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
   Free(s2w);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 Fire()
@@ -396,20 +396,20 @@ U0 Init()
 {
   I64 i,x,y;
   I64 min_map_x,max_map_x,min_map_y,max_map_y;
-  GrBitMap *base;
-  GrElemsExtents(__BIN_1,&min_map_x,&max_map_x,&min_map_y,&max_map_y);
+  GrDC *dc;
+  GrSpriteExtents(__BIN_1,&min_map_x,&max_map_x,&min_map_y,&max_map_y);
   map_width =(max_map_x-min_map_x+1)/MAP_SCALE+2;
   map_height=(max_map_y-min_map_y+1)/MAP_SCALE+2;
   Free(map);
   Free(panels_processed_bitmap);
   map=CAlloc(map_width*map_height*sizeof(U8));
   panels_processed_bitmap=MAlloc((map_width*map_height+7)>>3);
-  base=GrNew(BMT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
-  GrElemsPlot3(base,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
+  dc=GrDCNew(BMT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
+  GrSpritePlot3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
   for (y=1;y<map_height-1;y++)
     for (x=1;x<map_width-1;x++)
-      map[(map_height-1-y)*map_width+x]=GrPeek(base,x*MAP_SCALE,y*MAP_SCALE);
-    GrDel(base);
+      map[(map_height-1-y)*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);
+    GrDCDel(dc);
   man_xx=(1+MAN_START_X)*SCREEN_SCALE;
   man_yy=(map_height-1-MAN_START_Y)*SCREEN_SCALE;
   man_theta=0;

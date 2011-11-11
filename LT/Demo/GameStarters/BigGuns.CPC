@@ -12,7 +12,7 @@
 
 I64 gun_x,gun_y,active_map=0,gun_recoil;
 F64 gun_theta;
-GrBitMap *maps[2]={NULL,NULL};
+GrDC *maps[2]={NULL,NULL};
 I16 elevs[MAP_WIDTH];
 
 F64 wind_x;
@@ -38,7 +38,7 @@ Ode *ode=NULL;
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task),
+  GrDC *dc=GrDCAlias(gr_dc,task),
       *map=maps[active_map&1];
   MassStruct *tempm;
   F64 theta=gun_theta;
@@ -50,22 +50,22 @@ U0 UpdateWin(TaskStruct *task)
   task->horz_scroll.max=MAP_WIDTH-task->win_pixel_width;
   task->vert_scroll.min=0;
   task->vert_scroll.max=MAP_HEIGHT-task->win_pixel_height;
-  GrBlot(base,h,v,map);
+  GrBlot(dc,h,v,map);
 
-  GrElemsPlot3(base,gun_x+h,gun_y+v,0,__BIN_2);
+  GrSpritePlot3(dc,gun_x+h,gun_y+v,0,__BIN_2);
 
   if (theta<-pi/2) {
-    base->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
-    GrSetSymmetry(base,gun_x+h,0,gun_x+h,1);
+    dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+    GrSetSymmetry(dc,gun_x+h,0,gun_x+h,1);
     theta=-pi-theta;
   }
-  GrElemsPlotRotZ3b(base,
+  GrSpritePlotRotZ3b(dc,
       gun_x+h-gun_recoil*Cos(theta),
       gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
-  base->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+  dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
 
   tempm=ode->next_mass;
-  base->color=BLACK;
+  dc->color=BLACK;
   map->bkcolor=ROP_COLLISION+LTCYAN;
   map->color=ROP_COLLISION+BLACK;
   while (tempm!=&ode->next_mass) {
@@ -74,20 +74,20 @@ U0 UpdateWin(TaskStruct *task)
     if (map->collision_cnt)
       tempm->user_data=1;
 
-    GrCircle(base,tempm->x+h,tempm->y+v,2);
+    GrCircle(dc,tempm->x+h,tempm->y+v,2);
 
     tempm=tempm->next;
   }
 
-  base->color=LTGRAY;
+  dc->color=LTGRAY;
   w=tP(task)*wind_x;
   for (i=0;i<NUM_DUST;i++) {
     x=(dust_x[i]+w)%MAP_WIDTH;
     y=dust_y[i];
     if (y<elevs[x])
-      GrPlot(base,x+h,y+v);
+      GrPlot(dc,x+h,y+v);
   }
-  GrDel(base);
+  GrDCDel(dc);
   LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
 }
 
@@ -104,7 +104,7 @@ U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
 
 U0 DrawMap()
 {
-  GrBitMap *map=maps[(active_map+1)&1];
+  GrDC *map=maps[(active_map+1)&1];
   I64 x;
 
   map->color=LTCYAN;
@@ -193,13 +193,13 @@ U0 MoveTask(U64 dummy=0)
 
 U0 Init()
 {
-  GrBitMap *map;
+  GrDC *map;
   I64 i,x,y,dy;
   BoolI8 old_preempt;
   if (!maps[0])
-    maps[0]=GrNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+    maps[0]=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
   if (!maps[1])
-    maps[1]=GrNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+    maps[1]=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
   map=maps[active_map&1];
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
@@ -333,8 +333,8 @@ bg_done:
   } catch
     CatchAll;
   SettingsPop;
-  GrDel(maps[0]); maps[0]=NULL;
-  GrDel(maps[1]); maps[1]=NULL;
+  GrDCDel(maps[0]); maps[0]=NULL;
+  GrDCDel(maps[1]); maps[1]=NULL;
   CleanUp(ode);
   MenuPop;
 }

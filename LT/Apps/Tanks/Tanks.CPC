@@ -77,7 +77,7 @@ I64 map_cols=(MAP_WIDTH-DCOS)/(2*HEX_SIDE+2*DCOS),
    map_width=map_cols*(2*HEX_SIDE+2*DCOS)+DCOS,
    map_height=map_rows*DSIN+DSIN+1;
 
-GrBitMap *map;
+GrDC *map;
 U8 terrain[map_rows][map_cols];
 
 
@@ -112,8 +112,8 @@ U8 msg_buf[80];
 U64 msg_off_timeout; //Jiffies. Goes away after a time.
 
 /*I got tricky by not defining a color
-right away in these [C:/LT/Adam/Gr/Gr.APZ,54] GrElems so they can
-work for both players by setting base->color
+right away in these [C:/LT/Adam/Gr/Gr.APZ,54] GrSprites so they can
+work for both players by setting dc->color
 before drawing them.  I actually made these
 graphics by defining a color in the <CTRL-R>
 menu, drawing the unit and deleting the color.
@@ -1232,15 +1232,15 @@ U0 PickAI(U8 *dirname,I64 player)
 }
 
 
-U0 DrawUnit(TaskStruct *task,GrBitMap *base,Unit *tempu,I64 x,I64 y,F64 f)
+U0 DrawUnit(TaskStruct *task,GrDC *dc,Unit *tempu,I64 x,I64 y,F64 f)
 {
   if (tempu->infantry)
-    GrElemsPlot3(base,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img);
+    GrSpritePlot3(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img);
   else
-    GrElemsPlotRotZ3b(base,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img,f);
+    GrSpritePlotRotZ3b(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img,f);
 }
 
-U0 DrawUnits(TaskStruct *task,GrBitMap *base)
+U0 DrawUnits(TaskStruct *task,GrDC *dc)
 {
   I64 i,j;
   F64 x,y;
@@ -1250,21 +1250,21 @@ U0 DrawUnits(TaskStruct *task,GrBitMap *base)
       tempu=&units[j][i];
       if (tempu==target_unit) {
 	if (target_hit)
-	  base->color=RED;
+	  dc->color=RED;
 	else
-	  base->color=GREEN;
+	  dc->color=GREEN;
       } else {
 	if (j)
-	  base->color=LTPURPLE;
+	  dc->color=LTPURPLE;
 	else
-	  base->color=LTCYAN;
+	  dc->color=LTCYAN;
       }
       if (tempu->life>0 && Bt(&tempu->visible[view_player],0) && tempu!=moving_unit) {
 	RowColToXY(x,y,tempu->row,tempu->col);
 	if (phase&~1==PHASE_MOVE && tempu->remaining_movement ||
 	    phase&~1==PHASE_FIRE && !tempu->fired ||
 	    Blink(5,tP(task)))
-	  DrawUnit(task,base,tempu,x,y,tempu->facing*60.0*pi/180.0);
+	  DrawUnit(task,dc,tempu,x,y,tempu->facing*60.0*pi/180.0);
       }
     }
   }
@@ -1275,7 +1275,7 @@ U0 UpdateWin(TaskStruct *task)
   F64 x,y;
   I64 h,v,i,j,c;
   BoolI8 old_preempt=IsPreempt;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   U8 buf[128];
 
   task->horz_scroll.min=0;
@@ -1286,10 +1286,10 @@ U0 UpdateWin(TaskStruct *task)
   h=task->horz_scroll.pos;
   v=task->vert_scroll.pos;
 
-  GrBlot(base,-h,-v,map);
+  GrBlot(dc,-h,-v,map);
 
   //We want this "atomic" in a multitasking sense.
-  //[C:/LT/OSMain/OSGlbls.CPZ,72] ipx,[C:/LT/OSMain/OSGlbls.CPZ,72] ipy are the current mouse x,y in screen coordinates.
+  //[C:/LT/OSMain/OSGlbls.CPZ,71] ipx,[C:/LT/OSMain/OSGlbls.CPZ,71] ipy are the current mouse x,y in screen coordinates.
   Preempt(OFF);
   i=ipx-task->win_pixel_left-task->win_scroll_x;
   j=ipy-task->win_pixel_top -task->win_scroll_y;
@@ -1299,24 +1299,24 @@ U0 UpdateWin(TaskStruct *task)
   Preempt(old_preempt);
 
 //Roads require multiple cursor fills
-  base->color=YELLOW;
+  dc->color=YELLOW;
   c=terrain[cursor_row][cursor_col];
   for (i=-(HEX_SIDE+DCOS)/2;i<=(HEX_SIDE+DCOS)/2;i++) {
-    if (GrPeek(base,x+i-h,y-v)==c)
-      GrFloodFill(base,x+i-h,y-v);
+    if (GrPeek(dc,x+i-h,y-v)==c)
+      GrFloodFill(dc,x+i-h,y-v);
     for (j=-HEX_SIDE/2;j<=HEX_SIDE/2;j++)
-      if (GrPeek(base,x+j-h,y+i-v)==c)
-	GrFloodFill(base,x+j-h,y+i-v);
+      if (GrPeek(dc,x+j-h,y+i-v)==c)
+	GrFloodFill(dc,x+j-h,y+i-v);
   }
 
-  DrawUnits(task,base);
+  DrawUnits(task,dc);
   if (firing) {
-    base->color=BLACK;
-    GrCircle(base,fire_x-h,fire_y-v,2);
+    dc->color=BLACK;
+    GrCircle(dc,fire_x-h,fire_y-v,2);
   }
   if (moving_unit && moving_unit->visible[view_player]) {
-    base->color=YELLOW;
-    DrawUnit(task,base,moving_unit,move_x,move_y,move_facing);
+    dc->color=YELLOW;
+    DrawUnit(task,dc,moving_unit,move_x,move_y,move_facing);
   }
   progress4=progress4_max=progress1=progress1_max=0;
   if (moving_unit) {
@@ -1329,11 +1329,11 @@ U0 UpdateWin(TaskStruct *task)
     }
   }
   if (fire_radius) {
-    base->color=YELLOW;
-    GrCircle(base,fire_radius_x-h,fire_radius_y-v,fire_radius-1);
-    GrCircle(base,fire_radius_x-h,fire_radius_y-v,fire_radius+1);
-    base->color=RED;
-    GrCircle(base,fire_radius_x-h,fire_radius_y-v,fire_radius);
+    dc->color=YELLOW;
+    GrCircle(dc,fire_radius_x-h,fire_radius_y-v,fire_radius-1);
+    GrCircle(dc,fire_radius_x-h,fire_radius_y-v,fire_radius+1);
+    dc->color=RED;
+    GrCircle(dc,fire_radius_x-h,fire_radius_y-v,fire_radius);
   }
 
   if (Bt(key_down_bitmap,SC_SHIFT)) {
@@ -1348,30 +1348,30 @@ U0 UpdateWin(TaskStruct *task)
     } else
       Preempt(old_preempt);
 
-    base->color=LTGRAY;
+    dc->color=LTGRAY;
     for (j=0;j<map_rows;j++)
       for (i=0;i<map_cols;i++)
 	if (!visible_map[j][i]) {
 	  RowColToXY(x,y,j,i);
-	  GrLine(base,x-6-h,y-6-v,x+6-h,y+6-v);
-	  GrLine(base,x+6-h,y-6-v,x-6-h,y+6-v);
-	  GrLine(base,x-h,y-6-v,x-h,y+6-v);
-	  GrLine(base,x+6-h,y-v,x-6-h,y-v);
+	  GrLine(dc,x-6-h,y-6-v,x+6-h,y+6-v);
+	  GrLine(dc,x+6-h,y-6-v,x-6-h,y+6-v);
+	  GrLine(dc,x-h,y-6-v,x-h,y+6-v);
+	  GrLine(dc,x+6-h,y-v,x-6-h,y-v);
 	}
   }
   if (i=StrLen(msg_buf)*FONT_WIDTH) {
-    base->color=BLACK;
-    GrRect(base,(task->win_pixel_width-i)>>1-10-task->win_scroll_x,
+    dc->color=BLACK;
+    GrRect(dc,(task->win_pixel_width-i)>>1-10-task->win_scroll_x,
 	       (task->win_pixel_height-FONT_HEIGHT)>>1-10-task->win_scroll_y,
 	       i+20,FONT_HEIGHT+20);
 
-    base->color=YELLOW;
-    GrRect(base,(task->win_pixel_width-i)>>1-7-task->win_scroll_x,
+    dc->color=YELLOW;
+    GrRect(dc,(task->win_pixel_width-i)>>1-7-task->win_scroll_x,
 	       (task->win_pixel_height-FONT_HEIGHT)>>1-7-task->win_scroll_y,
 	       i+14,FONT_HEIGHT+14);
 
-    base->color=RED;
-    GrPutS(base,(task->win_pixel_width-i)>>1-task->win_scroll_x,
+    dc->color=RED;
+    GrPutS(dc,(task->win_pixel_width-i)>>1-task->win_scroll_x,
 		(task->win_pixel_height-FONT_HEIGHT)>>1-task->win_scroll_y,
       msg_buf);
     if (msg_off_timeout) {
@@ -1382,33 +1382,33 @@ U0 UpdateWin(TaskStruct *task)
     }
   }
 
-  base->color=WHITE;
-  GrRect(base,-task->win_scroll_x,-task->win_scroll_y,(13+7+10+10)*FONT_WIDTH,FONT_HEIGHT);
+  dc->color=WHITE;
+  GrRect(dc,-task->win_scroll_x,-task->win_scroll_y,(13+7+10+10)*FONT_WIDTH,FONT_HEIGHT);
 
   if (phase&~1==PHASE_MOVE) {
-    base->color=GREEN;
+    dc->color=GREEN;
     SPrintF(buf,"Turn:%2d Move",turn);
   } else {
-    base->color=RED;
+    dc->color=RED;
     SPrintF(buf,"Turn:%2d Fire",turn);
   }
-  GrPutS(base,-task->win_scroll_x,-task->win_scroll_y,buf);
+  GrPutS(dc,-task->win_scroll_x,-task->win_scroll_y,buf);
 
   SPrintF(buf,"%3d Units",alive_cnt[0]);
   if (cur_player || Blink(,tP(task)))
-    base->color=CYAN;
+    dc->color=CYAN;
   else
-    base->color=LTCYAN;
-  GrPutS(base,-task->win_scroll_x+(13+7)*FONT_WIDTH,-task->win_scroll_y,buf);
+    dc->color=LTCYAN;
+  GrPutS(dc,-task->win_scroll_x+(13+7)*FONT_WIDTH,-task->win_scroll_y,buf);
 
   SPrintF(buf,"%3d Units",alive_cnt[1]);
   if (!cur_player || Blink(,tP(task)))
-    base->color=PURPLE;
+    dc->color=PURPLE;
   else
-    base->color=LTPURPLE;
-  GrPutS(base,-task->win_scroll_x+(13+7+10)*FONT_WIDTH,-task->win_scroll_y,buf);
+    dc->color=LTPURPLE;
+  GrPutS(dc,-task->win_scroll_x+(13+7+10)*FONT_WIDTH,-task->win_scroll_y,buf);
 
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 TaskEndCB()
@@ -1421,7 +1421,7 @@ U0 TaskEndCB()
 U0 Tanks()
 {
   U64 result,ch;
-  map=GrNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+  map=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->win_inhibit|=WIF_DBL_CLICK|WIF_IP_L|WIF_IP_R;
@@ -1512,5 +1512,5 @@ U0 Tanks()
 
   SettingsPop;
   MenuPop;
-  GrDel(map);
+  GrDCDel(map);
 }

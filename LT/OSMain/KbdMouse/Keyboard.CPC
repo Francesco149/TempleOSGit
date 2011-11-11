@@ -421,16 +421,15 @@ U0 KbdPktRead()
     }
   }
   if (!U8FifoCnt(kbd_fifo)) {
-    U8FifoInsert(kbd_fifo,0x01);
     U8FifoInsert(kbd_fifo,raw_byte);
     if (raw_byte!=0xE0) {
       while (U8FifoRem(kbd_fifo,&raw_byte))
-	U8FifoInsert(kbdmouse_fifo,raw_byte);
+	U8FifoInsert(kbd2_fifo,raw_byte);
     }
   } else {
     U8FifoInsert(kbd_fifo,raw_byte);
     while (U8FifoRem(kbd_fifo,&raw_byte))
-      U8FifoInsert(kbdmouse_fifo,raw_byte);
+      U8FifoInsert(kbd2_fifo,raw_byte);
   }
 }
 
@@ -478,12 +477,12 @@ U0 KbdHandler()
   BoolI8 set_LEDs,ctrl_alt;
   U64 ch,sc;
 
-  U8FifoRem(kbdmouse_fifo,&raw_byte);
+  U8FifoRem(kbd2_fifo,&raw_byte);
   sc=KbdBuildSC(raw_byte,&last_raw_byte,&sys_cur_scan_code,&set_LEDs,&ctrl_alt);
   if (set_LEDs)
     KbdSetLEDs(sc);
   if (raw_byte==0xE0) {
-    U8FifoRem(kbdmouse_fifo,&raw_byte);
+    U8FifoRem(kbd2_fifo,&raw_byte);
     sc=KbdBuildSC(raw_byte,&last_raw_byte,&sys_cur_scan_code,&set_LEDs,&ctrl_alt);
     if (set_LEDs)
       KbdSetLEDs(sc);

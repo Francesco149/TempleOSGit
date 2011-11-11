@@ -42,13 +42,13 @@ F64 Test(I64 n,I64 my_mp_cnt)
 #define NUM_TESTS	7
 #define MAX_PERCENT	200
 
-U0 DoIt()
+U0 Main()
 {
   I64 i,n,
     h=Fs->win_pixel_width,
     v=Fs->win_pixel_height;
   F64 t1,t2,results[NUM_TESTS];
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
   for (i=0,n=10;i<NUM_TESTS;i++,n*=10) {
     t1=Test(n,1);
@@ -60,26 +60,26 @@ U0 DoIt()
 
   LtfClear;
 
-  base->color=BLUE;
+  dc->color=BLUE;
   for (i=0;i<MAX_PERCENT;i+=MAX_PERCENT/10) {
-    GrPrintF(base,0,v-ToF64(i)/MAX_PERCENT*v-FONT_HEIGHT,"%3d%%",i);
-    GrLine(base,0,v-ToF64(i)/MAX_PERCENT*v,h,v-ToF64(i)/MAX_PERCENT*v);
+    GrPrintF(dc,0,v-ToF64(i)/MAX_PERCENT*v-FONT_HEIGHT,"%3d%%",i);
+    GrLine(dc,0,v-ToF64(i)/MAX_PERCENT*v,h,v-ToF64(i)/MAX_PERCENT*v);
   }
 
   for (i=0;i<NUM_TESTS-1;i++) {
-    base->color=RED;
-    base->pen_width=2;
-    GrLine3(base,i*h/(NUM_TESTS-1),v-results[i	]/MAX_PERCENT*v,0,
+    dc->color=RED;
+    dc->pen_width=2;
+    GrLine3(dc,i*h/(NUM_TESTS-1),v-results[i	]/MAX_PERCENT*v,0,
 		 (i+1)*h/(NUM_TESTS-1),v-results[i+1]/MAX_PERCENT*v,0);
-    base->color=GREEN;
-    GrPrintF(base,i*h/(NUM_TESTS-1),v-FONT_HEIGHT,"10e%d",i+1);
-    GrLine(base,i*h/(NUM_TESTS-1),0,
+    dc->color=GREEN;
+    GrPrintF(dc,i*h/(NUM_TESTS-1),v-FONT_HEIGHT,"10e%d",i+1);
+    GrLine(dc,i*h/(NUM_TESTS-1),0,
 		i*h/(NUM_TESTS-1),v);
   }
   PressAKey;
 
-  GrClear;
-  GrDel(base);
+  GrDCClear;
+  GrDCDel(dc);
 }
 
-DoIt;
+Main;

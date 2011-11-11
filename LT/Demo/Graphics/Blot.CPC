@@ -1,6 +1,6 @@
-GrBitMap *b=GrAlias(gr_persistent_base,Fs);
-GrBitMap *img1=GrNew(BMT_MONO,64,64);
-GrBitMap *img2=GrNew(BMT_COLOR4,512,512);
+GrDC *b=GrDCAlias(gr_dc2,Fs);
+GrDC *img1=GrDCNew(BMT_MONO,64,64);
+GrDC *img2=GrDCNew(BMT_COLOR4,512,512);
 
 img1->color=WHITE;
 img1->pen_width=3;
@@ -23,18 +23,18 @@ GrRect(img2,256-20,256-20,40,40);
 I64 i;
 for (i=0;i<256;i+=4) {
   WinSync;
-  GrClear;
+  GrDCClear;
   GrBlot(b,i-256,i-256,img2);
   Sleep(10);
 }
-U8 *tempg=GrBitMap2GrElems(img1);
-PutGrElems(tempg);
+U8 *tempg=GrDC2Sprite(img1);
+PutGrSprite(tempg);
 Free(tempg);
 CrLf(9);
 
-GrDel(img1);
-GrDel(img2);
-GrDel(b);
+GrDCDel(img1);
+GrDCDel(img2);
+GrDCDel(b);
 
 PressAKey;
-GrClear;
+GrDCClear;

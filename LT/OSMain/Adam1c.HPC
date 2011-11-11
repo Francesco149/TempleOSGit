@@ -97,7 +97,7 @@ public extern U0 DbgExit();
 public extern U64 sys_dbg_fault_num;
 public extern U0 *sys_dbg_fault_rip;
 #help_index "Debugging/Raw Output"
-public extern U0 DrawChar(U64 ch);
+public extern U0 RawDrawChar(U64 ch);
 public extern BoolI64 Raw(BoolI8 val);
 public extern BoolI64 IsRaw();
 public extern BoolI64 SingleUser(BoolI8 val);
@@ -122,7 +122,7 @@ extern U8 **ctrl_alt_let_descs;
 extern TaskCmdStruct sys_macro_root;
 extern KeyDevStruct sys_put_key_root;
 extern TaskStruct *sys_macro_util_task;
-extern U64 sys_dc_col,sys_dc_flags;
+extern U64 sys_raw_dc_col,sys_raw_dc_flags;
 extern U8 *sys_dc_screen_image;
 public extern BoolI8 text_mode;
 
@@ -168,7 +168,6 @@ extern U64 mouse_pkt_size;
 #help_index "Char/Input"
 public extern U64 kbd_evt_time;
 extern BoolI8 kbd_irqs_working;
-extern U8Fifo *kbdmouse_fifo;
 public extern BoolI64 PressAKey();
 public extern BoolI64 ExitAllApplications();
 public extern BoolI64 AreYouSure();
@@ -178,7 +177,7 @@ public extern BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALS
 public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 
-//Gets [C:/LT/OSMain/Adam1a.HPZ,1377] Flags
+//Gets [C:/LT/OSMain/Adam1a.HPZ,1378] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);

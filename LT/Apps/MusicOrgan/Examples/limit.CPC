@@ -8,17 +8,17 @@ F64 t0=tJ;
 
 /* <1> <1> (image) */
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   F64 dt=(tJ-t0)*music_tempo;
 
-  base->color=BLACK;
+  dc->color=BLACK;
   if (dt<21.5)
-    GrPutS(base,235,30,"- -");
+    GrPutS(dc,235,30,"- -");
   else {
-    GrElemsPlot3(base,235,30,0,__BIN_1);
-    GrPutS(base,235,30,"o o");
+    GrSpritePlot3(dc,235,30,0,__BIN_1);
+    GrPutS(dc,235,30,"o o");
   }
 }
 

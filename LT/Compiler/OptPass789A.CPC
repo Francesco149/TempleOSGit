@@ -1139,7 +1139,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	    }
 	    if (fun_class && Bt(fun_class->flags,Cf_INTERRUPT))
 	      IcU16(tempi,0xCF48);
-	    else if (fun_class &&
+	    else if (fun_class && fun_class->arg_cnt &&
 		  (Bt(fun_class->flags,Cf_RET1) || Bt(fun_class->flags,Cf_ARGPOP)) &&
 		  !Bt(fun_class->flags,Cf_NOARGPOP)) {
 	      IcU8(tempi,0xC2);

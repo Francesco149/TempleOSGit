@@ -1,6 +1,6 @@
 #help_index "Utils;Cmd Line (Typically);Ltf/Html"
 
-//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ
+//See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (12).
 
 U0 HtmlPutS(Ltf *l,I64 c,I64 *_old_c,U8 *st,I64 *_col,U8 *style_bitmap=NULL)
 {

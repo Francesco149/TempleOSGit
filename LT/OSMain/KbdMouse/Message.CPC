@@ -189,7 +189,7 @@ U64 GetChar(U64 *_scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE)
 }
 
 U8 *MGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1377] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1378] Flags
 {
 //Returns a [C:/LT/OSMain/Memory.CPZ,925] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);

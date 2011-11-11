@@ -1,5 +1,6 @@
 If you require separate global vars for multiple instances of a routine, you 
-can use NamedFrames.  See [C:/LT/Adam/Gr/GrElemMesh.APZ,901] GrElemMesh(),
-[::/LT/Demo/Graphics/Pick2.CPZ] ::/LT/Demo/Graphics/Pick2.CPZ or 
+can use NamedFrames.  See [C:/LT/Adam/Gr/GrSpriteMesh.APZ,901]
+GrSpriteMesh(), [::/LT/Demo/Graphics/Pick2.CPZ] ::/LT/Demo/Graphics/Pick2.CPZ
+or 
 [C:/LT/Adam/Snd/SndEffects.APZ,30] Noise().
  

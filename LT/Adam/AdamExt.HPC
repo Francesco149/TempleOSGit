@@ -1,11 +1,10 @@
 extern BoolI8 win_show_menu;
 extern BoolI64 WinToTop(TaskStruct *task=NULL,BoolI8 update_z_buf=TRUE);
-extern U0 GrPlot0(GrBitMap *base,I64 x,I64 y);
+extern U0 GrPlot0(GrDC *dc,I64 x,I64 y);
 extern U0 DrawTaskBorder(TaskStruct *task);
 extern U0 DrawCtrls(TaskStruct *task);
-
-extern U0 IDEClearAllBpts(Ltf *l);
-extern U0 IDEToggleBpt(Ltf *l);
+extern U0 MgdSliderCtrl(Ltf *l);
+extern U0 WinScrollsInit(TaskStruct *task);
 
 extern U64 ltf_tag_types[],ltf_nontag_invisible_types[],
 	  ltf_form_types[],ltf_data_types[];
@@ -24,19 +23,18 @@ extern BoolI64 PopUpTransform(I64 *r);
 extern U0 PopUpSnap(SnapStruct *g);
 extern Ltf *LtfNew(TaskStruct *task=NULL);
 extern Ltf *LtfRead(U8 *name,U64 flags=0);
+extern U0 EdMgdCode(Ltf *l);
 extern U0 LtfDel(Ltf *l);
 extern U0 LtfMax(U64 i=MAX_I32);
 extern LtfEntry *LtfPrintF(Ltf *l,U8 *src,...);
 extern U8 *EdPicture();
 extern BoolI64 View();
-extern U0 IDEGo();
-extern U0 IDEStepInto(Ltf *l);
-extern U0 IDEStepOver(Ltf *l);
-extern U0 IDESetLineNum(Ltf *l);
-extern U0 IDE(U8 *filename);
 extern BoolI64 LtfLock(Ltf *l);
 extern BoolI64 LtfUnlock(Ltf *l);
 extern U0 LtfInsert(Ltf *l,LtfEntry *ll);
+extern U0 LtfFmtData(LtfEntry *cl);
+extern U0 LtfGoToLineNum(Ltf *l,I64 linenum); //one based
+extern U0 LtfDump(Ltf *l,U64 uS_delay=0);
 extern LtfEntry *LtfCopyEntry(Ltf *l,LtfEntry *cl);
 extern U0 LtfInsertLtf(Ltf *l,Ltf *b);
 extern U0 LtfD(U8 *buf,U64 cnt=0x80);

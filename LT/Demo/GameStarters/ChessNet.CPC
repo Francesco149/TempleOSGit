@@ -43,38 +43,38 @@ I64 num_alive[2];
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   for (i=0;i<NUM_UNITS;i++)
     if (u[i].alive && !u[i].king) {
-      base->color=YELLOW;
-      base->pen_width=u[i].bandwidth;
-      GrLine3(base,u[i].x,u[i].y,0,u[u[i].link].x,u[u[i].link].y,0);
+      dc->color=YELLOW;
+      dc->pen_width=u[i].bandwidth;
+      GrLine3(dc,u[i].x,u[i].y,0,u[u[i].link].x,u[u[i].link].y,0);
       if (Blink(,tP(task))) {
-	base->color=BLUE;
-	base->pen_width=2;
-	GrPlot3(base,(u[i].x+u[u[i].link].x)>>1,(u[i].y+u[u[i].link].y)>>1,0);
+	dc->color=BLUE;
+	dc->pen_width=2;
+	GrPlot3(dc,(u[i].x+u[u[i].link].x)>>1,(u[i].y+u[u[i].link].y)>>1,0);
       }
     }
   for (i=0;i<NUM_UNITS;i++)
     if (u[i].alive)
-      GrElemsPlot3(base,u[i].x,u[i].y,0,u[i].img);
+      GrSpritePlot3(dc,u[i].x,u[i].y,0,u[i].img);
   if (show_start) {
-    base->color=LTRED;
-    GrLine(base,start_x-4,start_y-4,start_x+4,start_y+4);
-    GrLine(base,start_x-4,start_y+4,start_x+4,start_y-4);
-    GrLine(base,start_x,start_y,end_x,end_y);
+    dc->color=LTRED;
+    GrLine(dc,start_x-4,start_y-4,start_x+4,start_y+4);
+    GrLine(dc,start_x-4,start_y+4,start_x+4,start_y-4);
+    GrLine(dc,start_x,start_y,end_x,end_y);
   }
   if (cur_player==0)
-    base->color=LTCYAN;
+    dc->color=LTCYAN;
   else
-    base->color=LTPURPLE;
-  GrPrintF(base,0,0,"Player %d",cur_player+1);
+    dc->color=LTPURPLE;
+  GrPrintF(dc,0,0,"Player %d",cur_player+1);
   if ((num_alive[0]==1 || num_alive[1]==1) && Blink(4,tP(task))) {
-    base->color=BLACK;
-    GrPrintF(base,(task->win_pixel_width-FONT_WIDTH*9)>>1,
+    dc->color=BLACK;
+    GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
 		  (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
   }
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 Unit *FindUnit(I64 x,I64 y,I64 player)

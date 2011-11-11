@@ -8,22 +8,14 @@ I64 TssSize(TssStruct *tss)
       MSize2(tss->st2);
 }
 
-I64 GrBitMapSize(GrBitMap *b)
-{
-  if (b)
-    return MSize2(b)+MSize2(b->body)+GrBitMapSize(b->mask);
-  else
-    return 0;
-}
-
 I64 PenBrushesSize()
 {
   I64 result=0,i;
   for (i=0;i<GR_NUM_PEN_BRUSHES;i++)
     result+=
-      GrBitMapSize(gr_pen_brushes[i])+
-      GrBitMapSize(gr_even_pen_brushes[i])+
-      GrBitMapSize(gr_odd_pen_brushes[i] );
+      GrDCSize(gr_pen_brushes[i])+
+      GrDCSize(gr_even_pen_brushes[i])+
+      GrDCSize(gr_odd_pen_brushes[i] );
   return result;
 }
 
@@ -95,10 +87,10 @@ BoolI64 MemRepTask(TaskStruct *task,BoolI8 override_validate=FALSE)
   }
 
   if (task==sys_winmgr_task) {
-    PrintF("gr_persistent_base\t:%08X\r\n",GrBitMapSize(gr_persistent_base));
-    PrintF("gr_refreshed_base\t:%08X\r\n",GrBitMapSize(gr_refreshed_base));
-    PrintF("gr_screen_image\t:%08X\r\n",GrBitMapSize(gr_screen_image));
-    PrintF("gr_scaled_base\t:%08X\r\n",GrBitMapSize(gr_scaled_base));
+    PrintF("gr_dc2\t:%08X\r\n",GrDCSize(gr_dc2));
+    PrintF("gr_dc\t:%08X\r\n",GrDCSize(gr_dc));
+    PrintF("gr_screen_image\t:%08X\r\n",GrDCSize(gr_screen_image));
+    PrintF("gr_scaled_dc\t:%08X\r\n",GrDCSize(gr_scaled_dc));
     PrintF("gr_pen_brushes\t:%08X\r\n",PenBrushesSize);
     PrintF("gr_text_base\t:%08X\r\n",MSize2(gr_text_base));
     PrintF("gr_text_base_cache\t:%08X\r\n",MSize2(gr_text_base_cache));

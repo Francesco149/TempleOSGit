@@ -373,7 +373,7 @@ U0 BlkDevsInitAll()
   local_prts=ACAlloc(sizeof(LTPrt)*NUM_LTPRTS);
   for (i=0;i<NUM_LTPRTS;i++)
     drv_to_prt[i]=&local_prts[i];
-  sys_dc_col=0;
+  sys_raw_dc_col=0;
 #exe {StreamLtf(osmain_cfg->add_dev);};
   PrtRep;
 }

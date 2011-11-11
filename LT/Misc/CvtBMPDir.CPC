@@ -1,12 +1,12 @@
 U0 CvtBMPFile(U8 *fname)
 {
-  GrBitMap *base=BMPFileRead(fname,TRUE);
-  GrElem *elems=GrBitMap2GrElems(base);
+  GrDC *dc=BMPFileRead(fname,TRUE);
+  GrSprite *elems=GrDC2Sprite(dc);
   CrLf(TEXT_ROWS/2);
-  PutGrElems(elems);
+  PutGrSprite(elems);
   CrLf(TEXT_ROWS/2);
   Free(elems);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 public U0 CvtBMPDir()
@@ -34,7 +34,7 @@ public U0 CvtBMPDir()
 
 /*
 Save your files in Windows as 16-color BMP.
-Then, convert them to GrElems with this
+Then, convert them to GrSprite with this
 program.
 
 Cut and paste the converted bmp files

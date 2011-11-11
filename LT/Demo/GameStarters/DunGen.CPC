@@ -119,7 +119,7 @@
 
 
 //These are indexed by color #.
-//See [C:/LT/OSMain/Adam1a.HPZ,3392] COLORS.
+//See [C:/LT/OSMain/Adam1a.HPZ,3398] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -174,8 +174,8 @@ BoolI64 LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 
 U0 UpdateWin(TaskStruct *task)
 {
-  GrBitMap *base=GrAlias(gr_refreshed_base,task),
-      *base_t=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task),
+      *dc_t=GrDCAlias(gr_dc,task);
   I64 i,x,y,xx,yy,x1,y1,z1,color;
   P3I32 poly[4];
   U8 **_tiles;
@@ -185,16 +185,16 @@ U0 UpdateWin(TaskStruct *task)
   else
     _tiles=tiles2;
 
-  GrRotXEqu(base_t->r,60*2*pi/360);
-  GrRotZEqu(base_t->r,15*2*pi/360);
-  GrSetRotMat(base_t,base_t->r);
-  base_t->x=task->win_pixel_width/2;
-  base_t->y=task->win_pixel_height/2;
-  base_t->flags|=BMF_TRANSFORMATION;
+  GrRotXEqu(dc_t->r,60*2*pi/360);
+  GrRotZEqu(dc_t->r,15*2*pi/360);
+  GrSetRotMat(dc_t,dc_t->r);
+  dc_t->x=task->win_pixel_width/2;
+  dc_t->y=task->win_pixel_height/2;
+  dc_t->flags|=BMF_TRANSFORMATION;
 
   //You could make it much more efficient
   //if you did it like [::/LT/Demo/GameStarters/BigGuns.CPZ] ::/LT/Demo/GameStarters/BigGuns.CPZ
-  //with a [C:/LT/OSMain/Adam1a.HPZ,3446] GrBitMap.
+  //with a [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -208,8 +208,8 @@ U0 UpdateWin(TaskStruct *task)
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
-	      GrTransform(base_t,&x1,&y1,&z1);
-	      GrElemsPlot3(base,x1,y1,z1,_tiles[color]);
+	      GrTransform(dc_t,&x1,&y1,&z1);
+	      GrSpritePlot3(dc,x1,y1,z1,_tiles[color]);
 	    } else { //If no tile defined, do solid color.
 	      poly[0].x=x*SCREEN_SCALE;
 	      poly[0].y=y*SCREEN_SCALE;
@@ -223,19 +223,19 @@ U0 UpdateWin(TaskStruct *task)
 	      poly[3].x=x*SCREEN_SCALE-1;
 	      poly[3].y=(y+1)*SCREEN_SCALE-1;
 	      poly[3].z=0;
-	      base_t->color=color;
-	      GrFillPoly3(base_t,4,poly);
+	      dc_t->color=color;
+	      GrFillPoly3(dc_t,4,poly);
 	    }
 	  }
 	}
       }
       }
 
-  base_t->color=LTGRAY;
+  dc_t->color=LTGRAY;
   for (x=-SCREEN_WIDTH/2;x<=SCREEN_WIDTH/2;x++)
-    GrLine3(base_t,x*SCREEN_SCALE,-SCREEN_HEIGHT/2*SCREEN_SCALE,0,x*SCREEN_SCALE,SCREEN_HEIGHT/2*SCREEN_SCALE-1,0);
+    GrLine3(dc_t,x*SCREEN_SCALE,-SCREEN_HEIGHT/2*SCREEN_SCALE,0,x*SCREEN_SCALE,SCREEN_HEIGHT/2*SCREEN_SCALE-1,0);
   for (y=-SCREEN_HEIGHT/2;y<=SCREEN_HEIGHT/2;y++)
-    GrLine3(base_t,-SCREEN_WIDTH/2*SCREEN_SCALE,y*SCREEN_SCALE,0,SCREEN_WIDTH/2*SCREEN_SCALE,y*SCREEN_SCALE-1,0);
+    GrLine3(dc_t,-SCREEN_WIDTH/2*SCREEN_SCALE,y*SCREEN_SCALE,0,SCREEN_WIDTH/2*SCREEN_SCALE,y*SCREEN_SCALE-1,0);
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -248,15 +248,15 @@ U0 UpdateWin(TaskStruct *task)
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
-	      GrTransform(base_t,&x1,&y1,&z1);
-	      GrElemsPlot3(base,x1,y1,z1,__BIN_10);
+	      GrTransform(dc_t,&x1,&y1,&z1);
+	      GrSpritePlot3(dc,x1,y1,z1,__BIN_10);
 	    }
 	    if (xx+1<map_width && LOS(xx+1,yy,man_x,man_y)) {
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
-	      GrTransform(base_t,&x1,&y1,&z1);
-	      GrElemsPlot3(base,x1,y1,z1,__BIN_11);
+	      GrTransform(dc_t,&x1,&y1,&z1);
+	      GrSpritePlot3(dc,x1,y1,z1,__BIN_11);
 	    }
 	  }
 	}
@@ -268,13 +268,13 @@ U0 UpdateWin(TaskStruct *task)
       x1=(monsters[i].x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
       y1=(monsters[i].y-screen_y)*SCREEN_SCALE+SCREEN_SCALE/2;
       z1=0;
-      GrTransform(base_t,&x1,&y1,&z1);
+      GrTransform(dc_t,&x1,&y1,&z1);
       if (monsters[i].dx<0) {
-	base->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
-	GrSetSymmetry(base,x1,y1,x1,y1+1);
+	dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+	GrSetSymmetry(dc,x1,y1,x1,y1+1);
       } else
-	base->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
-      GrElemsPlot3(base,x1,y1,z1,__BIN_9);
+	dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+      GrSpritePlot3(dc,x1,y1,z1,__BIN_9);
     }
 
   x1=(man_x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
@@ -284,20 +284,20 @@ U0 UpdateWin(TaskStruct *task)
     x1+=Tri(tP(task)-man_attack_t0,0.2)*SCREEN_SCALE*man_dx;
     y1+=Tri(tP(task)-man_attack_t0,0.2)*SCREEN_SCALE*man_dy;
   }
-  GrTransform(base_t,&x1,&y1,&z1);
+  GrTransform(dc_t,&x1,&y1,&z1);
   if (man_dx<0) {
-    base->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
-    GrSetSymmetry(base,x1,y1,x1,y1+1);
+    dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+    GrSetSymmetry(dc,x1,y1,x1,y1+1);
   } else
-    base->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+    dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
 
   if (tP(task)-man_attack_t0<0.2)
-    GrElemsPlot3(base,x1,y1,z1,__BIN_3);
+    GrSpritePlot3(dc,x1,y1,z1,__BIN_3);
   else
-    GrElemsPlot3(base,x1,y1,z1,__BIN_2);
+    GrSpritePlot3(dc,x1,y1,z1,__BIN_2);
 
-  GrDel(base_t);
-  GrDel(base);
+  GrDCDel(dc_t);
+  GrDCDel(dc);
 }
 
 
@@ -317,18 +317,18 @@ U0 Attack()
 U0 Init()
 {
   I64 i,x,y,minx,maxx,miny,maxy;
-  GrBitMap *base;
-  GrElemsExtents(__BIN_1,&minx,&maxx,&miny,&maxy);
+  GrDC *dc;
+  GrSpriteExtents(__BIN_1,&minx,&maxx,&miny,&maxy);
   map_width =(maxx-minx+1)/MAP_SCALE;
   map_height=(maxy-miny+1)/MAP_SCALE;
   Free(map);
   map=MAlloc(map_width*map_height*sizeof(U8));
-  base=GrNew(BMT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
-  GrElemsPlot3(base,-minx,-miny,0,__BIN_1);
+  dc=GrDCNew(BMT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
+  GrSpritePlot3(dc,-minx,-miny,0,__BIN_1);
   for (y=0;y<map_height;y++)
     for (x=0;x<map_width;x++)
-       map[y*map_width+x]=GrPeek(base,x*MAP_SCALE,y*MAP_SCALE);
-  GrDel(base);
+       map[y*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);
+  GrDCDel(dc);
 
   for (i=0;i<NUM_MONSTERS;i++) {
     monsters[i].dead=FALSE;

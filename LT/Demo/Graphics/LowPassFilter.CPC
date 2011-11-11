@@ -3,19 +3,19 @@
 U0 LowPassFilterDemo()
 {
   F64 y,y1,t,dt;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
   WinMax;
   LtfClear;
 
-  base->color=BLUE;
-  GrLine(base,0,0,0,STEP_SIZE);
-  GrLine(base,0,STEP_SIZE,GR_WIDTH/2,STEP_SIZE);
-  GrLine(base,GR_WIDTH/2,STEP_SIZE,GR_WIDTH/2,0);
-  GrLine(base,GR_WIDTH/2,0,GR_WIDTH,0);
+  dc->color=BLUE;
+  GrLine(dc,0,0,0,STEP_SIZE);
+  GrLine(dc,0,STEP_SIZE,GR_WIDTH/2,STEP_SIZE);
+  GrLine(dc,GR_WIDTH/2,STEP_SIZE,GR_WIDTH/2,0);
+  GrLine(dc,GR_WIDTH/2,0,GR_WIDTH,0);
   PressAKey;
 
-  base->color=CYAN;
+  dc->color=CYAN;
   t=0;
   y=0.0;
   while (t<GR_WIDTH) {
@@ -24,13 +24,13 @@ U0 LowPassFilterDemo()
       y1=STEP_SIZE-STEP_SIZE*Exp(-0.01*t);
     else
       y1=STEP_SIZE*Exp(-0.01*(t-GR_WIDTH/2));
-    GrLine(base,t,y,t+dt,y1);
+    GrLine(dc,t,y,t+dt,y1);
     y=y1;
     t+=dt;
   }
   PressAKey;
 
-  base->color=BLACK;
+  dc->color=BLACK;
   t=0;
   y=0.0;
   while (t<GR_WIDTH) {
@@ -39,13 +39,13 @@ U0 LowPassFilterDemo()
       y1=0.99*y+.01*STEP_SIZE;
     else
       y1=0.99*y;
-    GrLine(base,t,y,t+dt,y1);
+    GrLine(dc,t,y,t+dt,y1);
     y=y1;
     t+=dt;
   }
   PressAKey;
 
-  base->color=RED;
+  dc->color=RED;
   t=0;
   y=0.0;
   while (t<GR_WIDTH) {
@@ -54,13 +54,13 @@ U0 LowPassFilterDemo()
       y1=LowPass1(.01,y,STEP_SIZE,dt);
     else
       y1=LowPass1(.01,y,0,dt);
-    GrLine(base,t,y,t+dt,y1);
+    GrLine(dc,t,y,t+dt,y1);
     y=y1;
     t+=dt;
   }
   PressAKey;
 
-  base->color=GREEN;
+  dc->color=GREEN;
   t=0;
   y=0.0;
   while (t<GR_WIDTH) {
@@ -69,14 +69,14 @@ U0 LowPassFilterDemo()
       y1=LowPass1(.1,y,STEP_SIZE,dt);
     else
       y1=LowPass1(.1,y,0,dt);
-    GrLine(base,t,y,t+dt,y1);
+    GrLine(dc,t,y,t+dt,y1);
     y=y1;
     t+=dt;
   }
   PressAKey;
 
-  GrDel(base);
-  GrClear;
+  GrDCDel(dc);
+  GrDCClear;
 }
 
 LowPassFilterDemo;

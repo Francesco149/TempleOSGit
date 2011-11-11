@@ -1,14 +1,14 @@
 //9 has graphics
 
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   I64 i,cx=0.85*task->win_pixel_width,cy=task->win_pixel_height+10;
-  base->pen_width=5;
+  dc->pen_width=5;
   for (i=2;i<=7;i++) {
-    base->color=gr_rainbow_10[9-i];
-    GrCircle3(base,cx,cy,0,(i+5)*5);
+    dc->color=gr_rainbow_10[9-i];
+    GrCircle3(dc,cx,cy,0,(i+5)*5);
   }
 }
 

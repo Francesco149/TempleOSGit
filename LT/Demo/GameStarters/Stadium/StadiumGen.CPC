@@ -3,8 +3,8 @@
 
 U0 StadiumGen()
 {
-  U0 (*fp_old_update)(GrBitMap *base);
-  GrBitMap *base;
+  U0 (*fp_old_update)(GrDC *dc);
+  GrDC *dc;
 
   WinMax;
   WinBorder(OFF);
@@ -16,10 +16,10 @@ U0 StadiumGen()
   fp_final_screen_update=NULL;
 
   WinSync(TRUE);
-  base=GrExtractBitMap(gr_screen_image,0,FONT_HEIGHT,GR_WIDTH,GR_HEIGHT);
+  dc=GrExtractDC(gr_screen_image,0,FONT_HEIGHT,GR_WIDTH,GR_HEIGHT);
 
-  LGRWrite("::/LT/Demo/GameStarters/Stadium/Stadium",base);
-  GrDel(base);
+  LGRWrite("::/LT/Demo/GameStarters/Stadium/Stadium",dc);
+  GrDCDel(dc);
  
   LtfCursor(ON);
   fp_final_screen_update=fp_old_update;

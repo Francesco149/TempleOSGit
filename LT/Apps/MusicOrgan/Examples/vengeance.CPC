@@ -20,16 +20,16 @@
 
 F64 t0=0;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   F64 dt=(tJ-t0)*music_tempo-6.0;
   if (t0 && 0<=dt<1.0) {
-    base->flags|=BMF_TRANSFORMATION;
-    GrRotZEqu(base->r,5.0*(dt-0.5));
-    GrRotXEqu(base->r,1.5-2.0*dt);
-    GrSetRotMat(base,base->r);
-    GrElemsPlot3b(base,200,55,0,__BIN_1);
+    dc->flags|=BMF_TRANSFORMATION;
+    GrRotZEqu(dc->r,5.0*(dt-0.5));
+    GrRotXEqu(dc->r,1.5-2.0*dt);
+    GrSetRotMat(dc,dc->r);
+    GrSpritePlot3b(dc,200,55,0,__BIN_1);
   }
 }
 

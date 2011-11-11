@@ -1,47 +1,47 @@
-GrBitMap *base[2]; //dbl buf
-I64 cur_base,;
+GrDC *dc[2]; //dbl buf
+I64 cur_dc,;
 BoolI8 restart;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *b)
+U0 DrawIt(TaskStruct *task,GrDC *b)
 {
   nounusedwarn task;
-  GrBlot(b,0,0,base[cur_base]);
+  GrBlot(b,0,0,dc[cur_dc]);
 }
 
 U0 AnimateTask(U64 dummy=0)
 {
   nounusedwarn dummy;
-  I64 x,y,x1,y1,cnt,next_base;
+  I64 x,y,x1,y1,cnt,next_dc;
   while (TRUE) {
-    next_base=cur_base^1;
+    next_dc=cur_dc^1;
 start_over:
     restart=FALSE;
-    GrClear(base[next_base]);
+    GrDCClear(dc[next_dc]);
     for (y=1;y<Fs->parent_task->win_pixel_height-1;y++) {
       for (x=1;x<Fs->parent_task->win_pixel_width-1;x++) {
 	cnt=0;
 	for (y1=y-1;y1<=y+1;y1++)
 	  for (x1=x-1;x1<=x+1;x1++)
-	    if (GrPeek(base[cur_base],x1,y1)==GREEN)
+	    if (GrPeek(dc[cur_dc],x1,y1)==GREEN)
 	      cnt++;
 	if (restart) goto start_over;
-	if (GrPeek(base[cur_base],x,y)==GREEN) {
+	if (GrPeek(dc[cur_dc],x,y)==GREEN) {
 	  if (cnt==3) {
-	    base[next_base]->color=GREEN;
-	    GrPlot(base[next_base],x,y);
+	    dc[next_dc]->color=GREEN;
+	    GrPlot(dc[next_dc],x,y);
 	  }
 	} else {
 //	  if (cnt==3) { //Use this for the classic rules
 	  if (cnt==2) {
-	    base[next_base]->color=GREEN;
-	    GrPlot(base[next_base],x,y);
+	    dc[next_dc]->color=GREEN;
+	    GrPlot(dc[next_dc],x,y);
 	  }
 	}
       }
       Yield;
     }
     Sleep(50);
-    cur_base=next_base;
+    cur_dc=next_dc;
   }
 }
 
@@ -49,14 +49,14 @@ public U0 Life()
 {
   I64 msg_code,cnt,x1,y1,x2,y2,p1,p2;
 
-  base[0]=GrNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  base[1]=GrNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  cur_base=0;
+  dc[0]=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  dc[1]=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  cur_dc=0;
   restart=FALSE;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  GrClear;
+  GrDCClear;
   PutS("$CL$");
 
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
@@ -74,24 +74,24 @@ public U0 Life()
 	cnt=0;
 	while (msg_code!=MSG_IP_L_UP) {
 	  restart=TRUE;
-	  base[cur_base]->color=ROP_EQU+GREEN;
-	  GrSpeedLine(base[cur_base],x1,y1,x2,y2,ip_speed);
+	  dc[cur_dc]->color=ROP_EQU+GREEN;
+	  GrSpeedLine(dc[cur_dc],x1,y1,x2,y2,ip_speed);
 	  restart=TRUE;
 	  msg_code=GetMsg(&p1,&p2,
   	    1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 	  x1=x2; y1=y2;
 	  x2=p1; y2=p2;
 	}
-	GrLine3(base[cur_base],x1,y1,0,x2,y2,0);
+	GrLine3(dc[cur_dc],x1,y1,0,x2,y2,0);
 	break;
       case MSG_KEY_DOWN:
 	break;
     }
   } while (msg_code!=MSG_KEY_DOWN || !p1);
   SettingsPop;
-  GrClear;
-  GrDel(base[0]);
-  GrDel(base[1]);
+  GrDCClear;
+  GrDCDel(dc[0]);
+  GrDCDel(dc[1]);
 }
 
 Life;

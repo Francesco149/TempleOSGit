@@ -23,7 +23,7 @@ background very easily.
 
 
 
-GrBitMap *background;
+GrDC *background;
 
 #define BALL_TIME	0.2
 #define MAX_FANS 10
@@ -35,11 +35,11 @@ I64 target_x,target_y,pitcher_x,pitcher_y;
 U0 UpdateWin(TaskStruct *task)
 {
   I64 i,*r;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 xx,yy,t0;
-  GrBlot(base,0,0,background);
+  GrBlot(dc,0,0,background);
   for (i=0;i<MAX_FANS;i++)
-    GrElemsPlotRotZ3b(base,x[i],y[i],0,__BIN_1,theta[i]);
+    GrSpritePlotRotZ3b(dc,x[i],y[i],0,__BIN_1,theta[i]);
   if (ball_t) {
     t0=(tP(task)-ball_t)/BALL_TIME;
     if (t0>1.0)
@@ -49,16 +49,16 @@ U0 UpdateWin(TaskStruct *task)
       yy=t0*target_y+(1.0-t0)*pitcher_y;
       xx/=1.5-t0;
       yy/=1.5-t0;
-      r=GrScaleMat(base->r,1.5-t0,base->mem_task);
-      Free(base->r);
-      GrSetRotMat(base,r);
-      base->flags|=BMF_TRANSFORMATION;
-      GrElemsPlotRotZ3b(base,xx,yy,0,__BIN_2,t0);
+      r=GrScaleMat(dc->r,1.5-t0,dc->mem_task);
+      Free(dc->r);
+      GrSetRotMat(dc,r);
+      dc->flags|=BMF_TRANSFORMATION;
+      GrSpritePlotRotZ3b(dc,xx,yy,0,__BIN_2,t0);
     }
   }
-  base->color=RED;
-  GrPutS(base,FONT_WIDTH,FONT_HEIGHT,"Peg the Fans");
-  GrDel(base);
+  dc->color=RED;
+  GrPutS(dc,FONT_WIDTH,FONT_HEIGHT,"Peg the Fans");
+  GrDCDel(dc);
 }
 
 U0 AnimateTask(U64 dummy=0)
@@ -142,7 +142,7 @@ U0 Stadium()
     }
   } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
 
-  GrDel(background);
+  GrDCDel(background);
   SettingsPop;
   MenuPop;
 }

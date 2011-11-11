@@ -1,4 +1,4 @@
-U0 DoIt()
+U0 Main()
 {
   I64 i;
   for (i=0;i<3;i++) {
@@ -19,7 +19,7 @@ U0 DontDoIt()
     PrintF("PopUpNoYes;\r PutS(\"%d\\r\\n\");\r",i);
 }
 
-DoIt;
+Main;
 PutS("//"); PressAKey;
 DontDoIt;
 

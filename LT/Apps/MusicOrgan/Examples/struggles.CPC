@@ -12,13 +12,13 @@
 F64 t0=tJ;
 #define CENTER_X	200
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   F64 dt=(tJ-t0)*music_tempo;
-  base->flags|=BMF_SYMMETRY;
-  GrSetSymmetry(base,CENTER_X,0,CENTER_X,1);
-  GrElemsPlot3(base,CENTER_X-40,75+dt,0,__BIN_1);
+  dc->flags|=BMF_SYMMETRY;
+  GrSetSymmetry(dc,CENTER_X,0,CENTER_X,1);
+  GrSpritePlot3(dc,CENTER_X-40,75+dt,0,__BIN_1);
 }
 
 U0 Song()

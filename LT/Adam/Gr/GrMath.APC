@@ -151,13 +151,13 @@ public U0 GrRot(I64 *r,I64 *x,I64 *y,I64 *z)
   *x=x1;*y=y1;*z=z1;
 }
 
-public U0 GrTransform(GrBitMap *base,I64 *x,I64 *y,I64 *z)
+public U0 GrTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
 {
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
-  GrRot(base->r,x,y,z);
-  *x+=base->x;
-  *y+=base->y;
-  *z+=base->z;
+  GrRot(dc->r,x,y,z);
+  *x+=dc->x;
+  *y+=dc->y;
+  *z+=dc->z;
 }
 
 public I64 *GrRotX(F64 phi,TaskStruct *mem_task=NULL)
@@ -305,26 +305,26 @@ public I64 *GrScaleMatEqu(I64 *m1,F64 s)
   return m1;
 }
 
-public U0 GrSetRotMat(GrBitMap *base,I64 *r)
+public U0 GrSetRotMat(GrDC *dc,I64 *r)
 {
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
 // (1.0/Sqrt(3))*65536=37837.22
   I64 xx=37838,yy=37837,zz=37837;
-  base->r=r;
+  dc->r=r;
   GrRot(r,&xx,&yy,&zz);
   //scaled 32 bits
-  base->r_norm=Sqrt(xx*xx+yy*yy+zz*zz)*65536;
+  dc->r_norm=Sqrt(xx*xx+yy*yy+zz*zz)*65536;
 }
 
-public U0 GrScalePenWidth(GrBitMap *base)
+public U0 GrScalePenWidth(GrDC *dc)
 {
   I64 d;
-  if (base->flags&BMF_TRANSFORMATION) {
-    if (base->pen_width) {
-      d=base->pen_width*base->r_norm+0x80000000;
-      base->pen_width=d.u32[1];
-      if (base->pen_width<1)
-	base->pen_width=1;
+  if (dc->flags&BMF_TRANSFORMATION) {
+    if (dc->pen_width) {
+      d=dc->pen_width*dc->r_norm+0x80000000;
+      dc->pen_width=d.u32[1];
+      if (dc->pen_width<1)
+	dc->pen_width=1;
     }
   }
 }
@@ -361,29 +361,29 @@ public I64 *GrSetTranslation(I64 *r,I64 x,I64 y,I64 z)
   return r;
 }
 
-public BoolI64 GrSetSymmetry(GrBitMap *base,I64 x1,I64 y1,I64 x2,I64 y2)
+public BoolI64 GrSetSymmetry(GrDC *dc,I64 x1,I64 y1,I64 x2,I64 y2)
 {
   F64 d;
   if (y1==y2 && x1==x2)
     return FALSE;
-  base->sym.snx=y2-y1;
-  base->sym.sny=x1-x2;
-  base->sym.snz=0;
-  if (d=Sqrt(SqrI64(base->sym.snx)+
-	     SqrI64(base->sym.sny)+
-	     SqrI64(base->sym.snz))) {
+  dc->sym.snx=y2-y1;
+  dc->sym.sny=x1-x2;
+  dc->sym.snz=0;
+  if (d=Sqrt(SqrI64(dc->sym.snx)+
+	     SqrI64(dc->sym.sny)+
+	     SqrI64(dc->sym.snz))) {
     d=gr_scale/d;
-    base->sym.snx *= d;
-    base->sym.sny *= d;
-    base->sym.snz *= d;
+    dc->sym.snx *= d;
+    dc->sym.sny *= d;
+    dc->sym.snz *= d;
   }
-  base->sym.sx=x1;
-  base->sym.sy=y1;
-  base->sym.sz=0;
+  dc->sym.sx=x1;
+  dc->sym.sy=y1;
+  dc->sym.sz=0;
   return TRUE;
 }
 
-public BoolI64 GrSetSymmetry3(GrBitMap *base,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 x3,I64 y3,I64 z3)
+public BoolI64 GrSetSymmetry3(GrDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 x3,I64 y3,I64 z3)
 {
   F64 d,x,y,z,xx,yy,zz;
   I64 xx1,yy1,zz1,xx2,yy2,zz2,*r;
@@ -397,8 +397,8 @@ public BoolI64 GrSetSymmetry3(GrBitMap *base,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,
   x=yy1*zz2-zz1*yy2;
   y=-xx1*zz2+zz1*xx2;
   z=xx1*yy2-yy1*xx2;
-  if (base->flags & BMF_TRANSFORMATION) {
-    r=base->r;
+  if (dc->flags & BMF_TRANSFORMATION) {
+    r=dc->r;
     xx=x*r[0]+y*r[1]+z*r[2];
     yy=x*r[4]+y*r[5]+z*r[6];
     zz=x*r[8]+y*r[9]+z*r[10];
@@ -406,40 +406,40 @@ public BoolI64 GrSetSymmetry3(GrBitMap *base,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,
   }
   if (d=Sqrt(Sqr(x)+Sqr(y)+Sqr(z))) {
     d=gr_scale/d;
-    base->sym.snx = d*x;
-    base->sym.sny = d*y;
-    base->sym.snz = d*z;
+    dc->sym.snx = d*x;
+    dc->sym.sny = d*y;
+    dc->sym.snz = d*z;
   }
-  if (base->flags & BMF_TRANSFORMATION)
-    (*base->transform)(base,&x1,&y1,&z1);
-  base->sym.sx=x1;
-  base->sym.sy=y1;
-  base->sym.sz=z1;
+  if (dc->flags & BMF_TRANSFORMATION)
+    (*dc->transform)(dc,&x1,&y1,&z1);
+  dc->sym.sx=x1;
+  dc->sym.sy=y1;
+  dc->sym.sz=z1;
   return TRUE;
 }
 
-public U0 GrReflect(GrBitMap *base,I64 *_x,I64 *_y,I64 *_z)
+public U0 GrReflect(GrDC *dc,I64 *_x,I64 *_y,I64 *_z)
 {
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
   I64 x=*_x<<32,y=*_y<<32,z=*_z<<32,
-    xx=*_x-base->sym.sx,yy=*_y-base->sym.sy,zz=*_z-base->sym.sz,
-    d=(xx*base->sym.snx+yy*base->sym.sny+zz*base->sym.snz)>>16,
+    xx=*_x-dc->sym.sx,yy=*_y-dc->sym.sy,zz=*_z-dc->sym.sz,
+    d=(xx*dc->sym.snx+yy*dc->sym.sny+zz*dc->sym.snz)>>16,
     xn,yn,zn,xx2,yy2,zz2;
-  xn=d*base->sym.snx>>15;
-  yn=d*base->sym.sny>>15;
-  zn=d*base->sym.snz>>15;
+  xn=d*dc->sym.snx>>15;
+  yn=d*dc->sym.sny>>15;
+  zn=d*dc->sym.snz>>15;
   xx=x-xn;
   yy=y-yn;
   zz=z-zn;
   xx2=x+xn;
   yy2=y+yn;
   zz2=z+zn;
-  if (SqrI64(xx>>16 -base->sym.sx<<16)+
-      SqrI64(yy>>16 -base->sym.sy<<16)+
-      SqrI64(zz>>16 -base->sym.sz<<16)<
-      SqrI64(xx2>>16-base->sym.sx<<16)+
-      SqrI64(yy2>>16-base->sym.sy<<16)+
-      SqrI64(zz2>>16-base->sym.sz<<16)) {
+  if (SqrI64(xx>>16 -dc->sym.sx<<16)+
+      SqrI64(yy>>16 -dc->sym.sy<<16)+
+      SqrI64(zz>>16 -dc->sym.sz<<16)<
+      SqrI64(xx2>>16-dc->sym.sx<<16)+
+      SqrI64(yy2>>16-dc->sym.sy<<16)+
+      SqrI64(zz2>>16-dc->sym.sz<<16)) {
     *_x=xx.i32[1]; *_y=yy.i32[1]; *_z=zz.i32[1];
   } else {
     *_x=xx2.i32[1]; *_y=yy2.i32[1]; *_z=zz2.i32[1];
@@ -447,7 +447,7 @@ public U0 GrReflect(GrBitMap *base,I64 *_x,I64 *_y,I64 *_z)
 }
 
 #help_index "Graphics/Mesh"
-public U0 GrLighting(GrBitMap *base,P3I32 *p1,P3I32 *p2,P3I32 *p3,ColorROPU32 color)
+public U0 GrLighting(GrDC *dc,P3I32 *p1,P3I32 *p2,P3I32 *p3,ColorROPU32 color)
 {
   P3I32 v1,v2;
   I64 i,vn_x,vn_y,vn_z;
@@ -478,7 +478,7 @@ public U0 GrLighting(GrBitMap *base,P3I32 *p1,P3I32 *p2,P3I32 *p3,ColorROPU32 co
 //It has been scaled to length 65536.
 
 //Light source has been scaled to length 65536.
-  i=(vn_x*base->ls.x+vn_y*base->ls.y+vn_z*base->ls.z)>>16;
+  i=(vn_x*dc->ls.x+vn_y*dc->ls.y+vn_z*dc->ls.z)>>16;
 //The dot product of the light source
 //vect and the surface normal
 //gives an illumination number.
@@ -502,11 +502,11 @@ public U0 GrLighting(GrBitMap *base,P3I32 *p1,P3I32 *p2,P3I32 *p3,ColorROPU32 co
     }
   }
   if (i<65536) {
-    base->color=ROPF_PROBABILITY_DITHER+color<<16+BLACK;
-    base->dither_probability=i;
+    dc->color=ROPF_PROBABILITY_DITHER+color<<16+BLACK;
+    dc->dither_probability=i;
   } else {
-    base->color=ROPF_PROBABILITY_DITHER+(color^8)<<16+color;
-    base->dither_probability=i-65536;
+    dc->color=ROPF_PROBABILITY_DITHER+(color^8)<<16+color;
+    dc->dither_probability=i-65536;
   }
 }
 

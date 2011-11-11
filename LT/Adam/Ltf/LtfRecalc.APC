@@ -133,7 +133,7 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
   TaskStruct *win_task=l->win_task,*mem_task=l->mem_task;
   BoolI8 resize=FALSE,extra_processing,same_win;
   BoolI8 blink_flag=Blink(,tP(win_task));
-  GrBitMap *base;
+  GrDC *dc;
   I64 cursor_y=MIN_I64,left_margin,right_margin;
   I64 y_plot_top,y_plot_bottom;
   U8 *ptr,buf[64],ch;
@@ -161,7 +161,7 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
     return;
   }
 
-  base=GrAlias(gr_refreshed_base,win_task);
+  dc=GrDCAlias(gr_dc,win_task);
 
   PushFD;
   Cli;
@@ -1236,12 +1236,12 @@ adjust_xy:
 	if (!cl->bin_data)
 	  cl->bin_data=LtfFindBin(l,cl->bin_num);
 	if (cl->bin_data && (to_screen||find_cur_entry)) {
-	  GrRst(base);
-	  base->flags&=~(BMF_DONT_DRAW|BMF_LOCATE_NEAREST);
+	  GrDCRst(dc);
+	  dc->flags&=~(BMF_DONT_DRAW|BMF_LOCATE_NEAREST);
 	  if (!to_screen || cl->flags&LTFLF_DONT_DRAW)
-	    base->flags|=BMF_DONT_DRAW;
-	  ii=GrElemsTypeMask(cl->bin_data->data);
-	  if (ii&(1<<GRET_FLOOD_FILL|1<<GRET_FLOOD_FILL_NOT))
+	    dc->flags|=BMF_DONT_DRAW;
+	  ii=GrSpriteTypeMask(cl->bin_data->data);
+	  if (ii&(1<<GRST_FLOOD_FILL|1<<GRST_FLOOD_FILL_NOT))
 	    i=cur_u8_attr>>4 &0xF ^ win_task->text_attr>>4 & 0xF;
 	  else {
 	    i=temp_u32_attr>>12&0xF ^ win_task->text_attr>>4 & 0xF;
@@ -1252,21 +1252,21 @@ adjust_xy:
 	    if (blink_flag && (cl==l->cur_entry || temp_u32_attr&LTFLT_BLINK))
 	      i^=0xF;
 	  }
-	  base->color=i;
+	  dc->color=i;
 	  if (find_cur_entry)
-	    base->flags|=BMF_LOCATE_NEAREST;
-	  base->nearest_grelem_num=0;
-	  base->nearest_dist=MAX_I64;
+	    dc->flags|=BMF_LOCATE_NEAREST;
+	  dc->nearest_grelem_num=0;
+	  dc->nearest_dist=MAX_I64;
 	  if (to_screen && l->cur_grelems==cl->bin_data->data) {
-	    base->flags|=BMF_LOCATE_NEAREST;
-	    base->cur_x=ipx;
-	    base->cur_y=ipy;
+	    dc->flags|=BMF_LOCATE_NEAREST;
+	    dc->cur_x=ipx;
+	    dc->cur_y=ipy;
 	  } else {
-	    base->cur_x=(l->x-x0)*FONT_WIDTH+pixel_left+scroll_x;
-	    base->cur_y=(l->y-y0)*FONT_HEIGHT+pixel_top+scroll_y;
+	    dc->cur_x=(l->x-x0)*FONT_WIDTH+pixel_left+scroll_x;
+	    dc->cur_y=(l->y-y0)*FONT_HEIGHT+pixel_top+scroll_y;
 	  }
-	  base->cur_z=0;
-	  base->bkcolor=i;
+	  dc->cur_z=0;
+	  dc->bkcolor=i;
 	  if (cl->flags & LTFLF_FROM_START) {
 	    xx=(x-k-x0)*FONT_WIDTH; //TODO: scrolling text is not length k
 	    yy=(y-y0)*FONT_HEIGHT;
@@ -1276,28 +1276,28 @@ adjust_xy:
 	    yy=(y-y0)*FONT_HEIGHT;
 	    zz=0;
 	  }
-	  if (ii&(1<<GRET_MESH|1<<GRET_SHIFTABLE_MESH)) {
+	  if (ii&(1<<GRST_MESH|1<<GRST_SHIFTABLE_MESH)) {
 	    if (!depth_buf) {
-	      GrAllocDepthBuf(base);
-	      depth_buf=base->depth_buf;
+	      GrDCAllocDepthBuf(dc);
+	      depth_buf=dc->depth_buf;
 	    } else
-	      base->depth_buf=depth_buf;
-	    GrRotZEqu(base->r,tP(win_task)*3.1);
-	    GrRotYEqu(base->r,tP(win_task)*1.9);
-	    GrRotXEqu(base->r,tP(win_task));
-	    base->flags|=BMF_TRANSFORMATION;
-	    base->x=xx;
-	    base->y=yy;
-	    base->z=GR_Z_ALL;
+	      dc->depth_buf=depth_buf;
+	    GrRotZEqu(dc->r,tP(win_task)*3.1);
+	    GrRotYEqu(dc->r,tP(win_task)*1.9);
+	    GrRotXEqu(dc->r,tP(win_task));
+	    dc->flags|=BMF_TRANSFORMATION;
+	    dc->x=xx;
+	    dc->y=yy;
+	    dc->z=GR_Z_ALL;
 	    xx=0; yy=0; zz=0;
 	  }
-	  GrElemsPlot3(base,xx,yy,zz,cl->bin_data->data);
-	  base->depth_buf=NULL;
+	  GrSpritePlot3(dc,xx,yy,zz,cl->bin_data->data);
+	  dc->depth_buf=NULL;
 	  if (to_screen && l->cur_grelems==cl->bin_data->data)
-	    l->cur_grelem_num=base->nearest_grelem_num;
-	  base->flags&=~(BMF_LOCATE_NEAREST|BMF_DONT_DRAW|BMF_TRANSFORMATION);
-	  if (base->nearest_dist<=D) {
-	    D=base->nearest_dist;
+	    l->cur_grelem_num=dc->nearest_grelem_num;
+	  dc->flags&=~(BMF_LOCATE_NEAREST|BMF_DONT_DRAW|BMF_TRANSFORMATION);
+	  if (dc->nearest_dist<=D) {
+	    D=dc->nearest_dist;
 	    col=cl->min_col;
 	  }
 	}
@@ -1643,7 +1643,7 @@ skip:
   }
   if (to_screen)
     l->refresh_cnt++;
-  GrDel(base);
+  GrDCDel(dc);
   Free(depth_buf);
   if (unlock)
     LtfUnlock(l);
@@ -1785,7 +1785,7 @@ public U64 LtfCurAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 
 public U64 LtfAuxAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/LT/OSMain/Adam1a.HPZ,1240] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1241] LTFF_ATTR_BY_FILENAME flag is probably set
+  //[C:/LT/OSMain/Adam1a.HPZ,1241] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1242] LTFF_ATTR_BY_FILENAME flag is probably set
   //which means [C:/LT/Adam/Dsk2a.APZ,274] SetDrvTextAttr() is overriding it.
   U64 result=0;
   Ltf *l;

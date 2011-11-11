@@ -63,17 +63,17 @@ BMPFile *BMPFileNew(U64 width,U64 height,U64 bits)
 }
 
 
-public BMPFile *BMPFile4To(GrBitMap *base)
+public BMPFile *BMPFile4To(GrDC *dc)
 {
 //To Windows 4 bit BMP
   U8 *src,j;
-  U64 wd=base->width_internal>>3,pl=wd*base->height;
-  U8 *img=base->body;
-  BMPFile *r=BMPFileNew(base->width,base->height,4);
+  U64 wd=dc->width_internal>>3,pl=wd*dc->height;
+  U8 *img=dc->body;
+  BMPFile *r=BMPFileNew(dc->width,dc->height,4);
   I64 x,y,i;
   U8 *rgb;
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -90,7 +90,7 @@ public BMPFile *BMPFile4To(GrBitMap *base)
   }
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img+pl;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -107,7 +107,7 @@ public BMPFile *BMPFile4To(GrBitMap *base)
   }
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img+pl<<1;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -124,7 +124,7 @@ public BMPFile *BMPFile4To(GrBitMap *base)
   }
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img+pl*3;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -142,18 +142,18 @@ public BMPFile *BMPFile4To(GrBitMap *base)
   return r;
 }
 
-public BMPFile *BMPFile24To(GrBitMap *base)
+public BMPFile *BMPFile24To(GrDC *dc)
 {
 //To Windows 24 bit BMP
   U8 *src,j;
-  U64 wd=base->width_internal>>3,pl=wd*base->height;
-  U8 *img=base->body;
-  BMPFile *r=BMPFileNew(base->width,base->height,24);
+  U64 wd=dc->width_internal>>3,pl=wd*dc->height;
+  U8 *img=dc->body;
+  BMPFile *r=BMPFileNew(dc->width,dc->height,24);
   I64 x,y,i;
   RGBEntry *rgb;
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -166,7 +166,7 @@ public BMPFile *BMPFile24To(GrBitMap *base)
   }
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img+pl;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -179,7 +179,7 @@ public BMPFile *BMPFile24To(GrBitMap *base)
   }
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img+pl<<1;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -192,7 +192,7 @@ public BMPFile *BMPFile24To(GrBitMap *base)
   }
 
   rgb=r><(U8 *)+r->data_offset;
-  for (y=base->height-1;y>=0;y--) {
+  for (y=dc->height-1;y>=0;y--) {
     src=y*wd+img+pl*3;
     for (x=0;x<wd;x++) {
       j=*src++;
@@ -209,14 +209,14 @@ public BMPFile *BMPFile24To(GrBitMap *base)
   return r;
 }
 
-public U64 BMPFileWrite(U8 *filename,GrBitMap *base,U64 bits=4)
+public U64 BMPFileWrite(U8 *filename,GrDC *dc,U64 bits=4)
 { //Window's BMP Files
   U64 size;
   BMPFile *r;
   if (bits==4)
-    r=BMPFile4To(base);
+    r=BMPFile4To(dc);
   else if (bits==24)
-    r=BMPFile24To(base);
+    r=BMPFile24To(dc);
   else {
     PutS("Format Not Supported.\r\n");
     return 0;
@@ -252,16 +252,16 @@ U8 *BMPFilePaletteNew(BMPFile *r)
 
 U8 ms_paint_palette[16]={0,4,2,6,1,5,3,8,7,12,10,14,9,13,11,15};
 
-public GrBitMap *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
+public GrDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
 { //Window's BMP Files
   I64 i,j;
   U8 *palette_map,*ptr1;
   BMPFile *r;
-  GrBitMap *result=NULL;
+  GrDC *result=NULL;
   if (ptr1=FileRead(filename)) {
     r=ptr1;
     if (0<r->width<MAX_I32 && 0<r->height<MAX_I32) {
-      result=GrNew(BMT_COLOR4,r->width,r->height);
+      result=GrDCNew(BMT_COLOR4,r->width,r->height);
       ptr1+=r->data_offset;
       if (r->bit_cnt==4) {
 	if (use_ms_paint_palette)
@@ -281,7 +281,7 @@ public GrBitMap *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
 	  Free(palette_map);
       } else {
 	PutS("Format Not Supported.\r\n");
-	GrDel(result);
+	GrDCDel(result);
 	result=NULL;
       }
     } else
@@ -295,9 +295,9 @@ public GrBitMap *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
 
 public U64 BMPFileCaptureScreen(U8 *filename,U64 bits=4)
 {
-  GrBitMap *base=GrCaptureScreen;
-  U64 size=BMPFileWrite(filename,base,bits);
-  GrDel(base);
+  GrDC *dc=GrCaptureScreen;
+  U64 size=BMPFileWrite(filename,dc,bits);
+  GrDCDel(dc);
   return size;
 }
 

@@ -1,9 +1,9 @@
 //"ls" is light source.
 
-U0 Lighting(GrBitMap *base,P3I32 *ls,P3I32 *poly,I64 color)
+U0 Lighting(GrDC *dc,P3I32 *ls,P3I32 *poly,I64 color)
 { //color is a color from 0-7
   P3I32 v1,v2;
-  I64 *r=base->r,i,vn_x,vn_y,vn_z;
+  I64 *r=dc->r,i,vn_x,vn_y,vn_z;
   F64 d;
 
   v1.x=poly[0].x-poly[1].x;
@@ -42,11 +42,11 @@ U0 Lighting(GrBitMap *base,P3I32 *ls,P3I32 *poly,I64 color)
 //will pick from two colors.
 //Probability dithering does not work with pen_width>1 at this time.
   if (i<0) {
-    base->color=ROPF_PROBABILITY_DITHER+BLACK<<16+color;
-    base->dither_probability=-i;
+    dc->color=ROPF_PROBABILITY_DITHER+BLACK<<16+color;
+    dc->dither_probability=-i;
   } else {
-    base->color=ROPF_PROBABILITY_DITHER+(color^8)<<16+color;
-    base->dither_probability=i;
+    dc->color=ROPF_PROBABILITY_DITHER+(color^8)<<16+color;
+    dc->dither_probability=i;
   }
 }
 
@@ -54,7 +54,7 @@ U0 Lighting(GrBitMap *base,P3I32 *ls,P3I32 *poly,I64 color)
 #define FACES	32
 #define SLOP	0.03 //Gaps appear without this.
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   Ctrl *c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES);
   ViewAnglesState *s=c->state;
@@ -63,15 +63,15 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   I64 i,j,cx=task->win_pixel_width/2,cy=task->win_pixel_height/2;
   P3I32 poly[3],ls;
 
-  base->flags|=BMF_TRANSFORMATION;
-  GrAllocDepthBuf(base);
+  dc->flags|=BMF_TRANSFORMATION;
+  GrDCAllocDepthBuf(dc);
 
-  GrIdentEqu(base->r);
-  GrRotZEqu(base->r,s->az);
-  GrRotYEqu(base->r,s->ay);
-  GrRotXEqu(base->r,s->ax+pi);
-  GrScaleMatEqu(base->r,tt);
-  GrSetRotMat(base,base->r);
+  GrIdentEqu(dc->r);
+  GrRotZEqu(dc->r,s->az);
+  GrRotYEqu(dc->r,s->ay);
+  GrRotXEqu(dc->r,s->ax+pi);
+  GrScaleMatEqu(dc->r,tt);
+  GrSetRotMat(dc,dc->r);
 
   ls.x=-(ipx-task->win_pixel_left-task->win_scroll_x-cx);
   ls.y=-(ipy-task->win_pixel_top-task->win_scroll_y-cy);
@@ -82,9 +82,9 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
   ls.z*=d;
 
 
-  base->x=cx;
-  base->y=cy;
-  base->z=MaxI64(cx,cy);
+  dc->x=cx;
+  dc->y=cy;
+  dc->z=MaxI64(cx,cy);
   radius =MinI64(cx,cy)/2;
 
 
@@ -105,8 +105,8 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
       poly[2].x=radius*Cos(phi2)*Cos(theta+2*pi/FACES/2);
       poly[2].y=radius*Cos(phi2)*Sin(theta+2*pi/FACES/2);
       poly[2].z=radius*Sin(phi2);
-      Lighting(base,&ls,poly,BLUE);
-      GrFillPoly3(base,3,poly);
+      Lighting(dc,&ls,poly,BLUE);
+      GrFillPoly3(dc,3,poly);
 
       poly[2].x=radius*Cos(phi2)*Cos(theta +2*pi/FACES/2);
       poly[2].y=radius*Cos(phi2)*Sin(theta +2*pi/FACES/2);
@@ -117,8 +117,8 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
       poly[0].x=radius*Cos(phi)*Cos(theta2);
       poly[0].y=radius*Cos(phi)*Sin(theta2);
       poly[0].z=radius*Sin(phi);
-      Lighting(base,&ls,poly,BLUE);
-      GrFillPoly3(base,3,poly);
+      Lighting(dc,&ls,poly,BLUE);
+      GrFillPoly3(dc,3,poly);
 
       //Lower half
       poly[2].x=radius*Cos(phi)*Cos(theta);
@@ -130,8 +130,8 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
       poly[0].x=radius*Cos(phi2)*Cos(theta+2*pi/FACES/2);
       poly[0].y=radius*Cos(phi2)*Sin(theta+2*pi/FACES/2);
       poly[0].z=-radius*Sin(phi2);
-      Lighting(base,&ls,poly,RED);
-      GrFillPoly3(base,3,poly);
+      Lighting(dc,&ls,poly,RED);
+      GrFillPoly3(dc,3,poly);
 
       poly[0].x=radius*Cos(phi2)*Cos(theta +2*pi/FACES/2);
       poly[0].y=radius*Cos(phi2)*Sin(theta +2*pi/FACES/2);
@@ -142,18 +142,18 @@ U0 DrawIt(TaskStruct *task,GrBitMap *base)
       poly[2].x=radius*Cos(phi)*Cos(theta2);
       poly[2].y=radius*Cos(phi)*Sin(theta2);
       poly[2].z=-radius*Sin(phi);
-      Lighting(base,&ls,poly,RED);
-      GrFillPoly3(base,3,poly);
+      Lighting(dc,&ls,poly,RED);
+      GrFillPoly3(dc,3,poly);
     }
   }
 }
 
-//See [::/LT/Demo/Graphics/GrElem2.CPZ] ::/LT/Demo/Graphics/GrElem2.CPZ.
-//for a GrElem example.
+//See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
+//for a GrSprite example.
 
-//See [C:/LT/Adam/Gr/GrElemMesh.APZ,901] GrElemMesh() for a fancy example.
+//See [C:/LT/Adam/Gr/GrSpriteMesh.APZ,901] GrSpriteMesh() for a fancy example.
 
-U0 DoIt()
+U0 Main()
 {
   Ctrl *c=ViewAnglesNew;
   ViewAnglesState *s=c->state;
@@ -179,4 +179,4 @@ U0 DoIt()
   ViewAnglesDel;
 }
 
-DoIt;
+Main;

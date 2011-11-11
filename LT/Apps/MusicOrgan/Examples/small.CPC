@@ -72,15 +72,15 @@ __BIN_5,__BIN_4,__BIN_3,__BIN_1
 
 F64 t0=tJ;
 
-U0 DrawIt(TaskStruct *task,GrBitMap *base)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   U8 *inter;
   F64 tt=4.0*tJ,dt=(tJ-t0)*music_tempo;
-  inter=GrElemsInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
-  GrElemsPlot3(base,180,40,0,inter);
+  inter=GrSpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
+  GrSpritePlot3(dc,180,40,0,inter);
   Free(inter);
   if (dt>24.0)
-    GrElemsPlot3(base,task->win_pixel_width-12.0*(dt-24.0),40,0,__BIN_6);
+    GrSpritePlot3(dc,task->win_pixel_width-12.0*(dt-24.0),40,0,__BIN_6);
 }
 
 U0 Song()

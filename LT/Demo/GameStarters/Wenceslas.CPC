@@ -89,16 +89,8 @@ AcctRegExecuteBranch("LT/Wenceslas");
 
 
 
-
-
-
-
-
-
-
-
-
     /* <7> <7> (image) */
+
 
 
 #define NUM_FLAKES	0x8000
@@ -136,14 +128,14 @@ class Step
 U0 UpdateWin(TaskStruct *task)
 {
   I64 r[16],i,w=task->win_pixel_width,h=task->win_pixel_height;
-  GrBitMap *base=GrAlias(gr_refreshed_base,task);
+  GrDC *dc=GrDCAlias(gr_dc,task);
   U8 *img;
   Step *temps;
   Peasant *tempp;
   F64 tt;
   BoolI8 old_preempt=Preempt(OFF);
 
-  base->pen_width=1;
+  dc->pen_width=1;
   for (i=0;i<NUM_TREES;i++) {
     if (trees[i].y<=h/2) { //Draw trees behind house
       if (trees[i].fire_frame_index) {
@@ -153,13 +145,13 @@ U0 UpdateWin(TaskStruct *task)
 	  img=__BIN_5;
       } else
 	img=__BIN_3;
-      GrElemsPlot3(base,trees[i].x,trees[i].y,0,img);
+      GrSpritePlot3(dc,trees[i].x,trees[i].y,0,img);
     }
   }
 
-  GrElemsPlot3(base,w/2,h/2,0,__BIN_6);
+  GrSpritePlot3(dc,w/2,h/2,0,__BIN_6);
   if (tP(task)<door_open_t0+1.0)
-    GrElemsPlot3(base,w/2,h/2,0,__BIN_7);
+    GrSpritePlot3(dc,w/2,h/2,0,__BIN_7);
 
   for (i=0;i<NUM_TREES;i++) {
     if (trees[i].y>h/2) { //Draw trees in front of house
@@ -170,61 +162,61 @@ U0 UpdateWin(TaskStruct *task)
 	  img=__BIN_5;
       } else
 	img=__BIN_3;
-      GrElemsPlot3(base,trees[i].x,trees[i].y,0,img);
+      GrSpritePlot3(dc,trees[i].x,trees[i].y,0,img);
     }
   }
 
   temps=step_root.next;
   while (temps!=&step_root) {
     if (tP(task)-temps->t0<2.0)
-      base->color=DKGRAY;
+      dc->color=DKGRAY;
     else
-      base->color=LTGRAY;
-    base->pen_width=2;
-    GrPlot3(base,temps->x,temps->y,0);
+      dc->color=LTGRAY;
+    dc->pen_width=2;
+    GrPlot3(dc,temps->x,temps->y,0);
     temps=temps->next;
   }
 
-  base->pen_width=1;
+  dc->pen_width=1;
   tempp=peasant_root.next;
   while (tempp!=&peasant_root) {
     GrIdentEqu(r);
     GrRotYEqu(r,tempp->theta+pi/2);
     GrRotXEqu(r,pi/6);
     if (tempp->stopped)
-      base->color=LTCYAN;
+      dc->color=LTCYAN;
     else
-      base->color=CYAN;
-    GrElemsPlotRotMat3b(base,tempp->x,tempp->y,0,__BIN_2,r);
+      dc->color=CYAN;
+    GrSpritePlotRotMat3b(dc,tempp->x,tempp->y,0,__BIN_2,r);
     tempp=tempp->next;
   }
  
-  base->pen_width=1;
+  dc->pen_width=1;
   GrIdentEqu(r);
   GrRotYEqu(r,king_theta+pi/2);
   GrRotXEqu(r,pi/6);
-  GrElemsPlotRotMat3b(base,king_x,king_y,0,__BIN_1,r);
+  GrSpritePlotRotMat3b(dc,king_x,king_y,0,__BIN_1,r);
 
-  base->pen_width=1;
-  base->color=WHITE;
+  dc->pen_width=1;
+  dc->color=WHITE;
   for (i=0;i<NUM_FLAKES;i++)
-    GrPlot(base,(flakes[i].x+snow_x)%task->win_pixel_width,
+    GrPlot(dc,(flakes[i].x+snow_x)%task->win_pixel_width,
 		(flakes[i].y+snow_y)%task->win_pixel_height);
  
   if (tf) {
-    base->color=LTRED;
+    dc->color=LTRED;
     if (Blink(,tP(task)))
-      GrPutS(base,w/2-(FONT_WIDTH*14)/2,h/2+FONT_HEIGHT,"Game Completed");
+      GrPutS(dc,w/2-(FONT_WIDTH*14)/2,h/2+FONT_HEIGHT,"Game Completed");
     tt=tf;
   } else {
     tt=tP(task);
   }
-  base->color=LTBLUE;
-  GrPrintF(base,0,0,"Freezing Peasants:%d Time:%3.2f Best:%3.2f",
+  dc->color=LTBLUE;
+  GrPrintF(dc,0,0,"Freezing Peasants:%d Time:%3.2f Best:%3.2f",
     not_stopped_cnt,tt-t0,best_score);
 
   Preempt(old_preempt);
-  GrDel(base);
+  GrDCDel(dc);
 }
 
 U0 StepNew(TaskStruct *task,I64 x,I64 y,F64 theta,BoolI8 king)
@@ -264,7 +256,7 @@ U0 Init()
     flakes[i].y=RandU16;
   }
 
-  GrElemsExtents(__BIN_3,&min_x,&max_x,&min_y,&max_y);
+  GrSpriteExtents(__BIN_3,&min_x,&max_x,&min_y,&max_y);
   for (i=0;i<NUM_TREES;i++) {
     trees[i].x=RandU16%(w-2*BORDER-(max_x-min_x+1))+BORDER-min_x;
     trees[i].y=RandU16%(h-2*BORDER-(max_y-min_y+1))+BORDER-min_y;
@@ -274,7 +266,7 @@ U0 Init()
   step_root.next=step_root.last=&step_root;
   king_step_root.next=king_step_root.last=&king_step_root;
 
-  GrElemsExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
+  GrSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
   peasant_root.next=peasant_root.last=&peasant_root;
   for (i=0;i<NUM_PEASANTS;i++) {
     tempp=MAlloc(sizeof(Peasant));

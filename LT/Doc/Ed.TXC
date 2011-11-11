@@ -134,7 +134,7 @@ Save and Exit           ESC
 `Msg(2,0x1B,0x0100000001);`
 
 
-See editor key dispatch [C:/LT/Adam/Ltf/LtfEd.APZ,1398] LtfPutKey(),
+See editor key dispatch [C:/LT/Adam/Ltf/LtfEd.APZ,1411] LtfPutKey(),
 [C:/LT/Accts/TAD/Adam3dKeyPlugIns.APZ,12] MyPutKey() and
 [::/LT/Doc/KeyBoard.TXZ] ::/LT/Doc/KeyBoard.TXZ.
  

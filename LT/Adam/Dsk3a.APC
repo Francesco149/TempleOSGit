@@ -240,7 +240,7 @@ U0 LTFSDrvView(U8 drv_let=0)
   LTPrt *p=Drv2Prt(drv_let);
   U64 lohi,c1,i,x,y,l,s;
   U8 *bitmap;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
   s=(p->size+p->spc-1)/p->spc;
@@ -250,7 +250,7 @@ U0 LTFSDrvView(U8 drv_let=0)
   WinMax;
   Fs->update_win=NULL;
 
-  GrClear;
+  GrDCClear;
   try {
     i=((s+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
@@ -263,10 +263,10 @@ U0 LTFSDrvView(U8 drv_let=0)
 	lohi=i*s;
 	c1=lohi/l;
 	if (Bt(bitmap,c1))
-	  base->color=ROP_XOR+BLUE;
+	  dc->color=ROP_XOR+BLUE;
 	else
-	  base->color=ROP_XOR+WHITE;
-	GrPlot(base,x,y);
+	  dc->color=ROP_XOR+WHITE;
+	GrPlot(dc,x,y);
 	i++;
       }
     }
@@ -276,8 +276,8 @@ U0 LTFSDrvView(U8 drv_let=0)
   GetChar;
  
   SettingsPop;
-  GrClear;
-  GrDel(base);
+  GrDCClear;
+  GrDCDel(dc);
 }
 
 U0 FAT32DrvView(U8 drv_let=0)
@@ -285,7 +285,7 @@ U0 FAT32DrvView(U8 drv_let=0)
   LTPrt *p=Drv2Prt(drv_let);
   U64 lohi,c1,i,x,y,l,s;
   U32 *bitmap;
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
   s=(p->size+p->spc-1)/p->spc;
  
@@ -294,7 +294,7 @@ U0 FAT32DrvView(U8 drv_let=0)
   WinMax;
   Fs->update_win=NULL;
 
-  GrClear;
+  GrDCClear;
   try {
     i=(s*4+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
@@ -307,10 +307,10 @@ U0 FAT32DrvView(U8 drv_let=0)
 	lohi=i*s;
 	c1=lohi/l;
 	if (bitmap[c1])
-	  base->color=ROP_XOR+BLUE;
+	  dc->color=ROP_XOR+BLUE;
 	else
-	  base->color=ROP_XOR+WHITE;
-	GrPlot(base,x,y);
+	  dc->color=ROP_XOR+WHITE;
+	GrPlot(dc,x,y);
 	i++;
       }
     }
@@ -320,8 +320,8 @@ U0 FAT32DrvView(U8 drv_let=0)
   GetChar;
  
   SettingsPop;
-  GrClear;
-  GrDel(base);
+  GrDCClear;
+  GrDCDel(dc);
 }
 
 public U0 DrvView(U8 drv_let=0)
@@ -349,7 +349,7 @@ public U0 DskView(U8 drv_let=0)
     radius;
   LTPrt *p;
   LTBlkDev *bdev=Drv2BlkDev(drv_let);
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
   F64 sect_start,sect_end;
 
   while (TRUE) {
@@ -364,13 +364,13 @@ public U0 DskView(U8 drv_let=0)
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->update_win=NULL;
 
-  GrClear;
+  GrDCClear;
   if (h<v)
     radius=0.4*h;
   else
     radius=0.4*v;
-  base->color=ROP_EQU+BLACK;
-  GrCircle(base,h>>1,v>>1,radius);
+  dc->color=ROP_EQU+BLACK;
+  GrCircle(dc,h>>1,v>>1,radius);
 
   j=1;
   for (i=0;i<NUM_LTPRTS;i++) {
@@ -378,18 +378,18 @@ public U0 DskView(U8 drv_let=0)
     if (bdev==p->bdev && p->type) {
       sect_start=-(p->offset*2*pi/(bdev->max_blk+1));
       sect_end	=-((p->offset+p->size)*2*pi/(bdev->max_blk+1));
-      base->color=ROP_EQU+BLACK;
-      GrLine(base,h>>1,v>>1,
+      dc->color=ROP_EQU+BLACK;
+      GrLine(dc,h>>1,v>>1,
 	h>>1+radius*Cos(sect_start),
 	v>>1+radius*Sin(sect_start));
-      GrLine(base,h>>1,v>>1,
+      GrLine(dc,h>>1,v>>1,
 	h>>1+radius*Cos(sect_end),
 	v>>1+radius*Sin(sect_end));
 
-      base->color=ROP_EQU+j;
-      GrPrintF(base,0,v-FONT_HEIGHT*j,"%C %Z",Prt2Drv(p),
+      dc->color=ROP_EQU+j;
+      GrPrintF(dc,0,v-FONT_HEIGHT*j,"%C %Z",Prt2Drv(p),
 	p->type.u16[0],"ST_PRT_TYPES");
-      GrFloodFill(base,
+      GrFloodFill(dc,
 	h>>1+(radius-4)*Cos((sect_start+sect_end)/2),
 	v>>1+(radius-4)*Sin((sect_start+sect_end)/2),FALSE);
       j++;
@@ -398,8 +398,8 @@ public U0 DskView(U8 drv_let=0)
 
   GetChar(NULL,FALSE);
   SettingsPop;
-  GrClear;
-  GrDel(base);
+  GrDCClear;
+  GrDCDel(dc);
 }
 
 #help_index "Info;File/Cmd Line (Typically);Cmd Line (Typically);File/Install Related;Install"

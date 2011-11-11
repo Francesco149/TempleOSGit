@@ -17,15 +17,15 @@ U0 Init()
  
 U0 Bounce()
 {
-  GrBitMap *base=GrAlias(gr_persistent_base,Fs);
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
   I64 i,msg_code,p1,update;
   Init;
   try { //Catch <CTRL-ALT-C>
     while (TRUE) {
       update=win_updates;
       do for (i=0;i<16;i++) {
-	  base->color=i;
-	  GrPlot(base,x[i].i32[1],y[i].i32[1]);
+	  dc->color=i;
+	  GrPlot(dc,x[i].i32[1],y[i].i32[1]);
 	  x[i]+=dx[i];
 	  y[i]+=dy[i];
 	  if (!(0<=x[i]<Fs->win_pixel_width<<32)) {
@@ -45,13 +45,13 @@ U0 Bounce()
 	  else
 	    Init;
 	} else
-	  GrClear(base);
+	  GrDCClear(dc);
     }
 bc_done:
   } catch
     CatchAll;
-  GrClear(base);
-  GrDel(base);
+  GrDCClear(dc);
+  GrDCDel(dc);
 }
  
 Bounce;

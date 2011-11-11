@@ -73,7 +73,7 @@ chained to parents.  This provides scopes for vars and functions.
 * Fs->hash_table holds user C+ syms and if a sym is not found, it checks 
 parents.  When a duplicate sym is added to the table, it overshadows the 
 previous sym unless you have done [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1397] OPTf_REPLACE_SYMS).  When developing 
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1398] OPTf_REPLACE_SYMS).  When developing 
 software, typically you include the file at the cmd prompt, make changes and 
 reinclude it.  Old syms are overshadowed but they are still there.  
 Periodically, kill the TASK and start fresh when mem is low.  If you wish

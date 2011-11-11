@@ -11,7 +11,7 @@ it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-128,529 lines of code including the kernel, the 64-bit compiler, the graphics 
+129,010 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -139,9 +139,9 @@ putting graphics on the screen.  Hardware graphics acceleration is not used,
 so this is possible.  See [::/LT/Doc/MultiCore.TXZ] LoseThos MultiCore.
 
 There is no distinction between the terms "task", "process" or "thread".  All 
-have a task record, [C:/LT/OSMain/Adam1a.HPZ,3081] TaskStruct(), pointed to
+have a task record, [C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct(), pointed to
 by the FS segment register and 
-are accessed with Fs-> while Gs-> points to a [C:/LT/OSMain/Adam1a.HPZ,3708]
+are accessed with Fs-> while Gs-> points to a [C:/LT/OSMain/Adam1a.HPZ,3714]
 CPUStruct for the current CPU 
 core.  Each task can have just one window, but a task can have children with 
 windows.  (The segment registers are just used as extra registers -- there is 
