@@ -66,9 +66,9 @@ public U0 ProfBin(U8 *start,U64 cnt=PF_ARRAY_CNT*3)
 public U0 ProfCPUSet(U64 num)
 {
   if (num>=mp_cnt)
-    PutS(ST_ERR_ST "Invalid CPU\r\n");
+    ST_ERR_ST "Invalid CPU\r\n";
   else if (cpu_structs[pf_cpu].timer_irq_chain!=&ProfTimerInt)
-    PutS(ST_ERR_ST "Unchaining not implemented!\r\n");
+    ST_ERR_ST "Unchaining not implemented!\r\n";
   else {
     cpu_structs[pf_cpu].timer_irq_chain=fp_chained_timer_routine;
     pf_cpu=num;
@@ -125,9 +125,9 @@ public U0 ProfRep(U64 filter_cnt=1)
 	StrFirstRem(buf3,"+",buf2);
 	if (StrCmp(buf2,last_buf)) {
 	  if (*last_buf && routine_total>=filter_cnt) {
-	    PrintF("$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
-	      routine_total*10000/total_time%100,routine_total);
-	    PrintF("%s\r\n$FG$",last_buf);
+	    "$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
+	      routine_total*10000/total_time%100,routine_total;
+	    "%s\r\n$FG$",last_buf;
 	  }
 	  StrCpy(last_buf,buf2);
 	  routine_total=0;
@@ -135,19 +135,19 @@ public U0 ProfRep(U64 filter_cnt=1)
 	hits=pf_array[i];
 	routine_total+=hits;
 	if (hits>=filter_cnt) {
-	  PrintF("%3d.%02d%% %08X:",hits*100/total_time,
-	  hits*10000/total_time%100,hits);
+	  "%3d.%02d%% %08X:",hits*100/total_time,
+	  hits*10000/total_time%100,hits;
 	  if (!PutSrcLink(ip,ip-last_ip))
-	    PrintF("%s\r\n",buf);
+	    "%s\r\n",buf;
 	  else
 	    CrLf;
 	  last_ip=ip;
 	}
       }
       if (*last_buf && routine_total>=filter_cnt) {
-	PrintF("$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
-	  routine_total*10000/total_time%100,routine_total);
-	PrintF("%s\r\n$FG$",last_buf);
+	"$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
+	  routine_total*10000/total_time%100,routine_total;
+	"%s\r\n$FG$",last_buf;
       }
       break;
     case PFM_ALL:
@@ -166,28 +166,28 @@ public U0 ProfRep(U64 filter_cnt=1)
 	StrFirstRem(buf3,"+",buf2);
 	if (StrCmp(buf2,last_buf)) {
 	  if (*last_buf && routine_total>=filter_cnt) {
-	    PrintF("$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
-	      routine_total*10000/total_time%100,routine_total);
-	    PrintF("%s\r\n$FG$",last_buf);
+	    "$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
+	      routine_total*10000/total_time%100,routine_total;
+	    "%s\r\n$FG$",last_buf;
 	  }
 	  StrCpy(last_buf,buf2);
 	  routine_total=0;
 	}
 	routine_total+=hits;
 	if (hits>=filter_cnt) {
-	  PrintF("%3d.%02d%% %08X:",hits*100/total_time,
-	  hits*10000/total_time%100,hits);
+	  "%3d.%02d%% %08X:",hits*100/total_time,
+	  hits*10000/total_time%100,hits;
 	  if (!PutSrcLink(ip,ip-last_ip))
-	    PrintF("%s\r\n",buf);
+	    "%s\r\n",buf;
 	  else
 	    CrLf;
 	  last_ip=ip;
 	}
       }
       if (*last_buf && routine_total>=filter_cnt) {
-	PrintF("$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
-	  routine_total*10000/total_time%100,routine_total);
-	PrintF("%s\r\n$FG$",last_buf);
+	"$FG,GREEN$%3d.%02d%% %08X:",routine_total*100/total_time,
+	  routine_total*10000/total_time%100,routine_total;
+	"%s\r\n$FG$",last_buf;
       }
       break;
   }

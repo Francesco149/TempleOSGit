@@ -70,24 +70,10 @@ SysAcctStruct *PopUpGetSysAcct()
 
 U0 SysLogin()
 {
-  CPUStruct *c;
-  TaskStruct *task;
-  SysAcctStruct *tempa=AcctFind(sys_startup_acct);
-  I64 i;
-  BoolI8 old_preempt;
+  SysAcctStruct *tempa=AcctFind(sys_acct_name);
   if (!tempa)
     tempa=PopUpGetSysAcct;
-  old_preempt=Preempt(OFF);
-  for (i=0;i<mp_cnt;i++) {
-    c=&cpu_structs[i];
-    task=c->seth_task;
-    do {
-      if (!TaskValidate(task)) break;
-      task->acct=tempa;
-      task=task->next_task;
-    } while (task!=c->seth_task);
-  }
-  Preempt(old_preempt);
+  sys_acct=tempa;
   HomeDirRst;
 }
 
@@ -113,8 +99,8 @@ public BoolI64 AcctRegSetDftEntry(U8 *path,U8 *val,BoolI8 is_adam_entry=FALSE)
   BoolI8 unlock_l,result;
   AcctCacheRegistry;
   unlock_l=LtfLock(sys_registry_ltf);
-  if (!LtfFindTree(sys_registry_ltf,path)) {
-    LtfMakeTree(sys_registry_ltf,path);
+  if (!LtfTreeFind(sys_registry_ltf,path)) {
+    LtfTreeMake(sys_registry_ltf,path);
     LtfPutS(sys_registry_ltf,val);
     if (is_adam_entry) {
       if (Fs==adam_task)
@@ -135,7 +121,7 @@ public BoolI64 AcctRegSetDftEntry(U8 *path,U8 *val,BoolI8 is_adam_entry=FALSE)
 public I64 AcctRegExecuteBranch(U8 *path)
 {
   AcctCacheRegistry;
-  return LtfExeTreeBranch(sys_registry_ltf,path);
+  return LtfTreeBranchExe(sys_registry_ltf,path);
 }
 
 public BoolI64 AcctRegWriteBranch(U8 *path,U8 *fmt,...)
@@ -145,9 +131,9 @@ public BoolI64 AcctRegWriteBranch(U8 *path,U8 *fmt,...)
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   AcctCacheRegistry;
   unlock_l=LtfLock(sys_registry_ltf);
-  if (result=LtfFindTree(sys_registry_ltf,path,&tree_branch,&start_indent,&end_indent))
+  if (result=LtfTreeFind(sys_registry_ltf,path,&tree_branch,&start_indent,&end_indent))
     LtfCut(sys_registry_ltf,tree_branch,end_indent);
-  LtfMakeTree(sys_registry_ltf,path);
+  LtfTreeMake(sys_registry_ltf,path);
   LtfPutS(sys_registry_ltf,buf);
   if (IsDrvWritable(dft_drv))
     LtfWrite(sys_registry_ltf);
@@ -161,8 +147,7 @@ U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
 { //You're not supposed to make system pop-up flags, only me.
   Ltf *l=LtfNew;
   LtfEntry *ll;
-  SysAcctStruct *tempa=Fs->acct;
-  if (tempa && !Bt(sys_msg_flags,flag_num)) {
+  if (sys_acct && !Bt(sys_msg_flags,flag_num)) {
     if (msg) LtfPutS(l,msg);
     ll=LtfPutS(l,"\r\n$CB+LE,\"Do not show this msg again.\",1$");
     LtfPutS(l,"$CM+CX,0,4$$BT,\"OKAY\",1$\r\n");

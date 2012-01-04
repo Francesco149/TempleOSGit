@@ -70,12 +70,12 @@ __BIN_1,__BIN_2,__BIN_3,__BIN_4,
 __BIN_5,__BIN_4,__BIN_3,__BIN_1
 };
 
-F64 t0=tJ;
+F64 t0=tM;
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   U8 *inter;
-  F64 tt=4.0*tJ,dt=(tJ-t0)*music_tempo;
+  F64 tt=4.0*tM,dt=(tM-t0)*music_tempo;
   inter=GrSpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
   GrSpritePlot3(dc,180,40,0,inter);
   Free(inter);
@@ -92,7 +92,7 @@ U0 Song()
   music_tempo=2.5;
   try {
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       LtfClear;
       Play("qR3sDEDE2eGR3etGGAqEetDGBsA2G3A2GqR",
 	  " \0What \0 \0seem \0 \0large, \0 \0for \0 \0 \0God \0is \0quite \0small.\r\n\0 \0 \0 \0 \0 \0");

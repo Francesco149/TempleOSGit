@@ -1,4 +1,4 @@
-PutS(	"\r\nSuper    : 3$SY,-3$2$SY,0$=9\r\n\r\n"
+	"\r\nSuper    : 3$SY,-3$2$SY,0$=9\r\n\r\n"
 	"Sub      : H$SY,3$2$SY,0$O\r\n\r\n"
 	"Color    : $FG,RED$Test$FG$\r\n\r\n"
 	"Blink    : $BK,1$Test$BK,0$\r\n\r\n"
@@ -7,10 +7,10 @@ PutS(	"\r\nSuper    : 3$SY,-3$2$SY,0$=9\r\n\r\n"
 	"Link     : $LK,\"Genesis,1:1\",\"BF:Genesis,1:1\"$\r\n\r\n\r\n"
 
 
-	"Button   :     $BT-X,\"OKAY\",1$\r\n\r\n\r\n\r\n");
+	"Button   :     $BT-X,\"OKAY\",1$\r\n\r\n\r\n\r\n";
 
 //You can do it this way if you like.
-PutS(	"\r\nSuper    : 32=9\r\n\r\n"
+	"\r\nSuper    : 32=9\r\n\r\n"
 	"Sub      : H2O\r\n\r\n"
 //Can't see color because of syntax highlighting.  Press <CTRL-T>
 	"Color    : Test\r\n\r\n"
@@ -21,4 +21,4 @@ PutS(	"\r\nSuper    : 32=9\r\n\r\n"
 	"Link     : [Genesis,1:1] Genesis,1:1\r\n\r\n\r\n"
 
 
-	"Button   :     OKAY\r\n\r\n\r\n\r\n");
+	"Button   :     OKAY\r\n\r\n\r\n\r\n";

@@ -119,10 +119,10 @@ U0 Battle()
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   try {
     LtfClear;
-    PutS("$BG,YELLOW$");
+    "$BG,YELLOW$";
 
     PutBibleVerse("Exodus,17:11",8);
-    PutS("\r\n$BK,1$Hold <SPACE BAR>$BK,0$\r\n");
+    "\r\n$BK,1$Hold <SPACE BAR>$BK,0$\r\n";
 
     held_up=FALSE;
     t0=tP;
@@ -142,7 +142,7 @@ U0 Battle()
     } while (msg_code!=MSG_KEY_DOWN || ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   } catch
     CatchAll;
-  PutS("$BG$\r\n");
+  "$BG$\r\n";
   SettingsPop(Fs,TSF_SAME_SONG);
 }
 

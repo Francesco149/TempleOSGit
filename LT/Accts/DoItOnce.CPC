@@ -9,7 +9,7 @@
 //default start-up msg.
 Type("::/LT/Doc/Customize.TXZ");
 
-PutS("\r\nTake Tour");
+"\r\nTake Tour";
 if (YorN) {
   Cd("/LT/Misc/Tour");
   AutoFile("Tour");

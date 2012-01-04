@@ -26,7 +26,7 @@ See [::/LT/Doc/Registered.TXZ] Registered Version.
 
 History:
 I've been working on LoseThos full-time for 15.5 years.  Yes, I wrote every 
-one of the 129,010 lines myself, no GPL code, no linkage or dependence on 
+one of the 129,334 lines myself, no GPL code, no linkage or dependence on 
 other code.  I am a for profit company, not welcoming code contributions, but 
 feedback is very welcome.  See [::/LT/Doc/Acknowledgements.TXZ]
 ::/LT/Doc/Acknowledgements.TXZ.
@@ -51,14 +51,17 @@ scene in the movie, Platoon, where Elias says to Chris, "S**tcan this and
 this...", referring to dorky standard issue equipment.)
 
 If you're curious, download HOPPY.ZIP (278 KB), J051018.zip (357 KB), or 
-LoseThos V1.0 (1.12 Meg).
+LoseThos V1.0 (1.12 Meg).  The FreeDOS trick for launching no longer works 
+because the makers of FreeDOS changed it from real mode to v8086 mode,
+locking 
+it down.
 
 For some time-stamped proof 2004 www.webarchives.org/hare (has download),
 2006 www.webarchives.org/justrighteous (no download) or 
 2007 YouTube ScreenCast of Songs.  I have weekly Cd-ROM back-ups going way 
 back and time-stamped back-up files on source forge going back to
 2008.  HOPPY 
-runs from FreeDOS.  The Visual C project files are just for editing.
+runs from any REAL-MODE DOS.  The Visual C project files are just for editing.
 
 
 LoseThos' Public Domain License:

@@ -13,12 +13,12 @@
 
 /* <2> <2> (image) */
 
-F64 t0=tJ;
+F64 t0=tM;
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 dt=(tJ-t0)*music_tempo,tt;
+  F64 dt=(tM-t0)*music_tempo,tt;
   U8 *inter;
   if (dt<16.0)
     tt=0;
@@ -40,7 +40,7 @@ U0 Song()
   music_tempo=3.0;
   try {
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       LtfClear;
       Play("3qFeRRqAeRAqGDetBACeCB",
 	  "God \0 \0 \0is \0 \0a \0good \0God.  \0(Thank \0 \0 \0God!!)\r\n\0 \0");

@@ -15,7 +15,7 @@ BoolI64 OptIc6(IntermediateCode *tempi)
       !Bt(&non_ptr_vars_mask,tempil2->p1.reg))
     if (tempil2->p1.type&TY_MASK==TY_REG) {
       tempil1->ic_flags= tempil1->ic_flags & ~ICF_P1_WAS_STK |
-   			 tempil2->ic_flags;
+			 tempil2->ic_flags;
       tempil2->ic_opcode=EC_NOP1;
       tempil2->p1.type=TY_NULL+tempil2->p1.type&IT_MASK;
       tempil2->r.type=TY_NULL+tempil2->r.type&IT_MASK;
@@ -49,7 +49,7 @@ U0 OptPass6Lag(LexStruct *lx,
   else {
     if (tempi->ic_flags&ICF_TRACE) {
       if (Bt(&lx->pass_trace_mask,6)) {
-	PrintF("%2d:",i);
+	"%2d:",i;
 	CbPutIc(tempi);
       }
     }
@@ -261,10 +261,10 @@ U0 OptPass6(LexStruct *lx,ClassStruct *fun_class)
     fun_class->used_reg_mask&=~CSTK_TEMPS_MASK;
     fun_class->used_reg_mask|=clobbered_reg_mask;
     fun_class->clobbered_reg_mask=clobbered_reg_mask;
-    if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-      if (Bt(&lx->pass_trace_mask,6)) {
-	PrintF("Used      Reg Mask:%04X\r\n",fun_class->used_reg_mask);
-	PrintF("Clobbered Reg Mask:%04X\r\n",clobbered_reg_mask);
-}
-}
+    if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) &&
+	Bt(&lx->pass_trace_mask,6)) {
+	"Used      Reg Mask:%04X\r\n",fun_class->used_reg_mask;
+	"Clobbered Reg Mask:%04X\r\n",clobbered_reg_mask;
+    }
+  }
 }

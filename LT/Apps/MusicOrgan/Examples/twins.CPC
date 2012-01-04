@@ -7,7 +7,7 @@ U0 Song()
   music_stacatto_factor= 0.902;
   try {
   while (!ScanKey) {
-	PutS("$FG,GREEN$As I look back on my sinful past...$FG$\r\n");
+	"$FG,GREEN$As I look back on my sinful past...$FG$\r\n";
 	Play("W13qCAABAeAECEqB",
 		"Who \0was \0that \0per\0son? \0 \0It \0wasn't \0 \0me?\r\n\0");
 	Play("CAABAeAECEqB",

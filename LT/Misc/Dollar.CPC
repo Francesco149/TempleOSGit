@@ -5,7 +5,7 @@ U0 DollarFile(LTDirEntry *m1)
     if (m1->attr & LT_ATTR_DIR)
       DollarFile(m1->sub);
     else {
-      PutS(m1->full_name);
+      "" m1->full_name;
       CrLf;
       l=LtfRead(m1->full_name,LTFF_PLAIN_TEXT|LTFF_DBL_DOLLARS);
       LtfWrite(l);

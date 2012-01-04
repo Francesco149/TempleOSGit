@@ -19,16 +19,16 @@
 
 
 
-F64 t0=tJ;
+F64 t0=tM;
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  F64 dt=(tJ-t0)*music_tempo;
-  dc->flags|=BMF_TRANSFORMATION;
-  GrRotZEqu(dc->r,0.25*Sin(2*pi*tJ));
-  GrScaleMatEqu(dc->r,1.5+0.5*Sin(tJ));
+  F64 dt=(tM-t0)*music_tempo;
+  dc->flags|=DCF_TRANSFORMATION;
+  GrRotZEqu(dc->r,0.25*Sin(2*pi*tM));
+  GrScaleMatEqu(dc->r,1.5+0.5*Sin(tM));
   GrSetRotMat(dc,dc->r);
-  if (Blink(music_tempo/2,tJ))
+  if (Blink(music_tempo/2,tM))
     GrSpritePlot3b(dc,12.0*dt%task->win_pixel_width,20,0,__BIN_1);
   else
     GrSpritePlot3b(dc,12.0*dt%task->win_pixel_width,20,0,__BIN_2);
@@ -41,7 +41,7 @@ U0 Song()
   Fs->task_end_cb=&SndTaskEndCB;
 
   music_tempo=3.5;
-  t0=tJ;
+  t0=tM;
   try {
     while (!ScanKey) {
       Play("3qG2G3DBsDCDCqRCG",

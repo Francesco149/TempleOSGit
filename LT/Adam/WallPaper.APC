@@ -215,7 +215,7 @@ TermButtonNew;
 #help_index "Graphics;Input Pointer/Displayed Image"
 public U0 DrawGrabInputPtr(GrDC *dc,I64 x,I64 y,BoolI8 closed)
 {
-  dc->flags&=~(BMF_TRANSFORMATION|BMF_SYMMETRY);
+  dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   if (closed)
     GrSpritePlot3(dc,x,y,0,(binary data));
   else

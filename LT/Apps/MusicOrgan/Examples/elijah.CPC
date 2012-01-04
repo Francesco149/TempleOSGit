@@ -37,7 +37,7 @@
 
 
 
-F64 t0=tJ;
+F64 t0=tM;
 
 #define WOOD_X	220
 #define WOOD_Y	45
@@ -46,7 +46,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   U8 *img;
-  F64 dt=(tJ-t0)*music_tempo;
+  F64 dt=(tM-t0)*music_tempo;
   I64 r;
  
   if (dt<8)
@@ -90,7 +90,7 @@ U0 Song()
   task->win_bottom=task->win_top+12;
   TaskDerivedValsUpdate(task);
   while (!ScanKey) {
-	t0=tJ;
+	t0=tM;
 	LtfClear;
 	Play("W12qGeG!3BsD2G3D2G3qBeFCqDeAFqA",
 		"Soak, \0 \0 \0soak \0 \0that \0 \0wood.\r\n\0 \0 \0 \0 \0 \0 \0");

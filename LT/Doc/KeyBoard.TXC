@@ -4,7 +4,7 @@ See [Char] Char for definition of scan codes.
 
 When you are at the cmd line, editing documents, browsing documentation and 
 help, entering items in forms or in menu's, the
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf editor handles keys.  It 
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf editor handles keys.  It 
 allows you to define your own key handlers in a
 [C:/LT/Accts/TAD/Adam3dKeyPlugIns.APZ,12] MyPutKey() function.  If you 
 choose, you can catch most keys, overriding the default handlers.  See 
@@ -26,7 +26,7 @@ Extended ASCII (3 digit decimal number).
 
 CTRL-ALT-keys and CTRL-ALT-SHIFT-keys
 
-Handled at a system level, NOT by the [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf
+Handled at a system level, NOT by the [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf
 editor.  I reserve the right to 
 allocate these, but in the mean time, you can make your own by assigning 
 handlers to the [C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[]
@@ -83,14 +83,14 @@ Priority    Handler
 ---------- ---------
 0x20000000 [C:/LT/Accts/TAD/Adam3dKeyPlugIns.APZ,12] MyPutKey() user handler
 0x40000000 [C:/LT/OSMain/Display.CPZ,172] AKDInputFilterPutKey() for
-[C:/LT/OSMain/TaskCmd.CPZ,353] Auto(), [C:/LT/OSMain/TaskCmd.CPZ,383]
-AutoStr(), and [C:/LT/OSMain/TaskCmd.CPZ,395] AutoFile() 
+[C:/LT/OSMain/TaskCmd.CPZ,355] Auto(), [C:/LT/OSMain/TaskCmd.CPZ,385]
+AutoStr(), and [C:/LT/OSMain/TaskCmd.CPZ,397] AutoFile() 
 handling.
 0x50000000 [C:/LT/OSMain/Display.CPZ,204] AKDTaskPutKey() focus task key
 device queue.  See below.
 0x60000000 [C:/LT/OSMain/Display.CPZ,136] AKDRawDisplayPutKey() direct to
 video mem debug output. 
-0x80000000 [C:/LT/Adam/Ltf/LtfEd.APZ,2035] AKDLtfPutKey() standard document
+0x80000000 [C:/LT/Adam/Ltf/LtfEd.APZ,2051] AKDLtfPutKey() standard document
 cmds
 
 Since handling individual keys is slow, LoseThos supports
@@ -103,10 +103,10 @@ with it's own priorities and takes affect when the task is the focus
 task.  **WA
 RNING**: Preemption is turned off, so enable it in your handlers if necessary.
 
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf.user_put_key and
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf.user_put_s are call back routines which
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf.user_put_key and
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf.user_put_s are call back routines which
 offer some 
 neat tricks.  See [::/LT/Apps/MusicOrgan/JukeBox.CPZ]
 ::/LT/Apps/MusicOrgan/JukeBox.CPZ.  There is a var
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf.user_
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf.user_
 put_data which gets passed to them.

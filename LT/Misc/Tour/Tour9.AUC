@@ -11,9 +11,20 @@ PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
-PutS("Type(\"HOME/PersonalMenu.TXZ\");");
+"Type(\"HOME/PersonalMenu.TXZ\");";
 AFPmtStr("\r");
 
+Sleep(1500);
 
+PopUpOk(
+"We will now run a test-suite\r\n"
+"that automatically executes\r\n"
+"most LoseThos commands.  It takes\r\n"
+"a few minutes, so kick-back.\r\n");
+
+PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
+
+"#include \"::/LT/Misc/LTTestSuite.CPZ\";";
+AFPmtStr("\r");

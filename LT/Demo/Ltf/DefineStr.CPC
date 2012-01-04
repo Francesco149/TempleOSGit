@@ -10,10 +10,9 @@ documentation.
 
 
 DefineLoad("COMPANY","Trivial Solutions");
-PutS("Company: $TX+D,\"\",\"COMPANY\"$\r\n");
+"Company: $TX+D,\"\",\"COMPANY\"$\r\n";
 
-DefinePrintF(
-  "COMPANY_TIME","%T",GetCurTimeLTDate);
+DefinePrintF("COMPANY_TIME","%T",GetCurTimeLTDate);
 
 #exe {
   StreamPrintF(
@@ -21,5 +20,5 @@ DefinePrintF(
 };
 
 
-PutS("Age : $TX+D,\"\",\"COMPANY_AGE\"$ years\r\n");
-PutS("Time: $TX+D,\"\",\"COMPANY_TIME\"$\r\n");
+"Age : $TX+D,\"\",\"COMPANY_AGE\"$ years\r\n";
+"Time: $TX+D,\"\",\"COMPANY_TIME\"$\r\n";

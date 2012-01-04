@@ -86,19 +86,18 @@ public U0 HeapLogRep()
   for (i=0;i<HEAPLOG_HASH_SIZE;i++) {
     temph=heaplog_root[i].next;
     while (temph!=&heaplog_root[i]) {
-      PrintF("$FG,PURPLE$%08X$FG$ ",MSize(temph->add));
-
+      "$FG,PURPLE$%08X$FG$ ",MSize(temph->add);
       if (!PutSrcLink(temph->caller1,64))
-	PrintF("%P",temph->caller1);
-      Spaces;
+	"%P",temph->caller1;
+      '' CH_SPACE;
       if (!PutSrcLink(temph->caller2,64))
-	PrintF("%P",temph->caller2);
-      Spaces;
+	"%P",temph->caller2;
+      '' CH_SPACE;
       if (!PutSrcLink(temph->caller3,64))
-	PrintF("%P",temph->caller3);
-      Spaces;
+	"%P",temph->caller3;
+      '' CH_SPACE;
       if (!PutSrcLink(temph->caller4,64))
-	PrintF("%P",temph->caller4);
+	"%P",temph->caller4;
       CrLf;
 
       total+=MSize(temph->add);
@@ -106,7 +105,7 @@ public U0 HeapLogRep()
     }
   }
   LBEqu(&sys_semas[SYS_SEMA_HEAPLOG],0,old_val);
-  PrintF("\r\n$FG,LTRED$Total:%08X$FG$\r\n",total);
+  "\r\n$FG,LTRED$Total:%08X$FG$\r\n",total;
 }
 
 public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
@@ -114,7 +113,7 @@ public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
   U64 i;
   if (val) {
     if (Bt(&sys_semas[SYS_SEMA_HEAPLOG],0))
-      PutS("HeapLog Already Active\r\n");
+      "HeapLog Already Active\r\n";
     else {
       if (!task) task=Fs;
       heaplog_test_task=task;
@@ -128,7 +127,7 @@ public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
     }
   } else {
     if (!LBtr(&sys_semas[SYS_SEMA_HEAPLOG],0))
-      PutS("HeapLog Not Active\r\n");
+      "HeapLog Not Active\r\n";
     else {
       Kill(heaplog_task);
       heaplog_task=NULL;

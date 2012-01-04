@@ -1,6 +1,6 @@
 /*
 This scans the sym table and checks
-each [C:/LT/OSMain/Adam1a.HPZ,513] HTT_DEFINE_STR entry to see if
+each [C:/LT/OSMain/Adam1a.HPZ,514] HTT_DEFINE_STR entry to see if
 it only occurs once in files.
 
 It's a brute force solution, but
@@ -59,8 +59,8 @@ U0 UnusedDefineScan()
 	    while (ll!=l) {
 	      if (ll->type_u8==LTFT_LINK) {
 		CrLf;
-		PutS(temph->str);
-		ll2=LtfCopyEntry(l,ll);
+		"" temph->str;
+		ll2=LtfEntryCopy(l,ll);
 		LtfInsert(old_ltf,ll2);
 		CrLf;
 	      }

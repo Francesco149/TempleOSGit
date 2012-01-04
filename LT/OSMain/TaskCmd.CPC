@@ -188,7 +188,7 @@ U0 TaskWaitIdle(TaskStruct *task)
       task1=task->last_input_filter_task;
       tempc=&task1->next_servant_cmd;
       if (TaskValidate(task1) && tempc==*tempc &&
-	  Bt(&task1->task_flags,TASKf_IDLE))
+	  (task1==Fs || Bt(&task1->task_flags,TASKf_IDLE)))
 	break;
       Yield;
     }
@@ -198,11 +198,13 @@ U0 TaskWaitIdle(TaskStruct *task)
 
 U0 PostMsg(TaskStruct *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0)
 {
-  if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
-    QueueMsg(task->last_input_filter_task,NULL,msg_code,p1,p2,
-	flags| 1<<TASKCf_DONT_FILTER);
-  else
-    QueueMsg(task,NULL,msg_code,p1,p2,flags);
+  if (TaskValidate(task)) {
+    if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
+      QueueMsg(task->last_input_filter_task,NULL,msg_code,p1,p2,
+	  flags| 1<<TASKCf_DONT_FILTER);
+    else
+      QueueMsg(task,NULL,msg_code,p1,p2,flags);
+  }
 }
 
 U0 SendMsg(TaskStruct *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0)
@@ -227,6 +229,7 @@ start_over:
   while (LBts(&task->locked_flags,TASKLf_TASK_LOCK))
     Pause;
   tempc1=&task->next_servant_cmd;
+  tempc=tempc1->next;
   while (tempc!=tempc1) {
     tempc=tempc1->next;
     if (tempc->cmd_code==TASKCT_EXECUTE_STR ||
@@ -253,7 +256,7 @@ start_over:
 	}
 	if (Bt(&tempc->flags,TASKCf_FOCUS_MASTER) &&
 	Bt(&master->task_flags,TASKf_LOCAL_USER))
-	  sys_cur_focus_task=master;
+	  sys_focus_task=master;
 	if (Bt(&tempc->flags,TASKCf_WAKE_MASTER))
 	  LBtr(&master->task_flags,TASKf_SUSPENDED);
 	if (!Bt(&tempc->flags,TASKCf_EXIT_ON_COMPLETE))
@@ -307,9 +310,9 @@ U0 AdamLog(U8 *fmt,...)
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   if (Fs!=adam_task) {
     if (!IsSingleUser)
-      Adam("PutS(\"%Q\");",buf);
+      Adam("\"%Q\";",buf);
   } else
-    PutS(buf);
+    "" buf;
   Free(buf);
 }
 
@@ -318,13 +321,12 @@ U0 AdamErr(U8 *fmt,...)
 //displayed as red and blinking.
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv),
-     *buf1=MSPrintF("%S%s",
-       "ST_ERR",buf);
+     *buf1=MSPrintF("%S%s","ST_ERR",buf);
   if (Fs!=adam_task) {
     if (!IsSingleUser)
-      Adam("PutS(\"%Q\");",buf1);
+      Adam("\"%Q\";",buf1);
   }else
-    PutS(buf1);
+    "" buf1;
   Free(buf1);
   Free(buf);
 }
@@ -334,7 +336,7 @@ U0 XTalk(TaskStruct *task,U8 *fmt,...)
 //buffer.
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv),
-     *buf1=MSPrintF("PutS(\"%Q\");",buf);
+     *buf1=MSPrintF("\"%Q\";",buf);
   TextInputQueue(task,0,buf1,0);
   Free(buf1);
   Free(buf);
@@ -343,7 +345,7 @@ U0 XTalk(TaskStruct *task,U8 *fmt,...)
 U0 XTalkWithWait(TaskStruct *task,U8 *fmt,...)
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv),
-     *buf1=MSPrintF("PutS(\"%Q\");",buf);
+     *buf1=MSPrintF("\"%Q\";",buf);
   TextInputQueue(task,0,buf1,0);
   Free(buf1);
   Free(buf);
@@ -354,7 +356,7 @@ U0 Auto(U8 *fmt,...)
 //Sends text to one's own input buffer
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv),
-     *buf1=MSPrintF("PutS(\"%Q\");",buf);
+     *buf1=MSPrintF("\"%Q\";",buf);
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK))
     ExePutS(buf1);
   else

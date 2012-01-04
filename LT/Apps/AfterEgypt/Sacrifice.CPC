@@ -75,16 +75,16 @@ U0 Sacrifice()
     Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_GRAB_SCROLL;
  
     LtfClear;
-    PutS("$BG,YELLOW$");
+    "$BG,YELLOW$";
  
     PutBibleVerse("Exodus,24:5",13);
-    PutS("\r\n\r\n$FG,LTRED$Left-button to sprinkle blood.$FG$\r\n");
+    "\r\n\r\n$FG,LTRED$Left-button to sprinkle blood.$FG$\r\n";
 
     Fs->draw_it=&DrawSacrifice;
     CrLf;
     PressAKey;
   } catch
     CatchAll;
-  PutS("$BG$\r\n");
+  "$BG$\r\n";
   SettingsPop(Fs,TSF_SAME_SONG);
 }

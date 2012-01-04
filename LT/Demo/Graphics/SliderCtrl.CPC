@@ -1,9 +1,9 @@
 /*
-This was done with <CTRL-C> managed code.
+This was done with <CTRL-O> managed code.
 It's conceptually easy to do a ctrl,
 but tedious.  You have complete freedom.
 
-See [C:/LT/OSMain/Adam1a.HPZ,2915] Ctrl.
+See [C:/LT/OSMain/Adam1a.HPZ,2897] Ctrl.
 */
 
 // Start of autocreated Code
@@ -99,12 +99,12 @@ U0 SliderDel(Ctrl *c)
 
 U0 Main()
 {
-  PutS("This is to demo ctrls.\r\n");
+  "This is to demo ctrls.\r\n";
   Ctrl *c=SliderNew;
   PressAKey;
-  PrintF("Left: %d  Right: %d\r\n",
+  "Left: %d  Right: %d\r\n",
     sld.left_pos*10/SLIDER_RANGE,
-    sld.right_pos*10/SLIDER_RANGE);
+    sld.right_pos*10/SLIDER_RANGE;
   SliderDel(c);
   LtfBottom;
 }

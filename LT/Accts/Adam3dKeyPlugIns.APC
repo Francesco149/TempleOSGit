@@ -5,7 +5,7 @@ U0 FillInTime()
 {
   LTDate ltdt;
   ltdt=GetCurTimeLTDate;
-  PrintF("$IV,1$----%D %T----$IV,0$\r",ltdt,ltdt);
+  "$IV,1$----%D %T----$IV,0$\r",ltdt,ltdt;
 }
 
 
@@ -37,9 +37,9 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Dollar/PURPLE");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    PutS("$FG,LTPURPLE$");
+	    "$FG,LTPURPLE$";
 	  else
-	    PutS("$FG,PURPLE$");
+	    "$FG,PURPLE$";
 	}
 	break;
       case SC_F2:
@@ -50,9 +50,9 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Dollar/RED");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    PutS("$FG,LTRED$");
+	    "$FG,LTRED$";
 	  else
-	    PutS("$FG,RED$");
+	    "$FG,RED$";
 	}
 	break;
       case SC_F3:
@@ -63,9 +63,9 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Dollar/GREEN");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    PutS("$FG,LTGREEN$");
+	    "$FG,LTGREEN$";
 	  else
-	    PutS("$FG,GREEN$");
+	    "$FG,GREEN$";
 	}
 	break;
       case SC_F4:
@@ -76,9 +76,9 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Dollar/Default Color");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    PutS("$FG,LTBLUE$");
+	    "$FG,LTBLUE$";
 	  else
-	    PutS("$FG$");
+	    "$FG$";
 	}
 	break;
       case SC_F6:
@@ -96,7 +96,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Misc/Insert Datetime");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    LtfSafeInsert(LtfCur,
+	    LtfInsertSafe(LtfCur,
 		"$HS+C$$FG$$HE$");
 	  else
 	    FillInTime();
@@ -146,7 +146,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	      ClipBoardDel;
 	      LtfPrintF(sys_clipboard_ltf,"$LK,\"<TODO>\",\"FA:%s,ANC%d\"$",
 		LtfCur->filename.name,i);
-	      PrintF("$AN,\"<TODO>\",\"ANC%d\"$",i);
+	      "$AN,\"<TODO>\",\"ANC%d\"$",i;
 	    }
 	    return TRUE;
 

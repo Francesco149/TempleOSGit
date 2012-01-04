@@ -11,60 +11,60 @@ U0 CbPutClass(ClassStruct *c)
       Yield;
   }
   for (i=0;i<c->ptr_cnt;i++)
-    PutChar('*');
+    '*';
   c-=c->ptr_cnt;
   if (c->str)
-    PutS(c->str);
+    "" c->str;
   else {
     PrintFErr("put_class str=NULL\r\n");
     while (TRUE)
 //TODO:
       Yield;
   }
-  PutChar(CH_SPACE);
+  '' CH_SPACE;
 }
 
 
 U0 CbPutIcArg(IcArg *p)
 {
   if (p->ptype)
-    PrintF("%Z %Z %Z ",
+    "%Z %Z %Z ",
       p->type&IT_MASK,"ST_IT_TYPES",
       p->ptype&IT_MASK,"ST_IT_TYPES",
-      p->type>>4,"ST_TY_TYPES");
+      p->type>>4,"ST_TY_TYPES";
   else
-    PrintF("%Z %Z ",
+    "%Z %Z ",
       p->type&IT_MASK,"ST_IT_TYPES",
-      p->type>>4,"ST_TY_TYPES");
+      p->type>>4,"ST_TY_TYPES";
   switch (p->type>>4) {
     case TY_STK>>4:
-      PutS("STK");
+      "STK";
       break;
     case TY_IMM>>4:
-      PrintF("#%X",p->disp);
+      "#%X",p->disp;
       break;
     case TY_REG>>4:
-      PrintF("%Z",p->reg,"ST_U64_REGS");
+      "%Z",p->reg,"ST_U64_REGS";
       break;
     case TY_DISP>>4:
-      PrintF("%X[%Z]",p->disp,p->reg,"ST_U64_REGS");
+      "%X[%Z]",p->disp,p->reg,"ST_U64_REGS";
       break;
     case TY_RIP_DISP32>>4:
-      PrintF("[%X]",p->disp);
+      "[%X]",p->disp;
       break;
     case TY_SIB>>4:
       if (p->disp)
-	PrintF("%X",p->disp);
+	"%X",p->disp;
       if (p->reg==CREG_RIP)
-	PrintF("[");
+	'[';
       else
-	PrintF("[%Z+",p->reg&7,"ST_U64_REGS");
-      PrintF("%Z",p->reg>>8&7,"ST_U64_REGS");
+	"[%Z+",p->reg&7,"ST_U64_REGS";
+      "%Z",p->reg>>8&7,"ST_U64_REGS";
       switch (p->reg>>14) {
-	case 0: PrintF("]"); break;
-	case 1: PrintF("*2]"); break;
-	case 2: PrintF("*4]"); break;
-	case 3: PrintF("*8]"); break;
+	case 0: "]"; break;
+	case 1: "*2]"; break;
+	case 2: "*4]"; break;
+	case 3: "*8]"; break;
       }
       break;
   }
@@ -74,70 +74,70 @@ U0 CbPutIc(IntermediateCode *tempi)
 {
   U64 opcode=tempi->ic_opcode,i;
   if (opcode>=EC_END_EXP && opcode!=EC_NOP1) {
-//PrintF("%d,%d ",tempi->ic_line+tempi->ic_start_line_offset,tempi->ic_indent_level);
-    PrintF("%15ts %016X ",
+//"%d,%d ",tempi->ic_line+tempi->ic_start_line_offset,tempi->ic_indent_level;
+    "%15ts %016X ",
       DefineSub(opcode,"ST_INTERMEDIATE_CODE")+4,
-      tempi->ic_data);
+      tempi->ic_data;
     if (tempi->r.type&TY_MASK) {
       CbPutIcArg(&tempi->r);
-      PutS("<-");
+      "<-";
     }
     if (tempi->p1.type&TY_MASK)
       CbPutIcArg(&tempi->p1);
-    PutS(",");
+    ',';
     if (tempi->p2.type&TY_MASK)
       CbPutIcArg(&tempi->p2);
-    PutS(",");
+    ',';
     if (tempi->p3.type&TY_MASK)
       CbPutIcArg(&tempi->p3);
-    PutS(" ");
+    '' CH_SPACE;
     CbPutClass(tempi->ic_class);
     if (tempi->ic_flags & ICF_LOCK)
-      PutS("$FG,BROWN$lock$FG$ ");
+      "$FG,BROWN$lock$FG$ ";
     if (tempi->ic_flags & ICF_P3_TO_F64)
-      PutS("$FG,LTBLUE$p3d$FG$ ");
+      "$FG,LTBLUE$p3d$FG$ ";
     if (tempi->ic_flags & ICF_P3_TO_INT)
-      PutS("$FG,GREEN$p3i$FG$ ");
+      "$FG,GREEN$p3i$FG$ ";
     if (tempi->ic_flags & ICF_P2_TO_F64)
-      PutS("$FG,LTBLUE$p2d$FG$ ");
+      "$FG,LTBLUE$p2d$FG$ ";
     if (tempi->ic_flags & ICF_P2_TO_INT)
-      PutS("$FG,GREEN$p2i$FG$ ");
+      "$FG,GREEN$p2i$FG$ ";
     if (tempi->ic_flags & ICF_P1_TO_F64)
-      PutS("$FG,LTBLUE$p1d$FG$ ");
+      "$FG,LTBLUE$p1d$FG$ ";
     if (tempi->ic_flags & ICF_P1_TO_INT)
-      PutS("$FG,GREEN$p1i$FG$ ");
+      "$FG,GREEN$p1i$FG$ ";
     if (tempi->ic_flags & ICF_R_TO_F64)
-      PutS("$FG,LTBLUE$rd$FG$ ");
+      "$FG,LTBLUE$rd$FG$ ";
     if (tempi->ic_flags & ICF_R_TO_INT)
-      PutS("$FG,GREEN$ri$FG$ ");
+      "$FG,GREEN$ri$FG$ ";
     if (tempi->ic_flags & ICF_USE_F64)
-      PutS("[F64] ");
+      "[F64] ";
     if (tempi->ic_flags & ICF_USE_UNSIGNED)
-      PutS("[unsigned] ");
+      "[unsigned] ";
     if (tempi->ic_flags & ICF_USE_INT)
-      PutS("[int] ");
+      "[int] ";
     if (tempi->ic_flags & ICF_NO_DEPEND_RESULT)
-      PutS("-DEP ");
+      "-DEP ";
     if (tempi->ic_flags & ICF_DEPEND_RESULT)
-      PutS("+DEP ");
+      "+DEP ";
     if (tempi->ic_flags & ICF_NOT_ADDR)
-      PutS("NOT_ADDR ");
+      "NOT_ADDR ";
     if (tempi->ic_flags & ICF_PUSH_RESULT)
-      PutS("PUSH ");
+      "PUSH ";
     if (tempi->ic_flags & ICF_PUSH_CMP)
-      PutS("PUSH_CMP ");
+      "PUSH_CMP ";
     if (tempi->ic_flags & ICF_POP_CMP)
-      PutS("POP_CMP ");
+      "POP_CMP ";
     if (tempi->ic_flags & ICF_DEL_PREVIOUS_INS)
-      PutS("DELINS ");
+      "DELINS ";
     for (i=0;i<4;i++) {
       if (Bt(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0+i))
-	PrintF("DONT_PUSH#%d ",i);
+	"DONT_PUSH#%d ",i;
       if (Bt(&tempi->ic_flags,ICf_DONT_POP_FLOAT0+i))
-	PrintF("DONT_POP#%d ",i);
+	"DONT_POP#%d ",i;
     }
     if (tempi->ic_flags & ICF_ALTERNATE_TEMPLATE)
-      PutS("ALT_TEMP ");
+      "ALT_TEMP ";
     CrLf;
   }
 }
@@ -405,7 +405,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   CbCombine(lx);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,0)) {
-      PutS("$IV 1$Before Pass 1:$IV 0$\r\n");
+      "$IV,1$Before Pass 1:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
@@ -413,7 +413,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass012(lx,fun_class,TRUE);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,1)) {
-      PutS("$IV 1$After Pass 1:$IV 0$\r\n");
+      "$IV,1$After Pass 1:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
@@ -421,7 +421,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass012(lx,fun_class,TRUE);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,2)) {
-      PutS("$IV 1$After Pass 2:$IV 0$\r\n");
+      "$IV,1$After Pass 2:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
@@ -429,7 +429,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass3(lx,fun_class,register_offsets);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,3)) {
-      PutS("$IV 1$After Pass 3:$IV 0$\r\n");
+      "$IV,1$After Pass 3:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
@@ -437,7 +437,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass4(lx,register_offsets,type);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,4)) {
-      PutS("$IV 1$After Pass 4:$IV 0$\r\n");
+      "$IV,1$After Pass 4:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
@@ -445,7 +445,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass5(lx);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,5)) {
-      PutS("$IV 1$After Pass 5:$IV 0$\r\n");
+      "$IV,1$After Pass 5:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
@@ -453,26 +453,26 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass6(lx,fun_class);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,6)) {
-      PutS("$IV 1$After Pass 6:$IV 0$\r\n");
+      "$IV,1$After Pass 6:$IV,0$\r\n";
       CbPutAllIc(lx);
     }
   }
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,7))
-      PutS("$IV 1$Pass 7:$IV 0$\r\n");
+      "$IV,1$Pass 7:$IV,0$\r\n";
   lx->pass=7;
   OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,8))
-      PutS("$IV 1$Pass 8:$IV 0$\r\n");
+      "$IV,1$Pass 8:$IV,0$\r\n";
   lx->pass=8;
   OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,9))
-      PutS("$IV 1$Pass 9:$IV 0$\r\n");
+      "$IV,1$Pass 9:$IV,0$\r\n";
   lx->pass=9;
   *code_size=OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
   if (lx->flags&LF_STATIC_COMPILE)
@@ -482,7 +482,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,0xA))
-      PutS("$IV 1$Pass A:$IV 0$\r\n");
+      "$IV,1$Pass A:$IV,0$\r\n";
   lx->pass=0xA;
   *code_size=OptPass789A(lx,fun_class,register_offsets,result,_dbg,_indent,&min_line,&max_line);
   compiled_bytes+=*code_size;

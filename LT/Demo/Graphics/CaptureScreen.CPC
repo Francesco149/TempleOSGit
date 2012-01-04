@@ -3,8 +3,9 @@
 U0 ViewScreenCapture(U8 *filename)
 {
   GrDC *dc=GrDCAlias(gr_dc2,Fs),
-	   *b=LGRRead(filename);
-  GrBlot(dc,0,0,b);
+       *b=LGRRead(filename);
+  b->bkcolor=INVALID_COLOR;
+  GrDCBlot(dc,0,0,b);
   GrDCDel(b);
   GrDCDel(dc);
 }
@@ -12,11 +13,11 @@ U0 ViewScreenCapture(U8 *filename)
 
 U0 Main()
 {
-  PutS("Capture screen...\r\n");
+  "Capture screen...\r\n";
   PressAKey;
   LGRCaptureScreen("HOME/SnapShot.LGZ");
 
-  PutS("View captured screen...\r\n");
+  "View captured screen...\r\n";
   PressAKey;
   ViewScreenCapture("HOME/SnapShot.LGZ");
 

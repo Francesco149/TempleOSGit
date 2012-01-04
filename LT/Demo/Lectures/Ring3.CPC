@@ -32,7 +32,7 @@ TO_RING0::	//Set to handle general protection 0xD fault temporarily.
 U0 Ring3Demo()
 {
   U8 *old_pf;
-  PrintF("Progress1 Before:%X\r\n",progress1);
+  "Progress1 Before:%X\r\n",progress1;
   Cli;
   old_pf=SetIDTEntry(0x0D,TO_RING0,0,IDTET_TRAP,0);
 
@@ -82,7 +82,7 @@ asm {
 
   SetIDTEntry(0x0D,old_pf,0,IDTET_IRQ,0);
   Sti;
-  PrintF("Progress1 After :%X\r\n",progress1);
+  "Progress1 After :%X\r\n",progress1;
 }
 
 

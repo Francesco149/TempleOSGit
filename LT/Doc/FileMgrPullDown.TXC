@@ -15,9 +15,9 @@ Edit
   Plain(,CH_SHIFT_SPACE);
   Rename(,'r');
   MkDir(,'d');
-  Copy(,0,0x4D200000452);
-  Paste(,0,0x2D200000252);
-  DeleteFile(,0x19,0x41500000415);
+  Copy(,CH_CTRLC);
+  Paste(,CH_CTRLV);
+  DeleteFile(,CH_CTRLY);
 }
 
 Program

@@ -91,9 +91,9 @@ U8 *WsdSortWords(U8 *start,I64 size,I64 word_cnt)
     ptr_array[i++]=ptr;
     ptr+=StrLen(ptr)+3;
   }
-  PutS("Sorting...\r\n"); Sleep(100);
+  "Sorting...\r\n"; Sleep(100);
   QSortU64(ptr_array,word_cnt,&WsdCompareWords);
-  PutS("Done...\r\n"); Sleep(100);
+  "Done...\r\n"; Sleep(100);
 
   ptr=out_start;
   for (i=0;i<word_cnt;i++) {
@@ -200,17 +200,17 @@ next_word:
 
   Free(in_start);
 
-  PrintF("Blk Size      :%d\r\n",WSD_BLK_SIZE);
-  PrintF("Blk Cnt       :%04X\r\n",(out_ptr-out_start+WSD_BLK_SIZE-1)/WSD_BLK_SIZE);
-  PrintF("Largest Entry :%d\r\n",largest_entry);
-  PrintF("Word Count    :%d\r\n",word_cnt);
+  "Blk Size      :%d\r\n",WSD_BLK_SIZE;
+  "Blk Cnt       :%04X\r\n",(out_ptr-out_start+WSD_BLK_SIZE-1)/WSD_BLK_SIZE;
+  "Largest Entry :%d\r\n",largest_entry;
+  "Word Count    :%d\r\n",word_cnt;
 
   FileWrite(WSD_DEF_FILENAME,out_start,out_ptr-out_start);
-  PrintF("Def File Size :%d\r\n",out_ptr-out_start);
+  "Def File Size :%d\r\n",out_ptr-out_start;
 
   sorted_word_start=WsdSortWords(word_start,word_ptr-word_start,word_cnt);
   FileWrite(WSD_WORD_FILENAME,sorted_word_start,word_ptr-word_start);
-  PrintF("Word File Size:%d\r\n",word_ptr-word_start);
+  "Word File Size:%d\r\n",word_ptr-word_start;
 
   Free(out_start);
   Free(word_start);

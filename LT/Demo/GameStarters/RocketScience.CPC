@@ -264,9 +264,9 @@ U0 RocketScience()
   dc2=GrDCAlias(gr_dc2,Fs);
   Fs->task_end_cb=&TaskEndCB;
 
-  PutS("$CL$$BG,LTCYAN$");
+  "$CL$$BG,LTCYAN$";
   CrLf(Fs->win_height-4);
-  PutS("$BG,YELLOW$\r\n");
+  "$BG,YELLOW$\r\n";
  
   ode=OdeNew(STATE_NUM,1e-6,ODEF_HAS_MASSES);
   ode->derivative=&MyDerivative;
@@ -306,7 +306,7 @@ rs_done:
     CatchAll;
   RemQue(ode);
   OdeDel(ode);
-  PutS("$CL$$BG$\r\n");
+  "$CL$$BG$\r\n";
   SettingsPop;
   GrDCClear;
   GrDCDel(dc2);

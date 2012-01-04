@@ -210,11 +210,12 @@ public U0 SndWaveFillBuf(SndWaveCtrl *sc,U0 *buf,I64 num_samples,
 }
 
 #help_index "Snd/HDAudio"
+I64 snd_reverb_buf_cnt;
+SND_OUT_CONTAINER *snd_reverb_buf=NULL;
+
 U0 SndReverb(SND_OUT_CONTAINER *buf,I64 buf_num)
 {
   I64 i,j,mask,span=RoundI64(SND_SAMPLE_RATE*SND_OCHANNELS*snd_reverb_delay,SND_OCHANNELS);
-  static I64 snd_reverb_buf_cnt;
-  static SND_OUT_CONTAINER *snd_reverb_buf=NULL;
   if (!snd_reverb_buf || span>snd_reverb_buf_cnt) {
     Free(snd_reverb_buf);
     snd_reverb_buf_cnt=1<<(Bsr(span)+1);
@@ -228,6 +229,11 @@ U0 SndReverb(SND_OUT_CONTAINER *buf,I64 buf_num)
       LimitI64(buf[i]+snd_reverb_intensity*snd_reverb_buf[(j-span)&mask],
 	MIN_I32,MAX_I32)&0xFFFFFF00;
   }
+}
+
+I64 AudioSize()
+{
+  return MSize2(snd_reverb_buf);
 }
 
 #help_index "Snd"

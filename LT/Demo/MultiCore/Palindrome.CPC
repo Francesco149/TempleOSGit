@@ -92,7 +92,7 @@ U0 Palindrome(U8 *filename)
     Yield;
 
   Free(buf);
-  PrintF("Time:%9.5f\r\n",tNP-t0);
+  "Time:%9.5f\r\n",tNP-t0;
 }
 
 Palindrome(Define("ST_BIBLE_FILE"));

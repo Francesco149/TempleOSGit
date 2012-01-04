@@ -33,7 +33,7 @@ as in:
 Cd("B:/Temp");		B drive
 Cd("::/LT/Demo");	Boot drive
 
-Cd("HOME/CfgMgr");	HOME is a dir
+Cd("HOME/MusicOrgan");	HOME is a dir
 
 You can place macros in your personal menu for
 [C:/LT/OSMain/Dsk/Dsk1b.CPZ,41] Cd() commands.  <WINDOWS KEY> 

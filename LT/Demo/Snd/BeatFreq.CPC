@@ -6,7 +6,7 @@ U0 (*fp_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
 F64 freq1,freq2;
 
 U0 BeatFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
-{ //Gets called by HD Audio task -- [C:/LT/Adam/Snd/HDAudio.APZ,375] HDAudioTask().
+{ //Gets called by HD Audio task -- [C:/LT/Adam/Snd/HDAudio.APZ,393] HDAudioTask().
   I64 j,m;
   F64 t;
   if (beat_done) return;
@@ -37,7 +37,7 @@ U0 BeatTaskEndCB()
 U0 BeatFreq()
 {
   if (snd_dev!=SD_HD_AUDIO) {
-    PutS("Only works for HD Audio.\r\n");
+    "Only works for HD Audio.\r\n";
     return;
   }
   freq1=600.0;
@@ -49,9 +49,9 @@ U0 BeatFreq()
   fp_old_fill_buf=fp_snd_fill_buf;
   fp_snd_fill_buf=&BeatFillBuf;
   try {
-    PutS("Pick two frequencies within a few Hz of each other to hear beats.\r\n"
-	"Pick two frequencies a multiple of two for an octave harmonic.\r\n"
-	"$FG,GREEN$<CTRL-ALT-C>$FG$ to exit.\r\n");
+    "Pick two frequencies within a few Hz of each other to hear beats.\r\n"
+    "Pick two frequencies a multiple of two for an octave harmonic.\r\n"
+    "$FG,GREEN$<CTRL-ALT-C>$FG$ to exit.\r\n";
     while (TRUE) {
       freq1=PmtF64("Freq #1 (%0.2fHz):",freq1,20,20000);
       freq2=PmtF64("Freq #2 (%0.2fHz):",freq2,20,20000);

@@ -62,7 +62,7 @@ SMP.  Core zero explicitly
 assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
 access, though.
 
-* [C:/LT/Adam/Snd/Music.APZ,78] Music is done with an elegant one-voice
+* [C:/LT/Adam/Snd/Music.APZ,86] Music is done with an elegant one-voice
 notation.
 
 * All tasks have a heap and a sym table.  Scope is that of environment vars

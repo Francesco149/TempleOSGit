@@ -17,7 +17,7 @@ class Ball
 
 class BallDefineStruct
 {
-  F64 radius	 fmtstr "$DA-T,32,\"Radius         :%8.3f\"$\r\n";
+  F64 radius	fmtstr	 "$DA-T,32,\"Radius         :%8.3f\"$\r\n";
   I64 n_longitude fmtstr "$DA-T,32,\"Longitude Faces:%5d\"$\r\n";
   I64 n_lattitude fmtstr "$DA-T,32,\"Lattitude Rings:%5d\"$\r\n";
 };
@@ -120,11 +120,11 @@ public U8 *BallGen()
  
     result=Ball2GrSprite;
     CrLf(7);
-    PutGrSprite(result,0,"\t\t$PI,\"<1>\",%d$");
+    PutSprite(result,"\t\t$PI,\"<1>\",%d$");
     CrLf(7);
-    PrintF("Vertices:%d\r\n",b->vertex_cnt);
+    "Vertices:%d\r\n",b->vertex_cnt;
     Free(b);
-    PutS("Do another");
+    "Do another";
     if (YorN)
       Free(result);
     else

@@ -13,16 +13,7 @@
 
 
 
-
-
 		/*  <1> (image) */
-
-
-
-
-
-
-
 
 
 
@@ -39,18 +30,7 @@
 
 
 
-
-
-
-
-
-
-
-
 		/* <3> <3> (image) */
-
-
-
 
 
 
@@ -74,7 +54,6 @@ U0 PhasorTask(U64 dummy=0)
   }
   Snd(0);
 }
-
 
 U0 UpdateWin(TaskStruct *task)
 {
@@ -131,11 +110,9 @@ U0 UpdateWin(TaskStruct *task)
 }
 
 
-
 U0 SpaceShip()
 {
   U64 i;
-  U64 old_ip=ip_dev;
   for (i=0;i<NUM_STARS;i++) {
     stars_x[i]=RandU16%GR_WIDTH;
     stars_y[i]=RandU16%GR_HEIGHT;
@@ -155,11 +132,12 @@ U0 SpaceShip()
   //Normally, it's not a problem.
   Fs->text_attr=BLACK+BLACK<<4;
   WinTextClear; WinSync;
+
   Fs->update_win=&UpdateWin;
   try {
     while (!ScanChar) {
-      x+=3; y-=2;
-      if (x>GR_WIDTH) x=0;
+      x-=3; y-=2;
+      if (x<0) x=GR_WIDTH;
       if (y<0) y=GR_HEIGHT;
       if (ip_lb) {  //left button?
 	phasor_time=tP+0.5;  //half second
@@ -170,7 +148,6 @@ U0 SpaceShip()
   } catch
     CatchAll;
   SettingsPop;
-  ip_dev=old_ip;
 }
 
 SpaceShip;

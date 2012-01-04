@@ -63,7 +63,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   I64 i,j,cx=task->win_pixel_width/2,cy=task->win_pixel_height/2;
   P3I32 poly[3],ls;
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   GrDCAllocDepthBuf(dc);
 
   GrIdentEqu(dc->r);
@@ -169,7 +169,7 @@ U0 Main()
   WordStat(OFF);
   Fs->draw_it=&DrawIt;
   try {
-    PutS("\r\n\r\nMove mouse to change light source.\r\n\r\n");
+    "\r\n\r\nMove mouse to change light source.\r\n\r\n";
     PressAKey;
   } catch
     CatchAll;

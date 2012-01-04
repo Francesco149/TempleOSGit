@@ -41,14 +41,14 @@ U0 Spy()
   while (TRUE) {
     task=Fs->next_task;
     while (task!=Fs) {
-      PrintF("$MA+A+X,\"Task:%08X:%16ts\",\"0x%08X\r\"$\r\n",task,task->task_name,task);
+      "$MA+A+X,\"Task:%08X:%16ts\",\"0x%08X\r\"$\r\n",task,task->task_name,task;
       task=task->next_task;
     }
     CrLf;
     task=PmtI64("Task Addr: ",0);
     if (TaskValidate(task)) {
-      PutS("\r\n\r\n\t$BT-LE+LM,\"StkRep\",\"1\r\"$\r\n\r\n\r\n");
-      PutS("\r\n\r\n\t$BT-LE+LM,\"CallerRep\",\"2\r\"$\r\n\r\n\r\n");
+      "\r\n\r\n\t$BT-LE+LM,\"StkRep\",\"1\r\"$\r\n\r\n\r\n"
+      "\r\n\r\n\t$BT-LE+LM,\"CallerRep\",\"2\r\"$\r\n\r\n\r\n";
       i=PmtI64("",0);
       if (i==1)
 	SpyStkRep(task);

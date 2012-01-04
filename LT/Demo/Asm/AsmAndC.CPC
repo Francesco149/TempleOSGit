@@ -48,7 +48,7 @@ LTextern _BEEPS U0 Beeps(U64 cnt);
 
 I64 AsmAndC()
 {
-  I64 noreg i; 	//Normally this would be stored in a reg
+  I64 noreg i;	//Normally this would be stored in a reg
 		//Check with [C:/LT/Adam/Dbg2a.APZ,241] Uf("AsmAndC").
 
   i=PmtI64("Num of beeps 1-5 (%d):",3,1,5);
@@ -58,7 +58,7 @@ I64 AsmAndC()
 //You can clobber RAX,RBX,RCX,RDX, but preserve the rest for code in a C+ routine.
 USE64	//Defaults to 64, but this is a good habit.
 	IMPORT	Snd;
-    	MOV	RCX,&i[RBP] //You can clobber RAX,RBX,RCX,RDX.
+	MOV	RCX,&i[RBP] //You can clobber RAX,RBX,RCX,RDX.
 			    //You better preserve the rest.
 
 @@05:	PUSH	RCX
@@ -90,4 +90,4 @@ USE64	//Defaults to 64, but this is a good habit.
   return i;
 }
 
-PrintF("Beeps:%d\r\n",AsmAndC);
+"Beeps:%d\r\n",AsmAndC;

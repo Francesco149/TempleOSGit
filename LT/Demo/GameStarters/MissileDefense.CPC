@@ -177,11 +177,11 @@ U0 MissileDefense()
   U64 ch;
 
   PopUpOk(
-  "I refuse to rip-off the original\r\n"
-  "so this is intentionally crappy\r\n"
-  "and included for demonstration\r\n"
-  "purposes.\r\n\r\n"
-      "Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\r\n"
+	"so this is intentionally crappy\r\n"
+	"and included for demonstration\r\n"
+	"purposes.\r\n\r\n"
+	"Write games, don't play them.\r\n");
 
   MenuPush(
   "File {"
@@ -197,9 +197,9 @@ U0 MissileDefense()
       );
   PopUpOk("Press '1', '2', or '3' to launch.");
 
-  PutS("$CL$$BG,BLUE$");
+  "$CL$$BG,BLUE$";
   CrLf(SKY_LINES);
-  PutS("$BG,BROWN$");
+  "$BG,BROWN$";
 
   dc2=GrDCAlias(gr_dc2,Fs);
 
@@ -233,7 +233,7 @@ md_done:
   MenuPop;
   GrDCClear(dc2);
   GrDCDel(dc2);
-  PutS("$CL$$BG$\r\n");
+  "$CL$$BG$\r\n";
 }
 
 MissileDefense;

@@ -3,9 +3,7 @@
 
 //Use Dbg("Type 'DbgExit'"); to debug before window manager is running.
 
-public F64 os_version=7.08;
-
-#define CFG_LT_MAIN		"LT/Main007"
+public F64 os_version=7.10;
 
 #include "AdamExt.HPZ"
 
@@ -35,7 +33,7 @@ Cd("::/LT/Adam/Ctrls");;
 #include "Ctrls"
 
 Cd("::/LT/Adam");;
-#include "AutoFile"
+#include "AutoFile2a"
 #include "LogIn"
 
 Cd("::/LT/Adam/WordStat");;
@@ -45,7 +43,6 @@ Cd("::/LT/Adam");;
 #include "Profiler"
 #include "Hash2a"
 #include "FileMgr"
-#include "CfgMgr"
 #include "TaskSettings"
 #include "DevInfo"
 #include "DocDefines"

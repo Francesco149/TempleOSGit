@@ -22,7 +22,7 @@ U0 Display()
   I64 x,y;
   for (y=0;y<NUM_ROWS;y++) {
     for (x=0;x<NUM_COLS;x++)
-      PutChar(m[y][x]);
+      '' m[y][x];
     CrLf;
   }
 }
@@ -50,7 +50,7 @@ U0 Search(I64 dx,I64 dy)
 	buf[i]=0;
 	if ((ptr=WsdPointAtWord(buf)) && *ptr++==WSD_WORD_CHAR &&
 	  !StrICmp(ptr,buf)) {
-	  PrintF("%s ",buf);
+	  "%s ",buf;
 	}
       }
     }
@@ -116,7 +116,7 @@ U0 DisplayWords(I64 n)
 	if (StrLen(dict+1)>2) {
 	  k=i;
 	  while (k<n && !StrNICmp(word_ptrs[k++],dict+1,StrLen(dict+1)))
-	    PrintF("%s ",dict+1);
+	    "%s ",dict+1;
 	}
 	w2=dict+1;
 	while (!StrICmp(w2,dict+1))

@@ -43,7 +43,7 @@ U0 DrawShadow(TaskStruct *task)
   GrRotZEqu(dc1->r,omega);
   GrScaleMatEqu(dc1->r,s);
   GrSetTranslation(dc1->r,200,200,5000);
-  dc1->flags|=BMF_TRANSFORMATION;
+  dc1->flags|=DCF_TRANSFORMATION;
   GrSetRotMat(dc1,dc1->r);
 
   MemSet(r,0,sizeof(r));
@@ -72,7 +72,7 @@ U0 UpdateWin(TaskStruct *task)
   GrRotZEqu(dc0->r,omega);
   GrScaleMatEqu(dc0->r,s);
   GrSetTranslation(dc0->r,200,200,5000);
-  dc0->flags|=BMF_TRANSFORMATION;
+  dc0->flags|=DCF_TRANSFORMATION;
   GrSetRotMat(dc0,dc0->r);
   if (mp_cnt>1)
     MPJob(&DrawShadow,task);

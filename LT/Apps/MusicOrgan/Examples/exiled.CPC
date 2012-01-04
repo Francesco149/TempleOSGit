@@ -1,4 +1,4 @@
-//7 has graphics
+//8 has graphics
 
 F64 t0;
 
@@ -6,10 +6,10 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   I64 i;
-  F64 dt=(tJ-t0)*music_tempo%8.0,z,w,x1,y1,z1,x2,y2,z2;
+  F64 dt=(tM-t0)*music_tempo%8.0,z,w,x1,y1,z1,x2,y2,z2;
   BoolI8 first=TRUE;
   GrDCAllocDepthBuf(dc);
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   dc->x=30*dt+20.0*Sin(dt)+25;
   dc->y=10*dt-15;
   dc->z=GR_Z_ALL;
@@ -40,7 +40,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 
 U0 Song()
 {
-  t0=tJ;
+  t0=tM;
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
@@ -48,8 +48,9 @@ U0 Song()
   music_tempo= 2.480;
   music_stacatto_factor= 0.902;
   try {
-    PutS("$BG+H,LTCYAN$$FG+H,BLACK$");
+    "$BG+H,LTCYAN$";
     while (!ScanKey) {
+	"$FG,GREEN$To God...$FG+H,BLACK$\r\n";
 	Play("W13qE!AA!etF2G3G!qDF!!etFE!D2eG!3G",
 		"A\0dam... \0 \0no \0 \0 \0long\0er \0sees \0Your \0face.\r\n\0 \0 \0");
 	Play("qE!AA!etF2G3G!qDF!!etFE!D2eG!3G",

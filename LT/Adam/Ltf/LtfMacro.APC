@@ -79,9 +79,9 @@ U8 *SysMacro2Str(TaskCmdStruct *macro_root)
     cnt+=StrLen(tempmt->buf);
     if (tempmt->type==MT_CHAR) {
       if (tempmt->last->type!=MT_CHAR)
-	cnt+=StrLen("PutS(\"");
+	cnt+=StrLen("\"");
       if (tempmt->next->type!=MT_CHAR)
-	cnt+=StrLen("\");");
+	cnt+=StrLen("\";");
     }
     tempc=tempc->next;
   }
@@ -97,14 +97,14 @@ U8 *SysMacro2Str(TaskCmdStruct *macro_root)
       ptr+=StrLen(tempmt->buf);
     } else {
       if (tempmt->last->type!=MT_CHAR) {
-	StrCpy(ptr, "PutS(\"");
-	ptr+=StrLen("PutS(\"");
+	StrCpy(ptr, "\"");
+	ptr+=StrLen("\"");
       }
       StrCpy(ptr,tempmt->buf);
       ptr+=StrLen(tempmt->buf);
       if (tempmt->next->type!=MT_CHAR) {
-	StrCpy(ptr, "\");");
-	ptr+=StrLen("\");");
+	StrCpy(ptr, "\";");
+	ptr+=StrLen("\";");
       }
     }
     Free(tempmt);
@@ -117,7 +117,7 @@ U8 *SysMacro2Str(TaskCmdStruct *macro_root)
 
 U0 PlaySysMacro(I64 n=1)
 {
-  TaskStruct *task=sys_cur_focus_task;
+  TaskStruct *task=sys_focus_task;
   BoolI8 old_preempt;
   U8 *m;
   if (TaskValidate(task)) {
@@ -139,8 +139,8 @@ U0 EdInsertCapturedMacro()
 {
   BoolI8 old_preempt=Preempt(OFF);
   U8 *st=SysMacro2Str(&sys_macro_root);
-  if (sys_cur_focus_task) {
-    XTalk(sys_cur_focus_task,"$MA+A+LM+LA,\"%s\",\"%Q\"$",
+  if (sys_focus_task) {
+    XTalk(sys_focus_task,"$MA+A+LM+LA,\"%s\",\"%Q\"$",
 	captured_macro_name,st);
     Free(st);
   }
@@ -163,17 +163,17 @@ I64 PopUpExitRecordPlayStopInsert()
   LtfEntry *ll;
   ll=LtfPutS(l,"$DA-P,127,\"Name:%s\"$");
   ll->data=captured_macro_name;
-  LtfFmtData(ll);
+  LtfDataFmt(ll);
   ll=LtfPutS(l,"\r\n$DA,32,\"Repeat N:%d\"$");
   ll->data=&sys_macro_repeat_n;
-  LtfFmtData(ll);
+  LtfDataFmt(ll);
   LtfPutS(l,"\r\n"
-	"$CM+LX,1,3$$BT, \"RECORD\",SM_RECORD$"
-	"$CM+LX,17,0$$BT, \"INSERT\",SM_INSERT$"
-	"$CM+LX,1,3$$BT, \"PLAY\",SM_PLAY$"
-	"$CM+LX,17,0$$BT, \"REPEAT N\",SM_REPEAT_N$"
-	"$CM+LX,1,3$$BT, \"STOP\",SM_STOP$"
-	"$CM+LX,17,0$$BT, \"CANCEL\",SM_CANCEL$"
+	"$CM+LX,1,3$$BT,\"RECORD\",SM_RECORD$"
+	"$CM+LX,17,0$$BT,\"INSERT\",SM_INSERT$"
+	"$CM+LX,1,3$$BT,\"PLAY\",SM_PLAY$"
+	"$CM+LX,17,0$$BT,\"REPEAT N\",SM_REPEAT_N$"
+	"$CM+LX,1,3$$BT,\"STOP\",SM_STOP$"
+	"$CM+LX,17,0$$BT,\"CANCEL\",SM_CANCEL$"
 	"\r\n\r\n\r\n$FG,GREEN$SHIFT-F2$FG$ will play macro.\r\n");
   l->flags|=LTFF_MIN_SIZE | LTFF_FORM;
   SPrintF(buf,"LtfMenuDo(0x%X);",l);
@@ -186,7 +186,7 @@ I64 PopUpExitRecordPlayStopInsert()
   Fs->popup_task=NULL;
   Kill(sys_macro_util_task);
   sys_macro_util_task=NULL;
-  LtfGetData(ll);
+  LtfDataGet(ll);
   LtfDel(l);
   return result;
 }

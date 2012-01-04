@@ -613,9 +613,7 @@ _ARG::
 	RET1	16
 // ************************************
 _ROUND::
-	ENTER	0
-	
-	SUB	RSP,8
+	ENTER	8
 	FSTCW	U16 -8[RBP]
 	MOV	AX,U16 -8[RBP]
 	MOV	U16 -6[RBP],AX
@@ -629,15 +627,11 @@ _ROUND::
 	MOV	RAX,U64 SF_ARG1[RBP]
 
 	FLDCW	U16 -6[RBP]
-	ADD	RSP,8
-
 	LEAVE
 	RET1	8
 // ************************************
 _TRUNC::
-	ENTER	0
-	
-	SUB	RSP,8
+	ENTER	8
 	FSTCW	U16 -8[RBP]
 	MOV	AX,U16 -8[RBP]
 	MOV	U16 -6[RBP],AX
@@ -651,15 +645,11 @@ _TRUNC::
 	MOV	RAX,U64 SF_ARG1[RBP]
 
 	FLDCW	U16 -6[RBP]
-	ADD	RSP,8
-
 	LEAVE
 	RET1	8
 // ************************************
 _FLOOR::
-	ENTER	0
-	
-	SUB	RSP,8
+	ENTER	8
 	FSTCW	U16 -8[RBP]
 	MOV	AX,U16 -8[RBP]
 	MOV	U16 -6[RBP],AX
@@ -674,15 +664,11 @@ _FLOOR::
 	MOV	RAX,U64 SF_ARG1[RBP]
 
 	FLDCW	U16 -6[RBP]
-	ADD	RSP,8
-
 	LEAVE
 	RET1	8
 // ************************************
 _CEIL::
-	ENTER	0
-	
-	SUB	RSP,8
+	ENTER	8
 	FSTCW	U16 -8[RBP]
 	MOV	AX,U16 -8[RBP]
 	MOV	U16 -6[RBP],AX
@@ -697,14 +683,70 @@ _CEIL::
 	MOV	RAX,SF_ARG1[RBP]
 
 	FLDCW	U16 -6[RBP]
-	ADD	RSP,8
-
 	LEAVE
 	RET1	8
 // ************************************
-_POW10::
+SYS_POW::
+// RAX=RDX`RAX
+	ENTER	24
+	OR	RAX,RAX	//To power of zero?
+	JNZ	@@05
+	MOV	RAX,1.0
+	JMP	@@20
+@@05:	OR	RDX,RDX	//zero to a power?
+	JNZ	@@10
+	XOR	RAX,RAX
+	JMP	@@20
+@@10:	MOV	RCX,RAX //RCX=pow
+	MOV	U64 -8[RBP],RDX
+	MOV	U64 -16[RBP],RAX
+	FSTCW	U16 -24[RBP]
+	MOV	AX,U16 -24[RBP]
+	MOV	U16 -22[RBP],AX
+	OR	AX,0x0C00
+	MOV	U16 -24[RBP],AX
+	FLDCW	U16 -24[RBP]
+	FLD	U64 -16[RBP]
+	FLD	U64 -8[RBP]
+	FABS	//base should be pos
+	FYL2X	// y*log2(x)
+	FST	U64 -8[RBP]
+	FRNDINT
+	FLD	U64 -8[RBP]
+	FSUBRP	ST1,ST0
+	F2XM1
+	FLD1
+	FADDP	ST1,ST0
+	FSTP	U64 -16[RBP]
+	FLD	U64 -8[RBP]
+	FLD	U64 -16[RBP]
+	FSCALE	// ST0<<ST1
+	OR	RDX,RDX //was base neg?
+	JGE	@@15
+	MOV	U64 -16[RBP],RCX
+	FLD	U64 -16[RBP]
+	FISTTP	U64 -16[RBP]
+	TEST	U64 -16[RBP],1
+	JZ	@@15	//was pow odd?
+	FCHS
+@@15:	FSTP	U64 -8[RBP]
+	FFREE	ST0
+	FINCSTP
+	FLDCW	U16 -22[RBP]
+	MOV	RAX,U64 -8[RBP]
+@@20:	LEAVE
+	RET
+// ************************************
+_POW::
 	ENTER	0
-	SUB	RSP,16
+	MOV	RAX,U64 SF_ARG2[RBP]
+	MOV	RDX,U64 SF_ARG1[RBP]
+	CALL	SYS_POW
+	LEAVE
+	RET1	16
+// ************************************
+_POW10::
+	ENTER	16
 	FSTCW	U16 -8[RBP]
 	MOV	AX,U16 -8[RBP]
 	MOV	U16 -6[RBP],AX
@@ -731,14 +773,12 @@ _POW10::
 	FINCSTP
 
 	FLDCW	U16 -6[RBP]
-	POP	RAX
-	ADD	RSP,8
+	MOV	RAX,U64 -16[RBP]
 	LEAVE
 	RET1	8
 // ************************************
 _EXP::
-	ENTER	0
-	SUB	RSP,16
+	ENTER	16
 	FSTCW	U16 -8[RBP]
 	MOV	AX,U16 -8[RBP]
 	MOV	U16 -6[RBP],AX
@@ -765,42 +805,37 @@ _EXP::
 	FINCSTP
 
 	FLDCW	U16 -6[RBP]
-
-	POP	RAX
-	ADD	RSP,8
+	MOV	RAX,U64 -16[RBP]
 	LEAVE
 	RET1	8
 // ************************************
 _LOG10::
-	ENTER	0
-	SUB	RSP,8
+	ENTER	8
 	FLDLG2
 	FLD	U64 SF_ARG1[RBP]
 	FYL2X	// y*log2(x)
 	FSTP	U64 -8[RBP]
-	POP	RAX
+	MOV	RAX,U64 -8[RBP]
 	LEAVE
 	RET1	8
 // ************************************
 _LOG2::
-	ENTER	0
-	SUB	RSP,8
+	ENTER	8
 	FLD1
 	FLD	U64 SF_ARG1[RBP]
 	FYL2X	// y*log2(x)
 	FSTP	U64 -8[RBP]
-	POP	RAX
+	MOV	RAX,U64 -8[RBP]
 	LEAVE
 	RET1	8
 // ************************************
 _LN::
-	ENTER	0
-	SUB	RSP,8
+	ENTER	8
 	FLDLN2
 	FLD	U64 SF_ARG1[RBP]
 	FYL2X	// y*log2(x)
 	FSTP	U64 -8[RBP]
-	POP	RAX
+	MOV	RAX,U64 -8[RBP]
 	LEAVE
 	RET1	8
 // ************************************
@@ -811,11 +846,9 @@ _FLDCW::
 	RET1	8
 // ************************************
 _FSTCW::
-	ENTER	0
-	SUB	RSP,8
+	ENTER	8
 	FSTCW	U16 -8[RBP]
 	MOVZX	RAX,U16 -8[RBP]
-	ADD	RSP,8
 	LEAVE
 	RET
 // ************************************

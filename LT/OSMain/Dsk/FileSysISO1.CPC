@@ -271,12 +271,10 @@ BoolI64 ISO1Cd(U8 *name,U64 cur_dir_cluster)
   if (Fs->cur_prt->type!=PT_ISO9660)
     PutDefineErr("ST_NOT_ISO9660");
   else {
-    if (ISO1FileFind(Fs->cur_prt,cur_dir_cluster,
-			name,&de,TRUE,FALSE)) {
+    if (ISO1FileFind(Fs->cur_prt,cur_dir_cluster,name,&de,TRUE,FALSE))
       return TRUE;
-    } else {
-      PutS(name);
-      Spaces;
+    else {
+      "%s ",name;
       PutDefineErr("ST_FILE_NOT_FOUND");
     }
   }
@@ -322,7 +320,7 @@ LTDirEntry *ISO1FilesFind(U8 *files_find_mask,U64 fuf_flags,LTDirEntry *parent=N
 	  }
 	} else if ((tempm->attr & LT_ATTR_DIR || !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
 	!(Bt(&fuf_flags,FUf_RECURSE) && *tempm->name=='.' && tempm->attr&LT_ATTR_DIR) &&
-      	   FilesFindMatch(files_find_mask,tempm->name,fuf_flags)) {
+	   FilesFindMatch(files_find_mask,tempm->name,fuf_flags)) {
 	  tempm->next=result;
 	  result=tempm;
 	  tempm->full_name=FileNameAbs(tempm->name);

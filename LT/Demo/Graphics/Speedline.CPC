@@ -12,7 +12,7 @@ public U0 SpeedLineDemo()
   WinMax;
   WordStat(OFF);
   GrDCClear;
-  PutS("$CL$");
+  "$CL$";
   do {
     msg_code=GetMsg(&p1,&p2,
       1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+
@@ -30,7 +30,7 @@ public U0 SpeedLineDemo()
 	while (msg_code!=MSG_IP_L_UP) {
 	  GrSpeedLine(dc,x1,y1,x2,y2,ip_speed);
 	  msg_code=GetMsg(&p1,&p2,
-  	    1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
+	    1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 	  x1=x2; y1=y2;
 	  x2=p1; y2=p2;
 	}

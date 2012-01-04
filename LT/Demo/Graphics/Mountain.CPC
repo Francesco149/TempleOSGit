@@ -12,7 +12,6 @@
 
 
 
-
 /* <1> <1> (image) */	/* <2> <2> (image) */	  /* <3> <3> (image) */
 
 
@@ -69,7 +68,7 @@ P3I32 mountain[19]={{0,0,0},{100,-20,0},{100,-20,0},{-100,-40,0},{-100,-40,0},
 BoolI64 PlotMan(U0 *aux,I64 _x,I64 _y,I64 _z)
 { nounusedwarn aux,_z;
   x=_x; y=_y;
-  Sleep(5);
+  Sleep(4);
   return TRUE;
 }
 

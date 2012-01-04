@@ -99,7 +99,7 @@ BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NU
 	    if (i.u16[0]==EC_DEREF && tempc->ptr_cnt)
 	      tempc--;
 	    else if (i.u16[0]==EC_ADDR) {
-   	      lx->abs_cnts.c_addres++;
+	      lx->abs_cnts.c_addres++;
 	      if (!(lx->flags & (LF_RAX|LF_ARRAY))) {
 		if (!Bt(deref_bitmap,tempi->ic_opcode))
 		  PrsExcept(lx,"ST_INVALID_LVAL");
@@ -344,12 +344,33 @@ done3:
 U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,ClassStruct *tempc)
 {
   I64 i,argc_cnt;
-  BoolI8 is_first_arg,needs_right_paren;
+  BoolI8 is_first_arg=TRUE,needs_right_paren,is_str_out,is_putchar;
   ClassStruct *tempc1,*tempc2;
   MemberListStruct *tempm;
   LexCbHeader *tempcbh,*tempcbh1;
   CbMiscStruct *mc;
   IntermediateCode *tempi;
+
+  if (!tempc) {
+    if (lx->token==TK_U8) {
+      if (!(tempc=HashFind("PutChar",lx->hash_table_list,HTT_FUN)))
+	PrsExcept(lx,"ST_HEADER_FOR_PRINTF");
+      if (!lx->cur_i) //empty char signals PutChar with variable
+	Lex(lx);
+      is_str_out=FALSE;
+      is_putchar=TRUE;
+    } else {
+      if (!(tempc=HashFind("PrintF",lx->hash_table_list,HTT_FUN)))
+	PrsExcept(lx,"ST_HEADER_FOR_PRINTF");
+      if (!*lx->ident) //empty string signals PrintF with variable fmt_str
+	Lex(lx);
+      is_putchar=FALSE;
+      is_str_out=TRUE;
+    }
+  } else {
+    is_str_out=FALSE;
+    is_putchar=FALSE;
+  }
 
   if (indirect) {
     if (!(lx->flags & (LF_RAX | LF_ARRAY)))
@@ -358,7 +379,6 @@ U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,ClassStruct *tempc)
     CbIcAdd(lx,EC_SET_RAX,0,sys_internal_types[IT_PTR]);
     CbIcAdd(lx,EC_NOP1,1,sys_internal_types[IT_PTR]); //balance the books
   }
-  is_first_arg=TRUE;
   CbIcAdd(lx,EC_NOP,0,0); //record indent_level
   CbPush(lx);
   tempcbh=lx->cbh.cb_next;
@@ -366,20 +386,30 @@ U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,ClassStruct *tempc)
   i=tempc->arg_cnt;
   tempm=tempc->member_list;
   argc_cnt=0;
-  if (lx->token!='(')
-    needs_right_paren=FALSE;
-  else {
+  if (lx->token=='(') {
     Lex(lx);
     needs_right_paren=TRUE;
+  } else {
+    if (lx->opts&1<<OPTf_STD_C)
+      PrsExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+    needs_right_paren=FALSE;
   }
-
   while (i--) {
     CbOutPtrsInit(lx);
-    if (needs_right_paren && !is_first_arg) {
-      if (lx->token==',')
-	Lex(lx);
-      else if (lx->token!=')')
-	PrsExcept(lx,"ST_EXPECTING_COMMA");
+    if (!is_first_arg) {
+      if (is_str_out) {
+	if (lx->token==',')
+	  Lex(lx);
+	else if (lx->token!=';')
+	  PrsExcept(lx,"ST_EXPECTING_COMMA");
+      } else {
+	if (needs_right_paren) {
+	  if (lx->token==',')
+	    Lex(lx);
+	  else if (lx->token!=')')
+	    PrsExcept(lx,"ST_EXPECTING_COMMA");
+	}
+      }
     }
     if (tempm->flags & MLF_DFT_AVAILABLE &&
 	(lx->token==')' || lx->token==',' || !needs_right_paren)) {
@@ -425,12 +455,35 @@ U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,ClassStruct *tempc)
     is_first_arg=FALSE;
     tempm=tempm->next;
   }
+  if (is_str_out && lx->token==';') {
+    if (!(tempc=HashFind("PutS",lx->hash_table_list,HTT_FUN)))
+      PrsExcept(lx,"ST_HEADER_FOR_PRINTF");
+    tempm=NULL;
+  }
   if (tempm && tempm->flags & MLF_DOT_DOT_DOT) {
     CbOutPtrsInit(lx);
     tempi=CbIcAdd(lx,EC_IMM,0,tempm->member_class);
     CbIcAdd(lx,EC_END,0,0);
     CbPush(lx);
-    if (needs_right_paren) {
+    if (is_str_out) {
+      if (lx->token!=';') {
+	do {
+	  if (!is_first_arg) {
+	    if (lx->token==',')
+	      Lex(lx);
+	    else
+	      PrsExcept(lx,"ST_EXPECTING_COMMA");
+	  }
+	  CbOutPtrsInit(lx);
+	  if (!PrsExpression(lx,NULL,FALSE,ps))
+	    throw(EXCEPT_COMPILER,4);
+	  CbIcAdd(lx,EC_END,0,0);
+	  CbPush(lx);
+	  is_first_arg=FALSE;
+	  argc_cnt++;
+	} while (lx->token==',');
+      }
+    } else if (needs_right_paren) {
       if (lx->token!=')') {
 	do {
 	  if (!is_first_arg) {
@@ -452,9 +505,10 @@ U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,ClassStruct *tempc)
     tempi->ic_data=argc_cnt++; //++ so add_esp latter works
   }
   if (needs_right_paren) {
-    if (lx->token!=')')
+    if (lx->token==')')
+      Lex(lx);
+    else
       PrsExcept(lx,"ST_MISSING_RIGHT_PAREN");
-    Lex(lx);
   }
   tempcbh1=tempcbh->cb_next;
   tempcbh->cb_next=lx->cbh.cb_next;
@@ -502,6 +556,8 @@ U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,ClassStruct *tempc)
     }
   }
   CbIcAdd(lx,EC_CALL_END,tempc,tempc->return_class);
+  if (is_str_out||is_putchar)
+    CbIcAdd(lx,EC_END_EXP,0,0);
   lx->flags=(lx->flags|LF_RAX) & ~(LF_ARRAY|LF_FUN_EXP);
   return PRST_UNARY_MODIFIERS;
 }
@@ -524,6 +580,7 @@ U64 PrsUnaryTerm(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,ArrayDimS
   *paren_prec=PREC_NULL;
   switch (lx->token) {
     case TK_INTEGER:
+    case TK_U8:
       if (PREC_TERM>*max_prec)
 	*max_prec=PREC_TERM;
       if (lx->cur_i<0)
@@ -1134,10 +1191,9 @@ U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,Array
 	    PrsExcept(lx,"ST_MISSING_RIGHT_BRACKET");
 	  Lex(lx); //skip ]
 	  tempi1=lx->cbh.cb_last_out_ptr;
-	  if (tempi1->ic_class->sub_type==IT_F64)
-	    tempi1->ic_flags|=ICF_R_TO_INT;
-	  CbIcAdd(lx,EC_MUL,0,tempc,ICF_USE_INT);
-	  CbIcAdd(lx,EC_ADD,0,tempc,ICF_USE_INT);
+	  tempi1->ic_flags|=ICF_R_TO_INT;
+	  CbIcAdd(lx,EC_MUL,0,tempc);
+	  CbIcAdd(lx,EC_ADD,0,tempc);
 	  lx->flags|=LF_RAX;
 	  return PRST_UNARY_MODIFIERS;
 	}
@@ -1151,10 +1207,9 @@ U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,Array
 	PrsExcept(lx,"ST_MISSING_RIGHT_BRACKET");
       Lex(lx); //skip ]
       tempi1=lx->cbh.cb_last_out_ptr;
-      if (tempi1->ic_class->sub_type==IT_F64)
-	tempi1->ic_flags|=ICF_R_TO_INT;
-      CbIcAdd(lx,EC_MUL,0,tempc,ICF_USE_INT);
-      CbIcAdd(lx,EC_ADD,0,tempc,ICF_USE_INT);
+      tempi1->ic_flags|=ICF_R_TO_INT;
+      CbIcAdd(lx,EC_MUL,0,tempc);
+      CbIcAdd(lx,EC_ADD,0,tempc);
       lx->flags&=~(LF_RAX|LF_ARRAY);
       return PRST_UNARY_MODIFIERS;
     case '(':

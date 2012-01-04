@@ -1,13 +1,13 @@
 //7 has words
 
-F64 t0=tJ;
+F64 t0=tM;
 
 U0 AnimateTask(U0 **update)
 {
   F64 dt;
   U0 *old_update=*update;
   while (TRUE) {
-    dt=(tJ-t0)*music_tempo;
+    dt=(tM-t0)*music_tempo;
     if (dt>16.0) {
       *update=NULL;
       WinSync;
@@ -36,7 +36,7 @@ U0 Song()
   Fs->animate_task=Spawn(&AnimateTask,&Fs->update_win,"Animate",Fs);
   try {
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       Play("3qEeACA2G3qCEC2G3E",
 	  "Now... \0 \0 \0 \0 \0I \0see \0the \0light.\r\n\0 \0");
       Play("EeACA2G3qCEC2G3E",

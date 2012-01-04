@@ -10,12 +10,12 @@ I64 PopUpDiffOptions()
 {
   I64 i;
   Ltf *l=LtfNew;
-  LtfPutS(l,"$CM+LX,2,4$$FG$$BT, \"USE FILE1\",DS_USE_FILE1$"
-  	"$CM+LX,24,0$$FG,CYAN$$BT, \"USE FILE2\",DS_USE_FILE2$"
-  	"$CM+LX,2,4$$FG$$BT, \"REMAINDER ALL FILE1\",DS_REMAINDER_1$"
-  	"$CM+LX,24,0$$FG,CYAN$$BT, \"REMAINDER ALL FILE2\",DS_REMAINDER_2$"
-  	"$CM+LX,2,4$$FG$$BT, \"ABORT FILE\",DS_ABORT_FILE$"
-  	"$CM+LX,24,0$$FG$$BT, \"ABORT ALL FILES\",LTFM_CANCEL$\r\n");
+  LtfPutS(l,"$CM+LX,2,4$$FG$$BT,\"USE FILE1\",DS_USE_FILE1$"
+	"$CM+LX,24,0$$FG,CYAN$$BT,\"USE FILE2\",DS_USE_FILE2$"
+	"$CM+LX,2,4$$FG$$BT,\"REMAINDER ALL FILE1\",DS_REMAINDER_1$"
+	"$CM+LX,24,0$$FG,CYAN$$BT,\"REMAINDER ALL FILE2\",DS_REMAINDER_2$"
+	"$CM+LX,2,4$$FG$$BT,\"ABORT FILE\",DS_ABORT_FILE$"
+	"$CM+LX,24,0$$FG$$BT,\"ABORT ALL FILES\",LTFM_CANCEL$\r\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -43,31 +43,31 @@ U0 DiffSelect(Ltf *l,U64 *_df_flags,I64 j1_lo,I64 j1_hi,
   U64 old_flags;
   Ltf *cur_l;
   if (!(*_df_flags & (DF_ABORT_FILE|DF_ABORT_ALL_FILES))) {
-    PrintF("$FG,RED$%d,%d---------------------$FG$\r\n",j1_lo,j2_lo);
+    "$FG,RED$%d,%d---------------------$FG$\r\n",j1_lo,j2_lo;
     i= j1_lo<=0 ? 0:j1_lo-1;
     while (i<j1_hi) {
       if (cur_l=LtfCur) {
 	old_flags=cur_l->flags&LTFF_PLAIN_TEXT;
 	cur_l->flags|=LTFF_PLAIN_TEXT;
       }
-      PutS(usl1[i++]->tag);
+      "" usl1[i++]->tag;
       if (cur_l)
 	cur_l->flags= cur_l->flags&~LTFF_PLAIN_TEXT |old_flags;
       CrLf;
     }
-    PutS("$FG,CYAN$");
+    "$FG,CYAN$";
     i= j2_lo<=0 ? 0:j2_lo-1;
     while (i<j2_hi) {
       if (cur_l=LtfCur) {
 	old_flags=cur_l->flags&LTFF_PLAIN_TEXT;
 	cur_l->flags|=LTFF_PLAIN_TEXT;
       }
-      PutS(usl2[i++]->tag);
+      "" usl2[i++]->tag;
       if (cur_l)
 	cur_l->flags= cur_l->flags&~LTFF_PLAIN_TEXT |old_flags;
       CrLf;
     }
-    PutS("$FG$");
+    "$FG$";
 
     use_file1=TRUE;
     if (!(*_df_flags & DF_NO_MORE_PROMPTS_THIS_FILE)) {
@@ -100,14 +100,14 @@ U0 DiffSelect(Ltf *l,U64 *_df_flags,I64 j1_lo,I64 j1_hi,
 	cl=usl1[j1_lo];
 	while (cl!=usl1[j1_hi]) {
 	  cl2=cl->next;
-	  LtfDelEntry(l,cl);
+	  LtfEntryDel(l,cl);
 	  cl=cl2;
 	}
       }
       if (j2_lo<j2_hi) {
 	cl=usl2[j2_lo];
 	while (cl!=usl2[j2_hi]) {
-	  cl2=LtfCopyEntry(l,cl);
+	  cl2=LtfEntryCopy(l,cl);
 	  InsQue(cl2,cl1);
 	  cl1=cl2;
 	  cl=cl->next;
@@ -256,7 +256,7 @@ public U64 Diff(U8 *dst_file,U8 *src_file,U64 df_flags=0)
     LtfWrite(l1);
 
   if (!DiffBins(l1,l2))
-    PutS("$FG,RED$Bin Data is Different$FG$\r\n");
+    "$FG,RED$Bin Data is Different$FG$\r\n";
 
   LtfDel(l1);
   LtfDel(l2);

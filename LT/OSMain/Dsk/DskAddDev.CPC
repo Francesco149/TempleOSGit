@@ -133,7 +133,7 @@ U64 BlkDevAdd(LTBlkDev *bdev,BoolI8 one_prt)
 	if (!mbr.p[j].offset)
 	  break;
 	if (ext_base==INVALID_CLUSTER) {
-  	  offset=mbr.p[j].offset;
+	  offset=mbr.p[j].offset;
 	  ext_base=offset;
 	} else
 	  offset=mbr.p[j].offset+ext_base;
@@ -336,7 +336,7 @@ BoolI64 PmtBaseUnit(LTBlkDev *bdev)
 {
   U64 ch;
   BoolI8 probe;
-  PutS("The LoseThos Operating System\r\n\r\n\r\n");
+  "The LoseThos Operating System\r\n\r\n\r\n";
 #exe {
   if (osmain_cfg->opts[CFG_DONT_PROBE])
     StreamPutS("probe=FALSE;");
@@ -344,20 +344,20 @@ BoolI64 PmtBaseUnit(LTBlkDev *bdev)
     StreamPutS("probe=TRUE;");
 };
   if (!probe || !BootCdProbeAll(bdev)) {
-    PutS("\r\nThis is not a product registration.  LoseThos\r\n"
-	 "needs the I/O port numbers for the CD-ROM.\r\n"
-	 "Retry the ports above or check Windows\r\n"
-	 "system information under I/O ports for\r\n"
-	 "'IDE', 'ATA' or 'SATA'.\r\n\r\n"
-	 "\r\nEnter 4-digit hex I/O Port number.\r\n"
-	 "CD-ROM I/O Port Base0: 0x");
+	"\r\nThis is not a product registration.  LoseThos\r\n"
+	"needs the I/O port numbers for the CD-ROM.\r\n"
+	"Retry the ports above or check Windows\r\n"
+	"system information under I/O ports for\r\n"
+	"'IDE', 'ATA' or 'SATA'.\r\n\r\n"
+	"\r\nEnter 4-digit hex I/O Port number.\r\n"
+	"CD-ROM I/O Port Base0: 0x";
     bdev->base0=SysPmtI64;
     bdev->base1=0;
 
-    PutS("\r\nUnit (0 or 1): ");
+    "\r\nUnit (0 or 1): ";
     do ch=GetChar(NULL,FALSE);
     while (!('0'<=ch<='1'));
-    PutChar(ch);
+    '' ch;
     bdev->unit=ch-'0';
     return TRUE;
   }
@@ -374,7 +374,11 @@ U0 BlkDevsInitAll()
   for (i=0;i<NUM_LTPRTS;i++)
     drv_to_prt[i]=&local_prts[i];
   sys_raw_dc_col=0;
-#exe {StreamLtf(osmain_cfg->add_dev);};
+#exe {
+   StreamPutS("#exe {OptOff(OPTf_PAREN_WARN);}");
+   StreamLtf(osmain_cfg->add_dev);
+   StreamPutS("#exe {OptOn(OPTf_PAREN_WARN);}");
+};
   PrtRep;
 }
 

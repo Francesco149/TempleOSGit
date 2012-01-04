@@ -17,14 +17,14 @@ U0 MergeChkList(LTDirEntry *m1,LTDirEntry *m2,U64 *_fuf_flags,U64 *df_flags)
   while (m1 && !(*df_flags & DF_ABORT_ALL_FILES)) {
     tempm2=MCMatchFind(m1,m2);
     if (!tempm2)
-      PrintF("$FG,BROWN$Does Not Exist:%s$FG$\r\n",m1->full_name);
+      "$FG,BROWN$Does Not Exist:%s$FG$\r\n",m1->full_name;
     else {
       if (m1->attr & LT_ATTR_DIR)
 	MergeChkList(m1->sub,tempm2->sub,_fuf_flags,df_flags);
       else {
 	i=m1->datetime-tempm2->datetime;
 	if (AbsI64(i)>LTDATE_FREQ*2) { //Filedates can shift due to conversion
-	  PutS(m1->full_name);
+	  "" m1->full_name;
 	  CrLf;
 	  if (Bt(_fuf_flags,FUf_DIFF)) {
 	    if (IsTextFile(m1->full_name))
@@ -61,7 +61,7 @@ U0 ListNewFilesList(LTDirEntry *tempm,LTDate datetime)
 {
   while (tempm) {
     if (tempm->datetime>datetime) {
-      PutS(tempm->full_name);
+      "" tempm->full_name;
       CrLf;
     }
     ListNewFilesList(tempm->sub,datetime);

@@ -58,8 +58,7 @@ U0 RandWord()
   I64 i;
   if (ws_num_words) {
     i=TimerPickedU32;
-    PutS(ws_sorted_words[i%ws_num_words]->str);
-    PutS(" ");
+    "%s ",ws_sorted_words[i%ws_num_words]->str;
   }
 }
 
@@ -71,7 +70,7 @@ U0 RandQuote()
   if (buf) {
     i=TimerPickedU32%(size-l);
     buf[i+l]=0;
-    PutS(buf+i);
+    "" buf+i;
     Free(buf);
   }
 }
@@ -84,13 +83,13 @@ U0 UpTheMountain()
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->draw_it=&DrawGodTalking;
-  PutS("$BG,YELLOW$$WW,1$$CM,0,30$God Says...$FG,RED$\r\n");
+  "$BG,YELLOW$$WW,1$$CM,0,30$God Says...$FG,RED$\r\n";
   if (RandU32&1) {
     for (i=0;i<16;i++)
       RandWord;
   } else
     RandQuote;
-  PutS("$FG$\r\n\r\nPress <SHIFT-ESC>.\r\n");
+  "$FG$\r\n\r\nPress <SHIFT-ESC>.\r\n";
   View;
   SettingsPop(Fs,TSF_SAME_SONG);
 }
@@ -107,27 +106,27 @@ U0 HoldCourt()
 
   CrLf;
   accused=RandU32%3;
-  PutS(ListEntryPoint(accused,"A man \0A woman \0A child \0"));
+  "" ListEntryPoint(accused,"A man \0A woman \0A child \0");
 
   crime=RandU32&3;
-  PutS(ListEntryPoint(crime,"commits murder\0commits adultery\0commits blasphemy\0commits idolatry\0"));
+  "" ListEntryPoint(crime,"commits murder\0commits adultery\0commits blasphemy\0commits idolatry\0");
 
   if (crime<=1) {
-    PutChar(CH_SPACE);
+    '' CH_SPACE;
     victim=RandU32%3;
-    PutS(ListEntryPoint(victim,"to a man\0to a woman\0to a child\0to an animal\0"));
+    "" ListEntryPoint(victim,"to a man\0to a woman\0to a child\0to an animal\0");
   }
   if (!(RandU32%5))
-    PutS(", again!");
+    ", again!";
   else
-    PutChar('.');
+    '.';
   CrLf(4);
 
-  PutS("$LM,4$");
-  PutS("\r\n\r\n$BT,\"Show Mercy\",1$\r\n\r\n");
-  PutS("\r\n\r\n$BT,\"Punish\",2$\r\n\r\n");
-  PutS("\r\n\r\n$BT,\"Really Punish\",3$\r\n\r\n");
-  PutS("$LM,0$");
+  "$LM,4$"
+  "\r\n\r\n$BT,\"Show Mercy\",1$\r\n\r\n"
+  "\r\n\r\n$BT,\"Punish\",2$\r\n\r\n"
+  "\r\n\r\n$BT,\"Really Punish\",3$\r\n\r\n"
+  "$LM,0$";
   LtfDblBufEnd;
   i=LtfMenuDo(LtfCur);
 
@@ -161,8 +160,7 @@ BoolI64 TakeTurn()
 
   FlushMsgs;
   LtfDblBufStart;
-
-  PutS("$LM,4$"
+	"$LM,4$"
 	"\r\n\r\n$BT,\"Break Camp\",T_BREAK_CAMP$\r\n\r\n"
 	"\r\n\r\n$BT,\"Talk with God\",T_TALK_WITH_GOD$\r\n\r\n"
 	"\r\n\r\n$BT,\"View Clouds\",T_VIEW_CLOUDS$\r\n\r\n"
@@ -176,8 +174,7 @@ BoolI64 TakeTurn()
 	"\r\n\r\n$BT,\"Toggle Mute\",T_MUTE$\r\n\r\n"
 	"\r\n\r\n$BT,\"Help\",T_HELP$\r\n\r\n"
 	"\r\n\r\n$BT,\"Quit\",T_QUIT$\r\n\r\n"
-	"$LM,0$");
-
+	"$LM,0$";
   LtfDblBufEnd;
   i=LtfMenuDo(LtfCur);
 

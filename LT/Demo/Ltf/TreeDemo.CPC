@@ -8,7 +8,7 @@ Ltf is taken off-line by disabling preemption so there
 are no screen updates until all data has been inserted.
 
 There is a special Ltf function which is also
-available to take an Ltf off-line.  See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1680] LtfSafeInsert.
+available to take an Ltf off-line.  See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1683] LtfInsertSafe.
 For this example, however, I wanted to use LtfPrintF
 and disabled Preemption myself.
 */

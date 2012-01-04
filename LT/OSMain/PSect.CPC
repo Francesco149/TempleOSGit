@@ -1,4 +1,4 @@
-/* Project: OSMain2.SPZ */
+/* Project: OSMain.SPZ */
 
 I64 HasLower(U8 *src)
 {
@@ -232,7 +232,7 @@ BoolI64 PutSrcLink(U0 *add,U64 cnt=1,U8 *buf=NULL)
     if (buf)
       SPrintF(buf,"$LK,\"%P\",\"%s\"$",add,src);
     else
-      PrintF("$LK,\"%P\",\"%s\"$",add,src);
+      "$LK,\"%P\",\"%s\"$",add,src;
     Free(src);
     return TRUE;
   } else if (buf)

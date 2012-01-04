@@ -47,8 +47,8 @@ U64 TimerPickedU16(U8 *msg=NULL)
   } else
     st=CAlloc(256);
   StrCat(st,"\r\n\r\nPress $FG,GREEN$OKAY$FG$ to generate \r\n"
-	    "a random num from a timer.\r\n"
-	    "The Holy Spirit can puppet you.\r\n\r\n");
+	"a random num from a timer.\r\n"
+	"The Holy Spirit can puppet you.\r\n\r\n");
   PopUpTimerOk(st);
   Free(st);
   if (mouse_evt_time>kbd_evt_time)
@@ -83,4 +83,3 @@ U64 TimerPickedNibble(U8 *msg=NULL)
     return result&15;
   }
 }
-

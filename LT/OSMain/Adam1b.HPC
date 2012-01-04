@@ -20,7 +20,7 @@ See
 */
 
 #help_index "Misc;Messages"
-public LTextern SYS_CUR_FOCUS_TASK TaskStruct *sys_cur_focus_task;
+public LTextern SYS_FOCUS_TASK TaskStruct *sys_focus_task;
 
 #help_index "Graphics/Screen"
 //This is the INT 0x10 mode number.
@@ -38,23 +38,19 @@ LTextern SYS_RUN_LEVEL U32 sys_run_level;
 LTextern SYS_BOOT_PATCH_TABLE_BASE U32 sys_boot_patch_table_base;
 
 #help_index "Misc/Progress Bars"
-public LTextern SYS_PROGRESS_VALS U64 progress_vals[NUM_PROGRESS_BARS];
-public LTextern SYS_PROGRESS1 U64 progress1;
-public LTextern SYS_PROGRESS2 U64 progress2;
-public LTextern SYS_PROGRESS3 U64 progress3;
-public LTextern SYS_PROGRESS4 U64 progress4;
-
-public LTextern SYS_PROGRESS_MAXES U64 progress_maxes[NUM_PROGRESS_BARS];
-public LTextern SYS_PROGRESS1_MAX U64 progress1_max;
-public LTextern SYS_PROGRESS2_MAX U64 progress2_max;
-public LTextern SYS_PROGRESS3_MAX U64 progress3_max;
-public LTextern SYS_PROGRESS4_MAX U64 progress4_max;
- 
-public LTextern SYS_PROGRESS_DESCS U8 *progress_descs[NUM_PROGRESS_BARS];
-public LTextern SYS_PROGRESS1_DESC U8 *progress1_desc;
-public LTextern SYS_PROGRESS2_DESC U8 *progress2_desc;
-public LTextern SYS_PROGRESS3_DESC U8 *progress3_desc;
-public LTextern SYS_PROGRESS4_DESC U8 *progress4_desc;
+public LTextern SYS_PROGRESSES ProgressStruct sys_progresses[NUM_PROGRESS_BARS];
+public LTextern SYS_PROGRESS1	   U64 progress1;
+public LTextern SYS_PROGRESS1_MAX  U64 progress1_max;
+public LTextern SYS_PROGRESS1_DESC U8  progress1_desc[PROGRESS_DESC_LEN+1];
+public LTextern SYS_PROGRESS2	   U64 progress2;
+public LTextern SYS_PROGRESS2_MAX  U64 progress2_max;
+public LTextern SYS_PROGRESS2_DESC U8  progress2_desc[PROGRESS_DESC_LEN+1];
+public LTextern SYS_PROGRESS3	   U64 progress3;
+public LTextern SYS_PROGRESS3_MAX  U64 progress3_max;
+public LTextern SYS_PROGRESS3_DESC U8  progress3_desc[PROGRESS_DESC_LEN+1];
+public LTextern SYS_PROGRESS4	   U64 progress4;
+public LTextern SYS_PROGRESS4_MAX  U64 progress4_max;
+public LTextern SYS_PROGRESS4_DESC U8  progress4_desc[PROGRESS_DESC_LEN+1];
  
 #help_index "Bit"
 #help_file "::/LT/Doc/Bit.TXZ"
@@ -175,7 +171,7 @@ public LTextern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d);
 public LTextern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d);
 
 //Model Specific REgisters
-//See [C:/LT/OSMain/Adam1a.HPZ,435] MSRs
+//See [C:/LT/OSMain/Adam1a.HPZ,436] MSRs
 public LTextern _SET_MSR U0 SetMSR(U64 model_specific_reg,U64 val);
 
 #help_index "Processor/Cache;Memory/Cache"
@@ -191,7 +187,7 @@ public LTintern EC_CLFLUSH U0 CLFlush(U0 *a);
 #help_file "::/LT/Doc/MultiCore.TXZ"
 LTextern _SET_GS_BASE U0 SetGs(CPUStruct *c);
 public LTextern SYS_MP_CNT U64 mp_cnt;
-LTextern SYS_MP_INIT_CNT U64 mp_init_cnt; //only used during [C:/LT/OSMain/MultiProc.CPZ,422] MPStart
+LTextern SYS_MP_CNT_INITIAL U64 mp_cnt_initial; //only used during [C:/LT/OSMain/MultiProc.CPZ,414] MPStart
 LTextern SYS_MP_CNT_LOCK U64 mp_cnt_lock;
 LTextern SYS_TEMP_CPU0_STRUCT CPUStruct sys_temp_cpu0_struct;
 public LTextern SYS_CPU_STRUCTS	 CPUStruct *cpu_structs;
@@ -245,6 +241,7 @@ public LTextern _ROUND F64 Round(F64 d);
 public LTextern _TRUNC F64 Trunc(F64 d);
 public LTextern _FLOOR F64 Floor(F64 d);
 public LTextern _CEIL  F64 Ceil(F64 d);
+public LTextern _POW F64 Pow(F64 base,F64 power);
 public LTextern _POW10 F64 Pow10(F64 d);
 public LTextern _LOG2  F64 Log2(F64 d);
 public LTextern _LOG10 F64 Log10(F64 d);
@@ -295,7 +292,7 @@ public LTextern _CALL I64 Call(U0 *s);
 public LTextern _CALLIND I64 CallInd(/*argpop*/I64 (*fp_add)(...),...);
 
 //This is just an array of ptrs to funs.
-//See [C:/LT/OSMain/Adam1a.HPZ,506] Extern Num Definitions
+//See [C:/LT/OSMain/Adam1a.HPZ,507] Extern Num Definitions
 public LTextern SYS_EXTERN_TABLE /*argpop*/ I64 (**ext)(...);
 //Can have any fixed number of arguments.
 public LTextern _CALLEXTNUM I64 CallExtNum(U64 num,...);

@@ -54,6 +54,16 @@ public F64 ACos(F64 c)
   return ATan(s/c);
 }
 
+public F64 Sinh(F64 x)
+{
+  return 0.5*(Exp(x)-Exp(-x));
+}
+
+public F64 Cosh(F64 x)
+{
+  return 0.5*(Exp(x)+Exp(-x));
+}
+
 #help_index "Math/Complex"
 public Complex *CAdd(Complex *n1,Complex *n2,Complex *sum)
 {

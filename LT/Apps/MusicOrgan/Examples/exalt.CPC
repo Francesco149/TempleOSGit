@@ -22,7 +22,7 @@ U0 Song()
   try {
     while (!ScanKey) {
       LtfClear;
-      PutS("$BG,LTCYAN$$FG,BLACK$");
+      "$BG,LTCYAN$$FG,BLACK$";
       Play("3eEDsBABA2qG3etGECFDBECFCBReBE",
 	  "Come \0and \0sing \0 \0a\0 \0long.  \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\r\n\0 \0 \0 \0");
       Play("EDsBABA2qG3etGECFDBECFCBReBE",

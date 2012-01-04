@@ -12,7 +12,7 @@ U0 LockToPage(Ltf *l)
   cl=l->cur_entry;
   if (cl->flags & LTFLF_LOCK_TO_PAGE)  {
     l->cur_top_line_num=cl->y-cl->page_line_num;
-    s=LtfLastSettings(cl);
+    s=LtfSettingsLast(cl);
     win_page_len=l->win_task->win_height;
     if (cl->page_line_num>=win_page_len)
       l->cur_top_line_num+=s->page_len-win_page_len;
@@ -49,7 +49,7 @@ U0 LtfDelToNum(Ltf *l,I64 num)
 	l->cur_entry=ll2;
 	l->cur_data_col=ll2->min_col;
       }
-      LtfDelEntry(l,ll);
+      LtfEntryDel(l,ll);
     }
     ll=ll2;
   }
@@ -65,7 +65,7 @@ U0 LtfDelToEntry(Ltf *l,LtfEntry *clear_entry)
 	l->cur_entry=ll2;
 	l->cur_data_col=ll2->min_col;
       }
-      LtfDelEntry(l,ll);
+      LtfEntryDel(l,ll);
     }
     if (ll==clear_entry)
       break;
@@ -73,7 +73,7 @@ U0 LtfDelToEntry(Ltf *l,LtfEntry *clear_entry)
   }
 }
 
-U0 LtfDrawBorderList(Ltf *l)
+U0 LtfBorderListDraw(Ltf *l)
 {
   TaskStruct *win_task=l->win_task;
   I64 i,y=-1,attr=win_task->border_attr<<8;
@@ -131,7 +131,7 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
   BoolI8 del_cl,skipped_update,tree_collapsed;
   U64 hide_collapsed[2];
   TaskStruct *win_task=l->win_task,*mem_task=l->mem_task;
-  BoolI8 resize=FALSE,extra_processing,same_win;
+  BoolI8 resize=FALSE,extra_processing,same_win,more=FALSE;
   BoolI8 blink_flag=Blink(,tP(win_task));
   GrDC *dc;
   I64 cursor_y=MIN_I64,left_margin,right_margin;
@@ -249,10 +249,10 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
       l->cur_entry==l->old_cur_entry &&
       l->cur_data_col==l->old_cur_data_col;
   if (to_screen) {
-    y_plot_top=y0-2-scroll_y/FONT_HEIGHT;
-    y_plot_bottom=y0+1+height-scroll_y/FONT_HEIGHT;
+    y_plot_top=y0-scroll_y/FONT_HEIGHT;
+    y_plot_bottom=y0+height-1-scroll_y/FONT_HEIGHT;
     if (!(l->flags&LTFF_AUX_LTF) && !Bt(&win_task->display_flags,DISPLAYf_NO_BORDER))
-      LtfDrawBorderList(l);
+      LtfBorderListDraw(l);
   }
 
   if (recalc) {
@@ -282,7 +282,7 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
   } else
     cl=l->root.next;
 
-  s=LtfLastSettings(cl);
+  s=LtfSettingsLast(cl);
   l->flags=cl->flags& (LTF_BL_IV_UL|LTFLF_WORD_WRAP|LTFLF_LOCK_TO_PAGE|LTFLF_LOCK_TO_CENTER) |
 	    l->flags&~(LTF_BL_IV_UL|LTFLF_WORD_WRAP|LTFLF_LOCK_TO_PAGE|LTFLF_LOCK_TO_CENTER);
   cur_u8_attr=s->cur_text_attr;
@@ -306,7 +306,7 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
   extra_processing=recalc||find_cur_entry||resize;
   full_refresh_and_extra_processing=full_refresh&&extra_processing;
   if (full_refresh) {
-    LtfDelRemainingSettings(l,s->next);
+    LtfSettlingsRemainingDel(l,s->next);
     l->min_x=MAX_I32; l->min_y=MAX_I32;
     l->max_x=MIN_I32; l->max_y=MIN_I32;
   }
@@ -358,7 +358,7 @@ word_wrap_start:
 	    best_cl=cl2->next;
 	    best_col=0;
 	  }
-	  LtfDelEntry(l,cl2);
+	  LtfEntryDel(l,cl2);
 	  goto word_wrap_start;
 	}
       }
@@ -379,7 +379,7 @@ word_wrap_start:
 	    best_cl=cl;
 	    best_col=0;
 	  }
-	  LtfDelEntry(l,cl2);
+	  LtfEntryDel(l,cl2);
 	  k+=j;
 	  if (k>(right_margin-left_margin+1)<<1)
 	    goto word_wrap2;
@@ -595,7 +595,7 @@ skip_soft_cr:
 
     if (cl->flags & LTFLF_REFRESH_DATA) {
       if (cl->type_u8==LTFT_DATA || cl->type_u8==LTFT_CHECK_BOX)
-	LtfFmtData(cl);
+	LtfDataFmt(cl);
     }
 
     if (Bt(ltf_tag_types,cl->type_u8)) {
@@ -700,7 +700,9 @@ skip_soft_cr:
 	  else
 	    hl=NULL;
 	  if (to_screen && !(cl->flags&LTFLF_DONT_DRAW)) {
-	    if (y_plot_top<=y<=y_plot_bottom) {
+	    if (y>y_plot_bottom) //Technically we should do this for scrolling_x, too.
+	      more=TRUE;
+	    else if (y>=y_plot_top) {
 	      if (hl)
 		PlotAttrStr2(win_task,hl,k,x-x0,y-y0);
 	      else
@@ -856,18 +858,18 @@ skip_soft_cr:
 	if (cl->flags&LTFLF_HIGHLIGHT) {
 	  if (s->state&7==LTFSS_CPP_COMMENT) {
 	    if (full_refresh) {
-	      s=LtfIdenticalSettings(l,s);
+	      s=LtfSettingsIdentical(l,s);
 	      s->state=LTFSS_NORMAL;
 	      InsQue(s,l->settings_root.last);
 	    } else
-	      s=LtfNextSettings(cl->next);
+	      s=LtfSettingsNext(cl->next);
 	  } else if (s->state&LTFSSF_BPT) {
 	    if (full_refresh) {
-	      s=LtfIdenticalSettings(l,s);
+	      s=LtfSettingsIdentical(l,s);
 	      s->state&=~LTFSSF_BPT;
 	      InsQue(s,l->settings_root.last);
 	    } else
-	      s=LtfNextSettings(cl->next);
+	      s=LtfSettingsNext(cl->next);
 	  }
 	}
 	y++;
@@ -947,31 +949,31 @@ adjust_xy:
 	    i=cl->attr;
 	  else
 	    i=s->indent+cl->attr;
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->indent=i;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	goto start_of_line;
       case LTFT_PAGE_LEN:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->page_len=cl->attr;
 	  if (cl->flags & LTFLF_WIN_REL)
 	    s->page_len+=height;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
       case LTFT_LEFT_MARGIN:
 	i=cl->attr;
 	left_margin=left+i;
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->left_margin=i;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	goto start_of_line;
       case LTFT_RIGHT_MARGIN:
 	if (cl->flags & LTFLF_WIN_REL)
@@ -980,27 +982,27 @@ adjust_xy:
 	  i=cl->attr;
 	right_margin=left+i;
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->right_margin=i;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
       case LTFT_HEADER:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->header=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
       case LTFT_FOOTER:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->footer=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
       case LTFT_FOREGROUND:
 	cur_u8_attr&=0xF0;
@@ -1009,11 +1011,11 @@ adjust_xy:
 	else
 	  cur_u8_attr|=cl->attr;
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->cur_text_attr=cur_u8_attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_BACKGROUND:
 	cur_u8_attr&=0x0F;
@@ -1022,11 +1024,11 @@ adjust_xy:
 	else
 	  cur_u8_attr|=cl->attr<<4;
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->cur_text_attr=cur_u8_attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	if (to_screen && !(cl->flags&LTFLF_DONT_DRAW))
 	  win_task->text_attr=cur_u8_attr;
 	break;
@@ -1037,12 +1039,12 @@ adjust_xy:
 	else
 	  cur_u8_attr|=cl->attr;
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->dft_text_attr=s->dft_text_attr&0xF0|cur_u8_attr&0x0F;
 	  s->cur_text_attr=cur_u8_attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_DFT_BACKGROUND:
 	cur_u8_attr&=0x0F;
@@ -1051,62 +1053,62 @@ adjust_xy:
 	else
 	  cur_u8_attr|=cl->attr<<4;
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->dft_text_attr=s->dft_text_attr&0x0F|cur_u8_attr&0xF0;
 	  s->cur_text_attr=cur_u8_attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	if (to_screen && !(cl->flags&LTFLF_DONT_DRAW))
 	  win_task->text_attr=cur_u8_attr;
 	break;
       case LTFT_ALT_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->alt_text_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_LINK_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->link_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_MACRO_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->macro_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_ANCHOR_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->anchor_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_HIDDEN_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->hidden_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_TREE_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->tree_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_USER_FOREGROUND:
 	if (cl->attr==LTF_DFT) {
@@ -1117,52 +1119,52 @@ adjust_xy:
 	  }
 	} else {
 	  if (full_refresh) {
-	    s=LtfIdenticalSettings(l,s);
+	    s=LtfSettingsIdentical(l,s);
 	    s->user_attr=cl->attr;
 	    InsQue(s,l->settings_root.last);
 	  } else
-	    s=LtfNextSettings(cl->next);
+	    s=LtfSettingsNext(cl->next);
 	}
 	break;
       case LTFT_BINARY_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->bin_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_KEYWORD_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->keyword_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_KEYWORD2_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->keyword2_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_COMMENT_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->comment_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_QUOTE_FOREGROUND:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->quote_attr=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_WORD_WRAP:
 	if (cl->attr)
@@ -1208,19 +1210,19 @@ adjust_xy:
 	break;
       case LTFT_SHIFTED_X:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->shifted_x=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_SHIFTED_Y:
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->shifted_y=cl->attr;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
 	break;
       case LTFT_PROJECT:
 	l->project=cl;
@@ -1234,12 +1236,12 @@ adjust_xy:
 	break;
       case LTFT_PICTURE:
 	if (!cl->bin_data)
-	  cl->bin_data=LtfFindBin(l,cl->bin_num);
+	  cl->bin_data=LtfBinFind(l,cl->bin_num);
 	if (cl->bin_data && (to_screen||find_cur_entry)) {
 	  GrDCRst(dc);
-	  dc->flags&=~(BMF_DONT_DRAW|BMF_LOCATE_NEAREST);
+	  dc->flags&=~(DCF_DONT_DRAW|DCF_LOCATE_NEAREST);
 	  if (!to_screen || cl->flags&LTFLF_DONT_DRAW)
-	    dc->flags|=BMF_DONT_DRAW;
+	    dc->flags|=DCF_DONT_DRAW;
 	  ii=GrSpriteTypeMask(cl->bin_data->data);
 	  if (ii&(1<<GRST_FLOOD_FILL|1<<GRST_FLOOD_FILL_NOT))
 	    i=cur_u8_attr>>4 &0xF ^ win_task->text_attr>>4 & 0xF;
@@ -1254,11 +1256,11 @@ adjust_xy:
 	  }
 	  dc->color=i;
 	  if (find_cur_entry)
-	    dc->flags|=BMF_LOCATE_NEAREST;
-	  dc->nearest_grelem_num=0;
+	    dc->flags|=DCF_LOCATE_NEAREST;
+	  dc->nearest_sprite_elem_num=0;
 	  dc->nearest_dist=MAX_I64;
-	  if (to_screen && l->cur_grelems==cl->bin_data->data) {
-	    dc->flags|=BMF_LOCATE_NEAREST;
+	  if (to_screen && l->cur_sprite==cl->bin_data->data) {
+	    dc->flags|=DCF_LOCATE_NEAREST;
 	    dc->cur_x=ipx;
 	    dc->cur_y=ipy;
 	  } else {
@@ -1285,7 +1287,7 @@ adjust_xy:
 	    GrRotZEqu(dc->r,tP(win_task)*3.1);
 	    GrRotYEqu(dc->r,tP(win_task)*1.9);
 	    GrRotXEqu(dc->r,tP(win_task));
-	    dc->flags|=BMF_TRANSFORMATION;
+	    dc->flags|=DCF_TRANSFORMATION;
 	    dc->x=xx;
 	    dc->y=yy;
 	    dc->z=GR_Z_ALL;
@@ -1293,9 +1295,9 @@ adjust_xy:
 	  }
 	  GrSpritePlot3(dc,xx,yy,zz,cl->bin_data->data);
 	  dc->depth_buf=NULL;
-	  if (to_screen && l->cur_grelems==cl->bin_data->data)
-	    l->cur_grelem_num=dc->nearest_grelem_num;
-	  dc->flags&=~(BMF_LOCATE_NEAREST|BMF_DONT_DRAW|BMF_TRANSFORMATION);
+	  if (to_screen && l->cur_sprite==cl->bin_data->data)
+	    l->cur_sprite_elem_num=dc->nearest_sprite_elem_num;
+	  dc->flags&=~(DCF_LOCATE_NEAREST|DCF_DONT_DRAW|DCF_TRANSFORMATION);
 	  if (dc->nearest_dist<=D) {
 	    D=dc->nearest_dist;
 	    col=cl->min_col;
@@ -1305,15 +1307,15 @@ adjust_xy:
       case LTFT_BPT:
 	if (!(s->state&LTFSSF_BPT)) {
 	  if (full_refresh) {
-	    s=LtfIdenticalSettings(l,s);
+	    s=LtfSettingsIdentical(l,s);
 	    s->state|=LTFSSF_BPT;
 	    InsQue(s,l->settings_root.last);
 	  } else
-	    s=LtfNextSettings(cl->next);
+	    s=LtfSettingsNext(cl->next);
 	}
 	break;
       case LTFT_SONG:
-	if (sys_cur_focus_task==win_task && to_screen && !(cl->flags&LTFLF_DONT_DRAW)) {
+	if (sys_focus_task==win_task && to_screen && !(cl->flags&LTFLF_DONT_DRAW)) {
 	  if (cl->aux_str && (!cur_song || StrCmp(cur_song,cl->aux_str))) {
 	    Free(cur_song);
 	    MusicSettingsRst;
@@ -1462,7 +1464,7 @@ skip:
 	    best_cl=cl2;
 	    best_col=cl2->min_col;  //TODO: might be bug
 	  }
-	  LtfDelEntry(l,cl);
+	  LtfEntryDel(l,cl);
 	}
       }
     }
@@ -1619,6 +1621,7 @@ skip:
 	  vss->max=l->max_y-height+1;
 	vss->pos=l->cur_top_line_num;
       }
+      LBEqu(&l->flags,LTFf_MORE,more);
     }
   }
   if (extra_processing && !same_win) {
@@ -1677,7 +1680,7 @@ public U0 LtfRecalc(Ltf *l=NULL)
     LtfUnlock(l);
 }
 
-public U0 LtfSafeInsert(Ltf *l,U8 *st)
+public U0 LtfInsertSafe(Ltf *l,U8 *st)
 { //This is necessary when hidden text might screw-up
   //inserts.  It does them all-at-once.
   BoolI8 unlock;
@@ -1785,7 +1788,7 @@ public U64 LtfCurAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 
 public U64 LtfAuxAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/LT/OSMain/Adam1a.HPZ,1241] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1242] LTFF_ATTR_BY_FILENAME flag is probably set
+  //[C:/LT/OSMain/Adam1a.HPZ,1224] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1225] LTFF_ATTR_BY_FILENAME flag is probably set
   //which means [C:/LT/Adam/Dsk2a.APZ,274] SetDrvTextAttr() is overriding it.
   U64 result=0;
   Ltf *l;

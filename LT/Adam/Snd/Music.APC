@@ -11,6 +11,14 @@ I64 music_waveform,music_meter_top,music_meter_bottom;
 //note in a Play() string.  0 is the start
 public I64 music_play_note_num=0;
 
+#help_index "Snd/Music;Time/Seconds"
+F64 music_tM_correction=0;
+public F64 tM()
+{
+  return (sys_jiffies+music_tM_correction)/JIFFY_FREQ;
+}
+
+#help_index "Snd/Music"
 public F64 music_tempo,music_stacatto_factor,music_amplitude;
 
 U8 *MusicSetOctave(U8 *st)
@@ -96,11 +104,11 @@ public U0 Play(U8 *st,U8 *words=NULL)
     '!!'  *1.5`2
 
   [C:/LT/Adam/Snd/Music.APZ,8] music_waveform is set with
-    "W1" for [C:/LT/OSMain/Adam1a.HPZ,3824] WF_SQUARE
-    "W2" for [C:/LT/OSMain/Adam1a.HPZ,3825] WF_SINE
-    "W3" for [C:/LT/OSMain/Adam1a.HPZ,3826] WF_TRIANGLE
-    "W4" for [C:/LT/OSMain/Adam1a.HPZ,3827] WF_SAWTOOTH
-    "W5" for [C:/LT/OSMain/Adam1a.HPZ,3828] WF_NOISE
+    "W1" for [C:/LT/OSMain/Adam1a.HPZ,3810] WF_SQUARE
+    "W2" for [C:/LT/OSMain/Adam1a.HPZ,3811] WF_SINE
+    "W3" for [C:/LT/OSMain/Adam1a.HPZ,3812] WF_TRIANGLE
+    "W4" for [C:/LT/OSMain/Adam1a.HPZ,3813] WF_SAWTOOTH
+    "W5" for [C:/LT/OSMain/Adam1a.HPZ,3814] WF_NOISE
 
   [C:/LT/Adam/Snd/Music.APZ,8] music_meter_top,[C:/LT/Adam/Snd/Music.APZ,8] music_meter_bottom is set with
     "M3/4"
@@ -125,7 +133,7 @@ public U0 Play(U8 *st,U8 *words=NULL)
   U8 *word;
   U64 note,i=0,timeout_val,timeout_val2;
   BoolI8 old_preempt=Preempt(OFF);
-  F64 f,d,a;
+  F64 f,d,a,on_jiffies,off_jiffies;
   music_play_note_num=0;
   while (*st) {
     timeout_val=sys_jiffies;
@@ -159,20 +167,25 @@ public U0 Play(U8 *st,U8 *words=NULL)
     if (words) {
       if (word=ListEntryPoint(i++,words))
 	if (StrCmp(word," "))
-	  PutS(word);
+	  "" word;
     }
 
     d=JIFFY_FREQ*music_note_len/music_tempo;
-    timeout_val+=d*music_stacatto_factor;
-    timeout_val2=timeout_val+
-      d*(1.0-music_stacatto_factor);
+    on_jiffies	=d*music_stacatto_factor;
+    timeout_val+=on_jiffies;
+    off_jiffies =d*(1.0-music_stacatto_factor);
+    timeout_val2=timeout_val+off_jiffies;
 
     if (!music_mute)
       Snd(f,music_waveform,a);
     SleepUntil(timeout_val);
+    music_tM_correction+=on_jiffies-ToI64(on_jiffies);
+
     if (!music_mute)
       Snd(0,music_waveform,a);
     SleepUntil(timeout_val2);
+    music_tM_correction+=off_jiffies-ToI64(off_jiffies);
+
     music_play_note_num++;
   }
   Preempt(old_preempt);

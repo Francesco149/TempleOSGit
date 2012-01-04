@@ -1,0 +1,29 @@
+//8 has words
+U0 Song()
+{
+  Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
+  music_tempo= 2.480;
+  music_stacatto_factor= 0.902;
+  try {
+  while (!ScanKey) {
+	"$FG,GREEN$I did the first half, God, the second.$FG$\r\n";
+	Play("W12qG3eAAqBA2G3BhA",
+		"The \0Cre\0 \0a\0tor \0on \0His \0thone,\r\n\0");
+	Play("2qG3eAAqBA2G3BhA",
+		"Believe \0or \0 \0not, \0we're \0not \0a\0lone.\r\n\0");
+	Play("qCeBA2qG3A2GFhE",
+		"God \0wat\0ches \0al\0ways \0o\0ver \0us.\r\n\0");
+	Play("3qCeBA2qG3A2GF3hA",
+		"Is \0there \0 \0some\0thing \0to \0dis\0cuss?\r\n\0");
+	Play("qEeB2G3qAsE2G!!3E2G3qEetBFEqDF",
+		"God, \0 \0 \0 \0won't \0 \0You \0 \0talk \0 \0to \0me?\r\n\0 \0 \0");
+	Play("EeB2G3qAsE2G!!3E2G3qEetBFEqDF",
+		"God, \0 \0 \0 \0won't \0 \0You \0 \0talk \0 \0to \0me?\r\n\0 \0 \0");
+  }
+  } catch
+    CatchAll;
+  Snd(0);
+}
+
+Song;

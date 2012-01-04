@@ -1,5 +1,16 @@
                                    Bug Stat
 
+#000025 Introduced:12/10/2011 Fixed:12/20/2011
+In certain cases, floats as array indexes were still broken.
+
+#000024 Introduced:00/00/0000 Fixed:12/16/2011
+The heap-control free-chunk-list was allowed to get too long and caused 
+crashes from long delays.  Now, it transfers free-list chunks into the heap 
+hash, every-so-often.  (During [C:/LT/OSMain/Memory.CPZ,511] AllocMemBlks).
+
+#000023 Introduced:00/00/0000 Fixed:12/10/2011
+In certain cases, floats as array indexes were broken.
+
 #000022 Introduced:00/00/0000 Fixed:10/29/2011
 In certain cases, the compiler wrongly optimized local variable arrays as reg 
 vars.
@@ -84,5 +95,5 @@ Compiler optimization was screwing-up code like this:
 
 
 #000001 Introduced:00/00/0000 Fixed:05/14/2010
-[C:/LT/OSMain2/SPrintF2.CPZ,490] PrintF()'s "%g", "%e", and "%n" horribly
+[C:/LT/OSMain/Str1a.CPZ,1580] PrintF()'s "%g", "%e", and "%n" horribly
 broken, due to rounding.

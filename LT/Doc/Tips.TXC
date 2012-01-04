@@ -11,8 +11,9 @@ CacheWrites().
 reboot to make them take effect.  (You don't compile anything.)  You should 
 have two LoseThos partitions on your hard drive because a syntax error in a 
 start-up file will make the partition unbootable.  Boot to the second 
-partition or a recovery CD and fix it, or boot to a standard LoseThos CD-ROM 
-and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,198] Mount() to mount your hard drive.
+partition or boot to a standard LoseThos CD-ROM and use
+[C:/LT/OSMain/Dsk/DskAddDev.CPZ,198] Mount() to mount your 
+hard drive.
 
 * I copy my files to a mirrored identical partition, periodically with 
 [C:/LT/Adam/Dsk2a.APZ,109] CopyTree() commands in scripts.  I do merge
@@ -51,10 +52,10 @@ new machine does not have PS/2 ports.
 
 * You can set your local time zone by setting the
 [C:/LT/OSMain/OSGlbls.CPZ,43] local_time_offset global var 
-in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,455]
+in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,456]
 LTDATE_FREQ.  See [HOME/Adam3aLocalize.APZ,local_time] local time.
 
-* Use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1771] LtfCurAttr() in
+* Use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1774] LtfCurAttr() in
 [C:/LT/Accts/TAD/Adam3fSys.APZ,4] UserStartUp() to set terminal window colors.
 
 * See Key Map
@@ -63,17 +64,17 @@ LTDATE_FREQ.  See [HOME/Adam3aLocalize.APZ,local_time] local time.
 [C:/LT/Accts/TAD/Adam3dKeyPlugIns.APZ,12] MyPutKey(). 
  See [::/LT/Doc/KeyBoard.TXZ] ::/LT/Doc/KeyBoard.TXZ.
 
-* <CTRL-C> in the editor to autoindent a C+ function or renumber an asm 
+* <CTRL-O> in the editor to autoindent a C+ function or renumber an asm 
 routine.  If it's not a static module, select "recompile."  Otherwise, don't 
 recompile and it will use the compiler info collected when it was most 
 recently compiled.  The sole purpose of the $PJ,"",""$ (project) dollar sign 
-cmd is to help autoindent.  **<CTRL-C> can be used to test if a file will 
-compile.**  (Note: <CTRL-ALT-C> breaks a program.)
+cmd is to help autoindent.  **<CTRL-O> can be used to test if a file will 
+compile.**
 
 * While developing applications, keeping everything in one source file allows 
-you to use the <CTRL-C> compile check/autoindent feature.  Alternatively, you 
+you to use the <CTRL-O> compile check/autoindent feature.  Alternatively, you 
 can #include the files in a project a file depends on before entering the 
-editor and <CTRL-C> it.
+editor and <CTRL-O> it.
 
 * You can use filter_lines in the editor text search form (<CTRL-F>) to 
 temporarily display just lines near each match.  A value of filter lines set 
@@ -82,19 +83,18 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().  You'll 
+[C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().  You'll 
 probably want to make a function for recompiling that uses the
-[C:/LT/OSMain/TaskCmd.CPZ,353] Auto() function 
+[C:/LT/OSMain/TaskCmd.CPZ,355] Auto() function 
 to answer the cfg questions.  See my technique
 [::/LT/Demo/AcctExample/TSAdam.APZ,1] Cfg Strs
 [::/LT/Demo/AcctExample/TSDistribute.APZ,1] Update Funs.
 
 * You can disable WORDSTAT commenting-out [HOME/Adam3fSys.APZ,WsInit]
-WsInit() and the [HOME/Adam3fSys.APZ,WordStat] WordStat() in 
-[HOME/Adam3fSys.APZ,WsInit] HOME/Adam3fSys.APZ.
+WsInit() in [HOME/Adam3fSys.APZ,WsInit] HOME/Adam3fSys.APZ.
 
 * You can rst MultiCore CPU's if they get hung with
-[C:/LT/OSMain/MultiProc.CPZ,422] MPStart().  HD Audio will 
+[C:/LT/OSMain/MultiProc.CPZ,414] MPStart().  HD Audio will 
 get screwed-up, however.
 
 * Boolean expressions **not** in if statements don't have short circuit logic
@@ -102,7 +102,7 @@ and
 are compiled inefficiently.
 
 * You can use [C:/LT/OSMain/Adam1b.HPZ,42]
-progress1-[C:/LT/OSMain/Adam1b.HPZ,45] progress4 in your programs for
+progress1-[C:/LT/OSMain/Adam1b.HPZ,51] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
@@ -116,19 +116,19 @@ want to make a hot key.  See
 [::/LT/Demo/AcctExample/TSAdam.APZ,BMPFileCaptureScreen] BMPFileCaptureScreen.
 
 * Use [C:/LT/Adam/Ltf/LtfNew.APZ,668] LtfMax() to adjust the size of the cmd
-line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf entries, 
+line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf entries, 
 not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3087]
+to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3074]
 TaskStruct, [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry and
-[C:/LT/OSMain/Adam1a.HPZ,2536] LTDirEntry 
+[C:/LT/OSMain/Adam1a.HPZ,2519] LTDirEntry 
 have them.  You shouldn't encounter conflicts with LoseThos using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
 [C:/LT/OSMain/Task1a.CPZ,230] Spawn(
-), changing [C:/LT/OSMain/Adam1a.HPZ,2809] DFT_STK, and using
+), changing [C:/LT/OSMain/Adam1a.HPZ,2791] DFT_STK, and using
 [C:/LT/Adam/Ltf/LtfNew.APZ,668] LtfMax() to reduce the cmd line buffer size.
 
 * Filenames ending in Z will be automatically compressed and uncompressed
@@ -145,12 +145,12 @@ changed.  The +d flag will show
 differences of files which have changed and allow you to merge code.  (The +r 
 flag will recurse.)
 
-* There is a utility [C:/LT/Adam/LinkChk.APZ,75] LinkChk() which will check
+* There is a utility [C:/LT/Adam/LinkChk.APZ,71] LinkChk() which will check
 for broken links in 
 documentation.
 
 * You can use [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1388] OPTf_PAREN_WARN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1371] OPTf_PAREN_WARN) to find unnecessary
 parentheses in code.
 
 * Use [C:/LT/Adam/Ltf/LtfMain.APZ,149] Plain() to edit a plain text
@@ -202,9 +202,9 @@ middle of compilation and data inserted into the compilation stream.  Click
 here for an example: [::/LT/OSMain/OSMain.CPZ,#exe {] #exe {.
 
 * If you output to the cmd line and wish to allow users to scroll around and 
-view data, you can use [C:/LT/Adam/Ltf/LtfPopUp.APZ,172] View().
+view data, you can use [C:/LT/Adam/Ltf/LtfPopUp.APZ,184] View().
 
-* Use [C:/LT/Adam/Ltf/LtfPopUp.APZ,172] View() in Pop-up macros to linger
+* Use [C:/LT/Adam/Ltf/LtfPopUp.APZ,184] View() in Pop-up macros to linger
 until the user presses <ESC> or <SHIFT
 -ESC>.
 
@@ -216,16 +216,16 @@ probably turn-off preemption or interrupts momentarily to copy it.
 
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
-lx for [C:/LT/OSMain/Adam1a.HPZ,1942] LexStruct ptrs; l for
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf ptrs; ll or cl for
+lx for [C:/LT/OSMain/Adam1a.HPZ,1925] LexStruct ptrs; l for
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf ptrs; ll or cl for
 [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry ptrs, etc.
 
 
-* [C:/LT/OSMain/Adam1b.HPZ,98] Preempt() is used to keep a task from being
+* [C:/LT/OSMain/Adam1b.HPZ,94] Preempt() is used to keep a task from being
 interrupted and swapped-out.  It 
 has a similar effect to turning-off interrupts.  Each task has it's own 
 preemption ctrl.  A task with preemption turned-off can voluntarily
-[C:/LT/OSMain/Scheduler.CPZ,378] Yield() 
+[C:/LT/OSMain/Scheduler.CPZ,373] Yield() 
 with preemption off.
 
 * You can set a color for different drives with [C:/LT/Adam/Dsk2a.APZ,274]
@@ -233,7 +233,7 @@ SetDrvTextAttr().  Place calls
 to this in [HOME/Adam3aLocalize.APZ] HOME/Adam3aLocalize.APZ.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf cmd under the 
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf cmd under the 
 cursor.  See [::/LT/Demo/Ltf/TextDemo.CPZ] ::/LT/Demo/Ltf/TextDemo.CPZ.
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -249,7 +249,7 @@ num.
 
 * I use spaces-to-tab operations on all my src files to keep them small.  You 
 have to be careful, though, because spaces in strings will be converted.  I 
-use <SHIFT-SPACE> ' ' in such cases.  See [C:/LT/Adam/S2T.APZ,62] S2T() for
+use <SHIFT-SPACE> ' ' in such cases.  See [C:/LT/Adam/S2T.APZ,61] S2T() for
 spaces-to-tabs.
 
 * You can edit an existing Graphic Element by putting the cursor on it and 
@@ -274,9 +274,9 @@ adjusted based on load.  The range is [C:/LT/Adam/Window.APZ,50]
 win_min_refresh - Fs->win_max_refresh.
 
 * You can make a RAM disk and it will not be reformatted if you reboot with 
-[C:/LT/Adam/Boot/InsBoot.APZ,70] Boot().  You can even boot to a RAM
-disk.  See [C:/LT/Adam/Boot/InsBoot.APZ,492] Install2RAMDrv() and 
-[C:/LT/Adam/Boot/InsBoot.APZ,502] Boot2RAMDrv().
+[C:/LT/Adam/Boot/InsBoot.APZ,71] Boot().  You can even boot to a RAM
+disk.  See [C:/LT/Adam/Boot/InsBoot.APZ,457] Install2RAMDrv() and 
+[C:/LT/Adam/Boot/InsBoot.APZ,467] Boot2RAMDrv().
 
 * try{} catch{} in a function will cause all vars to be non-register.
 
@@ -296,14 +296,14 @@ text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/LT/OSMain/OSGlbls.CPZ,46] time_stamp_freq is continuously calibrated,
 so be careful because 
 expressions involving it might decrease.  Take a snap-shot, like this: timeout
-=[C:/LT/OSMain/Adam1b.HPZ,206] GetTimeStamp+[C:/LT/OSMain/OSGlbls.CPZ,46]
-time_stamp_freq x seconds; and compare against [C:/LT/OSMain/Adam1b.HPZ,206]
+=[C:/LT/OSMain/Adam1b.HPZ,202] GetTimeStamp+[C:/LT/OSMain/OSGlbls.CPZ,46]
+time_stamp_freq x seconds; and compare against [C:/LT/OSMain/Adam1b.HPZ,202]
 GetTimeStamp().
 
-* Use [C:/LT/Adam/HeapLog.APZ,112] HeapLog() and [C:/LT/Adam/HeapLog.APZ,79]
+* Use [C:/LT/Adam/HeapLog.APZ,111] HeapLog() and [C:/LT/Adam/HeapLog.APZ,79]
 HeapLogRep() to find leaks.  Don't be confused by
-[C:/LT/OSMain/Adam1a.HPZ,1319] Ltf 
+[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2757]
+* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2740]
 _CFG_HEAP_DBG.  You're on your own.

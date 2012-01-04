@@ -40,7 +40,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
   }
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,lx->pass))
-      PutS("$BK,1$$FG,LTRED$$IV,1$This code gets merged together and patched.\r\n$FG$$IV,0$$BK,0$");
+      "$BK,1$$FG,LTRED$$IV,1$This code gets merged together and patched.\r\n$FG$$IV,0$$BK,0$";
 
   lx->last_float_op_ic=NULL;
 
@@ -281,11 +281,11 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	    break;
 	  case EC_FS:
 	    IcZero(tempi,CREG_RAX);
-	    IcU32(tempi,0x008B4864);
+	    IcU32(tempi,0x8B4864);
 	    break;
 	  case EC_GS:
 	    IcZero(tempi,CREG_RAX);
-	    IcU32(tempi,0x008B4865);
+	    IcU32(tempi,0x8B4865);
 	    break;
 	  case EC_MOV_FS:
 	    IcZero(tempi,CREG_RAX);
@@ -374,7 +374,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 		tempi->p1.type,tempi->p1.reg,tempi->p1.disp,lx,buf,ip2);
 	    break;
 	  case EC_POWER:
-	    IcFOp2a(lx,tempi,CMP_TEMPLATE_POWER,ip2);
+	    IcFPow(lx,tempi,buf,ip2);
 	    break;
 	  case EC_SHL:
 	    IcShift(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
@@ -402,7 +402,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	    if (tempi->ic_flags&ICF_USE_INT)
 	      IcMod(tempi,ip2);
 	    else
-	      IcFOp2a(lx,tempi,CMP_TEMPLATE_MOD,ip2);
+	      IcFMod(lx,tempi,ip2);
 	    break;
 	  case EC_AND:
 	    IcAddEct(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
@@ -502,19 +502,19 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	    if (tempi->ic_flags&ICF_USE_INT)
 	      IcMulEqual(tempi,ip2);
 	    else
-	      IcFOp2bEqual(lx,tempi,SLASH_OP_FMUL,buf,ip2);
+	      IcFOpEqual(lx,tempi,SLASH_OP_FMUL,buf,ip2);
 	    break;
 	  case EC_DIV_EQUAL:
 	    if (tempi->ic_flags&ICF_USE_INT)
 	      IcDivEqual(tempi,FALSE,ip2);
 	    else
-	      IcFOp2bEqual(lx,tempi,SLASH_OP_FDIV,buf,ip2);
+	      IcFOpEqual(lx,tempi,SLASH_OP_FDIV,buf,ip2);
 	    break;
 	  case EC_MOD_EQUAL:
 	    if (tempi->ic_flags&ICF_USE_INT)
 	      IcDivEqual(tempi,TRUE,ip2);
 	    else
-	      IcFOp2aEqual(lx,tempi,CMP_TEMPLATE_MOD,ip2);
+	      IcFModEqual(lx,tempi,ip2);
 	    break;
 	  case EC_AND_EQUAL:
 	    IcAndEqual(tempi,ip2);
@@ -532,7 +532,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,
 		  tempi->p2.type,tempi->p2.reg,tempi->p2.disp,0x010000000003,ip2);
 	    else
-	      IcFOp2bEqual(lx,tempi,SLASH_OP_FADD,buf,ip2);
+	      IcFOpEqual(lx,tempi,SLASH_OP_FADD,buf,ip2);
 	    break;
 	  case EC_SUB_EQUAL:
 	    if (tempi->ic_flags&ICF_USE_INT)
@@ -541,7 +541,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,
 		  tempi->p2.type,tempi->p2.reg,tempi->p2.disp,0x29000000052B,ip2);
 	    else
-	      IcFOp2bEqual(lx,tempi,SLASH_OP_FSUB,buf,ip2);
+	      IcFOpEqual(lx,tempi,SLASH_OP_FSUB,buf,ip2);
 	    break;
 	  case EC_SHL_CONST:
 	    IcShift(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
@@ -875,9 +875,9 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	    if (tempi->p1.type&TY_MASK==TY_IMM) {
 	      IcU16(tempi,0xC033);
 	      if (tempi->p1.disp<=MAX_U8)
-		IcU16(tempi,0x00E5+tempi->p1.disp<<8);
+		IcU16(tempi,0xE5+tempi->p1.disp<<8);
 	      else {
-		IcU32(tempi,0xBA66+tempi->p1.disp<<16);
+		IcU32(tempi,0xBA00+OC_OP_SIZE_PREFIX+tempi->p1.disp<<16);
 		IcU8(tempi,0xED);
 	      }
 	    } else {
@@ -891,25 +891,25 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	    if (tempi->p1.type&TY_MASK==TY_IMM) {
 	      IcU16(tempi,0xC033);
 	      if (tempi->p1.disp<=MAX_U8)
-		IcU24(tempi,0x00E566+tempi->p1.disp<<16);
+		IcU24(tempi,0xE500+OC_OP_SIZE_PREFIX+tempi->p1.disp<<16);
 	      else {
-		IcU32(tempi,0xBA66+tempi->p1.disp<<16);
-		IcU16(tempi,0xED66);
+		IcU32(tempi,0xBA00+OC_OP_SIZE_PREFIX+tempi->p1.disp<<16);
+		IcU16(tempi,0xED00+OC_OP_SIZE_PREFIX);
 	      }
 	    } else {
 	      IcMov(tempi,TY_REG+IT_I64,CREG_RDX,0,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
 	      IcU16(tempi,0xC033);
-	      IcU16(tempi,0xED66);
+	      IcU16(tempi,0xED00+OC_OP_SIZE_PREFIX);
 	    }
 	    break;
 	  case EC_INU8:
 	    if (tempi->p1.type&TY_MASK==TY_IMM) {
 	      IcU16(tempi,0xC033);
 	      if (tempi->p1.disp<=MAX_U8)
-		IcU16(tempi,0x00E4+tempi->p1.disp<<8);
+		IcU16(tempi,0xE4+tempi->p1.disp<<8);
 	      else {
-		IcU32(tempi,0xBA66+tempi->p1.disp<<16);
+		IcU32(tempi,0xBA00+OC_OP_SIZE_PREFIX+tempi->p1.disp<<16);
 		IcU8(tempi,0xEC);
 	      }
 	    } else {
@@ -924,9 +924,9 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	      IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
 	      if (tempi->p2.disp<=MAX_U8)
-		IcU16(tempi,0x00E7+tempi->p2.disp<<8);
+		IcU16(tempi,0xE7+tempi->p2.disp<<8);
 	      else {
-		IcU32(tempi,0xBA66+tempi->p2.disp<<16);
+		IcU32(tempi,0xBA00+OC_OP_SIZE_PREFIX+tempi->p2.disp<<16);
 		IcU8(tempi,0xEF);
 	      }
 	    } else {
@@ -949,10 +949,10 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	      IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
 	      if (tempi->p2.disp<=MAX_U8)
-		IcU24(tempi,0x00E766+tempi->p2.disp<<16);
+		IcU24(tempi,0xE700+OC_OP_SIZE_PREFIX+tempi->p2.disp<<16);
 	      else {
-		IcU32(tempi,0xBA66+tempi->p2.disp<<16);
-		IcU16(tempi,0xEF66);
+		IcU32(tempi,0xBA00+OC_OP_SIZE_PREFIX+tempi->p2.disp<<16);
+		IcU16(tempi,0xEF00+OC_OP_SIZE_PREFIX);
 	      }
 	    } else {
 	      if (tempi->ic_flags & ICF_P1_FIRST) {
@@ -966,7 +966,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 		IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 		    tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
 	      }
-	      IcU16(tempi,0xEF66);
+	      IcU16(tempi,0xEF00+OC_OP_SIZE_PREFIX);
 	    }
 	    break;
 	  case EC_OUTU8:
@@ -974,9 +974,9 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
 	      IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
 	      if (tempi->p2.disp<=MAX_U8)
-		IcU16(tempi,0x00E6+tempi->p2.disp<<8);
+		IcU16(tempi,0xE6+tempi->p2.disp<<8);
 	      else {
-		IcU32(tempi,0xBA66+tempi->p2.disp<<16);
+		IcU32(tempi,0xBA00+OC_OP_SIZE_PREFIX+tempi->p2.disp<<16);
 		IcU8(tempi,0xEE);
 	      }
 	    } else {
@@ -1275,14 +1275,14 @@ skip_copy:
       if (tempi->ic_flags&ICF_TRACE) {
 	if (Bt(&lx->pass_trace_mask,lx->pass)) {
 	  if (cnt) {
-	    PutS("$FG,RED$");
+	    "$FG,RED$";
 	    if (buf)
 	      Un(buf+ip,cnt,64);
 	    else if (tempi->ic_ext_body)
 	      Un(tempi->ic_ext_body,cnt,64);
 	    else
 	      Un(tempi->ic_body,cnt,64);
-	    PutS("$FG$");
+	    "$FG$";
 	  }
 	}
       }

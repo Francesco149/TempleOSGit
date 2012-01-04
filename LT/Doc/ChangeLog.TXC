@@ -1,6 +1,134 @@
 Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 
-----11/11/11 13:35:36----
+----01/03/12 04:18:13----
+
+----12/30/11 01:11:38----
+* Added artillery to [::/LT/Apps/Tanks/Tanks.CPZ] ::/LT/Apps/Tanks/Tanks.CPZ.
+
+----12/21/11 09:57:44----
+* Fixed compiler bug, again -- floats as array indexes.  See
+[::/LT/Doc/Bugs.TXZ,#000025] #000025.
+* Improved assembler.
+* Fixed-up [::/LT/Demo/Snd/MorseCode.CPZ] ::/LT/Demo/Snd/MorseCode.CPZ.
+* Fixed bug in [::/LT/Demo/Graphics/CaptureScreen.CPZ]
+::/LT/Demo/Graphics/CaptureScreen.CPZ.
+* Improved [::/LT/Misc/LTTestSuite.CPZ] ::/LT/Misc/LTTestSuite.CPZ, added it
+to tour.
+
+----12/17/11 20:10:50----
+* Reduced required RAM to 256 Meg.
+* Added [C:/LT/OSMain/Memory.CPZ,1360] Scale2Mem() for use in OSMain CFG
+expressions.
+* Made disk cache and ram drives [C:/LT/OSMain/Memory.CPZ,1360] Scale2Mem. 
+* Changed to overtly Christian theme.
+* Changed progress bars.
+* Fixed [C:/LT/OSMain/Memory.CPZ,957] MAlloc() bug.  (Speeds things up,
+too.)  See [::/LT/Doc/Bugs.TXZ,#000024] #000024.
+
+----12/14/11 22:52:18----
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfEdFile","LtfFileEd");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfDelEntry","LtfEntryDel");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfDelBin","LtfBinDel");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfFmtData","LtfDataFmt");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfGetData","LtfDataGet");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfDrawBorderList","LtfBorderListDraw");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfSizeEntry","LtfEntrySize");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfSafeInsert","LtfInsertSafe");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfGoToLineNum","LtfLineNumGoTo");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfDelUndo","LtfUndoDel");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfRestoreUndo","LtfUndoRestore");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfSetUndoCnt","LtfUndoCntSet");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfCopyEntry","LtfEntryCopy");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfDelRemainingSettings","LtfSettingsRemainingDel");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfIdenticalSettings","LtfSettingsIdentical");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfLastSettings","LtfSettingsLast");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfNextSettings","LtfSettingsNext");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfFindAnchor","LtfAnchorFind");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfFindBin","LtfBinFind");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfFindTree","LtfTreeFind");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfExeTreeBranch","LtfTreeBranchExe");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("LtfMakeTree","LtfTreeMake");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("LtfToggleFlags","LtfFlagsToggle");
+* Fixed Unasm bug.
+
+----12/12/11 23:36:56----
+* Made so compiler sends isolated chars to [C:/LT/OSMain/Display.CPZ,267]
+PutChar().
+* You can now specify an address for [C:/LT/OSMain/Hash1a.CPZ,733] Load().
+* Moved start addr of OSMain from 0x10000 to 0x7C00.
+* Merged OSMain2 into OSMain.
+* Added null string for variable fmt_str option -- PutS/PrintF.
+
+----12/10/11 18:51:08----
+* **V7.10 Released**
+* Fixed compiler bug -- floats as array indexes.  See
+[::/LT/Doc/Bugs.TXZ,#000023] #000023.
+* Added redundant clipboard keys  <CTRL-X>, <CTRL-C>, <CTRL-V> to be in 
+addition to <SHIFT-INSERT>, etc.
+* Moved <CTRL-C> (managed code) to <CTRL-O>.
+
+----12/09/11 02:42:45----
+* Fixed bugs in [C:/LT/OSMain/Str1a.CPZ,664] Spaces2Tabs().
+* Got rid of ListFile.APZ.
+* Made so [C:/LT/OSMain/Adam1b.HPZ,244] Pow() operator is not in-line.
+* Made so compiler sends strings all alone to [C:/LT/OSMain/Display.CPZ,272]
+PutS() or [C:/LT/OSMain/Str1a.CPZ,2499] PrintF().
+
+----12/04/11 22:40:18----
+* **Warning**: Got rid of size arg in [C:/LT/Adam/Gr/GrSpritePlot.APZ,555]
+PutSprite() and [C:/LT/Adam/Gr/GrSpritePlot.APZ,527] LtfPutSprite(). 
+* Added [C:/LT/Adam/Snd/Music.APZ,16] tM().
+* Added [::/LT/Apps/MusicOrgan/Examples/dialogue.CPZ]
+::/LT/Apps/MusicOrgan/Examples/dialogue.CPZ
+
+----12/02/11 14:56:31----
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("sys_cur_focus_task","sys_focus_task");
+* Improved [C:/LT/Adam/MemRep.APZ,185] MemRep().
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("PutGrSprite","PutSprite");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("GrBlot","GrDCBlot");
+
+----11/27/11 04:24:42----
+* **V7.09 Released**
+* Cleaned-up [::/LT/Apps/Logic/Logic.CPZ] ::/LT/Apps/Logic/Logic.CPZ.
+* Got rid of Cvt603.
+
+----11/25/11 15:52:23----
+* Added [::/LT/ReadMe.TXT] ::/LT/ReadMe.TXT.
+
+----11/25/11 02:04:42----
+* Added Ltf "More".
+* Got rid of recovery CD maker.
+* Cleaned-up [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("BootImageCreate","MakeAll");
+* Got rid of CfgMgr.
+
+----11/21/11 07:41:45----
+* Added [C:/LT/Adam/Math.APZ,62] Cosh() and [C:/LT/Adam/Math.APZ,57] Sinh().
+* Got rid of task->acct.
+* **Warning**: Removed arg from [C:/LT/OSMain/Task1a.CPZ,230] Spawn().
+ 
+----11/19/11 15:47:16----
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("BMF_","DCF_");
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("BMT_","DCT_");
+
+----11/14/11 09:27:37----
+* Got rid of FastMP (was not justified).
+
+----11/13/11 08:39:07----
+* Added [D:/LT/Apps/MusicOrgan/Examples/fog.CPZ]
+D:/LT/Apps/MusicOrgan/Examples/fog.CPZ.
+* Added [D:/LT/Apps/MusicOrgan/Examples/free.CPZ]
+D:/LT/Apps/MusicOrgan/Examples/free.CPZ.
 
 ----11/11/11 11:43:38----
 * **V7.08 Released**
@@ -48,7 +176,7 @@ Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
  
 ----10/16/11 12:16:17----
 * Converted [C:/LT/Compiler/CmpMain.CPZ,15] StreamPrintF()'s to
-[C:/LT/OSMain/Str1a.CPZ,1138] DefinePrintF()'s.
+[C:/LT/OSMain/Str1a.CPZ,2515] DefinePrintF()'s.
 * Improved [::/LT/Apps/Tanks/Tanks.CPZ] ::/LT/Apps/Tanks/Tanks.CPZ.
 * Deleted ::/LT/Demo/GameStarters/Pac.CPZ (Redundant)
 * Deleted ::/LT/Demo/GameStarters/Kings.CPZ (Redundant)
@@ -75,7 +203,7 @@ Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 ----10/09/11 07:51:39----
 * Fixed bug in <CTRL-R> menus.  See [::/LT/Doc/Bugs.TXZ,#000020] #000020.
 * Added Debugging to tour.
-* Added [C:/LT/Adam/AutoFile.APZ,132] AFView().
+* Added [C:/LT/Adam/AutoFile2a.APZ,132] AFView().
 * Moved the Tour account into the /LT/Misc dir.
 * Added ::/LT/Demo/GameStarters/Kings.CPZ
 * Moved /LT/Opt dir to /LT/Adam.
@@ -107,7 +235,7 @@ Rand2().
 ::/LT/Demo/GameStarters/ZoneOut.CPZ.
 
 ----09/08/11 13:56:29----
-* **Warning**: Changed args to [C:/LT/Adam/DskCDDVD.APZ,376]
+* **Warning**: Changed args to [C:/LT/Adam/DskCDDVD.APZ,375]
 CDFileCreate().  Src is now a file mask, not drive 
 letter and there is a file find flag arg.
 * Fixed bug in [::/LT/Adam/ToHtml.APZ] ::/LT/Adam/ToHtml.APZ and
@@ -122,7 +250,7 @@ letter and there is a file find flag arg.
 ::/LT/Apps/AfterEgypt/WaterRock.CPZ.
 
 ----08/22/11 02:12:02----
-* Changed default [C:/LT/OSMain/Dsk/Dsk1c.CPZ,163] Fmt() type from native to
+* Changed default [C:/LT/OSMain/Dsk/Dsk1c.CPZ,155] Fmt() type from native to
 FAT32.
 
 ----08/20/11 10:55:56----
@@ -146,7 +274,7 @@ FAT32.
 ::/LT/Demo/GameStarters/Wenceslas.CPZ.
 
 ----08/01/11 23:50:43----
-* Added compiler optimization on [C:/LT/OSMain/Adam1b.HPZ,61] Bt() family.
+* Added compiler optimization on [C:/LT/OSMain/Adam1b.HPZ,57] Bt() family.
 * Added a compiler optimization on absolute addresses.
 * Added a compiler optimization on Fs-> and Gs->.
 
@@ -162,7 +290,7 @@ FAT32.
 
 ----06/30/11 08:16:20----
 * Added instance arg to [C:/LT/OSMain/Hash1a.CPZ,449] HashFind() and
-[C:/LT/OSMain/Adam1c.HPZ,568] ExtFind().
+[C:/LT/OSMain/Adam1c.HPZ,566] ExtFind().
 
 ----06/25/11 17:28:37----
 * Added flats to MusicOrgan.
@@ -193,17 +321,17 @@ were being freed, leaving a dangling str pointer.
 
 ----05/14/11 14:14:40----
 * Changed F5 in editor so that exceptions don't kill
-task.  [C:/LT/Adam/Ltf/LtfPopUp.APZ,716] PopUpFile().
+task.  [C:/LT/Adam/Ltf/LtfPopUp.APZ,733] PopUpFile().
 
 ----05/14/11 08:52:46----
 * Fixed some harmless floating-point stkptr problems.
-* [C:/LT/OSMain/Str1a.CPZ,1122] PrintF() with %f will not overflow as much.
+* [C:/LT/OSMain/Str1a.CPZ,2499] PrintF() with %f will not overflow as much.
 
 ----04/30/11 13:26:54----
 * Misc minor compiler improvements.
   - LTintern can be expressions
   - JIT LTextern can be expressions
-  - [C:/LT/OSMain/Adam1a.HPZ,1402] OPTf_USE_LIT64 (not fully implemented)
+  - [C:/LT/OSMain/Adam1a.HPZ,1385] OPTf_USE_LIT64 (not fully implemented)
 
 ----04/27/11 21:27:32----
 * Made 8051 assembler syntax like LoseThos.
@@ -250,8 +378,8 @@ one level.  It's better.
 * Increased precision of [C:/LT/Adam/Gr/GrMath.APZ,517] Circle(),
 [C:/LT/Adam/Gr/GrMath.APZ,560] Ellipse() and [C:/LT/Adam/Gr/GrMath.APZ,632]
 RegPoly().
-* Improved [::/LT/Demo/WebLogExample/LogRep.CPZ]
-::/LT/Demo/WebLogExample/LogRep.CPZ.
+* Improved [::/LT/Demo/WebLogExample/WebLogRep.CPZ]
+::/LT/Demo/WebLogExample/WebLogRep.CPZ.
 * Cleaned-up <CTRL-R> code.
 
 ----03/06/11 14:34:05----
@@ -262,7 +390,7 @@ RegPoly().
 * Added BitMap editor to [C:/LT/Adam/Gr/Gr.APZ,54] GrSprite editor.
 
 ----03/02/11 22:33:01----
-* Fixed bug in [C:/LT/OSMain/Str1a.CPZ,932] WildCardMatch().
+* Fixed bug in [C:/LT/OSMain/Str1a.CPZ,937] WildCardMatch().
 * Added palette option to [::/LT/Adam/BMPFile.APZ,BMPFileRead] BMPFileRead().
 * Improved [::/LT/Demo/GameStarters/MissileDefense.CPZ]
 ::/LT/Demo/GameStarters/MissileDefense.CPZ.
@@ -270,7 +398,7 @@ RegPoly().
 ::/LT/Demo/GameStarters/RawHide.CPZ.
 
 ----02/27/11 18:25:24----
-* Fixed bug in [C:/LT/Adam/Gr/GrPrimatives.APZ,1187] GrFillTriangle0().
+* Fixed bug in [C:/LT/Adam/Gr/GrPrimatives.APZ,1190] GrFillTriangle0().
 * Improved [::/LT/Demo/GameStarters/EagleDive.CPZ]
 ::/LT/Demo/GameStarters/EagleDive.CPZ.
 * Improved [::/LT/Demo/GameStarters/BlackDiamond.CPZ]
@@ -282,8 +410,7 @@ RegPoly().
 
 ----02/21/11 19:56:34----
 * **V7.01 Released**
-* Added truncate to [C:/LT/OSMain2/SPrintF2.CPZ,490] SPrintFJoin2() for %q
-and %Q.
+* Added truncate to [C:/LT/OSMain/Str1a.CPZ,1580] SPrintFJoin() for %q and %Q.
 * Added [C:/LT/Adam/Gr/GrSpriteNew.APZ,176] GrSprite2Text() and enhanced text
 in GrSprite editor.
 * [C:/LT/Adam/BMPFile.APZ,255] BMPFileRead(), now, scan for nearest palette
@@ -312,7 +439,7 @@ entries.
 and just made things more complicated.
 * [::/LT/Adam/Diff.APZ,Diff(] Diff() reports differences in GrSprite or other
 binary data.
-* Improved [C:/LT/OSMain/Str1a.CPZ,989] A2I().
+* Improved [C:/LT/OSMain/Str1a.CPZ,994] A2I().
 
 ----02/14/11 22:56:44----
 * **Warning**: Got rid of cout and coutln.
@@ -321,12 +448,12 @@ binary data.
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("btype","type_u8");
 
 ----02/07/11 09:10:49----
-* Adjusted [C:/LT/Adam/Ltf/LtfPopUp.APZ,879] PopUpSnap().
+* Adjusted [C:/LT/Adam/Ltf/LtfPopUp.APZ,896] PopUpSnap().
 * Added low pass audio filter when downsampling to create .SND file.
 
 ----02/05/11 09:59:17----
-* Added [C:/LT/OSMain/Adam1b.HPZ,157] Push() and
-[C:/LT/OSMain/Adam1b.HPZ,156] Pop().
+* Added [C:/LT/OSMain/Adam1b.HPZ,153] Push() and
+[C:/LT/OSMain/Adam1b.HPZ,152] Pop().
 * Added blinking cursor to [C:/LT/OSMain/KbdMouse/Message.CPZ,139] GetKey()
 and [C:/LT/OSMain/KbdMouse/Message.CPZ,181] GetChar() when in
 [C:/LT/OSMain/Misc1a.CPZ,499] Raw() mode.

@@ -11,13 +11,14 @@ to generate the graphic.  A picture $PI$
 entry was created by <CTRL-R>.  Press <CTRL-T> to
 toggle to plain text mode and see
 how it is encoded.  You can place any text
-you want in the quotes.  The text doesn't matter,
+you want in the tag quotes.  The text doesn't matter,
 but the num does matter.  The num identifies
 the picture and can't be changed.
 
 You make use of a picture in a program by entering
 "insert binary", $IB$ cmds by hand after pressing
-<CTRL-T> or using <CTRL-R> and selecting "Insert binary".
+<CTRL-T> or using <CTRL-R> and
+selecting "Pointer to GrSprite Data".
 They behave like string constants when compiled.
 That is, they are ptrs to data.
 
@@ -39,14 +40,14 @@ U0 GrSprite1()
 {
   GrDC *dc=GrDCAlias(gr_dc2,Fs);
   I64 i;
-  PutS("$CL$");
+  "$CL$";
   for (i=0;i<GR_WIDTH>>2;i++) {
     GrDCClear;
     GrSpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
     Sleep(3);
   }
-  PrintF("Image size:%d\r\n",__BIN_1_SIZE);
-  PrintF("Image type:%d\r\n",__BIN_1_TYPE);
+  "Image size:%d\r\n",__BIN_1_SIZE;
+  "Image type:%d\r\n",__BIN_1_TYPE;
   GrDCDel(dc);
   PressAKey;
   GrDCClear;

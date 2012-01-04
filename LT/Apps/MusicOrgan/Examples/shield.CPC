@@ -39,12 +39,12 @@ U0 Song()
 	Play("3qDCDeEGBDetBBFqDeDB",
 	"God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0shame.\r\n\0 \0 \0 \0");
 	CrLf;
-	PutGrSprite(__BIN_1);
+	PutSprite(__BIN_1);
 	CrLf(5);
 	Play("qDCDeEGBDetBBFqDeDB",
 	"God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0shame.\r\n\0 \0 \0 \0");
 	CrLf;
-	PutGrSprite(__BIN_1);
+	PutSprite(__BIN_1);
 	CrLf(5);
 	Play("FAetAFDeDFqAetDFBeDFetFDEqD",
 	"Mocked \0 \0 \0a \0lit\0tle, \0 \0 \0badge \0 \0of \0 \0 \0cour\0 \0 \0age.\r\n\0");

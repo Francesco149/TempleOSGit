@@ -29,7 +29,7 @@ U0 Box()
 
   dc->x=200;
   dc->y=200;
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   while (!ScanChar) {
     GrIdentEqu(dc->r);
     GrRotZEqu(dc->r,theta);

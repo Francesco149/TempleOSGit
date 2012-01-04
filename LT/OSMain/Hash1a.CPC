@@ -71,7 +71,7 @@ ADDRESS-TO-SYMBOL LOOK-UP  (Slow because not important--could add tree)
 2)"next_added,last_added" queue links are traversed.  This speeds look-up
 instead of scanning hash table because hash table is so sparce.
 
-See [C:/LT/OSMain2/PSect.CPZ,12] PSectFind().
+See [C:/LT/OSMain/PSect.CPZ,12] PSectFind().
 
 ****/
 
@@ -106,7 +106,7 @@ SYS_HASH_STR::
 //	RDI=TABLE
 //	RCX=INSTANCE, NOT ZERO
 // OUT: RAX=ENTRY OR ZERO NOT FOUND
-// 	RDX=POINTER TO POINTER TO ENTRY
+//	RDX=POINTER TO POINTER TO ENTRY
 //	RCX IF NOT FOUND ENOUGH, DECREMENTED BY NUM MATCHES
 //	ZERO FLAG SET NOT FOUND
 SYS_HASH_SINGLE_TABLE_FIND1::
@@ -595,7 +595,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
 	if (!(tempess=HashFind(st_ptr,Fs->hash_table,HTT_ALL-HTT_IMPORT_SYS_SYM))) {
 	  if (!(ld_flags & LDF_SILENT)) {
 	    PutDefine("ST_UNRESOLVED_REFERENCE");
-	    PutS(st_ptr);
+	    "" st_ptr;
 	    CrLf;
 	  }
 	  tempiss=CAlloc(sizeof(ImportSysSymHashEntry));
@@ -734,13 +734,14 @@ U0 LoadPass2(U8 *src,U8 *module_base,I64 ld_flags)
   }
 }
 
-U0 *Load(U8 *filename,U64 ld_flags=0)
+U0 *Load(U8 *filename,U64 ld_flags=0,BinFileHeaderStruct *bfh_addr=-1)
 { //See [C:/LT/Adam/BinRep.APZ,22] BinRep().
+  //bfh_addr==-1 means don't care what load addr.
   U8 *fbuf;
   U8 *module_base;
   U8 *absname;
   U64 size,module_alignment;
-  BinFileHeaderStruct *bfh,*bfh2;
+  BinFileHeaderStruct *bfh2;
   fbuf=DftExt(filename,"BIZ");
   if (!(bfh2=FileRead(fbuf,&size))) {
     Free(fbuf);
@@ -752,24 +753,28 @@ U0 *Load(U8 *filename,U64 ld_flags=0)
 
   if (!module_alignment || Bsf(module_alignment)!=Bsr(module_alignment))
     throw(EXCEPT_BIN_MODULE);
-#assert sizeof(BinFileHeaderStruct)==16
-  if (Fs->code_heap!=Fs->data_heap) {
-    if (module_alignment<16)
-      module_alignment=16;
-    bfh=MAllocAligned(size,module_alignment,Fs->code_heap,module_alignment-sizeof(BinFileHeaderStruct));
-    MemCpy(bfh,bfh2,size);
-    Free(bfh2);
-  } else {
-    if (module_alignment>8) {
-      bfh=MAllocAligned(size,module_alignment,NULL,module_alignment-sizeof(BinFileHeaderStruct));
-      MemCpy(bfh,bfh2,size);
-      Free(bfh2);
-    } else
-      bfh=bfh2;
-  }
-  module_base=bfh><(U8 *)+sizeof(BinFileHeaderStruct);
 
-  if (ArcXSum(bfh,bfh->file_size)!=LT_XSUM)
+#assert sizeof(BinFileHeaderStruct)==16
+
+  if (bfh_addr==-1) {
+    if (Fs->code_heap!=Fs->data_heap) {
+      if (module_alignment<16)
+	module_alignment=16;
+      bfh_addr=MAllocAligned(size,module_alignment,Fs->code_heap,module_alignment-sizeof(BinFileHeaderStruct));
+    } else if (module_alignment>8)
+      bfh_addr=MAllocAligned(size,module_alignment,NULL,module_alignment-sizeof(BinFileHeaderStruct));
+    else {
+      bfh_addr=bfh2;
+      goto lo_skip;
+    }
+  }
+  MemCpy(bfh_addr,bfh2,size);
+  Free(bfh2);
+
+lo_skip:
+  module_base=bfh_addr><(U8 *)+sizeof(BinFileHeaderStruct);
+
+  if (ArcXSum(bfh_addr,bfh_addr->file_size)!=LT_XSUM)
     throw(EXCEPT_ARC_XSUM);
 
   absname=FileNameAbs(fbuf);
@@ -777,14 +782,14 @@ U0 *Load(U8 *filename,U64 ld_flags=0)
   fbuf=StrNew(absname);
   FileExtRem(fbuf);
   if (fbuf[1]==':' && StrLen(fbuf)>2)
-    HashGenericAdd(fbuf+2,HTT_MODULE|HTT_PUBLIC,bfh);
+    HashGenericAdd(fbuf+2,HTT_MODULE|HTT_PUBLIC,bfh_addr);
   Free(fbuf);
 
-  LoadPass1(bfh><(U8 *)+bfh->loader_patch_table_offset,module_base,ld_flags);
+  LoadPass1(bfh_addr><(U8 *)+bfh_addr->loader_patch_table_offset,module_base,ld_flags);
   if (!(ld_flags&LDF_JUST_LOAD))
-    LoadPass2(bfh><(U8 *)+bfh->loader_patch_table_offset,module_base,ld_flags);
+    LoadPass2(bfh_addr><(U8 *)+bfh_addr->loader_patch_table_offset,module_base,ld_flags);
   Free(absname);
-  return bfh;
+  return bfh_addr;
 }
 
 U0 LoadOSMain()

@@ -20,10 +20,10 @@ waiting for a certain time or waiting
 on a message and skips it if it's not
 ready.  A task runs until it
 voluntarily yields ctrl with a call
-to [C:/LT/OSMain/Scheduler.CPZ,378] Yield or gets preempted by the
+to [C:/LT/OSMain/Scheduler.CPZ,373] Yield or gets preempted by the
 timer interrupt.  See [::/LT/OSMain/Interrupts.CPZ,IRQ20:2] IRQ20.  The timer
-freqency is [C:/LT/OSMain/Adam1a.HPZ,454] JIFFY_FREQ.  Tasks can ask
-not to be preempted with [C:/LT/OSMain/Adam1b.HPZ,98] Preempt(ON/OFF).
+freqency is [C:/LT/OSMain/Adam1a.HPZ,455] JIFFY_FREQ.  Tasks can ask
+not to be preempted with [C:/LT/OSMain/Adam1b.HPZ,94] Preempt(ON/OFF).
 Tasks waiting on I/O often loop,
 checking for a stat and swapping-out.
 This does not really degrade
@@ -250,15 +250,10 @@ RESTORE_RSI_TASK_NO_KEY_CHECK:
 	JC	@@20
 	MOV	RAX,U64 GS:CPU_IDLE_TASK[RAX]
 	MOV	RSP,U64 TASK_STK[RAX]
-	ADD	RSP,IDLE_STK+TSTK_BASE	//Rst to top
+	ADD	RSP,DFT_STK+TSTK_BASE	//Rst to top
 	CALL	SET_FS_BASE
 	STI
-#exe {
-  if (osmain_cfg->opts[CFG_FAST_MP])
-    StreamPutS("NOP");
-  else
-    StreamPutS("HLT");
-};
+	HLT
 	CLI
 
 SWAP_IN_SETH_TASK:
@@ -288,8 +283,8 @@ HANDLE_SWAP_KEY_EVENT:
 	BTR	U32 [RAX],SYSf_CTRL_ALT_TAB
 	JNC	@@05
 	PUSH	RSI
-	MOV	RSI,U64 [SYS_CUR_FOCUS_TASK]
-	MOV	U64 [SYS_CUR_FOCUS_TASK],0
+	MOV	RSI,U64 [SYS_FOCUS_TASK]
+	MOV	U64 [SYS_FOCUS_TASK],0
 	CALL	FOCUS_RSI_NEXT_USER
 	POP	RSI
 	JMP	I32 RESTORE_FS_TASK_WITH_KEY_CHECK
@@ -302,7 +297,7 @@ HANDLE_SWAP_KEY_EVENT:
 	JNC	I32 RESTORE_RSI_TASK_WITH_KEY_CHECK
 
 BREAK_FOCUS_USER:
-	MOV	RSI,U64 [SYS_CUR_FOCUS_TASK]
+	MOV	RSI,U64 [SYS_FOCUS_TASK]
 	OR	RSI,RSI
 	JZ	SWAP_IN_SETH_TASK
 	BT	U64 TASK_TASK_FLAGS[RSI],TASKf_LOCAL_USER
@@ -327,8 +322,8 @@ BREAK_FOCUS_USER:
 @@15:	JMP	I32 RESTORE_RSI_TASK_NO_KEY_CHECK
 
 END_FOCUS_USER:
-	MOV	RSI,U64 [SYS_CUR_FOCUS_TASK]
-	MOV	U64 [SYS_CUR_FOCUS_TASK],0
+	MOV	RSI,U64 [SYS_FOCUS_TASK]
+	MOV	U64 [SYS_FOCUS_TASK],0
 	PUSH	RSI
 	CALL	FOCUS_RSI_NEXT_USER
 	POP	RSI
@@ -355,9 +350,9 @@ FOCUS_RSI_NEXT_USER:
 	MOV	RSI,U64 TASK_NEXT_TASK[RSI]
 @@25:	BT	U64 TASK_TASK_FLAGS[ESI],TASKf_LOCAL_USER
 	JNC	@@30
-	CMP	U64 [SYS_CUR_FOCUS_TASK],RSI
+	CMP	U64 [SYS_FOCUS_TASK],RSI
 	JE	@@30
-	MOV	U64 [SYS_CUR_FOCUS_TASK],RSI
+	MOV	U64 [SYS_FOCUS_TASK],RSI
 	MOV	RAX,U64 [SYS_EXTERN_TABLE]
 	MOV	RAX,U64 EXT_WIN_TO_TOP*8[RAX]
 	OR	RAX,RAX
@@ -369,7 +364,7 @@ FOCUS_RSI_NEXT_USER:
 @@30:	MOV	RSI,U64 TASK_NEXT_TASK[RSI]
 	CMP	RSI,RDI
 	JNE	@@25
-	MOV	U64 [SYS_CUR_FOCUS_TASK],0
+	MOV	U64 [SYS_FOCUS_TASK],0
 @@35:	RET
 
 }

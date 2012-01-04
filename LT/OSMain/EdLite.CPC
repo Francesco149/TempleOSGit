@@ -1,4 +1,4 @@
-/* Project: OSMain2.SPZ */
+/* Project: OSMain.SPZ */
 class LineStruct
 {
   LineStruct *next,*last;
@@ -36,7 +36,7 @@ U0 EdLiteUpdate(LineStruct *root,LineStruct *cur_line,I64 cur_col,I64 line_start
 	else
 	  k2=k+1;
 	if (line_start_col<=k<line_start_col+text_cols) {
-	  PutChar(ch);
+	  '' ch;
 	  j=k2-line_start_col;
 	}
 	k=k2;
@@ -46,7 +46,7 @@ U0 EdLiteUpdate(LineStruct *root,LineStruct *cur_line,I64 cur_col,I64 line_start
       templ=templ->next;
     } else {
       if (!done_eof) {
-	PutS("<EOF>");
+	"<EOF>";
 	done_eof=TRUE;
       }
       CrLf;

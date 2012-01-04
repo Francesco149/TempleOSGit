@@ -183,13 +183,13 @@ U0 MPUpdateWin(GrDC *dc2)
       GrIdentEqu(dc->r);
       GrScaleMatEqu(dc->r,s*2);
       GrSetRotMat(dc,dc->r);
-      dc->flags|=BMF_TRANSFORMATION;
+      dc->flags|=DCF_TRANSFORMATION;
       if (b[i].sym) {
-	dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	GrSetSymmetry(dc,s*x+cx,s*y+h,s*x+cx,s*y+h+10);
       }
       GrSpritePlot3b(dc,s*x+cx,s*y+h,z,b[i].img);
-      dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+      dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
   }
   dc->depth_buf=NULL;

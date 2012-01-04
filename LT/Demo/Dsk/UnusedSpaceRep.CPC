@@ -6,8 +6,8 @@ U0 UnusedSpaceRep()
     try {
       p=Drv2Prt(i+'A');
       if (p->type==PT_FAT32 || p->type==PT_LT)
-	PrintF("%C: %7.3f%% Free\r\n",
-	  Prt2Drv(p),UnusedDrvSpace(Prt2Drv(p))*100.0/(p->size*BLK_SIZE));
+	"%C: %7.3f%% Free\r\n",
+	  Prt2Drv(p),UnusedDrvSpace(Prt2Drv(p))*100.0/(p->size*BLK_SIZE);
     } catch
       Fs->catch_except=TRUE;
   }

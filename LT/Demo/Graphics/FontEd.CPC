@@ -8,7 +8,7 @@
 //If you want to change the system font permanently,
 //save to a file with this font editor program
 //and cut and paste the code into [::/LT/OSMain/Font8x8.CPZ] ::/LT/OSMain/Font8x8.CPZ.
-//You will need to recompile OSMain by calling [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
+//You will need to recompile OSMain by calling [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
 
 //See [::/LT/Demo/ExtendedChars.CPZ] ::/LT/Demo/ExtendedChars.CPZ and
 //[::/LT/Demo/ScreenCodes.CPZ] ::/LT/Demo/ScreenCodes.CPZ.

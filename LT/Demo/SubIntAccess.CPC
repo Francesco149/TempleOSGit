@@ -19,14 +19,14 @@
 
 U64 q=0xFEDCBA9876543210,q1;
 
-PrintF("q\t\t=%016X\r\n",q);
+"q\t\t=%016X\r\n",q;
 q1=q.i16[2];
-PrintF("q.i16[2]\t=%016X\r\n",q1);
+"q.i16[2]\t=%016X\r\n",q1;
 q1=q.u8[5];
-PrintF("q.u8[5]\t\t=%016X\r\n",q1);
+"q.u8[5]\t\t=%016X\r\n",q1;
 q1=q.i32[1].u8[2];
-PrintF("q.i32[1].u8[2]\t=%016X\r\n",q1);
+"q.i32[1].u8[2]\t=%016X\r\n",q1;
 q1=q.i32[0].i8[1];
-PrintF("q.i32[0].i8[1]\t=%016X\r\n",q1);
+"q.i32[0].i8[1]\t=%016X\r\n",q1;
 
 

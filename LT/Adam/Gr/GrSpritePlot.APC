@@ -32,7 +32,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
   I64 i,j,k;
   I64 x1,y1,z1,x2,y2;
   I32 *ptr;
-  I64 cur_grelem_num=0,*old_r,*r2;
+  I64 cur_sprite_elem_num=0,*old_r,*r2;
   U64 old_flags=dc->flags;
   ColorROPU32 old_color=dc->color,old_bkcolor=dc->bkcolor,
      colordc=dc->bkcolor;
@@ -44,7 +44,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
   if (colordc.c0.rop==ROPB_COLLISION)
     dc->color=colordc;
   while (tempg->type) {
-    dc->cur_grelem_num=cur_grelem_num++;
+    dc->cur_sprite_elem_num=cur_sprite_elem_num++;
     switch (tempg->type) {
       case GRST_COLOR4:
 	dc->color=colordc.c0^tempg->color4;
@@ -58,20 +58,20 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	GrScalePenWidth(dc);
 	break;
       case GRST_TRANSFORM_ON:
-	if (!(dc->flags&BMF_TRANSFORMATION)) {
+	if (!(dc->flags&DCF_TRANSFORMATION)) {
 	  x-=dc->x;
 	  y-=dc->y;
 	  z-=dc->z;
 	}
-	dc->flags|=BMF_TRANSFORMATION;
+	dc->flags|=DCF_TRANSFORMATION;
 	break;
       case GRST_TRANSFORM_OFF:
-	if (dc->flags&BMF_TRANSFORMATION) {
+	if (dc->flags&DCF_TRANSFORMATION) {
 	  x+=dc->x;
 	  y+=dc->y;
 	  z+=dc->z;
 	}
-	dc->flags&=~BMF_TRANSFORMATION;
+	dc->flags&=~DCF_TRANSFORMATION;
 	break;
       case GRST_POINT:
 	GrPlot3(dc,tempg->x1+x,tempg->y1+y,z);
@@ -106,27 +106,27 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	break;
       case GRST_PLANAR_SYMMETRY:
 	if (GrSetSymmetry3(dc,tempg->x1+x,tempg->y1+y,z,tempg->x2+x,tempg->y2+y,z,tempg->x2+x,tempg->y2+y,z+1))
-	  dc->flags|=BMF_SYMMETRY;
+	  dc->flags|=DCF_SYMMETRY;
 	else
-	  dc->flags&=~BMF_SYMMETRY;
+	  dc->flags&=~DCF_SYMMETRY;
 	break;
       case GRST_BITMAP4:
       case GRST_BITMAP4_TRANSPARENT:
 	img=CAlloc(sizeof(GrDC));
-	img->type=BMT_COLOR4;
+	img->type=DCT_COLOR4;
 	img->width=tempg->width;
 	img->width_internal=(tempg->width+7)&~7;
 	img->height=tempg->height;
 	img->plane_size=(img->width_internal*img->height)>>3;
 	img->body=tempg><(U8 *)+offset(GrSprite.sides);
-	img->bm_signature=BMS_SIGNATURE_VAL;
+	img->dc_signature=DCS_SIGNATURE_VAL;
 	img->bkcolor=tempg->bkcolor;
 	i=dc->color;
 	if (colordc.c0.rop==ROPB_COLLISION)
 	  dc->color=colordc;
 	else if (tempg->type==GRST_BITMAP4_TRANSPARENT)
 	  dc->color=ROP_TRANSPARENT+i&COLORROP_NO_ROP0_MASK;
-	GrBlot3(dc,tempg->x2+x,tempg->y2+y,z,img);
+	GrDCBlot3(dc,tempg->x2+x,tempg->y2+y,z,img);
 	dc->color=i;
 	Free(img);
 	break;
@@ -139,7 +139,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	z1=z;
 	GrRot(dc->r,&x1,&y1,&z1);
 	old_r=dc->r;
-	dc->flags|=BMF_TRANSFORMATION;
+	dc->flags|=DCF_TRANSFORMATION;
 	r2=GrRotZ(-tempg->rot_angle);
 	GrSetTranslation(r2,x1,y1,z1);
 	GrSetRotMat(dc,GrMulMat(old_r,r2));
@@ -147,7 +147,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	Free(dc->r);
 	Free(r2);
 	GrSetRotMat(dc,old_r);
-	dc->flags=dc->flags&~BMF_TRANSFORMATION|old_flags;
+	dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 	break;
       case GRST_CIRCLE:
 	GrCircle3(dc,tempg->x1+x,tempg->y1+y,z,tempg->x2);
@@ -270,7 +270,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	}
 	break;
       case GRST_SHIFTABLE_MESH:
-	if (dc->flags&BMF_TRANSFORMATION) {
+	if (dc->flags&DCF_TRANSFORMATION) {
 	  dc->x+=tempg->x1;
 	  dc->y+=tempg->y1;
 	  dc->z+=tempg->z1;
@@ -296,7 +296,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	  p->y-=y1;
 	  p->z-=z1;
 	}
-	if (dc->flags&BMF_TRANSFORMATION) {
+	if (dc->flags&DCF_TRANSFORMATION) {
 	  dc->x-=tempg->x1;
 	  dc->y-=tempg->y1;
 	  dc->z-=tempg->z1;
@@ -310,8 +310,8 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
   dc->color=old_color;
   dc->bkcolor=old_bkcolor;
   dc->pen_width=old_pen_width;
-  dc->flags=dc->flags&~(BMF_SYMMETRY|BMF_TRANSFORMATION) |
-	      old_flags&(BMF_SYMMETRY|BMF_TRANSFORMATION);
+  dc->flags=dc->flags&~(DCF_SYMMETRY|DCF_TRANSFORMATION) |
+	      old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
 }
 
 public U0 GrSpriteElemPlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems)
@@ -338,16 +338,16 @@ public U0 GrSpritePlot3b(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems)
 public U0 GrSpritePlotRotMat3b(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
 {
   I64 *old_r=dc->r,old_m[16];
-  U64 old_flags=dc->flags&BMF_TRANSFORMATION;
+  U64 old_flags=dc->flags&DCF_TRANSFORMATION;
   MemCpy(old_m,m,16*sizeof(I64));
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   GrSetTranslation(m,x,y,z);
   dc->r=GrMulMat(old_r,m);
   GrSpritePlot3(dc,0,0,0,elems);
   Free(dc->r);
   dc->r=old_r;
   MemCpy(m,old_m,16*sizeof(I64));
-  dc->flags=dc->flags&~BMF_TRANSFORMATION|old_flags;
+  dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
 public U0 GrSpritePlotRotX3b(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
@@ -374,7 +374,7 @@ public U0 GrSpritePlotRotZ3b(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
 public U0 GrSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
 				   I64 *min_y=NULL,I64 *max_y=NULL)
 { //Ignores flood fills.
-  GrDC *dc=GrDCNew(BMT_COLOR4,MAX_I32,MAX_I32,Fs,TRUE);
+  GrDC *dc=GrDCNew(DCT_COLOR4,MAX_I32,MAX_I32,Fs,TRUE);
   GrDCExtentsInit(dc);
   GrSpritePlot3(dc,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
   if (dc->min_x<=dc->max_x) {
@@ -392,7 +392,7 @@ public U0 GrSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
   GrDCDel(dc);
 }
 
-public GrDC *GrSprite2DC(U8 *elems,I64 type=BMT_COLOR4)
+public GrDC *GrSprite2DC(U8 *elems,I64 type=DCT_COLOR4)
 {
   GrDC *result;
   I64 min_x,max_x,min_y,max_y;
@@ -526,16 +526,14 @@ public U8 *GrSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 
 
 #help_index "Graphics/GrSprite;Ltf/Output"
-public LtfEntry *LtfPutGrSprite(Ltf *l,U8 *elems,U64 size=0,U8 *txt=NULL)
+public LtfEntry *LtfPutSprite(Ltf *l,U8 *elems,U8 *txt=NULL)
 {
-//Size is optional.  Set to zero and it
-//will measure.  (Faster if you know it).
+  I64 size;
   U8 *st;
   BoolI8 unlock=LtfLock(l);
   LtfEntry *ll;
   LtfBinEntry *tempb;
-  if (!size)
-    size=GrSpriteSize(elems);
+  size=GrSpriteSize(elems);
   tempb=CAlloc(sizeof(LtfBinEntry),l->mem_task);
   tempb->type=LTFBT_GRSPRITE;
   tempb->size=size;
@@ -556,16 +554,14 @@ public LtfEntry *LtfPutGrSprite(Ltf *l,U8 *elems,U64 size=0,U8 *txt=NULL)
   return ll;
 }
 
-public LtfEntry *PutGrSprite(U8 *elems,U64 size=0,U8 *txt=NULL)
+public LtfEntry *PutSprite(U8 *elems,U8 *txt=NULL)
 {
-//Size is optional.  Set to zero and it
-//will measure.  (Faster if you know it).
 //If you set txt,
 //then include dollarsigns ("$PI ...$")
 //and leave a %d for the number.
 
   Ltf *l;
   if (l=LtfCur)
-    return LtfPutGrSprite(l,elems,size,txt);
+    return LtfPutSprite(l,elems,txt);
   return NULL;
 }

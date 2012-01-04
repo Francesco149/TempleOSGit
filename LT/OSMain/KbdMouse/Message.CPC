@@ -144,10 +144,10 @@ U64 GetKey(U64 *_scancode=NULL,BoolI8 echo=FALSE,BoolI8 raw_cursor=FALSE)
   while (!ScanKey(&ch,&sc,FALSE)) {
     if (IsRaw && raw_cursor) {
       if (!cursor_on && Blink(,tNP)) {
-	PutChar(CH_SOLID);
+	'' CH_SOLID;
 	cursor_on=TRUE;
       } else if (cursor_on && !Blink(,tNP)) {
-	PutChar(CH_BACKSPACE);
+	'' CH_BACKSPACE;
 	cursor_on=FALSE;
       }
     }
@@ -170,7 +170,7 @@ U64 GetKey(U64 *_scancode=NULL,BoolI8 echo=FALSE,BoolI8 raw_cursor=FALSE)
     LBtr(&Fs->task_flags,TASKf_IDLE);
   }
   if (IsRaw && raw_cursor && cursor_on)
-    PutChar(CH_BACKSPACE);
+    '' CH_BACKSPACE;
   Preempt(old_preempt);
   if (echo)
     PutKey(ch,sc);
@@ -184,14 +184,14 @@ U64 GetChar(U64 *_scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE)
   do ch1=GetKey(_scancode,FALSE,raw_cursor);
   while (!ch1);
   if (echo)
-    PrintF("$FU$%c$FG$",ch1);
+    "$FU$%c$FG$",ch1;
   return ch1;
 }
 
 U8 *MGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1378] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1361] Flags
 {
-//Returns a [C:/LT/OSMain/Memory.CPZ,925] MAlloc()ed prompted string.
+//Returns a [C:/LT/OSMain/Memory.CPZ,957] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);
 }
 
@@ -213,17 +213,17 @@ U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE)
     while (TRUE) {
       ch=GetChar(NULL,FALSE,IsInDbg);
       if (ch==CH_CR) {
-	PutChar(ch);
+	'' ch;
 	break;
       } else if (ch==CH_BACKSPACE) {
 	if (i>0) {
 	  i--;
-	  PutChar(ch);
+	  '' ch;
 	}
       } else {
 	if (i<size-1) {
 	  buf[i++]=ch;
-	  PutChar(ch);
+	  '' ch;
 	}
       }
     }

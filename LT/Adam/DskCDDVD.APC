@@ -97,7 +97,7 @@ U64 CDFileCreate2(LTFile *out_file,LTDirEntry *tempm,
       FillU32Palindrome(&de->loc,*_cur_blk);
       tempc->loc=*_cur_blk;
       if (write)
-	PrintF("%X:%s\r\n",*_cur_blk,tempm1->full_name);
+	"%X:%s\r\n",*_cur_blk,tempm1->full_name;
       FillU32Palindrome(&de->size,tempm1->size);
       FillU16Palindrome(&de->vol_seq_num,1);
       LTDate2ISO1(&de->date,tempm1->datetime);
@@ -185,7 +185,7 @@ U64 CDFileCreate2(LTFile *out_file,LTDirEntry *tempm,
   FillU16Palindrome(&tempi->vol_seq_num,1);
   LTDate2ISO1(&tempi->date,tempm->datetime);
   if (write)
-    PrintF("%X:%s\r\n",*_cur_blk,tempm->full_name);
+    "%X:%s\r\n",*_cur_blk,tempm->full_name;
   if (write)
     FWBlks(out_file,dir_blk_buf,*_cur_blk<<2,n<<2);
   *_cur_blk+=n;
@@ -216,7 +216,7 @@ U64 CDFileCreate2(LTFile *out_file,LTDirEntry *tempm,
   FillU16Palindrome(&tempi2->vol_seq_num,1);
   LTDate2ISO1(&tempi2->date,tempm->datetime);
   if (write)
-    PrintF("%X:%s\r\n",*_cur_blk,tempm->full_name);
+    "%X:%s\r\n",*_cur_blk,tempm->full_name;
   if (write)
     FWBlks(out_file,dir_blk_buf2,*_cur_blk<<2,n<<2);
   *_cur_blk+=n;
@@ -330,7 +330,7 @@ U0 MakeMyISO()
   //Del("B:/LT/Adam/WordStat/WsDefs.DTA");
   Auto(PROD_CDROM_CFG);
   InstallBoot('B','T');
-  CDFileCreate(,"B:/*","",CD_BOOT);
+  CDFileCreate(,"B:/*","",CDBOOT_BIZ);
 }
 */
 
@@ -364,13 +364,12 @@ U0 BurnProductionCDImage()
   DelTree("/0000Boot");
   CopyTree("E:/0000Boot",
     "/0000Boot");
-  CDFileCreate(,"Z:/*",NULL,CD_BOOT); //sys_dft_iso_name
+  CDFileCreate(,"Z:/*",NULL,CDBOOT_BIZ); //sys_dft_iso_name
   CDImageWrite('T');
 }
 */
 
-Study my account examples my technique [::/LT/Demo/AcctExample/TSAdam.APZ,1] Cfg Strs [::/LT/Demo/AcctExample/TSDistribute.APZ,1] Update Funs and
-the recovery CD maker in  [::/LT/Accts/Install/DoItOnce.CPZ,MakeRecoveryDsk:2] Recovery Disk Maker.
+Study my account examples my technique [::/LT/Demo/AcctExample/TSAdam.APZ,1] Cfg Strs [::/LT/Demo/AcctExample/TSDistribute.APZ,1] Update Funs.
 ****/
 
 public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=NULL,
@@ -412,7 +411,7 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
   if (bootfile) {
     bootfile_buf=FileRead(bootfile,&bootfile_cd_blks);
     if (bootfile_cd_blks>CD_BLK_SIZE*4) {
-      PutS(ST_ERR_ST "Boot files limited to 0x2000 bytes\r\n");
+      ST_ERR_ST "Boot files limited to 0x2000 bytes\r\n";
       goto done1;
     }
     bootfile_cd_blks=(bootfile_cd_blks+CD_BLK_SIZE-1)/CD_BLK_SIZE;
@@ -496,13 +495,13 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
       et->media_type=emulation;
       et->sect_cnt=4;  //5 seems like the limit, 4 is safer
       et->load_rba=cur_blk+1;
-//CDBOOT See [C:/LT/Adam/Boot/InsBoot.APZ,35] CDBootFileCreate
+//CDBOOT See [C:/LT/Adam/Boot/InsBoot.APZ,29] CDBootFileCreate
 //See [C:/LT/OSMain/BIOS32.CPZ,292] BootCdProbe().
-      PrintF("%X: Pre Boot Blk\r\n",cur_blk);
+      "%X: Pre Boot Blk\r\n",cur_blk;
       FWBlks(out_file,et,cur_blk<<2,4);
       cur_blk++;
 
-      PrintF("%X: Boot Loader Blks\r\n",cur_blk);
+      "%X: Boot Loader Blks\r\n",cur_blk;
       FWBlks(out_file,bootfile_buf,cur_blk<<2,bootfile_cd_blks<<2);
       cur_blk+=bootfile_cd_blks;
     }
@@ -530,10 +529,10 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
     for (i=1;i<=max_depth;i++)
       CDFillPathTable(rootdir,&itabbuf,&itabbuf2,
 	1,FALSE,&first_free,1,i);
-    PrintF("%X: Path Table 0\r\n",cur_blk);
+    "%X: Path Table 0\r\n",cur_blk;
     FWBlks(out_file,tabbuf,cur_blk<<2,tabsize<<2);
     cur_blk+=tabsize;
-    PrintF("%X: Path Table 1\r\n",cur_blk);
+    "%X: Path Table 1\r\n",cur_blk;
     FWBlks(out_file,tabbuf2,cur_blk<<2,tabsize2<<2);
     cur_blk+=tabsize2;
 
@@ -556,10 +555,10 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
     for (i=1;i<=max_depth;i++)
       CDFillPathTable(rootdir,&itabbuf,&itabbuf2,
 	1,TRUE,&first_free,1,i);
-    PrintF("%X: Path Table 2\r\n",cur_blk);
+    "%X: Path Table 2\r\n",cur_blk;
     FWBlks(out_file,tabbuf,cur_blk<<2,tabsize<<2);
     cur_blk+=tabsize;
-    PrintF("%X: Path Table 3\r\n",cur_blk);
+    "%X: Path Table 3\r\n",cur_blk;
     FWBlks(out_file,tabbuf2,cur_blk<<2,tabsize2<<2);
     cur_blk+=tabsize2;
 

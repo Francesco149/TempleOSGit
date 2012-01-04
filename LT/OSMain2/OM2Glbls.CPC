@@ -1,6 +1,0 @@
-/* Project: OSMain2.SPZ */
-PSectCacheEntry *psect_cache;
-I64 psect_cache_index;
-
-//These are for [C:/LT/OSMain2/SPrintF2.CPZ,490] SPrintF()
-U8 *date_fmt_map,*time_fmt_map;

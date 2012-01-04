@@ -1,4 +1,4 @@
-//8 has words
+//7 has words
 U0 Song()
 {
   Fs->task_end_cb=&SndTaskEndCB;

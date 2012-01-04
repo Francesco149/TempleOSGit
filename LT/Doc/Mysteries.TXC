@@ -10,12 +10,12 @@ table is checked.  All process chain back to the adam process.
 * The compiler only creates pos independent code.  You can't create code
 which 
 is loaded at a fixed, specified location.  The code is pos independent by 
-virtue of the fact that abs addres get patched.
+virtue of the fact that abs addresses get patched.
 
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system OSMain has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,669] Man()/WORDSTAT
+links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,672] Man()/WORDSTAT
 feature can find src lines.
 
 * The word "public" does very little except allow the
@@ -46,11 +46,11 @@ system and see the amount of mem used.  Then, compile it again and far less
 will be allocated.  This is because it is reusing the small chunks.  See 
 [Memory] Memory.  Click Here
 `MemRep;View;`
- for a [C:/LT/Adam/MemRep.APZ,121] MemRep.
+ for a [C:/LT/Adam/MemRep.APZ,185] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is used for 
 SHIFT-SPACE, a character which does not get converted to tabs by 
-space-to-tabs, [C:/LT/Adam/S2T.APZ,62] S2T().
+space-to-tabs, [C:/LT/Adam/S2T.APZ,61] S2T().
 
 * Binary data is stored beyond the terminating NULL in text files.  Map files 
 store debug src lines and other files store pictures.

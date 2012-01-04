@@ -3,7 +3,7 @@ U0 CvtBMPFile(U8 *fname)
   GrDC *dc=BMPFileRead(fname,TRUE);
   GrSprite *elems=GrDC2Sprite(dc);
   CrLf(TEXT_ROWS/2);
-  PutGrSprite(elems);
+  PutSprite(elems);
   CrLf(TEXT_ROWS/2);
   Free(elems);
   GrDCDel(dc);

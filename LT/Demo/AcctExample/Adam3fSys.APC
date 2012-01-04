@@ -8,7 +8,7 @@ U0 UserStartUp()
   WinZBufUpdate;
   Preempt(ON);
   Dir;
-  PrintF("Processors:%d\r\n",mp_cnt);
+  CPURep;
 }
 
 U0 ServantStartUp()
@@ -45,7 +45,6 @@ U0 StartUpTasks(U64 dummy=0)
     XTalk(task1,"#include \"DoItOnce.CPZ\";\r");
 
     WsInit("/LT/" TEXT_FILE_MASK ";~*Bible.TXZ");
-    WordStat;
     AdamLog("WordStat Time:%7.3fs\r\n",ToF64(BootTime)/LTDATE_FREQ);
     if (ts_has_win_drv)
       DrvEnable(TS_WIN_DRV_LET,OFF);
@@ -60,4 +59,4 @@ MkDir("::/Temp/ScreenShots");
 //This must be spawned because start-up files
 // may invoke the Adam() cmd.
 Spawn(&StartUpTasks,NULL,"Spawn Users");
-PrintF("\r\nOS Compile Time:%D %T\r\n",sys_compile_time,sys_compile_time);
+"\r\nOS Compile Time:%D %T\r\n",sys_compile_time,sys_compile_time;

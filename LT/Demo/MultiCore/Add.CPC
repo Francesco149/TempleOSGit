@@ -34,8 +34,8 @@ F64 Test(I64 n,I64 my_mp_cnt)
   for (i=0;i<SAMPLE_SIZE;i++)
     val+=Sum(n,my_mp_cnt);
   end=tNP;
-  PrintF("Val:%,d\r\n",val/SAMPLE_SIZE);
-  PrintF("$FG,RED$N:%12,d Time:%10.8f$FG$\r\n",n,(end-start)/SAMPLE_SIZE);
+  "Val:%,d\r\n",val/SAMPLE_SIZE;
+  "$FG,RED$N:%12,d Time:%10.8f$FG$\r\n",n,(end-start)/SAMPLE_SIZE;
   return end-start;
 }
 
@@ -54,7 +54,7 @@ U0 Main()
     t1=Test(n,1);
     t2=Test(n,mp_cnt);
     results[i]=t2*100.0/t1;
-    PrintF("$FG,GREEN$%8.4f%%$FG$\r\n\r\n",results[i]);
+    "$FG,GREEN$%8.4f%%$FG$\r\n\r\n",results[i];
   }
   PressAKey;
 

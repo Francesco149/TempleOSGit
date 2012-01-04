@@ -18,7 +18,7 @@ U0 LogScrambleFile(U8 *name)
   I64 i;
   U32 num;
   U8 *st,*st2;
-  PrintF("Scrambling: %s\r\n",name);
+  "Scrambling: %s\r\n",name;
   while (ll!=l) {
     if (ll->type_u8==LTFT_TEXT) {
       st=MAlloc(StrLen(ll->tag)+1);
@@ -43,7 +43,7 @@ U0 LogScrambleFile(U8 *name)
   LtfDel(l);
 }
 
-U0 LogScramble(U8 *wild)
+U0 WebLogScramble(U8 *wild)
 {
   LTDirEntry *tempm=FilesFind(wild,FUF_RECURSE|FUF_JUST_FILES),
 	     *tempm1;
@@ -58,6 +58,6 @@ U0 LogScramble(U8 *wild)
 
 //Danger scrambles all log files in the /LT tree
 
-PutS(ST_WARN_ST "This will scramble all .log files in the /LT Tree.\r\n\r\n");
+ST_WARN_ST "This will scramble all .log files in the /LT Tree.\r\n\r\n";
 if (AreYouSure)
-  LogScramble("/LT/*.log*");
+  WebLogScramble("/LT/*.log*");

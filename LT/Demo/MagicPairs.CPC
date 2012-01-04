@@ -171,7 +171,7 @@ BoolI64 TestSumFact(U64 n,U64 target_sf,U64 sqrt_primes,U64 cbrt_primes,Prime *p
     p++;
   }
   /*  At this point we have three possible cases to test
-  1)n==p1 	->sf==(1+p1)	    ?
+  1)n==p1	->sf==(1+p1)	    ?
   2)n==p1*p1	->sf==(1+p1+p1^2)   ?
   3)n==p1*p2	->sf==(p1+1)*(p2+1) ?
 
@@ -246,14 +246,14 @@ U0 PutFactors(U64 n) //For debugging
       n/=i;
     }
     if (k) {
-      PrintF("%d",i);
+      "%d",i;
       if (k>1)
-      PrintF("^%d",k);
-      Spaces;
+	"^%d",k;
+      '' CH_SPACE;
     }
   }
   if (n!=1)
-    PrintF("%d ",n);
+    "%d ",n;
 }
 
 class RangeJob
@@ -340,8 +340,8 @@ I64 MagicPairs(U64 N)
     i,k,n=(N-1)/mp_cnt+1;
   Prime *primes=PrimesNew(N,&sqrt_primes,&cbrt_primes);
   PowPrime *powprimes=PowPrimesNew(N,sqrt_primes,primes,&num_powprimes);
-  PrintF("N:%u SqrtPrimes:%u CbrtPrimes:%u PowersOfPrimes:%u\r\n",
-    N,sqrt_primes,cbrt_primes,num_powprimes);
+  "N:%u SqrtPrimes:%u CbrtPrimes:%u PowersOfPrimes:%u\r\n",
+    N,sqrt_primes,cbrt_primes,num_powprimes;
 
   k=2;
   for (i=0;i<mp_cnt;i++) {
@@ -364,7 +364,7 @@ I64 MagicPairs(U64 N)
       result+=MPJobResult(rj[i].cmd);
   Free(powprimes);
   Free(primes);
-  PrintF("Found:%u Time:%9.4f\r\n",result,tP(Fs)-t0);
+  "Found:%u Time:%9.4f\r\n",result,tP(Fs)-t0;
   return result;
 }
 

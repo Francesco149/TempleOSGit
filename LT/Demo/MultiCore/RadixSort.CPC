@@ -76,19 +76,19 @@ U0 MPRadixSortDemo(U64 dummy=0)
 
   a2=MAlloc(NUM*sizeof(I32));
 
-  PutS("$FG,GREEN$QSort$FG$\r\n");
+  "$FG,GREEN$QSort$FG$\r\n";
   t0=tNP;
   MemCpy(a2,a1,sizeof(I32)*NUM);
   QSort(a2,NUM,sizeof(I32),&Compare);
-  PrintF("Time:%9.6f\r\n",tNP-t0);
+  "Time:%9.6f\r\n",tNP-t0;
   D(a2+NUM/4);
 
 
-  PutS("$FG,GREEN$QSortU32$FG$\r\n");
+  "$FG,GREEN$QSortU32$FG$\r\n";
   t0=tNP;
   MemCpy(a2,a1,sizeof(I32)*NUM);
   QSortU32(a2,NUM);
-  PrintF("Time:%9.6f\r\n",tNP-t0);
+  "Time:%9.6f\r\n",tNP-t0;
   D(a2+NUM/4);
 
   for (i=0;i<my_mp_cnt;i++) {
@@ -101,7 +101,7 @@ U0 MPRadixSortDemo(U64 dummy=0)
 
   if (my_mp_cnt<2) throw(EXCEPT_MULTICORE);
 
-  PutS("$FG,GREEN$MP Radix QSortU32$FG$\r\n");
+  "$FG,GREEN$MP Radix QSortU32$FG$\r\n";
   t0=tNP;
   k1=32-Bsr(my_mp_cnt);
   k2=my_mp_cnt/2;
@@ -120,7 +120,7 @@ U0 MPRadixSortDemo(U64 dummy=0)
     MemCpy(&a2[j],b[i],bn[i]*sizeof(I32));
     j+=bn[i];
   }
-  PrintF("Time:%9.6f\r\n",tNP-t0);
+  "Time:%9.6f\r\n",tNP-t0;
   D(a2+NUM/4);
 
   Free(a1);

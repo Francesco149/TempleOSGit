@@ -80,18 +80,18 @@ U0 Quail()
   WinMax;
 
   LtfBottom;
-  PutS("$CL$$BG,YELLOW$");
+  "$CL$$BG,YELLOW$";
 
   PutBibleVerse("Numbers,11:11",88);
   LtfTop;
   PopUpOk("Scroll down to finish reading.\r\n"
-	  "$FG,GREEN$<SHIFT-ESC>$FG$ when done.");
+	"$FG,GREEN$<SHIFT-ESC>$FG$ when done.");
   View;
 
   LtfBottom;
-  PutS("$CL$$BG,LTCYAN$");
+  "$CL$$BG,LTCYAN$";
   CrLf(SKY_HEIGHT/FONT_HEIGHT);
-  PutS("$BG,YELLOW$");
+  "$BG,YELLOW$";
   CrLf(3);
 
   t0=tP;
@@ -100,5 +100,5 @@ U0 Quail()
   PressAKey;
   LtfClear;
   SettingsPop(Fs,TSF_SAME_SONG);
-  PutS("$BG$\r\n");
+  "$BG$\r\n";
 }

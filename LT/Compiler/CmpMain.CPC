@@ -45,7 +45,7 @@ U8 *CmpStatement(LexStruct *lx,U64 *type)
 	if (lx->flags&LF_STATIC_COMPILE) {
 	  j=lx->a->ip;
 	  k=(size+7)>>3;
-  	  for (i=0;i<k;i++)
+	  for (i=0;i<k;i++)
 	    AsmStoreCodeU64(lx,result[i]);
 	  Free(result);
 	  result=j;
@@ -124,7 +124,7 @@ ExeStruct *CmpJoin(LexStruct *lx,ClassStruct *locals,BoolI8 first_lex,BoolI8 asm
     if (Fs->except_argc>0 && Fs->except_argv[0]==EXCEPT_COMPILER &&
       !asm_blk) {
       if (Fs->except_argc>1 && Fs->except_argv[1]) {
-	PrintF("Compiler exception #%d\r\n",Fs->except_argv[1]);
+	"Compiler exception #%d\r\n",Fs->except_argv[1];
 	LexPutLink(lx);
 	LexPutLine(lx,lx->cur_lfn->line_start);
       }
@@ -191,7 +191,7 @@ ExeStruct *CmpBuf(U8 *buf,U8 *map_name=NULL,
   ExeStruct *result=NULL;
  
   if (!is_first_compiler)
-    PutS("$FG,PURPLE$**** Not First Compiler ****$FG$\r\n");
+    "$FG,PURPLE$**** Not First Compiler ****$FG$\r\n";
  
   lx=LexNew(buf,LF_DONT_FREE_BUF,NULL);
   lx->flags|=LF_STATIC_COMPILE;
@@ -271,7 +271,7 @@ U0 CmpFixUpJITAsm(LexStruct *lx,ExeStruct *ex,I64 ip2)
       SysSymImportsResolve(tempess->str);
     } else if (tempe->type<EIE_MAIN) {
       if (tempe->str && !(tempess=HashFind(str,Fs->hash_table,HTT_ALL-HTT_IMPORT_SYS_SYM)))
-	PrintF("%S%s\r\n","ST_UNRESOLVED_REFERENCE",str);
+	"%S%s\r\n","ST_UNRESOLVED_REFERENCE",str;
       else {
 	ptr=tempe->ip+ip2;
 	if (tempess->type & HTT_FUN) {

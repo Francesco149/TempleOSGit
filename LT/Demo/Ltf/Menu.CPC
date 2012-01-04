@@ -4,14 +4,14 @@
 
 
 I64 PopUpFreq()
-{ //See also [C:/LT/Adam/Ltf/LtfPopUp.APZ,636] PopUpRangeI64()
+{ //See also [C:/LT/Adam/Ltf/LtfPopUp.APZ,653] PopUpRangeI64()
   I64 i;
   Ltf *l=LtfNew;
   LtfPutS(l,"$TX+CX,\"Set Freq\"$\r\n" //Centered text
-  	"$CM+LX,2,4$$BT,\"100 Hz\",100$"
-  	"$CM+LX,18,0$$BT,\"200 Hz\",200$"
-  	"$CM+LX,2,4$$BT,\"400 Hz\",400$"
-  	"$CM+LX,18,0$$BT,\"800 Hz\",800$\r\n");
+	"$CM+LX,2,4$$BT,\"100 Hz\",100$"
+	"$CM+LX,18,0$$BT,\"200 Hz\",200$"
+	"$CM+LX,2,4$$BT,\"400 Hz\",400$"
+	"$CM+LX,18,0$$BT,\"800 Hz\",800$\r\n");
   i=PopUpMenu(l);
   if (i<0) i=0; // <SHIFT-ESC>
   LtfDel(l);
@@ -33,16 +33,16 @@ U0 Main()
   do {
     LtfClear;
 //Use <CTRL-L> to generate cursor movement expressions and check "Quote".
-    PutS("$CM+CX-RE,-4$Menu Demo\r\n\r\n");
-    PutS("$LM,8$"); //Set left margin
+    "$CM+CX-RE,-4$Menu Demo\r\n\r\n";
+    "$LM,8$"; //Set left margin
 //These are buttons that return a val from a menu selection.
     if (!j)
-      PutS("\r\n$BT,\"Snd On\",MU_SND_ON$\r\n\r\n\r\n");
+      "\r\n$BT,\"Snd On\",MU_SND_ON$\r\n\r\n\r\n";
     else
-      PutS("\r\n$BT,\"Snd Off\",MU_SND_OFF$\r\n\r\n\r\n");
-    PutS("\r\n$BT,\"Set Freq\",MU_SET_FREQ$\r\n\r\n\r\n"
-	 "\r\n$BT,\"Nothing\",MU_NOTHING$\r\n\r\n\r\n"
-	 "\r\n$BT,\"Done\",LTFM_CANCEL$\r\n\r\n\r\n");
+      "\r\n$BT,\"Snd Off\",MU_SND_OFF$\r\n\r\n\r\n";
+    "\r\n$BT,\"Set Freq\",MU_SET_FREQ$\r\n\r\n\r\n"
+    "\r\n$BT,\"Nothing\",MU_NOTHING$\r\n\r\n\r\n"
+    "\r\n$BT,\"Done\",LTFM_CANCEL$\r\n\r\n\r\n";
     i=LtfMenuDo(LtfCur);
     LtfBottom;
     switch (i) {

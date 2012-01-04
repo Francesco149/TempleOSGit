@@ -38,7 +38,7 @@ BMPFile *BMPFileNew(U64 width,U64 height,U64 bits)
     size=offset(BMPFile.end)+
 	 width*height>>1+16*sizeof(BGREntry);
   else {
-    PutS("Format Not Supported.\r\n");
+    "Format Not Supported.\r\n";
     return NULL;
   }
   r=CAlloc(size);
@@ -218,7 +218,7 @@ public U64 BMPFileWrite(U8 *filename,GrDC *dc,U64 bits=4)
   else if (bits==24)
     r=BMPFile24To(dc);
   else {
-    PutS("Format Not Supported.\r\n");
+    "Format Not Supported.\r\n";
     return 0;
   }
   size=r->file_size;
@@ -261,7 +261,7 @@ public GrDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
   if (ptr1=FileRead(filename)) {
     r=ptr1;
     if (0<r->width<MAX_I32 && 0<r->height<MAX_I32) {
-      result=GrDCNew(BMT_COLOR4,r->width,r->height);
+      result=GrDCNew(DCT_COLOR4,r->width,r->height);
       ptr1+=r->data_offset;
       if (r->bit_cnt==4) {
 	if (use_ms_paint_palette)
@@ -280,12 +280,12 @@ public GrDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
 	if (!use_ms_paint_palette)
 	  Free(palette_map);
       } else {
-	PutS("Format Not Supported.\r\n");
+	"Format Not Supported.\r\n";
 	GrDCDel(result);
 	result=NULL;
       }
     } else
-      PutS("Invalid BMP File\r\n");
+      "Invalid BMP File\r\n";
     Free(r);
   }
   return result;
@@ -295,7 +295,7 @@ public GrDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
 
 public U64 BMPFileCaptureScreen(U8 *filename,U64 bits=4)
 {
-  GrDC *dc=GrCaptureScreen;
+  GrDC *dc=GrDCCaptureScreen;
   U64 size=BMPFileWrite(filename,dc,bits);
   GrDCDel(dc);
   return size;

@@ -32,7 +32,7 @@ U0 FSync(LTFile *f)
 
 LTFile *FOpen(U8 *filename,U8 *flags,U64 cnt=0)
 {  //allows flags "r","w","w+" and "c" (contiguous)
-  LTFile *f=ACAlloc(sizeof(LTFile));
+  LTFile *f=CAlloc(sizeof(LTFile));
   LTFileAccess *fa;
   U8 *full_name,*full_name2;
   BoolI8 contiguous=StrOcc(flags,'c');
@@ -57,7 +57,7 @@ LTFile *FOpen(U8 *filename,U8 *flags,U64 cnt=0)
 	throw(EXCEPT_FILE,2);
     }
   }
-  f->cluster_buf=ACAlloc(f->p->spc<<BLK_SIZE_BITS);
+  f->cluster_buf=CAlloc(f->p->spc<<BLK_SIZE_BITS);
   if (StrOcc(flags,'w')) {
     f->flags=f->flags|LTF_WRITE|LTF_NEEDS_WRITE;
     if (StrOcc(flags,'+')) {

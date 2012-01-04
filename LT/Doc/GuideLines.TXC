@@ -48,8 +48,8 @@ subdirectory and do similar stuff.
 does 
 not grow, so allocate enough when the task (process) is
 [C:/LT/OSMain/Task1a.CPZ,230] Spawned and use the 
-heap for most things.  (The "heap" refers to [C:/LT/OSMain/Memory.CPZ,925]
-MAlloc() and [C:/LT/OSMain/Memory.CPZ,919] Free().)
+heap for most things.  (The "heap" refers to [C:/LT/OSMain/Memory.CPZ,957]
+MAlloc() and [C:/LT/OSMain/Memory.CPZ,951] Free().)
 
 * See [::/LT/Doc/Glossary.TXZ,Naming convention] Naming convention.
 
@@ -73,13 +73,13 @@ chained to parents.  This provides scopes for vars and functions.
 * Fs->hash_table holds user C+ syms and if a sym is not found, it checks 
 parents.  When a duplicate sym is added to the table, it overshadows the 
 previous sym unless you have done [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1398] OPTf_REPLACE_SYMS).  When developing 
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1381] OPTf_REPLACE_SYMS).  When developing 
 software, typically you include the file at the cmd prompt, make changes and 
 reinclude it.  Old syms are overshadowed but they are still there.  
 Periodically, kill the TASK and start fresh when mem is low.  If you wish
 your 
 applications to free themselves instead of staying in mem, spawn or
-[C:/LT/Adam/Ltf/LtfPopUp.APZ,395] PopUp() a 
+[C:/LT/Adam/Ltf/LtfPopUp.APZ,412] PopUp() a 
 task to run the application and kill it when it's done.
 
 * To display the contents of a hash table, use the [C:/LT/Adam/Hash2a.APZ,88]

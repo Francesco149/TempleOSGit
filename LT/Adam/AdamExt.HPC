@@ -32,10 +32,10 @@ extern BoolI64 View();
 extern BoolI64 LtfLock(Ltf *l);
 extern BoolI64 LtfUnlock(Ltf *l);
 extern U0 LtfInsert(Ltf *l,LtfEntry *ll);
-extern U0 LtfFmtData(LtfEntry *cl);
-extern U0 LtfGoToLineNum(Ltf *l,I64 linenum); //one based
+extern U0 LtfDataFmt(LtfEntry *cl);
+extern U0 LtfLineNumGoTo(Ltf *l,I64 linenum); //one based
 extern U0 LtfDump(Ltf *l,U64 uS_delay=0);
-extern LtfEntry *LtfCopyEntry(Ltf *l,LtfEntry *cl);
+extern LtfEntry *LtfEntryCopy(Ltf *l,LtfEntry *cl);
 extern U0 LtfInsertLtf(Ltf *l,Ltf *b);
 extern U0 LtfD(U8 *buf,U64 cnt=0x80);
 extern U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,

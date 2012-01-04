@@ -12,7 +12,7 @@
 U0 Logo()
 {
   GrDC *dc=GrDCAlias(gr_dc2,Fs);
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   LtfClear;
   while (!ScanChar) {
     dc->x=Fs->win_pixel_width>>1;

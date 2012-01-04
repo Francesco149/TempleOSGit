@@ -96,8 +96,8 @@ extern GrDC *GrDCAlias(GrDC *dc,TaskStruct *task);
 extern U0 GrDCDel(GrDC *dc);
 extern U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *import_snap=NULL,F64 *import_ip_scaler=NULL);
 extern GrSprite *GrSpriteLtf2Queue(Ltf *l,GrSprite *root,I64 *cur_num);
-extern BoolI64 GrBlot3(GrDC *dc,I64 x1,I64 y1,I64 z1,GrDC *img);
-extern U0 GrBlotWithMask(GrDC *dc,GrDC *img);
+extern BoolI64 GrDCBlot3(GrDC *dc,I64 x1,I64 y1,I64 z1,GrDC *img);
+extern U0 GrDCBlotWithMask(GrDC *dc,GrDC *img);
 
 #include "GrCfg"
 #include "GrAsm"

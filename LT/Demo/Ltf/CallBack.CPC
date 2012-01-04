@@ -32,8 +32,8 @@ A second framework is kept at Fs->next_ltf.
 Normally, the next_ltf is used for updating
 the border, primarily.
 
-See [C:/LT/Adam/Ltf/LtfMain.APZ,212] UseTermLtf().
-See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1826] LtfUpdateTaskLtfs().
+See [C:/LT/Adam/Ltf/LtfMain.APZ,215] UseTermLtf().
+See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1829] LtfUpdateTaskLtfs().
 
 Note: the next_ltf is not to be confused
 with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry.
@@ -59,7 +59,7 @@ with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry.
 // Flags are explained here:
 //	[::/LT/Doc/CtrlL.TXZ] ::/LT/Doc/CtrlL.TXZ
 //	[::/LT/Doc/Dollar.TXZ] ::/LT/Doc/Dollar.TXZ
-//	[C:/LT/OSMain/Adam1a.HPZ,1020] Dollar Flags
+//	[C:/LT/OSMain/Adam1a.HPZ,1021] Dollar Flags
 //	[::/LT/Adam/Ltf/Ltf.APZ,ST_LTF_FLAGS] ST_LTF_FLAGS
 
   ll->tag_cb=&BootTimeCB;

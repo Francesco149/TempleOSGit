@@ -1,7 +1,7 @@
 #help_index "Ltf/Cmd Line (Typically);Cmd Line (Typically)"
 
 Ltf *EdJoin(U8 *filename,BoolI8 bail)
-{ //bail is for [C:/LT/Adam/LinkChk.APZ,75] LinkChk()
+{ //bail is for [C:/LT/Adam/LinkChk.APZ,71] LinkChk()
   U8 *buf=StrNew(filename),
      *temp_filename=StrNew(filename),
      *tfn_ptr=temp_filename,
@@ -108,7 +108,7 @@ ej_ltf:
       !PopUpCancelOk(ST_WARN_ST "Not Text File\r\n\r\n"))
       cont=FALSE;
   if (cont)
-    l=LtfEdFile(i,tfn_ptr,buf,num,bail);
+    l=LtfFileEd(i,tfn_ptr,buf,num,bail);
   else
     l=NULL;
   WinTextClear(Fs);
@@ -186,7 +186,10 @@ public Ltf *SysAuxLtfInit(BoolI8 has_menu)
   ll->tag_cb=&EdSemicolonCB;
 
   if (l) {
-    LtfPutS(aux,"$CM+H+BY+RX+NC,-12,1$");
+    LtfPutS(aux,"$CM+H+BY+RX+NC,-18,1$");
+    ll=LtfPutS(aux,"$TX+BD+TC,\"     \"$");
+    ll->user_data=l;
+    ll->tag_cb=&EdMoreCB;
     ll=LtfPutS(aux,"$TX+H+BD+TC,\" \"$");
     ll->user_data=l;
     ll->tag_cb=&EdDollarTypeCB;
@@ -197,7 +200,7 @@ public Ltf *SysAuxLtfInit(BoolI8 has_menu)
   LtfPutS(aux,"$CM+H+TY+NC,0,-1$");
   ll=LtfPutS(aux,"$DA+H-T-P+BD+RD+CX+SCX+IV,140,\"%s...\",16$");
   ll->data=&Fs->task_title;
-  LtfFmtData(ll);
+  LtfDataFmt(ll);
   LtfPrintF(aux,"$CM+H+NC,1,0$$TX+H+BD+IV,\"%X\"$",Fs);
   aux->settings_root.dft_text_attr=Fs->border_attr;
   if (Bt(&Fs->display_flags,DISPLAYf_HAS_CLOSE_WIN))
@@ -290,7 +293,7 @@ public U0 LtfDump(Ltf *l,U64 uS_delay=0)
   cl=l->root.next;
   while (cl!=l) {
     st=LtfGetLine(l,cl,NULL,&cl2);
-    PutS(st);
+    "" st;
     Free(st);
     cl=cl2;
     if (cl->type_u8==LTFT_CR) {
@@ -317,15 +320,15 @@ public LtfEntry *LtfPutLine(LtfEntry *cl)
 	  else
 	    ptr++;
 	*ptr=0;
-	PutS(ptr2);
+	"" ptr2;
 	*ptr=ch;
 	if (ch=='$') {
-	  PutS("$$");
+	  "$$";
 	  ptr++;
 	}
       } while (ch);
     } else if (cl->type_u8==LTFT_TAB)
-      PutChar(CH_TAB);
+      '' CH_TAB;
     cl=cl->next;
   }
   CrLf;
@@ -334,14 +337,14 @@ public LtfEntry *LtfPutLine(LtfEntry *cl)
 
 #help_index "Ltf/Input"
 public U8 *LtfMGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1378] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1361] Flags
 {
   Ltf *l;
   LtfEntry *cl,*cl_end;
   BoolI8 old_preempt=IsPreempt;
   U8 *result,*st;
   U64 ch,sc;
-  PutS("$FU$");
+  "$FU$";
   do {
     ch=LtfGetKey(&sc);
     if (ch==CH_ESC) {
@@ -352,13 +355,13 @@ public U8 *LtfMGetS(U64 flags=0)
 	if (!(l->flags&LTFF_DONT_SHOW) &&
 	    (!l->best_d || !(l->flags&LTFF_AUX_LTF)) &&
 	    l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL && l->cur_entry!=l) {
-	  cl=LtfCopyEntry(l,l->cur_entry);
+	  cl=LtfEntryCopy(l,l->cur_entry);
 	  if (l->flags&LTFF_AUX_LTF && LtfCur)
 	    LtfBottom;
 	  else
 	    LtfBottom(l);
 	  LtfEntryRun(l,cl,TRUE);
-	  LtfDelEntry(l,cl);
+	  LtfEntryDel(l,cl);
 	  LtfUnlock(l);
 	  break;
 	}
@@ -410,7 +413,7 @@ public U8 *LtfMGetS(U64 flags=0)
   }
   LtfUnlock(l);
 mgets_done:
-  PutS("$FU$$FG$$BG$");
+  "$FU$$FG$$BG$";
   Preempt(old_preempt);
   return result;
 }
@@ -423,7 +426,7 @@ public I64 PmtI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64)
   BoolI8 okay;
   U8 *st;
   while (TRUE) {
-    PrintF(msg,dft);
+    "" msg,dft;
     st=MGetS;
     if (!*st) {
       Free(st);
@@ -447,7 +450,7 @@ public F64 PmtF64(U8 *msg,F64 dft,F64 lo=MIN_F64,F64 hi=MAX_F64)
   BoolI8 okay;
   U8 *st;
   while (TRUE) {
-    PrintF(msg,dft);
+    "" msg,dft;
     st=MGetS;
     if (!*st) {
       Free(st);
@@ -470,9 +473,9 @@ public U8 *PmtStr(U8 *msg=NULL,U8 *dft=NULL)
   U8 *st;
   if (msg) {
     if (dft)
-      PrintF(msg,dft);
+      "" msg,dft;
     else
-      PrintF(msg);
+      "" msg;
   }
   st=MGetS;
   if (!*st) {
@@ -490,7 +493,7 @@ public LTDate PmtLTDate(U8 *msg,LTDate dft,LTDate lo=MIN_I64,LTDate hi=MAX_I64)
   LTDate result;
   U8 *st;
   while (TRUE) {
-    PrintF(msg,dft,dft);
+    "" msg,dft,dft;
     st=MGetS;
     if (!*st) {
       Free(st);
@@ -520,16 +523,16 @@ I64 PopUpCancelIncludeDelAuto(U8 *header=NULL,U8 *footer=NULL)
   I64 i;
   Ltf *l=LtfNew;
   if (header) LtfPutS(l,header);
-  LtfPutS(l,"$CM+LX,1,3 $$BT, \"INCLUDE       (.CPZ)\",RIGHT_INCLUDE$"
-  	"$CM+LX,25,0$$BT,\"DEBUG               \",RIGHT_DEBUG$"
-  	"$CM+LX,1,3 $$BT,\"STATIC COMPILE(.SPZ)\",RIGHT_COMPILE$"
-  	"$CM+LX,25,0$$BT,\"LOAD          (.BIZ)\",RIGHT_LOAD$"
-  	"$CM+LX,1,3 $$BT,\"ADAM_INCLUDE  (.APZ)\",RIGHT_AINCLUDE$"
-  	"$CM+LX,25,0$$BT,\"AUTOFILE      (.AUZ)\",RIGHT_AUTOFILE$"
-  	"$CM+LX,1,3 $$BT,\"COPY                \",RIGHT_COPY$"
-  	"$CM+LX,25,0$$BT,\"MOVE                \",RIGHT_MOVE$"
-  	"$CM+LX,1,3 $$BT,\"DELETE              \",RIGHT_DELETE$"
-  	"$CM+LX,25,0$$BT,\"CANCEL              \",LTFM_CANCEL$\r\n");
+  LtfPutS(l,"$CM+LX,1,3 $$BT,\"INCLUDE       (.CPZ)\",RIGHT_INCLUDE$"
+	"$CM+LX,25,0$$BT,\"DEBUG               \",RIGHT_DEBUG$"
+	"$CM+LX,1,3 $$BT,\"STATIC COMPILE(.SPZ)\",RIGHT_COMPILE$"
+	"$CM+LX,25,0$$BT,\"LOAD          (.BIZ)\",RIGHT_LOAD$"
+	"$CM+LX,1,3 $$BT,\"ADAM_INCLUDE  (.APZ)\",RIGHT_AINCLUDE$"
+	"$CM+LX,25,0$$BT,\"AUTOFILE      (.AUZ)\",RIGHT_AUTOFILE$"
+	"$CM+LX,1,3 $$BT,\"COPY                \",RIGHT_COPY$"
+	"$CM+LX,25,0$$BT,\"MOVE                \",RIGHT_MOVE$"
+	"$CM+LX,1,3 $$BT,\"DELETE              \",RIGHT_DELETE$"
+	"$CM+LX,25,0$$BT,\"CANCEL              \",LTFM_CANCEL$\r\n");
   if (footer) LtfPutS(l,footer);
   i=PopUpMenu(l);
   LtfDel(l);
@@ -572,7 +575,7 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	    break;
 	  }
 	}
-	PrintF("#include \"%s\";\r\n$FU$$FG$$BG$",st);
+	"#include \"%s\";\r\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	ExeFile(st);
 	result=TRUE;
@@ -588,7 +591,7 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	    break;
 	  }
 	}
-	PrintF("AutoFile(\"%s\");\r\n$FU$$FG$$BG$",st);
+	"AutoFile(\"%s\");\r\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	AutoStr("%F\r",st);
 	result=TRUE;
@@ -600,7 +603,7 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	    break;
 	  }
 	}
-	PrintF("Adam(\"#include \\\"%s\\\"\" );\r\n$FU$$FG$$BG$",st);
+	"Adam(\"#include \\\"%s\\\"\" );\r\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	AdamFile(st,FALSE);
 	result=TRUE;
@@ -612,7 +615,7 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	    break;
 	  }
 	}
-	PrintF("Cmp(\"%s\");\r\n$FU$$FG$$BG$",st);
+	"Cmp(\"%s\");\r\n$FU$$FG$$BG$",st;
 	Cmp(st);
 	result=TRUE;
 	break;
@@ -623,7 +626,7 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	    break;
 	  }
 	}
-	PrintF("Load(\"%s\");\r\n$FU$$FG$$BG$",st);
+	"Load(\"%s\");\r\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	Load(st);
 	result=TRUE;
@@ -649,7 +652,7 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	    break;
 	  }
 	}
-	PrintF("IDE(\"%s\");\r\n$FU$$FG$$BG$",st);
+	"IDE(\"%s\");\r\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	IDE(st);
 	result=TRUE;
@@ -658,9 +661,9 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
   } else
     send_cr=TRUE;
   LtfBottom(l);
-  PutS("$FU$$FG$$BG$");
+  "$FU$$FG$$BG$";
   if (send_cr)
-    PutChar(CH_CR);
+    '' CH_CR;
   return result;
 }
 
@@ -681,7 +684,7 @@ public U0 Man(U8 *st)
 
 public U0 LtfDm(U8 *buf,U64 cnt=0x80)
 //Dumps a chunk of mem, showing
-//addres.  It is live and can be
+//addresses.  It is live and can be
 //edited.
 {
   LtfEntry *ll;

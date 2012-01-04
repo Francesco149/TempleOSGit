@@ -52,7 +52,7 @@ U0 Song()
   while (!ScanKey) {
 	LtfClear;
 	Spaces(20);
-	PutGrSprite(__BIN_1);
+	PutSprite(__BIN_1);
 	CrLf(4);
 	Play("3qEsCBCBqARReGRqA2sG3G2G3G",
 		"Fin\0ger \0 \0of \0 \0God\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");

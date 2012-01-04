@@ -3,7 +3,7 @@ asm {
 USE32
 
 SYS_BIOS32_SERVICE_DIR:: DU32	0;
-SYS_PCI_SERVICES:: 	 DU32	0;
+SYS_PCI_SERVICES::	 DU32	0;
 
 SYS_FIND_BIOS32_SERVICE_DIR::
 	MOV	ESI,0xE0000
@@ -294,32 +294,26 @@ BoolI64 BootCdProbe(LTBlkDev *bdev)
   BoolI8 result=FALSE;
   OSMainStruct *img=CAlloc(CD_BLK_SIZE);
   I64 i;
-  PutS("Port: ");
-  PutHex(bdev->base0,4);
-  PutChar(',');
-  PutHex(bdev->base1,4);
-  PutS(" Unit: ");
-  PutHex(bdev->unit,2);
-  Spaces(2);
+  "Port: %04X,%04X Unit: %02X  ",bdev->base0,bdev->base1,bdev->unit;
   if (ATAProbe(bdev->base0,bdev->base1,bdev->unit)==LTBDT_ATAPI) {
     //After preboot + CDBoot.BIZ comes Boot.BIC
     //See [::/LT/Adam/DskCDDVD.APZ,CDBOOT] CDBOOT, See [::/LT/Adam/Boot/BootCD.SPZ,BOOT_CODE_CDROM] CD Boot Blk
-    PutS(" ATAPI");
+    " ATAPI";
     if (ATAPIStartStop(bdev,TRUE,BootTime+5*LTDATE_FREQ)) {
-      PutS(" Started");
+      " Started";
       for (i=0;i<2;i++) { //Retry
 	if (ATAPIReadBlks2(bdev,img,sys_boot_code.u16[1],1,FALSE,BootTime+7*LTDATE_FREQ)) {
 	  if (img->compile_time==sys_compile_time) {
-	    PutS(" Found");
+	    " Found";
 	    return TRUE;
 	  } else
-	    PutS(" Read");
+	    " Read";
 	} else
-	  PutS(" NoRead");
+	  " NoRead";
       }
     }
   }
-  PutS( " Nope\r\n");
+  " Nope\r\n";
   Free(img);
   return result;
 }

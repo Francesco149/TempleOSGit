@@ -1,5 +1,5 @@
 //This is the software interrupt num
-//we will use.  See [C:/LT/OSMain/Adam1a.HPZ,296] Software Int's for
+//we will use.  See [C:/LT/OSMain/Adam1a.HPZ,299] Software Int's for
 //picking a num.  Nums are subject to change.
 
 #define I_F_UNARY_MINUS	I_USER
@@ -68,14 +68,14 @@ U0 TimeIns()
   for (i=0;i<SAMPLE_SIZE;i++)
 	  UnaryMinusInt(pi);
   end=GetTimeStamp;
-  PrintF("Interrupt Cycles: %10.5f\r\n",ToF64(end-start)/SAMPLE_SIZE);
+  "Interrupt Cycles: %10.5f\r\n",ToF64(end-start)/SAMPLE_SIZE;
 
 //Measure call time
   start=GetTimeStamp;
   for (i=0;i<SAMPLE_SIZE;i++)
 	  UnaryMinusCall(pi);
   end=GetTimeStamp;
-  PrintF("Call      Cycles: %10.5f\r\n",ToF64(end-start)/SAMPLE_SIZE);
+  "Call      Cycles: %10.5f\r\n",ToF64(end-start)/SAMPLE_SIZE;
 
   Preempt(ON);
   SetIDTEntry(I_F_UNARY_MINUS,old_irq,0,IDTET_IRQ);

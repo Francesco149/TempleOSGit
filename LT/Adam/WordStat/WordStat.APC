@@ -59,7 +59,7 @@ I64 ws_num_fillins=0,ws_fillin_scores[WS_MAX_FILLINS+1],ws_fillin_hits[WS_MAX_FI
 #define WSD_H1_END		1
 #define WSD_DEF			2
 #define WSD_DEF_END		3
-#define WSD_PRONUNCIATION 	4
+#define WSD_PRONUNCIATION	4
 #define WSD_PRONUNCIATION_END	5
 #define WSD_POS			6
 #define WSD_POS_END		7
@@ -76,7 +76,7 @@ I64 ws_num_fillins=0,ws_fillin_scores[WS_MAX_FILLINS+1],ws_fillin_hits[WS_MAX_FI
 
 public U8 *ws_dict_word_list=NULL;
 public I64 ws_dict_word_list_size=0,
-   ws_dict_num_words=0,ws_num_structs=0;
+   ws_dict_num_words=0,ws_structs_size=0;
 
 extern U0 WsdWordsLoad();
 extern U0 WsdDictWordsAdd(Ltf *l,U8 *st=NULL);

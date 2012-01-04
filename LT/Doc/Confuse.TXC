@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 129,010 lines of LoseThos over
+* I, Terry A. Davis, wrote every one of the 129,334 lines of LoseThos over
 the 
 past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other srcs.  It's 100% independent 
@@ -29,10 +29,10 @@ use the word "script" sometimes for stuff, but it's actually compiled.
 than "root" was!  OSMain is the closest thing to a kernel, but everybody has 
 kernel privilege, so "Kernel" is deceptive!
 
-* [C:/LT/OSMain/Adam1b.HPZ,61] Bt() is "bit test", like the x86 instruction,
+* [C:/LT/OSMain/Adam1b.HPZ,57] Bt() is "bit test", like the x86 instruction,
 not "bit torrent".
 
-* [C:/LT/OSMain/Adam1b.HPZ,289] Fs is a segment register, not "file system". 
+* [C:/LT/OSMain/Adam1b.HPZ,286] Fs is a segment register, not "file system". 
 (It is kept pointing to the 
 current task's record.)  There is no memory segmentation -- FS and GS are
 used 
@@ -44,12 +44,12 @@ making parenthesis optional on function calls with no paramaters.
 * [C:/LT/OSMain/Misc1a.CPZ,289] Sleep() makes a program pause.  It is not
 hybernation for a laptop.
 
-* [C:/LT/OSMain/Scheduler.CPZ,378] Yield() saves the current task's registers
+* [C:/LT/OSMain/Scheduler.CPZ,373] Yield() saves the current task's registers
 (context) and loads in the next 
 task.  When waiting, it's better to do this than check a condition in a loop 
 until you get preempted.  Checking a condition until you get preempted wastes 
 CPU.  LoseThos does not use virtual memory, so
-[C:/LT/OSMain/Scheduler.CPZ,378] Yield() involves no disk 
+[C:/LT/OSMain/Scheduler.CPZ,373] Yield() involves no disk 
 activity.  A swap takes half a microsecond.  See 
 [::/LT/Demo/Lectures/Spinning.CPZ] ::/LT/Demo/Lectures/Spinning.CPZ.
 
@@ -61,7 +61,7 @@ encrypted.  [C:/LT/Adam/Dsk2a.APZ,51] Copy() or
 rename them with [C:/LT/Adam/Dsk2a.APZ,80] Move() to store them uncompressed.
 
 * LoseThos is open src and every bit of the src code is included in the 
-distribution.  Use [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot() to compile
+distribution.  Use [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot() to compile
 the kernel and compiler.
 
 * LoseThos does not use object files or a linker.  You can link .BIZ modules 
@@ -69,7 +69,7 @@ at [C:/LT/OSMain/Hash1a.CPZ,733] Load() time, though.
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/LT/OSMain/Adam1a.HPZ,454] JIFFY_FREQ.
+interrupt.  See [C:/LT/OSMain/Adam1a.HPZ,455] JIFFY_FREQ.
 
 * Refresh rate is how often LoseThos updates screen mem.  It is not 
 syncronized to the hardware rate, having nothing to do with it.
@@ -98,7 +98,7 @@ will be fine.  Small mem chunks stick to the task when they are freed until
 it 
 is killed.  The only way to get in trouble involves allocating multiple Meg 
 chunks and freeing them.  These can only be reused if the same size gets 
-allocated again.  Use [C:/LT/Adam/HeapLog.APZ,112] HeapLog() and
+allocated again.  Use [C:/LT/Adam/HeapLog.APZ,111] HeapLog() and
 [C:/LT/Adam/HeapLog.APZ,79] HeapLogRep() to see who allocated mem and 
 didn't free it.
 

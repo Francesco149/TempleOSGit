@@ -4,7 +4,7 @@ U0 Main()
   P3I32 poly[4];
   GrDC *dc=GrDCAlias(gr_dc2,Fs);
   GrDCAllocDepthBuf(dc);
-  dc->flags|=BMF_TRANSFORMATION|BMF_SYMMETRY;
+  dc->flags|=DCF_TRANSFORMATION|DCF_SYMMETRY;
   try {
     while (!ScanChar) {
       GrDCDepthBufRst(dc);

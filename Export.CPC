@@ -33,7 +33,7 @@ U0 ExportBinary(U8 *src_file,LtfBinEntry *b) {
   *buf=0;
   buf=MSPrintF("%s%d.DTC",buf1,b->num);
   Free(buf1);
-  PrintF("%s\r\n",buf);
+  "%s\r\n",buf;
   FileWrite(buf,b->data,b->size);
   Free(buf);
 }
@@ -149,10 +149,11 @@ U8 *StrToASCII(U8 *s)
       case 'theta': ext="theta"; break;
       case 'phi': ext="phi"; break;
       case 'omega': ext="omega"; break;
+      case '-': ext="-"; break;
       case 255: ext="\\xFF"; break; //Only used in the extended chars demo
       default:
         if (*buf&0x80)
-          PrintF("W: extended ASCII char: '%c'\r\n",*buf);
+          "W: extended ASCII char: '%c'\r\n",*buf;
         goto next_char;
     }
     if (StrLen(ext)!=1) {
@@ -425,7 +426,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
       default:
         buf=MSPrintF("%s /* Unknown token: %d */ ",out,cl->type_u8);
         Free(out); out=buf;
-        PrintF("Unknown token: %d\r\n",cl->type_u8);
+        "Unknown token: %d\r\n",cl->type_u8;
         break;
     }
     if (flags & LTFLF_WORD_WRAP)
@@ -452,7 +453,7 @@ U0 PutExportTree(LTDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
     MemCpy(path,dst_dir,dst_dir_len);
     path[dst_dir_len]='/';
     StrCpy(path+dst_dir_len+1,ent->full_name+src_dir_len);
-    PrintF("%s\r\n",path);
+    "%s\r\n",path;
     if (ent->attr & LT_ATTR_DIR) {
       MkDir(path);
       if (ent->sub)

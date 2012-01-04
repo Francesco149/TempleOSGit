@@ -125,8 +125,8 @@ U0 StkRep(TaskStruct *task=NULL)
   PopFD;
   Fs->hash_table=task->hash_table;
   for (i=0;i<STK_REP_LEN;i++) {
-    PrintF("%08X [RSP+%04X]: %016X ",rsp+i,
-      i*sizeof(U0 *),my_rsp[i]);
+    "%08X [RSP+%04X]: %016X ",rsp+i,
+      i*sizeof(U0 *),my_rsp[i];
     while (TRUE) {
       if (!(&task->stk->stk_base<=rbp<(&task->stk->stk_base)><(U8 *)+task->stk->stk_size))
 	break;
@@ -135,12 +135,12 @@ U0 StkRep(TaskStruct *task=NULL)
 	break;
       add=my_rsp[j+1];
       if (rbp>=my_rsp[j])
- 	break;
+	break;
       rbp=my_rsp[j];
     }
     if (my_rsp[i]==add)
-      PutS("$FG,RED$");
-    PrintF("%P$FG$\r\n",my_rsp[i]);
+      "$FG,RED$";
+    "%P$FG$\r\n",my_rsp[i];
   }
   CrLf;
   Fs->hash_table=old_hash;
@@ -154,7 +154,7 @@ U0 CallerRep(U0 **rbp=NULL,TaskStruct *task=NULL)
   if (!rbp) rbp=GetBasePtr;
   while (ChkOnStk(rbp,task)) {
     ptr=rbp+1;
-    PrintF("%08X:%08tX:%P\r\n",ptr,*ptr,*ptr);
+    "%08X:%08tX:%P\r\n",ptr,*ptr,*ptr;
     if (rbp>=*rbp)
       break;
     rbp=*rbp;
@@ -171,9 +171,9 @@ U0 DbgStr(U8 *st,U64 mS=100)
   Cli;
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
-  PutS("DbgStr(");
-  PutS(st);
-  PutChar(')');
+  "DbgStr(";
+  "" st;
+  ')';
   BusyWait(mS<<10);
   PopFD;
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
@@ -190,9 +190,7 @@ U0 DbgNum(U64 num,U64 mS=100)
   Cli;
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
-  PutS("DbgNum(");
-  PutHex(num,16);
-  PutChar(')');
+  "DbgNum(%016X)",num;
   BusyWait(mS<<10);
   PopFD;
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
@@ -209,7 +207,7 @@ U0 DbgF(F64 d,U64 mS=100)
   Cli;
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
-  PrintF("DbgF(%15e)",d);
+  "DbgF(%15e)",d;
   BusyWait(mS<<10);
   PopFD;
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
@@ -225,7 +223,7 @@ U0 DbgAdd(U0 *add,U64 mS=100)
   Cli;
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
-  PrintF("DbgAdd(%P)",add);
+  "DbgAdd(%P)",add;
   BusyWait(mS<<10);
   PopFD;
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
@@ -268,30 +266,27 @@ U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
 
 U0 D(U8 *buf,U64 cnt=0x80,BoolI8 show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/LT/Adam/Ltf/LtfMain.APZ,698] LtfD() for a live dump.
+//See [C:/LT/Adam/Ltf/LtfMain.APZ,701] LtfD() for a live dump.
 {
   U64 i,j,ch;
   U8 *b=buf;
   while (cnt) {
     if (show_offset)
-      PutHex(b-buf,8);
+      "%08X ",b-buf;
     else
-      PutHex(b,16);
-    Spaces;
+      "%016X ",b;
     j= cnt>16 ? 16:cnt;
-    for (i=0;i<j;i++) {
-      PutHex(b[i],2);
-      Spaces;
-    }
+    for (i=0;i<j;i++)
+      "%02X ",b[i];
     for (;i<16;i++)
-      PutS("   ");
+      "   ";
     for (i=0;i<j;i++) {
       ch=b[i];
       if (ch<CH_SHIFT_SPACE || ch==CH_BACKSPACE)
 	ch='.';
-      PutChar(ch);
+      '' ch;
       if (ch=='$')
-	PutChar(ch);
+	'' ch;
     }
     CrLf;
     cnt-=j;
@@ -306,10 +301,10 @@ U0 Dm(U8 *buf,U64 cnt=0x80)
 }
 
 U0 Da(U0 **b,U64 cnt=0x10)
-//Dump mem, showing symic addres
+//Dump mem, showing symbolic addresses
 {
   while (cnt-->0) {
-    PrintF("%08X:%08X,%P\r\n",b,*b,*b);
+    "%08X:%08X,%P\r\n",b,*b,*b;
     b++;
   }
 }
@@ -342,8 +337,8 @@ U0 Dr(TaskStruct *task=NULL)
   U64 i;
   if (!task) task=Fs;
   for (i=0;i<16;i++)
-    PrintF("%3Z:%016X\r\n",i,"ST_U64_REGS",*TaskRegAdd(task,i));
-  PrintF("RIP:%016X\r\n",task->rip);
+    "%3Z:%016X\r\n",i,"ST_U64_REGS",*TaskRegAdd(task,i);
+  "RIP:%016X\r\n",task->rip;
 }
 
 U0 OverRideSingleUserSwap()
@@ -353,10 +348,85 @@ U0 OverRideSingleUserSwap()
   SingleUser(old_single);
 }
 
+U0 DefineRegs()
+{
+  I64 i;
+  U8 buf1[8],buf2[8];
+  DefineLoad("RAX","Fs->rax");
+  DefineLoad("RBX","Fs->rbx");
+  DefineLoad("RCX","Fs->rcx");
+  DefineLoad("RDX","Fs->rdx");
+  DefineLoad("RSI","Fs->rsi");
+  DefineLoad("RDI","Fs->rdi");
+  DefineLoad("RBP","Fs->rbp");
+  DefineLoad("RSP","Fs->rsp");
+  DefineLoad("RIP","Fs->rip");
+  for (i=8;i<16;i++) {
+    SPrintF(buf1,"R%d",i);
+    SPrintF(buf2,"Fs->r%d",i);
+    DefineLoad(buf1,buf2);
+  }
+}
+
+U8 *SysMGetS(U64 flags)
+{
+  nounusedwarn flags;
+  U8 buf[512];
+  GetS(buf,512,FALSE);
+  return StrNew(buf);
+}
+
+U0 SysDbgExit()
+{
+  if (IsInDbg) {
+    "Exit Dbg\r\n";
+    CmdLineExit;
+  }
+}
+
 U0 DbgExit()
 {
   if (IsInDbg && ext[EXT_EXIT_DEBUGGER])
     CallExtNum(EXT_EXIT_DEBUGGER);
+}
+
+U0 SysDbgEnter(BoolI8 was_in_debugger)
+{
+  BoolI8 old_user_task,old_waiting_msg;
+  U64 i,old_dbg_mgets;
+  U8 buf[200];
+  SysHashTable *tempht;
+
+  if (IsRaw) {
+    i=Fs->rip;
+    Ui(buf,&i,64);
+    PutS(buf);
+  } else
+    U(Fs->rip,1);
+
+  if (!was_in_debugger) {
+    old_waiting_msg=LBtr(&Fs->task_flags,TASKf_AWAITING_MSG);
+    old_user_task=Bt(&Fs->task_flags,TASKf_LOCAL_USER);
+    UserTaskInit;
+    sys_focus_task=Fs;
+    sys_cur_scan_code=0;
+    old_dbg_mgets=fp_mgets;
+    fp_mgets=&SysMGetS;
+    while (!mouse_install_attempts)
+      OverRideSingleUserSwap;
+
+    tempht=HashTableNew(STD_HASH_SIZE);
+    tempht->next=Fs->hash_table;
+    Fs->hash_table=tempht;
+    DefineRegs;
+    UserTaskCont;
+    Fs->hash_table=tempht->next;
+    HashTableDel(tempht);
+
+    fp_mgets=old_dbg_mgets;
+    LBEqu(&Fs->task_flags,TASKf_LOCAL_USER,old_user_task);
+    LBEqu(&Fs->task_flags,TASKf_AWAITING_MSG,old_waiting_msg);
+  }
 }
 
 U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
@@ -382,22 +452,21 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
   was_in_dbg=InDbg(ON);
   sys_raw_dc_flags|=RDCF_SHOW_DOLLAR|RDCF_SCROLL;
 
-  PutS("\r\n\tLoseThos Debugger\r\n"
+	"\r\n\tLoseThos Debugger\r\n"
 	"Use EdLite(\"name\"); for editing.\r\n"
-	"\"DbgExit;\" or \"Exit;\" might work.\r\n\r\n");
+	"\"DbgExit;\" or \"Exit;\" might work.\r\n\r\n";
   Beep(500,TRUE);
   if (msg) {
-    PutS("\r\n!!! ");
-    PutS(msg);
+    "\r\n!!! %s",msg;
     if (num)
-      PutHex(num,16);
-    PutS(" !!!\r\n\r\n");
+      "%016X",num;
+    " !!!\r\n\r\n";
   }
   CallerRep;
   if (ext[EXT_DEBUGGER])
     CallExtNum(EXT_DEBUGGER,was_in_dbg);
   else {
-    PutS("No Debugger\r\n");
+    "No Debugger\r\n";
     while (TRUE);
   }
   InDbg(was_in_dbg);
@@ -419,7 +488,7 @@ U0 Fault2()
   if (Fs->fault_num==I_DIVIDE_BY_ZERO)
     throw(EXCEPT_DIVIDE_BY_ZERO,Fs->rip);
   was_single_user=SingleUser(ON);
-  sys_cur_focus_task=NULL;
+  sys_focus_task=NULL;
   sys_dbg_fault_num=Fs->fault_num;
   if (Fs->fault_num==I_BPT)
     Fs->rip--;
@@ -429,18 +498,18 @@ U0 Fault2()
   else {
     was_raw=Raw(ON);
     sys_raw_dc_flags|=RDCF_SHOW_DOLLAR|RDCF_SCROLL;
-    PutS("Task \"");
-    PutS(Fs->task_title);
-    PutS("\"\r\n");
-    PrintF("Fault:0x%02X %Z\t\tErr Code:%08X\r\n",Fs->fault_num,Fs->fault_num,"ST_INT_NAMES",Fs->fault_err_code);
-    PrintF("RIP:%08X",Fs->rip); //Sometimes crashes on %P, so do this first
-    PrintF(":%P  RSP:%08X\r\n",Fs->rip,Fs->rsp);
+    "Task \"";
+    "" Fs->task_title;
+    "\"\r\n";
+    "Fault:0x%02X %Z\t\tErr Code:%08X\r\n",Fs->fault_num,Fs->fault_num,"ST_INT_NAMES",Fs->fault_err_code;
+    "RIP:%08X",Fs->rip; //Sometimes crashes on %P, so do this first
+    ":%P  RSP:%08X\r\n",Fs->rip,Fs->rsp;
     if (Fs->fault_num==I_PAGE_FAULT) {
       asm {
 	MOV_RAX_CR2
       }
       i=GetRAX;
-      PrintF("Fault Addr:%08X:%P\r\n",i,i);
+      "Fault Addr:%08X:%P\r\n",i,i;
     }
     Dbg(NULL,0,TRUE);
     Raw(was_raw);

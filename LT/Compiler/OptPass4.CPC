@@ -148,7 +148,7 @@ BoolI64 OptIc4(IntermediateCode *tempi)
 	      tempil2->p1.disp><(F64)=tempil2->p1.disp><(U64);
 	    else
 	      tempil2->p1.disp><(F64)=tempil2->p1.disp><(I64);
-	  } else if (!(tempil1->ic_flags&ICF_USE_INT))
+	  } else
 	    tempil1->ic_flags|=ICF_P1_TO_F64;
 	}
 

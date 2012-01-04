@@ -447,7 +447,7 @@ I64 PopUpPiece(I64 player)
     LtfPutS(l,"\r\n\r\n\r\n\r\n\r\n   ");
     for (i=P_ROOK;i<=P_QUEEN;i++) {
       SPrintF(buf,"$PI+LE+X,\"\",%d,%%d$    ",i);
-      LtfPutGrSprite(l,imgs[2*i+player],0,buf);
+      LtfPutSprite(l,imgs[2*i+player],buf);
     }
     LtfPutS(l,"\r\n\r\n\r\n");
     i=PopUpMenu(l);
@@ -626,12 +626,12 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,x,y,z,k0,k1;
   PieceState *s=cur_state.pieces;
-  GrBlot(dc,cx-cx2,cy-cy2,brd_dc);
+  GrDCBlot(dc,cx-cx2,cy-cy2,brd_dc);
 
   dc->x=cx;
   dc->y=cy;
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   MemCpy(dc->r,w2s,sizeof(I64)*16);
  
   if (ai_thinking) {
@@ -662,9 +662,9 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 	GrTransform(dc,&x,&y,&z);
 	z=GR_Z_ALL+s->x-s->y;
 
-	dc->flags&=~BMF_TRANSFORMATION;
+	dc->flags&=~DCF_TRANSFORMATION;
 	GrSpritePlot3(dc,x,y,z,imgs[s->type*2+s->player]);
-	dc->flags|=BMF_TRANSFORMATION;
+	dc->flags|=DCF_TRANSFORMATION;
       }
     } else { //Dead
       if (s->player==-2) {
@@ -686,9 +686,9 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 	}
 	z=0;
       }
-      dc->flags&=~BMF_TRANSFORMATION;
+      dc->flags&=~DCF_TRANSFORMATION;
       GrSpritePlot3(dc,x,y,z,imgs[s->type*2+s->player+2]);
-      dc->flags|=BMF_TRANSFORMATION;
+      dc->flags|=DCF_TRANSFORMATION;
     }
   }
   if (game_over && Blink(,tP(task))) {
@@ -713,11 +713,11 @@ GrDC *BrdNew()
   cx2=w/2;
   cy2=h/2;
 
-  dc=GrDCNew(BMT_COLOR4,w,h);
+  dc=GrDCNew(DCT_COLOR4,w,h);
   dc->x=cx2;
   dc->y=cy2;
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   MemCpy(dc->r,w2s,sizeof(I64)*16);
 
   dc->color=YELLOW;
@@ -901,7 +901,7 @@ U0 Init()
 {
   chess_ltf=LtfCur;
   LtfClear;
-  PutS("$FD,BLACK$$BD,YELLOW$");
+  "$FD,BLACK$$BD,YELLOW$";
   game_over=FALSE;
   ai_thinking=FALSE;
   move_depth=3;

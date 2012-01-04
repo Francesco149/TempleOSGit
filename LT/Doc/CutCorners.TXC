@@ -9,7 +9,7 @@ compiler way cleaner and, actually, because LoseThos type-casting is more
 powerful.  It's a shame to break compatibility with C but it's way better.
 
 * LoseThos does not figure-out FAT32 short name alias numbers.  
-[C:/LT/OSMain/Dsk/FileSysFAT.CPZ,615] FAT32DirEntryNew().  It can cause hard
+[C:/LT/OSMain/Dsk/FileSysFAT.CPZ,613] FAT32DirEntryNew().  It can cause hard
 drive corruption, so I might have to do 
 it.  It would really take a lot of junky code for this hatefully, detestable, 
 legacy issue.  "Please don't make me ruin my beautiful shiny-new LoseThos

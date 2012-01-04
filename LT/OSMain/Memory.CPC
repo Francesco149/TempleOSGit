@@ -212,7 +212,7 @@ BoolI64 MemMarkPresent(U0 *a,BoolI8 val)
 }
 
 
-U0 *AllocNonTaskMemBlks(U64 *pages512,BlkPool *bp=NULL)
+U0 *AllocNonTaskMemBlks(U64 *_pages512,BlkPool *bp=NULL)
 //This will allocate a 512 byte pages from
 //and not link them to any task.  (Linking to a task
 //means it will be freed when the task
@@ -223,7 +223,7 @@ U0 *AllocNonTaskMemBlks(U64 *pages512,BlkPool *bp=NULL)
 //Returns NULL if out of memory
 {
   MemBlk *result=NULL,*m;
-  U64 i,num=*pages512;
+  U64 i,num=*_pages512;
   if (!bp) bp=sys_code_bp;
   PushFD;
   Cli;
@@ -246,7 +246,7 @@ U0 *AllocNonTaskMemBlks(U64 *pages512,BlkPool *bp=NULL)
     num-=2;
     i=Bsr(num)+1;
     num=1<<i+2;
-    *pages512=num;
+    *_pages512=num;
     if (result=bp->free_page_hash2[i]) {
       bp->free_page_hash2[i]=result->next;
       LBtr(&bp->locked_flags,BPlf_LOCKED);
@@ -262,14 +262,14 @@ U0 *AllocNonTaskMemBlks(U64 *pages512,BlkPool *bp=NULL)
       do {
 	if (result=bp->free_page_hash2[++i]) {
 	  num=1<<i+2;
-	  *pages512=num;
+	  *_pages512=num;
 	  bp->free_page_hash2[i]=result->next;
 	  LBtr(&bp->locked_flags,BPlf_LOCKED);
 	  PopFD;
 	  return result;
 	}
       } while (i<64-PAGE_BITS-1);
-      *pages512=0;
+      *_pages512=0;
       LBtr(&bp->locked_flags,BPlf_LOCKED);
       PopFD;
       return NULL; //Out of memory
@@ -324,7 +324,7 @@ U0 FreeNonTaskMemBlks(MemBlk *m,U64 pages512,BlkPool *bp=NULL)
   }
 }
 
-U0 *Alloc2MegMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
+U0 *Alloc2MegMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL)
 //This will allocate 2Meg pages and not
 //link it to any task.	(Linking to a task
 //means they will be freed when the task
@@ -336,7 +336,7 @@ U0 *Alloc2MegMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
 {
   U64 *pte;
   MemBlk *result=NULL,*m,*m1;
-  U64 i,j,num=*pages2Meg;
+  U64 i,j,num=*_pages2Meg;
 
   if (!bp) bp=sys_code_bp;
   PushFD;
@@ -367,7 +367,7 @@ U0 *Alloc2MegMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
   m=&bp->mem_free_list;
   while (TRUE) {
     if (!(result=m->next)) {
-      *pages2Meg=0;
+      *_pages2Meg=0;
       LBtr(&bp->locked_flags,BPlf_LOCKED);
       PopFD;
       return NULL; //Out of memory
@@ -417,7 +417,7 @@ U0 *Alloc2MegMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
   }
 am_done:
   m=result;
-  num=*pages2Meg;
+  num=*_pages2Meg;
   for (i=0;i<num;i++) {
     pte=MemPointAtPageTableEntry(m);
     *pte &= ~0x18;
@@ -429,7 +429,7 @@ am_done:
   return result;
 }
 
-U0 *AllocUncachedMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
+U0 *AllocUncachedMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL)
 //This will allocate 2Meg pages from
 //and not link them to any task.  (Linking to a task
 //means it will be freed when the task
@@ -440,11 +440,11 @@ U0 *AllocUncachedMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
 //Returns NULL if out of memory
 {
   MemBlk *result,*m;
-  U64 i,num=*pages2Meg,*pte;
+  U64 i,num=*_pages2Meg,*pte;
 
-  if (result=Alloc2MegMemBlks(pages2Meg,bp)) {
+  if (result=Alloc2MegMemBlks(_pages2Meg,bp)) {
     m=result;
-    num=*pages2Meg;
+    num=*_pages2Meg;
     for (i=0;i<num;i++) {
       pte=MemPointAtPageTableEntry(m);
       *pte= *pte& ~0x18 |0x10;
@@ -455,7 +455,7 @@ U0 *AllocUncachedMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
   return result;
 }
 
-U0 *AllocWriteThroughMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
+U0 *AllocWriteThroughMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL)
 //This will allocate 2Meg pages from
 //and not link them to any task.  (Linking to a task
 //means they will be freed when the task
@@ -466,11 +466,11 @@ U0 *AllocWriteThroughMemBlks(U64 *pages2Meg,BlkPool *bp=NULL)
 //Returns NULL if out of memory
 {
   MemBlk *result,*m;
-  U64 i,num=*pages2Meg,*pte;
+  U64 i,num=*_pages2Meg,*pte;
 
-  if (result=Alloc2MegMemBlks(pages2Meg,bp)) {
+  if (result=Alloc2MegMemBlks(_pages2Meg,bp)) {
     m=result;
-    num=*pages2Meg;
+    num=*_pages2Meg;
     for (i=0;i<num;i++) {
       pte=MemPointAtPageTableEntry(m);
       *pte= *pte& ~0x18 |8;
@@ -508,20 +508,43 @@ U0 Free2MegMemBlks(MemBlk *m,U64 pages2Meg,BlkPool *bp=NULL)
   }
 }
 
-MemBlk *AllocMemBlks(U64 *num_,HeapCtrl *hc)
+MemBlk *AllocMemBlks(U64 *_pages512,HeapCtrl *hc)
 {
-//hc must be locked
+//hc must be locked.  Interrupts should probably be off
+//Currently, this is only called from [C:/LT/OSMain/Memory.CPZ,957] MAlloc().
 //
 //Returns NULL if out of memory
+  I64 threshold,cnt,size;
+  UnusedAllocatedMem *uum,**_uum,**_ptr;
   MemBlk *result;
-  PushFD;
-  Cli;
-  if (result=AllocNonTaskMemBlks(num_,hc->bp)) {
+  if (result=AllocNonTaskMemBlks(_pages512,hc->bp)) {
     if (!Bt(&hc->flags,HCf_NON_TASK_QUEUE))
       InsQue(result,hc->last_mem_blk);
     result->mb_signature=MBS_USED_SIGNATURE_VAL;
+
+    //Tidy-up free list (Move into heap hash)
+    //because if free list gets long, delay causes crash
+    threshold=HEAP_HASH_SIZE>>4;
+#assert HEAP_HASH_SIZE>>4>=sizeof(U0 *)
+    do {
+      cnt=0;
+      _uum=&hc->malloc_free_list;
+      while (uum=*_uum) {
+#assert !offset(UnusedAllocatedMem.next)
+	size=uum->size;
+	if (size<threshold) {
+	  *_uum=uum->next;
+	  _ptr=hc->heap_hash><(U8 *)+size;
+	  uum->next=*_ptr;
+	  *_ptr=uum;
+	} else {
+	  cnt++;
+	  _uum=uum;
+	}
+      }
+      threshold<<=1;
+    } while (cnt>8 && threshold<=HEAP_HASH_SIZE);
   }
-  PopFD;
   return result;
 }
 
@@ -576,7 +599,7 @@ _MALLOC::
 	MOV	RDX,U64 FS:TASK_ADDR[RBX]
 @@05:	CMP	U32 TASK_SIGNATURE[RDX],TASK_SIGNATURE_VAL
 
-#assert TASK_SIGNATURE==HC_SIGNATURE
+#assert TASK_SIGNATURE==HC_SIGNATURE //location of signature matches
 
 	JNE	@@10
 	MOV	RDX,U64 TASK_DATA_HEAP[RDX]
@@ -599,7 +622,7 @@ _MALLOC::
 	CLI
 @@25:	LOCK
 	BTS	U32 HC_LOCKED_FLAGS[RDX],HClf_LOCKED
-	PAUSE
+	PAUSE	//don't know if this instruction helps
 	JC	@@25
 
 	CMP	RAX,HEAP_HASH_SIZE
@@ -609,19 +632,20 @@ _MALLOC::
 	JZ	@@35
 	MOV	RCX,U64 UUM_NEXT[RSI]
 	MOV	U64 HC_HEAP_HASH[RAX+RDX],RCX
-	JMP	I32 @@75
+	JMP	I32 MALLOC_ALMOST_DONE
 
+//Big allocation
 @@30:	ADD	RAX,MB_STRUCT_SIZE+PAGE_SIZE-1
 	SHR	RAX,PAGE_BITS
 
-	PUSH	RDX
-	PUSH	RAX
+	PUSH	RDX //preserve heap ctrl
+	PUSH	RAX //num blks (we must pass address of this)
 	MOV	RAX,RSP
 	PUSH	RDX
-	PUSH	RAX
+	PUSH	RAX //addr of num blks
 	CALL	&AllocMemBlks
 	MOV	RSI,RAX
-	POP	RAX
+	POP	RAX //blks that were allocated
 	POP	RDX
 	OR	RSI,RSI
 	JZ	@@45	//Out of memory
@@ -629,37 +653,39 @@ _MALLOC::
 	SHL	RAX,PAGE_BITS
 	SUB	RAX,MB_STRUCT_SIZE
 	ADD	RSI,MB_STRUCT_SIZE
-	JMP	I32 @@75
+	JMP	I32 MALLOC_ALMOST_DONE
 
+//Little allocation, chunk-off piece from free list chunks
 @@35:	LEA	RSI,U64 HC_MALLOC_FREE_LIST-UUM_NEXT[RDX]
 
 @@40:	MOV	RBX,RSI
 	MOV	RSI,U64 UUM_NEXT[RBX]
 	OR	RSI,RSI
 	JNZ	@@55
-	PUSH	RAX		//-****
+	PUSH	RAX		//-**** save byte size
 	ADD	RAX,16*PAGE_SIZE-1
 	SHR	RAX,PAGE_BITS
 
-	PUSH	RDX
-	PUSH	RAX //num blks
+	PUSH	RDX //preserve heap ctrl
+	PUSH	RAX //num blks (we must pass address of this)
 	MOV	RAX,RSP
 	PUSH	RDX
-	PUSH	RAX //addr of num blks out
+	PUSH	RAX //addr of num blks
 	CALL	&AllocMemBlks
 	MOV	RSI,RAX
-	POP	RAX
+	POP	RAX //blks that were allocated
 	POP	RDX
 	OR	RSI,RSI
 	JNZ	@@50
 
-@@45:	LOCK	//Out of memory
+//Out of memory
+@@45:	LOCK
 	BTR	U32 HC_LOCKED_FLAGS[RDX],HClf_LOCKED
 	POPFD
 	PUSH	EXCEPT_OUT_OF_MEM
 	PUSH	1
 	CALL	I32 &throw_no_log
-	JMP	I32 @@110
+	JMP	I32 MALLOC_FINAL_EXIT
 
 @@50:	LEA	RSI,U64 MB_STRUCT_SIZE[RSI]
 	SHL	RAX,PAGE_BITS
@@ -677,18 +703,22 @@ _MALLOC::
 
 @@60:	MOV	RDI,U64 UUM_NEXT[RSI]
 	MOV	U64 UUM_NEXT[RBX],RDI
-	JMP	@@75
+	JMP	MALLOC_ALMOST_DONE
 
 @@65:	SUB	U64 UUM_SIZE[RSI],RAX	//UPDATE FREE ENTRY
 	CMP	U64 UUM_SIZE[RSI],UUM_STRUCT_SIZE
-	JAE	@@70
-	ADD	U64 UUM_SIZE[RSI],RAX
-	MOV	RAX,U64 UUM_SIZE[RSI]
-	JMP	@@60
+	JAE	@@70			//take from top of block
+	ADD	U64 UUM_SIZE[RSI],RAX	//doesn't fit, undo
+	JMP	I32 @@40
 
-@@70:	ADD	RSI,U64 UUM_SIZE[RSI] 		//SET ESI TO @@ALLOCATED PAGES
+@@70:	ADD	RSI,U64 UUM_SIZE[RSI]
 
-@@75:
+
+MALLOC_ALMOST_DONE:
+//RSI=result-UM_SIZE
+//RAX=size+UM_SIZE
+//RDX=heap ctrl
+
 #if _CFG_HEAP_DBG
 //InsQue
 	MOV	RDI,U64 HC_LAST_UM[RDX]
@@ -703,21 +733,21 @@ _MALLOC::
 	MOV	RDX,U64 [SYS_HEAP_LIMIT]
 	MOV	RDI,U64 SF_RIP[RBP]
 	CMP	RDI,RDX
-	JB	@@80
+	JB	@@75
 	XOR	RDI,RDI
 	MOV	U64 UM_CALLER1[RSI],RDI
-	JMP	@@90
-@@80:	MOV	U64 UM_CALLER1[RSI],RDI
+	JMP	@@85
+@@75:	MOV	U64 UM_CALLER1[RSI],RDI
 	MOV	RDI,U64 SF_RBP[RBP]
+	CMP	RDI,RDX
+	JB	@@80
+	XOR	RDI,RDI
+	JMP	@@85
+@@80:	MOV	RDI,U64 SF_RIP[RDI]
 	CMP	RDI,RDX
 	JB	@@85
 	XOR	RDI,RDI
-	JMP	@@90
-@@85:	MOV	RDI,U64 SF_RIP[RDI]
-	CMP	RDI,RDX
-	JB	@@90
-	XOR	RDI,RDI
-@@90:	MOV	U64 UM_CALLER2[RSI],RDI
+@@85:	MOV	U64 UM_CALLER2[RSI],RDI
 	POP	RDX
 
 #endif
@@ -730,20 +760,20 @@ _MALLOC::
 	LEA	RAX,U64 UM_START[RSI]
 
 	BT	U32 [SYS_SEMAS+SYS_SEMA_HEAPLOG*SEMA_STRUCT_SIZE],0
-	JNC	@@105
+	JNC	@@100
 	PUSH_C_REGS
 	PUSH	RAX
 	MOV	RAX,U64 [SYS_EXTERN_TABLE]
 	MOV	RAX,U64 EXT_HEAPLOG_MALLOC*8[RAX]
 	OR	RAX,RAX
-	JZ	@@95
+	JZ	@@90
 	CALL	RAX
-	JMP	@@100
-@@95:	ADD	RSP,8
-@@100:	POP_C_REGS
+	JMP	@@95
+@@90:	ADD	RSP,8
+@@95:	POP_C_REGS
 
-@@105:	TEST	U8 [SYS_HEAP_INIT_FLAG],1
-	JZ	@@110
+@@100:	TEST	U8 [SYS_HEAP_INIT_FLAG],1
+	JZ	MALLOC_FINAL_EXIT
 
 	PUSH	RAX
 	PUSH	RCX
@@ -755,12 +785,14 @@ _MALLOC::
 	POP	RCX
 	POP	RAX
 
-@@110:	POP	RDI
+MALLOC_FINAL_EXIT:
+	POP	RDI
 	POP	RSI
 	LEAVE
 	RET1	16
 // ************************************
 _FREE::
+//Be aware of [::/LT/OSMain/Memory.CPZ,heap_hash] heap_hash in [C:/LT/OSMain/Memory.CPZ,511] AllocMemBlks().
 	ENTER	0
 	PUSH	RSI
 	PUSH	RDI
@@ -797,7 +829,7 @@ _FREE::
 	MOV	RAX,U64 UM_SIZE-UM_START[RSI]
 	OR	RAX,RAX
 	JGE	@@25	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/LT/OSMain/Adam1a.HPZ,2786] UsedAllocatedMem struct.
+			//The neg size is offset to start of [C:/LT/OSMain/Adam1a.HPZ,2769] UsedAllocatedMem struct.
 	ADD	RSI,RAX
 
 @@25:	PUSHFD
@@ -919,9 +951,9 @@ _MHEAP_CTRL::
 LTextern _FREE U0 Free(U0 *add);
 LTextern _MSIZE U64 MSize(U0 *src); //size of heap object
 LTextern _MSIZE2 U64 MSize2(U0 *src); //Internal size
-LTextern _MHEAP_CTRL HeapCtrl *MHeapCtrl(U0 *src); //[C:/LT/OSMain/Adam1a.HPZ,2834] HeapCtrl of object
+LTextern _MHEAP_CTRL HeapCtrl *MHeapCtrl(U0 *src); //[C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrl of object
 
-//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2834] HeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3074] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrl.  NULL allocs off current task's heap.
 LTextern _MALLOC U0 *MAlloc(U64 size,TaskStruct *mem_task=NULL);
 
 U0 *AMAlloc(U64 size)
@@ -930,7 +962,7 @@ U0 *AMAlloc(U64 size)
 }
 
 U0 *CAlloc(U64 size,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2834] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3074] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrl.  NULL allocs off current task's heap.
   U0 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -942,7 +974,7 @@ U0 *ACAlloc(U64 size)
 }
 
 U0 *MAllocIdentical(U0 *src,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2834] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3074] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   U0 *result;
   if (!src) return NULL;
@@ -978,7 +1010,7 @@ U0 *CAllocAligned(U64 size,U64 alignment,TaskStruct *mem_task=NULL,U64 misalignm
 }
 
 U8 *StrNew(U8 *buf,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2834] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3074] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   U8 *result;
   if (buf) {
@@ -1234,10 +1266,10 @@ U0 FreeMemMap32BitDev(U8 *base)
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
 }
 
-U0 *AllocMemMap64BitDev(U64 *pages2Meg)
+U0 *AllocMemMap64BitDev(U64 *_pages2Meg)
 {
   U0 *result;
-  U64 i=*pages2Meg,*pte;
+  U64 i=*_pages2Meg,*pte;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
   while (i--) {
@@ -1323,4 +1355,15 @@ U0 HeapsInit()
       m20++;
     }
   }
+}
+
+I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024)
+//This function is nice for scaling-back allocations if less than 2048 Meg.
+//Disk cache and RAM Drive expressions can include this function.
+{
+  I64 i=sys_code_bp->size<<PAGE_BITS;
+  if (i>=limit)
+    return max;
+  else
+    return min+(max-min)*i/limit;
 }

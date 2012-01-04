@@ -20,15 +20,15 @@
 
 
 
-F64 t0=tJ;
+F64 t0=tM;
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 dt=(tJ-t0)*music_tempo;
+  F64 dt=(tM-t0)*music_tempo;
   U8 *inter;
   if (dt>=16.0) {
-    inter=GrSpriteInterpolate(__BIN_1,__BIN_2,Abs((4.0*tJ%2-1)%1));
+    inter=GrSpriteInterpolate(__BIN_1,__BIN_2,Abs((4.0*tM%2-1)%1));
     GrSpritePlot3(dc,20,20,0,inter);
     Free(inter);
   }
@@ -58,7 +58,7 @@ U0 Song()
     TaskDerivedValsUpdate(task);
 
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       Play("3qGE2eG3BqGetDBDeDE2qGetG3BF",
 	  "Wise \0men \0use \0few \0words.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qGE2eG3BqGetDBDeDE2qGetG3BF",

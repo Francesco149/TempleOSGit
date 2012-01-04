@@ -9,14 +9,14 @@
 
 /* <1> <1> (image) */
 
-F64 t0=tJ;
+F64 t0=tM;
 #define CENTER_X	200
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 dt=(tJ-t0)*music_tempo;
-  dc->flags|=BMF_SYMMETRY;
+  F64 dt=(tM-t0)*music_tempo;
+  dc->flags|=DCF_SYMMETRY;
   GrSetSymmetry(dc,CENTER_X,0,CENTER_X,1);
   GrSpritePlot3(dc,CENTER_X-40,75+dt,0,__BIN_1);
 }
@@ -30,7 +30,7 @@ U0 Song()
   music_tempo=2.5;
   try {
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       Play("3sFGFGetDCFqD2G3DGDetDFB",
 	  "God, \0 \0 \0 \0please \0 \0 \0help \0me.\r\n\0 \0 \0 \0 \0 \0 \0");
       Play("sFGFGetDCFqD2G3DGDetDFB",

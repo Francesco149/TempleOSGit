@@ -200,6 +200,24 @@ class HDAudioCtrl
   BoolI8 audio_task_started,in_running,out_running;
 } *_hda=NULL;
 
+I64 AudioSize()
+{//[C:/LT/Adam/MemRep.APZ,185] MemRep uses this for Adam Heap
+  I64 result=MSize2(snd_reverb_buf);
+  if (_hda) {
+    result+=MSize2(_hda);
+/* uncached heap
+    result+=MSize2(_hda->corb)+MSize(_hda->rirb);
+    result+=MSize2(_hda->ostr0_bdl);
+    result+=MSize2(_hda->istr0_bdl);
+    for (i=0;i<2;i++)
+      result+=MSize2(_hda->ostr0_buf[i]);
+    for (i=0;i<2;i++)
+      result+=MSize2(_hda->istr0_buf[i]);
+*/
+  }
+  return result;
+}
+
 U0 HDSyncCORB()
 {
   U16 *wp,*rp;
@@ -219,10 +237,10 @@ U0 HDWriteCORB(I64 cad,I64 nid,U32 val)
 U64 HDSyncRIRB()
 {
   U64 result=0;
-  U16 *ww;
+  U16 *_w;
   U8 wp;
-  ww=_hda->bar+HD_RIRBWP;
-  wp=*ww;
+  _w=_hda->bar+HD_RIRBWP;
+  wp=*_w;
   while (_hda->rirb_rp!=wp)
     result=_hda->rirb[++_hda->rirb_rp];
   return result;
@@ -231,12 +249,12 @@ U64 HDSyncRIRB()
 U64 HDReadRIRB()
 {
   U64 result=0;
-  U16 *ww;
+  U16 *_w;
   U8 wp;
-  ww=_hda->bar+HD_RIRBWP;
+  _w=_hda->bar+HD_RIRBWP;
   do {
     Yield;
-    wp=*ww;
+    wp=*_w;
   } while (wp==_hda->rirb_rp);
   result=_hda->rirb[++_hda->rirb_rp];
   return result;
@@ -253,7 +271,7 @@ U64 HDWriteCORBSync(I64 cad,I64 nid,U32 val)
 
 BoolI64 HDTestCORBSync(I64 cad,I64 nid,U32 val)
 { //Checks for a response
-  U16 *ww;
+  U16 *_w;
   U8 wp;
 
   HDSyncCORB;
@@ -262,8 +280,8 @@ BoolI64 HDTestCORBSync(I64 cad,I64 nid,U32 val)
   HDSyncCORB;
 
   Sleep(1);
-  ww=_hda->bar+HD_RIRBWP;
-  wp=*ww;
+  _w=_hda->bar+HD_RIRBWP;
+  wp=*_w;
   if (wp==_hda->rirb_rp)
     return FALSE;
   HDReadRIRB;
@@ -317,16 +335,16 @@ U0 HDTraverse(I64 cad,I64 nid)
 
 U0 HDRun(BoolI8 in,BoolI8 out)
 {
-  U32 *dd;
+  U32 *_d;
   if (_hda->bar) {
     if (out) {
-      dd=_hda->bar+OSTR0+STRCTL;
-      *dd=0x100002;
+      _d=_hda->bar+OSTR0+STRCTL;
+      *_d=0x100002;
       _hda->out_running=TRUE;
     }
     if (in) {
-      dd=_hda->bar+ISTR0+STRCTL;
-      *dd=0x200002;
+      _d=_hda->bar+ISTR0+STRCTL;
+      *_d=0x200002;
       _hda->in_running=TRUE;
     }
   }
@@ -334,16 +352,16 @@ U0 HDRun(BoolI8 in,BoolI8 out)
 
 U0 HDStop(BoolI8 in,BoolI8 out)
 {
-  U32 *dd;
+  U32 *_d;
   if (_hda->bar) {
     if (out) {
-      dd=_hda->bar+OSTR0+STRCTL;
-      *dd=0;
+      _d=_hda->bar+OSTR0+STRCTL;
+      *_d=0;
       _hda->out_running=FALSE;
     }
     if (in) {
-      dd=_hda->bar+ISTR0+STRCTL;
-      *dd=0;
+      _d=_hda->bar+ISTR0+STRCTL;
+      *_d=0;
       _hda->in_running=FALSE;
     }
   }
@@ -427,18 +445,18 @@ U0 HDAudioTask(U64 dummy=0)
 
 U0 HDRst()
 {
-  U32 d,*dd;
+  U32 d,*_d;
   HDStop(TRUE,TRUE);
-  dd=_hda->bar+HD_GCTL;
-  *dd=0;  //rst
+  _d=_hda->bar+HD_GCTL;
+  *_d=0;  //rst
   do {
     Sleep(1);
-    d=*dd;
+    d=*_d;
   } while (d & 1);
-  *dd=1;
+  *_d=1;
   do {
     Sleep(1);
-    d=*dd;
+    d=*_d;
   } while (!(d & 1));
   Sleep(1);
 }
@@ -465,66 +483,66 @@ public U0 HDAudioEnd(BoolI8 rst=TRUE)
   }
 }
 
-public BoolI64 HDAudioInit()
+public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
 {
   I64 i;
-  U32 *dd;
-  U16 w,*ww;
-  U8 *bb;
+  U32 *_d;
+  U16 w,*_w;
+  U8 *_b;
   if (_hda)
     HDAudioEnd;
-  if (PCIReadU16(0,27,0,0)==0x8086 &&
+  if (PCIReadU16(hd_bus,hd_dev,hd_fun,0)==0x8086 &&
       (_hda=ACAlloc(sizeof(HDAudioCtrl))) &&
       (_hda->bar=AllocMemMap32BitDev(0x4000,0x4000)) ) {
-    PCIWriteU32(0,27,0,0x14,_hda->bar><(U64).u32[1]);
-    PCIWriteU32(0,27,0,0x10,_hda->bar><(U64).u32[0]);
-    PCIWriteU16(0,27,0,0x04,
-    PCIReadU16(0,27,0,0x04)|0x406);
+    PCIWriteU32(hd_bus,hd_dev,hd_fun,0x14,_hda->bar><(U64).u32[1]);
+    PCIWriteU32(hd_bus,hd_dev,hd_fun,0x10,_hda->bar><(U64).u32[0]);
+    PCIWriteU16(hd_bus,hd_dev,hd_fun,0x04,
+    PCIReadU16(hd_bus,hd_dev,hd_fun,0x04)|0x406);
 
     HDRst;
 
     _hda->corb=CAllocAligned(HD_CORB_ENTRIES*sizeof(U32),128,sys_uncached_heap);
-    dd=_hda->bar+HD_CORBLBASE;
-    *dd=_hda->corb><(U64).u32[0];
-    dd=_hda->bar+HD_CORBUBASE;
-    *dd=_hda->corb><(U64).u32[1];
+    _d=_hda->bar+HD_CORBLBASE;
+    *_d=_hda->corb><(U64).u32[0];
+    _d=_hda->bar+HD_CORBUBASE;
+    *_d=_hda->corb><(U64).u32[1];
 
     _hda->rirb=CAllocAligned(HD_RIRB_ENTRIES*sizeof(U64),128,sys_uncached_heap);
-    dd=_hda->bar+HD_RIRBLBASE;
-    *dd=_hda->rirb><(U64).u32[0];
-    dd=_hda->bar+HD_RIRBUBASE;
-    *dd=_hda->rirb><(U64).u32[1];
+    _d=_hda->bar+HD_RIRBLBASE;
+    *_d=_hda->rirb><(U64).u32[0];
+    _d=_hda->bar+HD_RIRBUBASE;
+    *_d=_hda->rirb><(U64).u32[1];
 
-    ww=_hda->bar+HD_CORBRP;
-    *ww=0x8000; //Rst read ptr
+    _w=_hda->bar+HD_CORBRP;
+    *_w=0x8000; //Rst read ptr
     do {
       Yield;
-      w=*ww;
+      w=*_w;
     } while (!(w&0x8000));
-    *ww=0x0000; //Rst read ptr
+    *_w=0x0000; //Rst read ptr
     do {
       Yield;
-      w=*ww;
+      w=*_w;
     } while (w&0x8000);
 
-    ww=_hda->bar+HD_RIRBWP;
-    *ww=0x8000; //Rst write ptr
+    _w=_hda->bar+HD_RIRBWP;
+    *_w=0x8000; //Rst write ptr
 
-    bb=_hda->bar+HD_CORBCTL;
-    *bb=0x02; //Run
-    bb=_hda->bar+HD_RIRBCTL;
-    *bb=0x02; //Run
+    _b=_hda->bar+HD_CORBCTL;
+    *_b=0x02; //Run
+    _b=_hda->bar+HD_RIRBCTL;
+    *_b=0x02; //Run
 
-    ww=_hda->bar+HD_CORBWP;
-    _hda->corb_wp=*ww;
-    ww=_hda->bar+HD_RIRBWP;
-    _hda->rirb_rp=*ww;
+    _w=_hda->bar+HD_CORBWP;
+    _hda->corb_wp=*_w;
+    _w=_hda->bar+HD_RIRBWP;
+    _hda->rirb_rp=*_w;
 
     _hda->ostr0_bdl =CAllocAligned(HD_BDL_ENTRIES*sizeof(HDBufDesc),128,sys_uncached_heap);
-    dd=_hda->bar+OSTR0+STRBDPL;
-    *dd=_hda->ostr0_bdl><(U64).u32[0];
-    dd=_hda->bar+OSTR0+STRBDPU;
-    *dd=_hda->ostr0_bdl><(U64).u32[1];
+    _d=_hda->bar+OSTR0+STRBDPL;
+    *_d=_hda->ostr0_bdl><(U64).u32[0];
+    _d=_hda->bar+OSTR0+STRBDPU;
+    *_d=_hda->ostr0_bdl><(U64).u32[1];
     for (i=0;i<2;i++) {
       _hda->ostr0_bdl[i].buf=_hda->ostr0_buf[i]=CAllocAligned(SND_BUF_LEN*sizeof(SND_OUT_CONTAINER),128,sys_uncached_heap);
       _hda->ostr0_bdl[i].len=SND_BUF_LEN*sizeof(SND_OUT_CONTAINER);
@@ -532,40 +550,40 @@ public BoolI64 HDAudioInit()
     }
 
     _hda->istr0_bdl =CAllocAligned(HD_BDL_ENTRIES*sizeof(HDBufDesc),128,sys_uncached_heap);
-    dd=_hda->bar+ISTR0+STRBDPL;
-    *dd=_hda->istr0_bdl><(U64).u32[0];
-    dd=_hda->bar+ISTR0+STRBDPU;
-    *dd=_hda->istr0_bdl><(U64).u32[1];
+    _d=_hda->bar+ISTR0+STRBDPL;
+    *_d=_hda->istr0_bdl><(U64).u32[0];
+    _d=_hda->bar+ISTR0+STRBDPU;
+    *_d=_hda->istr0_bdl><(U64).u32[1];
     for (i=0;i<2;i++) {
       _hda->istr0_bdl[i].buf=_hda->istr0_buf[i]=CAllocAligned(SND_BUF_LEN*sizeof(SND_IN_CONTAINER),128,sys_uncached_heap);
       _hda->istr0_bdl[i].len=SND_BUF_LEN*sizeof(SND_IN_CONTAINER);
       _hda->istr0_bdl[i].ctrl=1;
     }
 
-    ww=_hda->bar+HD_STATESTS;
-    w=*ww;
+    _w=_hda->bar+HD_STATESTS;
+    w=*_w;
     while (w) {
       _hda->cad=Bsf(w);
       if (HDTestCORBSync(_hda->cad,0,VERB_GET_PARAM+P_SUBNODE_CNT)) {
 	HDTraverse(_hda->cad,0);
 
-	dd=_hda->bar+OSTR0+STRLPIB;
-	*dd=0;
-	dd=_hda->bar+OSTR0+STRCBL;
-	*dd=HD_POS_BUF_MULTIPLES*SND_BUF_LEN*sizeof(SND_OUT_CONTAINER);
-	ww=_hda->bar+OSTR0+STRLVI;
-	*ww=1;	//last valid index
-	ww=_hda->bar+OSTR0+STRFMT;
-	*ww=HD_DFT_OUT_FMT;
+	_d=_hda->bar+OSTR0+STRLPIB;
+	*_d=0;
+	_d=_hda->bar+OSTR0+STRCBL;
+	*_d=HD_POS_BUF_MULTIPLES*SND_BUF_LEN*sizeof(SND_OUT_CONTAINER);
+	_w=_hda->bar+OSTR0+STRLVI;
+	*_w=1;	//last valid index
+	_w=_hda->bar+OSTR0+STRFMT;
+	*_w=HD_DFT_OUT_FMT;
 
-	dd=_hda->bar+ISTR0+STRLPIB;
-	*dd=0;
-	dd=_hda->bar+ISTR0+STRCBL;
-	*dd=HD_POS_BUF_MULTIPLES*SND_BUF_LEN*sizeof(SND_IN_CONTAINER);
-	ww=_hda->bar+ISTR0+STRLVI;
-	*ww=1;	//last valid index
-	ww=_hda->bar+ISTR0+STRFMT;
-	*ww=HD_DFT_IN_FMT;
+	_d=_hda->bar+ISTR0+STRLPIB;
+	*_d=0;
+	_d=_hda->bar+ISTR0+STRCBL;
+	*_d=HD_POS_BUF_MULTIPLES*SND_BUF_LEN*sizeof(SND_IN_CONTAINER);
+	_w=_hda->bar+ISTR0+STRLVI;
+	*_w=1;	//last valid index
+	_w=_hda->bar+ISTR0+STRFMT;
+	*_w=HD_DFT_IN_FMT;
 
 	LBts(&sys_semas[SYS_SEMA_SND],0); //turn off until cfg completed
 	LBtr(&snd_flags,Sf_FILLING_OUT);
@@ -589,10 +607,7 @@ public BoolI64 HDAudioInit()
   return FALSE;
 }
 
-HDAudioInit;
+HDAudioInit(0,27,0);
 
 //**Run [::/LT/Adam/Snd/HDCfg.CPZ] ::/LT/Adam/Snd/HDCfg.CPZ.**
-
 #help_index ""
-
-

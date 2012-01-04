@@ -1,5 +1,5 @@
 //You should compile this by calling
-//[C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot(), not doing it directly.
+//[C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot(), not doing it directly.
 //See [::/LT/Adam/Boot/InsBoot.APZ,Cmp("OS"] Cmp("OS").
 
 #exe {
@@ -27,6 +27,7 @@ asm {
 #include "FIFO"
 #include "Compress"
 #include "Hash1a"
+#include "Date"
 #include "Str1a"
 #include "Define1a"
 #include "Display"
@@ -41,7 +42,6 @@ asm {
 #include "QSort"
 #include "Task1a"
 #include "TaskCmd"
-#include "Date"
 #include "USB1a"
 
 #exe {Cd("Dsk");};
@@ -63,6 +63,9 @@ asm {
 #exe {Cd("..");};
 #include "MultiProc"
 #include "BIOS32"
+
+#include "EdLite"
+#include "PSect"
 #include "OSMain"
 
 #exe {OSMainCfgDel(osmain_cfg);};

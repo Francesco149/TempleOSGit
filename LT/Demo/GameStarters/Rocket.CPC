@@ -149,9 +149,9 @@ U0 Rocket()
   dc2=GrDCAlias(gr_dc2,Fs);
   Fs->task_end_cb=&TaskEndCB;
 
-  PutS("$CL$$BG,LTCYAN$$FG,GREEN$Up, Left, Right$FG$");
+  "$CL$$BG,LTCYAN$$FG,GREEN$Up, Left, Right$FG$";
   CrLf(Fs->win_height-4);
-  PutS("$BG,YELLOW$\r\n");
+  "$BG,YELLOW$\r\n";
  
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;
@@ -187,7 +187,7 @@ rk_done:
     CatchAll;
   RemQue(ode);
   OdeDel(ode);
-  PutS("$CL$$BG$$FG$\r\n");
+  "$CL$$BG$$FG$\r\n";
   SettingsPop;
   GrDCClear;
   GrDCDel(dc2);

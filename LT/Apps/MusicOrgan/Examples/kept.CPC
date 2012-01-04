@@ -13,7 +13,7 @@ U0 Song()
   task->win_top=Fs->win_bottom+3;
   task->win_bottom=task->win_top+12;
   TaskDerivedValsUpdate(task);
-  PutS("$WW+H,1$");
+  "$WW+H,1$";
   while (!ScanKey) {
 	Play("3eGAetCCCFFDqAeAAFAAFqG",
 		"I \0 \0have \0 \0 \0kept \0 \0 \0 \0 \0 \0the \0 \0 \0com\0mands.\r\n\0");
@@ -23,7 +23,7 @@ U0 Song()
 		"What \0 \0 \0else \0 \0 \0must \0I \0do?\r\n\0 \0 \0 \0");
 	Play("EeEGqEeEEqDBetCCGqC",
 		"What \0 \0 \0else \0 \0 \0must \0I \0do?\r\n\0 \0 \0 \0");
-	PutS("$FG,GREEN$(Christ said sell all and follow me.)\r\n$FG$");
+	"$FG,GREEN$(Christ said sell all and follow me.)\r\n$FG$";
   }
   } catch
     CatchAll;

@@ -164,9 +164,10 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/Lectures/MiniCompiler.CPZ] ::/LT/Demo/Lectures/MiniCompiler.CPZ
 [::/LT/Demo/MagicPairs.CPZ] ::/LT/Demo/MagicPairs.CPZ
 [::/LT/Demo/Graphics/PoleZeros.CPZ] ::/LT/Demo/Graphics/PoleZeros.CPZ
-[::/LT/Demo/WebLogExample/LogRep.CPZ] ::/LT/Demo/WebLogExample/LogRep.CPZ
-[::/LT/Demo/WebLogExample/LogScramble.CPZ]
-  ::/LT/Demo/WebLogExample/LogScramble.CPZ
+[::/LT/Demo/WebLogExample/WebLogRep.CPZ]
+  ::/LT/Demo/WebLogExample/WebLogRep.CPZ
+[::/LT/Demo/WebLogExample/WebLogScramble.CPZ]
+  ::/LT/Demo/WebLogExample/WebLogScramble.CPZ
 ::/LT/Apps/TimeClock
   `Cd("::/LT/Apps/TimeClock");Dir;View;`
   
@@ -216,6 +217,7 @@ be used as a tutorial if you start at the beginning and work your way forward.
 [::/LT/Demo/Asm/AsmAndC2.CPZ] ::/LT/Demo/Asm/AsmAndC2.CPZ
 [::/LT/Demo/GlblVars.CPZ] ::/LT/Demo/GlblVars.CPZ
 [::/LT/Demo/WinMgr2.APZ] ::/LT/Demo/WinMgr2.APZ
+[::/LT/Misc/LTTestSuite.CPZ] ::/LT/Misc/LTTestSuite.CPZ
 ::/LT/Adam
   `Cd("::/LT/Adam");Dir;View;`
   

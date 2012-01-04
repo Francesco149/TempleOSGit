@@ -9,20 +9,20 @@ public BoolI64 GrPlot0(GrDC *dc,I64 x,I64 y)
   ColorROPU32 color=dc->color,bkcolor=dc->bkcolor;
   GrDC *mask;
 
-  if (dc->flags & BMF_LOCATE_NEAREST) {
+  if (dc->flags & DCF_LOCATE_NEAREST) {
     dist=DistI64(x,y,dc->cur_x,dc->cur_y);
     if (dist<=dc->nearest_dist) {
-      dc->nearest_grelem_num=dc->cur_grelem_num;
+      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
     }
   }
-  if (dc->flags & BMF_RECORD_EXTENTS) {
+  if (dc->flags & DCF_RECORD_EXTENTS) {
     if (x<dc->min_x) dc->min_x=x;
     if (x>dc->max_x) dc->max_x=x;
     if (y<dc->min_y) dc->min_y=y;
     if (y>dc->max_y) dc->max_y=y;
   }
-  if (dc->flags & BMF_DONT_DRAW)
+  if (dc->flags & DCF_DONT_DRAW)
     return TRUE;
   d=dc->width_internal*y+x;
   if (db=dc->depth_buf) {
@@ -46,7 +46,7 @@ public BoolI64 GrPlot0(GrDC *dc,I64 x,I64 y)
     }
   }
   nobound_switch (dc->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       dst=dc->body+d>>3;
       d=dc->plane_size;
       bit=1<<(x&7);
@@ -104,7 +104,7 @@ public BoolI64 GrPlot0(GrDC *dc,I64 x,I64 y)
 	  break;
       }
       break;
-    case BMT_MONO:
+    case DCT_MONO:
       c=color&COLORROP_COLORS_MASK;
       nobound_switch (color.c0.rop) {
 	case ROPB_EQU:
@@ -144,7 +144,7 @@ public BoolI64 GrPlot0(GrDC *dc,I64 x,I64 y)
       mask->color.c0.rop=dc->color.c0.rop;
     mask->win_task=dc->win_task;
     if (mask->alias)
-      mask->alias->flags|=BMF_DIRTY;
+      mask->alias->flags|=DCF_DIRTY;
     GrPlot0(mask,x,y);
   }
   return TRUE;
@@ -157,7 +157,7 @@ public I64 GrPeek0(GrDC *dc,I64 x,I64 y)
 
   d=dc->width_internal*y+x;
   nobound_switch (dc->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       if (dc->mask && !Bt(dc->mask->body,d))
 	return MAX_I32;
       src=dc->body+d>>3;
@@ -177,7 +177,7 @@ public I64 GrPeek0(GrDC *dc,I64 x,I64 y)
 	c|=8;
 
       return c;
-    case BMT_MONO:
+    case DCT_MONO:
       if (dc->mask && !Bt(dc->mask->body,d))
 	return MAX_I32;
       return Bt(dc->body,d);
@@ -186,7 +186,7 @@ public I64 GrPeek0(GrDC *dc,I64 x,I64 y)
 
 #help_index "Graphics;Graphics/DCs"
 
-public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
+public BoolI64 GrDCBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 {  //Clipping but not transformation
   I64 x=_x,y=_y,i,j,k,k1,kk,kk1,m,w1,h1,w2,h2,plane,plane1,
       leading_bits,leading_bit_mask,whole_bytes,trailing_bits,trailing_bit_mask,
@@ -199,7 +199,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
   GrDC *mask;
   TaskStruct *win_task;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_scroll_x;
     y+=win_task->win_scroll_y;
@@ -208,18 +208,18 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
   h1=y<0 ?-y:0;
   w2=img->width;
   h2=img->height;
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     x+=win_task->win_pixel_left;
     y+=win_task->win_pixel_top;
   }
-  if (dc->flags & BMF_LOCATE_NEAREST) { //TODO:Untested
+  if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
     dist=DistI64(x+img->width>>1,y+img->height>>1,dc->cur_x,dc->cur_y);
     if (dist<=dc->nearest_dist) {
-      dc->nearest_grelem_num=dc->cur_grelem_num;
+      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
     }
   }
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
     if (x+w2>win_task->win_pixel_right+1)
       w2=win_task->win_pixel_right+1-x;
@@ -233,13 +233,13 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
   if (y+h2>dc->height)
     h2=dc->height-y;
   if (w1<w2<=img->width && h1<h2<=img->height) {
-    if (dc->flags & BMF_RECORD_EXTENTS) {
+    if (dc->flags & DCF_RECORD_EXTENTS) {
       if (x+w1<dc->min_x) dc->min_x=x+w1;
       if (x+w2-1>dc->max_x) dc->max_x=x+w2-1;
       if (y+h1<dc->min_y) dc->min_y=y+h1;
       if (y+h2-1>dc->max_y) dc->max_y=y+h2-1;
     }
-    if (dc->flags & BMF_DONT_DRAW)
+    if (dc->flags & DCF_DONT_DRAW)
       return TRUE;
     dc->depth_buf=NULL;
     color=dc->color;
@@ -259,11 +259,11 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	plane_size =img->plane_size<<3;
 	plane_size1=dc->plane_size<<3;
 	nobound_switch (dc->type) {
-	  case BMT_COLOR4:
+	  case DCT_COLOR4:
 	    plane_limit=plane_size*4;
 	    plane_limit1=plane_size1*4;
 	    break;
-	  case BMT_MONO:
+	  case DCT_MONO:
 	    plane_limit=plane_size;
 	    plane_limit1=plane_size1;
 	    break;
@@ -271,7 +271,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	color =dc->bkcolor.c0.color;
 	color2= img->bkcolor.c0.color;
 	nobound_switch (img->type) {
-	  case BMT_COLOR4:
+	  case DCT_COLOR4:
 	    k=h1*img->width_internal;
 	    k1=(h1+y)*dc->width_internal+x;
 	    for (j=h2-h1;j;j--) {
@@ -295,7 +295,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	      k1+=dc->width_internal;
 	    }
 	    break;
-	  case BMT_MONO:
+	  case DCT_MONO:
 	    k=h1*img->width_internal;
 	    k1=(h1+y)*dc->width_internal+x;
 	    for (j=h2-h1;j;j--) {
@@ -318,12 +318,12 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	break;
       case ROPB_TRANSPARENT:
       case ROPB_CLEAR_MASK_TRANSPARENT:
-	if (img->type==BMT_COLOR4) {
+	if (img->type==DCT_COLOR4) {
 	  plane_size=img->plane_size<<3;
 	  plane_limit=plane_size*4;
 	  color2=img->bkcolor.c0.color;
 	  k=h1*img->width_internal;
-	  if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP) {
+	  if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP) {
 	    for (j=h1;j<h2;j++) {
 	      for (i=w1;i<w2;i++) {
 		c=0;
@@ -383,20 +383,20 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
       plane_size=img->plane_size<<3;
 	plane_size1=dc->plane_size<<3;
 	nobound_switch (dc->type) {
-	  case BMT_COLOR4:
+	  case DCT_COLOR4:
 	    plane_limit=plane_size*4;
 	    plane_limit1=plane_size1*4;
 	    break;
-	  case BMT_MONO:
+	  case DCT_MONO:
 	    plane_limit=plane_size;
 	    plane_limit1=plane_size1;
 	    break;
 	}
-	if (dc->type==BMT_MONO && img->type==BMT_COLOR4) {
+	if (dc->type==DCT_MONO && img->type==DCT_COLOR4) {
 	  plane_limit=plane_size*4;
 	  k  = h1   *img->width_internal;
 	  kk1=(h1+y)*dc->width_internal+x;
-	  if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP) {
+	  if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP) {
 	    for (j=h2-h1;j;j--) {
 	      k1=kk1+w1;
 	      for (i=w1;i<w2;i++) {
@@ -452,7 +452,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	} else {
 	  for (p1=0,p=1,plane=0,plane1=0;plane<plane_limit;
 	  plane+=plane_size,plane1+=plane_size1,p<<=1,p1++) {
-	    if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP)
+	    if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP)
 	      win_z_buf_ptr=NULL;
 	    else {
 	      win_z_num=win_task->win_z_num;
@@ -468,7 +468,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	    kk1=(h1+y)*dc->width_internal+x+w1;
 	    kk =(kk-bit_shift)&~7+bit_shift;
 	    nobound_switch (img->type) {
-	      case BMT_COLOR4:
+	      case DCT_COLOR4:
 		nobound_switch (color.c0.rop) {
 		  case ROPB_EQU:
 		  case ROPB_CLEAR_MASK_EQU:
@@ -553,7 +553,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 		      break;
 		}
 		break;
-	      case BMT_MONO:
+	      case DCT_MONO:
 		nobound_switch (color.c0.rop) {
 		  case ROPB_EQU:
 		  case ROPB_CLEAR_MASK_EQU:
@@ -737,7 +737,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
       if (color.c0.rop!=ROPB_COLLISION &&
 	  (!(color.c0.rop==ROPB_TRANSPARENT ||
 	  color.c0.rop==ROPB_CLEAR_MASK_TRANSPARENT) ||
-	  img->type==BMT_MONO)) {
+	  img->type==DCT_MONO)) {
 	mask->brush=dc->brush;
 	mask->color=WHITE;
 	if (dc->color.c0.rop==ROPB_CLEAR_MASK_EQU)
@@ -748,8 +748,8 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 	  mask->color.c0.rop=dc->color.c0.rop;
 	mask->win_task=dc->win_task;
 	if (mask->alias)
-	  mask->alias->flags|=BMF_DIRTY;
-	GrBlot(mask,_x,_y,img);
+	  mask->alias->flags|=DCF_DIRTY;
+	GrDCBlot(mask,_x,_y,img);
       }
     }
     return TRUE;
@@ -758,7 +758,7 @@ public BoolI64 GrBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 }
 
 //This makes lots of assumptions.
-U0 GrBlotWithMask(GrDC *dc,GrDC *img)
+U0 GrDCBlotWithMask(GrDC *dc,GrDC *img)
 {
   U64 reg *mask_ptr,reg *m_dst,reg *m_src;
   U64 reg j,row,reg col,plane,
@@ -779,13 +779,13 @@ U0 GrBlotWithMask(GrDC *dc,GrDC *img)
   }
 }
 
-public GrDC *GrExtractDC(GrDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,TaskStruct *task=NULL)
+public GrDC *GrDCExtract(GrDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,TaskStruct *task=NULL)
 {
   GrDC *result;
   TaskStruct *win_task;
   if (x1>x2) SwapU64(&x1,&x2);
   if (y1>y2) SwapU64(&y1,&y2);
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x1+=win_task->win_pixel_left+win_task->win_scroll_x;
     y1+=win_task->win_pixel_top+win_task->win_scroll_y;
@@ -794,7 +794,7 @@ public GrDC *GrExtractDC(GrDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,TaskStruct *task=N
   }
   result=GrDCNew(dc->type,x2-x1+1,y2-y1+1,task);
   result->color=1;
-  GrBlot(result,-x1,-y1,dc);
+  GrDCBlot(result,-x1,-y1,dc);
   result->color=0;
   return result;
 }
@@ -812,7 +812,7 @@ public BoolI64 GrPutChar(GrDC *dc,I64 _x,I64 _y,U8 ch)
   GrDC *mask;
   TaskStruct *win_task;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_scroll_x;
     y+=win_task->win_scroll_y;
@@ -823,18 +823,18 @@ public BoolI64 GrPutChar(GrDC *dc,I64 _x,I64 _y,U8 ch)
   w2=FONT_WIDTH;
   h2=FONT_HEIGHT;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     x+=win_task->win_pixel_left;
     y+=win_task->win_pixel_top;
   }
-  if (dc->flags & BMF_LOCATE_NEAREST) { //TODO:Untested
+  if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
     dist=DistI64(x+w2>>1,y+h2>>1,dc->cur_x,dc->cur_y);
     if (dist<=dc->nearest_dist) {
-      dc->nearest_grelem_num=dc->cur_grelem_num;
+      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
     }
   }
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
     if (x+w2>win_task->win_pixel_right+1)
       w2=win_task->win_pixel_right+1-x;
@@ -848,21 +848,21 @@ public BoolI64 GrPutChar(GrDC *dc,I64 _x,I64 _y,U8 ch)
   if (y+h2>dc->height)
     h2=dc->height-y;
   if (w1<w2<=FONT_WIDTH && h1<h2<=FONT_HEIGHT) {
-    if (dc->flags & BMF_RECORD_EXTENTS) {
+    if (dc->flags & DCF_RECORD_EXTENTS) {
       if (x+w1<dc->min_x) dc->min_x=x+w1;
       if (x+w2-1>dc->max_x) dc->max_x=x+w2-1;
       if (y+h1<dc->min_y) dc->min_y=y+h1;
       if (y+h2-1>dc->max_y) dc->max_y=y+h2-1;
     }
-    if (dc->flags & BMF_DONT_DRAW)
+    if (dc->flags & DCF_DONT_DRAW)
       return TRUE;
     color=dc->color;
     plane_size1=dc->plane_size<<3;
     nobound_switch (dc->type) {
-      case BMT_COLOR4:
+      case DCT_COLOR4:
 	plane_limit1=plane_size1*4;
 	break;
-      case BMT_MONO:
+      case DCT_MONO:
 	plane_limit1=plane_size1;
 	break;
     }
@@ -906,7 +906,7 @@ public BoolI64 GrPutChar(GrDC *dc,I64 _x,I64 _y,U8 ch)
 	  color_byte=0;
 	k1=x+w1;
 	kk1=(h1+y)*dc->width_internal+k1+plane1;
-	if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP) {
+	if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP) {
 	  if (leading_bits) {
 	    dst=dc->body+kk1>>3;
 	    src=font_ptr;
@@ -1043,7 +1043,7 @@ public BoolI64 GrPutChar(GrDC *dc,I64 _x,I64 _y,U8 ch)
 	mask->color.c0.rop=dc->color.c0.rop;
       mask->win_task=dc->win_task;
       if (mask->alias)
-	mask->alias->flags|=BMF_DIRTY;
+	mask->alias->flags|=DCF_DIRTY;
       GrPutChar(mask,_x,_y,ch);
     }
     return TRUE;
@@ -1131,7 +1131,7 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
   GrDC *mask;
   TaskStruct *win_task;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_scroll_x;
     y+=win_task->win_scroll_y;
@@ -1142,24 +1142,24 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
   w2=w;
   h2=h;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     x+=win_task->win_pixel_left;
     y+=win_task->win_pixel_top;
   }
-  if (dc->flags & BMF_LOCATE_NEAREST) { //TODO:Untested
+  if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
     if (dc->cur_x>=x && dc->cur_y>=y &&
 	dc->cur_x<=x+w && dc->cur_y<=y+h) {
-      dc->nearest_grelem_num=dc->cur_grelem_num;
+      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=0;
     } else {
       dist=DistI64(x+w>>1,y+h>>1,dc->cur_x,dc->cur_y);
       if (dist<=dc->nearest_dist) {
-	dc->nearest_grelem_num=dc->cur_grelem_num;
+	dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	dc->nearest_dist=dist;
       }
     }
   }
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
     if (x+w2>win_task->win_pixel_right+1)
       w2=win_task->win_pixel_right+1-x;
@@ -1173,13 +1173,13 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
   if (y+h2>dc->height)
     h2=dc->height-y;
   if (w1<w2<=w && h1<h2<=h) {
-    if (dc->flags & BMF_RECORD_EXTENTS) {
+    if (dc->flags & DCF_RECORD_EXTENTS) {
       if (x+w1<dc->min_x) dc->min_x=x+w1;
       if (x+w2-1>dc->max_x) dc->max_x=x+w2-1;
       if (y+h1<dc->min_y) dc->min_y=y+h1;
       if (y+h2-1>dc->max_y) dc->max_y=y+h2-1;
     }
-    if (dc->flags & BMF_DONT_DRAW)
+    if (dc->flags & DCF_DONT_DRAW)
       return TRUE;
     color=dc->color;
     if (color.c1.rop&(ROPBF_DITHER|ROPBF_PROBABILITY_DITHER)) {
@@ -1196,10 +1196,10 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
       dither=FALSE;
     plane_size1=dc->plane_size<<3;
     nobound_switch (dc->type) {
-      case BMT_COLOR4:
+      case DCT_COLOR4:
 	plane_limit1=plane_size1*4;
 	break;
-      case BMT_MONO:
+      case DCT_MONO:
 	plane_limit1=plane_size1;
 	break;
     }
@@ -1243,7 +1243,7 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
       } else {
 	for (p1=0,plane1=0;plane1<plane_limit1;
 	plane1+=plane_size1,p1++) {
-	  if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP)
+	  if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP)
 	    win_z_buf_ptr=NULL;
 	  else {
 	    win_z_num=win_task->win_z_num;
@@ -1404,7 +1404,7 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
 	  SwapU16(&color.c0,&color.c1);
 	for (p1=0,plane1=0;plane1<plane_limit1;
 	plane1+=plane_size1,p1++) {
-	  if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP)
+	  if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP)
 	    win_z_buf_ptr=NULL;
 	  else {
 	    win_z_num=win_task->win_z_num;
@@ -1556,7 +1556,7 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
       } else {
 	for (p1=0,plane1=0;plane1<plane_limit1;
 	plane1+=plane_size1,p1++) {
-	  if (!(dc->flags & BMF_SCREEN_BITMAP) || dc->flags&BMF_ON_TOP)
+	  if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP)
 	    win_z_buf_ptr=NULL;
 	  else {
 	    win_z_num=win_task->win_z_num;
@@ -1672,7 +1672,7 @@ public I64 GrRect(GrDC *dc,I64 _x,I64 _y,I64 w,I64 h)
 	mask->color.c0.rop=dc->color.c0.rop;
       mask->win_task=dc->win_task;
       if (mask->alias)
-	mask->alias->flags|=BMF_DIRTY;
+	mask->alias->flags|=DCF_DIRTY;
       GrRect(mask,_x,_y,w,h);
     }
   }
@@ -1685,11 +1685,11 @@ I64 GrRayLenMinus(GrDC *dc,I64 x,I64 y)
 //Returns cnt of pixels changed
   I64 result=0,c,x3,y3,d,bit;
   U8 *dst,*dst2,*mask_dst;
-  BoolI8 not_color=ToBool(dc->flags&BMF_FILL_NOT_COLOR);
+  BoolI8 not_color=ToBool(dc->flags&DCF_FILL_NOT_COLOR);
   GrDC *mask;
   TaskStruct *win_task;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_scroll_x;
     y+=win_task->win_scroll_y;
@@ -1698,13 +1698,13 @@ I64 GrRayLenMinus(GrDC *dc,I64 x,I64 y)
   y3=y;
   if (x3<0 || y3<0)
     goto gr_done;
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     x3+=win_task->win_pixel_left;
     y3+=win_task->win_pixel_top;
     if (x3<0 || y3<0 ||
 	x3>win_task->win_pixel_right ||
 	y3>win_task->win_pixel_bottom ||
-	!(dc->flags&BMF_ON_TOP) &&
+	!(dc->flags&DCF_ON_TOP) &&
 	  IsPixelCovered0(win_task,x3,y3))
       goto gr_done;
   }
@@ -1713,7 +1713,7 @@ I64 GrRayLenMinus(GrDC *dc,I64 x,I64 y)
 
   d=y3*dc->width_internal;
   nobound_switch (dc->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       if (mask=dc->mask)
 	mask_dst=mask->body-dc->body;
       else
@@ -1724,18 +1724,18 @@ I64 GrRayLenMinus(GrDC *dc,I64 x,I64 y)
       while (TRUE) {
 	x3=x;
 	if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
-	  if (dc->flags & BMF_SCREEN_BITMAP) {
+	  if (dc->flags & DCF_SCREEN_BITMAP) {
 	    if (x3<0) break;
 	    x3+=win_task->win_pixel_left;
 	    if (x3<0 || x3>win_task->win_pixel_right ||
 		x3>=dc->width ||
-		!(dc->flags&BMF_ON_TOP) &&
+		!(dc->flags&DCF_ON_TOP) &&
 		  IsPixelCovered0(win_task,x3,y3))
 	     break;
 	  } else
 	    if (!(0<=x3<dc->width))
 	      break;
-	} else if (dc->flags & BMF_SCREEN_BITMAP)
+	} else if (dc->flags & DCF_SCREEN_BITMAP)
 	  x3+=win_task->win_pixel_left;
 
 	dst=dst2+x3>>3;
@@ -1776,22 +1776,22 @@ here1a:
 	}
       }
       return result;
-    case BMT_MONO:
+    case DCT_MONO:
       while (TRUE) {
 	x3=x;
 	if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
-	  if (dc->flags & BMF_SCREEN_BITMAP) {
+	  if (dc->flags & DCF_SCREEN_BITMAP) {
 	    if (x3<0) break;
 	    x3+=win_task->win_pixel_left;
 	    if (x3<0 || x3>win_task->win_pixel_right ||
 		x3>=dc->width ||
-		!(dc->flags&BMF_ON_TOP) &&
+		!(dc->flags&DCF_ON_TOP) &&
 		IsPixelCovered0(win_task,x3,y3))
 	      break;
 	  } else
 	    if (!(0<=x3<dc->width))
 	      break;
-	} else if (dc->flags & BMF_SCREEN_BITMAP)
+	} else if (dc->flags & DCF_SCREEN_BITMAP)
 	  x3+=win_task->win_pixel_left;
 	c=1;
 	if (mask=dc->mask)
@@ -1820,7 +1820,7 @@ I64 GrRayLen(GrDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 {
 //Returns cnt of pixels changed
   I64 result=0,d,x=*x1,x2,x3,y3,dist,bit,not_bit;
-  BoolI8 dither,probability_dither,not_color=ToBool(dc->flags&BMF_FILL_NOT_COLOR);
+  BoolI8 dither,probability_dither,not_color=ToBool(dc->flags&DCF_FILL_NOT_COLOR);
   U8 *dst,*dst2,*mask_dst;
   ColorROPU32 c,c2,color=dc->color,bkcolor=dc->bkcolor;
   I32 *db2;
@@ -1828,7 +1828,7 @@ I64 GrRayLen(GrDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
   GrDC *mask;
   TaskStruct *win_task;
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_scroll_x;
     y+=win_task->win_scroll_y;
@@ -1839,13 +1839,13 @@ I64 GrRayLen(GrDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
   y3=y;
   if (x3<0 || y3<0)
     goto gr_done;
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     x3+=win_task->win_pixel_left;
     y3+=win_task->win_pixel_top;
     if (x3<0 || y3<0 ||
 	x3>win_task->win_pixel_right ||
 	y3>win_task->win_pixel_bottom ||
-	!(dc->flags&BMF_ON_TOP) &&
+	!(dc->flags&DCF_ON_TOP) &&
 	IsPixelCovered0(win_task,x3,y3))
       goto gr_done;
   }
@@ -1870,11 +1870,11 @@ I64 GrRayLen(GrDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
   } else
     dither=FALSE;
   nobound_switch (dc->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       if (mask=dc->mask) {
 	mask_dst=mask->body-dc->body;
 	if (mask->alias)
-	  mask->alias->flags|=BMF_DIRTY;
+	  mask->alias->flags|=DCF_DIRTY;
       } else
 	mask_dst=NULL;
       dst2=dc->body+d>>3;
@@ -1882,19 +1882,19 @@ I64 GrRayLen(GrDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
       while (TRUE) {
 	x3=x;
 	if (!(x3&(FONT_WIDTH-1))) {
-	  if (dc->flags & BMF_SCREEN_BITMAP) {
+	  if (dc->flags & DCF_SCREEN_BITMAP) {
 	    if (x3<0) break;
 	    x3+=win_task->win_pixel_left;
 	    if (x3<0 || x3>win_task->win_pixel_right ||
 		x3>=dc->width ||
-		!(dc->flags&BMF_ON_TOP) &&
+		!(dc->flags&DCF_ON_TOP) &&
 		IsPixelCovered0(win_task,x3,y3))
 	      break;
 	  } else {
 	    if (!(0<=x3<dc->width))
 	      break;
 	  }
-	} else if (dc->flags & BMF_SCREEN_BITMAP)
+	} else if (dc->flags & DCF_SCREEN_BITMAP)
 	  x3+=win_task->win_pixel_left;
 
 	dst=dst2+x3>>3;
@@ -1933,14 +1933,14 @@ here3a:
 
 	if ((not_color && c!=dc->color2 ||
 	    !not_color && c==dc->color2) && plot) {
-	  if (dc->flags & BMF_LOCATE_NEAREST) {
+	  if (dc->flags & DCF_LOCATE_NEAREST) {
 	    dist=DistI64(x3,y3,dc->cur_x,dc->cur_y);
 	    if (dist<=dc->nearest_dist) {
-	      dc->nearest_grelem_num=dc->cur_grelem_num;
+	      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	      dc->nearest_dist=dist;
 	    }
 	  }
-	  if (dc->flags & BMF_RECORD_EXTENTS) {
+	  if (dc->flags & DCF_RECORD_EXTENTS) {
 	    if (x3<dc->min_x) dc->min_x=x3;
 	    if (x3>dc->max_x) dc->max_x=x3;
 	    if (y3<dc->min_y) dc->min_y=y3;
@@ -2021,7 +2021,7 @@ here1a:
 	} else
 	  break;
       }
-      if (dc->flags & BMF_SCREEN_BITMAP)
+      if (dc->flags & DCF_SCREEN_BITMAP)
 	*x1=x-1-win_task->win_scroll_x;
       else
 	*x1=x-1;
@@ -2029,18 +2029,18 @@ here1a:
       while (TRUE) {
 	x3=x;
 	if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
-	  if (dc->flags & BMF_SCREEN_BITMAP) {
+	  if (dc->flags & DCF_SCREEN_BITMAP) {
 	    if (x3<0) break;
 	    x3+=win_task->win_pixel_left;
 	    if (x3<0 || x3>win_task->win_pixel_right ||
 		x3>=dc->width ||
-		!(dc->flags&BMF_ON_TOP) &&
+		!(dc->flags&DCF_ON_TOP) &&
 		IsPixelCovered0(win_task,x3,y3))
 	      break;
 	  } else
 	    if (!(0<=x3<dc->width))
 	    break;
-	} else if (dc->flags & BMF_SCREEN_BITMAP)
+	} else if (dc->flags & DCF_SCREEN_BITMAP)
 	  x3+=win_task->win_pixel_left;
 
 	dst=dst2+x3>>3;
@@ -2079,14 +2079,14 @@ here4a:
 
 	if ((not_color && c!=dc->color2 ||
 	    !not_color && c==dc->color2) && plot) {
-	  if (dc->flags & BMF_LOCATE_NEAREST) {
+	  if (dc->flags & DCF_LOCATE_NEAREST) {
 	    dist=DistI64(x3,y3,dc->cur_x,dc->cur_y);
 	    if (dist<=dc->nearest_dist) {
-	      dc->nearest_grelem_num=dc->cur_grelem_num;
+	      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	      dc->nearest_dist=dist;
 	    }
 	  }
-	  if (dc->flags & BMF_RECORD_EXTENTS) {
+	  if (dc->flags & DCF_RECORD_EXTENTS) {
 	    if (x3<dc->min_x) dc->min_x=x3;
 	    if (x3>dc->max_x) dc->max_x=x3;
 	    if (y3<dc->min_y) dc->min_y=y3;
@@ -2168,25 +2168,25 @@ here2a:
 	  break;
       }
       return result;
-    case BMT_MONO:
+    case DCT_MONO:
       if (mask=dc->mask)
 	if (mask->alias)
-	  mask->alias->flags|=BMF_DIRTY;
+	  mask->alias->flags|=DCF_DIRTY;
       while (TRUE) {
 	x3=x;
 	if (!(x3&(FONT_WIDTH-1))) {
-	  if (dc->flags & BMF_SCREEN_BITMAP) {
+	  if (dc->flags & DCF_SCREEN_BITMAP) {
 	    if (x3<0) break;
 	    x3+=win_task->win_pixel_left;
 	    if (x3<0 || x3>win_task->win_pixel_right ||
 		x3>=dc->width ||
-		!(dc->flags&BMF_ON_TOP) &&
+		!(dc->flags&DCF_ON_TOP) &&
 		IsPixelCovered0(win_task,x3,y3))
 	      break;
 	  } else
 	    if (!(0<=x3<dc->width))
 	    break;
-	} else if (dc->flags & BMF_SCREEN_BITMAP)
+	} else if (dc->flags & DCF_SCREEN_BITMAP)
 	  x3+=win_task->win_pixel_left;
 	c=Bt(dc->body,d+x3);
 	if (mask)
@@ -2205,14 +2205,14 @@ here2a:
 
 	if ((not_color && c!=dc->color2 ||
 	    !not_color && c==dc->color2) && plot) {
-	  if (dc->flags & BMF_LOCATE_NEAREST) {
+	  if (dc->flags & DCF_LOCATE_NEAREST) {
 	    dist=DistI64(x3,y3,dc->cur_x,dc->cur_y);
 	    if (dist<=dc->nearest_dist) {
-	      dc->nearest_grelem_num=dc->cur_grelem_num;
+	      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	      dc->nearest_dist=dist;
 	    }
 	  }
-	  if (dc->flags & BMF_RECORD_EXTENTS) {
+	  if (dc->flags & DCF_RECORD_EXTENTS) {
 	    if (x3<dc->min_x) dc->min_x=x3;
 	    if (x3>dc->max_x) dc->max_x=x3;
 	    if (y3<dc->min_y) dc->min_y=y3;
@@ -2265,7 +2265,7 @@ here2a:
 	} else
 	  break;
       }
-      if (dc->flags & BMF_SCREEN_BITMAP)
+      if (dc->flags & DCF_SCREEN_BITMAP)
 	*x1=x-1-win_task->win_scroll_x;
       else
 	*x1=x-1;
@@ -2273,18 +2273,18 @@ here2a:
       while (TRUE) {
 	x3=x;
 	if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
-	  if (dc->flags & BMF_SCREEN_BITMAP) {
+	  if (dc->flags & DCF_SCREEN_BITMAP) {
 	    if (x3<0) break;
 	    x3+=win_task->win_pixel_left;
 	    if (x3<0 || x3>win_task->win_pixel_right ||
 		x3>=dc->width ||
-		!(dc->flags&BMF_ON_TOP) &&
+		!(dc->flags&DCF_ON_TOP) &&
 		IsPixelCovered0(win_task,x3,y3))
 	      break;
 	  } else
 	    if (!(0<=x3<dc->width) )
 	    break;
-	} else if (dc->flags & BMF_SCREEN_BITMAP)
+	} else if (dc->flags & DCF_SCREEN_BITMAP)
 	  x3+=win_task->win_pixel_left;
 
 	c=Bt(dc->body,d+x3);
@@ -2304,14 +2304,14 @@ here2a:
 
 	if ((not_color && c!=dc->color2 ||
 	    !not_color && c==dc->color2) && plot) {
-	  if (dc->flags & BMF_LOCATE_NEAREST) {
+	  if (dc->flags & DCF_LOCATE_NEAREST) {
 	    dist=DistI64(x3,y3,dc->cur_x,dc->cur_y);
 	    if (dist<=dc->nearest_dist) {
-	      dc->nearest_grelem_num=dc->cur_grelem_num;
+	      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	      dc->nearest_dist=dist;
 	    }
 	  }
-	  if (dc->flags & BMF_RECORD_EXTENTS) {
+	  if (dc->flags & DCF_RECORD_EXTENTS) {
 	    if (x3<dc->min_x) dc->min_x=x3;
 	    if (x3>dc->max_x) dc->max_x=x3;
 	    if (y3<dc->min_y) dc->min_y=y3;
@@ -2388,7 +2388,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
     return GrRect(dc,x1,y,x2-x1+1,1);
   }
 
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x1+=win_task->win_scroll_x;
     x2+=win_task->win_scroll_x;
@@ -2396,7 +2396,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
     z1+=win_task->win_scroll_z;
     z2+=win_task->win_scroll_z;
   }
-  if (dc->flags & BMF_RECORD_EXTENTS) {
+  if (dc->flags & DCF_RECORD_EXTENTS) {
     if (x1<dc->min_x) dc->min_x=x1;
     if (x1>dc->max_x) dc->max_x=x1;
     if (x2<dc->min_x) dc->min_x=x2;
@@ -2417,7 +2417,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
   } else
     i=0;
   j=0;
-  if (dc->flags & BMF_SCREEN_BITMAP) {
+  if (dc->flags & DCF_SCREEN_BITMAP) {
     x1+=win_task->win_pixel_left;
     x2+=win_task->win_pixel_left;
     if (x1>win_task->win_pixel_right)
@@ -2451,7 +2451,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
 
   dd=dc->plane_size;
 
-  if (dc->flags & BMF_LOCATE_NEAREST) {
+  if (dc->flags & DCF_LOCATE_NEAREST) {
     if (x1<=dc->cur_x<=x2)
       dist=0;
     else if (dc->cur_x<x1)
@@ -2460,16 +2460,16 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       dist=SqrI64(dc->cur_x-x2);
     dist+=SqrI64(y-dc->cur_y);
     if (dist<=dc->nearest_dist) {
-      dc->nearest_grelem_num=dc->cur_grelem_num;
+      dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
     }
   }
-  if (dc->flags & BMF_DONT_DRAW)
+  if (dc->flags & DCF_DONT_DRAW)
     goto gr_done;
 
-  if (!(dc->flags & BMF_SCREEN_BITMAP) ||
+  if (!(dc->flags & DCF_SCREEN_BITMAP) ||
       win_task->next_task==sys_winmgr_task ||
-      dc->flags&BMF_ON_TOP ||
+      dc->flags&DCF_ON_TOP ||
       !IsPixelCovered0(win_task,x1,y))
     char_clear=TRUE;
   else
@@ -2503,7 +2503,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       }
       if (plot) {
 	nobound_switch (dc->type) {
-	  case BMT_COLOR4:
+	  case DCT_COLOR4:
 	    dst=dc->body+d>>3;
 	    bit=1<<(x1&7);
 	    not_bit=~bit;
@@ -2560,7 +2560,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
 		break;
 	    }
 	    break;
-	  case BMT_MONO:
+	  case DCT_MONO:
 	    c=color.c0.color;
 	    nobound_switch (color.c0.rop) {
 	      case ROPB_EQU:
@@ -2607,9 +2607,9 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       db++;
     z+=dz;
     if (!(x1&(FONT_WIDTH-1)) && x1<=x2) {
-      if (!(dc->flags & BMF_SCREEN_BITMAP)||
+      if (!(dc->flags & DCF_SCREEN_BITMAP)||
 	  win_task->next_task==sys_winmgr_task ||
-	  dc->flags&BMF_ON_TOP ||
+	  dc->flags&DCF_ON_TOP ||
 	  !IsPixelCovered0(win_task,x1,y))
 	char_clear=TRUE;
       else
@@ -2627,7 +2627,7 @@ public I64 GrHLine(GrDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       mask->color.c0.rop=dc->color.c0.rop;
     mask->win_task=dc->win_task;
     if (mask->alias)
-      mask->alias->flags|=BMF_DIRTY;
+      mask->alias->flags|=DCF_DIRTY;
     GrHLine(mask,_x1,_x2,_y,_z1,_z2);
   }
 gr_done:

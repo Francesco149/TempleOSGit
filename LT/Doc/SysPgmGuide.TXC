@@ -21,10 +21,10 @@ with different compilers, though, the LoseThos compiler should use 1 for TRUE
 values, not just nonzero.  Boolean assignments don't have short circuit logic 
 and are not compiled efficiently.  The BoolI8 type is just an alias for a 1 
 byte int -- nothing forces it to 1 or 0.  There is a
-[C:/LT/OSMain/Adam1b.HPZ,219] ToBool() function.
+[C:/LT/OSMain/Adam1b.HPZ,215] ToBool() function.
 
 * If you use floats in your interrupt routine, save and restore the fpu state 
-with [C:/LT/OSMain/Adam1b.HPZ,257] Fxsave() and [C:/LT/OSMain/Adam1b.HPZ,258]
+with [C:/LT/OSMain/Adam1b.HPZ,254] Fxsave() and [C:/LT/OSMain/Adam1b.HPZ,255]
 Fxrstor().  The timer interrupt does this.  The keyboard and 
 mouse don't use floats.
 

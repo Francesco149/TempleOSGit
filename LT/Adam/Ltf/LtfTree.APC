@@ -1,6 +1,6 @@
 #help_index "Ltf"
 
-public BoolI64 LtfFindTree(Ltf *l,U8 *path,
+public BoolI64 LtfTreeFind(Ltf *l,U8 *path,
   LtfEntry **tree_entry=NULL,
   LtfEntry **start_indent=NULL, LtfEntry **end_indent=NULL)
 {
@@ -59,7 +59,7 @@ ft_done:
 }
 
 
-public BoolI64 LtfMakeTree(Ltf *l,U8 *path)
+public BoolI64 LtfTreeMake(Ltf *l,U8 *path)
 {
   BoolI8 result=TRUE;
   I64 i=0,j=MIN_I64,k=0;
@@ -150,13 +150,13 @@ public I64 ExeLtf(Ltf *l,BoolI8 just_load=FALSE)
 }
 
 
-public I64 LtfExeTreeBranch(Ltf *l,U8 *path)
+public I64 LtfTreeBranchExe(Ltf *l,U8 *path)
 {
   I64 result=0;
   Ltf *b;
   BoolI8 unlock_l=LtfLock(l);
   LtfEntry *tree_branch,*start_indent,*end_indent;
-  if (LtfFindTree(l,path,&tree_branch,&start_indent,&end_indent)) {
+  if (LtfTreeFind(l,path,&tree_branch,&start_indent,&end_indent)) {
     b=LtfCopy(l,tree_branch,end_indent);
     result=ExeLtf(b);
     LtfDel(b);
@@ -170,7 +170,7 @@ public I64 ExeTreeBranch(U8 *registry_file,U8 *path)
 {
   I64 result=0;
   Ltf *l=LtfRead(registry_file);
-  result=LtfExeTreeBranch(l,path);
+  result=LtfTreeBranchExe(l,path);
   LtfDel(l);
   return result;
 }

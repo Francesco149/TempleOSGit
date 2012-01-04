@@ -39,7 +39,7 @@ U0 PutStat()
   LTUSB *u;
   WinMax;
 
-PutS("$FG,GREEN$Dev Stat Bits\r\n$FG$"
+	"$FG,GREEN$Dev Stat Bits\r\n$FG$"
 	"  0:IRQ\r\n"
 	"  1:IRQ err\r\n"
 	"  2:Resume\r\n"
@@ -57,15 +57,15 @@ PutS("$FG,GREEN$Dev Stat Bits\r\n$FG$"
 	"  9:Port Rst\r\n"
 	" 10:Overcurrent Active\r\n"
 	" 11:Overcurrent Indicator\r\n"
-	" 12:Suspend\r\n\r\n");
+	" 12:Suspend\r\n\r\n";
 
   for (i=0;i<sys_num_usb;i++) {
     u=&sys_usb_devs[i];
-    PrintF("$FG,LTRED$Dev%d:%X:",i,u->ports);
+    "$FG,LTRED$Dev%d:%X:",i,u->ports;
     ll=LtfPutS(LtfCur,"$TX+TC,\" \"$");
     ll->user_data=&sys_usb_devs[i];
     ll->tag_cb=&StatCB;
-    PutS("$FG$\r\n");
+    "$FG$\r\n";
   }
 
   Preempt(old_preempt);
@@ -83,8 +83,8 @@ U32 *P(U32 d)
 
 U0 PutTD(U32 t)
 {
-  PrintF("TD:$FG,GREEN$%08X$FG$\r\n",t);
-  PrintF("%08X\r\n",*P(t));
+  "TD:$FG,GREEN$%08X$FG$\r\n",t;
+  "%08X\r\n",*P(t);
   LtfDm(t+4,8);
   if (*P(t+12))
     LtfDm(*P(t+12),16);
@@ -99,9 +99,9 @@ U0 PutTD(U32 t)
 
 U0 PutQH(U32 h)
 {
-  PrintF("QH:$FG,RED$%08X$FG$\r\n",h);
-  PrintF("%08X\r\n",*P(h));
-  PrintF("%08X\r\n",*P(h+4));
+  "QH:$FG,RED$%08X$FG$\r\n",h;
+  "%08X\r\n",*P(h);
+  "%08X\r\n",*P(h+4);
 
   if (!(*P(h)&1)) {
     if (*P(h)&2)
@@ -144,7 +144,7 @@ U0 Main()
   USBInitAll; //See [::/LT/OSMain/USB1a.CPZ] ::/LT/OSMain/USB1a.CPZ
   PutStat;
   PutFrames;
-  PutS("$FG,RED$The BIOS sets-up the USB in PS/2 legacy mode.$FG$\r\n");
+  "$FG,RED$The BIOS sets-up the USB in PS/2 legacy mode.$FG$\r\n";
 }
 
 Main;
@@ -170,14 +170,14 @@ U0 SetUpTD()
       *buf=CAlloc(128,Fs->code_heap);
   LtfD(buf,128);
 
-  PutS("<0>\r\n"); Sleep(100);
+  "<0>\r\n"; Sleep(100);
   OutU16(d+USBP_CMD,2); //Reset
-  PutS("<1>\r\n"); Sleep(100);
+  "<1>\r\n"; Sleep(100);
   OutU16(d+USBP_CMD,0);
-  PutS("<2>\r\n"); Sleep(100);
+  "<2>\r\n"; Sleep(100);
   OutU16(d+USBP_PORTSC0,4); //Enable
   OutU16(d+USBP_PORTSC1,4);
-  PutS("<3>\r\n"); Sleep(100);
+  "<3>\r\n"; Sleep(100);
 
   tds[0]=&tds[4]><(U8 *);
   tds[1]=0;
@@ -200,11 +200,11 @@ U0 SetUpTD()
 
   OutU16(d+USBP_FRNUM,frm);
   OutU32(d+USBP_FRBASEADD,frm);
-  PutS("<4>\r\n"); Sleep(200);
+  "<4>\r\n"; Sleep(200);
   OutU16(d+USBP_CMD,1);
-  PutS("<5>\r\n"); Sleep(1000);
+  "<5>\r\n"; Sleep(1000);
   OutU16(d+USBP_CMD,0);
-  PutS("<6>\r\n"); Sleep(200);
+  "<6>\r\n"; Sleep(200);
 }
 
 SetUpTD;

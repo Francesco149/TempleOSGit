@@ -49,7 +49,7 @@
 allowed to 
 have windows.
 
-* [C:/LT/OSMain/Adam1a.HPZ,3452] GrDCs (device contexts) are a data type for
+* [C:/LT/OSMain/Adam1a.HPZ,3438] GrDCs (device contexts) are a data type for
 ctrlling graphics on the screen 
 or graphics in mem, not on the screen.  The device context structure has pen 
 width and color associated with it, so you use [C:/LT/Adam/Gr/GrDC.APZ,23]
@@ -78,10 +78,10 @@ borders are not enforced.  See [::/LT/Demo/Graphics/DotNet.CPZ]
 
 * Use [C:/LT/Adam/Gr/GrDC.APZ,45] GrDCNew() to create a mem bitmap which can
 be used to work off-line and 
-which can be [C:/LT/Adam/Gr/GrBitMap.APZ,189] GrBloted onto the screen.  If
+which can be [C:/LT/Adam/Gr/GrBitMap.APZ,189] GrDCBloted onto the screen.  If
 you set brush member of GrDC to 
 another GrDC, all the graphic routines will [C:/LT/Adam/Gr/GrBitMap.APZ,189]
-GrBlot() the brush instead of 
+GrDCBlot() the brush instead of 
 [C:/LT/Adam/Gr/GrPrimatives.APZ,47] GrPlot().  See
 [::/LT/Demo/Graphics/Blot.CPZ] ::/LT/Demo/Graphics/Blot.CPZ.
 
@@ -93,14 +93,14 @@ allow 3 dimensional graphics.
 * See [::/LT/Doc/Transform.TXZ] ::/LT/Doc/Transform.TXZ for adding a
 transformation.
 
-* Set [C:/LT/OSMain/Adam1a.HPZ,3419] BMF_SYMMETRY in the
-[C:/LT/OSMain/Adam1a.HPZ,3452] GrDC.flags and call
+* Set [C:/LT/OSMain/Adam1a.HPZ,3405] DCF_SYMMETRY in the
+[C:/LT/OSMain/Adam1a.HPZ,3438] GrDC.flags and call
 [C:/LT/Adam/Gr/GrMath.APZ,364] GrSetSymmetry() or 
 [C:/LT/Adam/Gr/GrMath.APZ,386] GrSetSymmetry3().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/LT/OSMain/Adam1a.HPZ,3423] BMF_JUST_MIRROR to plot just the
+image.  Set [C:/LT/OSMain/Adam1a.HPZ,3409] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/LT/OSMain/Adam1a.HPZ,3419] BMF_SYMMETRY to be set at the same
+[C:/LT/OSMain/Adam1a.HPZ,3405] DCF_SYMMETRY to be set at the same
 time.  Note: You can only have one symmetry 
 active at a time including in [C:/LT/Adam/Gr/Gr.APZ,54] GrSprites.
 
@@ -120,7 +120,7 @@ pressing <CTRL-R> again.
 
 * There is a mechanism built-in for generating motion based on differential 
 equations, which allows real-world physics.  You create an
-[C:/LT/OSMain/Adam1a.HPZ,229] Ode struct with 
+[C:/LT/OSMain/Adam1a.HPZ,232] Ode struct with 
 [C:/LT/Adam/Ode.APZ,42] OdeNew(), passing it the num of vars in the state
 vect.  For real-world 
 physics, you usually have 2 state vars for each dimension (for each mass) 
@@ -129,7 +129,7 @@ states are pos and velocity and to solve these you need to supply the
 derivative of pos and velocity.  The derivative of pos is usually simply the 
 current velocity and the derivative of velocity is the acceleration (the sum 
 of forces on a mass divided by mass).  To help provide meaningful names for 
-values in the state vect, you can create an [C:/LT/OSMain/Adam1a.HPZ,186]
+values in the state vect, you can create an [C:/LT/OSMain/Adam1a.HPZ,189]
 Order2D3 ptr and point it to a 
 mass in the state vect.  Six elements in the state vect are required for each 
 mass.
@@ -137,44 +137,44 @@ mass.
 See [Math/Ode] Math/Ode.
 See [::/LT/Demo/GameStarters/Rocks.CPZ] ::/LT/Demo/GameStarters/Rocks.CPZ.
 
-* There are several [C:/LT/OSMain/Adam1a.HPZ,2847] raster operations
+* There are several [C:/LT/OSMain/Adam1a.HPZ,2829] raster operations
 available.  They go in bits 24-31 of the 
 dc->color member var.
 
-* [C:/LT/OSMain/Adam1a.HPZ,2850] ROP_COLLISION is special.  It counts the num
+* [C:/LT/OSMain/Adam1a.HPZ,2832] ROP_COLLISION is special.  It counts the num
 of pixels drawn on 
-non-background locations.  Using [C:/LT/OSMain/Adam1a.HPZ,2850] ROP_COLLISION
+non-background locations.  Using [C:/LT/OSMain/Adam1a.HPZ,2832] ROP_COLLISION
 with [C:/LT/Adam/Gr/Gr.APZ,54] GrSprite's is tricky 
 because overlapping pixels from lines in the [C:/LT/Adam/Gr/Gr.APZ,54]
 GrSprite register as collisions.  
 You can either work with a nonzero count or convert your
 [C:/LT/Adam/Gr/Gr.APZ,54] GrSprite to a bitmap 
 if your subelements draw on top of each other.  Be sure to set ->bkcolor to 
-[C:/LT/OSMain/Adam1a.HPZ,2850] ROP_COLLISION.  See
+[C:/LT/OSMain/Adam1a.HPZ,2832] ROP_COLLISION.  See
 [::/LT/Demo/Graphics/PixelCollision.CPZ]
 ::/LT/Demo/Graphics/PixelCollision.CPZ, 
 [::/LT/Demo/GameStarters/Rocks.CPZ] ::/LT/Demo/GameStarters/Rocks.CPZ and
 [::/LT/Apps/Timeout/Timeout.CPZ] ::/LT/Apps/Timeout/Timeout.CPZ.
  
-* The ->bkcolor member of [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC is used for
+* The ->bkcolor member of [C:/LT/OSMain/Adam1a.HPZ,3438] GrDC is used for
 determining collisions, it is also 
 used as the transparent color when [C:/LT/Adam/Gr/GrBitMap.APZ,189]
-GrBlot()ing bitmaps and it is used as the 
+GrDCBlot()ing bitmaps and it is used as the 
 dc color for [C:/LT/Adam/Gr/Gr.APZ,54] GrSprites, like when using
-[C:/LT/OSMain/Adam1a.HPZ,2848] ROP_XOR.
+[C:/LT/OSMain/Adam1a.HPZ,2830] ROP_XOR.
 
-* The ->dither_probability member of [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC is a
+* The ->dither_probability member of [C:/LT/OSMain/Adam1a.HPZ,3438] GrDC is a
 U16 used to statistically 
 select between two colors.  See [::/LT/Demo/Graphics/Shading.CPZ]
 ::/LT/Demo/Graphics/Shading.CPZ.  It works 
 with most graphic routines, but not those with pens.
  
-* The ->mask member of [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC can be pointed to
-a [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC and will be used to 
+* The ->mask member of [C:/LT/OSMain/Adam1a.HPZ,3438] GrDC can be pointed to
+a [C:/LT/OSMain/Adam1a.HPZ,3438] GrDC and will be used to 
 indicate which pixels have been defined.  It should be a
-[C:/LT/OSMain/Adam1a.HPZ,3435] BMT_MONO type.  A 
+[C:/LT/OSMain/Adam1a.HPZ,3421] DCT_MONO type.  A 
 mask is used when LoseThos merges the gr_dc2 bitmap.  There's not support for 
 using masks for your own bitmaps, but aliases of the gr_dc2 are used and you 
-might find [C:/LT/OSMain/Adam1a.HPZ,2851] ROP_CLEAR_MASK_EQU and
-[C:/LT/OSMain/Adam1a.HPZ,2852] ROP_CLEAR_MASK_TRANSPARENT useful when 
+might find [C:/LT/OSMain/Adam1a.HPZ,2833] ROP_CLEAR_MASK_EQU and
+[C:/LT/OSMain/Adam1a.HPZ,2834] ROP_CLEAR_MASK_TRANSPARENT useful when 
 writing to them.

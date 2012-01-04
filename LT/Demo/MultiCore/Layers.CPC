@@ -34,7 +34,7 @@ U0 UpdateWin(TaskStruct *task)
   GrSetRotMat(dc,r1);
   dc->x=200;
   dc->y=200;
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
 
   dc->pen_width=2;
   dc->bkcolor=BLACK;
@@ -69,7 +69,7 @@ U0 MPDrawIt(TaskStruct *main_task)
   GrSetRotMat(dc,r2);
   dc->x=200;
   dc->y=200;
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
 
   GrDCClear(dc);
 

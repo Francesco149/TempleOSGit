@@ -16,12 +16,12 @@ U0 PutVerse()
   U8 *ch;
   U64 *start;
 
-  PutS("$CL$");
+  "$CL$";
   start=GetTimeStamp%size;
   if (start>size-LEN) start=size-LEN;
   ch=bible[start+LEN-1];
   bible[start+LEN-1]=0;
-  PutS(bible+start);
+  "" bible+start;
   bible[start+LEN-1]=ch;
 }
 
@@ -31,7 +31,7 @@ U0 Song()
   Fs->task_end_cb=&TaskEndCB;
   music_tempo=2.5;
   bible=FileRead(bible_filename,&size);
-  PutS("$WW+H,1$");
+  "$WW+H,1$";
   try {
   while (!ScanKey) {
 	PutVerse;

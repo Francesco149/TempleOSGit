@@ -24,9 +24,6 @@ Cd("/LT/OSMain");Dir;
 Cd("/LT/OSMain/Dsk");Dir;
 `Cd("/LT/OSMain/Dsk");Dir;`
 
-Cd("/LT/OSMain2");Dir;
-`Cd("/LT/OSMain2");Dir;`
-
 Cd("/LT/Compiler");Dir;
 `Cd("/LT/Compiler");Dir;`
 
@@ -136,7 +133,7 @@ Cd("/0000Boot");Dir;
 `Cd("/0000Boot");Dir;`
 
 WebLog
-`LogRep(TS_TRA_DRV ":/Logs/LTLogs/*.log",TS_TRA_DRV ":/Logs/LogRep.TXT");View;`
+`WebLogRep(TS_TRA_DRV ":/Logs/LTLogs/*.log",TS_TRA_DRV ":/Logs/WebLogRep.TXT");View;`
 
 Copy Video
 `CopyVideo;`
@@ -208,7 +205,7 @@ Take Tour
   
   
   
-  Timeout <6> (image) TheDead <7> (image) Logic  <8> (image) X-Caliber <9> (image)
+  Timeout <6> (image) TheDead <7> (image) Logic <8> (image) X-Caliber <9> (image)
   
   
   

@@ -3,7 +3,7 @@
 
 #define STRETCH 	500.0
 #define GRAVITY 	50.0 //not really gravity
-#define BALL_RADIUS 	5
+#define BALL_RADIUS	5
 #define BASE_SIZE	10
 
 MassStruct balls[NUM_BALLS];
@@ -18,7 +18,7 @@ U0 UpdateWin(TaskStruct *task)
   GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 snd_on=FALSE;
   dc->color=BLACK;
-  GrPutS(dc,0,0,"Protect your dc.");
+  GrPutS(dc,0,0,"Protect your base.");
   GrRect(dc,cx-BASE_SIZE,cy-BASE_SIZE,BASE_SIZE*2,BASE_SIZE*2);
   dc->color=CYAN;
   GrRect(dc,cx-BASE_SIZE+2,cy-BASE_SIZE+2,BASE_SIZE*2-4,BASE_SIZE*2-4);

@@ -67,23 +67,12 @@ Top of Screen Pull-down menu
 
 /LT/OSMain The core of the operating system is found here.  Since priviledge
     levels are not used, calling it a "kernel" would be confusing, but that's
-    what it is.  It is statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,185]
-    InstallBoot().  It is loaded by the boot loader and must fit in 640K.  An
-    effort is made to limit what goes into OSMain so that it never exceeds the
-    640K limit.  OSMain2 has stuff which must be statically compiled but is not
-    needed in OSMain.
-
-/LT/OSMain2 Part 2 of the operating system core is found here.  It is
-    statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().  It
-    contains stuff which is statically compiled but not needed in the 640K
-    area.  Just enough is statically compiled in the OSMain, OSMain2, and
-    Compiler modules so that you can fix a start-up script error with the
-    [C:/LT/OSMain2/EdLite.CPZ,60] EdLite and reboot.  Everything else is JIT
-    compiled beginning with [::/LT/OSMain/Adam1.APZ] ::/LT/OSMain/Adam1.APZ.
+    what it is.  It is statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,168]
+    InstallBoot().  It is loaded by the boot loader and must fit in 640K.
 
 /LT/Compiler The compiler module src code is found here.  The compiler is
     statically compiled to produce a binary file which is loaded at boot.  It is
-    also statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
+    also statically compiled by [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
 
 /LT/Adam The non-kernel part of the operating system is found here.  It is
     JIT compiled during boot.
@@ -130,15 +119,15 @@ Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a
 
 Grep("pattern","/LT/Demo/*.CPZ;*.TXZ;");
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2012] TEXT_FILE_MASK and
-    [C:/LT/OSMain/Adam1a.HPZ,2011] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,1995] TEXT_FILE_MASK and
+    [C:/LT/OSMain/Adam1a.HPZ,1994] SRC_FILE_MASK.
 
 
   +] BURNING CD-ROMs/DVDs
     0) Prepare a partition (drive) with the files you wish to burn.
-1) Use [C:/LT/Adam/DskCDDVD.APZ,376] CDFileCreate() to make an ISO image file
+1) Use [C:/LT/Adam/DskCDDVD.APZ,375] CDFileCreate() to make an ISO image file
     of a partition.
-2) Use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,287] CDImageWrite() to burn an ISO file
+2) Use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,279] CDImageWrite() to burn an ISO file
     onto a CD or DVD.
 
 Note:  You can create a [::/LT/Doc/Glossary.TXZ,File Part] Temp (File
@@ -188,7 +177,7 @@ See [::/LT/Doc/Glossary.TXZ,File Part] Temp File Partition for a special type
 [::/LT/Demo/Lectures/PageTableEntries1.CPZ] Page Table Entries 1
 [::/LT/Demo/Lectures/PageTableEntries2.CPZ] Page Table Entries 2
 [::/LT/Demo/Lectures/PCIInterrupts.CPZ] PCIInterrupts.CPZ
-[C:/LT/Adam/MemRep.APZ,121] MemRep
+[C:/LT/Adam/MemRep.APZ,185] MemRep
 [::/LT/Adam/WallPaper.APZ] WallPaper.APZ
 [::/LT/Doc/NewFileSystem.TXZ] Adding a New File System
 

@@ -1,15 +1,16 @@
-BoolI8 load_test_done;
+I64 load_test_done;
 
 U0 Job1(U64 dummy=0)
-{ //Compile OSMain2
+{ //Compile Compiler
   nounusedwarn dummy;
   TaskLocalInit; //Enable file access
   Preempt(ON);	 //Off by default
   Silent(ON);
   while (!load_test_done) {
-    Cd("::/LT/OSMain2");
-    Cmp("OSMain2");
+    Cd("::/LT/Compiler");
+    Cmp("Compiler");
   }
+  lock {load_test_done--;}
 }
 
 U0 Job2(U64 dummy=0)
@@ -21,6 +22,7 @@ U0 Job2(U64 dummy=0)
     AdamLog("%F","::/LT/Demo/MultiCore/LoadTest.CPZ");
     Yield;
   }
+  lock {load_test_done--;}
 }
 
 U0 Job3(U64 dummy=0)
@@ -29,16 +31,17 @@ U0 Job3(U64 dummy=0)
   TaskLocalInit; //Enable file access
   Preempt(ON);	 //Off by default
   while (!load_test_done) {
-    Cd("::/LT/OSMain2");
-    AdamLog("%F","OSMain2.SPZ");
+    Cd("::/LT/Compiler");
+    AdamLog("%F","Compiler.SPZ");
     Yield;
   }
+  lock {load_test_done--;}
 }
 
 U0 Main()
 {
-  load_test_done=FALSE;
-  PrintF("Running MultiCore Test...\r\n");
+  load_test_done=0;
+  "Running MultiCore Test...\r\n";
   MPSpawn(&Job1);
   MPSpawn(&Job2);
   MPSpawn(&Job1);
@@ -48,10 +51,10 @@ U0 Main()
   Spawn(&Job1);
   Spawn(&Job3);
   PressAKey;
-  load_test_done=TRUE;
-  //Allow time to stop (kludge)
-  //Don't pull code from under other cores.
-  Sleep(500);
+  load_test_done=8;
+//We don't want to yank code from under MP cores.
+  while (load_test_done)
+    Yield;
 }
 
 Main;

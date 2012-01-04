@@ -114,7 +114,7 @@ U0 OutLine()
     GrSpriteExtents(in_img[n],&minx,&maxx,&miny,&maxy);
     w=maxx-minx+1+2;
     h=maxy-miny+1+2;
-    dc=GrDCNew(BMT_COLOR4,w,h);
+    dc=GrDCNew(DCT_COLOR4,w,h);
     dc->color=LTGREEN;
     GrRect(dc,0,0,w,h);
     GrSpritePlot3(dc,-minx+1,-miny+1,0,in_img[n]);
@@ -134,7 +134,7 @@ U0 OutLine()
 
     out_img=GrDC2Sprite(dc);
     CrLf;
-    PutGrSprite(out_img);
+    PutSprite(out_img);
     CrLf(4);
  
     GrDCDel(dc);

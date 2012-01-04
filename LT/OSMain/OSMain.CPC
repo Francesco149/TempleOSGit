@@ -1,5 +1,14 @@
 /* Project: OSMain */
 
+U0 DateTimeFmtMapsRst()
+{
+  I64 i;
+  for (i=0;i<NUM_DATE_FMTS;i++)
+    date_fmt_map[i]=i;
+  for (i=0;i<NUM_TIME_FMTS;i++)
+    time_fmt_map[i]=i;
+}
+
 U0 SysGlblsInit()
 {
   I64 i,j;
@@ -10,7 +19,7 @@ U0 SysGlblsInit()
   sys_cache_line_width=ee.rbx.u8[1]*8;
   sys_pci_dev_root.next=sys_pci_dev_root.last=&sys_pci_dev_root;
   sys_rnd_seed = 93186752^GetTimeStamp;
-  sys_cur_focus_task=Fs;
+  sys_focus_task=Fs;
   sys_macro_root.next=sys_macro_root.last=&sys_macro_root;
   sys_dft_iso_name="::/Temp/CDDVD.ISO";
   MemSet(mp_apic_ids,0,MP_MAX_PROCESSORS*sizeof(U8));
@@ -30,9 +39,16 @@ U0 SysGlblsInit()
 	set_bits_table[i]++;
 
   ext=CAlloc(EXT_TABLE_SIZE*sizeof(U0 *));
+  ext[EXT_DEBUGGER]=&SysDbgEnter;
+  ext[EXT_EXIT_DEBUGGER]=&SysDbgExit;
+  fp_mgets=&SysMGetS;
+
   fp_ctrl_alt_let_cbs=CAlloc(26*sizeof(U0 *));
   ctrl_alt_let_descs=CAlloc(26*sizeof(U8 *));;
   ctrl_alt_let_in_irq_flags=0;
+
+  psect_cache=CAlloc(PSECT_CACHE_SIZE*sizeof(PSectCacheEntry));
+  psect_cache_index=0;
 
   StrCpy(sys_temp_filename,"HOME/Temp.TXZ");
   MemSet(&sys_put_key_root,0,sizeof(KeyDevStruct));
@@ -41,8 +57,10 @@ U0 SysGlblsInit()
   KeyDevAdd(&AKDTaskPutKey,&AKDTaskPutS,0x50000000,TRUE);
   KeyDevAdd(&AKDRawDisplayPutKey,&AKDRawDisplayPutS,0x60000000,FALSE);
   #exe {
-    StreamPrintF("sys_startup_acct=\"%s\";",osmain_cfg->startup_acct);
-    StreamPrintF("LTDCInit(%d);",osmain_cfg->dsk_cache_size);
+    StreamPrintF("sys_acct_name=\"%s\";",osmain_cfg->acct_name);
+    StreamPutS("#exe{OptOff(OPTf_PAREN_WARN);}");
+    StreamPrintF("LTDCInit(%s);",osmain_cfg->dsk_cache_size_exp);
+    StreamPutS("#exe{OptOn(OPTf_PAREN_WARN);}");
   };
   pow10_I64=CAlloc(sizeof(F64)*(308+308+1));
   for (i=-308;i<309;i++)
@@ -52,10 +70,10 @@ U0 SysGlblsInit()
   i=1; //Request 1 blk, we might get more.
   m=AllocUncachedMemBlks(&i,sys_code_bp);
   sys_uncached_heap=IndependentHeapCtrlInit(m,i*0x200000/0x200);
-
-  for (i=0;i<NUM_PROGRESS_BARS;i++)
-    progress_descs[i]=AMAlloc(PROGRESS_DESC_LEN+1);
   ProgressBarsRst;
+  date_fmt_map=MAlloc(NUM_DATE_FMTS);
+  time_fmt_map=MAlloc(NUM_TIME_FMTS);
+  DateTimeFmtMapsRst;
 }
 
 U0 SysGrInit()
@@ -87,7 +105,7 @@ U0 SysGrInit()
 U0 TimersInit()
 {
   U64 i,*qq;
-  U32 *dd;
+  U32 *_d;
 
   OutU8(0x43,0x34);
   OutU8(0x40,SYS_TIMER0_PERIOD);
@@ -97,10 +115,10 @@ U0 TimersInit()
 
   if (PCIReadU16(0,31,0,0)==0x8086) { //Intel?
     //D31 F0, cfg 0xF0=RCBA of PCI-LPC Bridge
-    dd=PCIReadU32(0,31,0,0xF0)><(U8 *)&~0x3FFF+0x3404; //HPET cfg
+    _d=PCIReadU32(0,31,0,0xF0)><(U8 *)&~0x3FFF+0x3404; //HPET cfg
   //7	enable
   //1:0 HPET is at 0xFED00000,0xFED01000, 0xFED02000 or 0xFED03000.
-    *dd=*dd&3|0x80;
+    *_d=*_d&3|0x80;
   }
 
   qq=HPET_GCAP_ID;
@@ -151,6 +169,28 @@ U0 Reboot()
   SysHlt;
 }
 
+BoolI64 AdamStartUpScripts()
+{
+  BoolI8 result=TRUE;
+  LexStruct *lx;
+  Cd("/LT/OSMain");
+  lx=LexNew(TextFileRead("Adam1.APZ"),1<<Lf_RAW_ERRORS,
+    StrNew("::/LT/OSMain/Adam1.APZ"));
+  InsQue(lx,Fs->last_lex);
+
+  //Continues Here [/LT/OSMain/Adam1.APZ,1] /LT/OSMain/Adam1.APZ
+  try {
+    Lex(lx);
+    ExeCmdLine(lx);
+    RemQue(lx);
+    LexDel(lx);
+  } catch {
+    CatchAll;
+    result=FALSE;
+  }
+  return result;
+}
+
 U0 OSMain()
 { //Continued from [::/LT/OSMain/OSStartUp.CPZ,I32 &OSMain] OSMain
   adam_task=Fs;
@@ -179,14 +219,14 @@ U0 OSMain()
 //to debug.  After this point, use [C:/LT/OSMain/Dbg1a.CPZ,183] DbgNum()
   LBts(&sys_run_level,RLf_RAW);
 
-  if (BIOSTotalMem<500*0x100000)
-    Dbg("Requires 512 Meg of RAM Memory");
+  if (BIOSTotalMem<250*0x100000)
+    Dbg("Requires 256 Meg of RAM Memory");
 
   TimersInit;
   IntsInit;
   IntsInit; //Maybe we had slave IRQ pending, so do it again
 
-  PutS("Enable IRQ's\r\n");
+  "Enable IRQ's\r\n";
   SetFlags(SYS_NORMAL_RFLAGS);
   BusyWait(2000);
   IDTInitComplete;
@@ -196,7 +236,7 @@ U0 OSMain()
 
 #exe {
   if (!osmain_cfg->opts[CFG_NO_MP])
-    StreamPutS("PutS(\"MultiCore Start\\r\\n\");"
+    StreamPutS("\"MultiCore Start\\r\\n\";"
 	       "MPStart;");
 };
   LBts(&sys_run_level,RLf_MP);
@@ -214,9 +254,9 @@ U0 OSMain()
   else
     Spawn(&MouseDriverInstall);
 
-  PutS("BlkDevsInitAll\r\n");
+  "BlkDevsInitAll\r\n";
   BlkDevsInitAll;
-  PutS("BlkDevsInitAll Done\r\n");
+  "BlkDevsInitAll Done\r\n";
 #exe {
   if (osmain_cfg->cdrom_ports_pmt)
     StreamPutS("if (boot_drv_pmt) PutDefine(\"ST_CDROM_PORTS_PMT\");");
@@ -225,18 +265,17 @@ U0 OSMain()
   HomeDirRst;
   LBts(&sys_run_level,RLf_DSK);
 
-  PutS("Loading Compiler\r\n");
+  "Loading Compiler\r\n";
   Cd("/LT/Compiler");
   Load("Compiler",LDF_SILENT);
+
   time_stamp_freq_initial=TimeStampFreqCal;
   InDbg(OFF);
   LBts(&sys_run_level,RLf_COMPILER);
 
-  PutS("Loading OSMain2\r\n");
-  Cd("/LT/OSMain2");
-  //This runs the start-up scripts.
-  //See [C:/LT/OSMain2/OSMain2.CPZ,189] OSMain2().
-  Load("OSMain2",LDF_SILENT);
+  "Adam Start-Up Scripts...\r\n";
+  if (!AdamStartUpScripts)
+    Dbg("Adam Start-Up Error");
 
   LBts(&sys_run_level,RLf_ADAM_SERVER);
   ServantTaskCont; //Never to return

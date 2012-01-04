@@ -8,9 +8,9 @@ PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
-PutS("F(\"Dir\");");
+"F(\"Dir\");";
 AFPmtStr("\r");
 
 
@@ -25,9 +25,9 @@ PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
-PutS("F(\"Dir\",\"+l\");");
+"F(\"Dir\",\"+l\");";
 AFPmtStr("\r");
 
 
@@ -43,9 +43,9 @@ PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
-PutS("F(\"Dir\",\"+l-i\");");
+"F(\"Dir\",\"+l-i\");";
 AFPmtStr("\r");
 
 
@@ -61,9 +61,9 @@ PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
-PutS("Ed(\"HOME/Adam3eWrappers.APZ\");");
+"Ed(\"HOME/Adam3eWrappers.APZ\");";
 AFPmtStr("\r");
 
 Sleep(2000);

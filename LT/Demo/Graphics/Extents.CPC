@@ -22,7 +22,7 @@ U0 Extents()
 //We want screen, not window coordinates.
   I64 h=Fs->win_pixel_left+Fs->win_scroll_x,v=Fs->win_pixel_top+Fs->win_scroll_y;
 
-  PutS("$CL$");
+  "$CL$";
   GrDCClear;
 
 //This sets a flag to record the
@@ -47,8 +47,8 @@ U0 Extents()
   GrDCClear;
 
   GrSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
-  PrintF("X: %d to %d\r\n",min_x,max_x);
-  PrintF("Y: %d to %d\r\n",min_y,max_y);
+  "X: %d to %d\r\n",min_x,max_x;
+  "Y: %d to %d\r\n",min_y,max_y;
 }
 
 Extents;

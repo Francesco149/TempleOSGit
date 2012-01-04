@@ -3,7 +3,7 @@
 To upgrade, you generally boot the new LoseThos CD/DVD, install on top of
 your 
 partition, modify your files and set it to boot your account by executing 
-[C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().  Often, your code will have
+[C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().  Often, your code will have
 to be modified to work with the new 
 version.  See [::/LT/Doc/ChangeLog.TXZ] ChangeLog.  You might have to boot an
 alternate partition or the 

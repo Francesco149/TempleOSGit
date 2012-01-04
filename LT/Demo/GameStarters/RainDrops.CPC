@@ -60,7 +60,7 @@ U0 UpdateCurBase(TaskStruct *task,GrDC *dc)
 {
   BoolI8 old_preempt=Preempt(OFF);
   cur_dc->color=BLACK;
-  GrBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
+  GrDCBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
   Preempt(old_preempt);
 }
 
@@ -166,7 +166,7 @@ U0 RainDrops()
       );
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  cur_dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  cur_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
   sc_1=A2ScanCode('1');
   sc_2=A2ScanCode('2');
   Init;

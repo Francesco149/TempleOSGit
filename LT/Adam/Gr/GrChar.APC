@@ -96,13 +96,11 @@ U0 DrawTaskBorder(TaskStruct *task)
 {
   PushFD;
   Cli;
-  DrawBorder(task,task==sys_cur_focus_task,
+  DrawBorder(task,task==sys_focus_task,
     task->win_left,task->win_right,
     task->win_top,task->win_bottom,
     task->border_attr,FALSE);
   PopFD;
 }
-
-
 
 #help_index "Graphics"

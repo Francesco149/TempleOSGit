@@ -30,23 +30,23 @@ U0 Main()
   t0=tP;
   for (i=1000000000;i;i--)
     i_sum+=i_val;
-  PrintF("Integer Sum:%.9f Time:%7.3fs\r\n",i_sum/ToF64(0x100000000),tP-t0);
+  "Integer Sum:%.9f Time:%7.3fs\r\n",i_sum/ToF64(0x100000000),tP-t0;
 
   f_val= 2.0000002;
   t0=tP;
   for (i=1000000000;i;i--)
     f_sum+=f_val;
-  PrintF("Float   Sum:%.9f Time:%7.3fs\r\n",f_sum,tP-t0);
+  "Float   Sum:%.9f Time:%7.3fs\r\n",f_sum,tP-t0;
   CrLf;
 }
 
 U0 DoIt2()
 {
   U64 i=0x123456789ABCDEF0;
-  PrintF("i           =%X\r\n",i);
+  "i           =%X\r\n",i;
 
-  PrintF("i&0xFFFFFFFF=%X\r\n",i&0xFFFFFFFF);
-  PrintF("i>>32       =%X\r\n",i>>32);
+  "i&0xFFFFFFFF=%X\r\n",i&0xFFFFFFFF;
+  "i>>32       =%X\r\n",i>>32;
 
 /*
   Standard integer types are declared
@@ -77,8 +77,8 @@ features, see [::/LT/Doc/Differences.TXZ] ::/LT/Doc/Differences.TXZ.
 
 */
 
-  PrintF("i.u32[0]    =%X\r\n",i.u32[0]);
-  PrintF("i.u32[1]    =%X\r\n",i.u32[1]);
+  "i.u32[0]    =%X\r\n",i.u32[0];
+  "i.u32[1]    =%X\r\n",i.u32[1];
 }
 
 CPURep;

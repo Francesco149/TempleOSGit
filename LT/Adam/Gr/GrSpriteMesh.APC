@@ -396,7 +396,7 @@ U0 MPDrawIt(GrMFrame *e) //Multiprocessing draw it, called by each core.
   dc->x=e->dc->x;
   dc->y=e->dc->y;
   dc->z=e->dc->z;
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
 
   if (e->grid_on)
     //Draw grid with different cores.
@@ -660,7 +660,7 @@ U0 UpdateWin(TaskStruct *task)
   TaskDerivedValsUpdate(task);
   GrMRecalcCxCy(task,e);
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
 
   Free(dc->r); //Set rotmat doesn't free old dc->r matrix.
   GrSetRotMat(dc,GrMSetW2S(e,task));
@@ -747,7 +747,7 @@ U0 UpdateWin(TaskStruct *task)
   GrLine3(dc,x,y,z,x,y,0);
 
   if (e->select_rect) {
-    dc->flags&=~BMF_TRANSFORMATION;
+    dc->flags&=~DCF_TRANSFORMATION;
     dc->pen_width=1;
     if (Blink(,tP(task)))
       dc->color=ROPF_DITHER+RED<<16+WHITE;
@@ -898,7 +898,7 @@ U0 GrMUpdateMenu(GrMFrame *e)
     tempse->checked=ToBool(e->flip_y);
 }
 
-public I32 *GrSpriteMesh(I32 *root=NULL,I64 *_size=NULL,BoolI8 flip_y=FALSE)
+I32 *GrSpriteMesh(I32 *root=NULL,I64 *_size=NULL,BoolI8 flip_y=FALSE)
 /*
 
 Fmt for mesh:
@@ -951,9 +951,9 @@ See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
   "Edit {"
   "  Delete(,,SC_DELETE);"
   "  DelLast(,CH_BACKSPACE);"
-  "  Cut(,0,0x3D300000253);"
-  "  Copy(,0,0x4D200000452);"
-  "  Paste(,0,0x2D200000252);"
+  "  Cut(,CH_CTRLX);"
+  "  Copy(,CH_CTRLC);"
+  "  Paste(,CH_CTRLV);"
   "  SelectAll(,'A');"
   "  UnSelectAll(,'U');"
   "  SelectRect(,'a');"
@@ -995,15 +995,15 @@ See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF); //We don't really want window update while modifying links
   AcctOneTimePopUp(ARf_MESH_ED,
-  "$FG,GREEN$Right Mouse$FG$: Hold and move to shift cursor z\r\n"
-  "$FG,GREEN$'j'$FG$: Jump cursor Z to nearest vertex's Z\r\n"
-  "$FG,GREEN$'v'$FG$: Place Vertex Mode\r\n"
-  "$FG,GREEN$'t'$FG$: Make Triangle Mode\r\n"
-  "$FG,GREEN$'m'$FG$: Move Vertex Mode\r\n"
-  "$FG,GREEN$'M'$FG$: Move Vertex Z\r\n"
-  "$FG,GREEN$'c'$FG$: Set color\r\n"
-  "$FG,GREEN$'s'$FG$: Set snap\r\n"
-  "\r\nSee menu at top of screen for more.\r\n");
+	"$FG,GREEN$Right Mouse$FG$: Hold and move to shift cursor z\r\n"
+	"$FG,GREEN$'j'$FG$: Jump cursor Z to nearest vertex's Z\r\n"
+	"$FG,GREEN$'v'$FG$: Place Vertex Mode\r\n"
+	"$FG,GREEN$'t'$FG$: Make Triangle Mode\r\n"
+	"$FG,GREEN$'m'$FG$: Move Vertex Mode\r\n"
+	"$FG,GREEN$'M'$FG$: Move Vertex Z\r\n"
+	"$FG,GREEN$'c'$FG$: Set color\r\n"
+	"$FG,GREEN$'s'$FG$: Set snap\r\n"
+	"\r\nSee menu at top of screen for more.\r\n");
 
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
   Fs->horz_scroll.pos=0;
@@ -1147,6 +1147,26 @@ SG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
 	      break;
 	    case CH_CTRLB:
 	      WinBorder(Bt(&Fs->display_flags,DISPLAYf_NO_BORDER));
+	      break;
+	    case CH_CTRLC:
+	      if (e.mode=='t') {
+		Beep;Beep;
+	      } else
+		GrMClipBoardCopy(&e);
+	      break;
+	    case CH_CTRLV:
+	      if (e.mode=='t') {
+		Beep;Beep;
+	      } else {
+		GrMClipBoardPaste(&e);
+		e.mode='m';
+	      }
+	      break;
+	    case CH_CTRLX:
+	      if (e.mode=='t') {
+		Beep;Beep;
+	      } else
+		GrMClipBoardCut(&e);
 	      break;
 	    case CH_SHIFT_ESC:
 	      save_and_exit=FALSE;

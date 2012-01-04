@@ -96,7 +96,7 @@ U64 HashEntrySize(SrcSymHashEntry *temph)
     else if (temph->type & HTT_FUN) {
       result+=MemberListSize(temph);
       if (dbg=temph->debug)
-	//This should be [C:/LT/OSMain/Memory.CPZ,920] MSize() but it would crash on static .BIZ file funs.
+	//This should be [C:/LT/OSMain/Memory.CPZ,952] MSize() but it would crash on static .BIZ file funs.
 	result+=dbg->body[dbg->max_line-dbg->min_line+1]-temph><(ClassStruct *)->executable_addr;
     } else if (temph->type&HTT_DEFINE_STR)
       result+=MSize2(temph><(DefineStrHashEntry *)->data);

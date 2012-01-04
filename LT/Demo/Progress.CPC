@@ -1,7 +1,7 @@
 /*
-  [C:/LT/OSMain/Adam1b.HPZ,42] progress1-[C:/LT/OSMain/Adam1b.HPZ,45] progress4 are just global vars
+  [C:/LT/OSMain/Adam1b.HPZ,42] progress1-[C:/LT/OSMain/Adam1b.HPZ,51] progress4 are just global vars
   shown on the wallpaper. I use them in debugging a lot.
-  If you set [C:/LT/OSMain/Adam1b.HPZ,48] progress1_max-[C:/LT/OSMain/Adam1b.HPZ,51] progress4_max,
+  If you set [C:/LT/OSMain/Adam1b.HPZ,43] progress1_max-[C:/LT/OSMain/Adam1b.HPZ,52] progress4_max,
   then a bar will display.
 */
 
@@ -19,8 +19,8 @@ U0 Main()
 
 Main;
 
-PutS("$FG,LTRED$Now, from asm...  It's handy for debugging.$FG$\r\n");
-PutS("$FG,LTRED$Watch the progress on the wallpaper.$FG$\r\n");
+"$FG,LTRED$Now, from asm...  It's handy for debugging.$FG$\r\n"
+"$FG,LTRED$Watch the progress on the wallpaper.$FG$\r\n";
 PressAKey;
 
 asm {

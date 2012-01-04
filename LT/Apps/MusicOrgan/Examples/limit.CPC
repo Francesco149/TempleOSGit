@@ -4,14 +4,14 @@
 
 //9 has graphics
 
-F64 t0=tJ;
+F64 t0=tM;
 
 /* <1> <1> (image) */
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 dt=(tJ-t0)*music_tempo;
+  F64 dt=(tM-t0)*music_tempo;
 
   dc->color=BLACK;
   if (dt<21.5)
@@ -32,7 +32,7 @@ U0 Song()
   music_stacatto_factor= 0.900;
   try {
   while (!ScanKey) {
-	t0=tJ;
+	t0=tM;
 	Play("W13qBDAGFFeBAsD2G3D2G",
 		"Do \0not \0push \0your \0luck.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
 	Play("3qBDAGFFeBAsD2G3D2G",
@@ -41,7 +41,7 @@ U0 Song()
 		"God \0is \0not \0 \0a \0schmuck.\r\n\0 \0 \0 \0 \0 \0");
 	Play("GFCeCGqFetAAFqEF",
 		"God \0is \0not \0 \0a \0schmuck.  \0 \0 \0 \0No!\r\n\0 \0");
-	t0=tJ;
+	t0=tM;
 	Play("BDAGFFeBAsD2G3D2G",
 		"\r\nDo \0not \0tell \0the \0Lord\r\n\0 \0 \0 \0 \0 \0 \0 \0");
 	Play("3qBDAGFFeBAsD2G3D2G",
@@ -50,7 +50,7 @@ U0 Song()
 		"He \0will \0send \0 \0the \0sword.\r\n\0 \0 \0 \0 \0 \0");
 	Play("GFCeCGqFetAAFqEF",
 		"He \0will \0send \0 \0the \0sword.  \0 \0 \0 \0Yep!\r\n\r\n\0 \0");
-	PutS("$FG,GREEN$(Boredom is an insult to the Creator.\r\nWe are like guest at a banquet.)\r\n$FG$");
+	"$FG,GREEN$(Boredom is an insult to the Creator.\r\nWe are like guest at a banquet.)\r\n$FG$";
   }
   } catch
     CatchAll;

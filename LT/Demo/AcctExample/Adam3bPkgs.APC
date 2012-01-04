@@ -4,5 +4,5 @@
 Cd("HOME");;
 #include "::/LT/Accts/TS/TSAdam"
 #include "::/LT/Accts/TS/TSDistribute"
-#include "::/LT/Demo/WebLogExample/LogRep.CPZ"
+#include "::/LT/Demo/WebLogExample/WebLogRep.CPZ"
 Cd("HOME");;

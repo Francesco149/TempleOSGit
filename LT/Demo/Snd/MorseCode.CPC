@@ -62,27 +62,26 @@ U0 MorseTable()
   I64 i=0;
   for (i=0;i<13;i++ ) {
     if (st=ListEntryPoint(i,morse_list))
-      PrintF("$FG,RED$%C$FG$ %-7s ",*st,st+1);
+      "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     if (st=ListEntryPoint(i+13,morse_list))
-      PrintF("$FG,RED$%C$FG$ %-7s ",*st,st+1);
+      "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     if (st=ListEntryPoint(i+26,morse_list))
-      PrintF("$FG,RED$%C$FG$ %-7s ",*st,st+1);
+      "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     if (st=ListEntryPoint(i+39,morse_list))
-      PrintF("$FG,RED$%C$FG$ %-7s ",*st,st+1);
+      "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     CrLf;
   }
   CrLf;
 }
 
-I64 m_start,m_end;
-F64 dt_down,dt_up;
+F64 m_start,m_end,dt_down,dt_up;
 BoolI8 space_sent;
 
 U8 *MorseTimes(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
 {
   nounusedwarn l,ll;
   U8 *st=MAlloc(64,mem_task);
-  SPrintF(st,"Down:%12.6f Up:%12.6f",dt_down,dt_up);
+  SPrintF(st,"Down:%10.6f Up:%10.6f",dt_down,dt_up);
   return st;
 }
 
@@ -94,9 +93,9 @@ I64 MorseWaitKey()
   while (TRUE) {
     if (m_start) {
       GetMsg(NULL,NULL,1<<MSG_KEY_UP);
+      m_end=tP;
       Snd(0);
-      m_end=kbd_evt_time;
-      dt_down=(m_end-m_start)/ToF64(time_stamp_freq);
+      dt_down=m_end-m_start;
       m_start=0;
       space_sent=FALSE;
       if (dt_down<M_DASH_THRESHOLD)
@@ -106,7 +105,7 @@ I64 MorseWaitKey()
     } else {
       if (!space_sent) {
 	while (!ScanMsg(&ch,NULL,1<<MSG_KEY_DOWN)) {
-	  dt=(GetTimeStamp-m_end)/ToF64(time_stamp_freq);
+	  dt=tP-m_end;
 	  if (dt>=M_SPACE_THRESHOLD) {
 	    space_sent=TRUE;
 	    return CH_SPACE;
@@ -115,14 +114,14 @@ I64 MorseWaitKey()
 	}
       } else
 	ch=GetChar(NULL,FALSE);
+      m_start=tP;
       Snd(1000);
       if (ch==CH_SHIFT_ESC || ch==CH_ESC) {
 	CrLf;
 	Snd(0);
 	ThrowBreak; //exit program
       }
-      m_start=kbd_evt_time;
-      dt_up=(m_start-m_end)/ToF64(time_stamp_freq);
+      dt_up=m_start-m_end;
       if (!space_sent && dt_up>=M_SPACE_THRESHOLD) {
 	space_sent=TRUE;
 	return CH_SPACE;
@@ -139,12 +138,12 @@ U0 Morse()
 
   MorseTable;
   m_start=0;
-  m_end=GetTimeStamp;
+  m_end=tP;
   dt_down=0;
   dt_up=0;
   space_sent=TRUE;
 
-  PutS("$FG,GREEN$");
+  "$FG,GREEN$";
 
   //We don't want the tag call back
   //called before we set it, so preempt off.
@@ -153,7 +152,7 @@ U0 Morse()
   ll->tag_cb=&MorseTimes;
   Preempt(old_preempt);
 
-  PutS("$FG$\r\n");
+  "$FG$\r\n";
 
   dst=buf;
   while (TRUE) {
@@ -163,16 +162,16 @@ U0 Morse()
       src=morse_list;
       while (*src) {
 	if (!StrCmp(src+1,buf)) {
-	  PrintF("$FG,GREEN$%C$FG$",*src);
+	  "$FG,GREEN$%C$FG$",*src;
 	  break;
 	} else
 	  src+=StrLen(src)+1;
       }
-      PutChar(CH_SPACE);
+      '' CH_SPACE;
       dst=buf;
     } else {
       if (dst-buf<sizeof(buf)-1) {
-	PutChar(ch);
+	'' ch;
 	*dst++=ch;
       }
     }

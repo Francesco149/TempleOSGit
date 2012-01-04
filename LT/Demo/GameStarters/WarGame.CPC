@@ -99,18 +99,18 @@ U0 DrawTrooper(TaskStruct *task,GrDC *dc,Trooper *tempt,U64 color)
     dc->bkcolor=BLACK;
     gx=x;gy=y;
     if (tempt->dx<0) {
-      dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+      dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,x,y,x,y+1);
       gx-=13;
       gy-=7;
     } else {
-      dc->flags&=~BMF_SYMMETRY|BMF_JUST_MIRROR;
+      dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
       gx+=13;
       gy-=7;
     }
     if (GetTimeStamp<tempt->fire_end_time) {
       GrSpritePlot3(dc,x,y,0,__BIN_5);
-      dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+      dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
       if (!tempt->player)
 	dc->color=friendly_fire_color;
       else
@@ -122,7 +122,7 @@ U0 DrawTrooper(TaskStruct *task,GrDC *dc,Trooper *tempt,U64 color)
       inter=GrSpriteInterpolate(gr_trooper[tt%NUM_FRAMES],gr_trooper[(tt+1.0)%NUM_FRAMES],tt%1.0);
       GrSpritePlot3(dc,x,y,0,inter);
       Free(inter);
-      dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+      dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
 
     if (GetTimeStamp>=fire_end_time)
@@ -354,8 +354,8 @@ U0 WarGame()
   Init;
   Fs->update_win=&UpdateWin;
   PopUpOk("Wheel Ctrls Cmd Strength.\r\n"
-  "Attract or repel with\r\n"
-      "left or right button.\r\n");
+	"Attract or repel with\r\n"
+	"left or right button.\r\n");
 
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_MENU;
   try {

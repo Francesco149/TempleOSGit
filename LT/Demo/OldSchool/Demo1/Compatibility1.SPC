@@ -28,7 +28,7 @@ void main()
   double d;
   bool b;
 
-  LtfClear;
+  LtfClear();
   PrintF("char\t:%d\r\n",sizeof(ch));
   PrintF("bool\t:%d\r\n",sizeof(b));
   PrintF("short\t:%d\r\n",sizeof(s));
@@ -37,7 +37,7 @@ void main()
   PrintF("double\t:%d\r\n",sizeof(d));
 }
 
-main; //run main() when [C:/LT/OSMain/Hash1a.CPZ,733] Load()ed.
+main(); //run main() when [C:/LT/OSMain/Hash1a.CPZ,733] Load()ed.
 
 
 

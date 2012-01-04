@@ -46,27 +46,27 @@ U0 SpanBridge1Init(Ode *ode)
   }
 
   LtfBottom;
-  PutS("$CL$$BG,LTCYAN$");
+  "$CL$$BG,LTCYAN$";
   CrLf(SKY_LINES);
   for (i=0;i<10;i++) {
-    PutS("$BG,BROWN$");
+    "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS);
-    PutS("$BG,LTCYAN$");
+    "$BG,LTCYAN$";
     Spaces(TEXT_COLS-2*RIVER_BANK_COLS);
-    PutS("$BG,BROWN$");
+    "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS);
     CrLf;
   }
   for (i=0;i<5;i++) {
-    PutS("$BG,BROWN$");
+    "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS+i);
-    PutS("$BG,BLUE$");
+    "$BG,BLUE$";
     Spaces(TEXT_COLS/2-RIVER_BANK_COLS-2*i);
-    PutS("$BG,BROWN$");
+    "$BG,BROWN$";
     Spaces(2*i);
-    PutS("$BG,BLUE$");
+    "$BG,BLUE$";
     Spaces(TEXT_COLS/2-RIVER_BANK_COLS-2*i);
-    PutS("$BG,BROWN$");
+    "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS+i);
     CrLf;
   }

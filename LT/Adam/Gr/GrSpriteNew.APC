@@ -144,10 +144,10 @@ public U8 *GrDC2Sprite(GrDC *tempb)
   GrSprite *tempg;
   GrDC *tempb1;
   BoolI8 temp_bitmap;
-  if (tempb->type!=BMT_COLOR4) {
-    tempb1=GrDCNew(BMT_COLOR4,tempb->width,tempb->height,Fs);
+  if (tempb->type!=DCT_COLOR4) {
+    tempb1=GrDCNew(DCT_COLOR4,tempb->width,tempb->height,Fs);
     tempb1->color=WHITE;
-    GrBlot(tempb1,0,0,tempb);
+    GrDCBlot(tempb1,0,0,tempb);
     temp_bitmap=TRUE;
   } else {
     tempb1=tempb;

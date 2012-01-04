@@ -7,17 +7,17 @@ U0 WsPutMatrix(WsMatrix *m)
   WsMatrixSide *ms;
   WsStruct *tempw;
 
-  PrintF("n:%d\r\n",m->n);
+  "n:%d\r\n",m->n;
   for (i=0;i<ws_num_matrix_words;i++) {
     ms=&m->side[i];
-    PrintF("col:%d rhits:%d chits:%d\r\n",i,ms->row_hits,ms->col_hits);
+    "col:%d rhits:%d chits:%d\r\n",i,ms->row_hits,ms->col_hits;
     tempw=ms->next;
     while (tempw!=ms) {
-      PrintF("substructs:%d entries:%d\r\n",tempw->substructs,tempw->entries);
+      "substructs:%d entries:%d\r\n",tempw->substructs,tempw->entries;
       for (j=0;j<tempw->substructs;j++) {
-	PrintF("(%04X %04X) ",
+	"(%04X %04X) ",
 	  tempw->subs[j].hits,
-	  tempw->subs[j].repeats);
+	  tempw->subs[j].repeats;
       }
       CrLf;
       tempw=tempw->next;
@@ -57,7 +57,7 @@ U0 WsSidesInit(WsMatrix *m)
     m->side[i].row_hits=0;
     m->side[i].col_hits=0;
     tempa=AMAlloc(sizeof(WsStruct));
-    ws_num_structs++;
+    ws_structs_size+=MSize2(tempa);
     tempa->subs[0].hits=0;
     tempa->subs[0].repeats=ws_num_matrix_words;
     tempa->entries=ws_num_matrix_words;
@@ -152,8 +152,8 @@ U0 WsRem(WsSubStruct *s,WsStruct *parent)
     return;
   if (parent->substructs==1) {
     RemQue(parent);
+    ws_structs_size-=MSize2(parent);
     Free(parent);
-    ws_num_structs--;
   } else {
     parent->entries-=s->repeats;
     parent->substructs--;
@@ -172,7 +172,7 @@ WsSubStruct *WsInsert(WsSubStruct *s,WsStruct **_parent,WsSubStruct *last)
     *_parent=parent;
     if (parent->substructs==-1) {
       tempa=AMAlloc(sizeof(WsStruct));
-      ws_num_structs++;
+      ws_structs_size+=MSize2(tempa);
       InsQue(tempa,parent->last);
       parent=tempa;
       *_parent=parent;
@@ -184,7 +184,7 @@ WsSubStruct *WsInsert(WsSubStruct *s,WsStruct **_parent,WsSubStruct *last)
     tempa=parent->next;
     if (tempa->substructs==-1 || tempa->substructs==WS_SUBSTRUCTS_PER_STRUCT) {
       tempa=AMAlloc(sizeof(WsStruct));
-      ws_num_structs++;
+      ws_structs_size+=MSize2(tempa);
       tempa->entries=0;
       tempa->substructs=0;
       InsQue(tempa,parent);
@@ -542,13 +542,13 @@ U0 WsTask(U64 dummy=0)
   do {
     Sleep(333);
     if (Bt(&ws_flags,WSf_ENABLE)) {
-      original_focus_task=focus_task=sys_cur_focus_task;
+      original_focus_task=focus_task=sys_focus_task;
       while (TaskValidate(focus_task) && Bt(&focus_task->task_flags,TASKf_INPUT_FILTER_TASK))
 	focus_task=focus_task->parent_task;
       if (TaskValidate(focus_task) && (l=LtfCur(focus_task)) &&
 	  focus_task!=Fs && Bt(&focus_task->display_flags,DISPLAYf_SHOW)) {
 	LtfLock(l);
-	if (TaskValidate(focus_task) && original_focus_task==sys_cur_focus_task &&
+	if (TaskValidate(focus_task) && original_focus_task==sys_focus_task &&
 	     l->ltf_signature==LTF_SIGNATURE_VAL && l==LtfCur(focus_task) &&
 	    (ll=l->cur_entry)) {
 	  if (ll==l) ll=ll->last;
@@ -578,7 +578,7 @@ U0 WsMainFileListTraverse(U8 *files_find_mask,I64 pass)
     flist=FilesOrder(FilesFind(files_find_mask,
 	FUF_RECURSE|FUF_JUST_TEXT_FILES|FUF_JUST_FILES|FUF_FLATTEN_TREE),&cnt);
     for (i=0;i<cnt;i++) {
-      PrintF("%s\r\n",flist[i]->full_name);
+      "%s\r\n",flist[i]->full_name;
       buf=TextFileRead(flist[i]->full_name);
       WsSingleFileAdd(buf,pass);
       Free(buf);
@@ -672,11 +672,11 @@ public U0 WsInit(U8 *mask)
 
   ws_num_words=0;
   ws_num_matrix_words=0;
-  ws_num_structs=0;
+  ws_structs_size=0;
   Free(ws_cur_word);
   ws_cur_word=NULL;
 
-  PutS("\r\n\r\nPass #1\r\n");
+  "\r\n\r\nPass #1\r\n";
   WsMainFileListTraverse(mask,1);
   Free(ws_sorted_words);
   ws_sorted_words=AMAlloc(sizeof(U0 *)*ws_num_words);
@@ -696,9 +696,9 @@ public U0 WsInit(U8 *mask)
 
   WsMatrixDel(ws_matrix);
   ws_matrix=AMAlloc(sizeof(WsMatrix));
-
   WsSidesInit(ws_matrix);
-  PutS("\r\n\r\nPass #2\r\n");
+
+  "\r\n\r\nPass #2\r\n";
   WsMainFileListTraverse(mask,2);
 
   WsdWordsLoad;
@@ -706,5 +706,13 @@ public U0 WsInit(U8 *mask)
   LBtr(&ws_flags,WSf_INIT_IN_PROGRESS);
 }
 
-#help_index ""
+I64 WordStatSize()
+{
+  I64 result=0;
+  if (ws_hash_table)
+    result+=HashTableSize(ws_hash_table)+ws_structs_size+
+	MSize2(ws_sorted_words)+MSize2(ws_matrix)+MSize2(ws_dict_word_list);
+  return result;
+}
 
+#help_index ""

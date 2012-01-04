@@ -1,4 +1,4 @@
-//7 has words
+//9 has words
 //This is "modified" because I name this one, not God.
 //God called this a dirge.  I freaked
 //out not wanting a dirge so I sped it
@@ -9,7 +9,7 @@ U0 Song()
   Fs->task_end_cb=&SndTaskEndCB;
   music_tempo=2.0;
   while (TRUE) {
-    PutS("$FG,GREEN$God said this was a dirge.\r\n$FG$");
+    "$FG,GREEN$God said this was a dirge.\r\n$FG$";
     Play("FqDqDeACqEqEqDqDq",
       "Gone \0to \0sleep \0for \0the \0fi\0nal \0time.\r\n\0");
     Play("FqDqDeACqEqEqDqDq",

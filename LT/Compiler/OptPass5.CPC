@@ -12,7 +12,7 @@ U0 OptPass5(LexStruct *lx)
     if (code>EC_NOP1) {
       if (tempi->ic_flags&ICF_TRACE) {
 	if (Bt(&lx->pass_trace_mask,5)) {
-	  PrintF("%2d:",ps->ptr);
+	  "%2d:",ps->ptr;
 	  CbPutIc(tempi);
 	}
       }
@@ -132,7 +132,7 @@ U0 OptPass5(LexStruct *lx)
 		tempi1->p1.disp><(F64)=tempi1->p1.disp><(U64);
 	      else
 		tempi1->p1.disp><(F64)=tempi1->p1.disp><(I64);
-	    } else if (!(tempi->ic_flags&ICF_USE_INT))
+	    } else
 	      tempi->ic_flags|=ICF_P1_TO_F64;
 	  }
 

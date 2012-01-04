@@ -143,7 +143,7 @@ U0 MPDrawIt(TaskStruct *task)
   GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,lo=Gs->num*NUM_TREES/mp.mp_cnt,hi=(Gs->num+1)*NUM_TREES/mp.mp_cnt;
   MemCpy(dc->r,mp.r,sizeof(I64)*16);
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   for (i=lo;i<hi;i++)
     GrSpritePlotRotZ3b(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
@@ -174,7 +174,7 @@ U0 UpdateWin(TaskStruct *task)
     MPJob(&MPDrawIt,task,1<<MPCf_FREE_ON_COMPLETE,1<<i);
   MPDrawIt(task);
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   dc->color=BROWN;
   dc->pen_width=4;
   GrLine3(dc,2,2,0,MAP_WIDTH-3,2,0);

@@ -13,8 +13,8 @@ AcctRegExecuteBranch("DemoCompany/Game1");
 U0 Game()
 {
   I64 i=AcctRegExecuteBranch("DemoCompany/Game1/SimpleVal");
-  PrintF("High Score:%6.5f\r\n",best_score);
-  PrintF("Val:%d\r\n",i);
+  "High Score:%6.5f\r\n",best_score;
+  "Val:%d\r\n",i;
   i++;
   best_score=tNP;
 //You could combine these into one write by making

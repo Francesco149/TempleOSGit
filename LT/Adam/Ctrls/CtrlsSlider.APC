@@ -19,7 +19,7 @@ MgdMC *PmtSliderCtrl()
   MgdMCSlider *temps;
   U8 *st,pmt[64];
 
-  PutS("$FG,PURPLE$Slider Ctrl$FG$\r\n\r\n");
+  "$FG,PURPLE$Slider Ctrl$FG$\r\n\r\n";
 
   result->glbl_name=PmtStr("Glbl Struct Name (ENTER for No Glbl):");
   result->range=PmtI64	("Range   (%4d):",30);

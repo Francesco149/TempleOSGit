@@ -41,7 +41,7 @@
 
 
 
-F64 t0=tJ;
+F64 t0=tM;
 
 #define PHASE1	9.5
 #define PHASE2	10.0
@@ -55,7 +55,7 @@ F64 t0=tJ;
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 dt=(tJ-t0)*music_tempo;
+  F64 dt=(tM-t0)*music_tempo;
   U8 *inter;
 	 if (dt<PHASE1)
     GrSpritePlot3(dc,MAN_X,MAN_Y,0,__BIN_1);
@@ -97,9 +97,9 @@ U0 Song()
     SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
     Fs->draw_it=&DrawIt;
     Fs->task_end_cb=&SndTaskEndCB;
-    PutS("$FG,GREEN$I did this melody.  The others are random.\r\n\r\n$FG$");
+    "$FG,GREEN$I did this melody.  The others are random.\r\n\r\n$FG$";
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       Play("M5/4W13qEAeDDCCqBEAeDD",
 	  "Up \0a\0bove \0He \0gen\0tly \0smiles\r\n\0as \0we \0meet \0and \0");
       Play("CCqBFBeEEDDqCF",

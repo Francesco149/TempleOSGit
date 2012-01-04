@@ -310,9 +310,9 @@ U0 DrawBackGroundTextLayer()
 {
   LtfBottom;
   LtfClear;
-  PutS("$BG,LTCYAN$");
+  "$BG,LTCYAN$";
   CrLf(GROUND_Y/FONT_HEIGHT);
-  PutS("$BG,YELLOW$");
+  "$BG,YELLOW$";
 }
 
 U0 Init()
@@ -360,7 +360,7 @@ U0 CleanUp()
   OdeDel(ode);
   LtfBottom;
   LtfClear;
-  PutS("$BG$");
+  "$BG$";
 }
 
 U0 SongTask(U64 dummy=0)

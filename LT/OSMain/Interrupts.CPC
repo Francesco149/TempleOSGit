@@ -3,10 +3,10 @@
 asm {
 USE64
 SYS_INITIAL_IRQ_VECTS::
-//[C:/LT/OSMain/Interrupts.CPZ,309] IDTInit() uses this table
+//[C:/LT/OSMain/Interrupts.CPZ,312] IDTInit() uses this table
 //for the initial vects.
 //Other handlers are set, later,
-//with [C:/LT/OSMain/Interrupts.CPZ,280] SetIDTEntry().
+//with [C:/LT/OSMain/Interrupts.CPZ,283] SetIDTEntry().
 //See SetIDTEntry Grep
 `Grep("SetIDTEntry","::/LT/"SRC_FILE_MASK);View;`
 
@@ -27,7 +27,7 @@ SYS_INITIAL_IRQ_VECTS::
 
 	DU32 &MPCrash,IRQ31;
 
-//Set [C:/LT/OSMain/Adam1a.HPZ,298] MAX_INITIAL_IDT if you add more
+//Set [C:/LT/OSMain/Adam1a.HPZ,301] MAX_INITIAL_IDT if you add more
 
 //I_WAKE
 IRQ31:
@@ -269,9 +269,12 @@ SYS_FAULT_ERR_CODE_BITMAP::
 	DU32	0x00027D00;
 }
 
-U0 *GetIDTEntry(U64 irq,U64 core_num=0)
+U0 *GetIDTEntry(U64 irq,U64 cpu_num=0)
 {
-  U64 result,*src=cpu_structs[core_num].idt><(U8 *)+irq*16;
+  U64 result,*src;
+  if (cpu_num>=mp_cnt&&cpu_num>Gs->num)
+    throw(EXCEPT_MULTICORE,3);
+  src=cpu_structs[cpu_num].idt><(U8 *)+irq*16;
   result.u16[0]=*src><(U16 *);
   src><(U8 *)+=6;
   result.u16[1]=*src><(U16 *)++;
@@ -279,13 +282,13 @@ U0 *GetIDTEntry(U64 irq,U64 core_num=0)
   return result;
 }
 
-U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 core_num=0,U64 type=IDTET_IRQ,U64 dpl=0)
+U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 cpu_num=0,U64 type=IDTET_IRQ,U64 dpl=0)
 {
-//See [C:/LT/OSMain/Adam1a.HPZ,283] IDTET_IRQ
+//See [C:/LT/OSMain/Adam1a.HPZ,286] IDTET_IRQ
 //See [::/LT/Demo/Lectures/InterruptDemo.CPZ] ::/LT/Demo/Lectures/InterruptDemo.CPZ
 //See [::/LT/Demo/MultiCore/Interrupts.CPZ] ::/LT/Demo/MultiCore/Interrupts.CPZ
-  U64 result=GetIDTEntry(irq,core_num);
-  U8 *dst=cpu_structs[core_num].idt><(U8 *)+irq*16;
+  U64 result=GetIDTEntry(irq,cpu_num);
+  U8 *dst=cpu_structs[cpu_num].idt><(U8 *)+irq*16;
   PushFD;
   Cli;
   *dst><(U16 *)++=fp_new_handler><(U64).u16[0];

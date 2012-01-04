@@ -198,7 +198,7 @@ U0 TouchFile(U8 *filename,U8 *attr,LTDate dt=0) //Just one file
   U8 buf[64];
   if (FileFind(filename,&de,FALSE,TRUE)) {
     if (!StrCmp(attr,"+?"))
-      PrintF("%-32ts %s\r\n",filename,SPrintFFlags(buf,Define("ST_FILE_ATTRS"),de.attr));
+      "%-32ts %s\r\n",filename,SPrintFFlags(buf,Define("ST_FILE_ATTRS"),de.attr);
     else {
       StrFirstRem(cur_dir,":");
       StrLastRem(cur_dir,"/");
@@ -221,7 +221,7 @@ U0 TouchList(LTDirEntry *tempm1,U8 *attr,LTDate dt=0)
     tempm2=tempm1->next;
     if (tempm1->attr & LT_ATTR_DIR) {
       if (tempm1->sub) {
-	PrintF("%S%s\r\n","ST_SCANNING_DIR",tempm1->full_name);
+	"%S%s\r\n","ST_SCANNING_DIR",tempm1->full_name;
 	TouchList(tempm1->sub,attr,dt);
       }
     } else
@@ -286,7 +286,7 @@ U0 PrintFDrvTextAttr(U8 drv_let=0)
   LTPrt *p=Drv2Prt(drv_let);
   U8 fg=p->text_attr&0xF,bg=p->text_attr>>4;
   if (fg!=bg)
-    PrintF("$FG,%d$$BG,%d$",fg,bg);
+    "$FG,%d$$BG,%d$",fg,bg;
 }
 
 I64 LTFSUnusedDrvSpace(U8 drv_let=0)
@@ -331,6 +331,7 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
 { //returns size in bytes
   I64 result=0;
   LTPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
+  U8 *old_dir=StrNew(Fs->cur_dir);
   Drv(drv_let);
   switch (p->type) {
     case PT_LT:
@@ -343,6 +344,8 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
       PutDefineErr("ST_UNSUPPORTED_FILE_SYSTEM");
   }
   Drv(Prt2Drv(p_old));
+  Cd(old_dir);
+  Free(old_dir);
   return result;
 }
 

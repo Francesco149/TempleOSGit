@@ -5,11 +5,12 @@ before import is resolved, you can use
 var and check it before calling.
 */
 import U0 MemberListDel(ClassStruct *tempc);
-import U0 UserTaskCont();
 import I64 ExePutS(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE);
 import I64 ExeFile(U8 *name,BoolI8 just_load=FALSE);
 import SysAcctStruct *AcctFind(U8 *name);
 import U0 DisplaySpecialKeys(I64 sc);
+import BoolI64 LtfUnlock(Ltf *l);
+import Ltf *EdJoin(U8 *filename,BoolI8 bail);
 
 extern U0 throw(...);
 extern U8 *FileNameAbs(U8 *name);
@@ -86,6 +87,7 @@ extern U0 TaskWaitIdle(TaskStruct *task);
 extern U0 TaskPause(TaskStruct *task,BoolI8 state);
 extern U0 UserTaskInit();
 extern U64 ServantCmdsHandler(TaskStruct *task=NULL);
+extern U0 PrintF(U8 *fmt,...);
 extern U0 PutS(U8 *st);
 extern U0 PutChar(U64 ch);
 extern U0 PutDefine(U8 *name);
@@ -94,3 +96,20 @@ extern U64 GetChar(U64 *scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE);
 extern BoolI64 IsInDbg();
 extern U64 FlushMsgs(TaskStruct *task=NULL);
 extern U0 SetMouseIP(I64 x,I64 y,I64 z,I64 l,I64 r,I64 c);
+extern U8 *MSPrintF(U8 *fmt,...);
+extern U8 *TextFileRead(U8 *filename,I64 *attr=NULL);
+extern U0 SPrintFPSect(U8 *buf,U64 add,U64 field_len);
+extern F64 Pow10I64(I64 i);
+extern I64 FloorI64(I64 num,I64 to);
+extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
+extern U0 UserTaskCont();
+
+#exe {
+  KeepPrivate(ON);
+  Externs2Imports(ON);
+};
+#include "/LT/Compiler/Compiler.HPZ"
+#exe {
+  Externs2Imports(OFF);
+  KeepPrivate(OFF);
+};

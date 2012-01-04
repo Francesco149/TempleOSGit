@@ -174,7 +174,7 @@ U0 UpdateWin(TaskStruct *task)
   (*dc->transform)(dc,&xx,&yy,&zz);
   dc->ls.x=xx; dc->ls.y=yy; dc->ls.z=zz;
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   dc->transform=&FPSTransform;
   dc->x=cx;
   dc->y=cy;
@@ -404,7 +404,7 @@ U0 Init()
   Free(panels_processed_bitmap);
   map=CAlloc(map_width*map_height*sizeof(U8));
   panels_processed_bitmap=MAlloc((map_width*map_height+7)>>3);
-  dc=GrDCNew(BMT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
+  dc=GrDCNew(DCT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
   GrSpritePlot3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
   for (y=1;y<map_height-1;y++)
     for (x=1;x<map_width-1;x++)
@@ -499,16 +499,26 @@ U0 MoveMan(F64 theta)
   } while (step);
 }
 
+#define MICRO_STEPS	4
+U0 RotateMan(F64 d)
+{
+  I64 i;
+  for (i=0;i<MICRO_STEPS;i++) {
+    man_theta+=d/MICRO_STEPS;
+    Sleep(15);
+  }
+}
+
 U0 FPS()
 {
   U64 sc;
 
   PopUpOk(
-  "I refuse to rip-off the original\r\n"
-  "so this is intentionally crappy\r\n"
-  "and included for demonstration\r\n"
-  "purposes.\r\n\r\n"
-      "Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\r\n"
+	"so this is intentionally crappy\r\n"
+	"and included for demonstration\r\n"
+	"purposes.\r\n\r\n"
+	"Write games, don't play them.\r\n");
 
   MenuPush(
   "File {"
@@ -551,10 +561,10 @@ U0 FPS()
 	case 0:
 	  switch (sc.u8[0]) {
 	    case SC_CURSOR_RIGHT:
-	      man_theta+=pi/32;
+	      Spawn(&RotateMan,(pi/32)><(U64));
 	      break;
 	    case SC_CURSOR_LEFT:
-	      man_theta-=pi/32;
+	      Spawn(&RotateMan,(-pi/32)><(U64));
 	      break;
 	    case SC_CURSOR_UP:
 	      MoveMan(man_theta);

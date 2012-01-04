@@ -118,28 +118,24 @@ U0 PutExcept()
   I64 i;
   if (Fs->except_argc>0) {
     if (Fs->except_argv[0]<DefineSubCnt("ST_EXCEPT_TYPES")) {
-      PrintF("Exception Type :%Z\r\n",Fs->except_argv[0],"ST_EXCEPT_TYPES");
+      "Exception Type :%Z\r\n",Fs->except_argv[0],"ST_EXCEPT_TYPES";
       if (Fs->except_argv[0]==EXCEPT_UNDEF_DEFINE)
-	PrintF("Name:'%s'\r\n",Fs->except_argv[1]);
+	"Name:'%s'\r\n",Fs->except_argv[1];
       else if (Fs->except_argv[0]==EXCEPT_DIVIDE_BY_ZERO)
-	PrintF("Addr:%P\r\n",Fs->except_argv[1]);
+	"Addr:%P\r\n",Fs->except_argv[1];
       else {
-	for (i=1;i<Fs->except_argc;i++) {
-	  PutHex(Fs->except_argv[i],16);
-	  Spaces;
-	}
+	for (i=1;i<Fs->except_argc;i++)
+	  "%016X ",Fs->except_argv[i];
 	CrLf;
       }
     } else {
-      PutS("Exception:");
-      for (i=0;i<Fs->except_argc;i++) {
-	PutHex(Fs->except_argv[i],16);
-	Spaces;
-      }
+      "Exception:";
+      for (i=0;i<Fs->except_argc;i++)
+	"%016X ",Fs->except_argv[i];
       CrLf;
     }
   } else
-    PutS("Generic Exception\r\n");
+    "Generic Exception\r\n";
 }
 
 U0 throw_join(I64 argc,I64 *argv)
@@ -182,8 +178,7 @@ U0 throw_no_log(...)
 
 U0 throw(...)
 {
-  if (fp_sprintf_join)
-    AdamLogExcept(argc,argv);
+  AdamLogExcept(argc,argv);
   throw_join(argc,argv);
 }
 
@@ -209,7 +204,7 @@ U0 ThrowBreak(TaskStruct *task=NULL)
   if (task && task!=Fs) {
     if (!TaskValidate(task)) return;
     //TODO: Might want lock
-    sys_cur_focus_task=task;
+    sys_focus_task=task;
     LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_C);
   } else
     SysThrowBreak;
@@ -233,4 +228,10 @@ BoolI64 BreakUnlock(TaskStruct *task=NULL)
       task->rip=&ThrowBreak;
   }
   return result;
+}
+
+U0 CatchAll()
+{
+  PutExcept;
+  Fs->catch_except=TRUE;
 }

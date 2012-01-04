@@ -1,9 +1,9 @@
 //Intermediate compiler codes
 #define EC_END			0x00
 #define EC_START		0x01
-#define EC_NOP	 		0x02
+#define EC_NOP			0x02
 #define EC_END_EXP		0x03
-#define EC_NOP1	 		0x04
+#define EC_NOP1			0x04
 #define EC_LABEL		0x05
 #define EC_CALL_START		0x06
 #define EC_CALL_END		0x07
@@ -34,9 +34,9 @@
 #define EC_LT_TYPECAST		0x1E
 
 #define EC_ADDR		0x1F
-#define EC_COM	 		0x20
-#define EC_NOT	 		0x21
-#define EC_UNARY_MINUS	 	0x22
+#define EC_COM			0x20
+#define EC_NOT			0x21
+#define EC_UNARY_MINUS		0x22
 
 #define EC_DEREF		0x23
 #define EC_DEREF_PP		0x24
@@ -46,8 +46,8 @@
 #define EC_PP_			0x28
 #define EC_MM_			0x29
 
-#define EC_SHL	 		0x2A
-#define EC_SHR	 		0x2B
+#define EC_SHL			0x2A
+#define EC_SHR			0x2B
 #define EC_SHL_CONST		0x2C
 #define EC_SHR_CONST		0x2D
 #define EC_POWER		0x2E
@@ -56,17 +56,17 @@
 #define EC_DIV			0x30
 #define EC_MOD			0x31
 
-#define EC_AND	 		0x32
+#define EC_AND			0x32
 
 #define EC_OR			0x33
-#define EC_XOR 			0x34
+#define EC_XOR			0x34
 
 #define EC_ADD			0x35
-#define EC_SUB	 		0x36
+#define EC_SUB			0x36
 #define EC_ADD_CONST		0x37
 #define EC_SUB_CONST		0x38
 
-#define EC_EQUAL_EQUAL 		0x39
+#define EC_EQUAL_EQUAL		0x39
 #define EC_NOT_EQUAL		0x3A
 #define EC_LESS			0x3B
 #define EC_GREATER		0x3C
@@ -107,7 +107,7 @@
 #define EC_PUSH_REGS		0x58
 #define EC_POP_REGS		0x59
 #define EC_LEAVE		0x5A
-#define EC_RET	 		0x5B
+#define EC_RET			0x5B
 
 #define EC_CALL			0x5C
 #define EC_CALL_INDIRECT	0x5D
@@ -117,16 +117,16 @@
 #define EC_IRQ			0x61
 
 #define EC_ASM			0x62
-#define EC_CLI	 		0x63
-#define EC_STI	 		0x64
+#define EC_CLI			0x63
+#define EC_STI			0x64
 #define EC_PREEMPT		0x65
-#define EC_CLD	 		0x66
-#define EC_STD	 		0x67
-#define EC_HLT	 		0x68
+#define EC_CLD			0x66
+#define EC_STD			0x67
+#define EC_HLT			0x68
 #define EC_PUSH			0x69
 #define EC_POP			0x6A
-#define EC_PUSHFD 		0x6B
-#define EC_POPFD 		0x6C
+#define EC_PUSHFD		0x6B
+#define EC_POPFD		0x6C
 #define EC_PAUSE		0x6D
 
 #define EC_CLFLUSH		0x6E
@@ -135,7 +135,7 @@
 #define EC_WBINVD		0x70
 #define EC_INVD			0x71
 
-#define EC_INU8	 		0x72
+#define EC_INU8			0x72
 #define EC_INU16		0x73
 #define EC_INU32		0x74
 #define EC_OUTU8		0x75
@@ -156,13 +156,13 @@
 #define EC_HPET			0x82
 
 #define EC_BT			0x83
-#define EC_BTS	 		0x84
-#define EC_BTR	 		0x85
-#define EC_BTC	 		0x86
+#define EC_BTS			0x84
+#define EC_BTR			0x85
+#define EC_BTC			0x86
 #define EC_BEQU			0x87
-#define EC_LBTS	 		0x88
-#define EC_LBTR	 		0x89
-#define EC_LBTC	 		0x8A
+#define EC_LBTS			0x88
+#define EC_LBTR			0x89
+#define EC_LBTC			0x8A
 #define EC_LBEQU		0x8B
 #define EC_BSF			0x8C
 #define EC_BSR			0x8D
@@ -204,19 +204,19 @@
 #define EC_BR_OR_OR_NOT_ZERO	0xAC
 
 #define EC_BR_BT		0xAD
-#define EC_BR_BTS 		0xAE
-#define EC_BR_BTR 		0xAF
-#define EC_BR_BTC 		0xB0
-#define EC_BR_LBTS 		0xB1
-#define EC_BR_LBTR 		0xB2
-#define EC_BR_LBTC 		0xB3
+#define EC_BR_BTS		0xAE
+#define EC_BR_BTR		0xAF
+#define EC_BR_BTC		0xB0
+#define EC_BR_LBTS		0xB1
+#define EC_BR_LBTR		0xB2
+#define EC_BR_LBTC		0xB3
 #define EC_BR_NOT_BT		0xB4
-#define EC_BR_NOT_BTS 		0xB5
-#define EC_BR_NOT_BTR 		0xB6
-#define EC_BR_NOT_BTC 		0xB7
-#define EC_BR_NOT_LBTS 		0xB8
-#define EC_BR_NOT_LBTR 		0xB9
-#define EC_BR_NOT_LBTC 		0xBA
+#define EC_BR_NOT_BTS		0xB5
+#define EC_BR_NOT_BTR		0xB6
+#define EC_BR_NOT_BTC		0xB7
+#define EC_BR_NOT_LBTS		0xB8
+#define EC_BR_NOT_LBTR		0xB9
+#define EC_BR_NOT_LBTC		0xBA
 
 #define EC_SWAP_U8		0xBB
 #define EC_SWAP_U16		0xBC
@@ -321,18 +321,17 @@
 
 #define CMP_TEMPLATE_INC		0x00
 #define CMP_TEMPLATE_DEC		0x01
-#define CMP_TEMPLATE_POWER		0x02
-#define CMP_TEMPLATE_MOD		0x03
-#define CMP_TEMPLATE_LESS		0x04
-#define CMP_TEMPLATE_GREATER		0x05
-#define CMP_TEMPLATE_LESS_EQUAL		0x06
-#define CMP_TEMPLATE_GREATER_EQUAL	0x07
-#define CMP_TEMPLATE_STRLEN		0x08
-#define CMP_TEMPLATE_RDTSC		0x09
-#define CMP_TEMPLATE_SIGN_I64		0x0A
-#define CMP_TEMPLATE_FSTP		0x0B
-#define CMP_TEMPLATE_FLD		0x0C
-#define CMP_TEMPLATE_HPET		0x0D
+#define CMP_TEMPLATE_MOD		0x02
+#define CMP_TEMPLATE_LESS		0x03
+#define CMP_TEMPLATE_GREATER		0x04
+#define CMP_TEMPLATE_LESS_EQUAL		0x05
+#define CMP_TEMPLATE_GREATER_EQUAL	0x06
+#define CMP_TEMPLATE_STRLEN		0x07
+#define CMP_TEMPLATE_RDTSC		0x08
+#define CMP_TEMPLATE_SIGN_I64		0x09
+#define CMP_TEMPLATE_FSTP		0x0A
+#define CMP_TEMPLATE_FLD		0x0B
+#define CMP_TEMPLATE_HPET		0x0C
 
 #define ASSOCF_LEFT	1
 #define ASSOCF_RIGHT	2

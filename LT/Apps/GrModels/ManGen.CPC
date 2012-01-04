@@ -19,7 +19,7 @@ class ManDefineStruct
 {
   F64 head_rad	 fmtstr "$DA-T,32,\"Head Radius                :%8.3f\"$\r\n";
 
-  F64 torso_len	 fmtstr "$DA-T,32,\"Torso Length               :%8.3f\"$\r\n";
+  F64 torso_len  fmtstr "$DA-T,32,\"Torso Length               :%8.3f\"$\r\n";
   F64 arm_len	 fmtstr "$DA-T,32,\"Arm Length                 :%8.3f\"$\r\n";
   F64 hand_len	 fmtstr "$DA-T,32,\"Hand Length                :%8.3f\"$\r\n";
   F64 leg_len	 fmtstr "$DA-T,32,\"Leg Length                 :%8.3f\"$\r\n";
@@ -283,10 +283,10 @@ public U8 *ManGen()
 
     result=Man2GrSprite;
     CrLf(7);
-    PutGrSprite(result,0,"\t\t$PI,\"<1>\",%d$");
+    PutSprite(result,"\t\t$PI,\"<1>\",%d$");
     CrLf(7);
     Free(m);
-    PutS("Do another");
+    "Do another";
     if (YorN)
       Free(result);
     else

@@ -37,7 +37,7 @@ U0 UpdateWin(TaskStruct *task)
   I64 i,*r;
   GrDC *dc=GrDCAlias(gr_dc,task);
   F64 xx,yy,t0;
-  GrBlot(dc,0,0,background);
+  GrDCBlot(dc,0,0,background);
   for (i=0;i<MAX_FANS;i++)
     GrSpritePlotRotZ3b(dc,x[i],y[i],0,__BIN_1,theta[i]);
   if (ball_t) {
@@ -52,7 +52,7 @@ U0 UpdateWin(TaskStruct *task)
       r=GrScaleMat(dc->r,1.5-t0,dc->mem_task);
       Free(dc->r);
       GrSetRotMat(dc,r);
-      dc->flags|=BMF_TRANSFORMATION;
+      dc->flags|=DCF_TRANSFORMATION;
       GrSpritePlotRotZ3b(dc,xx,yy,0,__BIN_2,t0);
     }
   }

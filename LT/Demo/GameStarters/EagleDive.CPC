@@ -407,7 +407,7 @@ GrDC *main_dc;
 U0 UpdateWin(TaskStruct *task)
 {
   GrDC *dc=GrDCAlias(gr_dc,task);
-  GrBlot(dc,0,0,main_dc);
+  GrDCBlot(dc,0,0,main_dc);
   GrDCDel(dc);
 }
 
@@ -483,7 +483,7 @@ U0 MPDrawIt(TaskStruct *task,GrDC *dc)
 //it is persistent.  I have carefully syncronized to the update
 //cycle initiated by core#0 to prevent flicker.
 
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   dc->transform=&FSTransform;
   dc->x=cx;
   dc->y=cy;
@@ -589,7 +589,7 @@ U0 DrawHorizon(GrDC *dc)
   GrRotXEqu(dc->r,phi);
   GrRotZEqu(dc->r,theta1);
   GrSetRotMat(dc,dc->r);
-  dc->flags&=~BMF_TRANSFORMATION;
+  dc->flags&=~DCF_TRANSFORMATION;
   dc->transform=&FSTransform;
   dc->x=cx;
   dc->y=cy;
@@ -746,7 +746,7 @@ U0 BSPEagleDive(GrDC *dc)
     dc->color=WHITE;
   else
     dc->color=BLACK;
-  dc->flags&=~BMF_TRANSFORMATION;
+  dc->flags&=~DCF_TRANSFORMATION;
   GrLine3(dc,cx+5,cy,0,cx-5,cy,0);
   GrLine3(dc,cx,cy+5,0,cx,cy-5,0);
   GrPrintF(dc,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Box:%5.1f",
@@ -858,7 +858,7 @@ U0 SongTask(U64 dummy=0)
 U0 Init(I64 _mp_cnt)
 {
   I64 i;
-  main_dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  main_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
   critical_section_flag=0;
   game_over=FALSE;
   game_score=0;
@@ -938,7 +938,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
       );
   WinMax;
   WinBorder(OFF);
-  PutS("Initializing...\r\n");
+  "Initializing...\r\n";
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   Init(_mp_cnt);
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);

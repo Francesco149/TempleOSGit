@@ -240,16 +240,16 @@ GrSprite *GrTransformBitMap(I64 *r,GrSprite *tempg)
   if (z<minx) minz=z;
   if (z>maxx) maxz=z;
 
-  tempb=GrDCNew(BMT_COLOR4,maxx-minx+1,maxy-miny+1);
+  tempb=GrDCNew(DCT_COLOR4,maxx-minx+1,maxy-miny+1);
 
   img=CAlloc(sizeof(GrDC));
-  img->type=BMT_COLOR4;
+  img->type=DCT_COLOR4;
   img->width=tempg->width;
   img->width_internal=(tempg->width+7)&~7;
   img->height=tempg->height;
   img->plane_size=(img->width_internal*img->height)>>3;
   img->body=tempg><(U8 *)+offset(GrSprite.sides);
-  img->bm_signature=BMS_SIGNATURE_VAL;
+  img->dc_signature=DCS_SIGNATURE_VAL;
 
   tempb->color=img->bkcolor=tempg->bkcolor;
   GrRect(tempb,0,0,maxx-minx+1,maxy-miny+1);
@@ -260,12 +260,12 @@ GrSprite *GrTransformBitMap(I64 *r,GrSprite *tempg)
 
   Free(tempb->r);
   GrSetRotMat(tempb,r);
-  tempb->flags|=BMF_TRANSFORMATION;
+  tempb->flags|=DCF_TRANSFORMATION;
 
   tempb->x=-minx;
   tempb->y=-miny;
   tempb->z=-minz;
-  GrBlot3(tempb,0,0,0,img);
+  GrDCBlot3(tempb,0,0,0,img);
   Free(img);
 
   elems=GrDC2Sprite(tempb);
@@ -437,7 +437,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	while (tempg1!=&root2) {
 	  tempg2=tempg1->next;
 	  BFieldOrU32(ptr,i,
-	      GrElOffset[SignI64(tempg1->x1-x3)+1+
+	      GrSpOffset[SignI64(tempg1->x1-x3)+1+
 	      3*(SignI64(tempg1->y1-y3)+1)]);
 	  i+=3;
 	  x3=tempg1->x1;y3=tempg1->y1;
@@ -664,7 +664,7 @@ BoolI64 GrSpriteTextEd(GrSprite **_root,I64 *cur_num)
 #define GED_END			12
 
 DefineListLoad("ST_GRSPRITE_ED_MENU"," \0Pick Graphically\0Set Origin\0"
-   	"Shift Origin\0Shift Points\0Shift Rects\0Transform\0Shift SubOrigin\0Insert Object\0"
+	"Shift Origin\0Shift Points\0Shift Rects\0Transform\0Shift SubOrigin\0Insert Object\0"
 	"Insert Clipboard\0Delete Object\0Edit\0Snap\0");
 
 I64 PopUpGrSpriteEd(GrSprite **root,I64 snap,F64 ip_scaler,I64 *cur_num)
@@ -1089,10 +1089,10 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
       case GED_PICK_GRAPHICALLY:
 	AcctOneTimePopUp(ARf_GRSPRITE_PICK_GRAPHICALLY,
 	"You can delete elements by\r\n"
-	    "holding $FG,GREEN$Delete$FG$ and clicking.\r\n");
+	"holding $FG,GREEN$Delete$FG$ and clicking.\r\n");
 	cl->flags=old_cl_flags;
-	l->cur_grelems=tempb->data;
-	l->cur_grelem_num=0;
+	l->cur_sprite=tempb->data;
+	l->cur_sprite_elem_num=0;
 	del_down=FALSE;
 	do {
 	  msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_UP|1<<MSG_IP_R_UP|1<<MSG_KEY_DOWN|1<<MSG_KEY_UP);
@@ -1104,21 +1104,21 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	  }
 	  if (msg_code==MSG_IP_L_UP && sys_cur_scan_code&SCF_DELETE ||
 	      msg_code==MSG_KEY_DOWN && p2&SCF_IP_L_DOWN && p2.u8[0]==SC_DELETE) {
-	    cur_num=l->cur_grelem_num;
+	    cur_num=l->cur_sprite_elem_num;
 	    cur_elem=GrNum2Queue(root,cur_num);
 	    if (cur_elem!=root) {
 	      RemQue(cur_elem);
 	      Free(cur_elem);
 	      GrEdUpdate(l,tempb,root);
 	    }
-	    l->cur_grelems=tempb->data;
-	    l->cur_grelem_num=0;
+	    l->cur_sprite=tempb->data;
+	    l->cur_sprite_elem_num=0;
 	    if (msg_code==MSG_KEY_DOWN)
 	      GetMsg(&p1,&p2,1<<MSG_IP_L_UP);
 	  }
 	} while (del_down || msg_code!=MSG_IP_L_UP && msg_code!=MSG_IP_R_UP);
-	cur_num=l->cur_grelem_num;
-	l->cur_grelems=NULL;
+	cur_num=l->cur_sprite_elem_num;
+	l->cur_sprite=NULL;
 	break;
       case GED_SNAP:
 	PopUpSnap(&Fs->snap);
@@ -1189,7 +1189,7 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	"the location of element groups.  Use\r\n"
 	"'Insert shift sub-origin' after picking the\r\n"
 	"element to insert before.  Or,\r\n"
-	    "use 'shift points'.\r\n");
+	"use 'shift points'.\r\n");
 	insert_point=GrNum2Queue(root,cur_num);
 	unlock2=LtfLock(sys_clipboard_ltf);
 	ll=sys_clipboard_ltf->root.next;

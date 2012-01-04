@@ -233,9 +233,9 @@ U0 CheckCollisions()
   I64 i,x,y;
   Man *tempm;
   Shot *temps;
-  GrDC *dc2=GrDCNew(BMT_MONO,GR_WIDTH,GR_HEIGHT);
-  GrDC *friend=GrDCNew(BMT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
-  GrDC *enemy =GrDCNew(BMT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
+  GrDC *dc2=GrDCNew(DCT_MONO,GR_WIDTH,GR_HEIGHT);
+  GrDC *friend=GrDCNew(DCT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
+  GrDC *enemy =GrDCNew(DCT_MONO,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
 
   GrSpritePlot3(friend,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_2);
   GrSpritePlot3(enemy,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_3);
@@ -256,9 +256,9 @@ U0 CheckCollisions()
       if (0<=x<GR_WIDTH && 0<=y<GR_HEIGHT) {
 	dc2->collision_cnt=0;
 	if (tempm->friendly)
-	  GrBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,friend);
+	  GrDCBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,friend);
 	else
-	  GrBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,enemy);
+	  GrDCBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,enemy);
 	if (dc2->collision_cnt) {
 	  tempm->dead=TRUE;
 	  tempm->corpse_timeout=tP+30.0;
@@ -485,7 +485,7 @@ U0 Timeout()
       );
   WinMax;
   LtfClear;
-  PutS("\r\n\r\nYou're sent back through time "
+  "\r\n\r\nYou're sent back through time "
   "to help fight some bad guys.  ($FG,LTPURPLE$Purple$FG$)\r\n\r\n"
   "Scoring:\r\n"
   "  Enemy Killed\t\t+5\r\n"
@@ -494,7 +494,8 @@ U0 Timeout()
   "  Shots Fired\t\t-1\r\n"
   "  Game Time\t\t-10 per second\r\n"
   "  Surviving Friendlies\t+500\r\n"
-      "\r\n");
+  "\r\n";
+
   PressAKey;
   Init;
   Fs->update_win=&UpdateWin;

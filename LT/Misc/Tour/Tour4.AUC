@@ -3,20 +3,20 @@
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\rEd(\"::/LT/Misc/Tour/Tour4.AUZ\");\r");
+"\rEd(\"::/LT/Misc/Tour/Tour4.AUZ\");\r";
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN);
-PutS("//");
+"//";
 
 PopUpOk(
 "Now, we'll add a link to a file.\r\n"
 "using the $FG,GREEN$<F4>$FG$ filename chooser.\r\n");
 
-PutChar(CH_CTRLL);
+'' CH_CTRLL;
 Sleep(1000);
-PutChar(CH_SPACE);
+'' CH_SPACE;
 Sleep(1000);
-PutChar(CH_SPACE);
+'' CH_SPACE;
 Sleep(1000);
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN);
 Sleep(1000);

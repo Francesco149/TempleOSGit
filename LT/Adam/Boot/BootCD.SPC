@@ -64,7 +64,7 @@ BCD_NOT64_MSG:
 	DU8	"LoseThos requires a 64-bit capable processor.\n\r",0;
 
 
-//These get patched by [C:/LT/Adam/Boot/InsBoot.APZ,35] CDBootFileCreate
+//These get patched by [C:/LT/Adam/Boot/InsBoot.APZ,29] CDBootFileCreate
 BCD_BLK_LO::		DU16	0;
 BCD_BLK_HI::		DU16	0;
 BCD_BLK_CNT::		DU16	0;

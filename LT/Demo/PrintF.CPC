@@ -1,4 +1,4 @@
-//LoseThos supports standard [C:/LT/OSMain/Str1a.CPZ,1122] PrintF()
+//LoseThos supports standard [C:/LT/OSMain/Str1a.CPZ,2499] PrintF()
 //codes and extended ones.
 //See [::/LT/Doc/Differences.TXZ,PrintF_Codes] printF codes.
 
@@ -6,28 +6,28 @@
 
 
 
-PrintF("%10h?d\r\n",123456789);
-PrintF("%10h?d\r\n",12345);
+"%10h?d\r\n",123456789;
+"%10h?d\r\n",12345;
 
-PrintF("%10h3d\r\n",123456789);
-PrintF("%10h3d\r\n",12345);
+"%10h3d\r\n",123456789;
+"%10h3d\r\n",12345;
 
-PutS("\r\nWith the 'k' flag:\r\n");
-PrintF("%10kh?d\r\n",123456789);
-PrintF("%10kh?d\r\n",12345);
+"\r\nWith the 'k' flag:\r\n";
+"%10kh?d\r\n",123456789;
+"%10kh?d\r\n",12345;
 
-PrintF("%10kh3d\r\n",123456789);
-PrintF("%10kh3d\r\n",12345);
+"%10kh3d\r\n",123456789;
+"%10kh3d\r\n",12345;
 
-PutS("\r\nWith the ',' flag:\r\n");
-PrintF("%10,kh3d\r\n",123456789);
-PrintF("%10,kh3d\r\n",12345);
+"\r\nWith the ',' flag:\r\n";
+"%10,kh3d\r\n",123456789;
+"%10,kh3d\r\n",12345;
 
-PutS("\r\nFloating Point:\r\n");
-PrintF("%16h?n\r\n",.00123456789);
-PrintF("%16h?n\r\n",12345.0);
+"\r\nFloating Point:\r\n";
+"%16h?n\r\n",.00123456789;
+"%16h?n\r\n",12345.0;
 
-PrintF("%16.2h-6n\r\n",.00123456789);
-PrintF("%16.2h-6n\r\n",12345.0);
+"%16.2h-6n\r\n",.00123456789;
+"%16.2h-6n\r\n",12345.0;
 
 

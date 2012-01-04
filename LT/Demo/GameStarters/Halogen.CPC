@@ -1,4 +1,3 @@
-
 #define NUM_ROAD	512
 #define ROAD_WIDTH_BY_2	200
 #define CAR_WIDTH_BY_2	100
@@ -14,10 +13,8 @@ U0 UpdateWin(TaskStruct *task)
   I64 h=task->win_pixel_width,v=task->win_pixel_height;
   GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,x,y,xx;
-
   BoolI8 old_preempt=Preempt(OFF);
   xx=h>>1-car_x+road_x[road_ptr&(NUM_ROAD-1)];
-  Preempt(old_preempt);
 
   dc->color=LTGRAY;
   for (i=0;i<NUM_ROAD;i++) {
@@ -46,11 +43,11 @@ U0 UpdateWin(TaskStruct *task)
     GrPutS(dc,h>>1-FONT_WIDTH*4,(v-FONT_HEIGHT)>>1,"Game Over");
 
   GrDCDel(dc);
+  Preempt(old_preempt);
 }
 
 U0 UpdateRoad()
 {
-  BoolI8 old_preempt=Preempt(OFF);
   F64 t0=tP;
   distance+=speed*(t0-t_last);
   t_last=t0;
@@ -61,7 +58,6 @@ U0 UpdateRoad()
     road_ptr++;
     distance-=1.0;
   }
-  Preempt(old_preempt);
 }
 
 U0 Init()
@@ -84,54 +80,54 @@ U0 Init()
 
 U0 Halogen()
 {
-  U64 ch=0,sc,msg_code,p1,p2;
-
+  U64 p1,p2,ch=0,sc=0;
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->text_attr=BLACK<<4+WHITE;
-  Fs->update_win=&UpdateWin;
-  WordStat(OFF);
-
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,CH_CR);"
-"  Accelerate(,,SC_CURSOR_UP);"
-"  Deccellerate(,,SC_CURSOR_DOWN);"
-"  Left(,,SC_CURSOR_LEFT);"
-"  Right(,,SC_CURSOR_RIGHT);"
-"}"
-);
+  "File {"
+  "  Abort(,CH_SHIFT_ESC);"
+  "  Exit(,CH_ESC);"
+  "}"
+  "Play {"
+  "  Restart(,CH_CR);"
+  "  Accelerate(,,SC_CURSOR_UP);"
+  "  Deccellerate(,,SC_CURSOR_DOWN);"
+  "  Left(,,SC_CURSOR_LEFT);"
+  "  Right(,,SC_CURSOR_RIGHT);"
+      "}"
+      );
+  Preempt(OFF);
+  WordStat(OFF);
   WinMax;
+  Fs->update_win=&UpdateWin;
+  WinSync;
+  Fs->text_attr=BLACK+BLACK<<4;
   Init;
   try {
-    do {
-      if (msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
-	if (msg_code==MSG_KEY_DOWN) {
+    while (TRUE) {
+      switch (ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
+	case MSG_KEY_DOWN:
 	  ch=p1;sc=p2;
 	  switch (ch) {
 	    case CH_CR:
 	      Init;
 	      break;
+	    case CH_ESC:
+	    case CH_SHIFT_ESC:
+	      goto ha_done;
 	  }
-	} else if (msg_code==MSG_KEY_UP) {
-	  switch (ch) {
-	    case 0:
-	      switch (sc.u8[0]) {
-		case SC_CURSOR_RIGHT:
-		case SC_CURSOR_LEFT:
-		case SC_CURSOR_UP:
-		case SC_CURSOR_DOWN:
-		  ch=0; sc=0;
-		  break;
-	      }
-	      break;
-	    default:
-	      ch=p1; sc=p2;
-	  }
-	}
+	  break;
+	case MSG_KEY_UP:
+	  ch=p1;sc=p2;
+	  if (!ch)
+	    switch (sc.u8[0]) {
+	      case SC_CURSOR_RIGHT:
+	      case SC_CURSOR_LEFT:
+	      case SC_CURSOR_UP:
+	      case SC_CURSOR_DOWN:
+		sc=0;
+		break;
+	    }
+	  break;
       }
       switch (sc.u8[0]) {
 	case SC_CURSOR_RIGHT:
@@ -141,26 +137,25 @@ U0 Halogen()
 	  car_x--;
 	  break;
 	case SC_CURSOR_UP:
-	  speed+=1;
-	  if (speed>200) speed=200;
+	  if (++speed>200) speed=200;
 	  break;
 	case SC_CURSOR_DOWN:
-	  speed-=1;
-	  if (speed<0) speed=0;
+	  if (--speed<0) speed=0;
 	  break;
       }
-      if (crash) {
+      if (crash)
 	Snd(0);
-	Sleep(10);
-      } else {
+      else {
 	if (speed)
 	  Snd(speed+10);
 	else
 	  Snd(0);
-	Sleep(10);
 	UpdateRoad;
       }
-    } while (ch!=CH_ESC && ch!=CH_SHIFT_ESC);
+      Sleep(10);
+    }
+ha_done:
+    GetMsg(,,1<<MSG_KEY_UP);
   } catch
     CatchAll;
   MenuPop;

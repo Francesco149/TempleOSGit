@@ -10,13 +10,13 @@ U0 StadiumGen()
   WinBorder(OFF);
   LtfClear;
   Type("::/LT/Demo/GameStarters/Stadium/Stadium.TXZ");
-  PrintF("$CM,0,%d$",TEXT_ROWS-2);
+  "$CM,0,%d$",TEXT_ROWS-2;
   LtfCursor(OFF);
   fp_old_update=fp_final_screen_update; //hide mouse cursor
   fp_final_screen_update=NULL;
 
   WinSync(TRUE);
-  dc=GrExtractDC(gr_screen_image,0,FONT_HEIGHT,GR_WIDTH,GR_HEIGHT);
+  dc=GrDCExtract(gr_screen_image,0,FONT_HEIGHT,GR_WIDTH,GR_HEIGHT);
 
   LGRWrite("::/LT/Demo/GameStarters/Stadium/Stadium",dc);
   GrDCDel(dc);

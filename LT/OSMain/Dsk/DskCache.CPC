@@ -266,7 +266,7 @@ BoolI64 CacheWrites(U8 drv_let,BoolI8 val,BoolI8 all_writes=FALSE)
 //**TODO:This feat is broken!  Deadlocks.**
 {
 nounusedwarn drv_let,val,all_writes;
-PutS("Disk Write Caching is not implemented.\r\n");
+"Disk Write Caching is not implemented.\r\n";
 return FALSE;
 /*
   LTPrt *p=Drv2Prt(drv_let),*old_prt=Fs->cur_prt;

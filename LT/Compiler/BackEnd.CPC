@@ -8,7 +8,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/LT/OSMain/Adam1a.HPZ,1476] IcArg.  RAX is the most common register
+[C:/LT/OSMain/Adam1a.HPZ,1459] IcArg.  RAX is the most common register
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -44,7 +44,7 @@ U0 IcRex(IntermediateCode *tempi,U8 b)
   }
 }
 
-U0 Ic66Rex(IntermediateCode *tempi,U8 b)
+U0 IcOpSizeRex(IntermediateCode *tempi,U8 b)
 {
   if (!b) {
     if (tempi->ic_cnt>=IC_BODY_SIZE-1|| tempi->ic_ext_body) {
@@ -52,19 +52,19 @@ U0 Ic66Rex(IntermediateCode *tempi,U8 b)
 	tempi->ic_ext_body=MAlloc(256);
 	MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
       }
-      tempi->ic_ext_body[tempi->ic_cnt++]=0x66;
+      tempi->ic_ext_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
     } else
-      tempi->ic_body[tempi->ic_cnt++]=0x66;
+      tempi->ic_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
   } else {
     if (tempi->ic_cnt>=IC_BODY_SIZE-2|| tempi->ic_ext_body) {
       if (!tempi->ic_ext_body) {
 	tempi->ic_ext_body=MAlloc(256);
 	MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
       }
-      tempi->ic_ext_body[tempi->ic_cnt++]=0x66;
+      tempi->ic_ext_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
       tempi->ic_ext_body[tempi->ic_cnt++]=b;
     } else {
-      tempi->ic_body[tempi->ic_cnt++]=0x66;
+      tempi->ic_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
       tempi->ic_body[tempi->ic_cnt++]=b;
     }
   }
@@ -104,17 +104,17 @@ U0 IcU24(IntermediateCode *tempi,U32 d)
 
 U0 IcU32(IntermediateCode *tempi,U32 d)
 {
-  U32 *dd;
+  U32 *_d;
   if (tempi->ic_cnt>=IC_BODY_SIZE-4|| tempi->ic_ext_body) {
     if (!tempi->ic_ext_body) {
       tempi->ic_ext_body=MAlloc(256);
       MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
     }
-    dd=&tempi->ic_ext_body[tempi->ic_cnt];
+    _d=&tempi->ic_ext_body[tempi->ic_cnt];
   } else {
-    dd=&tempi->ic_body[tempi->ic_cnt];
+    _d=&tempi->ic_body[tempi->ic_cnt];
   }
-  *dd=d;
+  *_d=d;
   tempi->ic_cnt+=4;
 }
 
@@ -354,7 +354,7 @@ U64 IcModr(U64 r,U64 t2,U64 r2,I64 d2)
   //result.u[3] is SIB
   U64 result=0;
   if (t2&TY_MASK>TY_RIP_DISP32) {
-    PrintF("Callers:%P;%P\r\n",Caller,Caller(2));
+    "Callers:%P;%P\r\n",Caller,Caller(2);
     throw(EXCEPT_COMPILER,20);
   }
   if (t2&IT_MASK<IT_I64)
@@ -465,7 +465,7 @@ U0 IcSlashOp(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 op,I64 ip)
   i=IcModr(op.u8[0],t1,r1,d1);
 
   if (tempi->ic_flags&ICF_LOCK && op!=SLASH_OP_MOV && t1&TY_MASK!=TY_REG)
-    IcU8(tempi,0xF0);
+    IcU8(tempi,OC_LOCK_PREFIX);
   switch (t1&IT_MASK) {
     case IT_I8:
     case IT_U8:
@@ -474,7 +474,7 @@ U0 IcSlashOp(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 op,I64 ip)
       break;
     case IT_I16:
     case IT_U16:
-      Ic66Rex(tempi,i.u8[1]);
+      IcOpSizeRex(tempi,i.u8[1]);
       IcU16(tempi,i.u8[2]<<8+op.u8[2]);
       break;
     default:
@@ -822,7 +822,7 @@ U0 IcMov(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 t2,U64 r2,I64 d2,I64 i
 	    break;
 	  case IT_U16:
 	  case IT_I16:
-	    Ic66Rex(tempi,i.u8[1]);
+	    IcOpSizeRex(tempi,i.u8[1]);
 	    IcU16(tempi,i.u8[2]<<8+0xC7);
 	    break;
 	  default:
@@ -959,7 +959,7 @@ U0 IcAddEct(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
     IcMov(tempi,TY_REG+IT_I64,result_reg,0,t3,r3,d3,ip);
     i=IcModr(result_reg,t2,r2,d2);
     if (tempi->ic_flags&ICF_LOCK)
-      IcU8(tempi,0xF0);
+      IcU8(tempi,OC_LOCK_PREFIX);
     IcRex(tempi,i.u8[1]);
     IcU16(tempi,i.u8[2]<<8+op);
     if (t2&TY_MASK==TY_SIB)
@@ -1000,7 +1000,7 @@ U0 IcAddEct(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
     if (temp>7)
       i++;
     if (tempi->ic_flags&ICF_LOCK)
-      IcU8(tempi,0xF0);
+      IcU8(tempi,OC_LOCK_PREFIX);
     IcU24(tempi,0xC00000+i+(temp&7)<<16+(result_reg&7)<<19+op<<8);
   }
   IcMov(tempi,t1,r1,d1,TY_REG+IT_I64,result_reg,0,ip);
@@ -1085,7 +1085,7 @@ U0 IcAddConst(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
       if (op.u8[0]==0x03 && (disp==1 || disp==-1)) {  //Add
 	i=IcModr(r,t1,r1,d1);
 	if (t1!=TY_REG && tempi->ic_flags&ICF_LOCK)
-	  IcU8(tempi,0xF0);
+	  IcU8(tempi,OC_LOCK_PREFIX);
 	switch (t1&IT_MASK) {
 	  case IT_I8:
 	  case IT_U8:
@@ -1094,7 +1094,7 @@ U0 IcAddConst(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
 	    break;
 	  case IT_I16:
 	  case IT_U16:
-	    Ic66Rex(tempi,i.u8[1]);
+	    IcOpSizeRex(tempi,i.u8[1]);
 	    IcU16(tempi,i.u8[2]<<8+0xFF);
 	    break;
 	  default:
@@ -1117,7 +1117,7 @@ U0 IcAddConst(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
 	  t1&(IT_MASK-1)==IT_I8) {
 	i=IcModr(r,t1,r1,d1);
 	if (tempi->ic_flags&ICF_LOCK)
-	  IcU8(tempi,0xF0);
+	  IcU8(tempi,OC_LOCK_PREFIX);
 	switch (t1&IT_MASK) {
 	  case IT_I8:
 	  case IT_U8:
@@ -1126,7 +1126,7 @@ U0 IcAddConst(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
 	    break;
 	  case IT_I16:
 	  case IT_U16:
-	    Ic66Rex(tempi,i.u8[1]);
+	    IcOpSizeRex(tempi,i.u8[1]);
 	    IcU16(tempi,i.u8[2]<<8+0x83);
 	    break;
 	  default:
@@ -1150,11 +1150,11 @@ U0 IcAddConst(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
 	  t1&IT_MASK<IT_I64) {
 	i=IcModr(r,t1,r1,d1);
 	if (tempi->ic_flags&ICF_LOCK)
-	  IcU8(tempi,0xF0);
+	  IcU8(tempi,OC_LOCK_PREFIX);
 	switch (t1&IT_MASK) {
 	  case IT_I16:
 	  case IT_U16:
-	    Ic66Rex(tempi,i.u8[1]);
+	    IcOpSizeRex(tempi,i.u8[1]);
 	    IcU16(tempi,i.u8[2]<<8+0x81);
 	    break;
 	  default:
@@ -1209,7 +1209,7 @@ U0 IcSub(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
     }
     i=IcModr(CREG_RAX,t2,r2,d2);
     if (tempi->ic_flags&ICF_LOCK)
-      IcU8(tempi,0xF0);
+      IcU8(tempi,OC_LOCK_PREFIX);
     IcRex(tempi,i.u8[1]);
     IcU16(tempi,i.u8[2]<<8+op);
     if (t2&TY_MASK==TY_SIB)
@@ -1270,7 +1270,7 @@ U0 IcSub(IntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
     if (r2>7)
       i+=4;
     if (tempi->ic_flags&ICF_LOCK)
-      IcU8(tempi,0xF0);
+      IcU8(tempi,OC_LOCK_PREFIX);
     IcU24(tempi,0xC00000+i+(r3&7)<<16+(r2&7)<<19+op<<8);
     IcMov(tempi,t1,r1,d1,TY_REG+IT_I64,r2,0,ip);
   }
@@ -1402,8 +1402,8 @@ U0 IcFUnaryMinus(LexStruct *lx,IntermediateCode *tempi,U8 *buf2,I64 ip)
   }
 }
 
-U0 IcFOp2a(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
-{ //for POWER and MOD
+U0 IcFMod(LexStruct *lx,IntermediateCode *tempi,I64 ip)
+{ //for MOD
   BoolI8 dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (dont_push_float) {
@@ -1426,13 +1426,92 @@ U0 IcFOp2a(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
 	  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
     }
   }
-  IcCopyTemplate(lx,tempi,op,FALSE,FALSE,FALSE,CN_MAIN); //TODO: unpushable,unpop?  Not sure
+  IcCopyTemplate(lx,tempi,CMP_TEMPLATE_MOD,FALSE,FALSE,FALSE,CN_MAIN); //TODO: unpushable,unpop?  Not sure
   if (!dont_pop_float)
     IcMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 	TY_REG+IT_I64,CREG_RAX,0,ip);
 }
 
-U0 IcFOp2b(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
+U0 IcFPow(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
+{ //for POW
+  I64 i;
+  ExeImportExportStruct *tempe;
+  ExportSysSymHashEntry *tempess=HashFind("SYS_POW",lx->hash_table_list,HTT_EXPORT_SYS_SYM);
+
+  if (tempi->ic_flags & ICF_P1_FIRST) {
+    IcMov(tempi,TY_REG+IT_I64,CREG_RDX,0,
+	tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
+    IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
+	tempi->p2.type,tempi->p2.reg,tempi->p2.disp,ip);
+  } else {
+    IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
+	tempi->p2.type,tempi->p2.reg,tempi->p2.disp,ip);
+    IcMov(tempi,TY_REG+IT_I64,CREG_RDX,0,
+	tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
+  }
+  if (lx->flags&LF_STATIC_COMPILE) {
+    if (!tempess) {
+      tempess=CAlloc(sizeof(ExportSysSymHashEntry));
+      tempess->str=StrNew("SYS_POW");
+      tempess->type=HTT_EXPORT_SYS_SYM|HTT_UNRESOLVED_GLBL|HTT_IMPORT;
+      HashAdd(tempess,lx->glbl_hash_table);
+    }
+    if (tempess->type&HTT_IMPORT) {
+      if (GetOpt(OPTf_USE_LIT64)) {
+	IcU16(tempi,0xBB48);
+	IcU64(tempi,0);
+	if (buf) {
+	  tempe=CAlloc(sizeof(ExeImportExportStruct));
+	  tempe->type=EIE_LIT_U64;
+	  tempe->ip=ip+tempi->ic_cnt-8;
+	  tempe->next=tempess->list;
+	  tempess->list=tempe;
+	}
+	IcU16(tempi,0xD3FF);
+      } else {
+	IcU8(tempi,0xE8);
+	IcU32(tempi,-(ip+tempi->ic_cnt+4));
+	if (buf) {
+	  tempe=CAlloc(sizeof(ExeImportExportStruct));
+	  tempe->type=EIE_REL_U32;
+	  tempe->ip=ip+tempi->ic_cnt-4;
+	  tempe->next=tempess->list;
+	  tempess->list=tempe;
+	}
+      }
+    } else { //OSMain
+      if (tempess->type&HTT_UNRESOLVED_GLBL)
+	throw(EXCEPT_COMPILER,32);
+      else {
+	i=tempess->val-(ip+tempi->ic_cnt+5);
+	if (!(MIN_I32<=i<=MAX_I32)) {
+	  throw(EXCEPT_COMPILER,32);
+//	    IcU16(tempi,0xBB48);
+//	    IcU64(tempi,tempess->val);
+//	    IcU16(tempi,0xD3FF);
+	} else {
+	  IcU8(tempi,0xE8);
+	  IcU32(tempi,i);
+	}
+      }
+    }
+  } else {
+    i=tempess->val-(ip+tempi->ic_cnt+5);
+    if (!(MIN_I32<=i<=MAX_I32)) {
+      IcU16(tempi,0xBB48);
+      IcU64(tempi,tempess->val);
+      IcU16(tempi,0xD3FF);
+    } else {
+      IcU8(tempi,0xE8);
+      IcU32(tempi,i);
+    }
+  }
+  tempi->ic_flags&=~ICF_CODE_FINAL;
+  IcMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
+      TY_REG+IT_I64,CREG_RAX,0,ip);
+}
+
+U0 IcFOp(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 { //for ADD,SUB,DIV,MUL
   IcArg *p1,*p2;
   BoolI8 dont_push_float,dont_pop_float,alt;
@@ -1524,7 +1603,7 @@ U0 IcFOp2b(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 	    p1->type,p1->reg,p1->disp,ip);
 	IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 	    p2->type,p2->reg,p2->disp,ip);
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -1578,7 +1657,7 @@ U0 IcFOp2b(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 	    p2->type,p2->reg,p2->disp,ip);
 	IcMov(tempi,TY_REG+IT_I64,CREG_RDX,0,
 	    p1->type,p1->reg,p1->disp,ip);
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -1671,8 +1750,8 @@ U0 IcFCmp(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
       TY_REG+IT_I64,CREG_RAX,0,ip);
 }
 
-U0 IcFOp2aEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
-{ //for MOD
+U0 IcFModEqual(LexStruct *lx,IntermediateCode *tempi,I64 ip)
+{
   BoolI8 dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (tempi->ic_flags & ICF_NOT_ADDR) {
@@ -1696,7 +1775,7 @@ U0 IcFOp2aEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
       if (tempi->p1.ptype!=IT_F64)
 	IcFCvt2(lx,tempi,CREG_RDX,TY_REG+IT_I64,CREG_RDX,0,FALSE,ip);
     }
-    IcCopyTemplate(lx,tempi,op,FALSE,FALSE,FALSE,CN_MAIN); //TODO: unpushable,unpop?  Not sure
+    IcCopyTemplate(lx,tempi,CMP_TEMPLATE_MOD,FALSE,FALSE,FALSE,CN_MAIN); //TODO: unpushable,unpop?  Not sure
     if (tempi->p1.ptype!=IT_F64)
       IcFCvt2(lx,tempi,CREG_RAX,TY_REG+IT_I64,CREG_RAX,0,TRUE,ip);
     IcMov(tempi,tempi->p1.type&TY_MASK+tempi->p1.ptype,tempi->p1.reg,tempi->p1.disp,
@@ -1728,7 +1807,7 @@ U0 IcFOp2aEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
       if (tempi->p1.ptype!=IT_F64)
 	IcFCvt2(lx,tempi,CREG_RDX,TY_REG+IT_I64,CREG_RDX,0,FALSE,ip);
     }
-    IcCopyTemplate(lx,tempi,op,FALSE,FALSE,FALSE,CN_MAIN); //TODO: unpushable,unpop?  Not sure
+    IcCopyTemplate(lx,tempi,CMP_TEMPLATE_MOD,FALSE,FALSE,FALSE,CN_MAIN); //TODO: unpushable,unpop?  Not sure
     if (tempi->p1.ptype!=IT_F64)
       IcFCvt2(lx,tempi,CREG_RAX,TY_REG+IT_I64,CREG_RAX,0,TRUE,ip);
     IcMov(tempi,TY_DISP+tempi->p1.ptype,CREG_RCX,0,TY_REG+IT_I64,CREG_RAX,0,ip);
@@ -1738,7 +1817,7 @@ U0 IcFOp2aEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,I64 ip)
   }
 }
 
-U0 IcFOp2bEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
+U0 IcFOpEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 { //for ADD,SUB,DIV,MUL
   IcArg *p1=&tempi->p1,
       *p2=&tempi->p2;
@@ -1787,7 +1866,7 @@ U0 IcFOp2bEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 	IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 	    p2->type,p2->reg,p2->disp,ip);
 
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -1836,7 +1915,7 @@ U0 IcFOp2bEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 	    p1->type&TY_MASK+p1->ptype,p1->reg,p1->disp,ip);
 	if (p1->ptype!=IT_F64)
 	  IcFCvt2(lx,tempi,CREG_RDX,TY_REG+IT_I64,CREG_RDX,0,FALSE,ip);
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -1946,7 +2025,7 @@ U0 IcFOp2bEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 	IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 	    p2->type,p2->reg,p2->disp,ip);
 
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -1986,7 +2065,7 @@ U0 IcFOp2bEqual(LexStruct *lx,IntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
 	    TY_DISP+p1->ptype,CREG_RCX,0,ip);
 	if (p1->ptype!=IT_F64)
 	  IcFCvt2(lx,tempi,CREG_RDX,TY_REG+IT_I64,CREG_RDX,0,FALSE,ip);
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -2175,7 +2254,7 @@ U0 IcFCmpAndBranch(LexStruct *lx,IntermediateCode *tempi,U64 ip,
 	      p1->type,p1->reg,p1->disp,ip2);
 	IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 	      p2->type,p2->reg,p2->disp,ip2);
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -2240,7 +2319,7 @@ U0 IcFCmpAndBranch(LexStruct *lx,IntermediateCode *tempi,U64 ip,
 	else
 	  IcMov(tempi,TY_REG+IT_I64,CREG_RDX,0,
 	      p1->type,p1->reg,p1->disp,ip2);
-	IcU16(tempi,0x5052); 	//PUSH EDX PUSH EAX
+	IcU16(tempi,0x5052);	//PUSH EDX PUSH EAX
 	rsp_size=16;
 	t1=TY_SIB+IT_I64; r1=CREG_RSP+CREG_RSP<<8; d1=8;
 	t2=TY_SIB+IT_I64; r2=CREG_RSP+CREG_RSP<<8; d2=0;
@@ -2487,7 +2566,7 @@ U0 IcFMul(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
 	  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
     }
   } else
-    IcFOp2b(lx,tempi,SLASH_OP_FMUL,buf,ip);
+    IcFOp(lx,tempi,SLASH_OP_FMUL,buf,ip);
 }
 
 U0 IcFDiv(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
@@ -2511,7 +2590,7 @@ U0 IcFDiv(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
 	  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
     }
   } else
-    IcFOp2b(lx,tempi,SLASH_OP_FDIV,buf,ip);
+    IcFOp(lx,tempi,SLASH_OP_FDIV,buf,ip);
 }
 
 U0 IcFAdd(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
@@ -2549,7 +2628,7 @@ U0 IcFAdd(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
       CmpNoteFloatOp(lx,tempi,TRUE,TRUE,CN_MAIN);
     }
   } else
-    IcFOp2b(lx,tempi,SLASH_OP_FADD,buf,ip);
+    IcFOp(lx,tempi,SLASH_OP_FADD,buf,ip);
 }
 
 U0 IcFSub(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
@@ -2572,7 +2651,7 @@ U0 IcFSub(LexStruct *lx,IntermediateCode *tempi,U8 *buf,I64 ip)
       CmpNoteFloatOp(lx,tempi,TRUE,TRUE,CN_MAIN);
     }
   } else
-    IcFOp2b(lx,tempi,SLASH_OP_FSUB,buf,ip);
+    IcFOp(lx,tempi,SLASH_OP_FSUB,buf,ip);
 }
 
 U0 IcMulEqual(IntermediateCode *tempi,I64 ip)
@@ -2760,7 +2839,7 @@ U0 IcAddSubEctEqual(IntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
 	  }
 	  i=IcModr(temp,t2&TY_MASK+ptype,r2,d2);
 	  if (tempi->ic_flags&ICF_LOCK)
-	    IcU8(tempi,0xF0);
+	    IcU8(tempi,OC_LOCK_PREFIX);
 	  IcRex(tempi,i.u8[1]);
 	  IcU16(tempi,i.u8[2]<<8+op.u8[5]);
 	  if (t2&TY_MASK==TY_SIB)
@@ -2785,7 +2864,7 @@ U0 IcAddSubEctEqual(IntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
 	  }
 	  i=IcModr(result_reg,t3&TY_MASK+ptype,r3,d3);
 	  if (tempi->ic_flags&ICF_LOCK)
-	    IcU8(tempi,0xF0);
+	    IcU8(tempi,OC_LOCK_PREFIX);
 	  IcRex(tempi,i.u8[1]);
 	  IcU16(tempi,i.u8[2]<<8+op.u8[0]);
 	  if (t3&TY_MASK==TY_SIB)
@@ -2821,7 +2900,7 @@ U0 IcAddSubEctEqual(IntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
 	  }
 	}
 	if (tempi->ic_flags&ICF_LOCK)
-	  IcU8(tempi,0xF0);
+	  IcU8(tempi,OC_LOCK_PREFIX);
 	if (result_reg>7)
 	  IcU8(tempi,0x4C);
 	else
@@ -2844,7 +2923,7 @@ U0 IcAddSubEctEqual(IntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
 	  IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,TY_DISP+ptype,CREG_RCX,0,ip);
 	  result_reg=CREG_RAX;
 	  if (tempi->ic_flags&ICF_LOCK)
-	    IcU8(tempi,0xF0);
+	    IcU8(tempi,OC_LOCK_PREFIX);
 	  IcU16(tempi,op.u8[3]<<8+0x40);
 	  IcU32(tempi,d3);
 	  IcMov(tempi,TY_DISP+ptype,CREG_RCX,0,TY_REG+IT_I64,result_reg,0,ip);
@@ -2854,12 +2933,12 @@ U0 IcAddSubEctEqual(IntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
 	  IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,TY_DISP+ptype,CREG_RCX,0,ip);
 	  result_reg=CREG_RAX;
 	  if (tempi->ic_flags&ICF_LOCK)
-	    IcU8(tempi,0xF0);
+	    IcU8(tempi,OC_LOCK_PREFIX);
 	  if (d3.u16[1]) {
 	    IcU16(tempi,op.u8[3]<<8+0x40);
 	    IcU32(tempi,d3);
 	  } else if (d3.u8[1]) {
-	    IcU24(tempi,op.u8[3]<<16+0x4066);
+	    IcU24(tempi,op.u8[3]<<16+0x4000+OC_OP_SIZE_PREFIX);
 	    IcU16(tempi,d3);
 	  } else {
 	    IcU16(tempi,op.u8[2]<<8+0x40);
@@ -2881,7 +2960,7 @@ U0 IcAddSubEctEqual(IntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
       IcMov(tempi,TY_REG+IT_I64,CREG_RBX,0,TY_DISP+ptype,CREG_RCX,0,ip);
       result_reg=CREG_RBX;
       if (tempi->ic_flags&ICF_LOCK)
-	IcU8(tempi,0xF0);
+	IcU8(tempi,OC_LOCK_PREFIX);
       IcU8(tempi,0x48);
       IcU16(tempi,0xC000+op.u8[0]+(result_reg&7)<<11);
       IcMov(tempi,TY_DISP+ptype,CREG_RCX,0,TY_REG+IT_I64,result_reg,0,ip);
@@ -3362,7 +3441,7 @@ U0 IcBitOps(IntermediateCode *tempi,IcArg *p1,IcArg *p2,IntermediateCode *tempi2
     IcZero(tempi,CREG_RAX);
   if (tempi->ic_flags&ICF_LOCK) {
     if (op!=0xA30F)
-      IcU8(tempi,0xF0);
+      IcU8(tempi,OC_LOCK_PREFIX);
   }
   if ((p1->type&TY_MASK!=TY_IMM || p1->disp<32) && t2&TY_MASK!=TY_REG)
     t2=t2&TY_MASK+IT_U32;
@@ -3395,7 +3474,7 @@ U0 IcBitOps(IntermediateCode *tempi,IcArg *p1,IcArg *p2,IntermediateCode *tempi2
     }
   }
   if (!no_depend) {
-    IcU32(tempi,0x00D08348);
+    IcU32(tempi,0xD08348);
     if (tempi->r.type&TY_MASK)
       IcMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,TY_REG+IT_I64,CREG_RAX,0,ip);
   }
@@ -3483,7 +3562,7 @@ U0 IcPreempt(IntermediateCode *tempi,I64 ip)
     IcU16(tempi,TASK_TASK_FLAGS+TASKf_PREEMPT<<8);
   }
   if (!(tempi2->ic_flags&ICF_NO_DEPEND_RESULT))
-    IcU32(tempi,0x00D08348);
+    IcU32(tempi,0xD08348);
 }
 
 U0 IcToUpper(IntermediateCode *tempi,I64 ip)
@@ -4032,7 +4111,7 @@ U0 IcAndBranch(IntermediateCode *tempi,U64 ip,U64 is,U8 *buf,I64 ip2)
     if (i<=MAX_U8)
       IcU16(tempi,i<<8+0xA8);
     else if (i<=MAX_U16)
-      IcU32(tempi,i<<16+0xA966);
+      IcU32(tempi,i<<16+0xA900+OC_OP_SIZE_PREFIX);
     else {
       IcU8(tempi,0xA9);
       IcU32(tempi,i);
@@ -4119,7 +4198,7 @@ U0 IcAndBranch(IntermediateCode *tempi,U64 ip,U64 is,U8 *buf,I64 ip2)
 	break;
       case IT_U16:
       case IT_I16:
-	Ic66Rex(tempi,i.u8[1]);
+	IcOpSizeRex(tempi,i.u8[1]);
 	IcU16(tempi,i.u8[2]<<8+0x85);
 	break;
       default:
@@ -4327,7 +4406,7 @@ U0 IcBrBitOps(IntermediateCode *tempi,U64 ip,U64 op,U64 op_imm,U64 is,U8 *buf,I6
   }
   if (tempi->ic_flags&ICF_LOCK) {
     if (op!=0xA30F)
-      IcU8(tempi,0xF0);
+      IcU8(tempi,OC_LOCK_PREFIX);
   }
   if (tempi->ic_flags&ICF_SWAP) {
     if ((p2->type&TY_MASK!=TY_IMM || p2->disp<32) && t1&TY_MASK!=TY_REG)
@@ -4965,7 +5044,7 @@ U0 IcMemCpy(IntermediateCode *tempi,I64 ip2)
 	  TY_REG+IT_I64,CREG_RAX,0,ip2);
       switch (i) {
 	case 0: IcU16(tempi,0xA4F3); break;
-	case 1: IcU24(tempi,0xA5F366); break;
+	case 1: IcU24(tempi,0xA5F300+OC_OP_SIZE_PREFIX); break;
 	case 2: IcU16(tempi,0xA5F3); break;
 	case 3: IcU32(tempi,0xA548F348); break;
       }
@@ -5064,7 +5143,7 @@ U0 IcMemSet(IntermediateCode *tempi,I64 op,I64 ip2)
   }
   nobound_switch (op) {
     case 0: IcU16(tempi,0xAAF3);   break;
-    case 1: IcU24(tempi,0xABF366); break;
+    case 1: IcU24(tempi,0xABF300+OC_OP_SIZE_PREFIX); break;
     case 2: IcU16(tempi,0xABF3);   break;
     case 3: IcU24(tempi,0xAB48F3); break;
   }

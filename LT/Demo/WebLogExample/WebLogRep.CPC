@@ -45,7 +45,7 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
   LogStruct *templg;
   LTDateStruct dt;
   I64 i;
-  PrintF("%Q\r\n",name);
+  "%Q\r\n",name;
   while (ll!=l) {
     if (ll->type_u8==LTFT_TEXT) {
       templg=CAlloc(sizeof(LogStruct));
@@ -118,7 +118,7 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
 	  throw;
       } catch {
 	Fs->catch_except=TRUE;
-	PrintF("%Q\r\n",ll->tag);
+	"%Q\r\n",ll->tag;
 	LogStructDel(templg);
       }
     }
@@ -288,7 +288,7 @@ U0 LinkTreeTraverse(LinkStruct *root)
 {
   if (root) {
     LinkTreeTraverse(root->left);
-    PrintF("%3d:%Q\r\n",root->cnt,root->link);
+    "%3d:%Q\r\n",root->cnt,root->link;
     LinkTreeTraverse(root->right);
   }
 }
@@ -328,28 +328,28 @@ U0 DownLoadRep(LogStruct *root,LTDate start,LTDate end)
     templg=templg->next;
   }
 
-  PutS("\r\n\r\nDownloads of /LTCD.ISO\r\n");
+  "\r\n\r\nDownloads of /LTCD.ISO\r\n";
   for (i=start;i<=end;i+=1<<32)
-    PrintF("%D:%5d%5d\r\n",i,day_dup_cnts[(i+local_time_offset)>>32-days_start],
-			  day_cnts    [(i+local_time_offset)>>32-days_start]);
+    "%D:%5d%5d\r\n",i,day_dup_cnts[(i+local_time_offset)>>32-days_start],
+      day_cnts[(i+local_time_offset)>>32-days_start];
 
-  PutS("\r\n\r\nDownloads of /LTCD.ISO\r\n"
-       "'-' is a dup.  '+' is not a dup.\r\n");
+  "\r\n\r\nDownloads of /LTCD.ISO\r\n"
+  "'-' is a dup.  '+' is not a dup.\r\n";
   if (hours_end-hours_start>=MAX_HOURS)
     i=hours_end-MAX_HOURS+1;
   else
     i=hours_start;
   for (;i<=hours_end;i++) {
-    PrintF("%D %h20T: ",i<<32/24,i<<32/24);
+    "%D %h20T: ",i<<32/24,i<<32/24;
     for (j=0;j<dup_cnts[i-hours_start];j++)
-      PutChar('-');
+      '-';
     for (;j<hour_cnts[i-hours_start];j++)
-      PutChar('+');
+      '+';
     CrLf;
   }
-  PrintF("Total:%d  Dups:%d\r\n",cnt,dups);
+  "Total:%d  Dups:%d\r\n",cnt,dups;
 
-  PutS("\r\n\r\nDownloads of /LTCD.ISO\r\n");
+  "\r\n\r\nDownloads of /LTCD.ISO\r\n";
   LinkTreeTraverse(link_root);
   CrLf;
 
@@ -395,28 +395,28 @@ U0 IndexRep(LogStruct *root,LTDate start,LTDate end)
     templg=templg->next;
   }
 
-  PutS("\r\n\r\nHits on /index.html\r\n"
-       "'-' is a dup.  '+' is not a dup.\r\n");
+  "\r\n\r\nHits on /index.html\r\n"
+  "'-' is a dup.  '+' is not a dup.\r\n";
   for (i=start;i<=end;i+=1<<32)
-    PrintF("%D:%5d%5d\r\n",i,day_dup_cnts[(i+local_time_offset)>>32-days_start],
-			     day_cnts	 [(i+local_time_offset)>>32-days_start]);
+    "%D:%5d%5d\r\n",i,day_dup_cnts[(i+local_time_offset)>>32-days_start],
+     day_cnts[(i+local_time_offset)>>32-days_start];
 
-  PutS("\r\n\r\nHits on /index.html\r\n");
+  "\r\n\r\nHits on /index.html\r\n";
   if (hours_end-hours_start>=MAX_HOURS)
     i=hours_end-MAX_HOURS+1;
   else
     i=hours_start;
   for (;i<=hours_end;i++) {
-    PrintF("%D %h20T: ",i<<32/24,i<<32/24);
+    "%D %h20T: ",i<<32/24,i<<32/24;
     for (j=0;j<dup_cnts[i-hours_start];j++)
-      PutChar('-');
+      '-';
     for (;j<hour_cnts[i-hours_start];j++)
-      PutChar('+');
+      '+';
     CrLf;
   }
-  PrintF("Total:%d  Dups:%d\r\n",cnt,dups);
+  "Total:%d  Dups:%d\r\n",cnt,dups;
 
-  PutS("\r\n\r\nHits on /index.html\r\n");
+  "\r\n\r\nHits on /index.html\r\n";
   LinkTreeTraverse(link_root);
   CrLf;
 
@@ -427,7 +427,7 @@ U0 IndexRep(LogStruct *root,LTDate start,LTDate end)
   Free(day_dup_cnts);
 }
 
-U0 LogRep(U8 *mask,U8 *output_filename)
+U0 WebLogRep(U8 *mask,U8 *output_filename)
 {
   LogStruct *root;
   LTDate start,end;
@@ -440,17 +440,17 @@ U0 LogRep(U8 *mask,U8 *output_filename)
   BlockIPNums(root);
 
   LtfClear;
-  PutS("$WW,0$");
+  "$WW,0$";
   IndexRep(root,start,end);
   DownLoadRep(root,start,end);
 
   StrCpy(LtfCur->filename.name,output_filename);
   LtfWrite(LtfCur,TRUE);
 
-  PutS("$WW,1$");
+  "$WW,1$";
   LogListDel(root);
 }
 
 #if IncludeDepth<2
-LogRep("::/LT/Demo/WebLogExample/*.logZ","::/LT/Demo/WebLogExample/LogRep.TXZ");
+WebLogRep("::/LT/Demo/WebLogExample/*.logZ","::/LT/Demo/WebLogExample/WebLogRep.TXZ");
 #endif

@@ -11,9 +11,9 @@ U0 ShowBootFileDate(U8 drv_let)
   LTDirEntry de;
   U8 *name=MSPrintF("%c:/Boot.BIC",drv_let);
   if (FileFind(name,&de))
-    PrintF("%s %D %T\r\n",name,de.datetime,de.datetime);
+    "%s %D %T\r\n",name,de.datetime,de.datetime;
   else
-    PrintF("%s\r\n",name);
+    "%s\r\n",name;
   Free(name);
 }
 
@@ -28,7 +28,7 @@ U8 DrvMySelect()
 {
   U64 result=0;
   ShowBootFiles;
-  PutS("Drive:");
+  "Drive:";
   result=ToUpper(GetChar);
   CrLf;
   return result;
@@ -69,9 +69,9 @@ U0 UpdateAndCompile(U8 src,U8 dst)
 U0 PromptUpdateDrv()
 {
   U8 src,dst;
-  PutS("\r\nSrc Drive:\r\n");
+  "\r\nSrc Drive:\r\n";
   src=DrvMySelect;
-  PutS("\r\nDst Drive:\r\n");
+  "\r\nDst Drive:\r\n";
   dst=DrvMySelect;
   UpdateAndCompile(src,dst);
   ShowBootFiles;
@@ -81,9 +81,9 @@ U0 PromptUpdateDrv()
 U0 MyMerge()
 {
   U8 src,dst,buf_s[128],buf_d[128];
-  PutS("\r\nMerge Src Drive:\r\n");
+  "\r\nMerge Src Drive:\r\n";
   src=DrvMySelect;
-  PutS("\r\nMerge Dst Drive:\r\n");
+  "\r\nMerge Dst Drive:\r\n";
   dst=DrvMySelect;
   SPrintF(buf_s,"%c:/LT/*",src);
   SPrintF(buf_d,"%c:/LT/*",dst);
@@ -139,9 +139,9 @@ U0 MyCopyDrv(U8 src,U8 dst)
 U0 PmtMyCopyDrv()
 {
   U8 src,dst;
-  PutS("$FG,RED$\r\nCopy Src Drive:\r\n$FG$");
+  "$FG,RED$\r\nCopy Src Drive:\r\n$FG$";
   src=DrvMySelect;
-  PutS("$FG,RED$\r\nCopy Dst Drive:\r\n$FG$");
+  "$FG,RED$\r\nCopy Dst Drive:\r\n$FG$";
   dst=DrvMySelect;
   MyCopyDrv(src,dst);
 }
@@ -191,12 +191,12 @@ public U0 FilesCursorTop(U8 *mask="*")
   }
 }
 
-U0 LinkChgFile(U8 *filename,BoolI8 remove)
+U0 LinkChgFile(U8 *filename)
 {
   Ltf *l=LtfRead(filename,LTFF_NO_CURSOR);
   LtfEntry *ll=l->root.next;
   U8 *st,*st2;
-  I64 f=0,line_num;
+  I64 line_num;
   BoolI8 modified=FALSE;
   while (ll!=l) {
     if (ll->type_u8==LTFT_LINK) {
@@ -207,81 +207,23 @@ U0 LinkChgFile(U8 *filename,BoolI8 remove)
       if (st2) {
 	st=FileNameAbs(st2);
 	Free(st2);
-	if ((StrStr(st,"/LT/Doc")||StrStr(st,"/LT/Apps")||
-	     StrStr(st,"/LT/Accts/TS/Archive")) && !IsSrcFile(st)) {
-	  st2=MAlloc(StrLen(st)+1);
-	  StrLastRem(st,"/",st2);
-	  Free(st);
-	  FileExtRem(st2);
-	  if (line_num)
-	    st=MSPrintF("http://www.losethos.com/doc/%s.html#l%d",st2,line_num);
-	  else
-	    st=MSPrintF("http://www.losethos.com/doc/%s.html",st2);
-	  Free(st2);
-	  if (ll->flags&LTFLF_HTML_LINK) {
-	    if (!(remove && !StrCmp(ll->html_link,st))) {
-	      if (StrCmp(ll->html_link,st)) {
-		PrintF("$FG,RED$Warning:%s\r\n%s$FG$\r\n",filename,ll->html_link);
-//		Free(ll->html_link);
-//		ll->html_link=st;
-//		st=NULL;
-//		modified=TRUE;
-	      }
-	    } else {
-	      PrintF("%s\r\n$FG,LTRED$%s$FG$\r\n",filename,st);
-	      ll->flags&=~LTFLF_HTML_LINK;
-	      Free(ll->html_link);
-	      ll->html_link=NULL;
-	      modified=TRUE;
-	    }
-	  } else {
-	    if (!remove) {
-	      PrintF("%s\r\n$FG,GREEN$%s$FG$\r\n",filename,st);
-	      ll->flags|=LTFLF_HTML_LINK;
-	      ll->html_link=st;
-	      st=NULL;
-	      modified=TRUE;
-	    }
-	  }
-	} else {
-	  StrFirstRem(st,":");
-	  Silent(ON);
-	  if (GrepFile(st,TS_MAIN_DRV ":/LT/Accts/TS/LoseThos/CodeFiles.TXZ",&f,NULL)) {
-	    Silent(OFF);
-	    st2=MAlloc(StrLen(st)+1);
-	    StrLastRem(st,"/",st2);
-	    Free(st);
-	    FileExtRem(st2);
-	    if (line_num)
-	      st=MSPrintF("http://www.losethos.com/code/%s.html#l%d",st2,line_num);
-	    else
-	      st=MSPrintF("http://www.losethos.com/code/%s.html",st2);
-	    Free(st2);
-	    if (ll->flags&LTFLF_HTML_LINK) {
-	      if (!remove && StrCmp(ll->html_link,st)) {
-		PrintF("$FG,RED$Warning:%s\r\n%s$FG$\r\n",filename,ll->html_link);
-//		Free(ll->html_link);
-//		ll->html_link=st;
-//		st=NULL;
-//		modified=TRUE;
-	      } else if (remove && !StrCmp(ll->html_link,st)) {
-		PrintF("%s\r\n$FG,LTRED$%s$FG$\r\n",filename,st);
-		ll->flags&=~LTFLF_HTML_LINK;
-		Free(ll->html_link);
-		ll->html_link=NULL;
-		modified=TRUE;
-	      }
-	    } else {
-	      if (!remove) {
-		PrintF("%s\r\n$FG,GREEN$%s$FG$\r\n",filename,st);
-		ll->flags|=LTFLF_HTML_LINK;
-		ll->html_link=st;
-		st=NULL;
-		modified=TRUE;
-	      }
-	    }
-	  }
-	  Silent(OFF);
+	st2=MAlloc(StrLen(st)+1);
+	StrLastRem(st,":",st2);
+	Free(st);
+	StrFirstRem(st2,"/"); // root
+	StrFirstRem(st2,"/"); // /LT/
+	FileExtRem(st2);
+	if (line_num)
+	  st=MSPrintF("http://www.losethos.com/LTHtml/%s.html#l%d",st2,line_num);
+	else
+	  st=MSPrintF("http://www.losethos.com/LTHtml/%s.html",st2);
+	Free(st2);
+	if (!(ll->flags&LTFLF_HTML_LINK)) {
+	  "%s\r\n$FG,GREEN$%s$FG$\r\n",filename,st;
+	  ll->flags|=LTFLF_HTML_LINK;
+	  ll->html_link=st;
+	  st=NULL;
+	  modified=TRUE;
 	}
 	Free(st);
       }
@@ -293,18 +235,18 @@ U0 LinkChgFile(U8 *filename,BoolI8 remove)
   LtfDel(l);
 }
 
-U0 LinkChgList(LTDirEntry *tempm1,BoolI8 remove)
+U0 LinkChgList(LTDirEntry *tempm1)
 {
   LTDirEntry *tempm2;
   while (tempm1) {
     tempm2=tempm1->next;
     if (tempm1->attr & LT_ATTR_DIR) {
       if (tempm1->sub) {
-	PrintF("%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name);
-	LinkChgList(tempm1->sub,remove);
+	"%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name;
+	LinkChgList(tempm1->sub);
       }
     } else {
-      LinkChgFile(tempm1->full_name,remove);
+      LinkChgFile(tempm1->full_name);
       Touch(tempm1->full_name,"","",tempm1->datetime);
     }
     LTDirEntryDel(tempm1);
@@ -312,9 +254,9 @@ U0 LinkChgList(LTDirEntry *tempm1,BoolI8 remove)
   }
 }
 
-U0 LinkChg(U8 *files_find_mask=TEXT_FILE_MASK,BoolI8 remove)
+U0 LinkChg(U8 *files_find_mask=TEXT_FILE_MASK)
 {
-  LinkChgList(FilesFind(files_find_mask,1<<FUf_RECURSE),remove);
+  LinkChgList(FilesFind(files_find_mask,1<<FUf_RECURSE|1<<FUf_JUST_TEXT_FILES));
 }
 
 U0 UncollapseFile(U8 *filename,U64 *flags)
@@ -333,7 +275,7 @@ U0 UncollapseList(LTDirEntry *tempm1,U64 *flags)
     tempm2=tempm1->next;
     if (tempm1->attr & LT_ATTR_DIR) {
       if (tempm1->sub) {
-	PrintF("%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name);
+	"%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name;
 	UncollapseList(tempm1->sub,flags);
       }
     } else
@@ -351,98 +293,128 @@ U0 Uncollapse(U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL)
   UncollapseList(FilesFind(files_find_mask,f),&f);
 }
 
+U0 MakeSymFile()
+{
+  Ltf *l;
+  LtfEntry *ll,*ll2;
+  U8 *st;
+  HashRep(adam_task->hash_table,HTT_ALL,"LTHtml/sym.TXZ","-p",0,NULL);
+  l=LtfRead("LTHtml/sym.TXZ");
+  l->cur_entry=l->root.next;
+  l->cur_data_col=l->cur_entry->min_col;
+  LtfPutS(l,"[::/LT/Demo/AcctExample/TSDistribute.APZ,MakeSymFile] This file was generated here.\r\n"
+	    "The [C:/LT/Adam/Hash2a.APZ,88] HashRep() command will list symbols.\r\n\r\n");
+  ll=l->root.next;
+  while (ll!=l) {
+    if (ll->flags&LTFLF_HAS_BIN) {
+      ll->flags&=~LTFLF_HAS_BIN;
+      LtfBinDel(l,ll->bin_data);
+    }
+    if (ll->type_u8!=LTFT_LINK)
+      ll=ll->next;
+    else {
+      if (!*ll->tag) {
+	l->cur_entry=ll2=ll->next;
+	LtfEntryDel(l,ll);
+	ll=ll2;
+      } else {
+	if (ll->flags & LTFLF_AUX_STR)
+	  st=ll->aux_str;
+	else
+	  st=ll->tag;
+	if (StrStr(st,"/LT/Accts/")) {
+	  l->cur_entry=ll;
+	  l->cur_data_col=ll->min_col;
+	  l->y=ll->y;
+	  EdDelLine(l);
+	  ll=l->cur_entry;
+	} else
+	  ll=ll->next;
+      }
+    }
+  }
+  LtfWrite(l);
+}
+
 U8 *losethos_html_header=
 "<title>LoseThos 64-Bit Operating System</title>\r\n"
 "<meta name=\"author\"      content=\"Terry A. Davis\">\r\n"
-"<meta name=\"description\" content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking\">\r\n"
-"<meta name=\"keywords\"    content=\"64-Bit, Operating System, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking\">\r\n";
+"<meta name=\"description\" content=\"64-Bit, Operating System, Christian, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking\">\r\n"
+"<meta name=\"keywords\"    content=\"64-Bit, Operating System, Christian, OS, PC, Mutlicore, Free, Open Source, Public Domain, MultiTasking\">\r\n";
 
 U8 *losethos_code_header=
-"<span class=cF5>                               <a href=\"http://www.losethos.com/doc/TrivialSolutions.html\">Trivial Solutions</a>\r\n"
+"<span class=cF5>                               <a href=\"http://www.losethos.com/LTHtml/Doc/TrivialSolutions.html\">Trivial Solutions</a>\r\n"
 "                    <a href=\"http://www.losethos.com\">The LoseThos 64-bit PC Operating System</a>\r\n"
 "File:%s\r\n"
 "This, and all LoseThos files, are public domain.  Do whatever you like.\r\n"
 "God is watching; God is just; God is never out-done in generosity.  He talks!\r\n\r\n"
 "LoseThos code compiles with the 64-bit LoseThos compiler/assembler I wrote.\r\n"
 "Boot the LoseThos CD and you can compile it.  Not in Kansas anymore!\r\n\r\n"
-"<a href=\"http://www.losethos.com/code/FixedPoint.html\">Click here for preliminary compiler information you need.</a>"
+"<a href=\"http://www.losethos.com/LTHtml/Demo/Lectures/FixedPoint.html\">Click here for preliminary compiler information you need.</a>"
 "\r\n\r\n</span>";
 
 U0 AllToHtml()
 {
   I64 i,cnt;
-  LTDirEntry *tempm,**a;
-  U8 *st,*st1;
-  Ltf *l=LtfRead(TS_MAIN_DRV ":/LT/Accts/TS/LoseThos/CodeFiles.TXZ",LTFF_PLAIN_TEXT|LTFF_NO_CURSOR);
-  LtfEntry *ll;
+  LTDirEntry **a;
+  U8 *st,*st2;
 
   Cd(TS_MAIN_DRV ":/LT/Doc");
   FilesCursorTop;
 
-  if (ts_has_tra_drv) {
-    DelTree(TS_TRA_DRV ":/Temp/Html");
-    Cd(TS_TRA_DRV ":/Temp/LTHtml",TRUE);
-  }
+  if (!ts_has_tra_drv) return;
 
-  CopyTree(TS_MAIN_DRV ":/LT/Accts/TS/LoseThos","LoseThos");
-  Del("LoseThos/CodeFiles.TXZ");
+  DelTree(TS_TRA_DRV ":/Temp/LTHtml");
+  Cd(TS_TRA_DRV ":/Temp",TRUE);
 
-  MkDir("LoseThos/Code");
-  ll=l->root.next;
-  while (ll!=l) {
-    if (ll->type_u8==LTFT_TEXT && ll->tag[0]=='/') {
-      st=MSPrintF(TS_MAIN_DRV ":%s",ll->tag);
-      StrUtil(st,SUF_REM_TRAILING|SUF_REM_LEADING);
-      Copy(st,"LoseThos/Code");
-      Free(st);
-    }
-    ll=ll->next;
-  }
+  CopyTree(TS_MAIN_DRV ":/LT/Accts/TS/LoseThos/"TEXT_FILE_MASK,"LTHtml");
+  MakeSymFile;
 
-  MkDir("LoseThos/Doc");
-  Copy(TS_MAIN_DRV ":/LT/Accts/TS/Archive/News*.TXZ","LoseThos/Doc");
-  Copy(TS_MAIN_DRV ":/LT/Apps/AfterEgypt/*.TXZ","LoseThos/Doc");
-  Copy(TS_MAIN_DRV ":/LT/Doc/*.TXZ","LoseThos/Doc");
+  MkDir("LTHtml");
+  MkDir("LTHtml/LTHtml");
+  CopyTree(TS_MAIN_DRV ":/LT/"TEXT_FILE_MASK,TS_TRA_DRV ":/Temp/LTHtml/LTHtml");
+  DelTree(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Accts/TAD");
+  DelTree(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Accts/TS");
+  DelTree(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Accts/Cody");
+  Del(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Misc/*.TXZ");
 
-  LinkChg(TEXT_FILE_MASK,FALSE);
+  MkDir(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Accts");
+  MkDir(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Accts/TS");
+  MkDir(TS_TRA_DRV ":/Temp/LTHtml/LTHtml/Accts/TS/Archive");
+  Copy(TS_MAIN_DRV ":/LT/Accts/TS/Archive/News*.TXZ",
+       TS_TRA_DRV  ":/Temp/LTHtml/LTHtml/Accts/TS/Archive");
+
+  LinkChg(TEXT_FILE_MASK);
   Uncollapse(TEXT_FILE_MASK);
 
   cnt=0;
-  tempm=FilesFind("LoseThos/*",1<<FUf_RECURSE),
-  a=FilesOrder(tempm,&cnt);
+  a=FilesOrder(FilesFind("LTHtml/*",1<<FUf_RECURSE|1<<FUf_FLATTEN_TREE|1<<FUf_JUST_TEXT_FILES|1<<FUf_JUST_FILES),&cnt);
   for (i=0;i<cnt;i++) {
-    ToHtml(a[i]->full_name,,losethos_html_header);
+    if (IsSrcFile(a[i]->full_name)) {
+      st=StrNew(a[i]->full_name);
+      StrFirstRem(st,"/"); // /
+      StrFirstRem(st,"/"); // /Temp/
+      StrFirstRem(st,"/"); // /Temp/LTHtml/
+      StrFirstRem(st,"/"); // /Temp/LTHtml/LTHtml/
+      st2=MSPrintF("/LT/%s",st);
+      Free(st);
+      st=MSPrintF(losethos_code_header,st2);
+      Free(st2);
+      ToHtml(a[i]->full_name,,losethos_html_header,st);
+      Free(st);
+    } else
+      ToHtml(a[i]->full_name,,losethos_html_header);
+    Del(a[i]->full_name);
     LTDirEntryDel(a[i]);
   }
   Free(a);
 
-  //This redoes it with code header
-  ll=l->root.next;
-  while (ll!=l) {
-    if (ll->type_u8==LTFT_TEXT && ll->tag[0]=='/') {
-      StrUtil(ll->tag,SUF_REM_TRAILING|SUF_REM_LEADING);
-      st1=StrNew(ll->tag);
-      st=StrNew(ll->tag);
-      StrLastRem(st1,"/",st);
-      Free(st1);
-      st1=MSPrintF("LoseThos/Code/%s",st);
-      Free(st);
-      st=MSPrintF(losethos_code_header,ll->tag);
-      ToHtml(st1,,losethos_html_header,st);
-      Free(st);
-      Free(st1);
-    }
-    ll=ll->next;
-  }
-
   if (ts_has_tra_drv) {
     i=Round(os_version*100);
-    st=MSPrintF(TS_TRA_DRV ":/Temp/LTHtml/LoseThos/v%d%02d.html",i/100,i%100);
-    Copy(TS_TRA_DRV ":/Temp/LTHtml/LoseThos/index.html",st);
+    st=MSPrintF(TS_TRA_DRV ":/Temp/LTHtml/v%d%02d.html",i/100,i%100);
+    Copy(TS_TRA_DRV ":/Temp/LTHtml/index.html",st);
     Free(st);
   }
-
-  LtfDel(l);
 }
 
 
@@ -451,18 +423,17 @@ U0 PrepForDistribution()
   Touch("/LT/Doc/FileMgr.TXZ","+T");
   Touch("/LT/Doc/CtrlL.TXZ","+T");
   Touch("/LT/Accts/PersonalMenu.TXZ","+T");
+  Del("/LT/Demo/WebLogExample/WebLog.TXZ");
+  Del("/LT/Demo/GameStarters/EagleDive.BIZ");
 
 //User
-  Del(	  "/LT/Accts/User/Registry.CPZ");
-  DelTree("/LT/Accts/User/CfgMgr");
+  Del("/LT/Accts/User/Registry.CPZ");
 
 //Install
-  Del(	  "/LT/Accts/Install/Registry.CPZ");
-  DelTree("/LT/Accts/Install/CfgMgr");
+  Del("/LT/Accts/Install/Registry.CPZ");
 
 //SafeMode
-  Del(	  "/LT/Accts/SafeMode/Registry.CPZ");
-  DelTree("/LT/Accts/SafeMode/CfgMgr");
+  Del("/LT/Accts/SafeMode/Registry.CPZ");
 
 //TAD
   Touch("/LT/Accts/TAD/PersonalMenu.TXZ","+T");
@@ -482,7 +453,6 @@ U0 PrepForDistribution()
   Copy("/LT/Accts/TS/TSAdam.APZ","/LT/Demo/AcctExample");
   Copy("/LT/Accts/TS/TSIDComputer.APZ","/LT/Demo/AcctExample");
   Copy("/LT/Accts/TS/TSIDDft.APZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/TestSuite.CPZ","/LT/Demo/AcctExample");
   Copy("/LT/Accts/TS/PersonalMenu.TXZ","/LT/Demo/AcctExample");
   Copy("/LT/Accts/TAD/Notes.TXZ","/LT/Demo/AcctExample");
 
@@ -560,21 +530,21 @@ U0 PrepForSafe()
 U0 MakeProductionCDImage()
 {
   PrepForProduction;
-  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CDBOOT_BIZ);
   Drv(TS_MAIN_DRV_LET);
 }
 
 U0 MakeLiteCDImage()
 {
   PrepForLite;
-  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CDBOOT_BIZ);
   Drv(TS_MAIN_DRV_LET);
 }
 
 U0 MakeSafeCDImage()
 {
   PrepForSafe;
-  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CDBOOT_BIZ);
   Drv(TS_MAIN_DRV_LET);
 }
 
@@ -593,7 +563,7 @@ U0 MakeInhouseCDImage()
   MkDir("/Temp");
   MkDir("/Temp/ScreenShots");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
-  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CD_BOOT);
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,CDBOOT_BIZ);
   Drv(TS_MAIN_DRV_LET);
 }
 
@@ -613,8 +583,7 @@ U64 MakeLineCntFile()
   Drv(TS_IMG_DRV_LET);
   LtfDblBufStart;
   LtfMax;
-  PutS("$FG,PURPLE$$TX+CX+HTML,\"LoseThos Source Files\",\"http://www.losethos.com\"$\r\n"
-      "Uninteresting files are excluded.\r\n$FG$\r\n\r\n");
+  "$FG,PURPLE$$TX+CX+HTML,\"LoseThos Source Files\",\"http://www.losethos.com\"$$FG$\r\n\r\n\r\n";
   result=LineCntRep;
   LtfCollapse(FALSE);
   l=LtfCur;
@@ -627,7 +596,7 @@ U64 MakeLineCntFile()
   LtfDblBufEnd;
 
   l=LtfRead(TS_MAIN_DRV ":/LT/Adam/DocDefines.APZ");
-  LtfFindTree(l,"LineCnt",&tree_branch,&start_indent,&end_indent);
+  LtfTreeFind(l,"LineCnt",&tree_branch,&start_indent,&end_indent);
   LtfCut(l,start_indent->next,end_indent->last);
   l->cur_entry=start_indent->next;
   l->cur_data_col=0;
@@ -646,7 +615,7 @@ U64 MakeLineCntFile()
   LtfWrite(l);
   LtfDel(l);
 
-  PrintF("Total LOC:%12,d\r\n\r\n",result);
+  "Total LOC:%12,d\r\n\r\n",result;
   return result;
 }
 
@@ -657,7 +626,7 @@ U0 UpdateBakWin()
 {
   F64 start;
   U64 i;
-  PutS("!!!Update All!!!\r\n");
+  "!!!Update All!!!\r\n";
   if (AreYouSure) {
     start=tNP;
     LtfClear;
@@ -702,12 +671,12 @@ U0 UpdateBakWin()
 
     Drv(TS_MAIN_DRV_LET);
     if (ts_has_tra_drv) {
-      PrintF("LTCD.ISO   %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTCD.ISO"  ));
-      PrintF("LTFull.ISO %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTFull.ISO"));
-      PrintF("LTTS.ISO  %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTTS.ISO" ));
-      PrintF("LTSafe.ISO %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTSafe.ISO"));
+      "LTCD.ISO   %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTCD.ISO"  );
+      "LTFull.ISO %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTFull.ISO");
+      "LTTS.ISO  %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTTS.ISO" );
+      "LTSafe.ISO %6h?u\r\n",FileSize(TS_TRA_DRV ":/LTSafe.ISO");
     }
-    PrintF("Benchmark Time:%9.4f\r\n",tNP-start);
+    "Benchmark Time:%9.4f\r\n",tNP-start;
   }
 }
 
@@ -717,5 +686,16 @@ U0 Cody1New()
   DelTree(TS_MAIN_DRV ":/LT");
   CopyTree(TS_CDROM_DRV ":/LT",TS_MAIN_DRV ":/LT");
   CmpDrv(TS_MAIN_DRV_LET);
+}
+
+U0 TSVMNew()
+{ //From CD-ROM to TSVM
+  TSHDMount;
+  DelTree(TS_MAIN_DRV ":/LT");
+  CopyTree(TS_CDROM_DRV ":/LT",TS_MAIN_DRV ":/LT");
+  CmpDrv(TS_MAIN_DRV_LET);
+  DelTree(TS_BAK_DRV ":/LT");
+  CopyTree(TS_CDROM_DRV ":/LT",TS_BAK_DRV ":/LT");
+  CmpDrv(TS_BAK_DRV_LET);
 }
 

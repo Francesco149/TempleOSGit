@@ -38,7 +38,7 @@ U0 Main()
 {
   I64 i;
   U8 *da=IOAPIC_REG;
-  U32 *dd=IOAPIC_DATA;
+  U32 *_d=IOAPIC_DATA;
 
   ProgressBarsRst;
   for (i=I_USER;i<I_USER+4;i++)
@@ -48,24 +48,24 @@ U0 Main()
 //has the first four vects.
   for (i=IOREDTAB;i<IOREDTAB+4*2;i+=2) {
     *da=i+1;
-    *dd=mp_apic_ids[DEST_CPU]<<24;
+    *_d=mp_apic_ids[DEST_CPU]<<24;
     *da=i;
-    *dd=0x4000+0x40+(i-IOREDTAB)/2;
+    *_d=0x4000+0x40+(i-IOREDTAB)/2;
   }
 
   Sleep(1000);
-  PrintF("The keyboard and timer seem to be active.\r\n"
-    "IntA:%d IntB:%d IntC:%d IntD:%d\r\n\r\n"
-    "IntB is my keybaord and registers a single KEY-UP.\r\n"
-    "Rerun and press a few keys.\r\n",
-    progress1,progress2,progress3,progress4);
+  "The keyboard and timer seem to be active.\r\n"
+  "IntA:%d IntB:%d IntC:%d IntD:%d\r\n\r\n"
+  "IntB is my keybaord and registers a single KEY-UP.\r\n"
+  "Rerun and press a few keys.\r\n",
+  progress1,progress2,progress3,progress4;
 
   //Disable vects
   for (i=IOREDTAB;i<IOREDTAB+4*2;i+=2) {
     *da=i+1;
-    *dd=mp_apic_ids[DEST_CPU]<<24;
+    *_d=mp_apic_ids[DEST_CPU]<<24;
     *da=i;
-    *dd=0x14000+0x40+(i-IOREDTAB)/2;
+    *_d=0x14000+0x40+(i-IOREDTAB)/2;
   }
   ProgressBarsRst;
 }

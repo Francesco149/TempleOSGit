@@ -7,6 +7,9 @@
 #define __BIN_2_TYPE 0x00000002
 #define __BIN_2_SIZE 0x00000047
 #define __BIN_2 "\x11\xFF\xFF\xFF\xFF\xFD\xFF\xFF\xFF\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x05\x02\x00\x00\x00\xFC\xFF\xFF\xFF\x02\x00\x00\x00\x04\x00\x00\x00\x05\xFE\xFF\xFF\xFF\xFC\xFF\xFF\xFF\xFE\xFF\xFF\xFF\x04\x00\x00\x00\x05\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\xFA\xFF\xFF\xFF\x00"
+#define __BIN_4_TYPE 0x00000002
+#define __BIN_4_SIZE 0x000000CF
+#define __BIN_4 "\x11\xFE\xFF\xFF\xFF\xFE\xFF\xFF\xFF\x03\x00\x00\x00\x04\x00\x00\x00\x05\xFF\xFF\xFF\xFF\xFD\xFF\xFF\xFF\x01\x00\x00\x00\xFD\xFF\xFF\xFF\x05\xFF\xFF\xFF\xFF\xFC\xFF\xFF\xFF\x01\x00\x00\x00\xFC\xFF\xFF\xFF\x02\x00\x05\x00\x00\x00\x00\xFC\xFF\xFF\xFF\x00\x00\x00\x00\x03\x00\x00\x00\x05\xFD\xFF\xFF\xFF\x04\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00\x05\xFE\xFF\xFF\xFF\xFB\xFF\xFF\xFF\x02\x00\x00\x00\xFB\xFF\xFF\xFF\x05\x02\x00\x00\x00\xFD\xFF\xFF\xFF\x02\x00\x00\x00\xFC\xFF\xFF\xFF\x05\xFE\xFF\xFF\xFF\xFD\xFF\xFF\xFF\xFE\xFF\xFF\xFF\xFC\xFF\xFF\xFF\x05\xFD\xFF\xFF\xFF\xFD\xFF\xFF\xFF\xFD\xFF\xFF\xFF\x03\x00\x00\x00\x05\x03\x00\x00\x00\xFD\xFF\xFF\xFF\x03\x00\x00\x00\x03\x00\x00\x00\x05\x01\x00\x00\x00\x03\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x05\xFF\xFF\xFF\xFF\x03\x00\x00\x00\xFF\xFF\xFF\xFF\x01\x00\x00\x00\x00"
 
 /*
 Alteration Ideas:
@@ -40,7 +43,7 @@ Alteration Ideas:
 This is an advantage of just-in-time compilation.
 You can't change them when you start a
 game over, however.  A down-side of this
-is you can't use the <CTRL-C> auto-indent feature.
+is you can't use the <CTRL-O> auto-indent feature.
 */
 
 #define HEX_SIDE	11
@@ -135,11 +138,14 @@ and body because of how it is rendered when rotated.
 
 /* <3> <3> (image) */
 
+/* <4> <4> (image) */
+
 
 //Unit types
 #define UT_INFANTRY	0
-#define UT_LT_TANK	1
-#define UT_MD_TANK	2
+#define UT_ARTILLERY	1
+#define UT_LT_TANK	2
+#define UT_MD_TANK	3
 
 class Unit
 {
@@ -148,7 +154,7 @@ class Unit
      armored_attack,unarmored_attack,armor;
   I8 type,player,facing,movement,life,
      range,remaining_movement,accuracy;
-  BoolI8 visible[2],fired,infantry;
+  BoolI8 visible[2],fired,infantry,indirect_fire,pad[3];
 };
 
 Unit units[2][MAX_UNITS];
@@ -157,16 +163,19 @@ Unit units[2][MAX_UNITS];
 U8 visible_unit_bitmap[2][MAX_UNITS*MAX_UNITS>>3];
 
 #define PHASE_START	0
-#define PHASE_MOVE	0
-#define PHASE_MOVE0	0
-#define PHASE_MOVE1	1
-#define PHASE_FIRE	2
-#define PHASE_FIRE0	2
-#define PHASE_FIRE1	3
-#define PHASE_END	4
+#define PHASE_PLOT	0
+#define PHASE_PLOT0	0
+#define PHASE_PLOT1	1
+#define PHASE_MOVE	2
+#define PHASE_MOVE0	2
+#define PHASE_MOVE1	3
+#define PHASE_FIRE	4
+#define PHASE_FIRE0	4
+#define PHASE_FIRE1	5
+#define PHASE_END	6
 
 I64 phase,cur_player,enemy_player,view_player,turn,cursor_row,cursor_col,alive_cnt[2],
-   move_routines[2],fire_routines[2];
+   plot_routines[2],move_routines[2],fire_routines[2];
 
 
 U0 Toward(I64 &row,I64 &col,I64 direction)
@@ -215,7 +224,7 @@ I64 FacingChg(I64 f1,I64 f2)
     return result;
 }
 
-U0 RowColToXY(F64 &x,F64 &y,I64 row,I64 col)
+U0 RowCol2XY(F64 &x,F64 &y,I64 row,I64 col)
 {
   Point *c;
   row=LimitI64(row,0,map_rows);
@@ -225,7 +234,7 @@ U0 RowColToXY(F64 &x,F64 &y,I64 row,I64 col)
   y=c->y;
 }
 
-U0 XYToRowCol(I64 &row,I64 &col,F64 x,F64 y)
+U0 XY2RowCol(I64 &row,I64 &col,F64 x,F64 y)
 {
   col=(x-DCOS/2)/(HEX_SIDE+DCOS);
   if (col&1)
@@ -265,7 +274,7 @@ U0 UpdateCursor(TaskStruct *task,I64 x,I64 y)
   BoolI8 old_preempt=Preempt(OFF);
 
   if (CursorInWindow(task,x,y))
-    XYToRowCol(cursor_row,cursor_col,x+task->horz_scroll.pos,y+task->vert_scroll.pos);
+    XY2RowCol(cursor_row,cursor_col,x+task->horz_scroll.pos,y+task->vert_scroll.pos);
   Preempt(old_preempt);
 }
 
@@ -277,7 +286,7 @@ class LOSCtrl
 BoolI64 LOSPlot(LOSCtrl *l,I64 x,I64 y,I64 z)
 { //We got tricky and used z as the distance from the start of the line.
   I64 row,col;
-  XYToRowCol(row,col,x,y);
+  XY2RowCol(row,col,x,y);
   if ((row!=l->r1 || col!=l->c1) &&
       (row!=l->r2 || col!=l->c2) &&
       terrain[row][col]!=PLAINS) {
@@ -297,8 +306,8 @@ BoolI64 LOS(I64 r1,I64 c1,I64 r2,I64 c2)
 {
   F64 x1,y1,x2,y2;
   LOSCtrl l;
-  RowColToXY(x1,y1,r1,c1);
-  RowColToXY(x2,y2,r2,c2);
+  RowCol2XY(x1,y1,r1,c1);
+  RowCol2XY(x2,y2,r2,c2);
   l.r1=r1; l.c1=c1;
   l.r2=r2; l.c2=c2;
   l.distance=Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2));
@@ -366,12 +375,12 @@ BoolI64 MPRecalcVisible(MPCtrl1 *job)
     case RV_ONE_FRIENDLY_UNIT:
       if (job->mode==RV_UPDATE_FRIENDLY_UNIT)
 	range=MAX_F64;
-      RowColToXY(x1,y1,row,col);
+      RowCol2XY(x1,y1,row,col);
       for (i=job->lo;i<job->hi;i++,ut1++) {
 	seen=FALSE;
 	if (ut1->life>0 &&
 	    LOS(row,col,ut1->row,ut1->col)) {
-	    RowColToXY(x2,y2,ut1->row,ut1->col);
+	    RowCol2XY(x2,y2,ut1->row,ut1->col);
 	  d=Sqr(x2-x1)+Sqr(y2-y1);
 	  if (d<range) {
 	    seen=TRUE;
@@ -383,7 +392,7 @@ BoolI64 MPRecalcVisible(MPCtrl1 *job)
       }
       break;
     case RV_ONE_ENEMY_UNIT:
-      RowColToXY(x1,y1,row,col);
+      RowCol2XY(x1,y1,row,col);
       for (i=job->lo;i<job->hi;i++,ut1++)
 	if (ut1->life>0 &&
 	    LOS(row,col,ut1->row,ut1->col)) {
@@ -396,7 +405,7 @@ BoolI64 MPRecalcVisible(MPCtrl1 *job)
       ut0=&units[cur_player][0];
       for (i=0;i<MAX_UNITS;i++,ut0++)
 	if (ut0->life>0) {
-	  RowColToXY(x1,y1,ut0->row,ut0->col);
+	  RowCol2XY(x1,y1,ut0->row,ut0->col);
 	  ut1=&units[enemy_player][job->lo];
 	  for (j=job->lo;j<job->hi;j++,ut1++) {
 	    if (ut1->life>0 &&
@@ -412,7 +421,7 @@ BoolI64 MPRecalcVisible(MPCtrl1 *job)
       ut0=&units[enemy_player][0];
       for (i=0;i<MAX_UNITS;i++,ut0++)
 	if (ut0->life>0) {
-	  RowColToXY(x1,y1,ut0->row,ut0->col);
+	  RowCol2XY(x1,y1,ut0->row,ut0->col);
 	  ut1=&units[cur_player][job->lo];
 	  for (j=job->lo;j<job->hi;j++,ut1++) {
 	    if (ut1->life>0 &&
@@ -441,7 +450,7 @@ just compiles with the val at compile
 time, an advantage of just-in-time over
 static binaries.  LoseThos has a limited
 stk size, so don't get in the habit.
-[C:/LT/OSMain/Memory.CPZ,925] MAlloc() would probably be the better choice.
+[C:/LT/OSMain/Memory.CPZ,957] MAlloc() would probably be the better choice.
 */
   MPCtrl1 job[mp_cnt];
   MPCmdStruct *cmd[mp_cnt];
@@ -556,12 +565,12 @@ I64 MoveOneHex(I64 &row,I64 &col,F64 x,F64 y)
 {
   I64 direction,best_direction=-1,r,c;
   F64 d,best_d,x1,y1;
-  RowColToXY(x1,y1,row,col);
+  RowCol2XY(x1,y1,row,col);
   best_d=Sqr(x1-x)+Sqr(y1-y);
   for (direction=0;direction<6;direction++) {
     r=row; c=col;
     Toward(r,c,direction);
-    RowColToXY(x1,y1,r,c);
+    RowCol2XY(x1,y1,r,c);
     d=Sqr(x1-x)+Sqr(y1-y);
     if (0<=r<map_rows &&
 	0<=c<map_cols &&
@@ -594,7 +603,7 @@ U0 MoveUnitAnimation(Unit *tempu,I64 r,I64 c,I64 facing)
 {
   F64 x1,y1,x2,y2,f=facing*60.0*pi/180.0;
   moving_unit=tempu;
-  RowColToXY(x1,y1,tempu->row,tempu->col);
+  RowCol2XY(x1,y1,tempu->row,tempu->col);
   move_x=x1; move_y=y1;
   moving=TRUE;
   if (tempu->infantry)
@@ -613,7 +622,7 @@ U0 MoveUnitAnimation(Unit *tempu,I64 r,I64 c,I64 facing)
     Snd(100);
   }
   move_facing=f;
-  RowColToXY(x2,y2,r,c);
+  RowCol2XY(x2,y2,r,c);
   Line(NULL,x1,y1,0,x2,y2,0,&MovePlot);
   Snd(0);
   moving_unit=NULL;
@@ -650,10 +659,32 @@ BoolI64 MoveUnit(Unit *tempu,I64 x,I64 y)
     return FALSE;
 }
 
+class IndirectOrders
+{
+  IndirectOrders *next,*last;
+  Unit *attacker;
+  I64 row,col;
+} indirect_root;
+
+U0 PlotShot(Unit *tempu,I64 row,I64 col)
+{
+  IndirectOrders *tempi;
+  if (tempu->life<=0 || tempu->range<=0)
+    return;
+  tempu->fired=TRUE;
+  tempi=CAlloc(sizeof(IndirectOrders));
+  tempi->attacker=tempu;
+  tempi->row=row;
+  tempi->col=col;
+  InsQue(tempi,indirect_root.last);
+}
+
 BoolI8 firing=FALSE;
 I64 fire_x,fire_y;
 Unit *target_unit;
 BoolI8 target_hit;
+BoolI8 indirect_explosion=FALSE;
+I64 indirect_row,indirect_col;
 
 BoolI64 FirePlot(U0 aux,I64 x,I64 y,I64 z)
 {
@@ -674,33 +705,33 @@ U0 FireShot(Unit *tempu,Unit *target)
 
   if (tempu->life<=0 || target->life<=0 || tempu->range<=0)
     return;
-  RowColToXY(x1,y1,tempu->row,tempu->col);
-  RowColToXY(x2,y2,target->row,target->col);
+  RowCol2XY(x1,y1,tempu->row,tempu->col);
+  RowCol2XY(x2,y2,target->row,target->col);
 
   CrLf(2);
 
   d=100*Rand;
-  PrintF("+%5.2f  Roll\r\n",d);
+  "+%5.2f  Roll\r\n",d;
   d+=tempu->accuracy;
-  PrintF("+%2d.00  Accuracy\r\n",tempu->accuracy);
+  "+%2d.00  Accuracy\r\n",tempu->accuracy;
 
   range_factor=Sqrt(Sqr(x2-x1)+Sqr(y2-y1))/(tempu->range*2*DSIN);
-  PrintF("-%5.2f%% of Range\r\n",100*range_factor);
+  "-%5.2f%% of Range\r\n",100*range_factor;
   d-=100*range_factor;
   if (t2==TREES) {
-    PrintF("-30.00  Target in trees\r\n");
+    "-30.00  Target in trees\r\n";
     d-=30;
   }
   if (t1==MOUNTAINS && t2!=MOUNTAINS) {
-    PrintF("+30.00  Down from mountains\r\n");
+    "+30.00  Down from mountains\r\n";
     d+=30;
   }
-  PutS("_______\r\n");
+  "_______\r\n";
   if (d>=0) {
-    PrintF("+%5.2f  Hit\r\n",d);
+    "+%5.2f  Hit\r\n",d;
     hit=TRUE;
   } else {
-    PrintF("-%5.2f  Miss\r\n",-d);
+    "-%5.2f  Miss\r\n",-d;
     hit=FALSE;
   }
 
@@ -708,9 +739,11 @@ U0 FireShot(Unit *tempu,Unit *target)
   if (hit) {
     target_hit=TRUE;
     Noise(500*ANIMATION_DELAY,100,150);
+    Sleep(500*ANIMATION_DELAY);
   } else {
     target_hit=FALSE;
     Noise(1000*ANIMATION_DELAY,750,1000);
+    Sleep(1000*ANIMATION_DELAY);
   }
 
   if (hit)
@@ -724,40 +757,41 @@ U0 FireShot(Unit *tempu,Unit *target)
   tempu->fired=TRUE;
 
   if (hit) {
-    r=target->row; c=target->col;
+    r=target->row;c=target->col;
     if ((facing=MoveOneHex(r,c,x1,y1))>=0)
       facing=FacingChg(facing,target->facing);
     else
       facing=0;
     dammage=200.0*Rand;
-    PrintF("Raw dammage roll out of 200: %3f\r\n",dammage);
+    "Raw dammage roll out of 200: %3f\r\n",dammage;
     if (target->armor) {
       d=target->armor/100.0*(5-facing)/5.0;
-      PrintF("Armor:%d-FacingAdjustment(%z) Yields:%5.2f Defense\r\n",
-	target->armor,facing,"Front\0Side\0Rear\0",100*d);
+      "Armor:%d-FacingAdjustment(%z) Yields:%5.2f Defense\r\n",
+	target->armor,facing,"Front\0Side\0Rear\0",100*d;
       if (d>=0) {
 	dammage*=(tempu->armored_attack/100.0)/d;
-	PrintF("Armored Attack:%d\r\nRaw*Attack/Defense=%5.2f Dammage\r\n",
-	  tempu->armored_attack,dammage);
+	"Armored Attack:%d\r\nRaw*Attack/Defense=%5.2f Dammage\r\n",
+	  tempu->armored_attack,dammage;
       } else
 	dammage=0;
     } else {
       d=1.0-range_factor;
       if (d>0) {
-	PrintF("Range:%5.2f%% --> %5.2f%% Remaining\r\n",
-	  100*range_factor,100*d);
+	"Range:%5.2f%% --> %5.2f%% Remaining\r\n",
+	  100*range_factor,100*d;
 	dammage*=(tempu->unarmored_attack/100.0)*d;
-	PrintF("Unarmored Attack:%d\r\nRaw*Attack*Remaining=%5.2f Dammage\r\n",
-	  tempu->unarmored_attack,dammage);
+	"Unarmored Attack:%d\r\nRaw*Attack*Remaining=%5.2f Dammage\r\n",
+	  tempu->unarmored_attack,dammage;
       } else
 	dammage=0;
     }
     dammage=Round(dammage);
     if (dammage>0) {
-      PrintF("Life:%3d - Dammage:%3f =",target->life,dammage);
+      "Life:%3d - Dammage:%3f =",target->life,dammage;
       if (dammage>=target->life) {
-	PutS("Killed\r\n");
+	"Killed\r\n";
 	Noise(1000*ANIMATION_DELAY,1000,4000);
+	Sleep(1000*ANIMATION_DELAY);
 	target->life=0;
 	RecalcVisible(RV_FRIENDLY_UNIT_DIED,target);
 	alive_cnt[target->player]--;
@@ -765,12 +799,12 @@ U0 FireShot(Unit *tempu,Unit *target)
 	if (target->armor) {
 	  if (dammage>0.6*target->life) {
 	    target->movement=0;
-	    PutS("Immobilized\r\n");
+	    "Immobilized\r\n";
 	  } else
-	    PutS("No Penetration\r\n");
+	    "No Penetration\r\n";
 	} else {
 	  target->life-=dammage;
-	  PrintF("%d\r\n",target->life);
+	  "%d\r\n",target->life;
 	}
       }
     }
@@ -778,6 +812,133 @@ U0 FireShot(Unit *tempu,Unit *target)
   while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,408] Snd()
     Yield;
   target_unit=NULL;
+}
+
+I64 row_offsets[7]={-1,-2,-1,1,2,1,0};
+I64 col_offsets_even[7]={-1, 0, 0,0,0,-1,0};
+I64 col_offsets_odd [7]={ 0, 0, 1,1,0, 0,0};
+
+U0 IndirectFireResolve()
+{
+  I64 i,r,c,facing;
+  F64 x1,y1,x2,y2,d,dammage=0,range_factor;
+  Unit *tempu,*target;
+  BoolI8 hit;
+  IndirectOrders *tempi=indirect_root.next,*tempi1;
+  while (tempi!=*indirect_root) {
+    tempi1=tempi->next;
+    tempu=tempi->attacker;
+    RowCol2XY(x1,y1,tempu->row,tempu->col);
+    RowCol2XY(x2,y2,tempi->row,tempi->col);
+
+    CrLf(2);
+
+    d=100*Rand;
+    "+%5.2f  Roll\r\n",d;
+    d+=tempu->accuracy;
+    "+%2d.00  Accuracy\r\n",tempu->accuracy;
+
+    range_factor=Sqrt(Sqr(x2-x1)+Sqr(y2-y1))/(tempu->range*2*DSIN);
+    "-%5.2f%% of Range\r\n",100*range_factor;
+    d-=100*range_factor;
+
+    "_______\r\n";
+    if (d>=0) {
+      "+%5.2f  Hit\r\n",d;
+      hit=TRUE;
+    } else {
+      "-%5.2f  Miss\r\n",-d;
+      hit=FALSE;
+    }
+
+    if (hit) {
+      Noise(500*ANIMATION_DELAY,100,150);
+      Sleep(500*ANIMATION_DELAY);
+    } else {
+      Noise(1000*ANIMATION_DELAY,750,1000);
+      Sleep(1000*ANIMATION_DELAY);
+    }
+
+    if (!hit) {
+      i=RandU16%6;
+      if (tempi->row&1)
+	tempi->col+=col_offsets_odd[i];
+      else
+	tempi->col+=col_offsets_even[i];
+      tempi->row+=row_offsets[i];
+      RowCol2XY(x2,y2,tempi->row,tempi->col);
+    }
+    Line(NULL,x1,y1,0,x2,y2,0,&FirePlot);
+    firing=FALSE;
+    tempu->fired=TRUE;
+    indirect_row=tempi->row;
+    indirect_col=tempi->col;
+    indirect_explosion=TRUE;
+    for (i=0;i<7;i++) {
+      if (tempi->row&1)
+	c=tempi->col+col_offsets_odd[i];
+      else
+	c=tempi->col+col_offsets_even[i];
+      r=tempi->row+row_offsets[i];
+      if (0<=r<map_rows && 0<=c<map_cols &&
+	(target=FindUnit(r,c))) {
+	facing=1;
+	dammage=200.0*Rand;
+	"Raw dammage roll out of 200: %3f\r\n",dammage;
+	if (target->armor) {
+	  d=target->armor/100.0*(5-facing)/5.0;
+	  "Armor:%d-FacingAdjustment(%z) Yields:%5.2f Defense\r\n",
+	    target->armor,facing,"Front\0Side\0Rear\0",100*d;
+	  if (d>=0) {
+	    dammage*=(tempu->armored_attack/100.0)/d;
+	    "Armored Attack:%d\r\nRaw*Attack/Defense=%5.2f Dammage\r\n",
+	      tempu->armored_attack,dammage;
+	  } else
+	    dammage=0;
+	} else {
+	  d=1.0-range_factor;
+	  if (d>0) {
+	    "Range:%5.2f%% --> %5.2f%% Remaining\r\n",
+	      100*range_factor,100*d;
+	    dammage*=(tempu->unarmored_attack/100.0)*d;
+	    "Unarmored Attack:%d\r\nRaw*Attack*Remaining=%5.2f Dammage\r\n",
+	      tempu->unarmored_attack,dammage;
+	  } else
+	    dammage=0;
+	}
+	dammage=Round(dammage);
+	if (dammage>0) {
+	  "Life:%3d - Dammage:%3f =",target->life,dammage;
+	  if (dammage>=target->life) {
+	    "Killed\r\n";
+	    target->life=0;
+	    RecalcVisible(RV_FRIENDLY_UNIT_DIED,target);
+	    alive_cnt[target->player]--;
+	  } else {
+	    if (target->armor) {
+	      if (dammage>0.6*target->life) {
+		target->movement=0;
+		"Immobilized\r\n";
+	      } else
+		"No Penetration\r\n";
+	    } else {
+	      target->life-=dammage;
+	      "%d\r\n",target->life;
+	    }
+	  }
+	}
+      }
+    }
+    Noise(2000*ANIMATION_DELAY,800,1000);
+    Sleep(2000*ANIMATION_DELAY);
+    while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,408] Snd()
+      Yield;
+    indirect_explosion=FALSE;
+
+    RemQue(tempi);
+    Free(tempi);
+    tempi=tempi1;
+  }
 }
 
 U0 DrawHexes()
@@ -890,7 +1051,7 @@ U0 DrawTerrain()
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
       map->color=terrain[j][i];
-      RowColToXY(x,y,j,i);
+      RowCol2XY(x,y,j,i);
       GrFloodFill(map,x,y);
     }
 }
@@ -902,13 +1063,13 @@ U0 DrawRivers()
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
       if (rivers[j][i]) {
-	RowColToXY(x1,y1,j,i);
+	RowCol2XY(x1,y1,j,i);
 	for (k=0;k<6;k++) {
 	  r=j;c=i;
 	  Toward(r,c,k);
 	  if (0<=r<map_rows && 0<=c<map_cols &&
 	    rivers[r][c]) {
-	    RowColToXY(x2,y2,r,c);
+	    RowCol2XY(x2,y2,r,c);
 	    map->color=LTBLUE;
 	    map->pen_width=4;
 	    GrLine3(map,x1,y1,0,x2,y2,0);
@@ -930,13 +1091,13 @@ U0 DrawRoads()
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
       if (roads[j][i]) {
-	RowColToXY(x1,y1,j,i);
+	RowCol2XY(x1,y1,j,i);
 	for (k=0;k<6;k++) {
 	  r=j;c=i;
 	  Toward(r,c,k);
 	  if (0<=r<map_rows && 0<=c<map_cols &&
 	    roads[r][c]) {
-	    RowColToXY(x2,y2,r,c);
+	    RowCol2XY(x2,y2,r,c);
 	    GrLine3(map,x1,y1,0,x2,y2,0);
 	  }
 	}
@@ -967,7 +1128,7 @@ U0 DrawDots()
   map->color=BLACK;
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
-      RowColToXY(x,y,j,i);
+      RowCol2XY(x,y,j,i);
       GrPlot(map,x,y);
     }
 }
@@ -1005,24 +1166,57 @@ U0 InitUnits()
       tempu->life=100;
       tempu->facing=RandU16%6;
       if (!j) {
-	if (i>=Round(MAX_UNITS*P1_TO_P2_ODDS*PLAYER_1_ARMOR_PERCENT/100.0))
-	  type=UT_INFANTRY;
-	else if (i>=Round(0.5*MAX_UNITS*P1_TO_P2_ODDS*PLAYER_1_ARMOR_PERCENT/100.0))
-	  type=UT_MD_TANK;
-	else
-	  type=UT_LT_TANK;
+	if (i>=Round(MAX_UNITS*P1_TO_P2_ODDS*PLAYER_1_ARMOR_PERCENT/100.0)) {
+	  if (Round(i-MAX_UNITS*P1_TO_P2_ODDS*PLAYER_1_ARMOR_PERCENT/100.0)>=Round(0.85*(MAX_UNITS-MAX_UNITS*P1_TO_P2_ODDS*PLAYER_1_ARMOR_PERCENT/100.0)))
+	    type=UT_ARTILLERY;
+	  else
+	    type=UT_INFANTRY;
+	} else {
+	  if (i>=Round(0.5*MAX_UNITS*P1_TO_P2_ODDS*PLAYER_1_ARMOR_PERCENT/100.0))
+	    type=UT_MD_TANK;
+	  else
+	    type=UT_LT_TANK;
+	}
       } else {
-	if (i>=Round(MAX_UNITS*PLAYER_2_ARMOR_PERCENT/100.0))
-	  type=UT_INFANTRY;
-	else if (i>=Round(0.5*MAX_UNITS*PLAYER_2_ARMOR_PERCENT/100.0))
-	  type=UT_MD_TANK;
-	else
-	  type=UT_LT_TANK;
+	if (i>=Round(MAX_UNITS*PLAYER_2_ARMOR_PERCENT/100.0)) {
+	  if (Round(i-MAX_UNITS*PLAYER_2_ARMOR_PERCENT/100.0)>=Round(0.85*(MAX_UNITS-MAX_UNITS*PLAYER_2_ARMOR_PERCENT/100.0)))
+	    type=UT_ARTILLERY;
+	  else
+	    type=UT_INFANTRY;
+	} else {
+	  if (i>=Round(0.5*MAX_UNITS*PLAYER_2_ARMOR_PERCENT/100.0))
+	    type=UT_MD_TANK;
+	  else
+	    type=UT_LT_TANK;
+	}
       }
       tempu->type=type;
       switch (type) {
+	case UT_INFANTRY:
+	  tempu->infantry=TRUE;
+	  tempu->indirect_fire=FALSE;
+	  tempu->armor	 =0;
+	  tempu->armored_attack  =15;
+	  tempu->unarmored_attack=180;
+	  tempu->accuracy=45;
+	  tempu->range	 =5;
+	  tempu->movement=4;
+	  tempu->img	 =__BIN_3;
+	  break;
+	case UT_ARTILLERY:
+	  tempu->infantry=TRUE;
+	  tempu->indirect_fire=TRUE;
+	  tempu->armor	 =0;
+	  tempu->armored_attack  =75;
+	  tempu->unarmored_attack=180;
+	  tempu->accuracy=25;
+	  tempu->range	 =20;
+	  tempu->movement=2;
+	  tempu->img	 =__BIN_4;
+	  break;
 	case UT_LT_TANK:
 	  tempu->infantry=FALSE;
+	  tempu->indirect_fire=FALSE;
 	  tempu->armor	 =30;
 	  tempu->armored_attack  =40;
 	  tempu->unarmored_attack=60;
@@ -1033,6 +1227,7 @@ U0 InitUnits()
 	  break;
 	case UT_MD_TANK:
 	  tempu->infantry=FALSE;
+	  tempu->indirect_fire=FALSE;
 	  tempu->armor	 =60;
 	  tempu->armored_attack  =60;
 	  tempu->unarmored_attack=80;
@@ -1040,16 +1235,6 @@ U0 InitUnits()
 	  tempu->range	 =12;
 	  tempu->movement=16;
 	  tempu->img	 =__BIN_1;
-	  break;
-	case UT_INFANTRY:
-	  tempu->infantry=TRUE;
-	  tempu->armor	 =0;
-	  tempu->armored_attack  =15;
-	  tempu->unarmored_attack=180;
-	  tempu->accuracy=45;
-	  tempu->range	 =5;
-	  tempu->movement=4;
-	  tempu->img	 =__BIN_3;
 	  break;
       }
       do {
@@ -1091,10 +1276,14 @@ U0 NewPhase()
 {
   cur_player^=1;
   enemy_player=cur_player^1;
-  if (++phase>=PHASE_END)
+  if (++phase>=PHASE_END) {
+    IndirectFireResolve;
     NewTurn;
+  }
  
-  if (phase&~1==PHASE_MOVE)
+  if (phase&~1==PHASE_PLOT)
+    Fs->border_attr=WHITE<<4+PURPLE;
+  else if (phase&~1==PHASE_MOVE)
     Fs->border_attr=WHITE<<4+GREEN;
   else
     Fs->border_attr=WHITE<<4+RED;
@@ -1102,6 +1291,10 @@ U0 NewPhase()
   msg_off_timeout=sys_jiffies+JIFFY_FREQ*2*ANIMATION_DELAY+1;
   Snd(1000);
   switch (phase) {
+    case PHASE_PLOT0:
+    case PHASE_PLOT1:
+      SPrintF(msg_buf,"Player %d Artillery Plot",cur_player+1);
+      break;
     case PHASE_MOVE0:
     case PHASE_MOVE1:
       SPrintF(msg_buf,"Player %d Move",cur_player+1);
@@ -1132,6 +1325,7 @@ U0 Init()
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
   InitUnits;
+  indirect_root.next=indirect_root.last=&indirect_root;
   turn=0;
   fire_radius=0;
   show_visible_row=-1;
@@ -1141,6 +1335,16 @@ U0 Init()
   phase=PHASE_END;
 }
 
+U0 CleanUp()
+{
+  IndirectOrders *tempi=indirect_root.next,*tempi1;
+  while (tempi!=&indirect_root) {
+    tempi1=tempi->next;
+    RemQue(tempi);
+    Free(tempi);
+    tempi=tempi1;
+  }
+}
 
 #define T_TURN_OVER	0
 #define T_GAME_OVER	1
@@ -1228,7 +1432,7 @@ U0 PickAI(U8 *dirname,I64 player)
   LtfDel(l);
   LTDirListDel(tempm);
   LTDirListDel(tempm2);
-  ExePrintF("move_routines[%d]=&TanksMove;fire_routines[%d]=&TanksFire;",player,player);
+  ExePrintF("plot_routines[%d]=&TanksPlot;move_routines[%d]=&TanksMove;fire_routines[%d]=&TanksFire;",player,player,player);
 }
 
 
@@ -1260,9 +1464,10 @@ U0 DrawUnits(TaskStruct *task,GrDC *dc)
 	  dc->color=LTCYAN;
       }
       if (tempu->life>0 && Bt(&tempu->visible[view_player],0) && tempu!=moving_unit) {
-	RowColToXY(x,y,tempu->row,tempu->col);
+	RowCol2XY(x,y,tempu->row,tempu->col);
 	if (phase&~1==PHASE_MOVE && tempu->remaining_movement ||
-	    phase&~1==PHASE_FIRE && !tempu->fired ||
+	    (phase&~1==PHASE_PLOT&& tempu->indirect_fire||
+	     phase&~1==PHASE_FIRE&&!tempu->indirect_fire) && !tempu->fired ||
 	    Blink(5,tP(task)))
 	  DrawUnit(task,dc,tempu,x,y,tempu->facing*60.0*pi/180.0);
       }
@@ -1273,7 +1478,7 @@ U0 DrawUnits(TaskStruct *task,GrDC *dc)
 U0 UpdateWin(TaskStruct *task)
 {
   F64 x,y;
-  I64 h,v,i,j,c;
+  I64 h,v,i,j,r,c;
   BoolI8 old_preempt=IsPreempt;
   GrDC *dc=GrDCAlias(gr_dc,task);
   U8 buf[128];
@@ -1286,7 +1491,7 @@ U0 UpdateWin(TaskStruct *task)
   h=task->horz_scroll.pos;
   v=task->vert_scroll.pos;
 
-  GrBlot(dc,-h,-v,map);
+  GrDCBlot(dc,-h,-v,map);
 
   //We want this "atomic" in a multitasking sense.
   //[C:/LT/OSMain/OSGlbls.CPZ,71] ipx,[C:/LT/OSMain/OSGlbls.CPZ,71] ipy are the current mouse x,y in screen coordinates.
@@ -1295,7 +1500,7 @@ U0 UpdateWin(TaskStruct *task)
   j=ipy-task->win_pixel_top -task->win_scroll_y;
   if (CursorInWindow(task,i,j))
     UpdateCursor(task,i,j);
-  RowColToXY(x,y,cursor_row,cursor_col);
+  RowCol2XY(x,y,cursor_row,cursor_col);
   Preempt(old_preempt);
 
 //Roads require multiple cursor fills
@@ -1313,6 +1518,25 @@ U0 UpdateWin(TaskStruct *task)
   if (firing) {
     dc->color=BLACK;
     GrCircle(dc,fire_x-h,fire_y-v,2);
+  }
+  if (indirect_explosion) {
+    for (i=0;i<7;i++) {
+      if (indirect_row&1)
+	c=indirect_col+col_offsets_odd[i];
+      else
+	c=indirect_col+col_offsets_even[i];
+      r=indirect_row+row_offsets[i];
+      if (0<=r<map_rows && 0<=c<map_cols) {
+	RowCol2XY(x,y,r,c);
+	for (j=0;j<10;j++)  {
+	  if (j&1)
+	    dc->color=LTRED;
+	  else
+	    dc->color=YELLOW;
+	  GrCircle(dc,x+RandU16%HEX_SIDE-HEX_SIDE/2-h,y+RandU16%HEX_SIDE-HEX_SIDE/2-v,2);
+	}
+      }
+    }
   }
   if (moving_unit && moving_unit->visible[view_player]) {
     dc->color=YELLOW;
@@ -1352,7 +1576,7 @@ U0 UpdateWin(TaskStruct *task)
     for (j=0;j<map_rows;j++)
       for (i=0;i<map_cols;i++)
 	if (!visible_map[j][i]) {
-	  RowColToXY(x,y,j,i);
+	  RowCol2XY(x,y,j,i);
 	  GrLine(dc,x-6-h,y-6-v,x+6-h,y+6-v);
 	  GrLine(dc,x+6-h,y-6-v,x-6-h,y+6-v);
 	  GrLine(dc,x-h,y-6-v,x-h,y+6-v);
@@ -1385,7 +1609,10 @@ U0 UpdateWin(TaskStruct *task)
   dc->color=WHITE;
   GrRect(dc,-task->win_scroll_x,-task->win_scroll_y,(13+7+10+10)*FONT_WIDTH,FONT_HEIGHT);
 
-  if (phase&~1==PHASE_MOVE) {
+  if (phase&~1==PHASE_PLOT) {
+    dc->color=PURPLE;
+    SPrintF(buf,"Turn:%2d ArtilleryPlot",turn);
+  } else if (phase&~1==PHASE_MOVE) {
     dc->color=GREEN;
     SPrintF(buf,"Turn:%2d Move",turn);
   } else {
@@ -1421,7 +1648,7 @@ U0 TaskEndCB()
 U0 Tanks()
 {
   U64 result,ch;
-  map=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+  map=GrDCNew(DCT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->win_inhibit|=WIF_DBL_CLICK|WIF_IP_L|WIF_IP_R;
@@ -1451,23 +1678,25 @@ U0 Tanks()
   PickAI("/LT/Apps/Tanks/AIs",1);
 
   PopUpOk("Left-click  to move or fire units.\r\n"
-	  "$FG,GREEN$<SPACE BAR>$FG$ or right-click to end phase.\r\n"
-	  "$FG,GREEN$<SHIFT>\t   $FG$ to show line-of-sight.\r\n"
-	  "$FG,GREEN$<ENTER>\t   $FG$ to start new game.\r\n"
-	  "$FG,GREEN$  1\t   $FG$ Player 1 view.\r\n"
-	  "$FG,GREEN$  2\t   $FG$ Player 2 view.\r\n"
-	  "$FG,GREEN$  3\t   $FG$ View odds calculations.");
+	"$FG,GREEN$<SPACE BAR>$FG$ or right-click to end phase.\r\n"
+	"$FG,GREEN$<SHIFT>\t   $FG$ to show line-of-sight.\r\n"
+	"$FG,GREEN$<ENTER>\t   $FG$ to start new game.\r\n"
+	"$FG,GREEN$  1\t   $FG$ Player 1 view.\r\n"
+	"$FG,GREEN$  2\t   $FG$ Player 2 view.\r\n"
+	"$FG,GREEN$  3\t   $FG$ View odds calculations.");
   Fs->task_end_cb=&TaskEndCB; //<CTRL-ALT-X>
   Fs->update_win=&UpdateWin;
   LtfClear;
-  PutS("$FG,GREEN$<SHIFT-ESC>$FG$ to return to game.\r\n");
+  "$FG,GREEN$<SHIFT-ESC>$FG$ to return to game.\r\n";
 
   NewPhase;
   try {
     do {
       try {
 	result=T_EXIT_GAME;
-	if (phase&~1==PHASE_MOVE)
+	if (phase&~1==PHASE_PLOT)
+	  CallInd(plot_routines[cur_player]);
+	else if (phase&~1==PHASE_MOVE)
 	  CallInd(move_routines[cur_player]);
 	else
 	  CallInd(fire_routines[cur_player]);
@@ -1501,6 +1730,7 @@ U0 Tanks()
 	  }
 	  break;
 	case T_NEW_GAME:
+	  CleanUp;
 	  Init;
 	  NewPhase;
 	  break;
@@ -1508,9 +1738,10 @@ U0 Tanks()
     } while (result!=T_EXIT_GAME);
   } catch
     CatchAll;
-  progress4=progress4_max=progress1=progress1_max=0;
+  ProgressBarsRst;
 
   SettingsPop;
   MenuPop;
   GrDCDel(map);
+  CleanUp;
 }

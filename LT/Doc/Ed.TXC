@@ -12,13 +12,13 @@ Toggle Border           ^B
 
 
 Select Text             SHIFT CURSOR
-Cut to Clipboard        SHIFT DEL
+Cut to Clipboard        ^X,SHIFT DEL
 `Msg(2,0,0x3D300000253);`
 
-Copy to Clipboard       ^INS
+Copy to Clipboard       ^C,^INS
 `Msg(2,0,0x4D200000452);`
 
-Paste from Clipboard    SHIFT INS
+Paste from Clipboard    ^V,SHIFT INS
 `Msg(2,0,0x2D200000252);`
 
 Del Line                ^Y
@@ -94,7 +94,7 @@ File Manager            ^D
 `Msg(2,4,0x42000000420);`
 
 
-Autoindent C Function   ^C
+Managed code/Autoindent ^O
 `Msg(2,3,0x42E0000042E);`
 
 * Current code must have been compiled and loaded into mem.

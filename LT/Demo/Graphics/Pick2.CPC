@@ -131,9 +131,9 @@ f->cy+tempo->p.p.y-2);
 	dc->x=pf->cx+tempo->g.p->p.p.x;
 	dc->y=pf->cy+tempo->g.p->p.p.y;
 	dc->z=GR_Z_ALL;
-	dc->flags|=BMF_TRANSFORMATION;
+	dc->flags|=DCF_TRANSFORMATION;
 	GrSpritePlot3(dc,0,0,0,tempo->g.img);
-	dc->flags&=~BMF_TRANSFORMATION;
+	dc->flags&=~DCF_TRANSFORMATION;
 	dc->r=old_r;
 
 	//Updated each refresh, not guarenteed to be uniform.
@@ -296,7 +296,7 @@ U0 PickDemo2()
   WinMax;
   WinBorder(OFF);
   LtfClear;
-  PutS("$BK,1$Move things around.$BK,0$\r\n");
+  "$BK,1$Move things around.$BK,0$\r\n";
   WordStat(OFF);
   Preempt(OFF);
   pf=Init;

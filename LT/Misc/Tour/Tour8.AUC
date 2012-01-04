@@ -1,5 +1,5 @@
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
-PutS("Ed(\"HI:Debugging\");");
+"Ed(\"HI:Debugging\");";
 AFPmtStr("\r");
 PopUpOk(
 "$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\r\n");
@@ -11,7 +11,7 @@ PopUpOk(
 "It takes the function name\r\n"
 "as a string arg.\r\n\r\n"
 "Press $FG,GREEN$<ENTER>$FG$.");
-PutS("WinMax;WinBorder(OFF);\rUf(\"CAlloc\");");
+"WinMax;WinBorder(OFF);\rUf(\"CAlloc\");";
 AFPmtStr("\r");
 
 PopUpOk("Press $FG,GREEN$<CURSOR-UP>$FG$ eight times..");
@@ -29,25 +29,25 @@ AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("AFView;\r");
+"AFView;\r";
 PopUpOk(
 "$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\r\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
 "We can unassemble a\r\n"
-"numeric address with [C:/LT/Compiler/Unassembler.CPZ,847] U().\r\n\r\n"
+"numeric address with [C:/LT/Compiler/Unassembler.CPZ,848] U().\r\n\r\n"
 "Press $FG,GREEN$<ENTER>$FG$.");
-PutS("U(&CAlloc);");
+"U(&CAlloc);";
 AFPmtStr("\r");
 
-PutS("AFView;\r");
+"AFView;\r";
 PopUpOk(
 "$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\r\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk("The opcodes are slightly nonstandard.");
-PutS("Ed(\"::/LT/Compiler/OpCodes.TXZ\");\r");
+"Ed(\"::/LT/Compiler/OpCodes.TXZ\");\r";
 PopUpOk(
 "$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\r\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);

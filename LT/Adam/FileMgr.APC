@@ -63,7 +63,7 @@ U0 FMMountTempDrvWiz()
   LTPrt *p;
   PrtRep;
   BoolI8 okay=FALSE,sure=FALSE,in_use,valid_drv2;
-  PutS("$WW,1$");
+  "$WW,1$";
  
   a_type  =PmtStr("\r\n(R)am or (F)ile : ");
   type	  =ToUpper(*a_type);
@@ -80,23 +80,23 @@ U0 FMMountTempDrvWiz()
 	in_use=FALSE;
       }
       if (in_use)
-	PutS("$FG,RED$Drive letter in use.$FG$\r\n");
+	"$FG,RED$Drive letter in use.$FG$\r\n";
       else {
 	a_size	=PmtStr("\r\nSize in Meg     : ");
 	size=A2I(a_size)*0x100000>>BLK_SIZE_BITS;
 	if (size<0x800)
-	  PutS("$FG,RED$Invalid size.$FG$\r\n");
+	  "$FG,RED$Invalid size.$FG$\r\n";
 	else {
 	  if (type=='F') {
-	    PutS("$FG,RED$Specify entire path, including drive, but leave-off "
-		"the filename extension.$FG$\r\n");
+	    "$FG,RED$Specify entire path, including drive, but leave-off "
+	    "the filename extension.$FG$\r\n";
 	    a_dft=MSPrintF("%c:/Temp/Drive%c",dft_drv,drv_let);
 	    a_name=PmtStr("\r\nFile Name (%s): ",a_dft);
 	    if (*a_name==':')
 	      *a_name=dft_drv;
 	    if (StrLen(a_name)<4 || a_name[1]!=':' ||
 	      StrOcc(a_name,'.'))
-	      PutS("$FG,RED$Invalid file name.$FG$\r\n");
+	      "$FG,RED$Invalid file name.$FG$\r\n";
 	    else {
 	      drv_let2=ToUpper(*a_name);
 	      p=&local_prts[drv_let2-'A'];
@@ -109,20 +109,20 @@ U0 FMMountTempDrvWiz()
 		  Fs->catch_except=TRUE;
 	      }
 	      if (!valid_drv2)
-		PutS("$FG,RED$Invalid drive in file name.$FG$\r\n");
+		"$FG,RED$Invalid drive in file name.$FG$\r\n";
 	      else
 		okay=TRUE;
 	    }
 	  } else {
 	    if (size<<BLK_SIZE_BITS>7*UnusedSysMem/8)
-	      PutS("$FG,RED$Size is too big.$FG$\r\n");
+	      "$FG,RED$Size is too big.$FG$\r\n";
 	    else
 	      okay=TRUE;
 	  }
 	}
       }
     } else
-      PutS("$FG,RED$Invalid drive letter.$FG$\r\n");
+      "$FG,RED$Invalid drive letter.$FG$\r\n";
   }
  
   CrLf;
@@ -154,7 +154,7 @@ U0 FMMountTempDrvWiz()
     Kill(task);
     PrtRep;
   } else
-    PutS("$FG,RED$Canceled$FG$\r\n");
+    "$FG,RED$Canceled$FG$\r\n";
   CrLf;
   PressAKey;
   Free(a_drv);
@@ -611,19 +611,19 @@ I64 PopUpCancelPasteDel(U8 *header=NULL,U8 *footer=NULL)
   Ltf *l=LtfNew;
   if (header) LtfPutS(l,header);
   LtfPutS(l,"$CM+LX,1,1 $$BT,\"INCLUDE               \",FMR_INCLUDE$"
-  	"$CM+LX,27,0$$BT,\"ADAM INCLUDE          \",FMR_ADAM_INCLUDE$"
-  	"$CM+LX,1,3 $$BT,\"DELETE                \",FMR_DELETE$"
-  	"$CM+LX,27,0$$BT,\"RENAME                \",FMR_RENAME$"
-  	"$CM+LX,1,3 $$BT,\"MAKE DIRECTORY        \",FMR_MKDIR$"
-  	"$CM+LX,27,0$$BT,\"PLAIN-TEXT EDIT       \",FMR_PLAIN$"
-  	"$CM+LX,1,3 $$BT,\"PASTE CLIPBOARD FILES \",FMR_PASTE$"
-  	"$CM+LX,27,0$$BT,\"CHANGE DISK(MOUNT IT) \",FMR_CHG_DSK$"
-  	"$CM+LX,1,3 $$BT,\"ADD TEMP DRIVE        \",FMR_ADD_TEMP_DRIVE$"
-  	"$CM+LX,27,0$$BT,\"FORMAT                \",FMR_FORMAT$"
-  	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD-ROM) FILE\",FMR_MAKE_ISO$"
-  	"$CM+LX,27,0$$BT,\"BURN ISO (CD-ROM) FILE\",FMR_BURN_ISO$"
-  	"$CM+LX,1,3 $$BT,\"HELP                  \",FMR_HELP$"
-  	"$CM+LX,27,0$$BT,\"CANCEL                \",LTFM_CANCEL$\r\n");
+	"$CM+LX,27,0$$BT,\"ADAM INCLUDE          \",FMR_ADAM_INCLUDE$"
+	"$CM+LX,1,3 $$BT,\"DELETE                \",FMR_DELETE$"
+	"$CM+LX,27,0$$BT,\"RENAME                \",FMR_RENAME$"
+	"$CM+LX,1,3 $$BT,\"MAKE DIRECTORY        \",FMR_MKDIR$"
+	"$CM+LX,27,0$$BT,\"PLAIN-TEXT EDIT       \",FMR_PLAIN$"
+	"$CM+LX,1,3 $$BT,\"PASTE CLIPBOARD FILES \",FMR_PASTE$"
+	"$CM+LX,27,0$$BT,\"CHANGE DISK(MOUNT IT) \",FMR_CHG_DSK$"
+	"$CM+LX,1,3 $$BT,\"ADD TEMP DRIVE        \",FMR_ADD_TEMP_DRIVE$"
+	"$CM+LX,27,0$$BT,\"FORMAT                \",FMR_FORMAT$"
+	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD-ROM) FILE\",FMR_MAKE_ISO$"
+	"$CM+LX,27,0$$BT,\"BURN ISO (CD-ROM) FILE\",FMR_BURN_ISO$"
+	"$CM+LX,1,3 $$BT,\"HELP                  \",FMR_HELP$"
+	"$CM+LX,27,0$$BT,\"CANCEL                \",LTFM_CANCEL$\r\n");
   if (footer) LtfPutS(l,footer);
   i=PopUpMenu(l);
   LtfDel(l);
@@ -720,7 +720,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)
     do msg_code=GetMsg(&p1,&p2,
 	1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|
 	1<<MSG_IP_R_UP);
-    while (Fs!=sys_cur_focus_task);
+    while (Fs!=sys_focus_task);
     LtfLock(l);
     switch (msg_code) {
       case MSG_IP_R_UP:
@@ -804,6 +804,10 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)
 	    LtfUnlock(l);
 	    FMRightClick;
 	    LtfLock(l);
+	    break;
+	  case CH_CTRLV:
+	    FMCopy(l);
+	    FMRebuildLtf(&l,&root,mode);
 	    break;
 	  case 'r':
 	    LtfUnlock(l);

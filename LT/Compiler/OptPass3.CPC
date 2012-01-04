@@ -606,9 +606,9 @@ here1:
 		register_offsets[tempm->register].offset=mv[i].offset;
 		register_offsets[tempm->register].m=tempm;
 		if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-		  PrintF("Fun:%s\r\nReg %Z Var \"%s\" %08X[RBP]\r\n",
+		  "Fun:%s\r\nReg %Z Var \"%s\" %08X[RBP]\r\n",
 		    fun_class->str,tempm->register,"ST_U64_REGS",
-		      tempm->str,register_offsets[tempm->register].offset);
+		      tempm->str,register_offsets[tempm->register].offset;
 		mv[i].offset=0; //flag as reg var
 	      }
 	    }
@@ -627,8 +627,8 @@ here1:
 	      register_offsets[tempm->register].offset=mv[i].offset;
 	      register_offsets[tempm->register].m=tempm;
 	      if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-		PrintF("Reg %Z Var \"%s\" %08X[RBP]\r\n",tempm->register,"ST_U64_REGS",
-		  tempm->str,register_offsets[tempm->register].offset);
+		"Reg %Z Var \"%s\" %08X[RBP]\r\n",tempm->register,"ST_U64_REGS",
+		  tempm->str,register_offsets[tempm->register].offset;
 	    }
 	  }
 	}

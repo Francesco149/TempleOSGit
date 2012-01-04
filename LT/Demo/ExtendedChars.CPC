@@ -12,7 +12,7 @@ U0 Install()
 
 Install;
 
-PutS("Face:\xFF\r\n");
+"Face:\xFF\r\n";
 
 //Chars 128-255 are treated as letters
 //by the compiler and everything else.
@@ -23,7 +23,7 @@ PutS("Face:\xFF\r\n");
 U0 SrcExample()
 {
   U64 f\xFF\xFF=12345;
-  PrintF("f\xFF\xFF=%d\r\n",f\xFF\xFF);
+  "f\xFF\xFF=%d\r\n",f\xFF\xFF;
 }
 
 SrcExample;

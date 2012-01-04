@@ -8,9 +8,9 @@
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  static F64 last_t=tJ,tt=0;
-  tt+=(tJ-last_t)*Abs(Sin(tJ));
-  last_t=tJ;
+  static F64 last_t=tM,tt=0;
+  tt+=(tM-last_t)*Abs(Sin(tM));
+  last_t=tM;
   tt%=3.5;
   GrSpritePlotRotZ3b(dc,180+tt,tt*30,0,__BIN_1,0.25*Sin(tt)+0.1);
 }
@@ -27,7 +27,7 @@ U0 Song()
   music_tempo=2.5;
   try {
     while (!ScanKey) {
-      PutS("$FG,GREEN$God talking...\r\n$FG$");
+      "$FG,GREEN$God talking...\r\n$FG$";
       Play("3qGDFAFAAF",
 	  "Pre\0ci\0ous \0 \0one,\r\n\0 \0 \0My \0");
       Play("GDFAFAAF",

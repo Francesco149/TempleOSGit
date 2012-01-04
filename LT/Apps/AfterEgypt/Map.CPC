@@ -36,7 +36,7 @@ U0 AEMap()
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   LtfClear;
-  PutS("$BG,YELLOW$");
+  "$BG,YELLOW$";
   CrLf(54);
   PutBibleVerse("Exodus,16:35",3);
   Fs->draw_it=&DrawMap;
@@ -68,7 +68,7 @@ U0 AEMap()
     }
   } catch
     Fs->catch_except=TRUE;
-  PutS("$BG$\r\n");
+  "$BG$\r\n";
   SettingsPop(Fs,TSF_SAME_SONG);
   Free(r);
   GrDCClear(dc);

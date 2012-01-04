@@ -10,7 +10,7 @@ public U0 AFPmtStr(U8 *st)
 	sc.u8[0]!=SC_ALT &&
 	sc.u8[0]!=SC_CTRL) {
       if (ch==*st) {
-	PutChar(ch);
+	'' ch;
 	st++;
       } else {
 	if (*st==CH_CR)
@@ -29,7 +29,7 @@ public U0 AFDelayedPutS(U8 *st,U64 mS_delay=100)
 {
   U64 ch;
   while (ch=*st++) {
-    PutChar(ch);
+    '' ch;
     Sleep(mS_delay);
   }
 }

@@ -387,8 +387,7 @@ U0 SongTask(U64 dummy=0)
   Play("hRW13qDhG4eB3G");
   Play("4hBqA3hGqE");
   Play("hDqDhG4eB3G");
-  Play("4hBqAh.D");
-  Play("hD");
+  Play("4hBqAh.DhD");
 }
 
 #define SCREEN_BUMP	100
@@ -517,16 +516,16 @@ U0 Pilgrims()
 {
   U64 msg_code,ch,sc;
 
-  PutS("Initializing Maps...\r\n");
+  "Initializing Maps...\r\n";
   master_map=LGRRead("NewEngland"); //See [::/LT/Doc/Acknowledgements.TXZ,US Geological] Acknowledgements (7).
   vm=GrDC2VectMap(master_map);
   PopUpOk("This is about the pilgrims who fled\r\n"
-	  "religious persecution in England.\r\n"
-	  "They sailed in 1620 on the Mayflower\r\n"
-	  "and landed at Plymoth, Massachusetts.\r\n"
-	  "\r\n"
-	  "This game is comic, mostly.  Be sure\r\n"
-	  "to try 'z' or 'Z' for zooming.\r\n");
+	"religious persecution in England.\r\n"
+	"They sailed in 1620 on the Mayflower\r\n"
+	"and landed at Plymoth, Massachusetts.\r\n"
+	"\r\n"
+	"This game is comic, mostly.  Be sure\r\n"
+	"to try 'z' or 'Z' for zooming.\r\n");
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
 
   MenuPush(
@@ -593,4 +592,3 @@ pilgrim_done:
   GrVectMapDel(vm);
   GrDCDel(master_map);
 }
-

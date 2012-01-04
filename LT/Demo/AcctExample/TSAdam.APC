@@ -14,9 +14,9 @@ U0 TSInit()
     case CID_TAD8:
       DefinePrintF("CFG_ACCT","\"\rTAD\r\"");
       DefinePrintF("CFG_HARD_DRVS","\"h2s0xbc00\r0xb880\r1d2s0xbc00\r0xb880\r0\"");
-      DefinePrintF("CFG_RAM_DRVS","\"b10x40000\rz10x40000\r\"");
+      DefinePrintF("CFG_RAM_DRVS","\"b1Scale2Mem(2048,0x40000)\rz1Scale2Mem(2048,0x40000)\r\"");
       DefinePrintF("CFG_CDROM_DRVS","\"t3s0xb800\r0\"");
-      DefinePrintF("CFG_DSK_CACHE","\"0x8000000\r\"");
+      DefinePrintF("CFG_DSK_CACHE","\"Scale2Mem(0x80000,0x8000000)\r\"");
       DefinePrintF("TS_HDS","\"DEI\"");
       DefinePrintF("TS_MASTER_BOOT_DRVS","\"I\"");
       DefinePrintF("TS_MAIN_DRV","\"D\"");
@@ -30,9 +30,9 @@ U0 TSInit()
     case CID_CODY1:
       DefinePrintF("CFG_ACCT","\"\rCody\r\"");
       DefinePrintF("CFG_HARD_DRVS","\"c2s0xfe00\r0xfe10\r0\"");
-      DefinePrintF("CFG_RAM_DRVS","\"b10x40000\rz10x40000\r\"");
+      DefinePrintF("CFG_RAM_DRVS","\"b1Scale2Mem(2048,0x40000)\rz1Scale2Mem(2048,0x40000)\r\"");
       DefinePrintF("CFG_CDROM_DRVS","\"t3s0x1F0\r0\"");
-      DefinePrintF("CFG_DSK_CACHE","\"0x8000000\r\"");
+      DefinePrintF("CFG_DSK_CACHE","\"Scale2Mem(0x80000,0x8000000)\r\"");
       DefinePrintF("TS_HDS","\"DEF\"");
       DefinePrintF("TS_MASTER_BOOT_DRVS","\"D\"");
       DefinePrintF("TS_MAIN_DRV","\"D\"");
@@ -46,9 +46,9 @@ U0 TSInit()
     default:
       DefinePrintF("CFG_ACCT","\"\rTAD\r\"");
       DefinePrintF("CFG_HARD_DRVS","\"d2s0x1F0\r0x3F4\r0\"");
-      DefinePrintF("CFG_RAM_DRVS","\"b10x40000\rz10x40000\r\"");
+      DefinePrintF("CFG_RAM_DRVS","\"b1Scale2Mem(2048,0x40000)\rz1Scale2Mem(2048,0x40000)\r\"");
       DefinePrintF("CFG_CDROM_DRVS","\"t3s0x170\r0\"");
-      DefinePrintF("CFG_DSK_CACHE","\"0x8000000\r\"");
+      DefinePrintF("CFG_DSK_CACHE","\"Scale2Mem(0x80000,0x8000000)\r\"");
       DefinePrintF("TS_HDS","\"DE\"");
       DefinePrintF("TS_MASTER_BOOT_DRVS","\"D\"");
       DefinePrintF("TS_MAIN_DRV","\"D\"");
@@ -98,7 +98,6 @@ if (ts_has_cdrom_drv)
 #define TS_ISO_NAME TS_RAM_DRV ":/LTCD.ISO"
 
 #define CFG_OPTS	"ProtectLow\r\r"
-//#define CFG_OPTS	"ProtectLow\rFastMP\r\r"
 #define CFG_DBG_OPTS	"ProtectLow\rHeapInit\r130\rMemInit\r131\rVarInit\r132\r\r"
 #define CFG_DBGZ_OPTS	"ProtectLow\rHeapInit\r0\rMemInit\r0\rVarInit\r0\r\r"
 
@@ -110,9 +109,7 @@ if (ts_has_cdrom_drv)
 //PROD_CDROM_CFG
 `F("PROD_CDROM_CFG");View;`
 
-//[::/LT/Adam/Adam2.APZ,LT/Main] LT/Main
-//[::/LT/Accts/Install/DoItOnce.CPZ,InstallBoot:2] Install Menu #1
-//[::/LT/Accts/Install/DoItOnce.CPZ,InstallBoot:3] Install Menu #2
+//[::/LT/Accts/Install/DoItOnce.CPZ,InstallBoot] Install Acct
 
 
 U0 CtrlAltR(U64 sc)
@@ -243,20 +240,20 @@ public U0 MBRRep(U8 drv_let='C')
   ext_base=INVALID_CLUSTER;
   while (TRUE) {
     ATAReadBlks(bdev,&mbr,offset,1);
-    PrintF("$FG,PURPLE$Blk:%08X$FG$\r\n",offset);
+    "$FG,PURPLE$Blk:%08X$FG$\r\n",offset;
     ClassRep("MasterBootStruct",&mbr);
     if (mbr.signature!=0xAA55)
       break;
     j=-1;
     for (i=0;i<4;i++) {
-      PrintF("$FG,CYAN$  Entry #%d$FG$\r\n",i);
+      "$FG,CYAN$  Entry #%d$FG$\r\n",i;
       if (mbr.p[i].active||mbr.p[i].type)
 	ClassRep("MbrPrtEntry",&mbr.p[i]);
       if (mbr.p[i].type) {
 	type=mbr.p[i].type;
-	PrintF("$FG,RED$%C Offset:%08X Size:%08X Type:%X$FG$\r\n",
+	"$FG,RED$%C Offset:%08X Size:%08X Type:%X$FG$\r\n",
 	  drv_let,mbr.p[i].offset+offset,
-	  mbr.p[i].size,type);
+	  mbr.p[i].size,type;
 	if (type==5 || type==0xF)
 	  j=i;
 	else
@@ -324,6 +321,7 @@ public U0 CopySongs(U8 threshold='7')
   MkDir("::/LT/Apps/MusicOrgan/Examples");
   CopySongDir("::/LT/Accts/TAD/MusicOrgan/GODSongs/*.CPZ",threshold);
   CopySongDir("::/LT/Accts/TAD/MusicOrgan/TADSongs/*.CPZ",threshold);
+  CopySongDir("::/LT/Accts/TAD/MusicOrgan/MixedSongs/*.CPZ",threshold);
 }
 
 public U0 MyHAllRep(U8 *index=NULL)
@@ -415,7 +413,7 @@ U0 CopyVideo()
   if (ts_has_tra_drv) {
     Del(TS_TRA_DRV ":/Temp/*.SND");
     st=MSPrintF("#include \"::/LT/Apps/MusicOrgan/Load\";"
-	 "SndFileCreate(\"" TS_TRA_DRV ":/Temp/Audio\",0.23,0.0,WF_NULL,0.45,0.35);");
+	"SndFileCreate(\"" TS_TRA_DRV ":/Temp/Audio\",0.23,0.0,WF_NULL,0.45,0.35);");
     PopUp(st);
     Free(st);
     DelTree(TS_TRA_DRV ":/Temp/ScreenShots");

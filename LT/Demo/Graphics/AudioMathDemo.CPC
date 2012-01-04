@@ -49,39 +49,39 @@ U0 SndMathDemo()
   Init(dc);
   dc->color=RED;
   FunDraw1(dc,&Sin);
-  PutS("$FG,RED$Sin$FG$\r\n");
+  "$FG,RED$Sin$FG$\r\n";
   PressAKey;
   dc->color=BLUE;
   FunDraw2(dc,&Saw,1.0);
-  PutS("$FG,BLUE$Saw$FG$\r\n");
+  "$FG,BLUE$Saw$FG$\r\n";
   PressAKey;
 
   Init(dc);
   dc->color=RED;
   FunDraw1(dc,&Cos);
-  PutS("$FG,RED$Cos$FG$\r\n");
+  "$FG,RED$Cos$FG$\r\n";
   PressAKey;
   dc->color=BLUE;
   FunDraw2(dc,&Caw,1.0);
-  PutS("$FG,BLUE$Caw$FG$\r\n");
+  "$FG,BLUE$Caw$FG$\r\n";
   PressAKey;
   dc->color=GREEN;
   FunDraw2(dc,&FullCaw,1.0);
-  PutS("$FG,GREEN$FullCaw$FG$\r\n");
+  "$FG,GREEN$FullCaw$FG$\r\n";
   PressAKey;
 
   Init(dc);
   dc->color=RED;
   FunDraw1(dc,&Sin);
-  PutS("$FG,RED$Sin$FG$\r\n");
+  "$FG,RED$Sin$FG$\r\n";
   PressAKey;
   dc->color=BLUE;
   FunDraw2(dc,&Tri,1.0);
-  PutS("$FG,BLUE$Tri$FG$\r\n");
+  "$FG,BLUE$Tri$FG$\r\n";
   PressAKey;
   dc->color=GREEN;
   FunDraw2(dc,&FullTri,1.0);
-  PutS("$FG,GREEN$FullTri$FG$\r\n");
+  "$FG,GREEN$FullTri$FG$\r\n";
   PressAKey;
 
   GrDCClear(dc);

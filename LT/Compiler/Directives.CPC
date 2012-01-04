@@ -80,7 +80,7 @@ U0 ImportHashTable(SysHashTable *src)
   LexStruct *lx=Fs->last_lex;
   if (lx==&Fs->next_lex) {
     PutErr;
-    PutS("Not Compiling\r\n");
+    "Not Compiling\r\n";
   }
   if (!(lx->flags&LF_EXE_BLK))
     PrsExcept(lx,"ST_IMPORT_HASH_TABLE_NOT_ALLOWED");

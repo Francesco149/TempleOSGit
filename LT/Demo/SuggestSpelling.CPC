@@ -39,7 +39,7 @@ U0 SuggestSpelling(U8 *pattern)
   while (*dict) {
     wf=SuggestMatchForm(dict+1);
     if (!StrNCmp(pf,wf,len)) {
-      PrintF("%16s",dict+1);
+      "%16s",dict+1;
       if (++col==num_cols) {
 	col=0;
 	CrLf;
@@ -85,7 +85,7 @@ if (Fs!=adam_task)
 else {
   SetCtrlAltLetCB('L',&CtrlAltL,"Cmd/Suggest Spelling");
 //Appears in the Adam Task Window
-  PutS("<CTRL-ALT-L> installed\r\n");
+  "<CTRL-ALT-L> installed\r\n";
 }
 
 //Note: It would be more appropriate

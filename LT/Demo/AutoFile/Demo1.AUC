@@ -1,15 +1,15 @@
 /* To run this, do a directory, right click on
 this file's name and select "AutoFile".
-Or, type [C:/LT/OSMain/TaskCmd.CPZ,395] AutoFile(filename);
+Or, type [C:/LT/OSMain/TaskCmd.CPZ,397] AutoFile(filename);
 See [::/LT/Doc/Glossary.TXZ,AutoFile] AutoFile in the glossary for more info.
 */
 
 
 I64 i;
 for (i=0;i<3;i++)
-  PutS("Dir;\r");
+  "Dir;\r";
 
-PutS("$FG,RED$//Press a letter to complete the mask$FG$\r");
-PutS("Dir(\"*.");
+"$FG,RED$//Press a letter to complete the mask$FG$\r";
+"Dir(\"*.";
 U64 ch=GetChar(NULL,FALSE); //Prompt for first digit of mask
-PrintF("%c*\");\r",ch);
+"%c*\");\r",ch;

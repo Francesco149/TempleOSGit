@@ -49,7 +49,7 @@ Cd("::/LT/Demo/AcctExample");Dir;
 
 +] System Src Code
   
-Compile these with [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
+Compile these with [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
 
 This is the kernel, more or less.
 Cd("::/LT/OSMain");Dir;
@@ -59,9 +59,6 @@ Cd("::/LT/OSMain");Dir;
 This is the compiler.
 Cd("::/LT/Compiler");Dir;
   `Cd("::/LT/Compiler");Dir;`
-  
-Cd("::/LT/OSMain2");Dir;
-  `Cd("::/LT/OSMain2");Dir;`
   
 
 This is the remainder of the mandatory operating system files.
@@ -85,14 +82,13 @@ Key Map
 `KeyMap;View;`
 
 
-
 -] Applications
   
 
 
 
 
-Tanks <1> (image) Logic  <2> (image) WarGame <3> (image) Timeout <4> (image)
+Tanks <1> (image) Logic <2> (image) WarGame <3> (image) Timeout <4> (image)
   Span <5> (image)
 
 

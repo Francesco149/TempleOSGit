@@ -795,7 +795,7 @@ pvl_done:
 U0 UndefinedExtern()
 {
   PutDefineErr("ST_UNDEFINED_EXTERN");
-  PrintF("at %P\r\n",Caller);
+  "at %P\r\n",Caller;
   throw(EXCEPT_UNDEF_EXTERN);
 }
 
@@ -1587,6 +1587,9 @@ U0 PrsTryBlk(LexStruct *lx,ClassStruct *locals,I64 try_cnt)
     *temp_try=HashFind("SysTry",lx->hash_table_list,HTT_FUN),
     *temp_untry=HashFind("SysUntry",lx->hash_table_list,HTT_FUN);
 
+  if (!temp_try || !temp_untry)
+    PrsExcept(lx,"ST_HEADER_FOR_SYSTRY");
+
   lx->flags|=LF_NO_REG_OPT; //TODO (Currently no reg vars in funs with try/catch)
 
   lb_catch=CbMiscNew(lx,CBMT_LABEL);
@@ -1606,6 +1609,7 @@ U0 PrsTryBlk(LexStruct *lx,ClassStruct *locals,I64 try_cnt)
   CbIcAdd(lx,EC_GET_LABEL,lb_untry,tempc,ICF_PUSH_RESULT);
   CbIcAdd(lx,EC_GET_LABEL,lb_catch,tempc,ICF_PUSH_RESULT);
   if (Bt(temp_try->flags,Cf_EXTERN)) {
+    lx->abs_cnts.externs++;
     if (lx->flags&LF_STATIC_COMPILE)
       CbIcAdd(lx,EC_CALL_IMPORT,temp_try,tempc);
     else
@@ -1626,6 +1630,7 @@ U0 PrsTryBlk(LexStruct *lx,ClassStruct *locals,I64 try_cnt)
   CbIcAdd(lx,EC_LABEL,lb_untry,0);
   CbIcAdd(lx,EC_CALL_START,0,0);
   if (Bt(temp_untry->flags,Cf_EXTERN)) {
+    lx->abs_cnts.externs++;
     if (lx->flags&LF_STATIC_COMPILE)
       CbIcAdd(lx,EC_CALL_IMPORT,temp_untry,tempc);
     else
@@ -1881,7 +1886,7 @@ keyword_import:
 		Lex(lx);
 		if (!lb_break)
 		  PrsExcept(lx,"ST_BREAK_NOT_ALLOWED");
-	  	CbIcAdd(lx,EC_JMP,lb_break,0);
+		CbIcAdd(lx,EC_JMP,lb_break,0);
 		break;
 	      case KW_RETURN:
 		if (!locals)
@@ -1891,6 +1896,7 @@ keyword_import:
 		    lx->hash_table_list,HTT_FUN);
 		  for (i=0;i<try_cnt;i++) {
 		    if (Bt(temp_untry->flags,Cf_EXTERN)) {
+		      lx->abs_cnts.externs++;
 		      if (lx->flags&LF_STATIC_COMPILE)
 			CbIcAdd(lx,EC_CALL_IMPORT,
 			  temp_untry,sys_internal_types[IT_PTR]);
@@ -1922,7 +1928,7 @@ keyword_import:
 		  lx->ident=NULL;
 		}
 		g_lb->flags|=CBMF_USED;
-  		CbIcAdd(lx,EC_JMP,g_lb,0);
+		CbIcAdd(lx,EC_JMP,g_lb,0);
 		Lex(lx);
 		break;
 	      case KW_NOUNUSEDWARN:
@@ -2012,7 +2018,7 @@ keyword_import:
 	    g_lb->flags|=CBMF_DEFINED;
 	    Lex(lx); //skip ident
 	    lx->last_indent_level=0;
-  	    CbIcAdd(lx,EC_LABEL,g_lb,0);
+	    CbIcAdd(lx,EC_LABEL,g_lb,0);
 	    if (lx->token==':') //skip ident
 	      Lex(lx); //skip colon
 	    else
@@ -2024,7 +2030,9 @@ keyword_import:
 	}
       } else prs_exp=TRUE;
       if (prs_exp) {
-	if (!PrsExpression(lx,NULL,TRUE))
+	if ((lx->token==TK_STR||lx->token==TK_U8) && !(lx->opts&1<<OPTf_STD_C))
+	  PrsFunCall(lx,NULL,FALSE,NULL);
+	else if (!PrsExpression(lx,NULL,TRUE))
 	  throw(EXCEPT_COMPILER,18);
       }
       if (lx->token!=',')

@@ -3,7 +3,7 @@
 BoolI64 ChkDskConfirm(BoolI8 *_fix,BoolI8 *_confirm)
 {
   if (*_fix && *_confirm) {
-    PutS("Fix ");
+    "Fix ";
     if (!YorN)
       *_fix=FALSE;
     *_confirm=FALSE;
@@ -57,7 +57,7 @@ I64 LTFSChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   LTDirEntry *ptr,*ptr2;
 
   Drv(drv_let);
-  PutS("Scanning...\r\n");
+  "Scanning...\r\n";
   size=(p->size-(p->data-p->offset))/p->spc;
   bpc=p->spc<<BLK_SIZE_BITS;
   bits=CAlloc((size+7)>>3);
@@ -162,7 +162,7 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   U32 *bits2;
   I64 c,errs=0;
   Drv(drv_let);
-  PutS("Scanning...\r\n");
+  "Scanning...\r\n";
   size=(p->size-(p->data-p->offset))/p->spc;
   bpc=p->spc<<BLK_SIZE_BITS;
   bits=CAlloc((size+7)>>3);
@@ -223,10 +223,10 @@ public I64 ChkDsk(U8 drv_let=0,BoolI8 fix=FALSE,BoolI8 confirm=TRUE)
   }
   if (errs) {
     if (fix)
-      PutS("It might be a little better.  ");
-    PutS("Copy files to another partition or CD-ROM, "
-	   "reformat, and copy back.  "
-	   "Or, copy from a back-up.\r\n");
+      "It might be a little better.  ";
+    "Copy files to another partition or CD-ROM, "
+    "reformat, and copy back.  "
+    "Or, copy from a back-up.\r\n";
   }
   return errs;
 }

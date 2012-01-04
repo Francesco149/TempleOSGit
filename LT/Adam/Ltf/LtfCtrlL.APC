@@ -3,7 +3,7 @@
 #define LK_FILE_FIND	2
 #define LK_FILE_LINE	3
 #define LK_MAN_PAGE	4
-#define LK_PLAIN 	5
+#define LK_PLAIN	5
 #define LK_PLAIN_FIND	6
 #define LK_PLAIN_LINE	7
 #define LK_BIBLE_FIND	8
@@ -20,7 +20,7 @@ I64 PopUpLinkType(BoolI8 include_anchor)
   I64 i;
   Ltf *l=LtfNew;
   LtfPutS(l,"$MU,\"To file\",LK_FILE$\r\n"
-  	"$MU,\"To anchor in file\",LK_FILE_ANCHOR$\r\n"
+	"$MU,\"To anchor in file\",LK_FILE_ANCHOR$\r\n"
 	"$MU,\"To str in file\",LK_FILE_FIND$\r\n"
 	"$MU,\"To line in file\",LK_FILE_LINE$\r\n"
 	"$MU,\"To man page\",LK_MAN_PAGE$\r\n"
@@ -33,7 +33,7 @@ I64 PopUpLinkType(BoolI8 include_anchor)
 	"$MU,\"To Addr\",LK_ADDR$\r\n");
   if (include_anchor) {
     LtfPutS(l,"$MU,\"Place Anchor\",LK_PLACE_ANCHOR$\r\n"
-   	"$MU,\"Set Project\",LK_PROJECT$\r\n");
+	"$MU,\"Set Project\",LK_PROJECT$\r\n");
   }
   LtfPutS(l,"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
   i=PopUpMenu(l);
@@ -151,10 +151,7 @@ class EdProjectStruct
   BoolI8	hide;
 };
 
-
-
 U8 *ctrl_L_header="<WINDOWS KEY> for help\r\n\r\n";
-
 
 BoolI64 PmtLink(I64 type,U8 **_tag,U8 **_link,BoolI8 *_quote,U8 **_html_link)
 {
@@ -384,9 +381,9 @@ U0 EdInsertLink()
   }
   if (st) {
     if (quote)
-      PrintF("%Q",st);
+      "%Q",st;
     else
-      PutS(st);
+      "" st;
   }
   Free(tag);
   Free(link);
@@ -420,18 +417,17 @@ I64 PopUpColorType()
   return i;
 }
 
-
 I64 PopUpPageSettingType()
 {
   I64 i;
   Ltf *l=LtfNew;
   LtfPutS(l,"$MU,\"Page Length\",LTFT_PAGE_LEN$\r\n"
-  	"$MU,\"Page Header\",LTFT_HEADER$\r\n"
-  	"$MU,\"Page Footer\",LTFT_FOOTER$\r\n"
-  	"$MU,\"Left Margin\",LTFT_LEFT_MARGIN$\r\n"
-  	"$MU,\"Right Margin\",LTFT_RIGHT_MARGIN$\r\n"
-  	"$MU,\"Lock To Page\",LTFT_LOCK_TO_PAGE$\r\n"
-  	"$MU,\"Lock To Center\",LTFT_LOCK_TO_CENTER$\r\n");
+	"$MU,\"Page Header\",LTFT_HEADER$\r\n"
+	"$MU,\"Page Footer\",LTFT_FOOTER$\r\n"
+	"$MU,\"Left Margin\",LTFT_LEFT_MARGIN$\r\n"
+	"$MU,\"Right Margin\",LTFT_RIGHT_MARGIN$\r\n"
+	"$MU,\"Lock To Page\",LTFT_LOCK_TO_PAGE$\r\n"
+	"$MU,\"Lock To Center\",LTFT_LOCK_TO_CENTER$\r\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -443,9 +439,9 @@ U0 EdInsertColor()
   if (type>=0) {
     col=PopUpColor;
     if (col==LTF_DFT)
-      PrintF("$%Z$",type,"ST_LTF_CMDS");
+      "$%Z$",type,"ST_LTF_CMDS";
     else if (col>=0)
-      PrintF("$%Z,%d$",type,"ST_LTF_CMDS",col);
+      "$%Z,%d$",type,"ST_LTF_CMDS",col;
   }
 }
 
@@ -457,17 +453,17 @@ class EdPageSettingStruct
 class EdPageSettingStruct2
 {
   U8	val[136]	fmtstr "$DA-P,135,\"Setting Val:%s\"$\r\n";
-  BoolI8 winrel	 	fmtstr "$CB,\"Win Relative\"$\r\n";
+  BoolI8 winrel		fmtstr "$CB,\"Win Relative\"$\r\n";
 };
 
 class EdPageSettingStruct3
 {
-  BoolI8 lock	 	fmtstr "$CB,\"Lock To Page\"$\r\n";
+  BoolI8 lock		fmtstr "$CB,\"Lock To Page\"$\r\n";
 };
 
 class EdPageSettingStruct4
 {
-  BoolI8 lock	 	fmtstr "$CB,\"Lock To Center\"$\r\n";
+  BoolI8 lock		fmtstr "$CB,\"Lock To Center\"$\r\n";
 };
 
 
@@ -483,38 +479,38 @@ U0 EdInsertPageSetting()
       if (LtfFormDo(el2,"EdPageSettingStruct2")) {
 	if (el2->winrel) {
 	  if (*el2->val)
-	    PrintF("$%Z+WR,%s$",type,"ST_LTF_CMDS",el2->val);
+	    "$%Z+WR,%s$",type,"ST_LTF_CMDS",el2->val;
 	  else
-	    PrintF("$%Z+WR,0$",type,"ST_LTF_CMDS");
+	    "$%Z+WR,0$",type,"ST_LTF_CMDS";
 	} else {
 	  if (*el2->val)
-	    PrintF("$%Z,%s$",type,"ST_LTF_CMDS",el2->val);
+	    "$%Z,%s$",type,"ST_LTF_CMDS",el2->val;
 	  else
-	    PrintF("$%Z$",type,"ST_LTF_CMDS");
+	    "$%Z$",type,"ST_LTF_CMDS";
 	}
       }
     } else if (type==LTFT_LOCK_TO_PAGE) {
       el3->lock=TRUE;
       if (LtfFormDo(el3,"EdPageSettingStruct3")) {
 	if (el3->lock)
-	  PrintF("$%Z,1$",type,"ST_LTF_CMDS",el->val);
+	  "$%Z,1$",type,"ST_LTF_CMDS",el->val;
 	else
-	  PrintF("$%Z,0$",type,"ST_LTF_CMDS");
+	  "$%Z,0$",type,"ST_LTF_CMDS";
       }
     } else if (type==LTFT_LOCK_TO_CENTER) {
       el4->lock=TRUE;
       if (LtfFormDo(el4,"EdPageSettingStruct4")) {
 	if (el4->lock)
-	  PrintF("$%Z,1$",type,"ST_LTF_CMDS",el->val);
+	  "$%Z,1$",type,"ST_LTF_CMDS",el->val;
 	else
-	  PrintF("$%Z,0$",type,"ST_LTF_CMDS");
+	  "$%Z,0$",type,"ST_LTF_CMDS";
       }
     } else {
       if (LtfFormDo(el,"EdPageSettingStruct")) {
 	if (*el->val)
-	  PrintF("$%Z,%s$",type,"ST_LTF_CMDS",el->val);
+	  "$%Z,%s$",type,"ST_LTF_CMDS",el->val;
 	else
-	  PrintF("$%Z$",type,"ST_LTF_CMDS");
+	  "$%Z$",type,"ST_LTF_CMDS";
       }
     }
   }
@@ -529,22 +525,22 @@ I64 PopUpDollarType()
   I64 i;
   Ltf *l=LtfNew;
   LtfPutS(l,"$MU,\"Link\",LTFT_LINK$\r\n"
-  	"$MU,\"Text\",LTFT_TEXT$\r\n"
-  	"$MU,\"Tree Branch\",LTFT_TREE$\r\n"
-  	"$MU,\"Color\",LTFT_FOREGROUND$\r\n"
-  	"$MU,\"Page Settings\",LTFT_PAGE_LEN$\r\n"
-  	"$MU,\"Cursor Movement\",LTFT_CURSOR_MOVEMENT$\r\n"
-  	"$MU,\"Macro\",LTFT_MACRO$\r\n"
-  	"$MU,\"Button\",LTFT_BUTTON$\r\n"
-  	"$MU,\"Check Box\",LTFT_CHECK_BOX$\r\n"
-  	"$MU,\"Menu Val\",LTFT_MENU_VAL$\r\n"
-  	"$MU,\"Data\",LTFT_DATA$\r\n"
-  	"$MU,\"Hex Edit\",LTFT_HEX_ED$\r\n"
-  	"$MU,\"Hidden Widget\",LTFT_HIDE_START$\r\n"
-  	"$MU,\"Syntax Highlighting\",LTFT_HIGHLIGHT$\r\n"
-  	"$MU,\"HTML\",LTFT_HTML_CODE$\r\n"
-  	"$MU,\"Song\",LTFT_SONG$\r\n"
-  	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
+	"$MU,\"Text\",LTFT_TEXT$\r\n"
+	"$MU,\"Tree Branch\",LTFT_TREE$\r\n"
+	"$MU,\"Color\",LTFT_FOREGROUND$\r\n"
+	"$MU,\"Page Settings\",LTFT_PAGE_LEN$\r\n"
+	"$MU,\"Cursor Movement\",LTFT_CURSOR_MOVEMENT$\r\n"
+	"$MU,\"Macro\",LTFT_MACRO$\r\n"
+	"$MU,\"Button\",LTFT_BUTTON$\r\n"
+	"$MU,\"Check Box\",LTFT_CHECK_BOX$\r\n"
+	"$MU,\"Menu Val\",LTFT_MENU_VAL$\r\n"
+	"$MU,\"Data\",LTFT_DATA$\r\n"
+	"$MU,\"Hex Edit\",LTFT_HEX_ED$\r\n"
+	"$MU,\"Hidden Widget\",LTFT_HIDE_START$\r\n"
+	"$MU,\"Syntax Highlighting\",LTFT_HIGHLIGHT$\r\n"
+	"$MU,\"HTML\",LTFT_HTML_CODE$\r\n"
+	"$MU,\"Song\",LTFT_SONG$\r\n"
+	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -552,7 +548,7 @@ I64 PopUpDollarType()
 
 class EdDollarTextStruct
 {
-  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  U8	tag[136]	  fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
   BoolI8	left_x	  fmtstr "$CB,\"Left X\"$\r\n";
   BoolI8	center_x  fmtstr "$CB,\"Center X\"$\r\n";
   BoolI8	right_x   fmtstr "$CB,\"Right X\"$\r\n";
@@ -563,11 +559,11 @@ class EdDollarTextStruct
   BoolI8	tree	  fmtstr "$CB,\"Tree\"$\r\n";
   BoolI8	collapsed fmtstr "$CB,\"Collapsed\"$\r\n";
   BoolI8	alias	  fmtstr "$CB,\"Alias\"$\r\n";
-  U8	scroll_x [136]	 fmtstr "$DA-P,135,\"Scroll X Length Expression:%s\"$\r\n";
-  U8	shift_x  [136]	 fmtstr "$DA-P,135,\"X Offset Expression       :%s\"$\r\n";
-  U8	shift_y  [136]	 fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\r\n";
-  U8	define_str[136]	 fmtstr "$DA-P,135,\"Define Str                :%s\"$\r\n";
-  U8	html_link[136]	 fmtstr "$DA-P,135,\"Html Link                 :%s\"$\r\n";
+  U8	scroll_x [136]	  fmtstr "$DA-P,135,\"Scroll X Length Expression:%s\"$\r\n";
+  U8	shift_x  [136]	  fmtstr "$DA-P,135,\"X Offset Expression       :%s\"$\r\n";
+  U8	shift_y  [136]	  fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\r\n";
+  U8	define_str[136]	  fmtstr "$DA-P,135,\"Define Str                :%s\"$\r\n";
+  U8	html_link[136]	  fmtstr "$DA-P,135,\"Html Link                 :%s\"$\r\n";
 };
 
 U0 EdInsertDollarText()
@@ -576,12 +572,12 @@ U0 EdInsertDollarText()
   EdDollarTextStruct *dt=CAlloc(sizeof(EdDollarTextStruct));
   if (LtfFormDo(dt,"EdDollarTextStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
     *buf=0;
-    if (dt->left_x  ) StrCat(buf,"+LX");
-    if (dt->center_x) StrCat(buf,"+CX");
-    if (dt->right_x ) StrCat(buf,"+RX");
+    if (dt->left_x  )  StrCat(buf,"+LX");
+    if (dt->center_x)  StrCat(buf,"+CX");
+    if (dt->right_x )  StrCat(buf,"+RX");
     if (dt->margin_rel) StrCat(buf,"+MRX");
-    if (dt->blink)    StrCat(buf,"+BK");
-    if (dt->invert)   StrCat(buf,"+IV");
+    if (dt->blink)     StrCat(buf,"+BK");
+    if (dt->invert)    StrCat(buf,"+IV");
     if (dt->underline) StrCat(buf,"+UL");
     if (dt->tree)      StrCat(buf,"+TR");
     if (dt->collapsed) StrCat(buf,"+C");
@@ -592,25 +588,25 @@ U0 EdInsertDollarText()
     if (*dt->define_str) StrCat(buf,"+D");
     if (*dt->html_link) StrCat(buf,"+HTML");
     st=MSPrintF("%q",dt->tag);
-    PrintF("$TX%s,\"%Q\"",buf,st);
+    "$TX%s,\"%Q\"",buf,st;
     Free(st);
     if (*dt->shift_x)
-      PrintF(",%s",dt->shift_x);
+      ",%s",dt->shift_x;
     if (*dt->shift_y)
-      PrintF(",%s",dt->shift_y);
+      ",%s",dt->shift_y;
     if (*dt->scroll_x)
-      PrintF(",%s",dt->scroll_x);
+      ",%s",dt->scroll_x;
     if (*dt->define_str) {
       st=MSPrintF("%q",dt->define_str);
-      PrintF(",\"%Q\"",st);
+      ",\"%Q\"",st;
       Free(st);
     }
     if (*dt->html_link) {
       st=MSPrintF("%q",dt->html_link);
-      PrintF(",\"%Q\"",st);
+      ",\"%Q\"",st;
       Free(st);
     }
-    PrintF("$");
+    "$";
   }
   Free(dt);
 }
@@ -618,14 +614,14 @@ U0 EdInsertDollarText()
 class EdSongStruct
 {
   U8 tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
-  U8 song[512]		fmtstr "$DA-P,511,\"Song          :%s\"$\r\n";
+  U8 song[512]	fmtstr "$DA-P,511,\"Song          :%s\"$\r\n";
 };
 
 U0 EdInsertSong()
 {
   EdSongStruct *dt=CAlloc(sizeof(EdSongStruct));
   if (LtfFormDo(dt,"EdSongStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
-    PrintF("$SO,\"%Q\",\"%s\"$",dt->tag,dt->song);
+    "$SO,\"%Q\",\"%s\"$",dt->tag,dt->song;
   Free(dt);
 }
 
@@ -638,7 +634,7 @@ U0 EdInsertHighlight()
 {
   EdHighlightStruct *dt=CAlloc(sizeof(EdHighlightStruct));
   if (LtfFormDo(dt,"EdHighlightStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
-    PrintF("$HL,%d$",dt->highlight_on);
+    "$HL,%d$",dt->highlight_on;
   Free(dt);
 }
 
@@ -651,9 +647,9 @@ I64 PopUpHtmlType()
   I64 i;
   Ltf *l=LtfNew;
   LtfPutS(l,"$MU,\"Html Code\",HT_CODE$\r\n"
-  	"$MU,\"Html Image\",HT_IMAGE$\r\n"
-  	"$MU,\"Html Video\",HT_VIDEO$\r\n"
-  	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
+	"$MU,\"Html Image\",HT_IMAGE$\r\n"
+	"$MU,\"Html Video\",HT_VIDEO$\r\n"
+	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -675,15 +671,15 @@ U0 EdInsertHtml()
   switch (PopUpHtmlType) {
     case HT_CODE:
       if (LtfFormDo(dt,"EdHtmlCodeStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
-	PrintF("$HC,\"%Q\"$",dt->tag);
+	"$HC,\"%Q\"$",dt->tag;
       break;
     case HT_IMAGE:
       if (LtfFormDo(dt,"EdHtmlURLStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
-	PrintF("$HI,\"%Q\"$",dt->tag);
+	"$HI,\"%Q\"$",dt->tag;
       break;
     case HT_VIDEO:
       if (LtfFormDo(dt,"EdHtmlURLStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
-	PrintF("$HV,\"%Q\"$",dt->tag);
+	"$HV,\"%Q\"$",dt->tag;
       break;
   }
   Free(dt);
@@ -691,7 +687,7 @@ U0 EdInsertHtml()
 
 class EdMacroMenuStruct
 {
-  U8 tag[136]	fmtstr "$DA-P,135,\"Tag Text                  :%s\"$\r\n";
+  U8 tag[136]		fmtstr "$DA-P,135,\"Tag Text                  :%s\"$\r\n";
   U8 left_macro[512]	fmtstr "$DA-P,511,\"Left Click Macro          :%s\"$\r\n";
   U8 left_exp[136]	fmtstr "$DA-P,135,\"Left Click Expression     :%s\"$\r\n";
   BoolI8 popup		fmtstr "$CB,\"PopUp\"$\r\n";
@@ -718,18 +714,18 @@ U0 EdInsertMacroMenu(BoolI8 is_macro)
   if (LtfFormDo(dt,"EdMacroMenuStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
     *buf=0;
     if (is_macro && *dt->tag) StrCat(buf,"+A ");
-    if (dt->popup)    StrCat(buf,"+PU-X");
-    if (dt->left_x  ) StrCat(buf,"+LX");
-    if (dt->center_x) StrCat(buf,"+CX");
-    if (dt->right_x ) StrCat(buf,"+RX");
+    if (dt->popup)	StrCat(buf,"+PU-X");
+    if (dt->left_x  )	StrCat(buf,"+LX");
+    if (dt->center_x)	StrCat(buf,"+CX");
+    if (dt->right_x )	StrCat(buf,"+RX");
     if (dt->margin_rel) StrCat(buf,"+MRX");
-    if (dt->blink)    StrCat(buf,"+BK");
-    if (dt->invert)   StrCat(buf,"+IV");
+    if (dt->blink)	StrCat(buf,"+BK");
+    if (dt->invert)	StrCat(buf,"+IV");
     if (!dt->underline) StrCat(buf,"-UL");
     if (!dt->escape)	StrCat(buf,"-X");
-    if (*dt->scroll_x) StrCat(buf,"+SCX");
-    if (*dt->shift_x)  StrCat(buf,"+SX");
-    if (*dt->shift_y)  StrCat(buf,"+SY");
+    if (*dt->scroll_x)	StrCat(buf,"+SCX");
+    if (*dt->shift_x)	StrCat(buf,"+SX");
+    if (*dt->shift_y)	StrCat(buf,"+SY");
     if (is_macro) {
       if (*dt->left_exp)	StrCat(buf,"+LE");
       if (!*dt->left_macro) StrCat(buf,"-LM");
@@ -742,29 +738,29 @@ U0 EdInsertMacroMenu(BoolI8 is_macro)
       if (is_macro) {
 	if (*dt->tag) {
 	  st=MSPrintF("%q",dt->tag);
-	  PrintF("$MA%s,\"%Q\"",buf,st);
+	  "$MA%s,\"%Q\"",buf,st;
 	  Free(st);
 	} else
-	  PrintF("$MA%s,",buf);
+	  "$MA%s,",buf;
       } else {
 	st=MSPrintF("%q",dt->tag);
-	PrintF("$MU%s,\"%Q\"",buf,st);
+	"$MU%s,\"%Q\"",buf,st;
 	Free(st);
       }
       if (*dt->left_exp)
-	PrintF(",%s",dt->left_exp);
+	",%s",dt->left_exp;
       if (*dt->left_macro) {
 	st=MSPrintF("%q",dt->left_macro);
-	PrintF(",\"%Q\"",st);
+	",\"%Q\"",st;
 	Free(st);
       }
       if (*dt->shift_x)
-	PrintF(",%s",dt->shift_x);
+	",%s",dt->shift_x;
       if (*dt->shift_y)
-	PrintF(",%s",dt->shift_y);
+	",%s",dt->shift_y;
       if (*dt->scroll_x)
-	PrintF(",%s",dt->scroll_x);
-      PutS("$");
+	",%s",dt->scroll_x;
+      "$";
     }
   }
   Free(dt);
@@ -772,17 +768,17 @@ U0 EdInsertMacroMenu(BoolI8 is_macro)
 
 class EdButtonStruct
 {
-  U8	tag[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
-  BoolI8	popup	fmtstr "$CB,\"PopUp\"$\r\n";
-  BoolI8	left_x	fmtstr "$CB,\"Left X \"$\r\n";
-  BoolI8	center_x fmtstr "$CB,\"Center X \"$\r\n";
-  BoolI8	right_x	fmtstr "$CB,\"Right X \"$\r\n";
+  U8	tag[136]	   fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  BoolI8	popup	   fmtstr "$CB,\"PopUp\"$\r\n";
+  BoolI8	left_x	   fmtstr "$CB,\"Left X \"$\r\n";
+  BoolI8	center_x   fmtstr "$CB,\"Center X \"$\r\n";
+  BoolI8	right_x	   fmtstr "$CB,\"Right X \"$\r\n";
   BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\r\n";
-  BoolI8	escape	fmtstr "$CB,\"Escape\"$\r\n";
+  BoolI8	escape	   fmtstr "$CB,\"Escape\"$\r\n";
   U8	left_macro  [136]	fmtstr "$DA-P,135,\"Left Click Macro:%s\"$\r\n";
-  BoolI8	left_is_auto	    fmtstr "$CB,\"Left is AutoStr\"$\r\n";
+  BoolI8	left_is_auto	fmtstr "$CB,\"Left is AutoStr\"$\r\n";
   U8	left_exp    [136]	fmtstr "$DA-P,135,\"Left Click Expression:%s\"$\r\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\r\n";
+  BoolI8	quote		fmtstr "$CB,\"Quote\"$\r\n";
 };
 
 U0 EdInsertButton()
@@ -804,28 +800,28 @@ U0 EdInsertButton()
     if (*dt->tag) {
       if (dt->quote) {
 	st=MSPrintF("%q",dt->tag);
-	PrintF("$$BT%s,\\\"%Q\\\"",buf,st);
+	"$$BT%s,\\\"%Q\\\"",buf,st;
 	Free(st);
 	if (*dt->left_exp)
-	  PrintF(",%s",dt->left_exp);
+	  ",%s",dt->left_exp;
 	if (*dt->left_macro) {
 	  st=MSPrintF("%q",dt->left_macro);
-	  PrintF(",\\\"%Q\\\"",st);
+	  ",\\\"%Q\\\"",st;
 	  Free(st);
 	}
-	PutS("$$");
+	"$$";
       } else {
 	st=MSPrintF("%q",dt->tag);
-	PrintF("$BT%s,\"%Q\"",buf,st);
+	"$BT%s,\"%Q\"",buf,st;
 	Free(st);
 	if (*dt->left_exp)
-	  PrintF(",%s",dt->left_exp);
+	  ",%s",dt->left_exp;
 	if (*dt->left_macro) {
 	  st=MSPrintF("%q",dt->left_macro);
-	  PrintF(",\"%Q\"",st);
+	  ",\"%Q\"",st;
 	  Free(st);
 	}
-	PutS("$");
+	"$";
       }
     }
   }
@@ -865,15 +861,15 @@ U0 EdInsertCursorMovement()
     if (!*dt->left_exp)  StrCat(buf,"-LE");
     if (!*dt->right_exp) StrCat(buf,"-RE");
     if (dt->quote)
-      PutS("$");
-    PrintF("$CM%s",buf);
+      "$";
+    "$CM%s",buf;
     if (*dt->left_exp)
-      PrintF(",%s",dt->left_exp);
+      ",%s",dt->left_exp;
     if (*dt->right_exp)
-      PrintF(",%s",dt->right_exp);
-    PutS("$");
+      ",%s",dt->right_exp;
+    "$";
     if (dt->quote)
-      PutS("$");
+      "$";
   }
   Free(dt);
 }
@@ -881,15 +877,15 @@ U0 EdInsertCursorMovement()
 class EdDataStruct
 {
   U8	fmt_str [136]	fmtstr "$DA-P,135,\"Format Str:%s\"$\r\n";
-  U64 len	 fmtstr "$DA,256,\"Length:%d\"$\r\n";
-  BoolI8	term	 fmtstr "$CB,\"Terminator\"$\r\n";
-  BoolI8	str	 fmtstr "$CB,\"Str\"$\r\n";
-  BoolI8	refresh	 fmtstr "$CB,\"Refresh Data\"$\r\n";
-  BoolI8	update	 fmtstr "$CB,\"Update Data\"$\r\n";
-  BoolI8	u8	 fmtstr "$CB,\"U8\"$\r\n";
-  BoolI8	u16	 fmtstr "$CB,\"U16\"$\r\n";
-  BoolI8	u32	 fmtstr "$CB,\"U32\"$\r\n";
-  BoolI8	u64	 fmtstr "$CB,\"U64\"$\r\n";
+  U64 len		fmtstr "$DA,256,\"Length:%d\"$\r\n";
+  BoolI8	term	fmtstr "$CB,\"Terminator\"$\r\n";
+  BoolI8	str	fmtstr "$CB,\"Str\"$\r\n";
+  BoolI8	refresh	fmtstr "$CB,\"Refresh Data\"$\r\n";
+  BoolI8	update	fmtstr "$CB,\"Update Data\"$\r\n";
+  BoolI8	u8	fmtstr "$CB,\"U8\"$\r\n";
+  BoolI8	u16	fmtstr "$CB,\"U16\"$\r\n";
+  BoolI8	u32	fmtstr "$CB,\"U32\"$\r\n";
+  BoolI8	u64	fmtstr "$CB,\"U64\"$\r\n";
 };
 
 U0 EdInsertData()
@@ -906,13 +902,12 @@ U0 EdInsertData()
     if (dt->refresh)  StrCat(buf,"+RD");
     if (dt->update)   StrCat(buf,"+UD");
 
-    if (dt->u8)       StrCat(buf,"-U64+U8");
+    if (dt->u8)        StrCat(buf,"-U64+U8");
     else if (dt->u16)  StrCat(buf,"-U64+U16");
     else if (dt->u32)  StrCat(buf,"-U64+U32");
 
     st=MSPrintF("%q",dt->fmt_str);
-    PrintF("$$DA%s,%d,\\\"%Q\\\"$$",
-      buf,dt->len,st);
+    "$$DA%s,%d,\\\"%Q\\\"$$",buf,dt->len,st;
     Free(st);
   }
   Free(dt);
@@ -920,8 +915,8 @@ U0 EdInsertData()
 
 class EdCheckBoxStruct
 {
-  U8		label [136]   fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
-  BoolI8	refresh	 fmtstr "$CB,\"Refresh Data\"$\r\n";
+  U8	 label[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\r\n";
+  BoolI8 refresh	fmtstr "$CB,\"Refresh Data\"$\r\n";
 };
 
 U0 EdInsertCheckBox()
@@ -932,8 +927,7 @@ U0 EdInsertCheckBox()
     *buf=0;
     if (dt->refresh)  StrCat(buf,"+RD");
     st=MSPrintF("%q",dt->label);
-    PrintF("$$CB%s,\\\"%Q\\\"$$",
-      buf,st);
+    "$$CB%s,\\\"%Q\\\"$$",buf,st;
     Free(st);
   }
   Free(dt);
@@ -941,10 +935,10 @@ U0 EdInsertCheckBox()
 
 class EdHexEdStruct
 {
-  U64 cnt fmtstr "$DA,256,\"Count:%d\"$\r\n";
-  U64 cols fmtstr "$DA,256,\"Columns:%d\"$\r\n";
-  BoolI8	zero	 fmtstr "$CB,\"Zero Based\"$\r\n";
-  BoolI8	refresh	 fmtstr "$CB,\"Refresh Data\"$\r\n";
+  U64 cnt	fmtstr "$DA,256,\"Count:%d\"$\r\n";
+  U64 cols	fmtstr "$DA,256,\"Columns:%d\"$\r\n";
+  BoolI8 zero	fmtstr "$CB,\"Zero Based\"$\r\n";
+  BoolI8 refresh fmtstr "$CB,\"Refresh Data\"$\r\n";
 };
 
 U0 EdInsertHexEd()
@@ -958,8 +952,7 @@ U0 EdInsertHexEd()
     *buf=0;
     if (!dt->zero)  StrCat(buf,"-Z");
     if (dt->refresh)  StrCat(buf,"+RD");
-    PrintF("$$HX%s,%d,%d$$",
-      buf,dt->cnt,dt->cols);
+    "$$HX%s,%d,%d$$",buf,dt->cnt,dt->cols;
   }
   Free(dt);
 }
@@ -975,8 +968,8 @@ U0 EdInsertBinary(I64 type)
   EdBinaryStruct *dt=CAlloc(sizeof(EdBinaryStruct));
   dt->num=1;
   if (LtfFormDo(dt,"EdBinaryStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header)) {
-    if (LtfFindBin(LtfCur,dt->num))
-      PrintF("$%Z,\"<%d>\",%d$",type,"ST_LTF_CMDS",dt->num,dt->num);
+    if (LtfBinFind(LtfCur,dt->num))
+      "$%Z,\"<%d>\",%d$",type,"ST_LTF_CMDS",dt->num,dt->num;
     else
       PopUpOk("Invalid Binary Num");
   }
@@ -1002,7 +995,7 @@ U0 EdInsertTree()
     st=MSPrintF("%q",dt->label);
     st2=MSPrintF("$TR%s,\"%Q\"$\r\n$ID,%d$*\r\n$ID,%d$",
       buf,st,dt->indent,-dt->indent);
-    LtfSafeInsert(LtfCur,st2);
+    LtfInsertSafe(LtfCur,st2);
     Free(st);
     Free(st2);
   }
@@ -1011,7 +1004,7 @@ U0 EdInsertTree()
 
 U0 EdInsertHidden()
 {
-  LtfSafeInsert(LtfCur,"$HS$*$HE$");
+  LtfInsertSafe(LtfCur,"$HS$*$HE$");
 }
 
 U0 EdInsertDollarCmd()
@@ -1072,40 +1065,40 @@ U0 EdInsertDollarCmd()
 #define PT_PICTURE_MACRO	1
 #define PT_PICTURE_MENU		2
 #define PT_PICTURE_LINK		3
-#define PT_GRSPRITES_PTR		4
-#define PT_GRSPRITES_SIZE		5
+#define PT_GRSPRITES_PTR	4
+#define PT_GRSPRITES_SIZE	5
 #define PT_DUP_PICTURE		6
 
 I64 PopUpPictureType()
 {
   I64 i;
   Ltf *l=LtfNew;
-  LtfPutS(l,"A picture is composed of graphic elements\r\n"
+  LtfPutS(l,"A picture is composed of elements\r\n"
 	"such as lines and colors.  A collection\r\n"
-	"is called $FG,GREEN$GrSprite$FG$.\r\n\r\n"
-	"You can place a picture with a payload\r\n"
-	"of code to execute to create an icon.\r\n"
+	"is called $FG,GREEN$Sprite$FG$.\r\n\r\n"
+	"You can create an icon by placing a picture\r\n"
+	"with a payload of code to execute.\r\n"
 	"This is a called a picture macro.\r\n"
 	"Check \"Pop-Up\" for icons and \"Esc\" for\r\n"
 	"cmd line macros.\r\n\r\n"
 	"In a program, you first make a picture.\r\n"
 	"Then, you insert a pointer to it.\r\n\r\n"
-  	"$MU,\"Insert just Picture (GrSprite)\",PT_PICTURE$\r\n"
-  	"$MU,\"Picture Macro (Icon)\",PT_PICTURE_MACRO$\r\n"
-  	"$MU,\"Picture Menu Item\",PT_PICTURE_MENU$\r\n"
-  	"$MU,\"Picture Link\",PT_PICTURE_LINK$\r\n"
-  	"$MU,\"Pointer to GrSprite Data\",PT_GRSPRITES_PTR$\r\n"
-  	"$MU,\"GrSprite Size (not really needed)\",PT_GRSPRITES_SIZE$\r\n"
-  	"$MU,\"Duplicate Picture\",PT_DUP_PICTURE$\r\n"
-  	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$\r\n\r\n"
-  	"The potential exists for binary data\r\n"
-	"besides $FG,GREEN$GrSprite$FG$.  This is why\r\n"
-	"the pointer to GrSprite is known as\r\n"
+	"$MU,\"Insert just Picture (GrSprite)\",PT_PICTURE$\r\n"
+	"$MU,\"Picture Macro (Icon)\",PT_PICTURE_MACRO$\r\n"
+	"$MU,\"Picture Menu Item\",PT_PICTURE_MENU$\r\n"
+	"$MU,\"Picture Link\",PT_PICTURE_LINK$\r\n"
+	"$MU,\"Pointer to GrSprite Data\",PT_GRSPRITES_PTR$\r\n"
+	"$MU,\"GrSprite Size (not really needed)\",PT_GRSPRITES_SIZE$\r\n"
+	"$MU,\"Duplicate Picture\",PT_DUP_PICTURE$\r\n"
+	"\r\n$MU,\"CANCEL\",LTFM_CANCEL$\r\n\r\n"
+	"The potential exists for binary data\r\n"
+	"besides $FG,GREEN$Sprites$FG$.  This is why\r\n"
+	"the pointer to a Sprite is known as\r\n"
 	"\"Insert Binary\".  There is one more\r\n"
 	"option called \"Insert Binary Type\".\r\n"
 	"The only other binary data type is source\r\n"
 	"line info in map files.\r\n\r\n"
-  	"$MU,\"Insert Binary Data Type\",7$\r\n");
+	"$MU,\"Insert Binary Data Type\",7$\r\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;

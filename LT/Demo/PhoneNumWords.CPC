@@ -35,12 +35,10 @@ U0 PhoneNumWords(U8 *num)
 	if (!StrNCmp(st,src,StrLen(st))) {
 	  ch=*src;
 	  *src=0;
-	  PutS(_num);
+	  "" _num;
 	  *src=ch;
-
-	  PrintF("$FG,GREEN$%s$FG$",dict);
-
-	  PutS(src+StrLen(st));
+	  "$FG,GREEN$%s$FG$",dict;
+	  "" src+StrLen(st);
 	  CrLf;
 	}
 	src++;

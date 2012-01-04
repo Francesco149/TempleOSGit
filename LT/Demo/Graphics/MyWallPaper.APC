@@ -84,10 +84,10 @@ U0 MyWallPaper(TaskStruct *task)
     y=c->y>>16%GR_HEIGHT;
     if (y<0) y+=GR_HEIGHT;
     if (c->dx<0) {
-      dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+      dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,x,y-1,x,y+1);
     } else
-      dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+      dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     GrSpritePlot3(dc,x,y,0,imgs[c->type][j]);
     c->x+=c->dx;  c->y+=c->dy;
   }

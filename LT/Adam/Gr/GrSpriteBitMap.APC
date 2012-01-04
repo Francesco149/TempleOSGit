@@ -35,9 +35,9 @@ I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
     st2=StrNew("");
   }
   LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"BitMap Menu\"$$FG$\r\n"
-   	"$FG,RED$Settings$FG$\r\n"
+	"$FG,RED$Settings$FG$\r\n"
 	"$MU-UL,\"Color        %s\",GEBM_COLOR$\r\n"
-  	"$MU-UL,\"Dither Color %s\",GEBM_DITHER_COLOR$\r\n"
+	"$MU-UL,\"Dither Color %s\",GEBM_DITHER_COLOR$\r\n"
 	"$MU-UL,\"Width        %d\",GEBM_WIDTH$\r\n"
 	"$MU-UL,\"Snap %d %5.3f\",GEBM_SNAP$\r\n"
 	"\r\n$FG,RED$Objects$FG$\r\n"
@@ -74,7 +74,7 @@ U0 GrBMEdPrepPersistentDC(GrDC *dc,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrDC *img)
   GrDCClear(dc);
   dc->color=BLACK;
   GrRect(dc,xx1,yy1,xx2-xx1,yy2-yy1);
-  GrBlot(dc,xx1,yy1,img);
+  GrDCBlot(dc,xx1,yy1,img);
 }
 
 
@@ -153,7 +153,7 @@ bm_menu:
 	      if (undo) {
 		Beep;
 		img->color=BLACK;
-		GrBlot(img,0,0,undo);
+		GrDCBlot(img,0,0,undo);
 		GrDCDel(undo);
 		undo=NULL;
 	      }
@@ -188,7 +188,7 @@ bm_menu:
 
 	  }
 	  GrDCDel(undo);
-	  undo=GrExtractDC(img,0,0,img->width-1,img->height-1);
+	  undo=GrDCExtract(img,0,0,img->width-1,img->height-1);
 	  undo->bkcolor=bkcolor;
 	  WinSync(TRUE);	//Let popup close
 	  GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
@@ -243,7 +243,7 @@ bm_menu:
 		  dc->color=ROP_TRANSPARENT;
 		else
 		  dc->color=BLACK;
-		GrBlot(dc,p1,p2,clipboard);
+		GrDCBlot(dc,p1,p2,clipboard);
 	      }
 	      break;
 	    case GEBM_TEXT:
@@ -365,7 +365,7 @@ bm_menu:
 		  dc->color=ROP_TRANSPARENT;
 		else
 		  dc->color=BLACK;
-		GrBlot(dc,p1,p2,clipboard);
+		GrDCBlot(dc,p1,p2,clipboard);
 	      }
 	      break;
 	    case GEBM_TEXT:
@@ -449,7 +449,7 @@ bm_menu:
 		y22=y1;
 	      }
 	      GrDCDel(clipboard);
-	      clipboard=GrExtractDC(img,x11-xx1,y11-yy1,x22-xx1,y22-yy1);
+	      clipboard=GrDCExtract(img,x11-xx1,y11-yy1,x22-xx1,y22-yy1);
 	      clipboard->bkcolor=bkcolor;
 	      if (mode==GEBM_DELETE) {
 		img->color=bkcolor;
@@ -471,7 +471,7 @@ bm_menu:
 		  img->color=ROP_TRANSPARENT;
 		else
 		  img->color=BLACK;
-		GrBlot(img,p1-xx1,p2-yy1,clipboard);
+		GrDCBlot(img,p1-xx1,p2-yy1,clipboard);
 		GrBMEdPrepPersistentDC(dc,xx1,yy1,xx2,yy2,img);
 	      }
 	      break;

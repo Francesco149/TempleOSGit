@@ -103,6 +103,18 @@ U8 *EdDollarCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
   return st;
 }
 
+U8 *EdMoreCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+{
+  Ltf *ltf=ll->user_data;
+  U8 *st=MAlloc(8,mem_task);
+  nounusedwarn l;
+  if (ltf->flags&LTFF_MORE)
+    StrCpy(st,"More-");
+  else
+    StrCpy(st,"-----");
+  return st;
+}
+
 U8 *EdQuotesCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
 {
   LexStruct *lx=mem_task->last_lex;
@@ -214,16 +226,19 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
 
   ll=LtfPutS(aux,"$DA-T-P+BD+RD+CX+SCX+IV,256,\"%s...\",16$");
   ll->data=&l->filename.name;
-  LtfFmtData(ll);
+  LtfDataFmt(ll);
 
   if (l->flags & LTFF_ALLOW_UNDO) {
     LtfPutS(aux,"$CM+BY+LX+NC,1,1$");
-    ll=LtfPutS(aux,"$DA+BD+RD-T,32,\"Undo:%04d\"$\r\n");
+    ll=LtfPutS(aux,"$DA+BD+RD-T,32,\"Undo:%03d\"$\r\n");
     ll->data=&l->undo_cnt;
-    LtfFmtData(ll);
+    LtfDataFmt(ll);
   }
 
-  LtfPutS(aux,"$CM+BY+RX+NC,-25,1$");
+  LtfPutS(aux,"$CM+BY+RX+NC,-30,1$");
+  ll=LtfPutS(aux,"$TX+BD+TC,\"     \"$");
+  ll->user_data=l;
+  ll->tag_cb=&EdMoreCB;
   ll=LtfPutS(aux,"$TX+BD+TC,\" \"$");
   ll->user_data=l;
   ll->tag_cb=&EdDollarTypeCB;
@@ -236,13 +251,12 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
   ll=LtfPutS(aux,"$TX+BD+TC,\" \"$");
   ll->user_data=l;
   ll->tag_cb=&EdDollarCB;
-
   ll=LtfPutS(aux,"$DA+BD+RD-T,32,\"Line:%04d \"$");
   ll->data=&l->line;
-  LtfFmtData(ll);
+  LtfDataFmt(ll);
   ll=LtfPutS(aux,"$DA+BD+RD-T,32,\"Col:%04d\"$\r\n");
   ll->data=&l->col;
-  LtfFmtData(ll);
+  LtfDataFmt(ll);
 
   aux->recalc_start=aux;
   LtfRecalc(aux);
@@ -267,6 +281,9 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
 
   Preempt(old_preempt);
   LtfUnlock(l);
+  WinSync(TRUE);
+  if (l->flags&LTFF_MIN_SIZE)
+    WinSync(TRUE);
   result=View;
 
   Preempt(OFF);
@@ -275,7 +292,7 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
     ll=l->root.next;
     while (ll!=l) {
       if (ll->type_u8==LTFT_DATA || ll->type_u8==LTFT_CHECK_BOX)
-	LtfGetData(ll);
+	LtfDataGet(ll);
       ll=ll->next;
     }
   }
@@ -331,7 +348,7 @@ public BoolI64 LtfFormDo(U8 *D,U8 *class_name,
       ll=LtfPutS(l,fmtstr);
       ll->data=D+ml->offset;
       ll->my_fmt_data=MemberMetaData("fmtdata",ml);
-      LtfFmtData(ll);
+      LtfDataFmt(ll);
     }
     ml=ml->next;
   }
@@ -605,9 +622,9 @@ public I64 PopUpReplaceSkipAllCancel(U8 *header=NULL,U8 *footer=NULL)
   Ltf *l=LtfNew;
   if (header) LtfPutS(l,header);
   LtfPutS(l,"$CM+LX,1,4$$BT,\"REPLACE\",RSAC_REPLACE$"
-	    "$CM+LX,17,0$$BT,\"SKIP\",RSAC_SKIP$"
-	    "$CM+LX,1,3$$BT,\"ALL\",RSAC_ALL$"
-	    "$CM+LX,17,0$$BT,\"CANCEL\",LTFM_CANCEL$\r\n");
+	"$CM+LX,17,0$$BT,\"SKIP\",RSAC_SKIP$"
+	"$CM+LX,1,3$$BT,\"ALL\",RSAC_ALL$"
+	"$CM+LX,17,0$$BT,\"CANCEL\",LTFM_CANCEL$\r\n");
   if (footer) LtfPutS(l,footer);
   i=PopUpMenu(l);
   LtfDel(l);
@@ -618,7 +635,7 @@ U8 *DoPopUpMGetS(U8 *header,TaskStruct *mem_task)
 {
   U8 *result=NULL,*st;
   if (header)
-    PutS(header);
+    "" header;
   st=MGetS(GETSF_WITH_CR);
   result=StrNew(st,mem_task);
   Free(st);
@@ -724,7 +741,7 @@ public I64 PopUpFile(U8 *filename,BoolI8 warn_ext=TRUE,TaskStruct *parent=NULL,T
       !PopUpCancelOk(ST_WARN_ST "Not .CP? File\r\n\r\n"))
     okay=FALSE;
   if (okay) {
-    st=MSPrintF("PutS(\"$$WW+H,1$$\");Auto(\"ExeFile(\\\"%s\\\");\\r\");UserTaskCont;",name2);
+    st=MSPrintF("\"$$WW+H,1$$\";Auto(\"ExeFile(\\\"%s\\\");\\r\");UserTaskCont;",name2);
     result=PopUp(st,parent,pu_task);
     Free(st);
   }
@@ -779,15 +796,15 @@ public I64 PopUpLightingColor(U8 *header=NULL)
 
 class TransformFormStruct
 {
-  F64 x_scale  fmtstr "$DA-T,32,\"X Scale :%12.6f\"$\r\n";
-  F64 y_scale  fmtstr "$DA-T,32,\"Y Scale :%12.6f\"$\r\n";
-  F64 z_scale  fmtstr "$DA-T,32,\"Z Scale :%12.6f\"$\r\n";
-  F64 theta_z  fmtstr "\r\nAngles are in degrees\r\n$DA-T,32,\"Z-Axis  :%12.6f\"$\r\n";
-  F64 theta_y  fmtstr "$DA-T,32,\"Y-Axis  :%12.6f\"$\r\n";
-  F64 theta_x  fmtstr "$DA-T,32,\"X-Axis  :%12.6f\"$\r\n";
-  F64 x_offset fmtstr "\r\n$DA-T,32,\"X Offset:%12.6f\"$\r\n";
-  F64 y_offset fmtstr "$DA-T,32,\"Y Offset:%12.6f\"$\r\n";
-  F64 z_offset fmtstr "$DA-T,32,\"Z Offset:%12.6f\"$\r\n";
+  F64 x_scale	fmtstr "$DA-T,32,\"X Scale :%12.6f\"$\r\n";
+  F64 y_scale	fmtstr "$DA-T,32,\"Y Scale :%12.6f\"$\r\n";
+  F64 z_scale	fmtstr "$DA-T,32,\"Z Scale :%12.6f\"$\r\n";
+  F64 theta_z	fmtstr "\r\nAngles are in degrees\r\n$DA-T,32,\"Z-Axis  :%12.6f\"$\r\n";
+  F64 theta_y	fmtstr "$DA-T,32,\"Y-Axis  :%12.6f\"$\r\n";
+  F64 theta_x	fmtstr "$DA-T,32,\"X-Axis  :%12.6f\"$\r\n";
+  F64 x_offset	fmtstr "\r\n$DA-T,32,\"X Offset:%12.6f\"$\r\n";
+  F64 y_offset	fmtstr "$DA-T,32,\"Y Offset:%12.6f\"$\r\n";
+  F64 z_offset	fmtstr "$DA-T,32,\"Z Offset:%12.6f\"$\r\n";
 };
 
 BoolI64 PopUpTransform(I64 *r)
@@ -842,7 +859,7 @@ I64 DitherColorDo(U8 *header=NULL)
 {
   I64 msg_code,p1,p2,result=-1,i,j;
   LtfClear;
-  PutS(header);
+  "" header;
   LtfCur->recalc_start=LtfCur;
   LtfRecalc;
   NamedFramePtrAdd("DitherDoFrame",(LtfCur->max_y+1)*FONT_HEIGHT);
@@ -888,4 +905,3 @@ U0 PopUpSnap(SnapStruct *g)
 }
 
 #help_index "Ltf"
-

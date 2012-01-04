@@ -1,39 +1,45 @@
-I didn't want to use paged memory mode, but had to for 64-bit mode to work.  
-For all intents and purposes, it's as though virtual mem (paging) is not
-used. 
- LoseThos maps pages identically to physical memory.  All cores use the same 
-page table map.  Page table entries have a granularity of 2 Meg.   128 Gig 
-total is mapped.  It does not swap to disk.
+I didn't want to use paged memory mode, but 64-bit mode requires it.  For all 
+intents and purposes, virtual mem (paging) is not used.  LoseThos identity 
+maps pages to physical memory.  All cores use the same page table map.  Page 
+table entries have a granularity of 2 Meg, except the first 2 Meg.  It does 
+not swap to disk.
 
-LoseThos uses 32-bit signed relative jump/call instructions in code.  It is a 
-signed +/- value, so that means if one part of your code calls a function,
-the 
-function must be located within 2Gig distance.  Therefore, all code must 
-reside within the lowest 2Gig mem addres including what would normally be 
-called "the kernel."  This area I call the "code heap".
+LoseThos always uses 32-bit signed relative jump/call instructions.  It is a 
+signed +/- value, so if one part of your code calls a function, the function 
+must be within 2 Gig distance.  Therefore, LoseThos keeps all code in the 
+lowest 2 Gig memory addresses including what would normally be called "the 
+kernel."  This lowest 2 Gig I call the "code heap".
 
-The compiler/assembler only creates pos independent code.  You can't create 
-code which is loaded at a fixed, specified location.  The code is pos 
-independent by virtue of the fact that abs addres get patched.
+The compiler/assembler only creates position independent code.  In fact, you 
+can't create code which is loaded at a fixed, specified location.  The code
+is 
+position independent by virtue of the fact that absolute addresses get 
+patched.
 
-You can create new independent heap by first allocating mem with 
+You can create new independent heaps by first allocating mem with 
 [C:/LT/OSMain/Memory.CPZ,432] AllocUncachedMemBlks() or
 [C:/LT/OSMain/Memory.CPZ,215] AllocNonTaskMemBlks(), then calling 
-[C:/LT/OSMain/Memory.CPZ,1079] IndependentHeapCtrlInit() and, then, using
-[C:/LT/OSMain/Memory.CPZ,925] MAlloc().
+[C:/LT/OSMain/Memory.CPZ,1111] IndependentHeapCtrlInit() and, then, using
+[C:/LT/OSMain/Memory.CPZ,957] MAlloc().
 
-See [C:/LT/Adam/MemRep.APZ,121] MemRep().
+Memory allocated by a task will be freed when the task is killed.
+
+Eventually, memory will become fragmented, requiring a reboot.
+
+See [C:/LT/Adam/MemRep.APZ,185] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000009000-~0x000000FFFF
-  Multicore start-up vect code.
+ 0x0000007C00- 0x000003D2BF
+  OSMain kernel module, placed here by the boot-loader,
+  [C:/LT/OSMain/BootDefs.HPZ,6] BOOT_RAM_BASE.
 
- 0x0000010000- 0x000003D6BF
-  OSMain kernel module, placed here by the boot-loader.
+ 0x000007F000- 0x000007F02E
+  Multicore start-up vect code, [C:/LT/OSMain/Adam1a.HPZ,420] MPN_VECT.
 
-~0x000007C000- 0x000007FFFF
-  Boot block relocated here before loading the OSMain module.
+ 0x000007F600- 0x000007FFFF
+  Boot block relocated here before loading the OSMain module,
+  [::/LT/Adam/Boot/BootCD.SPZ] BootCD & [::/LT/Adam/Boot/BootHD.SPZ] BootHD.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -42,13 +48,13 @@ See [C:/LT/Adam/MemRep.APZ,121] MemRep().
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x0000182FFF
-  Page tables
+  Page tables, 128 Gig of space
 
  0x0000183000- 0x007FFFFFFF
   Code Heap mem.
 
  0x00E0000000- 0x00FFFFFFFF
-  Various hardware devices have addres here.  32-bit devices are allocated 
+  Various hardware devices have addresses here.  32-bit devices are allocated 
 memory starting at 0xF0000000 going up.
 
  0x0080000000-~0x00DFFFFFFF
@@ -59,14 +65,14 @@ memory starting at 0xF0000000 going up.
   64-bit devices are mapped counting backward from 128 Gig.
 
 
-                                      [C:/LT/OSMain/Adam1a.HPZ,2819] BlkPools
-[C:/LT/OSMain/Adam1a.HPZ,2834] HeapCtrls
+                                      [C:/LT/OSMain/Adam1a.HPZ,2801] BlkPools
+[C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrls
  <1> (image)
 
 0000 0000 0000 0000                   Core 0   
 
-0000 0000 0001 0000 OSMain
-0000 0000 0003 D6BF 
+0000 0000 0000 7C00 OSMain
+0000 0000 0003 D2BF 
 
 0000 0000 0010 0000 Page_Tables                    AdamTask
 
@@ -113,17 +119,17 @@ memory starting at 0xF0000000 going up.
 
 0000 001F FFFF FFFF
 
-* These numbers 64-bit addres and have been broken into 16-bit groups such as 
-#### #### #### #### for clarity.  There is no segmentation in LoseThos.
+* These numbers 64-bit addresses and have been broken into 16-bit groups such 
+as #### #### #### #### for clarity.  There is no segmentation in LoseThos.
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/LT/OSMain/Memory.CPZ,925] MAlloc() an 8 Gig chunk on my 12 Gig
+can [C:/LT/OSMain/Memory.CPZ,957] MAlloc() an 8 Gig chunk on my 12 Gig
 machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
-the total.  See [C:/LT/OSMain/Memory.CPZ,1283] HeapsInit().
+the total.  See [C:/LT/OSMain/Memory.CPZ,1315] HeapsInit().
 
 * See [::/LT/OSMain/OSMain.CPZ,Independent Heap Ctrl Example] Independent
 Heap Ctrl Example.

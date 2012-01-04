@@ -35,7 +35,7 @@ public U0 PCIDevFileGen()
       }
     }
     if (del)
-      LtfDelEntry(l,ll);
+      LtfEntryDel(l,ll);
     del=del2;
     ll=ll2;
   }
@@ -152,18 +152,18 @@ lud_done:
 public U0 PCIRep()
 {
   PCIDevStruct *temppci;
-  PrintF("PCI Busses:%d\r\n",sys_pci_busses);
+  "PCI Busses:%d\r\n",sys_pci_busses;
   if (!FileFind(PCI_DEV_FILE)) {
-    PutS("You don't have the PCI device file.\r\n");
+    "You don't have the PCI device file.\r\n";
     return;
   }
   PCILookUpDevs;
   temppci=sys_pci_dev_root.next;
   while (temppci!=&sys_pci_dev_root) {
-    PrintF("%02X:%02X:%01X %02X%02X $FG,GREEN$%s $FG,CYAN$%s$FG$\r\n",
+    "%02X:%02X:%01X %02X%02X $FG,GREEN$%s $FG,CYAN$%s$FG$\r\n",
       temppci->bus,temppci->dev,temppci->fun,
       temppci->base_code,temppci->sub_code,
-      temppci->vendor_str,temppci->dev_id_str);
+      temppci->vendor_str,temppci->dev_id_str;
     temppci=temppci->next;
   }
 }
@@ -171,7 +171,7 @@ public U0 PCIRep()
 #help_index "Info;Time/CPU Cycles"
 public U0 CPURep()
 {
-  PrintF("%d Cores %6h?nHz\r\n",mp_cnt,ToF64(time_stamp_freq));
+  "%d Cores %6h?nHz\r\n",mp_cnt,ToF64(time_stamp_freq);
 }
 
 #help_index "PCI;Info;File/System/Hardware;Device"
@@ -183,12 +183,12 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,ATARepStruct **root,
   ATARepStruct *tempha;
   if (type=ATAProbe(base0,base1,unit)) {
     *num_hints+=1;
-    PrintF("\r\n\r\n$FG,PURPLE$ $BT-LE+LM+X,\"%d\",\"%d\\r\"$$FG$$LM,4$",*num_hints,*num_hints);
+    "\r\n\r\n$FG,PURPLE$ $BT-LE+LM+X,\"%d\",\"%d\\r\"$$FG$$LM,4$",*num_hints,*num_hints;
     if (type==LTBDT_ATA)
-      PutS("$FG,RED$ATA   ");
+      "$FG,RED$ATA   ";
     else
-      PutS("$FG,RED$ATAPI ");
-    PrintF("$FG,LTBLUE$%s$FG$\r\nBase0: 0x%04X\r\nBase1: 0x%04X\r\nIrq: 0x%02X Unit:%d$LM,0$\r\n",msg,base0,base1,irq,unit);
+      "$FG,RED$ATAPI ";
+    "$FG,LTBLUE$%s$FG$\r\nBase0: 0x%04X\r\nBase1: 0x%04X\r\nIrq: 0x%02X Unit:%d$LM,0$\r\n",msg,base0,base1,irq,unit;
     if (root) {
       tempha=CAlloc(sizeof(ATARepStruct));
       tempha->next=*root;
@@ -209,7 +209,7 @@ U0 ATARepExitAllApplications()
   PutDefine("ST_GOING_TO_PROBE_HARDWARE");
   PutDefine("ST_EXIT_ALL_APPLICATIONS");
   PutDefine("ST_PRESS_A_KEY");
-  PutS("Press '$FG,PURPLE$p$FG$' to probe or '$FG,PURPLE$s$FG$' to skip.\r\n");
+  "Press '$FG,PURPLE$p$FG$' to probe or '$FG,PURPLE$s$FG$' to skip.\r\n";
   ch=ToUpper(GetChar(NULL,FALSE));
   if (ch=='S')
     hint_ata_disable=TRUE;
@@ -293,28 +293,28 @@ public U0 MemBIOSRep()
   U16		*m01=SYS_MEM_E801;
   MemE820Entry	*m20=SYS_MEM_E820;
   MemRange	*tempmr;
-  PutS("Standard Addres\r\n"
+	"Standard Addresses\r\n"
 	"0x000A0000-0x000BFFFF VGA\r\n"
 	"0xFEE00000-0xFEE00FFF See $LK,\"APIC\",\"MN:LAPIC_BASE\"$\r\n\r\n"
-	"32 Bit Device Mem\r\n");
+	"32 Bit Device Mem\r\n";
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
   tempmr=sys_mem32_dev_root.next;
   while (tempmr!=&sys_mem32_dev_root) {
-    PrintF("%02X:0x%016X-0x%016X\r\n",tempmr->type,tempmr->base,tempmr->base+tempmr->size-1);
+    "%02X:0x%016X-0x%016X\r\n",tempmr->type,tempmr->base,tempmr->base+tempmr->size-1;
     tempmr=tempmr->next;
   }
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
 
-  PutS("\r\nBIOS Memory Report 15:E801\r\n");
-  PrintF("01:0x0000000000000000-0x%016X\r\n",0x100000+m01[0]<<10-1);
-  PrintF("01:0x0000000001000000-0x%016X\r\n",0x1000000+m01[1]<<16-1);
+  "\r\nBIOS Memory Report 15:E801\r\n"
+  "01:0x0000000000000000-0x%016X\r\n",0x100000+m01[0]<<10-1;
+  "01:0x0000000001000000-0x%016X\r\n",0x1000000+m01[1]<<16-1;
 
   if (m20->type) {
     CrLf;
-    PutS("BIOS Memory Report 15:E820\r\n");
+    "BIOS Memory Report 15:E820\r\n";
     while (m20->type) {
-      PrintF("%02X:0x%016X-0x%016X\r\n",m20->type,m20->base,m20->base+m20->len-1);
+      "%02X:0x%016X-0x%016X\r\n",m20->type,m20->base,m20->base+m20->len-1;
       m20++;
     }
   }

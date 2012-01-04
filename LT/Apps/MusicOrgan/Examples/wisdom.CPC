@@ -24,8 +24,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   GrSpritePlot3(dc,20,8,0,__BIN_1);
   if (t0) {
     GrSpritePlot3(dc,20,24,0,__BIN_2);
-    Snd((tJ-t0)*100);
-    if (tJ>t0+0.25)
+    Snd((tM-t0)*100);
+    if (tM>t0+0.25)
       t0=0.0;
   }
 }
@@ -42,7 +42,7 @@ U0 Song()
       Play("3eBCsAGAGeAAetGAAsBBBBeCDqDeEA",
 	  "Now, \0I \0su\0 \0u\0 \0ure \0 \0 \0 \0won't \0do\0o\0o\0o \0that \0a\0gain!\r\n\0 \0 \0");
 
-      t0=tJ;
+      t0=tM;
       Play("BCsAGAGeAAetGAAsBBBBeCDqDeEA",
 	  "Now, \0I \0su\0 \0u\0 \0ure \0 \0 \0 \0won't \0do\0o\0o\0o \0that \0a\0gain!\r\n\0 \0 \0");
       Play("2qG3etAAGBB2G3eEFCDqFeAGqC",

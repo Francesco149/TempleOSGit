@@ -141,13 +141,13 @@ U0 DrawHoreb(TaskStruct *task,GrDC *dc)
     GrIdentEqu(dc->r);
     GrScaleMatEqu(dc->r,s*2);
     GrSetRotMat(dc,dc->r);
-    dc->flags|=BMF_TRANSFORMATION;
+    dc->flags|=DCF_TRANSFORMATION;
     if (tempo->sym) {
-      dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+      dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,s*tempo->x1+cx,s*tempo->y1+h,s*tempo->x1+cx,s*tempo->y1+h+10);
     }
     GrSpritePlot3b(dc,s*tempo->x1+cx,s*tempo->y1+h,0,tempo->img);
-    dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+    dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     if (o_sort[i]==objs) { //draw burning bush
       dc->x=s*tempo->x1+cx;
       dc->y=s*tempo->y1+h;
@@ -231,9 +231,9 @@ U0 Horeb()
     WinBorder(OFF);
     Preempt(OFF);
 
-    PutS("$CL$$BG,LTCYAN$");
+    "$CL$$BG,LTCYAN$";
     CrLf(6);
-    PutS("$BG,YELLOW$");
+    "$BG,YELLOW$";
     CrLf(30);
     PutBibleVerse("Exodus,3:1",21);
     Init;
@@ -271,7 +271,7 @@ hr_done: //Don't goto out of try
     Fs->catch_except=TRUE;
   SettingsPop(Fs,TSF_SAME_SONG);
   LtfClear;
-  PutS("$BG$");
+  "$BG$";
   MenuPop;
 }
 

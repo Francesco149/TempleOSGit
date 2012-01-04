@@ -66,7 +66,7 @@ U0 AsmHashLoad(BoolI8 first)
 	tempi=&tempo->ins[tempo->instruction_entry_cnt];
 	tempi->ins_entry_num=tempo->instruction_entry_cnt++;
 	tempi->opcode_cnt=0;
-	while (lx->token==TK_INTEGER) {
+	while (lx->token==TK_INTEGER||lx->token==TK_U8) {
 	  tempi->opcode[tempi->opcode_cnt++]=lx->cur_i;
 	  Lex(lx);
 	}
@@ -76,7 +76,8 @@ U0 AsmHashLoad(BoolI8 first)
 	  Lex(lx);
 	}
 	if (lx->token=='/') {
-	  if (Lex(lx)==TK_INTEGER) {
+	  Lex(lx);
+	  if (lx->token==TK_INTEGER||lx->token==TK_U8) {
 	    tempi->slash_val=lx->cur_i;
 	    Lex(lx);
 	  } else if (lx->token==TK_IDENT) {
@@ -170,7 +171,7 @@ U0 AsmHashLoad(BoolI8 first)
       temph->str=lx->ident;
       lx->ident=NULL;
       Lex(lx); //skip keyword name
-      if (lx->token!=TK_INTEGER)
+      if (lx->token!=TK_INTEGER&&lx->token!=TK_U8)
 	PrsExcept(lx,"ST_EXPECTING_INTEGER");
       temph->user_data0=lx->cur_i;
       if (Lex(lx)!=';')
@@ -365,6 +366,8 @@ U0 CmpLoadDefines()
   DefineLoad("ST_REG_IN_USE","Register in use ");
   DefineLoad("ST_ONE_BASE_CLASS","Only one base class allowed at this time at ");
   DefineLoad("ST_ADD_NOT_VAL","Must be address, not value ");
+  DefineLoad("ST_HEADER_FOR_PRINTF","Missing header for PrintF(), PutS() and PutChar() at ");
+  DefineLoad("ST_HEADER_FOR_SYSTRY","Missing header for SysTry() and SysUntry() at ");
 Anchor for inserting Compiler Defines
 
 

@@ -27,7 +27,7 @@ U0 BlinkDemo()
   LtfBottom;
   LtfClear;
   CrLf(10);
-  PutS("Pause and unpause task with $FG,GREEN$<CTRL-ALT-P>$FG$\r\n");
+  "Pause and unpause task with $FG,GREEN$<CTRL-ALT-P>$FG$\r\n";
   PressAKey;
   SettingsPop;
 }

@@ -28,7 +28,7 @@ Test g1[]={
 };
 
 D(g1,sizeof(g1));
-PrintF("Time 1:%d\r\n",g1[1].time);
+"Time 1:%d\r\n",g1[1].time;
 
 U0 Main1()
 {
@@ -38,7 +38,7 @@ U0 Main1()
     {30,"Static3"}
   };
   D(s1,sizeof(s1));
-  PrintF("Time 2:%d\r\n",s1[1].time);
+  "Time 2:%d\r\n",s1[1].time;
 }
 
 Main1;
@@ -73,7 +73,7 @@ Test g2[]={
 };
 
 D(g2,sizeof(g2));
-PrintF("Time 3:%d\r\n",g2[1].time);
+"Time 3:%d\r\n",g2[1].time;
 
 U0 Main2()
 {
@@ -83,7 +83,7 @@ U0 Main2()
     {30,"static3"}
   };
   D(s2,sizeof(s2));
-  PrintF("Time 4:%d\r\n",s2[1].time);
+  "Time 4:%d\r\n",s2[1].time;
 }
 
 Main2;

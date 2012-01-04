@@ -9,9 +9,9 @@ public extern LTDate BootTime();
 public extern U64 SysTimerRead();
 
 #help_index "Task"
-extern U8 *sys_startup_acct;
+extern SysAcctStruct sys_accts,*sys_acct;
+extern U8 *sys_acct_name;
 extern TaskStruct *sys_winmgr_task,*sys_task_being_screen_updated;
-extern SysAcctStruct sys_accts;
 public extern TaskStruct *adam_task;
 public extern I64 sys_num_spawned_users;
 extern U0 TaskFinishOffDying();
@@ -60,8 +60,8 @@ public extern U0 (*fp_snd_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num);
 public extern U0 (*fp_snd_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num);
 
 #help_index "Processor"
-public extern U0 *GetIDTEntry(U64 irq,U64 core_num=0);
-public extern U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 core_num=0,U64 type=IDTET_IRQ,U64 dpl=0);
+public extern U0 *GetIDTEntry(U64 irq,U64 cpu_num=0);
+public extern U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 cpu_num=0,U64 type=IDTET_IRQ,U64 dpl=0);
 extern PCIDevStruct sys_pci_dev_root;
 extern MemRange sys_mem32_dev_root;
 
@@ -177,12 +177,11 @@ public extern BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALS
 public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 
-//Gets [C:/LT/OSMain/Adam1a.HPZ,1378] Flags
+//Gets [C:/LT/OSMain/Adam1a.HPZ,1361] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *GetF(U8 *src,U8 *fmt,...);
-extern U8 (*fp_getf_join)(U8 *src,U8 *fmt,I64 argc,I64 *argv);
 
 #help_index "Char/Lists"
 public extern U8 *ListEntryPoint(I64 entry_num, U8 *lst);
@@ -204,7 +203,6 @@ public extern U8 *StrAdd(U8 *base,U8 *addition); //frees base arg
 public extern U8 *SearchStr(U8 *src,U8 *pattern,U64 flags=0);
 extern U8 *SPrintFJoin(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *SPrintF(U8 *dst,U8 *fmt,...);
-extern U8 *(*fp_sprintf_join)(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *MSPrintF(U8 *fmt,...);
 
 #help_index "Char/Define"
@@ -225,11 +223,11 @@ public LTextern _MEMCMP I64 MemCmp(U8 *ptr1,U8 *ptr2,U64 cnt);
 public extern U64 MemPageSize(U0 *a)
 public extern BoolI64 MemMarkPresent(U0 *a,BoolI8 val);
 public extern BoolI64 MemProtectLowPages(BoolI8 val);
-public extern U0 *Alloc2MegMemBlks(U64 *pages2Meg,BlkPool *bp=NULL);
-public extern U0 *AllocUncachedMemBlks(U64 *pages2Meg,BlkPool *bp=NULL);
-public extern U0 *AllocWriteThroughMemBlks(U64 *pages2Meg,BlkPool *bp=NULL);
+public extern U0 *Alloc2MegMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL);
+public extern U0 *AllocUncachedMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL);
+public extern U0 *AllocWriteThroughMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL);
 public extern U0 Free2MegMemBlks(MemBlk *m,U64 pages2Meg,BlkPool *bp=NULL);
-public extern U0 *AllocNonTaskMemBlks(U64 *pages512,BlkPool *bp=NULL);
+public extern U0 *AllocNonTaskMemBlks(U64 *_pages512,BlkPool *bp=NULL);
 public extern U64 *MemPointAtPageTableEntry(U0 *a);
 public extern U0 FreeNonTaskMemBlks(MemBlk *m,U64 pages512,BlkPool *bp=NULL);
 public LTextern _MALLOC U0 *MAlloc(U64 size,TaskStruct *mem_task=NULL);
@@ -244,6 +242,7 @@ public extern U0 *CAllocAligned(U64 size,U64 alignment,TaskStruct *mem_task=NULL
 public extern U0 LinkedListDel(U0 **list);
 public extern U0 *LinkedListCopy(U0 **list,TaskStruct *mem_task=NULL);
 public extern U64 LinkedListSize(U0 **list);
+public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
 #help_index "Memory/Heap Ctrl"
 public extern U0 BlkPoolAdd(BlkPool *bp,MemBlk *m,U64 pages512);
 public extern U0 BlkPoolInit(BlkPool *bp,U64 pages512);
@@ -262,7 +261,7 @@ public extern U8 *AStrNew(U8 *buf);
 
 #help_index "Device"
 public extern U0 *AllocMemMap32BitDev(U64 size,U64 alignment);
-public extern U0 *AllocMemMap64BitDev(U64 *pages2Meg);
+public extern U0 *AllocMemMap64BitDev(U64 *_pages2Meg);
 public extern U0 FreeMemMap32BitDev(U8 *base);
 public extern U0 FreeMemMap64BitDev(U8 *base,U64 pages2Meg);
 public extern HeapCtrl *sys_uncached_heap;
@@ -274,7 +273,6 @@ public extern BoolI64 TaskValidate(TaskStruct *task);
 public extern TaskStruct *Spawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,
 	    U8 *task_name=NULL,
 	    TaskStruct *parent=NULL, //NULL means adam
-	    U8 *acct=NULL,	  //Null means use parent's
 	    U64 stk_size=0,U64 flags=SPAWNF_ADD_TO_QUEUE);
 public extern U0 TaskPause(TaskStruct *task,BoolI8 state);
 public extern U0 TaskInsQue(TaskStruct *task,TaskStruct *pred=NULL);
@@ -580,7 +578,9 @@ public extern I64 NamedFramePtrSet(U8 *name,I64 u0,TaskStruct *task=NULL);
 public extern I64 NamedFramePtrDel(U8 *name,TaskStruct *task=NULL);
 
 #help_index "Compiler;Cmd Line (Typically)"
-public extern U0 *Load(U8 *filename,U64 ld_flags=0);
+public extern U0 *Load(U8 *filename,U64 ld_flags=0,
+  BinFileHeaderStruct *bfh_addr=-1); //-1 means don't care what load addr.
+
 extern U64 sys_num_installed_compilers;
 #help_index "Compiler"
 extern U0 (*fp_prs_stream_blk)(LexStruct *lx);
@@ -743,7 +743,7 @@ extern SnapStruct ip_snap_last;
 public extern U0 SetIP(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I64 c=MAX_I64);
 #help_index "Input Pointer/Displayed Image"
 public extern BoolI8 ip_on;  //Show or hide cursor
-extern U0 IPVarsUpdate(I64 x,I64 y,I64 z);
+extern U0 IPVarsUpdate(I64 x,I64 y,I64 z,BoolI8 l,BoolI8 c,BoolI8 r);
 extern U0 IPVarsInit();
 #help_index "Input Pointer/Snap"
 public extern I64 ipx_presnap,ipy_presnap,ipz_presnap;
@@ -772,5 +772,38 @@ extern U32 *USBAllocFrameList(U64 usb_num,U64 size);
 
 #help_index "Ltf/Task"
 extern Ltf *(*fp_ltf_cur)(TaskStruct *task=NULL);
+
+#help_index "Char/Conversion"
+public extern F64 A2F64(U8 *src,U8 **_end_ptr=NULL);
+
+#help_index "Time/LTDate"
+public extern U8 *date_fmt_map,*time_fmt_map;
+public extern U0 DateTimeFmtMapsRst();
+
+#help_index "Char/Conversion;Time/LTDate"
+public extern LTDate A2LTDate(U8 *src);
+
+#help_index "Hash"
+public extern U64 HashTableSize(SysHashTable *table);
+
+#help_index "Debugging;Hash"
+public extern SysHashEntry *PSectFind(U0 *add,I64 *offset);
+extern PSectCacheEntry *psect_cache;
+extern I64 psect_cache_index;
+
+#help_index "Debugging"
+public extern U0 EdLite(U8 *filename);
+public extern I64 SrcLineNum(U0 *add,U64 cnt=1);
+public extern U8 *SrcFileName(U0 *add,U64 cnt=1,TaskStruct *mem_task=NULL);
+public extern U8 *SrcEdLink(U0 *add,U64 cnt=1,TaskStruct *mem_task=NULL);
+public extern BoolI64 PutSrcLink(U0 *add,U64 cnt=1,U8 *buf=NULL);
+public extern Ltf *EdAddSrc(U0 *add,U64 cnt=1,BoolI8 bail=FALSE);
+
+#help_index "Exceptions"
+public extern U0 CatchAll();
+
+#help_index "Task/Requests;Compiler"
+public extern U0 UserTaskCont();
+public extern I64 ExeCmdLine(LexStruct *lx);
 
 #help_index ""

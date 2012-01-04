@@ -5,21 +5,21 @@ U0 PromptDemo()
   U8 *name;
   LTDate datetime;
 
-  PutS("\r\n\r\nNow prompting from the cmd line.\r\n\r\n");
-  PutS("$FG,GREEN$<ENTER>$FG$ keeps default.\r\n\r\n");
+  "\r\n\r\nNow prompting from the cmd line.\r\n\r\n"
+  "$FG,GREEN$<ENTER>$FG$ keeps default.\r\n\r\n";
 
   i=PmtI64("Enter int expression(%d):",123);
-  PrintF("Int=%d\r\n",i);
+  "Int=%d\r\n",i;
 
   d=PmtF64("Enter float expression(%12g):",1.2e3);
-  PrintF("Float=%e\r\n",d);
+  "Float=%e\r\n",d;
 
   name=PmtStr("Name (%s):","John");
-  PrintF("Name:%s\r\n",name);
+  "Name:%s\r\n",name;
   Free(name);
 
   datetime=PmtLTDate("Date (%D):",GetCurTimeLTDate);
-  PrintF("Date=%D\r\n",datetime);
+  "Date=%D\r\n",datetime;
 }
 
 PromptDemo;

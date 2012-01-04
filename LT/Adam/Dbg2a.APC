@@ -38,7 +38,7 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
 	  if (dynamic) {
 	    ll=LtfPutS(l,"$DA-T-P+RD,64,\"%40ts\"$\r\n");
 	    ll->data=ptr;
-	    LtfFmtData(ll);
+	    LtfDataFmt(ll);
 	  } else
 	    LtfPrintF(l,"%40ts\r\n",ptr);
 	}
@@ -55,7 +55,7 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
 	    if (dynamic) {
 	      ll=LtfPutS(l,"$DA-T-P+RD,64,\"%40ts\"$\r\n");
 	      ll->data=ptr;
-	      LtfFmtData(ll);
+	      LtfDataFmt(ll);
 	    } else
 	      LtfPrintF(l,"%40ts\r\n",ptr);
 	  }
@@ -104,7 +104,7 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
 		LtfPrintF(l,"%016X ",*ptr><(U64 *)++);
 	  }
 	  if (dynamic)
-	    LtfFmtData(ll);
+	    LtfDataFmt(ll);
 	}
 	if (j<ml->dim.total_cnt)
 	  LtfPutS(l,"...");
@@ -228,12 +228,12 @@ public U0 FunRep(U8 *st,U8 *rbp=NULL,I64 max_depth=2,TaskStruct *task=NULL)
       tempm=tempc->member_list;
       while (tempm) {
 	if (0<=tempm->register<NUM_REGS)
-	  PrintF("%08Z %s\r\n",tempm->register,"ST_U64_REGS",tempm->str);
+	  "%08Z %s\r\n",tempm->register,"ST_U64_REGS",tempm->str;
 	else
-	  PrintF("%08tX %s\r\n",tempm->offset,tempm->str);
+	  "%08tX %s\r\n",tempm->offset,tempm->str;
 	tempm=tempm->next;
       }
-      PrintF("%08tX Stk Size\r\n",tempc->size);
+      "%08tX Stk Size\r\n",tempc->size;
     }
   }
 }
@@ -248,7 +248,7 @@ public U0 Uf(U8 *st)
     if (dbg=tempc->debug) {
       i=dbg->body[dbg->max_line-dbg->min_line+1]-tempc->executable_addr;
       Un(tempc->executable_addr,i);
-      PrintF("Code Size:%04X\r\n",i);
+      "Code Size:%04X\r\n",i;
     } else
       U(tempc->executable_addr);
   }
@@ -343,7 +343,7 @@ public U0 Go(TaskStruct *task=NULL)
 {
   if (!task) task=Fs;
   if (BptFind(task,task->rip))
-    PutS("!!! Single Step First !!!\r\n");
+    "!!! Single Step First !!!\r\n";
   else {
     LBtr(&task->task_flags,TASKf_DISABLE_BPTS);
     LBtr(&task->rflags,RFLAGS_SINGLE_STEP);

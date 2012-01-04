@@ -50,19 +50,19 @@ U0 UpdateWin(TaskStruct *task)
   task->horz_scroll.max=MAP_WIDTH-task->win_pixel_width;
   task->vert_scroll.min=0;
   task->vert_scroll.max=MAP_HEIGHT-task->win_pixel_height;
-  GrBlot(dc,h,v,map);
+  GrDCBlot(dc,h,v,map);
 
   GrSpritePlot3(dc,gun_x+h,gun_y+v,0,__BIN_2);
 
   if (theta<-pi/2) {
-    dc->flags|=BMF_SYMMETRY|BMF_JUST_MIRROR;
+    dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
     GrSetSymmetry(dc,gun_x+h,0,gun_x+h,1);
     theta=-pi-theta;
   }
   GrSpritePlotRotZ3b(dc,
       gun_x+h-gun_recoil*Cos(theta),
       gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
-  dc->flags&=~(BMF_SYMMETRY|BMF_JUST_MIRROR);
+  dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
 
   tempm=ode->next_mass;
   dc->color=BLACK;
@@ -126,6 +126,7 @@ U0 FireTask(U64 dummy=0)
   MassStruct *tempm;
   I64 i;
   if (gun_recoil) return;
+  Fs->task_end_cb=&SndTaskEndCB;
 
   tempm=CAlloc(sizeof(MassStruct),Fs->parent_task);
   tempm->mass=10.0;
@@ -178,6 +179,7 @@ U0 MoveTask(U64 dummy=0)
 {
   nounusedwarn dummy;
   static I64 quit_time=0;
+  Fs->task_end_cb=&SndTaskEndCB;
   if (quit_time)
     quit_time=GetTimeStamp+time_stamp_freq/10;
   else {
@@ -197,9 +199,9 @@ U0 Init()
   I64 i,x,y,dy;
   BoolI8 old_preempt;
   if (!maps[0])
-    maps[0]=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+    maps[0]=GrDCNew(DCT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
   if (!maps[1])
-    maps[1]=GrDCNew(BMT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+    maps[1]=GrDCNew(DCT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
   map=maps[active_map&1];
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
@@ -264,11 +266,11 @@ U0 BigGuns()
   U64 ch,sc;
 
   PopUpOk(
-    "I refuse to rip-off the original\r\n"
-    "so this is intentionally crappy\r\n"
-    "and included for demonstration\r\n"
-    "purposes.\r\n\r\n"
-    "Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\r\n"
+	"so this is intentionally crappy\r\n"
+	"and included for demonstration\r\n"
+	"purposes.\r\n\r\n"
+	"Write games, don't play them.\r\n");
 
   PopUpOk("The map scrolls.\r\n");
 

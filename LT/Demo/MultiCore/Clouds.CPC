@@ -51,7 +51,7 @@ U0 MPDrawClouds(TaskStruct *task)
 	k=-c->py[i];
       c->py[i]+=SignI64(k);
 
-      GrBlot(dc,xx,yy,cloud_pens[i&(CLOUD_PENS-1)].img);
+      GrDCBlot(dc,xx,yy,cloud_pens[i&(CLOUD_PENS-1)].img);
     }
   GrDCDel(dc);
   LBts(&mp_done_flags,Gs->num);
@@ -131,7 +131,7 @@ U0 Init()
   }
 
   for (i=0;i<CLOUD_PENS;i++,cp++) {
-    cp->img=GrDCNew(BMT_MONO,CLOUD_PEN_SIZE,CLOUD_PEN_SIZE);
+    cp->img=GrDCNew(DCT_MONO,CLOUD_PEN_SIZE,CLOUD_PEN_SIZE);
     for (j=0;j<CLOUD_PEN_POINTS;j++) {
       cp->px[j]=RandU16%CLOUD_PEN_SIZE;
       cp->py[j]=RandU16%CLOUD_PEN_SIZE;
@@ -173,8 +173,8 @@ U0 CloudScene()
     Init;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
 
-    PutS("$CL$$BG,LTCYAN$"); CrLf(SKY_LINES);
-    PutS("$BG,YELLOW$");
+    "$CL$$BG,LTCYAN$"; CrLf(SKY_LINES);
+    "$BG,YELLOW$";
     CrLf(5);
     PutBibleVerse("Exodus,14:19",7);
 
@@ -183,7 +183,7 @@ U0 CloudScene()
     GetChar;
     WinSync;
 
-    PutS("$BG$\r\n");
+    "$BG$\r\n";
   } catch
     CatchAll;
   SettingsPop;

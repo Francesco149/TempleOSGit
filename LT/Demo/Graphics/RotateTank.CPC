@@ -44,7 +44,7 @@ U0 RotateTank()
   GrDC *dc=GrDCAlias(gr_dc2,Fs);
   LtfClear;
   GrDCAllocDepthBuf(dc);
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   Fs->win_left=TEXT_COLS/2-12;
   Fs->win_right=TEXT_COLS/2+12;
   Fs->win_top=TEXT_ROWS/2-12;

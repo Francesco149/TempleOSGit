@@ -170,7 +170,7 @@ public U0 PutBibleVerse(U8 *verse,I64 lines)
   if (i>=0) {
     i=A2I(DefineSub(i,"ST_BIBLE_BOOK_LINES"));
     l=LtfRead(Define("ST_BIBLE_FILE"),LTFF_PLAIN_TEXT);
-    LtfGoToLineNum(l,i); //one based
+    LtfLineNumGoTo(l,i); //one based
     if (*st2) {
       StrCpy(l->find_replace->find_text,st2);
       EdFindNext(l);
@@ -178,7 +178,7 @@ public U0 PutBibleVerse(U8 *verse,I64 lines)
     cl=l->cur_entry;
     while (lines) {
       if (cl->type_u8==LTFT_TEXT)
-	PutS(cl->tag);
+	"" cl->tag;
       else if (cl->type_u8==LTFT_CR) {
 	CrLf;
 	lines--;

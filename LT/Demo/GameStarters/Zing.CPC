@@ -117,14 +117,18 @@ U0 AnimateTask(U64 dummy=0)
 U0 Init()
 {
   I64 w=Fs->win_pixel_width,
-     h=Fs->win_pixel_height;
+      h=Fs->win_pixel_height;
   root.next=root.last=&root;
+  bow_drawn=FALSE;
   box_x_min=7*w/16;
   box_y_min=6*h/8;
   box_x_max=9*w/16;
   box_y_max=7*h/8;
-  bow_drawn=FALSE;
   bow_theta=-pi/2;
+  bow_x=(box_x_min+box_x_max)/2;
+  bow_y=(box_y_min+box_y_max)/2;
+  SetIP(bow_x+Fs->win_pixel_left+Fs->win_scroll_x,
+	bow_y+Fs->win_pixel_top+Fs->win_scroll_y);
 }
 
 U0 CleanUp()
@@ -165,15 +169,17 @@ U0 Zing()
   Fs->update_win=&UpdateWin;
   Fs->win_inhibit=WIF_ALL-WIF_GRAB_SCROLL;
   try {
-    do {
-      msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP);
-      switch (msg_code) {
+    while (TRUE) {
+      switch (GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP)) {
 	case MSG_KEY_DOWN:
 	  switch (p1) {
 	    case CH_CR:
 	      CleanUp;
 	      Init;
 	      break;
+	    case CH_ESC:
+	    case CH_SHIFT_ESC:
+	      goto zi_done;
 	  }
 	  break;
 	case MSG_IP_L_DOWN:
@@ -194,13 +200,14 @@ U0 Zing()
 	  bow_drawn=FALSE;
 	  break;
       }
-    } while (!(msg_code==MSG_KEY_DOWN && (p1==CH_ESC || p1==CH_SHIFT_ESC)));
+    }
+zi_done:
+    GetMsg(,,1<<MSG_KEY_UP);
   } catch
     CatchAll;
   SettingsPop;
   CleanUp;
   MenuPop;
 }
-
 
 Zing;

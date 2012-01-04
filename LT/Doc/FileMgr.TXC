@@ -6,10 +6,10 @@ SHIFT CURSOR
 CTRL-Y or DELETE KEY
   Delete file or tree.
 
-CTRL-INSERT
+CTRL-C or CTRL-INSERT
   Copy selected files to clipboard.
 
-SHIFT-INSERT
+CTRL-V or SHIFT-INSERT
   Paste clipboard.
 
 LEFT-CLICK,drag-drop
@@ -42,7 +42,7 @@ SHIFT-F5
 't'
   Add holding area temporary drive.  Use this to make a holding area for 
 burning CD/DVD's.  If you wish, you can recompile OSMain and always have a 
-temp drive available.  Use [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot() to
+temp drive available.  Use [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot() to
   recompile.
 
 'f'
@@ -50,13 +50,13 @@ temp drive available.  Use [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot() to
 
 'M'
   Make CD/DVD ISO file.  This creates a file image of the specified drive.  
-The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,29] sys_dft_iso_name
+The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,28] sys_dft_iso_name
   and can be redefined in your 
 start-up scripts.  You may wish to place it on a different drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/LT/OSMain/OSGlbls.CPZ,29] sys_dft_iso_name.
+[C:/LT/OSMain/OSGlbls.CPZ,28] sys_dft_iso_name.
 
 
 Instructions on Using CD/DVD's
@@ -90,7 +90,7 @@ U0 MakeMyISO()
   //Del("B:/LT/Adam/WordStat/WsDefs.DTA");
   Auto(PROD_CDROM_CFG);
   InstallBoot('B','T');
-  CDFileCreate(,"B:/*","",CD_BOOT);
+  CDFileCreate(,"B:/*","",CDBOOT_BIZ);
 }
 
 
@@ -122,15 +122,13 @@ U0 BurnProductionCDImage()
   CopyTree("E:/0000Boot",
     "/0000Boot");
   CDFileCreate(sys_dft_iso_name,
-    "Z:/*",NULL,CD_BOOT);
+    "Z:/*",NULL,CDBOOT_BIZ);
   CDImageWrite('T',
     sys_dft_iso_name);
 }
 
 Study my account examples [::/LT/Demo/AcctExample/TSAdam.APZ,1] Cfg Strs
-    [::/LT/Demo/AcctExample/TSDistribute.APZ,1] Update Funs and the recovery CD
-    maker 
-in  [::/LT/Accts/Install/DoItOnce.CPZ,MakeRecoveryDsk:2] Recovery Disk Maker.
+    [::/LT/Demo/AcctExample/TSDistribute.APZ,1] Update Funs.
 
   
 

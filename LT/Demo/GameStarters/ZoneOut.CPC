@@ -122,7 +122,7 @@ U0 UpdateWin(TaskStruct *task)
   GrSetTranslation(dc->r,-us.x,-us.y,-us.z);
   GrRotYEqu(dc->r,us.theta-pi/2);
   GrRotXEqu(dc->r,pi/16);
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   for (i=0;i<NUM_THEM;i++) {
     y=them[i].y;
     tempo=shots.next;
@@ -152,7 +152,7 @@ U0 UpdateWin(TaskStruct *task)
     GrSpritePlotRotY3b(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
     tempo=tempo->next;
   }
-  dc->flags&=~BMF_TRANSFORMATION;
+  dc->flags&=~DCF_TRANSFORMATION;
   dc->color=LTGREEN;
   GrLine(dc,cx-5,cy,cx+5,cy);
   GrLine(dc,cx,cy-5,cx,cy+5);
@@ -265,11 +265,11 @@ U0 ZoneOut()
   U64 sc;
 
   PopUpOk(
-  "I refuse to rip-off the original\r\n"
-  "so this is intentionally crappy\r\n"
-  "and included for demonstration\r\n"
-  "purposes.\r\n\r\n"
-      "Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\r\n"
+	"so this is intentionally crappy\r\n"
+	"and included for demonstration\r\n"
+	"purposes.\r\n\r\n"
+	"Write games, don't play them.\r\n");
 
   MenuPush(
   "File {"

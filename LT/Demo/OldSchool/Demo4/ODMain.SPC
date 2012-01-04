@@ -19,7 +19,7 @@ U0 Routine3(U8 *st)
 I64 ObjDemo(...)
 {
   I64 i;
-  MyBeep;
+  MyBeep();
   if (argc>0) {
     for (i=0;i<argc;i++)
       PrintF("Arg %d:%08X\r\n",i,argv[i]);

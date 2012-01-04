@@ -1,6 +1,6 @@
 GrDC *b=GrDCAlias(gr_dc2,Fs);
-GrDC *img1=GrDCNew(BMT_MONO,64,64);
-GrDC *img2=GrDCNew(BMT_COLOR4,512,512);
+GrDC *img1=GrDCNew(DCT_MONO,64,64);
+GrDC *img2=GrDCNew(DCT_COLOR4,512,512);
 
 img1->color=WHITE;
 img1->pen_width=3;
@@ -24,11 +24,11 @@ I64 i;
 for (i=0;i<256;i+=4) {
   WinSync;
   GrDCClear;
-  GrBlot(b,i-256,i-256,img2);
+  GrDCBlot(b,i-256,i-256,img2);
   Sleep(10);
 }
 U8 *tempg=GrDC2Sprite(img1);
-PutGrSprite(tempg);
+PutSprite(tempg);
 Free(tempg);
 CrLf(9);
 

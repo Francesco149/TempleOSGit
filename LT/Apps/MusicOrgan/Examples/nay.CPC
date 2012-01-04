@@ -4,7 +4,7 @@ U0 Song()
   Fs->task_end_cb=&SndTaskEndCB;
   music_tempo=2.5;
   try {
-  PutS("$WW+H,1$");
+  "$WW+H,1$";
   while (!ScanKey) {
 	Play("3qAAsG2G3G2G3qGF2eG3FqEetCBA",
 		"Let's \0ask \0Mike\0 \0 \0 \0y;  \0Hates \0 \0every\0thing.\r\n\0 \0 \0 \0");

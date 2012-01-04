@@ -94,8 +94,8 @@ U0 Main()
   }
   end=GetTimeStamp;
   overhead_time=end-start;
-  PrintF("$FG,RED$Overhead Cycles       :%10.5f$FG$\r\n",
-    ToF64(overhead_time)/SAMPLE_SIZE);
+  "$FG,RED$Overhead Cycles       :%10.5f$FG$\r\n",
+    ToF64(overhead_time)/SAMPLE_SIZE;
 
 //Measure F64 arithmetic
 // (Some of this is due to crappy
@@ -107,9 +107,9 @@ U0 Main()
     fsum+=d1*coordinates[i&65535];
   end=GetTimeStamp;
   test_time=end-start;
-  PrintF("Float Sum             :%X\r\n",ToI64(fsum));
-  PrintF("$FG,RED$Float Cycles          :%10.5f$FG$\r\n",
-    ToF64(test_time)/SAMPLE_SIZE);
+  "Float Sum             :%X\r\n",ToI64(fsum);
+  "$FG,RED$Float Cycles          :%10.5f$FG$\r\n",
+    ToF64(test_time)/SAMPLE_SIZE;
 
 
 //Measure fixed point arithmetic
@@ -122,27 +122,27 @@ U0 Main()
   }
   end=GetTimeStamp;
   test_time=end-start;
-  PrintF("Fixed Point Sum       :%X\r\n",sum);
-  PrintF("$FG,RED$Fixed Point Cycles    :%10.5f$FG$\r\n",
-    ToF64(test_time)/SAMPLE_SIZE);
+  "Fixed Point Sum       :%X\r\n",sum;
+  "$FG,RED$Fixed Point Cycles    :%10.5f$FG$\r\n",
+    ToF64(test_time)/SAMPLE_SIZE;
 
 //Measure fixed point arithmetic
   start=GetTimeStamp;
   sum=AsmFixedPoint;
   end=GetTimeStamp;
   test_time=end-start;
-  PrintF("Asm Fixed Point Sum   :%X\r\n",sum);
-  PrintF("$FG,RED$Asm Fixed Point Cycles:%10.5f$FG$\r\n",
-    ToF64(test_time)/SAMPLE_SIZE);
+  "Asm Fixed Point Sum   :%X\r\n",sum;
+  "$FG,RED$Asm Fixed Point Cycles:%10.5f$FG$\r\n",
+    ToF64(test_time)/SAMPLE_SIZE;
 
 //Measure float arithmetic
   start=GetTimeStamp;
   sum=AsmFloat;
   end=GetTimeStamp;
   test_time=end-start;
-  PrintF("Asm Float Sum         :%X\r\n",sum);
-  PrintF("$FG,RED$Asm Float Cycles      :%10.5f$FG$\r\n",
-    ToF64(test_time)/SAMPLE_SIZE);
+  "Asm Float Sum         :%X\r\n",sum;
+  "$FG,RED$Asm Float Cycles      :%10.5f$FG$\r\n",
+    ToF64(test_time)/SAMPLE_SIZE;
 
   Preempt(ON);
 }

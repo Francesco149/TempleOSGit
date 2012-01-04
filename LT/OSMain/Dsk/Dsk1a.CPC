@@ -282,7 +282,7 @@ BoolI64 SetDrvType(U8 drv_let,U64 type=PT_LT)
 	if (!mbr.p[j].offset)
 	  break;
 	if (ext_base==INVALID_CLUSTER) {
-  	  offset=mbr.p[j].offset;
+	  offset=mbr.p[j].offset;
 	  ext_base=offset;
 	} else
 	  offset=mbr.p[j].offset+ext_base;
@@ -409,34 +409,22 @@ U0 PrtRep()
   LTBlkDev *bdev;
   U16 type_u16;
   I64 i;
-  PutS("\r\nDefined Partitions:\r\n\r\n");
+  "\r\nDefined Partitions:\r\n\r\n";
   p=local_prts;
   for (i=0;i<NUM_LTPRTS;i++,p++) {
     bdev=p->bdev;
     if (type_u16=p->type.u16[0]) {
-      PutS("$FG,PURPLE$");
+      "$FG,PURPLE$";
       if (p==dft_prt)
-	PutS("*");
+	'*';
       else
-	PutS(" ");
+	'' CH_SPACE;
       if (Bt(&p->type,PTf_DISABLE))
-	PutS("Disabled ");
-      PutChar(Prt2Drv(p));
-      Spaces;
-      PutS(DefineSub(type_u16,"ST_PRT_TYPES"));
-      Spaces;
-      PutS(DefineSub(bdev->type,"ST_BLKDEV_TYPES"));
-      Spaces;
-      PutHex(bdev->base0,4);
-      Spaces;
-      PutHex(bdev->base1,4);
-      Spaces;
-      PutHex(bdev->unit,2);
-      PutS("$FG$\r\n");
-      PutHex(p->offset,16);
-      PutChar('-');
-      PutHex(p->offset+p->size-1,16);
-      CrLf;
+	"Disabled ";
+      "%C %Z %Z %04X %04X %02X$FG$\r\n%016X-%016X\r\n",
+	Prt2Drv(p),type_u16,"ST_PRT_TYPES",
+	bdev->type,"ST_BLKDEV_TYPES",bdev->base0,bdev->base1,bdev->unit,
+	p->offset,p->offset+p->size-1;
     }
   }
 }
@@ -565,8 +553,7 @@ I64 Name2DirCluster(LTPrt *p,U8 *dirname)
       }
     }
     if (!cont) {
-      PutS(dirname);
-      Spaces;
+      "%s ",dirname;
       PutDefineErr("ST_FILE_NOT_FOUND");
       cur_dir_cluster=0;
     }
@@ -616,8 +603,7 @@ I64 Name2ParentDirCluster(LTPrt *p,U8 *dirname)
       }
     }
     if (!cont) {
-      PutS(dirname);
-      Spaces;
+      "%s ",dirname;
       PutDefineErr("ST_FILE_NOT_FOUND");
       cur_dir_cluster2=0;
     }

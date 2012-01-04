@@ -77,7 +77,7 @@ U0 PixelCollision()
     WinSync;
 
 //This will not flicker as long as it occurs just
-//after a acreen update [C:/LT/Adam/Window.APZ,604] WinSync.
+//after a acreen update [C:/LT/Adam/Window.APZ,600] WinSync.
     GrDCClear(dc);
 
   }

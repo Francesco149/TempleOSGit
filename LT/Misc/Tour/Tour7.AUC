@@ -1,4 +1,4 @@
-PutS("Ed(\"::/LT/Misc/Tour/Tour7.AUZ\");\r");
+"Ed(\"::/LT/Misc/Tour/Tour7.AUZ\");\r";
 Sleep(1000);
 
 PopUpOk(
@@ -7,7 +7,7 @@ PopUpOk(
 
 AFGetChar(CH_CTRLF);
 
-PutS("<SHIFT-ESC>");
+"<SHIFT-ESC>";
 
 PopUpOk("Cursor down 8 times.\r\n");
 I64 i;
@@ -35,5 +35,5 @@ PopUpOk(
 "effectively do AND searches.\r\n");
 Sleep(1000);
 
-PutChar(CH_SHIFT_ESC);
+'' CH_SHIFT_ESC;
 

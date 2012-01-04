@@ -149,9 +149,12 @@ public class Complex
 #define DWORD	U32i
 #define QWORD	U64i
 
-#define OC_NOP	0x90
-#define OC_BPT	0xCC
-#define OC_CALL	0xE8
+#define OC_OP_SIZE_PREFIX	0x66
+#define OC_ADDR_SIZE_PREFIX	0x67
+#define OC_LOCK_PREFIX		0xF0
+#define OC_NOP			0x90
+#define OC_BPT			0xCC
+#define OC_CALL			0xE8
 
 extern class TaskStruct;
 extern class Ltf;
@@ -353,13 +356,12 @@ class OSMainStruct
 #define RLf_MP			8
 #define RLf_DSK			9
 #define RLf_COMPILER		10
-#define RLf_SPRINTF		11
-#define RLf_LTF			12
-#define RLf_WINMGR		13
-#define RLf_LOGIN		14
-#define RLf_REGISTRY		15
-#define RLf_ADAM2		16
-#define RLf_ADAM_SERVER		17
+#define RLf_LTF			11
+#define RLf_WINMGR		12
+#define RLf_LOGIN		13
+#define RLf_REGISTRY		14
+#define RLf_ADAM2		15
+#define RLf_ADAM_SERVER		16
 
 #define RLF_16BIT		0x000001
 #define RLF_32BIT		0x000002
@@ -372,13 +374,12 @@ class OSMainStruct
 #define RLF_MP			0x000100
 #define RLF_DSK			0x000200
 #define RLF_COMPILER		0x000400
-#define RLF_SPRINTF		0x000800
-#define RLF_LTF			0x001000
-#define RLF_WINMGR		0x002000
-#define RLF_LOGIN		0x004000
-#define RLF_REGISTRY		0x008000
-#define RLF_ADAM2		0x010000
-#define RLF_ADAM_SERVER		0x020000
+#define RLF_LTF			0x000800
+#define RLF_WINMGR		0x001000
+#define RLF_LOGIN		0x002000
+#define RLF_REGISTRY		0x004000
+#define RLF_ADAM2		0x008000
+#define RLF_ADAM_SERVER		0x010000
 
 #define LDF_NO_ABSS		1
 #define LDF_JUST_LOAD		2
@@ -400,7 +401,7 @@ class OSMainStruct
 #define LAPIC_DFR		(LAPIC_BASE+0x0E0)
 #define LAPIC_LDR		(LAPIC_BASE+0x0D0)
 
-#define LAPICF_APIC_ENABLED 		0x100
+#define LAPICF_APIC_ENABLED		0x100
 #define LAPIC_SVR		(LAPIC_BASE+0x0F0)
 
 #define LAPIC_ISR		(LAPIC_BASE+0x100)
@@ -416,7 +417,7 @@ class OSMainStruct
 #define LAPIC_LVT_LINT1		(LAPIC_BASE+0x360)
 #define LAPIC_LVT_ERR		(LAPIC_BASE+0x370)
 
-#define MPN_VECT		0xF
+#define MPN_VECT		0x7F
 #define MP_VECT_ADDR	(MPN_VECT*0x1000)
 
 //I/O APIC Memory mapped window
@@ -458,7 +459,7 @@ class MPCrashStruct
 #define SYS_TIMER0_PERIOD	(65536*182/10/JIFFY_FREQ)
 
 #define DFT_CACHE_LINE_WIDTH	64
-#define SEMA_STRUCT_SIZE 	DFT_CACHE_LINE_WIDTH
+#define SEMA_STRUCT_SIZE	DFT_CACHE_LINE_WIDTH
 
 class Sema
 {//I read you're supposed to use one cache line.	I don't know why.  Might be silly.
@@ -493,9 +494,9 @@ class Sema
 
 //Extern calls
 //I'm the only one allowed to create these.
-//They work with [C:/LT/OSMain/Adam1b.HPZ,301] CallExtNum().
+//They work with [C:/LT/OSMain/Adam1b.HPZ,298] CallExtNum().
 //I guess you could reallocate
-//and extend [C:/LT/OSMain/Adam1b.HPZ,299] ext[] and copy it.
+//and extend [C:/LT/OSMain/Adam1b.HPZ,296] ext[] and copy it.
 #define EXT_WIN_TO_TOP		0
 #define EXT_DEBUGGER		1
 #define EXT_EXIT_DEBUGGER	2
@@ -520,25 +521,25 @@ class Sema
 #define HTT_DICT_WORD		0x200 //GenericHashEntry -- only in WS table
 #define HTT_KEYWORD		0x400 //GenericHashEntry
 #define HTT_ASM_KEYWORD		0x800 //GenericHashEntry
-#define HTT_OPCODE	      	0x1000 //OpcodeHashEntry
-#define HTT_R8		      	0x2000 //GenericHashEntry
-#define HTT_R16 	      	0x4000 //GenericHashEntry
-#define HTT_R32 	      	0x8000 //GenericHashEntry
-#define HTT_R64 	      	0x10000 //GenericHashEntry
-#define HTT_SEG 	      	0x20000 //GenericHashEntry
-#define HTT_FSTK 	      	0x40000 //GenericHashEntry
-#define HTT_MM	 	      	0x80000 //GenericHashEntry
-#define HTT_XMM	 	      	0x100000 //GenericHashEntry
-#define HTT_FILE 		0x200000 //GenericHashEntry
+#define HTT_OPCODE		0x1000 //OpcodeHashEntry
+#define HTT_R8			0x2000 //GenericHashEntry
+#define HTT_R16 		0x4000 //GenericHashEntry
+#define HTT_R32 		0x8000 //GenericHashEntry
+#define HTT_R64 		0x10000 //GenericHashEntry
+#define HTT_SEG 		0x20000 //GenericHashEntry
+#define HTT_FSTK		0x40000 //GenericHashEntry
+#define HTT_MM			0x80000 //GenericHashEntry
+#define HTT_XMM			0x100000 //GenericHashEntry
+#define HTT_FILE		0x200000 //GenericHashEntry
 #define HTT_MODULE		0x400000 //GenericHashEntry
 #define HTT_HELP_FILE		0x800000 //SrcSymHashEntry
 #define HTT_NAMED_FRAME_PTR	0x1000000 //GenericHashEntry
 
-#define HTT_PRIVATE	      	0x02000000
-#define HTT_PUBLIC	      	0x04000000
-#define HTT_EXPORT	      	0x08000000
-#define HTT_IMPORT	      	0x10000000
-#define HTT_LITERAL	      	0x20000000
+#define HTT_PRIVATE		0x2000000
+#define HTT_PUBLIC		0x4000000
+#define HTT_EXPORT		0x8000000
+#define HTT_IMPORT		0x10000000
+#define HTT_LITERAL		0x20000000
 #define HTT_UNRESOLVED_LOCAL	0x40000000
 #define HTT_UNRESOLVED_GLBL	0x80000000
 
@@ -569,7 +570,7 @@ public class SysHashEntry
 //in future searches.  Old function code and stuff is not disposed
 //in case a referrence uses it and old hash entries are kept, too.
   SysHashEntry *next;
-//Once in a while, the whole hash table is traverse -- [C:/LT/OSMain2/PSect.CPZ,12] PSectFind(), for example.
+//Once in a while, the whole hash table is traverse -- [C:/LT/OSMain/PSect.CPZ,12] PSectFind(), for example.
 //To speed traversal of all symbols, the following links
 //allow skipping all the empty slots in a hash table.
   SysHashEntry *next_added,*last_added;
@@ -613,7 +614,7 @@ public class WsHashEntry:SysHashEntry
 {
   I32 num;
   U32 hits;
-  U16 last_vowel,last_consonant;
+  U16 last_vowel,last_consonant; //Not implemented
 };
 
 public class ExportSysSymHashEntry:SrcSymHashEntry
@@ -684,7 +685,7 @@ class ExternUsage
 };
 
 #define Cf_INTERNAL_FUN 	0
-#define Cf_INTERNAL_TYPE 	1
+#define Cf_INTERNAL_TYPE	1
 #define Cf_EXTERN		2
 #define Cf_INTERRUPT		3
 #define Cf_DOT_DOT_DOT		4
@@ -874,8 +875,8 @@ class SysBpt
 #define LTFT_INDENT		13
 #define LTFT_FOREGROUND		14
 #define LTFT_BACKGROUND		15
-#define LTFT_DFT_FOREGROUND 	16
-#define LTFT_DFT_BACKGROUND 	17
+#define LTFT_DFT_FOREGROUND	16
+#define LTFT_DFT_BACKGROUND	17
 #define LTFT_ALT_FOREGROUND	18
 #define LTFT_LINK_FOREGROUND	19
 #define LTFT_MACRO_FOREGROUND	20
@@ -1000,7 +1001,7 @@ class SysBpt
 #define LTFLF_HTML_LINK		0x8000000000000000
 
 //These are identical to Ltf flags
-#define LTFLF_HIGHLIGHT   	0x1000000
+#define LTFLF_HIGHLIGHT 	0x1000000
 #define LTFLF_LOCK_TO_PAGE	0x2000000
 #define LTFLF_LOCK_TO_CENTER	0x4000000
 #define LTFLF_WORD_WRAP		0x8000000
@@ -1141,26 +1142,8 @@ public class LtfEntryBase
   I64 user_data;
 };
 
-public class LtfEntry
+public class LtfEntry:LtfEntryBase
 {
-  LtfEntry *next,*last;
-  union {
-    U8 type_u8; //this stores the code
-    U32 type; //these store attr flags
-  };
-  I32 page_line_num;
-  U64 flags;
-  I32 x,y;
-  I32 min_col,max_col;
-
-  // These are stored so we can recalc
-  // the document starting in the
-  // middle.
-
-  LtfSettingsStruct *settings;
-
-  I64 user_data;
-
   union {
     U8 *tag;
     I64 hex_ed_width;
@@ -1202,7 +1185,7 @@ public class LtfEntry
   U8 *data;
 };
 
-//[C:/LT/Adam/Ltf/LtfPopUp.APZ,308] LtfFormDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,361] LtfMenuDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,181] LtfDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,447] PopUpMenu()
+//[C:/LT/Adam/Ltf/LtfPopUp.APZ,325] LtfFormDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,378] LtfMenuDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,193] LtfDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,464] PopUpMenu()
 #define DOF_HELP_IS_FILE	1
 #define	DOF_MIN_SIZE		2
 #define	DOF_INTERCEPT_TASK_END	4
@@ -1220,7 +1203,7 @@ class EdFindTextStruct
   BoolI8 local_var		fmtstr "$CB,\"Rename Local Var\"$\r\n";
   BoolI8 pmt;
   U8	 pad[1];
-  I64 	 filter_lines		fmtstr "$DA,131,  \"Filter Lines:%d\"$\r\n";
+  I64	 filter_lines		fmtstr "$DA,131,  \"Filter Lines:%d\"$\r\n";
 };
 
 class EdFileNameStruct
@@ -1236,7 +1219,7 @@ class EdFileNameStruct
 #define LTFF_MIN_SIZE		0x8
 #define LTFF_NO_CURSOR		0x10 // Makes LtfInsertStr remove
 #define LTFF_IN_DOLLAR		0x20
-//unused
+#define LTFF_MORE		0x40
 #define LTFF_FORM		0x80
 #define LTFF_ATTR_BY_PRT	0x100
 #define LTFF_ATTR_BY_FILENAME	0x200
@@ -1253,7 +1236,7 @@ class EdFileNameStruct
 #define LTFF_DO_FULL_UPDATE	0x100000
 #define LTFF_BREAK_UNLOCKED	0x200000
 #define LTFF_AUX_LTF		0x400000
-#define LTFF_HIDE_CURSOR	0x800000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1750] LtfCursor
+#define LTFF_HIDE_CURSOR	0x800000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1753] LtfCursor
 
 #define LTFF_HIGHLIGHT		LTFLF_HIGHLIGHT
 #define LTFF_LOCK_TO_PAGE	LTFLF_LOCK_TO_PAGE
@@ -1270,7 +1253,7 @@ class EdFileNameStruct
 #define LTFf_MIN_SIZE		3
 #define LTFf_NO_CURSOR		4 // Makes LtfInsertStr remove
 #define LTFf_IN_DOLLAR		5
-//unused
+#define LTFf_MORE		6
 #define LTFf_FORM		7
 #define LTFf_ATTR_BY_PRT	8
 #define LTFf_ATTR_BY_FILENAME	9
@@ -1287,7 +1270,7 @@ class EdFileNameStruct
 #define LTFf_DO_FULL_UPDATE	20
 #define LTFf_BREAK_UNLOCKED	21
 #define LTFf_AUX_LTF		22
-#define LTFf_HIDE_CURSOR	23  //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1750] LtfCursor
+#define LTFf_HIDE_CURSOR	23  //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1753] LtfCursor
 
 #define LTFf_HIGHLIGHT		LTFLf_HIGHLIGHT
 #define LTFf_LOCK_TO_PAGE	LTFLf_LOCK_TO_PAGE
@@ -1310,7 +1293,7 @@ class LtfUndo
   U8 *body;
 };
 
-//See [C:/LT/Adam/Ltf/LtfPopUp.APZ,361] LtfMenuDo()
+//See [C:/LT/Adam/Ltf/LtfPopUp.APZ,378] LtfMenuDo()
 #define LTFM_CANCEL		(-1)
 
 #define LTF_SIGNATURE_VAL		'LtfS'
@@ -1349,10 +1332,10 @@ public class Ltf //Linked Text File header
   Ltf *menu_ltf;
   I32 start_x,start_y;
 
-  U8 *cur_grelems;
+  U8 *cur_sprite;
 
 //not document num, but num in a GrSprite collection
-  I64 cur_grelem_num;
+  I64 cur_sprite_elem_num;
 
   EdFileNameStruct filename;
   U64 file_attr;
@@ -1811,44 +1794,45 @@ class ExeStruct
 #define TK_IDENT		0x100
 #define TK_STR			0x101
 #define TK_INTEGER		0x102
-#define TK_F64			0x103
-#define TK_PLUS_PLUS		0x104
-#define TK_MINUS_MINUS		0x105
-#define TK_DEREFERRENCE		0x106
-#define TK_DBL_COLON 		0x107
-#define TK_SHL			0x108
-#define TK_SHR		 	0x109
-#define TK_EQUAL_EQUAL		0x10A
-#define TK_NOT_EQUAL		0x10B
-#define TK_LESS_EQUAL		0x10C
-#define TK_GREATER_EQUAL	0x10D
-#define TK_AND_AND		0x10E
-#define TK_OR_OR		0x10F
-#define TK_XOR_XOR		0x110
-#define TK_SHL_EQUAL		0x111
-#define TK_SHR_EQUAL		0x112
-#define TK_MUL_EQUAL		0x113
-#define TK_DIV_EQUAL		0x114
-#define TK_AND_EQUAL		0x115
-#define TK_OR_EQUAL		0x116
-#define TK_XOR_EQUAL		0x117
-#define TK_ADD_EQUAL		0x118
-#define TK_SUB_EQUAL		0x119
-#define TK_CAST			0x11A
-#define TK_IF			0x11B
-#define TK_IFDEF		0x11C
-#define TK_IFNDEF		0x11D
-#define TK_IFSTATIC		0x11E
-#define TK_IFNSTATIC		0x11F
-#define TK_ENDIF		0x120
-#define TK_ELSE			0x121
-#define TK_MOD_EQUAL		0x122
-#define TK_DOT_DOT		0x123
-#define TK_DOT_DOT_DOT		0x124
-#define TK_INSERT_BINARY	0x125
-#define TK_INSERT_BINARY_TYPE	0x126
-#define TK_INSERT_BINARY_SIZE	0x127
-#define TK_NUM_TK		0x128
+#define TK_U8			0x103
+#define TK_F64			0x104
+#define TK_PLUS_PLUS		0x105
+#define TK_MINUS_MINUS		0x106
+#define TK_DEREFERRENCE		0x107
+#define TK_DBL_COLON		0x108
+#define TK_SHL			0x109
+#define TK_SHR			0x10A
+#define TK_EQUAL_EQUAL		0x10B
+#define TK_NOT_EQUAL		0x10C
+#define TK_LESS_EQUAL		0x10D
+#define TK_GREATER_EQUAL	0x10E
+#define TK_AND_AND		0x10F
+#define TK_OR_OR		0x110
+#define TK_XOR_XOR		0x111
+#define TK_SHL_EQUAL		0x112
+#define TK_SHR_EQUAL		0x113
+#define TK_MUL_EQUAL		0x114
+#define TK_DIV_EQUAL		0x115
+#define TK_AND_EQUAL		0x116
+#define TK_OR_EQUAL		0x117
+#define TK_XOR_EQUAL		0x118
+#define TK_ADD_EQUAL		0x119
+#define TK_SUB_EQUAL		0x11A
+#define TK_CAST			0x11B
+#define TK_IF			0x11C
+#define TK_IFDEF		0x11D
+#define TK_IFNDEF		0x11E
+#define TK_IFSTATIC		0x11F
+#define TK_IFNSTATIC		0x120
+#define TK_ENDIF		0x121
+#define TK_ELSE			0x122
+#define TK_MOD_EQUAL		0x123
+#define TK_DOT_DOT		0x124
+#define TK_DOT_DOT_DOT		0x125
+#define TK_INSERT_BINARY	0x126
+#define TK_INSERT_BINARY_TYPE	0x127
+#define TK_INSERT_BINARY_SIZE	0x128
+#define TK_NUM_TK		0x129
 
 //Lex flags
 #define LF_PROMPT		1
@@ -1891,7 +1875,6 @@ class ExeStruct
 #define Lf_RAW_ERRORS		39
 #define LF_PAREN		0x10000000000
 #define Lf_PAREN		40
-
 #define LEX_MAX_IDENT	134
 #define LFN_CNT		8
 #define LFN_STK_CNT	32
@@ -1924,15 +1907,15 @@ class StreamBlkStruct
 class LexCbHeader
 {
   LexCbHeader		*cb_next;
-  CodeBlk 		*cb_out_first;
-  CodeBlk 		*cb_out_last;
-  IntermediateCode 	*cb_out_end;
-  IntermediateCode 	*cb_out_ptr;
-  IntermediateCode 	*cb_last_out_ptr;
-  CodeBlk 		*cb_in_first;
-  IntermediateCode 	*cb_in_end;
-  IntermediateCode 	*cb_in_ptr;
-  CbMiscStruct 		*cb_misc_list,*cb_misc_list_end;
+  CodeBlk		*cb_out_first;
+  CodeBlk		*cb_out_last;
+  IntermediateCode	*cb_out_end;
+  IntermediateCode	*cb_out_ptr;
+  IntermediateCode	*cb_last_out_ptr;
+  CodeBlk		*cb_in_first;
+  IntermediateCode	*cb_in_end;
+  IntermediateCode	*cb_in_ptr;
+  CbMiscStruct		*cb_misc_list,*cb_misc_list_end;
 };
 
 
@@ -2244,7 +2227,7 @@ class ISO1PriDesc
 #define ISO3T_LOG_VOL_DESC		6
 #define ISO3T_UNALLOCATED_SPACE_DESC	7
 #define ISO3T_TERMINATOR_DESC		8
-#define ISO3T_LOG_VOL_INTEGRITY_DESC 	9
+#define ISO3T_LOG_VOL_INTEGRITY_DESC	9
 #define ISO3T_FILE_SET_DESC		256
 #define ISO3T_FILE_ID_DESC		257
 #define ISO3T_ALLOC_EXTENT_DESC		258
@@ -2804,7 +2787,6 @@ class UsedAllocatedMem
 
 #define ADAM_STK		(PAGE_SIZE*512) //limit of like 16384*PAGE_SIZE
 #define SETH_STK		(PAGE_SIZE*512)
-#define IDLE_STK		(PAGE_SIZE*512)
 #define INTERRUPT_STK		(PAGE_SIZE*512)
 #define DFT_STK			(PAGE_SIZE*512)
 #define MP_DFT_STK		(PAGE_SIZE*512)
@@ -2851,7 +2833,7 @@ public class HeapCtrl //See [::/LT/OSMain/OSAsmDefs.HPZ,HC_STRUCT_SIZE] HC_STRUC
 #define ROP_CLEAR_MASK_EQU		0x0400
 #define ROP_CLEAR_MASK_TRANSPARENT	0x0500
 
-//These are just for [C:/LT/OSMain/Adam1a.HPZ,2861] ROPF_PROBABILITY_DITHER
+//These are just for [C:/LT/OSMain/Adam1a.HPZ,2843] ROPF_PROBABILITY_DITHER
 //See [C:/LT/Adam/Gr/GrMath.APZ,450] GrLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2862,14 +2844,14 @@ public class HeapCtrl //See [::/LT/OSMain/OSAsmDefs.HPZ,HC_STRUCT_SIZE] HC_STRUC
 
 #define ROPB_EQU			0x00
 #define ROPB_XOR			0x01
-#define ROPB_TRANSPARENT 		0x02
-#define ROPB_COLLISION 			0x03
+#define ROPB_TRANSPARENT		0x02
+#define ROPB_COLLISION			0x03
 #define ROPB_CLEAR_MASK_EQU		0x04
-#define ROPB_CLEAR_MASK_TRANSPARENT 	0x05
+#define ROPB_CLEAR_MASK_TRANSPARENT	0x05
 #define ROPBF_HALF_RANGE_COLOR		0x10
 #define ROPBF_TWO_SIDED			0x20
 #define ROPBF_DITHER			0x40
-#define ROPBF_PROBABILITY_DITHER 	0x80
+#define ROPBF_PROBABILITY_DITHER	0x80
 
 public U16 class ColorROPU16 //Don't use this, use ColorROPU32
 {
@@ -3028,14 +3010,19 @@ class TaskSettings
 };
 
 #define NUM_PROGRESS_BARS	4
-#define PROGRESS_DESC_LEN	63
+#define PROGRESS_DESC_LEN	(64-8-8-1)
+class ProgressStruct
+{
+  U64 val,max;
+  U8  desc[PROGRESS_DESC_LEN+1];
+};
 
 // TASK task flags
 #define TASKf_KILL_TASK		0
 #define TASKf_SUSPENDED		1
 #define TASKf_LOCAL_USER	2
-#define TASKf_PREEMPT 		3
-#define TASKf_IDLE 		4
+#define TASKf_PREEMPT		3
+#define TASKf_IDLE		4
 #define TASKf_INPUT_FILTER_TASK	5
 #define TASKf_FILTER_INPUT	6
 #define TASKf_HAS_SONG		7
@@ -3063,7 +3050,7 @@ class TaskSettings
 #define DISPLAYf_SILENT			4
 #define DISPLAYf_HAS_BEEN_RESIZED2	5
 #define DISPLAYf_NO_BORDER		6
-#define DISPLAYf_CHILDREN_NOT_ON_TOP 	7
+#define DISPLAYf_CHILDREN_NOT_ON_TOP	7
 #define DISPLAYf_WIN_ON_TOP		8
 
 #define SPAWNF_ADD_TO_QUEUE		1
@@ -3184,7 +3171,6 @@ public class TaskStruct //See [::/LT/OSMain/OSAsmDefs.HPZ,TASK_STRUCT_SIZE] TASK
   Ode	*next_ode,*last_ode;
   F64	last_ode_time;
   SysHashTable *hash_table;
-  SysAcctStruct *acct;
 
 #define MSG_NULL		0
 #define MSG_CMD			1
@@ -3205,9 +3191,9 @@ public class TaskStruct //See [::/LT/OSMain/OSAsmDefs.HPZ,TASK_STRUCT_SIZE] TASK
 
 #define MSG_KEY_DOWN_UP		-2
 #define MSG_IP_L_DOWN_UP	-5
-#define MSG_IP_L_D_DOWN_UP 	-7
+#define MSG_IP_L_D_DOWN_UP	-7
 #define MSG_IP_R_DOWN_UP	-9
-#define MSG_IP_R_D_DOWN_UP 	-11
+#define MSG_IP_R_D_DOWN_UP	-11
 
 #define MSGF_ALLOW_KEY_DESC	63
 
@@ -3226,7 +3212,7 @@ public class TaskStruct //See [::/LT/OSMain/OSAsmDefs.HPZ,TASK_STRUCT_SIZE] TASK
   U32	user_num;
   U32	fault_num;
   U64	fault_err_code;
-  U64 	answers[4];
+  U64	answers[4];
   U16	answer_types[4];
   U64	answers_displayed;
   TaskStruct *dbg_task;
@@ -3325,7 +3311,7 @@ class TssStruct
 #define SCf_ALT 		11
 #define SCf_CAPS		12
 #define SCf_NUM 		13
-#define SCf_SCROLL 		14
+#define SCf_SCROLL		14
 #define SCf_NEW_KEY		15
 #define SCf_IP_L_DOWN		16
 #define SCf_IP_R_DOWN		17
@@ -3407,34 +3393,34 @@ class TssStruct
 #define LTPURPLE	13
 #define YELLOW		14
 #define WHITE		15
-
+#define INVALID_COLOR	16
 
 //Low 8 bits reserved for flags that go into saved bitmaps
-#define BMF_COMPRESSED		1
+#define DCF_COMPRESSED		1
 
 
-#define BMF_TRANSFORMATION	0x100
+#define DCF_TRANSFORMATION	0x100
 
 //See [C:/LT/Adam/Gr/GrMath.APZ,364] GrSetSymmetry() or [C:/LT/Adam/Gr/GrMath.APZ,386] GrSetSymmetry3()
-#define BMF_SYMMETRY		0x200
+#define DCF_SYMMETRY		0x200
 
-//Must be used with BMF_SYMMETRY set also.
+//Must be used with DCF_SYMMETRY set also.
 //See [::/LT/Demo/GameStarters/BigGuns.CPZ] ::/LT/Demo/GameStarters/BigGuns.CPZ
-#define BMF_JUST_MIRROR		0x400
+#define DCF_JUST_MIRROR		0x400
 
-#define BMF_LOCATE_NEAREST	0x800
-#define BMF_DONT_DRAW		0x1000
-#define BMF_ALIAS		0x2000
-#define BMF_SCREEN_BITMAP	0x4000
-#define BMF_FILL_NOT_COLOR	0x8000
-#define BMF_RECORD_EXTENTS	0x10000
-#define BMF_ON_TOP		0x20000
-#define BMF_DIRTY		0x40000 //only implemented on mask bitmap
+#define DCF_LOCATE_NEAREST	0x800
+#define DCF_DONT_DRAW		0x1000
+#define DCF_ALIAS		0x2000
+#define DCF_SCREEN_BITMAP	0x4000
+#define DCF_FILL_NOT_COLOR	0x8000
+#define DCF_RECORD_EXTENTS	0x10000
+#define DCF_ON_TOP		0x20000
+#define DCF_DIRTY		0x40000 //only implemented on mask bitmap
 
-#define BMT_COLOR4	1
-#define BMT_MONO	2
+#define DCT_COLOR4	1
+#define DCT_MONO	2
 
-#define BMS_SIGNATURE_VAL			'BmpS'
+#define DCS_SIGNATURE_VAL			'DvCS'
 
 public class GrSymStruct
 {
@@ -3462,7 +3448,7 @@ public class GrDC
   P3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability is basically a U16.
-  //It is activated by [C:/LT/OSMain/Adam1a.HPZ,2861] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/LT/OSMain/Adam1a.HPZ,2843] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3471,7 +3457,7 @@ public class GrDC
 
   GrDC *brush;
 
-//Set with [C:/LT/Adam/Gr/GrMath.APZ,308] GrSetRotMat().  [C:/LT/OSMain/Memory.CPZ,919] Free() before setting.
+//Set with [C:/LT/Adam/Gr/GrMath.APZ,308] GrSetRotMat().  [C:/LT/OSMain/Memory.CPZ,951] Free() before setting.
   I64 *r;  //rotation matrix of quads decimal in lo
   I64 r_norm; //shifted 32 bits.  Used for scaling pen width
 
@@ -3487,21 +3473,21 @@ public class GrDC
   GrSymStruct sym;
 
 //not document num, but num in a GrSprite collection
-  I64 nearest_grelem_num;
+  I64 nearest_sprite_elem_num;
 
   U64 nearest_dist;
 
 //not document num, but num in a GrSprite collection
-  I64 cur_grelem_num;
+  I64 cur_sprite_elem_num;
 
   I32 cur_x,cur_y,cur_z,pad;
   F64 speedline_scale;
   U64 collision_cnt;
 
-  //Set by [C:/LT/OSMain/Adam1a.HPZ,3430] BMF_RECORD_EXTENTS
+  //Set by [C:/LT/OSMain/Adam1a.HPZ,3416] DCF_RECORD_EXTENTS
   I64 min_x,max_x,min_y,max_y; //screen coordinates
 
-  U32 bm_signature,pad;
+  U32 dc_signature,pad;
   TaskStruct *mem_task,*win_task;
   GrDC *mask,*alias;
   U8 *body;
@@ -3564,9 +3550,9 @@ class RaxRbxRcxRdx
 #define ARC_MAX_BITS 12
 #define ARC_MAX_TABLE_ENTRY (1<<ARC_MAX_BITS-1)
 
-#define CT_NONE  	0
-#define CT_7_BIT 	1
-#define CT_8_BIT 	2
+#define CT_NONE 	0
+#define CT_7_BIT	1
+#define CT_8_BIT	2
 
 class ArcTableEntry
 {
@@ -3785,7 +3771,7 @@ POP R8 POP RDI POP RSI POP RBP POP RBX POP RDX POP RCX POP RAX
 #define NUM_PML3	1
 #define NUM_PML4	1
 #define PAGE_TABLE_SIZE (NUM_PML1+NUM_PML2+NUM_PML3+NUM_PML4)*0x1000
-#define PROTECTED_LOW_PAGE_LIMIT	MP_VECT_ADDR
+#define PROTECTED_LOW_PAGE_LIMIT	0x6FFF
 
 #define ST_ERR_ST   "$FG,LTRED$$BK,1$ERROR:$FG$$BK,0$ "
 #define ST_WARN_ST  "$FG,RED$$BK,1$WARNING:$FG$$BK,0$ "

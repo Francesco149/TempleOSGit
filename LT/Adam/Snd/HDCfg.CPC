@@ -342,109 +342,107 @@ U0 HDCfgRandomizeXY()
 U0 HDCfgPopUpInfoTask(MyMass *tempm)
 {
   I64 i;
-  PrintF("$FG,RED$NID:$FG$0x%02X $FG,RED$Type:$FG$%Z\r\n",
-	tempm->nid,tempm->type,
-	"ST_AUDIO_WIDGET_TYPES");
+  "$FG,RED$NID:$FG$0x%02X $FG,RED$Type:$FG$%Z\r\n",
+	tempm->nid,tempm->type,"ST_AUDIO_WIDGET_TYPES";
 
   i=tempm->audio_widget_capabilities;
-  PutS("\r\n$FG,RED$Audio Widget Capabilities:$FG$\r\n");
+  "\r\n$FG,RED$Audio Widget Capabilities:$FG$\r\n";
   if (Bt(&i,0))
-     PutS("Stereo, ");
+     "Stereo, ";
   if (Bt(&i,1))
-     PutS("In Amp, ");
+     "In Amp, ";
   if (Bt(&i,2))
-     PutS("Out Amp, ");
+     "Out Amp, ";
   if (Bt(&i,3))
-     PutS("Amp Override, ");
+     "Amp Override, ";
   if (Bt(&i,4))
-     PutS("Fmt Override, ");
+     "Fmt Override, ";
   if (Bt(&i,5))
-     PutS("Stripe, ");
+     "Stripe, ";
   if (Bt(&i,6))
-     PutS("Proc Wgt, ");
+     "Proc Wgt, ";
   if (Bt(&i,7))
-     PutS("Unsolicited, ");
+     "Unsolicited, ";
   if (Bt(&i,8))
-     PutS("Cnt List, ");
+     "Cnt List, ";
   if (Bt(&i,9))
-     PutS("Digital, ");
+     "Digital, ";
   if (Bt(&i,10))
-     PutS("Power Ctrl, ");
+     "Power Ctrl, ";
   if (Bt(&i,11))
-     PutS("Left/Right Swap, ");
-  PrintF("Delay:%d\r\n",i.u16[1]&0xF);
+     "Left/Right Swap, ";
+  "Delay:%d\r\n",i.u16[1]&0xF;
 
   i=tempm->in_amp_cap;
-  PutS("\r\n$FG,RED$Input Amp Capabilities:$FG$\r\n");
-  PrintF("Offset:0x%02X Steps:0x%02X StepSize:%5.2fdB Mutable:%d\r\n",
-    i&127,i.u8[1]&127+1,0.25*(i.u16[1]&127),Bt(&i,31));
+  "\r\n$FG,RED$Input Amp Capabilities:$FG$\r\n"
+  "Offset:0x%02X Steps:0x%02X StepSize:%5.2fdB Mutable:%d\r\n",
+    i&127,i.u8[1]&127+1,0.25*(i.u16[1]&127),Bt(&i,31);
 
   i=tempm->out_amp_cap;
-  PutS("\r\n$FG,RED$Output Amp Capabilities:$FG$\r\n");
-  PrintF("Offset:0x%02X Steps:0x%02X StepSize:%5.2fdB Mutable:%d\r\n",
-    i&127,i.u8[1]&127+1,0.25*(i.u16[1]&127),Bt(&i,31));
+  "\r\n$FG,RED$Output Amp Capabilities:$FG$\r\n"
+  "Offset:0x%02X Steps:0x%02X StepSize:%5.2fdB Mutable:%d\r\n",
+    i&127,i.u8[1]&127+1,0.25*(i.u16[1]&127),Bt(&i,31);
 
-  PutS("\r\n$FG,RED$Size Rates Capabilities:$FG$\r\n");
+  "\r\n$FG,RED$Size Rates Capabilities:$FG$\r\n";
   for (i=0;i<21;i++)
     if (Bt(&tempm->pcm_size_rates,i))
-      PrintF("%z",i,
+      "%z",i,
 	" 8.0kHz\0 11.025kHz\0 16.0kHz\0 22.05kHz\0"
 	" 32.0kHz\0 44.1kHz\0 48.0kHz\0 88.2kHz\0"
 	" 96.0kHz\0 176.4kHz\0 192.0kHz\0 384kHz\0"
 	" \0 \0 \0 \0"
-	" 8Bit\0 16bit\0 20Bit\0 24Bit\0 32Bit\0");
+	" 8Bit\0 16bit\0 20Bit\0 24Bit\0 32Bit\0";
   CrLf;
 
  
-  PutS("\r\n$FG,RED$Connection List:$FG$\r\n");
+  "\r\n$FG,RED$Connection List:$FG$\r\n";
   for (i=0;i<tempm->num_connects;i++)
-    PrintF("%02X,",tempm->connect_list[i]);
+    "%02X,",tempm->connect_list[i];
   CrLf;
 
-  PutS("\r\n$FG,RED$Gain List:$FG$\r\n");
+  "\r\n$FG,RED$Gain List:$FG$\r\n";
   for (i=0;i<tempm->num_connects;i++)
-    PrintF("%02X,",tempm->gain_list[i]);
+    "%02X,",tempm->gain_list[i];
   CrLf;
 
   switch (tempm->type) {
     case AWT_PIN_COMPLEX:
-      PutS("\r\n$FG,RED$Pin Capabilities:$FG$\r\n");
+      "\r\n$FG,RED$Pin Capabilities:$FG$\r\n";
       i=tempm->pin_capabilities;
       if (Bt(&i,0))
-	PutS("Impedance Sense, ");
+	"Impedance Sense, ";
       if (Bt(&i,1))
-	PutS("Trigger Required, ");
+	"Trigger Required, ";
       if (Bt(&i,2))
-	PutS("Presence Detect, ");
+	"Presence Detect, ";
       if (Bt(&i,3))
-	PutS("Headphone Drive, ");
+	"Headphone Drive, ";
       if (Bt(&i,4))
-	PutS("Output, ");
+	"Output, ";
       if (Bt(&i,5))
-	PutS("Input, ");
+	"Input, ";
       if (Bt(&i,6))
-	PutS("Balanced, ");
+	"Balanced, ";
       if (Bt(&i,16))
-	PutS("EAPD, ");
-      PrintF("Vref:%02X\r\n\r\n",i.u8[1]);
+	"EAPD, ";
+      "Vref:%02X\r\n\r\n",i.u8[1];
       if (Bt(&tempm->pin_capabilities,0) ||
 	  Bt(&tempm->pin_capabilities,2))
 	tempm->pin_sense=HDWriteCORBSync(_hda->cad,tempm->nid,VERB_PIN_SENSE_GET);
       if (Bt(&tempm->pin_capabilities,0))
-	PrintF("Impedance Measurement:%08X\r\n",
-	 tempm->pin_sense&0x7FFFFFFF);
+	"Impedance Measurement:%08X\r\n",tempm->pin_sense&0x7FFFFFFF;
       if (Bt(&tempm->pin_capabilities,2))
-	PrintF("Presence:%d\r\n",Bt(&tempm->pin_sense,31));
-      PutS("\r\n\r\nPin widget ctrl bits:\r\n"
-	     "  7: High phn enable (low impedance output amp)\r\n"
-	     "  6: Output Enable\r\n"
-	     "  5: Input Enable\r\n"
-	     "0-2: Vref 0=HiZ 1=50% 2=Gnd 4=80% 5=100%\r\n");
+	"Presence:%d\r\n",Bt(&tempm->pin_sense,31);
+      "\r\n\r\nPin widget ctrl bits:\r\n"
+      "  7: High phn enable (low impedance output amp)\r\n"
+      "  6: Output Enable\r\n"
+      "  5: Input Enable\r\n"
+      "0-2: Vref 0=HiZ 1=50% 2=Gnd 4=80% 5=100%\r\n";
       tempm->pin_widget_ctl=PmtI64("Widget Ctrl (0x%02X):",tempm->pin_widget_ctl,0,0xFF);
       HDWriteCORBSync(_hda->cad,tempm->nid,VERB_PIN_WIDGET_CTL_SET+tempm->pin_widget_ctl);
       break;
     case AWT_INPUT:
-      PutS("Disable");
+      "Disable";
       if (tempm->disabled=YorN)
 	HDWriteCORBSync(_hda->cad,tempm->nid,VERB_CHAN_STREAM_ID_SET+0x00);
       else
@@ -452,7 +450,7 @@ U0 HDCfgPopUpInfoTask(MyMass *tempm)
       CrLf;
       break;
     case AWT_OUTPUT:
-      PutS("Disable");
+      "Disable";
       if (tempm->disabled=YorN)
 	HDWriteCORBSync(_hda->cad,tempm->nid,VERB_CHAN_STREAM_ID_SET+0x00);
       else
@@ -465,7 +463,7 @@ U0 HDCfgPopUpInfoTask(MyMass *tempm)
 U0 HDCfgPopUpInfo(MyMass *tempm)
 {
   U8 buf[80];
-  SPrintF(buf,"HDCfgPopUpInfoTask(0x%X);PutS(\"\\r\\nPress SHIFT-ESC\\r\\n\\r\\n\");View;",tempm);
+  SPrintF(buf,"HDCfgPopUpInfoTask(0x%X);\"\\r\\nPress SHIFT-ESC\\r\\n\\r\\n\";View;",tempm);
   PopUp(buf,Fs);
 }
 
@@ -557,8 +555,8 @@ here:
     tempm=tempm->next;
   }
   LtfPutS(l,"  LBtr(&sys_semas[SYS_SEMA_SND],0);\r\n"
-	    "}\r\n\r\nif (snd_dev==SD_HD_AUDIO)\r\n"
-		     "  MyHDCfg;\r\n");
+		"}\r\n\r\nif (snd_dev==SD_HD_AUDIO)\r\n"
+		"  MyHDCfg;\r\n");
   StrCpy(l->filename.name,"HOME/HDAudioCfg.APZ");
   LtfWrite(l);
   LtfDel(l);
@@ -570,7 +568,7 @@ U0 HDCfg()
   MyMass *tempm1=NULL,*tempm2=NULL;
 
   if (snd_dev!=SD_HD_AUDIO) {
-    PutS("HD Audio not detected\r\n");
+    "HD Audio not detected\r\n";
     return;
   }
   HDAudioInit;
@@ -658,7 +656,7 @@ hd_done: //Don't goto out of try
   SettingsPop;
   CleanUp;
   MenuPop;
-  PutS("$BK,1$Note: #include \"HOME/HDAudioCfg.APZ\" in your start-up scripts.$BK,0$\r\n");
+  "$BK,1$Note: #include \"HOME/HDAudioCfg.APZ\" in your start-up scripts.$BK,0$\r\n";
 }
 
 HDCfg;

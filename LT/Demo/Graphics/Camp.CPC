@@ -121,7 +121,7 @@ U0 MPDrawMeeting(TaskStruct *task)
   I64 i,x,y,z,*r2,*old_r=dc->r,
      lo= Gs->num   *num_objs/mp_cnt,
      hi=(Gs->num+1)*num_objs/mp_cnt;
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   dc->depth_buf=depth_buf;
   dc->x=cx;
   dc->y=cy;
@@ -178,7 +178,7 @@ U0 DrawMeeting(TaskStruct *task)
 
   GrDCAllocDepthBuf(dc);
   depth_buf=dc->depth_buf;
-  dc->flags|=BMF_TRANSFORMATION;
+  dc->flags|=DCF_TRANSFORMATION;
   r1=GrRotX(30.0*pi/180.0,task);
   old_r=dc->r;
 

@@ -18,7 +18,7 @@ BoolI64 ISO3PrtInitPrt(LTPrt *p,U64 blk)
     while (TRUE) {
       p->size=MaxI64(p->size,(i+1)*spc);
       RBlks(p,iso,i*spc,spc);
-      PrintF("%X:%X\r\n",i,iso->tag.id);
+      "%X:%X\r\n",i,iso->tag.id;
       switch (iso->tag.id) {
 	case ISO3T_FILE_SET_DESC:
 	  ClassRep("ISO3FileSetDesc",iso,3);
@@ -72,7 +72,7 @@ BoolI64 ISO3PrtInit(LTPrt *p,U64 blk)
     while (TRUE) {
       p->size=MaxI64(p->size,(i+1)*spc);
       RBlks(p,iso,i*spc,spc);
-PrintF("%X:%X\r\n",i,iso->tag.id);
+"%X:%X\r\n",i,iso->tag.id;
       switch (iso->tag.id) {
 	case ISO3T_PRT_DESC:
 	  ClassRep("ISO3Prt",iso,3);

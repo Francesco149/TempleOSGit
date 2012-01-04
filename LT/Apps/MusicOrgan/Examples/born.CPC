@@ -7,7 +7,7 @@ F64 t0;
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i;
-  F64 dt=(tJ-t0)*music_tempo,d=Limit(0.1*dt,0,2),d2;
+  F64 dt=(tM-t0)*music_tempo,d=Limit(0.1*dt,0,2),d2;
 
   dc->color=ROPF_PROBABILITY_DITHER+LTCYAN<<16+CYAN;
   for (i=HORIZON_Y;i>=0;i--) {
@@ -36,7 +36,7 @@ U0 Song()
   music_stacatto_factor= 0.900;
   try {
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       Play("3qB!eB2G!3qA!!eF!!AsF!AFA!!qC2sG!3A!2G3ARBRB",
 	  "New \0day \0is \0born.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qB!eB2G!3qA!!eF!!AsF!AFA!!qC2sG!3A!2G3ARBRB",

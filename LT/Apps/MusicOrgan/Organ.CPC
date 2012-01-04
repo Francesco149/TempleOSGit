@@ -79,9 +79,9 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/LT/OSMain/Adam1a.HPZ,2915] Ctrl type for the tempo/stacatto sliders.
+  2) The [C:/LT/OSMain/Adam1a.HPZ,2897] Ctrl type for the tempo/stacatto sliders.
 
-  3) The active [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf picture buttons with macros for left/record/play/right.
+  3) The active [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf picture buttons with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
@@ -90,7 +90,7 @@ This uses four types of ctrls
 
 This uses four types of output
 
-  1) The [C:/LT/OSMain/Adam1a.HPZ,1319] Ltf for the text and buttons and kbdgraphic, drawn by 
+  1) The [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf for the text and buttons and kbdgraphic, drawn by 
 Fs->update_win().
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
@@ -241,7 +241,7 @@ BoolI8 org_triplet_durations[ORG_NUM_DURATIONS]={TRUE,FALSE,TRUE,
 
 BoolI64 OrgHasWords(U8 *st)
 {
-  if (st && *st && (StrLen(st)>1 || (*st!=CH_SPACE && *st!=CH_SHIFT_SPACE)))
+  if (st && *st && (StrLen(st)>1 || *st!=CH_SPACE && *st!=CH_SHIFT_SPACE))
     return TRUE;
   else
     return FALSE;
@@ -535,7 +535,7 @@ F64 PopUpDuration()
 	"$MU,\"Delete Note\",ORGR_DELETE_NOTE$\r\n"
 	"$MU,\"No Accent\",ORGR_NO_ACCENT$\r\n"
 	"$MU,\"Accent\",ORGR_ACCENT$\r\n"
-  	"$MU,\"Strong Accent\",ORGR_STRONG_ACCENT$\r\n\r\n");
+	"$MU,\"Strong Accent\",ORGR_STRONG_ACCENT$\r\n\r\n");
   for (i=0;i<ORG_NUM_DURATIONS;i++)
     LtfPrintF(l,"$MU,\"%7.5f\",%d$\r\n",org_durations[i],i);
   LtfPutS(l,"\r\n$MU,\"CANCEL\",LTFM_CANCEL$\r\n");
@@ -975,12 +975,9 @@ U8 OrgCvtDuration(F64 d)
 
 U8 *OrgMusicSetOctave(U8 *st,U64 *org_octave)
 {
-  U8 ch=*st++;
-  while (ch>='0' && ch<='9') {
-    *org_octave=ch-'0';
-    ch=*st++;
-  }
-  return --st;
+  while ('0'<=*st<='9')
+    *org_octave=*st++ -'0';
+  return st;
 }
 
 U8 *OrgMusicSetNoteLen(U8 *st,F64 *org_duration)
@@ -991,8 +988,8 @@ U8 *OrgMusicSetNoteLen(U8 *st,F64 *org_duration)
       case 'w': *org_duration=4.0;  break;
       case 'h': *org_duration=2.0;  break;
       case 'q': *org_duration=1.0;  break;
-      case 'e': *org_duration=0.5;   break;
-      case 's': *org_duration=0.25;   break;
+      case 'e': *org_duration=0.5;  break;
+      case 's': *org_duration=0.25; break;
       case 't': *org_duration=2.0* *org_duration/3.0; break;
       case '.': *org_duration=1.5* *org_duration; break;
       default:
@@ -1234,16 +1231,6 @@ U8 *OrgCvtSong()
   return st;
 }
 
-U0 OrgDelSong(U8 *full_filename)
-{
-  EdFileNameStruct fn;
-  if (full_filename) {
-    StrCpy(fn.name,full_filename);
-    if (LtfFormDo(&fn,"EdFileNameStruct"))
-      Del(fn.name);
-  }
-}
-
 U8 *OrgSaveSong(U8 *dirname,U8 *full_filename)
 {
   Ltf *l=LtfNew;
@@ -1270,20 +1257,16 @@ U8 *OrgSaveSong(U8 *dirname,U8 *full_filename)
   else
     LtfPutS(l,"//0 no nothing\r\n");
 
-  LtfPutS(l,
+  LtfPrintF(l,
 "U0 Song()\r\n"
 "{\r\n"
 "  Fs->task_end_cb=&SndTaskEndCB;\r\n"
-"  MusicSettingsRst;\r\n");
-
-LtfPrintF(l,"  music_tempo=%6.3f;\r\n",music_tempo+0.0005);
-LtfPrintF(l," 
-music_stacatto_factor=%6.3f;\r\n",music_stacatto_factor+0.0005);
-
-LtfPutS(l,
+"  MusicSettingsRst;\r\n"
+"  music_tempo=%6.3f;\r\n"
+"  music_stacatto_factor=%6.3f;\r\n"
 "  try {\r\n"
 "  while (!ScanKey) {\r\n"
-"\tPlay(\"");
+"\tPlay(\"",music_tempo+0.0005,music_stacatto_factor+0.0005);
 
   tempo=oc.root.next;
   tempo1=tempo;
@@ -1315,8 +1298,8 @@ LtfPutS(l,
 	  tempo1=tempo1->next;
 	}
       }
-      LtfPutS(l,"\");\r\n");
-      LtfPutS(l,"\tPlay(\"");
+      LtfPutS(l,"\");\r\n"
+		"\tPlay(\"");
       two_measure_left=2*measure_len;
       tempo1=tempo;
       has_words=FALSE;
@@ -1451,7 +1434,6 @@ U0 OrgDownKey(I64 x,I64 y)
     for (i=0;i<ORG_NUM_KEYS;i++) {
       o=&org_kbd[i];
       if (o->x<=x<o->x+o->w && y<o->h) {
-	kbd_evt_time=GetTimeStamp;
 	Msg(MSG_KEY_DOWN,o->ascii,0);
 	return;
       }
@@ -1469,7 +1451,6 @@ U0 OrgUpKey(I64 x,I64 y)
     for (i=0;i<ORG_NUM_KEYS;i++) {
       o=&org_kbd[i];
       if (o->x<=x<o->x+o->w && y<o->h) {
-	kbd_evt_time=GetTimeStamp;
 	Msg(MSG_KEY_UP,o->ascii,0);
 	return;
       }
@@ -1481,35 +1462,35 @@ U0 OrgMenu(I64 org_octave,I64 org_waveform)
 {
   LtfBottom;
   LtfClear;
-  PutS("$BD,WHITE$$FD,GREEN$$FU,GREEN$$FM,GREEN$$CM,0,12$\r\n");
-  PutGrSprite(__BIN_25);
+  "$BD,WHITE$$FD,GREEN$$FU,GREEN$$FM,GREEN$$CM,0,12$\r\n";
+  PutSprite(__BIN_25);
   CrLf(5);
 
   DrawDC2;
 
-  PutS("$FG,LTGREEN$<SPACE BAR>$FG$\tRest\r\n"
-	"$FG,LTGREEN$<BACKSPACE>$FG$\tDeletes Last Note\r\n"
-	"$FG,LTGREEN$Left Mouse$FG$\tDrag note or shift word\r\n"
-	"$FG,LTGREEN$Right Mouse$FG$\tChange duration or set word\r\n");
+  "$FG,LTGREEN$<SPACE BAR>$FG$\tRest\r\n"
+  "$FG,LTGREEN$<BACKSPACE>$FG$\tDeletes Last Note\r\n"
+  "$FG,LTGREEN$Left Mouse$FG$\tDrag note or shift word\r\n"
+  "$FG,LTGREEN$Right Mouse$FG$\tChange duration or set word\r\n";
  
-PutGrSprite(__BIN_6,__BIN_6_SIZE,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL
-|SC_CURSOR_LEFT);\",%d$");
-  PutS("   ");
+PutSprite(__BIN_6,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_LEFT
+);\",%d$");
+  "   ";
   if (oc.playing)
-    PutGrSprite(__BIN_9,__BIN_9_SIZE,"$PI+LM,\"\",\"x\",%d$");
+    PutSprite(__BIN_9,"$PI+LM,\"\",\"x\",%d$");
   else
-    PutGrSprite(__BIN_8,__BIN_8_SIZE,"$PI+LM,\"\",\"x\",%d$");
-  PutS("   ");
+    PutSprite(__BIN_8,"$PI+LM,\"\",\"x\",%d$");
+  "   ";
   if (oc.record_entry->checked) {
     oc.record_entry->checked=TRUE;
-    PutGrSprite(__BIN_10,__BIN_10_SIZE,"$PI+LM,\"\",\"z\",%d$");
+    PutSprite(__BIN_10,"$PI+LM,\"\",\"z\",%d$");
   } else
-    PutGrSprite(__BIN_11,__BIN_11_SIZE,"$PI+LM,\"\",\"z\",%d$");
-  PutS("   ");
+    PutSprite(__BIN_11,"$PI+LM,\"\",\"z\",%d$");
+  "   ";
  
-PutGrSprite(__BIN_7,__BIN_7_SIZE,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL
-|SC_CURSOR_RIGHT);\",%d$");
-  PutS("$CM+LX,0,6$");
+PutSprite(__BIN_7,"$PI+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_RIGH
+T);\",%d$");
+  "$CM+LX,0,6$";
   OrgSetOctave(org_octave);
   OrgSetWaveform(org_waveform);
   WinSync(TRUE);
@@ -1534,7 +1515,7 @@ U0 OrgPopMode()
 U0 MusicOrgan(U8 *dirname=NULL)
 {
   BoolI8 is_note,was_playing;
-  U64 p1,p2,ch,sc,msg_code=0,note_down_time,col;
+  U64 p1,p2,ch,sc,msg_code=0,col;
   U64
 note=0,octave=0,accent=0,org_waveform=WF_SQUARE,org_octave=3,timeout_val,timeo
 ut_val2;
@@ -1543,7 +1524,7 @@ ut_val2;
   TaskStruct *play_task=Spawn(&OrgPlayTask,NULL,"Organ Play",Fs);
   OrgNote *tempo;
   U64 old_ltf_flags;
-  F64 d;
+  F64 d,evt_time=tP,note_down_time=tP;
   Ctrl *c=TempoNew;
 
   if (LtfCur) old_ltf_flags=LtfCur->flags;
@@ -1577,9 +1558,9 @@ ut_val2;
   "  Exit(,CH_ESC);"
   "}"
   "Edit {"
-  "  Cut(,0,0x3D300000253);"
-  "  Copy(,0,0x4D200000452);"
-  "  Paste(,0,0x2D200000252);"
+  "  Cut(,CH_CTRLX);"
+  "  Copy(,CH_CTRLC);"
+  "  Paste(,CH_CTRLV);"
   "  RightMenu(,CH_CR);"
   "  BackSpace(,CH_BACKSPACE);"
   "  DeleteNote(,,SC_DELETE);"
@@ -1658,12 +1639,12 @@ got_msg:
 	  OrgPopMode;
 	  switch (p1) {
 	    case ORGF_CD:
-	      Free(filename);
-	      filename=NULL;
 	      st2=dirname;
-	      if (dirname=PopUpPickDir)
+	      if (dirname=PopUpPickDir) {
 		Free(st2);
-	      else
+		Free(filename);
+		filename=NULL;
+	      } else
 		dirname=st2;
 	      break;
 	    case ORGF_INCOMPLETE:
@@ -1675,9 +1656,10 @@ got_msg:
 	  col=0;
 	  break;
 	case MSG_KEY_DOWN:
+	  evt_time=tP;
 	  ch=p1;
 	  sc=p2;
-	  if (ch>='0' && ch<='9') {
+	  if ('0'<=ch<='9') {
 	    org_octave=ch-'0';
 	    OrgMenu(org_octave,org_waveform);
 	    col=0;
@@ -1810,6 +1792,18 @@ got_msg:
 		OrgPushMode(org_octave,org_waveform);
 		is_note=FALSE;
 		break;
+	      case CH_CTRLC:
+		OrgCopyToClipboard;
+		is_note=FALSE;
+		break;
+	      case CH_CTRLV:
+		OrgPasteClipboard;
+		is_note=FALSE;
+		break;
+	      case CH_CTRLX:
+		OrgCutToClipboard;
+		is_note=FALSE;
+		break;
 	      case '.':
 		OrgMenu(org_octave,org_waveform);
 		col=0;
@@ -1859,7 +1853,7 @@ G_CMD);
 		    oc.cur_note=tempo;
 		    oc.screen_x+=tempo->x-0.33*GR_WIDTH;
 		    if (OrgHasWords(tempo->word))
-		      PutS(tempo->word);
+		      "" tempo->word;
 		    note=tempo->note;
 		    octave=tempo->octave;
 		    accent=tempo->accent;
@@ -1904,7 +1898,7 @@ G_CMD);
 		}
 		is_note=FALSE;
 		if (col) {
-		  PutChar(CH_BACKSPACE);
+		  '' CH_BACKSPACE;
 		  col--;
 		}
 		break;
@@ -1975,6 +1969,7 @@ G_CMD);
 	  }
 	  break;
 	case MSG_KEY_UP:
+	  evt_time=tP;
 	  f=0;
 	  break;
 	case MSG_IP_MOVE:
@@ -2009,14 +2004,12 @@ G_CMD);
 	    music_tempo=4.4*tempo_state.tempo/TEMPO_RANGE+0.5;
 	    music_stacatto_factor=0.88*tempo_state.stacatto/TEMPO_RANGE+0.12;
 
-	   
-tempo->duration=OrgCvtDuration(music_tempo*(kbd_evt_time-note_down_time)/time_
-stamp_freq);
+	    tempo->duration=OrgCvtDuration(music_tempo*(evt_time-note_down_time));
 	    OrgSetWidth(tempo);
 	    InsQue(tempo,oc.cur_note->last);
 	  }
 	  if (f) {
-	    note_down_time=kbd_evt_time;
+	    note_down_time=tP;
 	    tempo=CAlloc(sizeof(OrgNote));
 	    tempo->type=OT_NOTE;
 	    tempo->note=note;
@@ -2028,7 +2021,7 @@ stamp_freq);
 	  }
 	}
 	last_f=f;
-	PutS(st);
+	"" st;
 	col+=StrLen(st);
 	if (col>=Fs->win_width-1) {
 	  CrLf;
@@ -2048,6 +2041,6 @@ stamp_freq);
   SettingsPop;
   if (LtfCur) LtfCur->flags=LtfCur->flags&~LTFF_FORM|old_ltf_flags&LTFF_FORM;
   Free(dirname);
-  PutS("$CL$\r\n");
+  "$CL$\r\n";
   MenuPop;
 }

@@ -2,9 +2,9 @@
 
 LoseThos is a preemptive multitasking operating system.  However, you can 
 turn-off preemption on a task by task basis and the task will not yield ctrl 
-unless it volunteers with [C:/LT/OSMain/Scheduler.CPZ,378] Yield(),
+unless it volunteers with [C:/LT/OSMain/Scheduler.CPZ,373] Yield(),
 [C:/LT/OSMain/Misc1a.CPZ,289] Sleep() or a call to I/O which yields ctrl. 
- Use the [C:/LT/OSMain/Adam1b.HPZ,98] Preempt() cmd to turn on or off
+ Use the [C:/LT/OSMain/Adam1b.HPZ,94] Preempt() cmd to turn on or off
 preemption.  This is useful when you 
 have multiple tasks modifying data structures simultaneously.  Interrupts 
 still occur when preemption is off.   
@@ -12,7 +12,7 @@ still occur when preemption is off.
 **Preemption is turned-off by default when a task is
 [C:/LT/OSMain/Task1a.CPZ,230] Spawn()ed.**
 
-The time-slice rate is set by [C:/LT/OSMain/Adam1a.HPZ,454] JIFFY_FREQ.
+The time-slice rate is set by [C:/LT/OSMain/Adam1a.HPZ,455] JIFFY_FREQ.
 
 LoseThos does not remove tasks from "the queue" when they are waiting.  They 
 swap-in, check for whatever condition they are waiting for and
@@ -29,8 +29,8 @@ LoseThos has no task priority scheme.
 
 You can turn-on and off interrupts, in your user programs.  This is part of 
 the mission statement, giving complete freedom to programmers  Use
-[C:/LT/OSMain/Adam1b.HPZ,145] Cli() or 
-[C:/LT/OSMain/Adam1b.HPZ,146] Sti().  LoseThos currently doesn't use
+[C:/LT/OSMain/Adam1b.HPZ,141] Cli() or 
+[C:/LT/OSMain/Adam1b.HPZ,142] Sti().  LoseThos currently doesn't use
 interrupt besides the timer and 
 keyboard interrupt.  Since the interrupt flag is part of your task context
 and 

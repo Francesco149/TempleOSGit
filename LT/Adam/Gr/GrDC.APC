@@ -17,14 +17,14 @@ public U0 GrDCRst(GrDC *dc)
   dc->speedline_scale=0.04;
   GrIdentEqu(dc->r);
   dc->r_norm=gr_scale;
-  dc->flags&=~(BMF_SYMMETRY|BMF_TRANSFORMATION|BMF_JUST_MIRROR);
+  dc->flags&=~(DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR);
 }
 
 public GrDC *GrDCAlias(GrDC *dc,TaskStruct *task)
 {
   GrDC *result;
   if (!dc) return NULL;
-  if (dc->bm_signature!=BMS_SIGNATURE_VAL)
+  if (dc->dc_signature!=DCS_SIGNATURE_VAL)
     Dbg;
   result=MAlloc(sizeof(GrDC),task);
   MemCpy(result,dc,sizeof(GrDC));
@@ -32,7 +32,7 @@ public GrDC *GrDCAlias(GrDC *dc,TaskStruct *task)
   result->mem_task=task;
   result->r=MAlloc(16*sizeof(I64),task);
   GrDCRst(result);
-  result->flags|=BMF_ALIAS;
+  result->flags|=DCF_ALIAS;
   result->alias=dc;
   if (dc->mask) {
     result->mask=GrDCAlias(dc->mask,task);
@@ -57,12 +57,12 @@ public GrDC *GrDCNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 
   result->width_internal=(width+7)&~7;
   result->height=height;
   switch (type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       result->plane_size=(result->width_internal*result->height)>>3;
       if (!null_bitmap)
 	result->body=CAlloc(result->plane_size<<2,task);
       break;
-    case BMT_MONO:
+    case DCT_MONO:
       result->plane_size=(result->width_internal*result->height)>>3;
       if (!null_bitmap)
 	result->body=CAlloc(result->plane_size,task);
@@ -71,21 +71,21 @@ public GrDC *GrDCNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 
       throw(EXCEPT_GRAPHICS,1);
   }
   if (null_bitmap)
-    result->flags|=BMF_DONT_DRAW;
+    result->flags|=DCF_DONT_DRAW;
   result->r=MAlloc(16*sizeof(I64),task);
   GrDCRst(result);
-  result->bm_signature=BMS_SIGNATURE_VAL;
+  result->dc_signature=DCS_SIGNATURE_VAL;
   return result;
 }
 
 public U0 GrDCDel(GrDC *dc)
 {
   if (!dc) return;
-  if (dc->bm_signature!=BMS_SIGNATURE_VAL)
+  if (dc->dc_signature!=DCS_SIGNATURE_VAL)
     Dbg;
-  dc->bm_signature=0;
+  dc->dc_signature=0;
   Free(dc->r);
-  if (!(dc->flags & BMF_ALIAS))
+  if (!(dc->flags & DCF_ALIAS))
     Free(dc->body);
   Free(dc->depth_buf);
   GrDCDel(dc->mask);
@@ -117,7 +117,7 @@ public GrDC *GrDCCopy(GrDC *dc,TaskStruct *task=NULL)
 {
   GrDC *result;
   if (!dc) return NULL;
-  if (dc->bm_signature!=BMS_SIGNATURE_VAL)
+  if (dc->dc_signature!=DCS_SIGNATURE_VAL)
     Dbg;
   result=MAllocIdentical(dc,task);
   GrSetRotMat(result,MAllocIdentical(dc->r,task));
@@ -129,13 +129,13 @@ public GrDC *GrDCCopy(GrDC *dc,TaskStruct *task=NULL)
 
 /* GrBitMaps
 	The format of a stored bitmap includes a
-0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3452] GrDC.  The body
+0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3438] GrDC.  The body
 consists of bit planes like VGA except bits
-in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3435] BMT_MONO, there
-is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3434] BMT_COLOR4, there are
+in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3421] DCT_MONO, there
+is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3420] DCT_COLOR4, there are
 four bit-planes.
 
-If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3394] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3409] WHITE)
+If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3380] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3395] WHITE)
 you'll see the color of the planes is as follows:
 
 Plane 0: BLUE
@@ -150,7 +150,7 @@ a single pixel's val is spread-out in mem
 instead of residing in one location.  This
 was done because that is how VGA is stored.
 However, I made the order of the bits suitable
-for doing [C:/LT/OSMain/Adam1b.HPZ,62] Bts() or [C:/LT/OSMain/Adam1b.HPZ,63] Btr() operations instead of
+for doing [C:/LT/OSMain/Adam1b.HPZ,58] Bts() or [C:/LT/OSMain/Adam1b.HPZ,59] Btr() operations instead of
 how VGA stores them.
 
 
@@ -181,10 +181,10 @@ public U8 *GrDCSave(GrDC *b,U64 *size=NULL,BoolI8 compressed=TRUE)
   I64 i,j,old_flags=b->flags;
 
   nobound_switch (b->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       i=b->plane_size<<2;
       break;
-    case BMT_MONO:
+    case DCT_MONO:
       i=b->plane_size;
       break;
     default:
@@ -204,8 +204,8 @@ public U8 *GrDCSave(GrDC *b,U64 *size=NULL,BoolI8 compressed=TRUE)
       offset(GrDC.start_saved_area)+j);
 
   old_preempt=Preempt(OFF); //in case it is a screen bitmap
-  if (compressed) b->flags|=BMF_COMPRESSED;
-  b->flags&=BMF_COMPRESSED;
+  if (compressed) b->flags|=DCF_COMPRESSED;
+  b->flags&=DCF_COMPRESSED;
   MemCpy(result,&b->start_saved_area,
       offset(GrDC.end_saved_area)-
       offset(GrDC.start_saved_area));
@@ -239,17 +239,17 @@ public GrDC *GrDCLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
   ptr+=offset(GrDC.end_saved_area)-
       offset(GrDC.start_saved_area);
   nobound_switch (result->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       i=result->plane_size<<2;
       break;
-    case BMT_MONO:
+    case DCT_MONO:
       i=result->plane_size;
       break;
     default:
       throw(EXCEPT_GRAPHICS,3);
   }
-  if (result->flags&BMF_COMPRESSED) {
-    result->flags&=~BMF_COMPRESSED;
+  if (result->flags&DCF_COMPRESSED) {
+    result->flags&=~DCF_COMPRESSED;
     ac=ptr;
     result->body=ExpandBuf(ac,task);
     ptr+=ac->compressed_size;
@@ -262,7 +262,7 @@ public GrDC *GrDCLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
   result->r=GrIdent(task);
   result->r_norm.u32[1]=1;
   result->speedline_scale=0.04;
-  result->bm_signature=BMS_SIGNATURE_VAL;
+  result->dc_signature=DCS_SIGNATURE_VAL;
   if (size)
     *size=ptr-src;
   return result;
@@ -293,7 +293,7 @@ public GrDC *LGRRead(U8 *filename,TaskStruct *task=NULL)
 
 #help_index "Graphics/DCs;Graphics/Screen"
 
-public GrDC *GrCaptureScreen(TaskStruct *task=NULL)
+public GrDC *GrDCCaptureScreen(TaskStruct *task=NULL)
 {
   WinSync(TRUE);
   return GrDCCopy(gr_screen_image,task);
@@ -302,7 +302,7 @@ public GrDC *GrCaptureScreen(TaskStruct *task=NULL)
 public U64 LGRCaptureScreen(U8 *filename)
 { // LoseThos LGR File
   U64 size;
-  GrDC *dc=GrCaptureScreen;
+  GrDC *dc=GrDCCaptureScreen;
   size=LGRWrite(filename,dc);
   GrDCDel(dc);
   return size;
@@ -313,7 +313,7 @@ public U64 LGRCaptureScreen(U8 *filename)
 public U0 GrDCExtentsInit(GrDC *dc)
 {//See [::/LT/Demo/Graphics/Extents.CPZ] ::/LT/Demo/Graphics/Extents.CPZ
 //You should clear the record flag yourself
-  dc->flags|=BMF_RECORD_EXTENTS;
+  dc->flags|=DCF_RECORD_EXTENTS;
   dc->min_x=MAX_I64;
   dc->max_x=MIN_I64;
   dc->min_y=MAX_I64;

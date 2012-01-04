@@ -1,6 +1,6 @@
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\rCd(\"::/LT/Demo/Snd\");Dir;\r");
+"\rCd(\"::/LT/Demo/Snd\");Dir;\r";
 
 PopUpOk(
 "Now, we're going to add the ASCIIOrgan.CPZ\r\n"
@@ -105,8 +105,8 @@ PopUpOk(
 "Your personal menu is special and\r\n"
 "does not save on $FG,GREEN$<ESC>$FG$.\r\n");
 if (Fs->parent_task->popup_task) {
-  PutChar(CH_SHIFT_ESC);
+  '' CH_SHIFT_ESC;
   Sleep(100);
 }
-PutChar(CH_SHIFT_ESC);	//exit menu
+'' CH_SHIFT_ESC;	//exit menu
 

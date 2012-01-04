@@ -18,10 +18,10 @@ SnapStruct *SnapCur()
 {
   static SnapStruct s;
   BoolI8 old_preempt=Preempt(OFF);
-  if (sys_cur_focus_task && TaskValidate(sys_cur_focus_task) &&
-      sys_cur_focus_task->win_pixel_left<=ipx_presnap<=sys_cur_focus_task->win_pixel_right &&
-      sys_cur_focus_task->win_pixel_top <=ipy_presnap<=sys_cur_focus_task->win_pixel_bottom)
-    MemCpy(&s,&sys_cur_focus_task->snap,sizeof(SnapStruct));
+  if (sys_focus_task && TaskValidate(sys_focus_task) &&
+      sys_focus_task->win_pixel_left<=ipx_presnap<=sys_focus_task->win_pixel_right &&
+      sys_focus_task->win_pixel_top <=ipy_presnap<=sys_focus_task->win_pixel_bottom)
+    MemCpy(&s,&sys_focus_task->snap,sizeof(SnapStruct));
   else
     SetSnap(&s,1,1.0);
   Preempt(old_preempt);
@@ -34,24 +34,24 @@ U0 GetSnap(SnapStruct *_s)
   MemCpy(_s,s,sizeof(SnapStruct));
 }
 
-U0 IPVarsUpdate(I64 x,I64 y,I64 z)
+U0 IPVarsUpdate(I64 x,I64 y,I64 z,BoolI8 l,BoolI8 c,BoolI8 r)
 {
   SnapStruct s;
   GetSnap(&s);
   ipx_presnap=ToI64(ipx_scale*x)+ipx_offset;
   ipx=RoundI64(ipx_presnap,s.x);
-  if (sys_cur_focus_task)
-    ipx+=(sys_cur_focus_task->win_pixel_left+sys_cur_focus_task->win_scroll_x)%s.x;
+  if (sys_focus_task)
+    ipx+=(sys_focus_task->win_pixel_left+sys_focus_task->win_scroll_x)%s.x;
 
   ipy_presnap=ToI64(ipy_scale*y)+ipy_offset;
   ipy=RoundI64(ipy_presnap,s.y);
-  if (sys_cur_focus_task)
-    ipy+=(sys_cur_focus_task->win_pixel_top+sys_cur_focus_task->win_scroll_y)%s.y;
+  if (sys_focus_task)
+    ipy+=(sys_focus_task->win_pixel_top+sys_focus_task->win_scroll_y)%s.y;
 
   ipz_presnap=ToI64(ipz_scale*z)+ipz_offset;
   ipz=RoundI64(ipz_presnap,s.z);
-  if (sys_cur_focus_task)
-    ipz+=sys_cur_focus_task->win_scroll_y%s.z;
+  if (sys_focus_task)
+    ipz+=sys_focus_task->win_scroll_y%s.z;
 
   ipx=LimitI64(ipx,0,gr_width-1);
   ipy=LimitI64(ipy,0,gr_height-1);
@@ -66,12 +66,16 @@ U0 IPVarsUpdate(I64 x,I64 y,I64 z)
     ipty=text_rows-1;
     ipy=text_rows*FONT_HEIGHT-1;
   }
+  ip_lb=l;
+  ip_cb=c;
+  ip_rb=r;
+  LBEqu(&sys_cur_scan_code,SCf_IP_L_DOWN,ip_lb);
+  LBEqu(&sys_cur_scan_code,SCf_IP_R_DOWN,ip_rb);
 }
 
 U0 SetIP(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I64 c=MAX_I64)
 { //Note: Generates a message.
   BoolI8 old_preempt=Preempt(OFF);
-
   if (!(0<=x<gr_width))
     x=ipx;
   if (!(0<=y<gr_height))
@@ -89,7 +93,7 @@ U0 SetIP(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I
   x=(x-ipx_offset)/ipx_scale;
   y=(y-ipy_offset)/ipy_scale;
   z=(z-ipz_offset)/ipz_scale;
-  IPVarsUpdate(x,y,z);
+  IPVarsUpdate(x,y,z,l,c,r);
   switch (ip_dev) {
     case IP_MOUSE:
       SetMouseIP(x,y,z,l,c,r);
@@ -97,7 +101,6 @@ U0 SetIP(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I
   }
   Preempt(old_preempt);
 }
-
 
 U0 IPVarsInit()
 {

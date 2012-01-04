@@ -5,7 +5,7 @@ When an AutoFile runs, a child task is [C:/LT/OSMain/Task1a.CPZ,230]
 Spawn()ed which intercepts real user 
 input and generates fake input.  AutoFiles are C+ programs run by the child 
 who's stdout goes to the parent's input
-buffer.  [C:/LT/OSMain/TaskCmd.CPZ,214] Msg() can be included in an A
+buffer.  [C:/LT/OSMain/TaskCmd.CPZ,216] Msg() can be included in an A
 utoFile to send special keys or mouse cmds to the parent.  While an AutoFile 
 is running, the normal input gets diverted to the AutoFile task and can be 
 filtered and sent back to the parent task.  Unless you are driving functions 
@@ -14,12 +14,12 @@ toFile.
 
 See [::/LT/Demo/AutoFile/Demo1.AUZ] ::/LT/Demo/AutoFile/Demo1.AUZ.
 
-Note: [C:/LT/OSMain/TaskCmd.CPZ,353] Auto("") can be used if all you need is
+Note: [C:/LT/OSMain/TaskCmd.CPZ,355] Auto("") can be used if all you need is
 to send ASCII characters.  It 
-differs from [C:/LT/OSMain/TaskCmd.CPZ,383] AutoStr().  You'll probably use
-[C:/LT/OSMain/TaskCmd.CPZ,353] Auto() a lot and not
-[C:/LT/OSMain/TaskCmd.CPZ,383] AutoStr().  
-With [C:/LT/OSMain/TaskCmd.CPZ,353] Auto(), for example, you can place
+differs from [C:/LT/OSMain/TaskCmd.CPZ,385] AutoStr().  You'll probably use
+[C:/LT/OSMain/TaskCmd.CPZ,355] Auto() a lot and not
+[C:/LT/OSMain/TaskCmd.CPZ,385] AutoStr().  
+With [C:/LT/OSMain/TaskCmd.CPZ,355] Auto(), for example, you can place
 answers to the prompts for recompiling 
-the OSMain module during [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
+the OSMain module during [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
 

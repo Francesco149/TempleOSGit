@@ -13,13 +13,13 @@
 
 
 
-F64 t0=tJ;
+F64 t0=tM;
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   I64 i,x,y;
-  x=30+50*((tJ-t0)%3);
+  x=30+50*((tM-t0)%3);
   y=40;
   GrSpritePlot3(dc,x,y,0,__BIN_1);
   dc->color=YELLOW;
@@ -38,9 +38,9 @@ U0 Song()
 
   music_tempo=2.5;
   try {
-    PutS("$BG+H,LTCYAN$$FG+H,BLACK$");
+    "$BG+H,LTCYAN$$FG+H,BLACK$";
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       LtfClear;
       Play("3qBeB2GqG3DBeA2GqR3etGED",
 	  "Sees \0the \0 \0end \0from \0the \0start.\r\n\0 \0 \0 \0 \0 \0");

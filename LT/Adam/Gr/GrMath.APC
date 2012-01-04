@@ -319,7 +319,7 @@ public U0 GrSetRotMat(GrDC *dc,I64 *r)
 public U0 GrScalePenWidth(GrDC *dc)
 {
   I64 d;
-  if (dc->flags&BMF_TRANSFORMATION) {
+  if (dc->flags&DCF_TRANSFORMATION) {
     if (dc->pen_width) {
       d=dc->pen_width*dc->r_norm+0x80000000;
       dc->pen_width=d.u32[1];
@@ -397,7 +397,7 @@ public BoolI64 GrSetSymmetry3(GrDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2
   x=yy1*zz2-zz1*yy2;
   y=-xx1*zz2+zz1*xx2;
   z=xx1*yy2-yy1*xx2;
-  if (dc->flags & BMF_TRANSFORMATION) {
+  if (dc->flags & DCF_TRANSFORMATION) {
     r=dc->r;
     xx=x*r[0]+y*r[1]+z*r[2];
     yy=x*r[4]+y*r[5]+z*r[6];
@@ -410,7 +410,7 @@ public BoolI64 GrSetSymmetry3(GrDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2
     dc->sym.sny = d*y;
     dc->sym.snz = d*z;
   }
-  if (dc->flags & BMF_TRANSFORMATION)
+  if (dc->flags & DCF_TRANSFORMATION)
     (*dc->transform)(dc,&x1,&y1,&z1);
   dc->sym.sx=x1;
   dc->sym.sy=y1;

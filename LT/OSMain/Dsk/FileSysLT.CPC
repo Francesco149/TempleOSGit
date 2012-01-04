@@ -213,7 +213,7 @@ BoolI64 LTFSFileFind(LTPrt *p,U64 cur_dir_cluster,U8 *name,LTDirEntry *result,
 	!StrCmp(dname,ptr->name)) {
 	  MemCpy(&result->attr,&ptr->attr,LT_DIR_ENTRY_SIZE);
 	  res=TRUE;
-	  	goto exit_this;
+		goto exit_this;
 	}
 	ptr><(U8 *)+=LT_DIR_ENTRY_SIZE;
       }
@@ -301,8 +301,7 @@ BoolI64 LTFSCd(U8 *name,U64 cur_dir_cluster)
 			name,&de,TRUE,FALSE))
       return TRUE;
     else {
-      PutS(name);
-      Spaces;
+      "%s ",name;
       PutDefineErr("ST_FILE_NOT_FOUND");
     }
   }
@@ -554,7 +553,7 @@ BoolI64 LTFSFilesDel(LTPrt *p,U8 *cur_dir,U8 *files_find_mask,U64 fuf_flags,
 	  FilesFindMatch(files_find_mask,ptr->name,fuf_flags)) {
 	if (print_msg) {
 	  PutDefine("ST_DELETE");
-	  PutS(ptr->name);
+	  "" ptr->name;
 	  CrLf;
 	}
 	ptr->attr|=LT_ATTR_DELETED;

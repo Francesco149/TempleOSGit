@@ -4,7 +4,7 @@ asm {
 USE16
 //See [::/LT/Doc/MultiCore.TXZ] LoseThos MultiCore.
 
-//This code gets copied to [C:/LT/OSMain/Adam1a.HPZ,420] MP_VECT_ADDR.
+//This code gets copied to [C:/LT/OSMain/Adam1a.HPZ,421] MP_VECT_ADDR.
 //See [::/LT/OSMain/MultiProc.CPZ,MemCpy(mp:2] MemCpy(MP_VECT_ADDR.
 SYS_MP_INIT_START::
 	JMP	MP2_START2
@@ -44,9 +44,9 @@ MP_INIT_OS:
 	BTS	U32 [SYS_MP_CNT_LOCK],0
 	JC	@@05
 
-	MOV	ESI,U32 [SYS_MP_INIT_CNT]
+	MOV	ESI,U32 [SYS_MP_CNT_INITIAL]
 	LOCK
-	INC	U32 [SYS_MP_INIT_CNT]
+	INC	U32 [SYS_MP_CNT_INITIAL]
 	LOCK
 	BTR	U32 [SYS_MP_CNT_LOCK],0
 
@@ -140,7 +140,7 @@ CPUStruct *CPUStructInit(U64 num,CPUStruct *c)
   c->idle_factor=0.01;
   MPCmdCtrlInit(&c->cmd_ctrl);
   if (num)
-    c->idle_task=Spawn(0,NULL,"Idle Task",Fs,NULL,IDLE_STK,0);
+    c->idle_task=Spawn(0,NULL,"Idle Task",Fs,,0);
   else
     c->timer_irq_chain=&IntSimpleTimer;
   return c;
@@ -166,8 +166,8 @@ U0 MPInt(U8 num,I64 cpu_num=1)
 
 U0 IntEOI()
 {
-  U32 *dd=LAPIC_EOI;
-  *dd=0;
+  U32 *_d=LAPIC_EOI;
+  *_d=0;
 }
 
 U0 MPIntAll(U8 num)
@@ -215,7 +215,7 @@ U0 MPWake(U64 target_cpu_mask)
 U0 MPAPICInit()
 { //Called by adam during start-up
   //and other cores during initialization
-  //after [C:/LT/OSMain/MultiProc.CPZ,422] MPStart().
+  //after [C:/LT/OSMain/MultiProc.CPZ,414] MPStart().
   U32 *d;
 
   d=LAPIC_SVR;
@@ -299,12 +299,7 @@ U0 MPSethServerTask()
     if (my_ctrl->next_waiting==my_ctrl &&
 	mp_ctrl->next_waiting==mp_ctrl) {
       LBts(&Gs->cpu_flags,CPUf_SETH_SLEEP);
-#exe {
-  if (osmain_cfg->opts[CFG_FAST_MP])
-    StreamPutS("Yield;");
-  else
-    StreamPutS("Sleep(20);"); //We don't want this too long because of need for [C:/LT/OSMain/Task1a.CPZ,484] TaskFinishOffDying().
-};
+      Sleep(20); //We don't want this too long because of need for [C:/LT/OSMain/Task1a.CPZ,561] TaskFinishOffDying().
       LBtr(&Gs->cpu_flags,CPUf_SETH_SLEEP);
     }
   }
@@ -341,10 +336,7 @@ MPCmdStruct *MPQueueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
   InsQue(tempm,ctrl->last_waiting);
   LBtr(&ctrl->flags,MPCCf_LOCKED);
   PopFD;
-#exe {
-  if (!osmain_cfg->opts[CFG_FAST_MP])
-    StreamPutS("MPWake(target_cpu_mask);");
-};
+  MPWake(target_cpu_mask);
   return tempm;
 }
 
@@ -399,7 +391,7 @@ TaskStruct *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 targe
 }
 
 U0 MPCPUTaskInit()
-{ //Called by multicore's seth task after [C:/LT/OSMain/MultiProc.CPZ,422] MPStart()
+{ //Called by multicore's seth task after [C:/LT/OSMain/MultiProc.CPZ,414] MPStart()
   //as the first thing a CPU does before waiting for jobs
   MPAPICInit;
   Fs->rip=&MPSethServerTask;
@@ -452,15 +444,13 @@ U0 MPStart()
   MemSet(&cpu_structs[1],0,sizeof(CPUStruct)*(MP_MAX_PROCESSORS-1));
 
 //When you start-up other cores, they jump to an addr
-//specified by a byte vect number, [C:/LT/OSMain/Adam1a.HPZ,419] MPN_VECT which corresponds
-//to a location 4096*vect number, [C:/LT/OSMain/Adam1a.HPZ,420] MP_VECT_ADDR.	I use vect 0x0F.
-//This copies the start-up code downto 0x0F000.
-//OSMain is at 0x10000, so it's safe.
+//specified by a byte vect number, [C:/LT/OSMain/Adam1a.HPZ,420] MPN_VECT which corresponds
+//to a location 4096*vect number, [C:/LT/OSMain/Adam1a.HPZ,421] MP_VECT_ADDR.
   MemCpy(mp,SYS_MP_INIT_START,SYS_MP_INIT_END-SYS_MP_INIT_START);
 
 #assert offset(MPMainStruct.sys_temp_ptr)==MP_SYS_TEMP_PTR
   mp->sys_temp_ptr=MAXGDT*16-1+sys_gdttab><(U8 *)<<16;
-  mp_init_cnt=mp_cnt=1;
+  mp_cnt_initial=mp_cnt=1;
   mp_cnt_lock=0;
 
   d=LAPIC_LVT_ERR;
@@ -478,7 +468,7 @@ U0 MPStart()
   BusyWait(100000);
   for (i=0;i<10000;i++)
     LBts(&mp_cnt_lock,0); //Don't let more through
-  my_mp_cnt=mp_init_cnt;
+  my_mp_cnt=mp_cnt_initial;
 
   if (my_mp_cnt>MP_MAX_PROCESSORS)
     my_mp_cnt=MP_MAX_PROCESSORS;
@@ -488,9 +478,9 @@ U0 MPStart()
     //SPrintF not available yet.
     StrCpy(buf,"Seth Task CPU#0");
     buf[14]+=i;
-    task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,NULL,SETH_STK,0);
+    task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/LT/OSMain/Adam1a.HPZ,3087] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/LT/OSMain/Adam1a.HPZ,3074] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_queue_signature=TASK_IN_QUEUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TssNew(i);
@@ -515,7 +505,7 @@ U0 MPInit()
   CPUStruct *c;
   CpuId(0x1,&ee);
 
-  mp_init_cnt=mp_cnt=1;
+  mp_cnt_initial=mp_cnt=1;
   mp_cnt_lock=0;
 
   mp_ctrl=AMAlloc(sizeof(MPCmdCtrl));
@@ -534,7 +524,7 @@ U0 MPInit()
   c->seth_task=adam_task;
   c->tss=TssNew(0);
 
-  c->idle_task=Spawn(0,NULL,"Idle Task",Fs,NULL,IDLE_STK,0);
+  c->idle_task=Spawn(0,NULL,"Idle Task",Fs,,0);
   if (Bt(&ee.rdx,9)) {
 //Unnecessary?
 //    SetMSR(IA32_LAPIC_BASE,LAPIC_BASE+0x900);
@@ -549,10 +539,6 @@ U0 MPCrash()
   mp_cnt=1;
   Raw(ON);
   sys_raw_dc_flags|=RDCF_SHOW_DOLLAR;
-  PutS("MP Crash CPU#");
-  PutHex(mp_crash->cpu_num,2);
-  PutS(" Task:");
-  PutHex(mp_crash->task,8);
-  CrLf;
+  "MP Crash CPU#%02X Task:%08X\r\n",mp_crash->cpu_num,mp_crash->task;
   Dbg(mp_crash->msg,mp_crash->msg_num);
 }

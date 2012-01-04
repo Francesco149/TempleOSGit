@@ -31,39 +31,39 @@ U0 LtfTablesInit()
   //Don't forget [::/LT/Compiler/Lex.CPZ,ltf_stop_btypes] ltf_stop_btypes
 
   ltf_nontag_invisible_types[0]=
-  	1<<LTFT_PAGE_LEN|
-  	1<<LTFT_LEFT_MARGIN|
-  	1<<LTFT_RIGHT_MARGIN|
-  	1<<LTFT_HEADER|
-  	1<<LTFT_FOOTER|
-  	1<<LTFT_INDENT|
-  	1<<LTFT_FOREGROUND|
-  	1<<LTFT_BACKGROUND|
-  	1<<LTFT_DFT_FOREGROUND|
-  	1<<LTFT_DFT_BACKGROUND|
-  	1<<LTFT_ALT_FOREGROUND|
-  	1<<LTFT_LINK_FOREGROUND|
- 	1<<LTFT_MACRO_FOREGROUND|
-  	1<<LTFT_ANCHOR_FOREGROUND|
-  	1<<LTFT_HIDDEN_FOREGROUND|
-  	1<<LTFT_TREE_FOREGROUND|
-  	1<<LTFT_USER_FOREGROUND|
-  	1<<LTFT_BINARY_FOREGROUND|
-  	1<<LTFT_KEYWORD_FOREGROUND|
-  	1<<LTFT_KEYWORD2_FOREGROUND|
-  	1<<LTFT_COMMENT_FOREGROUND|
-  	1<<LTFT_QUOTE_FOREGROUND|
-  	1<<LTFT_WORD_WRAP|
-  	1<<LTFT_UNDERLINE|
-  	1<<LTFT_INVERT|
-  	1<<LTFT_BLINK|
-  	1<<LTFT_SHIFTED_X|
-  	1<<LTFT_SHIFTED_Y|
-  	1<<LTFT_PICTURE|
-  	1<<LTFT_BPT|
-  	1<<LTFT_HIGHLIGHT|
-  	1<<LTFT_LOCK_TO_PAGE|
-  	1<<LTFT_LOCK_TO_CENTER;
+	1<<LTFT_PAGE_LEN|
+	1<<LTFT_LEFT_MARGIN|
+	1<<LTFT_RIGHT_MARGIN|
+	1<<LTFT_HEADER|
+	1<<LTFT_FOOTER|
+	1<<LTFT_INDENT|
+	1<<LTFT_FOREGROUND|
+	1<<LTFT_BACKGROUND|
+	1<<LTFT_DFT_FOREGROUND|
+	1<<LTFT_DFT_BACKGROUND|
+	1<<LTFT_ALT_FOREGROUND|
+	1<<LTFT_LINK_FOREGROUND|
+	1<<LTFT_MACRO_FOREGROUND|
+	1<<LTFT_ANCHOR_FOREGROUND|
+	1<<LTFT_HIDDEN_FOREGROUND|
+	1<<LTFT_TREE_FOREGROUND|
+	1<<LTFT_USER_FOREGROUND|
+	1<<LTFT_BINARY_FOREGROUND|
+	1<<LTFT_KEYWORD_FOREGROUND|
+	1<<LTFT_KEYWORD2_FOREGROUND|
+	1<<LTFT_COMMENT_FOREGROUND|
+	1<<LTFT_QUOTE_FOREGROUND|
+	1<<LTFT_WORD_WRAP|
+	1<<LTFT_UNDERLINE|
+	1<<LTFT_INVERT|
+	1<<LTFT_BLINK|
+	1<<LTFT_SHIFTED_X|
+	1<<LTFT_SHIFTED_Y|
+	1<<LTFT_PICTURE|
+	1<<LTFT_BPT|
+	1<<LTFT_HIGHLIGHT|
+	1<<LTFT_LOCK_TO_PAGE|
+	1<<LTFT_LOCK_TO_CENTER;
 
   ltf_form_types[0]=ltf_tag_types[0]&~(1<<LTFT_TEXT)|1<<LTFT_HEX_ED;
 
@@ -120,7 +120,7 @@ public BoolI64 LtfUnlock(Ltf *l)
 }
 
 
-LtfBinEntry *LtfFindBin(Ltf *l,U64 num)
+LtfBinEntry *LtfBinFind(Ltf *l,U64 num)
 {
   LtfBinEntry *b=l->bin_root.next;
   while (b!=&l->bin_root) {
@@ -145,7 +145,7 @@ U0 LtfBinsValidate(Ltf *l)
   while (cl!=l) {
     cl2=cl->next;
     if (cl->flags & LTFLF_HAS_BIN) {
-      if (cl->bin_data=LtfFindBin(l,cl->bin_num)) {
+      if (cl->bin_data=LtfBinFind(l,cl->bin_num)) {
 	if (!cl->bin_data->use_cnt++)
 	  cl->bin_data->renum_num=++renum_num;
 	cl->bin_num=cl->bin_data->renum_num;
@@ -175,7 +175,7 @@ U0 LtfBinsValidate(Ltf *l)
 }
 
 
-U0 LtfDelBin(Ltf *l,LtfBinEntry *b)
+U0 LtfBinDel(Ltf *l,LtfBinEntry *b)
 {
   if (l && b && b->use_cnt) {
     b->use_cnt--;
@@ -185,13 +185,13 @@ U0 LtfDelBin(Ltf *l,LtfBinEntry *b)
       Free(b);
     }
   } else
-    DbgStr("LtfDelBin",3000);
+    DbgStr("LtfBinDel",3000);
 }
 
-public U0 LtfDelEntry(Ltf *l,LtfEntry *cl)
+public U0 LtfEntryDel(Ltf *l,LtfEntry *cl)
 {
   if (!l || l==cl)
-    DbgStr("LtfDelEntry",3000);
+    DbgStr("LtfEntryDel",3000);
   else {
     if (l->cur_entry==cl)
       l->cur_entry=cl->next;
@@ -209,12 +209,12 @@ public U0 LtfDelEntry(Ltf *l,LtfEntry *cl)
     if (cl->flags & LTFLF_HTML_LINK)
       Free(cl->html_link);
     if (cl->flags & LTFLF_HAS_BIN)
-      LtfDelBin(l,cl->bin_data);
+      LtfBinDel(l,cl->bin_data);
     Free(cl);
   }
 }
 
-public U64 LtfSizeEntry(Ltf *l,LtfEntry *cl)
+public U64 LtfEntrySize(Ltf *l,LtfEntry *cl)
 {
   nounusedwarn l;
   U64 result=0;
@@ -235,14 +235,14 @@ public U64 LtfSizeEntry(Ltf *l,LtfEntry *cl)
   return result;
 }
 
-U0 LtfDelUndo(Ltf *l,LtfUndo *u)
+U0 LtfUndoDel(Ltf *l,LtfUndo *u)
 {
   nounusedwarn l;
   Free(u->body);
   Free(u);
 }
 
-U0 LtfSetUndoCnt(Ltf *l)
+U0 LtfUndoCntSet(Ltf *l)
 {
   BoolI8 unlock=LtfLock(l);
   LtfUndo *u=l->undo_root.next;
@@ -255,7 +255,7 @@ U0 LtfSetUndoCnt(Ltf *l)
     LtfUnlock(l);
 }
 
-public LtfEntry *LtfCopyEntry(Ltf *l,LtfEntry *cl)
+public LtfEntry *LtfEntryCopy(Ltf *l,LtfEntry *cl)
 {
   LtfEntry *nl;
   LtfBinEntry *tempb;
@@ -361,7 +361,7 @@ public U0 LtfHome(Ltf *l=NULL)
     LtfUnlock(l);
 }
 
-U0 LtfDelRemainingSettings(Ltf *l,LtfSettingsStruct *s)
+U0 LtfSettlingsRemainingDel(Ltf *l,LtfSettingsStruct *s)
 {
   LtfSettingsStruct *s1;
   if (!s) return;
@@ -373,21 +373,21 @@ U0 LtfDelRemainingSettings(Ltf *l,LtfSettingsStruct *s)
   }
 }
 
-LtfSettingsStruct *LtfIdenticalSettings(Ltf *l,LtfSettingsStruct *s1)
+LtfSettingsStruct *LtfSettingsIdentical(Ltf *l,LtfSettingsStruct *s1)
 {
   LtfSettingsStruct *s=MAlloc(sizeof(LtfSettingsStruct),l->mem_task);
   MemCpy(&s->start,&s1->start,sizeof(LtfSettingsStruct)-offset(LtfSettingsStruct.start));
   return s;
 }
 
-LtfSettingsStruct *LtfLastSettings(LtfEntry *cl)
+LtfSettingsStruct *LtfSettingsLast(LtfEntry *cl)
 {
   while (!cl->settings)
     cl=cl->last;
   return cl->settings;
 }
 
-LtfSettingsStruct *LtfNextSettings(LtfEntry *cl)
+LtfSettingsStruct *LtfSettingsNext(LtfEntry *cl)
 {
   while (!cl->settings)
     cl=cl->next;
@@ -410,14 +410,14 @@ public U0 LtfRst(Ltf *l,BoolI8 is_old)
     cl=l->root.next;
     while (cl!=l) {
       cl1=cl->next;
-      LtfDelEntry(l,cl);
+      LtfEntryDel(l,cl);
       cl=cl1;
     }
-    LtfDelRemainingSettings(l,l->settings_root.next);
+    LtfSettlingsRemainingDel(l,l->settings_root.next);
     u=l->undo_root.next;
     while (u!=&l->undo_root) {
       u8=u->next;
-      LtfDelUndo(l,u);
+      LtfUndoDel(l,u);
       u=u8;
     }
     l->project=NULL;
@@ -524,7 +524,7 @@ public U64 LtfSize(Ltf *l)
 
   cl=l->root.next;
   while (cl!=l) {
-    result+=LtfSizeEntry(l,cl);
+    result+=LtfEntrySize(l,cl);
     cl=cl->next;
   }
 
@@ -559,7 +559,7 @@ public U64 LtfSize(Ltf *l)
 }
 
 
-U0 LtfFmtData(LtfEntry *cl)
+U0 LtfDataFmt(LtfEntry *cl)
 {
   I64 i;
   U64 d;
@@ -594,7 +594,7 @@ U0 LtfFmtData(LtfEntry *cl)
   }
 }
 
-U0 LtfGetData(LtfEntry *cl)
+U0 LtfDataGet(LtfEntry *cl)
 {
   I64 i;
   U64 d;
@@ -654,7 +654,7 @@ U0 LtfRemSoftCRs(Ltf *l=NULL,LtfEntry *cl=NULL)
 	l->cur_entry=cl2;
 	l->cur_data_col=l->cur_entry->min_col;
       }
-      LtfDelEntry(l,cl);
+      LtfEntryDel(l,cl);
     } else if (saved_cl && cl->type_u8==LTFT_CR)
       break;
     cl=cl2;

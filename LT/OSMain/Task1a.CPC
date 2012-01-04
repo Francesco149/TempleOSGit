@@ -1,7 +1,7 @@
 /* Project: OSMain */
 U0 Exit()
 {
-  if (Fs==sys_cur_focus_task && IsInDbg) {
+  if (Fs==sys_focus_task && IsInDbg) {
     LBts(&Fs->task_flags,TASKf_KILL_AFTER_DBG);
     DbgExit;
   } else {
@@ -230,7 +230,6 @@ U64 TaskInit(TaskStruct *task,U64 stk_size)
 TaskStruct *Spawn(U0 (*fp_start_add)(U0 *data),U0 *data=NULL,
 	    U8 *task_name=NULL,
 	    TaskStruct *parent=NULL, //NULL means adam
-	    U8 *acct=NULL,
 	    U64 stk_size=0, //0=default
 	    U64 flags=SPAWNF_ADD_TO_QUEUE)
 {
@@ -257,10 +256,6 @@ TaskStruct *Spawn(U0 (*fp_start_add)(U0 *data),U0 *data=NULL,
   task->hash_table->next=parent->hash_table;
   MemCpy(task->task_title,task_name,TASK_TITLE_LEN+1);
   MemCpy(task->task_name,task_name,TASK_NAME_LEN+1);
-  if (acct)
-    task->acct=AcctFind(acct);
-  else
-    task->acct=task->parent_task->acct;
   PushFD;
   Cli;
   if (flags&SPAWNF_ADD_TO_QUEUE) {
@@ -312,6 +307,88 @@ U0 TaskLocalInit()
   Fs->win_top=13;
   Cd("HOME");
   CallExtNum(EXT_WIN_TO_TOP,Fs,Bt(&Fs->display_flags,DISPLAYf_SHOW));
+}
+
+I64 ExeCmdLine(LexStruct *lx)
+{
+  I64 result=0,i,type;
+  U8 *ptr,*ptr2,*ptr3;
+  U8 *code;
+  LtfEntry *cl;
+  Ltf *l;
+  while (lx->token &&
+    (lx->token!='}' || !(lx->flags & LF_EXE_BLK)) ) {
+    if (!Bt(&Fs->task_flags,TASKf_LOCK_TITLE)) {
+      ptr2=&Fs->task_title;
+      ptr3=ptr2+TASK_TITLE_LEN;
+      if (lx->cur_lfn->flags & LFSF_IS_LTF) {
+	cl=lx->cur_lfn->line_start;
+	l=lx->cur_lfn->l;
+	while (cl!=l && ptr2<ptr3) {
+	  switch (cl->type_u8 && ptr2<ptr3) {
+	    case LTFT_TEXT:
+	      ptr=cl->tag;
+	      while (*ptr && ptr2<ptr3)
+		*ptr2++=*ptr++;
+	      break;
+	    case LTFT_TAB:
+	    case LTFT_CR:
+	      *ptr2++='.';
+	      break;
+	  }
+	  cl=cl->next;
+	}
+      } else
+	if (ptr=lx->cur_lfn->line_start)
+	  MemCpy(ptr2,ptr,TASK_TITLE_LEN);
+    }
+    lx->flags&=~LF_HAS_MISC_DATA;
+    code=CmpStatement(lx,&type);
+    if (code!=INVALID_PTR) {
+      if (!(lx->flags&LF_JUST_LOAD)) {
+	result=Call(code);
+	for (i=2;i>=0;i--) {
+	  Fs->answers[i+1]=Fs->answers[i];
+	  Fs->answer_types[i+1]=Fs->answer_types[i];
+	}
+	Fs->answers[0]=result;
+	Fs->answer_types[0]=type;
+      }
+      if (!(lx->flags&LF_HAS_MISC_DATA))
+	Free(code);
+    }
+  }
+  if (lx->flags&LF_JUST_LOAD) {
+    if (lx->error_cnt)
+      return FALSE;
+    else
+      return TRUE;
+  } else
+    return result;
+}
+
+U0 UserTaskCont()
+{
+  LexStruct *lx;
+  Ltf *l;
+  BoolI8 cont=TRUE;
+  do {
+    lx=LexNew(NULL,LF_PROMPT,NULL);
+    InsQue(lx,Fs->last_lex);
+    try {
+      Lex(lx);
+      ExeCmdLine(lx);
+      cont=Bt(&lx->flags,Lf_PROMPT);
+      RemQue(lx);
+      LexDel(lx);
+    } catch {
+      l=Fs->last_ltf;
+      if (l!=(&Fs->next_ltf)><(U8 *)-offset(Ltf.next_ltf) &&
+	  l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL)
+	LtfUnlock(l);
+      CatchAll;
+    }
+  } while (cont);
 }
 
 U0 UserTaskInit()
@@ -447,10 +524,10 @@ U64 TaskEnd()
   if (IsRaw)
     LBts(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0);
 
-  if (sys_cur_focus_task==task) {
+  if (sys_focus_task==task) {
     if (!Gs->num)
       SingleUser(OFF);
-    sys_cur_focus_task=NULL;
+    sys_focus_task=NULL;
     if (fp_set_std_palette)
       (*fp_set_std_palette)();
   }
@@ -494,7 +571,7 @@ as another task with the same task record!
 
 A slight delay in freeing the task record
 is just a precaution, in case code somewhere
-doesn't use [C:/LT/OSMain/Adam1b.HPZ,98] Preempt(OFF) and could get burned
+doesn't use [C:/LT/OSMain/Adam1b.HPZ,94] Preempt(OFF) and could get burned
 by a task being reincarnated.
 */
   TaskStruct *task1,*task2;

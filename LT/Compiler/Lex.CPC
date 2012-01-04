@@ -6,17 +6,15 @@ U8 *CmpPmt(BoolI8 dbl_semicolon=FALSE)
 
   for (i=MinI64(3,Fs->answers_displayed-1);i>=0;i--) {
     if (Fs->answer_types[i]==IT_F64)
-      PrintF("ansf%d=%15.7g=%15e\r\n",i,
-	Fs->answers[i],Fs->answers[i]);
+      "ansf%d=%15.7g=%15e\r\n",i,Fs->answers[i],Fs->answers[i];
     else
-      PrintF("ans%d=0x%016X=%d\r\n",i,
-	Fs->answers[i],Fs->answers[i]);
+      "ans%d=0x%016X=%d\r\n",i,Fs->answers[i],Fs->answers[i];
   }
   if (st=CurDir) {
-    PutS(st);
+    "" st;
     Free(st);
   }
-  PutChar('>');
+  '>';
   st=MGetS(GETSF_SHIFT_ESC_EXIT);
   if (dbl_semicolon) {
     i=StrLen(st);
@@ -120,21 +118,23 @@ U0 SetSrcFileInfo(LexStruct *lx,SrcSymHashEntry *h)
 
 U0 LexPutToken(LexStruct *lx)
 {
-  PutChar('"');
+  '"';
   if (lx->token==TK_IDENT || lx->token==TK_STR)
-    PutS(lx->ident);
+    "" lx->ident;
   else if (lx->token==TK_INTEGER)
-    PrintF("INT:%X",lx->cur_i);
+    "INT:%X",lx->cur_i;
+  else if (lx->token==TK_U8)
+    "U8:%X",lx->cur_i;
   else if (lx->token==TK_F64)
-    PrintF("FLOAT:%e",lx->cur_f);
+    "FLOAT:%e",lx->cur_f;
   else if (lx->token==CH_CR)
-    PutS("<CR>");
+    "<CR>";
   else if (Bt(displayable_chars_bitmap,lx->token))
-    PutChar(lx->token);
+    '' lx->token;
   else {
-    PrintF("T:%X",lx->token);
+    "T:%X",lx->token;
   }
-  PutS("\" ");
+  "\" ";
 }
 
 U32 lex_zeros=0,lex_line_feed=0x000A;
@@ -224,14 +224,14 @@ U64 LexGetChar(LexStruct *lx)
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		tempf->line_num=cl->y+1;
 		if (lx->opts & OPTF_ECHO)
-		  PutChar(CH_TAB);
+		  '' CH_TAB;
 		lx->last_U16=CH_TAB;
 		return CH_TAB;
 	      case LTFT_PAGE_BREAK:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		tempf->line_num=cl->y+2;	//TODO: should be a page down
 		if (lx->opts & OPTF_ECHO)
-		  PutChar(CH_FORM_FEED);
+		  '' CH_FORM_FEED;
 		lx->last_U16=CH_FORM_FEED;
 		return CH_FORM_FEED;
 	      case LTFT_INSERT_BINARY:
@@ -357,7 +357,7 @@ U64 LexGetChar(LexStruct *lx)
 	}
       default:
 	if (lx->opts & OPTF_ECHO)
-	  PutChar(result);
+	  '' result;
 	if (result==CH_SHIFT_SPACE)
 	  return CH_SPACE;
 	else
@@ -693,12 +693,12 @@ I64 LexInStr(LexStruct *lx,
 	  while (TRUE) {
 	    ch=ToUpper(LexGetChar(lx));
 	    if (Bt(hex_numeric_bitmap,ch)) {
-    	      if (ch<='9')
-    		j=j<<4+ch-'0';
-    	      else
-    		j=j<<4+ch-'A'+10;
+	      if (ch<='9')
+		j=j<<4+ch-'0';
+	      else
+		j=j<<4+ch-'A'+10;
 	    } else
-    	      break;
+	      break;
 	  }
 	  buf[i++]=j;
 	  lx->flags|=LF_USE_LAST_U16;
@@ -709,9 +709,9 @@ I64 LexInStr(LexStruct *lx,
 	  while (TRUE) {
 	    ch=LexGetChar(lx);
 	    if ('0'<=ch<='1')
-    	      j=j<<1+ch-'0';
+	      j=j<<1+ch-'0';
 	    else
-    	      break;
+	      break;
 	  }
 	  buf[i++]=j;
 	  lx->flags|=LF_USE_LAST_U16;
@@ -726,7 +726,7 @@ lis_octal:
 	  while (TRUE) {
 	    ch=LexGetChar(lx);
 	    if ('0'<=ch<='7')
-    	      j=j<<3+ch-'0';
+	      j=j<<3+ch-'0';
 	    else
 	      break;
 	  }
@@ -1059,7 +1059,7 @@ lex_octal:
 		ch=LexGetChar(lx);
 		k.u8[j]='$';
 		if (ch!='$')
-	 	  lx->flags|=LF_USE_LAST_U16;
+		  lx->flags|=LF_USE_LAST_U16;
 	      } else
 		k.u8[j]=ch;
 	      if (!(ch=LexGetChar(lx)) || ch=='\'')
@@ -1067,14 +1067,14 @@ lex_octal:
 	    }
 	}
 	lx->cur_i=k;
-	lx->token=TK_INTEGER;
+	lx->token=TK_U8;
 	goto lex_end;
       case '#':
 	if (lx->flags&LF_KEEP_NUM_SIGN) {
 	  lx->token=ch;
 	  goto lex_end;
 	}
-	if (Lex(lx)!=TK_IDENT) 	//skip '#'
+	if (Lex(lx)!=TK_IDENT)	//skip '#'
 	  goto lex_end;
 	if (!(temph=lx->hash_entry))
 	  goto lex_end;
@@ -1250,7 +1250,7 @@ lex_if:
 			break;
 		    }
 		  } else {
-	 	    lx->token=TK_EOF;
+		    lx->token=TK_EOF;
 		    goto lex_end;
 		  }
 		} while (j);
@@ -1452,7 +1452,7 @@ lex_dot_dot:
 	  if (LexGetChar(lx)=='.')
 	    lx->token=TK_DOT_DOT_DOT;
 	  else
- 	    lx->flags|=LF_USE_LAST_U16;
+	    lx->flags|=LF_USE_LAST_U16;
 	  goto lex_end;
 	}
 	lx->flags|=LF_USE_LAST_U16;
@@ -1554,7 +1554,7 @@ lex_check_comment:
 	      }
 	    }
 	  }
- 	  lx->flags|=LF_USE_LAST_U16;
+	  lx->flags|=LF_USE_LAST_U16;
 	  lx->token=ch;
 	  goto lex_end;
       }
@@ -1613,7 +1613,7 @@ U8 *LexPutLine(LexStruct *lx,U8 *start)
 	  ptr++;
 	break;
       }
-      PutChar(ch);
+      '' ch;
     }
     if (!ch) ptr--;
     CrLf;
@@ -1630,11 +1630,11 @@ I64 LexLineNum(LexStruct *lx)
 U0 LexPutLink(LexStruct *lx)
 {
   if (IsRaw)
-    PrintF("%s,%d ",lx->cur_lfn->name,lx->cur_lfn->line_num);
+    "%s,%d ",lx->cur_lfn->name,lx->cur_lfn->line_num;
   else {
     PutFileLink(lx->cur_lfn->name,lx->cur_lfn->line_num);
     AdamErr("%s,%d\r",lx->cur_lfn->name,lx->cur_lfn->line_num);
-    PutS(" ");
+    '' CH_SPACE;
   }
 }
 
@@ -1652,7 +1652,7 @@ U0 PutLexErr(LexStruct *lx,U8 *name,U8 *msg=NULL)
   if (!IsRaw)
     AdamErr("%S",name);
   if (msg) {
-    PutS(msg);
+    "" msg;
     if (!IsRaw)
       AdamErr("%s\r\n",msg);
   }
@@ -1674,11 +1674,11 @@ U0 PutLexFunWarn(LexStruct *lx,ClassStruct *fun_class,U8 *name,U8 *msg=NULL)
 {
   PrintFWarn("%S%s",name,msg);
   if (fun_class) {
-    PrintF("%S'%s'.\r\n","ST_IN_FUN",fun_class->str);
+    "%S'%s'.\r\n","ST_IN_FUN",fun_class->str;
     if (IsRaw)
-      PrintF("%s",fun_class->src_link);
+      "%s",fun_class->src_link;
     else {
-      PrintF("$LK-A,\"%s\"$",fun_class->src_link);
+      "$LK-A,\"%s\"$",fun_class->src_link;
       AdamErr("%s\r",fun_class->src_link);
     }
     CrLf;

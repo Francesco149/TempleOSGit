@@ -36,7 +36,7 @@ U0 Output(I32 *a,I64 n)
   I64 i;
   WinMax;
   for (i=0;i<n;i++) {
-    PrintF("%08X ",a[i]);
+    "%08X ",a[i];
     if (i&7==3)
       CrLf;
   }
@@ -102,9 +102,9 @@ U0 CompareSorts(I64 n)
 //    Output(a3,n);
   }
   CleanUp;
-  PrintF("Array N:%08X  Timings Sampled:%d\r\n",n,SAMPLES);
-  PrintF("Single Core Average Time:%9.5fs\r\n",t1/SAMPLES);
-  PrintF("Dual Core Average Time  :%9.5fs\r\n",t2/SAMPLES);
+  "Array N:%08X  Timings Sampled:%d\r\n",n,SAMPLES;
+  "Single Core Average Time:%9.5fs\r\n",t1/SAMPLES;
+  "Dual Core Average Time  :%9.5fs\r\n",t2/SAMPLES;
   CrLf;
 }
 

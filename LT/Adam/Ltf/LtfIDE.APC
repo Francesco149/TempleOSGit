@@ -81,7 +81,7 @@ U0 WatchLocals()
       LtfDblBufStart;
       if (l=LtfCur(dbg_task)) {
 	if (tempc=DbgFunFind(l,0)) {
-	  PutS("$WW,1$");
+	  "$WW,1$";
 	  rbp=task->rbp;
 	  ip=task->rip;
 	  while (TRUE) {
@@ -283,12 +283,12 @@ U0 IDEToggleBpt(Ltf *l)
 		if (ll->type_u8==LTFT_BPT) {
 		  l->cur_entry=ll->next;
 		  l->cur_data_col=l->cur_entry->min_col;
-		  LtfDelEntry(l,ll);
+		  LtfEntryDel(l,ll);
 		}
 	      }
 	      if (unlock)
 		LtfUnlock(l);
-	      LtfGoToLineNum(l,line);
+	      LtfLineNumGoTo(l,line);
 	      return;
 	    }
 	  }
@@ -315,7 +315,7 @@ U0 IDEClearAllBpts(Ltf *l)
 	l->cur_entry=ll->next;
 	l->cur_data_col=l->cur_entry->min_col;
       }
-      LtfDelEntry(l,ll);
+      LtfEntryDel(l,ll);
     }
     ll=ll2;
   }
@@ -355,7 +355,7 @@ U0 IDEStepOver(Ltf *l)
   line=IDERIPLineNum(l,task->rip);
   LBts(&task->task_flags,TASKf_DISABLE_BPTS);
   if (line>0) {
-    LtfGoToLineNum(l,line);
+    LtfLineNumGoTo(l,line);
     IDESetStepRange(l);
   } else {
     tempi->cur_line=NULL;
@@ -395,7 +395,7 @@ U0 IDEStepInto(Ltf *l)
   line=IDERIPLineNum(l,task->rip);
   LBts(&task->task_flags,TASKf_DISABLE_BPTS);
   if (line>0) {
-    LtfGoToLineNum(l,line);
+    LtfLineNumGoTo(l,line);
     IDESetStepRange(l);
   } else {
     tempi->cur_line=NULL;
@@ -441,14 +441,14 @@ U0 IDEEdTask(U64 dummy=0)
     while (tempb) {
       if (bpt_filename=SrcFileName(tempb->addr)) {
 	if (!StrCmp(rip_filename,bpt_filename)) {
-	  LtfGoToLineNum(l,SrcLineNum(tempb->addr));
+	  LtfLineNumGoTo(l,SrcLineNum(tempb->addr));
 	  LtfPutS(l,"$BP$");
 	}
 	Free(bpt_filename);
       }
       tempb=tempb->next;
     }
-    LtfGoToLineNum(l,SrcLineNum(rip));
+    LtfLineNumGoTo(l,SrcLineNum(rip));
     Free(rip_filename);
     StrCpy(ed_task->task_title,"Debug Task");
   }
@@ -511,7 +511,7 @@ U0 IDEResumeDbg()
 	    LBtr(&Fs->task_flags,TASKf_DISABLE_BPTS);
 	    LBtr(&Fs->rflags,RFLAGS_SINGLE_STEP);
 	  }
- 	  LBtr(&Fs->task_flags,TASKf_SUSPENDED);
+	  LBtr(&Fs->task_flags,TASKf_SUSPENDED);
 	}
 	break;
     }

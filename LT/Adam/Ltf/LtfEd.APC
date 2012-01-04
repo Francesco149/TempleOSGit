@@ -1,7 +1,7 @@
 #help_index "Ltf/Edit"
 #define ED_MENU_NAME "::/LT/Doc/Ed.TXZ"
 
-public LtfEntry *LtfFindAnchor(Ltf *l,U8 *pattern)
+public LtfEntry *LtfAnchorFind(Ltf *l,U8 *pattern)
 {
   BoolI8 unlock=LtfLock(l);
   LtfEntry *ll=l->root.next;
@@ -40,7 +40,7 @@ public I64 EdCurU8(Ltf *l)
 }
 
 public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
-{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
+{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1655] LtfRecalc().
 //See [C:/LT/Adam/Ltf/LtfMgdCode.APZ,149] EdRenumAsm for an example.
   U8 *dst;
   BoolI8 unlock=LtfLock(l);
@@ -148,7 +148,7 @@ public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
 }
 
 public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
-{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
+{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1655] LtfRecalc().
 //See [C:/LT/Adam/Ltf/LtfMgdCode.APZ,149] EdRenumAsm for an example.
   BoolI8 unlock=LtfLock(l);
   U8 *dst;
@@ -254,7 +254,7 @@ public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
 }
 
 public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
-{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
+{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1655] LtfRecalc().
 //See [C:/LT/Adam/Ltf/LtfMgdCode.APZ,149] EdRenumAsm for an example.
   BoolI8 unlock=LtfLock(l);
   U8 *dst;
@@ -331,7 +331,7 @@ public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
 	if (sc&SCF_SHIFT)
 	  cl->type|=LTFLT_SELECTED;
 	else
-  	  cl->type&=~LTFLT_SELECTED;
+	  cl->type&=~LTFLT_SELECTED;
       }
     } else {
       if (cl->next->x==x) {
@@ -398,7 +398,7 @@ public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
 }
 
 public U0 EdLineDown(Ltf *l,I64 sc=MIN_I64)
-{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfRecalc().
+{//You might need a call to [C:/LT/Adam/Ltf/LtfRecalc.APZ,1655] LtfRecalc().
 //See [C:/LT/Adam/Ltf/LtfMgdCode.APZ,149] EdRenumAsm for an example.
   BoolI8 unlock=LtfLock(l);
   U8 *dst;
@@ -558,7 +558,7 @@ U0 EdDelChar(Ltf *l)
   l->cur_entry=cl->next;
   l->cur_data_col=l->cur_entry->min_col;
   if (!(cl->flags&LTFLF_FILTER_SKIP))
-    LtfDelEntry(l,cl);
+    LtfEntryDel(l,cl);
   LtfRemSoftCRs(l,l->cur_entry);
   if (unlock)
     LtfUnlock(l);
@@ -673,10 +673,10 @@ ic_overstrike_char:
 	if (cl->flags & LTFLF_HAS_TERMINATOR) {
 	  if (cl->tag[l->cur_data_col] &&
 	     l->cur_data_col<cl->min_col+cl->len) {
-  	    cl->tag[l->cur_data_col++]=ch;
+	    cl->tag[l->cur_data_col++]=ch;
 	    if ( ! cl->tag[l->cur_data_col]) {
-  	      cl->tag[l->cur_data_col]='_';
-  	      cl->tag[l->cur_data_col+1]=0;
+	      cl->tag[l->cur_data_col]='_';
+	      cl->tag[l->cur_data_col+1]=0;
 	    }
 	  }
 	} else {
@@ -773,7 +773,7 @@ ic_done:
   LtfRemSoftCRs(l,l->cur_entry);
   if (l->cur_entry->flags & LTFLF_UPDATE_DATA) {
     if (l->cur_entry->type_u8==LTFT_DATA || l->cur_entry->type_u8==LTFT_CHECK_BOX)
-    LtfGetData(l->cur_entry);
+    LtfDataGet(l->cur_entry);
   }
   if (unlock)
     LtfUnlock(l);
@@ -792,7 +792,7 @@ U0 EdDelLine(Ltf *l)
   while (cl!=l && cl->y==y) {
     cl2=cl->last;
     if (!(cl->flags&LTFLF_FILTER_SKIP))
-      LtfDelEntry(l,cl);
+      LtfEntryDel(l,cl);
     cl=cl2;
   }
   if (cl==l)
@@ -1175,15 +1175,15 @@ I64 EdFindReplace(Ltf *l)
 	  src=SearchStr(src,l->find_replace->find_text,ss_flags);
 	  if (src) {
 	    l->cur_data_col=src-ll->tag;
-  	    l->cur_entry=ll;
+	    l->cur_entry=ll;
 	    l->recalc_start=l;
 	    if (cmd!=RSAC_ALL)
 	      LtfCenter(l);
-  	    ll=l->cur_entry;
+	    ll=l->cur_entry;
 	    src=l->cur_data_col+ll->tag;
 	    if (cmd!=RSAC_ALL) {
 	      LtfUnlock(l);
-  	      cmd=PopUpReplaceSkipAllCancel("");
+	      cmd=PopUpReplaceSkipAllCancel("");
 	      LtfLock(l);
 	      if (cmd<0)
 		goto fr_unlock_done;
@@ -1204,13 +1204,13 @@ I64 EdFindReplace(Ltf *l)
 	      Free(ll->tag);
 	      ll->tag=dst2;
 	      l->cur_data_col=src-ll->tag;
-  	      l->cur_entry=ll;
+	      l->cur_entry=ll;
 	      if (cmd!=RSAC_ALL) {
 		l->recalc_start=l;
 		LtfRemSoftCRs(l,l->cur_entry);
 		LtfRecalc(l);
 	      }
-  	      ll=l->cur_entry;
+	      ll=l->cur_entry;
 	      src=l->cur_data_col+ll->tag;
 	      result++;
 	    } else
@@ -1273,7 +1273,7 @@ public I64 EdReplace(Ltf *l,U8 *find,U8 *replace,
   return result;
 }
 
-public U0 LtfGoToLineNum(Ltf *l,I64 linenum) //one based
+public U0 LtfLineNumGoTo(Ltf *l,I64 linenum) //one based
 {
   l->x=0;
   l->y=linenum-1;
@@ -1291,7 +1291,7 @@ public U0 EdGoToLine(Ltf *l)
   EdGoToLineStruct gtl;
   gtl.line=1;
   if (LtfFormDo(&gtl,"EdGoToLineStruct"))
-    LtfGoToLineNum(l,gtl.line);
+    LtfLineNumGoTo(l,gtl.line);
 }
 
 U0 LtfEntryToggle(Ltf *l)
@@ -1316,9 +1316,9 @@ U0 LtfEntryToggle(Ltf *l)
 	    cl->tag=st;
 	    cl->max_col=i+j;
 	    l->cur_data_col+=i;
-	    LtfDelEntry(l,cl2);
+	    LtfEntryDel(l,cl2);
 	  } else if (cl2->type_u8==LTFT_SOFT_CR)
-	    LtfDelEntry(l,cl2);
+	    LtfEntryDel(l,cl2);
 	  else
 	    break;
 	  cl2=cl1;
@@ -1338,9 +1338,9 @@ U0 LtfEntryToggle(Ltf *l)
 	    Free(cl->tag);
 	    cl->tag=st;
 	    cl->max_col=i+j;
-	    LtfDelEntry(l,cl2);
+	    LtfEntryDel(l,cl2);
 	  } else if (cl2->type_u8==LTFT_SOFT_CR)
-	    LtfDelEntry(l,cl2);
+	    LtfEntryDel(l,cl2);
 	  else
 	    break;
 	  cl2=cl1;
@@ -1370,7 +1370,7 @@ U0 LtfEntryToggle(Ltf *l)
       }
     } else {
       st=Ltf2PlainText(l,cl);
-      LtfDelEntry(l,cl);
+      LtfEntryDel(l,cl);
       LtfPrintF(l,"$$%Q$$",st);
     }
     l->recalc_start=l;
@@ -1380,7 +1380,7 @@ U0 LtfEntryToggle(Ltf *l)
     LtfUnlock(l);
 }
 
-U0 LtfToggleFlags(Ltf *l,I64 tog_flags)
+U0 LtfFlagsToggle(Ltf *l,I64 tog_flags)
 {
   U64 size,start_text_attr=l->start_text_attr;
   BoolI8 unlock=LtfLock(l);
@@ -1398,7 +1398,7 @@ U0 LtfToggleFlags(Ltf *l,I64 tog_flags)
   l->menu_ltf=menu;
   l->undo_root.next=u_next;
   l->undo_root.last=u_last;
-  LtfSetUndoCnt(l);
+  LtfUndoCntSet(l);
   l->flags=flags & ~(LTF_BL_IV_UL|LTFF_WORD_WRAP);
   LtfLoad(l,st,size);
   LtfCenter(l);
@@ -1452,9 +1452,9 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	break;
       case CH_CTRLC:
 	if (sc&SCF_KEY_DESC)
-	  SetKeyDesc("Edit/Managed Code");
+	  SetKeyDesc("Edit/Copy to Clipboard");
 	else
-	  EdMgdCode(l);
+	  EdCopyToClipboard(l);
 	break;
       case CH_CTRLD:
 	if (sc&SCF_KEY_DESC)
@@ -1489,7 +1489,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	  if (sc&SCF_KEY_DESC)
 	    SetKeyDesc("Edit/Undo");
 	  else
-	    LtfRestoreUndo(l);
+	    LtfUndoRestore(l);
 	} else {
 	  if (sc&SCF_KEY_DESC)
 	    SetKeyDesc("Char/Back Space");
@@ -1555,7 +1555,11 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	    LtfPutS(l,"$ID,2$");
 	}
 	break;
-      case CH_CTRLO: //Unused, reserved
+      case CH_CTRLO:
+	if (sc&SCF_KEY_DESC)
+	  SetKeyDesc("Edit/Managed Code");
+	else
+	  EdMgdCode(l);
 	break;
       case CH_CTRLP:
 	if (l->flags & (LTFF_SUPERSCRIPT_MODE | LTFF_SUBSCRIPT_MODE)) {
@@ -1623,7 +1627,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	    SetKeyDesc("Edit/Toggle Plain Text Display");
 	  else
 	    if (!(l->flags&LTFF_FORM) || l->flags&(LTFF_PLAIN_TEXT|LTFF_PLAIN_TEXT_WITH_TABS))
-	      LtfToggleFlags(l,LTFF_PLAIN_TEXT);
+	      LtfFlagsToggle(l,LTFF_PLAIN_TEXT);
 	}
 	break;
       case CH_CTRLU:
@@ -1634,6 +1638,12 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	else
 	  LtfPutS(l,"$UL,1$");
 	break;
+      case CH_CTRLV:
+	if (sc&SCF_KEY_DESC)
+	  SetKeyDesc("Edit/Paste Clipboard");
+	else
+	  EdPasteClipboard(l);
+	break;
       case CH_CTRLW:
 	if (sc&SCF_KEY_DESC)
 	  SetKeyDesc("Dollar/Toggle Word Wrap");
@@ -1641,6 +1651,12 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	  LtfPutS(l,"$WW,0$");
 	else
 	  LtfPutS(l,"$WW,1$");
+	break;
+      case CH_CTRLX:
+	if (sc&SCF_KEY_DESC)
+	  SetKeyDesc("Edit/Cut To Clipboard");
+	else
+	  EdCutToClipboard(l);
 	break;
       case CH_CTRLY:
 	if (sc&SCF_KEY_DESC)
@@ -2001,7 +2017,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	  case SC_INSERT:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		SetKeyDesc("Edit/Insert Clipboard");
+		SetKeyDesc("Edit/Paste Clipboard");
 	      else if (sc&SCF_CTRL)
 		SetKeyDesc("Edit/Copy to Clipboard");
 	      else
@@ -2126,9 +2142,9 @@ public U0 LtfPutSPartial(Ltf *l,U8 *st)
 }
 
 #help_index "Ltf"
-Ltf *LtfEdFile(I64 type,U8 *filename,
+Ltf *LtfFileEd(I64 type,U8 *filename,
 	U8 *pattern,I64 num,BoolI8 bail)
-{ //"bail" is for [C:/LT/Adam/LinkChk.APZ,75] LinkChk()
+{ //"bail" is for [C:/LT/Adam/LinkChk.APZ,71] LinkChk()
   U8 *ptr;
   I64 i,j,flags=0;
   LtfEntry *ll;
@@ -2181,7 +2197,7 @@ Ltf *LtfEdFile(I64 type,U8 *filename,
 	LtfUpdateWinJoin(l,FALSE,FALSE,FALSE,TRUE);
 	break;
       case LK_FILE_ANCHOR:
-	if (!(ll=LtfFindAnchor(l,pattern)))
+	if (!(ll=LtfAnchorFind(l,pattern)))
 	  found=FALSE;
 	break;
       case LK_FILE_FIND:
@@ -2202,7 +2218,7 @@ Ltf *LtfEdFile(I64 type,U8 *filename,
 	      }
 	    }
 	  }
-  	  ll=ll->next;
+	  ll=ll->next;
 	}
 	break;
       case LK_BIBLE_FIND:

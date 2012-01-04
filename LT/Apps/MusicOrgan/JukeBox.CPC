@@ -108,7 +108,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
 	  if (FileOcc("\\0",tempm1->full_name,"")) {
 	    s->cur_entry=ll->next;
 	    s->cur_data_col=0;
-	    LtfDelEntry(s,ll);
+	    LtfEntryDel(s,ll);
 	    LtfPutS(s,"//0 has words\r\n");
 	    LtfWrite(s);
 	  }

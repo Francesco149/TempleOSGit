@@ -11,7 +11,7 @@ DefineListLoad("ST_NO_YES_LIST","No\0Yes\0");
 //New strings might be loaded for each user
 //to override.
 
-PutS("Spanish");
+"Spanish";
 if (YorN) {
   DefineLoad("ST_YES_NO","(Si or No)");
   DefineLoad("ST_EXIT","Salida");
@@ -25,7 +25,7 @@ BoolI64 Quit()
   U8 *st;
   I64 i;
   while (TRUE) {
-    PrintF("%S %S?","ST_EXIT","ST_YES_NO");
+    "%S %S?","ST_EXIT","ST_YES_NO";
     st=MGetS;
     i=DefineMatch(st,"ST_NO_YES_LIST",LEF_IGNORE_CASE);
     if (i>=0) {

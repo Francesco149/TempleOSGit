@@ -7,7 +7,7 @@
 #define SUN_X	240
 #define SUN_Y	40
 
-F64 t0=tJ;
+F64 t0=tM;
 
 
 
@@ -20,7 +20,7 @@ F64 t0=tJ;
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 theta=0,dt=(tJ-t0)*music_tempo;
+  F64 theta=0,dt=(tM-t0)*music_tempo;
   I64 x=100.0*Cos(dt*2*pi/8.0),y=30.0*Sin(-dt*2*pi/8.0);
 
   dc->color=BLACK;
@@ -43,7 +43,7 @@ U0 Song()
   music_tempo=2.5;
   try {
     while (!ScanKey) {
-      t0=tJ;
+      t0=tM;
       Play("3qBetARFqER2G3sBABA2etG3GFsC2G3C2G",
 	  "A \0hap\0 \0py \0God.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("3qBetARFqER2G3sBABA2etG3GFsC2G3C2G",

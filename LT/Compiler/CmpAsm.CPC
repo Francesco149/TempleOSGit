@@ -205,12 +205,12 @@ _PRSPOP2::
 	RET1	8
 // ************************************
 CMP_TEMPLATES::
-	DU32	@@05,@@10,@@15;
-	DU32	@@40,@@50,@@55,@@60;
-	DU32	@@65,@@70;
-	DU32	@@80,@@85,@@100,@@105;
-	DU32	@@110;
-	DU32	@@115;
+	DU32	@@05,@@10;
+	DU32	@@15,@@25,@@30,@@35;
+	DU32	@@40,@@45;
+	DU32	@@55,@@60,@@75,@@80;
+	DU32	@@85;
+	DU32	@@90;
 
 @@05:	//INC
 	PUSH	RAX
@@ -226,75 +226,23 @@ CMP_TEMPLATES::
 	FSTP	U64 [RSP]
 	POP	RAX
 
-@@15:	//POWER
-	OR	RAX,RAX	//To power of zero?
-	JNZ	@@20
-	MOV	RAX,1.0
-	JMP	@@35
-@@20:	OR	RDX,RDX	//zero to a power?
-	JNZ	@@25
-	XOR	RAX,RAX
-	JMP	@@35
-@@25:	MOV	RCX,RAX //RCX=pow
-	PUSH	RDX	//RDX=base
-	PUSH	RAX
-	PUSH	0
-	MOV	RBX,RSP
-
-	FSTCW	U16 [RBX]
-	MOV	AX,U16 [RBX]
-	MOV	U16 2[RBX],AX
-	OR	AX,0x0C00
-	MOV	U16 [RBX],AX
-	FLDCW	U16 [RBX]
-	FLD	U64 8[RBX]
-	FLD	U64 16[RBX]
-	FABS	//base should be pos
-	FYL2X	// y*log2(x)
-	FST	U64 16[RBX]
-	FRNDINT
-	FLD	U64 16[RBX]
-	FSUBRP	ST1,ST0
-	F2XM1
-	FLD1
-	FADDP	ST1,ST0
-	FSTP	U64 8[RBX]
-	FLD	U64 16[RBX]
-	FLD	U64 8[RBX]
-	FSCALE	// ST0<<ST1
-	OR	RDX,RDX //was base neg?
-	JGE	@@30
-	MOV	U64 8[RBX],RCX
-	FLD	U64 8[RBX]
-	FISTTP	U64 8[RBX]
-	TEST	U64 8[RBX],1
-	JZ	@@30	//was pow odd?
-	FCHS
-@@30:	FSTP	U64 16[RBX]
-	FFREE	ST0
-	FINCSTP
-	FLDCW	U16 2[RBX]
-	ADD	RSP,16
-	POP	RAX
-@@35:
-
-@@40:	//MOD
+@@15:	//MOD
 	PUSH	RDX
 	PUSH	RAX
 	MOV	RBX,RSP
 	FLD	U64 [RBX]
 	FLD	U64 8[RBX]
-@@45:	FPREM
+@@20:	FPREM
 	FSTSW
 	TEST	AX,0x400
-	JNZ	@@45
+	JNZ	@@20
 	FSTP	U64 [RBX]
 	FFREE	ST0
 	FINCSTP
 	POP	RAX
 	ADD	RSP,8
 
-@@50:	//LESS
+@@25:	//LESS
 	PUSH	RDX
 	PUSH	RAX
 	FLD	U64 [RSP]
@@ -306,7 +254,7 @@ CMP_TEMPLATES::
 	FINCSTP
 	ADD	RSP,16
 
-@@55:	//GREATER
+@@30:	//GREATER
 	PUSH	RDX
 	PUSH	RAX
 	FLD	U64 8[RSP]
@@ -318,7 +266,7 @@ CMP_TEMPLATES::
 	FINCSTP
 	ADD	RSP,16
 
-@@60:	//LESS_EQUAL
+@@35:	//LESS_EQUAL
 	PUSH	RDX
 	PUSH	RAX
 	FLD	U64 8[RSP]
@@ -330,7 +278,7 @@ CMP_TEMPLATES::
 	FINCSTP
 	ADD	RSP,16
 
-@@65:	//GREATER_EQUAL
+@@40:	//GREATER_EQUAL
 	PUSH	RDX
 	PUSH	RAX
 	FLD	U64 [RSP]
@@ -342,44 +290,44 @@ CMP_TEMPLATES::
 	FINCSTP
 	ADD	RSP,16
 
-@@70: //StrLen
+@@45: //StrLen
 	MOV	RDX,RAX
-@@75:	MOV	BL,U8 [RAX]
+@@50:	MOV	BL,U8 [RAX]
 	INC	RAX
 	OR	BL,BL
-	JNZ	@@75
+	JNZ	@@50
 	SUB	RAX,RDX
 	DEC	RAX
 
-@@80: //RDTSC
+@@55: //RDTSC
 	RDTSC
 	SHL	RDX,32
 	ADD	RAX,RDX
 
-@@85: //SignI64
+@@60: //SignI64
 	OR	RAX,RAX
-	JZ	@@95
-	JS	@@90
+	JZ	@@70
+	JS	@@65
 	MOV	RAX,1
-	JMP	@@95
-@@90:	MOV	RAX,-1
-@@95:
-@@100:
-@@105:
-@@110:
+	JMP	@@70
+@@65:	MOV	RAX,-1
+@@70:
+@@75:
+@@80:
+@@85:
 	XOR	RAX,RAX
 	MOV	EAX,HPET_MAIN_CNT
 	MOV	RAX,U64 [RAX]
-@@115:
+@@90:
 
 // ************************************
 CMP_TEMPLATES_DONT_POP::
-	DU32	@@05,@@10,@@15;
-	DU32	@@20,@@25,@@30,@@35;
-	DU32	@@40,@@45;
-	DU32	@@50,@@55,@@60,@@65;
+	DU32	@@05,@@10;
+	DU32	@@15,@@20,@@25,@@30;
+	DU32	@@35,@@40;
+	DU32	@@45,@@50,@@55,@@60;
+	DU32	@@65;
 	DU32	@@70;
-	DU32	@@75;
 
 @@05:	//INC
 	PUSH	RAX
@@ -398,7 +346,6 @@ CMP_TEMPLATES_DONT_POP::
 @@15:
 
 @@20:
-
 @@25:
 @@30:
 @@35:
@@ -407,21 +354,20 @@ CMP_TEMPLATES_DONT_POP::
 @@50:
 @@55:
 @@60:
-@@65:
 	PUSH	RAX
 	FLD	U64 [RSP]
 	ADD	RSP,8
+@@65:
 @@70:
-@@75:
 
 // ************************************
 CMP_TEMPLATES_DONT_PUSH::
-	DU32	@@05,@@10,@@15;
-	DU32	@@20,@@25,@@35,@@40;
-	DU32	@@45,@@55;
-	DU32	@@60,@@65,@@70,@@75;
+	DU32	@@05,@@10;
+	DU32	@@15,@@20,@@30,@@35;
+	DU32	@@40,@@50;
+	DU32	@@55,@@60,@@65,@@70;
+	DU32	@@75;
 	DU32	@@80;
-	DU32	@@85;
 
 @@05:	//INC
 	SUB	RSP,8
@@ -438,9 +384,122 @@ CMP_TEMPLATES_DONT_PUSH::
 	POP	RAX
 
 @@15:
+@@20:	//LESS
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOMIP	ST0,ST1
+	MOV	RAX,0
+	JZ	@@25
+	MOV	RAX,1
+	SBB	RAX,0
+@@25:	FFREE	ST0
+	FINCSTP
+	ADD	RSP,8
+
+@@30:	//GREATER
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOMIP	ST0,ST1
+	MOV	RAX,0
+	ADC	RAX,0
+	FFREE	ST0
+	FINCSTP
+	ADD	RSP,8
+
+@@35:	//LESS_EQUAL
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOMIP	ST0,ST1
+	MOV	RAX,1
+	SBB	RAX,0
+	FFREE	ST0
+	FINCSTP
+	ADD	RSP,8
+
+@@40:	//GREATER_EQUAL
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOMIP	ST0,ST1
+	MOV	RAX,1
+	JZ	@@45
+	MOV	RAX,0
+	ADC	RAX,0
+@@45:	FFREE	ST0
+	FINCSTP
+	ADD	RSP,8
+@@50:
+@@55:
+@@60:
+@@65: //FSTP
+	SUB	RSP,8
+	FSTP	U64 [RSP]
+	POP	RAX
+@@70:
+@@75:
+@@80:
+
+// ************************************
+CMP_TEMPLATES_DONT_PUSH_POP::
+	DU32	@@05,@@10;
+	DU32	@@15,@@20,@@25,@@30;
+	DU32	@@35,@@40;
+	DU32	@@45,@@50,@@55,@@60;
+	DU32	@@65;
+	DU32	@@70;
+
+@@05:	//INC
+	SUB	RSP,8
+	FLD1
+	FADDP	ST1,ST0
+	FST	U64 [RSP]
+	POP	RAX
+
+@@10:	//DEC
+	SUB	RSP,8
+	FLD1
+	FSUBP	ST1,ST0
+	FST	U64 [RSP]
+	POP	RAX
+
+@@15:
 
 @@20:
-@@25:	//LESS
+@@25:
+@@30:
+@@35:
+@@40:
+@@45:
+@@50:
+@@55:
+@@60:
+@@65:
+@@70:
+
+
+// ************************************
+CMP_TEMPLATES_DONT_PUSH2::
+	DU32	@@05,@@10;
+	DU32	@@15,@@20,@@25,@@35;
+	DU32	@@45,@@50;
+	DU32	@@55,@@60,@@65,@@70;
+	DU32	@@75;
+	DU32	@@80;
+
+@@05:
+@@10:
+
+@@15:
+@@20:	//LESS
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOMIP	ST0,ST1
+	MOV	RAX,0
+	ADC	RAX,0
+	FFREE	ST0
+	FINCSTP
+	ADD	RSP,8
+
+@@25:	//GREATER
 	PUSH	RAX
 	FLD	U64 [RSP]
 	FCOMIP	ST0,ST1
@@ -452,23 +511,15 @@ CMP_TEMPLATES_DONT_PUSH::
 	FINCSTP
 	ADD	RSP,8
 
-@@35:	//GREATER
-	PUSH	RAX
-	FLD	U64 [RSP]
-	FCOMIP	ST0,ST1
-	MOV	RAX,0
-	ADC	RAX,0
-	FFREE	ST0
-	FINCSTP
-	ADD	RSP,8
-
-@@40:	//LESS_EQUAL
+@@35:	//LESS_EQUAL
 	PUSH	RAX
 	FLD	U64 [RSP]
 	FCOMIP	ST0,ST1
 	MOV	RAX,1
-	SBB	RAX,0
-	FFREE	ST0
+	JZ	@@40
+	MOV	RAX,0
+	ADC	RAX,0
+@@40:	FFREE	ST0
 	FINCSTP
 	ADD	RSP,8
 
@@ -477,127 +528,17 @@ CMP_TEMPLATES_DONT_PUSH::
 	FLD	U64 [RSP]
 	FCOMIP	ST0,ST1
 	MOV	RAX,1
-	JZ	@@50
-	MOV	RAX,0
-	ADC	RAX,0
-@@50:	FFREE	ST0
+	SBB	RAX,0
+	FFREE	ST0
 	FINCSTP
 	ADD	RSP,8
-@@55:
-@@60:
-@@65:
-@@70: //FSTP
-	SUB	RSP,8
-	FSTP	U64 [RSP]
-	POP	RAX
-@@75:
-@@80:
-@@85:
-
-// ************************************
-CMP_TEMPLATES_DONT_PUSH_POP::
-	DU32	@@05,@@10,@@15;
-	DU32	@@20,@@25,@@30,@@35;
-	DU32	@@40,@@45;
-	DU32	@@50,@@55,@@60,@@65;
-	DU32	@@70;
-	DU32	@@75;
-
-@@05:	//INC
-	SUB	RSP,8
-	FLD1
-	FADDP	ST1,ST0
-	FST	U64 [RSP]
-	POP	RAX
-
-@@10:	//DEC
-	SUB	RSP,8
-	FLD1
-	FSUBP	ST1,ST0
-	FST	U64 [RSP]
-	POP	RAX
-
-@@15:
-
-@@20:
-
-@@25:
-@@30:
-@@35:
-@@40:
-@@45:
 @@50:
 @@55:
 @@60:
 @@65:
 @@70:
 @@75:
-
-
-// ************************************
-CMP_TEMPLATES_DONT_PUSH2::
-	DU32	@@05,@@10,@@15;
-	DU32	@@20,@@25,@@30,@@40;
-	DU32	@@50,@@55;
-	DU32	@@60,@@65,@@70,@@75;
-	DU32	@@80;
-	DU32	@@85;
-
-@@05:
-@@10:
-@@15:
-
-@@20:
-@@25:	//LESS
-	PUSH	RAX
-	FLD	U64 [RSP]
-	FCOMIP	ST0,ST1
-	MOV	RAX,0
-	ADC	RAX,0
-	FFREE	ST0
-	FINCSTP
-	ADD	RSP,8
-
-@@30:	//GREATER
-	PUSH	RAX
-	FLD	U64 [RSP]
-	FCOMIP	ST0,ST1
-	MOV	RAX,0
-	JZ	@@35
-	MOV	RAX,1
-	SBB	RAX,0
-@@35:	FFREE	ST0
-	FINCSTP
-	ADD	RSP,8
-
-@@40:	//LESS_EQUAL
-	PUSH	RAX
-	FLD	U64 [RSP]
-	FCOMIP	ST0,ST1
-	MOV	RAX,1
-	JZ	@@45
-	MOV	RAX,0
-	ADC	RAX,0
-@@45:	FFREE	ST0
-	FINCSTP
-	ADD	RSP,8
-
-@@50:	//GREATER_EQUAL
-	PUSH	RAX
-	FLD	U64 [RSP]
-	FCOMIP	ST0,ST1
-	MOV	RAX,1
-	SBB	RAX,0
-	FFREE	ST0
-	FINCSTP
-	ADD	RSP,8
-@@55:
-@@60:
-@@65:
-@@70:
-@@75:
 @@80:
-@@85:
 }
 
 LTextern _OPTNEXT BoolI8 OptNext(IntermediateCode *tempi,

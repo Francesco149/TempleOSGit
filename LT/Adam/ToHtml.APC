@@ -109,7 +109,7 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
   LtfPutS(l_out,body_header);
 
   cl=l_in->root.next;
-  s=LtfLastSettings(cl);
+  s=LtfSettingsLast(cl);
   col=cl->x;
   y=cl->y;
   cur_u8_attr=cl->type.u8[1];
@@ -181,23 +181,23 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
 	    old_c=-1;
 	  }
 	  LtfPrintF(l_out,
-	  "<!--begin exclude-->\r\n"
-	  "<object classid=\"clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95\" "
-	  "codebase=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab\" "
-	  "width=\"640\" height=\"512\">\r\n"
-	  "<param name=\"FileName\" value=\"%s\">\r\n"
-	  "<param name=\"AutoStart\" value=\"false\">\r\n"
-	  "<param name=\"ShowTracker\" value=\"true\">\r\n"
-	  "<param name=\"ShowControls\" value=\"true\">\r\n"
-	  "<param name=\"ShowGotoBar\" value=\"false\">\r\n"
-	  "<param name=\"ShowDisplay\" value=\"false\">\r\n"
-	  "<param name=\"ShowStatusBar\" value=\"false\">\r\n"
-	  "<param name=\"AutoSize\" value=\"false\">\r\n"
-	  "<embed src=\"%s\" AutoStart=\"false\" ShowTracker=\"true\" ShowControls=\"true\" "
-	  "ShowGotoBar=\"false\" ShowDisplay=\"false\" ShowStatusBar=\"false\" "
-	  "AutoSize=\"false\" pluginspage=\"http://www.microsoft.com/windows/windowsmedia/download/\" "
-	  "width=\"640\" height=\"512\"></embed></object>\r\n"
-	  "<!--end exclude-->\r\n",cl->tag,cl->tag);
+		"<!--begin exclude-->\r\n"
+		"<object classid=\"clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95\" "
+		"codebase=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab\" "
+		"width=\"640\" height=\"512\">\r\n"
+		"<param name=\"FileName\" value=\"%s\">\r\n"
+		"<param name=\"AutoStart\" value=\"false\">\r\n"
+		"<param name=\"ShowTracker\" value=\"true\">\r\n"
+		"<param name=\"ShowControls\" value=\"true\">\r\n"
+		"<param name=\"ShowGotoBar\" value=\"false\">\r\n"
+		"<param name=\"ShowDisplay\" value=\"false\">\r\n"
+		"<param name=\"ShowStatusBar\" value=\"false\">\r\n"
+		"<param name=\"AutoSize\" value=\"false\">\r\n"
+		"<embed src=\"%s\" AutoStart=\"false\" ShowTracker=\"true\" ShowControls=\"true\" "
+		"ShowGotoBar=\"false\" ShowDisplay=\"false\" ShowStatusBar=\"false\" "
+		"AutoSize=\"false\" pluginspage=\"http://www.microsoft.com/windows/windowsmedia/download/\" "
+		"width=\"640\" height=\"512\"></embed></object>\r\n"
+		"<!--end exclude-->\r\n",cl->tag,cl->tag);
 	  break;
 	case LTFT_HTML_CODE:
 	  if (old_c!=-1) {

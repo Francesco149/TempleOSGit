@@ -95,14 +95,14 @@ hl_normal_done:
       if (s->state!=LTFSS_NORMAL||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_NORMAL;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_SINGLE_QUOTE:
@@ -122,14 +122,14 @@ hl_single_quote:
       if (s->state!=LTFSS_SINGLE_QUOTE||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_SINGLE_QUOTE;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_DBL_QUOTE:
@@ -149,14 +149,14 @@ hl_dbl_quote:
       if (s->state!=LTFSS_DBL_QUOTE||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_DBL_QUOTE;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_COMMENT:
@@ -177,14 +177,14 @@ hl_comment:
       if (s->state!=LTFSS_COMMENT||s->comment_depth!=comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_COMMENT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=comment_depth;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_CPP_COMMENT:
@@ -195,14 +195,14 @@ hl_cpp_comment:
       if (s->state!=LTFSS_CPP_COMMENT||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_CPP_COMMENT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_NORMAL+LTFSSF_BPT:
@@ -267,14 +267,14 @@ hl_bpt_normal_done:
       if (s->state!=LTFSS_NORMAL+LTFSSF_BPT||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_NORMAL+LTFSSF_BPT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_SINGLE_QUOTE+LTFSSF_BPT:
@@ -294,14 +294,14 @@ hl_bpt_single_quote:
       if (s->state!=LTFSS_SINGLE_QUOTE+LTFSSF_BPT||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_SINGLE_QUOTE+LTFSSF_BPT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_DBL_QUOTE+LTFSSF_BPT:
@@ -321,14 +321,14 @@ hl_bpt_dbl_quote:
       if (s->state!=LTFSS_DBL_QUOTE+LTFSSF_BPT||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_DBL_QUOTE+LTFSSF_BPT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_COMMENT+LTFSSF_BPT:
@@ -349,14 +349,14 @@ hl_bpt_comment:
       if (s->state!=LTFSS_COMMENT+LTFSSF_BPT||s->comment_depth!=comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_COMMENT+LTFSSF_BPT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=comment_depth;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
     case LTFSS_CPP_COMMENT+LTFSSF_BPT:
@@ -367,14 +367,14 @@ hl_bpt_cpp_comment:
       if (s->state!=LTFSS_CPP_COMMENT+LTFSSF_BPT||s->comment_depth||
 	  s->paren_depth!=paren_depth||s->brace_depth!=brace_depth) {
 	if (full_refresh) {
-	  s=LtfIdenticalSettings(l,s);
+	  s=LtfSettingsIdentical(l,s);
 	  s->state=LTFSS_CPP_COMMENT+LTFSSF_BPT;
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
 	  InsQue(s,l->settings_root.last);
 	} else
-	  s=LtfNextSettings(cl->next);
+	  s=LtfSettingsNext(cl->next);
       }
       break;
   }

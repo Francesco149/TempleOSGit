@@ -38,7 +38,7 @@ public U0 BinRep(U8 *filename)
   bfh=bfh2;
 
   if (ArcXSum(bfh,bfh->file_size)!=LT_XSUM) {
-    PutS("Bad XSum\r\n\r\n");
+    "Bad XSum\r\n\r\n";
     return;
   }
 
@@ -47,9 +47,9 @@ public U0 BinRep(U8 *filename)
   fbuf=StrNew(absname);
   FileExtRem(fbuf);
   if (fbuf[1]==':' && StrLen(fbuf)>2)
-    PrintF("Module Name:%s\r\n",fbuf+2);
+    "Module Name:%s\r\n",fbuf+2;
   else
-    PutS("No Module Name\r\n");
+    "No Module Name\r\n";
   Free(fbuf);
 
   ptr=bfh><(U8 *)+bfh->loader_patch_table_offset;
@@ -57,23 +57,23 @@ public U0 BinRep(U8 *filename)
     i=*ptr><(U32 *)++;
     sptr=ptr;
     ptr+=StrLen(sptr)+1;
-    PrintF("%16Z:$FG,GREEN$%s$FG$:%X ",etype,"ST_BIN_FILE_TYPES",sptr,i);
+    "%16Z:$FG,GREEN$%s$FG$:%X ",etype,"ST_BIN_FILE_TYPES",sptr,i;
     switch (etype) {
       case EIE_REL_U8...EIE_LIT_U64:
 	if (*sptr)
 	  saved_hash_ptr=HashFind(sptr,Fs->hash_table,HTT_ALL);
 	if (!saved_hash_ptr)
-	  PrintF("%S%s\r\n","ST_UNRESOLVED_REFERENCE",sptr);
+	  "%S%s\r\n","ST_UNRESOLVED_REFERENCE",sptr;
 	break;
       case EIE_ABS_ADDR:
 	CrLf;
 	for (j=0;j<i;j++)
-	  PrintF("%X ",*ptr><(U32 *)++);
+	  "%X ",*ptr><(U32 *)++;
 	break;
       case EIE_HEAP_GLBL:
-	PrintF("Size:%X ",*ptr><(U64 *)++);
+	"Size:%X ",*ptr><(U64 *)++;
 	for (j=0;j<i;j++)
-	  PrintF("%X ",*ptr><(U32 *)++);
+	  "%X ",*ptr><(U32 *)++;
 	break;
     }
     CrLf;

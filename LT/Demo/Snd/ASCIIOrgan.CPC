@@ -8,11 +8,11 @@ U0 SPrintFPutChar(U8 ch)
 {
   if (ch>=CH_SHIFT_SPACE && ch!=CH_BACKSPACE) {
     if (ch=='$')
-      PrintF("%02X $FG,RED$$$$FG$ ",ch);
+      "%02X $FG,RED$$$$FG$ ",ch;
     else
-      PrintF("%02X $FG,RED$%c$FG$ ",ch,ch);
+      "%02X $FG,RED$%c$FG$ ",ch,ch;
   } else
-      PrintF("%02X $FG,RED$ $FG$ ",ch);
+      "%02X $FG,RED$ $FG$ ",ch;
 }
 
 
@@ -36,8 +36,8 @@ U0 ASCIIOrgan()
     CrLf;
   }
 
-  PutS("\r\nPress keys to make snds\r\n");
-  PutS("and press $FG,GREEN$<SHIFT-ESC>$FG$ to exit.\r\n");
+  "\r\nPress keys to make snds\r\n"
+  "and press $FG,GREEN$<SHIFT-ESC>$FG$ to exit.\r\n";
   do {
     //We don't want echo or scan codes, so we use NULL and FALSE...
     ch=GetChar(NULL,FALSE);
@@ -47,7 +47,7 @@ U0 ASCIIOrgan()
 
 //Note the %d in the string for picture number.
   CrLf(7);
-  PutGrSprite(__BIN_1,0,"$PI+LM+PU,\"Click for better organ\",\"#include \\\"::/LT/Apps/MusicOrgan/Run\\\";\",%d$");
+  PutSprite(__BIN_1,"$PI+LM+PU,\"Click for better organ\",\"#include \\\"::/LT/Apps/MusicOrgan/Run\\\";\",%d$");
   CrLf(5);
 
 }

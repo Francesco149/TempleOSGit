@@ -17,11 +17,7 @@ BoolI64 CopySingleZ(U8 *f1,U8 *f2) //Just one file
     file_buf=FileRead(f1,&size,&attr);
     attr=FileAttr(f2,attr);
     if (file_buf) {
-      PutS("Copying ");
-      PutS(f1);
-      PutS(" to ");
-      PutS(f2);
-      CrLf;
+      "Copying %s to %s\r\n",f1,f2;
       c=FileWrite(f2,file_buf,size,de.datetime,attr);
       Free(file_buf);
       return ToBool(c);
@@ -61,11 +57,7 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
     else
       out_file=FOpen(f2,"w",cnt);
     if (out_file) {
-      PutS("Copying ");
-      PutS(f1);
-      PutS(" to ");
-      PutS(f2);
-      CrLf;
+      "Copying %s to %s\r\n",f1,f2;
       j=size;
       while (cnt) {
 	if (cnt>COPY_BUF_BLKS) {
@@ -113,8 +105,8 @@ BoolI64 MkDir(U8 *filename)
       if (!FileNameChk(fa->mask))
 	PutDefineErr("ST_INVALID_FILENAME");
       else {
-	PutS("Make Directory:");
-	PutS(filename);
+	"Make Directory:";
+	"" filename;
 	CrLf;
 	name=MStrUtil(fa->mask,
 	SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
@@ -161,7 +153,7 @@ U0 SysDel(U8 *wild,BoolI8 make_mask)	//this is dangerous
 }
 
 U0 Fmt(I64 drv_let,BoolI8 quick=TRUE,BoolI8 confirm=TRUE,U64 type=PT_FAT32)
-{//See [C:/LT/OSMain/Adam1a.HPZ,2633] PT_FAT32 for a list of supported file system types.
+{//See [C:/LT/OSMain/Adam1a.HPZ,2616] PT_FAT32 for a list of supported file system types.
 
   LTPrt *p=Drv2Prt(drv_let);
   BoolI8 old_silent=IsSilent;
@@ -315,7 +307,7 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
     bdev2=bdev2->lock_forwarding;
   if ((bdev2->type==LTBDT_ATA || bdev2->type==LTBDT_ATAPI) &&
        bdev2->base0==bdev->base0) {
-    PutS("Can't Burn CD on same ATA ctrller as File.\r\n\r\n");
+    "Can't Burn CD on same ATA ctrller as File.\r\n\r\n";
     throw(EXCEPT_BLKDEV,5);
   }
 

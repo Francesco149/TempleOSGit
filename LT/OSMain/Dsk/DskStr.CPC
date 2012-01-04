@@ -230,13 +230,12 @@ U8 *FileNameAbs(U8 *_filename)
 U0 HomeDirRst(U8 *st=NULL)
 {
   U8 *st2;
-  SysAcctStruct *sa=Fs->acct;
   BoolI8 old_preempt;
   if (!st) {
     st=AMAlloc(128);
     StrCpy(st,"::/LT/Accts/");
-    if (sa)
-      StrCat(st,sa->name);
+    if (sys_acct)
+      StrCat(st,sys_acct->name);
     else
       StrCat(st,"User");
     *st=Prt2Drv(dft_prt);

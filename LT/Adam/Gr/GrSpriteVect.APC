@@ -14,7 +14,7 @@ I64 PopUpGrSpriteVect(BoolI8 new_picture,GrSprite **root,I64 snap,F64 ip_scaler,
   I64 i;
   Ltf *l=LtfNew;
   LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Vect Object Menu\"$$FG$\r\n"
-   	"$FG,RED$Settings$FG$\r\n"
+	"$FG,RED$Settings$FG$\r\n"
 	"$MU-UL,\"Color (4-bit)\",GRST_COLOR4$\r\n"
 	"$MU-UL,\"Dither Color (4-bit)\",GRST_DITHER_COLOR4$\r\n"
 	"$MU-UL,\"Width\",GRST_WIDTH$\r\n"
@@ -67,7 +67,7 @@ I64 PopUpGrSpriteVect(BoolI8 new_picture,GrSprite **root,I64 snap,F64 ip_scaler,
   return i;
 }
 
-U8 GrElOffset[9]={0,1,2,3,0,4,5,6,7};
+U8 GrSpOffset[9]={0,1,2,3,0,4,5,6,7};
 
 BoolI64 GrPolyPointPlot(GrSprite *root,I64 x,I64 y,I64 z)
 {
@@ -182,9 +182,9 @@ U0 GrSetSettings(GrDC *dc,GrSprite *root,I64 cur_num,ColorROPU32 *_color,ColorRO
 	break;
       case GRST_PLANAR_SYMMETRY:
 	if (GrSetSymmetry3(dc,tempg->x1+x,tempg->y1+y,0,tempg->x2+x,tempg->y2+y,0,tempg->x2+x,tempg->y2+y,1))
-	  dc->flags|=BMF_SYMMETRY;
+	  dc->flags|=DCF_SYMMETRY;
 	else
-	  dc->flags&=~BMF_SYMMETRY;
+	  dc->flags&=~DCF_SYMMETRY;
 	break;
     }
     cur_num--;
@@ -200,8 +200,8 @@ U0 GrScreenInit(GrDC *dc,I64 x,I64 y)
   ColorROPU32 old_color=dc->color;
   WinSync;
   GrDCClear(dc);
-  if (dc->flags&BMF_SYMMETRY) {
-    dc->flags&=~BMF_SYMMETRY;
+  if (dc->flags&DCF_SYMMETRY) {
+    dc->flags&=~DCF_SYMMETRY;
     dc->pen_width=1;
     xx=dc->sym.sny*8192;
     yy=-dc->sym.snx*8192;
@@ -214,7 +214,7 @@ U0 GrScreenInit(GrDC *dc,I64 x,I64 y)
     dc->color=ROP_EQU+BLACK;
     GrLine3(dc,dc->sym.sx-xx.i32[1],dc->sym.sy-yy.i32[1],0,
       dc->sym.sx+xx.i32[1],dc->sym.sy+yy.i32[1],0,3,2);
-    dc->flags|=BMF_SYMMETRY;
+    dc->flags|=DCF_SYMMETRY;
   }
   dc->color=old_color;
   dc->pen_width=old_pen_width;
@@ -242,8 +242,8 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 
   WinSync(TRUE);
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  dc2->flags|=BMF_ON_TOP;
-  dc2->mask->flags|=BMF_ON_TOP;
+  dc2->flags|=DCF_ON_TOP;
+  dc2->mask->flags|=DCF_ON_TOP;
   insert_point=GrNum2Queue(*root,*cur_num,&x1,&y1);
   x+=x1; y+=y1;
 
@@ -267,26 +267,26 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	case GRST_FLOOD_FILL:
 	case GRST_FLOOD_FILL_NOT:
 	  AcctOneTimePopUp(ARf_FLOODFILL,
-	  ST_WARN_ST "This is affected by what's underneath\r\n"
-	  "when it is drawn.  You will probably want to\r\n"
-	  "convert it to a bitmap.\r\n\r\n"
-	  "A tip on artistry you might consider\r\n"
-	  "is using lines to fill regions because\r\n"
-	      "brush strokes look cool.\r\n");
+		ST_WARN_ST "This is affected by what's underneath\r\n"
+		"when it is drawn.  You will probably want to\r\n"
+		"convert it to a bitmap.\r\n\r\n"
+		"A tip on artistry you might consider\r\n"
+		"is using lines to fill regions because\r\n"
+		"brush strokes look cool.\r\n");
 	  break;
 	case GRST_BITMAP4_TRANSPARENT:
 	  AcctOneTimePopUp(ARf_TRANSPARENT_BITMAP,
-	  ST_WARN_ST "The initial transparent color is BLACK.\r\n"
-	  "If you use the color BLACK, place a WHITE rect\r\n"
-	  "under your image and select WHITE as the transparent\r\n"
-	  "color.  You can insert a WHITE rect by picking the\r\n"
-	  "insert point using 'Pick Object as Text' on the Edit Menu.\r\n"
-	  "This is like a TV green screen trick.  You can\r\n"
-	      "use other colors.\r\n");
+		ST_WARN_ST "The initial transparent color is BLACK.\r\n"
+		"If you use the color BLACK, place a WHITE rect\r\n"
+		"under your image and select WHITE as the transparent\r\n"
+		"color.  You can insert a WHITE rect by picking the\r\n"
+		"insert point using 'Pick Object as Text' on the Edit Menu.\r\n"
+		"This is like a TV green screen trick.  You can\r\n"
+		"use other colors.\r\n");
 	  break;
 	case GRST_PLANAR_SYMMETRY:
 	  AcctOneTimePopUp(ARf_PLANAR_SYMMETRY,
-	      "Right-click to turn-off symmetry.\r\n");
+		"Right-click to turn-off symmetry.\r\n");
 	  break;
       }
       cl->flags=old_cl_flags;
@@ -388,7 +388,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	cl->flags|=LTFLF_DONT_DRAW;
 	if (PopUpNoYes("Use same origin?\r\n")) {
 	  cl->flags=old_cl_flags;
- 	  p1=x; p2=y;
+	  p1=x; p2=y;
 	  goto ei_shiftable_mesh;
 	}
 	PopUpOk("Select Origin.\r\n");
@@ -397,7 +397,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
       case GRST_INSERT_SCREEN_BITMAP:
 	cl->flags|=LTFLF_DONT_DRAW;
 	PopUpOk("Drag-out a rect for the extents of the\r\n"
-	    "bitmap.\r\n");
+		"bitmap.\r\n");
 	cl->flags=old_cl_flags;
 	break;
       case GRST_BITMAP4_TRANSPARENT:
@@ -424,7 +424,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	    }
 	  }
 	  PopUpOk("Drag-out a rect for the extents of the\r\n"
-	      "bitmap.\r\n");
+		"bitmap.\r\n");
 	}
 	cl->flags=old_cl_flags;
 	break;
@@ -637,7 +637,7 @@ ei_restart:
 	  case GRST_PLANAR_SYMMETRY:
 	    old_width=dc->pen_width;
 	    old_flags=dc->flags;
-	    dc->flags&=~BMF_SYMMETRY;
+	    dc->flags&=~DCF_SYMMETRY;
 	    dc->pen_width=1;
 	    x1=p1; y1=p2;
 	    x2=p1; y2=p2;
@@ -658,7 +658,7 @@ ei_restart:
 	    InsQue(tempg,insert_point->last);
 	    GrEdUpdate(l,tempb,*root);
 	    *cur_num+=1;
-	    dc->flags=old_flags&BMF_SYMMETRY|dc->flags&~BMF_SYMMETRY;
+	    dc->flags=old_flags&DCF_SYMMETRY|dc->flags&~DCF_SYMMETRY;
 	    dc->pen_width=old_width;
 	    eletype=GRST_MENU;
 	    break;
@@ -732,7 +732,7 @@ ei_bitmap:
 	    tempg->height=yy2-yy1;
 	    tempg->x2=xx1-x;
 	    tempg->y2=yy1-y;
-	    img=GrDCNew(BMT_COLOR4,tempg->width,tempg->height,Fs);
+	    img=GrDCNew(DCT_COLOR4,tempg->width,tempg->height,Fs);
 	    tempg->bkcolor=bm_bkcolor;
 	    img->color=bm_bkcolor;
 	    GrRect(img,0,0,tempg->width,tempg->height);
@@ -818,7 +818,7 @@ ei_bitmap:
 	    i=gr_screen_scale;
 	    GrScaleZoom(1.0/i);
 	    WinSync(TRUE);
-	    img=GrExtractDC(gr_screen_image,
+	    img=GrDCExtract(gr_screen_image,
 		Fs->win_pixel_left+Fs->win_scroll_x+xx1,Fs->win_pixel_top+Fs->win_scroll_y+yy1,
 		Fs->win_pixel_left+Fs->win_scroll_x+xx2-1,Fs->win_pixel_top+Fs->win_scroll_y+yy2-1);
 	    GrScaleZoom(i);
@@ -1127,7 +1127,7 @@ ei_bitmap:
 	    while (tempg!=&root2) {
 	      tempg1=tempg->next;
 	      BFieldOrU32(ptr,i,
-		  GrElOffset[SignI64(tempg->x1-x1)+1+
+		  GrSpOffset[SignI64(tempg->x1-x1)+1+
 		  3*(SignI64(tempg->y1-y1)+1)]);
 	      i+=3;
 	      x1=tempg->x1;y1=tempg->y1;

@@ -190,7 +190,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 	  if (l)
 	    LtfPrintF(l,"$FG,GREEN$%s$FG$\r\n",cur_index);
 	  else
-	    PrintF("$FG,GREEN$%s$FG$\r\n",cur_index);
+	    "$FG,GREEN$%s$FG$\r\n",cur_index;
 	}
       }
     if (index && ptr->type & HTT_HELP_FILE) {
@@ -212,7 +212,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 		sizeof(U0 *)*
 		(dbg->max_line-dbg->min_line+2);
 	    if (size>MSize(dbg)) {
-	      PutS("Corrupt Map Entry\r\n");
+	      "Corrupt Map Entry\r\n";
 	      dbg=NULL;
 	    } else {
 	      if (dbg->min_line<=dbg->max_line) {
@@ -233,7 +233,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 		sizeof(U8)*
 		(indent->max_line-indent->min_line+2);
 	    if (size>MSize(indent)) {
-	      PutS("Corrupt Indent Entry\r\n");
+	      "Corrupt Indent Entry\r\n";
 	      indent=NULL;
 	    } else {
 	      if (indent->min_line<=indent->max_line) {
@@ -271,7 +271,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 	  if (l)
 	    LtfPutS(l,buf);
 	  else
-	    PutS(buf);
+	    "" buf;
 	}
 	Free(buf4);
       } else {
@@ -279,7 +279,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 	if (l)
 	  LtfPutS(l,buf);
 	else
-	  PutS(buf);
+	  "" buf;
       }
 
       if (!index) {
@@ -311,7 +311,7 @@ public U0 HashRep(SysHashTable *h=NULL,
       if (l)
 	LtfPutS(l,buf);
       else
-	PutS(buf);
+	"" buf;
     }
     Free(list[i].index);
   }
@@ -393,12 +393,12 @@ public I64 HashDepthRep(SysHashTable *tempht=NULL)
 	longest=j;
     }
   }
-  PutS("Histogram\r\n");
+  "Histogram\r\n";
   for (i=0;i<HDR_MAX;i++)
     if (a[i])
-      PrintF("%02d:%d\r\n",i,a[i]);
-  PrintF("Size:%d Count:%d Longest:%d\r\n",
-    tempht->mask+1,cnt,longest);
+      "%02d:%d\r\n",i,a[i];
+  "Size:%d Count:%d Longest:%d\r\n",
+    tempht->mask+1,cnt,longest;
   return longest;
 }
 
@@ -460,7 +460,7 @@ public U0 MapFileLoad(U8 *filename)
 	  if (!dbg && cl->bin_data && cl->bin_data->type==LTFBT_DEBUG_LINES) {
 	    if (dbg=cl->bin_data->data) {
 	      if (cl->bin_data->size>MSize(dbg))
-		PutS("Corrupt Map Entry\r\n");
+		"Corrupt Map Entry\r\n";
 	      else {
 		cl->bin_data->data=NULL;
 		temph->debug=dbg;
@@ -475,7 +475,7 @@ public U0 MapFileLoad(U8 *filename)
 	  if (!indent && cl->bin_data && cl->bin_data->type==LTFBT_INDENTS) {
 	    if (indent=cl->bin_data->data) {
 	      if (cl->bin_data->size>MSize(indent))
-		PutS("Corrupt Indent Entry\r\n");
+		"Corrupt Indent Entry\r\n";
 	      else {
 		cl->bin_data->data=NULL;
 		temph->indent=indent;

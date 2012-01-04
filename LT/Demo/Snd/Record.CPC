@@ -11,10 +11,10 @@ U0 RecordCopyBuf(SND_IN_CONTAINER *buf,I64 buf_num)
 {
   nounusedwarn buf_num;
   I64 j;
-  SND_IN_CONTAINER *ww=record_buf[record_ibuf_num&1];
+  SND_IN_CONTAINER *_s=record_buf[record_ibuf_num&1];
   j=0;
   while (j<SND_BUF_LEN) {
-    ww[record_buf_iptr++]=buf[j++];
+    _s[record_buf_iptr++]=buf[j++];
     j++; //Record in mono
   }
   if (record_buf_iptr>=RECORD_BUF_SIZE) {
@@ -90,7 +90,7 @@ U0 RecordTask(U8 *filename)
 U0 RecordDemo(U8 *filename="HOME/Record.SNZ")
 {
   if (snd_dev!=SD_HD_AUDIO) {
-    PutS("Only works for HD Audio.\r\n");
+    "Only works for HD Audio.\r\n";
     return;
   }
   record_done=FALSE;
@@ -108,7 +108,7 @@ U0 RecordDemo(U8 *filename="HOME/Record.SNZ")
     Yield;
   SettingsPop;
   while (TRUE) {
-    PutS("\r\n\r\nPlay ");
+    "\r\n\r\nPlay ";
     if (YorN)
       SndFilePlaySeq(filename,record_obuf_num);
     else

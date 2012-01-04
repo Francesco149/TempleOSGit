@@ -1,6 +1,6 @@
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
 PopUpOk(
 "Now, we're going to demonstrate how to work\r\n"
@@ -98,7 +98,7 @@ PopUpOk(
 
 AFGetKey(SC_F5);
 Sleep(50);
-TaskStruct *task=sys_cur_focus_task;
+TaskStruct *task=sys_focus_task;
 
 PopUpOk(
 "$FG,GREEN$<SHIFT-ESC>$FG$ to abort the application.\r\n"

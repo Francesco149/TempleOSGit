@@ -70,7 +70,7 @@ U0 CircleTrace()
 	x1=p1; y1=p2;
 	do {
 	  msg_code=ScanMsg(&p1,&p2,
-  	    1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
+	    1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 	  switch (msg_code) {
 	    case MSG_IP_L_UP:
 	      break;

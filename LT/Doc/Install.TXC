@@ -42,11 +42,11 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/LT/Adam/Boot/InsBoot.APZ,334] MasterBootZero() to
+You'll need to do a [C:/LT/Adam/Boot/InsBoot.APZ,299] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/LT/OSMain/Dsk/Dsk1c.CPZ,163] Fmt('D',TRUE,FALSE,PT_FAT32)
+2) [C:/LT/OSMain/Dsk/Dsk1c.CPZ,155] Fmt('D',TRUE,FALSE,PT_FAT32)
   This command formats a partition with FAT32 or the LoseThos native file 
 system type.  Use the drive letter of the partition in place of 'D'.
 
@@ -58,16 +58,16 @@ BR.BIC.
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot('D')
+4) [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot('D')
   This command recompiles the source code on a partition and writes to the
   _par
 tition's_ boot record.  You'll need to reenter the
   [C:/LT/OSMain/Dsk/DskAddDev.CPZ,198] Mount information so it 
 can be stored in the kernel.
 
-5) [C:/LT/Adam/Boot/InsBoot.APZ,360] InstallMasterBoot('D')
+5) [C:/LT/Adam/Boot/InsBoot.APZ,325] InstallMasterBoot('D')
   
-The [C:/LT/Adam/Boot/InsBoot.APZ,360] InstallMasterBoot() command places a
+The [C:/LT/Adam/Boot/InsBoot.APZ,325] InstallMasterBoot() command places a
   boot loader on a drive to boot 
 partitions.  It saves the old master boot record to /0000Boot/OldMBR.BIC and 
 replaces it.  When you boot, you will have the option of booting the old 

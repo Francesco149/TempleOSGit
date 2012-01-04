@@ -22,7 +22,7 @@ LTextern _MY_BEEP U0 MyBeep();
 U0 Routine2(U8 *st)
 {
   PrintF("Routine2:%s\r\n",st);
-  MyBeep;
+  MyBeep();
 }
 
 PutS("$BK,1$Woo-Hoo!$BK,0$\r\n");

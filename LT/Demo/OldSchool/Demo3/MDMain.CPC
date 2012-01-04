@@ -24,7 +24,7 @@ I64 ModuleDemo(...)
 	Routine3(argv[2]);
     }
   } else
-    PutS("Pass string parameters for args 1 and 2.\r\n");
+    PrintF("Pass string parameters for args 1 and 2.\r\n");
   return argc;
 }
 

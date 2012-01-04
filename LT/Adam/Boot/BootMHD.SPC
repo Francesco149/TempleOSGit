@@ -56,14 +56,14 @@ GET_IP:
 	DU8	0xEA;	//JMP BOOT_HIGH_LOC:BMHD_HISTART
 	DU16	BMHD_HISTART,BOOT_HIGH_LOC;
 
-BMHD_BIOS_DRV_NUM: 	DU8	0;
+BMHD_BIOS_DRV_NUM:	DU8	0;
 BMHD_OLD_CS_IP:		DU16	0,0;
-//Gets patched by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
+//Gets patched by [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
 BMHD_BLK_CNT::		DU16	0;
 
 BMHD_DAP:		DU8	16,0,1,0; //One blk at a time
 BMHD_DAP_BUF:		DU16	0,0;
-//Gets patched by [C:/LT/Adam/Boot/InsBoot.APZ,185] InstallBoot().
+//Gets patched by [C:/LT/Adam/Boot/InsBoot.APZ,168] InstallBoot().
 BMHD_DAP_BLK::	//64-bit
 BMHD_DAP_BLK_LO:	DU32	0;
 BMHD_DAP_BLK_HI:	DU32	0;

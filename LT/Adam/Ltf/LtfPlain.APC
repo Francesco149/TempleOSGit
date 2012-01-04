@@ -717,7 +717,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
 	  break;
 	case LTFLf_AUX_STR:
 	  if (lx->token==TK_STR) {
-     	    st2=LexExtStr(lx);
+	    st2=LexExtStr(lx);
 	    ll->aux_str=StrNew(st2,l->mem_task);
 	    Free(st2);
 	    if (i==LTFT_MACRO && !ll->tag)
@@ -736,7 +736,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
 	  break;
 	case LTFLf_LEFT_MACRO:
 	  if (lx->token==TK_STR) {
-     	    st2=LexExtStr(lx);
+	    st2=LexExtStr(lx);
 	    ll->left_macro=StrNew(st2,l->mem_task);
 	    Free(st2);
 	    if (i==LTFT_MACRO && !ll->tag)
@@ -749,7 +749,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
 	  break;
 	case LTFLf_RIGHT_MACRO:
 	  if (lx->token==TK_STR) {
-     	    st2=LexExtStr(lx);
+	    st2=LexExtStr(lx);
 	    ll->right_macro=StrNew(st2,l->mem_task);
 	    Free(st2);
 	    if (i==LTFT_MACRO && !ll->tag)
@@ -771,7 +771,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
 	  break;
 	case LTFLf_DEFINE:
 	  if (lx->token==TK_STR) {
-     	    st2=LexExtStr(lx);
+	    st2=LexExtStr(lx);
 	    ll->define_str=StrNew(st2,l->mem_task);
 	    Free(st2);
 	  } else
@@ -779,7 +779,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
 	  break;
 	case LTFLf_HTML_LINK:
 	  if (lx->token==TK_STR) {
-     	    st2=LexExtStr(lx);
+	    st2=LexExtStr(lx);
 	    ll->html_link=StrNew(st2,l->mem_task);
 	    Free(st2);
 	  } else
@@ -950,7 +950,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 		ll->tag=StrNew("$$",l->mem_task);
 	      else
 		ll->tag=StrNew("$",l->mem_task);
-   	      LtfInsert(l,ll);
+	      LtfInsert(l,ll);
 	    } else {
 	      st2=MAlloc(ptr-ptr2+1);
 	      ptr3=ptr2;
@@ -970,7 +970,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	      *ptr4=0;
 	      if (ll=PrsDollarCmd(l,st2)) {
 		result=ll;
-   		LtfInsert(l,ll);
+		LtfInsert(l,ll);
 	      }
 	      Free(st2);
 	    }
@@ -980,7 +980,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	default:
 	  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 	  ll->type=LTFT_CR | l->settings_root.dft_text_attr << 8;
-   	  LtfInsert(l,ll);
+	  LtfInsert(l,ll);
 	  if (ch==CH_CR)
 	    while (*ptr==CH_CR)
 	      ptr++;

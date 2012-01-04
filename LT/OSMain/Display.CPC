@@ -205,12 +205,12 @@ BoolI64 AKDTaskPutKey(U64 ch,U64 scancode)
 {
   BoolI8 old_preempt=Preempt(OFF);
   TaskKeyDevStruct *tempk;
-  if (!sys_cur_focus_task) {
+  if (!sys_focus_task) {
     Preempt(old_preempt);
     return FALSE;
   }
-  tempk=sys_cur_focus_task->next_key_dev;
-  while (tempk!=&sys_cur_focus_task->next_key_dev) {
+  tempk=sys_focus_task->next_key_dev;
+  while (tempk!=&sys_focus_task->next_key_dev) {
     if (!(scancode & SCF_KEY_DESC) || tempk->flags & KDF_HAS_DESCS) {
       if ((*tempk->put_key)(tempk->task,tempk->put_data,ch,scancode)) {
 	Preempt(old_preempt);
@@ -228,12 +228,12 @@ BoolI64 AKDTaskPutS(U8 *st)
 {
   BoolI8 old_preempt=Preempt(OFF);
   TaskKeyDevStruct *tempk;
-  if (!sys_cur_focus_task) {
+  if (!sys_focus_task) {
     Preempt(old_preempt);
     return FALSE;
   }
-  tempk=sys_cur_focus_task->next_key_dev;
-  while (tempk!=&sys_cur_focus_task->next_key_dev) {
+  tempk=sys_focus_task->next_key_dev;
+  while (tempk!=&sys_focus_task->next_key_dev) {
     if ((*tempk->put_s)(tempk->task,tempk->put_data,st)) {
       Preempt(old_preempt);
       return TRUE;
@@ -249,7 +249,7 @@ U0 PutKey(U64 ch,U64 sc)
   KeyDevStruct *tempp=sys_put_key_root.next;
   if (!Bt(&Fs->display_flags,DISPLAYf_SILENT)) {
     if (sys_cur_scan_code & SCF_SCROLL) {
-      if (sys_cur_focus_task==Fs) {
+      if (sys_focus_task==Fs) {
 	while (sys_cur_scan_code & SCF_SCROLL)
 	  Yield;
       }
@@ -277,7 +277,7 @@ U0 PutS(U8 *st)
   KeyDevStruct *tempp=sys_put_key_root.next;
   if (!Bt(&Fs->display_flags,DISPLAYf_SILENT)) {
     if (sys_cur_scan_code & SCF_SCROLL) {
-      if (sys_cur_focus_task==Fs) {
+      if (sys_focus_task==Fs) {
 	while (sys_cur_scan_code & SCF_SCROLL)
 	  Yield;
       }

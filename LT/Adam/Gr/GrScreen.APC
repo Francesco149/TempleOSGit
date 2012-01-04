@@ -12,12 +12,12 @@ U16 *gr_text_base_cache;
 U0 GrDCClear2(GrDC *dc)
 {
   if (dc->alias)
-    dc->alias->flags&=~BMF_DIRTY;
+    dc->alias->flags&=~DCF_DIRTY;
   nobound_switch (dc->type) {
-    case BMT_COLOR4:
+    case DCT_COLOR4:
       MemSet(dc->body,0,(dc->width_internal*dc->height)>>1);
       break;
-    case BMT_MONO:
+    case DCT_MONO:
       MemSet(dc->body,0,(dc->width_internal*dc->height)>>3);
       break;
   }
@@ -267,8 +267,8 @@ U0 GrSetUpTable(GrDC *hidden)
   for (i=0;i<GR_NUM_PEN_BRUSHES;i++) {
     k=i+1;
     j=(i+7)&~7;
-    b=GrDCNew(BMT_MONO,i,i);
-//    b=GrDCNew(BMT_MONO,j,i);
+    b=GrDCNew(DCT_MONO,i,i);
+//    b=GrDCNew(DCT_MONO,j,i);
     gr_pen_brushes[i]=b;
     b->color=WHITE;
     rr=k*k;
@@ -277,8 +277,8 @@ U0 GrSetUpTable(GrDC *hidden)
 	if (SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
 	  GrPlot0(b,x-1,y-1);
 
-    b=GrDCNew(BMT_MONO,i,i);
-//    b=GrDCNew(BMT_MONO,j,i);
+    b=GrDCNew(DCT_MONO,i,i);
+//    b=GrDCNew(DCT_MONO,j,i);
     gr_even_pen_brushes[i]=b;
     b->color=WHITE;
     rr=k*k;
@@ -287,8 +287,8 @@ U0 GrSetUpTable(GrDC *hidden)
 	if (!(((x-1)^(y-1))&1) && SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
 	  GrPlot0(b,x-1,y-1);
 
-    b=GrDCNew(BMT_MONO,i,i);
-//    b=GrDCNew(BMT_MONO,j,i);
+    b=GrDCNew(DCT_MONO,i,i);
+//    b=GrDCNew(DCT_MONO,j,i);
     gr_odd_pen_brushes[i]=b;
     b->color=WHITE;
     rr=k*k;
@@ -327,10 +327,10 @@ U0 GrSetUpTable(GrDC *hidden)
 
 GrDC *GrPersistentDCNew()
 {
-  GrDC *dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  dc->flags|=BMF_SCREEN_BITMAP;
-  dc->mask=GrDCNew(BMT_MONO,GR_WIDTH,GR_HEIGHT);
-  dc->mask->flags|=BMF_SCREEN_BITMAP;
+  GrDC *dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  dc->flags|=DCF_SCREEN_BITMAP;
+  dc->mask=GrDCNew(DCT_MONO,GR_WIDTH,GR_HEIGHT);
+  dc->mask->flags|=DCF_SCREEN_BITMAP;
   dc->mask->color=WHITE;
   GrDCClear2(dc);
   return dc;
@@ -348,12 +348,12 @@ U0 GrInit()
   gr_win_uncovered_bitmap=CAlloc(65536/8);
   gr_highest_uncovered=0;
 
-  gr_dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  gr_dc->flags|=BMF_SCREEN_BITMAP;
+  gr_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_dc->flags|=DCF_SCREEN_BITMAP;
 
-  gr_screen_image=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  gr_scaled_dc=GrDCNew(BMT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  gr_scaled_dc->flags|=BMF_SCREEN_BITMAP;
+  gr_screen_image=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_scaled_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_scaled_dc->flags|=DCF_SCREEN_BITMAP;
   gr_dc2=GrPersistentDCNew;
   GrSetUpTable(gr_dc);
 
@@ -744,12 +744,12 @@ U0 GrUpdateScreen()
     GrUpdateBackgroundOfText;
     GrUpdateForegroundOfText;
     GrUpdateWins;
-    if (gr_dc2->mask->flags&BMF_DIRTY)
-      GrBlotWithMask(gr_dc,gr_dc2);
+    if (gr_dc2->mask->flags&DCF_DIRTY)
+      GrDCBlotWithMask(gr_dc,gr_dc2);
   }
 
   dc=GrDCAlias(gr_dc,Fs);
-  dc->flags|=BMF_ON_TOP;
+  dc->flags|=DCF_ON_TOP;
   if (fp_final_screen_update)
     (*fp_final_screen_update)(dc);
   GrDCDel(dc);

@@ -10,8 +10,7 @@
 
 U0 RankOut(I64 i)
 {
-  PutChar(CH_SPACE);
-  PutS(ListEntryPoint(i,"Cadet\0Ensign\0Captain\0Admiral\0President\0"));
+  " %z",i,"Cadet\0Ensign\0Captain\0Admiral\0President\0";
 }
 
 class Test1Struct
@@ -23,8 +22,8 @@ class Test1Struct
 
 class Test2Struct
 {
-  I64 age	printf_str "%2d" dft_val 38 percentile 54.20;
-  I64 rank	printf_str "%1d" dft_val 5;
+  I64 age	 printf_str "%2d" dft_val 38 percentile 54.20;
+  I64 rank	 printf_str "%1d" dft_val 5;
   I64 serial_num printf_str "%6d" dft_val 123456;
 };
 
@@ -40,25 +39,25 @@ U0 DumpStruct(U8 *class_name,U8 *data)
   MemberListStruct *ml;
   ml=tempc->member_list;
   while (ml) {
-    PrintF("%s:",ml->str);
+    "%s:",ml->str;
 
 //All our items are I64's.  If you want, you can check
 //the data type of the member var.  See [C:/LT/Adam/Dbg2a.APZ,137] ClassRep().
     q=data+ml->offset;
 
     if (printf_str=MemberMetaData("printf_str",ml))
-      PrintF(printf_str,*q);
+      "" printf_str,*q;
 
 //This is slightly ambiguous -- if no meta is present it will return zero.
     if (dft_val=MemberMetaData("dft_val",ml))
-      PrintF(" default:%d",dft_val);
+      " default:%d",dft_val;
 
 //This corrects for the ambiguity, allowing zero percentile.
     if (MemberMetaFind("percentile",ml)) { //check if it exists
-//We could use the [C:/LT/OSMain/Adam1a.HPZ,654] MemberListMeta structure returned by
+//We could use the [C:/LT/OSMain/Adam1a.HPZ,655] MemberListMeta structure returned by
 //[C:/LT/Compiler/Lex.CPZ,516] MemberMetaFind() and save a search.
       percentile=MemberMetaData("percentile",ml)><(F64);
-      PrintF(" percentile: %5.2f",percentile);
+      " percentile: %5.2f",percentile;
     }
 
     if (fp_output_fun=MemberMetaData("output_fun",ml))

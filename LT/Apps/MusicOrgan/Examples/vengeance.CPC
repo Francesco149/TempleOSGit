@@ -23,9 +23,9 @@ F64 t0=0;
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
-  F64 dt=(tJ-t0)*music_tempo-6.0;
+  F64 dt=(tM-t0)*music_tempo-6.0;
   if (t0 && 0<=dt<1.0) {
-    dc->flags|=BMF_TRANSFORMATION;
+    dc->flags|=DCF_TRANSFORMATION;
     GrRotZEqu(dc->r,5.0*(dt-0.5));
     GrRotXEqu(dc->r,1.5-2.0*dt);
     GrSetRotMat(dc,dc->r);
@@ -58,10 +58,10 @@ U0 Song()
 	  "Leave \0it \0to \0God.\r\n\0");
       Play("etFDAqDqAqAqDqCeEGeDC",
 	  "Leave \0it \0to \0God.\r\n\0");
-      t0=tJ;
+      t0=tM;
       Play("qDqFqGqCqEqCetDGAeAA",
 	  " \0 \0 \0 \0Stand \0back.\r\n\0");
-      t0=tJ;
+      t0=tM;
       Play("qDqFqGqCqEqCetDGAeAA",
 	  " \0 \0 \0 \0Stand \0back.\r\n\0");
       t0=0;

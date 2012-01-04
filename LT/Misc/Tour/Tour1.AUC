@@ -1,6 +1,6 @@
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
-PutS("\r");
+"\r";
 
 PopUpOk(
 "After clicking $FG,GREEN$[OKAY]$FG$, you will be at the\r\n"
@@ -15,7 +15,7 @@ PopUpOk(
 
 AFPmtStr("Dir;\r");
 Sleep(1000);  //allow user time to see dir
-PutChar(CH_CR);
+'' CH_CR;
 
 PopUpOk(
 "After clicking $FG,GREEN$[OKAY]$FG$, you will be at the\r\n"

@@ -60,10 +60,10 @@ I64 Primes(I64 range,I64 _my_mp_cnt)
 
   for (i=MaxI64(prime_range-100,0);i<prime_range;i++)
     if (!Bt(master_bitmap,i))
-      PrintF("%d ",i);
+      "%d ",i;
 
-  PrintF("\r\n$FG,RED$CPUs:%d PrimeRange:%,d PrimeCnt:%,d Time:%9.6,f$FG$\r\n",
-    my_mp_cnt,prime_range,prime_cnt,tf-t0);
+  "\r\n$FG,RED$CPUs:%d PrimeRange:%,d PrimeCnt:%,d Time:%9.6,f$FG$\r\n",
+    my_mp_cnt,prime_range,prime_cnt,tf-t0;
 
   Free(master_bitmap);
   return prime_cnt;

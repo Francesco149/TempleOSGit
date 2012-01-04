@@ -170,7 +170,7 @@ U0 DrawMenu(GrDC *dc)
   Menu *m;
   MenuEntry *tempme,*tempse,*cur_submenu=NULL;
   U8 *st=NULL;
-  TaskStruct *task=sys_cur_focus_task;
+  TaskStruct *task=sys_focus_task;
   I64 i,w,x0,y0,x1=ipx,y1=ipy;
   if (!TaskValidate(task) || !(m=task->cur_menu) ||
       m->mu_signature!=MENU_SIGNATURE_VAL) {

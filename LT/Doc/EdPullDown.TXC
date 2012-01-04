@@ -10,11 +10,11 @@ File
 Edit
 {
   Undo(,8,0x80E0000080E);
-  Cut(,0,0x3D300000253);
-  Copy(,0,0x4D200000452);
-  Paste(,0,0x2D200000252);
-  DelLine(,0x19,0x41500000415);
-  FindReplace(,6,0x42100000421);
+  Cut(,CH_CTRLX);
+  Copy(,CH_CTRLC);
+  Paste(,CH_CTRLV);
+  DelLine(,CH_CTRLY);
+  FindReplace(,CH_CTRLF);
   FindNext(,0,0x3D0000003D);
   GoLine(,7,0x42200000422);
   GoBegin(,,0x4C800000448);

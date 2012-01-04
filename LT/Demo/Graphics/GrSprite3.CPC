@@ -40,15 +40,12 @@ U0 GrSprite3()
 {
   I64 i;
   for (i=0;i<3;i++) {
-    PutS("US Flag:");
-    PutGrSprite(__BIN_1);
+    "US Flag:";
+    PutSprite(__BIN_1);
     CrLf(12);
   }
-  PutS("US Map:");
-
-//Size is optional.  Set to zero and it
-//will measure.  (Faster if you know it).
-  PutGrSprite(__BIN_2,__BIN_2_SIZE);
+  "US Map:";
+  PutSprite(__BIN_2);
   CrLf(10);
 }
 

@@ -1,3 +1,10 @@
+
+* Saw file line num links incorrect.  Went away.  Perhaps, OS.MPZ 
+mismatch/out-of-date.
+* Logrep throw for out-of-mem
+* {Lock|Rep}{Seg|2E=NotBr|3E=Br}{OP}{ADD}{REX}
+* Virtual Box MP reboot
+* Std local var names
 * EIE_ABS_ADDR 64
 
 //After Egypt possible future ideas
@@ -6,13 +13,16 @@
 //Moses Comics 100304-
 
 Cody [::/LT/Demo/Graphics/Extents.CPZ] ::/LT/Demo/Graphics/Extents.CPZ.
-multicore layers
+Multicore "layers" demo art.
 
 GrEdit: Move sidebar selected elems.
       - Be careful of multipoint elems.
 GrEdit: Strip origin shift cmds.
 
-GrEditBitmap, grabscroll
+GrEditBitmap, grabscroll? 
+GrEditBitmap, cut/paste boxes.
+
+* Might make TS/TAD sub account.
 
 extern of fun with dft arg of str?
 
@@ -29,34 +39,33 @@ exceptions
 CDROM burning
 filemgr
 
-[Genesis,1:1] Genesis,1:1
-
 * We kinda need a routine to return how much free memory, so that
 applications 
 can plan a big alloc.
 
 * FileMgr bad with lots of files.
-* Recovery disk fail on Cody1 with LTLite
 
 * This [::/LT/OSMain/TaskCmd.CPZ,Fs->catch_except=TRUE] Fs->catch_except=TRUE
 causes problems because it catches divide and 
 out-of-mem.  Not sure what to do, yet.
-* [C:/LT/OSMain/MultiProc.CPZ,422] MPStart() free old task memory. (Prolly
+* [C:/LT/OSMain/MultiProc.CPZ,414] MPStart() free old task memory. (Prolly
 never gonna do anything about this.)
-* [C:/LT/OSMain/Adam1b.HPZ,132] sys_var_init_flag local vars.
-* grelem shift points, ctrl pt for ellipse/polygon w,h is off when rotated.
+* [C:/LT/OSMain/Adam1b.HPZ,128] sys_var_init_flag local vars.
+* sprite shift points, ctrl pt for ellipse/polygon w,h is off when rotated.
 
-* return vals for grrect,grblot,grputchar.
-* collisions for grrect,grblot,grputchar.
+* return vals for grrect, grblot, grputchar.
+* collisions for grrect, grblot, grputchar.
 
-* Window manager needs to do LTF operations on posted messages from mouse.
+* Window manager needs to do LTF operations on posted messages from mouse.  
+Works for [C:/LT/OSMain/KbdMouse/InputPointer.CPZ,76] SetIP(), though.
 
-* add local vars to sym table in [C:/LT/OSMain/Dbg1a.CPZ,362] Dbg()?  (maybe)
+* Add local vars to sym table in [C:/LT/OSMain/Dbg1a.CPZ,432] Dbg()?  (maybe)
+
+This shit: 
 
 
 
-
-* [Proverbs,30:10] Proverbs,30:10
+* Who's ever reading this -- [Proverbs,30:10] Proverbs,30:10
 
 * [::/LT/Adam/Ltf/LtfRecalc.APZ,->tag+i] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse 0x9FC30,
@@ -64,7 +73,7 @@ get
 kbd lights working.
 * figure-out hyperthread vs nonhyperthread CPU's
 * Might have issue with compiler exceptions and restoring lex.hash tables.
-* generates two compiler error messages for expressions in statements.
+* Generates two compiler error messages for expressions in statements.
 * release semaphores or break lock sema,usb_td
 * Fix Mom's secondary CD-ROM, dad's primary
 * pmtstr in install didn't like focus change
@@ -78,8 +87,8 @@ kbd lights working.
 
 * Syncronize VGA memory update with the hardware refresh cycle.
 
-* Demo [C:/LT/OSMain/Adam1a.HPZ,3745] TaskKeyDevStruct
-* demo [C:/LT/Adam/ToHtml.APZ,252] ToHtml().
+* Demo [C:/LT/OSMain/Adam1a.HPZ,3731] TaskKeyDevStruct
+* Demo [C:/LT/Adam/ToHtml.APZ,252] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have
 generated 
@@ -92,7 +101,7 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/LT/OSMain/Adam1a.HPZ,3419] BMF_SYMMETRY, before transformation?
+* [C:/LT/OSMain/Adam1a.HPZ,3405] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -106,7 +115,7 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 the end.
 * autofile popup of popup
 * cfg mgr bug--change focus
-* <CTRL-R> delete subgrelem in menu near others
+* <CTRL-R> delete subsprite in menu near others
 * consider changing domenu so a real <ESC> on menu item doesn't select
 (<SPACE 
 BAR> sends <ESC> followed by <SPACE BAR> or something)
@@ -156,7 +165,7 @@ registry-like routines... or registry I guess.
 * more signed int disassembly
 * support r4u8 by adding 0x40 byte
 
-* something makes [C:/LT/Compiler/OptPass012.CPZ,164] OptEnd not right
+* something makes [C:/LT/Compiler/OptPass012.CPZ,166] OptEnd not right
 * static var off of data heap.
 * Might want to use 32*32 multiplication.
 * could add "const" to not set LF_NOT_CONSTANT flag for trig, etc.
@@ -184,3 +193,5 @@ F64.
 * recalc_start could be more accurate before recalculating?
 * In LtfPutS, might need to alloc extstr, ect from different heap.
 
+The pattern for Major Geeks/BetaNews is too regular.  And, I added all those 
+shareware sites and no affect on downloads.
