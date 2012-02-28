@@ -6,9 +6,9 @@ U8 *CmpPmt(BoolI8 dbl_semicolon=FALSE)
 
   for (i=MinI64(3,Fs->answers_displayed-1);i>=0;i--) {
     if (Fs->answer_types[i]==IT_F64)
-      "ansf%d=%15.7g=%15e\r\n",i,Fs->answers[i],Fs->answers[i];
+      "ansf%d=%15.7g=%15e\n",i,Fs->answers[i],Fs->answers[i];
     else
-      "ans%d=0x%016X=%d\r\n",i,Fs->answers[i],Fs->answers[i];
+      "ans%d=0x%016X=%d\n",i,Fs->answers[i],Fs->answers[i];
   }
   if (st=CurDir) {
     "" st;
@@ -211,13 +211,13 @@ U64 LexGetChar(LexStruct *lx)
 		  cl=cl->next;
 		}
 		break;
-	      case LTFT_CR:
+	      case LTFT_NEW_LINE:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_line_feed;
 		tempf->line_start=cl->next;
 		tempf->line_num=cl->y+2;	//+1 because CR is on previous line, +1 because l y starts at zero
 		compiled_lines++;
 		if (lx->opts & OPTF_ECHO)
-		  CrLf;
+		  NewLine;
 		lx->last_U16=CH_CR;
 		return CH_CR;
 	      case LTFT_TAB:
@@ -343,7 +343,7 @@ U64 LexGetChar(LexStruct *lx)
       case CH_CURSOR:
       case CH_FORM_FEED:
 	goto lex_getchar_start;
-      case CH_LINE_FEED:
+      case CH_NEW_LINE:
 	tempf=lx->cur_lfn;
 	if (tempf->flags & LFSF_IS_LTF)
 	  if (result==CH_SHIFT_SPACE)
@@ -548,7 +548,7 @@ U0 MemberAdd(LexStruct *lx,MemberListStruct *tempm,ClassStruct *tempc)
 {
   U8 *st=tempm->str;
   MemberListStruct **tempm1,*tempm2;
-  if (MemberFind(st,tempc) && StrCmp(st,"pad") && StrCmp(st,"reserved"))
+  if (MemberFind(st,tempc) && StrCmp(st,"pad") && StrCmp(st,"reserved") && StrCmp(st,"_anon_"))
     PrsExcept(lx,"ST_DUP_MEMBER");
   tempm1=&tempc->member_list;
   while (tempm2=*tempm1) {
@@ -667,7 +667,7 @@ I64 LexInStr(LexStruct *lx,
     } else if (ch=='\\') {
       switch (ch=LexGetChar(lx)) {
 	case 'n':
-	  buf[i++]=CH_LINE_FEED;
+	  buf[i++]=CH_NEW_LINE;
 	  break;
 	case 'r':
 	  buf[i++]=CH_CR;
@@ -984,7 +984,7 @@ lex_float_start:
 	      if (ch=='\\') {
 		switch (ch=LexGetChar(lx)) {
 		  case 'n':
-		    k.u8[j]=CH_LINE_FEED;
+		    k.u8[j]=CH_NEW_LINE;
 		    break;
 		  case 'r':
 		    k.u8[j]=CH_CR;
@@ -1117,7 +1117,7 @@ lex_octal:
 		      if (ch!=CH_CR) {
 			buf[j++]='\\';
 			buf[j++]=ch;
-		      } else if (LexGetChar(lx)!=CH_LINE_FEED)
+		      } else if (LexGetChar(lx)!=CH_NEW_LINE)
 			lx->flags|=LF_USE_LAST_U16;
 		    } else {
 		      buf[j++]='\\';
@@ -1426,7 +1426,7 @@ lex_ifnstatic:
 	}
 	break;
       case CH_CR:
-	if (!(lx->flags&LF_KEEP_CR))
+	if (!(lx->flags&LF_KEEP_NEW_LINES))
 	  break; //else fall through
       case TK_INSERT_BINARY:
       case TK_INSERT_BINARY_TYPE:
@@ -1527,7 +1527,7 @@ lex_check_comment:
 	      i>>=16;
 	      if (!i) {  // "//"
 		LexSkipEol(lx);
-		if (lx->flags&LF_KEEP_CR) {
+		if (lx->flags&LF_KEEP_NEW_LINES) {
 		  lx->token=CH_CR;
 		  goto lex_end;
 		} else
@@ -1604,19 +1604,19 @@ U8 *LexPutLine(LexStruct *lx,U8 *start)
   else {
     ptr=start;
     while (ch=*ptr++) {
-      if (ch==CH_LINE_FEED) {
+      if (ch==CH_NEW_LINE) {
 	if (*ptr==CH_CR)
 	  ptr++;
 	break;
       } else if (ch==CH_CR) {
-	if (*ptr==CH_LINE_FEED)
+	if (*ptr==CH_NEW_LINE)
 	  ptr++;
 	break;
       }
       '' ch;
     }
     if (!ch) ptr--;
-    CrLf;
+    NewLine;
     return ptr;
   }
   return NULL;
@@ -1633,7 +1633,7 @@ U0 LexPutLink(LexStruct *lx)
     "%s,%d ",lx->cur_lfn->name,lx->cur_lfn->line_num;
   else {
     PutFileLink(lx->cur_lfn->name,lx->cur_lfn->line_num);
-    AdamErr("%s,%d\r",lx->cur_lfn->name,lx->cur_lfn->line_num);
+    AdamErr("%s,%d\n",lx->cur_lfn->name,lx->cur_lfn->line_num);
     '' CH_SPACE;
   }
 }
@@ -1654,7 +1654,7 @@ U0 PutLexErr(LexStruct *lx,U8 *name,U8 *msg=NULL)
   if (msg) {
     "" msg;
     if (!IsRaw)
-      AdamErr("%s\r\n",msg);
+      AdamErr("%s\n",msg);
   }
   LexPutToken(lx);
   LexPutLink(lx);
@@ -1674,14 +1674,14 @@ U0 PutLexFunWarn(LexStruct *lx,ClassStruct *fun_class,U8 *name,U8 *msg=NULL)
 {
   PrintFWarn("%S%s",name,msg);
   if (fun_class) {
-    "%S'%s'.\r\n","ST_IN_FUN",fun_class->str;
+    "%S'%s'.\n","ST_IN_FUN",fun_class->str;
     if (IsRaw)
       "%s",fun_class->src_link;
     else {
       "$LK-A,\"%s\"$",fun_class->src_link;
-      AdamErr("%s\r",fun_class->src_link);
+      AdamErr("%s\n",fun_class->src_link);
     }
-    CrLf;
+    NewLine;
   } else {
     LexPutToken(lx);
     LexPutLink(lx);

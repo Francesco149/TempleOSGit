@@ -16,7 +16,7 @@ U0 ShowPattern(U8 *st)
   U8 ch;
   while (ch=*st++)
     ShowDigit(ch);
-  CrLf;
+  NewLine;
 }
 
 U0 Digits()
@@ -27,14 +27,14 @@ U0 Digits()
   LtfClear;
   //Set default background and foreground
   "$WW,1$$BD,DKGRAY$$FD,WHITE$"
-  "\r\nThis is a mem game.  "
+  "\nThis is a mem game.  "
   "Try to remember the digits and enter them.  "
   "They are colored based on electrical "
-  "engineering color codes.\r\n";
+  "engineering color codes.\n";
   for (i=0;i<10;i++) {
-    "$FG,%Z$%d: %Z\r\n",i,"ST_RAINBOW_10",i,i,"ST_RAINBOW_10";
+    "$FG,%Z$%d: %Z\n",i,"ST_RAINBOW_10",i,i,"ST_RAINBOW_10";
   }
-  "$FG$\r\n"; //set to default background
+  "$FG$\n"; //set to default background
   if (!PressAKey) goto dg_done;
 
   while (TRUE) {
@@ -44,15 +44,15 @@ restart:
     MemSet(answer,0,sizeof(answer));
     while (TRUE) {
       LtfClear;
-      "$WW,1$$BD,DKGRAY$$FD,WHITE$\r\n";
-      "Pattern\r\nLength:%d\r\n\r\n",num+1;
+      "$WW,1$$BD,DKGRAY$$FD,WHITE$\n";
+      "Pattern\nLength:%d\n\n",num+1;
       answer[num++]=RandU32%10+'0';
       ShowPattern(answer);
       if (!PressAKey) goto dg_done;
 
       LtfClear;
-      "$WW,1$$BD,DKGRAY$$FD,WHITE$\r\n";
-      "Guess\r\nLength:%d\r\n\r\n",num;
+      "$WW,1$$BD,DKGRAY$$FD,WHITE$\n";
+      "Guess\nLength:%d\n\n",num;
       for (i=0;i<num;i++) {
 	ch=GetChar(NULL,FALSE);
 	if (ch==CH_SHIFT_ESC || ch==CH_ESC)
@@ -60,7 +60,7 @@ restart:
 	ShowDigit(ch);
 	if (ch!=answer[i]) {
 	  Snd(0);
-	  "\r\nScore:%d\r\n",num;
+	  "\nScore:%d\n",num;
 	  ShowPattern(answer);
 	  Beep;
 	  Beep;
@@ -71,7 +71,7 @@ restart:
     }
   }
 dg_done:
-  "$CL$\r\n";
+  "$CL$\n";
 }
 
 Digits;

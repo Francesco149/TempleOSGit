@@ -311,7 +311,7 @@ U0 DrawBackGroundTextLayer()
   LtfBottom;
   LtfClear;
   "$BG,LTCYAN$";
-  CrLf(GROUND_Y/FONT_HEIGHT);
+  NewLine(GROUND_Y/FONT_HEIGHT);
   "$BG,YELLOW$";
 }
 

@@ -33,13 +33,14 @@ U0 ExportBinary(U8 *src_file,LtfBinEntry *b) {
   *buf=0;
   buf=MSPrintF("%s%d.DTC",buf1,b->num);
   Free(buf1);
-  "%s\r\n",buf;
+  "%s\n",buf;
   FileWrite(buf,b->data,b->size);
   Free(buf);
 }
 
 U8 *ResolveLink(U8 *filename)
-{ //Adapted from [C:/LT/Adam/Ltf/LtfMain.APZ,3] EdJoin. Resolves stuff like MN:Func to the file
+{ //Adapted from [C:/LT/Adam/Ltf/LtfMain.APZ,3] EdJoin. Resolves stuff like
+MN:Func to the file
   U8 *buf;
   I64 i;
   SrcSymHashEntry *temph;
@@ -66,24 +67,22 @@ U8 *IndentString(I64 n) {
   return s;
 }
 
-U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0,BoolI64 debug=FALSE)
+U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
 { //Performs word wrapping on base, starting from s, line_len is state.
   //Also adds indent spaces to every soft and hard newline.
   //Returns new value for base.
   //This is supposed to also take tabs into account but fuck that shit
-  I64 len,i;
+  I64 len;
   U8 *p,*buf;
   U8 *end;
   U8 *lbstring;
   I64 lbstring_len;
 
-  if (debug)
-    lbstring=StrNew("\r\n");
-  else
-    lbstring=StrNew("\n");
-  for (i=0;i<indent;i++)
-    lbstring=StrAdd(lbstring," ");
-  lbstring_len=StrLen(lbstring);
+  lbstring=MAlloc(indent+2);
+  lbstring[0]='\n';
+  MemSet(lbstring+1,' ',indent);
+  lbstring[indent+1]=0;
+  lbstring_len=indent+1;
 
   s-=*line_len;
   end=s+EXPORT_W;
@@ -153,7 +152,7 @@ U8 *StrToASCII(U8 *s)
       case 255: ext="\\xFF"; break; //Only used in the extended chars demo
       default:
         if (*buf&0x80)
-          "W: extended ASCII char: '%c'\r\n",*buf;
+          "W: extended ASCII char: '%c'\n",*buf;
         goto next_char;
     }
     if (StrLen(ext)!=1) {
@@ -249,14 +248,14 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
       buf+=olen;
       for (i=0;i<b->size;i++)
         SPrintF(buf+i<<2,"\\x%02X",b->data[i]);
-      out=StrAdd(out,"\"\r\n");
+      out=StrAdd(out,"\"\n");
     } else if (StrCmp(ext,"MPC"))
       ExportBinary(out_path,b);
 //MP files are symbol maps and the binary data is just debug info (line nums)
 //so there's no need to create hundreds of bin files just for the line nums
   }
   if (*out)
-    out=StrAdd(out,"\r\n");
+    out=StrAdd(out,"\n");
   for (cl=l->root.next;cl!=l;cl=cl->next) {
     switch (cl->type_u8) {
       case LTFT_ERROR:
@@ -329,13 +328,13 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
           out=StrAdd(out,cl->tag);
         else
           out=StrAdd(out,"(macro)");
-        out=StrAdd(out,"\r\n");
+        out=StrAdd(out,"\n");
         if (cl->flags & LTFLF_RIGHT_MACRO) {
-          buf=MSPrintF("%s`%s`\r\n",out,cl->right_macro);
+          buf=MSPrintF("%s`%s`\n",out,cl->right_macro);
           Free(out); out=buf;
         }
         if (cl->flags & LTFLF_LEFT_MACRO) {
-          buf=MSPrintF("%s`%s`\r\n",out,cl->left_macro);
+          buf=MSPrintF("%s`%s`\n",out,cl->left_macro);
           Free(out); out=buf;
         }
         break;
@@ -351,15 +350,10 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
         out=StrAdd(out," ");
         out=StrAdd(out,cl->aux_str);
         break;
-      case LTFT_CR:
-      case LTFT_SOFT_CR:
-        if (debug) {
-          out=StrAdd(out,"\r\n");
-          prev_len+=2;
-        } else {
-          out=StrAdd(out,"\n");
-          prev_len++;
-        }
+      case LTFT_NEW_LINE:
+      case LTFT_SOFT_NEW_LINE:
+        out=StrAdd(out,"\n");
+        prev_len++;
         if (!(flags & LTFLF_WORD_WRAP)) {
           line_len=indent;
           out=StrAdd(out,indents);
@@ -426,11 +420,11 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
       default:
         buf=MSPrintF("%s /* Unknown token: %d */ ",out,cl->type_u8);
         Free(out); out=buf;
-        "Unknown token: %d\r\n",cl->type_u8;
+        "Unknown token: %d\n",cl->type_u8;
         break;
     }
     if (flags & LTFLF_WORD_WRAP)
-      out=Wrap(out,out+prev_len,&line_len,indent,debug);
+      out=Wrap(out,out+prev_len,&line_len,indent);
     prev_len=StrLen(out);
   }
   out=StrToASCII(out);
@@ -443,7 +437,8 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/LT/Adam/Dsk2a.APZ,89] PutCopyTree which is internally used by [C:/LT/Adam/Dsk2a.APZ,109] CopyTree
+//Adapted from [C:/LT/Adam/Dsk2a.APZ,89] PutCopyTree which is internally used
+by [C:/LT/Adam/Dsk2a.APZ,109] CopyTree
 U0 PutExportTree(LTDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   U8 *dst_dir,BoolI64 debug=FALSE)
 {
@@ -453,7 +448,7 @@ U0 PutExportTree(LTDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
     MemCpy(path,dst_dir,dst_dir_len);
     path[dst_dir_len]='/';
     StrCpy(path+dst_dir_len+1,ent->full_name+src_dir_len);
-    "%s\r\n",path;
+    "%s\n",path;
     if (ent->attr & LT_ATTR_DIR) {
       MkDir(path);
       if (ent->sub)

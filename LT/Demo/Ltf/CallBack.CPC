@@ -81,7 +81,7 @@ with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry.
 //Send carriage return, new line, so
 //that the timer string is not part
 //of the next cmd on the cmd line.
-  CrLf;
+  NewLine;
 }
 
 

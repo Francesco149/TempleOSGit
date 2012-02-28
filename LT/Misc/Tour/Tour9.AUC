@@ -1,11 +1,11 @@
 PopUpOk(
-"All text widgets work everywhere.\r\n"
-"The $FG,GREEN$Type()$FG$ command is like\r\n"
-"the DOS command of the same name\r\n"
-"or the UNIX, $FG,GREEN$cat$FG$ command.\r\n"
-"We will now send your menu document\r\n"
-"to the command line.  They use the same\r\n"
-"document format and it is active!!.\r\n");
+"All text widgets work everywhere.\n"
+"The $FG,GREEN$Type()$FG$ command is like\n"
+"the DOS command of the same name\n"
+"or the UNIX, $FG,GREEN$cat$FG$ command.\n"
+"We will now send your menu document\n"
+"to the command line.  They use the same\n"
+"document format and it is active!!.\n");
 
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
@@ -19,10 +19,10 @@ AFPmtStr("\r");
 Sleep(1500);
 
 PopUpOk(
-"We will now run a test-suite\r\n"
-"that automatically executes\r\n"
-"most LoseThos commands.  It takes\r\n"
-"a few minutes, so kick-back.\r\n");
+"We will now run a test-suite\n"
+"that automatically executes\n"
+"most LoseThos commands.  It takes\n"
+"a few minutes, so kick-back.\n");
 
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 

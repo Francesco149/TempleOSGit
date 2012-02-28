@@ -66,12 +66,12 @@ void main()
   bool b;
 
   LtfClear();
-  PrintF("char\t:%d\r\n",sizeof(ch));
-  PrintF("bool\t:%d\r\n",sizeof(b));
-  PrintF("short\t:%d\r\n",sizeof(s));
-  PrintF("int\t:%d\r\n",sizeof(i));
-  PrintF("long\t:%d\r\n",sizeof(q));
-  PrintF("double\t:%d\r\n",sizeof(d));
+  PrintF("char\t:%d\n",sizeof(ch));
+  PrintF("bool\t:%d\n",sizeof(b));
+  PrintF("short\t:%d\n",sizeof(s));
+  PrintF("int\t:%d\n",sizeof(i));
+  PrintF("long\t:%d\n",sizeof(q));
+  PrintF("double\t:%d\n",sizeof(d));
 }
 
 main(); //run main() when [C:/LT/OSMain/Hash1a.CPZ,733] Load()ed.

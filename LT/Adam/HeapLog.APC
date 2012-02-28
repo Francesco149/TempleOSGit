@@ -98,14 +98,14 @@ public U0 HeapLogRep()
       '' CH_SPACE;
       if (!PutSrcLink(temph->caller4,64))
 	"%P",temph->caller4;
-      CrLf;
+      NewLine;
 
       total+=MSize(temph->add);
       temph=temph->next;
     }
   }
   LBEqu(&sys_semas[SYS_SEMA_HEAPLOG],0,old_val);
-  "\r\n$FG,LTRED$Total:%08X$FG$\r\n",total;
+  "\n$FG,LTRED$Total:%08X$FG$\n",total;
 }
 
 public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
@@ -113,7 +113,7 @@ public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
   U64 i;
   if (val) {
     if (Bt(&sys_semas[SYS_SEMA_HEAPLOG],0))
-      "HeapLog Already Active\r\n";
+      "HeapLog Already Active\n";
     else {
       if (!task) task=Fs;
       heaplog_test_task=task;
@@ -127,7 +127,7 @@ public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
     }
   } else {
     if (!LBtr(&sys_semas[SYS_SEMA_HEAPLOG],0))
-      "HeapLog Not Active\r\n";
+      "HeapLog Not Active\n";
     else {
       Kill(heaplog_task);
       heaplog_task=NULL;

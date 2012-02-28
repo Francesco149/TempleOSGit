@@ -10,17 +10,17 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
   ClassStruct *cl,*cl2;
   if (depth>=max_depth) return TRUE;
   if (!(cl=HashFind(class_name,Fs->hash_table,types))) {
-    LtfPutS(l,"Class Not Found.\r\n");
+    LtfPutS(l,"Class Not Found.\n");
     return FALSE;
   }
   if (!ChkPtr(d) || !ChkPtr(d><(U8 *)+cl->size)) {
-    LtfPrintF(l,"Bad Ptr:%016X\r\n",d);
+    LtfPrintF(l,"Bad Ptr:%016X\n",d);
     return FALSE;
   }
   if (cl->base_class && !ClassRep2(l,cl->base_class->str,d,depth,max_depth,dynamic,types,offset))
     return FALSE;
   unlock=LtfLock(l);
-  LtfPrintF(l,"Class:\"%s\"\r\n",class_name);
+  LtfPrintF(l,"Class:\"%s\"\n",class_name);
   ml=cl->member_list;
   while (ml) {
     cl2=ml->member_class;
@@ -36,28 +36,28 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
 	ptr=*ptr;
 	if (ChkPtr(ptr)) {
 	  if (dynamic) {
-	    ll=LtfPutS(l,"$DA-T-P+RD,64,\"%40ts\"$\r\n");
+	    ll=LtfPutS(l,"$DA-T-P+RD,64,\"%40ts\"$\n");
 	    ll->data=ptr;
 	    LtfDataFmt(ll);
 	  } else
-	    LtfPrintF(l,"%40ts\r\n",ptr);
+	    LtfPrintF(l,"%40ts\n",ptr);
 	}
       } else if (!j) {
 	j=MinI64(ml->dim.total_cnt,32);
 	if (cl2->sub_type==IT_I8 || cl2->sub_type==IT_U8) {
 	  if (j==1) {
 	    if (dynamic) {
-	      ll=LtfPutS(l,"$DA-T+RD+UD-U64+U8,32,\"%c\"$\r\n");
+	      ll=LtfPutS(l,"$DA-T+RD+UD-U64+U8,32,\"%c\"$\n");
 	      ll->data=ptr;
 	    } else
-	      LtfPrintF(l,"%c\r\n",*ptr><(U8 *));
+	      LtfPrintF(l,"%c\n",*ptr><(U8 *));
 	  } else {
 	    if (dynamic) {
-	      ll=LtfPutS(l,"$DA-T-P+RD,64,\"%40ts\"$\r\n");
+	      ll=LtfPutS(l,"$DA-T-P+RD,64,\"%40ts\"$\n");
 	      ll->data=ptr;
 	      LtfDataFmt(ll);
 	    } else
-	      LtfPrintF(l,"%40ts\r\n",ptr);
+	      LtfPrintF(l,"%40ts\n",ptr);
 	  }
 	}
 	for (i=0;i<j;i++) {
@@ -110,13 +110,13 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
 	  LtfPutS(l,"...");
       } else
 	LtfPrintF(l,"%016X",*ptr);
-      LtfPutS(l,"\r\n");
+      LtfPutS(l,"\n");
     } else {
       if (depth<2) {
 	if (j==1 && !ChkPtr(*ptr))
-	  LtfPrintF(l,"%-20ts:%016X\r\n",ml->str,*ptr);
+	  LtfPrintF(l,"%-20ts:%016X\n",ml->str,*ptr);
 	else {
-	  LtfPrintF(l,"$TR,\"%s\"$\r\n",ml->str);
+	  LtfPrintF(l,"$TR,\"%s\"$\n",ml->str);
 	  LtfPutS(l,"$ID,2$");
 	  if (!j)
 	    ClassRep2(l,cl2->str,ptr,depth+1,max_depth,dynamic);
@@ -125,7 +125,7 @@ BoolI64 ClassRep2(Ltf *l,U8 *class_name,U8 *d,I64 depth,U64 max_depth,BoolI8 dyn
 	  LtfPutS(l,"$ID,-2$");
 	}
       } else
-	LtfPrintF(l,"%-20ts\r\n",ml->str);
+	LtfPrintF(l,"%-20ts\n",ml->str);
     }
     ml=ml->next;
   }
@@ -151,7 +151,7 @@ public U0 ClassRep(U8 *class_name,U8 *d,I64 max_depth=2,BoolI8 fun=FALSE,I64 off
     ClassRep2(l,class_name,d,0,max_depth,FALSE,HTT_FUN,offset);
   else
     ClassRep2(l,class_name,d,0,max_depth,FALSE,HTT_CLASS,offset);
-  LtfPutS(l,"\r\n");
+  LtfPutS(l,"\n");
   LtfRecalc(l);
   if (IsRaw) {
     LtfDump(l,150000);
@@ -176,7 +176,7 @@ public U0 ClassRepD(U8 *class_name,U8 *d,I64 max_depth=2,BoolI8 fun=FALSE,I64 of
     ClassRep2(l,class_name,d,0,max_depth,TRUE,HTT_FUN,offset);
   else
     ClassRep2(l,class_name,d,0,max_depth,TRUE,HTT_CLASS,offset);
-  LtfPutS(l,"\r\n");
+  LtfPutS(l,"\n");
   LtfRecalc(l);
   if (IsRaw) {
     LtfDump(l,150000);
@@ -228,12 +228,12 @@ public U0 FunRep(U8 *st,U8 *rbp=NULL,I64 max_depth=2,TaskStruct *task=NULL)
       tempm=tempc->member_list;
       while (tempm) {
 	if (0<=tempm->register<NUM_REGS)
-	  "%08Z %s\r\n",tempm->register,"ST_U64_REGS",tempm->str;
+	  "%08Z %s\n",tempm->register,"ST_U64_REGS",tempm->str;
 	else
-	  "%08tX %s\r\n",tempm->offset,tempm->str;
+	  "%08tX %s\n",tempm->offset,tempm->str;
 	tempm=tempm->next;
       }
-      "%08tX Stk Size\r\n",tempc->size;
+      "%08tX Stk Size\n",tempc->size;
     }
   }
 }
@@ -248,7 +248,7 @@ public U0 Uf(U8 *st)
     if (dbg=tempc->debug) {
       i=dbg->body[dbg->max_line-dbg->min_line+1]-tempc->executable_addr;
       Un(tempc->executable_addr,i);
-      "Code Size:%04X\r\n",i;
+      "Code Size:%04X\n",i;
     } else
       U(tempc->executable_addr);
   }
@@ -343,7 +343,7 @@ public U0 Go(TaskStruct *task=NULL)
 {
   if (!task) task=Fs;
   if (BptFind(task,task->rip))
-    "!!! Single Step First !!!\r\n";
+    "!!! Single Step First !!!\n";
   else {
     LBtr(&task->task_flags,TASKf_DISABLE_BPTS);
     LBtr(&task->rflags,RFLAGS_SINGLE_STEP);

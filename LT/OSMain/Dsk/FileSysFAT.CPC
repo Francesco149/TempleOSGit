@@ -792,7 +792,7 @@ BoolI64 FAT32FilesDel(LTPrt *p,U8 *cur_dir,U8 *files_find_mask,U64 fuf_flags,
 	      if (print_msg) {
 		PutDefine("ST_DELETE");
 		"" long_name.name;
-		CrLf;
+		NewLine;
 	      }
 	      *buf[cur_dir_entry].name=0xE5;
 	      i=1;

@@ -1,7 +1,7 @@
 PopUpOk(
-"$LK,\"F\",\"MN:F\"$() is a handy function.\r\n"
-"It is a wrapper around $LK,\"Grep\",\"MN:Grep\"$().\r\n"
-"It searches the $FG,GREEN$/LT$FG$ tree for a sym.\r\n"
+"$LK,\"F\",\"MN:F\"$() is a handy function.\n"
+"It is a wrapper around $LK,\"Grep\",\"MN:Grep\"$().\n"
+"It searches the $FG,GREEN$/LT$FG$ tree for a sym.\n"
 );
 
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
@@ -18,8 +18,8 @@ AFPmtStr("\r");
 
 
 PopUpOk(
-"Try it with the $FG,GREEN$+l$FG$ flag.\r\n"
-"This limits to whole labels, not partials.\r\n");
+"Try it with the $FG,GREEN$+l$FG$ flag.\n"
+"This limits to whole labels, not partials.\n");
 
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
@@ -35,9 +35,9 @@ AFPmtStr("\r");
 
 
 PopUpOk(
-"Try it with the $FG,GREEN$+l-i$FG$ flag.\r\n"
-"This does not ignore case and\r\n"
-"limits to whole labels, not partials.\r\n");
+"Try it with the $FG,GREEN$+l-i$FG$ flag.\n"
+"This does not ignore case and\n"
+"limits to whole labels, not partials.\n");
 
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
@@ -52,10 +52,10 @@ AFPmtStr("\r");
 
 
 PopUpOk(
-"The wrapper function is in your\r\n"
-"$FG,RED$HOME/Adam3eWrappers.APZ$FG$ file.\r\n"
-"There is a function $LK,\"R\",\"MN:R\"$() for\r\n"
-"find and replace.  Feel free to customize.\r\n");
+"The wrapper function is in your\n"
+"$FG,RED$HOME/Adam3eWrappers.APZ$FG$ file.\n"
+"There is a function $LK,\"R\",\"MN:R\"$() for\n"
+"find and replace.  Feel free to customize.\n");
 
 PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
@@ -68,5 +68,5 @@ AFPmtStr("\r");
 
 Sleep(2000);
 PopUpOk(
-"$FG,GREEN$<SHIFT-ESC>$FG$ to abort the source code.\r\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort the source code.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);

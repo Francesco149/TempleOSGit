@@ -8,7 +8,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/LT/OSMain/Adam1a.HPZ,1459] IcArg.  RAX is the most common register
+[C:/LT/OSMain/Adam1a.HPZ,1463] IcArg.  RAX is the most common register
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -354,7 +354,7 @@ U64 IcModr(U64 r,U64 t2,U64 r2,I64 d2)
   //result.u[3] is SIB
   U64 result=0;
   if (t2&TY_MASK>TY_RIP_DISP32) {
-    "Callers:%P;%P\r\n",Caller,Caller(2);
+    "Callers:%P;%P\n",Caller,Caller(2);
     throw(EXCEPT_COMPILER,20);
   }
   if (t2&IT_MASK<IT_I64)

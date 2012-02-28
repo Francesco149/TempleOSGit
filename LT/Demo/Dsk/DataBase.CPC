@@ -4,8 +4,8 @@
 
 class Acct
 { //Use <CTRL-L> to help generate fmtstrs.
-  U8 name[32] fmtstr "$DA-P,32,\"Name:%s\"$\r\n";
-  U8 addr[64] fmtstr "$DA-P,64,\"Addr:%s\"$\r\n";
+  U8 name[32] fmtstr "$DA-P,32,\"Name:%s\"$\n";
+  U8 addr[64] fmtstr "$DA-P,64,\"Addr:%s\"$\n";
   U8 pad[DB_ACCT_BLKS*BLK_SIZE-64-32];
 };
 
@@ -59,7 +59,7 @@ U0 DatabaseDemo()
   do {
     "$FG,GREEN$R$FG$ead acct, $FG,GREEN$W$FG$rite acct or $FG,GREEN$<SHIFT-ESC>$FG$:";
     ch=ToUpper(GetChar);
-    CrLf;
+    NewLine;
     if (ch=='R') ReadAcct;
     if (ch=='W') WriteAcct;
   } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);

@@ -267,8 +267,8 @@ U0 LtfUpdateWinJoin(Ltf *l,BoolI8 to_screen,BoolI8 has_cursor,
       if (cl!=l) {
 	i=l->ww_lines_back;
 	ii=i/2;  //Threshold for stopping on SOFT_CR
-	while (i-- && cl->type_u8!=LTFT_CR &&
-	    (i>ii || cl->type_u8!=LTFT_SOFT_CR) &&
+	while (i-- && cl->type_u8!=LTFT_NEW_LINE &&
+	    (i>ii || cl->type_u8!=LTFT_SOFT_NEW_LINE) &&
 	    cl->flags & LTFLF_WORD_WRAP &&
 	    cl->last!=l)
 	  cl=cl->last;
@@ -348,7 +348,7 @@ restart:
     if (full_refresh_and_extra_processing) {
 word_wrap_start:
       cl2=cl->next;
-      if (cl2->type_u8==LTFT_SOFT_CR) {
+      if (cl2->type_u8==LTFT_SOFT_NEW_LINE) {
 	if (!same_win) {
 	  if (l->cur_entry==cl2) {
 	    l->cur_entry=cl2->next;
@@ -495,7 +495,7 @@ word_wrap2:
 	      Free(cl->tag);
 	      cl->tag=ptr;
 	      cl2=CAlloc(sizeof(LtfEntryBase),mem_task);
-	      cl2->type=LTFT_SOFT_CR | cl->type & 0xFFFFFF00;
+	      cl2->type=LTFT_SOFT_NEW_LINE | cl->type & 0xFFFFFF00;
 	      cl2->flags=cl->flags;
 	      cl2->x=x;
 	      cl2->y=y;
@@ -511,11 +511,11 @@ word_wrap2:
 	}
 	if (k>=i) {
 	  cl2=cl->last;
-	  if (cl2->type_u8!=LTFT_SOFT_CR &&
-	      cl2->type_u8!=LTFT_CR &&
+	  if (cl2->type_u8!=LTFT_SOFT_NEW_LINE &&
+	      cl2->type_u8!=LTFT_NEW_LINE &&
 	      cl2->type_u8!=LTFT_CURSOR_MOVEMENT) {
 	    cl2=CAlloc(sizeof(LtfEntryBase),mem_task);
-	    cl2->type=LTFT_SOFT_CR | cl->type & 0xFFFFFF00;
+	    cl2->type=LTFT_SOFT_NEW_LINE | cl->type & 0xFFFFFF00;
 	    cl2->flags=LTFLF_WORD_WRAP |
 		cl->flags & (LTFLF_LOCK_TO_PAGE|LTFLF_HIGHLIGHT|LTFLF_LOCK_TO_CENTER|LTF_BL_IV_UL|LTFLF_SKIP|LTFLF_HARD_SKIP|LTFLF_FILTER_SKIP);
 	    cl2->x=x;
@@ -848,8 +848,8 @@ skip_soft_cr:
 	  }
 	}
 	break;
-      case LTFT_CR:
-      case LTFT_SOFT_CR:
+      case LTFT_NEW_LINE:
+      case LTFT_SOFT_NEW_LINE:
 	if (to_screen) {
 	  if (!(cl->flags&LTFLF_DONT_DRAW)&& y_plot_top<=y<=y_plot_bottom)
 	    PlotWinAttr(win_task,width-(x-x0),
@@ -1673,7 +1673,7 @@ public U0 LtfRecalc(Ltf *l=NULL)
   unlock=LtfLock(l);
   if (l->recalc_start) {
     if (l->recalc_start!=l)
-      LtfRemSoftCRs(l,l->recalc_start);
+      LtfRemSoftNewLines(l,l->recalc_start);
   }
   LtfUpdateWinJoin(l,FALSE,FALSE,TRUE,FALSE);
   if (unlock)

@@ -34,34 +34,34 @@ I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
     st1=MSPrintF("%Z",color.c0.color,"ST_COLORS");
     st2=StrNew("");
   }
-  LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"BitMap Menu\"$$FG$\r\n"
-	"$FG,RED$Settings$FG$\r\n"
-	"$MU-UL,\"Color        %s\",GEBM_COLOR$\r\n"
-	"$MU-UL,\"Dither Color %s\",GEBM_DITHER_COLOR$\r\n"
-	"$MU-UL,\"Width        %d\",GEBM_WIDTH$\r\n"
-	"$MU-UL,\"Snap %d %5.3f\",GEBM_SNAP$\r\n"
-	"\r\n$FG,RED$Objects$FG$\r\n"
-	"$MU-UL,\"Point\",GEBM_POINT$\r\n"
-	"$MU-UL,\"Line\",GEBM_LINE$\r\n"
-	"$MU-UL,\"Arrow\",GEBM_ARROW$\r\n"
-	"$MU-UL,\"Rect\",GEBM_RECT$\r\n"
-	"$MU-UL,\"Circle\",GEBM_CIRCLE$\r\n"
-	"$MU-UL,\"Text\",GEBM_TEXT$\r\n"
-	"$MU-UL,\"Text Box\",GEBM_TEXT_BOX$\r\n"
-	"$MU-UL,\"Text Diamond\",GEBM_TEXT_DIAMOND$\r\n"
-	"$MU-UL,\"Flood Fill\",GEBM_FLOOD_FILL$\r\n"
-	"$MU-UL,\"Flood Fill Not Color\",GEBM_FLOOD_FILL_NOT$\r\n"
-	"$MU-UL,\"PolyLine\",GEBM_POLYLINE$\r\n"
-	"$MU-UL,\"PolyPoint\",GEBM_POLYPOINT$\r\n"
-	"\r\n$FG,RED$Clipboard$FG$\r\n"
-	"$MU-UL,\"Cut\",GEBM_CUT$\r\n"
-	"$MU-UL,\"Delete\",GEBM_DELETE$\r\n"
-	"$MU-UL,\"Paste\",GEBM_PASTE$\r\n"
-	"$MU-UL,\"Paste Transparent\",GEBM_PASTE_TRANSPARENT$\r\n"
-	"\r\n$MU-UL,\"Undo\",GEBM_UNDO$\r\n"
-	"\r\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GEBM_CONT$$FM,LTBLUE$\r\n"
-	"$MU-UL,\"End\",GEBM_END$\r\n"
-	"$MU-UL,\"Cancel\",LTFM_CANCEL$\r\n",st1,st2,width,snap,ip_scaler);
+  LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"BitMap Menu\"$$FG$\n"
+	"$FG,RED$Settings$FG$\n"
+	"$MU-UL,\"Color        %s\",GEBM_COLOR$\n"
+	"$MU-UL,\"Dither Color %s\",GEBM_DITHER_COLOR$\n"
+	"$MU-UL,\"Width        %d\",GEBM_WIDTH$\n"
+	"$MU-UL,\"Snap %d %5.3f\",GEBM_SNAP$\n"
+	"\n$FG,RED$Objects$FG$\n"
+	"$MU-UL,\"Point\",GEBM_POINT$\n"
+	"$MU-UL,\"Line\",GEBM_LINE$\n"
+	"$MU-UL,\"Arrow\",GEBM_ARROW$\n"
+	"$MU-UL,\"Rect\",GEBM_RECT$\n"
+	"$MU-UL,\"Circle\",GEBM_CIRCLE$\n"
+	"$MU-UL,\"Text\",GEBM_TEXT$\n"
+	"$MU-UL,\"Text Box\",GEBM_TEXT_BOX$\n"
+	"$MU-UL,\"Text Diamond\",GEBM_TEXT_DIAMOND$\n"
+	"$MU-UL,\"Flood Fill\",GEBM_FLOOD_FILL$\n"
+	"$MU-UL,\"Flood Fill Not Color\",GEBM_FLOOD_FILL_NOT$\n"
+	"$MU-UL,\"PolyLine\",GEBM_POLYLINE$\n"
+	"$MU-UL,\"PolyPoint\",GEBM_POLYPOINT$\n"
+	"\n$FG,RED$Clipboard$FG$\n"
+	"$MU-UL,\"Cut\",GEBM_CUT$\n"
+	"$MU-UL,\"Delete\",GEBM_DELETE$\n"
+	"$MU-UL,\"Paste\",GEBM_PASTE$\n"
+	"$MU-UL,\"Paste Transparent\",GEBM_PASTE_TRANSPARENT$\n"
+	"\n$MU-UL,\"Undo\",GEBM_UNDO$\n"
+	"\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GEBM_CONT$$FM,LTBLUE$\n"
+	"$MU-UL,\"End\",GEBM_END$\n"
+	"$MU-UL,\"Cancel\",LTFM_CANCEL$\n",st1,st2,width,snap,ip_scaler);
   i=PopUpMenu(l);
   Free(st1);
   Free(st2);
@@ -139,7 +139,7 @@ bm_menu:
 	      goto bm_menu;
 
 	    case GEBM_WIDTH:
-	      i=PopUpRangeI64(1,16,1,"Pen Width\r\n");
+	      i=PopUpRangeI64(1,16,1,"Pen Width\n");
 	      if (i>=0) width=i;
 	      goto bm_menu;
 
@@ -179,7 +179,7 @@ bm_menu:
 	    case GEBM_TEXT_BOX:
 	    case GEBM_TEXT_DIAMOND:
 	      Free(st);
-	      st=PopUpMGetS("Enter text and press <ESC>.\r\n");
+	      st=PopUpMGetS("Enter text and press <ESC>.\n");
 	      if (st && *st)
 		mode=i;
 	      else

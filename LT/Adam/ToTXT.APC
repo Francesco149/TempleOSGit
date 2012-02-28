@@ -60,7 +60,7 @@ public Ltf *Ltf2TXT(Ltf *l_in)
   while (cl!=l_in) {
     if (!(cl->flags&(LTFLF_SKIP|LTFLF_HARD_SKIP))) {
       while (y<cl->y) {
-	TXTPutS(l_out,"\r\n",&col);
+	TXTPutS(l_out,"\n",&col);
 	y++;
 	col=0;
       }
@@ -101,7 +101,7 @@ public Ltf *Ltf2TXT(Ltf *l_in)
     cl=cl->next;
   }
   while (y<cl->y) {
-    TXTPutS(l_out,"\r\n",&col);
+    TXTPutS(l_out,"\n",&col);
     y++;
     col=0;
   }

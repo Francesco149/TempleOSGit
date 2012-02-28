@@ -1,6 +1,6 @@
 //Practice tracing circles
 
-AcctRegSetDftEntry("LT/CircleTrace","F64 best_score=999;\r\n");
+AcctRegSetDftEntry("LT/CircleTrace","F64 best_score=999;\n");
 AcctRegExecuteBranch("LT/CircleTrace");
 
 I64 cx,cy;
@@ -118,7 +118,7 @@ U0 CircleTrace()
   SettingsPop;
   GrDCClear;
   GrDCDel(dc);
-  AcctRegWriteBranch("LT/CircleTrace","F64 best_score=%5.4f;\r\n",best_score);
+  AcctRegWriteBranch("LT/CircleTrace","F64 best_score=%5.4f;\n",best_score);
 }
 
 CircleTrace;  //Execute when #included

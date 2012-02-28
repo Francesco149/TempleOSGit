@@ -81,7 +81,7 @@ U0 Song()
   music_stacatto_factor= 0.902;
   try {
   task=PopUpViewStr(
-    "[1 Kings,18:35] 1 Kings,18:35\r\n"
+    "[1 Kings,18:35] 1 Kings,18:35\n"
     );
   TaskWaitIdle(task);
   task->win_right=Fs->win_right;
@@ -93,14 +93,14 @@ U0 Song()
 	t0=tM;
 	LtfClear;
 	Play("W12qGeG!3BsD2G3D2G3qBeFCqDeAFqA",
-		"Soak, \0 \0 \0soak \0 \0that \0 \0wood.\r\n\0 \0 \0 \0 \0 \0 \0");
+		"Soak, \0 \0 \0soak \0 \0that \0 \0wood.\n\0 \0 \0 \0 \0 \0 \0");
 	Play("2GeG!3BsD2G3D2G3qBeFCqDeAFqA",
-		"Once, \0 \0 \0once \0 \0for \0 \0good...\r\n\0 \0 \0 \0 \0 \0 \0");
+		"Once, \0 \0 \0once \0 \0for \0 \0good...\n\0 \0 \0 \0 \0 \0 \0");
 	LtfClear;
 	Play("!etB!D!EeD!FqEB!sCFCFeC!!FqDsFD!!F!!D",
-		"See \0 \0 \0the \0em\0bers?  \0 \0 \0Where \0 \0is \0 \0your \0God?\r\n\0 \0 \0 \0 \0");
+		"See \0 \0 \0the \0em\0bers?  \0 \0 \0Where \0 \0is \0 \0your \0God?\n\0 \0 \0 \0 \0");
 	Play("!etB!D!EeD!FqEB!sCFCFeC!!FqDsFD!!F!!D",
-		"Tell, \0 \0 \0tell \0me, \0sirs, \0 \0 \0where \0 \0is \0 \0your \0God?\r\n\0 \0 \0 \0 \0");
+		"Tell, \0 \0 \0tell \0me, \0sirs, \0 \0 \0where \0 \0is \0 \0your \0God?\n\0 \0 \0 \0 \0");
   }
   } catch
     CatchAll;

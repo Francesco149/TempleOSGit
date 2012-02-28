@@ -5,7 +5,7 @@ U0 TreeSub(Ltf *l,LTDirEntry *tempm)
     tempm1=tempm->next;
     if (tempm->attr & LT_ATTR_DIR) {
       LtfPutS(l,"$TR,\"\"$");
-      LtfPrintF(l,"$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\r\"$\r\n",
+      LtfPrintF(l,"$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\r\"$\n",
       tempm->name,tempm->full_name);
       if (tempm->sub) {
 	LtfPutS(l,"$ID,+2$");
@@ -13,7 +13,7 @@ U0 TreeSub(Ltf *l,LTDirEntry *tempm)
 	LtfPutS(l,"$ID,-2$");
       }
     } else {
-      LtfPrintF(l,"$LK,\"%s\",\"FI:%s\"$\r\n",
+      LtfPrintF(l,"$LK,\"%s\",\"FI:%s\"$\n",
 	tempm->name,tempm->full_name);
     }
     //Note there is also a routine

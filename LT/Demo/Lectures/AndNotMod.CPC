@@ -27,7 +27,7 @@ U0 TimeIns()
      temp=i%0x400;
   end2=GetTimeStamp;
   test_time=end2-start2;
-  "Remainder Version #1 Cycles\t: %10.5f\r\n",
+  "Remainder Version #1 Cycles\t: %10.5f\n",
     ToF64(test_time-overhead_time)/SAMPLE_SIZE;
 
 //Measure remainder...
@@ -36,7 +36,7 @@ U0 TimeIns()
      temp=i&0x3FF;
   end2=GetTimeStamp;
   test_time=end2-start2;
-  "Remainder Version #2 Cycles\t: %10.5f\r\n",
+  "Remainder Version #2 Cycles\t: %10.5f\n",
     ToF64(test_time-overhead_time)/SAMPLE_SIZE;
 
   Preempt(ON);

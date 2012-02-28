@@ -23,17 +23,17 @@ U0 TimeIns()
     *cached_I64=i;
 
   end=GetTimeStamp;
-  "  Cached Cycles: %10,d\r\n",end-start;
+  "  Cached Cycles: %10,d\n",end-start;
 
 //Measure uncached time
   start=GetTimeStamp;
   for (i=0;i<SAMPLE_SIZE;i++)
     *uncached_I64=i;
   end=GetTimeStamp;
-  "Uncached Cycles: %10,d\r\n",end-start;
+  "Uncached Cycles: %10,d\n",end-start;
 
-  "$FG,GREEN$The difference is even greater\r\n"
-  "because the loop overhead was not subtracted.\r\n\r\n";
+  "$FG,GREEN$The difference is even greater\n"
+  "because the loop overhead was not subtracted.\n\n";
   Free(cached_I64);
   Free(uncached_I64);
   Free2MegMemBlks(bp,shared_blks);

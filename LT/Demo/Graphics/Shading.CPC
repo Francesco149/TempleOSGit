@@ -169,7 +169,7 @@ U0 Main()
   WordStat(OFF);
   Fs->draw_it=&DrawIt;
   try {
-    "\r\n\r\nMove mouse to change light source.\r\n\r\n";
+    "\n\nMove mouse to change light source.\n\n";
     PressAKey;
   } catch
     CatchAll;

@@ -37,7 +37,7 @@ U0 BeatTaskEndCB()
 U0 BeatFreq()
 {
   if (snd_dev!=SD_HD_AUDIO) {
-    "Only works for HD Audio.\r\n";
+    "Only works for HD Audio.\n";
     return;
   }
   freq1=600.0;
@@ -49,9 +49,9 @@ U0 BeatFreq()
   fp_old_fill_buf=fp_snd_fill_buf;
   fp_snd_fill_buf=&BeatFillBuf;
   try {
-    "Pick two frequencies within a few Hz of each other to hear beats.\r\n"
-    "Pick two frequencies a multiple of two for an octave harmonic.\r\n"
-    "$FG,GREEN$<CTRL-ALT-C>$FG$ to exit.\r\n";
+    "Pick two frequencies within a few Hz of each other to hear beats.\n"
+    "Pick two frequencies a multiple of two for an octave harmonic.\n"
+    "$FG,GREEN$<CTRL-ALT-C>$FG$ to exit.\n";
     while (TRUE) {
       freq1=PmtF64("Freq #1 (%0.2fHz):",freq1,20,20000);
       freq2=PmtF64("Freq #2 (%0.2fHz):",freq2,20,20000);

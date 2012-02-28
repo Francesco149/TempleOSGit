@@ -198,7 +198,7 @@ U0 TouchFile(U8 *filename,U8 *attr,LTDate dt=0) //Just one file
   U8 buf[64];
   if (FileFind(filename,&de,FALSE,TRUE)) {
     if (!StrCmp(attr,"+?"))
-      "%-32ts %s\r\n",filename,SPrintFFlags(buf,Define("ST_FILE_ATTRS"),de.attr);
+      "%-32ts %s\n",filename,SPrintFFlags(buf,Define("ST_FILE_ATTRS"),de.attr);
     else {
       StrFirstRem(cur_dir,":");
       StrLastRem(cur_dir,"/");
@@ -221,7 +221,7 @@ U0 TouchList(LTDirEntry *tempm1,U8 *attr,LTDate dt=0)
     tempm2=tempm1->next;
     if (tempm1->attr & LT_ATTR_DIR) {
       if (tempm1->sub) {
-	"%S%s\r\n","ST_SCANNING_DIR",tempm1->full_name;
+	"%S%s\n","ST_SCANNING_DIR",tempm1->full_name;
 	TouchList(tempm1->sub,attr,dt);
       }
     } else
@@ -252,7 +252,7 @@ U64 FFList(LTDirEntry *tempm1)
 	cnt+=FFList(tempm1->sub);
     } else {
       PutFileLink(tempm1->full_name);
-      CrLf;
+      NewLine;
       cnt++;
     }
     LTDirEntryDel(tempm1);

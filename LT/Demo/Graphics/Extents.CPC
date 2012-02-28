@@ -47,8 +47,8 @@ U0 Extents()
   GrDCClear;
 
   GrSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
-  "X: %d to %d\r\n",min_x,max_x;
-  "Y: %d to %d\r\n",min_y,max_y;
+  "X: %d to %d\n",min_x,max_x;
+  "Y: %d to %d\n",min_y,max_y;
 }
 
 Extents;

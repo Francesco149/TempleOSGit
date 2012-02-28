@@ -45,13 +45,13 @@ U0 Song()
     while (!ScanKey) {
       t0=tM;
       Play("3qBetARFqER2G3sBABA2etG3GFsC2G3C2G",
-	  "A \0hap\0 \0py \0God.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "A \0hap\0 \0py \0God.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("3qBetARFqER2G3sBABA2etG3GFsC2G3C2G",
-	  "Takes \0nap\0 \0py \0nod.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "Takes \0nap\0 \0py \0nod.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("3eBFsDR4DR3qGetAERqBetBGDeABsRERE",
-	  " \0World \0comes \0 \0un\0 \0done.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  " \0World \0comes \0 \0un\0 \0done.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("eBFsDRDRqGetAERqBetBGDeABsRERE",
-	  " \0Too \0bad \0 \0only \0 \0one!\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  " \0Too \0bad \0 \0only \0 \0one!\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
     }
   } catch
     CatchAll;

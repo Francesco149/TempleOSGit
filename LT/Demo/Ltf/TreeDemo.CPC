@@ -20,7 +20,7 @@ U0 TreeDemo()
   U64 fuf_flags=0;
   Ltf *l=LtfNew;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
-  LtfPutS(l,"$TR-C+AL,\"\"$\r\n");
+  LtfPutS(l,"$TR-C+AL,\"\"$\n");
   LtfPutS(l,"$ID,+2$");
   TreeSub(l,FilesFind("/LT/*",fuf_flags));
   LtfPutS(l,"$ID,-2$");

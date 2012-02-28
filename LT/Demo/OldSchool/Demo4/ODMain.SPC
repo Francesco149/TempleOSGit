@@ -9,7 +9,7 @@ LTimport _MY_BEEP U0 MyBeep();
 
 U0 Routine3(U8 *st)
 {
-  PrintF("Routine3:%s\r\n",st);
+  PrintF("Routine3:%s\n",st);
 }
 
 
@@ -22,7 +22,7 @@ I64 ObjDemo(...)
   MyBeep();
   if (argc>0) {
     for (i=0;i<argc;i++)
-      PrintF("Arg %d:%08X\r\n",i,argv[i]);
+      PrintF("Arg %d:%08X\n",i,argv[i]);
     Routine1(argv[0]);
     if (argc>1) {
       Routine2(argv[1]);
@@ -30,7 +30,7 @@ I64 ObjDemo(...)
 	Routine3(argv[2]);
     }
   } else
-    PutS("Pass string parameters for args 1 and 2.\r\n");
+    PutS("Pass string parameters for args 1 and 2.\n");
   return argc;
 }
 

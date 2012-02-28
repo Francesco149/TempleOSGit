@@ -13,48 +13,48 @@ I64 PopUpGrSpriteVect(BoolI8 new_picture,GrSprite **root,I64 snap,F64 ip_scaler,
   TaskStruct *pu_task;
   I64 i;
   Ltf *l=LtfNew;
-  LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Vect Object Menu\"$$FG$\r\n"
-	"$FG,RED$Settings$FG$\r\n"
-	"$MU-UL,\"Color (4-bit)\",GRST_COLOR4$\r\n"
-	"$MU-UL,\"Dither Color (4-bit)\",GRST_DITHER_COLOR4$\r\n"
-	"$MU-UL,\"Width\",GRST_WIDTH$\r\n"
-	"$MU-UL,\"Snap %d %5.3f\",GRST_SNAP$\r\n"
-	"$MU-UL,\"Planar Symmetry\",GRST_PLANAR_SYMMETRY$\r\n"
-	"\r\n$FG,RED$Objects$FG$\r\n"
-	"$MU-UL,\"Point\",GRST_POINT$\r\n"
-	"$MU-UL,\"Line\",GRST_LINE$\r\n"
-	"$MU-UL,\"Arrow\",GRST_ARROW$\r\n"
-	"$MU-UL,\"Rect\",GRST_RECT$\r\n"
-	"$MU-UL,\"Circle\",GRST_CIRCLE$\r\n"
-	"$MU-UL,\"Ellipse\",GRST_ELLIPSE$\r\n"
-	"$MU-UL,\"Reg Polygon\",GRST_REG_POLY$\r\n"
-	"$MU-UL,\"Text\",GRST_TEXT$\r\n"
-	"$MU-UL,\"Text Box\",GRST_TEXT_BOX$\r\n"
-	"$MU-UL,\"Text Diamond\",GRST_TEXT_DIAMOND$\r\n"
-	"$MU-UL,\"Flood Fill\",GRST_FLOOD_FILL$\r\n"
-	"$MU-UL,\"Flood Fill Not Color\",GRST_FLOOD_FILL_NOT$\r\n"
-	"$MU-UL,\"SpeedLine\",GRST_SPEEDLINE$\r\n"
-	"$MU-UL,\"PolyLine\",GRST_POLYLINE$\r\n"
-	"$MU-UL,\"PolyPoint\",GRST_POLYPOINT$\r\n"
-	"$MU-UL,\"BSpline2\",GRST_BSPLINE2$\r\n"
-	"$MU-UL,\"BSpline3\",GRST_BSPLINE3$\r\n"
-	"$MU-UL,\"BSpline2 Closed\",GRST_BSPLINE2_CLOSED$\r\n"
-	"$MU-UL,\"BSpline3 Closed\",GRST_BSPLINE3_CLOSED$\r\n"
-	"$MU-UL,\"Insert Screen Bitmap\",GRST_INSERT_SCREEN_BITMAP$\r\n"
-	"$MU-UL,\"Insert Transparent Screen Bitmap\",GRST_INSERT_TRANSPARENT_SCREEN_BITMAP$\r\n"
-	"$FM,PURPLE$$MU-UL,\"+] Create/Edit 3D Mesh\",GRST_MESH$\r\n"
-	"$MU-UL,\"+] Create/Edit Shiftable 3D Mesh\",GRST_SHIFTABLE_MESH$\r\n"
-	"$MU-UL,\"+] Create/Edit Bitmap\",GRST_BITMAP4$\r\n"
-	"$MU-UL,\"+] Create/Edit Bitmap Transparent\",GRST_BITMAP4_TRANSPARENT$$FM,LTBLUE$\r\n"
-	"\r\n$FG,RED$Advanced$FG$\r\n"
-	"$MU-UL,\"Transform On (For use with icons)\",GRST_TRANSFORM_ON$\r\n"
-	"$MU-UL,\"Transform Off(For use with icons)\",GRST_TRANSFORM_OFF$\r\n"
-	"\r\n"
-	"$FM,PURPLE$$MU-UL,\"+] Edit Menu\",GRST_ED$$FM,LTBLUE$\r\n"
-	"$MU-UL,\"End\",GRST_END$\r\n",snap,ip_scaler);
+  LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Vect Object Menu\"$$FG$\n"
+	"$FG,RED$Settings$FG$\n"
+	"$MU-UL,\"Color (4-bit)\",GRST_COLOR4$\n"
+	"$MU-UL,\"Dither Color (4-bit)\",GRST_DITHER_COLOR4$\n"
+	"$MU-UL,\"Width\",GRST_WIDTH$\n"
+	"$MU-UL,\"Snap %d %5.3f\",GRST_SNAP$\n"
+	"$MU-UL,\"Planar Symmetry\",GRST_PLANAR_SYMMETRY$\n"
+	"\n$FG,RED$Objects$FG$\n"
+	"$MU-UL,\"Point\",GRST_POINT$\n"
+	"$MU-UL,\"Line\",GRST_LINE$\n"
+	"$MU-UL,\"Arrow\",GRST_ARROW$\n"
+	"$MU-UL,\"Rect\",GRST_RECT$\n"
+	"$MU-UL,\"Circle\",GRST_CIRCLE$\n"
+	"$MU-UL,\"Ellipse\",GRST_ELLIPSE$\n"
+	"$MU-UL,\"Reg Polygon\",GRST_REG_POLY$\n"
+	"$MU-UL,\"Text\",GRST_TEXT$\n"
+	"$MU-UL,\"Text Box\",GRST_TEXT_BOX$\n"
+	"$MU-UL,\"Text Diamond\",GRST_TEXT_DIAMOND$\n"
+	"$MU-UL,\"Flood Fill\",GRST_FLOOD_FILL$\n"
+	"$MU-UL,\"Flood Fill Not Color\",GRST_FLOOD_FILL_NOT$\n"
+	"$MU-UL,\"SpeedLine\",GRST_SPEEDLINE$\n"
+	"$MU-UL,\"PolyLine\",GRST_POLYLINE$\n"
+	"$MU-UL,\"PolyPoint\",GRST_POLYPOINT$\n"
+	"$MU-UL,\"BSpline2\",GRST_BSPLINE2$\n"
+	"$MU-UL,\"BSpline3\",GRST_BSPLINE3$\n"
+	"$MU-UL,\"BSpline2 Closed\",GRST_BSPLINE2_CLOSED$\n"
+	"$MU-UL,\"BSpline3 Closed\",GRST_BSPLINE3_CLOSED$\n"
+	"$MU-UL,\"Insert Screen Bitmap\",GRST_INSERT_SCREEN_BITMAP$\n"
+	"$MU-UL,\"Insert Transparent Screen Bitmap\",GRST_INSERT_TRANSPARENT_SCREEN_BITMAP$\n"
+	"$FM,PURPLE$$MU-UL,\"+] Create/Edit 3D Mesh\",GRST_MESH$\n"
+	"$MU-UL,\"+] Create/Edit Shiftable 3D Mesh\",GRST_SHIFTABLE_MESH$\n"
+	"$MU-UL,\"+] Create/Edit Bitmap\",GRST_BITMAP4$\n"
+	"$MU-UL,\"+] Create/Edit Bitmap Transparent\",GRST_BITMAP4_TRANSPARENT$$FM,LTBLUE$\n"
+	"\n$FG,RED$Advanced$FG$\n"
+	"$MU-UL,\"Transform On (For use with icons)\",GRST_TRANSFORM_ON$\n"
+	"$MU-UL,\"Transform Off(For use with icons)\",GRST_TRANSFORM_OFF$\n"
+	"\n"
+	"$FM,PURPLE$$MU-UL,\"+] Edit Menu\",GRST_ED$$FM,LTBLUE$\n"
+	"$MU-UL,\"End\",GRST_END$\n",snap,ip_scaler);
   if (new_picture)
-    LtfPutS(l,"$MU-UL,\"Cancel\",LTFM_CANCEL$\r\n");
-  LtfPutS(l,"\r\nRight-Click to get back to this menu.");
+    LtfPutS(l,"$MU-UL,\"Cancel\",LTFM_CANCEL$\n");
+  LtfPutS(l,"\nRight-Click to get back to this menu.");
   st=MSPrintF("GrSpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,root,cur_num);
   PopUp(st,NULL,&pu_task);
   Free(st);
@@ -267,26 +267,26 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	case GRST_FLOOD_FILL:
 	case GRST_FLOOD_FILL_NOT:
 	  AcctOneTimePopUp(ARf_FLOODFILL,
-		ST_WARN_ST "This is affected by what's underneath\r\n"
-		"when it is drawn.  You will probably want to\r\n"
-		"convert it to a bitmap.\r\n\r\n"
-		"A tip on artistry you might consider\r\n"
-		"is using lines to fill regions because\r\n"
-		"brush strokes look cool.\r\n");
+		ST_WARN_ST "This is affected by what's underneath\n"
+		"when it is drawn.  You will probably want to\n"
+		"convert it to a bitmap.\n\n"
+		"A tip on artistry you might consider\n"
+		"is using lines to fill regions because\n"
+		"brush strokes look cool.\n");
 	  break;
 	case GRST_BITMAP4_TRANSPARENT:
 	  AcctOneTimePopUp(ARf_TRANSPARENT_BITMAP,
-		ST_WARN_ST "The initial transparent color is BLACK.\r\n"
-		"If you use the color BLACK, place a WHITE rect\r\n"
-		"under your image and select WHITE as the transparent\r\n"
-		"color.  You can insert a WHITE rect by picking the\r\n"
-		"insert point using 'Pick Object as Text' on the Edit Menu.\r\n"
-		"This is like a TV green screen trick.  You can\r\n"
-		"use other colors.\r\n");
+		ST_WARN_ST "The initial transparent color is BLACK.\n"
+		"If you use the color BLACK, place a WHITE rect\n"
+		"under your image and select WHITE as the transparent\n"
+		"color.  You can insert a WHITE rect by picking the\n"
+		"insert point using 'Pick Object as Text' on the Edit Menu.\n"
+		"This is like a TV green screen trick.  You can\n"
+		"use other colors.\n");
 	  break;
 	case GRST_PLANAR_SYMMETRY:
 	  AcctOneTimePopUp(ARf_PLANAR_SYMMETRY,
-		"Right-click to turn-off symmetry.\r\n");
+		"Right-click to turn-off symmetry.\n");
 	  break;
       }
       cl->flags=old_cl_flags;
@@ -386,18 +386,18 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	break;
       case GRST_SHIFTABLE_MESH:
 	cl->flags|=LTFLF_DONT_DRAW;
-	if (PopUpNoYes("Use same origin?\r\n")) {
+	if (PopUpNoYes("Use same origin?\n")) {
 	  cl->flags=old_cl_flags;
 	  p1=x; p2=y;
 	  goto ei_shiftable_mesh;
 	}
-	PopUpOk("Select Origin.\r\n");
+	PopUpOk("Select Origin.\n");
 	cl->flags=old_cl_flags;
 	break;
       case GRST_INSERT_SCREEN_BITMAP:
 	cl->flags|=LTFLF_DONT_DRAW;
-	PopUpOk("Drag-out a rect for the extents of the\r\n"
-		"bitmap.\r\n");
+	PopUpOk("Drag-out a rect for the extents of the\n"
+		"bitmap.\n");
 	cl->flags=old_cl_flags;
 	break;
       case GRST_BITMAP4_TRANSPARENT:
@@ -405,9 +405,9 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
       case GRST_INSERT_TRANSPARENT_SCREEN_BITMAP:
 	cl->flags|=LTFLF_DONT_DRAW;
 	if (eletype==GRST_BITMAP4)
-	  i=PopUpColor("Background Color\r\n\r\n");
+	  i=PopUpColor("Background Color\n\n");
 	else
-	  i=PopUpColor("Transparent Color\r\n\r\n");
+	  i=PopUpColor("Transparent Color\n\n");
 	if (i<0)
 	  eletype=GRST_MENU;
 	else {
@@ -415,7 +415,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	  if (eletype!=GRST_INSERT_TRANSPARENT_SCREEN_BITMAP) {
 	    GrEdUpdate(l,tempb,*root);
 	    GrSpriteExtents(tempb->data,&xx1,&xx2,&yy1,&yy2);
-	    if (xx1<=xx2 && yy1<=yy2 && PopUpNoYes("Use extents of the GrSprite?\r\n")) {
+	    if (xx1<=xx2 && yy1<=yy2 && PopUpNoYes("Use extents of the GrSprite?\n")) {
 	      cl->flags=old_cl_flags;
 	      old_width=dc->pen_width;
 	      xx1+=x; yy1+=y;
@@ -423,14 +423,14 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	      goto ei_bitmap;
 	    }
 	  }
-	  PopUpOk("Drag-out a rect for the extents of the\r\n"
-		"bitmap.\r\n");
+	  PopUpOk("Drag-out a rect for the extents of the\n"
+		"bitmap.\n");
 	}
 	cl->flags=old_cl_flags;
 	break;
       case GRST_WIDTH:
 	cl->flags|=LTFLF_DONT_DRAW;
-	i=PopUpRangeI64(1,16,1,"Pen Width\r\n");
+	i=PopUpRangeI64(1,16,1,"Pen Width\n");
 	if (i>=1) {
 	  width=i;
 	  tempg=MAlloc(gr_sprite_queued_base_size[GRST_WIDTH]);
@@ -457,7 +457,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	break;
       case GRST_REG_POLY:
 	cl->flags|=LTFLF_DONT_DRAW;
-	i=PopUpRangeI64(3,16,1,"Num of Sides\r\n");
+	i=PopUpRangeI64(3,16,1,"Num of Sides\n");
 	cl->flags=old_cl_flags;
 	if (i<3)
 	  eletype=GRST_MENU;
@@ -472,7 +472,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	break;
       case GRST_TEXT:
 	cl->flags|=LTFLF_DONT_DRAW;
-	st=PopUpMGetS("Enter text and press <ESC>.\r\n");
+	st=PopUpMGetS("Enter text and press <ESC>.\n");
 	cl->flags=old_cl_flags;
 	if (st && *st) {
 	  x1=0; y1=0;
@@ -498,7 +498,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	break;
       case GRST_TEXT_BOX:
 	cl->flags|=LTFLF_DONT_DRAW;
-	st=PopUpMGetS("Enter text and press <ESC>.\r\n");
+	st=PopUpMGetS("Enter text and press <ESC>.\n");
 	cl->flags=old_cl_flags;
 	if (st && *st) {
 	  x1=0; y1=0;
@@ -524,7 +524,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	break;
       case GRST_TEXT_DIAMOND:
 	cl->flags|=LTFLF_DONT_DRAW;
-	st=PopUpMGetS("Enter text and press <ESC>.\r\n");
+	st=PopUpMGetS("Enter text and press <ESC>.\n");
 	cl->flags=old_cl_flags;
 	if (st && *st) {
 	  x1=0; y1=0;

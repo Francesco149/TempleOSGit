@@ -10,7 +10,7 @@ U0 Main()
   LTDirEntry *tempm=FilesFind("::/LT/*",1<<FUf_RECURSE),
       **a=FilesOrder(tempm,&cnt);
   for (i=0;i<cnt;i++) {
-    "%08X %s\r\n",a[i]->cluster,a[i]->full_name;
+    "%08X %s\n",a[i]->cluster,a[i]->full_name;
     LTDirEntryDel(a[i]);
   }
   Free(a);

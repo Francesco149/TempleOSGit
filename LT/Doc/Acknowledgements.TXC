@@ -40,7 +40,7 @@ O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 [::/LT/Misc/Bible.TXZ] The King James Bible.
 
 12) Thanks to whoever wrote this CppHtml.CPP.  I'm a novice on web stuff and 
-you helped me with html.
+you helped me with html.  See [::/LT/Adam/ToHtml.APZ] ToHtml.
 
 13) Yahoo Sitebuilder helped with some html code items.
 
@@ -63,7 +63,7 @@ child windows like Windows.  Instead, I made one window per task with no
 child 
 windows.  He also guided my progress, very obviously.
 
-In short, I wrote every one of the 129,334 lines myself, no GPL code, no 
+In short, I wrote every one of the 129,742 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 

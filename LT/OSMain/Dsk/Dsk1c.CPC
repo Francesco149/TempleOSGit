@@ -17,7 +17,7 @@ BoolI64 CopySingleZ(U8 *f1,U8 *f2) //Just one file
     file_buf=FileRead(f1,&size,&attr);
     attr=FileAttr(f2,attr);
     if (file_buf) {
-      "Copying %s to %s\r\n",f1,f2;
+      "Copying %s to %s\n",f1,f2;
       c=FileWrite(f2,file_buf,size,de.datetime,attr);
       Free(file_buf);
       return ToBool(c);
@@ -31,15 +31,29 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
 {
   U8 *absf1=FileNameAbs(f1),
      *absf2=FileNameAbs(f2);
+  LTDirEntry de1,de2;
   U8 *buf;
   U64 cnt,n,size,attr1=FileAttr(f1),attr2=FileAttr(f2);
   LTFile *in_file=NULL,*out_file=NULL;
   U64 xsum=LT_XSUM,i,j;
-  if (!StrCmp(absf1,absf2)) {
+
+  if (!StrCmp(absf1,absf2)) { //onto self?
     Free(absf1);
     Free(absf2);
     return FALSE;
   }
+
+  if (Bt(&sys_semas[SYS_SEMA_RISKY_COPY],0) && //probably identical file?
+    FileFind(f1,&de1,FALSE,TRUE) &&
+    FileFind(f2,&de2,FALSE,TRUE) &&
+    de1.datetime==de2.datetime &&
+    de1.size==de2.size &&
+    de1.attr==de2.attr &&
+    !StrCmp(de1.name,de2.name) &&
+    de1.expanded_size==de2.expanded_size &&
+    de1.xsum==de2.xsum)
+    return TRUE;
+
   Free(absf1);
   Free(absf2);
   if (attr1!=attr2)
@@ -57,7 +71,7 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
     else
       out_file=FOpen(f2,"w",cnt);
     if (out_file) {
-      "Copying %s to %s\r\n",f1,f2;
+      "Copying %s to %s\n",f1,f2;
       j=size;
       while (cnt) {
 	if (cnt>COPY_BUF_BLKS) {
@@ -107,7 +121,7 @@ BoolI64 MkDir(U8 *filename)
       else {
 	"Make Directory:";
 	"" filename;
-	CrLf;
+	NewLine;
 	name=MStrUtil(fa->mask,
 	SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
 	switch (fa->p->type) {
@@ -153,7 +167,7 @@ U0 SysDel(U8 *wild,BoolI8 make_mask)	//this is dangerous
 }
 
 U0 Fmt(I64 drv_let,BoolI8 quick=TRUE,BoolI8 confirm=TRUE,U64 type=PT_FAT32)
-{//See [C:/LT/OSMain/Adam1a.HPZ,2616] PT_FAT32 for a list of supported file system types.
+{//See [C:/LT/OSMain/Adam1a.HPZ,2620] PT_FAT32 for a list of supported file system types.
 
   LTPrt *p=Drv2Prt(drv_let);
   BoolI8 old_silent=IsSilent;
@@ -307,7 +321,7 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
     bdev2=bdev2->lock_forwarding;
   if ((bdev2->type==LTBDT_ATA || bdev2->type==LTBDT_ATAPI) &&
        bdev2->base0==bdev->base0) {
-    "Can't Burn CD on same ATA ctrller as File.\r\n\r\n";
+    "Can't Burn CD on same ATA ctrller as File.\n\n";
     throw(EXCEPT_BLKDEV,5);
   }
 

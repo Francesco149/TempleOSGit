@@ -296,7 +296,7 @@ U0 PickDemo2()
   WinMax;
   WinBorder(OFF);
   LtfClear;
-  "$BK,1$Move things around.$BK,0$\r\n";
+  "$BK,1$Move things around.$BK,0$\n";
   WordStat(OFF);
   Preempt(OFF);
   pf=Init;

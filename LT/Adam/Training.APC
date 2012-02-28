@@ -15,9 +15,9 @@ public U0 PressKeyHelp(TaskStruct *task=NULL)
 task=Fs;
 
   Fs->hash_table=task->hash_table;
-  "Press keys to show handler code.\r\n"
-  "<SHIFT-ESC> to exit.\r\n"
-  "Do not press <CTRL-ALT-keys>.\r\n";
+  "Press keys to show handler code.\n"
+  "<SHIFT-ESC> to exit.\n"
+  "Do not press <CTRL-ALT-keys>.\n";
   while (p1!=CH_ESC && p1!=CH_SHIFT_ESC) {
     GetMsg(&p1,&p2,1<<MSG_KEY_DOWN);
     *key_desc=0;
@@ -44,21 +44,21 @@ U0 KeyMapCtrlAltFamily()
   p2=SC_DELETE+SCF_CTRL+SCF_ALT;
   st2=ScanCode2KeyName(p2);
   st=SrcEdLink(&Reboot,256);
-  "%20s $LK,\"%s\",\"%s\"$\r\n",st2,"Sys/Reboot",st;
+  "%20s $LK,\"%s\",\"%s\"$\n",st2,"Sys/Reboot",st;
   Free(st);
   Free(st2);
 
   p2=SC_ESC+SCF_CTRL+SCF_ALT;
   st2=ScanCode2KeyName(p2);
   st=SrcEdLink(&SpawnUser,256);
-  "%20s $LK,\"%s\",\"%s\"$\r\n",st2,"Sys/Spawn New User Task",st;
+  "%20s $LK,\"%s\",\"%s\"$\n",st2,"Sys/Spawn New User Task",st;
   Free(st);
   Free(st2);
 
   p2=SC_TAB+SCF_CTRL+SCF_ALT;
   st2=ScanCode2KeyName(p2);
   st=SrcEdLink(&WinToTop,256);
-  "%20s $LK,\"%s\",\"%s\"$\r\n",st2,"Sys/Switch Focus to Next Task",st;
+  "%20s $LK,\"%s\",\"%s\"$\n",st2,"Sys/Switch Focus to Next Task",st;
   Free(st);
   Free(st2);
 
@@ -68,7 +68,7 @@ U0 KeyMapCtrlAltFamily()
       p2=A2ScanCode(i+'a')+SCF_CTRL+SCF_ALT;
       st2=ScanCode2KeyName(p2);
       st=SrcEdLink(fp_ctrl_alt_let_cbs[i],256);
-      "%20s $LK,\"%s\",\"%s\"$\r\n",st2,ctrl_alt_let_descs[i],st;
+      "%20s $LK,\"%s\",\"%s\"$\n",st2,ctrl_alt_let_descs[i],st;
       Free(st);
       Free(st2);
     }
@@ -155,7 +155,7 @@ U0 KeyMapFamily2(U8 **entries,U8 *family,TaskStruct *task,I64 scf)
       st2=MSPrintF("%s %s",family,st);
       Free(st);
       st=SrcEdLink(key_handler,256);
-      entries[i]=MSPrintF("%20s $LK,\"%s\",\"%s\"$\r\n",
+      entries[i]=MSPrintF("%20s $LK,\"%s\",\"%s\"$\n",
 	  st2,key_desc,st);
       Free(st);
       Free(st2);
@@ -197,7 +197,7 @@ task=Fs;
   KeyMapFamily("CTRL",task,SCF_CTRL);
   KeyMapFamily("ALT",task,SCF_ALT);
   KeyMapCtrlAltFamily;
-  "\r\n$MA+A-X+PU,\"Click for help on key pressed\",\"PressKeyHelp(0x%X);\"$\r\n",task;
+  "\n$MA+A-X+PU,\"Click for help on key pressed\",\"PressKeyHelp(0x%X);\"$\n",task;
 }
 
 public U0 TipOfDay(U8 *tip_file="::/LT/Doc/Tips.TXZ")
@@ -205,7 +205,7 @@ public U0 TipOfDay(U8 *tip_file="::/LT/Doc/Tips.TXZ")
   I64 i=RandU16;
   Ltf *l=LtfRead(tip_file),*l2=LtfNew;
   LtfEntry *ll=l->root.next;
-  "$WW,1$\r\n";
+  "$WW,1$\n";
   while (TRUE) {
     if (ll->type_u8==LTFT_TEXT && *ll->tag=='*')
       if (!i--) break;

@@ -30,7 +30,7 @@ U0 LTFSDirEntryFileLtf(Ltf *l,LTDirEntry *tempm)
       ll=LtfPrintF(l,"$TR,\"%s\"$",tempm->name);
       ll->user_data=tempm;
       tempm->user_data=ll;
-      LtfPutS(l,"\r\n$ID,+2$");
+      LtfPutS(l,"\n$ID,+2$");
       if (tempm->sub)
 	LTFSDirEntryFileLtf(l,tempm->sub);
       LtfPutS(l,"$ID,-2$");
@@ -39,7 +39,7 @@ U0 LTFSDirEntryFileLtf(Ltf *l,LTDirEntry *tempm)
 	tempm->name);
       ll->user_data=tempm;
       tempm->user_data=ll;
-      LtfPutS(l,"\r\n");
+      LtfPutS(l,"\n");
     }
     tempm=tempm->next;
   }
@@ -65,10 +65,10 @@ U0 FMMountTempDrvWiz()
   BoolI8 okay=FALSE,sure=FALSE,in_use,valid_drv2;
   "$WW,1$";
  
-  a_type  =PmtStr("\r\n(R)am or (F)ile : ");
+  a_type  =PmtStr("\n(R)am or (F)ile : ");
   type	  =ToUpper(*a_type);
   if (type=='R' || type=='F') {
-    a_drv =PmtStr("\r\nNew Drive Letter: ");
+    a_drv =PmtStr("\nNew Drive Letter: ");
     drv_let=ToUpper(*a_drv);
     if ('A'<=drv_let<='Z') {
       p=&local_prts[drv_let-'A'];
@@ -80,23 +80,23 @@ U0 FMMountTempDrvWiz()
 	in_use=FALSE;
       }
       if (in_use)
-	"$FG,RED$Drive letter in use.$FG$\r\n";
+	"$FG,RED$Drive letter in use.$FG$\n";
       else {
-	a_size	=PmtStr("\r\nSize in Meg     : ");
+	a_size	=PmtStr("\nSize in Meg     : ");
 	size=A2I(a_size)*0x100000>>BLK_SIZE_BITS;
 	if (size<0x800)
-	  "$FG,RED$Invalid size.$FG$\r\n";
+	  "$FG,RED$Invalid size.$FG$\n";
 	else {
 	  if (type=='F') {
 	    "$FG,RED$Specify entire path, including drive, but leave-off "
-	    "the filename extension.$FG$\r\n";
+	    "the filename extension.$FG$\n";
 	    a_dft=MSPrintF("%c:/Temp/Drive%c",dft_drv,drv_let);
-	    a_name=PmtStr("\r\nFile Name (%s): ",a_dft);
+	    a_name=PmtStr("\nFile Name (%s): ",a_dft);
 	    if (*a_name==':')
 	      *a_name=dft_drv;
 	    if (StrLen(a_name)<4 || a_name[1]!=':' ||
 	      StrOcc(a_name,'.'))
-	      "$FG,RED$Invalid file name.$FG$\r\n";
+	      "$FG,RED$Invalid file name.$FG$\n";
 	    else {
 	      drv_let2=ToUpper(*a_name);
 	      p=&local_prts[drv_let2-'A'];
@@ -109,23 +109,23 @@ U0 FMMountTempDrvWiz()
 		  Fs->catch_except=TRUE;
 	      }
 	      if (!valid_drv2)
-		"$FG,RED$Invalid drive in file name.$FG$\r\n";
+		"$FG,RED$Invalid drive in file name.$FG$\n";
 	      else
 		okay=TRUE;
 	    }
 	  } else {
 	    if (size<<BLK_SIZE_BITS>7*UnusedSysMem/8)
-	      "$FG,RED$Size is too big.$FG$\r\n";
+	      "$FG,RED$Size is too big.$FG$\n";
 	    else
 	      okay=TRUE;
 	  }
 	}
       }
     } else
-      "$FG,RED$Invalid drive letter.$FG$\r\n";
+      "$FG,RED$Invalid drive letter.$FG$\n";
   }
  
-  CrLf;
+  NewLine;
   if (okay)
     sure=AreYouSure;
   if (okay && sure) {
@@ -154,8 +154,8 @@ U0 FMMountTempDrvWiz()
     Kill(task);
     PrtRep;
   } else
-    "$FG,RED$Canceled$FG$\r\n";
-  CrLf;
+    "$FG,RED$Canceled$FG$\n";
+  NewLine;
   PressAKey;
   Free(a_drv);
   Free(a_type);
@@ -269,7 +269,7 @@ LTDirEntry *FMRebuildLtfDrv(U8 drv_let,Ltf *l,LTDirEntry **root,BoolI8 init)
   tempm->user_data=ll;
   tempm->next=*root;
   *root=tempm;
-  LtfPutS(l,"\r\n$ID,+2$");
+  LtfPutS(l,"\n$ID,+2$");
   LtfBottom(l);
   if (init) {
     LTFSDirEntryFileLtf(l,tempm1);
@@ -343,14 +343,14 @@ U0 FMRebuildLtf(Ltf **l_,LTDirEntry **root,I64 mode)
   l->flags|=LTFF_FORM;
   switch (mode) {
     case FM_NORMAL:
-      LtfPutS(l,"$FG,PURPLE$File Manager$FG$\r\n\r\n");
+      LtfPutS(l,"$FG,PURPLE$File Manager$FG$\n\n");
       break;
     case FM_PICK_FILE:
-      LtfPutS(l,"$FG,PURPLE$Pick file and press <ESC>$FG$\r\n\r\n");
+      LtfPutS(l,"$FG,PURPLE$Pick file and press <ESC>$FG$\n\n");
       l->flags|=LTFF_MIN_SIZE;
       break;
     case FM_PICK_DIR:
-      LtfPutS(l,"$FG,PURPLE$Pick directory and press <ESC>$FG$\r\n\r\n");
+      LtfPutS(l,"$FG,PURPLE$Pick directory and press <ESC>$FG$\n\n");
       l->flags|=LTFF_MIN_SIZE;
       break;
   }
@@ -498,7 +498,7 @@ U0 FMFmtDrv(Ltf *l)
   if (tempm) {
     while (tempm->parent)
       tempm=tempm->parent;
-    st=MSPrintF("Format Drive '%c'?\r\nAre You Sure?\r\n",*tempm->full_name);
+    st=MSPrintF("Format Drive '%c'?\nAre You Sure?\n",*tempm->full_name);
     if (PopUpCancelOk(st)) {
       Silent(ON);
       Fmt(*tempm->full_name,TRUE,FALSE);
@@ -623,7 +623,7 @@ I64 PopUpCancelPasteDel(U8 *header=NULL,U8 *footer=NULL)
 	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD-ROM) FILE\",FMR_MAKE_ISO$"
 	"$CM+LX,27,0$$BT,\"BURN ISO (CD-ROM) FILE\",FMR_BURN_ISO$"
 	"$CM+LX,1,3 $$BT,\"HELP                  \",FMR_HELP$"
-	"$CM+LX,27,0$$BT,\"CANCEL                \",LTFM_CANCEL$\r\n");
+	"$CM+LX,27,0$$BT,\"CANCEL                \",LTFM_CANCEL$\n");
   if (footer) LtfPutS(l,footer);
   i=PopUpMenu(l);
   LtfDel(l);
@@ -703,7 +703,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)
   MenuFilePush("::/LT/Doc/FileMgrPullDown.TXZ");
   if (mode==FM_NORMAL)
     AcctOneTimePopUp(ARf_FILE_MANAGER_HELP,
-	"$FG,GREEN$<WINDOWS KEY>$FG$ for help.\r\n");
+	"$FG,GREEN$<WINDOWS KEY>$FG$ for help.\n");
 
   FMRebuildLtf(&l,&root,mode);
   if (tempm1=LTCdDir(root,old_cur_dir))

@@ -480,6 +480,12 @@ BoolI64 IOSnd(BoolI8 val) {
   return result;
 }
 
+BoolI64 RiskyCopy(BoolI8 val) {
+//This checks if datetime and name are same
+//during copy and skips.
+  return LBEqu(&sys_semas[SYS_SEMA_RISKY_COPY],0,val);
+}
+
 BoolI64 IsPreempt() {
   return Bt(&Fs->task_flags,TASKf_PREEMPT);
 }

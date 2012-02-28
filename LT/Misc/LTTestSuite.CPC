@@ -6,14 +6,14 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=141;
+  progress4_max=143;
 }
 U0 TSEnd()
 {
   if (ts_num!=progress4_max)
-    "$FG,RED$Progress4:%d$FG$\r\n",progress4;
+    "$FG,RED$Progress4:%d$FG$\n",progress4;
   else
-    "$FG,GREEN$Test Suite Completed$FG$\r\n";
+    "$FG,GREEN$Test Suite Completed$FG$\n";
   ProgressBarsRst;
 }
 
@@ -401,6 +401,24 @@ U0 DoTheDead()
   XTalk(task,"Exit;\r");
 }
 
+U0 DoBomber()
+{
+  I64 i;
+  TaskStruct *task=SpawnUser;
+  XTalkWithWait(task,"#include \"::/LT/Demo/GameStarters/Bomber.CPZ\";\r");
+  for (i=0;i<7;i++) {
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
+    Sleep(100);
+  }
+  for (i=0;i<7;i++) {
+    SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+    Sleep(200);
+  }
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\r");
+}
+
 U0 DoZoneOut()
 {
   I64 i;
@@ -415,6 +433,22 @@ U0 DoZoneOut()
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
     SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
     Sleep(100);
+  }
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\r");
+}
+
+U0 DoVaroom()
+{
+  I64 i;
+  TaskStruct *task=SpawnUser;
+  XTalk(task,"#include \"::/LT/Demo/GameStarters/Varoom.CPZ\";\r");
+  for (i=0;i<15;i++) {
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+    Sleep(50);
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_LEFT);
+    Sleep(50);
   }
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\r");
@@ -1724,6 +1758,9 @@ U0 DoDemoDoc()
 {
   TaskStruct *task=SpawnUser;
   XTalkWithWait(task,"Ed(\"::/LT/Demo/Ltf/DemoDoc.TXZ\");\r");
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_CTRLG,0);
+  XTalkWithWait(task,"100");
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_ESC,0);
   Sleep(1000);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\r");
@@ -1956,6 +1993,7 @@ TS; DoRocks;
 TS; DoDunGen;
 TS; DoFPS;
 TS; DoZoneOut;
+TS; DoVaroom;
 TS; DoRocket;
 TS; DoRocketScience;
 TS; DoMissileDefense;
@@ -1968,6 +2006,8 @@ TS; DoKeepAway;
 TS; DoAfterEgypt;
 TS; DoXCaliber;
 TS; DoWenceslas;
+TS; DoBomber;
+TS; DoTheDead;
 
 TS; DoAdd;
 TS; DoPrimes;
@@ -2024,7 +2064,6 @@ TS; DoShadow;
 TS; DoPredatorPrey;
 TS; DoPoleZeros;
 TS; DoDateTime;
-TS; DoTheDead;
 TS; DoDigits;
 TS; DoStadium;
 TS; DoHalogen;

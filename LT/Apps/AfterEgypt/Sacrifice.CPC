@@ -78,13 +78,13 @@ U0 Sacrifice()
     "$BG,YELLOW$";
  
     PutBibleVerse("Exodus,24:5",13);
-    "\r\n\r\n$FG,LTRED$Left-button to sprinkle blood.$FG$\r\n";
+    "\n\n$FG,LTRED$Left-button to sprinkle blood.$FG$\n";
 
     Fs->draw_it=&DrawSacrifice;
-    CrLf;
+    NewLine;
     PressAKey;
   } catch
     CatchAll;
-  "$BG$\r\n";
+  "$BG$\n";
   SettingsPop(Fs,TSF_SAME_SONG);
 }

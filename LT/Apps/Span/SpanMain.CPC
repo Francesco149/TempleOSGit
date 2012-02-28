@@ -339,20 +339,20 @@ U0 Span()
   Fs->draw_it=&DrawIt;
 
   PopUpOk(
-	"Build a bridge to hold-up the\r\n"
-	"red masses.  Test your design\r\n"
-	"by pressing run/stop.\r\n\r\n"
-	"The lowest cost bridge that\r\n"
-	"stays standing wins.\r\n\r\n"
-	"For a variation, try without\r\n"
-	"using the center base point.\r\n"
-	"\r\n"
-	"Use\r\n"
-	"\t$FG,GREEN$'m'$FG$ass\r\n"
-	"\t$FG,GREEN$'c'$FG$oncrete\r\n"
-	"\t$FG,GREEN$'s'$FG$teel\r\n"
-	"\t$FG,GREEN$'w'$FG$ire\r\n"
-	"\r\nto select materials.\r\n");
+	"Build a bridge to hold-up the\n"
+	"red masses.  Test your design\n"
+	"by pressing run/stop.\n\n"
+	"The lowest cost bridge that\n"
+	"stays standing wins.\n\n"
+	"For a variation, try without\n"
+	"using the center base point.\n"
+	"\n"
+	"Use\n"
+	"\t$FG,GREEN$'m'$FG$ass\n"
+	"\t$FG,GREEN$'c'$FG$oncrete\n"
+	"\t$FG,GREEN$'s'$FG$teel\n"
+	"\t$FG,GREEN$'w'$FG$ire\n"
+	"\nto select materials.\n");
 
   try {
     while (TRUE) {
@@ -505,5 +505,5 @@ span_done: //Don't goto out of try
   GrDCDel(dc);
   MenuPop;
   LtfBottom;
-  "$CL$$BG$\r\n";
+  "$CL$$BG$\n";
 }

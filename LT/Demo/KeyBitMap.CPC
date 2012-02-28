@@ -25,7 +25,7 @@ U0 KeyDownBitMapDemo()
   //This conversion routine is slow.
   I64 i_sc=A2ScanCode('i');
 
-  "Press and hold $FG,GREEN$'i'$FG$.\r\n";
+  "Press and hold $FG,GREEN$'i'$FG$.\n";
   while (!Bt(key_down_bitmap,i_sc))
     Yield;
 
@@ -36,7 +36,7 @@ U0 KeyDownBitMapDemo()
 //merged scan code.  (left shift and
 //right shift combined for example.)
 //[C:/LT/OSMain/OSGlbls.CPZ,114] key_down_bitmap2 is indexed with the
-//distinct scan code.  See [Char] Char and [C:/LT/OSMain/Adam1a.HPZ,3358] Scan Codes.
+//distinct scan code.  See [Char] Char and [C:/LT/OSMain/Adam1a.HPZ,3362] Scan Codes.
 
   while (Bt(key_down_bitmap,i_sc)) {
     x++;

@@ -79,25 +79,25 @@ F64 t0;
 
 CPURep;
 
-"Bad Code\r\n";
+"Bad Code\n";
 t0=tNP;
 i=Loop1;
-"Result:%d Time:%9.6f\r\n",i,tNP-t0;
+"Result:%d Time:%9.6f\n",i,tNP-t0;
 
-"Good Code #1\r\n";
+"Good Code #1\n";
 t0=tNP;
 i=Loop2;
-"Result:%d Time:%9.6f\r\n",i,tNP-t0;
+"Result:%d Time:%9.6f\n",i,tNP-t0;
 
-"Good Code #2\r\n";
+"Good Code #2\n";
 t0=tNP;
 i=Loop3;
-"Result:%d Time:%9.6f\r\n",i,tNP-t0;
+"Result:%d Time:%9.6f\n",i,tNP-t0;
 
-"Good Code #3\r\n";
+"Good Code #3\n";
 t0=tNP;
 i=Loop4;
-"Result:%d Time:%9.6f\r\n",i,tNP-t0;
+"Result:%d Time:%9.6f\n",i,tNP-t0;
 
 
 /*  Program Output

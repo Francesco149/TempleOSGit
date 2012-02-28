@@ -8,7 +8,7 @@ U0 ViewComics()
   tempm1=tempm;
   while (tempm1) {
     if (!(i++&3))
-      LtfPutS(l,"\r\n");
+      LtfPutS(l,"\n");
     st=StrNew(tempm1->name);
     FileExtRem(st);
     tempm1->user_data=LtfPrintF(l,"$MU-UL,\"%-10ts\",%d$ ",st,tempm1);

@@ -99,8 +99,8 @@ U0 PoleZeros()
   Complex *tempc=NULL;
 
   PopUpOk(
-	"Drag the poles and zeros with left mouse.\r\n"
-	"Hold right mouse for phase plot.\r\n"
+	"Drag the poles and zeros with left mouse.\n"
+	"Hold right mouse for phase plot.\n"
   );
   WinSync;
 

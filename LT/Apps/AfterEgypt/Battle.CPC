@@ -122,7 +122,7 @@ U0 Battle()
     "$BG,YELLOW$";
 
     PutBibleVerse("Exodus,17:11",8);
-    "\r\n$BK,1$Hold <SPACE BAR>$BK,0$\r\n";
+    "\n$BK,1$Hold <SPACE BAR>$BK,0$\n";
 
     held_up=FALSE;
     t0=tP;
@@ -142,7 +142,7 @@ U0 Battle()
     } while (msg_code!=MSG_KEY_DOWN || ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   } catch
     CatchAll;
-  "$BG$\r\n";
+  "$BG$\n";
   SettingsPop(Fs,TSF_SAME_SONG);
 }
 

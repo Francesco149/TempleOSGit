@@ -56,7 +56,7 @@ U0 FESave()
   for (i=0;i<256;i++) {
     for (j=0;j<FONT_HEIGHT;j++)
       LtfPrintF(l,"0x%02X,",gr_font[k++]);
-    LtfPutS(l,"\r\n");
+    LtfPutS(l,"\n");
   }
   LtfWrite(l,TRUE);
   LtfDel(l);

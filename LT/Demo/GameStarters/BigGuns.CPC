@@ -266,13 +266,13 @@ U0 BigGuns()
   U64 ch,sc;
 
   PopUpOk(
-	"I refuse to rip-off the original\r\n"
-	"so this is intentionally crappy\r\n"
-	"and included for demonstration\r\n"
-	"purposes.\r\n\r\n"
-	"Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\n"
+	"so this is intentionally crappy\n"
+	"and included for demonstration\n"
+	"purposes.\n\n"
+	"Write games, don't play them.\n");
 
-  PopUpOk("The map scrolls.\r\n");
+  PopUpOk("The map scrolls.\n");
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF);

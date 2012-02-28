@@ -1,6 +1,6 @@
 /* There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf
+hold the file until you are done.  The [C:/LT/OSMain/Adam1a.HPZ,1306] Ltf
 framework is convenient for this.
 */
 
@@ -11,7 +11,7 @@ U0 FPrintFDemo(U8 *output_filename=NULL)
   U64 fuf_flags=0;
   Ltf *l=LtfNew;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
-  LtfPutS(l,"$TR-C+AL,\"\"$\r\n");
+  LtfPutS(l,"$TR-C+AL,\"\"$\n");
   LtfPutS(l,"$ID,+2$");
   TreeSub(l,FilesFind("/LT/*",fuf_flags));
   LtfPutS(l,"$ID,-2$");

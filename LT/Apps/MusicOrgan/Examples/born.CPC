@@ -38,13 +38,13 @@ U0 Song()
     while (!ScanKey) {
       t0=tM;
       Play("3qB!eB2G!3qA!!eF!!AsF!AFA!!qC2sG!3A!2G3ARBRB",
-	  "New \0day \0is \0born.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "New \0day \0is \0born.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qB!eB2G!3qA!!eF!!AsF!AFA!!qC2sG!3A!2G3ARBRB",
-	  "Though \0it's \0the \0mourn',\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "Though \0it's \0the \0mourn',\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("!eDDR!!CqG!2eGR3qE!!etEA!!FqCsDGDG",
-	  "cheer-\0up \0 \0the \0heart\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0as \0 \0you \0");
+	  "cheer-\0up \0 \0the \0heart\n\0 \0 \0 \0 \0 \0 \0 \0 \0as \0 \0you \0");
       Play("!eDDR!!CqG!2eGR3qE!!etEA!!FqCsDGDG",
-	  "hitch-\0up \0 \0the \0cart.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "hitch-\0up \0 \0the \0cart.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
     }
   } catch
     CatchAll;

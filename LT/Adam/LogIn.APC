@@ -55,13 +55,13 @@ SysAcctStruct *PopUpGetSysAcct()
   Ltf *l=LtfNew;
   SysAcctStruct *tempa;
 
-  LtfPutS(l,"Select Account.\r\nCursor down and press <SPACE BAR>.\r\n");
+  LtfPutS(l,"Select Account.\nCursor down and press <SPACE BAR>.\n");
   tempa=sys_accts.next;
   while (tempa!=&sys_accts) {
     LtfPrintF(l,"$CM+LX,2,3$$BT,\"%s\",%d$",tempa->name,tempa);
     tempa=tempa->next;
   }
-  LtfPutS(l,"\r\n");
+  LtfPutS(l,"\n");
   do tempa=PopUpMenu(l);
   while (tempa<0);
   LtfDel(l);
@@ -149,12 +149,12 @@ U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
   LtfEntry *ll;
   if (sys_acct && !Bt(sys_msg_flags,flag_num)) {
     if (msg) LtfPutS(l,msg);
-    ll=LtfPutS(l,"\r\n$CB+LE,\"Do not show this msg again.\",1$");
-    LtfPutS(l,"$CM+CX,0,4$$BT,\"OKAY\",1$\r\n");
+    ll=LtfPutS(l,"\n$CB+LE,\"Do not show this msg again.\",1$");
+    LtfPutS(l,"$CM+CX,0,4$$BT,\"OKAY\",1$\n");
     if (PopUpMenu(l)==1 && ll->flags&LTFLF_CHECKED_COLLAPSED) {
       LBts(sys_msg_flags,flag_num);
       AcctRegWriteBranch("Adam/LT/SysMsgFlags",
-	"sys_msg_flags[0]=0x%X;\r\n",
+	"sys_msg_flags[0]=0x%X;\n",
 	sys_msg_flags[0]);
     }
     LtfDel(l);
@@ -165,8 +165,8 @@ U0 RegistryInit()
 {
   U8 buf[136];
   BoolI8 existed=FileFind(ACCT_REGISTRY_FILENAME),version_present;
-  AcctRegSetDftEntry("Adam/LT/SysMsgFlags","sys_msg_flags[0]=0;\r\n",TRUE);
-  SPrintF(buf,"registry_version=%4.3f;\r\n",os_version);
+  AcctRegSetDftEntry("Adam/LT/SysMsgFlags","sys_msg_flags[0]=0;\n",TRUE);
+  SPrintF(buf,"registry_version=%4.3f;\n",os_version);
   version_present=AcctRegSetDftEntry("Adam/LT/SysRegVer",buf,TRUE);
   AcctRegExecuteBranch("Adam");
 

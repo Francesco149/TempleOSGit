@@ -313,7 +313,7 @@ BoolI64 BootCdProbe(LTBlkDev *bdev)
       }
     }
   }
-  " Nope\r\n";
+  " Nope\n";
   Free(img);
   return result;
 }

@@ -52,12 +52,12 @@ faults here: [C:/LT/OSMain/Dbg1a.CPZ,481] Fault2().
 DbgStr() and [C:/LT/OSMain/Dbg1a.CPZ,217] DbgAdd() to print debug info
 bypassing the window 
 framework.  You pass these routines a count in milliseconds for how long it 
-should be displayed.  You can use [C:/LT/OSMain/Misc1a.CPZ,499] Raw(TRUE) to
+should be displayed.  You can use [C:/LT/OSMain/Misc1a.CPZ,505] Raw(TRUE) to
 make all output bypass the 
 window framework.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,487] SysDbg() to set a flag which you can read
-with [C:/LT/OSMain/Misc1a.CPZ,493] IsSysDbg() when you wish 
+* Use [C:/LT/OSMain/Misc1a.CPZ,493] SysDbg() to set a flag which you can read
+with [C:/LT/OSMain/Misc1a.CPZ,499] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
 * There are flags for various trace options that can help debugging when
@@ -92,7 +92,7 @@ other heap issues.
 
 * You can define functions for <CTRL-ALT-letter> keys, but they must operate 
 in a interrupt environment or in the window manager when in queues kbd msgs.  
-You can do [C:/LT/OSMain/Misc1a.CPZ,499] Raw() output.  Search for
+You can do [C:/LT/OSMain/Misc1a.CPZ,505] Raw() output.  Search for
 [C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[] and look at the 
 code.  They take scancode as an arg.
 

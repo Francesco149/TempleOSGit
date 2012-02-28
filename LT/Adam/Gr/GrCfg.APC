@@ -1,9 +1,9 @@
-//See [D:/LT/OSMain/OSStartUp.CPZ,SYS_GR_MODE:2] SYS_GR_MODE
+//See [D:/LT/OSMain/OSStartUp.CPZ,SYS_BIOS_GR_MODE:2] SYS_BIOS_GR_MODE
 //See [C:/LT/OSMain/OSMain.CPZ,79] SysGrInit()
 
 //This allows constants to be used
 //instead of vars.
-DefinePrintF("GR_MODE","%d",gr_mode);
+DefinePrintF("BIOS_GR_MODE","%d",bios_gr_mode);
 DefinePrintF("GR_WIDTH","%d",gr_width);
 DefinePrintF("GR_HEIGHT","%d",gr_height);
 DefinePrintF("TEXT_ROWS","%d",text_rows);

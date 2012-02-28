@@ -2,11 +2,11 @@
 +] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's lexical analyser removes comments and does preprocessing.  See [C:/LT/Compiler/Lex.CPZ,755] Lex().  Set [C:/LT/Compiler/Directives.CPZ,65] Echo(ON) or [C:/LT/Compiler/Directives.CPZ,56] LTrace(ON), to see the output of the lexical analyser.
   
-  The main compiler generates [::/LT/Compiler/CmpDefs.HPZ,EC_END] Intermediate Code at the parser stage.  See [C:/LT/Compiler/ExpParser.CPZ,26] PrsExpression(), [C:/LT/Compiler/StmtParser.CPZ,1665] PrsStatement().  Set [C:/LT/Compiler/Directives.CPZ,33] PTrace(ON) to see the output of the parser.
+  The main compiler generates [::/LT/Compiler/CmpDefs.HPZ,EC_END] Intermediate Code at the parser stage.  See [C:/LT/Compiler/ExpParser.CPZ,26] PrsExpression(), [C:/LT/Compiler/StmtParser.CPZ,1669] PrsStatement().  Set [C:/LT/Compiler/Directives.CPZ,33] PTrace(ON) to see the output of the parser.
   
   The main compiler optimizes   See [D:/LT/Compiler/CmpInit.CPZ,ST_INTERMEDIATE_CODE] Intermediate Code Attributes, [::/LT/Compiler/OptPass012.CPZ,EC_MUL] Combining Constants, [::/LT/Compiler/OptPass3.CPZ,num_reg_vars] Choosing Reg Vars.  Set [C:/LT/Compiler/Directives.CPZ,38] OTrace(ON) to see the optimization stages.
   
-  The main compiler makes machine code in the back end.  See [C:/LT/OSMain/Adam1a.HPZ,1466] IC Struct, [C:/LT/Compiler/CodeGen.CPZ,394] CbCompile and [::/LT/Compiler/OptPass789A.CPZ,EC_MUL] OptPass789A(), [::/LT/Compiler/BackEnd.CPZ,IcMul] BackEnd.  Set [C:/LT/Compiler/Directives.CPZ,51] CTrace(ON) to see the output of the backend.
+  The main compiler makes machine code in the back end.  See [C:/LT/OSMain/Adam1a.HPZ,1470] IC Struct, [C:/LT/Compiler/CodeGen.CPZ,394] CbCompile and [::/LT/Compiler/OptPass789A.CPZ,EC_MUL] OptPass789A(), [::/LT/Compiler/BackEnd.CPZ,IcMul] BackEnd.  Set [C:/LT/Compiler/Directives.CPZ,51] CTrace(ON) to see the output of the backend.
   
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:
@@ -41,7 +41,7 @@ I64 Lex(U8 **_src,I64 *num)
 	return TK_EOF;
       case CH_SPACE:
       case CH_CR:
-      case CH_LINE_FEED:
+      case CH_NEW_LINE:
 	src++;
 	break;
       case '0'...'9':
@@ -206,9 +206,9 @@ U0 Main()
   code=MAlloc(512,Fs->code_heap);
 
   while (TRUE) {
-    "This will compile an expression\r\n"
-    "consisting of integers, parentheses\r\n"
-    "and the operators +,-,* and /.\r\n";
+    "This will compile an expression\n"
+    "consisting of integers, parentheses\n"
+    "and the operators +,-,* and /.\n";
     src=MGetS;
     if (*src) {
       src2=src;
@@ -217,15 +217,15 @@ U0 Main()
 	PrsTerm(&src2,&dst,PREC_PAREN);
 	if (Parse(&src2,&dst)!=PREC_EOF)
 	  throw;
-	"$FG,RED$This code is not efficient, but the compiler is simple.$FG$\r\n";
+	"$FG,RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
 //[C:/LT/OSMain/Adam1b.HPZ,289] Call() is a function.  See
 [::/LT/OSMain/SysUtils.CPZ,_CALL] _CALL::
 //See also [C:/LT/OSMain/Adam1b.HPZ,292] CallInd().  See
 [::/LT/OSMain/SysUtils.CPZ,_CALLIND] _CALLIND::
-	"$FG,LTBLUE$Answer:%d$FG$\r\n",Call(code);
+	"$FG,LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
-	"$FG,RED$Error$FG$\r\n";
+	"$FG,RED$Error$FG$\n";
 	CatchAll;
       }
       Free(src);

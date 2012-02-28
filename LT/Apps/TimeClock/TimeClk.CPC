@@ -88,7 +88,7 @@ public BoolI64 TimeRep(TimeEntry **header=NULL)
       if (!first) {
 	if (is_in)
 	  week_total+=GetCurTimeLTDate;
-	"Week Total:%h7T\r\n",week_total;
+	"Week Total:%h7T\n",week_total;
       } else
 	first=FALSE;
       cur_week=week;
@@ -105,12 +105,12 @@ public BoolI64 TimeRep(TimeEntry **header=NULL)
 	week_total+=tempt->d;
       is_in=FALSE;
     }
-    " %h2D %T:$FG$\r\n%s\r\n",tempt->d,tempt->d,tempt->desc;
+    " %h2D %T:$FG$\n%s\n",tempt->d,tempt->d,tempt->desc;
     tempt=tempt->next;
   }
   if (is_in)
     week_total+=GetCurTimeLTDate;
-  "$FG,RED$Week Total:%h7T$FG$\r\n",week_total;
+  "$FG,RED$Week Total:%h7T$FG$\n",week_total;
   if (!header)
     TimeEntriesDel(my_header);
   return is_in;
@@ -122,12 +122,12 @@ public U0 PunchOut()
   TimeEntry *tempt,*header;
   is_in=TimeRep(&header);
   if (!is_in)
-    "$BK,1$Already Punched-Out$BK,0$\r\n";
+    "$BK,1$Already Punched-Out$BK,0$\n";
   else {
     tempt=MAlloc(sizeof(TimeEntry));
     tempt->type=TET_PUNCH_OUT;
     tempt->d=GetCurTimeLTDate;
-    "\r\nEnter Description.\r\nPress <ESC> when done.\r\n";
+    "\nEnter Description.\nPress <ESC> when done.\n";
     if (!(tempt->desc=MGetS(GETSF_WITH_CR)))
       tempt->desc=CAlloc(1);
     InsQue(tempt,header->last);
@@ -142,12 +142,12 @@ public U0 PunchIn()
   TimeEntry *tempt,*header;
   is_in=TimeRep(&header);
   if (is_in)
-    "$BK,1$Already Punched-In$BK,0$\r\n";
+    "$BK,1$Already Punched-In$BK,0$\n";
   else {
     tempt=MAlloc(sizeof(TimeEntry));
     tempt->type=TET_PUNCH_IN;
     tempt->d=GetCurTimeLTDate;
-    "\r\nEnter Description.\r\nPress <ESC> when done.\r\n";
+    "\nEnter Description.\nPress <ESC> when done.\n";
     if (!(tempt->desc=MGetS(GETSF_WITH_CR)))
       tempt->desc=CAlloc(1);
     InsQue(tempt,header->last);

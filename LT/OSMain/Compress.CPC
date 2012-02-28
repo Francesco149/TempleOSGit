@@ -1,7 +1,7 @@
 /* Project: OSMain */
 
 //See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (4).
-//See [C:/LT/OSMain/Adam1a.HPZ,3591] ArcCompressStruct, [C:/LT/OSMain/Adam1a.HPZ,3558] ArcTableEntry, and [C:/LT/OSMain/Adam1a.HPZ,3565] ArcCs
+//See [C:/LT/OSMain/Adam1a.HPZ,3595] ArcCompressStruct, [C:/LT/OSMain/Adam1a.HPZ,3562] ArcTableEntry, and [C:/LT/OSMain/Adam1a.HPZ,3569] ArcCs
 
 asm {
 USE64

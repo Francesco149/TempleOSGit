@@ -18,7 +18,7 @@ I64 PopUpReplaceSkipAllCancelEd(U8 *msg)
 	"$CM+LX,22,0$$BT,\"ABORT ALL\",LTFM_CANCEL$"
 	"$CM+LX,2,4$$BT,\"EDIT\",GRF_ED$"
 	"$CM+LX,22,0$$BT,\"ABORT FILE\",GRF_ABORT_FILE$"
-	"$CM+LX,2,4$$BT,\"SKIP FILE\",GRF_SKIP_FILE$\r\n");
+	"$CM+LX,2,4$$BT,\"SKIP FILE\",GRF_SKIP_FILE$\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -59,7 +59,7 @@ U64 GrepFile(U8 *pattern,U8 *name,U64 *_fuf_flags,U8 *replace_text)
 	      old_flags=cur_l->flags&LTFF_PLAIN_TEXT;
 	      cur_l->flags|=LTFF_PLAIN_TEXT;
 	    }
-	    " %s\r\n",cl->tag;
+	    " %s\n",cl->tag;
 	    if (cur_l)
 	      cur_l->flags= cur_l->flags&~LTFF_PLAIN_TEXT |old_flags;
 	  }
@@ -98,7 +98,7 @@ U64 GrepFile(U8 *pattern,U8 *name,U64 *_fuf_flags,U8 *replace_text)
 		old_flags=cur_l->flags&LTFF_PLAIN_TEXT;
 		cur_l->flags|=LTFF_PLAIN_TEXT;
 	      }
-	      "%12s,%04d*%s\r\n",name,cl->y+1,dst2;
+	      "%12s,%04d*%s\n",name,cl->y+1,dst2;
 	      if (cur_l)
 		cur_l->flags= cur_l->flags&~LTFF_PLAIN_TEXT |old_flags;
 	      write_this_file=TRUE;
@@ -112,7 +112,7 @@ U64 GrepFile(U8 *pattern,U8 *name,U64 *_fuf_flags,U8 *replace_text)
 		l->cur_data_col=cl->min_col;
 		LtfWrite(l);
 		LtfDel(l);
-		"Wrote:%s\r\n",name_buf;
+		"Wrote:%s\n",name_buf;
 		Ed(name_buf);
 		l=LtfRead(name_buf, LTFF_PLAIN_TEXT_WITH_TABS);
 		cl=l->cur_entry;
@@ -132,7 +132,7 @@ U64 GrepFile(U8 *pattern,U8 *name,U64 *_fuf_flags,U8 *replace_text)
   }
   if (write_this_file) {
     LtfWrite(l);
-    "Wrote:%s\r\n",l->filename.name;
+    "Wrote:%s\n",l->filename.name;
   }
   LtfDel(l);
   return cnt;
@@ -147,7 +147,7 @@ U64 GrepList(U8 *pattern,LTDirEntry *tempm1,U64 *_fuf_flags,U8 *replace_text)
     tempm2=tempm1->next;
     if (tempm1->attr & LT_ATTR_DIR) {
       if (tempm1->sub) {
-	"%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name;
+	"%S %s\n","ST_SCANNING_DIR",tempm1->full_name;
 	cnt+=GrepList(pattern,tempm1->sub,_fuf_flags,replace_text);
       }
     } else
@@ -198,13 +198,13 @@ public U64 FileOcc(U8 *pattern,U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags="
 
 class GrepStruct
 {
-  U8	find_text[136]	    fmtstr "$DA-P,135,\"FIND        :%s\"$\r\n";
-  U8	replace_text[136]   fmtstr "$DA-P,135,\"REPLACE     :%s\"$\r\n";
-  BoolI8 replace	    fmtstr "$CB,\"REPLACE\"$\r\n";
-  BoolI8 match_case	    fmtstr "$CB,\"MATCH CASE\"$\r\n";
-  BoolI8 whole_labels	    fmtstr "$CB,\"WHOLE LABELS\"$\r\n";
-  U8	filemask[136]	    fmtstr "$DA-P,135,\"FILE MASK   :%s\"$\r\n";
-  BoolI8 recurse	    fmtstr "$CB,\"RECURSE\"$\r\n";
+  U8	find_text[136]	    fmtstr "$DA-P,135,\"FIND        :%s\"$\n";
+  U8	replace_text[136]   fmtstr "$DA-P,135,\"REPLACE     :%s\"$\n";
+  BoolI8 replace	    fmtstr "$CB,\"REPLACE\"$\n";
+  BoolI8 match_case	    fmtstr "$CB,\"MATCH CASE\"$\n";
+  BoolI8 whole_labels	    fmtstr "$CB,\"WHOLE LABELS\"$\n";
+  U8	filemask[136]	    fmtstr "$DA-P,135,\"FILE MASK   :%s\"$\n";
+  BoolI8 recurse	    fmtstr "$CB,\"RECURSE\"$\n";
 };
 
 U64 GrepWiz()
@@ -222,7 +222,7 @@ U64 GrepWiz()
     g->match_case=l->find_replace->match_case;
     g->whole_labels=l->find_replace->whole_labels;
   }
-  if (LtfFormDo(g,"GrepStruct",NULL,FALSE,"$FG,PURPLE$$TX+CX,\"Grep\"$\r\n$FG$")) {
+  if (LtfFormDo(g,"GrepStruct",NULL,FALSE,"$FG,PURPLE$$TX+CX,\"Grep\"$\n$FG$")) {
     if (l) {
       StrCpy(l->find_replace->find_text,g->find_text);
       StrCpy(l->find_replace->replace_text,g->replace_text);

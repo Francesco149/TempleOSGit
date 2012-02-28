@@ -46,7 +46,7 @@ BCD_DAP_BUF:		DU16	0,0;
 BCD_DAP_BLK:		DU64	0;
 	
 BCD_LOSETHOS_MSG:
-	DU8	"\r\n\n\n\n\n"
+	DU8	"\n\r\n\r\n\r\n\r\n\r"
 "                   *  ********************************  \n\r"
 "                   *                 *                 *\n\r"
 "                   *   **   *** **** * *  *  **   ***  *\n\r"

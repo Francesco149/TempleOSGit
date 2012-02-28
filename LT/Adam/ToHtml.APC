@@ -93,19 +93,19 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
   if (!body_header) body_header="";
   if (!body_footer) body_footer="";
   LtfPrintF(l_out,
-    "<!DOCTYPE HTML>\r\n"
-    "<html>\r\n"
-    "<head>\r\n"
-    "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=US-ASCII\">\r\n"
+    "<!DOCTYPE HTML>\n"
+    "<html>\n"
+    "<head>\n"
+    "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=US-ASCII\">\n"
     "%s"
-    "<meta name=\"generator\" content=\"LoseThos V%4.2f\">\r\n"
-    "<style type=\"text/css\">\r\n",html_header,os_version);
+    "<meta name=\"generator\" content=\"LoseThos V%4.2f\">\n"
+    "<style type=\"text/css\">\n",html_header,os_version);
   style=l_out->cur_entry->last;
   LtfPutS(l_out,
-    "</style>\r\n"
-    "</head>\r\n"
-    "<body>\r\n"
-    "<pre style=\"font-family:courier;font-size:10pt\">\r\n");
+    "</style>\n"
+    "</head>\n"
+    "<body>\n"
+    "<pre style=\"font-family:courier;font-size:10pt\">\n");
   LtfPutS(l_out,body_header);
 
   cl=l_in->root.next;
@@ -120,7 +120,7 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
 	old_y=y;
       }
       while (y<cl->y) {
-	HtmlPutS(l_out,cur_u8_attr,&old_c,"\r\n",&col,style_bitmap);
+	HtmlPutS(l_out,cur_u8_attr,&old_c,"\n",&col,style_bitmap);
 	y++;
 	if (line_anchors && y!=old_y) {
 	  LtfPrintF(l_out,"<a name=\"l%d\"></a>",y+1);
@@ -173,7 +173,7 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
 	    LtfPutS(l_out,"</span>");
 	    old_c=-1;
 	  }
-	  LtfPrintF(l_out,"<img src=\"%s\" width=\"640\" height=\"480\" alt=\"\">\r\n",cl->tag);
+	  LtfPrintF(l_out,"<img src=\"%s\" width=\"640\" height=\"480\" alt=\"\">\n",cl->tag);
 	  break;
 	case LTFT_HTML_VIDEO:
 	  if (old_c!=-1) {
@@ -181,23 +181,23 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
 	    old_c=-1;
 	  }
 	  LtfPrintF(l_out,
-		"<!--begin exclude-->\r\n"
+		"<!--begin exclude-->\n"
 		"<object classid=\"clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95\" "
 		"codebase=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab\" "
-		"width=\"640\" height=\"512\">\r\n"
-		"<param name=\"FileName\" value=\"%s\">\r\n"
-		"<param name=\"AutoStart\" value=\"false\">\r\n"
-		"<param name=\"ShowTracker\" value=\"true\">\r\n"
-		"<param name=\"ShowControls\" value=\"true\">\r\n"
-		"<param name=\"ShowGotoBar\" value=\"false\">\r\n"
-		"<param name=\"ShowDisplay\" value=\"false\">\r\n"
-		"<param name=\"ShowStatusBar\" value=\"false\">\r\n"
-		"<param name=\"AutoSize\" value=\"false\">\r\n"
+		"width=\"640\" height=\"512\">\n"
+		"<param name=\"FileName\" value=\"%s\">\n"
+		"<param name=\"AutoStart\" value=\"false\">\n"
+		"<param name=\"ShowTracker\" value=\"true\">\n"
+		"<param name=\"ShowControls\" value=\"true\">\n"
+		"<param name=\"ShowGotoBar\" value=\"false\">\n"
+		"<param name=\"ShowDisplay\" value=\"false\">\n"
+		"<param name=\"ShowStatusBar\" value=\"false\">\n"
+		"<param name=\"AutoSize\" value=\"false\">\n"
 		"<embed src=\"%s\" AutoStart=\"false\" ShowTracker=\"true\" ShowControls=\"true\" "
 		"ShowGotoBar=\"false\" ShowDisplay=\"false\" ShowStatusBar=\"false\" "
 		"AutoSize=\"false\" pluginspage=\"http://www.microsoft.com/windows/windowsmedia/download/\" "
-		"width=\"640\" height=\"512\"></embed></object>\r\n"
-		"<!--end exclude-->\r\n",cl->tag,cl->tag);
+		"width=\"640\" height=\"512\"></embed></object>\n"
+		"<!--end exclude-->\n",cl->tag,cl->tag);
 	  break;
 	case LTFT_HTML_CODE:
 	  if (old_c!=-1) {
@@ -225,7 +225,7 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
     cl=cl->next;
   }
   while (y<cl->y) {
-    HtmlPutS(l_out,cur_u8_attr,&old_c,"\r\n",&col,style_bitmap);
+    HtmlPutS(l_out,cur_u8_attr,&old_c,"\n",&col,style_bitmap);
     y++;
     col=0;
   }
@@ -234,12 +234,12 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
     old_c=-1;
   }
   LtfPutS(l_out,body_footer);
-  LtfPutS(l_out,"</pre></body>\r\n</html>\r\n");
+  LtfPutS(l_out,"</pre></body>\n</html>\n");
 
   l_out->cur_entry=style->next;
   for (i=0;i<256;i++)
     if (Bt(style_bitmap,i))
-      LtfPrintF(l_out,".c%02X{color:#%02x%02x%02x;background-color:#%02x%02x%02x;}\r\n",i,p[i&15].r,p[i&15].g,p[i&15].b,p[i/16].r,p[i/16].g,p[i/16].b);
+      LtfPrintF(l_out,".c%02X{color:#%02x%02x%02x;background-color:#%02x%02x%02x;}\n",i,p[i&15].r,p[i&15].g,p[i&15].b,p[i/16].r,p[i/16].g,p[i/16].b);
   l_out->cur_entry=&l_out->root;
   l_out->recalc_start=l_out;
   LtfRecalc(l_out);

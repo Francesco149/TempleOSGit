@@ -4,7 +4,7 @@ asm {
 USE16
 //See [::/LT/Doc/MultiCore.TXZ] LoseThos MultiCore.
 
-//This code gets copied to [C:/LT/OSMain/Adam1a.HPZ,421] MP_VECT_ADDR.
+//This code gets copied to [C:/LT/OSMain/Adam1a.HPZ,420] MP_VECT_ADDR.
 //See [::/LT/OSMain/MultiProc.CPZ,MemCpy(mp:2] MemCpy(MP_VECT_ADDR.
 SYS_MP_INIT_START::
 	JMP	MP2_START2
@@ -444,8 +444,8 @@ U0 MPStart()
   MemSet(&cpu_structs[1],0,sizeof(CPUStruct)*(MP_MAX_PROCESSORS-1));
 
 //When you start-up other cores, they jump to an addr
-//specified by a byte vect number, [C:/LT/OSMain/Adam1a.HPZ,420] MPN_VECT which corresponds
-//to a location 4096*vect number, [C:/LT/OSMain/Adam1a.HPZ,421] MP_VECT_ADDR.
+//specified by a byte vect number, [C:/LT/OSMain/Adam1a.HPZ,419] MPN_VECT which corresponds
+//to a location 4096*vect number, [C:/LT/OSMain/Adam1a.HPZ,420] MP_VECT_ADDR.
   MemCpy(mp,SYS_MP_INIT_START,SYS_MP_INIT_END-SYS_MP_INIT_START);
 
 #assert offset(MPMainStruct.sys_temp_ptr)==MP_SYS_TEMP_PTR
@@ -480,7 +480,7 @@ U0 MPStart()
     buf[14]+=i;
     task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/LT/OSMain/Adam1a.HPZ,3074] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/LT/OSMain/Adam1a.HPZ,3078] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_queue_signature=TASK_IN_QUEUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TssNew(i);
@@ -539,6 +539,6 @@ U0 MPCrash()
   mp_cnt=1;
   Raw(ON);
   sys_raw_dc_flags|=RDCF_SHOW_DOLLAR;
-  "MP Crash CPU#%02X Task:%08X\r\n",mp_crash->cpu_num,mp_crash->task;
+  "MP Crash CPU#%02X Task:%08X\n",mp_crash->cpu_num,mp_crash->task;
   Dbg(mp_crash->msg,mp_crash->msg_num);
 }

@@ -69,9 +69,9 @@ U0 MorseTable()
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     if (st=ListEntryPoint(i+39,morse_list))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    CrLf;
+    NewLine;
   }
-  CrLf;
+  NewLine;
 }
 
 F64 m_start,m_end,dt_down,dt_up;
@@ -117,7 +117,7 @@ I64 MorseWaitKey()
       m_start=tP;
       Snd(1000);
       if (ch==CH_SHIFT_ESC || ch==CH_ESC) {
-	CrLf;
+	NewLine;
 	Snd(0);
 	ThrowBreak; //exit program
       }
@@ -152,7 +152,7 @@ U0 Morse()
   ll->tag_cb=&MorseTimes;
   Preempt(old_preempt);
 
-  "$FG$\r\n";
+  "$FG$\n";
 
   dst=buf;
   while (TRUE) {

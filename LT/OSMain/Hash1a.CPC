@@ -596,7 +596,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
 	  if (!(ld_flags & LDF_SILENT)) {
 	    PutDefine("ST_UNRESOLVED_REFERENCE");
 	    "" st_ptr;
-	    CrLf;
+	    NewLine;
 	  }
 	  tempiss=CAlloc(sizeof(ImportSysSymHashEntry));
 	  tempiss->str=StrNew(st_ptr);

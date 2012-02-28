@@ -84,15 +84,15 @@ U0 Quail()
 
   PutBibleVerse("Numbers,11:11",88);
   LtfTop;
-  PopUpOk("Scroll down to finish reading.\r\n"
+  PopUpOk("Scroll down to finish reading.\n"
 	"$FG,GREEN$<SHIFT-ESC>$FG$ when done.");
   View;
 
   LtfBottom;
   "$CL$$BG,LTCYAN$";
-  CrLf(SKY_HEIGHT/FONT_HEIGHT);
+  NewLine(SKY_HEIGHT/FONT_HEIGHT);
   "$BG,YELLOW$";
-  CrLf(3);
+  NewLine(3);
 
   t0=tP;
   t_last=0;
@@ -100,5 +100,5 @@ U0 Quail()
   PressAKey;
   LtfClear;
   SettingsPop(Fs,TSF_SAME_SONG);
-  "$BG$\r\n";
+  "$BG$\n";
 }

@@ -29,12 +29,12 @@ U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 	F64	double
 	no F32 float.
 
-* Function with no, or just default args can be called without parenthesis. 
+* Function with no, or just default args can be called without parentheses. 
 
 * Default args don't have to be on the end.  This code is valid:
   U0 Test(I64 i=4,I64 j,I64 k=5)
 {
-  PrintF("%X %X %X\r\n",i,j,k);
+  PrintF("%X %X %X\n",i,j,k);
 }
 
 Test(,3);
@@ -48,8 +48,8 @@ variable fmt_str follows.
 
   U0 Demo1(U8 drv,U8 *fmt,U8 *name,I64 age)
 {
-  PutS("Hello World!\r\n");
-  PrintF("%s age %d\r\n",name,age);
+  PutS("Hello World!\n");
+  PrintF("%s age %d\n",name,age);
   PrintF(fmt,name,age);
   PutChar(drv);
   PutChar('*');
@@ -57,8 +57,8 @@ variable fmt_str follows.
 
 U0 Demo2(U8 drv,U8 *fmt,U8 *name,I64 age)
 {
-  "Hello World!\r\n";
-  "%s age %d\r\n",name,age;
+  "Hello World!\n";
+  "%s age %d\n",name,age;
   "" fmt,name,age;
   '' drv;
   '*';
@@ -121,11 +121,11 @@ than multiplying by "1.0" to convert to float.)
   :,?
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* Use [C:/LT/Compiler/Directives.CPZ,8] OptOn([C:/LT/OSMain/Adam1a.HPZ,1380]
+* Use [C:/LT/Compiler/Directives.CPZ,8] OptOn([C:/LT/OSMain/Adam1a.HPZ,1384]
 OPTf_STD_C) to use C precedence.
 
 * You can use [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1371] OPTf_PAREN_WARN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1375] OPTf_PAREN_WARN) to find unnecessary
 parentheses in code.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -169,7 +169,7 @@ can be accessed from within a catch{} using the Fs->except_argc and Fs->except
 _argv[] vars.  Within a catch {} blk, set the var Fs->catch_except to TRUE if 
 you want to terminate the search for a handler.  By convention, the first arg 
 of except_argv[] specifies the exception type num.  A list of assigned 
-exception types can be found at [C:/LT/OSMain/Adam1a.HPZ,2689]
+exception types can be found at [C:/LT/OSMain/Adam1a.HPZ,2693]
 EXCEPT_LOCAL.  For a handler that will catch 
 all excepts, you can use [C:/LT/OSMain/Except.CPZ,233] CatchAll().
 
@@ -204,7 +204,7 @@ IndependentHeapCtrlInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/LT/OSMain/Adam1a.HPZ,2791] DFT_STK and 
+[C:/LT/OSMain/Adam1a.HPZ,2795] DFT_STK and 
 recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,230]
 Spawn().  You can use 
 [C:/LT/OSMain/Task1a.CPZ,67] CallStkGrow(), but it's odd.  See
@@ -223,16 +223,16 @@ I32 j;
 j=i=0x12345678; //Resulting i is 0x5678 but j is 0x12345678
 
 I64 i=0x8000000000000000;
-PrintF("%X\r\n",i>>1);  //Result is 0xC000000000000000 as expected
+PrintF("%X\n",i>>1);  //Result is 0xC000000000000000 as expected
 
 U64 u=0x8000000000000000;
-PrintF("%X\r\n",u>>1);  //Result is 0x4000000000000000 as expected
+PrintF("%X\n",u>>1);  //Result is 0x4000000000000000 as expected
 
 I32 i=0x80000000; 	  //constant is loaded into a 64-bit register var.
-PrintF("%X\r\n",i>>1);  //Result is 0x40000000
+PrintF("%X\n",i>>1);  //Result is 0x40000000
 
 I32 i=-0x80000000;
-PrintF("%X\r\n",i>>1);  //Result is 0xC0000000 as expected
+PrintF("%X\n",i>>1);  //Result is 0xC0000000 as expected
 
 
                                 PrintF Family
@@ -276,10 +276,10 @@ to be displayed.
 [C:/LT/Compiler/CmpMain.CPZ,2] StreamPutS(U8 *src) send text to the stream 
 of code being compiled and must reside in a #exe{} blk.
 
-[C:/LT/Adam/Gr/GrBitMap.APZ,1104] GrPrintF(GrDC *dc,I64 x,I64 y,U8
+[C:/LT/Adam/Gr/GrBitMap.APZ,1102] GrPrintF(GrDC *dc,I64 x,I64 y,U8
 *fmtstr,...) and [C:/LT/Adam/Gr/GrBitMap.APZ,1054] GrPutS(GrDC *dc,I64 x,I64 
-y,U8 *src) plots text in graphics mode.  [C:/LT/Adam/Gr/GrBitMap.APZ,1111]
-GrVPrintF() and [C:/LT/Adam/Gr/GrBitMap.APZ,1078] GrVPutS() will print 
+y,U8 *src) plots text in graphics mode.  [C:/LT/Adam/Gr/GrBitMap.APZ,1109]
+GrVPrintF() and [C:/LT/Adam/Gr/GrBitMap.APZ,1077] GrVPutS() will print 
 vertically.
 
 [C:/LT/Compiler/CmpMain.CPZ,559] ExePrintF(U8 *fmtstr,...) and
@@ -327,8 +327,8 @@ units letters.
 * "%T" and "%D" will display a date or time and the format is selected with 
 a subcode, entered after a "h".  Example: "%20h1D" uses date format code 
 "1". See [::/LT/Demo/DateTime.CPZ] ::/LT/Demo/DateTime.CPZ,
-  [C:/LT/OSMain/Str1a.CPZ,1224] MSPrintFDate() and
-  [C:/LT/OSMain/Str1a.CPZ,1134] MSPrintFTime() for 
+  [C:/LT/OSMain/Str1a.CPZ,1222] MSPrintFDate() and
+  [C:/LT/OSMain/Str1a.CPZ,1132] MSPrintFTime() for 
 subcodes.
 
 * "%z" will display a subentry of an enumerated list of text entries. It 

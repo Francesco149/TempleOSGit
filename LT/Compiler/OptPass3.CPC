@@ -77,7 +77,7 @@ U0 OptPass3(LexStruct *lx,ClassStruct *fun_class,OptRegStruct *register_offsets)
 	tempc=tempc->forward_class;
       if (0<=tempm->register<NUM_REGS) {
 	if (Bts(&used_reg_mask,tempm->register))
-	  PrintFWarn("%S\r\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\r\n","ST_REG_IN_USE",
+	  PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_REG_IN_USE",
 	    lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,fun_class->str);
 	register_offsets[tempm->register].offset=tempm->offset;
 	register_offsets[tempm->register].m=tempm;
@@ -89,7 +89,7 @@ U0 OptPass3(LexStruct *lx,ClassStruct *fun_class,OptRegStruct *register_offsets)
 	mv[member_cnt++].m=tempm;
       } else {
 	if (tempm->register==CREG_ALLOC)
-	  PrintFWarn("%S\r\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\r\n","ST_CANT_REG_VAR",
+	  PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_CANT_REG_VAR",
 	    lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,fun_class->str);
       }
       tempm=tempm->next;
@@ -585,7 +585,7 @@ here1:
 	  mv[j++].offset=mv[i].offset;
 	} else {
 	  if (mv[i].m->register==CREG_ALLOC)
-	    PrintFWarn("%S\r\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\r\n","ST_CANT_REG_VAR",
+	    PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_CANT_REG_VAR",
 	      lx->cur_lfn->name,lx->cur_lfn->line_num,mv[i].m->str,fun_class->str);
 	}
       }
@@ -606,7 +606,7 @@ here1:
 		register_offsets[tempm->register].offset=mv[i].offset;
 		register_offsets[tempm->register].m=tempm;
 		if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-		  "Fun:%s\r\nReg %Z Var \"%s\" %08X[RBP]\r\n",
+		  "Fun:%s\nReg %Z Var \"%s\" %08X[RBP]\n",
 		    fun_class->str,tempm->register,"ST_U64_REGS",
 		      tempm->str,register_offsets[tempm->register].offset;
 		mv[i].offset=0; //flag as reg var
@@ -627,7 +627,7 @@ here1:
 	      register_offsets[tempm->register].offset=mv[i].offset;
 	      register_offsets[tempm->register].m=tempm;
 	      if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-		"Reg %Z Var \"%s\" %08X[RBP]\r\n",tempm->register,"ST_U64_REGS",
+		"Reg %Z Var \"%s\" %08X[RBP]\n",tempm->register,"ST_U64_REGS",
 		  tempm->str,register_offsets[tempm->register].offset;
 	    }
 	  }

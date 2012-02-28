@@ -19,7 +19,7 @@ MgdMC *PmtSliderCtrl()
   MgdMCSlider *temps;
   U8 *st,pmt[64];
 
-  "$FG,PURPLE$Slider Ctrl$FG$\r\n\r\n";
+  "$FG,PURPLE$Slider Ctrl$FG$\n\n";
 
   result->glbl_name=PmtStr("Glbl Struct Name (ENTER for No Glbl):");
   result->range=PmtI64	("Range   (%4d):",30);
@@ -71,13 +71,13 @@ class SliderState
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    LtfPrintF(l,"  I64 %s;\r\n",temps->name);
+    LtfPrintF(l,"  I64 %s;\n",temps->name);
     temps=temps->next;
   }
   if (*m->glbl_name)
-    LtfPrintF(l,"} %s;\r\n",m->glbl_name);
+    LtfPrintF(l,"} %s;\n",m->glbl_name);
   else
-    LtfPutS(l,"};\r\n");
+    LtfPutS(l,"};\n");
 
 
   LtfPrintF(l,
@@ -100,29 +100,29 @@ U0 DrawSliderCtrl(GrDC *dc,Ctrl *c)
 	      c->left+%d*SLIDER_SPACING+%d,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
 ",i+1,i,i+1,i);
 
-  LtfPutS(l,"  dc->color=LTRED;\r\n");
+  LtfPutS(l,"  dc->color=LTRED;\n");
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
     LtfPrintF(l,
 "  GrPrintF(dc,c->left+%d*SLIDER_SPACING+%d-FONT_WIDTH/2,
     c->top+SLIDER_SPACING+SLIDER_RANGE+3,
-    \"%%d\",s->%s*10/SLIDER_RANGE);\r\n",
+    \"%%d\",s->%s*10/SLIDER_RANGE);\n",
       temps->num+1,temps->num,temps->name);
     temps=temps->next;
   }
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    LtfPrintF(l,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-2,7,5);\r\n",
+    LtfPrintF(l,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-2,7,5);\n",
       temps->num+1,temps->num,temps->name);
     temps=temps->next;
   }
-  LtfPutS(l,"  dc->color=YELLOW;\r\n");
+  LtfPutS(l,"  dc->color=YELLOW;\n");
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    LtfPrintF(l,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-1,5,3);\r\n",
+    LtfPrintF(l,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-1,5,3);\n",
       temps->num+1,temps->num,temps->name);
     temps=temps->next;
   }
@@ -140,7 +140,7 @@ U0 UpdateDerivedSliderCtrl(Ctrl *c)
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    LtfPrintF(l,"  s->%s=LimitI64(s->%s,0,SLIDER_RANGE-1);\r\n",temps->name,temps->name);
+    LtfPrintF(l,"  s->%s=LimitI64(s->%s,0,SLIDER_RANGE-1);\n",temps->name,temps->name);
     temps=temps->next;
   }
   LtfPutS(l,
@@ -158,11 +158,11 @@ U0 LeftClickSlider(Ctrl *c,I64 x,I64 y,BoolI8 down)
     if (temps!=m->next_slider)
       LtfPutS(l,"else ");
     if (temps->next==&m->next_slider)
-      LtfPutS(l,"\r\n");
+      LtfPutS(l,"\n");
     else
-      LtfPrintF(l,"if (x<c->left+%d*SLIDER_SPACING+%d+SLIDER_SPACING/2)\r\n",
+      LtfPrintF(l,"if (x<c->left+%d*SLIDER_SPACING+%d+SLIDER_SPACING/2)\n",
 	temps->num+1,temps->num);
-    LtfPrintF(l,"    s->%s=SLIDER_RANGE-1-(y-(c->top+SLIDER_SPACING));\r\n",
+    LtfPrintF(l,"    s->%s=SLIDER_RANGE-1-(y-(c->top+SLIDER_SPACING));\n",
        temps->name);
     temps=temps->next;
   }
@@ -181,10 +181,10 @@ Ctrl *SliderNew()
   c->type=CTRLT_GENERIC;
 ");
   if (*m->glbl_name)
-    LtfPrintF(l,"  c->state=&%s;\r\n"
-		"  MemSet(&%s,0,sizeof(SliderState));\r\n",m->glbl_name,m->glbl_name);
+    LtfPrintF(l,"  c->state=&%s;\n"
+		"  MemSet(&%s,0,sizeof(SliderState));\n",m->glbl_name,m->glbl_name);
   else
-    LtfPutS(l,	"  c->state=CAlloc(sizeof(SliderState));\r\n");
+    LtfPutS(l,	"  c->state=CAlloc(sizeof(SliderState));\n");
   LtfPutS(l,
 "  c->draw_it=&DrawSliderCtrl;
   c->left_click=&LeftClickSlider;
@@ -203,7 +203,7 @@ U0 SliderDel(Ctrl *c)
   Preempt(old_preempt);
 ");
   if (!*m->glbl_name)
-    LtfPutS(l,"  Free(c->state);\r\n");
+    LtfPutS(l,"  Free(c->state);\n");
   LtfPutS(l,
 "  Free(c);
 }
@@ -212,8 +212,8 @@ U0 SliderDel(Ctrl *c)
   Kill(task);  //This frees memory.
 
   AcctOneTimePopUp(ARf_MANAGE_SLIDER,
-    "Modify the code to your heart's content.\r\n"
-    "The code is no longer managed.\r\n");
+    "Modify the code to your heart's content.\n"
+    "The code is no longer managed.\n");
 
   LtfLock(l);
 }

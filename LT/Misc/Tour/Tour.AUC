@@ -2,7 +2,7 @@ public I64 PopUpTourPart()
 {
   I64 i;
   Ltf *l=LtfNew;
-  LtfPutS(l,"$FG,PURPLE$LoseThos Tours$FG$\r\n\r\n"
+  LtfPutS(l,"$FG,PURPLE$LoseThos Tours$FG$\n\n"
 	"$CM+LX,4,4$$BT,\"Part 1: The basics\",1$"
 	"$CM+LX,4,4$$BT,\"Part 2: Editing and running programs\",2$"
 	"$CM+LX,4,4$$BT,\"Part 3: Adding macros to your start menu\",3$"
@@ -12,7 +12,7 @@ public I64 PopUpTourPart()
 	"$CM+LX,4,4$$BT,\"Part 7: Editor filter\",7$"
 	"$CM+LX,4,4$$BT,\"Part 8: Debugging\",8$"
 	"$CM+LX,4,4$$BT,\"Part 9: Wow!!\",9$"
-	"$CM+LX,4,4$$BT,\"Done\",LTFM_CANCEL$\r\n");
+	"$CM+LX,4,4$$BT,\"Done\",LTFM_CANCEL$\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;

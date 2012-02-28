@@ -72,7 +72,7 @@ public U0 AFGetChar(U64 ch1,U64 ch2=0)
 	} else {
 	  st1=A2KeyName(ch1);
 	  st2=A2KeyName(ch2);
-	  SPrintF(buf,"Press the '$FG,GREEN$%s$FG$' key or\r\n"
+	  SPrintF(buf,"Press the '$FG,GREEN$%s$FG$' key or\n"
 		      "the '$FG,GREEN$%s$FG$' key.",st1,st2);
 	  Free(st1);
 	  Free(st2);

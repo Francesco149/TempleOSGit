@@ -34,7 +34,6 @@ BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NU
   PrsStk *ps;
   MemberListStruct *local_var;
   ArrayDimStruct *tempad=NULL;
-
   if (!(lx->flags&LF_INSIDE_EXPRESSION))
     lx->expression_start_line=lx->start_line_num;
   lx->flags|=LF_INSIDE_EXPRESSION;

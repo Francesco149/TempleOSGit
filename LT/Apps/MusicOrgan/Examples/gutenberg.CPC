@@ -33,7 +33,7 @@ U0 Song()
 {
   TaskStruct *task;
   task=PopUpViewStr(
-    "[Revelation,22:18] Revelation,22:18\r\n"
+    "[Revelation,22:18] Revelation,22:18\n"
   );
   TaskWaitIdle(task);
   task->win_right=Fs->win_right;
@@ -52,15 +52,15 @@ U0 Song()
   while (!ScanKey) {
 	t0=tM;
 	Play("!3qBRE2sG3C!2G!3CeCF!qEeG!!AsR2GR!G",
-		"The \0 \0quill\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"The \0 \0quill\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("!3qBRE2sG3C!2G!3CeCF!qEeG!!AsR2GR!G",
-		"is \0 \0still\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"is \0 \0still\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("3qER!!etA!!C!GqF2G3etD2G3F!BF!2G3DRF",
 		" \0 \0God's \0 \0 \0word \0for \0all \0 \0his \0 \0hap\0 \0py \0 \0peo\0");
 	Play("qER!!etA!!C!G!qF2G3etD2G3F!BF!2G3DRF",
-		"ple.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"ple.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	"$FG,GREEN$Gutenberg invented the printing press and made Bibles.  Until then, "
-	"I wonder how many man-hours for one word in the Bible!\r\n$FG$";
+	"I wonder how many man-hours for one word in the Bible!\n$FG$";
   }
   } catch
     CatchAll;

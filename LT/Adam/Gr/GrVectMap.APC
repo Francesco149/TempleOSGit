@@ -404,7 +404,7 @@ public GrVectMap *GrDC2VectMap(GrDC *dc,TaskStruct *mem_task=NULL,I64 *_size=NUL
   GrVectMap *result,tempv;
 
   if (!dc || dc->type!=DCT_MONO) {
-    "Must be DCT_MONO bitmap\r\n";
+    "Must be DCT_MONO bitmap\n";
     return NULL;
   }
 

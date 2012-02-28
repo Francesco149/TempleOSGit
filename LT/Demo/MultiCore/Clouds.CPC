@@ -173,9 +173,9 @@ U0 CloudScene()
     Init;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
 
-    "$CL$$BG,LTCYAN$"; CrLf(SKY_LINES);
+    "$CL$$BG,LTCYAN$"; NewLine(SKY_LINES);
     "$BG,YELLOW$";
-    CrLf(5);
+    NewLine(5);
     PutBibleVerse("Exodus,14:19",7);
 
     Preempt(OFF);
@@ -183,7 +183,7 @@ U0 CloudScene()
     GetChar;
     WinSync;
 
-    "$BG$\r\n";
+    "$BG$\n";
   } catch
     CatchAll;
   SettingsPop;

@@ -38,7 +38,7 @@ public U0 BinRep(U8 *filename)
   bfh=bfh2;
 
   if (ArcXSum(bfh,bfh->file_size)!=LT_XSUM) {
-    "Bad XSum\r\n\r\n";
+    "Bad XSum\n\n";
     return;
   }
 
@@ -47,9 +47,9 @@ public U0 BinRep(U8 *filename)
   fbuf=StrNew(absname);
   FileExtRem(fbuf);
   if (fbuf[1]==':' && StrLen(fbuf)>2)
-    "Module Name:%s\r\n",fbuf+2;
+    "Module Name:%s\n",fbuf+2;
   else
-    "No Module Name\r\n";
+    "No Module Name\n";
   Free(fbuf);
 
   ptr=bfh><(U8 *)+bfh->loader_patch_table_offset;
@@ -63,10 +63,10 @@ public U0 BinRep(U8 *filename)
 	if (*sptr)
 	  saved_hash_ptr=HashFind(sptr,Fs->hash_table,HTT_ALL);
 	if (!saved_hash_ptr)
-	  "%S%s\r\n","ST_UNRESOLVED_REFERENCE",sptr;
+	  "%S%s\n","ST_UNRESOLVED_REFERENCE",sptr;
 	break;
       case EIE_ABS_ADDR:
-	CrLf;
+	NewLine;
 	for (j=0;j<i;j++)
 	  "%X ",*ptr><(U32 *)++;
 	break;
@@ -76,7 +76,7 @@ public U0 BinRep(U8 *filename)
 	  "%X ",*ptr><(U32 *)++;
 	break;
     }
-    CrLf;
+    NewLine;
   }
   Free(absname);
   Free(bfh);

@@ -45,13 +45,13 @@ U0 Song()
   try {
     while (!ScanKey) {
       Play("3qG2G3DBsDCDCqRCG",
-	  "$CL$$BG,9$\r\n\r\n$BG,2$$CM-LE,3$$FG,14$Baa, \0the \0grass \0is \0green.\r\n\0 \0 \0 \0 \0 \0 \0");
+	  "$CL$$BG,9$\n\n$BG,2$$CM-LE,3$$FG,14$Baa, \0the \0grass \0is \0green.\n\0 \0 \0 \0 \0 \0 \0");
       Play("G2G3DBsDCDCqRCG",
-	  "This \0must \0be \0a \0dream.\r\n\0 \0 \0 \0 \0 \0 \0");
+	  "This \0must \0be \0a \0dream.\n\0 \0 \0 \0 \0 \0 \0");
       Play("EeGFqBBDA2eGGqR",
-	  "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\r\n\0 \0 \0");
+	  "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\n\0 \0 \0");
       Play("3EeGFqBBDA2eGGqR",
-	  "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\r\n\0 \0 \0");
+	  "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\n\0 \0 \0");
     }
   } catch
     CatchAll;

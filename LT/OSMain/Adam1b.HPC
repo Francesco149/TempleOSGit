@@ -24,7 +24,7 @@ public LTextern SYS_FOCUS_TASK TaskStruct *sys_focus_task;
 
 #help_index "Graphics/Screen"
 //This is the INT 0x10 mode number.
-public LTextern SYS_GR_MODE U16 gr_mode;
+public LTextern SYS_BIOS_GR_MODE U16 bios_gr_mode;
 #help_index "PCI"
 public LTextern SYS_PCI_BUSSES U16 sys_pci_busses;
 #help_index "Misc"
@@ -171,7 +171,7 @@ public LTextern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d);
 public LTextern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d);
 
 //Model Specific REgisters
-//See [C:/LT/OSMain/Adam1a.HPZ,436] MSRs
+//See [C:/LT/OSMain/Adam1a.HPZ,435] MSRs
 public LTextern _SET_MSR U0 SetMSR(U64 model_specific_reg,U64 val);
 
 #help_index "Processor/Cache;Memory/Cache"

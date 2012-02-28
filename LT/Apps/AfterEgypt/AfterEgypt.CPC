@@ -83,13 +83,13 @@ U0 UpTheMountain()
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->draw_it=&DrawGodTalking;
-  "$BG,YELLOW$$WW,1$$CM,0,30$God Says...$FG,RED$\r\n";
+  "$BG,YELLOW$$WW,1$$CM,0,30$God Says...$FG,RED$\n";
   if (RandU32&1) {
     for (i=0;i<16;i++)
       RandWord;
   } else
     RandQuote;
-  "$FG$\r\n\r\nPress <SHIFT-ESC>.\r\n";
+  "$FG$\n\nPress <SHIFT-ESC>.\n";
   View;
   SettingsPop(Fs,TSF_SAME_SONG);
 }
@@ -104,7 +104,7 @@ U0 HoldCourt()
   FlushMsgs;
   LtfDblBufStart;
 
-  CrLf;
+  NewLine;
   accused=RandU32%3;
   "" ListEntryPoint(accused,"A man \0A woman \0A child \0");
 
@@ -120,12 +120,12 @@ U0 HoldCourt()
     ", again!";
   else
     '.';
-  CrLf(4);
+  NewLine(4);
 
   "$LM,4$"
-  "\r\n\r\n$BT,\"Show Mercy\",1$\r\n\r\n"
-  "\r\n\r\n$BT,\"Punish\",2$\r\n\r\n"
-  "\r\n\r\n$BT,\"Really Punish\",3$\r\n\r\n"
+  "\n\n$BT,\"Show Mercy\",1$\n\n"
+  "\n\n$BT,\"Punish\",2$\n\n"
+  "\n\n$BT,\"Really Punish\",3$\n\n"
   "$LM,0$";
   LtfDblBufEnd;
   i=LtfMenuDo(LtfCur);
@@ -161,19 +161,19 @@ BoolI64 TakeTurn()
   FlushMsgs;
   LtfDblBufStart;
 	"$LM,4$"
-	"\r\n\r\n$BT,\"Break Camp\",T_BREAK_CAMP$\r\n\r\n"
-	"\r\n\r\n$BT,\"Talk with God\",T_TALK_WITH_GOD$\r\n\r\n"
-	"\r\n\r\n$BT,\"View Clouds\",T_VIEW_CLOUDS$\r\n\r\n"
-	"\r\n\r\n$BT,\"Hold Court\",T_HOLD_COURT$\r\n\r\n"
-	"\r\n\r\n$BT,\"View Map\",T_VIEW_MAP$\r\n\r\n"
-	"\r\n\r\n$BT,\"Make Water\",T_WATER_ROCK$\r\n\r\n"
-	"\r\n\r\n$BT,\"Battle\",T_BATTLE$\r\n\r\n"
-	"\r\n\r\n$BT,\"Sacrifice\",T_SACRIFICE$\r\n\r\n"
-	"\r\n\r\n$BT,\"Beg for Meat\",T_QUAIL$\r\n\r\n"
-	"\r\n\r\n$BT,\"Moses Comics\",T_MOSES_COMICS$\r\n\r\n"
-	"\r\n\r\n$BT,\"Toggle Mute\",T_MUTE$\r\n\r\n"
-	"\r\n\r\n$BT,\"Help\",T_HELP$\r\n\r\n"
-	"\r\n\r\n$BT,\"Quit\",T_QUIT$\r\n\r\n"
+	"\n\n$BT,\"Break Camp\",T_BREAK_CAMP$\n\n"
+	"\n\n$BT,\"Talk with God\",T_TALK_WITH_GOD$\n\n"
+	"\n\n$BT,\"View Clouds\",T_VIEW_CLOUDS$\n\n"
+	"\n\n$BT,\"Hold Court\",T_HOLD_COURT$\n\n"
+	"\n\n$BT,\"View Map\",T_VIEW_MAP$\n\n"
+	"\n\n$BT,\"Make Water\",T_WATER_ROCK$\n\n"
+	"\n\n$BT,\"Battle\",T_BATTLE$\n\n"
+	"\n\n$BT,\"Sacrifice\",T_SACRIFICE$\n\n"
+	"\n\n$BT,\"Beg for Meat\",T_QUAIL$\n\n"
+	"\n\n$BT,\"Moses Comics\",T_MOSES_COMICS$\n\n"
+	"\n\n$BT,\"Toggle Mute\",T_MUTE$\n\n"
+	"\n\n$BT,\"Help\",T_HELP$\n\n"
+	"\n\n$BT,\"Quit\",T_QUIT$\n\n"
 	"$LM,0$";
   LtfDblBufEnd;
   i=LtfMenuDo(LtfCur);
@@ -222,7 +222,7 @@ BoolI64 TakeTurn()
 	break;
       case T_HELP:
 	PopUp("Cd(Fs->parent_task->cur_dir);Ed(\"FL:AENotes.TXZ,1\");",Fs);
-	PopUpOk("Add your own story-line...\r\nLike old school toys.\r\n");
+	PopUpOk("Add your own story-line...\nLike old school toys.\n");
 	break;
     }
     result=TRUE;

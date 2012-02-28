@@ -29,7 +29,7 @@ GDTTAB_SIZE:
 #assert GDTTAB_SIZE/16==MAXGDT
 
 
-	STRUC 0 [C:/LT/OSMain/Adam1a.HPZ,2708] Redundant C+ Struct
+	STRUC 0 [C:/LT/OSMain/Adam1a.HPZ,2712] Redundant C+ Struct
 EXCEPT_NEXT:		DU64	?;
 EXCEPT_LAST:		DU64	?;
 EXCEPT_HANDLER_START:	DU64	?;

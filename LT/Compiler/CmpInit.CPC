@@ -327,8 +327,8 @@ U0 CmpLoadDefines()
   DefineLoad("ST_UNDEFINED_GOTO_LABEL","Undefined goto label ");
   DefineLoad("ST_UNDEFINED_GOTO_LABEL_AT","Undefined goto label at ");
   DefineLoad("ST_DUP_GOTO_LABEL","Duplicate goto label at ");
-  DefineLoad("ST_BREAK_NOT_ALLOWED","'break' not allowed\r\n");
-  DefineLoad("ST_ERRORS_WARNINGS","Errs:%d Warns:%d Code:%X Size:%X\r\n");
+  DefineLoad("ST_BREAK_NOT_ALLOWED","'break' not allowed\n");
+  DefineLoad("ST_ERRORS_WARNINGS","Errs:%d Warns:%d Code:%X Size:%X\n");
   DefineLoad("ST_IMPORT_NOT_NEEDED","import not needed at ");
   DefineLoad("ST_CASE_RANGE_ERROR","switch range error at ");
   DefineLoad("ST_LEX_STK_OVERFLOW","Lex Stk overflow");
@@ -360,7 +360,7 @@ U0 CmpLoadDefines()
   DefineLoad("ST_DUP_OPCODE_ENTRY","Duplicate OPCODE entry ");
   DefineLoad("ST_IN_FUN","in fun ");
   DefineLoad("ST_NOT_ARRAY_OR_PTR","not array or ptr ");
-  DefineLoad("ST_16BIT_UNASM","16-bit unassembly is not well supported.\r\n");
+  DefineLoad("ST_16BIT_UNASM","16-bit unassembly is not well supported.\n");
   DefineLoad("ST_CANT_REG_VAR","Can't reg var ");
   DefineLoad("ST_ILLEGAL_FORWARD_REF","Illegal forward ref at ");
   DefineLoad("ST_REG_IN_USE","Register in use ");

@@ -12,7 +12,7 @@ U0 MPPrintFDemo()
   for (i=0;i<1000;i++)
     MPJob(&Job,LtfCur);
   Sleep(1000);
-  "$FG$\r\n";
+  "$FG$\n";
 }
 
 MPPrintFDemo;

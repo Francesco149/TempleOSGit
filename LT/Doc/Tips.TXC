@@ -52,7 +52,7 @@ new machine does not have PS/2 ports.
 
 * You can set your local time zone by setting the
 [C:/LT/OSMain/OSGlbls.CPZ,43] local_time_offset global var 
-in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,456]
+in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,455]
 LTDATE_FREQ.  See [HOME/Adam3aLocalize.APZ,local_time] local time.
 
 * Use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1774] LtfCurAttr() in
@@ -116,19 +116,19 @@ want to make a hot key.  See
 [::/LT/Demo/AcctExample/TSAdam.APZ,BMPFileCaptureScreen] BMPFileCaptureScreen.
 
 * Use [C:/LT/Adam/Ltf/LtfNew.APZ,668] LtfMax() to adjust the size of the cmd
-line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf entries, 
+line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1306] Ltf entries, 
 not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3074]
+to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3078]
 TaskStruct, [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry and
-[C:/LT/OSMain/Adam1a.HPZ,2519] LTDirEntry 
+[C:/LT/OSMain/Adam1a.HPZ,2523] LTDirEntry 
 have them.  You shouldn't encounter conflicts with LoseThos using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
 [C:/LT/OSMain/Task1a.CPZ,230] Spawn(
-), changing [C:/LT/OSMain/Adam1a.HPZ,2791] DFT_STK, and using
+), changing [C:/LT/OSMain/Adam1a.HPZ,2795] DFT_STK, and using
 [C:/LT/Adam/Ltf/LtfNew.APZ,668] LtfMax() to reduce the cmd line buffer size.
 
 * Filenames ending in Z will be automatically compressed and uncompressed
@@ -150,7 +150,7 @@ for broken links in
 documentation.
 
 * You can use [C:/LT/Compiler/Directives.CPZ,8]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1371] OPTf_PAREN_WARN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1375] OPTf_PAREN_WARN) to find unnecessary
 parentheses in code.
 
 * Use [C:/LT/Adam/Ltf/LtfMain.APZ,149] Plain() to edit a plain text
@@ -216,8 +216,8 @@ probably turn-off preemption or interrupts momentarily to copy it.
 
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
-lx for [C:/LT/OSMain/Adam1a.HPZ,1925] LexStruct ptrs; l for
-[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf ptrs; ll or cl for
+lx for [C:/LT/OSMain/Adam1a.HPZ,1929] LexStruct ptrs; l for
+[C:/LT/OSMain/Adam1a.HPZ,1306] Ltf ptrs; ll or cl for
 [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry ptrs, etc.
 
 
@@ -233,7 +233,7 @@ SetDrvTextAttr().  Place calls
 to this in [HOME/Adam3aLocalize.APZ] HOME/Adam3aLocalize.APZ.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf cmd under the 
+[C:/LT/OSMain/Adam1a.HPZ,1306] Ltf cmd under the 
 cursor.  See [::/LT/Demo/Ltf/TextDemo.CPZ] ::/LT/Demo/Ltf/TextDemo.CPZ.
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -264,7 +264,7 @@ flood fills work well.  If you are doing interpolation, however, they must be
 vect.
 
 * [C:/LT/Adam/Gr/GrPrimatives.APZ,226] GrFloodFill() is
-slow.  [C:/LT/Adam/Gr/GrBitMap.APZ,1119] GrRect() is fast.
+slow.  [C:/LT/Adam/Gr/GrBitMap.APZ,1117] GrRect() is fast.
 
 * You can customize the wallpaper.  See [::/LT/Demo/Graphics/MyWallPaper.APZ]
 ::/LT/Demo/Graphics/MyWallPaper.APZ.
@@ -302,8 +302,8 @@ GetTimeStamp().
 
 * Use [C:/LT/Adam/HeapLog.APZ,111] HeapLog() and [C:/LT/Adam/HeapLog.APZ,79]
 HeapLogRep() to find leaks.  Don't be confused by
-[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf 
+[C:/LT/OSMain/Adam1a.HPZ,1306] Ltf 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2740]
+* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2744]
 _CFG_HEAP_DBG.  You're on your own.

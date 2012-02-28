@@ -100,7 +100,7 @@ mt_done:
     while (*st3) {
       StrFirstRem(st3,"/",st2);
       if (*st2) {
-	LtfPrintF(l,"$TR+C,\"%s\"$\r\n$ID,2$",st2);
+	LtfPrintF(l,"$TR+C,\"%s\"$\n$ID,2$",st2);
 	l->cur_entry=LtfPutS(l,"$ID,-2$");
 	l->cur_data_col=0;
       }

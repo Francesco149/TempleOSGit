@@ -6,7 +6,7 @@ U0 DollarFile(LTDirEntry *m1)
       DollarFile(m1->sub);
     else {
       "" m1->full_name;
-      CrLf;
+      NewLine;
       l=LtfRead(m1->full_name,LTFF_PLAIN_TEXT|LTFF_DBL_DOLLARS);
       LtfWrite(l);
       LtfDel(l);

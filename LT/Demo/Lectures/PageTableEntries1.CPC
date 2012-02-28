@@ -11,7 +11,7 @@
 U0 PageTableDemo1()
 {
   U64 *pte=MemPointAtPageTableEntry(VGA_GRAPHIC_MEM_BASE),p0,p1;
-  "Page table entries for VGA screen memory\r\n";
+  "Page table entries for VGA screen memory\n";
   LtfD(pte);
   PressAKey;
 
@@ -42,5 +42,5 @@ U0 PageTableDemo1()
 PageTableDemo1;
 
 //See [C:/LT/OSMain/Memory.CPZ,327] Alloc2MegMemBlks(), [C:/LT/OSMain/Memory.CPZ,484] Free2MegMemBlks() for page aligned allocations.
-//See [C:/LT/OSMain/Adam1a.HPZ,2801] BlkPool, [C:/LT/OSMain/Adam1a.HPZ,2816] HeapCtrl, [C:/LT/OSMain/Adam1b.HPZ,119] sys_code_bp, [C:/LT/OSMain/Adam1b.HPZ,120] sys_data_bp.
+//See [C:/LT/OSMain/Adam1a.HPZ,2805] BlkPool, [C:/LT/OSMain/Adam1a.HPZ,2820] HeapCtrl, [C:/LT/OSMain/Adam1b.HPZ,119] sys_code_bp, [C:/LT/OSMain/Adam1b.HPZ,120] sys_data_bp.
 //See [Memory] Memory

@@ -11,8 +11,8 @@ U0 Cartesian()
   GrDC *dc=GrDCAlias(gr_dc2,Fs);
   do {
     LtfClear;
-    "Enter algebraic equation to graph.\r\n"
-    "Example: y=2*x\r\n"
+    "Enter algebraic equation to graph.\n"
+    "Example: y=2*x\n"
     "y=";
     if (st=MGetS) {
       if (*st) {
@@ -45,7 +45,7 @@ Cartesian;
 
 /*
 For better performance, compile the expression entered by the user one time 
-with [C:/LT/Compiler/ExpParser.CPZ,1278] CmpExpression() and use
+with [C:/LT/Compiler/ExpParser.CPZ,1277] CmpExpression() and use
 [C:/LT/OSMain/Adam1b.HPZ,289] Call(). See
 [::/LT/Demo/OldSchool/CompileDemo.CPZ] ::/LT/Demo/OldSchool/CompileDemo.CPZ.
 */

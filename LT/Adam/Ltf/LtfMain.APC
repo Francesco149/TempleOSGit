@@ -105,7 +105,7 @@ ej_ltf:
 
   cont=TRUE;
   if (!IsTextFile(tfn_ptr) &&
-      !PopUpCancelOk(ST_WARN_ST "Not Text File\r\n\r\n"))
+      !PopUpCancelOk(ST_WARN_ST "Not Text File\n\n"))
       cont=FALSE;
   if (cont)
     l=LtfFileEd(i,tfn_ptr,buf,num,bail);
@@ -253,7 +253,7 @@ public U8 *LtfGetLine(Ltf *l,LtfEntry *cl,I64 *cur_col=NULL,LtfEntry **_cl_end=N
   U64 i=0;
   if (cur_col)
     *cur_col=-1;
-  while (cl2!=l && cl2->type_u8!=LTFT_CR) {
+  while (cl2!=l && cl2->type_u8!=LTFT_NEW_LINE) {
     if (Bt(ltf_tag_types,cl2->type_u8)) {
       src=cl2->tag;
       i+=StrLen(src);
@@ -263,7 +263,7 @@ public U8 *LtfGetLine(Ltf *l,LtfEntry *cl,I64 *cur_col=NULL,LtfEntry **_cl_end=N
   }
   result=MAlloc(i+1);
   dst=result;
-  while (cl!=l && cl->type_u8!=LTFT_CR) {
+  while (cl!=l && cl->type_u8!=LTFT_NEW_LINE) {
     start=dst;
     if (Bt(ltf_tag_types,cl->type_u8)) {
       src=cl->tag;
@@ -296,8 +296,8 @@ public U0 LtfDump(Ltf *l,U64 uS_delay=0)
     "" st;
     Free(st);
     cl=cl2;
-    if (cl->type_u8==LTFT_CR) {
-      CrLf;
+    if (cl->type_u8==LTFT_NEW_LINE) {
+      NewLine;
       BusyWait(uS_delay);
       cl=cl->next;
     }
@@ -309,7 +309,7 @@ public U0 LtfDump(Ltf *l,U64 uS_delay=0)
 public LtfEntry *LtfPutLine(LtfEntry *cl)
 {
   U8 ch,*ptr,*ptr2;
-  while (cl->type_u8!=LTFT_ERROR && cl->type_u8!=LTFT_CR) {
+  while (cl->type_u8!=LTFT_ERROR && cl->type_u8!=LTFT_NEW_LINE) {
     if (Bt(ltf_tag_types,cl->type_u8)) {
       ptr=cl->tag;
       do {
@@ -331,13 +331,13 @@ public LtfEntry *LtfPutLine(LtfEntry *cl)
       '' CH_TAB;
     cl=cl->next;
   }
-  CrLf;
+  NewLine;
   return cl->type_u8==LTFT_ERROR ? cl:cl->next;
 }
 
 #help_index "Ltf/Input"
 public U8 *LtfMGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1361] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1365] Flags
 {
   Ltf *l;
   LtfEntry *cl,*cl_end;
@@ -390,8 +390,8 @@ public U8 *LtfMGetS(U64 flags=0)
     while (cl!=l && cl->type_u8!=LTFT_USER_FOREGROUND);
     cl=cl->next;
     if (result=LtfGetLine(l,cl,NULL,&cl_end)) {
-      while (cl_end!=l && cl_end->type_u8==LTFT_CR) {
-	result=StrAdd(result,"\r\n");
+      while (cl_end!=l && cl_end->type_u8==LTFT_NEW_LINE) {
+	result=StrAdd(result,"\n");
 	if (st=LtfGetLine(l,cl_end->next,NULL,&cl_end)) {
 	  result=StrAdd(result,st);
 	  Free(st);
@@ -401,11 +401,11 @@ public U8 *LtfMGetS(U64 flags=0)
   } else {
     cl=l->cur_entry;
     do cl=cl->last;
-    while (cl!=l && cl->type_u8!=LTFT_CR &&
+    while (cl!=l && cl->type_u8!=LTFT_NEW_LINE &&
 	cl->type_u8!=LTFT_USER_FOREGROUND);
     if (cl!=l && cl->type_u8!=LTFT_USER_FOREGROUND) {
       do cl=cl->last;
-      while (cl!=l && cl->type_u8!=LTFT_CR &&
+      while (cl!=l && cl->type_u8!=LTFT_NEW_LINE &&
 	  cl->type_u8!=LTFT_USER_FOREGROUND);
     }
     cl=cl->next;
@@ -532,7 +532,7 @@ I64 PopUpCancelIncludeDelAuto(U8 *header=NULL,U8 *footer=NULL)
 	"$CM+LX,1,3 $$BT,\"COPY                \",RIGHT_COPY$"
 	"$CM+LX,25,0$$BT,\"MOVE                \",RIGHT_MOVE$"
 	"$CM+LX,1,3 $$BT,\"DELETE              \",RIGHT_DELETE$"
-	"$CM+LX,25,0$$BT,\"CANCEL              \",LTFM_CANCEL$\r\n");
+	"$CM+LX,25,0$$BT,\"CANCEL              \",LTFM_CANCEL$\n");
   if (footer) LtfPutS(l,footer);
   i=PopUpMenu(l);
   LtfDel(l);
@@ -570,12 +570,12 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
     switch (i) {
       case RIGHT_INCLUDE:
 	if (FileExtDot(st) && !WildCardMatch("*.CP?",st)) {
-	  if (!PopUpCancelOk(ST_WARN_ST "Not .CP? File\r\n\r\n")) {
+	  if (!PopUpCancelOk(ST_WARN_ST "Not .CP? File\n\n")) {
 	    send_cr=TRUE;
 	    break;
 	  }
 	}
-	"#include \"%s\";\r\n$FU$$FG$$BG$",st;
+	"#include \"%s\";\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	ExeFile(st);
 	result=TRUE;
@@ -586,47 +586,47 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	break;
       case RIGHT_AUTOFILE:
 	if (FileExtDot(st) && !WildCardMatch("*.AU?",st)) {
-	  if (!PopUpCancelOk(ST_WARN_ST "Not .AU? File\r\n\r\n")) {
+	  if (!PopUpCancelOk(ST_WARN_ST "Not .AU? File\n\n")) {
 	    send_cr=TRUE;
 	    break;
 	  }
 	}
-	"AutoFile(\"%s\");\r\n$FU$$FG$$BG$",st;
+	"AutoFile(\"%s\");\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	AutoStr("%F\r",st);
 	result=TRUE;
 	break;
       case RIGHT_AINCLUDE:
 	if (FileExtDot(st) && !WildCardMatch("*.AP?",st)) {
-	  if (!PopUpCancelOk(ST_WARN_ST "Not .AP? File\r\n\r\n")) {
+	  if (!PopUpCancelOk(ST_WARN_ST "Not .AP? File\n\n")) {
 	    send_cr=TRUE;
 	    break;
 	  }
 	}
-	"Adam(\"#include \\\"%s\\\"\" );\r\n$FU$$FG$$BG$",st;
+	"Adam(\"#include \\\"%s\\\"\" );\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	AdamFile(st,FALSE);
 	result=TRUE;
 	break;
       case RIGHT_COMPILE:
 	if (FileExtDot(st) && !WildCardMatch("*.SP?",st)) {
-	  if (!PopUpCancelOk(ST_WARN_ST "Not .SP? File\r\n\r\n")) {
+	  if (!PopUpCancelOk(ST_WARN_ST "Not .SP? File\n\n")) {
 	    send_cr=TRUE;
 	    break;
 	  }
 	}
-	"Cmp(\"%s\");\r\n$FU$$FG$$BG$",st;
+	"Cmp(\"%s\");\n$FU$$FG$$BG$",st;
 	Cmp(st);
 	result=TRUE;
 	break;
       case RIGHT_LOAD:
 	if (FileExtDot(st) && !WildCardMatch("*.BI?",st)) {
-	  if (!PopUpCancelOk(ST_WARN_ST "Not .BI? File\r\n\r\n")) {
+	  if (!PopUpCancelOk(ST_WARN_ST "Not .BI? File\n\n")) {
 	    send_cr=TRUE;
 	    break;
 	  }
 	}
-	"Load(\"%s\");\r\n$FU$$FG$$BG$",st;
+	"Load(\"%s\");\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	Load(st);
 	result=TRUE;
@@ -647,12 +647,12 @@ I64 TermRightClickLink(Ltf *l,LtfEntry *cl)
 	break;
       case RIGHT_DEBUG:
 	if (FileExtDot(st) && !WildCardMatch("*.CP?",st)) {
-	  if (!PopUpCancelOk(ST_WARN_ST "Not .CP? File\r\n\r\n")) {
+	  if (!PopUpCancelOk(ST_WARN_ST "Not .CP? File\n\n")) {
 	    send_cr=TRUE;
 	    break;
 	  }
 	}
-	"IDE(\"%s\");\r\n$FU$$FG$$BG$",st;
+	"IDE(\"%s\");\n$FU$$FG$$BG$",st;
 	WinZBufUpdate;
 	IDE(st);
 	result=TRUE;

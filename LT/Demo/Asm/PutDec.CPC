@@ -36,7 +36,7 @@ _DO_IT::			//The convention is C-callable routines have underscores.
 	MOV	RAX,122333221
 	CALL	PUT_DEC_U64
 	PUSH	1
-	CALL	&CrLf		//Print one carriage return/line feed
+	CALL	&NewLine		//Print one carriage return/line feed
 	RET
 }
 

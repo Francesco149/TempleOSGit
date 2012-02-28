@@ -30,11 +30,11 @@ U0 PullDownMenuDemo()
 
   "A pull-down menu will appear "
   "if you move the mouse to the top "
-  "of the screen.\r\n\r\n";
+  "of the screen.\n\n";
 
   do {
     msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN+1<<MSG_CMD);
-    "\r\nCmd:%d P1:%X P2:%X\r\n\r\n",msg_code,p1,p2;
+    "\nCmd:%d P1:%X P2:%X\n\n",msg_code,p1,p2;
 
     switch (msg_code) {
       case MSG_KEY_DOWN:
@@ -46,17 +46,17 @@ U0 PullDownMenuDemo()
 	    switch (p2.u8[0]) { //p2=Scan code
 	      case SC_F1:
 		if (p2&SCF_SHIFT)
-		  "About PullDown Demo\r\n";
+		  "About PullDown Demo\n";
 		else
-		  "Test the menu.\r\n";
+		  "Test the menu.\n";
 		break;
 	      case SC_DELETE:
 		if (p2&SCF_SHIFT)
-		  "Cut\r\n";
+		  "Cut\n";
 		break;
 	      case SC_INSERT:
 		if (p2&SCF_SHIFT)
-		  "Paste\r\n";
+		  "Paste\n";
 		break;
 	    }
 	    break;
@@ -66,15 +66,15 @@ U0 PullDownMenuDemo()
       case MSG_CMD:
       //I Recommend making your menu
       //drive by key strokes, but you can
-      //use the [C:/LT/OSMain/Adam1a.HPZ,3176] MSG_CMD val.
+      //use the [C:/LT/OSMain/Adam1a.HPZ,3180] MSG_CMD val.
 	switch (p1) {
 	  case M_OPTION1:
-	    "Option # 1\r\n";
+	    "Option # 1\n";
 	    if (tempse=MenuEntryFind(Fs->cur_menu,"Misc/Opt1"))
 	      tempse->checked=!tempse->checked;
 	    break;
 	  case M_OPTION2:
-	    "Option # 2\r\n";
+	    "Option # 2\n";
 	    if (tempse=MenuEntryFind(Fs->cur_menu,"Misc/Opt2"))
 	      tempse->checked=!tempse->checked;
 	    break;

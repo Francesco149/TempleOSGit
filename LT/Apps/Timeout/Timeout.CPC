@@ -26,7 +26,7 @@
 #define __BIN_2_SIZE 0x00000072
 #define __BIN_2 "\x16\x0D\x00\x00\x00\x0B\x00\x00\x00\xF8\xFF\xFF\xFF\xFE\xFF\xFF\xFF\x0F\x00\x00\x00\x00\x00\x00\x00\x7F\x1E\x3F\x1C\x3F\x1C\x1F\x18\xBB\x1D\xF1\x1F\xF9\x1F\xF9\x1F\xFD\x1F\xFD\x1F\xFF\x1F\xFF\x1F\xFF\x1F\xFF\x1F\x9F\x19\xBF\x1D\xFD\x1F\xF9\x1F\xF9\x1F\xFD\x1F\xFD\x1F\xFF\x1F\x9F\x11\xCF\x03\xC7\x03\x83\x19\xB7\x1D\xFD\x1F\xF9\x1F\xF9\x1F\xFD\x1F\xFD\x1F\xFF\x1F\x1F\x10\x2F\x0C\x37\x0C\x7B\x1E\xFB\x1F\xF1\x1F\xFB\x1F\xFB\x1F\xFF\x1F\xFF\x1F\xFF\x1F\x00"
 
-AcctRegSetDftEntry("LT/Timeout","I64 best_score=0;\r\n");
+AcctRegSetDftEntry("LT/Timeout","I64 best_score=0;\n");
 AcctRegExecuteBranch("LT/Timeout");
 
 #define MAP_HEIGHT	4096
@@ -485,16 +485,16 @@ U0 Timeout()
       );
   WinMax;
   LtfClear;
-  "\r\n\r\nYou're sent back through time "
-  "to help fight some bad guys.  ($FG,LTPURPLE$Purple$FG$)\r\n\r\n"
-  "Scoring:\r\n"
-  "  Enemy Killed\t\t+5\r\n"
-  "  Enemy by Friendly\t+10\r\n"
-  "  Friendly Fire\t\t-200\r\n"
-  "  Shots Fired\t\t-1\r\n"
-  "  Game Time\t\t-10 per second\r\n"
-  "  Surviving Friendlies\t+500\r\n"
-  "\r\n";
+  "\n\nYou're sent back through time "
+  "to help fight some bad guys.  ($FG,LTPURPLE$Purple$FG$)\n\n"
+  "Scoring:\n"
+  "  Enemy Killed\t\t+5\n"
+  "  Enemy by Friendly\t+10\n"
+  "  Friendly Fire\t\t-200\n"
+  "  Shots Fired\t\t-1\n"
+  "  Game Time\t\t-10 per second\n"
+  "  Surviving Friendlies\t+500\n"
+  "\n";
 
   PressAKey;
   Init;
@@ -624,5 +624,5 @@ to_done:
     CatchAll;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("LT/Timeout","I64 best_score=%d;\r\n",best_score);
+  AcctRegWriteBranch("LT/Timeout","I64 best_score=%d;\n",best_score);
 }

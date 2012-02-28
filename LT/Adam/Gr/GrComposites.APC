@@ -63,14 +63,13 @@ public BoolI64 GrTextBox3(GrDC *dc,I64 x1,I64 y1,I64 z1,U8 *s,I64 border=2)
   if (dc->flags & DCF_TRANSFORMATION)
     (*dc->transform)(dc,&x1,&y1,&z1);
   while (ch=*ptr++) {
-    if (ch==CH_CR) {
+    if (ch==CH_TAB)
+      w=CeilU64(w+FONT_WIDTH,FONT_WIDTH*8);
+    else if (ch==CH_NEW_LINE) {
       if (w>w_max) w_max=w;
       w=0;
-    } else if (ch==CH_TAB)
-      w=CeilU64(w+FONT_WIDTH,FONT_WIDTH*8);
-    else if (ch==CH_LINE_FEED)
       h+=FONT_HEIGHT;
-    else
+    } else
       w+=FONT_WIDTH;
   }
   if (w>w_max) w_max=w;
@@ -99,7 +98,7 @@ public BoolI64 GrTextDiamond3(GrDC *dc,I64 x1,I64 y1,I64 z1,U8 *_s,I64 border=2)
   while (ch=*ptr) {
     if (ch==CH_CR||ch==CH_TAB)
       *ptr=CH_SPACE;
-    if (ch==CH_LINE_FEED) {
+    if (ch==CH_NEW_LINE) {
       *ptr=0;
       h+=FONT_HEIGHT;
     }

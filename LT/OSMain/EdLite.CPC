@@ -42,14 +42,14 @@ U0 EdLiteUpdate(LineStruct *root,LineStruct *cur_line,I64 cur_col,I64 line_start
 	k=k2;
       }
       if (j<text_cols)
-	CrLf;
+	NewLine;
       templ=templ->next;
     } else {
       if (!done_eof) {
 	"<EOF>";
 	done_eof=TRUE;
       }
-      CrLf;
+      NewLine;
     }
   }
   sys_raw_dc_col=text_cols*cursor_row+cursor_col-line_start_col;
@@ -80,16 +80,16 @@ U0 EdLite(U8 *filename)
     src=buf;
     while (*src) {
       src2=src;
-      while ((ch=*src++) && ch!=CH_CR);
+      while ((ch=*src++) && ch!=CH_CR && ch!=CH_NEW_LINE);
       src--;
       *src++=0;
       if (!ch)
 	src--;
-      while (*src==CH_LINE_FEED || *src==CH_CURSOR)
+      while (ch==CH_CR && *src==CH_NEW_LINE || *src==CH_CURSOR)
 	src++;
       dst=src3=src2;
       while (ch=*src3++)
-	if (ch!=CH_LINE_FEED && ch!=CH_CURSOR)
+	if (ch!=CH_NEW_LINE && ch!=CH_CURSOR)
 	  *dst++=ch;
       *dst=0;
 
@@ -248,7 +248,7 @@ U0 EdLite(U8 *filename)
 
     templ=root.next;
     while (templ!=&root) {
-      size+=StrLen(templ->line)+2;
+      size+=StrLen(templ->line)+1;
       templ=templ->next;
     }
 
@@ -258,8 +258,7 @@ U0 EdLite(U8 *filename)
       i=StrLen(templ->line);
       MemCpy(dst,templ->line,i);
       dst+=i;
-      *dst++=CH_CR;
-      *dst++=CH_LINE_FEED;
+      *dst++=CH_NEW_LINE;
       templ=templ->next;
     }
     if (bin_data)

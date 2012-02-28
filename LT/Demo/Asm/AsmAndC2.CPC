@@ -58,9 +58,7 @@ _BEEPS2::
 	SUB	RAX,U64 [&sys_jiffies]
 	NEG	RAX
 	CALL	PUT_HEX_U64
-	MOV	RAX,CH_CR
-	CALL	PUT_CHAR
-	MOV	RAX,CH_LINE_FEED
+	MOV	RAX,CH_NEW_LINE
 	CALL	PUT_CHAR
 
 	LEAVE
@@ -75,7 +73,7 @@ U0 AsmAndC2()
 {
   I64 reg R15 i;
 
-  i=PmtI64("$FG,PURPLE$\r\n\r\nNum of beeps 1-5 (%d):$FG$",3,1,5);
+  i=PmtI64("$FG,PURPLE$\n\nNum of beeps 1-5 (%d):$FG$",3,1,5);
   Beeps2(i);
 
   asm {

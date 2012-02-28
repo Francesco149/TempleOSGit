@@ -47,7 +47,7 @@ U0 SpanBridge1Init(Ode *ode)
 
   LtfBottom;
   "$CL$$BG,LTCYAN$";
-  CrLf(SKY_LINES);
+  NewLine(SKY_LINES);
   for (i=0;i<10;i++) {
     "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS);
@@ -55,7 +55,7 @@ U0 SpanBridge1Init(Ode *ode)
     Spaces(TEXT_COLS-2*RIVER_BANK_COLS);
     "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS);
-    CrLf;
+    NewLine;
   }
   for (i=0;i<5;i++) {
     "$BG,BROWN$";
@@ -68,7 +68,7 @@ U0 SpanBridge1Init(Ode *ode)
     Spaces(TEXT_COLS/2-RIVER_BANK_COLS-2*i);
     "$BG,BROWN$";
     Spaces(RIVER_BANK_COLS+i);
-    CrLf;
+    NewLine;
   }
 }
 

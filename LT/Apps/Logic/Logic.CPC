@@ -120,11 +120,11 @@ U0 PmtGates()
   I64 i;
   U8 *st;
 
-  "\r\nEnter the available gate types in the order you prefer them to be used.\r\n"
-  "Your choices are:\r\n";
+  "\nEnter the available gate types in the order you prefer them to be used.\n"
+  "Your choices are:\n";
   for (i=GT_FIRST_REAL_GATE;i<GT_NUM_ENTRIES;i++)
     "%z ",i,gate_type_list;
-  CrLf;
+  NewLine;
 
   num_selected_gates=0;
   while (num_selected_gates<GT_NUM_ENTRIES) {
@@ -137,7 +137,7 @@ U0 PmtGates()
     i=ListEntryMatch(st,gate_type_list,LEF_IGNORE_CASE);
     Free(st);
     if (i<GT_FIRST_REAL_GATE)
-      "Invalid response\r\n";
+      "Invalid response\n";
     else
       selected_gates[num_selected_gates++]=i;
   }
@@ -149,11 +149,11 @@ U0 Init()
   I64 i;
 
   do {
-    table_size=PmtI64("\r\nTable size in hex (3 input=0x100,4=0x10000): ",0);
+    table_size=PmtI64("\nTable size in hex (3 input=0x100,4=0x10000): ",0);
     if (table_size>MAX_TABLE_SIZE)
-      "Too large\r\n";
+      "Too large\n";
     else if (table_size<1) {
-      "No table specified, aborting.\r\n";
+      "No table specified, aborting.\n";
       ThrowBreak;
     }
   } while (table_size>MAX_TABLE_SIZE);
@@ -165,21 +165,21 @@ U0 Init()
   input2_table	  =MAlloc(table_size*sizeof(U16));
   input3_table	  =MAlloc(table_size*sizeof(U16));
 
-  "\r\nEnter the hex truth table column values of inputs.\r\n";
+  "\nEnter the hex truth table column values of inputs.\n";
   if (table_size<=0x100)
-    "For example, enter A=0xF0, B=0xCC and C=0xAA.\r\n";
+    "For example, enter A=0xF0, B=0xCC and C=0xAA.\n";
   else
-    "For example, enter A=0xFF00, B=0xF0F0, C=0xCCCC and D=0xAAAA.\r\n";
+    "For example, enter A=0xFF00, B=0xF0F0, C=0xCCCC and D=0xAAAA.\n";
   num_inputs_entered=0;
   while (TRUE) {
     "Input %C: ",'A'+num_inputs_entered;
     i=PmtI64("",-1);
     if (i<0) break;
     if (i>table_size)
-      "Too large\r\n";
+      "Too large\n";
     else {
       if (gate_type_table[i])
-	"Duplicate\r\n";
+	"Duplicate\n";
       else {
 	gate_type_table[i]=GT_INPUT;
 	input1_table[i]=num_inputs_entered++;
@@ -187,24 +187,24 @@ U0 Init()
     }
   }
   if (!num_inputs_entered) {
-    "No inputs specified, aborting.\r\n";
+    "No inputs specified, aborting.\n";
     ThrowBreak;
   }
 
-  "\r\nEnter the hex truth table columns values of the outputs.\r\n";
+  "\nEnter the hex truth table columns values of the outputs.\n";
   num_outputs_entered=0;
   while (TRUE) {
     "Output %C: ",'A'+num_outputs_entered;
     i=PmtI64("",-1);
     if (i<0) break;
     if (i>table_size)
-      "Too large\r\n";
+      "Too large\n";
     else {
       if (gate_type_table[i]==GT_INPUT)
-	"To produce this output, connect to input %C\r\n",
+	"To produce this output, connect to input %C\n",
 	    'A'+input1_table[i];
       else if (gate_type_table[i]==GT_OUTPUT)
-	"Duplicate\r\n";
+	"Duplicate\n";
       else {
 	gate_type_table[i]=GT_OUTPUT;
 	input1_table[i]=num_outputs_entered++;
@@ -213,7 +213,7 @@ U0 Init()
   }
 
   if (!num_outputs_entered) {
-    "No output specified, aborting.\r\n";
+    "No output specified, aborting.\n";
     ThrowBreak;
   }
 }
@@ -575,9 +575,9 @@ I64 FillGateTable()
   output_found=-1;
   ProgressBarsRst;
   progress1_max=table_size;
-  CrLf;
+  NewLine;
   while (num_outputs_found<num_outputs_entered && chged) {
-    "Pass : %d\r\n",passes++;
+    "Pass : %d\n",passes++;
     chged=FALSE;
     MemSet(added_this_pass,0,(table_size+7)/8);
     for (current_gate=0;current_gate<num_selected_gates &&

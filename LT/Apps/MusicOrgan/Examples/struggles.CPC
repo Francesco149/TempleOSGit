@@ -32,13 +32,13 @@ U0 Song()
     while (!ScanKey) {
       t0=tM;
       Play("3sFGFGetDCFqD2G3DGDetDFB",
-	  "God, \0 \0 \0 \0please \0 \0 \0help \0me.\r\n\0 \0 \0 \0 \0 \0 \0");
+	  "God, \0 \0 \0 \0please \0 \0 \0help \0me.\n\0 \0 \0 \0 \0 \0 \0");
       Play("sFGFGetDCFqD2G3DGDetDFB",
-	  "God, \0 \0 \0 \0please \0 \0 \0help \0me.\r\n\0 \0 \0 \0 \0 \0 \0");
+	  "God, \0 \0 \0 \0please \0 \0 \0help \0me.\n\0 \0 \0 \0 \0 \0 \0");
       Play("qACADetF2G3B2sG3F2G3FetCDFsDFDF",
-	  "Thy \0will \0be \0done.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "Thy \0will \0be \0done.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qACADetF2G3B2sG3F2G3FetCDFsDFDF",
-	  "Thy \0will \0be \0done.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "Thy \0will \0be \0done.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
     }
   } catch
     CatchAll;

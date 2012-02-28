@@ -9,7 +9,7 @@ U0 StreamPutS(U8 *st)
   if (tempe!=&lx->next_stream_blk)
     tempe->body=StrAdd(tempe->body,st);
   else
-    PrintFErr("No exe{} blk\r\n");
+    PrintFErr("No exe{} blk\n");
 }
 
 U0 StreamPrintF(U8 *src,...)
@@ -124,7 +124,7 @@ ExeStruct *CmpJoin(LexStruct *lx,ClassStruct *locals,BoolI8 first_lex,BoolI8 asm
     if (Fs->except_argc>0 && Fs->except_argv[0]==EXCEPT_COMPILER &&
       !asm_blk) {
       if (Fs->except_argc>1 && Fs->except_argv[1]) {
-	"Compiler exception #%d\r\n",Fs->except_argv[1];
+	"Compiler exception #%d\n",Fs->except_argv[1];
 	LexPutLink(lx);
 	LexPutLine(lx,lx->cur_lfn->line_start);
       }
@@ -191,7 +191,7 @@ ExeStruct *CmpBuf(U8 *buf,U8 *map_name=NULL,
   ExeStruct *result=NULL;
  
   if (!is_first_compiler)
-    "$FG,PURPLE$**** Not First Compiler ****$FG$\r\n";
+    "$FG,PURPLE$**** Not First Compiler ****$FG$\n";
  
   lx=LexNew(buf,LF_DONT_FREE_BUF,NULL);
   lx->flags|=LF_STATIC_COMPILE;
@@ -271,7 +271,7 @@ U0 CmpFixUpJITAsm(LexStruct *lx,ExeStruct *ex,I64 ip2)
       SysSymImportsResolve(tempess->str);
     } else if (tempe->type<EIE_MAIN) {
       if (tempe->str && !(tempess=HashFind(str,Fs->hash_table,HTT_ALL-HTT_IMPORT_SYS_SYM)))
-	"%S%s\r\n","ST_UNRESOLVED_REFERENCE",str;
+	"%S%s\n","ST_UNRESOLVED_REFERENCE",str;
       else {
 	ptr=tempe->ip+ip2;
 	if (tempess->type & HTT_FUN) {

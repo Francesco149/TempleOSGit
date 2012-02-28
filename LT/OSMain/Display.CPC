@@ -9,7 +9,7 @@ and for the debugger.
 See [C:/LT/Adam/Gr/GrScreen.APZ,581] GrUpdateForegroundOfText for
 the normal screen text output routine.
 
-See also [C:/LT/Adam/Gr/GrScreen.APZ,736] GrUpdateScreen().
+See also [C:/LT/Adam/Gr/GrScreen.APZ,735] GrUpdateScreen().
 
 */
   static U64 timeout=0;
@@ -50,7 +50,7 @@ See also [C:/LT/Adam/Gr/GrScreen.APZ,736] GrUpdateScreen().
     sys_raw_dc_col--;
     RawDrawChar(CH_SPACE);
     sys_raw_dc_col--;
-  } else if (ch==CH_CR) {
+  } else if (ch==CH_CR||ch==CH_NEW_LINE) {
     RawDrawChar(CH_SPACE);
     while (sys_raw_dc_col % text_cols)
       RawDrawChar(CH_SPACE);

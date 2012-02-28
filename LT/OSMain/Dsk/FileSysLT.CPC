@@ -554,7 +554,7 @@ BoolI64 LTFSFilesDel(LTPrt *p,U8 *cur_dir,U8 *files_find_mask,U64 fuf_flags,
 	if (print_msg) {
 	  PutDefine("ST_DELETE");
 	  "" ptr->name;
-	  CrLf;
+	  NewLine;
 	}
 	ptr->attr|=LT_ATTR_DELETED;
 	WBlks(p,buf><(U8 *)+j<<BLK_SIZE_BITS,

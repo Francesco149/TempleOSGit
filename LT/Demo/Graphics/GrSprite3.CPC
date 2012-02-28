@@ -42,11 +42,11 @@ U0 GrSprite3()
   for (i=0;i<3;i++) {
     "US Flag:";
     PutSprite(__BIN_1);
-    CrLf(12);
+    NewLine(12);
   }
   "US Map:";
   PutSprite(__BIN_2);
-  CrLf(10);
+  NewLine(10);
 }
 
 //Start program when #included

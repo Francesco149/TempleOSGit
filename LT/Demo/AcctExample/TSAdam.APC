@@ -133,7 +133,6 @@ public U0 MyScreenShot()
     tempm=tempm->next;
   }
   st=MSPrintF("::/Temp/ScreenShots/SCRN%04d.BMP",cnt);
-//  st=MSPrintF("::/Temp/ScreenShots/S1201%02d.BMP",cnt);
   BMPFileCaptureScreen(st);
   Free(st);
   Beep;
@@ -144,9 +143,9 @@ public U0 MyScreenShot()
 
 #exe {
   if (ts_cid==CID_TAD8)
-    StreamPutS("#define FRAME_DIR_CNT	600\r\n");
+    StreamPutS("#define FRAME_DIR_CNT	600\n");
   else
-    StreamPutS("#define FRAME_DIR_CNT	200\r\n");
+    StreamPutS("#define FRAME_DIR_CNT	200\n");
 };
 
 U0 FrameGrabberTask(U64 dummy=0)
@@ -203,10 +202,7 @@ public U0 FrameGrabberToggle()
   } else {
     IOSnd(OFF); //You don't want to hear screen capture file writes
     frame_grabber_on=TRUE;
-    if (mp_cnt>1)
-      MPSpawn(&FrameGrabberTask,NULL,"Frame Grabber");
-    else
-      Spawn(&FrameGrabberTask,NULL,"Frame Grabber");
+    Spawn(&FrameGrabberTask,NULL,"Frame Grabber");
     snd_record=TRUE;
     Snd(0);
   }
@@ -240,18 +236,18 @@ public U0 MBRRep(U8 drv_let='C')
   ext_base=INVALID_CLUSTER;
   while (TRUE) {
     ATAReadBlks(bdev,&mbr,offset,1);
-    "$FG,PURPLE$Blk:%08X$FG$\r\n",offset;
+    "$FG,PURPLE$Blk:%08X$FG$\n",offset;
     ClassRep("MasterBootStruct",&mbr);
     if (mbr.signature!=0xAA55)
       break;
     j=-1;
     for (i=0;i<4;i++) {
-      "$FG,CYAN$  Entry #%d$FG$\r\n",i;
+      "$FG,CYAN$  Entry #%d$FG$\n",i;
       if (mbr.p[i].active||mbr.p[i].type)
 	ClassRep("MbrPrtEntry",&mbr.p[i]);
       if (mbr.p[i].type) {
 	type=mbr.p[i].type;
-	"$FG,RED$%C Offset:%08X Size:%08X Type:%X$FG$\r\n",
+	"$FG,RED$%C Offset:%08X Size:%08X Type:%X$FG$\n",
 	  drv_let,mbr.p[i].offset+offset,
 	  mbr.p[i].size,type;
 	if (type==5 || type==0xF)
@@ -373,7 +369,7 @@ public Ltf *GrDC2Ltf(GrDC *dc,I64 dx=0,I64 dy=0,I64 *_total_score=NULL)
       }
       total_score+=best_score;
     }
-    LtfPutS(l,"\r\n");
+    LtfPutS(l,"\n");
   }
   if (_total_score) *_total_score=total_score;
   return l;

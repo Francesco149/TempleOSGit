@@ -51,7 +51,7 @@ U0 Song()
   music_stacatto_factor= 0.902;
   try {
   task=PopUpViewStr(
-    "[Mark,14:37] Mark,14:37\r\n"
+    "[Mark,14:37] Mark,14:37\n"
     );
   TaskWaitIdle(task);
   task->win_right=Fs->win_right;
@@ -60,14 +60,15 @@ U0 Song()
   task->win_bottom=task->win_top+12;
   TaskDerivedValsUpdate(task);
   while (!ScanKey) {
+	"$FG,GREEN$Jesus talking...$FG$\n";
 	Play("W13eBC!qB2sG3D2G3DetC!!GFsCBCB!etCGBeB!!GsBCB!C",
-		"Stay \0a\0wake.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"Stay \0a\0wake.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("eBC!qB2sG3D2G3DetC!!GFsCBCB!etCGBeB!!GsBCB!C",
-		"Stay \0a\0wake.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"Stay \0a\0wake.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("qD!sD!BD!BetA2G3GqB2G3sAD!ADqD!etGF!D",
-		" \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\r\n\0");
+		" \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\n\0");
 	Play("qD!sD!BD!BetA2G3GqB2G3sAD!ADqD!etGF!D",
-		" \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\r\n\0");
+		" \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\n\0");
   }
   } catch
     CatchAll;

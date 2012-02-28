@@ -2,7 +2,7 @@
 //else used in low RAM.
 //See [::/LT/Doc/Mem.TXZ] ::/LT/Doc/Mem.TXZ.
 
-//At least [C:/LT/OSMain/Adam1a.HPZ,461] DFT_CACHE_LINE_WIDTH alignment.
+//At least [C:/LT/OSMain/Adam1a.HPZ,460] DFT_CACHE_LINE_WIDTH alignment.
 #define BOOT_RAM_BASE		0x07C00
 #define BOOT_RAM_LIMIT		0x80000
 

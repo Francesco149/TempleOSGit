@@ -5,10 +5,10 @@ returns time slices since boot.
 boot.  It's not as fast as 
 [C:/LT/OSMain/Adam1b.HPZ,202] GetTimeStamp.
 
-Use [C:/LT/OSMain/Adam1a.HPZ,455] JIFFY_FREQ to convert
+Use [C:/LT/OSMain/Adam1a.HPZ,454] JIFFY_FREQ to convert
 [C:/LT/OSMain/Adam1b.HPZ,210] sys_jiffies.
 
-Use [C:/LT/OSMain/Adam1a.HPZ,457] SYS_TIMER_FREQ to convert
+Use [C:/LT/OSMain/Adam1a.HPZ,456] SYS_TIMER_FREQ to convert
 [C:/LT/OSMain/Misc1a.CPZ,136] SysTimerRead.
 
 

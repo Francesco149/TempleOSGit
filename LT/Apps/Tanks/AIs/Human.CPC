@@ -21,10 +21,8 @@ U0 TanksPlot()
 	    if (tempu->player==enemy_player || tempu->fired || !tempu->indirect_fire)
 	      tempu=NULL;
 	    else {
-	      RVSetUp(cur_player);
 	      RowCol2XY(fire_radius_x,fire_radius_y,tempu->row,tempu->col);
 	      fire_radius=tempu->range*2*HEX_RADIUS;
-	      RecalcVisible(RV_ONE_FRIENDLY_UNIT,tempu);
 	    }
 	  }
 	}
@@ -40,7 +38,6 @@ U0 TanksPlot()
 	      Beep;
 	    else
 	      PlotShot(tempu,cursor_row,cursor_col);
-	    RecalcVisible(RV_UPDATE_FRIENDLY_UNIT,tempu);
 	  }
 	}
 	tempu=NULL;

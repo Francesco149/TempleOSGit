@@ -41,7 +41,7 @@ U0 OdeRstPtrs(Ode *ode)
 
 public Ode *OdeNew(U64 n,F64 max_tolerance=1e-6,U64 flags=0)
 {
-//See [C:/LT/OSMain/Adam1a.HPZ,226] flags.
+//See [C:/LT/OSMain/Adam1a.HPZ,225] flags.
 
 //The tolerance is not precise.
 //You can min_tolerance and it will

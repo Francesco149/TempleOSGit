@@ -8,8 +8,8 @@ jump-to-dictionary_definition functionality.
 
 Tip: If you use consistent var names for items of different classes, you'll 
 usually be able to autocomplete the member vars.  I always use lx for 
-[C:/LT/OSMain/Adam1a.HPZ,1925] LexStruct ptrs; l for
-[C:/LT/OSMain/Adam1a.HPZ,1302] Ltf ptrs; ll or cl for
+[C:/LT/OSMain/Adam1a.HPZ,1929] LexStruct ptrs; l for
+[C:/LT/OSMain/Adam1a.HPZ,1306] Ltf ptrs; ll or cl for
 [C:/LT/OSMain/Adam1a.HPZ,1145] LtfEntry ptrs, etc.
 
 If you have the raw Project Gutenberg dictionary file, you can generate the 

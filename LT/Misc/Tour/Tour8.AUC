@@ -2,14 +2,14 @@ PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 "Ed(\"HI:Debugging\");";
 AFPmtStr("\r");
 PopUpOk(
-"$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\r\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
-"We will now use [C:/LT/Adam/Dbg2a.APZ,241] Uf() to\r\n"
-"unassemble a function.\r\n"
-"It takes the function name\r\n"
-"as a string arg.\r\n\r\n"
+"We will now use [C:/LT/Adam/Dbg2a.APZ,241] Uf() to\n"
+"unassemble a function.\n"
+"It takes the function name\n"
+"as a string arg.\n\n"
 "Press $FG,GREEN$<ENTER>$FG$.");
 "WinMax;WinBorder(OFF);\rUf(\"CAlloc\");";
 AFPmtStr("\r");
@@ -20,35 +20,35 @@ for (i=0;i<8;i++)
   AFGetKey(SC_CURSOR_UP);
 
 PopUpOk(
-"Press $FG,GREEN$<SPACE BAR>$FG$.\r\n");
+"Press $FG,GREEN$<SPACE BAR>$FG$.\n");
 AFPmtStr(" ");
 
 PopUpOk(
-"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\r\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "AFView;\r";
 PopUpOk(
-"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\r\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
-"We can unassemble a\r\n"
-"numeric address with [C:/LT/Compiler/Unassembler.CPZ,848] U().\r\n\r\n"
+"We can unassemble a\n"
+"numeric address with [C:/LT/Compiler/Unassembler.CPZ,848] U().\n\n"
 "Press $FG,GREEN$<ENTER>$FG$.");
 "U(&CAlloc);";
 AFPmtStr("\r");
 
 "AFView;\r";
 PopUpOk(
-"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\r\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk("The opcodes are slightly nonstandard.");
 "Ed(\"::/LT/Compiler/OpCodes.TXZ\");\r";
 PopUpOk(
-"$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\r\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ to abort.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 

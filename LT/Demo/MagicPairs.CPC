@@ -305,7 +305,7 @@ I64 TestCoreSubRange(RangeJob *r)
     if (n<n2<r->N) {
       if (r->lo<=n2<r->hi && sumfacts[n2-r->lo]-n2-1==n ||
 	TestSumFact(n2,sf,r->sqrt_primes,r->cbrt_primes,r->primes)) {
-	LtfPrintF(r->l,"%u:%u\r\n",n,sf-n-1);
+	LtfPrintF(r->l,"%u:%u\n",n,sf-n-1);
 	result++;
       }
     }
@@ -340,7 +340,7 @@ I64 MagicPairs(U64 N)
     i,k,n=(N-1)/mp_cnt+1;
   Prime *primes=PrimesNew(N,&sqrt_primes,&cbrt_primes);
   PowPrime *powprimes=PowPrimesNew(N,sqrt_primes,primes,&num_powprimes);
-  "N:%u SqrtPrimes:%u CbrtPrimes:%u PowersOfPrimes:%u\r\n",
+  "N:%u SqrtPrimes:%u CbrtPrimes:%u PowersOfPrimes:%u\n",
     N,sqrt_primes,cbrt_primes,num_powprimes;
 
   k=2;
@@ -364,7 +364,7 @@ I64 MagicPairs(U64 N)
       result+=MPJobResult(rj[i].cmd);
   Free(powprimes);
   Free(primes);
-  "Found:%u Time:%9.4f\r\n",result,tP(Fs)-t0;
+  "Found:%u Time:%9.4f\n",result,tP(Fs)-t0;
   return result;
 }
 

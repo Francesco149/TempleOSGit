@@ -27,7 +27,7 @@ SYS_INITIAL_IRQ_VECTS::
 
 	DU32 &MPCrash,IRQ31;
 
-//Set [C:/LT/OSMain/Adam1a.HPZ,301] MAX_INITIAL_IDT if you add more
+//Set [C:/LT/OSMain/Adam1a.HPZ,300] MAX_INITIAL_IDT if you add more
 
 //I_WAKE
 IRQ31:
@@ -284,7 +284,7 @@ U0 *GetIDTEntry(U64 irq,U64 cpu_num=0)
 
 U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 cpu_num=0,U64 type=IDTET_IRQ,U64 dpl=0)
 {
-//See [C:/LT/OSMain/Adam1a.HPZ,286] IDTET_IRQ
+//See [C:/LT/OSMain/Adam1a.HPZ,285] IDTET_IRQ
 //See [::/LT/Demo/Lectures/InterruptDemo.CPZ] ::/LT/Demo/Lectures/InterruptDemo.CPZ
 //See [::/LT/Demo/MultiCore/Interrupts.CPZ] ::/LT/Demo/MultiCore/Interrupts.CPZ
   U64 result=GetIDTEntry(irq,cpu_num);

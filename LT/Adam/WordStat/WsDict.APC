@@ -188,7 +188,7 @@ U0 WsdDictWordsAdd(Ltf *l,U8 *st=NULL)
 	if (*ptr++!=WSD_WORD_CHAR)
 	  break;
 	if (i)
-	  LtfPutS(l,"\r\n");
+	  LtfPutS(l,"\n");
 	wsd_fillins[i]=ptr-1;
 	LtfPrintF(l," '%d' %s",i,ptr);
 	ptr+=StrLen(ptr)+3;
@@ -218,7 +218,7 @@ public U0 WsdDisplayDefs(Ltf *l,U8 *st,I64 num=-1)
   if (!st) return;
   if (*st==WSD_WORD_CHAR)
     st++;
-  LtfPrintF(l,"$WW,1$$FG,RED$%s:$FG$\r\n\r\n",st);
+  LtfPrintF(l,"$WW,1$$FG,RED$%s:$FG$\n\n",st);
   if (num<0) {
     if (st3=WsdGetWord(st)) {
       st2=st3;
@@ -227,17 +227,17 @@ public U0 WsdDisplayDefs(Ltf *l,U8 *st,I64 num=-1)
 	  case WSD_WORD_CHAR:
 	    break;
 	  case WSD_DEF_CHAR:
-	    LtfPrintF(l,"$FG,GREEN$(%d)$FG$ %s\r\n",
+	    LtfPrintF(l,"$FG,GREEN$(%d)$FG$ %s\n",
 	      ++i,st2);
 	    break;
 	  case WSD_PRONUNCIATION_CHAR:
-	    LtfPrintF(l,"$FG,LTGREEN$%s$FG$\r\n",st2);
+	    LtfPrintF(l,"$FG,LTGREEN$%s$FG$\n",st2);
 	    break;
 	  case WSD_POS_CHAR:
-	    LtfPrintF(l,"$FG,BLACK$%s$FG$\r\n",st2);
+	    LtfPrintF(l,"$FG,BLACK$%s$FG$\n",st2);
 	    break;
 	  case WSD_EXTRA_CHAR:
-	    LtfPrintF(l,"$FG,LTBLUE$%s$FG$\r\n",st2);
+	    LtfPrintF(l,"$FG,LTBLUE$%s$FG$\n",st2);
 	    break;
 	}
 	st2+=StrLen(st2)+1;
@@ -247,7 +247,7 @@ public U0 WsdDisplayDefs(Ltf *l,U8 *st,I64 num=-1)
   } else {
     while (st2=WsdGetDef(st,++i)) {
       if (i==num)
-	LtfPrintF(l,"$FG,GREEN$(%d)$FG$ %s\r\n",
+	LtfPrintF(l,"$FG,GREEN$(%d)$FG$ %s\n",
 	  i,st2);
       Free(st2);
     }

@@ -8,7 +8,7 @@ U0 Song()
   music_stacatto_factor= 0.902;
   try {
   task=PopUpViewStr(
-    "[Romans,8:28] Romans,8:28\r\n"
+    "[Romans,8:28] Romans,8:28\n"
     );
   TaskWaitIdle(task);
   task->win_right=Fs->win_right;
@@ -18,13 +18,13 @@ U0 Song()
   TaskDerivedValsUpdate(task);
   while (!ScanKey) {
 	Play("W13qEEBeBDsBBB!BqDsBFB!!FD2G3D!2G",
-		"Free \0will... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0fail.\r\n\0 \0 \0 \0");
+		"Free \0will... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0fail.\n\0 \0 \0 \0");
 	Play("3qEEBeBDsBBB!BqDsBFB!!FD2G3D!2G",
-		"God \0still... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0hail.\r\n\0 \0 \0 \0");
+		"God \0still... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0hail.\n\0 \0 \0 \0");
 	Play("3qD2G3eA2G3qCetEC!AqBsA!!C!ACqA",
-		"All \0things \0work \0for \0good... \0to \0the \0Lord.\r\n\0 \0 \0 \0 \0 \0 \0");
+		"All \0things \0work \0for \0good... \0to \0the \0Lord.\n\0 \0 \0 \0 \0 \0 \0");
 	Play("D2G3eA2G3qCetEC!AqBsA!!C!ACqA",
-		"It's \0all \0good... \0 \0 \0as\0 \0sured.\r\n\0 \0 \0 \0 \0 \0 \0");
+		"It's \0all \0good... \0 \0 \0as\0 \0sured.\n\0 \0 \0 \0 \0 \0 \0");
   }
   } catch
     CatchAll;

@@ -42,7 +42,7 @@ U0 PageTableDemo2()
   WinSync; //wait for VGA update
   WinSync;
   SetIDTEntry(I_PAGE_FAULT,old_idte,0,IDTET_IRQ);
-  "Err Code:%X Addr:%X\r\n",err_code,reported_fault_addr;
+  "Err Code:%X Addr:%X\n",err_code,reported_fault_addr;
 }
 
 PageTableDemo2;

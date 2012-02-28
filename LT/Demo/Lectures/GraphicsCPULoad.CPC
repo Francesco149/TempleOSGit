@@ -25,10 +25,10 @@ U0 GrDemo()
   for (i=0;i<16;i++) {
     t=VGAPattern(0x5555555555555555);
     "$FG,GREEN$Rate:$FG,RED$%5.1f FPS$FG$"
-    "  $FG,GREEN$Load@60Hz:$FG,RED$%5.1f%%$FG$\r\n",1/t,100*t*60.0;
+    "  $FG,GREEN$Load@60Hz:$FG,RED$%5.1f%%$FG$\n",1/t,100*t*60.0;
     t=VGAPattern(0x3333333333333333);
     "$FG,GREEN$Rate:$FG,RED$%5.1f FPS$FG$"
-    "  $FG,GREEN$Load@60Hz:$FG,RED$%5.1f%%$FG$\r\n",1/t,100*t*60.0;
+    "  $FG,GREEN$Load@60Hz:$FG,RED$%5.1f%%$FG$\n",1/t,100*t*60.0;
   }
   Preempt(old_preempt);
   LBts(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0);

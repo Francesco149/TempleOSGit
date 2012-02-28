@@ -24,7 +24,7 @@ U0 Song()
   Fs->task_end_cb=&SndTaskEndCB;
 
   task=PopUpViewStr(
-      "[Acts,9:3]\r\n"
+      "[Acts,9:3]\n"
       );
   TaskWaitIdle(task);
   task->win_right=Fs->win_right;
@@ -38,13 +38,13 @@ U0 Song()
     while (!ScanKey) {
       t0=tM;
       Play("3qEeACA2G3qCEC2G3E",
-	  "Now... \0 \0 \0 \0 \0I \0see \0the \0light.\r\n\0 \0");
+	  "Now... \0 \0 \0 \0 \0I \0see \0the \0light.\n\0 \0");
       Play("EeACA2G3qCEC2G3E",
-	  "Now... \0 \0 \0 \0 \0I \0see \0the \0light.\r\n\0 \0");
+	  "Now... \0 \0 \0 \0 \0I \0see \0the \0light.\n\0 \0");
       Play("GCGBEeDFCAqD",
-	  "It's \0 \0quite \0 \0bright.\r\n\0 \0 \0 \0 \0 \0");
+	  "It's \0 \0quite \0 \0bright.\n\0 \0 \0 \0 \0 \0");
       Play("GCGBEeDFCAqD",
-	  "It's \0 \0quite \0 \0bright.\r\n\0 \0 \0 \0 \0 \0");
+	  "It's \0 \0quite \0 \0bright.\n\0 \0 \0 \0 \0 \0");
     }
   } catch
     CatchAll;

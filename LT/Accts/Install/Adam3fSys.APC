@@ -36,7 +36,7 @@ U0 StartUpTasks(U64 dummy=0)
     WinToTop(task1);
     WinTileVert;
 
-    SPrintF(buf,"Boot Time:%h17Ts\r\n",BootTime);
+    SPrintF(buf,"Boot Time:%h17Ts\n",BootTime);
     AdamLog(buf);
     XTalk(task1,"#include \"DoItOnce.CPZ\";\r");
 
@@ -48,4 +48,4 @@ U0 StartUpTasks(U64 dummy=0)
 //This must be spawned because start-up files
 // may invoke the Adam() cmd.
 Spawn(&StartUpTasks,NULL,"Spawn Users");
-"\r\nOS Compile Time:%D %T\r\n",sys_compile_time,sys_compile_time;
+"\nOS Compile Time:%D %T\n",sys_compile_time,sys_compile_time;

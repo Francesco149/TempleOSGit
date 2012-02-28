@@ -3,67 +3,67 @@ Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\rCd(\"::/LT/Demo/Snd\");Dir;\r";
 
 PopUpOk(
-"Now, we're going to add the ASCIIOrgan.CPZ\r\n"
-"program to your start menu.\r\n\r\n"
-"Press $FG,GREEN$<WINDOWS KEY>$FG$\r\n"
-"to get to your perosnal menu.\r\n");
+"Now, we're going to add the ASCIIOrgan.CPZ\n"
+"program to your start menu.\n\n"
+"Press $FG,GREEN$<WINDOWS KEY>$FG$\n"
+"to get to your perosnal menu.\n");
 AFGetKey(SC_GUI);
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
 Sleep(1000);
 
 PopUpOk(
-"$FG,GREEN$<CTRL-L>$FG$ to invoke the\r\n"
-"text-widget resource editor.\r\n"
-"\r\n"
-"($FG,GREEN$<CTRL-R>$FG$ invokes the\r\n"
-"graphic resource editor.)\r\n"
+"$FG,GREEN$<CTRL-L>$FG$ to invoke the\n"
+"text-widget resource editor.\n"
+"\n"
+"($FG,GREEN$<CTRL-R>$FG$ invokes the\n"
+"graphic resource editor.)\n"
 );
 AFGetChar(CH_CTRLL);
 
 Sleep(100);
 PopUpOk(
-"$FG,GREEN$<CURSOR-DOWN>$FG$ until you reach\r\n"
-"\"Macro\".\r\n");
+"$FG,GREEN$<CURSOR-DOWN>$FG$ until you reach\n"
+"\"Macro\".\n");
 I64 i;
 for (i=0;i<6;i++)
   AFGetKey(SC_CURSOR_DOWN);
 
 PopUpOk(
-"$FG,GREEN$<SPACE BAR>$FG$.\r\n");
+"$FG,GREEN$<SPACE BAR>$FG$.\n");
 AFPmtStr(" ");
 Sleep(1000);
 
 
 PopUpOk(
-"Now, we'll fill-in the visible text\r\n"
-"of the macro.\r\n");
+"Now, we'll fill-in the visible text\n"
+"of the macro.\n");
 AFDelayedPutS("Click Here");
 
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN);
-PopUpOk("Now, we'll fill-in the macro text.\r\n");
+PopUpOk("Now, we'll fill-in the macro text.\n");
 AFDelayedPutS("Cd(\"::/LT/Demo/Snd\");;#include \"ASCIIOrgan.CPZ\";\\r");
 
-PopUpOk("$FG,GREEN$<ESC>$FG$ to exit the form.\r\n");
+PopUpOk("$FG,GREEN$<ESC>$FG$ to exit the form.\n");
 AFGetChar(CH_ESC);
 Sleep(1000);
 
 PopUpOk(
-"Press $FG,GREEN$<CTRL-SHIFT-ENTER>$FG$ to insert a line feed.\r\n"
-"($FG,GREEN$<CTRL-ENTER>$FG$ does a page break and $FG,GREEN$<ENTER>$FG$\r\n"
-"would execute the macro.)\r\n");
+"Press $FG,GREEN$<CTRL-SHIFT-ENTER>$FG$ to insert a line feed.\n"
+"($FG,GREEN$<CTRL-ENTER>$FG$ does a page break and $FG,GREEN$<ENTER>$FG$\n"
+"would execute the macro.)\n");
 AFGetKey(SC_CR|SCF_CTRL|SCF_SHIFT);
 Sleep(1000);
 
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
 PopUpOk(
-"Press $FG,GREEN$<SPACE BAR>$FG$ to test it.\r\n");
+"Press $FG,GREEN$<SPACE BAR>$FG$ to test it.\n");
 AFPmtStr(" ");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
-"Now, we'll do a fancier macro that pops-up\r\n"
-"a new window which dies when finished,\r\n"
-"returning mem to the system.\r\n");
+"Now, we'll do a fancier macro that pops-up\n"
+"a new window which dies when finished,\n"
+"returning mem to the system.\n");
 Msg(MSG_KEY_DOWN,0,SC_GUI);
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
 Msg(MSG_KEY_DOWN,CH_CTRLL,0);
@@ -75,35 +75,35 @@ AFDelayedPutS("Cd(\"::/LT/Demo/Snd\");;#include \"ASCIIOrgan.CPZ\";\\r");
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_LEFT|SCF_CTRL);
 
 PopUpOk(
-"$FG,GREEN$<CURSOR-DOWN>$FG$ until you reach\r\n"
-"the \"Pop-Up\" check-box.\r\n");
+"$FG,GREEN$<CURSOR-DOWN>$FG$ until you reach\n"
+"the \"Pop-Up\" check-box.\n");
 for (i=0;i<2;i++)
   AFGetKey(SC_CURSOR_DOWN);
 PopUpOk(
-"$FG,GREEN$<SPACE BAR>$FG$ to\r\n"
-"check the box.\r\n");
+"$FG,GREEN$<SPACE BAR>$FG$ to\n"
+"check the box.\n");
 AFPmtStr(" ");
 Sleep(500);
 
-PopUpOk("$FG,GREEN$<ESC>$FG$ to exit the form.\r\n");
+PopUpOk("$FG,GREEN$<ESC>$FG$ to exit the form.\n");
 AFGetChar(CH_ESC);
 Sleep(500);
 
-PopUpOk("$FG,GREEN$<CTRL-SHIFT-ENTER>$FG$ to insert a line feed.\r\n");
+PopUpOk("$FG,GREEN$<CTRL-SHIFT-ENTER>$FG$ to insert a line feed.\n");
 AFGetKey(SC_CR|SCF_CTRL|SCF_SHIFT);
 Sleep(500);
 
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_UP|SCF_CTRL);
 PopUpOk(
-"$FG,GREEN$<SPACE BAR>$FG$ to test it.\r\n");
+"$FG,GREEN$<SPACE BAR>$FG$ to test it.\n");
 AFPmtStr(" ");
 Sleep(5000);
 
 PopUpOk(
-"$FG,GREEN$<CTRL-S>$FG$ to save your\r\n"
-"personal menu file, if you wish.\r\n"
-"Your personal menu is special and\r\n"
-"does not save on $FG,GREEN$<ESC>$FG$.\r\n");
+"$FG,GREEN$<CTRL-S>$FG$ to save your\n"
+"personal menu file, if you wish.\n"
+"Your personal menu is special and\n"
+"does not save on $FG,GREEN$<ESC>$FG$.\n");
 if (Fs->parent_task->popup_task) {
   '' CH_SHIFT_ESC;
   Sleep(100);

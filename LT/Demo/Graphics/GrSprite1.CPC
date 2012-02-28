@@ -4,7 +4,7 @@
 
 /*
 
-Graphics can be place into src code
+Graphics can be placed into src code
 files.  The actual data is stored in the
 file after the text area.  <CTRL-R> was used
 to generate the graphic.  A picture $PI$
@@ -46,8 +46,8 @@ U0 GrSprite1()
     GrSpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
     Sleep(3);
   }
-  "Image size:%d\r\n",__BIN_1_SIZE;
-  "Image type:%d\r\n",__BIN_1_TYPE;
+  "Image size:%d\n",__BIN_1_SIZE;
+  "Image type:%d\n",__BIN_1_TYPE;
   GrDCDel(dc);
   PressAKey;
   GrDCClear;

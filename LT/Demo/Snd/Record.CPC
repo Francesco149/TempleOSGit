@@ -90,7 +90,7 @@ U0 RecordTask(U8 *filename)
 U0 RecordDemo(U8 *filename="HOME/Record.SNZ")
 {
   if (snd_dev!=SD_HD_AUDIO) {
-    "Only works for HD Audio.\r\n";
+    "Only works for HD Audio.\n";
     return;
   }
   record_done=FALSE;
@@ -108,13 +108,13 @@ U0 RecordDemo(U8 *filename="HOME/Record.SNZ")
     Yield;
   SettingsPop;
   while (TRUE) {
-    "\r\n\r\nPlay ";
+    "\n\nPlay ";
     if (YorN)
       SndFilePlaySeq(filename,record_obuf_num);
     else
       break;
   }
-  CrLf(2);
+  NewLine(2);
 }
 
 RecordDemo;

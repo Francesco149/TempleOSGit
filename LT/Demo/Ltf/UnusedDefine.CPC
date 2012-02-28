@@ -58,11 +58,11 @@ U0 UnusedDefineScan()
 	    ll=l->root.next;
 	    while (ll!=l) {
 	      if (ll->type_u8==LTFT_LINK) {
-		CrLf;
+		NewLine;
 		"" temph->str;
 		ll2=LtfEntryCopy(l,ll);
 		LtfInsert(old_ltf,ll2);
-		CrLf;
+		NewLine;
 	      }
 	      ll=ll->next;
 	    }
@@ -77,7 +77,7 @@ U0 UnusedDefineScan()
     CatchAll;
 
   Silent(old_silent);
-  CrLf;
+  NewLine;
   ProgressBarsRst;
 }
 

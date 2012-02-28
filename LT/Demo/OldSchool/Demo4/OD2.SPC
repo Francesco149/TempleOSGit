@@ -21,13 +21,13 @@ LTextern _MY_BEEP U0 MyBeep();
 
 U0 Routine2(U8 *st)
 {
-  PrintF("Routine2:%s\r\n",st);
+  PrintF("Routine2:%s\n",st);
   MyBeep();
 }
 
-PutS("$BK,1$Woo-Hoo!$BK,0$\r\n");
+PutS("$BK,1$Woo-Hoo!$BK,0$\n");
 Dir;
-PutS("$BK,1$Woo-Hoo!$BK,0$\r\n");
+PutS("$BK,1$Woo-Hoo!$BK,0$\n");
 
 Routine2("Cool");
 

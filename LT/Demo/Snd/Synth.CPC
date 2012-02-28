@@ -213,7 +213,7 @@ U0 Synth()
 {
   I64 p1,p2;
   if (snd_dev!=SD_HD_AUDIO) {
-    "Only works for HD Audio.\r\n";
+    "Only works for HD Audio.\n";
     return;
   }
 

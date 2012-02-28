@@ -150,8 +150,8 @@ U0 Rocket()
   Fs->task_end_cb=&TaskEndCB;
 
   "$CL$$BG,LTCYAN$$FG,GREEN$Up, Left, Right$FG$";
-  CrLf(Fs->win_height-4);
-  "$BG,YELLOW$\r\n";
+  NewLine(Fs->win_height-4);
+  "$BG,YELLOW$\n";
  
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;
@@ -187,7 +187,7 @@ rk_done:
     CatchAll;
   RemQue(ode);
   OdeDel(ode);
-  "$CL$$BG$$FG$\r\n";
+  "$CL$$BG$$FG$\n";
   SettingsPop;
   GrDCClear;
   GrDCDel(dc2);

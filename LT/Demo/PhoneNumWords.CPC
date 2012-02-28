@@ -39,7 +39,7 @@ U0 PhoneNumWords(U8 *num)
 	  *src=ch;
 	  "$FG,GREEN$%s$FG$",dict;
 	  "" src+StrLen(st);
-	  CrLf;
+	  NewLine;
 	}
 	src++;
       }
@@ -48,7 +48,7 @@ U0 PhoneNumWords(U8 *num)
     dict+=StrLen(dict)+3;
   }
   Free(_num);
-  CrLf;
+  NewLine;
 }
 
 U0 PNWDemo()

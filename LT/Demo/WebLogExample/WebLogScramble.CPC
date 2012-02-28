@@ -18,7 +18,7 @@ U0 LogScrambleFile(U8 *name)
   I64 i;
   U32 num;
   U8 *st,*st2;
-  "Scrambling: %s\r\n",name;
+  "Scrambling: %s\n",name;
   while (ll!=l) {
     if (ll->type_u8==LTFT_TEXT) {
       st=MAlloc(StrLen(ll->tag)+1);
@@ -58,6 +58,6 @@ U0 WebLogScramble(U8 *wild)
 
 //Danger scrambles all log files in the /LT tree
 
-ST_WARN_ST "This will scramble all .log files in the /LT Tree.\r\n\r\n";
+ST_WARN_ST "This will scramble all .log files in the /LT Tree.\n\n";
 if (AreYouSure)
   WebLogScramble("/LT/*.log*");

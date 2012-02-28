@@ -79,7 +79,7 @@ kbd lights working.
 
 * Syncronize VGA memory update with the hardware refresh cycle.
 
-* Demo [C:/LT/OSMain/Adam1a.HPZ,3731] TaskKeyDevStruct
+* Demo [C:/LT/OSMain/Adam1a.HPZ,3735] TaskKeyDevStruct
 * demo [C:/LT/Adam/ToHtml.APZ,252] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have
@@ -93,7 +93,7 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/LT/OSMain/Adam1a.HPZ,3405] DCF_SYMMETRY, before transformation?
+* [C:/LT/OSMain/Adam1a.HPZ,3409] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float

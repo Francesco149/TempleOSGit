@@ -78,7 +78,7 @@ U0 MoveDisks(I64 src_pole,I64 dst_pole,I64 num)
   if (num>1)
     MoveDisks(src_pole,OtherPole(src_pole,dst_pole),num-1);
   LtfClear;
-  "$CM+BY,0,0$Disk:%d from %d to %d\r\n",TopDisk(src_pole),src_pole,dst_pole;
+  "$CM+BY,0,0$Disk:%d from %d to %d\n",TopDisk(src_pole),src_pole,dst_pole;
 
   top=TopDisk(src_pole);
   for (y=disks_y[top];y>Fs->win_pixel_height-PEDESTAL_HEIGHT-(DISK_HEIGHT+1)/2-(DISK_HEIGHT+1)*(NUM_DISKS+2);y--) {

@@ -995,15 +995,15 @@ See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF); //We don't really want window update while modifying links
   AcctOneTimePopUp(ARf_MESH_ED,
-	"$FG,GREEN$Right Mouse$FG$: Hold and move to shift cursor z\r\n"
-	"$FG,GREEN$'j'$FG$: Jump cursor Z to nearest vertex's Z\r\n"
-	"$FG,GREEN$'v'$FG$: Place Vertex Mode\r\n"
-	"$FG,GREEN$'t'$FG$: Make Triangle Mode\r\n"
-	"$FG,GREEN$'m'$FG$: Move Vertex Mode\r\n"
-	"$FG,GREEN$'M'$FG$: Move Vertex Z\r\n"
-	"$FG,GREEN$'c'$FG$: Set color\r\n"
-	"$FG,GREEN$'s'$FG$: Set snap\r\n"
-	"\r\nSee menu at top of screen for more.\r\n");
+	"$FG,GREEN$Right Mouse$FG$: Hold and move to shift cursor z\n"
+	"$FG,GREEN$'j'$FG$: Jump cursor Z to nearest vertex's Z\n"
+	"$FG,GREEN$'v'$FG$: Place Vertex Mode\n"
+	"$FG,GREEN$'t'$FG$: Make Triangle Mode\n"
+	"$FG,GREEN$'m'$FG$: Move Vertex Mode\n"
+	"$FG,GREEN$'M'$FG$: Move Vertex Z\n"
+	"$FG,GREEN$'c'$FG$: Set color\n"
+	"$FG,GREEN$'s'$FG$: Set snap\n"
+	"\nSee menu at top of screen for more.\n");
 
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
   Fs->horz_scroll.pos=0;
@@ -1184,7 +1184,7 @@ SG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
 	      e.cur_color=PopUpLightingColor;
 	      break;
 	    case 's':
-	      i=PopUpRangeI64(1,25,1,"New Snap\r\n");
+	      i=PopUpRangeI64(1,25,1,"New Snap\n");
 	      if (i>=1)
 		e.cur_snap=i;
 	      GrMCurSnap(&e);

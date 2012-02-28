@@ -62,7 +62,7 @@ U0 DumpStruct(U8 *class_name,U8 *data)
 
     if (fp_output_fun=MemberMetaData("output_fun",ml))
       (*fp_output_fun)(*q);
-    CrLf;
+    NewLine;
     ml=ml->next;
   }
 }

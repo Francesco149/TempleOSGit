@@ -15,7 +15,7 @@ I64 PopUpDiffOptions()
 	"$CM+LX,2,4$$FG$$BT,\"REMAINDER ALL FILE1\",DS_REMAINDER_1$"
 	"$CM+LX,24,0$$FG,CYAN$$BT,\"REMAINDER ALL FILE2\",DS_REMAINDER_2$"
 	"$CM+LX,2,4$$FG$$BT,\"ABORT FILE\",DS_ABORT_FILE$"
-	"$CM+LX,24,0$$FG$$BT,\"ABORT ALL FILES\",LTFM_CANCEL$\r\n");
+	"$CM+LX,24,0$$FG$$BT,\"ABORT ALL FILES\",LTFM_CANCEL$\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -43,7 +43,7 @@ U0 DiffSelect(Ltf *l,U64 *_df_flags,I64 j1_lo,I64 j1_hi,
   U64 old_flags;
   Ltf *cur_l;
   if (!(*_df_flags & (DF_ABORT_FILE|DF_ABORT_ALL_FILES))) {
-    "$FG,RED$%d,%d---------------------$FG$\r\n",j1_lo,j2_lo;
+    "$FG,RED$%d,%d---------------------$FG$\n",j1_lo,j2_lo;
     i= j1_lo<=0 ? 0:j1_lo-1;
     while (i<j1_hi) {
       if (cur_l=LtfCur) {
@@ -53,7 +53,7 @@ U0 DiffSelect(Ltf *l,U64 *_df_flags,I64 j1_lo,I64 j1_hi,
       "" usl1[i++]->tag;
       if (cur_l)
 	cur_l->flags= cur_l->flags&~LTFF_PLAIN_TEXT |old_flags;
-      CrLf;
+      NewLine;
     }
     "$FG,CYAN$";
     i= j2_lo<=0 ? 0:j2_lo-1;
@@ -65,7 +65,7 @@ U0 DiffSelect(Ltf *l,U64 *_df_flags,I64 j1_lo,I64 j1_hi,
       "" usl2[i++]->tag;
       if (cur_l)
 	cur_l->flags= cur_l->flags&~LTFF_PLAIN_TEXT |old_flags;
-      CrLf;
+      NewLine;
     }
     "$FG$";
 
@@ -256,7 +256,7 @@ public U64 Diff(U8 *dst_file,U8 *src_file,U64 df_flags=0)
     LtfWrite(l1);
 
   if (!DiffBins(l1,l2))
-    "$FG,RED$Bin Data is Different$FG$\r\n";
+    "$FG,RED$Bin Data is Different$FG$\n";
 
   LtfDel(l1);
   LtfDel(l2);

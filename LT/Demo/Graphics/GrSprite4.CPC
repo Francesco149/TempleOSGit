@@ -17,7 +17,7 @@ U0 Main(U8 *elems)
   while (tempg->type) {
     //Study this routine [C:/LT/Adam/Gr/GrSpriteNew.APZ,176] GrSprite2Text().
     st=GrSprite2Text(tempg);
-    "%s\r\n",st;
+    "%s\n",st;
     Free(st);
     tempg><(U8 *)+=GrSpriteElemSize(tempg);
   }

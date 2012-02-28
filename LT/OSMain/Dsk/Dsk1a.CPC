@@ -409,7 +409,7 @@ U0 PrtRep()
   LTBlkDev *bdev;
   U16 type_u16;
   I64 i;
-  "\r\nDefined Partitions:\r\n\r\n";
+  "\nDefined Partitions:\n\n";
   p=local_prts;
   for (i=0;i<NUM_LTPRTS;i++,p++) {
     bdev=p->bdev;
@@ -421,7 +421,7 @@ U0 PrtRep()
 	'' CH_SPACE;
       if (Bt(&p->type,PTf_DISABLE))
 	"Disabled ";
-      "%C %Z %Z %04X %04X %02X$FG$\r\n%016X-%016X\r\n",
+      "%C %Z %Z %04X %04X %02X$FG$\n%016X-%016X\n",
 	Prt2Drv(p),type_u16,"ST_PRT_TYPES",
 	bdev->type,"ST_BLKDEV_TYPES",bdev->base0,bdev->base1,bdev->unit,
 	p->offset,p->offset+p->size-1;

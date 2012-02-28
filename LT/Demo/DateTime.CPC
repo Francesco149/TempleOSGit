@@ -1,5 +1,5 @@
 /*
-  An [C:/LT/OSMain/Adam1a.HPZ,178] LTDate is a signed 64-bit date/time num
+  An [C:/LT/OSMain/Adam1a.HPZ,177] LTDate is a signed 64-bit date/time num
   representing how many 49710ths of a second
   since Christ.  The reason it is this crazy
   num is so that 32bits is exactly one day.
@@ -25,13 +25,13 @@ LTDate d=GetCurTimeLTDate;
 
 I64 i;
 for (i=0;i<NUM_DATE_FMTS;i++)
-  "%%h%dD: %h*D\r\n",i,i,d;
-CrLf;
+  "%%h%dD: %h*D\n",i,i,d;
+NewLine;
 
 for (i=0;i<NUM_TIME_FMTS;i++)
-  "%%h%dT: %h*T\r\n",i,i,d;
+  "%%h%dT: %h*T\n",i,i,d;
 
-"$FG,PURPLE$LTDate freq:%12.6f$FG$\r\n",0x100000000/24.0/60.0/60.0;
+"$FG,PURPLE$LTDate freq:%12.6f$FG$\n",0x100000000/24.0/60.0/60.0;
 
 /*
   You can customize to your locality

@@ -19,8 +19,8 @@ U0 Main()
 
 Main;
 
-"$FG,LTRED$Now, from asm...  It's handy for debugging.$FG$\r\n"
-"$FG,LTRED$Watch the progress on the wallpaper.$FG$\r\n";
+"$FG,LTRED$Now, from asm...  It's handy for debugging.$FG$\n"
+"$FG,LTRED$Watch the progress on the wallpaper.$FG$\n";
 PressAKey;
 
 asm {

@@ -148,7 +148,7 @@ public extern U0 PutDefineWarn(U8 *st);
 public extern U0 PrintF(U8 *fmt,...);
 public extern U0 PrintFErr(U8 *fmt,...);
 public extern U0 PrintFWarn(U8 *fmt,...);
-public extern U0 CrLf(I64 cnt=1);
+public extern U0 NewLine(I64 cnt=1);
 public extern U0 Spaces(I64 cnt=1);
 public extern U0 PutErr(U8 *st=NULL);
 public extern U0 PutWarn(U8 *st=NULL);
@@ -177,7 +177,7 @@ public extern BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALS
 public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 
-//Gets [C:/LT/OSMain/Adam1a.HPZ,1361] Flags
+//Gets [C:/LT/OSMain/Adam1a.HPZ,1365] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);
@@ -439,6 +439,7 @@ extern U0 ATAWriteBlks(LTBlkDev *bdev,U0 *buf, U64 blk, U64 cnt);
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 #help_file "::/LT/Doc/CmdLine"
+public extern BoolI64 RiskyCopy(BoolI8 val);
 public extern U0 ChgDsk(U8 drv_let=0);
 public extern BoolI64 Drv(U8 drv_let);
 public extern BoolI64 Cd(U8 *dirname,BoolI8 make_dirs=FALSE);
@@ -490,7 +491,7 @@ public extern BoolI64 FRBlks(LTFile *f,U0 *buf,I64 blk=LTFB_NEXT_BLK,I64 cnt=1);
 public extern BoolI64 FWBlks(LTFile *f,U0 *buf,I64 blk=LTFB_NEXT_BLK,I64 cnt=1);
 
 #help_index "File/CD DVD"
-public extern U0 CDImageRead(U8 cd_drv_let,U8 *out_name,I64 cnt);
+public extern U0 CDImageRead(U8 cd_drv_let,U8 *out_name);
 public extern U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD);
 public extern U8 *sys_dft_iso_name;
 

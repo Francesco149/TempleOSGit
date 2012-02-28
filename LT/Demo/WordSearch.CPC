@@ -23,7 +23,7 @@ U0 Display()
   for (y=0;y<NUM_ROWS;y++) {
     for (x=0;x<NUM_COLS;x++)
       '' m[y][x];
-    CrLf;
+    NewLine;
   }
 }
 
@@ -66,7 +66,7 @@ U0 SimpleWordSearch()
   Search(-1,-1);
   Search(1,-1);
   Search(-1,1);
-  CrLf;
+  NewLine;
 }
 
 
@@ -139,7 +139,7 @@ U0 FancyWordSearch()
   CollectWords(-1,1,&n);
   QSortU64(word_ptrs,n,&WordsCompare);
   DisplayWords(n);
-  CrLf;
+  NewLine;
 }
 /////////////////////////////////////
 
@@ -147,7 +147,7 @@ U0 WordSearch()
 {
   Init;
   Display;
-  CrLf;
+  NewLine;
   SimpleWordSearch;
   FancyWordSearch;
 }

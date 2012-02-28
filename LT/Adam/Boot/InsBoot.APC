@@ -128,16 +128,16 @@ U8 ChkWritable(U8 drv_let=0)
   LTBlkDev *bdev;
   if (!IsDrvWritable(drv_let)) {
     '' drv_let;
-    ": Drive is read-only.\r\n";
+    ": Drive is read-only.\n";
     do {
       "Enter RAM drive (usually 'B') for temporary files:";
       writable_drv=ToUpper(GetChar);
-      CrLf;
+      NewLine;
       p=Drv2Prt(writable_drv);
       bdev=p->bdev;
       if (bdev->type!=LTBDT_RAM ||
 	  !IsDrvWritable(writable_drv))
-	"Not A RAM Drive\r\n";
+	"Not A RAM Drive\n";
       else
 	cont=FALSE;
     } while (cont);
@@ -214,9 +214,9 @@ public BoolI64 InstallBoot(U8 src_drv,U8 dst_drv=0)
       case LTBDT_ATA:
 	Move("/LT/OSMain/OS.BIZ",BOOT_BIC);
 	if (!FileFind(BOOT_BIC,&de,FALSE,TRUE))
-	  "No Boot.BIC\r\n";
+	  "No Boot.BIC\n";
 	else {
-	  "Modifying partition boot record.\r\n";
+	  "Modifying partition boot record.\n";
 	  RBlks(p,&br,p->offset,1);
 	  br.jump_and_nop[0]=0xEB;
 	  br.jump_and_nop[1]=0x58;
@@ -363,11 +363,11 @@ public BoolI64 InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
       qq=BMHD2_BLK_ARRAY;
       MemSet(qq,0,sizeof(U64)*8);
       menu_ptr=BMHD2_BOOT_MSG;
-      SPrintF(menu_ptr,"\r\n\r\nLoseThos Boot Loader\r\n\r\n");
+      SPrintF(menu_ptr,"\n\r\n\rLoseThos Boot Loader\n\r\n\r");
       j=0;
       if (FileFind(OLDMBR_BIC,&de,FALSE,TRUE)) {
 	*qq++=p->data+de.cluster*p->spc;
-	StrCat(menu_ptr,"0. Old Boot Record\r\n");
+	StrCat(menu_ptr,"0. Old Boot Record\n\r");
 	j++;
       }
 
@@ -390,20 +390,20 @@ public BoolI64 InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
 	    Fs->catch_except=TRUE;
 	  if (bd1==bdev) {
 	    *qq=p1->offset;
-	    "Drive %c:%16X\r\n",Prt2Drv(p1),*qq;
-	    SPrintF(buf,"%d. Drive %c\r\n",j++,Prt2Drv(p1));
+	    "Drive %c:%16X\n",Prt2Drv(p1),*qq;
+	    SPrintF(buf,"%d. Drive %c\n\r",j++,Prt2Drv(p1));
 	    StrCat(menu_ptr,buf);
 	    qq++;
 	  }
 	}
       }
-      StrCat(menu_ptr,"\r\nSelection:");
+      StrCat(menu_ptr,"\n\rSelection:");
 
       size=BMHD2_END-BMHD2_START;
       FileWrite(BOOTLOADER_BIC,BMHD2_START,size);
 
       if (!FileFind(BOOTLOADER_BIC,&de,FALSE,TRUE))
-	"No Boot Loader Image\r\n";
+	"No Boot Loader Image\n";
       else {
 	_w=BMHD_BLK_CNT;
 	*_w=(size+BLK_SIZE-1)>>BLK_SIZE_BITS;

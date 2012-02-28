@@ -25,18 +25,18 @@ I64 LTFSChkDskList(LTDirEntry *tempm1,U8 *bits,U8 *bits2,U64 size,U64 bpc)
     j=(tempm1->size+bpc-1)/bpc;
     for (i=0;i<j;i++) {
       if (i+tempm1->cluster>size) {
-	PrintFErr("Invalid Cluster:%s Cluster:%X\r\n",tempm1->full_name,
+	PrintFErr("Invalid Cluster:%s Cluster:%X\n",tempm1->full_name,
 	       i+tempm1->cluster);
 	errs++;
 	break;
       }
       if (LBts(bits,i+tempm1->cluster)) {
-	PrintFErr("Dbl Alloc:%s Cluster:%X\r\n",tempm1->full_name,
+	PrintFErr("Dbl Alloc:%s Cluster:%X\n",tempm1->full_name,
 	       i+tempm1->cluster);
 	errs++;
       }
       if (!LBtr(bits2,i+tempm1->cluster)) {
-	PrintFErr("UnAlloc:%s Cluster:%X\r\n",tempm1->full_name,
+	PrintFErr("UnAlloc:%s Cluster:%X\n",tempm1->full_name,
 	       i+tempm1->cluster);
 	errs++;
       }
@@ -57,7 +57,7 @@ I64 LTFSChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   LTDirEntry *ptr,*ptr2;
 
   Drv(drv_let);
-  "Scanning...\r\n";
+  "Scanning...\n";
   size=(p->size-(p->data-p->offset))/p->spc;
   bpc=p->spc<<BLK_SIZE_BITS;
   bits=CAlloc((size+7)>>3);
@@ -73,16 +73,16 @@ I64 LTFSChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
 
   for (i=0;i<j;i++) {
     if (i+p->root_cluster>size) {
-      PrintFErr("Invalid Cluster: RootDir Cluster:%X\r\n",i+p->root_cluster);
+      PrintFErr("Invalid Cluster: RootDir Cluster:%X\n",i+p->root_cluster);
       errs++;
       break;
     }
     if (LBts(bits,i+p->root_cluster)) {
-      PrintFErr("Dbl Alloc: RootDir Cluster:%X\r\n",i+p->root_cluster);
+      PrintFErr("Dbl Alloc: RootDir Cluster:%X\n",i+p->root_cluster);
       errs++;
     }
     if (!LBtr(bits2,i+p->root_cluster)) {
-      PrintFErr("UnAlloc: RootDir Cluster:%X\r\n",i+p->root_cluster);
+      PrintFErr("UnAlloc: RootDir Cluster:%X\n",i+p->root_cluster);
       errs++;
     }
   }
@@ -90,7 +90,7 @@ I64 LTFSChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   errs+=LTFSChkDskList(FilesFind(files_find_mask,1<<FUf_RECURSE),bits,bits2,size,bpc);
   for (i=1;i<size;i++)
     if (Bt(bits2,i)) {
-      PrintFWarn("Shouldn't Alloc Cluster:%0X\r\n",i);
+      PrintFWarn("Shouldn't Alloc Cluster:%0X\n",i);
       errs++;
       if (ChkDskConfirm(_fix,_confirm))
 	LTFSFreeClusters(p,i,1);
@@ -119,16 +119,16 @@ I64 FAT32ChkDskList(LTPrt *p,LTDirEntry *tempm1,U8 *bits,U32 *bits2,U64 size,U64
     c=tempm1->cluster;
     while (c && c!=INVALID_CLUSTER) {
       if (c>size) {
-	PrintFErr("Invalid Cluster:%s Cluster:%X\r\n",tempm1->full_name,c);
+	PrintFErr("Invalid Cluster:%s Cluster:%X\n",tempm1->full_name,c);
 	errs++;
 	break;
       }
       if (LBts(bits,c)) {
-	PrintFErr("Dbl Alloc:%s Cluster:%X\r\n",tempm1->full_name,c);
+	PrintFErr("Dbl Alloc:%s Cluster:%X\n",tempm1->full_name,c);
 	errs++;
       }
       if (!bits2[c]) {
-	PrintFErr("UnAlloc:%s Cluster:%X\r\n",tempm1->full_name,c);
+	PrintFErr("UnAlloc:%s Cluster:%X\n",tempm1->full_name,c);
 	errs++;
       } else
 	bits2[c]=0;
@@ -138,11 +138,11 @@ I64 FAT32ChkDskList(LTPrt *p,LTDirEntry *tempm1,U8 *bits,U32 *bits2,U64 size,U64
     if (!(tempm1->attr & LT_ATTR_DIR)) {
       i*=bpc;
       if (tempm1->size>i) {
-	PrintFErr("Allocated File Too Short:%s\r\n",tempm1->full_name);
+	PrintFErr("Allocated File Too Short:%s\n",tempm1->full_name);
 	errs++;
       }
       if (i>tempm1->size+bpc-1) {
-	PrintFWarn("Allocated File Too Long:%s\r\n",tempm1->full_name);
+	PrintFWarn("Allocated File Too Long:%s\n",tempm1->full_name);
 	errs++;
       }
     }
@@ -162,7 +162,7 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   U32 *bits2;
   I64 c,errs=0;
   Drv(drv_let);
-  "Scanning...\r\n";
+  "Scanning...\n";
   size=(p->size-(p->data-p->offset))/p->spc;
   bpc=p->spc<<BLK_SIZE_BITS;
   bits=CAlloc((size+7)>>3);
@@ -172,16 +172,16 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   c=p->root_cluster;
   while (c!=INVALID_CLUSTER) {
     if (c>size) {
-      PrintFErr("Invalid Cluster: RootDir Cluster:%X\r\n",c);
+      PrintFErr("Invalid Cluster: RootDir Cluster:%X\n",c);
       errs++;
       break;
     }
     if (LBts(bits,c)) {
-      PrintFErr("Dbl Alloc: RootDir Cluster:%X\r\n",c);
+      PrintFErr("Dbl Alloc: RootDir Cluster:%X\n",c);
       errs++;
     }
     if (!bits2[c]) {
-      PrintFErr("UnAlloc: RootDir Cluster:%X\r\n",c);
+      PrintFErr("UnAlloc: RootDir Cluster:%X\n",c);
       errs++;
     } else
       bits2[c]=0;
@@ -193,7 +193,7 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   bits2[1]=0; //See [C:/LT/OSMain/Dsk/FileSysFAT.CPZ,65] FAT32Fmt()
   for (i=1;i<size;i++)
     if (bits2[i]) {
-      PrintFWarn("Shouldn't Alloc Cluster:%0X\r\n",i);
+      PrintFWarn("Shouldn't Alloc Cluster:%0X\n",i);
       errs++;
       if (ChkDskConfirm(_fix,_confirm))
 	FAT32FreeClusters(p,i);
@@ -226,7 +226,7 @@ public I64 ChkDsk(U8 drv_let=0,BoolI8 fix=FALSE,BoolI8 confirm=TRUE)
       "It might be a little better.  ";
     "Copy files to another partition or CD-ROM, "
     "reformat, and copy back.  "
-    "Or, copy from a back-up.\r\n";
+    "Or, copy from a back-up.\n";
   }
   return errs;
 }

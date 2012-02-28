@@ -1,10 +1,10 @@
-Cd("HOME");Dir;
+Cd("HOME");Dir;
 `Cd("HOME");Dir;`
 
-Drv(TS_MAIN_DRV_LET);
+Drv(TS_MAIN_DRV_LET);
 `Drv(TS_MAIN_DRV_LET);`
 
-Drv(TS_BAK_DRV_LET);
+Drv(TS_BAK_DRV_LET);
 `Drv(TS_BAK_DRV_LET);`
 
 Quick Reboot MAIN
@@ -18,118 +18,118 @@ Compile MAIN
 [HOME/Notes.TXZ] HOME/Notes.TXZ
 [::/LT/Doc/HelpIndex.TXZ] Help Index
 [::/LT/Doc/DemoIndex.TXZ] Demo Index
-Cd("/LT/OSMain");Dir;
+Cd("/LT/OSMain");Dir;
 `Cd("/LT/OSMain");Dir;`
 
-Cd("/LT/OSMain/Dsk");Dir;
+Cd("/LT/OSMain/Dsk");Dir;
 `Cd("/LT/OSMain/Dsk");Dir;`
 
-Cd("/LT/Compiler");Dir;
+Cd("/LT/Compiler");Dir;
 `Cd("/LT/Compiler");Dir;`
 
-Cd("/LT/Adam");Dir;
+Cd("/LT/Adam");Dir;
 `Cd("/LT/Adam");Dir;`
 
-Cd("/LT/Adam/Ltf");Dir;
+Cd("/LT/Adam/Ltf");Dir;
 `Cd("/LT/Adam/Ltf");Dir;`
 
-Cd("/LT/Adam/WordStat");Dir;
+Cd("/LT/Adam/WordStat");Dir;
 `Cd("/LT/Adam/WordStat");Dir;`
 
-Cd("/LT/Adam/Gr");Dir;
+Cd("/LT/Adam/Gr");Dir;
 `Cd("/LT/Adam/Gr");Dir;`
 
-Cd("/LT/Adam/Snd");Dir;
+Cd("/LT/Adam/Snd");Dir;
 `Cd("/LT/Adam/Snd");Dir;`
 
-Cd("/LT/Accts");Dir;
+Cd("/LT/Accts");Dir;
 `Cd("/LT/Accts");Dir;`
 
-Cd("/LT/Accts/TAD");Dir;
+Cd("/LT/Accts/TAD");Dir;
 `Cd("/LT/Accts/TAD");Dir;`
 
-Cd("/LT/Accts/TAD/Private");Dir;
+Cd("/LT/Accts/TAD/Private");Dir;
 `Cd("/LT/Accts/TAD/Private");Dir;`
 
-Cd("/LT/Accts/TAD/MusicOrgan");Dir;
+Cd("/LT/Accts/TAD/MusicOrgan");Dir;
 `Cd("/LT/Accts/TAD/MusicOrgan");Dir;`
 
-Cd("/LT/Accts/TS");Dir;
+Cd("/LT/Accts/TS");Dir;
 `Cd("/LT/Accts/TS");Dir;`
 
-Cd("/LT/Accts/Cody");Dir;
+Cd("/LT/Accts/Cody");Dir;
 `Cd("/LT/Accts/Cody");Dir;`
 
-Cd("/LT/Accts/User");Dir;
+Cd("/LT/Accts/User");Dir;
 `Cd("/LT/Accts/User");Dir;`
 
-Cd("/LT/Accts/Install");Dir;
+Cd("/LT/Accts/Install");Dir;
 `Cd("/LT/Accts/Install");Dir;`
 
-Cd("/LT/Apps");Dir;
+Cd("/LT/Apps");Dir;
 `Cd("/LT/Apps");Dir;`
 
-Cd("/LT/Apps/GrModels");Dir;
+Cd("/LT/Apps/GrModels");Dir;
 `Cd("/LT/Apps/GrModels");Dir;`
 
-Cd("/LT/Apps/X-Caliber");Dir;
+Cd("/LT/Apps/X-Caliber");Dir;
 `Cd("/LT/Apps/X-Caliber");Dir;`
 
-Cd("/LT/Apps/MusicOrgan");Dir;
+Cd("/LT/Apps/MusicOrgan");Dir;
 `Cd("/LT/Apps/MusicOrgan");Dir;`
 
-Cd("/LT/Apps/AfterEgypt");Dir;
+Cd("/LT/Apps/AfterEgypt");Dir;
 `Cd("/LT/Apps/AfterEgypt");Dir;`
 
-Cd("/LT/Apps/KeepAway");Dir;
+Cd("/LT/Apps/KeepAway");Dir;
 `Cd("/LT/Apps/KeepAway");Dir;`
 
-Cd("/LT/Misc/Tour");Dir;
+Cd("/LT/Misc/Tour");Dir;
 `Cd("/LT/Misc/Tour");Dir;`
 
-Cd("/LT/Demo");Dir;
+Cd("/LT/Demo");Dir;
 `Cd("/LT/Demo");Dir;`
 
-Cd("/LT/Demo/Asm");Dir;
+Cd("/LT/Demo/Asm");Dir;
 `Cd("/LT/Demo/Asm");Dir;`
 
-Cd("/LT/Demo/Snd");Dir;
+Cd("/LT/Demo/Snd");Dir;
 `Cd("/LT/Demo/Snd");Dir;`
 
-Cd("/LT/Demo/Dsk");Dir;
+Cd("/LT/Demo/Dsk");Dir;
 `Cd("/LT/Demo/Dsk");Dir;`
 
-Cd("/LT/Demo/OldSchool");Dir;
+Cd("/LT/Demo/OldSchool");Dir;
 `Cd("/LT/Demo/OldSchool");Dir;`
 
-Cd("/LT/Demo/Graphics");Dir;
+Cd("/LT/Demo/Graphics");Dir;
 `Cd("/LT/Demo/Graphics");Dir;`
 
-Cd("/LT/Demo/MultiCore");Dir;
+Cd("/LT/Demo/MultiCore");Dir;
 `Cd("/LT/Demo/MultiCore");Dir;`
 
-Cd("/LT/Demo/GameStarters");Dir;
+Cd("/LT/Demo/GameStarters");Dir;
 `Cd("/LT/Demo/GameStarters");Dir;`
 
-Cd("/LT/Adam/Boot");Dir;
+Cd("/LT/Adam/Boot");Dir;
 `Cd("/LT/Adam/Boot");Dir;`
 
-Cd("/LT/Doc");Dir;
+Cd("/LT/Doc");Dir;
 `Cd("/LT/Doc");Dir;`
 
-Cd("/LT/Demo/Lectures");Dir;
+Cd("/LT/Demo/Lectures");Dir;
 `Cd("/LT/Demo/Lectures");Dir;`
 
-Cd("/LT/Misc");Dir;
+Cd("/LT/Misc");Dir;
 `Cd("/LT/Misc");Dir;`
 
-Cd("/Temp");Dir;
+Cd("/Temp");Dir;
 `Cd("/Temp");Dir;`
 
-Cd("/Text");Dir;
+Cd("/Text");Dir;
 `Cd("/Text");Dir;`
 
-Cd("/0000Boot");Dir;
+Cd("/0000Boot");Dir;
 `Cd("/0000Boot");Dir;`
 
 WebLog
@@ -141,7 +141,7 @@ Copy Video
 Copy Screen Shots
 `Del(TS_TRA_DRV ":/Temp/ScreenShots/*");Copy("::/Temp/ScreenShots/*",TS_TRA_DRV ":/Temp/ScreenShots");`
 
-Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS_TRA_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS_TRA_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
 `Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS_TRA_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");`
 
 -] Dangerous
@@ -149,19 +149,19 @@ Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS
 `PmtMyCopyDrv;`
 
   UpdateBakWin
-`Cd("/LT");S2T(SRC_FILE_MASK,"+r");UpdateBakWin;`
+`UpdateBakWin;`
 
   -] Merge Files Stuff
-  M(TS_MAIN_DRV ":/LT/*",TS_BAK_DRV ":/LT/*","+r+d");
+  M(TS_MAIN_DRV ":/LT/*",TS_BAK_DRV ":/LT/*","+r+d");
 `M(TS_MAIN_DRV ":/LT/*",TS_BAK_DRV ":/LT/*","+r+d");`
 
-  M(TS_MAIN_DRV ":/LT/*",TS_TRA_DRV ":/LT/*","+r+d");
+  M(TS_MAIN_DRV ":/LT/*",TS_TRA_DRV ":/LT/*","+r+d");
 `M(TS_MAIN_DRV ":/LT/*",TS_TRA_DRV ":/LT/*","+r+d");`
 
-  M(TS_MAIN_DRV ":/LT/*",TS_CDROM_DRV ":/LT/*","+r+d");
+  M(TS_MAIN_DRV ":/LT/*",TS_CDROM_DRV ":/LT/*","+r+d");
 `M(TS_MAIN_DRV ":/LT/*",TS_CDROM_DRV ":/LT/*","+r+d");`
 
-  ChgDsk(TS_CDROM_DRV_LET);
+  ChgDsk(TS_CDROM_DRV_LET);
 `ChgDsk(TS_CDROM_DRV_LET);`
 
 MenuBoot D

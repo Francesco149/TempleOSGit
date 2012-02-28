@@ -2,37 +2,37 @@
 Sleep(1000);
 
 PopUpOk(
-"$FG,GREEN$<CTRL-F>$FG$ to find.\r\n"
+"$FG,GREEN$<CTRL-F>$FG$ to find.\n"
 );
 
 AFGetChar(CH_CTRLF);
 
 "<SHIFT-ESC>";
 
-PopUpOk("Cursor down 8 times.\r\n");
+PopUpOk("Cursor down 8 times.\n");
 I64 i;
 for (i=0;i<8;i++)
   AFGetKey(SC_CURSOR_DOWN);
 
 PopUpOk(
-"Press '$FG,GREEN$1$FG$' to show\r\n"
-"all lines within 1 of a match.\r\n");
+"Press '$FG,GREEN$1$FG$' to show\n"
+"all lines within 1 of a match.\n");
 AFPmtStr("1");
 Sleep(1000);
 
-PopUpOk("Press $FG,GREEN$<ESC>$FG$.\r\n");
+PopUpOk("Press $FG,GREEN$<ESC>$FG$.\n");
 AFGetChar(CH_ESC);
 Sleep(500);
 
 PopUpOk(
-"Look around and press $FG,GREEN$<ESC>$FG$\r\n"
-"to turn off filter.\r\n");
+"Look around and press $FG,GREEN$<ESC>$FG$\n"
+"to turn off filter.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 Sleep(1000);
 
 PopUpOk(
-"You can combine filters to\r\n"
-"effectively do AND searches.\r\n");
+"You can combine filters to\n"
+"effectively do AND searches.\n");
 Sleep(1000);
 
 '' CH_SHIFT_ESC;

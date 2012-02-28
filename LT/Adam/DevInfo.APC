@@ -21,12 +21,12 @@ public U0 PCIDevFileGen()
       first=FALSE;
     }
     if (ll->type_u8==LTFT_TEXT && ll->tag[StrLen(ll->tag)-1]=='=' &&
-	ll2->type_u8==LTFT_CR) {
+	ll2->type_u8==LTFT_NEW_LINE) {
       ll->tag[StrLen(ll->tag)-1]=CH_SPACE;
       cont=TRUE;
     }
     del2=del;
-    if (ll->type_u8==LTFT_CR) {
+    if (ll->type_u8==LTFT_NEW_LINE) {
       first=TRUE;
       del2=FALSE;
       if (cont) {
@@ -70,7 +70,7 @@ U0 PCILookUpSingle(Ltf *l,I64 m,I64 d,U8 **_vendor,U8 **_dev)
       }
       first=FALSE;
     }
-    if (ll->type_u8==LTFT_CR)
+    if (ll->type_u8==LTFT_NEW_LINE)
       first=TRUE;
     ll=ll->next;
   }
@@ -100,7 +100,7 @@ U0 PCILookUpSingle(Ltf *l,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 	  break;
 	first=FALSE;
       }
-      if (ll->type_u8==LTFT_CR)
+      if (ll->type_u8==LTFT_NEW_LINE)
 	first=TRUE;
       ll=ll->next;
     }
@@ -152,15 +152,15 @@ lud_done:
 public U0 PCIRep()
 {
   PCIDevStruct *temppci;
-  "PCI Busses:%d\r\n",sys_pci_busses;
+  "PCI Busses:%d\n",sys_pci_busses;
   if (!FileFind(PCI_DEV_FILE)) {
-    "You don't have the PCI device file.\r\n";
+    "You don't have the PCI device file.\n";
     return;
   }
   PCILookUpDevs;
   temppci=sys_pci_dev_root.next;
   while (temppci!=&sys_pci_dev_root) {
-    "%02X:%02X:%01X %02X%02X $FG,GREEN$%s $FG,CYAN$%s$FG$\r\n",
+    "%02X:%02X:%01X %02X%02X $FG,GREEN$%s $FG,CYAN$%s$FG$\n",
       temppci->bus,temppci->dev,temppci->fun,
       temppci->base_code,temppci->sub_code,
       temppci->vendor_str,temppci->dev_id_str;
@@ -171,7 +171,7 @@ public U0 PCIRep()
 #help_index "Info;Time/CPU Cycles"
 public U0 CPURep()
 {
-  "%d Cores %6h?nHz\r\n",mp_cnt,ToF64(time_stamp_freq);
+  "%d Cores %6h?nHz\n",mp_cnt,ToF64(time_stamp_freq);
 }
 
 #help_index "PCI;Info;File/System/Hardware;Device"
@@ -183,12 +183,12 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,ATARepStruct **root,
   ATARepStruct *tempha;
   if (type=ATAProbe(base0,base1,unit)) {
     *num_hints+=1;
-    "\r\n\r\n$FG,PURPLE$ $BT-LE+LM+X,\"%d\",\"%d\\r\"$$FG$$LM,4$",*num_hints,*num_hints;
+    "\n\n$FG,PURPLE$ $BT-LE+LM+X,\"%d\",\"%d\\r\"$$FG$$LM,4$",*num_hints,*num_hints;
     if (type==LTBDT_ATA)
       "$FG,RED$ATA   ";
     else
       "$FG,RED$ATAPI ";
-    "$FG,LTBLUE$%s$FG$\r\nBase0: 0x%04X\r\nBase1: 0x%04X\r\nIrq: 0x%02X Unit:%d$LM,0$\r\n",msg,base0,base1,irq,unit;
+    "$FG,LTBLUE$%s$FG$\nBase0: 0x%04X\nBase1: 0x%04X\nIrq: 0x%02X Unit:%d$LM,0$\n",msg,base0,base1,irq,unit;
     if (root) {
       tempha=CAlloc(sizeof(ATARepStruct));
       tempha->next=*root;
@@ -209,7 +209,7 @@ U0 ATARepExitAllApplications()
   PutDefine("ST_GOING_TO_PROBE_HARDWARE");
   PutDefine("ST_EXIT_ALL_APPLICATIONS");
   PutDefine("ST_PRESS_A_KEY");
-  "Press '$FG,PURPLE$p$FG$' to probe or '$FG,PURPLE$s$FG$' to skip.\r\n";
+  "Press '$FG,PURPLE$p$FG$' to probe or '$FG,PURPLE$s$FG$' to skip.\n";
   ch=ToUpper(GetChar(NULL,FALSE));
   if (ch=='S')
     hint_ata_disable=TRUE;
@@ -279,7 +279,7 @@ public I64 ATARep(BoolI8 pmt=TRUE,ATARepStruct **root=NULL)
       ATARepEntry(d1,d2,1,d3,"Secondary SATA",root,&num_hints);
     }
   }
-  CrLf(2);
+  NewLine(2);
   for (i=0;i<num_blkdevs;i++)
     if (Bt(&unlock_flags,i))
      BlkDevUnlock(&local_blkdevs[i]);
@@ -293,28 +293,28 @@ public U0 MemBIOSRep()
   U16		*m01=SYS_MEM_E801;
   MemE820Entry	*m20=SYS_MEM_E820;
   MemRange	*tempmr;
-	"Standard Addresses\r\n"
-	"0x000A0000-0x000BFFFF VGA\r\n"
-	"0xFEE00000-0xFEE00FFF See $LK,\"APIC\",\"MN:LAPIC_BASE\"$\r\n\r\n"
-	"32 Bit Device Mem\r\n";
+	"Standard Addresses\n"
+	"0x000A0000-0x000BFFFF VGA\n"
+	"0xFEE00000-0xFEE00FFF See $LK,\"APIC\",\"MN:LAPIC_BASE\"$\n\n"
+	"32 Bit Device Mem\n";
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
   tempmr=sys_mem32_dev_root.next;
   while (tempmr!=&sys_mem32_dev_root) {
-    "%02X:0x%016X-0x%016X\r\n",tempmr->type,tempmr->base,tempmr->base+tempmr->size-1;
+    "%02X:0x%016X-0x%016X\n",tempmr->type,tempmr->base,tempmr->base+tempmr->size-1;
     tempmr=tempmr->next;
   }
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
 
-  "\r\nBIOS Memory Report 15:E801\r\n"
-  "01:0x0000000000000000-0x%016X\r\n",0x100000+m01[0]<<10-1;
-  "01:0x0000000001000000-0x%016X\r\n",0x1000000+m01[1]<<16-1;
+  "\nBIOS Memory Report 15:E801\n"
+  "01:0x0000000000000000-0x%016X\n",0x100000+m01[0]<<10-1;
+  "01:0x0000000001000000-0x%016X\n",0x1000000+m01[1]<<16-1;
 
   if (m20->type) {
-    CrLf;
-    "BIOS Memory Report 15:E820\r\n";
+    NewLine;
+    "BIOS Memory Report 15:E820\n";
     while (m20->type) {
-      "%02X:0x%016X-0x%016X\r\n",m20->type,m20->base,m20->base+m20->len-1;
+      "%02X:0x%016X-0x%016X\n",m20->type,m20->base,m20->base+m20->len-1;
       m20++;
     }
   }

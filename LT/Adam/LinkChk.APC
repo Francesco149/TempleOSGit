@@ -26,12 +26,12 @@ I64 LinkChkLtf(Ltf *l,U64 *_fuf_flags)
 	LtfDel(l2);
       else {
 	PutFileLink(l->filename.name,ll->y);
-	"$FG,RED$ %04d:%s\r\n$FG$",ll->y,st;
+	"$FG,RED$ %04d:%s\n$FG$",ll->y,st;
 	result++;
       }
     } else if (ll->type_u8==LTFT_ERROR) {
       PutFileLink(l->filename.name,ll->y);
-      "$FG,RED$ Ltf Error\r\n$FG$";
+      "$FG,RED$ Ltf Error\n$FG$";
       result++;
     }
     ll=ll->next;
@@ -57,7 +57,7 @@ I64 LinkChkList(LTDirEntry *tempm1,U64 *_fuf_flags)
     tempm2=tempm1->next;
     if (tempm1->attr & LT_ATTR_DIR) {
       if (tempm1->sub) {
-	"%S %s\r\n","ST_SCANNING_DIR",tempm1->full_name;
+	"%S %s\n","ST_SCANNING_DIR",tempm1->full_name;
 	result+=LinkChkList(tempm1->sub,_fuf_flags);
       }
     } else

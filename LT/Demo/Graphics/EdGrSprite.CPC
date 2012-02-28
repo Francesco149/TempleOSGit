@@ -133,9 +133,9 @@ U0 OutLine()
 	  }
 
     out_img=GrDC2Sprite(dc);
-    CrLf;
+    NewLine;
     PutSprite(out_img);
-    CrLf(4);
+    NewLine(4);
  
     GrDCDel(dc);
     Free(out_img);

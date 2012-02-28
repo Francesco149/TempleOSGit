@@ -263,8 +263,8 @@ U0 OptPass6(LexStruct *lx,ClassStruct *fun_class)
     fun_class->clobbered_reg_mask=clobbered_reg_mask;
     if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) &&
 	Bt(&lx->pass_trace_mask,6)) {
-	"Used      Reg Mask:%04X\r\n",fun_class->used_reg_mask;
-	"Clobbered Reg Mask:%04X\r\n",clobbered_reg_mask;
+	"Used      Reg Mask:%04X\n",fun_class->used_reg_mask;
+	"Clobbered Reg Mask:%04X\n",clobbered_reg_mask;
     }
   }
 }

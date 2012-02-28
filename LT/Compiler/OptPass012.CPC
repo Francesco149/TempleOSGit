@@ -142,7 +142,7 @@ I64 CmpOffset2Reg(I64 offset,OptRegStruct *register_offsets)
 
 U0 OptMissing(LexStruct *lx,IntermediateCode *tempi)
 {
-  "Pass:%d Missing IC handler\r\n",lx->pass;
+  "Pass:%d Missing IC handler\n",lx->pass;
   CbPutIc(tempi);
   PrsExcept(lx,"ST_OPT_INTERNAL_ERROR");
 }
@@ -166,7 +166,7 @@ PrsStk *OptStart(LexStruct *lx,IntermediateCode **temp_lag=NULL)
 U0 OptEnd(LexStruct *lx,PrsStk *ps)
 {
   if (ps->ptr>2) {
-    "Pass:%d Stk:%08X\r\n",lx->pass,ps->ptr;
+    "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
     PrsExcept(lx,"ST_OPT_INTERNAL_ERROR");
   }
   Free(ps);

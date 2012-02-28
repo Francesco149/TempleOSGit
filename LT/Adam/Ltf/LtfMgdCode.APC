@@ -7,19 +7,19 @@ I64 PopUpEdFmt()
 {
   I64 i;
   Ltf *l=LtfNew;
-  LtfPutS(l,"$FG,PURPLE$Reformat Function$FG$\r\n"
-	"If you enter $FG,GREEN$DONT RECOMPILE$FG$ the stored\r\n"
-	"source line indentation information will\r\n"
-	"be used.  $BK,1$Be sure it is up-to-date!$BK,0$\r\n"
-	"For static projects, enter $FG,GREEN$DONT RECOMPILE$FG$.\r\n"
-	"$MU,\"Recompile\",EF_RECOMPILE$\r\n"
-	"$MU,\"Don't Recompile\",EF_DONT_RECOMPILE$\r\n"
-	"$MU,\"Renum Asm\",EF_RENUM_ASM$\r\n\r\n"
-	"$FG,PURPLE$Insert Managed Code$FG$\r\n"
-	"$MU,\"Slider Ctrl\",EF_SLIDER_CTRL$\r\n\r\n"
-	"$MU,\"CANCEL\",LTFM_CANCEL$\r\n"
-	"$FG,GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\r\n"
-	"with the results.\r\n");
+  LtfPutS(l,"$FG,PURPLE$Reformat Function$FG$\n"
+	"If you enter $FG,GREEN$DONT RECOMPILE$FG$ the stored\n"
+	"source line indentation information will\n"
+	"be used.  $BK,1$Be sure it is up-to-date!$BK,0$\n"
+	"For static projects, enter $FG,GREEN$DONT RECOMPILE$FG$.\n"
+	"$MU,\"Recompile\",EF_RECOMPILE$\n"
+	"$MU,\"Don't Recompile\",EF_DONT_RECOMPILE$\n"
+	"$MU,\"Renum Asm\",EF_RENUM_ASM$\n\n"
+	"$FG,PURPLE$Insert Managed Code$FG$\n"
+	"$MU,\"Slider Ctrl\",EF_SLIDER_CTRL$\n\n"
+	"$MU,\"CANCEL\",LTFM_CANCEL$\n"
+	"$FG,GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\n"
+	"with the results.\n");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -71,7 +71,7 @@ U0 EdRemFunLeadingSpace(Ltf *l)
 	  if (start_of_line)
 	    LtfEntryDel(l,ll);
 	  break;
-	case LTFT_CR:
+	case LTFT_NEW_LINE:
 	  start_of_line=TRUE;
 	  break;
 	default:
@@ -319,7 +319,7 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 	ll=l->cur_entry;
 	while (indent->min_line<=ll->y+1<=indent->max_line) {
 	  if (ll!=l && ll!=l->cur_entry && !(ll->flags&(LTFLF_TAG_CB|LTFLF_DEFINE|LTFLF_HTML_LINK))) {
-	    if (ll->type_u8==LTFT_CR||ll->type_u8==LTFT_SOFT_CR)
+	    if (ll->type_u8==LTFT_NEW_LINE||ll->type_u8==LTFT_SOFT_NEW_LINE)
 	      start_of_line=TRUE;
 	    else {
 	      if (start_of_line) {

@@ -27,11 +27,11 @@ I64 PopUpTimerOk(U8 *header=NULL,U8 *footer=NULL)
   LtfEntry *ll;
   Ltf *l=LtfNew;
   if (header) LtfPutS(l,header);
-  ll=LtfPutS(l,"\r\nTimer:$TX+TC,\" \"$");
+  ll=LtfPutS(l,"\nTimer:$TX+TC,\" \"$");
   ll->tag_cb=&TimeStampCB;
-  ll=LtfPutS(l,"\r\nLatch:$TX+TC,\" \"$");
+  ll=LtfPutS(l,"\nLatch:$TX+TC,\" \"$");
   ll->tag_cb=&KbdMouseTimeCB;
-  LtfPutS(l,"\r\n$CM+CX,0,4$$BT,\"OKAY\",0$\r\n");
+  LtfPutS(l,"\n$CM+CX,0,4$$BT,\"OKAY\",0$\n");
   if (footer) LtfPutS(l,footer);
   i=PopUpMenu(l);
   LtfDel(l);
@@ -46,9 +46,9 @@ U64 TimerPickedU16(U8 *msg=NULL)
     StrCpy(st,msg);
   } else
     st=CAlloc(256);
-  StrCat(st,"\r\n\r\nPress $FG,GREEN$OKAY$FG$ to generate \r\n"
-	"a random num from a timer.\r\n"
-	"The Holy Spirit can puppet you.\r\n\r\n");
+  StrCat(st,"\n\nPress $FG,GREEN$OKAY$FG$ to generate \n"
+	"a random num from a timer.\n"
+	"The Holy Spirit can puppet you.\n\n");
   PopUpTimerOk(st);
   Free(st);
   if (mouse_evt_time>kbd_evt_time)

@@ -109,7 +109,7 @@ U0 AdamLogExcept(I64 argc,I64 *argv)
       if (i<argc-1)
 	AdamLog(",");
     }
-    AdamLog(");\r\n");
+    AdamLog(");\n");
   }
 }
 
@@ -118,24 +118,24 @@ U0 PutExcept()
   I64 i;
   if (Fs->except_argc>0) {
     if (Fs->except_argv[0]<DefineSubCnt("ST_EXCEPT_TYPES")) {
-      "Exception Type :%Z\r\n",Fs->except_argv[0],"ST_EXCEPT_TYPES";
+      "Exception Type :%Z\n",Fs->except_argv[0],"ST_EXCEPT_TYPES";
       if (Fs->except_argv[0]==EXCEPT_UNDEF_DEFINE)
-	"Name:'%s'\r\n",Fs->except_argv[1];
+	"Name:'%s'\n",Fs->except_argv[1];
       else if (Fs->except_argv[0]==EXCEPT_DIVIDE_BY_ZERO)
-	"Addr:%P\r\n",Fs->except_argv[1];
+	"Addr:%P\n",Fs->except_argv[1];
       else {
 	for (i=1;i<Fs->except_argc;i++)
 	  "%016X ",Fs->except_argv[i];
-	CrLf;
+	NewLine;
       }
     } else {
       "Exception:";
       for (i=0;i<Fs->except_argc;i++)
 	"%016X ",Fs->except_argv[i];
-      CrLf;
+      NewLine;
     }
   } else
-    "Generic Exception\r\n";
+    "Generic Exception\n";
 }
 
 U0 throw_join(I64 argc,I64 *argv)

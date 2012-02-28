@@ -346,7 +346,7 @@ Frame man_imgs[LAST_STOPPED_DRIBBLING+1]={
 {{__BIN_20,__BIN_21},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},{{__BIN_22,__BIN_23},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},
 };
 
-AcctRegSetDftEntry("LT/KeepAway","I64 best_score0=0,best_score1=9999;\r\n");
+AcctRegSetDftEntry("LT/KeepAway","I64 best_score0=0,best_score1=9999;\n");
 AcctRegExecuteBranch("LT/KeepAway");
 
 F64 game_t_end,foul_t_end;
@@ -376,7 +376,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,232] Ode feat,
+I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,231] Ode feat,
 just to be different.
 */
 
@@ -738,9 +738,9 @@ U0 KeepAway()
   I64 msg_code,p1,p2;
 
   PopUpOk(
-    "$FG,RED$Pass or hand-off to score points.$FG$\r\n\r\n"
-    "Left-Click to pass.\r\n"
-    "Right-Click to jump.\r\n");
+    "$FG,RED$Pass or hand-off to score points.$FG$\n\n"
+    "Left-Click to pass.\n"
+    "Right-Click to jump.\n");
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
   WinBorder(OFF);
@@ -800,7 +800,7 @@ ka_done: //Don't goto out of try
   } catch
     CatchAll;
   SettingsPop;
-  AcctRegWriteBranch("LT/KeepAway","I64 best_score0=%d,best_score1=%d;\r\n",
+  AcctRegWriteBranch("LT/KeepAway","I64 best_score0=%d,best_score1=%d;\n",
     best_score0,best_score1);
   CleanUp;
   MenuPop;

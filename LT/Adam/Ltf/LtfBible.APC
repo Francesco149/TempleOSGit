@@ -179,8 +179,8 @@ public U0 PutBibleVerse(U8 *verse,I64 lines)
     while (lines) {
       if (cl->type_u8==LTFT_TEXT)
 	"" cl->tag;
-      else if (cl->type_u8==LTFT_CR) {
-	CrLf;
+      else if (cl->type_u8==LTFT_NEW_LINE) {
+	NewLine;
 	lines--;
       }
       cl=cl->next;

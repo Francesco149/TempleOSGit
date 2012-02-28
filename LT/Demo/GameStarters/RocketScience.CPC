@@ -204,7 +204,7 @@ U0 Init()
   plane_hit=FALSE;
 
   do antispin_coefficient=PopUpRangeF64Exp(0.1,10.001,Sqrt(10),
-    "%9.4f","Anti-spin Coefficient\r\n\r\n");
+    "%9.4f","Anti-spin Coefficient\n\n");
   while (!(0.1<=antispin_coefficient<10.001));
 
 //We don't clear queue links.
@@ -265,8 +265,8 @@ U0 RocketScience()
   Fs->task_end_cb=&TaskEndCB;
 
   "$CL$$BG,LTCYAN$";
-  CrLf(Fs->win_height-4);
-  "$BG,YELLOW$\r\n";
+  NewLine(Fs->win_height-4);
+  "$BG,YELLOW$\n";
  
   ode=OdeNew(STATE_NUM,1e-6,ODEF_HAS_MASSES);
   ode->derivative=&MyDerivative;
@@ -306,7 +306,7 @@ rs_done:
     CatchAll;
   RemQue(ode);
   OdeDel(ode);
-  "$CL$$BG$\r\n";
+  "$CL$$BG$\n";
   SettingsPop;
   GrDCClear;
   GrDCDel(dc2);

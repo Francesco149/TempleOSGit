@@ -46,16 +46,16 @@ U0 DataDemo()
 
   Spawn(&UpdateGlblTask,NULL,"Update Glbl",Fs);
 
-  "Enter editor overstrike mode\r\n"
-  "and you can modify the val.\r\n"
-  "However, changes happen immediately,\r\n"
-  "so it's tricky.\r\n\r\n";
+  "Enter editor overstrike mode\n"
+  "and you can modify the val.\n"
+  "However, changes happen immediately,\n"
+  "so it's tricky.\n\n";
   //Use <CTRL-L> for the $DA,$ format.
-  ll=LtfPutS(l,"$DA-T+RD+UD-U64+U32,32,\"%12d\"$\r\n");
+  ll=LtfPutS(l,"$DA-T+RD+UD-U64+U32,32,\"%12d\"$\n");
   ll->data=&i;
 
   StrCpy(buf,"Terry");
-  ll=LtfPutS(l,"$DA-P+RD+UD,7,\"Str:%s\"$\r\n");
+  ll=LtfPutS(l,"$DA-P+RD+UD,7,\"Str:%s\"$\n");
   ll->data=buf;
 
   if (unlock)

@@ -6,22 +6,22 @@
 
 U0 LoadSysStrs()
 {
-  DefineLoad("ST_UNDEFINED_EXTERN","Undefined Extern\r\n");
-  DefineLoad("ST_FILE_NOT_FOUND","File not found.\r\n");
-  DefineLoad("ST_INVALID_FILENAME","Invalid File Name.\r\n");
-  DefineLoad("ST_PRESS_A_KEY","$BK,1$PRESS A KEY$BK,0$\r\n");
-  DefineLoad("ST_EXIT_ALL_APPLICATIONS","$FG,RED$Exit all other applications.$FG$\r\n");
-  DefineLoad("ST_GOING_TO_PROBE_HARDWARE","\r\nWe're going to probe hardware.\r\n");
+  DefineLoad("ST_UNDEFINED_EXTERN","Undefined Extern\n");
+  DefineLoad("ST_FILE_NOT_FOUND","File not found.\n");
+  DefineLoad("ST_INVALID_FILENAME","Invalid File Name.\n");
+  DefineLoad("ST_PRESS_A_KEY","$BK,1$PRESS A KEY$BK,0$\n");
+  DefineLoad("ST_EXIT_ALL_APPLICATIONS","$FG,RED$Exit all other applications.$FG$\n");
+  DefineLoad("ST_GOING_TO_PROBE_HARDWARE","\nWe're going to probe hardware.\n");
   DefineLoad("ST_ARE_YOU_SURE","ARE YOU SURE ");
-  DefineLoad("ST_NOT_LT","Not LT Partition\r\n");
-  DefineLoad("ST_NOT_FAT32","Not FAT32 Partition\r\n");
-  DefineLoad("ST_NOT_ISO9660","Not ISO9660 Partition\r\n");
-  DefineLoad("ST_NOT_ISO13346","Not ISO13346 Partition\r\n");
-  DefineLoad("ST_UNSUPPORTED_FILE_SYSTEM","File System Not Supported\r\n");
-  DefineLoad("ST_NOT_WRITABLE","Not Writable\r\n");
+  DefineLoad("ST_NOT_LT","Not LT Partition\n");
+  DefineLoad("ST_NOT_FAT32","Not FAT32 Partition\n");
+  DefineLoad("ST_NOT_ISO9660","Not ISO9660 Partition\n");
+  DefineLoad("ST_NOT_ISO13346","Not ISO13346 Partition\n");
+  DefineLoad("ST_UNSUPPORTED_FILE_SYSTEM","File System Not Supported\n");
+  DefineLoad("ST_NOT_WRITABLE","Not Writable\n");
   DefineLoad("ST_DELETE","Del ");
-  DefineLoad("ST_INVALID_DRV","Invalid Drive\r\n");
-  DefineLoad("ST_NO_MATCHING_ENTRIES","No matching entries\r\n");
+  DefineLoad("ST_INVALID_DRV","Invalid Drive\n");
+  DefineLoad("ST_NO_MATCHING_ENTRIES","No matching entries\n");
   DefineListLoad("ST_OFF_ON","Off\0On\0");
   DefineListLoad("ST_HTT_TYPES","ExportSysSym\0ImportSysSym\0DefineStr\0GlbVar\0TypeDef\0Class\0"
 		"IntType\0Funct\0Word\0DictWord\0KeyWord\0AsmKeyWord\0OpCode\0R8\0R16\0R32\0R64\0"
@@ -44,56 +44,56 @@ U0 LoadSysStrs()
   DefineListLoad("ST_PRT_TYPES","NULL    \0LT      \0FAT32   \0ISO9660 \0ISO13490\0ISO13346\0NTFS    \0UNKNOWN \0");
 
   DefineLoad("ST_MOUNT_INTRO",
-	"\r\n\r\n\r\n$BK,1$$FG,PURPLE$Mount drives so they will "
-	"be present when you boot.$FG$$BK,0$\r\n");
+	"\n\n\n$BK,1$$FG,PURPLE$Mount drives so they will "
+	"be present when you boot.$FG$$BK,0$\n");
   DefineLoad("ST_MOUNT_BASE_LET",
-	"\r\n****** Mount Drives ******\r\n"
-	"The base drive letter is the letter\r\n"
-	"of the first partition.  If adding\r\n"
-	"a hard drive, you should pick 'C'.\r\n"
-	"If more than one partition is present\r\n"
-	"they will be lettered in sequence.\r\n"
-	"\r\n"
+	"\n****** Mount Drives ******\n"
+	"The base drive letter is the letter\n"
+	"of the first partition.  If adding\n"
+	"a hard drive, you should pick 'C'.\n"
+	"If more than one partition is present\n"
+	"they will be lettered in sequence.\n"
+	"\n"
 	"Base Drive Letter($FG,PURPLE$<ENTER>$FG$ to exit):");
   DefineLoad("ST_MOUNT_DRV_TYPE",
-	"\t$FG,PURPLE$1$FG$=RAM\r\n\t$FG,PURPLE$2$FG$=ATA(Harddisk)\r\n"
-	"\t$FG,PURPLE$3$FG$=ATAPI(CD-ROM)\r\n"
-	"\t$FG,PURPLE$4$FG$=Temp (LT File)\r\n"
-	"\t$FG,PURPLE$5$FG$=Non LT File (Run LTZ first)\r\n"
+	"\t$FG,PURPLE$1$FG$=RAM\n\t$FG,PURPLE$2$FG$=ATA(Harddisk)\n"
+	"\t$FG,PURPLE$3$FG$=ATAPI(CD-ROM)\n"
+	"\t$FG,PURPLE$4$FG$=Temp (LT File)\n"
+	"\t$FG,PURPLE$5$FG$=Non LT File (Run LTZ first)\n"
 	"Type:");
   DefineLoad("ST_MOUNT_TEMP_PRT_FILENAME",
 	"Filename (Include host drive letter and no extension):");
   DefineLoad("ST_MOUNT_TEMP_PRT_FMT",
-	"$FG,RED$This drive will be reformatted each boot.$FG$\r\n");
+	"$FG,RED$This drive will be reformatted each boot.$FG$\n");
   DefineLoad("ST_MOUNT_BLKS",
 	"Blks of 512 bytes:");
   DefineLoad("ST_MOUNT_UNIT",
-	"\t$FG,PURPLE$0$FG$=Master\r\n\t$FG,PURPLE$1$FG$=Slave\r\nUnit:");
+	"\t$FG,PURPLE$0$FG$=Master\n\t$FG,PURPLE$1$FG$=Slave\nUnit:");
   DefineLoad("ST_MOUNT_FMT_WHOLE_DRV",
-	"\r\nReformat WHOLE drive!");
+	"\nReformat WHOLE drive!");
   DefineLoad("ST_MOUNT_BOOTED_CDROM",
-	"<ENTER> to use booted CD-ROM\r\n");
+	"<ENTER> to use booted CD-ROM\n");
   DefineLoad("ST_INCLUDE_0X",
-	"Include $FG,PURPLE$0x$FG$ prefix\r\n");
+	"Include $FG,PURPLE$0x$FG$ prefix\n");
   DefineLoad("ST_MOUNT_BASE0",
-	"Include $FG,PURPLE$0x$FG$ prefix.\r\n"
-	"I/O Port Base0:\r\n");
+	"Include $FG,PURPLE$0x$FG$ prefix.\n"
+	"I/O Port Base0:\n");
   DefineLoad("ST_MOUNT_BASE0_HINT",
-	"Enter dev number or\r\n"
-	"port with $FG,PURPLE$0x$FG$ prefix.\r\n"
-	"I/O Port Base0:\r\n");
+	"Enter dev number or\n"
+	"port with $FG,PURPLE$0x$FG$ prefix.\n"
+	"I/O Port Base0:\n");
   DefineLoad("ST_MOUNT_BASE1",
-	"I/O Port Base1:\r\n");
+	"I/O Port Base1:\n");
   DefineLoad("ST_MOUNT_NONLT_LET",
 	"Non LT Drive Letter:");
   DefineLoad("ST_MOUNT_NONLT_BLK",
 	"File blk num:");
 
   DefineLoad("ST_CDROM_PORTS_PMT",
-	 "\r\n\r\nTry again with different port numbers if\r\n"
-	 "it hangs for more than 2 minutes.\r\n\r\n");
+	 "\n\nTry again with different port numbers if\n"
+	 "it hangs for more than 2 minutes.\n\n");
 
-  DefineLoad("ST_FAILED","\r\n\r\n$BK,1$$FG,RED$Operation Failed$BK,0$$FG$\r\n\r\n");
+  DefineLoad("ST_FAILED","\n\n$BK,1$$FG,RED$Operation Failed$BK,0$$FG$\n\n");
 
   DefineListLoad("ST_COLORS","BLACK\0BLUE\0GREEN\0CYAN\0"
 	"RED\0PURPLE\0BROWN\0LTGRAY\0DKGRAY\0LTBLUE\0LTGREEN\0"

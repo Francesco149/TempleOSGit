@@ -17,7 +17,7 @@ U0 MergeChkList(LTDirEntry *m1,LTDirEntry *m2,U64 *_fuf_flags,U64 *df_flags)
   while (m1 && !(*df_flags & DF_ABORT_ALL_FILES)) {
     tempm2=MCMatchFind(m1,m2);
     if (!tempm2)
-      "$FG,BROWN$Does Not Exist:%s$FG$\r\n",m1->full_name;
+      "$FG,BROWN$Does Not Exist:%s$FG$\n",m1->full_name;
     else {
       if (m1->attr & LT_ATTR_DIR)
 	MergeChkList(m1->sub,tempm2->sub,_fuf_flags,df_flags);
@@ -25,7 +25,7 @@ U0 MergeChkList(LTDirEntry *m1,LTDirEntry *m2,U64 *_fuf_flags,U64 *df_flags)
 	i=m1->datetime-tempm2->datetime;
 	if (AbsI64(i)>LTDATE_FREQ*2) { //Filedates can shift due to conversion
 	  "" m1->full_name;
-	  CrLf;
+	  NewLine;
 	  if (Bt(_fuf_flags,FUf_DIFF)) {
 	    if (IsTextFile(m1->full_name))
 	      *df_flags=Diff(tempm2->full_name,m1->full_name,*df_flags);
@@ -47,7 +47,7 @@ public U0 MergeChk(
   LTDirEntry *tempm1=NULL,*tempm2=NULL;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  PrintFWarn("This is based strictly on file dates.\r\n");
+  PrintFWarn("This is based strictly on file dates.\n");
   tempm1=FilesFind(src_files_find_mask,fuf_flags);
   tempm2=FilesFind(dst_files_find_mask,fuf_flags);
   MergeChkList(tempm1,tempm2,&fuf_flags,&df_flags);
@@ -62,7 +62,7 @@ U0 ListNewFilesList(LTDirEntry *tempm,LTDate datetime)
   while (tempm) {
     if (tempm->datetime>datetime) {
       "" tempm->full_name;
-      CrLf;
+      NewLine;
     }
     ListNewFilesList(tempm->sub,datetime);
     tempm=tempm->next;

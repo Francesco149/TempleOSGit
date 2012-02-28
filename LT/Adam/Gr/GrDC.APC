@@ -129,13 +129,13 @@ public GrDC *GrDCCopy(GrDC *dc,TaskStruct *task=NULL)
 
 /* GrBitMaps
 	The format of a stored bitmap includes a
-0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3438] GrDC.  The body
+0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3442] GrDC.  The body
 consists of bit planes like VGA except bits
-in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3421] DCT_MONO, there
-is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3420] DCT_COLOR4, there are
+in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3425] DCT_MONO, there
+is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3424] DCT_COLOR4, there are
 four bit-planes.
 
-If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3380] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3395] WHITE)
+If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3384] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3399] WHITE)
 you'll see the color of the planes is as follows:
 
 Plane 0: BLUE

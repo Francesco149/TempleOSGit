@@ -11,7 +11,7 @@ U0 CursorMovementDemo()
 //+LX is relative to left side.
 //See <CTRL-L> with cursor-movement for all the flags.
 //Check "Quote" to set-up a cmd for in quotes.
-  "$CM+LX,0,+10$\r\n";
+  "$CM+LX,0,+10$\n";
 }
 
 CursorMovementDemo;

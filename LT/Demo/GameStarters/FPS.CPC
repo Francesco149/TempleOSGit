@@ -17,7 +17,7 @@
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
 
 
-AcctRegSetDftEntry("LT/FPS","F64 best_score=9999;\r\n");
+AcctRegSetDftEntry("LT/FPS","F64 best_score=9999;\n");
 AcctRegExecuteBranch("LT/FPS");
 
 //Set snap to 4 and width to 4
@@ -514,11 +514,11 @@ U0 FPS()
   U64 sc;
 
   PopUpOk(
-	"I refuse to rip-off the original\r\n"
-	"so this is intentionally crappy\r\n"
-	"and included for demonstration\r\n"
-	"purposes.\r\n\r\n"
-	"Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\n"
+	"so this is intentionally crappy\n"
+	"and included for demonstration\n"
+	"purposes.\n\n"
+	"Write games, don't play them.\n");
 
   MenuPush(
   "File {"
@@ -582,7 +582,7 @@ fs_done:
   SettingsPop;
   CleanUp;
   MenuPop;
-  AcctRegWriteBranch("LT/FPS","F64 best_score=%5.4f;\r\n",best_score);
+  AcctRegWriteBranch("LT/FPS","F64 best_score=%5.4f;\n",best_score);
 }
 
 FPS;

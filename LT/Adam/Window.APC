@@ -135,7 +135,7 @@ U0 ExtendedASCII()
 {
   I64 i;
   Ltf *l=LtfNew;
-  LtfPutS(l,"Select Char and Press <ESC>\r\n");
+  LtfPutS(l,"Select Char and Press <ESC>\n");
   for (i=0;i<256;i++) {
     if (i>=CH_SHIFT_SPACE && i!=127) {
       if (i==CH_SHIFT_SPACE)
@@ -149,7 +149,7 @@ U0 ExtendedASCII()
     } else
       LtfPutS(l," ");
     if (i&15==15)
-      LtfPutS(l,"\r\n");
+      LtfPutS(l,"\n");
   }
   i=PopUpMenu(l);
   LtfDel(l);

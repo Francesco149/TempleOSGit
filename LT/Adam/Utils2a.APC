@@ -9,9 +9,9 @@ public U8 *DBlk(U64 blk,BoolI8 write=FALSE)
   RBlks(Fs->cur_prt,buf,blk,1);
   LtfD(buf,BLK_SIZE);
   if (write) {
-    "Edit and press <ESC> to write or <SHIFT-ESC>\r\n";
+    "Edit and press <ESC> to write or <SHIFT-ESC>\n";
     if (View) {
-      "Write\r\n";
+      "Write\n";
       WBlks(Fs->cur_prt,buf,blk,1);
     }
   }
@@ -26,12 +26,12 @@ public U8 *DCluster(U64 c,BoolI8 write=FALSE,I64 num=0)
   U8 *buf=MAlloc(Fs->cur_prt->spc<<BLK_SIZE_BITS);
   c=ClusterNumNext(Fs->cur_prt,c,num);
   RClusters(Fs->cur_prt,buf,c,1);
-  "Cluster:%X\r\n",c;
+  "Cluster:%X\n",c;
   LtfD(buf,Fs->cur_prt->spc<<BLK_SIZE_BITS);
   if (write) {
-    "Edit and press <ESC> to write or <SHIFT-ESC>\r\n";
+    "Edit and press <ESC> to write or <SHIFT-ESC>\n";
     if (View) {
-      "Write\r\n";
+      "Write\n";
       WClusters(Fs->cur_prt,buf,c,1);
     }
   }
@@ -254,7 +254,7 @@ public BoolI64 HeapRep(TaskStruct *task)
   UnusedAllocatedMem *uum;
 
   if (!task || task==Fs) {
-    "Task can't HeapRep on self.\r\n";
+    "Task can't HeapRep on self.\n";
     return FALSE;
   }
   if (!TaskValidate(task)) return FALSE;
@@ -282,9 +282,9 @@ public BoolI64 HeapRep(TaskStruct *task)
       }
     }
     if (cnt)
-      "%03X:%08X\r\n",i<<3,cnt;
+      "%03X:%08X\n",i<<3,cnt;
   }
-  CrLf;
+  NewLine;
 
   uum=task->code_heap->malloc_free_list;
   while (uum) {
@@ -304,7 +304,7 @@ public BoolI64 HeapRep(TaskStruct *task)
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
   PopFD;
 
-  CrLf;
+  NewLine;
 }
 
 #help_index "Memory;Debugging"
@@ -445,12 +445,12 @@ U0 TaskRepTask(TaskStruct *task,I64 indent)
   U8 *st,*desc=MSPrintF("%q",task->task_title);
   st=MSPrintF("$MA+A,\"%08X\",\"Kill(0x%X);\r\",$",task,task,task);
   Spaces(indent);
-  "%s $TX+SCX,\"%Q...\",16$ Mem:%08X\r\n",
+  "%s $TX+SCX,\"%Q...\",16$ Mem:%08X\n",
     st,desc,TaskAllocatedMem(task);
   Spaces(indent+2);
-  "Flags:%04X:%04X %02X\r\n",
+  "Flags:%04X:%04X %02X\n",
     task->task_flags,task->display_flags,ExceptDepth(task);
-  "Time:%9.2fm\r\n",task->total_time/60.0/time_stamp_freq_initial;
+  "Time:%9.2fm\n",task->total_time/60.0/time_stamp_freq_initial;
   Free(st);
   Free(desc);
   task1=task->next_child_task;
@@ -468,7 +468,7 @@ public U0 TaskRep()
   Cli;
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
-    "$FG,RED$CPU:%d$FG$\r\n",i;
+    "$FG,RED$CPU:%d$FG$\n",i;
     TaskRepTask(c->seth_task,2);
   }
   PopFD;

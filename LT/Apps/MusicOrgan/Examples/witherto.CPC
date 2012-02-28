@@ -6,9 +6,9 @@ U0 Song()
   music_tempo=2.5;
   try {
   task=PopUpViewStr(
-    "[Mark,11:12] Mark,11:12\r\n"
-    "[Matthew,3:10] Matthew,3:10\r\n"
-    "[Matthew,25:18] Matthew,25:18\r\n"
+    "[Mark,11:12] Mark,11:12\n"
+    "[Matthew,3:10] Matthew,3:10\n"
+    "[Matthew,25:18] Matthew,25:18\n"
     );
   TaskWaitIdle(task);
   task->win_right=Fs->win_right;
@@ -18,14 +18,14 @@ U0 Song()
   TaskDerivedValsUpdate(task);
   while (!ScanKey) {
 	Play("2qG3sFEFEqDBEetCB2G3qFsBDBD",
-		" \0Damn \0 \0 \0 \0 \0 \0fig \0 \0 \0 \0tree.\r\n\0 \0 \0 \0 \0");
+		" \0Damn \0 \0 \0 \0 \0 \0fig \0 \0 \0 \0tree.\n\0 \0 \0 \0 \0");
 	Play("2qG3sFEFEqDBEetCB2G3qFsBDBD",
-		" \0On\0ly \0 \0 \0good \0 \0for \0a \0 \0 \0pee.\r\n\0 \0 \0 \0 \0");
+		" \0On\0ly \0 \0 \0good \0 \0for \0a \0 \0 \0pee.\n\0 \0 \0 \0 \0");
 	Play("qC2G3eFC2G3EqACDA",
-		"Has \0no \0fruit.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
+		"Has \0no \0fruit.\n\0 \0 \0 \0 \0 \0 \0 \0");
 	Play("C2G3eFC2G3EqACDA",
-		"Kill \0the \0root.\r\n\0 \0 \0 \0 \0 \0 \0 \0");
-	"$FG,GREEN$Be sure to bear 'fruit'.$FG$\r\n\r\n";
+		"Kill \0the \0root.\n\0 \0 \0 \0 \0 \0 \0 \0");
+	"$FG,GREEN$Be sure to bear 'fruit'.$FG$\n\n";
   }
   } catch
     CatchAll;

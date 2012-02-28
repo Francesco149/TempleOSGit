@@ -53,16 +53,16 @@ U0 Song()
 	LtfClear;
 	Spaces(20);
 	PutSprite(__BIN_1);
-	CrLf(4);
+	NewLine(4);
 	Play("3qEsCBCBqARReGRqA2sG3G2G3G",
-		"Fin\0ger \0 \0of \0 \0God\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"Fin\0ger \0 \0of \0 \0God\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("qEsCBCBqARReGRqA2sG3G2G3G",
-		"Light\0en \0 \0the \0 \0rod\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"Light\0en \0 \0the \0 \0rod\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Play("qFetEA2GqGetG3B2G3sFDFDqA2eG3GqD",
-		"All \0of \0this \0strife\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"All \0of \0this \0strife\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	Spawn(&ZapTask);
 	Play("FetEA2GqGetG3B2G3sFDFDqA2eG3GqD",
-		"Jump \0start \0my \0life\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+		"Jump \0start \0my \0life\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
   }
   } catch
     CatchAll;

@@ -1,7 +1,7 @@
                             LoseThos Constitution
 
 The goal of LoseThos is to provide an ideal environment for recreational 
-programming and not immitate Linux.  LoseThos is orders of magnitude simpler 
+programming and not imitate Linux.  LoseThos is orders of magnitude simpler 
 than Linux to better fulfill the promise of open source.  The vision for 
 LoseThos is a 64-bit, souped-up, multitasking, multicore Commodore 64 with a C
 + shell instead of BASIC that runs x86_64 code.

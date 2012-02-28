@@ -44,8 +44,8 @@ U0 Song()
   music_tempo=2.5;
   try {
     task=PopUpViewStr(
-	"[Romans,12:19] Romans,12:19\r\n"
-	"[Matthew,5:38] Matthew,5:38\r\n"
+	"[Romans,12:19] Romans,12:19\n"
+	"[Matthew,5:38] Matthew,5:38\n"
 	);
     TaskWaitIdle(task);
     task->win_right=Fs->win_right;
@@ -55,15 +55,15 @@ U0 Song()
     TaskDerivedValsUpdate(task);
     while (!ScanKey) {
       Play("etFDAqDqAqAqDqCeEGeDC",
-	  "Leave \0it \0to \0God.\r\n\0");
+	  "Leave \0it \0to \0God.\n\0");
       Play("etFDAqDqAqAqDqCeEGeDC",
-	  "Leave \0it \0to \0God.\r\n\0");
+	  "Leave \0it \0to \0God.\n\0");
       t0=tM;
       Play("qDqFqGqCqEqCetDGAeAA",
-	  " \0 \0 \0 \0Stand \0back.\r\n\0");
+	  " \0 \0 \0 \0Stand \0back.\n\0");
       t0=tM;
       Play("qDqFqGqCqEqCetDGAeAA",
-	  " \0 \0 \0 \0Stand \0back.\r\n\0");
+	  " \0 \0 \0 \0Stand \0back.\n\0");
       t0=0;
     }
   } catch

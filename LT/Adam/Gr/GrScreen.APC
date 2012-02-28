@@ -699,9 +699,8 @@ U0 GrUpdateTextModeText()
 
 U0 GrUpdateVGAGraphics()
 {
-  U64 row,plane,d2=gr_scaled_dc->width_internal>>6;
+  U64 row,plane,d2=gr_scaled_dc->width_internal>>5;
   U32 *src,*dst,*dst2;
-
   //Update Graphic Card
   if (gr_screen_scale==1)
     src=gr_dc->body;
@@ -717,7 +716,7 @@ U0 GrUpdateVGAGraphics()
       dst=VGA_GRAPHIC_MEM_BASE;
       row=gr_scaled_dc->height;
       while (row--)
-	GrUpdateLineU64FlushCache(&dst,&src,d2,&dst2);
+	GrUpdateLine32FlushCache(&dst,&src,d2,&dst2);
     }
   } else {
     for (plane=1;plane<0x10;plane<<=1) {
@@ -726,7 +725,7 @@ U0 GrUpdateVGAGraphics()
       dst=VGA_GRAPHIC_MEM_BASE;
       row=gr_scaled_dc->height;
       while (row--)
-	GrUpdateLineU64(&dst,&src,d2,&dst2);
+	GrUpdateLine32(&dst,&src,d2,&dst2);
     }
   }
 }

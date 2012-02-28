@@ -188,9 +188,9 @@ public U0 HashRep(SysHashTable *h=NULL,
 	  Free(last_index);
 	  last_index=StrNew(cur_index);
 	  if (l)
-	    LtfPrintF(l,"$FG,GREEN$%s$FG$\r\n",cur_index);
+	    LtfPrintF(l,"$FG,GREEN$%s$FG$\n",cur_index);
 	  else
-	    "$FG,GREEN$%s$FG$\r\n",cur_index;
+	    "$FG,GREEN$%s$FG$\n",cur_index;
 	}
       }
     if (index && ptr->type & HTT_HELP_FILE) {
@@ -212,7 +212,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 		sizeof(U0 *)*
 		(dbg->max_line-dbg->min_line+2);
 	    if (size>MSize(dbg)) {
-	      "Corrupt Map Entry\r\n";
+	      "Corrupt Map Entry\n";
 	      dbg=NULL;
 	    } else {
 	      if (dbg->min_line<=dbg->max_line) {
@@ -233,7 +233,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 		sizeof(U8)*
 		(indent->max_line-indent->min_line+2);
 	    if (size>MSize(indent)) {
-	      "Corrupt Indent Entry\r\n";
+	      "Corrupt Indent Entry\n";
 	      indent=NULL;
 	    } else {
 	      if (indent->min_line<=indent->max_line) {
@@ -307,7 +307,7 @@ public U0 HashRep(SysHashTable *h=NULL,
       for (j=0;j<32;j++)
 	if (Bt(&k,j))
 	  SPrintF(buf+StrLen(buf),"%Z ",j,"ST_HTT_TYPES");
-      StrCat(buf,"\r\n");
+      StrCat(buf,"\n");
       if (l)
 	LtfPutS(l,buf);
       else
@@ -393,11 +393,11 @@ public I64 HashDepthRep(SysHashTable *tempht=NULL)
 	longest=j;
     }
   }
-  "Histogram\r\n";
+  "Histogram\n";
   for (i=0;i<HDR_MAX;i++)
     if (a[i])
-      "%02d:%d\r\n",i,a[i];
-  "Size:%d Count:%d Longest:%d\r\n",
+      "%02d:%d\n",i,a[i];
+  "Size:%d Count:%d Longest:%d\n",
     tempht->mask+1,cnt,longest;
   return longest;
 }
@@ -460,7 +460,7 @@ public U0 MapFileLoad(U8 *filename)
 	  if (!dbg && cl->bin_data && cl->bin_data->type==LTFBT_DEBUG_LINES) {
 	    if (dbg=cl->bin_data->data) {
 	      if (cl->bin_data->size>MSize(dbg))
-		"Corrupt Map Entry\r\n";
+		"Corrupt Map Entry\n";
 	      else {
 		cl->bin_data->data=NULL;
 		temph->debug=dbg;
@@ -475,7 +475,7 @@ public U0 MapFileLoad(U8 *filename)
 	  if (!indent && cl->bin_data && cl->bin_data->type==LTFBT_INDENTS) {
 	    if (indent=cl->bin_data->data) {
 	      if (cl->bin_data->size>MSize(indent))
-		"Corrupt Indent Entry\r\n";
+		"Corrupt Indent Entry\n";
 	      else {
 		cl->bin_data->data=NULL;
 		temph->indent=indent;

@@ -33,11 +33,11 @@ U0 ASCIIOrgan()
     SPrintFPutChar(i+32);
     SPrintFPutChar(i+64);
     SPrintFPutChar(i+96);
-    CrLf;
+    NewLine;
   }
 
-  "\r\nPress keys to make snds\r\n"
-  "and press $FG,GREEN$<SHIFT-ESC>$FG$ to exit.\r\n";
+  "\nPress keys to make snds\n"
+  "and press $FG,GREEN$<SHIFT-ESC>$FG$ to exit.\n";
   do {
     //We don't want echo or scan codes, so we use NULL and FALSE...
     ch=GetChar(NULL,FALSE);
@@ -46,9 +46,9 @@ U0 ASCIIOrgan()
   Snd(0);
 
 //Note the %d in the string for picture number.
-  CrLf(7);
+  NewLine(7);
   PutSprite(__BIN_1,"$PI+LM+PU,\"Click for better organ\",\"#include \\\"::/LT/Apps/MusicOrgan/Run\\\";\",%d$");
-  CrLf(5);
+  NewLine(5);
 
 }
 

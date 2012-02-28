@@ -24,7 +24,7 @@ U0 DoIt()
 
   LtfInsQueRev(aux2,LtfAux);
 
-  CrLf;
+  NewLine;
 }
 
 U0 UndoIt()

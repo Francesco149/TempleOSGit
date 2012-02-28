@@ -91,7 +91,7 @@ extern U0 PrintF(U8 *fmt,...);
 extern U0 PutS(U8 *st);
 extern U0 PutChar(U64 ch);
 extern U0 PutDefine(U8 *name);
-extern U0 CrLf(I64 cnt=1);
+extern U0 NewLine(I64 cnt=1);
 extern U64 GetChar(U64 *scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE);
 extern BoolI64 IsInDbg();
 extern U64 FlushMsgs(TaskStruct *task=NULL);

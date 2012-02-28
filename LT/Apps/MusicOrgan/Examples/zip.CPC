@@ -45,10 +45,10 @@ U0 Song()
   music_tempo=2.5;
   try {
     task=PopUpViewStr(
-    "[Proverbs,10:19]\r\n"
-    "[Proverbs,15:2]\r\n"
-    "[Proverbs,17:28]\r\n"
-	"[Proverbs,29:11]\r\n"
+    "[Proverbs,10:19]\n"
+    "[Proverbs,15:2]\n"
+    "[Proverbs,17:28]\n"
+	"[Proverbs,29:11]\n"
 	);
     TaskWaitIdle(task);
     task->win_right=Fs->win_right;
@@ -60,13 +60,13 @@ U0 Song()
     while (!ScanKey) {
       t0=tM;
       Play("3qGE2eG3BqGetDBDeDE2qGetG3BF",
-	  "Wise \0men \0use \0few \0words.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "Wise \0men \0use \0few \0words.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qGE2eG3BqGetDBDeDE2qGetG3BF",
-	  "Wise \0men \0use \0few \0words.\r\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	  "Wise \0men \0use \0few \0words.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("eEAsFEFEqFAetDBEAA2G3qCA",
-	  "Fools \0 \0kinda \0 \0 \0 \0 \0 \0talk \0 \0 \0all \0day \0long.\r\n\0 \0 \0");
+	  "Fools \0 \0kinda \0 \0 \0 \0 \0 \0talk \0 \0 \0all \0day \0long.\n\0 \0 \0");
       Play("eEAsFEFEqFAetDBEAA2G3qCA",
-	  "Fools \0 \0kinda \0 \0 \0 \0 \0 \0talk \0 \0 \0all \0day \0long.\r\n\0 \0 \0");
+	  "Fools \0 \0kinda \0 \0 \0 \0 \0 \0talk \0 \0 \0all \0day \0long.\n\0 \0 \0");
     }
   } catch
     CatchAll;

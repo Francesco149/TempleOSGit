@@ -1,13 +1,13 @@
 /*
-A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf document structure that remains active even when you 
-change Fs->update_win.  To prevent links in the [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf from being activated when 
+A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1306] Ltf document structure that remains active even when you 
+change Fs->update_win.  To prevent links in the [C:/LT/OSMain/Adam1a.HPZ,1306] Ltf from being activated when 
 the user clicks in the window, do one of three things:
   
-  A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1703] LtfBottom() followed by [C:/LT/Adam/Ltf/LtfRecalc.APZ,1737] LtfClear() to clear the [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf so it has no active 
+  A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1703] LtfBottom() followed by [C:/LT/Adam/Ltf/LtfRecalc.APZ,1737] LtfClear() to clear the [C:/LT/OSMain/Adam1a.HPZ,1306] Ltf so it has no active 
   widgets.
   
   B) Disable window manager button click checking with Fs->win_inhibit set to 
-  mask [C:/LT/OSMain/Adam1a.HPZ,2946] WIF_IP_L and [C:/LT/OSMain/Adam1a.HPZ,2947] WIF_IP_R.  Only winmgr operations are inhibited -- 
+  mask [C:/LT/OSMain/Adam1a.HPZ,2950] WIF_IP_L and [C:/LT/OSMain/Adam1a.HPZ,2951] WIF_IP_R.  Only winmgr operations are inhibited -- 
   messages are still generated.
   
   C) Enter this code:
@@ -32,7 +32,7 @@ U0 VisibleWithNoFix()
   PlaceLinks;
   PopUpOk("Click widget to see problem.");
   PressAKey;
-  "Made keystroke and we lost our place, right?\r\n";
+  "Made keystroke and we lost our place, right?\n";
   LtfBottom;
   PressAKey;
 }
@@ -45,7 +45,7 @@ U0 InvisibleWithNoFix()
   Fs->update_win=NULL;
   PressAKey;
   SettingsPop;
-  "Made keystroke and we lost our place, right?\r\n";
+  "Made keystroke and we lost our place, right?\n";
   LtfBottom;
   PressAKey;
 }
@@ -60,7 +60,7 @@ U0 InvisibleWithClear()
   LtfClear;
   PressAKey;
   SettingsPop;
-  "Didn't lose our place, but screen was cleared right?\r\n";
+  "Didn't lose our place, but screen was cleared right?\n";
   LtfBottom;
   PressAKey;
 }
@@ -78,7 +78,7 @@ U0 InvisibleWithInhibit()
 
   PressAKey;
   SettingsPop;
-  "Didn't lose our place, right?\r\n";
+  "Didn't lose our place, right?\n";
   LtfBottom;
   PressAKey;
 }
@@ -94,7 +94,7 @@ U0 InvisibleWithRemQue()
   PressAKey;
   LtfInsQue(l,Fs->last_ltf);
   SettingsPop;
-  "Didn't lose our place, right?\r\n";
+  "Didn't lose our place, right?\n";
 }
 
 

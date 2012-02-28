@@ -330,7 +330,7 @@ LTextern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/LT/Compiler/Lex.CPZ,755] Lex() can use them with [C:/LT/OSMain/Adam1a.HPZ,1788] Token Codes.
+[C:/LT/Compiler/Lex.CPZ,755] Lex() can use them with [C:/LT/OSMain/Adam1a.HPZ,1792] Token Codes.
 */
 U32 alpha_bitmap[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -467,7 +467,7 @@ U0 UndefinedDefine(U8 *name)
 {
   ST_ERR_ST "Undefined Define: '";
   "" name;
-  "'.\r\n";
+  "'.\n";
   throw(EXCEPT_UNDEF_DEFINE,name);
 }
 
@@ -523,12 +523,10 @@ U0 GetOutOfDollar()
   }
 }
 
-U0 CrLf(I64 cnt=1)
+U0 NewLine(I64 cnt=1)
 {
-  while (cnt-->0) {
-    '' CH_CR;
-    '' CH_LINE_FEED;
-  }
+  while (cnt-->0)
+    '' CH_NEW_LINE;
 }
 
 U0 Spaces(I64 cnt=1)
@@ -543,7 +541,7 @@ U0 PutErr(U8 *st=NULL)
   PutDefine("ST_ERR");
   if (st) {
     "" st;
-    CrLf;
+    NewLine;
   }
 }
 
@@ -553,7 +551,7 @@ U0 PutWarn(U8 *st=NULL)
   PutDefine("ST_WARN");
   if (st) {
     "" st;
-    CrLf;
+    NewLine;
   }
 }
 
@@ -576,10 +574,10 @@ BoolI64 YorN()
   while (TRUE) {
     ch=ToUpper(GetChar(NULL,FALSE));
     if (ch=='Y') {
-      "$FU$YES$FG$\r\n";
+      "$FU$YES$FG$\n";
       return TRUE;
     } else if (ch=='N') {
-      "$FU$NO$FG$\r\n";
+      "$FU$NO$FG$\n";
       return FALSE;
     }
   }
@@ -766,7 +764,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/LT/OSMain/Adam1a.HPZ,3599] flags
+{//See [C:/LT/OSMain/Adam1a.HPZ,3603] flags
   U8 *src=_src,*dst=_src;
   U64 ch;
 
@@ -1414,47 +1412,48 @@ U8 *MSPrintFQ(U8 *ptr,BoolI8 dollar_flag)
   addr_buf=&buf;
   dst=buf;
   addr_dst=&dst;
-  while (ch=*ptr++) {
-    switch (ch) {
-      case '$':
-	if (dollar_flag) {
+  if (ptr)
+    while (ch=*ptr++) {
+      switch (ch) {
+	case '$':
+	  if (dollar_flag) {
+	    SPrintFPutChar(addr_dst,'\\',addr_buf);
+	    SPrintFPutChar(addr_dst,'$'>>6&7+'0',addr_buf);
+	    SPrintFPutChar(addr_dst,'$'>>3&7+'0',addr_buf);
+	    SPrintFPutChar(addr_dst,'$'&7+'0',addr_buf);
+	  } else {
+	    SPrintFPutChar(addr_dst,ch,addr_buf);
+	    SPrintFPutChar(addr_dst,ch,addr_buf);
+	  }
+	  break;
+	case CH_NEW_LINE:
 	  SPrintFPutChar(addr_dst,'\\',addr_buf);
-	  SPrintFPutChar(addr_dst,'$'>>6&7+'0',addr_buf);
-	  SPrintFPutChar(addr_dst,'$'>>3&7+'0',addr_buf);
-	  SPrintFPutChar(addr_dst,'$'&7+'0',addr_buf);
-	} else {
-	  SPrintFPutChar(addr_dst,ch,addr_buf);
-	  SPrintFPutChar(addr_dst,ch,addr_buf);
-	}
-	break;
-      case CH_LINE_FEED:
-	SPrintFPutChar(addr_dst,'\\',addr_buf);
-	SPrintFPutChar(addr_dst,'n',addr_buf);
-	break;
-      case CH_CR:
-	SPrintFPutChar(addr_dst,'\\',addr_buf);
-	SPrintFPutChar(addr_dst,'r',addr_buf);
-	break;
-      case CH_TAB:
-	SPrintFPutChar(addr_dst,'\\',addr_buf);
-	SPrintFPutChar(addr_dst,'t',addr_buf);
-	break;
-      case '"':
-      case '\\':
-	SPrintFPutChar(addr_dst,'\\',addr_buf);
-	SPrintFPutChar(addr_dst,ch,addr_buf);
-	break;
-      default:
-	if (CH_SHIFT_SPACE<=ch<=0x7F) {
-	  SPrintFPutChar(addr_dst,ch,addr_buf);
-	} else {
+	  SPrintFPutChar(addr_dst,'n',addr_buf);
+	  break;
+	case CH_CR:
 	  SPrintFPutChar(addr_dst,'\\',addr_buf);
-	  SPrintFPutChar(addr_dst,ch>>6&7+'0',addr_buf);
-	  SPrintFPutChar(addr_dst,ch>>3&7+'0',addr_buf);
-	  SPrintFPutChar(addr_dst,ch&7+'0',addr_buf);
-	}
+	  SPrintFPutChar(addr_dst,'r',addr_buf);
+	  break;
+	case CH_TAB:
+	  SPrintFPutChar(addr_dst,'\\',addr_buf);
+	  SPrintFPutChar(addr_dst,'t',addr_buf);
+	  break;
+	case '"':
+	case '\\':
+	  SPrintFPutChar(addr_dst,'\\',addr_buf);
+	  SPrintFPutChar(addr_dst,ch,addr_buf);
+	  break;
+	default:
+	  if (CH_SHIFT_SPACE<=ch<=0x7F) {
+	    SPrintFPutChar(addr_dst,ch,addr_buf);
+	  } else {
+	    SPrintFPutChar(addr_dst,'\\',addr_buf);
+	    SPrintFPutChar(addr_dst,ch>>6&7+'0',addr_buf);
+	    SPrintFPutChar(addr_dst,ch>>3&7+'0',addr_buf);
+	    SPrintFPutChar(addr_dst,ch&7+'0',addr_buf);
+	  }
+      }
     }
-  }
   SPrintFPutChar(addr_dst,0,addr_buf);
   return buf;
 }
@@ -1468,98 +1467,99 @@ U8 *MSPrintFq(U8 *ptr)
   addr_buf=&buf;
   dst=buf;
   addr_dst=&dst;
-  while (ch=*ptr++) {
-    ch1=*ptr;
-    if (ch=='\\')
-      switch (ch1) {
-	case 'n':
-	  SPrintFPutChar(addr_dst,CH_LINE_FEED,addr_buf);
-	  ptr++;
-	  break;
-	case 'r':
-	  SPrintFPutChar(addr_dst,CH_CR,addr_buf);
-	  ptr++;
-	  break;
-	case '"':
-	  SPrintFPutChar(addr_dst,'"',addr_buf);
-	  ptr++;
-	  break;
-	case '\'':
-	  SPrintFPutChar(addr_dst,'\'',addr_buf);
-	  ptr++;
-	  break;
-	case '\`':
-	  SPrintFPutChar(addr_dst,'\`',addr_buf);
-	  ptr++;
-	  break;
-	case '\\':
-	  SPrintFPutChar(addr_dst,'\\',addr_buf);
-	  ptr++;
-	  break;
-	case 't':
-	  SPrintFPutChar(addr_dst,CH_TAB,addr_buf);
-	  ptr++;
-	  break;
-	case 'x':
-	case 'X':
-	  i=0;
-	  ptr++;
-	  while (TRUE) {
-	    ch1=ToUpper(*ptr++);
-	    if (Bt(hex_numeric_bitmap,ch1)) {
-	      if (ch1<='9')
-		i=i<<4+ch1-'0';
+  if (ptr)
+    while (ch=*ptr++) {
+      ch1=*ptr;
+      if (ch=='\\')
+	switch (ch1) {
+	  case 'n':
+	    SPrintFPutChar(addr_dst,CH_NEW_LINE,addr_buf);
+	    ptr++;
+	    break;
+	  case 'r':
+	    SPrintFPutChar(addr_dst,CH_CR,addr_buf);
+	    ptr++;
+	    break;
+	  case '"':
+	    SPrintFPutChar(addr_dst,'"',addr_buf);
+	    ptr++;
+	    break;
+	  case '\'':
+	    SPrintFPutChar(addr_dst,'\'',addr_buf);
+	    ptr++;
+	    break;
+	  case '\`':
+	    SPrintFPutChar(addr_dst,'\`',addr_buf);
+	    ptr++;
+	    break;
+	  case '\\':
+	    SPrintFPutChar(addr_dst,'\\',addr_buf);
+	    ptr++;
+	    break;
+	  case 't':
+	    SPrintFPutChar(addr_dst,CH_TAB,addr_buf);
+	    ptr++;
+	    break;
+	  case 'x':
+	  case 'X':
+	    i=0;
+	    ptr++;
+	    while (TRUE) {
+	      ch1=ToUpper(*ptr++);
+	      if (Bt(hex_numeric_bitmap,ch1)) {
+		if (ch1<='9')
+		  i=i<<4+ch1-'0';
+		else
+		  i=i<<4+ch1-'A'+10;
+	      } else
+		break;
+	    }
+	    ptr--;
+	    SPrintFPutChar(addr_dst,i,addr_buf);
+	    break;
+	  case 'b':
+	  case 'B':
+	    i=0;
+	    ptr++;
+	    while (TRUE) {
+	      ch1=*ptr++;
+	      if ('0'<=ch1<='1')
+		i=i<<1+ch1-'0';
 	      else
-		i=i<<4+ch1-'A'+10;
-	    } else
-	      break;
-	  }
-	  ptr--;
-	  SPrintFPutChar(addr_dst,i,addr_buf);
-	  break;
-	case 'b':
-	case 'B':
-	  i=0;
-	  ptr++;
-	  while (TRUE) {
-	    ch1=*ptr++;
-	    if ('0'<=ch1<='1')
-	      i=i<<1+ch1-'0';
-	    else
-	      break;
-	  }
-	  ptr--;
-	  SPrintFPutChar(addr_dst,i,addr_buf);
-	  break;
-	case 'o':
-	case 'O':
-	  i=0;
-	  ptr++;
-	  goto sq_octal;
-	case '0'...'7':
-	  i=ch1-'0';
-	  ptr++;
+		break;
+	    }
+	    ptr--;
+	    SPrintFPutChar(addr_dst,i,addr_buf);
+	    break;
+	  case 'o':
+	  case 'O':
+	    i=0;
+	    ptr++;
+	    goto sq_octal;
+	  case '0'...'7':
+	    i=ch1-'0';
+	    ptr++;
 sq_octal:
-	  while (TRUE) {
-	    ch1=*ptr++;
-	    if ('0'<=ch1<='7')
-	      i=i<<3+ch1-'0';
-	    else
-	      break;
-	  }
-	  ptr--;
-	  SPrintFPutChar(addr_dst,i,addr_buf);
-	  break;
-	default:
-	  SPrintFPutChar(addr_dst,ch,addr_buf);
+	    while (TRUE) {
+	      ch1=*ptr++;
+	      if ('0'<=ch1<='7')
+		i=i<<3+ch1-'0';
+	      else
+		break;
+	    }
+	    ptr--;
+	    SPrintFPutChar(addr_dst,i,addr_buf);
+	    break;
+	  default:
+	    SPrintFPutChar(addr_dst,ch,addr_buf);
+	}
+      else if (ch=='$' && ch1=='$') {
+	SPrintFPutChar(addr_dst,ch,addr_buf);
+	ptr++;
+      } else {
+	SPrintFPutChar(addr_dst,ch,addr_buf);
       }
-    else if (ch=='$' && ch1=='$') {
-      SPrintFPutChar(addr_dst,ch,addr_buf);
-      ptr++;
-    } else {
-      SPrintFPutChar(addr_dst,ch,addr_buf);
     }
-  }
   SPrintFPutChar(addr_dst,0,addr_buf);
   return buf;
 }

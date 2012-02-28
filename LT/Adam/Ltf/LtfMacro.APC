@@ -164,17 +164,17 @@ I64 PopUpExitRecordPlayStopInsert()
   ll=LtfPutS(l,"$DA-P,127,\"Name:%s\"$");
   ll->data=captured_macro_name;
   LtfDataFmt(ll);
-  ll=LtfPutS(l,"\r\n$DA,32,\"Repeat N:%d\"$");
+  ll=LtfPutS(l,"\n$DA,32,\"Repeat N:%d\"$");
   ll->data=&sys_macro_repeat_n;
   LtfDataFmt(ll);
-  LtfPutS(l,"\r\n"
+  LtfPutS(l,"\n"
 	"$CM+LX,1,3$$BT,\"RECORD\",SM_RECORD$"
 	"$CM+LX,17,0$$BT,\"INSERT\",SM_INSERT$"
 	"$CM+LX,1,3$$BT,\"PLAY\",SM_PLAY$"
 	"$CM+LX,17,0$$BT,\"REPEAT N\",SM_REPEAT_N$"
 	"$CM+LX,1,3$$BT,\"STOP\",SM_STOP$"
 	"$CM+LX,17,0$$BT,\"CANCEL\",SM_CANCEL$"
-	"\r\n\r\n\r\n$FG,GREEN$SHIFT-F2$FG$ will play macro.\r\n");
+	"\n\n\n$FG,GREEN$SHIFT-F2$FG$ will play macro.\n");
   l->flags|=LTFF_MIN_SIZE | LTFF_FORM;
   SPrintF(buf,"LtfMenuDo(0x%X);",l);
   sys_macro_util_task=Spawn(&ServantUserCmdLine,NULL,"Macro Popup",Fs);

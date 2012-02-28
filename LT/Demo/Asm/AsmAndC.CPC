@@ -90,4 +90,4 @@ USE64	//Defaults to 64, but this is a good habit.
   return i;
 }
 
-"Beeps:%d\r\n",AsmAndC;
+"Beeps:%d\n",AsmAndC;

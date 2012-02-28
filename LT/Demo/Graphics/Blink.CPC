@@ -26,8 +26,8 @@ U0 BlinkDemo()
   Fs->draw_it=&DrawIt;
   LtfBottom;
   LtfClear;
-  CrLf(10);
-  "Pause and unpause task with $FG,GREEN$<CTRL-ALT-P>$FG$\r\n";
+  NewLine(10);
+  "Pause and unpause task with $FG,GREEN$<CTRL-ALT-P>$FG$\n";
   PressAKey;
   SettingsPop;
 }

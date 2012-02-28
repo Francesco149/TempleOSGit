@@ -353,9 +353,9 @@ U0 WarGame()
 
   Init;
   Fs->update_win=&UpdateWin;
-  PopUpOk("Wheel Ctrls Cmd Strength.\r\n"
-	"Attract or repel with\r\n"
-	"left or right button.\r\n");
+  PopUpOk("Wheel Ctrls Cmd Strength.\n"
+	"Attract or repel with\n"
+	"left or right button.\n");
 
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_MENU;
   try {

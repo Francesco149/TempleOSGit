@@ -30,7 +30,7 @@ for (i=0;i<256;i+=4) {
 U8 *tempg=GrDC2Sprite(img1);
 PutSprite(tempg);
 Free(tempg);
-CrLf(9);
+NewLine(9);
 
 GrDCDel(img1);
 GrDCDel(img2);

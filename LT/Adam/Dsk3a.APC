@@ -93,15 +93,15 @@ public U0 PrtDsk(U8 drv_let=0)
   BoolI8 pri=TRUE;
   I64 ext_base,num_prt,pri_cnt=0,
      i,start_offset,offset,remaining;
-"This command does not play well\r\n"
-"with other operating systems.\r\n"
-"You really should use another\r\n"
-"operating system's partitioner.\r\n"
-"If you use this, it may, in fact,\r\n"
-"make your hard drive impossible\r\n"
-"to repartition with other operating\r\n"
-"until you set block zero to zero\r\n"
-"with $LK,\"MasterBootZero\",\"MN:MasterBootZero\"$()\r\n\r\n\r\n"
+"This command does not play well\n"
+"with other operating systems.\n"
+"You really should use another\n"
+"operating system's partitioner.\n"
+"If you use this, it may, in fact,\n"
+"make your hard drive impossible\n"
+"to repartition with other operating\n"
+"until you set block zero to zero\n"
+"with $LK,\"MasterBootZero\",\"MN:MasterBootZero\"$()\n\n\n"
 "Continue";
   if (!YorN) return;
 
@@ -123,7 +123,7 @@ public U0 PrtDsk(U8 drv_let=0)
   while (FloorU64(remaining,ROUND_PRT_TO)>=ROUND_PRT_TO) {
     temppp=MAlloc(sizeof(PlannedPrt));
     do {
-      "$FG,RED$Partition %C$FG$\r\n",num_prt;
+      "$FG,RED$Partition %C$FG$\n",num_prt;
       temppp->pri=FALSE;
       if (pri) {
 	"Primary Partition";
@@ -135,7 +135,7 @@ public U0 PrtDsk(U8 drv_let=0)
 	} else
 	  pri=FALSE;
       }
-      "Blocks Remaining:%d (0x%X)\r\n",
+      "Blocks Remaining:%d (0x%X)\n",
 	remaining-PRT_HEADER,remaining-PRT_HEADER;
       temppp->size=CeilU64(PmtI64("Size in Blocks  :",
 	remaining-PRT_HEADER)+PRT_HEADER,ROUND_PRT_TO);
@@ -145,11 +145,11 @@ public U0 PrtDsk(U8 drv_let=0)
     num_prt++;
   }
 
-  "\r\n\r\n!!! Repartition Drive !!!\r\n\r\n";
+  "\n\n!!! Repartition Drive !!!\n\n";
   temppp=root.next;
   num_prt=bdev->drv_let_base;
   while (temppp!=&root) {
-    "Drive %C:%08X %s\r\n",num_prt,temppp->size,
+    "Drive %C:%08X %s\n",num_prt,temppp->size,
       temppp->pri ? "Primary":"Logical";
     temppp=temppp->next;
     num_prt++;
@@ -477,7 +477,7 @@ public U64 NonLTScan(I64 drv_let,U32 signature)
     }
     if (result) {
       start=result;
-      "\r\nStart  :0x%X Size:0x%X\r\n",result,size;
+      "\nStart  :0x%X Size:0x%X\n",result,size;
       to_go=size;
       blk=result;
       while (to_go && result) {
@@ -510,12 +510,12 @@ public U64 NonLTScan(I64 drv_let,U32 signature)
 	blk+=n;
       }
     }
-    "Start: 0x%X\r\n",result;
+    "Start: 0x%X\n",result;
     if (result) {
-      "\r\nSuccess\r\n";
+      "\nSuccess\n";
       proceed=TRUE;
     } else {
-      "\r\nFailed, but found 0x%X contiguous.\r\n",contiguous;
+      "\nFailed, but found 0x%X contiguous.\n",contiguous;
       if (contiguous) {
 	"Proceed Anyway ";
 	proceed=YorN;
@@ -530,7 +530,7 @@ public U64 NonLTScan(I64 drv_let,U32 signature)
   if (proceed) {
     "New Drive Letter:";
     new_drv_let=ToUpper(GetChar);
-    CrLf;
+    NewLine;
     bdev=&local_blkdevs[num_blkdevs++];
     bdev->drv_let_base=new_drv_let;
     bdev->blk_size=BLK_SIZE;
@@ -543,7 +543,7 @@ public U64 NonLTScan(I64 drv_let,U32 signature)
     if (!BlkDevAdd(bdev,FALSE))
       PutDefine("ST_FAILED");
     Drv(new_drv_let);
-    "File Blk: 0x%X\r\n",start;
+    "File Blk: 0x%X\n",start;
     result=start;
   } else
     result=0;

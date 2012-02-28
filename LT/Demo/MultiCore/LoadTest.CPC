@@ -41,7 +41,7 @@ U0 Job3(U64 dummy=0)
 U0 Main()
 {
   load_test_done=0;
-  "Running MultiCore Test...\r\n";
+  "Running MultiCore Test...\n";
   MPSpawn(&Job1);
   MPSpawn(&Job2);
   MPSpawn(&Job1);

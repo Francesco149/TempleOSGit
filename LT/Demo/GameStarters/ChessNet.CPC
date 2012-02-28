@@ -214,9 +214,9 @@ U0 ChessNet()
   WordStat(OFF);
 
   Init;
-  PopUpOk("Step on the link mid points.\r\n"
-	  "Make a computer player or\r\n"
-	  "modify the rules.\r\n");
+  PopUpOk("Step on the link mid points.\n"
+	  "Make a computer player or\n"
+	  "modify the rules.\n");
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_MENU;
   Fs->update_win=&UpdateWin;
   Fs->text_attr=GREEN<<4;

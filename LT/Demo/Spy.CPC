@@ -7,7 +7,7 @@ U0 SpyStkRep(TaskStruct *task)
   Ltf *l=LtfDblBufStart;
   while (!ScanChar && TaskValidate(task)) {
     StkRep(task);
-    CrLf;
+    NewLine;
     PutDefine("ST_PRESS_A_KEY");
     LtfDblBufSwap;
     WinSync;
@@ -23,7 +23,7 @@ U0 SpyCallerRep(TaskStruct *task)
   Ltf *l=LtfDblBufStart;
   while (!ScanChar && TaskValidate(task)) {
     CallerRep(task->rbp,task);
-    CrLf;
+    NewLine;
     PutDefine("ST_PRESS_A_KEY");
     LtfDblBufSwap;
     WinSync;
@@ -41,14 +41,14 @@ U0 Spy()
   while (TRUE) {
     task=Fs->next_task;
     while (task!=Fs) {
-      "$MA+A+X,\"Task:%08X:%16ts\",\"0x%08X\r\"$\r\n",task,task->task_name,task;
+      "$MA+A+X,\"Task:%08X:%16ts\",\"0x%08X\r\"$\n",task,task->task_name,task;
       task=task->next_task;
     }
-    CrLf;
+    NewLine;
     task=PmtI64("Task Addr: ",0);
     if (TaskValidate(task)) {
-      "\r\n\r\n\t$BT-LE+LM,\"StkRep\",\"1\r\"$\r\n\r\n\r\n"
-      "\r\n\r\n\t$BT-LE+LM,\"CallerRep\",\"2\r\"$\r\n\r\n\r\n";
+      "\n\n\t$BT-LE+LM,\"StkRep\",\"1\r\"$\n\n\n"
+      "\n\n\t$BT-LE+LM,\"CallerRep\",\"2\r\"$\n\n\n";
       i=PmtI64("",0);
       if (i==1)
 	SpyStkRep(task);
@@ -59,7 +59,7 @@ U0 Spy()
     } else
       break;
   }
-  CrLf;
+  NewLine;
 }
 
 Spy;

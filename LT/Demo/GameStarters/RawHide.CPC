@@ -10,7 +10,7 @@
 
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
 
-AcctRegSetDftEntry("LT/RawHide","F64 best_score=9999;\r\n");
+AcctRegSetDftEntry("LT/RawHide","F64 best_score=9999;\n");
 AcctRegExecuteBranch("LT/RawHide");
 
 F64 t0,tf;
@@ -272,7 +272,7 @@ U0 BuddySelect(I64 i)
   I64 b,best_b=i,score,best_score=MAX_I64;
   for (b=0;b<NUM_ANIMALS;b++) {
     if (b!=i && !a[b].dead) {
-      score=128*128+RandU32%(512*512)+
+      score=RandU32%(512*512)+
 	SqrI64(a[b].x.i32[1]-a[i].x.i32[1])+
 	SqrI64(a[b].y.i32[1]-a[i].y.i32[1]);
       if (score<best_score) {
@@ -485,9 +485,9 @@ U0 RawHide()
   I64 msg_code,p1,p2;
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   PopUpOk(
-	"Coral the cattle into an area\r\n"
-	"the size of a screen.\r\n\r\n"
-	"Scroll with {CTRL-Left Grab}.\r\n"
+	"Coral the cattle into an area\n"
+	"the size of a screen.\n\n"
+	"Scroll with {CTRL-Left Grab}.\n"
 	"Center with {CTRL-Right}.");
   MenuPush(
 "File {"
@@ -532,7 +532,7 @@ rh_done:
   MenuPop;
   SettingsPop;
   CleanUp;
-  AcctRegWriteBranch("LT/RawHide","F64 best_score=%5.4f;\r\n",best_score);
+  AcctRegWriteBranch("LT/RawHide","F64 best_score=%5.4f;\n",best_score);
 }
 
 RawHide;

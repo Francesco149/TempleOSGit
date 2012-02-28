@@ -38,9 +38,9 @@ U0 Output(I32 *a,I64 n)
   for (i=0;i<n;i++) {
     "%08X ",a[i];
     if (i&7==3)
-      CrLf;
+      NewLine;
   }
-  CrLf;
+  NewLine;
 }
 
 I64 IntCompare(I32 *i1,I32 *i2)
@@ -102,10 +102,10 @@ U0 CompareSorts(I64 n)
 //    Output(a3,n);
   }
   CleanUp;
-  "Array N:%08X  Timings Sampled:%d\r\n",n,SAMPLES;
-  "Single Core Average Time:%9.5fs\r\n",t1/SAMPLES;
-  "Dual Core Average Time  :%9.5fs\r\n",t2/SAMPLES;
-  CrLf;
+  "Array N:%08X  Timings Sampled:%d\n",n,SAMPLES;
+  "Single Core Average Time:%9.5fs\n",t1/SAMPLES;
+  "Dual Core Average Time  :%9.5fs\n",t2/SAMPLES;
+  NewLine;
 }
 
 CompareSorts(0x4000);

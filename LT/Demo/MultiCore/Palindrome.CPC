@@ -31,7 +31,7 @@ U0 PDAnswer(U8 *a,I64 len)
   LtfPrintF(l,"CPU:%d Len:%2d ",Gs->num,len);
   while (len--)
     LtfPrintF(l,"%C",*a++); //%C is toupper char
-  LtfPutS(l,"\r\n");
+  LtfPutS(l,"\n");
   LtfUnlock(l);
 }
 
@@ -92,7 +92,7 @@ U0 Palindrome(U8 *filename)
     Yield;
 
   Free(buf);
-  "Time:%9.5f\r\n",tNP-t0;
+  "Time:%9.5f\n",tNP-t0;
 }
 
 Palindrome(Define("ST_BIBLE_FILE"));

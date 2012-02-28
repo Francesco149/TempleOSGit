@@ -99,7 +99,7 @@ U0 UnasmHashLoad()
 U0 DumpUnasmIns(InstructionEntry *tempi)
 {
   OpcodeHashEntry *tempo=tempi><(U8 *)-tempi->ins_entry_num*sizeof(InstructionEntry)-offset(OpcodeHashEntry.ins);
-  "%10s:%02d,%02d SV:%02d\r\n",tempo->str,tempi->arg1,tempi->arg2,tempi->slash_val;
+  "%10s:%02d,%02d SV:%02d\n",tempo->str,tempi->arg1,tempi->arg2,tempi->slash_val;
 }
 
 U0 DumpUnasmTable()
@@ -143,7 +143,7 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
   a2_st=arg2_st;
 
   if (!IsRaw && PutSrcLink(ip,1,buf))
-    StrCat(buf,"\r\n");
+    StrCat(buf,"\n");
   else
     *buf=0;
 
@@ -836,10 +836,10 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
     bin_data_area2[(i-6)<<1]=CH_SPACE;
     bin_data_area2[(i-6)<<1+1]=CH_SPACE;
   }
-  StrCat(buf,"\r\n");
+  StrCat(buf,"\n");
   if (ip-(*_ip)><(I64)>6) {
     StrCat(buf,buf3);
-    StrCat(buf,"\r\n");
+    StrCat(buf,"\n");
   }
   *_ip=ip;
 }

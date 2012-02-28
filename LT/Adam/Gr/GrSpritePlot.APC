@@ -1,6 +1,6 @@
 #help_index "Graphics/GrSprite"
 /*
-[C:/LT/Adam/Gr/Gr.APZ,54] GrSprites are stored as a sequence of var
+[C:/LT/Adam/Gr/Gr.APZ,55] GrSprites are stored as a sequence of var
 length operations with a 1-byte type leading
 each operation.  The types available are listed
 here, [C:/LT/Adam/Gr/Gr.APZ,6] GRST_POINT.  They are stored, one after another,
@@ -12,7 +12,7 @@ unions are used.  It's kind-of a mess using a union.
 [C:/LT/Adam/Gr/GrSpriteNew.APZ,123] GrSpriteSize() will return the size of a single
 operation, while [C:/LT/Adam/Gr/GrSpriteNew.APZ,123] GrSpriteSize() with an 's' will
 return the size of an entire list.  Look at
-[C:/LT/Adam/Gr/GrSpriteNew.APZ,4] gr_sprite_base_size.
+[C:/LT/Adam/Gr/GrSpriteNew.APZ,5] gr_sprite_base_size.
 
 To get familiar, type <CTRL-R> on picture in
 a document and select "Display as Text".  It

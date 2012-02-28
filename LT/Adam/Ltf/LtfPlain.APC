@@ -28,10 +28,10 @@ U64 ltf_dft_flags[LTFT_NUM_TYPES]={
 //LTFT_TEXT
 0,
 	
-//LTFT_CR
+//LTFT_NEW_LINE
 0,
 
-//LTFT_SOFT_CR
+//LTFT_SOFT_NEW_LINE
 0,
 
 //LTFT_CURSOR
@@ -212,10 +212,10 @@ U64 ltf_dft_type_flags[LTFT_NUM_TYPES]={
 //LTFT_TEXT
 0,
 
-//LTFT_CR
+//LTFT_NEW_LINE
 0,
 
-//LTFT_SOFT_CR
+//LTFT_SOFT_NEW_LINE
 0,
 
 //LTFT_CURSOR
@@ -834,7 +834,7 @@ public U0 LtfInsert(Ltf *l,LtfEntry *ll)
     l->cur_entry=cl;
   }
   l->cur_data_col=l->cur_entry->min_col;
-  LtfRemSoftCRs(l,l->cur_entry);
+  LtfRemSoftNewLines(l,l->cur_entry);
   if (unlock)
     LtfUnlock(l);
 }
@@ -979,12 +979,12 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	  break;
 	default:
 	  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
-	  ll->type=LTFT_CR | l->settings_root.dft_text_attr << 8;
+	  ll->type=LTFT_NEW_LINE | l->settings_root.dft_text_attr << 8;
 	  LtfInsert(l,ll);
 	  if (ch==CH_CR)
 	    while (*ptr==CH_CR)
 	      ptr++;
-	  if (*ptr==CH_LINE_FEED)
+	  if (*ptr==CH_NEW_LINE)
 	    ptr++;
 	  while (*ptr==CH_CR)
 	    ptr++;

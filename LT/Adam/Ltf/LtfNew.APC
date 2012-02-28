@@ -430,7 +430,7 @@ public U0 LtfRst(Ltf *l,BoolI8 is_old)
       b=b1;
     }
   }
-  //Check [C:/LT/Adam/Ltf/LtfFile.APZ,194] LtfInsertLtf
+  //Check [C:/LT/Adam/Ltf/LtfFile.APZ,198] LtfInsertLtf
   l->flags&=LTFF_BREAK_UNLOCKED;
   l->root.next=l->root.last=l;
   l->bin_root.next=l->bin_root.last=&l->bin_root;
@@ -637,7 +637,7 @@ U0 LtfDataGet(LtfEntry *cl)
   }
 }
 
-U0 LtfRemSoftCRs(Ltf *l=NULL,LtfEntry *cl=NULL)
+U0 LtfRemSoftNewLines(Ltf *l=NULL,LtfEntry *cl=NULL)
 {
   LtfEntry *cl2,*saved_cl=cl;
   BoolI8 unlock;
@@ -649,13 +649,13 @@ U0 LtfRemSoftCRs(Ltf *l=NULL,LtfEntry *cl=NULL)
   if (!cl) cl=l->root.next;
   while (cl!=l) {
     cl2=cl->next;
-    if (cl->type_u8==LTFT_SOFT_CR) {
+    if (cl->type_u8==LTFT_SOFT_NEW_LINE) {
       if (l->cur_entry==cl) {
 	l->cur_entry=cl2;
 	l->cur_data_col=l->cur_entry->min_col;
       }
       LtfEntryDel(l,cl);
-    } else if (saved_cl && cl->type_u8==LTFT_CR)
+    } else if (saved_cl && cl->type_u8==LTFT_NEW_LINE)
       break;
     cl=cl2;
   }
@@ -665,12 +665,14 @@ U0 LtfRemSoftCRs(Ltf *l=NULL,LtfEntry *cl=NULL)
 
 #help_index "Ltf/Cmd Line (Typically);Cmd Line (Typically)"
 
-public U0 LtfMax(U64 i=MAX_I32)
+public I64 LtfMax(I64 i=MAX_I32)
 //Adjusts the size of the Ltf buf.
 //Normally, the cmd line deletes
 //entries after a while.
 {
+  I64 result=LtfCur->max_entries;
   LtfCur->max_entries=i;
+  return result;
 }
 
 #help_index "Ltf"

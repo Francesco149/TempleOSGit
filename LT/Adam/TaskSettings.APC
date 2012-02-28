@@ -7,7 +7,7 @@ public TaskSettings *SettingsPush(TaskStruct *task=NULL,U64 flags=0)
 
   //See [::/LT/Demo/Ltf/Quirk1.CPZ] ::/LT/Demo/Ltf/Quirk1.CPZ for
   //an issue you will surely have to
-  //addr relating to the [C:/LT/OSMain/Adam1a.HPZ,1302] Ltf under
+  //addr relating to the [C:/LT/OSMain/Adam1a.HPZ,1306] Ltf under
   //the graphics you display.
   TaskSettings *tempse;
   Ltf *l;

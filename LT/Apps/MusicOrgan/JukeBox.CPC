@@ -78,12 +78,12 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
   tempm1=tempm;
   LtfPutS(l,
   "Key: $FG,GREEN$Graphics $FG,BLUE$Words $FG,RED$No Nothing "
-  "$FG,BLACK$Incomplete $FG,CYAN$Special$FG$\r\n\r\n"
-  "$FG,GREEN$<DELETE>$FG$ to delete a song.\r\n"
-      "Press a number to rate a song.\r\n");
+  "$FG,BLACK$Incomplete $FG,CYAN$Special$FG$\n\n"
+  "$FG,GREEN$<DELETE>$FG$ to delete a song.\n"
+      "Press a number to rate a song.\n");
   while (tempm1) {
     if (!(i++%5))
-      LtfPutS(l,"\r\n");
+      LtfPutS(l,"\n");
     if (FileOcc("Play(",tempm1->full_name,"")) {
       st=StrNew(tempm1->name);
       FileExtRem(st);
@@ -109,7 +109,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
 	    s->cur_entry=ll->next;
 	    s->cur_data_col=0;
 	    LtfEntryDel(s,ll);
-	    LtfPutS(s,"//0 has words\r\n");
+	    LtfPutS(s,"//0 has words\n");
 	    LtfWrite(s);
 	  }
 	}
@@ -121,7 +121,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
     }
     tempm1=tempm1->next;
   }
-  LtfPrintF(l,"\r\n$FM,CYAN$$MU-UL,\"DONE\",%d$\r\n",LTFM_CANCEL);
+  LtfPrintF(l,"\n$FM,CYAN$$MU-UL,\"DONE\",%d$\n",LTFM_CANCEL);
   while (TRUE) {
     if (filename)
       tempm1=PopUpMenu(l,DOF_INTERCEPT_TASK_END);

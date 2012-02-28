@@ -78,13 +78,25 @@ U0 SysGlblsInit()
 
 U0 SysGrInit()
 {
-//See [D:/LT/OSMain/OSStartUp.CPZ,SYS_GR_MODE:2] SYS_GR_MODE
+//See [D:/LT/OSMain/OSStartUp.CPZ,SYS_BIOS_GR_MODE:2] SYS_BIOS_GR_MODE
 //See [::/LT/Adam/Gr/GrCfg.APZ] ::/LT/Adam/Gr/GrCfg.APZ
   gr_font=sys_font_8x8;
-  if (gr_mode==0x12) {
+  if (bios_gr_mode==0x12 || bios_gr_mode==0x6A) {
     text_mode=FALSE;
-    gr_width =640;
-    gr_height=480;
+
+/*
+Mode must be multiple of 32 wide
+[C:/LT/Adam/Gr/GrAsm.APZ,594] GrUpdateLine32().
+[C:/LT/Adam/Gr/GrBitMap.APZ,761] GrDCBlotWithMask().
+*/
+
+    if (bios_gr_mode==0x6A) {
+      gr_width =800;
+      gr_height=600;
+    } else {
+      gr_width =640;
+      gr_height=480;
+    }
     text_cols=gr_width/FONT_WIDTH;
     text_rows=gr_height/FONT_HEIGHT;
     OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
@@ -226,7 +238,7 @@ U0 OSMain()
   IntsInit;
   IntsInit; //Maybe we had slave IRQ pending, so do it again
 
-  "Enable IRQ's\r\n";
+  "Enable IRQ's\n";
   SetFlags(SYS_NORMAL_RFLAGS);
   BusyWait(2000);
   IDTInitComplete;
@@ -254,9 +266,9 @@ U0 OSMain()
   else
     Spawn(&MouseDriverInstall);
 
-  "BlkDevsInitAll\r\n";
+  "BlkDevsInitAll\n";
   BlkDevsInitAll;
-  "BlkDevsInitAll Done\r\n";
+  "BlkDevsInitAll Done\n";
 #exe {
   if (osmain_cfg->cdrom_ports_pmt)
     StreamPutS("if (boot_drv_pmt) PutDefine(\"ST_CDROM_PORTS_PMT\");");
@@ -265,7 +277,7 @@ U0 OSMain()
   HomeDirRst;
   LBts(&sys_run_level,RLf_DSK);
 
-  "Loading Compiler\r\n";
+  "Loading Compiler\n";
   Cd("/LT/Compiler");
   Load("Compiler",LDF_SILENT);
 
@@ -273,7 +285,7 @@ U0 OSMain()
   InDbg(OFF);
   LBts(&sys_run_level,RLf_COMPILER);
 
-  "Adam Start-Up Scripts...\r\n";
+  "Adam Start-Up Scripts...\n";
   if (!AdamStartUpScripts)
     Dbg("Adam Start-Up Error");
 

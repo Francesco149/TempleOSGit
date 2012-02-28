@@ -238,12 +238,12 @@ U0 DirLT(U8 *files_find_mask,U64 fuf_flags,BoolI8 full)
       esize=Bsr(esize)/4+1;
       c=Bsr(c)/4+1;
 
-      "$MA+A,\"Directory \",\"PopUpCd;Dir;\r\"$ of %s\r\n",st;
+      "$MA+A,\"Directory \",\"PopUpCd;Dir;\r\"$ of %s\n",st;
       if (full)
-	"__DATE__ __TIME__ %*ts %*ts %*ts\r\n",
+	"__DATE__ __TIME__ %*ts %*ts %*ts\n",
 	csize,"SIZE",esize,"UNCMPSIZE",c,"CLUSTER";
       else
-	"DATE_ TIME_ %*ts\r\n",csize,"SIZE";
+	"DATE_ TIME_ %*ts\n",csize,"SIZE";
       while (tempm1) {
 	tempm2=tempm1->next;
 	if (full)
@@ -258,7 +258,7 @@ U0 DirLT(U8 *files_find_mask,U64 fuf_flags,BoolI8 full)
 	else
 	  PutFileLink(tempm1->name);
 
-	CrLf;
+	NewLine;
 	LTDirEntryDel(tempm1);
 	tempm1=tempm2;
       }

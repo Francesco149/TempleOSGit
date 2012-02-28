@@ -51,7 +51,7 @@ public isn't interested in realism.
 */
 
 // ********************************** Glbls
-AcctRegSetDftEntry("LT/XCaliber","I64 best_score=0;\r\n");
+AcctRegSetDftEntry("LT/XCaliber","I64 best_score=0;\n");
 AcctRegExecuteBranch("LT/XCaliber");
 
 class MyMass:MassStruct
@@ -1166,6 +1166,6 @@ U0 XCaliber()
   SettingsPop;
   CtrlPanelDel(cp);
   MenuPop;
-  AcctRegWriteBranch("LT/XCaliber","I64 best_score=%d;\r\n",best_score);
+  AcctRegWriteBranch("LT/XCaliber","I64 best_score=%d;\n",best_score);
 }
 

@@ -50,9 +50,9 @@ U0 PredatorPrey()
   I64 i;
   GrDC *dc=GrDCAlias(gr_dc2,Fs);
 
-  PopUpOk("This will plot multiple predator-prey\r\n"
-	"trajectories.  It restarts many times\r\n"
-	"with different, random, initial populations.\r\n");
+  PopUpOk("This will plot multiple predator-prey\n"
+	"trajectories.  It restarts many times\n"
+	"with different, random, initial populations.\n");
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   try {
     LtfClear;

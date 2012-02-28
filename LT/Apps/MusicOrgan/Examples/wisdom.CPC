@@ -40,15 +40,15 @@ U0 Song()
   try {
     while (!ScanKey) {
       Play("3eBCsAGAGeAAetGAAsBBBBeCDqDeEA",
-	  "Now, \0I \0su\0 \0u\0 \0ure \0 \0 \0 \0won't \0do\0o\0o\0o \0that \0a\0gain!\r\n\0 \0 \0");
+	  "Now, \0I \0su\0 \0u\0 \0ure \0 \0 \0 \0won't \0do\0o\0o\0o \0that \0a\0gain!\n\0 \0 \0");
 
       t0=tM;
       Play("BCsAGAGeAAetGAAsBBBBeCDqDeEA",
-	  "Now, \0I \0su\0 \0u\0 \0ure \0 \0 \0 \0won't \0do\0o\0o\0o \0that \0a\0gain!\r\n\0 \0 \0");
+	  "Now, \0I \0su\0 \0u\0 \0ure \0 \0 \0 \0won't \0do\0o\0o\0o \0that \0a\0gain!\n\0 \0 \0");
       Play("2qG3etAAGBB2G3eEFCDqFeAGqC",
-	  " \0 \0 \0 \0 \0 \0 \0Learn\0ing \0from \0 \0my \0 \0mis\0takes.\r\n\0");
+	  " \0 \0 \0 \0 \0 \0 \0Learn\0ing \0from \0 \0my \0 \0mis\0takes.\n\0");
       Play("2G3etAAGBB2G3eEFCDqFeAGqC",
-	  " \0 \0 \0 \0 \0 \0 \0Learn\0ing \0from \0 \0my \0 \0mis\0takes.\r\n\0");
+	  " \0 \0 \0 \0 \0 \0 \0Learn\0ing \0from \0 \0my \0 \0mis\0takes.\n\0");
     }
   } catch
     CatchAll;

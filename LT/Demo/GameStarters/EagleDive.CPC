@@ -13,7 +13,7 @@
 #include "::/LT/OSMain/StaticAdam.HPZ"
 I64 best_score=0; //Doesn't work yet for statics
 #else
-AcctRegSetDftEntry("LT/EagleDive","I64 best_score=0;\r\n");
+AcctRegSetDftEntry("LT/EagleDive","I64 best_score=0;\n");
 AcctRegExecuteBranch("LT/EagleDive");
 #endif
 
@@ -938,7 +938,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
       );
   WinMax;
   WinBorder(OFF);
-  "Initializing...\r\n";
+  "Initializing...\n";
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   Init(_mp_cnt);
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
@@ -985,7 +985,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   SettingsPop;
   CleanUp;
 #ifnstatic
-  AcctRegWriteBranch("LT/EagleDive","I64 best_score=%d;\r\n",best_score);
+  AcctRegWriteBranch("LT/EagleDive","I64 best_score=%d;\n",best_score);
 #endif
   MenuPop;
 }

@@ -32,8 +32,8 @@ public I64 EdCurU8(Ltf *l)
     result=cl->tag[l->cur_data_col];
   else if (cl->type_u8==LTFT_TAB)
     result=CH_TAB;
-  else if (cl->type_u8==LTFT_CR || cl->type_u8==LTFT_SOFT_CR)
-    result=CH_CR;
+  else if (cl->type_u8==LTFT_NEW_LINE || cl->type_u8==LTFT_SOFT_NEW_LINE)
+    result=CH_NEW_LINE;
   if (unlock)
     LtfUnlock(l);
   return result;
@@ -96,7 +96,7 @@ public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
     } else {
       cc=cl->min_col;
       while (cl->last!=l &&
-	(cl->last->type_u8==LTFT_SOFT_CR || cl->last->type_u8==LTFT_INDENT ||
+	(cl->last->type_u8==LTFT_SOFT_NEW_LINE || cl->last->type_u8==LTFT_INDENT ||
 	cl->last->flags & (LTFLF_SKIP|LTFLF_HARD_SKIP|LTFLF_FILTER_SKIP))) {
 	cl=cl->last;
 	if (sc>=0) {
@@ -158,7 +158,7 @@ public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
   if (sc!=MIN_I64) sc=sc.u32[0];
   if (sc>=0 && sc&SCF_CTRL) {
     while (cl!=l && cl->next->y==y &&
-	   cl->next->type_u8!=LTFT_SOFT_CR && cl->next!=l && (cl->next->type_u8!=LTFT_CR || !(l->flags & LTFF_FORM)) ||
+	   cl->next->type_u8!=LTFT_SOFT_NEW_LINE && cl->next!=l && (cl->next->type_u8!=LTFT_NEW_LINE || !(l->flags & LTFF_FORM)) ||
 	   cl->flags & (LTFLF_SKIP|LTFLF_HARD_SKIP|LTFLF_FILTER_SKIP))
       cl=cl->next;
     if (cl->max_col>cl->min_col)
@@ -232,7 +232,7 @@ public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
 	  cl=cl->next;
 	}
 	cc=cl->min_col;
-	if (cl->type_u8==LTFT_SOFT_CR) {
+	if (cl->type_u8==LTFT_SOFT_NEW_LINE) {
 	  if (sc>=0) {
 	    if (sc&SCF_SHIFT)
 	      cl->type|=LTFLT_SELECTED;
@@ -457,8 +457,8 @@ public U0 EdLineDown(Ltf *l,I64 sc=MIN_I64)
   if (cl->last!=l && (cl->x>x || cl->y>y)) {
     cl=cl->last;
     l->cur_entry=cl;
-    if (!((cl->type_u8==LTFT_CR || cl->type_u8==LTFT_SOFT_CR || cl->type_u8==LTFT_INDENT) &&
-	  (cl->last->type_u8==LTFT_CR || cl->last->type_u8==LTFT_SOFT_CR || cl->last->type_u8==LTFT_INDENT)))
+    if (!((cl->type_u8==LTFT_NEW_LINE || cl->type_u8==LTFT_SOFT_NEW_LINE || cl->type_u8==LTFT_INDENT) &&
+	  (cl->last->type_u8==LTFT_NEW_LINE || cl->last->type_u8==LTFT_SOFT_NEW_LINE || cl->last->type_u8==LTFT_INDENT)))
       LtfFormBackward(l);
     cl=l->cur_entry;
   }
@@ -550,7 +550,7 @@ U0 EdDelChar(Ltf *l)
       l->cur_entry=cl->next;
       l->cur_data_col=l->cur_entry->min_col;
     }
-    LtfRemSoftCRs(l,l->cur_entry);
+    LtfRemSoftNewLines(l,l->cur_entry);
     if (unlock)
       LtfUnlock(l);
     return;
@@ -559,7 +559,7 @@ U0 EdDelChar(Ltf *l)
   l->cur_data_col=l->cur_entry->min_col;
   if (!(cl->flags&LTFLF_FILTER_SKIP))
     LtfEntryDel(l,cl);
-  LtfRemSoftCRs(l,l->cur_entry);
+  LtfRemSoftNewLines(l,l->cur_entry);
   if (unlock)
     LtfUnlock(l);
 }
@@ -707,12 +707,12 @@ ic_overstrike_char:
     }
     goto ic_done;
   }
-  if (ch==CH_CR) {
+  if (ch==CH_CR||ch==CH_NEW_LINE) {
     nl=CAlloc(sizeof(LtfEntryBase),l->mem_task);
     if (sc&SCF_CTRL && !(sc&SCF_SHIFT))
       nl->type=LTFT_PAGE_BREAK | l->settings_root.dft_text_attr << 8;
     else
-      nl->type=LTFT_CR | l->settings_root.dft_text_attr << 8;
+      nl->type=LTFT_NEW_LINE | l->settings_root.dft_text_attr << 8;
     LtfInsert(l,nl);
   } else if (ch==CH_TAB) {
     if (l->flags&LTFF_FORM &&
@@ -770,7 +770,7 @@ ic_form_tab:
     }
   }
 ic_done:
-  LtfRemSoftCRs(l,l->cur_entry);
+  LtfRemSoftNewLines(l,l->cur_entry);
   if (l->cur_entry->flags & LTFLF_UPDATE_DATA) {
     if (l->cur_entry->type_u8==LTFT_DATA || l->cur_entry->type_u8==LTFT_CHECK_BOX)
     LtfDataGet(l->cur_entry);
@@ -1207,7 +1207,7 @@ I64 EdFindReplace(Ltf *l)
 	      l->cur_entry=ll;
 	      if (cmd!=RSAC_ALL) {
 		l->recalc_start=l;
-		LtfRemSoftCRs(l,l->cur_entry);
+		LtfRemSoftNewLines(l,l->cur_entry);
 		LtfRecalc(l);
 	      }
 	      ll=l->cur_entry;
@@ -1233,7 +1233,7 @@ I64 EdFindReplace(Ltf *l)
       }
     }
 fr_unlock_done:
-    LtfRemSoftCRs(l,NULL);
+    LtfRemSoftNewLines(l,NULL);
     l->recalc_start=l;
     LtfRecalc(l);
     LtfCenter(l);
@@ -1317,7 +1317,7 @@ U0 LtfEntryToggle(Ltf *l)
 	    cl->max_col=i+j;
 	    l->cur_data_col+=i;
 	    LtfEntryDel(l,cl2);
-	  } else if (cl2->type_u8==LTFT_SOFT_CR)
+	  } else if (cl2->type_u8==LTFT_SOFT_NEW_LINE)
 	    LtfEntryDel(l,cl2);
 	  else
 	    break;
@@ -1339,7 +1339,7 @@ U0 LtfEntryToggle(Ltf *l)
 	    cl->tag=st;
 	    cl->max_col=i+j;
 	    LtfEntryDel(l,cl2);
-	  } else if (cl2->type_u8==LTFT_SOFT_CR)
+	  } else if (cl2->type_u8==LTFT_SOFT_NEW_LINE)
 	    LtfEntryDel(l,cl2);
 	  else
 	    break;
@@ -1498,7 +1498,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	    cl=l->cur_entry;
 	    if (l->cur_data_col<=cl->min_col) {
 	      cl=l->cur_entry=cl->last;
-	      if (cl!=l && cl->type_u8==LTFT_SOFT_CR)
+	      if (cl!=l && cl->type_u8==LTFT_SOFT_NEW_LINE)
 		cl=l->cur_entry=cl->last;
 	      if (cl==l || cl->type_u8==LTFT_USER_FOREGROUND) {
 		cl=l->cur_entry=cl->next;
@@ -1533,7 +1533,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	  LtfLock(l);
 	}
 	break;
-      case CH_CR: //<CTRL-M>
+      case CH_CR:	//<CTRL-M>
 	if (sc&SCF_KEY_DESC) {
 	  if (sc&SCF_CTRL && !(sc&SCF_SHIFT))
 	    SetKeyDesc("Char/Page Break");
@@ -2126,7 +2126,7 @@ public U0 LtfPutSPartial(Ltf *l,U8 *st)
 	  l->cur_data_col=StrLen(ptr2);
 	}
 	*ptr=ch;
-	LtfRemSoftCRs(l,l->cur_entry);
+	LtfRemSoftNewLines(l,l->cur_entry);
       }
     }
   if (unlock)

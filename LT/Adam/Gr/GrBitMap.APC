@@ -760,9 +760,9 @@ public BoolI64 GrDCBlot(GrDC *dc,I64 _x,I64 _y,GrDC *img)
 //This makes lots of assumptions.
 U0 GrDCBlotWithMask(GrDC *dc,GrDC *img)
 {
-  U64 reg *mask_ptr,reg *m_dst,reg *m_src;
+  U32 reg *mask_ptr,reg *m_dst,reg *m_src;
   U64 reg j,row,reg col,plane,
-      d0=img->width_internal>>6;
+      d0=img->width_internal>>5;
 
   m_src=img->body;
   m_dst=dc->body;
@@ -1057,11 +1057,10 @@ public BoolI64 GrPutS(GrDC *dc,I64 _x,I64 _y,U8 *_s)
   BoolI8 result=FALSE,first=TRUE;
   if (!_s) return FALSE;
   while (ch=*_s++) {
-    if (ch==CH_CR)
+    if (ch==CH_NEW_LINE) {
       _x=x0;
-    else if (ch==CH_LINE_FEED)
       _y+=FONT_HEIGHT;
-    else if (ch==CH_TAB)
+    } else if (ch==CH_TAB)
       _x=x0+CeilU64(_x-x0+FONT_WIDTH,8*FONT_WIDTH);
     else {
       if (first) {
@@ -1083,11 +1082,10 @@ public BoolI64 GrVPutS(GrDC *dc,I64 _x,I64 _y,U8 *_s)
   if (!_s) return FALSE;
   buf[1]=0;
   while (*buf=*_s++) {
-    if (*buf==CH_CR)
+    if (*buf==CH_NEW_LINE) {
       _y=y0;
-    else if (*buf==CH_LINE_FEED)
       _x+=FONT_WIDTH;
-    else if (*buf==CH_TAB)
+    } else if (*buf==CH_TAB)
       _y=y0+CeilU64(_y-y0+FONT_HEIGHT,8*FONT_HEIGHT);
     else {
       if (first) {

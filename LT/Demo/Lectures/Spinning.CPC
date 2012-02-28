@@ -20,7 +20,7 @@ U0 LoadTask(U64 dummy=0)
 U0 SpinningPreempt()
 {
   I64 i;
-  "Spinning with preemption....\r\n";
+  "Spinning with preemption....\n";
   for (i=0;i<3000000;i++)
     InU8(0x21); //This is a sample hardware stat read
 }
@@ -28,7 +28,7 @@ U0 SpinningPreempt()
 U0 SpinningNoPreempt()
 {
   I64 i;
-  "Spinning with no preemption...\r\n";
+  "Spinning with no preemption...\n";
 
 //Put on screen before it starts.  Text lags by one refresh
 //and we might catch it in the middle of an update.
@@ -46,7 +46,7 @@ U0 SpinningNoInterrupts()
 {
   I64 i;
 //Interrupts are ctrlled on a per task basis.
-  "Spinning with no interrupts...\r\n";
+  "Spinning with no interrupts...\n";
   WinSync;
   WinSync;
   WinSync;
@@ -61,7 +61,7 @@ U0 CooperativeMultitaskingPreempt()
 {
   F64 timeout=tNP+3.0;
 
-  "Cooperative multitasking with preemption...\r\n";
+  "Cooperative multitasking with preemption...\n";
   while (tNP<timeout) {
     InU8(0x21);
     Yield;
@@ -73,7 +73,7 @@ U0 CooperativeMultitaskingNoPreempt()
   F64 timeout=tNP+3.0;
 
   Preempt(OFF);
-  "Cooperative multitasking with no preemption...\r\n";
+  "Cooperative multitasking with no preemption...\n";
   while (tNP<timeout) {
     InU8(0x21);
     Yield;
@@ -86,7 +86,7 @@ U0 CooperativeMultitaskingNoInterrupts()
   F64 timeout=tNP+3.0;
 
   Cli;
-  "Cooperative multitasking with no interrupts...\r\n";
+  "Cooperative multitasking with no interrupts...\n";
   while (tNP<timeout) {
     InU8(0x21);
     Yield;

@@ -536,20 +536,20 @@ U0 PickGrSpriteLtfNew(Ltf *l,GrSprite *root,I64 old_num)
     st=GrSprite2Text(tempg);
     if (cur_num==old_num) {
       LtfPutS(l,"$FM,LTRED$");
-      ll=LtfPrintF(l,"$MU-UL,\"%Q\",%d$\r\n",st,cur_num++);
+      ll=LtfPrintF(l,"$MU-UL,\"%Q\",%d$\n",st,cur_num++);
     } else {
       LtfPutS(l,"$FM,LTBLUE$");
-      LtfPrintF(l,"$MU-UL,\"%Q\",%d$\r\n",st,cur_num++);
+      LtfPrintF(l,"$MU-UL,\"%Q\",%d$\n",st,cur_num++);
     }
     Free(st);
     tempg=tempg->next;
   }
   if (cur_num==old_num) {
     LtfPutS(l,"$FM,LTRED$");
-    ll=LtfPrintF(l,"$MU-UL,\"END\",%d$\r\n",cur_num);
+    ll=LtfPrintF(l,"$MU-UL,\"END\",%d$\n",cur_num);
   } else {
     LtfPutS(l,"$FM,LTBLUE$");
-    LtfPrintF(l,"$MU-UL,\"END\",%d$\r\n",cur_num);
+    LtfPrintF(l,"$MU-UL,\"END\",%d$\n",cur_num);
   }
   if (ll)
     l->cur_entry=ll;
@@ -632,7 +632,7 @@ BoolI64 GrSpriteTextEd(GrSprite **_root,I64 *cur_num)
   tempg=root->next;
   while (tempg!=root) {
     st=GrSprite2Text(tempg);
-    LtfPrintF(l,"$FG,BLUE$%s$FG$\r\n",st);
+    LtfPrintF(l,"$FG,BLUE$%s$FG$\n",st);
     Free(st);
     ll=LtfPrintF(l,"$HX,%d,16$",GrSpriteElemSize(tempg));
     ll->data=&tempg->start;
@@ -673,20 +673,20 @@ I64 PopUpGrSpriteEd(GrSprite **root,I64 snap,F64 ip_scaler,I64 *cur_num)
   TaskStruct *pu_task;
   I64 i;
   Ltf *l=LtfNew;
-  LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Edit Menu\"$$FG$\r\n"
-	"$MU-UL,\"Shift Points\",GED_SHIFT_POINTS$\r\n"
-	"$MU-UL,\"Shift Points with Rects\",GED_SHIFT_RECTS$\r\n"
-	"$MU-UL,\"Shift Origin\",GED_SHIFT_ORIGIN$\r\n"
-	"$MU-UL,\"Set Origin\",GED_SET_ORIGIN$\r\n"
-	"$MU-UL,\"Insert Shift SubOrigin\",GED_SHIFT_SUB_ORIGIN$\r\n"
-	"$MU-UL,\"Snap %d %5.3f\",GED_SNAP$\r\n"
-	"$MU-UL,\"Pick or Delete Objects Graphically\",GED_PICK_GRAPHICALLY$\r\n"
-	"$MU-UL,\"Transform\",GED_TRANSFORM$\r\n"
-	"$MU-UL,\"Delete\",GED_DELETE$\r\n"
-	"$MU-UL,\"Edit as Text\",GED_ED$\r\n"
-	"\r\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GED_VECT$$FM,LTBLUE$\r\n"
-	"$MU-UL,\"Insert Clipboard GrSprite's\",GED_INSERT_CLIPBOARD$\r\n"
-	"\r\n$MU-UL,\"End\",GED_END$\r\n"
+  LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Edit Menu\"$$FG$\n"
+	"$MU-UL,\"Shift Points\",GED_SHIFT_POINTS$\n"
+	"$MU-UL,\"Shift Points with Rects\",GED_SHIFT_RECTS$\n"
+	"$MU-UL,\"Shift Origin\",GED_SHIFT_ORIGIN$\n"
+	"$MU-UL,\"Set Origin\",GED_SET_ORIGIN$\n"
+	"$MU-UL,\"Insert Shift SubOrigin\",GED_SHIFT_SUB_ORIGIN$\n"
+	"$MU-UL,\"Snap %d %5.3f\",GED_SNAP$\n"
+	"$MU-UL,\"Pick or Delete Objects Graphically\",GED_PICK_GRAPHICALLY$\n"
+	"$MU-UL,\"Transform\",GED_TRANSFORM$\n"
+	"$MU-UL,\"Delete\",GED_DELETE$\n"
+	"$MU-UL,\"Edit as Text\",GED_ED$\n"
+	"\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GED_VECT$$FM,LTBLUE$\n"
+	"$MU-UL,\"Insert Clipboard GrSprite's\",GED_INSERT_CLIPBOARD$\n"
+	"\n$MU-UL,\"End\",GED_END$\n"
 	"$MU-UL,\"Cancel\",LTFM_CANCEL$",snap,ip_scaler);
   st=MSPrintF("GrSpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,root,cur_num);
   PopUp(st,NULL,&pu_task);
@@ -1088,8 +1088,8 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
     switch (i) {
       case GED_PICK_GRAPHICALLY:
 	AcctOneTimePopUp(ARf_GRSPRITE_PICK_GRAPHICALLY,
-	"You can delete elements by\r\n"
-	"holding $FG,GREEN$Delete$FG$ and clicking.\r\n");
+	"You can delete elements by\n"
+	"holding $FG,GREEN$Delete$FG$ and clicking.\n");
 	cl->flags=old_cl_flags;
 	l->cur_sprite=tempb->data;
 	l->cur_sprite_elem_num=0;
@@ -1146,10 +1146,10 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
       case GED_SHIFT_POINTS:
       case GED_SHIFT_RECTS:
 	AcctOneTimePopUp(ARf_GRSPRITE_POINTS_RECTANGLES,
-	"You can switch between points\r\n"
-	"and rectangles with '$FG,GREEN$p$FG$' and '$FG,GREEN$r$FG$'.\r\n"
-	"Press '$FG,GREEN$r$FG$' after one rectangle\r\n"
-	"to OR another rectangle.\r\n");
+	"You can switch between points\n"
+	"and rectangles with '$FG,GREEN$p$FG$' and '$FG,GREEN$r$FG$'.\n"
+	"Press '$FG,GREEN$r$FG$' after one rectangle\n"
+	"to OR another rectangle.\n");
 	cl->flags=old_cl_flags;
 	if (GrSpriteShiftPoints(tempb->data,x,y,&cur_num,i)) {
 	  GrSpriteDel(root);
@@ -1185,11 +1185,11 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	break;
       case GED_INSERT_CLIPBOARD:
 	AcctOneTimePopUp(ARf_GRSPRITE_INSERT_CLIPBOARD,
-	"You will probably want to shift around\r\n"
-	"the location of element groups.  Use\r\n"
-	"'Insert shift sub-origin' after picking the\r\n"
-	"element to insert before.  Or,\r\n"
-	"use 'shift points'.\r\n");
+	"You will probably want to shift around\n"
+	"the location of element groups.  Use\n"
+	"'Insert shift sub-origin' after picking the\n"
+	"element to insert before.  Or,\n"
+	"use 'shift points'.\n");
 	insert_point=GrNum2Queue(root,cur_num);
 	unlock2=LtfLock(sys_clipboard_ltf);
 	ll=sys_clipboard_ltf->root.next;

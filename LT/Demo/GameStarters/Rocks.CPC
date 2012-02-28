@@ -638,11 +638,11 @@ U0 Rocks()
   MenuEntry *tempse;
 
   PopUpOk(
-	"I refuse to rip-off the original\r\n"
-	"so this is intentionally unplayable\r\n"
-	"and included for demonstration\r\n"
-	"purposes.\r\n\r\n"
-	"Write games, don't play them.\r\n");
+	"I refuse to rip-off the original\n"
+	"so this is intentionally unplayable\n"
+	"and included for demonstration\n"
+	"purposes.\n\n"
+	"Write games, don't play them.\n");
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);

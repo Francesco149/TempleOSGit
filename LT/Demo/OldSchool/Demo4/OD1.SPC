@@ -7,7 +7,7 @@ import U0 Routine3(U8 *st);
 
 U0 Routine1(U8 *st)
 {
-  PrintF("Routine1:%s\r\n",st);
+  PrintF("Routine1:%s\n",st);
   Routine3("What the!!!");
 }
 

@@ -40,7 +40,7 @@ U64 OptPass789A(LexStruct *lx,ClassStruct *fun_class,
   }
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,lx->pass))
-      "$BK,1$$FG,LTRED$$IV,1$This code gets merged together and patched.\r\n$FG$$IV,0$$BK,0$";
+      "$BK,1$$FG,LTRED$$IV,1$This code gets merged together and patched.\n$FG$$IV,0$$BK,0$";
 
   lx->last_float_op_ic=NULL;
 

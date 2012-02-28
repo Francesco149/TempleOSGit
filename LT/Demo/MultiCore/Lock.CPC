@@ -32,7 +32,7 @@ U0 UnlockedInc()
     glbl++;
 
   MPJobResult(tempm);
-  "Correct Cnt:%X Actual Cnt:%X\r\n",CNT*2,glbl;
+  "Correct Cnt:%X Actual Cnt:%X\n",CNT*2,glbl;
 }
 
 
@@ -59,7 +59,7 @@ U0 LockedInc()
     }
 
   MPJobResult(tempm);
-  "Correct Cnt:%X Actual Cnt:%X\r\n",CNT*2,glbl;
+  "Correct Cnt:%X Actual Cnt:%X\n",CNT*2,glbl;
 }
 
 UnlockedInc;

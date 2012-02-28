@@ -131,10 +131,10 @@ U0 MassSpringDemo()
   I64 msg_code,p1,p2;
   MyMass *tempm1=NULL,*tempm2=NULL;
 
-  PopUpOk("Left-Click to place mas\r\n"
-	  "Right-Click and drag to\r\n"
-	  "connect with spring.\r\n\r\n"
-	  "Springs are 100 pixels long.\r\n");
+  PopUpOk("Left-Click to place mas\n"
+	  "Right-Click and drag to\n"
+	  "connect with spring.\n\n"
+	  "Springs are 100 pixels long.\n");
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
 

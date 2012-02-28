@@ -38,7 +38,7 @@ BMPFile *BMPFileNew(U64 width,U64 height,U64 bits)
     size=offset(BMPFile.end)+
 	 width*height>>1+16*sizeof(BGREntry);
   else {
-    "Format Not Supported.\r\n";
+    "Format Not Supported.\n";
     return NULL;
   }
   r=CAlloc(size);
@@ -218,7 +218,7 @@ public U64 BMPFileWrite(U8 *filename,GrDC *dc,U64 bits=4)
   else if (bits==24)
     r=BMPFile24To(dc);
   else {
-    "Format Not Supported.\r\n";
+    "Format Not Supported.\n";
     return 0;
   }
   size=r->file_size;
@@ -280,12 +280,12 @@ public GrDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
 	if (!use_ms_paint_palette)
 	  Free(palette_map);
       } else {
-	"Format Not Supported.\r\n";
+	"Format Not Supported.\n";
 	GrDCDel(result);
 	result=NULL;
       }
     } else
-      "Invalid BMP File\r\n";
+      "Invalid BMP File\n";
     Free(r);
   }
   return result;

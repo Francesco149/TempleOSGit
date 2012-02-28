@@ -36,9 +36,9 @@ U0 Song()
 	PutSprite(__BIN_1);
 	"$CM,0,8$";
 	Play("2qG3EAEADFC",
-		" \0Off \0 \0to \0 \0yon\0der \0star.\r\n\0");
+		" \0Off \0 \0to \0 \0yon\0der \0star.\n\0");
 	Play("2G3EAEADFC",
-		" \0Damn! \0 \0It's \0 \0ver\0y \0far.\r\n\0");
+		" \0Damn! \0 \0It's \0 \0ver\0y \0far.\n\0");
   }
   } catch
     CatchAll;

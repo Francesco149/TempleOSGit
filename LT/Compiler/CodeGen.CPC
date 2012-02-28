@@ -5,7 +5,7 @@ U0 CbPutClass(ClassStruct *c)
   I64 i;
   if (!c) return;
   if (c->ptr_cnt>4) {
-    PrintFErr("put_class ptrcnt=%d\r\n",c->ptr_cnt);
+    PrintFErr("put_class ptrcnt=%d\n",c->ptr_cnt);
     while (TRUE)
 //TODO:
       Yield;
@@ -16,7 +16,7 @@ U0 CbPutClass(ClassStruct *c)
   if (c->str)
     "" c->str;
   else {
-    PrintFErr("put_class str=NULL\r\n");
+    PrintFErr("put_class str=NULL\n");
     while (TRUE)
 //TODO:
       Yield;
@@ -138,7 +138,7 @@ U0 CbPutIc(IntermediateCode *tempi)
     }
     if (tempi->ic_flags & ICF_ALTERNATE_TEMPLATE)
       "ALT_TEMP ";
-    CrLf;
+    NewLine;
   }
 }
 
@@ -304,7 +304,7 @@ U0 CbMiscListDel(LexStruct *lx)
 	  undef=mc->str;
 	  mc->str=NULL;
 	} else if (!(mc->flags&CBMF_USED)) {
-	  PrintFWarn("%S%s\r\n","ST_UNUSED_LABEL",mc->str);
+	  PrintFWarn("%S%s\n","ST_UNUSED_LABEL",mc->str);
 	  PutLexWarn(lx,"ST_UNUSED_LABEL_AT");
 	}
 	break;
@@ -326,7 +326,7 @@ U0 CbMiscListDel(LexStruct *lx)
     mc=mc1;
   }
   if (undef) {
-    PrintFErr("%S%s\r\n","ST_UNDEFINED_GOTO_LABEL",undef);
+    PrintFErr("%S%s\n","ST_UNDEFINED_GOTO_LABEL",undef);
     Free(undef);
     PrsExcept(lx,"ST_UNDEFINED_GOTO_LABEL_AT");
   }
@@ -405,7 +405,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   CbCombine(lx);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,0)) {
-      "$IV,1$Before Pass 1:$IV,0$\r\n";
+      "$IV,1$Before Pass 1:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
@@ -413,7 +413,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass012(lx,fun_class,TRUE);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,1)) {
-      "$IV,1$After Pass 1:$IV,0$\r\n";
+      "$IV,1$After Pass 1:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
@@ -421,7 +421,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass012(lx,fun_class,TRUE);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,2)) {
-      "$IV,1$After Pass 2:$IV,0$\r\n";
+      "$IV,1$After Pass 2:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
@@ -429,7 +429,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass3(lx,fun_class,register_offsets);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,3)) {
-      "$IV,1$After Pass 3:$IV,0$\r\n";
+      "$IV,1$After Pass 3:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
@@ -437,7 +437,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass4(lx,register_offsets,type);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,4)) {
-      "$IV,1$After Pass 4:$IV,0$\r\n";
+      "$IV,1$After Pass 4:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
@@ -445,7 +445,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass5(lx);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,5)) {
-      "$IV,1$After Pass 5:$IV,0$\r\n";
+      "$IV,1$After Pass 5:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
@@ -453,26 +453,26 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
   OptPass6(lx,fun_class);
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT)) {
     if (Bt(&lx->pass_trace_mask,6)) {
-      "$IV,1$After Pass 6:$IV,0$\r\n";
+      "$IV,1$After Pass 6:$IV,0$\n";
       CbPutAllIc(lx);
     }
   }
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,7))
-      "$IV,1$Pass 7:$IV,0$\r\n";
+      "$IV,1$Pass 7:$IV,0$\n";
   lx->pass=7;
   OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,8))
-      "$IV,1$Pass 8:$IV,0$\r\n";
+      "$IV,1$Pass 8:$IV,0$\n";
   lx->pass=8;
   OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,9))
-      "$IV,1$Pass 9:$IV,0$\r\n";
+      "$IV,1$Pass 9:$IV,0$\n";
   lx->pass=9;
   *code_size=OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
   if (lx->flags&LF_STATIC_COMPILE)
@@ -482,7 +482,7 @@ U8 *CbCompile(LexStruct *lx,ClassStruct *fun_class,
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,0xA))
-      "$IV,1$Pass A:$IV,0$\r\n";
+      "$IV,1$Pass A:$IV,0$\n";
   lx->pass=0xA;
   *code_size=OptPass789A(lx,fun_class,register_offsets,result,_dbg,_indent,&min_line,&max_line);
   compiled_bytes+=*code_size;

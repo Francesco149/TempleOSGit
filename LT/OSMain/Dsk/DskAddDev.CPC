@@ -208,11 +208,11 @@ U0 Mount(BoolI8 repartition=FALSE)
     PrtRep;
     PutDefine("ST_MOUNT_BASE_LET");
     drv_let_base=ToUpper(GetChar)-'A';
-    CrLf;
+    NewLine;
     if (0<=drv_let_base<NUM_LTPRTS) {
       PutDefine("ST_MOUNT_DRV_TYPE");
       type=GetChar-'0';
-      CrLf;
+      NewLine;
 
       k=0;
 
@@ -247,14 +247,14 @@ U0 Mount(BoolI8 repartition=FALSE)
 	    PutDefine("ST_MOUNT_UNIT");
 	    k=GetChar-'0';
 	  } while (!(0<=k<=1));
-	  CrLf;
+	  NewLine;
 	}
 	LinkedListDel(root);
       }
       if (type==LTBDT_NON_LT_FILE) {
 	PutDefine("ST_MOUNT_NONLT_LET");
 	drv_let=GetChar;
-	CrLf;
+	NewLine;
 	PutDefine("ST_INCLUDE_0X");
 	PutDefine("ST_MOUNT_NONLT_BLK");
 	GetS(buf2,128);
@@ -336,7 +336,7 @@ BoolI64 PmtBaseUnit(LTBlkDev *bdev)
 {
   U64 ch;
   BoolI8 probe;
-  "The LoseThos Operating System\r\n\r\n\r\n";
+  "The LoseThos Operating System\n\n\n";
 #exe {
   if (osmain_cfg->opts[CFG_DONT_PROBE])
     StreamPutS("probe=FALSE;");
@@ -344,17 +344,17 @@ BoolI64 PmtBaseUnit(LTBlkDev *bdev)
     StreamPutS("probe=TRUE;");
 };
   if (!probe || !BootCdProbeAll(bdev)) {
-	"\r\nThis is not a product registration.  LoseThos\r\n"
-	"needs the I/O port numbers for the CD-ROM.\r\n"
-	"Retry the ports above or check Windows\r\n"
-	"system information under I/O ports for\r\n"
-	"'IDE', 'ATA' or 'SATA'.\r\n\r\n"
-	"\r\nEnter 4-digit hex I/O Port number.\r\n"
+	"\nThis is not a product registration.  LoseThos\n"
+	"needs the I/O port numbers for the CD-ROM.\n"
+	"Retry the ports above or check Windows\n"
+	"system information under I/O ports for\n"
+	"'IDE', 'ATA' or 'SATA'.\n\n"
+	"\nEnter 4-digit hex I/O Port number.\n"
 	"CD-ROM I/O Port Base0: 0x";
     bdev->base0=SysPmtI64;
     bdev->base1=0;
 
-    "\r\nUnit (0 or 1): ";
+    "\nUnit (0 or 1): ";
     do ch=GetChar(NULL,FALSE);
     while (!('0'<=ch<='1'));
     '' ch;

@@ -360,8 +360,7 @@ _PLOT_BORDER_U8::
 	LEAVE
 	RET1	32
 // ************************************
-#assert !(GR_WIDTH&63)
-_GR_UPDATE_LINE_U64::
+_GR_UPDATE_LINE32::
 	ENTER	0
 	PUSH	RSI
 	PUSH	RDI
@@ -376,29 +375,21 @@ _GR_UPDATE_LINE_U64::
 	MOV	RAX,U64 SF_ARG1[RBP]
 	MOV	R8,U64 [RAX]	//rbp=vga dst
 
-@@05:	LODSQ
-	CMP	U64 [RDI],RAX
+@@05:	LODSD
+	CMP	U32 [RDI],EAX
 	JE	@@10
-	MOV	U64 [RDI],RAX
+	MOV	U32 [RDI],EAX
 	XLATB
-	ROR	RAX,8
+	ROR	EAX,8
 	XLATB
-	ROR	RAX,8
+	ROR	EAX,8
 	XLATB
-	ROR	RAX,8
+	ROR	EAX,8
 	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	MOV	U64 [R8],RAX
-@@10:	ADD	RDI,8
-	ADD	R8,8
+	ROR	EAX,8
+	MOV	U32 [R8],EAX
+@@10:	ADD	RDI,4
+	ADD	R8,4
 	DEC	RCX
 	JNZ	@@05
 
@@ -413,7 +404,7 @@ _GR_UPDATE_LINE_U64::
 	LEAVE
 	RET1	32
 // ************************************
-_GR_UPDATE_LINE_U64_FLUSH_CACHE::
+_GR_UPDATE_LINE32_FLUSH_CACHE::
 	ENTER	0
 	PUSH	RSI
 	PUSH	RDI
@@ -428,27 +419,19 @@ _GR_UPDATE_LINE_U64_FLUSH_CACHE::
 	MOV	RAX,U64 SF_ARG1[RBP]
 	MOV	R8,U64 [RAX]	//rbp=vga dst
 
-@@05:	LODSQ
-	MOV	U64 [RDI],RAX
+@@05:	LODSD
+	MOV	U32 [RDI],EAX
 	XLATB
-	ROR	RAX,8
+	ROR	EAX,8
 	XLATB
-	ROR	RAX,8
+	ROR	EAX,8
 	XLATB
-	ROR	RAX,8
+	ROR	EAX,8
 	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	XLATB
-	ROR	RAX,8
-	MOV	U64 [R8],RAX
-	ADD	RDI,8
-	ADD	R8,8
+	ROR	EAX,8
+	MOV	U32 [R8],EAX
+	ADD	RDI,4
+	ADD	R8,4
 	DEC	RCX
 	JNZ	@@05
 
@@ -608,9 +591,9 @@ public LTextern GR_WIN_Z_BUF	U16 *gr_win_z_buf;
 //No clipping
 public LTextern _IS_PIXEL_COVERED0 BoolI64 IsPixelCovered0(TaskStruct *task,I64 x,I64 y);
 
-LTextern _GR_UPDATE_LINE_U64 U0 GrUpdateLineU64(U64 **dst3,U64 **src2,U64 d5b,
+LTextern _GR_UPDATE_LINE32 U0 GrUpdateLine32(U32 **dst3,U32 **src2,U64 d5b,
 				    U0 **vga);
-LTextern _GR_UPDATE_LINE_U64_FLUSH_CACHE U0 GrUpdateLineU64FlushCache(U64 **dst3,U64 **src2,U64 d5b,
+LTextern _GR_UPDATE_LINE32_FLUSH_CACHE U0 GrUpdateLine32FlushCache(U32 **dst3,U32 **src2,U64 d5b,
 				    U0 **vga);
 LTextern _GR_PLOT_U8 U0 GrPlotU8(U8 *font_ptr,U8 attr,U8 **dst2,U64 d1,U64 d2);
 LTextern _GR_PLOT_BACKGROUND U0 GrPlotBackground(U8 attr,U8 **dst,U64 d1,U64 d2);

@@ -232,9 +232,9 @@ U0 Horeb()
     Preempt(OFF);
 
     "$CL$$BG,LTCYAN$";
-    CrLf(6);
+    NewLine(6);
     "$BG,YELLOW$";
-    CrLf(30);
+    NewLine(30);
     PutBibleVerse("Exodus,3:1",21);
     Init;
     Fs->draw_it=&DrawHoreb;

@@ -149,7 +149,7 @@ U0 WaterRock()
     "$BG,YELLOW$";
 
     PutBibleVerse("Exodus,17:6",4);
-    "\r\n$BK,1$<SPACE BAR>$BK,0$\r\n";
+    "\n$BK,1$<SPACE BAR>$BK,0$\n";
 
     t0_down=t0_up=0;
     down_stroke=FALSE;
@@ -168,6 +168,6 @@ U0 WaterRock()
     } while (msg_code!=MSG_KEY_DOWN || ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   } catch
     CatchAll;
-  "$BG$\r\n";
+  "$BG$\n";
   SettingsPop(Fs,TSF_SAME_SONG);
 }

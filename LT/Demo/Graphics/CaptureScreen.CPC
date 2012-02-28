@@ -13,11 +13,11 @@ U0 ViewScreenCapture(U8 *filename)
 
 U0 Main()
 {
-  "Capture screen...\r\n";
+  "Capture screen...\n";
   PressAKey;
   LGRCaptureScreen("HOME/SnapShot.LGZ");
 
-  "View captured screen...\r\n";
+  "View captured screen...\n";
   PressAKey;
   ViewScreenCapture("HOME/SnapShot.LGZ");
 

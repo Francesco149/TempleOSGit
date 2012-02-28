@@ -474,7 +474,11 @@ start:
     } else {
       if (mode<PRS_NUM_GLBL)
 	*_ident=NULL;
-      else
+      else if (lx->token==',' || lx->token==';' || lx->token==')') {
+	tempess=NULL;
+	*_ident=StrNew("_anon_");
+	tempm->flags|=MLF_NO_UNUSED_WARN;
+      } else
 	PrsExcept(lx,"ST_EXPECTING_IDENTIFIER");
     }
   }
@@ -795,13 +799,13 @@ pvl_done:
 U0 UndefinedExtern()
 {
   PutDefineErr("ST_UNDEFINED_EXTERN");
-  "at %P\r\n",Caller;
+  "at %P\n",Caller;
   throw(EXCEPT_UNDEF_EXTERN);
 }
 
 U0 UnusedExternWarning(LexStruct *lx,ClassStruct *tempc)
 {
-  PrintFWarn("%S '%s'\r\n","ST_UNUSED_EXTERN",tempc->str);
+  PrintFWarn("%S '%s'\n","ST_UNUSED_EXTERN",tempc->str);
   lx->warning_cnt++;
 }
 
@@ -1005,11 +1009,11 @@ U0 PrsFun(LexStruct *lx,
   tempm=tempc->member_list;
   while (tempm) {
     if (tempm->flags & MLF_NO_UNUSED_WARN) {
-      if (tempm->use_cnt!=1)
-	PrintFWarn("%S\r\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\r\n","ST_UNNEEDED_NOUNUSEDWARN",
+      if (tempm->use_cnt>1)
+	PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_UNNEEDED_NOUNUSEDWARN",
 	  lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,tempc->str);
     } else if (!tempm->use_cnt && GetOpt(OPTf_UNUSED_VAR_WARN))
-      PrintFWarn("%S\r\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\r\n","ST_UNUSED_VAR",
+      PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_UNUSED_VAR",
 	lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,tempc->str);
     tempm=tempm->next;
   }

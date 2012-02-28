@@ -50,13 +50,13 @@ U0 Song()
   try {
     "$BG+H,LTCYAN$";
     while (!ScanKey) {
-	"$FG,GREEN$To God...$FG+H,BLACK$\r\n";
+	"$FG,GREEN$To God...$FG+H,BLACK$\n";
 	Play("W13qE!AA!etF2G3G!qDF!!etFE!D2eG!3G",
-		"A\0dam... \0 \0no \0 \0 \0long\0er \0sees \0Your \0face.\r\n\0 \0 \0");
+		"A\0dam... \0 \0no \0 \0 \0long\0er \0sees \0Your \0face.\n\0 \0 \0");
 	Play("qE!AA!etF2G3G!qDF!!etFE!D2eG!3G",
-		"Oh! \0 \0 \0What \0 \0a \0wretch\0ed \0bar\0ren \0waste!\r\n\0 \0 \0");
+		"Oh! \0 \0 \0What \0 \0a \0wretch\0ed \0bar\0ren \0waste!\n\0 \0 \0");
 	Play("qACFeB!CB2GqG3E!D",
-		" \0 \0 \0 \0 \0 \0 \0 \0Ex\0iled.\r\n\0");
+		" \0 \0 \0 \0 \0 \0 \0 \0Ex\0iled.\n\0");
 	Play("ACFeB!CB2GqG3E!D");
     }
   } catch

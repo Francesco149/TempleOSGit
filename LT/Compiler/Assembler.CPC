@@ -78,7 +78,7 @@ U0 AsmStoreCodeU8(LexStruct *lx,U8 b)
   tempc->body[a->ip++ & (ASM_CODE_BLK_SIZE-1)]=b;
   if (a->list) {
     if (a->display_col>=24) {
-      CrLf;
+      NewLine;
       a->display_col=0;
     }
     "%02X ",b;
@@ -117,7 +117,7 @@ U0 AsmStoreCodeU32(LexStruct *lx,U32 d)
   a->ip+=sizeof(U32);
   if (a->list) {
     if (a->display_col>=24) {
-      CrLf;
+      NewLine;
       a->display_col=0;
     }
     "%08X ",d;
@@ -156,7 +156,7 @@ U0 AsmStoreCodeU64(LexStruct *lx,U64 d)
   a->ip+=sizeof(U64);
   if (a->list) {
     if (a->display_col>=24) {
-      CrLf;
+      NewLine;
       a->display_col=0;
     }
     "%016X ",d;
@@ -241,7 +241,7 @@ U0 AsmLocalsResolve(LexStruct *lx)
 	PrintFErr("%S%S%04d ","ST_UNDEFINED_SYM","ST_LINE",tempu->line_num);
 	if (a->last_label)
 	  "%s ",a->last_label;
-	"%s\r\n",templu->hash->str;
+	"%s\n",templu->hash->str;
 	lx->error_cnt++;
 	FlushMsgs;
 	throw(EXCEPT_COMPILER,21);
@@ -259,7 +259,7 @@ U0 AsmLocalsResolve(LexStruct *lx)
 	  if (a->last_label)
 	    "%s ",a->last_label;
 	  if (label) "" label;
-	  CrLf;
+	  NewLine;
 	  lx->error_cnt++;
 	  FlushMsgs;
 	  throw(EXCEPT_COMPILER,22);
@@ -269,7 +269,7 @@ U0 AsmLocalsResolve(LexStruct *lx)
 	  if (a->last_label)
 	    "%s ",a->last_label;
 	  if (label) "" label;
-	  CrLf;
+	  NewLine;
 	}
       }
       AsmStoreCodeU8At(lx,result.u8[0],tempu->ip);
@@ -325,7 +325,7 @@ U0 AsmGlblsResolve(LexStruct *lx,ExeStruct *ex)
 	  label=templu->hash->str;
 	} else {
 	  if (!(tempess->type & HTT_IMPORT)) {
-	    PrintFErr("%S%S%04d %s\r\n",
+	    PrintFErr("%S%S%04d %s\n",
 	      "ST_UNDEFINED_SYM","ST_LINE",tempu->line_num,tempess->str);
 	    lx->error_cnt++;
 	    FlushMsgs;
@@ -355,7 +355,7 @@ U0 AsmGlblsResolve(LexStruct *lx,ExeStruct *ex)
 	    tempu->type==EIE_REL_U16 && !(MIN_I16<=result<=MAX_I16)) {
 	  PrintFErr("%S%S%04d ","ST_BRANCH_OUT_OF_RANGE","ST_LINE",tempu->line_num);
 	  if (label) "" label;
-	  CrLf;
+	  NewLine;
 	  lx->error_cnt++;
 	  FlushMsgs;
 	  throw(EXCEPT_COMPILER,24);
@@ -365,7 +365,7 @@ U0 AsmGlblsResolve(LexStruct *lx,ExeStruct *ex)
 	  if (a->last_label)
 	    "%s ",a->last_label;
 	  if (label) "" label;
-	  CrLf;
+	  NewLine;
 	}
       }
     }
@@ -405,7 +405,7 @@ U0 AsmGlblsResolve(LexStruct *lx,ExeStruct *ex)
       }
     } else if (tempess->type & HTT_EXPORT) {
       if (tempess->type & HTT_UNRESOLVED_GLBL) {
-	PrintFErr("%S%s\r\n","ST_UNDEFINED_SYM",tempess->str);
+	PrintFErr("%S%s\n","ST_UNDEFINED_SYM",tempess->str);
 	lx->error_cnt++;
 	throw(EXCEPT_COMPILER,25);
       }
@@ -927,7 +927,7 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 	if (best.U8_cnt!=255 && !found_second_possible && !best.is_dft) {
 	  found_second_possible=TRUE;
 	  if (!a->arg1.size)
-	    PrintFWarn("%S%s,%04d\r\n","ST_NO_SIZE_SPECIFIED",
+	    PrintFWarn("%S%s,%04d\n","ST_NO_SIZE_SPECIFIED",
 		   lx->cur_lfn->name,lx->cur_lfn->line_num-1);
 	}
 	if (tempi->flags & IEF_PLUS_OPCODE) {
@@ -1034,7 +1034,7 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 	if (best.U8_cnt!=255 && !found_second_possible && !best.is_dft) {
 	  found_second_possible=TRUE;
 	  if (!a->arg1.size && !a->arg2.size)
-	    PrintFWarn("%S%s,%04d\r\n","ST_NO_SIZE_SPECIFIED",
+	    PrintFWarn("%S%s,%04d\n","ST_NO_SIZE_SPECIFIED",
 	      lx->cur_lfn->name,lx->cur_lfn->line_num-1);
 	}
 	if (tempi->flags & IEF_PLUS_OPCODE) {
