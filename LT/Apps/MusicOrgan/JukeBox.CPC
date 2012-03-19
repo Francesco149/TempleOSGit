@@ -54,9 +54,9 @@ BoolI64 JBPutKey(Ltf *l,U0 *data,U64 ch,U64 sc)
   return FALSE;
 }
 
-public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
+public U0 JukeBox(U8 *dirname=NULL,U8 **_filename=NULL)
 {
-//**filename is for using this as a song-chooser program.
+//**_filename is for using this as a song-chooser program.
   I64 i=0,rating;
   U8 *st,*st2;
   LTDirEntry *tempm,*tempm1;
@@ -64,8 +64,8 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
   LtfEntry *ll;
   StrCpy(l->desc,"JukeBox");
   TaskStruct *task=NULL;
-  if (filename)
-    *filename=NULL;
+  if (_filename)
+    *_filename=NULL;
   if (!dirname)
     dirname=StrNew("HOME/MusicOrgan");
   else
@@ -123,7 +123,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
   }
   LtfPrintF(l,"\n$FM,CYAN$$MU-UL,\"DONE\",%d$\n",LTFM_CANCEL);
   while (TRUE) {
-    if (filename)
+    if (_filename)
       tempm1=PopUpMenu(l,DOF_INTERCEPT_TASK_END);
     else
       tempm1=PopUpMenu(l);
@@ -131,9 +131,9 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **filename=NULL)
       Kill(task);
     if (tempm1<0) break;
     st2=StrNew(tempm1->name);
-    if (filename) {
-      Free(*filename);
-      *filename=StrNew(tempm1->full_name);
+    if (_filename) {
+      Free(*_filename);
+      *_filename=StrNew(tempm1->full_name);
     }
     if (tempm1->user_data==JB_RUN_LEVEL_ONE) break; //<ESC>
     tempm1->user_data=JB_RUN_LEVEL_NULL; //Rst from <SPACE BAR>

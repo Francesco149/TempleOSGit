@@ -42,7 +42,7 @@ Test(,3);
 * A string or char constant all alone is sent to
 [C:/LT/OSMain/Display.CPZ,272] PutS() or [C:/LT/OSMain/Display.CPZ,267]
 PutChar().  A 
-string with args is sent to [C:/LT/OSMain/Str1a.CPZ,2499] PrintF().   An
+string with args is sent to [C:/LT/OSMain/Str1a.CPZ,2508] PrintF().   An
 empty string literal signals a 
 variable fmt_str follows.
 
@@ -237,8 +237,8 @@ PrintF("%X\n",i>>1);  //Result is 0xC0000000 as expected
 
                                 PrintF Family
 
-[C:/LT/OSMain/Str1a.CPZ,2507] MSPrintF() is like
-[C:/LT/OSMain/Str1a.CPZ,2191] SPrintF() but it returns a
+[C:/LT/OSMain/Str1a.CPZ,2516] MSPrintF() is like
+[C:/LT/OSMain/Str1a.CPZ,2200] SPrintF() but it returns a
 [C:/LT/OSMain/Memory.CPZ,957] MAllocated str.  It is vary 
 handy because you don't have to worry about overflow.
 
@@ -290,7 +290,7 @@ Note: It returns the result of the last executed expression.
 **Note:** If no PutS variant is available, you can use PrintF("%s",src).
 
 
-The [C:/LT/OSMain/Str1a.CPZ,2499] PrintF() family supports extended format
+The [C:/LT/OSMain/Str1a.CPZ,2508] PrintF() family supports extended format
 codes.  See [C:/LT/OSMain/Str1a.CPZ,1580] SPrintFJoin().
   %[-][0][width][.decimals][flags][hsub_fmt][main_fmt]
 

@@ -18,7 +18,7 @@ might exit debugger, but you will lose the task.
 
 * You can use [C:/LT/OSMain/TaskCmd.CPZ,306] AdamLog() to send text to the
 Adam task window.  It works like 
-[C:/LT/OSMain/Str1a.CPZ,2499] PrintF().
+[C:/LT/OSMain/Str1a.CPZ,2508] PrintF().
 
 * [C:/LT/OSMain/Dbg1a.CPZ,267] D() [C:/LT/Adam/Ltf/LtfMain.APZ,701] LtfD() to
 do 16 column hex dump mem with numbering from zero.  With 

@@ -117,10 +117,12 @@ See [C:/LT/Adam/Gr/GrScreen.APZ,365] GrUpdateWins() and [C:/LT/Adam/Gr/GrScreen.
 #define Of_SELECTED	0
 #define Of_SHARP	1
 #define Of_FLAT		2
+#define Of_TIE		3
 
 #define OF_SELECTED	1
 #define OF_SHARP	2
 #define OF_FLAT		4
+#define OF_TIE		8
 
 class OrgNote
 {
@@ -519,11 +521,12 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   Preempt(old_preempt);
 }
 
-#define ORGR_STRONG_ACCENT	-10
-#define ORGR_ACCENT		-9
-#define ORGR_NO_ACCENT		-8
-#define ORGR_FLAT		-7
-#define ORGR_SHARP		-6
+#define ORGR_STRONG_ACCENT	-11
+#define ORGR_ACCENT		-10
+#define ORGR_NO_ACCENT		-9
+#define ORGR_FLAT		-8
+#define ORGR_SHARP		-7
+#define ORGR_TIE		-6
 #define ORGR_REST		-5
 #define ORGR_INSERT_NOTE	-4
 #define ORGR_DELETE_NOTE	-3
@@ -536,6 +539,7 @@ F64 PopUpDuration()
   LtfPutS(l,"$FM,GREEN$$MU,\"Set Word\",ORGR_SET_WORD$\n"
 	"$MU,\"Toggle Sharp\",ORGR_SHARP$\n"
 	"$MU,\"Toggle Flat\",ORGR_FLAT$\n"
+	"$MU,\"Toggle Tie\",ORGR_TIE$\n"
 	"$MU,\"Make Rest\",ORGR_REST$\n"
 	"$MU,\"Insert Note\",ORGR_INSERT_NOTE$\n"
 	"$MU,\"Delete Note\",ORGR_DELETE_NOTE$\n"
@@ -607,6 +611,10 @@ U0 OrgRightClick(I64 x,I64 y)
 	      tempo->octave++;
 	    }
 	  }
+	  break;
+	case ORGR_TIE:
+	  if (tempo->type==OT_NOTE)
+	    Btc(&tempo->flags,Of_TIE);
 	  break;
 	case ORGR_SET_WORD:
 	  if (tempo->type==OT_NOTE) {
@@ -1041,6 +1049,10 @@ U0 OrgLoadSongStr(U8 *st,I64 *org_octave,F64 *org_duration)
 	tempo->accent++;
 	st++;
       }
+      while (*st=='(') {
+	Bts(&tempo->flags,Of_TIE);
+	st++;
+      }
       st=OrgMusicSetOctave(st,org_octave);
       st=OrgMusicSetNoteLen(st,org_duration);
     }
@@ -1195,6 +1207,8 @@ U8 *OrgCvtSong()
 	*dst++=waveform+'0';
 	last_waveform=waveform;
       }
+      if (Bt(&tempo->flags,Of_TIE))
+	*dst++='(';
       while (accent--)
 	*dst++='!';
       if (octave!=last_octave && note!=NOTE_REST) {
@@ -1878,9 +1892,14 @@ G_CMD);
 		    music_stacatto_factor=0.88*tempo_state.stacatto/TEMPO_RANGE+0.12;
 		    music_waveform=org_waveform;
 		    d=JIFFY_FREQ*org_durations[tempo->duration]/music_tempo;
-		    timeout_val+=d*music_stacatto_factor;
-		    timeout_val2=timeout_val+
-			d*(1.0-music_stacatto_factor);
+		    if (Bt(&tempo->flags,Of_TIE)) {
+		      timeout_val+=d;
+		      timeout_val2=timeout_val;
+		    } else {
+		      timeout_val+=d*music_stacatto_factor;
+		      timeout_val2=timeout_val+
+			  d*(1.0-music_stacatto_factor);
+		    }
 		    SleepUntil(timeout_val);
 		    org_play_f=0;
 		    SleepUntil(timeout_val2);

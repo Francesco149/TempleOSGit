@@ -137,7 +137,7 @@ U0 LexPutToken(LexStruct *lx)
   "\" ";
 }
 
-U32 lex_zeros=0,lex_line_feed=0x000A;
+U32 lex_zeros=0,lex_new_line=CH_NEW_LINE;
 
 U0 LexBackupLastChar(LexStruct *lx)
 {
@@ -212,7 +212,7 @@ U64 LexGetChar(LexStruct *lx)
 		}
 		break;
 	      case LTFT_NEW_LINE:
-		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_line_feed;
+		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_new_line;
 		tempf->line_start=cl->next;
 		tempf->line_num=cl->y+2;	//+1 because CR is on previous line, +1 because l y starts at zero
 		compiled_lines++;

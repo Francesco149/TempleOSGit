@@ -99,6 +99,8 @@ public U0 Play(U8 *st,U8 *words=NULL)
     '.' sets to 1.5 times the current duration
   durations stay set until changed.
 
+    '(' tie, placed before the note to be extended
+
   Accents are made with
     '!'   *1.5
     '!!'  *1.5`2
@@ -130,18 +132,23 @@ public U0 Play(U8 *st,U8 *words=NULL)
 */
 
 {
-  U8 *word;
+  U8 *word,*last_st;
   U64 note,i=0,timeout_val,timeout_val2;
-  BoolI8 old_preempt=Preempt(OFF);
+  BoolI8 tie,old_preempt=Preempt(OFF);
   F64 f,d,a,on_jiffies,off_jiffies;
   music_play_note_num=0;
   while (*st) {
     timeout_val=sys_jiffies;
     a=music_amplitude;
+    tie=FALSE;
 
-    while (*st && !('A'<=*st<='G') && *st!='R') {
+    do {
+      last_st=st;
       if (*st=='!') {
 	a*=1.5;
+	st++;
+      } else if (*st=='(') {
+	tie=TRUE;
 	st++;
       } else {
 	st=MusicSetWaveform(st);
@@ -149,7 +156,8 @@ public U0 Play(U8 *st,U8 *words=NULL)
 	st=MusicSetOctave(st);
 	st=MusicSetNoteLen(st);
       }
-    }
+    } while (st!=last_st);
+
     if (!*st) break;
     note=*st++-'A';
     if (note<7) {
@@ -171,9 +179,14 @@ public U0 Play(U8 *st,U8 *words=NULL)
     }
 
     d=JIFFY_FREQ*music_note_len/music_tempo;
-    on_jiffies	=d*music_stacatto_factor;
+    if (tie) {
+      on_jiffies  =d;
+      off_jiffies =0;
+    } else {
+      on_jiffies  =d*music_stacatto_factor;
+      off_jiffies =d*(1.0-music_stacatto_factor);
+    }
     timeout_val+=on_jiffies;
-    off_jiffies =d*(1.0-music_stacatto_factor);
     timeout_val2=timeout_val+off_jiffies;
 
     if (!music_mute)

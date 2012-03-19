@@ -1,6 +1,22 @@
 Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 
-----02/27/12 00:50:31----
+----03/18/12 18:04:04----
+
+----03/17/12 21:06:37----
+* Added ties to MusicOrgan.
+
+----03/10/12 02:56:24----
+* Added [::/LT/Demo/Graphics/Circuit.CPZ] ::/LT/Demo/Graphics/Circuit.CPZ.
+
+----03/07/12 08:00:39----
+* Made [C:/LT/OSMain/Str1a.CPZ,2508] PrintF() handle multi-char values with
+%c.
+* Added more songs.
+
+----03/04/12 06:27:01----
+* Added [::/LT/Demo/Graphics/Circuit.CPZ] ::/LT/Demo/Graphics/Circuit.CPZ.
+
+----02/28/12 13:32:53----
 * Added [C:/LT/OSMain/Misc1a.CPZ,483] RiskyCopy().
 
 ----02/08/12 16:29:13----
@@ -98,7 +114,7 @@ addition to <SHIFT-INSERT>, etc.
 * Got rid of ListFile.APZ.
 * Made so [C:/LT/OSMain/Adam1b.HPZ,244] Pow() operator is not in-line.
 * Made so compiler sends strings all alone to [C:/LT/OSMain/Display.CPZ,272]
-PutS() or [C:/LT/OSMain/Str1a.CPZ,2499] PrintF().
+PutS() or [C:/LT/OSMain/Str1a.CPZ,2508] PrintF().
 
 ----12/04/11 22:40:18----
 * **Warning**: Got rid of size arg in [C:/LT/Adam/Gr/GrSpritePlot.APZ,555]
@@ -193,7 +209,7 @@ D:/LT/Apps/MusicOrgan/Examples/free.CPZ.
  
 ----10/16/11 12:16:17----
 * Converted [C:/LT/Compiler/CmpMain.CPZ,15] StreamPrintF()'s to
-[C:/LT/OSMain/Str1a.CPZ,2515] DefinePrintF()'s.
+[C:/LT/OSMain/Str1a.CPZ,2524] DefinePrintF()'s.
 * Improved [::/LT/Apps/Tanks/Tanks.CPZ] ::/LT/Apps/Tanks/Tanks.CPZ.
 * Deleted ::/LT/Demo/GameStarters/Pac.CPZ (Redundant)
 * Deleted ::/LT/Demo/GameStarters/Kings.CPZ (Redundant)

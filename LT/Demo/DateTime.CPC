@@ -11,7 +11,7 @@
   is stored in the lower 32-bits.  The upper
   32-bits hold the num of days since Christ.
 
-  [C:/LT/OSMain/Str1a.CPZ,2499] PrintF() and the file datetimes use
+  [C:/LT/OSMain/Str1a.CPZ,2508] PrintF() and the file datetimes use
   this format, otherwise you might want to
   use [C:/LT/OSMain/Adam1b.HPZ,202] GetTimeStamp() for a higher frequency
   timing, divide by [C:/LT/OSMain/OSGlbls.CPZ,46] time_stamp_freq,

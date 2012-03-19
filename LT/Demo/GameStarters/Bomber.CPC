@@ -110,6 +110,22 @@ U0 UpdateWin(TaskStruct *task)
     }
   }
   GrSpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
+  GrDCDel(dc);
+}
+ 
+U0 BombDrop()
+{
+  I64 i;
+  bx=x;
+  by=y;
+  bt=tP(Fs);
+  Noise(200,500,1000);
+  for (i=0;i<NUM_TANKS;i++) {
+    if (!tk[i].dead) {
+      if (SqrI64(bx-tk[i].x)+SqrI64(by-tk[i].y)<20*20)
+	tk[i].dead=TRUE;
+    }
+  }
 }
  
 I64 AnimateTask(TaskStruct *parent)
@@ -157,21 +173,6 @@ U0 Init()
   }
 }
 
-U0 BombDrop()
-{
-  I64 i;
-  bx=x;
-  by=y;
-  bt=tP(Fs);
-  Noise(200,500,1000);
-  for (i=0;i<NUM_TANKS;i++) {
-    if (!tk[i].dead) {
-      if (SqrI64(bx-tk[i].x)+SqrI64(by-tk[i].y)<20*20)
-	tk[i].dead=TRUE;
-    }
-  }
-}
- 
 U0 Bomber()
 {
   U64 ch,sc;

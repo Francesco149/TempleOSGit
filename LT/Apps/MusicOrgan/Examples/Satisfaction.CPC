@@ -97,7 +97,6 @@ U0 Song()
     SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
     Fs->draw_it=&DrawIt;
     Fs->task_end_cb=&SndTaskEndCB;
-    "$FG,GREEN$I did this melody.  The others are random.\n\n$FG$";
     while (!ScanKey) {
       t0=tM;
       Play("M5/4W13qEAeDDCCqBEAeDD",

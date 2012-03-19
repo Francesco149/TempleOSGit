@@ -1757,12 +1757,21 @@ sp_in_sub_fmt:
 	case 'c':
 	  if (cur_arg>=argc)
 	    throw(EXCEPT_SPRINTF,1);
-	  SPrintFPutChar(addr_dst,argv[cur_arg++],addr_buf);
+	  temp_buf[0]><(U64)=argv[cur_arg++];
+	  temp_buf[8]	    =0;
+	  OutStr(temp_buf,addr_buf,addr_dst,len,left_justify,truncate_flag);
 	  break;
 	case 'C':
 	  if (cur_arg>=argc)
 	    throw(EXCEPT_SPRINTF,1);
-	  SPrintFPutChar(addr_dst,ToUpper(argv[cur_arg++]),addr_buf);
+	  temp_buf[0]><(U64)=argv[cur_arg++];
+	  temp_buf[8]	    =0;
+	  ptr=temp_buf;
+	  while (*ptr) {
+	    *ptr=ToUpper(*ptr);
+	    ptr++;
+	  }
+	  OutStr(temp_buf,addr_buf,addr_dst,len,left_justify,truncate_flag);
 	  break;
 	case 'D':
 	  if (cur_arg>=argc)

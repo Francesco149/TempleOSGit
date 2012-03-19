@@ -52,7 +52,6 @@ U0 Song()
   try {
   while (!ScanKey) {
 	t0=tM;
-	"$FG,GREEN$I did the first half, God, the second.$FG$\n";
 	Play("W12qG3eAAqBA2G3BhA",
 		"The \0Cre\0 \0a\0tor \0on \0His \0thone,\n\0");
 	Play("2qG3eAAqBA2G3BhA",

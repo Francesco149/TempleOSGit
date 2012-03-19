@@ -292,7 +292,7 @@ HT_STRUCT_SIZE    00000030 0001 ExportSysSym Lit
 [::/LT/Compiler/Directives.CPZ,77] ImportHashTable   [ImportHashTable] 000038B8 0000 Funct Export 
 [::/LT/Compiler/Directives.CPZ,96] IncludeDepth      [IncludeDepth] 00003970 0000 Funct Export 
 [::/LT/Compiler/Unassembler.CPZ,3] InstEntriesCompare[InstEntriesCompare] 00000748 0001 Funct Export 
-[::/LT/Compiler/CmpInit.CPZ,5] InternalType      322902A88 0002 Class 
+[::/LT/Compiler/CmpInit.CPZ,5] InternalType      322B6FE38 0002 Class 
 [::/LT/Compiler/Directives.CPZ,69] IsReplaceSyms     [IsReplaceSyms] 00003890 000A Funct Export 
 [::/LT/Compiler/Directives.CPZ,28] KeepPrivate       [KeepPrivate] 000037B0 0000 Funct Export 
 [::/LT/Compiler/Directives.CPZ,56] LTrace            [LTrace] 00003848 0000 Funct Export 
@@ -347,7 +347,7 @@ MP_SYS_TEMP_PTR   00000004 0000 ExportSysSym Lit
 [::/LT/Compiler/OptPass012.CPZ,187] OptLag1           [OptLag1] 00026D28 0005 Funct Export 
 [::/LT/Compiler/OptPass012.CPZ,198] OptLead1          [OptLead1] 00026D68 0002 Funct Export 
 [::/LT/Compiler/OptPass3.CPZ,47] OptMVCompare      [OptMVCompare] 0002BE30 0001 Funct Export 
-[::/LT/Compiler/OptPass3.CPZ,42] OptMemberVar      31C79AE20 0005 Class 
+[::/LT/Compiler/OptPass3.CPZ,42] OptMemberVar      322B905F0 0005 Class 
 [::/LT/Compiler/OptPass012.CPZ,143] OptMissing        [OptMissing] 00026AFE 0004 Funct Export 
 [::/LT/Compiler/CmpAsm.CPZ,544] OptNext           000000A8 0002 Funct 
 [::/LT/Compiler/CmpAsm.CPZ,547] OptNext2          0000011A 0001 Funct 
@@ -441,7 +441,7 @@ SF_RIP            00000008 0000 ExportSysSym Lit
 [::/LT/Compiler/Lex.CPZ,107] SetSrcFileInfo    [SetSrcFileInfo] 00003E48 0006 Funct Export 
 [::/LT/Compiler/CmpMain.CPZ,15] StreamPrintF      [StreamPrintF] 00037646 0000 Funct Export 
 [::/LT/Compiler/CmpMain.CPZ,2] StreamPutS        [StreamPutS] 000375E6 0001 Funct Export 
-[::/LT/Compiler/StmtParser.CPZ,1392] SwitchCaseEntry   31C79EF00 0004 Class 
+[::/LT/Compiler/StmtParser.CPZ,1392] SwitchCaseEntry   31C869428 0004 Class 
 [::/LT/Compiler/Directives.CPZ,73] SysEcho           [SysEcho] 000038A0 0000 Funct Export 
 TASK_ADDR         00000000 0000 ExportSysSym Lit 
 TASK_ANIMATE_TASK 00000468 0000 ExportSysSym Lit 
@@ -592,7 +592,7 @@ UUM_STRUCT_SIZE   00000010 0000 ExportSysSym Lit
 [::/LT/Compiler/Unassembler.CPZ,58] UnasmHashLoad     [UnasmHashLoad] 00000970 0001 Funct Export 
 [::/LT/Compiler/StmtParser.CPZ,799] UndefinedExtern   [UndefinedExtern] 00014916 0001 Funct Export 
 [::/LT/Compiler/StmtParser.CPZ,806] UnusedExternWarning[UnusedExternWarning] 00014966 0004 Funct Export 
-[::/LT/Compiler/StmtParser.CPZ,183] VI16              322758FE0 0003 Class 
+[::/LT/Compiler/StmtParser.CPZ,183] VI16              323E56170 0003 Class 
 _OPTNEXT          000000A8 0001 ExportSysSym Export 
 _OPTNEXT2         0000011A 0001 ExportSysSym Export 
 _OPTNEXT3         0000018C 0001 ExportSysSym Export 
@@ -624,7 +624,7 @@ _PRSPUSH2         0000024C 0001 ExportSysSym Export
 [::/LT/Compiler/CmpGlbls.CPZ,9] fpop_bitmap       000006B0 000C GlbVar Export 
 [::/LT/Compiler/CmpInit.CPZ,9] internal_types_table00034008 0001 GlbVar Export 
 [::/LT/Compiler/CmpGlbls.CPZ,3] is_first_compiler 000005E8 0004 GlbVar Export 
-[::/LT/Compiler/Lex.CPZ,140] lex_line_feed     00003FD4 0001 GlbVar Export 
+[::/LT/Compiler/Lex.CPZ,140] lex_new_line      00003FD4 0001 GlbVar Export 
 [::/LT/Compiler/Lex.CPZ,140] lex_zeros         00003FD0 000A GlbVar Export 
 [::/LT/Compiler/Lex.CPZ,403] ltf_stop_btypes   00004980 0001 GlbVar Export 
 [::/LT/Compiler/CmpGlbls.CPZ,11] non_ptr_vars_mask 000006E0 0006 GlbVar Export 

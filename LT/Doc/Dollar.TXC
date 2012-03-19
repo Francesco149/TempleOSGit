@@ -104,7 +104,7 @@ Examples: <CTRL-T> to see
 3)File link without different tag str.[::/LT/Doc/HelpMain.TXZ]
 4)[::/LT/Doc/HelpMain.TXZ,Admin] File find link searching for 'Admin'
 5)[::/LT/OSMain/Adam1a.HPZ,CTRL:3] File find link searching for 3rd 'CTRL'
-6)[C:/LT/OSMain/Str1a.CPZ,2499] Manual page link
+6)[C:/LT/OSMain/Str1a.CPZ,2508] Manual page link
 7)[::/LT/OSMain/Adam1a.HPZ,200] File line num link
 8)[::/LT/OSMain/Define1a.CPZ,OS_DEFINE] File anchor link -- <CTRL-T> to see
   anchor after you click
