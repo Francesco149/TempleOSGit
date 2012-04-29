@@ -1,0 +1,82 @@
+#define __BIN_1_TYPE 0x00000002
+#define __BIN_1_SIZE 0x0000007F
+#define __BIN_1 "\x02\x01\x08\x02\x00\x00\x00\x05\xFF\xFF\xFF\xFF\x00\x00\x00\x00\x02\x00\x00\x00\xF6\xFF\xFF\xFF\x05\x02\x00\x00\x00\xF6\xFF\xFF\xFF\x04\x00\x00\x00\x00\x00\x00\x00\x05\x02\x00\x00\x00\xF5\xFF\xFF\xFF\x06\x00\x00\x00\xEA\xFF\xFF\xFF\x05\x01\x00\x00\x00\xF2\xFF\xFF\xFF\x00\x00\x00\x00\xEA\xFF\xFF\xFF\x05\x02\x00\x00\x00\xE7\xFF\xFF\xFF\x02\x00\x00\x00\xE1\xFF\xFF\xFF\x05\x05\x00\x00\x00\xEA\xFF\xFF\xFF\x0A\x00\x00\x00\xF2\xFF\xFF\xFF\x05\xFF\xFF\xFF\xFF\xE9\xFF\xFF\xFF\xFB\xFF\xFF\xFF\xF3\xFF\xFF\xFF\x00"
+
+
+
+
+
+/* <1> <1> (image) */
+
+I64 x=0,y=0;
+
+U0 DrawMap(TaskStruct *task,GrDC *dc)
+{
+  nounusedwarn task;
+  GrSpritePlot3(dc,x,y,0,__BIN_1);
+}
+
+#define A1_MIN	0.02
+#define A1_MAX	0.05
+#define A2_MIN	0.15
+#define A2_MAX	0.30
+
+U0 AEMap()
+{
+  I64 i=0,
+      cx=Fs->win_pixel_width>>1,
+      cy=Fs->win_pixel_height>>1,
+      c_min=MinI64(cx,cy),
+      *r=NULL,
+      x1=0,y1=0,z1=0,
+      x_last=x1,y_last=y1;
+  F64 a,a1=(A1_MAX+A1_MIN)/2,a2=(A2_MAX+A2_MIN)/2,a2_total=a2,
+      x_scale=ToF64(cx)/c_min,y_scale=ToF64(cy)/c_min;
+  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+
+  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
+  LtfClear;
+  "$BG,YELLOW$";
+  NewLine(54);
+  PutBibleVerse("Exodus,16:35",3);
+  Fs->draw_it=&DrawMap;
+  try {
+    while (!ScanChar) {
+      dc->color=BLACK;
+      a1=Limit(Unwrap(a1+(A1_MAX+A1_MIN)/5.0*(Rand-0.5)),-A1_MAX,A1_MAX);
+      a=a1;
+      if ( 0.0<=a<=A1_MIN) a=A1_MIN;
+      if (-A1_MIN<=a<=0.0) a=-A1_MIN;
+      Free(r);
+      r=GrRotZ(a);
+      GrRot(r,&x1,&y1,&z1);
+
+      a2=Limit(Unwrap(a2+(A2_MAX+A2_MIN)/5.0*(Rand-0.5)),-A2_MAX,A2_MAX);
+      a=a2;
+      if ( 0.0<=a<=A2_MIN) a=A2_MIN;
+      if (-A2_MIN<=a<=0.0) a=-A2_MIN;
+      a2_total+=a;
+
+      x1=LimitI64(x1+6.0*Cos(a2_total),-c_min+10,c_min-10);
+      y1=LimitI64(y1+6.0*Sin(a2_total),-c_min+10,c_min-10);
+
+      x=x_scale*x1+cx; y=y_scale*y1+cy;
+      if (i++&1)
+	GrLine(dc,x_last,y_last,x,y);
+      x_last=x; y_last=y;
+      Sleep(15);
+    }
+  } catch
+    Fs->catch_except=TRUE;
+  "$BG$\n";
+  SettingsPop(Fs,TSF_SAME_SONG);
+  Free(r);
+  GrDCClear(dc);
+  GrDCDel(dc);
+}
+
+//This is so I can use this file stand alone
+//or as a component of a program.
+#if IncludeDepth<2
+AEMap;
+#endif

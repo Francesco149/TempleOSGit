@@ -1,0 +1,10 @@
+LoseThos uses a 64-bit value, [C:/LT/OSMain/Adam1a.HPZ,181] LTDate, for
+date/time.  The upper 32-bits are 
+the days since Christ.  The lower 32-bits store time of day divided by 4 
+billion which works out to 49710ths of a second.  You can subtract two
+[C:/LT/OSMain/Adam1a.HPZ,181] LTDate'
+s to get a time span.
+
+Use [C:/LT/OSMain/Adam1a.HPZ,466] LTDATE_FREQ to convert.
+
+

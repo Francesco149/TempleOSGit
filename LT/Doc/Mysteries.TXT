@@ -1,0 +1,88 @@
+This is to clearify how several mysterious things happen in LoseThos.
+
+* The main difference between LoseThos and other systems is that the heap and 
+compiler sym table are associated with tasks, not applications.
+
+* There are sym(hash) tables maintained by each task.  They are similar in 
+scope to environment vars.  When a sym is not found, the parent task's sym 
+table is checked.  All process chain back to the adam process.
+
+* The compiler only creates pos independent code.  You can't create code
+which 
+is loaded at a fixed, specified location.  The code is pos independent by 
+virtue of the fact that abs addresses get patched.
+
+* Binary executable files have export syms which are loaded into the sym 
+tables.  The operating system OSMain has such an export table.  In addition, 
+some map files are processed to provide more information on syms -- src file 
+links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,671] Man()/WORDSTAT
+feature can find src lines.
+
+* The word "public" does very little except allow the
+[::/LT/Doc/HelpIndex.TXZ] help_index and [C:/LT/Adam/Hash2a.APZ,151]
+HashRep() 
+program varients to exclude meaningless syms.  If you wish a full report of 
+public and nonpublic syms Click Here
+`LtfMax(1000000);HAllRep;View;
+`
+.
+
+* When compilation takes place, the structures used by the compiler stick 
+around.  Data on classes can be accessed by code.  See
+[C:/LT/Adam/Dbg2a.APZ,137] ClassRep().
+
+* Filenames ending in 'Z' are automatically compressed and uncompressed when 
+writing to disk.  File size in directory listing is the compressed size.  You 
+can view uncompressed size with [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236]
+Dir("*",TRUE); if you use the native LoseThos 
+filesystem.  See [::/LT/Doc/LTZ.TXZ] ::/LT/Doc/LTZ.TXZ for uncompressing from
+WINDOWS.
+
+* Some memory objects are allocated when needed and will decrease the 
+available memory displayed.  A task keeps mem objects smaller than a couple 
+blocks in it's own separate heap when freed and these are not counted in the 
+available system free memory, though they are free.  They get returned to the 
+system when the task is killed.  To get a sense of this, compile the
+operating 
+system and see the amount of mem used.  Then, compile it again and far less 
+will be allocated.  This is because it is reusing the small chunks.  See 
+[Memory] Memory.  Click Here
+`MemRep;View;`
+ for a [C:/LT/Adam/MemRep.APZ,188] MemRep.
+
+* The cursor location is stored as an ASCII 5 in files.  ASCII 31 is used for 
+SHIFT-SPACE, a character which does not get converted to tabs by 
+space-to-tabs, [C:/LT/Adam/S2T.APZ,61] S2T().
+
+* Binary data is stored beyond the terminating NULL in text files.  Map files 
+store debug src lines and other files store pictures.
+
+* Pictures can be stored as vect graphics so they might take shockingly
+little 
+room.  They can be converted to bitmaps.
+
+* If you change code in the /LT/Adam, /LT/Adam or your HOME directory, you 
+don't need to recompile, you just need to reboot because those directories
+get 
+recompiled when you boot.  It uses JIT compilation.  There is no ".BIN" file 
+for JIT compilation.
+
+* If a file is not found, the parent directories are searched for a file of 
+the same name.
+
+* LoseThos supports FAT32 and a native LoseThos file system type.  The native
+ 
+LoseThos partitions will appear as FAT32 to other operating systems, but will 
+not work.  Do not access the native LoseThos partitions from other operating 
+systems.  This was to fool a bootloader when I tricked it to use it's
+recovery 
+partition feature.
+
+* The CPU usage during disk operation expands to 99%.  It polls while 
+swapping-out.  You can do other things during disk operations fine because it 
+swaps-out a lot.  See [::/LT/Demo/Lectures/Spinning.CPZ] Cooperative
+Multitasking.
+
+
+
+* "Windows" is a trademark of MicroSoft Corp.

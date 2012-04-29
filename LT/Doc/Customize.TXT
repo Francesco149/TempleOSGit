@@ -1,0 +1,16 @@
+
+* You can adjust the mouse movement rate by setting global vars in your 
+start-up file.  See [HOME/Adam3aLocalize.APZ,mxx_scale] mouse scale.
+
+* You can set your local time zone by setting the local_time_offset global
+var 
+in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,466]
+LTDATE_FREQ.  See [HOME/Adam3aLocalize.APZ,local_time] local time.  See 
+[::/LT/Demo/DateTime.CPZ] DateTime.CPZ for changing date/time format maps.
+
+* If sound doesn't work, run [::/LT/Adam/Snd/HDCfg.CPZ]
+::/LT/Adam/Snd/HDCfg.CPZ or, comment-out 
+[HOME/Adam3cSnd.APZ,HDAudio] #include "HDAudio" to revert to PC Speaker.
+
+* Get rid of this msg [HOME/DoItOnce.CPZ,Customize.TXZ] here.
+

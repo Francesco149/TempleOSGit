@@ -1,0 +1,800 @@
+#help_index "Graphics/DCs;Graphics/Screen"
+public GrDC *gr_screen_image; //This is read only
+
+#help_index "Graphics/DCs"
+public GrDC *gr_dc=NULL,  //This is updated every refresh
+	    *gr_dc2=NULL,
+	    *gr_dc3=NULL; //This is updated every refresh
+GrDC *gr_scaled_dc;
+U16 *gr_win_uncovered_bitmap=NULL,gr_highest_uncovered;
+
+U16 *gr_text_base_cache;
+
+U64 *gr_1_to_8_bits,*gr_1_to_8_colors;
+
+public U0 GrDCFill(GrDC *dc,ColorROPU32 val=0)
+{
+  nobound_switch (dc->type) {
+    case DCT_COLOR4:
+      MemSet(dc->body,val,(dc->width_internal*dc->height)>>1);
+      break;
+    case DCT_MONO:
+      if (val)
+	MemSet(dc->body,0xFF,(dc->width_internal*dc->height)>>3);
+      else
+	MemSet(dc->body,0,(dc->width_internal*dc->height)>>3);
+      break;
+    case DCT_COLOR8:
+      MemSet(dc->body,val,dc->width_internal*dc->height);
+      break;
+  }
+}
+
+public U0 GrDCClear(GrDC *dc=NULL)
+{
+  if (!dc) dc=gr_dc2;
+  if (dc->alias)
+    dc->alias->flags&=~DCF_DIRTY;
+  GrDCFill(dc);
+  if (dc->mask)
+    GrDCClear(dc->mask);
+}
+
+#help_index "Graphics/Screen;Windows"
+
+U0 WinZBufFill(TaskStruct *task)
+{ //Not public
+  I64 y,t,b,l,r,w;
+  if (!Bt(&task->display_flags,DISPLAYf_NO_BORDER)) {
+    t= task->win_top-1>0
+       ? task->win_top-1 : 0,
+    b= task->win_bottom+1<TEXT_ROWS
+       ? task->win_bottom+1 : TEXT_ROWS-1,
+    l= task->win_left-1>0
+       ? task->win_left-1 : 0,
+    r= task->win_right+1<TEXT_COLS
+       ? task->win_right+1 : TEXT_COLS-1;
+  } else {
+    t= task->win_top>0
+       ? task->win_top : 0,
+    b= task->win_bottom<TEXT_ROWS
+       ? task->win_bottom : TEXT_ROWS-1,
+    l= task->win_left>0
+       ? task->win_left : 0,
+    r= task->win_right<TEXT_COLS
+       ? task->win_right : TEXT_COLS-1;
+  }
+  t=LimitI64(t,0,TEXT_ROWS-1);
+  b=LimitI64(b,t,TEXT_ROWS-1);
+  l=LimitI64(l,0,TEXT_COLS-1);
+  r=LimitI64(r,l,TEXT_COLS-1);
+  if (w=r-l+1)
+    for (y=t;y<=b;y++)
+      MemSetU16(gr_win_z_buf(U8 *)+(y*TEXT_COLS+l)*sizeof(U16),
+	task->win_z_num,w);
+}
+
+public U0 WinZBufUpdate()
+{ //You might have to call this if you are doing graphics outside
+  //the window manager callback routines.  Call it if, for example,
+  //a pop-up window closes and you need to refresh before graphics.
+  I64 i,z=1;
+  U16 *ptr;
+  TaskStruct *task,*task1;
+  BoolI8 old_preempt=Preempt(OFF);
+  if (gr_win_z_buf) {
+    LBtr(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0);
+    task1=task=sys_winmgr_task;
+    do {
+      if (!TaskValidate(task)) break;
+      if (Bt(&task->display_flags,DISPLAYf_SHOW)) {
+	task->win_z_num=z++;
+	WinZBufFill(task);
+      }
+      task=task->next_task;
+    } while (task!=task1 && z<0x10000);
+
+    MemSet(gr_win_uncovered_bitmap,0,(gr_highest_uncovered+7)>>3+1);
+    gr_highest_uncovered=z-1;
+    for (ptr=gr_win_z_buf,i=TEXT_ROWS*TEXT_COLS;i;i--)
+      Bts(gr_win_uncovered_bitmap,*ptr++);
+  }
+  Preempt(old_preempt);
+}
+
+#help_index "Graphics/Char;Char"
+public U0 WinTextFill(U64 d,TaskStruct *task=NULL)
+{
+  if (!task) task=Fs;
+  if (!TaskValidate(task)) return;
+  I64 y,w,
+      t= task->win_top>0
+       ? task->win_top : 0,
+      b= task->win_bottom<TEXT_ROWS
+       ? task->win_bottom : TEXT_ROWS-1,
+      l= task->win_left>0
+       ? task->win_left : 0,
+      r= task->win_right<TEXT_COLS
+       ? task->win_right : TEXT_COLS-1;
+  if (w=r-l+1)
+    for (y=t;y<=b;y++)
+      MemSetU32(gr_text_base(U8 *)+(y*TEXT_COLS+l)*sizeof(U32),
+	d,w);
+}
+
+public U0 WinTextClear(TaskStruct *task=NULL)
+{
+  if (!task) task=Fs;
+  if (!TaskValidate(task)) return;
+  WinTextFill(task->text_attr<<8,task);
+}
+
+public U0 SetWinBkColor(U64 c,TaskStruct *task=NULL)
+{
+  if (!task) task=Fs;
+  if (!TaskValidate(task)) return;
+  task->text_attr=task->text_attr&0x0F | c<<4;
+  WinTextFill(c<<12,task);
+}
+
+#help_index "Graphics/Color"
+public I32 gr_rainbow_10[10]=
+{
+BLACK,BROWN,RED,LTRED,YELLOW,
+GREEN,BLUE,PURPLE,LTGRAY,WHITE
+};
+
+DefineListLoad("ST_RAINBOW_10",
+"BLACK\0BROWN\0RED\0LTRED\0YELLOW\0"
+"GREEN\0BLUE\0PURPLE\0LTGRAY\0WHITE\0");
+
+U0 SetVGAPalette4Indices()
+{//4-bit (16 color)
+/*There is a level of indirection we wish to identity map.
+This sets the 16-colors to use
+the first 16 DAC rgb entries, so
+we never need to worry about indexes,
+just DAC palette settings.
+*/
+  I64 i;
+  if (text_mode) return;
+  PushFD;
+  Cli;
+  while (LBts(&sys_semas[SYS_SEMA_VGA],0))
+    Yield;
+  InU8(VGA_INPUT_STAT); //Rsts attr index/data
+  for (i=0;i<16;i++) {
+    OutU8(VGA_ATTR_INDEX,i);
+    OutU8(VGA_ATTR_DATA_WRITE,i);
+  }
+  OutU8(VGA_ATTR_INDEX,0x20);
+  OutU8(VGA_ATTR_DATA_WRITE,0); //Dummy write
+  InU8(VGA_INPUT_STAT); //Rsts attr index/data
+  LBtr(&sys_semas[SYS_SEMA_VGA],0);
+  PopFD;
+}
+
+public U0 SetVGAPaletteColor(U64 color_num,BGREntry bgr)
+{ //6-bits per r,b and g
+  if (text_mode) return;
+  PushFD;
+  Cli;
+  while (LBts(&sys_semas[SYS_SEMA_VGA],0))
+    Yield;
+  OutU8(VGA_PALETTE_MASK,0xFF);
+  OutU8(VGA_REG_WRITE,color_num);
+  OutU8(VGA_PALETTE_DATA,bgr.r>>2);
+  OutU8(VGA_PALETTE_DATA,bgr.g>>2);
+  OutU8(VGA_PALETTE_DATA,bgr.b>>2);
+  LBtr(&sys_semas[SYS_SEMA_VGA],0);
+  PopFD;
+}
+
+public BGREntry GetVGAPaletteColor(U64 color_num)
+{ //6-bits per r,b and g
+  BGREntry result=0;
+  if (text_mode) return 0;
+  PushFD;
+  Cli;
+  while (LBts(&sys_semas[SYS_SEMA_VGA],0))
+    Yield;
+  OutU8(VGA_PALETTE_MASK,0xFF);
+  OutU8(VGA_REG_READ,color_num);
+  result.r=InU8(VGA_PALETTE_DATA)<<2;
+  result.g=InU8(VGA_PALETTE_DATA)<<2;
+  result.b=InU8(VGA_PALETTE_DATA)<<2;
+  LBtr(&sys_semas[SYS_SEMA_VGA],0);
+  PopFD;
+  return result;
+}
+
+public BGREntry vga_palette4_std[16]={
+0x000000,0x0000AA,0x00AA00,0x00AAAA,
+0xAA0000,0xAA00AA,0xAA5500,0xAAAAAA,
+0x555555,0x5555FF,0x55FF55,0x55FFFF,
+0xFF5555,0xFF55FF,0xFFFF55,0xFFFFFF};
+
+public BGREntry vga_palette4_gray[16]={
+0x000000,0x111111,0x222222,0x333333,
+0x444444,0x555555,0x666666,0x777777,
+0x888888,0x999999,0xAAAAAA,0xBBBBBB,
+0xCCCCCC,0xDDDDDD,0xEEEEEE,0xFFFFFF};
+
+public U0 GetVGAPalette4(BGREntry *bgr)
+{//4-bit (16 color)
+  I64 i;
+  for (i=0;i<16;i++)
+    bgr[i]=GetVGAPaletteColor(i);
+}
+
+public U0 SetVGAPalette4(BGREntry *bgr)
+{//4-bit (16 color)
+  I64 i;
+  for (i=0;i<16;i++)
+    SetVGAPaletteColor(i,bgr[i]);
+}
+
+public U0 SetStdPalette()
+{
+  SetVGAPalette4(vga_palette4_std);
+}
+
+#help_index "Graphics/Screen"
+I32 gr_table[1024];
+
+#define GR_NUM_PEN_BRUSHES 64
+GrDC *gr_pen_brushes[GR_NUM_PEN_BRUSHES],
+	 *gr_even_pen_brushes[GR_NUM_PEN_BRUSHES],
+	 *gr_odd_pen_brushes[GR_NUM_PEN_BRUSHES];
+
+
+#define GR_MAX_SCREEN_SCALE	8
+U8 *gr_screen_scale_tables[GR_MAX_SCREEN_SCALE+1];
+I64 gr_screen_scale=1,grsx=0,grsy=0;
+
+//When zoomed, this keeps the mouse centered.
+public BoolI8 gr_continuous_scroll=FALSE;
+
+
+#define GR_REFRESH_LOG_CNT	16
+F64 gr_refresh_time_stamps[GR_REFRESH_LOG_CNT];
+U64 gr_refresh_ts_ptr=0;
+
+U0 GrSetUpTable(GrDC *hidden)
+{
+  GrDC *b;
+  I64 i,j,k,l,m,x,y,rr;
+  U8 *dst;
+
+  k=0;
+  for (i=0;i<256;i++)
+    for (j=0;j<8;j++)
+      if (Bt(&i,j))
+	gr_1_to_8_bits(U8 *)[k++]=0xFF;
+      else
+	gr_1_to_8_bits(U8 *)[k++]=0x00;
+  k=0;
+  for (i=0;i<16;i++)
+    for (j=0;j<8;j++)
+      gr_1_to_8_colors(U8 *)[k++]=i;
+
+  for (i=-16;i<16;i++) {
+    for (j=-16;j<16;j++) {
+      k=(i>=0 ? i:32+i)<<5+(j>=0 ? j:32+j);
+      gr_table[k]=(i*hidden->width_internal+j)>>3;
+    }
+  }
+  for (i=0;i<GR_NUM_PEN_BRUSHES;i++) {
+    k=i+1;
+    j=(i+7)&~7;
+    b=GrDCNew(DCT_MONO,i,i);
+//    b=GrDCNew(DCT_MONO,j,i);
+    gr_pen_brushes[i]=b;
+    b->color=WHITE;
+    rr=k*k;
+    for (y=1;y<k;y++)
+      for (x=1;x<k;x++)
+	if (SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
+	  GrPlot0(b,x-1,y-1);
+
+    b=GrDCNew(DCT_MONO,i,i);
+//    b=GrDCNew(DCT_MONO,j,i);
+    gr_even_pen_brushes[i]=b;
+    b->color=WHITE;
+    rr=k*k;
+    for (y=1;y<k;y++)
+      for (x=1;x<k;x++)
+	if (!(((x-1)^(y-1))&1) && SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
+	  GrPlot0(b,x-1,y-1);
+
+    b=GrDCNew(DCT_MONO,i,i);
+//    b=GrDCNew(DCT_MONO,j,i);
+    gr_odd_pen_brushes[i]=b;
+    b->color=WHITE;
+    rr=k*k;
+    for (y=1;y<k;y++)
+      for (x=1;x<k;x++)
+	if (((x-1)^(y-1))&1 && SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
+	  GrPlot0(b,x-1,y-1);
+  }
+  if (text_mode) {
+    MemSet(VGA_TEXT_MEM_BASE,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
+    MemSet(gr_text_base_cache,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
+  } else {
+    OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
+    OutU8(VGA_SC_DATA,0x0F);
+//Virtual Box crashes on the following for some reason.
+//    MemSet(VGA_GRAPHIC_MEM_BASE,0,GR_HEIGHT*GR_WIDTH>>3);
+    MemSet(gr_screen_image->body,0,GR_WIDTH*GR_HEIGHT>>1);
+  }
+  for (i=1;i<=GR_MAX_SCREEN_SCALE;i++) {
+    dst=gr_screen_scale_tables[i]=MAlloc(256*i);
+    for (j=0;j<256;j++) {
+      m=0;
+      for (k=0;k<8;k++) {
+	if (Bt(&j,k)) {
+	  for (l=0;l<i;l++)
+	    Bts(&m,l+k*i);
+	}
+      }
+      for (l=0;l<i;l++)
+	dst[j+l*256]=m.u8[l];
+    }
+  }
+  for (i=0;i<GR_REFRESH_LOG_CNT;i++)
+    gr_refresh_time_stamps[i]=tNP;
+}
+
+GrDC *GrPersistentDCNew()
+{
+  GrDC *dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  dc->flags|=DCF_SCREEN_BITMAP;
+  dc->mask=GrDCNew(DCT_MONO,GR_WIDTH,GR_HEIGHT);
+  dc->mask->flags|=DCF_SCREEN_BITMAP;
+  dc->mask->color=WHITE;
+  GrDCClear(dc);
+  return dc;
+}
+
+U0 GrInit()
+{
+  SetStdPalette;
+  fp_set_std_palette=&SetStdPalette;
+  SetVGAPalette4Indices;
+
+  gr_1_to_8_bits  =MAlloc(256*sizeof(U64));
+  gr_1_to_8_colors=MAlloc(16*sizeof(U64));
+
+  gr_text_base=CAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U32));
+  gr_text_base_cache=MAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U16));
+  gr_win_z_buf=MAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U16));
+  gr_win_uncovered_bitmap=CAlloc(65536/8);
+  gr_highest_uncovered=0;
+
+  gr_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_dc->flags|=DCF_SCREEN_BITMAP;
+
+  gr_screen_image=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_scaled_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_scaled_dc->flags|=DCF_SCREEN_BITMAP;
+  gr_dc2=GrPersistentDCNew;
+
+/*
+  gr_dc3=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
+  gr_dc3->flags|=DCF_SCREEN_BITMAP;
+  GrDCFill(gr_dc3,TRANSPARENT);
+*/
+
+  GrSetUpTable(gr_dc);
+
+  WinZBufUpdate;
+}
+
+U64 gr_screen_updates=0;
+
+U0 GrUpdateWins()
+{ //Only called by WinMgr
+  I64 i;
+  TaskStruct *task,*task1;
+  P3I64 saved_scroll;
+  GrDC *dc;
+  BoolI8 old_preempt=Preempt(OFF);
+  try {
+    refresh_ode_time=0;
+    if (Bt(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0))
+      WinZBufUpdate;
+    task1=task=sys_winmgr_task;
+    do {
+      if (!TaskValidate(task))
+	break;
+      sys_task_being_screen_updated=task;
+      Preempt(old_preempt);
+      OdesUpdate(task);
+      Preempt(OFF);
+      if (!TaskValidate(task))
+	break;
+      if (Bt(&task->display_flags,DISPLAYf_SHOW) &&
+	  Bt(gr_win_uncovered_bitmap,task->win_z_num)) {
+	if (!Bt(&task->display_flags,DISPLAYf_NO_BORDER))
+	  DrawTaskBorder(task);
+	WinTextClear(task);
+	Preempt(old_preempt);
+	if (task->update_win)
+	  (*task->update_win)(task);
+	if (task->draw_it) {
+	  dc=GrDCAlias(gr_dc,task);
+	  (*task->draw_it)(task,dc);
+	  GrDCDel(dc);
+	}
+	if (!TaskValidate(task))
+	  break;
+	Preempt(OFF);
+	WinScrollNull(task,&saved_scroll);
+	DrawCtrls(task);
+	WinScrollRestore(task,&saved_scroll);
+      }
+      if (!TaskValidate(task))
+	break;
+      task=task->next_task;
+    } while (task!=task1);
+
+    for (i=1;i<mp_cnt;i++) {
+      task1=task=cpu_structs[i].seth_task;
+      do {
+	if (!TaskValidate(task))
+	  break;
+	sys_task_being_screen_updated=task;
+	Preempt(old_preempt);
+	OdesUpdate(task);
+	Preempt(OFF);
+	if (!TaskValidate(task))
+	  break;
+	task=task->next_task;
+      } while (task!=task1);
+    }
+  } catch {
+    PutExcept;
+    Dbg("Exception in WinMgr");
+  }
+
+  last_refresh_ode_time=refresh_ode_time;
+  ode_allocated_factor=LowPass1(0.1,ode_allocated_factor,
+      Limit(Gs->idle_factor-0.1,0.2,0.8),1/win_actual_refresh);
+
+  sys_task_being_screen_updated=NULL;
+  gr_refresh_time_stamps[gr_refresh_ts_ptr++&(GR_REFRESH_LOG_CNT-1)]=tNP;
+  win_actual_refresh=(GR_REFRESH_LOG_CNT-1)/
+      (gr_refresh_time_stamps[(gr_refresh_ts_ptr-1)&(GR_REFRESH_LOG_CNT-1)]-
+      gr_refresh_time_stamps[gr_refresh_ts_ptr&(GR_REFRESH_LOG_CNT-1)]);
+  gr_screen_updates++;
+  Preempt(old_preempt);
+}
+
+U0 GrFixScale()
+{
+  gr_screen_scale=LimitI64(gr_screen_scale,1,GR_MAX_SCREEN_SCALE);
+  if (gr_screen_scale==1) {
+    grsx=0;
+    grsy=0;
+  } else {
+    grsx=LimitI64(grsx,0,GR_WIDTH-GR_WIDTH/gr_screen_scale)&~7;
+    grsy=LimitI64(grsy,0,GR_HEIGHT-GR_HEIGHT/gr_screen_scale);
+  }
+}
+
+public U0 GrScaleZoom(F64 scale)
+{
+  BoolI8 old_preempt=Preempt(OFF);
+  F64 s=gr_screen_scale;
+  gr_screen_scale=gr_screen_scale*scale;
+  GrFixScale;
+  s/=gr_screen_scale;
+  ipx_scale*=s;
+  ipy_scale*=s;
+  ipz_scale*=s;
+  ipx_offset=ipx-(ipx-ipx_offset)*s;
+  ipy_offset=ipy-(ipy-ipy_offset)*s;
+  ipz_offset=ipz-(ipz-ipz_offset)*s;
+  grsx=ipx-gr_scaled_dc->width >>1/gr_screen_scale;
+  grsy=ipy-gr_scaled_dc->height>>1/gr_screen_scale;
+  GrFixScale;
+  Preempt(old_preempt);
+}
+
+public U0 GrZoomIn()
+{
+  GrScaleZoom(2.0);
+}
+
+public U0 GrZoomOut()
+{
+  GrScaleZoom(0.5);
+}
+
+U0 CtrlAltZ(U64 sc)
+{
+  if (sc&SCF_SHIFT)
+    GrZoomOut;
+  else
+    GrZoomIn;
+}
+SetCtrlAltLetCB('Z',&CtrlAltZ,"Sys/Zoom In or Out");
+
+U0 GrScaleImage()
+{
+  GrFixScale;
+  I64 plane,row,col,k,l,
+    d2=gr_scaled_dc->width>>3/gr_screen_scale,
+    d4=gr_scaled_dc->width_internal>>3,
+    d5=d4-d2*gr_screen_scale,
+    d3=gr_scaled_dc->height/gr_screen_scale,
+    d6=(gr_scaled_dc->height-d3)*gr_dc->width_internal>>3,
+    d7=gr_scaled_dc->height%gr_screen_scale*d4;
+  U8 *src,*src2,*dst,*src3,*map=gr_screen_scale_tables[gr_screen_scale];
+
+  src=gr_dc->body+grsx>>3+grsy*gr_dc->width_internal>>3;
+  dst=gr_scaled_dc->body;
+  for (plane=1;plane<0x10;plane<<=1) {
+    row=d3;
+    while (row--) {
+      k=gr_screen_scale;
+      while (k--) {
+	src2=src;
+	col=d2;
+	while (col--) {
+	  src3=&map[*src2++];
+	  l=gr_screen_scale;
+	  while (l--) {
+	    *dst++=*src3;
+	    src3+=256;
+	  }
+	}
+	l=d5;
+	while (l--)
+	  *dst++=0;
+      }
+      src+=d4;
+    }
+    l=d7;
+    while (l--)
+      *dst++=0;
+    src+=d6;
+  }
+}
+
+
+U0 GrUpdateBackgroundOfText()
+{
+  U64  d1=gr_dc->width_internal>>3,
+      d2=(gr_dc->width_internal*gr_dc->height-FONT_HEIGHT*gr_dc->width)>>3,
+      d4=(gr_dc->width_internal*FONT_HEIGHT-gr_dc2->width)>>3,
+      d7=1-(gr_dc->width_internal*gr_dc->height<<2)>>3,
+      row,col;
+  U32 *src,cur_ch;
+  U8 *dst;
+  BoolI8 blink_flag=Blink;
+
+  src=gr_text_base;
+  dst=gr_dc->body;
+  row=TEXT_ROWS;
+  while (row--) {
+    col=TEXT_COLS;
+    while (col--) {
+      cur_ch=*src++;
+      if (cur_ch & (LTFLT_SELECTED | LTFLT_INVERT | LTFLT_BLINK)) {
+	if (cur_ch & LTFLT_SELECTED)
+	  cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
+	if (cur_ch & LTFLT_INVERT)
+	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
+	if (cur_ch & LTFLT_BLINK)
+	  if (blink_flag)
+	    cur_ch.u8[1]= cur_ch.u8[1]<<4+ cur_ch.u8[1]>>4;
+      }
+      GrPlotBackground(cur_ch.u8[1],&dst,d1,d2);
+      dst+=d7;
+    }
+    dst+=d4;
+  }
+}
+
+//ExtScreenCodes
+//   Bits 0-7	ASCII (Screen Code)
+//   Bits 8-11	Foreground color
+//   Bits 12-15 Background color
+//   Bits 16-20 Signed X pos shift val
+//   Bits 21-25 Signed Y pos shift val
+//   Bit  28	Blink
+//   Bit  29	Inverted (Swap foreground and background)
+//   Bit  30	Selected (XOR colors with FF)
+//   Bit  31	Underline
+
+U0 GrUpdateForegroundOfText()
+{
+  U32 *src;
+  U64 u,cur_ch,row,col,plane,ch_line,i,
+      d1=gr_dc->width_internal>>3,
+      d2=(gr_dc->width_internal*gr_dc->height-FONT_HEIGHT*gr_dc->width)>>3,
+      d4=(gr_dc->width_internal*FONT_HEIGHT-gr_dc2->width)>>3;
+  U16 *dst2,*end_body=gr_dc->body+gr_dc->plane_size*4;
+  U8 *dst,*font_ptr,*font_ptr2,saved_font_line;
+  BoolI8 blink_flag=Blink,skip_space;
+
+  font_ptr=&gr_font[FONT_WIDTH*FONT_HEIGHT>>3*CH_SPACE];
+  skip_space=TRUE;
+  for (row=0;row<FONT_HEIGHT;row++)
+    if (font_ptr[row]) {
+      skip_space=FALSE;
+      break;
+    }
+  src=gr_text_base;
+  dst=gr_dc->body;
+  row=TEXT_ROWS;
+  while (row--) {
+    col=TEXT_COLS;
+    while (col--) {
+      cur_ch=*src++;
+      if (cur_ch & (LTFLT_UNDERLINE | LTFLT_SELECTED | LTFLT_INVERT | LTFLT_BLINK)) {
+	if (cur_ch & LTFLT_SELECTED)
+	  cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
+	if (cur_ch & LTFLT_INVERT)
+	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
+	if (cur_ch & LTFLT_BLINK)
+	  if (blink_flag)
+	    cur_ch.u8[1]= cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
+      } else
+	if (!cur_ch.u8[0] || skip_space && cur_ch.u8[0]==CH_SPACE)
+	  goto skip_char;
+      font_ptr=&gr_font[FONT_WIDTH*FONT_HEIGHT>>3*cur_ch.u8[0]];
+      if (cur_ch & LTFLT_UNDERLINE) {
+	saved_font_line=font_ptr[7];
+	font_ptr[7]=0xFF;
+      }
+      i=cur_ch.u16[1]&0x3FF;
+      dst2=dst+gr_table[i];
+      if (i) { //This character is shifted off-the-grid.
+	i&=7;
+	for (plane=0x01;plane!=0x10;plane<<=1) {
+	  font_ptr2=font_ptr;
+	  if (cur_ch.u8[1] & plane) {
+	    ch_line=FONT_HEIGHT;
+	    while (ch_line--) {
+	      u=*font_ptr2++<<i;
+	      if (gr_dc->body<=dst2<end_body)
+		*dst2|=u.u16[0] | u.u16[1];
+	      dst2(U8 *)+=d1;
+	    }
+	  } else {
+	    ch_line=FONT_HEIGHT;
+	    while (ch_line--) {
+	      u=*font_ptr2++<<i;
+	      if (gr_dc->body<=dst2<end_body)
+		*dst2&=~(u.u16[0] | u.u16[1]);
+	      dst2(U8 *)+=d1;
+	    }
+	  }
+	  dst2(U8 *)+=d2;
+	}
+      } else
+	GrPlotU8(font_ptr,cur_ch.u8[1],&dst2,d1,d2);
+      if (cur_ch & LTFLT_UNDERLINE)
+	font_ptr[7]=saved_font_line;
+skip_char:
+      dst++;
+    }
+    dst+=d4;
+  }
+}
+
+U0 GrUpdateTextModeText()
+{
+  U32 *src=gr_text_base;
+  U64 cur_ch,i,d0=TEXT_COLS*TEXT_ROWS;
+  U16 *dst=VGA_TEXT_MEM_BASE,*dst2=gr_text_base_cache;
+  BoolI8 blink_flag=Blink;
+  if (LBtr(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0)) {
+    i=d0;
+    while (i--) {
+      cur_ch=*src++;
+      if (cur_ch & LTFLT_SELECTED)
+	cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
+      if (cur_ch & LTFLT_INVERT)
+	cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
+      if (cur_ch & LTFLT_BLINK)
+	if (blink_flag)
+	  cur_ch.u8[1]= cur_ch.u8[1]<<4+ cur_ch.u8[1]>>4;
+      cur_ch&=0x7FFF;
+      *dst++=*dst2++=cur_ch;
+    }
+  } else {
+    i=d0;
+    while (i--) {
+      cur_ch=*src++;
+      if (cur_ch & LTFLT_SELECTED)
+	cur_ch.u8[1]=cur_ch.u8[1]^0xFF;
+      if (cur_ch & LTFLT_INVERT)
+	cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
+      if (cur_ch & LTFLT_BLINK)
+	if (blink_flag)
+	  cur_ch.u8[1]= cur_ch.u8[1]<<4+ cur_ch.u8[1]>>4;
+      cur_ch&=0x7FFF;
+      if (*dst2!=cur_ch)
+	*dst++=*dst2++=cur_ch;
+      else {
+	dst++;
+	dst2++;
+      }
+    }
+  }
+}
+
+U0 GrUpdateVGAGraphics()
+{
+  U64 row,plane,d2=gr_scaled_dc->width_internal>>5;
+  U32 *src,*dst,*dst2;
+  //Update Graphic Card
+  if (gr_screen_scale==1)
+    src=gr_dc->body;
+  else {
+    GrScaleImage;
+    src=gr_scaled_dc->body;
+  }
+  dst2=gr_screen_image->body;
+  if (LBtr(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0)) {
+    for (plane=1;plane<0x10;plane<<=1) {
+      OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
+      OutU8(VGA_SC_DATA,plane);
+      dst=VGA_GRAPHIC_MEM_BASE;
+      row=gr_scaled_dc->height;
+      while (row--)
+	GrUpdateLine32FlushCache(&dst,&src,d2,&dst2);
+    }
+  } else {
+    for (plane=1;plane<0x10;plane<<=1) {
+      OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
+      OutU8(VGA_SC_DATA,plane);
+      dst=VGA_GRAPHIC_MEM_BASE;
+      row=gr_scaled_dc->height;
+      while (row--)
+	GrUpdateLine32(&dst,&src,d2,&dst2);
+    }
+  }
+}
+
+U0 (*fp_final_screen_update)(GrDC *dc)=NULL;
+
+U0 GrUpdateScreen()
+{
+  GrDC *dc;
+  BoolI8 old_preempt=IsPreempt;
+  if (!IsSysDeterministic)
+    Preempt(ON);
+
+  if (text_mode)
+    GrUpdateWins;
+  else {
+    if (gr_dc3)
+      GrDCFill(gr_dc3,TRANSPARENT);
+    GrUpdateBackgroundOfText;
+    GrUpdateForegroundOfText;
+    GrUpdateWins;
+    if (gr_dc2->mask->flags&DCF_DIRTY)
+      GrDCBlotColor4(gr_dc,gr_dc2);
+    if (gr_dc3)
+      GrDCBlotColor8(gr_dc,gr_dc3);
+  }
+
+  dc=GrDCAlias(gr_dc,Fs);
+  dc->flags|=DCF_ON_TOP;
+  if (fp_final_screen_update)
+    (*fp_final_screen_update)(dc);
+  GrDCDel(dc);
+
+  if (text_mode)
+    GrUpdateTextModeText;
+  else
+    GrUpdateVGAGraphics;
+  Preempt(old_preempt);
+}
+
+#help_index "Graphics"
+

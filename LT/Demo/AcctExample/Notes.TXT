@@ -1,0 +1,180 @@
+* GrVectMap sucks
+* return vals for grrect, grblot, grputchar?
+* collisions for grrect, grblot, grputchar?
+
+* 32-bit devices should be in free spot address space of E820.
+
+* Might want VMWare Install
+* RAM drive too small for LTFull.ISO
+
+* Logrep throw for out-of-mem?
+* {Lock|Rep}{Seg|2E=NotBr|3E=Br}{OP}{ADD}{REX}
+* Virtual Box MP reboot
+* Std local var names
+* EIE_ABS_ADDR 64
+
+//After Egypt possible future ideas
+//[Numbers,13:33] Numbers,13:33 scouts
+//[Numbers,21:8] Numbers,21:8 snakes
+//Moses Comics 100304-
+
+GrEdit: Move sidebar selected elems.
+	- Be careful of multipoint elems.
+GrEdit: Strip origin shift cmds.
+
+GrEditBitmap, grabscroll? 
+GrEditBitmap, cut/paste boxes.
+
+* Might make TS/TAD sub account.
+
+extern of fun with dft arg of str?
+
+* We kinda need a routine to return how much free memory, so that
+applications 
+can plan a big alloc.
+
+* FileMgr bad with lots of files.  
+
+* This [::/LT/OSMain/TaskCmd.CPZ,Fs->catch_except=TRUE] Fs->catch_except=TRUE
+causes problems because it catches divide and 
+out-of-mem.  Not sure what to do, yet.
+* [C:/LT/OSMain/MultiProc.CPZ,413] MPStart() free old task memory. (Prolly
+never gonna do anything about this.)
+* [C:/LT/OSMain/Adam1b.HPZ,128] sys_var_init_flag local vars.
+* sprite shift points, ctrl pt for ellipse/polygon w,h is off when rotated.
+
+* Window manager needs to do LTF operations on posted messages from mouse.  
+Works for [C:/LT/OSMain/KbdMouse/InputPointer.CPZ,74] SetIP(), though.
+
+* Add local vars to sym table in [C:/LT/OSMain/Dbg1a.CPZ,431] Dbg()?  (maybe)
+
+This shit: 
+
+
+
+* Who's ever reading this -- [Proverbs,30:10] Proverbs,30:10
+
+* [::/LT/Adam/Ltf/LtfRecalc.APZ,->tag+i] Bible sized nodes
+* Mouseinstall throws exceptions, doesn't work, investigate Mouse
+[::/LT/OSMain/KbdMouse/Mouse.CPZ,9FC] 0x9FC30, get 
+kbd lights working.
+* figure-out hyperthread vs nonhyperthread CPU's
+* Might have issue with compiler exceptions and restoring lex.hash tables.
+* Generates two compiler error messages for expressions in statements.
+* release semaphores or break lock sema,usb_td
+* Fix Mom's secondary CD-ROM, dad's primary
+* pmtstr in install didn't like focus change
+
+*U0 Main()
+{
+  U0 (*fp_old_draw_input_ptr)(GrDC *dc,I64 x,I64 y)=fp_draw_input_ptr;
+}
+
+* Disk write caching is broken. Deadlock.
+
+* Syncronize VGA memory update with the hardware refresh cycle.
+
+* Demo [C:/LT/OSMain/Adam1a.HPZ,3773] TaskKeyDevStruct
+* Demo [C:/LT/Adam/ToHtml.APZ,250] ToHtml().
+
+* Del short name in FAT32--currently I do not check to see if I have
+generated 
+a unique short name and one can delete multiple files accidentally.  
+Generating unique short names is a pain in the ass because you have to scan 
+the whole directory.  I think I just truncate the name instead of "Program~1" 
+or whatever. S081130-0001.BMP crashed windows--two identical short names.
+
+* OVERSTRIKE at cmd line with menu macro.
+
+* lock{} warning on invalid modes.
+* Local array vars-->reg.
+* [C:/LT/OSMain/Adam1a.HPZ,3448] DCF_SYMMETRY, before transformation?
+(Currently it's after) 
+* all graphics clipping -- screen y+top<0 for top<0
+* Maybe convert graphics to float
+* compiler F32
+* preempt(OFF) during graphic clipping?
+* compiler optimization heap_glbls with added offset
+* static_compile extern glblvar referrences. 
+* extern glbl var in static module on data heap.
+* Might make FAT32 read in contiguous chunks.
+* make Limit(),Min(),Max() asm routines.
+* Might make GrSprite flood fill operate on a separate bitmap and blotted at 
+the end.
+* autofile popup of popup
+* <CTRL-R> delete subsprite in menu near others
+* consider changing domenu so a real <ESC> on menu item doesn't select
+(<SPACE 
+BAR> sends <ESC> followed by <SPACE BAR> or something)
+* puts3 with depth buf?  might not do this
+* make task insque and remque safe for multicore cycling through tasks (fwd).
+* make better heapwalk, do something with _CFG_HEAP_DBG.
+* log to file--would be inefficient--load-in whole file, modify and write
+out. 
+ Useful, but not very efficient  (LoseThos file system has no grow-file 
+ability.  Created when FAT patent was an issue and wanted absly nothing
+people 
+could sue me for.)
+* APIC2
+* import intel datasheets, somehow?
+* Might make DskView show drive colors.
+* Might do utility to set drive colors, making a tree entry in Adam 3 using 
+registry-like routines... or registry I guess.
+
+* New Editor widgets
+
+* Make use of flag potential in SysFilesFind and possibly LTFileAccess
+* implement fixed pos files
+
+* new C+ language feats
+* better debugging
+
+* Change hardcoded stuff to Define
+* Too much preemption turned off?
+* Look for mem leaks.
+* Move stuff out of OSmain.
+
+* use width and height in line clipping for pen_width>1 or blot.
+* SIMD transformation
+* test removable media id  (critical for resident files)
+
+* add field overflow U8 "t='*'"
+* Implement fmt codes into GetF
+* GetF date codes and maybe h fmts for nums
+* Date Input
+* Default date fmt
+
+* 16 bit Unassembly is bad--very low priority
+* more signed int disassembly
+* support r4u8 by adding 0x40 byte
+* static var off of data heap.
+* Might want to use U32*U32 multiplication.
+* could add "const" to not set LF_NOT_CONSTANT flag for trig, etc.
+* do r,rm IcCmp like IcBrCmp
+* could make glblvar imports use TY_RIP_DISP32.
+* PUSH_CMP allocs reg R9 or whatever
+* Might be problem with NOP in OPT pass1 for NO_PUSH in expressions besides 
+assignments.  Is ShiftNoPush fully implemented?
+* NOP1 might need to have diff ic_data's
+* in divequal, it assumes about ebx
+* error/warning line nums
+* ASM branch out warning of range off by 1 line--use lx->last_line_num
+* Autoindent:do-while/while: [::/LT/Demo/Maze.CPZ] ::/LT/Demo/Maze.CPZ
+
+* Switch statement with sparse cases (low priority)
+* maybe inline functions?
+* Use of more floating-point stk?
+
+* More aggressive in this routine [C:/LT/Compiler/OptPass3.CPZ,29]
+CmpF2PushPop() with types besides MOV and 
+F64. 
+* !dbl ~dbl
+* &=, |= can overflow with Bts Btr on small data types
+
+* num lock comes on with break key
+* sort options for findfiles
+* recalc_start could be more accurate before recalculating?
+
+The pattern for Major Geeks/BetaNews is too regular.  And, I added all those 
+shareware sites and no affect on downloads. And, I only get FBI emails--not 
+one install.

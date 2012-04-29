@@ -1,0 +1,113 @@
+/*
+This was done with <CTRL-O> managed code.
+It's conceptually easy to do a ctrl,
+but tedious.  You have complete freedom.
+
+See [C:/LT/OSMain/Adam1a.HPZ,2940] Ctrl.
+*/
+
+// Start of autocreated Code
+#define SLIDER_RANGE   30
+#define SLIDER_SPACING 20
+#define SLIDER_BORDER  2
+
+class SliderState
+{
+  I64 left_pos;
+  I64 right_pos;
+} sld;
+
+U0 DrawSliderCtrl(GrDC *dc,Ctrl *c)
+{
+  SliderState *s=c->state;
+
+  dc->color=LTRED;
+  GrRect(dc, c->left,c->top,SLIDER_SPACING*3+2,SLIDER_SPACING*2+SLIDER_RANGE);
+  dc->color=BLUE;
+  GrRect(dc, c->left+SLIDER_BORDER,c->top+SLIDER_BORDER,
+    SLIDER_SPACING*3+2-2*SLIDER_BORDER,SLIDER_SPACING*2+SLIDER_RANGE-2*SLIDER_BORDER);
+  dc->color=BLACK;
+  GrLine(dc,c->left+1*SLIDER_SPACING+0,c->top+SLIDER_SPACING,
+	      c->left+1*SLIDER_SPACING+0,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
+  GrLine(dc,c->left+2*SLIDER_SPACING+1,c->top+SLIDER_SPACING,
+	      c->left+2*SLIDER_SPACING+1,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
+  dc->color=LTRED;
+  GrPrintF(dc,c->left+1*SLIDER_SPACING+0-FONT_WIDTH/2,
+    c->top+SLIDER_SPACING+SLIDER_RANGE+3,
+    "%d",s->left_pos*10/SLIDER_RANGE);
+  GrPrintF(dc,c->left+2*SLIDER_SPACING+1-FONT_WIDTH/2,
+    c->top+SLIDER_SPACING+SLIDER_RANGE+3,
+    "%d",s->right_pos*10/SLIDER_RANGE);
+  GrRect(dc,c->left+1*SLIDER_SPACING+0-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->left_pos-2,7,5);
+  GrRect(dc,c->left+2*SLIDER_SPACING+1-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->right_pos-2,7,5);
+  dc->color=YELLOW;
+  GrRect(dc,c->left+1*SLIDER_SPACING+0-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->left_pos-1,5,3);
+  GrRect(dc,c->left+2*SLIDER_SPACING+1-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->right_pos-1,5,3);
+}
+
+U0 UpdateDerivedSliderCtrl(Ctrl *c)
+{
+  SliderState *s=c->state;
+  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*3+2)/2;
+  c->right=c->left+3*SLIDER_SPACING+2;
+  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
+  s->left_pos=LimitI64(s->left_pos,0,SLIDER_RANGE-1);
+  s->right_pos=LimitI64(s->right_pos,0,SLIDER_RANGE-1);
+}
+
+U0 LeftClickSlider(Ctrl *c,I64 x,I64 y,BoolI8 down)
+{
+  nounusedwarn down;
+  SliderState *s=c->state;
+  if (x<c->left+1*SLIDER_SPACING+0+SLIDER_SPACING/2)
+    s->left_pos=SLIDER_RANGE-1-(y-(c->top+SLIDER_SPACING));
+  else
+    s->right_pos=SLIDER_RANGE-1-(y-(c->top+SLIDER_SPACING));
+  if (c->update_derived_vals)
+    (*c->update_derived_vals)(c);
+}
+
+Ctrl *SliderNew()
+{
+  BoolI8 old_preempt;
+  Ctrl *c=CAlloc(sizeof(Ctrl));
+  c->win_task=Fs;
+  c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
+  c->type=CTRLT_GENERIC;
+  c->state=&sld;
+  MemSet(&sld,0,sizeof(SliderState));
+  c->draw_it=&DrawSliderCtrl;
+  c->left_click=&LeftClickSlider;
+  c->update_derived_vals=&UpdateDerivedSliderCtrl;
+  old_preempt=Preempt(OFF);
+  InsQue(c,Fs->last_ctrl);
+  TaskDerivedValsUpdate;
+  Preempt(old_preempt);
+  return c;
+}
+
+U0 SliderDel(Ctrl *c)
+{
+  BoolI8 old_preempt=Preempt(OFF);
+  RemQue(c);
+  Preempt(old_preempt);
+  Free(c);
+}
+
+// End of autocreated Code
+
+U0 Main()
+{
+  "This is to demo ctrls.\n";
+  Ctrl *c=SliderNew;
+  PressAKey;
+  "Left: %d  Right: %d\n",
+    sld.left_pos*10/SLIDER_RANGE,
+    sld.right_pos*10/SLIDER_RANGE;
+  SliderDel(c);
+  LtfBottom;
+}
+
+Main;
+

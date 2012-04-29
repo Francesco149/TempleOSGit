@@ -1,0 +1,360 @@
+asm {
+USE64
+SYS_INITIAL_IRQ_VECTS::
+//[C:/LT/OSMain/Interrupts.CPZ,325] IDTInit() uses this table
+//for the initial vects.
+//Other handlers are set, later,
+//with [C:/LT/OSMain/Interrupts.CPZ,281] SetIDTEntry().
+//See SetIDTEntry Grep
+`Grep("SetIDTEntry","::/LT/"SRC_FILE_MASK);View;`
+
+	DU32 SYS_IRQ00,IRQ01,_SYS_HLT,IRQ03;
+	DU32 IRQ04,IRQ05,IRQ06,IRQ07;
+	DU32 IRQ08,IRQ09,IRQ0A,IRQ0B;
+	DU32 IRQ0C,IRQ0D,IRQ0E,IRQ0F;
+
+	DU32 IRQ10,IRQ11,IRQ12,IRQ13;
+	DU32 IRQ14,IRQ15,IRQ16,IRQ17;
+	DU32 IRQ18,IRQ19,IRQ1A,IRQ1B;
+	DU32 IRQ1C,IRQ1D,IRQ1E,IRQ1F;
+
+	DU32 IRQ20,IRQ21,IRQ22,IRQ23;
+	DU32 IRQ24,IRQ25,IRQ26,IRQ27;
+	DU32 IRQ28,IRQ29,IRQ2A,IRQ2B;
+	DU32 IRQ2C,IRQ2D,IRQ2E,IRQ2F;
+
+	DU32 &MPCrash,IRQ31;
+
+//Set [C:/LT/OSMain/Adam1a.HPZ,304] MAX_INITIAL_IDT if you add more
+
+//I_WAKE
+IRQ31:
+	PUSH	RAX
+	XOR	RAX,RAX
+	MOV	EAX,U32 LAPIC_EOI
+	MOV	U32 [RAX],0
+	POP	RAX
+	IRET
+
+//I_TIMER
+IRQ20:	CALL	SYS_SAVE_CONTEXT		//PREEMPTIVE
+	CLD
+	MOV	RBP,RSP
+	MOV	RBX,U64 [RBP]
+	MOV	U64 TaskStruct.rip[RSI],RBX
+	MOV	RAX,U64 16[RBP]
+	MOV	U64 TaskStruct.rflags[RSI],RAX
+	MOV	RAX,U64 24[RBP]
+	MOV	U64 TaskStruct.rsp[RSI],RAX
+
+	XOR	RAX,RAX
+	MOV	RDI,U64 GS:CPUStruct.addr[RAX]
+
+	LOCK
+	INC	U64 CPUStruct.total_jiffies[RDI]
+
+	BT	U64 TaskStruct.task_flags[RSI],TASKf_IDLE
+	JC	@@05
+	CMP	RBX,U32 SYS_IDLE_START
+	JB	@@10
+	CMP	RBX,U32 SYS_IDLE_END
+	JA	@@10
+@@05:	LOCK
+	INC	U64 CPUStruct.idle_point_hits[RDI]
+
+@@10:	MOV	RAX,U64 CPUStruct.timer_irq_chain[RDI]
+	OR	RAX,RAX
+	JZ	@@15
+	PUSH	RSI
+	CALL	RAX
+	JMP	@@20
+@@15:	ADD	RSP,8
+@@20:	CLI
+	MOV	RAX,U64 CPUStruct.num[RDI]
+	OR	RAX,RAX
+	JZ	@@25
+
+	XOR	RAX,RAX
+	MOV	EAX,U32 LAPIC_EOI
+	MOV	U32 [RAX],0
+	JMP	@@30
+
+@@25:	MOV	AL,0x20 		 //ACKNOWLEDGE INTERRUPT
+	OUT	0x20,AL
+
+@@30:	MOV	RAX,SYS_SEMAS
+	BT	U32 SYS_SEMA_SINGLE_USER*SEMA_STRUCT_SIZE[RAX],0
+	JC	@@35
+	BT	U64 TaskStruct.task_flags[RSI],TASKf_PREEMPT
+	JC	I32 RESTORE_NEXT_RSI_TASK
+@@35:	JMP	I32 RESTORE_RSI_NO_PREEMPT_TASK
+
+
+SYS_IRQ00::
+	PUSH	0
+	JMP	IRQFAULT_JMP
+
+IRQ01:	PUSH	1
+	JMP	IRQFAULT_JMP
+
+IRQ03:	PUSH	3
+	JMP	IRQFAULT_JMP
+
+IRQ04:	PUSH	4
+	JMP	IRQFAULT_JMP
+
+IRQ05:	PUSH	5
+	JMP	IRQFAULT_JMP
+
+IRQ06:	PUSH	6
+	JMP	IRQFAULT_JMP
+
+IRQ07:	PUSH	7
+	JMP	IRQFAULT_JMP
+
+IRQ08:	PUSH	8
+	JMP	IRQFAULT_JMP
+
+IRQ09:	PUSH	9
+	JMP	IRQFAULT_JMP
+
+IRQ0A:	PUSH	0x0A
+	JMP	IRQFAULT_JMP
+
+IRQ0B:	PUSH	0x0B
+	JMP	IRQFAULT_JMP
+
+IRQ0C:	PUSH	0x0C
+	JMP	IRQFAULT_JMP
+
+IRQ0D:	PUSH	0x0D
+	JMP	IRQFAULT_JMP
+
+IRQ0E:	PUSH	0x0E
+	JMP	IRQFAULT_JMP
+
+IRQ0F:	PUSH	0x0F
+	JMP	IRQFAULT_JMP
+
+IRQ10:	PUSH	0x10
+IRQFAULT_JMP:
+	JMP	SYS_IRQ_FAULT
+
+IRQ11:	PUSH	0x11
+	JMP	SYS_IRQ_FAULT
+
+IRQ12:	PUSH	0x12
+	JMP	SYS_IRQ_FAULT
+
+IRQ13:	PUSH	0x13
+	JMP	SYS_IRQ_FAULT
+
+IRQ14:	PUSH	0x14
+	JMP	SYS_IRQ_FAULT
+
+IRQ15:	PUSH	0x15
+	JMP	SYS_IRQ_FAULT
+
+IRQ16:	PUSH	0x16
+	JMP	SYS_IRQ_FAULT
+
+IRQ17:	PUSH	0x17
+	JMP	SYS_IRQ_FAULT
+
+IRQ18:	PUSH	0x18
+	JMP	SYS_IRQ_FAULT
+
+IRQ19:	PUSH	0x19
+	JMP	SYS_IRQ_FAULT
+
+IRQ1A:	PUSH	0x1A
+	JMP	SYS_IRQ_FAULT
+
+IRQ1B:	PUSH	0x1B
+	JMP	SYS_IRQ_FAULT
+
+IRQ1C:	PUSH	0x1C
+	JMP	SYS_IRQ_FAULT
+
+IRQ1D:	PUSH	0x1D
+	JMP	SYS_IRQ_FAULT
+
+IRQ1E:	PUSH	0x1E
+	JMP	SYS_IRQ_FAULT
+
+IRQ1F:	PUSH	0x1F
+	JMP	SYS_IRQ_FAULT
+
+IRQ21:	PUSH	0x21
+	JMP	SYS_IRQ_FAULT
+
+IRQ22:	PUSH	0x22
+	JMP	SYS_IRQ_FAULT
+
+IRQ23:	PUSH	0x23
+	JMP	SYS_IRQ_FAULT
+
+IRQ24:	PUSH	0x24
+	JMP	SYS_IRQ_FAULT
+
+IRQ25:	PUSH	0x25
+	JMP	SYS_IRQ_FAULT
+
+IRQ26:	PUSH	0x26
+	JMP	SYS_IRQ_FAULT
+
+IRQ27:	PUSH	0x27
+	JMP	SYS_IRQ_FAULT
+
+IRQ28:	PUSH	0x28
+	JMP	SYS_IRQ_FAULT
+
+IRQ29:	PUSH	0x29
+	JMP	SYS_IRQ_FAULT
+
+IRQ2A:	PUSH	0x2A
+	JMP	SYS_IRQ_FAULT
+
+IRQ2B:	PUSH	0x2B
+	JMP	SYS_IRQ_FAULT
+
+IRQ2C:	PUSH	0x2C
+	JMP	SYS_IRQ_FAULT
+
+IRQ2D:	PUSH	0x2D
+	JMP	SYS_IRQ_FAULT
+
+IRQ2E:	PUSH	0x2E
+	JMP	SYS_IRQ_FAULT
+
+IRQ2F:	PUSH	0x2F
+	JMP	SYS_IRQ_FAULT
+
+// ************************************
+SYS_IRQ_FAULT::
+	PUSH	RBX
+	MOV	RBX,U64 8[RSP]
+	PUSH	RAX
+	XOR	RAX,RAX
+	MOV	FS:U32 TaskStruct.fault_num[RAX],EBX
+	POP	RAX
+	POP	RBX
+	ADD	RSP,8
+
+	CALL	SYS_SAVE_CONTEXT
+
+	XOR	RDX,RDX
+	MOV	U64 TaskStruct.fault_err_code[RSI],RDX
+	MOV	EDX,U32 TaskStruct.fault_num[RSI]
+	BT	U64 [SYS_FAULT_ERR_CODE_BITMAP],RDX
+	JNC	@@1
+	POP	U64 TaskStruct.fault_err_code[RSI]
+
+@@1:	MOV	RBP,RSP
+	MOV	RAX,U64 [RBP]
+	MOV	U64 TaskStruct.rip[RSI],RAX
+	MOV	RAX,U64 16[RBP]
+	MOV	U64 TaskStruct.rflags[RSI],RAX
+	MOV	RAX,U64 24[RBP]
+	MOV	U64 TaskStruct.rsp[RSI],RAX
+	MOV	RSP,RAX
+	MOV	RBP,TaskStruct.rbp[RSI]
+	MOV	RSI,TaskStruct.rsi[RSI]
+	CALL	&Fault2 //See [::/LT/OSMain/Dbg1a.CPZ,Fault2] Fault2
+	JMP	I32 RESTORE_FS_TASK_WITH_KEY_CHECK
+
+SYS_FAULT_ERR_CODE_BITMAP::
+	DU32	0x00027D00;
+}
+
+U0 *GetIDTEntry(U64 irq,U64 cpu_num=0)
+{
+  U64 result,*src;
+  if (cpu_num>=mp_cnt&&cpu_num>Gs->num)
+    throw(EXCEPT_MULTICORE,3);
+  src=cpu_structs[cpu_num].idt(U8 *)+irq*16;
+  result.u16[0]=*src(U16 *);
+  src(U8 *)+=6;
+  result.u16[1]=*src(U16 *)++;
+  result.u32[1]=*src(U32 *);
+  return result;
+}
+
+U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 cpu_num=0,U64 type=IDTET_IRQ,U64 dpl=0)
+{
+//See [C:/LT/OSMain/Adam1a.HPZ,289] IDTET_IRQ
+//See [::/LT/Demo/Lectures/InterruptDemo.CPZ] ::/LT/Demo/Lectures/InterruptDemo.CPZ
+//See [::/LT/Demo/MultiCore/Interrupts.CPZ] ::/LT/Demo/MultiCore/Interrupts.CPZ
+  U64 result=GetIDTEntry(irq,cpu_num),fp=fp_new_handler;
+  U8 *dst=cpu_structs[cpu_num].idt(U8 *)+irq*16;
+  PushFD;
+  Cli;
+  *dst(U16 *)++=fp.u16[0];
+  *dst(U16 *)++=GDT_CS64_SEL;
+  *dst(U16 *)++=0x8000+type<<8+dpl<<13;
+  *dst(U16 *)++=fp.u16[1];
+  *dst(U32 *)++=fp.u32[1];
+  *dst(U32 *)++=0;
+  PopFD;
+  return result;
+}
+
+U0 IntsInit()
+{
+//Init 8259
+  OutU8(0x20,0x11); //IW1
+  OutU8(0xA0,0x11); //IW1
+  OutU8(0x21,0x20); //IW2
+  OutU8(0xA1,0x28); //IW2
+  OutU8(0x21,0x04); //IW3
+  OutU8(0xA1,0x02); //IW3
+  OutU8(0x21,0x0D); //IW4
+  OutU8(0xA1,0x09); //IW4
+  OutU8(0x21,0xFA); //Mask all but IRQ0 (timer) and IRQ2 Cascade
+  OutU8(0xA1,0xFF);
+}
+
+interrupt U0 IntNop()
+{
+}
+
+interrupt U0 IntAckNop()
+{
+  OutU8(0xA0,0x20);
+  OutU8(0x20,0x20);
+}
+
+U0 IDTInit()
+{ //interrupt descriptor table
+  U64 i,temp_ptr[2];
+  U32 *ptr=SYS_INITIAL_IRQ_VECTS;
+  Gs->idt=CAlloc(16*256);
+  if (Gs->num)
+    for (i=0;i<256;i++)
+      SetIDTEntry(i,&IntNop,Gs->num,IDTET_IRQ);
+  else
+    for (i=0;i<256;i++)
+      SetIDTEntry(i,&IntAckNop,Gs->num,IDTET_IRQ);
+
+  SetIDTEntry(I_TIMER ,ptr[I_TIMER] ,Gs->num,IDTET_IRQ);
+
+  ptr=temp_ptr;
+  *ptr(U16 *)++=256*16-1;
+  *ptr(U32 *)++=Gs->idt(U64).u32[0];
+  *ptr(U32 *)++=Gs->idt(U64).u32[1];
+  *ptr(U16 *)++=0;
+  SetRAX(temp_ptr);
+  asm {
+	LIDT U64 [RAX]
+  }
+}
+
+U0 IDTInitComplete()
+{ //interrupt descriptor table
+  U64 i;
+  U32 *ptr=SYS_INITIAL_IRQ_VECTS;
+
+  for (i=0;i<MAX_INITIAL_IDT;i++)
+    if (i!=I_TIMER)
+      SetIDTEntry(i,ptr[i],Gs->num,IDTET_IRQ);
+}

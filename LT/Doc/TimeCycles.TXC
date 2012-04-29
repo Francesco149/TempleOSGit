@@ -1,8 +1,0 @@
-Intel has an instruction that returns the num of CPU cycles since boot.  This 
-is not calibrated to an accurate real time value, but LoseThos measures it
-and 
-you can convert with [C:/LT/OSMain/OSGlbls.CPZ,46] time_stamp_freq, a value
-continuously calibrated from 
-other timers.  This is the fastest timer available.
-
-

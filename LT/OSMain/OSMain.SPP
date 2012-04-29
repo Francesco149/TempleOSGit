@@ -1,0 +1,70 @@
+//You should compile this by calling
+//[C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot(), not doing it directly.
+//See [::/LT/Adam/Boot/InsBoot.APZ,Cmp("OSMain"] Cmp("OSMain").
+
+#exe {
+OptOn(OPTf_PAREN_WARN);
+#include "OSCfg"
+OSMainCfg *osmain_cfg;
+osmain_cfg=OSMainCfgNew;
+};
+
+#include "BootDefs.HPZ"
+#include "Adam1a.HPZ"
+#include "OSStart"
+#include "Utils1a"
+#include "Math1a"
+#include "/LT/Compiler/CmpDefs.HPZ"
+#include "Adam1b.HPZ"
+#include "OSExts"
+#include "OSGlbls"
+#include "Math1b"
+#include "Scheduler"
+#include "Font8x8"
+#include "Memory"
+#include "Interrupts"
+#include "FIFO"
+#include "Compress"
+#include "Hash1a"
+#include "Date"
+#include "Str1a"
+#include "Define1a"
+#include "Display"
+#include "Misc1a"
+#include "Dbg1a"
+#include "Except"
+#include "KbdMouse/InputPointer"
+#include "KbdMouse/Keyboard"
+#include "KbdMouse/Mouse"
+#include "KbdMouse/Message"
+
+#include "QSort"
+#include "Task1a"
+#include "TaskCmd"
+#include "USB1a"
+
+#exe {Cd("Dsk");};
+#include "DskStr"
+#include "DskCache"
+#include "ATADef.HPZ"
+#include "DskATA"
+#include "Dsk1a"
+#include "DskAddDev"
+#include "DskDir"
+#include "FileSysISO1"
+#include "FileSysISO3"
+#include "FileSysLT"
+#include "FileSysFAT"
+#include "Dsk1b"
+#include "DskLTFile"
+#include "Dsk1c"
+
+#exe {Cd("..");};
+#include "MultiProc"
+#include "BIOS32"
+
+#include "EdLite"
+#include "PSect"
+#include "OSEnd"
+
+#exe {OSMainCfgDel(osmain_cfg);};

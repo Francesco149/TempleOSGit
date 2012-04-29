@@ -1,0 +1,114 @@
+                                  ACCT FILES
+
+You can add and remove accts by making or removing directories in the ::/LT/Ac
+cts directory.  An empty account directory should be valid because it will
+get 
+default files from the parent directory.
+
+See [HOME/PersonalMenu.TXZ] for a personal menu which can be viewed at the
+cmd 
+line with the WINDOWS key or by clicking "MENU" in the upper left border area 
+of a window.
+
+See [HOME/DoItOnce.CPZ] for a file which is invoked at the start-up of the
+first 
+user.
+
+See [HOME/Adam3.APZ] for the user files that get loaded into the adam task at 
+start-up.  These are only loaded once.
+
+[HOME/Registry.CPZ] can be edited by hand or deleted to rst to
+defaults.  Takes 
+affect next boot.
+
+
+
+                             APPLICATION POLICIES
+
+* Place applications in their own /LT/Apps subdirectory.
+
+* Make a file called Load.CPZ to load the application.
+
+* Make a file called Run.CPZ to load and run the application, preferable by #i
+ncludeing the Load.CPZ file.
+
+* Place user data in a subdirectory of HOME, preferably naming the 
+subdirectory the same as the /LT/Apps subdirectory.  Or, place data in the Reg
+istry.CPZ file.  See [::/LT/Demo/RegistryDemo.CPZ]
+::/LT/Demo/RegistryDemo.CPZ.
+
+* Make a file called Install.CPZ or Install.AUZ to create the HOME 
+subdirectory and do similar stuff.
+
+ 
+
+                          OS PROGRAMMING GUIDELINES:
+
+* Virtual mem is not used (It is identity mapped in EM64T mode).  The stk
+does 
+not grow, so allocate enough when the task (process) is
+[C:/LT/OSMain/Task1a.CPZ,229] Spawned and use the 
+heap for most things.  (The "heap" refers to [C:/LT/OSMain/Memory.CPZ,956]
+MAlloc() and [C:/LT/OSMain/Memory.CPZ,950] Free().)
+
+* See [::/LT/Doc/Glossary.TXZ,Naming convention] Naming convention.
+
+* There are two modes of compiling [::/LT/Doc/Glossary.TXZ,Static Compiled
+Mode] Static Compiled Mode and [::/LT/Doc/Glossary.TXZ,JIT] JIT Mode.  Actual 
+compilation is done in both--nothing is "interpreted".
+
+* [::/LT/Doc/Differences.TXZ] Differences from C/C++
+
+* [::/LT/Doc/SysPgmGuide.TXZ] System Programming Guidelines
+
+                               Hash sym tables:
+
+* See [::/LT/Adam/Hash2a.APZ] ::/LT/Adam/Hash2a.APZ for examples of how the
+hash tables are set-up.  
+Basically, syms are placed into hash tables and child process hash tables are 
+chained to parents.  This provides scopes for vars and functions.
+
+* adam_task->hash_table holds the C/C++ syms loaded in on start-up.
+
+* Fs->hash_table holds user C+ syms and if a sym is not found, it checks 
+parents.  When a duplicate sym is added to the table, it overshadows the 
+previous sym unless you have done [C:/LT/Compiler/Directives.CPZ,6]
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1436] OPTf_REPLACE_SYMS).  When developing 
+software, typically you include the file at the cmd prompt, make changes and 
+reinclude it.  Old syms are overshadowed but they are still there.  
+Periodically, kill the TASK and start fresh when mem is low.  If you wish
+your 
+applications to free themselves instead of staying in mem, spawn or
+[C:/LT/Adam/Ltf/LtfPopUp.APZ,410] PopUp() a 
+task to run the application and kill it when it's done.
+
+* To display the contents of a hash table, use the
+[C:/LT/Adam/Hash2a.APZ,151] HashRep() routine or the 
+varients.  [C:/LT/Adam/Hash2a.APZ,432] HashDepthRep() gives a histogram  of
+how long the chains are, in 
+case you wish to make hash table sizes bigger.
+
+                         Assembly Language Concerns:
+
+* FS must always point to the [C:/LT/OSMain/Adam1a.HPZ,3117] TaskStruct.
+
+* GS must always point to the [C:/LT/OSMain/Adam1a.HPZ,3743] CPUStruct.
+
+* Don't change the segment registers unless interrupts are off.
+
+* When interacting with compiled code, preserve RBP, RSI, RDI, R10-R15
+because 
+the compiler uses these for register vars.  You are free to clobber RAX, RBX, 
+RCX, RDX, R8 and R9.
+
+* I recommend using the standard stk frame for functions because
+[C:/LT/OSMain/Dbg1a.CPZ,53] Caller() is 
+used to display the call stk, such as for the wallpaper.
+	ENTER	nnnn
+...
+	LEAVE
+	RET
+
+* The args are removed from the stack with RET1 statements.
+
+	RET1	16	//remove two args

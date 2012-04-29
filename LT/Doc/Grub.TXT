@@ -1,0 +1,40 @@
+                          The Grub Master Bootloader
+
+Here are my grub.cfg file entries for my LoseThos partitions.  I don't have 
+the patience to do it correctly and GRUB obfuscates.  Chain loading is just 
+the normal way an operating system like Windows boots.  They do drives, 
+zero-based, and partitions on drives, one-based.  They call traditional 
+partitioning a "msdos" partition and I presume, if there is a new way to 
+partition drives, it has a new name.
+
+In addition to a Windows and a Linux partition, I have a Primary LoseThos
+'D', 
+Backup LoseThos 'E' and a Transfer 'I' partition for transferring between 
+Windows and LoseThos.  "hd0" is 1st hard drive, zero-based numbering.
+"msdos1" 
+is partition #1, traditional msdos partitioning.  I keep 'D', 'E', and 'I' 
+identical by frequently copying all files and I use 'I' to transfer files.  
+They only need to be a couple Gig in size.  Every time I copy files, use 
+[C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot() to
+[C:/LT/Adam/Boot/InsBoot.APZ,141] MakeAll and prepare the partition
+[::/LT/Adam/Boot/BootHD.APZ] boot sector for 
+chainloading by patching the new block address and size of OSMain.BIC.
+
+menuentry "LoseThos D" {
+	insmod chain
+	set root=(hd0,msdos1)
+	chainloader +1
+}
+
+menuentry "LoseThos E" {
+	insmod chain
+	set root=(hd0,msdos5)
+	chainloader +1
+}
+
+menuentry "LoseThos I" {
+	insmod chain
+	set root=(hd1,msdos5)
+	chainloader +1
+}
+

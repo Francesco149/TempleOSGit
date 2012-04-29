@@ -1,0 +1,37 @@
+                        The LoseThos Operating System
+[::/LT/Doc/TrivialSolutions.TXZ] Trivial Solutions
+
+-] Keyboard Ctrls
+  Enter		Right-click menu
+Space Bar	Edit (view)
+Esc		Save and exit
+Shift-Esc	Abort
+Windows Key	Personal Menu
+Shift-Windows	Pull-down Menu
+**F1
+  `Msg(MSG_KEY_DOWN,0,SC_F1);`
+  **		Help
+Other keys: Key Map
+  `KeyMap;View;
+  `
+  
+
+-] Mouse Ctrls
+  Right-Click	Right-click menu
+Left-Click	Edit (view)
+Double-Left	Save and exit
+Double-Right	Abort
+Top of Screen	Pull-down menu
+
+-] Keyboard-Mouse Ctrls
+  Ctrl-LeftDrag	Grab-Scroll Window
+Ctrl-Right	Null scrolling
+Ctrl-Alt-z	Zoom screen on Mouse
+Ctrl-Alt-Z	Unzoom screen on Mouse
+
+Remember to terminate cmds with a semicolon.
+
+[::/LT/Doc/Welcome.TXZ] Welcome [::/LT/Doc/ChangeLog.TXZ] ChangeLog
+[::/LT/Doc/HelpMain.TXZ] Help Main
+
+

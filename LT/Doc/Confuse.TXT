@@ -1,0 +1,111 @@
+                            Clearing-up Confusions
+
+* I, Terry A. Davis, wrote every one of the 130,933 lines of LoseThos over
+the 
+past 15.5 years (full-time).  It runs on bare hardware with no layering, 
+libraries, tools, modules or anything from other srcs.  It's 100% independent 
+and stands alone.  It has no networking and certainly doesn't call home.  
+Every line of LoseThos src code is including in all distributions, from the 
+kernel to the compiler to the boot loaders.
+
+* LoseThos does not execute code not written by me and any time except for a 
+few BIOS calles for cfguration.
+
+* LoseThos is 100% independent -- it does not access the files of your
+primary 
+operating system.  It will work as the only operating system on your computer.
+
+* LoseThos is 100% written from scratch.  There is no Linux or GNU or any 
+other code in LoseThos.  Yes, I wrote the compiler from scratch.  (I probably 
+need to repeat this a few times.)
+
+* LoseThos is an operating system, not a browser.  The cmd line has active 
+links.  They link to local files.
+
+* LoseThos compiles, not "interprets", and uses no "byte code" anywhere.  I 
+use the word "script" sometimes for stuff, but it's actually compiled.
+
+* I am an evolutionist.  "Adam" is a better term for the father of all tasks 
+than "root" was!  OSMain is the closest thing to a kernel, but everybody has 
+kernel privilege, so "Kernel" is deceptive!
+
+* [C:/LT/OSMain/Adam1b.HPZ,57] Bt() is "bit test", like the x86 instruction,
+not "bit torrent".
+
+* [C:/LT/OSMain/Adam1b.HPZ,286] Fs is a segment register, not "file system". 
+(It is kept pointing to the 
+current task's record.)  There is no memory segmentation -- FS and GS are
+used 
+as general purpose registers, more or less.
+
+* LoseThos uses a flavor of C/C++.  It is not PASCAL.  I altered the syntax 
+making parenthesis optional on function calls with no paramaters.
+
+* [C:/LT/OSMain/Misc1a.CPZ,216] Sleep() makes a program pause.  It is not
+hybernation for a laptop.
+
+* [C:/LT/OSMain/Scheduler.CPZ,371] Yield() saves the current task's registers
+(context) and loads in the next 
+task.  When waiting, it's better to do this than check a condition in a loop 
+until you get preempted.  Checking a condition until you get preempted wastes 
+CPU.  LoseThos does not use virtual memory, so
+[C:/LT/OSMain/Scheduler.CPZ,371] Yield() involves no disk 
+activity.  A swap takes half a microsecond.  See 
+[::/LT/Demo/Lectures/Spinning.CPZ] ::/LT/Demo/Lectures/Spinning.CPZ.
+
+* I use the term "JIT compilation".  This means it is compiled and executable 
+code placed into mem, ready to be called.
+
+* Files with names ending in "Z" are compressed, not
+encrypted.  [C:/LT/Adam/Dsk/Dsk2a.APZ,91] Copy() or 
+rename them with [C:/LT/Adam/Dsk/Dsk2a.APZ,120] Move() to store them
+uncompressed.
+
+* LoseThos is open src and every bit of the src code is included in the 
+distribution.  Use [C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot() to compile
+the kernel and compiler.
+
+* LoseThos does not use object files or a linker.  You can link .BIZ modules 
+at [C:/LT/OSMain/Hash1a.CPZ,730] Load() time, though. 
+
+* The swap rate is high because tasks stay in the queue and poll conditions 
+and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
+interrupt.  See [C:/LT/OSMain/Adam1a.HPZ,465] JIFFY_FREQ.
+
+* Refresh rate is how often LoseThos updates screen mem.  It is not 
+syncronized to the hardware rate, having nothing to do with it.
+
+* No application has a lock on the speaker so apps can interfere with each 
+other and LoseThos makes speaker noise during disk access on purpose.
+
+* During boot, LoseThos reads-in all text files in the /LT directory tree and 
+collects statistic on them.  It makes a sparse matrix containing the
+frequency 
+each word was followed by each other word.  This makes it able to predict the 
+next word while you type.  This feature is called WordStat.
+
+* There are no mem leaks.  LoseThos allocates mem as more items are displayed 
+on the screen.  LoseThos allocates mem for code as it is compiled at the cmd 
+line.  If you #include a file twice, it allocates more mem for it.  If you 
+have a 50,000 line program with each line taking twenty bytes on a machine 
+with 1 Gig, you could #include it a thousand times if it had no data or 
+graphics and no other use of mem.  Code entered at the cmd line gets
+allocated 
+and persists.  I don't want to hear any bullshit about leaks unless you 
+actually run-out.  If it bothers you, hit <CTRL-ALT-X> and <CTRL-ALT-E>, perio
+dically.  Use the pop-up flag on macros in your menu to spawn new tasks, run 
+applications and free the applications when they are finished and everything 
+will be fine.  Small mem chunks stick to the task when they are freed until
+it 
+is killed.  The only way to get in trouble involves allocating multiple Meg 
+chunks and freeing them.  These can only be reused if the same size gets 
+allocated again.  Use [C:/LT/Adam/HeapLog.APZ,122] HeapLog() and
+[C:/LT/Adam/HeapLog.APZ,81] HeapLogRep() to see who allocated mem and 
+didn't free it.
+
+* The editor periodically takes a snap-shot for UNDO and this looks like a 
+memory leak.
+
+
+
+* "Linux" is probably a trademark owned by Linus Torvalds.

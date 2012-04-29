@@ -1,0 +1,13 @@
+
+// imports all syms from the Adam Task's hash table.
+#include "::/LT/OSMain/StaticAdam.HPZ"
+
+//If you just want part of the symbolas
+//#include "::/LT/OSMain/Static.HPZ"
+
+#exe {Cd("::/LT/Demo/OldSchool/Demo1");};
+
+#include "MD1"
+#include "MD2"
+#include "MDMain"
+

@@ -1,0 +1,81 @@
+The LTZ utility is on the [::/LT/Doc/Registered.TXZ] registered version.
+
+                              Linux LTZ Utility
+
+
+LTZ [-ascii] filename
+
+Will uncompress a single file from Linux.  The -ascii flag will convert the 
+irregular LoseThos ASCII 5 and ASCII 31 characters to spaces.  (ASCII 5 is 
+used to mark the cursor pos and ASCII 31 is used for shifted space characters 
+and will cause problems unless you convert them.)
+
+
+                             Windows LTZ Utility
+
+LTZ is a Windows cmd line program which will assist transferring files from 
+LoseThos to Windows.  It will also uncompress LoseThos files you have gotten 
+to Windows.  There are three ways to get files from LoseThos to Windows --
+via 
+CD-ROM, a FAT32 partition or via a "file partition" you have created with LTZ 
+on a Windows partition.
+
+
+LTZ -expand [-ascii] dirname:
+
+will uncompress all LoseThos files with names ending in 'Z' in a Windows 
+directory and in all subdirectories.  The -ascii flag used in combination
+will 
+convert the irregular LoseThos ASCII 5 and ASCII 31 characters to spaces.  
+(ASCII 5 is used to mark the cursor pos and ASCII 31 is used for shifted
+space 
+characters and will cause problems unless you convert them.)  Note: If you 
+pick names not ending in 'Z', they will not need to be uncompressed.  You can 
+[C:/LT/Adam/Dsk/Dsk2a.APZ,120] Move() or [C:/LT/Adam/Dsk/Dsk2a.APZ,91] Copy()
+them to a name not ending in 'Z' and they will be stored 
+uncompressed.
+
+
+LTZ -make megcnt partitionfilename signnum:
+
+will create a file on a Windows partition and fill it with a signature num 
+that can be searched for block-by-block from LoseThos.  Once some blocks have 
+been allocated by Windows and located by LoseThos, and if you don't mess with 
+them, you can use them to transfer files between LoseThos and Windows.  This 
+is a little risky.  It's pretty safe if you create this file on a partition 
+dedicated for this purpose.
+
+
+[C:/LT/Adam/Dsk/Dsk2b.APZ,403] NonLTScan():
+
+is a LoseThos cmd which will scan for some blocks created by LTZ and provide
+a 
+block num you can use to specify a "Non-LT file partition".  You can
+recompile 
+OSMain and define this partition or use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,184]
+Mount() each time.  You will be asked 
+to provide a drive letter and from then on, you just copy files to that 
+partition, boot Windows and run LTZ to extract them.
+
+
+LTZ -extract dstdirname partitionfilename:
+
+will copy all files in a file partition to a Windows directory, making them 
+available from Windows.
+
+
+**WARNING:** Do not attempt to uncompress files twice or it may crash.  If
+there 
+are any files ending in 'Z' which are present, it'll may crash too.  You
+might 
+get really unlucky and it uncompresses and creates havoc.
+
+**WARNING:** Do not run a defrag operation on a partition holding a file 
+partition.  If you store files to it after such an operation, you'll ruin
+data 
+on your hard drive.
+
+
+
+* "Windows" is a trademark of MicroSoft Corp.
+* "Linux" is probably a trademark owned by Linus Torvalds.
