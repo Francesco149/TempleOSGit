@@ -45,9 +45,8 @@ U0 EchoTaskEndCB()
     Exit;
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   SND_IN_CONTAINER *buf=_hda->istr0_buf[0];
   I64 i,x1,y1,x2=0,y2=0,
     cy=task->win_pixel_height>>1;
@@ -59,7 +58,6 @@ U0 UpdateWin(TaskStruct *task)
     x2=x1;
     y2=y1;
   }
-  GrDCDel(dc);
 }
 
 U0 EchoDemo()
@@ -79,7 +77,9 @@ U0 EchoDemo()
   fp_old_copy_buf=fp_snd_copy_buf;
   fp_snd_fill_buf=&EchoFillBuf;
   fp_snd_copy_buf=&EchoCopyBuf;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try
     GetChar;
   catch { //Catch <CTRL-ALT-C>, but pass it on to next higher handler.

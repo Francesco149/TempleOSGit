@@ -1,8 +1,8 @@
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn task;
   I64 i,j;
   U16 *ptr=gr_win_z_buf;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   dc->color=BLACK;
   GrPutS(dc,0,0,"Move the windows around and watch.");
   for (i=0;i<TEXT_ROWS;i++)
@@ -10,13 +10,12 @@ U0 UpdateWin(TaskStruct *task)
       dc->color=*ptr++&15;
       GrPlot(dc,j,i+FONT_HEIGHT);
     }
-  GrDCDel(dc);
 }
 
 U0 ScrollBars()
 {
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=&UpdateWin;
+  Fs->draw_it=&DrawIt;
   GetChar(NULL,FALSE);
   SettingsPop;
 }

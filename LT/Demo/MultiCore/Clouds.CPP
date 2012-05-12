@@ -35,9 +35,9 @@ U0 MPDrawClouds(TaskStruct *task)
     for (i=lo;i<hi;i++) {
       k=c->pc[i];
       if (k<c->color)
-	dc->color=ROP_TRANSPARENT+LTGRAY;
+	dc->color=ROP_MONO+LTGRAY;
       else
-	dc->color=ROP_TRANSPARENT+WHITE;
+	dc->color=ROP_MONO+WHITE;
       xx=c->x.i32[1]+c->px[i];
       yy=c->y.i32[1]+c->py[i];
 
@@ -80,7 +80,7 @@ U0 AnimateTask(U64 dummy=0)
 
     for (i=0,cp=cloud_pens;i<CLOUD_PENS;i++,cp++) {
       GrDCClear(cp->img);
-      cp->img->color=WHITE;
+      cp->img->color=COLOR_MONO;
       for (j=0;j<CLOUD_PEN_POINTS;j++) {
 	GrPlot(cp->img,cp->px[j],cp->py[j]);
 	cp->px[j]=LimitI64(cp->px[j]+RandU16%3-1,0,CLOUD_PEN_SIZE-1);
@@ -131,7 +131,7 @@ U0 Init()
   }
 
   for (i=0;i<CLOUD_PENS;i++,cp++) {
-    cp->img=GrDCNew(DCT_MONO,CLOUD_PEN_SIZE,CLOUD_PEN_SIZE);
+    cp->img=GrDCNew(DCT_COLOR8,CLOUD_PEN_SIZE,CLOUD_PEN_SIZE);
     for (j=0;j<CLOUD_PEN_POINTS;j++) {
       cp->px[j]=RandU16%CLOUD_PEN_SIZE;
       cp->py[j]=RandU16%CLOUD_PEN_SIZE;
@@ -167,9 +167,9 @@ U0 CloudScene()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   try {
     Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
-    LtfCursor(OFF);
+    LtfCursor;
     WinMax;
-    WordStat(OFF);
+    WordStat;
     Init;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
 

@@ -163,7 +163,7 @@ public U0 *LtfSave(Ltf *l,U64 *size=NULL)
   *dst++=0;
   b=l->bin_root.next;
   if (b!=&l->bin_root) {
-    while (b!=&l->bin_root) {
+    do {
       if (b->use_cnt>b->temp_use_cnt) {
 	MemCpy(dst,&b->type,offset(LtfBinEntry.data)-offset(LtfBinEntry.start));
 	dst+=offset(LtfBinEntry.data)-offset(LtfBinEntry.start);
@@ -171,7 +171,7 @@ public U0 *LtfSave(Ltf *l,U64 *size=NULL)
 	dst+=b->size;
       }
       b=b->next;
-    }
+    } while (b!=&l->bin_root);
   } else
     cnt--;
   if (size) *size=cnt;

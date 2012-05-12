@@ -133,16 +133,16 @@ BoolI64 MemRepTask(TaskStruct *task,BoolI8 override_validate=FALSE)
   }
 
   if (task==sys_winmgr_task) {
-    "gr_dc3\t\t:%08X\n",GrDCSize(gr_dc3);
     "gr_dc2\t\t:%08X\n",GrDCSize(gr_dc2);
     "gr_dc\t\t:%08X\n",GrDCSize(gr_dc);
+    "gr_dc_cache\t\t:%08X\n",GrDCSize(gr_dc_cache);
     "gr_screen_image\t:%08X\n",GrDCSize(gr_screen_image);
     "gr_scaled_dc\t:%08X\n",GrDCSize(gr_scaled_dc);
     "gr_pen_brushes\t:%08X\n",PenBrushesSize;
     "gr_1_to_8_bits\t:%08X\n",MSize2(gr_1_to_8_bits);
     "gr_1_to_8_colors\t:%08X\n",MSize2(gr_1_to_8_colors);
     "gr_text_base\t:%08X\n",MSize2(gr_text_base);
-    "gr_text_base_cache\t:%08X\n",MSize2(gr_text_base_cache);
+    "gr_vga_text_cache\t:%08X\n",MSize2(gr_vga_text_cache);
     "gr_win_z_buf\t:%08X\n",MSize2(gr_win_z_buf)+MSize2(gr_win_uncovered_bitmap);
     "gr_screen_scale_tables:%08X\n",ScreenScaleTablesSize;
   } else if (task==adam_task) {

@@ -63,8 +63,9 @@ U0 DrawShadow(TaskStruct *task)
   GrSpritePlot3(dc1,0,0,0,__BIN_1);
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *_dc)
 {
+  nounusedwarn _dc;
   GrDCDepthBufRst(dc0);
   GrIdentEqu(dc0->r);
   GrRotZEqu(dc0->r,theta);
@@ -95,7 +96,7 @@ U0 Shadow()
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  Fs->update_win=&UpdateWin;
+  Fs->draw_it=&DrawIt;
   Preempt(OFF);
 
   while (!ScanChar) {

@@ -238,7 +238,7 @@ U0 LTFSDrvView(U8 drv_let=0)
   LTPrt *p=Drv2Prt(drv_let);
   U64 lohi,c1,i,x,y,l,s;
   U8 *bitmap;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
   s=(p->size+p->spc-1)/p->spc;
@@ -246,9 +246,9 @@ U0 LTFSDrvView(U8 drv_let=0)
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  Fs->update_win=NULL;
-
-  GrDCClear;
+  LtfCursor;
+  LtfClear;
+  GrDCFill;
   try {
     i=((s+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
@@ -261,9 +261,9 @@ U0 LTFSDrvView(U8 drv_let=0)
 	lohi=i*s;
 	c1=lohi/l;
 	if (Bt(bitmap,c1))
-	  dc->color=ROP_XOR+BLUE;
+	  dc->color=ROP_XOR+BLUE^COLOR_TRANSPARENT;
 	else
-	  dc->color=ROP_XOR+WHITE;
+	  dc->color=ROP_XOR+WHITE^COLOR_TRANSPARENT;
 	GrPlot(dc,x,y);
 	i++;
       }
@@ -274,7 +274,7 @@ U0 LTFSDrvView(U8 drv_let=0)
   GetChar;
  
   SettingsPop;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 
@@ -283,16 +283,16 @@ U0 FAT32DrvView(U8 drv_let=0)
   LTPrt *p=Drv2Prt(drv_let);
   U64 lohi,c1,i,x,y,l,s;
   U32 *bitmap;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
   s=(p->size+p->spc-1)/p->spc;
  
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  Fs->update_win=NULL;
-
-  GrDCClear;
+  LtfCursor;
+  LtfClear;
+  GrDCFill;
   try {
     i=(s*4+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
@@ -305,9 +305,9 @@ U0 FAT32DrvView(U8 drv_let=0)
 	lohi=i*s;
 	c1=lohi/l;
 	if (bitmap[c1])
-	  dc->color=ROP_XOR+BLUE;
+	  dc->color=ROP_XOR+BLUE^COLOR_TRANSPARENT;
 	else
-	  dc->color=ROP_XOR+WHITE;
+	  dc->color=ROP_XOR+WHITE^COLOR_TRANSPARENT;
 	GrPlot(dc,x,y);
 	i++;
       }
@@ -318,7 +318,7 @@ U0 FAT32DrvView(U8 drv_let=0)
   GetChar;
  
   SettingsPop;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 
@@ -347,12 +347,13 @@ public U0 DskView(U8 drv_let=0)
     radius;
   LTPrt *p;
   LTBlkDev *bdev=Drv2BlkDevFwded(drv_let);
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   F64 sect_start,sect_end;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=NULL;
-  GrDCClear;
+  LtfCursor;
+  LtfClear;
+  GrDCFill;
   if (h<v)
     radius=0.4*h;
   else
@@ -386,7 +387,7 @@ public U0 DskView(U8 drv_let=0)
 
   GetChar(NULL,FALSE);
   SettingsPop;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 

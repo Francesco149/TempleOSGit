@@ -15,7 +15,7 @@ extern LtfEntry *LtfPutS(Ltf *l,U8 *st);
 extern BoolI64 PopUpNoYes(U8 *header=NULL,U8 *footer=NULL);
 extern I64 PopUpMenu(Ltf *l,U64 do_flags=0,U8 *help=NULL);
 extern I64 PopUpRangeI64(I64 lo,I64 hi,I64 step=1,U8 *header=NULL,U8 *footer=NULL);
-extern I64 PopUpColor(U8 *header=NULL);
+extern I64 PopUpColor(U8 *header=NULL,BoolI8 allow_transpant=TRUE,BoolI8 allow_dft=TRUE);
 extern I64 PopUpLightingColor(U8 *header=NULL);
 extern I64 PopUpDitherColor(U8 *header=NULL);
 extern U8 *PopUpMGetS(U8 *header=NULL);
@@ -43,6 +43,7 @@ extern BoolI64 LtfFormDo(U8 *D,U8 *class_name,U64 do_flags=0,
     U8 *help=NULL,U8 *header=NULL,U8 *footer=NULL);
 extern Ltf *LtfCur(TaskStruct *task=NULL);
 extern U0 LtfClear(Ltf *l=NULL);
+extern BoolI64 LtfCursor(BoolI8 show=OFF,Ltf *l=NULL);
 extern U0 LtfBottom(Ltf *l=NULL);
 extern U0 LtfBinsValidate(Ltf *l);
 extern U0 LtfRemQue(Ltf *l);

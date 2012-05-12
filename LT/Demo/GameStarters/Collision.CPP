@@ -18,14 +18,13 @@ bits 31 and 32.
 I64 ball_x[NUM_BALLS],ball_y[NUM_BALLS],
    ball_velocity_x[NUM_BALLS],ball_velocity_y[NUM_BALLS];
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn task;
   I64 i;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   dc->color=RED;
   for (i=0;i<NUM_BALLS;i++)
     GrCircle(dc,ball_x[i].i32[1],ball_y[i].i32[1],BALL_RADIUS);
-  GrDCDel(dc);
 }
 
 
@@ -164,7 +163,9 @@ U0 Collision()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   GetChar;
   SettingsPop;
 }

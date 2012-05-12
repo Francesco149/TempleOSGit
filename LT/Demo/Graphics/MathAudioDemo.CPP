@@ -19,7 +19,7 @@ U0 Init(GrDC *dc)
   I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height;
   F64 scale=h/5.0;
   LtfClear;
-  GrDCClear(dc);
+  GrDCFill(dc);
   dc->color=BLACK;
   GrLine(dc,0,h/2,w-1,h/2);
   GrLine(dc,w/2,0,w/2,h-1);
@@ -43,8 +43,7 @@ U0 Init(GrDC *dc)
 
 U0 SndMathDemo()
 {
-  F64 y,y1,t,dt;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   Init(dc);
   dc->color=RED;
@@ -84,9 +83,8 @@ U0 SndMathDemo()
   "$FG,GREEN$FullTri$FG$\n";
   PressAKey;
 
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
 }
 
 SndMathDemo;
-

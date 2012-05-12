@@ -10,9 +10,8 @@ class MySpring:SpringStruct
 Ode *ode=NULL;
 
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 old_suspend;
   MyMass   *tempm;
   MySpring *temps;
@@ -33,8 +32,6 @@ U0 UpdateWin(TaskStruct *task)
     tempm=tempm->next;
   }
   LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
-
-  GrDCDel(dc);
 }
 
 
@@ -153,7 +150,7 @@ U0 MassSpringDemo()
 
 
   Fs->win_inhibit|=WIF_DBL_CLICK;
-  WordStat(OFF);
+  WordStat;
 
   MenuPush(
 "File {"
@@ -166,8 +163,9 @@ U0 MassSpringDemo()
   );
 
   Init;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
   LtfClear;
+  Fs->draw_it=&DrawIt;
 
   try {
     while (TRUE) {

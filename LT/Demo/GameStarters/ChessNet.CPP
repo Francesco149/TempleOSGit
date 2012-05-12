@@ -40,10 +40,10 @@ U8 *pawn_imgs[2]={__BIN_1,__BIN_2};
 U8 *king_imgs[2]={__BIN_3,__BIN_4};
 I64 num_alive[2];
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i;
-  GrDC *dc=GrDCAlias(gr_dc,task);
+  task->text_attr=GREEN<<4;
   for (i=0;i<NUM_UNITS;i++)
     if (u[i].alive && !u[i].king) {
       dc->color=YELLOW;
@@ -74,7 +74,6 @@ U0 UpdateWin(TaskStruct *task)
     GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
 		  (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
   }
-  GrDCDel(dc);
 }
 
 Unit *FindUnit(I64 x,I64 y,I64 player)
@@ -210,16 +209,17 @@ U0 ChessNet()
   "}"
   );
   WinMax;
-  WinBorder(OFF);
-  WordStat(OFF);
+  WinBorder;
+  WordStat;
 
   Init;
   PopUpOk("Step on the link mid points.\n"
 	  "Make a computer player or\n"
 	  "modify the rules.\n");
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_MENU;
-  Fs->update_win=&UpdateWin;
-  Fs->text_attr=GREEN<<4;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try {
     do {
       ch=0;

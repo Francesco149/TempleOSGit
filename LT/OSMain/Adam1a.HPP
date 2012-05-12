@@ -816,7 +816,7 @@ public class GlblVarStruct:SrcSymHashEntry
 
 //Registry sys_msg_flags
 #define ARf_FLOODFILL			0
-#define ARf_TRANSPARENT_BITMAP		1
+//obsolete
 #define ARf_GRSPRITE_INSERT_CLIPBOARD	2
 #define ARf_FILE_MANAGER_HELP		3
 #define ARf_GRSPRITE_PICK_GRAPHICALLY	4
@@ -1233,7 +1233,7 @@ public class LtfEntry:LtfEntryBase
   U8 *data;
 };
 
-//[C:/LT/Adam/Ltf/LtfPopUp.APZ,323] LtfFormDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,376] LtfMenuDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,193] LtfDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,462] PopUpMenu()
+//[C:/LT/Adam/Ltf/LtfPopUp.APZ,320] LtfFormDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,373] LtfMenuDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,193] LtfDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,459] PopUpMenu()
 #define DOF_HELP_IS_FILE	1
 #define	DOF_MIN_SIZE		2
 #define	DOF_INTERCEPT_TASK_END	4
@@ -1284,7 +1284,7 @@ class EdFileNameStruct
 #define LTFF_DO_FULL_REFRESH	0x100000
 #define LTFF_BREAK_UNLOCKED	0x200000
 #define LTFF_AUX_LTF		0x400000
-#define LTFF_HIDE_CURSOR	0x800000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1699] LtfCursor
+#define LTFF_HIDE_CURSOR	0x800000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1707] LtfCursor
 
 #define LTFF_HIGHLIGHT		LTFLF_HIGHLIGHT
 #define LTFF_LOCK_TO_PAGE	LTFLF_LOCK_TO_PAGE
@@ -1296,6 +1296,7 @@ class EdFileNameStruct
 #define LTFF_UNDERLINE		LTFLF_UNDERLINE
 
 #define LTFF_CARRIAGE_RETURN	0x100000000
+#define LTFF_NO_SCROLL_BARS	0x200000000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1717] LtfScroll
 
 #define LTFf_OVERSTRIKE 	0
 #define LTFf_PLAIN_TEXT 	1
@@ -1320,7 +1321,7 @@ class EdFileNameStruct
 #define LTFf_DO_FULL_REFRESH	20
 #define LTFf_BREAK_UNLOCKED	21
 #define LTFf_AUX_LTF		22
-#define LTFf_HIDE_CURSOR	23  //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1699] LtfCursor
+#define LTFf_HIDE_CURSOR	23  //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1707] LtfCursor
 
 #define LTFf_HIGHLIGHT		LTFLf_HIGHLIGHT
 #define LTFf_LOCK_TO_PAGE	LTFLf_LOCK_TO_PAGE
@@ -1331,7 +1332,8 @@ class EdFileNameStruct
 #define LTFf_SELECTED		LTFLf_SELECTED
 #define LTFf_UNDERLINE		LTFLf_UNDERLINE
 
-#define LTFf_CR			32
+#define LTFf_CARRIAGE_RETURN	32
+#define LTFf_NO_SCROLL_BARS	33
 
 //locked flags
 #define LTFlf_LOCKED		0
@@ -1345,7 +1347,7 @@ class LtfUndo
   U8 *body;
 };
 
-//See [C:/LT/Adam/Ltf/LtfPopUp.APZ,376] LtfMenuDo()
+//See [C:/LT/Adam/Ltf/LtfPopUp.APZ,373] LtfMenuDo()
 #define LTFM_CANCEL		(-1)
 
 #define LTF_SIGNATURE_VAL		'LtfS'
@@ -2043,7 +2045,7 @@ class PCIDevStruct
 
 #define LT_XSUM			0xA5CF3796
 #define SRC_FILE_MASK		"*.CPZ;*.CPP;*.SPZ;*.SPP;*.HPZ;*.HPP;*.APZ;*.APP;*.AUZ;*.AUT"
-#define TEXT_FILE_MASK		SRC_FILE_MASK ";*.TXZ;*.TXT;*.MPZ;*.MPP"
+#define TEXT_FILE_MASK		SRC_FILE_MASK ";*.TXZ;*.TXT"
 
 public class MbrPrtEntry
 {
@@ -2871,10 +2873,8 @@ public class HeapCtrl
 //Raster operations
 #define ROP_EQU				0x0000
 #define ROP_XOR				0x0100
-#define ROP_TRANSPARENT			0x0200
-#define ROP_COLLISION			0x0300
-#define ROP_CLEAR_MASK_EQU		0x0400
-#define ROP_CLEAR_MASK_TRANSPARENT	0x0500
+#define ROP_COLLISION			0x0200
+#define ROP_MONO			0x0300
 
 //These are just for [C:/LT/OSMain/Adam1a.HPZ,2886] ROPF_PROBABILITY_DITHER
 //See [C:/LT/Adam/Gr/MathGr.APZ,460] GrLighting().
@@ -2887,10 +2887,8 @@ public class HeapCtrl
 
 #define ROPB_EQU			0x00
 #define ROPB_XOR			0x01
-#define ROPB_TRANSPARENT		0x02
-#define ROPB_COLLISION			0x03
-#define ROPB_CLEAR_MASK_EQU		0x04
-#define ROPB_CLEAR_MASK_TRANSPARENT	0x05
+#define ROPB_COLLISION			0x02
+#define ROPB_MONO			0x03
 #define ROPBF_HALF_RANGE_COLOR		0x10
 #define ROPBF_TWO_SIDED			0x20
 #define ROPBF_DITHER			0x40
@@ -2907,7 +2905,7 @@ public U32 class ColorROPU32
 };
 #define COLORROP_COLORS_MASK	0x00FF00FF
 #define COLORROP_NO_ROP0_MASK	0xFFFF00FF
-
+#define COLORROP_BITS		16
 
 #define CTRLT_GENERIC		0
 #define CTRLT_WIN_HSCROLL	1 //unique
@@ -2991,7 +2989,8 @@ class Menu
 #define WIF_BORDER		32
 #define WIF_DBL_CLICK		64
 #define WIF_GRAB_SCROLL		128
-#define WIF_ALL			(-1)
+#define WIF_LTF			256
+#define WIF_ALL			(-1-WIF_LTF)
 
 #define WIf_MENU		0
 #define WIf_CTRLS		1
@@ -3001,7 +3000,7 @@ class Menu
 #define WIf_BORDER		5
 #define WIf_DBL_CLICK		6
 #define WIf_GRAB_SCROLL		7
-
+#define WIf_LTF			8
 
 #define WIN_DFT_MAX_REFRESH	60.0
 
@@ -3032,7 +3031,6 @@ class TaskSettings
 {
   TaskSettings *next;
   I64 left,right,top,bottom;
-  U0 (*update_win)(TaskStruct *task);
   U0 (*draw_it)(TaskStruct *task,GrDC *dc);
   U0 (*task_end_cb)();
   TaskStruct *song_task,*animate_task;
@@ -3048,8 +3046,9 @@ class TaskSettings
   BoolI8 border;
   BoolI8 preempt;
   BoolI8 cursor;
+  BoolI8 scroll;
   BoolI8 wordstat;
-  U8	pad[4];
+  U8	pad[3];
 };
 
 #define NUM_PROGRESS_BARS	4
@@ -3187,7 +3186,6 @@ public class TaskStruct
   F64	pause_start,pause_total;  //Seconds
   U64	swap_cnter;
 
-  U0	(*update_win)(TaskStruct *task);
   U0	(*draw_it)(TaskStruct *task,GrDC *dc);
 
   U8	task_title[TASK_TITLE_LEN+1];
@@ -3416,30 +3414,32 @@ class TssStruct
 #define SC_PRTSCRN1		0xAA
 #define SC_PRTSCRN2		0xB7
 
-#define FONT_WIDTH	8
-#define FONT_HEIGHT	8
+#define FONT_WIDTH		8
+#define FONT_HEIGHT		8
 
-#define BLACK		0
-#define BLUE		1
-#define GREEN		2
-#define CYAN		3
-#define RED		4
-#define PURPLE		5
-#define BROWN		6
-#define LTGRAY		7
-#define DKGRAY		8
-#define LTBLUE		9
-#define LTGREEN		10
-#define LTCYAN		11
-#define LTRED		12
-#define LTPURPLE	13
-#define YELLOW		14
-#define WHITE		15
-#define INVALID_COLOR	16
-#define TRANSPARENT	0xFF //Not yet implemented
+#define BLACK			0
+#define BLUE			1
+#define GREEN			2
+#define CYAN			3
+#define RED			4
+#define PURPLE			5
+#define BROWN			6
+#define LTGRAY			7
+#define DKGRAY			8
+#define LTBLUE			9
+#define LTGREEN			10
+#define LTCYAN			11
+#define LTRED			12
+#define LTPURPLE		13
+#define YELLOW			14
+#define WHITE			15
+#define COLOR_INVALID		16
+#define COLOR_TRANSPARENT	0xFF
+#define COLOR_MONO		0xFF
 
 //Low 8 bits reserved for flags that go into saved bitmaps
 #define DCF_COMPRESSED		1
+#define DCF_NO_TRANSPARENTS	2 //Can be used to optimized [C:/LT/Adam/Gr/GrBitMap.APZ,76] GrDCBlot().
 
 
 #define DCF_TRANSFORMATION	0x100
@@ -3458,11 +3458,9 @@ class TssStruct
 #define DCF_FILL_NOT_COLOR	0x8000
 #define DCF_RECORD_EXTENTS	0x10000
 #define DCF_ON_TOP		0x20000
-#define DCF_DIRTY		0x40000 //only implemented on mask bitmap
 
 #define DCT_COLOR4	1
-#define DCT_MONO	2
-#define DCT_COLOR8	3 //Not yet fully implemented
+#define DCT_COLOR8	3
 
 #define DCS_SIGNATURE_VAL			'DvCS'
 
@@ -3487,8 +3485,9 @@ public class GrDC
   U0 end_saved_area;
 
 //public--change directly
-  ColorROPU32 color,bkcolor;
-  ColorROPU32 color2;
+  ColorROPU32 color,
+	bkcolor, //Set for use with [C:/LT/OSMain/Adam1a.HPZ,2876] ROP_COLLISION
+	color2; //Internally used for [C:/LT/Adam/Gr/GrPrimatives.APZ,234] GrFloodFill()
   P3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability is basically a U16.
@@ -3533,10 +3532,10 @@ public class GrDC
 
   U32 dc_signature,pad;
   TaskStruct *mem_task,*win_task;
-  GrDC *mask,*alias;
+  GrDC *alias;
   U8 *body;
 
-  //Set by [C:/LT/Adam/Gr/GrDC.APZ,112] GrDCAllocDepthBuf()
+  //Set by [C:/LT/Adam/Gr/GrDC.APZ,103] GrDCAllocDepthBuf()
   I32 *depth_buf;
   I64 db_z; //private
 };
@@ -3552,7 +3551,7 @@ public class GrVectMap
   ColorROPU32 bkcolor,pad;
 
 //Array of bit numbers for rectangle starts
-//Can be regenerated with [C:/LT/Adam/Gr/GrVectMap.APZ,475] GrVectMapRectStartBits()
+//Can be regenerated with [C:/LT/Adam/Gr/GrVectMap.APZ,470] GrVectMapRectStartBits()
   U32 *rect_start_bits;
 
   U8 *body;

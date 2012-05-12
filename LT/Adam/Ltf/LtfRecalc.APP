@@ -153,9 +153,12 @@ U0 LtfRecalc(Ltf *l,BoolI8 has_cursor=FALSE,I64 recalc=LTF_RECALC_ALL)
   win_task=l->win_task;
   mem_task=l->mem_task;
   blink_flag=Blink(,tP(win_task));
+  dc=NULL;
 
   nobound_switch (recalc) {
     case LTF_RECALC_FIND_CURSOR:
+      if (win_task)
+	dc=GrDCAlias(gr_dc,win_task);
       find_cursor=TRUE;
     case LTF_RECALC_ALL:
       l->recalc_start=l;
@@ -166,13 +169,13 @@ U0 LtfRecalc(Ltf *l,BoolI8 has_cursor=FALSE,I64 recalc=LTF_RECALC_ALL)
 	  !(l->flags&LTFF_BACKWARD_MOVEMENT))
 	full_refresh=FALSE;
       l->recalc_start=l;
+      if (win_task)
+	dc=GrDCAlias(gr_dc,win_task);
       break;
     case LTF_RECALC_PARTIAL:
       LtfRemSoftNewLines(l,l->recalc_start);
       break;
   }
-
-  dc=GrDCAlias(gr_dc,win_task);
 
   PushFD;
   Cli;
@@ -221,13 +224,15 @@ U0 LtfRecalc(Ltf *l,BoolI8 has_cursor=FALSE,I64 recalc=LTF_RECALC_ALL)
     has_cursor=FALSE;
   } else if (has_cursor && full_refresh) {
     if (Bt(&hss->flags,WSSf_SET_TO_POS)||Bt(&vss->flags,WSSf_SET_TO_POS)) {
-      if (Bt(&hss->flags,WSSf_SET_TO_POS)) {
-	l->line_start_col=hss->pos;
-	LBtr(&hss->flags,WSSf_SET_TO_POS);
-      }
-      if (Bt(&vss->flags,WSSf_SET_TO_POS)) {
-	l->cur_top_line_num=vss->pos;
-	LBtr(&vss->flags,WSSf_SET_TO_POS);
+      if (!(l->flags&LTFF_NO_SCROLL_BARS)) {
+	if (Bt(&hss->flags,WSSf_SET_TO_POS)) {
+	  l->line_start_col=hss->pos;
+	  LBtr(&hss->flags,WSSf_SET_TO_POS);
+	}
+	if (Bt(&vss->flags,WSSf_SET_TO_POS)) {
+	  l->cur_top_line_num=vss->pos;
+	  LBtr(&vss->flags,WSSf_SET_TO_POS);
+	}
       }
       l->x=l->line_start_col+width/2;
       l->y=l->cur_top_line_num+height/2;
@@ -672,7 +677,7 @@ skip_soft_cr:
 	      PlotBorderU8(win_task,temp_u32_attr+ch,x-x0,y-y0);
 	    else
 	      if (find_cursor) {
-	      d2=LtfCharDist(l,x,y);
+		d2=LtfCharDist(l,x,y);
 	      if (d2<D) {
 		D=d2;
 		col=col2;
@@ -1219,7 +1224,7 @@ adjust_xy:
       case LTFT_PICTURE:
 	if (!cl->bin_data)
 	  cl->bin_data=LtfBinFind(l,cl->bin_num);
-	if (cl->bin_data && (recalc==LTF_RECALC_TO_SCREEN||find_cursor)) {
+	if (cl->bin_data && dc) {
 	  GrDCRst(dc);
 	  dc->flags&=~(DCF_DONT_DRAW|DCF_LOCATE_NEAREST);
 	  if (recalc!=LTF_RECALC_TO_SCREEN || cl->flags&LTFLF_DONT_DRAW)
@@ -1584,21 +1589,23 @@ skip:
       *u32_ptr^=0xFF00;
     }
     if (full_refresh) {
-      if (!Bt(&hss->flags,WSSf_SET_TO_POS)) {
-	hss->min=l->min_x;
-	if (l->max_x-width+1<hss->min)
-	  hss->max=hss->min;
-	else
-	  hss->max=l->max_x-width+1;
-	hss->pos=l->line_start_col;
-      }
-      if (!Bt(&vss->flags,WSSf_SET_TO_POS)) {
-	vss->min=l->min_y;
-	if (l->max_y-height+1<vss->min)
-	  vss->max=vss->min;
-	else
-	  vss->max=l->max_y-height+1;
-	vss->pos=l->cur_top_line_num;
+      if (!(l->flags&LTFF_NO_SCROLL_BARS)) {
+	if (!Bt(&hss->flags,WSSf_SET_TO_POS)) {
+	  hss->min=l->min_x;
+	  if (l->max_x-width+1<hss->min)
+	    hss->max=hss->min;
+	  else
+	    hss->max=l->max_x-width+1;
+	  hss->pos=l->line_start_col;
+	}
+	if (!Bt(&vss->flags,WSSf_SET_TO_POS)) {
+	  vss->min=l->min_y;
+	  if (l->max_y-height+1<vss->min)
+	    vss->max=vss->min;
+	  else
+	    vss->max=l->max_y-height+1;
+	  vss->pos=l->cur_top_line_num;
+	}
       }
       LBEqu(&l->flags,LTFf_MORE,more);
     }
@@ -1690,13 +1697,14 @@ public U0 LtfClear(Ltf *l=NULL)
       return;
   }
   unlock=LtfLock(l);
+  LtfBottom(l);
   LtfPutS(l,"$CL$");
   LtfRecalc(l);
   if (unlock)
     LtfUnlock(l);
 }
 
-public BoolI64 LtfCursor(BoolI8 show=FALSE,Ltf *l=NULL)
+public BoolI64 LtfCursor(BoolI8 show=OFF,Ltf *l=NULL)
 {
   if (!l) {
     l=LtfCur;
@@ -1706,7 +1714,17 @@ public BoolI64 LtfCursor(BoolI8 show=FALSE,Ltf *l=NULL)
   return !LBEqu(&l->flags,LTFf_HIDE_CURSOR,!show);
 }
 
-public U64 LtfBkColor(Ltf *l,U64 col)
+public BoolI64 LtfScroll(BoolI8 val=OFF,Ltf *l=NULL)
+{
+  if (!l) {
+    l=LtfCur;
+    if (!l)
+      return FALSE;
+  }
+  return !LBEqu(&l->flags,LTFf_NO_SCROLL_BARS,!val);
+}
+
+U64 LtfBkColor(Ltf *l,U64 col)
 {
   U64 result=l->start_text_attr>>4&15;
   LtfSettingsStruct *s=&l->settings_root;
@@ -1771,14 +1789,13 @@ public U0 LtfCollapse(BoolI8 collapse=TRUE,Ltf *l=NULL)
 }
 
 #help_index "Ltf/Task"
-public U0 LtfUpdateTaskLtfs(TaskStruct *task)
+U0 LtfUpdateTaskLtfs(TaskStruct *task)
 {
   LTPrt *p;
-  U8 attr=task->border_attr;
-  Ltf *l;
+  U64 attr=task->border_attr;
+  Ltf *l=task->last_ltf;
   P3I64 saved_scroll;
   BoolI8 old_preempt;
-  l=task->last_ltf;
   while (l!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf)) {
     if (!(l->flags&LTFF_DONT_SHOW)) {
       if (l->flags&LTFF_AUX_LTF) {

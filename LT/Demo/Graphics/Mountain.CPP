@@ -19,13 +19,13 @@ BoolI8 animate_done;
 GrSprite *man_imgs[4]={__BIN_1,__BIN_2,__BIN_3,__BIN_2};
 I64 x=0,y=0;
 
-U0 DrawMountain(TaskStruct *task)
+U0 DrawMountain(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
 //"tP()" is a function holding time since boot, less pauses.
   I64 frame=4*Saw(tP(task),0.5),
       cx=task->win_pixel_width/2,
       cy=task->win_pixel_height/2;
+  task->text_attr=YELLOW<<4;
   dc->color=BROWN;
   dc->pen_width=2;
   GrLine3(dc,cx-400,cy,0,    cx-30 ,cy-120,0);
@@ -56,7 +56,6 @@ U0 DrawMountain(TaskStruct *task)
   GrPutS(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
 
   GrSpritePlot3(dc,x+cx,y+cy,0,man_imgs[frame&3]);
-  GrDCDel(dc);
 }
 
 //This is the path of the man.
@@ -84,15 +83,14 @@ U0 MountainTask(U64 dummy=0)
 
 U0 Mountain()
 {
-  LtfBottom; LtfClear;
-
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   try {
-    WordStat(OFF);
+    WordStat;
     WinMax;
-    WinBorder(OFF);
-    Fs->text_attr=YELLOW<<4;
-    Fs->update_win=&DrawMountain;
+    WinBorder;
+    LtfCursor;
+    LtfClear;
+    Fs->draw_it=&DrawMountain;
 
     animate_done=FALSE;
     Spawn(&MountainTask,NULL,"Animate",Fs);

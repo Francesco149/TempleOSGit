@@ -151,7 +151,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 //See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
 //for a GrSprite example.
 
-//See [C:/LT/Adam/Gr/GrSpriteMesh.APZ,901] GrSpriteMesh() for a fancy example.
+//See [C:/LT/Adam/Gr/GrSpriteMesh.APZ,899] GrSpriteMesh() for a fancy example.
 
 U0 Main()
 {
@@ -162,11 +162,10 @@ U0 Main()
   s->sz=6*VIEWANGLES_SNAP;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  LtfBottom;
   LtfClear;
   WinMax;
-  WinBorder(OFF);
-  WordStat(OFF);
+  WinBorder;
+  WordStat;
   Fs->draw_it=&DrawIt;
   try {
     "\n\nMove mouse to change light source.\n\n";
@@ -174,7 +173,6 @@ U0 Main()
   } catch
     CatchAll;
   SettingsPop;
-  LtfBottom;
   LtfClear;
   ViewAnglesDel;
 }

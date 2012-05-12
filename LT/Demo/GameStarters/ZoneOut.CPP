@@ -107,14 +107,14 @@ U0 ZOTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
   *z+=dc->z;
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   Object *tempo;
   I64 i,dd,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w>>1,cy=h>>1;
   U8 *img;
   F64 tt;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 old_preempt=Preempt(OFF);
+  task->text_attr=BLACK<<4;
   GrDCAllocDepthBuf(dc);
   dc->transform=&ZOTransform;
   dc->x=cx;
@@ -170,8 +170,6 @@ U0 UpdateWin(TaskStruct *task)
     tt=tP(task);
   }
   GrPrintF(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
-
-  GrDCDel(dc);
 }
 
 U0 Fire()
@@ -288,15 +286,15 @@ U0 ZoneOut()
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WinBorder(OFF);
-  WordStat(OFF);
+  WinBorder;
+  WordStat;
   Preempt(OFF);
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
-  Fs->update_win=&UpdateWin;
-  WinSync;
-  Fs->text_attr=BLACK<<4;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
       switch (GetKey(&sc)) {

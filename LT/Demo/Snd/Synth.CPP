@@ -93,9 +93,8 @@ BoolI64 ELPlot(U0 *aux,I64 x,I64 y,I64 z)
   return TRUE;
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,x1,y1,x2,y2,
       cy=task->win_pixel_height>>1,
       h_max=task->win_pixel_width-1;
@@ -185,8 +184,6 @@ U0 UpdateWin(TaskStruct *task)
 
   dc->color=BLACK;
   GrLine(dc,0,cy,task->win_pixel_width,cy);
-
-  GrDCDel(dc);
 }
 
 U0 SetMenu()
@@ -231,9 +228,9 @@ U0 Synth()
   "  Envelope(,'3');"
   "}"
   );
-  WordStat(OFF);
+  WordStat;
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   Fs->win_inhibit=WIF_ALL-WIF_MENU;
 
   Init;
@@ -243,7 +240,9 @@ U0 Synth()
   Fs->task_end_cb=&SynthTaskEndCB; //Catch <CTRL-ALT-X> or Kill() task
   fp_old_fill_buf=fp_snd_fill_buf;
   fp_snd_fill_buf=&SynthFillBuf;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
       switch (GetMsg(&p1,&p2,1<<MSG_KEY_DOWN+1<<MSG_IP_R_DOWN)) {

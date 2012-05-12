@@ -3,18 +3,13 @@
 public TaskSettings *SettingsPush(TaskStruct *task=NULL,U64 flags=0)
 { //This is typically used at the start of an application.
   //It saves many settings so they can be restored
-  //at the end of the application with [C:/LT/Adam/TaskSettings.APZ,68] SettingsPop().
+  //at the end of the application with [C:/LT/Adam/TaskSettings.APZ,64] SettingsPop().
 
-  //See [::/LT/Demo/Ltf/Quirk1.CPZ] ::/LT/Demo/Ltf/Quirk1.CPZ for
-  //an issue you will surely have to
-  //addr relating to the [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf under
-  //the graphics you display.
   TaskSettings *tempse;
   Ltf *l;
   if (!task) task=Fs;
   if (!TaskValidate(task)) return NULL;
   tempse=CAlloc(sizeof(TaskSettings),task);
-  tempse->update_win=task->update_win;
   tempse->draw_it=task->draw_it;
   GetVGAPalette4(tempse->palette4);
   tempse->task_end_cb=task->task_end_cb;
@@ -33,6 +28,7 @@ public TaskSettings *SettingsPush(TaskStruct *task=NULL,U64 flags=0)
 
   if (l=LtfCur(task)) {
     tempse->cursor=!Bt(&l->flags,LTFf_HIDE_CURSOR);
+    tempse->scroll=!Bt(&l->flags,LTFf_NO_SCROLL_BARS);
     tempse->ltf_cur_attr=l->start_text_attr;
   }
   if (l=LtfAux(task))
@@ -77,7 +73,6 @@ public U0 SettingsPop(TaskStruct *task=NULL,U64 flags=0)
   }
   if (tempse=task->next_settings) {
     task->next_settings=tempse->next;
-    task->update_win=tempse->update_win;
     task->draw_it=tempse->draw_it;
     SetVGAPalette4(tempse->palette4);
     task->task_end_cb=tempse->task_end_cb;
@@ -96,6 +91,7 @@ public U0 SettingsPop(TaskStruct *task=NULL,U64 flags=0)
 
     if (l=LtfCur(task)) {
       LBEqu(&l->flags,LTFf_HIDE_CURSOR,!tempse->cursor);
+      LBEqu(&l->flags,LTFf_NO_SCROLL_BARS,!tempse->scroll);
       l->start_text_attr=tempse->ltf_cur_attr;
     }
     if (l=LtfAux(task))

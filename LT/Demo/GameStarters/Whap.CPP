@@ -10,12 +10,11 @@ MassStruct balls[NUM_BALLS];
 SpringStruct springs[NUM_SPRINGS];
 F64 collision_t;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,
     cx=task->win_pixel_width>>1,
     cy=task->win_pixel_height>>1;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 snd_on=FALSE;
   dc->color=BLACK;
   GrPutS(dc,0,0,"Protect your base.");
@@ -50,7 +49,6 @@ U0 UpdateWin(TaskStruct *task)
     Snd(1000);
   else
     Snd(0);
-  GrDCDel(dc);
 }
 
 
@@ -114,7 +112,7 @@ U0 Whap()
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WordStat(OFF);
+  WordStat;
   Preempt(OFF);
 
   MenuPush(
@@ -130,8 +128,10 @@ U0 Whap()
   MemSet(balls,0,NUM_BALLS*sizeof(MassStruct));
   D3Equ(&balls[0].x,100,100,0);
   for (i=1;i<NUM_BALLS;i++)
-    D3Equ(&balls[i].x,RandI16%500+Fs->win_pixel_width>>1,
-			 RandI16%500+Fs->win_pixel_height>>1,0);
+    D3Equ(&balls[i].x,
+    RandI16%500+Fs->win_pixel_width>>1,RandI16%500+Fs->win_pixel_height>>1,0);
+  balls[0].x=ipx-Fs->win_pixel_left-Fs->win_scroll_x;
+  balls[0].y=ipy-Fs->win_pixel_top-Fs->win_scroll_y;
   for (i=0;i<NUM_BALLS;i++) {
     balls[i].mass=1.0;
     balls[i].drag_profile_factor=1.0;
@@ -161,7 +161,9 @@ U0 Whap()
   collision_t=0;
   InsQue(ode,Fs->last_ode);
 
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   GetChar;
   SettingsPop;
   RemQue(ode);

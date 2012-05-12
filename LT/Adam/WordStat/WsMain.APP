@@ -503,7 +503,7 @@ U0 WsPutChoices(Ltf *focus_l,LtfEntry *ll,TaskStruct *focus_task)
 pc_done:
   LtfRst(l,TRUE);
   l->flags|=LTFF_MIN_SIZE;
-  LtfCursor(OFF);
+  LtfCursor;
   LtfCurAttr(LTBLUE<<4+WHITE);
   LtfAuxAttr(LTBLUE<<4+BLACK);
   LtfPrintF(l,"Word:%s\n",ws_cur_word);
@@ -608,7 +608,7 @@ U0 WsMatrixDel(WsMatrix *m)
 }
 
 
-public BoolI64 WordStat(BoolI64 val=ON)
+public BoolI64 WordStat(BoolI64 val=OFF)
 {
   BoolI8 old_wordstat=FALSE,
 	 old_preempt=Preempt(OFF);
@@ -658,7 +658,7 @@ public U0 WsInit(U8 *mask)
   while (LBts(&ws_flags,WSf_INIT_IN_PROGRESS))
     Yield;
 
-  WordStat(OFF);
+  WordStat;
 
   if (IsDrvWritable && FileFind(WSD_DEF_FILENAME_Z) && !FileFind(WSD_DEF_FILENAME)) {
     if (bdev->type!=LTBDT_RAM) {
@@ -703,7 +703,7 @@ public U0 WsInit(U8 *mask)
   WsMainFileListTraverse(mask,2);
 
   WsdWordsLoad;
-  WordStat;
+  WordStat(ON);
   LBtr(&ws_flags,WSf_INIT_IN_PROGRESS);
 }
 

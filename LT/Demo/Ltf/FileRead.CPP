@@ -4,7 +4,7 @@ public U0 LtfProfile(U8 *filename,U64 flags)
        *flags_stats=CAlloc(sizeof(U64)*64),
        *type_flags_stats=CAlloc(sizeof(U64)*64);
 //Note, word wrap is determined by
-//l->win_task when a [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf is recalculated
+//l->win_task when a [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf is recalculated
 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,110] LtfRecalc().
   Ltf *l=LtfRead(filename,flags);
 

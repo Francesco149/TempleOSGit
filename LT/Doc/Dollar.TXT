@@ -37,7 +37,7 @@ See [C:/LT/OSMain/Adam1a.HPZ,909] Ltf Type Defines and
   editor-type thing to generate the text you'll need in your "fmtstr" cmd in a
   class.  If you add it directly with [C:/LT/Adam/Ltf/LtfPlain.APZ,835]
   LtfPutS(), you'll need to fill-in the data addr.  See
-  [C:/LT/Adam/Ltf/LtfPopUp.APZ,323] LtfFormDo(),[::/LT/Demo/Ltf/Form.CPZ]
+  [C:/LT/Adam/Ltf/LtfPopUp.APZ,320] LtfFormDo(),[::/LT/Demo/Ltf/Form.CPZ]
   ::/LT/Demo/Ltf/Form.CPZ.
 
 If there is a ':', the space after the first ':' in the format string marks
@@ -45,7 +45,7 @@ If there is a ':', the space after the first ':' in the format string marks
   
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/LT/OSMain/Adam1a.HPZ,3422] color defines) to indicate which of the 16
+  [C:/LT/OSMain/Adam1a.HPZ,3420] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 FD Default Foreground Color
 BD Default Background Color
@@ -70,7 +70,7 @@ FQ Foreground of Quotes
 +] CL clear
   Clear all previous entries except ones with hold(+H) flags.  You might want
   +H on word wrap entries.  Alternatively, you can use
-  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1684] LtfClear().
+  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear().
 +] WW Word Wrap
   Include a 1 or 0.
 +] HL Highlighting
@@ -122,9 +122,9 @@ Examples: <CTRL-T> to see
   you cancel the <ESC> with a '-X'.
 
 +] MU Menu Value
-  See [C:/LT/Adam/Ltf/LtfPopUp.APZ,651] PopUpRangeI64().
+  See [C:/LT/Adam/Ltf/LtfPopUp.APZ,648] PopUpRangeI64().
 +] HX Hex Edit
-  See [C:/LT/Adam/Ltf/LtfMain.APZ,700] LtfD().
+  See [C:/LT/Adam/Ltf/LtfMain.APZ,699] LtfD().
 +] Hidden Text Widget
   HS Start of hidden text
 HE End of hidden text

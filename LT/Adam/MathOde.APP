@@ -536,7 +536,7 @@ it has a timeout.
   if (task->next_ode==&task->next_ode)
     task->last_ode_time=0;
   else {
-    //See [C:/LT/Adam/Gr/GrScreen.APZ,395] GrUpdateWins()
+    //See [C:/LT/Adam/Gr/GrScreen.APZ,370] GrUpdateWins()
     if (task!=Fs)
       old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
 
@@ -632,7 +632,7 @@ ode_done:
       ode=ode->next;
     }
     refresh_ode_time+=task->last_ode_time=tNP-start_time;
-    //See [C:/LT/Adam/Gr/GrScreen.APZ,395] GrUpdateWins()
+    //See [C:/LT/Adam/Gr/GrScreen.APZ,370] GrUpdateWins()
     if (task!=Fs)
       LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
   }

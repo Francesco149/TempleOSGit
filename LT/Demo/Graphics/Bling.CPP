@@ -59,7 +59,6 @@ U0 UpdateDerivedDawgSettingsCtrl(Ctrl *c)
 
 U0 LeftClickDawgSettings(Ctrl *c,I64 x,I64 y,BoolI8 down)
 {
-  nounusedwarn down;
   DawgSettingsState *s=c->state;
   if (x<c->left+(c->right-c->left)/3)
     s->cnt=DAWG_SETTINGS_RANGE-1-(y-(c->top+DAWG_SETTINGS_SPACING));
@@ -163,16 +162,16 @@ U0 Bling()
   Simplex n1,n2,n3,n4,n5,n6,n7,n8;
   U64 timeout_time;
   Ctrl *c=DawgSettingsNew;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   F64 e=Exp(1);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=NULL;
-  Fs->text_attr=BLACK<<4+WHITE;
+  LtfCursor;
+  LtfClear;
   Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_CTRLS;
 
   chged=FALSE;
-  WordStat(OFF);
+  WordStat;
   WinMax;
   while (TRUE) {
 next_dotel:
@@ -217,7 +216,7 @@ next_dotel:
 	GrPlot(dc,x,y);
       }
     }
-    dc->color=ROP_CLEAR_MASK_TRANSPARENT;
+    dc->color=COLOR_TRANSPARENT;
     GrRect(dc,c->left,c->top,c->right-c->left,c->bottom-c->top);
     while (TRUE) {
       if (chged) {
@@ -235,7 +234,7 @@ next_dotel:
 bling_done:
   SettingsPop;
   GrDCDel(dc);
-  GrDCClear;
+  GrDCFill;
   DawgSettingsDel(c);
 }
 

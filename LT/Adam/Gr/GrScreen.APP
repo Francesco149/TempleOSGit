@@ -2,27 +2,21 @@
 public GrDC *gr_screen_image; //This is read only
 
 #help_index "Graphics/DCs"
-public GrDC *gr_dc=NULL,  //This is updated every refresh
-	    *gr_dc2=NULL,
-	    *gr_dc3=NULL; //This is updated every refresh
+public GrDC *gr_dc=NULL, //This is updated every refresh
+	    *gr_dc_cache,
+	    *gr_dc1=NULL,
+	    *gr_dc2=NULL;
 GrDC *gr_scaled_dc;
 U16 *gr_win_uncovered_bitmap=NULL,gr_highest_uncovered;
 
-U16 *gr_text_base_cache;
+U16 *gr_vga_text_cache;
 
-U64 *gr_1_to_8_bits,*gr_1_to_8_colors;
-
-public U0 GrDCFill(GrDC *dc,ColorROPU32 val=0)
+public U0 GrDCFill(GrDC *dc=NULL,ColorROPU32 val=COLOR_TRANSPARENT)
 {
+  if (!dc) dc=gr_dc2;
   nobound_switch (dc->type) {
     case DCT_COLOR4:
       MemSet(dc->body,val,(dc->width_internal*dc->height)>>1);
-      break;
-    case DCT_MONO:
-      if (val)
-	MemSet(dc->body,0xFF,(dc->width_internal*dc->height)>>3);
-      else
-	MemSet(dc->body,0,(dc->width_internal*dc->height)>>3);
       break;
     case DCT_COLOR8:
       MemSet(dc->body,val,dc->width_internal*dc->height);
@@ -33,14 +27,16 @@ public U0 GrDCFill(GrDC *dc,ColorROPU32 val=0)
 public U0 GrDCClear(GrDC *dc=NULL)
 {
   if (!dc) dc=gr_dc2;
-  if (dc->alias)
-    dc->alias->flags&=~DCF_DIRTY;
-  GrDCFill(dc);
-  if (dc->mask)
-    GrDCClear(dc->mask);
+  GrDCFill(dc,0);
 }
 
+#help_index "Graphics/Screen"
+public U0 (*fp_final_screen_update)(GrDC *dc)=NULL;
+public U0 (*fp_wall_paper)(TaskStruct *task)=NULL;
+
 #help_index "Graphics/Screen;Windows"
+
+
 
 U0 WinZBufFill(TaskStruct *task)
 { //Not public
@@ -240,12 +236,11 @@ public U0 SetStdPalette()
 }
 
 #help_index "Graphics/Screen"
-I32 gr_table[1024];
 
 #define GR_NUM_PEN_BRUSHES 64
-GrDC *gr_pen_brushes[GR_NUM_PEN_BRUSHES],
-	 *gr_even_pen_brushes[GR_NUM_PEN_BRUSHES],
-	 *gr_odd_pen_brushes[GR_NUM_PEN_BRUSHES];
+GrDC	*gr_pen_brushes[GR_NUM_PEN_BRUSHES],
+	*gr_even_pen_brushes[GR_NUM_PEN_BRUSHES],
+	*gr_odd_pen_brushes[GR_NUM_PEN_BRUSHES];
 
 
 #define GR_MAX_SCREEN_SCALE	8
@@ -260,7 +255,7 @@ public BoolI8 gr_continuous_scroll=FALSE;
 F64 gr_refresh_time_stamps[GR_REFRESH_LOG_CNT];
 U64 gr_refresh_ts_ptr=0;
 
-U0 GrSetUpTable(GrDC *hidden)
+U0 GrSetUpTables()
 {
   GrDC *b;
   I64 i,j,k,l,m,x,y,rr;
@@ -274,43 +269,33 @@ U0 GrSetUpTable(GrDC *hidden)
       else
 	gr_1_to_8_bits(U8 *)[k++]=0x00;
   k=0;
-  for (i=0;i<16;i++)
+  for (i=0;i<256;i++)
     for (j=0;j<8;j++)
       gr_1_to_8_colors(U8 *)[k++]=i;
 
-  for (i=-16;i<16;i++) {
-    for (j=-16;j<16;j++) {
-      k=(i>=0 ? i:32+i)<<5+(j>=0 ? j:32+j);
-      gr_table[k]=(i*hidden->width_internal+j)>>3;
-    }
-  }
   for (i=0;i<GR_NUM_PEN_BRUSHES;i++) {
     k=i+1;
-    j=(i+7)&~7;
-    b=GrDCNew(DCT_MONO,i,i);
-//    b=GrDCNew(DCT_MONO,j,i);
+    b=GrDCNew(DCT_COLOR8,i,i);
     gr_pen_brushes[i]=b;
-    b->color=WHITE;
+    b->color=COLOR_MONO;
     rr=k*k;
     for (y=1;y<k;y++)
       for (x=1;x<k;x++)
 	if (SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
 	  GrPlot0(b,x-1,y-1);
 
-    b=GrDCNew(DCT_MONO,i,i);
-//    b=GrDCNew(DCT_MONO,j,i);
+    b=GrDCNew(DCT_COLOR8,i,i);
     gr_even_pen_brushes[i]=b;
-    b->color=WHITE;
+    b->color=COLOR_MONO;
     rr=k*k;
     for (y=1;y<k;y++)
       for (x=1;x<k;x++)
 	if (!(((x-1)^(y-1))&1) && SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
 	  GrPlot0(b,x-1,y-1);
 
-    b=GrDCNew(DCT_MONO,i,i);
-//    b=GrDCNew(DCT_MONO,j,i);
+    b=GrDCNew(DCT_COLOR8,i,i);
     gr_odd_pen_brushes[i]=b;
-    b->color=WHITE;
+    b->color=COLOR_MONO;
     rr=k*k;
     for (y=1;y<k;y++)
       for (x=1;x<k;x++)
@@ -319,7 +304,7 @@ U0 GrSetUpTable(GrDC *hidden)
   }
   if (text_mode) {
     MemSet(VGA_TEXT_MEM_BASE,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
-    MemSet(gr_text_base_cache,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
+    MemSet(gr_vga_text_cache,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
   } else {
     OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
     OutU8(VGA_SC_DATA,0x0F);
@@ -345,17 +330,6 @@ U0 GrSetUpTable(GrDC *hidden)
     gr_refresh_time_stamps[i]=tNP;
 }
 
-GrDC *GrPersistentDCNew()
-{
-  GrDC *dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  dc->flags|=DCF_SCREEN_BITMAP;
-  dc->mask=GrDCNew(DCT_MONO,GR_WIDTH,GR_HEIGHT);
-  dc->mask->flags|=DCF_SCREEN_BITMAP;
-  dc->mask->color=WHITE;
-  GrDCClear(dc);
-  return dc;
-}
-
 U0 GrInit()
 {
   SetStdPalette;
@@ -363,29 +337,30 @@ U0 GrInit()
   SetVGAPalette4Indices;
 
   gr_1_to_8_bits  =MAlloc(256*sizeof(U64));
-  gr_1_to_8_colors=MAlloc(16*sizeof(U64));
+  gr_1_to_8_colors=MAlloc(256*sizeof(U64));
 
   gr_text_base=CAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U32));
-  gr_text_base_cache=MAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U16));
+  gr_vga_text_cache=MAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U16));
   gr_win_z_buf=MAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U16));
   gr_win_uncovered_bitmap=CAlloc(65536/8);
   gr_highest_uncovered=0;
 
-  gr_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_dc=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
   gr_dc->flags|=DCF_SCREEN_BITMAP;
+  gr_dc_cache=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
+
+  gr_dc2=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
+  gr_dc2->flags|=DCF_SCREEN_BITMAP;
+  GrDCFill;
+
+  gr_dc1=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_dc1->flags|=DCF_SCREEN_BITMAP;
 
   gr_screen_image=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  gr_scaled_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  gr_scaled_dc	 =GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
   gr_scaled_dc->flags|=DCF_SCREEN_BITMAP;
-  gr_dc2=GrPersistentDCNew;
 
-/*
-  gr_dc3=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
-  gr_dc3->flags|=DCF_SCREEN_BITMAP;
-  GrDCFill(gr_dc3,TRANSPARENT);
-*/
-
-  GrSetUpTable(gr_dc);
+  GrSetUpTables;
 
   WinZBufUpdate;
 }
@@ -419,8 +394,13 @@ U0 GrUpdateWins()
 	  DrawTaskBorder(task);
 	WinTextClear(task);
 	Preempt(old_preempt);
-	if (task->update_win)
-	  (*task->update_win)(task);
+	if (task==sys_winmgr_task) {
+	  if (fp_wall_paper)
+	    (*fp_wall_paper)(task);
+	} else {
+	  if (!(task->win_inhibit&WIF_LTF))
+	    LtfUpdateTaskLtfs(task);
+	}
 	if (task->draw_it) {
 	  dc=GrDCAlias(gr_dc,task);
 	  (*task->draw_it)(task,dc);
@@ -528,11 +508,11 @@ U0 GrScaleImage()
     d4=gr_scaled_dc->width_internal>>3,
     d5=d4-d2*gr_screen_scale,
     d3=gr_scaled_dc->height/gr_screen_scale,
-    d6=(gr_scaled_dc->height-d3)*gr_dc->width_internal>>3,
+    d6=(gr_scaled_dc->height-d3)*gr_dc1->width_internal>>3,
     d7=gr_scaled_dc->height%gr_screen_scale*d4;
   U8 *src,*src2,*dst,*src3,*map=gr_screen_scale_tables[gr_screen_scale];
 
-  src=gr_dc->body+grsx>>3+grsy*gr_dc->width_internal>>3;
+  src=gr_dc1->body+grsx>>3+grsy*gr_dc1->width_internal>>3;
   dst=gr_scaled_dc->body;
   for (plane=1;plane<0x10;plane<<=1) {
     row=d3;
@@ -562,24 +542,16 @@ U0 GrScaleImage()
   }
 }
 
-
 U0 GrUpdateBackgroundOfText()
 {
-  U64  d1=gr_dc->width_internal>>3,
-      d2=(gr_dc->width_internal*gr_dc->height-FONT_HEIGHT*gr_dc->width)>>3,
-      d4=(gr_dc->width_internal*FONT_HEIGHT-gr_dc2->width)>>3,
-      d7=1-(gr_dc->width_internal*gr_dc->height<<2)>>3,
-      row,col;
-  U32 *src,cur_ch;
-  U8 *dst;
-  BoolI8 blink_flag=Blink;
-
-  src=gr_text_base;
-  dst=gr_dc->body;
-  row=TEXT_ROWS;
-  while (row--) {
-    col=TEXT_COLS;
-    while (col--) {
+  U64 reg RSI *dst=gr_dc->body,reg R13 c,row,col,,cur_ch,
+      reg R12 w1=gr_dc->width_internal,reg R10 w2=-7*w1+8,w3=7*w1,
+      reg *my_1_to_8_colors=gr_1_to_8_colors;
+  U32 reg *src=gr_text_base;
+	BoolI8 blink_flag=Blink;
+  nounusedwarn w2;
+  for (row=TEXT_ROWS;row--;) {
+    for (col=TEXT_COLS;col--;) {
       cur_ch=*src++;
       if (cur_ch & (LTFLT_SELECTED | LTFLT_INVERT | LTFLT_BLINK)) {
 	if (cur_ch & LTFLT_SELECTED)
@@ -590,10 +562,27 @@ U0 GrUpdateBackgroundOfText()
 	  if (blink_flag)
 	    cur_ch.u8[1]= cur_ch.u8[1]<<4+ cur_ch.u8[1]>>4;
       }
-      GrPlotBackground(cur_ch.u8[1],&dst,d1,d2);
-      dst+=d7;
+      c=my_1_to_8_colors[cur_ch.u8[1]>>4];
+asm {
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R12
+	MOV	U64 [RSI],R13
+	ADD	RSI,R10
+}
     }
-    dst+=d4;
+    dst(U8 *)+=w3;
   }
 }
 
@@ -607,31 +596,17 @@ U0 GrUpdateBackgroundOfText()
 //   Bit  29	Inverted (Swap foreground and background)
 //   Bit  30	Selected (XOR colors with FF)
 //   Bit  31	Underline
-
 U0 GrUpdateForegroundOfText()
 {
-  U32 *src;
-  U64 u,cur_ch,row,col,plane,ch_line,i,
-      d1=gr_dc->width_internal>>3,
-      d2=(gr_dc->width_internal*gr_dc->height-FONT_HEIGHT*gr_dc->width)>>3,
-      d4=(gr_dc->width_internal*FONT_HEIGHT-gr_dc2->width)>>3;
-  U16 *dst2,*end_body=gr_dc->body+gr_dc->plane_size*4;
-  U8 *dst,*font_ptr,*font_ptr2,saved_font_line;
-  BoolI8 blink_flag=Blink,skip_space;
-
-  font_ptr=&gr_font[FONT_WIDTH*FONT_HEIGHT>>3*CH_SPACE];
-  skip_space=TRUE;
-  for (row=0;row<FONT_HEIGHT;row++)
-    if (font_ptr[row]) {
-      skip_space=FALSE;
-      break;
-    }
-  src=gr_text_base;
-  dst=gr_dc->body;
-  row=TEXT_ROWS;
-  while (row--) {
-    col=TEXT_COLS;
-    while (col--) {
+  U32 *src=gr_text_base;
+  U64 cur_ch,reg *dst=gr_dc->body,
+      reg w1=gr_dc->width_internal,w2=7*w1,
+      row,col;
+  U8 *dst_start=gr_dc->body,*dst_end=dst_start+w1*gr_dc->height-7*w1-8;
+  I64 j,i;
+  BoolI8 blink_flag=Blink;
+  for (row=TEXT_ROWS;row--;) {
+    for (col=TEXT_COLS;col--;) {
       cur_ch=*src++;
       if (cur_ch & (LTFLT_UNDERLINE | LTFLT_SELECTED | LTFLT_INVERT | LTFLT_BLINK)) {
 	if (cur_ch & LTFLT_SELECTED)
@@ -641,47 +616,33 @@ U0 GrUpdateForegroundOfText()
 	if (cur_ch & LTFLT_BLINK)
 	  if (blink_flag)
 	    cur_ch.u8[1]= cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
-      } else
-	if (!cur_ch.u8[0] || skip_space && cur_ch.u8[0]==CH_SPACE)
-	  goto skip_char;
-      font_ptr=&gr_font[FONT_WIDTH*FONT_HEIGHT>>3*cur_ch.u8[0]];
-      if (cur_ch & LTFLT_UNDERLINE) {
-	saved_font_line=font_ptr[7];
-	font_ptr[7]=0xFF;
       }
-      i=cur_ch.u16[1]&0x3FF;
-      dst2=dst+gr_table[i];
-      if (i) { //This character is shifted off-the-grid.
-	i&=7;
-	for (plane=0x01;plane!=0x10;plane<<=1) {
-	  font_ptr2=font_ptr;
-	  if (cur_ch.u8[1] & plane) {
-	    ch_line=FONT_HEIGHT;
-	    while (ch_line--) {
-	      u=*font_ptr2++<<i;
-	      if (gr_dc->body<=dst2<end_body)
-		*dst2|=u.u16[0] | u.u16[1];
-	      dst2(U8 *)+=d1;
-	    }
-	  } else {
-	    ch_line=FONT_HEIGHT;
-	    while (ch_line--) {
-	      u=*font_ptr2++<<i;
-	      if (gr_dc->body<=dst2<end_body)
-		*dst2&=~(u.u16[0] | u.u16[1]);
-	      dst2(U8 *)+=d1;
-	    }
-	  }
-	  dst2(U8 *)+=d2;
-	}
+      if (i=cur_ch.u16[1]&0x3FF) {
+	j=i&0x1F;
+	if (j&0x10) j|=~0x1F;
+	i>>=5;
+	if (i&0x10) i|=~0x1F;
+	i=w1*i+j;
+	if (dst_start<=dst(U8 *)+i<dst_end)
+	  GrRopEquU8NoClipping(cur_ch&(LTFLT_UNDERLINE+0xFFF),dst(U8 *)+i,w1);
       } else
-	GrPlotU8(font_ptr,cur_ch.u8[1],&dst2,d1,d2);
-      if (cur_ch & LTFLT_UNDERLINE)
-	font_ptr[7]=saved_font_line;
-skip_char:
-      dst++;
+	GrRopEquU8NoClipping(cur_ch&(LTFLT_UNDERLINE+0xFFF),dst,w1);
+      dst(U8 *)+=8;
     }
-    dst+=d4;
+    dst(U8 *)+=w2;
+  }
+}
+
+U0 GrDCBlotColor8(GrDC *dc,GrDC *img)
+{
+  U8  reg *src=img->body,*b0=dc->body;
+  U64 reg j,reg k,reg d0=img->width_internal*img->height;
+  for (k=0;k<d0;k++) {
+    j=*src++;
+    if (j!=COLOR_TRANSPARENT)
+      *b0++=j;
+    else
+      b0++;
   }
 }
 
@@ -689,7 +650,7 @@ U0 GrUpdateTextModeText()
 {
   U32 *src=gr_text_base;
   U64 cur_ch,i,d0=TEXT_COLS*TEXT_ROWS;
-  U16 *dst=VGA_TEXT_MEM_BASE,*dst2=gr_text_base_cache;
+  U16 *dst=VGA_TEXT_MEM_BASE,*dst2=gr_vga_text_cache;
   BoolI8 blink_flag=Blink;
   if (LBtr(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0)) {
     i=d0;
@@ -733,7 +694,7 @@ U0 GrUpdateVGAGraphics()
   U32 *src,*dst,*dst2;
   //Update Graphic Card
   if (gr_screen_scale==1)
-    src=gr_dc->body;
+    src=gr_dc1->body;
   else {
     GrScaleImage;
     src=gr_scaled_dc->body;
@@ -760,8 +721,6 @@ U0 GrUpdateVGAGraphics()
   }
 }
 
-U0 (*fp_final_screen_update)(GrDC *dc)=NULL;
-
 U0 GrUpdateScreen()
 {
   GrDC *dc;
@@ -772,15 +731,10 @@ U0 GrUpdateScreen()
   if (text_mode)
     GrUpdateWins;
   else {
-    if (gr_dc3)
-      GrDCFill(gr_dc3,TRANSPARENT);
     GrUpdateBackgroundOfText;
     GrUpdateForegroundOfText;
     GrUpdateWins;
-    if (gr_dc2->mask->flags&DCF_DIRTY)
-      GrDCBlotColor4(gr_dc,gr_dc2);
-    if (gr_dc3)
-      GrDCBlotColor8(gr_dc,gr_dc3);
+    GrDCBlotColor8(gr_dc,gr_dc2);
   }
 
   dc=GrDCAlias(gr_dc,Fs);
@@ -791,8 +745,11 @@ U0 GrUpdateScreen()
 
   if (text_mode)
     GrUpdateTextModeText;
-  else
+  else {
+    GrBlotColor4(gr_dc1->body,gr_dc->body,gr_dc_cache->body,
+      gr_dc->height*gr_dc->width_internal>>3);
     GrUpdateVGAGraphics;
+  }
   Preempt(old_preempt);
 }
 

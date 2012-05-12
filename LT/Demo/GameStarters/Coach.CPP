@@ -68,13 +68,13 @@ U8 *runner2_imgs[NUM_RUNNER2_IMGS]={__BIN_8,__BIN_9,__BIN_8,__BIN_10};
 F64 t0,hit_t0;
 F64 ball_x,ball_y;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   F64 tt=tP(task)-t0;
   I64 i=(NUM_BATTER_IMGS-1)*tt/BATTER_T;
   U8 *inter;
-  GrDC *dc=GrDCAlias(gr_dc,task);
 
+  task->text_attr=GREEN<<4;
   dc->color=WHITE;
   dc->pen_width=3;
   GrLine3(dc,BASE_X,BASE_Y,0,BASE_X-200,BASE_Y-200,0);
@@ -115,8 +115,6 @@ U0 UpdateWin(TaskStruct *task)
       }
     }
   }
-
-  GrDCDel(dc);
 }
 
 #define BALL_PATH_POINTS	7
@@ -158,13 +156,12 @@ U0 TeeBall()
 {
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   Preempt(OFF);
 
   Fs->win_inhibit|=WIF_DBL_CLICK;
-  WordStat(OFF);
+  WordStat;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  Fs->text_attr=GREEN<<4;
 
   MenuPush(
   "File {"
@@ -178,8 +175,9 @@ U0 TeeBall()
       );
 
   Init;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
   LtfClear;
+  Fs->draw_it=&DrawIt;
 
   try {
     while (TRUE) {

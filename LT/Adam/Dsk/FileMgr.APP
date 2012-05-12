@@ -599,8 +599,6 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)
       tempm1->user_data(LtfEntry *)->flags&=~LTFLF_CHECKED_COLLAPSED;
     tempm1=tempm1->parent;
   }
-
-  Fs->update_win=&LtfUpdateTaskLtfs;
   do {
     LtfUnlock(l);
     do msg_code=GetMsg(&p1,&p2,

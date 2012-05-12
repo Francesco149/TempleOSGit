@@ -33,7 +33,7 @@ Normally, the next_ltf is used for updating
 the border, primarily.
 
 See [C:/LT/Adam/Ltf/LtfMain.APZ,215] UseTermLtf().
-See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1774] LtfUpdateTaskLtfs().
+See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1792] LtfUpdateTaskLtfs().
 
 Note: the next_ltf is not to be confused
 with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1193] LtfEntry.

@@ -28,9 +28,9 @@ Windows Key	Personal Menu
 Shift-Windows Pull-down Menu
 
 Other keys: Key Map
-    `KeyMap;View;
-    `
-    
+`KeyMap;View;
+`
+
 
   +] Mouse Ctrls
     Right-Click	Right-click menu
@@ -92,16 +92,16 @@ Top of Screen Pull-down menu
 
 
 Dir("*");
-    `Dir("*");`
-     will list files in the current directory.
+`Dir("*");`
+ will list files in the current directory.
 
 Dir;
-    `Dir;`
-     uses default of "*".
+`Dir;`
+ uses default of "*".
 
 Cd("::/LT/Apps");
-    `Cd("::/LT/Apps");`
-     will change directories.
+`Cd("::/LT/Apps");`
+ will change directories.
 
 Directories are referenced with "/" not "\".  The Boot drive is referred to
     with "::".  Other drives are referred to by a letter and a colon.  Your user
@@ -120,8 +120,8 @@ Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a
 
 Grep("pattern","/LT/Demo/*.CPZ;*.TXZ;");
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2046] TEXT_FILE_MASK and
-    [C:/LT/OSMain/Adam1a.HPZ,2045] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,2048] TEXT_FILE_MASK and
+    [C:/LT/OSMain/Adam1a.HPZ,2047] SRC_FILE_MASK.
 
 
   +] BURNING CD-ROMs/DVDs
@@ -167,7 +167,6 @@ Be aware of [C:/LT/OSMain/Adam1a.HPZ,2046] TEXT_FILE_MASK and
 [::/LT/Doc/SysPgmGuide.TXZ] System Programming Guide-Lines
 [::/LT/OSMain/Hash1a.CPZ,1] Hash Tables
 [::/LT/Doc/KeyBoard.TXZ,PutKeyHandling] Keyboard Handling
-[D:/LT/Adam/Gr/GrDC.APZ,GrBitMaps] GrDC internal format
 [::/LT/Demo/Lectures/PageTableEntries1.CPZ] Page Table Entries 1
 [::/LT/Demo/Lectures/PageTableEntries2.CPZ] Page Table Entries 2
 [::/LT/Demo/Lectures/PCIInterrupts.CPZ] PCIInterrupts.CPZ

@@ -2,7 +2,7 @@ U0 Main()
 {
   I64 x1=0,y1=0,x2=0,y2=0,i=1,c=0;
   I64 vx1=0,vy1=0,vx2=0,vy2=0;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   while (!ScanChar) {
     if (!--i) {
       i=1000;
@@ -19,7 +19,7 @@ U0 Main()
     y2=LimitI64(y2+vy2,0,Fs->win_pixel_height-1);
     Sleep(1); //Take this out and see what happens!
   }
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
 }
 

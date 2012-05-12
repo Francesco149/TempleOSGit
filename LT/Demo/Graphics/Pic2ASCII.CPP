@@ -8,7 +8,7 @@ U0 Convert()
   U8 byte_bit_cnts[256];
 
   I64 i,j,row,col,ch,best_ch,score,best_score,cur_char_image,diff_image;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
 //Set-up a table telling how many 1 bits in a val.
   MemSet(byte_bit_cnts,0,sizeof(byte_bit_cnts));
@@ -23,15 +23,12 @@ U0 Convert()
 
 //The size of one character is 8x8 pixels
 //which fits in a 64-bit var. We'll
-//fetch the pixels from the screen using [C:/LT/Adam/Gr/GrPrimatives.APZ,97] GrPeek().
+//fetch the pixels from the screen using [C:/LT/Adam/Gr/GrPrimatives.APZ,105] GrPeek().
       cur_char_image=0;
       for (i=0;i<FONT_HEIGHT;i++)
 	for (j=0;j<FONT_WIDTH;j++)
-//[C:/LT/Adam/Gr/GrPrimatives.APZ,97] GrPeek() returns color or -1 if covered or off-screen.
-//We pass-it the mask, which is also a [C:/LT/OSMain/Adam1a.HPZ,3482] GrDC. The mask
-//is a 2-color bitmap telling which pixels have been changed
-//in the gr_dc2 layer.  Noramlly, don't pass the mask.
-	  if (GrPeek(dc->mask,col*FONT_WIDTH+j,row*FONT_HEIGHT+i)==1)
+//[C:/LT/Adam/Gr/GrPrimatives.APZ,105] GrPeek() returns color or -1 if covered or off-screen.
+	  if (GrPeek(dc,col*FONT_WIDTH+j,row*FONT_HEIGHT+i)!=COLOR_TRANSPARENT)
 	    LBts(&cur_char_image,i*8+j);
 
       best_score=MAX_I64;
@@ -60,14 +57,14 @@ U0 Convert()
 public U0 Pic2ASCII()
 {
   I64 msg_code,cnt,x1,y1,x2,y2,p1,p2;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   dc->color=ROP_EQU+BLACK;
 
   SettingsPush;
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
   WinMax;
-  GrDCClear;
+  GrDCFill;
   "$CL$Draw a picture and hit\na key to convert to ASCII.\n";
   do {
     msg_code=GetMsg(&p1,&p2,
@@ -95,7 +92,7 @@ public U0 Pic2ASCII()
   "$CL$$WW,0$";
 
   Convert;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
   SettingsPop;
 }

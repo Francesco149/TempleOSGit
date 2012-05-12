@@ -15,9 +15,8 @@ class Arrow
 BoolI8 bow_drawn;
 F64 bow_x,bow_y,bow_theta;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 theta,x,y,dx,dy,
 	   str_w,str_h,draw_len;
   Arrow *tempa;
@@ -75,8 +74,6 @@ U0 UpdateWin(TaskStruct *task)
     GrSpritePlotRotZ3b(dc,tempa->x,tempa->y,0,__BIN_1,theta);
     tempa=tempa->next;
   }
-
-  GrDCDel(dc);
 }
 
 #define ANIMATE_SLEEP_MS	10
@@ -144,7 +141,7 @@ U0 CleanUp()
 
 U0 Zing()
 {
-  I64 msg_code,p1,p2;
+  I64 p1,p2;
   Arrow *tempa;
   MenuPush(
     "File {"
@@ -157,16 +154,17 @@ U0 Zing()
   );
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF);
-  WinBorder(OFF);
+  WinBorder;
   WinMax;
-  WordStat(OFF);
+  WordStat;
 
-  LtfBottom;
   LtfClear;
 
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIF_ALL-WIF_GRAB_SCROLL;
   try {
     while (TRUE) {

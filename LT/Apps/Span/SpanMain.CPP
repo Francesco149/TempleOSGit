@@ -283,7 +283,7 @@ U0 Span()
   MySpring *temps;
   Ctrl *bt_run,*bt_mode,*bt_snap;
   U8 *src;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
@@ -308,9 +308,9 @@ U0 Span()
   Preempt(OFF);
 
 
-  LtfCursor(OFF);
-  WinBorder(OFF);
-  WordStat(OFF);
+  LtfCursor;
+  WinBorder;
+  WordStat;
   Fs->win_inhibit|=WIF_DBL_CLICK;
 
   MenuPush(
@@ -357,7 +357,7 @@ U0 Span()
   try {
     while (TRUE) {
       msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_IP_L_UP|1<<MSG_KEY_DOWN|1<<MSG_IP_MOVE);
-      GrDCClear(dc);
+      GrDCFill(dc);
       switch (msg_code) {
 	case MSG_IP_L_DOWN:
 	  cursor_mass=tempm1=tempm2=NULL;
@@ -501,7 +501,7 @@ span_done: //Don't goto out of try
   CtrlButtonDel(bt_mode);
   CtrlButtonDel(bt_snap);
   SpanDel(ode);
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
   MenuPop;
   LtfBottom;

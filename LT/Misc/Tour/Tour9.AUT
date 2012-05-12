@@ -16,15 +16,9 @@ Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "Type(\"HOME/PersonalMenu.TXZ\");";
 AFPmtStr("\n");
 
-Sleep(1500);
-
+"AFView;\n";
 PopUpOk(
-"We will now run a test-suite\n"
-"that automatically executes\n"
-"most LoseThos commands.  It takes\n"
-"a few minutes, so kick-back.\n");
+"$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\n");
+AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
-PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
 
-"#include \"::/LT/Misc/LTTestSuite.CPZ\";";
-AFPmtStr("\n");

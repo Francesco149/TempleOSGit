@@ -48,7 +48,7 @@ U0 Main()
     h=Fs->win_pixel_width,
     v=Fs->win_pixel_height;
   F64 t1,t2,results[NUM_TESTS];
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   for (i=0,n=10;i<NUM_TESTS;i++,n*=10) {
     t1=Test(n,1);
@@ -78,7 +78,7 @@ U0 Main()
   }
   PressAKey;
 
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 

@@ -442,7 +442,7 @@ U0 MPDrawIt(GrMFrame *e) //Multiprocessing draw it, called by each core.
   }
   dc->r=old_r;
 
-//e->dc's depth buf was copied but we don't want it freed during [C:/LT/Adam/Gr/GrDC.APZ,84] GrDCDel().
+//e->dc's depth buf was copied but we don't want it freed during [C:/LT/Adam/Gr/GrDC.APZ,76] GrDCDel().
   dc->depth_buf=NULL;
 
   GrDCDel(dc);
@@ -485,7 +485,7 @@ I64 *GrMSetW2S(GrMFrame *e,TaskStruct *task)
   e->w2s=GrMW2S(e,task);
   Free(e->s2w);
   e->s2w=GrMS2W(e,task);
-  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/LT/Adam/Gr/GrDC.APZ,84] GrDCDel().
+  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/LT/Adam/Gr/GrDC.APZ,76] GrDCDel().
 }
 
 U0 GrMCursorW(GrMFrame *e,TaskStruct *task,I64 *_x,I64 *_y,I64 *_z)
@@ -644,10 +644,9 @@ U0 GrMClipBoardPaste(GrMFrame *e)
 GrMClipBoardInit;
 
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   GrMFrame *e=NamedFramePtr("GrMFrame",task);
-  GrDC *dc=GrDCAlias(gr_dc,task);
   Ctrl *c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES);
   F64 d;
   I64 i,x,y,z;
@@ -728,17 +727,17 @@ U0 UpdateWin(TaskStruct *task)
 
   if (CtrlInside(c,ipx_presnap,ipy_presnap)||win_show_menu) {
     SetSnap(&task->snap,1,1.0);
-    task->win_inhibit=0;
+    task->win_inhibit=WIF_LTF;
   } else {
     GrMCurSnap(e);
-    task->win_inhibit=WIF_ALL-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
+    task->win_inhibit=WIF_ALL|WIF_LTF-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
   }
 
   GrMCursorW(e,task,&x,&y,&z);
   if (z<0)
-    dc->color=ROP_XOR+RED^WHITE;
+    dc->color=ROP_XOR+RED^COLOR_TRANSPARENT;
   else
-    dc->color=ROP_XOR+WHITE;
+    dc->color=ROP_XOR+COLOR_TRANSPARENT;
   GrPrintF(dc,0,0,"%6.3f%% (%d,%d,%d)",e->view_scale*100,x,y,z);
   dc->pen_width=1;
   dc->color&=0xF;
@@ -758,7 +757,6 @@ U0 UpdateWin(TaskStruct *task)
 //Wait for all cores to complete.
   while (e->mp_done_flags!=1<<mp_cnt-1)
     Yield;
-  GrDCDel(dc);
 }
 
 U0 GrMInit(GrMFrame *e,BoolI8 flip_y)
@@ -1005,16 +1003,16 @@ See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
 	"$FG,GREEN$'s'$FG$: Set snap\n"
 	"\nSee menu at top of screen for more.\n");
 
-  Fs->win_inhibit=WIF_ALL-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
+ 
+Fs->win_inhibit=WIF_ALL|WIF_LTF-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
-  WordStat(OFF);
+  WordStat;
   GrMInit(&e,flip_y);
   if (root)
     GrMLoad(&e,root);
   NamedFramePtrAdd("GrMFrame",&e);
-  Fs->update_win=&UpdateWin;
-
+  Fs->draw_it=&DrawIt;
   GrMCurSnap(&e);
   GrMRecalcCxCy(Fs,&e);
 

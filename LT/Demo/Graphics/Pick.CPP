@@ -19,10 +19,10 @@ I64 x[NUM_APPLES],y[NUM_APPLES],
 
 U8 buf[128];
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn task;
   I64 i,best_dist=MAX_I64,best_apple=0,best_sprite_elem_num=0;
-  GrDC *dc=GrDCAlias(gr_dc,task);
  
   dc->flags|=DCF_LOCATE_NEAREST;
   dc->cur_x=cur_x;
@@ -52,7 +52,6 @@ U0 UpdateWin(TaskStruct *task)
   GrRect(dc,5,5,StrLen(buf)*FONT_WIDTH,FONT_HEIGHT);
   dc->color=BLACK;
   GrPutS(dc,5,5,buf);
-  GrDCDel(dc);
 }
 
 
@@ -66,8 +65,10 @@ U0 Main()
   *buf=0;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  WordStat(OFF);
-  Fs->update_win=&UpdateWin;
+  WordStat;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
   do {

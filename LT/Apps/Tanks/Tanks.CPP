@@ -1348,17 +1348,17 @@ U0 CleanUp()
 #define T_NEW_GAME	2
 #define T_EXIT_GAME	3
 
-extern U0 UpdateWin(TaskStruct *task);
+extern U0 DrawIt(TaskStruct *task,GrDC *dc);
 
 U0 HandleChar(U8 ch)
 {
   switch (ch) {
     case CH_ESC:
     case CH_SHIFT_ESC:
-      if (Fs->update_win==&UpdateWin)
+      if (Fs->draw_it==&DrawIt)
 	throw(EXCEPT_LOCAL,T_EXIT_GAME);
       else
-	Fs->update_win=&UpdateWin;
+	Fs->draw_it=&DrawIt;
       break;
     case CH_SPACE:
       throw(EXCEPT_LOCAL,T_TURN_OVER);
@@ -1371,11 +1371,11 @@ U0 HandleChar(U8 ch)
       SetViewPlayer(1);
       break;
     case '3':
-      if (Fs->update_win==&UpdateWin) {
-	Fs->update_win=Fs->next_settings->update_win;
+      if (Fs->draw_it==&DrawIt) {
+	Fs->draw_it=Fs->next_settings->draw_it;
 	View;
       }
-      Fs->update_win=&UpdateWin;
+      Fs->draw_it=&DrawIt;
       break;
   }
 }
@@ -1472,11 +1472,10 @@ U0 DrawUnits(TaskStruct *task,GrDC *dc)
   }
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   F64 x,y;
   I64 h,v,i,j,r,c;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   U8 buf[128];
   IndirectOrders *tempi;
   BoolI8 old_preempt=Preempt(OFF);
@@ -1489,6 +1488,7 @@ U0 UpdateWin(TaskStruct *task)
   h=task->horz_scroll.pos;
   v=task->vert_scroll.pos;
 
+  map->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(dc,-h,-v,map);
 
   i=ipx-task->win_pixel_left-task->win_scroll_x;
@@ -1632,8 +1632,6 @@ U0 UpdateWin(TaskStruct *task)
   else
     dc->color=LTPURPLE;
   GrPutS(dc,-task->win_scroll_x+(13+7+10)*FONT_WIDTH,-task->win_scroll_y,buf);
-
-  GrDCDel(dc);
   Preempt(old_preempt);
 }
 
@@ -1647,7 +1645,7 @@ U0 TaskEndCB()
 U0 Tanks()
 {
   U64 result,ch;
-  map=GrDCNew(DCT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+  map=GrDCNew(DCT_COLOR8,MAP_WIDTH,MAP_HEIGHT);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->win_inhibit|=WIF_DBL_CLICK|WIF_IP_L|WIF_IP_R;
@@ -1670,7 +1668,7 @@ U0 Tanks()
 );
 
   WinMax;
-  WordStat(OFF);
+  WordStat;
   WinBorder(ON);
   Preempt(OFF);
   Init;
@@ -1685,8 +1683,9 @@ U0 Tanks()
 	"$FG,GREEN$  2\t   $FG$ Player 2 view.\n"
 	"$FG,GREEN$  3\t   $FG$ View odds calculations.");
   Fs->task_end_cb=&TaskEndCB; //<CTRL-ALT-X>
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
   LtfClear;
+  Fs->draw_it=&DrawIt;
   "$FG,GREEN$<SHIFT-ESC>$FG$ to return to game.\n";
 
   NewPhase;

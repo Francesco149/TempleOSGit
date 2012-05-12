@@ -478,7 +478,7 @@ U0 MPStart()
     buf[14]+=i;
     task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/LT/OSMain/Adam1a.HPZ,3117] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_queue_signature=TASK_IN_QUEUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TssNew(i);

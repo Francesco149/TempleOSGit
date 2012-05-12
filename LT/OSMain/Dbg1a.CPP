@@ -265,7 +265,7 @@ U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
 
 U0 D(U8 *buf,U64 cnt=0x80,BoolI8 show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/LT/Adam/Ltf/LtfMain.APZ,700] LtfD() for a live dump.
+//See [C:/LT/Adam/Ltf/LtfMain.APZ,699] LtfD() for a live dump.
 {
   U64 i,j,ch;
   U8 *b=buf;

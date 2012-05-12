@@ -418,7 +418,7 @@ U0 EdInsertColor()
 {
   I64 type=PopUpColorType,col=LTF_DFT;
   if (type>=0) {
-    col=PopUpColor;
+    col=PopUpColor(,FALSE);
     if (col==LTF_DFT)
       "$%Z$",type,"ST_LTF_CMDS";
     else if (col>=0)

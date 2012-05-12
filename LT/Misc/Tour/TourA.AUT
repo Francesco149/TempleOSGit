@@ -1,0 +1,10 @@
+PopUpOk(
+"We will now run a test-suite\n"
+"that automatically executes\n"
+"most LoseThos demos.  It takes\n"
+"a few minutes, so kick-back.\n");
+
+PopUpOk("Press $FG,GREEN$<ENTER>$FG$.");
+
+"#include \"::/LT/Misc/LTTestSuite.CPZ\";";
+AFPmtStr("\n");

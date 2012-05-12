@@ -1,6 +1,5 @@
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   SND_OUT_CONTAINER *buf=_hda->ostr0_buf[0];
   I64 i,x1,y1,x2,y2,
     cy=task->win_pixel_height>>1;
@@ -22,8 +21,6 @@ U0 UpdateWin(TaskStruct *task)
     GrLine(dc,x2,y2,x1,y1);
     x2=x1; y2=y1;
   }
-
-  GrDCDel(dc);
 }
 
 U0 SndScope()
@@ -35,7 +32,9 @@ U0 SndScope()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   SetWinHorz(1,18);
   SetWinVert(15,TEXT_ROWS-2);
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   GetChar;
   SettingsPop;
 }

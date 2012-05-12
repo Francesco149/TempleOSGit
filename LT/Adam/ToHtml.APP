@@ -82,7 +82,7 @@ public Ltf *Ltf2Html(Ltf *l_in,U8 *html_header=NULL,
   BoolI8 unlock_l=LtfLock(l_in),no_backward;
 
   for (i=0xF0;i<=0xFF;i++)
-    LBts(style_bitmap,i); //See [::/LT/Demo/AcctExample/TSDistribute.APZ,cF5] kludge
+    LBts(style_bitmap,i);
 
   LtfRecalc(l_in);
 

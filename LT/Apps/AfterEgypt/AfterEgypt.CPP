@@ -252,9 +252,9 @@ U0 TMsg(GrDC *dc,U8 *msg)
 
 U0 Trailer()
 {
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   Cd(Fs->parent_task->cur_dir);
   Type("AESplash.TXZ");
   Sleep(500);
@@ -266,7 +266,7 @@ U0 Trailer()
     TMsg(dc,"\"Trust Me!\"");
   } catch
     Fs->catch_except=TRUE;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 
@@ -276,15 +276,15 @@ U0 AfterEgypt()
   U8 *bible_filename=Define("ST_BIBLE_FILE");
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  WinBorder(OFF);
-  WordStat(OFF);
+  WinBorder;
+  WordStat;
   LtfClear;
   WinMax;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   PopUp("Trailer;",Fs);
 
   WsInit(bible_filename);
-  WordStat(OFF);
+  WordStat;
 
   try //This is to catch <CTRL-ALT-C>.
     while (TakeTurn);

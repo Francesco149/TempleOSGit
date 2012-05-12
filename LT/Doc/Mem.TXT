@@ -30,7 +30,7 @@ See [C:/LT/Adam/MemRep.APZ,188] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003D6CF
+ 0x0000007C00- 0x000003D7BF
   OSMain kernel module, placed here by the boot-loader,
   [C:/LT/OSMain/BootDefs.HPZ,6] BOOT_RAM_BASE.
 
@@ -65,14 +65,14 @@ memory starting at 0xF0000000 going up.
   64-bit devices are mapped counting backward from 128 Gig.
 
 
-                                      [C:/LT/OSMain/Adam1a.HPZ,2845] BlkPools
-[C:/LT/OSMain/Adam1a.HPZ,2860] HeapCtrls
+                                      [C:/LT/OSMain/Adam1a.HPZ,2847] BlkPools
+[C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrls
  <1> (image)
 
 0000 0000 0000 0000                   Core 0   
 
 0000 0000 0000 7C00 OSMain
-0000 0000 0003 D6CF 
+0000 0000 0003 D7BF 
 
 0000 0000 0010 0000 Page_Tables                    AdamTask
 

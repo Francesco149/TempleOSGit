@@ -18,14 +18,11 @@ class MPCtrl {
 
 I64 *r1,*r2;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc;
   I64 *old_r;
 
   if (mp.core0_done) return;
-
-  dc=GrDCAlias(gr_dc,task);
   old_r=dc->r;
   dc->color=BLACK;
   GrPutS(dc,0,0,"This is not art.");
@@ -37,7 +34,6 @@ U0 UpdateWin(TaskStruct *task)
   dc->flags|=DCF_TRANSFORMATION;
 
   dc->pen_width=2;
-  dc->bkcolor=BLACK;
   GrSpritePlot3(dc,0,0,0,__BIN_1);
 
   dc->color=BLUE;
@@ -51,7 +47,6 @@ U0 UpdateWin(TaskStruct *task)
   GrEllipse3(dc,100,100,0,50,25,pi/3);
 
   GrSetRotMat(dc,old_r);
-  GrDCDel(dc);
   mp.core0_done=TRUE;
 }
 
@@ -63,7 +58,7 @@ U0 MPDrawIt(TaskStruct *main_task)
 
   if (mp.core1_done) return;
 
-  dc=GrDCAlias(gr_dc2,Fs);
+  dc=GrDCAlias;
   old_r=dc->r;
   dc->win_task=main_task;
   GrSetRotMat(dc,r2);
@@ -71,10 +66,9 @@ U0 MPDrawIt(TaskStruct *main_task)
   dc->y=200;
   dc->flags|=DCF_TRANSFORMATION;
 
-  GrDCClear(dc);
+  GrDCFill(dc);
 
   dc->pen_width=2;
-  dc->bkcolor=BLACK;
   GrSpritePlot3(dc,0,0,0,__BIN_1);
 
   dc->color=BLUE;
@@ -103,7 +97,8 @@ U0 Main()
   r2=GrIdent;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=&UpdateWin;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   Preempt(OFF); //Don't access r1,r2 while being changed
 
   while (!ScanChar) {
@@ -130,7 +125,7 @@ U0 Main()
     theta3-=2*pi/100;
     phi3	-=2*pi/130;
   }
-  GrDCClear;
+  GrDCFill;
 
   SettingsPop;
   Free(r1);

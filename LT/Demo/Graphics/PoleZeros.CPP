@@ -68,7 +68,7 @@ U0 Draw()
   MPCmdStruct *tempm[MP_MAX_PROCESSORS];
   F64 y_total,old_y_total=MAX_F64;
   I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height,cx=w/2,cy=h/2;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   while (TRUE) {
 
     for (i=1;i<mp_cnt;i++)
@@ -110,10 +110,10 @@ U0 PoleZeros()
   SetVGAPaletteColor(15,0xFF0000); //White is red
 
   WinMax;
-  WordStat(OFF);
-  WinBorder(OFF);
+  WordStat;
+  WinBorder;
 
-  GrDCClear;
+  GrDCFill;
   LtfClear;
   scale=1.0;
 
@@ -165,8 +165,7 @@ pz_done:
   } catch
     CatchAll;
   SettingsPop;
-  GrDCClear;
+  GrDCFill;
 }
 
 PoleZeros;
-

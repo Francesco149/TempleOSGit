@@ -1,12 +1,48 @@
 Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 
-----04/28/12 13:44:03----
-* Began [C:/LT/OSMain/Adam1a.HPZ,3465] DCT_COLOR8.
+----05/05/12 21:43:47----
+* Added find & replace color in <CTRL-R> editor.
+* Added [C:/LT/Adam/Ltf/LtfRecalc.APZ,1659] LtfBottom() call into
+[C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear().
+* Added [C:/LT/Adam/Gr/GrScreen.APZ,6] gr_dc_cache
+
+----05/04/12 16:45:33----
+* Got rid of Fs->update_win and added [C:/LT/OSMain/Adam1a.HPZ,2992] WIF_LTF.
+* Changed dft for [C:/LT/Adam/WordStat/WsMain.APZ,611] WordStat();
+* Added [C:/LT/Adam/Ltf/LtfRecalc.APZ,1717] LtfScroll();
+
+----05/03/12 22:27:03----
+* **V8.03 Released**
+* **Warning**: Run [::/LT/Misc/Cvt803.CPZ] ::/LT/Misc/Cvt803.CPZ to convert
+bitmaps in [C:/LT/Adam/Gr/Gr.APZ,55] GrSprites stored in 
+your text files.  Run it to convert *.LG? files, too.
+* **Warning**: [C:/LT/Adam/Gr/GrScreen.APZ,8] gr_dc2 with
+[C:/LT/OSMain/Adam1a.HPZ,2875] ROP_XOR is different.
+* Added [C:/LT/Adam/Gr/GrScreen.APZ,14] GrDCFill().
+* **Warning**: Replace [C:/LT/Adam/Gr/GrScreen.APZ,27] GrDCClear() with
+[C:/LT/Adam/Gr/GrScreen.APZ,14] GrDCFill([C:/LT/Adam/Gr/GrScreen.APZ,8]
+gr_dc2,[C:/LT/OSMain/Adam1a.HPZ,3437] COLOR_TRANSPARENT);
+* Merged GRST_BITMAP4_TRANSPARENT into [C:/LT/Adam/Gr/Gr.APZ,23] GRST_BITMAP8.
+* Made [C:/LT/OSMain/Adam1a.HPZ,3463] DCT_COLOR8 to replace DCT_COLOR4.
+* Got rid of DCF_DIRTY.
+* Changed how [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.bkcolor works for
+[C:/LT/OSMain/Adam1a.HPZ,2876] ROP_COLLISION.
+* Got rid of DCT_MONO.  Use [C:/LT/OSMain/Adam1a.HPZ,3463] DCT_COLOR8
+filled-in with [C:/LT/OSMain/Adam1a.HPZ,3438] COLOR_MONO.  Then, 
+[C:/LT/Adam/Gr/GrBitMap.APZ,76] GrDCBlot() with
+[C:/LT/OSMain/Adam1a.HPZ,2877] ROP_MONO.  See
+[::/LT/Demo/MultiCore/Clouds.CPZ] ::/LT/Demo/MultiCore/Clouds.CPZ and 
+[::/LT/Demo/Graphics/Blot.CPZ] ::/LT/Demo/Graphics/Blot.CPZ.
+* [C:/LT/OSMain/Adam1a.HPZ,3437] COLOR_TRANSPARENT replaces ROP_TRANSPARENT.
+* Got rid of [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.mask, ROP_CLEAR_MASK_EQU,
+ROPB_CLEAR_MASK_TRANSPARENT.
+* Added [C:/LT/OSMain/Adam1a.HPZ,3442] DCF_NO_TRANSPARENTS, as an
+optimization.
 
 ----04/26/12 22:50:40----
 * Added [C:/LT/OSMain/Dsk/DskStr.CPZ,109] Drv2BlkDevFwded().
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Forward","Fwd");
-* Fixed bug in [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf code and cleaned-up.
+* Fixed bug in [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf code and cleaned-up.
 * Made compiler handle & more compatibly.
 
 ----04/22/12 06:12:59----
@@ -62,7 +98,7 @@ debug.
 
 ----03/28/12 04:26:17----
 * Added [C:/LT/Adam/Gr/MathGr.APZ,364] GrAddTranslation() and changed
-[C:/LT/Adam/Gr/GrSpritePlot.APZ,336] GrSpritePlotRotMat3b().
+[C:/LT/Adam/Gr/GrSpritePlot.APZ,325] GrSpritePlotRotMat3b().
 * Added song.
 
 ----03/27/12 00:47:17----
@@ -192,8 +228,8 @@ addition to <SHIFT-INSERT>, etc.
 PutS() or [C:/LT/OSMain/Str1a.CPZ,2509] PrintF().
 
 ----12/04/11 22:40:18----
-* **Warning**: Got rid of size arg in [C:/LT/Adam/Gr/GrSpritePlot.APZ,555]
-PutSprite() and [C:/LT/Adam/Gr/GrSpritePlot.APZ,527] LtfPutSprite(). 
+* **Warning**: Got rid of size arg in [C:/LT/Adam/Gr/GrSpritePlot.APZ,543]
+PutSprite() and [C:/LT/Adam/Gr/GrSpritePlot.APZ,515] LtfPutSprite(). 
 * Added [C:/LT/Adam/Snd/Music.APZ,16] tM().
 * Added [::/LT/Apps/MusicOrgan/Examples/dialogue.CPZ]
 ::/LT/Apps/MusicOrgan/Examples/dialogue.CPZ

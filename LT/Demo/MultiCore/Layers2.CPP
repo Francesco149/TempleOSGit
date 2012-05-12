@@ -7,11 +7,10 @@ class MPCtrl
 } mp;
 
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i;
   F64 t0=tNP,t1;
-  GrDC *dc=GrDCAlias(gr_dc,task);
 
   mp.refresh_done=FALSE;
   mp.refresh_start=TRUE;
@@ -23,7 +22,6 @@ U0 UpdateWin(TaskStruct *task)
     GrEllipse(dc,GR_WIDTH/2,GR_HEIGHT/2,
       GR_WIDTH/4*(Sin(t1)+1.0),GR_HEIGHT/4*(Sin(t1)+1.0),t1*2.0);
   }
-  GrDCDel(dc);
   while (!mp.refresh_done)
     Yield;
 }
@@ -32,7 +30,7 @@ U0 MPDrawIt()
 {
   I64 i;
   F64 t0=tNP,t1;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   dc->win_task=mp.win_task;
 
   while (!mp.refresh_start && !mp.app_done)
@@ -40,7 +38,7 @@ U0 MPDrawIt()
   if (mp.app_done)
     goto mp_done;
   mp.refresh_start=FALSE;
-  GrDCClear;
+  GrDCFill;
   for (i=32;i<64;i++) {
     t1=t0+i*2*pi/64;
     dc->color=(mp.i+i)/10&15;
@@ -58,7 +56,7 @@ U0 MPTask(U64 dummy=0)
   while (!mp.app_done)
     MPDrawIt;
   mp.app_done_ack=TRUE;
-  GrDCClear;
+  GrDCFill;
 }
 
 
@@ -68,8 +66,9 @@ U0 Main()
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  Fs->update_win=&UpdateWin;
-  WinBorder(OFF);
+  LtfClear;
+  Fs->draw_it=&DrawIt;
+  WinBorder;
 
   mp.i=0;
   mp.app_done=FALSE;

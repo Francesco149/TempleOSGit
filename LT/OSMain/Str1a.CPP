@@ -328,7 +328,7 @@ LTextern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/LT/Compiler/Lex.CPZ,756] Lex() can use them with [C:/LT/OSMain/Adam1a.HPZ,1846] Token Codes.
+[C:/LT/Compiler/Lex.CPZ,756] Lex() can use them with [C:/LT/OSMain/Adam1a.HPZ,1848] Token Codes.
 */
 U32 alpha_bitmap[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -763,7 +763,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/LT/OSMain/Adam1a.HPZ,3641] flags
+{//See [C:/LT/OSMain/Adam1a.HPZ,3640] flags
   U8 *src=_src,*dst=_src;
   U64 ch;
 

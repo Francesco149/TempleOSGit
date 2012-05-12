@@ -46,7 +46,7 @@ is a little risky.  It's pretty safe if you create this file on a partition
 dedicated for this purpose.
 
 
-[C:/LT/Adam/Dsk/Dsk2b.APZ,403] NonLTScan():
+[C:/LT/Adam/Dsk/Dsk2b.APZ,404] NonLTScan():
 
 is a LoseThos cmd which will scan for some blocks created by LTZ and provide
 a 

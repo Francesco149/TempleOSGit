@@ -1,7 +1,12 @@
+#help_index "Graphics"
+U64 *gr_1_to_8_bits,*gr_1_to_8_colors;
+
+#help_index "Graphics/Char;Char/Graphics"
+U32 *gr_text_base;
+U16 *gr_win_z_buf;
+
 asm {
 USE64
-GR_TEXT_BASE::	DU64	0;
-GR_WIN_Z_BUF::	DU64	0;
 // ************************************
 _PLOT_SCREEN_U8::
 	ENTER	0
@@ -18,7 +23,7 @@ _PLOT_SCREEN_U8::
 	IMUL2	RAX,TEXT_COLS
 	ADD	RBX,RAX
 	SHL	RBX,2
-	ADD	RBX,U64 [GR_TEXT_BASE]
+	ADD	RBX,U64 [&gr_text_base]
 	MOV	RAX,U64 SF_ARG1[RBP]
 	MOV	U32 [RBX],EAX
 
@@ -62,7 +67,7 @@ _PLOT_WIN_U8::
 	IMUL2	RAX,TEXT_COLS
 	ADD	RBX,RAX
 	SHL	RBX,2
-	ADD	RBX,U64 [GR_TEXT_BASE]
+	ADD	RBX,U64 [&gr_text_base]
 	MOV	RAX,U64 SF_ARG2[RBP]
 	MOV	U32 [RBX],EAX
 
@@ -79,7 +84,7 @@ BoolI8 PlotWinStr2(TaskStruct *task,U8 *s,I64 len,
 */
 _PLOT_WIN_STR2::
 	ENTER	0
-	MOV	R9,U64 [GR_TEXT_BASE]
+	MOV	R9,U64 [&gr_text_base]
 	PUSH	RSI
 	PUSH	RDI
 	MOV	RBX,U64 SF_ARG1[RBP]
@@ -156,7 +161,7 @@ BoolI8 PlotAttrStr2(TaskStruct *task,U32 *hl,I64 len,I64 x,I64 y)
 */
 _PLOT_ATTR_STR2::
 	ENTER	0
-	MOV	R9,U64 [GR_TEXT_BASE]
+	MOV	R9,U64 [&gr_text_base]
 	PUSH	RSI
 	PUSH	RDI
 	MOV	RBX,U64 SF_ARG1[RBP]
@@ -234,7 +239,7 @@ BoolI8 PlotAttr(TaskStruct *task,I64 len,
 */
 _PLOT_ATTR::
 	ENTER	0
-	MOV	R9,U64 [GR_TEXT_BASE]
+	MOV	R9,U64 [&gr_text_base]
 	PUSH	RSI
 	PUSH	RDI
 	MOV	RBX,U64 SF_ARG1[RBP]
@@ -309,7 +314,7 @@ _PLOT_ATTR::
 // ************************************
 _PLOT_BORDER_U8::
 	ENTER	0
-	MOV	R9,U64 [GR_TEXT_BASE]
+	MOV	R9,U64 [&gr_text_base]
 	MOV	RCX,U64 SF_ARG1[RBP]
 	MOV	RBX,U64 TaskStruct.win_scroll_x[RCX]
 	SAR	RBX,3
@@ -444,119 +449,146 @@ _GR_UPDATE_LINE32_FLUSH_CACHE::
 	LEAVE
 	RET1	32
 // ************************************
-_GR_PLOT_U8::
+_GR_BLOT_COLOR4::
 	ENTER	0
 	PUSH	RSI
 	PUSH	RDI
-	MOV	RDX,1 //EDX=plane
-	MOV	RBX,U64 SF_ARG4[RBP]	//RBX=d1
-	MOV	RAX,U64 SF_ARG3[RBP]
-	MOV	RDI,U64 [RAX]		//RDI=dst2
-@@05:	MOV	RSI,U64 SF_ARG1[RBP]	//RSI=font_ptr2
-	TEST	U64 SF_ARG2[RBP],RDX
-	JZ	@@15
+	PUSH	R10
 
-@@10:	LODSQ
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	OR	U8 [RDI],AL
-	ADD	RDI,RBX
-	JMP	@@20
+	MOV	RDI,U64 SF_ARG1[RBP]
+	MOV	RSI,U64 SF_ARG2[RBP]
+	MOV	RBX,U64 SF_ARG3[RBP]
+	MOV	RCX,U64 SF_ARG4[RBP]
 
-@@15:	LODSQ
-	NOT	RAX
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
-	ROR	RAX,8
-	AND	U8 [RDI],AL
-	ADD	RDI,RBX
+	MOV	R8,RDI
+	ADD	R8,RCX
+	MOV	R9,R8
+	ADD	R9,RCX
+	MOV	R10,R9
+	ADD	R10,RCX
 
-@@20:	ADD	RDI,U64 SF_ARG5[RBP]
+@@5:	LODSQ
+	MOV	RDX,U64 [RBX]
+	CMP	RAX,RDX
+	JE	I32 @@10
+	MOV	U64 [RBX],RAX
+
+	XOR	RDX,RDX
+	BT	RAX,7*8+0
+	ADC	RDX,0
 	SHL1	RDX
-	CMP	RDX,0x10
-	JNE	U32 @@05
+	BT	RAX,6*8+0
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,5*8+0
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,4*8+0
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,3*8+0
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,2*8+0
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,1*8+0
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,0*8+0
+	ADC	RDX,0
+	MOV	U8 [RDI],DL
 
-	MOV	RAX,U64 SF_ARG3[RBP]
-	MOV	U64 [RAX],RDI
-	POP	RDI
+	XOR	RDX,RDX
+	BT	RAX,7*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,6*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,5*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,4*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,3*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,2*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,1*8+1
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,0*8+1
+	ADC	RDX,0
+	MOV	U8 [R8],DL
+
+	XOR	RDX,RDX
+	BT	RAX,7*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,6*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,5*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,4*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,3*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,2*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,1*8+2
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,0*8+2
+	ADC	RDX,0
+	MOV	U8 [R9],DL
+
+	XOR	RDX,RDX
+	BT	RAX,7*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,6*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,5*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,4*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,3*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,2*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,1*8+3
+	ADC	RDX,0
+	SHL1	RDX
+	BT	RAX,0*8+3
+	ADC	RDX,0
+	MOV	U8 [R10],DL
+
+@@10:	ADD	RBX,8
+
+	INC	RDI
+	INC	R8
+	INC	R9
+	INC	R10
+
+	DEC	RCX
+	JNZ	I32 @@5
+
+	POP	R10
 	POP	RSI
-	LEAVE
-	RET1	40
-// ************************************
-_GR_PLOT_BACKGROUND::
-	ENTER	0
-	PUSH	RDI
-	MOV	RDX,0x10 //EDX=plane
-	MOV	RBX,U64 SF_ARG3[RBP]	//RBX=d1
-	MOV	RAX,U64 SF_ARG2[RBP]	//RDI=dst
-	MOV	RDI,U64 [RAX]		//RDI=dst
-
-@@05:	XOR	RAX,RAX
-	TEST	U64 SF_ARG1[RBP],RDX
-	JZ	@@10
-	DEC	RAX
-
-@@10:	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-	MOV	U8 [RDI],AL
-	ADD	RDI,RBX
-
-	ADD	RDI,U64 SF_ARG4[RBP]
-	SHL1	RDX
-	CMP	RDX,0x100
-	JNE	@@05
-
-	MOV	RAX,U64 SF_ARG2[RBP]
-	MOV	U64 [RAX],RDI
 	POP	RDI
 	LEAVE
 	RET1	32
@@ -570,7 +602,7 @@ _IS_PIXEL_COVERED0::
 	SAR	RAX,3
 	MOV	RDX,U64 SF_ARG1[RBP]
 	IMUL2	RCX,TEXT_COLS
-	MOV	RBX,U64 [GR_WIN_Z_BUF]
+	MOV	RBX,U64 [&gr_win_z_buf]
 	MOV	DX,U16 TaskStruct.win_z_num[RDX]
 	ADD	RCX,RAX
 	XOR	RAX,RAX
@@ -579,22 +611,133 @@ _IS_PIXEL_COVERED0::
 	INC	RAX
 @@05:	LEAVE
 	RET1	24
+// ************************************
+_GR_ROP_EQU_U8_NO_CLIPPING::
+//Puts foreground char shape onto gr_dc.
+//ch.u8[1] is color as a whole byte
+//ch LTFLt_UNDERLINE attr flag is used.
+	ENTER	0
+	MOVZX	RAX,U8 SF_ARG1[RBP]
+	MOV	RDX,U64 [&gr_font]
+	MOV	RAX,U64 [RDX+RAX*8]	//RAX is 8x8 char font data, 64-bits
+	BT	U64 SF_ARG1[RBP],LTFLt_UNDERLINE
+	JNC	@@05
+	MOV	RBX,0xFF00000000000000
+	OR	RAX,RBX
+@@05:	OR	RAX,RAX
+	JZ	I32 @@10
+
+	PUSH	RSI
+	PUSH	RDI
+	MOVZX	RBX,U8 SF_ARG1+1[RBP]	//Warning color is 8-bit
+	MOV	RDX,U64 [&gr_1_to_8_colors]
+	MOV	R8,U64 [RDX+RBX*8]	//R8 is color repeated 8 times.
+	MOV	R9,U64 SF_ARG3[RBP]	//R9 is width_internal
+	MOV	RDI,U64 SF_ARG2[RBP]
+	MOV	RSI,U64 [&gr_1_to_8_bits] //RSI is gr_1_to_8_bits
+
+//	m=my_1_to_8_bits[ch&255];ch>>=8;
+//	*dst=*dst&~m|c&m;
+//	dst(U8 *)+=w1;
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOVZX	RBX,AL
+	MOV	RDX,U64 [RSI+RBX*8]
+	SHR	RAX,8
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+	ADD	RDI,R9
+
+	MOV	RDX,U64 [RSI+RAX*8]
+	MOV	RBX,U64 [RDI]
+	MOV	RCX,RDX
+	NOT	RCX
+	AND	RDX,R8
+	AND	RCX,RBX
+	OR	RCX,RDX
+	MOV	U64 [RDI],RCX
+
+	POP	RDI
+	POP	RSI
+@@10:	LEAVE
+	RET1	24
 }
-
-#help_index "Graphics/Char;Char/Graphics"
-public LTextern GR_TEXT_BASE	U32 *gr_text_base;
-public LTextern GR_WIN_Z_BUF	U16 *gr_win_z_buf;
-#help_index "Graphics"
-
-//No clipping
-public LTextern _IS_PIXEL_COVERED0 BoolI64 IsPixelCovered0(TaskStruct *task,I64 x,I64 y);
-
-LTextern _GR_UPDATE_LINE32 U0 GrUpdateLine32(U32 **dst3,U32 **src2,U64 d5b,
-				    U0 **vga);
-LTextern _GR_UPDATE_LINE32_FLUSH_CACHE U0 GrUpdateLine32FlushCache(U32 **dst3,U32 **src2,U64 d5b,
-				    U0 **vga);
-LTextern _GR_PLOT_U8 U0 GrPlotU8(U8 *font_ptr,U8 attr,U8 **dst2,U64 d1,U64 d2);
-LTextern _GR_PLOT_BACKGROUND U0 GrPlotBackground(U8 attr,U8 **dst,U64 d1,U64 d2);
 
 #help_index "Graphics/Char;Char/Graphics"
 public LTextern _PLOT_SCREEN_U8 BoolI64 PlotScreenU8(U64 w,I64 x,I64 y);
@@ -607,4 +750,16 @@ public LTextern _PLOT_ATTR_STR2 BoolI64 PlotAttrStr2(
 public LTextern _PLOT_ATTR	  BoolI64 PlotWinAttr(
 	   TaskStruct *task,I64 len,U64 attr,I64 x,I64 y);
 public LTextern _PLOT_BORDER_U8 BoolI64 PlotBorderU8(TaskStruct *task,U64 w,I64 x,I64 y);
+LTextern _GR_ROP_EQU_U8_NO_CLIPPING U0 GrRopEquU8NoClipping(U64 ch,U8 *dst,U64 width_internal);
+
+#help_index "Graphics"
+//No clipping
+public LTextern _IS_PIXEL_COVERED0 BoolI64 IsPixelCovered0(TaskStruct *task,I64 x,I64 y);
+
+LTextern _GR_UPDATE_LINE32 U0 GrUpdateLine32(
+  U32 **dst3,U32 **src2,U64 w,U0 **vga);
+LTextern _GR_UPDATE_LINE32_FLUSH_CACHE U0 GrUpdateLine32FlushCache(
+  U32 **dst3,U32 **src2,U64 w,U0 **vga);
+LTextern _GR_BLOT_COLOR4 U0 GrBlotColor4(
+  U8 *dst,U64 *img,U64 *img_cache,U64 cnt);
 #help_index ""

@@ -15,8 +15,9 @@ U0 SongTask(U64 dummy=0)
     Play("hEDCARCDECR");
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn dc;
   U8 buf[128];
   SPrintF(buf,"Error:%6.3f  Time:%6.3f  Score:%6.3f  Best:%8.3f",avg_error,elapsed_time,score,best_score);
   PlotWinStr(task,buf,BLACK<<4+WHITE,0,0);
@@ -38,20 +39,22 @@ U0 CircleTrace()
 {
   I64 msg_code,p1,p2,x1,y1;
   F64 rad,t0,total_distance;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
-  WordStat(OFF);
+  WordStat;
 
   cx=Fs->win_pixel_width/2;
   cy=Fs->win_pixel_height/2;
 
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
 
-  GrDCClear;
-  dc->color=ROP_XOR+BLACK;
+  GrDCFill;
+  dc->color=ROP_XOR+BLACK^COLOR_TRANSPARENT;
   GrCircle(dc,cx,cy,CIRCLE_RADIUS);
   do {
     msg_code=GetMsg(&p1,&p2,
@@ -60,10 +63,10 @@ U0 CircleTrace()
       case MSG_KEY_UP:
 	break;
       case MSG_IP_L_DOWN:
-	GrDCClear;
-	dc->color=ROP_XOR+BLACK;
+	GrDCFill;
+	dc->color=ROP_XOR+BLACK^COLOR_TRANSPARENT;
 	GrCircle(dc,cx,cy,CIRCLE_RADIUS);
-	dc->color=ROP_XOR+RED;
+	dc->color=ROP_XOR+RED^COLOR_TRANSPARENT;
 	t0=tP;
 	total_distance=0.001;
 	total_error=0;
@@ -116,7 +119,7 @@ U0 CircleTrace()
     }
   } while (msg_code!=MSG_KEY_DOWN || p1!=CH_SHIFT_ESC && p1!=CH_ESC);
   SettingsPop;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
   AcctRegWriteBranch("LT/CircleTrace","F64 best_score=%5.4f;\n",best_score);
 }

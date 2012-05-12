@@ -2,6 +2,10 @@
 
 F64 t0=tM;
 
+U0 DrawIt(TaskStruct *task,GrDC *dc)
+{
+}
+
 U0 AnimateTask(U0 **update)
 {
   F64 dt;
@@ -33,7 +37,10 @@ U0 Song()
   task->win_bottom=task->win_top+12;
   TaskDerivedValsUpdate(task);
   music_tempo=2.5;
-  Fs->animate_task=Spawn(&AnimateTask,&Fs->update_win,"Animate",Fs);
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
   try {
     while (!ScanKey) {
       t0=tM;

@@ -4,7 +4,7 @@
 
 
 I64 PopUpFreq()
-{ //See also [C:/LT/Adam/Ltf/LtfPopUp.APZ,651] PopUpRangeI64()
+{ //See also [C:/LT/Adam/Ltf/LtfPopUp.APZ,648] PopUpRangeI64()
   I64 i;
   Ltf *l=LtfNew;
   LtfPutS(l,"$TX+CX,\"Set Freq\"$\n" //Centered text

@@ -409,13 +409,12 @@ I64 ObjCompare(Object *o1,Object *o2)
 }
 
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   F64 tt=tP(task),d,d_down,d_up;
   I64 i;
   Object *o_sort[NUM_OBJS],*o;
 
-  GrDC *dc=GrDCAlias(gr_dc,task);
   GrDCAllocDepthBuf(dc);
   dc->ls.x=10000;
   dc->ls.y=60000;
@@ -527,8 +526,6 @@ U0 UpdateWin(TaskStruct *task)
   GrPrintF(dc,FONT_WIDTH*39,0,"%02d",best_score0);
   dc->color=LTPURPLE;
   GrPrintF(dc,FONT_WIDTH*42,0,"%02d",best_score1);
-
-  GrDCDel(dc);
 }
 
 
@@ -743,12 +740,12 @@ U0 KeepAway()
     "Right-Click to jump.\n");
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   Preempt(OFF);
   LtfCurAttr(BLACK+YELLOW<<4);
 
   Fs->win_inhibit|=WIF_DBL_CLICK;
-  WordStat(OFF);
+  WordStat;
 
   MenuPush(
 "File {"
@@ -763,9 +760,10 @@ U0 KeepAway()
   );
 
   Init;
-  Fs->update_win=&UpdateWin;
-  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",Fs);
+  LtfCursor;
   LtfClear;
+  Fs->draw_it=&DrawIt;
+  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",Fs);
 
   try {
     while (TRUE) {

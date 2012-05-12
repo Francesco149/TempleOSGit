@@ -34,7 +34,7 @@ U0 NoiseDemo()
   F64 t0;
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WordStat(OFF);
+  WordStat;
   cnt=0x1000;
 
   noise_done=FALSE;
@@ -56,7 +56,7 @@ U0 NoiseDemo()
   while (done_ack!=1<<mp_cnt-1)
     Yield;
 
-  GrDCClear;
+  GrDCFill;
   SettingsPop;
 }
 

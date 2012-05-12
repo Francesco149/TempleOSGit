@@ -2,7 +2,7 @@
 
 //This changes a page table entry for VGA graphics memory.
 //LoseThos keeps a cached copy of VGA memory in
-//[C:/LT/Adam/Gr/GrScreen.APZ,2] gr_screen_image.  See [C:/LT/Adam/Gr/GrScreen.APZ,730] GrUpdateVGAGraphics.
+//[C:/LT/Adam/Gr/GrScreen.APZ,2] gr_screen_image.  See [C:/LT/Adam/Gr/GrScreen.APZ,691] GrUpdateVGAGraphics.
 
 //LoseThos used 4096 size pages for memory below addr 2 Meg
 //and 2 Meg pages above two Meg.  See [C:/LT/OSMain/Memory.CPZ,183] MemPageSize() and [::/LT/OSMain/Memory.CPZ,SYS_INIT_MEM] INIT_MEMORY.
@@ -42,5 +42,5 @@ U0 PageTableDemo1()
 PageTableDemo1;
 
 //See [C:/LT/OSMain/Memory.CPZ,325] Alloc2MegMemBlks(), [C:/LT/OSMain/Memory.CPZ,482] Free2MegMemBlks() for page aligned allocations.
-//See [C:/LT/OSMain/Adam1a.HPZ,2845] BlkPool, [C:/LT/OSMain/Adam1a.HPZ,2860] HeapCtrl, [C:/LT/OSMain/Adam1b.HPZ,119] sys_code_bp, [C:/LT/OSMain/Adam1b.HPZ,120] sys_data_bp.
+//See [C:/LT/OSMain/Adam1a.HPZ,2847] BlkPool, [C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrl, [C:/LT/OSMain/Adam1b.HPZ,119] sys_code_bp, [C:/LT/OSMain/Adam1b.HPZ,120] sys_data_bp.
 //See [Memory] Memory

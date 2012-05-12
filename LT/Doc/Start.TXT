@@ -9,12 +9,12 @@ Shift-Esc	Abort
 Windows Key	Personal Menu
 Shift-Windows	Pull-down Menu
 **F1
-  `Msg(MSG_KEY_DOWN,0,SC_F1);`
-  **		Help
+`Msg(MSG_KEY_DOWN,0,SC_F1);`
+**		Help
 Other keys: Key Map
-  `KeyMap;View;
-  `
-  
+`KeyMap;View;
+`
+
 
 -] Mouse Ctrls
   Right-Click	Right-click menu

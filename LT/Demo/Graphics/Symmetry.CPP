@@ -4,15 +4,14 @@
 
 U0 SymmetryDemo()
 {
-  I64 msg_code,x1,y1,x2,y2,p1,p2,color=BLACK;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
-  dc->color=ROP_XOR+color;
+  I64 msg_code,x1,y1,x2,y2,p1,p2;
+  GrDC *dc=GrDCAlias;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
   WinMax;
-  GrDCClear;
+  GrDCFill;
   "$CL$";
   dc->flags|=DCF_SYMMETRY;
   GrSetSymmetry(dc,Fs->win_pixel_width/2,0,Fs->win_pixel_width/2,1);
@@ -23,7 +22,7 @@ U0 SymmetryDemo()
     switch (msg_code) {
       case MSG_IP_R_DOWN:
 	dc->flags&=~DCF_SYMMETRY;
-	dc->color=RED+ROP_XOR;
+	dc->color=ROP_XOR+RED^COLOR_TRANSPARENT;
 	x1=p1; y1=p2;
 	x2=p1; y2=p2;
 	while (msg_code!=MSG_IP_R_UP) {
@@ -36,9 +35,9 @@ U0 SymmetryDemo()
 	GrLine3(dc,x1,y1,0,x2,y2,0);
 	if (GrSetSymmetry3(dc,x1,y1,0,x2,y2,0,x2,y2,1))
 	  dc->flags|=DCF_SYMMETRY;
-	dc->color=BLACK+ROP_XOR;
 	break;
       case MSG_IP_L_DOWN:
+	dc->color=ROP_XOR+BLACK^COLOR_TRANSPARENT;
 	x1=p1; y1=p2;
 	x2=p1; y2=p2;
 	while (msg_code!=MSG_IP_L_UP) {
@@ -54,7 +53,7 @@ U0 SymmetryDemo()
 	break;
     }
   } while (msg_code!=MSG_KEY_DOWN || !p1);
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
   SettingsPop;
 }

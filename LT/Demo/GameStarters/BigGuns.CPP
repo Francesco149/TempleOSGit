@@ -36,10 +36,9 @@ Ode *ode=NULL;
 
 
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task),
-      *map=maps[active_map&1];
+  GrDC *map=maps[active_map&1];
   MassStruct *tempm;
   F64 theta=gun_theta;
   I64 i,x,y,w,
@@ -50,6 +49,7 @@ U0 UpdateWin(TaskStruct *task)
   task->horz_scroll.max=MAP_WIDTH-task->win_pixel_width;
   task->vert_scroll.min=0;
   task->vert_scroll.max=MAP_HEIGHT-task->win_pixel_height;
+  map->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(dc,h,v,map);
 
   GrSpritePlot3(dc,gun_x+h,gun_y+v,0,__BIN_2);
@@ -66,8 +66,8 @@ U0 UpdateWin(TaskStruct *task)
 
   tempm=ode->next_mass;
   dc->color=BLACK;
-  map->bkcolor=ROP_COLLISION+LTCYAN;
-  map->color=ROP_COLLISION+BLACK;
+  map->color=ROP_COLLISION;
+  map->bkcolor=LTCYAN;
   while (tempm!=&ode->next_mass) {
     map->collision_cnt=0;
     GrCircle(map,tempm->x,tempm->y,2);
@@ -87,7 +87,6 @@ U0 UpdateWin(TaskStruct *task)
     if (y<elevs[x])
       GrPlot(dc,x+h,y+v);
   }
-  GrDCDel(dc);
   LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
 }
 
@@ -199,9 +198,9 @@ U0 Init()
   I64 i,x,y,dy;
   BoolI8 old_preempt;
   if (!maps[0])
-    maps[0]=GrDCNew(DCT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+    maps[0]=GrDCNew(DCT_COLOR8,MAP_WIDTH,MAP_HEIGHT);
   if (!maps[1])
-    maps[1]=GrDCNew(DCT_COLOR4,MAP_WIDTH,MAP_HEIGHT);
+    maps[1]=GrDCNew(DCT_COLOR8,MAP_WIDTH,MAP_HEIGHT);
   map=maps[active_map&1];
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
@@ -292,9 +291,12 @@ U0 BigGuns()
 
   WinMax;
   WinBorder(ON);
-  WordStat(OFF);
+  WordStat;
   Init;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  LtfScroll;
+  Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
       while (ScanKey(&ch,&sc))

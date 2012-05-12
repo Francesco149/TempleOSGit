@@ -84,13 +84,12 @@ U0 PutPoem(TaskStruct *task,GrDC *dc,I64 w,I64 h)
   }
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   U8 *inter;
   I64 i,w=task->win_pixel_width,h=task->win_pixel_height;
   F64 tt;
-
+  task->text_attr=LTGRAY<<4+BLACK;
   PutPoem(task,dc,w,h);
 
   for (i=0;i<NUM_GEESE;i++) {
@@ -99,8 +98,6 @@ U0 UpdateWin(TaskStruct *task)
     GrSpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
     Free(inter);
   }
-
-  GrDCDel(dc);
 }
 
 U0 Init()
@@ -150,9 +147,10 @@ U0 WaterFowl()
   Init;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  WordStat(OFF);
-  Fs->update_win=&UpdateWin;
-  Fs->text_attr=LTGRAY<<4+BLACK;
+  WordStat;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
 
   t0=tP;
   try //This catches <CTRL-ALT-C> exits

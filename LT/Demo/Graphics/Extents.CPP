@@ -16,14 +16,14 @@
 
 U0 Extents()
 {
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   I64 min_x,max_x,min_y,max_y;
 
 //We want screen, not window coordinates.
   I64 h=Fs->win_pixel_left+Fs->win_scroll_x,v=Fs->win_pixel_top+Fs->win_scroll_y;
 
   "$CL$";
-  GrDCClear;
+  GrDCFill;
 
 //This sets a flag to record the
 //extents of what we draw and inits
@@ -44,7 +44,7 @@ U0 Extents()
 
   GrDCDel(dc);
   PressAKey;
-  GrDCClear;
+  GrDCFill;
 
   GrSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
   "X: %d to %d\n",min_x,max_x;

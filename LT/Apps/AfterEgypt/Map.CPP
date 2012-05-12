@@ -32,7 +32,7 @@ U0 AEMap()
       x_last=x1,y_last=y1;
   F64 a,a1=(A1_MAX+A1_MIN)/2,a2=(A2_MAX+A2_MIN)/2,a2_total=a2,
       x_scale=ToF64(cx)/c_min,y_scale=ToF64(cy)/c_min;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   LtfClear;
@@ -71,7 +71,7 @@ U0 AEMap()
   "$BG$\n";
   SettingsPop(Fs,TSF_SAME_SONG);
   Free(r);
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
 }
 

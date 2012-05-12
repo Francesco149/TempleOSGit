@@ -15,7 +15,7 @@ virtue of the fact that abs addresses get patched.
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system OSMain has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,671] Man()/WORDSTAT
+links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,670] Man()/WORDSTAT
 feature can find src lines.
 
 * The word "public" does very little except allow the

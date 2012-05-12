@@ -11,7 +11,7 @@ PopUpOk(
 "It takes the function name\n"
 "as a string arg.\n\n"
 "Press $FG,GREEN$<ENTER>$FG$.");
-"WinMax;WinBorder(OFF);\nUf(\"CAlloc\");";
+"WinMax;WinBorder;\nUf(\"CAlloc\");";
 AFPmtStr("\n");
 
 PopUpOk("Press $FG,GREEN$<CURSOR-UP>$FG$ eight times..");

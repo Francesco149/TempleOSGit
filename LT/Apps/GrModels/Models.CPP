@@ -5,7 +5,6 @@ U0 Models()
 {
   I64 i;
   BoolI8 old_form=LBts(&(LtfCur)->flags,LTFf_FORM);
-  LtfBottom;
   LtfClear;
   "Make a GrSprite model.  Then, cut-and-Paste it.\n\n";
   "$LM,4$";

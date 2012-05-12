@@ -11,7 +11,7 @@
 
 U0 Logo()
 {
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   dc->flags|=DCF_TRANSFORMATION;
   LtfClear;
   while (!ScanChar) {
@@ -27,11 +27,11 @@ U0 Logo()
     GrSetRotMat(dc,dc->r);
 
     GrSpritePlot3(dc,0,0,0,__BIN_1);
-//See also [C:/LT/Adam/Gr/GrSpritePlot.APZ,351] GrSpritePlotRotX3b(),
-//[C:/LT/Adam/Gr/GrSpritePlot.APZ,358] GrSpritePlotRotY3b(),[C:/LT/Adam/Gr/GrSpritePlot.APZ,365] GrSpritePlotRotZ3b().
+//See also [C:/LT/Adam/Gr/GrSpritePlot.APZ,340] GrSpritePlotRotX3b(),
+//[C:/LT/Adam/Gr/GrSpritePlot.APZ,347] GrSpritePlotRotY3b(),[C:/LT/Adam/Gr/GrSpritePlot.APZ,354] GrSpritePlotRotZ3b().
 
     WinSync;
-    GrDCClear(dc);
+    GrDCFill(dc);
   }
   GrDCDel(dc);
 }

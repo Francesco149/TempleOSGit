@@ -24,7 +24,6 @@ U0 BlinkDemo()
 {
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->draw_it=&DrawIt;
-  LtfBottom;
   LtfClear;
   NewLine(10);
   "Pause and unpause task with $FG,GREEN$<CTRL-ALT-P>$FG$\n";

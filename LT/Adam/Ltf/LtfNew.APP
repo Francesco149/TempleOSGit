@@ -674,9 +674,14 @@ public I64 LtfMax(I64 i=MAX_I32)
 //Normally, the cmd line deletes
 //entries after a while.
 {
-  I64 result=LtfCur->max_entries;
-  LtfCur->max_entries=i;
-  return result;
+  Ltf *l=LtfCur;
+  I64 result;
+  if (l) {
+    result=l->max_entries;
+    l->max_entries=i;
+    return result;
+  } else
+    return 0;
 }
 
 #help_index "Ltf"

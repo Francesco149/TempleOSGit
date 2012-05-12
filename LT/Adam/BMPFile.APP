@@ -66,77 +66,17 @@ BMPFile *BMPFileNew(U64 width,U64 height,U64 bits)
 public BMPFile *BMPFile4To(GrDC *dc)
 {
 //To Windows 4 bit BMP
-  U8 *src,j;
-  U64 wd=dc->width_internal>>3,pl=wd*dc->height;
-  U8 *img=dc->body;
+  U8 *src;
   BMPFile *r=BMPFileNew(dc->width,dc->height,4);
-  I64 x,y,i;
-  U8 *rgb;
-  rgb=r(U8 *)+r->data_offset;
+  I64 x,y,w=dc->width>>1;
+  U8 *bgr;
+  bgr=r(U8 *)+r->data_offset;
   for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  *rgb |= 0x10;
-	i<<=1;
-
-	if (i&j)
-	  *rgb |= 0x01;
-	rgb++;
-      }
-    }
-  }
-
-  rgb=r(U8 *)+r->data_offset;
-  for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img+pl;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  *rgb |= 0x20;
-	i<<=1;
-
-	if (i&j)
-	  *rgb |= 0x02;
-	rgb++;
-      }
-    }
-  }
-
-  rgb=r(U8 *)+r->data_offset;
-  for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img+pl<<1;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  *rgb |= 0x40;
-	i<<=1;
-
-	if (i&j)
-	  *rgb |= 0x04;
-	rgb++;
-      }
-    }
-  }
-
-  rgb=r(U8 *)+r->data_offset;
-  for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img+pl*3;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  *rgb |= 0x80;
-	i<<=1;
-
-	if (i&j)
-	  *rgb |= 0x08;
-	rgb++;
-      }
+    src=y*dc->width_internal+dc->body;
+    for (x=0;x<w;x++) {
+      *bgr|=(*src++&15)<<4;
+      *bgr|=*src++&15;
+      bgr++;
     }
   }
   return r;
@@ -145,65 +85,25 @@ public BMPFile *BMPFile4To(GrDC *dc)
 public BMPFile *BMPFile24To(GrDC *dc)
 {
 //To Windows 24 bit BMP
-  U8 *src,j;
-  U64 wd=dc->width_internal>>3,pl=wd*dc->height;
-  U8 *img=dc->body;
+  U8 *src;
   BMPFile *r=BMPFileNew(dc->width,dc->height,24);
-  I64 x,y,i;
-  RGBEntry *rgb;
+  I64 i,x,y;
+  BGREntry *bgr;
 
-  rgb=r(U8 *)+r->data_offset;
+  bgr=r(U8 *)+r->data_offset;
   for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  rgb->r=0x7F;
-	rgb(U8 *)+=4;
+    src=y*dc->width_internal+dc->body;
+    for (x=0;x<dc->width;x++) {
+      i=*src++;
+      if (i&BLUE)  bgr->b=0x7F;
+      if (i&GREEN) bgr->g=0x7F;
+      if (i&RED)   bgr->r=0x7F;
+      if (i&8) {
+	if (bgr->b) bgr->b=0xFF;
+	if (bgr->g) bgr->g=0xFF;
+	if (bgr->r) bgr->r=0xFF;
       }
-    }
-  }
-
-  rgb=r(U8 *)+r->data_offset;
-  for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img+pl;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  rgb->g=0x7F;
-	rgb(U8 *)+=4;
-      }
-    }
-  }
-
-  rgb=r(U8 *)+r->data_offset;
-  for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img+pl<<1;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j)
-	  rgb->b=0x7F;
-	rgb(U8 *)+=4;
-      }
-    }
-  }
-
-  rgb=r(U8 *)+r->data_offset;
-  for (y=dc->height-1;y>=0;y--) {
-    src=y*wd+img+pl*3;
-    for (x=0;x<wd;x++) {
-      j=*src++;
-      for (i=1;i<0x100;i<<=1) {
-	if (i&j) {
-	  if (rgb->r) rgb->r=0xFF;
-	  if (rgb->g) rgb->g=0xFF;
-	  if (rgb->b) rgb->b=0xFF;
-	}
-	rgb(U8 *)+=4;
-      }
+      bgr(U8 *)+=4;
     }
   }
   return r;
@@ -261,7 +161,7 @@ public GrDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
   if (ptr1=FileRead(filename)) {
     r=ptr1;
     if (0<r->width<MAX_I32 && 0<r->height<MAX_I32) {
-      result=GrDCNew(DCT_COLOR4,r->width,r->height);
+      result=GrDCNew(DCT_COLOR8,r->width,r->height);
       ptr1+=r->data_offset;
       if (r->bit_cnt==4) {
 	if (use_ms_paint_palette)

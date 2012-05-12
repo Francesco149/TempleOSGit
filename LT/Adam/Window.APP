@@ -198,11 +198,11 @@ U0 DrawInputPtr(GrDC *dc)
     else {
       if (fp_draw_input_ptr) {
 	if (ip_lb)
-	  dc->color=ROP_XOR+LTPURPLE;
+	  dc->color=ROP_XOR+LTPURPLE^COLOR_TRANSPARENT;
 	else if (ip_rb)
-	  dc->color=ROP_XOR+LTCYAN;
+	  dc->color=ROP_XOR+LTCYAN^COLOR_TRANSPARENT;
 	else
-	  dc->color=ROP_XOR+WHITE;
+	  dc->color=ROP_XOR+BLACK^COLOR_TRANSPARENT;
 	if (win_grab_scroll && fp_draw_grab_input_ptr)
 	  (*fp_draw_grab_input_ptr)(dc,x,y,win_grab_scroll_closed);
 	else
@@ -938,7 +938,7 @@ public U0 WinMax(TaskStruct *task=NULL)
   PopFD;
 }
 
-public BoolI64 WinBorder(BoolI8 val,TaskStruct *task=NULL)
+public BoolI64 WinBorder(BoolI8 val=OFF,TaskStruct *task=NULL)
 {
   BoolI8 old_has_border;
   if (!task) task=Fs;
@@ -1072,8 +1072,6 @@ BoolI8 WinKeyNavMenu()
   return FALSE;
 }
 
-public U0 (*fp_wall_paper)(TaskStruct *task)=NULL;
-
 U0 WinManagerTask(U64 dummy=0)
 {
   nounusedwarn dummy;
@@ -1100,8 +1098,7 @@ U0 WinManagerTask(U64 dummy=0)
   LBts(&sys_run_level,RLf_WINMGR);
   while (TRUE) {
     try {
-      wmt_start:
-      Fs->update_win=fp_wall_paper;
+wmt_start:
       WinMgrSleep;
       //We delay freeing in case lingering
       //references are made to task's.

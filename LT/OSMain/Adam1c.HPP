@@ -115,6 +115,7 @@ public extern U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100);
 
 #help_index "Graphics/Color"
 extern U0 (*fp_set_std_palette)();
+public extern U8 *Color2Text(U8 *buf,ColorROPU32 c);
 
 #help_index "Char"
 #help_file "::/LT/Doc/Char"
@@ -179,7 +180,7 @@ public extern BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALS
 public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 
-//Gets [C:/LT/OSMain/Adam1a.HPZ,1417] Flags
+//Gets [C:/LT/OSMain/Adam1a.HPZ,1419] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);

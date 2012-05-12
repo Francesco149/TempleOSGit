@@ -139,9 +139,8 @@ BoolI64 LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 	       x2*LOS_SCALE/SCREEN_SCALE,y2*LOS_SCALE/SCREEN_SCALE,0,&LOSPlot);
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,j,*r1,*r2,*r3,*s2w,xx,yy,zz,x,y,x1,y1,z1,
       x1w,y1w,x1h,y1h,xh,yh,zh,
       cx=task->win_pixel_width/2,
@@ -151,6 +150,7 @@ U0 UpdateWin(TaskStruct *task)
   F64 tt,_man_theta=man_theta;
   P3I32 poly[4];
 
+  task->text_attr=BLACK<<4;
   GrDCAllocDepthBuf(dc);
   MemSet(panels_processed_bitmap,0,(map_width*map_height+7)>>3);
 
@@ -360,7 +360,6 @@ U0 UpdateWin(TaskStruct *task)
   }
   GrPrintF(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
   Free(s2w);
-  GrDCDel(dc);
 }
 
 U0 Fire()
@@ -404,7 +403,7 @@ U0 Init()
   Free(panels_processed_bitmap);
   map=CAlloc(map_width*map_height*sizeof(U8));
   panels_processed_bitmap=MAlloc((map_width*map_height+7)>>3);
-  dc=GrDCNew(DCT_COLOR4,map_width*MAP_SCALE,map_height*MAP_SCALE);
+  dc=GrDCNew(DCT_COLOR8,map_width*MAP_SCALE,map_height*MAP_SCALE);
   GrSpritePlot3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
   for (y=1;y<map_height-1;y++)
     for (x=1;x<map_width-1;x++)
@@ -538,13 +537,13 @@ U0 FPS()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF);
   WinMax;
-  WordStat(OFF);
+  WordStat;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
-  Fs->update_win=&UpdateWin;
-  WinSync;
-  Fs->text_attr=BLACK<<4;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
 
   try {
     while (TRUE) {

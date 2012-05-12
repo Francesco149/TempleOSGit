@@ -1,7 +1,3 @@
-#define __BIN_1_TYPE 0x00000002
-#define __BIN_1_SIZE 0x0000005A
-#define __BIN_1 "\x15\x0B\x00\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xF0\x07\x10\x00\x10\x00\x10\x00\x10\x00\x01\x00\x01\x00\x01\x00\xF1\x07\x11\x00\x11\x00\x11\x00\x11\x00\x00\x00\x00\x00\x00\x00\xF0\x07\x10\x00\x10\x00\x10\x00\x10\x00\x00"
-
 #help_index "Graphics/DCs"
 
 public U0 GrDCRst(GrDC *dc)
@@ -24,10 +20,11 @@ public U0 GrDCRst(GrDC *dc)
   dc->flags&=~(DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR);
 }
 
-public GrDC *GrDCAlias(GrDC *dc,TaskStruct *task)
+public GrDC *GrDCAlias(GrDC *dc=NULL,TaskStruct *task=NULL)
 {
   GrDC *result;
-  if (!dc) return NULL;
+  if (!dc)   dc=gr_dc2;
+  if (!task) task=Fs;
   if (dc->dc_signature!=DCS_SIGNATURE_VAL)
     Dbg;
   result=MAlloc(sizeof(GrDC),task);
@@ -38,10 +35,6 @@ public GrDC *GrDCAlias(GrDC *dc,TaskStruct *task)
   GrDCRst(result);
   result->flags|=DCF_ALIAS;
   result->alias=dc;
-  if (dc->mask) {
-    result->mask=GrDCAlias(dc->mask,task);
-    result->mask->color=dc->mask->color;
-  }
   return result;
 }
 
@@ -65,11 +58,6 @@ public GrDC *GrDCNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 
       result->plane_size=(result->width_internal*result->height)>>3;
       if (!null_bitmap)
 	result->body=CAlloc(result->plane_size<<2,task);
-      break;
-    case DCT_MONO:
-      result->plane_size=(result->width_internal*result->height)>>3;
-      if (!null_bitmap)
-	result->body=CAlloc(result->plane_size,task);
       break;
     case DCT_COLOR8:
       result->plane_size=result->width_internal*result->height;
@@ -97,14 +85,13 @@ public U0 GrDCDel(GrDC *dc)
   if (!(dc->flags & DCF_ALIAS))
     Free(dc->body);
   Free(dc->depth_buf);
-  GrDCDel(dc->mask);
   Free(dc);
 }
 
 public I64 GrDCSize(GrDC *b)
 {
   if (b)
-    return MSize2(b)+MSize2(b->body)+GrDCSize(b->mask)+MSize2(b->depth_buf);
+    return MSize2(b)+MSize2(b->body)+MSize2(b->depth_buf);
   else
     return 0;
 }
@@ -132,56 +119,40 @@ public GrDC *GrDCCopy(GrDC *dc,TaskStruct *task=NULL)
   GrSetRotMat(result,MAllocIdentical(dc->r,task));
   result->mem_task=task;
   result->body=MAllocIdentical(dc->body,task);
-  result->mask=GrDCCopy(dc->mask,task);
   return result;
 }
 
-/* GrBitMaps
-	The format of a stored bitmap includes a
-0x30 byte header.  See [C:/LT/OSMain/Adam1a.HPZ,3482] GrDC.  The body
-consists of bit planes like VGA except bits
-in bytes are reversed.  For [C:/LT/OSMain/Adam1a.HPZ,3464] DCT_MONO, there
-is one bit-plane; for [C:/LT/OSMain/Adam1a.HPZ,3463] DCT_COLOR4, there are
-four bit-planes.
+public U0 GrDCMono(GrDC *dc,
+  I64 quest=COLOR_TRANSPARENT,I64 true_color=0,I64 false_color=COLOR_MONO)
+{
+  I64 i;
+  U8 *dst;
+  if (dc->type==DCT_COLOR8) {
+    dst=dc->body;
+    i=dc->width_internal*dc->height;
+    while (i--)
+      if (*dst==quest)
+	*dst++=true_color;
+      else
+	*dst++=false_color;
+  }
+}
 
-If you look at the color vals ([C:/LT/OSMain/Adam1a.HPZ,3422] BLACK-[C:/LT/OSMain/Adam1a.HPZ,3437] WHITE)
-you'll see the color of the planes is as follows:
+public U0 GrDCColorChg(GrDC *dc,I64 src_color,I64 dst_color=COLOR_TRANSPARENT)
+{
+  I64 i;
+  U8 *dst;
+  if (dc->type==DCT_COLOR8) {
+    dst=dc->body;
+    i=dc->width_internal*dc->height;
+    while (i--)
+      if (*dst==src_color)
+	*dst++=dst_color;
+      else
+	dst++;
+  }
+}
 
-Plane 0: BLUE
-Plane 1: GREEN
-Plane 2: RED
-Plane 3: INTENSITY
-
-If you are unfamiliar with bit planes, all
-the blue bits for all the pixels are stored,
-for all the green bits for all pixels, etc.  Therefore,
-a single pixel's val is spread-out in mem
-instead of residing in one location.  This
-was done because that is how VGA is stored.
-However, I made the order of the bits suitable
-for doing [C:/LT/OSMain/Adam1b.HPZ,58] Bts() or [C:/LT/OSMain/Adam1b.HPZ,59] Btr() operations instead of
-how VGA stores them.
-
-
-The data for the following bitmap is displayed
-
-width         : 11 pixels
-height        :  8 pixels
-internal width: 16 pixels (rounded-up to multiple of 8)
-plane size    : 16 bytes
-
-/*  <1> (image) */
-
-#define RED		4
-#define YELLOW		14
-
-
-00000000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00000010 00 00 00 00 00 00 F0 07 10 00 10 00 10 00 10 00
-00000020 01 00 01 00 01 00 F1 07 11 00 11 00 11 00 11 00
-00000030 00 00 00 00 00 00 F0 07 10 00 10 00 10 00 10 00
-
-*/
 public U8 *GrDCSave(GrDC *b,U64 *size=NULL,BoolI8 compressed=TRUE)
 { //stores to mem
   U8 *ptr,*body,*result;
@@ -189,17 +160,10 @@ public U8 *GrDCSave(GrDC *b,U64 *size=NULL,BoolI8 compressed=TRUE)
   ArcCompressStruct *ac;
   I64 i,j,old_flags=b->flags;
 
-  nobound_switch (b->type) {
-    case DCT_COLOR4:
-      i=b->plane_size<<2;
-      break;
-    case DCT_COLOR8:
-    case DCT_MONO:
-      i=b->plane_size;
-      break;
-    default:
-      throw(EXCEPT_GRAPHICS,2);
-  }
+  if (b->type==DCT_COLOR8)
+    i=b->plane_size;
+  else
+    throw(EXCEPT_GRAPHICS,2);
   if (compressed) {
     ac=CompressBuf(b->body,i);
     j=ac->compressed_size;
@@ -248,17 +212,10 @@ public GrDC *GrDCLoad(U8 *src,U64 *size=NULL,TaskStruct *task=NULL)
       offset(GrDC.start_saved_area));
   ptr+=offset(GrDC.end_saved_area)-
       offset(GrDC.start_saved_area);
-  nobound_switch (result->type) {
-    case DCT_COLOR4:
-      i=result->plane_size<<2;
-      break;
-    case DCT_COLOR8:
-    case DCT_MONO:
-      i=result->plane_size;
-      break;
-    default:
-      throw(EXCEPT_GRAPHICS,3);
-  }
+  if (result->type==DCT_COLOR8)
+    i=result->plane_size;
+  else
+    throw(EXCEPT_GRAPHICS,3);
   if (result->flags&DCF_COMPRESSED) {
     result->flags&=~DCF_COMPRESSED;
     ac=ptr;
@@ -306,8 +263,19 @@ public GrDC *LGRRead(U8 *filename,TaskStruct *task=NULL)
 
 public GrDC *GrDCCaptureScreen(TaskStruct *task=NULL)
 {
+  GrDC *dc;
+  U8 *dst;
   WinSync(TRUE);
-  return GrDCCopy(gr_screen_image,task);
+  dc=GrDCCopy(gr_screen_image,task);
+  if (dc->type==DCT_COLOR4) {
+    dc->type=DCT_COLOR8;
+    dc->plane_size*=8;
+    dst=MAlloc(dc->plane_size,task);
+    GrBitMap4ToBitMap8(dst,dc->body,dc->plane_size/2,COLOR_INVALID);
+    Free(dc->body);
+    dc->body=dst;
+  }
+  return dc;
 }
 
 public U64 LGRCaptureScreen(U8 *filename)

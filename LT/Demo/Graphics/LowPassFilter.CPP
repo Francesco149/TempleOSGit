@@ -3,7 +3,7 @@
 U0 LowPassFilterDemo()
 {
   F64 y,y1,t,dt;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   WinMax;
   LtfClear;
@@ -76,7 +76,7 @@ U0 LowPassFilterDemo()
   PressAKey;
 
   GrDCDel(dc);
-  GrDCClear;
+  GrDCFill;
 }
 
 LowPassFilterDemo;

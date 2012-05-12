@@ -20,7 +20,7 @@ MUL_BY_HAND_U8_U8_TO_U16: //This is only for fun.
 //AL*BL-->AX
 	MOV	CL,8
 	SHL	AX,8
-@@05:	SHL	AX,1
+@@05:	SHL1	AX
 	JNC	@@10
 	ADD	AL,BL
 @@10:	DEC	CL

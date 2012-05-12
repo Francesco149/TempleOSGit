@@ -24,9 +24,8 @@ Ode *ode=NULL;
 #define BORDER	10
 
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 old_suspend,old_preempt;
   I16 *buf;
   I64 i,cxx,cyy,
@@ -73,8 +72,6 @@ U0 UpdateWin(TaskStruct *task)
   for (i=0;i<SND_BUF_LEN;i++)
     GrPlot(dc,i*task->win_pixel_width/SND_BUF_LEN,
       cy-buf[i]*cy/MAX_I16);
-
-  GrDCDel(dc);
 }
 
 
@@ -464,7 +461,9 @@ U0 HDCfgPopUpInfo(MyMass *tempm)
 {
   U8 buf[136];
   SPrintF(buf,"HDCfgPopUpInfoTask(0x%X);\"\\n\\nPress SHIFT-ESC\\n\\n\\n\\n\";View;",tempm);
+  Fs->draw_it=NULL;
   PopUp(buf,Fs);
+  Fs->draw_it=&DrawIt;
 }
 
 U0 HDCfgEdLink(MyMass *tempm_out,MyMass *tempm_in)
@@ -571,7 +570,7 @@ U0 HDCfg()
     "HD Audio not detected\n";
     return;
   }
-  HDAudioInit;
+  HDAudioInit(0,27,0);
 
   MenuPush(
 "File {"
@@ -586,18 +585,18 @@ U0 HDCfg()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF);
   LtfBottom;
-  LtfClear;
-  WordStat(OFF);
+  WordStat;
   WinMax;
-  WinBorder(OFF);
-  LtfCursor(OFF);
+  WinBorder;
   Fs->win_inhibit|=WIF_DBL_CLICK;
   Init;
 
   HDCfgTraverse(_hda->cad,0);
   HDCfgRandomizeXY;
   RedoSprings;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   PopUpOk(
 "This is a tool to cfgure\n"
 "HD Audio.  It creates $FG,RED$HOME/HDAudioCfg.APZ$FG$\n"
@@ -648,7 +647,7 @@ U0 HDCfg()
       }
     }
 hd_done: //Don't goto out of try
-  GetMsg(,,1<<MSG_KEY_UP);
+    GetMsg(,,1<<MSG_KEY_UP);
   } catch
     Fs->catch_except=TRUE;
   Snd(0);

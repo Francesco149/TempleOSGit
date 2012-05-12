@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=144;
+  progress4_max=149;
 }
 U0 TSEnd()
 {
@@ -485,23 +485,69 @@ U0 DoWenceslas()
     Yield;
   TaskWaitIdle(task->popup_task);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  WinSync; //Not perfect
-  WinSync;
+  Sleep(100);
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWaitIdle(task->popup_task);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  WinSync; //Not perfect
-  WinSync;
+  Sleep(100);
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWaitIdle(task->popup_task);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  Sleep(100);
   for (i=0;i<25;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
     Sleep(25);
   }
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoChess()
+{
+  I64 i;
+  TaskStruct *task=SpawnUser;
+  XTalk(task,"#include \"::/LT/Demo/GameStarters/Chess.CPZ\";\n");
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  Sleep(100);
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  Sleep(100);
+  for (i=0;i<8;i++) {
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
+    Sleep(25);
+  }
+  SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+  Sleep(250);
+  SendMsg(task,MSG_KEY_DOWN,CH_SPACE,0);
+  SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+  Sleep(250);
+  SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+  SendMsg(task,MSG_KEY_UP,CH_SPACE,0);
+  Sleep(1000);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoChessNet()
+{
+  TaskStruct *task=SpawnUser;
+  XTalk(task,"#include \"::/LT/Demo/GameStarters/ChessNet.CPZ\";\n");
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  Sleep(500);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_NEW_LINE,0);
+  Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
 }
@@ -572,6 +618,33 @@ U0 DoBlackDiamond()
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
     Sleep(75);
   }
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoCircuit()
+{
+  TaskStruct *task=SpawnUser;
+  XTalk(task,"#include \"::/LT/Demo/Graphics/Circuit.CPZ\";\n");
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (TaskValidate(task->popup_task))
+    Yield;
+  SetIP(300,350);
+  SendMsg(task,MSG_KEY_DOWN_UP,'r',0);
+  SetIP(400,350);
+  SendMsg(task,MSG_KEY_DOWN_UP,'l',0);
+  SetIP(350,400);
+  SendMsg(task,MSG_KEY_DOWN_UP,'c',0);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  SendMsg(task,MSG_IP_L_DOWN,350,385);
+  SendMsg(task,MSG_IP_L_UP,390,350);
+  Sleep(500);
+  SendMsg(task,MSG_IP_L_DOWN,350,385);
+  SendMsg(task,MSG_IP_L_UP,310,350);
+  Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
 }
@@ -798,14 +871,6 @@ U0 DoZing()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoChessNet()
-{
-  TaskStruct *task=SpawnUser;
-  XTalkWithWait(task,"#include \"::/LT/Demo/GameStarters/ChessNet.CPZ\";\n");
-  Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  XTalk(task,"Exit;\n");
-}
 */
 
 U0 DoFlowers()
@@ -1139,6 +1204,32 @@ U0 DoPilgrims()
   XTalk(task,"Exit;\n");
 }
 
+U0 DoSpan()
+{
+  TaskStruct *task=SpawnUser;
+  XTalk(task,"#include \"::/LT/Apps/Span/Run\";\n");
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  Sleep(1500);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoRawHide()
+{
+  TaskStruct *task=SpawnUser;
+  XTalk(task,"#include \"::/LT/Demo/GameStarters/RawHide.CPZ\";\n");
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  Sleep(2500);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
 U0 DoAfterEgypt()
 {
   TaskStruct *task=SpawnUser;
@@ -1183,6 +1274,20 @@ U0 DoPoleZeros()
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   Sleep(750);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoWhap()
+{
+  TaskStruct *task=SpawnUser;
+  XTalkWithWait(task,"#include \"::/LT/Demo/GameStarters/Whap.CPZ\";\n");
+  SetIP(300,200);
+  Sleep(500);
+  AFSetIP(3,350,300);
+  Sleep(500);
+  AFSetIP(3,450,200);
+  Sleep(500);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
 }
 
@@ -1841,21 +1946,6 @@ U0 DoCallBack2()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoQuirk1()
-{
-  I64 i;
-  TaskStruct *task=SpawnUser;
-  XTalk(task,"#include \"::/LT/Demo/Ltf/Quirk1.CPZ\";\n");
-  for (i=0;i<14;i++) {
-    Sleep(200);
-    if (task->popup_task)
-      SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-    else //Is not idle after key before next popup.
-      PostMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  }
-  XTalk(task,"Exit;\n");
-}
-
 U0 DoDefine()
 {
   TaskStruct *task=SpawnUser;
@@ -2020,12 +2110,16 @@ TS; DoBigGuns;
 TS; DoBirdLand;
 TS; DoTimeOut;
 TS; DoPilgrims;
+TS; DoSpan;
+TS; DoRawHide;
 TS; DoKeepAway;
 TS; DoAfterEgypt;
 TS; DoXCaliber;
 TS; DoWenceslas;
 TS; DoBomber;
 TS; DoTheDead;
+TS; DoChess;
+TS; DoChessNet;
 
 TS; DoAdd;
 TS; DoPrimes;
@@ -2070,6 +2164,7 @@ TS; DoBlot;
 TS; if (IsDrvWritable(':')) DoCaptureScreen;
 TS; DoPick;
 TS; DoPick2;
+TS; DoWhap;
 TS; DoPalette;
 TS; DoPrintF;
 TS; DoCamp;
@@ -2112,6 +2207,7 @@ TS; DoRainDrops;
 TS; DoCollision;
 TS; DoOrderedIO;
 TS; DoLogic;
+TS; DoCircuit;
 TS; DoCompileDemo;
 TS; DoPrompt;
 TS; if (IsDrvWritable(':')) DoWebLog;
@@ -2122,7 +2218,6 @@ TS; DoParenWarn;
 TS; DoDefineStr;
 TS; DoCallBack;
 TS; DoCallBack2;
-TS; DoQuirk1;
 TS; DoClassMeta;
 TS; DoForm;
 TS; DoMenu;

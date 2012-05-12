@@ -197,7 +197,6 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
   LtfEntry *ll;
   I64 old_top=Fs->win_top,old_bottom=Fs->win_bottom,
       old_left=Fs->win_left,old_right=Fs->win_right;
-  U0 *old_update=Fs->update_win;
   BoolI8 unlock,old_preempt,result;
 
   unlock=LtfLock(l);
@@ -271,7 +270,6 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
   LtfInsQue(l,Fs->last_ltf);
   Fs->text_attr=l->settings_root.dft_text_attr;
   LBEqu(&Fs->display_flags,DISPLAYf_HAS_MENU,l->menu_ltf);
-  Fs->update_win=&LtfUpdateTaskLtfs;
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
   WinZBufUpdate;
   if (do_flags&DOF_MIN_SIZE)
@@ -304,7 +302,6 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
   LtfInsQue(old_ltf,Fs->last_ltf);
   LBEqu(&Fs->display_flags,DISPLAYf_HAS_MENU,old_ltf->menu_ltf);
   Fs->text_attr=old_attr;
-  Fs->update_win=old_update;
   if (menu) {
     l->menu_ltf=NULL;
     LtfDel(menu);
@@ -756,16 +753,19 @@ public I64 PopUpInputPtr()
 }
 
 #help_index "Graphics/Input"
-public I64 PopUpColor(U8 *header=NULL)
+public I64 PopUpColor(U8 *header=NULL,BoolI8 allow_transparent=TRUE,BoolI8 allow_dft=TRUE)
 {
   I64 i;
   Ltf *l=LtfNew;
   if (header)
     LtfPutS(l,header);
+  if (allow_transparent)
+    LtfPutS(l,"$BG,WHITE$$MU,\"TRANSPARENT\",COLOR_TRANSPARENT$$BG$\n");
   LtfPutS(l,"$FM,BLACK$");
   for (i=0;i<16;i++)
     LtfPrintF(l,"$BG,%d$$MU,\"__%-8Z__\",%d$$BG$\n",i,i,"ST_COLORS",i);
-  LtfPutS(l,"$BG,WHITE$$MU,\"DEFAULT\",LTF_DFT$$BG$");
+  if (allow_dft)
+    LtfPutS(l,"$BG,WHITE$$MU,\"DEFAULT\",LTF_DFT$$BG$");
   i=PopUpMenu(l);
   LtfDel(l);
   return i;
@@ -840,17 +840,25 @@ BoolI64 PopUpTransform(I64 *r)
 #define PU_SPACING	10
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  I64 i,j;
+  I64 i,j,i1,j1;
   Ltf *l=LtfCur(task);
-  for (j=0;j<16;j++)
-    for (i=0;i<16;i++) {
-      dc->color=j+i<<16+ROPF_DITHER;
+  for (j=0;j<17;j++)
+    for (i=0;i<17;i++) {
+      if (j<16)
+	j1=j;
+      else
+	j1=COLOR_TRANSPARENT;
+      if (i<16)
+	i1=i;
+      else
+	i1=COLOR_TRANSPARENT;
+      dc->color=j1+i1<<16+ROPF_DITHER;
       GrRect(dc,i*PU_SPACING,j*PU_SPACING+NamedFramePtr("DitherDoFrame",task),PU_SPACING,PU_SPACING);
     }
-  i=(16*PU_SPACING+FONT_WIDTH-1)/FONT_WIDTH;
+  i=(17*PU_SPACING+FONT_WIDTH-1)/FONT_WIDTH;
   if (l->max_x>i) i=l->max_x;
   task->win_right=task->win_left+i;
-  task->win_bottom=task->win_top+l->max_y+(16*PU_SPACING+FONT_WIDTH-1)/FONT_WIDTH;
+  task->win_bottom=task->win_top+l->max_y+(17*PU_SPACING+FONT_WIDTH-1)/FONT_WIDTH;
 }
 
 I64 DitherColorDo(U8 *header=NULL)
@@ -868,7 +876,9 @@ I64 DitherColorDo(U8 *header=NULL)
       msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_UP);
       i=p1/PU_SPACING;
       j=(p2-NamedFramePtr("DitherDoFrame"))/PU_SPACING;
-      if (p1>=0 && p2>=0 && 0<=j<16 && 0<=i<16) {
+      if (p1>=0 && p2>=0 && 0<=j<17 && 0<=i<17) {
+	if (j==16) j=COLOR_TRANSPARENT;
+	if (i==16) i=COLOR_TRANSPARENT;
 	result=j+i<<16+ROPF_DITHER;
 	goto dcd_done;
       }

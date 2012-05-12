@@ -4,7 +4,7 @@
 
 /*
 This demo uses gr_dc, so you must add a
-update_win routine because gr_dc is not
+draw_it routine because gr_dc is not
 persistent.  (It gets erased each update by
 the system.)
 */
@@ -24,16 +24,14 @@ the system.)
 
 
 
-GrDC *dc=GrDCAlias(gr_dc,Fs);
+GrDC *dc;
 
-
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *_dc)
 {
-  nounusedwarn task;
+  nounusedwarn task,_dc;
 //We can change the pen width because it was not
 //define in <CTRL-R>.
   dc->pen_width=2;
-  dc->bkcolor=BLACK;
   GrDCDepthBufRst(dc);
   GrSpritePlot3(dc,0,0,0,__BIN_1);
 }
@@ -41,9 +39,10 @@ U0 UpdateWin(TaskStruct *task)
 U0 GrSprite2()
 {
   F64 theta=0,phi=0;
+  dc=GrDCAlias(gr_dc,Fs);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=&UpdateWin;
+  Fs->draw_it=&DrawIt;
   Preempt(OFF); //We don't want update during matrix change
   dc->x=200;
   dc->y=200;
@@ -62,6 +61,7 @@ U0 GrSprite2()
     phi+=2*pi/130;
   }
   SettingsPop;
+  GrDCDel(dc);
 }
 
 GrSprite2;

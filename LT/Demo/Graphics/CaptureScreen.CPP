@@ -4,7 +4,6 @@ U0 ViewScreenCapture(U8 *filename)
 {
   GrDC *dc=GrDCAlias(gr_dc2,Fs),
        *b=LGRRead(filename);
-  b->bkcolor=INVALID_COLOR;
   GrDCBlot(dc,0,0,b);
   GrDCDel(b);
   GrDCDel(dc);
@@ -22,7 +21,7 @@ U0 Main()
   ViewScreenCapture("HOME/SnapShot.LGZ");
 
   PressAKey;
-  GrDCClear(gr_dc2);
+  GrDCFill;
 }
 
 Main;

@@ -45,7 +45,6 @@ U0 SpanBridge1Init(Ode *ode)
     tempm->color=RED;
   }
 
-  LtfBottom;
   "$CL$$BG,LTCYAN$";
   NewLine(SKY_LINES);
   for (i=0;i<10;i++) {

@@ -288,6 +288,32 @@ U0 PrepForInHouse(BoolI8 cont=FALSE)
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
 }
 
+U64 MakeLineCntFile()
+{
+  U64 result;
+  U8 *st;
+  Ltf *l;
+  LtfEntry *tree_branch,*start_indent,*end_indent;
+
+  result=LineCntRep;
+  l=LtfRead(TS_MAIN_DRV ":/LT/Adam/DocDefines.APZ");
+  LtfTreeFind(l,"LineCnt",&tree_branch,&start_indent,&end_indent);
+  LtfCut(l,start_indent->next,end_indent->last);
+  l->cur_entry=start_indent->next;
+  l->cur_data_col=0;
+  LtfPrintF(l,"DefinePrintF(\"DOC_LOSETHOS_LOC\",\"%,d\");\n",result);
+
+  st=MSPrintF("%,d",result);
+  DefineLoad("DOC_LOSETHOS_LOC",st);
+  Free(st);
+
+  LtfWrite(l);
+  LtfDel(l);
+
+  "Total LOC:%12,d\n\n",result;
+  return result;
+}
+
 U0 PrepForProduction(BoolI8 cont=FALSE)
 {
   Drv(TS_MAIN_DRV_LET);
@@ -311,6 +337,13 @@ U0 PrepForProduction(BoolI8 cont=FALSE)
   DelTree("/LT/Accts/TS");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
   Del("/0000Boot/OldMBR.BIC");
+
+  Cd("/LT");
+  if (LinkChk) {
+    Drv(TS_MAIN_DRV_LET);
+    throw;
+  }
+  MakeLineCntFile;
 }
 
 

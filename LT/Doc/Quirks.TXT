@@ -17,7 +17,7 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/LT/OSMain/Adam1a.HPZ,2835] DFT_STK and 
+[C:/LT/OSMain/Adam1a.HPZ,2837] DFT_STK and 
 recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,229]
 Spawn().
 
@@ -37,32 +37,22 @@ which binds a C+ definition to a asm sym.  This, too, can only be done once.
 I/O.  And, preemption is off by default, so use [C:/LT/OSMain/Adam1b.HPZ,94]
 Preempt(ON) if you wish.
 
-* A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf document structure
+* A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf document structure
 that remains active even when 
-you change Fs->update_win.  See [::/LT/Demo/Ltf/Quirk1.CPZ]
-::/LT/Demo/Ltf/Quirk1.CPZ.  To prevent links 
-in the [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf from being activated when the user
-clicks in the window, do one of 
-three things:
+you change Fs->draw_it.  To prevent links in the
+[C:/LT/OSMain/Adam1a.HPZ,1361] Ltf from being activated when 
+the user clicks in the window, do one of three things:
   
-A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1652] LtfBottom() followed by
-  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1684] LtfClear() to clear the
-  [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf so it has no active 
+A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1659] LtfBottom() followed by
+  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear() to clear the
+  [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf so it has no active 
 widgets.
 
 B) Disable window manager button click checking with Fs->win_inhibit set to 
-mask [C:/LT/OSMain/Adam1a.HPZ,2989] WIF_IP_L and
-  [C:/LT/OSMain/Adam1a.HPZ,2990] WIF_IP_R.  This inhibits window manager
+mask [C:/LT/OSMain/Adam1a.HPZ,2987] WIF_IP_L and
+  [C:/LT/OSMain/Adam1a.HPZ,2988] WIF_IP_R.  This inhibits window manager
   operations but 
 still generates messages from button clicks.
-
-C) Enter this code:
-Ltf *l=LtfCur;
-LtfRemQue(l);
-...
-LtfInsQue(l,Fs->last_ltf);
-
-D) Hope the user just uses keyboard, not clicking the mouse in the window.
 
 * switch/case statements allocate a single jump table--do not use with wide, 
 sparse ranges of case values.

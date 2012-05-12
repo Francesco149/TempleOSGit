@@ -6,7 +6,7 @@
   
   The main compiler optimizes   See [D:/LT/Compiler/CmpInit.CPZ,ST_INTERMEDIATE_CODE] Intermediate Code Attributes, [::/LT/Compiler/OptPass012.CPZ,EC_MUL] Combining Constants, [::/LT/Compiler/OptPass3.CPZ,num_reg_vars] Choosing Reg Vars.  Set [C:/LT/Compiler/Directives.CPZ,36] OTrace(ON) to see the optimization stages.
   
-  The main compiler makes machine code in the back end.  See [C:/LT/OSMain/Adam1a.HPZ,1527] IC Struct, [C:/LT/Compiler/CodeGen.CPZ,392] CbCompile and [::/LT/Compiler/OptPass789A.CPZ,EC_MUL] OptPass789A(), [::/LT/Compiler/BackEnd.CPZ,IcMul] BackEnd.  Set [C:/LT/Compiler/Directives.CPZ,49] CTrace(ON) to see the output of the backend.
+  The main compiler makes machine code in the back end.  See [C:/LT/OSMain/Adam1a.HPZ,1529] IC Struct, [C:/LT/Compiler/CodeGen.CPZ,392] CbCompile and [::/LT/Compiler/OptPass789A.CPZ,EC_MUL] OptPass789A(), [::/LT/Compiler/BackEnd.CPZ,IcMul] BackEnd.  Set [C:/LT/Compiler/Directives.CPZ,49] CTrace(ON) to see the output of the backend.
   
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:

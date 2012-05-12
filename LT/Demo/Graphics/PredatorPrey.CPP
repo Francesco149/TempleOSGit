@@ -48,7 +48,7 @@ U0 PlotTrajectory(TaskStruct *parent)
 U0 PredatorPrey()
 {
   I64 i;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
 
   PopUpOk("This will plot multiple predator-prey\n"
 	"trajectories.  It restarts many times\n"
@@ -57,9 +57,9 @@ U0 PredatorPrey()
   try {
     LtfClear;
     WinMax;
-    WinBorder(OFF);
+    WinBorder;
     WinSync;
-    WordStat(OFF);
+    WordStat;
 
     dc->color=BLACK;
     GrLine(dc,OX,0,OX,GR_HEIGHT-FONT_HEIGHT-1);
@@ -75,9 +75,8 @@ U0 PredatorPrey()
   } catch
     CatchAll;
   SettingsPop;
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
 }
 
 PredatorPrey;
-

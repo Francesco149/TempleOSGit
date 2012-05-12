@@ -1,6 +1,6 @@
 U0 Main()
 {
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   dc->color=RED+BLACK<<16+ROPF_DITHER;
   GrCircle(dc,100,100,50);
   GrLine(dc,10,10,280,70);
@@ -9,7 +9,7 @@ U0 Main()
   dc->color=PURPLE+BLUE<<16+ROPF_DITHER;
   GrRect(dc,20,20,100,100);
   PressAKey;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 

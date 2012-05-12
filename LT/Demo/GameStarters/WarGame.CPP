@@ -96,7 +96,6 @@ U0 DrawTrooper(TaskStruct *task,GrDC *dc,Trooper *tempt,U64 color)
   if (s>0) {
     s/=3;
     dc->color=color;
-    dc->bkcolor=BLACK;
     gx=x;gy=y;
     if (tempt->dx<0) {
       dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
@@ -133,13 +132,13 @@ U0 DrawTrooper(TaskStruct *task,GrDC *dc,Trooper *tempt,U64 color)
   }
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,c,x=ipx-task->win_pixel_left-task->win_scroll_x,y=ipy-task->win_pixel_top-task->win_scroll_y;
   cmd_intensity=(ip_throttle*128)>>32;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   BoolI8 repulsive=cmd_intensity>0 ^^ ip_rb,active=!win_grab_scroll && (ip_lb||ip_rb);
 
+  task->text_attr=GREEN<<4;
   cnt1=0;
   cnt2=0;
   for (i=0;i<NUM_TROOPERS;i++)
@@ -175,7 +174,6 @@ U0 UpdateWin(TaskStruct *task)
   GrPrintF(dc,(task->win_right-8)*FONT_WIDTH,0,"%03d",cnt1);
   dc->color=p2_color&15;
   GrPrintF(dc,(task->win_right-4)*FONT_WIDTH,0,"%03d",cnt2);
-  GrDCDel(dc);
 }
 
 U0 DoAiTarget()
@@ -348,11 +346,12 @@ U0 WarGame()
       "}"
       );
   WinMax;
-  Fs->text_attr=GREEN<<4;
-  WordStat(OFF);
+  WordStat;
 
   Init;
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   PopUpOk("Wheel Ctrls Cmd Strength.\n"
 	"Attract or repel with\n"
 	"left or right button.\n");

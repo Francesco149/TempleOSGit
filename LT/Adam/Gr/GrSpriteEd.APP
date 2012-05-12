@@ -22,8 +22,7 @@ U0 GrSetOrigin(GrSprite *root,I64 dx,I64 dy,I64 dz)
 	tempg->x2+=dx;
 	tempg->y2+=dy;
 	break;
-      case GRST_BITMAP4:
-      case GRST_BITMAP4_TRANSPARENT:
+      case GRST_BITMAP8:
       case GRST_ELLIPSE:
       case GRST_REG_POLY:
 	tempg->x2+=dx;
@@ -240,23 +239,19 @@ GrSprite *GrTransformBitMap(I64 *r,GrSprite *tempg)
   if (z<minx) minz=z;
   if (z>maxx) maxz=z;
 
-  tempb=GrDCNew(DCT_COLOR4,maxx-minx+1,maxy-miny+1);
+  tempb=GrDCNew(DCT_COLOR8,maxx-minx+1,maxy-miny+1);
 
   img=CAlloc(sizeof(GrDC));
-  img->type=DCT_COLOR4;
+  img->type=DCT_COLOR8;
   img->width=tempg->width;
   img->width_internal=(tempg->width+7)&~7;
   img->height=tempg->height;
   img->plane_size=(img->width_internal*img->height)>>3;
-  img->body=tempg(U8 *)+offset(GrSprite.sides);
+  img->body=tempg(U8 *)+offset(GrSprite.linespeed);
   img->dc_signature=DCS_SIGNATURE_VAL;
 
-  tempb->color=img->bkcolor=tempg->bkcolor;
+  tempb->color=COLOR_TRANSPARENT;
   GrRect(tempb,0,0,maxx-minx+1,maxy-miny+1);
-  if (tempg->type==GRST_BITMAP4)
-    tempb->bkcolor=tempb->color=ROP_EQU+tempg->bkcolor&COLORROP_NO_ROP0_MASK;
-  else
-    tempb->bkcolor=tempb->color=ROP_TRANSPARENT+tempg->bkcolor&COLORROP_NO_ROP0_MASK;
 
   Free(tempb->r);
   GrSetRotMat(tempb,r);
@@ -326,8 +321,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	tempg->x2=x;
 	tempg->y2=y;
 	break;
-      case GRST_BITMAP4:
-      case GRST_BITMAP4_TRANSPARENT:
+      case GRST_BITMAP8:
 	tempg1=GrTransformBitMap(r,tempg);
 	InsQue(tempg1,tempg);
 	RemQue(tempg);
@@ -586,7 +580,6 @@ U0 GrSpriteSideBarTask(TaskStruct *parent,GrSprite **root,I64 *cur_num)
     if (ll->type_u8==LTFT_MENU_VAL)
       *cur_num=ll->left_exp;
     *root=GrSpriteLtf2Queue(l,*root,cur_num);
-    LtfBottom(l);
     LtfClear(l);
   }
 }
@@ -767,8 +760,7 @@ U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
 	temppe->h=&tempg->height;
 	temppe->num=cur_num;
 	InsQue(temppe,root->last);
-      case GRST_BITMAP4:
-      case GRST_BITMAP4_TRANSPARENT:
+      case GRST_BITMAP8:
 	temppe=CAlloc(sizeof(GrSpritePointStruct));
 	temppe->type=GESPT_SIMPLE_POINT;
 	temppe->xx=x;
@@ -868,7 +860,7 @@ U0 GESPCtrlPointsDraw(GrDC *dc,GrSpritePointStruct *root)
   I64 x,y;
   GrSpritePointStruct *temppe;
   WinSync;
-  GrDCClear(dc);
+  GrDCFill(dc);
   if (Blink(20)) {
     temppe=root->next;
     while (temppe!=root) {
@@ -918,7 +910,7 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 {
   I64 msg_code,p1,p2,xx,yy,xx2,yy2,dd,best_dd,cur_num;
   BoolI8 old_preempt;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   GrSpritePointStruct root,*temppe,*best_pe;
   BoolI8 result=TRUE;
 
@@ -1034,7 +1026,7 @@ gs_done:
     Preempt(old_preempt);
     GrSpritePointQueueDel(&root);
   }
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
   if (_cur_num && result)
     *_cur_num=cur_num;
@@ -1058,7 +1050,7 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 
   WinSync(TRUE);
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  WordStat(OFF);
+  WordStat;
   if (_import_snap) new_snap=*_import_snap;
   if (_import_ip_scaler) new_ip_scaler=*_import_ip_scaler;
   SetSnap(&Fs->snap,new_snap,new_ip_scaler);

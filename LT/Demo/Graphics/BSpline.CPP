@@ -1,6 +1,6 @@
 U0 BSplineDemo()
 {
-  GrDC *b=GrDCAlias(gr_dc2,Fs);
+  GrDC *b=GrDCAlias;
   I64 p1,p2,i=0,msg_code;
   P3I32 c[64];
 
@@ -8,7 +8,7 @@ U0 BSplineDemo()
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
   "$CL$Select ctrl points with left mouse.  Right when finished.\n";
-  GrDCClear;
+  GrDCFill;
   do {
     msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_UP+1<<MSG_IP_R_UP);
     if (msg_code==MSG_IP_L_UP) {
@@ -26,7 +26,7 @@ U0 BSplineDemo()
   SettingsPop;
 
   PressAKey;
-  GrDCClear;
+  GrDCFill;
 }
 
 BSplineDemo;

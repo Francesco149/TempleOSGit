@@ -7,7 +7,7 @@ U0 StadiumGen()
   GrDC *dc;
 
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   LtfClear;
   Type("::/LT/Demo/GameStarters/Stadium/Stadium.TXZ");
   "$CM,0,%d$",TEXT_ROWS-2;

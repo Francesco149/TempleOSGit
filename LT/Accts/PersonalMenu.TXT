@@ -81,25 +81,25 @@ Compile these with [C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot().
 
 This is the kernel, more or less.
 Cd("::/LT/OSMain");Dir;
-  
-  `Cd("::/LT/OSMain");Dir;
-  `
-  
+
+`Cd("::/LT/OSMain");Dir;
+`
+
 
 This is the compiler.
 Cd("::/LT/Compiler");Dir;
-  
-  `Cd("::/LT/Compiler");Dir;
-  `
-  
+
+`Cd("::/LT/Compiler");Dir;
+`
+
 
 This is the remainder of the mandatory operating system files.
 They are compiled during every boot.
 Cd("::/LT/Adam");Dir;
-  
-  `Cd("::/LT/Adam");Dir;
-  `
-      
+
+`Cd("::/LT/Adam");Dir;
+`
+    
 
 
 Quick Reboot
@@ -178,19 +178,19 @@ AfterEgypt <22> (image) Pilgrims <23> (image) Wenceslas <24> (image)
 
 
   CPUPlot
-  `#include "/LT/Demo/Graphics/CPUPlot.CPZ";`
-   MemRep
-  `MemRep;View;`
-  
+`#include "/LT/Demo/Graphics/CPUPlot.CPZ";`
+ MemRep
+`MemRep;View;`
+
 
 Digits (Memory Game)
-  `Cd("::/LT/Demo");;#include "Digits"
-  `
-  
+`Cd("::/LT/Demo");;#include "Digits"
+`
+
 Bling (A fractel-like thing)
-  `Cd("::/LT/Demo/Graphics");;#include "Bling"
-  `
-  
+`Cd("::/LT/Demo/Graphics");;#include "Bling"
+`
+
 
 CTRL-R	Add Graphics with CTRL-R 
 CTRL-L	Add Widgets such as trees

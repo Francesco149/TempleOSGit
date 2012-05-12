@@ -4,10 +4,10 @@ U0 RawDrawChar(U64 ch)
 before the window manager is running
 and for the debugger.
 
-See [C:/LT/Adam/Gr/GrScreen.APZ,611] GrUpdateForegroundOfText for
+See [C:/LT/Adam/Gr/GrScreen.APZ,599] GrUpdateForegroundOfText for
 the normal screen text output routine.
 
-See also [C:/LT/Adam/Gr/GrScreen.APZ,765] GrUpdateScreen().
+See also [C:/LT/Adam/Gr/GrScreen.APZ,724] GrUpdateScreen().
 
 */
   static U64 timeout=0;

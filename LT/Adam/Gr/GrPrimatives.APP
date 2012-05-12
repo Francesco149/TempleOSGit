@@ -48,10 +48,14 @@ public BoolI64 GrPlot(GrDC *dc,I64 x,I64 y)
 {  //Clipping but No transformation or pen width
   I32 *db=dc->depth_buf;
   TaskStruct *win_task;
+  ColorROPU32 old_color;
   dc->depth_buf=NULL;
-  if (dc->brush)
+  if (dc->brush) {
+    old_color=dc->color;
+    dc->color.c0.rop=ROPB_MONO;
     GrDCBlot(dc,x,y,dc->brush);
-  else if (dc->flags & DCF_SCREEN_BITMAP) {
+    dc->color=old_color;
+  } else if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_pixel_left+win_task->win_scroll_x;
     y+=win_task->win_pixel_top+win_task->win_scroll_y;
@@ -72,11 +76,15 @@ public BoolI64 GrPlot(GrDC *dc,I64 x,I64 y)
 BoolI64 GrPlot1(GrDC *dc,I64 x,I64 y)
 {  //Clipping but No transformation or pen width, called with db_z set
   TaskStruct *win_task;
+  ColorROPU32 old_color;
   if (dc->brush) {
+    old_color=dc->color;
+    dc->color.c0.rop=ROPB_MONO;
     if (dc->depth_buf)
       GrDCBlot3(dc,x,y,dc->db_z,dc->brush);
     else
       GrDCBlot(dc,x,y,dc->brush);
+    dc->color=old_color;
   } else if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
     x+=win_task->win_pixel_left+win_task->win_scroll_x;
@@ -230,56 +238,33 @@ public I64 GrFloodFill(GrDC *dc,I64 x,I64 y,BoolI8 not_color=FALSE,I64 z=0,I32 *
 //not_color=FALSE means fill all parts equal to the color under the point.
 //Returns cnt of pixels changed
   I64 result=0,j,old_flags=dc->flags;
-  ColorROPU32 c,c2,old_color2=dc->color2;
+  ColorROPU32 old_color2=dc->color2;
   GrDC *old_brush;
   if (dc->flags & DCF_DONT_DRAW) //TODO
     return 0;
   old_brush=dc->brush;
   dc->brush=NULL;
-  if ((j=GrPeek(dc,x,y))>=0) {
-    nobound_switch (dc->type) {
-      case DCT_COLOR4:
-      case DCT_COLOR8:
-	if (not_color) {
-	  dc->color2=dc->color.c0.color;
-	  dc->flags|=DCF_FILL_NOT_COLOR;
-	} else {
-	  dc->color2=j;
-	  if (dc->color.c1.rop&ROPBF_DITHER) {
-	    if (dc->color2.c0.color==dc->color.c0.color &&
-		dc->color.c0.color==dc->color.c1.color)
-	      break;
-	  } else if (dc->color2.c0.color==dc->color.c0.color)
-	    break;
-	  dc->flags&=~DCF_FILL_NOT_COLOR;
-	}
-	if (not_color && j!=dc->color2 ||
-	   !not_color)
-	  result=GrFloodFillRay(dc,x,y,z,db);
-	break;
-      case DCT_MONO:
-	c=ToBool(dc->color.c0.color);
-	c2=ToBool(dc->color.c1.color);
-	if (not_color) {
-	  dc->color2=c;
-	  dc->flags|=DCF_FILL_NOT_COLOR;
-	} else {
-	  dc->color2=j;
-	  if (dc->color.c1.rop&ROPBF_DITHER) {
-	    if (dc->color2==c && c==c2)
-	      break;
-	  } else if (dc->color2==c)
-	    break;
-	  dc->flags&=~DCF_FILL_NOT_COLOR;
-	}
-	if (not_color && j!=c ||
-	   !not_color)
-	  result=GrFloodFillRay(dc,x,y,z,db);
-	break;
+  if ((j=GrPeek(dc,x,y))>=0 && dc->type==DCT_COLOR8) {
+    if (not_color) {
+      dc->color2=dc->color.c0.color;
+      dc->flags|=DCF_FILL_NOT_COLOR;
+    } else {
+      dc->color2=j;
+      if (dc->color.c1.rop&ROPBF_DITHER) {
+	if (dc->color2.c0.color==dc->color.c0.color &&
+	    dc->color.c0.color==dc->color.c1.color)
+	  goto ff_done;
+      } else if (dc->color2.c0.color==dc->color.c0.color)
+	goto ff_done;
+      dc->flags&=~DCF_FILL_NOT_COLOR;
     }
+    if (not_color && j!=dc->color2 ||
+	!not_color)
+      result=GrFloodFillRay(dc,x,y,z,db);
   }
+ff_done:
   dc->brush=old_brush;
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
   dc->color2=old_color2;
   return result;
 }
@@ -339,10 +324,7 @@ public BoolI64 GrPlot3(GrDC *dc,I64 x,I64 y,I64 z)
   if (dc->brush || w<=0)
     GrPlot1(dc,x,y);
   else if (dc->pen_width<GR_NUM_PEN_BRUSHES) {
-    if (dc->color.c0.rop==ROPB_EQU)
-      dc->color.c0.rop=ROPB_TRANSPARENT;
-    if (dc->color.c0.rop==ROPB_CLEAR_MASK_EQU)
-      dc->color.c0.rop=ROPB_CLEAR_MASK_TRANSPARENT;
+    dc->color.c0.rop=ROPB_MONO;
     if (dc->depth_buf) {
       if (dc->color.c1.rop&ROPBF_DITHER) {
 	dc->color.c1.rop=dc->color.c0.rop;
@@ -748,7 +730,7 @@ public I64 GrFloodFill3(GrDC *dc,I64 x1,I64 y1,I64 z1,BoolI8 not_color=FALSE)
   }
   result=GrFloodFill(dc,x1,y1,not_color,z1,dc->depth_buf);
 gr_done:
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
   return result;
 }
 
@@ -868,19 +850,26 @@ public BoolI64 GrDCBlot3(GrDC *dc,I64 x1,I64 y1,I64 z1,GrDC *img)
 	y=0;
 	for (i=0;i<=d2;i++) {
 	  if (_x2.i32[1]!=last_x || _y2.i32[1]!=last_y ||first) {
-	    color=GrPeek(img,x.i32[1],y.i32[1]);
-	    if (color>=0 &&
-		(old_color.c0.rop!=ROPB_TRANSPARENT ||
-		color(ColorROPU32).c0.color!=img->bkcolor.c0.color)) {
-	      if (img->type==DCT_MONO)
-		dc->color=old_color;
-	      else
-		dc->color=old_color&0xFF00+color;
-	      if (dc->depth_buf) {
-		dc->db_z=_z2.i32[1];
-		GrPlot1(dc,_x2.i32[1],_y2.i32[1]);
-	      } else
-		GrPlot(dc,_x2.i32[1],_y2.i32[1]);
+	    if ((color=GrPeek(img,x.i32[1],y.i32[1]))>=0) {
+	      if (dc->color.c0.rop==ROPB_MONO) {
+		if (color) {
+		  dc->color=old_color&~ROPF_DITHER;
+		  if (dc->depth_buf) {
+		    dc->db_z=_z2.i32[1];
+		    GrPlot1(dc,_x2.i32[1],_y2.i32[1]);
+		  } else
+		    GrPlot(dc,_x2.i32[1],_y2.i32[1]);
+		}
+	      } else {
+		if (color!=COLOR_TRANSPARENT) {
+		  dc->color=old_color&~COLORROP_NO_ROP0_MASK|color;
+		  if (dc->depth_buf) {
+		    dc->db_z=_z2.i32[1];
+		    GrPlot1(dc,_x2.i32[1],_y2.i32[1]);
+		  } else
+		    GrPlot(dc,_x2.i32[1],_y2.i32[1]);
+		}
+	      }
 	    }
 	  }
 	  first=FALSE;
@@ -937,19 +926,26 @@ normal_image:
       y=0;
       for (i=0;i<=d2;i++) {
 	if (x2.i32[1]!=last_x || y2.i32[1]!=last_y || first) {
-	  color=GrPeek(img,x.i32[1],y.i32[1]);
-	  if (color>=0 &&
-	      (old_color.c0.rop!=ROPB_TRANSPARENT ||
-	      color(ColorROPU32).c0.color!=img->bkcolor.c0.color)) {
-	    if (img->type==DCT_MONO)
-	      dc->color=old_color;
-	    else
-	      dc->color=old_color&0xFF00+color;
-	    if (dc->depth_buf) {
-	      dc->db_z=z2.i32[1];
-	      GrPlot1(dc,x2.i32[1],y2.i32[1]);
-	    } else
-	      GrPlot(dc,x2.i32[1],y2.i32[1]);
+	  if ((color=GrPeek(img,x.i32[1],y.i32[1]))>=0) {
+	    if (dc->color.c0.rop==ROPB_MONO) {
+	      if (color) {
+		dc->color=old_color&~ROPF_DITHER;
+		if (dc->depth_buf) {
+		  dc->db_z=z2.i32[1];
+		  GrPlot1(dc,x2.i32[1],y2.i32[1]);
+		} else
+		  GrPlot(dc,x2.i32[1],y2.i32[1]);
+	      }
+	    } else {
+	      if (color!=COLOR_TRANSPARENT) {
+		dc->color=old_color&~COLORROP_NO_ROP0_MASK|color;//COLOR
+		if (dc->depth_buf) {
+		  dc->db_z=z2.i32[1];
+		  GrPlot1(dc,x2.i32[1],y2.i32[1]);
+		} else
+		  GrPlot(dc,x2.i32[1],y2.i32[1]);
+	      }
+	    }
 	  }
 	}
 	first=FALSE;
@@ -1011,7 +1007,7 @@ public U0 Gr2Bezier3(GrDC *dc,P3I32 *ctrl)
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
 }
 
 public U0 Gr3Bezier3(GrDC *dc,P3I32 *ctrl)
@@ -1054,7 +1050,7 @@ public U0 Gr3Bezier3(GrDC *dc,P3I32 *ctrl)
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
 }
 
 public U0 Gr2BSpline3(GrDC *dc,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
@@ -1097,7 +1093,7 @@ public U0 Gr2BSpline3(GrDC *dc,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
 }
 
 public U0 Gr3BSpline3(GrDC *dc,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
@@ -1140,7 +1136,7 @@ public U0 Gr3BSpline3(GrDC *dc,P3I32 *ctrl,I64 cnt,BoolI8 closed=FALSE)
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
 }
 
 public U0 GrSpeedLine(GrDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,F64 speed)
@@ -1152,7 +1148,7 @@ public U0 GrSpeedLine(GrDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,F64 speed)
   dc->pen_width=dc->speedline_scale*speed;
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR);
   GrLine3(dc,x1,y1,0,x2,y2,0);
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
   dc->pen_width=old_pen_width;
   dc->depth_buf=db;
 }
@@ -1185,7 +1181,7 @@ public U0 GrSpeedLine3(GrDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,F64 sp
 
 gr_done:
   dc->pen_width=old_pen_width;
-  dc->flags=old_flags|dc->flags&DCF_DIRTY;
+  dc->flags=old_flags;
 }
 
 public I64 GrFillTriangle0(GrDC *dc,P3I32 *p1,P3I32 *p2,P3I32 *p3)

@@ -53,9 +53,6 @@
 #define __BIN_6_SIZE 0x00000028
 #define __BIN_6 "\x02\x08\x07\x0E\x00\x00\x00\xFE\xFF\xFF\xFF\x01\x00\x00\x00\x36\x99\x25\x49\x66\x03\x02\x07\x07\x07\x00\x00\x00\xFD\xFF\xFF\xFF\x00\x00\x00\x00\x24\x49\x0F\x00"
 
-GrDC *RK_dc=GrDCAlias(gr_dc,Fs);
-
-
 
 /* <ship_null> <1> (image) */
 
@@ -218,14 +215,16 @@ I64 ObjectAlloc(I64 type)
   return i;
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   nounusedwarn task;
   I64 i,x,y;
 
-  RK_dc->color=WHITE;
+  task->text_attr=BLACK<<4+WHITE;
+
+  dc->color=WHITE;
   for (i=0;i<NUM_STARS;i++)
-    GrPlot(RK_dc,stars_x[i],stars_y[i]);
+    GrPlot(dc,stars_x[i],stars_y[i]);
 
   for (i=0;i<NUM_OBJECTS;i++) {
     if (objs[i].active==A_ACTIVE) {
@@ -253,14 +252,14 @@ U0 UpdateWin(TaskStruct *task)
 	  case OT_SHIP:
 	    if (bounce) {
 	      if (cmd_code==CMD_THRUST && GetTimeStamp&8192)
-		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_2,o_state[i].theta);
+		GrSpritePlotRotZ3b(dc,x,y,0,__BIN_2,o_state[i].theta);
 	      else
-		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_1,o_state[i].theta);
+		GrSpritePlotRotZ3b(dc,x,y,0,__BIN_1,o_state[i].theta);
 	    } else {
 	      if (cmd_code==CMD_THRUST && GetTimeStamp&8192)
-		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_4,o_state[i].theta);
+		GrSpritePlotRotZ3b(dc,x,y,0,__BIN_4,o_state[i].theta);
 	      else
-		GrSpritePlotRotZ3b(RK_dc,x,y,0,__BIN_3,o_state[i].theta);
+		GrSpritePlotRotZ3b(dc,x,y,0,__BIN_3,o_state[i].theta);
 	    }
 	    break;
 	  case OT_BULLET:
@@ -269,14 +268,14 @@ U0 UpdateWin(TaskStruct *task)
 	  case OT_MEDIUM_ROCK:
 	  case OT_LARGE_ROCK:
 	  case OT_CARGO:
-	    GrSpritePlotRotZ3b(RK_dc,x,y,0,objs[i].img,o_state[i].theta);
+	    GrSpritePlotRotZ3b(dc,x,y,0,objs[i].img,o_state[i].theta);
 	    break;
 	}
       }
     }
   }
-  RK_dc->color=WHITE;
-  GrPutS(RK_dc,0,0,"Escort the cargo ship.");
+  dc->color=WHITE;
+  GrPutS(dc,0,0,"Escort the cargo ship.");
 }
 
 U0 Init()
@@ -569,9 +568,10 @@ U0 CheckCollisions()
 
 	  d1=objs[i].radius+objs[j].radius;
 	  if (dd<Sqr(d1)) {
-	    b=GrDCNew(DCT_COLOR4,64,64,Fs);
+	    b=GrDCNew(DCT_COLOR8,64,64,Fs);
 	    GrSpritePlotRotZ3b(b,32,32,0,objs[i].img,o_state[i].theta);
-	    b->bkcolor=ROP_COLLISION+BLACK;
+	    b->color=ROP_COLLISION;
+	    b->bkcolor=BLACK;
 	    GrSpritePlotRotZ3b(b,o_state[j].x-o_state[i].x+32,
 			       o_state[j].y-o_state[i].y+32,0,
 			       objs[j].img,o_state[j].theta);
@@ -647,8 +647,8 @@ U0 Rocks()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   Preempt(OFF),
-  WinBorder(OFF);
-  WordStat(OFF);
+  WinBorder;
+  WordStat;
 
   MenuPush(
 "File {"
@@ -673,12 +673,13 @@ U0 Rocks()
   o_state=ode->state;
   objs=MAlloc(NUM_OBJECTS*sizeof(Object));
 
-  Fs->text_attr=BLACK<<4+WHITE;
   WinMax;
 
   Init;
   InsQue(ode,Fs->last_ode);
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
 
   try {
     while (TRUE) {

@@ -2,7 +2,7 @@ U0 Main()
 {
   F64 theta=0,phi=0,omega=0;
   P3I32 poly[4];
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   GrDCAllocDepthBuf(dc);
   dc->flags|=DCF_TRANSFORMATION|DCF_SYMMETRY;
   try {
@@ -102,7 +102,7 @@ U0 Main()
       GrFillPoly3(dc,4,poly);
 
       WinSync;
-      GrDCClear;
+      GrDCFill;
       theta+=2.1*pi/180.0;
       phi+=1.1*pi/180.0;
       omega+=0.5*pi/180.0;
@@ -110,7 +110,7 @@ U0 Main()
   } catch
     CatchAll;
 
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 

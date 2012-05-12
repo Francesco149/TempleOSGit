@@ -79,9 +79,9 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/LT/OSMain/Adam1a.HPZ,2940] Ctrl type for the tempo/stacatto sliders.
+  2) The [C:/LT/OSMain/Adam1a.HPZ,2938] Ctrl type for the tempo/stacatto sliders.
 
-  3) The active [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf picture buttons with macros for left/record/play/right.
+  3) The active [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf picture buttons with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
@@ -90,8 +90,7 @@ This uses four types of ctrls
 
 This uses four types of output
 
-  1) The [C:/LT/OSMain/Adam1a.HPZ,1359] Ltf for the text and buttons and kbdgraphic, drawn by 
-Fs->update_win().
+  1) The [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf for the text and buttons and kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
 
@@ -101,7 +100,7 @@ persistent layer is used during drag-and-drop.
   4) The Fs->next_ctrl for the tempo/stacatto sliders.
 
 
-See [C:/LT/Adam/Gr/GrScreen.APZ,395] GrUpdateWins() and [C:/LT/Adam/Gr/GrScreen.APZ,765] GrUpdateScreen().
+See [C:/LT/Adam/Gr/GrScreen.APZ,370] GrUpdateWins() and [C:/LT/Adam/Gr/GrScreen.APZ,724] GrUpdateScreen().
 
 
 */
@@ -426,7 +425,6 @@ BoolI64 OrgBlink(F64 t)
 U0 DrawNote(GrDC *dc,I64 x,I64 y,I64 duration)
 {
   if (0<=duration<=ORG_NUM_DURATIONS) {
-    dc->bkcolor=WHITE;
     GrSpritePlot3(dc,x,y,0,org_duration_imgs[duration]);
     if (org_triplet_durations[duration])
       GrSpritePlot3(dc,x,y,0,__BIN_18);
@@ -774,7 +772,7 @@ eter_bottoms[i]);
 
 U0 DrawDC2()
 {
-  GrDCClear;
+  GrDCFill;
   DrawPickNoteBox;
   DrawPickMeterBox;
   DrawPickTools;
@@ -1480,7 +1478,6 @@ U0 OrgUpKey(I64 x,I64 y)
 
 U0 OrgMenu(I64 org_octave,I64 org_waveform)
 {
-  LtfBottom;
   LtfClear;
   "$BD,WHITE$$FD,GREEN$$FU,GREEN$$FM,GREEN$$CM,0,12$\n";
   PutSprite(__BIN_25);
@@ -1526,7 +1523,7 @@ U0 OrgPushMode(I64 org_octave,I64 org_waveform)
 U0 OrgPopMode()
 {
   Fs->win_inhibit=0;
-  GrDCClear;
+  GrDCFill;
 }
 
 #define ORGF_CD		1
@@ -1549,8 +1546,8 @@ note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3
 
   if (LtfCur) old_ltf_flags=LtfCur->flags;
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  WinBorder(OFF);
-  WordStat(OFF);
+  WinBorder;
+  WordStat;
   Preempt(OFF);
 
   MkDir("HOME/MusicOrgan");
@@ -1566,7 +1563,7 @@ note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3
   oc.clipboard.next=oc.clipboard.last=&oc.clipboard;
   oc.root.waveform=WF_SQUARE;
   oc.cur_note=&oc.root;
-  oc.dc2=GrDCAlias(gr_dc2,Fs);
+  oc.dc2=GrDCAlias;
 
   MenuPush(
   "File {"
@@ -2061,7 +2058,7 @@ G_CMD);
   OrgSongDel(&oc.clipboard);
   TempoDel(c);
   Kill(play_task);
-  GrDCClear;
+  GrDCFill;
   GrDCDel(oc.dc2);
   SettingsPop;
   if (LtfCur) LtfCur->flags=LtfCur->flags&~LTFF_FORM|old_ltf_flags&LTFF_FORM;

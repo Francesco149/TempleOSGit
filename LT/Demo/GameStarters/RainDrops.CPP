@@ -1,4 +1,3 @@
-
 I64 sc_1,sc_2;
 
 #define NUM_DROPS	0x2000
@@ -49,6 +48,7 @@ U0 DrawFrame(TaskStruct *task,GrDC *dc)
 
 U0 DrawDrops(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn task;
   I64 i;
   dc->color=BLUE;
   for (i=0;i<NUM_DROPS;i++)
@@ -59,18 +59,18 @@ U0 DrawDrops(TaskStruct *task,GrDC *dc)
 U0 UpdateCurBase(TaskStruct *task,GrDC *dc)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  cur_dc->color=BLACK;
+  cur_dc->color=ROP_EQU;
+  dc->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
+  dc->flags&=~DCF_NO_TRANSPARENTS;
   Preempt(old_preempt);
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   DrawFrame(task,dc);
   DrawDrops(task,dc);
   UpdateCurBase(task,dc);
-  GrDCDel(dc);
 }
 
 
@@ -166,14 +166,15 @@ U0 RainDrops()
       );
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  cur_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  cur_dc=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
   sc_1=A2ScanCode('1');
   sc_2=A2ScanCode('2');
   Init;
-  LtfClear;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  Fs->update_win=&UpdateWin;
-  WordStat(OFF);
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
+  WordStat;
   try {
     do {
       ch=GetKey(&sc);

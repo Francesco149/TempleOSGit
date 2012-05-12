@@ -6,8 +6,9 @@
 //Hold ALT and press a 3 digit decimal number
 //or press <CTRL-ALT-A>.
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn dc;
   I64 i;
   for (i=0;i<256;i++)
     PlotWinU8(task,i+BLACK<<12+WHITE<<8,(i&15)*2,(i/16)*2);
@@ -16,8 +17,8 @@ U0 UpdateWin(TaskStruct *task)
 U0 ScreenCodes()
 {
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=&UpdateWin;
-
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   GetChar(NULL,FALSE);
   SettingsPop;
 }

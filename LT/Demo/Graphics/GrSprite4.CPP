@@ -15,7 +15,7 @@ U0 Main(U8 *elems)
   GrSprite *tempg=elems-offset(GrSprite.start);
   U8 *st;
   while (tempg->type) {
-    //Study this routine [C:/LT/Adam/Gr/GrSpriteNew.APZ,176] GrSprite2Text().
+    //Study this routine [C:/LT/Adam/Gr/GrSpriteNew.APZ,171] GrSprite2Text().
     st=GrSprite2Text(tempg);
     "%s\n",st;
     Free(st);

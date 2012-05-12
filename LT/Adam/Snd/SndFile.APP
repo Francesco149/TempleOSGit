@@ -23,7 +23,7 @@ public U64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
 
 //Averaging should be a num from 0.0 to 0.999.
 //Vol should be from 0.0 to 1.0.
-//If waveform is [C:/LT/OSMain/Adam1a.HPZ,3849] WF_NULL, the original passed to [C:/LT/OSMain/Misc1a.CPZ,227] Snd() will be used.
+//If waveform is [C:/LT/OSMain/Adam1a.HPZ,3848] WF_NULL, the original passed to [C:/LT/OSMain/Misc1a.CPZ,227] Snd() will be used.
 
 //Set reverb_delay to like 0.3 sec and reverb_intensity to like 0.4.
 
@@ -186,8 +186,8 @@ public U0 SndFileView(U8 *name,BoolI8 zoom=FALSE)
 	end=start+w;
     }
     "$CL$";
-    GrDCClear;
-    GrDC *dc=GrDCAlias(gr_dc2,Fs);
+    GrDCFill;
+    GrDC *dc=GrDCAlias;
     dc->color=GREEN;
     x_scale=ToF64(w)/(end-start+1);
     y_scale=ToF64(h)/MAX_U16;
@@ -196,7 +196,7 @@ public U0 SndFileView(U8 *name,BoolI8 zoom=FALSE)
 		x_scale*(i-start-1),y_scale*(s->body[i-1]+MAX_I16));
     Free(s);
     PressAKey;
-    GrDCClear;
+    GrDCFill;
     GrDCDel(dc);
   }
 }

@@ -119,7 +119,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	      SetKeyDesc("Win/Maximize");
 	    else {
 	      WinMax;
-	      WinBorder(OFF);
+	      WinBorder;
 	    }
 	    return TRUE;
 	  case 'v':
@@ -158,9 +158,9 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    return TRUE;
 	  case 'W':
 	    if (sc&SCF_KEY_DESC)
-	      SetKeyDesc("Win/WordStat(OFF);");
+	      SetKeyDesc("Win/WordStat;");
 	    else
-	      WordStat(OFF);
+	      WordStat;
 	    return TRUE;
 
 //Insert your own ALT-key plug-ins

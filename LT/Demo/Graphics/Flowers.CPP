@@ -102,7 +102,7 @@ U0 DrawStem(GrDC *dc,Seed *tempe,Stem *temps,Stem *parent,I64 w,I64 h)
   dc->color=GREEN;
   dc->pen_width=2;
   while (temps) {
-  //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,545] GrLine3() because it has pen_width
+  //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,527] GrLine3() because it has pen_width
     if (parent) {
       dc->color=GREEN;
       dc->pen_width=2;
@@ -150,7 +150,7 @@ U0 DrawSeeds(GrDC *dc,Seed *tempe,I64 w,I64 h)
   Stem *temps;
   while (tempe) {
     GrSpritePlot3(dc,tempe->x+w/2,h-tempe->y,0,__BIN_1);
-    //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,545] GrLine3() because it has pen_width
+    //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,527] GrLine3() because it has pen_width
     if (temps=tempe->sub) {
       dc->color=GREEN;
       dc->pen_width=2;

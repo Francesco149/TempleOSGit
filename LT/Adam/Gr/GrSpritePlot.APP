@@ -6,11 +6,11 @@ each operation.  The types available are listed
 here, [C:/LT/Adam/Gr/Gr.APZ,6] GRST_POINT.  They are stored, one after another,
 in a chunk of memory terminated by a type [C:/LT/Adam/Gr/Gr.APZ,2] GRST_END.
 
-[C:/LT/Adam/Gr/GrSpritePlot.APZ,27] GrSpritePlot3() and [C:/LT/Adam/Gr/GrSpriteVect.APZ,223] GrSpriteVect() shows how the
+[C:/LT/Adam/Gr/GrSpritePlot.APZ,27] GrSpritePlot3() and [C:/LT/Adam/Gr/GrSpriteVect.APZ,221] GrSpriteVect() shows how the
 unions are used.  It's kind-of a mess using a union.
 
-[C:/LT/Adam/Gr/GrSpriteNew.APZ,123] GrSpriteSize() will return the size of a single
-operation, while [C:/LT/Adam/Gr/GrSpriteNew.APZ,123] GrSpriteSize() with an 's' will
+[C:/LT/Adam/Gr/GrSpriteNew.APZ,122] GrSpriteSize() will return the size of a single
+operation, while [C:/LT/Adam/Gr/GrSpriteNew.APZ,122] GrSpriteSize() with an 's' will
 return the size of an entire list.  Look at
 [C:/LT/Adam/Gr/GrSpriteNew.APZ,5] gr_sprite_base_size.
 
@@ -35,24 +35,22 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
   I32 *ptr;
   I64 cur_sprite_elem_num=0,*old_r,*r2;
   U64 old_flags=dc->flags;
-  ColorROPU32 old_color=dc->color,old_bkcolor=dc->bkcolor,
-     colordc=dc->bkcolor;
+  ColorROPU32 old_color=dc->color;
   I64 old_pen_width=dc->pen_width;
   GrDC *img;
   P3I32 *p;
   GrSymStruct old_sym;
   MemCpy(&old_sym,&dc->sym,sizeof(GrSymStruct));
-  if (colordc.c0.rop==ROPB_COLLISION)
-    dc->color=colordc;
   while (tempg->type) {
     dc->cur_sprite_elem_num=cur_sprite_elem_num++;
     switch (tempg->type) {
-      case GRST_COLOR4:
-	dc->color=colordc.c0^tempg->color4;
+      case GRST_COLOR8:
+	dc->color=dc->color&~(COLORROP_COLORS_MASK|ROPF_DITHER)|tempg->color8;
 	break;
-      case GRST_DITHER_COLOR4:
-	dc->color=colordc.c0^tempg->dither_color4&15|
-		   (colordc.c0^tempg->dither_color4>>4&15)<<16|ROPF_DITHER;
+      case GRST_DITHER_COLOR8:
+	dc->color=dc->color&~COLORROP_COLORS_MASK|
+		  tempg->dither_color8.u8[0]|
+		  tempg->dither_color8.u8[1]<<COLORROP_BITS|ROPF_DITHER;
 	break;
       case GRST_WIDTH:
 	dc->pen_width=tempg->width;
@@ -111,24 +109,16 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	else
 	  dc->flags&=~DCF_SYMMETRY;
 	break;
-      case GRST_BITMAP4:
-      case GRST_BITMAP4_TRANSPARENT:
+      case GRST_BITMAP8:
 	img=CAlloc(sizeof(GrDC));
-	img->type=DCT_COLOR4;
+	img->type=DCT_COLOR8;
 	img->width=tempg->width;
 	img->width_internal=(tempg->width+7)&~7;
 	img->height=tempg->height;
-	img->plane_size=(img->width_internal*img->height)>>3;
-	img->body=tempg(U8 *)+offset(GrSprite.sides);
+	img->plane_size=img->width_internal*img->height;
+	img->body=tempg(U8 *)+offset(GrSprite.linespeed);
 	img->dc_signature=DCS_SIGNATURE_VAL;
-	img->bkcolor=tempg->bkcolor;
-	i=dc->color;
-	if (colordc.c0.rop==ROPB_COLLISION)
-	  dc->color=colordc;
-	else if (tempg->type==GRST_BITMAP4_TRANSPARENT)
-	  dc->color=ROP_TRANSPARENT+i&COLORROP_NO_ROP0_MASK;
 	GrDCBlot3(dc,tempg->x2+x,tempg->y2+y,z,img);
-	dc->color=i;
 	Free(img);
 	break;
       case GRST_RECT:
@@ -309,10 +299,9 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
   }
   MemCpy(&dc->sym,&old_sym,sizeof(GrSymStruct));
   dc->color=old_color;
-  dc->bkcolor=old_bkcolor;
   dc->pen_width=old_pen_width;
   dc->flags=dc->flags&~(DCF_SYMMETRY|DCF_TRANSFORMATION) |
-	      old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
+	    old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
 }
 
 public U0 GrSpriteElemPlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems)
@@ -375,7 +364,7 @@ public U0 GrSpritePlotRotZ3b(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
 public U0 GrSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
 				   I64 *min_y=NULL,I64 *max_y=NULL)
 { //Ignores flood fills.
-  GrDC *dc=GrDCNew(DCT_COLOR4,MAX_I32,MAX_I32,Fs,TRUE);
+  GrDC *dc=GrDCNew(DCT_COLOR8,MAX_I32,MAX_I32,Fs,TRUE);
   GrDCExtentsInit(dc);
   GrSpritePlot3(dc,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
   if (dc->min_x<=dc->max_x) {
@@ -393,7 +382,7 @@ public U0 GrSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
   GrDCDel(dc);
 }
 
-public GrDC *GrSprite2DC(U8 *elems,I64 type=DCT_COLOR4)
+public GrDC *GrSprite2DC(U8 *elems,I64 type=DCT_COLOR8)
 {
   GrDC *result;
   I64 min_x,max_x,min_y,max_y;
@@ -453,8 +442,7 @@ public U8 *GrSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 	tempgr->width=(tempg0->width*t0+tempg1->width*t1)>>32;
 	tempgr->height=(tempg0->height*t0+tempg1->height*t1)>>32;
 	break;
-      case GRST_BITMAP4:
-      case GRST_BITMAP4_TRANSPARENT:
+      case GRST_BITMAP8:
 	tempgr->x2=(tempg0->x2*t0+tempg1->x2*t1)>>32;
 	tempgr->y2=(tempg0->y2*t0+tempg1->y2*t1)>>32;
 	break;

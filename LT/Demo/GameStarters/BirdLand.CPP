@@ -45,13 +45,12 @@ F64 frame_x,percent_completed,t0,tf;
 I32 bugs_x[MAX_BUGS],bugs_y[MAX_BUGS];
 BoolI8 bugs_dead[MAX_BUGS];
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,y,x,
     h=task->win_pixel_width-10,
     v=task->win_pixel_height-10;
   U8 *inter,*inter2,*inter3;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   F64 tt;
   if (h<1) h=1;
   if (v<1) v=1;
@@ -87,7 +86,6 @@ U0 UpdateWin(TaskStruct *task)
   }
   GrPrintF(dc,0,0,"Bugs:%3.1f%% Time:%3.2f Best:%3.2f",
     percent_completed,tt-t0,best_score);
-  GrDCDel(dc);
 }
 
 U0 CheckBugs(TaskStruct *task,TaskStruct *song_task)
@@ -194,7 +192,7 @@ U0 AnimateTask(U64 dummy=0)
 U0 BirdLand()
 {
   BoolI8 rst_space=TRUE;
-  I64 msg_code,p1,p2,ch;
+  I64 p1,p2;
 
   MenuPush(
   "File {"
@@ -207,7 +205,6 @@ U0 BirdLand()
       "}"
       );
 
-  LtfClear;
   PopUpOk("Use $FG,GREEN$<SPACE BAR>$FG$ to flap.\nHold down to glide.");
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
@@ -226,7 +223,9 @@ U0 BirdLand()
   while (rst)
     Yield;
 
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
 
   try {
     while (TRUE) {

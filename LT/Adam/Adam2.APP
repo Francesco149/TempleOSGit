@@ -3,7 +3,7 @@
 
 //Use Dbg("Type 'DbgExit'"); to debug before window manager is running.
 
-public F64 os_version=8.02;
+public F64 os_version=8.03;
 
 #include "AdamExt.HPZ"
 

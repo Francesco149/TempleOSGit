@@ -1,3 +1,15 @@
+* remembering 0 term in str or not for $DA
+* Windows Key menu is forgotten.
+* GetS, crazy putkey code
+* editor page formatting
+* determinant mode Rand #s
+
+* [C:/LT/Adam/Gr/GrScreen.APZ,2] gr_screen_image
+  >Might want to do ZOOM in U8 graphics and convert screen capture to U8
+  >Might want to reverse bit order
+
+* wenceslas crashes in testsuite, sometimes
+
 * GrVectMap sucks
 * return vals for grrect, grblot, grputchar?
 * collisions for grrect, grblot, grputchar?
@@ -22,8 +34,8 @@ GrEdit: Move sidebar selected elems.
 	- Be careful of multipoint elems.
 GrEdit: Strip origin shift cmds.
 
-GrEditBitmap, grabscroll? 
-GrEditBitmap, cut/paste boxes.
+GrEditBitMap, grabscroll? 
+GrEditBitMap, cut/paste boxes.
 
 * Might make TS/TAD sub account.
 
@@ -74,7 +86,7 @@ kbd lights working.
 
 * Syncronize VGA memory update with the hardware refresh cycle.
 
-* Demo [C:/LT/OSMain/Adam1a.HPZ,3773] TaskKeyDevStruct
+* Demo [C:/LT/OSMain/Adam1a.HPZ,3772] TaskKeyDevStruct
 * Demo [C:/LT/Adam/ToHtml.APZ,250] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have

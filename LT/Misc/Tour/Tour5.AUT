@@ -1,5 +1,5 @@
 PopUp("WsInit(\"::/LT/\" TEXT_FILE_MASK \";~*Bible.TXZ\");");
-WordStat;
+WordStat(ON);
 
 //This puts the cursor at the bottom
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);

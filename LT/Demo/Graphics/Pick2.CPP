@@ -294,10 +294,10 @@ U0 PickDemo2()
 );
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   LtfClear;
   "$BK,1$Move things around.$BK,0$\n";
-  WordStat(OFF);
+  WordStat;
   Preempt(OFF);
   pf=Init;
   tempo=NULL;

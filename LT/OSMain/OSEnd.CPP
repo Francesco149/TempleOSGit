@@ -84,8 +84,7 @@ U0 SysGrInit()
 
 /*
 Mode must be multiple of 32 wide
-[C:/LT/Adam/Gr/GrAsm.APZ,592] GrUpdateLine32().
-[GrDCBlotWithMask] GrDCBlotWithMask().
+[C:/LT/Adam/Gr/GrAsm.APZ,759] GrUpdateLine32().
 */
 
     if (bios_gr_mode==0x6A) {

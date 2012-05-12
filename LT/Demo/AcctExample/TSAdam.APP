@@ -105,7 +105,7 @@ SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
 BoolI8 frame_grabber_paused=FALSE,
        frame_grabber_on=FALSE;
 
-public U0 MyScreenShot()
+public U0 MyScreenShot(U64 bits=4)
 {
   U8 *st;
   LTDirEntry *tempm;
@@ -116,7 +116,7 @@ public U0 MyScreenShot()
     tempm=tempm->next;
   }
   st=MSPrintF("::/Temp/ScreenShots/SCRN%04d.BMP",cnt);
-  BMPFileCaptureScreen(st);
+  BMPFileCaptureScreen(st,bits);
   Free(st);
   Beep;
 }

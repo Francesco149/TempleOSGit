@@ -23,9 +23,8 @@ U0 RecordCopyBuf(SND_IN_CONTAINER *buf,I64 buf_num)
   }
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   SND_IN_CONTAINER *buf=_hda->istr0_buf[0];
   I64 i,x1,y1,x2=0,y2=0,
     cy=task->win_pixel_height>>1;
@@ -38,7 +37,6 @@ U0 UpdateWin(TaskStruct *task)
     y2=y1;
   }
   dc->color=RED;
-  GrDCDel(dc);
 }
 
 U0 RecordTaskEndCB()
@@ -99,7 +97,9 @@ U0 RecordDemo(U8 *filename="HOME/Record.SNZ")
   Spawn(&RecordTask,filename,"Record .SNZ",Fs);
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Preempt(OFF);
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try
     GetChar;
   catch //Catch <CTRL-ALT-C>, but pass it on to next higher handler.

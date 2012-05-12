@@ -45,7 +45,7 @@ That means no read-modify-writes, too.
   Preempt(old_preempt);
 
 //LoseThos has a 4 plane memory duplicate of the screen, [C:/LT/Adam/Gr/GrScreen.APZ,2] gr_screen_image,
-//and only writes actual changes.  See [C:/LT/Adam/Gr/GrScreen.APZ,730] GrUpdateVGAGraphics().
+//and only writes actual changes.  See [C:/LT/Adam/Gr/GrScreen.APZ,691] GrUpdateVGAGraphics().
   LBts(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0);
 }
 

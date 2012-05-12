@@ -5,7 +5,7 @@ I64 gr_sprite_base_size[GRST_NUM_TYPES]=
 {
 offset(GrSprite.x1)-offset(GrSprite.start), //GRST_END
 0,
-1+offset(GrSprite.color4)-offset(GrSprite.start), //GRST_COLOR4
+1+offset(GrSprite.color8)-offset(GrSprite.start), //GRST_COLOR8
 0,
 offset(GrSprite.x2)-offset(GrSprite.start), //GRST_POINT
 offset(GrSprite.linespeed)-offset(GrSprite.start), //GRST_LINE
@@ -19,18 +19,18 @@ offset(GrSprite.y1)-offset(GrSprite.start), //GRST_BSPLINE2_CLOSED
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_BSPLINE3_CLOSED
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_SPEEDLINE
 offset(GrSprite.sides)-offset(GrSprite.start), //GRST_SPEEDLINE_POINT
-0, //GRST_SPEEDLINE_SPEED
+0,
 offset(GrSprite.linespeed)-offset(GrSprite.start), //GRST_RECT
 offset(GrSprite.y2)-offset(GrSprite.start), //GRST_CIRCLE
 offset(GrSprite.x2)-offset(GrSprite.start), //GRST_FLOOD_FILL_NOT
 offset(GrSprite.x2)-offset(GrSprite.start), //GRST_FLOOD_FILL
-offset(GrSprite.sides)-offset(GrSprite.start), //GRST_BITMAP4
-offset(GrSprite.sides)-offset(GrSprite.start), //GRST_BITMAP4_TRANSPARENT
+offset(GrSprite.linespeed)-offset(GrSprite.start), //GRST_BITMAP8
+0,
 offset(GrSprite.st)-offset(GrSprite.start), //GRST_TEXT
 offset(GrSprite.sides)-offset(GrSprite.start), //GRST_ELLIPSE
 sizeof(GrSprite)-offset(GrSprite.start), //GRST_REG_POLY
 offset(GrSprite.linespeed)-offset(GrSprite.start), //GRST_PLANAR_SYMMETRY
-1+offset(GrSprite.dither_color4)-offset(GrSprite.start), //GRST_DITHER_COLOR4
+2+offset(GrSprite.dither_color8)-offset(GrSprite.start), //GRST_DITHER_COLOR8
 offset(GrSprite.sides)-offset(GrSprite.start), //GRST_ROTATED_RECT
 offset(GrSprite.x2)-offset(GrSprite.start), //GRST_MESH
 offset(GrSprite.shiftable_triangle_cnt)+sizeof(I32)-offset(GrSprite.start), //GRST_SHIFTABLE_MESH
@@ -45,7 +45,7 @@ I64 gr_sprite_queued_base_size[GRST_NUM_TYPES]=
 {
 offset(GrSprite.x1),//GRST_END
 0,
-1+offset(GrSprite.color4), //GRST_COLOR4
+1+offset(GrSprite.color8), //GRST_COLOR8
 0,
 offset(GrSprite.x2), //GRST_POINT
 offset(GrSprite.linespeed), //GRST_LINE
@@ -59,18 +59,18 @@ offset(GrSprite.y1), //GRST_BSPLINE2_CLOSED
 offset(GrSprite.y1), //GRST_BSPLINE3_CLOSED
 offset(GrSprite.y1), //GRST_SPEEDLINE
 offset(GrSprite.sides), //GRST_SPEEDLINE_POINT
-0, //GRST_SPEEDLINE_SPEED
+0,
 offset(GrSprite.linespeed), //GRST_RECT
 offset(GrSprite.y2), //GRST_CIRCLE
 offset(GrSprite.x2), //GRST_FLOOD_FILL_NOT
 offset(GrSprite.x2), //GRST_FLOOD_FILL
-offset(GrSprite.sides), //GRST_BITMAP4
-offset(GrSprite.sides), //GRST_BITMAP4_TRANSPARENT
+offset(GrSprite.linespeed), //GRST_BITMAP8
+0,
 offset(GrSprite.st), //GRST_TEXT
 offset(GrSprite.sides), //GRST_ELLIPSE
 sizeof(GrSprite), //GRST_REG_POLY
 offset(GrSprite.linespeed), //GRST_PLANAR_SYMMETRY
-1+offset(GrSprite.dither_color4), //GRST_DITHER_COLOR4
+2+offset(GrSprite.dither_color8), //GRST_DITHER_COLOR8
 offset(GrSprite.sides), //GRST_ROTATED_RECT
 offset(GrSprite.x2), //GRST_MESH
 offset(GrSprite.shiftable_triangle_cnt)+sizeof(I32), //GRST_SHIFTABLE_MESH
@@ -97,9 +97,8 @@ U64 GrSpriteElemSize(GrSprite *tempg)
     case GRST_SPEEDLINE:
       i+=tempg->num*(2*sizeof(I32)+sizeof(F64));
       break;
-    case GRST_BITMAP4:
-    case GRST_BITMAP4_TRANSPARENT:
-      i+=((tempg->width+7)&~7)*tempg->height*4/8;
+    case GRST_BITMAP8:
+      i+=((tempg->width+7)&~7)*tempg->height;
       break;
     case GRST_POLYPOINT:
       i+=sizeof(I32)<<1+(tempg->num*3+7)>>3;
@@ -144,8 +143,8 @@ public U8 *GrDC2Sprite(GrDC *tempb)
   GrSprite *tempg;
   GrDC *tempb1;
   BoolI8 temp_bitmap;
-  if (tempb->type!=DCT_COLOR4) {
-    tempb1=GrDCNew(DCT_COLOR4,tempb->width,tempb->height,Fs);
+  if (tempb->type!=DCT_COLOR8) {
+    tempb1=GrDCNew(DCT_COLOR8,tempb->width,tempb->height,Fs);
     tempb1->color=WHITE;
     GrDCBlot(tempb1,0,0,tempb);
     temp_bitmap=TRUE;
@@ -153,21 +152,17 @@ public U8 *GrDC2Sprite(GrDC *tempb)
     tempb1=tempb;
     temp_bitmap=FALSE;
   }
-  tempg=CAlloc(gr_sprite_base_size[GRST_BITMAP4]+
-	      tempb1->width_internal*tempb1->height/2+
+  tempg=CAlloc(gr_sprite_base_size[GRST_BITMAP8]+
+	      tempb1->width_internal*tempb1->height+
 	   gr_sprite_base_size[GRST_END])
 	(U8 *)-offset(GrSprite.start);
-  tempg->bkcolor=tempb1->bkcolor;
-  if (tempb->color.c0.rop==ROPB_TRANSPARENT)
-    tempg->type=GRST_BITMAP4_TRANSPARENT;
-  else
-    tempg->type=GRST_BITMAP4;
+  tempg->type=GRST_BITMAP8;
   tempg->width=tempb1->width;
   tempg->height=tempb1->height;
   tempg->x2=0;
   tempg->y2=0;
-  MemCpy(tempg(U8 *)+offset(GrSprite.sides),tempb1->body,
-    tempb1->width_internal*tempb1->height/2);
+  MemCpy(tempg(U8 *)+offset(GrSprite.linespeed),tempb1->body,
+    tempb1->width_internal*tempb1->height);
   if (temp_bitmap)
     GrDCDel(tempb1);
   return tempg(U8 *)+offset(GrSprite.start);
@@ -175,13 +170,13 @@ public U8 *GrDC2Sprite(GrDC *tempb)
 
 public U8 *GrSprite2Text(GrSprite *tempg)
 { //Study [::/LT/Demo/Graphics/GrSprite4.CPZ] ::/LT/Demo/Graphics/GrSprite4.CPZ.
-  U8 buf[256],buf2[256];
+  U8 buf[256],buf2[256],buf3[136];
   I32 *ptr;
   SPrintF(buf,"%Z",tempg->type,"ST_GRSPRITE_TYPES");
   *buf2=0;
   switch (tempg->type) {
-    case GRST_COLOR4:
-      SPrintF(buf2," %Z",tempg->color4&15,"ST_COLORS");
+    case GRST_COLOR8:
+      SPrintF(buf2," %s",Color2Text(buf3,tempg->color8));
       break;
     case GRST_POINT:
     case GRST_FLOOD_FILL:
@@ -209,9 +204,8 @@ public U8 *GrSprite2Text(GrSprite *tempg)
     case GRST_TEXT_DIAMOND:
       SPrintF(buf2," %d,%d:%16tQ",tempg->x1,tempg->y1,tempg->st);
       break;
-    case GRST_DITHER_COLOR4:
-      SPrintF(buf2," %Z,%Z",tempg->dither_color4&15,"ST_COLORS",
-	  tempg->dither_color4>>4&15,"ST_COLORS");
+    case GRST_DITHER_COLOR8:
+      SPrintF(buf2," %s",Color2Text(buf3,ROPF_DITHER|tempg->dither_color8.u8[0]|tempg->dither_color8.u8[1]<<COLORROP_BITS));
       break;
     case GRST_POLYLINE:
     case GRST_SPEEDLINE:
@@ -221,14 +215,9 @@ public U8 *GrSprite2Text(GrSprite *tempg)
       break;
     case GRST_ELLIPSE:
     case GRST_REG_POLY:
-    case GRST_BITMAP4:
+    case GRST_BITMAP8:
       SPrintF(buf2," %dW,%dH:%d,%d",
 	  tempg->width,tempg->height,tempg->x2,tempg->y2);
-      break;
-    case GRST_BITMAP4_TRANSPARENT:
-      SPrintF(buf2," %dW,%dH:%d,%d:%Z",
-	  tempg->width,tempg->height,tempg->x2,tempg->y2,
-	  tempg->bkcolor&15,"ST_COLORS");
       break;
     case GRST_BSPLINE2:
     case GRST_BSPLINE3:

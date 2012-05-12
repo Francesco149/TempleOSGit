@@ -3,15 +3,15 @@
 public U0 SpeedLineDemo()
 {
   I64 msg_code,cnt,x1,y1,x2,y2,p1,p2,color=BLACK;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   dc->color=ROP_EQU+color;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
   WinMax;
-  WordStat(OFF);
-  GrDCClear;
+  WordStat;
+  GrDCFill;
   "$CL$";
   do {
     msg_code=GetMsg(&p1,&p2,
@@ -40,7 +40,7 @@ public U0 SpeedLineDemo()
 	break;
     }
   } while (msg_code!=MSG_KEY_DOWN || !p1);
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
   SettingsPop;
 }

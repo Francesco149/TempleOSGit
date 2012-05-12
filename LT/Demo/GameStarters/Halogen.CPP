@@ -8,14 +8,14 @@ I64 road_ptr=0,car_x;
 F64 t_last;
 BoolI8 crash;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 h=task->win_pixel_width,v=task->win_pixel_height;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,x,y,xx;
   BoolI8 old_preempt=Preempt(OFF);
   xx=h>>1-car_x+road_x[road_ptr&(NUM_ROAD-1)];
 
+  task->text_attr=BLACK+BLACK<<4;
   dc->color=LTGRAY;
   for (i=0;i<NUM_ROAD;i++) {
     x=h>>1-car_x+road_x[(i+road_ptr)&(NUM_ROAD-1)];
@@ -41,8 +41,6 @@ U0 UpdateWin(TaskStruct *task)
   dc->color=YELLOW;
   if (crash)
     GrPutS(dc,h>>1-FONT_WIDTH*4,(v-FONT_HEIGHT)>>1,"Game Over");
-
-  GrDCDel(dc);
   Preempt(old_preempt);
 }
 
@@ -96,12 +94,12 @@ U0 Halogen()
       "}"
       );
   Preempt(OFF);
-  WordStat(OFF);
+  WordStat;
   WinMax;
-  Fs->update_win=&UpdateWin;
-  WinSync;
-  Fs->text_attr=BLACK+BLACK<<4;
   Init;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
       switch (ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {

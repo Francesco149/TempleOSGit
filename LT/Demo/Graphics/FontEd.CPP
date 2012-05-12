@@ -18,10 +18,9 @@
 
 U8 cur_ch;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,j,k,c;
-  GrDC *dc=GrDCAlias(gr_dc,task);
   k=0;
   for (i=0;i<16;i++)
     for (j=0;j<16;j++) {
@@ -46,11 +45,11 @@ U0 UpdateWin(TaskStruct *task)
 		  BLOW_UP_CHAR_Y+i*FONT_HEIGHT,
 	     FONT_WIDTH,FONT_HEIGHT);
     }
-  GrDCDel(dc);
 }
 
-U0 FESave()
+U0 FESave(BoolI64 pmt)
 {
+  U8 old_draw_it=Fs->draw_it;
   Ltf *l=LtfNew;
   I64 i,j,k=0;
   for (i=0;i<256;i++) {
@@ -58,7 +57,9 @@ U0 FESave()
       LtfPrintF(l,"0x%02X,",gr_font[k++]);
     LtfPutS(l,"\n");
   }
-  LtfWrite(l,TRUE);
+  Fs->draw_it=NULL;
+  LtfWrite(l,pmt);
+  Fs->draw_it=old_draw_it;
   LtfDel(l);
 }
 
@@ -72,13 +73,13 @@ U0 FontEd()
   "  Abort(,CH_SHIFT_ESC);"
   "  Exit(,CH_ESC);"
   "}");
-  WordStat(OFF);
-  LtfBottom;
+  WordStat;
   LtfClear;
+  LtfCursor;
   Fs->win_inhibit|=WIF_DBL_CLICK;
   cur_ch=0;
   try {
-    Fs->update_win=&UpdateWin;
+    Fs->draw_it=&DrawIt;
     while (TRUE) {
       switch (msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_IP_MOVE)) {
 	case MSG_KEY_DOWN:
@@ -102,10 +103,10 @@ U0 FontEd()
 	      break;
 	      goto fe_done;
 	    case CH_CTRLA:
-	      FESave;
+	      FESave(TRUE);
 	      break;
 	    case CH_ESC:
-	      FESave;
+	      FESave(FALSE);
 	    case CH_SHIFT_ESC:
 	      goto fe_done;
 	    default:

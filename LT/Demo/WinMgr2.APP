@@ -5,7 +5,7 @@ this window manager to be a novelty, not desirable for actual use.  You're
 welcome to add it, or some variation to your start-up scripts if you like it.  
 It's not fully debugged.
 
-I had to cheat to make this work.  I added [C:/LT/OSMain/Adam1a.HPZ,3094] DISPLAYf_HAS_BEEN_RESIZED2 and 
+I had to cheat to make this work.  I added [C:/LT/OSMain/Adam1a.HPZ,3093] DISPLAYf_HAS_BEEN_RESIZED2 and 
 modified [::/LT/Adam/Window.APZ] ::/LT/Adam/Window.APZ.
 
 The differential equation stuff was overkill and made it overly complicated.  

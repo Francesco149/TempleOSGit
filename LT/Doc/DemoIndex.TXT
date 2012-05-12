@@ -102,9 +102,9 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/GameStarters/RawHide.CPZ] ::/LT/Demo/GameStarters/RawHide.CPZ
 [::/LT/Demo/GameStarters/DunGen.CPZ] ::/LT/Demo/GameStarters/DunGen.CPZ
 ::/LT/Apps/Timeout
-    `Cd("::/LT/Apps/Timeout");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/Timeout");Dir;View;
+`
+
 [::/LT/Demo/GameStarters/Collision.CPZ] ::/LT/Demo/GameStarters/Collision.CPZ
   +] Advanced
     [::/LT/Demo/MultiCore/LoadTest.CPZ] ::/LT/Demo/MultiCore/LoadTest.CPZ
@@ -113,31 +113,31 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/MultiCore/RadixSort.CPZ] ::/LT/Demo/MultiCore/RadixSort.CPZ
 [::/LT/Demo/MultiCore/Interrupts.CPZ] ::/LT/Demo/MultiCore/Interrupts.CPZ
 ::/LT/Apps/Pilgrims
-    `Cd("::/LT/Apps/Pilgrims");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/Pilgrims");Dir;View;
+`
+
 ::/LT/Apps/AfterEgypt
-    `Cd("::/LT/Apps/AfterEgypt");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/AfterEgypt");Dir;View;
+`
+
 [::/LT/Demo/GameStarters/Varoom.CPZ] ::/LT/Demo/GameStarters/Varoom.CPZ
 [::/LT/Demo/Graphics/Shading.CPZ] ::/LT/Demo/Graphics/Shading.CPZ
 [::/LT/Demo/Graphics/Transform.CPZ] ::/LT/Demo/Graphics/Transform.CPZ
 [::/LT/Demo/Graphics/Shadow.CPZ] ::/LT/Demo/Graphics/Shadow.CPZ
 [::/LT/Demo/Graphics/Pick2.CPZ] ::/LT/Demo/Graphics/Pick2.CPZ
 ::/LT/Apps/Tanks
-    `Cd("::/LT/Apps/Tanks");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/Tanks");Dir;View;
+`
+
 [::/LT/Demo/Graphics/GrSprite4.CPZ] ::/LT/Demo/Graphics/GrSprite4.CPZ
 ::/LT/Apps/GrModels
-    `Cd("::/LT/Apps/GrModels");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/GrModels");Dir;View;
+`
+
 ::/LT/Apps/KeepAway
-    `Cd("::/LT/Apps/KeepAway");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/KeepAway");Dir;View;
+`
+
 [::/LT/Demo/Graphics/Camp.CPZ] ::/LT/Demo/Graphics/Camp.CPZ
 [::/LT/Demo/GameStarters/Rocket.CPZ] ::/LT/Demo/GameStarters/Rocket.CPZ
 [::/LT/Demo/GameStarters/RocketScience.CPZ]
@@ -148,20 +148,20 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/GameStarters/Rocks.CPZ] ::/LT/Demo/GameStarters/Rocks.CPZ
 [::/LT/Demo/GameStarters/Squirt.CPZ] ::/LT/Demo/GameStarters/Squirt.CPZ
 ::/LT/Apps/X-Caliber
-    `Cd("::/LT/Apps/X-Caliber");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/X-Caliber");Dir;View;
+`
+
 [::/LT/Demo/GameStarters/ZoneOut.CPZ] ::/LT/Demo/GameStarters/ZoneOut.CPZ
 [::/LT/Demo/GameStarters/FPS.CPZ] ::/LT/Demo/GameStarters/FPS.CPZ
 [::/LT/Demo/GameStarters/EagleDive.CPZ] ::/LT/Demo/GameStarters/EagleDive.CPZ
 ::/LT/Apps/Span
-    `Cd("::/LT/Apps/Span");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/Span");Dir;View;
+`
+
 ::/LT/Apps/MusicOrgan
-    `Cd("::/LT/Apps/MusicOrgan");Dir;View;
-    `
-    
+`Cd("::/LT/Apps/MusicOrgan");Dir;View;
+`
+
   
 +] Non-Game Skills
   [::/LT/Demo/PhoneNumWords.CPZ] ::/LT/Demo/PhoneNumWords.CPZ
@@ -182,27 +182,27 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/WebLogExample/WebLogScramble.CPZ]
   ::/LT/Demo/WebLogExample/WebLogScramble.CPZ
 ::/LT/Apps/TimeClock
-  `Cd("::/LT/Apps/TimeClock");Dir;View;
-  `
-  
+`Cd("::/LT/Apps/TimeClock");Dir;View;
+`
+
 ::/LT/Apps/Logic
-  `Cd("::/LT/Apps/Logic");Dir;View;
-  `
-  
+`Cd("::/LT/Apps/Logic");Dir;View;
+`
+
 ::/LT/Demo/Lectures
-  `Cd("::/LT/Demo/Lectures");Dir;View;
-  `
-  
+`Cd("::/LT/Demo/Lectures");Dir;View;
+`
+
 
 +] LoseThos Specific
   ::/LT/Demo/OldSchool
-  `Cd("::/LT/Demo/OldSchool");Dir;View;
-  `
-  
+`Cd("::/LT/Demo/OldSchool");Dir;View;
+`
+
 ::/LT/Demo/AutoFile
-  `Cd("::/LT/Demo/AutoFile");Dir;View;
-  `
-  
+`Cd("::/LT/Demo/AutoFile");Dir;View;
+`
+
 [::/LT/Demo/PrintF.CPZ] ::/LT/Demo/PrintF.CPZ
 [::/LT/Demo/DateTime.CPZ] ::/LT/Demo/DateTime.CPZ
 [::/LT/Demo/SubIntAccess.CPZ] ::/LT/Demo/SubIntAccess.CPZ
@@ -225,7 +225,6 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/Ltf/DefineStr.CPZ] ::/LT/Demo/Ltf/DefineStr.CPZ
 [::/LT/Demo/Ltf/CallBack.CPZ] ::/LT/Demo/Ltf/CallBack.CPZ
 [::/LT/Demo/Ltf/CallBack2.CPZ] ::/LT/Demo/Ltf/CallBack2.CPZ
-[::/LT/Demo/Ltf/Quirk1.CPZ] ::/LT/Demo/Ltf/Quirk1.CPZ
 [::/LT/Demo/Define.CPZ] ::/LT/Demo/Define.CPZ
 [C:/LT/Adam/Ltf/LtfCodeTools.APZ,150] EdRenumAsm
 [::/LT/Demo/Ltf/UnusedDefine.CPZ] ::/LT/Demo/Ltf/UnusedDefine.CPZ
@@ -238,9 +237,9 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/WinMgr2.APZ] ::/LT/Demo/WinMgr2.APZ
 [::/LT/Misc/LTTestSuite.CPZ] ::/LT/Misc/LTTestSuite.CPZ
 ::/LT/Adam
-  `Cd("::/LT/Adam");Dir;View;
-  `
-  
+`Cd("::/LT/Adam");Dir;View;
+`
+
 
 +] HD Audio
   [::/LT/Demo/Snd/BeatFreq.CPZ] ::/LT/Demo/Snd/BeatFreq.CPZ

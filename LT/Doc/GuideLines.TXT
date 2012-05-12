@@ -73,13 +73,13 @@ chained to parents.  This provides scopes for vars and functions.
 * Fs->hash_table holds user C+ syms and if a sym is not found, it checks 
 parents.  When a duplicate sym is added to the table, it overshadows the 
 previous sym unless you have done [C:/LT/Compiler/Directives.CPZ,6]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1436] OPTf_REPLACE_SYMS).  When developing 
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1438] OPTf_REPLACE_SYMS).  When developing 
 software, typically you include the file at the cmd prompt, make changes and 
 reinclude it.  Old syms are overshadowed but they are still there.  
 Periodically, kill the TASK and start fresh when mem is low.  If you wish
 your 
 applications to free themselves instead of staying in mem, spawn or
-[C:/LT/Adam/Ltf/LtfPopUp.APZ,410] PopUp() a 
+[C:/LT/Adam/Ltf/LtfPopUp.APZ,407] PopUp() a 
 task to run the application and kill it when it's done.
 
 * To display the contents of a hash table, use the
@@ -90,9 +90,9 @@ case you wish to make hash table sizes bigger.
 
                          Assembly Language Concerns:
 
-* FS must always point to the [C:/LT/OSMain/Adam1a.HPZ,3117] TaskStruct.
+* FS must always point to the [C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct.
 
-* GS must always point to the [C:/LT/OSMain/Adam1a.HPZ,3743] CPUStruct.
+* GS must always point to the [C:/LT/OSMain/Adam1a.HPZ,3742] CPUStruct.
 
 * Don't change the segment registers unless interrupts are off.
 

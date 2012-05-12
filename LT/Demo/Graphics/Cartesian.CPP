@@ -8,7 +8,7 @@ U0 Cartesian()
   U8 *st;
   U64 ch=0,h,v;
   BoolI8 first;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   do {
     LtfClear;
     "Enter algebraic equation to graph.\n"
@@ -36,7 +36,7 @@ U0 Cartesian()
       Free(st);
     } else
        ch=CH_SHIFT_ESC;
-    GrDCClear;
+    GrDCFill;
   } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   GrDCDel(dc);
 }

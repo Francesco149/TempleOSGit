@@ -107,3 +107,23 @@ Anchor for inserting OS Define
 
 }
 
+U8 *Color2Text(U8 *buf,ColorROPU32 c)
+{
+  if (0<=c.c0.color<16)
+    StrCpy(buf,DefineSub(c.c0.color,"ST_COLORS"));
+  else if (c.c0.color==COLOR_TRANSPARENT)
+    StrCpy(buf,"TRANSPARENT");
+  else
+    StrCpy(buf,"INVALID");
+  if (c&ROPF_DITHER) {
+    StrCat(buf,"/");
+    if (0<=c.c1.color<16)
+      StrCat(buf,DefineSub(c.c1.color,"ST_COLORS"));
+    else if (c.c1.color==COLOR_TRANSPARENT)
+      StrCat(buf,"TRANSPARENT");
+    else
+      StrCat(buf,"INVALID");
+  }
+  return buf;
+}
+

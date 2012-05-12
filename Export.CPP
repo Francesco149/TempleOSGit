@@ -10,7 +10,8 @@
 OptOn(OPTf_PAREN_WARN);
 
 //Just in case the filesystem gets corrupted while I develop it
-U0 BackupExport() {
+U0 BackupExport()
+{
   Copy("D:/Export.CPP","C:/Export.CPP");
   Copy("D:/Export.CPP","D:/ExportB.CPP");
   Copy("D:/Export.CPP","C:/ExportB.CPP");
@@ -20,7 +21,8 @@ BackupExport;
 
 #define EXPORT_W 78
 
-U0 ExportBinary(U8 *src_file,LtfBinEntry *b) {
+U0 ExportBinary(U8 *src_file,LtfBinEntry *b)
+{
   U64 len;
   U8 *buf,*buf1;
 
@@ -59,7 +61,8 @@ U8 *ResolveLink(U8 *filename)
   return filename;
 }
 
-U8 *IndentString(I64 n) {
+U8 *IndentString(I64 n)
+{
   U8 *s=MAlloc(n+1);
   MemSet(s,' ',n);
   s[n]=0;
@@ -85,23 +88,25 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
 
   s-=*line_len;
   end=s+EXPORT_W;
-  for (p=s;*p && p<end;p++) {
-    if (*p=='\n') {
-      buf=StrNew(p+1);
-      if(p>s && *(p-1)=='\r')
-        p--;
-      *p=0;
-      len=p-base;
-      base=StrAdd(base,lbstring);
-      base=StrAdd(base,buf);
-      Free(buf);
-      p=base+len+lbstring_len-1;
-      s=p+1;
-      *line_len=0;
-      end=s+EXPORT_W;
-    }
-  }
   while (StrLen(s)>EXPORT_W) {
+    for (p=s;*p && p<end;p++) {
+      if (*p=='\n') {
+        buf=StrNew(p+1);
+        if(p>s && *(p-1)=='\r')
+          p--;
+        *p=0;
+        len=p-base;
+        base=StrAdd(base,lbstring);
+        base=StrAdd(base,buf);
+        Free(buf);
+        p=base+len+lbstring_len-1;
+        s=p+1;
+        *line_len=0;
+        end=s+EXPORT_W;
+      }
+    }
+    if (StrLen(s)<=EXPORT_W)
+      break;
     for (p=s+EXPORT_W-1;p>s;p--) {
       if (*p==' ')
         break;
@@ -409,7 +414,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
         break;
       case LTFT_WORD_WRAP:
         flags&=~LTFLF_WORD_WRAP;
-        if ((l->flags|cl->flags) & LTFF_WORD_WRAP)
+        if ((l->flags | cl->flags) & LTFLF_WORD_WRAP)
           flags|=LTFLF_WORD_WRAP;
         break;
       case LTFT_INDENT:

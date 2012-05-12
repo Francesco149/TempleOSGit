@@ -15,8 +15,8 @@ I64 PopUpGrSpriteVect(BoolI8 new_picture,GrSprite **root,I64 snap,F64 ip_scaler,
   Ltf *l=LtfNew;
   LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Vect Object Menu\"$$FG$\n"
 	"$FG,RED$Settings$FG$\n"
-	"$MU-UL,\"Color (4-bit)\",GRST_COLOR4$\n"
-	"$MU-UL,\"Dither Color (4-bit)\",GRST_DITHER_COLOR4$\n"
+	"$MU-UL,\"Color (4-bit)\",GRST_COLOR8$\n"
+	"$MU-UL,\"Dither Color (4-bit)\",GRST_DITHER_COLOR8$\n"
 	"$MU-UL,\"Width\",GRST_WIDTH$\n"
 	"$MU-UL,\"Snap %d %5.3f\",GRST_SNAP$\n"
 	"$MU-UL,\"Planar Symmetry\",GRST_PLANAR_SYMMETRY$\n"
@@ -40,12 +40,11 @@ I64 PopUpGrSpriteVect(BoolI8 new_picture,GrSprite **root,I64 snap,F64 ip_scaler,
 	"$MU-UL,\"BSpline3\",GRST_BSPLINE3$\n"
 	"$MU-UL,\"BSpline2 Closed\",GRST_BSPLINE2_CLOSED$\n"
 	"$MU-UL,\"BSpline3 Closed\",GRST_BSPLINE3_CLOSED$\n"
-	"$MU-UL,\"Insert Screen Bitmap\",GRST_INSERT_SCREEN_BITMAP$\n"
-	"$MU-UL,\"Insert Transparent Screen Bitmap\",GRST_INSERT_TRANSPARENT_SCREEN_BITMAP$\n"
+	"$MU-UL,\"Insert Screen BitMap\",GRST_INSERT_SCREEN_BITMAP$\n"
+	"$MU-UL,\"Insert Transparent Screen BitMap\",GRST_INSERT_TRANSPARENT_SCREEN_BITMAP$\n"
 	"$FM,PURPLE$$MU-UL,\"+] Create/Edit 3D Mesh\",GRST_MESH$\n"
 	"$MU-UL,\"+] Create/Edit Shiftable 3D Mesh\",GRST_SHIFTABLE_MESH$\n"
-	"$MU-UL,\"+] Create/Edit Bitmap\",GRST_BITMAP4$\n"
-	"$MU-UL,\"+] Create/Edit Bitmap Transparent\",GRST_BITMAP4_TRANSPARENT$$FM,LTBLUE$\n"
+	"$MU-UL,\"+] Create/Edit BitMap\",GRST_BITMAP8$\n"
 	"\n$FG,RED$Advanced$FG$\n"
 	"$MU-UL,\"Transform On (For use with icons)\",GRST_TRANSFORM_ON$\n"
 	"$MU-UL,\"Transform Off(For use with icons)\",GRST_TRANSFORM_OFF$\n"
@@ -158,10 +157,9 @@ U0 GrEdUpdate(Ltf *l,LtfBinEntry *tempb,GrSprite *root)
     LtfUnlock(l);
 }
 
-U0 GrSetSettings(GrDC *dc,GrSprite *root,I64 cur_num,ColorROPU32 *_color,ColorROPU32 *_bkcolor,I64 *_width,I64 x,I64 y)
+U0 GrSetSettings(GrDC *dc,GrSprite *root,I64 cur_num,ColorROPU32 *_color,I64 *_width,I64 x,I64 y)
 {
   GrSprite *tempg;
-  *_bkcolor=Fs->text_attr>>4&15;
   *_color=ROP_EQU|BLACK;
   *_width=1;
   GrDCRst(dc);
@@ -169,13 +167,13 @@ U0 GrSetSettings(GrDC *dc,GrSprite *root,I64 cur_num,ColorROPU32 *_color,ColorRO
   tempg=root->next;
   while (cur_num>0 && tempg!=root) {
     switch (tempg->type) {
-      case GRST_COLOR4:
-	dc->color=*_color=tempg->color4;
+      case GRST_COLOR8:
+	dc->color=*_color=tempg->color8;
 	break;
-      case GRST_DITHER_COLOR4:
+      case GRST_DITHER_COLOR8:
 	dc->color=*_color=
-	       tempg->dither_color4&15|
-	       (tempg->dither_color4>>4&15)<<16|ROPF_DITHER;
+	       tempg->dither_color8.u8[0]|
+	       tempg->dither_color8.u8[1]<<COLORROP_BITS|ROPF_DITHER;
 	break;
       case GRST_WIDTH:
 	dc->pen_width=*_width=tempg->width;
@@ -199,7 +197,7 @@ U0 GrScreenInit(GrDC *dc,I64 x,I64 y)
   I64 xx,yy,old_pen_width=dc->pen_width;
   ColorROPU32 old_color=dc->color;
   WinSync;
-  GrDCClear(dc);
+  GrDCFill(dc);
   if (dc->flags&DCF_SYMMETRY) {
     dc->flags&=~DCF_SYMMETRY;
     dc->pen_width=1;
@@ -220,15 +218,16 @@ U0 GrScreenInit(GrDC *dc,I64 x,I64 y)
   dc->pen_width=old_pen_width;
 }
 
-I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,BoolI8 new_picture,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
+I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **_root,I64 *cur_num,I64 x,I64 y,BoolI8 new_picture,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
 {
   I64 i,result,msg_code,z,x1,y1,z1,x2,y2,x3,y3,p1,p2,xx1,yy1,xx2,yy2,
       num,old_width,size,eletype=GRST_MENU,width,new_snap=1;
-  ColorROPU32 bkcolor,bm_bkcolor,color;
+  ColorROPU32 bm_bkcolor,color;
   I32 *ptr;
   GrSprite root2,*tempg,*tempg1,*tempg2,*insert_point;
   GrDC *dc=GrDCAlias(gr_dc2,Fs),
-      *dc2=GrDCAlias(gr_dc2,sys_winmgr_task);
+      *dc2=GrDCAlias(gr_dc2,sys_winmgr_task),
+      *dc3;
   GrDC *img;
   P3I32 *p;
   LtfBinEntry *tempb=cl->bin_data;
@@ -243,8 +242,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
   WinSync(TRUE);
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   dc2->flags|=DCF_ON_TOP;
-  dc2->mask->flags|=DCF_ON_TOP;
-  insert_point=GrNum2Queue(*root,*cur_num,&x1,&y1);
+  insert_point=GrNum2Queue(*_root,*cur_num,&x1,&y1);
   x+=x1; y+=y1;
 
   if (_import_snap) new_snap=*_import_snap;
@@ -252,17 +250,17 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
   SetSnap(&Fs->snap,new_snap,new_ip_scaler);
   Fs->win_inhibit=GRSPRITE_WIF;
   while (TRUE) {
-    GrSetSettings(dc,*root,*cur_num,&color,&bkcolor,&width,x,y);
-    GrDCClear;
+    GrSetSettings(dc,*_root,*cur_num,&color,&width,x,y);
+    GrDCFill;
     if (eletype==GRST_MENU) {
       cl->flags|=LTFLF_DONT_DRAW;
       StrCpy(Fs->task_title,old_desc);
       StrCpy(l->filename.name,old_filename);
       l->flags|=old_ltf_flags;
 
-      eletype=PopUpGrSpriteVect(new_picture,root,new_snap,new_ip_scaler,cur_num);
-      GrEdUpdate(l,tempb,*root);
-      insert_point=GrNum2Queue(*root,*cur_num);
+      eletype=PopUpGrSpriteVect(new_picture,_root,new_snap,new_ip_scaler,cur_num);
+      GrEdUpdate(l,tempb,*_root);
+      insert_point=GrNum2Queue(*_root,*cur_num);
       switch (eletype) {
 	case GRST_FLOOD_FILL:
 	case GRST_FLOOD_FILL_NOT:
@@ -273,16 +271,6 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 		"A tip on artistry you might consider\n"
 		"is using lines to fill regions because\n"
 		"brush strokes look cool.\n");
-	  break;
-	case GRST_BITMAP4_TRANSPARENT:
-	  AcctOneTimePopUp(ARf_TRANSPARENT_BITMAP,
-		ST_WARN_ST "The initial transparent color is BLACK.\n"
-		"If you use the color BLACK, place a WHITE rect\n"
-		"under your image and select WHITE as the transparent\n"
-		"color.  You can insert a WHITE rect by picking the\n"
-		"insert point using 'Pick Object as Text' on the Edit Menu.\n"
-		"This is like a TV green screen trick.  You can\n"
-		"use other colors.\n");
 	  break;
 	case GRST_PLANAR_SYMMETRY:
 	  AcctOneTimePopUp(ARf_PLANAR_SYMMETRY,
@@ -295,10 +283,10 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
     if (eletype<0)
       switch (eletype) {
 	case GRST_INSERT_SCREEN_BITMAP:
-	  StrCpy(Fs->task_title,"Insert Screen Bitmap");
+	  StrCpy(Fs->task_title,"Insert Screen BitMap");
 	  break;
 	case GRST_INSERT_TRANSPARENT_SCREEN_BITMAP:
-	  StrCpy(Fs->task_title,"Insert Transparent Screen Bitmap");
+	  StrCpy(Fs->task_title,"Insert Transparent Screen BitMap");
 	  break;
       }
     else
@@ -307,31 +295,31 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
     l->flags&=~(LTFF_ATTR_BY_PRT|LTFF_ATTR_BY_FILENAME);
 
     switch (eletype) {
-      case GRST_COLOR4:
+      case GRST_COLOR8:
 	cl->flags|=LTFLF_DONT_DRAW;
-	i=PopUpColor;
+	i=PopUpColor(,,FALSE);
 	if (i>=0) {
 	  color=ROP_EQU|i;
-	  tempg=MAlloc(gr_sprite_queued_base_size[GRST_COLOR4]);
-	  tempg->type=GRST_COLOR4;
-	  tempg->color4=color;
+	  tempg=MAlloc(gr_sprite_queued_base_size[GRST_COLOR8]);
+	  tempg->type=GRST_COLOR8;
+	  tempg->color8=color;
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	}
 	cl->flags=old_cl_flags;
 	eletype=GRST_MENU;
 	break;
-      case GRST_DITHER_COLOR4:
+      case GRST_DITHER_COLOR8:
 	cl->flags|=LTFLF_DONT_DRAW;
 	i=PopUpDitherColor;
 	if (i>=0) {
 	  color=ROP_EQU|i;
-	  tempg=MAlloc(gr_sprite_queued_base_size[GRST_DITHER_COLOR4]);
-	  tempg->type=GRST_DITHER_COLOR4;
-	  tempg->dither_color4=color&15|(color>>16&15)<<4;
+	  tempg=MAlloc(gr_sprite_queued_base_size[GRST_DITHER_COLOR8]);
+	  tempg->type=GRST_DITHER_COLOR8;
+	  tempg->dither_color8=color.c0.color|color.c1.color<<8;
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	}
 	cl->flags=old_cl_flags;
@@ -341,9 +329,9 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	cl->flags|=LTFLF_DONT_DRAW;
 
 	tempg1=insert_point;
-	if (tempg1!=*root && tempg1->type==GRST_MESH)
+	if (tempg1!=*_root && tempg1->type==GRST_MESH)
 	  old_mesh=&tempg1->vertex_cnt;
-	else if (tempg1!=*root && tempg1->type==GRST_SHIFTABLE_MESH) {
+	else if (tempg1!=*_root && tempg1->type==GRST_SHIFTABLE_MESH) {
 	  x1=tempg1->x1;
 	  y1=tempg1->y1;
 	  z1=tempg1->z1;
@@ -362,12 +350,12 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	  MemCpy(&tempg->vertex_cnt,mesh,size);
 	  Free(mesh);
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  if (old_mesh) {
 	    insert_point=tempg;
 	    RemQue(tempg1);
 	    Free(tempg1);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	  } else
 	    *cur_num+=1;
 	} else if (old_mesh && tempg1->type==GRST_SHIFTABLE_MESH) {
@@ -400,20 +388,16 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 		"bitmap.\n");
 	cl->flags=old_cl_flags;
 	break;
-      case GRST_BITMAP4_TRANSPARENT:
-      case GRST_BITMAP4:
+      case GRST_BITMAP8:
       case GRST_INSERT_TRANSPARENT_SCREEN_BITMAP:
 	cl->flags|=LTFLF_DONT_DRAW;
-	if (eletype==GRST_BITMAP4)
-	  i=PopUpColor("Background Color\n\n");
-	else
-	  i=PopUpColor("Transparent Color\n\n");
+	i=PopUpColor("Background Color\n\n",,FALSE);
 	if (i<0)
 	  eletype=GRST_MENU;
 	else {
 	  bm_bkcolor=i;
 	  if (eletype!=GRST_INSERT_TRANSPARENT_SCREEN_BITMAP) {
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    GrSpriteExtents(tempb->data,&xx1,&xx2,&yy1,&yy2);
 	    if (xx1<=xx2 && yy1<=yy2 && PopUpNoYes("Use extents of the GrSprite?\n")) {
 	      cl->flags=old_cl_flags;
@@ -437,7 +421,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	  tempg->type=GRST_WIDTH;
 	  tempg->width=width;
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	}
 	cl->flags=old_cl_flags;
@@ -451,7 +435,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	else
 	  tempg->type=GRST_TRANSFORM_OFF;
 	InsQue(tempg,insert_point->last);
-	GrEdUpdate(l,tempb,*root);
+	GrEdUpdate(l,tempb,*_root);
 	*cur_num+=1;
 	eletype=GRST_MENU;
 	break;
@@ -490,7 +474,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	  tempg->y1=y1-y;
 	  StrCpy(tempg->st,st);
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	}
 	Free(st);
@@ -516,7 +500,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	  tempg->y1=y1-y;
 	  StrCpy(tempg->st,st);
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	}
 	Free(st);
@@ -542,7 +526,7 @@ I64 GrSpriteVect(Ltf *l,LtfEntry *cl,GrSprite **root,I64 *cur_num,I64 x,I64 y,Bo
 	  tempg->y1=y1-y;
 	  StrCpy(tempg->st,st);
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	}
 	Free(st);
@@ -571,7 +555,7 @@ ei_restart:
 	  tempg=CAlloc(gr_sprite_queued_base_size[GRST_PLANAR_SYMMETRY]);
 	  tempg->type=GRST_PLANAR_SYMMETRY;
 	  InsQue(tempg,insert_point->last);
-	  GrEdUpdate(l,tempb,*root);
+	  GrEdUpdate(l,tempb,*_root);
 	  *cur_num+=1;
 	  eletype=GRST_MENU;
 	} else
@@ -608,7 +592,7 @@ ei_restart:
 	    tempg->x2=x2-x;
 	    tempg->y2=y2-y;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_ARROW:
@@ -631,7 +615,7 @@ ei_restart:
 	    tempg->x2=x2-x;
 	    tempg->y2=y2-y;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_PLANAR_SYMMETRY:
@@ -656,7 +640,7 @@ ei_restart:
 	    tempg->x2=x2-x;
 	    tempg->y2=y2-y;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    dc->flags=old_flags&DCF_SYMMETRY|dc->flags&~DCF_SYMMETRY;
 	    dc->pen_width=old_width;
@@ -694,11 +678,10 @@ ei_restart:
 	    tempg->x2=xx2-x;
 	    tempg->y2=yy2-y;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
-	  case GRST_BITMAP4:
-	  case GRST_BITMAP4_TRANSPARENT:
+	  case GRST_BITMAP8:
 	    x1=p1; y1=p2;
 	    x2=p1; y2=p2;
 	    xx1=p1; yy1=p2;
@@ -725,38 +708,37 @@ ei_restart:
 	    } while (msg_code!=MSG_IP_L_UP);
 ei_bitmap:
 	  xx2++; yy2++;
-	    tempg=CAlloc(gr_sprite_queued_base_size[GRST_BITMAP4]+
-		((xx2-xx1+7)&~7)*(yy2-yy1)/2);
+	    tempg=CAlloc(gr_sprite_queued_base_size[GRST_BITMAP8]+
+		((xx2-xx1+7)&~7)*(yy2-yy1));
 	    tempg->type=eletype;
 	    tempg->width=xx2-xx1;
 	    tempg->height=yy2-yy1;
 	    tempg->x2=xx1-x;
 	    tempg->y2=yy1-y;
-	    img=GrDCNew(DCT_COLOR4,tempg->width,tempg->height,Fs);
-	    tempg->bkcolor=bm_bkcolor;
+	    img=GrDCNew(DCT_COLOR8,tempg->width,tempg->height,Fs);
 	    img->color=bm_bkcolor;
 	    GrRect(img,0,0,tempg->width,tempg->height);
 	    tempg1=insert_point;
-	    if (tempg1==*root || tempg1->type!=GRST_BITMAP4 && tempg1->type!=GRST_BITMAP4_TRANSPARENT) {
-	      GrSetSettings(img,*root,0,&color,&bkcolor,&width,-(xx1-x),-(yy1-y));
+	    if (tempg1==*_root || tempg1->type!=GRST_BITMAP8) {
+	      GrSetSettings(img,*_root,0,&color,&width,-(xx1-x),-(yy1-y));
 	      GrSpritePlot3(img,-(xx1-x),-(yy1-y),0,tempb->data);
-	      GrSpriteDel(*root);
-	      insert_point=(*root)->next=(*root)->last=*root;
+	      GrSpriteDel(*_root);
+	      insert_point=(*_root)->next=(*_root)->last=*_root;
 	      *cur_num=1;
 	    } else {
-	      GrSetSettings(img,*root,*cur_num,&color,&bkcolor,&width,-(xx1-x),-(yy1-y));
+	      GrSetSettings(img,*_root,*cur_num,&color,&width,-(xx1-x),-(yy1-y));
 	      GrSpritePlot3(img,-(xx1-x),-(yy1-y),0,tempg1(U8 *)+offset(GrSprite.start),TRUE);
 	      insert_point=tempg1->next;
 	      RemQue(tempg1);
 	      Free(tempg1);
 	    }
-	    MemCpy(tempg(U8 *)+offset(GrSprite.sides),img->body,((xx2-xx1+7)&~7)*(yy2-yy1)/2);
+	    MemCpy(tempg(U8 *)+offset(GrSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 
 	    cl->flags|=LTFLF_DONT_DRAW;
 	    switch (i=GrSpriteBitMap(dc,xx1,yy1,xx2,yy2,img,bm_bkcolor,&new_snap,&new_ip_scaler)) {
 	      case GE_OKAY_DONE:
 	      case GE_OKAY_CONT:
-		MemCpy(tempg(U8 *)+offset(GrSprite.sides),img->body,((xx2-xx1+7)&~7)*(yy2-yy1)/2);
+		MemCpy(tempg(U8 *)+offset(GrSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 		break;
 	    }
 	    SetSnap(&Fs->snap,new_snap,new_ip_scaler);
@@ -764,7 +746,7 @@ ei_bitmap:
 
 	    InsQue(tempg,insert_point->last);
 	    GrDCDel(img);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    dc->pen_width=old_width;
 	    eletype=GRST_MENU;
 	    if (i==GE_OKAY_DONE) {
@@ -800,16 +782,9 @@ ei_bitmap:
 	      }
 	    } while (msg_code!=MSG_IP_L_UP);
 	    xx2++; yy2++;
-	    tempg=CAlloc(gr_sprite_queued_base_size[GRST_BITMAP4]+
-		((xx2-xx1+7)&~7)*(yy2-yy1)/2);
-
-	    if (eletype==GRST_INSERT_SCREEN_BITMAP) {
-	      tempg->type=GRST_BITMAP4;
-	      tempg->bkcolor=BLACK;
-	    } else {
-	      tempg->type=GRST_BITMAP4_TRANSPARENT;
-	      tempg->bkcolor=bm_bkcolor;
-	    }
+	    tempg=CAlloc(gr_sprite_queued_base_size[GRST_BITMAP8]+
+		((xx2-xx1+7)&~7)*(yy2-yy1));
+	    tempg->type=GRST_BITMAP8;
 	    tempg->width=xx2-xx1;
 	    tempg->height=yy2-yy1;
 	    tempg->x2=0;
@@ -818,15 +793,20 @@ ei_bitmap:
 	    i=gr_screen_scale;
 	    GrScaleZoom(1.0/i);
 	    WinSync(TRUE);
-	    img=GrDCExtract(gr_screen_image,
+ 
+	    dc3=GrDCCaptureScreen;
+	    img=GrDCExtract(dc3,
 		Fs->win_pixel_left+Fs->win_scroll_x+xx1,Fs->win_pixel_top+Fs->win_scroll_y+yy1,
 		Fs->win_pixel_left+Fs->win_scroll_x+xx2-1,Fs->win_pixel_top+Fs->win_scroll_y+yy2-1);
+	    if (eletype==GRST_INSERT_TRANSPARENT_SCREEN_BITMAP)
+	      GrDCColorChg(img,bm_bkcolor);
 	    GrScaleZoom(i);
-	    MemCpy(tempg(U8 *)+offset(GrSprite.sides),img->body,((xx2-xx1+7)&~7)*(yy2-yy1)/2);
+	    MemCpy(tempg(U8 *)+offset(GrSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 	    GrDCDel(img);
+	    GrDCDel(dc3);
 	    dc2->pen_width=old_width;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    eletype=GRST_MENU;
 	    break;
@@ -849,7 +829,7 @@ ei_bitmap:
 	    tempg->y1=y1-y;
 	    tempg->x2=Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2));
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_ELLIPSE:
@@ -898,7 +878,7 @@ ei_bitmap:
 	    GrEllipse3(dc,tempg->x2+x,tempg->y2+y,0,
 		tempg->width,tempg->height,tempg->rot_angle);
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_REG_POLY:
@@ -949,7 +929,7 @@ ei_bitmap:
 	      GrRegPoly3(dc,tempg->x2+x,tempg->y2+y,0,
 		  tempg->width,tempg->height,tempg->sides,tempg->rot_angle);
 	      InsQue(tempg,insert_point->last);
-	      GrEdUpdate(l,tempb,*root);
+	      GrEdUpdate(l,tempb,*_root);
 	      *cur_num+=1;
 	    }
 	    eletype=GRST_MENU;
@@ -961,7 +941,7 @@ ei_bitmap:
 	    tempg->x1=x1-x;
 	    tempg->y1=y1-y;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_FLOOD_FILL:
@@ -972,7 +952,7 @@ ei_bitmap:
 	    tempg->x1=x1-x;
 	    tempg->y1=y1-y;
 	    InsQue(tempg,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_POLYLINE:
@@ -988,7 +968,7 @@ ei_bitmap:
 		msg_code=GetMsg(&p1,&p2,
 		1<<MSG_IP_L_UP+1<<MSG_IP_MOVE+
 		    1<<MSG_IP_R_UP);
-		dc->color=ROP_CLEAR_MASK_EQU;
+		dc->color=ROP_EQU|COLOR_TRANSPARENT;
 		GrLine3(dc,x1,y1,0,x2,y2,0);
 		x2=p1; y2=p2;
 	      } while (msg_code!=MSG_IP_L_UP && msg_code!=MSG_IP_R_UP);
@@ -1022,7 +1002,7 @@ ei_bitmap:
 	      tempg2->type=GRST_POLYLINE;
 	      tempg2->num=num+1;
 	      InsQue(tempg2,insert_point->last);
-	      GrEdUpdate(l,tempb,*root);
+	      GrEdUpdate(l,tempb,*_root);
 	      *cur_num+=1;
 	    }
 	    break;
@@ -1081,7 +1061,7 @@ ei_bitmap:
 	    tempg2->type=GRST_SPEEDLINE;
 	    tempg2->num=num+1;
 	    InsQue(tempg2,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_POLYPOINT:
@@ -1138,7 +1118,7 @@ ei_bitmap:
 	    tempg2->type=GRST_POLYPOINT;
 	    tempg2->num=num;
 	    InsQue(tempg2,insert_point->last);
-	    GrEdUpdate(l,tempb,*root);
+	    GrEdUpdate(l,tempb,*_root);
 	    *cur_num+=1;
 	    break;
 	  case GRST_BSPLINE2:
@@ -1157,7 +1137,7 @@ ei_bitmap:
 		msg_code=GetMsg(&p1,&p2,
 		1<<MSG_IP_L_UP+1<<MSG_IP_MOVE+
 		    1<<MSG_IP_R_UP);
-		dc->color=ROP_CLEAR_MASK_EQU;
+		dc->color=ROP_EQU|COLOR_TRANSPARENT;
 		GrLine3(dc,x1,y1,0,x2,y2,0);
 		x2=p1; y2=p2;
 	      } while (msg_code!=MSG_IP_L_UP && msg_code!=MSG_IP_R_UP);
@@ -1190,7 +1170,7 @@ ei_bitmap:
 	      tempg2->type=eletype;
 	      tempg2->num=num+1;
 	      InsQue(tempg2,insert_point->last);
-	      GrEdUpdate(l,tempb,*root);
+	      GrEdUpdate(l,tempb,*_root);
 	      *cur_num+=1;
 	    }
 	    break;
@@ -1200,7 +1180,7 @@ ei_shiftable_mesh:
 	  cl->flags|=LTFLF_DONT_DRAW;
 
 	    tempg1=insert_point;
-	    if (tempg1!=*root && tempg1->type==GRST_MESH) {
+	    if (tempg1!=*_root && tempg1->type==GRST_MESH) {
 	      z=0;
 	      x1=-(p1-x);
 	      y1=-(p2-y);
@@ -1212,7 +1192,7 @@ ei_shiftable_mesh:
 		p->z+=z1;
 	      }
 	      old_mesh=&tempg1->vertex_cnt;
-	    } else if (tempg1!=*root && tempg1->type==GRST_SHIFTABLE_MESH) {
+	    } else if (tempg1!=*_root && tempg1->type==GRST_SHIFTABLE_MESH) {
 	      z=-tempg1->z1;
 	      x1=tempg1->x1-(p1-x);
 	      y1=tempg1->y1-(p2-y);
@@ -1237,12 +1217,12 @@ ei_shiftable_mesh:
 	      tempg->y1=p2-y;
 	      tempg->z1=-z;
 	      InsQue(tempg,insert_point->last);
-	      GrEdUpdate(l,tempb,*root);
+	      GrEdUpdate(l,tempb,*_root);
 	      if (old_mesh) {
 		insert_point=tempg;
 		RemQue(tempg1);
 		Free(tempg1);
-		GrEdUpdate(l,tempb,*root);
+		GrEdUpdate(l,tempb,*_root);
 	      } else
 		*cur_num+=1;
 	    } else if (old_mesh && tempg1->type==GRST_SHIFTABLE_MESH) {
@@ -1274,7 +1254,7 @@ ei_shiftable_mesh:
     }
   }
 ei_done:
-  GrDCClear;
+  GrDCFill;
   SettingsPop;
   cl->flags=old_cl_flags;
   GrDCDel(dc);
@@ -1319,7 +1299,7 @@ U0 EdInsertGraphic(Ltf *l,I64 x,I64 y)
   tempb->data=CAlloc(tempb->size,l->mem_task);
   if (st=EdPicture) {
     SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-    WordStat(OFF);
+    WordStat;
     unlock=LtfLock(l);
     ll=LtfPutS(l,st);
     Free(st);

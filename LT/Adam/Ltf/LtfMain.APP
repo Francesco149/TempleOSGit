@@ -237,7 +237,6 @@ public U0 UseTermLtf(U8 *ltf_menu_file=NULL,U8 *pulldown_menu_file=NULL)
   else
     Fs->cur_menu=MenuFile("::/LT/Doc/EdPullDown.TXZ");
 
-  Fs->update_win=&LtfUpdateTaskLtfs;
   WinScrollsInit(Fs);
   Preempt(old_preempt);
   Raw(OFF);
@@ -336,7 +335,7 @@ public LtfEntry *LtfPutLine(LtfEntry *cl)
 
 #help_index "Ltf/Input"
 public U8 *LtfMGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1417] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1419] Flags
 {
   Ltf *l;
   LtfEntry *cl,*cl_end;

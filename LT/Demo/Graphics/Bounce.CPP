@@ -17,7 +17,7 @@ U0 Init()
  
 U0 Bounce()
 {
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   I64 i,msg_code,p1,update;
   Init;
   try { //Catch <CTRL-ALT-C>
@@ -45,12 +45,12 @@ U0 Bounce()
 	  else
 	    Init;
 	} else
-	  GrDCClear(dc);
+	  GrDCFill(dc);
     }
 bc_done:
   } catch
     CatchAll;
-  GrDCClear(dc);
+  GrDCFill(dc);
   GrDCDel(dc);
 }
  

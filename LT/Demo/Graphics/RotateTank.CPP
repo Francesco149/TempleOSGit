@@ -41,7 +41,7 @@
 U0 RotateTank()
 {
   F64 theta,phi,omega;
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   LtfClear;
   GrDCAllocDepthBuf(dc);
   dc->flags|=DCF_TRANSFORMATION;
@@ -73,12 +73,12 @@ U0 RotateTank()
  
       GrSpritePlot3(dc,0,0,0,__BIN_1);
       WinSync;
-      GrDCClear;
+      GrDCFill;
     }
   } catch
     CatchAll;
 
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc);
 }
 

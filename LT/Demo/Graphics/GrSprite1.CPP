@@ -22,7 +22,7 @@ selecting "Pointer to GrSprite Data".
 They behave like string constants when compiled.
 That is, they are ptrs to data.
 
-GrSprite1.CPZ uses the persistent graphic dc, gr_dc2,
+GrSprite1.CPZ uses the persistent graphic DC, gr_dc2,
 while the other demo's use gr_dc which must
 be redrawn each update of the screen (by the
 window manager task).  This demo is simpler
@@ -38,11 +38,11 @@ because you do not need a window update routine.
 
 U0 GrSprite1()
 {
-  GrDC *dc=GrDCAlias(gr_dc2,Fs);
+  GrDC *dc=GrDCAlias;
   I64 i;
   "$CL$";
   for (i=0;i<GR_WIDTH>>2;i++) {
-    GrDCClear;
+    GrDCFill;
     GrSpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
     Sleep(3);
   }
@@ -50,7 +50,7 @@ U0 GrSprite1()
   "Image type:%d\n",__BIN_1_TYPE;
   GrDCDel(dc);
   PressAKey;
-  GrDCClear;
+  GrDCFill;
 }
 
 GrSprite1;

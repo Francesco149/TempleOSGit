@@ -197,7 +197,7 @@ U0 MPUpdateWin(GrDC *dc2)
   LBts(&mp_done_flags,Gs->num);
 }
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
   I64 i,x,y,z,
       w=task->win_pixel_width,
@@ -205,7 +205,7 @@ U0 UpdateWin(TaskStruct *task)
       cx=w>>1;
   F64 s,dip_theta=Diptheta(vx,vz);
 
-  GrDC *dc=GrDCAlias(gr_dc,task);
+  task->text_attr=YELLOW<<4;
   dc->color=LTCYAN;
   GrRect(dc,0,0,w,HORIZON_DIP*Sin(dip_theta)+FONT_HEIGHT*4.5);
 
@@ -243,7 +243,6 @@ U0 UpdateWin(TaskStruct *task)
 
   dc->color=WHITE;
   GrPlot(dc,w-64+64*(-vx+0x5000)/0xA000,h-64*(-vz+0x5000)/0xA000);
-  GrDCDel(dc);
 }
 
 
@@ -299,13 +298,14 @@ U0 Varoom()
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   try {
     Fs->win_inhibit=WIF_ALL-WIF_GRAB_SCROLL-WIF_MENU;
-    WordStat(OFF);
+    WordStat;
     WinMax;
-    WinBorder(OFF);
+    WinBorder;
     Preempt(OFF);
     Init;
-    Fs->text_attr=YELLOW<<4;
-    Fs->update_win=&UpdateWin;
+    LtfCursor;
+    LtfClear;
+    Fs->draw_it=&DrawIt;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
     while (TRUE) {
       while (ScanKey(&ch,&sc))
@@ -341,6 +341,5 @@ vr_done: //Don't goto out of try
   SettingsPop(Fs,TSF_SAME_SONG);
   MenuPop;
 }
-
 
 Varoom;

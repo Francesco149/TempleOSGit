@@ -14,8 +14,9 @@ I16 stk_x[STK_SIZE];
 I16 stk_y[STK_SIZE];
 I16 stk_dir[STK_SIZE];
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
+  nounusedwarn dc;
   I64 i,j;
   for (j=0;j<TEXT_ROWS;j++)
     for (i=0;i<TEXT_COLS;i++)
@@ -75,8 +76,10 @@ U0 Maze()
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  WordStat(OFF);
-  Fs->update_win=&UpdateWin;
+  WordStat;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
 try

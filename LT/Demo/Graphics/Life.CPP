@@ -5,6 +5,7 @@ BoolI8 restart;
 U0 DrawIt(TaskStruct *task,GrDC *b)
 {
   nounusedwarn task;
+  dc[cur_dc]->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(b,0,0,dc[cur_dc]);
 }
 
@@ -49,18 +50,18 @@ public U0 Life()
 {
   I64 msg_code,cnt,x1,y1,x2,y2,p1,p2;
 
-  dc[0]=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
-  dc[1]=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  dc[0]=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
+  dc[1]=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
   cur_dc=0;
   restart=FALSE;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WinMax;
-  GrDCClear;
+  GrDCFill;
   "$CL$";
 
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  WordStat(OFF);
+  WordStat;
   Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
@@ -89,7 +90,7 @@ public U0 Life()
     }
   } while (msg_code!=MSG_KEY_DOWN || !p1);
   SettingsPop;
-  GrDCClear;
+  GrDCFill;
   GrDCDel(dc[0]);
   GrDCDel(dc[1]);
 }

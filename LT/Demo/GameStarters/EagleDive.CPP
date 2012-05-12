@@ -404,11 +404,11 @@ U0 InitMap()
 
 GrDC *main_dc;
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
+  nounusedwarn task;
+  main_dc->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(dc,0,0,main_dc);
-  GrDCDel(dc);
 }
 
 
@@ -668,10 +668,11 @@ U0 DrawHorizon(GrDC *dc)
 }
 
 
-U0 BSPEagleDive(GrDC *dc)
+U0 BSPEagleDive()
 {
+  GrDC *dc=GrDCAlias(main_dc,Fs);
   F64 last_t;
-  I64  i,xx,yy,height,bkcolor,
+  I64 i,xx,yy,height,bkcolor,
       cx=Fs->win_pixel_width>>1,
       cy=Fs->win_pixel_height>>1;
   Fish *tempf;
@@ -765,7 +766,9 @@ U0 BSPEagleDive(GrDC *dc)
     GrPutS(dc,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
 	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Catch Fish");
   }
-
+//We made an alias of this we don't want freed.
+  dc->depth_buf=NULL;
+  GrDCDel(dc);
   WinSync;
 }
 
@@ -859,7 +862,7 @@ U0 SongTask(U64 dummy=0)
 U0 Init(I64 _mp_cnt)
 {
   I64 i;
-  main_dc=GrDCNew(DCT_COLOR4,GR_WIDTH,GR_HEIGHT);
+  main_dc=GrDCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
   critical_section_flag=0;
   game_over=FALSE;
   game_score=0;
@@ -923,7 +926,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   //We really can't afford to run at 60Hz.	This is how often VGA
   //memory is updated, not related to actual hardware refresh rates.
 
-  WordStat(OFF);
+  WordStat;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"
@@ -938,12 +941,14 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
       "}"
       );
   WinMax;
-  WinBorder(OFF);
+  WinBorder;
   "Initializing...\n";
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   Init(_mp_cnt);
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
   try //in case <CTRL-ALT-C> is pressed.
     do {
       if (ScanKey(&ch,&sc)) {
@@ -968,18 +973,18 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
 	    }
 	    break;
 	  case CH_NEW_LINE:
-	    Fs->update_win=NULL;
+	    Fs->draw_it=NULL;
 	    CleanUp;
 	    WinSync;
 	    Init(_mp_cnt);
-	    Fs->update_win=&UpdateWin;
+	    Fs->draw_it=&DrawIt;
 	    break;
 	  }
 	theta1=Unwrap(theta1);
 	phi	=Unwrap(phi);
 	theta2=Unwrap(theta2);
       } else
-	BSPEagleDive(main_dc);
+	BSPEagleDive;
     } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   catch
     CatchAll;

@@ -4,9 +4,8 @@ F64 CPU_idle[MP_MAX_PROCESSORS][NUM_DATA_POINTS];
 F64 mem[NUM_DATA_POINTS];
 F64 refresh[NUM_DATA_POINTS];
 
-U0 UpdateWin(TaskStruct *task)
+U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,j,x1,y1,x2,y2;
   U8 buf[32];
   for (i=1;i<NUM_DATA_POINTS;i++) {
@@ -34,7 +33,6 @@ U0 UpdateWin(TaskStruct *task)
   }
   PlotWinStr(task,"Mem %",LTCYAN+WHITE<<4,0,task->win_height-3);
   PlotWinStr(task,"Refresh Hz",LTPURPLE+WHITE<<4,0,task->win_height-2);
-  GrDCDel(dc);
 }
 
 U0 CPUPlot()
@@ -45,7 +43,9 @@ U0 CPUPlot()
   MemSet(refresh,0,sizeof(F64)*NUM_DATA_POINTS);
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
-  Fs->update_win=&UpdateWin;
+  LtfCursor;
+  LtfClear;
+  Fs->draw_it=&DrawIt;
 
   while (!ScanChar) {
     for (j=0;j<mp_cnt;j++)
