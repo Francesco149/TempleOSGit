@@ -1,15 +1,41 @@
 Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 
+----07/11/12 19:12:34----
+* [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13]
+R("OPTf_PAREN_WARN","[C:/LT/OSMain/Adam1a.HPZ,1447] OPTf_WARN_PAREN");
+* Changed [C:/LT/OSMain/MultiProc.CPZ,370] MPSpawn() and
+[C:/LT/OSMain/MultiProc.CPZ,342] MPJob() so they take cpu_num, not cpu_mask.
+* Added words to some songs.
+
+----07/05/12 22:00:39----
+* Got rid of "RiskyCopy".
+* Changed args to [C:/LT/Adam/Dbg2a.APZ,281] BptS() etc.
+
+----07/03/12 10:47:08----
+* Added Trim to Extents to GrSprite BitMap edit.
+
+----07/01/12 07:23:53----
+* Overhauled auto-indent in compiler.
+
+----06/19/12 17:14:14----
+* Improved [::/LT/Compiler/OpCodes.TXZ] ::/LT/Compiler/OpCodes.TXZ syntax.
+
+----06/14/12 14:01:01----
+* Added [::/LT/Demo/Asm/DivByHand.CPZ] ::/LT/Demo/Asm/DivByHand.CPZ.
+
+----05/28/12 05:53:39----
+* Got rid of TaskKeyDev code.
+
 ----05/05/12 21:43:47----
 * Added find & replace color in <CTRL-R> editor.
-* Added [C:/LT/Adam/Ltf/LtfRecalc.APZ,1659] LtfBottom() call into
-[C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear().
-* Added [C:/LT/Adam/Gr/GrScreen.APZ,6] gr_dc_cache
+* Added [C:/LT/Adam/Ltf/LtfRecalc.APZ,1664] LtfBottom() call into
+[C:/LT/Adam/Ltf/LtfRecalc.APZ,1696] LtfClear().
+* Added [C:/LT/Adam/Gr/GrScreen.APZ,7] gr_dc_cache
 
 ----05/04/12 16:45:33----
-* Got rid of Fs->update_win and added [C:/LT/OSMain/Adam1a.HPZ,2992] WIF_LTF.
+* Got rid of Fs->update_win and added [C:/LT/OSMain/Adam1a.HPZ,3008] WIF_LTF.
 * Changed dft for [C:/LT/Adam/WordStat/WsMain.APZ,611] WordStat();
-* Added [C:/LT/Adam/Ltf/LtfRecalc.APZ,1717] LtfScroll();
+* Added [C:/LT/Adam/Ltf/LtfRecalc.APZ,1722] LtfScroll();
 
 ----05/03/12 22:27:03----
 * **V8.03 Released**
@@ -17,32 +43,32 @@ Use [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R() to rename if I change a label.
 bitmaps in [C:/LT/Adam/Gr/Gr.APZ,55] GrSprites stored in 
 your text files.  Run it to convert *.LG? files, too.
 * **Warning**: [C:/LT/Adam/Gr/GrScreen.APZ,8] gr_dc2 with
-[C:/LT/OSMain/Adam1a.HPZ,2875] ROP_XOR is different.
+[C:/LT/OSMain/Adam1a.HPZ,2891] ROP_XOR is different.
 * Added [C:/LT/Adam/Gr/GrScreen.APZ,14] GrDCFill().
 * **Warning**: Replace [C:/LT/Adam/Gr/GrScreen.APZ,27] GrDCClear() with
 [C:/LT/Adam/Gr/GrScreen.APZ,14] GrDCFill([C:/LT/Adam/Gr/GrScreen.APZ,8]
-gr_dc2,[C:/LT/OSMain/Adam1a.HPZ,3437] COLOR_TRANSPARENT);
+gr_dc2,[C:/LT/OSMain/Adam1a.HPZ,3451] COLOR_TRANSPARENT);
 * Merged GRST_BITMAP4_TRANSPARENT into [C:/LT/Adam/Gr/Gr.APZ,23] GRST_BITMAP8.
-* Made [C:/LT/OSMain/Adam1a.HPZ,3463] DCT_COLOR8 to replace DCT_COLOR4.
+* Made [C:/LT/OSMain/Adam1a.HPZ,3477] DCT_COLOR8 to replace DCT_COLOR4.
 * Got rid of DCF_DIRTY.
-* Changed how [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.bkcolor works for
-[C:/LT/OSMain/Adam1a.HPZ,2876] ROP_COLLISION.
-* Got rid of DCT_MONO.  Use [C:/LT/OSMain/Adam1a.HPZ,3463] DCT_COLOR8
-filled-in with [C:/LT/OSMain/Adam1a.HPZ,3438] COLOR_MONO.  Then, 
+* Changed how [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.bkcolor works for
+[C:/LT/OSMain/Adam1a.HPZ,2892] ROP_COLLISION.
+* Got rid of DCT_MONO.  Use [C:/LT/OSMain/Adam1a.HPZ,3477] DCT_COLOR8
+filled-in with [C:/LT/OSMain/Adam1a.HPZ,3452] COLOR_MONO.  Then, 
 [C:/LT/Adam/Gr/GrBitMap.APZ,76] GrDCBlot() with
-[C:/LT/OSMain/Adam1a.HPZ,2877] ROP_MONO.  See
+[C:/LT/OSMain/Adam1a.HPZ,2893] ROP_MONO.  See
 [::/LT/Demo/MultiCore/Clouds.CPZ] ::/LT/Demo/MultiCore/Clouds.CPZ and 
 [::/LT/Demo/Graphics/Blot.CPZ] ::/LT/Demo/Graphics/Blot.CPZ.
-* [C:/LT/OSMain/Adam1a.HPZ,3437] COLOR_TRANSPARENT replaces ROP_TRANSPARENT.
-* Got rid of [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.mask, ROP_CLEAR_MASK_EQU,
+* [C:/LT/OSMain/Adam1a.HPZ,3451] COLOR_TRANSPARENT replaces ROP_TRANSPARENT.
+* Got rid of [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.mask, ROP_CLEAR_MASK_EQU,
 ROPB_CLEAR_MASK_TRANSPARENT.
-* Added [C:/LT/OSMain/Adam1a.HPZ,3442] DCF_NO_TRANSPARENTS, as an
+* Added [C:/LT/OSMain/Adam1a.HPZ,3456] DCF_NO_TRANSPARENTS, as an
 optimization.
 
 ----04/26/12 22:50:40----
 * Added [C:/LT/OSMain/Dsk/DskStr.CPZ,109] Drv2BlkDevFwded().
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("Forward","Fwd");
-* Fixed bug in [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf code and cleaned-up.
+* Fixed bug in [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf code and cleaned-up.
 * Made compiler handle & more compatibly.
 
 ----04/22/12 06:12:59----
@@ -80,13 +106,13 @@ changed for NON-LT Types, if you have those in OSMain cfg scripts.
 
 ----04/06/12 18:12:42----
 * Fixed-up [C:/LT/Adam/HeapLog.APZ,122] HeapLog() code.
-* Added [C:/LT/OSMain/Misc1a.CPZ,322] SysDeterministic() with Deterministic
+* Added [C:/LT/OSMain/Misc1a.CPZ,316] SysDeterministic() with Deterministic
 OSMain config option to help 
 debug.
 
 ----04/06/12 11:46:07----
-* Cleaned-up [C:/LT/OSMain/Adam1a.HPZ,731] ClassStruct and
-[C:/LT/OSMain/Adam1a.HPZ,760] FunStruct.
+* Cleaned-up [C:/LT/OSMain/Adam1a.HPZ,749] ClassStruct and
+[C:/LT/OSMain/Adam1a.HPZ,778] FunStruct.
 
 ----04/04/12 15:57:15----
 * **V8.01 Released**
@@ -128,7 +154,7 @@ debug.
 * Added [::/LT/Demo/Graphics/Circuit.CPZ] ::/LT/Demo/Graphics/Circuit.CPZ.
 
 ----02/28/12 13:32:53----
-* Added [C:/LT/OSMain/Misc1a.CPZ,302] RiskyCopy().
+* Added RiskyCopy().
 
 ----02/08/12 16:29:13----
 * Added anonymous fun args.
@@ -205,7 +231,7 @@ R("LtfToggleFlags","LtfFlagsToggle");
 * Fixed Unasm bug.
 
 ----12/12/11 23:36:56----
-* Made so compiler sends isolated chars to [C:/LT/OSMain/Display.CPZ,265]
+* Made so compiler sends isolated chars to [C:/LT/OSMain/Display.CPZ,222]
 PutChar().
 * You can now specify an address for [C:/LT/OSMain/Hash1a.CPZ,730] Load().
 * Moved start addr of OSMain from 0x10000 to 0x7C00.
@@ -224,7 +250,7 @@ addition to <SHIFT-INSERT>, etc.
 * Fixed bugs in [C:/LT/OSMain/Str1a.CPZ,661] Spaces2Tabs().
 * Got rid of ListFile.APZ.
 * Made so [C:/LT/OSMain/Adam1b.HPZ,244] Pow() operator is not in-line.
-* Made so compiler sends strings all alone to [C:/LT/OSMain/Display.CPZ,270]
+* Made so compiler sends strings all alone to [C:/LT/OSMain/Display.CPZ,227]
 PutS() or [C:/LT/OSMain/Str1a.CPZ,2509] PrintF().
 
 ----12/04/11 22:40:18----
@@ -260,7 +286,7 @@ R("sys_cur_focus_task","sys_focus_task");
 * Added [C:/LT/Adam/Math2a.APZ,62] Cosh() and [C:/LT/Adam/Math2a.APZ,57]
 Sinh().
 * Got rid of task->acct.
-* **Warning**: Removed arg from [C:/LT/OSMain/Task1a.CPZ,229] Spawn().
+* **Warning**: Removed arg from [C:/LT/OSMain/Task1a.CPZ,225] Spawn().
  
 ----11/19/11 15:47:16----
 * [C:/LT/Accts/TAD/Adam3eWrappers.APZ,13] R("BMF_","DCF_");
@@ -395,7 +421,7 @@ letter and there is a file find flag arg.
 ::/LT/Apps/AfterEgypt/WaterRock.CPZ.
 
 ----08/22/11 02:12:02----
-* Changed default [C:/LT/OSMain/Dsk/Dsk1c.CPZ,168] Fmt() type from native to
+* Changed default [C:/LT/OSMain/Dsk/Dsk1c.CPZ,156] Fmt() type from native to
 FAT32.
 
 ----08/20/11 10:55:56----

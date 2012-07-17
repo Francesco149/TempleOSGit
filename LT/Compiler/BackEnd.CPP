@@ -7,7 +7,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/LT/OSMain/Adam1a.HPZ,1516] IcArg.  RAX is the most common register
+[C:/LT/OSMain/Adam1a.HPZ,1534] IcArg.  RAX is the most common register
 for coupling intermediate codes.
 
 Internal calculations take place on

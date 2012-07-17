@@ -132,6 +132,8 @@ I64 GrSpriteTypeMask(U8 *elems)
   I64 result=0;
   GrSprite *tempg=elems-offset(GrSprite.start);
   while (tempg->type) {
+    if (tempg->type>=GRST_NUM_TYPES)
+      return 1<<GRST_NUM_TYPES;
     Bts(&result,tempg->type);
     tempg(U8 *)+=GrSpriteElemSize(tempg);
   }

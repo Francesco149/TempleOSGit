@@ -76,7 +76,7 @@ U0 DrawIt(TaskStruct *task,GrDC *_dc)
   dc0->flags|=DCF_TRANSFORMATION;
   GrSetRotMat(dc0,dc0->r);
   if (mp_cnt>1)
-    MPJob(&DrawShadow,task);
+    MPJob(&DrawShadow,task,1);
   else
     DrawShadow(task);
   GrSpritePlot3(dc0,0,0,0,__BIN_1);

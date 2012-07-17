@@ -875,7 +875,7 @@ U0 AIMove(GameState *state)
       if (i%mp_cnt==mp_cnt-1)
 	AIMove1(cj);
       else
-	MPJob(&AIMove1,cj);
+	MPJob(&AIMove1,cj,1+i%(mp_cnt-1));
     }
 
     //Wait for finish

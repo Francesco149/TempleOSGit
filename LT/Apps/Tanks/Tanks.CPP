@@ -482,7 +482,7 @@ stk size, so don't get in the habit.
 
 
   for (i=cnt-1;i>0;i--)
-    cmd[i]=MPJob(&MPRecalcVisible,&job[i],0,1<<i);
+    cmd[i]=MPJob(&MPRecalcVisible,&job[i],i,0);
   result=MPRecalcVisible(&job[0]);
   for (i=cnt-1;i>0;i--)
     if (MPJobResult(cmd[i]))
@@ -529,7 +529,7 @@ U0 RecalcVisibleMap(I64 row,I64 col)
     job[i].lo=k;
   }
   for (i=cnt-1;i>0;i--)
-    cmd[i]=MPJob(&MPRecalcVisibleMap,&job[i],0,1<<i);
+    cmd[i]=MPJob(&MPRecalcVisibleMap,&job[i],i,0);
   MPRecalcVisibleMap(&job[0]);
   for (i=cnt-1;i>0;i--)
     MPJobResult(cmd[i]);

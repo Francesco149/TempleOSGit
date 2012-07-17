@@ -163,7 +163,7 @@ public U0 GrVectMapBlotMP(GrDC *dc,I64 x,I64 y,GrVectMap *vm,F64 scale=1.0,I64 _
 	MPGrVectMapBlotRect(mp);
       else {
 	mp[cpu].busy=TRUE;
-	MPJob(&MPGrVectMapBlotRect,&mp[cpu],1<<MPCf_FREE_ON_COMPLETE,1<<cpu);
+	MPJob(&MPGrVectMapBlotRect,&mp[cpu],cpu);
       }
       k+=w;
       yy+=R_HEIGHT*scale;

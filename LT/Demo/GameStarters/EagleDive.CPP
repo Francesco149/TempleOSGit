@@ -394,7 +394,7 @@ U0 InitMap()
 
   mp.done_flags=0;
   for (i=1;i<mp.mp_cnt;i++)
-    MPSpawn(&MPDoPanels,Fs,"Do Panels",1<<i);
+    MPSpawn(&MPDoPanels,Fs,"Do Panels",i);
   MPDoPanels(Fs);
   while (mp.done_flags!=1<<mp.mp_cnt-1)
     Yield;
@@ -889,7 +889,7 @@ U0 Init(I64 _mp_cnt)
   z=64		 *COORDINATE_SCALE*MAP_SCALE;
 
   for (i=1;i<mp.mp_cnt;i++)
-    MPSpawn(&APEagleDiveTask,Fs,"AP EagleDive",1<<i);
+    MPSpawn(&APEagleDiveTask,Fs,"AP EagleDive",i);
   Fs->task_end_cb=&TaskEndCB;
   game_t0=tP;
 }

@@ -162,7 +162,7 @@ U0 CallerRep(U0 **rbp=NULL,TaskStruct *task=NULL)
 
 U0 DbgStr(U8 *st,U64 mS=100)
 //Shows a string using
-//[C:/LT/OSMain/Misc1a.CPZ,331] Raw screen output for a fixed length
+//[C:/LT/OSMain/Misc1a.CPZ,325] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -181,7 +181,7 @@ U0 DbgStr(U8 *st,U64 mS=100)
 
 U0 DbgNum(U64 num,U64 mS=100)
 //Shows a hex num using
-//[C:/LT/OSMain/Misc1a.CPZ,331] Raw screen output for a fixed length
+//[C:/LT/OSMain/Misc1a.CPZ,325] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -198,7 +198,7 @@ U0 DbgNum(U64 num,U64 mS=100)
 
 U0 DbgF(F64 d,U64 mS=100)
 //Shows a floating-point val using
-//[C:/LT/OSMain/Misc1a.CPZ,331] Raw screen output for a fixed length
+//[C:/LT/OSMain/Misc1a.CPZ,325] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -214,7 +214,7 @@ U0 DbgF(F64 d,U64 mS=100)
 }
 
 U0 DbgAdd(U0 *add,U64 mS=100)
-//Shows an addr using [C:/LT/OSMain/Misc1a.CPZ,331] Raw screen
+//Shows an addr using [C:/LT/OSMain/Misc1a.CPZ,325] Raw screen
 //output for a length of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -230,7 +230,7 @@ U0 DbgAdd(U0 *add,U64 mS=100)
 }
 
 U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,331] Raw
+//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,325] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -247,7 +247,7 @@ U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
 }
 
 U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,331] Raw
+//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,325] Raw
 //screen output for a fixed length
 //of time.
 {

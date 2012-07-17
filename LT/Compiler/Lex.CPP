@@ -41,9 +41,8 @@ LexStruct *LexNew(U8 *buf,U64 flags,U8 *filename=NULL)
   MemSet(lx,0,offset(LexStruct.end_of_zeroed_members)+sizeof(LexFileStruct));
   lx->next=lx->last=lx;
   lx->flags=flags;
-  lx->locked_flags=0;
-  lx->opts=1<<OPTf_UNUSED_VAR_WARN;
-  lx->start_line_num=lx->last_line_num=1;
+  lx->opts=1<<OPTf_WARN_UNUSED_VAR;
+  lx->expression_start_line_num=lx->last_line_num=1;
   lx->pass_trace_mask=0b10001111101;
   lx->hash_mask=HTT_ALL-HTT_IMPORT_SYS_SYM-HTT_ASM_KEYWORD;
   lx->define_hash_table=lx->hash_table_list=lx->glbl_hash_table=lx->local_hash_table=Fs->hash_table;
@@ -79,6 +78,7 @@ U0 LexDel(LexStruct *lx)
   if (!(lx->flags & LF_DONT_FREE_BUF))
     Free(tempf->buf);
   Free(lx->ident);
+  U8QueVectDel(lx->indent_que_vect);
   Free(lx->dollar);
   Free(lx);
 }
@@ -214,6 +214,8 @@ lgc_here2:
 		tempf->line_start=cl->next;
 		tempf->line_num=cl->y+2;	//+1 because NEW_LINE is on previous line, +1 because l y starts at zero
 		compiled_lines++;
+		if (tempf==lx->fun_lfn && tempf->line_num>lx->max_line)
+		  lx->max_line=tempf->line_num;
 		if (lx->opts & OPTF_ECHO)
 		  NewLine;
 		lx->last_U16=CH_NEW_LINE;
@@ -353,6 +355,8 @@ lgc_here:
 	  tempf->line_num++;
 	  compiled_lines++;
 	  tempf->line_start=src;
+	  if (tempf==lx->fun_lfn && tempf->line_num>lx->max_line)
+	    lx->max_line=tempf->line_num;
 	}
       case 0xFF: //nobound_switch
       default:
@@ -761,11 +765,17 @@ I64 Lex(LexStruct *lx)
   BoolI8 str_done,neg_e;
   U8 *fbuf;
   U8 *buf2,*buf3,buf[LEX_MAX_IDENT];
-  lx->last_indent_level=lx->indent_level;
+  if (lx->cur_lfn==lx->fun_lfn && lx->indent_que_vect) {
+    i=lx->temp_indent_level;
+//    if (lx->flags&LF_INSIDE_EXPRESSION &&
+//	lx->fun_lfn->line_num>lx->expression_start_line_num)
+//	  i+=2;
+    U8QueVectPut(lx->indent_que_vect,lx->last_line_num,i);
+  }
+  lx->temp_indent_level=lx->indent_level;
   lx->last_line_num=lx->cur_lfn->line_num;
   while (TRUE) {
 lex_cont:
-    lx->start_line_num=lx->cur_lfn->line_num;
     nobound_switch (ch=LexGetChar(lx)) {
       case 0:
 	return lx->token=TK_EOF;
@@ -1555,6 +1565,8 @@ lex_check_comment:
     }
   }
 lex_end:
+  LexGetChar(lx); //Do this so WAS_NEW_LINE is right
+  lx->flags|=LF_USE_LAST_U16;
   if (Bt(&lx->opts,OPTf_LEX_TRACE))
     LexPutToken(lx);
   return lx->token;

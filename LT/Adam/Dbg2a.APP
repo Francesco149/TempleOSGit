@@ -191,7 +191,7 @@ U0 UpdateRegVarImg(FunStruct *tempf,U8 *d,TaskStruct *task)
   ClassStruct *tempc;
   ml=tempf->member_list;
   while (ml) {
-    if (ml->register>=0) {
+    if (ml->register!=CREG_NONE) {
       tempc=ml->member_class;
       while (tempc->fwd_class)
 	tempc=tempc->fwd_class;
@@ -278,7 +278,7 @@ SysBpt *BptFind(TaskStruct *task,U8 *a,BoolI8 rem=FALSE)
   return result;
 }
 
-public BoolI64 BptS(TaskStruct *task,U8 *a,BoolI8 live=TRUE)	//set Bpt
+public BoolI64 BptS(U8 *a,TaskStruct *task=NULL,BoolI8 live=TRUE)	//set Bpt
 //Sets a breakpoint
 //Honestly, I never use this.  I put
 //output statements to debug, partly
@@ -286,6 +286,7 @@ public BoolI64 BptS(TaskStruct *task,U8 *a,BoolI8 live=TRUE)	//set Bpt
 {
   BoolI8 result=TRUE;
   SysBpt *tempb;
+  if (!task) task=Fs;
   PushFD;
   Cli;
   if (!(tempb=BptFind(task,a,FALSE))) {
@@ -302,11 +303,12 @@ public BoolI64 BptS(TaskStruct *task,U8 *a,BoolI8 live=TRUE)	//set Bpt
   return result;
 }
 
-public BoolI64 BptR(TaskStruct *task,U8 *a,BoolI8 live=TRUE,BoolI8 rem=TRUE)
+public BoolI64 BptR(U8 *a,TaskStruct *task=NULL,BoolI8 live=TRUE,BoolI8 rem=TRUE)
 //Rems one breakpoint
 {
   BoolI8 result=FALSE;
   SysBpt *tempb;
+  if (!task) task=Fs;
   PushFD;
   Cli;
   if (tempb=BptFind(task,a,rem)) {
@@ -320,10 +322,11 @@ public BoolI64 BptR(TaskStruct *task,U8 *a,BoolI8 live=TRUE,BoolI8 rem=TRUE)
   return result;
 }
 
-public U0 BptsR(TaskStruct *task,BoolI8 live=TRUE)	//clear Bpts
+public U0 BptsR(TaskStruct *task=NULL,BoolI8 live=TRUE)	//clear Bpts
 //Rems all breakpoints
 {
   SysBpt *tempb,*tempb1;
+  if (!task) task=Fs;
   PushFD;
   Cli;
   tempb=task->bpt_list;
@@ -339,7 +342,7 @@ public U0 BptsR(TaskStruct *task,BoolI8 live=TRUE)	//clear Bpts
 }
 
 public U0 Go(TaskStruct *task=NULL)
-//Do a [C:/LT/Adam/Dbg2a.APZ,358] Step() first after a Bpt.
+//Do a [C:/LT/Adam/Dbg2a.APZ,361] Step() first after a Bpt.
 {
   if (!task) task=Fs;
   if (BptFind(task,task->rip))

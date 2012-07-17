@@ -357,7 +357,7 @@ I64 MagicPairs(U64 N)
     if (i==mp_cnt-1)
       result=TestCoreRange(&rj[i]);
     else
-      rj[i].cmd=MPJob(&TestCoreRange,&rj[i],0,1<<(mp_cnt-i-1));
+      rj[i].cmd=MPJob(&TestCoreRange,&rj[i],mp_cnt-i-1,0);
   }
   if (mp_cnt>1)
     for (i=0;i<mp_cnt-1;i++)

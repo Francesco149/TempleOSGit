@@ -354,9 +354,9 @@ U0 BlkDevsInitAll()
     drv_to_prt[i]=&local_prts[i];
   sys_raw_dc_col=0;
 #exe {
-   StreamPutS("#exe {OptOff(OPTf_PAREN_WARN);}");
+   StreamPutS("#exe {OptOff(OPTf_WARN_PAREN);}");
    StreamLtf(osmain_cfg->add_dev);
-   StreamPutS("#exe {OptOn(OPTf_PAREN_WARN);}");
+   StreamPutS("#exe {OptOn(OPTf_WARN_PAREN);}");
 };
   PrtRep;
 }

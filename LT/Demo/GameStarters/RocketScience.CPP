@@ -14,7 +14,7 @@ If you find this interesting, you might want to check-out
 SimStructure, a simulation program I wrote you can downlload.
 
 
-http://www.losethos.com/files/SimStrSetup.exe
+http://www.losethos.com/files/SimStrSetUp.ZIP
 Product Key: L00-W10-M70
 
 I did study ctrl systems for 2 years, but lost enthusiasm

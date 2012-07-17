@@ -30,12 +30,12 @@ See [C:/LT/Adam/MemRep.APZ,188] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003D7BF
+ 0x0000007C00- 0x000003D2CF
   OSMain kernel module, placed here by the boot-loader,
   [C:/LT/OSMain/BootDefs.HPZ,6] BOOT_RAM_BASE.
 
  0x000007F000- 0x000007F02E
-  Multicore start-up vect code, [C:/LT/OSMain/Adam1a.HPZ,430] MPN_VECT.
+  Multicore start-up vect code, [C:/LT/OSMain/Adam1a.HPZ,449] MPN_VECT.
 
  0x000007F600- 0x000007FFFF
   Boot block relocated here before loading the OSMain module,
@@ -65,14 +65,14 @@ memory starting at 0xF0000000 going up.
   64-bit devices are mapped counting backward from 128 Gig.
 
 
-                                      [C:/LT/OSMain/Adam1a.HPZ,2847] BlkPools
-[C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrls
+                                      [C:/LT/OSMain/Adam1a.HPZ,2863] BlkPools
+[C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrls
  <1> (image)
 
 0000 0000 0000 0000                   Core 0   
 
 0000 0000 0000 7C00 OSMain
-0000 0000 0003 D7BF 
+0000 0000 0003 D2CF 
 
 0000 0000 0010 0000 Page_Tables                    AdamTask
 

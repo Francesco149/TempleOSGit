@@ -3,9 +3,6 @@ When I was a kid with a Commodore 64,
 the 6502 chip had no multiply instruction
 and this is how we had to do it, except,
 I used more regs in this example.
-
-I'll leave it as an exercise to do
-division by hand.
 */
 asm {
 //Opcodes are slightly different to make writing my x86_64 assembler easier.

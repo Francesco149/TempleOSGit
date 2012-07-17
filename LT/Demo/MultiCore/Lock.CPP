@@ -5,7 +5,7 @@
   read-modify-write statements.
   It will generate invalid instructions
   if you misuse it and it will crash.
-  [C:/LT/Compiler/Unassembler.CPZ,846] U() to see what code was generated.
+  [C:/LT/Compiler/Unassembler.CPZ,851] U() to see what code was generated.
 */
 
 #define CNT	0x1000000
@@ -27,7 +27,7 @@ U0 UnlockedInc()
   MPCmdStruct *tempm;
   glbl=0;
 
-  tempm=MPJob(&MPUnlockedInc,NULL,0);
+  tempm=MPJob(&MPUnlockedInc,NULL,1,0);
   for (i=0;i<CNT;i++)
     glbl++;
 
@@ -52,7 +52,7 @@ U0 LockedInc()
   MPCmdStruct *tempm;
   glbl=0;
 
-  tempm=MPJob(&MPLockedInc,NULL,0);
+  tempm=MPJob(&MPLockedInc,NULL,1,0);
   for (i=0;i<CNT;i++)
     lock {
       glbl++;

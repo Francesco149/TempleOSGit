@@ -114,7 +114,7 @@ U0 Main()
     mp.core1_done=FALSE;
 
     //Pass the task of the window as data item to job.
-    MPJob(&MPDrawIt,Fs,1<<MPCf_FREE_ON_COMPLETE,1<<1);
+    MPJob(&MPDrawIt,Fs,1);
 
     WinSync;
     while (!mp.core0_done || !mp.core1_done)

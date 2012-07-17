@@ -201,7 +201,7 @@ BoolI64 DiffBins(Ltf *l1,Ltf *l2)
 }
 
 public U64 Diff(U8 *dst_file,U8 *src_file,U64 df_flags=0)
-{ //The df_flags arg is used when this is called by [C:/LT/Adam/Merge.APZ,40] MergeChk().
+{ //The df_flags arg is used when this is called by [C:/LT/Adam/Merge.APZ,41] MergeChk().
   Ltf *l1=LtfRead(dst_file, LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
   Ltf *l2=LtfRead(src_file, LTFF_PLAIN_TEXT_WITH_TABS | LTFF_NO_CURSOR);
   LtfEntry *cl,**sl1,**sl2,**usl1,**usl2;

@@ -484,7 +484,7 @@ U0 HashDel(SrcSymHashEntry *temph)
     }
     if (temph->type & (HTT_FUN | HTT_CLASS))
     //Assumes code not on heap, so doesn't Free.
-    //[C:/LT/Compiler/Lex.CPZ,567] MemberListDel() is an import to the OSMain module
+    //[C:/LT/Compiler/Lex.CPZ,571] MemberListDel() is an import to the OSMain module
       MemberListDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(DefineStrHashEntry *)->data);

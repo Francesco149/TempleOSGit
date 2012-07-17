@@ -201,12 +201,12 @@ LTDirEntry *FilesFind(U8 *files_find_mask,U64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/LT/OSMain/Adam1a.HPZ,3721] FUF_RECURSE		+r Recurse
- [C:/LT/OSMain/Adam1a.HPZ,3735] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/LT/OSMain/Adam1a.HPZ,3731] FUF_JUST_DIRS		+D just directories
- [C:/LT/OSMain/Adam1a.HPZ,3732] FUF_JUST_FILES		+F just files
- [C:/LT/OSMain/Adam1a.HPZ,3733] FUF_JUST_TEXT_FILES	+t just text files: [C:/LT/OSMain/Adam1a.HPZ,2048] TEXT_FILE_MASK
- [C:/LT/OSMain/Adam1a.HPZ,3734] FUF_JUST_SRC_FILES	+s just src files : [C:/LT/OSMain/Adam1a.HPZ,2047] SRC_FILE_MASK
+ [C:/LT/OSMain/Adam1a.HPZ,3735] FUF_RECURSE		+r Recurse
+ [C:/LT/OSMain/Adam1a.HPZ,3749] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
+ [C:/LT/OSMain/Adam1a.HPZ,3745] FUF_JUST_DIRS		+D just directories
+ [C:/LT/OSMain/Adam1a.HPZ,3746] FUF_JUST_FILES		+F just files
+ [C:/LT/OSMain/Adam1a.HPZ,3747] FUF_JUST_TEXT_FILES	+t just text files: [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK
+ [C:/LT/OSMain/Adam1a.HPZ,3748] FUF_JUST_SRC_FILES	+s just src files : [C:/LT/OSMain/Adam1a.HPZ,2063] SRC_FILE_MASK
 See [] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   LTDirEntry *result=NULL;

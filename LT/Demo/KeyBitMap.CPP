@@ -32,11 +32,11 @@ U0 KeyDownBitMapDemo()
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->draw_it=&DrawIt;
 
-//[C:/LT/OSMain/OSGlbls.CPZ,111] key_down_bitmap is indexed with the
+//[C:/LT/OSMain/OSGlbls.CPZ,112] key_down_bitmap is indexed with the
 //merged scan code.  (left shift and
 //right shift combined for example.)
-//[C:/LT/OSMain/OSGlbls.CPZ,113] key_down_bitmap2 is indexed with the
-//distinct scan code.  See [Char] Char and [C:/LT/OSMain/Adam1a.HPZ,3398] Scan Codes.
+//[C:/LT/OSMain/OSGlbls.CPZ,114] key_down_bitmap2 is indexed with the
+//distinct scan code.  See [Char] Char and [C:/LT/OSMain/Adam1a.HPZ,3412] Scan Codes.
 
   while (Bt(key_down_bitmap,i_sc)) {
     x++;

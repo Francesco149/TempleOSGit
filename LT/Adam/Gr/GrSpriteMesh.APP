@@ -694,7 +694,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   e->mp_done_flags=0; //Issue jobs to all cores.
   e->dc=dc;
   for (i=1;i<mp_cnt;i++)
-    MPJob(&MPDrawIt,e,1<<MPCf_FREE_ON_COMPLETE,1<<i);
+    MPJob(&MPDrawIt,e,i);
   MPDrawIt(e); //Do one job ourself.
 
   tempv=e->vertex_root.next;

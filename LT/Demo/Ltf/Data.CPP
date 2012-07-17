@@ -40,7 +40,7 @@ U0 DataDemo()
 //ll->data before it is set.
   BoolI8 unlock=LtfLock(l);
 
-//You might set the [C:/LT/OSMain/Adam1a.HPZ,1271] LTFF_FORM flag.
+//You might set the [C:/LT/OSMain/Adam1a.HPZ,1289] LTFF_FORM flag.
 //  l->flags|=LTFF_FORM
 //if you wish.
 

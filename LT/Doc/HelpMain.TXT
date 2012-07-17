@@ -120,15 +120,15 @@ Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a
 
 Grep("pattern","/LT/Demo/*.CPZ;*.TXZ;");
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2048] TEXT_FILE_MASK and
-    [C:/LT/OSMain/Adam1a.HPZ,2047] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK and
+    [C:/LT/OSMain/Adam1a.HPZ,2063] SRC_FILE_MASK.
 
 
   +] BURNING CD-ROMs/DVDs
     0) Prepare a directory with the files you wish to burn.
 1) Use [C:/LT/Adam/Dsk/DskCDDVD.APZ,376] CDFileCreate() to make an ISO image
     file.
-2) Use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,293] CDImageWrite() to burn an ISO file
+2) Use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,281] CDImageWrite() to burn an ISO file
     onto a CD or DVD.
 
 [::/LT/Doc/FileMgr.TXZ,Bootable] Bootable CD-ROMs 

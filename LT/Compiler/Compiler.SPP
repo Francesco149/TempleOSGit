@@ -1,9 +1,10 @@
-#exe {OptOn(OPTf_PAREN_WARN);};
+#exe {OptOn(OPTf_WARN_PAREN);};
 
 #include "/LT/OSMain/Static.HPZ"
 #include "CmpAsm"
 #include "CmpExts"
 #include "CmpGlbls"
+#include "CmpQueVect"
 #include "Unassembler"
 #include "Directives"
 #include "Lex"

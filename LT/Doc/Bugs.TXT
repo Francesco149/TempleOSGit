@@ -90,7 +90,7 @@ autofile operations were broken.
 
 #000003 Introduced:05/20/2010 Fixed:06/05/2010
 [C:/LT/OSMain/KbdMouse/Message.CPZ,138] GetKey() was turning-off preemption
-in its call to echo with [C:/LT/OSMain/Display.CPZ,245] PutKey().  This 
+in its call to echo with [C:/LT/OSMain/Display.CPZ,202] PutKey().  This 
 had the effect of running all terminal window right-clicked #included
 programs 
 with preemption off. 

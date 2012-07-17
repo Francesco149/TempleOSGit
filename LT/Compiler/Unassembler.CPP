@@ -451,8 +451,7 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
 
   a1_size=arg1_size;
   a2_size=arg2_size;
-  if (tempi->flags & IEF_PLUS_OPCODE && (tempi->slash_val==SV_REGISTER ||
-      OM_RB<=tempi->opcode_modifier<=OM_RD)) {
+  if (tempi->flags & IEF_PLUS_OPCODE) {
     ip--;
     RM1=*ip++ - tempi->opcode[tempi->opcode_cnt-1]+REX_b;
     *buf2=0;
@@ -717,6 +716,9 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
     case ARGT_EAX:
       StrCat(arg1_st,"EAX");
       break;
+    case ARGT_RAX:
+      StrCat(arg1_st,"RAX");
+      break;
     case ARGT_DX:
       StrCat(arg1_st,"DX");
       break;
@@ -784,6 +786,9 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
       break;
     case ARGT_EAX:
       StrCat(arg2_st,"EAX");
+      break;
+    case ARGT_RAX:
+      StrCat(arg2_st,"RAX");
       break;
     case ARGT_DX:
       StrCat(arg2_st,"DX");

@@ -827,7 +827,7 @@ _FREE::
 	MOV	RAX,U64 UsedAllocatedMem.size-UsedAllocatedMem.start[RSI]
 	OR	RAX,RAX
 	JGE	@@25	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/LT/OSMain/Adam1a.HPZ,2815] UsedAllocatedMem struct.
+			//The neg size is offset to start of [C:/LT/OSMain/Adam1a.HPZ,2831] UsedAllocatedMem struct.
 	ADD	RSI,RAX
 
 @@25:	PUSHFD
@@ -950,9 +950,9 @@ _MHEAP_CTRL::
 LTextern _FREE U0 Free(U0 *add);
 LTextern _MSIZE U64 MSize(U0 *src); //size of heap object
 LTextern _MSIZE2 U64 MSize2(U0 *src); //Internal size
-LTextern _MHEAP_CTRL HeapCtrl *MHeapCtrl(U0 *src); //[C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrl of object
+LTextern _MHEAP_CTRL HeapCtrl *MHeapCtrl(U0 *src); //[C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl of object
 
-//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
 LTextern _MALLOC U0 *MAlloc(U64 size,TaskStruct *mem_task=NULL);
 
 U0 *AMAlloc(U64 size)
@@ -961,7 +961,7 @@ U0 *AMAlloc(U64 size)
 }
 
 U0 *CAlloc(U64 size,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
   U0 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -973,7 +973,7 @@ U0 *ACAlloc(U64 size)
 }
 
 U0 *MAllocIdentical(U0 *src,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   U0 *result;
   if (!src) return NULL;
@@ -1009,7 +1009,7 @@ U0 *CAllocAligned(U64 size,U64 alignment,TaskStruct *mem_task=NULL,U64 misalignm
 }
 
 U8 *StrNew(U8 *buf,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2862] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   U8 *result;
   if (buf) {

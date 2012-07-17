@@ -86,7 +86,7 @@ U0 Palindrome(U8 *filename)
   l=LtfCur;
   mp_done_flags=0;
   for (i=1;i<mp_cnt;i++)
-    MPJob(&MPPalindrome,NULL,1<<MPCf_FREE_ON_COMPLETE,1<<i);
+    MPJob(&MPPalindrome,NULL,i);
   MPPalindrome;
   while (mp_done_flags!=1<<mp_cnt-1)
     Yield;

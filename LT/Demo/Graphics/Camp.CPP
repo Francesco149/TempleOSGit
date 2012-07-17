@@ -229,7 +229,7 @@ U0 DrawMeeting(TaskStruct *task,GrDC *dc)
 
   mp_done_flags=0;
   for (i=1;i<mp_cnt;i++)
-    MPJob(&MPDrawMeeting,task,1<<MPCf_FREE_ON_COMPLETE,1<<i);
+    MPJob(&MPDrawMeeting,task,i);
   MPDrawMeeting(task);
 
   GrSetRotMat(dc,old_r);

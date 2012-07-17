@@ -119,7 +119,7 @@
 
 
 //These are indexed by color #.
-//See [C:/LT/OSMain/Adam1a.HPZ,3424] COLORS.
+//See [C:/LT/OSMain/Adam1a.HPZ,3438] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -194,7 +194,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 
   //You could make it much more efficient
   //if you did it like [::/LT/Demo/GameStarters/BigGuns.CPZ] ::/LT/Demo/GameStarters/BigGuns.CPZ
-  //with a [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.
+  //with a [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;

@@ -578,7 +578,7 @@ U0 PrsAsmArg(LexStruct *lx,AsmArgStruct *arg)
 	  }
 	} else if (lx->token=='*') {
 	  Lex(lx);
-	  if (lx->token!=TK_INTEGER&&lx->token!=TK_U8)
+	  if (lx->token!=TK_INTEGER)
 	    PrsExcept(lx,"ST_EXPECTING_SCALE_FACTOR");
 	  arg->scale=lx->cur_i;
 	  Lex(lx); //skip scale
@@ -930,15 +930,15 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 		   lx->cur_lfn->name,lx->cur_lfn->line_num-1);
 	}
 	if (tempi->flags & IEF_PLUS_OPCODE) {
-	  if (om==OM_I) {
-	    if (tempa1->fstk!=CREG_NONE)
-	      cur.last_opcode_U8+=tempa1->fstk;
-	  } else {
+	  if (tempi->slash_val==SV_R_REGISTER) {
 	    cur.last_opcode_U8|=tempa1->reg1&7;
 	    if (tempa1->reg1&15>7)
 	      cur.REX|=1;
 	    if (tempa1->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
 	      cur.has_REX=TRUE;
+	  } else { //SV_I_REGISTER
+	    if (tempa1->fstk!=CREG_NONE)
+	      cur.last_opcode_U8+=tempa1->fstk;
 	  }
 	}
 	if (a1==ARGT_R64 || a1==ARGT_RM64 || a1==ARGT_M64)
@@ -1037,32 +1037,25 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 	      lx->cur_lfn->name,lx->cur_lfn->line_num-1);
 	}
 	if (tempi->flags & IEF_PLUS_OPCODE) {
-	  if (OM_RB<=om<=OM_RD) {
-	    cur.last_opcode_U8|=tempa1->reg1&7;
-	    if (tempa1->reg1&15>7)
-	      cur.REX|=1;
-	    if (tempa1->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
-	      cur.has_REX=TRUE;
-	  } else if (om==OM_I) {
-	    if (tempa1->fstk!=CREG_NONE)
-	      cur.last_opcode_U8|=tempa1->fstk;
-	    if (tempa2->fstk!=CREG_NONE)
-	      cur.last_opcode_U8|=tempa2->fstk;
-	  }
-	  else if (tempi->slash_val==SV_REGISTER) {
-	    if (ARGT_AL<=a1<=ARGT_EAX) {
+	  if (tempi->slash_val==SV_R_REGISTER) {
+	    if (ARGT_AL<=a1<=ARGT_RAX) {
 	      cur.last_opcode_U8|=tempa2->reg1&7;
 	      if (tempa2->reg1&15>7)
 		cur.REX|=1;
 	      if (tempa2->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
 		cur.has_REX=TRUE;
-	    } else if (ARGT_AL<=a2<=ARGT_EAX) {
+	    } else {
 	      cur.last_opcode_U8|=tempa1->reg1&7;
 	      if (tempa1->reg1&15>7)
 		cur.REX|=1;
 	      if (tempa1->reg1>=20) //RBPu8,RSPu8,RSIu8,RDIu8?
 		cur.has_REX=TRUE;
 	    }
+	  } else { //SV_I_REGISTER
+	    if (tempa1->fstk!=CREG_NONE)
+	      cur.last_opcode_U8|=tempa1->fstk;
+	    if (tempa2->fstk!=CREG_NONE)
+	      cur.last_opcode_U8|=tempa2->fstk;
 	  }
 	}
 	if (a1==ARGT_RM64 || a2==ARGT_RM64 ||
@@ -1078,7 +1071,7 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 	    tempa1=&a->arg2;
 	    tempa2=&a->arg1;
 	  }
-	  if (tempi->slash_val==SV_REGISTER) {
+	  if (tempi->slash_val==SV_R_REGISTER) {
 	    if (tempa2->just_seg)
 	      cur.ModrM|=tempa2->seg<<3;
 	    else {

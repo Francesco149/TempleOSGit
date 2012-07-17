@@ -2,7 +2,7 @@
 //else used in low RAM.
 //See [::/LT/Doc/Mem.TXZ] ::/LT/Doc/Mem.TXZ.
 
-//At least [C:/LT/OSMain/Adam1a.HPZ,471] DFT_CACHE_LINE_WIDTH alignment.
+//At least [C:/LT/OSMain/Adam1a.HPZ,490] DFT_CACHE_LINE_WIDTH alignment.
 #define BOOT_RAM_BASE		0x07C00
 #define BOOT_RAM_LIMIT		0x80000
 
@@ -19,8 +19,9 @@
 
 //These are the cfguration settings
 //for a standard production CD-Image
-#define PROD_CDROM_CFG	"b1Scale2Mem(2048,0x40000)\nt3 \n\n\n\n\n"
-#define SAFE_CDROM_CFG	"b1Scale2Mem(2048,0x40000)\nt3 \n\n\n\nDontProbe\n\n"
+#define PROD_CDROM_CFG	 "b1Scale2Mem(2048,0x40000)\nt3 \n\n\n\n\n"
+#define SAFE_CDROM_CFG	 "b1Scale2Mem(2048,0x40000)\nt3 \n\n\n\nDontProbe\n\n"
+#define VMWARE_CDROM_CFG "b1Scale2Mem(2048,0x40000)\nt3 \n\nVMWare\n\n\n"
 
 #define BOOT_STK_SIZE	BLK_SIZE
 

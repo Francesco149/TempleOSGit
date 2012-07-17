@@ -20,7 +20,7 @@ ready.  A task runs until it
 voluntarily yields ctrl with a call
 to [C:/LT/OSMain/Scheduler.CPZ,371] Yield or gets preempted by the
 timer interrupt.  See [::/LT/OSMain/Interrupts.CPZ,IRQ20:2] IRQ20.  The timer
-freqency is [C:/LT/OSMain/Adam1a.HPZ,465] JIFFY_FREQ.  Tasks can ask
+freqency is [C:/LT/OSMain/Adam1a.HPZ,484] JIFFY_FREQ.  Tasks can ask
 not to be preempted with [C:/LT/OSMain/Adam1b.HPZ,94] Preempt(ON/OFF).
 Tasks waiting on I/O often loop,
 checking for a stat and swapping-out.

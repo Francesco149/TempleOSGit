@@ -45,7 +45,7 @@ Cartesian;
 
 /*
 For better performance, compile the expression entered by the user one time 
-with [C:/LT/Compiler/ExpParser.CPZ,1240] CmpExpression() and use
+with [C:/LT/Compiler/ExpParser.CPZ,1245] CmpExpression() and use
 [C:/LT/OSMain/Adam1b.HPZ,289] Call(). See
 [::/LT/Demo/OldSchool/CompileDemo.CPZ] ::/LT/Demo/OldSchool/CompileDemo.CPZ.
 */

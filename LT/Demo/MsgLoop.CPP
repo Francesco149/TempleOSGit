@@ -1,7 +1,7 @@
 U0 MsgLoop()
 {
   U64 p1,p2,msg_code;
-  "Use [C:/LT/OSMain/Adam1a.HPZ,3215] these defines in your programs instead of hardcoded nums.\n"
+  "Use [C:/LT/OSMain/Adam1a.HPZ,3229] these defines in your programs instead of hardcoded nums.\n"
   "<ESC> to Exit\n";
 
   //We don't want the mouse buttons to reposition the cursor,

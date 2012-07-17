@@ -18,7 +18,7 @@ extern BoolI64 GetExpression(LexStruct *lx,U8 **exp);
 extern U64 PrsUnaryTerm(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,ArrayDimStruct **tempad,
     I64 *max_prec,I64 *unary_pre_prec,I64 *paren_prec);
 extern U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,ArrayDimStruct **tempad,I64 *unary_post_prec);
-extern U0 PrsDereferrence(LexStruct *lx);
+extern U0 PrsDereference(LexStruct *lx);
 extern U0 PrsExcept(LexStruct *lx,U8 *name=NULL,U8 *msg=NULL);
 extern ExeStruct *CmpJoin(LexStruct *lx,FunStruct *locals,BoolI8 first_lex,BoolI8 asm_blk=FALSE,U8 *map_name=NULL,U8 mapfile_drv=0);
 extern U0 CmpFixUpJITAsm(LexStruct *lx,ExeStruct *ex,I64 ip2);
@@ -38,7 +38,7 @@ extern U0 OptPass3(LexStruct *lx,FunStruct *fun_class,OptRegStruct *register_off
 extern U0 OptPass4(LexStruct *lx,OptRegStruct *register_offsets,U64 *_type);
 extern U0 OptPass5(LexStruct *lx);
 extern U0 OptPass6(LexStruct *lx,FunStruct *fun_class);
-extern U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,OptRegStruct *register_offsets,U8 *buf,DbgInfo **_dbg,IndentInfo **_indent,I64 *min_line,I64 *max_line);
+extern U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,OptRegStruct *register_offsets,U8 *buf,DbgInfo **_dbg);
 extern I64 PrsKeyWord(LexStruct *lx);
 extern U64 HashEntrySize(SrcSymHashEntry *temph);
 extern U0 PutLexWarn(LexStruct *lx,U8 *name,U8 *msg=NULL);
@@ -50,3 +50,5 @@ LTextern CMP_TEMPLATES_DONT_POP U32 cmp_templates_dont_pop[1];
 LTextern CMP_TEMPLATES_DONT_PUSH U32 cmp_templates_dont_push[1];
 LTextern CMP_TEMPLATES_DONT_PUSH_POP U32 cmp_templates_dont_push_pop[1];
 LTextern CMP_TEMPLATES_DONT_PUSH2 U32 cmp_templates_dont_push2[1];
+
+

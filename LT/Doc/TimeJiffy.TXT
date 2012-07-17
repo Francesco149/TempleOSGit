@@ -1,14 +1,14 @@
-One jiffy is one time slice.  [C:/LT/OSMain/Adam1b.HPZ,210] sys_jiffies
+One jiffy is one time slice.  [C:/LT/OSMain/Adam1b.HPZ,211] sys_jiffies
 returns time slices since boot.
 
 [C:/LT/OSMain/Misc1a.CPZ,63] SysTimerRead reads the timer ticks since
 boot.  It's not as fast as 
 [C:/LT/OSMain/Adam1b.HPZ,202] GetTimeStamp.
 
-Use [C:/LT/OSMain/Adam1a.HPZ,465] JIFFY_FREQ to convert
-[C:/LT/OSMain/Adam1b.HPZ,210] sys_jiffies.
+Use [C:/LT/OSMain/Adam1a.HPZ,484] JIFFY_FREQ to convert
+[C:/LT/OSMain/Adam1b.HPZ,211] sys_jiffies.
 
-Use [C:/LT/OSMain/Adam1a.HPZ,467] SYS_TIMER_FREQ to convert
+Use [C:/LT/OSMain/Adam1a.HPZ,486] SYS_TIMER_FREQ to convert
 [C:/LT/OSMain/Misc1a.CPZ,63] SysTimerRead.
 
 

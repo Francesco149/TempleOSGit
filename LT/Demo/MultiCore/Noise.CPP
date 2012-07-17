@@ -39,7 +39,7 @@ U0 NoiseDemo()
 
   noise_done=FALSE;
   for (i=1;i<mp_cnt;i++)
-    MPSpawn(&MPTask,Fs,"Job",1<<i);
+    MPSpawn(&MPTask,Fs,"Job",i);
 
   while (!ScanChar) {
     t0=tNP;

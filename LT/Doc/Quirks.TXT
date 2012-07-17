@@ -17,8 +17,8 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/LT/OSMain/Adam1a.HPZ,2837] DFT_STK and 
-recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,229]
+[C:/LT/OSMain/Adam1a.HPZ,2853] DFT_STK and 
+recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,225]
 Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
@@ -32,25 +32,25 @@ removable media.
 * You can only extern something once.  There is a varient called LTextern 
 which binds a C+ definition to a asm sym.  This, too, can only be done once.
 
-* You must call [C:/LT/OSMain/Task1a.CPZ,298] TaskLocalInit() in a task you
-[C:/LT/OSMain/Task1a.CPZ,229] Spawn() before you can do file 
+* You must call [C:/LT/OSMain/Task1a.CPZ,294] TaskLocalInit() in a task you
+[C:/LT/OSMain/Task1a.CPZ,225] Spawn() before you can do file 
 I/O.  And, preemption is off by default, so use [C:/LT/OSMain/Adam1b.HPZ,94]
 Preempt(ON) if you wish.
 
-* A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf document structure
+* A terminal task has a [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf document structure
 that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/LT/OSMain/Adam1a.HPZ,1361] Ltf from being activated when 
+[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf from being activated when 
 the user clicks in the window, do one of three things:
   
-A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1659] LtfBottom() followed by
-  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear() to clear the
-  [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf so it has no active 
+A) [C:/LT/Adam/Ltf/LtfRecalc.APZ,1664] LtfBottom() followed by
+  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1696] LtfClear() to clear the
+  [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf so it has no active 
 widgets.
 
 B) Disable window manager button click checking with Fs->win_inhibit set to 
-mask [C:/LT/OSMain/Adam1a.HPZ,2987] WIF_IP_L and
-  [C:/LT/OSMain/Adam1a.HPZ,2988] WIF_IP_R.  This inhibits window manager
+mask [C:/LT/OSMain/Adam1a.HPZ,3003] WIF_IP_L and
+  [C:/LT/OSMain/Adam1a.HPZ,3004] WIF_IP_R.  This inhibits window manager
   operations but 
 still generates messages from button clicks.
 
@@ -82,7 +82,7 @@ effect, but when entering "if" statements with "else" clauses it presents
 problems.
 
 * You can do a class fwd reference by using extern on the first declaration, 
-but you can only do ptr referrences to the class.
+but you can only do ptr references to the class.
 
 * When doing something like
       U16 *_w=0xF0000000;

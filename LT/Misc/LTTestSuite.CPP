@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=149;
+  progress4_max=150;
 }
 U0 TSEnd()
 {
@@ -2000,6 +2000,14 @@ U0 DoMulByHand()
   XTalk(task,"Exit;\n");
 }
 
+U0 DoDivByHand()
+{
+  TaskStruct *task=SpawnUser;
+  XTalkWithWait(task,"#include \"::/LT/Demo/Asm/DivByHand.CPZ\";\n");
+  Sleep(1000);
+  XTalk(task,"Exit;\n");
+}
+
 U0 DoGlblVars()
 {
   TaskStruct *task=SpawnUser;
@@ -2230,6 +2238,7 @@ TS; DoAsmHelloWorld;
 TS; DoAsmAndC;
 TS; DoAsmAndC2;
 TS; DoMulByHand;
+TS; DoDivByHand;
 TS; DoPageTableEntries2;
 DoReps;
 

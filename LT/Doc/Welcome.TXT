@@ -11,7 +11,7 @@ it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-129,676 lines of code including the kernel, the 64-bit compiler, the graphics 
+135,015 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -114,7 +114,7 @@ Cli() and on with [C:/LT/OSMain/Adam1b.HPZ,142] Sti().  Lose
 Thos runs all programs in kernel mode, ring 0, so no instructions are 
 off-limits.  Turning-off and on preemption with [C:/LT/OSMain/Adam1b.HPZ,94]
 Preempt() is a less drastic 
-measure that is usually sufficient.  A newly [C:/LT/OSMain/Task1a.CPZ,229]
+measure that is usually sufficient.  A newly [C:/LT/OSMain/Task1a.CPZ,225]
 Spawn()ed task begins with 
 preemption off.
 
@@ -138,9 +138,9 @@ putting graphics on the screen.  Hardware graphics acceleration is not used,
 so this is possible.  See [::/LT/Doc/MultiCore.TXZ] LoseThos MultiCore.
 
 There is no distinction between the terms "task", "process" or "thread".  All 
-have a task record, [C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct(), pointed to
+have a task record, [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct(), pointed to
 by the FS segment register and 
-are accessed with Fs-> while Gs-> points to a [C:/LT/OSMain/Adam1a.HPZ,3742]
+are accessed with Fs-> while Gs-> points to a [C:/LT/OSMain/Adam1a.HPZ,3756]
 CPUStruct for the current CPU 
 core.  Each task can have just one window, but a task can have children with 
 windows.  (The segment registers are just used as extra registers -- there is 
@@ -159,7 +159,7 @@ task and even had a "/LT/Root" directory ;-)  Adam executes
 For easy back-ups, place everything you author in your HOME directory and 
 subdirectories.  Then, use [C:/LT/Adam/Dsk/Dsk2a.APZ,149] CopyTree().  That
 should make upgrading easy, too.  
-To make an account use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,109] MkDir() to create a
+To make an account use [C:/LT/OSMain/Dsk/Dsk1c.CPZ,97] MkDir() to create a
 directory under /LT/Accts.  It will 
 be HOME if you boot to it.  Recompile with [C:/LT/Adam/Boot/InsBoot.APZ,157]
 InstallBoot() and make it boot your 

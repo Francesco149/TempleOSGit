@@ -165,11 +165,30 @@ extern class ClassStruct;
 extern class FunStruct;
 extern class ExeImportExportStruct;
 extern class HeapCtrl;
-extern class TaskKeyDevStruct;
 extern class ExeHeapGlblStruct;
 extern class GrDC;
 extern class MPCmdCtrl;
 extern class IntermediateCode;
+
+#define U8_QUE_VECT_CNT		512
+class U8QueVect
+{
+  U8QueVect *next,*last;
+  I64 total_cnt,node_cnt,min_index;
+  U8 body[U8_QUE_VECT_CNT];
+};
+
+public class U8Fifo
+{
+  U8 *buf;
+  U64 mask,in_ptr,out_ptr;
+};
+
+public class U64Fifo
+{
+  U64 *buf;
+  U64 mask,in_ptr,out_ptr;
+};
 
 #define NUM_DATE_FMTS	57
 #define NUM_TIME_FMTS	23
@@ -497,8 +516,7 @@ class Sema
 #define SYS_SEMA_UPDATE_WIN_Z_BUF	17
 #define SYS_SEMA_TNP			18
 #define SYS_SEMA_MUTE			19
-#define SYS_SEMA_RISKY_COPY		20
-#define NUM_SYS_SEMAS			21
+#define NUM_SYS_SEMAS			20
 
 #define SYSf_CTRL_ALT_DEL		0
 #define SYSf_CTRL_ALT_C			1
@@ -509,7 +527,7 @@ class Sema
 //I'm the only one allowed to create these.
 //They work with [C:/LT/OSMain/Adam1b.HPZ,298] CallExtNum().
 //I guess you could reallocate
-//and extend [C:/LT/OSMain/Adam1b.HPZ,296] ext[] and copy it.
+//and extend [C:/LT/OSMain/Adam1b.HPZ,297] ext[] and copy it.
 #define EXT_WIN_TO_TOP		0
 #define EXT_DEBUGGER		1
 #define EXT_EXIT_DEBUGGER	2
@@ -615,7 +633,7 @@ public class SysHashEntry
 //Hash entries are not normally ever removed.  Normally, a new
 //entry is added to eclipse the old by being in front of it
 //in future searches.  Old function code and stuff is not disposed
-//in case a referrence uses it and old hash entries are kept, too.
+//in case a reference uses it and old hash entries are kept, too.
   SysHashEntry *next;
 //Once in a while, the whole hash table is traverse -- [C:/LT/OSMain/PSect.CPZ,10] PSectFind(), for example.
 //To speed traversal of all symbols, the following links
@@ -629,7 +647,7 @@ public class SysHashEntry
 //before being defined.  It is also used for popularity measures
 //in wordstat.	You can do a [C:/LT/Adam/Hash2a.APZ,151] HashRep() to see
 //roughly how many times a symbol has been
-//referrenced.	Beware of instances where
+//referenced.	Beware of instances where
 //a hash entry is continuously searched for and
 //racks-up huge use_cnt numbers.
 };
@@ -729,8 +747,8 @@ public class MemberListStruct
 #define Cf_INTERNAL_TYPE	1
 
 public class ClassStruct:SrcSymHashEntry
-{ //See [C:/LT/Compiler/StmtParser.CPZ,1] PrsClassNew().	baseclass of [C:/LT/OSMain/Adam1a.HPZ,760] FunStruct
-  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,803] GlblVarStruct.size
+{ //See [C:/LT/Compiler/StmtParser.CPZ,1] PrsClassNew().	baseclass of [C:/LT/OSMain/Adam1a.HPZ,778] FunStruct
+  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,821] GlblVarStruct.size
   U32 member_cnt;
   U8 ptr_cnt,sub_type,flags[2];
   MemberListStruct *member_list;
@@ -802,7 +820,7 @@ public class FunStruct:ClassStruct
 
 public class GlblVarStruct:SrcSymHashEntry
 {//also used for typedef's
-  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,731] ClassStruct.size
+  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,749] ClassStruct.size
   I64 flags;
   ClassStruct *var_class;
   FunStruct *fun_ptr;
@@ -1284,7 +1302,7 @@ class EdFileNameStruct
 #define LTFF_DO_FULL_REFRESH	0x100000
 #define LTFF_BREAK_UNLOCKED	0x200000
 #define LTFF_AUX_LTF		0x400000
-#define LTFF_HIDE_CURSOR	0x800000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1707] LtfCursor
+#define LTFF_HIDE_CURSOR	0x800000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1712] LtfCursor
 
 #define LTFF_HIGHLIGHT		LTFLF_HIGHLIGHT
 #define LTFF_LOCK_TO_PAGE	LTFLF_LOCK_TO_PAGE
@@ -1296,7 +1314,7 @@ class EdFileNameStruct
 #define LTFF_UNDERLINE		LTFLF_UNDERLINE
 
 #define LTFF_CARRIAGE_RETURN	0x100000000
-#define LTFF_NO_SCROLL_BARS	0x200000000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1717] LtfScroll
+#define LTFF_NO_SCROLL_BARS	0x200000000 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1722] LtfScroll
 
 #define LTFf_OVERSTRIKE 	0
 #define LTFf_PLAIN_TEXT 	1
@@ -1321,7 +1339,7 @@ class EdFileNameStruct
 #define LTFf_DO_FULL_REFRESH	20
 #define LTFf_BREAK_UNLOCKED	21
 #define LTFf_AUX_LTF		22
-#define LTFf_HIDE_CURSOR	23  //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1707] LtfCursor
+#define LTFf_HIDE_CURSOR	23  //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1712] LtfCursor
 
 #define LTFf_HIGHLIGHT		LTFLf_HIGHLIGHT
 #define LTFf_LOCK_TO_PAGE	LTFLf_LOCK_TO_PAGE
@@ -1425,8 +1443,8 @@ public class Ltf //Linked Text File header
 //You might need to do #exe {OptOn();}
 //Note: The #exe statement is lexed-ahead, so it takes effect earlier than you might expect.
 
-#define OPTf_UNUSED_VAR_WARN	0 //Applied to funs, not statements
-#define OPTf_PAREN_WARN		1 //warn unnecessary parens
+#define OPTf_WARN_UNUSED_VAR	0 //Applied to funs, not statements
+#define OPTf_WARN_PAREN		1 //warn unnecessary parens
 #define OPTf_PARSE_TRACE	2
 #define OPTf_COMPILE_TRACE	3
 #define OPTf_ECHO		4
@@ -1540,8 +1558,7 @@ class IntermediateCode
   ClassStruct *ic_class2;
 
   U32 ic_line;
-  U8 ic_indent_level,pad;
-  U16 ic_start_line_offset;
+  I8 ic_indent_level,pad[3];
   IcArg p1,p2,p3,r;
 
   U8 *ic_ext_body;
@@ -1612,8 +1629,9 @@ class CbMiscStruct
 #define IEF_STI			0x400
 #define IEF_ENDING_ZERO		0x800
 
-#define SV_REGISTER	8
-#define SV_NONE		9
+#define SV_R_REGISTER	8
+#define SV_I_REGISTER	9
+#define SV_NONE		10
 class InstructionEntry
 {
   U8 ins_entry_num; //This entry num in opcode hash entry
@@ -1747,7 +1765,7 @@ class ExeHeapGlblStruct
   ExeHeapGlblStruct *next;
   U8 *str;
   U64 size;
-  ExeHeapGlblRefStruct *referrences;
+  ExeHeapGlblRefStruct *references;
 };
 
 class ExeStruct
@@ -1763,18 +1781,13 @@ class ExeStruct
 
 
 #define OM_NO 0
-#define OM_R  1
-#define OM_CB 2
-#define OM_CW 3
-#define OM_CD 4
-#define OM_CP 5
-#define OM_IB 6
-#define OM_IW 7
-#define OM_ID 8
-#define OM_RB 9
-#define OM_RW 10
-#define OM_RD 11
-#define OM_I  12
+#define OM_CB 1
+#define OM_CW 2
+#define OM_CD 3
+#define OM_CP 4
+#define OM_IB 5
+#define OM_IW 6
+#define OM_ID 7
 
 #define ARGT_NO		0
 #define ARGT_REL8	1
@@ -1854,11 +1867,11 @@ class ExeStruct
 #define TK_IDENT		0x100
 #define TK_STR			0x101
 #define TK_INTEGER		0x102
-#define TK_U8			0x103
+#define TK_U8			0x103 // character(s) in single quotes
 #define TK_F64			0x104
 #define TK_PLUS_PLUS		0x105
 #define TK_MINUS_MINUS		0x106
-#define TK_DEREFERRENCE		0x107
+#define TK_DEREFERENCE		0x107
 #define TK_DBL_COLON		0x108
 #define TK_SHL			0x109
 #define TK_SHR			0x10A
@@ -1981,7 +1994,7 @@ public class LexStruct
 {
   LexStruct *next,*last;
   I64	token;
-  U64	flags,locked_flags;
+  U64	flags;
   I64	cur_i;
   F64	cur_f;
   U8	*ident;
@@ -1989,12 +2002,15 @@ public class LexStruct
   U8	*dollar;
   I64	dollar_cnt;
   U8	*cur_index;
-  I64	last_U16,last_indent_level,last_line_num,start_line_num,indent_line_offset;
+  I64	last_U16;
+  I64	min_line,max_line,last_line_num;
+  I64	expression_start_line_num;
+  I64	indent_level,temp_indent_level;
   I64	braces_cnt;
   I64	statement_cnt;
-  I64	indent_level,expression_start_line;
   I64	lock_cnt;
   U32	*alpha_numeric_bitmap;
+  U8QueVect *indent_que_vect;
   SysHashTable	*define_hash_table;
   SysHashTable	*local_hash_table;
   SysHashTable	*glbl_hash_table;
@@ -2008,7 +2024,7 @@ public class LexStruct
   MemberListStruct *local_var_entry;
   CbMiscStruct	*lb_leave;
   U8 *cur_buf_ptr;
-  LexFileStruct *cur_lfn;
+  LexFileStruct *cur_lfn,*fun_lfn;
   I64 stk_ptr;
   StreamBlkStruct *next_stream_blk,*last_stream_blk;
   ExeStruct *exe_struct;
@@ -2876,7 +2892,7 @@ public class HeapCtrl
 #define ROP_COLLISION			0x0200
 #define ROP_MONO			0x0300
 
-//These are just for [C:/LT/OSMain/Adam1a.HPZ,2886] ROPF_PROBABILITY_DITHER
+//These are just for [C:/LT/OSMain/Adam1a.HPZ,2902] ROPF_PROBABILITY_DITHER
 //See [C:/LT/Adam/Gr/MathGr.APZ,460] GrLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3136,8 +3152,6 @@ public class TaskStruct
   TaskStruct *next_input_filter_task,*last_input_filter_task;
   TaskStruct *next_sibling_task,*last_sibling_task;
   TaskStruct *next_child_task,*last_child_task;
-
-  TaskKeyDevStruct *next_key_dev,*last_key_dev;
 
   //These are derived from left,top,right,bottom
   I64	win_width;
@@ -3486,12 +3500,12 @@ public class GrDC
 
 //public--change directly
   ColorROPU32 color,
-	bkcolor, //Set for use with [C:/LT/OSMain/Adam1a.HPZ,2876] ROP_COLLISION
+	bkcolor, //Set for use with [C:/LT/OSMain/Adam1a.HPZ,2892] ROP_COLLISION
 	color2; //Internally used for [C:/LT/Adam/Gr/GrPrimatives.APZ,234] GrFloodFill()
   P3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability is basically a U16.
-  //It is activated by [C:/LT/OSMain/Adam1a.HPZ,2886] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/LT/OSMain/Adam1a.HPZ,2902] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3527,7 +3541,7 @@ public class GrDC
   F64 speedline_scale;
   U64 collision_cnt;
 
-  //Set by [C:/LT/OSMain/Adam1a.HPZ,3459] DCF_RECORD_EXTENTS
+  //Set by [C:/LT/OSMain/Adam1a.HPZ,3473] DCF_RECORD_EXTENTS
   I64 min_x,max_x,min_y,max_y; //screen coordinates
 
   U32 dc_signature,pad;
@@ -3768,16 +3782,6 @@ class KeyDevStruct
   BoolI64 (*put_s)(U8 *st);
 };
 
-class TaskKeyDevStruct
-{
-  TaskKeyDevStruct *next,*last;
-  TaskStruct *task;
-  U64 priority,flags;
-  U0 *put_data;
-  BoolI64 (*put_key)(TaskStruct *task,U0 *data,U64 ch,U64 sc);
-  BoolI64 (*put_s)(TaskStruct *task,U0 *data,U8 *st);
-};
-
 #define CREG_RAX	0
 #define CREG_RCX	1
 #define CREG_RDX	2
@@ -3817,18 +3821,6 @@ POP R8 POP RDI POP RSI POP RBP POP RBX POP RDX POP RCX POP RAX
 #define ST_ERR_ST   "$FG,LTRED$$BK,1$ERROR:$FG$$BK,0$ "
 #define ST_WARN_ST  "$FG,RED$$BK,1$WARNING:$FG$$BK,0$ "
 
-public class U8Fifo
-{
-  U8 *buf;
-  U64 mask,in_ptr,out_ptr;
-};
-
-public class U64Fifo
-{
-  U64 *buf;
-  U64 mask,in_ptr,out_ptr;
-};
-
 //snd devs
 #define SD_PC_SPEAKER		0
 #define SD_HD_AUDIO		1
@@ -3856,8 +3848,8 @@ public class U64Fifo
 
 //sys_raw_dc_flags flags
 #define RDCF_IN_DOLLAR		1
-#define RDCF_LAST_DOLLAR		2
-#define RDCF_SHOW_DOLLAR		4
+#define RDCF_LAST_DOLLAR	2
+#define RDCF_SHOW_DOLLAR	4
 #define RDCF_SCROLL		8
 
 //Input ptr types

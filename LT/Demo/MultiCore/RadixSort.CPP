@@ -111,7 +111,7 @@ U0 MPRadixSortDemo(U64 dummy=0)
   }
   mp_done_flags=0;
   for (i=1;i<my_mp_cnt;i++)
-    MPSpawn(&MPSort,NULL,NULL,1<<i);
+    MPSpawn(&MPSort,NULL,NULL,i);
   MPSort;
   while (mp_done_flags!=1<<my_mp_cnt-1)
     Yield;

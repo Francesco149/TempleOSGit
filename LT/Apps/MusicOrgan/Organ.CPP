@@ -79,9 +79,9 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/LT/OSMain/Adam1a.HPZ,2938] Ctrl type for the tempo/stacatto sliders.
+  2) The [C:/LT/OSMain/Adam1a.HPZ,2954] Ctrl type for the tempo/stacatto sliders.
 
-  3) The active [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf picture buttons with macros for left/record/play/right.
+  3) The active [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf picture buttons with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
@@ -90,7 +90,7 @@ This uses four types of ctrls
 
 This uses four types of output
 
-  1) The [C:/LT/OSMain/Adam1a.HPZ,1361] Ltf for the text and buttons and kbdgraphic.
+  1) The [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf for the text and buttons and kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
 

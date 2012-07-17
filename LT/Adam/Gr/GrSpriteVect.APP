@@ -735,9 +735,17 @@ ei_bitmap:
 	    MemCpy(tempg(U8 *)+offset(GrSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 
 	    cl->flags|=LTFLF_DONT_DRAW;
-	    switch (i=GrSpriteBitMap(dc,xx1,yy1,xx2,yy2,img,bm_bkcolor,&new_snap,&new_ip_scaler)) {
+	    switch (i=GrSpriteBitMap(dc,&xx1,&yy1,&xx2,&yy2,&img,bm_bkcolor,&new_snap,&new_ip_scaler)) {
 	      case GE_OKAY_DONE:
 	      case GE_OKAY_CONT:
+		Free(tempg);
+		tempg=CAlloc(gr_sprite_queued_base_size[GRST_BITMAP8]+
+		    ((xx2-xx1+7)&~7)*(yy2-yy1));
+		tempg->type=eletype;
+		tempg->width=xx2-xx1;
+		tempg->height=yy2-yy1;
+		tempg->x2=xx1-x;
+		tempg->y2=yy1-y;
 		MemCpy(tempg(U8 *)+offset(GrSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 		break;
 	    }

@@ -199,49 +199,6 @@ BoolI64 AKDInputFilterPutS(U8 *st)
     return FALSE;
 }
 
-BoolI64 AKDTaskPutKey(U64 ch,U64 scancode)
-{
-  BoolI8 old_preempt=Preempt(OFF);
-  TaskKeyDevStruct *tempk;
-  if (!sys_focus_task) {
-    Preempt(old_preempt);
-    return FALSE;
-  }
-  tempk=sys_focus_task->next_key_dev;
-  while (tempk!=&sys_focus_task->next_key_dev) {
-    if (!(scancode & SCF_KEY_DESC) || tempk->flags & KDF_HAS_DESCS) {
-      if ((*tempk->put_key)(tempk->task,tempk->put_data,ch,scancode)) {
-	Preempt(old_preempt);
-	return TRUE;
-      }
-    }
-    tempk=tempk->next;
-  }
-  Preempt(old_preempt);
-  return FALSE;
-}
-
-
-BoolI64 AKDTaskPutS(U8 *st)
-{
-  BoolI8 old_preempt=Preempt(OFF);
-  TaskKeyDevStruct *tempk;
-  if (!sys_focus_task) {
-    Preempt(old_preempt);
-    return FALSE;
-  }
-  tempk=sys_focus_task->next_key_dev;
-  while (tempk!=&sys_focus_task->next_key_dev) {
-    if ((*tempk->put_s)(tempk->task,tempk->put_data,st)) {
-      Preempt(old_preempt);
-      return TRUE;
-    }
-    tempk=tempk->next;
-  }
-  Preempt(old_preempt);
-  return FALSE;
-}
-
 U0 PutKey(U64 ch,U64 sc)
 { //See [::/LT/Doc/KeyBoard.TXZ,PutKeyHandling] PutKeyHandling
   KeyDevStruct *tempp=sys_put_key_root.next;
@@ -341,38 +298,4 @@ U0 KeyDevRem(KeyDevStruct *tempp)
   RemQue(tempp);
   Preempt(old_preempt);
   Free(tempp);
-}
-
-TaskKeyDevStruct *TaskKeyDevAdd(BoolI64 (*fp_put_key)(TaskStruct *task,U0 *data,U64 ch,U64 sc),
-  BoolI64 (*fp_puts)(TaskStruct *task,U0 *data,U8 *st),U64 priority,BoolI8 key_descs,TaskStruct *task,U0 *data)
-//Places hook in StdOut chain for just a task
-{ //See [::/LT/Doc/KeyBoard.TXZ,PutKeyHandling] PutKeyHandling
-  BoolI8 old_preempt=Preempt(OFF);
-  TaskKeyDevStruct *tempk,*tempk1;
-  if (!TaskValidate(task)) {
-    Preempt(old_preempt);
-    return NULL;
-  }
-  tempk1=task->last_key_dev;
-  tempk=CAlloc(sizeof(TaskKeyDevStruct),task);
-  tempk->task=task;
-  tempk->put_data=data;
-  tempk->put_key=fp_put_key;
-  tempk->put_s=fp_puts;
-  tempk->priority=priority;
-  if (key_descs)
-    tempk->flags|=KDF_HAS_DESCS;
-  while (tempk1->priority>priority)
-    tempk1=tempk1->last;
-  InsQue(tempk,tempk1);
-  Preempt(old_preempt);
-  return tempk;
-}
-
-U0 TaskKeyDevRem(TaskKeyDevStruct *tempk)
-{
-  BoolI8 old_preempt=Preempt(OFF);
-  RemQue(tempk);
-  Preempt(old_preempt);
-  Free(tempk);
 }

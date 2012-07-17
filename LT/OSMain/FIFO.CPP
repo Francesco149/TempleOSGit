@@ -101,7 +101,7 @@ U0 U64FifoDel(U64Fifo *f)
   Free(f);
 }
 
-BoolI64 U64FifoInsert(U64Fifo *f,U64 d)
+BoolI64 U64FifoInsert(U64Fifo *f,U64 dd)
 {
   U64 new_in_ptr;
   PushFD;
@@ -111,14 +111,14 @@ BoolI64 U64FifoInsert(U64Fifo *f,U64 d)
     PopFD;
     return FALSE;
   } else {
-    f->buf[f->in_ptr]=d;
+    f->buf[f->in_ptr]=dd;
     f->in_ptr=new_in_ptr;
     PopFD;
     return TRUE;
   }
 }
 
-BoolI64 U64FifoRem(U64Fifo *f,U64 *d)
+BoolI64 U64FifoRem(U64Fifo *f,U64 *dd)
 {
   PushFD;
   Cli;
@@ -126,14 +126,14 @@ BoolI64 U64FifoRem(U64Fifo *f,U64 *d)
     PopFD;
     return FALSE;
   } else {
-    *d=f->buf[f->out_ptr];
+    *dd=f->buf[f->out_ptr];
     f->out_ptr=(f->out_ptr+1)&f->mask;
     PopFD;
     return TRUE;
   }
 }
 
-BoolI64 U64FifoPeek(U64Fifo *f,U64 *d)
+BoolI64 U64FifoPeek(U64Fifo *f,U64 *dd)
 {
   PushFD;
   Cli;
@@ -141,7 +141,7 @@ BoolI64 U64FifoPeek(U64Fifo *f,U64 *d)
     PopFD;
     return FALSE;
   } else {
-    *d=f->buf[f->out_ptr];
+    *dd=f->buf[f->out_ptr];
     PopFD;
     return TRUE;
   }

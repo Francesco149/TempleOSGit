@@ -136,9 +136,6 @@ public extern U8 *gr_font;
 
 public extern KeyDevStruct *KeyDevAdd(BoolI64 (*fp_put_key)(U64 ch,U64 sc),BoolI64 (*fp_puts)(U8 *st),U64 priority,BoolI8 key_descs=FALSE);
 public extern U0 KeyDevRem(KeyDevStruct *tempp);
-public extern TaskKeyDevStruct *TaskKeyDevAdd(BoolI64 (*fp_put_key)(TaskStruct *task,U0 *data,U64 ch,U64 sc),
-  BoolI64 (*fp_puts)(TaskStruct *task,U0 *data,U8 *st),U64 priority,BoolI8 key_descs,TaskStruct *task,U0 *data);
-public extern U0 TaskKeyDevRem(TaskKeyDevStruct *tempk);
 public extern U0 SetKeyDesc(U8 *fmt,...);
 public extern U0 SetCtrlAltLetCB(U8 ch,U0 (*fp_handler)(U64 sc),U8 *desc,BoolI8 in_irq=FALSE);
 extern U8 key_desc[128];
@@ -180,7 +177,7 @@ public extern BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALS
 public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 
-//Gets [C:/LT/OSMain/Adam1a.HPZ,1419] Flags
+//Gets [C:/LT/OSMain/Adam1a.HPZ,1437] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);
@@ -442,7 +439,6 @@ extern U0 ATAWriteBlks(LTBlkDev *bdev,U0 *buf, U64 blk, U64 cnt);
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 #help_file "::/LT/Doc/CmdLine"
-public extern BoolI64 RiskyCopy(BoolI8 val);
 public extern U0 ChgDsk(U8 drv_let=0);
 public extern BoolI64 Drv(U8 drv_let);
 public extern BoolI64 Cd(U8 *dirname,BoolI8 make_dirs=FALSE);
@@ -609,10 +605,9 @@ extern MPCmdStruct *MPQueueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
        U64 flags=1<<MPCf_FREE_ON_COMPLETE,
        BoolI8 spawn=FALSE,U64 target_cpu_mask=ALL_MASK);
 public extern MPCmdStruct *MPJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
-       U64 flags=1<<MPCf_FREE_ON_COMPLETE,
-       U64 target_cpu_mask=ALL_MASK);
+       U64 target_cpu=1,U64 flags=1<<MPCf_FREE_ON_COMPLETE);
 public extern I64 MPJobResult(MPCmdStruct *tempm);
-public extern TaskStruct *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 target_cpu=ALL_MASK);
+public extern TaskStruct *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 target_cpu=1);
 public extern U0 MPNMInt();
 public extern U0 MPStart();
 #help_index "MultiCore;Boot"
@@ -661,9 +656,9 @@ public extern U0 U8FifoFlush(U8Fifo *f);
 public extern U64 U8FifoCnt(U8Fifo *f);
 public extern U64Fifo *U64FifoNew(U64 size,TaskStruct *mem_task=NULL);
 public extern U0 U64FifoDel(U64Fifo *f);
-public extern BoolI64 U64FifoInsert(U64Fifo *f,U64 d);
-public extern BoolI64 U64FifoRem(U64Fifo *f,U64 *d);
-public extern BoolI64 U64FifoPeek(U64Fifo *f,U64 *d);
+public extern BoolI64 U64FifoInsert(U64Fifo *f,U64 dd);
+public extern BoolI64 U64FifoRem(U64Fifo *f,U64 *dd);
+public extern BoolI64 U64FifoPeek(U64Fifo *f,U64 *dd);
 public extern U0 U64FifoFlush(U64Fifo *f);
 public extern U64 U64FifoCnt(U64Fifo *f);
 

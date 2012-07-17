@@ -278,31 +278,6 @@ public U0 ChkAll()
     ChkDsk(*ptr++);
 }
 
-U0 CopySongDir(U8 *files_find_mask,U8 threshold)
-{
-  Ltf *s;
-  LtfEntry *ll;
-  LTDirEntry *tempm,*tempm1;
-  tempm1=tempm=FilesFind(files_find_mask);
-  while (tempm1) {
-    s=LtfRead(tempm1->full_name);
-    ll=s->root.next;
-    if (ll->type_u8==LTFT_TEXT && ll->tag[2]>=threshold)
-      Copy(tempm1->full_name,"::/LT/Apps/MusicOrgan/Examples");
-    tempm1=tempm1->next;
-  }
-  LTDirListDel(tempm);
-}
-
-public U0 CopySongs(U8 threshold='7')
-{
-  DelTree("::/LT/Apps/MusicOrgan/Examples");
-  MkDir("::/LT/Apps/MusicOrgan/Examples");
-  CopySongDir("::/LT/Accts/TAD/MusicOrgan/GODSongs/*.CPZ",threshold);
-  CopySongDir("::/LT/Accts/TAD/MusicOrgan/TADSongs/*.CPZ",threshold);
-  CopySongDir("::/LT/Accts/TAD/MusicOrgan/MixedSongs/*.CPZ",threshold);
-}
-
 public U0 MyHAllRep(U8 *flags="-p",U8 *index=NULL)
 {
   HashRep(Fs->hash_table,HTT_SRC_SYM-HTT_DEFINE_STR-HTT_CLASS,NULL,flags,0,index);

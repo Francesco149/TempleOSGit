@@ -1,4 +1,4 @@
-#exe {OptOn(OPTf_PAREN_WARN);};
+#exe {OptOn(OPTf_WARN_PAREN);};
 #help_index "Task/Login"
 
 //Use Dbg("Type 'DbgExit'"); to debug before window manager is running.
@@ -64,7 +64,7 @@ LBts(&sys_run_level,RLf_REGISTRY);
 
 Cd("::/LT/Adam");;
 #include "WallPaper"
-#exe {OptOff(OPTf_PAREN_WARN);};
+#exe {OptOff(OPTf_WARN_PAREN);};
 LBts(&sys_run_level,RLf_ADAM2);
 
 Cd("HOME");;

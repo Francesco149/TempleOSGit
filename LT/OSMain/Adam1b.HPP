@@ -171,7 +171,7 @@ public LTextern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d);
 public LTextern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d);
 
 //Model Specific REgisters
-//See [C:/LT/OSMain/Adam1a.HPZ,446] MSRs
+//See [C:/LT/OSMain/Adam1a.HPZ,465] MSRs
 public LTextern _SET_MSR U0 SetMSR(U64 model_specific_reg,U64 val);
 
 #help_index "Processor/Cache;Memory/Cache"
@@ -187,7 +187,7 @@ public LTintern EC_CLFLUSH U0 CLFlush(U0 *a);
 #help_file "::/LT/Doc/MultiCore.TXZ"
 LTextern _SET_GS_BASE U0 SetGs(CPUStruct *c);
 public LTextern SYS_MP_CNT U64 mp_cnt;
-LTextern SYS_MP_CNT_INITIAL U64 mp_cnt_initial; //only used during [C:/LT/OSMain/MultiProc.CPZ,413] MPStart
+LTextern SYS_MP_CNT_INITIAL U64 mp_cnt_initial; //only used during [C:/LT/OSMain/MultiProc.CPZ,412] MPStart
 LTextern SYS_MP_CNT_LOCK U64 mp_cnt_lock;
 LTextern SYS_TEMP_CPU0_STRUCT CPUStruct sys_temp_cpu0_struct;
 public LTextern SYS_CPU_STRUCTS	 CPUStruct *cpu_structs;
@@ -292,7 +292,7 @@ public LTextern _CALL I64 Call(U0 *s);
 public LTextern _CALLIND I64 CallInd(/*argpop*/I64 (*fp_add)(...),...);
 
 //This is just an array of ptrs to funs.
-//See [C:/LT/OSMain/Adam1a.HPZ,520] Extern Num Definitions
+//See [C:/LT/OSMain/Adam1a.HPZ,538] Extern Num Definitions
 public LTextern SYS_EXTERN_TABLE /*argpop*/ I64 (**ext)(...);
 //Can have any fixed number of arguments.
 public LTextern _CALLEXTNUM I64 CallExtNum(U64 num,...);

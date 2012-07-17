@@ -34,6 +34,6 @@ cores, you need a locked semaphore.
 
 * I don't use TYPEDEFs, for no particular reason.
 
-* [C:/LT/OSMain/Misc1a.CPZ,312] SysDbg() and [C:/LT/OSMain/Misc1a.CPZ,318]
+* [C:/LT/OSMain/Misc1a.CPZ,306] SysDbg() and [C:/LT/OSMain/Misc1a.CPZ,312]
 IsSysDbg() are really handy when working on the compiler or 
 OSMain.  It's just a bit you can set and test.

@@ -296,7 +296,7 @@ value, too.  If you want to see my
 best attempt at realistic physics
 download SimStructure.
 
-http://www.losethos.com/files/SimStrSetup.exe
+http://www.losethos.com/files/SimStrSetUp.ZIP
 Product Key: L00-W10-M70
 
 This is just a video game. Relax.
@@ -376,7 +376,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,235] Ode feat,
+I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,254] Ode feat,
 just to be different.
 */
 

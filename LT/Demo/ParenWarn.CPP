@@ -1,4 +1,4 @@
-OptOn(OPTf_PAREN_WARN);
+OptOn(OPTf_WARN_PAREN);
 
 
 F64 d,d1=1,d2=1;
@@ -16,4 +16,4 @@ d=2`(3`2);
 d=-d1`(d+d2);
 
 
-OptOff(OPTf_PAREN_WARN);
+OptOff(OPTf_WARN_PAREN);

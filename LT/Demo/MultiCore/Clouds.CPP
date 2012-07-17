@@ -63,7 +63,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   I64 i;
   mp_done_flags=0;
   for (i=1;i<mp_cnt;i++)
-    MPJob(&MPDrawClouds,task,1<<MPCf_FREE_ON_COMPLETE,1<<i);
+    MPJob(&MPDrawClouds,task,i);
   MPDrawClouds(task);
   while (mp_done_flags!=1<<mp_cnt-1)
     Yield;

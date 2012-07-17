@@ -72,7 +72,6 @@ U0 CbPutIc(IntermediateCode *tempi)
 {
   U64 opcode=tempi->ic_opcode,i;
   if (opcode>=EC_END_EXP && opcode!=EC_NOP1) {
-//"%d,%d ",tempi->ic_line+tempi->ic_start_line_offset,tempi->ic_indent_level;
     "%15ts %016X ",
       DefineSub(opcode,"ST_INTERMEDIATE_CODE")+4,
       tempi->ic_data;
@@ -158,12 +157,7 @@ IntermediateCode *CbIcAdd(LexStruct *lx,
     flags|=ICF_LOCK;
   tempi->ic_flags=flags;
   tempi->ic_line=lx->last_line_num;
-  tempi->ic_start_line_offset=lx->indent_line_offset;
-  lx->indent_line_offset=0;
-  tempi->ic_indent_level=lx->last_indent_level;
-  if (lx->flags&LF_INSIDE_EXPRESSION &&
-      lx->start_line_num>lx->expression_start_line)
-    tempi->ic_indent_level+=2;
+  tempi->ic_indent_level=lx->indent_level;
   if (lx->opts & OPTF_PARSE_TRACE)
     CbPutIc(tempi);
   tempi++;
@@ -348,7 +342,6 @@ U0 CbAppend(LexStruct *lx, LexCbHeader *tempcbh)
     if (tempi->ic_opcode) {
       tempi1=CbIcAdd(lx,tempi->ic_opcode+tempi->ic_precedence<<16,tempi->ic_data,
 	tempi->ic_class,tempi->ic_flags);
-      tempi1->ic_indent_level=tempi->ic_indent_level;
       tempi1->ic_line=tempi->ic_line;
     }
   } while (tempi->ic_opcode);
@@ -389,12 +382,22 @@ U0 CbCombine(LexStruct *lx)
   }
 }
 
+IndentInfo *CbIndents(LexStruct *lx)
+{
+  I64 i,num_lines=lx->max_line-lx->min_line+1;
+  IndentInfo *result=CAlloc(offset(IndentInfo.body)+sizeof(U8)*(num_lines+1));
+  result->min_line=lx->min_line;
+  result->max_line=lx->max_line;
+  for (i=0;i<num_lines;i++)
+    result->body[i]=U8QueVectGet(lx->indent_que_vect,i+lx->min_line);
+  return result;
+}
+
 U8 *CbCompile(LexStruct *lx,FunStruct *fun_class,
-		 U64 *code_size,DbgInfo **_dbg,IndentInfo **_indent,U64 *type=NULL)
+      U64 *code_size,DbgInfo **_dbg,IndentInfo **_indent,U64 *type=NULL)
 {
   U8 *result;
   OptRegStruct register_offsets[NUM_REGS];
-  I64 min_line=MAX_I64,max_line=0;
   if (_dbg)
     *_dbg=NULL;
   if (_indent)
@@ -460,19 +463,19 @@ U8 *CbCompile(LexStruct *lx,FunStruct *fun_class,
     if (Bt(&lx->pass_trace_mask,7))
       "$IV,1$Pass 7:$IV,0$\n";
   lx->pass=7;
-  OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
+  OptPass789A(lx,fun_class,register_offsets,NULL,NULL);
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,8))
       "$IV,1$Pass 8:$IV,0$\n";
   lx->pass=8;
-  OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
+  OptPass789A(lx,fun_class,register_offsets,NULL,NULL);
 
   if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
     if (Bt(&lx->pass_trace_mask,9))
       "$IV,1$Pass 9:$IV,0$\n";
   lx->pass=9;
-  *code_size=OptPass789A(lx,fun_class,register_offsets,NULL,_dbg,_indent,&min_line,&max_line);
+  *code_size=OptPass789A(lx,fun_class,register_offsets,NULL,NULL);
   if (lx->flags&LF_STATIC_COMPILE)
     result=MAlloc(*code_size);
   else
@@ -482,8 +485,11 @@ U8 *CbCompile(LexStruct *lx,FunStruct *fun_class,
     if (Bt(&lx->pass_trace_mask,0xA))
       "$IV,1$Pass A:$IV,0$\n";
   lx->pass=0xA;
-  *code_size=OptPass789A(lx,fun_class,register_offsets,result,_dbg,_indent,&min_line,&max_line);
+  *code_size=OptPass789A(lx,fun_class,register_offsets,result,_dbg);
   compiled_bytes+=*code_size;
+
+  if (_indent && lx->indent_que_vect)
+    *_indent=CbIndents(lx);
 
   LinkedListDel(lx->cbh.cb_out_first);
   CbMiscListDel(lx);

@@ -22,7 +22,7 @@ See [::/LT/Doc/Registered.TXZ] Registered Version.
 
 History:
 I've been working on LoseThos full-time for 15.5 years.  Yes, I wrote every 
-one of the 129,676 lines myself, no GPL code, no linkage or dependence on 
+one of the 135,015 lines myself, no GPL code, no linkage or dependence on 
 other code.  I am a for profit company, not welcoming code contributions, but 
 feedback is very welcome.  See [::/LT/Doc/Acknowledgements.TXZ]
 ::/LT/Doc/Acknowledgements.TXZ.
@@ -94,7 +94,7 @@ See [::/LT/Adam/DevInfo.APZ,PCIDevFileGen] PCIDevFileGen.
 
 
 Download SimStructure, a Free Windows-based Physics Simulator I wrote:
-SimStrSetup.exe (2.02 Meg)
+SimStrSetUp.ZIP (2.02 Meg)
 Use product key: L00-W10-M70
 
 I learned with SimStructure that making money directly is nearly impossible.  

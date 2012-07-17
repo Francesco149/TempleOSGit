@@ -26,11 +26,11 @@ Help
 }
 
 The first arg is the msg code and it is optional with the default being 
-[C:/LT/OSMain/Adam1a.HPZ,3231] MSG_KEY_DOWN_UP.  The second arg is the msg p1
+[C:/LT/OSMain/Adam1a.HPZ,3245] MSG_KEY_DOWN_UP.  The second arg is the msg p1
 value which is ASCII of the key 
-in the case of [C:/LT/OSMain/Adam1a.HPZ,3216] MSG_KEY_DOWN.  The third arg is
+in the case of [C:/LT/OSMain/Adam1a.HPZ,3230] MSG_KEY_DOWN.  The third arg is
 the msg p2 value which is the S
-can Code of the key in the case of [C:/LT/OSMain/Adam1a.HPZ,3216]
+can Code of the key in the case of [C:/LT/OSMain/Adam1a.HPZ,3230]
 MSG_KEY_DOWN.
 
 See [::/LT/Demo/PullDownMenu.CPZ] ::/LT/Demo/PullDownMenu.CPZ.

@@ -1,4 +1,4 @@
-//8 no nothing
+//7 has words
 U0 Song()
 {
   Fs->task_end_cb=&SndTaskEndCB;
@@ -8,11 +8,15 @@ U0 Song()
   try {
   while (!ScanKey) {
 	Play("M3/4");
-	Play("W13eECqAAeECqAA");
-	Play("eDCqAAeECqAR");
+	Play("W13eECqAAeECqAA",
+		"I \0hate \0you.\n\0 \0I \0hate \0you.\n\0 \0");
+	Play("eDCqAAeECqAR",
+		" \0 \0 \0 \0I \0hate \0you.\n\0 \0");
 	Play("M6/8");
-	Play("etAB!GqCsGEGE!!etGBDqCsCD!CD");
-	Play("etAB!GqCsGEGE!!etGBDqCsCD!CD");
+	Play("etAB!GqCsGEGE!!etGBDqCsCD!CD",
+		"$FG,RED$Don't \0 \0 \0smile.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	Play("etAB!GqCsGEGE!!etGBDqCsCD!CD",
+		"Don't \0 \0 \0smile.$FG$\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
   }
   } catch
     CatchAll;

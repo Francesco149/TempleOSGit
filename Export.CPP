@@ -7,7 +7,7 @@
 //As an added bonus, I try to match each iteration's coding style.
 //This code is public domain.
 
-OptOn(OPTf_PAREN_WARN);
+OptOn(OPTf_WARN_PAREN);
 
 //Just in case the filesystem gets corrupted while I develop it
 U0 BackupExport()

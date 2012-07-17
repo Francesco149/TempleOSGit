@@ -569,7 +569,7 @@ U8 *Ltf2PlainText(Ltf *l,LtfEntry *ll)
 
 
 LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
-{//This uses [C:/LT/Compiler/Lex.CPZ,756] Lex() to parse a string and make Ltf entries.
+{//This uses [C:/LT/Compiler/Lex.CPZ,760] Lex() to parse a string and make Ltf entries.
   I64 i,j,flags;
   U8 *ptr,*st2;
   LtfEntry *ll=NULL;

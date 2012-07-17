@@ -69,6 +69,7 @@ extern U0 CmpInit(BoolI8 first);
 extern U64 compiled_lines,compiled_funs,compiled_bytes;
 
 
+
 //The following is for benchmarking
 extern BoolI8 cmp_do_not_write_to_dsk;
 

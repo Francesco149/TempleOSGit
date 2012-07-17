@@ -1,6 +1,6 @@
 /*
 This scans the sym table and checks
-each [C:/LT/OSMain/Adam1a.HPZ,562] HTT_DEFINE_STR entry to see if
+each [C:/LT/OSMain/Adam1a.HPZ,580] HTT_DEFINE_STR entry to see if
 it only occurs once in files.
 
 It's a brute force solution, but

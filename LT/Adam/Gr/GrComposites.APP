@@ -160,6 +160,7 @@ public U0 DrawStdInputPtr(GrDC *dc,I64 x,I64 y)
 
 public U0 (*fp_draw_input_ptr)(GrDC *dc,I64 x,I64 y)=&DrawStdInputPtr;
 public U0 (*fp_draw_grab_input_ptr)(GrDC *dc,I64 x,I64 y,BoolI8 closed)=NULL;
+public U0 *gr_empty_sprite=NULL; //Gets assigned [::/LT/Adam/WallPaper.APZ] gr_empty_sprite
 
 public U0 DrawWaitInputPtr(GrDC *dc,I64 x,I64 y)
 {

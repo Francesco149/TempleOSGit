@@ -1,3 +1,5 @@
+* compiler warning enable/disable
+
 * remembering 0 term in str or not for $DA
 * Windows Key menu is forgotten.
 * GetS, crazy putkey code
@@ -28,7 +30,6 @@
 //After Egypt possible future ideas
 //[Numbers,13:33] Numbers,13:33 scouts
 //[Numbers,21:8] Numbers,21:8 snakes
-//Moses Comics 100304-
 
 GrEdit: Move sidebar selected elems.
 	- Be careful of multipoint elems.
@@ -50,9 +51,9 @@ can plan a big alloc.
 * This [::/LT/OSMain/TaskCmd.CPZ,Fs->catch_except=TRUE] Fs->catch_except=TRUE
 causes problems because it catches divide and 
 out-of-mem.  Not sure what to do, yet.
-* [C:/LT/OSMain/MultiProc.CPZ,413] MPStart() free old task memory. (Prolly
+* [C:/LT/OSMain/MultiProc.CPZ,412] MPStart() free old task memory. (Prolly
 never gonna do anything about this.)
-* [C:/LT/OSMain/Adam1b.HPZ,128] sys_var_init_flag local vars.
+* [C:/LT/OSMain/Adam1b.HPZ,129] sys_var_init_flag local vars.
 * sprite shift points, ctrl pt for ellipse/polygon w,h is off when rotated.
 
 * Window manager needs to do LTF operations on posted messages from mouse.  
@@ -63,8 +64,6 @@ Works for [C:/LT/OSMain/KbdMouse/InputPointer.CPZ,74] SetIP(), though.
 This shit: 
 
 
-
-* Who's ever reading this -- [Proverbs,30:10] Proverbs,30:10
 
 * [::/LT/Adam/Ltf/LtfRecalc.APZ,->tag+i] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
@@ -86,7 +85,6 @@ kbd lights working.
 
 * Syncronize VGA memory update with the hardware refresh cycle.
 
-* Demo [C:/LT/OSMain/Adam1a.HPZ,3772] TaskKeyDevStruct
 * Demo [C:/LT/Adam/ToHtml.APZ,250] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have
@@ -100,14 +98,14 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/LT/OSMain/Adam1a.HPZ,3448] DCF_SYMMETRY, before transformation?
+* [C:/LT/OSMain/Adam1a.HPZ,3462] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
 * compiler F32
 * preempt(OFF) during graphic clipping?
 * compiler optimization heap_glbls with added offset
-* static_compile extern glblvar referrences. 
+* static_compile extern glblvar references. 
 * extern glbl var in static module on data heap.
 * Might make FAT32 read in contiguous chunks.
 * make Limit(),Min(),Max() asm routines.
@@ -186,7 +184,3 @@ F64.
 * num lock comes on with break key
 * sort options for findfiles
 * recalc_start could be more accurate before recalculating?
-
-The pattern for Major Geeks/BetaNews is too regular.  And, I added all those 
-shareware sites and no affect on downloads. And, I only get FBI emails--not 
-one install.

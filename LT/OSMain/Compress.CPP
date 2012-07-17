@@ -1,5 +1,5 @@
 //See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (4).
-//See [C:/LT/OSMain/Adam1a.HPZ,3632] ArcCompressStruct, [C:/LT/OSMain/Adam1a.HPZ,3600] ArcTableEntry, and [C:/LT/OSMain/Adam1a.HPZ,3606] ArcCs
+//See [C:/LT/OSMain/Adam1a.HPZ,3646] ArcCompressStruct, [C:/LT/OSMain/Adam1a.HPZ,3614] ArcTableEntry, and [C:/LT/OSMain/Adam1a.HPZ,3620] ArcCs
 
 asm {
 USE64

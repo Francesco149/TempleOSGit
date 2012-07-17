@@ -3,7 +3,7 @@
 //See [::/LT/Adam/Boot/InsBoot.APZ,Cmp("OSMain"] Cmp("OSMain").
 
 #exe {
-OptOn(OPTf_PAREN_WARN);
+OptOn(OPTf_WARN_PAREN);
 #include "OSCfg"
 OSMainCfg *osmain_cfg;
 osmain_cfg=OSMainCfgNew;

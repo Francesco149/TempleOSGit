@@ -72,7 +72,7 @@ U0 Draw()
   while (TRUE) {
 
     for (i=1;i<mp_cnt;i++)
-      tempm[i]=MPJob(&MPDraw,Fs,0,1<<i);
+      tempm[i]=MPJob(&MPDraw,Fs,i,0);
     y_total=MPDraw(Fs);
     for (i=1;i<mp_cnt;i++)
       y_total+=MPJobResult(tempm[i])(F64);

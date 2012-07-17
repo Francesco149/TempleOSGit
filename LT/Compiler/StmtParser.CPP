@@ -105,8 +105,6 @@ U0 PrsVarInit(LexStruct *lx,U8 **_dst,ClassStruct *tempc,ArrayDimStruct *tempad,
   AsmCtrlStruct *a=lx->a;
   ExeAbsAddrStruct *tempa;
   ExeImportExportStruct *tempe;
-  DbgInfo *dbg=NULL;
-  IndentInfo *indent=NULL;
   BoolI8 is_str;
 
   while (tempc->fwd_class)
@@ -176,7 +174,7 @@ U0 PrsVarInit(LexStruct *lx,U8 **_dst,ClassStruct *tempc,ArrayDimStruct *tempad,
 	  CbIcAdd(lx,EC_END_EXP,0,tempc);
 	  CbIcAdd(lx,EC_RET,0,0);
 	  CbIcAdd(lx,EC_END,0,0);
-	  if (ex=CbCompile(lx,NULL,&size,&dbg,&indent)) {
+	  if (ex=CbCompile(lx,NULL,&size,NULL,NULL)) {
 	    tempe=CAlloc(sizeof(ExeImportExportStruct));
 	    tempe->type=EIE_MAIN;
 	    tempe->ip=lx->a->ip;
@@ -185,8 +183,6 @@ U0 PrsVarInit(LexStruct *lx,U8 **_dst,ClassStruct *tempc,ArrayDimStruct *tempad,
 	      AsmStoreCodeU8(lx,ex[i]);
 	    ExpressionDel(ex);
 	  }
-	  Free(dbg);
-	  Free(indent);
 	  CbPop(lx);
 	} else
 	  lx->stk_ptr--;  //grows up
@@ -320,8 +316,6 @@ U0 PrsStaticInit(LexStruct *lx,MemberListStruct *tempm,I64 pass)
   ClassStruct *tempc=tempm->member_class;
   U8 *ex;
   U64 i,size;
-  DbgInfo *dbg=NULL;
-  IndentInfo *indent=NULL;
   IntermediateCode *tempi;
   ExeImportExportStruct *tempe;
 
@@ -336,7 +330,7 @@ U0 PrsStaticInit(LexStruct *lx,MemberListStruct *tempm,I64 pass)
     if (tempi!=lx->cbh.cb_last_out_ptr) {
       CbIcAdd(lx,EC_RET,0,0);
       CbIcAdd(lx,EC_END,0,0);
-      if (ex=CbCompile(lx,NULL,&size,&dbg,&indent)) {
+      if (ex=CbCompile(lx,NULL,&size,NULL,NULL)) {
 	if (pass==2) {
 	  tempe=CAlloc(sizeof(ExeImportExportStruct));
 	  tempe->type=EIE_MAIN;
@@ -349,8 +343,6 @@ U0 PrsStaticInit(LexStruct *lx,MemberListStruct *tempm,I64 pass)
       }
     } else
       LinkedListDel(lx->cbh.cb_out_first);
-    Free(dbg);
-    Free(indent);
     CbPop(lx);
   }
 }
@@ -608,15 +600,14 @@ restart:
       LexPush(lx);
       if (lx->token!=',' && mode==PRS_LOCAL_VAR) {
 	Lex(lx); //skip type
-	lx->last_indent_level=lx->indent_level=1;
-	CbIcAdd(lx,EC_NOP,0,0); //record indent_level
+	lx->temp_indent_level=lx->indent_level=1;
 	lx->flags|=LF_INSIDE_EXPRESSION;
-	lx->expression_start_line=lx->start_line_num;
-      } else {
+	if (lx->fun_lfn)
+	  lx->expression_start_line_num=lx->fun_lfn->line_num;
+	else
+	  lx->expression_start_line_num=1;
+      } else
 	Lex(lx); //skip type or ','
-	if (mode==PRS_LOCAL_VAR)
-	  CbIcAdd(lx,EC_NOP,0,0); //record indent_level
-      }
       tempm=MemberListNew(register);
       if (mode==PRS_STATIC_LOCAL_VAR) {
 	tempm->flags=MLF_STATIC;
@@ -826,9 +817,8 @@ restart:
   }
 pvl_done:
 	if (mode==PRS_LOCAL_VAR) {
-		lx->flags=lx->flags&~LF_INSIDE_EXPRESSION;
-		lx->last_indent_level=lx->indent_level=1;
-		CbIcAdd(lx,EC_NOP,0,0); //record indent_level
+	  lx->flags=lx->flags&~LF_INSIDE_EXPRESSION;
+	  lx->temp_indent_level=lx->indent_level=1;
 	}
 }
 
@@ -987,9 +977,12 @@ U0 PrsFun(LexStruct *lx,
   MemberListStruct *tempm;
   CbMiscStruct *saved_leave_label;
   U64 i,j,size;
-  DbgInfo *dbg=NULL;
-  IndentInfo *indent=NULL;
   BoolI8 old_ctrace;
+
+  lx->fun_lfn=lx->cur_lfn;
+  lx->min_line=lx->max_line=lx->cur_lfn->line_num;
+  U8QueVectDel(lx->indent_que_vect);
+  lx->indent_que_vect=U8QueVectNew(lx->min_line);
 
   lx->flags&=~LF_NO_REG_OPT;
   tempf=PrsFunJoin(lx,temp_return,name,cps_flags);
@@ -998,7 +991,8 @@ U0 PrsFun(LexStruct *lx,
   Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
   CbOutPtrsInit(lx);
   CbIcAdd(lx,EC_START,0,0); //So we can scan back an instruction
-  lx->last_indent_level=lx->indent_level=0;
+
+  lx->temp_indent_level=lx->indent_level=0;
   CbIcAdd(lx,EC_ENTER,0,0);
   saved_leave_label=lx->lb_leave;
   lx->lb_leave=CbMiscNew(lx,CBMT_LABEL);
@@ -1007,7 +1001,7 @@ U0 PrsFun(LexStruct *lx,
   if (tempf->return_class->size &&
       !(lx->flags&LF_HAS_RETURN))
     PutLexWarn(lx,"ST_SHOULD_RETURN_VAL");
-  lx->last_indent_level=lx->indent_level=0;
+  lx->temp_indent_level=lx->indent_level=0;
   CbIcAdd(lx,EC_LABEL,lx->lb_leave,0);
   lx->lb_leave=saved_leave_label;
   CbIcAdd(lx,EC_LEAVE,0,tempf->return_class);
@@ -1016,9 +1010,7 @@ U0 PrsFun(LexStruct *lx,
   if (lx->flags&LF_STATIC_COMPILE) {
     tempf->executable_addr=lx->a->ip;
     tempf->type|=HTF_EXPORT;
-    result=CbCompile(lx,tempf,&size,&dbg,&indent);
-    tempf->debug=dbg;
-    tempf->indent=indent;
+    result=CbCompile(lx,tempf,&size,&tempf->debug,&tempf->indent);
     if (result) {
       j=(size+7)>>3;
       for (i=0;i<j;i++)
@@ -1027,9 +1019,7 @@ U0 PrsFun(LexStruct *lx,
     }
   } else {
     old_ctrace=Btr(&lx->opts,OPTf_COMPILE_TRACE);
-    tempf->executable_addr=CbCompile(lx,tempf,&size,&dbg,&indent);
-    tempf->debug=dbg;
-    tempf->indent=indent;
+    tempf->executable_addr=CbCompile(lx,tempf,&size,&tempf->debug,&tempf->indent);
     if (old_ctrace) {
       Bts(&lx->opts,OPTf_COMPILE_TRACE);
       Un(tempf->executable_addr,size,64);
@@ -1045,11 +1035,15 @@ U0 PrsFun(LexStruct *lx,
       if (tempm->use_cnt>1)
 	PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_UNNEEDED_NOUNUSEDWARN",
 	  lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,tempf->str);
-    } else if (!tempm->use_cnt && GetOpt(OPTf_UNUSED_VAR_WARN))
+    } else if (!tempm->use_cnt && GetOpt(OPTf_WARN_UNUSED_VAR))
       PrintFWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_UNUSED_VAR",
 	lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,tempf->str);
     tempm=tempm->next;
   }
+
+  U8QueVectDel(lx->indent_que_vect);
+  lx->indent_que_vect=NULL;
+  lx->fun_lfn=NULL;
 }
 
 U0 PrsGlblVarList(LexStruct *lx,I64 saved_mode,ClassStruct *saved_tempc,
@@ -1311,19 +1305,14 @@ U0 PrsIf(LexStruct *lx,FunStruct *locals,I64 try_cnt,
     PrsExcept(lx,"ST_MISSING_RIGHT_PAREN");
   Lex(lx);
   lb=CbMiscNew(lx,CBMT_LABEL);
-  lx->last_indent_level++;
-  lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
+  lx->temp_indent_level++;
   CbIcAdd(lx,EC_BR_ZERO,lb,0);
   PrsStatement(lx,locals,try_cnt,lb_break);
   k=PrsKeyWord(lx);
   if (k==KW_ELSE) {
-    lx->last_indent_level--;
-    lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
-    CbIcAdd(lx,EC_NOP,0,0); //record indent_level
-
+    lx->temp_indent_level--;
     Lex(lx);
-
-    lx->last_indent_level++;
+    lx->temp_indent_level++;
     lb1=CbMiscNew(lx,CBMT_LABEL);
     CbIcAdd(lx,EC_JMP,lb1,0);
     CbIcAdd(lx,EC_LABEL,lb,0);
@@ -1384,8 +1373,7 @@ U0 PrsFor(LexStruct *lx,FunStruct *locals,I64 try_cnt)
   LexCbHeader *tempcbh;
   CbMiscStruct *lb,*lb_done;
 
-  CbIcAdd(lx,EC_NOP,0,0); //record indent_level
-  lx->last_indent_level=lx->indent_level--;
+  lx->temp_indent_level=lx->indent_level--;
   if (lx->token!='(')
     PrsExcept(lx,"ST_EXPECTING_LEFT_PAREN");
   Lex(lx);
@@ -1413,12 +1401,11 @@ U0 PrsFor(LexStruct *lx,FunStruct *locals,I64 try_cnt)
     PrsExcept(lx,"ST_MISSING_RIGHT_PAREN");
   Lex(lx);
 
-  lx->last_indent_level=lx->indent_level++;
+  lx->temp_indent_level=lx->indent_level++;
   PrsStatement(lx,locals,try_cnt,lb_done);
   CbAppend(lx,tempcbh);
   CbIcAdd(lx,EC_JMP,lb,0);
-  lx->last_indent_level--;
-  lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
+  lx->temp_indent_level--;
   CbIcAdd(lx,EC_LABEL,lb_done,0);
 }
 
@@ -1458,7 +1445,7 @@ U0 PrsSwitch(LexStruct *lx,BoolI8 nobound,FunStruct *locals,I64 try_cnt)
   if (Lex(lx)!='{')
     PrsExcept(lx,"ST_EXPECTING_LEFT_BRACE");
   Lex(lx);
-  lx->last_indent_level=lx->indent_level++;
+  lx->temp_indent_level=lx->indent_level++;
   while (lx->token && lx->token!='}') {
     k=PrsKeyWord(lx);
     if (k==KW_CASE) {
@@ -1506,18 +1493,14 @@ U0 PrsSwitch(LexStruct *lx,BoolI8 nobound,FunStruct *locals,I64 try_cnt)
       first=TRUE;
     } else {
       if (first) {
-	lx->last_indent_level++;
-	lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
-	CbIcAdd(lx,EC_NOP,0,0); //record indent_level
+	lx->temp_indent_level++;
 	first=FALSE;
       }
       PrsStatement(lx,locals,try_cnt,lb_break);
     }
   }
 
-  lx->last_indent_level=lx->indent_level--;
-  lx->last_indent_level--;
-  lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
+  lx->temp_indent_level=--lx->indent_level;
   if (!dft_found)
     CbIcAdd(lx,EC_LABEL,lb_dft,0);
   CbIcAdd(lx,EC_LABEL,lb_break,0);
@@ -1633,13 +1616,11 @@ U0 PrsTryBlk(LexStruct *lx,FunStruct *locals,I64 try_cnt)
   lb_done=CbMiscNew(lx,CBMT_LABEL);
   lb_untry=CbMiscNew(lx,CBMT_LABEL);
 
-  lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
   if (lx->token=='{')
     has_brace=TRUE;
   else {
-    lx->last_indent_level=lx->indent_level++;
+    lx->temp_indent_level=++lx->indent_level;
     has_brace=FALSE;
-    lx->last_indent_level++;
   }
 
   CbIcAdd(lx,EC_CALL_START,0,0);
@@ -1662,7 +1643,7 @@ U0 PrsTryBlk(LexStruct *lx,FunStruct *locals,I64 try_cnt)
 
   PrsStatement(lx,locals,try_cnt+1);
   if (!has_brace)
-    lx->last_indent_level=lx->indent_level--;
+    lx->temp_indent_level=lx->indent_level--;
 
   CbIcAdd(lx,EC_LABEL,lb_untry,0);
   CbIcAdd(lx,EC_CALL_START,0,0);
@@ -1683,18 +1664,16 @@ U0 PrsTryBlk(LexStruct *lx,FunStruct *locals,I64 try_cnt)
     PrsExcept(lx,"ST_MISSING_CATCH");
 
   Lex(lx);
-  lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
   if (lx->token=='{')
     has_brace=TRUE;
   else {
-    lx->last_indent_level=lx->indent_level++;
-    lx->last_indent_level++;
+    lx->temp_indent_level=++lx->indent_level;
     has_brace=FALSE;
   }
   CbIcAdd(lx,EC_LABEL,lb_catch,0);
   PrsStatement(lx,locals,try_cnt+1);
   if (!has_brace)
-    lx->last_indent_level=lx->indent_level--;
+    lx->temp_indent_level=lx->indent_level--;
   CbIcAdd(lx,EC_RET,0,tempc);
   CbIcAdd(lx,EC_LABEL,lb_done,0);
 }
@@ -1710,7 +1689,7 @@ BoolI64 PrsStatement(LexStruct *lx,FunStruct *locals,I64 try_cnt=0,
   FunStruct *temp_untry;
   ExeStruct *tempex;
 
-  lx->last_indent_level=lx->indent_level++;
+  lx->temp_indent_level=lx->indent_level++;
   do {
     cps_flags&=~CPS_FUN_FLAGS;
     cont=FALSE;
@@ -1721,23 +1700,13 @@ BoolI64 PrsStatement(LexStruct *lx,FunStruct *locals,I64 try_cnt=0,
       Lex(lx);
     if (lx->token=='{') {
       Lex(lx);
-
-      lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
-      CbIcAdd(lx,EC_NOP,0,0); //record indent_level
-
-      lx->last_indent_level=lx->indent_level--;
       lx->braces_cnt++;
+      lx->temp_indent_level=lx->indent_level--;
       while (lx->token!='}')
 	PrsStatement(lx,locals,try_cnt,lb_break);
-
-
-      lx->last_indent_level--;
-      lx->indent_line_offset=lx->start_line_num-lx->last_line_num;
-      CbIcAdd(lx,EC_NOP,0,0); //record indent_level
-
       lx->braces_cnt--;
       lx->statement_cnt--;
-      lx->last_indent_level=lx->indent_level++;
+      lx->temp_indent_level=lx->indent_level++;
       Lex(lx);
     } else if (lx->token==TK_EOF) ;
     else if (lx->token==';') {
@@ -1754,10 +1723,10 @@ BoolI64 PrsStatement(LexStruct *lx,FunStruct *locals,I64 try_cnt=0,
 	      case KW_IF:
 		Lex(lx);
 		if (if_else)
-		  lx->last_indent_level=lx->indent_level--;
+		  lx->temp_indent_level=lx->indent_level--;
 		PrsIf(lx,locals,try_cnt,lb_break);
 		if (if_else)
-		  lx->last_indent_level=lx->indent_level++;
+		  lx->temp_indent_level=lx->indent_level++;
 		prs_semicolon=FALSE;
 		break;
 	      case KW_FOR:
@@ -2054,7 +2023,7 @@ keyword_import:
 	      PrsExcept(lx,"ST_DUP_GOTO_LABEL");
 	    g_lb->flags|=CBMF_DEFINED;
 	    Lex(lx); //skip ident
-	    lx->last_indent_level=0;
+	    lx->temp_indent_level=0;
 	    CbIcAdd(lx,EC_LABEL,g_lb,0);
 	    if (lx->token==':') //skip ident
 	      Lex(lx); //skip colon
@@ -2083,6 +2052,6 @@ keyword_import:
     }
     last_cps_flags=cps_flags;
   } while (lx->token==',' || cont);
-  lx->last_indent_level=lx->indent_level--;
+  lx->temp_indent_level=lx->indent_level--;
   return cps_flags&CPS_IS_ASM;
 }

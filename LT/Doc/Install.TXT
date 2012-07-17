@@ -46,7 +46,7 @@ You'll need to do a [C:/LT/Adam/Boot/InsBoot.APZ,269] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/LT/OSMain/Dsk/Dsk1c.CPZ,168] Fmt('D',TRUE,FALSE,PT_FAT32)
+2) [C:/LT/OSMain/Dsk/Dsk1c.CPZ,156] Fmt('D',TRUE,FALSE,PT_FAT32)
   This command formats a partition with FAT32 or the LoseThos native file 
 system type.  Use the drive letter of the partition in place of 'D'.
 

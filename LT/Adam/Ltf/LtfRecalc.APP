@@ -1229,7 +1229,12 @@ adjust_xy:
 	  dc->flags&=~(DCF_DONT_DRAW|DCF_LOCATE_NEAREST);
 	  if (recalc!=LTF_RECALC_TO_SCREEN || cl->flags&LTFLF_DONT_DRAW)
 	    dc->flags|=DCF_DONT_DRAW;
-	  ii=GrSpriteTypeMask(cl->bin_data->data);
+	  bptr=cl->bin_data->data;
+	  ii=GrSpriteTypeMask(bptr);
+	  if (ii&1<<GRST_NUM_TYPES) {
+	    bptr=gr_empty_sprite;
+	    ii=GrSpriteTypeMask(bptr);
+	  }
 	  if (ii&(1<<GRST_FLOOD_FILL|1<<GRST_FLOOD_FILL_NOT))
 	    i=cur_u8_attr>>4 &0xF ^ win_task->text_attr>>4 & 0xF;
 	  else {
@@ -1246,7 +1251,7 @@ adjust_xy:
 	    dc->flags|=DCF_LOCATE_NEAREST;
 	  dc->nearest_sprite_elem_num=0;
 	  dc->nearest_dist=MAX_I64;
-	  if (recalc==LTF_RECALC_TO_SCREEN && l->cur_sprite==cl->bin_data->data) {
+	  if (recalc==LTF_RECALC_TO_SCREEN && l->cur_sprite==bptr) {
 	    dc->flags|=DCF_LOCATE_NEAREST;
 	    dc->cur_x=ipx;
 	    dc->cur_y=ipy;
@@ -1280,9 +1285,9 @@ adjust_xy:
 	    dc->z=GR_Z_ALL;
 	    xx=0; yy=0; zz=0;
 	  }
-	  GrSpritePlot3(dc,xx,yy,zz,cl->bin_data->data);
+	  GrSpritePlot3(dc,xx,yy,zz,bptr);
 	  dc->depth_buf=NULL;
-	  if (recalc==LTF_RECALC_TO_SCREEN && l->cur_sprite==cl->bin_data->data)
+	  if (recalc==LTF_RECALC_TO_SCREEN && l->cur_sprite==bptr)
 	    l->cur_sprite_elem_num=dc->nearest_sprite_elem_num;
 	  dc->flags&=~(DCF_LOCATE_NEAREST|DCF_DONT_DRAW|DCF_TRANSFORMATION);
 	  if (dc->nearest_dist<=D) {
@@ -1752,7 +1757,7 @@ public U64 LtfCurAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 
 public U64 LtfAuxAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/LT/OSMain/Adam1a.HPZ,1272] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1273] LTFF_ATTR_BY_FILENAME flag is probably set
+  //[C:/LT/OSMain/Adam1a.HPZ,1290] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1291] LTFF_ATTR_BY_FILENAME flag is probably set
   //which means [C:/LT/Adam/Dsk/Dsk2a.APZ,314] SetDrvTextAttr() is overriding it.
   U64 result=0;
   Ltf *l;

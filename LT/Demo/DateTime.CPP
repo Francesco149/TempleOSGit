@@ -1,5 +1,5 @@
 /*
-  An [C:/LT/OSMain/Adam1a.HPZ,181] LTDate is a signed 64-bit date/time num
+  An [C:/LT/OSMain/Adam1a.HPZ,200] LTDate is a signed 64-bit date/time num
   representing how many 49710ths of a second
   since Christ.  The reason it is this crazy
   num is so that 32bits is exactly one day.
@@ -35,7 +35,7 @@ for (i=0;i<NUM_TIME_FMTS;i++)
 
 /*
   You can customize to your locality
-  with [C:/LT/OSMain/OSGlbls.CPZ,134] date_fmt_map[] and [C:/LT/OSMain/OSGlbls.CPZ,134] time_fmt_map[].
+  with [C:/LT/OSMain/OSGlbls.CPZ,134] date_fmt_map[] and [C:/LT/OSMain/OSGlbls.CPZ,135] time_fmt_map[].
   [C:/LT/OSMain/OSEnd.CPZ,1] DateTimeFmtMapsRst() will rst
   them.
 */

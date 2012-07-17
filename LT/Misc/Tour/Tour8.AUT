@@ -36,7 +36,7 @@ AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
 "We can unassemble a\n"
-"numeric address with [C:/LT/Compiler/Unassembler.CPZ,846] U().\n\n"
+"numeric address with [C:/LT/Compiler/Unassembler.CPZ,851] U().\n\n"
 "Press $FG,GREEN$<ENTER>$FG$.");
 "U(&CAlloc);";
 AFPmtStr("\n");

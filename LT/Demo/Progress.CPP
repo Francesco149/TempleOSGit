@@ -1,7 +1,7 @@
 /*
-  [C:/LT/OSMain/Adam1b.HPZ,42] progress1-[C:/LT/OSMain/Adam1b.HPZ,51] progress4 are just global vars
+  [C:/LT/OSMain/Adam1b.HPZ,43] progress1-[C:/LT/OSMain/Adam1b.HPZ,52] progress4 are just global vars
   shown on the wallpaper. I use them in debugging a lot.
-  If you set [C:/LT/OSMain/Adam1b.HPZ,43] progress1_max-[C:/LT/OSMain/Adam1b.HPZ,52] progress4_max,
+  If you set [C:/LT/OSMain/Adam1b.HPZ,44] progress1_max-[C:/LT/OSMain/Adam1b.HPZ,53] progress4_max,
   then a bar will display.
 */
 

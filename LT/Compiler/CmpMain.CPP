@@ -25,8 +25,6 @@ U8 *CmpStatement(LexStruct *lx,U64 *type)
 {
   U64 *result=INVALID_PTR;
   U64 size,i,j,k;
-  DbgInfo *dbg=NULL;
-  IndentInfo *indent=NULL;
   IntermediateCode *tempi;
   if (type) *type=IT_I64;
   Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
@@ -40,7 +38,7 @@ U8 *CmpStatement(LexStruct *lx,U64 *type)
       CbIcAdd(lx,EC_RETURN_VAL2,0,NULL);
       CbIcAdd(lx,EC_RET,0,0);
       CbIcAdd(lx,EC_END,0,0);
-      if (result=CbCompile(lx,NULL,&size,&dbg,&indent,type)) {
+      if (result=CbCompile(lx,NULL,&size,NULL,NULL,type)) {
 	if (lx->flags&LF_STATIC_COMPILE) {
 	  j=lx->a->ip;
 	  k=(size+7)>>3;
@@ -56,8 +54,6 @@ U8 *CmpStatement(LexStruct *lx,U64 *type)
     LinkedListDel(lx->cbh.cb_out_first);
   if (lx->a_depth==2)
     CbPop(lx);
-  Free(dbg);
-  Free(indent);
   return result;
 }
 
@@ -425,7 +421,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     while (temphg) {
       temphg1=temphg->next;
       cnt=0;
-      temphgr=temphg->referrences;
+      temphgr=temphg->references;
       while (temphgr) {
 	cnt++;
 	temphgr=temphgr->next;
@@ -441,7 +437,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
 	} else
 	  *ptr++=0;
 	*ptr(U64 *)++=temphg->size;
-	temphgr=temphg->referrences;
+	temphgr=temphg->references;
 	while (temphgr) {
 	  temphgr1=temphgr->next;
 	  *ptr(U32 *)++=temphgr->ip;

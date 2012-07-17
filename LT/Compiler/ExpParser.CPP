@@ -1,6 +1,6 @@
 U0 ParenWarning(LexStruct *lx)
 {
-  if (Bt(&lx->opts,OPTf_PAREN_WARN) &&
+  if (Bt(&lx->opts,OPTf_WARN_PAREN) &&
       !(lx->cur_lfn->flags&LFSF_IS_DEFINE))
     PutLexWarn(lx,"ST_UNNECESSARY_PARENTHESIS");
 }
@@ -19,13 +19,13 @@ U0 PrsPopDeref(PrsStk *ps)
 #define PRST_UNARY_TERM		0
 #define PRST_MAYBE_MODIFIERS	1
 #define PRST_UNARY_MODIFIERS	2
-#define PRST_DEREFERRENCE	3
+#define PRST_DEREFERENCE	3
 #define PRST_CHECK_BINARY_OPS	4
 
 BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NULL)
 {
   BoolI8 result=TRUE,cont_unary,cont_check_binary_ops,is_lower,div_sizeof;
-  I64 i,k,old_flags=lx->flags,old_start_line=lx->expression_start_line,
+  I64 i,k,old_flags=lx->flags,old_expression_start_line_num=lx->expression_start_line_num,
       max_prec=PREC_NULL,unary_pre_prec,paren_prec,unary_post_prec,
       left_prec=PREC_MAX,question_clauses=0;
   IntermediateCode *tempi,*tempi2;
@@ -33,8 +33,12 @@ BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NU
   PrsStk *ps;
   MemberListStruct *local_var;
   ArrayDimStruct *tempad=NULL;
-  if (!(lx->flags&LF_INSIDE_EXPRESSION))
-    lx->expression_start_line=lx->start_line_num;
+  if (!(lx->flags&LF_INSIDE_EXPRESSION)) {
+    if (lx->fun_lfn)
+      lx->expression_start_line_num=lx->fun_lfn->line_num;
+    else
+      lx->expression_start_line_num=1;
+  }
   lx->flags|=LF_INSIDE_EXPRESSION;
   if (_ps)
     ps=_ps;
@@ -81,8 +85,8 @@ BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NU
 	    ParenWarning(lx);
       }
 
-      if (i==PRST_DEREFERRENCE)
-	PrsDereferrence(lx);
+      if (i==PRST_DEREFERENCE)
+	PrsDereference(lx);
 
 	//Check for binary Ops
       do {
@@ -318,7 +322,9 @@ done3:
       if (Fs->except_argv[0]==EXCEPT_COMPILER) {
 	lx->statement_cnt=0;
 	lx->braces_cnt=0;
-	lx->last_indent_level=lx->indent_level=0;
+	lx->temp_indent_level=lx->indent_level=0;
+	U8QueVectDel(lx->indent_que_vect);
+	lx->indent_que_vect=NULL;
 	result=FALSE;
 	Fs->catch_except=TRUE;
       }
@@ -335,7 +341,7 @@ done3:
     *_max_prec=max_prec;
   lx->flags=lx->flags&~LF_INSIDE_EXPRESSION |
       old_flags&(LF_INSIDE_EXPRESSION|LF_PREINC|LF_PREDEC);
-  lx->expression_start_line=old_start_line;
+  lx->expression_start_line_num=old_expression_start_line_num;
   return result;
 }
 
@@ -458,7 +464,6 @@ U64 PrsFunCall(LexStruct *lx,PrsStk *ps,BoolI8 indirect,FunStruct *tempf)
     CbIcAdd(lx,EC_SET_RAX,0,sys_internal_types[IT_PTR]);
     CbIcAdd(lx,EC_NOP1,1,sys_internal_types[IT_PTR]); //balance the books
   }
-  CbIcAdd(lx,EC_NOP,0,0); //record indent_level
   CbPush(lx);
   tempcbh=lx->cbh.cb_next;
   lx->cbh.cb_next=NULL;
@@ -1056,7 +1061,7 @@ U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,Array
       }
     }
   }
-  if (lx->token==TK_DEREFERRENCE) {
+  if (lx->token==TK_DEREFERENCE) {
     if (!*unary_post_prec)
       *unary_post_prec=PREC_TERM;
     tempi=lx->cbh.cb_last_out_ptr;
@@ -1073,7 +1078,7 @@ U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,Array
   *local_var=NULL;
   switch (lx->token) {
     case '.':
-    case TK_DEREFERRENCE:
+    case TK_DEREFERENCE:
       if (!*unary_post_prec)
 	*unary_post_prec=PREC_TERM;
       tempc=lx->cbh.cb_last_out_ptr->ic_class;
@@ -1196,18 +1201,18 @@ U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,Array
 	*unary_post_prec=PREC_UNARY_POST;
       Lex(lx);
       lx->flags|=LF_POSTINC;
-      return PRST_DEREFERRENCE;
+      return PRST_DEREFERENCE;
     case TK_MINUS_MINUS:
       if (!*unary_post_prec)
 	*unary_post_prec=PREC_UNARY_POST;
       Lex(lx);
       lx->flags|=LF_POSTDEC;
-      return PRST_DEREFERRENCE;
+      return PRST_DEREFERENCE;
   }
-  return PRST_DEREFERRENCE;
+  return PRST_DEREFERENCE;
 }
 
-U0 PrsDereferrence(LexStruct *lx)
+U0 PrsDereference(LexStruct *lx)
 {
   I64 i;
   ClassStruct *tempc;
@@ -1241,8 +1246,6 @@ U0 *CmpExpression(LexStruct *lx,U64 *type=NULL)
 {
   U0 *result;
   U64 size;
-  DbgInfo *dbg=NULL;
-  IndentInfo *indent=NULL;
   BoolI8 old_trace=Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
   CbPush(lx);
   CbOutPtrsInit(lx);
@@ -1251,12 +1254,10 @@ U0 *CmpExpression(LexStruct *lx,U64 *type=NULL)
     CbIcAdd(lx,EC_RETURN_VAL,0,NULL);
     CbIcAdd(lx,EC_RET,0,0);
     CbIcAdd(lx,EC_END,0,0);
-    result=CbCompile(lx,NULL,&size,&dbg,&indent,type);
+    result=CbCompile(lx,NULL,&size,NULL,NULL,type);
   } else
     result=NULL;
   CbPop(lx);
-  Free(dbg);
-  Free(indent);
   BEqu(&lx->flags,Lf_OPT_TRACE_PRESENT,old_trace);
   return result;
 }

@@ -12,7 +12,7 @@ U0 Doodle()
   WordStat;
 
   GrDCFill;
-  "$CL$"; //[C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear() is better
+  "$CL$"; //[C:/LT/Adam/Ltf/LtfRecalc.APZ,1696] LtfClear() is better
   do {
     msg_code=GetMsg(&p1,&p2,
       1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+

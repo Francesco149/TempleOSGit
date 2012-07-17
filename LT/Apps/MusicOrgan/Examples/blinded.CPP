@@ -4,20 +4,11 @@ F64 t0=tM;
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-}
-
-U0 AnimateTask(U0 **update)
-{
-  F64 dt;
-  U0 *old_update=*update;
-  while (TRUE) {
-    dt=(tM-t0)*music_tempo;
-    if (dt>16.0) {
-      *update=NULL;
-      WinSync;
-    }
-    *update=old_update;
-    WinSync;
+  static I64 i=0;
+  F64 dt=(tM-t0)*music_tempo;
+  if (dt>16.0 && i++&1) {
+    dc->color=WHITE;
+    GrRect(dc,0,0,task->win_pixel_width,task->win_pixel_height);
   }
 }
 
@@ -40,7 +31,6 @@ U0 Song()
   LtfCursor;
   LtfClear;
   Fs->draw_it=&DrawIt;
-  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
   try {
     while (!ScanKey) {
       t0=tM;

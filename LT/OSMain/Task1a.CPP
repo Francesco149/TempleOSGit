@@ -152,10 +152,6 @@ U64 TaskInit(TaskStruct *task,U64 stk_size)
     task->last_input_filter_task=
     task;
 
-  task->next_key_dev=
-    task->last_key_dev=
-    &task->next_key_dev;
-
   task->rflags=SYS_NORMAL_RFLAGS;
   task->win_max_refresh=WIN_DFT_MAX_REFRESH;
   SetSnap(&task->snap,1,1.0);

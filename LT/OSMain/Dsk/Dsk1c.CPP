@@ -30,7 +30,6 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
 {
   U8 *absf1=FileNameAbs(f1),
      *absf2=FileNameAbs(f2);
-  LTDirEntry de1,de2;
   U8 *buf;
   U64 cnt,n,size,attr1=FileAttr(f1),attr2=FileAttr(f2);
   LTFile *in_file=NULL,*out_file=NULL;
@@ -41,17 +40,6 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
     Free(absf2);
     return FALSE;
   }
-
-  if (Bt(&sys_semas[SYS_SEMA_RISKY_COPY],0) && //probably identical file?
-    FileFind(f1,&de1,FALSE,TRUE) &&
-    FileFind(f2,&de2,FALSE,TRUE) &&
-    de1.datetime==de2.datetime &&
-    de1.size==de2.size &&
-    de1.attr==de2.attr &&
-    !StrCmp(de1.name,de2.name) &&
-    de1.expanded_size==de2.expanded_size &&
-    de1.xsum==de2.xsum)
-    return TRUE;
 
   Free(absf1);
   Free(absf2);
@@ -166,7 +154,7 @@ U0 SysDel(U8 *wild,BoolI8 make_mask)	//this is dangerous
 }
 
 U0 Fmt(I64 drv_let,BoolI8 quick=TRUE,BoolI8 confirm=TRUE,U64 type=PT_FAT32)
-{//See [C:/LT/OSMain/Adam1a.HPZ,2664] PT_FAT32 for a list of supported file system types.
+{//See [C:/LT/OSMain/Adam1a.HPZ,2680] PT_FAT32 for a list of supported file system types.
 
   LTPrt *p=Drv2Prt(drv_let);
   BoolI8 old_silent=IsSilent;

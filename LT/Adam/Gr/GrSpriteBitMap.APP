@@ -21,7 +21,8 @@
 #define GEBM_PASTE		20
 #define GEBM_PASTE_TRANSPARENT	21
 #define GEBM_FIND_AND_REPLACE	22
-#define GEBM_UNDO		23
+#define GEBM_TRIM_TO_EXTENTS	23
+#define GEBM_UNDO		24
 
 I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 {
@@ -45,6 +46,7 @@ I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 	"$MU-UL,\"Width        %d\",GEBM_WIDTH$\n"
 	"$MU-UL,\"Snap %d %5.3f\",GEBM_SNAP$\n"
 	"$MU-UL,\"Find & Replace Color\",GEBM_FIND_AND_REPLACE$\n"
+	"$MU-UL,\"Trim to Extents\",GEBM_TRIM_TO_EXTENTS$\n"
 	"\n$FG,RED$Objects$FG$\n"
 	"$MU-UL,\"Point\",GEBM_POINT$\n"
 	"$MU-UL,\"Line\",GEBM_LINE$\n"
@@ -89,8 +91,58 @@ U0 GrBMEFindReplaceColor(GrDC *img,I64 pattern,I64 replace)
   }
 }
 
-I64 GrSpriteBitMap(GrDC *dc,I64 xx1,I64 yy1,I64 xx2,I64 yy2,GrDC *img,ColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
+U0 GrBMETrimToExtents(GrDC **_img,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,ColorROPU32 bkcolor)
 {
+  GrDC *img=*_img;
+  I64 i,c,
+    x1=0,y1=0,x2=img->width-1,y2=img->height-1; //inclusive
+
+  while (y1<y2) {
+    for (i=x1;i<=x2;i++) {
+      c=GrPeek(img,i,y1);
+      if (c!=bkcolor&&c!=COLOR_TRANSPARENT) goto tr_y2;
+    }
+    y1++;
+  }
+
+tr_y2:
+  while (y1<y2) {
+    for (i=x1;i<=x2;i++) {
+      c=GrPeek(img,i,y2);
+      if (c!=bkcolor&&c!=COLOR_TRANSPARENT) goto tr_x1;
+    }
+    y2--;
+  }
+
+tr_x1:
+  while (x1<x2) {
+    for (i=y1;i<=y2;i++) {
+      c=GrPeek(img,x1,i);
+      if (c!=bkcolor&&c!=COLOR_TRANSPARENT) goto tr_x2;
+    }
+    x1++;
+  }
+
+tr_x2:
+  while (x1<x2) {
+    for (i=y1;i<=y2;i++) {
+      c=GrPeek(img,x2,i);
+      if (c!=bkcolor&&c!=COLOR_TRANSPARENT) goto tr_done;
+    }
+    x2--;
+  }
+
+tr_done:
+  *_img=GrDCExtract(img,x1,y1,x2,y2);
+  *_xx1+=x1;		    *_yy1+=y1;
+  *_xx2+=x2-(img->width-1); *_yy2+=y2-(img->height-1); //not inclusive
+  GrDCDel(img);
+}
+
+I64 GrSpriteBitMap(GrDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,GrDC **_img,ColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
+{
+  I64 xx1=*_xx1,yy1=*_yy1,xx2=*_xx2,yy2=*_yy2;
+  GrDC *img=*_img;
   I64 i,j,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,new_snap=1;
   BoolI8 down=FALSE,result;
   F64 new_ip_scaler=1.0;
@@ -153,6 +205,11 @@ bm_menu:
 		  GrBMEdPrepPersistentDC(dc,xx1,yy1,img);
 		}
 	      }
+	      goto bm_menu;
+
+	    case GEBM_TRIM_TO_EXTENTS:
+	      GrBMETrimToExtents(&img,&xx1,&yy1,&xx2,&yy2,bkcolor);
+	      GrBMEdPrepPersistentDC(dc,xx1,yy1,img);
 	      goto bm_menu;
 
 
@@ -541,5 +598,7 @@ bm_done:
   SettingsPop;
   if (_import_snap) *_import_snap=new_snap;
   if (_import_ip_scaler) *_import_ip_scaler=new_ip_scaler;
+  *_img=img;
+  *_xx1=xx1,*_yy1=yy1,*_xx2=xx2,*_yy2=yy2;
   return result;
 }

@@ -335,7 +335,7 @@ public LtfEntry *LtfPutLine(LtfEntry *cl)
 
 #help_index "Ltf/Input"
 public U8 *LtfMGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1419] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1437] Flags
 {
   Ltf *l;
   LtfEntry *cl,*cl_end;

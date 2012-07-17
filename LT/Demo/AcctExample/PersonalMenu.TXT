@@ -110,6 +110,11 @@ Cd("/LT/Accts/User");Dir;
 `Cd("/LT/Accts/User");Dir;
 `
 
+Cd("/LT/Accts/VMWare");Dir;
+
+`Cd("/LT/Accts/VMWare");Dir;
+`
+
 Cd("/LT/Accts/Install");Dir;
 
 `Cd("/LT/Accts/Install");Dir;
@@ -215,11 +220,6 @@ Cd("/Temp");Dir;
 `Cd("/Temp");Dir;
 `
 
-Cd("/Text");Dir;
-
-`Cd("/Text");Dir;
-`
-
 Cd("/0000Boot");Dir;
 
 `Cd("/0000Boot");Dir;
@@ -275,27 +275,27 @@ Take Tour
 `
 
 Make InHouse    CD 
-`MakeInHouseCDImage;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeInHouseCDImage(FALSE);   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
 
 Make InHouse    DVD
-`MakeInHouseCDImage;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeInHouseCDImage(FALSE);   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
 Make InHouse    ISO
-`MakeInHouseCDImage;   Copy(TS_ISO_NAME,TS_TRA_DRV ":LTTS.ISO");
+`MakeInHouseCDImage(FALSE);   Copy(TS_ISO_NAME,TS_TRA_DRV ":LTTS.ISO");
 `
 
 Make Production CD 
-`MakeProductionCDImage;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeProductionCDImage(FALSE);CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
 
 Make Production DVD
-`MakeProductionCDImage;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeProductionCDImage(FALSE);CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
 Make Production ISO
-`MakeProductionCDImage;Copy(TS_ISO_NAME,TS_TRA_DRV ":LTCD.ISO");
+`MakeProductionCDImage(FALSE);Copy(TS_ISO_NAME,TS_TRA_DRV ":LTCD.ISO");
 `
 
 -] Applications
@@ -352,20 +352,7 @@ Make Production ISO
   
   
   
-  Chess <23> (image) Mixed <24> (image) 3rdParty <25> (image)
-  
-  MusicOrgan TADSongs
-`#include "::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TAD/MusicOrgan/TADSongs");
-`
-
-  MusicOrgan MixedSongs
-`#include "::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TAD/MusicOrgan/MixedSongs");
-`
-
-  MusicOrgan 3rdParty
-`#include "::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TAD/MusicOrgan/3rdParty");
-`
-
+  Chess <23> (image) 
   
   Digits (Memory Game)
 `Cd("::/LT/Demo");;#include "Digits"
@@ -428,7 +415,6 @@ Test Suite
 
 MusicOrgan GODSongs
 `#include
-"::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TAD/MusicOrgan/GODSongs")
-;
+"::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TAD/MusicOrgan");
 `
 

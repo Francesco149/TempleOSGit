@@ -1,18 +1,15 @@
 U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
-   OptRegStruct *register_offsets,U8 *buf,DbgInfo **_dbg,IndentInfo **_indent,
-   I64 *min_line,I64 *max_line)
+   OptRegStruct *register_offsets,U8 *buf,DbgInfo **_dbg)
 {
   IntermediateCode *tempi;
-  I64 code,i,cnt,num_lines,ip=0,ip2;
-  I64 min_line2=-1,last_line=0;
+  I64 code,i,cnt,num_lines=lx->max_line-lx->min_line+1,ip=0,ip2;
   CbMiscStruct *lb,*lb1;
   ExeStruct *tempex;
   ExeAbsAddrStruct *tempa;
   ExeImportExportStruct *tempe;
   ExeHeapGlblStruct *temphg;
   ExeHeapGlblRefStruct *temphgr;
-  DbgInfo *dbg=NULL;
-  IndentInfo *indent=NULL;
+  DbgInfo *dbg;
   AsmCtrlStruct *a=lx->a;
   BoolI8 short_jmp;
   I64 *qq;
@@ -22,24 +19,19 @@ U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
   GlblVarStruct *tempg;
   ExternUsage *tempeu;
 
-  if (buf) {
-    if (*max_line>=*min_line && *max_line-*min_line<10000) {
-      num_lines=*max_line-*min_line+1;
-      dbg=CAlloc(offset(DbgInfo.body)+sizeof(U0 *)*(num_lines+1));
-      dbg->min_line=*min_line;
-      dbg->max_line=*max_line;
-      indent=MAlloc(offset(IndentInfo.body)+sizeof(U8)*(num_lines+1));
-      MemSet(indent->body,0xFF,num_lines+1);
-      indent->min_line=*min_line;
-      indent->max_line=*max_line;
-    }
-    if (_dbg)
-      *_dbg=dbg;
-    if (_indent)
-      *_indent=indent;
-  }
-  if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-    if (Bt(&lx->pass_trace_mask,lx->pass))
+  if (_dbg) {
+    *_dbg=dbg=CAlloc(offset(DbgInfo.body)+sizeof(U0 *)*(num_lines+1));
+    dbg->min_line=lx->min_line;
+    dbg->max_line=lx->max_line;
+    if (lx->flags&LF_STATIC_COMPILE)
+      dbg->body[0]=a->ip;
+    else
+      dbg->body[0]=buf;
+  } else
+    dbg=NULL;
+
+  if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) &&
+      Bt(&lx->pass_trace_mask,lx->pass))
       "$BK,1$$FG,LTRED$$IV,1$This code gets merged together and patched.\n$FG$$IV,0$$BK,0$";
 
   lx->last_float_op_ic=NULL;
@@ -52,9 +44,8 @@ U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
   }
   while (code=tempi->ic_opcode) {
     if (code>EC_END_EXP) {
-      if (tempi->ic_flags&ICF_TRACE)
-	if (Bt(&lx->pass_trace_mask,lx->pass))
-	  CbPutIc(tempi);
+      if (tempi->ic_flags&ICF_TRACE && Bt(&lx->pass_trace_mask,lx->pass))
+	CbPutIc(tempi);
       ip2=ip;
       if (lx->flags&LF_STATIC_COMPILE)
 	ip2+=a->ip;
@@ -231,8 +222,8 @@ U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
 	    if (buf && lx->flags&LF_STATIC_COMPILE &&
 	      !(lx->flags&(LF_NO_ABSS|LF_ASM_EXPRESSIONS))) { //is this necessary--flags?
 	      temphgr=CAlloc(sizeof(ExeHeapGlblRefStruct));
-	      temphgr->next=temphg->referrences;
-	      temphg->referrences=temphgr;
+	      temphgr->next=temphg->references;
+	      temphg->references=temphgr;
 	      temphgr->ip=ip2+tempi->ic_cnt-8;
 	    }
 	    IcMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
@@ -1253,41 +1244,21 @@ U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
       }
 
 skip_copy:
-      if (cnt) {
-	if (lx->pass==9) {
-	  i=tempi->ic_line;
-	  if (i>=last_line) {
-	    last_line=i;
-	    if (i<*min_line)
-	      *min_line=i;
-	    if (*min_line<i<min_line2)
-	      min_line2=i;
-	    if (i>*max_line)
-	      *max_line=i;
-	  }
-	}
-	if (buf && dbg) {
-	  if (*min_line<=tempi->ic_line<=*max_line) {
-	    i=tempi->ic_line-*min_line;
-	    if (!dbg->body[i])
-	    dbg->body[i]=ip2;
-	  }
-	}
+      if (dbg && lx->min_line<=tempi->ic_line<=lx->max_line) {
+	i=tempi->ic_line-lx->min_line;
+	if (!dbg->body[i])
+	  dbg->body[i]=ip2;
       }
 
-      if (tempi->ic_flags&ICF_TRACE) {
-	if (Bt(&lx->pass_trace_mask,lx->pass)) {
-	  if (cnt) {
-	    "$FG,RED$";
-	    if (buf)
-	      Un(buf+ip,cnt,64);
-	    else if (tempi->ic_ext_body)
-	      Un(tempi->ic_ext_body,cnt,64);
-	    else
-	      Un(tempi->ic_body,cnt,64);
-	    "$FG$";
-	  }
-	}
+      if (tempi->ic_flags&ICF_TRACE && Bt(&lx->pass_trace_mask,lx->pass) && cnt) {
+	"$FG,RED$";
+	if (buf)
+	  Un(buf+ip,cnt,64);
+	else if (tempi->ic_ext_body)
+	  Un(tempi->ic_ext_body,cnt,64);
+	else
+	  Un(tempi->ic_body,cnt,64);
+	"$FG$";
       }
       if (!(tempi->ic_flags&(ICF_CODE_FINAL|ICF_DONT_RESTORE)))
 	MemCpy(&tempi->p1,saved_p123,3*sizeof(IcArg));
@@ -1295,14 +1266,6 @@ skip_copy:
     } else {
       tempi->ic_cnt=0;
       tempi->ic_last_cnt=-1;
-    }
-    if (buf && indent) {
-      i=tempi->ic_line+tempi->ic_start_line_offset;
-      if (*min_line<=i<=*max_line) {
-	i-=*min_line;
-	if (indent->body[i]==-1)
-	  indent->body[i]=tempi->ic_indent_level;
-      }
     }
     tempi++;
   }
@@ -1344,24 +1307,11 @@ skip_copy:
     }
     lb=lb->next;
   }
-  if (lx->pass==9) {
-    if (min_line2!=-1 &&
-	min_line2-*min_line>10) //Defines screw things up
-      *min_line=min_line2;
-  } else if (buf) {
-    if (dbg) {
-      if (lx->flags&LF_STATIC_COMPILE)
-	dbg->body[num_lines]=ip+a->ip;
-      else
-	dbg->body[num_lines]=ip+buf;
-    }
-    if (indent) {
-      if (indent->body[0]==-1)
-	indent->body[0]=0;
-      for (i=1;i<=num_lines;i++)
-	if (indent->body[i]==-1)
-	  indent->body[i]=indent->body[i-1];
-      }
+  if (dbg) {
+    if (lx->flags&LF_STATIC_COMPILE)
+      dbg->body[num_lines]=ip+a->ip;
+    else
+      dbg->body[num_lines]=ip+buf;
   }
 
   return ip;

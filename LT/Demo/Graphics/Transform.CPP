@@ -170,7 +170,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   mp.a=s.a2;
 
   for (i=1;i<mp.mp_cnt;i++)
-    MPJob(&MPDrawIt,task,1<<MPCf_FREE_ON_COMPLETE,1<<i);
+    MPJob(&MPDrawIt,task,i);
   MPDrawIt(task);
 
   dc->flags|=DCF_TRANSFORMATION;

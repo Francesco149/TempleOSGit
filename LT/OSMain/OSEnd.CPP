@@ -52,13 +52,12 @@ U0 SysGlblsInit()
   MemSet(&sys_put_key_root,0,sizeof(KeyDevStruct));
   sys_put_key_root.next=sys_put_key_root.last=&sys_put_key_root;
   KeyDevAdd(&AKDInputFilterPutKey,&AKDInputFilterPutS,0x40000000,FALSE);
-  KeyDevAdd(&AKDTaskPutKey,&AKDTaskPutS,0x50000000,TRUE);
   KeyDevAdd(&AKDRawDisplayPutKey,&AKDRawDisplayPutS,0x60000000,FALSE);
   #exe {
     StreamPrintF("sys_acct_name=\"%s\";",osmain_cfg->acct_name);
-    StreamPutS("#exe{OptOff(OPTf_PAREN_WARN);}");
+    StreamPutS("#exe{OptOff(OPTf_WARN_PAREN);}");
     StreamPrintF("LTDCInit(%s);",osmain_cfg->dsk_cache_size_exp);
-    StreamPutS("#exe{OptOn(OPTf_PAREN_WARN);}");
+    StreamPutS("#exe{OptOn(OPTf_WARN_PAREN);}");
   };
   pow10_I64=CAlloc(sizeof(F64)*(308+308+1));
   for (i=-308;i<309;i++)
@@ -84,7 +83,7 @@ U0 SysGrInit()
 
 /*
 Mode must be multiple of 32 wide
-[C:/LT/Adam/Gr/GrAsm.APZ,759] GrUpdateLine32().
+[C:/LT/Adam/Gr/GrAsm.APZ,760] GrUpdateLine32().
 */
 
     if (bios_gr_mode==0x6A) {

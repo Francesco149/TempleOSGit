@@ -49,7 +49,7 @@
 allowed to 
 have windows.  There is one window per task and no child windows.
 
-* [C:/LT/OSMain/Adam1a.HPZ,3480] GrDCs (device contexts) are a data type for
+* [C:/LT/OSMain/Adam1a.HPZ,3494] GrDCs (device contexts) are a data type for
 controlling graphics on the 
 screen or graphics in mem, not on the screen.  The device context structure 
 has pen width and color associated with it, so you use
@@ -60,7 +60,7 @@ when finished.
 
 * [C:/LT/Adam/Gr/GrScreen.APZ,5] gr_dc is a global var for a bitmap redrawn
 each refresh and placed on the 
-screen.  You use an alias [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.  You change
+screen.  You use an alias [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.  You change
 the "Fs->draw_it" var to point to 
 your "DrawIt()" which gets called each screen refresh.  You draw everything
 in 
@@ -94,14 +94,14 @@ rotations.
 * See [::/LT/Doc/Transform.TXZ] ::/LT/Doc/Transform.TXZ for adding a
 transformation.
 
-* Set [C:/LT/OSMain/Adam1a.HPZ,3448] DCF_SYMMETRY in the
-[C:/LT/OSMain/Adam1a.HPZ,3480] GrDC.flags and call
+* Set [C:/LT/OSMain/Adam1a.HPZ,3462] DCF_SYMMETRY in the
+[C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.flags and call
 [C:/LT/Adam/Gr/MathGr.APZ,374] GrSetSymmetry() or 
 [C:/LT/Adam/Gr/MathGr.APZ,396] GrSetSymmetry3().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/LT/OSMain/Adam1a.HPZ,3452] DCF_JUST_MIRROR to plot just the
+image.  Set [C:/LT/OSMain/Adam1a.HPZ,3466] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/LT/OSMain/Adam1a.HPZ,3448] DCF_SYMMETRY to be set at the same
+[C:/LT/OSMain/Adam1a.HPZ,3462] DCF_SYMMETRY to be set at the same
 time.  Note: You can only have one symmetry 
 active at a time including in [C:/LT/Adam/Gr/Gr.APZ,55] GrSprites.
 
@@ -121,7 +121,7 @@ pressing <CTRL-R> again.
 
 * There is a mechanism built-in for generating motion based on differential 
 equations, which allows realistic physics.  You create an
-[C:/LT/OSMain/Adam1a.HPZ,235] Ode struct with 
+[C:/LT/OSMain/Adam1a.HPZ,254] Ode struct with 
 [C:/LT/Adam/MathOde.APZ,42] OdeNew(), passing it the num of vars in the state
 vect.  For realistic 
 physics, you usually have 2 state vars for each dimension (for each mass) 
@@ -130,7 +130,7 @@ states are pos and velocity and to solve these you need to supply the
 derivative of pos and velocity.  The derivative of pos is usually simply the 
 current velocity and the derivative of velocity is the acceleration (the sum 
 of forces on a mass divided by mass).  To help provide meaningful names for 
-values in the state vect, you can create an [C:/LT/OSMain/Adam1a.HPZ,192]
+values in the state vect, you can create an [C:/LT/OSMain/Adam1a.HPZ,211]
 Order2D3 ptr and point it to a 
 mass in the state vect.  Six elements in the state vect are required for each 
 mass.
@@ -138,27 +138,27 @@ mass.
 See [Math/Ode] Math/Ode.
 See [::/LT/Demo/GameStarters/Rocks.CPZ] ::/LT/Demo/GameStarters/Rocks.CPZ.
 
-* There are several [C:/LT/OSMain/Adam1a.HPZ,2874] raster operations
+* There are several [C:/LT/OSMain/Adam1a.HPZ,2890] raster operations
 available.  They go in bits 8-11 of the 
 dc->color member var.
 
-* [C:/LT/OSMain/Adam1a.HPZ,2876] ROP_COLLISION is special.  It counts the num
+* [C:/LT/OSMain/Adam1a.HPZ,2892] ROP_COLLISION is special.  It counts the num
 of pixels drawn on 
-non-background locations.  Using [C:/LT/OSMain/Adam1a.HPZ,2876] ROP_COLLISION
+non-background locations.  Using [C:/LT/OSMain/Adam1a.HPZ,2892] ROP_COLLISION
 with vector [C:/LT/Adam/Gr/Gr.APZ,55] GrSprite's is 
 tricky because overlapping pixels from lines in the [C:/LT/Adam/Gr/Gr.APZ,55]
 GrSprite register as 
 collisions.  You can either work with a nonzero count or convert your 
 [C:/LT/Adam/Gr/Gr.APZ,55] GrSprite to a bitmap if your subelements draw on
 top of each other.  Be sure 
-to set ->bkcolor before using [C:/LT/OSMain/Adam1a.HPZ,2876]
+to set ->bkcolor before using [C:/LT/OSMain/Adam1a.HPZ,2892]
 ROP_COLLISION.  See 
 [::/LT/Demo/Graphics/PixelCollision.CPZ]
 ::/LT/Demo/Graphics/PixelCollision.CPZ, [::/LT/Demo/GameStarters/Rocks.CPZ]
 ::/LT/Demo/GameStarters/Rocks.CPZ and 
 [::/LT/Apps/Timeout/Timeout.CPZ] ::/LT/Apps/Timeout/Timeout.CPZ.
  
-* The ->dither_probability member of [C:/LT/OSMain/Adam1a.HPZ,3480] GrDC is a
+* The ->dither_probability member of [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC is a
 U16 used to statistically 
 select between two colors.  See [::/LT/Demo/Graphics/Shading.CPZ]
 ::/LT/Demo/Graphics/Shading.CPZ.  It works 

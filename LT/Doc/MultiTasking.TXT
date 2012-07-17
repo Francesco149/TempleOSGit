@@ -10,9 +10,9 @@ have multiple tasks modifying data structures simultaneously.  Interrupts
 still occur when preemption is off.   
 
 **Preemption is turned-off by default when a task is
-[C:/LT/OSMain/Task1a.CPZ,229] Spawn()ed.**
+[C:/LT/OSMain/Task1a.CPZ,225] Spawn()ed.**
 
-The time-slice rate is set by [C:/LT/OSMain/Adam1a.HPZ,465] JIFFY_FREQ.
+The time-slice rate is set by [C:/LT/OSMain/Adam1a.HPZ,484] JIFFY_FREQ.
 
 LoseThos does not remove tasks from "the queue" when they are waiting.  They 
 swap-in, check for whatever condition they are waiting for and

@@ -32,7 +32,7 @@ U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 Test(,3);
 
 * A string or char constant all alone is sent to
-[C:/LT/OSMain/Display.CPZ,270] PutS() or [C:/LT/OSMain/Display.CPZ,265]
+[C:/LT/OSMain/Display.CPZ,227] PutS() or [C:/LT/OSMain/Display.CPZ,222]
 PutChar().  A 
 string with args is sent to [C:/LT/OSMain/Str1a.CPZ,2509] PrintF().   An
 empty string literal signals a 
@@ -115,7 +115,7 @@ convert to float.)
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/LT/Compiler/Directives.CPZ,6]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1429] OPTf_PAREN_WARN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1447] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -138,7 +138,7 @@ stream following the conclusion of the #exe{} blk.
 refers to the instruction's 
 addr. 
 
-* union is more like a class, so you don't referrence it with a union label 
+* union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
 [C:/LT/OSMain/Adam1a.HPZ,12] Adam1a.HPZ for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
@@ -159,7 +159,7 @@ can be accessed from within a catch{} using the Fs->except_argc and Fs->except
 _argv[] vars.  Within a catch {} blk, set the var Fs->catch_except to TRUE if 
 you want to terminate the search for a handler.  By convention, the first arg 
 of except_argv[] specifies the exception type num.  A list of assigned 
-exception types can be found at [C:/LT/OSMain/Adam1a.HPZ,2737]
+exception types can be found at [C:/LT/OSMain/Adam1a.HPZ,2753]
 EXCEPT_LOCAL.  For a handler that will catch 
 all excepts, you can use [C:/LT/OSMain/Except.CPZ,232] CatchAll().
 
@@ -194,8 +194,8 @@ IndependentHeapCtrlInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/LT/OSMain/Adam1a.HPZ,2837] DFT_STK and 
-recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,229]
+[C:/LT/OSMain/Adam1a.HPZ,2853] DFT_STK and 
+recompile OSMain or request more when doing a [C:/LT/OSMain/Task1a.CPZ,225]
 Spawn().  You can use 
 [C:/LT/OSMain/Task1a.CPZ,66] CallStkGrow(), but it's odd.  See
 [::/LT/Demo/StkGrow.CPZ] ::/LT/Demo/StkGrow.CPZ. 
@@ -232,7 +232,7 @@ PrintF("%X\n",i>>1);  //Result is 0xC0000000 as expected
 [C:/LT/OSMain/Memory.CPZ,956] MAllocated str.  It is vary 
 handy because you don't have to worry about overflow.
 
-[C:/LT/OSMain/Display.CPZ,270] PutS() doesn't print a new line.
+[C:/LT/OSMain/Display.CPZ,227] PutS() doesn't print a new line.
 
 [C:/LT/OSMain/TaskCmd.CPZ,353] Auto(U8 *fmtstr,...) sends text to the current
 task's input buffer.
@@ -272,8 +272,8 @@ y,U8 *src) plots text in graphics mode.  [C:/LT/Adam/Gr/GrBitMap.APZ,853]
 GrVPrintF() and [C:/LT/Adam/Gr/GrBitMap.APZ,821] GrVPutS() will print 
 vertically.
 
-[C:/LT/Compiler/CmpMain.CPZ,558] ExePrintF(U8 *fmtstr,...) and
-[C:/LT/Compiler/CmpMain.CPZ,526] ExePutS(U8 *src) compile and execute a
+[C:/LT/Compiler/CmpMain.CPZ,554] ExePrintF(U8 *fmtstr,...) and
+[C:/LT/Compiler/CmpMain.CPZ,522] ExePutS(U8 *src) compile and execute a
 string.  
 Note: It returns the result of the last executed expression.
 

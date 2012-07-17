@@ -276,8 +276,8 @@ U0 IDEToggleBpt(Ltf *l)
 		ll=ll->last;
 	      l->cur_entry=ll;
 	      l->cur_data_col=ll->min_col;
-	      if (!BptR(Fs->parent_task,a)) {
-		BptS(Fs->parent_task,a);
+	      if (!BptR(a,Fs->parent_task)) {
+		BptS(a,Fs->parent_task);
 		LtfPutS(l,"$BP$");
 	      } else {
 		if (ll->type_u8==LTFT_BPT) {
@@ -369,7 +369,7 @@ U0 IDEStepOver(Ltf *l)
 
   opcode=task->rip;
   if (*opcode==OC_CALL) {
-    if (BptS(task,opcode+5)) {
+    if (BptS(opcode+5,task)) {
       if (tempi->call_bpt!=opcode+5)
 	tempi->existing_bpt=TRUE;
     } else
@@ -492,7 +492,7 @@ U0 IDEResumeDbg()
 	LBts(&Fs->task_flags,TASKf_DISABLE_BPTS);
 	if (Fs->rip==tempi->call_bpt) {
 	  if (!tempi->existing_bpt)
-	    BptR(Fs,Fs->rip,FALSE);
+	    BptR(Fs->rip,Fs,FALSE);
 	  tempi->call_bpt=NULL;
 	}
 	if (!tempi->cur_line ||
@@ -502,7 +502,7 @@ U0 IDEResumeDbg()
 	} else {
 	  opcode=Fs->rip;
 	  if (*opcode==OC_CALL) {
-	    if (BptS(Fs,opcode+5,FALSE)) {
+	    if (BptS(opcode+5,Fs,FALSE)) {
 	      if (tempi->call_bpt!=opcode+5)
 		tempi->existing_bpt=TRUE;
 	    } else

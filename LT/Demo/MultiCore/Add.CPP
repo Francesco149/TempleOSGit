@@ -16,7 +16,7 @@ I64 Sum(I64 n,I64 my_mp_cnt)
   I64 result=0,i;
   mp_n=n+1;
   for (i=1;i<my_mp_cnt;i++)
-    tempm[i]=MPJob(&MPSum,my_mp_cnt,0,1<<i);
+    tempm[i]=MPJob(&MPSum,my_mp_cnt,i,0);
   result=MPSum(my_mp_cnt);
   for (i=1;i<my_mp_cnt;i++)
     result+=MPJobResult(tempm[i]);

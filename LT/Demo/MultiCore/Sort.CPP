@@ -63,7 +63,7 @@ F64 Sort2(I64 n)
   F64 t0=tNP;
   MemSet(&mp,0,sizeof(MPCtrl));
   MemCpy(&a2[n/2],&a1[n/2],n/2*sizeof(I32));
-  MPJob(&Sort1,n/2,1<<MPCf_FREE_ON_COMPLETE,1<<1);
+  MPJob(&Sort1,n/2,1);
   QSort(&a2[n/2],n/2,sizeof(I32),&IntCompare);
   while (!mp.done[1])
     Yield;

@@ -143,7 +143,7 @@ U0 FireShot(I64 site)
       s[i].x=(100+site*((GR_WIDTH-200)/2))<<32;
       s[i].y=(GR_HEIGHT-100)<<32;
 //([C:/LT/OSMain/OSGlbls.CPZ,70] ipx, [C:/LT/OSMain/OSGlbls.CPZ,70] ipy) is the input pointer -- mouse --location.
-//[C:/LT/OSMain/OSGlbls.CPZ,79] ip_lb,[C:/LT/OSMain/OSGlbls.CPZ,79] ip_rb is the button state.
+//[C:/LT/OSMain/OSGlbls.CPZ,79] ip_lb,[C:/LT/OSMain/OSGlbls.CPZ,80] ip_rb is the button state.
       x=ipx-Fs->win_pixel_left-Fs->win_scroll_x;
       y=ipy-Fs->win_pixel_top-Fs->win_scroll_y;
       d=Sqrt(SqrI64(s[i].x.i32[1]-x)+SqrI64(s[i].y.i32[1]-y));

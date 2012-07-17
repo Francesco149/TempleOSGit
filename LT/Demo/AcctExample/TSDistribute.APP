@@ -102,10 +102,6 @@ U0 MyCopyDrv(U8 src,U8 dst)
   SPrintF(buf_d,"%c:/LT",dst);
   CopyTree(buf_s,buf_d);
 
-  SPrintF(buf_s,"%c:/Text",src);
-  SPrintF(buf_d,"%c:/Text",dst);
-  CopyTree(buf_s,buf_d);
-
   SPrintF(buf_s,"%c:/Windows",src);
   SPrintF(buf_d,"%c:/Windows",dst);
   CopyTree(buf_s,buf_d);
@@ -224,19 +220,46 @@ U0 Uncollapse(U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL)
   UncollapseList(FilesFind(files_find_mask,f),&f);
 }
 
-U0 PrepForDistribution(BoolI8 cont=FALSE)
+U0 CopySongDir(U8 *files_find_mask,U8 threshold)
+{
+  Ltf *s;
+  LtfEntry *ll;
+  LTDirEntry *tempm,*tempm1;
+  tempm1=tempm=FilesFind(files_find_mask);
+  while (tempm1) {
+    s=LtfRead(tempm1->full_name);
+    ll=s->root.next;
+    if (ll->type_u8==LTFT_TEXT && ll->tag[2]>=threshold)
+      Copy(tempm1->full_name,"/LT/Apps/MusicOrgan/Examples");
+    tempm1=tempm1->next;
+  }
+  LTDirListDel(tempm);
+}
+
+public U0 CopySongs(U8 threshold='7')
+{
+  DelTree("/LT/Apps/MusicOrgan/Examples");
+  MkDir("/LT/Apps/MusicOrgan/Examples");
+  CopySongDir("/LT/Accts/TAD/MusicOrgan/*.CPZ",threshold);
+}
+
+U0 PrepForDistribution()
 {
   Touch("/LT/Doc/FileMgr.TXZ","+T");
   Touch("/LT/Doc/CtrlL.TXZ","+T");
   Touch("/LT/Accts/PersonalMenu.TXZ","+T");
   Del("/LT/Demo/WebLogExample/WebLog.TXZ");
   Del("/LT/Demo/GameStarters/EagleDive.BIZ");
+  CopySongs;
 
 //User
   Del("/LT/Accts/User/Registry.CPZ");
 
 //Install
   Del("/LT/Accts/Install/Registry.CPZ");
+
+//VMWare
+  Del("/LT/Accts/VMWare/Registry.CPZ");
 
 //SafeMode
   Del("/LT/Accts/SafeMode/Registry.CPZ");
@@ -264,28 +287,26 @@ U0 PrepForDistribution(BoolI8 cont=FALSE)
 
   DelTree("/LT/Demo/*.BI?");
 
-  if (!cont) {
-    Cd("/LT");
-    S2T(SRC_FILE_MASK,"+r");
-  }
+  Cd("/LT");
+  S2T(SRC_FILE_MASK,"+r");
   Move(WSD_DEF_FILENAME,WSD_DEF_FILENAME_Z);
 }
 
-U0 PrepForInHouse(BoolI8 cont=FALSE)
+U0 PrepForInHouse()
 {
   Drv(TS_MAIN_DRV_LET);
-  PrepForDistribution(cont);
+  PrepForDistribution;
   Auto(TS_CDROM_CFG);
   InstallBoot(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
   Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
   Drv(TS_IMG_DRV_LET);
   CopyTree(TS_MAIN_DRV ":/LT","/LT");
-  CopyTree(TS_MAIN_DRV ":/Text","/Text");
   CopyTree(TS_MAIN_DRV ":/Windows","/Windows");
   CopyTree(TS_MAIN_DRV ":/Linux","/Linux");
   MkDir("/Temp");
   MkDir("/Temp/ScreenShots");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
+  Del("/0000Boot/BootMHD2.BIC");
 }
 
 U64 MakeLineCntFile()
@@ -314,49 +335,42 @@ U64 MakeLineCntFile()
   return result;
 }
 
-U0 PrepForProduction(BoolI8 cont=FALSE)
+U0 PrepForProduction(U8 *auto_cfg)
 {
   Drv(TS_MAIN_DRV_LET);
-  if (!cont)
-    PrepForDistribution;
-  Auto(PROD_CDROM_CFG);
+  PrepForDistribution;
+  Auto(auto_cfg);
   InstallBoot(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
-  if (cont) {
-    Drv(TS_IMG_DRV_LET);
-    DelTree("/Text");
-    DelTree("/Temp/ScreenShots");
-  } else {
-    Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
-    Drv(TS_IMG_DRV_LET);
-    CopyTree(TS_MAIN_DRV ":/LT","/LT");
-    CopyTree(TS_MAIN_DRV ":/Windows","/Windows");
-    CopyTree(TS_MAIN_DRV ":/Linux","/Linux");
-    MkDir("/Temp");
-  }
+  Fmt(TS_IMG_DRV_LET,TRUE,FALSE,PT_LT);
+  Drv(TS_IMG_DRV_LET);
+  CopyTree(TS_MAIN_DRV ":/LT","/LT");
+  CopyTree(TS_MAIN_DRV ":/Windows","/Windows");
+  CopyTree(TS_MAIN_DRV ":/Linux","/Linux");
+  MkDir("/Temp");
   DelTree("/LT/Accts/TAD");
   DelTree("/LT/Accts/TS");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
   Del("/0000Boot/OldMBR.BIC");
-
-  Cd("/LT");
-  if (LinkChk) {
-    Drv(TS_MAIN_DRV_LET);
-    throw;
-  }
-  MakeLineCntFile;
+  Del("/0000Boot/BootMHD2.BIC");
 }
 
-
-U0 MakeInHouseCDImage(BoolI8 cont=FALSE)
+U0 MakeInHouseCDImage()
 {
-  PrepForInHouse(cont);
+  PrepForInHouse;
   CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,BOOTCD_BIZ);
   Drv(TS_MAIN_DRV_LET);
 }
 
-U0 MakeProductionCDImage(BoolI8 cont=FALSE)
+U0 MakeProductionCDImage()
 {
-  PrepForProduction(cont);
+  PrepForProduction(PROD_CDROM_CFG);
+  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,BOOTCD_BIZ);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeVMWareCDImage()
+{
+  PrepForProduction(VMWARE_CDROM_CFG);
   CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,BOOTCD_BIZ);
   Drv(TS_MAIN_DRV_LET);
 }
@@ -369,8 +383,16 @@ U0 MakeBack()
     MyCopyDrv(TS_MAIN_DRV_LET,TS_TRA_DRV_LET);
     MakeInHouseCDImage;
     Copy(TS_ISO_NAME,TS_TRA_DRV ":LTTS.ISO");
-    MakeProductionCDImage(TRUE);
+    MakeProductionCDImage;
     Copy(TS_ISO_NAME,TS_TRA_DRV ":LTCD.ISO");
+    MakeVMWareCDImage;
+    Copy(TS_ISO_NAME,TS_TRA_DRV ":LTVM.ISO");
+    Cd("/LT");
+    if (LinkChk) {
+      Drv(TS_MAIN_DRV_LET);
+      throw;
+    }
+    MakeLineCntFile;
   }
   ChkAll;
 }

@@ -49,6 +49,6 @@ SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
 
 * The note accent feat only works when exporting songs.  When calling 
 [C:/LT/Adam/Snd/SndFile.APZ,19] SndFileCreate() you can set a waveform.  The
-PC speaker is [C:/LT/OSMain/Adam1a.HPZ,3849] WF_SQUARE.  You can 
+PC speaker is [C:/LT/OSMain/Adam1a.HPZ,3841] WF_SQUARE.  You can 
 select reverb and averaging, also.
 

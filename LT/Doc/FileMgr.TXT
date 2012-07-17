@@ -45,13 +45,13 @@ SHIFT-F5
 'M'
   Make CD/DVD ISO file.  This creates a file image of the directory the
   cursor 
-is on.  The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,27]
+is on.  The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,28]
   sys_dft_iso_name and can be redefined in 
 your start-up scripts.  You may wish to place it on a different drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/LT/OSMain/OSGlbls.CPZ,27] sys_dft_iso_name to the drive the cursor is on.
+[C:/LT/OSMain/OSGlbls.CPZ,28] sys_dft_iso_name to the drive the cursor is on.
 
 
 Instructions on Using CD/DVD's

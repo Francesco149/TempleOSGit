@@ -590,7 +590,7 @@ public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
 	LBtr(&snd_flags,Sf_FILLING_OUT);
 	_hda->audio_task_started=FALSE;
 	if (mp_cnt>1)
-	  _hda->task=MPSpawn(&HDAudioTask,NULL,"HD Audio",1<<1);
+	  _hda->task=MPSpawn(&HDAudioTask,NULL,"HD Audio");
 	else
 	  _hda->task=Spawn(&HDAudioTask,NULL,"HD Audio");
 	while (!_hda->audio_task_started)

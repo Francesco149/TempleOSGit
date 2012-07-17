@@ -3,7 +3,7 @@ asm {
 USE16
 //See [::/LT/Doc/MultiCore.TXZ] LoseThos MultiCore.
 
-//This code gets copied to [C:/LT/OSMain/Adam1a.HPZ,431] MP_VECT_ADDR.
+//This code gets copied to [C:/LT/OSMain/Adam1a.HPZ,450] MP_VECT_ADDR.
 //See [::/LT/OSMain/MultiProc.CPZ,MemCpy(mp:2] MemCpy(MP_VECT_ADDR.
 SYS_MP_INIT_START::
 	JMP	MP2_START2
@@ -214,7 +214,7 @@ U0 MPWake(U64 target_cpu_mask)
 U0 MPAPICInit()
 { //Called by adam during start-up
   //and other cores during initialization
-  //after [C:/LT/OSMain/MultiProc.CPZ,413] MPStart().
+  //after [C:/LT/OSMain/MultiProc.CPZ,412] MPStart().
   U32 *d;
 
   d=LAPIC_SVR;
@@ -298,7 +298,7 @@ U0 MPSethServerTask()
     if (my_ctrl->next_waiting==my_ctrl &&
 	mp_ctrl->next_waiting==mp_ctrl) {
       LBts(&Gs->cpu_flags,CPUf_SETH_SLEEP);
-      Sleep(20); //We don't want this too long because of need for [C:/LT/OSMain/Task1a.CPZ,564] TaskFinishOffDying().
+      Sleep(20); //We don't want this too long because of need for [C:/LT/OSMain/Task1a.CPZ,560] TaskFinishOffDying().
       LBtr(&Gs->cpu_flags,CPUf_SETH_SLEEP);
     }
   }
@@ -340,12 +340,11 @@ MPCmdStruct *MPQueueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
 }
 
 MPCmdStruct *MPJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
-       U64 flags=1<<MPCf_FREE_ON_COMPLETE,
-       U64 target_cpu_mask=ALL_MASK)
+       U64 target_cpu=1,U64 flags=1<<MPCf_FREE_ON_COMPLETE)
 //Set flags to zero if you wish to
 //get the result.
 {
-  return MPQueueJob(fp_add,data,NULL,flags,FALSE,target_cpu_mask);
+  return MPQueueJob(fp_add,data,NULL,flags,FALSE,1<<target_cpu);
 }
 
 I64 MPJobResult(MPCmdStruct *tempm)
@@ -368,10 +367,10 @@ I64 MPJobResult(MPCmdStruct *tempm)
   return result;
 }
 
-TaskStruct *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 target_cpu=ALL_MASK)
+TaskStruct *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 target_cpu=1)
 {
   TaskStruct *result;
-  MPCmdStruct *tempm=MPQueueJob(fp_add,data,name,0,TRUE,target_cpu);
+  MPCmdStruct *tempm=MPQueueJob(fp_add,data,name,0,TRUE,1<<target_cpu);
   MPCmdCtrl *ctrl;
   while (!Bt(&tempm->flags,MPCf_DONE))
     Yield;
@@ -390,7 +389,7 @@ TaskStruct *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 targe
 }
 
 U0 MPCPUTaskInit()
-{ //Called by multicore's seth task after [C:/LT/OSMain/MultiProc.CPZ,413] MPStart()
+{ //Called by multicore's seth task after [C:/LT/OSMain/MultiProc.CPZ,412] MPStart()
   //as the first thing a CPU does before waiting for jobs
   MPAPICInit;
   Fs->rip=&MPSethServerTask;
@@ -443,8 +442,8 @@ U0 MPStart()
   MemSet(&cpu_structs[1],0,sizeof(CPUStruct)*(MP_MAX_PROCESSORS-1));
 
 //When you start-up other cores, they jump to an addr
-//specified by a byte vect number, [C:/LT/OSMain/Adam1a.HPZ,430] MPN_VECT which corresponds
-//to a location 4096*vect number, [C:/LT/OSMain/Adam1a.HPZ,431] MP_VECT_ADDR.
+//specified by a byte vect number, [C:/LT/OSMain/Adam1a.HPZ,449] MPN_VECT which corresponds
+//to a location 4096*vect number, [C:/LT/OSMain/Adam1a.HPZ,450] MP_VECT_ADDR.
   MemCpy(mp,SYS_MP_INIT_START,SYS_MP_INIT_END-SYS_MP_INIT_START);
 
   mp->sys_temp_ptr=GDT_SIZE-1+sys_gdttab(U8 *)<<16;
@@ -478,7 +477,7 @@ U0 MPStart()
     buf[14]+=i;
     task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/LT/OSMain/Adam1a.HPZ,3116] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_queue_signature=TASK_IN_QUEUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TssNew(i);

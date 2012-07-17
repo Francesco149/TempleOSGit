@@ -2,5 +2,5 @@ The compiler's lexical analyzer can be used in your programs to simplify
 parsing.  See [::/LT/Adam/Ltf/LtfPlain.APZ,LexNew] Ltf Parsing or
 [::/LT/Compiler/CmpInit.CPZ,Opcodes.TXZ] Parse Opcode File.
 
-See [C:/LT/OSMain/Adam1a.HPZ,1854] Tokens.
+See [C:/LT/OSMain/Adam1a.HPZ,1867] Tokens.
 

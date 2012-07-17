@@ -12,7 +12,7 @@ the cmd takes.
 See [::/LT/Doc/CtrlL.TXZ] ::/LT/Doc/CtrlL.TXZ and
 [::/LT/Demo/Ltf/DemoDoc.TXZ] ::/LT/Demo/Ltf/DemoDoc.TXZ.
 
-See [C:/LT/OSMain/Adam1a.HPZ,909] Ltf Type Defines and
+See [C:/LT/OSMain/Adam1a.HPZ,927] Ltf Type Defines and
 [::/LT/Adam/Ltf/Ltf.APZ,ST_LTF_CMDS] Ltf Type Codes
 +] TX Text
   Normally, text is not bracketed with "$", but if you wish to specify flag
@@ -45,7 +45,7 @@ If there is a ':', the space after the first ':' in the format string marks
   
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/LT/OSMain/Adam1a.HPZ,3420] color defines) to indicate which of the 16
+  [C:/LT/OSMain/Adam1a.HPZ,3434] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 FD Default Foreground Color
 BD Default Background Color
@@ -70,7 +70,7 @@ FQ Foreground of Quotes
 +] CL clear
   Clear all previous entries except ones with hold(+H) flags.  You might want
   +H on word wrap entries.  Alternatively, you can use
-  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1691] LtfClear().
+  [C:/LT/Adam/Ltf/LtfRecalc.APZ,1696] LtfClear().
 +] WW Word Wrap
   Include a 1 or 0.
 +] HL Highlighting
@@ -163,7 +163,7 @@ The main reason for the $IB$ cmd at this point is to pass a arg to the
 +] IT Insert Binary Type
   See $IB$.  This cmd inserts a number into the compiled stream describing
   the type of binary data associated with a num.  See
-  [C:/LT/OSMain/Adam1a.HPZ,1128] LTFBT_GRSPRITE for the types of binary data in
+  [C:/LT/OSMain/Adam1a.HPZ,1146] LTFBT_GRSPRITE for the types of binary data in
   LTF's.
 +] IS Insert Binary Size
   See $IB$.  This cmd inserts a number into the compiled stream describing
@@ -180,7 +180,7 @@ The main reason for the $IB$ cmd at this point is to pass a arg to the
   When errors are detected in dollar cmds, an ER entry is generated to hold
   the garbage so it is not lost.
 
-See [C:/LT/OSMain/Adam1a.HPZ,1067] Ltf Flag Defines and
+See [C:/LT/OSMain/Adam1a.HPZ,1085] Ltf Flag Defines and
 [::/LT/Adam/Ltf/Ltf.APZ,ST_LTF_FLAGS] Ltf Flag Codes
 See [::/LT/Adam/Ltf/LtfPlain.APZ,ltf_dft_flags] dft_flags.
 +] FLAGS

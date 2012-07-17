@@ -24,9 +24,59 @@ InternalType internal_types_table[NUM_INTERNAL_TYPES]={
 {IT_F64,8,"F64"},
 };
 
+U0 AsmPrsInsFlags(LexStruct *lx,InstructionEntry *tempi)
+{
+  I64 i;
+  while (TRUE) {
+    switch (lx->token) {
+      case TK_IDENT:
+	if ((i=DefineMatch(lx->ident,"ST_OPCODE_MODIFIERS"))>=0) {
+	  tempi->opcode_modifier=i;
+	  break;
+	} else
+	  return;
+      case TK_INTEGER:
+	if (lx->cur_i==16)
+	  tempi->flags|=IEF_OP_SIZE16;
+	else if (lx->cur_i==32)
+	  tempi->flags|=IEF_OP_SIZE32;
+	else
+	  return;
+	break;
+      case '+':
+	tempi->flags|=IEF_PLUS_OPCODE;
+      case '/':
+	if (Lex(lx)==TK_INTEGER && lx->cur_i<8)
+	  tempi->slash_val=lx->cur_i;
+	else if (lx->token==TK_IDENT) {
+	  if (!StrCmp(lx->ident,"R"))
+	    tempi->slash_val=SV_R_REGISTER;
+	  else if (!StrCmp(lx->ident,"I"))
+	    tempi->slash_val=SV_I_REGISTER;
+	  else
+	    return;
+	} else
+	  return;
+	break;
+      case '!': tempi->flags|=IEF_DONT_SWITCH_MODES; break;
+      case '&': tempi->flags|=IEF_DFT; break;
+      case ':': tempi->flags|=IEF_STI; break;
+      case '-': tempi->flags|=IEF_NO_REX; break;
+      case '~': tempi->flags|=IEF_40_REX; break;
+      case '=': tempi->flags|=IEF_48_REX; break;
+      case '`': tempi->flags|=IEF_REX_ONLY_R8_R15; break;
+      case '^': tempi->flags|=IEF_REX_XOR_LIKE; break;
+      case '$': tempi->flags|=IEF_ENDING_ZERO; break;
+      default:
+	return;
+    }
+    Lex(lx);
+  }
+}
+
 U0 AsmHashLoad(BoolI8 first)
 {
-  U64 i,j;
+  I64 i,j;
   InternalType *tempit;
   LexStruct *lx;
   I64 size,size1;
@@ -57,90 +107,33 @@ U0 AsmHashLoad(BoolI8 first)
       while (lx->token && lx->token!=';') {
 	tempi=&tempo->ins[tempo->instruction_entry_cnt];
 	tempi->ins_entry_num=tempo->instruction_entry_cnt++;
-	tempi->opcode_cnt=0;
-	while (lx->token==TK_INTEGER||lx->token==TK_U8) {
+	tempi->slash_val=SV_NONE; //Not zero!!
+	while (lx->token==TK_INTEGER) {
 	  tempi->opcode[tempi->opcode_cnt++]=lx->cur_i;
 	  Lex(lx);
 	}
-	tempi->flags=0;
-	if (lx->token=='+') {
-	  tempi->flags|=IEF_PLUS_OPCODE;
+	if (lx->token==',')
 	  Lex(lx);
-	}
-	if (lx->token=='/') {
-	  Lex(lx);
-	  if (lx->token==TK_INTEGER||lx->token==TK_U8) {
-	    tempi->slash_val=lx->cur_i;
-	    Lex(lx);
-	  } else if (lx->token==TK_IDENT) {
-	    tempi->slash_val=SV_REGISTER;
-	    Lex(lx);
-	  }
-	} else
-	  tempi->slash_val=SV_NONE;
-	if (lx->token=='*') {
-	  tempi->flags|=IEF_OP_SIZE16;
-	  Lex(lx);
-	}
-	if (lx->token==TK_MOD_EQUAL) {
-	  tempi->flags|=IEF_OP_SIZE32|IEF_48_REX;
-	  Lex(lx);
-	}
-	if (lx->token=='%') {
-	  tempi->flags|=IEF_OP_SIZE32;
-	  Lex(lx);
-	}
-	if (lx->token=='!') {
-	  tempi->flags|=IEF_DONT_SWITCH_MODES;
-	  Lex(lx);
-	}
-	if (lx->token=='&') {
-	  tempi->flags|=IEF_DFT;
-	  Lex(lx);
-	}
-	if (lx->token==':') {
-	  tempi->flags|=IEF_STI;
-	  Lex(lx);
-	}
-	if (lx->token=='-') {
-	  tempi->flags|=IEF_NO_REX;
-	  Lex(lx);
-	} else if (lx->token=='~') {
-	  tempi->flags|=IEF_40_REX;
-	  Lex(lx);
-	} else if (lx->token=='=') {
-	  tempi->flags|=IEF_48_REX;
-	  Lex(lx);
-	} else if (lx->token=='`') {
-	  tempi->flags|=IEF_REX_ONLY_R8_R15;
-	  Lex(lx);
-	} else if (lx->token=='^') {
-	  tempi->flags|=IEF_REX_XOR_LIKE;
-	  Lex(lx);
-	}
-	if (lx->token=='$') {
-	  tempi->flags|=IEF_ENDING_ZERO;
-	  Lex(lx);
-	}
-	if (lx->token!=TK_IDENT)
-	  PrsExcept(lx,"ST_EXPECTING_IDENTIFIER");
-	tempi->opcode_modifier=DefineMatch(lx->ident,
-	    "ST_OPCODE_MODIFIERS");
+	else if (lx->token!=';')
+	  PrsExcept(lx,"ST_EXPECTING_COMMA");
+
+	AsmPrsInsFlags(lx,tempi);
+
 	tempi->arg1=0;
 	tempi->arg2=0;
-	if (Lex(lx)==TK_IDENT) {
+	if (lx->token==TK_IDENT) {
 	  j=DefineMatch(lx->ident,"ST_ARG_TYPES");
 	  tempi->arg1=j;
-	  if (j>=ARGT_REL8 && j<=ARGT_REL32 ||
-	      j>=ARGT_MOFFS8 && j<=ARGT_MOFFS64)
+	  if (ARGT_REL8<=j<=ARGT_REL32 ||
+	      ARGT_MOFFS8<=j<=ARGT_MOFFS64)
 	    tempi|=IEF_NO_REX;
 
 	  if (Lex(lx)==TK_IDENT) {
 	    j=DefineMatch(lx->ident,"ST_ARG_TYPES");
 	    Lex(lx);
 	    tempi->arg2=j;
-	    if (j>=ARGT_REL8 && j<=ARGT_REL32 ||
-		j>=ARGT_MOFFS8 && j<=ARGT_MOFFS64)
+	    if (ARGT_REL8<=j<=ARGT_REL32 ||
+		ARGT_MOFFS8<=j<=ARGT_MOFFS64)
 	      tempi|=IEF_NO_REX;
 	  }
 	}
@@ -163,7 +156,7 @@ U0 AsmHashLoad(BoolI8 first)
       temph->str=lx->ident;
       lx->ident=NULL;
       Lex(lx); //skip keyword name
-      if (lx->token!=TK_INTEGER&&lx->token!=TK_U8)
+      if (lx->token!=TK_INTEGER)
 	PrsExcept(lx,"ST_EXPECTING_INTEGER");
       temph->user_data0=lx->cur_i;
       if (Lex(lx)!=';')
@@ -290,7 +283,7 @@ U0 CmpLoadDefines()
 			"R8\0R9\0R10\0R11\0R12\0R13\0R14\0R15\0");
   DefineListLoad("ST_MM_REGS","MM0\0MM1\0MM2\0MM3\0MM4\0MM5\0MM6\0MM7\0");
   DefineListLoad("ST_XMM_REGS","XMM0\0XMM1\0XMM2\0XMM3\0XMM4\0XMM5\0XMM6\0XMM7\0");
-  DefineListLoad("ST_OPCODE_MODIFIERS","NO\0R\0CB\0CW\0CD\0CP\0IB\0IW\0ID\0RB\0RW\0RD\0I\0");
+  DefineListLoad("ST_OPCODE_MODIFIERS","NO\0CB\0CW\0CD\0CP\0IB\0IW\0ID\0");
   DefineListLoad("ST_ARG_TYPES",
 		"NO\0REL8\0REL16\0REL32\0UIMM8\0UIMM16\0UIMM32\0UIMM64\0"
 		"R8\0R16\0R32\0R64\0"
@@ -364,7 +357,7 @@ Anchor for inserting Compiler Defines
 
 
   DefineListLoad("ST_INTERMEDIATE_CODE",
-// '*' means it is a dereferrence instruction
+// '*' means it is a dereference instruction
 // '=' means it is an assignment instruction
 // '^' means it is a compare instruction
 
@@ -654,7 +647,7 @@ U0 CmpFillTables()
   u['&']=TK_AND_AND<<16+'&';
   u['*']=TK_MUL_EQUAL<<16+'=';
   u['+']=TK_PLUS_PLUS<<16+'+';
-  u['-']=TK_DEREFERRENCE<<16+'>';
+  u['-']=TK_DEREFERENCE<<16+'>';
   u['/']='*';
   u[':']=TK_DBL_COLON<<16+':';
   u['<']=TK_LESS_EQUAL<<16+'=';
