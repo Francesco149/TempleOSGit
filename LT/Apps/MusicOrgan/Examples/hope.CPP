@@ -15,9 +15,8 @@
 
 F64 t0=tM;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i,x,y;
   x=30+50*((tM-t0)%3);
   y=40;

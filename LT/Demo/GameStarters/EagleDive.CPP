@@ -44,7 +44,7 @@ class Panel
   Panel *next;
   I32 n,   //num polygon sides
      num; //panel number
-  P3I32 *points;
+  P3I32 *pts;
   I64 color,cnt;
 };
 
@@ -267,7 +267,7 @@ U0 MPDoPanels(TaskStruct *task)
 		tempf->y=(j+h/2)*MAP_SCALE;
 		tempf->z=l;
 		CriticalSectionStart;
-		InsQue(tempf,fish_root.last);
+		QueIns(tempf,fish_root.last);
 		CriticalSectionEnd;
 	      }
 	    } else {
@@ -302,7 +302,7 @@ U0 MPDoPanels(TaskStruct *task)
 	      }
 	    }
 	    tempp->n=4;
-	    poly=tempp->points=MAlloc(sizeof(P3I32)*tempp->n,task);
+	    poly=tempp->pts=MAlloc(sizeof(P3I32)*tempp->n,task);
 	    poly[0].x=MAP_SCALE*i;
 	    poly[0].y=MAP_SCALE*j;
 	    poly[0].z=elevations[j][i];
@@ -404,9 +404,8 @@ U0 InitMap()
 
 GrDC *main_dc;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   main_dc->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(dc,0,0,main_dc);
 }
@@ -540,7 +539,7 @@ U0 MPDrawIt(TaskStruct *task,GrDC *dc)
 	  if ((tempp=panels[y1][x1*2]) && !LBts(panels_processed_bitmap,tempp->num)) {
 	    if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
 	      dc->color=tempp->color;
-	      tempp->cnt=GrFillPoly3(dc,tempp->n,tempp->points);
+	      tempp->cnt=GrFillPoly3(dc,tempp->n,tempp->pts);
 	    } else
 	      tempp->cnt++;
 	  }
@@ -769,14 +768,13 @@ U0 BSPEagleDive()
 //We made an alias of this we don't want freed.
   dc->depth_buf=NULL;
   GrDCDel(dc);
-  WinSync;
+  WinMgrSync;
 }
 
 #define ANIMATE_MS	10
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   //This just steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1;
   F64 t0=tP(Fs->parent_task),mS;
@@ -806,7 +804,7 @@ U0 AnimateTask(U64 dummy=0)
 	    game_score++;
 	    if (game_score>best_score)
 	      best_score=game_score;
-	    RemQue(tempf);
+	    QueRem(tempf);
 	    Free(tempf);
 	    music_mute=TRUE;
 	    Snd(1000); Sleep(200); Snd(0);
@@ -824,7 +822,7 @@ U0 AnimateTask(U64 dummy=0)
 	speed=Limit(speed+(0.0005-0.0002*Abs(phi)/(pi/4)),0.1,5.0);
       }
     }
-    WinSync;
+    WinMgrSync;
   }
 }
 
@@ -843,9 +841,8 @@ U0 TaskEndCB()
   Exit;
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by Terry A. Davis
-  nounusedwarn dummy;
 #ifstatic
   Fs->task_end_cb=ExtFind("SndTaskEndCB");//(Can't take addr of an extern function.)
 #else
@@ -871,7 +868,7 @@ U0 Init(I64 _mp_cnt)
     mp.mp_cnt=_mp_cnt;
   else
     mp.mp_cnt=mp_cnt;
-  fish_root.next=fish_root.last=&fish_root;
+  QueInit(&fish_root);
   InitMap;
   GrDCAllocDepthBuf(main_dc);
 
@@ -903,13 +900,13 @@ U0 CleanUp()
 
   while (tempf!=&fish_root) {
     tempf1=tempf->next;
-    RemQue(tempf);
+    QueRem(tempf);
     Free(tempf);
     tempf=tempf1;
   }
   while (tempp) {
     tempp1=tempp->next;
-    Free(tempp->points);
+    Free(tempp->pts);
     Free(tempp);
     tempp=tempp1;
   }
@@ -975,7 +972,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
 	  case CH_NEW_LINE:
 	    Fs->draw_it=NULL;
 	    CleanUp;
-	    WinSync;
+	    WinMgrSync;
 	    Init(_mp_cnt);
 	    Fs->draw_it=&DrawIt;
 	    break;

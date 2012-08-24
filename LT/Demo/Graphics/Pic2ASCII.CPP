@@ -23,11 +23,11 @@ U0 Convert()
 
 //The size of one character is 8x8 pixels
 //which fits in a 64-bit var. We'll
-//fetch the pixels from the screen using [C:/LT/Adam/Gr/GrPrimatives.APZ,105] GrPeek().
+//fetch the pixels from the screen using [C:/LT/Adam/Gr/GrPrimatives.APZ,107] GrPeek().
       cur_char_image=0;
       for (i=0;i<FONT_HEIGHT;i++)
 	for (j=0;j<FONT_WIDTH;j++)
-//[C:/LT/Adam/Gr/GrPrimatives.APZ,105] GrPeek() returns color or -1 if covered or off-screen.
+//[C:/LT/Adam/Gr/GrPrimatives.APZ,107] GrPeek() returns color or -1 if covered or off-screen.
 	  if (GrPeek(dc,col*FONT_WIDTH+j,row*FONT_HEIGHT+i)!=COLOR_TRANSPARENT)
 	    LBts(&cur_char_image,i*8+j);
 

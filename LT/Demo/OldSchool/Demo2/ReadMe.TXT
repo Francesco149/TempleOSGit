@@ -5,7 +5,7 @@ to OBJ files.
 Right-Click MakeFile.CPZ and click INCLUDE or
 do the following:
 
-1) Do a [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236] Dir() command
+1) Do a [C:/LT/OSMain/Dsk/Dsk1b.CPZ,234] Dir() command
 
 2) Right-Click on OD1.SPZ and click COMPILE.
    Right-Click on OD2.SPZ and click COMPILE.

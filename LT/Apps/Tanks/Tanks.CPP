@@ -54,6 +54,10 @@ is you can't use the <CTRL-O> auto-indent feature.
   TaskStruct *task;
   PopUpFile("/LT/Demo/Graphics/RotateTank.CPZ",FALSE,NULL,&task);
   F64 d;
+  PopUpOk("This aspires to be a rip-off of\n"
+	  "the	Perfect General, but has tank\n"
+	  "facing like in the board game,\n"
+	  "Stalin's Tanks.\n");
   if (!PopUpNoYes("Tournament Settings")) {
     d=PopUpRangeF64Log(300,2000,20,"%4f","Map Width In Pixels\n");
     DefinePrintF("MAP_WIDTH","%f",d);
@@ -88,11 +92,11 @@ U8 terrain[map_rows][map_cols];
 
 
 //Centers of hexes
-class Point
+class Pt
 {
   F64 x,y;
 };
-Point hex_centers[map_rows][map_cols];
+Pt hex_centers[map_rows][map_cols];
 
 I64 show_visible_row,show_visible_col;
 BoolI8 roads[map_rows][map_cols],
@@ -228,7 +232,7 @@ I64 FacingChg(I64 f1,I64 f2)
 
 U0 RowCol2XY(F64 &x,F64 &y,I64 row,I64 col)
 {
-  Point *c;
+  Pt *c;
   row=LimitI64(row,0,map_rows);
   col=LimitI64(col,0,map_cols);
   c=&hex_centers[row][col];
@@ -588,9 +592,8 @@ I64 move_x,move_y;
 F64 move_facing;
 Unit *moving_unit;
 
-BoolI64 MovePlot(U0 aux,I64 x,I64 y,I64 z)
+BoolI64 MovePlot(U0,I64 x,I64 y,I64)
 {
-  nounusedwarn z,aux;
   move_x=x; move_y=y;
   Sleep(5*ANIMATION_DELAY);
   return TRUE;
@@ -673,7 +676,7 @@ U0 PlotShot(Unit *tempu,I64 row,I64 col)
   tempi->attacker=tempu;
   tempi->row=row;
   tempi->col=col;
-  InsQue(tempi,indirect_root.last);
+  QueIns(tempi,indirect_root.last);
 }
 
 BoolI8 firing=FALSE;
@@ -683,9 +686,8 @@ BoolI8 target_hit;
 BoolI8 indirect_explosion=FALSE;
 I64 indirect_row,indirect_col;
 
-BoolI64 FirePlot(U0 aux,I64 x,I64 y,I64 z)
+BoolI64 FirePlot(U0,I64 x,I64 y,I64)
 {
-  nounusedwarn z,aux;
   fire_x=x; fire_y=y;
   firing=TRUE;
   Sleep(3*ANIMATION_DELAY);
@@ -806,7 +808,7 @@ U0 FireShot(Unit *tempu,Unit *target)
       }
     }
   }
-  while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,227] Snd()
+  while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,226] Snd()
     Yield;
   target_unit=NULL;
 }
@@ -928,11 +930,11 @@ U0 IndirectFireResolve()
     }
     Noise(2000*ANIMATION_DELAY,800,1000);
     Sleep(2000*ANIMATION_DELAY);
-    while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,227] Snd()
+    while (snd_freq) //see [C:/LT/OSMain/Misc1a.CPZ,226] Snd()
       Yield;
     indirect_explosion=FALSE;
 
-    RemQue(tempi);
+    QueRem(tempi);
     Free(tempi);
     tempi=tempi1;
   }
@@ -1322,7 +1324,7 @@ U0 Init()
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
   InitUnits;
-  indirect_root.next=indirect_root.last=&indirect_root;
+  QueInit(&indirect_root);
   turn=0;
   fire_radius=0;
   show_visible_row=-1;
@@ -1334,13 +1336,7 @@ U0 Init()
 
 U0 CleanUp()
 {
-  IndirectOrders *tempi=indirect_root.next,*tempi1;
-  while (tempi!=&indirect_root) {
-    tempi1=tempi->next;
-    RemQue(tempi);
-    Free(tempi);
-    tempi=tempi1;
-  }
+  QueDel(&indirect_root,TRUE);
 }
 
 #define T_TURN_OVER	0

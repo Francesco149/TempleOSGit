@@ -328,7 +328,7 @@ LTextern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/LT/Compiler/Lex.CPZ,760] Lex() can use them with [C:/LT/OSMain/Adam1a.HPZ,1861] Token Codes.
+[C:/LT/Compiler/Lex.CPZ,752] Lex() can use them with [C:/LT/OSMain/Adam1a.HPZ,1861] Token Codes.
 */
 U32 alpha_bitmap[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -382,7 +382,7 @@ U32 non_eol_chars_bitmap[16]=
 {0xFFFFDBFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
 0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
 
-U8 *ListEntryPoint(I64 entry_num, U8 *lst)
+U8 *ListEntryPt(I64 entry_num, U8 *lst)
 {//Point to list entry.
  //Not especially efficient but handy.  Use an array of U8*'s for efficiency.
   if (!lst) return NULL;
@@ -483,7 +483,7 @@ U8 *DefineSub(U64 sub,U8 *name)
 {
   DefineStrHashEntry *temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR);
   if (temph)
-    return ListEntryPoint(sub,temph->data);
+    return ListEntryPt(sub,temph->data);
   else
     UndefinedDefine(name);
 }
@@ -763,7 +763,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/LT/OSMain/Adam1a.HPZ,3654] flags
+{//See [C:/LT/OSMain/Adam1a.HPZ,3657] flags
   U8 *src=_src,*dst=_src;
   U64 ch;
 
@@ -1081,7 +1081,7 @@ U8 *SPrintFFlags(U8 *dst,U8 *list,U64 flags)
   for (i=0;i<=63;i++)
     if (Bt(&flags,i)) {
       StrCat(dst,"+");
-      StrCat(dst,ListEntryPoint(i,list));
+      StrCat(dst,ListEntryPt(i,list));
     }
   return dst;
 }
@@ -1744,7 +1744,7 @@ sp_in_sub_fmt:
 	case 'z':
 	  if (cur_arg+1>=argc)
 	    throw(EXCEPT_SPRINTF,1);
-	  ptr=ListEntryPoint(argv[cur_arg],argv[cur_arg+1]);
+	  ptr=ListEntryPt(argv[cur_arg],argv[cur_arg+1]);
 	  cur_arg=cur_arg+2;
 	  OutStr(ptr,addr_buf,addr_dst,len,left_justify,truncate_flag);
 	  break;

@@ -14,9 +14,8 @@ I16 stk_x[STK_SIZE];
 I16 stk_y[STK_SIZE];
 I16 stk_dir[STK_SIZE];
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *task,GrDC *)
 {
-  nounusedwarn dc;
   I64 i,j;
   for (j=0;j<TEXT_ROWS;j++)
     for (i=0;i<TEXT_COLS;i++)
@@ -97,7 +96,7 @@ try
 	ch=GetChar;
 	break;
       }
-      WinSync;
+      WinMgrSync;
     }
   } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
 catch

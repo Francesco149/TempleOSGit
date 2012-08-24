@@ -8,7 +8,7 @@ U0 FillInTime()
   "$IV,1$----%D %T----$IV,0$\n",ltdt,ltdt;
 }
 
-U0 RandQuote(U64 num)
+U0 RandQuote(I64 num)
 {
   I64 i,size,l=512;
   U8 *bible_filename=Define("ST_BIBLE_FILE");
@@ -21,6 +21,34 @@ U0 RandQuote(U64 num)
   }
 }
 
+U0 BadCodeJump(I64 num)
+{
+  LTDirEntry *root=FilesFind("/LT/*",FUF_JUST_FILES|FUF_RECURSE|FUF_FLATTEN_TREE|FUF_JUST_SRC_FILES),
+	     *tempm=root;
+  I64 cnt=0;
+  Ltf *l;
+  U8 *st;
+  while (tempm) {
+    l=LtfRead(tempm->full_name);
+    tempm->user_data=l->root.y;
+    cnt+=l->root.y;
+    LtfDel(l);
+    tempm=tempm->next;
+  }
+  num=num%cnt;
+  tempm=root;
+  while (tempm) {
+    num-=tempm->user_data;
+    if (num<0) {
+      st=MSPrintF("FL:%s,%d",tempm->full_name,-num);
+      break;
+    }
+    tempm=tempm->next;
+  }
+  LTDirListDel(root);
+  Ed(st);
+  Free(st);
+}
 
 BoolI64 MyPutKey(U64 ch,U64 sc)
 {  //ch=ASCII; sc=scancode
@@ -128,7 +156,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Misc/Insert Datetime");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    LtfInsertSafe(LtfCur,
+	    LtfInsSafe(LtfCur,
 		"$HS+C$$FG$$HE$");
 	  else
 	    FillInTime();
@@ -201,7 +229,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	      WordStat;
 	    return TRUE;
 
-//Insert your own ALT-key plug-ins
+//Ins your own ALT-key plug-ins
 
 	  case 'f':
 	    if (sc&SCF_KEY_DESC)
@@ -210,11 +238,18 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	      Ed("HOME/Notes.TXZ");
 	    return TRUE;
 
+	  case 'b':
+	    if (sc&SCF_KEY_DESC)
+	      SetKeyDesc("Cmd/Jump to Bad Code");
+	    else
+	      BadCodeJump(GetTimeStamp/16);
+	    return TRUE;
+
 	  case 'p':
 	    if (sc&SCF_KEY_DESC)
 	      SetKeyDesc("JukeBox(TAD)");
 	    else
-	      JukeBox("::/LT/Accts/TAD/MusicOrgan");
+	      JukeBox("::/LT/Accts/TS/TAD/MusicOrgan");
 	    return TRUE;
 	  case 'P':
 	    if (sc&SCF_KEY_DESC)

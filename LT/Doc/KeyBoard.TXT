@@ -4,7 +4,7 @@ See [Char] Char for definition of scan codes.
 
 When you are at the cmd line, editing documents, browsing documentation and 
 help, entering items in forms or in menu's, the
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf editor handles keys.  It 
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf editor handles keys.  It 
 allows you to define your own key handlers in a
 [C:/LT/Accts/TAD/Adam3dKeyPlugIns.APZ,12] MyPutKey() function.  If you 
 choose, you can catch most keys, overriding the default handlers.  See 
@@ -26,11 +26,11 @@ Extended ASCII (3 digit decimal number).
 
 CTRL-ALT-keys and CTRL-ALT-SHIFT-keys
 
-Handled at a system level, NOT by the [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf
+Handled at a system level, NOT by the [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf
 editor.  I reserve the right to 
 allocate these, but in the mean time, you can make your own by assigning 
-handlers to the [C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[]
-array.  Be aware that they operate in an 
+handlers to the [C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[] array. 
+Be aware that they operate in an 
 interrupt framework, so they are tricky to use.
 
 
@@ -69,20 +69,20 @@ I reserve the right to allocate to these.  There are not many free.
                               Behind the Scenes
 
 The editor mostly stays in a [C:/LT/OSMain/KbdMouse/Message.CPZ,138]
-GetKey()/[C:/LT/OSMain/Display.CPZ,202] PutKey() loop.  The putkey portion is 
+GetKey()/[C:/LT/OSMain/Display.CPZ,201] PutKey() loop.  The putkey portion is 
 where keys are acted-upon.  LoseThos has a chain of putkey handlers in a 
 [Circular Queue] Circular Queue with priorities.  The highest priority
 handlers can choose to 
 terminate handling, otherwise, the keys get sent on down the chain.
 
-[C:/LT/OSMain/Display.CPZ,277] KeyDevAdd() defines a putkey device with a
+[C:/LT/OSMain/Display.CPZ,276] KeyDevAdd() defines a putkey device with a
 priority.  "Device" might be a 
 misnomer.  Currently, the following are defined:
 
 Priority    Handler
 ---------- ---------
 0x20000000 [C:/LT/Accts/TAD/Adam3dKeyPlugIns.APZ,12] MyPutKey() user handler
-0x40000000 [C:/LT/OSMain/Display.CPZ,170] AKDInputFilterPutKey() for
+0x40000000 [C:/LT/OSMain/Display.CPZ,169] AKDInputFilterPutKey() for
 [C:/LT/OSMain/TaskCmd.CPZ,353] Auto(), [C:/LT/OSMain/TaskCmd.CPZ,383]
 AutoStr(), and [C:/LT/OSMain/TaskCmd.CPZ,395] AutoFile() 
 handling.
@@ -92,13 +92,13 @@ video mem debug output.
 cmds
 
 Since handling individual keys is slow, LoseThos supports
-[C:/LT/OSMain/Display.CPZ,227] PutS() as well.  If 
+[C:/LT/OSMain/Display.CPZ,226] PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf.user_put_key and
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf.user_put_s are call back routines which
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf.user_put_key and
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf.user_put_s are call back routines which
 offer some 
 neat tricks.  See [::/LT/Apps/MusicOrgan/JukeBox.CPZ]
 ::/LT/Apps/MusicOrgan/JukeBox.CPZ.  There is a var
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf.user_
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf.user_
 put_data which gets passed to them.

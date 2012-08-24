@@ -27,9 +27,8 @@ GrDC *dc0,*dc1;
 
 
 
-U0 GrBlackLighting(GrDC *dc,P3I32 *p1,P3I32 *p2,P3I32 *p3,ColorROPU32 color)
+U0 GrBlackLighting(GrDC *dc,P3I32 *,P3I32 *,P3I32 *,ColorROPU32)
 {
-  nounusedwarn p1,p2,p3,color;
   dc->color=0;
 }
 
@@ -63,9 +62,8 @@ U0 DrawShadow(TaskStruct *task)
   GrSpritePlot3(dc1,0,0,0,__BIN_1);
 }
 
-U0 DrawIt(TaskStruct *task,GrDC *_dc)
+U0 DrawIt(TaskStruct *task,GrDC *)
 {
-  nounusedwarn _dc;
   GrDCDepthBufRst(dc0);
   GrIdentEqu(dc0->r);
   GrRotZEqu(dc0->r,theta);

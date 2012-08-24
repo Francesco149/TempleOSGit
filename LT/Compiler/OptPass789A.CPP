@@ -687,12 +687,6 @@ U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
 	  case EC_HLT:
 	    IcU8(tempi,0xF4);
 	    break;
-	  case EC_WBINVD:
-	    IcU16(tempi,0x090F);
-	    break;
-	  case EC_INVD:
-	    IcU16(tempi,0x080F);
-	    break;
 	  case EC_INVLPG:
 	    IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 		tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
@@ -842,14 +836,17 @@ U64 OptPass789A(LexStruct *lx,FunStruct *fun_class,
 	  case EC_SWAP_U64:
 	    IcSwap(tempi,ip2);
 	    break;
-	  case EC_INSQUE:
-	    IcInsQue(tempi,ip2);
+	  case EC_QUE_INIT:
+	    IcQueInit(tempi,ip2);
 	    break;
-	  case EC_INSQUE_REV:
-	    IcInsQueRev(tempi,ip2);
+	  case EC_QUE_INS:
+	    IcQueIns(tempi,ip2);
 	    break;
-	  case EC_REMQUE:
-	    IcRemQue(tempi,ip2);
+	  case EC_QUE_INS_REV:
+	    IcQueInsRev(tempi,ip2);
+	    break;
+	  case EC_QUE_REM:
+	    IcQueRem(tempi,ip2);
 	    break;
 	  case EC_MEMCPY:
 	    IcMemCpy(tempi,ip2);

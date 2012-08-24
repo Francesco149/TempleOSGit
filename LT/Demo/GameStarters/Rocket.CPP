@@ -40,7 +40,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
     x=m1.x-10*Cos(theta+nozzle_angle);
     y=m1.y-10*Sin(theta+nozzle_angle);
     for (i=0;i<6;i++) {
-      if ((i^gr_screen_updates)&1)
+      if ((i^win_updates)&1)
 	dc->color=YELLOW;
       else
 	dc->color=RED;
@@ -67,9 +67,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   GrSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
 }
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *,F64,Order2D3 *,Order2D3 *)
 {
-  nounusedwarn ode,t,state,DstateDt;
   BoolI8 engine_on;
   F64 nozzle_angle,theta=Arg(m2.state->x-m1.state->x,m2.state->y-m1.state->y);
 
@@ -99,7 +98,7 @@ U0 Init()
 {
   blast_off=FALSE;
 
-//We don't clear queue links.
+//We don't clear que links.
   MemSet(&m1.start_saved_area,0,offset(MassStruct.end_saved_area)-offset(MassStruct.start_saved_area));
   m1.y=-PT_SPAN/2;
 
@@ -159,11 +158,11 @@ U0 Rocket()
   ode->acceleration_limit=5e3;
 
   Init;
-  InsQue(&m1,ode->last_mass);
-  InsQue(&m2,ode->last_mass);
-  InsQue(&s,ode->last_spring);
+  QueIns(&m1,ode->last_mass);
+  QueIns(&m2,ode->last_mass);
+  QueIns(&s,ode->last_spring);
 
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
 
   Fs->draw_it=&DrawIt;
 
@@ -185,7 +184,7 @@ U0 Rocket()
 rk_done:
   } catch
     CatchAll;
-  RemQue(ode);
+  QueRem(ode);
   OdeDel(ode);
   "$CL$$BG$$FG$\n";
   SettingsPop;

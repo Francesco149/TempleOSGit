@@ -8,7 +8,7 @@ U0 GrSetOrigin(GrSprite *root,I64 dx,I64 dy,I64 dz)
   GrSprite *tempg=root->next;
   while (tempg!=root) {
     switch (tempg->type) {
-      case GRST_POINT:
+      case GRST_PT:
       case GRST_FLOOD_FILL:
       case GRST_FLOOD_FILL_NOT:
 	tempg->x1+=dx;
@@ -56,7 +56,7 @@ U0 GrSetOrigin(GrSprite *root,I64 dx,I64 dy,I64 dz)
 	  ptr[i<<2+1]+=dy;
 	}
 	break;
-      case GRST_POLYPOINT:
+      case GRST_POLYPT:
 	ptr=&tempg->y1;
 	ptr[0]+=dx;
 	ptr[1]+=dy;
@@ -95,7 +95,7 @@ GrSprite *GrTransformCircle(I64 *r,GrSprite *tempg)
 {
   I64 x,y,z;
   F64 m1,a1,m2,radius=tempg->x2<<16;
-  GrSprite *tempg1=CAlloc(gr_sprite_queued_base_size[GRST_ELLIPSE]);
+  GrSprite *tempg1=CAlloc(gr_sprite_qued_base_size[GRST_ELLIPSE]);
   tempg1->type=GRST_ELLIPSE;
 
   x=tempg->x1; y=tempg->y1; z=0;
@@ -122,7 +122,7 @@ GrSprite *GrTransformEllipse(I64 *r,GrSprite *tempg)
 {
   I64 x,y,z;
   F64 m1,a1,m2,a2,s,c,x_radius=tempg->width<<16,y_radius=tempg->height<<16;
-  GrSprite *tempg1=CAlloc(gr_sprite_queued_base_size[tempg->type]);
+  GrSprite *tempg1=CAlloc(gr_sprite_qued_base_size[tempg->type]);
   tempg1->type=tempg->type;
   if (tempg->type==GRST_REG_POLY)
     tempg1->sides=tempg->sides;
@@ -163,7 +163,7 @@ GrSprite *GrTransformRect(I64 *r,GrSprite *tempg,F64 theta)
   F64 m1,a1,m2,a2,s,c,
     x_radius=(tempg->x2-tempg->x1)<<16,
     y_radius=(tempg->y2-tempg->y1)<<16;
-  GrSprite *tempg1=CAlloc(gr_sprite_queued_base_size[GRST_ROTATED_RECT]);
+  GrSprite *tempg1=CAlloc(gr_sprite_qued_base_size[GRST_ROTATED_RECT]);
   tempg1->type=GRST_ROTATED_RECT;
 
   x=tempg->x1; y=tempg->y1; z=0;
@@ -301,7 +301,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	tempg->width*=Sqrt(x*x+y*y+z*z)/65536;
 	if (tempg->width<0) tempg->width=0;
 	break;
-      case GRST_POINT:
+      case GRST_PT:
       case GRST_FLOOD_FILL:
       case GRST_FLOOD_FILL_NOT:
 	x=tempg->x1; y=tempg->y1; z=0;
@@ -323,22 +323,22 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	break;
       case GRST_BITMAP8:
 	tempg1=GrTransformBitMap(r,tempg);
-	InsQue(tempg1,tempg);
-	RemQue(tempg);
+	QueIns(tempg1,tempg);
+	QueRem(tempg);
 	Free(tempg);
 	tempg=tempg1;
 	break;
       case GRST_ROTATED_RECT:
 	tempg1=GrTransformRect(r,tempg,tempg->rot_angle);
-	InsQue(tempg1,tempg);
-	RemQue(tempg);
+	QueIns(tempg1,tempg);
+	QueRem(tempg);
 	Free(tempg);
 	tempg=tempg1;
 	break;
       case GRST_RECT:
 	tempg1=GrTransformRect(r,tempg,0);
-	InsQue(tempg1,tempg);
-	RemQue(tempg);
+	QueIns(tempg1,tempg);
+	QueRem(tempg);
 	Free(tempg);
 	tempg=tempg1;
 	break;
@@ -352,16 +352,16 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	break;
       case GRST_CIRCLE:
 	tempg1=GrTransformCircle(r,tempg);
-	InsQue(tempg1,tempg);
-	RemQue(tempg);
+	QueIns(tempg1,tempg);
+	QueRem(tempg);
 	Free(tempg);
 	tempg=tempg1;
 	break;
       case GRST_ELLIPSE:
       case GRST_REG_POLY:
 	tempg1=GrTransformEllipse(r,tempg);
-	InsQue(tempg1,tempg);
-	RemQue(tempg);
+	QueIns(tempg1,tempg);
+	QueRem(tempg);
 	Free(tempg);
 	tempg=tempg1;
 	break;
@@ -383,8 +383,8 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	  ptr[i<<2+1]=y;
 	}
 	break;
-      case GRST_POLYPOINT:
-	root2.next=root2.last=&root2;
+      case GRST_POLYPT:
+	QueInit(&root2);
 	ptr=&tempg->y1;
 	x=ptr[0]; y=ptr[1]; z=0;
 	x1=x; y1=y; z1=z;  //unrotated cur coordinates
@@ -399,7 +399,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	  y1+=gr_y_offsets[j];
 	  x=x1; y=y1; z=z1;
 	  GrRot(r,&x,&y,&z);
-	  Line(&root2,x3-x2,y3-y2,0,x-x2,y-y2,0,&GrPolyPointPlot);
+	  Line(&root2,x3-x2,y3-y2,0,x-x2,y-y2,0,&GrPolyPtPlot);
 	  x3=x; y3=y; z3=z;
 	}
 
@@ -409,7 +409,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	while (tempg1!=&root2) {
 	  tempg2=tempg1->next;
 	  if (tempg1->x1==x3 && tempg1->y1==y3) {
-	    RemQue(tempg1);
+	    QueRem(tempg1);
 	    Free(tempg1);
 	  } else {
 	    num++;
@@ -419,7 +419,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	  tempg1=tempg2;
 	}
 
-	tempg3=CAlloc(gr_sprite_queued_base_size[GRST_POLYPOINT]+
+	tempg3=CAlloc(gr_sprite_qued_base_size[GRST_POLYPT]+
 	    sizeof(I32)*2+(num*3+7)>>3);
 	ptr=&tempg3->y1;
 	ptr[0]=x2;
@@ -435,14 +435,14 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
 	      3*(SignI64(tempg1->y1-y3)+1)]);
 	  i+=3;
 	  x3=tempg1->x1;y3=tempg1->y1;
-	  RemQue(tempg1);
+	  QueRem(tempg1);
 	  Free(tempg1);
 	  tempg1=tempg2;
 	}
-	tempg3->type=GRST_POLYPOINT;
+	tempg3->type=GRST_POLYPT;
 	tempg3->num=num;
-	InsQue(tempg3,tempg);
-	RemQue(tempg);
+	QueIns(tempg3,tempg);
+	QueRem(tempg);
 	Free(tempg);
 	tempg=tempg3;
 	break;
@@ -489,7 +489,7 @@ U0 GrSpriteTransform(I64 *r,GrSprite *root)
   }
 }
 
-GrSprite *GrSpriteLtf2Queue(Ltf *l,GrSprite *root,I64 *cur_num)
+GrSprite *GrSpriteLtf2Que(Ltf *l,GrSprite *root,I64 *cur_num)
 {
   GrSprite *result=CAlloc(sizeof(GrSprite)),*tempg;
   LtfEntry *ll=l->root.next;
@@ -498,14 +498,14 @@ GrSprite *GrSpriteLtf2Queue(Ltf *l,GrSprite *root,I64 *cur_num)
   result->next=result->last=result;
   while (ll!=l) {
     if (ll->type_u8==LTFT_MENU_VAL && ll->left_exp>=0) {
-      tempg=GrNum2Queue(root,ll->left_exp);
+      tempg=GrNum2Que(root,ll->left_exp);
       if (tempg!=root) {
 	tempg=MAllocIdentical(tempg);
 	if (*cur_num==ll->left_exp) {
 	  *cur_num=num;
 	  found=TRUE;
 	}
-	InsQue(tempg,result->last);
+	QueIns(tempg,result->last);
 	num++;
       }
     }
@@ -513,7 +513,7 @@ GrSprite *GrSpriteLtf2Queue(Ltf *l,GrSprite *root,I64 *cur_num)
   }
   if (!found)
     *cur_num=num;
-  GrSpriteDel(root);
+  QueDel(root);
   Free(root);
   return result;
 }
@@ -563,7 +563,7 @@ U0 GrSpriteSideBarTask2(TaskStruct *grand_parent)
       parent->win_top=pu_task->win_top;
       parent->win_bottom=parent->win_top+h;
     }
-    WinSync;
+    WinMgrSync;
   }
 }
 
@@ -579,7 +579,7 @@ U0 GrSpriteSideBarTask(TaskStruct *parent,GrSprite **root,I64 *cur_num)
     ll=l->cur_entry;
     if (ll->type_u8==LTFT_MENU_VAL)
       *cur_num=ll->left_exp;
-    *root=GrSpriteLtf2Queue(l,*root,cur_num);
+    *root=GrSpriteLtf2Que(l,*root,cur_num);
     LtfClear(l);
   }
 }
@@ -633,9 +633,9 @@ BoolI64 GrSpriteTextEd(GrSprite **_root,I64 *cur_num)
   }
   if (result=ServantUser("LtfDo(0x%X,0x%X,0x%X);",l,0,NULL)) {
     tempg=GrSpriteHexLtf2GrSprite(l,cur_num);
-    GrSpriteDel(root);
+    QueDel(root);
     Free(root);
-    root=GrSprite2Queue(tempg);
+    root=GrSprite2Que(tempg);
   }
   LtfDel(l);
   if (_root) *_root=root;
@@ -645,12 +645,12 @@ BoolI64 GrSpriteTextEd(GrSprite **_root,I64 *cur_num)
 #define GED_PICK_GRAPHICALLY	0
 #define GED_SET_ORIGIN		1
 #define GED_SHIFT_ORIGIN	2
-#define GED_SHIFT_POINTS	3
+#define GED_SHIFT_PTS	3
 #define GED_SHIFT_RECTS		4
 #define GED_TRANSFORM		5
 #define GED_SHIFT_SUB_ORIGIN	6
 #define GED_VECT		7
-#define GED_INSERT_CLIPBOARD	8
+#define GED_INS_CLIPBOARD	8
 #define GED_DELETE		9
 #define GED_ED			10
 #define GED_SNAP		11
@@ -667,7 +667,7 @@ I64 PopUpGrSpriteEd(GrSprite **root,I64 snap,F64 ip_scaler,I64 *cur_num)
   I64 i;
   Ltf *l=LtfNew;
   LtfPrintF(l,"$FG,PURPLE$$TX+CX,\"Edit Menu\"$$FG$\n"
-	"$MU-UL,\"Shift Points\",GED_SHIFT_POINTS$\n"
+	"$MU-UL,\"Shift Points\",GED_SHIFT_PTS$\n"
 	"$MU-UL,\"Shift Points with Rects\",GED_SHIFT_RECTS$\n"
 	"$MU-UL,\"Shift Origin\",GED_SHIFT_ORIGIN$\n"
 	"$MU-UL,\"Set Origin\",GED_SET_ORIGIN$\n"
@@ -678,7 +678,7 @@ I64 PopUpGrSpriteEd(GrSprite **root,I64 snap,F64 ip_scaler,I64 *cur_num)
 	"$MU-UL,\"Delete\",GED_DELETE$\n"
 	"$MU-UL,\"Edit as Text\",GED_ED$\n"
 	"\n$FM,PURPLE$$MU-UL,\"+] Vect Object Menu\",GED_VECT$$FM,LTBLUE$\n"
-	"$MU-UL,\"Insert Clipboard GrSprite's\",GED_INSERT_CLIPBOARD$\n"
+	"$MU-UL,\"Insert Clipboard GrSprite's\",GED_INS_CLIPBOARD$\n"
 	"\n$MU-UL,\"End\",GED_END$\n"
 	"$MU-UL,\"Cancel\",LTFM_CANCEL$",snap,ip_scaler);
   st=MSPrintF("GrSpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,root,cur_num);
@@ -686,33 +686,33 @@ I64 PopUpGrSpriteEd(GrSprite **root,I64 snap,F64 ip_scaler,I64 *cur_num)
   Free(st);
   i=PopUpMenu(l);
   if (TaskValidate(pu_task)) {
-    *root=GrSpriteLtf2Queue(LtfCur(pu_task),*root,cur_num);
+    *root=GrSpriteLtf2Que(LtfCur(pu_task),*root,cur_num);
     Kill(pu_task);
   }
   LtfDel(l);
   return i;
 }
 
-#define GESPT_SIMPLE_POINT	0
+#define GESPT_SIMPLE_PT	0
 #define GESPT_WIDTH_HEIGHT	1
 
 #define GESPF_SELECTED		1
 
-class GrSpritePointStruct
+class GrSpritePtStruct
 {
-  GrSpritePointStruct *next,*last;
+  GrSpritePtStruct *next,*last;
   I32 type,num,flags,xx,yy,zz;
   I32 *x,*y,*z,*w,*h;
 };
 
-U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
+U0 GrSpritePtQueNew(U8 *elems,I64 x,I64 y,GrSpritePtStruct *root)
 {
   I64 i,cur_num=0;
   I32 *ptr;
   P3I32 *p;
-  GrSpritePointStruct *temppe;
+  GrSpritePtStruct *temppe;
   GrSprite *tempg=elems-offset(GrSprite.start);
-  root->next=root->last=root;
+  QueInit(root);
   while (tempg->type) {
     switch (tempg->type) {
       case GRST_RECT:
@@ -720,29 +720,29 @@ U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
       case GRST_LINE:
       case GRST_ARROW:
       case GRST_PLANAR_SYMMETRY:
-	temppe=CAlloc(sizeof(GrSpritePointStruct));
-	temppe->type=GESPT_SIMPLE_POINT;
+	temppe=CAlloc(sizeof(GrSpritePtStruct));
+	temppe->type=GESPT_SIMPLE_PT;
 	temppe->xx=x;
 	temppe->yy=y;
 	temppe->x=&tempg->x2;
 	temppe->y=&tempg->y2;
 	temppe->num=cur_num;
-	InsQue(temppe,root->last);
+	QueIns(temppe,root->last);
       case GRST_TEXT:
       case GRST_TEXT_BOX:
       case GRST_TEXT_DIAMOND:
-      case GRST_POINT:
+      case GRST_PT:
       case GRST_FLOOD_FILL:
       case GRST_FLOOD_FILL_NOT:
       case GRST_CIRCLE:
-	temppe=CAlloc(sizeof(GrSpritePointStruct));
-	temppe->type=GESPT_SIMPLE_POINT;
+	temppe=CAlloc(sizeof(GrSpritePtStruct));
+	temppe->type=GESPT_SIMPLE_PT;
 	temppe->xx=x;
 	temppe->yy=y;
 	temppe->x=&tempg->x1;
 	temppe->y=&tempg->y1;
 	temppe->num=cur_num;
-	InsQue(temppe,root->last);
+	QueIns(temppe,root->last);
 	break;
       case GRST_SHIFT:
 	x+=tempg->x1;
@@ -750,7 +750,7 @@ U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
 	break;
       case GRST_ELLIPSE:
       case GRST_REG_POLY:
-	temppe=CAlloc(sizeof(GrSpritePointStruct));
+	temppe=CAlloc(sizeof(GrSpritePtStruct));
 	temppe->type=GESPT_WIDTH_HEIGHT;
 	temppe->xx=x;
 	temppe->yy=y;
@@ -759,53 +759,53 @@ U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
 	temppe->w=&tempg->width;
 	temppe->h=&tempg->height;
 	temppe->num=cur_num;
-	InsQue(temppe,root->last);
+	QueIns(temppe,root->last);
       case GRST_BITMAP8:
-	temppe=CAlloc(sizeof(GrSpritePointStruct));
-	temppe->type=GESPT_SIMPLE_POINT;
+	temppe=CAlloc(sizeof(GrSpritePtStruct));
+	temppe->type=GESPT_SIMPLE_PT;
 	temppe->xx=x;
 	temppe->yy=y;
 	temppe->x=&tempg->x2;
 	temppe->y=&tempg->y2;
 	temppe->num=cur_num;
-	InsQue(temppe,root->last);
+	QueIns(temppe,root->last);
 	break;
       case GRST_SPEEDLINE:
 	ptr=&tempg->y1;
 	for (i=0;i<tempg->num;i++) {
-	  temppe=CAlloc(sizeof(GrSpritePointStruct));
-	  temppe->type=GESPT_SIMPLE_POINT;
+	  temppe=CAlloc(sizeof(GrSpritePtStruct));
+	  temppe->type=GESPT_SIMPLE_PT;
 	  temppe->xx=x;
 	  temppe->yy=y;
 	  temppe->x=&ptr[i<<2];
 	  temppe->y=&ptr[i<<2+1];
 	  temppe->num=cur_num;
-	  InsQue(temppe,root->last);
+	  QueIns(temppe,root->last);
 	}
 	break;
       case GRST_POLYLINE:
 	ptr=&tempg->y1;
 	for (i=0;i<tempg->num;i++) {
-	  temppe=CAlloc(sizeof(GrSpritePointStruct));
-	  temppe->type=GESPT_SIMPLE_POINT;
+	  temppe=CAlloc(sizeof(GrSpritePtStruct));
+	  temppe->type=GESPT_SIMPLE_PT;
 	  temppe->xx=x;
 	  temppe->yy=y;
 	  temppe->x=&ptr[i<<1];
 	  temppe->y=&ptr[i<<1+1];
 	  temppe->num=cur_num;
-	  InsQue(temppe,root->last);
+	  QueIns(temppe,root->last);
 	}
 	break;
-      case GRST_POLYPOINT:
+      case GRST_POLYPT:
 	ptr=&tempg->y1;
-	temppe=CAlloc(sizeof(GrSpritePointStruct));
-	temppe->type=GESPT_SIMPLE_POINT;
+	temppe=CAlloc(sizeof(GrSpritePtStruct));
+	temppe->type=GESPT_SIMPLE_PT;
 	temppe->xx=x;
 	temppe->yy=y;
 	temppe->x=&ptr[0];
 	temppe->y=&ptr[1];
 	temppe->num=cur_num;
-	InsQue(temppe,root->last);
+	QueIns(temppe,root->last);
 	break;
       case GRST_BSPLINE2:
       case GRST_BSPLINE3:
@@ -813,29 +813,29 @@ U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
       case GRST_BSPLINE3_CLOSED:
 	p=&tempg->y1;
 	for (i=0;i<tempg->num;i++) {
-	  temppe=CAlloc(sizeof(GrSpritePointStruct));
-	  temppe->type=GESPT_SIMPLE_POINT;
+	  temppe=CAlloc(sizeof(GrSpritePtStruct));
+	  temppe->type=GESPT_SIMPLE_PT;
 	  temppe->xx=x;
 	  temppe->yy=y;
 	  temppe->x=&p[i].x;
 	  temppe->y=&p[i].y;
 	  temppe->z=&p[i].z;
 	  temppe->num=cur_num;
-	  InsQue(temppe,root->last);
+	  QueIns(temppe,root->last);
 	}
 	break;
       case GRST_MESH:
 	break;
       case GRST_SHIFTABLE_MESH:
-	temppe=CAlloc(sizeof(GrSpritePointStruct));
-	temppe->type=GESPT_SIMPLE_POINT;
+	temppe=CAlloc(sizeof(GrSpritePtStruct));
+	temppe->type=GESPT_SIMPLE_PT;
 	temppe->xx=x;
 	temppe->yy=y;
 	temppe->x=&tempg->x1;
 	temppe->y=&tempg->y1;
 	temppe->z=&tempg->z1;
 	temppe->num=cur_num;
-	InsQue(temppe,root->last);
+	QueIns(temppe,root->last);
 	break;
     }
     tempg(U8 *)+=GrSpriteElemSize(tempg);
@@ -843,29 +843,17 @@ U0 GrSpritePointQueueNew(U8 *elems,I64 x,I64 y,GrSpritePointStruct *root)
   }
 }
 
-U0 GrSpritePointQueueDel(GrSpritePointStruct *root)
-{
-  GrSpritePointStruct *temppe,*temppe1;
-  temppe=root->next;
-  while (temppe!=root) {
-    temppe1=temppe->next;
-    RemQue(temppe);
-    Free(temppe);
-    temppe=temppe1;
-  }
-}
-
-U0 GESPCtrlPointsDraw(GrDC *dc,GrSpritePointStruct *root)
+U0 GESPCtrlPtsDraw(GrDC *dc,GrSpritePtStruct *root)
 {
   I64 x,y;
-  GrSpritePointStruct *temppe;
-  WinSync;
+  GrSpritePtStruct *temppe;
+  WinMgrSync;
   GrDCFill(dc);
   if (Blink(20)) {
     temppe=root->next;
     while (temppe!=root) {
       switch (temppe->type) {
-	case GESPT_SIMPLE_POINT:
+	case GESPT_SIMPLE_PT:
 	  x=*temppe->x+temppe->xx;
 	  y=*temppe->y+temppe->yy;
 	  break;
@@ -886,14 +874,14 @@ U0 GESPCtrlPointsDraw(GrDC *dc,GrSpritePointStruct *root)
   }
 }
 
-U0 GESPCtrlPointsMove(GrSpritePointStruct *root,I64 dx,I64 dy)
+U0 GESPCtrlPtsMove(GrSpritePtStruct *root,I64 dx,I64 dy)
 {
-  GrSpritePointStruct *temppe;
+  GrSpritePtStruct *temppe;
   temppe=root->next;
   while (temppe!=root) {
     if (temppe->flags&GESPF_SELECTED)
       switch (temppe->type) {
-	case GESPT_SIMPLE_POINT:
+	case GESPT_SIMPLE_PT:
 	  if (temppe->x) *temppe->x+=dx;
 	  if (temppe->y) *temppe->y+=dy;
 	  break;
@@ -906,30 +894,30 @@ U0 GESPCtrlPointsMove(GrSpritePointStruct *root,I64 dx,I64 dy)
   }
 }
 
-BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
+BoolI64 GrSpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 {
   I64 msg_code,p1,p2,xx,yy,xx2,yy2,dd,best_dd,cur_num;
   BoolI8 old_preempt;
   GrDC *dc=GrDCAlias;
-  GrSpritePointStruct root,*temppe,*best_pe;
+  GrSpritePtStruct root,*temppe,*best_pe;
   BoolI8 result=TRUE;
 
-  GrSpritePointQueueNew(elems,x,y,&root);
+  GrSpritePtQueNew(elems,x,y,&root);
   cur_num=0;
   if (root.next!=&root) {
     old_preempt=Preempt(OFF);
     while (TRUE) {
-      GESPCtrlPointsDraw(dc,&root); //has WinSync
+      GESPCtrlPtsDraw(dc,&root); //has WinMgrSync
       switch (msg_code=ScanMsg(&p1,&p2,1<<MSG_IP_R_UP|1<<MSG_IP_L_DOWN|1<<MSG_KEY_DOWN)) {
 	case MSG_IP_L_DOWN:
 	  switch (mode) {
-	    case GED_SHIFT_POINTS:
+	    case GED_SHIFT_PTS:
 	      xx=p1; yy=p2;
 	      best_dd=MAX_I64;
 	      temppe=root.next;
 	      while (temppe!=&root) {
 		switch (temppe->type) {
-		  case GESPT_SIMPLE_POINT:
+		  case GESPT_SIMPLE_PT:
 		    dd=SqrI64(*temppe->x+temppe->xx-xx)+SqrI64(*temppe->y+temppe->yy-yy);
 		    break;
 		  case GESPT_WIDTH_HEIGHT:
@@ -948,7 +936,7 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 	    case GED_SHIFT_RECTS:
 	      xx2=xx=p1; yy2=yy=p2;
 	      while (TRUE) {
-		GESPCtrlPointsDraw(dc,&root);
+		GESPCtrlPtsDraw(dc,&root);
 		if (Blink)
 		  dc->color=ROPF_DITHER+RED<<16+WHITE;
 		else
@@ -966,7 +954,7 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 	      temppe=root.next;
 	      while (temppe!=&root) {
 		switch (temppe->type) {
-		  case GESPT_SIMPLE_POINT:
+		  case GESPT_SIMPLE_PT:
 		    if (xx<=*temppe->x+temppe->xx<=xx2 &&
 			yy<=*temppe->y+temppe->yy<=yy2)
 		      temppe->flags|=GESPF_SELECTED;
@@ -980,7 +968,7 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 		temppe=temppe->next;
 	      }
 	      do {
-		GESPCtrlPointsDraw(dc,&root);
+		GESPCtrlPtsDraw(dc,&root);
 		msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN);
 		if (msg_code==MSG_KEY_DOWN) goto gs_key;
 	      } while (msg_code!=MSG_IP_L_DOWN);
@@ -988,9 +976,9 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 	      break;
 	  }
 	  do {
-	    GESPCtrlPointsDraw(dc,&root);
+	    GESPCtrlPtsDraw(dc,&root);
 	    if (msg_code=ScanMsg(&p1,&p2,1<<MSG_IP_MOVE|1<<MSG_IP_L_UP)) {
-	      GESPCtrlPointsMove(&root,p1-xx,p2-yy);
+	      GESPCtrlPtsMove(&root,p1-xx,p2-yy);
 	      xx=p1;yy=p2;
 	    }
 	  } while (msg_code!=MSG_IP_L_UP);
@@ -1010,7 +998,7 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 	      goto gs_done;
 	    case 'p':
 	    case 'P':
-	      mode=GED_SHIFT_POINTS;
+	      mode=GED_SHIFT_PTS;
 	      break;
 	    case 'r':
 	    case 'R':
@@ -1024,7 +1012,7 @@ BoolI64 GrSpriteShiftPoints(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
     }
 gs_done:
     Preempt(old_preempt);
-    GrSpritePointQueueDel(&root);
+    QueDel(&root,TRUE);
   }
   GrDCFill(dc);
   GrDCDel(dc);
@@ -1040,7 +1028,7 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
   I64 i,r[16],cur_num=0,msg_code,p1,p2,old_size,xx,yy,new_snap=1;
   F64 new_ip_scaler=1.0;
   GrSprite *cur_elem,*old_GrSprite,
-      *root,*root2,*next,*last,*tempg,*insert_point;
+      *root,*root2,*next,*last,*tempg,*insert_pt;
   BoolI8 unlock=LtfLock(l),unlock2,del_down;
   Fs->task_title[TASK_TITLE_LEN]=0;
   U8 *old_desc=StrNew(Fs->task_title);
@@ -1048,7 +1036,7 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
   U64 old_ltf_flags=l->flags&(LTFF_ATTR_BY_PRT|LTFF_ATTR_BY_FILENAME),
      old_cl_flags;
 
-  WinSync(TRUE);
+  WinMgrSync(2);
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   WordStat;
   if (_import_snap) new_snap=*_import_snap;
@@ -1060,7 +1048,7 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
   tempb=cl->bin_data;
   old_size=tempb->size;
   old_GrSprite=tempb->data;
-  root=GrSprite2Queue(old_GrSprite);
+  root=GrSprite2Que(old_GrSprite);
 
   cur_num=GrSpriteCntQue(root);
   tempb->data=MAllocIdentical(old_GrSprite);
@@ -1097,9 +1085,9 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	  if (msg_code==MSG_IP_L_UP && sys_cur_scan_code&SCF_DELETE ||
 	      msg_code==MSG_KEY_DOWN && p2&SCF_IP_L_DOWN && p2.u8[0]==SC_DELETE) {
 	    cur_num=l->cur_sprite_elem_num;
-	    cur_elem=GrNum2Queue(root,cur_num);
+	    cur_elem=GrNum2Que(root,cur_num);
 	    if (cur_elem!=root) {
-	      RemQue(cur_elem);
+	      QueRem(cur_elem);
 	      Free(cur_elem);
 	      GrEdUpdate(l,tempb,root);
 	    }
@@ -1135,18 +1123,18 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	  GrEdUpdate(l,tempb,root);
 	} while (msg_code!=MSG_IP_L_UP);
 	break;
-      case GED_SHIFT_POINTS:
+      case GED_SHIFT_PTS:
       case GED_SHIFT_RECTS:
-	AcctOneTimePopUp(ARf_GRSPRITE_POINTS_RECTANGLES,
+	AcctOneTimePopUp(ARf_GRSPRITE_PTS_RECTANGLES,
 	"You can switch between points\n"
 	"and rectangles with '$FG,GREEN$p$FG$' and '$FG,GREEN$r$FG$'.\n"
 	"Press '$FG,GREEN$r$FG$' after one rectangle\n"
 	"to OR another rectangle.\n");
 	cl->flags=old_cl_flags;
-	if (GrSpriteShiftPoints(tempb->data,x,y,&cur_num,i)) {
-	  GrSpriteDel(root);
+	if (GrSpriteShiftPts(tempb->data,x,y,&cur_num,i)) {
+	  QueDel(root);
 	  Free(root);
-	  root=GrSprite2Queue(tempb->data);
+	  root=GrSprite2Que(tempb->data);
 	} else
 	  GrEdUpdate(l,tempb,root);
 	break;
@@ -1158,12 +1146,12 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	break;
       case GED_SHIFT_SUB_ORIGIN:
 	cl->flags=old_cl_flags;
-	insert_point=GrNum2Queue(root,cur_num);
-	tempg=MAlloc(gr_sprite_queued_base_size[GRST_SHIFT]);
+	insert_pt=GrNum2Que(root,cur_num);
+	tempg=MAlloc(gr_sprite_qued_base_size[GRST_SHIFT]);
 	tempg->type=GRST_SHIFT;
 	tempg->x1=0;
 	tempg->y1=0;
-	InsQue(tempg,insert_point->last);
+	QueIns(tempg,insert_pt->last);
 	GetMsg(&p1,&p2,1<<MSG_IP_L_DOWN);
 	xx=p1; yy=p2;
 	do {
@@ -1175,19 +1163,19 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	} while (msg_code!=MSG_IP_L_UP);
 	cur_num++;
 	break;
-      case GED_INSERT_CLIPBOARD:
-	AcctOneTimePopUp(ARf_GRSPRITE_INSERT_CLIPBOARD,
+      case GED_INS_CLIPBOARD:
+	AcctOneTimePopUp(ARf_GRSPRITE_INS_CLIPBOARD,
 	"You will probably want to shift around\n"
 	"the location of element groups.  Use\n"
 	"'Insert shift sub-origin' after picking the\n"
 	"element to insert before.  Or,\n"
 	"use 'shift points'.\n");
-	insert_point=GrNum2Queue(root,cur_num);
+	insert_pt=GrNum2Que(root,cur_num);
 	unlock2=LtfLock(sys_clipboard_ltf);
 	ll=sys_clipboard_ltf->root.next;
 	while (ll!=sys_clipboard_ltf) {
 	  if (ll->type_u8==LTFT_PICTURE) {
-	    root2=GrSprite2Queue(ll->bin_data->data);
+	    root2=GrSprite2Que(ll->bin_data->data);
 	    if (root2->next!=root2) {
 	      tempg=root2->next;
 	      while (tempg!=root2) {
@@ -1196,10 +1184,10 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	      }
 	      next=root2->next;
 	      last=root2->last;
-	      insert_point->last->next=next;
-	      next->last=insert_point->last;
-	      insert_point->last=last;
-	      last->next=insert_point;
+	      insert_pt->last->next=next;
+	      next->last=insert_pt->last;
+	      insert_pt->last=last;
+	      last->next=insert_pt;
 	    }
 	    Free(root2);
 	  }
@@ -1221,9 +1209,9 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
 	}
 	break;
       case GED_DELETE:
-	cur_elem=GrNum2Queue(root,cur_num);
+	cur_elem=GrNum2Que(root,cur_num);
 	if (cur_elem!=root) {
-	  RemQue(cur_elem);
+	  QueRem(cur_elem);
 	  Free(cur_elem);
 	  GrEdUpdate(l,tempb,root);
 	}
@@ -1247,7 +1235,7 @@ U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_s
     LtfUnlock(l);
   if (_import_snap) *_import_snap=new_snap;
   if (_import_ip_scaler) *_import_ip_scaler=new_ip_scaler;
-  GrSpriteDel(root);
+  QueDel(root);
   Free(root);
   StrCpy(Fs->task_title,old_desc);
   Free(old_desc);

@@ -79,9 +79,9 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/LT/OSMain/Adam1a.HPZ,2954] Ctrl type for the tempo/stacatto sliders.
+  2) The [C:/LT/OSMain/Adam1a.HPZ,2955] Ctrl type for the tempo/stacatto sliders.
 
-  3) The active [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf picture buttons with macros for left/record/play/right.
+  3) The active [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf picture buttons with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
@@ -90,7 +90,7 @@ This uses four types of ctrls
 
 This uses four types of output
 
-  1) The [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf for the text and buttons and kbdgraphic.
+  1) The [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf for the text and buttons and kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
 
@@ -100,7 +100,7 @@ persistent layer is used during drag-and-drop.
   4) The Fs->next_ctrl for the tempo/stacatto sliders.
 
 
-See [C:/LT/Adam/Gr/GrScreen.APZ,370] GrUpdateWins() and [C:/LT/Adam/Gr/GrScreen.APZ,724] GrUpdateScreen().
+See [C:/LT/Adam/Gr/GrScreen.APZ,378] GrUpdateWins() and [C:/LT/Adam/Gr/GrScreen.APZ,731] GrUpdateScreen().
 
 
 */
@@ -253,7 +253,7 @@ BoolI64 OrgHasWords(U8 *st)
 
 BoolI64 OrgIsDotted(I64 duration)
 {
-  U8 *st=ListEntryPoint(duration,org_duration_list);
+  U8 *st=ListEntryPt(duration,org_duration_list);
   if (st[1]=='.')
     return TRUE;
   else
@@ -299,7 +299,7 @@ U0 OrgRecalcNoteXY()
 	    note=0;
 	    octave++;
 	  }
-	  note=music_note_map[*ListEntryPoint(note,org_note_list)-'A'];
+	  note=music_note_map[*ListEntryPt(note,org_note_list)-'A'];
 	  tempo->y=(15+(org_note_map[note]-7*(octave-2)))*4;
 	}
       }
@@ -369,9 +369,9 @@ U0 OrgCutToClipboard()
     if (tempo->flags&OF_SELECTED) {
       if (oc.cur_note==tempo)
 	oc.cur_note=tempo->next;
-      RemQue(tempo);
+      QueRem(tempo);
       tempo->flags&=~OF_SELECTED;
-      InsQue(tempo,oc.clipboard.last);
+      QueIns(tempo,oc.clipboard.last);
     }
     tempo=tempo1;
   }
@@ -383,7 +383,7 @@ U0 OrgPasteClipboard()
   tempo=oc.clipboard.next;
   while (tempo!=&oc.clipboard) {
     tempo1=OrgNoteCopy(tempo);
-    InsQue(tempo1,oc.cur_note->last);
+    QueIns(tempo1,oc.cur_note->last);
     tempo=tempo->next;
   }
 }
@@ -397,15 +397,14 @@ U0 OrgCopyToClipboard()
     if (tempo->flags&OF_SELECTED) {
       tempo->flags&=~OF_SELECTED;
       tempo1=OrgNoteCopy(tempo);
-      InsQue(tempo1,oc.clipboard.last);
+      QueIns(tempo1,oc.clipboard.last);
     }
     tempo=tempo->next;
   }
 }
 
-OrgNote *OrgFindNote(I64 x,I64 y)
+OrgNote *OrgFindNote(I64 x,I64)
 {
-  nounusedwarn y;
   OrgNote *tempo=oc.root.next;
   OrgRecalcNoteXY;
   x+=ORG_NOTE_SPACING/2;
@@ -526,7 +525,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 #define ORGR_SHARP		-7
 #define ORGR_TIE		-6
 #define ORGR_REST		-5
-#define ORGR_INSERT_NOTE	-4
+#define ORGR_INS_NOTE	-4
 #define ORGR_DELETE_NOTE	-3
 #define ORGR_SET_WORD		-2
 
@@ -539,7 +538,7 @@ F64 PopUpDuration()
 	"$MU,\"Toggle Flat\",ORGR_FLAT$\n"
 	"$MU,\"Toggle Tie\",ORGR_TIE$\n"
 	"$MU,\"Make Rest\",ORGR_REST$\n"
-	"$MU,\"Insert Note\",ORGR_INSERT_NOTE$\n"
+	"$MU,\"Insert Note\",ORGR_INS_NOTE$\n"
 	"$MU,\"Delete Note\",ORGR_DELETE_NOTE$\n"
 	"$MU,\"No Accent\",ORGR_NO_ACCENT$\n"
 	"$MU,\"Accent\",ORGR_ACCENT$\n"
@@ -634,13 +633,13 @@ U0 OrgRightClick(I64 x,I64 y)
 LtfCur->flags=LtfCur->flags&~LTFF_FORM|old_ltf_flags&LTFF_FORM;
 	  }
 	  break;
-	case ORGR_INSERT_NOTE:
+	case ORGR_INS_NOTE:
 	  tempo1=OrgNoteCopy(tempo);
-	  InsQue(tempo1,tempo);
+	  QueIns(tempo1,tempo);
 	  break;
 	case ORGR_DELETE_NOTE:
 	  oc.cur_note=tempo->next;
-	  RemQue(tempo);
+	  QueRem(tempo);
 	  OrgNoteDel(tempo);
 	  break;
 	case ORGR_NO_ACCENT:
@@ -812,7 +811,7 @@ U0 OrgLeftClickPickNoteBox(I64 duration)
     tempo->duration=duration;
     tempo->waveform=tempo1->waveform;
     OrgSetWidth(tempo);
-    InsQue(tempo,tempo1);
+    QueIns(tempo,tempo1);
     oc.cur_note=tempo->next;
   }
   DrawDC2;
@@ -842,7 +841,7 @@ U0 OrgLeftClickPickMeterBox(I64 top,I64 bottom)
     tempo->meter_bottom=bottom;
     tempo->waveform=tempo1->waveform;
     OrgSetWidth(tempo);
-    InsQue(tempo,tempo1);
+    QueIns(tempo,tempo1);
     oc.cur_note=tempo->next;
   }
   DrawDC2;
@@ -937,9 +936,8 @@ U0 OrgLeftClick(I64 x,I64 y)
 U64 org_play_mode=0;
 F64 org_play_f=0;
 
-U0 OrgPlayTask(U64 dummy=0)
+U0 OrgPlayTask(U64)
 {
-  nounusedwarn dummy;
   U64 i=0;
   F64 f=0,f2=0;
   Fs->task_end_cb=&SndTaskEndCB;
@@ -1036,7 +1034,7 @@ U0 OrgLoadSongStr(U8 *st,I64 *org_octave,F64 *org_duration)
 	else
 	  tempo1->meter_bottom=4;
 	OrgSetWidth(tempo1);
-	InsQue(tempo1,oc.root.last);
+	QueIns(tempo1,oc.root.last);
       }
       if (*st=='W') {
 	st++;
@@ -1112,7 +1110,7 @@ U0 OrgLoadSongStr(U8 *st,I64 *org_octave,F64 *org_duration)
     tempo->duration=i;
     tempo->type=OT_NOTE;
     OrgSetWidth(tempo);
-    InsQue(tempo,oc.cur_note->last);
+    QueIns(tempo,oc.cur_note->last);
   }
 }
 
@@ -1196,7 +1194,7 @@ U8 *OrgCvtSong()
 	  note=0;
 	  octave++;
 	}
-	note=music_note_map[*ListEntryPoint(note,org_note_list)-'A'];
+	note=music_note_map[*ListEntryPt(note,org_note_list)-'A'];
       }
       accent=tempo->accent;
       waveform=tempo->waveform;
@@ -1214,14 +1212,14 @@ U8 *OrgCvtSong()
 	last_octave=octave;
       }
       if (tempo->duration!=last_duration) {
-	src=ListEntryPoint(tempo->duration,org_duration_list);
+	src=ListEntryPt(tempo->duration,org_duration_list);
 	*dst++=src[0];
 	if (src[1])
 	  *dst++=src[1];
 	last_duration=tempo->duration;
       }
       if (note!=NOTE_REST) {
-	src=ListEntryPoint(note,org_note_list);
+	src=ListEntryPt(note,org_note_list);
 	*dst++=src[0];
 	if (src[1])
 	  *dst++=src[1];
@@ -1510,7 +1508,7 @@ T);\",%d$");
   "$CM+LX,0,6$";
   OrgSetOctave(org_octave);
   OrgSetWaveform(org_waveform);
-  WinSync(TRUE);
+  WinMgrSync(2);
 }
 
 
@@ -1636,7 +1634,7 @@ _IP_L_UP|1<<MSG_IP_R_UP|
 MD);
 got_msg:
       if (msg_code==MSG_KEY_DOWN && p1==CH_SPACE && !p2) {
-      //The Window Manager sets the Ltf cur_entry to a button
+      //The Window Mgr sets the Ltf cur_entry to a button
       //and generates a <SPACE BAR> when the Ltf Buttons are clicked.
       //This is so that kbd and mouse are the same for Ltf's.
       //We must now pass the <SPACE BAR> onto the Ltf handler.
@@ -1722,12 +1720,12 @@ got_msg:
 		      tempo=oc.cur_note;
 		      oc.cur_note=tempo->next;
 		      if (tempo!=&oc.root) {
-			RemQue(tempo);
+			QueRem(tempo);
 			OrgNoteDel(tempo);
 		      }
 		    }
 		    break;
-		  case SC_INSERT:
+		  case SC_INS:
 		    if (sc&SCF_SHIFT)
 		      OrgPasteClipboard;
 		    else if (sc&SCF_CTRL)
@@ -1915,7 +1913,7 @@ G_CMD);
 	      case CH_BACKSPACE:
 		tempo=oc.cur_note->last;
 		if (tempo!=&oc.root) {
-		  RemQue(tempo);
+		  QueRem(tempo);
 		  OrgNoteDel(tempo);
 		}
 		is_note=FALSE;
@@ -2012,7 +2010,7 @@ G_CMD);
       }
       if (f!=last_f) {
 	if (f>0) {
-	  st=ListEntryPoint(note,org_note_list);
+	  st=ListEntryPt(note,org_note_list);
 	  org_play_f=f;
 	} else {
 	  if (f<0)
@@ -2028,7 +2026,7 @@ G_CMD);
 
 	    tempo->duration=OrgCvtDuration(music_tempo*(evt_time-note_down_time));
 	    OrgSetWidth(tempo);
-	    InsQue(tempo,oc.cur_note->last);
+	    QueIns(tempo,oc.cur_note->last);
 	  }
 	  if (f) {
 	    note_down_time=tP;

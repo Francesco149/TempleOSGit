@@ -15,7 +15,7 @@ U0 StadiumGen()
   fp_old_update=fp_final_screen_update; //hide mouse cursor
   fp_final_screen_update=NULL;
 
-  WinSync(TRUE);
+  WinMgrSync(2);
   dc=GrDCExtract(gr_screen_image,0,FONT_HEIGHT,GR_WIDTH,GR_HEIGHT);
 
   LGRWrite("::/LT/Demo/GameStarters/Stadium/Stadium",dc);

@@ -1,4 +1,4 @@
--] Abbreviations
++] Abbreviations
   Abs	Absolute
 Acct	Account
 Add/Addr	Address
@@ -79,11 +79,13 @@ Prec	Precedence
 Prod	Product or Production
 Pri	Primary
 Prt	Partition
+Pt	Point
 Ptr	Pointer
 Que	Queue
 Reg	Register or Regular
 Rem	Remove
 Rep	Report
+Rqst	Request
 Rst	Reset
 Rot	Rotation
 Rx	Receive
@@ -109,13 +111,13 @@ Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between "task", "process" or "thread."  The Fs
   segment register is kept pointing to the current task's
-  [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct.  There is only one window per task.
+  [C:/LT/OSMain/Adam1a.HPZ,3135] TaskStruct.  There is only one window per task.
 
 +] Adam Task
   This is Adam, as in Adam and Eve, the parent of all tasks.  This task is
   created at start-up and appears in the small window at the top beneath the
-  user windows.  On it's heap are all memory objects which are system
-  wide.  When created, it runs the file [::/LT/OSMain/Adam1.APZ]
+  user windows.  On it's heap are all memory objects which are system wide. 
+  When created, it runs the file [::/LT/OSMain/Adam1.APZ]
   ::/LT/OSMain/Adam1.APZ  Normally, Adam1.APZ ends by #include
   [::/LT/Adam/Adam2.APZ] ::/LT/Adam/Adam2.APZ where the remainder of the
   operating system is "#included".  When start-up is finished, the adam task
@@ -136,17 +138,17 @@ Wiz	Wizard
   calling routines +/-2 Gig from the current code location.  To prevent
   out-of-range issues, I decided to separate code and data, placing all code
   within the lowest 2 Gig of memory.  The compiler and
-  [C:/LT/OSMain/Hash1a.CPZ,730] Load()er allocate memory from the code heap to
+  [C:/LT/OSMain/Hash1a.CPZ,729] Load()er allocate memory from the code heap to
   store code and glbl vars, unless the compiler option
-  [C:/LT/OSMain/Adam1a.HPZ,1457] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  [C:/LT/OSMain/Adam1a.HPZ,1456] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/LT/OSMain/Memory.CPZ,956] MAlloc() is comes from the data
   heap, which in not limited in size, except by how much physical RAM memory
   you have.  You can allocate from any heap you like, or even make independent
   heaps.
 
 +] Parent/Child Task
-  Often a task will [C:/LT/OSMain/Task1a.CPZ,225] Spawn() or
-  [C:/LT/Adam/Ltf/LtfPopUp.APZ,407] PopUp() a task as a helper.  The helper is
+  Often a task will [C:/LT/OSMain/Task1a.CPZ,203] Spawn() or
+  [C:/LT/Adam/Ltf/LtfPopUp.APZ,399] PopUp() a task as a helper.  The helper is
   known as a Child Task, though you can Spawn a task and assign it a different
   parent... like Adam.  Links are kept as to who spawned what so that when one
   task is [C:/LT/OSMain/Task1a.CPZ,28] Kill()ed the helper tasks disappear,
@@ -168,12 +170,12 @@ Wiz	Wizard
   I coined this term to refer to conventional AOT compilation mode, but it is
   not the preferred mode for this operating system and is discouraged.  .SP?
   files are compiled to .BI? files, skipping .OBJ files.  After compiling, you
-  do a [C:/LT/OSMain/Hash1a.CPZ,730] Load() cmd which is available from
-  right-clicking on a link (like from [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236]
-  Dir()).  There is no main() routine.  Instead, statements outside functions
-  are automatically executed upon loading.  There is no way to unload except by
+  do a [C:/LT/OSMain/Hash1a.CPZ,729] Load() cmd which is available from
+  right-clicking on a link (like from [C:/LT/OSMain/Dsk/Dsk1b.CPZ,234] Dir()). 
+  There is no main() routine.  Instead, statements outside functions are
+  automatically executed upon loading.  There is no way to unload except by
   killing the task.  To invoke Static Compiled Mode, use the
-  [C:/LT/Compiler/CmpMain.CPZ,375] Cmp() routine or right-click on a link.  The
+  [C:/LT/Compiler/CmpMain.CPZ,378] Cmp() routine or right-click on a link.  The
   OSMain modules and compiler are made in static compiled mode and stored in
   OSMain.BIC and Compiler.BIZ, respectively.
 
@@ -184,10 +186,10 @@ See [::/LT/Demo/GameStarters/EagleDive.CPZ]
   In just-in-time mode, the compiler allocates objects, code and data, from
   the heap, incrementally.  This mode is used during cmd line operations.  When
   you #include a file, it is compiled function by function and objects are
-  placed all over in mem.  The [C:/LT/Compiler/CmpMain.CPZ,563] ExeFile()
-  routine is the same as #include but can be placed in
-  programs.  [C:/LT/Compiler/CmpMain.CPZ,522] ExePutS() routine will compile
-  and run a string.
+  placed all over in mem.  The [C:/LT/Compiler/CmpMain.CPZ,571] ExeFile()
+  routine is the same as #include but can be placed in programs. 
+  [C:/LT/Compiler/CmpMain.CPZ,530] ExePutS() routine will compile and run a
+  string.
 
 +] Compiler Intermediate Code
   The compiler generates instructions one step before making actual
@@ -215,8 +217,8 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   [C:/LT/OSMain/Dsk/DskStr.CPZ,32] FilesFindMatch().  An optional directory
   plus a list of file name masks, as in /LT/Demo/*.TXZ;*.CPZ.
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK and
-  [C:/LT/OSMain/Adam1a.HPZ,2063] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,2065] TEXT_FILE_MASK and
+  [C:/LT/OSMain/Adam1a.HPZ,2064] SRC_FILE_MASK.
 
 +] Filename Extention Types
   
@@ -238,8 +240,8 @@ Be aware of [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK and
 *.MPZ;*.MPP
   Compiler "map" files
 *.BIZ;*.BIN;*.BIC
-  Binary executable files, created by [C:/LT/Compiler/CmpMain.CPZ,375] Cmp()
-  and read by [C:/LT/OSMain/Hash1a.CPZ,730] Load().
+  Binary executable files, created by [C:/LT/Compiler/CmpMain.CPZ,378] Cmp()
+  and read by [C:/LT/OSMain/Hash1a.CPZ,729] Load().
 *.DTZ;*.DTA
   Data files
 *.ISO
@@ -250,17 +252,17 @@ Be aware of [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK and
 *.LGZ
   Graphics file
 
-[C:/LT/OSMain/Adam1a.HPZ,2063] SRC_FILE_MASK
+[C:/LT/OSMain/Adam1a.HPZ,2064] SRC_FILE_MASK
   This #define holds a list of src file extensions.
-[C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK
+[C:/LT/OSMain/Adam1a.HPZ,2065] TEXT_FILE_MASK
   This #define holds a list of text file extensions.
 
 +] Naming Convention
   The following are rules I stick to.  If you work on the operating system,
-  it'd be good to stick with them for uniformity, but you can do what you
-  like.  Since there are no "namespaces" and I don't plan to implement name
-  spaces, I highly recommend putting a 2-3 character module code prefix on
-  syms. e.g. "Ws","Ltf","Lex"
+  it'd be good to stick with them for uniformity, but you can do what you like.
+   Since there are no "namespaces" and I don't plan to implement name spaces, I
+  highly recommend putting a 2-3 character module code prefix on syms. e.g.
+  "Ws","Ltf","Lex"
 
 ALL_CAPS
   Assembly Language labels are capitalized with underscores between words. 
@@ -281,10 +283,10 @@ SYSf_????
   designated with a lower case "f".
 
 Fs The CPU FS segment register.  This register points to the current task's 
-[C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct.
+[C:/LT/OSMain/Adam1a.HPZ,3135] TaskStruct.
 
 Gs The CPU GS segment register.  This register points to the
-[C:/LT/OSMain/Adam1a.HPZ,3756] CPUStruct.
+[C:/LT/OSMain/Adam1a.HPZ,3759] CPUStruct.
 
 Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
   These are bit manipulation functions named after Intel instructions.  They 

@@ -185,9 +185,8 @@ U0 DrawTermButton(GrDC *dc,Ctrl *c)
     GrSpritePlot3(dc,c->left,c->top,0,__BIN_1);
 }
 
-U0 LeftClickTermButton(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickTermButton(Ctrl *,I64,I64,BoolI8 down)
 {
-  nounusedwarn c,x,y;
   if (down)
     SpawnUser;
 }
@@ -212,7 +211,7 @@ Ctrl *TermButtonNew()
   c->bottom=c->top+(max_y-min_y+1)-1;
 
   old_preempt=Preempt(OFF);
-  InsQue(c,sys_winmgr_task->last_ctrl);
+  QueIns(c,sys_winmgr_task->last_ctrl);
   TaskDerivedValsUpdate(sys_winmgr_task);
   Preempt(old_preempt);
 

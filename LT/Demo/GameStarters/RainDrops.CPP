@@ -46,9 +46,8 @@ U0 DrawFrame(TaskStruct *task,GrDC *dc)
   GrLine(dc,cx+400,cy+100,cx-250,cy+200);
 }
 
-U0 DrawDrops(TaskStruct *task,GrDC *dc)
+U0 DrawDrops(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i;
   dc->color=BLUE;
   for (i=0;i<NUM_DROPS;i++)
@@ -74,9 +73,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 }
 
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,j,cur_drop=0,c1,c2,x0,y0,x1,y1,w,h;
   while (TRUE) {
     w=Fs->parent_task->win_pixel_width;

@@ -6,7 +6,7 @@ class MakeSongSettings
   BoolI8 six_eight		fmtstr "$CB,\"Six Eight\"$\n";
 };
 
-U0 InsertNote(MakeSongSettings *mss,U8 *buf,U64 k,U64 *j)
+U0 InsNote(MakeSongSettings *mss,U8 *buf,U64 k,U64 *j)
 {  //k is a random note nibble
   U64 a=TimerPickedNibble; //accent
   if (!a) {
@@ -102,35 +102,35 @@ U8 *MakeSong()
       case DUR_EIGHTH:
 	if (last_duration!=DUR_EIGHTH)
 	  buf[j++]='e';
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
 	k=TimerPickedNibble;
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
 	break;
       case DUR_TRIPLET:
 	if (last_duration!=DUR_TRIPLET) {
 	  buf[j++]='e';
 	  buf[j++]='t';
 	}
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
 	k=TimerPickedNibble;
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
 	k=TimerPickedNibble;
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
 	break;
       case DUR_SIXTEENTH:
 	if (last_duration!=DUR_SIXTEENTH)
 	  buf[j++]='s';
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
 	k2=k;
 	k=TimerPickedNibble;
-	InsertNote(&mss,buf,k,&j);
-	InsertNote(&mss,buf,k2,&j);
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k2,&j);
+	InsNote(&mss,buf,k,&j);
 	break;
       default:
 	if (last_duration!=DUR_QUARTER)
 	  buf[j++]='q';
-	InsertNote(&mss,buf,k,&j);
+	InsNote(&mss,buf,k,&j);
     }
     last_duration=duration;
     progress4++;

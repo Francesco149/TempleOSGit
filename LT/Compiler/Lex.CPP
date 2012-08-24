@@ -39,7 +39,7 @@ LexStruct *LexNew(U8 *buf,U64 flags,U8 *filename=NULL)
   LexStruct *lx=MAlloc(sizeof(LexStruct));
   LexFileStruct *tempf=&lx->lfns[0];
   MemSet(lx,0,offset(LexStruct.end_of_zeroed_members)+sizeof(LexFileStruct));
-  lx->next=lx->last=lx;
+  QueInit(lx);
   lx->flags=flags;
   lx->opts=1<<OPTf_WARN_UNUSED_VAR;
   lx->expression_start_line_num=lx->last_line_num=1;
@@ -51,7 +51,7 @@ LexStruct *LexNew(U8 *buf,U64 flags,U8 *filename=NULL)
   else
     lx->alpha_numeric_bitmap=alpha_numeric_bitmap;
   lx->cur_lfn=tempf;
-  lx->next_stream_blk=lx->last_stream_blk=&lx->next_stream_blk;
+  QueInit(&lx->next_stream_blk);
   if (!filename)
     tempf->name=StrNew(sys_temp_filename);
   else
@@ -168,16 +168,12 @@ U64 LexGetChar(LexStruct *lx)
   U8 *src;
   LexFileStruct *tempf,*tempf1;
   BoolI8 cont;
-  U64 result;
   Ltf *l;
   LtfEntry *cl;
   U8 *ptr;
   if (lx->flags & LF_USE_LAST_U16) {
     lx->flags&=~LF_USE_LAST_U16;
-    if (lx->last_U16==CH_SHIFT_SPACE)
-      return CH_SPACE;
-    else
-      return lx->last_U16;
+    goto lgc_done;
   }
   while (TRUE) {
 lex_getchar_start:
@@ -185,7 +181,7 @@ lex_getchar_start:
       lx->cur_buf_ptr--;
       goto lgc_here2;
     }
-    nobound_switch (lx->last_U16=result=*src++) {
+    nobound_switch (lx->last_U16=*src++) {
       case 0:
 lgc_here2:
 	tempf=lx->cur_lfn;
@@ -219,22 +215,22 @@ lgc_here2:
 		if (lx->opts & OPTF_ECHO)
 		  NewLine;
 		lx->last_U16=CH_NEW_LINE;
-		return CH_NEW_LINE;
+		goto lgc_done;
 	      case LTFT_TAB:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		tempf->line_num=cl->y+1;
 		if (lx->opts & OPTF_ECHO)
 		  '' CH_TAB;
 		lx->last_U16=CH_TAB;
-		return CH_TAB;
+		goto lgc_done;
 	      case LTFT_PAGE_BREAK:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		tempf->line_num=cl->y+2;	//TODO: should be a page down
 		if (lx->opts & OPTF_ECHO)
 		  '' CH_FORM_FEED;
 		lx->last_U16=CH_FORM_FEED;
-		return CH_FORM_FEED;
-	      case LTFT_INSERT_BINARY:
+		goto lgc_done;
+	      case LTFT_INS_BINARY:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		tempf->line_num=cl->y+1;
 		Free(lx->ident);
@@ -247,26 +243,26 @@ lgc_here2:
 		  lx->ident=ptr;
 		  lx->ident_len=cl->bin_data->size;
 		}
-		lx->last_U16=TK_INSERT_BINARY;
-		return TK_INSERT_BINARY;
-	      case LTFT_INSERT_BINARY_TYPE:
+		lx->last_U16=TK_INS_BINARY;
+		goto lgc_done;
+	      case LTFT_INS_BINARY_TYPE:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		if (cl->bin_data)
 		  lx->cur_i=cl->bin_data->type;
 		else
 		  lx->cur_i=0;
 		tempf->line_num=cl->y+1;
-		lx->last_U16=TK_INSERT_BINARY_TYPE;
-		return TK_INSERT_BINARY_TYPE;
-	      case LTFT_INSERT_BINARY_SIZE:
+		lx->last_U16=TK_INS_BINARY_TYPE;
+		goto lgc_done;
+	      case LTFT_INS_BINARY_SIZE:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		if (cl->bin_data)
 		  lx->cur_i=cl->bin_data->size;
 		else
 		  lx->cur_i=0;
 		tempf->line_num=cl->y+1;
-		lx->last_U16=TK_INSERT_BINARY_SIZE;
-		return TK_INSERT_BINARY_SIZE;
+		lx->last_U16=TK_INS_BINARY_SIZE;
+		goto lgc_done;
 	      case LTFT_SHIFTED_Y:
 		if (LexDollar(lx,l,cl) && *(src=lx->dollar)) {
 		  tempf->line_num=cl->y+1;
@@ -276,13 +272,13 @@ lgc_here2:
 		  tempf->line_num=cl->y+1;
 		  if (cl->attr<0) {
 		    lx->last_U16=TK_SUPERSCRIPT;
-		    return TK_SUPERSCRIPT;
+		    goto lgc_done;
 		  } else if (cl->attr>0) {
 		    lx->last_U16=TK_SUBSCRIPT;
-		    return TK_SUBSCRIPT;
+		    goto lgc_done;
 		  } else {
 		    lx->last_U16=TK_NORMALSCRIPT;
-		    return TK_NORMALSCRIPT;
+		    goto lgc_done;
 		  }
 		}
 		break;
@@ -322,10 +318,7 @@ lgc_here:
 	    lx->cur_buf_ptr=tempf->buf_ptr;
 	    if (lx->last_U16=tempf->last_U16) {
 	      lx->flags&=~LF_USE_LAST_U16;
-	      if (lx->last_U16==CH_SHIFT_SPACE)
-		return CH_SPACE;
-	      else
-		return lx->last_U16;
+	      goto lgc_done;
 	    } else
 	      lx->flags&=~LF_USE_LAST_U16;
 	  } else {
@@ -334,9 +327,9 @@ lgc_here:
 	      lx->cur_buf_ptr=tempf->line_start=
 		  tempf->buf_ptr=tempf->buf=CmpPmt(TRUE);
 	    } else {
-	      lx->last_U16=TK_EOF;
 	      lx->cur_buf_ptr=src-1;
-	      return TK_EOF;
+	      lx->last_U16=TK_EOF;
+	      goto lgc_done;
 	    }
 	  }
 	}
@@ -346,12 +339,9 @@ lgc_here:
 	goto lex_getchar_start;
       case CH_NEW_LINE:
 	tempf=lx->cur_lfn;
-	if (tempf->flags & LFSF_IS_LTF) {
-	  if (result==CH_SHIFT_SPACE)
-	    return CH_SPACE;
-	  else
-	    return result;
-	} else {
+	if (tempf->flags & LFSF_IS_LTF)
+	  goto lgc_done;
+	else {
 	  tempf->line_num++;
 	  compiled_lines++;
 	  tempf->line_start=src;
@@ -360,14 +350,16 @@ lgc_here:
 	}
       case 0xFF: //nobound_switch
       default:
-	if (lx->opts & OPTF_ECHO)
-	  '' result;
-	if (result==CH_SHIFT_SPACE)
-	  return CH_SPACE;
-	else
-	  return result;
+	goto lgc_done;
     }
   }
+lgc_done:
+  if (lx->last_U16==CH_SHIFT_SPACE)
+    lx->last_U16=CH_SPACE;
+  if (lx->opts & OPTF_ECHO &&
+    lx->last_U16<256 && Bt(printable_chars_bitmap,lx->last_U16))
+    '' lx->last_U16;
+  return lx->last_U16;
 }
 
 U0 LexSkipEol(LexStruct *lx)
@@ -407,9 +399,9 @@ U64 ltf_stop_btypes[(LTFT_NUM_TYPES+63)/64]=
 {
 1<<LTFT_TEXT|
 1<<LTFT_TAB|
-1<<LTFT_INSERT_BINARY|
-1<<LTFT_INSERT_BINARY_TYPE|
-1<<LTFT_INSERT_BINARY_SIZE
+1<<LTFT_INS_BINARY|
+1<<LTFT_INS_BINARY_TYPE|
+1<<LTFT_INS_BINARY_SIZE
 };
 
 
@@ -1429,9 +1421,9 @@ lex_ifnstatic:
       case CH_NEW_LINE:
 	if (!(lx->flags&LF_KEEP_NEW_LINES))
 	  break; //else fall through
-      case TK_INSERT_BINARY:
-      case TK_INSERT_BINARY_TYPE:
-      case TK_INSERT_BINARY_SIZE:
+      case TK_INS_BINARY:
+      case TK_INS_BINARY_TYPE:
+      case TK_INS_BINARY_SIZE:
 	lx->token=ch;
 	goto lex_end;
       case '.':

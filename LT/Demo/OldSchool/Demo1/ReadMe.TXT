@@ -1,4 +1,4 @@
-1) Do a [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236] Dir() command
+1) Do a [C:/LT/OSMain/Dsk/Dsk1b.CPZ,234] Dir() command
 
 2) Right-Click on ModuleDemo.SPZ and click COMPILE.
 

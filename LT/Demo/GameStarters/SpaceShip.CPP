@@ -45,9 +45,8 @@ I64 x=100,y=100;
 #define NUM_STARS	100
 I64 stars_x[NUM_STARS],stars_y[NUM_STARS];
 
-U0 PhasorTask(U64 dummy=0)
+U0 PhasorTask(U64)
 {
-  nounusedwarn dummy;
   I64 i;
   for (i=2000;i>100;i-=6) {
     Snd(i);

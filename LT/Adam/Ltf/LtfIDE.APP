@@ -72,7 +72,7 @@ U0 WatchLocals()
 	  Exit;
 	if (ScanKey(&ch,&sc,TRUE))
 	  timeout=BootTime+LTDATE_FREQ*4;
-	WinSync;
+	WinMgrSync;
       } while (BootTime<timeout);
     } else {
       IDEWaitParent;
@@ -104,7 +104,7 @@ break; //TODO: load reg vars for higher level subroutines
 	}
       }
       LtfDblBufEnd;
-      WinSync;
+      WinMgrSync;
     }
   }
   Preempt(old_preempt);
@@ -134,7 +134,7 @@ public U0 IDE(U8 *filename)
 	"I'm always doing multitasking stuff, \n"
 	"kernel stuff and multicore stuff.  Also,\n"
 	"you can't debug code in the window\n"
-	"manager callbacks.  It works on really\n"
+	"mgr callbacks.  It works on really\n"
 	"simple stuff, sort-of.\n\n"
 	"I recommend making use of:\n"
 	"$LK,\"progress1\",\"MN:progress1\"$-$LK,\"progress4\",\"MN:progress4\"$,       -- glbl I64 vars shown on wallpaper\n"
@@ -406,9 +406,8 @@ U0 IDEStepInto(Ltf *l)
   LBtr(&task->task_flags,TASKf_SUSPENDED);
 }
 
-U0 IDEEdTask(U64 dummy=0)
+U0 IDEEdTask(U64)
 {
-  nounusedwarn dummy;
   TaskStruct *task=Fs->parent_task;
   U0 *rip=task->rip;
   U8 *st,*rip_filename,*bpt_filename;

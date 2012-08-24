@@ -35,13 +35,12 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 }
 
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64,Order2D3 *,Order2D3 *)
 {
 //The forces due to springs and drag are
 //automatically handled by the
 //ode code.  We can add new forces
 //here.
-  nounusedwarn t,state,DstateDt;
   F64 d,dd;
   D3 p;
   MyMass *tempm1,*tempm2;
@@ -73,7 +72,7 @@ U0 PlaceMass(I64 x, I64 y)
   tempm->x=x;
   tempm->y=y;
   tempm->radius=10*(Rand+0.25);
-  InsQue(tempm,ode->last_mass);
+  QueIns(tempm,ode->last_mass);
 }
 
 U0 PlaceSpring(MyMass *tempm1,MyMass *tempm2)
@@ -83,7 +82,7 @@ U0 PlaceSpring(MyMass *tempm1,MyMass *tempm2)
   temps->end2=tempm2;
   temps->constant=10000;
   temps->rest_len=100;
-  InsQue(temps,ode->last_spring);
+  QueIns(temps,ode->last_spring);
 }
 
 U0 Init()
@@ -94,32 +93,14 @@ U0 Init()
   ode->drag_v3=0.00001;
   ode->acceleration_limit=5e3;
 
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
 }
 
 U0 CleanUp()
 {
-  MyMass   *tempm,*tempm1;
-  MySpring *temps,*temps1;
-
-  RemQue(ode);
-
-  tempm=ode->next_mass;
-  while (tempm!=&ode->next_mass) {
-    tempm1=tempm->next;
-    RemQue(tempm);
-    Free(tempm);
-    tempm=tempm1;
-  }
-
-  temps=ode->next_spring;
-  while (temps!=&ode->next_spring) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
-
+  QueRem(ode);
+  QueDel(&ode->next_mass,TRUE);
+  QueDel(&ode->next_spring,TRUE);
   OdeDel(ode);
 }
 
@@ -137,10 +118,10 @@ U0 MassSpringDemo()
 
 //This Preempt() eliminates a lot of hassles.
 //The concern is about changing
-//queue links while the winmgr task
+//que links while the winmgr task
 //is updating the ode or screen.
 
-//The Window manager suspends this
+//The Window mgr suspends this
 //task while updating the ode.  It
 //will not be interrupted and with this
 //preempt, we will not be interrupted.

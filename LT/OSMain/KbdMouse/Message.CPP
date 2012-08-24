@@ -17,7 +17,7 @@ U0 InputFilterTask()
       break;
     else {
       if (tempc->cmd_code==TASKCT_TEXT_INPUT) {
-	RemQue(tempc);
+	QueRem(tempc);
 	SetFlags(old_flags);
 	st=tempc->data;
 	Free(tempc);
@@ -56,7 +56,7 @@ I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,U64 mask=~1,TaskStruct *task=NULL)
       break;
     else {
       if (tempc->cmd_code==TASKCT_MSG) {
-	RemQue(tempc);
+	QueRem(tempc);
 	SetFlags(old_flags);
 	result=tempc->msg_code;
 	if (_p1)
@@ -158,7 +158,7 @@ U64 GetKey(U64 *_scancode=NULL,BoolI8 echo=FALSE,BoolI8 raw_cursor=FALSE)
       PushFD;
       Cli;
       KbdMouseHandler(TRUE,FALSE);
-      KbdQueueMsgs;
+      KbdQueMsgs;
       PopFD;
       if (old_preempt && GetFlags&1<<RFLAGS_INTERRUPTS)
 	Yield;
@@ -188,7 +188,7 @@ U64 GetChar(U64 *_scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE)
 }
 
 U8 *MGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1437] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1436] Flags
 {
 //Returns a [C:/LT/OSMain/Memory.CPZ,956] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);

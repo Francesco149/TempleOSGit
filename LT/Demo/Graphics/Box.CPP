@@ -1,8 +1,7 @@
 GrDC *dc;
 
-U0 DrawIt(TaskStruct *task,GrDC *_dc)
+U0 DrawIt(TaskStruct *,GrDC *)
 {
-  nounusedwarn task,_dc;
   dc->pen_width=2;
   dc->color=RED;
   GrLine3(dc,-100,-100,-100, -100, 100,-100);

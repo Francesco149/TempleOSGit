@@ -23,7 +23,7 @@ GrRect(img2,256-20,256-20,40,40);
 
 I64 i;
 for (i=0;i<256;i+=4) {
-  WinSync;
+  WinMgrSync;
   GrDCFill;
   GrDCBlot(b,i-256,i-256,img2);
   Sleep(10);

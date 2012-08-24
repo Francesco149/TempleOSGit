@@ -194,9 +194,8 @@ IntermediateCode *OptLag1(IntermediateCode *tempi)
   return tempi;
 }
 
-IntermediateCode *OptLead1(LexStruct *lx,IntermediateCode *tempi)
+IntermediateCode *OptLead1(LexStruct *,IntermediateCode *tempi)
 {
-  nounusedwarn lx;
   do {
     tempi++;
     if (tempi->ic_opcode==EC_END)
@@ -536,6 +535,32 @@ IntermediateCode *OptBrNotZero(LexStruct *lx,IntermediateCode *tempi)
   return tempi;
 }
 
+U0 OptFixSizeOf(IntermediateCode *tempi1,IntermediateCode *tempi_push,ClassStruct *tempcc)
+{
+  if (tempi1->ic_opcode==EC_MUL &&
+      tempi1->t.p2t->ic_opcode==EC_SIZEOF) {
+    tempi1->t.p2t->ic_opcode=EC_IMM;
+    tempi1->t.p2t->ic_class=tempcc;
+    tempi_push->ic_class=tempcc;
+    if (tempcc->ptr_cnt) {
+      tempcc--;
+      if (tempcc->size==1)
+	goto here;
+      tempi1->t.p2t->ic_data=tempcc->size;
+    } else {
+here:
+      if (tempi_push==tempi1)
+	tempi1->t.p2t->ic_data=1;
+      else {
+	tempi1->ic_opcode=EC_NOP;
+	tempi1->ic_flags=0;
+	tempi1->t.p2t->ic_opcode=EC_NOP;
+	tempi1->t.p2t->ic_flags=0;
+      }
+    }
+  }
+}
+
 IntermediateCode *OptPass012(LexStruct *lx,FunStruct *fun_class,BoolI8 combined)
 {
 /*
@@ -547,7 +572,7 @@ args.
 */
   I64 code,i;
   BoolI8 is_unsigned;
-  ClassStruct *tempc,*tempc1,*tempc2,*tempc3,*tempcc;
+  ClassStruct *tempc,*tempc1,*tempc2,*tempc3;
   IntermediateCode *tempi,*tempi1,*tempi2,*tempi3,*tempi_push,
       *temp_lag[4],*last_with_class=NULL,*tempii;
   PrsStk *ps=OptStart(lx,temp_lag);
@@ -1777,8 +1802,6 @@ args.
       case EC_POP:
       case EC_CLD:
       case EC_STD:
-      case EC_WBINVD:
-      case EC_INVD:
       case EC_INVLPG:
       case EC_CLFLUSH:
       case EC_PAUSE:
@@ -1827,9 +1850,10 @@ args.
       case EC_BTR:
       case EC_BTC:
       case EC_BEQU:
-      case EC_REMQUE:
-      case EC_INSQUE:
-      case EC_INSQUE_REV:
+      case EC_QUE_INIT:
+      case EC_QUE_REM:
+      case EC_QUE_INS:
+      case EC_QUE_INS_REV:
       case EC_OUTU32:
       case EC_OUTU16:
       case EC_OUTU8:
@@ -2140,60 +2164,11 @@ args.
 	OptMissing(lx,tempi);
     }
     if (cmp_arg_cnt[code]==2) {
-      if (tempi_push->ic_precedence.u8[0]&~ASSOC_MASK==PREC_ASSIGN) {
-	if (tempi2->ic_opcode==EC_MUL &&
-	    tempi2->t.p2t->ic_opcode==EC_SIZEOF) {
-	  tempcc=tempi1->ic_class-1;
-	  goto here1;
-	}
-      } else {
-	if (tempi1->ic_opcode==EC_MUL &&
-	    tempi1->t.p2t->ic_opcode==EC_SIZEOF) {
-	  tempcc=tempi2->ic_class;
-	  tempi1->t.p2t->ic_opcode=EC_IMM;
-	  tempi1->t.p2t->ic_class=tempcc;
-	  tempi_push->ic_class=tempcc;
-	  if (tempcc->ptr_cnt) {
-	    tempcc--;
-	    if (tempcc->size==1)
-	      goto here2;
-	    tempi1->t.p2t->ic_data=tempcc->size;
-	  } else {
-	    here2:
-	    if (tempi_push==tempi1)
-	      tempi1->t.p2t->ic_data=1;
-	    else {
-	      tempi1->ic_opcode=EC_NOP;
-	      tempi1->ic_flags=0;
-	      tempi1->t.p2t->ic_opcode=EC_NOP;
-	      tempi1->t.p2t->ic_flags=0;
-	    }
-	  }
-	}
-	if (tempi2->ic_opcode==EC_MUL &&
-	    tempi2->t.p2t->ic_opcode==EC_SIZEOF) {
-	  tempcc=tempi1->ic_class;
-here1:
-	  tempi2->t.p2t->ic_opcode=EC_IMM;
-	  tempi2->t.p2t->ic_class=tempcc;
-	  tempi_push->ic_class=tempcc;
-	  if (tempcc->ptr_cnt) {
-	    tempcc--;
-	    if (tempcc->size==1)
-	      goto here3;
-	    tempi2->t.p2t->ic_data=tempcc->size;
-	  } else {
-	    here3:
-	    if (tempi_push==tempi2)
-	      tempi2->t.p2t->ic_data=1;
-	    else {
-	      tempi2->ic_opcode=EC_NOP;
-	      tempi2->ic_flags=0;
-	      tempi2->t.p2t->ic_opcode=EC_NOP;
-	      tempi2->t.p2t->ic_flags=0;
-	    }
-	  }
-	}
+      if (tempi_push->ic_precedence.u8[0]&~ASSOC_MASK==PREC_ASSIGN)
+	OptFixSizeOf(tempi2,tempi_push,tempi1->ic_class-1);
+      else {
+	OptFixSizeOf(tempi1,tempi_push,tempi2->ic_class);
+	OptFixSizeOf(tempi2,tempi_push,tempi1->ic_class);
       }
     }
     if (cmp_result_cnt[tempi_push->ic_opcode]) {

@@ -75,13 +75,12 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 }
 
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64,Order2D3 *,Order2D3 *)
 {
 //The forces due to springs and drag are
 //automatically handled by the
 //ode code.  We can add new forces
 //here.
-  nounusedwarn t,state,DstateDt;
   TaskStruct *task=ode->win_task;
   I64 h=task->win_pixel_width,v=task->win_pixel_height;
   F64 d,dd;
@@ -128,7 +127,7 @@ MyMass *PlaceMass(I64 nid)
   tempm->nid=nid;
   tempm->gain_list[0]=0x7F;
   MemSet(tempm->gain_list+1,0x80,(MAX_CONNECTS-1)*sizeof(U8));
-  InsQue(tempm,ode->last_mass);
+  QueIns(tempm,ode->last_mass);
   return tempm;
 }
 
@@ -178,7 +177,7 @@ MySpring *PlaceSpring(MyMass *tempm1,MyMass *tempm2)
   temps->constant=10;
   temps->rest_len=0;
   temps->color=LTGRAY;
-  InsQue(temps,ode->last_spring);
+  QueIns(temps,ode->last_spring);
   return temps;
 }
 
@@ -186,16 +185,9 @@ U0 RedoSprings()
 {
   I64 i,k;
   MyMass   *tempm,*tempm1;
-  MySpring *temps,*temps1;
+  MySpring *temps;
 
-  temps=ode->next_spring;
-  while (temps!=&ode->next_spring) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
-
+  QueDel(&ode->next_spring,TRUE);
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     for (i=0;i<tempm->num_connects;i++) {
@@ -233,32 +225,14 @@ U0 Init()
   ode->drag_v3=0.00001;
   ode->acceleration_limit=5e3;
 
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
 }
 
 U0 CleanUp()
 {
-  MyMass   *tempm,*tempm1;
-  MySpring *temps,*temps1;
-
-  RemQue(ode);
-
-  tempm=ode->next_mass;
-  while (tempm!=&ode->next_mass) {
-    tempm1=tempm->next;
-    RemQue(tempm);
-    Free(tempm);
-    tempm=tempm1;
-  }
-
-  temps=ode->next_spring;
-  while (temps!=&ode->next_spring) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
-
+  QueRem(ode);
+  QueDel(&ode->next_mass,TRUE);
+  QueDel(&ode->next_spring,TRUE);
   OdeDel(ode);
 }
 
@@ -461,8 +435,11 @@ U0 HDCfgPopUpInfo(MyMass *tempm)
 {
   U8 buf[136];
   SPrintF(buf,"HDCfgPopUpInfoTask(0x%X);\"\\n\\nPress SHIFT-ESC\\n\\n\\n\\n\";View;",tempm);
+  Fs->win_inhibit|=WIF_ODE;
   Fs->draw_it=NULL;
+  WinMgrSync;
   PopUp(buf,Fs);
+  Fs->win_inhibit&=~WIF_ODE;
   Fs->draw_it=&DrawIt;
 }
 
@@ -588,7 +565,7 @@ U0 HDCfg()
   WordStat;
   WinMax;
   WinBorder;
-  Fs->win_inhibit|=WIF_DBL_CLICK;
+  Fs->win_inhibit=WIF_IP_L|WIF_IP_R|WIF_DBL_CLICK|WIF_LTF;
   Init;
 
   HDCfgTraverse(_hda->cad,0);
@@ -650,9 +627,8 @@ hd_done: //Don't goto out of try
     GetMsg(,,1<<MSG_KEY_UP);
   } catch
     Fs->catch_except=TRUE;
-  Snd(0);
-  HDStop(TRUE,FALSE); //stop input
   SettingsPop;
+  HDStop(TRUE,FALSE); //stop input
   CleanUp;
   MenuPop;
   "$BK,1$Note: #include \"HOME/HDAudioCfg.APZ\" in your start-up scripts.$BK,0$\n";

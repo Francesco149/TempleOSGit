@@ -7,7 +7,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/LT/OSMain/Adam1a.HPZ,1534] IcArg.  RAX is the most common register
+[C:/LT/OSMain/Adam1a.HPZ,1533] IcArg.  RAX is the most common register
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -3524,9 +3524,8 @@ U0 IcToF64(LexStruct *lx,IntermediateCode *tempi,I64 ip)
   IcFCvt(lx,tempi,CREG_RAX,tempi->p1.type,tempi->p1.reg,tempi->p1.disp,FALSE,CN_MAIN,ip);
 }
 
-U0 IcToBool(LexStruct *lx,IntermediateCode *tempi,I64 ip)
+U0 IcToBool(LexStruct *,IntermediateCode *tempi,I64 ip)
 {
-  nounusedwarn lx;
   I64 r;
   if (tempi->p1.type&TY_MASK==TY_REG)
     r=tempi->p1.reg;
@@ -4417,7 +4416,21 @@ U0 IcBrBitOps(IntermediateCode *tempi,U64 ip,U64 op,U64 op_imm,U64 is,U8 *buf,I6
   }
 }
 
-U0 IcInsQue(IntermediateCode *tempi,I64 ip2)
+U0 IcQueInit(IntermediateCode *tempi,I64 ip2)
+{
+  I64 r1;
+  if (tempi->p1.type==TY_REG+IT_I64)
+    r1=tempi->p1.reg;
+  else {
+    IcMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
+      tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
+    r1=CREG_RAX;
+  }
+  IcMov(tempi,TY_DISP+IT_I64,r1,0,TY_REG+IT_I64,r1,0,ip2);
+  IcMov(tempi,TY_DISP+IT_I64,r1,sizeof(U0 *),TY_REG+IT_I64,r1,0,ip2);
+}
+
+U0 IcQueIns(IntermediateCode *tempi,I64 ip2)
 {
   I64 r1,r2;
   if (tempi->ic_flags & ICF_P1_FIRST) {
@@ -4458,7 +4471,7 @@ U0 IcInsQue(IntermediateCode *tempi,I64 ip2)
   IcMov(tempi,TY_DISP+IT_I64,CREG_RBX,sizeof(U0 *),TY_REG+IT_I64,r2,0,ip2);
 }
 
-U0 IcInsQueRev(IntermediateCode *tempi,I64 ip2)
+U0 IcQueInsRev(IntermediateCode *tempi,I64 ip2)
 {
   I64 r1,r2;
   if (tempi->ic_flags & ICF_P1_FIRST) {
@@ -4499,7 +4512,7 @@ U0 IcInsQueRev(IntermediateCode *tempi,I64 ip2)
   IcMov(tempi,TY_DISP+IT_I64,r1,sizeof(U0 *),TY_REG+IT_I64,r2,0,ip2);
 }
 
-U0 IcRemQue(IntermediateCode *tempi,I64 ip2)
+U0 IcQueRem(IntermediateCode *tempi,I64 ip2)
 {
   I64 r1;
   if (tempi->p1.type==TY_REG+IT_I64)

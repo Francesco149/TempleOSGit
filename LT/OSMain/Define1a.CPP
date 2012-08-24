@@ -101,7 +101,7 @@ U0 LoadSysStrs()
 	" \0 \0 \0 \0 \0 \0 \0 \0"
 	" \0 \0 \0 \0 \0 \0 \0 \0"
 
-	" \0Wake\0");
+	"MP Crash\0Wake\0");
 
 Anchor for inserting OS Define
 

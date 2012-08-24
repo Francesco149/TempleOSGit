@@ -41,7 +41,7 @@ U0 OdeRstPtrs(Ode *ode)
 
 public Ode *OdeNew(U64 n,F64 max_tolerance=1e-6,U64 flags=0)
 {
-//See [C:/LT/OSMain/Adam1a.HPZ,248] flags.
+//See [C:/LT/OSMain/Adam1a.HPZ,253] flags.
 
 //The tolerance is not precise.
 //You can min_tolerance and it will
@@ -62,8 +62,8 @@ public Ode *OdeNew(U64 n,F64 max_tolerance=1e-6,U64 flags=0)
   ode->max_tolerance=ode->min_tolerance=ode->tolerance_internal=max_tolerance;
   ode->win_task=ode->mem_task=Fs;
   ode->derivative=NULL;
-  ode->next_mass=ode->last_mass=&ode->next_mass;
-  ode->next_spring=ode->last_spring=&ode->next_spring;
+  QueInit(&ode->next_mass);
+  QueInit(&ode->next_spring);
   ode->acceleration_limit=ode->drag_v=ode->drag_v2=ode->drag_v3=0;
 
   ode->state=CAlloc(s);
@@ -518,7 +518,7 @@ F64 ode_allocated_factor=0.75;
 U0 OdesUpdate(TaskStruct *task)
 {
 /*
-This routine is called by the [::/LT/Adam/Gr/GrScreen.APZ,OdesUpdate] window manager on a continuous
+This routine is called by the [::/LT/Adam/Gr/GrScreen.APZ,OdesUpdate] window mgr on a continuous
 basis to allow real-time simulation.  It is intended
 to provide results good enough for games.  It uses a runge-kutta
 integrator which is a better algorithm than doing it with Euler.
@@ -536,105 +536,108 @@ it has a timeout.
   if (task->next_ode==&task->next_ode)
     task->last_ode_time=0;
   else {
-    //See [C:/LT/Adam/Gr/GrScreen.APZ,370] GrUpdateWins()
-    if (task!=Fs)
-      old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
-
-    //We will not pick a time limit based on
-    //how busy the CPU is, what percent of the
-    //last refresh cycle was spent on ODE's
-    //and what the refresh cycle rate was.
-    start_time=tNP;
-    d=1.0/win_actual_refresh;
-    timeout_time=start_time+
-	(task->last_ode_time/d+0.1)/(last_refresh_ode_time/d+0.1)*
-	 ode_allocated_factor*d;
-    ode=task->next_ode;
-    while (ode!=&task->next_ode) {
-      if (ode->ode_signature==ODE_SIGNATURE_VAL) {
-	t_initial=ode->t;
-	d=tNP;
-	if (!(ode->flags&ODEF_STARTED)) {
-	  ode->base_t=d;
-	  ode->flags|=ODEF_STARTED;
-	}
-	d-=ode->base_t+t_initial;
-	t_desired=ode->t_scale*d+t_initial;
-	if (ode->flags&ODEF_PAUSED || Bt(&task->task_flags,TASKf_PAUSED))
-	  ode->base_t+=t_desired-ode->t; //Slip
-	else if (ode->derivative) {
-	  OdeState2Internal(ode);
-	  MemCpy(ode->initial_state,ode->state_internal,ode->n_internal*sizeof(F64));
-	  while (ode->t<t_desired) {
-	    ode->h_max=t_desired-ode->t;
-	    OdeCallDerivative(ode,ode->t,ode->state_internal,ode->DstateDt);
-	    for (i=0;i<ode->n_internal;i++)
-	      ode->state_scale[i]=Abs(ode->state_internal[i])+
-		  Abs(ode->DstateDt[i]*ode->h)+ode->tolerance_internal;
-	    OdeRK5OneStep(ode);
-	    if (tNP>timeout_time) {
-	      ode->base_t+=t_desired-ode->t; //Slip
-	      goto ode_done;
-
-	    }
+    //See [C:/LT/Adam/Gr/GrScreen.APZ,378] GrUpdateWins()
+    if (!Bt(&task->win_inhibit,WIf_ODE)) {
+      //TODO: Being preempted here woulds be bad
+      if (task!=Fs)
+	old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
+      //We will not pick a time limit based on
+      //how busy the CPU is, what percent of the
+      //last refresh cycle was spent on ODE's
+      //and what the refresh cycle rate was.
+      start_time=tNP;
+      d=1.0/win_actual_refresh;
+      timeout_time=start_time+
+      (task->last_ode_time/d+0.1)/(last_refresh_ode_time/d+0.1)*
+      ode_allocated_factor*d;
+      ode=task->next_ode;
+      while (ode!=&task->next_ode) {
+	if (ode->ode_signature==ODE_SIGNATURE_VAL) {
+	  t_initial=ode->t;
+	  d=tNP;
+	  if (!(ode->flags&ODEF_STARTED)) {
+	    ode->base_t=d;
+	    ode->flags|=ODEF_STARTED;
 	  }
+	  d-=ode->base_t+t_initial;
+	  t_desired=ode->t_scale*d+t_initial;
+	  if (ode->flags&ODEF_PAUSED || Bt(&task->task_flags,TASKf_PAUSED))
+	  ode->base_t+=t_desired-ode->t; //Slip
+	  else if (ode->derivative) {
+	    OdeState2Internal(ode);
+	    MemCpy(ode->initial_state,ode->state_internal,ode->n_internal*sizeof(F64));
+	    while (ode->t<t_desired) {
+	      ode->h_max=t_desired-ode->t;
+	      OdeCallDerivative(ode,ode->t,ode->state_internal,ode->DstateDt);
+	      for (i=0;i<ode->n_internal;i++)
+		ode->state_scale[i]=Abs(ode->state_internal[i])+
+		Abs(ode->DstateDt[i]*ode->h)+ode->tolerance_internal;
+	      OdeRK5OneStep(ode);
+	      if (tNP>timeout_time) {
+	      ode->base_t+=t_desired-ode->t; //Slip
+		goto ode_done;
 
-	  //Interpolate if end time was not exact.
-	  if (ode->t!=t_desired) {
-	    if (interpolation=ode->t-t_initial) {
-	      interpolation=(t_desired-t_initial)/interpolation;
-	      if (interpolation!=1.0)
-		for (i=0;i<ode->n_internal;i++)
-		  ode->state_internal[i]=(ode->state_internal[i]-
+}
+	    }
+
+	    //Interpolate if end time was not exact.
+	    if (ode->t!=t_desired) {
+	      if (interpolation=ode->t-t_initial) {
+		interpolation=(t_desired-t_initial)/interpolation;
+		if (interpolation!=1.0)
+		  for (i=0;i<ode->n_internal;i++)
+		    ode->state_internal[i]=(ode->state_internal[i]-
 		    ode->initial_state[i])*interpolation+
 		    ode->initial_state[i];
+	      }
+	      ode->t=t_desired;
 	    }
-	    ode->t=t_desired;
-	  }
 ode_done:
-	  OdeInternal2State(ode);
+	    OdeInternal2State(ode);
 
-	  //Convenience call to set vals
-	  OdeCallDerivative(ode,ode->t,ode->state_internal,ode->DstateDt);
+	    //Convenience call to set vals
+	    OdeCallDerivative(ode,ode->t,ode->state_internal,ode->DstateDt);
+	  }
+	  ode->base_t+=(1.0-ode->t_scale)*d;
 	}
-	ode->base_t+=(1.0-ode->t_scale)*d;
+	ode=ode->next;
       }
-      ode=ode->next;
-    }
 
-    //Now, we will dynamically adjust tolerances.
+      //Now, we will dynamically adjust tolerances.
 
-    //We will regulate the tolerances
-    //to fill the time we decided was
-    //okay to devote to ODE's.
-    //Since we might have multiple ODE's
-    //active we scale them by the same factor.
+      //We will regulate the tolerances
+      //to fill the time we decided was
+      //okay to devote to ODE's.
+      //Since we might have multiple ODE's
+      //active we scale them by the same factor.
 
-    //This algorithm is probably not stable or very good, but it's something.
+      //This algorithm is probably not stable or very good, but it's something.
 
-    //Target is 75% of allocated time.
-    d=(tNP-start_time)/(timeout_time-start_time)-0.75;
+      //Target is 75% of allocated time.
+      d=(tNP-start_time)/(timeout_time-start_time)-0.75;
 
-    ode=task->next_ode;
-    while (ode!=&task->next_ode) {
-      if (ode->ode_signature==ODE_SIGNATURE_VAL &&
-	  !(ode->flags&ODEF_PAUSED) &&
-	  !Bt(&task->task_flags,TASKf_PAUSED) &&
-	  ode->derivative) {
-	if (ode->min_tolerance!=ode->max_tolerance) {
-	  if (d>0)
-	    ode->tolerance_internal*=10.0`d;
-	  else
-	    ode->tolerance_internal*=2.0`d;
+      ode=task->next_ode;
+      while (ode!=&task->next_ode) {
+	if (ode->ode_signature==ODE_SIGNATURE_VAL &&
+	!(ode->flags&ODEF_PAUSED) &&
+	!Bt(&task->task_flags,TASKf_PAUSED) &&
+	ode->derivative) {
+	  if (ode->min_tolerance!=ode->max_tolerance) {
+	    if (d>0)
+	      ode->tolerance_internal*=10.0`d;
+	    else
+	      ode->tolerance_internal*=2.0`d;
+	  }
+	  ode->tolerance_internal=Limit(ode->tolerance_internal,ode->min_tolerance,ode->max_tolerance);
 	}
-	ode->tolerance_internal=Limit(ode->tolerance_internal,ode->min_tolerance,ode->max_tolerance);
+	ode=ode->next;
       }
-      ode=ode->next;
+      refresh_ode_time+=task->last_ode_time=tNP-start_time;
+      //See [C:/LT/Adam/Gr/GrScreen.APZ,378] GrUpdateWins()
+      if (task!=Fs)
+	LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
     }
-    refresh_ode_time+=task->last_ode_time=tNP-start_time;
-    //See [C:/LT/Adam/Gr/GrScreen.APZ,370] GrUpdateWins()
-    if (task!=Fs)
-      LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
   }
 }
+
 #help_index ""

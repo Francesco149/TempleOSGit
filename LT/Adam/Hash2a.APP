@@ -259,7 +259,7 @@ public U0 HashRep(SysHashTable *h=NULL,
     if (index && ptr->type & HTT_HELP_FILE) {
       if (l) {
 	l1=LtfRead(ptr->str);
-	LtfInsertLtf(l,l1);
+	LtfInsLtf(l,l1);
 	LtfDel(l1);
       } else
 	Type(ptr->str);
@@ -286,7 +286,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 		MemCpy(tempb->data,dbg,size);
 		dbg_bin_num=tempb->num=l->cur_bin_num++;
 		tempb->use_cnt=1;
-		InsQue(tempb,l->bin_root.last);
+		QueIns(tempb,l->bin_root.last);
 	      } else
 		dbg=NULL;
 	    }
@@ -307,7 +307,7 @@ public U0 HashRep(SysHashTable *h=NULL,
 		MemCpy(tempb->data,indent,size);
 		indent_bin_num=tempb->num=l->cur_bin_num++;
 		tempb->use_cnt=1;
-		InsQue(tempb,l->bin_root.last);
+		QueIns(tempb,l->bin_root.last);
 	      } else
 		indent=NULL;
 	    }

@@ -193,7 +193,7 @@ U0 GameSnapShot()
 {
   GameState *tempg=MAlloc(sizeof(GameState));
   MemCpy(tempg,&cur_state,sizeof(GameState));
-  InsQue(tempg,cur_state.last);
+  QueIns(tempg,cur_state.last);
 }
 
 I64 PieceFind(I64 x,I64 y,I64 player)
@@ -912,7 +912,7 @@ U0 Init()
   last_mv.x=-1;
   last_mv.y=-1;
   MemCpy(&cur_state,&setup_state,sizeof(cur_state));
-  cur_state.next=cur_state.last=&cur_state;
+  QueInit(&cur_state);
   cur_state.is_human[0]=PopUpNoYes("$FG,BLACK$WHITE is human?");
   cur_state.is_human[1]=PopUpNoYes("$FG,BLACK$BLACK is human?");
 
@@ -921,13 +921,7 @@ U0 Init()
 
 U0 CleanUp()
 {
-  GameState *tempg=cur_state.next,*tempg1;
-  while (tempg!=&cur_state) {
-    tempg1=tempg->next;
-    RemQue(tempg);
-    Free(tempg);
-    tempg=tempg1;
-  }
+  QueDel(&cur_state,TRUE);
 }
 
 U0 SetMouseCursor()
@@ -1002,7 +996,7 @@ U0 Chess()
 	    ai_thinking=FALSE;
 	    Beep(500);
 	  }
-	  WinSync;
+	  WinMgrSync;
 	  break;
 	case MSG_IP_MOVE:
 	  SetKbdCursor(p1,p2);

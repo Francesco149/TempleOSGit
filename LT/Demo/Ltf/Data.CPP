@@ -19,9 +19,8 @@
 I32 i;
 U8 buf[8];
 
-U0 UpdateGlblTask(U64 dummy=0)
+U0 UpdateGlblTask(U64)
 {
-  nounusedwarn dummy;
   while (TRUE) {
     i++;
     Sleep(1);
@@ -40,7 +39,7 @@ U0 DataDemo()
 //ll->data before it is set.
   BoolI8 unlock=LtfLock(l);
 
-//You might set the [C:/LT/OSMain/Adam1a.HPZ,1289] LTFF_FORM flag.
+//You might set the [C:/LT/OSMain/Adam1a.HPZ,1288] LTFF_FORM flag.
 //  l->flags|=LTFF_FORM
 //if you wish.
 

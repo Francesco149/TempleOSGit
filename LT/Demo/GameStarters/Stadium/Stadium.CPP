@@ -58,9 +58,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   GrPutS(dc,FONT_WIDTH,FONT_HEIGHT,"Peg the Fans");
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i;
   F64 xx,yy,t0;
   while (TRUE) {

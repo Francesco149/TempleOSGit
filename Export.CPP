@@ -330,21 +330,21 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
         } else
           out=StrAdd(out,cl->tag);
         break;
-      case LTFT_INSERT_BINARY_TYPE:
+      case LTFT_INS_BINARY_TYPE:
         if (is_code)
           buf=MSPrintF("%s__BIN_%d_TYPE",out,cl->bin_data->num);
         else
           buf=MSPrintF("%s%d",out,cl->bin_data->type);
         Free(out); out=buf;
         break;
-      case LTFT_INSERT_BINARY_SIZE:
+      case LTFT_INS_BINARY_SIZE:
         if (is_code)
           buf=MSPrintF("%s__BIN_%d_SIZE",out,cl->bin_data->num);
         else
           buf=MSPrintF("%s%d",out,cl->bin_data->size);
         Free(out); out=buf;
         break;
-      case LTFT_INSERT_BINARY:
+      case LTFT_INS_BINARY:
         if (is_code) {
           buf=MSPrintF("%s__BIN_%d",out,cl->bin_data->num);
           Free(out); out=buf;

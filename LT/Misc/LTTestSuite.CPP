@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=150;
+  progress4_max=152;
 }
 U0 TSEnd()
 {
@@ -620,6 +620,112 @@ U0 DoBlackDiamond()
   }
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
+}
+
+U0 DoCtrlR1()
+{
+  I64 i;
+  TaskStruct *task=SpawnUser,*task1;
+  XTalkWithWait(task,"//");
+  PostMsg(task,MSG_KEY_DOWN_UP,CH_CTRLR,0);
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (TaskValidate(task->popup_task))
+    Yield;
+
+//Tag text
+  PostMsg(task,MSG_KEY_DOWN_UP,CH_ESC,0);
+
+//Color
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  task1=task->popup_task;
+  TaskWaitIdle(task->popup_task);
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  for (i=0;i<2;i++)
+    SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  task1=task->popup_task;
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+
+//Width
+  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  task1=task->popup_task;
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  for (i=0;i<4;i++)
+    SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  task1=task->popup_task;
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+
+//Line
+  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  for (i=0;i<6;i++)
+    SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (TaskValidate(task->popup_task))
+    Yield;
+  SendMsg(task,MSG_IP_L_DOWN,150,150);
+  SendMsg(task,MSG_IP_L_UP,150,95);
+  Sleep(250);
+  SendMsg(task,MSG_IP_L_DOWN,150,150);
+  SendMsg(task,MSG_IP_L_UP,190,190);
+  Sleep(250);
+  SendMsg(task,MSG_IP_L_DOWN,150,150);
+  SendMsg(task,MSG_IP_L_UP,110,190);
+  Sleep(250);
+  PostMsg(task,MSG_IP_R_DOWN_UP,100,100);
+
+//Color
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  task1=task->popup_task;
+  TaskWaitIdle(task->popup_task);
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  for (i=0;i<3;i++)
+    SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  task1=task->popup_task;
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+
+//Circle
+  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    Yield;
+  TaskWaitIdle(task->popup_task);
+  for (i=0;i<9;i++)
+    SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (TaskValidate(task->popup_task))
+    Yield;
+  SendMsg(task,MSG_IP_L_DOWN,150,150);
+  SendMsg(task,MSG_IP_L_UP,190,190);
+  Sleep(250);
+  PostMsg(task,MSG_IP_R_DOWN_UP,100,100);
+
+//Exit
+  while (!TaskValidate(task->popup_task))
+    Yield;
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN+SCF_CTRL);
+  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
+  PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  while (TaskValidate(task->popup_task))
+    Yield;
+  Sleep(1000);
+  XTalk(task,"\nExit;\n");
 }
 
 U0 DoCircuit()
@@ -1911,16 +2017,13 @@ U0 DoFileRead()
   XTalk(task,"Exit;\n");
 }
 
-/*
-U0 Do()
+U0 DoData()
 {
   TaskStruct *task=SpawnUser;
   XTalkWithWait(task,"#include \"::/LT/Demo/Ltf/Data.CPZ\";\n");
   Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
 }
-*/
 
 U0 DoDefineStr()
 {
@@ -2190,6 +2293,7 @@ TS; DoStadium;
 TS; DoHalogen;
 TS; DoMaze;
 TS; DoFontEd;
+TS; DoCtrlR1;
 TS; DoLogo;
 TS; DoSubIntAccess;
 TS; DoDemoDoc;
@@ -2224,6 +2328,7 @@ TS; DoGlblVars;
 TS; DoFileRead;
 TS; DoParenWarn;
 TS; DoDefineStr;
+TS; DoData;
 TS; DoCallBack;
 TS; DoCallBack2;
 TS; DoClassMeta;
@@ -2242,6 +2347,7 @@ TS; DoDivByHand;
 TS; DoPageTableEntries2;
 DoReps;
 
+//TicTacToe?
 TSEnd;
 }
 

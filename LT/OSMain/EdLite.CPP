@@ -61,18 +61,21 @@ U0 EdLite(U8 *filename)
 //Light weight text editor for debugging
   U8 *src,*src2,*src3,*dst;
   I64 i,ch,sc,size,bin_size=0,line_start_col=0,cur_col=0;
-  U8 *buf=FileRead(filename,&size),*bin_data=NULL;
+  U8 *buf,*bin_data=NULL;
   LineStruct root,*templ,*templ1,*cur_line;
   U64 old_dc_flags=sys_raw_dc_flags;
   BoolI8 old_raw=Raw(ON),
-    old_debug=InDbg(ON),
-    old_single=SingleUser(ON);
+	old_debug=InDbg(ON),
+	old_single=SingleUser(ON);
+
+  if (!filename) filename=sys_temp_filename;
+  buf=FileRead(filename,&size);
 
   PushFD;
   Cli;
   sys_raw_dc_flags=sys_raw_dc_flags&~RDCF_SCROLL|RDCF_SHOW_DOLLAR;
   sys_cur_scan_code=0;
-  root.next=root.last=&root;
+  QueInit(&root);
   root.line=StrNew("");
 
   if (buf) {
@@ -94,7 +97,7 @@ U0 EdLite(U8 *filename)
 
       templ=MAlloc(sizeof(LineStruct));
       templ->line=StrNew(src2);
-      InsQue(templ,root.last);
+      QueIns(templ,root.last);
     }
 
     if (src+1-buf<size) {
@@ -176,7 +179,7 @@ U0 EdLite(U8 *filename)
 		Free(cur_line->line);
 		Free(templ->line);
 		cur_line->line=src;
-		RemQue(templ);
+		QueRem(templ);
 		Free(templ);
 	      }
 	    } else
@@ -188,7 +191,7 @@ U0 EdLite(U8 *filename)
 	templ=MAlloc(sizeof(LineStruct));
 	templ->line=StrNew(cur_line->line+cur_col);
 	cur_line->line[cur_col]=0;
-	InsQue(templ,cur_line);
+	QueIns(templ,cur_line);
 	cur_line=templ;
 	cur_col=0;
 	break;
@@ -205,7 +208,7 @@ U0 EdLite(U8 *filename)
 	  Free(cur_line->line);
 	  Free(templ->line);
 	  templ->line=src;
-	  RemQue(cur_line);
+	  QueRem(cur_line);
 	  Free(cur_line);
 	  cur_line=templ;
 	}
@@ -214,7 +217,7 @@ U0 EdLite(U8 *filename)
 	if (cur_line!=&root) {
 	  templ=cur_line;
 	  cur_line=cur_line->next;
-	  RemQue(templ);
+	  QueRem(templ);
 	  Free(templ->line);
 	  Free(templ);
 	  cur_col=0;
@@ -225,7 +228,7 @@ U0 EdLite(U8 *filename)
 	  if (cur_line==&root) {
 	    cur_line=MAlloc(sizeof(LineStruct));
 	    cur_line->line=StrNew("");
-	    InsQue(cur_line,root.last);
+	    QueIns(cur_line,root.last);
 	  }
 	  src=MAlloc(StrLen(cur_line->line)+2);
 	  MemCpy(src,cur_line->line,cur_col);
@@ -269,7 +272,7 @@ U0 EdLite(U8 *filename)
   templ=root.next;
   while (templ!=&root) {
     templ1=templ->next;
-    RemQue(templ);
+    QueRem(templ);
     Free(templ->line);
     Free(templ);
     templ=templ1;

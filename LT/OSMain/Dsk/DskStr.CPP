@@ -181,9 +181,9 @@ U8 *DirNameAbs(U8 *_dirname)
     } else if (*buf) {
       if (!StrCmp(buf,"HOME")) {
 	Free(buf3);
-	buf3=MAlloc(maxlen+StrLen(sys_home_dir));
-	StrCpy(buf3,sys_home_dir+2);
-	*drv=*sys_home_dir;
+	buf3=MAlloc(maxlen+StrLen(sys_acct));
+	StrCpy(buf3,sys_acct+2);
+	*drv=*sys_acct;
       } else {
 	if (StrCmp(buf3,"/"))
 	  StrCat(buf3,"/");
@@ -229,29 +229,6 @@ U8 *FileNameAbs(U8 *_filename)
   Free(buf3);
   Free(temp_name);
   return buf;
-}
-
-U0 HomeDirRst(U8 *st=NULL)
-{
-  U8 *st2;
-  BoolI8 old_preempt;
-  if (!st) {
-    st=AMAlloc(128);
-    StrCpy(st,"::/LT/Accts/");
-    if (sys_acct)
-      StrCat(st,sys_acct->name);
-    else
-      StrCat(st,"User");
-    *st=Prt2Drv(dft_prt);
-    st2=DirNameAbs(st);
-    Free(st);
-  } else
-    st2=DirNameAbs(st);
-  old_preempt=Preempt(OFF);
-  Free(sys_home_dir);
-  sys_home_dir=AStrNew(st2);
-  Free(st2);
-  Preempt(old_preempt);
 }
 
 U8 *ChgExt(U8 *filename,U8 *extension)

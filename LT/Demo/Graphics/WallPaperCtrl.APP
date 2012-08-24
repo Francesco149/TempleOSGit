@@ -62,9 +62,8 @@ U0 UpdateDerivedSliderCtrl(Ctrl *c)
   s->right_pos=LimitI64(s->right_pos,0,SLIDER_RANGE-1);
 }
 
-U0 LeftClickSlider(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickSlider(Ctrl *c,I64 x,I64 y,BoolI8)
 {
-  nounusedwarn down;
   SliderState *s=c->state;
   if (x<c->left+1*SLIDER_SPACING+0+SLIDER_SPACING/2)
     s->left_pos=SLIDER_RANGE-1-(y-(c->top+SLIDER_SPACING));
@@ -86,7 +85,7 @@ Ctrl *SliderNew()
   c->left_click=&LeftClickSlider;
   c->update_derived_vals=&UpdateDerivedSliderCtrl;
   old_preempt=Preempt(OFF);
-  InsQue(c,sys_winmgr_task->last_ctrl);
+  QueIns(c,sys_winmgr_task->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
   return c;
@@ -95,7 +94,7 @@ Ctrl *SliderNew()
 U0 SliderDel(Ctrl *c)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(c);
+  QueRem(c);
   Preempt(old_preempt);
   Free(c->state);
   Free(c);

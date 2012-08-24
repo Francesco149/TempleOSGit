@@ -10,9 +10,8 @@
 
 I64 x=0,y=0;
 
-U0 DrawMap(TaskStruct *task,GrDC *dc)
+U0 DrawMap(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   GrSpritePlot3(dc,x,y,0,__BIN_1);
 }
 

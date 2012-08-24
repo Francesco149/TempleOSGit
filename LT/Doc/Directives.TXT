@@ -24,8 +24,8 @@ Compiler Options.
 
 Assembler Directives
 
-See [::/LT/Compiler/OpCodes.TXZ] ::/LT/Compiler/OpCodes.TXZ for
-opcodes.  They're not standard.  Some 
+See [::/LT/Compiler/OpCodes.TXZ] ::/LT/Compiler/OpCodes.TXZ for opcodes. 
+They're not standard.  Some 
 invalid instructions are not flagged and some valid instructions are not 
 implemented. 16-bit asm support is limited.
 
@@ -35,6 +35,16 @@ Here are example instruction formats:
 
 $ Current compiler output pos (instruction ptr).  Even works in C+ 
 expressions.
+
+$ works in classes.
+  class MyFun
+  {
+    $=-16;
+    I64 local1;
+    I64 local2;
+    $=$+256;
+    I64 crazy;
+  };
 
 LABEL::
   Defines an exported glbl label.
@@ -48,10 +58,8 @@ LABEL:
 DU8, DU16, DU32, DU64
   Define BYTE, WORD, DWORD or QWORD. Can be used with DUP() and ASCII
 strings. 
- For your convenience, the ASCII strings do not have terminating
-zeros.  DUP() 
-can be used with ? for uninitialized values.  Use uninitialized values in 
-struc's.  Define cmds must end with a semicolon.
+ For your convenience, the ASCII strings do not have terminating zeros.  
+Define cmds must end with a semicolon.
 
 USE16, USE32, USE64
 
@@ -61,8 +69,6 @@ LIST, NOLIST
 
 ALIGN num, fill_byte
   Align to num boundary and fill with fill_byte.
-ALIGN num, ?
-  Align to num boundary but do not fill.
 
 See [::/LT/Demo/Asm/AsmAndC.CPZ] ::/LT/Demo/Asm/AsmAndC.CPZ and
 [::/LT/Demo/Asm/AsmAndC2.CPZ] ::/LT/Demo/Asm/AsmAndC2.CPZ.

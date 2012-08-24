@@ -376,7 +376,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,254] Ode feat,
+I also didn't use the [C:/LT/OSMain/Adam1a.HPZ,259] Ode feat,
 just to be different.
 */
 
@@ -445,7 +445,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
       }
       if (tt>o->next_t0) {
 	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET || Abs(ball->DzDt)<30)) {
-	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/LT/OSMain/Adam1b.HPZ,249] Exp().
+	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/LT/OSMain/Adam1b.HPZ,245] Exp().
 	//However, we should be syncronized to img frames, so we don't have to be perfect.
 	  d_down=1.0;
 	  d_up	=1.0/COLLISION_DAMP; //Up bounce takes higher percentage because speed lost in collision.
@@ -699,7 +699,7 @@ U0 AnimateTask(TaskStruct *parent_task)
 	}
       }
 
-      WinSync;
+      WinMgrSync;
   }
 }
 

@@ -100,7 +100,7 @@ hl_normal_done:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -127,7 +127,7 @@ hl_single_quote:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -154,7 +154,7 @@ hl_dbl_quote:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -182,7 +182,7 @@ hl_comment:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=comment_depth;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -200,7 +200,7 @@ hl_cpp_comment:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -272,7 +272,7 @@ hl_bpt_normal_done:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -299,7 +299,7 @@ hl_bpt_single_quote:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -326,7 +326,7 @@ hl_bpt_dbl_quote:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -354,7 +354,7 @@ hl_bpt_comment:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=comment_depth;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }
@@ -372,7 +372,7 @@ hl_bpt_cpp_comment:
 	  s->paren_depth=paren_depth;
 	  s->brace_depth=brace_depth;
 	  s->comment_depth=0;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
       }

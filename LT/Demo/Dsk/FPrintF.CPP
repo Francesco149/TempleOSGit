@@ -1,6 +1,6 @@
 /* There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf
+hold the file until you are done.  The [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf
 framework is convenient for this.
 */
 

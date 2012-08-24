@@ -56,32 +56,32 @@ public I64i union I64
   U32 u32[2];
 };
 
-public class P2I32  //two dimensional point
+public class P2I32  //two dimensional pt
 {
   I32 x,y;
 };
 
-public class P3I32  //three dimensional point
+public class P3I32  //three dimensional pt
 {
   I32 x,y,z;
 };
 
-public class P2I64  //two dimensional point
+public class P2I64  //two dimensional pt
 {
   I64 x,y;
 };
 
-public class P3I64  //three dimensional point
+public class P3I64  //three dimensional pt
 {
   I64 x,y,z;
 };
 
-public class P2d  //two dimensional point
+public class P2d  //two dimensional pt
 {
   F64 x,y;
 };
 
-public class P3d  //three dimensional point
+public class P3d  //three dimensional pt
 {
   F64 x,y,z;
 };
@@ -89,6 +89,11 @@ public class P3d  //three dimensional point
 public class Complex
 {
   F64 x,y;
+};
+
+public class Que
+{
+  Que *next,*last;
 };
 
 #define NULL	0
@@ -320,7 +325,7 @@ See [::/LT/Compiler/CmpMain.CPZ,EIE_MODULE_ALIGNMENT] Loader Patch Table Generat
 #define I_MP_CRASH		0x30
 #define I_WAKE			0x31
 //See [] ST_INT_NAMES
-#define MAX_INITIAL_IDT		0x32
+
 //You might want to start backward from
 //0xFF for your own interrupts.
 #define I_USER			0x40
@@ -525,9 +530,9 @@ class Sema
 
 //Extern calls
 //I'm the only one allowed to create these.
-//They work with [C:/LT/OSMain/Adam1b.HPZ,298] CallExtNum().
+//They work with [C:/LT/OSMain/Adam1b.HPZ,294] CallExtNum().
 //I guess you could reallocate
-//and extend [C:/LT/OSMain/Adam1b.HPZ,297] ext[] and copy it.
+//and extend [C:/LT/OSMain/Adam1b.HPZ,293] ext[] and copy it.
 #define EXT_WIN_TO_TOP		0
 #define EXT_DEBUGGER		1
 #define EXT_EXIT_DEBUGGER	2
@@ -747,8 +752,8 @@ public class MemberListStruct
 #define Cf_INTERNAL_TYPE	1
 
 public class ClassStruct:SrcSymHashEntry
-{ //See [C:/LT/Compiler/StmtParser.CPZ,1] PrsClassNew().	baseclass of [C:/LT/OSMain/Adam1a.HPZ,778] FunStruct
-  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,821] GlblVarStruct.size
+{ //See [C:/LT/Compiler/StmtParser.CPZ,1] PrsClassNew().	baseclass of [C:/LT/OSMain/Adam1a.HPZ,783] FunStruct
+  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,826] GlblVarStruct.size
   U32 member_cnt;
   U8 ptr_cnt,sub_type,flags[2];
   MemberListStruct *member_list;
@@ -820,7 +825,7 @@ public class FunStruct:ClassStruct
 
 public class GlblVarStruct:SrcSymHashEntry
 {//also used for typedef's
-  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,749] ClassStruct.size
+  I64 size; //must be at same offset as [C:/LT/OSMain/Adam1a.HPZ,754] ClassStruct.size
   I64 flags;
   ClassStruct *var_class;
   FunStruct *fun_ptr;
@@ -835,21 +840,15 @@ public class GlblVarStruct:SrcSymHashEntry
 //Registry sys_msg_flags
 #define ARf_FLOODFILL			0
 //obsolete
-#define ARf_GRSPRITE_INSERT_CLIPBOARD	2
-#define ARf_FILE_MANAGER_HELP		3
+#define ARf_GRSPRITE_INS_CLIPBOARD	2
+#define ARf_FILE_MGR_HELP		3
 #define ARf_GRSPRITE_PICK_GRAPHICALLY	4
 #define ARf_PLANAR_SYMMETRY		5
 #define ARf_MUSIC_ORGAN_JUKEBOX		6
 #define ARf_MESH_ED			7
 //obsolete
-#define ARf_GRSPRITE_POINTS_RECTANGLES	9
+#define ARf_GRSPRITE_PTS_RECTANGLES	9
 #define ARf_MANAGE_SLIDER		10
-
-public class SysAcctStruct
-{
-  SysAcctStruct *next,*last;
-  U8 name[32];
-};
 
 #define TASKCf_WAKE_MASTER	0
 #define TASKCf_FOCUS_MASTER	1
@@ -972,9 +971,9 @@ class SysBpt
 #define LTFT_HIDE_END		45
 #define LTFT_TREE		46
 #define LTFT_PICTURE		47
-#define LTFT_INSERT_BINARY	48
-#define LTFT_INSERT_BINARY_TYPE	49
-#define LTFT_INSERT_BINARY_SIZE	50
+#define LTFT_INS_BINARY	48
+#define LTFT_INS_BINARY_TYPE	49
+#define LTFT_INS_BINARY_SIZE	50
 #define LTFT_BPT		51
 #define LTFT_SONG		52
 #define LTFT_HIGHLIGHT		53
@@ -1198,7 +1197,7 @@ public class LtfEntryBase
   U32 min_col,max_col;
 
   //These are here to allow recalculating the Ltf
-  //from a point other than the beginning.  Without
+  //from a pt other than the beginning.  Without
   //these, you do not know the current state.
   //Margins will change to allow multiple columns
   //of text on the same page.  (cursor move back up the page.)
@@ -1251,7 +1250,7 @@ public class LtfEntry:LtfEntryBase
   U8 *data;
 };
 
-//[C:/LT/Adam/Ltf/LtfPopUp.APZ,320] LtfFormDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,373] LtfMenuDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,193] LtfDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,459] PopUpMenu()
+//[C:/LT/Adam/Ltf/LtfPopUp.APZ,312] LtfFormDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,365] LtfMenuDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,185] LtfDo() [C:/LT/Adam/Ltf/LtfPopUp.APZ,452] PopUpMenu()
 #define DOF_HELP_IS_FILE	1
 #define	DOF_MIN_SIZE		2
 #define	DOF_INTERCEPT_TASK_END	4
@@ -1283,7 +1282,7 @@ class EdFileNameStruct
 #define LTFF_PLAIN_TEXT 	0x2
 #define LTFF_PLAIN_TEXT_WITH_TABS 0x4 //has CH_TAB, not LTFT_TAB
 #define LTFF_MIN_SIZE		0x8
-#define LTFF_NO_CURSOR		0x10 // Makes LtfInsertStr remove
+#define LTFF_NO_CURSOR		0x10 // Makes LtfInsStr remove
 #define LTFF_IN_DOLLAR		0x20
 #define LTFF_MORE		0x40
 #define LTFF_FORM		0x80
@@ -1320,7 +1319,7 @@ class EdFileNameStruct
 #define LTFf_PLAIN_TEXT 	1
 #define LTFf_PLAIN_TEXT_WITH_TABS 2 //has CH_TAB, not LTFT_TAB
 #define LTFf_MIN_SIZE		3
-#define LTFf_NO_CURSOR		4 // Makes LtfInsertStr remove
+#define LTFf_NO_CURSOR		4 // Makes LtfInsStr remove
 #define LTFf_IN_DOLLAR		5
 #define LTFf_MORE		6
 #define LTFf_FORM		7
@@ -1365,11 +1364,11 @@ class LtfUndo
   U8 *body;
 };
 
-//See [C:/LT/Adam/Ltf/LtfPopUp.APZ,373] LtfMenuDo()
+//See [C:/LT/Adam/Ltf/LtfPopUp.APZ,365] LtfMenuDo()
 #define LTFM_CANCEL		(-1)
 
 #define LTF_SIGNATURE_VAL		'LtfS'
-#define LTF_IN_QUEUE_SIGNATURE_VAL	'LtfQ'
+#define LTF_IN_QUE_SIGNATURE_VAL	'LtfQ'
 
 #define LTF_RECALC_ALL		0
 #define LTF_RECALC_PARTIAL	1
@@ -1399,7 +1398,7 @@ public class Ltf //Linked Text File header
      old_win_left,old_win_right;
 
   I64 cmd_U8;
-  U32 ltf_signature,ltf_in_queue_signature;
+  U32 ltf_signature,ltf_in_que_signature;
 
   I32 max_entries,ww_lines_back,cur_bin_num,pad;
   I64 refresh_cnt;
@@ -1569,7 +1568,7 @@ class IntermediateCode
 };
 
 class PrsStk
-{//dup code [::/LT/Compiler/CmpAsm.CPZ,_PRSPUSH] _PRSPUSH
+{
   U64 ptr;
   I64 stk[255];
   U64 ptr2;
@@ -1736,6 +1735,7 @@ class ExeImportExportStruct
   ExeImportExportStruct *next,*last;
   I64 ip;
   U8 *str;
+  U8 *src_link;
   U8 type;
 };
 
@@ -1901,9 +1901,9 @@ class ExeStruct
 #define TK_MOD_EQUAL		0x122
 #define TK_DOT_DOT		0x123
 #define TK_DOT_DOT_DOT		0x124
-#define TK_INSERT_BINARY	0x125
-#define TK_INSERT_BINARY_TYPE	0x126
-#define TK_INSERT_BINARY_SIZE	0x127
+#define TK_INS_BINARY	0x125
+#define TK_INS_BINARY_TYPE	0x126
+#define TK_INS_BINARY_SIZE	0x127
 #define TK_NUM_TK		0x128
 
 //Lex flags
@@ -1946,6 +1946,7 @@ class ExeStruct
 #define Lf_RAW_ERRORS		38
 #define LF_PAREN		0x08000000000
 #define Lf_PAREN		39
+#define LF_CLASS_IP		0x10000000000
 #define LEX_MAX_IDENT	134
 #define LFN_CNT		8
 #define LFN_STK_CNT	32
@@ -1987,7 +1988,6 @@ class LexCbHeader
   CbMiscStruct		*cb_misc_list,*cb_misc_list_end;
 };
 
-
 #define NUM_REGS	16
 
 public class LexStruct
@@ -1999,6 +1999,7 @@ public class LexStruct
   F64	cur_f;
   U8	*ident;
   I64	ident_len;
+  I64	class_ip;
   U8	*dollar;
   I64	dollar_cnt;
   U8	*cur_index;
@@ -2524,7 +2525,7 @@ class ISO3FileEntry
   ISO3Date access_date_time;
   ISO3Date modification_date_time;
   ISO3Date attr_date_time;
-  U32 chk_point;
+  U32 chk_pt;
   ISO3LongAD ext_attr_icb;
   ISO3RegId implementation_id;
   U64 unique_id;
@@ -2552,7 +2553,7 @@ class ISO3ExtFileEntry
   ISO3Date modification_date_time;
   ISO3Date creation_date_time;
   ISO3Date attr_date_time;
-  U32 chk_point;
+  U32 chk_pt;
   U32 reserved;
   ISO3LongAD ext_attr_icb;
   ISO3LongAD stream_dir_icb;
@@ -2869,7 +2870,7 @@ public class BlkPool
   MemBlk *free_page_hash2[64-PAGE_BITS];
 };
 
-#define HCf_NON_TASK_QUEUE	0
+#define HCf_NON_TASK_QUE	0
 //locked flags
 #define HClf_LOCKED		0
 
@@ -2892,7 +2893,7 @@ public class HeapCtrl
 #define ROP_COLLISION			0x0200
 #define ROP_MONO			0x0300
 
-//These are just for [C:/LT/OSMain/Adam1a.HPZ,2902] ROPF_PROBABILITY_DITHER
+//These are just for [C:/LT/OSMain/Adam1a.HPZ,2903] ROPF_PROBABILITY_DITHER
 //See [C:/LT/Adam/Gr/MathGr.APZ,460] GrLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2997,16 +2998,17 @@ class Menu
 };
 
 //win_inhibit mask
-#define WIF_MENU		1
-#define WIF_CTRLS		2
-#define WIF_IP_WHEEL		4
-#define WIF_IP_L		8
-#define WIF_IP_R		16
-#define WIF_BORDER		32
-#define WIF_DBL_CLICK		64
-#define WIF_GRAB_SCROLL		128
-#define WIF_LTF			256
-#define WIF_ALL			(-1-WIF_LTF)
+#define WIF_MENU		0x001
+#define WIF_CTRLS		0x002
+#define WIF_IP_WHEEL		0x004
+#define WIF_IP_L		0x008
+#define WIF_IP_R		0x010
+#define WIF_BORDER		0x020
+#define WIF_DBL_CLICK		0x040
+#define WIF_GRAB_SCROLL		0x080
+#define WIF_LTF			0x100
+#define WIF_ODE			0x200
+#define WIF_ALL			(-1-WIF_LTF-WIF_ODE)
 
 #define WIf_MENU		0
 #define WIf_CTRLS		1
@@ -3017,6 +3019,7 @@ class Menu
 #define WIf_DBL_CLICK		6
 #define WIf_GRAB_SCROLL		7
 #define WIf_LTF			8
+#define WIf_ODE			9
 
 #define WIN_DFT_MAX_REFRESH	60.0
 
@@ -3093,8 +3096,8 @@ class ProgressStruct
 #define TASKf_PENDING_BREAK	14
 #define TASKf_PAUSED		15
 #define TASKf_SERVANT_USER	16
-#define TASKf_BREAK_TO_SHIFT_ESC	17
-#define TASKf_CFG_RECORD_DONE 18
+#define TASKf_BREAK_TO_SHIFT_ESC 17
+#define TASKf_CFG_RECORD_DONE	18
 #define TASKf_LOCAL_INITIALIZED	19
 #define TASKf_KILL_AFTER_DBG	20
 
@@ -3111,11 +3114,11 @@ class ProgressStruct
 #define DISPLAYf_CHILDREN_NOT_ON_TOP	7
 #define DISPLAYf_WIN_ON_TOP		8
 
-#define SPAWNF_ADD_TO_QUEUE		1
+#define SPAWNF_ADD_TO_QUE		1
 
 #define TASK_SIGNATURE_VAL		'TskS'
-#define TASK_IN_QUEUE_SIGNATURE_VAL	'TskQ'
-#define TASK_COMBINED_SIGNATURE_VAL	(TASK_SIGNATURE_VAL+TASK_IN_QUEUE_SIGNATURE_VAL<<32)
+#define TASK_IN_QUE_SIGNATURE_VAL	'TskQ'
+#define TASK_COMBINED_SIGNATURE_VAL	(TASK_SIGNATURE_VAL+TASK_IN_QUE_SIGNATURE_VAL<<32)
 
 #define TASK_TITLE_LEN			127
 #define TASK_NAME_LEN			31
@@ -3131,7 +3134,7 @@ class TaskStk
 public class TaskStruct
 {
   TaskStruct *addr;
-  U32 task_signature,task_in_queue_signature;
+  U32 task_signature,task_in_que_signature;
   U64 task_flags,locked_flags;
   U32 display_flags,win_inhibit;
   U64 wake_jiffy;
@@ -3370,7 +3373,7 @@ class TssStruct
 #define SCf_IP_L_DOWN		16
 #define SCf_IP_R_DOWN		17
 #define SCf_DELETE		18
-#define SCf_INSERT		19
+#define SCf_INS		19
 #define SCf_KEY_DESC		31
 #define SCF_E0_PREFIX (1<<SCf_E0_PREFIX)
 #define SCF_KEY_UP    (1<<SCf_KEY_UP)
@@ -3384,7 +3387,7 @@ class TssStruct
 #define SCF_IP_L_DOWN (1<<SCf_IP_L_DOWN)
 #define SCF_IP_R_DOWN (1<<SCf_IP_R_DOWN)
 #define SCF_DELETE    (1<<SCf_DELETE)
-#define SCF_INSERT    (1<<SCf_INSERT)
+#define SCF_INS    (1<<SCf_INS)
 #define SCF_KEY_DESC (1<<SCf_KEY_DESC)
 
 //LoseThos places a 1 in bit 7 for
@@ -3409,7 +3412,7 @@ class TssStruct
 #define SC_PAGE_DOWN		0x51
 #define SC_HOME			0x47
 #define SC_END			0x4F
-#define SC_INSERT		0x52
+#define SC_INS		0x52
 #define SC_DELETE		0x53
 #define SC_F1			0x3B
 #define SC_F2			0x3C
@@ -3500,12 +3503,12 @@ public class GrDC
 
 //public--change directly
   ColorROPU32 color,
-	bkcolor, //Set for use with [C:/LT/OSMain/Adam1a.HPZ,2892] ROP_COLLISION
-	color2; //Internally used for [C:/LT/Adam/Gr/GrPrimatives.APZ,234] GrFloodFill()
+	bkcolor, //Set for use with [C:/LT/OSMain/Adam1a.HPZ,2893] ROP_COLLISION
+	color2; //Internally used for [C:/LT/Adam/Gr/GrPrimatives.APZ,236] GrFloodFill()
   P3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability is basically a U16.
-  //It is activated by [C:/LT/OSMain/Adam1a.HPZ,2902] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/LT/OSMain/Adam1a.HPZ,2903] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3541,7 +3544,7 @@ public class GrDC
   F64 speedline_scale;
   U64 collision_cnt;
 
-  //Set by [C:/LT/OSMain/Adam1a.HPZ,3473] DCF_RECORD_EXTENTS
+  //Set by [C:/LT/OSMain/Adam1a.HPZ,3476] DCF_RECORD_EXTENTS
   I64 min_x,max_x,min_y,max_y; //screen coordinates
 
   U32 dc_signature,pad;
@@ -3549,7 +3552,7 @@ public class GrDC
   GrDC *alias;
   U8 *body;
 
-  //Set by [C:/LT/Adam/Gr/GrDC.APZ,103] GrDCAllocDepthBuf()
+  //Set by [C:/LT/Adam/Gr/GrDC.APZ,104] GrDCAllocDepthBuf()
   I32 *depth_buf;
   I64 db_z; //private
 };
@@ -3757,7 +3760,7 @@ public class CPUStruct
   CPUStruct   *addr;
   U64 num,cpu_flags;
   U64 startup_rip;
-  U64 idle_point_hits;
+  U64 idle_pt_hits;
   F64 idle_factor;
   U64 total_jiffies;
   TaskStruct *seth_task,*idle_task;
@@ -3796,10 +3799,10 @@ class KeyDevStruct
 #define CREG_ALLOC	33	//reg flag sets it to this
 #define CREG_UNDEF	MIN_I8
 
-#define CALWAYS_CLOBBERED_MASK		0x003F
-#define CSTK_TEMPS_MASK			0x0300
-#define CREG_VARS_MASK			0xCCC0
-#define CREG_NON_PTR_MASK		0x3000
+#define CALWAYS_CLOBBERED_MASK		0x003F /* RAX,RCX,RDX,RBX,RBP,RSP */
+#define CSTK_TEMPS_MASK			0x0300 /* R8,R9 */
+#define CREG_VARS_MASK			0xCCC0 /* RSI,RDI,R10,R11,R14,R15 */
+#define CREG_NON_PTR_MASK		0x3000 /* R12,R13 */
 
 #define PUSH_C_REGS PUSH RAX PUSH RCX PUSH RDX PUSH RBX PUSH R8 PUSH R9
 #define POP_C_REGS POP R9 POP R8 POP RBX POP RDX POP RCX POP RAX
@@ -3899,7 +3902,7 @@ class LTUSB
 #define PID_SPLIT	0x78
 #define PID_PING	0xB4
 
-//USB Std Requests
+//USB Std Rqsts
 #define RQ_GET_STAT	0x0
 #define RQ_CLR_FEAT	0x1
 #define RQ_SET_FEAT	0x3

@@ -214,13 +214,13 @@ public U0 TipOfDay(U8 *tip_file="::/LT/Doc/Tips.TXZ")
   if (ll->type_u8==LTFT_TEXT && *ll->tag=='*') {
     while (ll!=l) {
       if (ll->type_u8!=LTFT_ERROR)
-	LtfInsert(l2,LtfEntryCopy(l2,ll));
+	LtfIns(l2,LtfEntryCopy(l2,ll));
       ll=ll->next;
       if (ll->type_u8==LTFT_TEXT && *ll->tag=='*')
 	break;
     }
   }
-  LtfInsertLtf(LtfCur,l2);
+  LtfInsLtf(LtfCur,l2);
   LtfDel(l2);
   LtfDel(l);
 }
@@ -231,9 +231,8 @@ public U0 TipOfDay(U8 *tip_file="::/LT/Doc/Tips.TXZ")
 //cmds for all applications,
 //but it makes the code too ugly.
 //
-U0 CtrlAltK(U64 sc)
+U0 CtrlAltK(U64)
 {
-  nounusedwarn sc;
   U8 buf[136];
   SPrintF(buf,"KeyMap(0x%X);View;",
     sys_focus_task);

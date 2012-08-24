@@ -4,11 +4,11 @@ Use [C:/LT/Compiler/Directives.CPZ,6] OptOn()
 [C:/LT/Compiler/Directives.CPZ,11] OptOff().  You might need to do #exe
 {OptOn();}.
 
-[C:/LT/OSMain/Adam1a.HPZ,1456] OPTf_REPLACE_SYMS is to cause new declaritions
+[C:/LT/OSMain/Adam1a.HPZ,1455] OPTf_REPLACE_SYMS is to cause new declaritions
 to replace old, instead of 
 overshadowing them in the hash sym table.
 
-[C:/LT/OSMain/Adam1a.HPZ,1457] OPTf_GLBLS_ON_DATA_HEAP without this option,
+[C:/LT/OSMain/Adam1a.HPZ,1456] OPTf_GLBLS_ON_DATA_HEAP without this option,
 global vars are placed in the 
 code heap which is limited to 2 Gig.  In static modules, global vars take-up 
 room in the .BIN file, so you might want to use this option, instead.  You 
@@ -16,25 +16,25 @@ might wish to turn it on and off around specific vars.  A disadvantage of
 data 
 heap global vars in static modules is they can't be initialized.
 
-[C:/LT/OSMain/Adam1a.HPZ,1453] OPTf_EXTERNS_TO_IMPORTS and
-[C:/LT/OSMain/Adam1a.HPZ,1454] OPTf_KEEP_PRIVATE are strange options, you'll 
+[C:/LT/OSMain/Adam1a.HPZ,1452] OPTf_EXTERNS_TO_IMPORTS and
+[C:/LT/OSMain/Adam1a.HPZ,1453] OPTf_KEEP_PRIVATE are strange options, you'll 
 never need.  They're to allow the same header file for OSMain to act as extern
 s when compiling itself and imports when compiled by static modules.  They
 are 
 used in [::/LT/OSMain/Static.HPZ] ::/LT/OSMain/Static.HPZ.
 
-[C:/LT/OSMain/Adam1a.HPZ,1446] OPTf_WARN_UNUSED_VAR turns-off unused var
+[C:/LT/OSMain/Adam1a.HPZ,1445] OPTf_WARN_UNUSED_VAR turns-off unused var
 warning.  It is applied to 
 functions.
 
-[C:/LT/OSMain/Adam1a.HPZ,1447] OPTf_WARN_PAREN turns-on a warning if
+[C:/LT/OSMain/Adam1a.HPZ,1446] OPTf_WARN_PAREN turns-on a warning if
 parenthesis are not needed.
 
-[C:/LT/OSMain/Adam1a.HPZ,1455] OPTf_NO_REG_VAR forces all function local vars
+[C:/LT/OSMain/Adam1a.HPZ,1454] OPTf_NO_REG_VAR forces all function local vars
 to the stk not registers.  
 Applied to functions.
 
-[C:/LT/OSMain/Adam1a.HPZ,1459] OPTf_NO_BUILTIN_CONST Disable 10-byte float
+[C:/LT/OSMain/Adam1a.HPZ,1458] OPTf_NO_BUILTIN_CONST Disable 10-byte float
 consts for pi, log2_10, log10_2, 
 loge_2.  Applied to functions.
 

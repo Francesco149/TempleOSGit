@@ -5,7 +5,7 @@ public I64 PopUpTourPart()
   LtfPutS(l,"$FG,PURPLE$LoseThos Tours$FG$\n\n"
 	"$CM+LX,4,4$$BT,\"Part  1: The basics\",1$"
 	"$CM+LX,4,4$$BT,\"Part  2: Editing and running programs\",2$"
-	"$CM+LX,4,4$$BT,\"Part  3: Adding macros to your start menu\",3$"
+	"$CM+LX,4,4$$BT,\"Part  3: Adding macros to your personal menu\",3$"
 	"$CM+LX,4,4$$BT,\"Part  4: Choose filename, choose dir\",4$"
 	"$CM+LX,4,4$$BT,\"Part  5: WordStat\",5$"
 	"$CM+LX,4,4$$BT,\"Part  6: Search (Grep)\",6$"

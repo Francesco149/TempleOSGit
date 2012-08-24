@@ -9,8 +9,7 @@ public extern LTDate BootTime();
 public extern U64 SysTimerRead();
 
 #help_index "Task"
-extern SysAcctStruct sys_accts,*sys_acct;
-extern U8 *sys_acct_name;
+extern U8 *sys_acct;
 extern TaskStruct *sys_winmgr_task,*sys_task_being_screen_updated;
 public extern TaskStruct *adam_task;
 public extern I64 sys_num_spawned_users;
@@ -60,8 +59,9 @@ public extern U0 (*fp_snd_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num);
 public extern U0 (*fp_snd_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num);
 
 #help_index "Processor"
-public extern U0 *GetIDTEntry(U64 irq,U64 cpu_num=0);
-public extern U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 cpu_num=0,U64 type=IDTET_IRQ,U64 dpl=0);
+extern U8 *sys_fault_handlers_code;
+public extern U0 *GetIDTEntry(U64 irq,I64 cpu_num=-1);
+public extern U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,U64 type=IDTET_IRQ,U64 dpl=0);
 extern PCIDevStruct sys_pci_dev_root;
 extern MemRange sys_mem32_dev_root;
 
@@ -177,14 +177,14 @@ public extern BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALS
 public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 
-//Gets [C:/LT/OSMain/Adam1a.HPZ,1437] Flags
+//Gets [C:/LT/OSMain/Adam1a.HPZ,1436] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *GetF(U8 *src,U8 *fmt,...);
 
 #help_index "Char/Lists"
-public extern U8 *ListEntryPoint(I64 entry_num, U8 *lst);
+public extern U8 *ListEntryPt(I64 entry_num, U8 *lst);
 public extern I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *ambiguity_overkill_ptr=NULL);
 
 #help_index "Char/Operations"
@@ -228,7 +228,7 @@ public extern U0 *AllocUncachedMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL);
 public extern U0 *AllocWriteThroughMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL);
 public extern U0 Free2MegMemBlks(MemBlk *m,U64 pages2Meg,BlkPool *bp=NULL);
 public extern U0 *AllocNonTaskMemBlks(U64 *_pages512,BlkPool *bp=NULL);
-public extern U64 *MemPointAtPageTableEntry(U0 *a);
+public extern U64 *MemPtAtPageTableEntry(U0 *a);
 public extern U0 FreeNonTaskMemBlks(MemBlk *m,U64 pages512,BlkPool *bp=NULL);
 public LTextern _MALLOC U0 *MAlloc(U64 size,TaskStruct *mem_task=NULL);
 public LTextern _FREE U0 Free(U0 *add);
@@ -241,8 +241,14 @@ public extern U0 *MAllocAligned(U64 size,U64 alignment,TaskStruct *mem_task=NULL
 public extern U0 *CAllocAligned(U64 size,U64 alignment,TaskStruct *mem_task=NULL,U64 misalignment=0);
 public extern U0 LinkedListDel(U0 **list);
 public extern U0 *LinkedListCopy(U0 **list,TaskStruct *mem_task=NULL);
+public extern U64 LinkedListCnt(U0 **list);
 public extern U64 LinkedListSize(U0 **list);
 public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
+#help_index "Memory;Circular Queue"
+public extern U0 QueDel(Que *root,BoolI8 querem=FALSE);
+public extern Que *QueCopy(Que *root,TaskStruct *mem_task=NULL);
+public extern U64 QueCnt(Que *root);
+public extern U64 QueSize(Que *root);
 #help_index "Memory/Heap Ctrl"
 public extern U0 BlkPoolAdd(BlkPool *bp,MemBlk *m,U64 pages512);
 public extern U0 BlkPoolInit(BlkPool *bp,U64 pages512);
@@ -273,10 +279,10 @@ public extern BoolI64 TaskValidate(TaskStruct *task);
 public extern TaskStruct *Spawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,
 	    U8 *task_name=NULL,
 	    TaskStruct *parent=NULL, //NULL means adam
-	    U64 stk_size=0,U64 flags=SPAWNF_ADD_TO_QUEUE);
+	    U64 stk_size=0,U64 flags=SPAWNF_ADD_TO_QUE);
 public extern U0 TaskPause(TaskStruct *task,BoolI8 state);
-public extern U0 TaskInsQue(TaskStruct *task,TaskStruct *pred=NULL);
-public extern U0 TaskRemQue(TaskStruct *task);
+public extern U0 TaskQueIns(TaskStruct *task,TaskStruct *pred=NULL);
+public extern U0 TaskQueRem(TaskStruct *task);
 public extern U0 TaskWaitIdle(TaskStruct *task);
 public extern U0 UserTaskInit();
 public extern U0 TaskLocalInit();
@@ -291,12 +297,12 @@ public extern U0 OverRideSingleUserSwap();
 #help_index "Task/Requests"
 public extern U0 TaskRstAwaitingMsg(TaskStruct *task=NULL);
 public extern TaskCmdStruct *
-  TaskRequestQueue(TaskStruct *servant,TaskStruct *master,
+  TaskRqstQue(TaskStruct *servant,TaskStruct *master,
 		     U8 *data,U64 flags);
 public extern U64 ServantCmdsHandler(TaskStruct *task=NULL);
 public extern I64 ServantUser(U8 *fmt,...);
 extern U0 ServantUserCmdLine();
-public extern BoolI64 GetRequestResult(TaskCmdStruct *rqst=NULL,U64 *result=NULL);
+public extern BoolI64 GetRqstResult(TaskCmdStruct *rqst=NULL,U64 *result=NULL);
 public extern U0 ServantTaskCont();
 public extern I64 Adam(U8 *fmt,...);
 public extern U0 AdamLogExcept(I64 argc,I64 *argv);
@@ -304,10 +310,10 @@ public extern U0 AdamLog(U8 *fmt,...);
 public extern U0 AdamErr(U8 *fmt,...);
 #help_index "Task/Text Input"
 public extern TaskCmdStruct *
-  TextInputQueue(TaskStruct *servant,TaskStruct *master,
+  TextInputQue(TaskStruct *servant,TaskStruct *master,
 		     U8 *data,U64 flags);
 #help_index "Task/Text Input;Messages"
-public extern TaskCmdStruct *QueueMsg(TaskStruct *servant,TaskStruct *master,
+public extern TaskCmdStruct *QueMsg(TaskStruct *servant,TaskStruct *master,
 		     I64 msg_code,I64 p1,I64 p2,U64 flags);
 public extern U0 PostMsg(TaskStruct *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0);
 public extern U0 SendMsg(TaskStruct *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0);
@@ -504,8 +510,6 @@ public extern U8 *FileExtRem(U8 *src,U8 *dst=NULL);
 public extern U0 PutFileLink(U8 *filename,I64 line=0,BoolI8 plain_text=FALSE);
 public extern U0 PutDirLink(U8 *dirname);
 public extern U8 *CurDir(TaskStruct *task=NULL,TaskStruct *mem_task=NULL);
-extern U8 *sys_home_dir;
-public extern U0 HomeDirRst(U8 *st=NULL);
 public extern U8 *DirNameAbs(U8 *dirname);
 public extern U8 *DirFile(U8 *dirname,U8 *name=NULL,U8 *_extension=NULL);
 public extern U8 *ZorNotZ(U8 *name,U64 ch);
@@ -532,6 +536,7 @@ public extern BoolI64 LTDirEntryNew(LTPrt *p,U8 *cur_dir,LTDirEntry *tempm,BoolI
 #help_index "File/Program Routines"
 public extern LTDirEntry *FilesFind(U8 *files_find_mask,U64 fuf_flags=0);
 public extern U64 FileSize(U8 *filename);
+public extern U64 FileSizeExpanded(U8 *filename);
 public extern BoolI64 FileFind(U8 *filename,LTDirEntry *de=NULL,
       BoolI8 dir_only=FALSE,BoolI8 file_only=FALSE,BoolI8 scan_parents=FALSE);
 public extern U0 *FileRead(U8 *filename,I64 *size=NULL,I64 *attr=NULL,BoolI8 raw=FALSE);
@@ -600,7 +605,7 @@ public extern U0 IntEOI(); //signal end of interrupt
 public extern U0 MPIntAll(U8 num);
 public extern U0 MPWake(U64 target_cpu_mask);
 extern U0 MPSethServerTask();
-extern MPCmdStruct *MPQueueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
+extern MPCmdStruct *MPQueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
        U8 *desc=NULL,
        U64 flags=1<<MPCf_FREE_ON_COMPLETE,
        BoolI8 spawn=FALSE,U64 target_cpu_mask=ALL_MASK);
@@ -649,14 +654,14 @@ public argpop extern I64 CallStkGrow(U64 stk_size_threshold,U64 stk_size,/*argpo
 #help_index "Fifo"
 public extern U8Fifo *U8FifoNew(U64 size,TaskStruct *mem_task=NULL);
 public extern U0 U8FifoDel(U8Fifo *f);
-public extern BoolI64 U8FifoInsert(U8Fifo *f,U8 ch);
+public extern BoolI64 U8FifoIns(U8Fifo *f,U8 ch);
 public extern BoolI64 U8FifoRem(U8Fifo *f,U8 *ch);
 public extern BoolI64 U8FifoPeek(U8Fifo *f,U8 *ch);
 public extern U0 U8FifoFlush(U8Fifo *f);
 public extern U64 U8FifoCnt(U8Fifo *f);
 public extern U64Fifo *U64FifoNew(U64 size,TaskStruct *mem_task=NULL);
 public extern U0 U64FifoDel(U64Fifo *f);
-public extern BoolI64 U64FifoInsert(U64Fifo *f,U64 dd);
+public extern BoolI64 U64FifoIns(U64Fifo *f,U64 dd);
 public extern BoolI64 U64FifoRem(U64Fifo *f,U64 *dd);
 public extern BoolI64 U64FifoPeek(U64Fifo *f,U64 *dd);
 public extern U0 U64FifoFlush(U64Fifo *f);
@@ -676,7 +681,7 @@ public LTextern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 public extern U64 sys_key_cnt;
 public extern U0 SetTypeMatic(U8 delay);
 extern U0 KbdInit();
-extern U64 KbdQueueMsgs();
+extern U64 KbdQueMsgs();
 extern U0 KbdMouseVarsInit();
 extern BoolI64 MouseDriverInstall();
 extern U0 KbdMouseHandler(BoolI8 poll_kbd,BoolI8 poll_mouse);

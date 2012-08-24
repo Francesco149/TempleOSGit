@@ -1,9 +1,9 @@
 #exe {OptOn(OPTf_WARN_PAREN);};
 #help_index "Task/Login"
 
-//Use Dbg("Type 'DbgExit'"); to debug before window manager is running.
+//Use Dbg("Type 'DbgExit'"); to debug before window mgr is running.
 
-public F64 os_version=8.03;
+public F64 os_version=8.04;
 
 #include "AdamExt.HPZ"
 
@@ -53,8 +53,7 @@ UseTermLtf(NULL);
 
 adam_task->win_top=2;
 adam_task->win_bottom=10;
-sys_winmgr_task=Spawn(&WinManagerTask,NULL,"Window Manager");
-AcctCollectList;
+sys_winmgr_task=Spawn(&WinMgrTask,NULL,"Window Mgr");
 LBts(&Fs->display_flags,DISPLAYf_CHILDREN_NOT_ON_TOP);
 LBts(&Fs->display_flags,DISPLAYf_SHOW);
 SysLogin;

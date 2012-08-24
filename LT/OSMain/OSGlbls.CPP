@@ -9,6 +9,8 @@ U8 mp_apic_ids[MP_MAX_PROCESSORS];
 TaskStruct *adam_task;
 I64 sys_num_spawned_users=0;
 
+U8 *sys_fault_handlers_code;
+
 LTCacheBlk *sys_ltdc_base=NULL,*sys_ltdc_ctrl=NULL;
 LTCacheBlk **sys_ltdc_hash_table=NULL;
 U64 sys_ltdc_size;
@@ -32,9 +34,7 @@ U8 dft_drv;
 BoolI8 boot_drv_pmt=FALSE;
 I64 num_blkdevs;
 LTPrt *drv_to_prt[32];
-SysAcctStruct sys_accts,*sys_acct=NULL;
-U8 *sys_acct_name=NULL;
-U8 *sys_home_dir=NULL;
+U8 *sys_acct;
 U8 *reverse_bits_table,*set_bits_table;
 U0 (**fp_ctrl_alt_let_cbs)(U64 sc);
 U64 ctrl_alt_let_in_irq_flags;

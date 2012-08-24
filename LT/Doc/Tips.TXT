@@ -1,7 +1,7 @@
                                      TIPS
 
-* Turn-off or reboot (<CTRL-ALT-DEL>) at any time, except during disk
-writes.  
+* Turn-off or reboot (<CTRL-ALT-DEL>) at any time, except during disk writes.
+ 
 Writes are not cached unless you call [C:/LT/OSMain/Dsk/DskCache.CPZ,263]
 CacheWrites(). 
 
@@ -24,7 +24,7 @@ M(\"D:/LT/*\",\"E:/LT/*\",\"+r+d\"); to check my changes.
 * <WINDOWS KEY> at the cmd line to access your personal menu.  Place macros 
 there with CTRL-L, or icon-like pictures with <CTRL-R>.  Use the Pop-Up
 option 
-on macros to [C:/LT/OSMain/Task1a.CPZ,225] Spawn() a task to run a file.  It
+on macros to [C:/LT/OSMain/Task1a.CPZ,203] Spawn() a task to run a file.  It
 dies when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-S> to save your macro/menu 
 area after making changes.
@@ -52,7 +52,7 @@ new machine does not have PS/2 ports.
 
 * You can set your local time zone by setting the
 [C:/LT/OSMain/OSGlbls.CPZ,42] local_time_offset global var 
-in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,485]
+in a start-up file.  It's units are [C:/LT/OSMain/Adam1a.HPZ,490]
 LTDATE_FREQ.  See [HOME/Adam3aLocalize.APZ,local_time] local time.
 
 * Use [C:/LT/Adam/Ltf/LtfRecalc.APZ,1743] LtfCurAttr() in
@@ -95,7 +95,7 @@ to answer the cfg questions.  See my technique
 WsInit() in [HOME/Adam3fSys.APZ,WsInit] HOME/Adam3fSys.APZ.
 
 * You can rst MultiCore CPU's if they get hung with
-[C:/LT/OSMain/MultiProc.CPZ,412] MPStart().  HD Audio will 
+[C:/LT/OSMain/MultiProc.CPZ,404] MPStart().  HD Audio will 
 get screwed-up, however.
 
 * Boolean expressions **not** in if statements don't have short circuit logic
@@ -116,21 +116,21 @@ capture, use [C:/LT/Adam/BMPFile.APZ,196] BMPFileCaptureScreen().  You might
 want to make a hot key.  See 
 [::/LT/Demo/AcctExample/TSAdam.APZ,BMPFileCaptureScreen] BMPFileCaptureScreen.
 
-* Use [C:/LT/Adam/Ltf/LtfNew.APZ,672] LtfMax() to adjust the size of the cmd
-line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf entries, 
+* Use [C:/LT/Adam/Ltf/LtfNew.APZ,670] LtfMax() to adjust the size of the cmd
+line buf.  It counts [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf entries, 
 not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3132]
-TaskStruct, [C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry and
-[C:/LT/OSMain/Adam1a.HPZ,2588] LTDirEntry 
+to store a data item, for convenience.  [C:/LT/OSMain/Adam1a.HPZ,3135]
+TaskStruct, [C:/LT/OSMain/Adam1a.HPZ,1210] LtfEntry and
+[C:/LT/OSMain/Adam1a.HPZ,2589] LTDirEntry 
 have them.  You shouldn't encounter conflicts with LoseThos using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
-[C:/LT/OSMain/Task1a.CPZ,225] Spawn(
-), changing [C:/LT/OSMain/Adam1a.HPZ,2853] DFT_STK, and using
-[C:/LT/Adam/Ltf/LtfNew.APZ,672] LtfMax() to reduce the cmd line buffer size.
+[C:/LT/OSMain/Task1a.CPZ,203] Spawn(
+), changing [C:/LT/OSMain/Adam1a.HPZ,2854] DFT_STK, and using
+[C:/LT/Adam/Ltf/LtfNew.APZ,670] LtfMax() to reduce the cmd line buffer size.
 
 * Filenames ending in Z will be automatically compressed and uncompressed
 when 
@@ -141,8 +141,8 @@ ending in Z.  See [::/LT/Doc/LTZ.TXZ] ::/LT/Doc/LTZ.TXZ if you want to
 uncompress while in WINDOWS
 .
 
-* [C:/LT/Adam/Merge.APZ,41] MergeChk() can be used to see what's
-changed.  The +d flag will show 
+* [C:/LT/Adam/Merge.APZ,41] MergeChk() can be used to see what's changed. 
+The +d flag will show 
 differences of files which have changed and allow you to merge code.  (The +r 
 flag will recurse.)
 
@@ -151,24 +151,24 @@ for broken links in
 documentation.
 
 * You can use [C:/LT/Compiler/Directives.CPZ,6]
-OptOn([C:/LT/OSMain/Adam1a.HPZ,1447] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/LT/OSMain/Adam1a.HPZ,1446] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
-* Use [C:/LT/Adam/Ltf/LtfMain.APZ,149] Plain() to edit a plain text
-file.  You'll need this if your file has $'
+* Use [C:/LT/Adam/Ltf/LtfMain.APZ,154] Plain() to edit a plain text file. 
+You'll need this if your file has $'
 s.  Use the [::/LT/Misc/Dollar.CPZ] ::/LT/Misc/Dollar.CPZ utility to strip
 dollar signs in text files.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,287] Silent() to disable screen text output.
+* Use [C:/LT/OSMain/Misc1a.CPZ,286] Silent() to disable screen text output.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,296] IOSnd() to disable noise from disk access.
+* Use [C:/LT/OSMain/Misc1a.CPZ,295] IOSnd() to disable noise from disk access.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-DRAG}.  Null 
 grab-scrolling with {CTRL-RIGHT}.
 
 * Use <CTRL-ALT-Z> to zoom-in and <CTRL-ALT-SHIFT-Z> to zoom-out.  You can 
 scroll by moving to the edge of the window.  Set
-[C:/LT/Adam/Gr/GrScreen.APZ,251] gr_continuous_scroll to TRUE 
+[C:/LT/Adam/Gr/GrScreen.APZ,252] gr_continuous_scroll to TRUE 
 if you want. 
 
 * Use <CTRL-ALT-G> and <CTRL-ALT-SHIFT-G> to display a grid on the screen.
@@ -203,9 +203,9 @@ middle of compilation and data inserted into the compilation stream.  Click
 here for an example: [::/LT/OSMain/OSEnd.CPZ,#exe {] #exe {.
 
 * If you output to the cmd line and wish to allow users to scroll around and 
-view data, you can use [C:/LT/Adam/Ltf/LtfPopUp.APZ,184] View().
+view data, you can use [C:/LT/Adam/Ltf/LtfPopUp.APZ,176] View().
 
-* Use [C:/LT/Adam/Ltf/LtfPopUp.APZ,184] View() in Pop-up macros to linger
+* Use [C:/LT/Adam/Ltf/LtfPopUp.APZ,176] View() in Pop-up macros to linger
 until the user presses <ESC> or <SHIFT
 -ESC>.
 
@@ -218,8 +218,8 @@ probably turn-off preemption or interrupts momentarily to copy it.
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
 lx for [C:/LT/OSMain/Adam1a.HPZ,1994] LexStruct ptrs; l for
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf ptrs; ll or cl for
-[C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry ptrs, etc.
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf ptrs; ll or cl for
+[C:/LT/OSMain/Adam1a.HPZ,1210] LtfEntry ptrs, etc.
 
 
 * [C:/LT/OSMain/Adam1b.HPZ,94] Preempt() is used to keep a task from being
@@ -234,7 +234,7 @@ with preemption off.
 to this in [HOME/Adam3aLocalize.APZ] HOME/Adam3aLocalize.APZ.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf cmd under the 
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf cmd under the 
 cursor.  See [::/LT/Demo/Ltf/TextDemo.CPZ] ::/LT/Demo/Ltf/TextDemo.CPZ.
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -264,8 +264,8 @@ them, so you can edit the ctrl points.  Then, convert them to bitmaps, so the
 flood fills work well.  If you are doing interpolation, however, they must be 
 vect.
 
-* [C:/LT/Adam/Gr/GrPrimatives.APZ,234] GrFloodFill() is
-slow.  [C:/LT/Adam/Gr/GrBitMap.APZ,861] GrRect() is fast.
+* [C:/LT/Adam/Gr/GrPrimatives.APZ,236] GrFloodFill() is slow. 
+[C:/LT/Adam/Gr/GrBitMap.APZ,861] GrRect() is fast.
 
 * You can customize the wallpaper.  See [::/LT/Demo/Graphics/MyWallPaper.APZ]
 ::/LT/Demo/Graphics/MyWallPaper.APZ.
@@ -275,8 +275,8 @@ adjusted based on load.  The range is [C:/LT/Adam/Window.APZ,19]
 win_min_refresh - Fs->win_max_refresh.
 
 * You can make a RAM disk and it will not be reformatted if you reboot with 
-[C:/LT/Adam/Boot/InsBoot.APZ,60] Boot().  You can even boot to a RAM
-disk.  See [C:/LT/Adam/Boot/InsBoot.APZ,402] Install2RAMDrv() and 
+[C:/LT/Adam/Boot/InsBoot.APZ,60] Boot().  You can even boot to a RAM disk. 
+See [C:/LT/Adam/Boot/InsBoot.APZ,402] Install2RAMDrv() and 
 [C:/LT/Adam/Boot/InsBoot.APZ,412] Boot2RAMDrv().
 
 * try{} catch{} in a function will cause all vars to be non-register.
@@ -297,14 +297,14 @@ text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/LT/OSMain/OSGlbls.CPZ,45] time_stamp_freq is continuously calibrated,
 so be careful because 
 expressions involving it might decrease.  Take a snap-shot, like this: timeout
-=[C:/LT/OSMain/Adam1b.HPZ,202] GetTimeStamp+[C:/LT/OSMain/OSGlbls.CPZ,45]
-time_stamp_freq x seconds; and compare against [C:/LT/OSMain/Adam1b.HPZ,202]
+=[C:/LT/OSMain/Adam1b.HPZ,198] GetTimeStamp+[C:/LT/OSMain/OSGlbls.CPZ,45]
+time_stamp_freq x seconds; and compare against [C:/LT/OSMain/Adam1b.HPZ,198]
 GetTimeStamp().
 
-* Use [C:/LT/Adam/HeapLog.APZ,122] HeapLog() and [C:/LT/Adam/HeapLog.APZ,81]
+* Use [C:/LT/Adam/HeapLog.APZ,121] HeapLog() and [C:/LT/Adam/HeapLog.APZ,80]
 HeapLogRep() to find leaks.  Don't be confused by
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf 
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2804]
+* For advanced heap debugging, play with [C:/LT/OSMain/Adam1a.HPZ,2805]
 _CFG_HEAP_DBG.  You're on your own.

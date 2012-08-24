@@ -23,7 +23,7 @@ public U64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
 
 //Averaging should be a num from 0.0 to 0.999.
 //Vol should be from 0.0 to 1.0.
-//If waveform is [C:/LT/OSMain/Adam1a.HPZ,3840] WF_NULL, the original passed to [C:/LT/OSMain/Misc1a.CPZ,227] Snd() will be used.
+//If waveform is [C:/LT/OSMain/Adam1a.HPZ,3843] WF_NULL, the original passed to [C:/LT/OSMain/Misc1a.CPZ,226] Snd() will be used.
 
 //Set reverb_delay to like 0.3 sec and reverb_intensity to like 0.4.
 
@@ -61,7 +61,7 @@ public U64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
     cnt2=dt*SNDFILE_SAMPLE_RATE;
     SndWaveFillBuf(sc,&s->body[k],cnt2,d->freq,waveform ?waveform:d->waveform,d->amp*normalized_vol);
     k+=cnt2;
-    RemQue(d);
+    QueRem(d);
     Free(d);
     d=d1;
   }
@@ -98,7 +98,7 @@ public U64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
   d=snd_record_root.next;
   while (d!=&snd_record_root) {
     d1=d->next;
-    RemQue(d);
+    QueRem(d);
     Free(d);
     d=d1;
   }

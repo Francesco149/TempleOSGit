@@ -5,6 +5,7 @@ public U0 GrDCRst(GrDC *dc)
   dc->color=BLACK;
   dc->color2=BLACK;
   dc->bkcolor=BLACK;
+  dc->collision_cnt=0;
   dc->pen_width=1;
   dc->ls.x=37837; //1<<16/Sqrt(3)
   dc->ls.y=37837;
@@ -265,7 +266,7 @@ public GrDC *GrDCCaptureScreen(TaskStruct *task=NULL)
 {
   GrDC *dc;
   U8 *dst;
-  WinSync(TRUE);
+  WinMgrSync(2);
   dc=GrDCCopy(gr_screen_image,task);
   if (dc->type==DCT_COLOR4) {
     dc->type=DCT_COLOR8;

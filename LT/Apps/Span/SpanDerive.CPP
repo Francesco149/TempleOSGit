@@ -1,10 +1,9 @@
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64,Order2D3 *,Order2D3 *)
 {
 //The forces due to springs and drag are
 //automatically handled by the
 //ode code.  We can add new forces
 //here.
-  nounusedwarn t,state,DstateDt;
   TaskStruct *task=ode->win_task;
   F64 d,dd;
   D3 p,p2;

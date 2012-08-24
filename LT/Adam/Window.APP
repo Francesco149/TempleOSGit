@@ -157,9 +157,8 @@ U0 ExtendedASCII()
   PostMsg(ext_ASCII_task,MSG_KEY_DOWN_UP,i,A2ScanCode(i));
 }
 
-U0 CtrlAltA(U64 sc)
+U0 CtrlAltA(U64)
 {
-  nounusedwarn sc;
   if (ext_ASCII_task=sys_focus_task)
     Spawn(&ExtendedASCII);
 }
@@ -279,7 +278,7 @@ U0 WinIPUpdate()
 }
 
 U64 last_total_jiffies,
-   last_idle_point_hits[MP_MAX_PROCESSORS],
+   last_idle_pt_hits[MP_MAX_PROCESSORS],
    last_swap_cnter[MP_MAX_PROCESSORS];
 F64 last_refresh_time=tNP,
    last_refresh_start_time=0,
@@ -292,7 +291,7 @@ U64 WinCalcRefreshTimeout()
 {
   F64 d,d1;
   I64 i,k,total;
-  U64 total_jiffies,idle_point_hits[MP_MAX_PROCESSORS];
+  U64 total_jiffies,idle_pt_hits[MP_MAX_PROCESSORS];
   CPUStruct *c;
 
   win_calc_refresh_skips++;
@@ -301,7 +300,7 @@ U64 WinCalcRefreshTimeout()
     Cli;
     total_jiffies=cpu_structs[0].total_jiffies;
     for (i=0;i<mp_cnt;i++)
-      idle_point_hits[i]=cpu_structs[i].idle_point_hits;
+      idle_pt_hits[i]=cpu_structs[i].idle_pt_hits;
     PopFD;
 
     refresh_delta_time=refresh_time-last_refresh_time;
@@ -311,19 +310,19 @@ U64 WinCalcRefreshTimeout()
       d1=0.01;
       if (refresh_delta_time>0) {
 	if (total) {
-	  if ((k=idle_point_hits[i]-last_idle_point_hits[i])>=0) {
+	  if ((k=idle_pt_hits[i]-last_idle_pt_hits[i])>=0) {
 	    d1=ToF64(k)/total;
 	    d=ToF64(k*time_stamp_freq)
 	      /(JIFFY_FREQ*refresh_delta_time);
 	    if (d<d1) d1=d;
 	  }
 	} else {
-	  if ((k=idle_point_hits[i]-last_idle_point_hits[i])>=0)
+	  if ((k=idle_pt_hits[i]-last_idle_pt_hits[i])>=0)
 	    d1=ToF64(k*time_stamp_freq)
 	    /(JIFFY_FREQ*refresh_delta_time);
 	}
       }
-      last_idle_point_hits[i]=idle_point_hits[i];
+      last_idle_pt_hits[i]=idle_pt_hits[i];
       c->idle_factor=Limit(d1,0.01,0.99);
     }
     last_total_jiffies=total_jiffies;
@@ -355,7 +354,7 @@ U64 WinCalcRefreshTimeout()
   return sys_jiffies+JIFFY_FREQ/win_desired_refresh;
 }
 
-U64 WinQueueIPMsgs(BoolI8 queue)
+U64 WinQueIPMsgs(BoolI8 que)
 {
   static I64 single_ipx=0,single_ipy=0;
   U64 time=GetTimeStamp,msg_code=0;
@@ -368,40 +367,40 @@ U64 WinQueueIPMsgs(BoolI8 queue)
     single_p1=single_ipx-task_focus->win_pixel_left-task_focus->win_scroll_x;
     single_p2=single_ipy-task_focus->win_pixel_top-task_focus->win_scroll_y;
     if (old_ipx_presnap!=ipx_presnap || old_ipy_presnap!=ipy_presnap) {
-      if (queue)
-	QueueMsg(task_focus,0,
+      if (que)
+	QueMsg(task_focus,0,
 	  MSG_IP_MOVE,p1,p2,0);
       msg_code=MSG_IP_MOVE;
     }
-    //TODO queue msg for ipz?
+    //TODO que msg for ipz?
     if (left_ip_dbl_time) {
       if (time>left_ip_dbl_time) {
 	if (left_dbl) {
 	  if (!left_down_sent) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_L_D_DOWN,p1,p2,0);
 	    left_down_sent=TRUE;
 	    msg_code=MSG_IP_L_D_DOWN;
 	  }
 	  if (!ip_lb) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_L_D_UP,p1,p2,0);
 	    left_ip_dbl_time=0;
 	    msg_code=MSG_IP_L_D_UP;
 	  }
 	} else {
 	  if (!left_down_sent) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_L_DOWN,single_p1,single_p2,0);
 	    left_down_sent=TRUE;
 	    msg_code=MSG_IP_L_DOWN;
 	  }
 	  if (!ip_lb) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_L_UP,p1,p2,0);
 	    left_ip_dbl_time=0;
 	    msg_code=MSG_IP_L_UP;
@@ -416,13 +415,13 @@ U64 WinQueueIPMsgs(BoolI8 queue)
     } else {
       if (WinInhibit(WIf_DBL_CLICK)) {
 	if (ip_lb  && !ip_lb_last) {
-	  if (queue)
-	    QueueMsg(task_focus,0,
+	  if (que)
+	    QueMsg(task_focus,0,
 	      MSG_IP_L_DOWN,p1,p2,0);
 	  msg_code=MSG_IP_L_DOWN;
 	} else if (!ip_lb && ip_lb_last) {
-	  if (queue)
-	    QueueMsg(task_focus,0,
+	  if (que)
+	    QueMsg(task_focus,0,
 	      MSG_IP_L_UP,p1,p2,0);
 	  msg_code=MSG_IP_L_UP;
 	}
@@ -442,30 +441,30 @@ U64 WinQueueIPMsgs(BoolI8 queue)
       if (time>right_ip_dbl_time) {
 	if (right_dbl) {
 	  if (!right_down_sent) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_R_D_DOWN,p1,p2,0);
 	    right_down_sent=TRUE;
 	    msg_code=MSG_IP_R_D_DOWN;
 	  }
 	  if (!ip_rb) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_R_D_UP,p1,p2,0);
 	    right_ip_dbl_time=0;
 	    msg_code=MSG_IP_R_D_UP;
 	  }
 	} else {
 	  if (!right_down_sent) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_R_DOWN,single_p1,single_p2,0);
 	    right_down_sent=TRUE;
 	    msg_code=MSG_IP_R_DOWN;
 	  }
 	  if (!ip_rb) {
-	    if (queue)
-	      QueueMsg(task_focus,0,
+	    if (que)
+	      QueMsg(task_focus,0,
 		MSG_IP_R_UP,p1,p2,0);
 	    right_ip_dbl_time=0;
 	    msg_code=MSG_IP_R_UP;
@@ -480,13 +479,13 @@ U64 WinQueueIPMsgs(BoolI8 queue)
     } else {
       if (WinInhibit(WIf_DBL_CLICK)) {
 	if (ip_rb  && !ip_rb_last) {
-	  if (queue)
-	    QueueMsg(task_focus,0,
+	  if (que)
+	    QueMsg(task_focus,0,
 	      MSG_IP_R_DOWN,p1,p2,0);
 	  msg_code=MSG_IP_R_DOWN;
 	} else if (!ip_rb && ip_rb_last) {
-	  if (queue)
-	    QueueMsg(task_focus,0,
+	  if (que)
+	    QueMsg(task_focus,0,
 	      MSG_IP_R_UP,p1,p2,0);
 	  msg_code=MSG_IP_R_UP;
 	}
@@ -522,33 +521,33 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
 {
   U64 timeout_val,timeout_val2,msg_code=0;
   Ctrl *c;
-  BoolI8 queue;
+  BoolI8 que;
 
   TimeStampFreqCal;
 
   if (!flush_msgs && old_sys_focus_task!=sys_focus_task) {
-    QueueMsg(old_sys_focus_task,0,
+    QueMsg(old_sys_focus_task,0,
 	  MSG_FOCUS,FALSE,0,0);
-    QueueMsg(sys_focus_task,0,
+    QueMsg(sys_focus_task,0,
 	  MSG_FOCUS,TRUE,0,0);
     old_sys_focus_task=sys_focus_task;
   }
 
   if (!flush_msgs && sys_focus_task) {
-    KbdQueueMsgs;
+    KbdQueMsgs;
 
-    queue=TRUE;
+    que=TRUE;
     if (!WinInhibit(WIf_CTRLS)) {
       c=sys_focus_task->next_ctrl;
       while (c!=&sys_focus_task->next_ctrl) {
 	if (CtrlInside(c,ipx,ipy)) {
-	  queue=FALSE;
+	  que=FALSE;
 	  break;
 	}
 	c=c->next;
       }
     }
-    msg_code=WinQueueIPMsgs(queue);
+    msg_code=WinQueIPMsgs(que);
   } else {
     WinRefocus;
     if (flush_msgs || !sys_focus_task)
@@ -598,42 +597,29 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
 }
 
 #help_index "Windows;Task/Delay"
-public U0 WinSync(BoolI8 full_refresh=FALSE)
+public U0 WinMgrSync(I64 cnt=1)
 {
-//This waits until the next screen update.
-//Since msgs are only dispatched
-//by the window manager, you can call
-//this when waiting for msgs.
-
-  I64 update_cnt,gr_update_cnt;
+//0 Cnt Sync to WinMgr. (not used)
+//1 Cnt Wait and Pump Msgs.
+//2 Cnt Make Sure to do a Full Refresh
+//	and Set Cur Pos.
   BoolI8 old_preempt=Preempt(OFF),
 	 old_full_refresh,
 	 old_idle=LBts(&Fs->task_flags,TASKf_IDLE);
   Ltf *old_ltf=LtfCur;
+  I64 update_cnt;
 
-  if (full_refresh && old_ltf)
-    old_full_refresh=LBts(&old_ltf->flags,LTFf_DO_FULL_REFRESH);
-
-  //We might catch it in the middle of an update
-  //If do full update, set cur pos
   while (Bt(&sys_semas[SYS_SEMA_REFRESH_IN_PROGRESS],0))
     Yield;
-  update_cnt=win_updates;
-  gr_update_cnt=gr_screen_updates;
-  while (update_cnt==win_updates ||
-	 gr_update_cnt==gr_screen_updates)
+  if (cnt>1 && old_ltf)
+    old_full_refresh=LBts(&old_ltf->flags,LTFf_DO_FULL_REFRESH);
+
+  update_cnt=win_updates+cnt;
+  while (win_updates<update_cnt)
     Yield;
 
-  if (full_refresh) {
-    //Do update with cur pos
-    update_cnt=win_updates;
-    gr_update_cnt=gr_screen_updates;
-    while (update_cnt==win_updates ||
-	   gr_update_cnt==gr_screen_updates)
-      Yield;
-    if (old_ltf)
-      LBEqu(&old_ltf->flags,LTFf_DO_FULL_REFRESH,old_full_refresh);
-  }
+  if (old_ltf)
+    LBEqu(&old_ltf->flags,LTFf_DO_FULL_REFRESH,old_full_refresh);
   LBEqu(&Fs->task_flags,TASKf_IDLE,old_idle);
   Preempt(old_preempt);
 }
@@ -654,8 +640,8 @@ U64 WinOnTopWindows()
     }
     if (Bt(&task->display_flags,DISPLAYf_WIN_ON_TOP) &&
 	task!=sys_winmgr_task->last_task) {
-      TaskRemQue(task);
-      TaskInsQue(task,sys_winmgr_task);
+      TaskQueRem(task);
+      TaskQueIns(task,sys_winmgr_task);
       result++;
       if (!first_moved_fwd)
 	first_moved_fwd=task;
@@ -683,8 +669,8 @@ public U64 WinToTop(TaskStruct *task=NULL,BoolI8 update_z_buf=TRUE)
     return 0;
   }
   if (task!=sys_winmgr_task->last_task) {
-    TaskRemQue(task);
-    TaskInsQue(task,sys_winmgr_task);
+    TaskQueRem(task);
+    TaskQueIns(task,sys_winmgr_task);
     result++;
   }
   if (Bt(&task->task_flags,TASKf_LOCAL_USER))
@@ -792,10 +778,10 @@ BoolI64 SetCursorPos(TaskStruct *task,I64 iptx,I64 ipty,BoolI8 set_cursor=TRUE)
     task->win_left <=iptx<=task->win_right) {
     l=task->next_ltf;
     while (l!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-	   l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+	   l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
       if (set_cursor) {
 	unlock=LtfLock(l);
-	if (l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+	if (l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 	  if (l->flags&LTFF_AUX_LTF) {
 	    l->x=iptx-task->win_left;
 	    l->y=ipty-task->win_top;
@@ -973,11 +959,11 @@ U0 WinChkMoveSize(TaskStruct *task)
 {
   if (task->win_left!=task->win_old_left ||
       task->win_top!=task->win_old_top)
-    QueueMsg(task,0,
+    QueMsg(task,0,
 	MSG_MOVE,task->win_left,task->win_top,0);
   if (task->win_right-task->win_left!=task->win_old_right-task->win_old_left ||
       task->win_bottom-task->win_top!=task->win_old_bottom-task->win_old_top)
-    QueueMsg(task,0,
+    QueMsg(task,0,
 	MSG_RESIZE,task->win_right-task->win_left+1,task->win_bottom-task->win_top+1,0);
   task->win_old_left  =task->win_left;
   task->win_old_right =task->win_right;
@@ -1056,7 +1042,7 @@ BoolI8 WinKeyNavMenu()
 	ipy=new_ipy=0;
     }
     if (sys_cur_submenu_entry) {
-      QueueMsg(sys_focus_task,0,
+      QueMsg(sys_focus_task,0,
 	  sys_cur_submenu_entry->msg_code,
 	  sys_cur_submenu_entry->p1,
 	  sys_cur_submenu_entry->p2,0);
@@ -1072,9 +1058,8 @@ BoolI8 WinKeyNavMenu()
   return FALSE;
 }
 
-U0 WinManagerTask(U64 dummy=0)
+U0 WinMgrTask(U64)
 {
-  nounusedwarn dummy;
   TaskStruct *task=Fs;
   I64 x,y,z,msg_code;
   Ltf *l;
@@ -1084,7 +1069,7 @@ U0 WinManagerTask(U64 dummy=0)
   Ctrl *c;
   U64 old_flags=GetFlags;
   last_total_jiffies=0;
-  MemSet(last_idle_point_hits,0,sizeof(U64)*MP_MAX_PROCESSORS);
+  MemSet(last_idle_pt_hits,0,sizeof(U64)*MP_MAX_PROCESSORS);
   MemSet(last_swap_cnter,0,sizeof(U64)*MP_MAX_PROCESSORS);
 
   Fs->win_left=0;
@@ -1157,7 +1142,7 @@ wmt_start:
 	    while (ip_lb)
 	      WinMgrSleep(TRUE);
 	    if (sys_cur_submenu_entry) {
-	      QueueMsg(sys_focus_task,0,
+	      QueMsg(sys_focus_task,0,
 		  sys_cur_submenu_entry->msg_code,
 		  sys_cur_submenu_entry->p1,
 		  sys_cur_submenu_entry->p2,0);
@@ -1323,11 +1308,11 @@ wmt_start:
 	  if (SetCursorPos(task,iptx,ipty)) {
 	    l=task->next_ltf;
 	    while (l!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-		l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+		l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 	      LtfLock(l);
 	      if (!(l->flags&LTFF_DONT_SHOW) &&
 		  (!l->best_d || !(l->flags&LTFF_AUX_LTF))) {
-		if (l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+		if (l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 		  ll=l->cur_entry;
 		  if (ll!=l) {
 		    if (ll->flags & LTFLF_HAS_BORDER)
@@ -1358,14 +1343,14 @@ wmt_start:
 	  if (ipty==task->win_top-1) {
 	    if (task->win_left<=iptx<task->win_left+4) {
 	      if (Bt(&task->display_flags,DISPLAYf_HAS_MENU)) {
-		QueueMsg(task,0,MSG_KEY_DOWN,0,SC_GUI,0);
+		QueMsg(task,0,MSG_KEY_DOWN,0,SC_GUI,0);
 		old_ip_lb=FALSE;
 		goto wmt_start;
 	      }
 	    } else if (task->win_right-2<=iptx<=task->win_right) {
 	      if (Bt(&task->display_flags,DISPLAYf_HAS_CLOSE_WIN)) {
 		if (LtfCur(task))
-		  QueueMsg(task,0,MSG_KEY_DOWN,CH_SHIFT_ESC,0,0);
+		  QueMsg(task,0,MSG_KEY_DOWN,CH_SHIFT_ESC,0,0);
 		else
 		  Kill(task,FALSE);
 		old_ip_lb=FALSE;
@@ -1380,7 +1365,7 @@ wmt_start:
 	  if (SetCursorPos(task,iptx,ipty,FALSE)) {
 	    l=task->next_ltf;
 	    while (l!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-		l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+		l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 	      if (!(l->flags&LTFF_DONT_SHOW) &&
 		  (!l->best_d || !(l->flags&LTFF_AUX_LTF))) {
 		do msg_code=WinMgrSleep;
@@ -1388,24 +1373,24 @@ wmt_start:
 		    (ip_lb || left_ip_dbl_time));
 		if (TaskValidate(task)) {
 		  if (msg_code==MSG_IP_L_UP) {
-		    if (l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+		    if (l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 		      LtfLock(l);
 		      if (TaskValidate(task)) {
-			if (l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+			if (l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 			  ll=l->cur_entry;
 			  if (ll!=l) {
 			    if (ll->flags & LTFLF_HAS_BORDER)
 			      ll->flags&=~LTFLF_SOLID_BORDER;
 			    if (ll->flags & (LTFLF_TREE|LTFLF_LINK|LTFLF_CHECK_COLLAPSABLE|
 			    LTFLF_LEFT_CB|LTFLF_LEFT_MACRO|LTFLF_LEFT_EXP))
-			      QueueMsg(task,0,MSG_KEY_DOWN,CH_SPACE,0,0);
+			      QueMsg(task,0,MSG_KEY_DOWN,CH_SPACE,0,0);
 			  }
 			}
 			LtfUnlock(l);
 		      }
 		    }
 		  } else if (msg_code==MSG_IP_L_D_UP)
-		    QueueMsg(task,0,MSG_KEY_DOWN,CH_ESC,0,0);
+		    QueMsg(task,0,MSG_KEY_DOWN,CH_ESC,0,0);
 		}
 		break;
 	      }
@@ -1422,7 +1407,7 @@ wmt_start:
 	  if (SetCursorPos(task,iptx,ipty,FALSE)) {
 	    l=task->next_ltf;
 	    while (l!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-		l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+		l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 	      if (!(l->flags&LTFF_DONT_SHOW) &&
 		  (!l->best_d || !(l->flags&LTFF_AUX_LTF))) {
 		do msg_code=WinMgrSleep;
@@ -1430,22 +1415,22 @@ wmt_start:
 		    (ip_rb || right_ip_dbl_time));
 		if (TaskValidate(task)) {
 		  if (msg_code==MSG_IP_R_UP) {
-		    if (l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+		    if (l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 		      LtfLock(l);
 		      if (TaskValidate(task)) {
-			if (l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+			if (l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 			  ll=l->cur_entry;
 			  if (ll!=l) {
 			    if (ll->flags&(LTFLF_LINK|
 			    LTFLF_RIGHT_CB|LTFLF_RIGHT_MACRO|LTFLF_RIGHT_EXP))
-			      QueueMsg(task,0,MSG_KEY_DOWN,CH_NEW_LINE,0,0);
+			      QueMsg(task,0,MSG_KEY_DOWN,CH_NEW_LINE,0,0);
 			  }
 			}
 			LtfUnlock(l);
 		      }
 		    }
 		  } else if (msg_code==MSG_IP_R_D_UP)
-		    QueueMsg(task,0,MSG_KEY_DOWN,CH_SHIFT_ESC,0,0);
+		    QueMsg(task,0,MSG_KEY_DOWN,CH_SHIFT_ESC,0,0);
 		}
 		break;
 	      }

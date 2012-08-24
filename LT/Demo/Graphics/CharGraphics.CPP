@@ -17,9 +17,8 @@ U0 AnimateEnd()
   Exit;
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   U64 i;
   U8 *font=MAlloc(256*8);
   Fs->task_end_cb=&AnimateEnd;

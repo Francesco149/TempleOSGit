@@ -79,10 +79,10 @@ BoolI64 Cd(U8 *dirname,BoolI8 make_dirs=FALSE)
       ;
     } else if (*buf) {
       if (!StrCmp(buf,"HOME")) {
-	result=Cd(sys_home_dir);
+	result=Cd(sys_acct);
 	Free(new_cur_dir);
-	new_cur_dir=MAlloc(maxlen+StrLen(sys_home_dir));
-	StrCpy(new_cur_dir,sys_home_dir+2);
+	new_cur_dir=MAlloc(maxlen+StrLen(sys_acct));
+	StrCpy(new_cur_dir,sys_acct+2);
       } else {
 	p=Fs->cur_prt;
 	cur_dir_cluster=Name2DirCluster(p,new_cur_dir);
@@ -157,10 +157,8 @@ LTFileAccess *LTFileAccessNew(U8 *_mask,BoolI8 make_mask=FALSE,BoolI8 make_dirs=
       if (!Drv(*mask)) valid=FALSE;
     mask+=2;
   }
-  if (StrStr(mask,"HOME")) {  //TODO
-    if (Fs->cur_prt!=Drv2Prt(*sys_home_dir))
-      Drv(*sys_home_dir);
-  }
+  if (StrStr(mask,"HOME") && Fs->cur_prt!=Drv2Prt(*sys_acct))
+    Drv(*sys_acct);
   fa->p=Fs->cur_prt;
   PrtChk(fa->p);
   buf=MAlloc(StrLen(mask)+2);
@@ -201,12 +199,12 @@ LTDirEntry *FilesFind(U8 *files_find_mask,U64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/LT/OSMain/Adam1a.HPZ,3735] FUF_RECURSE		+r Recurse
- [C:/LT/OSMain/Adam1a.HPZ,3749] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/LT/OSMain/Adam1a.HPZ,3745] FUF_JUST_DIRS		+D just directories
- [C:/LT/OSMain/Adam1a.HPZ,3746] FUF_JUST_FILES		+F just files
- [C:/LT/OSMain/Adam1a.HPZ,3747] FUF_JUST_TEXT_FILES	+t just text files: [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK
- [C:/LT/OSMain/Adam1a.HPZ,3748] FUF_JUST_SRC_FILES	+s just src files : [C:/LT/OSMain/Adam1a.HPZ,2063] SRC_FILE_MASK
+ [C:/LT/OSMain/Adam1a.HPZ,3738] FUF_RECURSE		+r Recurse
+ [C:/LT/OSMain/Adam1a.HPZ,3752] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
+ [C:/LT/OSMain/Adam1a.HPZ,3748] FUF_JUST_DIRS		+D just directories
+ [C:/LT/OSMain/Adam1a.HPZ,3749] FUF_JUST_FILES		+F just files
+ [C:/LT/OSMain/Adam1a.HPZ,3750] FUF_JUST_TEXT_FILES	+t just text files: [C:/LT/OSMain/Adam1a.HPZ,2065] TEXT_FILE_MASK
+ [C:/LT/OSMain/Adam1a.HPZ,3751] FUF_JUST_SRC_FILES	+s just src files : [C:/LT/OSMain/Adam1a.HPZ,2064] SRC_FILE_MASK
 See [] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   LTDirEntry *result=NULL;
@@ -408,6 +406,29 @@ U64 FileSize(U8 *filename)
   if (FileFind(filename,&de))
     return de.size;
   else
+    return 0;
+}
+
+U64 FileSizeExpanded(U8 *filename)
+{
+  U8 buf[BLK_SIZE];
+  U8 *full_name;
+  LTPrt *p;
+  LTDirEntry de;
+  if (FileFind(filename,&de)) {
+    full_name=FileNameAbs(filename);
+    p=Drv2Prt(*full_name);
+    Free(full_name);
+    if (p->type==PT_LT && de.expanded_size)
+      return de.expanded_size;
+    else {
+      if (de.size && FileAttr(de.name) & LT_ATTR_COMPRESSED) {
+	RBlks(p,buf,Cluster2Blk(p,de.cluster),1);
+	return (&buf)(ArcCompressStruct *)->expanded_size;
+      } else
+	return de.size;
+    }
+  } else
     return 0;
 }
 

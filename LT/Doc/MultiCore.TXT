@@ -3,10 +3,10 @@
 LoseThos does master-slave multicore instead of SMP.  Core#0 is the master.  
 The master core assigns computational jobs to other cores.  It is symmetrical 
 in the sense that you can do file access and heap allocations because there 
-are locks.  Call [C:/LT/OSMain/Task1a.CPZ,294] TaskLocalInit to enable file
+are locks.  Call [C:/LT/OSMain/Task1a.CPZ,272] TaskLocalInit to enable file
 access.  See 
-[::/LT/Demo/MultiCore/LoadTest.CPZ]
-::/LT/Demo/MultiCore/LoadTest.CPZ.  LoseThos does not move tasks between 
+[::/LT/Demo/MultiCore/LoadTest.CPZ] ::/LT/Demo/MultiCore/LoadTest.CPZ. 
+LoseThos does not move tasks between 
 cores.
 
 Only tasks on core#0 can have windows, but other cores can help render them.
@@ -14,10 +14,10 @@ Only tasks on core#0 can have windows, but other cores can help render them.
 Each core has a "seth task" which is the father of all tasks on that core.  
 Adam is the seth task on core 0.
 
-You give a job to a seth task with [C:/LT/OSMain/MultiProc.CPZ,342] MPJob()
+You give a job to a seth task with [C:/LT/OSMain/MultiProc.CPZ,334] MPJob()
 and get the result with 
-[C:/LT/OSMain/MultiProc.CPZ,350] MPJobResult().  You spawn a task on another
-core with [C:/LT/OSMain/MultiProc.CPZ,370] MPSpawn().
+[C:/LT/OSMain/MultiProc.CPZ,342] MPJobResult().  You spawn a task on another
+core with [C:/LT/OSMain/MultiProc.CPZ,362] MPSpawn().
 
 Note: you must use the LOCK asm prefix when changing shared structures in a 
 multicore environment.  The [C:/LT/OSMain/Adam1b.HPZ,64] LBts(),

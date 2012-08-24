@@ -87,7 +87,7 @@ U8 *tent_img=__BIN_4;
 
 I64 num_objs;
 CObj objs[MAX_PEOPLE+MAX_TENTS];
-CObj camp_view_point;
+CObj camp_view_pt;
 
 #define CAMP_WIDTH	600
 #define CAMP_SCALE	300
@@ -95,9 +95,9 @@ CObj camp_view_point;
 
 U0 CTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
 {
-  *x-=camp_view_point.x;
-  *y-=camp_view_point.y;
-  *z-=camp_view_point.z;
+  *x-=camp_view_pt.x;
+  *y-=camp_view_pt.y;
+  *z-=camp_view_pt.z;
 
   GrRot(dc->r,x,y,z);
 
@@ -172,9 +172,9 @@ U0 DrawMeeting(TaskStruct *task,GrDC *dc)
   cx=task->win_pixel_width/2;
   cy=task->win_pixel_height/2;
 
-  camp_view_point.x=0;
-  camp_view_point.y=200-100*Sin(tP(task));
-  camp_view_point.z=20+100*Cos(tP(task));
+  camp_view_pt.x=0;
+  camp_view_pt.y=200-100*Sin(tP(task));
+  camp_view_pt.z=20+100*Cos(tP(task));
 
   GrDCAllocDepthBuf(dc);
   depth_buf=dc->depth_buf;
@@ -245,13 +245,12 @@ U0 DrawMeeting(TaskStruct *task,GrDC *dc)
 
 #define MAX_SPEED	2<<32
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,x,z,dx,dz;
   F64 d;
   while (TRUE) {
-    WinSync;
+    WinMgrSync;
     for (i=0;i<num_objs;i++)
       if (objs[i].type==CO_PERSON) {
 	if (tP(Fs->parent_task)%10<5) {

@@ -1,9 +1,9 @@
 /*
 See [::/LT/Doc/MultiTasking.TXZ] LoseThos MultiTasking.
 
-Tasks are ordered in a queue based
+Tasks are ordered in a que based
 on window front-to-back order with the
-window manager as the head, which
+window mgr as the head, which
 paints the wallpaper.  The scheduler
 goes in a circle, checking if a task is
 ready and swapping-it-in if so.
@@ -19,14 +19,14 @@ on a message and skips it if it's not
 ready.  A task runs until it
 voluntarily yields ctrl with a call
 to [C:/LT/OSMain/Scheduler.CPZ,371] Yield or gets preempted by the
-timer interrupt.  See [::/LT/OSMain/Interrupts.CPZ,IRQ20:2] IRQ20.  The timer
-freqency is [C:/LT/OSMain/Adam1a.HPZ,484] JIFFY_FREQ.  Tasks can ask
-not to be preempted with [C:/LT/OSMain/Adam1b.HPZ,94] Preempt(ON/OFF).
-Tasks waiting on I/O often loop,
-checking for a stat and swapping-out.
-This does not really degrade
-performance, though it pegs the CPU
-Load.
+timer interrupt.  See [C:/LT/OSMain/Interrupts.CPZ,16] SYS_TIMER_HANDLER.
+The timer freqency is [C:/LT/OSMain/Adam1a.HPZ,489] JIFFY_FREQ.  Tasks
+can ask not to be preempted with
+[C:/LT/OSMain/Adam1b.HPZ,94] Preempt(ON/OFF).  Tasks waiting on I/O
+often loop, checking for a stat and
+swapping-out.  This does not really
+degrade performance, though it pegs the
+CPU Load.
 
 The scheduler checks for a few critical
 key-strokes such as <CTRL-ALT-X>, which
@@ -35,10 +35,10 @@ kills a task; <CTRL-ALT-DEL>, which reboots;
 which breaks execution of a program.
 
 Each core has it's own circular task
-queue.  For AP processors, they have a
+que.  For AP processors, they have a
 "Seth" task which stays in a loop
 waiting for jobs or requests to spawn
-tasks.  See [C:/LT/OSMain/MultiProc.CPZ,288] MPSethServerTask().
+tasks.  See [C:/LT/OSMain/MultiProc.CPZ,280] MPSethServerTask().
 
 All cores have an idle task.  If the
 scheduler determined an IRQ opportunity
@@ -210,7 +210,7 @@ SYS_SAVE_CONTEXT_YIELD::
 @@15:	POP	RSI
 	CALL	SYS_SAVE_CONTEXT
 
-	MOV	EBX,U32 SYS_IDLE_POINT
+	MOV	EBX,U32 SYS_IDLE_PT
 	MOV	U64 TaskStruct.rip[RSI],RBX
 	POP	U64 TaskStruct.rflags[RSI]
 	MOV	U64 TaskStruct.rsp[RSI],RSP
@@ -233,7 +233,7 @@ RESTORE_RSI_TASK_NO_KEY_CHECK:
 	CMP	U64 TaskStruct.wake_jiffy[RSI],RAX
 	JA	@@25
 
-	CMP	U32 TaskStruct.task_in_queue_signature[RSI],TASK_IN_QUEUE_SIGNATURE_VAL
+	CMP	U32 TaskStruct.task_in_que_signature[RSI],TASK_IN_QUE_SIGNATURE_VAL
 	JNE	SWAP_IN_SETH_TASK
 	MOV	RAX,RSI
 	CALL	SET_FS_BASE
@@ -259,7 +259,7 @@ SWAP_IN_SETH_TASK:
 	MOV	RSI,GS:CPUStruct.seth_task[RAX]
 	JMP	I32 RESTORE_RSI_TASK_WITH_KEY_CHECK
 
-SYS_IDLE_POINT::
+SYS_IDLE_PT::
 	RET
 
 SYS_IDLE_END::
@@ -373,7 +373,7 @@ LTextern SYS_IDLE_START U8 sys_idle_start;
 LTextern SYS_IDLE_END	U8 sys_idle_end;
 LTextern SYS_TASK_END_NOW U0 TaskEndNow();
 
-U0 TaskInsQue(TaskStruct *task,TaskStruct *pred=NULL)
+U0 TaskQueIns(TaskStruct *task,TaskStruct *pred=NULL)
 {
   TaskStruct *last;
   PushFD;
@@ -383,16 +383,16 @@ U0 TaskInsQue(TaskStruct *task,TaskStruct *pred=NULL)
   last->next_task=pred->last_task=task;
   task->last_task=last;
   task->next_task=pred;
-  task->task_in_queue_signature=TASK_IN_QUEUE_SIGNATURE_VAL;
+  task->task_in_que_signature=TASK_IN_QUE_SIGNATURE_VAL;
   PopFD;
 }
 
-U0 TaskRemQue(TaskStruct *task)
+U0 TaskQueRem(TaskStruct *task)
 {
   TaskStruct *next,*last;
   PushFD;
   Cli;
-  task->task_in_queue_signature=0;
+  task->task_in_que_signature=0;
   next=task->next_task;
   last=task->last_task;
   last->next_task=next;
@@ -400,7 +400,7 @@ U0 TaskRemQue(TaskStruct *task)
   PopFD;
 }
 
-U0 TaskInsQueChild(TaskStruct *task)
+U0 TaskQueInsChild(TaskStruct *task)
 {
   TaskStruct *last,*pred;
   PushFD;

@@ -18,7 +18,7 @@ U0 InstallWizard()
   " and '$FG,GREEN$No$FG$' to '$FG,GREEN$Delete /LT directory?$FG$'.\n\n"
   "You can partition the drive or compile the kernel "
   "with more options if you do it by hand, not using this wizard.  The LoseThos "
-  "disk partitioner doesn't play well with others.\n\n"
+  "disk partitioner, [C:/LT/Adam/Dsk/Dsk2b.APZ,86] PrtDsk(), doesn't play well with others.\n\n"
   "Continue ";
 
   if (YorN) {

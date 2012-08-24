@@ -10,7 +10,7 @@ U0 SpyStkRep(TaskStruct *task)
     NewLine;
     PutDefine("ST_PRESS_A_KEY");
     LtfDblBufSwap;
-    WinSync;
+    WinMgrSync;
   }
   if (LtfCur==l) LtfDblBufSwap;
   LtfDblBufEnd;
@@ -26,7 +26,7 @@ U0 SpyCallerRep(TaskStruct *task)
     NewLine;
     PutDefine("ST_PRESS_A_KEY");
     LtfDblBufSwap;
-    WinSync;
+    WinMgrSync;
   }
   if (LtfCur==l) LtfDblBufSwap;
   LtfDblBufEnd;

@@ -2,14 +2,19 @@
 
 Ltf *EdJoin(U8 *filename,BoolI8 bail)
 { //bail is for [C:/LT/Adam/LinkChk.APZ,71] LinkChk()
-  U8 *buf=StrNew(filename),
-     *temp_filename=StrNew(filename),
-     *tfn_ptr=temp_filename,
-     *ptr;
+  U8 *buf,*temp_filename,*tfn_ptr,*ptr;
   I64 i,num=1;
   SrcSymHashEntry *temph;
   BoolI8 cont;
   Ltf *l=NULL;
+
+  if (!filename) {
+    if (bail) return NULL;
+    filename=sys_temp_filename;
+  }
+ 
+  buf=StrNew(filename);
+  tfn_ptr=temp_filename=StrNew(filename);
 
   i=LK_FILE;
   if (StrLen(filename)>3 && filename[2]==':') {
@@ -119,7 +124,7 @@ et_done:
   return l;
 }
 
-public BoolI64 Ed(U8 *filename)
+public BoolI64 Ed(U8 *filename=NULL)
 {
   if (IsRaw)
     return EdLite(filename);
@@ -217,7 +222,7 @@ public U0 UseTermLtf(U8 *ltf_menu_file=NULL,U8 *pulldown_menu_file=NULL)
   BoolI8 old_preempt=Preempt(OFF);
   Ltf *l=LtfNew,*m;
   l->start_text_attr=WHITE<<4+BLUE;
-  LtfInsQue(l,Fs->last_ltf);
+  LtfQueIns(l,Fs->last_ltf);
   l->right_click_link=&TermRightClickLink;
   l->max_entries=4096;
   l->flags|=LTFF_ATTR_BY_PRT;
@@ -228,9 +233,9 @@ public U0 UseTermLtf(U8 *ltf_menu_file=NULL,U8 *pulldown_menu_file=NULL)
     m->start_text_attr=WHITE<<4+BLUE;
     m->flags|=LTFF_ATTR_BY_PRT|LTFF_ALLOW_UNDO;
     l->menu_ltf=m;
-    LtfInsQueRev(SysAuxLtfInit(TRUE),Fs->next_ltf);
+    LtfQueInsRev(SysAuxLtfInit(TRUE),Fs->next_ltf);
   } else
-    LtfInsQueRev(SysAuxLtfInit(FALSE),Fs->next_ltf);
+    LtfQueInsRev(SysAuxLtfInit(FALSE),Fs->next_ltf);
 
   if (pulldown_menu_file)
     Fs->cur_menu=MenuFile(pulldown_menu_file);
@@ -335,7 +340,7 @@ public LtfEntry *LtfPutLine(LtfEntry *cl)
 
 #help_index "Ltf/Input"
 public U8 *LtfMGetS(U64 flags=0)
-//[C:/LT/OSMain/Adam1a.HPZ,1437] Flags
+//[C:/LT/OSMain/Adam1a.HPZ,1436] Flags
 {
   Ltf *l;
   LtfEntry *cl,*cl_end;
@@ -348,11 +353,11 @@ public U8 *LtfMGetS(U64 flags=0)
     if (ch==CH_ESC) {
       l=Fs->next_ltf;
       while (l!=(&Fs->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-	  l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+	  l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
 	LtfLock(l);
 	if (!(l->flags&LTFF_DONT_SHOW) &&
 	    (!l->best_d || !(l->flags&LTFF_AUX_LTF)) &&
-	    l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL && l->cur_entry!=l) {
+	    l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL && l->cur_entry!=l) {
 	  cl=LtfEntryCopy(l,l->cur_entry);
 	  if (l->flags&LTFF_AUX_LTF && LtfCur)
 	    LtfBottom;

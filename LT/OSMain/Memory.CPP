@@ -188,7 +188,7 @@ U64 MemPageSize(U0 *a)
     return 0x200000;
 }
 
-U64 *MemPointAtPageTableEntry(U0 *a)
+U64 *MemPtAtPageTableEntry(U0 *a)
 {
   if (a<NUM_PML1*0x1000*0x200)
     return PAGE_TABLE_BASE+ a>>12 *8;
@@ -199,7 +199,7 @@ U64 *MemPointAtPageTableEntry(U0 *a)
 
 BoolI64 MemMarkPresent(U0 *a,BoolI8 val)
 {
-  U64 *pte=MemPointAtPageTableEntry(a);
+  U64 *pte=MemPtAtPageTableEntry(a);
   BoolI64 result=*pte&1;
   if (val)
     *pte=*pte|1;  //Mark present
@@ -417,7 +417,7 @@ am_done:
   m=result;
   num=*_pages2Meg;
   for (i=0;i<num;i++) {
-    pte=MemPointAtPageTableEntry(m);
+    pte=MemPtAtPageTableEntry(m);
     *pte &= ~0x18;
     InvlPg(m);
     m(U8 *)+=MemPageSize(m);
@@ -444,7 +444,7 @@ U0 *AllocUncachedMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL)
     m=result;
     num=*_pages2Meg;
     for (i=0;i<num;i++) {
-      pte=MemPointAtPageTableEntry(m);
+      pte=MemPtAtPageTableEntry(m);
       *pte= *pte& ~0x18 |0x10;
       InvlPg(m);
       m(U8 *)+=MemPageSize(m);
@@ -470,7 +470,7 @@ U0 *AllocWriteThroughMemBlks(U64 *_pages2Meg,BlkPool *bp=NULL)
     m=result;
     num=*_pages2Meg;
     for (i=0;i<num;i++) {
-      pte=MemPointAtPageTableEntry(m);
+      pte=MemPtAtPageTableEntry(m);
       *pte= *pte& ~0x18 |8;
       InvlPg(m);
       m(U8 *)+=MemPageSize(m);
@@ -488,7 +488,7 @@ U0 Free2MegMemBlks(MemBlk *m,U64 pages2Meg,BlkPool *bp=NULL)
     if (!bp) bp=sys_code_bp;
     m1=m;
     for (i=0;i<pages2Meg;i++) {
-      pte=MemPointAtPageTableEntry(m1);
+      pte=MemPtAtPageTableEntry(m1);
       *pte=*pte & ~0x18;
       InvlPg(m1);
       m1(U8 *)+=MemPageSize(m1);
@@ -516,8 +516,8 @@ MemBlk *AllocMemBlks(U64 *_pages512,HeapCtrl *hc)
   UnusedAllocatedMem *uum,**_uum,**_ptr;
   MemBlk *result;
   if (result=AllocNonTaskMemBlks(_pages512,hc->bp)) {
-    if (!Bt(&hc->flags,HCf_NON_TASK_QUEUE))
-      InsQue(result,hc->last_mem_blk);
+    if (!Bt(&hc->flags,HCf_NON_TASK_QUE))
+      QueIns(result,hc->last_mem_blk);
     result->mb_signature=MBS_USED_SIGNATURE_VAL;
 
     //Tidy-up free list (Move into heap hash)
@@ -532,7 +532,7 @@ MemBlk *AllocMemBlks(U64 *_pages512,HeapCtrl *hc)
 	size=uum->size;
 	if (size<threshold) {
 	  *_uum=uum->next;
-	  _ptr=hc->heap_hash(U8 *)+size;
+	  _ptr=(&hc->heap_hash)(U8 *)+size;
 	  uum->next=*_ptr;
 	  *_ptr=uum;
 	} else {
@@ -554,8 +554,8 @@ U0 FreeMemBlks(MemBlk *m,HeapCtrl *hc)
     if (m->mb_signature!=MBS_USED_SIGNATURE_VAL)
       SysBadFree(m);
     else {
-      if (!Bt(&hc->flags,HCf_NON_TASK_QUEUE))
-	RemQue(m);
+      if (!Bt(&hc->flags,HCf_NON_TASK_QUE))
+	QueRem(m);
       FreeNonTaskMemBlks(m,m->pages,hc->bp);
     }
     PopFD;
@@ -718,7 +718,7 @@ MALLOC_ALMOST_DONE:
 //RDX=heap ctrl
 
 #if _CFG_HEAP_DBG
-//InsQue
+//QueIns
 	MOV	RDI,U64 HeapCtrl.last_um[RDX]
 	MOV	U64 UsedAllocatedMem.next[RDI],RSI
 	MOV	U64 HeapCtrl.last_um[RDX],RSI
@@ -827,7 +827,7 @@ _FREE::
 	MOV	RAX,U64 UsedAllocatedMem.size-UsedAllocatedMem.start[RSI]
 	OR	RAX,RAX
 	JGE	@@25	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/LT/OSMain/Adam1a.HPZ,2831] UsedAllocatedMem struct.
+			//The neg size is offset to start of [C:/LT/OSMain/Adam1a.HPZ,2832] UsedAllocatedMem struct.
 	ADD	RSI,RAX
 
 @@25:	PUSHFD
@@ -848,7 +848,7 @@ _FREE::
 	PAUSE
 	JC	@@35
 #if _CFG_HEAP_DBG
-//RemQue
+//QueRem
 	MOV	RDX,U64 UsedAllocatedMem.next[RSI]
 	MOV	RDI,U64 UsedAllocatedMem.last[RSI]
 	MOV	U64 UsedAllocatedMem.last[RDX],RDI
@@ -950,9 +950,9 @@ _MHEAP_CTRL::
 LTextern _FREE U0 Free(U0 *add);
 LTextern _MSIZE U64 MSize(U0 *src); //size of heap object
 LTextern _MSIZE2 U64 MSize2(U0 *src); //Internal size
-LTextern _MHEAP_CTRL HeapCtrl *MHeapCtrl(U0 *src); //[C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl of object
+LTextern _MHEAP_CTRL HeapCtrl *MHeapCtrl(U0 *src); //[C:/LT/OSMain/Adam1a.HPZ,2879] HeapCtrl of object
 
-//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3135] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2879] HeapCtrl.  NULL allocs off current task's heap.
 LTextern _MALLOC U0 *MAlloc(U64 size,TaskStruct *mem_task=NULL);
 
 U0 *AMAlloc(U64 size)
@@ -961,7 +961,7 @@ U0 *AMAlloc(U64 size)
 }
 
 U0 *CAlloc(U64 size,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3135] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2879] HeapCtrl.  NULL allocs off current task's heap.
   U0 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -973,7 +973,7 @@ U0 *ACAlloc(U64 size)
 }
 
 U0 *MAllocIdentical(U0 *src,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3135] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2879] HeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   U0 *result;
   if (!src) return NULL;
@@ -1009,7 +1009,7 @@ U0 *CAllocAligned(U64 size,U64 alignment,TaskStruct *mem_task=NULL,U64 misalignm
 }
 
 U8 *StrNew(U8 *buf,TaskStruct *mem_task=NULL)
-{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3132] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2878] HeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/LT/OSMain/Adam1a.HPZ,3135] TaskStruct or [C:/LT/OSMain/Adam1a.HPZ,2879] HeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   U8 *result;
   if (buf) {
@@ -1048,12 +1048,68 @@ U0 *LinkedListCopy(U0 **list,TaskStruct *mem_task=NULL)
   return result;
 }
 
+U64 LinkedListCnt(U0 **list)
+{
+  U64 result=0;
+  while (list) {
+    result++;
+    list=*list;
+  }
+  return result;
+}
+
 U64 LinkedListSize(U0 **list)
 {
   U64 result=0;
   while (list) {
     result+=MSize2(list);
     list=*list;
+  }
+  return result;
+}
+
+U0 QueDel(Que *root,BoolI8 querem=FALSE) //Does not delete root
+{
+  Que *d=root->next,*d1;
+  while (d!=root) {
+    d1=d->next;
+    if (querem)
+      QueRem(d);
+    Free(d);
+    d=d1;
+  }
+}
+
+Que *QueCopy(Que *root,TaskStruct *mem_task=NULL)
+{
+  Que *result=MAllocIdentical(root,mem_task),*d=root->next,*d1;
+  QueInit(result);
+  while (d!=root) {
+    d1=MAllocIdentical(d,mem_task);
+    QueIns(d1,result->last);
+    d=d->next;
+  }
+  return result;
+}
+
+U64 QueCnt(Que *root) //Does not include root
+{
+  U64 result=0;
+  Que *d=root->next;
+  while (d!=root) {
+    result++;
+    d=d->next;
+  }
+  return result;
+}
+
+U64 QueSize(Que *root) //Does not include root
+{
+  U64 result=0;
+  Que *d=root->next;
+  while (d!=root) {
+    result+=MSize2(d);
+    d=d->next;
   }
   return result;
 }
@@ -1113,7 +1169,7 @@ HeapCtrl *IndependentHeapCtrlInit(BlkPool *bp,U64 pages512)
   HeapCtrl *hc=bp(U8 *)+sizeof(BlkPool);
   MemBlk *m;
   MemSet(bp,0,sizeof(BlkPool)+sizeof(HeapCtrl));
-  LBts(&hc->flags,HCf_NON_TASK_QUEUE);
+  LBts(&hc->flags,HCf_NON_TASK_QUE);
   hc->bp=bp;
   hc->hc_signature=HEAP_CTRL_SIGNATURE_VAL;
   hc->next_um=hc->last_um=(&hc->next_um)(U8 *)-offset(UsedAllocatedMem.next);
@@ -1125,7 +1181,7 @@ HeapCtrl *IndependentHeapCtrlInit(BlkPool *bp,U64 pages512)
 }
 
 
-BoolI64 Mem32DevMemInsert(MemRange *tempmr)
+BoolI64 Mem32DevMemIns(MemRange *tempmr)
 {
   MemRange *tempmr1=sys_mem32_dev_root.next,*tempmr2;
   while (tempmr1!=&sys_mem32_dev_root) {
@@ -1137,14 +1193,14 @@ BoolI64 Mem32DevMemInsert(MemRange *tempmr)
 	tempmr2->flags=0;
 	tempmr2->base=tempmr1->base;
 	tempmr2->size=tempmr->base-tempmr1->base;
-	InsQueRev(tempmr2,tempmr1);
+	QueInsRev(tempmr2,tempmr1);
       }
-      InsQueRev(tempmr,tempmr1);
+      QueInsRev(tempmr,tempmr1);
       tempmr1->size=tempmr1->base+tempmr1->size-
 		    (tempmr->base+tempmr->size);
       tempmr1->base=tempmr->base+tempmr->size;
       if (!tempmr1->size) {
-	RemQue(tempmr1);
+	QueRem(tempmr1);
 	Free(tempmr1);
       }
       return TRUE;
@@ -1159,14 +1215,13 @@ U0 Mem32BitDevInit()
   MemRange *tempmr;
   MemE820Entry *m20=SYS_MEM_E820;
 
-  sys_mem32_dev_root.next=sys_mem32_dev_root.last=&sys_mem32_dev_root;
-
+  QueInit(&sys_mem32_dev_root);
   tempmr=AMAlloc(sizeof(MemRange));
   tempmr->type=MRT_UNUSED;
   tempmr->flags=0;
   tempmr->base=0xF0000000;
   tempmr->size=0x10000000;
-  InsQue(tempmr,sys_mem32_dev_root.last);
+  QueIns(tempmr,sys_mem32_dev_root.last);
 
   if (m20->type) {
     while (m20->type) {
@@ -1175,7 +1230,7 @@ U0 Mem32BitDevInit()
       tempmr->flags=0;
       tempmr->base=m20->base;
       tempmr->size=m20->len;
-      if (!Mem32DevMemInsert(tempmr))
+      if (!Mem32DevMemIns(tempmr))
 	Free(tempmr);
       m20++;
     }
@@ -1234,7 +1289,7 @@ U0 *AllocMemMap32BitDev(U64 size,U64 alignment)
       tempmr->flags=0;
       tempmr->base=base;
       tempmr->size=size;
-      if (!Mem32DevMemInsert(tempmr)) {
+      if (!Mem32DevMemIns(tempmr)) {
 	Free(tempmr);
 	LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
 	return NULL;
@@ -1273,7 +1328,7 @@ U0 *AllocMemMap64BitDev(U64 *_pages2Meg)
     Yield;
   while (i--) {
     sys_mem64_dev_ptr-=0x200000;
-    pte=MemPointAtPageTableEntry(sys_mem64_dev_ptr);
+    pte=MemPtAtPageTableEntry(sys_mem64_dev_ptr);
     *pte=*pte&~0x18 |0x11; //Uncached and present
     InvlPg(sys_mem64_dev_ptr);
   }

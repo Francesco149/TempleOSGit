@@ -22,7 +22,7 @@ DefineListLoad("ST_BIN_FILE_TYPES",
 public U0 BinRep(U8 *filename)
 {//This reports imports, exports, etc
  //for a .BI? file.
-//See [::/LT/Compiler/CmpMain.CPZ,EIE_MODULE_ALIGNMENT] Loader Patch Table Generation and [C:/LT/OSMain/Hash1a.CPZ,730] Load().
+//See [::/LT/Compiler/CmpMain.CPZ,EIE_MODULE_ALIGNMENT] Loader Patch Table Generation and [C:/LT/OSMain/Hash1a.CPZ,729] Load().
   U8 *fbuf;
   U8 *ptr,etype;
   U8 *sptr,*absname;

@@ -11,7 +11,7 @@ the routine executing, but the routines which called it, as well.
 
 When done collecting statistics, use [C:/LT/Adam/Profiler.APZ,106] ProfRep()
 for a report.  You might need a 
-[C:/LT/Adam/Ltf/LtfNew.APZ,672] LtfMax() to expand the command line window
+[C:/LT/Adam/Ltf/LtfNew.APZ,670] LtfMax() to expand the command line window
 buffer to fit it all.
 
 You can set the CPU to monitor with [C:/LT/Adam/Profiler.APZ,66] ProfCPUSet().

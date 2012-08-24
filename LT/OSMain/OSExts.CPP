@@ -7,7 +7,6 @@ var and check it before calling.
 import U0 MemberListDel(ClassStruct *tempc);
 import I64 ExePutS(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE);
 import I64 ExeFile(U8 *name,BoolI8 just_load=FALSE);
-import SysAcctStruct *AcctFind(U8 *name);
 import U0 DisplaySpecialKeys(I64 sc);
 import BoolI64 LtfUnlock(Ltf *l);
 import Ltf *EdJoin(U8 *filename,BoolI8 bail);
@@ -79,7 +78,7 @@ extern U64 PCIReadU16(I64 bus,I64 dev,I64 fun,I64 rg);
 extern U64 PCIReadU32(I64 bus,I64 dev,I64 fun,I64 rg);
 extern TaskStruct *SpawnUser(U8 *st=NULL);
 extern U0 TaskRstAwaitingMsg(TaskStruct *task=NULL);
-extern TaskCmdStruct *QueueMsg(TaskStruct *_servant,TaskStruct *master,
+extern TaskCmdStruct *QueMsg(TaskStruct *_servant,TaskStruct *master,
 		     I64 code,U64 p1,U64 p2,U64 flags);
 extern U0 TaskWaitIdle(TaskStruct *task);
 extern U0 TaskPause(TaskStruct *task,BoolI8 state);

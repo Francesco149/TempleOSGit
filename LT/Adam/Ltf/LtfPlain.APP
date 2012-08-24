@@ -169,13 +169,13 @@ LTFLF_CHECKED_COLLAPSED|LTFLF_CHECK_COLLAPSABLE|LTFLF_TREE,
 //LTFT_PICTURE
 LTFLF_HAS_BIN,
 
-//LTFT_INSERT_BINARY
+//LTFT_INS_BINARY
 LTFLF_HAS_BIN,
 
-//LTFT_INSERT_BINARY_TYPE
+//LTFT_INS_BINARY_TYPE
 LTFLF_HAS_BIN,
 
-//LTFT_INSERT_BINARY_SIZE
+//LTFT_INS_BINARY_SIZE
 LTFLF_HAS_BIN,
 
 //LTFT_BPT
@@ -350,13 +350,13 @@ LTFLT_UNDERLINE,
 //LTFT_PICTURE
 0,
 
-//LTFT_INSERT_BINARY
+//LTFT_INS_BINARY
 0,
 
-//LTFT_INSERT_BINARY_TYPE
+//LTFT_INS_BINARY_TYPE
 0,
 
-//LTFT_INSERT_BINARY_SIZE
+//LTFT_INS_BINARY_SIZE
 0,
 
 //LTFT_BPT
@@ -428,9 +428,9 @@ U8 *Ltf2PlainText(Ltf *l,LtfEntry *ll)
       case LTFT_CHECK_BOX:
       case LTFT_TREE:
       case LTFT_PICTURE:
-      case LTFT_INSERT_BINARY:
-      case LTFT_INSERT_BINARY_TYPE:
-      case LTFT_INSERT_BINARY_SIZE:
+      case LTFT_INS_BINARY:
+      case LTFT_INS_BINARY_TYPE:
+      case LTFT_INS_BINARY_SIZE:
       case LTFT_SONG:
       case LTFT_HTML_IMG:
       case LTFT_HTML_VIDEO:
@@ -569,7 +569,7 @@ U8 *Ltf2PlainText(Ltf *l,LtfEntry *ll)
 
 
 LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
-{//This uses [C:/LT/Compiler/Lex.CPZ,760] Lex() to parse a string and make Ltf entries.
+{//This uses [C:/LT/Compiler/Lex.CPZ,752] Lex() to parse a string and make Ltf entries.
   I64 i,j,flags;
   U8 *ptr,*st2;
   LtfEntry *ll=NULL;
@@ -596,9 +596,9 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
       case LTFT_CHECK_BOX:
       case LTFT_TREE:
       case LTFT_PICTURE:
-      case LTFT_INSERT_BINARY:
-      case LTFT_INSERT_BINARY_TYPE:
-      case LTFT_INSERT_BINARY_SIZE:
+      case LTFT_INS_BINARY:
+      case LTFT_INS_BINARY_TYPE:
+      case LTFT_INS_BINARY_SIZE:
       case LTFT_SONG:
       case LTFT_HTML_IMG:
       case LTFT_HTML_VIDEO:
@@ -618,7 +618,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
 	  ll->tag=StrNew(st,l->mem_task);
 	  Free(st);
 	} else {
-	  if (LTFT_PICTURE<=i<=LTFT_INSERT_BINARY_SIZE ||
+	  if (LTFT_PICTURE<=i<=LTFT_INS_BINARY_SIZE ||
 	      i==LTFT_SONG)
 	    ll->tag=StrNew("",l->mem_task);
 	  else {
@@ -788,7 +788,7 @@ LtfEntry *PrsDollarCmd(Ltf *l,U8 *st)
   return ll;
 }
 
-public U0 LtfInsert(Ltf *l,LtfEntry *ll)
+public U0 LtfIns(Ltf *l,LtfEntry *ll)
 {
   U8 *dst;
   BoolI8 unlock=LtfLock(l);
@@ -812,16 +812,16 @@ public U0 LtfInsert(Ltf *l,LtfEntry *ll)
     nl->tag=StrNew(dst,l->mem_task);
     *dst=0;
     cl->max_col=l->cur_data_col;
-    InsQue(nl,cl);
+    QueIns(nl,cl);
     l->cur_data_col=0;
     cl=nl;
     cl->max_col=StrLen(cl->tag);
   }
   if (cl->type_u8==LTFT_TEXT && l->cur_data_col>=cl->max_col) {
-    InsQue(ll,cl);
+    QueIns(ll,cl);
     l->cur_entry=ll->next;
   } else {
-    InsQue(ll,cl->last);
+    QueIns(ll,cl->last);
     l->cur_entry=cl;
   }
   l->cur_data_col=l->cur_entry->min_col;
@@ -870,7 +870,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	ll->tag=MAlloc(j+1,l->mem_task);
 	MemCpy(ll->tag,src,j+1);
 	ll->max_col=j;
-	LtfInsert(l,ll);
+	LtfIns(l,ll);
 	if (l->flags & LTFF_NO_CURSOR)
 	  Free(src);
       }
@@ -896,7 +896,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	ll->tag=MAlloc(j+1,l->mem_task);
 	MemCpy(ll->tag,src,j+1);
 	ll->max_col=j;
-	LtfInsert(l,ll);
+	LtfIns(l,ll);
 	if (l->flags & LTFF_NO_CURSOR)
 	  Free(src);
 	*ptr=ch;
@@ -905,19 +905,19 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	case CH_CURSOR:
 	  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 	  ll->type=LTFT_CURSOR | l->settings_root.dft_text_attr << 8;
-	  LtfInsert(l,ll);
+	  LtfIns(l,ll);
 	  ptr++;
 	  break;
 	case CH_FORM_FEED:
 	  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 	  ll->type=LTFT_PAGE_BREAK | l->settings_root.dft_text_attr << 8;
-	  LtfInsert(l,ll);
+	  LtfIns(l,ll);
 	  ptr++;
 	  break;
 	case CH_TAB:
 	  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 	  ll->type=LTFT_TAB | l->settings_root.dft_text_attr << 8;
-	  LtfInsert(l,ll);
+	  LtfIns(l,ll);
 	  ptr++;
 	  break;
 	case '$':
@@ -930,7 +930,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	    if (ptr-1==ptr2 && *ptr2==CH_CURSOR) {
 	      ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 	      ll->type=LTFT_CURSOR | l->settings_root.dft_text_attr << 8;
-	      LtfInsert(l,ll);
+	      LtfIns(l,ll);
 	      ptr2++;
 	    }
 	    if (ptr==ptr2) {
@@ -941,7 +941,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 		ll->tag=StrNew("$$",l->mem_task);
 	      else
 		ll->tag=StrNew("$",l->mem_task);
-	      LtfInsert(l,ll);
+	      LtfIns(l,ll);
 	    } else {
 	      st2=MAlloc(ptr-ptr2+1);
 	      ptr3=ptr2;
@@ -950,18 +950,18 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 		if (ch==CH_CURSOR) {
 		  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 		  ll->type=LTFT_CURSOR | l->settings_root.dft_text_attr << 8;
-		  LtfInsert(l,ll);
+		  LtfIns(l,ll);
 		} else if (ch==CH_FORM_FEED) {
 		  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 		  ll->type=LTFT_PAGE_BREAK | l->settings_root.dft_text_attr << 8;
-		  LtfInsert(l,ll);
+		  LtfIns(l,ll);
 		} else
 		  *ptr4++=ch;
 	      }
 	      *ptr4=0;
 	      if (ll=PrsDollarCmd(l,st2)) {
 		result=ll;
-		LtfInsert(l,ll);
+		LtfIns(l,ll);
 	      }
 	      Free(st2);
 	    }
@@ -971,7 +971,7 @@ public LtfEntry *LtfPutS(Ltf *l,U8 *st)
 	default:
 	  ll=CAlloc(sizeof(LtfEntryBase),l->mem_task);
 	  ll->type=LTFT_NEW_LINE | l->settings_root.dft_text_attr << 8;
-	  LtfInsert(l,ll);
+	  LtfIns(l,ll);
 	  if (ch==CH_CARRIAGE_RETURN)
 	    while (*ptr==CH_CARRIAGE_RETURN)
 	      ptr++;

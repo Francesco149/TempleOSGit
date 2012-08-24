@@ -70,7 +70,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
     x=m1.x-10*Cos(theta+nozzle_angle);
     y=m1.y-10*Sin(theta+nozzle_angle);
     for (i=0;i<6;i++) {
-      if ((i^gr_screen_updates)&1)
+      if ((i^win_updates)&1)
 	dc->color=YELLOW;
       else
 	dc->color=RED;
@@ -125,9 +125,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 }
 
 
-U0 MyDerivative(Ode *ode,F64 t,F64 *state,F64 *DstateDt)
+U0 MyDerivative(Ode *,F64,F64 *state,F64 *DstateDt)
 {
-  nounusedwarn ode,t;
   F64 d,discriminant,v,a,theta=Arg(m2.state->x-m1.state->x,m2.state->y-m1.state->y),
      DthetaDt,
      collision_estimate_t,
@@ -208,7 +207,7 @@ U0 Init()
     "%9.4f","Anti-spin Coefficient\n\n");
   while (!(0.1<=antispin_coefficient<10.001));
 
-//We don't clear queue links.
+//We don't clear que links.
   MemSet(&m1.start_saved_area,0,offset(MassStruct.end_saved_area)-offset(MassStruct.start_saved_area));
   m1.y=-PT_SPAN/2;
   m1.mass=1.0;
@@ -278,12 +277,12 @@ U0 RocketScience()
 //  ode->t_scale=0.1; //Uncomment this to go in slow motion.
 
   Init;
-  InsQue(&m1,ode->last_mass);
-  InsQue(&m2,ode->last_mass);
-  InsQue(&m3,ode->last_mass);
-  InsQue(&s,ode->last_spring);
+  QueIns(&m1,ode->last_mass);
+  QueIns(&m2,ode->last_mass);
+  QueIns(&m3,ode->last_mass);
+  QueIns(&s,ode->last_spring);
 
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
 
   Fs->draw_it=&DrawIt;
 
@@ -305,7 +304,7 @@ U0 RocketScience()
 rs_done:
   } catch
     CatchAll;
-  RemQue(ode);
+  QueRem(ode);
   OdeDel(ode);
   "$CL$$BG$\n";
   SettingsPop;

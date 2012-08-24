@@ -62,7 +62,7 @@ U0 WsSidesInit(WsMatrix *m)
     tempa->subs[0].repeats=ws_num_matrix_words;
     tempa->entries=ws_num_matrix_words;
     tempa->substructs=1;
-    InsQue(tempa,m->side[i].last);
+    QueIns(tempa,m->side[i].last);
   }
 }
 
@@ -151,7 +151,7 @@ U0 WsRem(WsSubStruct *s,WsStruct *parent)
   if (i<0 || i>=WS_SUBSTRUCTS_PER_STRUCT || parent->substructs<1)
     return;
   if (parent->substructs==1) {
-    RemQue(parent);
+    QueRem(parent);
     ws_structs_size-=MSize2(parent);
     Free(parent);
   } else {
@@ -162,7 +162,7 @@ U0 WsRem(WsSubStruct *s,WsStruct *parent)
   }
 }
 
-WsSubStruct *WsInsert(WsSubStruct *s,WsStruct **_parent,WsSubStruct *last)
+WsSubStruct *WsIns(WsSubStruct *s,WsStruct **_parent,WsSubStruct *last)
 {
   WsStruct *tempa,*parent=*_parent;
   I64 j,k,i=(last(U8 *)-(&parent->subs)(U8 *))/sizeof(WsSubStruct)+1;
@@ -173,7 +173,7 @@ WsSubStruct *WsInsert(WsSubStruct *s,WsStruct **_parent,WsSubStruct *last)
     if (parent->substructs==-1) {
       tempa=AMAlloc(sizeof(WsStruct));
       ws_structs_size+=MSize2(tempa);
-      InsQue(tempa,parent->last);
+      QueIns(tempa,parent->last);
       parent=tempa;
       *_parent=parent;
       tempa->entries=0;
@@ -187,7 +187,7 @@ WsSubStruct *WsInsert(WsSubStruct *s,WsStruct **_parent,WsSubStruct *last)
       ws_structs_size+=MSize2(tempa);
       tempa->entries=0;
       tempa->substructs=0;
-      InsQue(tempa,parent);
+      QueIns(tempa,parent);
       k=0;
       for (j=i;j<parent->substructs;j++) {
 	MemCpy(&tempa->subs[k],&parent->subs[j],sizeof(WsSubStruct));
@@ -273,14 +273,14 @@ I64 WsHitsInc(WsMatrix *m,I64 col,I64 row)
 	tempa_l=tempa->last; //header
 	temps_l=&tempa_l->subs[WS_SUBSTRUCTS_PER_STRUCT-1];
       }
-      temps=WsInsert(&sn,&tempa_l,temps_l);
+      temps=WsIns(&sn,&tempa_l,temps_l);
       temps=WsCondense(temps,&tempa_l);
     } else if (row==repeats-1+row_base) {
       temps->repeats--;
       tempa->entries--;
       sn.hits=1;
       sn.repeats=1;
-      temps=WsInsert(&sn,&tempa,temps);
+      temps=WsIns(&sn,&tempa,temps);
       temps=WsCondense(temps,&tempa);
     } else {
       tempa->entries-=repeats;
@@ -288,12 +288,12 @@ I64 WsHitsInc(WsMatrix *m,I64 col,I64 row)
       sn.repeats=1;
       tempa1=tempa;
       temps1=temps;
-      temps=WsInsert(&sn,&tempa1,temps1);
+      temps=WsIns(&sn,&tempa1,temps1);
       temps1->repeats=row-row_base;
       tempa->entries+=temps1->repeats;
       sn.repeats=row_base+repeats-(row+1);
       sn.hits=temps1->hits;
-      WsInsert(&sn,&tempa1,temps);
+      WsIns(&sn,&tempa1,temps);
     }
   }
   m->n++;
@@ -529,9 +529,8 @@ pc_done:
   Free(buf1);
 }
 
-U0 WsTask(U64 dummy=0)
+U0 WsTask(U64)
 {
-  nounusedwarn dummy;
   TaskStruct *focus_task,*original_focus_task;
   Ltf *l;
   LtfEntry *ll;
@@ -635,23 +634,26 @@ public BoolI64 WordStat(BoolI64 val=OFF)
   return old_wordstat;
 }
 
-U0 WsProgressTask(U64 dummy=0)
+U0 WsProgressTask(BoolI8 *_start_flag)
 {
-  nounusedwarn dummy;
   I64 start=sys_dsk_writes;
-  progress1=0; progress1_max=51657;
+  TaskLocalInit; //needed for disk access
+  progress1=0;
+  progress1_max=(FileSizeExpanded(WSD_DEF_FILENAME_Z)+BLK_SIZE-1)>>BLK_SIZE_BITS;
   StrCpy(progress1_desc,"Uncompressing Dictionary");
+  start=sys_dsk_writes;
+  *_start_flag=TRUE;
   while (progress1<progress1_max) {
     progress1=sys_dsk_writes-start;
     Sleep(10);
   }
-  *progress1_desc=0;
-  progress1=progress1_max=0;
+  ProgressBarsRst;
 }
 
 public U0 WsInit(U8 *mask)
 {
   I64 i,j=0;
+  BoolI8 start_flag;
   WsHashEntry *tempw;
   LTBlkDev *bdev=Drv2BlkDev;
 
@@ -662,8 +664,10 @@ public U0 WsInit(U8 *mask)
 
   if (IsDrvWritable && FileFind(WSD_DEF_FILENAME_Z) && !FileFind(WSD_DEF_FILENAME)) {
     if (bdev->type!=LTBDT_RAM) {
-      Spawn(&WsProgressTask);
-      Yield;
+      start_flag=FALSE;
+      Spawn(&WsProgressTask,&start_flag);
+      while (!start_flag)
+	Yield;
     }
     Move(WSD_DEF_FILENAME_Z,WSD_DEF_FILENAME);
   }

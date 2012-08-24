@@ -137,13 +137,9 @@ U64 TaskInit(TaskStruct *task,U64 stk_size)
 { //Returns Fs of task
   TaskStk *temps;
 
-  task->code_heap->next_mem_blk=
-    task->code_heap->last_mem_blk=
-    &task->code_heap->next_mem_blk;
+  QueInit(&task->code_heap->next_mem_blk);
   if (task->code_heap!=task->data_heap)
-    task->data_heap->next_mem_blk=
-      task->data_heap->last_mem_blk=
-      &task->data_heap->next_mem_blk;
+    QueInit(&task->data_heap->next_mem_blk);
 
   task->addr=
     task->next_task=
@@ -160,34 +156,16 @@ U64 TaskInit(TaskStruct *task,U64 stk_size)
     task->last_child_task=
     (&task->next_child_task)(U8 *)-offset(TaskStruct.next_sibling_task);
 
-  task->next_servant_cmd=
-    task->last_servant_cmd=
-    &task->next_servant_cmd;
-
-  task->next_master_cmd=
-    task->last_master_cmd=
-    &task->next_master_cmd;
-
-
-  task->next_lex=
-    task->last_lex=
-    &task->next_lex;
-
   task->next_ltf=
     task->last_ltf=
     (&task->next_ltf)(U8 *)-offset(Ltf.next_ltf);
 
-  task->next_except=
-    task->last_except=
-    &task->next_except;
-
-  task->next_ctrl=
-    task->last_ctrl=
-    &task->next_ctrl;
-
-  task->next_ode=
-    task->last_ode=
-    &task->next_ode;
+  QueInit(&task->next_servant_cmd);
+  QueInit(&task->next_master_cmd);
+  QueInit(&task->next_lex);
+  QueInit(&task->next_except);
+  QueInit(&task->next_ctrl);
+  QueInit(&task->next_ode);
 
   task->fpu_mmx=MAllocAligned(sizeof(FPUState),0x10,task);
   MemCpy(task->fpu_mmx,&sys_init_fpu_mmx,sizeof(FPUState));
@@ -226,7 +204,7 @@ TaskStruct *Spawn(U0 (*fp_start_add)(U0 *data),U0 *data=NULL,
 	    U8 *task_name=NULL,
 	    TaskStruct *parent=NULL, //NULL means adam
 	    U64 stk_size=0, //0=default
-	    U64 flags=SPAWNF_ADD_TO_QUEUE)
+	    U64 flags=SPAWNF_ADD_TO_QUE)
 {
 //We alloc from code heap so addr will be short
 //Could be allocated off of data heap
@@ -253,9 +231,9 @@ TaskStruct *Spawn(U0 (*fp_start_add)(U0 *data),U0 *data=NULL,
   MemCpy(task->task_name,task_name,TASK_NAME_LEN+1);
   PushFD;
   Cli;
-  if (flags&SPAWNF_ADD_TO_QUEUE) {
-    TaskInsQueChild(task);
-    TaskInsQue(task);
+  if (flags&SPAWNF_ADD_TO_QUE) {
+    TaskQueInsChild(task);
+    TaskQueIns(task);
   }
   PopFD;
   return task;
@@ -369,17 +347,17 @@ U0 UserTaskCont()
   BoolI8 cont=TRUE;
   do {
     lx=LexNew(NULL,LF_PROMPT,NULL);
-    InsQue(lx,Fs->last_lex);
+    QueIns(lx,Fs->last_lex);
     try {
       Lex(lx);
       ExeCmdLine(lx);
       cont=Bt(&lx->flags,Lf_PROMPT);
-      RemQue(lx);
+      QueRem(lx);
       LexDel(lx);
     } catch {
       l=Fs->last_ltf;
       if (l!=(&Fs->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-	  l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL)
+	  l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL)
 	LtfUnlock(l);
       CatchAll;
     }
@@ -527,7 +505,7 @@ U64 TaskEnd()
       (*fp_set_std_palette)();
   }
 
-//Remque
+//QueRem
   task->task_signature(U64)=0;
 
   tempt =task->next_input_filter_task;
@@ -541,7 +519,7 @@ U64 TaskEnd()
   tempt ->last_sibling_task=tempt1;
 
   tempt =task->next_task; //save to return
-  TaskRemQue(task);
+  TaskQueRem(task);
 
   LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
 

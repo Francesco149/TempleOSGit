@@ -161,9 +161,8 @@ U0 WinDerivedScrollValsUpdate(Ctrl *c)
   }
 }
 
-U0 LeftClickHWinScroll(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickHWinScroll(Ctrl *c,I64 x,I64,BoolI8 down)
 {
-  nounusedwarn y;
   TaskStruct *task=c->win_task;
   WinScrollState *s=c->state;
   I64 range=task->win_pixel_width+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE;
@@ -177,9 +176,8 @@ U0 LeftClickHWinScroll(Ctrl *c,I64 x,I64 y,BoolI8 down)
     (*c->update_derived_vals)(c);
 }
 
-U0 LeftClickVWinScroll(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickVWinScroll(Ctrl *c,I64,I64 y,BoolI8 down)
 {
-  nounusedwarn x;
   TaskStruct *task=c->win_task;
   WinScrollState *s=c->state;
   I64 range=task->win_pixel_height+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE;
@@ -216,7 +214,7 @@ U0 WinScrollsInit(TaskStruct *task)
     c->update_derived_vals=&WinDerivedScrollValsUpdate;
     c->draw_it=&DrawWinScroll;
     c->left_click=&LeftClickHWinScroll;
-    InsQue(c,task->last_ctrl);
+    QueIns(c,task->last_ctrl);
   }
 
   if (!CtrlFindUnique(task,CTRLT_WIN_VSCROLL)) {
@@ -229,7 +227,7 @@ U0 WinScrollsInit(TaskStruct *task)
     c->draw_it=&DrawWinScroll;
     c->left_click=&LeftClickVWinScroll;
     c->wheel_chg=&WheelChangeWinScroll;
-    InsQue(c,task->last_ctrl);
+    QueIns(c,task->last_ctrl);
   }
   TaskDerivedValsUpdate(task);
   Preempt(old_preempt);
@@ -332,9 +330,8 @@ U0 UpdateDerivedViewAnglesCtrl(Ctrl *c)
   s->az=2*pi*s->sz/VIEWANGLES_RANGE;
 }
 
-U0 LeftClickViewAngles(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickViewAngles(Ctrl *c,I64 x,I64 y,BoolI8)
 {
-  nounusedwarn down;
   ViewAnglesState *s=c->state;
   I64 i;
   i=VIEWANGLES_RANGE-1-(y-(c->top+VIEWANGLES_SPACING));
@@ -375,7 +372,7 @@ public Ctrl *ViewAnglesNew(TaskStruct *task=NULL)
     c->left_click=&LeftClickViewAngles;
     c->update_derived_vals=&UpdateDerivedViewAnglesCtrl;
     old_preempt=Preempt(OFF);
-    InsQue(c,task->last_ctrl);
+    QueIns(c,task->last_ctrl);
     TaskDerivedValsUpdate(task);
     Preempt(old_preempt);
   }
@@ -388,7 +385,7 @@ public U0 ViewAnglesDel(TaskStruct *task=NULL)
   BoolI8 old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   if (c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES)) {
-    RemQue(c);
+    QueRem(c);
     Free(c->state);
     Free(c);
   }

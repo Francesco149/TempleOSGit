@@ -1,12 +1,12 @@
 /*
 +] Main Compiler
-  The mini compiler is like the main compiler, except the main compiler's lexical analyser removes comments and does preprocessing.  See [C:/LT/Compiler/Lex.CPZ,760] Lex().  Set [C:/LT/Compiler/Directives.CPZ,63] Echo(ON) or [C:/LT/Compiler/Directives.CPZ,54] LTrace(ON), to see the output of the lexical analyser.
+  The mini compiler is like the main compiler, except the main compiler's lexical analyser removes comments and does preprocessing.  See [C:/LT/Compiler/Lex.CPZ,752] Lex().  Set [C:/LT/Compiler/Directives.CPZ,63] Echo(ON) or [C:/LT/Compiler/Directives.CPZ,54] LTrace(ON), to see the output of the lexical analyser.
   
-  The main compiler generates [::/LT/Compiler/CmpDefs.HPZ,EC_END] Intermediate Code at the parser stage.  See [C:/LT/Compiler/ExpParser.CPZ,25] PrsExpression(), [C:/LT/Compiler/StmtParser.CPZ,1681] PrsStatement().  Set [C:/LT/Compiler/Directives.CPZ,31] PTrace(ON) to see the output of the parser.
+  The main compiler generates [::/LT/Compiler/CmpDefs.HPZ,EC_END] Intermediate Code at the parser stage.  See [C:/LT/Compiler/ExpParser.CPZ,44] PrsExpression(), [C:/LT/Compiler/StmtParser.CPZ,1702] PrsStatement().  Set [C:/LT/Compiler/Directives.CPZ,31] PTrace(ON) to see the output of the parser.
   
   The main compiler optimizes   See [D:/LT/Compiler/CmpInit.CPZ,ST_INTERMEDIATE_CODE] Intermediate Code Attributes, [::/LT/Compiler/OptPass012.CPZ,EC_MUL] Combining Constants, [::/LT/Compiler/OptPass3.CPZ,num_reg_vars] Choosing Reg Vars.  Set [C:/LT/Compiler/Directives.CPZ,36] OTrace(ON) to see the optimization stages.
   
-  The main compiler makes machine code in the back end.  See [C:/LT/OSMain/Adam1a.HPZ,1547] IC Struct, [C:/LT/Compiler/CodeGen.CPZ,396] CbCompile and [::/LT/Compiler/OptPass789A.CPZ,EC_MUL] OptPass789A(), [::/LT/Compiler/BackEnd.CPZ,IcMul] BackEnd.  Set [C:/LT/Compiler/Directives.CPZ,49] CTrace(ON) to see the output of the backend.
+  The main compiler makes machine code in the back end.  See [C:/LT/OSMain/Adam1a.HPZ,1546] IC Struct, [C:/LT/Compiler/CodeGen.CPZ,396] CbCompile and [::/LT/Compiler/OptPass789A.CPZ,EC_MUL] OptPass789A(), [::/LT/Compiler/BackEnd.CPZ,IcMul] BackEnd.  Set [C:/LT/Compiler/Directives.CPZ,49] CTrace(ON) to see the output of the backend.
   
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:
@@ -30,7 +30,7 @@
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/LT/Compiler/Lex.CPZ,760] Lex().
+{ //See [C:/LT/Compiler/Lex.CPZ,752] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -90,7 +90,7 @@ I64 Lex(U8 **_src,I64 *num)
 extern I64 Parse(U8 **_src,U8 **_dst);
 
 U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
-{ //See [C:/LT/Compiler/ExpParser.CPZ,25] PrsExpression().
+{ //See [C:/LT/Compiler/ExpParser.CPZ,44] PrsExpression().
   I64 i;
   U8 *src2;
   U8 *dst2;
@@ -112,7 +112,7 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 
 I64 Parse(U8 **_src,U8 **_dst)
 {
-//See [C:/LT/Compiler/ExpParser.CPZ,25] PrsExpression().
+//See [C:/LT/Compiler/ExpParser.CPZ,44] PrsExpression().
 //See [::/LT/Compiler/OpCodes.TXZ,IDIV] Opcode Fmts for details on asm
 instructions.
   I64 i;
@@ -219,9 +219,9 @@ U0 Main()
 	  throw;
 	"$FG,RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/LT/OSMain/Adam1b.HPZ,289] Call() is a function.  See
+//[C:/LT/OSMain/Adam1b.HPZ,285] Call() is a function.  See
 [::/LT/OSMain/Utils1a.CPZ,_CALL] _CALL::
-//See also [C:/LT/OSMain/Adam1b.HPZ,292] CallInd().  See
+//See also [C:/LT/OSMain/Adam1b.HPZ,288] CallInd().  See
 [::/LT/OSMain/Utils1a.CPZ,_CALLIND] _CALLIND::
 	"$FG,LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {

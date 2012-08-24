@@ -15,10 +15,10 @@ U0 SysGlblsInit()
 
   CpuId(0x1,&ee);
   sys_cache_line_width=ee.rbx.u8[1]*8;
-  sys_pci_dev_root.next=sys_pci_dev_root.last=&sys_pci_dev_root;
+  QueInit(&sys_pci_dev_root);
   sys_rnd_seed = 93186752^GetTimeStamp;
   sys_focus_task=Fs;
-  sys_macro_root.next=sys_macro_root.last=&sys_macro_root;
+  QueInit(&sys_macro_root);
   sys_dft_iso_name="::/Temp/CDDVD.ISO";
   MemSet(mp_apic_ids,0,MP_MAX_PROCESSORS*sizeof(U8));
   MemSet(sys_usb_devs,0,MAX_USB*sizeof(LTUSB));
@@ -50,11 +50,11 @@ U0 SysGlblsInit()
 
   StrCpy(sys_temp_filename,"HOME/Temp.TXZ");
   MemSet(&sys_put_key_root,0,sizeof(KeyDevStruct));
-  sys_put_key_root.next=sys_put_key_root.last=&sys_put_key_root;
+  QueInit(&sys_put_key_root);
   KeyDevAdd(&AKDInputFilterPutKey,&AKDInputFilterPutS,0x40000000,FALSE);
   KeyDevAdd(&AKDRawDisplayPutKey,&AKDRawDisplayPutS,0x60000000,FALSE);
   #exe {
-    StreamPrintF("sys_acct_name=\"%s\";",osmain_cfg->acct_name);
+    StreamPrintF("sys_acct=StrNew(\"%C:/LT/Accts/%s\");",osmain_cfg->dft_drv,osmain_cfg->acct_name);
     StreamPutS("#exe{OptOff(OPTf_WARN_PAREN);}");
     StreamPrintF("LTDCInit(%s);",osmain_cfg->dsk_cache_size_exp);
     StreamPutS("#exe{OptOn(OPTf_WARN_PAREN);}");
@@ -64,13 +64,14 @@ U0 SysGlblsInit()
     pow10_I64[i+309]=Pow10(i);
 
 //Independent Heap Ctrl Example
-  i=1; //Request 1 blk, we might get more.
+  i=1; //Rqst 1 blk, we might get more.
   m=AllocUncachedMemBlks(&i,sys_code_bp);
   sys_uncached_heap=IndependentHeapCtrlInit(m,i*0x200000/0x200);
   ProgressBarsRst;
   date_fmt_map=MAlloc(NUM_DATE_FMTS);
   time_fmt_map=MAlloc(NUM_TIME_FMTS);
   DateTimeFmtMapsRst;
+  sys_fault_handlers_code=IntFaultHandlersNew;
 }
 
 U0 SysGrInit()
@@ -164,13 +165,13 @@ BoolI64 AdamStartUpScripts()
   Cd("/LT/OSMain");
   lx=LexNew(TextFileRead("Adam1.APZ"),1<<Lf_RAW_ERRORS,
     StrNew("::/LT/OSMain/Adam1.APZ"));
-  InsQue(lx,Fs->last_lex);
+  QueIns(lx,Fs->last_lex);
 
   //Continues Here [/LT/OSMain/Adam1.APZ,1] /LT/OSMain/Adam1.APZ
   try {
     Lex(lx);
     ExeCmdLine(lx);
-    RemQue(lx);
+    QueRem(lx);
     LexDel(lx);
   } catch {
     CatchAll;
@@ -203,9 +204,9 @@ U0 OSMain()
 
   LoadSysStrs;
   MPInit;
-  IDTInit;
+  IDTInit1;
 
-//Before this point use [C:/LT/OSMain/Misc1a.CPZ,227] Snd() and [C:/LT/OSMain/Misc1a.CPZ,189] BusyWait()
+//Before this point use [C:/LT/OSMain/Misc1a.CPZ,226] Snd() and [C:/LT/OSMain/Misc1a.CPZ,188] BusyWait()
 //to debug.  After this point, use [C:/LT/OSMain/Dbg1a.CPZ,182] DbgNum()
   LBts(&sys_run_level,RLf_RAW);
 
@@ -214,12 +215,11 @@ U0 OSMain()
 
   TimersInit;
   IntsInit;
-  IntsInit; //Maybe we had slave IRQ pending, so do it again
 
   "Enable IRQ's\n";
   SetFlags(SYS_NORMAL_RFLAGS);
   BusyWait(2000);
-  IDTInitComplete;
+  IDTInit2;
   LBts(&sys_run_level,RLf_INTERRUPTS);
   TimeStampFreqCal;
   if (!IsSysDeterministic)
@@ -253,7 +253,6 @@ U0 OSMain()
     StreamPutS("if (boot_drv_pmt) PutDefine(\"ST_CDROM_PORTS_PMT\");");
 };
   DrvDftSelect;
-  HomeDirRst;
   LBts(&sys_run_level,RLf_DSK);
 
   "Loading Compiler\n";

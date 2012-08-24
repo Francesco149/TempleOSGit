@@ -72,12 +72,12 @@ U0 PixelCollision()
 
     DrawShapes(dc,ipx-Fs->win_pixel_left-Fs->win_scroll_x,ipy-Fs->win_pixel_top-Fs->win_scroll_y,ROP_EQU);
 
-//This waits for the Window Manager task
+//This waits for the Window Mgr task
 //to update the screen.
-    WinSync;
+    WinMgrSync;
 
 //This will not flicker as long as it occurs just
-//after a acreen update [C:/LT/Adam/Window.APZ,601] WinSync.
+//after a acreen update [C:/LT/Adam/Window.APZ,600] WinMgrSync.
     GrDCFill(dc);
 
   }
@@ -88,7 +88,7 @@ U0 PixelCollision()
 
 /*  If you are dealing with many objects,
 create a bitmap just for checking collisions
-using [C:/LT/Adam/Gr/GrDC.APZ,42] GrDCNew().  You probably want to check
+using [C:/LT/Adam/Gr/GrDC.APZ,43] GrDCNew().  You probably want to check
 only when they are near each other or it will
 take too long.	See [::/LT/Demo/GameStarters/Rocks.CPZ] ::/LT/Demo/GameStarters/Rocks.CPZ.
 */

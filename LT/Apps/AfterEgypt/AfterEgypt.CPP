@@ -8,9 +8,8 @@
 I64 num_people=100;
 
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by the Holy Spirit
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {
@@ -37,9 +36,8 @@ U0 SongTask(U64 dummy=0)
 
 
 
-U0 DrawGodTalking(TaskStruct *task,GrDC *dc)
+U0 DrawGodTalking(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i;
   GrSpritePlot3(dc,0,70,0,__BIN_1);
   GrSpritePlot3(dc,200,70,0,__BIN_2);
@@ -106,15 +104,15 @@ U0 HoldCourt()
 
   NewLine;
   accused=RandU32%3;
-  "" ListEntryPoint(accused,"A man \0A woman \0A child \0");
+  "" ListEntryPt(accused,"A man \0A woman \0A child \0");
 
   crime=RandU32&3;
-  "" ListEntryPoint(crime,"commits murder\0commits adultery\0commits blasphemy\0commits idolatry\0");
+  "" ListEntryPt(crime,"commits murder\0commits adultery\0commits blasphemy\0commits idolatry\0");
 
   if (crime<=1) {
     '' CH_SPACE;
     victim=RandU32%3;
-    "" ListEntryPoint(victim,"to a man\0to a woman\0to a child\0to an animal\0");
+    "" ListEntryPt(victim,"to a man\0to a woman\0to a child\0to an animal\0");
   }
   if (!(RandU32%5))
     ", again!";
@@ -227,7 +225,7 @@ BoolI64 TakeTurn()
     }
     result=TRUE;
   }
-  WinSync;
+  WinMgrSync;
   return result;
 }
 
@@ -244,7 +242,7 @@ U0 TMsg(GrDC *dc,U8 *msg)
     GrRect(dc,2,GR_HEIGHT-FONT_HEIGHT*3+2,GR_WIDTH-4,FONT_HEIGHT*2-4);
     dc->color=YELLOW;
     GrPutS(dc,(GR_WIDTH-StrLen(msg)*FONT_WIDTH)/2,GR_HEIGHT-5*FONT_HEIGHT/2,msg);
-    WinSync;
+    WinMgrSync;
     if (ScanChar)
       throw;
   }

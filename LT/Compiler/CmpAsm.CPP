@@ -160,47 +160,6 @@ _OPTNEXT3::
 	RET1	16
 
 // ************************************
-_PRSPUSH::
-	ENTER	0
-	MOV	RCX,U64 SF_ARG1[RBP]
-	MOV	RAX,U64 PrsStk.ptr[RCX]
-	INC	RAX
-	MOV	RDX,U64 SF_ARG2[RBP]
-	MOV	U64 [RCX+RAX*8],RDX
-	MOV	U64 PrsStk.ptr[RCX],RAX
-	LEAVE
-	RET1	16
-
-_PRSPOP::
-	ENTER	0
-	MOV	RCX,U64 SF_ARG1[RBP]
-	MOV	RBX,U64 PrsStk.ptr[RCX]
-	MOV	RAX,U64 [RCX+RBX*8]
-	DEC	RBX
-	MOV	U64 PrsStk.ptr[RCX],RBX
-	LEAVE
-	RET1	8
-_PRSPUSH2::
-	ENTER	0
-	MOV	RCX,U64 SF_ARG1[RBP]
-	MOV	RAX,U64 PrsStk.ptr2[RCX]
-	INC	RAX
-	MOV	RDX,U64 SF_ARG2[RBP]
-	MOV	U64 256*8[RCX+RAX*8],RDX
-	MOV	U64 PrsStk.ptr2[RCX],RAX
-	LEAVE
-	RET1	16
-
-_PRSPOP2::
-	ENTER	0
-	MOV	RCX,U64 SF_ARG1[RBP]
-	MOV	RBX,U64 PrsStk.ptr2[RCX]
-	MOV	RAX,U64 256*8[RCX+RBX*8]
-	DEC	RBX
-	MOV	U64 PrsStk.ptr2[RCX],RBX
-	LEAVE
-	RET1	8
-// ************************************
 CMP_TEMPLATES::
 	DU32	@@05,@@10,@@15,@@25,@@30,
 		@@35,@@40,@@45,@@55,@@60,
@@ -531,8 +490,3 @@ LTextern _OPTNEXT2 BoolI8 OptNext2(IntermediateCode *tempi,
 
 LTextern _OPTNEXT3 BoolI8 OptNext3(IntermediateCode *tempi,
 	       IntermediateCode **temp_lag);
-
-LTextern _PRSPUSH U0 PrsPush(PrsStk *ps,I64 val);
-LTextern _PRSPOP I64 PrsPop(PrsStk *ps);
-LTextern _PRSPUSH2 U0 PrsPush2(PrsStk *ps,I64 val);
-LTextern _PRSPOP2 I64 PrsPop2(PrsStk *ps);

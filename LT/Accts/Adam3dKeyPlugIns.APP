@@ -96,7 +96,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	    SetKeyDesc("Misc/Insert Datetime");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    LtfInsertSafe(LtfCur,
+	    LtfInsSafe(LtfCur,
 		"$HS+C$$FG$$HE$");
 	  else
 	    FillInTime();
@@ -163,7 +163,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 	      WordStat;
 	    return TRUE;
 
-//Insert your own ALT-key plug-ins
+//Ins your own ALT-key plug-ins
 
 	  case 'f':
 	    if (sc&SCF_KEY_DESC)

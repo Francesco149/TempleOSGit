@@ -338,7 +338,7 @@ BoolI64 PmtLink(I64 type,U8 **_tag,U8 **_link,BoolI8 *_quote,U8 **_html_link)
   return result;
 }
 
-U0 EdInsertLink()
+U0 EdInsLink()
 {
   U8 *tag=NULL,*link=NULL,*st=NULL,*html_link=NULL;
   BoolI8 quote=FALSE;
@@ -414,7 +414,7 @@ I64 PopUpPageSettingType()
   return i;
 }
 
-U0 EdInsertColor()
+U0 EdInsColor()
 {
   I64 type=PopUpColorType,col=LTF_DFT;
   if (type>=0) {
@@ -448,7 +448,7 @@ class EdPageSettingStruct4
 };
 
 
-U0 EdInsertPageSetting()
+U0 EdInsPageSetting()
 {
   I64 type=PopUpPageSettingType;
   EdPageSettingStruct *el=CAlloc(sizeof(EdPageSettingStruct));
@@ -547,7 +547,7 @@ class EdDollarTextStruct
   U8	html_link[136]	  fmtstr "$DA-P,135,\"Html Link                 :%s\"$\n";
 };
 
-U0 EdInsertDollarText()
+U0 EdInsDollarText()
 {
   U8 *st,buf[136];
   EdDollarTextStruct *dt=CAlloc(sizeof(EdDollarTextStruct));
@@ -598,7 +598,7 @@ class EdSongStruct
   U8 song[512]	fmtstr "$DA-P,511,\"Song          :%s\"$\n";
 };
 
-U0 EdInsertSong()
+U0 EdInsSong()
 {
   EdSongStruct *dt=CAlloc(sizeof(EdSongStruct));
   if (LtfFormDo(dt,"EdSongStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
@@ -611,7 +611,7 @@ class EdHighlightStruct
   BoolI8 highlight_on	fmtstr "$CB,\"Highlight On\"$\n";
 };
 
-U0 EdInsertHighlight()
+U0 EdInsHighlight()
 {
   EdHighlightStruct *dt=CAlloc(sizeof(EdHighlightStruct));
   if (LtfFormDo(dt,"EdHighlightStruct",DOF_HELP_IS_FILE,CTRL_L_HELP,ctrl_L_header))
@@ -646,7 +646,7 @@ class EdHtmlURLStruct
   U8 tag[512]	fmtstr "$DA-P,511,\"URL:%s\"$\n";
 };
 
-U0 EdInsertHtml()
+U0 EdInsHtml()
 {
   EdHtmlCodeStruct *dt=CAlloc(sizeof(EdHtmlCodeStruct));
   switch (PopUpHtmlType) {
@@ -686,7 +686,7 @@ class EdMacroMenuStruct
   U8 shift_y[136]	fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\n";
 };
 
-U0 EdInsertMacroMenu(BoolI8 is_macro)
+U0 EdInsMacroMenu(BoolI8 is_macro)
 {
   U8 *st,buf[136];
   EdMacroMenuStruct *dt=CAlloc(sizeof(EdMacroMenuStruct));
@@ -762,7 +762,7 @@ class EdButtonStruct
   BoolI8	quote		fmtstr "$CB,\"Quote\"$\n";
 };
 
-U0 EdInsertButton()
+U0 EdInsButton()
 {
   U8 *st,buf[136];
   EdButtonStruct *dt=CAlloc(sizeof(EdButtonStruct));
@@ -825,7 +825,7 @@ class EdCursorMovementStruct
   BoolI8	quote	 fmtstr "$CB,\"Quote\"$\n";
 };
 
-U0 EdInsertCursorMovement()
+U0 EdInsCursorMovement()
 {
   U8 buf[136];
   EdCursorMovementStruct *dt=CAlloc(sizeof(EdCursorMovementStruct));
@@ -869,7 +869,7 @@ class EdDataStruct
   BoolI8	u64	fmtstr "$CB,\"U64\"$\n";
 };
 
-U0 EdInsertData()
+U0 EdInsData()
 {
   U8 *st,buf[136];
   EdDataStruct *dt=CAlloc(sizeof(EdDataStruct));
@@ -900,7 +900,7 @@ class EdCheckBoxStruct
   BoolI8 refresh	fmtstr "$CB,\"Refresh Data\"$\n";
 };
 
-U0 EdInsertCheckBox()
+U0 EdInsCheckBox()
 {
   U8 *st,buf[136];
   EdCheckBoxStruct *dt=CAlloc(sizeof(EdCheckBoxStruct));
@@ -922,7 +922,7 @@ class EdHexEdStruct
   BoolI8 refresh fmtstr "$CB,\"Refresh Data\"$\n";
 };
 
-U0 EdInsertHexEd()
+U0 EdInsHexEd()
 {
   U8 buf[136];
   EdHexEdStruct *dt=CAlloc(sizeof(EdHexEdStruct));
@@ -944,7 +944,7 @@ class EdBinaryStruct
   I64 num fmtstr "$DA,256,\"Num:%d\"$\n";
 };
 
-U0 EdInsertBinary(I64 type)
+U0 EdInsBinary(I64 type)
 {
   EdBinaryStruct *dt=CAlloc(sizeof(EdBinaryStruct));
   dt->num=1;
@@ -964,7 +964,7 @@ class EdTreeStruct
   BoolI8	collapsed  fmtstr "$CB,\"Collapsed\"$\n";
 };
 
-U0 EdInsertTree()
+U0 EdInsTree()
 {
   U8 *st,*st2,buf[136];
   EdTreeStruct *dt=CAlloc(sizeof(EdTreeStruct));
@@ -976,69 +976,69 @@ U0 EdInsertTree()
     st=MSPrintF("%q",dt->label);
     st2=MSPrintF("$TR%s,\"%Q\"$\n$ID,%d$*\n$ID,%d$",
       buf,st,dt->indent,-dt->indent);
-    LtfInsertSafe(LtfCur,st2);
+    LtfInsSafe(LtfCur,st2);
     Free(st);
     Free(st2);
   }
   Free(dt);
 }
 
-U0 EdInsertHidden()
+U0 EdInsHidden()
 {
-  LtfInsertSafe(LtfCur,"$HS$*$HE$");
+  LtfInsSafe(LtfCur,"$HS$*$HE$");
 }
 
-U0 EdInsertDollarCmd()
+U0 EdInsDollarCmd()
 {
   I64 type=PopUpDollarType;
   switch (type) {
     case LTFT_FOREGROUND:
-      EdInsertColor;
+      EdInsColor;
       break;
     case LTFT_PAGE_LEN:
-      EdInsertPageSetting;
+      EdInsPageSetting;
       break;
     case LTFT_LINK:
-      EdInsertLink;
+      EdInsLink;
       break;
     case LTFT_TEXT:
-      EdInsertDollarText;
+      EdInsDollarText;
       break;
     case LTFT_TREE:
-      EdInsertTree;
+      EdInsTree;
       break;
     case LTFT_MACRO:
-      EdInsertMacroMenu(TRUE);
+      EdInsMacroMenu(TRUE);
       break;
     case LTFT_MENU_VAL:
-      EdInsertMacroMenu(FALSE);
+      EdInsMacroMenu(FALSE);
       break;
     case LTFT_CURSOR_MOVEMENT:
-      EdInsertCursorMovement;
+      EdInsCursorMovement;
       break;
     case LTFT_BUTTON:
-      EdInsertButton;
+      EdInsButton;
       break;
     case LTFT_DATA:
-      EdInsertData;
+      EdInsData;
       break;
     case LTFT_CHECK_BOX:
-      EdInsertCheckBox;
+      EdInsCheckBox;
       break;
     case LTFT_HEX_ED:
-      EdInsertHexEd;
+      EdInsHexEd;
       break;
     case LTFT_HIDE_START:
-      EdInsertHidden;
+      EdInsHidden;
       break;
     case LTFT_SONG:
-      EdInsertSong;
+      EdInsSong;
       break;
     case LTFT_HIGHLIGHT:
-      EdInsertHighlight;
+      EdInsHighlight;
       break;
     case LTFT_HTML_CODE:
-      EdInsertHtml;
+      EdInsHtml;
    }
 }
 
@@ -1158,13 +1158,13 @@ U8 *EdPicture()
       st1=EdPictureLink(&html_link);
       break;
     case PT_GRSPRITES_PTR:
-      EdInsertBinary(LTFT_INSERT_BINARY);
+      EdInsBinary(LTFT_INS_BINARY);
       break;
     case PT_GRSPRITES_SIZE:
-      EdInsertBinary(LTFT_INSERT_BINARY_SIZE);
+      EdInsBinary(LTFT_INS_BINARY_SIZE);
       break;
     case PT_DUP_PICTURE:
-      EdInsertBinary(LTFT_PICTURE);
+      EdInsBinary(LTFT_PICTURE);
       break;
   }
   if (st1) {

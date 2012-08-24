@@ -4,7 +4,7 @@ Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 
 PopUpOk(
 "Now, we're going to add the ASCIIOrgan.CPZ\n"
-"program to your start menu.\n\n"
+"program to your personal menu.\n\n"
 "Press $FG,GREEN$<WINDOWS KEY>$FG$\n"
 "to get to your perosnal menu.\n");
 AFGetKey(SC_GUI);

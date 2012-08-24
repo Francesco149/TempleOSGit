@@ -149,8 +149,8 @@ public BoolI64 GrTextDiamond3(GrDC *dc,I64 x1,I64 y1,I64 z1,U8 *_s,I64 border=2)
 }
 
 #help_index "Graphics;Input Pointer/Displayed Image"
-//Called by [C:/LT/Adam/Window.APZ,187] DrawInputPtr() which is
-//called by [C:/LT/Adam/Window.APZ,216] WinFinalUpdate().
+//Called by [C:/LT/Adam/Window.APZ,186] DrawInputPtr() which is
+//called by [C:/LT/Adam/Window.APZ,215] WinFinalUpdate().
 public U0 DrawStdInputPtr(GrDC *dc,I64 x,I64 y)
 {
   dc->pen_width=1;

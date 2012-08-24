@@ -4,7 +4,7 @@
 #define GEBM_DITHER_COLOR	3
 #define GEBM_WIDTH		4
 #define GEBM_SNAP		5
-#define GEBM_POINT		6
+#define GEBM_PT		6
 #define GEBM_LINE		7
 #define GEBM_ARROW		8
 #define GEBM_RECT		9
@@ -15,7 +15,7 @@
 #define GEBM_FLOOD_FILL		14
 #define GEBM_FLOOD_FILL_NOT	15
 #define GEBM_POLYLINE		16
-#define GEBM_POLYPOINT		17
+#define GEBM_POLYPT		17
 #define GEBM_CUT		18
 #define GEBM_DELETE		19
 #define GEBM_PASTE		20
@@ -48,7 +48,7 @@ I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 	"$MU-UL,\"Find & Replace Color\",GEBM_FIND_AND_REPLACE$\n"
 	"$MU-UL,\"Trim to Extents\",GEBM_TRIM_TO_EXTENTS$\n"
 	"\n$FG,RED$Objects$FG$\n"
-	"$MU-UL,\"Point\",GEBM_POINT$\n"
+	"$MU-UL,\"Point\",GEBM_PT$\n"
 	"$MU-UL,\"Line\",GEBM_LINE$\n"
 	"$MU-UL,\"Arrow\",GEBM_ARROW$\n"
 	"$MU-UL,\"Rect\",GEBM_RECT$\n"
@@ -59,7 +59,7 @@ I64 PopUpGrSpriteBitMap(ColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 	"$MU-UL,\"Flood Fill\",GEBM_FLOOD_FILL$\n"
 	"$MU-UL,\"Flood Fill Not Color\",GEBM_FLOOD_FILL_NOT$\n"
 	"$MU-UL,\"PolyLine\",GEBM_POLYLINE$\n"
-	"$MU-UL,\"PolyPoint\",GEBM_POLYPOINT$\n"
+	"$MU-UL,\"PolyPoint\",GEBM_POLYPT$\n"
 	"\n$FG,RED$Clipboard$FG$\n"
 	"$MU-UL,\"Cut\",GEBM_CUT$\n"
 	"$MU-UL,\"Delete\",GEBM_DELETE$\n"
@@ -239,14 +239,14 @@ bm_menu:
 	      }
 	      goto bm_menu;
 
-	    case GEBM_POINT:
+	    case GEBM_PT:
 	    case GEBM_LINE:
 	    case GEBM_ARROW:
 	    case GEBM_RECT:
 	    case GEBM_CIRCLE:
 	    case GEBM_FLOOD_FILL:
 	    case GEBM_FLOOD_FILL_NOT:
-	    case GEBM_POLYPOINT:
+	    case GEBM_POLYPT:
 	    case GEBM_POLYLINE:
 	    case GEBM_CUT:
 	    case GEBM_DELETE:
@@ -270,13 +270,13 @@ bm_menu:
 	  GrDCDel(undo);
 	  undo=GrDCExtract(img,0,0,img->width-1,img->height-1);
 	  undo->bkcolor=bkcolor;
-	  WinSync(TRUE);	//Let popup close
+	  WinMgrSync(2);	//Let popup close
 	  GrBMEdPrepPersistentDC(dc,xx1,yy1,img);
 	  down=FALSE;
 	  break;
 	case MSG_IP_L_DOWN:
 	  switch (mode) {
-	    case GEBM_POINT:
+	    case GEBM_PT:
 	      img->color=color;
 	      img->pen_width=width;
 	      GrPlot3(img,p1-xx1,p2-yy1,0);
@@ -365,7 +365,7 @@ bm_menu:
 		GrLine3(dc,x1,y1,0,p1,p2,0);
 	      }
 	      break;
-	    case GEBM_POLYPOINT:
+	    case GEBM_POLYPT:
 	      x1=p1; y1=p2;
 	      down=TRUE;
 	      img->color=color;
@@ -473,7 +473,7 @@ bm_menu:
 	      dc->color=color;
 	      GrTextDiamond3(dc,p1,p2,0,st);
 	      break;
-	    case GEBM_POLYPOINT:
+	    case GEBM_POLYPT:
 	      if (down) {
 		img->color=color;
 		img->pen_width=width;
@@ -488,7 +488,7 @@ bm_menu:
 	  switch (mode) {
 	    case GEBM_LINE:
 	    case GEBM_ARROW:
-	    case GEBM_POLYPOINT:
+	    case GEBM_POLYPT:
 	    case GEBM_POLYLINE:
 	      img->color=color;
 	      img->pen_width=width;
@@ -586,7 +586,7 @@ bm_menu:
 	  break;
       }
     }
-    WinSync;
+    WinMgrSync;
   }
 bm_key_up_done:
   GetMsg(,,1<<MSG_KEY_UP);

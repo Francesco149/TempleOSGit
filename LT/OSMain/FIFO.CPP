@@ -16,7 +16,7 @@ U0 U8FifoDel(U8Fifo *f)
   Free(f);
 }
 
-BoolI64 U8FifoInsert(U8Fifo *f,U8 ch)
+BoolI64 U8FifoIns(U8Fifo *f,U8 ch)
 {
   U64 new_in_ptr;
   PushFD;
@@ -101,7 +101,7 @@ U0 U64FifoDel(U64Fifo *f)
   Free(f);
 }
 
-BoolI64 U64FifoInsert(U64Fifo *f,U64 dd)
+BoolI64 U64FifoIns(U64Fifo *f,U64 dd)
 {
   U64 new_in_ptr;
   PushFD;

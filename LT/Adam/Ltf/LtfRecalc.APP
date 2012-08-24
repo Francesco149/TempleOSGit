@@ -478,7 +478,7 @@ word_wrap2:
 	    if (k>i && i>0) {
 	      cl2=MAllocIdentical(cl,mem_task);
 	      cl2->tag=StrNew(cl->tag+i,mem_task);
-	      InsQue(cl2,cl);
+	      QueIns(cl2,cl);
 	      if (l->cur_entry==cl && l->cur_data_col>=i) {
 		l->cur_entry=cl2;
 		l->cur_data_col=l->cur_data_col-i;
@@ -494,7 +494,7 @@ word_wrap2:
 	      cl2->y=y;
 	      cl2->page_line_num=cl->page_line_num;
 	      cl2->settings=NULL;
-	      InsQue(cl2,cl);
+	      QueIns(cl2,cl);
 	      k=StrLen(cl->tag);
 	      goto skip_soft_cr;
 	    }
@@ -515,7 +515,7 @@ word_wrap2:
 	    cl2->y=y;
 	    cl2->page_line_num=cl->last->page_line_num;
 	    cl2->settings=s;
-	    InsQue(cl2,cl->last);
+	    QueIns(cl2,cl->last);
 	    cl=cl2;
 	    goto restart;
 	  }
@@ -850,14 +850,14 @@ skip_soft_cr:
 	    if (full_refresh) {
 	      s=LtfSettingsIdentical(l,s);
 	      s->state=LTFSS_NORMAL;
-	      InsQue(s,l->settings_root.last);
+	      QueIns(s,l->settings_root.last);
 	    } else
 	      s=LtfSettingsNext(cl->next);
 	  } else if (s->state&LTFSSF_BPT) {
 	    if (full_refresh) {
 	      s=LtfSettingsIdentical(l,s);
 	      s->state&=~LTFSSF_BPT;
-	      InsQue(s,l->settings_root.last);
+	      QueIns(s,l->settings_root.last);
 	    } else
 	      s=LtfSettingsNext(cl->next);
 	  }
@@ -941,7 +941,7 @@ adjust_xy:
 	    i=s->indent+cl->attr;
 	  s=LtfSettingsIdentical(l,s);
 	  s->indent=i;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	goto start_of_line;
@@ -951,7 +951,7 @@ adjust_xy:
 	  s->page_len=cl->attr;
 	  if (cl->flags & LTFLF_WIN_REL)
 	    s->page_len+=height;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
@@ -961,7 +961,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->left_margin=i;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	goto start_of_line;
@@ -974,7 +974,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->right_margin=i;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
@@ -982,7 +982,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->header=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
@@ -990,7 +990,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->footer=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	goto adjust_xy;
@@ -1003,7 +1003,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->cur_text_attr=cur_u8_attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1016,7 +1016,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->cur_text_attr=cur_u8_attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	if (recalc==LTF_RECALC_TO_SCREEN && !(cl->flags&LTFLF_DONT_DRAW))
@@ -1032,7 +1032,7 @@ adjust_xy:
 	  s=LtfSettingsIdentical(l,s);
 	  s->dft_text_attr=s->dft_text_attr&0xF0|cur_u8_attr&0x0F;
 	  s->cur_text_attr=cur_u8_attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1046,7 +1046,7 @@ adjust_xy:
 	  s=LtfSettingsIdentical(l,s);
 	  s->dft_text_attr=s->dft_text_attr&0x0F|cur_u8_attr&0xF0;
 	  s->cur_text_attr=cur_u8_attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	if (recalc==LTF_RECALC_TO_SCREEN && !(cl->flags&LTFLF_DONT_DRAW))
@@ -1056,7 +1056,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->alt_text_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1064,7 +1064,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->link_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1072,7 +1072,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->macro_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1080,7 +1080,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->anchor_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1088,7 +1088,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->hidden_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1096,7 +1096,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->tree_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1111,7 +1111,7 @@ adjust_xy:
 	  if (full_refresh) {
 	    s=LtfSettingsIdentical(l,s);
 	    s->user_attr=cl->attr;
-	    InsQue(s,l->settings_root.last);
+	    QueIns(s,l->settings_root.last);
 	  } else
 	    s=LtfSettingsNext(cl->next);
 	}
@@ -1120,7 +1120,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->bin_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1128,7 +1128,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->keyword_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1136,7 +1136,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->keyword2_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1144,7 +1144,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->comment_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1152,7 +1152,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->quote_attr=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1202,7 +1202,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->shifted_x=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1210,7 +1210,7 @@ adjust_xy:
 	if (full_refresh) {
 	  s=LtfSettingsIdentical(l,s);
 	  s->shifted_y=cl->attr;
-	  InsQue(s,l->settings_root.last);
+	  QueIns(s,l->settings_root.last);
 	} else
 	  s=LtfSettingsNext(cl->next);
 	break;
@@ -1301,7 +1301,7 @@ adjust_xy:
 	  if (full_refresh) {
 	    s=LtfSettingsIdentical(l,s);
 	    s->state|=LTFSSF_BPT;
-	    InsQue(s,l->settings_root.last);
+	    QueIns(s,l->settings_root.last);
 	  } else
 	    s=LtfSettingsNext(cl->next);
 	}
@@ -1641,7 +1641,7 @@ skip:
     LtfUnlock(l);
 }
 
-public U0 LtfInsertSafe(Ltf *l,U8 *st)
+public U0 LtfInsSafe(Ltf *l,U8 *st)
 { //This is necessary when hidden text might screw-up
   //inserts.  It does them all-at-once.
   BoolI8 unlock;
@@ -1757,7 +1757,7 @@ public U64 LtfCurAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 
 public U64 LtfAuxAttr(U64 attr=WHITE<<4+BLUE,TaskStruct *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/LT/OSMain/Adam1a.HPZ,1290] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1291] LTFF_ATTR_BY_FILENAME flag is probably set
+  //[C:/LT/OSMain/Adam1a.HPZ,1289] LTFF_ATTR_BY_PRT or [C:/LT/OSMain/Adam1a.HPZ,1290] LTFF_ATTR_BY_FILENAME flag is probably set
   //which means [C:/LT/Adam/Dsk/Dsk2a.APZ,314] SetDrvTextAttr() is overriding it.
   U64 result=0;
   Ltf *l;

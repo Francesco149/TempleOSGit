@@ -37,9 +37,7 @@ U0 Ring3Demo()
 
   TssBusy(Gs->tss->tr_ring3,OFF);
   SetRAX(Gs->tss->tr_ring3+3);
-asm {
-	LTR	AX
-}
+asm {	LTR	AX}
 
 
 asm {
@@ -74,9 +72,7 @@ R3_CALLBACK:
 
   TssBusy(Gs->tss->tr,OFF);
   SetRAX(Gs->tss->tr);
-asm {
-	LTR	AX
-}
+asm {	LTR	AX}
 
   SetIDTEntry(0x0D,old_pf,0,IDTET_IRQ,0);
   Sti;

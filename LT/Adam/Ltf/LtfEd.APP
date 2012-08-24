@@ -66,7 +66,7 @@ public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
 	nl->page_line_num=cl->page_line_num;
 	*dst=0;
 	cl->max_col=cc;
-	InsQue(nl,cl);
+	QueIns(nl,cl);
       }
       cc--;
       if (cl->type_u8==LTFT_TEXT&& !(cl->flags&(LTFLF_TAG_CB|LTFLF_DEFINE|LTFLF_HTML_LINK|LTFLF_SCROLLING_X)) && cc>cl->min_col) {
@@ -81,7 +81,7 @@ public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
 	nl->page_line_num=cl->page_line_num;
 	*dst=0;
 	cl->max_col=cc;
-	InsQue(nl,cl);
+	QueIns(nl,cl);
 	cl=nl;
 	cc=cl->min_col;
       }
@@ -120,7 +120,7 @@ public U0 EdCursorLeft(Ltf *l,I64 sc=MIN_I64)
 	    nl->page_line_num=cl->page_line_num;
 	    *dst=0;
 	    cl->max_col=cc;
-	    InsQue(nl,cl);
+	    QueIns(nl,cl);
 	    cl=nl;
 	    cc=cl->min_col;
 	  }
@@ -176,7 +176,7 @@ public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
 	nl->max_col=StrLen(dst);
 	*dst=0;
 	cl->max_col=cc;
-	InsQue(nl,cl);
+	QueIns(nl,cl);
 	cl=nl;
 	cc=cl->min_col;
       }
@@ -201,7 +201,7 @@ public U0 EdCursorRight(Ltf *l,I64 sc=MIN_I64)
 	nl->x=cl->x;
 	nl->y=cl->y;
 	nl->page_line_num=cl->page_line_num;
-	InsQue(nl,cl);
+	QueIns(nl,cl);
 	cl=nl;
 	cc=cl->min_col;
       } else if (cc>=cl->max_col) {
@@ -280,7 +280,7 @@ public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
       nl->page_line_num=cl->page_line_num;
       *dst=0;
       cl->max_col=l->cur_data_col;
-      InsQue(nl,cl);
+      QueIns(nl,cl);
     } else
       if (l->cur_data_col==cl->min_col && cl->last!=l)
 	cl=cl->last;
@@ -377,7 +377,7 @@ public U0 EdLineUp(Ltf *l,I64 sc=MIN_I64)
       nl->x=cl->x+l->cur_data_col;
       *dst=0;
       cl->max_col=l->cur_data_col;
-      InsQue(nl,cl);
+      QueIns(nl,cl);
       cl=nl;
       l->cur_data_col=cl->min_col;
     }
@@ -431,7 +431,7 @@ public U0 EdLineDown(Ltf *l,I64 sc=MIN_I64)
       nl->x=cl->x+l->cur_data_col;
       *dst=0;
       cl->max_col=l->cur_data_col;
-      InsQue(nl,cl);
+      QueIns(nl,cl);
       cl=nl;
       l->cur_data_col=cl->min_col;
     }
@@ -494,7 +494,7 @@ public U0 EdLineDown(Ltf *l,I64 sc=MIN_I64)
       nl->y=cl->y;
       nl->page_line_num=cl->page_line_num;
       nl->x=cl->x+l->cur_data_col;
-      InsQue(nl,cl);
+      QueIns(nl,cl);
       cl=nl;
       l->cur_data_col=cl->min_col;
     }
@@ -568,7 +568,7 @@ U0 ChkDollarBufSize(Ltf *l)
 }
 
 
-U0 EdInsertChar(U64 ch,U64 sc,Ltf *l)
+U0 EdInsChar(U64 ch,U64 sc,Ltf *l)
 {
   BoolI8 unlock=LtfLock(l);
   U8 *b,*src,*dst;
@@ -687,7 +687,7 @@ ic_overstrike_char:
       nl->x=cl->x;
       nl->y=cl->y;
       nl->page_line_num=cl->page_line_num;
-      InsQue(nl,cl->last);
+      QueIns(nl,cl->last);
     } else if (ch==CH_NEW_LINE) {
       while (l->cur_entry->next!=l && l->cur_entry->y==y)
 	l->cur_entry=l->cur_entry->next;
@@ -704,7 +704,7 @@ ic_overstrike_char:
       nl->type=LTFT_PAGE_BREAK | l->settings_root.dft_text_attr << 8;
     else
       nl->type=LTFT_NEW_LINE | l->settings_root.dft_text_attr << 8;
-    LtfInsert(l,nl);
+    LtfIns(l,nl);
   } else if (ch==CH_TAB) {
     if (l->flags&LTFF_FORM &&
        Bt(ltf_form_types,l->cur_entry->type_u8) &&
@@ -717,7 +717,7 @@ ic_form_tab:
     } else {
       nl=CAlloc(sizeof(LtfEntryBase),l->mem_task);
       nl->type=LTFT_TAB | l->settings_root.dft_text_attr << 8;
-      LtfInsert(l,nl);
+      LtfIns(l,nl);
     }
   } else {
     if (Bt(displayable_chars_bitmap,ch)) {
@@ -755,7 +755,7 @@ ic_form_tab:
 	nl->x=cl->x+1;
 	nl->y=cl->y;
 	nl->page_line_num=cl->page_line_num;
-	InsQue(nl,cl->last);
+	QueIns(nl,cl->last);
       }
     }
   }
@@ -1415,7 +1415,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
       SetKeyDesc("Char/'%s'",st);
       Free(st);
     } else
-      EdInsertChar(ch,sc,l);
+      EdInsChar(ch,sc,l);
   } else {
     cl=l->cur_entry;
     x=l->x; y=l->y;
@@ -1519,7 +1519,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	  else
 	    SetKeyDesc("Char/Return");
 	} else
-	  EdInsertChar(ch,sc,l);
+	  EdInsChar(ch,sc,l);
 	break;
       case CH_CTRLK:
 	if (sc&SCF_KEY_DESC)
@@ -1534,7 +1534,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	  SetKeyDesc("Dollar/Wizard");
 	else {
 	  LtfUnlock(l);
-	  EdInsertDollarCmd;
+	  EdInsDollarCmd;
 	  LtfLock(l);
 	}
 	break;
@@ -1581,7 +1581,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 		  (cl->x-l->line_start_col+cl->max_col)*FONT_WIDTH,
 		  (cl->y-l->cur_top_line_num)*FONT_HEIGHT);
 	    else
-	      EdInsertGraphic(l,
+	      EdInsGraphic(l,
 		  (cl->x+l->cur_data_col-l->line_start_col)*FONT_WIDTH,
 		  (cl->y-l->cur_top_line_num)*FONT_HEIGHT);
 	    LtfLock(l);
@@ -1685,7 +1685,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 	    else
 	      l->ext_ascii_val=l->ext_ascii_val*10+ch-'0';
 	    if (l->ext_ascii_cnt==3)
-	      EdInsertChar(l->ext_ascii_val.u8[0],sc,l);
+	      EdInsChar(l->ext_ascii_val.u8[0],sc,l);
 	    else
 	      ext_ascii_cnt=l->ext_ascii_cnt;
 	  }
@@ -1999,7 +1999,7 @@ public U0 LtfPutKey(Ltf *l,U64 ch,U64 sc)
 		EdDelChar(l);
 	    }
 	    break;
-	  case SC_INSERT:
+	  case SC_INS:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
 		SetKeyDesc("Edit/Paste Clipboard");
@@ -2038,7 +2038,7 @@ BoolI64 AKDLtfPutKey(U64 ch,U64 scancode)
   Ltf *l;
   l=Fs->next_ltf;
   while (l!=(&Fs->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-	 l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+	 l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
     if (!(l->flags&LTFF_DONT_SHOW) && l->flags&LTFF_AUX_LTF && !l->best_d) {
       LtfPutKey(l,ch,scancode);
       return FALSE;
@@ -2105,7 +2105,7 @@ public U0 LtfPutSPartial(Ltf *l,U8 *st)
 	  nl->y=cl->y;
 	  nl->max_col=j;
 	  nl->page_line_num=cl->page_line_num;
-	  InsQue(nl,cl->last);
+	  QueIns(nl,cl->last);
 	  l->cur_entry=nl;
 	  l->cur_data_col=StrLen(ptr2);
 	}

@@ -52,9 +52,8 @@ F64 t0=tM;
 #define MAN_X	250
 #define MAN_Y	30
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 dt=(tM-t0)*music_tempo;
   U8 *inter;
 	 if (dt<PHASE1)

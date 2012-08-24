@@ -66,7 +66,7 @@ BoolI8 g_dead[MAX_DEAD];
 
 
 //This routine updates the window.  It is called
-//by the window manager system task.  The task refers to
+//by the window mgr system task.  The task refers to
 //the task which owns the window.
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
@@ -96,9 +96,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   PlotWinStr(task,"you must learn to make-up rules.",BLUE<<4+YELLOW,0,i++);
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Randomly generate (by God :-)
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {

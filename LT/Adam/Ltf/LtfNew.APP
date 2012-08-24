@@ -19,9 +19,9 @@ U0 LtfTablesInit()
 	1<<LTFT_LINK|
 	1<<LTFT_ANCHOR|
 	1<<LTFT_PICTURE|
-	1<<LTFT_INSERT_BINARY|
-	1<<LTFT_INSERT_BINARY_TYPE|
-	1<<LTFT_INSERT_BINARY_SIZE|
+	1<<LTFT_INS_BINARY|
+	1<<LTFT_INS_BINARY_TYPE|
+	1<<LTFT_INS_BINARY_SIZE|
 	1<<LTFT_SONG|
 	1<<LTFT_HTML_IMG|
 	1<<LTFT_HTML_VIDEO|
@@ -150,7 +150,7 @@ U0 LtfBinsValidate(Ltf *l)
 	cl->bin_num=cl->bin_data->renum_num;
       } else {
 	DbgStr("Bin Not Found",3000);
-	RemQue(cl); //don't attempt to delete
+	QueRem(cl); //don't attempt to delete
       }
     }
     cl=cl2;
@@ -161,7 +161,7 @@ U0 LtfBinsValidate(Ltf *l)
   while (b!=&l->bin_root) {
     b1=b->next;
     if (!b->use_cnt) {
-      RemQue(b);
+      QueRem(b);
       Free(b->data);
       Free(b);
     } else {
@@ -179,7 +179,7 @@ U0 LtfBinDel(Ltf *l,LtfBinEntry *b)
   if (l && b && b->use_cnt) {
     b->use_cnt--;
     if (!b->use_cnt) {
-      RemQue(b);
+      QueRem(b);
       Free(b->data);
       Free(b);
     }
@@ -194,7 +194,7 @@ public U0 LtfEntryDel(Ltf *l,LtfEntry *cl)
   else {
     if (l->cur_entry==cl)
       l->cur_entry=cl->next;
-    RemQue(cl);
+    QueRem(cl);
     if (Bt(ltf_tag_types,cl->type_u8))
       Free(cl->tag);
     if (cl->flags & LTFLF_LEFT_MACRO)
@@ -213,9 +213,8 @@ public U0 LtfEntryDel(Ltf *l,LtfEntry *cl)
   }
 }
 
-public U64 LtfEntrySize(Ltf *l,LtfEntry *cl)
+public U64 LtfEntrySize(Ltf *,LtfEntry *cl)
 {
-  nounusedwarn l;
   U64 result=0;
   if (!cl) return 0;
   result+=MSize2(cl);
@@ -234,9 +233,8 @@ public U64 LtfEntrySize(Ltf *l,LtfEntry *cl)
   return result;
 }
 
-U0 LtfUndoDel(Ltf *l,LtfUndo *u)
+U0 LtfUndoDel(Ltf *,LtfUndo *u)
 {
-  nounusedwarn l;
   Free(u->body);
   Free(u);
 }
@@ -281,7 +279,7 @@ public LtfEntry *LtfEntryCopy(Ltf *l,LtfEntry *cl)
     nl->bin_num=l->cur_bin_num;
     tempb->num=l->cur_bin_num++;
     nl->bin_data=tempb;
-    InsQue(tempb,l->bin_root.last);
+    QueIns(tempb,l->bin_root.last);
   }
   return nl;
 }
@@ -372,7 +370,7 @@ U0 LtfSettlingsRemainingDel(Ltf *l,LtfEntry *cl,LtfSettingsStruct *s)
   if (!s) return;
   while (s!=&l->settings_root) {
     s1=s->next;
-    RemQue(s);
+    QueRem(s);
     Free(s);
     s=s1;
   }
@@ -428,17 +426,17 @@ public U0 LtfRst(Ltf *l,BoolI8 is_old)
     b=l->bin_root.next;
     while (b!=&l->bin_root) {
       b1=b->next;
-      RemQue(b);
+      QueRem(b);
       Free(b->data);
       Free(b);
       b=b1;
     }
   }
-  //Check [C:/LT/Adam/Ltf/LtfFile.APZ,196] LtfInsertLtf
+  //Check [C:/LT/Adam/Ltf/LtfFile.APZ,196] LtfInsLtf
   l->flags&=LTFF_BREAK_UNLOCKED;
   l->root.next=l->root.last=l;
-  l->bin_root.next=l->bin_root.last=&l->bin_root;
-  l->undo_root.next=l->undo_root.last=&l->undo_root;
+  QueInit(&l->bin_root);
+  QueInit(&l->undo_root);
   l->undo_root.time_stamp=0;
   l->undo_cnt=0;
   l->cur_bin_num=1;
@@ -501,7 +499,7 @@ public U0 LtfDel(Ltf *l)
   if (!l || l->ltf_signature!=LTF_SIGNATURE_VAL) return;
   LtfLock(l);
   l->ltf_signature=0;
-  l->ltf_in_queue_signature=0;
+  l->ltf_in_que_signature=0;
   m=l->menu_ltf;
   LtfRst(l,TRUE);
   Free(l->find_replace);
@@ -710,7 +708,7 @@ public Ltf *LtfNew(TaskStruct *task=NULL)
 sys_clipboard_ltf=LtfNew;
 
 #help_index "Ltf/Task"
-public U0 LtfInsQue(Ltf *l,Ltf *pred)
+public U0 LtfQueIns(Ltf *l,Ltf *pred)
 {
   Ltf *succ;
   BoolI8 *old_preempt;
@@ -721,11 +719,11 @@ public U0 LtfInsQue(Ltf *l,Ltf *pred)
   l->next_ltf=succ;
   pred->next_ltf=l;
   succ->last_ltf=l;
-  l->ltf_in_queue_signature=LTF_IN_QUEUE_SIGNATURE_VAL;
+  l->ltf_in_que_signature=LTF_IN_QUE_SIGNATURE_VAL;
   Preempt(old_preempt);
 }
 
-public U0 LtfInsQueRev(Ltf *l,Ltf *succ)
+public U0 LtfQueInsRev(Ltf *l,Ltf *succ)
 {
   Ltf *pred;
   BoolI8 *old_preempt;
@@ -736,17 +734,17 @@ public U0 LtfInsQueRev(Ltf *l,Ltf *succ)
   l->next_ltf=succ;
   pred->next_ltf=l;
   succ->last_ltf=l;
-  l->ltf_in_queue_signature=LTF_IN_QUEUE_SIGNATURE_VAL;
+  l->ltf_in_que_signature=LTF_IN_QUE_SIGNATURE_VAL;
   Preempt(old_preempt);
 }
 
-public U0 LtfRemQue(Ltf *l)
+public U0 LtfQueRem(Ltf *l)
 {
   Ltf *succ,*pred;
   BoolI8 *old_preempt;
   if (!l) return;
   old_preempt=Preempt(OFF);
-  l->ltf_in_queue_signature=0;
+  l->ltf_in_que_signature=0;
   succ=l->next_ltf;
   pred=l->last_ltf;
   pred->next_ltf=succ;
@@ -761,7 +759,7 @@ public Ltf *LtfCur(TaskStruct *task=NULL)
   result=task->last_ltf;
   if (result==(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) ||
       result->flags&LTFF_AUX_LTF ||
-      result->ltf_in_queue_signature!=LTF_IN_QUEUE_SIGNATURE_VAL)
+      result->ltf_in_que_signature!=LTF_IN_QUE_SIGNATURE_VAL)
     result=NULL;
   return result;
 }
@@ -773,7 +771,7 @@ public Ltf *LtfAux(TaskStruct *task=NULL)
   result=task->next_ltf;
   if (result==(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) ||
       !(result->flags&LTFF_AUX_LTF) ||
-      result->ltf_in_queue_signature!=LTF_IN_QUEUE_SIGNATURE_VAL)
+      result->ltf_in_que_signature!=LTF_IN_QUE_SIGNATURE_VAL)
     result=NULL;
   return result;
 }
@@ -804,7 +802,7 @@ public Ltf *LtfDblBufStart(TaskStruct *task=NULL)
   l->desc[0](U64)=l2->desc[0](U64);
   l->user_data	=l2->user_data;
   l->flags|=l2->flags&LTF_DBL_BUF_FLAGS | LTFF_DONT_SHOW;
-  LtfInsQue(l,task->last_ltf);
+  LtfQueIns(l,task->last_ltf);
   if (unlock)
     LtfUnlock(l2);
   Preempt(old_preempt);
@@ -820,11 +818,11 @@ public BoolI8 LtfDblBufEnd(TaskStruct *task=NULL)
     l2=l1->last_ltf;
     if (l2!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
 	!(l2->flags&LTFF_AUX_LTF) &&
-	l2->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+	l2->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
       l2->flags|=LTFF_DONT_SHOW;
       l1->flags&=~LTFF_DONT_SHOW;
       LtfLock(l2);
-      LtfRemQue(l2);
+      LtfQueRem(l2);
       LtfUnlock(l2);
       l2->menu_ltf=NULL;
       LtfDel(l2);
@@ -844,11 +842,11 @@ public BoolI8 LtfDblBufSwap(TaskStruct *task=NULL)
     l2=l1->last_ltf;
     if (l2!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
 	!(l2->flags&LTFF_AUX_LTF) &&
-	l2->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+	l2->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
       l2->flags|=LTFF_DONT_SHOW;
       l1->flags&=~LTFF_DONT_SHOW;
       LtfLock(l2);
-      LtfRemQue(l2);
+      LtfQueRem(l2);
       LtfUnlock(l2);
       LtfRst(l2,TRUE);
       MemCpy(l2->find_replace,l1->find_replace,sizeof(EdFindTextStruct));
@@ -864,7 +862,7 @@ public BoolI8 LtfDblBufSwap(TaskStruct *task=NULL)
       l2->user_put_s   =l1->user_put_s;
       l2->desc[0](U64)=l1->desc[0](U64);
       l2->user_data    =l1->user_data;
-      LtfInsQue(l2,task->last_ltf);
+      LtfQueIns(l2,task->last_ltf);
       okay=TRUE;
     }
   }

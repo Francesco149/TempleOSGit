@@ -3,7 +3,6 @@
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i,cx=0.85*task->win_pixel_width,cy=task->win_pixel_height+10;
   dc->pen_width=5;
   for (i=2;i<=7;i++) {

@@ -144,17 +144,10 @@ BoolI8 rd_lock;
 
 U0 RiverDropsDel()
 {
-  RiverDrop *tempr,*tempr1;
   while (LBts(&rd_lock,0))
     Yield;
-  tempr=rd_root.next;
-  while (tempr!=&rd_root) {
-    tempr1=tempr->next;
-    RemQue(tempr);
-    Free(tempr);
-    tempr=tempr1;
-  }
-  rd_root.next=rd_root.last=&rd_root;
+  QueDel(&rd_root,TRUE);
+  QueInit(&rd_root);
   LBtr(&rd_lock,0);
 }
 
@@ -167,7 +160,7 @@ U0 RiverDropsNext(TaskStruct *mem_task)
   while (tempr!=&rd_root) {
     tempr1=tempr->next;
     if (++tempr->index>river_hi) {
-      RemQue(tempr);
+      QueRem(tempr);
       Free(tempr);
     } else {
       do {
@@ -185,7 +178,7 @@ U0 RiverDropsNext(TaskStruct *mem_task)
   tempr->index=river_lo;
   tempr->dx=0;
   tempr->dy=0;
-  InsQue(tempr,rd_root.last);
+  QueIns(tempr,rd_root.last);
   LBtr(&rd_lock,0);
 }
 
@@ -404,9 +397,8 @@ U0 AnimateTask(TaskStruct *parent)
   }
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Randomly generated (by God :-)
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {
@@ -465,7 +457,7 @@ U0 Init()
 
   RiverNew;
   rd_lock=0;
-  rd_root.next=rd_root.last=&rd_root;
+  QueInit(&rd_root);
   dc2=GrDCNew(DCT_COLOR8,MAP_WIDTH,MAP_HEIGHT);
   a=MAlloc(NUM_ANIMALS*sizeof(Animal));
   ReInit;

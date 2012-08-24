@@ -1,7 +1,6 @@
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *task,GrDC *)
 {
-  nounusedwarn dc;
-  if (gr_screen_updates&1)
+  if (win_updates&1)
     PlotWinStr(task,"test",RED+WHITE*16,10,3);
   else
     PlotWinStr(task,"test",PURPLE+WHITE*16,10,3);

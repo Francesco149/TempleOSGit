@@ -52,7 +52,8 @@ public BoolI64 GrPlot(GrDC *dc,I64 x,I64 y)
   dc->depth_buf=NULL;
   if (dc->brush) {
     old_color=dc->color;
-    dc->color.c0.rop=ROPB_MONO;
+    if (dc->color.c0.rop!=ROPB_COLLISION)
+      dc->color.c0.rop=ROPB_MONO;
     GrDCBlot(dc,x,y,dc->brush);
     dc->color=old_color;
   } else if (dc->flags & DCF_SCREEN_BITMAP) {
@@ -79,7 +80,8 @@ BoolI64 GrPlot1(GrDC *dc,I64 x,I64 y)
   ColorROPU32 old_color;
   if (dc->brush) {
     old_color=dc->color;
-    dc->color.c0.rop=ROPB_MONO;
+    if (dc->color.c0.rop!=ROPB_COLLISION)
+      dc->color.c0.rop=ROPB_MONO;
     if (dc->depth_buf)
       GrDCBlot3(dc,x,y,dc->db_z,dc->brush);
     else
@@ -324,7 +326,8 @@ public BoolI64 GrPlot3(GrDC *dc,I64 x,I64 y,I64 z)
   if (dc->brush || w<=0)
     GrPlot1(dc,x,y);
   else if (dc->pen_width<GR_NUM_PEN_BRUSHES) {
-    dc->color.c0.rop=ROPB_MONO;
+    if (dc->color.c0.rop!=ROPB_COLLISION)
+      dc->color.c0.rop=ROPB_MONO;
     if (dc->depth_buf) {
       if (dc->color.c1.rop&ROPBF_DITHER) {
 	dc->color.c1.rop=dc->color.c0.rop;
@@ -337,8 +340,15 @@ public BoolI64 GrPlot3(GrDC *dc,I64 x,I64 y,I64 z)
 	  dc->color.c0=dc->color.c1;
 	  record=GrDCBlot3(dc,x-w,y-w,z,gr_odd_pen_brushes[dc->pen_width]);
 	}
-      } else
-	record=GrDCBlot3(dc,x-w,y-w,z,gr_pen_brushes[dc->pen_width]);
+      } else {
+	if (dc->color.c0.rop==ROPB_COLLISION) {
+	  if (dc->color.c0.color!=dc->bkcolor.c0.color && dc->color.c0.color!=COLOR_TRANSPARENT)
+	    record=GrDCBlot3(dc,x-w,y-w,z,gr_collision_pen_brushes[dc->pen_width]);
+	  else
+	    record=FALSE;
+	} else
+	  record=GrDCBlot3(dc,x-w,y-w,z,gr_pen_brushes[dc->pen_width]);
+      }
     } else {
       if (dc->color.c1.rop&ROPBF_DITHER) {
 	dc->color.c1.rop=dc->color.c0.rop;
@@ -351,8 +361,15 @@ public BoolI64 GrPlot3(GrDC *dc,I64 x,I64 y,I64 z)
 	  dc->color.c0=dc->color.c1;
 	  record=GrDCBlot(dc,x-w,y-w,gr_odd_pen_brushes[dc->pen_width]);
 	}
-      } else
-	record=GrDCBlot(dc,x-w,y-w,gr_pen_brushes[dc->pen_width]);
+      } else {
+	if (dc->color.c0.rop==ROPB_COLLISION) {
+	  if (dc->color.c0.color!=dc->bkcolor.c0.color && dc->color.c0.color!=COLOR_TRANSPARENT)
+	    record=GrDCBlot(dc,x-w,y-w,gr_collision_pen_brushes[dc->pen_width]);
+	  else
+	    record=FALSE;
+	} else
+	  record=GrDCBlot(dc,x-w,y-w,gr_pen_brushes[dc->pen_width]);
+      }
     }
     if (record) {
       if (dc->flags & DCF_SCREEN_BITMAP) {

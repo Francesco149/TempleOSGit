@@ -1,6 +1,6 @@
 /*
 This scans the sym table and checks
-each [C:/LT/OSMain/Adam1a.HPZ,580] HTT_DEFINE_STR entry to see if
+each [C:/LT/OSMain/Adam1a.HPZ,585] HTT_DEFINE_STR entry to see if
 it only occurs once in files.
 
 It's a brute force solution, but
@@ -9,7 +9,7 @@ gets the job done... slowly.
 [C:/LT/Adam/Grep.APZ,161] Grep() returns a count of matches.
 
 [C:/LT/Adam/Grep.APZ,186] FileOcc() is [C:/LT/Adam/Grep.APZ,161] Grep() with
-output [C:/LT/OSMain/Misc1a.CPZ,287] Silent().
+output [C:/LT/OSMain/Misc1a.CPZ,286] Silent().
 
 */
 
@@ -50,18 +50,18 @@ U0 UnusedDefineScan()
 	  progress1++;
 	  if (FileOcc(temph->str,"/LT/"TEXT_FILE_MASK,"+l-i")==1) {
 	    l=LtfNew;
-	    LtfRemQue(old_ltf);
-	    LtfInsQue(l,Fs->last_ltf);
+	    LtfQueRem(old_ltf);
+	    LtfQueIns(l,Fs->last_ltf);
 	    Grep(temph->str,"/LT/"TEXT_FILE_MASK,"+l-i");
-	    LtfRemQue(l);
-	    LtfInsQue(old_ltf,Fs->last_ltf);
+	    LtfQueRem(l);
+	    LtfQueIns(old_ltf,Fs->last_ltf);
 	    ll=l->root.next;
 	    while (ll!=l) {
 	      if (ll->type_u8==LTFT_LINK) {
 		NewLine;
 		"" temph->str;
 		ll2=LtfEntryCopy(l,ll);
-		LtfInsert(old_ltf,ll2);
+		LtfIns(old_ltf,ll2);
 		NewLine;
 	      }
 	      ll=ll->next;

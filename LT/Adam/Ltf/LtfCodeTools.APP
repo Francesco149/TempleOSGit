@@ -136,7 +136,7 @@ U0 EdRACollect(Ltf *l,RenumStruct *root)
 	    ch=EdRAGetU8(l);
 	    tempr=MAlloc(sizeof(RenumStruct));
 	    StrCpy(tempr->label,buf);
-	    InsQue(tempr,root->last);
+	    QueIns(tempr,root->last);
 	  }
 	}
       }
@@ -155,7 +155,7 @@ U0 EdRenumAsm(Ltf *l)
   U8 buf[sizeof(EdFindTextStruct.find_text)],
   buf2[sizeof(EdFindTextStruct.find_text)];
 
-  root.next=root.last=&root;
+  QueInit(&root);
   EdSelectFun(l,TRUE);
   EdRACollect(l,&root);
 
@@ -210,7 +210,7 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 	task=Spawn(&ServantUserCmdLine,NULL,"Servant",Fs);
 	st2=CurDir;
 	st=MSPrintF("Cd(\"%s\");",st2);
-	tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	tempc=TaskRqstQue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
 	Free(st2);
 	Free(st);
 
@@ -220,7 +220,7 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 	task->win_right=Fs->win_right;
 	TaskDerivedValsUpdate(task);
 
-	if (GetRequestResult(tempc,&result)) {
+	if (GetRqstResult(tempc,&result)) {
 	  st=DirFile(l->filename.name,,"SPZ"),
 	  prj_file=ZorNotZ(st,'P');
 	  Free(st);
@@ -228,21 +228,21 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 	    st2=DirFile(prj_file),
 	    st=MSPrintF("Cd(\"%s\");",st2);
 	    Free(st2);
-	    tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    tempc=TaskRqstQue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
 	    Free(st);
 	    st=MSPrintF("\"$WW,1$\";Cmp(\"%s\",\"SysTemp\",\"SysTemp\");",prj_file);
-	    tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    tempc=TaskRqstQue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
 	    Free(st);
-	    if (GetRequestResult(tempc,&result))
+	    if (GetRqstResult(tempc,&result))
 	      if (!result) {
-		tempc=TaskRequestQueue(task,Fs,
+		tempc=TaskRqstQue(task,Fs,
 		"Load(\"SysTemp\",LDF_JUST_LOAD);"
 		    "MapFileLoad(\"SysTemp\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-		if (GetRequestResult(tempc,&result))
+		if (GetRqstResult(tempc,&result))
 		  action=AC_REINDENT;
 	      }
-	    tempc=TaskRequestQueue(task,Fs,"Del(\"SysTemp.*\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-	    GetRequestResult(tempc,&result);
+	    tempc=TaskRqstQue(task,Fs,"Del(\"SysTemp.*\");",1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    GetRqstResult(tempc,&result);
 	  } else {
 	    Free(prj_file);
 	    st=DirFile(l->filename.name,"Load","CPZ");
@@ -252,9 +252,9 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 	      st=MSPrintF("\"$WW,1$\";ExeFile(\"%s\",TRUE);",prj_file);
 	    else
 	      st=MSPrintF("\"$WW,1$\";ExeFile(\"%s\",TRUE);",l->filename.name);
-	    tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	    tempc=TaskRqstQue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
 	    Free(st);
-	    if (GetRequestResult(tempc,&result))
+	    if (GetRqstResult(tempc,&result))
 	      if (result)
 		action=AC_REINDENT;
 	  }
@@ -263,9 +263,9 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 	if (action==AC_REINDENT)	{
 	  LtfUnlock(l);
 	  st=MSPrintF("DbgFunFind(0x%X,0);",l);
-	  tempc=TaskRequestQueue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+	  tempc=TaskRqstQue(task,Fs,st,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
 	  Free(st);
-	  if (GetRequestResult(tempc,&result))
+	  if (GetRqstResult(tempc,&result))
 	    temph=result;
 	  else
 	    action=AC_ABORT;
@@ -333,7 +333,7 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 		  nl->x=x;
 		  nl->y=ll->y;
 		  nl->page_line_num=ll->page_line_num;
-		  InsQue(nl,ll->last);
+		  QueIns(nl,ll->last);
 		  i-=8;
 		  x+=8;
 		}
@@ -348,7 +348,7 @@ U0 EdRefmtFun(Ltf *l,I64 fmt_type)
 		  nl->x=x;
 		  nl->y=ll->y;
 		  nl->page_line_num=ll->page_line_num;
-		  InsQue(nl,ll->last);
+		  QueIns(nl,ll->last);
 		}
 	      }
 	      start_of_line=FALSE;

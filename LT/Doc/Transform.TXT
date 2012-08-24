@@ -1,7 +1,7 @@
-[C:/LT/OSMain/Adam1a.HPZ,3494] GrDC's have a 4x4 matrix for rotating,
+[C:/LT/OSMain/Adam1a.HPZ,3497] GrDC's have a 4x4 matrix for rotating,
 scaling, skewing and shifting in 3 
 dimensions.  To make the graphics routines respond to the transformation, you 
-must set the [C:/LT/OSMain/Adam1a.HPZ,3459] DCF_TRANSFORMATION flag.
+must set the [C:/LT/OSMain/Adam1a.HPZ,3462] DCF_TRANSFORMATION flag.
 
 The matrix consists of integers that have been scaled 32 bits
 ([C:/LT/Adam/Gr/MathGr.APZ,142] gr_scale).  See 
@@ -15,7 +15,7 @@ GrRotXEqu(), [C:/LT/Adam/Gr/MathGr.APZ,260] GrRotYEqu(),
 [C:/LT/Adam/Gr/MathGr.APZ,280] GrRotZEqu() and [C:/LT/Adam/Gr/MathGr.APZ,300]
 GrScaleMatEqu() to rotate about axes and scale.  Combine them 
 with [C:/LT/Adam/Gr/MathGr.APZ,220] GrMulMat() and assign them to the
-[C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.dc with [C:/LT/Adam/Gr/MathGr.APZ,308]
+[C:/LT/OSMain/Adam1a.HPZ,3497] GrDC.dc with [C:/LT/Adam/Gr/MathGr.APZ,308]
 GrSetRotMat().  See 
 [::/LT/Demo/Graphics/Box.CPZ] ::/LT/Demo/Graphics/Box.CPZ.
 
@@ -28,11 +28,11 @@ operations.  Normally, you can't combine pos shift operations.  See
 [C:/LT/Adam/Gr/MathGr.APZ,354] GrSetTranslation() and
 [::/LT/Demo/Graphics/Transform.CPZ] ::/LT/Demo/Graphics/Transform.CPZ.
 
-Finally, [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC's have an x, y and z which is an
+Finally, [C:/LT/OSMain/Adam1a.HPZ,3497] GrDC's have an x, y and z which is an
 additional shift (translation).
 
 The transformation is implemented as a callback on the
-[C:/LT/OSMain/Adam1a.HPZ,3494] GrDC's transform() 
+[C:/LT/OSMain/Adam1a.HPZ,3497] GrDC's transform() 
 member.  The default transfrom() callback is [C:/LT/Adam/Gr/MathGr.APZ,154]
 GrTransform().  See 
 [::/LT/Demo/GameStarters/EagleDive.CPZ] ::/LT/Demo/GameStarters/EagleDive.CPZ

@@ -180,7 +180,7 @@ U0 Fire()
   tempo->z=us.z;
   tempo->theta=us.theta;
   tempo->t0=tP;
-  InsQue(tempo,shots.last);
+  QueIns(tempo,shots.last);
 }
 
 U0 MoveUs(F64 theta)
@@ -189,9 +189,8 @@ U0 MoveUs(F64 theta)
   us.z+=0.1*SCREEN_SCALE*Sin(theta);
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 { //Preemption is off after Spawn
-  nounusedwarn dummy;
   I64 i;
   Object *tempo,*tempo1;
   while (TRUE) {
@@ -204,7 +203,7 @@ U0 AnimateTask(U64 dummy=0)
     while (tempo!=&shots) {
       tempo1=tempo->next;
       if (tP(Fs->parent_task)-tempo->t0>1.0) {
-	RemQue(tempo);
+	QueRem(tempo);
 	Free(tempo);
       } else {
 	tempo->x+=0.25*SCREEN_SCALE*Cos(tempo->theta);
@@ -219,7 +218,7 @@ U0 AnimateTask(U64 dummy=0)
 U0 Init()
 {
   I64 i;
-  shots.next=shots.last=&shots;
+  QueInit(&shots);
   MemSet(&us,0,sizeof(us));
   MemSet(them,0,sizeof(them));
   num_them=NUM_THEM;
@@ -235,19 +234,11 @@ U0 Init()
 
 U0 CleanUp()
 {
-  Object *tempo,*tempo1;
-  tempo=shots.next;
-  while (tempo!=&shots) {
-    tempo1=tempo->next;
-    RemQue(tempo);
-    Free(tempo);
-    tempo=tempo1;
-  }
+  QueDel(&shots,TRUE);
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Randomly generate (by God :-)
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {

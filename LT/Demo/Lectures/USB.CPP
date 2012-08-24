@@ -15,9 +15,8 @@ See [::/LT/OSMain/USB1a.CPZ] ::/LT/OSMain/USB1a.CPZ
 */
 
 
-U8 *StatCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *StatCB(Ltf *,LtfEntry *ll,TaskStruct *mem_task)
 { //This routine shows the stat of the USB ports
-  nounusedwarn l;
   U8 *st=MAlloc(128,mem_task);
   U16 w1,w2,w3,w4;
   U32 d1;

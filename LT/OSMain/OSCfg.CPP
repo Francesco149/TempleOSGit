@@ -19,7 +19,7 @@ U8 *osmain_cfg_options="ProtectLow\0Deterministic\0MemInit\0HeapInit\0VarInit\0N
 class OSMainCfg
 {
   I64 bios_gr_mode;
-  U8 *acct_name;
+  U8 dft_drv,*acct_name;
   U8 *dsk_cache_size_exp;
   Ltf *add_dev;
 
@@ -151,6 +151,7 @@ Ltf *OSMainCfgAddDev(OSMainCfg *c)
     k=Fs->cur_prt->drv_let;
 
   LtfPrintF(l,"dft_drv=\'%C\';",k);
+  c->dft_drv=k;
 
   return l;
 }
@@ -213,11 +214,13 @@ OSMainCfg *OSMainCfgNew()
   OSMainCfg *c=CAlloc(sizeof(OSMainCfg));
 
   c->add_dev=OSMainCfgAddDev(c);
-  c->acct_name=PmtStr("Start-up Acct ($FG,PURPLE$<ENTER>$FG$ will prompt):","");
+  c->acct_name=PmtStr("Start-up Acct ($FG,PURPLE$<ENTER>$FG$ will prompt):","Invd");
   c->dsk_cache_size_exp=PmtStr("Disk Cache Size in Bytes, gets rounded-up funny, ($FG,PURPLE$<ENTER>$FG$ will use default of $FG,PURPLE$%s$FG$ Bytes):",
 			       "Scale2Mem(0x80000,0x8000000)");
   c->bios_gr_mode=0x12; //0x12=640x480x4 0x6A=800x600x4
   OSMainCfgOptions(c);
+  if (c->opts[CFG_DETERMINISTIC])
+    StreamPutS("#define SYS_DETERMINISTIC");
   return c;
 }
  

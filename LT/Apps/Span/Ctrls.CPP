@@ -17,7 +17,7 @@ U0 DrawCtrlButton(GrDC *dc,Ctrl *c)
 
   dc->color=BLACK;
   GrRect(dc,c->left,c->top,c->right-c->left+1,c->bottom-c->top+1);
-  st=ListEntryPoint(s->state,s->state_texts);
+  st=ListEntryPt(s->state,s->state_texts);
   dc->color=s->state_colors[s->state];
   l=StrLen(st);
   GrRect(dc,c->left+2,c->top+2,c->right-c->left+1-4,c->bottom-c->top+1-4);
@@ -25,9 +25,8 @@ U0 DrawCtrlButton(GrDC *dc,Ctrl *c)
   GrPutS(dc,c->left+(c->left+c->right+1-l*FONT_WIDTH)>>1,c->top+FONT_HEIGHT,st);
 }
 
-U0 LeftClickCtrlButton(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickCtrlButton(Ctrl *c,I64,I64,BoolI8 down)
 {
-  nounusedwarn x,y;
   CtrlButtonState *s=c->state;
   if (down) {
     s->state++;
@@ -55,7 +54,7 @@ Ctrl *CtrlButtonNew(I64 x,I64 y,I64 num_states,U8 *state_texts,I32 state_colors[
   c->right=c->left+CTRL_BUTTON_WIDTH-1;
   c->bottom=c->top+CTRL_BUTTON_HEIGHT-1;
   old_preempt=Preempt(OFF);
-  InsQue(c,Fs->last_ctrl);
+  QueIns(c,Fs->last_ctrl);
   Preempt(old_preempt);
   return c;
 }
@@ -63,7 +62,7 @@ Ctrl *CtrlButtonNew(I64 x,I64 y,I64 num_states,U8 *state_texts,I32 state_colors[
 U0 CtrlButtonDel(Ctrl *c)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(c);
+  QueRem(c);
   Preempt(old_preempt);
   Free(c);
 }

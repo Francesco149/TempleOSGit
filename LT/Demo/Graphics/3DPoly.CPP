@@ -101,7 +101,7 @@ U0 Main()
       poly[3].z=0;
       GrFillPoly3(dc,4,poly);
 
-      WinSync;
+      WinMgrSync;
       GrDCFill;
       theta+=2.1*pi/180.0;
       phi+=1.1*pi/180.0;

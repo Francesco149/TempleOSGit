@@ -1,8 +1,7 @@
 I64 load_test_done;
 
-U0 Job1(U64 dummy=0)
+U0 Job1(U64)
 { //Compile Compiler
-  nounusedwarn dummy;
   TaskLocalInit; //Enable file access
   Preempt(ON);	 //Off by default
   Silent(ON);
@@ -13,9 +12,8 @@ U0 Job1(U64 dummy=0)
   lock {load_test_done--;}
 }
 
-U0 Job2(U64 dummy=0)
+U0 Job2(U64)
 { //Log a file
-  nounusedwarn dummy;
   TaskLocalInit; //Enable file access
   Preempt(ON);	 //Off by default
   while (!load_test_done) {
@@ -25,9 +23,8 @@ U0 Job2(U64 dummy=0)
   lock {load_test_done--;}
 }
 
-U0 Job3(U64 dummy=0)
+U0 Job3(U64)
 { //Log a file
-  nounusedwarn dummy;
   TaskLocalInit; //Enable file access
   Preempt(ON);	 //Off by default
   while (!load_test_done) {

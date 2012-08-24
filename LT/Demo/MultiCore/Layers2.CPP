@@ -50,9 +50,8 @@ mp_done:
   mp.refresh_done=TRUE;
 }
 
-U0 MPTask(U64 dummy=0)
+U0 MPTask(U64)
 {
-  nounusedwarn dummy;
   while (!mp.app_done)
     MPDrawIt;
   mp.app_done_ack=TRUE;

@@ -8,9 +8,8 @@
 /* <1> <1> (image) */
 
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 tt=Unwrap(tM,0);
   dc->flags|=DCF_TRANSFORMATION;
   GrRotXEqu(dc->r,5*2*pi/180);

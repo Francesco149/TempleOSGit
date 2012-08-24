@@ -298,9 +298,8 @@ U0 DrawDesign(GrDC *dc,I64 &y,U64 output,I64 depth,I64 *_x_out,I64 *_y_out)
   Bts(displayed_design,output);
 }
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 y=0;
   MemSet(displayed_design,0,(table_size+7)/8*sizeof(BoolI8));
   DrawDesign(dc,y,output_found,0,NULL,NULL);
@@ -632,7 +631,7 @@ U0 DigitalLogic()
       Fs->draw_it=&DrawIt;
       GetChar;
       LtfClear;
-      WinSync(TRUE);
+      WinMgrSync(2);
       LtfBottom;
     }
   } catch

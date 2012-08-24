@@ -46,9 +46,8 @@ I64 BCnt(U64 d)
   return result;
 }
 
-U0 IntSimpleTimer(TaskStruct *task)
+U0 IntSimpleTimer(TaskStruct *)
 {
-  nounusedwarn task;
   I64 i;
   if (mp_cnt>1)
     while (LBts(&sys_semas[SYS_SEMA_SYS_TIMER],0))
@@ -356,51 +355,43 @@ U0 ProgressBarsRst()
   MemSet(sys_progresses,0,sizeof(sys_progresses));
 }
 
-U0 CtrlAltDel(U64 sc)
+U0 CtrlAltDel(U64)
 {
-  nounusedwarn sc;
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_DEL);
 }
 
-U0 CtrlAltC(U64 sc)
+U0 CtrlAltC(U64)
 {
-  nounusedwarn sc;
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_C);
 }
 
-U0 CtrlAltD(U64 sc)
+U0 CtrlAltD(U64)
 {
-  nounusedwarn sc;
   Dbg;
 }
 
-U0 CtrlAltE(U64 sc)
+U0 CtrlAltE(U64)
 {
-  nounusedwarn sc;
   SpawnUser;
 }
 
-U0 CtrlAltM(U64 sc)
+U0 CtrlAltM(U64)
 {
-  nounusedwarn sc;
   Mute(!IsMute);
 }
 
-U0 CtrlAltP(U64 sc)
+U0 CtrlAltP(U64)
 {
-  nounusedwarn sc;
   if (sys_focus_task)
     TaskPause(sys_focus_task,!Bt(&sys_focus_task->task_flags,TASKf_PAUSED));
 }
 
-U0 CtrlAltT(U64 sc)
+U0 CtrlAltT(U64)
 {
-  nounusedwarn sc;
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_TAB);
 }
 
-U0 CtrlAltX(U64 sc)
+U0 CtrlAltX(U64)
 {
-  nounusedwarn sc;
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_X);
 }

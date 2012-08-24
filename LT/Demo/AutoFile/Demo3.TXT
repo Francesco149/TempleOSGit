@@ -164,9 +164,9 @@
 #define EC_BSF			0x8B
 #define EC_BSR			0x8C
 
-#define EC_INSQUE		0x8D
-#define EC_INSQUE_REV		0x8E
-#define EC_REMQUE		0x8F
+#define EC_QUE_INS		0x8D
+#define EC_QUE_INS_REV		0x8E
+#define EC_QUE_REM		0x8F
 
 #define EC_STRLEN		0x90
 #define EC_MEMCPY		0x91

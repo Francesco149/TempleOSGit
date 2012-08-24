@@ -22,9 +22,8 @@ HeapCtrl *heaplog_hc;
 HeapLogHashStruct *heaplog_root=NULL;
 
 
-U0 HeapLogTask(U64 dummy=0)
+U0 HeapLogTask(U64)
 {
-  nounusedwarn dummy;
   while (TRUE)
     Yield;
 }
@@ -45,7 +44,7 @@ U0 HeapLogMAlloc(U8 *addr)
     Cli;
     while (LBts(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0))
       Pause;
-    InsQue(temph,heaplog_root[i].last);
+    QueIns(temph,heaplog_root[i].last);
     LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
     PopFD;
   }
@@ -65,7 +64,7 @@ U0 HeapLogFree(U8 *addr)
     temph=heaplog_root[i].next;
     while (temph!=&heaplog_root[i]) {
       if (addr==temph->addr) {
-	RemQue(temph);
+	QueRem(temph);
 	LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
 	PopFD;
 	Free(temph);
@@ -140,7 +139,7 @@ public U0 HeapLog(BoolI8 val=TRUE,TaskStruct *task=NULL)
       ext[EXT_HEAPLOG_FREE]=&HeapLogFree;
       heaplog_root=MAlloc(sizeof(HeapLogHashStruct)*HEAPLOG_HASH_SIZE,heaplog_task);
       for (i=0;i<HEAPLOG_HASH_SIZE;i++)
-	heaplog_root[i].next=heaplog_root[i].last=&heaplog_root[i];
+	QueInit(&heaplog_root[i]);
       LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
       PopFD;
       LBts(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0);

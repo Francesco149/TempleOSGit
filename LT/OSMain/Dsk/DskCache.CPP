@@ -85,14 +85,14 @@ U0 LTDCInit(U64 size_in_U8s)
   } else {
     sys_ltdc_ctrl=ACAlloc(offset(LTCacheBlk.body));
     sys_ltdc_base=AMAlloc(size_in_U8s);
-    sys_ltdc_ctrl->next_lru=sys_ltdc_ctrl->last_lru=sys_ltdc_ctrl;
+    QueInit(sys_ltdc_ctrl);
     sys_ltdc_ctrl->next_dirty=sys_ltdc_ctrl->last_dirty=sys_ltdc_ctrl;
 
     cnt=MSize(sys_ltdc_base)/sizeof(LTCacheBlk);
     sys_ltdc_size=cnt*BLK_SIZE;
     for (i=0;i<cnt;i++) {
       tempc=sys_ltdc_base+i;
-      InsQue(tempc,sys_ltdc_ctrl->last_lru);
+      QueIns(tempc,sys_ltdc_ctrl->last_lru);
       tempc->next_hash=tempc->last_hash=
 	tempc->next_dirty=tempc->last_dirty=tempc;
       tempc->flags=0;
@@ -115,17 +115,17 @@ U64 LTDCHash(U64 blk)
   return sys_ltdc_hash_table(U8 *)+i<<4-offset(LTCacheBlk.next_hash);
 }
 
-U0 LTDCRemQue(LTCacheBlk *tempc)
+U0 LTDCQueRem(LTCacheBlk *tempc)
 {
-  RemQue(tempc);
+  QueRem(tempc);
   tempc->next_hash->last_hash=tempc->last_hash;
   tempc->last_hash->next_hash=tempc->next_hash;
 }
 
-U0 LTDCInsQue(LTCacheBlk *tempc)
+U0 LTDCQueIns(LTCacheBlk *tempc)
 {
   LTCacheBlk *temp_n,*temp_l;
-  InsQue(tempc,sys_ltdc_ctrl->last_lru);
+  QueIns(tempc,sys_ltdc_ctrl->last_lru);
   temp_l=LTDCHash(tempc->blk);
   temp_n=temp_l->next_hash;
   tempc->last_hash=temp_l;
@@ -195,11 +195,11 @@ U0 LTDCAdd(LTPrt *p,U8 *buf, U64 blk, U64 cnt,BoolI8 write,BoolI8 write_cache)
 	}
       }
       if (cache) {
-	LTDCRemQue(tempc);
+	LTDCQueRem(tempc);
 	MemCpy(&tempc->body,buf,BLK_SIZE);
 	tempc->p=p;
 	tempc->blk=blk;
-	LTDCInsQue(tempc);
+	LTDCQueIns(tempc);
       }
       blk++;
       buf+=BLK_SIZE;
@@ -219,12 +219,12 @@ U0 LTDCInvalidate(LTPrt *p)
     while (tempc!=sys_ltdc_ctrl) {
       tempc1=tempc->last_lru;
       if (tempc->p==p) {
-	LTDCRemQue(tempc);
+	LTDCQueRem(tempc);
 	tempc->p=NULL;
 	tempc->blk=0;
 	tempc->flags=0;
 	tempc->next_hash=tempc->last_hash=tempc;
-	InsQue(tempc,sys_ltdc_ctrl->last_lru);
+	QueIns(tempc,sys_ltdc_ctrl->last_lru);
       }
       tempc=tempc1;
     }

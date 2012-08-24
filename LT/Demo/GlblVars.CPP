@@ -2,7 +2,7 @@
 This demonstrates dynamic initialization of
 vars.  It even works for static modules
 because code is generated which runs at
-[C:/LT/OSMain/Hash1a.CPZ,730] Load() time to initialize them.
+[C:/LT/OSMain/Hash1a.CPZ,729] Load() time to initialize them.
 
 This file is dual use -- you can JIT compile
 it or static compile it.  If you static compile

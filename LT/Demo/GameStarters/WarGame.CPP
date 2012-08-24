@@ -16,10 +16,6 @@
 
 //This uses [::/LT/Demo/Lectures/FixedPoint.CPZ] fixed-point.
 
-#define p1_color	    (ROP_EQU+LTCYAN)
-#define p2_color	    (ROP_EQU+LTPURPLE)
-#define enemy_fire_color    (ROP_EQU+LTBLUE)
-#define friendly_fire_color (ROP_EQU+WHITE)
 
 
 /* <1> <1> (image) */
@@ -45,22 +41,20 @@
 
 #define NUM_FRAMES 6
 
-U8 *gr_trooper[NUM_FRAMES]={
+U8 *trooper_imgs[NUM_FRAMES]={
 __BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_3,__BIN_2};
 
-U64 fire_end_time=0;
-BoolI8 snd_off=TRUE;
+F64 fire_end_time;
 
 class Trooper
 {
-  I64 num,x,y,dx,dy,att,def,rng,player;
-  U64 fire_end_time;
+  I64 x,y,dx,dy,att,def,rng,player;
+  F64 animate_time_base,fire_end_time;
   Trooper *target;
 };
 
 #define NUM_TROOPERS 100
-Trooper tr[NUM_TROOPERS<<1];
-U64 cnt1,cnt2;
+Trooper tr[2][NUM_TROOPERS];
 
 BoolI8 time_lapse=FALSE;
 
@@ -73,182 +67,186 @@ I64 cmd_intensity;
 #define AI_TARGET  1
 #define AI_RANDOM  2
 #define AI_NUM_AI  3
-U64 ai;
+U64 ai_mode;
 
-I64 targets[10];
+I64 ai_targets[10];
 
-U0 DrawTrooper(TaskStruct *task,GrDC *dc,Trooper *tempt,U64 color)
+U0 DrawTrooper(TaskStruct *task,GrDC *dc,Trooper *tempt)
 {
   U8 *inter;
-  I64 x=tempt->dx>>28,y=tempt->dy>>28,s,gx,gy;
-  F64 speed=0.5*Sqrt(x*x+y*y),
-	 tt=tempt->num+tP(task)*speed;
+  I64 x,y,gx,gy;
+  F64 speed,tt;
 
-  if (time_lapse) {
-    x=(tempt->x+500*tempt->dx)>>32;
-    y=(tempt->y+500*tempt->dy)>>32;
-  } else {
-    x=tempt->x.i32[1];
-    y=tempt->y.i32[1];
-  }
-  s=tempt->def;
+  if (tempt->def>0) {
+    x=tempt->dx>>28;
+    y=tempt->dy>>28;
+    speed=0.5*Sqrt(x*x+y*y);
 
-  if (s>0) {
-    s/=3;
-    dc->color=color;
-    gx=x;gy=y;
-    if (tempt->dx<0) {
-      dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-      GrSetSymmetry(dc,x,y,x,y+1);
-      gx-=13;
-      gy-=7;
+    tt=tempt->animate_time_base+tP(task)*speed;
+    if (time_lapse) {
+      x=(tempt->x+500*tempt->dx)>>32;
+      y=(tempt->y+500*tempt->dy)>>32;
     } else {
-      dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
-      gx+=13;
-      gy-=7;
+      x=tempt->x.i32[1];
+      y=tempt->y.i32[1];
     }
-    if (GetTimeStamp<tempt->fire_end_time) {
+    if (!tempt->player)
+      dc->color=LTCYAN;
+    else
+      dc->color=LTPURPLE;
+    if (tempt->target) {
+      gx=x;gy=y;
+      if (tempt->dx<0) {
+	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
+	GrSetSymmetry(dc,x,y,x,y+1);
+	gx-=13;
+	gy-=7;
+      } else {
+	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
+	gx+=13;
+	gy-=7;
+      }
       GrSpritePlot3(dc,x,y,0,__BIN_5);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
       if (!tempt->player)
-	dc->color=friendly_fire_color;
+	dc->color=WHITE;
       else
-	dc->color=enemy_fire_color;
-      Snd(2000);
-      snd_off=FALSE;
+	dc->color=LTBLUE;
       GrLine3(dc,gx,gy,0,tempt->target->x.i32[1],tempt->target->y.i32[1],0);
     } else {
-      inter=GrSpriteInterpolate(gr_trooper[tt%NUM_FRAMES],gr_trooper[(tt+1.0)%NUM_FRAMES],tt%1.0);
+      if (tempt->dx<0) {
+	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
+	GrSetSymmetry(dc,x,y,x,y+1);
+      } else
+	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
+      inter=GrSpriteInterpolate(trooper_imgs[tt%NUM_FRAMES],trooper_imgs[(tt+1.0)%NUM_FRAMES],tt%1.0);
       GrSpritePlot3(dc,x,y,0,inter);
       Free(inter);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
-
-    if (GetTimeStamp>=fire_end_time)
-      if (!snd_off) {
-	snd_off=TRUE;
-	Snd(0);
-      }
   }
 }
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  I64 i,c,x=ipx-task->win_pixel_left-task->win_scroll_x,y=ipy-task->win_pixel_top-task->win_scroll_y;
+  Trooper *tempt=tr;
+  I64 i,j,cnt[2],
+      x=ipx-task->win_pixel_left-task->win_scroll_x,y=ipy-task->win_pixel_top-task->win_scroll_y;
+
   cmd_intensity=(ip_throttle*128)>>32;
-  BoolI8 repulsive=cmd_intensity>0 ^^ ip_rb,active=!win_grab_scroll && (ip_lb||ip_rb);
+  BoolI8 repulsive=cmd_intensity>0 ^^ ip_rb,
+	 active=!win_grab_scroll && (ip_lb||ip_rb);
 
   task->text_attr=GREEN<<4;
-  cnt1=0;
-  cnt2=0;
-  for (i=0;i<NUM_TROOPERS;i++)
-    if (tr[i].def>0) {
-      DrawTrooper(task,dc,&tr[i],p1_color);
-      cnt1++;
+  for (j=0;j<2;j++) {
+    cnt[j]=0;
+    for (i=0;i<NUM_TROOPERS;i++,tempt++) {
+      if (tempt->def>0) {
+	DrawTrooper(task,dc,tempt);
+	cnt[j]++;
+      }
     }
-  for (i=NUM_TROOPERS;i<NUM_TROOPERS<<1;i++)
-    if (tr[i].def>0) {
-      DrawTrooper(task,dc,&tr[i],p2_color);
-      cnt2++;
-    }
-
+  }
   if (tap_mode) {
     dc->color=YELLOW;
     GrCircle(dc,x,y,TAP_MODE_RADIUS);
   } else {
     if (repulsive) {
       if (active)
-	c=ROP_EQU+LTRED;
+	dc->color=LTRED;
       else
-	c=ROP_EQU+RED;
+	dc->color=RED;
     } else {
       if (active)
-	c=ROP_EQU+LTBLUE;
+	dc->color=LTBLUE;
       else
-	c=ROP_EQU+BLUE;
+	dc->color=BLUE;
     }
-    dc->color=c;
     GrCircle(dc,x,y,AbsI64(cmd_intensity));
   }
-  dc->color=p1_color&15;
-  GrPrintF(dc,(task->win_right-8)*FONT_WIDTH,0,"%03d",cnt1);
-  dc->color=p2_color&15;
-  GrPrintF(dc,(task->win_right-4)*FONT_WIDTH,0,"%03d",cnt2);
+  dc->color=LTCYAN;
+  GrPrintF(dc,(task->win_right-8)*FONT_WIDTH,0,"%03d",cnt[0]);
+  dc->color=LTPURPLE;
+  GrPrintF(dc,(task->win_right-4)*FONT_WIDTH,0,"%03d",cnt[1]);
 }
 
 U0 DoAiTarget()
 {
   I64 i,j;
-  Trooper *tempt,*tempt2;
+  Trooper *tempt1,*tempt0;
   for (i=0;i<10;i++) {
-    tempt2=&tr[targets[i]];
+    tempt0=&tr[0][ai_targets[i]];
     for (j=0;j<10;j++) {
-      tempt=&tr[i*10+j+NUM_TROOPERS];
-      tempt->dx=(tempt2->x-tempt->x)>>11;
-      tempt->dy=(tempt2->y-tempt->y)>>11;
+      tempt1=&tr[1][i*10+j];
+      tempt1->dx=(tempt0->x-tempt1->x)>>11;
+      tempt1->dy=(tempt0->y-tempt1->y)>>11;
     }
   }
 }
 
 U0 UpdatePos()
 {
-  I64 i;
-  Trooper *tempt;
-  for (i=0;i<NUM_TROOPERS<<1;i++) {
-    tempt=&tr[i];
-    tempt->x+=tempt->dx;
-    if (tempt->x>=GR_WIDTH<<32) tempt->x-=GR_WIDTH<<32;
-    if (tempt->x<0) tempt->x+=GR_WIDTH<<32;
-    tempt->y+=tempt->dy;
-    if (tempt->y>=GR_HEIGHT<<32) tempt->y-=GR_HEIGHT<<32;
-    if (tempt->y<0) tempt->y+=GR_HEIGHT<<32;
-  }
+  I64 i,j;
+  Trooper *tempt=tr;
+  for (j=0;j<2;j++)
+    for (i=0;i<NUM_TROOPERS;i++,tempt++) {
+      tempt->x+=tempt->dx;
+      if (tempt->x>=GR_WIDTH<<32) tempt->x-=GR_WIDTH<<32;
+      if (tempt->x<0) tempt->x+=GR_WIDTH<<32;
+      tempt->y+=tempt->dy;
+      if (tempt->y>=GR_HEIGHT<<32) tempt->y-=GR_HEIGHT<<32;
+      if (tempt->y<0) tempt->y+=GR_HEIGHT<<32;
+    }
 }
 
 U0 ResolveFiring()
 {
-  I64 i,j,d,dx,dy;
-  for (i=0;i<NUM_TROOPERS;i++)
-    for (j=NUM_TROOPERS;j<NUM_TROOPERS<<1;j++) {
-      if (tr[i].def>0 && tr[j].def>0) {
-	if (tr[i].target) {
-	  if (tr[i].fire_end_time<GetTimeStamp) {
-	    tr[i].target->def-=tr[i].att;
-	    tr[i].target=NULL;
-	  }
+  I64 i,j,dd,dx,dy;
+  Trooper *tempt=tr,*tempt0,*tempt1;
+
+  for (j=0;j<2;j++)
+    for (i=0;i<NUM_TROOPERS;i++,tempt++) {
+      if (tempt->target && tempt->fire_end_time<tP) {
+	tempt->target->def-=tempt->att;
+	tempt->fire_end_time=0;
+	tempt->target=NULL;
+      }
+    }
+
+  for (i=0;i<NUM_TROOPERS;i++) {
+    tempt0=&tr[0][i];
+    for (j=0;j<NUM_TROOPERS;j++) {
+      tempt1=&tr[1][j];
+      if (tempt0->def>0 && tempt1->def>0) {
+	dx=(tempt0->x-tempt1->x)>>32;
+	dy=(tempt0->y-tempt1->y)>>32;
+	dd=dx*dx+dy*dy;
+	if (dd<tempt0->rng && !tempt0->target) {
+	  fire_end_time=tempt0->fire_end_time=tP+0.125;
+	  Snd(2000);
+	  tempt0->target=tempt1;
 	}
-	if (tr[j].target) {
-	  if (tr[j].fire_end_time<GetTimeStamp) {
-	    tr[j].target->def-=tr[j].att;
-	    tr[j].target=NULL;
-	  }
-	}
-	dx=(tr[i].x-tr[j].x)>>32;
-	dy=(tr[i].y-tr[j].y)>>32;
-	d=dx*dx+dy*dy;
-	if (d<tr[i].rng && !tr[i].target) {
-	  tr[i].fire_end_time=GetTimeStamp+time_stamp_freq>>3;
-	  fire_end_time=tr[i].fire_end_time;
-	  tr[i].target=&tr[j];
-	}
-	if (d<tr[j].rng && !tr[j].target) {
-	  tr[j].fire_end_time=GetTimeStamp+time_stamp_freq>>3;
-	  fire_end_time=tr[i].fire_end_time;
-	  tr[j].target=&tr[i];
+	if (dd<tempt1->rng && !tempt1->target) {
+	  fire_end_time=tempt1->fire_end_time=tP+0.125;
+	  Snd(2000);
+	  tempt1->target=tempt0;
 	}
       }
     }
+  }
+
+  if (tP>=fire_end_time)
+    Snd(0);
 }
 
-U0 UpdateVelocities()
+U0 UpdateHumanVelocities()
 {
   F64 intensity;
   I64 i,j,x=ipx-Fs->win_pixel_left-Fs->win_scroll_x,y=ipy-Fs->win_pixel_top-Fs->win_scroll_y,dx,dy,d;
   BoolI8 active=!win_grab_scroll&&(ip_lb||ip_rb);
-  Trooper *tempt;
+  Trooper *tempt=&tr[0][0];
   if (tap_mode) {
-    for (i=0;i<NUM_TROOPERS;i++) {
-      tempt=&tr[i];
+    for (i=0;i<NUM_TROOPERS;i++,tempt++) {
       dx=x- tempt->x.i32[1];
       dy=y- tempt->y.i32[1];
       if ((d=dx*dx+dy*dy) && d<TAP_MODE_RADIUS*TAP_MODE_RADIUS) {
@@ -266,8 +264,7 @@ U0 UpdateVelocities()
     j=cmd_intensity<<29;
     if (ip_rb)
       j=-j;
-    for (i=0;i<NUM_TROOPERS;i++) {
-      tempt=&tr[i];
+    for (i=0;i<NUM_TROOPERS;i++,tempt++) {
       dx=x- tempt->x.i32[1];
       dy=y- tempt->y.i32[1];
       if (d=dx*dx+dy*dy) {
@@ -288,43 +285,37 @@ U0 Init()
   tap_mode=FALSE;
   cmd_intensity=128;
   time_lapse=FALSE;
+  fire_end_time=0;
+  MemSet(tr,0,sizeof(tr));
   for (i=0;i<10;i++) {
-    targets[i]=RandU16%NUM_TROOPERS;
+    ai_targets[i]=RandU16%NUM_TROOPERS;
     dx=RandI32;
     dy=RandI32;
     for (j=0;j<10;j++) {
-      tempt=&tr[i*10+j];
-      tempt->target=NULL;
-      tempt->num=i*10+j;
+      tempt=&tr[0][i*10+j];
       tempt->x=(GR_WIDTH-100-i*10)<<32;
       tempt->y=(GR_HEIGHT>>1-50+j*10)<<32;
-      tempt->dx=0;
-      tempt->dy=0;
-      tempt->fire_end_time=GetTimeStamp;
       tempt->att=3;
       tempt->def=10;
       tempt->rng=50*50;
+      tempt->animate_time_base=10*Rand;
       tempt->player=0;
 
-      tempt=&tr[i*10+j+NUM_TROOPERS];
-      tempt->target=NULL;
-      tempt->num=i*10+j;
+      tempt=&tr[1][i*10+j];
       tempt->x=(100+i*10)<<32;
       tempt->y=(GR_HEIGHT>>1-50+j*10)<<32;
-      tempt->dx=0;
-      tempt->dy=0;
-      if (ai==AI_RANDOM) {
+      if (ai_mode==AI_RANDOM) {
 	tempt->dx=dx;
 	tempt->dy=dy;
       }
-      tempt->fire_end_time=GetTimeStamp;
       tempt->att=3;
       tempt->def=10;
       tempt->rng=50*50;
+      tempt->animate_time_base=10*Rand;
       tempt->player=1;
     }
   }
-  ai=RandU16%AI_NUM_AI;
+  ai_mode=RandU16%AI_NUM_AI;
 }
 
 U0 WarGame()
@@ -345,8 +336,10 @@ U0 WarGame()
   "  TapMode(,'2');"
       "}"
       );
-  WinMax;
   WordStat;
+  WinMax;
+  WinBorder;
+  Preempt(OFF);
 
   Init;
   LtfCursor;
@@ -378,9 +371,9 @@ U0 WarGame()
 	  break;
       }
       Sleep(40);
-      if (ai==AI_TARGET)
+      if (ai_mode==AI_TARGET)
 	DoAiTarget;
-      UpdateVelocities;
+      UpdateHumanVelocities;
       UpdatePos;
       ResolveFiring;
     }

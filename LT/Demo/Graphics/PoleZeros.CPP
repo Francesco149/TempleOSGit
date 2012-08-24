@@ -102,7 +102,7 @@ U0 PoleZeros()
 	"Drag the poles and zeros with left mouse.\n"
 	"Hold right mouse for phase plot.\n"
   );
-  WinSync;
+  WinMgrSync;
 
   SettingsPush; //See [C:/LT/Adam/TaskSettings.APZ,3] SettingsPush
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
@@ -159,7 +159,7 @@ pz_msg:
 	  if (p1==CH_SHIFT_ESC||p1==CH_ESC)
 	    goto pz_done;
       }
-      WinSync;
+      WinMgrSync;
     }
 pz_done:
   } catch

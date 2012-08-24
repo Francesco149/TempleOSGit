@@ -57,9 +57,9 @@ Top of Screen Pull-down menu
 
 /LT/Apps Applications are placed in subdirectories of /LT/Apps.  Applications
     should have a file called Install.CPZ which will install the app for the
-    current user acct.  The file, Load.CPZ will load the application into
-    mem.  The file, Run.CPZ, will usually load and execute the app.  To add an
-    app to your personal menu, use <CTRL-L>, insert a macro with the PopUp option
+    current user acct.  The file, Load.CPZ will load the application into mem. 
+    The file, Run.CPZ, will usually load and execute the app.  To add an app to
+    your personal menu, use <CTRL-L>, insert a macro with the PopUp option
     checked and invoke the Run.CPZ file.
 
 /LT/Demo Here you can find lots of sample code to do various things.
@@ -81,7 +81,7 @@ Top of Screen Pull-down menu
   +] DOLLAR SIGN CMDS
     [::/LT/Doc/Dollar.TXZ] Dollar Sign Cmds are rich-text cmds.  The editor,
     compiler, assembler and operating system are seamlessly equiped to handle
-    LoseThos rich text.  Cmds like [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236] Dir() and
+    LoseThos rich text.  Cmds like [C:/LT/OSMain/Dsk/Dsk1b.CPZ,234] Dir() and
     [C:/LT/Adam/Grep.APZ,161] Grep() can output links to the cmd line.
 
   +] CMD PROMPT
@@ -109,19 +109,18 @@ Directories are referenced with "/" not "\".  The Boot drive is referred to
 
 If a file is not found in one directory, all it's parents are searched. 
 
-Ed("FILENAME.TXZ"); Invokes the editor.  See [::/LT/Doc/Ed.TXZ] Editor
-    cmds.  Note that editor cmds work practically everywhere--like at the cmd
-    prompt or within help.
+Ed("FILENAME.TXZ"); Invokes the editor.  See [::/LT/Doc/Ed.TXZ] Editor cmds. 
+    Note that editor cmds work practically everywhere--like at the cmd prompt or
+    within help.
 
-Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a
-    "find_files_mask".  They begin with the name of a dir tree and end with a
-    list of filename masks.  See [C:/LT/OSMain/Dsk/DskStr.CPZ,32]
-    FilesFindMatch().
+Some cmds like [C:/LT/Adam/Grep.APZ,161] Grep() take a "find_files_mask". 
+    They begin with the name of a dir tree and end with a list of filename masks.
+     See [C:/LT/OSMain/Dsk/DskStr.CPZ,32] FilesFindMatch().
 
 Grep("pattern","/LT/Demo/*.CPZ;*.TXZ;");
 
-Be aware of [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK and
-    [C:/LT/OSMain/Adam1a.HPZ,2063] SRC_FILE_MASK.
+Be aware of [C:/LT/OSMain/Adam1a.HPZ,2065] TEXT_FILE_MASK and
+    [C:/LT/OSMain/Adam1a.HPZ,2064] SRC_FILE_MASK.
 
 
   +] BURNING CD-ROMs/DVDs
@@ -170,7 +169,7 @@ Be aware of [C:/LT/OSMain/Adam1a.HPZ,2064] TEXT_FILE_MASK and
 [::/LT/Demo/Lectures/PageTableEntries1.CPZ] Page Table Entries 1
 [::/LT/Demo/Lectures/PageTableEntries2.CPZ] Page Table Entries 2
 [::/LT/Demo/Lectures/PCIInterrupts.CPZ] PCIInterrupts.CPZ
-[C:/LT/Adam/MemRep.APZ,188] MemRep
+[C:/LT/Adam/MemRep.APZ,189] MemRep
 [::/LT/Adam/WallPaper.APZ] WallPaper.APZ
 [::/LT/Doc/NewFileSystem.TXZ] Adding a New File System
 

@@ -167,7 +167,7 @@ U8 scan_code_map[0x100]={
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0x35,0,0,SC_ALT,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,SC_HOME,SC_CURSOR_UP,SC_PAGE_UP,0,SC_CURSOR_LEFT,0,SC_CURSOR_RIGHT,0,SC_END,
-  SC_CURSOR_DOWN,SC_PAGE_DOWN,SC_INSERT,SC_DELETE,0,0,0,0,0,0,0,0,SC_GUI,0,0,0,
+  SC_CURSOR_DOWN,SC_PAGE_DOWN,SC_INS,SC_DELETE,0,0,0,0,0,0,0,0,SC_GUI,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
@@ -188,7 +188,7 @@ U8 num_lock_map[0x100]={
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0x35,0,0,SC_ALT,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,SC_HOME,SC_CURSOR_UP,SC_PAGE_UP,0,SC_CURSOR_LEFT,0,SC_CURSOR_RIGHT,0,SC_END,
-  SC_CURSOR_DOWN,SC_PAGE_DOWN,SC_INSERT,SC_DELETE,0,0,0,0,0,0,0,0,SC_GUI,0,0,0,
+  SC_CURSOR_DOWN,SC_PAGE_DOWN,SC_INS,SC_DELETE,0,0,0,0,0,0,0,0,SC_GUI,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
@@ -269,7 +269,7 @@ U8 *ScanCode2KeyName(U64 sc)
       case SC_PAGE_DOWN:StrCat(buf,"PAGE_DOWN"); break;
       case SC_HOME:	StrCat(buf,"HOME"); break;
       case SC_END:	StrCat(buf,"END"); break;
-      case SC_INSERT:	StrCat(buf,"INSERT"); break;
+      case SC_INS:	StrCat(buf,"INS"); break;
       case SC_DELETE:	StrCat(buf,"DELETE"); break;
       case SC_F1:	StrCat(buf,"F1"); break;
       case SC_F2:	StrCat(buf,"F2"); break;
@@ -348,10 +348,10 @@ U64 KbdBuildSC(U8 raw_byte,U8 *_last_raw_byte,U64 *_last_sc,
   else if (sc==SC_DELETE+SCF_KEY_UP)
     sc_flags&=~SCF_DELETE;
 
-  if (sc==SC_INSERT)
-    sc_flags|=SCF_INSERT;
-  else if (sc==SC_INSERT+SCF_KEY_UP)
-    sc_flags&=~SCF_INSERT;
+  if (sc==SC_INS)
+    sc_flags|=SCF_INS;
+  else if (sc==SC_INS+SCF_KEY_UP)
+    sc_flags&=~SCF_INS;
 
   if (sc==SC_CAPS)
     goto new_key_done;
@@ -420,15 +420,15 @@ U0 KbdPktRead()
     }
   }
   if (!U8FifoCnt(kbd_fifo)) {
-    U8FifoInsert(kbd_fifo,raw_byte);
+    U8FifoIns(kbd_fifo,raw_byte);
     if (raw_byte!=0xE0) {
       while (U8FifoRem(kbd_fifo,&raw_byte))
-	U8FifoInsert(kbd2_fifo,raw_byte);
+	U8FifoIns(kbd2_fifo,raw_byte);
     }
   } else {
-    U8FifoInsert(kbd_fifo,raw_byte);
+    U8FifoIns(kbd_fifo,raw_byte);
     while (U8FifoRem(kbd_fifo,&raw_byte))
-      U8FifoInsert(kbd2_fifo,raw_byte);
+      U8FifoIns(kbd2_fifo,raw_byte);
   }
 }
 
@@ -457,7 +457,7 @@ U0 KbdInit()
     KbdCmdFlush;
     Fs->catch_except=TRUE;
   }
-  SetIDTEntry(0x21,&KbdIntHandler,0,IDTET_IRQ);
+  SetIDTEntry(0x21,&KbdIntHandler,0);
   OutU8(0x21,InU8(0x21)&~2);
 
   SetCtrlAltLetCB('C',&CtrlAltC,"Sys/Break Execution",TRUE);
@@ -502,7 +502,7 @@ U0 KbdHandler()
   }
   if (Btr(&sys_cur_scan_code,SCf_NEW_KEY)) {
     Btr(&sys_cur_scan_code,32+SCf_NEW_KEY);
-    U64FifoInsert(scan_code_fifo,sys_cur_scan_code);
+    U64FifoIns(scan_code_fifo,sys_cur_scan_code);
     sys_key_cnt++;
     if (!(sys_cur_scan_code&SCF_KEY_UP)) {
       sys_last_down_scan_code=sys_cur_scan_code;
@@ -515,7 +515,7 @@ U0 KbdHandler()
   }
 }
 
-U64 KbdQueueMsgs()
+U64 KbdQueMsgs()
 {
   I64 p1,p2,msg_code=MSG_NULL;
   TaskStruct *task_focus;
@@ -523,11 +523,11 @@ U64 KbdQueueMsgs()
     while (U64FifoRem(scan_code_fifo,&p2)) {
       p1=ScanCode2A(p2);
       if (p2 & SCF_KEY_UP) {
-	QueueMsg(task_focus,0,
+	QueMsg(task_focus,0,
 	  MSG_KEY_UP,p1,p2,0);
 	msg_code=MSG_KEY_UP;
       } else {
-	QueueMsg(task_focus,0,
+	QueMsg(task_focus,0,
 	  MSG_KEY_DOWN,p1,p2,0);
 	msg_code=MSG_KEY_DOWN;
       }

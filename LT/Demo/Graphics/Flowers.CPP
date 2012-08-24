@@ -86,9 +86,8 @@ I64 GrowStem(Stem *temps,I64 parent_x,I64 parent_y,I64 x0,I64 y0,BoolI8 bloom)
   return result;
 }
 
-U0 GrowSeeds(Seed *tempe,I64 w,I64 h)
+U0 GrowSeeds(Seed *tempe,I64,I64 h)
 {
-  nounusedwarn w;
   while (tempe) {
     if (tempe->height<h)
       tempe->height=GrowStem(tempe->sub,tempe->x,tempe->y,0,0,tempe->height>0.75*h);
@@ -102,7 +101,7 @@ U0 DrawStem(GrDC *dc,Seed *tempe,Stem *temps,Stem *parent,I64 w,I64 h)
   dc->color=GREEN;
   dc->pen_width=2;
   while (temps) {
-  //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,527] GrLine3() because it has pen_width
+  //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,544] GrLine3() because it has pen_width
     if (parent) {
       dc->color=GREEN;
       dc->pen_width=2;
@@ -150,7 +149,7 @@ U0 DrawSeeds(GrDC *dc,Seed *tempe,I64 w,I64 h)
   Stem *temps;
   while (tempe) {
     GrSpritePlot3(dc,tempe->x+w/2,h-tempe->y,0,__BIN_1);
-    //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,527] GrLine3() because it has pen_width
+    //We use [C:/LT/Adam/Gr/GrPrimatives.APZ,544] GrLine3() because it has pen_width
     if (temps=tempe->sub) {
       dc->color=GREEN;
       dc->pen_width=2;
@@ -223,7 +222,7 @@ U0 Flowers()
   try
     do {
       //Hopefully draw_it will not happen during Init()
-      WinSync;
+      WinMgrSync;
 
       InitFlowers;
       ch=GetChar(NULL,FALSE);

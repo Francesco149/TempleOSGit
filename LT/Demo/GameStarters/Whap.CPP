@@ -52,9 +52,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 }
 
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64 t,Order2D3 *,Order2D3 *)
 {
-  nounusedwarn state,DstateDt;
   I64 i,j;
   F64 d,dd;
   D3 p,p2;
@@ -135,7 +134,7 @@ U0 Whap()
   for (i=0;i<NUM_BALLS;i++) {
     balls[i].mass=1.0;
     balls[i].drag_profile_factor=1.0;
-    InsQue(&balls[i],ode->last_mass);
+    QueIns(&balls[i],ode->last_mass);
   }
   balls[2].x=balls[1].x+15;
   balls[2].y=balls[1].y;
@@ -146,27 +145,27 @@ U0 Whap()
   springs[0].end2=&balls[2];
   springs[0].rest_len=15;
   springs[0].constant=10000;
-  InsQue(&springs[0],ode->last_spring);
+  QueIns(&springs[0],ode->last_spring);
   springs[1].end1=&balls[1];
   springs[1].end2=&balls[3];
   springs[1].rest_len=15;
   springs[1].constant=10000;
-  InsQue(&springs[1],ode->last_spring);
+  QueIns(&springs[1],ode->last_spring);
   springs[2].end1=&balls[2];
   springs[2].end2=&balls[3];
   springs[2].rest_len=sqrt2*15;
   springs[2].constant=10000;
-  InsQue(&springs[2],ode->last_spring);
+  QueIns(&springs[2],ode->last_spring);
 
   collision_t=0;
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
 
   LtfCursor;
   LtfClear;
   Fs->draw_it=&DrawIt;
   GetChar;
   SettingsPop;
-  RemQue(ode);
+  QueRem(ode);
   OdeDel(ode);
   MenuPop;
 }

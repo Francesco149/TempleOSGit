@@ -17,11 +17,11 @@ I64 LinkChkLtf(Ltf *l,U64 *_fuf_flags)
 	st=ll->aux_str;
       else
 	st=ll->tag;
-      LtfRemQue(old_ltf);
-      LtfInsQue(l,Fs->last_ltf);
+      LtfQueRem(old_ltf);
+      LtfQueIns(l,Fs->last_ltf);
       l2=LtfLinkChk(st);
-      LtfRemQue(l);
-      LtfInsQue(old_ltf,Fs->last_ltf);
+      LtfQueRem(l);
+      LtfQueIns(old_ltf,Fs->last_ltf);
       if (l2)
 	LtfDel(l2);
       else {

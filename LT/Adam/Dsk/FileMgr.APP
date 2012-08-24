@@ -47,7 +47,7 @@ U0 LTFSDirEntryFileLtf(Ltf *l,LTDirEntry *tempm)
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 
-#define FILEMANAGER_MENU_NAME "::/LT/Doc/FileMgr.TXZ"
+#define FILE_MGR_MENU_NAME "::/LT/Doc/FileMgr.TXZ"
 
 class FMUncollapsedList
 {
@@ -181,9 +181,9 @@ U0 FMRebuildLtf(Ltf **l_,LTDirEntry **root,I64 mode)
     parent_ltf=LtfCur;
   else {
     parent_ltf=l->parent_ltf;
-    LtfRemQue(l);
+    LtfQueRem(l);
     LtfUnlock(l);
-    WinSync;
+    WinMgrSync;
     LtfLock(l);
     cur_tree_entry=NULL;
     cl=l->cur_entry;
@@ -240,7 +240,7 @@ U0 FMRebuildLtf(Ltf **l_,LTDirEntry **root,I64 mode)
       l->flags|=LTFF_MIN_SIZE;
       break;
   }
-  m=LtfRead(FILEMANAGER_MENU_NAME);
+  m=LtfRead(FILE_MGR_MENU_NAME);
   m->settings_root.dft_text_attr=WHITE<<4+LTBLUE;
   l->menu_ltf=m;
   for (i=0;i<NUM_LTPRTS;i++) {
@@ -266,8 +266,8 @@ U0 FMRebuildLtf(Ltf **l_,LTDirEntry **root,I64 mode)
   Free(next_entry);
   *l_=l;
   LtfLock(l);
-  LtfRemQue(LtfCur);
-  LtfInsQue(l,Fs->last_ltf);
+  LtfQueRem(LtfCur);
+  LtfQueIns(l,Fs->last_ltf);
 }
 
 U0 FMRename(Ltf *l)
@@ -541,7 +541,7 @@ U0 FMRightClick()
       Msg(MSG_KEY_DOWN,CH_SHIFT_SPACE,0);
       break;
     case FMR_PASTE:
-      Msg(MSG_KEY_DOWN,0,SC_INSERT+SCF_SHIFT);
+      Msg(MSG_KEY_DOWN,0,SC_INS+SCF_SHIFT);
       break;
     case FMR_CHG_DSK:
       Msg(MSG_KEY_DOWN,'m',0);
@@ -588,7 +588,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)
 
   MenuFilePush("::/LT/Doc/FileMgrPullDown.TXZ");
   if (mode==FM_NORMAL)
-    AcctOneTimePopUp(ARf_FILE_MANAGER_HELP,
+    AcctOneTimePopUp(ARf_FILE_MGR_HELP,
 	"$FG,GREEN$<WINDOWS KEY>$FG$ for help.\n");
 
   FMRebuildLtf(&l,&root,mode);
@@ -759,7 +759,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,TaskStruct *mem_task=NULL)
 	    }
 	    break;
 	  default:
-	    if (sc.u8[0]==SC_INSERT && sc&SCF_SHIFT && !(sc&SCF_CTRL)) {
+	    if (sc.u8[0]==SC_INS && sc&SCF_SHIFT && !(sc&SCF_CTRL)) {
 	      FMCopy(l);
 	      FMRebuildLtf(&l,&root,mode);
 	    } else if (sc.u8[0]==SC_F5) {
@@ -783,8 +783,8 @@ regular_key:
     }
   } while (ch!=CH_ESC && ch!=CH_SHIFT_ESC);
   fp_final_screen_update=fp_old_final_screen_update;
-  LtfRemQue(l);
-  LtfInsQue(old_ltf,Fs->last_ltf);
+  LtfQueRem(l);
+  LtfQueIns(old_ltf,Fs->last_ltf);
   SettingsPop;
   LtfDel(l);
   LTDirListDel(root);

@@ -48,7 +48,7 @@ U0 Search(I64 dx,I64 dy)
       n=StrLen(buf);
       for (i=n;i>2;i--) {
 	buf[i]=0;
-	if ((ptr=WsdPointAtWord(buf)) && *ptr++==WSD_WORD_CHAR &&
+	if ((ptr=WsdPtAtWord(buf)) && *ptr++==WSD_WORD_CHAR &&
 	  !StrICmp(ptr,buf)) {
 	  "%s ",buf;
 	}

@@ -15,7 +15,7 @@ This is a whimsical program which demonstrates some techniques.
 
 #define BORDER		20
 
-#define PTY_POINT	0
+#define PTY_PT	0
 #define PTY_CIRCLE	1
 #define PTY_LINE	2
 #define PTY_GRSPRITES	3
@@ -23,7 +23,7 @@ This is a whimsical program which demonstrates some techniques.
 
 extern class PObject;
 
-class PPoint
+class PPt
 {
   P3I32 p;
 };
@@ -53,7 +53,7 @@ class PObject
   PObject *next,*last;
   I64 type,color;
   union {
-    PPoint   p;
+    PPt   p;
     PCircle  c;
     PLine    l;
     PGrSprite g;
@@ -111,7 +111,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   while (tempo!=&pf->o_root) {
     dc->color=tempo->color;
     switch (tempo->type) {
-      case PTY_POINT:
+      case PTY_PT:
 	GrLine(dc,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x-2,p
 f->cy+tempo->p.p.y-2);
 	GrLine(dc,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x+2,p
@@ -154,13 +154,13 @@ PObject *PObjectNew(PickFrame *pf,I64 type,I64 color)
   tempo->type=type;
   tempo->color=color;
   pf->o_cnts[type]++;
-  InsQue(tempo,pf->o_root.last);
+  QueIns(tempo,pf->o_root.last);
   return tempo;
 }
 
 U0 PObjectDel(PickFrame *pf,PObject *tempo)
 {
-  RemQue(tempo);
+  QueRem(tempo);
   switch (tempo->type) {
     case PTY_GRSPRITES:
       Free(tempo->g.r);
@@ -171,31 +171,31 @@ U0 PObjectDel(PickFrame *pf,PObject *tempo)
   Free(tempo);
 }
 
-PObject *PPointNew(PickFrame *pf,I64 x,I64 y)
+PObject *PPtNew(PickFrame *pf,I64 x,I64 y)
 {
-  PObject *tempo=PObjectNew(pf,PTY_POINT,BLACK);
+  PObject *tempo=PObjectNew(pf,PTY_PT,BLACK);
   tempo->p.p.x=x;
   tempo->p.p.y=y;
   return tempo;
 }
 
-PObject *PPointNum(PickFrame *pf,I64 num)
+PObject *PPtNum(PickFrame *pf,I64 num)
 {
   PObject *tempo=pf->o_root.next;
   while (tempo!=&pf->o_root) {
-    if (tempo->type==PTY_POINT && !num--)
+    if (tempo->type==PTY_PT && !num--)
       return tempo;
     tempo=tempo->next;
   }
   return NULL;
 }
 
-PObject *PPointFind(PickFrame *pf,I64 x,I64 y)
+PObject *PPtFind(PickFrame *pf,I64 x,I64 y)
 {
   I64 d,best_d=MAX_I64;
   PObject *tempo=pf->o_root.next,*result=NULL;
   while (tempo!=&pf->o_root) {
-    if (tempo->type==PTY_POINT) {
+    if (tempo->type==PTY_PT) {
       d=SqrI64(tempo->p.p.x-x)+SqrI64(tempo->p.p.y-y);
       if (d<best_d) {
 	best_d=d;
@@ -210,7 +210,7 @@ PObject *PPointFind(PickFrame *pf,I64 x,I64 y)
 PObject *PCircleNew(PickFrame *pf,I64 p_num,I64 r)
 {
   PObject *tempo=PObjectNew(pf,PTY_CIRCLE,RED);
-  tempo->c.p=PPointNum(pf,p_num);
+  tempo->c.p=PPtNum(pf,p_num);
   tempo->c.radius=r;
   return tempo;
 }
@@ -218,15 +218,15 @@ PObject *PCircleNew(PickFrame *pf,I64 p_num,I64 r)
 PObject *PLineNew(PickFrame *pf,I64 p1_num,I64 p2_num)
 {
   PObject *tempo=PObjectNew(pf,PTY_LINE,GREEN);
-  tempo->l.p1=PPointNum(pf,p1_num);
-  tempo->l.p2=PPointNum(pf,p2_num);
+  tempo->l.p1=PPtNum(pf,p1_num);
+  tempo->l.p2=PPtNum(pf,p2_num);
   return tempo;
 }
 
 PObject *PGrSpriteNew(PickFrame *pf,U8 *img,I64 p_num,I64 *r,I64 *dr)
 {
   PObject *tempo=PObjectNew(pf,PTY_GRSPRITES,BLACK);
-  tempo->g.p=PPointNum(pf,p_num);
+  tempo->g.p=PPtNum(pf,p_num);
   tempo->g.img=img;
   tempo->g.r=r;
   tempo->g.dr=dr;
@@ -243,13 +243,13 @@ PickFrame *Init()
 
   pf->o_root.next=pf->o_root.last=&pf->o_root;
   for (i=0;i<50;i++)
-    PPointNew(pf,RandI32%(pf->cx-BORDER),RandI32%(pf->cy-BORDER));
+    PPtNew(pf,RandI32%(pf->cx-BORDER),RandI32%(pf->cy-BORDER));
   for (i=0;i<20;i++)
-    PCircleNew(pf,pf->o_cnts[PTY_POINT]*RandU16/MAX_U16,6);
+    PCircleNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,6);
   for (i=0;i<20;i++)
    
-PLineNew(pf,pf->o_cnts[PTY_POINT]*RandU16/MAX_U16,pf->o_cnts[PTY_POINT]*RandU1
-6/MAX_U16);
+PLineNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,pf->o_cnts[PTY_PT]*RandU16/MAX_
+U16);
   for (i=0;i<10;i++) {
     r=GrIdent;
     dr=GrIdent;
@@ -257,8 +257,8 @@ PLineNew(pf,pf->o_cnts[PTY_POINT]*RandU16/MAX_U16,pf->o_cnts[PTY_POINT]*RandU1
     GrRotYEqu(dr,0.05*2*(Rand-0.5));
     GrRotXEqu(dr,0.05*2*(Rand-0.5));
    
-PGrSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_POINT]*RandU16/M
-AX_U16,r,dr);
+PGrSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_PT]*RandU16/MAX_
+U16,r,dr);
   }
   NamedFramePtrSet("PickFrame",pf);
   return pf;
@@ -321,7 +321,7 @@ G_IP_MOVE)) {
 	  }
 	  break;
 	case MSG_IP_L_DOWN:
-	  tempo=PPointFind(pf,p1-pf->cx,p2-pf->cy);
+	  tempo=PPtFind(pf,p1-pf->cx,p2-pf->cy);
 	  break;
 	case MSG_IP_L_UP:
 	  if (tempo) {

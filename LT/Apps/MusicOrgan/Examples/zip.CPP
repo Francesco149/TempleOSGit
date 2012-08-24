@@ -22,9 +22,8 @@
 
 F64 t0=tM;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 dt=(tM-t0)*music_tempo;
   U8 *inter;
   if (dt>=16.0) {

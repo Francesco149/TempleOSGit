@@ -111,7 +111,7 @@ public U0 SettingsPop(TaskStruct *task=NULL,U64 flags=0)
     WordStat(tempse->wordstat);
     Snd(0);
     Free(tempse);
-    WinSync;
+    WinMgrSync;
     Preempt(old_preempt);
     LBEqu(&task->task_flags,TASKf_PREEMPT,tempse->preempt);
   } else

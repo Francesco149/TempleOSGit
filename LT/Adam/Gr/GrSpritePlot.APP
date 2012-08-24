@@ -3,10 +3,10 @@
 [C:/LT/Adam/Gr/Gr.APZ,55] GrSprites are stored as a sequence of var
 length operations with a 1-byte type leading
 each operation.  The types available are listed
-here, [C:/LT/Adam/Gr/Gr.APZ,6] GRST_POINT.  They are stored, one after another,
+here, [C:/LT/Adam/Gr/Gr.APZ,6] GRST_PT.  They are stored, one after another,
 in a chunk of memory terminated by a type [C:/LT/Adam/Gr/Gr.APZ,2] GRST_END.
 
-[C:/LT/Adam/Gr/GrSpritePlot.APZ,27] GrSpritePlot3() and [C:/LT/Adam/Gr/GrSpriteVect.APZ,221] GrSpriteVect() shows how the
+[C:/LT/Adam/Gr/GrSpritePlot.APZ,27] GrSpritePlot3() and [C:/LT/Adam/Gr/GrSpriteVect.APZ,208] GrSpriteVect() shows how the
 unions are used.  It's kind-of a mess using a union.
 
 [C:/LT/Adam/Gr/GrSpriteNew.APZ,122] GrSpriteSize() will return the size of a single
@@ -72,7 +72,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	}
 	dc->flags&=~DCF_TRANSFORMATION;
 	break;
-      case GRST_POINT:
+      case GRST_PT:
 	GrPlot3(dc,tempg->x1+x,tempg->y1+y,z);
 	break;
       case GRST_TEXT:
@@ -171,7 +171,7 @@ public U0 GrSpritePlot3(GrDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FAL
 	  x1=x2;y1=y2;
 	}
 	break;
-      case GRST_POLYPOINT:
+      case GRST_POLYPT:
 	ptr=&tempg->y1;
 	x1=ptr[0];
 	y1=ptr[1];
@@ -423,7 +423,7 @@ public U8 *GrSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
       case GRST_TEXT:
       case GRST_TEXT_BOX:
       case GRST_TEXT_DIAMOND:
-      case GRST_POINT:
+      case GRST_PT:
       case GRST_FLOOD_FILL:
       case GRST_FLOOD_FILL_NOT:
       case GRST_SHIFT:
@@ -464,7 +464,7 @@ public U8 *GrSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 	  ptrr[i<<1+1]=(ptr0[i<<1+1]*t0+ptr1[i<<1+1]*t1)>>32;
 	}
 	break;
-      case GRST_POLYPOINT:
+      case GRST_POLYPT:
 	ptr0=&tempg0->y1;
 	ptr1=&tempg1->y1;
 	ptrr=&tempgr->y1;
@@ -530,7 +530,7 @@ public LtfEntry *LtfPutSprite(Ltf *l,U8 *elems,U8 *txt=NULL)
   MemCpy(tempb->data,elems,size);
   tempb->num=l->cur_bin_num;
   tempb->use_cnt=1;
-  InsQue(tempb,l->bin_root.last);
+  QueIns(tempb,l->bin_root.last);
   if (txt)
     st=MSPrintF(txt,l->cur_bin_num++);
   else

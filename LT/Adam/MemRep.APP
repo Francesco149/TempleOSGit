@@ -14,6 +14,7 @@ I64 PenBrushesSize()
   for (i=0;i<GR_NUM_PEN_BRUSHES;i++)
     result+=
       GrDCSize(gr_pen_brushes[i])+
+      GrDCSize(gr_collision_pen_brushes[i])+
       GrDCSize(gr_even_pen_brushes[i])+
       GrDCSize(gr_odd_pen_brushes[i] );
   return result;
@@ -38,7 +39,7 @@ I64 TaskStkSize(TaskStruct *task)
   return result;
 }
 
-I64 TaskQueueSize(TaskStruct *task)
+I64 TaskQueSize(TaskStruct *task)
 {
   TaskCmdStruct *tempc,*tempc1;
   I64 result=0;
@@ -115,7 +116,7 @@ BoolI64 MemRepTask(TaskStruct *task,BoolI8 override_validate=FALSE)
 
   l=task->last_ltf;
   while (l!=(&task->next_ltf)(U8 *)-offset(Ltf.next_ltf) &&
-      l->ltf_in_queue_signature==LTF_IN_QUEUE_SIGNATURE_VAL) {
+      l->ltf_in_que_signature==LTF_IN_QUE_SIGNATURE_VAL) {
     "Ltf      :%08X\n",LtfSize(l);
     l=l->last_ltf;
   }
@@ -158,7 +159,7 @@ BoolI64 MemRepTask(TaskStruct *task,BoolI8 override_validate=FALSE)
 	  if (task1->data_heap!=task1->code_heap)
 	    m+=MSize2(task1->code_heap);
 	}
-	n+=TaskQueueSize(task1);
+	n+=TaskQueSize(task1);
 	task1=task1->next_task;
       } while (task1!=c->seth_task);
       task1=c->idle_task;
@@ -170,7 +171,7 @@ BoolI64 MemRepTask(TaskStruct *task,BoolI8 override_validate=FALSE)
     "TaskStructs\t:%08X\n",j;
     "Tsses\t:%08X\n",k;
     "HeapCtrls\t:%08X\n",m;
-    "TaskQueues\t:%08X\n",n;
+    "TaskQues\t:%08X\n",n;
     "BlkDevs\t:%08X\n",BlkDevsSize;
     "Prts\t:%08X\n",PrtsSize;
     "Audio\t:%08X\n",CallExtStr("AudioSize");

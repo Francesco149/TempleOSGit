@@ -1,34 +1,9 @@
 asm {
 USE64
-SYS_INITIAL_IRQ_VECTS::
-//[C:/LT/OSMain/Interrupts.CPZ,325] IDTInit() uses this table
-//for the initial vects.
-//Other handlers are set, later,
-//with [C:/LT/OSMain/Interrupts.CPZ,281] SetIDTEntry().
-//See SetIDTEntry Grep
-`Grep("SetIDTEntry","::/LT/"SRC_FILE_MASK);View;`
+SYS_MP_CRASH_HANDLER_ADDR:: //forward reference to work around compiler
+	DU32	&MPCrash;
 
-	DU32 SYS_IRQ00,IRQ01,_SYS_HLT,IRQ03;
-	DU32 IRQ04,IRQ05,IRQ06,IRQ07;
-	DU32 IRQ08,IRQ09,IRQ0A,IRQ0B;
-	DU32 IRQ0C,IRQ0D,IRQ0E,IRQ0F;
-
-	DU32 IRQ10,IRQ11,IRQ12,IRQ13;
-	DU32 IRQ14,IRQ15,IRQ16,IRQ17;
-	DU32 IRQ18,IRQ19,IRQ1A,IRQ1B;
-	DU32 IRQ1C,IRQ1D,IRQ1E,IRQ1F;
-
-	DU32 IRQ20,IRQ21,IRQ22,IRQ23;
-	DU32 IRQ24,IRQ25,IRQ26,IRQ27;
-	DU32 IRQ28,IRQ29,IRQ2A,IRQ2B;
-	DU32 IRQ2C,IRQ2D,IRQ2E,IRQ2F;
-
-	DU32 &MPCrash,IRQ31;
-
-//Set [C:/LT/OSMain/Adam1a.HPZ,323] MAX_INITIAL_IDT if you add more
-
-//I_WAKE
-IRQ31:
+SYS_WAKE_HANDLER::
 	PUSH	RAX
 	XOR	RAX,RAX
 	MOV	EAX,U32 LAPIC_EOI
@@ -37,7 +12,8 @@ IRQ31:
 	IRET
 
 //I_TIMER
-IRQ20:	CALL	SYS_SAVE_CONTEXT		//PREEMPTIVE
+SYS_TIMER_HANDLER::
+	CALL	SYS_SAVE_CONTEXT		//PREEMPTIVE
 	CLD
 	MOV	RBP,RSP
 	MOV	RBX,U64 [RBP]
@@ -60,7 +36,7 @@ IRQ20:	CALL	SYS_SAVE_CONTEXT		//PREEMPTIVE
 	CMP	RBX,U32 SYS_IDLE_END
 	JA	@@10
 @@05:	LOCK
-	INC	U64 CPUStruct.idle_point_hits[RDI]
+	INC	U64 CPUStruct.idle_pt_hits[RDI]
 
 @@10:	MOV	RAX,U64 CPUStruct.timer_irq_chain[RDI]
 	OR	RAX,RAX
@@ -88,147 +64,6 @@ IRQ20:	CALL	SYS_SAVE_CONTEXT		//PREEMPTIVE
 	BT	U64 TaskStruct.task_flags[RSI],TASKf_PREEMPT
 	JC	I32 RESTORE_NEXT_RSI_TASK
 @@35:	JMP	I32 RESTORE_RSI_NO_PREEMPT_TASK
-
-
-SYS_IRQ00::
-	PUSH	0
-	JMP	IRQFAULT_JMP
-
-IRQ01:	PUSH	1
-	JMP	IRQFAULT_JMP
-
-IRQ03:	PUSH	3
-	JMP	IRQFAULT_JMP
-
-IRQ04:	PUSH	4
-	JMP	IRQFAULT_JMP
-
-IRQ05:	PUSH	5
-	JMP	IRQFAULT_JMP
-
-IRQ06:	PUSH	6
-	JMP	IRQFAULT_JMP
-
-IRQ07:	PUSH	7
-	JMP	IRQFAULT_JMP
-
-IRQ08:	PUSH	8
-	JMP	IRQFAULT_JMP
-
-IRQ09:	PUSH	9
-	JMP	IRQFAULT_JMP
-
-IRQ0A:	PUSH	0x0A
-	JMP	IRQFAULT_JMP
-
-IRQ0B:	PUSH	0x0B
-	JMP	IRQFAULT_JMP
-
-IRQ0C:	PUSH	0x0C
-	JMP	IRQFAULT_JMP
-
-IRQ0D:	PUSH	0x0D
-	JMP	IRQFAULT_JMP
-
-IRQ0E:	PUSH	0x0E
-	JMP	IRQFAULT_JMP
-
-IRQ0F:	PUSH	0x0F
-	JMP	IRQFAULT_JMP
-
-IRQ10:	PUSH	0x10
-IRQFAULT_JMP:
-	JMP	SYS_IRQ_FAULT
-
-IRQ11:	PUSH	0x11
-	JMP	SYS_IRQ_FAULT
-
-IRQ12:	PUSH	0x12
-	JMP	SYS_IRQ_FAULT
-
-IRQ13:	PUSH	0x13
-	JMP	SYS_IRQ_FAULT
-
-IRQ14:	PUSH	0x14
-	JMP	SYS_IRQ_FAULT
-
-IRQ15:	PUSH	0x15
-	JMP	SYS_IRQ_FAULT
-
-IRQ16:	PUSH	0x16
-	JMP	SYS_IRQ_FAULT
-
-IRQ17:	PUSH	0x17
-	JMP	SYS_IRQ_FAULT
-
-IRQ18:	PUSH	0x18
-	JMP	SYS_IRQ_FAULT
-
-IRQ19:	PUSH	0x19
-	JMP	SYS_IRQ_FAULT
-
-IRQ1A:	PUSH	0x1A
-	JMP	SYS_IRQ_FAULT
-
-IRQ1B:	PUSH	0x1B
-	JMP	SYS_IRQ_FAULT
-
-IRQ1C:	PUSH	0x1C
-	JMP	SYS_IRQ_FAULT
-
-IRQ1D:	PUSH	0x1D
-	JMP	SYS_IRQ_FAULT
-
-IRQ1E:	PUSH	0x1E
-	JMP	SYS_IRQ_FAULT
-
-IRQ1F:	PUSH	0x1F
-	JMP	SYS_IRQ_FAULT
-
-IRQ21:	PUSH	0x21
-	JMP	SYS_IRQ_FAULT
-
-IRQ22:	PUSH	0x22
-	JMP	SYS_IRQ_FAULT
-
-IRQ23:	PUSH	0x23
-	JMP	SYS_IRQ_FAULT
-
-IRQ24:	PUSH	0x24
-	JMP	SYS_IRQ_FAULT
-
-IRQ25:	PUSH	0x25
-	JMP	SYS_IRQ_FAULT
-
-IRQ26:	PUSH	0x26
-	JMP	SYS_IRQ_FAULT
-
-IRQ27:	PUSH	0x27
-	JMP	SYS_IRQ_FAULT
-
-IRQ28:	PUSH	0x28
-	JMP	SYS_IRQ_FAULT
-
-IRQ29:	PUSH	0x29
-	JMP	SYS_IRQ_FAULT
-
-IRQ2A:	PUSH	0x2A
-	JMP	SYS_IRQ_FAULT
-
-IRQ2B:	PUSH	0x2B
-	JMP	SYS_IRQ_FAULT
-
-IRQ2C:	PUSH	0x2C
-	JMP	SYS_IRQ_FAULT
-
-IRQ2D:	PUSH	0x2D
-	JMP	SYS_IRQ_FAULT
-
-IRQ2E:	PUSH	0x2E
-	JMP	SYS_IRQ_FAULT
-
-IRQ2F:	PUSH	0x2F
-	JMP	SYS_IRQ_FAULT
 
 // ************************************
 SYS_IRQ_FAULT::
@@ -264,12 +99,13 @@ SYS_IRQ_FAULT::
 	JMP	I32 RESTORE_FS_TASK_WITH_KEY_CHECK
 
 SYS_FAULT_ERR_CODE_BITMAP::
-	DU32	0x00027D00;
+	DU32	0x00027D00,0,0,0,0,0,0,0;
 }
 
-U0 *GetIDTEntry(U64 irq,U64 cpu_num=0)
+U0 *GetIDTEntry(U64 irq,I64 cpu_num=-1)
 {
   U64 result,*src;
+  if (cpu_num<0) cpu_num=Gs->num;
   if (cpu_num>=mp_cnt&&cpu_num>Gs->num)
     throw(EXCEPT_MULTICORE,3);
   src=cpu_structs[cpu_num].idt(U8 *)+irq*16;
@@ -280,13 +116,20 @@ U0 *GetIDTEntry(U64 irq,U64 cpu_num=0)
   return result;
 }
 
-U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),U64 cpu_num=0,U64 type=IDTET_IRQ,U64 dpl=0)
+U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,
+    U64 type=IDTET_IRQ,U64 dpl=0)
 {
-//See [C:/LT/OSMain/Adam1a.HPZ,308] IDTET_IRQ
+//See [C:/LT/OSMain/Adam1a.HPZ,313] IDTET_IRQ
 //See [::/LT/Demo/Lectures/InterruptDemo.CPZ] ::/LT/Demo/Lectures/InterruptDemo.CPZ
 //See [::/LT/Demo/MultiCore/Interrupts.CPZ] ::/LT/Demo/MultiCore/Interrupts.CPZ
-  U64 result=GetIDTEntry(irq,cpu_num),fp=fp_new_handler;
-  U8 *dst=cpu_structs[cpu_num].idt(U8 *)+irq*16;
+  U64 result,fp=fp_new_handler;
+  U8 *dst;
+
+  if (cpu_num<0) cpu_num=Gs->num;
+
+  result=GetIDTEntry(irq,cpu_num);
+  dst=cpu_structs[cpu_num].idt(U8 *)+irq*16;
+
   PushFD;
   Cli;
   *dst(U16 *)++=fp.u16[0];
@@ -314,29 +157,47 @@ U0 IntsInit()
   OutU8(0xA1,0xFF);
 }
 
-interrupt U0 IntNop()
+U0 IntEOI()
 {
+  U32 *_d=LAPIC_EOI;
+  *_d=0;
 }
 
-interrupt U0 IntAckNop()
+interrupt U0 IntNop1()
+{
+  IntEOI;
+}
+
+interrupt U0 IntNop2()
 {
   OutU8(0xA0,0x20);
   OutU8(0x20,0x20);
 }
 
-U0 IDTInit()
-{ //interrupt descriptor table
-  U64 i,temp_ptr[2];
-  U32 *ptr=SYS_INITIAL_IRQ_VECTS;
-  Gs->idt=CAlloc(16*256);
-  if (Gs->num)
-    for (i=0;i<256;i++)
-      SetIDTEntry(i,&IntNop,Gs->num,IDTET_IRQ);
-  else
-    for (i=0;i<256;i++)
-      SetIDTEntry(i,&IntAckNop,Gs->num,IDTET_IRQ);
+U8 *IntFaultHandlersNew()
+{
+  I64 i;
+  U8 *result=MAlloc(256*10,Fs->code_heap),*dst=result;
+  for (i=0;i<256;i++) {
+    *dst++=0x68; //PUSH I32 xxxxxxxx
+    *dst(I32 *)++=i;
+    *dst++=0xE9; //JMP	I32 xxxxxxxx
+    *dst(I32 *)=SYS_IRQ_FAULT-dst-4;
+    dst+=4;
+  }
+  return result;
+}
 
-  SetIDTEntry(I_TIMER ,ptr[I_TIMER] ,Gs->num,IDTET_IRQ);
+U0 IDTInit1()
+{ //Interrupt descriptor table part1
+  U64 i,temp_ptr[2];
+  U32 *ptr;
+  Gs->idt=CAlloc(16*256);
+  for (i=0;i<256;i++)
+    if (!Gs->num && 0x20<=i<0x30)
+      SetIDTEntry(i,&IntNop2);
+    else
+      SetIDTEntry(i,&IntNop1);
 
   ptr=temp_ptr;
   *ptr(U16 *)++=256*16-1;
@@ -344,17 +205,19 @@ U0 IDTInit()
   *ptr(U32 *)++=Gs->idt(U64).u32[1];
   *ptr(U16 *)++=0;
   SetRAX(temp_ptr);
-  asm {
-	LIDT U64 [RAX]
-  }
+  asm {	LIDT U64 [RAX] }
 }
 
-U0 IDTInitComplete()
-{ //interrupt descriptor table
+U0 IDTInit2()
+{ //Interrupt descriptor table part2
   U64 i;
-  U32 *ptr=SYS_INITIAL_IRQ_VECTS;
-
-  for (i=0;i<MAX_INITIAL_IDT;i++)
-    if (i!=I_TIMER)
-      SetIDTEntry(i,ptr[i],Gs->num,IDTET_IRQ);
+  PushFD;
+  Cli;
+  for (i=0;i<256;i++)
+    SetIDTEntry(i,&sys_fault_handlers_code[10*i]);
+  SetIDTEntry(I_NMI,_SYS_HLT);
+  SetIDTEntry(I_TIMER,SYS_TIMER_HANDLER);
+  SetIDTEntry(I_MP_CRASH,*SYS_MP_CRASH_HANDLER_ADDR(U32 *));
+  SetIDTEntry(I_WAKE,SYS_WAKE_HANDLER);
+  PopFD;
 }

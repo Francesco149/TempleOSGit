@@ -226,20 +226,20 @@ U0 StepNew(TaskStruct *task,I64 x,I64 y,F64 theta,BoolI8 king)
     temps->x=x;
     temps->y=y;
     temps->t0=tP(task);
-    InsQue(temps,king_step_root.last);
+    QueIns(temps,king_step_root.last);
   }
 
   temps=MAlloc(sizeof(Step),task);
   temps->x=x-3.5*Sin(theta)+1.0*Cos(theta);
   temps->y=y+3.5*Cos(theta)+1.0*Sin(theta);
   temps->t0=tP(task);
-  InsQue(temps,step_root.last);
+  QueIns(temps,step_root.last);
 
   temps=MAlloc(sizeof(Step),task);
   temps->x=x+3.5*Sin(theta)-1.0*Cos(theta);
   temps->y=y-3.5*Cos(theta)-1.0*Sin(theta);
   temps->t0=tP(task);
-  InsQue(temps,step_root.last);
+  QueIns(temps,step_root.last);
 }
 
 U0 Init()
@@ -261,11 +261,11 @@ U0 Init()
     trees[i].fire_frame_index=0;
   }
 
-  step_root.next=step_root.last=&step_root;
-  king_step_root.next=king_step_root.last=&king_step_root;
+  QueInit(&step_root);
+  QueInit(&king_step_root);
 
   GrSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
-  peasant_root.next=peasant_root.last=&peasant_root;
+  QueInit(&peasant_root);
   for (i=0;i<NUM_PEASANTS;i++) {
     tempp=MAlloc(sizeof(Peasant));
     tempp->x=RandU16%(w-2*BORDER-(max_x-min_x+1))+BORDER-min_x;
@@ -273,7 +273,7 @@ U0 Init()
     tempp->theta=pi*2*Rand;
     tempp->door_opened_t0=0;
     tempp->stopped=FALSE;
-    InsQue(tempp,peasant_root.last);
+    QueIns(tempp,peasant_root.last);
   }
 
   king_x=w/2;
@@ -286,32 +286,9 @@ U0 Init()
 
 U0 CleanUp()
 {
-  Peasant *tempp,*tempp1;
-  Step *temps,*temps1;
-
-  tempp=peasant_root.next;
-  while (tempp!=&peasant_root) {
-    tempp1=tempp->next;
-    RemQue(tempp);
-    Free(tempp);
-    tempp=tempp1;
-  }
-
-  temps=step_root.next;
-  while (temps!=&step_root) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
-
-  temps=king_step_root.next;
-  while (temps!=&king_step_root) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
+  QueDel(&peasant_root,TRUE);
+  QueDel(&step_root,TRUE);
+  QueDel(&king_step_root,TRUE);
 }
 
 U0 Follow(TaskStruct *task,Peasant *tempp)
@@ -331,9 +308,8 @@ U0 Follow(TaskStruct *task,Peasant *tempp)
   }
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {//preempt off by default after Spawned
-  nounusedwarn dummy;
   Step *temps,*temps1;
   Peasant *tempp;
   I64 i,animate_cnt=0,w,h;
@@ -345,7 +321,7 @@ U0 AnimateTask(U64 dummy=0)
     while (temps!=&step_root) {
       temps1=temps->next;
       if (tP(Fs->parent_task)-temps->t0>4.0) {
-	RemQue(temps);
+	QueRem(temps);
 	Free(temps);
       }
       temps=temps1;
@@ -355,7 +331,7 @@ U0 AnimateTask(U64 dummy=0)
     while (temps!=&king_step_root) {
       temps1=temps->next;
       if (tP(Fs->parent_task)-temps->t0>4.0) {
-	RemQue(temps);
+	QueRem(temps);
 	Free(temps);
       }
       temps=temps1;
@@ -421,9 +397,8 @@ U0 BurnTrees()
       trees[i].fire_frame_index=1;
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 {
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   music_tempo= 2.480;

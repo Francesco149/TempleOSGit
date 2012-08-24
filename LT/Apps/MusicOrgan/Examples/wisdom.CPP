@@ -18,9 +18,8 @@
 
 F64 t0=0.0;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   GrSpritePlot3(dc,20,8,0,__BIN_1);
   if (t0) {
     GrSpritePlot3(dc,20,24,0,__BIN_2);

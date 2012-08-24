@@ -6,7 +6,7 @@ They're just global integer vars.
 label, as in _MALLOC+0x20.  You specify C+ function names with & before 
 functions as in &PrintF+0x10.
 
-* [C:/LT/OSMain/Dbg1a.CPZ,431] Dbg() will enter debugger.  You might enter
+* [C:/LT/OSMain/Dbg1a.CPZ,431] Dbg() will enter debugger or you might enter
 the debugger through a fault.  
 You might place a call in your code at fatal error points to enter the 
 debugger.  If you see a stk dump, record the label+offset and unassemble, 
@@ -18,14 +18,15 @@ might exit debugger, but you will lose the task.
 
 * You can use [C:/LT/OSMain/TaskCmd.CPZ,304] AdamLog() to send text to the
 Adam task window.  It works like 
-[C:/LT/OSMain/Str1a.CPZ,2509] PrintF().
+[C:/LT/OSMain/Str1a.CPZ,2509] PrintF().  I never use this.  Instead I use
+[C:/LT/OSMain/Dbg1a.CPZ,182] DbgNum().
 
-* [C:/LT/OSMain/Dbg1a.CPZ,266] D() [C:/LT/Adam/Ltf/LtfMain.APZ,699] LtfD() to
+* [C:/LT/OSMain/Dbg1a.CPZ,266] D() [C:/LT/Adam/Ltf/LtfMain.APZ,704] LtfD() to
 do 16 column hex dump mem with numbering from zero.  With 
-[C:/LT/Adam/Ltf/LtfMain.APZ,699] LtfD the values are updated continually and
+[C:/LT/Adam/Ltf/LtfMain.APZ,704] LtfD the values are updated continually and
 you can alter mem by editing.
 
-* [C:/LT/OSMain/Dbg1a.CPZ,296] Dm() [C:/LT/Adam/Ltf/LtfMain.APZ,683] LtfDm()
+* [C:/LT/OSMain/Dbg1a.CPZ,296] Dm() [C:/LT/Adam/Ltf/LtfMain.APZ,688] LtfDm()
 to do 16 column hex dump mem with addresses showing.
 
 * [C:/LT/OSMain/Dbg1a.CPZ,302] Da() to do one column address dump (for stk,
@@ -33,10 +34,12 @@ etc.) with symbolic addresses.
 
 * [C:/LT/OSMain/Dbg1a.CPZ,334] Dr() dumps registers.  You can display and
 modify registers in the debugger 
-with var-like labels, RAX, RBX, etc.
+with var-like labels, RAX, RBX, etc.  See [C:/LT/OSMain/Dbg1a.CPZ,350]
+DefineRegs().
 
-* [C:/LT/Compiler/Unassembler.CPZ,851] U() to unassemble mem or
-[C:/LT/Adam/Dbg2a.APZ,241] Uf() to unassemble a function.
+* [C:/LT/Compiler/Unassembler.CPZ,851] U(&FunName+offset) to unassemble mem
+or [C:/LT/Adam/Dbg2a.APZ,241] Uf("FunName") to unassemble a 
+function.
 
 * [C:/LT/Adam/Profiler.APZ,45] ProfBin(),[C:/LT/Adam/Profiler.APZ,80]
 ProfAll() and [C:/LT/Adam/Profiler.APZ,106] ProfRep() provide code profiling.
@@ -52,17 +55,18 @@ faults here: [C:/LT/OSMain/Dbg1a.CPZ,480] Fault2().
 DbgStr() and [C:/LT/OSMain/Dbg1a.CPZ,216] DbgAdd() to print debug info
 bypassing the window 
 framework.  You pass these routines a count in milliseconds for how long it 
-should be displayed.  You can use [C:/LT/OSMain/Misc1a.CPZ,325] Raw(TRUE) to
+should be displayed.  You can use [C:/LT/OSMain/Misc1a.CPZ,324] Raw(TRUE) to
 make all output bypass the 
-window framework.
+window framework.  The WinMgr runs on core0 and will overwrite raw text from 
+other cores when it updates the screen.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,306] SysDbg() to set a flag which you can read
-with [C:/LT/OSMain/Misc1a.CPZ,312] IsSysDbg() when you wish 
+* Use [C:/LT/OSMain/Misc1a.CPZ,305] SysDbg() to set a flag which you can read
+with [C:/LT/OSMain/Misc1a.CPZ,311] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
-* Use [C:/LT/OSMain/Misc1a.CPZ,316] SysDeterministic() to set a flag which
+* Use [C:/LT/OSMain/Misc1a.CPZ,315] SysDeterministic() to set a flag which
 tries to keep the system 
-deterministic for debugging.  [C:/LT/OSMain/Misc1a.CPZ,321]
+deterministic for debugging.  [C:/LT/OSMain/Misc1a.CPZ,320]
 IsSysDeterministic().  There is a Deterministic 
 OSMain config flag.
 
@@ -90,17 +94,17 @@ compiler (it's not 100% valid because it hasn't been fixed-up).
 
 
 * There is a heap check utility which can find leaks.  Use
-[C:/LT/Adam/HeapLog.APZ,122] HeapLog(), and 
-[C:/LT/Adam/HeapLog.APZ,81] HeapLogRep().  It's a really simple program which
+[C:/LT/Adam/HeapLog.APZ,121] HeapLog(), and 
+[C:/LT/Adam/HeapLog.APZ,80] HeapLogRep().  It's a really simple program which
 intercepts [C:/LT/OSMain/Memory.CPZ,956] MAlloc() and 
 [C:/LT/OSMain/Memory.CPZ,950] Free().  You can customize the code to find
 other heap issues.
 
 * You can define functions for <CTRL-ALT-letter> keys, but they must operate 
-in a interrupt environment or in the window manager when in queues kbd msgs.  
-You can do [C:/LT/OSMain/Misc1a.CPZ,325] Raw() output.  Search for
-[C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[] and look at the 
-code.  They take scancode as an arg.
+in a interrupt environment or in the window mgr when in ques kbd msgs.  You 
+can do [C:/LT/OSMain/Misc1a.CPZ,324] Raw() output.  Search for
+[C:/LT/OSMain/OSGlbls.CPZ,40] fp_ctrl_alt_let_cbs[] and look at the code.  
+They take scancode as an arg.
 
 * If you recompile OSMain with [C:/LT/Adam/Boot/InsBoot.APZ,157]
 InstallBoot(), you can set the MemInit, option 

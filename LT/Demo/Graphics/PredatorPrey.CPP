@@ -58,7 +58,7 @@ U0 PredatorPrey()
     LtfClear;
     WinMax;
     WinBorder;
-    WinSync;
+    WinMgrSync;
     WordStat;
 
     dc->color=BLACK;

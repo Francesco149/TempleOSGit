@@ -9,9 +9,8 @@ SND_IN_CONTAINER my_buf[SND_BUF_LEN*NUM_BUF];
 
 I64 my_ibuf_ptr,my_obuf_ptr;
 
-U0 EchoFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
+U0 EchoFillBuf(SND_OUT_CONTAINER *buf,I64)
 {
-  nounusedwarn buf_num;
   I64 j;
   if (echo_done) return;
   j=0;
@@ -21,9 +20,8 @@ U0 EchoFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
   }
 }
 
-U0 EchoCopyBuf(SND_IN_CONTAINER *buf,I64 buf_num)
+U0 EchoCopyBuf(SND_IN_CONTAINER *buf,I64)
 {
-  nounusedwarn buf_num;
   I64 j;
   if (echo_done) return;
   j=0;

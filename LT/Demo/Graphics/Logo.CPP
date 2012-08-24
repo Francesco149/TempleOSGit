@@ -30,7 +30,7 @@ U0 Logo()
 //See also [C:/LT/Adam/Gr/GrSpritePlot.APZ,340] GrSpritePlotRotX3b(),
 //[C:/LT/Adam/Gr/GrSpritePlot.APZ,347] GrSpritePlotRotY3b(),[C:/LT/Adam/Gr/GrSpritePlot.APZ,354] GrSpritePlotRotZ3b().
 
-    WinSync;
+    WinMgrSync;
     GrDCFill(dc);
   }
   GrDCDel(dc);

@@ -246,9 +246,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 }
 
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   while (TRUE) {
     Snd(speed*3+10);
     vx-=speed*Sin(theta);
@@ -333,7 +332,7 @@ U0 Varoom()
 	  case CH_ESC:
 	    goto vr_done;
 	}
-      WinSync;
+      WinMgrSync;
     }
 vr_done: //Don't goto out of try
   } catch

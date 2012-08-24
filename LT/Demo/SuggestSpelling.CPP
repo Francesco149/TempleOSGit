@@ -72,9 +72,8 @@ If you "Adam Include" this file, it will
 install this command as a hot-key.
 */
 
-U0 CtrlAltL(U64 sc)
+U0 CtrlAltL(U64)
 {
-  nounusedwarn sc;
 //[C:/LT/Adam/WordStat/WordStat.APZ,36] ws_cur_word is only set if WordStat
 //is running.
   PopUp("SuggestSpelling(ws_cur_word);View;");

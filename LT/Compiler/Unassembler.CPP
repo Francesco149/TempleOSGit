@@ -659,9 +659,9 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
       SPrintF(buf2,"%02X",imm);
       StrCat(arg1_st,buf2);
       if (tempi->opcode[0]==0xCD) {
-	if (imm<MAX_INITIAL_IDT) {
+	if (ptr=DefineSub(imm,"ST_INT_NAMES")) {
 	  StrCat(arg1_st," ");
-	  StrCat(arg1_st,DefineSub(imm,"ST_INT_NAMES"));
+	  StrCat(arg1_st,ptr);
 	}
       }
       break;

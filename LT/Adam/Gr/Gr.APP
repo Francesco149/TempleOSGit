@@ -3,10 +3,10 @@
 //Unused
 #define GRST_COLOR8		2
 //Unused
-#define GRST_POINT		4
+#define GRST_PT		4
 #define GRST_LINE		5
 #define GRST_POLYLINE		6
-#define GRST_POLYPOINT		7
+#define GRST_POLYPT		7
 #define GRST_WIDTH		8
 #define GRST_SHIFT		9
 #define GRST_BSPLINE2		10
@@ -14,7 +14,7 @@
 #define GRST_BSPLINE2_CLOSED	12
 #define GRST_BSPLINE3_CLOSED	13
 #define GRST_SPEEDLINE		14
-#define GRST_SPEEDLINE_POINT	15
+#define GRST_SPEEDLINE_PT	15
 //Unused
 #define GRST_RECT		17
 #define GRST_CIRCLE		18
@@ -94,7 +94,7 @@ extern GrDC *GrDCNew(U64 type,U64 width,U64 height,TaskStruct *task=NULL,BoolI8 
 extern GrDC *GrDCAlias(GrDC *dc=NULL,TaskStruct *task=NULL);
 extern U0 GrDCDel(GrDC *dc);
 extern U0 EdExistingGraphic(Ltf *l,I64 x,I64 y,I64 *import_snap=NULL,F64 *import_ip_scaler=NULL);
-extern GrSprite *GrSpriteLtf2Queue(Ltf *l,GrSprite *root,I64 *cur_num);
+extern GrSprite *GrSpriteLtf2Que(Ltf *l,GrSprite *root,I64 *cur_num);
 extern BoolI64 GrDCBlot3(GrDC *dc,I64 x1,I64 y1,I64 z1,GrDC *img);
 extern U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor);
 

@@ -106,11 +106,11 @@ public U0 Play(U8 *st,U8 *words=NULL)
     '!!'  *1.5`2
 
   [C:/LT/Adam/Snd/Music.APZ,8] music_waveform is set with
-    "W1" for [C:/LT/OSMain/Adam1a.HPZ,3841] WF_SQUARE
-    "W2" for [C:/LT/OSMain/Adam1a.HPZ,3842] WF_SINE
-    "W3" for [C:/LT/OSMain/Adam1a.HPZ,3843] WF_TRIANGLE
-    "W4" for [C:/LT/OSMain/Adam1a.HPZ,3844] WF_SAWTOOTH
-    "W5" for [C:/LT/OSMain/Adam1a.HPZ,3845] WF_NOISE
+    "W1" for [C:/LT/OSMain/Adam1a.HPZ,3844] WF_SQUARE
+    "W2" for [C:/LT/OSMain/Adam1a.HPZ,3845] WF_SINE
+    "W3" for [C:/LT/OSMain/Adam1a.HPZ,3846] WF_TRIANGLE
+    "W4" for [C:/LT/OSMain/Adam1a.HPZ,3847] WF_SAWTOOTH
+    "W5" for [C:/LT/OSMain/Adam1a.HPZ,3848] WF_NOISE
 
   [C:/LT/Adam/Snd/Music.APZ,8] music_meter_top,[C:/LT/Adam/Snd/Music.APZ,9] music_meter_bottom is set with
     "M3/4"
@@ -173,7 +173,7 @@ public U0 Play(U8 *st,U8 *words=NULL)
     } else
       f=0;
     if (words) {
-      if (word=ListEntryPoint(i++,words))
+      if (word=ListEntryPt(i++,words))
 	if (StrCmp(word," "))
 	  "" word;
     }

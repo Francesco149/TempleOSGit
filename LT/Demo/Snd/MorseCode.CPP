@@ -61,13 +61,13 @@ U0 MorseTable()
   U8 *st;
   I64 i=0;
   for (i=0;i<13;i++ ) {
-    if (st=ListEntryPoint(i,morse_list))
+    if (st=ListEntryPt(i,morse_list))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    if (st=ListEntryPoint(i+13,morse_list))
+    if (st=ListEntryPt(i+13,morse_list))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    if (st=ListEntryPoint(i+26,morse_list))
+    if (st=ListEntryPt(i+26,morse_list))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    if (st=ListEntryPoint(i+39,morse_list))
+    if (st=ListEntryPt(i+39,morse_list))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     NewLine;
   }
@@ -77,9 +77,8 @@ U0 MorseTable()
 F64 m_start,m_end,dt_down,dt_up;
 BoolI8 space_sent;
 
-U8 *MorseTimes(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *MorseTimes(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
-  nounusedwarn l,ll;
   U8 *st=MAlloc(64,mem_task);
   SPrintF(st,"Down:%10.6f Up:%10.6f",dt_down,dt_up);
   return st;

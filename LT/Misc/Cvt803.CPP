@@ -1,6 +1,6 @@
 /*
 This converts [C:/LT/Adam/Gr/Gr.APZ,55] GrSprite to the
-new [C:/LT/OSMain/Adam1a.HPZ,3477] DCT_COLOR8 format.
+new [C:/LT/OSMain/Adam1a.HPZ,3480] DCT_COLOR8 format.
 */
 
 public class OldGrSprite

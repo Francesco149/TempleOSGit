@@ -36,7 +36,7 @@ MgdMC *PmtSliderCtrl()
     }
     temps=CAlloc(sizeof(MgdMCSlider));
     temps->name=st;
-    InsQue(temps,result->last_slider);
+    QueIns(temps,result->last_slider);
     temps->num=result->num_sliders++;
   }
   return result;
@@ -189,7 +189,7 @@ Ctrl *SliderNew()
   c->left_click=&LeftClickSlider;
   c->update_derived_vals=&UpdateDerivedSliderCtrl;
   old_preempt=Preempt(OFF);
-  InsQue(c,Fs->last_ctrl);
+  QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
   return c;
@@ -198,7 +198,7 @@ Ctrl *SliderNew()
 U0 SliderDel(Ctrl *c)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(c);
+  QueRem(c);
   Preempt(old_preempt);
 ");
   if (!*m->glbl_name)

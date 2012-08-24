@@ -205,7 +205,7 @@ MyMass *PlaceMass(I64 type,I64 x, I64 y,F64 r,F64 dx,F64 dy,F64 mass,TaskStruct 
   tempm->DxDt=dx;
   tempm->DyDt=dy;
   tempm->radius=r;
-  InsQue(tempm,ode->last_mass);
+  QueIns(tempm,ode->last_mass);
   return tempm;
 }
 
@@ -215,7 +215,7 @@ MySpring PlaceSpring(MyMass *tempm1,MyMass *tempm2)
   temps->end1=tempm1;
   temps->end2=tempm2;
   temps->constant=20000;
-  InsQue(temps,ode->last_spring);
+  QueIns(temps,ode->last_spring);
   return temps;
 }
 
@@ -240,9 +240,8 @@ U0 HoseNew()
   nozzle_theta=0;
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
 //Preempt is off by default for new task
   MyMass   *tempm,*tempm1;
   F64 dx,dy;
@@ -271,13 +270,13 @@ U0 AnimateTask(U64 dummy=0)
 	tempm1=tempm->next;
 	if (tempm->type==MT_DROPLET &&
 	    tempm->y+tempm->radius>GROUND_Y) {
-	  RemQue(tempm);
+	  QueRem(tempm);
 	  Free(tempm);
 	}
 	tempm=tempm1;
       }
     }
-    WinSync;
+    WinMgrSync;
   }
 }
 
@@ -290,7 +289,7 @@ U0 MoveNozzleTaskX(I64 sign)
     nozzle->x=Limit(nozzle->x+
       sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
       HOSE_RADIUS*3,GR_WIDTH-HOSE_RADIUS*3);
-    WinSync;
+    WinMgrSync;
   }
 }
 
@@ -301,7 +300,7 @@ U0 MoveNozzleTaskY(I64 sign)
     nozzle->y=Limit(nozzle->y+
       sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
       HOSE_RADIUS*3,GROUND_Y);
-    WinSync;
+    WinMgrSync;
   }
 }
 
@@ -326,44 +325,22 @@ U0 Init()
   ode->acceleration_limit=5e3;
 
   HoseNew;
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
 }
 
 U0 CleanUp()
 {
-  MyMass   *tempm,*tempm1;
-  MySpring *temps,*temps1;
-  I64 i;
-
-  for (i=0;i<NOZZLE_MOVE_STEPS;i++)
-    WinSync;	//Let nozzle move tasks die
-
-  RemQue(ode);
-
-  tempm=ode->next_mass;
-  while (tempm!=&ode->next_mass) {
-    tempm1=tempm->next;
-    RemQue(tempm);
-    Free(tempm);
-    tempm=tempm1;
-  }
-
-  temps=ode->next_spring;
-  while (temps!=&ode->next_spring) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
-
+  WinMgrSync(NOZZLE_MOVE_STEPS); //Let nozzle move tasks die
+  QueRem(ode);
+  QueDel(&ode->next_mass,TRUE);
+  QueDel(&ode->next_spring,TRUE);
   OdeDel(ode);
   LtfClear;
   "$BG$";
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 {
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {

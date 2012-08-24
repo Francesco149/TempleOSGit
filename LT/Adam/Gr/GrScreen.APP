@@ -72,7 +72,7 @@ U0 WinZBufFill(TaskStruct *task)
 
 public U0 WinZBufUpdate()
 { //You might have to call this if you are doing graphics outside
-  //the window manager callback routines.  Call it if, for example,
+  //the window mgr callback routines.  Call it if, for example,
   //a pop-up window closes and you need to refresh before graphics.
   I64 i,z=1;
   U16 *ptr;
@@ -239,6 +239,7 @@ public U0 SetStdPalette()
 
 #define GR_NUM_PEN_BRUSHES 64
 GrDC	*gr_pen_brushes[GR_NUM_PEN_BRUSHES],
+	*gr_collision_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*gr_even_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*gr_odd_pen_brushes[GR_NUM_PEN_BRUSHES];
 
@@ -278,6 +279,15 @@ U0 GrSetUpTables()
     b=GrDCNew(DCT_COLOR8,i,i);
     gr_pen_brushes[i]=b;
     b->color=COLOR_MONO;
+    rr=k*k;
+    for (y=1;y<k;y++)
+      for (x=1;x<k;x++)
+	if (SqrI64(y*2-k)+SqrI64(x*2-k)<rr)
+	  GrPlot0(b,x-1,y-1);
+
+    b=GrDCNew(DCT_COLOR8,i,i);
+    gr_collision_pen_brushes[i]=b;
+    b->color=COLOR_INVALID;
     rr=k*k;
     for (y=1;y<k;y++)
       for (x=1;x<k;x++)
@@ -365,8 +375,6 @@ U0 GrInit()
   WinZBufUpdate;
 }
 
-U64 gr_screen_updates=0;
-
 U0 GrUpdateWins()
 { //Only called by WinMgr
   I64 i;
@@ -446,7 +454,6 @@ U0 GrUpdateWins()
   win_actual_refresh=(GR_REFRESH_LOG_CNT-1)/
       (gr_refresh_time_stamps[(gr_refresh_ts_ptr-1)&(GR_REFRESH_LOG_CNT-1)]-
       gr_refresh_time_stamps[gr_refresh_ts_ptr&(GR_REFRESH_LOG_CNT-1)]);
-  gr_screen_updates++;
   Preempt(old_preempt);
 }
 

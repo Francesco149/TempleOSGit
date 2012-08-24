@@ -1,5 +1,8 @@
                                    Bug Stat
 
+#000028 Introduced:00/00/0000 Fixed:08/07/2012
+Compiler did not typecasting arrays.
+
 #000027 Introduced:00/00/0000 Fixed:04/22/2012
 Compiler used 0 displacement off of RBP in rare circumstances.
 
@@ -90,7 +93,7 @@ autofile operations were broken.
 
 #000003 Introduced:05/20/2010 Fixed:06/05/2010
 [C:/LT/OSMain/KbdMouse/Message.CPZ,138] GetKey() was turning-off preemption
-in its call to echo with [C:/LT/OSMain/Display.CPZ,202] PutKey().  This 
+in its call to echo with [C:/LT/OSMain/Display.CPZ,201] PutKey().  This 
 had the effect of running all terminal window right-clicked #included
 programs 
 with preemption off. 

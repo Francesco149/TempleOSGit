@@ -22,7 +22,7 @@ public U8 *DCluster(U64 c,BoolI8 write=FALSE,I64 num=0)
 {//Dump Disk Cluster.
 //If you set write to TRUE, it will be written when you press <ESC>.
 //See [::/LT/Demo/Dsk/Raw.CPZ] ::/LT/Demo/Dsk/Raw.CPZ.
-//Do [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236] Dir("*",TRUE); to get cluster numbers of files.
+//Do [C:/LT/OSMain/Dsk/Dsk1b.CPZ,234] Dir("*",TRUE); to get cluster numbers of files.
   U8 *buf=MAlloc(Fs->cur_prt->spc<<BLK_SIZE_BITS);
   c=ClusterNumNext(Fs->cur_prt,c,num);
   RClusters(Fs->cur_prt,buf,c,1);

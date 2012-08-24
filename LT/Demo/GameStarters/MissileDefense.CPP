@@ -50,9 +50,8 @@ class Missile
 } m[NUM_MISSILES];
 
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i,x,radius,site;
 
   dc->color=BLACK;
@@ -68,14 +67,14 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
       dc->color=LTGRAY;
       GrPlot(dc,s[i].x.i32[1],s[i].y.i32[1]);
     } else if (s[i].cnt>-EXPLOSION_CNT) {
-      dc->color=gr_screen_updates&15;
+      dc->color=win_updates&15;
       radius=(EXPLOSION_CNT/2-AbsI64(-EXPLOSION_CNT/2-s[i].cnt))*2;
       dc->pen_width=radius;
       GrPlot3(dc,s[i].x.i32[1],s[i].y.i32[1],0);
     }
   for (i=0;i<NUM_MISSILES;i++)
     if (!m[i].dead) {
-      if (gr_screen_updates&1)
+      if (win_updates&1)
 	dc2->color=BLACK;
       else
 	dc2->color=LTGRAY;
@@ -89,9 +88,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   GrPrintF(dc,0,0,"Ammo Left:%d",ammo);
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,j,radius;
   while (TRUE) {
     for (i=0;i<MAX_SHOTS;i++)

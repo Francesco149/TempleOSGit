@@ -2,16 +2,14 @@ GrDC *dc[2]; //dbl buf
 I64 cur_dc,;
 BoolI8 restart;
 
-U0 DrawIt(TaskStruct *task,GrDC *b)
+U0 DrawIt(TaskStruct *,GrDC *b)
 {
-  nounusedwarn task;
   dc[cur_dc]->flags|=DCF_NO_TRANSPARENTS;
   GrDCBlot(b,0,0,dc[cur_dc]);
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 x,y,x1,y1,cnt,next_dc;
   while (TRUE) {
     next_dc=cur_dc^1;

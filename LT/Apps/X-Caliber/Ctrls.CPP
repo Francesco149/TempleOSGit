@@ -97,9 +97,8 @@ U0 UpdateDerivedCtrlPanelCtrl(Ctrl *c)
   s->fuse_time=LimitI64(s->fuse_time,0,CTRL_PANEL_RANGE-1);
 }
 
-U0 LeftClickCtrlPanel(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickCtrlPanel(Ctrl *c,I64 x,I64 y,BoolI8)
 {
-  nounusedwarn down;
   CtrlPanelState *s=c->state;
   if (y<c->top+CTRL_PANEL_BORDER+(CTRL_PANEL_SPACING-FONT_HEIGHT)/2+FONT_HEIGHT+6)
     s->spacewalk=TRUE;
@@ -126,7 +125,7 @@ Ctrl *CtrlPanelNew()
   c->left_click=&LeftClickCtrlPanel;
   c->update_derived_vals=&UpdateDerivedCtrlPanelCtrl;
   old_preempt=Preempt(OFF);
-  InsQue(c,Fs->last_ctrl);
+  QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
   return c;
@@ -135,7 +134,7 @@ Ctrl *CtrlPanelNew()
 U0 CtrlPanelDel(Ctrl *c)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(c);
+  QueRem(c);
   Preempt(old_preempt);
   Free(c);
 }

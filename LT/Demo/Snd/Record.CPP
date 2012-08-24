@@ -7,9 +7,8 @@ U0 (*fp_old_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num)=NULL;
 SND_IN_CONTAINER *record_buf[2];
 I64 record_buf_iptr,record_ibuf_num,record_obuf_num;
 
-U0 RecordCopyBuf(SND_IN_CONTAINER *buf,I64 buf_num)
+U0 RecordCopyBuf(SND_IN_CONTAINER *buf,I64)
 {
-  nounusedwarn buf_num;
   I64 j;
   SND_IN_CONTAINER *_s=record_buf[record_ibuf_num&1];
   j=0;

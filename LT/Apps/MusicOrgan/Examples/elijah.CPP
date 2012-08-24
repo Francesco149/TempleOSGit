@@ -42,9 +42,8 @@ F64 t0=tM;
 #define WOOD_X	220
 #define WOOD_Y	45
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   U8 *img;
   F64 dt=(tM-t0)*music_tempo;
   I64 r;

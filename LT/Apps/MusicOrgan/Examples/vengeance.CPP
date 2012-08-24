@@ -20,9 +20,8 @@
 
 F64 t0=0;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 dt=(tM-t0)*music_tempo-6.0;
   if (t0 && 0<=dt<1.0) {
     dc->flags|=DCF_TRANSFORMATION;

@@ -12,6 +12,6 @@ write a driver for your snd card following the HDAudio template.
 See [::/LT/Demo/Snd/PolyPhonic.CPZ] ::/LT/Demo/Snd/PolyPhonic.CPZ,
 [C:/LT/Adam/Snd/SndFile.APZ,223] SndFileFillBuf() and
 [C:/LT/Adam/Snd/HDAudio.APZ,377] HDFillBuf() for using 
-HD Audio.  The buffers are managed by [C:/LT/Adam/Snd/HDAudio.APZ,393]
+HD Audio.  The buffers are managed by [C:/LT/Adam/Snd/HDAudio.APZ,392]
 HDAudioTask().
 

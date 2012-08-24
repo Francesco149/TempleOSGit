@@ -85,34 +85,24 @@ Cd("/LT/Accts");Dir;
 `Cd("/LT/Accts");Dir;
 `
 
-Cd("/LT/Accts/TAD");Dir;
-
-`Cd("/LT/Accts/TAD");Dir;
-`
-
-Cd("/LT/Accts/TAD/Private");Dir;
-
-`Cd("/LT/Accts/TAD/Private");Dir;
-`
-
-Cd("/LT/Accts/TAD/MusicOrgan");Dir;
-
-`Cd("/LT/Accts/TAD/MusicOrgan");Dir;
-`
-
 Cd("/LT/Accts/TS");Dir;
 
 `Cd("/LT/Accts/TS");Dir;
 `
 
+Cd("/LT/Accts/TS/TAD");Dir;
+
+`Cd("/LT/Accts/TS/TAD");Dir;
+`
+
+Cd("/LT/Accts/TS/TAD/MusicOrgan");Dir;
+
+`Cd("/LT/Accts/TS/TAD/MusicOrgan");Dir;
+`
+
 Cd("/LT/Accts/User");Dir;
 
 `Cd("/LT/Accts/User");Dir;
-`
-
-Cd("/LT/Accts/VMWare");Dir;
-
-`Cd("/LT/Accts/VMWare");Dir;
 `
 
 Cd("/LT/Accts/Install");Dir;
@@ -242,7 +232,7 @@ Copy Drive
 `PmtMyCopyDrv;
 `
 
-Make Back
+Make BackUp
 `MakeBack;
 `
 
@@ -275,27 +265,27 @@ Take Tour
 `
 
 Make InHouse    CD 
-`MakeInHouseCDImage(FALSE);   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeInHouseCDImage;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
 
 Make InHouse    DVD
-`MakeInHouseCDImage(FALSE);   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeInHouseCDImage;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
 Make InHouse    ISO
-`MakeInHouseCDImage(FALSE);   Copy(TS_ISO_NAME,TS_TRA_DRV ":LTTS.ISO");
+`MakeInHouseCDImage;   Copy(TS_ISO_NAME,TS_TRA_DRV ":LTTS.ISO");
 `
 
 Make Production CD 
-`MakeProductionCDImage(FALSE);CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeProductionCDImage;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
 
 Make Production DVD
-`MakeProductionCDImage(FALSE);CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeProductionCDImage;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
 Make Production ISO
-`MakeProductionCDImage(FALSE);Copy(TS_ISO_NAME,TS_TRA_DRV ":LTCD.ISO");
+`MakeProductionCDImage;Copy(TS_ISO_NAME,TS_TRA_DRV ":LTCD.ISO");
 `
 
 -] Applications
@@ -415,6 +405,6 @@ Test Suite
 
 MusicOrgan GODSongs
 `#include
-"::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TAD/MusicOrgan");
+"::/LT/Apps/MusicOrgan/Load";MusicOrgan("::/LT/Accts/TS/TAD/MusicOrgan");
 `
 

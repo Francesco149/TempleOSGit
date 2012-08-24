@@ -143,7 +143,7 @@ I64 SrcLineNum(U0 *add,U64 cnt=1)
   SrcSymHashEntry *temph;
   I64 i,ii,j,offset,best=-1,d,best_d;
   DbgInfo *dbg;
-  U8 **body;
+  U8 **body,*src,*src2;
   if (temph=PSectFind(add,&offset)) {
     if (temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM)) {
       if (dbg=temph->debug) {
@@ -164,6 +164,13 @@ I64 SrcLineNum(U0 *add,U64 cnt=1)
 	    }
 	  }
 	}
+      } else if (temph->src_link && !offset) {
+	src =StrNew(temph->src_link);
+	src2=StrNew(temph->src_link);
+	StrLastRem(src,",",src2);
+	best=A2I(src2);
+	Free(src);
+	Free(src2);
       }
     }
   }
@@ -197,7 +204,8 @@ U8 *SrcFileName(U0 *add,U64 cnt=1,TaskStruct *mem_task=NULL)
 	    }
 	  }
 	}
-	}
+      } else
+	best=temph->src_link;
     }
   }
   if (best) {

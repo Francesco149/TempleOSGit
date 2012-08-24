@@ -1,19 +1,19 @@
 Linked Text Files are a [Circular Queue] Circular Queue of document cmds and
 graphics.  This is 
 the data structure for LoseThos documents.  See
-[C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry for the entry 
+[C:/LT/OSMain/Adam1a.HPZ,1210] LtfEntry for the entry 
 structure.  See [C:/LT/Adam/Training.APZ,203] TipOfDay() for a nice example.
 
 There is one document format for the editor/ viewer/ browser/ cmd line.
 
-Each task has an [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf queue.  There is one
-[C:/LT/OSMain/Adam1a.HPZ,1379] Ltf for the border, called 
+Each task has an [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf queue.  There is one
+[C:/LT/OSMain/Adam1a.HPZ,1378] Ltf for the border, called 
 "auxiliary" and one for the main window.  The aux is at Fs->next_ltf and the 
 main at Fs->last_ltf.  When dbl buffering, there are two main's.  See 
 [::/LT/Demo/Spy.CPZ] ::/LT/Demo/Spy.CPZ.  It is possible to define multiple
 aux's.  To insert a 
-additional aux, use [C:/LT/Adam/Ltf/LtfNew.APZ,728]
-LtfInsQueRev(l,Fs->next_ltf).
+additional aux, use [C:/LT/Adam/Ltf/LtfNew.APZ,726]
+LtfQueInsRev(l,Fs->next_ltf).
 
 See[::/LT/Demo/Ltf/CallBack.CPZ] ::/LT/Demo/Ltf/CallBack.CPZ and
 [::/LT/Demo/Ltf/CallBack2.CPZ] ::/LT/Demo/Ltf/CallBack2.CPZ.

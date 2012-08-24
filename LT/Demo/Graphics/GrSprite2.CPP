@@ -26,9 +26,8 @@ the system.)
 
 GrDC *dc;
 
-U0 DrawIt(TaskStruct *task,GrDC *_dc)
+U0 DrawIt(TaskStruct *,GrDC *)
 {
-  nounusedwarn task,_dc;
 //We can change the pen width because it was not
 //define in <CTRL-R>.
   dc->pen_width=2;

@@ -17,9 +17,8 @@
 
 #define LOAD_WEIGHTS	8
 
-U0 SpanBridge1Init(Ode *ode)
+U0 SpanBridge1Init(Ode *)
 {
-  nounusedwarn ode;
   I64 i;
 
   MyMass *tempm;

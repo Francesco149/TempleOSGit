@@ -3,10 +3,9 @@
 #define R1	13
 #define R2	21
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
   static F64 theta=0;
-  nounusedwarn task;
   I64 x1=200,y1=20,x2=x1,y2=y1+R2;
   F64 tt=tM*music_tempo%16.0,phi;
   theta+=1/(tt*tt+1);

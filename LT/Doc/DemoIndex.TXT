@@ -11,6 +11,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/LT/Demo/Graphics/LowPassFilter.CPZ] ::/LT/Demo/Graphics/LowPassFilter.CPZ
 [::/LT/Demo/Graphics/MathAudioDemo.CPZ] ::/LT/Demo/Graphics/MathAudioDemo.CPZ
 [::/LT/Demo/Graphics/Lines.CPZ] ::/LT/Demo/Graphics/Lines.CPZ
+[::/LT/Demo/GameStarters/TicTacToe.CPZ] ::/LT/Demo/GameStarters/TicTacToe.CPZ
 [::/LT/Demo/Graphics/GrSprite1.CPZ] ::/LT/Demo/Graphics/GrSprite1.CPZ
 [::/LT/Demo/MsgLoop.CPZ] ::/LT/Demo/MsgLoop.CPZ
 [::/LT/Demo/Snd/ASCIIOrgan.CPZ] ::/LT/Demo/Snd/ASCIIOrgan.CPZ

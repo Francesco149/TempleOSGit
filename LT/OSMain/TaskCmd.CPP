@@ -13,7 +13,7 @@ U0 TaskRstAwaitingMsg(TaskStruct *task=NULL)
   Preempt(old_preempt);
 }
 
-TaskCmdStruct *TaskRequestQueue(TaskStruct *servant,TaskStruct *master,
+TaskCmdStruct *TaskRqstQue(TaskStruct *servant,TaskStruct *master,
 		     U8 *data,U64 flags)
 {
   TaskCmdStruct *result;
@@ -40,7 +40,7 @@ TaskCmdStruct *TaskRequestQueue(TaskStruct *servant,TaskStruct *master,
   } else {
     LBtr(&servant->task_flags,TASKf_IDLE);
     TaskRstAwaitingMsg(servant);
-    InsQue(result,servant->last_servant_cmd);
+    QueIns(result,servant->last_servant_cmd);
     LBtr(&servant->locked_flags,TASKLf_TASK_LOCK);
     if (Bt(&flags,TASKCf_WAKE_MASTER) &&
       TaskValidate(master)) {
@@ -52,7 +52,7 @@ TaskCmdStruct *TaskRequestQueue(TaskStruct *servant,TaskStruct *master,
   return result;
 }
 
-TaskCmdStruct *TextInputQueue(TaskStruct *servant,TaskStruct *master,
+TaskCmdStruct *TextInputQue(TaskStruct *servant,TaskStruct *master,
 		     U8 *data,U64 flags)
 {
   BoolI8 old_preempt=Preempt(OFF);
@@ -93,7 +93,7 @@ TaskCmdStruct *TextInputQueue(TaskStruct *servant,TaskStruct *master,
   } else {
     LBtr(&task->task_flags,TASKf_IDLE);
     TaskRstAwaitingMsg(task);
-    InsQue(result,task->last_servant_cmd);
+    QueIns(result,task->last_servant_cmd);
     LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
   }
   PopFD;
@@ -101,7 +101,7 @@ TaskCmdStruct *TextInputQueue(TaskStruct *servant,TaskStruct *master,
   return result;
 }
 
-TaskCmdStruct *QueueMsg(TaskStruct *_servant,TaskStruct *master,
+TaskCmdStruct *QueMsg(TaskStruct *_servant,TaskStruct *master,
 		     I64 msg_code,I64 p1,I64 p2,U64 flags)
 {
   TaskCmdStruct *tempc1,*tempc;
@@ -125,7 +125,7 @@ TaskCmdStruct *QueueMsg(TaskStruct *_servant,TaskStruct *master,
       msg_code==MSG_KEY_DOWN) {
     tempc1=AMAllocIdentical(tempc);
     Cli;
-    InsQue(tempc1,sys_macro_root.last);
+    QueIns(tempc1,sys_macro_root.last);
   }
   Cli;
   while (Bt(&servant->task_flags,TASKf_FILTER_INPUT) &&
@@ -139,16 +139,16 @@ TaskCmdStruct *QueueMsg(TaskStruct *_servant,TaskStruct *master,
   } else {
     LBtr(&servant->task_flags,TASKf_IDLE);
     TaskRstAwaitingMsg(servant);
-    InsQue(tempc,servant->last_servant_cmd);
+    QueIns(tempc,servant->last_servant_cmd);
     LBtr(&servant->locked_flags,TASKLf_TASK_LOCK);
   }
   PopFD;
   if (msg_code<0) //Down-Up
-    QueueMsg(_servant,master,-msg_code+1,p1,p2,flags);
+    QueMsg(_servant,master,-msg_code+1,p1,p2,flags);
   return tempc;
 }
 
-BoolI64 GetRequestResult(TaskCmdStruct *rqst=NULL,U64 *result=NULL)
+BoolI64 GetRqstResult(TaskCmdStruct *rqst=NULL,U64 *result=NULL)
 {
   TaskCmdStruct *tempc,*tempc1;
   PushFD;
@@ -159,7 +159,7 @@ BoolI64 GetRequestResult(TaskCmdStruct *rqst=NULL,U64 *result=NULL)
   tempc=tempc1->next;
   while (tempc!=tempc1) {
     if (!rqst || rqst==tempc) {
-      RemQue(tempc);
+      QueRem(tempc);
       LBtr(&Fs->locked_flags,TASKLf_TASK_LOCK);
       PopFD;
       if (result)
@@ -198,10 +198,10 @@ U0 PostMsg(TaskStruct *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0)
 {
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
-      QueueMsg(task->last_input_filter_task,NULL,msg_code,p1,p2,
+      QueMsg(task->last_input_filter_task,NULL,msg_code,p1,p2,
 	  flags| 1<<TASKCf_DONT_FILTER);
     else
-      QueueMsg(task,NULL,msg_code,p1,p2,flags);
+      QueMsg(task,NULL,msg_code,p1,p2,flags);
   }
 }
 
@@ -233,7 +233,7 @@ start_over:
     if (tempc->cmd_code==TASKCT_EXECUTE_STR ||
     tempc->cmd_code==TASKCT_EXECUTE_FILE) {
       cnt++;
-      RemQue(tempc);
+      QueRem(tempc);
       LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
       SetFlags(old_flags);
       try {
@@ -248,7 +248,7 @@ start_over:
 	  Cli;
 	  while (LBts(&master->locked_flags,TASKLf_TASK_LOCK))
 	    Pause;
-	  InsQue(tempc,master->last_master_cmd);
+	  QueIns(tempc,master->last_master_cmd);
 	  LBtr(&master->locked_flags,TASKLf_TASK_LOCK);
 	  SetFlags(old_flags);
 	}
@@ -294,9 +294,9 @@ I64 Adam(U8 *fmt,...)
   if (!Bt(&sys_run_level,RLf_ADAM_SERVER))
     Dbg("Adam Not Serving Yet");
   TaskWaitIdle(adam_task);
-  tempc=TaskRequestQueue(adam_task,Fs,buf,1<<TASKCf_WAKE_MASTER);
+  tempc=TaskRqstQue(adam_task,Fs,buf,1<<TASKCf_WAKE_MASTER);
   Preempt(old_preempt);
-  GetRequestResult(tempc,&result);
+  GetRqstResult(tempc,&result);
   Free(buf);
   return result;
 }
@@ -335,7 +335,7 @@ U0 XTalk(TaskStruct *task,U8 *fmt,...)
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv),
      *buf1=MSPrintF("\"%Q\";",buf);
-  TextInputQueue(task,0,buf1,0);
+  TextInputQue(task,0,buf1,0);
   Free(buf1);
   Free(buf);
 }
@@ -344,7 +344,7 @@ U0 XTalkWithWait(TaskStruct *task,U8 *fmt,...)
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv),
      *buf1=MSPrintF("\"%Q\";",buf);
-  TextInputQueue(task,0,buf1,0);
+  TextInputQue(task,0,buf1,0);
   Free(buf1);
   Free(buf);
   TaskWaitIdle(task);
@@ -358,7 +358,7 @@ U0 Auto(U8 *fmt,...)
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK))
     ExePutS(buf1);
   else
-    TextInputQueue(Fs,0,buf1,1<<TASKCf_HIGHEST_PRIORITY);
+    TextInputQue(Fs,0,buf1,1<<TASKCf_HIGHEST_PRIORITY);
   Free(buf1);
   Free(buf);
 }
@@ -372,8 +372,8 @@ I64 ServantUser(U8 *fmt,...)
   TaskCmdStruct *tempc;
   TaskStruct *task=Spawn(&ServantUserCmdLine,NULL,"Servant",Fs);
   Fs->popup_task=task;
-  tempc=TaskRequestQueue(task,Fs,buf,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
-  GetRequestResult(tempc,&result);
+  tempc=TaskRqstQue(task,Fs,buf,1<<TASKCf_WAKE_MASTER|1<<TASKCf_FOCUS_MASTER);
+  GetRqstResult(tempc,&result);
   Fs->popup_task=NULL;
   Kill(task,FALSE);
   Free(buf);
@@ -388,7 +388,7 @@ U0 AutoStr(U8 *fmt,...)
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK))
     ExePutS(buf);
   else
-    TextInputQueue(Fs,0,buf,1<<TASKCf_HIGHEST_PRIORITY);
+    TextInputQue(Fs,0,buf,1<<TASKCf_HIGHEST_PRIORITY);
   Free(buf);
 }
 
@@ -408,14 +408,14 @@ U0 AutoFile(U8 *filename)
 U0 XTalkStr(TaskStruct *task,U8 *fmt,...)
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
-  TextInputQueue(task,0,buf,0);
+  TextInputQue(task,0,buf,0);
   Free(buf);
 }
 
 U0 XTalkStrWithWait(TaskStruct *task,U8 *fmt,...)
 {
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
-  TextInputQueue(task,0,buf,0);
+  TextInputQue(task,0,buf,0);
   Free(buf);
   TaskWaitIdle(task);
 }

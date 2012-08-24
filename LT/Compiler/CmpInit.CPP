@@ -239,6 +239,7 @@ U0 CmpLoadDefines()
   DefineLoad("ST_MISSING_EXPRESSION","missing Expression at ");
   DefineLoad("ST_MISSING_RIGHT_PAREN","missing ')' at ");
   DefineLoad("ST_MISSING_RIGHT_BRACKET","missing ']' at ");
+  DefineLoad("ST_MISSING_COLON","missing ':' at");
   DefineLoad("ST_UNDEFINED_SYM","undefined sym at ");
   DefineLoad("ST_UNDEFINED_IDENTIFIER","undefined identifier at ");
   DefineLoad("ST_INVALID_CLASS","invalid class at ");
@@ -247,6 +248,7 @@ U0 CmpLoadDefines()
   DefineLoad("ST_EXPECTING_IDENTIFIER","expecting identifier at ");
   DefineLoad("ST_EXPECTING_RIGHT_PAREN","expecting ')' at ");
   DefineLoad("ST_EXPECTING_LEFT_BRACE","expecting '{' at ");
+  DefineLoad("ST_EXPECTING_EQUAL","expecting '=' at ");
   DefineLoad("ST_MISSING_RIGHT_BRACE","missing '}' at ");
   DefineLoad("ST_INVALID_LVAL","invalid lval at ");
   DefineLoad("ST_EXPECTING_COMMA","expecting ',' at ");
@@ -391,7 +393,9 @@ Anchor for inserting Compiler Defines
 "01.NRBP\0"
 "01.NREG\0"
 "00.NFS\0"
+"01.NMOV_FS\0"
 "00.NGS\0"
+"01.NMOV_GS\0"
 "01.NLEA\0"
 "01.NMOV\0"
 "10..TO_I64\0"
@@ -480,8 +484,6 @@ Anchor for inserting Compiler Defines
 "00.NPAUSE\0"
 "10.NCLFLUSH\0"
 "10.NINVLPG\0"
-"00.NWBINVD\0"
-"00.NINVD\0"
 "10.NINU8\0"
 "10.NINU16\0"
 "10.NINU32\0"
@@ -510,9 +512,10 @@ Anchor for inserting Compiler Defines
 "30.NLBEQU\0"
 "10.NBSF\0"
 "10.NBSR\0"
-"20.NINSQUE\0"
-"20.NINSQUE_REV\0"
-"10.NREMQUE\0"
+"10.NQUE_INIT\0"
+"20.NQUE_INS\0"
+"20.NQUE_INS_REV\0"
+"10.NQUE_REM\0"
 "10.NSTRLEN\0"
 "30.NMEMCPY\0"
 "30.NMEMSET\0"
@@ -570,8 +573,6 @@ Anchor for inserting Compiler Defines
 "20..MOD_U64\0"
 "10..SQRI64\0"
 "10..SQRU64\0"
-"01.NMOV_FS\0"
-"01.NMOV_GS\0"
 );Anchor for adding intermediate codes
 
 }

@@ -151,7 +151,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 //See [::/LT/Demo/Graphics/GrSprite2.CPZ] ::/LT/Demo/Graphics/GrSprite2.CPZ.
 //for a GrSprite example.
 
-//See [C:/LT/Adam/Gr/GrSpriteMesh.APZ,899] GrSpriteMesh() for a fancy example.
+//See [C:/LT/Adam/Gr/GrSpriteMesh.APZ,875] GrSpriteMesh() for a fancy example.
 
 U0 Main()
 {

@@ -1,5 +1,5 @@
 //This is the software interrupt num
-//we will use.  See [C:/LT/OSMain/Adam1a.HPZ,321] Software Int's for
+//we will use.  See [C:/LT/OSMain/Adam1a.HPZ,326] Software Int's for
 //picking a num.  Nums are subject to change.
 
 #define I_F_UNARY_MINUS	I_USER

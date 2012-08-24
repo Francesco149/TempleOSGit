@@ -22,118 +22,117 @@
 #define EC_RBP			0x14
 #define EC_REG			0x15
 #define EC_FS			0x16
-#define EC_GS			0x17
+#define EC_MOV_FS		0x17
+#define EC_GS			0x18
+#define EC_MOV_GS		0x19
 
-#define EC_LEA			0x18
-#define EC_MOV			0x19
+#define EC_LEA			0x1A
+#define EC_MOV			0x1B
 
-#define EC_TO_I64		0x1A
-#define EC_TO_F64		0x1B
-#define EC_TO_BOOL		0x1C
-#define EC_TOUPPER		0x1D
-#define EC_LT_TYPECAST		0x1E
+#define EC_TO_I64		0x1C
+#define EC_TO_F64		0x1D
+#define EC_TO_BOOL		0x1E
+#define EC_TOUPPER		0x1F
+#define EC_LT_TYPECAST		0x20
 
-#define EC_ADDR		0x1F
-#define EC_COM			0x20
-#define EC_NOT			0x21
-#define EC_UNARY_MINUS		0x22
+#define EC_ADDR		0x21
+#define EC_COM			0x22
+#define EC_NOT			0x23
+#define EC_UNARY_MINUS		0x24
 
-#define EC_DEREF		0x23
-#define EC_DEREF_PP		0x24
-#define EC_DEREF_MM		0x25
-#define EC__PP			0x26
-#define EC__MM			0x27
-#define EC_PP_			0x28
-#define EC_MM_			0x29
+#define EC_DEREF		0x25
+#define EC_DEREF_PP		0x26
+#define EC_DEREF_MM		0x27
+#define EC__PP			0x28
+#define EC__MM			0x29
+#define EC_PP_			0x2A
+#define EC_MM_			0x2B
 
-#define EC_SHL			0x2A
-#define EC_SHR			0x2B
-#define EC_SHL_CONST		0x2C
-#define EC_SHR_CONST		0x2D
-#define EC_POWER		0x2E
+#define EC_SHL			0x2C
+#define EC_SHR			0x2D
+#define EC_SHL_CONST		0x2E
+#define EC_SHR_CONST		0x2F
+#define EC_POWER		0x30
 
-#define EC_MUL			0x2F
-#define EC_DIV			0x30
-#define EC_MOD			0x31
+#define EC_MUL			0x31
+#define EC_DIV			0x32
+#define EC_MOD			0x33
 
-#define EC_AND			0x32
+#define EC_AND			0x34
 
-#define EC_OR			0x33
-#define EC_XOR			0x34
+#define EC_OR			0x35
+#define EC_XOR			0x36
 
-#define EC_ADD			0x35
-#define EC_SUB			0x36
-#define EC_ADD_CONST		0x37
-#define EC_SUB_CONST		0x38
+#define EC_ADD			0x37
+#define EC_SUB			0x38
+#define EC_ADD_CONST		0x39
+#define EC_SUB_CONST		0x3A
 
-#define EC_EQUAL_EQUAL		0x39
-#define EC_NOT_EQUAL		0x3A
-#define EC_LESS			0x3B
-#define EC_GREATER		0x3C
-#define EC_LESS_EQUAL		0x3D
-#define EC_GREATER_EQUAL	0x3E
-#define EC_PUSH_CMP		0x3F
+#define EC_EQUAL_EQUAL		0x3B
+#define EC_NOT_EQUAL		0x3C
+#define EC_LESS			0x3D
+#define EC_GREATER		0x3E
+#define EC_LESS_EQUAL		0x3F
+#define EC_GREATER_EQUAL	0x40
+#define EC_PUSH_CMP		0x41
 
-#define EC_AND_AND		0x40
+#define EC_AND_AND		0x42
 
-#define EC_OR_OR		0x41
-#define EC_XOR_XOR		0x42
+#define EC_OR_OR		0x43
+#define EC_XOR_XOR		0x44
 
-#define EC_COLON		0x43
-#define EC_QUESTION		0x44
+#define EC_COLON		0x45
+#define EC_QUESTION		0x46
 
-#define EC_ASSIGN		0x45
-#define EC_ASSIGN_PP		0x46
-#define EC_ASSIGN_MM		0x47
+#define EC_ASSIGN		0x47
+#define EC_ASSIGN_PP		0x48
+#define EC_ASSIGN_MM		0x49
 
-#define EC_SHL_EQUAL		0x48
-#define EC_SHR_EQUAL		0x49
-#define EC_MUL_EQUAL		0x4A
-#define EC_DIV_EQUAL		0x4B
-#define EC_MOD_EQUAL		0x4C
-#define EC_AND_EQUAL		0x4D
-#define EC_OR_EQUAL		0x4E
-#define EC_XOR_EQUAL		0x4F
-#define EC_ADD_EQUAL		0x50
-#define EC_SUB_EQUAL		0x51
+#define EC_SHL_EQUAL		0x4A
+#define EC_SHR_EQUAL		0x4B
+#define EC_MUL_EQUAL		0x4C
+#define EC_DIV_EQUAL		0x4D
+#define EC_MOD_EQUAL		0x4E
+#define EC_AND_EQUAL		0x4F
+#define EC_OR_EQUAL		0x50
+#define EC_XOR_EQUAL		0x51
+#define EC_ADD_EQUAL		0x52
+#define EC_SUB_EQUAL		0x53
 
-#define EC_JMP			0x52
-#define EC_SWITCH		0x53
-#define EC_NOBOUND_SWITCH	0x54
+#define EC_JMP			0x54
+#define EC_SWITCH		0x55
+#define EC_NOBOUND_SWITCH	0x56
 
-#define EC_ADD_RSP		0x55
-#define EC_ADD_RSP1		0x56
-#define EC_ENTER		0x57
-#define EC_PUSH_REGS		0x58
-#define EC_POP_REGS		0x59
-#define EC_LEAVE		0x5A
-#define EC_RET			0x5B
+#define EC_ADD_RSP		0x57
+#define EC_ADD_RSP1		0x58
+#define EC_ENTER		0x59
+#define EC_PUSH_REGS		0x5A
+#define EC_POP_REGS		0x5B
+#define EC_LEAVE		0x5C
+#define EC_RET			0x5D
 
-#define EC_CALL			0x5C
-#define EC_CALL_INDIRECT	0x5D
-#define EC_CALL_INDIRECT2	0x5E
-#define EC_CALL_IMPORT		0x5F
-#define EC_CALL_EXTERN		0x60
-#define EC_IRQ			0x61
+#define EC_CALL			0x5E
+#define EC_CALL_INDIRECT	0x5F
+#define EC_CALL_INDIRECT2	0x60
+#define EC_CALL_IMPORT		0x61
+#define EC_CALL_EXTERN		0x62
+#define EC_IRQ			0x63
 
-#define EC_ASM			0x62
-#define EC_CLI			0x63
-#define EC_STI			0x64
-#define EC_PREEMPT		0x65
-#define EC_CLD			0x66
-#define EC_STD			0x67
-#define EC_HLT			0x68
-#define EC_PUSH			0x69
-#define EC_POP			0x6A
-#define EC_PUSHFD		0x6B
-#define EC_POPFD		0x6C
-#define EC_PAUSE		0x6D
+#define EC_ASM			0x64
+#define EC_CLI			0x65
+#define EC_STI			0x66
+#define EC_PREEMPT		0x67
+#define EC_CLD			0x68
+#define EC_STD			0x69
+#define EC_HLT			0x6A
+#define EC_PUSH			0x6B
+#define EC_POP			0x6C
+#define EC_PUSHFD		0x6D
+#define EC_POPFD		0x6E
+#define EC_PAUSE		0x6F
 
-#define EC_CLFLUSH		0x6E
-#define EC_INVLPG		0x6F
-//6E,6F unused
-#define EC_WBINVD		0x70
-#define EC_INVD			0x71
+#define EC_CLFLUSH		0x70
+#define EC_INVLPG		0x71
 
 #define EC_INU8			0x72
 #define EC_INU16		0x73
@@ -167,78 +166,76 @@
 #define EC_BSF			0x8C
 #define EC_BSR			0x8D
 
-#define EC_INSQUE		0x8E
-#define EC_INSQUE_REV		0x8F
-#define EC_REMQUE		0x90
+#define EC_QUE_INIT		0x8E
+#define EC_QUE_INS		0x8F
+#define EC_QUE_INS_REV		0x90
+#define EC_QUE_REM		0x91
 
-#define EC_STRLEN		0x91
-#define EC_MEMCPY		0x92
+#define EC_STRLEN		0x92
+#define EC_MEMCPY		0x93
 
-#define EC_MEMSET		0x93
-#define EC_MEMSET_U16		0x94
-#define EC_MEMSET_U32		0x95
-#define EC_MEMSET_U64		0x96
+#define EC_MEMSET		0x94
+#define EC_MEMSET_U16		0x95
+#define EC_MEMSET_U32		0x96
+#define EC_MEMSET_U64		0x97
 
-#define EC_BR_ZERO		0x97
-#define EC_BR_NOT_ZERO		0x98
+#define EC_BR_ZERO		0x98
+#define EC_BR_NOT_ZERO		0x99
 
-#define EC_BR_NOT_EQUAL		0x99
-#define EC_BR_EQUAL_EQUAL	0x9A
-#define EC_BR_GREATER_EQUAL	0x9B
-#define EC_BR_LESS_EQUAL	0x9C
-#define EC_BR_GREATER		0x9D
-#define EC_BR_LESS		0x9E
-#define EC_BR_NOT_EQUAL2	0x9F
-#define EC_BR_EQUAL_EQUAL2	0xA0
-#define EC_BR_GREATER_EQUAL2	0xA1
-#define EC_BR_LESS_EQUAL2	0xA2
-#define EC_BR_GREATER2		0xA3
-#define EC_BR_LESS2		0xA4
-#define EC_BR_AND_ZERO		0xA5
-#define EC_BR_AND_NOT_ZERO	0xA6
-#define EC_BR_MM_ZERO		0xA7
-#define EC_BR_MM_NOT_ZERO	0xA8
-#define EC_BR_AND_AND_ZERO	0xA9
-#define EC_BR_AND_AND_NOT_ZERO	0xAA
-#define EC_BR_OR_OR_ZERO	0xAB
-#define EC_BR_OR_OR_NOT_ZERO	0xAC
+#define EC_BR_NOT_EQUAL		0x9A
+#define EC_BR_EQUAL_EQUAL	0x9B
+#define EC_BR_GREATER_EQUAL	0x9C
+#define EC_BR_LESS_EQUAL	0x9D
+#define EC_BR_GREATER		0x9E
+#define EC_BR_LESS		0x9F
+#define EC_BR_NOT_EQUAL2	0xA0
+#define EC_BR_EQUAL_EQUAL2	0xA1
+#define EC_BR_GREATER_EQUAL2	0xA2
+#define EC_BR_LESS_EQUAL2	0xA3
+#define EC_BR_GREATER2		0xA4
+#define EC_BR_LESS2		0xA5
+#define EC_BR_AND_ZERO		0xA6
+#define EC_BR_AND_NOT_ZERO	0xA7
+#define EC_BR_MM_ZERO		0xA8
+#define EC_BR_MM_NOT_ZERO	0xA9
+#define EC_BR_AND_AND_ZERO	0xAA
+#define EC_BR_AND_AND_NOT_ZERO	0xAB
+#define EC_BR_OR_OR_ZERO	0xAC
+#define EC_BR_OR_OR_NOT_ZERO	0xAD
 
-#define EC_BR_BT		0xAD
-#define EC_BR_BTS		0xAE
-#define EC_BR_BTR		0xAF
-#define EC_BR_BTC		0xB0
-#define EC_BR_LBTS		0xB1
-#define EC_BR_LBTR		0xB2
-#define EC_BR_LBTC		0xB3
-#define EC_BR_NOT_BT		0xB4
-#define EC_BR_NOT_BTS		0xB5
-#define EC_BR_NOT_BTR		0xB6
-#define EC_BR_NOT_BTC		0xB7
-#define EC_BR_NOT_LBTS		0xB8
-#define EC_BR_NOT_LBTR		0xB9
-#define EC_BR_NOT_LBTC		0xBA
+#define EC_BR_BT		0xAE
+#define EC_BR_BTS		0xAF
+#define EC_BR_BTR		0xB0
+#define EC_BR_BTC		0xB1
+#define EC_BR_LBTS		0xB2
+#define EC_BR_LBTR		0xB3
+#define EC_BR_LBTC		0xB4
+#define EC_BR_NOT_BT		0xB5
+#define EC_BR_NOT_BTS		0xB6
+#define EC_BR_NOT_BTR		0xB7
+#define EC_BR_NOT_BTC		0xB8
+#define EC_BR_NOT_LBTS		0xB9
+#define EC_BR_NOT_LBTR		0xBA
+#define EC_BR_NOT_LBTC		0xBB
 
-#define EC_SWAP_U8		0xBB
-#define EC_SWAP_U16		0xBC
-#define EC_SWAP_U32		0xBD
-#define EC_SWAP_U64		0xBE
+#define EC_SWAP_U8		0xBC
+#define EC_SWAP_U16		0xBD
+#define EC_SWAP_U32		0xBE
+#define EC_SWAP_U64		0xBF
 
-#define EC_ABS_I64		0xBF
-#define EC_SIGN_I64		0xC0
-#define EC_MIN_I64		0xC1
-#define EC_MIN_U64		0xC2
-#define EC_MAX_I64		0xC3
-#define EC_MAX_U64		0xC4
-#define EC_LIMIT_I64		0xC5
-#define EC_LIMIT_U64		0xC6
-#define EC_MOD_U64		0xC7
-#define EC_SQR_I64		0xC8
-#define EC_SQR_U64		0xC9
+#define EC_ABS_I64		0xC0
+#define EC_SIGN_I64		0xC1
+#define EC_MIN_I64		0xC2
+#define EC_MIN_U64		0xC3
+#define EC_MAX_I64		0xC4
+#define EC_MAX_U64		0xC5
+#define EC_LIMIT_I64		0xC6
+#define EC_LIMIT_U64		0xC7
+#define EC_MOD_U64		0xC8
+#define EC_SQR_I64		0xC9
+#define EC_SQR_U64		0xCA
 
-#define EC_MOV_FS		0xCA
-#define EC_MOV_GS		0xCB
-
-#define EC_NUM_ENTRIES		0xCC
+#define EC_NUM_ENTRIES		0xCB
 //Don't forget [::/LT/Compiler/CmpInit.CPZ,IC_INIT_TABLE] IC_INIT_TABLE
 
 #define KW_INCLUDE	0
@@ -360,23 +357,28 @@
 
 #define CPS_FUN_FLAGS		(CPS_IS_INTERRUPT|CPS_IS_PUBLIC|CPS_IS_ARGPOP|CPS_IS_NOARGPOP)
 
-#define PRS_NULL		0
-#define PRS_LTEXTERN		1
-#define PRS_LTINTERN		2
-#define PRS_LTIMPORT		3
-#define PRS_EXTERN		4
-#define PRS_IMPORT		5
-#define PRS_TYPEDEF		6
-#define PRS_NUM_GLBL		7
+//Byte 0
+#define PRS0_NULL		0x000000
+#define PRS0_LTEXTERN		0x000001
+#define PRS0_LTINTERN		0x000002
+#define PRS0_LTIMPORT		0x000003
+#define PRS0_EXTERN		0x000004
+#define PRS0_IMPORT		0x000005
+#define PRS0_TYPEDEF		0x000006
+#define PRS0_TYPECAST		0x000007
 
-#define PRS_TYPECAST		7
+//Byte 1
+#define PRS1_NULL		0x000000
+#define PRS1B_LOCAL_VAR		1
+#define PRS1_LOCAL_VAR		0x000100
+#define PRS1B_FUN_ARG		2
+#define PRS1_FUN_ARG		0x000200
+#define PRS1B_CLASS		3
+#define PRS1_CLASS		0x000300
+#define PRS1B_STATIC_LOCAL_VAR	4
+#define PRS1_STATIC_LOCAL_VAR	0x000400
 
-#define PRSF_LEX_PUSH		8
-#define PRS_LOCAL_VAR		(0+PRSF_LEX_PUSH)
-#define PRS_FUN_ARG	(1+PRSF_LEX_PUSH)
-#define PRS_CLASS		(2+PRSF_LEX_PUSH)
-#define PRS_UNION		(3+PRSF_LEX_PUSH)
-#define PRS_STATIC_LOCAL_VAR	(4+PRSF_LEX_PUSH)
+#define PRSF_UNION		0x010000
 
 class OptRegStruct
 {

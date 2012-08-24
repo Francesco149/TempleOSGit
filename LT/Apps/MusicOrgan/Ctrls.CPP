@@ -47,9 +47,8 @@ U0 UpdateDerivedTempoCtrl(Ctrl *c)
   s->stacatto=LimitI64(s->stacatto,0,TEMPO_RANGE-1);
 }
 
-U0 LeftClickTempo(Ctrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickTempo(Ctrl *c,I64 x,I64 y,BoolI8)
 {
-  nounusedwarn down;
   TempoState *s=c->state;
   if (x<(c->right+c->left)/2)
     s->tempo=TEMPO_RANGE-1-(y-(c->top+TEMPO_SPACING));
@@ -73,7 +72,7 @@ Ctrl *TempoNew()
   c->left=396;
   c->top=96;
   old_preempt=Preempt(OFF);
-  InsQue(c,Fs->last_ctrl);
+  QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
   return c;
@@ -82,7 +81,7 @@ Ctrl *TempoNew()
 U0 TempoDel(Ctrl *c)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(c);
+  QueRem(c);
   Preempt(old_preempt);
   Free(c);
 }

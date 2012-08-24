@@ -124,9 +124,8 @@ U0 FPSTransform(GrDC *dc,I64 *x,I64 *y,I64 *z)
 
 #define LOS_SCALE	4
 
-BoolI64 LOSPlot(U0 *dummy,I64 x,I64 y,I64 z)
+BoolI64 LOSPlot(U0 *,I64 x,I64 y,I64)
 {
-  nounusedwarn dummy,z;
   if (!map[(y/LOS_SCALE)*map_width+(x/LOS_SCALE)])
     return FALSE;
   else
@@ -425,9 +424,8 @@ U0 Init()
   t0=tP;
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,x,y,dd;
   while (TRUE) {
     dd=0.25*SCREEN_SCALE*Sin(tP(Fs->parent_task)/2);
@@ -468,9 +466,8 @@ U0 CleanUp()
   panels_processed_bitmap=NULL;
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by Terry A. Davis
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {

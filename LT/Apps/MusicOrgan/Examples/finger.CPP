@@ -17,17 +17,15 @@
 
 BoolI8 zap_on;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   if (zap_on)
     GrSpritePlot3(dc,20*8,4*8,0,__BIN_2);
 }
 
 
-U0 ZapTask(U64 dummy=0)
+U0 ZapTask(U64)
 {
-  nounusedwarn dummy;
   Sleep(100);
   zap_on=TRUE;
   Noise(100,3000,4000);

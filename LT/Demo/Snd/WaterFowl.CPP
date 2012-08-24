@@ -113,9 +113,8 @@ U0 Init()
   }
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i;
   while (TRUE) {
     for (i=0;i<NUM_GEESE;i++) {
@@ -126,11 +125,10 @@ U0 AnimateTask(U64 dummy=0)
   }
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by Terry A. Davis
 //This specifies a call-back routine
 //to be called when the task dies.
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {

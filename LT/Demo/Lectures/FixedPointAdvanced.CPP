@@ -71,7 +71,7 @@ _ASM_FLOAT::
 	RET
 }
 
-LTextern _ASM_FIXED_POINT I64 AsmFixedPoint();
+LTextern _ASM_FIXED_POINT I64 AsmFixedPt();
 LTextern _ASM_FLOAT I64 AsmFloat();
 
 U0 Main()
@@ -127,7 +127,7 @@ U0 Main()
 
 //Measure fixed point arithmetic
   start=GetTimeStamp;
-  sum=AsmFixedPoint;
+  sum=AsmFixedPt;
   end=GetTimeStamp;
   test_time=end-start;
   "Asm Fixed Point Sum   :%X\n",sum;

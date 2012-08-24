@@ -1,7 +1,7 @@
 //**WARNING:** Don't return out of a catch{}.  This
 //might get fixed.
 
-//You can use [C:/LT/OSMain/Except.CPZ,232] CatchAll() in a catch statement
+//You can use [C:/LT/OSMain/Except.CPZ,226] CatchAll() in a catch statement
 //and it will report args.
 
 #define EXCEPT_1	1

@@ -13,9 +13,8 @@
 I64 glbl;
 
 
-U0 MPUnlockedInc(U64 dummy=0)
+U0 MPUnlockedInc(U64)
 {
-  nounusedwarn dummy;
   I64 i;
   for (i=0;i<CNT;i++)
     glbl++;
@@ -37,9 +36,8 @@ U0 UnlockedInc()
 
 
 
-U0 MPLockedInc(U64 dummy=0)
+U0 MPLockedInc(U64)
 {
-  nounusedwarn dummy;
   I64 i;
   for (i=0;i<CNT;i++)
     lock  //Can be used without {}

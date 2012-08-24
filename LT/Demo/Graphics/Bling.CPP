@@ -87,7 +87,7 @@ Ctrl *DawgSettingsNew()
   c->left_click=&LeftClickDawgSettings;
   c->update_derived_vals=&UpdateDerivedDawgSettingsCtrl;
   old_preempt=Preempt(OFF);
-  InsQue(c,Fs->last_ctrl);
+  QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
   return c;
@@ -96,7 +96,7 @@ Ctrl *DawgSettingsNew()
 U0 DawgSettingsDel(Ctrl *c)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(c);
+  QueRem(c);
   Preempt(old_preempt);
 //  Free(c->state);
   Free(c);
@@ -228,7 +228,7 @@ next_dotel:
 	  break;
 	else
 	  goto bling_done;
-      WinSync;
+      WinMgrSync;
     }
   }
 bling_done:

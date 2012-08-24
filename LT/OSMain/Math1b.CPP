@@ -71,14 +71,8 @@ I64 CeilI64(I64 num,I64 to)
 }
 
 //See [::/LT/Doc/Acknowledgements.TXZ] ::/LT/Doc/Acknowledgements.TXZ (6).
-
+#ifdef SYS_DETERMINISTIC
 U16 RandU16()
-{
-  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
-  return sys_rnd_seed.u16[0];
-}
-
-U16 Rand2U16()
 {
   Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
   return Fs->rnd_seed.u16[0];
@@ -86,35 +80,17 @@ U16 Rand2U16()
 
 I16 RandI16()
 {
-  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
-  return sys_rnd_seed.i16[0];
-}
-
-I16 Rand2I16()
-{
   Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
   return Fs->rnd_seed.i16[0];
 }
 
 U32 RandU32()
 {
-  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
-  return sys_rnd_seed.u32[0];
-}
-
-U32 Rand2U32()
-{
   Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
   return Fs->rnd_seed.u32[0];
 }
 
 I32 RandI32()
-{
-  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
-  return sys_rnd_seed.i32[0];
-}
-
-I32 Rand2I32()
 {
   Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
   return Fs->rnd_seed.i32[0];
@@ -123,16 +99,57 @@ I32 Rand2I32()
 U64 RandU64()
 {
   U64 result;
-  result.u32[0]=sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
-  result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   return result;
 }
 
-U64 Rand2U64()
+I64 RandI64()
 {
+  I64 result;
+  result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
+}
+
+F64 Rand()
+{ //0.0<=x<1.0
   U64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  result&=0x3FFFFFFFFFFFFFFF;
+  return result/ToF64(0x4000000000000000);
+}
+#else
+U16 RandU16()
+{
+  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  return sys_rnd_seed.u16[0];
+}
+
+I16 RandI16()
+{
+  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  return sys_rnd_seed.i16[0];
+}
+
+U32 RandU32()
+{
+  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  return sys_rnd_seed.u32[0];
+}
+
+I32 RandI32()
+{
+  sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  return sys_rnd_seed.i32[0];
+}
+
+U64 RandU64()
+{
+  U64 result;
+  result.u32[0]=sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
+  result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
   return result;
 }
 
@@ -144,14 +161,6 @@ I64 RandI64()
   return result;
 }
 
-I64 Rand2I64()
-{
-  I64 result;
-  result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
-  result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
-  return result;
-}
-
 F64 Rand()
 { //0.0<=x<1.0
   U64 result;
@@ -159,6 +168,47 @@ F64 Rand()
   result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
   result&=0x3FFFFFFFFFFFFFFF;
   return result/ToF64(0x4000000000000000);
+}
+#endif
+
+U16 Rand2U16()
+{
+  Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return Fs->rnd_seed.u16[0];
+}
+
+I16 Rand2I16()
+{
+  Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return Fs->rnd_seed.i16[0];
+}
+
+U32 Rand2U32()
+{
+  Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return Fs->rnd_seed.u32[0];
+}
+
+I32 Rand2I32()
+{
+  Fs->rnd_seed.i32[0]=1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return Fs->rnd_seed.i32[0];
+}
+
+U64 Rand2U64()
+{
+  U64 result;
+  result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
+}
+
+I64 Rand2I64()
+{
+  I64 result;
+  result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 F64 Rand2()

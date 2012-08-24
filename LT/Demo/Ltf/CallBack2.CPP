@@ -1,10 +1,9 @@
 //See [::/LT/Demo/Ltf/CallBack.CPZ] ::/LT/Demo/Ltf/CallBack.CPZ first.
 
-U8 *BootTimeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *BootTimeCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
   LTDate i;
   U8 *st=MAlloc(64,mem_task);
-  nounusedwarn l,ll;
   i=BootTime;
   SPrintF(st,"%d=%h11T",i,i);
   return st;
@@ -22,7 +21,7 @@ U0 DoIt()
   ll->tag_cb=&BootTimeCB;
   LtfPutS(aux2,"$FG$");
 
-  LtfInsQueRev(aux2,LtfAux);
+  LtfQueInsRev(aux2,LtfAux);
 
   NewLine;
 }
@@ -30,7 +29,7 @@ U0 DoIt()
 U0 UndoIt()
 {
   Ltf *aux2=LtfAux;
-  LtfRemQue(aux2);
+  LtfQueRem(aux2);
   LtfDel(aux2);
 }
 

@@ -576,8 +576,6 @@ sib:
 	case EC_POP:
 	case EC_CLD:
 	case EC_STD:
-	case EC_WBINVD:
-	case EC_INVD:
 	case EC_INVLPG:
 	case EC_CLFLUSH:
 	case EC_PAUSE:
@@ -638,9 +636,10 @@ sib:
 	case EC_SWAP_U16:
 	case EC_SWAP_U32:
 	case EC_SWAP_U64:
-	case EC_INSQUE:
-	case EC_INSQUE_REV:
-	case EC_REMQUE:
+	case EC_QUE_INIT:
+	case EC_QUE_INS:
+	case EC_QUE_INS_REV:
+	case EC_QUE_REM:
 	case EC_MEMCPY:
 	case EC_MEMSET:
 	case EC_MEMSET_U16:

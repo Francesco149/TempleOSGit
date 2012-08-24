@@ -56,7 +56,7 @@ GrMVertex *GrMVertexNew(GrMFrame *e,I64 x,I64 y,I64 z)
   tempv->p.x=x;
   tempv->p.y=y;
   tempv->p.z=z;
-  InsQue(tempv,e->vertex_root.last);
+  QueIns(tempv,e->vertex_root.last);
   return tempv;
 }
 
@@ -69,7 +69,7 @@ GrMTri *GrMTriNew(GrMFrame *e,ColorROPU32 color,GrMVertex *v1,GrMVertex *v2,GrMV
   tempt->t[0]=v1;
   tempt->t[1]=v2;
   tempt->t[2]=v3;
-  InsQue(tempt,e->triangle_root.last);
+  QueIns(tempt,e->triangle_root.last);
   return tempt;
 }
 
@@ -108,7 +108,7 @@ U0 GrMTriangleDel(GrMFrame *e,GrMTri *tempt)
   if (tempt) {
     if (tempt==e->cur_triangle)
       e->cur_triangle=NULL;
-    RemQue(tempt);
+    QueRem(tempt);
     Free(tempt);
   }
 }
@@ -130,7 +130,7 @@ U0 GrMVertexDel(GrMFrame *e,GrMVertex *tempv)
     }
     if (tempv==e->cur_vertex)
       e->cur_vertex=NULL;
-    RemQue(tempv);
+    QueRem(tempv);
     Free(tempv);
   }
 }
@@ -386,7 +386,7 @@ U0 MPDrawIt(GrMFrame *e) //Multiprocessing draw it, called by each core.
   GrMTri *tempt=e->triangle_root.next;
   I64 i,*old_r=dc->r;
 
-//[C:/LT/Adam/Gr/GrDC.APZ,23] GrDCAlias() allocates a new identity rotation matrix.
+//[C:/LT/Adam/Gr/GrDC.APZ,24] GrDCAlias() allocates a new identity rotation matrix.
 //We want e->dc's rotation matrix.
   dc->r=e->dc->r;
 
@@ -442,7 +442,7 @@ U0 MPDrawIt(GrMFrame *e) //Multiprocessing draw it, called by each core.
   }
   dc->r=old_r;
 
-//e->dc's depth buf was copied but we don't want it freed during [C:/LT/Adam/Gr/GrDC.APZ,76] GrDCDel().
+//e->dc's depth buf was copied but we don't want it freed during [C:/LT/Adam/Gr/GrDC.APZ,77] GrDCDel().
   dc->depth_buf=NULL;
 
   GrDCDel(dc);
@@ -485,7 +485,7 @@ I64 *GrMSetW2S(GrMFrame *e,TaskStruct *task)
   e->w2s=GrMW2S(e,task);
   Free(e->s2w);
   e->s2w=GrMS2W(e,task);
-  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/LT/Adam/Gr/GrDC.APZ,76] GrDCDel().
+  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/LT/Adam/Gr/GrDC.APZ,77] GrDCDel().
 }
 
 U0 GrMCursorW(GrMFrame *e,TaskStruct *task,I64 *_x,I64 *_y,I64 *_z)
@@ -523,26 +523,14 @@ GrMTri	  sys_triangle_root;
 
 U0 GrMClipBoardInit()
 {
-  sys_vertex_root.next=sys_vertex_root.last=&sys_vertex_root;
-  sys_triangle_root.next=sys_triangle_root.last=&sys_triangle_root;
+  QueInit(&sys_vertex_root);
+  QueInit(&sys_triangle_root);
 }
 
 U0 GrMClipBoardRst()
 {
-  GrMVertex *tempv=sys_vertex_root.next,*tempv1;
-  GrMTri *tempt=sys_triangle_root.next,*tempt1;
-
-  while (tempv!=&sys_vertex_root) {
-    tempv1=tempv->next;
-    Free(tempv);
-    tempv=tempv1;
-  }
-
-  while (tempt!=&sys_triangle_root) {
-    tempt1=tempt->next;
-    Free(tempt);
-    tempt=tempt1;
-  }
+  QueDel(&sys_vertex_root,TRUE);
+  QueDel(&sys_triangle_root,TRUE);
   GrMClipBoardInit;
 }
 
@@ -556,7 +544,7 @@ U0 GrMClipBoardCopy(GrMFrame *e)
     if (tempv->flags&VF_SELECTED) {
       tempv->copy=tempv2=ACAlloc(sizeof(GrMVertex));
       MemCpy(&tempv2->p,&tempv->p,sizeof(P3I32));
-      InsQue(tempv2,sys_vertex_root.last);
+      QueIns(tempv2,sys_vertex_root.last);
       tempv->flags|=VF_COPIED;
       tempv->flags&=~VF_SELECTED;
     } else {
@@ -573,7 +561,7 @@ U0 GrMClipBoardCopy(GrMFrame *e)
       tempt2->t[1]=tempt->t[1]->copy;
       tempt2->t[2]=tempt->t[2]->copy;
       tempt2->mt.color=tempt->mt.color;
-      InsQue(tempt2,sys_triangle_root.last);
+      QueIns(tempt2,sys_triangle_root.last);
       tempt->flags|=TF_COPIED;
       tempt->flags&=~TF_SELECTED;
     } else
@@ -629,7 +617,7 @@ U0 GrMClipBoardPaste(GrMFrame *e)
   while (tempv2!=&sys_vertex_root) {
     tempv2->copy=tempv=CAlloc(sizeof(GrMVertex));
     MemCpy(&tempv->p,&tempv2->p,sizeof(P3I32));
-    InsQue(tempv,e->vertex_root.last);
+    QueIns(tempv,e->vertex_root.last);
     tempv->flags|=VF_SELECTED;
     tempv2=tempv2->next;
   }
@@ -859,20 +847,8 @@ I32 *GrMSave(GrMFrame *e,I64 *_size=NULL)
 
 U0 GrMCleanUp(GrMFrame *e)
 {
-  GrMVertex *tempv=e->vertex_root.next,*tempv1;
-  GrMTri *tempt=e->triangle_root.next,*tempt1;
-
-  while (tempv!=&e->vertex_root) {
-    tempv1=tempv->next;
-    Free(tempv);
-    tempv=tempv1;
-  }
-
-  while (tempt!=&e->triangle_root) {
-    tempt1=tempt->next;
-    Free(tempt);
-    tempt=tempt1;
-  }
+  QueDel(&e->vertex_root,TRUE);
+  QueDel(&e->triangle_root,TRUE);
   Free(e->w2s);
   Free(e->s2w);
 }
@@ -1046,7 +1022,7 @@ l_x,ipy_presnap-Fs->win_pixel_top-Fs->win_scroll_y));
 		    vn=0;
 		  }
 		  break;
-		case SC_INSERT:
+		case SC_INS:
 		  if (e.mode=='t') {
 		    Beep; Beep;
 		  } else {

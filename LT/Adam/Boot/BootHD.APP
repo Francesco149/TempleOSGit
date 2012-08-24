@@ -4,7 +4,7 @@ asm {
 
 USE16
 BHD_START::
-	DU8	0x5A DUP(0); //See [C:/LT/OSMain/Adam1a.HPZ,2102] FAT32BootStruct.code[]
+	DU8	0x5A DUP(0); //See [C:/LT/OSMain/Adam1a.HPZ,2103] FAT32BootStruct.code[]
 BHD_CODE::
 	CLD
 

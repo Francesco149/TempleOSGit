@@ -55,7 +55,7 @@ public U64 LineCntRep(U8 *files_find_mask="/LT/*",U8 *fu_flags=NULL)
     LtfPutS(l,"$ID,-2$");
     LTDirListDel(tempm1);
   }
-  LtfInsertLtf(LtfCur,l);
+  LtfInsLtf(LtfCur,l);
   LtfDel(l);
   return result;
 }
@@ -105,7 +105,7 @@ public U64 TreeSizeRep(U8 *files_find_mask="/LT/*",U8 *fu_flags=NULL)
     LtfPutS(l,"$ID,-2$");
     LTDirListDel(tempm1);
   }
-  LtfInsertLtf(LtfCur,l);
+  LtfInsLtf(LtfCur,l);
   LtfDel(l);
   return result;
 }

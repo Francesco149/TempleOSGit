@@ -9,51 +9,12 @@ U0 Song()
   while (!ScanKey) {
 	Play("W13sC!G!CG!!etA!DD2sG!3G2G3G!F!A!!FADD!!DD!qGsB2G3B2G3qG");
 	Play("sC!G!CG!!etA!DD2sG!3G2G3G!F!A!!FADD!!DD!qGsB2G3B2G3qG");
-	Play("eG!2G3qEsA2G3A2G3qAsEAEAD!E!!DEqFeA!2G");
-	Play("3G!2G3qEsA2G3A2G3qAsEAEAD!E!!DEqFeA!2G");
+	Play("eG!2G3qEeAsA2G3qAsEAEAD!E!!DEqFeA!2G");
+	Play("3G!2G3qEeAsA2G3qAsEAEAD!E!!DEqFeA!2G");
   }
   } catch
     CatchAll;
   Snd(0);
 }
- 
+
 Song;
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 

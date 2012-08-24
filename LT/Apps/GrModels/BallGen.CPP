@@ -37,9 +37,8 @@ U0 BDCorrect(BallDefineStruct *bd)
 }
 
 
-I64 AddVertex(BallDefineStruct *bd,I64 x,I64 y,I64 z)
+I64 AddVertex(BallDefineStruct *,I64 x,I64 y,I64 z)
 {
-  nounusedwarn bd;
   I64 i;
   for (i=0;i<b->vertex_cnt;i++)
     if (b->v[i].x==x && b->v[i].y==y && b->v[i].z==z)
@@ -51,9 +50,8 @@ I64 AddVertex(BallDefineStruct *bd,I64 x,I64 y,I64 z)
   return i;
 }
 
-I64 AddTriangle(BallDefineStruct *bd,I64 c,I64 n0,I64 n1,I64 n2)
+I64 AddTriangle(BallDefineStruct *,I64 c,I64 n0,I64 n1,I64 n2)
 {
-  nounusedwarn bd;
   I64 result=b->triangle_cnt++;
   b->t[result].color=c;
   b->t[result].nums[0]=n0;

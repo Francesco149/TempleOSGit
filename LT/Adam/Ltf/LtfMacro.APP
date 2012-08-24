@@ -3,18 +3,6 @@ StrCpy(captured_macro_name,"Test");
 
 I64 sys_macro_repeat_n=1;
 
-U0 SysMacroDel(TaskCmdStruct *macro_root)
-{
-  TaskCmdStruct *tempc,*tempc1;
-  tempc=macro_root->next;
-  while (tempc!=macro_root) {
-    tempc1=tempc->next;
-    RemQue(tempc);
-    Free(tempc);
-    tempc=tempc1;
-  }
-}
-
 U0 SysMacroStripKey(TaskCmdStruct *macro_root,I64 p1,I64 p2)
 {
   TaskCmdStruct *tempc,*tempc1;
@@ -27,7 +15,7 @@ U0 SysMacroStripKey(TaskCmdStruct *macro_root,I64 p1,I64 p2)
 	 tempc->msg_code==MSG_KEY_DOWN_UP) &&
 	 p1 && tempc->p1==p1 ||
 	!p1 && tempc->p2==p2) {
-      RemQue(tempc);
+      QueRem(tempc);
       Free(tempc);
     }
     tempc=tempc1;
@@ -72,12 +60,12 @@ U8 *SysMacro2Str(TaskCmdStruct *macro_root)
   BoolI8 old_preempt=Preempt(OFF);
   LBtr(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
 
-  root.next=root.last=&root;
+  QueInit(&root);
   root.type=MT_NULL;
   tempc=macro_root->next;
   while (tempc!=macro_root) {
     tempmt=Cmd2MT(tempc);
-    InsQue(tempmt,root.last);
+    QueIns(tempmt,root.last);
     cnt+=StrLen(tempmt->buf);
     if (tempmt->type==MT_CHAR) {
       if (tempmt->last->type!=MT_CHAR)
@@ -137,7 +125,7 @@ U0 PlaySysMacro(I64 n=1)
   }
 }
 
-U0 EdInsertCapturedMacro()
+U0 EdInsCapturedMacro()
 {
   BoolI8 old_preempt=Preempt(OFF);
   U8 *st=SysMacro2Str(&sys_macro_root);
@@ -151,12 +139,12 @@ U0 EdInsertCapturedMacro()
 
 #define SM_CANCEL	-1
 #define SM_RECORD	0
-#define SM_INSERT	1
+#define SM_INS	1
 #define SM_PLAY		2
 #define SM_REPEAT_N	3
 #define SM_STOP		4
 
-I64 PopUpExitRecordPlayStopInsert()
+I64 PopUpExitRecordPlayStopIns()
 {
   I64 result=0;
   U8 buf[136];
@@ -171,7 +159,7 @@ I64 PopUpExitRecordPlayStopInsert()
   LtfDataFmt(ll);
   LtfPutS(l,"\n"
 	"$CM+LX,1,3$$BT,\"RECORD\",SM_RECORD$"
-	"$CM+LX,17,0$$BT,\"INSERT\",SM_INSERT$"
+	"$CM+LX,17,0$$BT,\"INSERT\",SM_INS$"
 	"$CM+LX,1,3$$BT,\"PLAY\",SM_PLAY$"
 	"$CM+LX,17,0$$BT,\"REPEAT N\",SM_REPEAT_N$"
 	"$CM+LX,1,3$$BT,\"STOP\",SM_STOP$"
@@ -182,9 +170,9 @@ I64 PopUpExitRecordPlayStopInsert()
   sys_macro_util_task=Spawn(&ServantUserCmdLine,NULL,"Macro Popup",Fs);
   Fs->popup_task=sys_macro_util_task;
   LBts(&sys_macro_util_task->display_flags,DISPLAYf_WIN_ON_TOP);
-  tempc=TaskRequestQueue(sys_macro_util_task,Fs,buf,
+  tempc=TaskRqstQue(sys_macro_util_task,Fs,buf,
       1<<TASKCf_WAKE_MASTER | 1<<TASKCf_FOCUS_MASTER);
-  GetRequestResult(tempc,&result);
+  GetRqstResult(tempc,&result);
   Fs->popup_task=NULL;
   Kill(sys_macro_util_task);
   sys_macro_util_task=NULL;
@@ -193,19 +181,18 @@ I64 PopUpExitRecordPlayStopInsert()
   return result;
 }
 
-U0 MacroTask(U64 dummy=0)
+U0 MacroTask(U64)
 {
-  nounusedwarn dummy;
   I64 i;
   StrCpy(captured_macro_name,"Click Here");
   sys_macro_repeat_n=1;
   do {
-    i=PopUpExitRecordPlayStopInsert;
+    i=PopUpExitRecordPlayStopIns;
     WinRefocus;
     switch (i) {
       case SM_RECORD:
 	LBtr(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
-	SysMacroDel(&sys_macro_root);
+	QueDel(&sys_macro_root,TRUE);
 	LBts(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
 	break;
       case SM_PLAY:
@@ -217,9 +204,9 @@ U0 MacroTask(U64 dummy=0)
       case SM_STOP:
 	LBtr(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
 	break;
-      case SM_INSERT:
+      case SM_INS:
 	LBtr(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
-	EdInsertCapturedMacro;
+	EdInsCapturedMacro;
 	break;
     }
   } while (i>=0);

@@ -7,10 +7,10 @@ offset(GrSprite.x1)-offset(GrSprite.start), //GRST_END
 0,
 1+offset(GrSprite.color8)-offset(GrSprite.start), //GRST_COLOR8
 0,
-offset(GrSprite.x2)-offset(GrSprite.start), //GRST_POINT
+offset(GrSprite.x2)-offset(GrSprite.start), //GRST_PT
 offset(GrSprite.linespeed)-offset(GrSprite.start), //GRST_LINE
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_POLYLINE
-offset(GrSprite.y1)-offset(GrSprite.start), //GRST_POLYPOINT
+offset(GrSprite.y1)-offset(GrSprite.start), //GRST_POLYPT
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_WIDTH
 offset(GrSprite.x2)-offset(GrSprite.start), //GRST_SHIFT
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_BSPLINE2
@@ -18,7 +18,7 @@ offset(GrSprite.y1)-offset(GrSprite.start), //GRST_BSPLINE3
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_BSPLINE2_CLOSED
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_BSPLINE3_CLOSED
 offset(GrSprite.y1)-offset(GrSprite.start), //GRST_SPEEDLINE
-offset(GrSprite.sides)-offset(GrSprite.start), //GRST_SPEEDLINE_POINT
+offset(GrSprite.sides)-offset(GrSprite.start), //GRST_SPEEDLINE_PT
 0,
 offset(GrSprite.linespeed)-offset(GrSprite.start), //GRST_RECT
 offset(GrSprite.y2)-offset(GrSprite.start), //GRST_CIRCLE
@@ -41,16 +41,16 @@ offset(GrSprite.st)-offset(GrSprite.start), //GRST_TEXT_BOX
 offset(GrSprite.st)-offset(GrSprite.start), //GRST_TEXT_DIAMOND
 };
 
-I64 gr_sprite_queued_base_size[GRST_NUM_TYPES]=
+I64 gr_sprite_qued_base_size[GRST_NUM_TYPES]=
 {
 offset(GrSprite.x1),//GRST_END
 0,
 1+offset(GrSprite.color8), //GRST_COLOR8
 0,
-offset(GrSprite.x2), //GRST_POINT
+offset(GrSprite.x2), //GRST_PT
 offset(GrSprite.linespeed), //GRST_LINE
 offset(GrSprite.y1), //GRST_POLYLINE
-offset(GrSprite.y1), //GRST_POLYPOINT
+offset(GrSprite.y1), //GRST_POLYPT
 offset(GrSprite.y1), //GRST_WIDTH
 offset(GrSprite.x2), //GRST_SHIFT
 offset(GrSprite.y1), //GRST_BSPLINE2
@@ -58,7 +58,7 @@ offset(GrSprite.y1), //GRST_BSPLINE3
 offset(GrSprite.y1), //GRST_BSPLINE2_CLOSED
 offset(GrSprite.y1), //GRST_BSPLINE3_CLOSED
 offset(GrSprite.y1), //GRST_SPEEDLINE
-offset(GrSprite.sides), //GRST_SPEEDLINE_POINT
+offset(GrSprite.sides), //GRST_SPEEDLINE_PT
 0,
 offset(GrSprite.linespeed), //GRST_RECT
 offset(GrSprite.y2), //GRST_CIRCLE
@@ -100,7 +100,7 @@ U64 GrSpriteElemSize(GrSprite *tempg)
     case GRST_BITMAP8:
       i+=((tempg->width+7)&~7)*tempg->height;
       break;
-    case GRST_POLYPOINT:
+    case GRST_POLYPT:
       i+=sizeof(I32)<<1+(tempg->num*3+7)>>3;
       break;
     case GRST_BSPLINE2:
@@ -180,7 +180,7 @@ public U8 *GrSprite2Text(GrSprite *tempg)
     case GRST_COLOR8:
       SPrintF(buf2," %s",Color2Text(buf3,tempg->color8));
       break;
-    case GRST_POINT:
+    case GRST_PT:
     case GRST_FLOOD_FILL:
     case GRST_FLOOD_FILL_NOT:
     case GRST_SHIFT:
@@ -204,14 +204,14 @@ public U8 *GrSprite2Text(GrSprite *tempg)
     case GRST_TEXT:
     case GRST_TEXT_BOX:
     case GRST_TEXT_DIAMOND:
-      SPrintF(buf2," %d,%d:%16tQ",tempg->x1,tempg->y1,tempg->st);
+      SPrintF(buf2," %d,%d:%-16tQ",tempg->x1,tempg->y1,tempg->st);
       break;
     case GRST_DITHER_COLOR8:
       SPrintF(buf2," %s",Color2Text(buf3,ROPF_DITHER|tempg->dither_color8.u8[0]|tempg->dither_color8.u8[1]<<COLORROP_BITS));
       break;
     case GRST_POLYLINE:
     case GRST_SPEEDLINE:
-    case GRST_POLYPOINT:
+    case GRST_POLYPT:
       ptr=&tempg->y1;
       SPrintF(buf2," %d %d,%d",tempg->num,ptr[0],ptr[1]);
       break;

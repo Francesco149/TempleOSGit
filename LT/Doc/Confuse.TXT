@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 135,015 lines of LoseThos over
+* I, Terry A. Davis, wrote every one of the 134,614 lines of LoseThos over
 the 
 past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other srcs.  It's 100% independent 
@@ -32,7 +32,7 @@ kernel privilege, so "Kernel" is deceptive!
 * [C:/LT/OSMain/Adam1b.HPZ,57] Bt() is "bit test", like the x86 instruction,
 not "bit torrent".
 
-* [C:/LT/OSMain/Adam1b.HPZ,286] Fs is a segment register, not "file system". 
+* [C:/LT/OSMain/Adam1b.HPZ,282] Fs is a segment register, not "file system". 
 (It is kept pointing to the 
 current task's record.)  There is no memory segmentation -- FS and GS are
 used 
@@ -41,7 +41,7 @@ as general purpose registers, more or less.
 * LoseThos uses a flavor of C/C++.  It is not PASCAL.  I altered the syntax 
 making parenthesis optional on function calls with no paramaters.
 
-* [C:/LT/OSMain/Misc1a.CPZ,216] Sleep() makes a program pause.  It is not
+* [C:/LT/OSMain/Misc1a.CPZ,215] Sleep() makes a program pause.  It is not
 hybernation for a laptop.
 
 * [C:/LT/OSMain/Scheduler.CPZ,371] Yield() saves the current task's registers
@@ -56,8 +56,8 @@ activity.  A swap takes half a microsecond.  See
 * I use the term "JIT compilation".  This means it is compiled and executable 
 code placed into mem, ready to be called.
 
-* Files with names ending in "Z" are compressed, not
-encrypted.  [C:/LT/Adam/Dsk/Dsk2a.APZ,91] Copy() or 
+* Files with names ending in "Z" are compressed, not encrypted. 
+[C:/LT/Adam/Dsk/Dsk2a.APZ,91] Copy() or 
 rename them with [C:/LT/Adam/Dsk/Dsk2a.APZ,120] Move() to store them
 uncompressed.
 
@@ -66,11 +66,11 @@ distribution.  Use [C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot() to compile
 the kernel and compiler.
 
 * LoseThos does not use object files or a linker.  You can link .BIZ modules 
-at [C:/LT/OSMain/Hash1a.CPZ,730] Load() time, though. 
+at [C:/LT/OSMain/Hash1a.CPZ,729] Load() time, though. 
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/LT/OSMain/Adam1a.HPZ,484] JIFFY_FREQ.
+interrupt.  See [C:/LT/OSMain/Adam1a.HPZ,489] JIFFY_FREQ.
 
 * Refresh rate is how often LoseThos updates screen mem.  It is not 
 syncronized to the hardware rate, having nothing to do with it.
@@ -99,8 +99,8 @@ will be fine.  Small mem chunks stick to the task when they are freed until
 it 
 is killed.  The only way to get in trouble involves allocating multiple Meg 
 chunks and freeing them.  These can only be reused if the same size gets 
-allocated again.  Use [C:/LT/Adam/HeapLog.APZ,122] HeapLog() and
-[C:/LT/Adam/HeapLog.APZ,81] HeapLogRep() to see who allocated mem and 
+allocated again.  Use [C:/LT/Adam/HeapLog.APZ,121] HeapLog() and
+[C:/LT/Adam/HeapLog.APZ,80] HeapLogRep() to see who allocated mem and 
 didn't free it.
 
 * The editor periodically takes a snap-shot for UNDO and this looks like a 

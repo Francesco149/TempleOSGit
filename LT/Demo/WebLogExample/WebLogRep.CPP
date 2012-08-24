@@ -111,7 +111,7 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
 	  templg->link=StrNew(src);
 	  src=++src2;
 
-	  InsQue(templg,root->last);
+	  QueIns(templg,root->last);
 	} else if (!StrNCmp(src,"HEAD ",5)) {
 	  LogStructDel(templg);
 	} else
@@ -131,7 +131,7 @@ LogStruct *PrsLogFiles(U8 *files_find_mask)
 {
   LogStruct *root=CAlloc(sizeof(LogStruct));
   LTDirEntry *tempm=FilesFind(files_find_mask),*tempm1=tempm;
-  root->next=root->last=root;
+  QueInit(root);
   while (tempm) {
     PrsSingleLogFile(root,tempm->full_name);
     tempm=tempm->next;
@@ -154,7 +154,7 @@ U0 BlockedStructAdd(BlockedStruct *root,U32 ip_num)
 {
   BlockedStruct *tempb=CAlloc(sizeof(BlockedStruct));
   tempb->ip_num=ip_num;
-  InsQue(tempb,root->last);
+  QueIns(tempb,root->last);
 }
 
 BoolI64 IsBlocked(BlockedStruct *root,U32 ip_num)
@@ -168,22 +168,12 @@ BoolI64 IsBlocked(BlockedStruct *root,U32 ip_num)
   return FALSE;
 }
 
-U0 BlockedListDel(BlockedStruct *root)
-{
-  BlockedStruct *tempb=root->next,*tempb1;
-  while (tempb!=root) {
-    tempb1=tempb->next;
-    Free(tempb);
-    tempb=tempb1;
-  }
-}
-
 U0 BlockIPNums(LogStruct *root)
 {
   BlockedStruct blocked_root;
   LogStruct *templg=root->next,*templg1;
 
-  blocked_root.next=blocked_root.last=&blocked_root;
+  QueInit(&blocked_root);
   BlockedStructAdd(&blocked_root,68<<24+224<<16+130<<8+96); //Me 68.224.130.96
   BlockedStructAdd(&blocked_root,68<<24+96<<16+100<<8+126); //Me 68.96.100.126
 
@@ -200,13 +190,13 @@ U0 BlockIPNums(LogStruct *root)
   while (templg!=root) {
     templg1=templg->next;
     if (IsBlocked(&blocked_root,templg->ip_num)) {
-      RemQue(templg);
+      QueRem(templg);
       LogStructDel(templg);
     }
     templg=templg1;
   }
  
-  BlockedListDel(&blocked_root);
+  QueDel(&blocked_root);
 }
 
 BoolI64 IsDownLoad(LogStruct *templg)

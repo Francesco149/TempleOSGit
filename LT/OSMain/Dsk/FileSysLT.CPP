@@ -46,7 +46,7 @@ U0 LTFSFreeListBuild(LTPrt *p)
 	tempf=AMAlloc(sizeof(LTFreeList));
 	tempf->size=i;
 	tempf->start=first;
-	InsQue(tempf,p->last_free);
+	QueIns(tempf,p->last_free);
       }
       first+=i+1;
     }
@@ -337,7 +337,7 @@ U0 LTFSFreeClusters(LTPrt *p,I64 c,I64 cnt)
 	tempf=AMAlloc(sizeof(LTFreeList));
 	tempf->size=cnt;
 	tempf->start=c;
-	InsQue(tempf,p->last_free);
+	QueIns(tempf,p->last_free);
       }
       while (cnt--) {
 	SetLTBuf(p,c);
@@ -394,7 +394,7 @@ I64 LTFSAllocClusters(LTPrt *p,I64 cnt)
     if (best_free->size-=cnt)
       best_free->start+=cnt;
     else {
-      RemQue(best_free);
+      QueRem(best_free);
       Free(best_free);
     }
     if (unlock)

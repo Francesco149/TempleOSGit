@@ -15,7 +15,7 @@ virtue of the fact that abs addresses get patched.
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system OSMain has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,670] Man()/WORDSTAT
+links.  This is how the [C:/LT/Adam/Ltf/LtfMain.APZ,675] Man()/WORDSTAT
 feature can find src lines.
 
 * The word "public" does very little except allow the
@@ -33,7 +33,7 @@ around.  Data on classes can be accessed by code.  See
 
 * Filenames ending in 'Z' are automatically compressed and uncompressed when 
 writing to disk.  File size in directory listing is the compressed size.  You 
-can view uncompressed size with [C:/LT/OSMain/Dsk/Dsk1b.CPZ,236]
+can view uncompressed size with [C:/LT/OSMain/Dsk/Dsk1b.CPZ,234]
 Dir("*",TRUE); if you use the native LoseThos 
 filesystem.  See [::/LT/Doc/LTZ.TXZ] ::/LT/Doc/LTZ.TXZ for uncompressing from
 WINDOWS.
@@ -48,7 +48,7 @@ system and see the amount of mem used.  Then, compile it again and far less
 will be allocated.  This is because it is reusing the small chunks.  See 
 [Memory] Memory.  Click Here
 `MemRep;View;`
- for a [C:/LT/Adam/MemRep.APZ,188] MemRep.
+ for a [C:/LT/Adam/MemRep.APZ,189] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is used for 
 SHIFT-SPACE, a character which does not get converted to tabs by 

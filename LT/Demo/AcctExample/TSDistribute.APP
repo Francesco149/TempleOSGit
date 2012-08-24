@@ -186,9 +186,8 @@ public U0 FilesCursorTop(U8 *mask="*")
   }
 }
 
-U0 UncollapseFile(U8 *filename,U64 *flags)
+U0 UncollapseFile(U8 *filename,U64 *)
 {
-  nounusedwarn flags;
   Ltf *l=LtfRead(filename,LTFF_NO_CURSOR);
   LtfCollapse(FALSE,l);
   LtfWrite(l);
@@ -240,7 +239,7 @@ public U0 CopySongs(U8 threshold='7')
 {
   DelTree("/LT/Apps/MusicOrgan/Examples");
   MkDir("/LT/Apps/MusicOrgan/Examples");
-  CopySongDir("/LT/Accts/TAD/MusicOrgan/*.CPZ",threshold);
+  CopySongDir("/LT/Accts/TS/TAD/MusicOrgan/*.CPZ",threshold);
 }
 
 U0 PrepForDistribution()
@@ -258,14 +257,11 @@ U0 PrepForDistribution()
 //Install
   Del("/LT/Accts/Install/Registry.CPZ");
 
-//VMWare
-  Del("/LT/Accts/VMWare/Registry.CPZ");
-
 //SafeMode
   Del("/LT/Accts/SafeMode/Registry.CPZ");
 
 //TAD
-  Touch("/LT/Accts/TAD/PersonalMenu.TXZ","+T");
+  Touch("/LT/Accts/TS/TAD/PersonalMenu.TXZ","+T");
 
 //TS
   Touch("/LT/Accts/TS/PersonalMenu.TXZ","+T");
@@ -273,14 +269,9 @@ U0 PrepForDistribution()
   Touch("/LT/Doc/Ed.TXZ","+T");
 
   DelTree("/LT/Demo/AcctExample");
-  MkDir("/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/Adam3*.APZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/TSDistribute.APZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/TSAdam.APZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/TSIDComputer.APZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/TSIDDft.APZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TS/PersonalMenu.TXZ","/LT/Demo/AcctExample");
-  Copy("/LT/Accts/TAD/Notes.TXZ","/LT/Demo/AcctExample");
+  CopyTree("/LT/Accts/TS","/LT/Demo/AcctExample");
+  DelTree("/LT/Demo/AcctExample/TAD/MusicOrgan");
+  Del("/LT/Demo/AcctExample/TAD/Test*");
 
   Cd("/LT");
   FilesCursorTop;
@@ -347,7 +338,6 @@ U0 PrepForProduction(U8 *auto_cfg)
   CopyTree(TS_MAIN_DRV ":/Windows","/Windows");
   CopyTree(TS_MAIN_DRV ":/Linux","/Linux");
   MkDir("/Temp");
-  DelTree("/LT/Accts/TAD");
   DelTree("/LT/Accts/TS");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
   Del("/0000Boot/OldMBR.BIC");
@@ -368,13 +358,6 @@ U0 MakeProductionCDImage()
   Drv(TS_MAIN_DRV_LET);
 }
 
-U0 MakeVMWareCDImage()
-{
-  PrepForProduction(VMWARE_CDROM_CFG);
-  CDFileCreate(TS_ISO_NAME,TS_IMG_DRV ":/*",NULL,BOOTCD_BIZ);
-  Drv(TS_MAIN_DRV_LET);
-}
-
 U0 MakeBack()
 {
   ChkAll;
@@ -385,8 +368,6 @@ U0 MakeBack()
     Copy(TS_ISO_NAME,TS_TRA_DRV ":LTTS.ISO");
     MakeProductionCDImage;
     Copy(TS_ISO_NAME,TS_TRA_DRV ":LTCD.ISO");
-    MakeVMWareCDImage;
-    Copy(TS_ISO_NAME,TS_TRA_DRV ":LTVM.ISO");
     Cd("/LT");
     if (LinkChk) {
       Drv(TS_MAIN_DRV_LET);

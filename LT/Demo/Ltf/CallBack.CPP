@@ -1,12 +1,11 @@
-U8 *BootTimeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *BootTimeCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
   LTDate i;
 //This routine is called by the window
-//manager things would get corrupted
-//if the window manager used it's own
+//mgr things would get corrupted
+//if the window mgr used it's own
 //heap, so we use the owning task's heap.
   U8 *st=MAlloc(64,mem_task);
-  nounusedwarn l,ll;
 
   i=BootTime;
 
@@ -15,11 +14,10 @@ U8 *BootTimeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
   return st;
 }
 
-U8 *CurTimeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *CurTimeCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
   LTDate i;
   U8 *st=MAlloc(64,mem_task);
-  nounusedwarn l,ll;
   i=GetCurTimeLTDate;
   SPrintF(st,"%h0D %h0T",i,i);
   return st;
@@ -32,11 +30,11 @@ A second framework is kept at Fs->next_ltf.
 Normally, the next_ltf is used for updating
 the border, primarily.
 
-See [C:/LT/Adam/Ltf/LtfMain.APZ,215] UseTermLtf().
+See [C:/LT/Adam/Ltf/LtfMain.APZ,220] UseTermLtf().
 See [C:/LT/Adam/Ltf/LtfRecalc.APZ,1797] LtfUpdateTaskLtfs().
 
 Note: the next_ltf is not to be confused
-with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry.
+with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1210] LtfEntry.
 
 */
   Ltf *aux=LtfAux, //Fetches Fs->next_ltf basically.
@@ -49,7 +47,7 @@ with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry.
 
   BoolI8 old_preempt=Preempt(OFF);
 
-  LtfBottom(aux);  //Insert at the bottom
+  LtfBottom(aux);  //Ins at the bottom
   LtfPutS(aux,"$FG,RED$$CM+BY+LX,5,-3$");
 
 // The [C:/LT/Adam/Ltf/LtfPlain.APZ,835] LtfPutS() routine returns the addr of the last entry.
@@ -59,7 +57,7 @@ with the aux_str, a member of the [C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry.
 // Flags are explained here:
 //	[::/LT/Doc/CtrlL.TXZ] ::/LT/Doc/CtrlL.TXZ
 //	[::/LT/Doc/Dollar.TXZ] ::/LT/Doc/Dollar.TXZ
-//	[C:/LT/OSMain/Adam1a.HPZ,1085] Dollar Flags
+//	[C:/LT/OSMain/Adam1a.HPZ,1084] Dollar Flags
 //	[::/LT/Adam/Ltf/Ltf.APZ,ST_LTF_FLAGS] ST_LTF_FLAGS
 
   ll->tag_cb=&BootTimeCB;

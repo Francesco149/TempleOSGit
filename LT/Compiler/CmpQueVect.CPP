@@ -30,7 +30,7 @@ U0 U8QueVectPut(U8QueVect *v,I64 index,U8 ch)
     if (tempv->node_cnt>=U8_QUE_VECT_CNT) {
       tempv=MAlloc(sizeof(U8QueVect));
       tempv->node_cnt=0;
-      InsQue(tempv,v->last);
+      QueIns(tempv,v->last);
     }
     if (index--) {
       tempv->body[tempv->node_cnt++]=0;
@@ -45,14 +45,10 @@ U0 U8QueVectPut(U8QueVect *v,I64 index,U8 ch)
 
 U0 U8QueVectDel(U8QueVect *v)
 {
-  U8QueVect *tempv,*tempv1;
-  if (!v) return;
-  tempv=v;
-  do {
-    tempv1=tempv->next;
-    Free(tempv);
-    tempv=tempv1;
-  } while (tempv!=v);
+  if (v) {
+    QueDel(v);
+    Free(v);
+  }
 }
 
 U64 U8QueVectGet(U8QueVect *v,I64 index)

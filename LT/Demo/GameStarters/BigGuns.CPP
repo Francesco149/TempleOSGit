@@ -90,9 +90,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
 }
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64,Order2D3 *,Order2D3 *)
 {
-  nounusedwarn t,DstateDt,state;
   MassStruct *tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     tempm->DstateDt->DyDt+=1000.0*tempm->mass;
@@ -119,9 +118,8 @@ U0 DrawMap()
   active_map++;
 }
 
-U0 FireTask(U64 dummy=0)
+U0 FireTask(U64)
 { //by default preempt is off on new tasks
-  nounusedwarn dummy;
   MassStruct *tempm;
   I64 i;
   if (gun_recoil) return;
@@ -137,7 +135,7 @@ U0 FireTask(U64 dummy=0)
   tempm->user_data=0;
   while (sys_task_being_screen_updated==Fs->parent_task)
     Yield;
-  InsQue(tempm,ode->last_mass);
+  QueIns(tempm,ode->last_mass);
 
   for (i=0;i<60;i++) {
     Snd(RandU32&511+15);
@@ -161,7 +159,7 @@ U0 ManageShots()
     tempm1=tempm->next;
     if (!(0<=tempm->x<MAP_WIDTH) ||
 	 tempm->user_data) {
-      RemQue(tempm);
+      QueRem(tempm);
       for (i=tempm->x-4;i<=tempm->x+4;i++)
 	if (0<=i<MAP_WIDTH)
 	  elevs[i]=LimitI64(elevs[i]+10-2*AbsI64(i-tempm->x),0,MAP_HEIGHT-2);
@@ -174,9 +172,8 @@ U0 ManageShots()
     DrawMap;
 }
 
-U0 MoveTask(U64 dummy=0)
+U0 MoveTask(U64)
 {
-  nounusedwarn dummy;
   static I64 quit_time=0;
   Fs->task_end_cb=&SndTaskEndCB;
   if (quit_time)
@@ -231,7 +228,7 @@ U0 Init()
   ode->drag_v2=0.002;
   ode->drag_v3=0.0001;
   ode->acceleration_limit=5e5;
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
   Fs->horz_scroll.min=0;
   Fs->horz_scroll.max=MAP_WIDTH-Fs->win_pixel_width;
   Fs->horz_scroll.pos=gun_x-Fs->win_pixel_width/2;
@@ -246,16 +243,9 @@ U0 Init()
 
 U0 CleanUp(Ode *ode)
 {
-  MassStruct *tempm,*tempm1;
   if (ode) {
-    RemQue(ode);
-    tempm=ode->next_mass;
-    while (tempm!=&ode->next_mass) {
-      tempm1=tempm->next;
-      RemQue(tempm);
-      Free(tempm);
-      tempm=tempm1;
-    }
+    QueRem(ode);
+    QueDel(&ode->next_mass,TRUE);
     OdeDel(ode);
   }
 }
@@ -331,7 +321,7 @@ U0 BigGuns()
 	    goto bg_done;
 	}
       ManageShots;
-      WinSync;
+      WinMgrSync;
     }
 bg_done:
   } catch

@@ -129,15 +129,8 @@ I64 rubber_band_terminal,rubber_band_x,rubber_band_y;
 
 U0 DotDel(Dot *root)
 {
-  Dot *tempd,*tempd1;
   if (root) {
-    tempd=root->next;
-    while (tempd!=root) {
-      tempd1=tempd->next;
-      RemQue(tempd);
-      Free(tempd);
-      tempd=tempd1;
-    }
+    QueDel(root,TRUE);
     Free(root);
   }
 }
@@ -323,7 +316,7 @@ BoolI64 NodeAdd(Node *tempn,Element *tempe,I64 terminal,TaskStruct *mem_task=NUL
 U0 NodeDel(Node *tempn)
 {
   if (tempn) {
-    RemQue(tempn);
+    QueRem(tempn);
     Free(tempn->terms);
     if (tempn->dot_root)
       DotDel(tempn->dot_root);
@@ -417,14 +410,14 @@ U0 ElementDel(Element *tempe,TaskStruct *mem_task=NULL)
     }
     tempn=tempn1;
   }
-  RemQue(tempe);
+  QueRem(tempe);
   Free(tempe);
 }
 
 Node *NodeNew(TaskStruct *mem_task=NULL)
 {
   Node *result=CAlloc(sizeof(Node),mem_task);
-  InsQue(result,node_root.last);
+  QueIns(result,node_root.last);
   return result;
 }
 
@@ -631,7 +624,7 @@ U0 DotSpacersAdd(Dot *root,TaskStruct *mem_task=NULL)
 	  }
 	  tempd->flags[0]=0;
 	  tempd->e=NULL;
-	  InsQue(tempd1,root->last);
+	  QueIns(tempd1,root->last);
 	}
 	tempd=tempd->next;
       } while (tempd!=tempd2);
@@ -745,7 +738,7 @@ Dot *DotTerminalsNew(Node *tempn,TaskStruct *mem_task=NULL)
   I64 i,min_x,max_x,min_y,max_y,dx,dy,x,y;
   Element *tempe;
   Dot *result=CAlloc(sizeof(Dot),mem_task),*tempd;
-  result->next=result->last=result;
+  QueInit(result);
   for (i=0;i<tempn->cnt;i++)
     if (tempe=tempn->terms[i].e) {
       tempd=CAlloc(sizeof(Dot),mem_task);
@@ -786,7 +779,7 @@ Dot *DotTerminalsNew(Node *tempn,TaskStruct *mem_task=NULL)
 	else
 	  Bts(tempd->flags,Df_TERMINAL_BOTTOM);
       }
-      InsQue(tempd,result->last);
+      QueIns(tempd,result->last);
     }
   return result;
 }
@@ -820,7 +813,7 @@ Dot *DotNew(Node *tempn,TaskStruct *mem_task=NULL)
 	      Free(tempd2);
 	      tempd2=tempd3;
 	    } else
-	      InsQue(tempd2,result->last);
+	      QueIns(tempd2,result->last);
 
 	    if (DotHVConnect(tempd,tempd2)) {
 	      DotMarkConnected(tempd);
@@ -989,8 +982,8 @@ U0 Init()
   }
   mode=MD_CONNECT;
   RubberReset;
-  el_root.next=el_root.last=&el_root;
-  node_root.next=node_root.last=&node_root;
+  QueInit(&el_root);
+  QueInit(&node_root);
 }
 
 U0 CleanUp()
@@ -999,7 +992,7 @@ U0 CleanUp()
   Node *tempn=node_root.next,*tempn1;
   while (tempe!=&el_root) {
     tempe1=tempe->next;
-    RemQue(tempe);
+    QueRem(tempe);
     Free(tempe);
     tempe=tempe1;
   }
@@ -1016,7 +1009,7 @@ Element *ElementNew(I64 t,TaskStruct *mem_task=NULL)
   tempe->type=&et[t];
   tempe->x=ipx-Fs->win_pixel_left-Fs->win_scroll_x;
   tempe->y=ipy-Fs->win_pixel_top -Fs->win_scroll_y;
-  InsQue(tempe,el_root.last);
+  QueIns(tempe,el_root.last);
   ElementExtents(tempe);
   return tempe;
 }

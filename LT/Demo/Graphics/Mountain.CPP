@@ -64,16 +64,15 @@ P3I32 mountain[19]={{0,0,0},{100,-20,0},{100,-20,0},{-100,-40,0},{-100,-40,0},
 		  {60,-80,0},{60,-80,0},{-60,-100,0},{-60,-100,0},{40,-120,0},
 		  {40,-120,0},{-37,-140,0},{-37,-140,0},{0,-160,0},{0,-160,0}};
 
-BoolI64 PlotMan(U0 *aux,I64 _x,I64 _y,I64 _z)
-{ nounusedwarn aux,_z;
+BoolI64 PlotMan(U0 *,I64 _x,I64 _y,I64)
+{
   x=_x; y=_y;
   Sleep(4);
   return TRUE;
 }
 
-U0 MountainTask(U64 dummy=0)
+U0 MountainTask(U64)
 {
-  nounusedwarn dummy;
 //Most of the graphic shape routines can be called with
 //a custom routine to plot the points.
 //See [Graphics/Math] Graphics/Math.

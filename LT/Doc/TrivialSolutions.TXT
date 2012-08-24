@@ -22,7 +22,7 @@ See [::/LT/Doc/Registered.TXZ] Registered Version.
 
 History:
 I've been working on LoseThos full-time for 15.5 years.  Yes, I wrote every 
-one of the 135,015 lines myself, no GPL code, no linkage or dependence on 
+one of the 134,614 lines myself, no GPL code, no linkage or dependence on 
 other code.  I am a for profit company, not welcoming code contributions, but 
 feedback is very welcome.  See [::/LT/Doc/Acknowledgements.TXZ]
 ::/LT/Doc/Acknowledgements.TXZ.
@@ -55,8 +55,8 @@ it down.
 For some time-stamped proof 2004 www.webarchives.org/hare (has download),
 2006 www.webarchives.org/justrighteous (no download) or 
 2007 YouTube ScreenCast of Songs.  I have weekly Cd-ROM back-ups going way 
-back and time-stamped back-up files on source forge going back to
-2008.  HOPPY 
+back and time-stamped back-up files on source forge going back to 2008. 
+HOPPY 
 runs from any REAL-MODE DOS.  The Visual C project files are just for editing.
 
 
@@ -103,8 +103,8 @@ distributed for free.
 
 
 About Me:
-I was a National Merit Scholar with a 1440 SAT at Arizona State
-University.  I 
+I was a National Merit Scholar with a 1440 SAT at Arizona State University. 
+I 
 have a bachelor's in Computer System Engineering from ASU, basically,
 embedded 
 systems, and a master's in Electrical Engineering from ASU, control systems.  

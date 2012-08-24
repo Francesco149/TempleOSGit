@@ -6,10 +6,10 @@ SHIFT CURSOR
 CTRL-Y or DELETE KEY
   Delete file or tree.
 
-CTRL-C or CTRL-INSERT
+CTRL-C or CTRL-INS
   Copy selected files to clipboard.
 
-CTRL-V or SHIFT-INSERT
+CTRL-V or SHIFT-INS
   Paste clipboard.
 
 LEFT-CLICK,drag-drop
@@ -45,20 +45,20 @@ SHIFT-F5
 'M'
   Make CD/DVD ISO file.  This creates a file image of the directory the
   cursor 
-is on.  The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,28]
+is on.  The name of the ISO file is [C:/LT/OSMain/OSGlbls.CPZ,30]
   sys_dft_iso_name and can be redefined in 
 your start-up scripts.  You may wish to place it on a different drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/LT/OSMain/OSGlbls.CPZ,28] sys_dft_iso_name to the drive the cursor is on.
+[C:/LT/OSMain/OSGlbls.CPZ,30] sys_dft_iso_name to the drive the cursor is on.
 
 
 Instructions on Using CD/DVD's
   If you have not recompiled OSMain and defined your CD/DVD drive, exit the 
-file manager and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,184] Mount to define
-  your CD/DVD drive.  Place a CD/DVD in 
-the drive and press 'm' when on top of the CD/DVD drive letter to mount the 
+file mgr and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,184] Mount to define your
+  CD/DVD drive.  Place a CD/DVD in the 
+drive and press 'm' when on top of the CD/DVD drive letter to mount the 
 drive.  It will call [C:/LT/OSMain/Dsk/Dsk1a.CPZ,375] ChgDsk(), the LoseThos
   cmd to mount removable media.
 
@@ -68,8 +68,7 @@ Instructions on Burning CD/DVD's
 holding drive.  Make an ISO image of the drive by pressing 'M' when on top 
 of the holding drive.  Press 'B' when on top of the CD/DVD ROM drive to burn 
 the ISO to disk.  If you have not recompiled OSMain and defined your CD/DVD 
-drive, exit the file manager and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,184]
-  Mount.
+drive, exit the file mgr and use [C:/LT/OSMain/Dsk/DskAddDev.CPZ,184] Mount.
 
 
 Making a Bootable CD/DVD

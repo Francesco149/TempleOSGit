@@ -25,7 +25,7 @@ That is, they are ptrs to data.
 GrSprite1.CPZ uses the persistent graphic DC, gr_dc2,
 while the other demo's use gr_dc which must
 be redrawn each update of the screen (by the
-window manager task).  This demo is simpler
+window mgr task).  This demo is simpler
 because you do not need a window update routine.
 
 */

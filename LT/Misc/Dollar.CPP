@@ -19,7 +19,7 @@ U0 DollarFile(LTDirEntry *m1)
 public U0 Dollar(U8 *files_find_mask,U8 *fu_flags=NULL)
 //This is for importing non-"LT" text files.
 //**WARNING:**Do not use on files with dollar cmds
-// or on binary files. See [C:/LT/OSMain/Dsk/Dsk1b.CPZ,200] FilesFind() for flags.
+// or on binary files. See [C:/LT/OSMain/Dsk/Dsk1b.CPZ,198] FilesFind() for flags.
 {
   LTDirEntry *tempm1=NULL;
   U64 fuf_flags=0;

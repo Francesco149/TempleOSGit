@@ -73,41 +73,37 @@ public I64 LtfEntryRun(Ltf *l,LtfEntry *cl,BoolI8 exited)
   return result;
 }
 
-U8 *EdOverStrikeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdOverStrikeCB(Ltf *,LtfEntry *ll,TaskStruct *mem_task)
 {
   Ltf *ltf=ll->user_data;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l;
   *st=ltf->flags & LTFF_OVERSTRIKE ? 'O':CH_SINGLE_HORZ;
   st[1]=0;
   return st;
 }
 
-U8 *EdFilterCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdFilterCB(Ltf *,LtfEntry *ll,TaskStruct *mem_task)
 {
   Ltf *ltf=ll->user_data;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l;
   *st=ltf->find_replace->filter_lines ? 'F':CH_SINGLE_HORZ;
   st[1]=0;
   return st;
 }
 
-U8 *EdDollarCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdDollarCB(Ltf *,LtfEntry *ll,TaskStruct *mem_task)
 {
   Ltf *ltf=ll->user_data;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l;
   *st=ltf->flags & LTFF_IN_DOLLAR ? '$':CH_SINGLE_HORZ;
   st[1]=0;
   return st;
 }
 
-U8 *EdMoreCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdMoreCB(Ltf *,LtfEntry *ll,TaskStruct *mem_task)
 {
   Ltf *ltf=ll->user_data;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l;
   if (ltf->flags&LTFF_MORE)
     StrCpy(st,"More-");
   else
@@ -115,42 +111,38 @@ U8 *EdMoreCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
   return st;
 }
 
-U8 *EdQuotesCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdQuotesCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
   LexStruct *lx=mem_task->last_lex;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l,ll;
   *st=lx->flags & LF_IN_QUOTES ? '"':CH_SINGLE_HORZ;
   st[1]=0;
   return st;
 }
 
-U8 *EdBracesCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdBracesCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
   LexStruct *lx=mem_task->last_lex;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l,ll;
   *st=lx->braces_cnt ? '}':CH_SINGLE_HORZ;
   st[1]=0;
   return st;
 }
 
-U8 *EdSemicolonCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdSemicolonCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
   LexStruct *lx=mem_task->last_lex;
   U8 *st=MAlloc(8,mem_task);
-  nounusedwarn l,ll;
   *st=lx->statement_cnt ? ';':CH_SINGLE_HORZ;
   st[1]=0;
   return st;
 }
 
-U8 *EdDollarTypeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *EdDollarTypeCB(Ltf *,LtfEntry *ll,TaskStruct *mem_task)
 {
   Ltf *ltf=ll->user_data;
   U8 *src=DefineSub(ltf->cur_entry->type_u8,"ST_LTF_CMDS");
   U8 *st=CAlloc(8,mem_task);
-  nounusedwarn l;
   if (ltf->cur_entry==ltf)
     src="EOF";
   else if (!src)
@@ -262,12 +254,12 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
   if (!(do_flags&DOF_DONT_HOME))
     LtfHome(l);
   old_preempt=Preempt(OFF);
-  LtfRemQue(old_aux_ltf);
-  LtfInsQueRev(aux,Fs->next_ltf);
+  LtfQueRem(old_aux_ltf);
+  LtfQueInsRev(aux,Fs->next_ltf);
   if (l!=old_ltf)
     l->parent_ltf=old_ltf;
-  LtfRemQue(old_ltf);
-  LtfInsQue(l,Fs->last_ltf);
+  LtfQueRem(old_ltf);
+  LtfQueIns(l,Fs->last_ltf);
   Fs->text_attr=l->settings_root.dft_text_attr;
   LBEqu(&Fs->display_flags,DISPLAYf_HAS_MENU,l->menu_ltf);
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
@@ -277,9 +269,9 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
 
   Preempt(old_preempt);
   LtfUnlock(l);
-  WinSync(TRUE);
+  WinMgrSync(2);
   if (l->flags&LTFF_MIN_SIZE)
-    WinSync(TRUE);
+    WinMgrSync(2);
   result=View;
 
   Preempt(OFF);
@@ -295,11 +287,11 @@ public BoolI64 LtfDo(Ltf *l,U64 do_flags=0,U8 *help=NULL)
   if (unlock)
     LtfUnlock(l);
 
-  LtfRemQue(aux);
-  LtfInsQueRev(old_aux_ltf,Fs->next_ltf);
+  LtfQueRem(aux);
+  LtfQueInsRev(old_aux_ltf,Fs->next_ltf);
   LtfDel(aux);
-  LtfRemQue(l);
-  LtfInsQue(old_ltf,Fs->last_ltf);
+  LtfQueRem(l);
+  LtfQueIns(old_ltf,Fs->last_ltf);
   LBEqu(&Fs->display_flags,DISPLAYf_HAS_MENU,old_ltf->menu_ltf);
   Fs->text_attr=old_attr;
   if (menu) {
@@ -404,25 +396,26 @@ public I64 LtfMenuDo(Ltf *m,U64 do_flags=0,U8 *help=NULL)
 }
 
 #help_index "Ltf"
-public I64 PopUp(U8 *msg,TaskStruct *parent=NULL,TaskStruct **pu_task=NULL)
+public I64 PopUp(U8 *msg,TaskStruct *parent=NULL,TaskStruct **_pu_task=NULL)
 {
   U64 result=0;
   BoolI8 old_preempt=Preempt(OFF);
   TaskCmdStruct *tempc;
   TaskStruct *task=Spawn(&ServantUserCmdLine,NULL,"System",parent);
   if (!parent) {
-    TaskRequestQueue(task,parent,msg,1<<TASKCf_EXIT_ON_COMPLETE);
-    if (pu_task) *pu_task=task;
+    TaskRqstQue(task,parent,msg,1<<TASKCf_EXIT_ON_COMPLETE);
+    if (_pu_task) *_pu_task=task;
     Preempt(old_preempt);
     return 0;
   } else {
     Fs->popup_task=task;
-    tempc=TaskRequestQueue(task,parent,msg,
+    tempc=TaskRqstQue(task,parent,msg,
       1<<TASKCf_WAKE_MASTER | 1<<TASKCf_FOCUS_MASTER);
-    GetRequestResult(tempc,&result);
+    if (_pu_task) *_pu_task=task;
+    GetRqstResult(tempc,&result);
     Fs->popup_task=NULL;
     Kill(task);
-    if (pu_task) *pu_task=NULL;
+    if (_pu_task) *_pu_task=NULL;
     Preempt(old_preempt);
     return result;
   }
@@ -433,7 +426,7 @@ public TaskStruct *PopUpViewLtf(Ltf *l,U64 do_flags=0,U8 *help=NULL)
 {
   U8 *buf=MSPrintF("if (!IsSysDeterministic) Preempt(ON);LtfDo(0x%X,0x%X,0x%X);",l,do_flags,help);
   TaskStruct *task=Spawn(&ServantUserCmdLine,NULL,"View",Fs);
-  TaskRequestQueue(task,NULL,buf,1<<TASKCf_EXIT_ON_COMPLETE);
+  TaskRqstQue(task,NULL,buf,1<<TASKCf_EXIT_ON_COMPLETE);
   Free(buf);
   return task;
 }
@@ -706,7 +699,7 @@ public F64 PopUpRangeF64Log(F64 lo,F64 hi,I64 steps,
   return PopUpRangeF64Exp(lo,hi,Exp(Ln(hi/lo)/(steps-1)),fmt,header,footer);
 }
 
-#help_index "Task/Requests"
+#help_index "Task/Rqsts"
 public I64 AdamFile(U8 *filename,BoolI8 warn_ext=TRUE)
 {
   I64 result=0;

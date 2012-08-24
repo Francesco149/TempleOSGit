@@ -2,9 +2,8 @@
 
 F64 t0;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i;
   F64 dt=(tM-t0)*music_tempo%8.0,z,w,x1,y1,z1,x2,y2,z2;
   BoolI8 first=TRUE;

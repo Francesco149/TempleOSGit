@@ -117,27 +117,26 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
   }
 }
 
-#define BALL_PATH_POINTS	7
-P3I32 ball_path[BALL_PATH_POINTS]={
+#define BALL_PATH_PTS	7
+P3I32 ball_path[BALL_PATH_PTS]={
   {0,0,0},{20,-40,0},{40,20,0},
   {40,20,0},{50,-30,0},{55,10,0},
   {55,10,0}
 };
 
-BoolI64 PlotBall(U0 *aux,I64 _x,I64 _y,I64 _z)
-{ nounusedwarn aux,_z;
+BoolI64 PlotBall(U0 *,I64 _x,I64 _y,I64)
+{
   ball_x=_x; ball_y=_y;
   Sleep(3);
   return TRUE;
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   while (TRUE) {
     if (hit_t0) {
       Noise(25,2000,3000);
-      BSpline2(NULL,&ball_path,BALL_PATH_POINTS,&PlotBall);
+      BSpline2(NULL,&ball_path,BALL_PATH_PTS,&PlotBall);
       hit_t0=0;
     }
     Sleep(1);

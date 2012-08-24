@@ -1,6 +1,5 @@
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i,j;
   U16 *ptr=gr_win_z_buf;
   dc->color=BLACK;

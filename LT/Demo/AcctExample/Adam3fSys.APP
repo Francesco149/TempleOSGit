@@ -22,9 +22,8 @@ U0 ServantStartUp()
 
 TaskStruct *user1,*user2;
 
-U0 StartUpTasks(U64 dummy=0)
+U0 StartUpTasks(U64)
 {
-  nounusedwarn dummy;
   U8 buf[136];
   TaskStruct *task1,*task2;
 

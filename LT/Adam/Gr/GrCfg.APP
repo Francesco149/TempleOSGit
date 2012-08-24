@@ -1,5 +1,5 @@
 //See [D:/LT/OSMain/OSStart.CPZ,SYS_BIOS_GR_MODE:2] SYS_BIOS_GR_MODE
-//See [C:/LT/OSMain/OSEnd.CPZ,76] SysGrInit()
+//See [C:/LT/OSMain/OSEnd.CPZ,77] SysGrInit()
 
 //This allows constants to be used
 //instead of vars.

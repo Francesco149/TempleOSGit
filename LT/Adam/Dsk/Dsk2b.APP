@@ -116,7 +116,7 @@ public U0 PrtDsk(U8 drv_let=0)
 
   prt_dsk_dsk_size=bdev->max_blk+1;
 
-  root.next=root.last=&root;
+  QueInit(&root);
 
   num_prt=bdev->drv_let_base;
   remaining=FloorU64(bdev->max_blk+1,ROUND_PRT_TO);
@@ -140,7 +140,7 @@ public U0 PrtDsk(U8 drv_let=0)
       temppp->size=CeilU64(PmtI64("Size in Blocks  :",
 	remaining-PRT_HEADER)+PRT_HEADER,ROUND_PRT_TO);
     } while (!(ROUND_PRT_TO<=temppp->size<=FloorU64(remaining,ROUND_PRT_TO)));
-    InsQue(temppp,root.last);
+    QueIns(temppp,root.last);
     remaining-=temppp->size;
     num_prt++;
   }
@@ -225,7 +225,7 @@ public U0 PrtDsk(U8 drv_let=0)
 pd_done:
   while (root.next!=&root) {
     temppp=root.next;
-    RemQue(temppp);
+    QueRem(temppp);
     Free(temppp);
   }
 }

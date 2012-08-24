@@ -38,8 +38,8 @@ CD-ROMs, see [::/LT/Adam/Dsk/DskCDDVD.APZ] DiskCDDVD.APZ.  To make a custom
 bootable CD-ROM, look here 
 [::/LT/Doc/FileMgr.TXZ,BurnProdu] Bootable CD.
 
-BootMHD is the master boot record for a hard drive.  This goes on block
-zero.  
+BootMHD is the master boot record for a hard drive.  This goes on block zero.
+ 
 It loads-in BootMHD2 which is stored as a file on a partition, kinda risky
 and 
 unusual -- most other master boot loaders place stage 2 in a gap that's not
@@ -55,9 +55,9 @@ they get patched with the LBA, logical block addresses, to load other stuff.
 To update with a new LoseThos kernel (OSMain), you must create a binary file 
 and patch the boot loader so it knows the LBA blocks to load.  Therefore, you 
 usually recompile the kernel and update the boot sect at the same time.  
-[C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot() does
-this.  [C:/LT/Adam/Boot/InsBoot.APZ,285] InstallMasterBoot() will install a
-master boot 
+[C:/LT/Adam/Boot/InsBoot.APZ,157] InstallBoot() does this. 
+[C:/LT/Adam/Boot/InsBoot.APZ,285] InstallMasterBoot() will install a master
+boot 
 loader.
 
 With LoseThos , the OSMain module loads the Compiler module so it can process 

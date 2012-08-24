@@ -1,5 +1,5 @@
 U0 StreamPutS(U8 *st)
-//Inserts text into the stream of
+//Inss text into the stream of
 //characters being compiled.  Called
 //from withing #exe{} block.
 {
@@ -12,7 +12,7 @@ U0 StreamPutS(U8 *st)
 }
 
 U0 StreamPrintF(U8 *src,...)
-//Inserts text into the stream of
+//Inss text into the stream of
 //characters being compiled.  Called
 //from withing #exe{} block.
 {
@@ -107,7 +107,7 @@ ExeStruct *CmpJoin(LexStruct *lx,FunStruct *locals,BoolI8 first_lex,BoolI8 asm_b
 	  tempe=CAlloc(sizeof(ExeImportExportStruct));
 	  tempe->type=EIE_MAIN;
 	  tempe->ip=i;
-	  InsQue(tempe,result->last_ie);
+	  QueIns(tempe,result->last_ie);
 	}
 	if (asm_blk)
 	  break;
@@ -190,11 +190,11 @@ ExeStruct *CmpBuf(U8 *buf,U8 *map_name=NULL,
  
   lx=LexNew(buf,LF_DONT_FREE_BUF,NULL);
   lx->flags|=LF_STATIC_COMPILE;
-  InsQue(lx,Fs->last_lex);
+  QueIns(lx,Fs->last_lex);
   result=CmpJoin(lx,NULL,TRUE,FALSE,map_name,mapfile_drv);
   if (error_cnt) *error_cnt=lx->error_cnt;
   if (warning_cnt) *warning_cnt=lx->warning_cnt;
-  RemQue(lx);
+  QueRem(lx);
   if (result)
     LexDel(lx);
   return result;
@@ -259,6 +259,8 @@ U0 CmpFixUpJITAsm(LexStruct *lx,ExeStruct *ex,I64 ip2)
 	tempess->val=tempe->ip;
       else
 	tempess->val=tempe->ip+ip2;
+      tempess->src_link=tempe->src_link;
+      tempe->src_link=NULL;
       if (IsReplaceSyms)
 	HashReplace(tempess,Fs->hash_table);
       else
@@ -297,6 +299,7 @@ U0 CmpFixUpJITAsm(LexStruct *lx,ExeStruct *ex,I64 ip2)
 	  *ptr(U64 *)+=i;
       }
     }
+    Free(tempe->src_link);
     Free(tempe);
     tempe=tempe1;
   }
@@ -351,7 +354,7 @@ U0 CmpFixUpStaticAsm(LexStruct *lx,ExeStruct *ex,I64 ip2)
   tempe=ex->next_ie;
   while (tempe!=&ex->next_ie) {
     tempe1=tempe->next;
-    RemQue(tempe);
+    QueRem(tempe);
     if (tempe->type<=EIE_LIT_EXPORT)
       tempe->ip+=ip2;
     else if (tempe->type<EIE_MAIN) {
@@ -366,7 +369,7 @@ U0 CmpFixUpStaticAsm(LexStruct *lx,ExeStruct *ex,I64 ip2)
 	*ptr(U64 *)-=ip2;
       tempe->ip+=ip2;
     }
-    InsQue(tempe,ex->parent_exe->last_ie);
+    QueIns(tempe,ex->parent_exe->last_ie);
     tempe=tempe1;
   }
   Free(ex);
@@ -394,7 +397,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
   if (ex) {
     code_U8s=ex->code_U8s;
     ptr=patch_table;
-    *ptr++=EIE_MODULE_ALIGNMENT; //See [C:/LT/OSMain/Hash1a.CPZ,730] Load() and [C:/LT/Adam/BinRep.APZ,22] BinRep()
+    *ptr++=EIE_MODULE_ALIGNMENT; //See [C:/LT/OSMain/Hash1a.CPZ,729] Load() and [C:/LT/Adam/BinRep.APZ,22] BinRep()
     *ptr(U32 *)++=ex->max_align;
     *ptr++=0;
     cnt=0;
@@ -454,7 +457,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     while (tempe!=&ex->next_ie) {
       tempe1=tempe->next;
       if (tempe->type<=EIE_LIT_EXPORT) {
-	RemQue(tempe);
+	QueRem(tempe);
 	*ptr++=tempe->type;
 	*ptr(U32 *)++=tempe->ip;
 	if (tempe->str) {
@@ -464,6 +467,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
 	  ptr+=i+1;
 	} else
 	  *ptr++=0;
+	Free(tempe->src_link);
 	Free(tempe);
       }
       tempe=tempe1;
@@ -473,7 +477,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     tempe=ex->next_ie;
     while (tempe!=&ex->next_ie) {
       tempe1=tempe->next;
-      RemQue(tempe);
+      QueRem(tempe);
       *ptr++=tempe->type;
       *ptr(U32 *)++=tempe->ip;
       if (tempe->str) {
@@ -483,22 +487,26 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
 	ptr+=i+1;
       } else
 	*ptr++=0;
+      Free(tempe->src_link);
       Free(tempe);
       tempe=tempe1;
     }
 
     *ptr++=EIE_END;
-    i=(ptr-patch_table+15) & -0x10;
-    size=i+code_U8s+sizeof(BinFileHeaderStruct);
+    MemSet(ptr,0,16);
+    i=ptr-patch_table;
+    //[::/LT/OSMain/OSStart.CPZ,LT_XSUM] LT_XSUM needs 16 ALIGN
+    size=(sizeof(BinFileHeaderStruct)+code_U8s+i+15)&-16;
     bfh=MAlloc(size);
-    MemCpy(bfh(U8 *)+code_U8s+sizeof(BinFileHeaderStruct),patch_table,i);
-    MemCpy(bfh(U8 *)+sizeof(BinFileHeaderStruct),ex->code,code_U8s);
     bfh->jmp=0xEB+256*(sizeof(BinFileHeaderStruct)-2);
 #assert sizeof(BinFileHeaderStruct)-2<=MAX_I8
     bfh->type=0;
-    bfh->loader_patch_table_offset=code_U8s+sizeof(BinFileHeaderStruct);
+    bfh->loader_patch_table_offset=sizeof(BinFileHeaderStruct)+code_U8s;
     bfh->file_size=size;
     bfh->xsum=LT_XSUM;
+    MemCpy(bfh(U8 *)+sizeof(BinFileHeaderStruct),ex->code,code_U8s);
+    MemCpy(bfh(U8 *)+sizeof(BinFileHeaderStruct)+code_U8s,patch_table,
+      size-code_U8s-sizeof(BinFileHeaderStruct));
     bfh->xsum=ArcXSum(bfh,size);
     Free(fbuf2);
     if (out_name)
@@ -531,7 +539,7 @@ I64 ExePutS(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
     lx->flags|=LF_JUST_LOAD;
   if (Fs->last_lex!=&Fs->next_lex)
     lx->opts=Fs->last_lex->opts;
-  InsQue(lx,Fs->last_lex);
+  QueIns(lx,Fs->last_lex);
   try {
     Lex(lx);
     result=ExeCmdLine(lx);
@@ -545,7 +553,7 @@ I64 ExePutS(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
       }
     }
   }
-  RemQue(lx);
+  QueRem(lx);
   if (okay)
     LexDel(lx); //TODO: can crash
   return result;
@@ -583,7 +591,7 @@ I64 ExePutS2(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
     lx->flags|=LF_JUST_LOAD;
   if (Fs->last_lex!=&Fs->next_lex)
     lx->opts=Fs->last_lex->opts|1<<OPTf_REPLACE_SYMS;
-  InsQue(lx,Fs->last_lex);
+  QueIns(lx,Fs->last_lex);
   try {
     Lex(lx);
     result=ExeCmdLine(lx);
@@ -597,7 +605,7 @@ I64 ExePutS2(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
       }
     }
   }
-  RemQue(lx);
+  QueRem(lx);
   if (okay)
     LexDel(lx); //TODO: can crash
   return result;
@@ -634,10 +642,10 @@ I64 ExePutS3(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
     lx->flags|=LF_JUST_LOAD;
   if (Fs->last_lex!=&Fs->next_lex)
     lx->opts=Fs->last_lex->opts;
-  InsQue(lx,Fs->last_lex);
+  QueIns(lx,Fs->last_lex);
   Lex(lx);
   result=ExeCmdLine(lx);
-  RemQue(lx);
+  QueRem(lx);
   LexDel(lx);
   return result;
 }

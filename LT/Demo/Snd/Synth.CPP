@@ -69,25 +69,22 @@ U0 SynthTaskEndCB()
     Exit;
 }
 
-BoolI64 WFPlot(U0 *aux,I64 x,I64 y,I64 z)
+BoolI64 WFPlot(U0 *,I64 x,I64 y,I64)
 {
-  nounusedwarn aux,z;
   if (0<=x<=WF_BUF_LEN)
     waveform_buf[x]=y;
   return TRUE;
 }
 
-BoolI64 FQPlot(U0 *aux,I64 x,I64 y,I64 z)
+BoolI64 FQPlot(U0 *,I64 x,I64 y,I64)
 {
-  nounusedwarn aux,z;
   if (0<=x<=FQ_BUF_LEN)
     frequency_buf[x]=AbsI64(y);
   return TRUE;
 }
 
-BoolI64 ELPlot(U0 *aux,I64 x,I64 y,I64 z)
+BoolI64 ELPlot(U0 *,I64 x,I64 y,I64)
 {
-  nounusedwarn aux,z;
   if (0<=x<=EL_BUF_LEN)
     envelope_buf[x]=AbsI64(y);
   return TRUE;

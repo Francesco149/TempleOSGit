@@ -33,7 +33,7 @@ on an 8x8 grid.  It can run in Text mode if graphic initialization fails.
 computations intermediately.  Assembler has minimal 16-bit support, good 
 enough for compiling boot loaders.
 
-* No object files.  Linking can be done at [C:/LT/OSMain/Hash1a.CPZ,730]
+* No object files.  Linking can be done at [C:/LT/OSMain/Hash1a.CPZ,729]
 Load() time for static modules, if 
 you insist on not using JIT.  Modules have imports and exports.
 
@@ -54,8 +54,8 @@ servers or mainframes.  The
 focus task is all important.  Disk requests are not broken-up, so sharing is 
 bad, however.
 
-* [::/LT/Doc/MultiCore.TXZ] MultiCore is done master/slave, instead of
-SMP.  Core zero explicitly 
+* [::/LT/Doc/MultiCore.TXZ] MultiCore is done master/slave, instead of SMP. 
+Core zero explicitly 
 assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
 access, though.
 

@@ -116,7 +116,7 @@ U0 Main()
     //Pass the task of the window as data item to job.
     MPJob(&MPDrawIt,Fs,1);
 
-    WinSync;
+    WinMgrSync;
     while (!mp.core0_done || !mp.core1_done)
       Yield;
 

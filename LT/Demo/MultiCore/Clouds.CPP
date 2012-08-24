@@ -2,22 +2,22 @@
 
 #define NUM_CLOUDS		16
 #define SKY_LINES		30
-#define CLOUD_POINTS		512
+#define CLOUD_PTS		512
 #define CLOUD_PENS		8
-#define CLOUD_PEN_POINTS	16
+#define CLOUD_PEN_PTS	16
 #define CLOUD_PEN_SIZE		16
 
 class Cloud
 {
   I64 i,x,y,w,h,dx,dy;
   U64 color;
-  I64 px[CLOUD_POINTS],py[CLOUD_POINTS],pc[CLOUD_POINTS];
+  I64 px[CLOUD_PTS],py[CLOUD_PTS],pc[CLOUD_PTS];
 } clouds[NUM_CLOUDS];
 
 class CloudPen
 {
   GrDC *img;
-  I64 px[CLOUD_PEN_POINTS],py[CLOUD_PEN_POINTS];
+  I64 px[CLOUD_PEN_PTS],py[CLOUD_PEN_PTS];
 } cloud_pens[CLOUD_PENS];
 
 GrDC *cloud_pen;
@@ -28,8 +28,8 @@ U0 MPDrawClouds(TaskStruct *task)
   Cloud *c;
   GrDC *dc=GrDCAlias(gr_dc,task);
   I64 i,j,k,xx,yy,
-     lo= Gs->num   *CLOUD_POINTS/mp_cnt,
-     hi=(Gs->num+1)*CLOUD_POINTS/mp_cnt;
+     lo= Gs->num   *CLOUD_PTS/mp_cnt,
+     hi=(Gs->num+1)*CLOUD_PTS/mp_cnt;
 
   for (j=0,c=clouds;j<NUM_CLOUDS;j++,c++)
     for (i=lo;i<hi;i++) {
@@ -57,9 +57,8 @@ U0 MPDrawClouds(TaskStruct *task)
   LBts(&mp_done_flags,Gs->num);
 }
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *task,GrDC *)
 {
-  nounusedwarn dc;
   I64 i;
   mp_done_flags=0;
   for (i=1;i<mp_cnt;i++)
@@ -69,19 +68,18 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
     Yield;
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,j;
   Cloud *c;
   CloudPen *cp;
   while (TRUE) {
-    WinSync;
+    WinMgrSync;
 
     for (i=0,cp=cloud_pens;i<CLOUD_PENS;i++,cp++) {
       GrDCClear(cp->img);
       cp->img->color=COLOR_MONO;
-      for (j=0;j<CLOUD_PEN_POINTS;j++) {
+      for (j=0;j<CLOUD_PEN_PTS;j++) {
 	GrPlot(cp->img,cp->px[j],cp->py[j]);
 	cp->px[j]=LimitI64(cp->px[j]+RandU16%3-1,0,CLOUD_PEN_SIZE-1);
 	cp->py[j]=LimitI64(cp->py[j]+RandU16%3-1,0,CLOUD_PEN_SIZE-1);
@@ -115,7 +113,7 @@ U0 Init()
     c->w=100;
     c->h=50;
     c->color=RandU16;
-    for (l=0;l<CLOUD_POINTS;l++) {
+    for (l=0;l<CLOUD_PTS;l++) {
       k=0;
       for (j=0;j<SAMPLES;j++)
 	k+=RandI16;
@@ -132,7 +130,7 @@ U0 Init()
 
   for (i=0;i<CLOUD_PENS;i++,cp++) {
     cp->img=GrDCNew(DCT_COLOR8,CLOUD_PEN_SIZE,CLOUD_PEN_SIZE);
-    for (j=0;j<CLOUD_PEN_POINTS;j++) {
+    for (j=0;j<CLOUD_PEN_PTS;j++) {
       cp->px[j]=RandU16%CLOUD_PEN_SIZE;
       cp->py[j]=RandU16%CLOUD_PEN_SIZE;
     }
@@ -147,9 +145,8 @@ U0 CleanUp()
     GrDCDel(cp->img);
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by the Holy Spirit
-  nounusedwarn dummy;
 //This specifies a call-back routine
 //to be called when the task dies.
   Fs->task_end_cb=&SndTaskEndCB;
@@ -181,7 +178,7 @@ U0 CloudScene()
     Preempt(OFF);
     Fs->draw_it=&DrawIt;
     GetChar;
-    WinSync;
+    WinMgrSync;
 
     "$BG$\n";
   } catch

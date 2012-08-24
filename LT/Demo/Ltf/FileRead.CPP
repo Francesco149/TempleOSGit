@@ -4,12 +4,12 @@ public U0 LtfProfile(U8 *filename,U64 flags)
        *flags_stats=CAlloc(sizeof(U64)*64),
        *type_flags_stats=CAlloc(sizeof(U64)*64);
 //Note, word wrap is determined by
-//l->win_task when a [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf is recalculated
+//l->win_task when a [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf is recalculated
 //use [C:/LT/Adam/Ltf/LtfRecalc.APZ,110] LtfRecalc().
   Ltf *l=LtfRead(filename,flags);
 
 //l->root which is equal to l is the
-//header of the Queue and represents the end-of-file marker.
+//header of the Que and represents the end-of-file marker.
   LtfEntry *ll=l->root.next;
   while (ll!=l) {
     cmd_stats[ll->type_u8]++;
@@ -54,11 +54,11 @@ public U0 LtfProfile(U8 *filename,U64 flags)
 
 //See [C:/LT/Adam/Training.APZ,203] TipOfDay.
 
-//Note: Not all [C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry's are full-sized nodes.
+//Note: Not all [C:/LT/OSMain/Adam1a.HPZ,1210] LtfEntry's are full-sized nodes.
 //Some are [C:/LT/OSMain/Memory.CPZ,956] MAlloced with a smaller size to save
-//mem.	They all have at least the size [C:/LT/OSMain/Adam1a.HPZ,1186] LtfEntryBase.
+//mem.	They all have at least the size [C:/LT/OSMain/Adam1a.HPZ,1185] LtfEntryBase.
 
-//Note: [C:/LT/OSMain/Adam1a.HPZ,1211] LtfEntry's should be allocated from the
+//Note: [C:/LT/OSMain/Adam1a.HPZ,1210] LtfEntry's should be allocated from the
 //heap of the owning task, l->mem_task.
 
 //The flag arrays [C:/LT/Adam/Ltf/LtfNew.APZ,2] ltf_tag_types, [C:/LT/Adam/Ltf/LtfNew.APZ,4] ltf_form_types, etc

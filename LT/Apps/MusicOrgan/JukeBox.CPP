@@ -4,13 +4,13 @@ TaskStruct *SingleSong(U8 *msg,U8 *name)
   TaskStruct *task=Spawn(&ServantUserCmdLine,NULL,name,Fs);
   LBts(&task->task_flags,TASKf_LOCK_TITLE);
   StrCpy(task->task_title,name);
-  TaskRequestQueue(task,Fs,";",1<<TASKCf_WAKE_MASTER);
+  TaskRqstQue(task,Fs,";",1<<TASKCf_WAKE_MASTER);
   task->win_top=2;
 task->win_bottom=task->win_top+8;
   task->win_right=task->win_left+50;
   TaskDerivedValsUpdate(task);
   Preempt(old_preempt);
-  TaskRequestQueue(task,NULL,msg,1<<TASKCf_EXIT_ON_COMPLETE);
+  TaskRqstQue(task,NULL,msg,1<<TASKCf_EXIT_ON_COMPLETE);
   LtfCur(task)->max_entries=100;
   return task;
 }
@@ -19,9 +19,8 @@ task->win_bottom=task->win_top+8;
 #define JB_RUN_LEVEL_ONE	1
 #define JB_RUN_LEVEL_TWO	2
 
-BoolI64 JBPutKey(Ltf *l,U0 *data,U64 ch,U64 sc)
+BoolI64 JBPutKey(Ltf *l,U0 *,U64 ch,U64 sc)
 {  //ch=ASCII; sc=scancode
-  nounusedwarn data;
   LtfEntry *cl=l->cur_entry,*ll;
   LTDirEntry *tempm;
   Ltf *s;

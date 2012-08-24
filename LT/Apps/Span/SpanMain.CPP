@@ -94,7 +94,7 @@ MyMass PlaceMass(I64 x, I64 y)
   tempm->radius=MASS_RADIUS;
   tempm->cost=25.0*COST_SCALE;
   tempm->color=YELLOW;
-  InsQue(tempm,ode->last_mass);
+  QueIns(tempm,ode->last_mass);
   return tempm;
 }
 
@@ -129,7 +129,7 @@ U0 MoveMass(MyMass *tempm,I64 x, I64 y)
 
 U0 DelSpring(MySpring *temps)
 {
-  RemQue(temps);
+  QueRem(temps);
   Free(temps);
 }
 
@@ -143,7 +143,7 @@ U0 DelMass(MyMass *tempm)
       DelSpring(temps);
     temps=temps1;
   }
-  RemQue(tempm);
+  QueRem(tempm);
   Free(tempm);
 }
 
@@ -201,7 +201,7 @@ U0 PlaceSpring(MyMass *tempm1,MyMass *tempm2)
       temps->flags|=SSF_NO_COMPRESSION;
       break;
   }
-  InsQue(temps,ode->last_spring);
+  QueIns(temps,ode->last_spring);
 }
 
 U0 AnimateTask(SpanAnimateStruct *a)
@@ -220,7 +220,7 @@ U0 AnimateTask(SpanAnimateStruct *a)
       temps=temps1;
     }
     AdjustLoads(Fs->parent_task,ode);
-    WinSync; //Ode updated once per refresh.
+    WinMgrSync; //Ode updated once per refresh.
     if (old_run!=run_button.state) {
       if (run_button.state) {
 	if (!a->elapsed_t || !a->saved_ode) {
@@ -250,8 +250,8 @@ U0 Init(SpanAnimateStruct *a)
   ode=SpanNew;
 
   run_button.state=0;
-  WinSync; //Allow stop to register in animate task.
-  WinSync;
+  WinMgrSync; //Allow stop to register in animate task.
+  WinMgrSync;
 
   if (a->saved_ode)
     SpanLoad(ode,a->saved_ode);
@@ -261,9 +261,8 @@ U0 Init(SpanAnimateStruct *a)
   cursor_mass=NULL;
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by Terry A. Davis
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   music_tempo= 3.636;
@@ -296,10 +295,10 @@ U0 Span()
 
 //This Preempt() eliminates a lot of hassles.
 //The concern is about changing
-//queue links while the winmgr task
+//que links while the winmgr task
 //is updating the ode or screen.
 
-//The Window manager suspends this
+//The Window mgr suspends this
 //task while updating the ode.  It
 //will not be interrupted and with this
 //preempt, we will not be interrupted.

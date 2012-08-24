@@ -5,6 +5,25 @@ U0 ParenWarning(LexStruct *lx)
     PutLexWarn(lx,"ST_UNNECESSARY_PARENTHESIS");
 }
 
+U0 PrsPush(PrsStk *ps,I64 val)
+{
+  ps->stk[++ps->ptr]=val;
+}
+
+I64 PrsPop(PrsStk *ps)
+{
+  return ps->stk[ps->ptr--];
+}
+
+U0 PrsPush2(PrsStk *ps,I64 val)
+{
+  ps->stk2[++ps->ptr2]=val;
+}
+
+I64 PrsPop2(PrsStk *ps)
+{
+  return ps->stk2[ps->ptr2--];
+}
 
 U0 PrsPopDeref(PrsStk *ps)
 {
@@ -27,7 +46,7 @@ BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NU
   BoolI8 result=TRUE,cont_unary,cont_check_binary_ops,is_lower,div_sizeof;
   I64 i,k,old_flags=lx->flags,old_expression_start_line_num=lx->expression_start_line_num,
       max_prec=PREC_NULL,unary_pre_prec,paren_prec,unary_post_prec,
-      left_prec=PREC_MAX,question_clauses=0;
+      left_prec=PREC_MAX,quest=0;
   IntermediateCode *tempi,*tempi2;
   ClassStruct *tempc,*tempc1;
   PrsStk *ps;
@@ -141,13 +160,13 @@ BoolI64 PrsExpression(LexStruct *lx,I64 *_max_prec,BoolI8 end_exp,PrsStk *_ps=NU
 	      CbIcAdd(lx,EC_NOP,0,sys_internal_types[IT_I64]);
 	      break;
 	    case EC_QUESTION:
-	      question_clauses++;
+	      quest++;
 	      break;
 	    case EC_COLON:
-	      if (!question_clauses)
+	      if (!quest) //case statement colons or labels
 		k=0;
 	      else
-		question_clauses--;
+		quest--;
 	      break;
 	  }
 	  if (!k.u8[2]) {
@@ -337,6 +356,8 @@ done3:
   }
   if (end_exp && result)
     CbIcAdd(lx,EC_END_EXP,0,0);
+  if (quest>0)
+    PrsExcept(lx,"ST_MISSING_COLON");
   if (_max_prec)
     *_max_prec=max_prec;
   lx->flags=lx->flags&~LF_INSIDE_EXPRESSION |
@@ -687,7 +708,7 @@ U64 PrsUnaryTerm(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,ArrayDimS
       mc->str=d;
       lx->flags|=LF_HAS_MISC_DATA;
       return PRST_MAYBE_MODIFIERS;
-    case TK_INSERT_BINARY:
+    case TK_INS_BINARY:
       if (PREC_TERM>*max_prec)
 	*max_prec=PREC_TERM;
       d=lx->ident;
@@ -700,8 +721,8 @@ U64 PrsUnaryTerm(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,ArrayDimS
       lx->flags|=LF_HAS_MISC_DATA;
       Lex(lx);
       return PRST_MAYBE_MODIFIERS;
-    case TK_INSERT_BINARY_TYPE:
-    case TK_INSERT_BINARY_SIZE:
+    case TK_INS_BINARY_TYPE:
+    case TK_INS_BINARY_SIZE:
       if (PREC_TERM>*max_prec)
 	*max_prec=PREC_TERM;
       CbIcAdd(lx,EC_IMM,lx->cur_i,sys_internal_types[IT_U64]);
@@ -821,8 +842,12 @@ U64 PrsUnaryTerm(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,ArrayDimS
 	  CbIcAdd(lx,EC_ABS_ADDR,lx->a->ip,sys_internal_types[IT_PTR]);
 	else
 	  CbIcAdd(lx,EC_IMM,lx->a->ip,sys_internal_types[IT_PTR]);
-      } else
-	CbIcAdd(lx,EC_RIP,0,sys_internal_types[IT_PTR]);
+      } else {
+	if (lx->flags&LF_CLASS_IP)
+	  CbIcAdd(lx,EC_IMM,lx->class_ip,sys_internal_types[IT_I64]);
+	else
+	  CbIcAdd(lx,EC_RIP,0,sys_internal_types[IT_PTR]);
+      }
       Lex(lx);
       return PRST_MAYBE_MODIFIERS;
     }
@@ -1120,9 +1145,10 @@ U64 PrsUnaryModifier(LexStruct *lx,PrsStk *ps,MemberListStruct **local_var,Array
 	PrsExcept(lx,"ST_INVALID_CLASS");
       if (Btr(&lx->flags,Lf_FUN_EXP))
 	ps->ptr2--;
+      lx->flags&=~LF_ARRAY;
       tempc=lx->hash_entry;
       Lex(lx);
-      mode=PRS_TYPECAST;
+      mode=PRS0_TYPECAST|PRS1_NULL;
       tempc=PrsType(lx,&tempc,&mode,NULL,NULL,&fun_ptr,NULL,&tempad2,0);
       if (fun_ptr) {
 	PrsPopDeref(ps);

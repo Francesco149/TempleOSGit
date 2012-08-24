@@ -18,9 +18,8 @@ bits 31 and 32.
 I64 ball_x[NUM_BALLS],ball_y[NUM_BALLS],
    ball_velocity_x[NUM_BALLS],ball_velocity_y[NUM_BALLS];
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i;
   dc->color=RED;
   for (i=0;i<NUM_BALLS;i++)
@@ -62,9 +61,8 @@ Conservation of Energy:
 
 **/
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   TaskStruct *task=Fs->parent_task;
   I64 i,j,h,v,distdist,
     dia=(2*BALL_RADIUS)<<32,

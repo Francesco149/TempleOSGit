@@ -4,10 +4,10 @@ U0 MousePktRead()
   if (GetTimeStamp>mouse_evt_time+time_stamp_freq>>3)
     U8FifoFlush(mouse_fifo);
   mouse_evt_time=GetTimeStamp;
-  U8FifoInsert(mouse_fifo,InU8(KBD_PORT));
+  U8FifoIns(mouse_fifo,InU8(KBD_PORT));
   if (U8FifoCnt(mouse_fifo)==mouse_pkt_size)
     while (U8FifoRem(mouse_fifo,&j))
-      U8FifoInsert(mouse2_fifo,j);
+      U8FifoIns(mouse2_fifo,j);
 }
 
 interrupt U0 MouseIntHandler()
@@ -259,7 +259,7 @@ U0 KbdMouseRst()
   kbdmouse_rst=FALSE;
 }
 
-BoolI64 MouseDriverInstall(U64 dummy=0)
+BoolI64 MouseDriverInstall(U64 dummy=0) //can be spawned
 {
   nounusedwarn dummy;
   I64 i;
@@ -269,7 +269,7 @@ BoolI64 MouseDriverInstall(U64 dummy=0)
   mouse_install_attempt_in_progress=TRUE;
   OutU8(0xA1,InU8(0xA1)|0x10);
   mouse_installed=mouse_irqs_working=FALSE;
-  SetIDTEntry(0x2C,&MouseIntHandler,0,IDTET_IRQ);
+  SetIDTEntry(0x2C,&MouseIntHandler,0);
   for(i=0;i<5;i++)
     mouse_buttons[i]=0;
   if (i=MouseRst)

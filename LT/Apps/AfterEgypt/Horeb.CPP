@@ -264,7 +264,7 @@ U0 Horeb()
 	  case CH_ESC:
 	    goto hr_done;
 	}
-      WinSync;
+      WinMgrSync;
     }
 hr_done: //Don't goto out of try
   } catch

@@ -6,9 +6,8 @@
 //Hold ALT and press a 3 digit decimal number
 //or press <CTRL-ALT-A>.
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *task,GrDC *)
 {
-  nounusedwarn dc;
   I64 i;
   for (i=0;i<256;i++)
     PlotWinU8(task,i+BLACK<<12+WHITE<<8,(i&15)*2,(i/16)*2);

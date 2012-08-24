@@ -10,7 +10,7 @@ BoolI64 IsDbgTask()
 BoolI64 ChkPtr(U0 *ptr)
 {
   if (sys_heap_base<=ptr<=MAPPED_MEM_SPACE) {
-    if (*MemPointAtPageTableEntry(ptr)&1)
+    if (*MemPtAtPageTableEntry(ptr)&1)
       return TRUE;
     else
       return FALSE;
@@ -88,7 +88,7 @@ U0 *TaskCaller(TaskStruct *task=NULL,I64 num=0,BoolI8 saved_context=FALSE)
     }
     return NULL;
   } else {
-    if (task->rip==SYS_IDLE_POINT)
+    if (task->rip==SYS_IDLE_PT)
       return *rsp;
     else
       return task->rip;
@@ -116,7 +116,7 @@ U0 StkRep(TaskStruct *task=NULL)
     rsp=task->rsp;
     rbp=task->rbp;
   }
-  if (task->rip==SYS_IDLE_POINT)
+  if (task->rip==SYS_IDLE_PT)
     add=*rsp;
   else
     add=task->rip;
@@ -162,7 +162,7 @@ U0 CallerRep(U0 **rbp=NULL,TaskStruct *task=NULL)
 
 U0 DbgStr(U8 *st,U64 mS=100)
 //Shows a string using
-//[C:/LT/OSMain/Misc1a.CPZ,325] Raw screen output for a fixed length
+//[C:/LT/OSMain/Misc1a.CPZ,324] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -181,7 +181,7 @@ U0 DbgStr(U8 *st,U64 mS=100)
 
 U0 DbgNum(U64 num,U64 mS=100)
 //Shows a hex num using
-//[C:/LT/OSMain/Misc1a.CPZ,325] Raw screen output for a fixed length
+//[C:/LT/OSMain/Misc1a.CPZ,324] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -198,7 +198,7 @@ U0 DbgNum(U64 num,U64 mS=100)
 
 U0 DbgF(F64 d,U64 mS=100)
 //Shows a floating-point val using
-//[C:/LT/OSMain/Misc1a.CPZ,325] Raw screen output for a fixed length
+//[C:/LT/OSMain/Misc1a.CPZ,324] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -214,7 +214,7 @@ U0 DbgF(F64 d,U64 mS=100)
 }
 
 U0 DbgAdd(U0 *add,U64 mS=100)
-//Shows an addr using [C:/LT/OSMain/Misc1a.CPZ,325] Raw screen
+//Shows an addr using [C:/LT/OSMain/Misc1a.CPZ,324] Raw screen
 //output for a length of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -230,7 +230,7 @@ U0 DbgAdd(U0 *add,U64 mS=100)
 }
 
 U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,325] Raw
+//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,324] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -247,7 +247,7 @@ U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
 }
 
 U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,325] Raw
+//Dumps a block of mem using [C:/LT/OSMain/Misc1a.CPZ,324] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -265,7 +265,7 @@ U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
 
 U0 D(U8 *buf,U64 cnt=0x80,BoolI8 show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/LT/Adam/Ltf/LtfMain.APZ,699] LtfD() for a live dump.
+//See [C:/LT/Adam/Ltf/LtfMain.APZ,704] LtfD() for a live dump.
 {
   U64 i,j,ch;
   U8 *b=buf;
@@ -347,10 +347,8 @@ U0 OverRideSingleUserSwap()
   SingleUser(old_single);
 }
 
-U0 DefineRegs()
+U0 DefineRegs() //A courtesy for dbgging
 {
-  I64 i;
-  U8 buf1[8],buf2[8];
   DefineLoad("RAX","Fs->rax");
   DefineLoad("RBX","Fs->rbx");
   DefineLoad("RCX","Fs->rcx");
@@ -360,16 +358,18 @@ U0 DefineRegs()
   DefineLoad("RBP","Fs->rbp");
   DefineLoad("RSP","Fs->rsp");
   DefineLoad("RIP","Fs->rip");
-  for (i=8;i<16;i++) {
-    SPrintF(buf1,"R%d",i);
-    SPrintF(buf2,"Fs->r%d",i);
-    DefineLoad(buf1,buf2);
-  }
+  DefineLoad("R8" ,"Fs->r8");
+  DefineLoad("R9" ,"Fs->r9");
+  DefineLoad("R10","Fs->r10");
+  DefineLoad("R11","Fs->r11");
+  DefineLoad("R12","Fs->r12");
+  DefineLoad("R13","Fs->r13");
+  DefineLoad("R14","Fs->r14");
+  DefineLoad("R15","Fs->r15");
 }
 
-U8 *SysMGetS(U64 flags)
+U8 *SysMGetS(U64)
 {
-  nounusedwarn flags;
   U8 buf[512];
   GetS(buf,512,FALSE);
   return StrNew(buf);
@@ -466,7 +466,7 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
     CallExtNum(EXT_DEBUGGER,was_in_dbg);
   else {
     "No Debugger\n";
-    while (TRUE);
+    SysHlt;
   }
   InDbg(was_in_dbg);
   SingleUser(was_single_user);
@@ -477,7 +477,7 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
     Exit;
 }
 
-U0 Fault2()
+U0 Fault2() //Called from [::/LT/OSMain/Interrupts.CPZ,Fault2] Fault2
 {
 //**Be careful not to swap-out and ruin the saved context**
   BoolI8 was_raw,was_single_user;
@@ -504,9 +504,7 @@ U0 Fault2()
     "RIP:%08X",Fs->rip; //Sometimes crashes on %P, so do this first
     ":%P  RSP:%08X\n",Fs->rip,Fs->rsp;
     if (Fs->fault_num==I_PAGE_FAULT) {
-      asm {
-	MOV_RAX_CR2
-      }
+      asm {	MOV_RAX_CR2	 }
       i=GetRAX;
       "Fault Addr:%08X:%P\n",i,i;
     }

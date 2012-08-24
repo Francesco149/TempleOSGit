@@ -18,9 +18,8 @@
 
 F64 t0;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 theta,dt=(tM-t0)*music_tempo;
   if (dt>12) dt=12;
   theta=0.2*FullTri(dt,4);

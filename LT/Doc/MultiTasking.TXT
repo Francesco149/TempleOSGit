@@ -3,22 +3,22 @@
 LoseThos is a preemptive multitasking operating system.  However, you can 
 turn-off preemption on a task by task basis and the task will not yield ctrl 
 unless it volunteers with [C:/LT/OSMain/Scheduler.CPZ,371] Yield(),
-[C:/LT/OSMain/Misc1a.CPZ,216] Sleep() or a call to I/O which yields ctrl. 
+[C:/LT/OSMain/Misc1a.CPZ,215] Sleep() or a call to I/O which yields ctrl. 
  Use the [C:/LT/OSMain/Adam1b.HPZ,94] Preempt() cmd to turn on or off
 preemption.  This is useful when you 
 have multiple tasks modifying data structures simultaneously.  Interrupts 
 still occur when preemption is off.   
 
 **Preemption is turned-off by default when a task is
-[C:/LT/OSMain/Task1a.CPZ,225] Spawn()ed.**
+[C:/LT/OSMain/Task1a.CPZ,203] Spawn()ed.**
 
-The time-slice rate is set by [C:/LT/OSMain/Adam1a.HPZ,484] JIFFY_FREQ.
+The time-slice rate is set by [C:/LT/OSMain/Adam1a.HPZ,489] JIFFY_FREQ.
 
 LoseThos does not remove tasks from "the queue" when they are waiting.  They 
-swap-in, check for whatever condition they are waiting for and
-swap-out.  This 
-keeps it simple, but would cause problems if too many tasks
-existed.  LoseThos 
+swap-in, check for whatever condition they are waiting for and swap-out. 
+This 
+keeps it simple, but would cause problems if too many tasks existed. 
+LoseThos 
 is intended for non-server home computers with a maximum of around ten, or
 so, 
 tasks.  See [::/LT/OSMain/Scheduler.CPZ,1] Scheduler.

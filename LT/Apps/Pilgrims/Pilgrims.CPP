@@ -118,7 +118,7 @@ I64 num_gardens;
 
 
 F64 WaterHeight(F64 x,F64 y)
-{ //Returns wave height at world coordinate point
+{ //Returns wave height at world coordinate pt
   F64 dxn=Cos(wave_theta),
       dyn=Sin(wave_theta),
   theta;
@@ -395,9 +395,8 @@ U0 AnimateObject(Object *tempo,F64 dt)
   tempo->d_theta=LowPass1(0.5,tempo->d_theta,0,dt);
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 {
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   music_tempo= 2.480;
@@ -411,9 +410,8 @@ U0 SongTask(U64 dummy=0)
 
 #define SCREEN_BUMP	100
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,j,
      w=Fs->parent_task->win_pixel_width,  cx=w/2,
      h=Fs->parent_task->win_pixel_height, cy=h/2;
@@ -536,7 +534,7 @@ U0 AnimateTask(U64 dummy=0)
       Spawn(&SongTask,NULL,"Song",Fs);
       song_time=0;
     }
-    WinSync;
+    WinMgrSync;
   }
 }
 

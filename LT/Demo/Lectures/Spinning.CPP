@@ -1,7 +1,6 @@
 //This task lets you hear how busy the CPU is.
-U0 LoadTask(U64 dummy=0)
+U0 LoadTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,j=100;
 //Preemption is ctrlled on a per task basis.
 //Preemption is OFF by default on new tasks.
@@ -33,9 +32,9 @@ U0 SpinningNoPreempt()
 
 //Put on screen before it starts.  Text lags by one refresh
 //and we might catch it in the middle of an update.
-  WinSync;
-  WinSync;
-  WinSync;
+  WinMgrSync;
+  WinMgrSync;
+  WinMgrSync;
 
   old_preempt=Preempt(OFF);
   for (i=0;i<3000000;i++)
@@ -48,9 +47,9 @@ U0 SpinningNoInterrupts()
   I64 i;
 //Interrupts are ctrlled on a per task basis.
   "Spinning with no interrupts...\n";
-  WinSync;
-  WinSync;
-  WinSync;
+  WinMgrSync;
+  WinMgrSync;
+  WinMgrSync;
   Cli;
   for (i=0;i<3000000;i++)
     InU8(0x21);

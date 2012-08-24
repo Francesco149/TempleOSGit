@@ -7,33 +7,15 @@ Ode *SpanNew()
   ode->drag_v3=0.00001;
   ode->acceleration_limit=5e3;
 
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
   return ode;
 }
 
 U0 SpanDel(Ode *ode)
 {
-  MyMass   *tempm,*tempm1;
-  MySpring *temps,*temps1;
-
-  RemQue(ode);
-
-  tempm=ode->next_mass;
-  while (tempm!=&ode->next_mass) {
-    tempm1=tempm->next;
-    RemQue(tempm);
-    Free(tempm);
-    tempm=tempm1;
-  }
-
-  temps=ode->next_spring;
-  while (temps!=&ode->next_spring) {
-    temps1=temps->next;
-    RemQue(temps);
-    Free(temps);
-    temps=temps1;
-  }
-
+  QueRem(ode);
+  QueDel(&ode->next_mass,TRUE);
+  QueDel(&ode->next_spring,TRUE);
   OdeDel(ode);
 }
 
@@ -119,14 +101,14 @@ U0 SpanLoad(Ode *ode,U8 *src)
     tempm=CAlloc(sizeof(MyMass));
     MemCpy(&tempm->start_saved_area,src,M_SIZE);
     src+=M_SIZE;
-    InsQue(tempm,ode->last_mass);
+    QueIns(tempm,ode->last_mass);
   }
 
   for (i=0;i<h.num_springs;i++) {
     temps=CAlloc(sizeof(MySpring));
     MemCpy(&temps->start_saved_area,src,S_SIZE);
     src+=S_SIZE;
-    InsQue(temps,ode->last_spring);
+    QueIns(temps,ode->last_spring);
     temps->end1=MassFindNum(ode,temps->end1_num);
     temps->end2=MassFindNum(ode,temps->end2_num);
   }

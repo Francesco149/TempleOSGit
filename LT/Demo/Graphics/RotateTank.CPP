@@ -72,7 +72,7 @@ U0 RotateTank()
       dc->z=GR_Z_ALL;
  
       GrSpritePlot3(dc,0,0,0,__BIN_1);
-      WinSync;
+      WinMgrSync;
       GrDCFill;
     }
   } catch

@@ -119,7 +119,7 @@
 
 
 //These are indexed by color #.
-//See [C:/LT/OSMain/Adam1a.HPZ,3438] COLORS.
+//See [C:/LT/OSMain/Adam1a.HPZ,3441] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -157,9 +157,8 @@ class monster
 
 #define LOS_SCALE	4
 
-BoolI64 LOSPlot(U0 *dummy,I64 x,I64 y,I64 z)
+BoolI64 LOSPlot(U0 *,I64 x,I64 y,I64)
 {
-  nounusedwarn dummy,z;
   if (!map[(y/LOS_SCALE)*map_width+(x/LOS_SCALE)])
     return FALSE;
   else
@@ -194,7 +193,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 
   //You could make it much more efficient
   //if you did it like [::/LT/Demo/GameStarters/BigGuns.CPZ] ::/LT/Demo/GameStarters/BigGuns.CPZ
-  //with a [C:/LT/OSMain/Adam1a.HPZ,3494] GrDC.
+  //with a [C:/LT/OSMain/Adam1a.HPZ,3497] GrDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -354,9 +353,8 @@ U0 CleanUp()
   map=NULL;
 }
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 i,x,y,dx,dy;
   while (TRUE) {
     for (i=0;i<NUM_MONSTERS;i++)

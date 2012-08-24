@@ -1,13 +1,13 @@
 U0 RawDrawChar(U64 ch)
 {
 /* This is for RAW output during boot
-before the window manager is running
+before the window mgr is running
 and for the debugger.
 
-See [C:/LT/Adam/Gr/GrScreen.APZ,599] GrUpdateForegroundOfText for
+See [C:/LT/Adam/Gr/GrScreen.APZ,606] GrUpdateForegroundOfText for
 the normal screen text output routine.
 
-See also [C:/LT/Adam/Gr/GrScreen.APZ,724] GrUpdateScreen().
+See also [C:/LT/Adam/Gr/GrScreen.APZ,731] GrUpdateScreen().
 
 */
   static U64 timeout=0;
@@ -131,9 +131,8 @@ U0 WinDerivedValsUpdate(TaskStruct *task=NULL)
   PopFD;
 }
 
-BoolI64 AKDRawDisplayPutKey(U64 ch,U64 scancode)
+BoolI64 AKDRawDisplayPutKey(U64 ch,U64)
 {
-  nounusedwarn scancode;
   if (IsRaw) {
     RawDrawChar(ch);
     return TRUE;
@@ -287,7 +286,7 @@ KeyDevStruct *KeyDevAdd(BoolI64 (*fp_put_key)(U64 ch,U64 sc),BoolI64 (*fp_puts)(
     tempp->flags|=KDF_HAS_DESCS;
   while (tempp1->priority>priority)
     tempp1=tempp1->last;
-  InsQue(tempp,tempp1);
+  QueIns(tempp,tempp1);
   Preempt(old_preempt);
   return tempp;
 }
@@ -295,7 +294,7 @@ KeyDevStruct *KeyDevAdd(BoolI64 (*fp_put_key)(U64 ch,U64 sc),BoolI64 (*fp_puts)(
 U0 KeyDevRem(KeyDevStruct *tempp)
 {
   BoolI8 old_preempt=Preempt(OFF);
-  RemQue(tempp);
+  QueRem(tempp);
   Preempt(old_preempt);
   Free(tempp);
 }

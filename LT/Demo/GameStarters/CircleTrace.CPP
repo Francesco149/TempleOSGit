@@ -6,18 +6,16 @@ AcctRegExecuteBranch("LT/CircleTrace");
 I64 cx,cy;
 F64 avg_error=0,elapsed_time=0,total_error=0,score=999;
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 {
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE)
     Play("hEDCARCDECR");
 }
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *task,GrDC *)
 {
-  nounusedwarn dc;
   U8 buf[128];
   SPrintF(buf,"Error:%6.3f  Time:%6.3f  Score:%6.3f  Best:%8.3f",avg_error,elapsed_time,score,best_score);
   PlotWinStr(task,buf,BLACK<<4+WHITE,0,0);
@@ -26,9 +24,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 #define CIRCLE_RADIUS	100
 #define CIRCUMFERENCE	(2*pi*CIRCLE_RADIUS)
 
-BoolI64 CTPlot(GrDC *dc,I64 x,I64 y,I64 z)
+BoolI64 CTPlot(GrDC *dc,I64 x,I64 y,I64)
 {
-  nounusedwarn z;
   F64 rad=Sqrt(Sqr(x-cx)+Sqr(y-cy));
   GrPlot(dc,x,y);
   total_error+=Abs(rad-CIRCLE_RADIUS);
@@ -93,12 +90,12 @@ U0 CircleTrace()
 	  avg_error=total_error/total_distance;
 	  score=elapsed_time*avg_error;
 
-	  //This [C:/LT/OSMain/Misc1a.CPZ,216] Sleep()s until the next time the
-	  //window manager task runs.  The
-	  //window manager calls the UpdateWin() routine
-	  //and places msgs in the queue, so there's
-	  //no need to do anything until the window manager runs.
-	  WinSync;
+	  //This [C:/LT/OSMain/Misc1a.CPZ,215] Sleep()s until the next time the
+	  //window mgr task runs.  The
+	  //window mgr calls the UpdateWin() routine
+	  //and places msgs in the que, so there's
+	  //no need to do anything until the window mgr runs.
+	  WinMgrSync;
 
 	} while (msg_code!=MSG_IP_L_UP);
 	music_mute=TRUE; Sleep(200);

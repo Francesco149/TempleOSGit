@@ -67,7 +67,7 @@ Duplicate entries are allowed--they overshadow old entries.
 
 ADDRESS-TO-SYMBOL LOOK-UP  (Slow because not important--could add tree)
 1)PSect Cache is scanned.
-2)"next_added,last_added" queue links are traversed.  This speeds look-up
+2)"next_added,last_added" que links are traversed.  This speeds look-up
 instead of scanning hash table because hash table is so sparce.
 
 See [C:/LT/OSMain/PSect.CPZ,10] PSectFind().
@@ -299,7 +299,7 @@ _HASH_ADD::
 	MOV	U64 SysHashEntry.next[RCX],RBX
 	MOV	U64 [RAX],RCX
 
-//Insque
+//Queins
 	MOV	RBX,U64 SysHashTable.last_added[RDI]
 	MOV	U64 SysHashEntry.last_added[RCX],RBX
 	MOV	U64 SysHashEntry.next_added[RBX],RCX
@@ -324,7 +324,7 @@ _HASH_ADD_AFTER::
 	MOV	U64 SysHashEntry.next[RCX],RBX
 	MOV	U64 [RAX],RCX
 
-//Insque
+//Queins
 	MOV	RBX,U64 SysHashTable.last_added[RDI]
 	MOV	U64 SysHashEntry.last_added[RCX],RBX
 	MOV	U64 SysHashEntry.next_added[RBX],RCX
@@ -357,7 +357,7 @@ _HASH_REPLACE::
 	MOV	RCX,U64 SF_ARG1[RBP]
 	JZ	@@05	//Z set by find
 
-//Remque/Insque
+//QueRem/Queins
 	MOV	RBX,U64 SysHashEntry.next_added[RAX]
 	MOV	U64 SysHashEntry.next_added[RCX],RBX
 	MOV	U64 SysHashEntry.last_added[RBX],RCX
@@ -368,7 +368,7 @@ _HASH_REPLACE::
 	MOV	RBX,U64 SysHashEntry.next[RAX]
 	JMP	@@10
 
-//Insque
+//Queins
 @@05:	MOV	RBX,U64 SysHashTable.last_added[RDI]
 	MOV	U64 SysHashEntry.last_added[RCX],RBX
 	MOV	U64 SysHashEntry.next_added[RBX],RCX
@@ -418,7 +418,7 @@ _HASH_REM_DEL::
 	MOV	RBX,U64 SysHashEntry.next[RAX]
 	MOV	U64 [RDX],RBX
 
-//Remque
+//QueRem
 	MOV	RBX,U64 SysHashEntry.next_added[RAX]
 	MOV	RDX,U64 SysHashEntry.last_added[RAX]
 	MOV	U64 SysHashEntry.next_added[RDX],RBX
@@ -484,7 +484,7 @@ U0 HashDel(SrcSymHashEntry *temph)
     }
     if (temph->type & (HTT_FUN | HTT_CLASS))
     //Assumes code not on heap, so doesn't Free.
-    //[C:/LT/Compiler/Lex.CPZ,571] MemberListDel() is an import to the OSMain module
+    //[C:/LT/Compiler/Lex.CPZ,563] MemberListDel() is an import to the OSMain module
       MemberListDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(DefineStrHashEntry *)->data);
@@ -708,9 +708,8 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 }
 
 
-U0 LoadPass2(U8 *src,U8 *module_base,I64 ld_flags)
+U0 LoadPass2(U8 *src,U8 *module_base,I64)
 {
-  nounusedwarn ld_flags;
   U8 *st_ptr;
   I64 i,etype;
   while ((etype=*src++)!=EIE_END) {

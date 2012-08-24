@@ -80,7 +80,7 @@ U0 SysTry(U8 *catch_start,U8 *untry_start)
   tempt->rflags=old_flags;
   SaveExceptRegs(tempt);
   Cli;
-  InsQue(tempt,Fs->last_except);
+  QueIns(tempt,Fs->last_except);
   SetFlags(old_flags);
 }
 
@@ -92,7 +92,7 @@ U0 SysUntry()
 //so we lock it out.  A probe from a multicore
 //would fail, but who'd want to do that?
   Cli;
-  RemQue(tempt);
+  QueRem(tempt);
   PopFD;
   Free(tempt);
 }
@@ -155,18 +155,12 @@ U0 throw_join(I64 argc,I64 *argv)
       return;
     SetBasePtr(Fs->except_rbp);
     tempt=Fs->last_except;
-    RemQue(tempt);
+    QueRem(tempt);
     Free(tempt);
   }
   was_raw=Raw(ON);
   PutExcept;
-  if (!Gs->num)
-    Dbg("Unhandled Exception");
-  else {
-    DbgStr("Unhandled MP Exception",5000);
-    while (TRUE)
-      Beep;
-  }
+  Dbg("Unhandled Exception");
   Raw(was_raw);
 }
 

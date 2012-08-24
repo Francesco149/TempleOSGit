@@ -11,7 +11,7 @@ U0 TSInit()
   //TS_IMG_DRV is for the holding area for burning CDROMs
   switch (ts_cid) {
     case CID_TAD8:
-      DefinePrintF("CFG_ACCT","\"\nTAD\n\"");
+      DefinePrintF("CFG_ACCT","\"\nTS/TAD\n\"");
       DefinePrintF("CFG_HARD_DRVS","\"h2s0xbc00\n0xb880\n1d2s0xbc00\n0xb880\n0\"");
       DefinePrintF("CFG_RAM_DRVS","\"b1Scale2Mem(2048,0x40000)\nz1Scale2Mem(2048,0x40000)\n\"");
       DefinePrintF("CFG_CDROM_DRVS","\"t3s0xb800\n0\"");
@@ -27,7 +27,7 @@ U0 TSInit()
       DefinePrintF("TS_CDROM_DRV","\"T\"");
       break;
     default:
-      DefinePrintF("CFG_ACCT","\"\nTAD\n\"");
+      DefinePrintF("CFG_ACCT","\"\nTS/TAD\n\"");
       DefinePrintF("CFG_HARD_DRVS","\"d2s0x1F0\n0x3F4\n0\"");
       DefinePrintF("CFG_RAM_DRVS","\"b1Scale2Mem(2048,0x40000)\nz1Scale2Mem(2048,0x40000)\n\"");
       DefinePrintF("CFG_CDROM_DRVS","\"t3s0x170\n0\"");
@@ -95,9 +95,8 @@ if (ts_has_cdrom_drv)
 //[::/LT/Accts/Install/DoItOnce.CPZ,InstallBoot] Install Acct
 
 
-U0 CtrlAltR(U64 sc)
+U0 CtrlAltR(U64)
 {
-  nounusedwarn sc;
   snd_record=!snd_record;
 }
 SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
@@ -131,9 +130,8 @@ public U0 MyScreenShot(U64 bits=4)
     StreamPutS("#define FRAME_DIR_CNT	200\n");
 };
 
-U0 FrameGrabberTask(U64 dummy=0)
+U0 FrameGrabberTask(U64)
 {
-  nounusedwarn dummy;
   I64 frame_num=0;
   I64 buf[136],buf2[136],buf3[136];
   F64 end_time=tNP,f;
@@ -191,16 +189,14 @@ public U0 FrameGrabberToggle()
   }
 }
 
-U0 ScreenShotTask(U64 dummy=0)
+U0 ScreenShotTask(U64)
 {
-  nounusedwarn dummy;
   TaskLocalInit;
   MyScreenShot;
 }
 
-U0 CtrlAltS(U64 sc)
+U0 CtrlAltS(U64)
 {
-  nounusedwarn sc;
   Spawn(&ScreenShotTask);
 }
 SetCtrlAltLetCB('S',&CtrlAltS,"Cmd/Screen Shot");

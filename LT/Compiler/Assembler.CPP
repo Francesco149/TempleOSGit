@@ -399,7 +399,7 @@ U0 AsmGlblsResolve(LexStruct *lx,ExeStruct *ex)
 	  tempe->str=StrNew(tempess->str);
 	do {
 	  tempe1=tempe->next;
-	  InsQue(tempe,ex->last_ie);
+	  QueIns(tempe,ex->last_ie);
 	} while (tempe=tempe1);
 	tempess->list=NULL;
       }
@@ -432,7 +432,8 @@ U0 AsmGlblsResolve(LexStruct *lx,ExeStruct *ex)
       if (tempess->type & HTF_LIT)
 	tempe->type++;
       tempe->str=StrNew(tempess->str);
-      InsQue(tempe,ex->last_ie);
+      tempe->src_link=StrNew(tempess->src_link);
+      QueIns(tempe,ex->last_ie);
     }
     tempess=tempess->next_added;
   }
@@ -691,7 +692,7 @@ U0 AsmMakeArgMask(LexStruct *lx,AsmArgStruct *arg,U64 *mask)
     *mask&=  0x1FFFFFFFFF;
 }
 
-BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI8 U8_avail)
+BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 U8_avail)
 {
   AsmCtrlStruct *a=lx->a;
   I64 i;
@@ -708,10 +709,8 @@ BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI
 	AsmUnresolvedAdd(a,num2->num.exp,EIE_REL_U8+num2->lit,a->ip,num2->rel,
 	  num2->num.undef_glbl,LexLineNum(lx),U8_avail,TRUE);
       else {
-	if (!num2->lit && !(MIN_I8<=num2->num.i<=MAX_I8)) {
-//	  LexPop(lx);
+	if (!num2->lit && !(MIN_I8<=num2->num.i<=MAX_I8))
 	  PrsExcept(lx,"ST_BRANCH_OUT_OF_RANGE");
-	}
       }
       if (num2->lit) {
 	if (num2->num.abs_cnts.abs_addres & 1) {
@@ -730,11 +729,7 @@ BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI
 	  tempa->type=EAA_SUB_U8;
 	}
       }
-      if (is_question)
-	a->ip++;
-      else
-	AsmStoreCodeU8(lx,num2->num.i.u8[0]);
-
+      AsmStoreCodeU8(lx,num2->num.i.u8[0]);
     } else if (num2->U8_cnt==2) {
       if (num2->num.undef_local)
 	AsmUnresolvedAdd(a,num2->num.exp,EIE_REL_U16+num2->lit,a->ip,num2->rel,
@@ -742,12 +737,8 @@ BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI
       else if (num2->num.undef_glbl)
 	AsmUnresolvedAdd(a,num2->num.exp,EIE_REL_U16+num2->lit,a->ip,num2->rel,
 	  num2->num.undef_glbl,LexLineNum(lx),U8_avail,TRUE);
-      else {
-	if (!num2->lit && !(MIN_I16<=num2->num.i<=MAX_I16)) {
-//	  LexPop(lx);
-	  PrsExcept(lx,"ST_BRANCH_OUT_OF_RANGE");
-	}
-      }
+      else if (!num2->lit && !(MIN_I16<=num2->num.i<=MAX_I16))
+	PrsExcept(lx,"ST_BRANCH_OUT_OF_RANGE");
       if (num2->lit) {
 	if (num2->num.abs_cnts.abs_addres & 1) {
 	  tempa=CAlloc(sizeof(ExeAbsAddrStruct));
@@ -765,15 +756,10 @@ BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI
 	  tempa->type=EAA_SUB_U16;
 	}
       }
-      if (is_question)
-	a->ip+=2;
-      else {
-	AsmStoreCodeU8(lx,num2->num.i.u8[0]);
-	AsmStoreCodeU8(lx,num2->num.i.u8[1]);
-      }
+      AsmStoreCodeU8(lx,num2->num.i.u8[0]);
+      AsmStoreCodeU8(lx,num2->num.i.u8[1]);
       if (U8_avail && !num2->num.undef_local && !num2->num.undef_glbl &&
 	  !num2->lit && -124<=num2->num.i<=123) {
-//	LexPop(lx);
 	PutAsmWarn(lx,"ST_COULD_USE_U8_DISP");
 	return FALSE;
       }
@@ -801,13 +787,9 @@ BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI
 	  tempa->type=EAA_SUB_U32;
 	}
       }
-      if (is_question)
-	a->ip+=4;
-      else
-	AsmStoreCodeU32(lx,num2->num.i.u32[0]);
+      AsmStoreCodeU32(lx,num2->num.i.u32[0]);
       if (U8_avail && !num2->num.undef_local && !num2->num.undef_glbl &&
 	  !num2->lit && -124<=num2->num.i<=123) {
-//	LexPop(lx);
 	PutAsmWarn(lx,"ST_COULD_USE_U8_DISP");
 	return FALSE;
       }
@@ -836,13 +818,9 @@ BoolI64 AsmStoreNum(LexStruct *lx,AsmNum2 *num2,I64 cnt,BoolI8 is_question,BoolI
 	  tempa->type=EAA_SUB_U64;
 	}
       }
-      if (is_question)
-	a->ip+=8;
-      else
-	AsmStoreCodeU64(lx,num2->num.i);
+      AsmStoreCodeU64(lx,num2->num.i);
       if (U8_avail && !num2->num.undef_local && !num2->num.undef_glbl &&
 	  !num2->lit && -124<=num2->num.i<=123) {
-//	LexPop(lx);
 	PutAsmWarn(lx,"ST_COULD_USE_U8_DISP");
 	return FALSE;
       }
@@ -1246,20 +1224,19 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 
     if (best.disp.U8_cnt) {
       best.disp.rel=a->ip+best.disp.U8_cnt+best.imm.U8_cnt;
-      if (!AsmStoreNum(lx,&best.disp,1,FALSE,U8_avail))
+      if (!AsmStoreNum(lx,&best.disp,1,U8_avail))
 	return FALSE;
     }
 
     if (best.imm.U8_cnt) {
       best.imm.rel=a->ip+best.imm.U8_cnt;
-      if (!AsmStoreNum(lx,&best.imm,1,FALSE,U8_avail))
+      if (!AsmStoreNum(lx,&best.imm,1,U8_avail))
 	return FALSE;
     }
     if (tempi->flags&IEF_ENDING_ZERO) //ENTER instruction
       AsmStoreCodeU8(lx,0);
     return TRUE;
   }
-//  LexPop(lx);
   PrsExcept(lx,"ST_INVALID_INSTRUCTION");
 }
 
@@ -1267,7 +1244,7 @@ BoolI64 AsmCodeInstruction(LexStruct *lx,
 U0 DefineU8s(LexStruct *lx,I64 U8_cnt)
 {
   AsmCtrlStruct *a=lx->a;
-  BoolI8 is_question,is_dup;
+  BoolI8 is_dup;
   I64 i,dup_val;
   U8 *ptr;
   AsmNum2 num2;
@@ -1281,52 +1258,41 @@ U0 DefineU8s(LexStruct *lx,I64 U8_cnt)
       i=lx->ident_len-1;
       while (i--)
 	AsmStoreCodeU8(lx,*ptr++);
-      Lex(lx);	//Skip Str
+    Lex(lx);	//Skip Str
     } else {
-      is_question=FALSE;
       is_dup=FALSE;
       lx->abs_cnts=0;
-      if (lx->token=='?') {
-	is_question=TRUE;
-	Lex(lx);
-      } else {
-	lx->undef_hash_entry=NULL;
-	lx->flags&=~(LF_UNRESOLVED+LF_LOCAL);
-	if (!GetExpression(lx,&num2.num.exp))
-	  LexSkipEol(lx);
-	else {
-	  if (lx->abs_cnts.externs)
-	    PrsExcept(lx,"ST_EXTERNS_NOT_ALLOWED");
-	  if (lx->flags & LF_UNRESOLVED) {
-	    if (lx->flags & LF_LOCAL) {
-	      num2.num.undef_local=lx->undef_hash_entry;
-	      lx->undef_hash_entry=NULL;
-	      a->has_locals=TRUE;
-	    } else {
-	      num2.num.undef_glbl=lx->undef_hash_entry;
-	      lx->undef_hash_entry=NULL;
-	    }
+      lx->undef_hash_entry=NULL;
+      lx->flags&=~(LF_UNRESOLVED+LF_LOCAL);
+      if (!GetExpression(lx,&num2.num.exp))
+	LexSkipEol(lx);
+      else {
+	if (lx->abs_cnts.externs)
+	  PrsExcept(lx,"ST_EXTERNS_NOT_ALLOWED");
+	if (lx->flags & LF_UNRESOLVED) {
+	  if (lx->flags & LF_LOCAL) {
+	    num2.num.undef_local=lx->undef_hash_entry;
+	    lx->undef_hash_entry=NULL;
+	    a->has_locals=TRUE;
 	  } else {
-	    i=Call(num2.num.exp);
-	    ExpressionDel(num2.num.exp);
+	    num2.num.undef_glbl=lx->undef_hash_entry;
+	    lx->undef_hash_entry=NULL;
 	  }
+	} else {
+	  i=Call(num2.num.exp);
+	  ExpressionDel(num2.num.exp);
 	}
       }
       if (lx->token==TK_IDENT && lx->hash_entry) {
 	if (lx->hash_entry->type & HTT_ASM_KEYWORD && lx->hash_entry->user_data0==AKW_DUP) {
-	  if (is_question)
-	    PrsExcept(lx,"ST_QUESTION_NOT_ALLOWED");
 	  is_dup=TRUE;
 	  if (Lex(lx)!='(')
 	    PrsExcept(lx,"ST_EXPECTING_LEFT_PAREN");
-	  if (Lex(lx)=='?') {
-	    is_question=TRUE;
-	    Lex(lx);  //SKIP "?"
-	  } else
-	    dup_val=AsmExpressionEval(lx);
+	  Lex(lx); //skip (
+	  dup_val=AsmExpressionEval(lx);
 	  if (lx->token!=')')
 	    PrsExcept(lx,"ST_EXPECTING_RIGHT_PAREN");
-	  Lex(lx); //SKIP ')'
+	  Lex(lx); //SKIP )
 	}
       }
       num2.rel=0;
@@ -1336,10 +1302,10 @@ U0 DefineU8s(LexStruct *lx,I64 U8_cnt)
 	if (num2.num.undef_local || num2.num.undef_glbl)
 	  PrsExcept(lx,"ST_UNDEFINED_DUP_CNT");
 	num2.num.i=dup_val;
-	AsmStoreNum(lx,&num2,i,is_question,FALSE);
+	AsmStoreNum(lx,&num2,i,FALSE);
       } else {
 	num2.num.i=i;
-	AsmStoreNum(lx,&num2,1,is_question,FALSE);
+	AsmStoreNum(lx,&num2,1,FALSE);
       }
     }
     if (lx->token==',')
@@ -1409,14 +1375,9 @@ U0 PrsAsmBlk(LexStruct *lx)
 	    i=CeilU64(a->ip,i);
 	    if (lx->token==',')
 	      Lex(lx);
-	    if (lx->token=='?') {
-	      Lex(lx);
-	      a->ip=i;
-	    } else {
-	      k=AsmExpressionEval(lx);
-	      for (j=a->ip;j<i;j++)
-		AsmStoreCodeU8(lx,k);
-	    }
+	    k=AsmExpressionEval(lx);
+	    for (j=a->ip;j<i;j++)
+	      AsmStoreCodeU8(lx,k);
 	    break;
 	  case AKW_DU8:
 	    DefineU8s(lx,1);
@@ -1483,6 +1444,7 @@ U0 PrsAsmBlk(LexStruct *lx)
 	      PrsExcept(lx,"ST_EXPECTING_COLON");
 	    if (lx->token==TK_DBL_COLON) {
 	      lx->hash_entry->type|=HTF_EXPORT;
+	      SetSrcFileInfo(lx,lx->hash_entry);
 	      AsmLocalsResolve(lx);
 	      a->last_label=next_last_label;
 	    }
@@ -1517,6 +1479,7 @@ U0 PrsAsmBlk(LexStruct *lx)
 	    HashAdd(tempess,lx->glbl_hash_table);
 	  if (lx->token==TK_DBL_COLON) {
 	    tempess->type|=HTF_EXPORT;
+	    SetSrcFileInfo(lx,tempess);
 	    AsmLocalsResolve(lx);
 	    a->last_label=tempess->str;
 	  }

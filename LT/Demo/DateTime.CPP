@@ -1,5 +1,5 @@
 /*
-  An [C:/LT/OSMain/Adam1a.HPZ,200] LTDate is a signed 64-bit date/time num
+  An [C:/LT/OSMain/Adam1a.HPZ,205] LTDate is a signed 64-bit date/time num
   representing how many 49710ths of a second
   since Christ.  The reason it is this crazy
   num is so that 32bits is exactly one day.
@@ -13,7 +13,7 @@
 
   [C:/LT/OSMain/Str1a.CPZ,2509] PrintF() and the file datetimes use
   this format, otherwise you might want to
-  use [C:/LT/OSMain/Adam1b.HPZ,202] GetTimeStamp() for a higher frequency
+  use [C:/LT/OSMain/Adam1b.HPZ,198] GetTimeStamp() for a higher frequency
   timing, divide by [C:/LT/OSMain/OSGlbls.CPZ,45] time_stamp_freq,
   but this num is tied to your CPU's
   clock frequency which is inexact when

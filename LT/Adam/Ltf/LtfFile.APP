@@ -19,7 +19,7 @@ public U0 LtfLoad(Ltf *l,U8 *src2,U64 size)
 	MemCpy(tempb->data,src,tempb->size);
 	src+=tempb->size;
       }
-      InsQue(tempb,l->bin_root.last);
+      QueIns(tempb,l->bin_root.last);
       if (tempb->num>=l->cur_bin_num)
 	l->cur_bin_num=tempb->num+1;
     }
@@ -193,8 +193,8 @@ public U0 LtfWrite(Ltf *l,BoolI8 prompt=FALSE)
 }
 
 #help_index "Ltf"
-public U0 LtfInsertLtf(Ltf *l,Ltf *b)
-{  //TODO: [C:/LT/Adam/Ltf/LtfNew.APZ,402] LtfRst
+public U0 LtfInsLtf(Ltf *l,Ltf *b)
+{  //TODO: [C:/LT/Adam/Ltf/LtfNew.APZ,400] LtfRst
   U8 *dst;
   BoolI8 unlock_l=LtfLock(l),
 	 unlock_b=LtfLock(b);
@@ -214,7 +214,7 @@ public U0 LtfInsertLtf(Ltf *l,Ltf *b)
       nl->max_col=StrLen(dst);
       *dst=0;
       l->cur_entry->max_col=l->cur_data_col;
-      InsQue(nl,l->cur_entry);
+      QueIns(nl,l->cur_entry);
       l->cur_entry=nl;
       l->cur_data_col=nl->min_col;
     } else
@@ -224,7 +224,7 @@ public U0 LtfInsertLtf(Ltf *l,Ltf *b)
   while (cl!=b) {
     if (cl->type_u8!=LTFT_SOFT_NEW_LINE) {
       nl=LtfEntryCopy(l,cl);
-      InsQue(nl,l->cur_entry->last);
+      QueIns(nl,l->cur_entry->last);
     }
     cl=cl->next;
   }
@@ -253,7 +253,7 @@ public U0 EdCopyToClipboard(Ltf *l)
       cl->type&=~LTFLT_SELECTED;
       if (!Bt(ltf_data_types,cl->type_u8)) {
 	nl=LtfEntryCopy(b,cl);
-	InsQue(nl,b->root.last);
+	QueIns(nl,b->root.last);
       }
     }
     cl=cl->next;
@@ -277,7 +277,7 @@ public U0 EdCutToClipboard(Ltf *l)
       cl->type&=~LTFLT_SELECTED;
       if (!Bt(ltf_data_types,cl->type_u8)) {
 	nl=LtfEntryCopy(b,cl);
-	InsQue(nl,b->root.last);
+	QueIns(nl,b->root.last);
       }
       if (cl==l->cur_entry || cl==cl2)
 	cl2=cl->next;
@@ -311,7 +311,7 @@ public U0 EdPasteClipboard(Ltf *l)
       ll=ll->next;
     }
   } else
-    LtfInsertLtf(l,b);
+    LtfInsLtf(l,b);
   if (unlock_b)
     LtfUnlock(b);
   if (unlock_l)
@@ -347,7 +347,7 @@ public Ltf *LtfCopy(Ltf *l,LtfEntry *start,LtfEntry *end)
   while (start!=l) {
     if (!Bt(ltf_data_types,start->type_u8)) {
       nl=LtfEntryCopy(b,start);
-      InsQue(nl,b->root.last);
+      QueIns(nl,b->root.last);
     }
     if (start==end)
       break;
@@ -361,7 +361,7 @@ public Ltf *LtfCopy(Ltf *l,LtfEntry *start,LtfEntry *end)
 #help_index "Ltf;Compiler/Directive"
 
 public U0 StreamLtf(Ltf *b)
-{  //TODO: [C:/LT/Adam/Ltf/LtfNew.APZ,402] LtfRst
+{  //TODO: [C:/LT/Adam/Ltf/LtfNew.APZ,400] LtfRst
   BoolI8 unlock_b=LtfLock(b);
   LtfEntry *cl=b->root.next;
   while (cl!=b) {
@@ -390,7 +390,7 @@ BoolI64 LtfCaptureUndo(Ltf *l,BoolI8 force=FALSE)
     u=CAlloc(sizeof(LtfUndo),l->mem_task);
     u->time_stamp=i;
     u->body=LtfSave(l,&u->size);
-    InsQue(u,l->undo_root.last);
+    QueIns(u,l->undo_root.last);
     l->flags&=~LTFF_UNDO_DIRTY;
     l->undo_cnt++;
     u->ltf_flags=l->flags;
@@ -406,10 +406,10 @@ U0 LtfUndoRestore(Ltf *l)
   LtfUndo *u=l->undo_root.last,*u_next,*u_last;
   Ltf *m;
   if (u!=&l->undo_root) {
-    RemQue(u);
+    QueRem(u);
     u_next=l->undo_root.next;
     u_last=l->undo_root.last;
-    l->undo_root.next=l->undo_root.last=&l->undo_root;
+    QueInit(&l->undo_root);
     m=l->menu_ltf;
     LtfRst(l,TRUE);
     l->flags=u->ltf_flags;
@@ -434,7 +434,7 @@ public U0 Type(U8 *name)
 {
   Ltf *l=LtfRead(name);
   if (LtfCur)
-    LtfInsertLtf(LtfCur,l);
+    LtfInsLtf(LtfCur,l);
   LtfDel(l);
 }
 #help_index "Ltf"

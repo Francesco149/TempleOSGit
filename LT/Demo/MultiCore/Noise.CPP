@@ -23,7 +23,7 @@ U0 MPTask(TaskStruct *task)
 {
   while (!noise_done) {
     DrawNoise(task);
-    WinSync;
+    WinMgrSync;
   }
   LBts(&done_ack,Gs->num);
 }
@@ -48,7 +48,7 @@ U0 NoiseDemo()
       cnt-=0x100;
     else
       cnt+=0x100;
-    WinSync;
+    WinMgrSync;
   }
 
   done_ack=1;

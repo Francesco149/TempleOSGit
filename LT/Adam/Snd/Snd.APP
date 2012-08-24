@@ -36,7 +36,7 @@ U0 SndRecord(F64 freq,U64 waveform,F64 amp)
   d->time_stamp=tNP;
   d->waveform=waveform;
   d->amp=amp;
-  InsQue(d,snd_record_root.last);
+  QueIns(d,snd_record_root.last);
 }
 
 U0 CtrlAltV(U64 sc)
@@ -50,7 +50,7 @@ SetCtrlAltLetCB('V',&CtrlAltV,"Sys/Snd Volume +/-");
 
 U0 SndInit()
 {
-  snd_record_root.next=snd_record_root.last=&snd_record_root;
+  QueInit(&snd_record_root);
   snd_record_root.freq=0;
   snd_record_root.time_stamp=GetTimeStamp;
   fp_snd_record=&SndRecord;

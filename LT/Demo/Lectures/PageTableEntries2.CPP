@@ -1,5 +1,5 @@
 U64 *addr=VGA_GRAPHIC_MEM_BASE,
-   *pte_addr=MemPointAtPageTableEntry(addr),
+   *pte_addr=MemPtAtPageTableEntry(addr),
    err_code=0,
    *reported_fault_addr;
 
@@ -20,9 +20,7 @@ interrupt U0 PageFault()
   *pte_addr|=1;
   InvlPg(addr);
   err_code=rbp[1];
-asm {
-  MOV_RAX_CR2
-}
+asm {  MOV_RAX_CR2}
   reported_fault_addr=GetRAX;
 //Remove err_code from stk
 //so IRET works right.
@@ -39,8 +37,8 @@ U0 PageTableDemo2()
   err_code=0;
   *pte_addr &=~1; //Not present
   InvlPg(addr);
-  WinSync; //wait for VGA update
-  WinSync;
+  WinMgrSync; //wait for VGA update
+  WinMgrSync;
   SetIDTEntry(I_PAGE_FAULT,old_idte,0,IDTET_IRQ);
   "Err Code:%X Addr:%X\n",err_code,reported_fault_addr;
 }

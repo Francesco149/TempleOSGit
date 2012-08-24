@@ -126,7 +126,7 @@ public I64 ExeLtf(Ltf *l,BoolI8 just_load=FALSE)
     lx->flags|=LF_JUST_LOAD;
   if (Fs->last_lex!=&Fs->next_lex)
     lx->opts=Fs->last_lex->opts;
-  InsQue(lx,Fs->last_lex);
+  QueIns(lx,Fs->last_lex);
   LexIncludeLtf(lx,NULL,l);
   try {
     Lex(lx);
@@ -141,7 +141,7 @@ public I64 ExeLtf(Ltf *l,BoolI8 just_load=FALSE)
       }
     }
   }
-  RemQue(lx);
+  QueRem(lx);
   if (okay)
     LexDel(lx); //TODO: can crash
   if (unlock_l)

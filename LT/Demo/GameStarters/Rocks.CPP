@@ -217,7 +217,6 @@ I64 ObjectAlloc(I64 type)
 
 U0 DrawIt(TaskStruct *task,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i,x,y;
 
   task->text_attr=BLACK<<4+WHITE;
@@ -315,11 +314,10 @@ U0 Init()
   }
 }
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D2theta *state,Order2D2theta *DstateDt)
+U0 MyDerivative(Ode *,F64,Order2D2theta *state,Order2D2theta *DstateDt)
 {
   I64 i,j;
   F64 f,d,d1,dd,dx,dy;
-  nounusedwarn ode,t;
 
   MemSet(DstateDt,0,sizeof(Order2D2theta)*NUM_OBJECTS);
   for (i=0;i<NUM_OBJECTS;i++) {
@@ -619,9 +617,8 @@ U0 CheckCrazy()
     }
 }
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by Terry A. Davis
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {
@@ -676,7 +673,7 @@ U0 Rocks()
   WinMax;
 
   Init;
-  InsQue(ode,Fs->last_ode);
+  QueIns(ode,Fs->last_ode);
   LtfCursor;
   LtfClear;
   Fs->draw_it=&DrawIt;
@@ -722,14 +719,14 @@ U0 Rocks()
 	Sleep(1000);
 	Init;
       }
-      WinSync; //msgs are only queued by winmngr
+      WinMgrSync; //msgs are only qued by winmngr
     }
 rk_done:
     GetMsg(,,1<<MSG_KEY_UP);
   } catch
     CatchAll;
 
-  RemQue(ode);
+  QueRem(ode);
   OdeDel(ode);
   Free(objs);
   MenuPop;

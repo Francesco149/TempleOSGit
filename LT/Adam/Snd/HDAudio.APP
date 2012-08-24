@@ -201,7 +201,7 @@ class HDAudioCtrl
 } *_hda=NULL;
 
 I64 AudioSize()
-{//[C:/LT/Adam/MemRep.APZ,188] MemRep uses this for Adam Heap
+{//[C:/LT/Adam/MemRep.APZ,189] MemRep uses this for Adam Heap
   I64 result=MSize2(snd_reverb_buf);
   if (_hda) {
     result+=MSize2(_hda);
@@ -374,9 +374,8 @@ U0 HDSnd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0)
   _hda->freq=freq;
 }
 
-U0 HDFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
+U0 HDFillBuf(SND_OUT_CONTAINER *buf,I64)
 {
-  nounusedwarn buf_num;
   SndWaveFillBuf(_hda->sc,buf,SND_BUF_LEN/SND_OCHANNELS,_hda->freq,_hda->waveform,snd_vol*_hda->amp);
 }
 
@@ -390,9 +389,8 @@ U0 HDAudioTaskEndCB()
 }
 
 
-U0 HDAudioTask(U64 dummy=0)
+U0 HDAudioTask(U64)
 {
-  nounusedwarn dummy;
 //I didn't feel like messing around with PCI interrupts
 //so this task polls every millisecond to know when to
 //switch buffers.

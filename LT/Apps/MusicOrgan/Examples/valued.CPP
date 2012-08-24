@@ -5,9 +5,8 @@
 //9 has graphics
 
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   static F64 last_t=tM,tt=0;
   tt+=(tM-last_t)*Abs(Sin(tM));
   last_t=tM;

@@ -1,16 +1,14 @@
 #define CLK_DIVISOR	16
 
-U8 *TimeStampCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *TimeStampCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
-  nounusedwarn l,ll;
   U8 *st=MAlloc(64,mem_task);
   SPrintF(st,"%X",GetTimeStamp/CLK_DIVISOR);
   return st;
 }
 
-U8 *KbdMouseTimeCB(Ltf *l,LtfEntry *ll,TaskStruct *mem_task)
+U8 *KbdMouseTimeCB(Ltf *,LtfEntry *,TaskStruct *mem_task)
 {
-  nounusedwarn l,ll;
   U8 *st=MAlloc(64,mem_task);
   U64 i;
   if (mouse_evt_time>kbd_evt_time)
@@ -75,11 +73,11 @@ U64 TimerPickedNibble(U8 *msg=NULL)
     return result;
   else {
     result=TimerPickedU16(msg);
-    U8FifoInsert(rnd_nibble_fifo,result.u8[0]>>4);
-    U8FifoInsert(rnd_nibble_fifo,result.u8[1]&15);
-    U8FifoInsert(rnd_nibble_fifo,result.u8[1]>>4);
-    U8FifoInsert(rnd_nibble_fifo,result.u8[2]&15);
-    U8FifoInsert(rnd_nibble_fifo,result.u8[2]>>4);
+    U8FifoIns(rnd_nibble_fifo,result.u8[0]>>4);
+    U8FifoIns(rnd_nibble_fifo,result.u8[1]&15);
+    U8FifoIns(rnd_nibble_fifo,result.u8[1]>>4);
+    U8FifoIns(rnd_nibble_fifo,result.u8[2]&15);
+    U8FifoIns(rnd_nibble_fifo,result.u8[2]>>4);
     return result&15;
   }
 }

@@ -108,7 +108,7 @@ U0 DiffSelect(Ltf *l,U64 *_df_flags,I64 j1_lo,I64 j1_hi,
 	cl=usl2[j2_lo];
 	while (cl!=usl2[j2_hi]) {
 	  cl2=LtfEntryCopy(l,cl);
-	  InsQue(cl2,cl1);
+	  QueIns(cl2,cl1);
 	  cl1=cl2;
 	  cl=cl->next;
 	}

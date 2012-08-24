@@ -8,9 +8,8 @@ F64 t0=tM;
 
 /* <1> <1> (image) */
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 dt=(tM-t0)*music_tempo;
 
   dc->color=BLACK;

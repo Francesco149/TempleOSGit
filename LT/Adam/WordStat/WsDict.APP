@@ -128,7 +128,7 @@ Fmt of word list entry:
   U8 word[] with terminating zero
   I16 block;
 */
-public U8 *WsdPointAtWord(U8 *st)
+public U8 *WsdPtAtWord(U8 *st)
 {
   I64 i;
   U8 *start=ws_dict_word_list,*r=start,
@@ -183,7 +183,7 @@ U0 WsdDictWordsAdd(Ltf *l,U8 *st=NULL)
   if (!st)
     st=ws_cur_word;
   if (st) {
-    if (ptr=WsdPointAtWord(st)) {
+    if (ptr=WsdPtAtWord(st)) {
       for (i=0;i<WSD_MAX_FILLINS;i++) {
 	if (*ptr++!=WSD_WORD_CHAR)
 	  break;
@@ -284,7 +284,7 @@ U0 WsFindMisspelled(Ltf *l)
 	    col2++;
 	  ch=cl->tag[col2];
 	  cl->tag[col2]=0;
-	  if (StrICmp(&cl->tag[col],WsdPointAtWord(&cl->tag[col])+1)) {
+	  if (StrICmp(&cl->tag[col],WsdPtAtWord(&cl->tag[col])+1)) {
 	    cl->tag[col2]=ch;
 	    l->cur_entry=cl;
 	    l->cur_data_col=col;

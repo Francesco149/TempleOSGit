@@ -126,9 +126,8 @@ I64 AddVertex(ManDefineStruct *md,I64 x,I64 y,I64 z)
   return result;
 }
 
-I64 AddTriangle(ManDefineStruct *md,I64 c,I64 n0,I64 n1,I64 n2)
+I64 AddTriangle(ManDefineStruct *,I64 c,I64 n0,I64 n1,I64 n2)
 {
-  nounusedwarn md;
   I64 result=m->triangle_cnt++;
   m->t[result].color=c;
   m->t[result].nums[0]=n1;

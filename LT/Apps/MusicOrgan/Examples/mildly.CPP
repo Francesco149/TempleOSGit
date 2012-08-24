@@ -37,9 +37,8 @@
 
 F64 t0=tM;
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   F64 y,dt=(tM-t0)*music_tempo;
   if (dt>=24.0)
     GrSpritePlot3(dc,0,0,0,__BIN_2);

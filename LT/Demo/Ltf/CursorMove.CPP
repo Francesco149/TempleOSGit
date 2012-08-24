@@ -19,7 +19,7 @@ CursorMovementDemo;
 //The word-wrap Off and On cmds are
 //$WW,0$ and $WW,1$.
 
-//You might need [C:/LT/Adam/Ltf/LtfNew.APZ,672] LtfMax() to adjust
+//You might need [C:/LT/Adam/Ltf/LtfNew.APZ,670] LtfMax() to adjust
 //the cmd line window buf size.
 //It counts cmds, not lines.
 

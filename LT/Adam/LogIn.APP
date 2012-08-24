@@ -22,60 +22,39 @@ U0 ServantStartUp()
     Preempt(ON);
 }
 
-U0 AcctCollectList()
+U8 *PopUpSysAcctGet()
 {
-  LTDirEntry *tempm1;
-  SysAcctStruct *tempa;
-  sys_accts.next=sys_accts.last=&sys_accts;
-  tempm1=FilesFind("/LT/Accts/*",1<<FUf_JUST_DIRS);
-  while (tempm1) {
-    if (*tempm1->name!='.') {
-      tempa=CAlloc(sizeof(SysAcctStruct));
-      StrCpy(tempa->name,tempm1->name);
-      InsQue(tempa,sys_accts.last);
-    }
-    tempm1=tempm1->next;
-  }
-  LTDirListDel(tempm1);
-}
-
-public SysAcctStruct *AcctFind(U8 *name)
-{
-  SysAcctStruct *tempa;
-  tempa=sys_accts.next;
-  while (tempa!=&sys_accts) {
-    if (!StrCmp(tempa->name,name))
-      return tempa;
-    tempa=tempa->next;
-  }
-  return NULL;
-}
-
-SysAcctStruct *PopUpGetSysAcct()
-{
+  U8 *result,*st;
   Ltf *l=LtfNew;
-  SysAcctStruct *tempa;
-
+  LTDirEntry	*tempm1=FilesFind("/LT/Accts/*",1<<FUf_RECURSE|1<<FUf_JUST_DIRS|1<<FUf_FLATTEN_TREE),
+		*tempm=tempm1;
   LtfPutS(l,"Select Account.\nCursor down and press <SPACE BAR>.\n");
-  tempa=sys_accts.next;
-  while (tempa!=&sys_accts) {
-    LtfPrintF(l,"$CM+LX,2,3$$BT,\"%s\",%d$",tempa->name,tempa);
-    tempa=tempa->next;
+  while (tempm) {
+    if (*tempm->name!='.') {
+      st=tempm->full_name;
+      if (!StrNCmp(st+2,"/LT/Accts/",10))
+	st+=12;
+      LtfPrintF(l,"$CM+LX,2,3$$BT,\"%s\",%d$",st,tempm);
+    }
+    tempm=tempm->next;
   }
   LtfPutS(l,"\n");
-  do tempa=PopUpMenu(l);
-  while (tempa<0);
+
+  do tempm=PopUpMenu(l);
+  while (tempm<0);
+
   LtfDel(l);
-  return tempa;
+  result=AStrNew(tempm->full_name);
+  LTDirListDel(tempm1);
+  return result;
 }
 
 U0 SysLogin()
 {
-  SysAcctStruct *tempa=AcctFind(sys_acct_name);
-  if (!tempa)
-    tempa=PopUpGetSysAcct;
-  sys_acct=tempa;
-  HomeDirRst;
+  if (!FileFind(sys_acct)) {
+    Free(sys_acct);
+    sys_acct=PopUpSysAcctGet;
+  }
 }
 
 #define ACCT_REGISTRY_FILENAME "HOME/Registry.CPZ"
@@ -148,7 +127,7 @@ U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
 { //You're not supposed to make system pop-up flags, only me.
   Ltf *l=LtfNew;
   LtfEntry *ll;
-  if (sys_acct && !Bt(sys_msg_flags,flag_num)) {
+  if (!Bt(sys_msg_flags,flag_num)) {
     if (msg) LtfPutS(l,msg);
     ll=LtfPutS(l,"\n$CB+LE,\"Do not show this msg again.\",1$");
     LtfPutS(l,"$CM+CX,0,4$$BT,\"OKAY\",1$\n");

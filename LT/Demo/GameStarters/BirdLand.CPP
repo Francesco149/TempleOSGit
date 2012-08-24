@@ -148,9 +148,8 @@ U0 Init(TaskStruct *song_task)
 }
 
 
-U0 SongTask(U64 dummy=0)
+U0 SongTask(U64)
 { //Song by Terry A. Davis
-  nounusedwarn dummy;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {
@@ -161,9 +160,8 @@ U0 SongTask(U64 dummy=0)
 }
 
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   F64 tt=0;
   while (TRUE) {
     if (rst) {

@@ -1,28 +1,35 @@
-/*This is an alternative window manager.  It augments the existing one found 
-in [::/LT/Adam/Window.APZ] ::/LT/Adam/Window.APZ.  It uses the real-time differential equation solver 
-to repos windows as though they were repulsively charged particles.  I find 
-this window manager to be a novelty, not desirable for actual use.  You're 
-welcome to add it, or some variation to your start-up scripts if you like it.  
-It's not fully debugged.
 
-I had to cheat to make this work.  I added [C:/LT/OSMain/Adam1a.HPZ,3109] DISPLAYf_HAS_BEEN_RESIZED2 and 
+/*
+You must "Adam Include" this because the Adam task's memory is never freed,
+so the code for this file will not be yanked from underneath the task.
+
+ This is a really bad alternative window mgr.  It augments the existing
+one found in [::/LT/Adam/Window.APZ] ::/LT/Adam/Window.APZ.  It uses the real-time differential 
+equation solver to reposition windows as though they were repulsively charged 
+particles.  I find this window mgr to be a novelty, not desirable for actual 
+use.  You're welcome to add it, or some variation to your start-up scripts if 
+you like it.  It's not fully debugged.
+
+I had to cheat to make this work.  I added [C:/LT/OSMain/Adam1a.HPZ,3112] DISPLAYf_HAS_BEEN_RESIZED2 and 
 modified [::/LT/Adam/Window.APZ] ::/LT/Adam/Window.APZ.
 
 The differential equation stuff was overkill and made it overly complicated.  
 Oh, well.
 */
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64,Order2D3 *state,Order2D3 *DstateDt)
 {
   U64 i,j,task_cnt=ode->n/6;
   F64 f,d,dd,dx,dy;
-  nounusedwarn t;
+  Order2D3 *tempo;
   if (!task_cnt) return;
 
   MemSet(DstateDt,0,sizeof(Order2D3)*task_cnt);
-  for (i=0;i<task_cnt;i++) {
-    DstateDt[i].x=state[i].DxDt;
-    DstateDt[i].y=state[i].DyDt;
+
+  tempo=DstateDt;
+  for (i=0;i<task_cnt;i++,tempo++) {
+    tempo->x=state[i].DxDt;
+    tempo->y=state[i].DyDt;
     for (j=0;j<task_cnt;j++) {
       if (i!=j) {
 	dx=state[i].x-state[j].x;
@@ -35,20 +42,21 @@ U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
 
 	f=1000000.0/dd;
 
-	DstateDt[i].DxDt+=f*dx;
-	DstateDt[i].DyDt+=f*dy;
+	tempo->DxDt+=f*dx; //Repulsive force like electro-static
+	tempo->DyDt+=f*dy;
       }
     }
   }
-  for (i=0;i<task_cnt;i++) {
-    DstateDt[i].DxDt-=state[i].DxDt;
-    DstateDt[i].DyDt-=state[i].DyDt;
+
+  tempo=DstateDt; //a=-v  (Damp-out motion.)
+  for (i=0;i<task_cnt;i++,tempo++) {
+    tempo->DxDt-=state[i].DxDt;
+    tempo->DyDt-=state[i].DyDt;
   }
 }
 
-U0 WinMngTask(U64 dummy=0)
+U0 WinMngTask(U64)
 { //Preempt() is off after Spawn()
-  nounusedwarn dummy;
   BoolI8 same=FALSE;
   I64 i,j,w,h,x,y,cnt,task_cnt=0;
   Order2D3 *tempo;
@@ -57,7 +65,7 @@ U0 WinMngTask(U64 dummy=0)
 
   while (TRUE) {
 restart:
-    WinSync;
+    WinMgrSync;
     while (Bt(&sys_semas[SYS_SEMA_REFRESH_IN_PROGRESS],0))
       Yield;
     cnt=0;
@@ -87,13 +95,13 @@ restart:
       task_cnt=cnt;
       if (task_map) {
 	Free(task_map);
-	RemQue(ode);
+	QueRem(ode);
 	OdeDel(ode);
       }
       task_map=MAlloc(sizeof(U0 *)*task_cnt);
       ode=OdeNew(task_cnt*6,0.1);
       ode->derivative=&MyDerivative;
-      InsQue(ode,Fs->last_ode);
+      QueIns(ode,Fs->last_ode);
 
       i=0;
       task=Fs->next_task;
@@ -112,8 +120,8 @@ restart:
       }
       same=TRUE;
     } else {
-      for (i=0;i<task_cnt;i++) {
-	tempo=ode->state(U8 *)+sizeof(Order2D3)*i;
+      tempo=ode->state;
+      for (i=0;i<task_cnt;i++,tempo++) {
 	task=task_map[i];
 	w=task->win_width-1;
 	h=task->win_height-1;
@@ -125,10 +133,8 @@ restart:
 	} else {
 	  x=task->win_left+w>>1;
 	  y=task->win_top+h>>1;
-	  if (tempo->x>x+2) tempo->x=x+2;
-	  if (tempo->y>y+2) tempo->y=y+2;
-	  if (tempo->x<x-2) tempo->x=x-2;
-	  if (tempo->y<y-2) tempo->y=y-2;
+	  tempo->x=Limit(tempo->x,x-2,x+2); //Only move up to 2 chars at a time
+	  tempo->y=Limit(tempo->y,y-2,y+2);
 
 	  j=Round(tempo->x-w>>1);
 	  if (Bt(&task->display_flags,DISPLAYf_NO_BORDER))
@@ -150,14 +156,12 @@ restart:
 	    tempo->x=x;
 	    tempo->y=y;
 	  }
-	  if (tempo->DxDt>8.0)	tempo->DxDt=8.0;
-	  if (tempo->DyDt>8.0)	tempo->DyDt=8.0;
-	  if (tempo->DxDt<-8.0) tempo->DxDt=-8.0;
-	  if (tempo->DyDt<-8.0) tempo->DyDt=-8.0;
+	  tempo->DxDt=Limit(tempo->DxDt,-8.0,8.0); //+/- 8 chars/sec
+	  tempo->DyDt=Limit(tempo->DyDt,-8.0,8.0);
 	}
       }
     }
   }
 }
 
-Spawn(&WinMngTask,NULL,"Window Manager 2");
+Spawn(&WinMngTask,NULL,"Window Mgr 2");

@@ -78,9 +78,8 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
 
 #define ANIMATE_SLEEP_MS	10
 
-U0 AnimateTask(U64 dummy=0)
+U0 AnimateTask(U64)
 {
-  nounusedwarn dummy;
   I64 x,y;
   Arrow *tempa,*tempa1;
   F64 dt,t0=tP(Fs->parent_task);
@@ -102,12 +101,12 @@ U0 AnimateTask(U64 dummy=0)
       tempa->y+=tempa->dy*dt;
       if (!(-Fs->parent_task->win_scroll_x<=tempa->x<Fs->parent_task->win_pixel_width-Fs->parent_task->win_scroll_x) ||
 	  !(-Fs->parent_task->win_scroll_y<=tempa->y<Fs->parent_task->win_pixel_height-Fs->parent_task->win_scroll_y)) {
-	RemQue(tempa);
+	QueRem(tempa);
 	Free(tempa);
       }
       tempa=tempa1;
     }
-    WinSync;
+    WinMgrSync;
   }
 }
 
@@ -115,7 +114,7 @@ U0 Init()
 {
   I64 w=Fs->win_pixel_width,
       h=Fs->win_pixel_height;
-  root.next=root.last=&root;
+  QueInit(&root);
   bow_drawn=FALSE;
   box_x_min=7*w/16;
   box_y_min=6*h/8;
@@ -130,13 +129,7 @@ U0 Init()
 
 U0 CleanUp()
 {
-  Arrow *tempa=root.next,*tempa1;
-  while (tempa!=&root) {
-    tempa1=tempa->next;
-    RemQue(tempa);
-    Free(tempa);
-    tempa=tempa1;
-  }
+  QueDel(&root,TRUE);
 }
 
 U0 Zing()
@@ -192,7 +185,7 @@ U0 Zing()
 	    tempa->dy=10.0*(bow_y-p2);
 	    tempa->x=p1;
 	    tempa->y=p2;
-	    InsQue(tempa,root.last);
+	    QueIns(tempa,root.last);
 	    Noise(50,8000,10000);
 	  }
 	  bow_drawn=FALSE;

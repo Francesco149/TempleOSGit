@@ -19,9 +19,8 @@ I64 x[NUM_APPLES],y[NUM_APPLES],
 
 U8 buf[128];
 
-U0 DrawIt(TaskStruct *task,GrDC *dc)
+U0 DrawIt(TaskStruct *,GrDC *dc)
 {
-  nounusedwarn task;
   I64 i,best_dist=MAX_I64,best_apple=0,best_sprite_elem_num=0;
  
   dc->flags|=DCF_LOCATE_NEAREST;
@@ -34,7 +33,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
     GrSpritePlot3(dc,x[i],y[i],0,__BIN_1);
     if (dc->nearest_dist<=best_dist) {
       //distance to nearest pixel, squared
-      //[C:/LT/OSMain/Adam1b.HPZ,231] Sqrt() is expensive so we work with distance squared.
+      //[C:/LT/OSMain/Adam1b.HPZ,227] Sqrt() is expensive so we work with distance squared.
       best_dist=dc->nearest_dist;
       best_apple=i;
 
@@ -42,7 +41,7 @@ U0 DrawIt(TaskStruct *task,GrDC *dc)
       best_sprite_elem_num=dc->nearest_sprite_elem_num;
     }
   }
-//Note: window manager does not get preempted and
+//Note: window mgr does not get preempted and
 //this code runs in the window manger task.
 
   cur_apple=best_apple;
@@ -76,13 +75,13 @@ U0 Main()
 
     //Use screen coordinates, not window (p1,p2)
     //[C:/LT/OSMain/OSGlbls.CPZ,70] ipx and [C:/LT/OSMain/OSGlbls.CPZ,70] ipy are global vars updated
-    //updated by the window manager to hold the
+    //updated by the window mgr to hold the
     //screen coordinates of the input ptr (mouse).
     cur_x=ipx; cur_y=ipy;
 
     if (msg_code==MSG_IP_L_DOWN) {
-      //Wait for window manager to call UpdateWin
-      WinSync;
+      //Wait for window mgr to call UpdateWin
+      WinMgrSync;
       best_i=cur_apple;
       old_x=x[best_i];
       old_y=y[best_i];

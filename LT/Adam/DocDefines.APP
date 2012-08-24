@@ -3,7 +3,7 @@
 U0 LoadDocDefines()
 {
 //These are used in documents such as [::/LT/Doc/TrivialSolutions.TXZ] ::/LT/Doc/TrivialSolutions.TXZ
-//The [C:/LT/OSMain/Adam1a.HPZ,1379] Ltf framework will search the sym table for define string
+//The [C:/LT/OSMain/Adam1a.HPZ,1378] Ltf framework will search the sym table for define string
 //constants if you specify that.
   BinFileHeaderStruct *bfh=sys_boot_base-sizeof(BinFileHeaderStruct);
 
@@ -29,7 +29,7 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distribution.
   //See [::/LT/Demo/AcctExample/TSDistribute.APZ,DOC_LOSETHOS_LOC] DOC_LOSETHOS_LOC.
   -] LineCnt
-    DefinePrintF("DOC_LOSETHOS_LOC","135,015");
+    DefinePrintF("DOC_LOSETHOS_LOC","134,614");
     
   DefinePrintF(
     "DOC_PAGE_TABLE_BASE","%08X",PAGE_TABLE_BASE);

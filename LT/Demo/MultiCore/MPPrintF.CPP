@@ -2,7 +2,7 @@ U0 Job(Ltf *l)
 {
   I64 i;
   for (i=0;i<10;i++)
-    LtfPrintF(l,"$FG,%d$CPU ",Gs->num);
+    LtfPrintF(l,"$FG,%d$CPU%d ",Gs->num,Gs->num);
 }
 
 

@@ -20,7 +20,7 @@ class WsStruct
 class WsMatrixSide
 {
   WsStruct *next,*last;
-  I64 const_minus_one, //-1 used to header in queue
+  I64 const_minus_one, //-1 used to header in que
      row_hits,col_hits;
 };
 

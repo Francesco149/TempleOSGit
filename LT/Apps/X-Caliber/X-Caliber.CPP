@@ -187,7 +187,7 @@ Ship *ShipNew(I64 x,I64 y,I64 type)
 	else
 	  temps->p[i].radius=4;
 	temps->p[i].drag_profile_factor=3;
-	InsQue(&temps->p[i],ode->last_mass);
+	QueIns(&temps->p[i],ode->last_mass);
       }
       temps->p[3].mass/=10.0;
       temps->p[4].mass/=10.0;
@@ -216,7 +216,7 @@ Ship *ShipNew(I64 x,I64 y,I64 type)
 	  temps->s[i].color=LTCYAN;
 	else
 	  temps->s[i].color=LTGRAY;
-	InsQue(&temps->s[i],ode->last_spring);
+	QueIns(&temps->s[i],ode->last_spring);
       }
       remaining=0;
 
@@ -235,7 +235,7 @@ Ship *ShipNew(I64 x,I64 y,I64 type)
 	temps->p[i].mass=1;
 	temps->p[i].radius=7;
 	temps->p[i].drag_profile_factor=3;
-	InsQue(&temps->p[i],ode->last_mass);
+	QueIns(&temps->p[i],ode->last_mass);
       }
 
       temps->springs=3;
@@ -251,7 +251,7 @@ Ship *ShipNew(I64 x,I64 y,I64 type)
 	temps->s[i].constant=10000;
 	temps->s[i].strength  =20000;
 	temps->s[i].color=BLACK;
-	InsQue(&temps->s[i],ode->last_spring);
+	QueIns(&temps->s[i],ode->last_spring);
       }
       remaining++;
       break;
@@ -274,7 +274,7 @@ Ship *ShipNew(I64 x,I64 y,I64 type)
 	temps->p[i].radius=6;
 	temps->p[i].drag_profile_factor=5;
 	temps->p[i].color=PURPLE;
-	InsQue(&temps->p[i],ode->last_mass);
+	QueIns(&temps->p[i],ode->last_mass);
       }
 
       temps->springs=7;
@@ -301,12 +301,12 @@ Ship *ShipNew(I64 x,I64 y,I64 type)
 	  temps->s[i].color=LTPURPLE;
 	else
 	  temps->s[i].color=BLACK;
-	InsQue(&temps->s[i],ode->last_spring);
+	QueIns(&temps->s[i],ode->last_spring);
       }
       remaining++;
       break;
   }
-  InsQue(temps,ship_root.last);
+  QueIns(temps,ship_root.last);
   return temps;
 }
 
@@ -315,10 +315,10 @@ U0 ShipDel(Ship *temps)
   I64 i;
   if (!temps) return;
   for (i=0;i<temps->masses;i++)
-    RemQue(&temps->p[i]);
+    QueRem(&temps->p[i]);
   for (i=0;i<temps->springs;i++)
-    RemQue(&temps->s[i]);
-  RemQue(temps);
+    QueRem(&temps->s[i]);
+  QueRem(temps);
   Free(temps);
   remaining--;
 }
@@ -362,8 +362,7 @@ I64 Tweaked()
 U0 AllDel(Ode *ode)
 {
   Ship *temps,*temps1;
-  Bullet *tempb=bullet_root.next,*tempb1;
-  RemQue(ode);
+  QueRem(ode);
   temps=ship_root.next;
   while (temps!=&ship_root) {
     temps1=temps->next;
@@ -371,19 +370,13 @@ U0 AllDel(Ode *ode)
     temps=temps1;
   }
   human=NULL;
-  while (tempb!=&bullet_root) {
-    tempb1=tempb->next;
-    RemQue(tempb);
-    Free(tempb);
-    tempb=tempb1;
-  }
+  QueDel(&bullet_root,TRUE);
   OdeDel(ode);
 }
 
-BoolI64 LaserPlot(GrDC *dc,I64 x,I64 y,I64 z)
+BoolI64 LaserPlot(GrDC *dc,I64 x,I64 y,I64)
 {
   I64 c;
-  nounusedwarn z;
   c=GrPeek(dc,x,y);
   if (c!=BLACK && c!=WHITE)
     return FALSE;
@@ -644,9 +637,8 @@ U0 Explosion(MyMass *tempm1,F64 r)
   }
 }
 
-U0 MyDerivative(Ode *ode,F64 t,Order2D3 *state,Order2D3 *DstateDt)
+U0 MyDerivative(Ode *ode,F64,Order2D3 *,Order2D3 *)
 {
-  nounusedwarn t,state,DstateDt;
   I64 i;
   F64 d,dd,dd2,spin,t_left,t_right;
   TaskStruct *task=ode->win_task;
@@ -895,8 +887,8 @@ U0 FireOneGun(Ship *temps,I64 g,F64 r,F64 fuse_time)
   D3Copy(&tempb->p.DxDt,&p);
   D3MulEqu(&p,tempb->p.mass/temps->p[g].mass/100.0);
   D3SubEqu(&temps->p[g].DxDt,&p);
-  InsQue(&tempb->p,ode->last_mass);
-  InsQue(tempb,bullet_root.last);
+  QueIns(&tempb->p,ode->last_mass);
+  QueIns(tempb,bullet_root.last);
   temps->reload_timeout=tP+r/temps->fire_rate;
   Noise(100,r*200,r*400);
 }
@@ -954,8 +946,8 @@ U0 ExpireShots()
       Noise(50,3000,6000);
     }
     if (tP>tempb->die_timeout) {
-      RemQue(tempb);
-      RemQue(&tempb->p);
+      QueRem(tempb);
+      QueRem(&tempb->p);
       Free(tempb);
     }
     tempb=tempb1;
@@ -1061,7 +1053,7 @@ U0 XCaliber()
     ode->min_tolerance=1e-9;
     ode->drag_v3=0.00001;
     Init;
-    InsQue(ode,Fs->last_ode);
+    QueIns(ode,Fs->last_ode);
     ch=0;
     do {
       while (!game_over && !show_level_msg &&
@@ -1141,7 +1133,7 @@ U0 XCaliber()
       AI;
       ExpireShots;
       CheckDamage;
-      WinSync; //msgs are only queued by winmngr
+      WinMgrSync; //msgs are only qued by winmngr
       if (show_level_msg) {
 	ch=GetKey(&sc);
 	if (ch==CH_NEW_LINE)
