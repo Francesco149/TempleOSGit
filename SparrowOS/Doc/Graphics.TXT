@@ -1,0 +1,174 @@
+                              Graphics Overview
+
+
+
+
+
+
+
+
+
+
+
+ <1> (image)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen() and
+[C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,377] GrUpdateWins().  Only tasks on
+core0 are allowed to 
+have windows.  There is one window per task and no child windows.
+
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3514] CDCs (device contexts) are a data
+type for controlling graphics on the 
+screen or graphics in mem, not on the screen.  The device context structure 
+has pen width and color associated with it, so you use
+[C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() to create 
+your own structure, with its own color and pen width.  Free it with
+[C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,72] DCDel() 
+when finished.
+
+* [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,5] gr_dc is a global var for a bitmap
+redrawn each refresh and placed on the 
+screen.  You use an alias [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3514] CDC.  You
+change the "Fs->draw_it" var to point to 
+your "DrawIt()" which gets called each screen refresh.  You draw everything
+in 
+the window over and over again.  See [::/SparrowOS/Demo/Graphics/Box.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/Box.CPP.Z.
+ 
+* gr_dc2 is a bitmap for persistent data on the screen, not needing to be 
+redrawn.  You create an alias for this by using
+[C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() and work with that.  
+It's slightly simpler than using the global var
+[C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,5] gr_dc, but it's not as good 
+because changes aren't syncronized to the screen update and window borders
+are 
+not enforced when windows are moved.  See 
+[::/SparrowOS/Demo/Graphics/DotNet.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/DotNet.CPP.Z.
+
+* Use [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,40] DCNew() to create a mem bitmap
+which can be used to work off-screen and 
+which can be [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,76] GrBloted onto the
+screen.  If you set brush member of CDC to 
+another CDC, all the graphic routines will
+[C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,76] GrBlot() the brush instead of 
+[C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,47] GrPlot().  See
+[::/SparrowOS/Demo/Graphics/Blot.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/Blot.CPP.Z.
+
+* There are various flavors of line and point plotting routines. 
+[C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,434] GrLine() and 
+[C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,47] GrPlot() are the simplest.  The
+others allow 3 dimensional graphics and 
+rotations.
+
+* See [::/SparrowOS/Doc/Transform.TXT.Z,1] ::/SparrowOS/Doc/Transform.TXT.Z
+for adding a transformation.
+
+* Set [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3482] DCF_SYMMETRY in the
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3514] CDC.flags and call
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,374] GrSetSymmetry() or 
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,396] GrSetSymmetry3().  This will plot a
+mirror image in addition to the primary 
+image.  Set [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3486] DCF_JUST_MIRROR to plot
+just the image, but this required 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3482] DCF_SYMMETRY to be set at the same
+time.  Note: You can only have one symmetry 
+active at a time including in [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprites.
+
+* Use the resource editor, <CTRL-R>, to create a sprite that can be plotted 
+with [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] CSpritePlot3().  Use
+$IB,"",1$ in a src program to insert the addr of 
+sprite #1.  After creating a sprite with <CTRL-R> in your src code, toggle to 
+plain text with <CTRL-T> and check its num.  Then, make an assignment to a
+ptr 
+var with $IB,"",n$ as the value. See 
+[::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z and 
+[::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z.)  The origin (zero point) for
+a 
+sprite is defined by the cursor location when you press <CTRL-R>.  The "x", "y
+" and "z" values you pass to [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27]
+CSpritePlot3() shift it around.  You can edit a 
+sprite by clicking the cursor on it and pressing <CTRL-R> again.
+
+* There is a mechanism built-in for generating motion based on differential 
+equations, which allows realistic physics.  You create an
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,257] CMathODE struct with 
+[C:/SparrowOS/Adam/MathODE.CPP.Z,42] ODENew(), passing it the num of vars in
+the state vect.  For realistic 
+physics, you usually have 2 state vars for each dimension (for each mass) 
+because motion is governed by f=ma which is a 2nd order equation.  The two 
+states are pos and velocity and to solve these you need to supply the 
+derivative of pos and velocity.  The derivative of pos is usually simply the 
+current velocity and the derivative of velocity is the acceleration (the sum 
+of forces on a mass divided by mass).  To help provide meaningful names for 
+values in the state vect, you can create an
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,213] COrder2D3 ptr and point it to a 
+mass in the state vect.  Six elements in the state vect are required for each 
+mass.
+
+See [Math/CMathODE,1] Math/CMathODE.
+See [::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1]
+::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z.
+
+* There are several [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2911] raster operations
+available.  They go in bits 8-11 of the 
+dc->color member var.
+
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2913] ROP_COLLISION is special.  It
+counts the num of pixels drawn on 
+non-background locations.  Using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2913]
+ROP_COLLISION with vector [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprite's is
+tricky 
+because overlapping pixels from lines in the
+[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprite register as collisions.  
+You can either work with a nonzero count or convert your
+[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprite to a bitmap 
+if your subelements draw on top of each other.  Be sure to set ->bkcolor 
+before using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2913] ROP_COLLISION.  See 
+[::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z, 
+[::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1]
+::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z and 
+[::/SparrowOS/Apps/Timeout/Timeout.CPP.Z,1]
+::/SparrowOS/Apps/Timeout/Timeout.CPP.Z.
+ 
+* The ->dither_probability member of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3514]
+CDC is a U16 used to statistically select 
+between two colors.  See [::/SparrowOS/Demo/Graphics/Shading.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/Shading.CPP.Z.  It works 
+with most graphic routines, but not those with pens.

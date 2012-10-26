@@ -1,0 +1,39 @@
+A menu appears when you move the mouse to the top of the screen.  Menus are 
+created with [C:/SparrowOS/Adam/Menu.CPP.Z,144] MenuPush(),
+[C:/SparrowOS/Adam/Menu.CPP.Z,152] MenuFilePush(),
+[C:/SparrowOS/Adam/Menu.CPP.Z,75] MenuNew() or
+[C:/SparrowOS/Adam/Menu.CPP.Z,95] MenuFile() and assigned 
+to Fs->cur_menu.  The format is:
+
+
+File 
+{
+  Open(,'O');
+  Save(,'S');
+  Exit(,CH_SHIFT_ESC);
+}
+Edit {
+  Cut(,,SC_DELETE|SCF_SHIFT);
+  Paste(,,SC_INS|SCF_SHIFT);
+}
+Misc {
+  Opt1(MSG_CMD,M_OPTION1);
+  Opt2(MSG_CMD,M_OPTION2);
+}
+Help
+{
+  Help(,'?');
+  About(,'/');
+}
+
+The first arg is the msg code and it is optional with the default being 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3265] MSG_KEY_DOWN_UP.  The second arg is
+the msg p1 value which is ASCII of the key 
+in the case of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3250] MSG_KEY_DOWN.  The
+third arg is the msg p2 value which is the S
+can Code of the key in the case of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3250]
+MSG_KEY_DOWN.
+
+See [::/SparrowOS/Demo/PullDownMenu.CPP.Z,1]
+::/SparrowOS/Demo/PullDownMenu.CPP.Z.
+

@@ -1,0 +1,14 @@
+One jiffy is one time slice.  [C:/SparrowOS/OSMain/Adam1b.HPP.Z,207]
+sys_jiffies returns time slices since boot.
+
+[C:/SparrowOS/OSMain/Misc1a.CPP.Z,55] SysTimerRead reads the timer ticks
+since boot.  It's not as fast as 
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,198] GetTimeStamp.
+
+Use [C:/SparrowOS/OSMain/Adam1a.HPP.Z,493] JIFFY_FREQ to convert
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,207] sys_jiffies.
+
+Use [C:/SparrowOS/OSMain/Adam1a.HPP.Z,495] SYS_TIMER_FREQ to convert
+[C:/SparrowOS/OSMain/Misc1a.CPP.Z,55] SysTimerRead.
+
+

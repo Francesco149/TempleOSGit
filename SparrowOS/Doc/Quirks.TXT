@@ -1,0 +1,98 @@
+                               SparrowOS Quirks
+
+* You run a risk of problems if you do file operations on the same files 
+simultaneously because there is **no file sharing/locking mechanism**. 
+Generally, 
+the last write wins.
+
+* When using FAT32, SparrowOS does not generate unique short-entry names. 
+Not 
+all FAT32 filenames are valid SparrowOS names and it will complain.  Do not 
+access FAT32 drives not dedicated to SparrowOS.  Disable them with
+[C:/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,159] DrvEnable(O
+FF), or they will generate error messages.  FAT32 involves a long and short 
+name for each file.  SparrowOS isn't so good at making distinct short names, 
+so don't make files with same 11 characters, or you're asking for trouble
+when 
+accessing from Windows.
+
+* The stk does not grow because virtual mem is not used.  I recommend 
+allocating large local vars from the heap.  You can change
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2872] DFT_STK and 
+recompile OSMain or request more when doing a
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn().
+
+* The syntax highlighting occassionally glitches.  The compiler doesn't.
+
+* Call [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,363] ChgDsk() when you insert a
+new removable media.
+
+* Accessing CD-ROM's is flacky.  Try [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,12]
+Drv() or [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,363] ChgDsk() twice.
+
+* You can only extern something once.  There is a varient called _extern
+which 
+binds a C+ definition to a asm sym.  This, too, can only be done once.
+
+* You must call [C:/SparrowOS/OSMain/Task1a.CPP.Z,272] TaskInitExt() in a
+task you [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn() before you can do
+file 
+I/O.  And, preemption is off by default, so use
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt(ON) if you wish.
+
+* A terminal task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc document
+structure that remains active even when 
+you change Fs->draw_it.  To prevent links in the
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc from being activated 
+when the user clicks in the window, do one of three things:
+  
+A) [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1669] DocBottom() followed by
+  [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1701] DocClear() to clear the
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc so it has no active 
+widgets.
+
+B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3024] WIF_IP_L and
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3025] WIF_IP_R.  This inhibits window mgr
+  operations but still 
+generates messages from button clicks.
+
+* switch/case statements allocate a single jump table--do not use with wide, 
+sparse ranges of case values.
+
+* If you use a typedef as a function return class, you might have problems 
+dereferrencing it.  This might be or get fixed.
+
+* Don't do a goto out of a try{}.
+
+* A goto label name must not match a global scope object's name.  (It's not 
+worth slowing-down the compiler to handle this case.)
+
+* [C:/SparrowOS/OSMain/Adam1b.HPP.Z,113] MemCpy() only goes fwd.
+
+* Don't attempt to use Fs->ignore_except with <CTRL-ALT-C>.
+
+* A [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,39] Cd() cmd must be followed by two
+semicolons if a #include is after it.  
+This is because the preprocessor processes the next token ahead.
+
+* The assembler's error msgs are often off by a line and undefines are 
+cryptic.
+
+* The last semicolon on the cmd line is converted to a dbl semicolon because 
+the compiler looks ahead before doing a cmd.  This normally has no negative 
+effect, but when entering "if" statements with "else" clauses it presents 
+problems.
+
+* You can do a class fwd reference by using extern on the first declaration, 
+but you can only do ptr references to the class.
+
+* When doing something like
+      U16 *_w=0xF0000000;
+*_w|=0x8000;
+  The |= will be coded as a U32 Bts instruction resulting in a U32 access 
+instead of a U16 access.  This affects some hardware operations.
+
+* Compiler warning or error message line numbers will be off if you have a 
+block of word-wrapped comments.  You might press <CTRL-T> before doing an 
+editor goto-line-number command.

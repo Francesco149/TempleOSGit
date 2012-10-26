@@ -1,9 +1,0 @@
-#help_index "Topic/SubTopic;OtherTopic"
-The help index preprocessor compiler directive sets the topics for syms 
-subsequently defined.  You specify subtopics with a '/' tree hierarchy and 
-multiple topics separated by a ';'.  The index ctrls HI:topic links.
-
-#help_file "filename[.TXZ]"
-The help file preprocessor directive places a file as the heading text in a HI
-:topic link for the current help index.
-

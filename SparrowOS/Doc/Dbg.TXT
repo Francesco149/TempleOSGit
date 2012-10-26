@@ -1,0 +1,129 @@
+* You can enter the debugger with <CTRL-ALT-D>.  Enter
+[C:/SparrowOS/Adam/Dbg2a.CPP.Z,333] BptsR() follwed by
+[C:/SparrowOS/Adam/Dbg2a.CPP.Z,352] Go2(
+) to continue execution.  [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,462] Dbg() will
+enter debugger or you might enter the 
+debugger through a fault.  You might place a call in your code at fatal error 
+points to enter the debugger.  If you see a stk dump, record the label+offset 
+and unassemble,  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,851] U(), possibly
+when not in the debugger, find the offset and 
+follow the link to source code.  [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,384] Go1()
+might exit the debugger and retain the 
+task or [C:/SparrowOS/OSMain/Task1a.CPP.Z,1] Exit() might exit debugger, but
+you will lose the task.
+
+* I use [C:/SparrowOS/OSMain/Adam1b.HPP.Z,43]
+progress1-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,52] progress4 for debugging
+because they show on the wallpaper.  
+They're just global integer vars.
+
+* While debugging, you specify addresses of assembly  routines with just the 
+label, as in _MALLOC+0x20.  You specify C+ function names with & before 
+functions as in &PrintF+0x10.
+
+* You can use [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,302] AdamLog() to send text
+to the Adam task window.  It works like 
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF().  I never use this.  Instead
+I use [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,180] DbgNum().
+
+* [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,264] D()
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,602] DocD() to do 16 column hex dump mem
+with numbering from zero.  With 
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,602] DocD the values are updated
+continually and you can alter mem by editing.
+
+* [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,294] Dm()
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,586] DocDm() to do 16 column hex dump
+mem with addresses showing.
+
+* [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,300] Da() to do one column address dump
+(for stk, etc.) with symbolic addresses.
+
+* [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,332] Dr() dumps registers.  You can
+display and modify registers in the debugger 
+with var-like labels, RAX, RBX, etc.  See
+[C:/SparrowOS/OSMain/Dbg1a.CPP.Z,348] DefineRegs().
+
+* [C:/SparrowOS/Compiler/Unassembler.CPP.Z,851] U(&FunName+offset) to
+unassemble mem or [C:/SparrowOS/Adam/Dbg2a.CPP.Z,241] Uf("FunName") to
+unassemble a 
+function.
+
+* [C:/SparrowOS/Adam/Profiler.CPP.Z,46]
+ProfBin(),[C:/SparrowOS/Adam/Profiler.CPP.Z,82] ProfAll() and
+[C:/SparrowOS/Adam/Profiler.CPP.Z,109] ProfRep() provide code profiling.  See 
+[::/SparrowOS/Demo/AutoFile/AFProfile.AUT.Z,1]
+::/SparrowOS/Demo/AutoFile/AFProfile.AUT.Z (This is an
+[::/SparrowOS/Doc/Glossary.TXT.Z,1] AutoFile.)
+
+* If you recompile OSMain with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157]
+InstallBoot(), you can modify the handler for 
+faults here: [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,514] Fault2().
+
+* Use [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,180] DbgNum(),
+[C:/SparrowOS/OSMain/Dbg1a.CPP.Z,161] DbgStr() and
+[C:/SparrowOS/OSMain/Dbg1a.CPP.Z,214] DbgAdd() to print debug info bypassing
+the window 
+framework.  You pass these routines a count in milliseconds for how long it 
+should be displayed.  You can use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296]
+Raw(TRUE) to make all output bypass the 
+window framework.  The WinMgr runs on core0 and will overwrite raw text from 
+other cores when it updates the screen.
+
+* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,277] SysDbg() to set a flag which you
+can read with [C:/SparrowOS/OSMain/Misc1a.CPP.Z,283] IsSysDbg() when you wish 
+to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
+
+* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,287] SysDeterministic() to set a flag
+which tries to keep the system 
+deterministic for debugging.  [C:/SparrowOS/OSMain/Misc1a.CPP.Z,292]
+IsSysDeterministic().  There is a Deterministic 
+OSMain config flag.
+
+* There are flags for various trace options that can help debugging when
+there 
+are compiler bugs.  Often, you place them in #exe{} blocks.
+  
+[C:/SparrowOS/Compiler/Directives.CPP.Z,48] Echo() turns on or off raw data
+  going into the lexical analyzer.
+
+[C:/SparrowOS/Compiler/Directives.CPP.Z,43] LTrace() shows the tokens coming
+  out of the lexical analyzer.
+
+[C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace() unassembles code
+  generated from the C+ compiler.
+
+[C:/SparrowOS/Compiler/Directives.CPP.Z,21] PTrace() shows intermediate code
+  comming out of the first stage of the 
+compiler (it's not 100% valid because it hasn't been fixed-up).
+
+[C:/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace() shows intermediate code
+  coming-out after optimization.  
+[C:/SparrowOS/Compiler/Directives.CPP.Z,31] OPassTraceMask() ctrls which
+  passes are displayed.
+
+
+* There is a heap check utility which can find leaks.  Use
+[C:/SparrowOS/Adam/HeapLog.CPP.Z,121] HeapLog(), and 
+[C:/SparrowOS/Adam/HeapLog.CPP.Z,80] HeapLogRep().  It's a really simple
+program which intercepts [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() and 
+[C:/SparrowOS/OSMain/Memory.CPP.Z,946] Free().  You can customize the code to
+find other heap issues.
+
+* You can define functions for <CTRL-ALT-letter> keys, but they must operate 
+in a interrupt environment or in the window mgr when in ques kbd msgs.  You 
+can do [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw() output.  Search for
+[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,40] fp_ctrl_alt_let_cbs[] and look at the
+code.  
+They take scancode as an arg.
+
+* If you recompile OSMain with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157]
+InstallBoot(), you can set the MemInit, option 
+to initialize memory to a value at boot, the HeapInit option to cause mem 
+allocated off the heap to be initialized or VarInit option so both global and 
+local vars will be initialized to a value.  Pick a non-zero value to discover 
+uninitialized var bugs.  You can set [C:/SparrowOS/OSMain/Adam1b.HPP.Z,129]
+sys_var_init_flag, and 
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,125] sys_heap_init_flag directly after
+booting.  You can also use the ProtectLow 
+option to discover NULL dereferences.

@@ -1,0 +1,424 @@
+Cd("HOME");Dir;
+
+`Cd("HOME");Dir;
+`
+
+Drv(TS_MAIN_DRV_LET);
+
+`Drv(TS_MAIN_DRV_LET);
+`
+
+Drv(TS_BAK_DRV_LET);
+
+`Drv(TS_BAK_DRV_LET);
+`
+
+Quick Reboot MAIN
+`Boot(TS_MAIN_DRV ":/OSMain.BIN.C");`
+
+Compile MAIN
+`CmpDrv(TS_MAIN_DRV_LET);
+`
+
+
+[::/SparrowOS/Doc/ChangeLog.TXT.Z,1] ChangeLog [::/SparrowOS/Doc/HelpIndex.TXT.Z,1] Help [::/SparrowOS/Doc/DemoIndex.TXT.Z,1] Demo
+
+Cd("/SparrowOS/OSMain");Dir;
+
+`Cd("/SparrowOS/OSMain");Dir;
+`
+
+Cd("/SparrowOS/OSMain/Dsk");Dir;
+
+`Cd("/SparrowOS/OSMain/Dsk");Dir;
+`
+
+Cd("/SparrowOS/Compiler");Dir;
+
+`Cd("/SparrowOS/Compiler");Dir;
+`
+
+Cd("/SparrowOS/Adam");Dir;
+
+`Cd("/SparrowOS/Adam");Dir;
+`
+
+Cd("/SparrowOS/Adam/Boot");Dir;
+
+`Cd("/SparrowOS/Adam/Boot");Dir;
+`
+
+Cd("/SparrowOS/Adam/Ctrls");Dir;
+
+`Cd("/SparrowOS/Adam/Ctrls");Dir;
+`
+
+Cd("/SparrowOS/Adam/Dsk");Dir;
+
+`Cd("/SparrowOS/Adam/Dsk");Dir;
+`
+
+Cd("/SparrowOS/Adam/Doc");Dir;
+
+`Cd("/SparrowOS/Adam/Doc");Dir;
+`
+
+Cd("/SparrowOS/Adam/WordStat");Dir;
+
+`Cd("/SparrowOS/Adam/WordStat");Dir;
+`
+
+Cd("/SparrowOS/Adam/Gr");Dir;
+
+`Cd("/SparrowOS/Adam/Gr");Dir;
+`
+
+Cd("/SparrowOS/Adam/Snd");Dir;
+
+`Cd("/SparrowOS/Adam/Snd");Dir;
+`
+
+Cd("/SparrowOS/Accts");Dir;
+
+`Cd("/SparrowOS/Accts");Dir;
+`
+
+Cd("/SparrowOS/Accts/TS");Dir;
+
+`Cd("/SparrowOS/Accts/TS");Dir;
+`
+
+Cd("/SparrowOS/Accts/TS/TAD");Dir;
+
+`Cd("/SparrowOS/Accts/TS/TAD");Dir;
+`
+
+Cd("/SparrowOS/Accts/TS/TAD/MusicOrgan");Dir;
+
+`Cd("/SparrowOS/Accts/TS/TAD/MusicOrgan");Dir;
+`
+
+Cd("/SparrowOS/Accts/TS/Wb2");Dir;
+
+`Cd("/SparrowOS/Accts/TS/Wb2");Dir;
+`
+
+Cd("/SparrowOS/Accts/User");Dir;
+
+`Cd("/SparrowOS/Accts/User");Dir;
+`
+
+Cd("/SparrowOS/Accts/Install");Dir;
+
+`Cd("/SparrowOS/Accts/Install");Dir;
+`
+
+Cd("/SparrowOS/Apps");Dir;
+
+`Cd("/SparrowOS/Apps");Dir;
+`
+
+Cd("/SparrowOS/Apps/Pilgrims");Dir;
+
+`Cd("/SparrowOS/Apps/Pilgrims");Dir;
+`
+
+Cd("/SparrowOS/Apps/X-Caliber");Dir;
+
+`Cd("/SparrowOS/Apps/X-Caliber");Dir;
+`
+
+Cd("/SparrowOS/Apps/MusicOrgan");Dir;
+
+`Cd("/SparrowOS/Apps/MusicOrgan");Dir;
+`
+
+Cd("/SparrowOS/Apps/AfterEgypt");Dir;
+
+`Cd("/SparrowOS/Apps/AfterEgypt");Dir;
+`
+
+Cd("/SparrowOS/Apps/KeepAway");Dir;
+
+`Cd("/SparrowOS/Apps/KeepAway");Dir;
+`
+
+Cd("/SparrowOS/Misc/Tour");Dir;
+
+`Cd("/SparrowOS/Misc/Tour");Dir;
+`
+
+Cd("/SparrowOS/Demo");Dir;
+
+`Cd("/SparrowOS/Demo");Dir;
+`
+
+Cd("/SparrowOS/Demo/Doc");Dir;
+
+`Cd("/SparrowOS/Demo/Doc");Dir;
+`
+
+Cd("/SparrowOS/Demo/Asm");Dir;
+
+`Cd("/SparrowOS/Demo/Asm");Dir;
+`
+
+Cd("/SparrowOS/Demo/Snd");Dir;
+
+`Cd("/SparrowOS/Demo/Snd");Dir;
+`
+
+Cd("/SparrowOS/Demo/Dsk");Dir;
+
+`Cd("/SparrowOS/Demo/Dsk");Dir;
+`
+
+Cd("/SparrowOS/Demo/OldSchool");Dir;
+
+`Cd("/SparrowOS/Demo/OldSchool");Dir;
+`
+
+Cd("/SparrowOS/Demo/Graphics");Dir;
+
+`Cd("/SparrowOS/Demo/Graphics");Dir;
+`
+
+Cd("/SparrowOS/Demo/MultiCore");Dir;
+
+`Cd("/SparrowOS/Demo/MultiCore");Dir;
+`
+
+Cd("/SparrowOS/Demo/GameStarters");Dir;
+
+`Cd("/SparrowOS/Demo/GameStarters");Dir;
+`
+
+Cd("/SparrowOS/Demo/Lectures");Dir;
+
+`Cd("/SparrowOS/Demo/Lectures");Dir;
+`
+
+Cd("/SparrowOS/Doc");Dir;
+
+`Cd("/SparrowOS/Doc");Dir;
+`
+
+Cd("/SparrowOS/Misc");Dir;
+
+`Cd("/SparrowOS/Misc");Dir;
+`
+
+Cd("/Temp");Dir;
+
+`Cd("/Temp");Dir;
+`
+
+Cd(TS_TRA_DRV ":/Wb");Dir;
+
+`Cd(TS_TRA_DRV ":/Wb");Dir;
+`
+
+Cd("/0000Boot");Dir;
+
+`Cd("/0000Boot");Dir;
+`
+
+Copy Video
+`CopyVideo;
+`
+
+Copy Screen Shots
+`Del(TS_TRA_DRV ":/Temp/ScreenShots/*");Copy("::/Temp/ScreenShots/*",TS_TRA_DRV ":/Temp/ScreenShots");
+`
+
+Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS_TRA_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+
+`Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS_TRA_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+`
+
+CvtBMPDir(".");
+
+`CvtBMPDir(".");
+`
+
+Copy Drive
+`PmtMyCopyDrv;
+`
+
+Make BackUp
+`MakeBack;
+`
+
+M(TS_MAIN_DRV ":/SparrowOS/*",TS_BAK_DRV ":/SparrowOS/*","+r+d");
+
+`M(TS_MAIN_DRV ":/SparrowOS/*",TS_BAK_DRV ":/SparrowOS/*","+r+d");
+`
+
+M(TS_MAIN_DRV ":/SparrowOS/*",TS_TRA_DRV ":/SparrowOS/*","+r+d");
+
+`M(TS_MAIN_DRV ":/SparrowOS/*",TS_TRA_DRV ":/SparrowOS/*","+r+d");
+`
+
+M(TS_MAIN_DRV ":/SparrowOS/*",TS_CDROM_DRV ":/SparrowOS/*","+r+d");
+
+`M(TS_MAIN_DRV ":/SparrowOS/*",TS_CDROM_DRV ":/SparrowOS/*","+r+d");
+`
+
+ChgDsk(TS_CDROM_DRV_LET);
+
+`ChgDsk(TS_CDROM_DRV_LET);
+`
+
+MenuBoot D
+`QMenuBoot(TS_MAIN_DRV_LET);
+`
+
+Take Tour
+`Cd("::/SparrowOS/Misc/Tour");;AutoFile("Tour");
+`
+
+Make InHouse    CD 
+`MakeInHouseCDImage;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+
+Make InHouse    DVD
+`MakeInHouseCDImage;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+Make InHouse    ISO
+`MakeInHouseCDImage;   Copy(TS_ISO_NAME,TS_TRA_DRV ":SparrowOSTS.ISO");
+`
+
+Make Production CD 
+`MakeProductionCDImage;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+
+Make Production DVD
+`MakeProductionCDImage;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+Make Production ISO
+`MakeProductionCDImage;Copy(TS_ISO_NAME,TS_TRA_DRV ":SparrowOSCD.ISO");
+`
+
+-] Applications
+  
+  
+  
+  
+   
+  JukeBox <1> (image) Rocks <2> (image) Vocab <3> (image)  EagleDive <4> (image) WarGame <5> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Timeout <6> (image) TheDead <7> (image) Logic <8> (image) X-Caliber <9> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Span <10> (image)  BigGuns <11> (image) BirdLand <12> (image) Tanks <13> (image) Pilgrims <14> (image)
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  FPS <15> (image)      AfterEgypt <16> (image)  Organ <17> (image) MisDef <18> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Wenceslas <19> (image) KeepAway <20> (image) Models <21> (image) RawHide <22> (image)
+  
+  
+  
+  
+  
+  Chess <23> (image) Navy <24> (image) Bomber <25> (image)
+  
+  Digits (Memory Game)
+`Cd("::/SparrowOS/Demo");;#include "Digits"
+`
+
+  Bling (A fractel-like thing)
+`Cd("::/SparrowOS/Demo/Graphics");;#include "Bling"
+`
+
+  CPUPlot
+`#include "/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z"
+`
+
+  
+List functions in alphabetic order
+`HFunsRep;View;`
+ 
+List all functions in alphabetic order
+`HFunsRep("-p");View;`
+ 
+List all syms in alphabetic order
+`DocMax;HAllRep;View;`
+ 
+List functions in numeric order
+`HMapRep;View;`
+ 
+Key Map
+`KeyMap;View;
+`
+
+
+[::/SparrowOS/Misc/Bible.TXT.Z,297] Bible
+Drv(TS_TRA_DRV_LET);
+
+`Drv(TS_TRA_DRV_LET);
+`
+
+Quick Reboot TRA
+`Boot(TS_TRA_DRV ":/OSMain.BIN.C");`
+
+Quick Reboot BAK
+`Boot(TS_BAK_DRV ":/OSMain.BIN.C");`
+
+Compile BAK
+`CmpDrv(TS_BAK_DRV_LET);
+`
+
+List all syms in alphabetic order
+`DocMax;MyHAllRep;View;`
+ 
+List all hash entries in alphabetic order
+`DocMax;HashRep(Fs->hash_table,HTG_ALL,NULL,"-p",0,NULL);View;`
+
+List all hash entries in numeric order
+`DocMax;HashRep(Fs->hash_table,HTG_ALL,NULL,"-p+m",0,NULL);View;`
+
+Test Suite
+`#include "::/SparrowOS/Misc/OSTestSuite.CPP.Z";
+`
+
+MusicOrgan GODSongs
+`#include
+"::/SparrowOS/Apps/MusicOrgan/Load";MusicOrgan("::/SparrowOS/Accts/TS/TAD/Musi
+cOrgan");
+`
+

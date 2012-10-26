@@ -1,0 +1,12 @@
+                           Adding a New File System
+
+If you want to add a support for a new file system, do a text search on 
+"PT_FAT32".  All the places where that occurs will require new entries for 
+your file system type.  Click here for search.
+`Grep("PT_FAT32","/SparrowOS/" SRC_FILE_MASK);View;`
+
+
+You will also need to add an entry [::/SparrowOS/OSMain/Define1a.CPP.Z,1]
+here.
+
+  

@@ -1,0 +1,52 @@
+Use [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I
+change a label.
+
+----10/22/12 21:10:06----
+* Worked on [::/SparrowOS/Apps/MusicOrgan/Examples/risen.CPP.Z,1] risen,
+[::/SparrowOS/Apps/MusicOrgan/Examples/cosam.CPP.Z,1] cosam,
+[::/SparrowOS/Apps/MusicOrgan/Examples/night.CPP.Z,1] night,
+[::/SparrowOS/Apps/MusicOrgan/Examples/abiding.CPP.Z,1] abiding and
+[::/SparrowOS/Apps/MusicOrgan/Examples/thereupon.CPP.Z,1] thereupon.
+
+----10/16/12 10:22:14----
+* **SparrowOS version 1.01 Released**
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BigEndian","Endian");
+* Added result as a built-in local variable like this in C++.
+
+----10/13/12 19:52:59----
+* Fixed bug in comma'ed leading zeros in
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF().
+* Added octal to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF().
+* Added comma flag to hex, octal and binary in
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF().
+
+----10/12/12 05:16:20----
+* Changed Binary File Format.  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1740] EIE_END
+
+----10/06/12 12:37:05----
+* Made [C:/SparrowOS/Adam/Window.CPP.Z,710] WinFocus(),
+[C:/SparrowOS/OSMain/Dbg1a.CPP.Z,384] Go1(),
+[C:/SparrowOS/Adam/Dbg2a.CPP.Z,352] Go2() and
+[C:/SparrowOS/Adam/Dbg2a.CPP.Z,373] Go3().
+* Added [C:/SparrowOS/OSMain/Str1a.CPP.Z,2655] Help(),
+[C:/SparrowOS/OSMain/Display.CPP.Z,96] VGAFlush() and <CTRL-ALT-F>.
+* Added [::/SparrowOS/Demo/DbgDemo.CPP.Z,1] ::/SparrowOS/Demo/DbgDemo.CPP.Z.
+
+----10/05/12 21:15:13----
+* Made so arrays with dimensions in functions args are pass-by-ref.  They
+were 
+not implemented.
+* Fixed compiler bug with extern zero length arrays[].
+* Added [::/SparrowOS/Demo/Graphics/SpritePutExt.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/SpritePutExt.CPP.Z.
+
+----10/03/12 07:59:33----
+* Expanded CDocEntry.flags to CDocEntry.flags1 and CDocEntry.flags2.
+* Added +BP [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1075] DOCEF2_BIN_PTR_LINK flag
+to allow importing sprites from other 
+files.
+
+----10/02/12 20:55:02----
+* **SparrowOS version 1.00 Released**
+* Change "$PI" to "$SP".  I made an alias in
+[C:/SparrowOS/Adam/Doc/Doc.CPP.Z,29] ST_DOC_CMDS, for now.

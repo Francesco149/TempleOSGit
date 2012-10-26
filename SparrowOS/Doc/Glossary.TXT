@@ -1,0 +1,332 @@
++] Abbreviations
+  Abs	Absolute
+Acct	Account
+Add/Addr	Address
+AOT	Ahead-of-Time
+AP	Application Processor (CPU# > 0)
+Arg	Argument
+Attr	Attribute
+Aux	Auxilliary
+Blk	Block
+BSP	Boot-strap Processor (CPU#0)
+Buf	Buffer
+CB	Call-Back or Code Block
+Cfg	Config
+Chg	Change
+Chk	Check
+Cmd	Command
+Cmp	Compiler
+Cnt	Count
+Ctrl	Control.  The ctrl key is indicated with "^" in documentation.
+Cur	Current
+Dbg	Debug
+Dbl	Double
+CDC	Device Context
+Del	Delete
+Desc	Descriptor or Description
+Dev	Device
+Dft	Default
+Dir	Directory
+Drv	Drive
+Dsk	Disk
+Dst	Destination
+Ed	Edit, Editor
+Elem	Element
+Evt	Event
+Exe	Execute
+Ext	Extern or Extended
+Feat	Feature
+Fmt	Format
+Fwd	Forward
+fp_	Function ptr
+Fun	Function
+Gen	Generate
+Glbl	Global
+Gr	Graphic
+IDE	Integrated Development Environment or Integrated Drive Electronics
+IDT	Interrupt Descriptor Table
+Init	Initialize
+Ins	Insert
+Int	Interrupt
+ip_	Input Pointer.  See [::/SparrowOS/OSMain/KbdMouse/InputPointer.CPP.Z,1]
+  InputPointer.CPP.Z.
+Irq	Interrupt (Request)
+JIT	Just-in-Time
+Kbd	Keyboard
+Len	Length
+Let	Letter
+Lex	Lexical Analyser
+Lit	Literal
+Loc	Location, Lines of Code
+Log	Logarithm or Logical
+Doc	Linked-Text-File (doubly-linked-list of rich text and graphic cmds)
+Man	Manual
+Mem	Memory
+Mgd	Managed
+Mgr	Manager
+Mon	Month
+MP	MultiProcessor
+Msg	Message
+Num	Number
+Obj	Object
+Occ	Occurrence
+CMathODE	Ordinary Differential Equation
+Paren	Parenthesis
+Pkg	Package
+Pmt	Prompt
+Poly	Polygon
+Pos	Position
+Prec	Precedence
+Prod	Product or Production
+Pri	Primary
+Prt	Partition
+Pt	Point
+Ptr	Pointer
+Que	Queue
+Reg	Register or Regular
+Rem	Remove
+Rep	Report
+Rqst	Request
+Rst	Reset
+Rot	Rotation
+Rx	Receive
+Sec	Second or Secondary
+Sect	Sector
+Seq	Sequence
+Snd	Sound
+Src	Source
+Stat	Status or Statistic
+Stk	Stack
+Str	String
+Sym	Symbol
+Sys	System
+Term	Terminal
+Tx	Transmit
+Val	Value
+Var	Variable
+Vect	Vector
+Vol	Volume
+Win	Window
+Wiz	Wizard
+WS	WordStat
+WSD	WordStat Dictionary
+
++] Task/Process/Thread
+  There is no distinction between "task", "process" or "thread."  The Fs
+  segment register is kept pointing to the current task's
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask.  There is only one window per
+  task.
+
++] Adam Task
+  This is Adam, as in Adam and Eve, the parent of all tasks.  This task is
+  created at start-up and appears in the small window at the top beneath the
+  user windows.  On it's heap are all memory objects which are system wide. 
+  When created, it runs the file [::/SparrowOS/OSMain/Adam1.CPP.Z,1]
+  ::/SparrowOS/OSMain/Adam1.CPP.Z  Normally, Adam1.CPP.Z ends by #include
+  [::/SparrowOS/Adam/Adam2.CPP.Z,1] ::/SparrowOS/Adam/Adam2.CPP.Z where the
+  remainder of the operating system is "#included".  When start-up is finished,
+  the adam task enters a server mode where it accepts requests from other
+  tasks.  The [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,283] Adam("") routine will
+  cause the adam task to compile and run text src code.  "#include" statements
+  can be sent to the [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,283] Adam("") routine,
+  creating system-wide code and data which don't disappear when any particular
+  task ends.  (The Adam task is immortal.)
+
++] Seth Task
+  This is Seth, as in Adam and Eve's child.  Each CPU core has a special task
+  which is immortal and which is special.  The Adam task on CPU#0 is also it's
+  Seth task.
+
++] Code and Data Heaps
+  SparrowOS uses the asm CALL instruction exclusively and it's limited to
+  calling routines +/-2 Gig from the current code location.  To prevent
+  out-of-range issues, I decided to separate code and data, placing all code
+  within the lowest 2 Gig of memory.  The compiler and
+  [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load()er allocate memory from the code
+  heap to store code and glbl vars, unless the compiler option
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_GLBLS_ON_DATA_HEAP is used. 
+  When programs call [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() is comes
+  from the data heap, which in not limited in size, except by how much physical
+  RAM memory you have.  You can allocate from any heap you like, or even make
+  independent heaps.
+
++] Parent/Child Task
+  Often a task will [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn() or
+  [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,374] PopUp() a task as a helper.  The
+  helper is known as a Child Task, though you can Spawn a task and assign it a
+  different parent... like Adam.  Links are kept as to who spawned what so that
+  when one task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,28] Kill()ed the helper
+  tasks disappear, too.  You can get a report on current system tasks with
+  [C:/SparrowOS/Adam/Utils2a.CPP.Z,423] TaskRep().  There is just one possible
+  window per task, so child tasks are needed.
+
++] C+
+  The language used by SparrowOS is more than C and less than C++, so it's
+  just C+, perhaps.  See [::/SparrowOS/Doc/Differences.TXT.Z,1] Differences. 
+  It has the default arg feature of C++ and uses class in place of struct.  It
+  uses U0,U8,U16,U32,U64 and I0,I8,I16,I32,I64 for signed and unsigned
+  integers.  It has a slightly different operator precedence.  See
+  [::/SparrowOS/Doc/Differences.TXT.Z,1] OP_precedence  It has the PASCAL-like
+  feature of function calls with no parens, but requires an "&" when referring
+  to function addresses.
+
++] Static Compile Mode
+  I coined this term to refer to conventional AOT compilation mode, but it is
+  not the preferred mode for this operating system and is discouraged.  .SP?
+  files are compiled to .BI? files, skipping .OBJ files.  After compiling, you
+  do a [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() cmd which is available
+  from right-clicking on a link (like from
+  [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir()).  There is no main()
+  routine.  Instead, statements outside functions are automatically executed
+  upon loading.  There is no way to unload except by killing the task.  To
+  invoke Static Compiled Mode, use the
+  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,371] Cmp() routine or right-click on a
+  link.  The OSMain modules and compiler are made in static compiled mode and
+  stored in OSMain.BIN.C and Compiler.BIN.Z, respectively.
+
+See [::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1]
+  ::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z for an example of static
+  module.
+
++] JIT Compile Mode
+  In just-in-time mode, the compiler allocates objects, code and data, from
+  the heap, incrementally.  This mode is used during cmd line operations.  When
+  you #include a file, it is compiled function by function and objects are
+  placed all over in mem.  The [C:/SparrowOS/Compiler/CmpMain.CPP.Z,560]
+  ExeFile() routine is the same as #include but can be placed in programs. 
+  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,523] ExePutS() routine will compile and
+  run a string.
+
++] Compiler Intermediate Code
+  The compiler generates instructions one step before making actual
+  assembly(machine) language instructions.  This code is reverse polish in
+  nature and can be viewed with [C:/SparrowOS/Compiler/Directives.CPP.Z,21]
+  PTrace() or [C:/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace().  The
+  compiler does not "interpret" code, except in the process of optimization. 
+  The assembly language can be viewed when it is compiled with the
+  [C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace() routine, or afterward
+  with [C:/SparrowOS/Compiler/Unassembler.CPP.Z,851] U().
+
++] Partition/Drive
+  There is no distinction between "partition" or "drive."  They are specified
+  with a single letter from 'A'-'Z'.
+
+':' is the boot drive.
+
+For commands taking a drive letter as an argument, 0 is the current drive.
+
+[AutoFile,1] AutoFile
+[Graphics/CSprite,1] Sprite
+[Hash,1] Hash Table
+[Char/Define,1] Define
+[C:/SparrowOS/Adam/Doc/Doc.CPP.Z,44] Link Types
++] files_find_mask
+  [C:/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50] FilesFindMatch().  An optional
+  directory plus a list of file name masks, as in
+  /SparrowOS/Demo/*.TXT.Z;*.CPP.Z
+
+See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3759] FUF_RECURSE and
+  [C:/SparrowOS/OSMain/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS.
+
+Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK and
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2092] SRC_FILE_MASK.
+
++] Filename Extention Types
+  
+*.???.Z
+  These files are automatically compressed or uncompresses files when read or
+  written.
+*.???.C
+  Contiguous files--NOT compressed.
+*.TXT.Z;*.TXT;*.LOG.Z;*.LOG
+  Text Files
+*.CPP.Z;*.CPP
+  C+ src files.  The default C+ compiler type is ".CPP.Z".
+*.PRJ.Z;*.PRJ
+  C+ src files to be compiled statically.
+*.HPP.Z;*.HPP
+  C+ src header files.
+*.MAP.Z;*.MAP
+  Compiler "map" files
+*.BIN.Z;*.BIN.C;*.BIN
+  Binary executable files, created by
+  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,371] Cmp() and read by
+  [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load().
+*.DAT.Z;*.DAT
+  Data files
+*.ISO
+  CD-ROM image file--ISO9660.
+*.AUT.Z;*.AUT
+  "AutoFile" Basically a C+ program who's stdout goes to the input of a task
+  when [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,390] AutoFile() is called.
+*.GRA.Z;*.GRA
+  Graphics file
+
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2092] SRC_FILE_MASK
+  This #define holds a list of src file extensions.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK
+  This #define holds a list of text file extensions.
+
++] Naming Convention
+  The following are rules I stick to.  If you work on the operating system,
+  it'd be good to stick with them for uniformity, but you can do what you like.
+   Since there are no "namespaces" and I don't plan to implement name spaces, I
+  highly recommend putting a 2-3 character module code prefix on syms. e.g.
+  "WS","Doc","Lex"
+
+ALL_CAPS
+  Assembly Language labels are capitalized with underscores between words. 
+  So are #define's.
+
+_ALL_CAPS
+  Asm routines which are C+ callible should have a leading underscore.
+
+MixedCaps
+  C+ Functions and class names are MixedCaps.
+
+lower_case
+  Local function vars and glbl vars are lower case.  Class member names are
+  also lower_case.
+
+DOCf_????
+  Flags bit nums instead of bit values are designated with a lower case "f".
+
+DOCG_????
+  Flag groups are designated with "G".
+
+Fs The CPU FS segment register.  This register points to the current task's 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask.
+
+Gs The CPU GS segment register.  This register points to the
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3781] CCPU.
+
+Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
+  These are bit manipulation functions named after Intel instructions.  They 
+stand for "Bit Test", "Bit Test and Set", "Bit Test and Rst" and "Bit Test
+and 
+Compliment".  An 'L' means locked.
+
+Cli,Sti Turn on or off interrupts.  They are named after the x86
+instructions. 
+ "Cli" turns off interrupts.
+
+Heap Programs can dynamically request chunks of memory allocated from a
+"heap" 
+using [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc().  They must
+[C:/SparrowOS/OSMain/Memory.CPP.Z,946] Free() it when finished.  Ptrs are
+used to refer to 
+it.  The "heap" is dynamically allocated mem.
+
+Root The base of a binary tree or the head of a queue.  (I don't like the
+word 
+"head.")
+
+Join When two parts of a program have a common low-level routine, that
+routine 
+is often labeled SomethingJoin.
+
+user_data Many operating system structures have space set aside for you to 
+store values.  You are on your own managing these with multiple applications 
+and libraries.
+
+BSP/AP Boot-strap Processor/Application Processor

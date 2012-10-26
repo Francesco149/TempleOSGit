@@ -1,7 +1,0 @@
-#help_index "Snd"
-#include "/LT/Apps/Shared/HolySpirit.CPZ"
-#include "/LT/Apps/MusicOrgan/MakeSong.CPZ"
-#include "/LT/Apps/MusicOrgan/JukeBox.CPZ"
-#include "/LT/Apps/MusicOrgan/Ctrls.CPZ"
-#include "/LT/Apps/MusicOrgan/Organ.CPZ"
-#help_index ""
