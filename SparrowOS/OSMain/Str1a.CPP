@@ -335,7 +335,7 @@ _extern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/SparrowOS/Compiler/Lex.CPP.Z,748] Lex() can use them with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1890] Token Codes.
+[C:/SparrowOS/Compiler/Lex.CPP.Z,748] Lex() can use them with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1891] Token Codes.
 */
 U32 alpha_bitmap[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -777,7 +777,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3674] flags
+{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3675] flags
   U8 *src=_src,*dst=_src;
   U64 ch;
 

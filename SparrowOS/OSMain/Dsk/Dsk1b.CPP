@@ -198,12 +198,12 @@ CDirEntry *FilesFind(U8 *files_find_mask,U64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3759] FUF_RECURSE		+r Recurse
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3773] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3769] FUF_JUST_DIRS		+D just directories
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3770] FUF_JUST_FILES		+F just files
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3771] FUF_JUST_TEXT_FILES	+t just text files: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3772] FUF_JUST_SRC_FILES	+s just src files : [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2092] SRC_FILE_MASK
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3760] FUF_RECURSE		+r Recurse
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3774] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3770] FUF_JUST_DIRS		+D just directories
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3771] FUF_JUST_FILES		+F just files
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3772] FUF_JUST_TEXT_FILES	+t just text files: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3773] FUF_JUST_SRC_FILES	+s just src files : [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK
 See [C:/SparrowOS/OSMain/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   CFileAccess *fa=FileAccessNew(files_find_mask,TRUE);

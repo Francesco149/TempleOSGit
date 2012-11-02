@@ -38,7 +38,7 @@ U0 AEMap()
   try {
     while (!ScanChar) {
       dc->color=BLACK;
-      a1=Limit(Unwrap(a1+(A1_MAX+A1_MIN)/5.0*(Rand-0.5)),-A1_MAX,A1_MAX);
+      a1=Limit(Wrap(a1+(A1_MAX+A1_MIN)/5.0*(Rand-0.5)),-A1_MAX,A1_MAX);
       a=a1;
       if ( 0.0<=a<=A1_MIN) a=A1_MIN;
       if (-A1_MIN<=a<=0.0) a=-A1_MIN;
@@ -46,7 +46,7 @@ U0 AEMap()
       r=GrRotZ(a);
       GrRot(r,&x1,&y1,&z1);
 
-      a2=Limit(Unwrap(a2+(A2_MAX+A2_MIN)/5.0*(Rand-0.5)),-A2_MAX,A2_MAX);
+      a2=Limit(Wrap(a2+(A2_MAX+A2_MIN)/5.0*(Rand-0.5)),-A2_MAX,A2_MAX);
       a=a2;
       if ( 0.0<=a<=A2_MIN) a=A2_MIN;
       if (-A2_MIN<=a<=0.0) a=-A2_MIN;

@@ -3,12 +3,18 @@
 
 //OSMain module: OSMain.BIN.Z
 #define OSMAIN_BIN_C	"OSMain.BIN.C"
-//First dir on CD.  First file must be OSMain.BIN.C (on CD-ROMs).
+
+//Must be first dir on CD.
 #define BOOT_DIR	"/0000Boot"
+//Must be first file on CD.
+#define BOOT_DIR_OSMAIN_BIN_C BOOT_DIR "/0000" OSMAIN_BIN_C
+
 //Stage 2 of master boot loader
 #define BOOTMHD2_BIN_C	"/0000Boot/BootMHD2.BIN.C"
+
 //Old master boot record
 #define OLDMBR_BIN_C	"/0000Boot/OldMBR.BIN.C"
+
 //CD-ROM patched Boot Loader
 #define BOOTCD_BIN_Z	"/0000Boot/BootCD.BIN.Z"
 
@@ -24,16 +30,18 @@ if (IsDrvWritable)
 public BoolI64 CDBootFileCreate()
 {
   U8 *br;
-  U64 size=FileSize(BOOT_DIR "/" OSMAIN_BIN_C);
+  U64 size=FileSize(BOOT_DIR_OSMAIN_BIN_C);
 
   br=CAlloc(CD_BOOT_LOADER_SIZE);
   *BCD_BLK_CNT(U16 *)=(size+CD_BLK_SIZE-1)/CD_BLK_SIZE;
 
-  //After preboot + BootCD.BIN.Z comes OSMain.BIN.C
-  //[::/SparrowOS/Adam/Dsk/DskCDDVD.CPP.Z,1] CDBOOT
+  //[::/SparrowOS/Adam/Dsk/DskCDDVD.CPP.Z,1] CDBOOT writes the following blocks:
+  //0x14 Preboot
+  //0x15 Boot-loader ([::/SparrowOS/Adam/Boot/BootCD.CPP.Z,1] BootCD.BIN.C stored uncompressed in a non-file block)
+  //0x16 0000OSMain.BIN.C.
 
   //No emulation
-  //This trick assumes OSMain is first file in first Dir.
+  //This trick assumes 0000OSMain is first file in first dir.
   *BCD_BLK_LO(U32 *)=1+(CD_FILE_OFFSET+CD_BOOT_LOADER_SIZE/BLK_SIZE)/(CD_BLK_SIZE>>BLK_SIZE_BITS);
 
   MemCpy(br,BCD_START,BCD_END-BCD_START);
@@ -139,7 +147,7 @@ U8 ChkWritable(U8 drv_let=0)
 
 #help_index "Install"
 public U0 MakeAll()
-//Call from [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot()  because loader must be patched with block address.
+//Call from [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot()  because loader must be patched with block address.
 
 //These 2 modules (and bootloaders at top) are the only statically
 //compiled code in SparrowOS.  Everything else is JIT.
@@ -193,7 +201,7 @@ public BoolI64 InstallBoot(U8 src_drv,U8 dst_drv=0)
     p	=Drv2Prt   (dst_drv);
     switch (bdev->type) {
       case BDT_ATAPI:
-	Move("/SparrowOS/OSMain/OSMain.BIN.Z",BOOT_DIR "/" OSMAIN_BIN_C);
+	Move("/SparrowOS/OSMain/OSMain.BIN.Z",BOOT_DIR_OSMAIN_BIN_C);
 	CDBootFileCreate;
 	result=TRUE;
 	break;

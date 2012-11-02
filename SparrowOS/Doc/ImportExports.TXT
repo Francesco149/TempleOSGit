@@ -12,7 +12,7 @@ syms.
 
 When a sym is placed into a table, older syms with identical names will be 
 overshadowed if they exist, unless you use the compiler option 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1480] OPTf_REPLACE_SYMS.  Duplicates are not allowed in many cases, especially in 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_REPLACE_SYMS.  Duplicates are not allowed in many cases, especially in 
 asm blks.  Dupicates are allowed, by design in other cases, so that you can 
 repeatedly #include the same file from the cmd line while developing it.  Or, 
 so you can repeatedly declare a function with a standard name, like "UpdateWin
@@ -148,8 +148,8 @@ to noreg.
 * An unused gap on the stk is left for reg vars.
 
 * Note: static function vars do not go on the data heap, no matter the setting 
-of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_GLBLS_ON_DATA_HEAP.  They may in the future.
+of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP.  They may in the future.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1477] OPTf_EXTERNS_TO_IMPORTS will treat _extern as _import and extern as import.  
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1478] OPTf_EXTERNS_TO_IMPORTS will treat _extern as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or static compiled 
 header.

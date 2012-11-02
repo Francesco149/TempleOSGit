@@ -6,5 +6,4 @@ Cd("HOME");;
 #include "/SparrowOS/Accts/TS/TSAdam"
 #include "/SparrowOS/Accts/TS/TSDistribute"
 #include "/SparrowOS/Demo/WebLogExample/WebLogRep.CPP.Z"
-#include "/SparrowOS/Misc/CvtBMPDir.CPP.Z"
 Cd("HOME");;

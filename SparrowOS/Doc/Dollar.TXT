@@ -36,7 +36,7 @@ See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,937] Doc Type Defines and
   editor-type thing to generate the text you'll need in your "fmtstr" cmd in a
   class.  If you add it directly with
   [C:/SparrowOS/Adam/Doc/DocPlain.CPP.Z,1111] DocPutS(), you'll need to fill-in
-  the data addr.  See [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,290]
+  the data addr.  See [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,293]
   DocFormDo(),[::/SparrowOS/Demo/Doc/Form.CPP.Z,1]
   ::/SparrowOS/Demo/Doc/Form.CPP.Z.
 
@@ -45,7 +45,7 @@ If there is a ':', the space after the first ':' in the format string marks
   
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3455] color defines) to indicate which of
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3456] color defines) to indicate which of
   the 16 colors to use. If you enter no num, color returns to the default.
 FD Default Foreground Color
 BD Default Background Color
@@ -128,9 +128,9 @@ Examples: <CTRL-T> to see
   you cancel the <ESC> with a '-X'.
 
 +] MU Menu Value
-  See [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,609] PopUpRangeI64().
+  See [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,612] PopUpRangeI64().
 +] HX Hex Edit
-  See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,602] DocD().
+  See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,607] DocD().
 +] Hidden Text Widget
   HS Start of hidden text
 HE End of hidden text

@@ -4,7 +4,7 @@
 
 
 I64 PopUpFreq()
-{ //See also [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,609] PopUpRangeI64()
+{ //See also [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,612] PopUpRangeI64()
   I64 i;
   CDoc *doc=DocNew;
   DocPutS(doc,"$TX+CX,\"Set Freq\"$\n" //Centered text

@@ -53,7 +53,7 @@ public _extern SYS_PROGRESS4_MAX  U64 progress4_max;
 public _extern SYS_PROGRESS4_DESC U8  progress4_desc[PROGRESS_DESC_LEN+1];
  
 #help_index "Bit"
-#help_file "::/SparrowOS/Doc/Bit.TXT.Z"
+#help_file "::/SparrowOS/Doc/Bit"
 public _intern IC_BT BoolI64 Bt(U0 *bit_field,U64 bit);
 public _intern IC_BTS BoolI64 Bts(U0 *bit_field,U64 bit);
 public _intern IC_BTR BoolI64 Btr(U0 *bit_field,U64 bit);
@@ -80,7 +80,7 @@ public _extern _BIT_FIELD_EXTRACT_U32 U32 BFieldExtU32(
 	 U0 *bit_field,U64 bit,U64 size);
 
 #help_index "Circular Queue"
-#help_file "::/SparrowOS/Doc/Que.TXT.Z"
+#help_file "::/SparrowOS/Doc/Que"
 public _intern IC_QUE_INIT U0 QueInit(CQue *root);
 //Ins item into que after predicessor.
 public _intern IC_QUE_INS U0 QueIns(CQue *entry,CQue *pred);
@@ -180,7 +180,7 @@ public _intern IC_INVLPG U0 InvlPg(U0 *a);
 public _intern IC_CLFLUSH U0 CLFlush(U0 *a);
 
 #help_index "MultiCore"
-#help_file "::/SparrowOS/Doc/MultiCore.TXT.Z"
+#help_file "::/SparrowOS/Doc/MultiCore"
 _extern _SET_GS_BASE U0 SetGs(CCPU *c);
 public _extern SYS_MP_CNT U64 mp_cnt;
 _extern SYS_MP_CNT_INITIAL U64 mp_cnt_initial; //only used during [C:/SparrowOS/OSMain/MultiProc.CPP.Z,391] MPStart
@@ -252,7 +252,7 @@ _extern _FXRSTOR U0 Fxrstor(CFPU *fpu_mmx);
 _extern SYS_INIT_FPU_MMX CFPU sys_init_fpu_mmx;
 
 #help_index "Math/CD3;ODE/CD3"
-#help_file "::/SparrowOS/Doc/CD3.TXT.Z"
+#help_file "::/SparrowOS/Doc/D3"
 public _extern _D3_EQU CD3 *D3Equ(CD3 *dst,F64 x,F64 y,F64 z);
 public _extern _D3_ZERO CD3 *D3Zero(CD3 *dst);
 public _extern _D3_COPY CD3 *D3Copy(CD3 *dst,CD3 *src);

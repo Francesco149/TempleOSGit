@@ -7,7 +7,7 @@ U0 TS()
 {
   progress4=ts_num++;
   SPrintF(progress4_desc,"%d",progress4);
-  progress4_max=154;
+  progress4_max=155;
 }
 U0 TSEnd()
 {
@@ -21,7 +21,7 @@ U0 TSEnd()
 U0 DoSpritePlot()
 {
   CTask *task=SpawnUser;
-XTalkWait(task,"#include \"::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z\";\n");
+  XTalkWait(task,"#include \"::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z\";\n");
   Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
@@ -1014,6 +1014,15 @@ U0 DoFlowers()
 {
   CTask *task=SpawnUser;
   XTalkWait(task,"#include \"::/SparrowOS/Demo/Graphics/Flowers.CPP.Z\";\n");
+  Sleep(3000);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoCommonAncestor()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z\";\n");
   Sleep(3000);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
@@ -2346,6 +2355,7 @@ TS; DoMagicPairs;
 TS; DoHanoi;
 TS; DoSquirt;
 TS; DoFlowers;
+TS; DoCommonAncestor;
 TS; DoCartesian;
 TS; DoBling;
 TS; DoRainDrops;

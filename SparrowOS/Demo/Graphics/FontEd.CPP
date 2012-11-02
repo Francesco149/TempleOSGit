@@ -8,7 +8,7 @@
 //If you want to change the system font permanently,
 //save to a file with this font editor program
 //and cut and paste the code into [::/SparrowOS/OSMain/Font8x8.CPP.Z,1] ::/SparrowOS/OSMain/Font8x8.CPP.Z.
-//You will need to recompile OSMain by calling [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().
+//You will need to recompile OSMain by calling [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().
 
 //See [::/SparrowOS/Demo/ExtendedChars.CPP.Z,1] ::/SparrowOS/Demo/ExtendedChars.CPP.Z and
 //[::/SparrowOS/Demo/ScreenCodes.CPP.Z,1] ::/SparrowOS/Demo/ScreenCodes.CPP.Z.

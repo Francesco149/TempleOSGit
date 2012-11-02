@@ -19,7 +19,7 @@ heap never gets freed.  That's as close to "kernel memory" as it gets.
 be 
 used.  SparrowOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_GLBLS_ON_DATA_HEAP. 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP. 
 [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() can allocate any memory, of
 course.
 
@@ -44,12 +44,21 @@ Master-Boot-Loader-Stage2,
 [::/SparrowOS/Adam/Boot/BootCD.CPP.Z,1] CD-DVD-Boot-Loader.
 
 * The boot-loaders must be patched by you running
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot() or 
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,282] InstallMasterBoot().  Those will
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() or 
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot().  Those will
 write the block address into the boot-loader 
 because the boot-loaders do not navigate file systems to find the
 [::/SparrowOS/OSMain/OSStart.CPP.Z,1] Stage2 if 
 you relocate it.
+
+* The /0000Boot directory and the 0000OSMain.BIN.C file are named so that
+they 
+are first in alphabetical order and, therefore, at a predictable block 
+address.  The [::/SparrowOS/Adam/Boot/BootCD.CPP.Z,1] CD/DVD Boot Loader will
+find 0000OSMain.BIN.C at [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] Block
+#0x16.  
+The SparrowOS boot loader can be used with http://www.magiciso.com if you 
+place 0000OSMain.BIN.C in the right spot.
 
 * SparrowOS is 64-bit.  Like all PC operating systems, the boot-loader starts 
 in 16-bit real-mode.  SparrowOS calls a few BIOS info routines, switches to 
@@ -65,8 +74,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask, GS for 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3781] CCPU.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask, GS for 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU.
 
 * SparrowOS uses JIT file compression on a file-by-file basis.  Files are 
 [::/SparrowOS/OSMain/Compress.CPP.Z,1] compressed, not encrypted.
@@ -79,8 +88,8 @@ scratch and it is self-contained.
 
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- OSMain.BIN.C and Compiler.BIN.Z.  You can delete them and 
-recompile with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot(). 
-SparrowOS is 135,794 lines.  Roughly 50,000 is 
+recompile with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot(). 
+SparrowOS is 136,281 lines.  Roughly 50,000 is 
 compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -104,7 +113,7 @@ virtue of the fact that abs addresses get patched.
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system OSMain has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,575]
+links.  This is how the [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,580]
 Man()/WORDSTAT feature can find src lines.
 
 * The word "public" does very little except allow the

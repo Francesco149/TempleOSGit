@@ -163,7 +163,7 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
   D3AddEqu(&target,&m2.state->x);
 
   target_heading=Arg(p_target.x,p_target.y);
-  target_angle_error=Unwrap(theta-target_heading); //Force to range [-pi,pi)
+  target_angle_error=Wrap(theta-target_heading); //Force to range [-pi,pi)
   desired_nozzle_angle=Limit(50.0*DthetaDt+750*target_angle_error,-pi/8,pi/8);
 
   //For realism we limit the speed the nozzle angle can change.

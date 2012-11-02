@@ -31,7 +31,7 @@ U0 KeyDownBitMapDemo()
 //merged scan code.  (left shift and
 //right shift combined for example.)
 //[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,115] key_down_bitmap2 is indexed with the
-//distinct scan code.  See [Char,1] Char and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3433] Scan Codes.
+//distinct scan code.  See [Char,1] Char and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3434] Scan Codes.
 
   while (Bt(key_down_bitmap,i_sc)) {
     x++;

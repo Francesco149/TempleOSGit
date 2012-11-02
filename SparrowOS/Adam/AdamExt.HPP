@@ -1,6 +1,8 @@
 extern BoolI8 win_show_menu;
 extern BoolI64 WinToTop(CTask *task=NULL,BoolI8 update_z_buf=TRUE);
 extern U0 GrPlot0(CDC *dc,I64 x,I64 y);
+extern U8 *DC2Sprite(CDC *tempb);
+extern CDocEntry *DocPutSprite(CDoc *doc,U8 *elems,U8 *txt=NULL);
 extern U0 DrawTaskBorder(CTask *task);
 extern U0 DrawCtrls(CTask *task);
 extern U0 MgdSliderCtrl(CDoc *doc);
@@ -56,6 +58,7 @@ extern F64 PmtF64(U8 *msg,F64 dft,F64 lo=MIN_F64,F64 hi=MAX_F64);
 extern U0 ClassRep(U8 *class_name,U8 *d,I64 max_depth=2,BoolI8 fun=FALSE,I64 offset=0);
 extern U0 Ed(U8 *link_st=NULL);
 extern U0 Plain(U8 *filename);
+extern U0 DocPutBMPFile(CDoc *doc=NULL,U8 *fname,BoolI8 use_ms_paint_palette=FALSE);
 
 extern U0 WSFillIn(I64 n);
 extern U0 WSMan(I64 n,CTask *parent=NULL);

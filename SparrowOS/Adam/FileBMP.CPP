@@ -189,8 +189,17 @@ public CDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
   }
 }
 
-#help_index "Graphics/Windows BMP Files;Graphics/Screen"
+#help_index "Graphics/CSprite;Graphics/Windows BMP Files;Doc/Output"
+public U0 DocPutBMPFile(CDoc *doc=NULL,U8 *fname,BoolI8 use_ms_paint_palette=FALSE)
+{
+  CDC *dc=BMPFileRead(fname,use_ms_paint_palette);
+  CSprite *elems=DC2Sprite(dc);
+  DocPutSprite(doc,elems);
+  Free(elems);
+  DCDel(dc);
+}
 
+#help_index "Graphics/Windows BMP Files;Graphics/Screen"
 public U64 BMPFileCaptureScreen(U8 *filename,U64 bits=4)
 {
   CDC *dc=DCCaptureScreen;

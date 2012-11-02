@@ -1760,7 +1760,7 @@ public U64 DocCurAttr(U64 attr=WHITE<<4+BLUE,CTask *task=NULL)
 
 public U64 DocAuxAttr(U64 attr=WHITE<<4+BLUE,CTask *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1314] DOCF_ATTR_BY_PRT or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1315] DOCF_ATTR_BY_FILENAME flag is probably set
+  //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1315] DOCF_ATTR_BY_PRT or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1316] DOCF_ATTR_BY_FILENAME flag is probably set
   //which means [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,312] SetDrvTextAttr() is overriding it.
   CDoc *doc;
   result=0;

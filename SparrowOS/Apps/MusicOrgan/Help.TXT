@@ -49,7 +49,7 @@ SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
 
 * The note accent feat only works when exporting songs.  When calling 
 [C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you can set a
-waveform.  The PC speaker is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3868]
+waveform.  The PC speaker is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3869]
 WF_SQUARE.  You can 
 select reverb and averaging, also.
 

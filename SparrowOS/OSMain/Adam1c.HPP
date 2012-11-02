@@ -179,7 +179,7 @@ public extern BoolI64 YorN();
 public extern U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE);
 public extern U64 KbdMouseEvtTime();
 
-//Gets [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1461] Flags
+//Gets [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1462] Flags
 public extern U8 *MGetS(U64 flags=0);
 extern U8  *(*fp_mgets)(U64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);

@@ -4,13 +4,13 @@ The SparrowOS term is a U8.
 ASCII values range from 0 to 127.  Values below 32 are ctrl key's.  So, an 
 ASCII #3 is a <CTRL-C>.  SparrowOS uses a few nonstandard values.  In 
 SparrowOS ASCII #5 is the cursor location, ASCII 28 is <SHIFT-ESC> and ASCII 
-#31 is a <SHIFT-SPACE>.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3364] Char
+#31 is a <SHIFT-SPACE>.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3365] Char
 Definitions.
 
 A Key is typically specified with a scan code.  SparrowOS scan codes contain 
 the key value in the lowest U8, and flags in the upper bytes.  See 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3399] Scan Code Flags and
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3433] Scan Codes.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3400] Scan Code Flags and
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3434] Scan Codes.
 
 SparrowOS stores scan codes in 8 bytes.
   Byte 0   is the code with left and right keys combined.

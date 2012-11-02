@@ -616,14 +616,14 @@ U0 DrawHorizon(CDC *dc)
     p[2].y=y2;
     p[3].x=0;
     p[3].y=y1;
-    if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
+    if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
       dc->color=LTCYAN;
     else
       dc->color=LTGREEN;
     GrFillPoly3(dc,4,p);
     p[0].y=dc->height-1;
     p[1].y=dc->height-1;
-    if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
+    if (-pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
       dc->color=LTGREEN;
     else
       dc->color=LTCYAN;
@@ -642,14 +642,14 @@ U0 DrawHorizon(CDC *dc)
       p[2].y=dc->height-1;
       p[3].x=x1;
       p[3].y=0;
-      if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
+      if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
 	dc->color=LTCYAN;
       else
 	dc->color=LTGREEN;
       GrFillPoly3(dc,4,p);
       p[0].x=dc->width-1;
       p[1].x=dc->width-1;
-      if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Unwrap(phi-pi/2)<pi/2)
+      if (x1<x2 ^^ -pi/2<=theta1<pi/2 ^^ -pi/2<=Wrap(phi-pi/2)<pi/2)
 	dc->color=LTGREEN;
       else
 	dc->color=LTCYAN;
@@ -690,7 +690,7 @@ U0 BSPEagleDive()
   } else
     bkcolor=LTCYAN;
 
-  if (height>=0 && !(-pi/4<=Unwrap(phi-pi)<pi/4)) {
+  if (height>=0 && !(-pi/4<=Wrap(phi-pi)<pi/4)) {
     DrawHorizon(dc);
     DCDepthBufRst(dc);
 
@@ -970,9 +970,9 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
 	    Fs->draw_it=&DrawIt;
 	    break;
 	  }
-	theta1=Unwrap(theta1);
-	phi	=Unwrap(phi);
-	theta2=Unwrap(theta2);
+	theta1=Wrap(theta1);
+	phi	=Wrap(phi);
+	theta2=Wrap(theta2);
       } else
 	BSPEagleDive;
     } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);

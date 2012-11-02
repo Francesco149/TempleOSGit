@@ -13,7 +13,7 @@ count down, so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-135,794 lines of code including the kernel, the 64-bit compiler, the graphics 
+136,281 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -143,10 +143,10 @@ so this is possible.  See [::/SparrowOS/Doc/MultiCore.TXT.Z,1] SparrowOS
 MultiCore.
 
 There is no distinction between the terms "task", "process" or "thread".  All 
-have a task record, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask(), pointed
+have a task record, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask(), pointed
 to by the FS segment register and are 
 accessed with Fs-> while Gs-> points to a
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3781] CCPU for the current CPU core.  Each 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU for the current CPU core.  Each 
 task can have just one window, but a task can have children with windows.  
 (The segment registers are just used as extra registers -- there is nothing 
 segmented about SparrowOS' memory.)
@@ -168,7 +168,7 @@ CopyTree().  That should make upgrading easy, too.
 To make an account use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,97] MkDir() to
 create a directory under /SparrowOS/Accts.  
 It will be HOME if you boot to it.  Recompile with
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot() and make it 
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() and make it 
 boot your acct.  Customizable start-up scripts go in your HOME directory. 
 The 
 default start-up scripts are in /SparrowOS/Accts, the parent of all accounts.

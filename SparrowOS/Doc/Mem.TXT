@@ -30,7 +30,7 @@ See [C:/SparrowOS/Adam/MemRep.CPP.Z,184] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003D86F
+ 0x0000007C00- 0x000003D90F
   OSMain kernel module, placed here by the boot-loader,
   [C:/SparrowOS/OSMain/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
 
@@ -67,14 +67,14 @@ memory starting at 0xF0000000 going up.
   64-bit devices are mapped counting backward from 128 Gig.
 
 
-                                      [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2882]
-CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2898] CHeapCtrls
+                                      [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2883]
+CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrls
  <1> (image)
 
 0000,0000,0000,0000                   Core 0   
 
 0000,0000,0000,7C00 OSMain
-0000,0000,0003,D86F 
+0000,0000,0003,D90F 
 
 0000,0000,0010,0000 Page_Tables                    AdamTask
 

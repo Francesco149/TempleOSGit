@@ -329,7 +329,7 @@ public CDoc *DC2Doc(CDC *dc,I64 dx=0,I64 dy=0,I64 *_total_score=NULL)
   return doc;
 }
 
-public U0 BMP2TXT_Z(U8 *_in_name,U8 *_out_name=NULL)
+public U0 BMP2TXT(U8 *_in_name,U8 *_out_name=NULL)
 {
   U8 *in_name,*out_name;
   I64 dx,dy,score,best_score=MAX_I64;

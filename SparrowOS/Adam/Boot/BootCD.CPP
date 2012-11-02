@@ -47,7 +47,7 @@ BCD_SPARROWOS_MSG:
 BCD_NOT64_MSG:
 	DU8	"SparrowOS requires a 64-bit capable processor.\n\r",0;
 
-//These get patched by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,24] CDBootFileCreate
+//These get patched by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] CDBootFileCreate
 BCD_BLK_LO::		DU16	0;
 BCD_BLK_HI::		DU16	0;
 BCD_BLK_CNT::		DU16	0;

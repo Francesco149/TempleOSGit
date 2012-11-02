@@ -1,5 +1,5 @@
 //You should compile this by calling
-//[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot(), not doing it directly.
+//[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot(), not doing it directly.
 //See [::/SparrowOS/Adam/Boot/InsBoot.CPP.Z,1] Cmp("OSMain").
 
 #exe {

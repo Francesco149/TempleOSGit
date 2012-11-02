@@ -246,7 +246,7 @@ public CDocEntry *DocPutLine(CDocEntry *doc_e)
 
 #help_index "Doc/Input"
 public U8 *DocMGetS(U64 flags=0)
-//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1461] Flags
+//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1462] Flags
 {
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
@@ -422,6 +422,7 @@ public CDate PmtCDate(U8 *msg,CDate dft,CDate lo=MIN_I64,CDate hi=MAX_I64)
 #define RIGHT_COPY	6
 #define RIGHT_MOVE	7
 #define RIGHT_DELETE	8
+#define RIGHT_TYPE	9
 
 I64 PopUpCancelIncludeDelAuto(U8 *header=NULL,U8 *footer=NULL)
 {
@@ -437,7 +438,8 @@ I64 PopUpCancelIncludeDelAuto(U8 *header=NULL,U8 *footer=NULL)
 	"$CM+LX,1,3 $$BT,\"COPY                  \",RIGHT_COPY$"
 	"$CM+LX,26,0$$BT,\"MOVE                  \",RIGHT_MOVE$"
 	"$CM+LX,1,3 $$BT,\"DELETE                \",RIGHT_DELETE$"
-	"$CM+LX,26,0$$BT,\"CANCEL                \",DOCM_CANCEL$\n");
+	"$CM+LX,26,0$$BT,\"TYPE                  \",RIGHT_TYPE$"
+	"$CM+LX,1,3 $$BT,\"CANCEL                \",DOCM_CANCEL$\n");
   if (footer) DocPutS(doc,footer);
   i=PopUpMenu(doc);
   DocDel(doc);
@@ -487,6 +489,9 @@ I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e)
       case RIGHT_DELETE:
 	Del(st);
 	result=TRUE;
+	break;
+      case RIGHT_TYPE:
+	result=Type(st);
 	break;
       case RIGHT_AUTOFILE:
 	if (FileExtDot(st) && !WildCardMatch("*.AUT.Z",st)) {

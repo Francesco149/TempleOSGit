@@ -3,7 +3,7 @@
 To upgrade, you generally boot the new SparrowOS CD/DVD, install on top of 
 your partition, modify your files and set it to boot your account by
 executing 
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().  Often, your code
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().  Often, your code
 will have to be modified to work with the new 
 version.  See [::/SparrowOS/Doc/ChangeLog.TXT.Z,1] ChangeLog.  You might have
 to boot an alternate partition or the 

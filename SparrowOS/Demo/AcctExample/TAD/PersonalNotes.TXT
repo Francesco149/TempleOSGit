@@ -7,7 +7,7 @@
 
 * Why is wordstat so slow on "OldMasterBootWrite" for example.
 
-* [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,49] Plain() might be better not saving [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3356] CH_CURSOR.
+* [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,49] Plain() might be better not saving [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3357] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -117,7 +117,7 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3482] DCF_SYMMETRY, before
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3483] DCF_SYMMETRY, before
 transformation? (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -163,7 +163,7 @@ registry-like routines... or registry I guess.
 * Look for mem leaks.
 * Move stuff out of OSmain.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2912] ROP_XOR with pen_width>1 is broken.
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2913] ROP_XOR with pen_width>1 is broken.
 
 * use width and height in line clipping for pen_width>1 or blot.
 * SIMD transformation

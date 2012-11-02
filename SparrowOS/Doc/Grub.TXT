@@ -13,8 +13,8 @@ Windows and SparrowOS.  "hd0" is 1st hard drive, zero-based numbering.
 "msdos1" is partition #1, traditional msdos partitioning.  I keep 'D', 'E', 
 and 'I' identical by frequently copying all files and I use 'I' to transfer 
 files.  They only need to be a couple Gig in size.  Every time I copy files, 
-use [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot() to
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,141] MakeAll and prepare the partition
+use [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() to
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,149] MakeAll and prepare the partition
 [::/SparrowOS/Adam/Boot/BootHD.CPP.Z,1] boot sector for 
 chainloading by patching the new block address and size of OSMain.BIN.C.
 

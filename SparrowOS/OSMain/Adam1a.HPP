@@ -1268,10 +1268,11 @@ public class CDocEntry:CDocEntryBase
   U8 *data;
 };
 
-//[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,290] DocFormDo() [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,341] DocMenuDo() [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,184] DocDo() [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,427] PopUpMenu()
+//[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,293] DocFormDo() [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,344] DocMenuDo() [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,184] DocDo() [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,430] PopUpMenu()
 #define	DOF_MIN_SIZE		1
 #define	DOF_INTERCEPT_TASK_END	2
 #define DOF_DONT_HOME		4
+#define DOF_WIN_MAX		8
 
 class CEdFindText
 {
@@ -1389,7 +1390,7 @@ class CDocUndo
   U8 *body;
 };
 
-//See [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,341] DocMenuDo()
+//See [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,344] DocMenuDo()
 #define DOCM_CANCEL		(-1)
 
 #define DOC_SIGNATURE_VAL		'DocS'
@@ -2913,7 +2914,7 @@ public class CHeapCtrl
 #define ROP_COLLISION			0x0200
 #define ROP_MONO			0x0300
 
-//These are just for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2923] ROPF_PROBABILITY_DITHER
+//These are just for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2924] ROPF_PROBABILITY_DITHER
 //See [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,460] GrLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3520,12 +3521,12 @@ public class CDC
 
 //public--change directly
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2913] ROP_COLLISION
+	bkcolor, //Set for use with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2914] ROP_COLLISION
 	color2; //Internally used for [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,234] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability is basically a U16.
-  //It is activated by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2923] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2924] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3560,7 +3561,7 @@ public class CDC
   I32 cur_x,cur_y,cur_z,pad;
   U64 collision_cnt;
 
-  //Set by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] DCF_RECORD_EXTENTS
+  //Set by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3494] DCF_RECORD_EXTENTS
   I64 min_x,max_x,min_y,max_y; //screen coordinates
 
   U32 dc_signature,pad;

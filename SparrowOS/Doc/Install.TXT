@@ -42,7 +42,7 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,265]
+You'll need to do a [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,273]
     MasterBootZero() to restore your drive to a state 
 where other operating systems can partition it.
   
@@ -58,7 +58,7 @@ BR.BIN.C.
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot('D')
+4) [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot('D')
   This command recompiles the source code on a partition and writes to the
   _par
 tition's_ boot record.  You'll need to reenter the
@@ -66,9 +66,9 @@ tition's_ boot record.  You'll need to reenter the
 can be stored in the kernel.
 
 5) Use Linux's [::/SparrowOS/Doc/Grub.TXT.Z,1] Grub or SparrowOS'
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,282] InstallMasterBoot('D')
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot('D')
   
-The [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,282] InstallMasterBoot() command
+The [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot() command
   places a boot loader on a drive to boot 
 partitions.  It saves the old master boot record to /0000Boot/OldMBR.BIN.C 
 and replaces it.  When you boot, you will have the option of booting the old 

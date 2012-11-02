@@ -9,7 +9,7 @@ class SpanHeader
 class MyMass:CMass
 {
   F64 radius,cost,load_t;
-  I32 color;
+  CColorROPU32 color;
 } *cursor_mass;
 
 class MySpring:CSpring
@@ -18,15 +18,17 @@ class MySpring:CSpring
   F64 base_compression_strength,base_tensile_strength,
 	 base_constant,base_cost;
  
-  I32 color,pen_width;
+  CColorROPU32 color;
+  I32 pen_width;
 };
 
 
 CMathODE *ode=NULL;
 
-I32 run_colors[2]={RED,GREEN};
+CCtrlButtonState snap_button,run_button,mode_button;
 
-I32 snap_colors[2]={RED,GREEN};
+CColorROPU32 run_colors[2]={RED,GREEN};
+CColorROPU32 snap_colors[2]={RED,GREEN};
 
 #define SNAP_SIZE	4
 
@@ -37,7 +39,7 @@ I32 snap_colors[2]={RED,GREEN};
 #define MD_MOVE		4
 #define MD_DELETE	5
 #define MD_NUM_MODES	6
-I32 mode_colors[MD_NUM_MODES]=
+CColorROPU32 mode_colors[MD_NUM_MODES]=
 {BROWN,LTGRAY,DKGRAY,RED,PURPLE,RED};
 DefineListLoad("ST_SPAN_MODES","Mass\0Concrete\0Steel\0Wire\0Move\0Delete\0");
 

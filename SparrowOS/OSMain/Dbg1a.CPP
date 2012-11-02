@@ -160,7 +160,7 @@ U0 CallerRep(U0 **rbp=NULL,CTask *task=NULL)
 
 U0 DbgStr(U8 *st,U64 mS=100)
 //Shows a string using
-//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw screen output for a fixed length
+//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -179,7 +179,7 @@ U0 DbgStr(U8 *st,U64 mS=100)
 
 U0 DbgNum(U64 num,U64 mS=100)
 //Shows a hex num using
-//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw screen output for a fixed length
+//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -196,7 +196,7 @@ U0 DbgNum(U64 num,U64 mS=100)
 
 U0 DbgF(F64 d,U64 mS=100)
 //Shows a floating-point val using
-//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw screen output for a fixed length
+//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen output for a fixed length
 //of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -212,7 +212,7 @@ U0 DbgF(F64 d,U64 mS=100)
 }
 
 U0 DbgAdd(U0 *add,U64 mS=100)
-//Shows an addr using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw screen
+//Shows an addr using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen
 //output for a length of time.
 {
   BoolI8 old_raw,old_input_filter;
@@ -228,7 +228,7 @@ U0 DbgAdd(U0 *add,U64 mS=100)
 }
 
 U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw
+//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -245,7 +245,7 @@ U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
 }
 
 U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw
+//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -263,7 +263,7 @@ U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
 
 U0 D(U8 *buf,U64 cnt=0x80,BoolI8 show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,602] DocD() for a live dump.
+//See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,607] DocD() for a live dump.
 {
   U64 i,j,ch;
   U8 *b=buf;

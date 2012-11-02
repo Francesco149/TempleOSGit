@@ -265,6 +265,8 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 [::/SparrowOS/Demo/SuggestSpelling.CPP.Z,1]
   ::/SparrowOS/Demo/SuggestSpelling.CPP.Z
 [::/SparrowOS/Demo/WordSearch.CPP.Z,1] ::/SparrowOS/Demo/WordSearch.CPP.Z
+[::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z,1]
+  ::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z
 [::/SparrowOS/Demo/Dsk/DataBase.CPP.Z,1] ::/SparrowOS/Demo/Dsk/DataBase.CPP.Z
 [::/SparrowOS/Demo/Dsk/OrderedIO.CPP.Z,1]
   ::/SparrowOS/Demo/Dsk/OrderedIO.CPP.Z

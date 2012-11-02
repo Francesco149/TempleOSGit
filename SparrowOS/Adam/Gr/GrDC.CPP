@@ -247,8 +247,17 @@ public CDC *GRARead(U8 *filename,CTask *task=NULL)
   return dc;
 }
 
-#help_index "Graphics/DCs;Graphics/Screen"
+#help_index "Graphics/CSprite;Graphics/DCs;Doc/Output"
+public U0 DocPutGRAFile(CDoc *doc=NULL,U8 *fname)
+{
+  CDC *dc=GRARead(fname);
+  CSprite *elems=DC2Sprite(dc);
+  DocPutSprite(doc,elems);
+  Free(elems);
+  DCDel(dc);
+}
 
+#help_index "Graphics/DCs;Graphics/Screen"
 public CDC *DCCaptureScreen(CTask *task=NULL)
 {
   CDC *dc;

@@ -363,8 +363,7 @@ U0 BurnProductionCDImage()
   DelTree("/Temp");
   MkDir("/Temp");
   DelTree("/0000Boot");
-  CopyTree("E:/0000Boot",
-    "/0000Boot");
+  CopyTree("E:/0000Boot","/0000Boot");
   CDFileCreate(,"Z:/*",NULL,BOOTCD_BIN_Z); //sys_dft_iso_name
   CDImageWrite('T');
 }
@@ -496,7 +495,7 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
       et->media_type=emulation;
       et->sect_cnt=4;  //5 seems like the limit, 4 is safer
       et->load_rba=cur_blk+1;
-//CDBOOT See [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,24] CDBootFileCreate
+//CDBOOT See [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] CDBootFileCreate
 //See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,283] BootCdProbe().
       "%X: Pre Boot Blk\n",cur_blk;
       FWBlks(out_file,et,cur_blk<<2,4);

@@ -27,13 +27,13 @@ to the Adam task window.  It works like
 I use [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,180] DbgNum().
 
 * [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,264] D()
-[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,602] DocD() to do 16 column hex dump mem
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,607] DocD() to do 16 column hex dump mem
 with numbering from zero.  With 
-[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,602] DocD the values are updated
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,607] DocD the values are updated
 continually and you can alter mem by editing.
 
 * [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,294] Dm()
-[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,586] DocDm() to do 16 column hex dump
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,591] DocDm() to do 16 column hex dump
 mem with addresses showing.
 
 * [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,300] Da() to do one column address dump
@@ -56,7 +56,7 @@ ProfBin(),[C:/SparrowOS/Adam/Profiler.CPP.Z,82] ProfAll() and
 ::/SparrowOS/Demo/AutoFile/AFProfile.AUT.Z (This is an
 [::/SparrowOS/Doc/Glossary.TXT.Z,1] AutoFile.)
 
-* If you recompile OSMain with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157]
+* If you recompile OSMain with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165]
 InstallBoot(), you can modify the handler for 
 faults here: [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,514] Fault2().
 
@@ -65,18 +65,18 @@ faults here: [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,514] Fault2().
 [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,214] DbgAdd() to print debug info bypassing
 the window 
 framework.  You pass these routines a count in milliseconds for how long it 
-should be displayed.  You can use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296]
+should be displayed.  You can use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300]
 Raw(TRUE) to make all output bypass the 
 window framework.  The WinMgr runs on core0 and will overwrite raw text from 
 other cores when it updates the screen.
 
-* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,277] SysDbg() to set a flag which you
-can read with [C:/SparrowOS/OSMain/Misc1a.CPP.Z,283] IsSysDbg() when you wish 
+* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,281] SysDbg() to set a flag which you
+can read with [C:/SparrowOS/OSMain/Misc1a.CPP.Z,287] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
-* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,287] SysDeterministic() to set a flag
+* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,291] SysDeterministic() to set a flag
 which tries to keep the system 
-deterministic for debugging.  [C:/SparrowOS/OSMain/Misc1a.CPP.Z,292]
+deterministic for debugging.  [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296]
 IsSysDeterministic().  There is a Deterministic 
 OSMain config flag.
 
@@ -112,12 +112,12 @@ find other heap issues.
 
 * You can define functions for <CTRL-ALT-letter> keys, but they must operate 
 in a interrupt environment or in the window mgr when in ques kbd msgs.  You 
-can do [C:/SparrowOS/OSMain/Misc1a.CPP.Z,296] Raw() output.  Search for
+can do [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw() output.  Search for
 [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,40] fp_ctrl_alt_let_cbs[] and look at the
 code.  
 They take scancode as an arg.
 
-* If you recompile OSMain with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157]
+* If you recompile OSMain with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165]
 InstallBoot(), you can set the MemInit, option 
 to initialize memory to a value at boot, the HeapInit option to cause mem 
 allocated off the heap to be initialized or VarInit option so both global and 

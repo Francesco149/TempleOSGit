@@ -236,11 +236,6 @@ Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS
 `Del(TS_TRA_DRV ":/Temp/*.SND");DelTree(TS_TRA_DRV ":/Temp/ScreenShots");MkDir(TS_TRA_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
 `
 
-CvtBMPDir(".");
-
-`CvtBMPDir(".");
-`
-
 Copy Drive
 `PmtMyCopyDrv;
 `

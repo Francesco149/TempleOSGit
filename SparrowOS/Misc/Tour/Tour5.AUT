@@ -6,7 +6,7 @@ Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\nCd(\"::/SparrowOS/Demo\");\n";
 
 PopUpOk(
-"WordStat is an autocomplete feat\n"
+"WordStat is an autocomplete feature\n"
 "which will also jump to source code.\n"
 "The function keys work with code, while\n"
 "the num keys work with the dictionary.\n\n"

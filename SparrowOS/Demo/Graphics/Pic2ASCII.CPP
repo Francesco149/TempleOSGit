@@ -60,7 +60,7 @@ public U0 Pic2ASCII()
   CDC *dc=DCAlias;
   dc->color=ROP_EQU+BLACK;
 
-  SettingsPush;
+  SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit=WIF_ALL-WIF_BORDER;
 
   WinMax;

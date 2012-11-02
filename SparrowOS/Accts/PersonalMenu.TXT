@@ -77,7 +77,7 @@ Cd("::/SparrowOS/Demo/AcctExample");Dir;
 
 +] System Src Code
   
-Compile these with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().
+Compile these with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().
 
 This is the kernel, more or less.
 Cd("::/SparrowOS/OSMain");Dir;

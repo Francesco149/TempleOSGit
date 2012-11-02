@@ -190,6 +190,9 @@ public BoolI64 DocDo(CDoc *doc,U64 doc_flags=0)
       old_left=Fs->win_left,old_right=Fs->win_right;
   BoolI8 unlock,old_preempt;
 
+  if (doc_flags&DOF_WIN_MAX)
+    WinMax;
+
   unlock=DocLock(doc);
   doc->win_task=Fs;
   aux=DocNew;

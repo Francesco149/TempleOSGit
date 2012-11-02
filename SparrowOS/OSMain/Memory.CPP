@@ -823,7 +823,7 @@ _FREE::
 	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RSI]
 	OR	RAX,RAX
 	JGE	@@25	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2850] CMemUsedAllocated struct.
+			//The neg size is offset to start of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2851] CMemUsedAllocated struct.
 	ADD	RSI,RAX
 
 @@25:	PUSHFD
@@ -946,9 +946,9 @@ _MHEAP_CTRL::
 _extern _FREE U0 Free(U0 *add);
 _extern _MSIZE U64 MSize(U0 *src); //size of heap object
 _extern _MSIZE2 U64 MSize2(U0 *src); //Internal size
-_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U0 *src); //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2898] CHeapCtrl of object
+_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U0 *src); //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrl of object
 
-//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2898] CHeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrl.  NULL allocs off current task's heap.
 _extern _MALLOC U0 *MAlloc(U64 size,CTask *mem_task=NULL);
 
 U0 *AMAlloc(U64 size)
@@ -957,7 +957,7 @@ U0 *AMAlloc(U64 size)
 }
 
 U0 *CAlloc(U64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2898] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrl.  NULL allocs off current task's heap.
   result=MAlloc(size,mem_task);
   MemSet(result,0,size);
 }
@@ -968,7 +968,7 @@ U0 *ACAlloc(U64 size)
 }
 
 U0 *MAllocIdentical(U0 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2898] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   if (!src) return NULL;
   size=MSize(src);
@@ -1000,7 +1000,7 @@ U0 *CAllocAligned(U64 size,U64 alignment,CTask *mem_task=NULL,U64 misalignment=0
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2898] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrl.  NULL allocs off current task's heap.
   U64 size;
   if (buf) {
     size=StrLen(buf)+1;

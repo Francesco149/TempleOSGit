@@ -5,8 +5,8 @@ TipOfDay() for a nice example.
 
 There is one document format for the editor/ viewer/ browser/ cmd line.
 
-Each task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc queue.  There is
-one [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc for the border, called 
+Each task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc queue.  There is
+one [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc for the border, called 
 "auxiliary" and one for the main window.  The aux is at Fs->next_doc and the 
 main at Fs->last_doc.  When dbl buffering, there are two main's.  See 
 [::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z.  It is possible

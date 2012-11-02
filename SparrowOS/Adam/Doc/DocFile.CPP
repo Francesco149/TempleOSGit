@@ -427,13 +427,29 @@ U0 DocUndoRestore(CDoc *doc)
 
 #help_index "File/Cmd Line (Typically);Doc/Cmd Line (Typically);Cmd Line (Typically)"
 
-public U0 Type(U8 *name)
+public BoolI64 Type(U8 *fname)
 //Output a file to the cmd line.
 //Even graphics and macros will be sent.
 {
-  CDoc *doc=DocRead(name);
-  if (DocCur)
-    DocInsDoc(DocCur,doc);
-  DocDel(doc);
+  CDoc *doc,*doc2;
+  if (doc=DocCur) {
+    if (IsTextFile(fname)) {
+      doc2=DocRead(fname);
+      DocInsDoc(doc,doc2);
+      DocDel(doc2);
+      return TRUE;
+    } else if (FilesFindMatch("*.BMP.Z",fname)) {
+      DocPutBMPFile(doc,fname,FALSE);
+      return TRUE;
+    } else if (FilesFindMatch("*.BMP;*.bmp",fname)) {
+      DocPutBMPFile(doc,fname,TRUE);
+      return TRUE;
+    } else if (FilesFindMatch("*.GRA.Z;*.GRA",fname)) {
+      DocPutGRAFile(doc,fname);
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
+
 #help_index "Doc"

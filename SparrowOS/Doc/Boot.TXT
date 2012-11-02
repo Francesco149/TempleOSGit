@@ -58,8 +58,8 @@ they get patched with the LBA, logical block addresses, to load other stuff.
 To update with a new SparrowOS kernel (OSMain), you must create a binary file 
 and patch the boot loader so it knows the LBA blocks to load.  Therefore, you 
 usually recompile the kernel and update the boot sect at the same time.  
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot() does this. 
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,282] InstallMasterBoot() will install a
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() does this. 
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot() will install a
 master boot 
 loader.
 
@@ -73,7 +73,7 @@ starting start-up script.  It processes
 
 It is possible to reboot without doing a hardware rst.  This is faster.  You 
 might do this when working on OSMain or your start-up scripts when you want 
-them to take effect.  See [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,60] Boot().
+them to take effect.  See [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,68] Boot().
 
  <1> (image)
 

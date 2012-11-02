@@ -366,7 +366,7 @@ Obj *ObjLaunch(I64 player,I64 squadron=-1,Obj *host=NULL,F64 x=MAX_F64,F64 y=MAX
 	  tempo->flags=tempo->flags&~OF_RETURNING|OF_ACTIVE;
 	  tempo->theta=host->theta;
 	  if (x==MAX_F64 || y==MAX_F64 || Sqr(x-host->x)+Sqr(y-host->y)>3*3)
-	    tempo->dtheta=Unwrap(theta-tempo->theta,-pi);
+	    tempo->dtheta=Wrap(theta-tempo->theta,-pi);
 	  else
 	    tempo->dtheta=0;
 	  tempo->x=host->x;
@@ -444,7 +444,7 @@ Obj *ObjSettheta(I64 player,F64 x=MAX_F64,F64 y=MAX_F64,F64 theta=MAX_F64)
   if ((tempo=ObjFind(x,y,,,,1<<player)) && tempo->flags&OF_ACTIVE && !(tempo->flags&OF_RETURNING)) {
     if (theta==MAX_F64)
       theta=Arg(x-tempo->x,y-tempo->y);
-    tempo->dtheta+=Unwrap(theta-(tempo->theta+tempo->dtheta),-pi);
+    tempo->dtheta+=Wrap(theta-(tempo->theta+tempo->dtheta),-pi);
     return tempo;
   }
   return NULL;
@@ -504,7 +504,7 @@ U0 SquadronActions()
       case SA_SET_theta:
 	tempo=temps->next_in_squadron;
 	while (tempo!=temps) {
-	  tempo->dtheta+=Unwrap(temps->theta-(tempo->theta+tempo->dtheta),-pi);
+	  tempo->dtheta+=Wrap(temps->theta-(tempo->theta+tempo->dtheta),-pi);
 	  tempo=tempo->next_in_squadron;
 	}
 	temps->action=SA_FLYING;
@@ -682,7 +682,7 @@ U0 AnimateTask(U64)
 	  } else if (d>tempo->fuel-250)
 	    tempo->flags|=OF_RETURNING;
 	  if (tempo->flags&OF_RETURNING)
-	    tempo->dtheta+=Unwrap(Arg(tempo->host->x-tempo->x,tempo->host->y-tempo->y)-(tempo->theta+tempo->dtheta),-pi);
+	    tempo->dtheta+=Wrap(Arg(tempo->host->x-tempo->x,tempo->host->y-tempo->y)-(tempo->theta+tempo->dtheta),-pi);
 	} else if (tempo->type==OT_CARRIER)
 	  tempo->life_percent=Min(100.0,tempo->life_percent+2.5*period);
       }

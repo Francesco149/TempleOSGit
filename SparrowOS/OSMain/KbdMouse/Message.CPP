@@ -185,7 +185,7 @@ U64 GetChar(U64 *_scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE)
 }
 
 U8 *MGetS(U64 flags=0)
-//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1461] Flags
+//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1462] Flags
 {
 //Returns a [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);

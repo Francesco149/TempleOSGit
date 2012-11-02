@@ -69,7 +69,7 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
   //Also adds indent spaces to every soft and hard newline.
   //Returns new value for base.
   //This is supposed to also take tabs into account but fuck that shit
-  //NOTE: at this point I could use [C:/SparrowOS/Adam/Window.CPP.Z,720] SetWinHorz and append to a CDoc
+  //NOTE: at this point I could use [C:/SparrowOS/Adam/Window.CPP.Z,722] SetWinHorz and append to a CDoc
   I64 len;
   U8 *p,*buf;
   U8 *end;

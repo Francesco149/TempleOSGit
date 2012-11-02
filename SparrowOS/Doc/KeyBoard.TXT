@@ -4,7 +4,7 @@ See [Char,1] Char for definition of scan codes.
 
 When you are at the cmd line, editing documents, browsing documentation and 
 help, entering items in forms or in menu's, the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc editor handles keys.  It 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc editor handles keys.  It 
 allows you to define your own key handlers in a
 [C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() function.  If
 you 
@@ -28,7 +28,7 @@ Extended ASCII (3 digit decimal number).
 
 CTRL-ALT-keys and CTRL-ALT-SHIFT-keys
 
-Handled at a system level, NOT by the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403]
+Handled at a system level, NOT by the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404]
 CDoc editor.  I reserve the right to 
 allocate these, but in the mean time, you can make your own by assigning 
 handlers to the [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,40] fp_ctrl_alt_let_cbs[]
@@ -100,10 +100,10 @@ Since handling individual keys is slow, SparrowOS supports
 [C:/SparrowOS/OSMain/Display.CPP.Z,205] PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc.user_put_key and
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc.user_put_s are call back
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc.user_put_key and
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc.user_put_s are call back
 routines which offer some 
 neat tricks.  See [::/SparrowOS/Apps/MusicOrgan/JukeBox.CPP.Z,1]
 ::/SparrowOS/Apps/MusicOrgan/JukeBox.CPP.Z.  There is a var 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc.user_put_data which gets passed
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc.user_put_data which gets passed
 to them.

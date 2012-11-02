@@ -11,8 +11,8 @@ U0 FillInTime()
 U0 RandQuote(I64 num)
 { //[::/SparrowOS/Apps/AfterEgypt/AENotes.TXT.Z,1] ::/SparrowOS/Apps/AfterEgypt/AENotes.TXT.Z
   I64 i,size,l=512;
-  U8 *bible_filename=Define("ST_BIBLE_FILE");
-  U8 *buf=FileRead(bible_filename,&size);
+  U8 *bible_filename=Define("ST_BIBLE_FILE"),
+     *buf=FileRead(bible_filename,&size);
   if (buf) {
     i=num%(size-l);
     buf[i+l]=0;

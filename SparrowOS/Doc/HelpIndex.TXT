@@ -56,11 +56,13 @@
     
     /SparrowOS/Doc Here you can find documentation.
     
-    /SparrowOS/OSMain The core of the operating system is found here.  Since priviledge levels are not used, calling it a "kernel" would be confusing, but that's what it is.  It is statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().  It is loaded by the boot loader and must fit in 640K.
+    /SparrowOS/OSMain The core of the operating system is found here.  Since priviledge levels are not used, calling it a "kernel" would be confusing, but that's what it is.  It is statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().  It is loaded by the boot loader and must fit in 640K.
     
-    /SparrowOS/Compiler The compiler module src code is found here.  The compiler is statically compiled to produce a binary file which is loaded at boot.  It is also statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().
+    /SparrowOS/Compiler The compiler module src code is found here.  The compiler is statically compiled to produce a binary file which is loaded at boot.  It is also statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().
     
     /SparrowOS/Adam The non-kernel part of the operating system is found here.  It is JIT compiled during boot.
+    
+    /0000Boot directory and the 0000OSMain.BIN.C file are named so that they are first in alphabetical order and, therefore, at a predictable CD/DVD block address.  The [::/SparrowOS/Adam/Boot/BootCD.CPP.Z,1] CD/DVD Boot Loader will find 0000OSMain.BIN.C at [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] Block #0x16.  The SparrowOS boot loader can be used with http://www.magiciso.com if you place 0000OSMain.BIN.C in the right spot.  OldMBR.BIN.C and BootMHD2.BIN.C will be found in /0000Boot if you run [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot() to install a hard-drive master boot loader.
     
       +] DOLLAR SIGN CMDS
       
@@ -93,12 +95,12 @@
     
     Grep("pattern","/SparrowOS/Demo/*.CPP.Z;*.TXT.Z;");
     
-    Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2092] SRC_FILE_MASK.
+    Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK.
     
       +] BURNING CD-ROMs/DVDs
       
     0) Prepare a directory with the files you wish to burn.
-    1) Use [C:/SparrowOS/Adam/Dsk/DskCDDVD.CPP.Z,376] CDFileCreate() to make an ISO image file.
+    1) Use [C:/SparrowOS/Adam/Dsk/DskCDDVD.CPP.Z,375] CDFileCreate() to make an ISO image file.
     2) Use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,280] CDImageWrite() to burn an ISO file onto a CD or DVD.
     
     [::/SparrowOS/Doc/FileMgr.TXT.Z,1] Bootable CD-ROMs 

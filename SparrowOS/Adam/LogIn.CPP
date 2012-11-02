@@ -22,22 +22,15 @@ U0 ServantStartUp()
     Preempt(ON);
 }
 
-
-
-
-	    /*  <1> (image) */
-
-
-
 U8 *PopUpSysAcctGet()
 {
   U8 *st;
   CDoc *doc=DocNew;
   CDirEntry	*tempm1=FilesFind("/SparrowOS/Accts/*",1<<FUf_RECURSE|1<<FUf_JUST_DIRS|1<<FUf_FLATTEN_TREE),
 		*tempm=tempm1;
-  DocPutS(doc,"$CM+CX-LE,5$");
+  DocPutS(doc,"$CM+CX-LE,8$");
   DocPutSprite(doc,__BIN_1,"$SP+SIF,\"\",%d$");
-  DocPutS(doc,"$CM+LX,0,5$Select Account.\nCursor down and press <SPACE BAR>.\n");
+  DocPutS(doc,"$CM+LX,0,14$Select Account.\nCursor down and press <SPACE BAR>.\n");
   while (tempm) {
     if (*tempm->name!='.') {
       st=tempm->full_name;
@@ -49,7 +42,7 @@ U8 *PopUpSysAcctGet()
   }
   DocPutS(doc,"\n\n\n\nLog-in as USER if you are new and get familiar\n"
 	    "before you try to install.\n");
-  do tempm=PopUpMenu(doc);
+  do tempm=PopUpMenu(doc,DOF_WIN_MAX);
   while (tempm<0);
 
   DocDel(doc);

@@ -56,12 +56,12 @@ BMHD_GET_IP:
 
 BMHD_BIOS_DRV_NUM:	DU8	0;
 BMHD_OLD_CS_IP:		DU16	0,0;
-//Gets patched by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().
+//Gets patched by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().
 BMHD_BLK_CNT::		DU16	0;
 
 BMHD_DAP:		DU8	16,0,1,0; //One blk at a time
 BMHD_DAP_BUF:		DU16	0,0;
-//Gets patched by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().
+//Gets patched by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().
 BMHD_DAP_BLK::	//64-bit
 BMHD_DAP_BLK_LO:	DU32	0;
 BMHD_DAP_BLK_HI:	DU32	0;

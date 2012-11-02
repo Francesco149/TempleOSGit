@@ -15,17 +15,17 @@ U0 DrawIt(CTask *,CDC *dc)
   F64 dt=tMBeat-t0,a_x,a_y;
   if (dt<8) {
     a_y=pi/2;
-    a_x=Unwrap(pi*dt/4,0);
+    a_x=Wrap(pi*dt/4,0);
   } else if (dt<32) {
     a_x=0;
-    a_y=Unwrap(pi*dt/16,0);
+    a_y=Wrap(pi*dt/16,0);
     if (pi/2<=a_y<=3*pi/2) a_y=-a_y;
   } else if (dt<44) {
     a_y=0;
     a_x=0;
   } else {
     a_x=0;
-    a_y=Unwrap(pi*dt/8+pi/2,0);
+    a_y=Wrap(pi*dt/8+pi/2,0);
     if (pi/2<=a_y<=3*pi/2) a_y=-a_y;
   }
   dc->flags|=DCF_TRANSFORMATION;

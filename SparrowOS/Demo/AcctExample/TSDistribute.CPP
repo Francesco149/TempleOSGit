@@ -290,7 +290,6 @@ U0 PrepForInHouse()
   MkDir("/Temp");
   MkDir("/Temp/ScreenShots");
   CopyTree(TS_MAIN_DRV ":/0000Boot","/0000Boot");
-  Del("/0000Boot/BootMHD2.BIN.C");
 }
 
 U0 MakeSymbolFiles()

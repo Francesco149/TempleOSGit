@@ -1,23 +1,23 @@
-class CMgdMCSlider
+class CMgdSCSlider
 {
-  CMgdMCSlider *next,*last;
+  CMgdSCSlider *next,*last;
   U8 *name;
   I64 num;
 };
 
-class CMgdMC
+class CMgdSC
 {
-  CMgdMCSlider *next_slider,*last_slider;
+  CMgdSCSlider *next_slider,*last_slider;
   I64 num_sliders,range,spacing,border;
   U8 *glbl_name;
 };
 
 
-CMgdMC *PmtSliderCtrl()
+CMgdSC *PmtSliderCtrl()
 {
-  CMgdMCSlider *temps;
+  CMgdSCSlider *temps;
   U8 *st,pmt[136];
-  result=CAlloc(sizeof(CMgdMC));
+  result=CAlloc(sizeof(CMgdSC));
 
   "$FG,PURPLE$Slider Ctrl$FG$\n\n";
 
@@ -34,7 +34,7 @@ CMgdMC *PmtSliderCtrl()
       Free(st);
       break;
     }
-    temps=CAlloc(sizeof(CMgdMCSlider));
+    temps=CAlloc(sizeof(CMgdSCSlider));
     temps->name=st;
     QueIns(temps,result->last_slider);
     temps->num=result->num_sliders++;
@@ -44,15 +44,15 @@ CMgdMC *PmtSliderCtrl()
 U0 MgdSliderCtrl(CDoc *doc)
 {
   CTask *task;
-  CMgdMC *m=NULL;
-  CMgdMCSlider *temps;
+  CMgdSC *m=NULL;
+  CMgdSCSlider *temps;
   I64 i;
 
   DocUnlock(doc);
   DocRecalc(doc);
   DocCaptureUndo(doc,TRUE);
 
-  task=SpawnUser("CMgdMC **_m=0x%X;*_m=PmtSliderCtrl;\n",&m);
+  task=SpawnUser("CMgdSC **_m=0x%X;*_m=PmtSliderCtrl;\n",&m);
   while (!m)
     Yield;
 

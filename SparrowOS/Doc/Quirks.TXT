@@ -18,7 +18,7 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2872] DFT_STK and 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2873] DFT_STK and 
 recompile OSMain or request more when doing a
 [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn().
 
@@ -40,20 +40,20 @@ file
 I/O.  And, preemption is off by default, so use
 [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt(ON) if you wish.
 
-* A terminal task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc document
+* A terminal task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc document
 structure that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc from being activated 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
 A) [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1669] DocBottom() followed by
   [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1701] DocClear() to clear the
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc so it has no active 
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3024] WIF_IP_L and
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3025] WIF_IP_R.  This inhibits window mgr
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3025] WIF_IP_L and
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3026] WIF_IP_R.  This inhibits window mgr
   operations but still 
 generates messages from button clicks.
 

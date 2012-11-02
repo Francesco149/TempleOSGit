@@ -130,7 +130,7 @@ I64 AnimateTask(CTask *parent)
       h=parent->win_pixel_height;
   while (TRUE) {
     if (tank_cnt)
-      Snd(60+0.001*(1.0+Abs(Unwrap(thetaf-theta,-pi)))`8.0);
+      Snd(60+0.001*(1.0+Abs(Wrap(thetaf-theta,-pi)))`8.0);
     if (x+parent->win_scroll_x<0.25*w)
       parent->win_scroll_x+=3;
     if (x+parent->win_scroll_x>0.75*w)

@@ -590,11 +590,11 @@ U0 MoveUnitAnimation(Unit *tempu,I64 r,I64 c,I64 facing)
   else {
     move_facing=tempu->facing*60.0*pi/180.0;
     Snd(150);
-    while (Unwrap(f-move_facing,-pi)<=0) {
+    while (Wrap(f-move_facing,-pi)<=0) {
       move_facing-=0.03;
       Sleep(5*ANIMATION_DELAY);
     }
-    while (Unwrap(f-move_facing,-pi)>0) {
+    while (Wrap(f-move_facing,-pi)>0) {
       move_facing+=0.03;
       Sleep(5*ANIMATION_DELAY);
     }

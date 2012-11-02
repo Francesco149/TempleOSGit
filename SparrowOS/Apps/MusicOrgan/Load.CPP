@@ -2,6 +2,6 @@
 #include "/SparrowOS/Apps/HolySpirit/HolySpirit.CPP.Z"
 #include "/SparrowOS/Apps/MusicOrgan/MakeSong.CPP.Z"
 #include "/SparrowOS/Apps/MusicOrgan/JukeBox.CPP.Z"
-#include "/SparrowOS/Apps/MusicOrgan/Ctrls.CPP.Z"
+#include "/SparrowOS/Apps/MusicOrgan/OrganCtrls.CPP.Z"
 #include "/SparrowOS/Apps/MusicOrgan/Organ.CPP.Z"
 #help_index ""

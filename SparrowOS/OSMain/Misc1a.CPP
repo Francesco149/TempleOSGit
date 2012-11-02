@@ -209,12 +209,16 @@ U0 Snd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0)
       !LBts(&sys_semas[SYS_SEMA_SND],0)) {
     if (!IsInDbg && snd_dev!=SD_PC_SPEAKER) {
       snd_freq=freq;
-      if (fp_snd)
-	(*fp_snd)(freq,waveform,amp);
+      if (fp_snd) {
+	if (0<freq<=20000 && amp>0)
+	  (*fp_snd)(freq,waveform,amp);
+	else
+	  (*fp_snd)(0,waveform,0);
+      }
     } else {
       if (freq!=snd_freq) {
 	snd_freq=freq;
-	if (freq) {
+	if (0<freq<=20000 && amp>0) {
 	  p=SYS_TIMER_FREQ/freq;
 	  OutU8(0x43,0xB6);
 	  OutU8(0x42,p);

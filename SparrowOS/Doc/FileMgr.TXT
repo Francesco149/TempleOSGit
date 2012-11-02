@@ -115,10 +115,8 @@ U0 BurnProductionCDImage()
   Drv('Z');
   CopyTree("E:/SparrowOS","/SparrowOS");
   MkDir("/Temp");
-  CopyTree("E:/0000Boot",
-    "/0000Boot");
-  CDFileCreate(sys_dft_iso_name,
-    "Z:/*",NULL,BOOTCD_BIN_Z);
+  CopyTree("E:/0000Boot","/0000Boot");
+  CDFileCreate(sys_dft_iso_name,"Z:/*",NULL,BOOTCD_BIN_Z);
   CDImageWrite('T',
     sys_dft_iso_name);
 }

@@ -22,6 +22,6 @@ probably use [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto() a lot and not
 [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,378] AutoStr().  
 With [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto(), for example, you can
 place answers to the prompts for recompiling 
-the OSMain module during [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157]
+the OSMain module during [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165]
 InstallBoot().
 

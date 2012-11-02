@@ -10,7 +10,7 @@ repulsively charged particles.  I find this window mgr to be a novelty, not
 desirable for actual use.  You're welcome to add it, or some variation to your 
 start-up scripts if you like it.  It's not fully debugged.
 
-I had to cheat to make this work.  I added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3132] DISPLAYf_USER_HAS_BEEN_RESIZED and 
+I had to cheat to make this work.  I added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3133] DISPLAYf_USER_HAS_BEEN_RESIZED and 
 modified [::/SparrowOS/Adam/Window.CPP.Z,1] ::/SparrowOS/Adam/Window.CPP.Z.
 
 The differential equation stuff was overkill and made it overly complicated.  

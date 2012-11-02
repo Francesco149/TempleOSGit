@@ -492,13 +492,15 @@ public U8 *CSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 
 
 #help_index "Graphics/CSprite;Doc/Output"
-public CDocEntry *DocPutSprite(CDoc *doc,U8 *elems,U8 *txt=NULL)
+public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *txt=NULL)
 {
   I64 size;
   U8 *st;
-  BoolI8 unlock=DocLock(doc);
+  BoolI8 unlock;
   CDocEntry *doc_e;
   CDocBin *tempb;
+  if (!doc && !(doc=DocCur)) return NULL;
+  unlock=DocLock(doc);
   size=CSpriteSize(elems);
   tempb=CAlloc(sizeof(CDocBin),doc->mem_task);
   tempb->type=DOCBT_GRSPRITE;

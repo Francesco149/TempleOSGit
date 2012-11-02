@@ -23,7 +23,7 @@ public U64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
 
 //Averaging should be a num from 0.0 to 0.999.
 //Vol should be from 0.0 to 1.0.
-//If waveform is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3867] WF_NULL, the original passed to [C:/SparrowOS/OSMain/Misc1a.CPP.Z,201] Snd() will be used.
+//If waveform is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3868] WF_NULL, the original passed to [C:/SparrowOS/OSMain/Misc1a.CPP.Z,201] Snd() will be used.
 
 //Set reverb_delay to like 0.3 sec and reverb_intensity to like 0.4.
 

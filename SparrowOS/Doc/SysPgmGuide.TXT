@@ -36,7 +36,7 @@ cores, you need a locked semaphore.
 
 * I don't use TYPEDEFs, for no particular reason.
 
-* [C:/SparrowOS/OSMain/Misc1a.CPP.Z,277] SysDbg() and
-[C:/SparrowOS/OSMain/Misc1a.CPP.Z,283] IsSysDbg() are really handy when
+* [C:/SparrowOS/OSMain/Misc1a.CPP.Z,281] SysDbg() and
+[C:/SparrowOS/OSMain/Misc1a.CPP.Z,287] IsSysDbg() are really handy when
 working on the compiler or 
 OSMain.  It's just a bit you can set and test.

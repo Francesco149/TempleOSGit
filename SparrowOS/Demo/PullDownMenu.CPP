@@ -66,7 +66,7 @@ U0 PullDownMenuDemo()
       case MSG_CMD:
       //I Recommend making your menu
       //drive by key strokes, but you can
-      //use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3249] MSG_CMD val.
+      //use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3250] MSG_CMD val.
 	switch (p1) {
 	  case M_OPTION1:
 	    "Option # 1\n";

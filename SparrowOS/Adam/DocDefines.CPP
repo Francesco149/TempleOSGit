@@ -3,7 +3,7 @@
 U0 LoadDocDefines()
 {
 //These are used in documents such as [::/SparrowOS/Doc/TrivialSolutions.TXT.Z,1] ::/SparrowOS/Doc/TrivialSolutions.TXT.Z
-//The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc framework will search the sym table for define string
+//The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc framework will search the sym table for define string
 //constants if you specify that.
   CBinFile *bfh=sys_boot_base-sizeof(CBinFile);
 
@@ -29,7 +29,7 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distribution.
   //See [::/SparrowOS/Demo/AcctExample/TSDistribute.CPP.Z,1] DD_SPARROWOS_LOC.
   -] LineCnt
-    DefinePrintF("DD_SPARROWOS_LOC","135,794");
+    DefinePrintF("DD_SPARROWOS_LOC","136,281");
     
   DefinePrintF(
     "DD_PAGE_TABLE_BASE","%08X",PAGE_TABLE_BASE);

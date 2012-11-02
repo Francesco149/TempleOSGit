@@ -16,7 +16,7 @@ public U0 P2R(F64 *_x=NULL,F64 *_y=NULL,F64 mag,F64 arg)
     *_y=mag*Sin(arg);
 }
 
-public F64 Unwrap(F64 theta,F64 base=-pi)
+public F64 Wrap(F64 theta,F64 base=-pi)
 { //returns angle in range [base,base+2*pi)
   result=theta%(2*pi);
   if (result>=base+2*pi)

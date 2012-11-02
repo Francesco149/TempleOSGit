@@ -6,7 +6,7 @@
 
 U0 DrawIt(CTask *,CDC *dc)
 {
-  F64 tt=Unwrap(tM,0);
+  F64 tt=Wrap(tM,0);
   dc->flags|=DCF_TRANSFORMATION;
   GrRotXEqu(dc->r,5*2*pi/180);
   if (pi/2<=tt<=3*pi/2) tt=pi-tt;

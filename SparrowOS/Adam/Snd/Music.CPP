@@ -123,11 +123,11 @@ public U0 Play(U8 *st,U8 *words=NULL)
     '!!'  *1.5`2
 
   [C:/SparrowOS/Adam/Snd/Music.CPP.Z,8] music_waveform is set with
-    "W1" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3868] WF_SQUARE
-    "W2" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3869] WF_SINE
-    "W3" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3870] WF_TRIANGLE
-    "W4" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3871] WF_SAWTOOTH
-    "W5" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3872] WF_NOISE
+    "W1" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3869] WF_SQUARE
+    "W2" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3870] WF_SINE
+    "W3" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3871] WF_TRIANGLE
+    "W4" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3872] WF_SAWTOOTH
+    "W5" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3873] WF_NOISE
 
   [C:/SparrowOS/Adam/Snd/Music.CPP.Z,8] music_meter_top,[C:/SparrowOS/Adam/Snd/Music.CPP.Z,9] music_meter_bottom is set with
     "M3/4"

@@ -114,7 +114,7 @@ WSD	WordStat Dictionary
 +] Task/Process/Thread
   There is no distinction between "task", "process" or "thread."  The Fs
   segment register is kept pointing to the current task's
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask.  There is only one window per
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask.  There is only one window per
   task.
 
 +] Adam Task
@@ -144,7 +144,7 @@ WSD	WordStat Dictionary
   within the lowest 2 Gig of memory.  The compiler and
   [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load()er allocate memory from the code
   heap to store code and glbl vars, unless the compiler option
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_GLBLS_ON_DATA_HEAP is used. 
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP is used. 
   When programs call [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() is comes
   from the data heap, which in not limited in size, except by how much physical
   RAM memory you have.  You can allocate from any heap you like, or even make
@@ -152,7 +152,7 @@ WSD	WordStat Dictionary
 
 +] Parent/Child Task
   Often a task will [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn() or
-  [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,374] PopUp() a task as a helper.  The
+  [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,377] PopUp() a task as a helper.  The
   helper is known as a Child Task, though you can Spawn a task and assign it a
   different parent... like Adam.  Links are kept as to who spawned what so that
   when one task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,28] Kill()ed the helper
@@ -225,11 +225,11 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   directory plus a list of file name masks, as in
   /SparrowOS/Demo/*.TXT.Z;*.CPP.Z
 
-See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3759] FUF_RECURSE and
+See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3760] FUF_RECURSE and
   [C:/SparrowOS/OSMain/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS.
 
-Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK and
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2092] SRC_FILE_MASK.
+Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK and
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK.
 
 +] Filename Extention Types
   
@@ -262,9 +262,9 @@ Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK and
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2092] SRC_FILE_MASK
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK
   This #define holds a list of src file extensions.
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] TEXT_FILE_MASK
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK
   This #define holds a list of text file extensions.
 
 +] Naming Convention
@@ -295,10 +295,10 @@ DOCG_????
   Flag groups are designated with "G".
 
 Fs The CPU FS segment register.  This register points to the current task's 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask.
 
 Gs The CPU GS segment register.  This register points to the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3781] CCPU.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU.
 
 Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
   These are bit manipulation functions named after Intel instructions.  They 

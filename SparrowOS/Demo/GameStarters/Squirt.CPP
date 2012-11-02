@@ -80,7 +80,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempm1=nozzle->last;
   dx=tempm->x-tempm1->x;
   dy=tempm->y-tempm1->y;
-  nozzle_theta=Unwrap(Arg(dx,dy));
+  nozzle_theta=Wrap(Arg(dx,dy));
   CSpritePlotRotZ3b(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
   dc->color=BLACK;
   GrCircle(dc,tempm->x,tempm->y,tempm->radius);

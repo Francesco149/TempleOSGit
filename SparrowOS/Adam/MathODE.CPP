@@ -1,5 +1,5 @@
 #help_index "Math/CMathODE;CMathODE"
-#help_file "::/SparrowOS/Doc/CMathODE"
+#help_file "::/SparrowOS/Doc/ODE"
 
 //See [::/SparrowOS/Doc/Acknowledgements.TXT.Z,1] ::/SparrowOS/Doc/Acknowledgements.TXT.Z (5).
 

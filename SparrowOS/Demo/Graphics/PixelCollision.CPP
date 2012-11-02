@@ -73,7 +73,7 @@ U0 PixelCollision()
     WinMgrSync;
 
 //This will not flicker as long as it occurs just
-//after a acreen update [C:/SparrowOS/Adam/Window.CPP.Z,607] WinMgrSync.
+//after a acreen update [C:/SparrowOS/Adam/Window.CPP.Z,609] WinMgrSync.
     DCFill(dc);
 
   }

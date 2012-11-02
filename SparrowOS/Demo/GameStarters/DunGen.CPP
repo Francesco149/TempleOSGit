@@ -85,7 +85,7 @@
 
 
 //These are indexed by color #.
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3459] COLORS.
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3460] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -159,7 +159,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z
-  //with a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3514] CDC.
+  //with a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3515] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;

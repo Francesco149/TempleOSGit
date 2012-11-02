@@ -508,7 +508,7 @@ CTask *WinRefocus()
   task=sys_focus_task;
   if (!task) {
     task=sys_winmgr_task->last_task;
-    while (task!=sys_winmgr_task) {
+    while (TaskValidate(task) && task!=sys_winmgr_task) {
       if (Bt(&task->task_flags,TASKf_USER)) {
 	sys_focus_task=task;
 	break;
@@ -539,7 +539,9 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
     old_sys_focus_task=sys_focus_task;
   }
 
-  if (!flush_msgs && sys_focus_task) {
+  if (flush_msgs)
+    FifoU64Flush(scan_code_fifo);
+  else if (TaskValidate(sys_focus_task)) {
     KbdQueMsgs;
 
     que=TRUE;
@@ -556,7 +558,7 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
     msg_code=WinQueIPMsgs(que);
   } else {
     WinRefocus;
-    if (flush_msgs || !sys_focus_task)
+    if (!TaskValidate(sys_focus_task))
       FifoU64Flush(scan_code_fifo);
   }
 
@@ -1085,6 +1087,7 @@ U0 WinMgrTask(U64)
   BoolI8 has_border;
   CCtrl *c;
   U64 old_flags=GetFlags;
+  TaskInitExt;
   last_total_jiffies=0;
   MemSet(last_idle_pt_hits,0,sizeof(U64)*MP_MAX_PROCESSORS);
   MemSet(last_swap_cnter,0,sizeof(U64)*MP_MAX_PROCESSORS);

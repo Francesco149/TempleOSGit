@@ -287,9 +287,9 @@ U0 Span()
   WinMax;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
 
-  bt_run=CtrlButtonNew(0,0,2,"Stopped\0Running\0",run_colors,&run_button),
-  bt_snap=CtrlButtonNew(0,3.5*FONT_HEIGHT,2,"Snap Off\0Snap On\0",snap_colors,&snap_button),
-  bt_mode=CtrlButtonNew(0,7.0*FONT_HEIGHT,MD_NUM_MODES,Define("ST_SPAN_MODES"),mode_colors,&mode_button);
+  bt_run =CtrlButtonNew(0,0,		  80,,2,"Stopped\0Running\0",run_colors,&run_button),
+  bt_snap=CtrlButtonNew(0,2.5*FONT_HEIGHT,80,,2,"Snap Off\0Snap On\0",snap_colors,&snap_button),
+  bt_mode=CtrlButtonNew(0,5.0*FONT_HEIGHT,80,,MD_NUM_MODES,Define("ST_SPAN_MODES"),mode_colors,&mode_button);
   a.saved_ode=NULL;
 
 //This Preempt() eliminates a lot of hassles.

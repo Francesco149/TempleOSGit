@@ -68,8 +68,9 @@ Rivals Spanish and French?
 
 #define AFT_MAST	16
 #define BOW_MAST	14
-#define AFT_LEN	36
-#define BOW_LEN	43
+#define MAST_HEIGHT	20
+#define AFT_LEN		36
+#define BOW_LEN		43
 #define BERTH		28
 
 F64 screen_x,screen_y,d_screen_x,d_screen_y,
@@ -90,6 +91,7 @@ F64 song_time,game_over_time;
 F64 view_scale,new_view_scale;
 CDC *master_map;
 U8 *vm;
+F64 men;
 
 #define NUM_DOLPHINS	5
 #define NUM_PIGRAIMS	10
@@ -118,8 +120,7 @@ I64 num_gardens;
 F64 WaterHeight(F64 x,F64 y)
 { //Returns wave height at world coordinate pt
   F64 dxn=Cos(wave_theta),
-      dyn=Sin(wave_theta),
-  theta;
+      dyn=Sin(wave_theta),theta;
   theta=2*pi*((x-ship_wave_x)*dxn+(y-ship_wave_y)*dyn)/wave_period;
   return wave_amplitude*Cos(theta);
 }
@@ -186,6 +187,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       c=1.05*(MaxI64(cx,cy)+wave_period),
       *ship_r,x,y,z;
   F64 d,xx,yy,dx,dy,dx2,dy2,wave_x,wave_y;
+  BoolI8 bow_down;
 
   task->text_attr=LTBLUE<<4;
 
@@ -269,42 +271,118 @@ U0 DrawIt(CTask *task,CDC *dc)
  
 
   //Draw Sails
-  d=Unwrap(ship.theta-Unwrap(wave_theta,ship.theta-pi));
+  d=Wrap(ship.theta-Wrap(wave_theta,ship.theta-pi));
   if (Abs(d)<pi)
     d=(Abs(d)-pi)*Sign(-d);
   dx=-1.5*BERTH/2*Sin(ship.theta+d/2);
   dy= 1.5*BERTH/2*Cos(ship.theta+d/2);
 
-  //Aft Sail
-  x=-AFT_MAST; y=0; z=0;
+  x=BOW_MAST; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
-  x+=ship.x*view_scale; y+=ship.y*view_scale;
-  x-=1.5*Cos(wave_theta); y-=1.5*Sin(wave_theta);
-  dc->color=WHITE;
-  GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  if (z<0)
+    bow_down=TRUE;
+  else
+    bow_down=FALSE;
 
+  //Aft Sail
   x=-AFT_MAST; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
   dc->color=BLACK;
   GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+
+  xx=x-screen_x; yy=y-screen_y;
+
+  if (!bow_down) {
+    x=-AFT_MAST; y=0; z=MAST_HEIGHT;
+    GrRot(ship_r,&x,&y,&z);
+    x+=ship.x*view_scale; y+=ship.y*view_scale;
+    dc->color=DKGRAY;
+    dc->pen_width=4;
+    GrLine3(dc,x-screen_x,y-screen_y,0,xx,yy,0);
+  }
+
+  dc->pen_width=2;
+  for (d=0;d<MAST_HEIGHT;d+=0.5) {
+    x=-AFT_MAST; y=0; z=d;
+    GrRot(ship_r,&x,&y,&z);
+    x+=ship.x*view_scale; y+=ship.y*view_scale;
+    x-=1.5*Cos(wave_theta); y-=1.5*Sin(wave_theta);
+    dc->color=WHITE;
+    GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  }
+  dc->pen_width=1;
+
+  x=-AFT_MAST; y=0; z=MAST_HEIGHT;
+  GrRot(ship_r,&x,&y,&z);
+  x+=ship.x*view_scale; y+=ship.y*view_scale;
+  dc->color=BLACK;
+  GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+
+  if (bow_down) {
+    x=-AFT_MAST; y=0; z=MAST_HEIGHT;
+    GrRot(ship_r,&x,&y,&z);
+    x+=ship.x*view_scale; y+=ship.y*view_scale;
+    dc->color=DKGRAY;
+    dc->pen_width=4;
+    GrLine3(dc,x-screen_x,y-screen_y,0,xx,yy,0);
+  }
+
+  dc->color=BLACK;
+  dc->pen_width=1;
+  GrCircle3(dc,x-screen_x,y-screen_y,0,2);
 
   //Bow Sail
   x=BOW_MAST; y=0; z=0;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
-  x-=1.5*Cos(wave_theta); y-=1.5*Sin(wave_theta);
-  dc->color=WHITE;
+  dc->color=BLACK;
   GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
 
-  x=BOW_MAST; y=0; z=0;
+  xx=x-screen_x; yy=y-screen_y;
+
+  if (!bow_down) {
+    x=BOW_MAST; y=0; z=MAST_HEIGHT;
+    GrRot(ship_r,&x,&y,&z);
+    x+=ship.x*view_scale; y+=ship.y*view_scale;
+    dc->color=DKGRAY;
+    dc->pen_width=4;
+    GrLine3(dc,x-screen_x,y-screen_y,0,xx,yy,0);
+  }
+
+  dc->pen_width=2;
+  for (d=0;d<MAST_HEIGHT;d+=0.5) {
+    x=BOW_MAST; y=0; z=d;
+    GrRot(ship_r,&x,&y,&z);
+    x+=ship.x*view_scale; y+=ship.y*view_scale;
+    x-=1.5*Cos(wave_theta); y-=1.5*Sin(wave_theta);
+    dc->color=WHITE;
+    GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
+  }
+  dc->pen_width=1;
+
+  x=BOW_MAST; y=0; z=MAST_HEIGHT;
   GrRot(ship_r,&x,&y,&z);
   x+=ship.x*view_scale; y+=ship.y*view_scale;
   dc->color=BLACK;
   GrLine3(dc,x-dx-screen_x,y-dy-screen_y,0,x+dx-screen_x,y+dy-screen_y,0);
 
+  if (bow_down) {
+    x=BOW_MAST; y=0; z=MAST_HEIGHT;
+    GrRot(ship_r,&x,&y,&z);
+    x+=ship.x*view_scale; y+=ship.y*view_scale;
+    dc->color=DKGRAY;
+    dc->pen_width=4;
+    GrLine3(dc,x-screen_x,y-screen_y,0,xx,yy,0);
+  }
+
+  dc->color=BLACK;
+  dc->pen_width=1;
+  GrCircle3(dc,x-screen_x,y-screen_y,0,2);
+
   dc->color=BLACK;
   GrPrintF(dc,0,0,"Speed:%5.1f Knots",ship.speed);
+  GrPrintF(dc,0,FONT_HEIGHT,"Men:%f",men);
 
   //Check for wreck
   x=BOW_LEN; y=0; z=0;
@@ -338,9 +416,36 @@ U0 DrawIt(CTask *task,CDC *dc)
   Free(ship_r);
 }
 
+
+CColorROPU32 pray_colors[1]={RED};
+CTask *pray_task;
+
+U0 LeftClickPrayButton(CCtrl *,I64,I64,BoolI8 down)
+{ //[::/SparrowOS/Apps/AfterEgypt/AENotes.TXT.Z,1] ::/SparrowOS/Apps/AfterEgypt/AENotes.TXT.Z
+  I64 i,size,l=512;
+  U8 *bible_filename,*buf;
+  if (down && !TaskValidate(pray_task)) {
+    bible_filename=Define("ST_BIBLE_FILE");
+    if (buf=FileRead(bible_filename,&size)) {
+      i=GetTimeStamp>>4%(size-l);
+      buf[i+l]=0;
+      pray_task=PopUpViewStr(buf+i);
+      Free(buf);
+    }
+  }
+}
+
 U0 Init()
 {
   I64 i;
+  Fs->draw_it=NULL;
+  Kill(Fs->song_task);
+  Fs->song_task=NULL;
+  WinMgrSync;
+
+  men=102.0;
+  pray_task=NULL;
+
   screen_x=400;   d_screen_x=0;
   screen_y=500;   d_screen_y=0;
   view_scale=1.0; new_view_scale=1.0;
@@ -378,7 +483,7 @@ U0 Init()
   ship_landed=FALSE;
   song_time=0;
   game_over_time=0;
-
+  Fs->draw_it=&DrawIt;
 }
 
 
@@ -386,7 +491,7 @@ U0 AnimateObj(Obj *tempo,F64 dt)
 {
   tempo->x+=tempo->speed*dt*Cos(tempo->theta);
   tempo->y+=tempo->speed*dt*Sin(tempo->theta);
-  tempo->theta=Unwrap(tempo->theta+tempo->d_theta*dt);
+  tempo->theta=Wrap(tempo->theta+tempo->d_theta*dt);
   tempo->d_theta=LowPass1(0.5,tempo->d_theta,0,dt);
 }
 
@@ -401,6 +506,7 @@ U0 SongTask(U64)
   Play("4hBqA3hGqE");
   Play("hDqDhG4eB3G");
   Play("4hBqAh.DhD");
+  Fs->parent_task->song_task=NULL;
 }
 
 #define SCREEN_BUMP	100
@@ -410,11 +516,22 @@ U0 AnimateTask(U64)
   I64 i,j,
      w=Fs->parent_task->win_pixel_width,  cx=w/2,
      h=Fs->parent_task->win_pixel_height, cy=h/2;
-  F64 d,dx,dy,dx2,dy2,dxn,dyn,t0=tP(Fs->parent_task),dt,old_view_scale;
+  F64 die_timer=0,d,dx,dy,dx2,dy2,dxn,dyn,t0=tP(Fs->parent_task),dt,old_view_scale;
 
   while (TRUE) {
+    if (TaskValidate(pray_task)) {
+      while (TaskValidate(pray_task))
+	WinMgrSync;
+      pray_task=NULL;
+      t0=tP(Fs->parent_task);
+    }
+
     dt=tP(Fs->parent_task)-t0;
     t0=tP(Fs->parent_task);
+
+    for (die_timer+=dt;die_timer>0.1;die_timer-=0.1)
+      if (Rand<0.05)
+	men*=Exp(-0.05*(Rand+0.05)`20);
 
     old_view_scale=view_scale;
     view_scale=Exp(0.5*dt*(Ln(new_view_scale)-Ln(view_scale))+Ln(view_scale));
@@ -461,7 +578,7 @@ U0 AnimateTask(U64)
       if (church_y*view_scale-screen_y-0.9*d_screen_y>h-1-h/4)
 	d_screen_y+=SCREEN_BUMP;
     } else {
-      d=Unwrap(ship.theta-Unwrap(wave_theta,ship.theta-pi));
+      d=Wrap(ship.theta-Wrap(wave_theta,ship.theta-pi));
       if (Abs(d)<pi)
 	d=(Abs(d)-pi)*Sign(-d);
       d=wind_speed*Cos(d/2);
@@ -488,7 +605,7 @@ U0 AnimateTask(U64)
       d_screen_x=0;
     }
 
-    wave_theta=Unwrap(wave_theta+d_wave_theta*dt);
+    wave_theta=Wrap(wave_theta+d_wave_theta*dt);
     d_wave_theta=Limit(LowPass1(1.0,d_wave_theta,
 	d_wave_theta+1.0*(Rand-0.5),dt),-0.05,0.05);
 
@@ -526,7 +643,8 @@ U0 AnimateTask(U64)
     if (wave_sound)
       Snd(200+8*WaterHeight(ship.x,ship.y));
     else if (song_time && tNP>song_time) {
-      Spawn(&SongTask,NULL,"Song",Fs);
+      Kill(Fs->parent_task->song_task);
+      Fs->parent_task->song_task=Spawn(&SongTask,NULL,"Song",Fs->parent_task);
       song_time=0;
     }
     WinMgrSync;
@@ -536,6 +654,7 @@ U0 AnimateTask(U64)
 U0 Pilgrims()
 {
   U64 msg_code,ch,sc;
+  CCtrl *bt_pray;
 
   "Initializing Maps...\n";
   master_map=GRARead("NewEngland"); //See [::/SparrowOS/Doc/Acknowledgements.TXT.Z,1] Acknowledgements (7).
@@ -544,7 +663,7 @@ U0 Pilgrims()
   PopUpOk("This is about the pilgrims who fled\n"
 	"religious persecution in England.\n"
 	"They sailed in 1620 on the Mayflower\n"
-	"and landed at Plymoth, Massachusetts.\n"
+	"and landed at Plymouth, Massachusetts.\n"
 	"\n"
 	"This game is comic, mostly.  Be sure\n"
 	"to try 'z' or 'Z' for zooming.\n");
@@ -557,6 +676,7 @@ U0 Pilgrims()
   "}"
   "Play {"
   "  Restart(,CH_NEW_LINE);"
+  "  Pray(,'p');"
   "  Port(,,SC_CURSOR_LEFT);"
   "  Starboard(,,SC_CURSOR_RIGHT);"
   "}"
@@ -568,13 +688,17 @@ U0 Pilgrims()
 
   WordStat;
   Preempt(OFF);
+
+  bt_pray=CtrlButtonNew(0,2.5*FONT_HEIGHT,,,,"Pray\0",pray_colors),
+  bt_pray->left_click=&LeftClickPrayButton;
+
   WinMax;
   DocCursor;
   DocClear;
-  Fs->draw_it=&DrawIt;
+  Fs->song_task=NULL;
+  Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
   try {
-    Init;
     while (TRUE) {
       switch (msg_code=GetMsg(&ch,&sc,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
 	case MSG_KEY_DOWN:
@@ -588,6 +712,9 @@ U0 Pilgrims()
 		  ship.d_theta=Limit(ship.d_theta+5*pi/180,-.5,.5);
 		  break;
 	      }
+	      break;
+	    case 'p':
+	      LeftClickPrayButton(NULL,0,0,TRUE);
 	      break;
 	    case 'z':
 	      if (new_view_scale<10.0)
@@ -612,6 +739,7 @@ pilgrim_done:
     CatchAll;
   MenuPop;
   SettingsPop;
+  CtrlButtonDel(bt_pray);
   GrVectMapDel(vm);
   DCDel(master_map);
 }

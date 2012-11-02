@@ -1,6 +1,33 @@
 Use [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I
 change a label.
 
+----11/02/12 03:02:44----
+* Added graphics to
+[::/SparrowOS/Apps/MusicOrgan/Examples/furnishing.CPP.Z,1]
+::/SparrowOS/Apps/MusicOrgan/Examples/furnishing.CPP.Z.
+
+----10/31/12 08:45:21----
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Unwrap","Wrap");
+* Worked on [::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z,1]
+::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z.
+
+----10/29/12 17:20:23----
+* Added .BMP and .GRA to [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type().
+* Added [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type() to
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,462] TermRightClickLink().
+* Added [C:/SparrowOS/Adam/FileBMP.CPP.Z,193] DocPutBMPFile() and
+[C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,249] DocPutGRAFile().
+* Added [::/SparrowOS/Adam/Ctrls/CtrlsButton.CPP.Z,1]
+::/SparrowOS/Adam/Ctrls/CtrlsButton.CPP.Z to the API.
+
+----10/27/12 11:09:21----
+* Added [::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z.
+
+----10/26/12 05:06:53----
+* Changed to /0000Boot/0000OSMain.BIN.C.
+* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1275] DOF_WIN_MAX.
+
 ----10/22/12 21:10:06----
 * Worked on [::/SparrowOS/Apps/MusicOrgan/Examples/risen.CPP.Z,1] risen,
 [::/SparrowOS/Apps/MusicOrgan/Examples/cosam.CPP.Z,1] cosam,
@@ -21,10 +48,10 @@ change a label.
 [C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF().
 
 ----10/12/12 05:16:20----
-* Changed Binary File Format.  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1740] EIE_END
+* Changed Binary File Format.  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1741] EIE_END
 
 ----10/06/12 12:37:05----
-* Made [C:/SparrowOS/Adam/Window.CPP.Z,710] WinFocus(),
+* Made [C:/SparrowOS/Adam/Window.CPP.Z,712] WinFocus(),
 [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,384] Go1(),
 [C:/SparrowOS/Adam/Dbg2a.CPP.Z,352] Go2() and
 [C:/SparrowOS/Adam/Dbg2a.CPP.Z,373] Go3().

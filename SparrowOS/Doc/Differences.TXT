@@ -154,7 +154,7 @@ convert to float.)
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1471] OPTf_WARN_PAREN) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1472] OPTf_WARN_PAREN) to find
 unnecessary parentheses in code.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -190,7 +190,7 @@ declaration, that is the type when used by itself.  See
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See 
 [::/SparrowOS/Demo/ClassMeta.CPP.Z,1] ::/SparrowOS/Demo/ClassMeta.CPP.Z and 
-[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,290] DocFormDo().
+[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,293] DocFormDo().
 
 * See [::/SparrowOS/Demo/Exceptions.CPP.Z,1]
 ::/SparrowOS/Demo/Exceptions.CPP.Z.  try{} catch{} and throw are 
@@ -200,7 +200,7 @@ rgc and Fs->except_argv[] vars.  Within a catch {} blk, set the var Fs->catch_
 except to TRUE if you want to terminate the search for a handler.  By 
 convention, the first arg of except_argv[] specifies the exception type num.  
 A list of assigned exception types can be found at
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2773] EXCEPT_LOCAL.  For a 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2774] EXCEPT_LOCAL.  For a 
 handler that will catch all excepts, you can use
 [C:/SparrowOS/OSMain/Except.CPP.Z,223] CatchAll().
 
@@ -236,7 +236,7 @@ HeapCtrlIndependentInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2872] DFT_STK and 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2873] DFT_STK and 
 recompile OSMain or request more when doing a
 [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn().  You can use 
 [C:/SparrowOS/OSMain/Task1a.CPP.Z,66] CallStkGrow(), but it's odd.  See

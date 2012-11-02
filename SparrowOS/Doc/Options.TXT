@@ -4,11 +4,11 @@ Use [C:/SparrowOS/Compiler/Directives.CPP.Z,6] OptOn()
 [C:/SparrowOS/Compiler/Directives.CPP.Z,11] OptOff().  You might need to do
 #exe {OptOn();}.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1480] OPTf_REPLACE_SYMS is to cause new
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_REPLACE_SYMS is to cause new
 declaritions to replace old, instead of 
 overshadowing them in the hash sym table.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_GLBLS_ON_DATA_HEAP without this
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP without this
 option, global vars are placed in the 
 code heap which is limited to 2 Gig.  In static modules, global vars take-up 
 room in the .BIN file, so you might want to use this option, instead.  You 
@@ -16,26 +16,26 @@ might wish to turn it on and off around specific vars.  A disadvantage of
 data 
 heap global vars in static modules is they can't be initialized.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1477] OPTf_EXTERNS_TO_IMPORTS and
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1478] OPTf_KEEP_PRIVATE are strange
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1478] OPTf_EXTERNS_TO_IMPORTS and
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1479] OPTf_KEEP_PRIVATE are strange
 options, you'll 
 never need.  They're to allow the same header file for OSMain to act as extern
 s when compiling itself and imports when compiled by static modules.  They
 are 
 used in [::/SparrowOS/OSMain/Static.HPP.Z,1] ::/SparrowOS/OSMain/Static.HPP.Z.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1470] OPTf_WARN_UNUSED_VAR turns-off unused
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1471] OPTf_WARN_UNUSED_VAR turns-off unused
 var warning.  It is applied to 
 functions.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1471] OPTf_WARN_PAREN turns-on a warning if
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1472] OPTf_WARN_PAREN turns-on a warning if
 parenthesis are not needed.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1479] OPTf_NO_REG_VAR forces all function
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1480] OPTf_NO_REG_VAR forces all function
 local vars to the stk not registers.  
 Applied to functions.
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1483] OPTf_NO_BUILTIN_CONST Disable 10-byte
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1484] OPTf_NO_BUILTIN_CONST Disable 10-byte
 float consts for pi, log2_10, log10_2, 
 loge_2.  Applied to functions.
 

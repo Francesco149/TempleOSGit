@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 135,794 lines of SparrowOS over 
+* I, Terry A. Davis, wrote every one of the 136,281 lines of SparrowOS over 
 the past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
@@ -64,7 +64,7 @@ rename them with [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,120] Move() to store them
 uncompressed.
 
 * SparrowOS is open src and every bit of the src code is included in the 
-distribution.  Use [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot()
+distribution.  Use [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot()
 to compile the kernel and compiler.
 
 * SparrowOS does not use object files or a linker.  You can link .BIN.Z 

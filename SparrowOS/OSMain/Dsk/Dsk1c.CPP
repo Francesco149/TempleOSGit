@@ -153,7 +153,7 @@ U0 SysDel(U8 *wild,BoolI8 make_mask)	//this is dangerous
 }
 
 U0 Fmt(I64 drv_let,BoolI8 quick=TRUE,BoolI8 confirm=TRUE,U64 type=PT_FAT32)
-{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2704] PT_FAT32 for a list of supported file system types.
+{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2705] PT_FAT32 for a list of supported file system types.
 
   CPrt *p=Drv2Prt(drv_let);
   BoolI8 old_silent=IsSilent;

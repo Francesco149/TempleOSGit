@@ -6,7 +6,7 @@
   
   The main compiler optimizes   See [D:/SparrowOS/Compiler/CmpInit.CPP.Z,1] Intermediate Code Attributes, [::/SparrowOS/Compiler/OptPass012.CPP.Z,1] Combining Constants, [::/SparrowOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg Vars.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the optimization stages.
   
-  The main compiler makes machine code in the back end.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1571] IC Struct, [C:/SparrowOS/Compiler/CodeGen.CPP.Z,394] CBCompile and [::/SparrowOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [::/SparrowOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of the backend.
+  The main compiler makes machine code in the back end.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1572] IC Struct, [C:/SparrowOS/Compiler/CodeGen.CPP.Z,394] CBCompile and [::/SparrowOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [::/SparrowOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of the backend.
   
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:

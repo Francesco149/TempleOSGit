@@ -84,7 +84,7 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,157] InstallBoot().  You'll 
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().  You'll 
 probably want to make a function for recompiling that uses the
 [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto() function 
 to answer the cfg questions.  See my technique
@@ -113,25 +113,25 @@ easily viewed.  See [::/SparrowOS/Demo/Progress.CPP.Z,1]
 ::/SparrowOS/Demo/Progress.CPP.Z.
 
 * You can save the cmd line doc as text with <CTRL-A>.  For a bitmap screen 
-capture, use [C:/SparrowOS/Adam/FileBMP.CPP.Z,194] BMPFileCaptureScreen(). 
+capture, use [C:/SparrowOS/Adam/FileBMP.CPP.Z,203] BMPFileCaptureScreen(). 
 You might want to make a hot key.  See 
 [::/SparrowOS/Demo/AcctExample/TSAdam.CPP.Z,1] BMPFileCaptureScreen.
 
 * Use [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,697] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc 
+the cmd line buf.  It counts [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
 to store a data item, for convenience. 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3151] CTask,
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask,
 [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEntry and
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2617] CDirEntry have 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2618] CDirEntry have 
 them.  You shouldn't encounter conflicts with SparrowOS using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
 [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn(
-), changing [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2872] DFT_STK, and using
+), changing [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2873] DFT_STK, and using
 [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,697] DocMax() to reduce the cmd line
 buffer size.
 
@@ -153,7 +153,7 @@ will check for broken links in
 documentation.
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1471] OPTf_WARN_PAREN) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1472] OPTf_WARN_PAREN) to find
 unnecessary parentheses in code.
 
 * Use [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,49] Plain() to edit a plain text
@@ -162,10 +162,10 @@ s.  Use the [::/SparrowOS/Misc/Dollar.CPP.Z,1] ::/SparrowOS/Misc/Dollar.CPP.Z
 utility to strip dollar signs in 
 text files.
 
-* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,259] Silent() to disable screen text
+* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,263] Silent() to disable screen text
 output.
 
-* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,268] IOSnd() to disable noise from
+* Use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,272] IOSnd() to disable noise from
 disk access.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-DRAG}.  Null 
@@ -223,8 +223,8 @@ probably turn-off preemption or interrupts momentarily to copy it.
 
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
-lx for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2021] CLex ptrs; doc for
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc ptrs; doc_e or doc_ce for
+lx for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2022] CLex ptrs; doc for
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc ptrs; doc_e or doc_ce for
 [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEntry ptrs, etc.
 
 
@@ -240,7 +240,7 @@ with preemption off.
 to this in [HOME/Adam3aLocalize.CPP.Z,1] HOME/Adam3aLocalize.CPP.Z.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc cmd under the 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc cmd under the 
 cursor.  See [::/SparrowOS/Demo/Doc/TextDemo.CPP.Z,1]
 ::/SparrowOS/Demo/Doc/TextDemo.CPP.Z.
  
@@ -310,8 +310,8 @@ GetTimeStamp().
 
 * Use [C:/SparrowOS/Adam/HeapLog.CPP.Z,121] HeapLog() and
 [C:/SparrowOS/Adam/HeapLog.CPP.Z,80] HeapLogRep() to find leaks.  Don't be
-confused by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1403] CDoc 
+confused by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
 * For advanced heap debugging, play with
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2823] _CFG_HEAP_DBG.  You're on your own.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2824] _CFG_HEAP_DBG.  You're on your own.
