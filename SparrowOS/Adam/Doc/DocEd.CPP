@@ -1,7 +1,7 @@
 #help_index "Doc/Edit"
-public BoolI64 DocLineNumGoTo(CDoc *doc,I64 line_num) //one based
+public Bool DocLineNumGoTo(CDoc *doc,I64 line_num) //one based
 {
-  BoolI8 result=FALSE,unlock;
+  Bool result=FALSE,unlock;
   if (doc) {
     unlock=DocLock(doc);
     doc->x=0;
@@ -14,13 +14,14 @@ public BoolI64 DocLineNumGoTo(CDoc *doc,I64 line_num) //one based
     if (unlock)
       DocUnlock(doc);
   }
+  return result;
 }
 
 
-public BoolI64 DocPatternFind(CDoc *doc,I64 start_line_num=MIN_I64,
+public Bool DocPatternFind(CDoc *doc,I64 start_line_num=MIN_I64,
 			      U8 *pattern,I64 match=1)
 {
-  BoolI8 result=FALSE,unlock;
+  Bool result=FALSE,unlock;
   CDocEntry *doc_e;
   U8 *ptr;
   I64 i;
@@ -60,11 +61,12 @@ public BoolI64 DocPatternFind(CDoc *doc,I64 start_line_num=MIN_I64,
     if (unlock)
       DocUnlock(doc);
   }
+  return result;
 }
 
-public BoolI64 DocAnchorFind(CDoc *doc,U8 *pattern)
+public Bool DocAnchorFind(CDoc *doc,U8 *pattern)
 {
-  BoolI8 result=FALSE,unlock;
+  Bool result=FALSE,unlock;
   CDocEntry *doc_e;
   if (doc) {
     unlock=DocLock(doc);
@@ -86,14 +88,15 @@ public BoolI64 DocAnchorFind(CDoc *doc,U8 *pattern)
     if (unlock)
       DocUnlock(doc);
   }
+  return result;
 }
 
 public I64 EdCurU8(CDoc *doc)
 {
-//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,151] EdRenumAsm for an example.
-  BoolI8 unlock=DocLock(doc);
+//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,152] EdRenumAsm for an example.
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry;
-  result=-1;
+  I64 result=-1;
   if (doc_ce->type_u8==DOCT_TEXT && doc_ce->min_col<=doc->cur_data_col<doc_ce->max_col)
     result=doc_ce->tag[doc->cur_data_col];
   else if (doc_ce->type_u8==DOCT_TAB)
@@ -102,13 +105,14 @@ public I64 EdCurU8(CDoc *doc)
     result=CH_NEW_LINE;
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
 public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 {//You might need a call to [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,151] EdRenumAsm for an example.
+//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,152] EdRenumAsm for an example.
   U8 *dst;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry,*original_cl=doc_ce,*doc_ne;
   I64 cc=doc->cur_data_col,y=doc_ce->y;
   if (sc!=MIN_I64) sc=sc.u32[0];
@@ -123,7 +127,7 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 	!(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
 	!(doc_ce->flags2&DOCEG2_DONT_EDIT) &&
 	cc<doc_ce->max_col) {
-	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_ne->type=doc_ce->type;
 	doc_ne->flags1=doc_ce->flags1;
 	doc_ne->flags2=doc_ce->flags2;
@@ -142,7 +146,7 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 	!(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
 	!(doc_ce->flags2&DOCEG2_DONT_EDIT) &&
 	cc>doc_ce->min_col) {
-	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_ne->type=doc_ce->type;
 	doc_ne->flags1=doc_ce->flags1;
 	doc_ne->flags2=doc_ce->flags2;
@@ -185,7 +189,7 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 	    !(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
 	    !(doc_ce->flags2&DOCEG2_DONT_EDIT) &&
 	    cc>doc_ce->min_col) {
-	    doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	    doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	    doc_ne->type=doc_ce->type;
 	    doc_ne->flags1=doc_ce->flags1;
 	    doc_ne->flags2=doc_ce->flags2;
@@ -223,8 +227,8 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 {//You might need a call to [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,151] EdRenumAsm for an example.
-  BoolI8 unlock=DocLock(doc);
+//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,152] EdRenumAsm for an example.
+  Bool unlock=DocLock(doc);
   U8 *dst;
   CDocEntry *doc_ce=doc->cur_entry,*original_cl=doc_ce,*doc_ne;
   I64 cc=doc->cur_data_col,y=doc_ce->y,old_flags1,old_flags2,old_color;
@@ -245,7 +249,7 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 	!(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
 	!(doc_ce->flags2&DOCEG2_DONT_EDIT) &&
 	cc>doc_ce->min_col) {
-	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_ne->type=doc_ce->type;
 	doc_ne->flags1=doc_ce->flags1;
 	doc_ne->flags2=doc_ce->flags2;
@@ -275,7 +279,7 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 	!(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
 	!(doc_ce->flags2&DOCEG2_DONT_EDIT) &&
 	cc<doc_ce->max_col) {
-	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_ne->type=DOCT_TEXT | old_color & -0x100;
 	doc_ne->flags1=old_flags1;
 	doc_ne->flags2=old_flags2;
@@ -336,8 +340,8 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 {//You might need a call to [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,151] EdRenumAsm for an example.
-  BoolI8 unlock=DocLock(doc);
+//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,152] EdRenumAsm for an example.
+  Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x;
   CDocEntry *doc_ce=doc->cur_entry,*doc_ne;
@@ -357,7 +361,7 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
       !(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
       !(doc_ce->flags2&DOCEG2_DONT_EDIT)) {
     if (doc_ce->min_col<doc->cur_data_col<doc_ce->max_col-1) {
-      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
       doc_ne->type=doc_ce->type;
       doc_ne->flags1=doc_ce->flags1;
       doc_ne->flags2=doc_ce->flags2;
@@ -455,7 +459,7 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
     !(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
     !(doc_ce->flags2&DOCEG2_DONT_EDIT) && doc_ce->x<x) {
     if (doc->cur_data_col<doc_ce->max_col-1) {
-      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
       doc_ne->type=doc_ce->type;
       doc_ne->flags1=doc_ce->flags1;
       doc_ne->flags2=doc_ce->flags2;
@@ -488,8 +492,8 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
 {//You might need a call to [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,151] EdRenumAsm for an example.
-  BoolI8 unlock=DocLock(doc);
+//See [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,152] EdRenumAsm for an example.
+  Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x,old_flags1=0,old_flags2=0,old_color;
   CDocEntry *doc_ce=doc->cur_entry,*doc_ne,*doc_ce2;
@@ -512,7 +516,7 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
       !(doc_ce->flags1&DOCEG1_DONT_EDIT)&&
       !(doc_ce->flags2&DOCEG2_DONT_EDIT)) {
     if (doc->cur_data_col>doc_ce->min_col && doc->cur_data_col<doc_ce->max_col-1) {
-      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
       doc_ne->type=doc_ce->type;
       doc_ne->flags1=doc_ce->flags1;
       doc_ne->flags2=doc_ce->flags2;
@@ -589,7 +593,7 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
     !(doc_ce->flags1&DOCEG1_DONT_EDIT) &&
     !(doc_ce->flags2&DOCEG2_DONT_EDIT)) {
     if (doc_ce->min_col<doc->cur_data_col<doc_ce->max_col-1) {
-      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
       doc_ne->type=DOCT_TEXT | old_color & -0x100;
       doc_ne->flags1=old_flags1;
       doc_ne->flags2=old_flags2;
@@ -625,7 +629,7 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
 
 U0 EdDelChar(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry;
 
   if (doc_ce==doc) {
@@ -677,9 +681,9 @@ U0 ChkDollarBufSize(CDoc *doc)
 }
 
 
-U0 EdInsChar(U64 ch,U64 sc,CDoc *doc)
+U0 EdInsChar(I64 ch,I64 sc,CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   U8 *b,*src,*dst;
   CDocEntry *doc_ce=doc->cur_entry,*doc_ne;
   I64 i,j,m,y=doc_ce->y;
@@ -791,7 +795,7 @@ ic_overstrike_char:
       b=MAlloc(2,doc->mem_task);
       *b=ch;
       b[1]=0;
-      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
       doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
       doc_ne->tag=b;
       doc_ne->max_col=1;
@@ -861,7 +865,7 @@ ic_form_tab:
 	b=MAlloc(2,doc->mem_task);
 	*b=ch;
 	b[1]=0;
-	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
 	doc_ne->tag=b;
 	doc_ne->max_col=1;
@@ -906,10 +910,10 @@ U0 EdDelLine(CDoc *doc)
 
 public U0 EdFindNext(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   U8 *ptr,*ptr2,*ptr3;
   CDocEntry *doc_ce=doc->cur_entry,*doc_e=doc_ce;
-  U64 ss_flags;
+  I64 ss_flags;
   if (doc->find_replace->match_case)
     ss_flags=0;
   else
@@ -978,9 +982,9 @@ fn_skip:
     DocUnlock(doc);
 }
 
-public U0 EdSelectAll(CDoc *doc,BoolI8 select)
+public U0 EdSelectAll(CDoc *doc,Bool select)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
     if (select)
@@ -994,9 +998,9 @@ public U0 EdSelectAll(CDoc *doc,BoolI8 select)
 }
 
 #help_index "Doc/IDE"
-public BoolI64 EdFindPaired(CDoc *doc,U8 plus,U8 minus,BoolI8 fwd,BoolI8 abort_on_dbl_colon=FALSE)
+public Bool EdFindPaired(CDoc *doc,U8 plus,U8 minus,Bool fwd,Bool abort_on_dbl_colon=FALSE)
 {
-  BoolI8 unlock=DocLock(doc),result=FALSE;
+  Bool unlock=DocLock(doc),result=FALSE;
   U8 ch,*ptr,original_col=doc->cur_data_col;
   I64 levels=0,colons=0;
   CDocEntry *doc_ce=doc->cur_entry,*doc_e=doc_ce,*original_cl=doc_ce;
@@ -1084,11 +1088,12 @@ pa_done:
   DocCenter(doc);
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
-public BoolI64 EdGoToFun(CDoc *doc,BoolI8 fwd,BoolI8 abort_on_dbl_colon)
+public Bool EdGoToFun(CDoc *doc,Bool fwd,Bool abort_on_dbl_colon)
 {
-  BoolI8 unlock=DocLock(doc),result=FALSE;
+  Bool unlock=DocLock(doc),result=FALSE;
   I64 ch,levels,colons;
   if (fwd) {
     levels=0;
@@ -1126,11 +1131,12 @@ public BoolI64 EdGoToFun(CDoc *doc,BoolI8 fwd,BoolI8 abort_on_dbl_colon)
   }
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
-public U0 EdSelectFun(CDoc *doc,BoolI8 abort_on_dbl_colon=FALSE)
+public U0 EdSelectFun(CDoc *doc,Bool abort_on_dbl_colon=FALSE)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   U8 ch,*ptr;
   I64 levels=0,colons=0;
   CDocEntry *doc_e;
@@ -1173,7 +1179,7 @@ sf_done:
 #help_index "Doc/Edit"
 U0 EdUndoFilter(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->root.next;
   while (doc_ce!=doc) {
     doc_ce->flags1&=~DOCEF1_FILTER_SKIP;
@@ -1186,11 +1192,10 @@ U0 EdUndoFilter(CDoc *doc)
 
 I64 EdFindReplace(CDoc *doc)
 {
-  BoolI8 first=TRUE,found,unlock;
-  I64 cmd,i,j,plen,rlen,dlen,result=-1;
+  Bool first=TRUE,found,unlock;
+  I64 cmd,i,j,plen,rlen,dlen,result=-1,ss_flags;
   U8 *src,*dst,*dst2;
   CDocEntry *doc_ce=doc->cur_entry,*doc_e;
-  U64 ss_flags;
   if (doc->find_replace->pmt)
     cmd=RSAC_REPLACE;
   else
@@ -1339,13 +1344,14 @@ fr_unlock_done:
     if (unlock)
       DocUnlock(doc);
   }
+  return result;
 }
 
 public I64 EdReplace(CDoc *doc,U8 *find,U8 *replace,
-  BoolI8 selected=TRUE,BoolI8 match_case=TRUE,BoolI8 whole_labels=FALSE)
+  Bool selected=TRUE,Bool match_case=TRUE,Bool whole_labels=FALSE)
 {
   CEdFindText old_find_replace;
-  BoolI8 unlock;
+  Bool unlock;
   I64 i,result=-1;
   if (!doc) return -1;
   unlock=DocLock(doc);
@@ -1368,6 +1374,7 @@ public I64 EdReplace(CDoc *doc,U8 *find,U8 *replace,
   MemCpy(doc->find_replace,&old_find_replace,sizeof(CEdFindText));
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
 class CEdLineGoTo
@@ -1385,7 +1392,7 @@ public U0 EdGoToLine(CDoc *doc)
 
 U0 DocEntryToggle(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry,*cl1,*doc_ce2;
   U8 ch,*st,*st2;
   I64 i,j,k;
@@ -1470,10 +1477,10 @@ U0 DocEntryToggle(CDoc *doc)
 
 U0 DocFlagsToggle(CDoc *doc,I64 tog_flags)
 {
-  U64 size,start_text_attr=doc->start_text_attr;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
+  I64 size,start_text_attr=doc->start_text_attr,
+      flags=doc->flags^tog_flags;
   U8 *st=DocSave(doc,&size);
-  U64 flags=doc->flags^tog_flags;
   CDocUndo *u_next,*u_last;
 
   u_next=doc->undo_root.next;
@@ -1494,14 +1501,13 @@ U0 DocFlagsToggle(CDoc *doc,I64 tog_flags)
 }
 
 #help_index "Doc/Output"
-public U0 DocPutKey(CDoc *doc,U64 ch,U64 sc)
+public U0 DocPutKey(CDoc *doc,I64 ch,I64 sc)
 {
-  I64 i,x,y,ext_ascii_cnt=0,timeout;
-  U64 sc2;
+  I64 i,x,y,sc2,ext_ascii_cnt=0,timeout;
   CDoc *m;
   CDocEntry *doc_ce;
   U8 *st;
-  BoolI8 unlock;
+  Bool unlock;
 
   if (!doc || doc->doc_signature!=DOC_SIGNATURE_VAL)
     return;
@@ -2197,7 +2203,7 @@ public U0 DocPutKey(CDoc *doc,U64 ch,U64 sc)
   }
 }
 
-BoolI64 AKDDocPutKey(U64 ch,U64 scancode)
+Bool AKDDocPutKey(I64 ch,I64 scancode)
 {
   CDoc *doc;
   doc=Fs->next_doc;
@@ -2217,7 +2223,7 @@ BoolI64 AKDDocPutKey(U64 ch,U64 scancode)
 public U0 DocPutSPartial(CDoc *doc,U8 *st)
 {
   U8 ch,*b,*src,*dst,*ptr=st,*ptr2;
-  BoolI8 unlock;
+  Bool unlock;
   CDocEntry *doc_ce,*doc_ne;
   I64 i,j,timeout;
   if (!st)
@@ -2263,7 +2269,7 @@ public U0 DocPutSPartial(CDoc *doc,U8 *st)
 	  Free(doc_ce->tag);
 	  doc_ce->tag=b;
 	} else {
-	  doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	  doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	  doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
 	  doc_ne->tag=MAlloc(j+1,doc->mem_task);
 	  MemCpy(doc_ne->tag,ptr2,j+1);
@@ -2292,13 +2298,13 @@ public U0 DocPutSPartial(CDoc *doc,U8 *st)
 }
 
 #help_index "Doc"
-BoolI64 DocFileEd(I64 type,U8 *filename,
-	U8 *pattern,I64 *_num,U64 ed_flags)
+Bool DocFileEd(I64 type,U8 *filename,
+	U8 *pattern,I64 *_num,I64 ed_flags)
 {
   I64 flags=0;
   CDocEntry *doc_e;
   CDoc *doc;
-  BoolI8 old_silent=Bt(&Fs->display_flags,DISPLAYf_SILENT),
+  Bool old_silent=Bt(&Fs->display_flags,DISPLAYf_SILENT),
 	 result=FALSE;
  
   try {
@@ -2373,12 +2379,13 @@ BoolI64 DocFileEd(I64 type,U8 *filename,
     Silent(old_silent);
     result=FALSE;
   }
+  return result;
 }
 
-public I64 EdLinkCvt(U8 *link_st,U8 **_filename,U8 **_pattern,I64 *_num,U64 ed_flags)
+public I64 EdLinkCvt(U8 *link_st,U8 **_filename,U8 **_pattern,I64 *_num,I64 ed_flags)
 {
   U8 *st,*ptr,*filename;
-  I64 i;
+  I64 result,i;
   CHashSrcSym *temph;
   *_filename=NULL;
   *_pattern=NULL;
@@ -2475,4 +2482,5 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename,U8 **_pattern,I64 *_num,U64 ed_f
     *_filename=StrNew(filename);
 lc_done:
   Free(st);
+  return result;
 }

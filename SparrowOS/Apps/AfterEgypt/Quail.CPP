@@ -18,7 +18,7 @@
 class QuailStruct
 {
   F64 x,y,dx,dy,phase;
-  BoolI8 dead,pad[7];
+  Bool dead,pad[7];
 } q[NUM_QUAIL];
 
 F64 t0,t_last;

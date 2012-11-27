@@ -4,7 +4,7 @@
 U0 Models()
 {
   I64 i;
-  BoolI8 old_form=LBts(&(DocCur)->flags,DOCf_FORM);
+  Bool old_form=LBts(&(DocCur)->flags,DOCf_FORM);
   DocClear;
   "Make a CSprite model.  Then, cut-and-Paste it.\n\n";
   "$LM,4$";

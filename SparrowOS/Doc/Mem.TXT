@@ -17,25 +17,25 @@ position independent by virtue of the fact that absolute addresses get
 patched.
 
 You can create new independent heaps by first allocating mem with 
-[C:/SparrowOS/OSMain/Memory.CPP.Z,426] MemBlksUncachedAlloc() or
-[C:/SparrowOS/OSMain/Memory.CPP.Z,214] MemBlksNonTaskAlloc(), then calling 
-[C:/SparrowOS/OSMain/Memory.CPP.Z,1149] HeapCtrlIndependentInit() and, then,
-using [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc().
+[C:/SparrowOS/OSMain/Memory.CPP.Z,428] MemBlksUncachedAlloc() or
+[C:/SparrowOS/OSMain/Memory.CPP.Z,215] MemBlksNonTaskAlloc(), then calling 
+[C:/SparrowOS/OSMain/Memory.CPP.Z,1167] HeapCtrlIndependentInit() and, then,
+using [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc().
 
 Memory allocated by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/SparrowOS/Adam/MemRep.CPP.Z,184] MemRep().
+See [C:/SparrowOS/Adam/MemRep.CPP.Z,190] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003D90F
+ 0x0000007C00- 0x000003CF6F
   OSMain kernel module, placed here by the boot-loader,
   [C:/SparrowOS/OSMain/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
 
  0x000007F000- 0x000007F02E
-  Multicore start-up vect code, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,457]
+  Multicore start-up vect code, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,453]
   MPN_VECT.
 
  0x000007F600- 0x000007FFFF
@@ -65,16 +65,15 @@ memory starting at 0xF0000000 going up.
 
              - 0x1FFFFFFFFF
   64-bit devices are mapped counting backward from 128 Gig.
+  
 
-
-                                      [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2883]
-CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrls
+                                      [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2595] CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrls
  <1> (image)
 
 0000,0000,0000,0000                   Core 0   
 
 0000,0000,0000,7C00 OSMain
-0000,0000,0003,D90F 
+0000,0000,0003,CF6F 
 
 0000,0000,0010,0000 Page_Tables                    AdamTask
 
@@ -123,12 +122,12 @@ CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2899] CHeapCtrls
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() an 8 Gig chunk on my 12
+can [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() an 8 Gig chunk on my 12
 Gig machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
-the total.  See [C:/SparrowOS/OSMain/Memory.CPP.Z,1349] HeapsInit().
+the total.  See [C:/SparrowOS/OSMain/Memory.CPP.Z,1370] HeapsInit().
 
 * See [::/SparrowOS/OSMain/OSEnd.CPP.Z,1] Independent Heap Ctrl Example.
 

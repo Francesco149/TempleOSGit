@@ -19,10 +19,10 @@ U0 DollarFile(CDirEntry *m1)
 public U0 Dollar(U8 *files_find_mask,U8 *fu_flags=NULL)
 //This is for importing non-"SparrowOS" text files.
 //**WARNING:**Do not use on files with dollar cmds
-// or on binary files. See [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,197] FilesFind() for flags.
+// or on binary files. See [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,196] FilesFind() for flags.
 {
   CDirEntry *tempm1=NULL;
-  U64 fuf_flags=0;
+  I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   tempm1=FilesFind(files_find_mask,fuf_flags);

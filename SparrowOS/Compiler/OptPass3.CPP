@@ -346,6 +346,16 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *register_offsets)
 	      tempil1->ic_flags|=ICF_R_TO_INT;
 	  }
 	  break;
+	case IC_SQR:
+	case IC_ABS:
+	case IC_SQRT:
+	case IC_SIN:
+	case IC_COS:
+	case IC_TAN:
+	case IC_ATAN:
+	  if (tempc->sub_type==IT_F64)
+	    CmpF1PushPop(tempi,tempi1);
+	  break;
 	case IC_SHL_CONST:
 	case IC_SHR_CONST:
 	case IC_ENTER:

@@ -4,7 +4,7 @@ This is to clearify how several mysterious things happen in SparrowOS.
 * SparrowOS runs in VGA 640x480 16 color graphics mode, not text mode.  It 
 changes to this mode with a [::/SparrowOS/OSMain/OSStart.CPP.Z,1] BIOS call
 while in real-mode before it switches to 
-64-bit mode.  The text is [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,627] drawn
+64-bit mode.  The text is [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,628] drawn
 manually.  If graphics mode fails, it 
 falls-back on text mode.  You can force text mode with an
 [::/SparrowOS/OSMain/OSCfg.CPP.Z,1] OSMain config 
@@ -19,8 +19,8 @@ heap never gets freed.  That's as close to "kernel memory" as it gets.
 be 
 used.  SparrowOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP. 
-[C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() can allocate any memory, of
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1474] OPTf_GLBLS_ON_DATA_HEAP. 
+[C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() can allocate any memory, of
 course.
 
 * SparrowOS doesn't use software interrupts or SYSCALL instructions because
@@ -45,7 +45,7 @@ Master-Boot-Loader-Stage2,
 
 * The boot-loaders must be patched by you running
 [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() or 
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot().  Those will
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,291] InstallMasterBoot().  Those will
 write the block address into the boot-loader 
 because the boot-loaders do not navigate file systems to find the
 [::/SparrowOS/OSMain/OSStart.CPP.Z,1] Stage2 if 
@@ -74,8 +74,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask, GS for 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask, GS for 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] CCPU.
 
 * SparrowOS uses JIT file compression on a file-by-file basis.  Files are 
 [::/SparrowOS/OSMain/Compress.CPP.Z,1] compressed, not encrypted.
@@ -89,7 +89,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- OSMain.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot(). 
-SparrowOS is 136,281 lines.  Roughly 50,000 is 
+SparrowOS is 137,965 lines.  Roughly 50,000 is 
 compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -113,12 +113,12 @@ virtue of the fact that abs addresses get patched.
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system OSMain has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,580]
+links.  This is how the [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,588]
 Man()/WORDSTAT feature can find src lines.
 
 * The word "public" does very little except allow the
 [::/SparrowOS/Doc/HelpIndex.TXT.Z,1] help_index and
-[C:/SparrowOS/Adam/Hash2a.CPP.Z,137] HashRep() 
+[C:/SparrowOS/Adam/Hash2a.CPP.Z,136] HashRep() 
 program varients to exclude meaningless syms.  If you wish a full report of 
 public and nonpublic syms Click Here
 `DocMax(1000000);HAllRep;View;
@@ -127,11 +127,11 @@ public and nonpublic syms Click Here
 
 * When compilation takes place, the structures used by the compiler stick 
 around.  Data on classes can be accessed by code.  See
-[C:/SparrowOS/Adam/Dbg2a.CPP.Z,137] ClassRep().
+[C:/SparrowOS/Adam/Dbg2a.CPP.Z,136] ClassRep().
 
 * Filenames ending in ".Z" are automatically compressed and uncompressed when 
 writing to disk.  File size in directory listing is the compressed size.  You 
-can view uncompressed size with [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231]
+can view uncompressed size with [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233]
 Dir("*",TRUE); if you use the native SparrowOS 
 filesystem.  See [::/SparrowOS/Doc/TSZ.TXT.Z,1] ::/SparrowOS/Doc/TSZ.TXT.Z
 for uncompressing from WINDOWS.
@@ -146,7 +146,7 @@ system and see the amount of mem used.  Then, compile it again and far less
 will be allocated.  This is because it is reusing the small chunks.  See 
 [Memory,1] Memory.  Click Here
 `MemRep;View;`
- for a [C:/SparrowOS/Adam/MemRep.CPP.Z,184] MemRep.
+ for a [C:/SparrowOS/Adam/MemRep.CPP.Z,190] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is SHIFT-SPA
 CE, a character which does not get converted to tabs by space-to-tabs,

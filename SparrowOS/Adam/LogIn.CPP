@@ -24,7 +24,7 @@ U0 ServantStartUp()
 
 U8 *PopUpSysAcctGet()
 {
-  U8 *st;
+  U8 *result,*st;
   CDoc *doc=DocNew;
   CDirEntry	*tempm1=FilesFind("/SparrowOS/Accts/*",1<<FUf_RECURSE|1<<FUf_JUST_DIRS|1<<FUf_FLATTEN_TREE),
 		*tempm=tempm1;
@@ -48,6 +48,7 @@ U8 *PopUpSysAcctGet()
   DocDel(doc);
   result=AStrNew(tempm->full_name);
   CDirListDel(tempm1);
+  return result;
 }
 
 U0 SysLogin()
@@ -65,9 +66,9 @@ CDoc *sys_registry_doc=NULL;
 I64 sys_msg_flags[1]={0};
 F64 registry_version;
 
-BoolI64 AcctCacheRegistry()
+Bool AcctCacheRegistry()
 {
-  BoolI8 old_silent;
+  Bool old_silent;
   if (!sys_registry_doc) {
     old_silent=Silent(ON);
     sys_registry_doc=DocRead(ACCT_REGISTRY_FILENAME);
@@ -77,9 +78,9 @@ BoolI64 AcctCacheRegistry()
     return TRUE;
 }
 
-public BoolI64 AcctRegSetDftEntry(U8 *path,U8 *val,BoolI8 is_adam_entry=FALSE)
+public Bool AcctRegSetDftEntry(U8 *path,U8 *val,Bool is_adam_entry=FALSE)
 {
-  BoolI8 unlock_doc;
+  Bool result,unlock_doc;
   AcctCacheRegistry;
   unlock_doc=DocLock(sys_registry_doc);
   if (!DocTreeFind(sys_registry_doc,path)) {
@@ -98,6 +99,7 @@ public BoolI64 AcctRegSetDftEntry(U8 *path,U8 *val,BoolI8 is_adam_entry=FALSE)
     result=TRUE;
   if (unlock_doc)
     DocUnlock(sys_registry_doc);
+  return result;
 }
 
 public I64 AcctRegExecuteBranch(U8 *path)
@@ -106,9 +108,9 @@ public I64 AcctRegExecuteBranch(U8 *path)
   return DocTreeBranchExe(sys_registry_doc,path);
 }
 
-public BoolI64 AcctRegWriteBranch(U8 *path,U8 *fmt,...)
+public Bool AcctRegWriteBranch(U8 *path,U8 *fmt,...)
 {
-  BoolI8 unlock_doc;
+  Bool result,unlock_doc;
   CDocEntry *tree_branch,*start_indent,*end_indent;
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   AcctCacheRegistry;
@@ -122,6 +124,7 @@ public BoolI64 AcctRegWriteBranch(U8 *path,U8 *fmt,...)
   if (unlock_doc)
     DocUnlock(sys_registry_doc);
   Free(buf);
+  return result;
 }
  
 U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
@@ -145,7 +148,7 @@ U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
 U0 RegistryInit()
 {
   U8 buf[136];
-  BoolI8 existed=FileFind(ACCT_REGISTRY_FILENAME),version_present;
+  Bool existed=FileFind(ACCT_REGISTRY_FILENAME),version_present;
   AcctRegSetDftEntry("Adam/SparrowOS/SysMsgFlags","sys_msg_flags[0]=0;\n",TRUE);
   SPrintF(buf,"registry_version=%4.3f;\n",os_version);
   version_present=AcctRegSetDftEntry("Adam/SparrowOS/SysRegVer",buf,TRUE);

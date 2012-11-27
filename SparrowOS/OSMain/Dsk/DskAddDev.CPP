@@ -22,10 +22,9 @@ U0 SetBlkDevLockFwding(CBlkDev *bdev)
   }
 }
 
-U64 BlkDevAdd(CBlkDev *bdev,BoolI8 one_prt)
+I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt)
 {
-  I64 i,j,ext_base,num_prt;
-  U64 offset;
+  I64 i,j,ext_base,num_prt,offset;
   CPrt *p;
   CBootStruct br;
   CMasterBoot mbr;
@@ -156,17 +155,18 @@ U64 BlkDevAdd(CBlkDev *bdev,BoolI8 one_prt)
 }
 
 
-BoolI64 DrvEnable(U8 drv_let,BoolI8 val)
+Bool DrvEnable(U8 drv_let,Bool val)
 {//This can be used to unmount a drive or remount,
 //but not mount the first time.
   CPrt *p;
-  result=FALSE;
+  Bool result=FALSE;
   try {
     p=Drv2Prt(drv_let);
     result=!LBEqu(&p->type,PTf_DISABLE,!val);
   } catch {
     Fs->ignore_except=TRUE;
   }
+  return result;
 }
 
 CATARep *ATARepFind(CATARep *root,I64 num)
@@ -180,14 +180,13 @@ CATARep *ATARepFind(CATARep *root,I64 num)
   return tempha;
 }
 
-U0 Mount(BoolI8 repartition=FALSE)
+U0 Mount(Bool repartition=FALSE)
 {
   CBlkDev *bdev;
-  I64 drv_let_base,drv_let,type,k;
+  I64 drv_let_base,drv_let,type,k,num_hints;
   U8 buf[32],buf2[128],buf3[128];
-  BoolI8 add;
+  Bool add;
   CATARep *root,*tempha;
-  I64 num_hints;
 
   do {
     PrtRep;
@@ -310,10 +309,10 @@ I64 SysPmtI64()
   return A2I(st);
 }
 
-BoolI64 PmtBaseUnit(CBlkDev *bdev)
+Bool PmtBaseUnit(CBlkDev *bdev)
 {
-  U64 ch;
-  BoolI8 probe;
+  I64 ch;
+  Bool probe;
   "            SparrowOS\n\n\n";
 #exe {
   if (osmain_cfg->opts[CFG_DONT_PROBE])

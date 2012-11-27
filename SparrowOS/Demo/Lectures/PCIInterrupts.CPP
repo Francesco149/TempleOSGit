@@ -32,7 +32,7 @@ interrupt U0 MyVect43()
   IntEOI;
 }
 
-U64 vect[4]={&MyVect40,&MyVect41,&MyVect42,&MyVect43};
+I64 vect[4]={&MyVect40,&MyVect41,&MyVect42,&MyVect43};
 
 U0 Main()
 {
@@ -42,7 +42,7 @@ U0 Main()
 
   ProgressBarsRst;
   for (i=I_USER;i<I_USER+4;i++)
-    SetIDTEntry(i,vect[i&3],DEST_CPU,IDTET_IRQ);
+    IntEntrySet(i,vect[i&3],DEST_CPU,IDTET_IRQ);
 
 //There are like 4*6 vects.  Bus zero
 //has the first four vects.

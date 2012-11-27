@@ -1,9 +1,9 @@
 #help_index "Windows"
 
-U64 last_swap_cnter2[MP_MAX_PROCESSORS];
+I64 last_swap_cnter2[MP_MAX_PROCESSORS];
 MemSet(last_swap_cnter2,0,sizeof(last_swap_cnter2));
 
-U64 last_unused_sysmem=0,
+I64 last_unused_sysmem=0,
    last_calc_refresh_cnt=0;
 F64 last_refresh_delta_time=1.0;
 
@@ -12,7 +12,7 @@ F64 last_refresh_delta_time=1.0;
 
 class CTaskWallPaperData
 {
-  U64 allocated_u8s,used_u8s;
+  I64 allocated_u8s,used_u8s;
   U8 caller_stk[TASK_WALLPAPER_DATA_SIZE-16];
 };
 
@@ -23,11 +23,11 @@ U0 WallPaper(CTask *_task)
   CTaskWallPaperData *wpd;
   CHashTable *old_hash=Fs->hash_table;
   CCPU *c;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CDate ltdt;
   U8 buf[256],buf2[256],*st;
   CDC *dc=DCAlias(gr_dc,_task);
-  static U64 code_heap_unused=0,code_heap_used=0,
+  static I64 code_heap_unused=0,code_heap_used=0,
 	     data_heap_unused=0,data_heap_used=0;
 
   _task->text_attr=WALLPAPER_ATTR;
@@ -181,7 +181,7 @@ U0 DrawTermButton(CDC *dc,CCtrl *c)
     CSpritePlot3(dc,c->left,c->top,0,__BIN_1);
 }
 
-U0 LeftClickTermButton(CCtrl *,I64,I64,BoolI8 down)
+U0 LeftClickTermButton(CCtrl *,I64,I64,Bool down)
 {
   if (down)
     SpawnUser;
@@ -189,7 +189,7 @@ U0 LeftClickTermButton(CCtrl *,I64,I64,BoolI8 down)
 
 CCtrl *TermButtonNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   I64 min_x,max_x,min_y,max_y;
   CCtrl *c=ACAlloc(sizeof(CCtrl));
 
@@ -226,7 +226,7 @@ gr_empty_sprite=__BIN_2;
 /* <4> <4> (image) */
 
 #help_index "Graphics;Input Pointer/Displayed Image"
-public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,BoolI8 closed)
+public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,Bool closed)
 {
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   dc->color=ROP_EQU;

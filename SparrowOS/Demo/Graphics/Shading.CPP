@@ -151,7 +151,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 //See [::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z.
 //for a CSprite example.
 
-//See [C:/SparrowOS/Adam/Gr/CSpriteMesh.CPP.Z,872] CSpriteMesh() for a fancy example.
+//See [C:/SparrowOS/Adam/Gr/CSpriteMesh.CPP.Z,875] CSpriteMesh() for a fancy example.
 
 U0 Main()
 {

@@ -17,9 +17,9 @@ U0 AnimateEndCB()
   Exit;
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
-  U64 i;
+  I64 i;
   U8 *font=MAlloc(256*8);
   Fs->task_end_cb=&AnimateEndCB;
   MemCpy(font,gr_font,256*8);

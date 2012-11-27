@@ -16,7 +16,7 @@ See [::/SparrowOS/Doc/Acknowledgements.TXT.Z,1] ::/SparrowOS/Doc/Acknowledgement
 I64 WSDNextCmd(U8 **_ptr)
 {
   U8 ch,*ptr=*_ptr,*ptr2;
-  result=-1;
+  I64 result=-1;
   do {
     do {
       if (!(ch=*ptr++)) goto ncmd_done;
@@ -36,11 +36,12 @@ I64 WSDNextCmd(U8 **_ptr)
 
 ncmd_done:
   *_ptr=ptr;
+  return result;
 }
 
 U8 *WSDNextEntry(U8 **_ptr)
 {
-  U8 *ignore,ch,*ptr=*_ptr,buf[WSD_BLK_SIZE],*out_ptr=buf;
+  U8 *result,*ignore,ch,*ptr=*_ptr,buf[WSD_BLK_SIZE],*out_ptr=buf;
   I64 l;
   while (TRUE) {
     while (TRUE) {
@@ -71,6 +72,7 @@ nentry_done:
   *out_ptr++=0;
   result=StrNew(buf);
   *_ptr=ptr-1;
+  return result;
 }
 
 I64 WSDCompareWords(U8 *e1,U8 *e2)
@@ -80,7 +82,7 @@ I64 WSDCompareWords(U8 *e1,U8 *e2)
 
 U8 *WSDSortWords(U8 *start,I64 size,I64 word_cnt)
 {
-  U8 **ptr_array=MAlloc(sizeof(U0 *)*word_cnt),
+  U8 **ptr_array=MAlloc(sizeof(U8 *)*word_cnt),
       *out_start=MAlloc(size),
       *ptr=start,*ptr2;
   I64 i=0;
@@ -89,7 +91,7 @@ U8 *WSDSortWords(U8 *start,I64 size,I64 word_cnt)
     ptr+=StrLen(ptr)+3;
   }
   "Sorting...\n"; Sleep(100);
-  QSortU64(ptr_array,word_cnt,&WSDCompareWords);
+  QSortI64(ptr_array,word_cnt,&WSDCompareWords);
   "Done...\n"; Sleep(100);
 
   ptr=out_start;

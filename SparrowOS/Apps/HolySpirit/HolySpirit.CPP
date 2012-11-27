@@ -31,7 +31,7 @@ I64 PopUpTimerOk(U8 *header=NULL,U8 *footer=NULL)
   return i;
 }
 
-U64 TimerPickedU16(U8 *msg=NULL)
+I64 TimerPickedU16(U8 *msg=NULL)
 {
   U8 *st;
   if (msg) {
@@ -47,19 +47,20 @@ you.\n\n");
   return KbdMouseEvtTime/CLK_DIVISOR;
 }
 
-U64 TimerPickedU32(U8 *msg=NULL)
+I64 TimerPickedU32(U8 *msg=NULL)
 {
-  result=0;
+  I64 result=0;
   result.u16[0]=TimerPickedU16(msg);
   result.u16[1]=TimerPickedU16(msg);
+  return result;
 }
 
 
 CFifoU8 *rnd_nibble_fifo=FifoU8New(16);
 
-U64 TimerPickedNibble(U8 *msg=NULL)
+I64 TimerPickedNibble(U8 *msg=NULL)
 {
-  U64 result=0;
+  I64 result=0;
   if (FifoU8Rem(rnd_nibble_fifo,&result))
     return result;
   else {

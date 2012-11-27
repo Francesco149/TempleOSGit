@@ -1,9 +1,9 @@
-Unit *FindNearestUnit(I64 row,I64 col,I64 player,BoolI8 in_LOS,F64 range=-1)
+Unit *FindNearestUnit(I64 row,I64 col,I64 player,Bool in_LOS,F64 range=-1)
 {
   I64 i;
   F64 d,best_d=MAX_F64,x1,y1,x2,y2;
   Unit *best=NULL;
-//[C:/SparrowOS/OSMain/Adam1b.HPP.Z,227] Sqrt() is slow, so work with squared distances.
+//[C:/SparrowOS/OSMain/Adam1b.HPP.Z,229] Sqrt() is slow, so work with squared distances.
   if (range<0)
     range=MAX_F64;
   else

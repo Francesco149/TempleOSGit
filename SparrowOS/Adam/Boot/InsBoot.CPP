@@ -27,10 +27,10 @@ if (IsDrvWritable)
 #include "BootMHD2"
 
 #help_index "Install;File/Install Related;File/CD DVD"
-public BoolI64 CDBootFileCreate()
+public Bool CDBootFileCreate()
 {
   U8 *br;
-  U64 size=FileSize(BOOT_DIR_OSMAIN_BIN_C);
+  I64 size=FileSize(BOOT_DIR_OSMAIN_BIN_C);
 
   br=CAlloc(CD_BOOT_LOADER_SIZE);
   *BCD_BLK_CNT(U16 *)=(size+CD_BLK_SIZE-1)/CD_BLK_SIZE;
@@ -62,7 +62,7 @@ _HI_CALL::
 @@05:	LEAVE
 	RET1	8
 }
-_extern _HI_CALL U64 HiCall(U0 *s);
+_extern _HI_CALL I64 HiCall(U8 *s);
 
 #help_index "Boot"
 public U0 Boot(U8 *filename)
@@ -70,7 +70,7 @@ public U0 Boot(U8 *filename)
 //Specify the OSMain binary file you
 //wish to boot.
 {
-  U64 size;
+  I64 size;
   COSMain	*hi_image,*lo_image=sys_boot_base-sizeof(CBinFile),
 		reg *shutdown,*hi_image2;
 
@@ -119,7 +119,7 @@ U0 InstallCDir(U8 src,U8 dst)
 
 U8 ChkWritable(U8 drv_let=0)
 {
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE;
   U8 writable_drv=drv_let;
   CPrt *p;
   CBlkDev *bdev;
@@ -162,7 +162,7 @@ public U0 MakeAll()
     throw;
 }
 
-public BoolI64 InstallBoot(U8 src_drv,U8 dst_drv=0)
+public Bool InstallBoot(U8 src_drv,U8 dst_drv=0)
 {
 //Normally, you just supply a src_drv.	It will compile
 //the code on that drive and update the boot sect.
@@ -178,8 +178,8 @@ public BoolI64 InstallBoot(U8 src_drv,U8 dst_drv=0)
   CPrt *p;
   CFAT32Boot br;
   CDirEntry de;
-  U64 i;
-  result=FALSE;
+  I64 i;
+  Bool result=FALSE;
 
   try {
     if (!src_drv) src_drv=Fs->cur_prt->drv_let;
@@ -217,7 +217,7 @@ public BoolI64 InstallBoot(U8 src_drv,U8 dst_drv=0)
 	  br.jump_and_nop[1]=0x58;
 	  br.jump_and_nop[2]=0x90;
 	  *BHD_BLK_CNT(U16 *)=(de.size+BLK_SIZE-1)>>BLK_SIZE_BITS;
-	  *BHD_DAP_BLK(U64 *)=p->data+de.cluster*p->spc;
+	  *BHD_DAP_BLK(I64 *)=p->data+de.cluster*p->spc;
 	  for (i=0;i<BHD_END-BHD_CODE;i++)
 	    br.code[i]=BHD_CODE(U8 *)[i];
 	  for (;i<420;i++)
@@ -230,6 +230,7 @@ public BoolI64 InstallBoot(U8 src_drv,U8 dst_drv=0)
   } catch
     CatchAll;
   NamedFramePtrDel("InsBootDstDrv");
+  return result;
 }
 
 
@@ -287,16 +288,16 @@ public U0 MasterBootZero(U8 dst_drv)
   BlkDevUnlock(bdev);
 }
 
-public BoolI64 InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
+public Bool InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
 { //Create new MBR on the disk that has drv_let as a partition.
   //Puts stage 2 in /0000Boot dir of drv_let.
   CBlkDev *bdev,*bd1;
   CPrt *p,*p1;
   CMasterBoot mbr;
   CDirEntry de;
-  U64 i,j,size,*_q;
+  I64 i,j,size,*_q;
   U8 *menu_ptr,*ptr,ch,buf[128],buf2[128];
-  result=FALSE;
+  Bool result=FALSE;
 
   try {
     if (drv_list)
@@ -318,7 +319,7 @@ public BoolI64 InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
 	OldMasterBootRead(drv_let,drv_let);
 
       _q=BMHD2_BLK_ARRAY;
-      MemSet(_q,0,sizeof(U64)*8);
+      MemSet(_q,0,sizeof(I64)*8);
       menu_ptr=BMHD2_BOOT_MSG;
       SPrintF(menu_ptr,"\n\r\n\rSparrowOS Boot Loader\n\r\n\r");
       j=0;
@@ -355,7 +356,7 @@ public BoolI64 InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
 	"No Boot Loader Image\n";
       else {
 	*BMHD_BLK_CNT(U16 *)=(size+BLK_SIZE-1)>>BLK_SIZE_BITS;
-	*BMHD_DAP_BLK(U64 *)=p->data+de.cluster*p->spc;
+	*BMHD_DAP_BLK(I64 *)=p->data+de.cluster*p->spc;
 	//Bypass partition bounds-checking
 	BlkDevLock(bdev);
 	ATAReadBlks(bdev,&mbr,0,1);
@@ -375,5 +376,6 @@ public BoolI64 InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
     }
   } catch
     CatchAll;
+  return result;
 }
 #help_index ""

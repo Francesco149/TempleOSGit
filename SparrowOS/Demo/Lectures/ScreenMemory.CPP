@@ -11,8 +11,8 @@ U0 PlotXY(I64 x,I64 y)
 
 U0 Main()
 {
-  U64 i;
-  BoolI8 old_preempt=Preempt(OFF);
+  I64 i;
+  Bool old_preempt=Preempt(OFF);
 
 //This makes all 4 color planes active.
   OutU8(VGA_SC_INDEX,VGA_MAP_MASK);

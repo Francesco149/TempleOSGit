@@ -1,5 +1,5 @@
 #help_index "Graphics"
-U64 *gr_1_to_8_bits,*gr_1_to_8_colors;
+I64 *gr_1_to_8_bits,*gr_1_to_8_colors;
 
 #help_index "Graphics/Char;Char/Graphics"
 U32 *gr_text_base;
@@ -79,8 +79,8 @@ _PLOT_WIN_U8::
 	RET1	32
 // ************************************
 /*
-BoolI8 PlotWinStr2(CTask *task,U8 *s,I64 len,
-		   U64 attr,I64 x,I64 y)
+Bool PlotWinStr2(CTask *task,U8 *s,I64 len,
+		   I64 attr,I64 x,I64 y)
 */
 _PLOT_WIN_STR2::
 	ENTER	0
@@ -157,7 +157,7 @@ _PLOT_WIN_STR2::
 	RET1	48
 // ************************************
 /*
-BoolI8 PlotAttrStr2(CTask *task,U32 *hl,I64 len,I64 x,I64 y)
+Bool PlotAttrStr2(CTask *task,U32 *hl,I64 len,I64 x,I64 y)
 */
 _PLOT_ATTR_STR2::
 	ENTER	0
@@ -234,8 +234,8 @@ _PLOT_ATTR_STR2::
 	RET1	40
 // ************************************
 /*
-BoolI8 PlotAttr(CTask *task,I64 len,
-		U64 attr,I64 x,I64 y)
+Bool PlotAttr(CTask *task,I64 len,
+		I64 attr,I64 x,I64 y)
 */
 _PLOT_ATTR::
 	ENTER	0
@@ -740,26 +740,26 @@ _GR_ROP_EQU_U8_NO_CLIPPING::
 }
 
 #help_index "Graphics/Char;Char/Graphics"
-public _extern _PLOT_SCREEN_U8 BoolI64 PlotScreenU8(U64 w,I64 x,I64 y);
-public _extern _PLOT_WIN_U8 BoolI64 PlotWinU8(CTask *task,U64 w,I64 x,I64 y);
-public _extern _PLOT_WIN_STR2	BoolI64 PlotWinStr2(
-	   CTask *task,U8 *s,I64 len,U64 attr,I64 x,I64 y);
-public _extern _PLOT_ATTR_STR2 BoolI64 PlotAttrStr2(
+public _extern _PLOT_SCREEN_U8 Bool PlotScreenU8(I64 w,I64 x,I64 y);
+public _extern _PLOT_WIN_U8 Bool PlotWinU8(CTask *task,I64 w,I64 x,I64 y);
+public _extern _PLOT_WIN_STR2	Bool PlotWinStr2(
+	   CTask *task,U8 *s,I64 len,I64 attr,I64 x,I64 y);
+public _extern _PLOT_ATTR_STR2 Bool PlotAttrStr2(
 	   CTask *task,U32 *hl,I64 len,I64 x,I64 y);
 
-public _extern _PLOT_ATTR	  BoolI64 PlotWinAttr(
-	   CTask *task,I64 len,U64 attr,I64 x,I64 y);
-public _extern _PLOT_BORDER_U8 BoolI64 PlotBorderU8(CTask *task,U64 w,I64 x,I64 y);
-_extern _GR_ROP_EQU_U8_NO_CLIPPING U0 GrRopEquU8NoClipping(U64 ch,U8 *dst,U64 width_internal);
+public _extern _PLOT_ATTR	  Bool PlotWinAttr(
+	   CTask *task,I64 len,I64 attr,I64 x,I64 y);
+public _extern _PLOT_BORDER_U8 Bool PlotBorderU8(CTask *task,I64 w,I64 x,I64 y);
+_extern _GR_ROP_EQU_U8_NO_CLIPPING U0 GrRopEquU8NoClipping(I64 ch,U8 *dst,I64 width_internal);
 
 #help_index "Graphics"
 //No clipping
-public _extern _IS_PIXEL_COVERED0 BoolI64 IsPixelCovered0(CTask *task,I64 x,I64 y);
+public _extern _IS_PIXEL_COVERED0 Bool IsPixelCovered0(CTask *task,I64 x,I64 y);
 
 _extern _GR_UPDATE_LINE32 U0 GrUpdateLine32(
-  U32 **_dst3,U32 **_src2,U64 w,U0 **_vga);
+  U32 **_dst3,U32 **_src2,I64 w,U8 **_vga);
 _extern _GR_UPDATE_LINE32_FLUSH_CACHE U0 GrUpdateLine32FlushCache(
-  U32 **_dst3,U32 **_src2,U64 w,U0 **_vga);
+  U32 **_dst3,U32 **_src2,I64 w,U8 **_vga);
 _extern _DC_BLOT_COLOR4 U0 DCBlotColor4(
-  U8 *dst,U64 *img,U64 *img_cache,U64 cnt);
+  U8 *dst,I64 *img,I64 *img_cache,I64 cnt);
 #help_index ""

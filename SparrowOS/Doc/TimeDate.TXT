@@ -1,10 +1,10 @@
-SparrowOS uses a 64-bit value, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,207] CDate,
+SparrowOS uses a 64-bit value, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,204] CDate,
 for date/time.  The upper 32-bits are 
 the days since Christ.  The lower 32-bits store time of day divided by 4 
 billion which works out to 49710ths of a second.  You can subtract two
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,207] CDate's 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,204] CDate's 
 to get a time span.
 
-Use [C:/SparrowOS/OSMain/Adam1a.HPP.Z,494] CDATE_FREQ to convert.
+Use [C:/SparrowOS/OSMain/Adam1a.HPP.Z,490] CDATE_FREQ to convert.
 
 

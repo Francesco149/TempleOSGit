@@ -77,7 +77,7 @@ public U0 WinZBufUpdate()
   I64 i,z=1;
   U16 *ptr;
   CTask *task,*task1;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (gr_win_z_buf) {
     LBtr(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0);
     task1=task=sys_winmgr_task;
@@ -99,7 +99,7 @@ public U0 WinZBufUpdate()
 }
 
 #help_index "Graphics/Char;Char"
-public U0 WinTextFill(U64 d,CTask *task=NULL)
+public U0 WinTextFill(I64 d,CTask *task=NULL)
 {
   if (!task) task=Fs;
   if (!TaskValidate(task)) return;
@@ -125,7 +125,7 @@ public U0 WinTextClear(CTask *task=NULL)
   WinTextFill(task->text_attr<<8,task);
 }
 
-public U0 SetWinBkColor(U64 c,CTask *task=NULL)
+public U0 SetWinBkColor(I64 c,CTask *task=NULL)
 {
   if (!task) task=Fs;
   if (!TaskValidate(task)) return;
@@ -170,7 +170,7 @@ just DAC palette settings.
   PopFD;
 }
 
-public U0 SetVGAPaletteColor(U64 color_num,CBGR bgr)
+public U0 SetVGAPaletteColor(I64 color_num,CBGR bgr)
 { //6-bits per r,dc and g
   if (text_mode) return;
   PushFD;
@@ -186,9 +186,9 @@ public U0 SetVGAPaletteColor(U64 color_num,CBGR bgr)
   PopFD;
 }
 
-public CBGR GetVGAPaletteColor(U64 color_num)
+public CBGR GetVGAPaletteColor(I64 color_num)
 { //6-bits per r,dc and g
-  result=0;
+  CBGR result=0;
   if (text_mode) return 0;
   PushFD;
   Cli;
@@ -201,6 +201,7 @@ public CBGR GetVGAPaletteColor(U64 color_num)
   result.b=InU8(VGA_PALETTE_DATA)<<2;
   LBtr(&sys_semas[SYS_SEMA_VGA],0);
   PopFD;
+  return result;
 }
 
 public CBGR vga_palette4_std[16]={
@@ -248,12 +249,12 @@ U8 *gr_screen_zoom_tables[GR_MAX_SCREEN_ZOOM+1];
 I64 gr_screen_zoom=1,grsx=0,grsy=0;
 
 //When zoomed, this keeps the mouse centered.
-public BoolI8 gr_continuous_scroll=FALSE;
+public Bool gr_continuous_scroll=FALSE;
 
 
 #define GR_REFRESH_LOG_CNT	16
 F64 gr_refresh_time_stamps[GR_REFRESH_LOG_CNT];
-U64 gr_refresh_ts_ptr=0;
+I64 gr_refresh_ts_ptr=0;
 
 U0 GrSetUpTables()
 {
@@ -345,8 +346,8 @@ U0 GrInit()
   fp_set_std_palette=&SetStdPalette;
   SetVGAPalette4Indices;
 
-  gr_1_to_8_bits  =MAlloc(256*sizeof(U64));
-  gr_1_to_8_colors=MAlloc(256*sizeof(U64));
+  gr_1_to_8_bits  =MAlloc(256*sizeof(I64));
+  gr_1_to_8_colors=MAlloc(256*sizeof(I64));
 
   gr_text_base=CAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U32));
   gr_vga_text_cache=MAlloc(TEXT_ROWS*TEXT_COLS*sizeof(U16));
@@ -380,7 +381,7 @@ U0 GrUpdateWins()
   CTask *task,*task1;
   CD3I64 saved_scroll;
   CDC *dc;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   try {
     refresh_ode_time=0;
     if (Bt(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0))
@@ -492,7 +493,7 @@ U0 GrFixZoomScale()
 
 public U0 GrScaleZoom(F64 scale)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   F64 s=gr_screen_zoom;
   gr_screen_zoom=gr_screen_zoom*scale;
   GrFixZoomScale;
@@ -519,7 +520,7 @@ public U0 GrZoomOut()
   GrScaleZoom(0.5);
 }
 
-U0 CtrlAltZ(U64 sc)
+U0 CtrlAltZ(I64 sc)
 {
   if (sc&SCF_SHIFT)
     GrZoomOut;
@@ -572,11 +573,11 @@ U0 GrZoomInScreen()
 
 U0 GrUpdateBackgroundOfText()
 {
-  U64 reg RSI *dst=gr_dc->body,reg R13 c,row,col,,cur_ch,
+  I64 reg RSI *dst=gr_dc->body,reg R13 c,row,col,,cur_ch,
       reg R12 w1=gr_dc->width_internal,reg R10 w2=-7*w1+8,w3=7*w1,
       reg *my_1_to_8_colors=gr_1_to_8_colors;
   U32 reg *src=gr_text_base;
-	BoolI8 blink_flag=Blink;
+	Bool blink_flag=Blink;
   nounusedwarn w2;
   for (row=TEXT_ROWS;row--;) {
     for (col=TEXT_COLS;col--;) {
@@ -627,12 +628,11 @@ asm {
 U0 GrUpdateForegroundOfText()
 {
   U32 *src=gr_text_base;
-  U64 cur_ch,reg *dst=gr_dc->body,
+  I64 i,j,cur_ch,reg *dst=gr_dc->body,
       reg w1=gr_dc->width_internal,w2=7*w1,
       row,col;
   U8 *dst_start=gr_dc->body,*dst_end=dst_start+w1*gr_dc->height-7*w1-8;
-  I64 j,i;
-  BoolI8 blink_flag=Blink;
+  Bool blink_flag=Blink;
   for (row=TEXT_ROWS;row--;) {
     for (col=TEXT_COLS;col--;) {
       cur_ch=*src++;
@@ -664,7 +664,7 @@ U0 GrUpdateForegroundOfText()
 U0 DCBlotColor8(CDC *dc,CDC *img)
 {
   U8  reg *src=img->body,*b0=dc->body;
-  U64 reg j,reg k,reg d0=img->width_internal*img->height;
+  I64 reg j,reg k,reg d0=img->width_internal*img->height;
   for (k=0;k<d0;k++) {
     j=*src++;
     if (j!=COLOR_TRANSPARENT)
@@ -677,9 +677,9 @@ U0 DCBlotColor8(CDC *dc,CDC *img)
 U0 GrUpdateTextModeText()
 {
   U32 *src=gr_text_base;
-  U64 cur_ch,i,d0=TEXT_COLS*TEXT_ROWS;
+  I64 cur_ch,i,d0=TEXT_COLS*TEXT_ROWS;
   U16 *dst=VGA_TEXT_MEM_BASE,*dst2=gr_vga_text_cache;
-  BoolI8 blink_flag=Blink;
+  Bool blink_flag=Blink;
   if (LBtr(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0)) {
     i=d0;
     while (i--) {
@@ -718,7 +718,7 @@ U0 GrUpdateTextModeText()
 
 U0 GrUpdateVGAGraphics()
 {
-  U64 row,plane,d2=gr_zoomed_dc->width_internal>>5;
+  I64 row,plane,d2=gr_zoomed_dc->width_internal>>5;
   U32 *src,*dst,*dst2;
   //Update Graphic Card
   if (gr_screen_zoom==1)
@@ -752,7 +752,7 @@ U0 GrUpdateVGAGraphics()
 U0 GrUpdateScreen()
 {
   CDC *dc;
-  BoolI8 old_preempt=IsPreempt;
+  Bool old_preempt=IsPreempt;
   if (!IsSysDeterministic)
     Preempt(ON);
 

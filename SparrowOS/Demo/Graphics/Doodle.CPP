@@ -12,7 +12,7 @@ U0 Doodle()
   WordStat;
 
   DCFill;
-  "$CL$"; //[C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1701] DocClear() is better
+  "$CL$"; //[C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1698] DocClear() is better
   do {
     msg_code=GetMsg(&p1,&p2,
       1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+

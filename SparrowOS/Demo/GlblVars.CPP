@@ -2,7 +2,7 @@
 This demonstrates dynamic initialization of
 vars.  It even works for static modules
 because code is generated which runs at
-[C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() time to initialize them.
+[C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() time to initialize them.
 
 This file is dual use -- you can JIT compile
 it or static compile it.  If you static compile

@@ -1,6 +1,6 @@
 /* There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc
+hold the file until you are done.  The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc
 framework is convenient for this.
 */
 
@@ -8,7 +8,7 @@ framework is convenient for this.
 
 U0 FPrintFDemo(U8 *output_filename=NULL)
 {
-  U64 fuf_flags=0;
+  I64 fuf_flags=0;
   CDoc *doc=DocNew;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   DocPutS(doc,"$TR-C+AL,\"\"$\n");

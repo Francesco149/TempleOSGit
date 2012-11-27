@@ -6,13 +6,13 @@ I64 road_x[NUM_ROAD],road_trend;
 F64 speed,distance;
 I64 road_ptr=0,car_x;
 F64 t_last;
-BoolI8 crash;
+Bool crash;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 h=task->win_pixel_width,v=task->win_pixel_height;
   I64 i,x,y,xx;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   xx=h>>1-car_x+road_x[road_ptr&(NUM_ROAD-1)];
 
   task->text_attr=BLACK+BLACK<<4;
@@ -78,7 +78,7 @@ U0 Init()
 
 U0 Halogen()
 {
-  U64 p1,p2,ch=0,sc=0;
+  I64 p1,p2,ch=0,sc=0;
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   MenuPush(
   "File {"

@@ -7,8 +7,7 @@ U16 mon_start_days2[12]={
 
 I64 YearStartDate(I64 year)
 {
-  I64 y1=year-1;
-  I64 yd4000=y1/4000,yd400=y1/400,yd100=y1/100,yd4=y1/4;
+  I64 y1=year-1,yd4000=y1/4000,yd400=y1/400,yd100=y1/100,yd4=y1/4;
   return year*365+yd4-yd100+yd400-yd4000;
 }
 
@@ -38,8 +37,7 @@ I64 DayOfWeek(I64 i)
 
 U0 CDate2CDateStruct(CDateStruct *_ds,CDate ltdt)
 {
-  I64 i,date=ltdt.date;
-  U64 k;
+  I64 i,k,date=ltdt.date;
   _ds->day_of_week=DayOfWeek(date);
   _ds->year=(date+1)*100000/CDATE_YEAR_DAYS_INT;
   i=YearStartDate(_ds->year);
@@ -122,21 +120,22 @@ I64 LastDayOfYear(I64 i)
 }
 
 
-U64 Bcd2Bin(U64 b)
+I64 Bcd2Bin(I64 b)
 {
-  U64 i,result=0;
+  I64 i,result=0;
   for (i=0;i<16;i++) {
     result=result*10+b>>60;
     b<<=4;
   }
+  return result;
 }
 
 
 U0 GetCurTimeCDateStruct(CDateStruct *_ds)
 {
-  U64 i;
+  I64 i;
   U8 *b=_ds;
-  BoolI8 is_bcd;
+  Bool is_bcd;
 
   MemSet(_ds,0,sizeof(CDateStruct));
   PushFD;

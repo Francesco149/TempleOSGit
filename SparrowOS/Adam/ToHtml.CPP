@@ -82,12 +82,13 @@ U8 *TSLinkCvt2(U8 *filename,I64 line_num)
       result=MSPrintF("http://www.sparrowos.com/Wb/%s#l%d",st+13,line_num);
     Free(st);
   }
+  return result;
 }
 
 U8 *TSLinkCvt1(U8 *link_st)
 {
   static CDoc *bible=NULL;
-  static U64 locks=0;
+  static I64 locks=0;
   U8 *result=NULL,*filename,*pattern;
   I64 i,num;
   if (link_st) {
@@ -117,11 +118,12 @@ U8 *TSLinkCvt1(U8 *link_st)
     Free(filename);
     Free(pattern);
   }
+  return result;
 }
 
 public CDoc *Doc2Html(CDoc *doc_in,
   U8 *html_header=NULL,
-  U8 *body_header=NULL,U8 *body_footer=NULL,BoolI8 line_anchors=TRUE,
+  U8 *body_header=NULL,U8 *body_footer=NULL,Bool line_anchors=TRUE,
   U8 (*link_cvt)(U8 *link_st)=&TSLinkCvt1)
 {
   CDocEntry *doc_e,*style,*doc_e2;
@@ -132,7 +134,7 @@ public CDoc *Doc2Html(CDoc *doc_in,
   CBGR p[16];
   GetVGAPalette4(p);
   CDoc *doc_out=DocNew;
-  BoolI8 unlock_doc_in=DocLock(doc_in),no_backward;
+  Bool unlock_doc_in=DocLock(doc_in),no_backward;
 
   for (i=0xF0;i<=0xFF;i++)
     LBts(style_bitmap,i);
@@ -315,7 +317,7 @@ public CDoc *Doc2Html(CDoc *doc_in,
 
 public U0 ToHtml(U8 *_in_name,U8 *_out_name=NULL,U8 *html_header=NULL,
   U8 *body_header=NULL,U8 *body_footer=NULL,I64 width=80,
-  BoolI8 line_anchors=TRUE,U8 (*link_cvt)(U8 *link_st)=&TSLinkCvt1)
+  Bool line_anchors=TRUE,U8 (*link_cvt)(U8 *link_st)=&TSLinkCvt1)
 //Supply your own link_cvt routine.
 {
   U8 *in_name,*out_name;

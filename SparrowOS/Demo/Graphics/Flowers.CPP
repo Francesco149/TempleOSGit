@@ -11,13 +11,13 @@ class Seed
   Stem *sub;
   I64 x,y;
   I64 height,type;
-  BoolI8 bloom;
+  Bool bloom;
 } *seed_root;
 
 
 F64 grow_speed=500.0,adjusted_grow_speed;
 
-BoolI64 GrowProbability(F64 prob)
+Bool GrowProbability(F64 prob)
 {
   return prob*adjusted_grow_speed>ToF64(RandU32)/MAX_U32;
 }
@@ -27,7 +27,7 @@ BoolI64 GrowProbability(F64 prob)
 /* <1> <1> (image) */
 
 
-I64 GrowStem(Stem *temps,I64 parent_x,I64 parent_y,I64 x0,I64 y0,BoolI8 bloom)
+I64 GrowStem(Stem *temps,I64 parent_x,I64 parent_y,I64 x0,I64 y0,Bool bloom)
 {
   I64 x,y,cnt=0,result=parent_y,height;
   Stem *temps1,*temps2=temps;
@@ -79,6 +79,7 @@ I64 GrowStem(Stem *temps,I64 parent_x,I64 parent_y,I64 x0,I64 y0,BoolI8 bloom)
     temps1->x=temps2->x+SignI64(RandI16);
     temps1->y=temps2->y+1;
   }
+  return result;
 }
 
 U0 GrowSeeds(Seed *tempe,I64,I64 h)
@@ -96,7 +97,7 @@ U0 DrawStem(CDC *dc,Seed *tempe,Stem *temps,Stem *parent,I64 w,I64 h)
   dc->color=GREEN;
   dc->pen_width=2;
   while (temps) {
-  //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,541] GrLine3() because it has pen_width
+  //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,544] GrLine3() because it has pen_width
     if (parent) {
       dc->color=GREEN;
       dc->pen_width=2;
@@ -144,7 +145,7 @@ U0 DrawSeeds(CDC *dc,Seed *tempe,I64 w,I64 h)
   Stem *temps;
   while (tempe) {
     CSpritePlot3(dc,tempe->x+w/2,h-tempe->y,0,__BIN_1);
-    //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,541] GrLine3() because it has pen_width
+    //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,544] GrLine3() because it has pen_width
     if (temps=tempe->sub) {
       dc->color=GREEN;
       dc->pen_width=2;
@@ -186,10 +187,11 @@ U0 SeedsDel(Seed *tempe)
 
 Seed *SeedNew()
 {
-  result=CAlloc(sizeof(Seed));
+  Seed *result=CAlloc(sizeof(Seed));
   result->sub=CAlloc(sizeof(Stem));
   result->type=RandU16&3;
   result->x=result->sub->x=RandI32%(Fs->win_pixel_width/3);
+  return result;
 }
 
 U0 InitFlowers()
@@ -206,7 +208,7 @@ U0 InitFlowers()
 
 U0 Flowers()
 {
-  U64 ch;
+  I64 ch;
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;

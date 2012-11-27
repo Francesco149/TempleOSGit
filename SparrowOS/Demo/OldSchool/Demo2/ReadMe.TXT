@@ -5,7 +5,7 @@ to OBJ files.
 Right-Click MakeFile.CPP.Z and click INCLUDE or
 do the following:
 
-1) Do a [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir() command
+1) Do a [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir() command
 
 2) Right-Click on OD1.PRJ.Z and click COMPILE.
    Right-Click on OD2.PRJ.Z and click COMPILE.

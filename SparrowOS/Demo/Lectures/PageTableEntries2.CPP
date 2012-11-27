@@ -1,4 +1,4 @@
-U64 *addr=VGA_GRAPHIC_MEM_BASE,
+I64 *addr=VGA_GRAPHIC_MEM_BASE,
    *pte_addr=MemPtAtPageTableEntry(addr),
    err_code=0,
    *reported_fault_addr;
@@ -16,7 +16,7 @@ U64 *addr=VGA_GRAPHIC_MEM_BASE,
 
 interrupt U0 PageFault()
 {
-  U64 reg *rbp=GetBasePtr,reg *rsp=GetStkPtr,reg *src=rbp,reg *dst=rbp+1;
+  I64 reg *rbp=GetBasePtr,reg *rsp=GetStkPtr,reg *src=rbp,reg *dst=rbp+1;
   *pte_addr|=1;
   InvlPg(addr);
   err_code=rbp[1];
@@ -33,13 +33,13 @@ asm {  MOV_RAX_CR2}
 
 U0 PageTableDemo2()
 {
-  U0 *old_idte=SetIDTEntry(I_PAGE_FAULT,&PageFault,0,IDTET_IRQ);
+  U8 *old_idte=IntEntrySet(I_PAGE_FAULT,&PageFault,0,IDTET_IRQ);
   err_code=0;
   *pte_addr &=~1; //Not present
   InvlPg(addr);
   WinMgrSync; //wait for VGA update
   WinMgrSync;
-  SetIDTEntry(I_PAGE_FAULT,old_idte,0,IDTET_IRQ);
+  IntEntrySet(I_PAGE_FAULT,old_idte,0,IDTET_IRQ);
   "Err Code:%X Addr:%X\n",err_code,reported_fault_addr;
 }
 

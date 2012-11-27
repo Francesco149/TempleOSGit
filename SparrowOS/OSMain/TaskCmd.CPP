@@ -1,6 +1,6 @@
 U0 TaskRstAwaitingMsg(CTask *task=NULL)
 { //Pop-ups get parent messages so wake-up our pop-ups if we got a msg.
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   if (TaskValidate(task)) {
     LBtr(&task->task_flags,TASKf_AWAITING_MSG);
@@ -14,8 +14,9 @@ U0 TaskRstAwaitingMsg(CTask *task=NULL)
 }
 
 CTaskCmd *TaskRqstQue(CTask *servant,CTask *master,
-		     U8 *data,U64 flags)
+		     U8 *data,I64 flags)
 {
+  CTaskCmd *result;
   if (!data || !TaskValidate(servant) ||
       master && !TaskValidate(master) ||
       servant->popup_task && !Bt(&servant->task_flags,TASKf_FILTER_INPUT))
@@ -41,19 +42,20 @@ CTaskCmd *TaskRqstQue(CTask *servant,CTask *master,
     TaskRstAwaitingMsg(servant);
     QueIns(result,servant->last_servant_cmd);
     LBtr(&servant->locked_flags,TASKLf_TASK_LOCK);
-    if (Bt(&flags,TASKCf_WAKE_MASTER) &&
-      TaskValidate(master)) {
-      LBts(&master->task_flags,TASKf_SUSPENDED);
+    if (Bt(&flags,TASKCf_WAKE_MASTER)) {
+      Suspend(master);
       Yield;
     }
   }
   PopFD;
+  return result;
 }
 
 CTaskCmd *TextInputQue(CTask *servant,CTask *master,
-		     U8 *data,U64 flags)
+		     U8 *data,I64 flags)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  CTaskCmd *result;
+  Bool old_preempt=Preempt(OFF);
   CTask *task;
   if (!data || !TaskValidate(servant) ||
       master && !TaskValidate(master) ||
@@ -95,10 +97,11 @@ CTaskCmd *TextInputQue(CTask *servant,CTask *master,
   }
   PopFD;
   Preempt(old_preempt);
+  return result;
 }
 
 CTaskCmd *QueMsg(CTask *_servant,CTask *master,
-		     I64 msg_code,I64 p1,I64 p2,U64 flags)
+		     I64 msg_code,I64 p1,I64 p2,I64 flags)
 {
   CTaskCmd *tempc1,*tempc;
   CTask *servant=_servant;
@@ -144,7 +147,7 @@ CTaskCmd *QueMsg(CTask *_servant,CTask *master,
   return tempc;
 }
 
-BoolI64 GetRqstResult(CTaskCmd *rqst=NULL,U64 *result=NULL)
+Bool GetRqstResult(CTaskCmd *rqst=NULL,I64 *_result=NULL)
 {
   CTaskCmd *tempc,*tempc1;
   PushFD;
@@ -158,8 +161,8 @@ BoolI64 GetRqstResult(CTaskCmd *rqst=NULL,U64 *result=NULL)
       QueRem(tempc);
       LBtr(&Fs->locked_flags,TASKLf_TASK_LOCK);
       PopFD;
-      if (result)
-	*result=tempc->result;
+      if (_result)
+	*_result=tempc->result;
       Free(tempc->data);
       Free(tempc);
       return TRUE;
@@ -191,7 +194,7 @@ U0 TaskWait(CTask *task=NULL)
   }
 }
 
-U0 PostMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0)
+U0 PostMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,I64 flags=0)
 {
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
@@ -202,20 +205,20 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0)
   }
 }
 
-U0 SendMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,U64 flags=0)
+U0 SendMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,I64 flags=0)
 {
   PostMsg(task,msg_code,p1,p2,flags);
   TaskWait(task);
 }
 
-U0 Msg(I64 msg_code,I64 p1,I64 p2,U64 flags=0)
+U0 Msg(I64 msg_code,I64 p1,I64 p2,I64 flags=0)
 {
   PostMsg(Fs,msg_code,p1,p2,flags);
 }
 
-U64 ServantCmdsHandler(CTask *task=NULL)
+I64 ServantCmdsHandler(CTask *task=NULL)
 {
-  U64 cnt=0,old_flags=GetFlags;
+  I64 cnt=0,old_flags=GetFlags;
   CTaskCmd *tempc,*tempc1;
   CTask *master;
   if (!task) task=Fs;
@@ -253,7 +256,7 @@ start_over:
 	Bt(&master->task_flags,TASKf_USER))
 	  sys_focus_task=master;
 	if (Bt(&tempc->flags,TASKCf_WAKE_MASTER))
-	  LBtr(&master->task_flags,TASKf_SUSPENDED);
+	  Suspend(master,FALSE);
 	if (!Bt(&tempc->flags,TASKCf_EXIT_ON_COMPLETE))
 	  goto start_over;
 	else {
@@ -284,8 +287,9 @@ I64 Adam(U8 *fmt,...)
 //Sends text to the adam task which gets
 //compiled and run.
 {
+  I64 result;
   U8 *st=SPrintFJoin(NULL,fmt,argc,argv);
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CTaskCmd *tempc;
   if (Fs==adam_task) {
     tempc=TaskRqstQue(adam_task,Fs,st,0);
@@ -297,6 +301,7 @@ I64 Adam(U8 *fmt,...)
   Preempt(old_preempt);
   GetRqstResult(tempc,&result);
   Free(st);
+  return result;
 }
 
 U0 AdamLog(U8 *fmt,...)
@@ -364,7 +369,7 @@ I64 ServantUser(U8 *fmt,...)
 //which gets compiled and run.
 {
   U8 *st=SPrintFJoin(NULL,fmt,argc,argv);
-  U64 result=0;
+  I64 result=0;
   CTaskCmd *tempc;
   CTask *task=Spawn(&ServantUserCmdLine,NULL,"Servant",Fs);
   Fs->popup_task=task;
@@ -373,6 +378,7 @@ I64 ServantUser(U8 *fmt,...)
   Fs->popup_task=NULL;
   Kill(task,FALSE);
   Free(st);
+  return result;
 }
 
 U0 AutoStr(U8 *fmt,...)

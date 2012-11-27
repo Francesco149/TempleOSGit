@@ -15,140 +15,185 @@
 	
 +] Level 1: USER HELP
   
-  +] Keyboard Ctrls
-      
-    Enter	Right-click menu
-    Space Bar	Edit (view)
-    Esc		Save and exit
-    Shift-Esc	Abort
-    Ctrl-m	Personal Menu
-    Windows Key Pull-down Menu
++] Keyboard Ctrls
     
-    Other keys: Key Map
+Enter	Right-click menu
+Space Bar	Edit (view)
+Esc		Save and exit
+Shift-Esc	Abort
+Ctrl-m	Personal Menu
+Windows Key Pull-down Menu
+
+Other keys: Key Map
 `KeyMap;View;
 `
 
+
+  +] Mouse Ctrls
     
-      +] Mouse Ctrls
-      
-    Right-Click	Right-click menu
-    Left-Click	Edit (view)
-    Double-Left	Save and exit
-    Double-Right Abort
-    Top of Screen Pull-down menu
+Right-Click	Right-click menu
+Left-Click	Edit (view)
+Double-Left	Save and exit
+Double-Right Abort
+Top of Screen Pull-down menu
+
+  [::/SparrowOS/Doc/Glossary.TXT.Z,1] Glossary
+[::/SparrowOS/Doc/TSZ.TXT.Z,1] TSZ Window's Utility
+[::/SparrowOS/Doc/Tips.TXT.Z,1] Tips on Using SparrowOS
+[::/SparrowOS/Doc/Quirks.TXT.Z,1] SparrowOS Quirks
+
+ <1> (image)	This button on the wall paper
+	starts a terminal window.
+
+
++] DIRECTORY STRUCTURE
     
-      [::/SparrowOS/Doc/Glossary.TXT.Z,1] Glossary
-  [::/SparrowOS/Doc/TSZ.TXT.Z,1] TSZ Window's Utility
-  [::/SparrowOS/Doc/Tips.TXT.Z,1] Tips on Using SparrowOS
-  [::/SparrowOS/Doc/Quirks.TXT.Z,1] SparrowOS Quirks
-  
-   <1> (image)	This button on the wall paper
-  	starts a terminal window.
-  
-  
-  +] DIRECTORY STRUCTURE
-      
-    /SparrowOS/Accts Each subdirectory is an acct.  When you boot, you can select an acct to login to, unless you compile OSMain soas to pick one.  Your acct directory is your HOME directory and all your user data should be placed in here to ease backing-up your data.  When you Install an application it will create a subdirectory of your HOME directory for storage.
+/SparrowOS/Accts Each subdirectory is an acct.  When you boot, you can select
+    an acct to login to, unless you compile OSMain soas to pick one.  Your acct
+    directory is your HOME directory and all your user data should be placed in
+    here to ease backing-up your data.  When you Install an application it will
+    create a subdirectory of your HOME directory for storage.
+
+/SparrowOS/Apps Applications are placed in subdirectories of /SparrowOS/Apps.
+     Applications should have a file called Install.CPP.Z which will install the
+    app for the current user acct.  The file, Load.CPP.Z will load the
+    application into mem.  The file, Run.CPP.Z, will usually load and execute the
+    app.  To add an app to your personal menu, use <CTRL-L>, insert a macro with
+    the PopUp option checked and invoke the Run.CPP.Z file.
+
+/SparrowOS/Demo Here you can find lots of sample code to do various things.
+
+/SparrowOS/Doc Here you can find documentation.
+
+/SparrowOS/OSMain The core of the operating system is found here.  Since
+    priviledge levels are not used, calling it a "kernel" would be confusing, but
+    that's what it is.  It is statically compiled by
+    [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().  It is loaded by
+    the boot loader and must fit in 640K.
+
+/SparrowOS/Compiler The compiler module src code is found here.  The compiler
+    is statically compiled to produce a binary file which is loaded at boot.  It
+    is also statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165]
+    InstallBoot().
+
+/SparrowOS/Adam The non-kernel part of the operating system is found here. 
+    It is JIT compiled during boot.
+
+/0000Boot directory and the 0000OSMain.BIN.C file are named so that they are
+    first in alphabetical order and, therefore, at a predictable CD/DVD block
+    address.  The [::/SparrowOS/Adam/Boot/BootCD.CPP.Z,1] CD/DVD Boot Loader will
+    find 0000OSMain.BIN.C at [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] Block
+    #0x16.  The SparrowOS boot loader can be used with http://www.magiciso.com if
+    you place 0000OSMain.BIN.C in the right spot.  OldMBR.BIN.C and
+    BootMHD2.BIN.C will be found in /0000Boot if you run
+    [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,291] InstallMasterBoot() to install a
+    hard-drive master boot loader.
+
+  +] DOLLAR SIGN CMDS
     
-    /SparrowOS/Apps Applications are placed in subdirectories of /SparrowOS/Apps.  Applications should have a file called Install.CPP.Z which will install the app for the current user acct.  The file, Load.CPP.Z will load the application into mem.  The file, Run.CPP.Z, will usually load and execute the app.  To add an app to your personal menu, use <CTRL-L>, insert a macro with the PopUp option checked and invoke the Run.CPP.Z file.
+[::/SparrowOS/Doc/Dollar.TXT.Z,1] Dollar Sign Cmds are rich-text cmds.  The
+    editor, compiler, assembler and operating system are seamlessly equiped to
+    handle SparrowOS rich text.  Cmds like
+    [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir() and
+    [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() can output links to the cmd line.
+
+  +] CMD PROMPT
     
-    /SparrowOS/Demo Here you can find lots of sample code to do various things.
-    
-    /SparrowOS/Doc Here you can find documentation.
-    
-    /SparrowOS/OSMain The core of the operating system is found here.  Since priviledge levels are not used, calling it a "kernel" would be confusing, but that's what it is.  It is statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().  It is loaded by the boot loader and must fit in 640K.
-    
-    /SparrowOS/Compiler The compiler module src code is found here.  The compiler is statically compiled to produce a binary file which is loaded at boot.  It is also statically compiled by [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot().
-    
-    /SparrowOS/Adam The non-kernel part of the operating system is found here.  It is JIT compiled during boot.
-    
-    /0000Boot directory and the 0000OSMain.BIN.C file are named so that they are first in alphabetical order and, therefore, at a predictable CD/DVD block address.  The [::/SparrowOS/Adam/Boot/BootCD.CPP.Z,1] CD/DVD Boot Loader will find 0000OSMain.BIN.C at [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] Block #0x16.  The SparrowOS boot loader can be used with http://www.magiciso.com if you place 0000OSMain.BIN.C in the right spot.  OldMBR.BIN.C and BootMHD2.BIN.C will be found in /0000Boot if you run [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot() to install a hard-drive master boot loader.
-    
-      +] DOLLAR SIGN CMDS
-      
-    [::/SparrowOS/Doc/Dollar.TXT.Z,1] Dollar Sign Cmds are rich-text cmds.  The editor, compiler, assembler and operating system are seamlessly equiped to handle SparrowOS rich text.  Cmds like [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir() and [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() can output links to the cmd line.
-    
-      +] CMD PROMPT
-      
-    The SparrowOS cmd line interface is based on C/C++. Explore the ".CPP.Z" files.  A cmd which takes no args may be executed by typing the name and a semicolon.  Cmds with args require placing the arg in parentheses like a function call.
-    
-    Dir("*");
+The SparrowOS cmd line interface is based on C/C++. Explore the ".CPP.Z"
+    files.  A cmd which takes no args may be executed by typing the name and a
+    semicolon.  Cmds with args require placing the arg in parentheses like a
+    function call.
+
+Dir("*");
 `Dir("*");`
  will list files in the current directory.
-    
-    Dir;
+
+Dir;
 `Dir;`
  uses default of "*".
-    
-    Cd("::/SparrowOS/Apps");
+
+Cd("::/SparrowOS/Apps");
 `Cd("::/SparrowOS/Apps");`
  will change directories.
+
+Directories are referenced with "/" not "\".  The Boot drive is referred to
+    with "::".  Other drives are referred to by a letter and a colon.  Your user
+    acct directory is referred to with "HOME".
+
+If a file is not found in one directory, all it's parents are searched. 
+
+Ed("FILENAME.TXT.Z"); Invokes the editor. See
+    [C:/SparrowOS/Adam/Doc/Doc.CPP.Z,44] DOC LINK TYPES.
+
+
+Some cmds like [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() take a
+    "find_files_mask".  They begin with the name of a dir tree and end with a
+    list of filename masks.  See [C:/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50]
+    FilesFindMatch().
+
+Grep("pattern","/SparrowOS/Demo/*.CPP.Z;*.TXT.Z;");
+
+Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2084] TEXT_FILE_MASK and
+    [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2083] SRC_FILE_MASK.
+
+  +] BURNING CD-ROMs/DVDs
     
-    Directories are referenced with "/" not "\".  The Boot drive is referred to with "::".  Other drives are referred to by a letter and a colon.  Your user acct directory is referred to with "HOME".
-    
-    If a file is not found in one directory, all it's parents are searched. 
-    
-    Ed("FILENAME.TXT.Z"); Invokes the editor. See [C:/SparrowOS/Adam/Doc/Doc.CPP.Z,44] DOC LINK TYPES.
-    
-    
-    Some cmds like [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() take a "find_files_mask".  They begin with the name of a dir tree and end with a list of filename masks.  See [C:/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50] FilesFindMatch().
-    
-    Grep("pattern","/SparrowOS/Demo/*.CPP.Z;*.TXT.Z;");
-    
-    Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK.
-    
-      +] BURNING CD-ROMs/DVDs
-      
-    0) Prepare a directory with the files you wish to burn.
-    1) Use [C:/SparrowOS/Adam/Dsk/DskCDDVD.CPP.Z,375] CDFileCreate() to make an ISO image file.
-    2) Use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,280] CDImageWrite() to burn an ISO file onto a CD or DVD.
-    
-    [::/SparrowOS/Doc/FileMgr.TXT.Z,1] Bootable CD-ROMs 
-    
-      
-  +] Level 2: ADMIN HELP
+0) Prepare a directory with the files you wish to burn.
+1) Use [C:/SparrowOS/Adam/Dsk/DskCDDVD.CPP.Z,375] CDFileCreate() to make an
+    ISO image file.
+2) Use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,279] CDImageWrite() to burn an
+    ISO file onto a CD or DVD.
+
+[::/SparrowOS/Doc/FileMgr.TXT.Z,1] Bootable CD-ROMs 
+
   
-  Use [C:/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,183] Mount() to mount disk drives.  
++] Level 2: ADMIN HELP
   
-  [::/SparrowOS/Doc/Install.TXT.Z,1] Installing
-  [::/SparrowOS/Doc/GuideLines.TXT.Z,1] Acct Files
+Use [C:/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,183] Mount() to mount disk
+  drives.  
+
+[::/SparrowOS/Doc/Install.TXT.Z,1] Installing
+[::/SparrowOS/Doc/GuideLines.TXT.Z,1] Acct Files
+
+[::/SparrowOS/OSMain/Adam1.CPP.Z,1] the SparrowOS equivalent of the
+  AUTOEXEC.BAT.
+
++] Level 3: PROGRAMMER HELP
   
-  [::/SparrowOS/OSMain/Adam1.CPP.Z,1] the SparrowOS equivalent of the AUTOEXEC.BAT.
+[::/SparrowOS/Doc/GuideLines.TXT.Z,1] Guidelines
+[::/SparrowOS/Doc/Differences.TXT.Z,1] Differences from C/C++
+[::/SparrowOS/Doc/Graphics.TXT.Z,1] Graphics
+[::/SparrowOS/Doc/MultiTasking.TXT.Z,1] Multitasking
+[::/SparrowOS/Demo/Doc/FileRead.CPP.Z,1] Doc Documents
+[::/SparrowOS/Demo/Lectures/AndNotMod.CPP.Z,1] Lectures/AndNotMod.CPP.Z
+[::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z,1] Lectures/FixedPoint.CPP.Z
+[::/SparrowOS/Demo/Lectures/Uncached.CPP.Z,1] Lectures/Uncached.CPP.Z
+[::/SparrowOS/Demo/Lectures/Optimization.CPP.Z,1] Lectures/Optimization.CPP.Z
+[::/SparrowOS/Demo/Lectures/ScreenMemory.CPP.Z,1] Lectures/ScreenMemory.CPP.Z
+[::/SparrowOS/Demo/Lectures/GraphicsCPULoad.CPP.Z,1]
+  Lectures/GraphicsCPULoad.CPP.Z
+[::/SparrowOS/Demo/Lectures/InterruptDemo.CPP.Z,1]
+  Lectures/InterruptDemo.CPP.Z
+[::/SparrowOS/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP.Z
+
++] Level 4: SYSTEM PROGRAMMER HELP
   
-  +] Level 3: PROGRAMMER HELP
-  
-  [::/SparrowOS/Doc/GuideLines.TXT.Z,1] Guidelines
-  [::/SparrowOS/Doc/Differences.TXT.Z,1] Differences from C/C++
-  [::/SparrowOS/Doc/Graphics.TXT.Z,1] Graphics
-  [::/SparrowOS/Doc/MultiTasking.TXT.Z,1] Multitasking
-  [::/SparrowOS/Demo/Doc/FileRead.CPP.Z,1] Doc Documents
-  [::/SparrowOS/Demo/Lectures/AndNotMod.CPP.Z,1] Lectures/AndNotMod.CPP.Z
-  [::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z,1] Lectures/FixedPoint.CPP.Z
-  [::/SparrowOS/Demo/Lectures/Uncached.CPP.Z,1] Lectures/Uncached.CPP.Z
-  [::/SparrowOS/Demo/Lectures/Optimization.CPP.Z,1] Lectures/Optimization.CPP.Z
-  [::/SparrowOS/Demo/Lectures/ScreenMemory.CPP.Z,1] Lectures/ScreenMemory.CPP.Z
-  [::/SparrowOS/Demo/Lectures/GraphicsCPULoad.CPP.Z,1] Lectures/GraphicsCPULoad.CPP.Z
-  [::/SparrowOS/Demo/Lectures/InterruptDemo.CPP.Z,1] Lectures/InterruptDemo.CPP.Z
-  [::/SparrowOS/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP.Z
-  
-  +] Level 4: SYSTEM PROGRAMMER HELP
-  
-  [::/SparrowOS/Doc/SysPgmGuide.TXT.Z,1] System Programming Guide-Lines
-  [::/SparrowOS/OSMain/Hash1a.CPP.Z,1] Hash Tables
-  [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] Keyboard Handling
-  [::/SparrowOS/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
-  [::/SparrowOS/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2
-  [::/SparrowOS/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP.Z
-  [C:/SparrowOS/Adam/MemRep.CPP.Z,184] MemRep
-  [::/SparrowOS/Adam/WallPaper.CPP.Z,1] WallPaper.CPP.Z
-  [::/SparrowOS/Doc/NewFileSystem.TXT.Z,1] Adding a New File System
-  [::/SparrowOS/OSMain/Scheduler.CPP.Z,1] Scheduler.CPP.Z
-  [::/SparrowOS/Adam/Doc/Doc.CPP.Z,1] Doc
-  [::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z,1] MiniGrLib
-  [::/SparrowOS/Demo/Lectures/MiniCompiler.CPP.Z,1] MiniCompiler
-  [::/SparrowOS/Compiler/BackEnd.CPP.Z,1] Backend
-  
-  
+[::/SparrowOS/Doc/SysPgmGuide.TXT.Z,1] System Programming Guide-Lines
+[::/SparrowOS/OSMain/Hash1a.CPP.Z,1] Hash Tables
+[::/SparrowOS/Doc/KeyBoard.TXT.Z,1] Keyboard Handling
+[::/SparrowOS/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
+[::/SparrowOS/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2
+[::/SparrowOS/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP.Z
+[C:/SparrowOS/Adam/MemRep.CPP.Z,190] MemRep
+[::/SparrowOS/Adam/WallPaper.CPP.Z,1] WallPaper.CPP.Z
+[::/SparrowOS/Doc/NewFileSystem.TXT.Z,1] Adding a New File System
+[::/SparrowOS/OSMain/Scheduler.CPP.Z,1] Scheduler.CPP.Z
+[::/SparrowOS/Adam/Doc/Doc.CPP.Z,1] Doc
+[::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z,1] MiniGrLib
+[::/SparrowOS/Demo/Lectures/MiniCompiler.CPP.Z,1] MiniCompiler
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1] Backend
+
+
 [AutoFile,1] AutoFile
 [Bit,1] Bit
 [Boot,1] Boot
@@ -189,7 +234,7 @@
 [Profiler,1] Profiler
 [PCI,1] PCI
 [Snd,1] Sound
-[CTask,1] CTask
+[Task,1] Task
 [Time,1] Time
 [Training,1] Training
 [Windows,1] Windows

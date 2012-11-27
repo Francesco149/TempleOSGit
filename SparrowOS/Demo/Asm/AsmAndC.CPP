@@ -18,7 +18,7 @@ _BEEPS::
 	MOV	RCX,U64 SF_ARG1[RBP]  //[::/SparrowOS/OSMain/Adam1a.HPP.Z,1] SF_ARG1
 
 @@05:	PUSH	RCX
-//U0 Beep(U64 freq=500,BoolI8 busy=FALSE)
+//U0 Beep(I64 freq=500,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	500	//Hz
 	CALL	Beep
@@ -34,12 +34,12 @@ _BEEPS::
 //_extern binds a asm sym to a function.
 //My convention is to put an underscore
 //on C callable routines.
-_extern _BEEPS U0 Beeps(U64 cnt);
+_extern _BEEPS U0 Beeps(I64 cnt);
 
 I64 AsmAndC()
 {
   I64 noreg i;	//Normally this would be stored in a reg
-		//Check with [C:/SparrowOS/Adam/Dbg2a.CPP.Z,241] Uf("AsmAndC").
+		//Check with [C:/SparrowOS/Adam/Dbg2a.CPP.Z,240] Uf("AsmAndC").
 
   i=PmtI64("Num of beeps 1-5 (%d):",3,1,5);
   Beeps(i);
@@ -52,7 +52,7 @@ USE64	//Defaults to 64, but this is a good habit.
 			    //You better preserve the rest.
 
 @@05:	PUSH	RCX
-//U0 Snd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0);
+//U0 Snd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0);
 	MOV	RAX,1.0	//amplitude
 	PUSH	RAX
 	PUSH	WF_SQUARE

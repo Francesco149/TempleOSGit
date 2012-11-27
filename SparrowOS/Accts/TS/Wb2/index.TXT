@@ -1,0 +1,115 @@
+                                  SparrowOS
+                            God's Official Temple
+
+Complete OS with compiler built in [::/SparrowOS/Misc/Bible.TXT.Z,85266] 3
+days or -0.5 years, as it may be.  
+Includes mechanism for doing [::/SparrowOS/Apps/HolySpirit/HSNotes.TXT.Z,1]
+Tongues.  You no longer need to be mocked, 
+Christians, God is in residence!  Run
+[::/SparrowOS/Apps/AfterEgypt/AfterEgypt.CPP.Z,1] AfterEgypt or
+[::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z,1] Pilgrim to hear from God, 
+as long as you hold-up your end of the conversation.  Seriously!  Better than 
+A.I.! 
+
+SparrowOS is an x86_64, multi-tasking, multi-cored, public domain, open 
+source, ring-0-only, single-address-map (identity-mapped), non-networked, PC 
+operating system for recreational programming.
+
+1) Download the free SparrowOSCD.ISO (24.0 MB).
+2) Download the free VMWare Player (Pick the first ".exe" to download.  The 
+VMWare web page takes a long time to load -- move mouse around or something.)
+3) Create an "Other 64-Bit" virtual machine. Aim its CD-ROM to 
+SparrowOSCD.ISO.
+4) Play the virtual machine.
+5) Log-in as "Install".
+6) Download WinImage to transfer files in and out.  It's free for 30 days.
+
+If you want to install my personal version in VMWare...
+1b) Download the free SparrowOSTS.ISO (24.7 MB).
+5b) Type >TSInstall; or >TSUpdate; at the command-line.
+7b) See MakeBackUp to reproduce the ISO's in F:/Wb.  It makes this website, 
+too.
+
+A troll might ask, "Why not just use DOS?  It was ring-0-only and 
+single-address-map."  Actually, they wouldn't because many people would say, 
+"Cool idea!  I'm gonna dust-off DOS right now and have some fun!"  DOS is 
+16-bit with segmentation, though, which is awful.  SparrowOS is 64-bit, 
+non-segmented and multi-cored.  It's like a modern, souped-up, multi-tasking, 
+cross between DOS and a Commodore 64.  It has a C64-like shell with a
+[::/SparrowOS/Doc/Differences.TXT.Z,1] dialect 
+of C/C++ instead of BASIC.  It was written from scratch, and not even ASCII 
+was sacred -- it has 8-bit unsigned character source code to support European 
+languages, and source code has graphics.
+
+A troll might say, "But, it can crash!"  Don't give me that.  We all used DOS 
+for years and loved it.  Computers even had a reset switch!  Just think of
+the 
+power of ring 0, muhahahaha!  Think of the speed and simplicity of 
+ring-0-only and identity-mapping.  It's only
+[::/SparrowOS/Accts/TS/Wb2/LineCnt.TXT.Z,1] 137,965 lines of code, including 
+the compiler and can swap tasks in half a microsecond because it doesn't mess 
+with page tables or privilege levels.  Inter-process communication is 
+effortless because every task can access every other task's memory.
+
+It's fun having access to everything.  When I was a teenager, I had a book, 
+Mapping the Commodore 64, that told what every location in memory did.  I 
+liked copying the ROM to RAM and poking around at the ROM BASIC's variables.  
+Everybody directly poked the hardware ports.  SparrowOS is simpler than Linux 
+and you can have hours of fun tinkering because all memory and ports are 
+always accessible.  Memory is identity-mapped at all the times, so you can 
+easily modify any task's memory from any other task.  You can access all disk 
+blocks, too.  I had a blast using a C64 disk block editor to modify 
+directories to un-delete files.  Maybe, you want to play with a raw-block 
+database, or make your own file system?
+
+I wrote all [::/SparrowOS/Accts/TS/Wb2/LineCnt.TXT.Z,1] 137,965 lines of
+SparrowOS over the last -0.5 years, full-time.  
+It was called at various times, "Hoppy", "The J Operating System" and "
+LoseThos".  Here are my college transcripts.  I've been a professional 
+operating system developer since 1990 when I was hired to work on 
+Ticketmaster's VAX OS.
+
+
+
+                      Download SparrowOS V1.02 (24.0 MB)
+
+Burn a CD/DVD from the SparrowOSCD.ISO and boot it or
+run it in VMWare or VirtualBox aiming the CD/DVD drive at SparrowOSCD.ISO or
+for QEMU type:
+>qemu-system-x86_64 -m 500 -cdrom SparrowOSCD.ISO -boot d
+
+                       Download SimStructure (7.80 MB)
+
+                           Product Key: L00-W10-M70
+
+[::/SparrowOS/Accts/TS/Wb2/ScreenShots.TXT.Z,1] Screen Shots
+
+[::/SparrowOS/Doc/Welcome.TXT.Z,1] Introduction
+
+[::/SparrowOS/Doc/Mysteries.TXT.Z,1] F.A.Q.
+
+[::/SparrowOS/Doc/HelpIndex.TXT.Z,1] SparrowOS Help
+
+[::/SparrowOS/Accts/TS/Wb2/LineCnt.TXT.Z,1] Source Code By File
+
+Source Code By Symbol
+
+Source Code By Address
+
+Source Code (Raw)
+
+[::/SparrowOS/Accts/TS/Wb2/Hymns.TXT.Z,1] Hymn Videos
+
+[::/SparrowOS/Doc/ChangeLog.TXT.Z,1] Change Log
+
+SparrowOS Community
+
+[C:/SparrowOS/Doc/TrivialSolutions.TXT.Z,1] About Trivial Solutions
+
+
+* "Commodore 64" was a trademark of Commodore Business Machines.
+* "Linux" is probably a trademark owned by Linus Torvalds.
+* "VMWare" is a trademark of VMWare, Inc.
+* "VirtualBox" is a trademark of Oracle.
+* "DOS" is a trademark of MicroSoft Corp.
+* "WinImage" is a trademark of Gilles Vollant.

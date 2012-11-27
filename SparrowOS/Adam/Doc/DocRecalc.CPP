@@ -21,7 +21,7 @@ U0 LockToPage(CDoc *doc)
 
 public U0 DocCenter(CDoc *doc=NULL,I64 recalc=DOC_RECALC_ALL)
 {
-  BoolI8 unlock;
+  Bool unlock;
   CTask *task;
   if (!doc) {
     doc=DocCur;
@@ -79,7 +79,7 @@ U0 DocBorderListDraw(CDoc *doc)
   CDoc *templ=doc;
   U8 *ptr;
   CD3I64 saved_scroll;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   while (templ && templ->doc_signature==DOC_SIGNATURE_VAL) {
     y+=StrLen(templ->desc)+1;
     templ=templ->parent_doc;
@@ -105,28 +105,25 @@ U0 DocBorderListDraw(CDoc *doc)
 U8 doc_spaces[9]=
 {0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0};
 
-U0 DocRecalc(CDoc *doc,BoolI8 has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
+U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
 {
-  I64 i,ii,j,k,x,x0,y,y0,D,d2,col,col2,best_col=0,best_d=MAX_I64,xx,yy,zz;
-  I64 num_entries=0;
+  I64 i,ii,j,k,x,x0,y,y0,D,d2,col,col2,best_col=0,best_d=MAX_I64,xx,yy,zz,
+      num_entries=0,ijif,cur_u8_attr,temp_u32_attr,
+      hide_collapsed[2],
+      cursor_y=MIN_I64,left_margin,right_margin,
+      y_plot_top,y_plot_bottom,
+      top,left,bottom,right,width,height,scroll_x,scroll_y,
+      pixel_top,pixel_left;
   CDocEntry reg *doc_e,reg *doc_e2,*best_do_e,*alias,*next_clear_found=NULL;
   CDocBin *tempb;
   CDocSettings *s;
-  I64 ijif;
-  U64 cur_u8_attr,temp_u32_attr;
-  U8 *bptr;
-  BoolI8 del_cl,skipped_update,tree_collapsed,
+  Bool del_cl,skipped_update,tree_collapsed,
 	 resize=FALSE,same_win,more=FALSE,find_cursor=FALSE,
 	 blink_flag,full_refresh=TRUE,unlock;
-  U64 hide_collapsed[2];
   CTask *win_task,*mem_task;
   CDC *dc;
-  I64 cursor_y=MIN_I64,left_margin,right_margin;
-  I64 y_plot_top,y_plot_bottom;
-  U8 *ptr,buf[136],ch;
+  U8 *bptr,*ptr,buf[136],ch;
   U32 *u32_ptr,*hl;
-  I64 top,left,bottom,right,width,height,scroll_x,scroll_y;
-  I64 pixel_top,pixel_left;
   I32 *depth_buf=NULL;
   CWinScroll *vss,*hss;
   CHashDefineStr *temph;
@@ -1649,8 +1646,8 @@ skip:
 public U0 DocInsSafe(CDoc *doc,U8 *st)
 { //This is necessary when hidden text might screw-up
   //inserts.  It does them all-at-once.
-  BoolI8 unlock;
-  U64 old_flags;
+  Bool unlock;
+  I64 old_flags;
   if (!doc) {
     doc=DocCur;
     if (!doc)
@@ -1668,7 +1665,7 @@ public U0 DocInsSafe(CDoc *doc,U8 *st)
 
 public U0 DocBottom(CDoc *doc=NULL)
 {
-  BoolI8 unlock;
+  Bool unlock;
   if (!doc) {
     doc=DocCur;
     if (!doc)
@@ -1684,7 +1681,7 @@ public U0 DocBottom(CDoc *doc=NULL)
 
 public U0 DocTop(CDoc *doc=NULL)
 {
-  BoolI8 unlock;
+  Bool unlock;
   if (!doc) {
     doc=DocCur;
     if (!doc)
@@ -1700,7 +1697,7 @@ public U0 DocTop(CDoc *doc=NULL)
 
 public U0 DocClear(CDoc *doc=NULL)
 {
-  BoolI8 unlock;
+  Bool unlock;
   if (!doc) {
     doc=DocCur;
     if (!doc)
@@ -1714,7 +1711,7 @@ public U0 DocClear(CDoc *doc=NULL)
     DocUnlock(doc);
 }
 
-public BoolI64 DocCursor(BoolI8 show=OFF,CDoc *doc=NULL)
+public Bool DocCursor(Bool show=OFF,CDoc *doc=NULL)
 {
   if (!doc) {
     doc=DocCur;
@@ -1724,7 +1721,7 @@ public BoolI64 DocCursor(BoolI8 show=OFF,CDoc *doc=NULL)
   return !LBEqu(&doc->flags,DOCf_HIDE_CURSOR,!show);
 }
 
-public BoolI64 DocScroll(BoolI8 val=OFF,CDoc *doc=NULL)
+public Bool DocScroll(Bool val=OFF,CDoc *doc=NULL)
 {
   if (!doc) {
     doc=DocCur;
@@ -1734,20 +1731,21 @@ public BoolI64 DocScroll(BoolI8 val=OFF,CDoc *doc=NULL)
   return !LBEqu(&doc->flags,DOCf_NO_SCROLL_BARS,!val);
 }
 
-U64 DocBkColor(CDoc *doc,U64 col)
+I64 DocBkColor(CDoc *doc,I64 col)
 {
   CDocSettings *s=&doc->settings_root;
-  result=doc->start_text_attr>>4&15;
+  I64 result=doc->start_text_attr>>4&15;
   col=(col&15)<<4;
   doc->start_text_attr=doc->start_text_attr&15+col;
   s->cur_text_attr  =s->cur_text_attr&15+col;
   s->dft_text_attr  =s->dft_text_attr&15+col;
+  return result;
 }
 
-public U64 DocCurAttr(U64 attr=WHITE<<4+BLUE,CTask *task=NULL)
+public I64 DocCurAttr(I64 attr=WHITE<<4+BLUE,CTask *task=NULL)
 {
   CDoc *doc;
-  result=0;
+  I64 result=0;
   if (!task) task=Fs;
   result=task->text_attr;
   if (doc=DocCur(task)) {
@@ -1756,14 +1754,15 @@ public U64 DocCurAttr(U64 attr=WHITE<<4+BLUE,CTask *task=NULL)
     DocBkColor(doc,attr>>4);
   }
   task->text_attr=attr;
+  return result;
 }
 
-public U64 DocAuxAttr(U64 attr=WHITE<<4+BLUE,CTask *task=NULL)
+public I64 DocAuxAttr(I64 attr=WHITE<<4+BLUE,CTask *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1315] DOCF_ATTR_BY_PRT or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1316] DOCF_ATTR_BY_FILENAME flag is probably set
-  //which means [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,312] SetDrvTextAttr() is overriding it.
+  //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1307] DOCF_ATTR_BY_PRT or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1308] DOCF_ATTR_BY_FILENAME flag is probably set
+  //which means [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,314] SetDrvTextAttr() is overriding it.
   CDoc *doc;
-  result=0;
+  I64 result=0;
   if (!task) task=Fs;
   result=task->border_attr;
   if (doc=DocAux(task)) {
@@ -1772,12 +1771,13 @@ public U64 DocAuxAttr(U64 attr=WHITE<<4+BLUE,CTask *task=NULL)
     DocBkColor(doc,attr>>4);
   }
   task->border_attr=attr;
+  return result;
 }
 
-public U0 DocCollapse(BoolI8 collapse=TRUE,CDoc *doc=NULL)
+public U0 DocCollapse(Bool collapse=TRUE,CDoc *doc=NULL)
 {
   CDocEntry *doc_e;
-  BoolI8 unlock;
+  Bool unlock;
   if (!doc) {
     doc=DocCur;
     if (!doc)
@@ -1799,20 +1799,18 @@ public U0 DocCollapse(BoolI8 collapse=TRUE,CDoc *doc=NULL)
 U0 DocUpdateTaskDocs(CTask *task)
 {
   CPrt *p;
-  U64 attr=task->border_attr;
+  I64 attr=task->border_attr;
   CDoc *doc=task->last_doc;
   CD3I64 saved_scroll;
-  BoolI8 old_preempt;
+  Bool old_preempt=Preempt(OFF);
   while (doc!=(&task->next_doc)(U8 *)-offset(CDoc.next_doc)) {
-    if (!(doc->flags&DOCF_DONT_SHOW)) {
+    if (!(doc->flags&DOCF_DONT_SHOW)&&!Bt(&doc->locked_flags,DOClf_LOCKED)) {
       if (doc->flags&DOCF_AUX_DOC) {
 	if (attr&0xF!=attr>>4)
 	  doc->start_text_attr=attr;
-	old_preempt=Preempt(OFF);
 	WinScrollNull(task,&saved_scroll);
 	DocRecalc(doc,FALSE,DOC_RECALC_TO_SCREEN);
 	WinScrollRestore(task,&saved_scroll);
-	Preempt(old_preempt);
       } else {
 	if (doc->flags&DOCF_ATTR_BY_PRT) {
 	  p=task->cur_prt;
@@ -1830,10 +1828,13 @@ U0 DocUpdateTaskDocs(CTask *task)
 	}
 	if (attr&0xF!=attr>>4)
 	  task->border_attr=attr;
+	Preempt(old_preempt);
 	DocRecalc(doc,TRUE,DOC_RECALC_TO_SCREEN);
+	Preempt(OFF);
       }
     }
     doc=doc->last_doc;
   }
+  Preempt(old_preempt);
 }
 #help_index "Doc"

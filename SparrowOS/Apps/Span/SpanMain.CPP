@@ -10,7 +10,7 @@ F64 Cost(CMathODE *ode)
 {
   MyMass   *tempm;
   MySpring *temps;
-  result=0;
+  F64 result=0;
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     result+=tempm->cost;
@@ -21,20 +21,19 @@ F64 Cost(CMathODE *ode)
     result+=temps->cost;
     temps=temps->next;
   }
+  return result;
 }
 
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  BoolI8 old_suspend1,old_suspend2;
+  Bool old_suspend1,old_suspend2;
   I64 i,j;
   MyMass   *tempm;
   MySpring *temps;
 
-  if (TaskValidate(task))
-    old_suspend1=LBts(&task->task_flags,TASKf_SUSPENDED);
-  if (TaskValidate(task->animate_task))
-    old_suspend2=LBts(&task->animate_task->task_flags,TASKf_SUSPENDED);
+  old_suspend1=Suspend(task);
+  old_suspend2=Suspend(task->animate_task);
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
     if (!(temps->flags&SSF_INACTIVE)) {
@@ -77,10 +76,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=BLACK;
   GrPrintF(dc,90,0,"Cost:%12.2,f",Cost(ode));
   GrPrintF(dc,90,FONT_HEIGHT,"Time:%12.2f",SpanTime(task));
-  if (TaskValidate(task))
-    LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend1);
-  if (TaskValidate(task->animate_task))
-    LBEqu(&task->animate_task->task_flags,TASKf_SUSPENDED,old_suspend2);
+  Suspend(task,old_suspend1);
+  Suspend(task->animate_task,old_suspend2);
 }
 
 MyMass PlaceMass(I64 x, I64 y)
@@ -260,7 +257,7 @@ U0 Init(SpanAnimateStruct *a)
   cursor_mass=NULL;
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by Terry A. Davis
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;

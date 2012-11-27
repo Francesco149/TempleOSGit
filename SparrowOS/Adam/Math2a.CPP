@@ -18,11 +18,12 @@ public U0 P2R(F64 *_x=NULL,F64 *_y=NULL,F64 mag,F64 arg)
 
 public F64 Wrap(F64 theta,F64 base=-pi)
 { //returns angle in range [base,base+2*pi)
-  result=theta%(2*pi);
+  F64 result=theta%(2*pi);
   if (result>=base+2*pi)
     result-=2*pi;
   else if (result<base)
     result+=2*pi;
+  return result;
 }
 
 public I64 DistI64(I64 x1,I64 y1,I64 x2,I64 y2)

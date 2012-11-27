@@ -71,7 +71,7 @@ U0 SolveMaze(I64 x,I64 y)
 
 U0 Maze()
 {
-  U64 ch,x,y;
+  I64 ch,x,y;
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;

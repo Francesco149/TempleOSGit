@@ -114,7 +114,7 @@ WSD	WordStat Dictionary
 +] Task/Process/Thread
   There is no distinction between "task", "process" or "thread."  The Fs
   segment register is kept pointing to the current task's
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask.  There is only one window per
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask.  There is only one window per
   task.
 
 +] Adam Task
@@ -126,9 +126,9 @@ WSD	WordStat Dictionary
   [::/SparrowOS/Adam/Adam2.CPP.Z,1] ::/SparrowOS/Adam/Adam2.CPP.Z where the
   remainder of the operating system is "#included".  When start-up is finished,
   the adam task enters a server mode where it accepts requests from other
-  tasks.  The [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,283] Adam("") routine will
+  tasks.  The [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,286] Adam("") routine will
   cause the adam task to compile and run text src code.  "#include" statements
-  can be sent to the [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,283] Adam("") routine,
+  can be sent to the [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,286] Adam("") routine,
   creating system-wide code and data which don't disappear when any particular
   task ends.  (The Adam task is immortal.)
 
@@ -142,29 +142,29 @@ WSD	WordStat Dictionary
   calling routines +/-2 Gig from the current code location.  To prevent
   out-of-range issues, I decided to separate code and data, placing all code
   within the lowest 2 Gig of memory.  The compiler and
-  [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load()er allocate memory from the code
+  [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load()er allocate memory from the code
   heap to store code and glbl vars, unless the compiler option
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP is used. 
-  When programs call [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() is comes
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1474] OPTf_GLBLS_ON_DATA_HEAP is used. 
+  When programs call [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() is comes
   from the data heap, which in not limited in size, except by how much physical
   RAM memory you have.  You can allocate from any heap you like, or even make
   independent heaps.
 
 +] Parent/Child Task
-  Often a task will [C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn() or
-  [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,377] PopUp() a task as a helper.  The
+  Often a task will [C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn() or
+  [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,380] PopUp() a task as a helper.  The
   helper is known as a Child Task, though you can Spawn a task and assign it a
   different parent... like Adam.  Links are kept as to who spawned what so that
   when one task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,28] Kill()ed the helper
   tasks disappear, too.  You can get a report on current system tasks with
-  [C:/SparrowOS/Adam/Utils2a.CPP.Z,423] TaskRep().  There is just one possible
+  [C:/SparrowOS/Adam/Utils2a.CPP.Z,429] TaskRep().  There is just one possible
   window per task, so child tasks are needed.
 
 +] C+
   The language used by SparrowOS is more than C and less than C++, so it's
   just C+, perhaps.  See [::/SparrowOS/Doc/Differences.TXT.Z,1] Differences. 
   It has the default arg feature of C++ and uses class in place of struct.  It
-  uses U0,U8,U16,U32,U64 and I0,I8,I16,I32,I64 for signed and unsigned
+  uses U0,U8,U16,U32,I64 and I0,I8,I16,I32,I64 for signed and unsigned
   integers.  It has a slightly different operator precedence.  See
   [::/SparrowOS/Doc/Differences.TXT.Z,1] OP_precedence  It has the PASCAL-like
   feature of function calls with no parens, but requires an "&" when referring
@@ -174,13 +174,13 @@ WSD	WordStat Dictionary
   I coined this term to refer to conventional AOT compilation mode, but it is
   not the preferred mode for this operating system and is discouraged.  .SP?
   files are compiled to .BI? files, skipping .OBJ files.  After compiling, you
-  do a [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() cmd which is available
+  do a [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() cmd which is available
   from right-clicking on a link (like from
-  [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir()).  There is no main()
+  [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir()).  There is no main()
   routine.  Instead, statements outside functions are automatically executed
   upon loading.  There is no way to unload except by killing the task.  To
   invoke Static Compiled Mode, use the
-  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,371] Cmp() routine or right-click on a
+  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,372] Cmp() routine or right-click on a
   link.  The OSMain modules and compiler are made in static compiled mode and
   stored in OSMain.BIN.C and Compiler.BIN.Z, respectively.
 
@@ -192,7 +192,7 @@ See [::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1]
   In just-in-time mode, the compiler allocates objects, code and data, from
   the heap, incrementally.  This mode is used during cmd line operations.  When
   you #include a file, it is compiled function by function and objects are
-  placed all over in mem.  The [C:/SparrowOS/Compiler/CmpMain.CPP.Z,560]
+  placed all over in mem.  The [C:/SparrowOS/Compiler/CmpMain.CPP.Z,564]
   ExeFile() routine is the same as #include but can be placed in programs. 
   [C:/SparrowOS/Compiler/CmpMain.CPP.Z,523] ExePutS() routine will compile and
   run a string.
@@ -205,7 +205,7 @@ See [::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1]
   compiler does not "interpret" code, except in the process of optimization. 
   The assembly language can be viewed when it is compiled with the
   [C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace() routine, or afterward
-  with [C:/SparrowOS/Compiler/Unassembler.CPP.Z,851] U().
+  with [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U().
 
 +] Partition/Drive
   There is no distinction between "partition" or "drive."  They are specified
@@ -225,11 +225,11 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   directory plus a list of file name masks, as in
   /SparrowOS/Demo/*.TXT.Z;*.CPP.Z
 
-See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3760] FUF_RECURSE and
+See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3471] FUF_RECURSE and
   [C:/SparrowOS/OSMain/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS.
 
-Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK and
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK.
+Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2084] TEXT_FILE_MASK and
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2083] SRC_FILE_MASK.
 
 +] Filename Extention Types
   
@@ -250,21 +250,21 @@ Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK and
   Compiler "map" files
 *.BIN.Z;*.BIN.C;*.BIN
   Binary executable files, created by
-  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,371] Cmp() and read by
-  [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load().
+  [C:/SparrowOS/Compiler/CmpMain.CPP.Z,372] Cmp() and read by
+  [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load().
 *.DAT.Z;*.DAT
   Data files
 *.ISO
   CD-ROM image file--ISO9660.
 *.AUT.Z;*.AUT
   "AutoFile" Basically a C+ program who's stdout goes to the input of a task
-  when [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,390] AutoFile() is called.
+  when [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,396] AutoFile() is called.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2083] SRC_FILE_MASK
   This #define holds a list of src file extensions.
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2084] TEXT_FILE_MASK
   This #define holds a list of text file extensions.
 
 +] Naming Convention
@@ -295,10 +295,10 @@ DOCG_????
   Flag groups are designated with "G".
 
 Fs The CPU FS segment register.  This register points to the current task's 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask.
 
 Gs The CPU GS segment register.  This register points to the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] CCPU.
 
 Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
   These are bit manipulation functions named after Intel instructions.  They 
@@ -312,8 +312,8 @@ instructions.
 
 Heap Programs can dynamically request chunks of memory allocated from a
 "heap" 
-using [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc().  They must
-[C:/SparrowOS/OSMain/Memory.CPP.Z,946] Free() it when finished.  Ptrs are
+using [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc().  They must
+[C:/SparrowOS/OSMain/Memory.CPP.Z,950] Free() it when finished.  Ptrs are
 used to refer to 
 it.  The "heap" is dynamically allocated mem.
 

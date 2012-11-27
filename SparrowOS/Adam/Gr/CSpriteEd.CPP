@@ -2,7 +2,7 @@
 
 U0 GrSetOrigin(CSprite *root,I64 dx,I64 dy,I64 dz)
 {
-  U64 i;
+  I64 i;
   I32 *ptr;
   CD3I32 *p;
   CSprite *tempg=root->next;
@@ -279,8 +279,8 @@ CSprite *GrTransformBitMap(I64 r[4][4],CSprite *tempg)
 
 U0 CSpriteTransform(I64 r[4][4],CSprite *root)
 {
-  I64 x,y,z,x1,y1,z1,x2,y2,z2,x3,y3,z3;
-  I64 i,j,k,num;
+  I64 i,j,k,num,
+      x,y,z,x1,y1,z1,x2,y2,z2,x3,y3,z3;
   I32 *ptr;
   CD3I32 *p;
   CSprite *tempg=root->next,root2,*tempg1,*tempg2,*tempg3;
@@ -477,7 +477,7 @@ CSprite *CSpriteDoc2Que(CDoc *doc,CSprite *root,I64 *cur_num)
 {
   CSprite *result=CAlloc(sizeof(CSprite)),*tempg;
   CDocEntry *doc_e=doc->root.next;
-  BoolI8 found=FALSE;
+  Bool found=FALSE;
   I64 num=0;
   result->next=result->last=result;
   while (doc_e!=doc) {
@@ -499,6 +499,7 @@ CSprite *CSpriteDoc2Que(CDoc *doc,CSprite *root,I64 *cur_num)
     *cur_num=num;
   QueDel(root);
   Free(root);
+  return result;
 }
 
 U0 PickCSpriteDocNew(CDoc *doc,CSprite *root,I64 old_num)
@@ -570,8 +571,8 @@ U0 CSpriteSideBarTask(CTask *parent,CSprite **_root,I64 *cur_num)
 U8 *CSpriteHexDoc2CSprite(CDoc *doc,I64 *cur_num,CTask *mem_task=NULL)
 {
   I64 num=0,size=gr_sprite_base_size[GRST_END];
-  U8 *dst;
-  BoolI8 unlock_doc=DocLock(doc);
+  U8 *result,*dst;
+  Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_HEX_ED)
@@ -594,10 +595,12 @@ U8 *CSpriteHexDoc2CSprite(CDoc *doc,I64 *cur_num,CTask *mem_task=NULL)
   *dst=GRST_END;
   if (unlock_doc)
     DocUnlock(doc);
+  return result;
 }
 
-BoolI64 CSpriteTextEd(CSprite **_root,I64 *cur_num)
+Bool CSpriteTextEd(CSprite **_root,I64 *cur_num)
 {
+  Bool result;
   U8 *st;
   CDoc *doc=DocNew;
   CSprite *root=*_root,*tempg;
@@ -620,6 +623,7 @@ BoolI64 CSpriteTextEd(CSprite **_root,I64 *cur_num)
   }
   DocDel(doc);
   if (_root) *_root=root;
+  return result;
 }
 
 #define GED_PICK_GRAPHICALLY	0
@@ -638,7 +642,7 @@ BoolI64 CSpriteTextEd(CSprite **_root,I64 *cur_num)
 
 U0 GrInit2()
 {
-  DefineListLoad("ST_GRSPRITE_ED_MENU"," \0Pick Graphically\0Set Origin\0"
+  DefineListLoad("ST_CSPRITE_ED_MENU"," \0Pick Graphically\0Set Origin\0"
 	"Shift Origin\0Shift Points\0Shift Rects\0Transform\0Shift SubOrigin\0Insert Object\0"
 	"Insert Clipboard\0Delete Object\0Edit\0Snap\0");
 }
@@ -865,13 +869,12 @@ U0 GESPCtrlPtsMove(CSpritePt *root,I64 dx,I64 dy)
   }
 }
 
-BoolI64 CSpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
+Bool CSpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 {
   I64 msg_code,p1,p2,xx,yy,xx2,yy2,dd,best_dd,cur_num;
-  BoolI8 old_preempt;
+  Bool old_preempt,result=TRUE;
   CDC *dc=DCAlias;
   CSpritePt root,*temppe,*best_pe;
-  result=TRUE;
 
   CSpritePtQueNew(elems,x,y,&root);
   cur_num=0;
@@ -989,22 +992,23 @@ gs_done:
   DCDel(dc);
   if (_cur_num && result)
     *_cur_num=cur_num;
+  return result;
 }
 
 U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
 {
   CDocEntry *doc_e,*doc_ce;
   CDocBin *tempb;
-  I64 i,r[16],cur_num=0,msg_code,p1,p2,old_size,xx,yy,new_snap=1;
+  Bool unlock=DocLock(doc),unlock2,del_down;
+  I64 i,r[16],cur_num=0,msg_code,p1,p2,old_size,xx,yy,new_snap=1,
+     old_doc_flags=doc->flags&(DOCF_ATTR_BY_PRT|DOCF_ATTR_BY_FILENAME),
+     old_ce_flags1;
   F64 new_ip_scaler=1.0;
   CSprite *cur_elem,*old_CSprite,
       *root,*root2,*next,*last,*tempg,*insert_pt;
-  BoolI8 unlock=DocLock(doc),unlock2,del_down;
   Fs->task_title[TASK_TITLE_LEN]=0;
-  U8 *old_desc=StrNew(Fs->task_title);
-  U8 *old_filename=StrNew(doc->filename.name);
-  U64 old_doc_flags=doc->flags&(DOCF_ATTR_BY_PRT|DOCF_ATTR_BY_FILENAME),
-     old_ce_flags1;
+  U8 *old_desc=StrNew(Fs->task_title),
+     *old_filename=StrNew(doc->filename.name);
 
   WinMgrSync(2,TRUE);
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
@@ -1012,7 +1016,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
   if (_import_snap) new_snap=*_import_snap;
   if (_import_ip_scaler) new_ip_scaler=*_import_ip_scaler;
   SetSnap(&Fs->snap,new_snap,new_ip_scaler);
-  Fs->win_inhibit=GRSPRITE_WIF;
+  Fs->win_inhibit=CSPRITE_WIF;
   doc_ce=doc->cur_entry;
   old_ce_flags1=doc_ce->flags1;
   tempb=doc_ce->bin_data;
@@ -1031,13 +1035,13 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
     i=PopUpCSpriteEd(&root,new_snap,new_ip_scaler,&cur_num);
     GrEdUpdate(doc,tempb,root);
     if (i>=0) {
-      StrCpy(Fs->task_title,DefineSub(i,"ST_GRSPRITE_ED_MENU"));
+      StrCpy(Fs->task_title,DefineSub(i,"ST_CSPRITE_ED_MENU"));
       StrCpy(doc->filename.name,Fs->task_title);
       doc->flags&=~(DOCF_ATTR_BY_PRT|DOCF_ATTR_BY_FILENAME);
     }
     switch (i) {
       case GED_PICK_GRAPHICALLY:
-	AcctOneTimePopUp(ARf_GRSPRITE_PICK_GRAPHICALLY,
+	AcctOneTimePopUp(ARf_CSPRITE_PICK_GRAPHICALLY,
 	"You can delete elements by\n"
 	"holding $FG,GREEN$Delete$FG$ and clicking.\n");
 	doc_ce->flags1=old_ce_flags1;
@@ -1095,7 +1099,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
 	break;
       case GED_SHIFT_PTS:
       case GED_SHIFT_RECTS:
-	AcctOneTimePopUp(ARf_GRSPRITE_PTS_RECTANGLES,
+	AcctOneTimePopUp(ARf_CSPRITE_PTS_RECTANGLES,
 	"You can switch between points\n"
 	"and rectangles with '$FG,GREEN$p$FG$' and '$FG,GREEN$r$FG$'.\n"
 	"Press '$FG,GREEN$r$FG$' after one rectangle\n"
@@ -1134,7 +1138,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
 	cur_num++;
 	break;
       case GED_INS_CLIPBOARD:
-	AcctOneTimePopUp(ARf_GRSPRITE_INS_CLIPBOARD,
+	AcctOneTimePopUp(ARf_CSPRITE_INS_CLIPBOARD,
 	"You will probably want to shift around\n"
 	"the location of element groups.  Use\n"
 	"'Insert shift sub-origin' after picking the\n"

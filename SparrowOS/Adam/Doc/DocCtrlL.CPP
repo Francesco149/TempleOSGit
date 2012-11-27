@@ -1,6 +1,6 @@
 #define DFT_ADDR_LINK_BIN_SIZE	64
 
-I64 PopUpLinkType(BoolI8 include_anchor)
+I64 PopUpLinkType(Bool include_anchor)
 {
   I64 i;
   CDoc *doc=DocNew;
@@ -31,8 +31,8 @@ class CEdFileLink
   U8	aux[136];
   I64	num;
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdFileAnchorLink
@@ -42,8 +42,8 @@ class CEdFileAnchorLink
   U8	aux[136]	fmtstr "$DA-P,135,\"Anchor Label  :%s\"$\n";
   I64	num;
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdFileFindLink
@@ -53,8 +53,8 @@ class CEdFileFindLink
   U8	aux[136]	fmtstr "$DA-P,135,\"Str        :%s\"$\n";
   I64	num		fmtstr "$DA-T,135,\"Occurrence Num:%04d\"$\n";
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdFileLineLink
@@ -64,8 +64,8 @@ class CEdFileLineLink
   U8	aux[136];
   I64	num		fmtstr "$DA-T,135,\"Line Num      :%04d\"$\n";
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdManPageLink
@@ -75,8 +75,8 @@ class CEdManPageLink
   U8	aux[136]	fmtstr "$DA-P,135,\"Label         :%s\"$\n";
   I64	num;
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdAddrLink
@@ -86,8 +86,8 @@ class CEdAddrLink
   U8	aux[136]	fmtstr "$DA-P,135,\"Addr Exp   :%s\"$\n";
   I64	num		fmtstr "$DA-T,135,\"Bin Size      :%04d\"$\n";
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdPlaceAnchor
@@ -97,8 +97,8 @@ class CEdPlaceAnchor
   U8	aux[136]	fmtstr "$DA-P,135,\"Anchor Label  :%s\"$\n";
   I64	num;
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide	fmtstr "$CB,\"Hide\"$\n";
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide	fmtstr "$CB,\"Hide\"$\n";
 };
 
 class CEdBibleLink
@@ -108,8 +108,8 @@ class CEdBibleLink
   U8	aux[136]	fmtstr "$DA-P,135,\"Chapter Verse :%s\"$\n";
   I64	num;
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdDefLink
@@ -119,8 +119,8 @@ class CEdDefLink
   U8	aux[136]	fmtstr "$DA-P,135,\"Word          :%s\"$\n";
   I64	num		fmtstr "$DA-T,135,\"Def Num       :%4d\"$\n";
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 class CEdProject
@@ -130,17 +130,17 @@ class CEdProject
   U8	aux[136];
   I64	num;
   U8	html_link[136]	fmtstr "$DA-P,135,\"Html Link     :%s\"$\n";
-  BoolI8	quote	fmtstr "$CB,\"Quote\"$\n";
-  BoolI8	hide;
+  Bool	quote	fmtstr "$CB,\"Quote\"$\n";
+  Bool	hide;
 };
 
 U8 *ctrl_L_footer="\n\n$LK,\"Click for Help\",\"FI:::/SparrowOS/Doc/CtrlL.TXT.Z\"$\n";
 
-BoolI64 PmtLink(I64 type,U8 **_tag,U8 **_link,BoolI8 *_quote,U8 **_html_link)
+Bool PmtLink(I64 type,U8 **_tag,U8 **_link,Bool *_quote,U8 **_html_link)
 {
   I64 i;
   CEdFileLink *el=CAlloc(sizeof(CEdFileLink));
-  result=FALSE;
+  Bool result=FALSE;
   if (type>=0) {
     el->num=1;
     switch (type) {
@@ -321,12 +321,13 @@ BoolI64 PmtLink(I64 type,U8 **_tag,U8 **_link,BoolI8 *_quote,U8 **_html_link)
   else
     *_quote=FALSE;
   Free(el);
+  return result;
 }
 
 U0 EdInsLink()
 {
   U8 *tag=NULL,*link=NULL,*st=NULL,*html_link=NULL;
-  BoolI8 quote=FALSE;
+  Bool quote=FALSE;
   I64 type=PopUpLinkType(TRUE);
   if (type>=0) {
     if (PmtLink(type,&tag,&link,&quote,&html_link)) {
@@ -419,17 +420,17 @@ class CEdPageSetting1
 class CEdPageSetting2
 {
   U8	val[136]	fmtstr "$DA-P,135,\"Setting Val:%s\"$\n";
-  BoolI8 winrel		fmtstr "$CB,\"Win Relative\"$\n";
+  Bool winrel		fmtstr "$CB,\"Win Relative\"$\n";
 };
 
 class CEdPageSetting3
 {
-  BoolI8 lock		fmtstr "$CB,\"Lock To Page\"$\n";
+  Bool lock		fmtstr "$CB,\"Lock To Page\"$\n";
 };
 
 class CEdPageSetting4
 {
-  BoolI8 lock		fmtstr "$CB,\"Lock To Center\"$\n";
+  Bool lock		fmtstr "$CB,\"Lock To Center\"$\n";
 };
 
 
@@ -515,16 +516,16 @@ I64 PopUpDollarType()
 class CEdDollarText
 {
   U8	tag[136]	  fmtstr "$DA-P,135,\"Tag Text      :%s\"$\n";
-  BoolI8	left_x	  fmtstr "$CB,\"Left X\"$\n";
-  BoolI8	center_x  fmtstr "$CB,\"Center X\"$\n";
-  BoolI8	right_x   fmtstr "$CB,\"Right X\"$\n";
-  BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\n";
-  BoolI8	blink	  fmtstr "$CB,\"Blink\"$\n";
-  BoolI8	invert	  fmtstr "$CB,\"Invert\"$\n";
-  BoolI8	underline fmtstr "$CB,\"Underline\"$\n";
-  BoolI8	tree	  fmtstr "$CB,\"Tree\"$\n";
-  BoolI8	collapsed fmtstr "$CB,\"Collapsed\"$\n";
-  BoolI8	alias	  fmtstr "$CB,\"Alias\"$\n";
+  Bool	left_x	  fmtstr "$CB,\"Left X\"$\n";
+  Bool	center_x  fmtstr "$CB,\"Center X\"$\n";
+  Bool	right_x   fmtstr "$CB,\"Right X\"$\n";
+  Bool	margin_rel fmtstr "$CB,\"Margin Rel X\"$\n";
+  Bool	blink	  fmtstr "$CB,\"Blink\"$\n";
+  Bool	invert	  fmtstr "$CB,\"Invert\"$\n";
+  Bool	underline fmtstr "$CB,\"Underline\"$\n";
+  Bool	tree	  fmtstr "$CB,\"Tree\"$\n";
+  Bool	collapsed fmtstr "$CB,\"Collapsed\"$\n";
+  Bool	alias	  fmtstr "$CB,\"Alias\"$\n";
   U8	scroll_x [136]	  fmtstr "$DA-P,135,\"Scroll X Length Expression:%s\"$\n";
   U8	shift_x  [136]	  fmtstr "$DA-P,135,\"X Offset Expression       :%s\"$\n";
   U8	shift_y  [136]	  fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\n";
@@ -593,7 +594,7 @@ U0 EdInsSong()
 
 class CEdHighlight
 {
-  BoolI8 highlight_on	fmtstr "$CB,\"Highlight On\"$\n";
+  Bool highlight_on	fmtstr "$CB,\"Highlight On\"$\n";
 };
 
 U0 EdInsHighlight()
@@ -656,22 +657,22 @@ class CEdMacroMenu
   U8 tag[136]		fmtstr "$DA-P,135,\"Tag Text                  :%s\"$\n";
   U8 left_macro[512]	fmtstr "$DA-P,511,\"Left Click Macro          :%s\"$\n";
   U8 left_exp[136]	fmtstr "$DA-P,135,\"Left Click Expression     :%s\"$\n";
-  BoolI8 popup		fmtstr "$CB,\"PopUp\"$\n";
-  BoolI8 left_is_auto	fmtstr "$CB,\"Left is AutoStr\"$\n";
-  BoolI8 left_x		fmtstr "$CB,\"Left X \"$\n";
-  BoolI8 center_x	fmtstr "$CB,\"Center X \"$\n";
-  BoolI8 right_x	fmtstr "$CB,\"Right X \"$\n";
-  BoolI8 margin_rel	fmtstr "$CB,\"Margin Rel X\"$\n";
-  BoolI8 blink		fmtstr "$CB,\"Blink\"$\n";
-  BoolI8 invert		fmtstr "$CB,\"Invert\"$\n";
-  BoolI8 underline	fmtstr "$CB,\"Underline\"$\n";
-  BoolI8 escape		fmtstr "$CB,\"Escape\"$\n";
+  Bool popup		fmtstr "$CB,\"PopUp\"$\n";
+  Bool left_is_auto	fmtstr "$CB,\"Left is AutoStr\"$\n";
+  Bool left_x		fmtstr "$CB,\"Left X \"$\n";
+  Bool center_x	fmtstr "$CB,\"Center X \"$\n";
+  Bool right_x	fmtstr "$CB,\"Right X \"$\n";
+  Bool margin_rel	fmtstr "$CB,\"Margin Rel X\"$\n";
+  Bool blink		fmtstr "$CB,\"Blink\"$\n";
+  Bool invert		fmtstr "$CB,\"Invert\"$\n";
+  Bool underline	fmtstr "$CB,\"Underline\"$\n";
+  Bool escape		fmtstr "$CB,\"Escape\"$\n";
   U8 scroll_x[136]	fmtstr "$DA-P,135,\"Scroll X Length Expression:%s\"$\n";
   U8 shift_x[136]	fmtstr "$DA-P,135,\"X Offset Expression       :%s\"$\n";
   U8 shift_y[136]	fmtstr "$DA-P,135,\"Y Offset Expression       :%s\"$\n";
 };
 
-U0 EdInsMacroMenu(BoolI8 is_macro)
+U0 EdInsMacroMenu(Bool is_macro)
 {
   U8 *st,buf[136];
   CEdMacroMenu *dt=CAlloc(sizeof(CEdMacroMenu));
@@ -735,16 +736,16 @@ U0 EdInsMacroMenu(BoolI8 is_macro)
 class CEdButton
 {
   U8	tag[136]	   fmtstr "$DA-P,135,\"Tag Text      :%s\"$\n";
-  BoolI8	popup	   fmtstr "$CB,\"PopUp\"$\n";
-  BoolI8	left_x	   fmtstr "$CB,\"Left X \"$\n";
-  BoolI8	center_x   fmtstr "$CB,\"Center X \"$\n";
-  BoolI8	right_x	   fmtstr "$CB,\"Right X \"$\n";
-  BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\n";
-  BoolI8	escape	   fmtstr "$CB,\"Escape\"$\n";
+  Bool	popup	   fmtstr "$CB,\"PopUp\"$\n";
+  Bool	left_x	   fmtstr "$CB,\"Left X \"$\n";
+  Bool	center_x   fmtstr "$CB,\"Center X \"$\n";
+  Bool	right_x	   fmtstr "$CB,\"Right X \"$\n";
+  Bool	margin_rel fmtstr "$CB,\"Margin Rel X\"$\n";
+  Bool	escape	   fmtstr "$CB,\"Escape\"$\n";
   U8	left_macro  [136]	fmtstr "$DA-P,135,\"Left Click Macro:%s\"$\n";
-  BoolI8	left_is_auto	fmtstr "$CB,\"Left is AutoStr\"$\n";
+  Bool	left_is_auto	fmtstr "$CB,\"Left is AutoStr\"$\n";
   U8	left_exp    [136]	fmtstr "$DA-P,135,\"Left Click Expression:%s\"$\n";
-  BoolI8	quote		fmtstr "$CB,\"Quote\"$\n";
+  Bool	quote		fmtstr "$CB,\"Quote\"$\n";
 };
 
 U0 EdInsButton()
@@ -799,15 +800,15 @@ class CEdCursorMovement
 {
   U8 left_exp[136]	 fmtstr "$DA-P,135,\"X Expression:%s\"$\n";
   U8 right_exp[136]	 fmtstr "$DA-P,135,\"Y Expression:%s\"$\n";
-  BoolI8	left_x	 fmtstr "$CB,\"Left   X \"$\n";
-  BoolI8	center_x fmtstr "$CB,\"Center X \"$\n";
-  BoolI8	right_x  fmtstr "$CB,\"Right  X \"$\n";
-  BoolI8	margin_rel fmtstr "$CB,\"Margin Rel X\"$\n";
-  BoolI8	top_y	 fmtstr "$CB,\"Top    Y \"$\n";
-  BoolI8	center_y fmtstr "$CB,\"Center Y \"$\n";
-  BoolI8	bottom_y fmtstr "$CB,\"Bottom Y \"$\n";
-  BoolI8	page_rel fmtstr "$CB,\"Page Rel Y\"$\n";
-  BoolI8	quote	 fmtstr "$CB,\"Quote\"$\n";
+  Bool	left_x	 fmtstr "$CB,\"Left   X \"$\n";
+  Bool	center_x fmtstr "$CB,\"Center X \"$\n";
+  Bool	right_x  fmtstr "$CB,\"Right  X \"$\n";
+  Bool	margin_rel fmtstr "$CB,\"Margin Rel X\"$\n";
+  Bool	top_y	 fmtstr "$CB,\"Top    Y \"$\n";
+  Bool	center_y fmtstr "$CB,\"Center Y \"$\n";
+  Bool	bottom_y fmtstr "$CB,\"Bottom Y \"$\n";
+  Bool	page_rel fmtstr "$CB,\"Page Rel Y\"$\n";
+  Bool	quote	 fmtstr "$CB,\"Quote\"$\n";
 };
 
 U0 EdInsCursorMovement()
@@ -843,15 +844,15 @@ U0 EdInsCursorMovement()
 class CEdData
 {
   U8	fmt_str [136]	fmtstr "$DA-P,135,\"Format Str:%s\"$\n";
-  U64 len		fmtstr "$DA,256,\"Length:%d\"$\n";
-  BoolI8	term	fmtstr "$CB,\"Terminator\"$\n";
-  BoolI8	str	fmtstr "$CB,\"Str\"$\n";
-  BoolI8	refresh	fmtstr "$CB,\"Refresh Data\"$\n";
-  BoolI8	update	fmtstr "$CB,\"Update Data\"$\n";
-  BoolI8	u8	fmtstr "$CB,\"U8\"$\n";
-  BoolI8	u16	fmtstr "$CB,\"U16\"$\n";
-  BoolI8	u32	fmtstr "$CB,\"U32\"$\n";
-  BoolI8	u64	fmtstr "$CB,\"U64\"$\n";
+  I64 len		fmtstr "$DA,256,\"Length:%d\"$\n";
+  Bool	term	fmtstr "$CB,\"Terminator\"$\n";
+  Bool	str	fmtstr "$CB,\"Str\"$\n";
+  Bool	refresh	fmtstr "$CB,\"Refresh Data\"$\n";
+  Bool	update	fmtstr "$CB,\"Update Data\"$\n";
+  Bool	u8	fmtstr "$CB,\"U8\"$\n";
+  Bool	u16	fmtstr "$CB,\"U16\"$\n";
+  Bool	u32	fmtstr "$CB,\"U32\"$\n";
+  Bool	u64	fmtstr "$CB,\"I64\"$\n";
 };
 
 U0 EdInsData()
@@ -868,9 +869,9 @@ U0 EdInsData()
     if (dt->refresh)  StrCat(buf,"+RD");
     if (dt->update)   StrCat(buf,"+UD");
 
-    if (dt->u8)        StrCat(buf,"-U64+U8");
-    else if (dt->u16)  StrCat(buf,"-U64+U16");
-    else if (dt->u32)  StrCat(buf,"-U64+U32");
+    if (dt->u8)        StrCat(buf,"-I64+U8");
+    else if (dt->u16)  StrCat(buf,"-I64+U16");
+    else if (dt->u32)  StrCat(buf,"-I64+U32");
 
     st=MSPrintF("%q",dt->fmt_str);
     "$$DA%s,%d,\\\"%Q\\\"$$",buf,dt->len,st;
@@ -882,7 +883,7 @@ U0 EdInsData()
 class CEdCheckBox
 {
   U8	 label[136]	fmtstr "$DA-P,135,\"Tag Text      :%s\"$\n";
-  BoolI8 refresh	fmtstr "$CB,\"Refresh Data\"$\n";
+  Bool refresh	fmtstr "$CB,\"Refresh Data\"$\n";
 };
 
 U0 EdInsCheckBox()
@@ -901,10 +902,10 @@ U0 EdInsCheckBox()
 
 class CEdHexEd
 {
-  U64 cnt	fmtstr "$DA,256,\"Count:%d\"$\n";
-  U64 cols	fmtstr "$DA,256,\"Columns:%d\"$\n";
-  BoolI8 zero	fmtstr "$CB,\"Zero Based\"$\n";
-  BoolI8 refresh fmtstr "$CB,\"Refresh Data\"$\n";
+  I64 cnt	fmtstr "$DA,256,\"Count:%d\"$\n";
+  I64 cols	fmtstr "$DA,256,\"Columns:%d\"$\n";
+  Bool zero	fmtstr "$CB,\"Zero Based\"$\n";
+  Bool refresh fmtstr "$CB,\"Refresh Data\"$\n";
 };
 
 U0 EdInsHexEd()
@@ -965,7 +966,7 @@ class CEdTree
 {
   U8	label[136] fmtstr "$DA-P,135,\"Tag Text      :%s\"$\n";
   I64	indent	   fmtstr "$DA,135,\"Indention:%d\"$\n";
-  BoolI8	collapsed  fmtstr "$CB,\"Collapsed\"$\n";
+  Bool	collapsed  fmtstr "$CB,\"Collapsed\"$\n";
 };
 
 U0 EdInsTree()
@@ -1094,22 +1095,22 @@ class CEdMacroSprite
 {
   U8 tag[136]		fmtstr "$DA-P,135,\"Tag Text       :%s\"$\n";
   U8 exp[512]		fmtstr "$DA-P,511,\"Macro          :%s\"$\n";
-  BoolI8 escape		fmtstr "$CB,\"Escape\"$\n";
-  BoolI8 popup		fmtstr "$CB,\"PopUp\"$\n";
-  BoolI8 is_auto	fmtstr "$CB,\"AutoStr\"$\n";
+  Bool escape		fmtstr "$CB,\"Escape\"$\n";
+  Bool popup		fmtstr "$CB,\"PopUp\"$\n";
+  Bool is_auto	fmtstr "$CB,\"AutoStr\"$\n";
 };
 
 class CEdMenuSprite
 {
   U8 tag[136]		fmtstr "$DA-P,135,\"Tag Text       :%s\"$\n";
   U8 exp[512]		fmtstr "$DA-P,511,\"Expression     :%s\"$\n";
-  BoolI8 escape		fmtstr "$CB,\"Escape\"$\n";
+  Bool escape		fmtstr "$CB,\"Escape\"$\n";
 };
 
 U8 *EdSpriteLink(U8 **_html_link)
 {
   U8 *result=NULL,*tag=NULL,*link=NULL;
-  BoolI8 quote=FALSE;
+  Bool quote=FALSE;
   I64 type=PopUpLinkType(FALSE);
   *_html_link=NULL;
   if (type>=0) {
@@ -1118,6 +1119,7 @@ U8 *EdSpriteLink(U8 **_html_link)
   }
   Free(tag);
   Free(link);
+  return result;
 }
 
 U8 *EdSprite(I64 bin_num)

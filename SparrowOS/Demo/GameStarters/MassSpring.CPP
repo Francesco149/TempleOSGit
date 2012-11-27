@@ -12,11 +12,11 @@ CMathODE *ode=NULL;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  BoolI8 old_suspend;
+  Bool old_suspend;
   MyMass   *tempm;
   MySpring *temps;
 
-  old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
+  old_suspend=Suspend(task);
   dc->color=RED;
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
@@ -31,7 +31,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrCircle(dc,tempm->x,tempm->y,tempm->radius);
     tempm=tempm->next;
   }
-  LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
+  Suspend(task,old_suspend);
 }
 
 

@@ -1,6 +1,6 @@
 To create a SparrowOS graphic ctrl, you define call-back functions and insert 
-a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2976] CCtrl structure in the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask queue.  See 
+a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2688] CCtrl structure in the
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask queue.  See 
 [::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z,1]
 ::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z, 
 [::/SparrowOS/Demo/Graphics/ScrollBars.CPP.Z,1]

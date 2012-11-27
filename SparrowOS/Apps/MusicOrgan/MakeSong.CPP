@@ -1,15 +1,15 @@
 class MakeSongSettings
 {
-  BoolI8 simple_rhythms		fmtstr "$CB,\"Simple Rhythms\"$\n";
-  BoolI8 rests			fmtstr "$CB,\"Rests\"$\n";
-  BoolI8 change_waveforms	fmtstr "$CB,\"Change Waveforms\"$\n";
-  BoolI8 six_eight		fmtstr "$CB,\"Six Eight\"$\n";
+  Bool simple_rhythms		fmtstr "$CB,\"Simple Rhythms\"$\n";
+  Bool rests			fmtstr "$CB,\"Rests\"$\n";
+  Bool change_waveforms	fmtstr "$CB,\"Change Waveforms\"$\n";
+  Bool six_eight		fmtstr "$CB,\"Six Eight\"$\n";
   I64	 octave			fmtstr "$DA-T,32,\"Octave:%d\"$\n";
 };
 
-U0 InsNote(MakeSongSettings *mss,U8 *buf,U64 k,U64 *j)
+U0 InsNote(MakeSongSettings *mss,U8 *buf,I64 k,I64 *j)
 {  //k is a random note nibble
-  U64 a=TimerPickedNibble; //accent
+  I64 a=TimerPickedNibble; //accent
   if (!a) {
     buf[*j]='!';
     *j+=1;

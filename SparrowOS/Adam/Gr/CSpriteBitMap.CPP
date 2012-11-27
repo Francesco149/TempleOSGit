@@ -140,13 +140,13 @@ tr_done:
 
 I64 CSpriteBitMap(CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,CDC **_img,CColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
 {
-  I64 xx1=*_xx1,yy1=*_yy1,xx2=*_xx2,yy2=*_yy2;
-  CDC *img=*_img;
-  I64 i,j,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,new_snap=1;
-  BoolI8 down=FALSE;
+  I64 i,j,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,new_snap=1,
+      result,xx1=*_xx1,yy1=*_yy1,xx2=*_xx2,yy2=*_yy2;
+  Bool down=FALSE;
   F64 new_ip_scaler=1.0;
   U8 *st=NULL;
-  CDC *clipboard=NULL,*undo=NULL,*dc2;
+  CDC *img=*_img,
+      *clipboard=NULL,*undo=NULL,*dc2;
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
 
   if (_import_snap) new_snap=*_import_snap;
@@ -599,4 +599,5 @@ bm_done:
   if (_import_ip_scaler) *_import_ip_scaler=new_ip_scaler;
   *_img=img;
   *_xx1=xx1,*_yy1=yy1,*_xx2=xx2,*_yy2=yy2;
+  return result;
 }

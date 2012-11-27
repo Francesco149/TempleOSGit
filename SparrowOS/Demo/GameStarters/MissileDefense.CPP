@@ -81,7 +81,7 @@ U0 DrawIt(CTask *,CDC *dc)
   GrPrintF(dc,0,0,"Ammo Left:%d",ammo);
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,j,radius;
   while (TRUE) {
@@ -165,7 +165,7 @@ U0 Init()
 
 U0 MissileDefense()
 {
-  U64 ch;
+  I64 ch;
 
   PopUpOk(
 	"I refuse to rip-off the original\n"

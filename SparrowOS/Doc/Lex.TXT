@@ -2,5 +2,5 @@ The compiler's lexical analyzer can be used in your programs to simplify
 parsing.  See [::/SparrowOS/Adam/Doc/DocPlain.CPP.Z,1] Doc Parsing or
 [::/SparrowOS/Compiler/CmpInit.CPP.Z,1] Parse Opcode File.
 
-See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1895] Tokens.
+See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1887] Tokens.
 

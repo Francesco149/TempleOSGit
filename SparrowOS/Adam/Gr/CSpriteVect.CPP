@@ -1,5 +1,5 @@
 #help_index "Graphics/CSprite"
-#define GRSPRITE_WIF	(WIF_ALL-WIF_BORDER-WIF_GRAB_SCROLL)
+#define CSPRITE_WIF	(WIF_ALL-WIF_BORDER-WIF_GRAB_SCROLL)
 
 #define GRST_MENU	-2
 #define GRST_SNAP	-3
@@ -7,7 +7,7 @@
 #define GRST_INS_TRANSPARENT_SCREEN_BITMAP	-6
 #define GRST_ED		-7
 
-I64 PopUpCSpriteVect(BoolI8 new_sprite,CSprite **_root,I64 snap,F64 ip_scaler,I64 *cur_num)
+I64 PopUpCSpriteVect(Bool new_sprite,CSprite **_root,I64 snap,F64 ip_scaler,I64 *cur_num)
 {
   U8 *st;
   CTask *pu_task;
@@ -67,7 +67,7 @@ I64 PopUpCSpriteVect(BoolI8 new_sprite,CSprite **_root,I64 snap,F64 ip_scaler,I6
 
 U8 GrSpOffset[9]={0,1,2,3,0,4,5,6,7};
 
-BoolI64 GrPolyPtPlot(CSprite *root,I64 x,I64 y,I64)
+Bool GrPolyPtPlot(CSprite *root,I64 x,I64 y,I64)
 {
   CSprite *tempg=CAlloc(gr_sprite_qued_base_size[GRST_PT]);
   tempg->type=GRST_PT;
@@ -79,8 +79,8 @@ BoolI64 GrPolyPtPlot(CSprite *root,I64 x,I64 y,I64)
 
 CSprite *CSpriteFromQue(CSprite *root,U32 *_size=NULL)
 {
-  U64 s,size=gr_sprite_base_size[GRST_END];
-  CSprite *tempg;
+  I64 s,size=gr_sprite_base_size[GRST_END];
+  CSprite *result,*tempg;
   U8 *dst;
 
   tempg=root->next;
@@ -99,11 +99,12 @@ CSprite *CSpriteFromQue(CSprite *root,U32 *_size=NULL)
   }
   *dst=GRST_END;
   if (_size) *_size=size;
+  return result;
 }
 
 CSprite *CSprite2Que(U8 *elems)
 {
-  U64 s;
+  I64 s;
   CSprite *result=CAlloc(sizeof(CSprite)),
 	 *tempg=elems-offset(CSprite.start),
 	 *tempg1;
@@ -115,12 +116,13 @@ CSprite *CSprite2Que(U8 *elems)
     QueIns(tempg1,result->last);
     tempg(U8 *)+=s;
   }
+  return result;
 }
 
 CSprite *GrNum2Que(CSprite *root,I64 num,I64 *x=NULL,I64 *y=NULL)
 {
   I64 xx=0,yy=0;
-  result=root->next;
+  CSprite *result=root->next;
   while (result!=root && num--) {
     if (result->type==GRST_SHIFT) {
       xx+=result->x1;
@@ -130,11 +132,12 @@ CSprite *GrNum2Que(CSprite *root,I64 num,I64 *x=NULL,I64 *y=NULL)
   }
   if (x) *x=xx;
   if (y) *y=yy;
+  return result;
 }
 
 U0 GrEdUpdate(CDoc *doc,CDocBin *tempb,CSprite *root)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   Free(tempb->data);
   tempb->data=CSpriteFromQue(root,&tempb->size);
   if (unlock)
@@ -201,26 +204,25 @@ U0 GrScreenInit(CDC *dc,I64,I64)
   dc->pen_width=old_pen_width;
 }
 
-I64 CSpriteVect(CDoc *doc,CDocEntry *doc_e,CSprite **_root,I64 *cur_num,I64 x,I64 y,BoolI8 new_sprite,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
+I64 CSpriteVect(CDoc *doc,CDocEntry *doc_e,CSprite **_root,I64 *cur_num,I64 x,I64 y,Bool new_sprite,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
 {
-  I64 i,msg_code,z,x1,y1,z1,x2,y2,x3,y3,p1,p2,xx1,yy1,xx2,yy2,
-      num,old_width,size,eletype=GRST_MENU,width,new_snap=1;
+  I64 result,i,msg_code,z,x1,y1,z1,x2,y2,x3,y3,p1,p2,xx1,yy1,xx2,yy2,
+      num,old_width,size,eletype=GRST_MENU,width,new_snap=1,
+      old_doc_flags=doc->flags&(DOCF_ATTR_BY_PRT|DOCF_ATTR_BY_FILENAME),
+      old_ce_flags1=doc_e->flags1,old_flags;
   CColorROPU32 bm_bkcolor,color;
-  I32 *ptr;
   CSprite root2,*tempg,*tempg1,*tempg2,*insert_pt;
   CDC *dc=DCAlias(gr_dc2,Fs),
       *dc2=DCAlias(gr_dc2,sys_winmgr_task),
-      *dc3;
-  CDC *img;
+      *dc3,
+      *img;
   CD3I32 *p;
   CDocBin *tempb=doc_e->bin_data;
   F64 a1,a2,new_ip_scaler=1.0;
   Fs->task_title[TASK_TITLE_LEN]=0;
-  I32 *mesh,*old_mesh;
+  I32 *ptr,*mesh,*old_mesh;
   U8 *st,*old_desc=StrNew(Fs->task_title),
       *old_filename=StrNew(doc->filename.name);
-  U64 old_doc_flags=doc->flags&(DOCF_ATTR_BY_PRT|DOCF_ATTR_BY_FILENAME),
-      old_ce_flags1=doc_e->flags1,old_flags;
 
   WinMgrSync(2,TRUE);
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
@@ -231,7 +233,7 @@ I64 CSpriteVect(CDoc *doc,CDocEntry *doc_e,CSprite **_root,I64 *cur_num,I64 x,I6
   if (_import_snap) new_snap=*_import_snap;
   if (_import_ip_scaler) new_ip_scaler=*_import_ip_scaler;
   SetSnap(&Fs->snap,new_snap,new_ip_scaler);
-  Fs->win_inhibit=GRSPRITE_WIF;
+  Fs->win_inhibit=CSPRITE_WIF;
   while (TRUE) {
     GrSetSettings(dc,*_root,*cur_num,&color,&width,x,y);
     DCFill;
@@ -273,7 +275,7 @@ I64 CSpriteVect(CDoc *doc,CDocEntry *doc_e,CSprite **_root,I64 *cur_num,I64 x,I6
 	  break;
       }
     else
-      StrCpy(Fs->task_title,DefineSub(eletype,"ST_GRSPRITE_TYPES"));
+      StrCpy(Fs->task_title,DefineSub(eletype,"ST_CSPRITE_TYPES"));
     StrCpy(doc->filename.name,Fs->task_title);
     doc->flags&=~(DOCF_ATTR_BY_PRT|DOCF_ATTR_BY_FILENAME);
 
@@ -1199,27 +1201,28 @@ ei_done:
   if (_import_snap) *_import_snap=new_snap;
   if (_import_ip_scaler) *_import_ip_scaler=new_ip_scaler;
   doc->flags|=old_doc_flags;
+  return result;
 }
 
 I64 CSpriteCntQue(CSprite *root)
 {
   CSprite *tempg=root->next;
-  result=0;
+  I64 result=0;
   while (tempg->type) {
     result++;
     tempg=tempg->next;
   }
+  return result;
 }
 
 U0 EdInsGraphic(CDoc *doc,I64 x,I64 y)
 {
-  BoolI8 unlock;
+  Bool unlock;
   U8 *st;
   CDocEntry *doc_e;
   CDocBin *tempb;
-  I64 cur_num=0;
+  I64 cur_num=0,new_snap=1;
   CSprite *root;
-  I64 new_snap=1;
   F64 new_ip_scaler=1.0;
   if (Fs!=doc->mem_task)
     Dbg;
@@ -1228,7 +1231,7 @@ U0 EdInsGraphic(CDoc *doc,I64 x,I64 y)
     WordStat;
     unlock=DocLock(doc);
     tempb=CAlloc(sizeof(CDocBin),doc->mem_task);
-    tempb->type=DOCBT_GRSPRITE;
+    tempb->type=DOCBT_CSPRITE;
     tempb->size=gr_sprite_base_size[GRST_END];
     tempb->data=CAlloc(tempb->size,doc->mem_task);
     tempb->num=doc->cur_bin_num++;

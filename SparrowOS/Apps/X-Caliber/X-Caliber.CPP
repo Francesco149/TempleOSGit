@@ -66,7 +66,7 @@ class Ship
   F64 die_time,die_timeout;
   I64 spacewalk_side;
   F64 laser_temperature;
-  BoolI8 lasering,exploding,laser_overheat;
+  Bool lasering,exploding,laser_overheat;
 } *human;
 
 F64 human_t_left,human_t_right,human_antispin;
@@ -77,7 +77,7 @@ class Bullet
   F64 radius;
   F64 fuse_time,die_timeout;
   MyMass p;
-  BoolI8 exploding;
+  Bool exploding;
 };
 
 #define MAX_THRUST	200.0
@@ -90,7 +90,7 @@ class Bullet
 #define CMD_THRUST	3
 #define CMD_FIRE	4
 #define CMD_EXIT	5
-BoolI8 game_over,show_level_msg;
+Bool game_over,show_level_msg;
 
 #define NUM_STARS	100
 I64 stars_x[NUM_STARS],stars_y[NUM_STARS];
@@ -118,7 +118,7 @@ I64 level,score,remaining;
 
 
 // ********************************** Ship
-BoolI64 CheckOverlap()
+Bool CheckOverlap()
 {
   CD3 p;
   MyMass *tempm,*tempm1;
@@ -352,7 +352,7 @@ U0 AllDel(CMathODE *ode)
   ODEDel(ode);
 }
 
-BoolI64 LaserPlot(CDC *dc,I64 x,I64 y,I64)
+Bool LaserPlot(CDC *dc,I64 x,I64 y,I64)
 {
   I64 c;
   c=GrPeek(dc,x,y);
@@ -375,7 +375,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   F64 t_left,t_right,spin,d,x,y;
   MySpring *tempss;
   U8 *img;
-  BoolI8 draw_laser_line=FALSE;
+  Bool draw_laser_line=FALSE;
 
   task->text_attr=BLACK<<4+WHITE;
   if (ode!=task->last_ode) return;
@@ -994,7 +994,7 @@ U0 Init()
 
 U0 XCaliber()
 {
-  U64 ch,msg_code,p1,p2,sc;
+  I64 ch,msg_code,p1,p2,sc;
   CCtrl *cp=CtrlPanelNew;
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush

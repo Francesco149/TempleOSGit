@@ -16,20 +16,20 @@ U0 Exit()
   }
 }
 
-BoolI64 TaskValidate(CTask *task)
+Bool TaskValidate(CTask *task)
 {
   if (!(0<task<=MAX_I32) || task->addr!=task ||
-    task->task_signature(U64)!=TASK_COMBINED_SIGNATURE_VAL)
+    task->task_signature(I64)!=TASK_COMBINED_SIGNATURE_VAL)
     return FALSE;
   else
     return TRUE;
 }
 
-U0 Kill(CTask *task,BoolI8 wait=TRUE)
+U0 Kill(CTask *task,Bool wait=TRUE)
 {
-  U64 i;
+  I64 i;
   CCPU *c;
-  BoolI8 found,old_preempt=Preempt(OFF);
+  Bool found,old_preempt=Preempt(OFF);
   if (TaskValidate(task)) {
     if (task==sys_winmgr_task)
       found=TRUE;
@@ -51,7 +51,30 @@ U0 Kill(CTask *task,BoolI8 wait=TRUE)
   Preempt(old_preempt);
 }
 
-CTaskStk *TaskStkNew(U64 stk_size,CTask *task)
+Bool Suspend(CTask *task=NULL,Bool state=TRUE)
+{
+  Bool result;
+  if (!task) task=Fs;
+  PushFD;
+  Cli;
+  if (TaskValidate(task))
+    result=LBEqu(&task->task_flags,TASKf_SUSPENDED,state);
+  else
+    result=FALSE;
+  PopFD;
+  return result;
+}
+
+Bool IsSuspended(CTask *task=NULL)
+{
+  if (!task) task=Fs;
+  if (TaskValidate(task))
+    return Bt(&task->task_flags,TASKf_SUSPENDED);
+  else
+    return FALSE;
+}
+
+CTaskStk *TaskStkNew(I64 stk_size,CTask *task)
 {
   CTaskStk *temps=MAlloc(stk_size+offset(CTaskStk.stk_base),task);
   temps->next_stk=NULL;
@@ -63,7 +86,7 @@ CTaskStk *TaskStkNew(U64 stk_size,CTask *task)
 
 #exe {OptOn(OPTf_NO_REG_VAR);};
 //fp_add can have any fixed number of arguments.
-argpop I64 CallStkGrow(U64 stk_size_threshold,U64 stk_size,/*argpop*/I64 (*fp_add)(...),...)
+argpop I64 CallStkGrow(I64 stk_size_threshold,I64 stk_size,/*argpop*/I64 (*fp_add)(...),...)
 {
   CTaskStk *temps,*temps2,**_stk;
   I64 result,*rsp,*rsp2,*old_stk;
@@ -133,7 +156,7 @@ asm {
 ;
 #exe {OptOff(OPTf_NO_REG_VAR);};
 
-U64 TaskInit(CTask *task,U64 stk_size)
+I64 TaskInit(CTask *task,I64 stk_size)
 { //Returns Fs of task
   CTaskStk *temps;
 
@@ -200,11 +223,11 @@ U64 TaskInit(CTask *task,U64 stk_size)
   return task;
 }
 
-CTask *Spawn(U0 (*fp_start_add)(U0 *data),U0 *data=NULL,
+CTask *Spawn(U0 (*fp_start_add)(U8 *data),U8 *data=NULL,
 	    U8 *task_name=NULL,
 	    CTask *parent=NULL, //NULL means adam
-	    U64 stk_size=0, //0=default
-	    U64 flags=SPAWNF_ADD_TO_QUE)
+	    I64 stk_size=0, //0=default
+	    I64 flags=SPAWNF_ADD_TO_QUE)
 {
 //We alloc from code heap so addr will be short
 //Could be allocated off of data heap
@@ -253,7 +276,7 @@ U0 ServantTaskCont()
   }
 }
 
-U0 TaskDerivedValsUpdate(CTask *task=NULL,BoolI8 update_z_buf=TRUE)
+U0 TaskDerivedValsUpdate(CTask *task=NULL,Bool update_z_buf=TRUE)
 {
   if (!task) task=Fs;
   PushFD;
@@ -285,8 +308,7 @@ U0 TaskInitExt()
 I64 ExeCmdLine(CLex *lx)
 {
   I64 result=0,i,type;
-  U8 *ptr,*ptr2,*ptr3;
-  U8 *code;
+  U8 *ptr,*ptr2,*ptr3,*code;
   CDocEntry *doc_e;
   CDoc *doc;
   while (lx->token &&
@@ -336,14 +358,15 @@ I64 ExeCmdLine(CLex *lx)
       return FALSE;
     else
       return TRUE;
-  }
+  } else
+    return result;
 }
 
 U0 UserTaskCont()
 {
   CLex *lx;
   CDoc *doc;
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE;
   do {
     lx=LexNew(NULL,LF_PROMPT,NULL);
     QueIns(lx,Fs->last_lex);
@@ -363,7 +386,7 @@ U0 UserTaskCont()
   } while (cont);
 }
 
-U0 UserCmdLine(U64 dummy=0)
+U0 UserCmdLine(I64 dummy=0)
 {
   nounusedwarn dummy;
   LBts(&Fs->task_flags,TASKf_USER);
@@ -376,7 +399,7 @@ U0 UserCmdLine(U64 dummy=0)
   UserTaskCont;
 }
 
-U0 ServantUserCmdLine(U64 dummy=0)
+U0 ServantUserCmdLine(I64 dummy=0)
 {
   nounusedwarn dummy;
   LBts(&Fs->task_flags,TASKf_USER);
@@ -399,10 +422,12 @@ CTask *SpawnUser(U8 *fmt=NULL,...)
   return task;
 }
 
-U0 TaskPause(CTask *task,BoolI8 state)
+U0 TaskPause(CTask *task=NULL,Bool state=TRUE)
 {
   CTask *task1;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt;
+  if (!task) task=Fs;
+  old_preempt=Preempt(OFF);
   if (TaskValidate(task)) {
     if (LBEqu(&task->task_flags,TASKf_PAUSED,state)) {
       if (!state)
@@ -431,7 +456,7 @@ U0 TaskFinishOff(CTask *task)
   Free(task);
 }
 
-U64 TaskEnd()
+I64 TaskEnd()
 { //called with irq's off
   CTask *task=Fs,*tempt,*tempt1;
   CTaskCmd *tempc,*tempc1,*tempc2;
@@ -443,7 +468,7 @@ U64 TaskEnd()
     task->wake_jiffy=0;
     LBtr(&task->task_flags,TASKf_KILL_TASK);
     TaskRstAwaitingMsg(task);
-    LBtr(&task->task_flags,TASKf_SUSPENDED);
+    Suspend(task,FALSE);
     task->rip=task->task_end_cb;
     task->task_end_cb=NULL;
     return task;
@@ -504,7 +529,7 @@ U64 TaskEnd()
   }
 
 //QueRem
-  task->task_signature(U64)=0;
+  task->task_signature(I64)=0;
 
   tempt =task->next_input_filter_task;
   tempt1=task->last_input_filter_task;

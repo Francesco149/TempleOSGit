@@ -3,9 +3,11 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2976] CCtrl type for the tempo/stacatto sliders.
+  2) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2688] CCtrl type for the
+tempo/stacatto sliders.
 
-  3) The active [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc sprite buttons with macros for left/record/play/right.
+  3) The active [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc sprite buttons
+with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
@@ -14,7 +16,8 @@ This uses four types of ctrls
 
 This uses four types of output
 
-  1) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc for the text and buttons and kbdgraphic.
+  1) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc for the text and
+buttons and kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
 
@@ -24,7 +27,8 @@ persistent layer is used during drag-and-drop.
   4) The Fs->next_ctrl for the tempo/stacatto sliders.
 
 
-See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,377] GrUpdateWins() and [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen().
+See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,378] GrUpdateWins() and
+[C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen().
 
 
 */
@@ -78,7 +82,7 @@ class OrgCtrl
      tool;
   OrgNote *cur_note;
   CDC *dc2;
-  BoolI8 playing;
+  Bool playing;
 } oc;
 
 U8 *org_note_list="A\0A#\0B\0C\0C#\0D\0D#\0E\0F\0F#\0G\0G#\0";
@@ -163,11 +167,11 @@ U8 *org_duration_list="st\0s\0et\0e\0qt\0e.\0q\0q.\0h\0h.\0w\0w.\0";
 U8 *org_duration_imgs[ORG_NUM_DURATIONS]={__BIN_1,__BIN_1,__BIN_2,
 			__BIN_2,__BIN_3,__BIN_2,__BIN_3,__BIN_3,
 			__BIN_4,__BIN_4,__BIN_5,__BIN_5};
-BoolI8 org_triplet_durations[ORG_NUM_DURATIONS]={TRUE,FALSE,TRUE,
+Bool org_triplet_durations[ORG_NUM_DURATIONS]={TRUE,FALSE,TRUE,
 			FALSE,TRUE,FALSE,FALSE,FALSE,
 			FALSE,FALSE,FALSE,FALSE};
 
-BoolI64 OrgHasWords(U8 *st)
+Bool OrgHasWords(U8 *st)
 {
   if (st && *st && (StrLen(st)>1 || *st!=CH_SPACE && *st!=CH_SHIFT_SPACE))
     return TRUE;
@@ -175,7 +179,7 @@ BoolI64 OrgHasWords(U8 *st)
     return FALSE;
 }
 
-BoolI64 OrgIsDotted(I64 duration)
+Bool OrgIsDotted(I64 duration)
 {
   U8 *st=ListEntryPt(duration,org_duration_list);
   if (st[1]=='.')
@@ -242,7 +246,7 @@ U0 OrgRecalcNoteXY()
   }
 }
 
-U0 OrgMarkSelected(I64 x1,I64 x2,BoolI8 sel)
+U0 OrgMarkSelected(I64 x1,I64 x2,Bool sel)
 {
   OrgNote *tempo=oc.root.next;
   while (tempo!=&oc.root) {
@@ -337,7 +341,7 @@ OrgNote *OrgFindNote(I64 x,I64)
   return tempo;
 }
 
-BoolI64 OrgBlink(F64 t)
+Bool OrgBlink(F64 t)
 {
   if (Blink(,t) || oc.playing)
     return TRUE;
@@ -368,7 +372,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,x,y,
      w=task->win_pixel_width;
   F64 measure_len=4,measure_left=measure_len;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   dc->color=BLACK;
   for (i=1;i<6;i++)
@@ -480,7 +484,7 @@ U0 OrgRightClick(I64 x,I64 y)
   U8 *st,*st2;
   OrgNote *tempo,*tempo1;
   I64 i;
-  U64 old_doc_flags;
+  I64 old_doc_flags;
   if (DocCur) old_doc_flags=DocCur->flags;
   oc.cur_note=tempo=OrgFindNote(x,y);
   if (tempo!=&oc.root) {
@@ -553,8 +557,7 @@ U0 OrgRightClick(I64 x,I64 y)
 	      Free(st);
 	    } else
 	      tempo->word=StrNew(" ");
-	    if (DocCur)
-DocCur->flags=DocCur->flags&~DOCF_FORM|old_doc_flags&DOCF_FORM;
+	    if (DocCur) DocCur->flags=DocCur->flags&~DOCF_FORM|old_doc_flags&DOCF_FORM;
 	  }
 	  break;
 	case ORGR_INS_NOTE:
@@ -649,7 +652,7 @@ U0 DrawPickTools()
 }
 
 
-BoolI64 OrgGetPickToolBox(I64 xx,I64 yy)
+Bool OrgGetPickToolBox(I64 xx,I64 yy)
 {
   if (ORG_TOOLS_X<=xx<ORG_TOOLS_X+27 &&
       ORG_TOOLS_Y<=yy<ORG_TOOLS_Y+15) {
@@ -670,7 +673,7 @@ I64 meter_tops[ORG_NUM_METERS]	={2,3,4,5,6,7,9},
 #define ORG_METER_X	485
 #define ORG_METER_Y	13*FONT_HEIGHT
 #define ORG_METER_W	12
-BoolI64 OrgGetPickMeterBox(I64 xx,I64 yy,I64 *top,I64 *bottom)
+Bool OrgGetPickMeterBox(I64 xx,I64 yy,I64 *top,I64 *bottom)
 {
   I64 i;
   if (ORG_METER_X<=xx<ORG_METER_X+ORG_METER_W*ORG_NUM_METERS &&
@@ -688,9 +691,7 @@ U0 DrawPickMeterBox()
   I64 i;
   oc.dc2->color=BLACK;
   for (i=0;i<ORG_NUM_METERS;i++)
-   
-DrawTimeSignature(oc.dc2,ORG_METER_X+i*ORG_METER_W,ORG_METER_Y,meter_tops[i],m
-eter_bottoms[i]);
+    DrawTimeSignature(oc.dc2,ORG_METER_X+i*ORG_METER_W,ORG_METER_Y,meter_tops[i],meter_bottoms[i]);
 }
 
 U0 DrawDC2()
@@ -857,12 +858,12 @@ U0 OrgLeftClick(I64 x,I64 y)
 #define ORGPM_REVERB1		1
 #define ORGPM_NUM_PLAY_MODES	2
 
-U64 org_play_mode=0;
+I64 org_play_mode=0;
 F64 org_play_f=0;
 
-U0 OrgPlayTask(U64)
+U0 OrgPlayTask(I64)
 {
-  U64 i=0;
+  I64 i=0;
   F64 f=0,f2=0;
   Fs->task_end_cb=&SndTaskEndCB;
   while (TRUE) {
@@ -916,7 +917,7 @@ U8 *OrgMusicSetOctave(U8 *st,I64 *org_octave)
 
 U8 *OrgMusicSetNoteLen(U8 *st,F64 *org_duration)
 {
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE;
   do {
     switch (*st++) {
       case 'w': *org_duration=4.0;  break;
@@ -1174,7 +1175,7 @@ U8 *OrgCvtSong()
 U8 *OrgSaveSong(U8 *dirname,U8 *full_filename)
 {
   CDoc *doc=DocNew;
-  BoolI8 has_words;
+  Bool has_words;
   OrgNote *tempo,*tempo1;
   F64 measure_len=4,two_measure_left=2*measure_len;
   U8 *ptr,ch;
@@ -1411,9 +1412,7 @@ U0 OrgMenu(I64 org_octave,I64 org_waveform)
   "$FG,LTGREEN$<BACKSPACE>$FG$\tDeletes Last Note\n"
   "$FG,LTGREEN$Left Mouse$FG$\tDrag note or shift word\n"
   "$FG,LTGREEN$Right Mouse$FG$\tChange duration or set word\n";
- 
-PutSprite(__BIN_6,"$SP+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_LEFT
-);\",%d$");
+  PutSprite(__BIN_6,"$SP+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_LEFT);\",%d$");
   "   ";
   if (oc.playing)
     PutSprite(__BIN_9,"$SP+LM,\"\",\"x\",%d$");
@@ -1426,9 +1425,7 @@ PutSprite(__BIN_6,"$SP+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_LEFT
   } else
     PutSprite(__BIN_11,"$SP+LM,\"\",\"z\",%d$");
   "   ";
- 
-PutSprite(__BIN_7,"$SP+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_RIGH
-T);\",%d$");
+  PutSprite(__BIN_7,"$SP+LM+LA,\"\",\"Msg(MSG_KEY_DOWN,0,SCF_CTRL|SC_CURSOR_RIGHT);\",%d$");
   "$CM+LX,0,6$";
   OrgSetOctave(org_octave);
   OrgSetWaveform(org_waveform);
@@ -1453,16 +1450,14 @@ U0 OrgPopMode()
 
 U0 MusicOrgan(U8 *dirname=NULL)
 {
-  BoolI8 is_note,was_playing;
-  U64 p1,p2,ch,sc,msg_code=0,col;
-  I64
-note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3
-,timeout_val,timeout_val2;
+  Bool is_note,was_playing;
+  I64 p1,p2,ch,sc,msg_code=0,col;
+  I64 note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3,timeout_val,timeout_val2;
   F64 f=0,last_f=0,org_duration=1.0;
   U8 *filename=NULL,*st,*st2;
   CTask *play_task=Spawn(&OrgPlayTask,NULL,"Organ Play",Fs);
   OrgNote *tempo;
-  U64 old_doc_flags;
+  I64 old_doc_flags;
   F64 d,evt_time=tP,note_down_time=tP;
   CCtrl *c=TempoNew;
 
@@ -1552,12 +1547,10 @@ note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3
       was_playing=FALSE;
 start:
       if (ipty-Fs->win_top<18)
-	msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP|1<<MSG_IP_L_DOWN|1<<MSG
-_IP_L_UP|1<<MSG_IP_R_UP|
+	msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_UP|
 	    1<<MSG_IP_MOVE|1<<MSG_CMD);
       else
-	msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP|1<<MSG_IP_MOVE|1<<MSG_C
-MD);
+	msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP|1<<MSG_IP_MOVE|1<<MSG_CMD);
 got_msg:
       if (msg_code==MSG_KEY_DOWN && p1==CH_SPACE && !p2) {
       //The Window Mgr sets the Doc cur_entry to a button
@@ -1776,9 +1769,7 @@ got_msg:
 		  if (tempo->type!=OT_METER) {
 		    timeout_val=sys_jiffies;
 		    if (ipty-Fs->win_top<18)
-		     
-msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_R_UP|1<<MS
-G_CMD);
+		      msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_R_UP|1<<MSG_CMD);
 		    else
 		      msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_CMD);
 		    if (msg_code) {

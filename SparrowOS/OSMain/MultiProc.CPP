@@ -3,7 +3,7 @@ asm {
 USE16
 //See [::/SparrowOS/Doc/MultiCore.TXT.Z,1] SparrowOS MultiCore.
 
-//This code gets copied to [C:/SparrowOS/OSMain/Adam1a.HPP.Z,458] MP_VECT_ADDR.
+//This code gets copied to [C:/SparrowOS/OSMain/Adam1a.HPP.Z,454] MP_VECT_ADDR.
 //See [::/SparrowOS/OSMain/MultiProc.CPP.Z,2] MemCpy(MP_VECT_ADDR.
 SYS_MP_INIT_START::
 	JMP	MP2_START2
@@ -79,7 +79,7 @@ USE64
 	JMP	I32 SYS_RESTORE_CONTEXT
 }
 
-U0 TSSBusy(I64 tr,BoolI8 val=OFF)
+U0 TSSBusy(I64 tr,Bool val=OFF)
 {
   LBEqu((&sys_gdttab)(U8 *)+tr+4,9,val);
 }
@@ -131,7 +131,7 @@ U0 MPCmdCtrlInit(CMPCmdCtrl *ctrl)
   ctrl->next_done=ctrl->last_done=&ctrl->next_done;
 }
 
-CCPU *CPUStructInit(U64 num,CCPU *c)
+CCPU *CPUStructInit(I64 num,CCPU *c)
 {
   MemSet(c,0,sizeof(CCPU));
   c->addr=c;
@@ -184,7 +184,7 @@ U0 MPHalt()
   BusyWait(10000);
 }
 
-U0 MPWake(U64 target_cpu_mask)
+U0 MPWake(I64 target_cpu_mask)
 {
   I64 i;
   target_cpu_mask&=1<<mp_cnt-1;
@@ -205,7 +205,7 @@ U0 MPWake(U64 target_cpu_mask)
 U0 MPAPICInit()
 { //Called by adam during start-up
   //and other cores during initialization
-  //after [C:/SparrowOS/OSMain/MultiProc.CPP.Z,391] MPStart().
+  //after [C:/SparrowOS/OSMain/MultiProc.CPP.Z,395] MPStart().
   *LAPIC_SVR(U32 *)|=LAPICF_APIC_ENABLED;
   mp_apic_ids[Gs->num]=*LAPIC_APIC_ID(U32 *)>>24;
   *LAPIC_LDR(U32 *)=mp_apic_ids[Gs->num]<<24;
@@ -219,16 +219,16 @@ U0 MPAPICInit()
   SetRAX(Gs->tss->tr);
   asm {	LTR	AX  }
   if (Gs->num) {
-    IDTInit1;
+    IntInit1;
     SetFlags(SYS_NORMAL_RFLAGS);
     BusyWait(2000);
-    IDTInit2;
+    IntInit2;
   }
 }
 
 #assert !offset(CMPCmdCtrl.next_waiting)
 
-BoolI64 MPCmdCtrlDo(CMPCmdCtrl *ctrl)
+Bool MPCmdCtrlDo(CMPCmdCtrl *ctrl)
 { //Called while locked
   CMPCmd *tempm=ctrl->next_waiting;
   while (tempm!=ctrl && !Bt(&tempm->target_cpu_mask,Gs->num))
@@ -281,16 +281,16 @@ U0 MPSethServerTask()
     if (my_ctrl->next_waiting==my_ctrl &&
 	mp_ctrl->next_waiting==mp_ctrl) {
       LBts(&Gs->cpu_flags,CPUf_SETH_SLEEP);
-      Sleep(20); //We don't want this too long because of need for [C:/SparrowOS/OSMain/Task1a.CPP.Z,536] TaskFinishOffDying().
+      Sleep(20); //We don't want this too long because of need for [C:/SparrowOS/OSMain/Task1a.CPP.Z,561] TaskFinishOffDying().
       LBtr(&Gs->cpu_flags,CPUf_SETH_SLEEP);
     }
   }
 }
 
-CMPCmd *MPQueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
+CMPCmd *MPQueJob(I64 (*fp_add)(U8 *data),U8 *data=NULL,
        U8 *desc=NULL,
-       U64 flags=1<<MPCf_FREE_ON_COMPLETE,
-       BoolI8 spawn=FALSE,U64 target_cpu_mask=ALL_MASK)
+       I64 flags=1<<MPCf_FREE_ON_COMPLETE,
+       Bool spawn=FALSE,I64 target_cpu_mask=ALL_MASK)
 {
   I64 i=Bsf(target_cpu_mask);
   CMPCmdCtrl *ctrl;
@@ -322,8 +322,8 @@ CMPCmd *MPQueJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
   return tempm;
 }
 
-CMPCmd *MPJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
-       U64 target_cpu=1,U64 flags=1<<MPCf_FREE_ON_COMPLETE)
+CMPCmd *MPJob(I64 (*fp_add)(U8 *data),U8 *data=NULL,
+       I64 target_cpu=1,I64 flags=1<<MPCf_FREE_ON_COMPLETE)
 //Set flags to zero if you wish to
 //get the result.
 {
@@ -332,6 +332,7 @@ CMPCmd *MPJob(I64 (*fp_add)(U0 *data),U0 *data=NULL,
 
 I64 MPJobResult(CMPCmd *tempm)
 {
+  I64 result;
   CMPCmdCtrl *ctrl=tempm->ctrl;
   if (mp_cnt<2) throw(EXCEPT_MULTICORE,2);
   while (!Bt(&tempm->flags,MPCf_DONE))
@@ -346,10 +347,12 @@ I64 MPJobResult(CMPCmd *tempm)
   result=tempm->result;
   Free(tempm->desc);
   Free(tempm);
+  return result;
 }
 
-CTask *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 target_cpu=1)
+CTask *MPSpawn(U0 (*fp_add)(U8 *data),U8 *data=NULL,U8 *name=NULL,I64 target_cpu=1)
 {
+  CTask *result;
   CMPCmd *tempm=MPQueJob(fp_add,data,name,0,TRUE,1<<target_cpu);
   CMPCmdCtrl *ctrl;
   while (!Bt(&tempm->flags,MPCf_DONE))
@@ -365,10 +368,11 @@ CTask *MPSpawn(U0 (*fp_add)(U0 *data),U0 *data=NULL,U8 *name=NULL,U64 target_cpu
   PopFD;
   Free(tempm->desc);
   Free(tempm);
+  return result;
 }
 
 U0 MPCPUTaskInit()
-{ //Called by multicore's seth task after [C:/SparrowOS/OSMain/MultiProc.CPP.Z,391] MPStart()
+{ //Called by multicore's seth task after [C:/SparrowOS/OSMain/MultiProc.CPP.Z,395] MPStart()
   //as the first thing a CPU does before waiting for jobs
   MPAPICInit;
   Fs->rip=&MPSethServerTask;
@@ -420,8 +424,8 @@ U0 MPStart()
   MemSet(&cpu_structs[1],0,sizeof(CCPU)*(MP_MAX_PROCESSORS-1));
 
 //When you start-up other cores, they jump to an addr
-//specified by a byte vect number, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,457] MPN_VECT which corresponds
-//to a location 4096*vect number, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,458] MP_VECT_ADDR.
+//specified by a byte vect number, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,453] MPN_VECT which corresponds
+//to a location 4096*vect number, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,454] MP_VECT_ADDR.
   MemCpy(mp,SYS_MP_INIT_START,SYS_MP_INIT_END-SYS_MP_INIT_START);
 
   mp->sys_temp_ptr=GDT_SIZE-1+(&sys_gdttab)(U8 *)<<16;
@@ -453,7 +457,7 @@ U0 MPStart()
     buf[14]+=i;
     task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_que_signature=TASK_IN_QUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TSSNew(i);

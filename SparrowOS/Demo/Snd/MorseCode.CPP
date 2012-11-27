@@ -75,7 +75,7 @@ U0 MorseTable()
 }
 
 F64 m_start,m_end,dt_down,dt_up;
-BoolI8 space_sent;
+Bool space_sent;
 
 U8 *MorseTimes(CDoc *,CDocEntry *,CTask *mem_task)
 {
@@ -87,7 +87,7 @@ U8 *MorseTimes(CDoc *,CDocEntry *,CTask *mem_task)
 
 I64 MorseWaitKey()
 {
-  U64 ch;
+  I64 ch;
   F64 dt;
   while (TRUE) {
     if (m_start) {
@@ -131,7 +131,7 @@ I64 MorseWaitKey()
 
 U0 Morse()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CDocEntry *doc_e;
   U8 buf[8],*dst,ch,*src;
 

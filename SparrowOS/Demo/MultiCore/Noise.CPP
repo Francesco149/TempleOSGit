@@ -1,4 +1,4 @@
-BoolI8 noise_done;
+Bool noise_done;
 I64 done_ack;
 I64 cnt;
 

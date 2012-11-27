@@ -6,9 +6,9 @@
      +RD refreshes the data.
      +UD updates the val when you edit it.
      +U32 means the val is 4 bytes.
-     -U64 U64 is the default so we might
+     -I64 I64 is the default so we might
 	 want to turn-it-off.  Strings
-	 use U64.
+	 use I64.
     ,32  sets the tag string width.
 	 See [::/SparrowOS/Adam/Doc/DocPlain.CPP.Z,1] Data Tag Width.
      -P  Means it is a string var, basically.
@@ -19,7 +19,7 @@
 I32 i;
 U8 buf[8];
 
-U0 UpdateGlblTask(U64)
+U0 UpdateGlblTask(I64)
 {
   while (TRUE) {
     i++;
@@ -37,9 +37,9 @@ U0 DataDemo()
 
 //We do this to prevent access to
 //doc_e->data before it is set.
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
 
-//You might set the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1314] DOCF_FORM flag.
+//You might set the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1306] DOCF_FORM flag.
 //  doc->flags|=DOCF_FORM
 //if you wish.
 
@@ -50,7 +50,7 @@ U0 DataDemo()
   "However, changes happen immediately,\n"
   "so it's tricky.\n\n";
   //Use <CTRL-L> for the $DA,$ format.
-  doc_e=DocPutS(doc,"$DA-T+RD+UD-U64+U32,32,\"%12d\"$\n");
+  doc_e=DocPutS(doc,"$DA-T+RD+UD-I64+U32,32,\"%12d\"$\n");
   doc_e->data=&i;
 
   StrCpy(buf,"Terry");

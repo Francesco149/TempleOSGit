@@ -1,4 +1,4 @@
-BoolI64 OptIC6(CIntermediateCode *tempi)
+Bool OptIC6(CIntermediateCode *tempi)
 {
   CIntermediateCode *tempil1,*tempil2;
   if (tempi->ic_opcode<IC_IMM) return FALSE;
@@ -36,11 +36,9 @@ BoolI64 OptIC6(CIntermediateCode *tempi)
 
 U0 OptPass6Lag(CLex *lx,
   CPrsStk *ps,CIntermediateCode *tempi,I64 *i_,I64 num_stk,
-  U64 *_clobbered_reg_mask,U64 fun_num)
+  I64 *_clobbered_reg_mask,I64 fun_num)
 {
-  I64 i=*i_;
-  I64 j,k,l,code;
-  U64 clobbered_reg_mask=*_clobbered_reg_mask;
+  I64 i=*i_,j,k,l,code,clobbered_reg_mask=*_clobbered_reg_mask;
   CHashFun *tempf;
   code=tempi->ic_opcode;
   if (code<=IC_NOP1)
@@ -150,9 +148,8 @@ U0 OptPass6(CLex *lx,CHashFun *fun_class)
   CIntermediateCode *tempi,*tempil1,*tempif1,*tempif2,
       *temp_lag[4],*old_tempil1=NULL;
   CPrsStk *ps=OptStart(lx,temp_lag);
-  I64 code;
-  I64 i=0,num_stk,clobbered_reg_mask=CALWAYS_CLOBBERED_MASK;
-  U64 fun_num=0;
+  I64 i=0,code,num_stk,clobbered_reg_mask=CALWAYS_CLOBBERED_MASK,
+      fun_num=0;
 
   if (fun_class)
     fun_num=compiled_funs++;

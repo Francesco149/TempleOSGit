@@ -1,13 +1,13 @@
-/*                              Intermediate Code
-                                      To
-                                 Machine Code
+/*Intermediate Code
+To
+Machine Code
 
 RAX,RBX,RCX and RDX can be clobbered by
 each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1559] CICArg.  RAX is the most common register
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1551] CICArg.  RAX is the most common register
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -117,9 +117,9 @@ U0 ICU32(CIntermediateCode *tempi,U32 d)
   tempi->ic_cnt+=4;
 }
 
-U0 ICU64(CIntermediateCode *tempi,U64 q)
+U0 ICU64(CIntermediateCode *tempi,I64 q)
 {
-  U64 *qq;
+  I64 *qq;
   if (tempi->ic_cnt>=IC_BODY_SIZE-8 || tempi->ic_ext_body) {
     if (!tempi->ic_ext_body) {
       tempi->ic_ext_body=MAlloc(256);
@@ -132,7 +132,7 @@ U0 ICU64(CIntermediateCode *tempi,U64 q)
   tempi->ic_cnt+=8;
 }
 
-BoolI64 ICLastIns(CIntermediateCode *tempi,CIntermediateCode **_tempi1,U8 **_body)
+Bool ICLastIns(CIntermediateCode *tempi,CIntermediateCode **_tempi1,U8 **_body)
 {
   CIntermediateCode *tempil1;
   if (tempi->ic_last_cnt>=0) {
@@ -160,7 +160,7 @@ BoolI64 ICLastIns(CIntermediateCode *tempi,CIntermediateCode **_tempi1,U8 **_bod
 }
 
 
-U0 ICAddRSP(CIntermediateCode *tempi,I64 i,BoolI8 optimize=TRUE)
+U0 ICAddRSP(CIntermediateCode *tempi,I64 i,Bool optimize=TRUE)
 {
   I64 j,last_cnt;
   U8 *body;
@@ -223,9 +223,9 @@ U0 ICAddRSP(CIntermediateCode *tempi,I64 i,BoolI8 optimize=TRUE)
 #define CN_P3	3
 #define CN_R	4
 
-U0 CmpNoteFloatOp(CLex *lx,CIntermediateCode *tempi,BoolI8 dont_pushable,BoolI8 dont_popable,I64 pos)
+U0 CmpNoteFloatOp(CLex *lx,CIntermediateCode *tempi,Bool dont_pushable,Bool dont_popable,I64 pos)
 {
-  BoolI8 link=FALSE;
+  Bool link=FALSE;
   if (lx->pass==7 && lx->last_float_op_ic && lx->last_dont_popable && dont_pushable) {
     nobound_switch (pos) {
       case CN_P3:
@@ -278,7 +278,7 @@ U0 CmpNoteFloatOp(CLex *lx,CIntermediateCode *tempi,BoolI8 dont_pushable,BoolI8 
     throw(EXCEPT_COMPILER,21);
 }
 
-U0 CmpSetFloatOpPushPop(CLex *lx,CIntermediateCode *tempi,BoolI8 *dont_push_float,BoolI8 *dont_pop_float)
+U0 CmpSetFloatOpPushPop(CLex *lx,CIntermediateCode *tempi,Bool *dont_push_float,Bool *dont_pop_float)
 {
   if (lx->pass==7) {
     *dont_push_float=FALSE;
@@ -290,10 +290,10 @@ U0 CmpSetFloatOpPushPop(CLex *lx,CIntermediateCode *tempi,BoolI8 *dont_push_floa
   }
 }
 
-U0 ICCopyTemplate(CLex *lx,CIntermediateCode *tempi,U64 op,
-  BoolI8 off_the_record,BoolI8 dont_pushable,BoolI8 dont_popable,I64 pos)
+U0 ICCopyTemplate(CLex *lx,CIntermediateCode *tempi,I64 op,
+  Bool off_the_record,Bool dont_pushable,Bool dont_popable,I64 pos)
 {
-  BoolI8 dont_push_float,dont_pop_float,alt;
+  Bool dont_push_float,dont_pop_float,alt;
   U8 *ptr;
   I64 i=0;
   if (!off_the_record) {
@@ -343,15 +343,15 @@ U0 ICCopyTemplate(CLex *lx,CIntermediateCode *tempi,U64 op,
   tempi->ic_cnt+=i;
 }
 
-extern U0 ICMov(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 t2,U64 r2,I64 d2,I64 ip);
+extern U0 ICMov(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 t2,I64 r2,I64 d2,I64 ip);
 
-U64 ICModr(U64 r,U64 t2,U64 r2,I64 d2)
+I64 ICModr(I64 r,I64 t2,I64 r2,I64 d2)
 {
   //result.u[0] is type 0=[REG],1=disp8[REG],2=disp32[REG],3=REG,4=RIP_REL
   //result.u[1] is REX
   //result.u[2] is ModR
   //result.u[3] is SIB
-  result=0;
+  I64 result=0;
   if (t2&TY_MASK>TY_RIP_DISP32) {
     "Callers:%P;%P\n",Caller,Caller(2);
     throw(EXCEPT_COMPILER,22);
@@ -433,6 +433,7 @@ U64 ICModr(U64 r,U64 t2,U64 r2,I64 d2)
 	result.u8[1]=0;
       break;
   }
+  return result;
 }
 
 #define SLASH_OP_INC	0x00000000FFFE00
@@ -456,7 +457,7 @@ U64 ICModr(U64 r,U64 t2,U64 r2,I64 d2)
 #define SLASH_OP_FISTTP	0x01000000DDDD01
 #define SLASH_OP_FILD	0x01000000DFDF05
 
-U0 ICSlashOp(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 op,I64 ip)
+U0 ICSlashOp(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 op,I64 ip)
 {
   I64 i;
   if (t1&TY_MASK==TY_REG && !op.u8[6])
@@ -493,7 +494,7 @@ U0 ICSlashOp(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 op,I64 ip)
   }
 }
 
-U0 ICPush(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,I64 ip)
+U0 ICPush(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 ip)
 {
   switch (t1>>4) {
     case TY_REG>>4:
@@ -531,7 +532,7 @@ U0 ICPush(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,I64 ip)
   ICU16(tempi,0x5048+CREG_RBX<<8);
 }
 
-U0 ICPushRegs(CIntermediateCode *tempi,U64 mask)
+U0 ICPushRegs(CIntermediateCode *tempi,I64 mask)
 {
   I64 i;
   for (i=0;i<NUM_REGS;i++) {
@@ -544,7 +545,7 @@ U0 ICPushRegs(CIntermediateCode *tempi,U64 mask)
   }
 }
 
-U0 ICPop(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,I64 ip)
+U0 ICPop(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 ip)
 {
   switch (t1>>4) {
     case TY_NULL>>4:
@@ -571,7 +572,7 @@ U0 ICPop(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,I64 ip)
   }
 }
 
-U0 ICPopRegs(CIntermediateCode *tempi,U64 mask)
+U0 ICPopRegs(CIntermediateCode *tempi,I64 mask)
 {
   I64 i;
   for (i=NUM_REGS-1;i>=0;i--) {
@@ -584,7 +585,7 @@ U0 ICPopRegs(CIntermediateCode *tempi,U64 mask)
   }
 }
 
-U0 ICZero(CIntermediateCode *tempi,U64 r)
+U0 ICZero(CIntermediateCode *tempi,I64 r)
 {
   if (r>7) {
     r&=7;
@@ -593,9 +594,9 @@ U0 ICZero(CIntermediateCode *tempi,U64 r)
     ICU16(tempi,0xC033+r<<8+r<<11);
 }
 
-U0 ICOr(CIntermediateCode *tempi,U64 r)
+U0 ICOr(CIntermediateCode *tempi,I64 r)
 {
-  U64 i=0xC00B48; //OR R,R
+  I64 i=0xC00B48; //OR R,R
   if (r>7) {
     i+=5;
     r&=7;
@@ -603,7 +604,7 @@ U0 ICOr(CIntermediateCode *tempi,U64 r)
   ICU24(tempi,i+r<<16+r<<19);
 }
 
-U64 ICBuiltInFloatConst(F64 d)
+I64 ICBuiltInFloatConst(F64 d)
 { //Returns 2-byte opcode for FLD const or zero
   if (!d)
     return 0xEED9;
@@ -626,12 +627,12 @@ U64 ICBuiltInFloatConst(F64 d)
 }
 
 
-U0 ICMov(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 t2,U64 r2,I64 d2,I64 ip)
+U0 ICMov(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 t2,I64 r2,I64 d2,I64 ip)
 {
   I64 i,last_cnt=tempi->ic_cnt;
   CIntermediateCode *tempil1;
   U8 *body;
-  BoolI8 old_lock=Btr(&tempi->ic_flags,ICf_LOCK);
+  Bool old_lock=Btr(&tempi->ic_flags,ICf_LOCK);
   switch (t1>>4) {
     case TY_REG>>4:
       if (t2&TY_MASK==TY_IMM) {
@@ -817,7 +818,7 @@ move_done:
     tempi->ic_last_cnt=last_cnt;
 }
 
-U0 ICLea(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,U64 t2,U64 r2,I64 d2,CLex *lx,U8 *buf,I64 ip)
+U0 ICLea(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 t2,I64 r2,I64 d2,CLex *lx,U8 *buf,I64 ip)
 {
   I64 i;
   CExeAbsAddr *tempa;
@@ -878,11 +879,11 @@ U0 ICDeref(CIntermediateCode *tempi,I64 ip)
   }
 }
 
-U0 ICAddEct(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
-	   U64 t2,U64 r2,I64 d2,U64 t3,U64 r3,I64 d3,U64 op,I64 ip)
+U0 ICAddEct(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
+	   I64 t2,I64 r2,I64 d2,I64 t3,I64 r3,I64 d3,I64 op,I64 ip)
 {
   I64 i,temp,result_reg=CREG_RAX;
-  BoolI8 swap=FALSE;
+  Bool swap=FALSE;
   if (r3!=result_reg) {
     swap^=TRUE;
     SwapU64(&t2,&t3);
@@ -943,8 +944,8 @@ U0 ICAddEct(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
   ICMov(tempi,t1,r1,d1,TY_REG+IT_I64,result_reg,0,ip);
 }
 
-U0 ICAddConst(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
-	   U64 t2,U64 r2,I64 d2,I64 disp,U64 op,I64 ip)
+U0 ICAddConst(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
+	   I64 t2,I64 r2,I64 d2,I64 disp,I64 op,I64 ip)
 {
   I64 i,r;
   if (op.u8[0]==0x2B) {
@@ -1126,11 +1127,11 @@ U0 ICAddConst(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
   ICAddEct(tempi,t1,r1,d1,TY_IMM+IT_I64,0,disp,t2,r2,d2,op.u8[0],ip);
 }
 
-U0 ICSub(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
-	   U64 t2,U64 r2,I64 d2,U64 t3,U64 r3,I64 d3,I64 ip)
+U0 ICSub(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
+	   I64 t2,I64 r2,I64 d2,I64 t3,I64 r3,I64 d3,I64 ip)
 {
   I64 i=0x48,op=0x2B;
-  BoolI8 swap=FALSE;
+  Bool swap=FALSE;
   if (r3!=CREG_RAX) {
     swap=TRUE;
     SwapU64(&t2,&t3);
@@ -1213,10 +1214,10 @@ U0 ICSub(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
   }
 }
 
-U0 ICFCvt(CLex *lx,CIntermediateCode *tempi,I64 r1,I64 t2,I64 r2,I64 d2,BoolI8 to_int,I64 pos,I64 ip)
+U0 ICFCvt(CLex *lx,CIntermediateCode *tempi,I64 r1,I64 t2,I64 r2,I64 d2,Bool to_int,I64 pos,I64 ip)
 {
   I64 rsp_size=0,op1,op2;
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
 
   if (to_int) {
     op1=SLASH_OP_FLD;
@@ -1261,7 +1262,7 @@ U0 ICFCvt(CLex *lx,CIntermediateCode *tempi,I64 r1,I64 t2,I64 r2,I64 d2,BoolI8 t
   }
 }
 
-U0 ICFCvt2(CLex *lx,CIntermediateCode *tempi,I64 r1,I64 t2,I64 r2,I64 d2,BoolI8 to_int,I64 ip)
+U0 ICFCvt2(CLex *lx,CIntermediateCode *tempi,I64 r1,I64 t2,I64 r2,I64 d2,Bool to_int,I64 ip)
 {
   I64 rsp_size=0,op1,op2;
   if (to_int) {
@@ -1292,7 +1293,7 @@ U0 ICFUnaryMinus(CLex *lx,CIntermediateCode *tempi,U8 *buf2,I64 ip)
 {
   CICArg *p1=&tempi->p1;
   I64 rsp_size=0,builtin1=0,t1,r1,d1;
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
 
   if (lx->flags&LF_STATIC_COMPILE)
     buf2=lx->a->ip;
@@ -1341,7 +1342,7 @@ U0 ICFUnaryMinus(CLex *lx,CIntermediateCode *tempi,U8 *buf2,I64 ip)
 
 U0 ICFMod(CLex *lx,CIntermediateCode *tempi,I64 ip)
 { //for MOD
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (dont_push_float) {
     if (tempi->ic_flags&ICF_ALTERNATE_TEMPLATE)
@@ -1448,10 +1449,10 @@ U0 ICFPow(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
       TY_REG+IT_I64,CREG_RAX,0,ip);
 }
 
-U0 ICFOp(CLex *lx,CIntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
+U0 ICFOp(CLex *lx,CIntermediateCode *tempi,I64 op,U8 *buf2,I64 ip)
 { //for ADD,SUB,DIV,MUL
   CICArg *p1,*p2;
-  BoolI8 dont_push_float,dont_pop_float,alt;
+  Bool dont_push_float,dont_pop_float,alt;
   I64 rsp_size=0,builtin1=0,builtin2=0,
       t1,r1,d1,t2,r2,d2;
 
@@ -1647,9 +1648,9 @@ U0 ICFOp(CLex *lx,CIntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
   }
 }
 
-U0 ICFCmp(CLex *lx,CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICFCmp(CLex *lx,CIntermediateCode *tempi,I64 op,I64 ip)
 {
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (dont_push_float) {
     if (tempi->ic_flags&ICF_ALTERNATE_TEMPLATE) {
@@ -1689,7 +1690,7 @@ U0 ICFCmp(CLex *lx,CIntermediateCode *tempi,U64 op,I64 ip)
 
 U0 ICFModEqual(CLex *lx,CIntermediateCode *tempi,I64 ip)
 {
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (tempi->ic_flags & ICF_NOT_ADDR) {
     if (dont_push_float) {
@@ -1754,11 +1755,11 @@ U0 ICFModEqual(CLex *lx,CIntermediateCode *tempi,I64 ip)
   }
 }
 
-U0 ICFOpEqual(CLex *lx,CIntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
+U0 ICFOpEqual(CLex *lx,CIntermediateCode *tempi,I64 op,U8 *buf2,I64 ip)
 { //for ADD,SUB,DIV,MUL
   CICArg *p1=&tempi->p1,
       *p2=&tempi->p2;
-  BoolI8 dont_push_float,dont_pop_float,p1_mem;
+  Bool dont_push_float,dont_pop_float,p1_mem;
   I64 rsp_size=0,builtin2=0,
      t1,r1,d1,t2,r2,d2;
 
@@ -2078,14 +2079,13 @@ U0 ICFOpEqual(CLex *lx,CIntermediateCode *tempi,U64 op,U8 *buf2,I64 ip)
   }
 }
  
-U0 ICFCmpAndBranch(CLex *lx,CIntermediateCode *tempi,U64 ip,
-   U64 us,U64 not_us,U8 *buf,I64 ip2)
+U0 ICFCmpAndBranch(CLex *lx,CIntermediateCode *tempi,I64 ip,
+   I64 us,I64 not_us,U8 *buf,I64 ip2)
 {
   CICArg *p1,*p2;
-  BoolI8 dont_push_float,dont_pop_float,alt;
+  Bool dont_push_float,dont_pop_float,alt,short_jmp=FALSE;
   I64 i,rsp_size=0,builtin1=0,builtin2=0,
       t1,r1,d1,t2,r2,d2;
-  BoolI8 short_jmp=FALSE;
   CCodeBlkMisc *lb,*lb1;
   U8 *buf2;
 
@@ -2358,7 +2358,7 @@ U0 ICFCmpAndBranch(CLex *lx,CIntermediateCode *tempi,U64 ip,
   }
 }
 
-U0 ICFPreIncDec(CLex *lx,CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICFPreIncDec(CLex *lx,CIntermediateCode *tempi,I64 op,I64 ip)
 {
   if (tempi->ic_flags & ICF_NOT_ADDR) {
     ICMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
@@ -2380,7 +2380,7 @@ U0 ICFPreIncDec(CLex *lx,CIntermediateCode *tempi,U64 op,I64 ip)
       TY_REG+IT_I64,CREG_RAX,0,ip);
 }
 
-U0 ICFPostIncDec(CLex *lx,CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICFPostIncDec(CLex *lx,CIntermediateCode *tempi,I64 op,I64 ip)
 {
   if (tempi->ic_flags & ICF_NOT_ADDR) {
     ICMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
@@ -2468,7 +2468,7 @@ U0 ICMul(CIntermediateCode *tempi,I64 ip)
 
 U0 ICFMul(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 {
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (tempi->p1.type&TY_MASK==TY_IMM &&
       tempi->p1.ptype&IT_MASK==IT_F64 &&
@@ -2508,7 +2508,7 @@ U0 ICFMul(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 
 U0 ICFDiv(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 {
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   if (tempi->p2.type&TY_MASK==TY_IMM &&
       tempi->p2.ptype&IT_MASK==IT_F64 &&
       tempi->p2.disp(F64)==1.0) {
@@ -2532,7 +2532,7 @@ U0 ICFDiv(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 
 U0 ICFAdd(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 {
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (tempi->p1.type&TY_MASK==TY_IMM &&
       !tempi->p1.disp) {
@@ -2570,7 +2570,7 @@ U0 ICFAdd(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 
 U0 ICFSub(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 {
-  BoolI8 dont_push_float,dont_pop_float;
+  Bool dont_push_float,dont_pop_float;
   if (tempi->p2.type&TY_MASK==TY_IMM &&
       !tempi->p2.disp) {
     CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
@@ -2678,7 +2678,7 @@ U0 ICDiv(CIntermediateCode *tempi,I64 ip)
   ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,TY_REG+IT_I64,CREG_RAX,0,ip);
 }
 
-U0 ICDivEqual(CIntermediateCode *tempi,BoolI8 is_mod,I64 ip)
+U0 ICDivEqual(CIntermediateCode *tempi,Bool is_mod,I64 ip)
 {
   if (tempi->ic_flags & ICF_NOT_ADDR) {
     if (tempi->ic_flags & ICF_P1_FIRST) {
@@ -2751,10 +2751,10 @@ U0 ICMod(CIntermediateCode *tempi,I64 ip)
   ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,TY_REG+IT_I64,CREG_RDX,0,ip);
 }
 
-U0 ICAddSubEctEqual(CIntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
-	   U64 t2,U64 r2,I64 d2,U64 t3,U64 r3,I64 d3,U64 op,I64 ip)
+U0 ICAddSubEctEqual(CIntermediateCode *tempi,I64 ptype,I64 t1,I64 r1,I64 d1,
+	   I64 t2,I64 r2,I64 d2,I64 t3,I64 r3,I64 d3,I64 op,I64 ip)
 {
-  BoolI8 done;
+  Bool done;
   I64 result_reg,temp,i;
   if (tempi->ic_flags & ICF_NOT_ADDR) {
     if (t3&TY_MASK==TY_IMM) {
@@ -2907,8 +2907,8 @@ U0 ICAddSubEctEqual(CIntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
     ICMov(tempi,t1,r1,d1,TY_REG+IT_I64,result_reg,0,ip);
 }
 
-U0 ICShift(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
-	   U64 t2,U64 r2,I64 d2,U64 t3,U64 r3,I64 d3,U64 us,U64 is,I64 ip)
+U0 ICShift(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
+	   I64 t2,I64 r2,I64 d2,I64 t3,I64 r3,I64 d3,I64 us,I64 is,I64 ip)
 {
   I64 i=0x48,result_reg;
   if (tempi->ic_class->sub_type&1 || tempi->ic_flags & ICF_USE_UNSIGNED)
@@ -2941,8 +2941,8 @@ U0 ICShift(CIntermediateCode *tempi,U64 t1,U64 r1,I64 d1,
   ICMov(tempi,t1,r1,d1,TY_REG+IT_I64,result_reg,0,ip);
 }
 
-U0 ICShiftEqual(CIntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
-	   U64 t2,U64 r2,I64 d2,U64 t3,U64 r3,I64 d3,U64 us,U64 is,I64 ip)
+U0 ICShiftEqual(CIntermediateCode *tempi,I64 ptype,I64 t1,I64 r1,I64 d1,
+	   I64 t2,I64 r2,I64 d2,I64 t3,I64 r3,I64 d3,I64 us,I64 is,I64 ip)
 {
   I64 result_reg;
   if (tempi->ic_class->sub_type&1 || tempi->ic_flags & ICF_USE_UNSIGNED)
@@ -3009,7 +3009,7 @@ U0 ICShiftEqual(CIntermediateCode *tempi,U64 ptype,U64 t1,U64 r1,I64 d1,
     ICMov(tempi,t1,r1,d1,TY_REG+IT_I64,result_reg,0,ip);
 }
 
-U0 ICUnaries(CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICUnaries(CIntermediateCode *tempi,I64 op,I64 ip)
 {
   ICMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
     tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
@@ -3175,7 +3175,7 @@ U0 ICColon(CIntermediateCode *tempi,I64 ip)
   ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,TY_REG+IT_I64,CREG_RAX,0,ip);
 }
 
-U0 ICCmp(CIntermediateCode *tempi,U64 us,U64 is,I64 ip)
+U0 ICCmp(CIntermediateCode *tempi,I64 us,I64 is,I64 ip)
 {
   I64 r1,d1,r2,i=0x48,j=tempi->p2.disp;
   if (tempi->p2.type&TY_MASK==TY_IMM && MIN_I32<=j<=MAX_I32) {
@@ -3296,9 +3296,9 @@ U0 ICCmp(CIntermediateCode *tempi,U64 us,U64 is,I64 ip)
 }
 
 U0 ICBitOps(CIntermediateCode *tempi,CICArg *p1,CICArg *p2,CIntermediateCode *tempi2,
-	      U64 op,U64 op_imm,I64 ip)
+	      I64 op,I64 op_imm,I64 ip)
 { //TODO:not fully utilizing Modr
-  BoolI8 no_depend=ToBool(tempi2->ic_flags&ICF_NO_DEPEND_RESULT);
+  Bool no_depend=ToBool(tempi2->ic_flags&ICF_NO_DEPEND_RESULT);
   I64 r1,t2,r2,d2,i=0x48;
   if (tempi->ic_flags & ICF_NOT_ADDR) {
     t2=p2->type&TY_MASK+IT_I64; //TODO: check overflow
@@ -3538,7 +3538,23 @@ U0 ICToBool(CLex *,CIntermediateCode *tempi,I64 ip)
   ICU32(tempi,0xC0B60F48); //MOVZX RAX,AL
 }
 
-U0 ICPreIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICFTemplateFun(CLex *lx,CIntermediateCode *tempi,I64 op,I64 ip)
+{
+  Bool dont_push_float,dont_pop_float;
+
+  CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
+  if (!dont_push_float)
+    ICMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
+      tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip);
+
+  ICCopyTemplate(lx,tempi,op,FALSE,TRUE,TRUE,CN_MAIN);
+  if (tempi->r.type&TY_MASK && !(tempi->ic_flags & ICF_R_TO_F64) &&
+    !(tempi->ic_flags & ICF_R_TO_INT))
+    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
+      TY_REG+IT_I64,CREG_RAX,0,ip);
+}
+
+U0 ICPreIncDec(CIntermediateCode *tempi,I64 op,I64 ip)
 {
   I64 r;
   CHashClass *tempc=tempi->ic_class,*tempc1=tempc-1;
@@ -3575,7 +3591,7 @@ U0 ICPreIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
 }
 
 
-U0 ICPostIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICPostIncDec(CIntermediateCode *tempi,I64 op,I64 ip)
 {
   I64 r;
   CHashClass *tempc=tempi->ic_class,*tempc1=tempc-1;
@@ -3615,7 +3631,7 @@ U0 ICPostIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
   }
 }
 
-U0 ICDerefPostIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICDerefPostIncDec(CIntermediateCode *tempi,I64 op,I64 ip)
 {
   I64 ty,r;
   CHashClass *tempc1=tempi->ic_class;
@@ -3658,7 +3674,7 @@ U0 ICDerefPostIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
   }
 }
 
-U0 ICAssignPostIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
+U0 ICAssignPostIncDec(CIntermediateCode *tempi,I64 op,I64 ip)
 {
   CHashClass *tempc1=tempi->ic_class2-1;
   I64 r;
@@ -3700,12 +3716,12 @@ U0 ICAssignPostIncDec(CIntermediateCode *tempi,U64 op,I64 ip)
 }
 
 
-U0 ICCmpAndBranch(CIntermediateCode *tempi,BoolI8 has_result,U64 ip,
-   U64 us,U64 is,U64 not_us,U64 not_is,
+U0 ICCmpAndBranch(CIntermediateCode *tempi,Bool has_result,I64 ip,
+   I64 us,I64 is,I64 not_us,I64 not_is,
    U8 *buf,I64 ip2)
 {
   I64 r1,d1,r2,i=0x48,j,t1,t2,result_reg;
-  BoolI8 short_jmp=FALSE,done;
+  Bool short_jmp=FALSE,done;
   CCodeBlkMisc *lb,*lb1;
   CICArg *p1=&tempi->p1,*p2=&tempi->p2,*swap;
 
@@ -3919,10 +3935,10 @@ U0 ICCmpAndBranch(CIntermediateCode *tempi,BoolI8 has_result,U64 ip,
     ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,TY_REG+IT_I64,result_reg,0,ip2);
 }
 
-U0 ICTestAndBranch(CIntermediateCode *tempi,U64 ip,U64 is,U8 *buf,I64 ip2)
+U0 ICTestAndBranch(CIntermediateCode *tempi,I64 ip,I64 is,U8 *buf,I64 ip2)
 {
   I64 i;
-  BoolI8 short_jmp=FALSE;
+  Bool short_jmp=FALSE;
   CCodeBlkMisc *lb,*lb1;
 
   if (tempi->p1.type&TY_MASK!=TY_REG) {
@@ -3978,10 +3994,10 @@ U0 ICTestAndBranch(CIntermediateCode *tempi,U64 ip,U64 is,U8 *buf,I64 ip2)
   }
 }
 
-U0 ICZFlagBranch(CIntermediateCode *tempi,U64 ip,U64 is,U8 *buf)
+U0 ICZFlagBranch(CIntermediateCode *tempi,I64 ip,I64 is,U8 *buf)
 {
   I64 i;
-  BoolI8 short_jmp=FALSE;
+  Bool short_jmp=FALSE;
   CCodeBlkMisc *lb,*lb1;
 
   ip+=tempi->ic_cnt;
@@ -4014,10 +4030,11 @@ U0 ICZFlagBranch(CIntermediateCode *tempi,U64 ip,U64 is,U8 *buf)
   }
 }
 
-U0 ICAndBranch(CIntermediateCode *tempi,U64 ip,U64 is,U8 *buf,I64 ip2)
+U0 ICAndBranch(CIntermediateCode *tempi,I64 ip,I64 is,U8 *buf,I64 ip2)
 {
-  U64 i,it,t1,r1,d1,r2;
-  BoolI8 short_jmp=FALSE,swap,override;
+  U64 i;
+  I64 it,t1,r1,d1,r2;
+  Bool short_jmp=FALSE,swap,override;
   CCodeBlkMisc *lb,*lb1;
   CICArg *p1,*p2;
  
@@ -4232,11 +4249,11 @@ U0 ICAssign(CIntermediateCode *tempi,I64 ip)
 }
 
 
-U0 ICBrBitOps(CIntermediateCode *tempi,U64 ip,U64 op,U64 op_imm,U64 is,U8 *buf,I64 ip2)
+U0 ICBrBitOps(CIntermediateCode *tempi,I64 ip,I64 op,I64 op_imm,I64 is,U8 *buf,I64 ip2)
 {
   I64 i,ty,r1,r2,d1,d2,t1,t2;
   CICArg *p1=&tempi->p1,*p2=&tempi->p2;
-  BoolI8 short_jmp=FALSE;
+  Bool short_jmp=FALSE;
   CCodeBlkMisc *lb,*lb1;
 
   if (tempi->ic_flags & ICF_NOT_ADDR) {
@@ -4426,7 +4443,7 @@ U0 ICQueInit(CIntermediateCode *tempi,I64 ip2)
     r1=CREG_RAX;
   }
   ICMov(tempi,TY_DISP+IT_I64,r1,0,TY_REG+IT_I64,r1,0,ip2);
-  ICMov(tempi,TY_DISP+IT_I64,r1,sizeof(U0 *),TY_REG+IT_I64,r1,0,ip2);
+  ICMov(tempi,TY_DISP+IT_I64,r1,sizeof(U8 *),TY_REG+IT_I64,r1,0,ip2);
 }
 
 U0 ICQueIns(CIntermediateCode *tempi,I64 ip2)
@@ -4466,8 +4483,8 @@ U0 ICQueIns(CIntermediateCode *tempi,I64 ip2)
   ICMov(tempi,TY_REG+IT_I64,CREG_RBX,0,TY_DISP+IT_I64,r1,0,ip2);
   ICMov(tempi,TY_DISP+IT_I64,r1,0,TY_REG+IT_I64,r2,0,ip2);
   ICMov(tempi,TY_DISP+IT_I64,r2,0,TY_REG+IT_I64,CREG_RBX,0,ip2);
-  ICMov(tempi,TY_DISP+IT_I64,r2,sizeof(U0 *),TY_REG+IT_I64,r1,0,ip2);
-  ICMov(tempi,TY_DISP+IT_I64,CREG_RBX,sizeof(U0 *),TY_REG+IT_I64,r2,0,ip2);
+  ICMov(tempi,TY_DISP+IT_I64,r2,sizeof(U8 *),TY_REG+IT_I64,r1,0,ip2);
+  ICMov(tempi,TY_DISP+IT_I64,CREG_RBX,sizeof(U8 *),TY_REG+IT_I64,r2,0,ip2);
 }
 
 U0 ICQueInsRev(CIntermediateCode *tempi,I64 ip2)
@@ -4504,11 +4521,11 @@ U0 ICQueInsRev(CIntermediateCode *tempi,I64 ip2)
       r1=CREG_RDX;
     }
   }
-  ICMov(tempi,TY_REG+IT_I64,CREG_RBX,0,TY_DISP+IT_I64,r1,sizeof(U0 *),ip2);
+  ICMov(tempi,TY_REG+IT_I64,CREG_RBX,0,TY_DISP+IT_I64,r1,sizeof(U8 *),ip2);
   ICMov(tempi,TY_DISP+IT_I64,CREG_RBX,0,TY_REG+IT_I64,r2,0,ip2);
   ICMov(tempi,TY_DISP+IT_I64,r2,0,TY_REG+IT_I64,r1,0,ip2);
-  ICMov(tempi,TY_DISP+IT_I64,r2,sizeof(U0 *),TY_REG+IT_I64,CREG_RBX,0,ip2);
-  ICMov(tempi,TY_DISP+IT_I64,r1,sizeof(U0 *),TY_REG+IT_I64,r2,0,ip2);
+  ICMov(tempi,TY_DISP+IT_I64,r2,sizeof(U8 *),TY_REG+IT_I64,CREG_RBX,0,ip2);
+  ICMov(tempi,TY_DISP+IT_I64,r1,sizeof(U8 *),TY_REG+IT_I64,r2,0,ip2);
 }
 
 U0 ICQueRem(CIntermediateCode *tempi,I64 ip2)
@@ -4522,12 +4539,12 @@ U0 ICQueRem(CIntermediateCode *tempi,I64 ip2)
     r1=CREG_RAX;
   }
   ICMov(tempi,TY_REG+IT_I64,CREG_RBX,0,TY_DISP+IT_I64,r1,0,ip2);
-  ICMov(tempi,TY_REG+IT_I64,CREG_RDX,0,TY_DISP+IT_I64,r1,sizeof(U0 *),ip2);
+  ICMov(tempi,TY_REG+IT_I64,CREG_RDX,0,TY_DISP+IT_I64,r1,sizeof(U8 *),ip2);
   ICU24(tempi,0x1A8948);
-  ICU32(tempi,sizeof(U0 *)<<24+0x538948);
+  ICU32(tempi,sizeof(U8 *)<<24+0x538948);
 }
 
-U0 ICLimit(CIntermediateCode *tempi,U64 op,I64 ip2)
+U0 ICLimit(CIntermediateCode *tempi,I64 op,I64 ip2)
 {
   I64 r2,r1,i2=0x48,i1=0x48;
   if (tempi->ic_flags & ICF_P1_FIRST) { //TODO--does this come-up?  checks for only 2 param before setting flag
@@ -4585,7 +4602,7 @@ U0 ICLimit(CIntermediateCode *tempi,U64 op,I64 ip2)
   ICU32(tempi,0xC0000F00+op.u8[1]<<16+r1<<24+i1);
 }
 
-U0 ICMinMax(CIntermediateCode *tempi,U64 op,I64 ip2)
+U0 ICMinMax(CIntermediateCode *tempi,I64 op,I64 ip2)
 {
   I64 r1,i1=0x48;
   if (tempi->ic_flags & ICF_P1_FIRST) {
@@ -4657,7 +4674,7 @@ U0 ICMinMax(CIntermediateCode *tempi,U64 op,I64 ip2)
   ICU32(tempi,0xC0000F00+op<<16+r1<<24+i1);
 }
 
-U0 ICSqr(CIntermediateCode *tempi,U64 op,I64 ip2)
+U0 ICSqr(CIntermediateCode *tempi,I64 op,I64 ip2)
 {
   ICMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 	tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
@@ -4834,11 +4851,11 @@ U0 ICXorEqual(CIntermediateCode *tempi,I64 ip2)
 }
 
 
-U0 ICSwitch(CIntermediateCode *tempi,I64 ip,BoolI8 fast,CLex *lx,U8 *buf,I64 ip2)
+U0 ICSwitch(CIntermediateCode *tempi,I64 ip,Bool fast,CLex *lx,U8 *buf,I64 ip2)
 {
   I64 i,j,r;
   CCodeBlkMisc *lb,*lb1;
-  BoolI8 short_jmp=FALSE;
+  Bool short_jmp=FALSE;
   CExeAbsAddr *tempa;
   if (tempi->p1.type&TY_MASK==TY_REG)
     r=tempi->p1.reg;

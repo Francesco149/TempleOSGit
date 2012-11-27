@@ -21,7 +21,7 @@ U0 LoadSysStrs()
   DefineLoad("ST_INVALID_DRV","Invalid Drive\n");
   DefineLoad("ST_NO_MATCHING_ENTRIES","No matching entries\n");
   DefineListLoad("ST_OFF_ON","Off\0On\0");
-  DefineListLoad("ST_HTT_TYPES","ExportSysSym\0ImportSysSym\0DefineStr\0GlbVar\0TypeDef\0Class\0"
+  DefineListLoad("ST_HTT_TYPES","ExportSysSym\0ImportSysSym\0DefineStr\0GlbVar\0Class\0"
 		"IntType\0Funct\0Word\0DictWord\0KeyWord\0AsmKeyWord\0OpCode\0Reg\0"
 		"File\0Module\0HelpFile\0Frame Ptr\0Private\0"
 		"Public\0Export\0Import\0Lit\0Unres\0Local\0");

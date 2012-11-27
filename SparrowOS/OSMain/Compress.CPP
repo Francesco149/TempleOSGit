@@ -1,12 +1,12 @@
 //See [::/SparrowOS/Doc/Acknowledgements.TXT.Z,1] ::/SparrowOS/Doc/Acknowledgements.TXT.Z (4).
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3667] CArcCompress, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3634] CArcEntry, and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3642] CArcCtrl
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3379] CArcCompress, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3346] CArcEntry, and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3354] CArcCtrl
 
 asm {
 USE64
 /****
 U0 ArcGetEntry(CArcCtrl *c)
 {
-  U64 i;
+  I64 i;
   CArcEntry *temp,*temp1;
 
   if (c->entry_used) {
@@ -101,15 +101,16 @@ _extern _ARC_GET_ENTRY
 	U0 ArcGetEntry(CArcCtrl *c);
 
 
-U64 ArcXSum(U32 *src,U64 size)
+I64 ArcXSum(U32 *src,I64 size)
 {
-  result=0;
+  I64 result=0;
   size>>=2;
   while (size--)
     result^=*src++;
+  return result;
 }
 
-I64 ArcDetermineCompressionType(U8 *src,U64 size)
+I64 ArcDetermineCompressionType(U8 *src,I64 size)
 {
   while (size--)
     if (*src++&0x80)
@@ -118,11 +119,11 @@ I64 ArcDetermineCompressionType(U8 *src,U64 size)
 }
 
 U0 ArcCompressBuf(CArcCtrl *c)
-//Use [C:/SparrowOS/OSMain/Compress.CPP.Z,267] CompressBuf() unless you are doing
+//Use [C:/SparrowOS/OSMain/Compress.CPP.Z,268] CompressBuf() unless you are doing
 //more than one buffer.
 {
   CArcEntry *temp,*temp1;
-  U64 basecode;
+  I64 basecode;
   U8 *src_ptr,*src_limit,ch;
 
   src_ptr=c->src_buf+c->src_pos;
@@ -175,11 +176,11 @@ U0 ArcFinishCompression(CArcCtrl *c)
 }
 
 U0 ArcExpandBuf(CArcCtrl *c)
-//Use [C:/SparrowOS/OSMain/Compress.CPP.Z,298] ExpandBuf() unless you know what
+//Use [C:/SparrowOS/OSMain/Compress.CPP.Z,301] ExpandBuf() unless you know what
 //you're doing.
 {
   U8 *dst_ptr,*dst_limit;
-  U64 basecode,lastcode,code;
+  I64 basecode,lastcode,code;
   CArcEntry *temp,*temp1;
 
   dst_ptr=c->dst_buf+c->dst_pos;
@@ -234,7 +235,7 @@ U0 ArcExpandBuf(CArcCtrl *c)
   c->dst_pos=dst_ptr-c->dst_buf;
 }
 
-CArcCtrl *ArcCtrlNew(BoolI8 expand,BoolI8 text_only)
+CArcCtrl *ArcCtrlNew(Bool expand,Bool text_only)
 {
   CArcCtrl *c;
   c=CAlloc(sizeof(CArcCtrl));
@@ -264,11 +265,12 @@ U0 ArcCtrlDel(CArcCtrl *c)
 }
 
 
-CArcCompress *CompressBuf(U8 *src,U64 size,
-		U64 flags=0,CTask *mem_task=NULL)
+CArcCompress *CompressBuf(U8 *src,I64 size,
+		I64 flags=0,CTask *mem_task=NULL)
 {
-  U64 size_out;
-  BoolI8 text_only=ArcDetermineCompressionType(src,size)==CT_7_BIT;
+  CArcCompress *result;
+  I64 size_out;
+  Bool text_only=ArcDetermineCompressionType(src,size)==CT_7_BIT;
   CArcCtrl *c=ArcCtrlNew(FALSE,text_only);
   c->src_size=size;
   c->src_buf=src;
@@ -293,13 +295,14 @@ CArcCompress *CompressBuf(U8 *src,U64 size,
   result->flags=flags;
   Free(c->dst_buf);
   ArcCtrlDel(c);
+  return result;
 }
 
 U8 *ExpandBuf(CArcCompress *r,CTask *mem_task=NULL)
 {
   CArcCtrl *c;
-  BoolI8 text_only;
-  result=MAlloc(r->expanded_size+1,mem_task);
+  Bool text_only;
+  U8 *result=MAlloc(r->expanded_size+1,mem_task);
   result[r->expanded_size]=0; //terminate
   text_only= r->compression_type==CT_7_BIT;
   if (r->compression_type==CT_NONE) {
@@ -315,7 +318,7 @@ U8 *ExpandBuf(CArcCompress *r,CTask *mem_task=NULL)
   c->dst_pos=0;
   ArcExpandBuf(c);
   ArcCtrlDel(c);
-
 expand_end:
+  return result;
 }
 

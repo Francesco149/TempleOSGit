@@ -43,8 +43,8 @@ public U8 *WSDGetDef(U8 *st,I64 def_num=1)
 {
   CFile *f;
   CHashGeneric *temph;
-  U8 *result=NULL,*buf,*in_ptr;
-  U8 *st2=MStrUtil(st,SUF_TO_UPPER);
+  U8 *result=NULL,*buf,*in_ptr,
+     *st2=MStrUtil(st,SUF_TO_UPPER);
   temph=HashFind(st2,ws_hash_table,HTT_DICT_WORD);
   Free(st2);
   if (temph) {
@@ -79,14 +79,15 @@ public U8 *WSDGetDef(U8 *st,I64 def_num=1)
       Free(buf);
     }
   }
+  return result;
 }
 
 public U8 *WSDGetWord(U8 *st)
 {
   CFile *f;
   CHashGeneric *temph;
-  U8 *result=NULL,*buf,*in_ptr,*in_ptr2;
-  U8 *st2=MStrUtil(st,SUF_TO_UPPER);
+  U8 *result=NULL,*buf,*in_ptr,*in_ptr2,
+     *st2=MStrUtil(st,SUF_TO_UPPER);
   temph=HashFind(st2,ws_hash_table,HTT_DICT_WORD);
   Free(st2);
   if (temph) {
@@ -117,6 +118,7 @@ public U8 *WSDGetWord(U8 *st)
       Free(buf);
     }
   }
+  return result;
 }
 
 
@@ -268,7 +270,7 @@ U0 WSDDef(I64 n,CTask *parent=NULL)
 
 U0 WSFindMisspelled(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_e=doc->cur_entry;
   I64 col=doc->cur_data_col,col2,ch;
   do {

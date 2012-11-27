@@ -55,7 +55,7 @@ F64 theta,speed;
 class Bush
 {
   I32 x,y,z;
-  BoolI8 sym,pad[3];
+  Bool sym,pad[3];
   U8 *img;
 } b[NUM_BUSHES];
 
@@ -124,7 +124,7 @@ U0 InitTrack()
 
 #define HORIZON_DIP	200
 
-U64 mp_done_flags;
+I64 mp_done_flags;
 
 U0 MPUpdateWin(CDC *dc2)
 {
@@ -233,7 +233,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 }
 
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   while (TRUE) {
     Snd(speed*3+10);
@@ -267,7 +267,7 @@ U0 Init()
 
 U0 Varoom()
 {
-  U64 ch,sc;
+  I64 ch,sc;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"

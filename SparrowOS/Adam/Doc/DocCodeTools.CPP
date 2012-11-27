@@ -34,11 +34,11 @@ I64 PopUpEdFmt()
 
 U0 EdRemFunLeadingSpace(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc),
+       start_of_line=TRUE;
   U8 ch,*ptr;
   I64 levels=1;
   CDocEntry *doc_e,*doc_e2;
-  BoolI8 start_of_line=TRUE;
 
   EdGoToFun(doc,FALSE,FALSE);
   doc_e=doc->cur_entry->next;
@@ -100,11 +100,12 @@ class CRenum
 
 I64 EdRAGetU8(CDoc *doc)
 {
-  result=-1;
+  I64 result=-1;
   while (doc->cur_entry!=doc && doc->cur_entry->type&DOCET_SELECTED && result<0) {
     result=EdCurU8(doc);
     EdCursorRight(doc);
   }
+  return result;
 }
 
 U0 EdRACollect(CDoc *doc,CRenum *root)
@@ -150,7 +151,7 @@ U0 EdRACollect(CDoc *doc,CRenum *root)
 
 U0 EdRenumAsm(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   I64 num=0;
   CRenum root,*tempr,*tempr1;
   U8 buf[sizeof(CEdFindText.find_text)],
@@ -189,7 +190,7 @@ U0 EdRenumAsm(CDoc *doc)
 
 U0 EdRefmtFun(CDoc *doc,I64 fmt_type)
 {
-  BoolI8 unlock=DocLock(doc),start_of_line=TRUE;
+  Bool unlock=DocLock(doc),start_of_line=TRUE;
   CDocEntry *doc_e,*doc_ne;
   I64 i,x,r,action=AC_ABORT,old_line_num;
   U8 *b,*st,*st2,*prj_file;
@@ -343,7 +344,7 @@ U0 EdRefmtFun(CDoc *doc,I64 fmt_type)
 		  b=MAlloc(i+1,doc->mem_task);
 		  MemSet(b,CH_SPACE,i);
 		  b[i]=0;
-		  doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+		  doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 		  doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
 		  doc_ne->tag=b;
 		  doc_ne->max_col=1;
@@ -371,9 +372,9 @@ U0 EdRefmtFun(CDoc *doc,I64 fmt_type)
     Kill(task,FALSE);
 }
 
-U0 EdPopUpChSC(U64 *_ch,U64 *_sc)
+U0 EdPopUpChSC(I64 *_ch,I64 *_sc)
 {
-  U64 sc;
+  I64 sc;
   "Press A Key\n";
   DocCur->flags|=DOCF_MIN_SIZE;
   do GetMsg(_ch,&sc,1<<MSG_KEY_DOWN);
@@ -383,7 +384,7 @@ U0 EdPopUpChSC(U64 *_ch,U64 *_sc)
 
 U0 EdChSC(CDoc *doc)
 {
-  U64 ch,sc;
+  I64 ch,sc;
   U8 buf[136];
   SPrintF(buf,"EdPopUpChSC(%d,%d);",&ch,&sc);
   PopUp(buf,Fs);

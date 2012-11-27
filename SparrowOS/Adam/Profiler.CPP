@@ -2,12 +2,12 @@
 #help_file "::/SparrowOS/Doc/Profiler"
 
 #define PF_ARRAY_CNT 0x100000
-U64 pf_time_start,pf_time_end;
-U64 pf_low=0,pf_high=SYS_OSMAIN_END,pf_size=PF_ARRAY_CNT;
-U64 *pf_array=NULL;
-U64 pf_cpu=0;
+I64 pf_time_start,pf_time_end;
+I64 pf_low=0,pf_high=SYS_OSMAIN_END,pf_size=PF_ARRAY_CNT;
+I64 *pf_array=NULL;
+I64 pf_cpu=0;
 U0 (*fp_chained_timer_routine)(CTask *task)=cpu_structs[pf_cpu].timer_irq_chain;
-U64 pf_ptr,pf_depth;
+I64 pf_ptr,pf_depth;
 #define PFM_OFF		0
 #define PFM_BIN		1
 #define PFM_ALL		2
@@ -16,7 +16,7 @@ F64 pf_t0;
 
 U0 ProfTimerInt(CTask *task)
 {
-  U64 i,j=task->rip,k;
+  I64 i,j=task->rip,k;
   nobound_switch (prof_mode) {
     case PFM_OFF:
       break;
@@ -43,7 +43,7 @@ U0 ProfTimerInt(CTask *task)
 }
 cpu_structs[pf_cpu].timer_irq_chain=&ProfTimerInt;
 
-public U0 ProfBin(U8 *start,U64 cnt=PF_ARRAY_CNT*3)
+public U0 ProfBin(U8 *start,I64 cnt=PF_ARRAY_CNT*3)
 //Start profiler in bin mode.  Profilers
 //report where time is spent by checking
 //the instruction ptr during the
@@ -57,15 +57,15 @@ public U0 ProfBin(U8 *start,U64 cnt=PF_ARRAY_CNT*3)
   pf_low=start;
   pf_high=start+cnt;
   if (!pf_array)
-    pf_array=AMAlloc(sizeof(U64)*PF_ARRAY_CNT);
-  MemSet(pf_array,0,PF_ARRAY_CNT*sizeof(U64));
+    pf_array=AMAlloc(sizeof(I64)*PF_ARRAY_CNT);
+  MemSet(pf_array,0,PF_ARRAY_CNT*sizeof(I64));
   pf_time_end=0;
   pf_time_start=sys_jiffies;
   prof_mode=PFM_BIN;
   pf_t0=tNP;
 }
 
-public U0 ProfCPUSet(U64 num)
+public U0 ProfCPUSet(I64 num)
 {
   if (num>=mp_cnt)
     ST_ERR_ST "Invalid CPU\n";
@@ -89,14 +89,14 @@ public U0 ProfAll(I64 depth=0)
   pf_depth=depth;
   pf_ptr=0;
   if (!pf_array)
-    pf_array=AMAlloc(sizeof(U64)*PF_ARRAY_CNT);
+    pf_array=AMAlloc(sizeof(I64)*PF_ARRAY_CNT);
   pf_time_end=0;
   pf_time_start=sys_jiffies;
   prof_mode=PFM_ALL;
   pf_t0=tNP;
 }
 
-I64 PFACompare(U0 *i1,U0 *i2)
+I64 PFACompare(U8 *i1,U8 *i2)
 {
   if (i1<i2)
     return -1;
@@ -106,11 +106,11 @@ I64 PFACompare(U0 *i1,U0 *i2)
     return 0;
 }
 
-public U0 ProfRep(U64 filter_cnt=1)
+public U0 ProfRep(I64 filter_cnt=1)
 {
   F64 pf_tf=tNP;
-  I64 i,ip,last_ip=pf_low,hits;
-  U64 total_time,routine_total=0,old_mode=prof_mode;
+  I64 i,ip,last_ip=pf_low,hits,
+      total_time,routine_total=0,old_mode=prof_mode;
   U8 buf[128],buf2[128],buf3[128],last_buf[128];
   prof_mode=PFM_OFF;
   if (pf_time_end)
@@ -154,7 +154,7 @@ public U0 ProfRep(U64 filter_cnt=1)
       }
       break;
     case PFM_ALL:
-      QSortU64(pf_array,pf_ptr,&PFACompare);
+      QSortI64(pf_array,pf_ptr,&PFACompare);
       *last_buf=0;
       for (i=0;i<pf_ptr;i++) {
 	ip=pf_array[i];

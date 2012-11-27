@@ -35,7 +35,7 @@ I64 x=100,y=100;
 #define NUM_STARS	100
 I64 stars_x[NUM_STARS],stars_y[NUM_STARS];
 
-U0 PhasorTask(U64)
+U0 PhasorTask(I64)
 {
   I64 i;
   for (i=2000;i>100;i-=6) {
@@ -47,7 +47,7 @@ U0 PhasorTask(U64)
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  U64 i;
+  I64 i;
   I64 xx=ipx-task->win_pixel_left-task->win_scroll_x,
      yy=ipy-task->win_pixel_top-task->win_scroll_y;
  
@@ -104,7 +104,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 U0 SpaceShip()
 {
-  U64 i;
+  I64 i;
   start_time=tP;
   for (i=0;i<NUM_STARS;i++) {
     stars_x[i]=RandU16%GR_WIDTH;

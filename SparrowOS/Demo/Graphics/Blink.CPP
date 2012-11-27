@@ -10,12 +10,12 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (Blink(10))
     GrPutS(dc,0,2*FONT_HEIGHT,"Blink(10)");
 
-  //[C:/SparrowOS/OSMain/Misc1a.CPP.Z,113] tNP is a float var with time in seconds, function actually.
+  //[C:/SparrowOS/OSMain/Misc1a.CPP.Z,121] tNP is a float var with time in seconds, function actually.
   //You can skip arguments if they have defaults.
   if (Blink(,tNP))
     GrPutS(dc,0,3*FONT_HEIGHT,"Blink(,tNP)");
 
-  //[C:/SparrowOS/OSMain/Misc1a.CPP.Z,136] tP is a pausable function.
+  //[C:/SparrowOS/OSMain/Misc1a.CPP.Z,144] tP is a pausable function.
   if (Blink(,tP(task)))
     GrPutS(dc,0,4*FONT_HEIGHT,"Blink(,tP(task))");
 }

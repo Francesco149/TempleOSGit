@@ -1,10 +1,10 @@
-BoolI8 poly_done;
+Bool poly_done;
 I64 start_buf_num;
 U0 (*fp_task_end_cb)();
 U0 (*fp_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
 
 U0 PolyFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
-{ //Gets called by HD Audio task -- [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,389] HDAudioTask().
+{ //Gets called by HD Audio task -- [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,390] HDAudioTask().
 
 //Note: the buffer is in uncached memory
 //so you might want to avoid multiple

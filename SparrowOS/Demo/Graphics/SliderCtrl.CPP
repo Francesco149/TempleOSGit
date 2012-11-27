@@ -3,7 +3,7 @@ This was done with <CTRL-SHIFT-L> managed code.
 It's conceptually easy to do a ctrl,
 but tedious.  You have complete freedom.
 
-See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2976] CCtrl.
+See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2688] CCtrl.
 */
 
 // Start of autocreated Code
@@ -56,7 +56,7 @@ U0 UpdateDerivedSliderCtrl(CCtrl *c)
   s->right_pos=LimitI64(s->right_pos,0,SLIDER_RANGE-1);
 }
 
-U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,BoolI8)
+U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,Bool)
 {
   CSliderState *s=c->state;
   if (x<c->left+1*SLIDER_SPACING+0+SLIDER_SPACING/2)
@@ -69,7 +69,7 @@ U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,BoolI8)
 
 CCtrl *SliderNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c=CAlloc(sizeof(CCtrl));
   c->win_task=Fs;
   c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
@@ -88,7 +88,7 @@ CCtrl *SliderNew()
 
 U0 SliderDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

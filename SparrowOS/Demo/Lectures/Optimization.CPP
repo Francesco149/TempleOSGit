@@ -69,12 +69,12 @@ _WELL_OPTIMIZED3::
 
 
 
-_extern _BADLY_UNOPTIMIZED U64 Loop1();
-_extern _WELL_OPTIMIZED1   U64 Loop2();
-_extern _WELL_OPTIMIZED2   U64 Loop3();
-_extern _WELL_OPTIMIZED3   U64 Loop4();
+_extern _BADLY_UNOPTIMIZED I64 Loop1();
+_extern _WELL_OPTIMIZED1   I64 Loop2();
+_extern _WELL_OPTIMIZED2   I64 Loop3();
+_extern _WELL_OPTIMIZED3   I64 Loop4();
 
-U64 i;
+I64 i;
 F64 t0;
 
 CPURep;

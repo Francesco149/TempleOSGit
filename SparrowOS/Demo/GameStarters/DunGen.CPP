@@ -85,7 +85,7 @@
 
 
 //These are indexed by color #.
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3460] COLORS.
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3172] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -111,19 +111,19 @@ I64 map_width,map_height;
 U8 *map=NULL;
 
 I64 man_x,man_y,man_dx,man_dy;
-BoolI8 man_attack;
+Bool man_attack;
 F64 man_attack_t0;
 
 #define NUM_MONSTERS	16
 class Monster
 {
   I64 x,y,dx,dy;
-  BoolI8 dead,pad[7];
+  Bool dead,pad[7];
 } monsters[NUM_MONSTERS];
 
 #define LOS_SCALE	4
 
-BoolI64 LOSPlot(U0 *,I64 x,I64 y,I64)
+Bool LOSPlot(U8 *,I64 x,I64 y,I64)
 {
   if (!map[(y/LOS_SCALE)*map_width+(x/LOS_SCALE)])
     return FALSE;
@@ -131,7 +131,7 @@ BoolI64 LOSPlot(U0 *,I64 x,I64 y,I64)
     return TRUE;
 }
 
-BoolI64 LOS(I64 x1,I64 y1,I64 x2,I64 y2)
+Bool LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 { //Line of sight
   return Line(NULL,x1*LOS_SCALE+LOS_SCALE/2,y1*LOS_SCALE+LOS_SCALE/2,0,
 	       x2*LOS_SCALE+LOS_SCALE/2,y2*LOS_SCALE+LOS_SCALE/2,0,&LOSPlot);
@@ -159,7 +159,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z
-  //with a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3515] CDC.
+  //with a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -319,7 +319,7 @@ U0 CleanUp()
   map=NULL;
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,x,y,dx,dy;
   while (TRUE) {
@@ -343,7 +343,7 @@ U0 AnimateTask(U64)
 
 U0 DunGen()
 {
-  U64 ch,sc;
+  I64 ch,sc;
 
   MenuPush(
   "File {"

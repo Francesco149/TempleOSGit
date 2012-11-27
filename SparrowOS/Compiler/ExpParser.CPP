@@ -41,9 +41,9 @@ U0 PrsPopDeref(CPrsStk *ps)
 #define PRST_DEREFERENCE	3
 #define PRST_CHECK_BINARY_OPS	4
 
-BoolI64 PrsExpression(CLex *lx,I64 *_max_prec,BoolI8 end_exp,CPrsStk *_ps=NULL)
+Bool PrsExpression(CLex *lx,I64 *_max_prec,Bool end_exp,CPrsStk *_ps=NULL)
 {
-  BoolI8 result=TRUE,cont_unary,cont_check_binary_ops,is_lower,div_sizeof;
+  Bool result=TRUE,cont_unary,cont_check_binary_ops,is_lower,div_sizeof;
   I64 i,k,old_flags=lx->flags,old_expression_start_line_num=lx->expression_start_line_num,
       max_prec=PREC_NULL,unary_pre_prec,paren_prec,unary_post_prec,
       left_prec=PREC_MAX,quest=0;
@@ -68,10 +68,6 @@ BoolI64 PrsExpression(CLex *lx,I64 *_max_prec,BoolI8 end_exp,CPrsStk *_ps=NULL)
   }
   PrsPush(ps,0); //terminate
   PrsPush(ps,0); //terminate
-  if (Btr(&lx->flags,Lf_BY_ADDR)) {
-    PrsPush(ps,tempc);
-    PrsPush(ps,unary_ops_table['&']);
-  }
   try {
     do {
       unary_pre_prec=PREC_NULL;
@@ -363,6 +359,7 @@ done3:
   lx->flags=lx->flags&~LF_INSIDE_EXPRESSION |
       old_flags&(LF_INSIDE_EXPRESSION|LF_PREINC|LF_PREDEC);
   lx->expression_start_line_num=old_expression_start_line_num;
+  return result;
 }
 
 U0 PrsSizeOf(CLex *lx)
@@ -380,7 +377,7 @@ U0 PrsSizeOf(CLex *lx)
       goto pu_sizeof_member;
   } else {
     tempc=lx->hash_entry;
-    if (!tempc || !(tempc->type & (HTT_CLASS|HTT_INTERNAL_TYPE|HTT_GLBL_VAR|HTT_TYPEDEF|HTT_FUN)))
+    if (!tempc || !(tempc->type & (HTT_CLASS|HTT_INTERNAL_TYPE|HTT_GLBL_VAR|HTT_FUN)))
       LexExcept(lx,"ST_INVALID_CLASS");
     if (tempc->type&HTT_FUN) {
       if (!(dbg=tempc(CHashFun *)->debug))
@@ -408,7 +405,7 @@ pu_sizeof_member:
   }
   if (lx->token=='*') {
     while (Lex(lx)=='*');
-    i=sizeof(U0 *);
+    i=sizeof(U8 *);
   }
   CBICAdd(lx,IC_IMM,i,sys_internal_types[IT_I64]);
 }
@@ -444,10 +441,10 @@ U0 PrsOffsetOf(CLex *lx)
   CBICAdd(lx,IC_IMM,i,sys_internal_types[IT_I64]);
 }
 
-U64 PrsFunCall(CLex *lx,CPrsStk *ps,BoolI8 indirect,CHashFun *tempf)
+I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 {
   I64 i,argc_cnt;
-  BoolI8 is_first_arg=TRUE,needs_right_paren,is_str_out,is_putchar;
+  Bool is_first_arg=TRUE,needs_right_paren,is_str_out,is_putchar,is_template_fun;
   CHashClass *tempc1,*tempc2;
   CMemberList *tempm;
   CLexCodeBlkCtrl *tempcbh,*tempcbh1;
@@ -474,6 +471,11 @@ U64 PrsFunCall(CLex *lx,CPrsStk *ps,BoolI8 indirect,CHashFun *tempf)
     is_str_out=FALSE;
     is_putchar=FALSE;
   }
+
+  if (Bt(tempf->flags,Ff_INTERNAL)&& IC_SQR<=tempf->executable_addr<=IC_ATAN)
+    is_template_fun=TRUE;
+  else
+    is_template_fun=FALSE;
 
   if (indirect) {
     if (!(lx->flags & (LF_RAX | LF_ARRAY)))
@@ -522,8 +524,6 @@ U64 PrsFunCall(CLex *lx,CPrsStk *ps,BoolI8 indirect,CHashFun *tempf)
       } else
 	CBICAdd(lx,IC_IMM,tempm->dft_val,tempm->member_class);
     } else {
-      if (tempm->flags&MLF_BY_ADDR)
-	lx->flags|=LF_BY_ADDR;
       if (!PrsExpression(lx,NULL,FALSE,ps))
 	throw(EXCEPT_COMPILER,3);
       else {
@@ -615,7 +615,8 @@ U64 PrsFunCall(CLex *lx,CPrsStk *ps,BoolI8 indirect,CHashFun *tempf)
   CBPop(lx);
   tempcbh=lx->cbh.cb_next;
   lx->cbh.cb_next=tempcbh1;
-  CBICAdd(lx,IC_CALL_START,tempf,0);
+  if (!is_template_fun)
+    CBICAdd(lx,IC_CALL_START,tempf,0);
   if (indirect)
     CBICAdd(lx,IC_PUSH_REGS,1<<CREG_RAX,tempf->return_class);
   while (tempcbh) {
@@ -654,18 +655,18 @@ U64 PrsFunCall(CLex *lx,CPrsStk *ps,BoolI8 indirect,CHashFun *tempf)
       CBICAdd(lx,IC_ADD_RSP,(argc_cnt+tempf->arg_cnt)<<3,tempf->return_class);
     }
   }
-  CBICAdd(lx,IC_CALL_END,tempf,tempf->return_class);
+  if (!is_template_fun)
+    CBICAdd(lx,IC_CALL_END,tempf,tempf->return_class);
   if (is_str_out||is_putchar)
     CBICAdd(lx,IC_END_EXP,0,0);
   lx->flags=(lx->flags|LF_RAX) & ~(LF_ARRAY|LF_FUN_EXP);
   return PRST_UNARY_MODIFIERS;
 }
 
-U64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,
+I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,
     I64 *max_prec,I64 *unary_pre_prec,I64 *paren_prec)
 {
-  I64 i,*i_ptr,j,size;
-  U64 d;
+  I64 i,*i_ptr,j,d,size;
   CHashExport *tempess;
   CHashClass *tempc;
   CHashFun *tempf;
@@ -673,7 +674,7 @@ U64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_temp
   CMemberList *tempm;
   CLexUndef *templu;
   CCodeBlkMisc *mc;
-  BoolI8 paren_warn;
+  Bool paren_warn;
 
   *_local_var=NULL;
   *paren_prec=PREC_NULL;
@@ -726,7 +727,7 @@ U64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_temp
       Lex(lx);
       return PRST_MAYBE_MODIFIERS;
     case '(':
-      if (Lex(lx)==TK_IDENT && lx->hash_entry && lx->hash_entry->type & (HTT_CLASS|HTT_INTERNAL_TYPE|HTT_TYPEDEF))
+      if (Lex(lx)==TK_IDENT && lx->hash_entry && lx->hash_entry->type & (HTT_CLASS|HTT_INTERNAL_TYPE))
 	LexExcept(lx,"ST_USE_POSTFIX_CAST");
       else {
 	if (PREC_TERM>*max_prec)
@@ -1066,27 +1067,16 @@ pu_export_sys_sym:
   LexExcept(lx,"ST_MISSING_EXPRESSION");
 }
 
-U64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,I64 *unary_post_prec)
+I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,I64 *unary_post_prec)
 {
   CHashClass *tempc,*tempc1;
   CHashFun *fun_ptr;
-  CMemberList *tempm;
+  CMemberList *tempm=*_local_var;
   CIntermediateCode *tempi,*tempi1;
   CArrayDim *tempad1,tempad2;
   CCodeBlkMisc *mc;
   I64 mode,old_flags;
-  BoolI8 was_paren=Btr(&lx->flags,Lf_PAREN);
-  if (tempm=*_local_var) {
-    if (tempm->flags&MLF_BY_ADDR) {
-      tempi=lx->cbh.cb_last_out_ptr;
-      if (!(lx->flags & (LF_RAX | LF_ARRAY)))
-	CBICAdd(lx,IC_DEREF+PREC_UNARY_PRE<<16,0,tempi->ic_class-1);
-      else {
-	tempi->ic_class--;
-	lx->flags&=~(LF_RAX|LF_ARRAY);
-      }
-    }
-  }
+  Bool was_paren=Btr(&lx->flags,Lf_PAREN);
   if (lx->token==TK_DEREFERENCE) {
     if (!*unary_post_prec)
       *unary_post_prec=PREC_TERM;
@@ -1269,10 +1259,11 @@ U0 PrsDereference(CLex *lx)
   }
 }
 
-U0 *CmpExpression(CLex *lx,U64 *type=NULL)
+U8 *CmpExpression(CLex *lx,I64 *type=NULL)
 {
-  U64 size;
-  BoolI8 old_trace=Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
+  U8 *result;
+  I64 size;
+  Bool old_trace=Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
   CBPush(lx);
   CBOutPtrsInit(lx);
   CBICAdd(lx,IC_START,0,0); //So we can scan back an instruction
@@ -1285,19 +1276,22 @@ U0 *CmpExpression(CLex *lx,U64 *type=NULL)
     result=NULL;
   CBPop(lx);
   BEqu(&lx->flags,Lf_OPT_TRACE_PRESENT,old_trace);
+  return result;
 }
 
-BoolI64 GetExpression(CLex *lx,U0 **_ex)
+Bool GetExpression(CLex *lx,U8 **_ex)
 {
   return ToBool(*_ex=CmpExpression(lx));
 }
 
 I64 Expression(CLex *lx)
 {
-  U0 *ex=CmpExpression(lx);
+  I64 result;
+  U8 *ex=CmpExpression(lx);
   if (ex) {
     result=Call(ex);
     ExpressionDel(ex);
   } else
     result=0;
+  return result;
 }

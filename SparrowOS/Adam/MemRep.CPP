@@ -17,6 +17,7 @@ I64 PenBrushesSize()
       DCSize(gr_collision_pen_brushes[i])+
       DCSize(gr_even_pen_brushes[i])+
       DCSize(gr_odd_pen_brushes[i] );
+  return result;
 }
 
 I64 ScreenZoomTablesSize()
@@ -24,22 +25,24 @@ I64 ScreenZoomTablesSize()
   I64 result=0,i;
   for (i=1;i<=GR_MAX_SCREEN_ZOOM;i++)
     result+=MSize2(gr_screen_zoom_tables[i]);
+  return result;
 }
 
 I64 TaskStkSize(CTask *task)
 {
   CTaskStk *temps=task->stk;
-  result=0;
+  I64 result=0;
   while (temps) {
     result+=MSize2(temps);
     temps=temps->next_stk;
   }
+  return result;
 }
 
 I64 TaskQueSize(CTask *task)
 {
   CTaskCmd *tempc,*tempc1;
-  result=0;
+  I64 result=0;
   PushFD;
   Cli;
   while (LBts(&task->locked_flags,TASKLf_TASK_LOCK))
@@ -56,6 +59,7 @@ I64 TaskQueSize(CTask *task)
   }
   LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
   PopFD;
+  return result;
 }
 
 I64 BlkDevsSize()
@@ -70,6 +74,7 @@ I64 BlkDevsSize()
 	  UnusedDrvSpace(bd->drv_let_base);
     result+=MSize2(bd->dev_id_record);
   }
+  return result;
 }
 
 I64 PrtsSize()
@@ -78,9 +83,10 @@ I64 PrtsSize()
   for (i=0;i<NUM_PRTS;i++)
     result+=MSize2(sys_prts[i].buffered_map_dirty_bits)+
 	    MSize2(sys_prts[i].fis);
+  return result;
 }
 
-BoolI64 MemRepTask(CTask *task,BoolI8 override_validate=FALSE)
+Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
 {
   I64 i,j,k,m,n;
   U8 *st;
@@ -187,9 +193,9 @@ public U0 MemRep()
   CTask *task;
   CCPU *c;
   U32 *u32_ptr;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CBinFile *bfh=sys_boot_base-sizeof(CBinFile);
-  bfh(U64)+=bfh->file_size-1;
+  bfh(I64)+=bfh->file_size-1;
 
   "$FG,BLACK$Low Memory\t:0000100000$FG$\n$ID,2$";
   u32_ptr=SYS_BOOT_BASE;

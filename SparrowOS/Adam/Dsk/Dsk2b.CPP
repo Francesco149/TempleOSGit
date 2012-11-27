@@ -1,8 +1,8 @@
 #help_index "File/Program Routines/Utils"
 
-U64 CDirTreeFlattenSize(CDirEntry *tempm)
+I64 CDirTreeFlattenSize(CDirEntry *tempm)
 {
-  U64 result=0;
+  I64 result=0;
   while (tempm) {
     result+=CDIR_SIZE+1;
     if (tempm->attr & _ATTR_DIR)
@@ -12,9 +12,9 @@ U64 CDirTreeFlattenSize(CDirEntry *tempm)
   return result+1;
 }
 
-U64 CDirTreeFlattenFill(CDirEntry *tempm,U8 *dst)
+I64 CDirTreeFlattenFill(CDirEntry *tempm,U8 *dst)
 {
-  U64 result=0,i;
+  I64 result=0,i;
   while (tempm) {
     *dst++=1;
     result++;
@@ -33,9 +33,9 @@ U64 CDirTreeFlattenFill(CDirEntry *tempm,U8 *dst)
   return result+1;
 }
 
-public U8 *CDirTreeFlatten(CDirEntry *tempm,U64 *_size=NULL)
+public U8 *CDirTreeFlatten(CDirEntry *tempm,I64 *_size=NULL)
 {
-  U64 size=CDirTreeFlattenSize(tempm);
+  I64 size=CDirTreeFlattenSize(tempm);
   U8 *buf=MAlloc(size);
   CDirTreeFlattenFill(tempm,buf);
   if (_size) *_size=size;
@@ -44,7 +44,7 @@ public U8 *CDirTreeFlatten(CDirEntry *tempm,U64 *_size=NULL)
 
 U8 *CDirTreeDoUnflatten(U8 *src,CDirEntry **tempm)
 {
-  U64 i;
+  I64 i;
   CDirEntry *tempm1;
   if (*src++) {
     tempm1=CAlloc(sizeof(CDirEntry));
@@ -77,7 +77,7 @@ class CPlannedPrt
 {
   CPlannedPrt *next,*last;
   I64 size;
-  BoolI8 pri;
+  Bool pri;
 };
 
 //This is available to assist in writing scripts.
@@ -90,7 +90,7 @@ public U0 PrtDsk(U8 drv_let=0)
   CBlkDev *bdev;
   CPlannedPrt root,*temppp;
   CMasterBoot mbr;
-  BoolI8 pri=TRUE;
+  Bool pri=TRUE;
   I64 ext_base,num_prt,pri_cnt=0,
      i,start_offset,offset,remaining;
 "This command does not play well\n"
@@ -244,7 +244,7 @@ pd_done:
 U0 NativeFSDrvView(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
-  U64 lohi,c1,i,x,y,l,s;
+  I64 lohi,c1,i,x,y,l,s;
   U8 *bitmap;
   CDC *dc=DCAlias;
 
@@ -289,7 +289,7 @@ U0 NativeFSDrvView(U8 drv_let=0)
 U0 FAT32DrvView(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
-  U64 lohi,c1,i,x,y,l,s;
+  I64 lohi,c1,i,x,y,l,s;
   U32 *bitmap;
   CDC *dc=DCAlias;
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
@@ -409,18 +409,16 @@ public U0 BlkDevRep()
 
 #help_index "Install;File/Install Related"
 #define SC_BLK_CNT	2048
-public U64 NonNativeScan(I64 drv_let,U32 signature)
+public I64 NonNativeScan(I64 drv_let,U32 signature)
 {
 // See [::/SparrowOS/Doc/TSZ.TXT.Z,1] ::/SparrowOS/Doc/TSZ.TXT.Z
   U8 *buf=CAlloc(BLK_SIZE*SC_BLK_CNT),*b;
   U32 *d;
-  U64 *qq;
   CBlkDev *bdev=Drv2BlkDev(drv_let);
   CPrt *p=Drv2Prt(drv_let);
-  I64 blk=p->offset;
-  U64 result=0,start=0,i,j,n,to_go,size,
-  contiguous=0,new_drv_let;
-  BoolI8 good,proceed=FALSE;
+  I64 *qq,blk=p->offset,result=0,start=0,i,j,n,to_go,size,
+      contiguous=0,new_drv_let;
+  Bool good,proceed=FALSE;
   try {
     while (!result) {
       '-';

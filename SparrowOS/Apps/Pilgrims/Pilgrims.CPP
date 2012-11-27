@@ -85,7 +85,7 @@ F64 screen_x,screen_y,d_screen_x,d_screen_y,
    wave_speed,wave_theta,d_wave_theta,wave_period,
    wave_amplitude;
 
-BoolI8 wave_sound,ship_landed;
+Bool wave_sound,ship_landed;
 F64 song_time,game_over_time;
 
 F64 view_scale,new_view_scale;
@@ -128,6 +128,7 @@ F64 WaterHeight(F64 x,F64 y)
 I64 *ShipMat()
 { //Returns rotation matrix for ship bobbing on waves
   F64 x1,y1,z1,x2,y2,z2,a;
+  I64 *result;
 
   x1=ship.x-AFT_LEN/2*Cos(ship.theta)/view_scale;
   y1=ship.y-AFT_LEN/2*Sin(ship.theta)/view_scale;
@@ -146,11 +147,12 @@ I64 *ShipMat()
   GrRotXEqu(result,a);
 
   GrRotZEqu(result,ship.theta);
+  return result;
 }
 
 U0 BubbleAdd(I64 x,I64 y)
 {
-  U64 i=RandU16&(MAX_BUBBLES-1);
+  I64 i=RandU16&(MAX_BUBBLES-1);
   bubbles[i].x=x;
   bubbles[i].y=y;
 }
@@ -187,7 +189,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       c=1.05*(MaxI64(cx,cy)+wave_period),
       *ship_r,x,y,z;
   F64 d,xx,yy,dx,dy,dx2,dy2,wave_x,wave_y;
-  BoolI8 bow_down;
+  Bool bow_down;
 
   task->text_attr=LTBLUE<<4;
 
@@ -420,7 +422,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 CColorROPU32 pray_colors[1]={RED};
 CTask *pray_task;
 
-U0 LeftClickPrayButton(CCtrl *,I64,I64,BoolI8 down)
+U0 LeftClickPrayButton(CCtrl *,I64,I64,Bool down)
 { //[::/SparrowOS/Apps/AfterEgypt/AENotes.TXT.Z,1] ::/SparrowOS/Apps/AfterEgypt/AENotes.TXT.Z
   I64 i,size,l=512;
   U8 *bible_filename,*buf;
@@ -495,7 +497,7 @@ U0 AnimateObj(Obj *tempo,F64 dt)
   tempo->d_theta=LowPass1(0.5,tempo->d_theta,0,dt);
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 {
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -511,7 +513,7 @@ U0 SongTask(U64)
 
 #define SCREEN_BUMP	100
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,j,
      w=Fs->parent_task->win_pixel_width,  cx=w/2,
@@ -653,7 +655,7 @@ U0 AnimateTask(U64)
 
 U0 Pilgrims()
 {
-  U64 msg_code,ch,sc;
+  I64 msg_code,ch,sc;
   CCtrl *bt_pray;
 
   "Initializing Maps...\n";

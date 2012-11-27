@@ -4,7 +4,7 @@
 
 
 I64 PopUpFreq()
-{ //See also [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,612] PopUpRangeI64()
+{ //See also [C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,621] PopUpRangeI64()
   I64 i;
   CDoc *doc=DocNew;
   DocPutS(doc,"$TX+CX,\"Set Freq\"$\n" //Centered text
@@ -25,9 +25,9 @@ I64 PopUpFreq()
 
 U0 MenuButton()
 {
-  BoolI8 done=FALSE;
+  Bool done=FALSE;
   I64 i,j=0,freq=100;
-  U64 old_flags=DocCur->flags;
+  I64 old_flags=DocCur->flags;
 //This allows keyboard navigation to skip nonselectible entries.
   DocCur->flags|=DOCF_FORM;
   do {

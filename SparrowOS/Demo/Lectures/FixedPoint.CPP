@@ -42,7 +42,7 @@ U0 Main()
 
 U0 DoIt2()
 {
-  U64 i=0x123456789ABCDEF0;
+  I64 i=0x123456789ABCDEF0;
   "i           =%X\n",i;
 
   "i&0xFFFFFFFF=%X\n",i&0xFFFFFFFF;
@@ -54,10 +54,10 @@ U0 DoIt2()
   allows a structure to be accessed as a
   whole.  That's why the i variable can
   be accessed normally in addition to
-  structure member access [C:/SparrowOS/OSMain/Adam1a.HPP.Z,40] U64.  The actual
+  structure member access [C:/SparrowOS/OSMain/Adam1a.HPP.Z,50] I64.  The actual
   intrinsic compiler type is U64i.
 
-public U64i union U64
+public U64i union I64
 {
   I8i i8[8];
   U8i u8[8];

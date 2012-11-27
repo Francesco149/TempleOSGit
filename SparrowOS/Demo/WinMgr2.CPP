@@ -4,13 +4,16 @@ You must "Adam Include" this because the Adam task's memory is never freed,
 so the code for this file will not be yanked from underneath the task.
 
  This is a really bad alternative window mgr.  It augments the existing
-one found in [::/SparrowOS/Adam/Window.CPP.Z,1] ::/SparrowOS/Adam/Window.CPP.Z.  It uses the real-time 
+one found in [::/SparrowOS/Adam/Window.CPP.Z,1]
+::/SparrowOS/Adam/Window.CPP.Z.  It uses the real-time 
 differential equation solver to reposition windows as though they were 
 repulsively charged particles.  I find this window mgr to be a novelty, not 
-desirable for actual use.  You're welcome to add it, or some variation to your 
+desirable for actual use.  You're welcome to add it, or some variation to
+your 
 start-up scripts if you like it.  It's not fully debugged.
 
-I had to cheat to make this work.  I added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3133] DISPLAYf_USER_HAS_BEEN_RESIZED and 
+I had to cheat to make this work.  I added
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2845] DISPLAYf_USER_HAS_BEEN_RESIZED and 
 modified [::/SparrowOS/Adam/Window.CPP.Z,1] ::/SparrowOS/Adam/Window.CPP.Z.
 
 The differential equation stuff was overkill and made it overly complicated.  
@@ -19,7 +22,7 @@ Oh, well.
 
 U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *state,COrder2D3 *DstateDt)
 {
-  U64 i,j,task_cnt=ode->n/6;
+  I64 i,j,task_cnt=ode->n/6;
   F64 f,d,dd,dx,dy;
   COrder2D3 *tempo;
   if (!task_cnt) return;
@@ -55,9 +58,9 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *state,COrder2D3 *DstateDt)
   }
 }
 
-U0 WinMngTask(U64)
+U0 WinMngTask(I64)
 { //Preempt() is off after Spawn()
-  BoolI8 same=FALSE;
+  Bool same=FALSE;
   I64 i,j,w,h,x,y,cnt,task_cnt=0;
   COrder2D3 *tempo;
   CTask *task,**task_map=NULL;
@@ -98,7 +101,7 @@ restart:
 	QueRem(ode);
 	ODEDel(ode);
       }
-      task_map=MAlloc(sizeof(U0 *)*task_cnt);
+      task_map=MAlloc(sizeof(U8 *)*task_cnt);
       ode=ODENew(task_cnt*6,0.1);
       ode->derivative=&MyDerivative;
       QueIns(ode,Fs->last_ode);

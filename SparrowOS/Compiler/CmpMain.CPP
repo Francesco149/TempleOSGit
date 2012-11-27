@@ -21,10 +21,9 @@ U0 StreamPrintF(U8 *src,...)
   Free(buf);
 }
 
-U8 *CmpStatement(CLex *lx,U64 *type)
+U8 *CmpStatement(CLex *lx,I64 *type)
 {
-  U64 *result=INVALID_PTR;
-  U64 size,i,j,k;
+  I64 size,i,j,k,*result=INVALID_PTR;
   CIntermediateCode *tempi;
   if (type) *type=IT_I64;
   Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
@@ -54,24 +53,25 @@ U8 *CmpStatement(CLex *lx,U64 *type)
     LinkedListDel(lx->cbh.cb_out_first);
   if (lx->a_depth==2)
     CBPop(lx);
+  return result;
 }
 
 
-CExe *CmpJoin(CLex *lx,CHashFun *locals,BoolI8 first_lex,BoolI8 asm_blk=FALSE,
+CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
   U8 *map_name=NULL,U8 mapfile_drv=0)
 {
   CAsmCtrl *a,*old_a=lx->a;
-  U64 i,j,l;
+  I64 i,j,l;
   CAsmCodeBlk *tempc;
   CExeImportExport *tempe;
-  BoolI8 okay=TRUE;
+  Bool okay=TRUE;
   CHashTable *ht1=lx->hash_table_list,
 	       *ht2=lx->define_hash_table,
 	       *ht3=lx->glbl_hash_table,
 	       *ht4=lx->local_hash_table,
 	       *asm_hash_alias=MAllocIdentical(asm_hash);
-  CHashFun	  *old_var_list=lx->local_var_list;
-  result=CAlloc(sizeof(CExe));
+  CHashFun     *old_var_list=lx->local_var_list;
+  CExe *result=CAlloc(sizeof(CExe));
   result->parent_exe=lx->exe_struct;
   lx->exe_struct=result;
 
@@ -173,13 +173,14 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,BoolI8 first_lex,BoolI8 asm_blk=FALSE,
   Free(a);
   lx->a=old_a;
   lx->a_depth--;
+  return result;
 }
 
 CExe *CmpBuf(U8 *buf,U8 *map_name=NULL,
   I64 *error_cnt=NULL, I64 *warning_cnt=NULL,U8 mapfile_drv=0)
 {
   CLex *lx;
-  result=NULL;
+  CExe *result=NULL;
   if (!is_first_compiler)
     "$FG,PURPLE$**** Not First Compiler ****$FG$\n";
   lx=LexNew(buf,LF_DONT_FREE_BUF,NULL);
@@ -191,18 +192,18 @@ CExe *CmpBuf(U8 *buf,U8 *map_name=NULL,
   QueRem(lx);
   if (result)
     LexDel(lx);
+  return result;
 }
 
 U0 CmpFixUpJITAsm(CLex *lx,CExe *ex,I64 ip2)
 {
-  I64 i;
-  U0 *ptr;
+  I64 i,*str=NULL;
+  U8 *ptr;
   CExeAbsAddr *tempa,*tempa1;
   CExeImportExport *tempe,*tempe1;
   CHashExport *tempess;
   CHashFun *tempf;
   CHashGlblVar *tempg;
-  I64 *str=NULL;
 
   tempa=ex->abss;
   while (tempa) {
@@ -227,10 +228,10 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *ex,I64 ip2)
 	*(ex->code(U8 *)+tempa->ip)(U32 *)-=ip2;
 	break;
       case EAA_ADD_U64:
-	*(ex->code(U8 *)+tempa->ip)(U64 *)+=ip2;
+	*(ex->code(U8 *)+tempa->ip)(I64 *)+=ip2;
 	break;
       case EAA_SUB_U64:
-	*(ex->code(U8 *)+tempa->ip)(U64 *)-=ip2;
+	*(ex->code(U8 *)+tempa->ip)(I64 *)-=ip2;
 	break;
     }
     Free(tempa);
@@ -289,7 +290,7 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *ex,I64 ip2)
 	else if (tempe->type<=EIE_LIT_U32)
 	  *ptr(U32 *)+=i;
 	else if (tempe->type<=EIE_LIT_U64)
-	  *ptr(U64 *)+=i;
+	  *ptr(I64 *)+=i;
       }
     }
     Free(tempe->src_link);
@@ -305,7 +306,7 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *ex,I64 ip2)
 U0 CmpFixUpStaticAsm(CLex *lx,CExe *ex,I64 ip2)
 {
   CAsmCtrl *a=lx->a;
-  U0 *ptr;
+  U8 *ptr;
   CExeAbsAddr *tempa,*tempa1;
   CExeImportExport *tempe,*tempe1;
 
@@ -333,10 +334,10 @@ U0 CmpFixUpStaticAsm(CLex *lx,CExe *ex,I64 ip2)
 	*(ex->code(U8 *)+tempa->ip)(U32 *)-=ip2;
 	break;
       case EAA_ADD_U64:
-	*(ex->code(U8 *)+tempa->ip)(U64 *)+=ip2;
+	*(ex->code(U8 *)+tempa->ip)(I64 *)+=ip2;
 	break;
       case EAA_SUB_U64:
-	*(ex->code(U8 *)+tempa->ip)(U64 *)-=ip2;
+	*(ex->code(U8 *)+tempa->ip)(I64 *)-=ip2;
 	break;
     }
     a->abss=tempa;
@@ -359,7 +360,7 @@ U0 CmpFixUpStaticAsm(CLex *lx,CExe *ex,I64 ip2)
       else if (tempe->type<=EIE_LIT_U32)
 	*ptr(U32 *)-=ip2;
       else if (tempe->type<=EIE_LIT_U64)
-	*ptr(U64 *)-=ip2;
+	*ptr(I64 *)-=ip2;
       tempe->ip+=ip2;
     }
     QueIns(tempe,ex->parent_exe->last_ie);
@@ -370,12 +371,11 @@ U0 CmpFixUpStaticAsm(CLex *lx,CExe *ex,I64 ip2)
 
 I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
 { //Compile file
-  U8 *fbuf=NULL,*fbuf2=NULL,*fbuf3=NULL;
+  U8 *ptr,*fbuf=NULL,*fbuf2=NULL,*fbuf3=NULL,
+     *patch_table=MAlloc(0x20000);
   CExe *ex;
-  U64 size=0;
-  U8 *patch_table=MAlloc(0x20000),*ptr;
+  I64 i,cnt,size=0,error_cnt=0,warning_cnt=0,code_U8s=0;
   CBinFile *bfh;
-  U64 i,cnt,error_cnt=0,warning_cnt=0,code_U8s=0;
   CExeImportExport *tempe,*tempe1;
   CExeAbsAddr *tempa,*tempa1;
   CExeHeapGlblRef *temphgr,*temphgr1;
@@ -390,7 +390,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
   if (ex) {
     code_U8s=ex->code_U8s;
     ptr=patch_table;
-    *ptr++=EIE_MODULE_ALIGNMENT; //See [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() and [C:/SparrowOS/Adam/BinRep.CPP.Z,23] BinRep()
+    *ptr++=EIE_MODULE_ALIGNMENT; //See [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() and [C:/SparrowOS/Adam/BinRep.CPP.Z,23] BinRep()
     *ptr(U32 *)++=ex->max_align;
     *ptr++=0;
     cnt=0;
@@ -432,7 +432,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
 	  ptr+=i+1;
 	} else
 	  *ptr++=0;
-	*ptr(U64 *)++=temphg->size;
+	*ptr(I64 *)++=temphg->size;
 	temphgr=temphg->references;
 	while (temphgr) {
 	  temphgr1=temphgr->next;
@@ -520,9 +520,10 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
   return error_cnt;
 }
 
-I64 ExePutS(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
+I64 ExePutS(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE)
 {
-  BoolI8 okay=TRUE;
+  I64 result;
+  Bool okay=TRUE;
   CLex *lx;
   if (!filename)
     filename=sys_temp_filename;
@@ -548,27 +549,33 @@ I64 ExePutS(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
   QueRem(lx);
   if (okay)
     LexDel(lx); //TODO: can crash
+  return result;
 }
 
 I64 ExePrintF(U8 *fmt,...)
 {
+  I64 result;
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   result=ExePutS(buf);
   Free(buf);
+  return result;
 }
 
-I64 ExeFile(U8 *name,BoolI8 just_load=FALSE)
+I64 ExeFile(U8 *name,Bool just_load=FALSE)
 {
-  U8 *name2=DftExt(name,"CPP.Z");
-  U8 *st=MSPrintF("#include \"%s\";",name2);
+  I64 result;
+  U8 *name2=DftExt(name,"CPP.Z"),
+     *st=MSPrintF("#include \"%s\";",name2);
   result=ExePutS(st,name,just_load);
   Free(st);
   Free(name2);
+  return result;
 }
 
-I64 ExePutS2(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
+I64 ExePutS2(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE)
 { //with REPLACE_SYMS
-  BoolI8 okay=TRUE;
+  I64 result;
+  Bool okay=TRUE;
   CLex *lx;
   if (!filename)
     filename=sys_temp_filename;
@@ -594,26 +601,32 @@ I64 ExePutS2(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
   QueRem(lx);
   if (okay)
     LexDel(lx); //TODO: can crash
+  return result;
 }
 
 I64 ExePrintF2(U8 *fmt,...)
 { //with REPLACE_SYMS
+  I64 result;
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   result=ExePutS2(buf);
   Free(buf);
+  return result;
 }
 
-I64 ExeFile2(U8 *name,BoolI8 just_load=FALSE)
+I64 ExeFile2(U8 *name,Bool just_load=FALSE)
 { //with REPLACE_SYMS
-  U8 *name2=DftExt(name,"CPP.Z");
-  U8 *st=MSPrintF("#include \"%s\";",name2);
+  I64 result;
+  U8 *name2=DftExt(name,"CPP.Z"),
+     *st=MSPrintF("#include \"%s\";",name2);
   result=ExePutS2(st,name,just_load);
   Free(st);
   Free(name2);
+  return result;
 }
 
-I64 ExePutS3(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
+I64 ExePutS3(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE)
 { //throws exceptions
+  I64 result;
   CLex *lx;
   if (!filename)
     filename=sys_temp_filename;
@@ -627,23 +640,28 @@ I64 ExePutS3(U8 *buf,U8 *filename=NULL,BoolI8 just_load=FALSE)
   result=ExeCmdLine(lx);
   QueRem(lx);
   LexDel(lx);
+  return result;
 }
 
 I64 ExePrintF3(U8 *fmt,...)
 { //throws exceptions
+  I64 result;
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   result=ExePutS3(buf);
   Free(buf);
+  return result;
 }
 
 
-I64 ExeFile3(U8 *name,BoolI8 just_load=FALSE)
+I64 ExeFile3(U8 *name,Bool just_load=FALSE)
 { //throws exceptions
-  U8 *name2=DftExt(name,"CPP.Z");
-  U8 *st=MSPrintF("#include \"%s\";",name2);
+  I64 result;
+  U8 *name2=DftExt(name,"CPP.Z"),
+     *st=MSPrintF("#include \"%s\";",name2);
   result=ExePutS3(st,name,just_load);
   Free(st);
   Free(name2);
+  return result;
 }
 
 U0 CmpInit()

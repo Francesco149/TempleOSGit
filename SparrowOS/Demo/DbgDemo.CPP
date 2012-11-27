@@ -4,14 +4,14 @@ Press <CTRL-ALT-C> to break.
 Rerun Program
 
 Press <CTRL-ALT-D> to enter Dbg.
-> [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,332] Dr;	 //Dump Registers
-> [C:/SparrowOS/Adam/Dbg2a.CPP.Z,333] BptsR;  //Clear break-points.
-> [C:/SparrowOS/Adam/Dbg2a.CPP.Z,352] Go2;	 //Cont program
+> [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,334] Dr;	 //Dump Registers
+> [C:/SparrowOS/Adam/Dbg2a.CPP.Z,335] BptsR;  //Clear break-points.
+> [C:/SparrowOS/Adam/Dbg2a.CPP.Z,354] Go2;	 //Cont program
 
 
 Press <CTRL-ALT-D> to enter Dbg.
-> [C:/SparrowOS/Adam/Dbg2a.CPP.Z,241] Uf("DbgDemo");
-> [C:/SparrowOS/Compiler/Unassembler.CPP.Z,851] U(RIP);
+> [C:/SparrowOS/Adam/Dbg2a.CPP.Z,240] Uf("DbgDemo");
+> [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U(RIP);
 
 See [Debugging,1] Debugging
 

@@ -53,7 +53,7 @@ U0 ReadAcct()
 
 U0 DatabaseDemo()
 {
-  U64 ch;
+  I64 ch;
   if (!FileFind(DB_FILENAME))
     InitDatabase;
   do {

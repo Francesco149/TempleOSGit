@@ -275,7 +275,7 @@ F64 DotNetScore(Dot *root)
   return num/(nonzero_cnt*nonzero_cnt*nonzero_cnt*distdist1*distdist2);
 }
 
-BoolI64 NodeAdd(Node *tempn,Element *tempe,I64 terminal,CTask *mem_task=NULL)
+Bool NodeAdd(Node *tempn,Element *tempe,I64 terminal,CTask *mem_task=NULL)
 {
   I64 i;
   Terminal *a;
@@ -397,8 +397,9 @@ U0 ElementDel(Element *tempe,CTask *mem_task=NULL)
 
 Node *NodeNew(CTask *mem_task=NULL)
 {
-  result=CAlloc(sizeof(Node),mem_task);
+  Node *result=CAlloc(sizeof(Node),mem_task);
   QueIns(result,node_root.last);
+  return result;
 }
 
 Node *NodeCat(Node *dst,Node *src,CTask *mem_task=NULL)
@@ -458,7 +459,7 @@ I64 DotHVDecideConnect(Dot *tempd,Dot *tempd1)
   return CT_NONE;
 }
 
-BoolI64 DotHVConnect(Dot *tempd,Dot *tempd1)
+Bool DotHVConnect(Dot *tempd,Dot *tempd1)
 {
   switch (DotHVDecideConnect(tempd,tempd1)) {
     case CT_RIGHT:
@@ -485,7 +486,7 @@ BoolI64 DotHVConnect(Dot *tempd,Dot *tempd1)
 Dot *DotHVInterconnect(Dot *tempd,Dot *tempd1,CTask *mem_task=NULL)
 {
   I64 type;
-  result=CAlloc(sizeof(Dot),mem_task);
+  Dot *result=CAlloc(sizeof(Dot),mem_task);
   if (Bt(tempd ->flags,Df_TERMINAL_LEFT)||
       Bt(tempd ->flags,Df_TERMINAL_RIGHT)) {	 //d horizontal
     type=0;
@@ -519,9 +520,10 @@ Dot *DotHVInterconnect(Dot *tempd,Dot *tempd1,CTask *mem_task=NULL)
     result->x=tempd ->x;
     result->y=tempd1->y;
   }
+  return result;
 }
 
-Dot *DotNearest(Dot *root,Dot *tempd,BoolI8 just_processed)
+Dot *DotNearest(Dot *root,Dot *tempd,Bool just_processed)
 {
   I64 best_dd=MAX_I64,dx,dy,dd;
   Dot *result=NULL,*tempd1,*tempd2;
@@ -552,9 +554,10 @@ Dot *DotNearest(Dot *root,Dot *tempd,BoolI8 just_processed)
       tempd1=tempd1->next;
     }
   }
+  return result;
 }
 
-BoolI64 DotMarkConnected(Dot *tempd)
+Bool DotMarkConnected(Dot *tempd)
 {
   if (tempd && !Bts(tempd->flags,Df_PROCESSED)) {
     DotMarkConnected(tempd->left);
@@ -759,14 +762,15 @@ Dot *DotTerminalsNew(Node *tempn,CTask *mem_task=NULL)
       }
       QueIns(tempd,result->last);
     }
+  return result;
 }
 
 Dot *DotNew(Node *tempn,CTask *mem_task=NULL)
 {
   I64 cnt,pass=0,last_cnt=0;
-  BoolI8 cont;
+  Bool cont;
   Dot *tempd,*tempd1,*tempd2,*tempd3;
-  result=DotTerminalsNew(tempn,mem_task);
+  Dot *result=DotTerminalsNew(tempn,mem_task);
   do {
     pass++;
     tempd=result->next;
@@ -863,6 +867,7 @@ Dot *DotNew(Node *tempn,CTask *mem_task=NULL)
   DotSpacersAdd(result,mem_task);
   DotAddSpace(result);
   DotJunctions(result);
+  return result;
 }
 
 U0 DotDraw(CDC *dc,Dot *root)
@@ -894,7 +899,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,x1,y1,x2,y2;
   U8 *img;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   Node *tempn=node_root.next;
   Element *tempe=el_root.next;
   while (tempe!=&el_root) {
@@ -1007,6 +1012,7 @@ Element *ElementFind(I64 x,I64 y,I64 *_terminal)
     }
     tempe=tempe->next;
   }
+  return result;
 }
 
 U0 Circuit()

@@ -1,5 +1,5 @@
 //This task lets you hear how busy the CPU is.
-U0 LoadTask(U64)
+U0 LoadTask(I64)
 {
   I64 i,j=100;
 //Preemption is ctrlled on a per task basis.
@@ -27,7 +27,7 @@ U0 SpinningPreempt()
 U0 SpinningNoPreempt()
 {
   I64 i;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   "Spinning with no preemption...\n";
 
 //Put on screen before it starts.  Text lags by one refresh
@@ -71,7 +71,7 @@ U0 CooperativeMultitaskingPreempt()
 U0 CooperativeMultitaskingNoPreempt()
 {
   F64 timeout=tNP+3.0;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   "Cooperative multitasking with no preemption...\n";
   while (tNP<timeout) {
     InU8(0x21);

@@ -59,7 +59,7 @@ To update with a new SparrowOS kernel (OSMain), you must create a binary file
 and patch the boot loader so it knows the LBA blocks to load.  Therefore, you 
 usually recompile the kernel and update the boot sect at the same time.  
 [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() does this. 
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot() will install a
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,291] InstallMasterBoot() will install a
 master boot 
 loader.
 

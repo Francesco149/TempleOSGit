@@ -1,7 +1,7 @@
 #help_index "Snd/Music"
 U8 *cur_song=NULL;
 CTask *cur_song_task=NULL;
-U64 music_octave;
+I64 music_octave;
 F64 music_note_len;
 U8 music_note_map[7]={0,2,3,5,7,8,10};
 I64 music_mute=0;
@@ -21,7 +21,7 @@ public F64 tM()
 
 public F64 tMBeat()
 { //Time in music beats
-  F64 cur_tM;
+  F64 result,cur_tM;
   PushFD;
   Cli;
   if (mp_cnt>1)
@@ -35,6 +35,7 @@ public F64 tMBeat()
   music_last_tMBeat=result;
   LBtr(&sys_semas[SYS_SEMA_TMBEAT],0);
   PopFD;
+  return result;
 }
 
 #help_index "Snd/Music"
@@ -82,7 +83,7 @@ U8 *MusicSetMeter(U8 *st)
 
 U8 *MusicSetNoteLen(U8 *st)
 {
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE;
   do {
     switch (*st++) {
       case 'w': music_note_len=4.0;  break;
@@ -123,11 +124,11 @@ public U0 Play(U8 *st,U8 *words=NULL)
     '!!'  *1.5`2
 
   [C:/SparrowOS/Adam/Snd/Music.CPP.Z,8] music_waveform is set with
-    "W1" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3869] WF_SQUARE
-    "W2" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3870] WF_SINE
-    "W3" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3871] WF_TRIANGLE
-    "W4" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3872] WF_SAWTOOTH
-    "W5" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3873] WF_NOISE
+    "W1" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3580] WF_SQUARE
+    "W2" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3581] WF_SINE
+    "W3" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3582] WF_TRIANGLE
+    "W4" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3583] WF_SAWTOOTH
+    "W5" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3584] WF_NOISE
 
   [C:/SparrowOS/Adam/Snd/Music.CPP.Z,8] music_meter_top,[C:/SparrowOS/Adam/Snd/Music.CPP.Z,9] music_meter_bottom is set with
     "M3/4"
@@ -150,8 +151,8 @@ public U0 Play(U8 *st,U8 *words=NULL)
 
 {
   U8 *word,*last_st;
-  U64 note,i=0,timeout_val,timeout_val2;
-  BoolI8 tie,old_preempt=Preempt(OFF);
+  I64 note,i=0,timeout_val,timeout_val2;
+  Bool tie,old_preempt=Preempt(OFF);
   F64 f,d,a,on_jiffies,off_jiffies;
   music_play_note_num=0;
   while (*st) {

@@ -7,7 +7,7 @@
 //Scroll bar works.
 
 //The multiplication takes place in the
-//[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,343] CSpritePlotRotZ3b routine.
+//[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,329] CSpritePlotRotZ3b routine.
 
 
 #define SLIDER_SPACING 20
@@ -71,7 +71,7 @@ U0 UpdateDerivedSliderCtrl(CCtrl *c)
   s->scale=2.0*s->s3/SLIDER_RANGE;
 }
 
-U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,BoolI8)
+U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,Bool)
 {
   CSliderState *s=c->state;
   if (x<c->left+(c->right-c->left)/3)
@@ -86,7 +86,7 @@ U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,BoolI8)
 
 CCtrl *SliderNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c=CAlloc(sizeof(CCtrl));
   c->win_task=Fs;
   c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
@@ -105,7 +105,7 @@ CCtrl *SliderNew()
 
 U0 SliderDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

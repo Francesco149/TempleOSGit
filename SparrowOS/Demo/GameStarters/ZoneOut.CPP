@@ -76,7 +76,7 @@ class Obj
   Obj *next,*last;
   F64 t0,theta;
   I64 x,y,z;
-  BoolI8 hit,pad[7];
+  Bool hit,pad[7];
 } us,them[NUM_THEM],shots;
 I64 num_them;
 F64 t0,tf;
@@ -103,7 +103,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,dd,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w>>1,cy=h>>1;
   U8 *img;
   F64 tt;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   task->text_attr=BLACK<<4;
   DCAllocDepthBuf(dc);
   dc->transform=&ZOTransform;
@@ -179,7 +179,7 @@ U0 MoveUs(F64 theta)
   us.z+=0.1*SCREEN_SCALE*Sin(theta);
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 { //Preemption is off after Spawn
   I64 i;
   Obj *tempo,*tempo1;
@@ -227,7 +227,7 @@ U0 CleanUp()
   QueDel(&shots,TRUE);
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Randomly generate (by God :-)
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -241,7 +241,7 @@ U0 SongTask(U64)
 
 U0 ZoneOut()
 {
-  U64 sc;
+  I64 sc;
 
   PopUpOk(
 	"I refuse to rip-off the original\n"

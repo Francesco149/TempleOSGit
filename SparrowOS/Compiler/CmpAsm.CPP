@@ -163,7 +163,9 @@ _OPTNEXT3::
 CMP_TEMPLATES::
 	DU32	@@05,@@10,@@15,@@25,@@30,
 		@@35,@@40,@@45,@@55,@@60,
-		@@75,@@80,@@85,@@90;
+		@@75,@@80,@@85,@@90,@@95,
+		@@100,@@105,@@110,@@115,@@125,
+		@@135;
 
 @@05:	//INC
 	PUSH	RAX
@@ -270,13 +272,73 @@ CMP_TEMPLATES::
 @@85:
 	MOV	EAX,HPET_MAIN_CNT
 	MOV	RAX,U64 [RAX]
-@@90:
+
+@@90: //Sqr
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FMUL	ST0,ST0
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@95: //Abs
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FABS
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@100: //Sqrt
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FSQRT
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@105: //Sin
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FSIN
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@110: //Cos
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOS
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@115: //Tan
+	PUSH	RAX
+	FLD	U64 [RSP]
+@@120:	FPTAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@120
+	FFREE	ST0
+	FINCSTP
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@125: //Atan
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FLD1
+@@130:	FPATAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@130
+	FSTP	U64 [RSP]
+	POP	RAX
+@@135:
 
 // ************************************
 CMP_TEMPLATES_DONT_POP::
 	DU32	@@05,@@10,@@15,@@20,@@25,
 		@@30,@@35,@@40,@@45,@@50,
-		@@55,@@60,@@65,@@70;
+		@@55,@@60,@@65,@@70,@@75,
+		@@80,@@85,@@90,@@95,@@105,
+		@@115;
 
 @@05:	//INC
 	PUSH	RAX
@@ -293,7 +355,6 @@ CMP_TEMPLATES_DONT_POP::
 	POP	RAX
 
 @@15:
-
 @@20:
 @@25:
 @@30:
@@ -307,13 +368,66 @@ CMP_TEMPLATES_DONT_POP::
 	FLD	U64 [RSP]
 	ADD	RSP,8
 @@65:
-@@70:
+
+@@70: //Sqr
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FMUL	ST0,ST0
+	ADD	RSP,8
+
+@@75: //Abs
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FABS
+	ADD	RSP,8
+
+@@80: //Sqrt
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FSQRT
+	ADD	RSP,8
+
+@@85: //Sin
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FSIN
+	ADD	RSP,8
+
+@@90: //Cos
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FCOS
+	ADD	RSP,8
+
+@@95: //Tan
+	PUSH	RAX
+	FLD	U64 [RSP]
+@@100:	FPTAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@100
+	FFREE	ST0
+	FINCSTP
+	ADD	RSP,8
+
+@@105: //Atan
+	PUSH	RAX
+	FLD	U64 [RSP]
+	FLD1
+@@110:	FPATAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@110
+	ADD	RSP,8
+@@115:
 
 // ************************************
 CMP_TEMPLATES_DONT_PUSH::
 	DU32	@@05,@@10,@@15,@@20,@@30,
 		@@35,@@40,@@50,@@55,@@60,
-		@@65,@@70,@@75,@@80;
+		@@65,@@70,@@75,@@80,@@85,
+		@@90,@@95,@@100,@@105,@@115,
+		@@125;
 
 @@05:	//INC
 	SUB	RSP,8
@@ -382,13 +496,65 @@ CMP_TEMPLATES_DONT_PUSH::
 	POP	RAX
 @@70:
 @@75:
-@@80:
+@@80: //Sqr
+	SUB	RSP,8
+	FMUL	ST0,ST0
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@85: //Abs
+	SUB	RSP,8
+	FABS
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@90: //Sqrt
+	SUB	RSP,8
+	FSQRT
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@95: //Sin
+	SUB	RSP,8
+	FSIN
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@100: //Cos
+	SUB	RSP,8
+	FCOS
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@105: //Tan
+	SUB	RSP,8
+@@110:	FPTAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@110
+	FFREE	ST0
+	FINCSTP
+	FSTP	U64 [RSP]
+	POP	RAX
+
+@@115: //Atan
+	SUB	RSP,8
+	FLD1
+@@120:	FPATAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@120
+	FSTP	U64 [RSP]
+	POP	RAX
+@@125:
 
 // ************************************
 CMP_TEMPLATES_DONT_PUSH_POP::
 	DU32	@@05,@@10,@@15,@@20,@@25,
 		@@30,@@35,@@40,@@45,@@50,
-		@@55,@@60,@@65,@@70;
+		@@55,@@60,@@65,@@70,@@75,
+		@@80,@@85,@@90,@@95,@@100,
+		@@110;
 
 @@05:	//INC
 	SUB	RSP,8
@@ -405,7 +571,6 @@ CMP_TEMPLATES_DONT_PUSH_POP::
 	POP	RAX
 
 @@15:
-
 @@20:
 @@25:
 @@30:
@@ -416,14 +581,44 @@ CMP_TEMPLATES_DONT_PUSH_POP::
 @@55:
 @@60:
 @@65:
-@@70:
+@@70: //Sqr
+	FMUL	ST0,ST0
 
+@@75: //Abs
+	FABS
+
+@@80: //Sqrt
+	FSQRT
+
+@@85: //Sin
+	FSIN
+
+@@90: //Cos
+	FCOS
+
+@@95: //Tan
+	FPTAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@95
+	FFREE	ST0
+	FINCSTP
+
+@@100: //Atan
+	FLD1
+@@105:	FPATAN
+	FSTSW
+	TEST	AX,0x400
+	JNZ	@@105
+@@110:
 
 // ************************************
 CMP_TEMPLATES_DONT_PUSH2::
 	DU32	@@05,@@10,@@15,@@20,@@25,
 		@@35,@@45,@@50,@@55,@@60,
-		@@65,@@70,@@75,@@80;
+		@@65,@@70,@@75,@@80,@@85,
+		@@90,@@95,@@100,@@105,@@110,
+		@@115;
 
 @@05:
 @@10:
@@ -479,13 +674,20 @@ CMP_TEMPLATES_DONT_PUSH2::
 @@70:
 @@75:
 @@80:
+@@85:
+@@90:
+@@95:
+@@100:
+@@105:
+@@110:
+@@115:
 }
 
-_extern _OPTNEXT BoolI8 OptNext(CIntermediateCode *tempi,
+_extern _OPTNEXT Bool OptNext(CIntermediateCode *tempi,
 	       CIntermediateCode **temp_lag);
 
-_extern _OPTNEXT2 BoolI8 OptNext2(CIntermediateCode *tempi,
+_extern _OPTNEXT2 Bool OptNext2(CIntermediateCode *tempi,
 	       CIntermediateCode **temp_lag);
 
-_extern _OPTNEXT3 BoolI8 OptNext3(CIntermediateCode *tempi,
+_extern _OPTNEXT3 Bool OptNext3(CIntermediateCode *tempi,
 	       CIntermediateCode **temp_lag);

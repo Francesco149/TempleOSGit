@@ -2,15 +2,15 @@
 
 I64 old_ipx=-1000,old_ipy=-1000,old_ipz=0;
 I64 old_ipx_presnap=-1000,old_ipy_presnap=-1000,old_ipz_presnap=0;
-BoolI8 old_ip_lb=FALSE,old_ip_rb=FALSE;
+Bool old_ip_lb=FALSE,old_ip_rb=FALSE;
 F64 left_ip_dbl_time=0;
-BoolI8 left_dbl=FALSE,left_down_sent=FALSE;
+Bool left_dbl=FALSE,left_down_sent=FALSE;
 F64 right_ip_dbl_time=0;
-BoolI8 right_dbl=FALSE,right_down_sent=FALSE;
+Bool right_dbl=FALSE,right_down_sent=FALSE;
 public F64 dbl_click_time=0.350;
 
 public I64 win_updates=0;
-BoolI8 win_first_after_startup_complete=FALSE;
+Bool win_first_after_startup_complete=FALSE;
 F64 refresh_ode_time=0,last_refresh_ode_time=0;
 
 //These are not hardware rates.  They
@@ -28,7 +28,7 @@ F64 WinMaxRefresh()
     return WIN_DFT_MAX_REFRESH;
 }
 
-BoolI64 WinInhibit(U64 flag)
+Bool WinInhibit(I64 flag)
 {
   if (sys_focus_task && TaskValidate(sys_focus_task))
     return Bt(&sys_focus_task->win_inhibit,flag);
@@ -81,7 +81,7 @@ U0 DrawProgressBars(CDC *dc)
   }
 }
 
-BoolI8 win_show_grid=FALSE;
+Bool win_show_grid=FALSE;
 F64 win_grid_spacing=8.0,
     win_grid_x_offset=0,
     win_grid_y_offset=0;
@@ -105,7 +105,7 @@ U0 WinGrid()
   win_show_grid=TRUE;
 }
 
-U0 CtrlAltG(U64 sc)
+U0 CtrlAltG(I64 sc)
 {
   if (sc&SCF_SHIFT)
     win_show_grid=FALSE;
@@ -141,7 +141,7 @@ U0 ExtendedASCII()
   PostMsg(ext_ASCII_task,MSG_KEY_DOWN_UP,i,A2ScanCode(i));
 }
 
-U0 CtrlAltA(U64)
+U0 CtrlAltA(I64)
 {
   if (ext_ASCII_task=sys_focus_task)
     Spawn(&ExtendedASCII);
@@ -149,7 +149,7 @@ U0 CtrlAltA(U64)
 SetCtrlAltLetCB('A',&CtrlAltA,"Sys/Extended ASCII");
 
 
-BoolI8 win_grab_scroll=FALSE,win_grab_scroll_closed=FALSE;
+Bool win_grab_scroll=FALSE,win_grab_scroll_closed=FALSE;
 public U0 WinScrollNull(CTask *task,CD3I64 *s)
 {
   s->x=task->win_scroll_x;
@@ -195,7 +195,7 @@ U0 DrawInputPtr(CDC *dc)
   }
 }
 
-BoolI8 win_show_menu=FALSE;
+Bool win_show_menu=FALSE;
 U0 WinFinalUpdate(CDC *dc)
 {
   if (win_show_grid)
@@ -214,7 +214,7 @@ U0 WinIPUpdate()
 {
   I64 dd;
   F64 temp,temp2;
-  BoolI8 set=FALSE,old_preempt=Preempt(OFF);
+  Bool set=FALSE,old_preempt=Preempt(OFF);
  
   if (ip_dev==IP_MOUSE) {
     ip_has_wheel=mouse_has_wheel;
@@ -261,21 +261,21 @@ U0 WinIPUpdate()
   Preempt(old_preempt);
 }
 
-U64 last_total_jiffies,
+I64 last_total_jiffies,
    last_idle_pt_hits[MP_MAX_PROCESSORS],
    last_swap_cnter[MP_MAX_PROCESSORS];
 F64 last_refresh_time=tNP,
    last_refresh_start_time=0,
    last_refresh_end_time=0,
    refresh_time,refresh_delta_time;
-U64 win_calc_refresh_cnt=0,
+I64 win_calc_refresh_cnt=0,
    win_calc_refresh_skips=0;
 
-U64 WinCalcRefreshTimeout(BoolI8 was_forced)
+I64 WinCalcRefreshTimeout(Bool was_forced)
 {
   F64 d,d1;
-  I64 i,k,total;
-  U64 total_jiffies,idle_pt_hits[MP_MAX_PROCESSORS];
+  I64 i,k,total,
+      total_jiffies,idle_pt_hits[MP_MAX_PROCESSORS];
   CCPU *c;
 
   win_calc_refresh_skips++;
@@ -340,12 +340,11 @@ U64 WinCalcRefreshTimeout(BoolI8 was_forced)
   return sys_jiffies+JIFFY_FREQ/win_desired_refresh;
 }
 
-U64 WinQueIPMsgs(BoolI8 que)
+I64 WinQueIPMsgs(Bool que)
 {
   static I64 single_ipx=0,single_ipy=0;
   F64 time=tNP;
-  U64 msg_code=0;
-  I64 p1,p2,single_p1,single_p2;
+  I64 msg_code=0,p1,p2,single_p1,single_p2;
   CTask *task_focus=sys_focus_task;
 
   if (task_focus && !win_grab_scroll) {
@@ -522,12 +521,12 @@ CTask *WinRefocus()
 
 CTask *old_sys_focus_task=NULL;
 
-U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
+I64 WinMgrSleep(Bool flush_msgs=FALSE)
 {
-  static BoolI8 was_forced=FALSE;
-  U64 timeout_val,timeout_val2,msg_code=0;
+  static Bool was_forced=FALSE;
+  I64 timeout_val,timeout_val2,msg_code=0;
   CCtrl *c;
-  BoolI8 que;
+  Bool que;
 
   TimeStampFreqCal;
 
@@ -540,7 +539,7 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
   }
 
   if (flush_msgs)
-    FifoU64Flush(scan_code_fifo);
+    FifoI64Flush(scan_code_fifo);
   else if (TaskValidate(sys_focus_task)) {
     KbdQueMsgs;
 
@@ -559,7 +558,7 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
   } else {
     WinRefocus;
     if (!TaskValidate(sys_focus_task))
-      FifoU64Flush(scan_code_fifo);
+      FifoI64Flush(scan_code_fifo);
   }
 
   if (sys_focus_task)
@@ -606,13 +605,13 @@ U64 WinMgrSleep(BoolI8 flush_msgs=FALSE)
 }
 
 #help_index "Windows;Task/Delay"
-public U0 WinMgrSync(I64 cnt=1,BoolI8 force=FALSE)
+public U0 WinMgrSync(I64 cnt=1,Bool force=FALSE)
 {
 //0 Cnt Sync to WinMgr. (not used)
 //1 Cnt Wait and Pump Msgs.
 //2 Cnt Make Sure to do a Full Refresh
 //	and Set Cur Pos.
-  BoolI8 old_preempt=Preempt(OFF),
+  Bool old_preempt=Preempt(OFF),
   old_full_refresh,
   old_idle=LBts(&Fs->task_flags,TASKf_IDLE);
   CDoc *old_doc=DocCur;
@@ -641,10 +640,10 @@ public U0 WinMgrSync(I64 cnt=1,BoolI8 force=FALSE)
 }
 
 #help_index "Windows"
-U64 WinOnTopWindows()
+I64 WinOnTopWindows()
 {
   CTask *task,*task1,*first_moved_fwd=NULL;
-  result=0;
+  I64 result=0;
   PushFD;
   Cli; //TODO Multiprocessor safe
   task=sys_winmgr_task->next_task;
@@ -665,12 +664,13 @@ U64 WinOnTopWindows()
     task=task1;
   }
   PopFD;
+  return result;
 }
 
-public U64 WinToTop(CTask *task=NULL,BoolI8 update_z_buf=TRUE)
+public I64 WinToTop(CTask *task=NULL,Bool update_z_buf=TRUE)
 {
   CTask *task1;
-  result=0;
+  I64 result=0;
   if (!task) task=Fs;
   if (!TaskValidate(task) || task->gs->num)
     return 0;
@@ -706,6 +706,7 @@ public U64 WinToTop(CTask *task=NULL,BoolI8 update_z_buf=TRUE)
   result+=WinOnTopWindows;
   if (result && update_z_buf)
     WinZBufUpdate;
+  return result;
 }
 ext[EXT_WIN_TO_TOP]=&WinToTop;
 
@@ -719,7 +720,7 @@ public U0 WinFocus(CTask *task=NULL)
   PopFD;
 }
 
-public BoolI64 SetWinHorz(I64 left,I64 right,CTask *task=NULL)
+public Bool SetWinHorz(I64 left,I64 right,CTask *task=NULL)
 {
   I64 d=right-left;
   if (!task) task=Fs;
@@ -755,7 +756,7 @@ public BoolI64 SetWinHorz(I64 left,I64 right,CTask *task=NULL)
   }
 }
 
-public BoolI64 SetWinVert(I64 top,I64 bottom,CTask *task=NULL)
+public Bool SetWinVert(I64 top,I64 bottom,CTask *task=NULL)
 {
   I64 d=bottom-top;
   if (!task) task=Fs;
@@ -791,10 +792,10 @@ public BoolI64 SetWinVert(I64 top,I64 bottom,CTask *task=NULL)
   }
 }
 
-BoolI64 SetCursorPos(CTask *task,I64 iptx,I64 ipty,BoolI8 set_cursor=TRUE)
+Bool SetCursorPos(CTask *task,I64 iptx,I64 ipty,Bool set_cursor=TRUE)
 {
   CDoc *doc;
-  BoolI8 unlock;
+  Bool unlock;
   I64 x0,y0;
   if (!task) task=Fs;
   if (!TaskValidate(task)) return FALSE;
@@ -948,9 +949,9 @@ public U0 WinMax(CTask *task=NULL)
   PopFD;
 }
 
-public BoolI64 WinBorder(BoolI8 val=OFF,CTask *task=NULL)
+public Bool WinBorder(Bool val=OFF,CTask *task=NULL)
 {
-  BoolI8 old_has_border;
+  Bool old_has_border;
   if (!task) task=Fs;
   if (!TaskValidate(task)) return FALSE;
   PushFD;
@@ -995,7 +996,7 @@ U0 WinChkMoveSize(CTask *task)
   task->win_old_bottom=task->win_bottom;
 }
 
-BoolI8 WinKeyNavMenu()
+Bool WinKeyNavMenu()
 {
   I64 i,old_key_cnt,
     old_ipx,old_ipy,
@@ -1077,20 +1078,20 @@ BoolI8 WinKeyNavMenu()
   return FALSE;
 }
 
-U0 WinMgrTask(U64)
+U0 WinMgrTask(I64)
 {
   CTask *task=Fs;
-  I64 x,y,z,msg_code;
   CDoc *doc;
   CDocEntry *doc_e;
-  I64 my_ipz=0,left,top;
-  BoolI8 has_border;
+  I64 x,y,z,msg_code,
+      my_ipz=0,left,top,
+      old_flags=GetFlags;
+  Bool has_border;
   CCtrl *c;
-  U64 old_flags=GetFlags;
   TaskInitExt;
   last_total_jiffies=0;
-  MemSet(last_idle_pt_hits,0,sizeof(U64)*MP_MAX_PROCESSORS);
-  MemSet(last_swap_cnter,0,sizeof(U64)*MP_MAX_PROCESSORS);
+  MemSet(last_idle_pt_hits,0,sizeof(I64)*MP_MAX_PROCESSORS);
+  MemSet(last_swap_cnter,0,sizeof(I64)*MP_MAX_PROCESSORS);
 
   Fs->win_left=0;
   Fs->win_right=TEXT_COLS-1;

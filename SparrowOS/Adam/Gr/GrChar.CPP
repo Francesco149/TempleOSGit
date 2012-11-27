@@ -1,5 +1,5 @@
 #help_index "Graphics/Char;Char/Graphics"
-public U0 PlotScreenStr(U8 *s,U64 attr,I64 x,I64 y)
+public U0 PlotScreenStr(U8 *s,I64 attr,I64 x,I64 y)
 {
   U8 ch;
   attr<<=8;
@@ -9,7 +9,7 @@ public U0 PlotScreenStr(U8 *s,U64 attr,I64 x,I64 y)
   }
 }
 
-public U0 PlotWinStr(CTask *task,U8 *s,U64 attr,I64 x,I64 y)
+public U0 PlotWinStr(CTask *task,U8 *s,I64 attr,I64 x,I64 y)
 {
   U8 ch;
   attr<<=8;
@@ -19,7 +19,7 @@ public U0 PlotWinStr(CTask *task,U8 *s,U64 attr,I64 x,I64 y)
   }
 }
 
-public U0 PlotBorderStr(CTask *task,U8 *s,U64 attr,I64 x,I64 y)
+public U0 PlotBorderStr(CTask *task,U8 *s,I64 attr,I64 x,I64 y)
 {
   U8 ch;
   attr<<=8;
@@ -29,7 +29,7 @@ public U0 PlotBorderStr(CTask *task,U8 *s,U64 attr,I64 x,I64 y)
   }
 }
 
-public U0 DrawBorder(CTask *task,BoolI8 solid,I64 l,I64 r,I64 t,I64 b,U64 attr,BoolI8 clip_to_win)
+public U0 DrawBorder(CTask *task,Bool solid,I64 l,I64 r,I64 t,I64 b,I64 attr,Bool clip_to_win)
 {
   I64 i;
   attr<<=8;

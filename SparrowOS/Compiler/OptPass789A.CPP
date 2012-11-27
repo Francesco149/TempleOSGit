@@ -1,8 +1,8 @@
-U64 OptPass789A(CLex *lx,CHashFun *fun_class,
+I64 OptPass789A(CLex *lx,CHashFun *fun_class,
    COptReg *register_offsets,U8 *buf,CDbgInfo **_dbg)
 {
   CIntermediateCode *tempi;
-  I64 code,i,cnt,num_lines=lx->max_line-lx->min_line+1,ip=0,ip2;
+  I64 code,i,cnt,*qq,num_lines=lx->max_line-lx->min_line+1,ip=0,ip2;
   CCodeBlkMisc *lb,*lb1;
   CExe *tempex;
   CExeAbsAddr *tempa;
@@ -11,8 +11,7 @@ U64 OptPass789A(CLex *lx,CHashFun *fun_class,
   CExeHeapGlblRef *temphgr;
   CDbgInfo *dbg;
   CAsmCtrl *a=lx->a;
-  BoolI8 short_jmp;
-  I64 *qq;
+  Bool short_jmp;
   CICArg saved_p123[3];
   CHashClass *tempc;
   CHashFun *tempf;
@@ -20,7 +19,7 @@ U64 OptPass789A(CLex *lx,CHashFun *fun_class,
   CExternUsage *tempeu;
 
   if (_dbg) {
-    *_dbg=dbg=CAlloc(offset(CDbgInfo.body)+sizeof(U0 *)*(num_lines+1));
+    *_dbg=dbg=CAlloc(offset(CDbgInfo.body)+sizeof(U8 *)*(num_lines+1));
     dbg->min_line=lx->min_line;
     dbg->max_line=lx->max_line;
     if (lx->flags&LF_STATIC_COMPILE)
@@ -796,6 +795,27 @@ U64 OptPass789A(CLex *lx,CHashFun *fun_class,
 	  case IC_TO_BOOL:
 	    ICToBool(lx,tempi,ip2);
 	    break;
+	  case IC_SQR:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_SQR,ip2);
+	    break;
+	  case IC_ABS:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_ABS,ip2);
+	    break;
+	  case IC_SQRT:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_SQRT,ip2);
+	    break;
+	  case IC_SIN:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_SIN,ip2);
+	    break;
+	  case IC_COS:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_COS,ip2);
+	    break;
+	  case IC_TAN:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_TAN,ip2);
+	    break;
+	  case IC_ATAN:
+	    ICFTemplateFun(lx,tempi,CMP_TEMPLATE_ATAN,ip2);
+	    break;
 	  case IC_ABS_I64:
 	    ICMov(tempi,TY_REG+IT_I64,CREG_RAX,0,
 		tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
@@ -1293,7 +1313,7 @@ skip_copy:
 	      *qq=lb1->addr+buf;
 	  }
 	}
-	ip+=lb->range*sizeof(U0 *);
+	ip+=lb->range*sizeof(U8 *);
 	break;
       case CBMT_FLOAT_CONSTS:
 	lb->addr=ip;

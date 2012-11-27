@@ -1,14 +1,14 @@
 #define BORDER_CHARS	1
 
 U8 *buf;
-U64 size,mp_done_flags;
+I64 size,mp_done_flags;
 CDoc *doc;
 
 U0 PDNormalize()
 {
-  U8 *result=MAlloc(size+2*BORDER_CHARS),
-     *src=buf,*dst=result;
-  U64 ch;
+  U8 *r=MAlloc(size+2*BORDER_CHARS),
+     *src=buf,*dst=r;
+  I64 ch;
   *dst++='['; //Border
   while (size--) {
     ch=*src++;
@@ -19,8 +19,8 @@ U0 PDNormalize()
   }
   *dst++=']'; //Border
   Free(buf);
-  buf=result;
-  size=dst-result-2*BORDER_CHARS;
+  buf=r;
+  size=dst-r-2*BORDER_CHARS;
 }
 
 
@@ -35,7 +35,7 @@ U0 PDAnswer(U8 *a,I64 len)
   DocUnlock(doc);
 }
 
-U0 MPPalindrome(U64 dummy=0)
+U0 MPPalindrome(I64 dummy=0)
 {
   nounusedwarn dummy;
   U8 *src=buf+BORDER_CHARS+size*Gs->num/mp_cnt,

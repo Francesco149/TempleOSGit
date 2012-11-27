@@ -29,7 +29,7 @@ U0 DrawIt(CTask *,CDC *dc)
     CSpritePlot3(dc,x[i],y[i],0,__BIN_1);
     if (dc->nearest_dist<=best_dist) {
       //distance to nearest pixel, squared
-      //[C:/SparrowOS/OSMain/Adam1b.HPP.Z,227] Sqrt() is expensive so we work with distance squared.
+      //[C:/SparrowOS/OSMain/Adam1b.HPP.Z,229] Sqrt() is expensive so we work with distance squared.
       best_dist=dc->nearest_dist;
       best_apple=i;
 

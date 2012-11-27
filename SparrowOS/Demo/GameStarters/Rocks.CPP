@@ -62,7 +62,7 @@ I64 cmd_code=CMD_NULL;
 #define NUM_STARS	100
 I64 stars_x[NUM_STARS],stars_y[NUM_STARS];
 
-BoolI8 bounce;
+Bool bounce;
 
 #define OT_SHIP		1
 #define OT_CARGO	2
@@ -562,7 +562,7 @@ U0 CheckCrazy()
     }
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by Terry A. Davis
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -576,7 +576,7 @@ U0 SongTask(U64)
 
 U0 Rocks()
 {
-  U64 ch,sc,msg_code;
+  I64 ch,sc,msg_code;
   CMenuEntry *tempse;
 
   PopUpOk(

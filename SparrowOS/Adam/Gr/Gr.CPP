@@ -39,7 +39,7 @@
 
 U0 GrInit()
 {
-  DefineListLoad("ST_GRSPRITE_TYPES","End\0 \0Color 8Bit\0 \0Point\0"
+  DefineListLoad("ST_CSPRITE_TYPES","End\0 \0Color 8Bit\0 \0Point\0"
 	"Line\0PolyLine\0PolyPoint\0Width\0Shift\0"
 	"BSpline2\0BSpline3\0BSpline2 Closed\0BSpline3 Closed\0"
 	" \0 \0 \0Rect\0Circle\0Flood Fill Not Color\0Flood Fill\0BitMap 8Bit\0"
@@ -94,12 +94,12 @@ public class CSprite
 };
 
 
-extern CDC *DCNew(U64 type,U64 width,U64 height,CTask *task=NULL,BoolI8 null_bitmap=FALSE);
+extern CDC *DCNew(I64 type,I64 width,I64 height,CTask *task=NULL,Bool null_bitmap=FALSE);
 extern CDC *DCAlias(CDC *dc=NULL,CTask *task=NULL);
 extern U0 DCDel(CDC *dc);
 extern U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *import_snap=NULL,F64 *import_ip_scaler=NULL);
 extern CSprite *CSpriteDoc2Que(CDoc *doc,CSprite *root,I64 *cur_num);
-extern BoolI64 GrBlot3(CDC *dc,I64 x1,I64 y1,I64 z1,CDC *img);
+extern Bool GrBlot3(CDC *dc,I64 x1,I64 y1,I64 z1,CDC *img);
 extern U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor);
 
 #include "GrCfg"

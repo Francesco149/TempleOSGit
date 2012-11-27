@@ -1,60 +1,56 @@
-BoolI64 OptEqu(U64 num,BoolI8 val) {
+Bool OptEqu(I64 num,Bool val) {
   return BEqu(&Fs->last_lex->opts,num,val);
 }
 
 //Turn on compiler option
-BoolI64 OptOn(U64 num) {
+Bool OptOn(I64 num) {
   return OptEqu(num,ON);
 }
 
 //Turn off compiler option
-BoolI64 OptOff(U64 num) {
+Bool OptOff(I64 num) {
   return OptEqu(num,OFF);
 }
 
 //Get state of compiler option
-BoolI64 GetOpt(U64 num) {
+Bool GetOpt(I64 num) {
   return Bt(&Fs->last_lex->opts,num);
 }
 
 //Displays intermediate code as it is being added
-BoolI64 PTrace(BoolI8 val) {
+Bool PTrace(Bool val) {
   return OptEqu(OPTf_PARSE_TRACE,val);
 }
 
 //Displays intermediate code after passes through optimization
-BoolI64 OTrace(BoolI8 val) {
+Bool OTrace(Bool val) {
   return OptEqu(OPTf_OPT_TRACE,val);
 }
 
 //Ctrls which optimizer passes are displayed
-U64 OPassTraceMask(U64 i=0b1001111101) {
-  U64 old=Fs->last_lex->pass_trace_mask;
+I64 OPassTraceMask(I64 i=0b1001111101) {
+  I64 old=Fs->last_lex->pass_trace_mask;
   Fs->last_lex->pass_trace_mask=i;
   return old;
 }
 
 //Displays assembly code output
-BoolI64 CTrace(BoolI8 val) {
+Bool CTrace(Bool val) {
   return OptEqu(OPTf_COMPILE_TRACE,val);
 }
 
 //Displays lexical analyser's output
-BoolI64 LTrace(BoolI8 val) {
+Bool LTrace(Bool val) {
   return OptEqu(OPTf_LEX_TRACE,val);
 }
 
 //Displays text as it is being compiled
-BoolI64 Echo(BoolI8 val) {
+Bool Echo(Bool val) {
   return OptEqu(OPTf_ECHO,val);
 }
 
-BoolI64 IsReplaceSyms() {
+Bool IsReplaceSyms() {
   return GetOpt(OPTf_REPLACE_SYMS);
-}
-
-BoolI64 SysEcho(BoolI8 val) {
-  return OptEqu(OPTf_ECHO,val);
 }
 
 U0 ImportHashTable(CHashTable *src)

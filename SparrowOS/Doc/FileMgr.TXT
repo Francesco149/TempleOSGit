@@ -60,7 +60,7 @@ Instructions on Using CD/DVD's
 file mgr and use [C:/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,183] Mount to
   define your CD/DVD drive.  Place a CD/DVD in the 
 drive and press 'm' when on top of the CD/DVD drive letter to mount the 
-drive.  It will call [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,363] ChgDsk(), the
+drive.  It will call [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,367] ChgDsk(), the
   SparrowOS cmd to mount removable media.
 
 
@@ -78,20 +78,20 @@ Making a Bootable CD/DVD
 This is a quick way to make an ISO.
 
 #define PROD_CDROM_CFG	"b10x20000\nt3 \n\n\n\n\n"
-
-U0 MakeMyISO()
-{
-  Fmt('B',TRUE,FALSE);
-  CopyTree("::/SparrowOS","B:/SparrowOS");
-  //Del("B:/SparrowOS/Adam/WordStat/WSDefs.DAT");
-  Auto(PROD_CDROM_CFG);
-  InstallBoot('B','T');
-  CDFileCreate(,"B:/*","",BOOTCD_BIN_Z);
-}
-
-
-
-
+    
+    U0 MakeMyISO()
+    {
+      Fmt('B',TRUE,FALSE);
+      CopyTree("::/SparrowOS","B:/SparrowOS");
+      //Del("B:/SparrowOS/Adam/WordStat/WSDefs.DAT");
+      Auto(PROD_CDROM_CFG);
+      InstallBoot('B','T');
+      CDFileCreate(,"B:/*","",BOOTCD_BIN_Z);
+    }
+    
+    
+    
+    
 I have the following code in my start-up script.
 
 'E' is my main hard drive SparrowOS partition
@@ -102,25 +102,25 @@ I have the following code in my start-up script.
 use a hard drive directory instead of RAM. 
 
 #define PROD_CDROM_CFG	"b10x20000\nt3 \n\n\n\n\n"
-U0 BurnProductionCDImage()
-{
-  Cd("E:/SparrowOS");
-
-  //This enters my cfg
-  //for compiling OSMain.
-  Auto(PROD_CDROM_CFG);
-
-  InstallBoot('E','T');
-  Fmt('Z',TRUE,FALSE);
-  Drv('Z');
-  CopyTree("E:/SparrowOS","/SparrowOS");
-  MkDir("/Temp");
-  CopyTree("E:/0000Boot","/0000Boot");
-  CDFileCreate(sys_dft_iso_name,"Z:/*",NULL,BOOTCD_BIN_Z);
-  CDImageWrite('T',
-    sys_dft_iso_name);
-}
-
+    U0 BurnProductionCDImage()
+    {
+      Cd("E:/SparrowOS");
+    
+      //This enters my cfg
+      //for compiling OSMain.
+      Auto(PROD_CDROM_CFG);
+    
+      InstallBoot('E','T');
+      Fmt('Z',TRUE,FALSE);
+      Drv('Z');
+      CopyTree("E:/SparrowOS","/SparrowOS");
+      MkDir("/Temp");
+      CopyTree("E:/0000Boot","/0000Boot");
+      CDFileCreate(sys_dft_iso_name,"Z:/*",NULL,BOOTCD_BIN_Z);
+      CDImageWrite('T',
+        sys_dft_iso_name);
+    }
+    
 Study my account examples [::/SparrowOS/Demo/AcctExample/TSAdam.CPP.Z,1] Cfg
     Strs [::/SparrowOS/Demo/AcctExample/TSDistribute.CPP.Z,1] Update Funs.
 

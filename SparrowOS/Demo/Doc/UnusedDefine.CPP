@@ -1,6 +1,6 @@
 /*
 This scans the sym table and checks
-each [C:/SparrowOS/OSMain/Adam1a.HPP.Z,585] HTT_DEFINE_STR entry to see if
+each [C:/SparrowOS/OSMain/Adam1a.HPP.Z,580] HTT_DEFINE_STR entry to see if
 it only occurs once in files.
 
 It's a brute force solution, but
@@ -9,7 +9,7 @@ gets the job done... slowly.
 [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() returns a count of matches.
 
 [C:/SparrowOS/Adam/Grep.CPP.Z,190] FileOcc() is [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() with
-output [C:/SparrowOS/OSMain/Misc1a.CPP.Z,263] Silent().
+output [C:/SparrowOS/OSMain/Misc1a.CPP.Z,273] Silent().
 
 */
 
@@ -20,7 +20,7 @@ U0 UnusedDefineScan()
   CHashTable *tempht;
   CHash *temph;
   CDocEntry *doc_e,*doc_e2;
-  BoolI8 old_silent=IsSilent;
+  Bool old_silent=IsSilent;
 
   //Technically, we might want to
   //turn-off preemption in case the

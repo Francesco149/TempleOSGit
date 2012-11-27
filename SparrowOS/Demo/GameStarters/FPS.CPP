@@ -90,7 +90,7 @@ I64 monsters_left;
 class Monster
 {
   I64 x,y;
-  BoolI8 dead,pad[7];
+  Bool dead,pad[7];
 } monsters[NUM_MONSTERS];
 
 U0 FPSTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
@@ -108,7 +108,7 @@ U0 FPSTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 
 #define LOS_SCALE	4
 
-BoolI64 LOSPlot(U0 *,I64 x,I64 y,I64)
+Bool LOSPlot(U8 *,I64 x,I64 y,I64)
 {
   if (!map[(y/LOS_SCALE)*map_width+(x/LOS_SCALE)])
     return FALSE;
@@ -116,7 +116,7 @@ BoolI64 LOSPlot(U0 *,I64 x,I64 y,I64)
     return TRUE;
 }
 
-BoolI64 LOS(I64 x1,I64 y1,I64 x2,I64 y2)
+Bool LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 { //Line of sight
   return Line(NULL,x1*LOS_SCALE/SCREEN_SCALE,y1*LOS_SCALE/SCREEN_SCALE,0,
 	       x2*LOS_SCALE/SCREEN_SCALE,y2*LOS_SCALE/SCREEN_SCALE,0,&LOSPlot);
@@ -408,7 +408,7 @@ U0 Init()
   t0=tP;
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,x,y,dd;
   while (TRUE) {
@@ -450,7 +450,7 @@ U0 CleanUp()
   panels_processed_bitmap=NULL;
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by Terry A. Davis
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -491,7 +491,7 @@ U0 RotateMan(F64 d)
 
 U0 FPS()
 {
-  U64 sc;
+  I64 sc;
 
   PopUpOk(
 	"I refuse to rip-off the original\n"
@@ -541,10 +541,10 @@ U0 FPS()
 	case 0:
 	  switch (sc.u8[0]) {
 	    case SC_CURSOR_RIGHT:
-	      Spawn(&RotateMan,(pi/32)(U64));
+	      Spawn(&RotateMan,(pi/32)(I64));
 	      break;
 	    case SC_CURSOR_LEFT:
-	      Spawn(&RotateMan,(-pi/32)(U64));
+	      Spawn(&RotateMan,(-pi/32)(I64));
 	      break;
 	    case SC_CURSOR_UP:
 	      MoveMan(man_theta);

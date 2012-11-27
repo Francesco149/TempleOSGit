@@ -2,8 +2,8 @@
 
 public U0 PressKeyHelp(CTask *task=NULL)
 {
-  U64 p1=0,p2=0;
-  BoolI8 old_preempt=Preempt(OFF);
+  I64 p1=0,p2=0;
+  Bool old_preempt=Preempt(OFF);
   CTask *old_hash=Fs->hash_table;
   if (!task) task=Fs;
 
@@ -38,7 +38,7 @@ task=Fs;
 
 U0 KeyMapCtrlAltFamily()
 {
-  U64 i,p2;
+  I64 i,p2;
   U8 *st,*st2;
 
   p2=SC_DELETE+SCF_CTRL+SCF_ALT;
@@ -79,7 +79,7 @@ I64 KMCompare(U8 *e1,U8 *e2)
 {
   I64 i;
   U8 *ee1,*ee2,ch1,ch2;
-  BoolI8 e1_shift=FALSE,e2_shift=FALSE;
+  Bool e1_shift=FALSE,e2_shift=FALSE;
   if (e1) {
     if (e2) {
       while (*e1==CH_SPACE)
@@ -134,7 +134,7 @@ I64 KMCompare(U8 *e1,U8 *e2)
 
 U0 KeyMapFamily2(U8 **entries,U8 *family,CTask *task,I64 scf)
 {
-  U64 i,p2,p1;
+  I64 i,p2,p1;
   U8 *st,*st2;
   CTask *old_hash=Fs->hash_table;
   Fs->hash_table=task->hash_table;
@@ -166,13 +166,13 @@ U0 KeyMapFamily2(U8 **entries,U8 *family,CTask *task,I64 scf)
 
 U0 KeyMapFamily(U8 *family,CTask *task,I64 scf)
 {
-  U64 i;
+  I64 i;
   U8 **entries=CAlloc(2*256*sizeof(U8 *)),st1[32],st2[32];
   SPrintF(st1,"%s      ",family);
   SPrintF(st2,"%s SHIFT",family);
   KeyMapFamily2(entries    ,st1,task,scf);
   KeyMapFamily2(entries+256,st2,task,scf+SCF_SHIFT);
-  QSortU64(entries,2*256,&KMCompare);
+  QSortI64(entries,2*256,&KMCompare);
   for (i=0;i<2*256;i++)
     if (entries[i]) {
       "" entries[i];
@@ -231,7 +231,7 @@ public U0 TipOfDay(U8 *tip_file="::/SparrowOS/Doc/Tips.TXT.Z")
 //cmds for all applications,
 //but it makes the code too ugly.
 //
-U0 CtrlAltK(U64)
+U0 CtrlAltK(I64)
 {
   U8 buf[136];
   SPrintF(buf,"KeyMap(0x%X);View;",

@@ -15,33 +15,33 @@ U0 ODERstPtrs(CMathODE *ode)
   F64 *ptr=ode->array_base;
 
   ode->state_internal=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->state_scale=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->DstateDt=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->initial_state=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp0=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp1=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp2=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp3=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp4=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp5=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp6=ptr;
-  ptr(U64)+=s;
+  ptr(I64)+=s;
   ode->temp7=ptr;
 }
 
-public CMathODE *ODENew(U64 n,F64 max_tolerance=1e-6,U64 flags=0)
+public CMathODE *ODENew(I64 n,F64 max_tolerance=1e-6,I64 flags=0)
 {
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,251] flags.
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,248] flags.
 
 //The tolerance is not precise.
 //You can min_tolerance and it will
@@ -82,7 +82,7 @@ public U0 ODEDel(CMathODE *ode)
   Free(ode);
 }
 
-public U64 ODESize(CMathODE *ode)
+public I64 ODESize(CMathODE *ode)
 {
   if (!ode)
     return 0;
@@ -377,8 +377,7 @@ U0 ODEOneStep(CMathODE *ode)
 U0 ODERK4OneStep(CMathODE *ode)
 {
   I64 i,n=ode->n_internal;
-  F64 xh,hh,h6;
-  F64 *dym,*dyt,*yt,*DstateDt;
+  F64 xh,hh,h6,*dym,*dyt,*yt,*DstateDt;
 
   dym =ode->temp0;
   dyt =ode->temp1;
@@ -481,8 +480,7 @@ U0 ODECashKarp(CMathODE *ode)
 U0 ODERK5OneStep(CMathODE *ode)
 {
   I64 i;
-  F64 errmax,temp;
-  F64 *tempstate=ode->temp6,*stateerr=ode->temp7;
+  F64 errmax,temp,*tempstate=ode->temp6,*stateerr=ode->temp7;
   while (TRUE) {
     ode->h=Limit(ode->h,ode->h_min,ode->h_max);
     ODECashKarp(ode);
@@ -527,16 +525,16 @@ it has a timeout.
   I64 i;
   F64 d,start_time,timeout_time,t_desired,t_initial,interpolation;
   CMathODE *ode;
-  BoolI8 old_suspend;
+  Bool old_suspend;
 
   if (task->next_ode==&task->next_ode)
     task->last_ode_time=0;
   else {
-    //See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,377] GrUpdateWins()
+    //See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,378] GrUpdateWins()
     if (!Bt(&task->win_inhibit,WIf_ODE)) {
       //TODO: Being preempted here woulds be bad
       if (task!=Fs)
-	old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
+	old_suspend=Suspend(task);
       //We will not pick a time limit based on
       //how busy the CPU is, what percent of the
       //last refresh cycle was spent on ODE's
@@ -629,9 +627,9 @@ ode_done:
 	ode=ode->next;
       }
       refresh_ode_time+=task->last_ode_time=tNP-start_time;
-      //See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,377] GrUpdateWins()
+      //See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,378] GrUpdateWins()
       if (task!=Fs)
-	LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
+	Suspend(task,old_suspend);
     }
   }
 }

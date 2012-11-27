@@ -1,6 +1,7 @@
 /*
 This gets a list of files, flattens the list from a tree into an array and 
-sorts them by cluster num, to speed-up access time by avoiding moving the disk 
+sorts them by cluster num, to speed-up access time by avoiding moving the
+disk 
 head around.
 */
 
@@ -11,7 +12,7 @@ U0 Main()
       **a=FilesOrder(tempm,&cnt);
   for (i=0;i<cnt;i++) {
     "%08X %s\n",a[i]->cluster,a[i]->full_name;
-    CDirDel(a[i]);
+    CDirEntryDel(a[i]);
   }
   Free(a);
 }

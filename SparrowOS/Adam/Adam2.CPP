@@ -1,9 +1,10 @@
 #exe {OptOn(OPTf_WARN_PAREN);};
+#exe {OptOn(OPTf_WARN_DUP_TYPES);};
 #help_index "Task/Login"
 
 //Use Dbg("Type 'Go1;'"); to debug before window mgr is running.
 
-public F64 os_version=1.01;
+public F64 os_version=1.02;
 
 #include "AdamExt.HPP.Z"
 
@@ -64,6 +65,7 @@ LBts(&sys_run_level,RLf_REGISTRY);
 Cd("::/SparrowOS/Adam");;
 #include "WallPaper"
 #exe {OptOff(OPTf_WARN_PAREN);};
+#exe {OptOff(OPTf_WARN_DUP_TYPES);};
 LBts(&sys_run_level,RLf_ADAM2);
 
 Cd("HOME");;

@@ -37,7 +37,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,x,y,w,
       h=-task->horz_scroll.pos,
       v=-task->vert_scroll.pos;
-  BoolI8 old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
+  Bool old_suspend=Suspend(task);
   task->horz_scroll.min=0;
   task->horz_scroll.max=MAP_WIDTH-task->win_pixel_width;
   task->vert_scroll.min=0;
@@ -80,7 +80,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     if (y<elevs[x])
       GrPlot(dc,x+h,y+v);
   }
-  LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
+  Suspend(task,old_suspend);
 }
 
 U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
@@ -111,7 +111,7 @@ U0 DrawMap()
   active_map++;
 }
 
-U0 FireTask(U64)
+U0 FireTask(I64)
 { //by default preempt is off on new tasks
   CMass *tempm;
   I64 i;
@@ -145,7 +145,7 @@ U0 ManageShots()
 {
   I64 i;
   CMass *tempm,*tempm1;
-  BoolI8 chged=FALSE;
+  Bool chged=FALSE;
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     tempm1=tempm->next;
@@ -164,7 +164,7 @@ U0 ManageShots()
     DrawMap;
 }
 
-U0 MoveTask(U64)
+U0 MoveTask(I64)
 {
   static F64 quit_time=0;
   if (quit_time)
@@ -184,7 +184,7 @@ U0 Init()
 {
   CDC *map;
   I64 i,x,y,dy;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   if (!maps[0])
     maps[0]=DCNew(DCT_COLOR8,MAP_WIDTH,MAP_HEIGHT);
   if (!maps[1])
@@ -243,7 +243,7 @@ U0 CleanUp(CMathODE *ode)
 
 U0 BigGuns()
 {
-  U64 ch,sc;
+  I64 ch,sc;
 
   PopUpOk(
 	"I refuse to rip-off the original\n"

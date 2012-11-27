@@ -26,6 +26,7 @@ I64 PosInStk(I64 pole,I64 disk)
   for (i=NUM_DISKS-1;i>disk;i--)
     if (disks_pole[i]==pole)
       result++;
+  return result;
 }
 
 U0 SetDisksRestXY()

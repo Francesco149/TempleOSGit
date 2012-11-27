@@ -5,10 +5,10 @@
 #define M_NUM_MODES	3
 
 I64 mode;
-BoolI8 my_ip_down;
+Bool my_ip_down;
 I64 last_x,last_y;
 
-BoolI8 synth_done;
+Bool synth_done;
 
 U0 (*fp_task_end_cb)();
 U0 (*fp_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
@@ -69,21 +69,21 @@ U0 SynthTaskEndCB()
     Exit;
 }
 
-BoolI64 WFPlot(U0 *,I64 x,I64 y,I64)
+Bool WFPlot(U8 *,I64 x,I64 y,I64)
 {
   if (0<=x<=WF_BUF_LEN)
     waveform_buf[x]=y;
   return TRUE;
 }
 
-BoolI64 FQPlot(U0 *,I64 x,I64 y,I64)
+Bool FQPlot(U8 *,I64 x,I64 y,I64)
 {
   if (0<=x<=FQ_BUF_LEN)
     frequency_buf[x]=AbsI64(y);
   return TRUE;
 }
 
-BoolI64 ELPlot(U0 *,I64 x,I64 y,I64)
+Bool ELPlot(U8 *,I64 x,I64 y,I64)
 {
   if (0<=x<=EL_BUF_LEN)
     envelope_buf[x]=AbsI64(y);

@@ -20,7 +20,7 @@ ready.  A task runs until it
 voluntarily yields ctrl with a call
 to [C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield or gets preempted by the
 timer interrupt.  See [C:/SparrowOS/OSMain/Interrupts.CPP.Z,15] SYS_TIMER_HANDLER.
-The timer freqency is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,493] JIFFY_FREQ.  Tasks
+The timer freqency is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,489] JIFFY_FREQ.  Tasks
 can ask not to be preempted with
 [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt(ON/OFF).  Tasks waiting on I/O
 often loop, checking for a stat and

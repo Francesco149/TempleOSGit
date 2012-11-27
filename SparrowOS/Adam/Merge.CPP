@@ -10,7 +10,7 @@ CDirEntry MCMatchFind(CDirEntry *pattern,CDirEntry *list)
   return NULL;
 }
 
-U0 MergeChkList(CDirEntry *m1,CDirEntry *m2,U64 *_fuf_flags,U64 *df_flags)
+U0 MergeChkList(CDirEntry *m1,CDirEntry *m2,I64 *_fuf_flags,I64 *df_flags)
 {
   I64 i;
   CDirEntry *tempm2;
@@ -43,7 +43,7 @@ public U0 MergeChk(
   U8 *fu_flags=NULL)
 //"+d"=Do [C:/SparrowOS/Adam/Diff.CPP.Z,203] Diff() on files
 {
-  U64 df_flags=0,fuf_flags=0;
+  I64 df_flags=0,fuf_flags=0;
   CDirEntry *tempm1=NULL,*tempm2=NULL;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
@@ -73,7 +73,7 @@ public U0 ListNewFiles(U8 *files_find_mask="/SparrowOS/*",CDate ltdt=0,
   U8 *fu_flags=NULL)
 //"+t"=is just text files
 {
-  U64 fuf_flags=0;
+  I64 fuf_flags=0;
   CDirEntry *tempm1=NULL;
   if (!ltdt)
     ltdt=sys_compile_time;

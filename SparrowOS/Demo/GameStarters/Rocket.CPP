@@ -1,6 +1,6 @@
 #define THRUST	100
 
-BoolI8 blast_off;
+Bool blast_off;
 CMass m1, //Bottom of rocket
 	   m2; //Top of rocket
 CSpring s;
@@ -17,7 +17,7 @@ CDC *dc2;
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,x,y,cx=task->win_pixel_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
-  BoolI8 engine_on;
+  Bool engine_on;
   F64 nozzle_angle,theta=Arg(m2.x-m1.x,m2.y-m1.y);
 
   if (Bt(key_down_bitmap,SC_CURSOR_UP)) {
@@ -65,7 +65,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 U0 MyDerivative(CMathODE *,F64,COrder2D3 *,COrder2D3 *)
 {
-  BoolI8 engine_on;
+  Bool engine_on;
   F64 nozzle_angle,theta=Arg(m2.state->x-m1.state->x,m2.state->y-m1.state->y);
 
   if (Bt(key_down_bitmap,SC_CURSOR_UP)) {

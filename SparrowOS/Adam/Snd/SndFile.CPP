@@ -16,14 +16,14 @@ class CFileSND
 #define MAX_SND_FILE_DATA	0x7FF00
 
 
-public U64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=0.0,I64 waveform=WF_NULL,
+public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=0.0,I64 waveform=WF_NULL,
   F64 reverb_delay=0,F64 reverb_intensity=0)
 //Use "snd_record" flag to start or stop
 //recording, then call this routine.
 
 //Averaging should be a num from 0.0 to 0.999.
 //Vol should be from 0.0 to 1.0.
-//If waveform is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3868] WF_NULL, the original passed to [C:/SparrowOS/OSMain/Misc1a.CPP.Z,201] Snd() will be used.
+//If waveform is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3579] WF_NULL, the original passed to [C:/SparrowOS/OSMain/Misc1a.CPP.Z,209] Snd() will be used.
 
 //Set reverb_delay to like 0.3 sec and reverb_intensity to like 0.4.
 
@@ -165,7 +165,7 @@ public U0 SndFileWrite(U8 *filename,SND_IN_CONTAINER *buf,I64 cnt)
   Free(s);
 }
 
-public U0 SndFileView(U8 *name,BoolI8 zoom=FALSE)
+public U0 SndFileView(U8 *name,Bool zoom=FALSE)
 {
   I64 i,start,end,w=Fs->win_pixel_width,h=Fs->win_pixel_height;
   F64 x_scale,y_scale;
@@ -204,7 +204,7 @@ public U0 SndFileView(U8 *name,BoolI8 zoom=FALSE)
 
 CFileSND *snd_play_snd_file=NULL;
 I64 snd_play_start_buf_num,snd_play_samples_per_sample;
-BoolI64 snd_play_done=TRUE,snd_play_single_done;
+Bool snd_play_done=TRUE,snd_play_single_done;
 U0 (*fp_snd_play_task_end_cb)()=NULL;
 U0 (*fp_snd_play_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
 
@@ -294,7 +294,7 @@ public U0 SndFilePlay(U8 *snz_filename)
 public U0 SndFilePlaySeq(U8 *snz_filename,I64 num)
 { //This has gaps between files.  I might fix it someday.  You fix it;-)
   I64 i;
-  BoolI8 old_preempt=Preempt(OFF),old_idle;
+  Bool old_preempt=Preempt(OFF),old_idle;
   U8 *fname=StrNew(snz_filename),*fname2;
   FileExtRem(fname);
   old_idle=LBts(&Fs->task_flags,TASKf_IDLE);

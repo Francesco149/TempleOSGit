@@ -70,7 +70,7 @@ U0 CBPutICArg(CICArg *p)
 
 U0 CBPutIC(CIntermediateCode *tempi)
 {
-  U64 opcode=tempi->ic_opcode,i;
+  I64 opcode=tempi->ic_opcode,i;
   if (opcode>=IC_END_EXP && opcode!=IC_NOP1) {
     "%15ts %016X ",
       DefineSub(opcode,"ST_INTERMEDIATE_CODE")+4,
@@ -140,7 +140,7 @@ U0 CBPutIC(CIntermediateCode *tempi)
 }
 
 CIntermediateCode *CBICAdd(CLex *lx,
-   U64 opcode_and_precedence,U64 arg, CHashClass *c,U64 flags=0)
+   I64 opcode_and_precedence,I64 arg, CHashClass *c,I64 flags=0)
 {
   CIntermediateCode *tempi=lx->cbh.cb_out_ptr;
   CCodeBlk *cb,*cb1;
@@ -252,13 +252,14 @@ CCodeBlkMisc *CBGoToLabelFind(CLex *lx,U8 *name)
   return NULL;
 }
 
-CCodeBlkMisc *CBMiscNew(CLex *lx,U64 ty)
+CCodeBlkMisc *CBMiscNew(CLex *lx,I64 ty)
 {
-  result=CAlloc(sizeof(CCodeBlkMisc));
+  CCodeBlkMisc *result=CAlloc(sizeof(CCodeBlkMisc));
   lx->cbh.cb_misc_list_end->next=result;
   lx->cbh.cb_misc_list_end=result;
   result->addr=INVALID_PTR;
   result->type=ty;
+  return result;
 }
 
 I64 CBFloatConstFind(CLex *lx,F64 d)
@@ -375,7 +376,7 @@ U0 CBCombine(CLex *lx)
       Free(cb);
       cb=cb2;
     }
-    MemCpy(ptr,&cb->data,lx->cbh.cb_out_ptr(U64)-(&cb->data)(U64));
+    MemCpy(ptr,&cb->data,lx->cbh.cb_out_ptr(I64)-(&cb->data)(I64));
     Free(cb);
     lx->cbh.cb_out_first=cb1;
   }
@@ -383,17 +384,20 @@ U0 CBCombine(CLex *lx)
 
 CIndentInfo *CBIndents(CLex *lx)
 {
+  CIndentInfo *result;
   I64 i,num_lines=lx->max_line-lx->min_line+1;
   result=CAlloc(offset(CIndentInfo.body)+sizeof(U8)*(num_lines+1));
   result->min_line=lx->min_line;
   result->max_line=lx->max_line;
   for (i=0;i<num_lines;i++)
     result->body[i]=QueVectU8Get(lx->indent_que_vect,i+lx->min_line);
+  return result;
 }
 
 U8 *CBCompile(CLex *lx,CHashFun *fun_class,
-      U64 *code_size,CDbgInfo **_dbg,CIndentInfo **_indent,U64 *type=NULL)
+      I64 *code_size,CDbgInfo **_dbg,CIndentInfo **_indent,I64 *type=NULL)
 {
+  U8 *result;
   COptReg register_offsets[NUM_REGS];
   if (_dbg)
     *_dbg=NULL;
@@ -501,4 +505,5 @@ U8 *CBCompile(CLex *lx,CHashFun *fun_class,
     } else
       Un(result,*code_size,64);
   }
+  return result;
 }

@@ -1,7 +1,7 @@
 I64 num_people=100;
 
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by the Holy Spirit
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -91,7 +91,7 @@ U0 HoldCourt()
 {
   I64 i;
   I64 accused,crime,victim;
-  BoolI8 old_form=LBts(&(DocCur)->flags,DOCf_FORM);
+  Bool old_form=LBts(&(DocCur)->flags,DOCf_FORM);
 
   FlushMsgs;
   DocDblBufStart;
@@ -140,10 +140,10 @@ U0 HoldCourt()
 #define T_QUIT		12
 
 
-BoolI64 TakeTurn()
+Bool TakeTurn()
 {
   I64 i;
-  BoolI8 old_form=LBts(&(DocCur)->flags,DOCf_FORM);
+  Bool result,old_form=LBts(&(DocCur)->flags,DOCf_FORM);
   num_people*=1.0+0.01*((RandU16%100)-30);
   if (num_people>MAX_PEOPLE)
     num_people=MAX_PEOPLE;
@@ -199,10 +199,10 @@ BoolI64 TakeTurn()
 	Quail;
 	break;
       case T_MOSES_COMICS:
-	LBts(&Fs->song_task->task_flags,TASKf_SUSPENDED);
+	Suspend(Fs->song_task);
 	Snd(0);
 	ViewComics;
-	LBtr(&Fs->song_task->task_flags,TASKf_SUSPENDED);
+	Suspend(Fs->song_task,FALSE);
 	break;
       case T_MUTE:
 	Mute(!IsMute);
@@ -215,6 +215,7 @@ BoolI64 TakeTurn()
     result=TRUE;
   }
   WinMgrSync;
+  return result;
 }
 
 U0 TMsg(CDC *dc,U8 *msg)
@@ -258,7 +259,7 @@ U0 Trailer()
 
 U0 AfterEgypt()
 {
-  BoolI8 was_mute=IsMute;
+  Bool was_mute=IsMute;
   U8 *bible_filename=Define("ST_BIBLE_FILE");
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush

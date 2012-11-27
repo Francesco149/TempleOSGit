@@ -34,27 +34,22 @@ U0 MouseGetDevType()
     mouse_has_ext_buttons=TRUE;
 }
 
-BoolI64 MouseRst()
+Bool MouseRst()
 {
-  U8 *_b;
+  U8 b,*_b;
   U16 *_w;
-  U8 b;
   I64 i;
-  BoolI8 result=FALSE,timeout,present;
+  Bool result=FALSE,timeout,present;
 
   mouse_has_wheel=FALSE;
   mouse_has_ext_buttons=FALSE;
 
-//Somehow the BIOS Extended Data Area
-//enables my mouse!
   _w=0x40E;
   present=MemPagePresentMark(_w,TRUE);
   if (*_w==0x9FC0) {
     _b=0x9FC00+0x30;
-    *_b=1; //This enables my mouse
-    //Must be some kind of cfg
-    //register!!	No clue.  Legacy PS/2
-    //must use it, somehow.
+    *_b=1; //This enables my mouse.  It might be for one machine.
+	   //USB DMA packets, set-up by BIOS to make legacy PS/2?
   }
   if (!present)
     MemPagePresentMark(_w,FALSE);
@@ -129,12 +124,13 @@ BoolI64 MouseRst()
       KbdCmdSend(KBD_CTRL,0xA7); //Disable Mouse
     catch
       Fs->catch_except=TRUE;
+  return result;
 }
 
 
 U0 SetMouseSpeed()
 {
-  U64 dd,temp;
+  I64 dd,temp;
   if (dd=(old_mxx-mxx)*(old_mxx-mxx)+
 	 (old_myy-myy)*(old_myy-myy))
     if (temp=mouse_evt_time-mouse_last_evt_time)
@@ -142,7 +138,7 @@ U0 SetMouseSpeed()
   mouse_last_evt_time=mouse_evt_time;
 }
 
-U0 MouseUpdatePre(BoolI8 *old_buttons)
+U0 MouseUpdatePre(Bool *old_buttons)
 {
   I64 i;
   old_mxx=mxx; old_myy=myy; old_mzz=mzz;
@@ -150,7 +146,7 @@ U0 MouseUpdatePre(BoolI8 *old_buttons)
     old_buttons[i]=mouse_buttons[i];
 }
 
-U0 MouseUpdatePost(BoolI8 *old_buttons)
+U0 MouseUpdatePost(Bool *old_buttons)
 {
   I64 i;
   CSnap s;
@@ -197,7 +193,7 @@ U0 MouseHandler()
 {
   I64 i,dx,dy,dz;
   U8 mouse_buf[4];
-  BoolI8 old_buttons[5];
+  Bool old_buttons[5];
 
   MouseUpdatePre(old_buttons);
 
@@ -234,7 +230,7 @@ U0 MouseHandler()
 
 U0 SetMouseIP(I64 x,I64 y,I64 z,I64 l,I64 r,I64 c)
 {
-  BoolI8 old_buttons[5];
+  Bool old_buttons[5];
   CSnap s;
   GetSnap(&s);
   mouse_evt_time=GetTimeStamp;
@@ -253,22 +249,22 @@ U0 KbdMouseRst()
   KbdCmdFlush;
   FifoU8Flush(kbd2_fifo);
   FifoU8Flush(mouse2_fifo);
-  FifoU64Flush(scan_code_fifo);
+  FifoI64Flush(scan_code_fifo);
   sys_cur_scan_code=0;
   kbdmouse_rst=FALSE;
 }
 
-BoolI64 MouseDriverInstall(U64 dummy=0) //can be spawned
+Bool MouseDriverInstall(I64 dummy=0) //can be spawned
 {
   nounusedwarn dummy;
   I64 i;
-  BoolI8 old_preempt=IsPreempt;
+  Bool old_preempt=IsPreempt;
   if (!IsSysDeterministic)
     Preempt(ON);
   mouse_install_attempt_in_progress=TRUE;
   OutU8(0xA1,InU8(0xA1)|0x10);
   mouse_installed=mouse_irqs_working=FALSE;
-  SetIDTEntry(0x2C,&MouseIntHandler,0);
+  IntEntrySet(0x2C,&MouseIntHandler,0);
   for(i=0;i<5;i++)
     mouse_buttons[i]=0;
   if (i=MouseRst)
@@ -281,7 +277,7 @@ BoolI64 MouseDriverInstall(U64 dummy=0) //can be spawned
   return mouse_installed;
 }
 
-U0 KbdMouseHandler(BoolI8 poll_kbd,BoolI8 poll_mouse)
+U0 KbdMouseHandler(Bool poll_kbd,Bool poll_mouse)
 {
   if (mouse_install_attempt_in_progress) {
     Yield;
@@ -321,7 +317,7 @@ U0 KbdMouseHandler(BoolI8 poll_kbd,BoolI8 poll_mouse)
 U0 KbdMouseVarsInit()
 {
   sys_key_cnt=0;
-  scan_code_fifo=FifoU64New(128);
+  scan_code_fifo=FifoI64New(128);
   kbd_fifo=FifoU8New(8);
   kbd2_fifo=FifoU8New(64);
   mouse_fifo=FifoU8New(8);

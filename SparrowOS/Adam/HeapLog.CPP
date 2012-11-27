@@ -22,7 +22,7 @@ CHeapCtrl *heaplog_hc;
 CHeapLogHash *heaplog_root=NULL;
 
 
-U0 HeapLogTask(U64)
+U0 HeapLogTask(I64)
 {
   while (TRUE)
     Yield;
@@ -31,7 +31,7 @@ U0 HeapLogTask(U64)
 U0 HeapLogMAlloc(U8 *addr)
 {
   CHeapLog *temph;
-  U64 i;
+  I64 i;
   if (MHeapCtrl(addr)==heaplog_hc) {
     temph=MAlloc(sizeof(CHeapLog),heaplog_task);
     temph->addr=addr;
@@ -52,7 +52,7 @@ U0 HeapLogMAlloc(U8 *addr)
 
 U0 HeapLogFree(U8 *addr)
 {
-  U64 i;
+  I64 i;
   CHeapLog *temph;
   if (!addr) return;
   if (MHeapCtrl(addr)==heaplog_hc) {
@@ -79,7 +79,7 @@ U0 HeapLogFree(U8 *addr)
 
 public U0 HeapLogRep()
 {
-  U64 i,total=0;
+  I64 i,total=0;
   CHeapLog *temph;
   if (!LBtr(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0)) {
     "HeapLog Not Active\n";
@@ -118,9 +118,9 @@ public U0 HeapLogRep()
   LBts(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0);
 }
 
-public U0 HeapLog(BoolI8 val=TRUE,CTask *task=NULL)
+public U0 HeapLog(Bool val=TRUE,CTask *task=NULL)
 {
-  U64 i;
+  I64 i;
   if (val) {
     if (Bt(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0))
       "HeapLog Already Active\n";

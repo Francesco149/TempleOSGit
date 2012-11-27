@@ -8,7 +8,7 @@ Doc is taken off-line by disabling preemption so there
 are no screen updates until all data has been inserted.
 
 There is a special Doc function which is also
-available to take an Doc off-line.  See [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1649] DocInsSafe.
+available to take an Doc off-line.  See [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1646] DocInsSafe.
 For this example, however, I wanted to use DocPrintF
 and disabled Preemption myself.
 */
@@ -17,7 +17,7 @@ and disabled Preemption myself.
 
 U0 TreeDemo()
 {
-  U64 fuf_flags=0;
+  I64 fuf_flags=0;
   CDoc *doc=DocNew;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   DocPutS(doc,"$TR-C+AL,\"\"$\n");

@@ -1,4 +1,4 @@
-BoolI8 echo_done;
+Bool echo_done;
 
 U0 (*fp_task_end_cb)();
 U0 (*fp_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;

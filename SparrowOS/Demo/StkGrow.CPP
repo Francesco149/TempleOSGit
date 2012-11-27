@@ -42,7 +42,7 @@ U0 StkGrowDemo()
   "Time:%7.5fs\n",tP-t0;
 
 
-  //[C:/SparrowOS/OSMain/Task1a.CPP.Z,66] CallStkGrow() works with multiple args.
+  //[C:/SparrowOS/OSMain/Task1a.CPP.Z,89] CallStkGrow() works with multiple args.
   t0=tP;
   "%X:%X\n",DEPTH,CallStkGrow(DEPTH*32+0x800,DEPTH*32+0x800,
     &Recurse3,DEPTH,1000,2000);

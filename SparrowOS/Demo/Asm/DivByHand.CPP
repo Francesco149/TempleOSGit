@@ -18,6 +18,6 @@ DIV_U64_BY_U64::
 	RET1	16
 }
 
-_extern DIV_U64_BY_U64 U64 DivU64ByU64(U64 dividend,U64 divisor);
+_extern DIV_U64_BY_U64 I64 DivU64ByU64(I64 dividend,I64 divisor);
 
 "123456/10=%d\n",DivU64ByU64(123456,10);

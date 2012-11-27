@@ -16,9 +16,9 @@ report zero clock cycles.
 U0 TimeIns()
 {
   I64 i;
-  U64 start1,end1,start2,end2,overhead_time,test_time;
+  I64 start1,end1,start2,end2,overhead_time,test_time;
   F64 reg d=5.0; //Use the reg directive to designate register vars
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
 //Measure Loop Overhead
   start1=GetTimeStamp;

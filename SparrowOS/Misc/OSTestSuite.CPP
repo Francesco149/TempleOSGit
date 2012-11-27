@@ -7,7 +7,7 @@ U0 TS()
 {
   progress4=ts_num++;
   SPrintF(progress4_desc,"%d",progress4);
-  progress4_max=155;
+  progress4_max=157;
 }
 U0 TSEnd()
 {
@@ -1484,16 +1484,28 @@ U0 Do()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoGrModels()
-{
-  CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/SparrowOS/Apps/GrModels\";\n");
-  Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  XTalk(task,"Exit;\n");
-}
 */
 
+U0 DoGrModels()
+{
+  CTask *task=SpawnUser,*task1=NULL;
+  I64 i,j;
+  XTalkWait(task,"#include \"::/SparrowOS/Apps/GrModels/Run\";\n");
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  PostMsg(task,MSG_KEY_DOWN_UP,CH_ESC,0);
+  for (i=0;i<4;i++) {
+    while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+      Yield;
+    task1=task->popup_task;
+    TaskWait(task1);
+    for (j=0;j<=i;j++)
+      SendMsg(task1,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+    SendMsg(task1,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  }
+  Sleep(1000);
+  SendMsg(task,MSG_KEY_DOWN_UP,'n',0);
+  XTalk(task,"Exit;\n");
+}
 
 U0 DoKeepAway()
 {
@@ -2135,6 +2147,14 @@ U0 DoAsmAndC2()
     Yield;
 }
 
+U0 DoBuzzFizz()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z\";\n");
+  Sleep(1000);
+  XTalk(task,"Exit;\n");
+}
+
 U0 DoMulByHand()
 {
   CTask *task=SpawnUser;
@@ -2313,6 +2333,7 @@ TS; DoCoach;
 TS; DoCPUPlot;
 TS; DoDither;
 TS; DoBSpline;
+TS; DoGrModels;
 TS; DoBlot;
 TS; if (IsDrvWritable(':')) DoCaptureScreen;
 TS; DoPick;
@@ -2387,6 +2408,7 @@ TS; DoAsmAndC;
 TS; DoAsmAndC2;
 TS; DoMulByHand;
 TS; DoDivByHand;
+TS; DoBuzzFizz;
 TS; DoPageTableEntries2;
 DoReps;
 

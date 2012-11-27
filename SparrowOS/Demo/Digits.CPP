@@ -21,7 +21,7 @@ U0 ShowPattern(U8 *st)
 
 U0 Digits()
 {
-  U64 num,ch,i;
+  I64 num,ch,i;
   U8 answer[1024];
 
   DocClear;

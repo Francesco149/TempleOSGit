@@ -15,7 +15,7 @@ U0 SetSnap(CSnap *s,I64 i=0,F64 d=0)
 CSnap *SnapCur()
 {
   static CSnap s;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (sys_focus_task && TaskValidate(sys_focus_task) &&
       sys_focus_task->win_pixel_left<=ipx_presnap<=sys_focus_task->win_pixel_right &&
       sys_focus_task->win_pixel_top <=ipy_presnap<=sys_focus_task->win_pixel_bottom)
@@ -32,7 +32,7 @@ U0 GetSnap(CSnap *_s)
   MemCpy(_s,s,sizeof(CSnap));
 }
 
-U0 IPVarsUpdate(I64 x,I64 y,I64 z,BoolI8 l,BoolI8 c,BoolI8 r)
+U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool c,Bool r)
 {
   CSnap s;
   GetSnap(&s);
@@ -73,7 +73,7 @@ U0 IPVarsUpdate(I64 x,I64 y,I64 z,BoolI8 l,BoolI8 c,BoolI8 r)
 
 U0 SetIP(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I64 c=MAX_I64)
 { //Note: Generates a message.
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (!(0<=x<gr_width))
     x=ipx;
   if (!(0<=y<gr_height))

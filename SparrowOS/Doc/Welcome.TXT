@@ -13,7 +13,7 @@ count down, so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-136,281 lines of code including the kernel, the 64-bit compiler, the graphics 
+137,965 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -29,8 +29,8 @@ SparrowOS.  See the [::/SparrowOS/Doc/Constitution.TXT.Z,1] SparrowOS
 Constitition.
 
 Two things to know about SparrowOS are that _tasks_ have
-[C:/SparrowOS/OSMain/Memory.CPP.Z,952]
-MAlloc/[C:/SparrowOS/OSMain/Memory.CPP.Z,946] Free heap 
+[C:/SparrowOS/OSMain/Memory.CPP.Z,956]
+MAlloc/[C:/SparrowOS/OSMain/Memory.CPP.Z,950] Free heap 
 memory, not applications, and tasks have compiler symbol tables that persist 
 at a scope like environment variables in other operating systems, and the 
 symbols can include functions.
@@ -38,7 +38,7 @@ symbols can include functions.
 In other operating systems, I hated learning one language for command line 
 scripts and another for programming.  With SparrowOS, the command line feeds 
 right into the C+ (more than C, less than C++) compiler, line by line, and it 
-places code into memory it [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc()s. 
+places code into memory it [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc()s. 
 The compiler is paused at the command 
 line, waiting for input.  Naturally, you #include a program to load it into 
 memory and, usually, start it.  During the boot process, many files get 
@@ -102,7 +102,7 @@ ending in 'Z' are automatically compressed or uncompressed when stored or
 fetched.  SparrowOS supports direct block random access into files, however
 -- 
 [C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,149] FRBlks() and
-[C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,200] FWBlks().  There is no PATH, but
+[C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,198] FWBlks().  There is no PATH, but
 parent directories are searched 
 when a file is not found.  This feature is used for default account files.  
 Note: the FAT32 filesystem is supported, which makes exchanging files with a 
@@ -119,7 +119,7 @@ rowOS runs all programs in kernel mode, ring 0, so no instructions are
 off-limits.  Turning-off and on preemption with
 [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt() is a less drastic 
 measure that is usually sufficient.  A newly
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn()ed task begins with 
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn()ed task begins with 
 preemption off.
 
 The graphic resolution is poor, 640x480 16 color, but that's all I feel 
@@ -143,10 +143,10 @@ so this is possible.  See [::/SparrowOS/Doc/MultiCore.TXT.Z,1] SparrowOS
 MultiCore.
 
 There is no distinction between the terms "task", "process" or "thread".  All 
-have a task record, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask(), pointed
+have a task record, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask(), pointed
 to by the FS segment register and are 
 accessed with Fs-> while Gs-> points to a
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU for the current CPU core.  Each 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] CCPU for the current CPU core.  Each 
 task can have just one window, but a task can have children with windows.  
 (The segment registers are just used as extra registers -- there is nothing 
 segmented about SparrowOS' memory.)
@@ -163,9 +163,9 @@ task and even had a "/SparrowOS/Root" directory ;-)  Adam executes
 time.
 
 For easy back-ups, place everything you author in your HOME directory and 
-subdirectories.  Then, use [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148]
+subdirectories.  Then, use [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149]
 CopyTree().  That should make upgrading easy, too.  
-To make an account use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,97] MkDir() to
+To make an account use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,95] MkDir() to
 create a directory under /SparrowOS/Accts.  
 It will be HOME if you boot to it.  Recompile with
 [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot() and make it 
@@ -178,13 +178,13 @@ Copy the start-up files you wish to customize into HOME and modify them.  See
 
 Typically, your usage pattern through the day will be repeatedly left or
 right 
-clicking on filenames in a cmd line [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231]
+clicking on filenames in a cmd line [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233]
 Dir() listing.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
-[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,41] Ed(""); 
+[C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,42] Ed(""); 
 and supply a filename.  You can also run programs with <F5> when in the 
 editor.  <ESC> to save and exit the file.  You'll need to do a new
-[C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir() cmd, 
+[C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir() cmd, 
 periodically, so make a macro on your personal menu.  Access your personal 
 menu by pressing <CTRL-M>, cursoring until you are on top of it and pressing <
 SPACE BAR>.
@@ -201,12 +201,12 @@ it very often, believe it or not.
 You'll do these periodically.
 
 [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() is your best friend.  There's a
-wrapper function called [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,8] F()
-in your HOM
+wrapper function called [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,8] F() in
+your HOM
 E/Adam3eWrappers.CPP.Z file.  Feel free to make wrapper functions for 
 functions you use often and customize the args.  By the way,
 [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() or
-[C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() can 
+[C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R() can 
 be used to replace strings across multiple files.  You can access
 [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() using 
 <CTRL-SHIFT-F>.

@@ -93,14 +93,14 @@ CD3I32 ball_path[BALL_PATH_PTS]={
   {55,10,0}
 };
 
-BoolI64 PlotBall(U0 *,I64 _x,I64 _y,I64)
+Bool PlotBall(U8 *,I64 _x,I64 _y,I64)
 {
   ball_x=_x; ball_y=_y;
   Sleep(3);
   return TRUE;
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   while (TRUE) {
     if (hit_t0) {

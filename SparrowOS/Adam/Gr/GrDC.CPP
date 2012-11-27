@@ -22,6 +22,7 @@ public U0 DCRst(CDC *dc)
 
 public CDC *DCAlias(CDC *dc=NULL,CTask *task=NULL)
 {
+  CDC *result;
   if (!dc)   dc=gr_dc2;
   if (!task) task=Fs;
   if (dc->dc_signature!=DCS_SIGNATURE_VAL)
@@ -34,14 +35,16 @@ public CDC *DCAlias(CDC *dc=NULL,CTask *task=NULL)
   DCRst(result);
   result->flags|=DCF_ALIAS;
   result->alias=dc;
+  return result;
 }
 
 
-public CDC *DCNew(U64 type,U64 width,U64 height,CTask *task=NULL,BoolI8 null_bitmap=FALSE)
+public CDC *DCNew(I64 type,I64 width,I64 height,CTask *task=NULL,Bool null_bitmap=FALSE)
 {  //This internally only allows widths which are divisible by 8
 //Don't forget these sizeof(CDC)
 `Grep("sizeof(CDC)","/SparrowOS/"TEXT_FILE_MASK);View;`
 .
+  CDC *result;
   if (!task) task=Fs;
   result=CAlloc(sizeof(CDC),task);
   result->win_task=task;
@@ -69,6 +72,7 @@ public CDC *DCNew(U64 type,U64 width,U64 height,CTask *task=NULL,BoolI8 null_bit
   result->r=MAlloc(16*sizeof(I64),task);
   DCRst(result);
   result->dc_signature=DCS_SIGNATURE_VAL;
+  return result;
 }
 
 public U0 DCDel(CDC *dc)
@@ -107,6 +111,7 @@ public U0 DCAllocDepthBuf(CDC *dc)
 
 public CDC *DCCopy(CDC *dc,CTask *task=NULL)
 {
+  CDC *result;
   if (!dc) return NULL;
   if (dc->dc_signature!=DCS_SIGNATURE_VAL)
     Dbg;
@@ -114,6 +119,7 @@ public CDC *DCCopy(CDC *dc,CTask *task=NULL)
   GrSetRotMat(result,MAllocIdentical(dc->r,task));
   result->mem_task=task;
   result->body=MAllocIdentical(dc->body,task);
+  return result;
 }
 
 public U0 DCMono(CDC *dc,
@@ -147,10 +153,10 @@ public U0 DCColorChg(CDC *dc,I64 src_color,I64 dst_color=COLOR_TRANSPARENT)
   }
 }
 
-public U8 *DCSave(CDC *dc,U64 *_size=NULL,BoolI8 compressed=TRUE)
+public U8 *DCSave(CDC *dc,I64 *_size=NULL,Bool compressed=TRUE)
 { //stores to mem
-  U8 *ptr,*body;
-  BoolI8 old_preempt;
+  U8 *result,*ptr,*body;
+  Bool old_preempt;
   CArcCompress *ac;
   I64 i,j,old_flags=dc->flags;
 
@@ -187,10 +193,12 @@ public U8 *DCSave(CDC *dc,U64 *_size=NULL,BoolI8 compressed=TRUE)
 
   Free(ac);
   if (_size) *_size=ptr-result;
+  return result;
 }
 
-public CDC *DCLoad(U8 *src,U64 *_size=NULL,CTask *task=NULL)
+public CDC *DCLoad(U8 *src,I64 *_size=NULL,CTask *task=NULL)
 { //loads from mem
+  CDC *result;
   I64 i;
   U8 *ptr=src;
   CArcCompress *ac;
@@ -222,11 +230,12 @@ public CDC *DCLoad(U8 *src,U64 *_size=NULL,CTask *task=NULL)
   result->r_norm.u32[1]=1;
   result->dc_signature=DCS_SIGNATURE_VAL;
   if (_size) *_size=ptr-src;
+  return result;
 }
 
-public U64 GRAWrite(U8 *filename,CDC *dc)
+public I64 GRAWrite(U8 *filename,CDC *dc)
 { // SparrowOS GRA File
-  U64 size;
+  I64 size;
   U8 *st=DftExt(filename,"GRA.Z"),
      *src=DCSave(dc,&size);
   FileWrite(st,src,size);
@@ -275,9 +284,9 @@ public CDC *DCCaptureScreen(CTask *task=NULL)
   return dc;
 }
 
-public U64 GRACaptureScreen(U8 *filename)
+public I64 GRACaptureScreen(U8 *filename)
 { // SparrowOS GRA File
-  U64 size;
+  I64 size;
   CDC *dc=DCCaptureScreen;
   size=GRAWrite(filename,dc);
   DCDel(dc);

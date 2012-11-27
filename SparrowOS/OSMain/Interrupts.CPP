@@ -100,31 +100,33 @@ SYS_FAULT_ERR_CODE_BITMAP::
 	DU32	0x00027D00,0,0,0,0,0,0,0;
 }
 
-U0 *GetIDTEntry(U64 irq,I64 cpu_num=-1)
+U8 *IntEntryGet(I64 irq,I64 cpu_num=-1)
 {
-  U64 *src;
+  U8 *result;
+  I64 *src;
   if (cpu_num<0) cpu_num=Gs->num;
   if (cpu_num>=mp_cnt&&cpu_num>Gs->num)
     throw(EXCEPT_MULTICORE,3);
   src=cpu_structs[cpu_num].idt(U8 *)+irq*16;
-  result(U64).u16[0]=*src(U16 *);
+  result(I64).u16[0]=*src(U16 *);
   src(U8 *)+=6;
-  result(U64).u16[1]=*src(U16 *)++;
-  result(U64).u32[1]=*src(U32 *);
+  result(I64).u16[1]=*src(U16 *)++;
+  result(I64).u32[1]=*src(U32 *);
+  return result;
 }
 
-U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,
-    U64 type=IDTET_IRQ,U64 dpl=0)
+U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,
+    I64 type=IDTET_IRQ,I64 dpl=0)
 {
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,311] IDTET_IRQ
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,307] IDTET_IRQ
 //See [::/SparrowOS/Demo/Lectures/InterruptDemo.CPP.Z,1] ::/SparrowOS/Demo/Lectures/InterruptDemo.CPP.Z
 //See [::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z
-  U64 fp=fp_new_handler;
-  U8 *dst;
+  I64 fp=fp_new_handler;
+  U8 *result,*dst;
 
   if (cpu_num<0) cpu_num=Gs->num;
 
-  result=GetIDTEntry(irq,cpu_num);
+  result=IntEntryGet(irq,cpu_num);
   dst=cpu_structs[cpu_num].idt(U8 *)+irq*16;
 
   PushFD;
@@ -136,6 +138,7 @@ U0 *SetIDTEntry(U64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,
   *dst(U32 *)++=fp.u32[1];
   *dst(U32 *)++=0;
   PopFD;
+  return result;
 }
 
 U0 IntsInit()
@@ -183,11 +186,12 @@ U8 *IntFaultHandlersNew()
     *dst(I32 *)=SYS_IRQ_FAULT-dst-4;
     dst+=4;
   }
+  return result;
 }
 
-U0 IDTInit1()
+U0 IntInit1()
 { //Interrupt descriptor table part1
-  U64 i,temp_ptr[2];
+  I64 i,temp_ptr[2];
   U32 *ptr;
   Gs->idt=CAlloc(16*256);
 /*
@@ -202,36 +206,36 @@ We only support keyboard, mouse and timer, anyway.
 */
   for (i=0;i<256;i++)
     if (!Gs->num)
-      SetIDTEntry(i,&IntNop2);
+      IntEntrySet(i,&IntNop2);
     else
-      SetIDTEntry(i,&IntNop1);
+      IntEntrySet(i,&IntNop1);
 
   ptr=temp_ptr;
   *ptr(U16 *)++=256*16-1;
-  *ptr(U32 *)++=Gs->idt(U64).u32[0];
-  *ptr(U32 *)++=Gs->idt(U64).u32[1];
+  *ptr(U32 *)++=Gs->idt(I64).u32[0];
+  *ptr(U32 *)++=Gs->idt(I64).u32[1];
   *ptr(U16 *)++=0;
   SetRAX(temp_ptr);
   asm {	LIDT U64 [RAX] }
 }
 
-U0 IDTInit2()
+U0 IntInit2()
 { //Interrupt descriptor table part2
   I64 i;
   PushFD;
   Cli;
   for (i=0;i<0x20;i++)
-    SetIDTEntry(i,&sys_fault_handlers_code[10*i]);
+    IntEntrySet(i,&sys_fault_handlers_code[10*i]);
 /*
 In theory, we use the PIC mask register to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
-I go ahead and ACK PIC in [C:/SparrowOS/OSMain/Interrupts.CPP.Z,168] IntNop2().
+I go ahead and ACK PIC in [C:/SparrowOS/OSMain/Interrupts.CPP.Z,171] IntNop2().
 I have no idea why I got a IRQ 0x27.
 */
-  SetIDTEntry(I_NMI,_SYS_HLT);
-  SetIDTEntry(I_TIMER,SYS_TIMER_HANDLER);
-  SetIDTEntry(I_MP_CRASH,*SYS_MP_CRASH_HANDLER_ADDR(U32 *));
-  SetIDTEntry(I_WAKE,SYS_WAKE_HANDLER);
+  IntEntrySet(I_NMI,_SYS_HLT);
+  IntEntrySet(I_TIMER,SYS_TIMER_HANDLER);
+  IntEntrySet(I_MP_CRASH,*SYS_MP_CRASH_HANDLER_ADDR(U32 *));
+  IntEntrySet(I_WAKE,SYS_WAKE_HANDLER);
   PopFD;
 }

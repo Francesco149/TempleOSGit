@@ -1,12 +1,11 @@
 #help_index "Debugging"
 
-BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8 dynamic,U64 types=HTT_CLASS,I64 offset=0)
+Bool ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,I64 max_depth,Bool dynamic,I64 types=HTT_CLASS,I64 offset=0)
 {
-  U64 i,j;
+  I64 i,j,*ptr;
   CMemberList *ml;
-  U64 *ptr;
   CDocEntry *doc_e;
-  BoolI8 unlock;
+  Bool unlock;
   CHashClass *tempc,*tempc2;
   if (depth>=max_depth) return TRUE;
   if (!(tempc=HashFind(class_name,Fs->hash_table,types))) {
@@ -47,7 +46,7 @@ BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8
 	if (tempc2->sub_type==IT_I8 || tempc2->sub_type==IT_U8) {
 	  if (j==1) {
 	    if (dynamic) {
-	      doc_e=DocPutS(doc,"$DA-T+RD+UD-U64+U8,32,\"%c\"$\n");
+	      doc_e=DocPutS(doc,"$DA-T+RD+UD-I64+U8,32,\"%c\"$\n");
 	      doc_e->data=ptr;
 	    } else
 	      DocPrintF(doc,"%c\n",*ptr(U8 *));
@@ -68,7 +67,7 @@ BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8
 	    case IT_I8:
 	    case IT_U8:
 	      if (dynamic) {
-		doc_e=DocPutS(doc,"$DA-T+RD+UD-U64+U8,32,\"%02X\"$ ");
+		doc_e=DocPutS(doc,"$DA-T+RD+UD-I64+U8,32,\"%02X\"$ ");
 		doc_e->data=ptr(U8 *)++;
 	      } else
 		DocPrintF(doc,"%02X ",*ptr(U8 *)++);
@@ -76,7 +75,7 @@ BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8
 	    case IT_I16:
 	    case IT_U16:
 	      if (dynamic) {
-		doc_e=DocPutS(doc,"$DA-T+RD+UD-U64+U16,32,\"%04X\"$ ");
+		doc_e=DocPutS(doc,"$DA-T+RD+UD-I64+U16,32,\"%04X\"$ ");
 		doc_e->data=ptr(U16 *)++;
 	      } else
 		DocPrintF(doc,"%04X ",*ptr(U16 *)++);
@@ -84,7 +83,7 @@ BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8
 	    case IT_I32:
 	    case IT_U32:
 	      if (dynamic) {
-		doc_e=DocPutS(doc,"$DA-T+RD+UD-U64+U32,32,\"%08X\"$ ");
+		doc_e=DocPutS(doc,"$DA-T+RD+UD-I64+U32,32,\"%08X\"$ ");
 		doc_e->data=ptr(U32 *)++;
 	      } else
 		DocPrintF(doc,"%08X ",*ptr(U32 *)++);
@@ -92,16 +91,16 @@ BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8
 	    case IT_F64:
 	      if (dynamic) {
 		doc_e=DocPutS(doc,"$DA-T+RD+UD,32,\"%16g\"$ ");
-		doc_e->data=ptr(U64 *)++;
+		doc_e->data=ptr(I64 *)++;
 	      } else
-		DocPrintF(doc,"%16g ",*ptr(U64 *)++);
+		DocPrintF(doc,"%16g ",*ptr(I64 *)++);
 	      break;
 	    default:
 	      if (dynamic) {
 		doc_e=DocPutS(doc,"$DA-T+RD+UD,32,\"%016X\"$ ");
-		doc_e->data=ptr(U64 *)++;
+		doc_e->data=ptr(I64 *)++;
 	      } else
-		DocPrintF(doc,"%016X ",*ptr(U64 *)++);
+		DocPrintF(doc,"%016X ",*ptr(I64 *)++);
 	  }
 	  if (dynamic)
 	    DocDataFmt(doc_e);
@@ -134,12 +133,12 @@ BoolI64 ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,U64 max_depth,BoolI8
   return TRUE;
 }
 
-public U0 ClassRep(U8 *class_name,U8 *_b,I64 max_depth=2,BoolI8 fun=FALSE,I64 offset=0)
+public U0 ClassRep(U8 *class_name,U8 *_b,I64 max_depth=2,Bool fun=FALSE,I64 offset=0)
 //Displays members of a record
 //by using the compiler's info.
 {
   CDoc *doc;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   if (IsRaw) {
     doc=DocNew;
   } else {
@@ -160,11 +159,11 @@ public U0 ClassRep(U8 *class_name,U8 *_b,I64 max_depth=2,BoolI8 fun=FALSE,I64 of
     Preempt(old_preempt);
 }
 
-public U0 ClassRepD(U8 *class_name,U8 *_b,I64 max_depth=2,BoolI8 fun=FALSE,I64 offset=0)
+public U0 ClassRepD(U8 *class_name,U8 *_b,I64 max_depth=2,Bool fun=FALSE,I64 offset=0)
 //Dynamic classrep (uses hex_ed widgit for live changes)
 {
   CDoc *doc;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   if (IsRaw) {
     doc=DocNew;
   } else {
@@ -255,7 +254,7 @@ public U0 Uf(U8 *st)
 }
 
 #help_index "Debugging/Breakpoints"
-CBpt *BptFind(CTask *task,U8 *a,BoolI8 rem=FALSE)
+CBpt *BptFind(CTask *task,U8 *a,Bool rem=FALSE)
 {//Rems
   CBpt *result=NULL,*tempb,*tempb1,*tempb2;
   PushFD;
@@ -275,16 +274,17 @@ CBpt *BptFind(CTask *task,U8 *a,BoolI8 rem=FALSE)
     tempb=tempb2;
   }
   PopFD;
+  return result;
 }
 
-public BoolI64 BptS(U8 *a,CTask *task=NULL,BoolI8 live=TRUE)	//set Bpt
+public Bool BptS(U8 *a,CTask *task=NULL,Bool live=TRUE)	//set Bpt
 //Sets a breakpoint
 //Honestly, I never use this.  I put
 //output statements to debug, partly
 //because breakpoints don't work well.
 {
   CBpt *tempb;
-  result=TRUE;
+  Bool result=TRUE;
   if (!task) task=Fs;
   PushFD;
   Cli;
@@ -299,9 +299,10 @@ public BoolI64 BptS(U8 *a,CTask *task=NULL,BoolI8 live=TRUE)	//set Bpt
       *a=OC_BPT;
   }
   PopFD;
+  return result;
 }
 
-U0 CtrlAltD(U64)
+U0 CtrlAltD(I64)
 {
   if (!IsInDbg) {
     if (Fs==Gs->idle_task)
@@ -312,11 +313,11 @@ U0 CtrlAltD(U64)
 }
 SetCtrlAltLetCB('D',&CtrlAltD,"Sys/Enter Debugger",TRUE);
 
-public BoolI64 BptR(U8 *a,CTask *task=NULL,BoolI8 live=TRUE,BoolI8 rem=TRUE)
+public Bool BptR(U8 *a,CTask *task=NULL,Bool live=TRUE,Bool rem=TRUE)
 //Rems one breakpoint
 {
   CBpt *tempb;
-  result=FALSE;
+  Bool result=FALSE;
   if (!task) task=Fs;
   PushFD;
   Cli;
@@ -328,9 +329,10 @@ public BoolI64 BptR(U8 *a,CTask *task=NULL,BoolI8 live=TRUE,BoolI8 rem=TRUE)
       Free(tempb);
   }
   PopFD;
+  return result;
 }
 
-public U0 BptsR(CTask *task=NULL,BoolI8 live=TRUE)	//clear Bpts
+public U0 BptsR(CTask *task=NULL,Bool live=TRUE)	//clear Bpts
 //Rems all breakpoints
 {
   CBpt *tempb,*tempb1;
@@ -350,7 +352,7 @@ public U0 BptsR(CTask *task=NULL,BoolI8 live=TRUE)	//clear Bpts
 }
 
 public U0 Go2(CTask *task=NULL)
-//Do a [C:/SparrowOS/Adam/Dbg2a.CPP.Z,383] Step() first after a Bpt.
+//Do a [C:/SparrowOS/Adam/Dbg2a.CPP.Z,385] Step() first after a Bpt.
 {
   if (!task) task=Fs;
   if (BptFind(task,task->rip))
@@ -362,7 +364,7 @@ public U0 Go2(CTask *task=NULL)
   else {
     LBtr(&task->task_flags,TASKf_DISABLE_BPTS);
     LBtr(&task->rflags,RFLAGS_SINGLE_STEP);
-    LBtr(&task->task_flags,TASKf_SUSPENDED);
+    Suspend(task,FALSE);
     if (task==Fs)
       Go1;
     else
@@ -386,7 +388,7 @@ public U0 Step(CTask *task=NULL)
   if (!task) task=Fs;
   LBts(&task->task_flags,TASKf_DISABLE_BPTS);
   LBts(&task->rflags,RFLAGS_SINGLE_STEP);
-  LBtr(&task->task_flags,TASKf_SUSPENDED);
+  Suspend(task,FALSE);
   if (task==Fs)
     Go1;
   else

@@ -137,7 +137,7 @@ U0 FancyWordSearch()
   CollectWords(-1,-1,&n);
   CollectWords(1,-1,&n);
   CollectWords(-1,1,&n);
-  QSortU64(word_ptrs,n,&WordsCompare);
+  QSortI64(word_ptrs,n,&WordsCompare);
   DisplayWords(n);
   NewLine;
 }

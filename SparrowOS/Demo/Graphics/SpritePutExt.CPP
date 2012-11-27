@@ -4,7 +4,7 @@ If you press <CTRL-T> you will see this:
 $IB+BP,"<1>",1,"::/SparrowOS/Demo/Graphics/SpritePut.CPP.Z,2"$
 
 That imports an external sprite.  It's
-called a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1075] DOCEF2_BIN_PTR_LINK.
+called a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1067] DOCEF2_BIN_PTR_LINK.
 
 Press <CTRL-R> and "pointer to sprite".
 Then, enter a file and the number of

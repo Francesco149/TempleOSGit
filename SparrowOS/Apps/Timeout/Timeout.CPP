@@ -9,7 +9,7 @@ AcctRegExecuteBranch("SparrowOS/Timeout");
 class Shot
 {
   I64 x,y,dx,dy,dx2,dy2;
-  BoolI8 dead,pad[7];
+  Bool dead,pad[7];
 } s[MAX_SHOTS];
 I64 shots_fired;
 
@@ -26,12 +26,12 @@ class Man
 {
   I64 x,y;
   F64 corpse_timeout;
-  BoolI8 friendly,dead,pad[6];
+  Bool friendly,dead,pad[6];
 } m[MAX_MAN];
 
 I64 total_score,friendly_fire,enemy_by_friendly,friendly_left,enemy_left,
     main_loop_pass;
-BoolI8 game_over;
+Bool game_over;
 
 
 
@@ -421,10 +421,10 @@ U0 MenFight(I64 phase_group)
 
 U0 Timeout()
 {
-  U64 i,msg_code,p1,p2;
-  BoolI8 gun_on;
+  I64 i,msg_code,p1,p2;
+  Bool gun_on;
 
-  U64 next_update_jiffy;
+  I64 next_update_jiffy;
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
   WinBorder;

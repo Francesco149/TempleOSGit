@@ -2,12 +2,12 @@
 
 U0 TimeIns()
 {
-  U64 i,start,end;
+  I64 i,start,end;
   I64 *cached_I64=MAlloc(sizeof(I64)),
      shared_blks,*uncached_I64;
   CBlkPool *bp;
   CHeapCtrl *hc;
-  BoolI8 old_preempt;
+  Bool old_preempt;
 
   CPURep;
 

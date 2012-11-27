@@ -51,10 +51,10 @@ subdirectory and do similar stuff.
 * Virtual mem is not used (It is identity mapped in EM64T mode).  The stk
 does 
 not grow, so allocate enough when the task (process) is
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawned and use the 
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawned and use the 
 heap for most things.  (The "heap" refers to
-[C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() and
-[C:/SparrowOS/OSMain/Memory.CPP.Z,946] Free().)
+[C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() and
+[C:/SparrowOS/OSMain/Memory.CPP.Z,950] Free().)
 
 * See [::/SparrowOS/Doc/Glossary.TXT.Z,1] Naming convention.
 
@@ -78,27 +78,27 @@ tables are chained to parents.  This provides scopes for vars and functions.
 * Fs->hash_table holds user C+ syms and if a sym is not found, it checks 
 parents.  When a duplicate sym is added to the table, it overshadows the 
 previous sym unless you have done [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_REPLACE_SYMS).  When
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1473] OPTf_REPLACE_SYMS).  When
 developing 
 software, typically you include the file at the cmd prompt, make changes and 
 reinclude it.  Old syms are overshadowed but they are still there.  
 Periodically, kill the TASK and start fresh when mem is low.  If you wish
 your 
 applications to free themselves instead of staying in mem, spawn or
-[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,377] PopUp() a 
+[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,380] PopUp() a 
 task to run the application and kill it when it's done.
 
 * To display the contents of a hash table, use the
-[C:/SparrowOS/Adam/Hash2a.CPP.Z,137] HashRep() routine or the 
-varients.  [C:/SparrowOS/Adam/Hash2a.CPP.Z,426] HashDepthRep() gives a
+[C:/SparrowOS/Adam/Hash2a.CPP.Z,136] HashRep() routine or the 
+varients.  [C:/SparrowOS/Adam/Hash2a.CPP.Z,424] HashDepthRep() gives a
 histogram  of how long the chains are, in 
 case you wish to make hash table sizes bigger.
 
                          Assembly Language Concerns:
 
-* FS must always point to the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3152] CTask.
+* FS must always point to the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask.
 
-* GS must always point to the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3782] CCPU.
+* GS must always point to the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] CCPU.
 
 * Don't change the segment registers unless interrupts are off.
 
@@ -108,7 +108,7 @@ the compiler uses these for register vars.  You are free to clobber RAX, RBX,
 RCX, RDX, R8 and R9.
 
 * I recommend using the standard stk frame for functions because
-[C:/SparrowOS/OSMain/Dbg1a.CPP.Z,50] Caller() is 
+[C:/SparrowOS/OSMain/Dbg1a.CPP.Z,53] Caller() is 
 used to display the call stk, such as for the wallpaper.
 	ENTER	nnnn
 ...

@@ -1,5 +1,5 @@
 /*
-  An [C:/SparrowOS/OSMain/Adam1a.HPP.Z,207] CDate is a signed 64-bit date/time num
+  An [C:/SparrowOS/OSMain/Adam1a.HPP.Z,204] CDate is a signed 64-bit date/time num
   representing how many 49710ths of a second
   since Christ.  The reason it is this crazy
   num is so that 32bits is exactly one day.
@@ -11,7 +11,7 @@
   is stored in the lower 32-bits.  The upper
   32-bits hold the num of days since Christ.
 
-  [C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF() and the file datetimes use
+  [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF() and the file datetimes use
   this format, otherwise you might want to
   use [C:/SparrowOS/OSMain/Adam1b.HPP.Z,198] GetTimeStamp() for a higher frequency
   timing, divide by [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,46] time_stamp_freq,
@@ -35,7 +35,7 @@ for (i=0;i<NUM_TIME_FMTS;i++)
 
 /*
   You can customize to your locality
-  with [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,135] date_fmt_map[] and [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,136] time_fmt_map[].
+  with [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,132] date_fmt_map[] and [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,133] time_fmt_map[].
   [C:/SparrowOS/OSMain/OSEnd.CPP.Z,1] DateTimeFmtMapsRst() will rst
   them.
 */

@@ -8,7 +8,7 @@
 /****
 public U0 PCIDevFileGen()
 {
-  BoolI8 first=TRUE,del=FALSE,del2=FALSE,cont=FALSE;
+  Bool first=TRUE,del=FALSE,del2=FALSE,cont=FALSE;
   CDoc *doc=DocRead(PCI_DEV_FILE,DOCF_PLAIN_TEXT|DOCF_DBL_DOLLARS);
   CDocEntry *doc_e=doc->root.next,*doc_e2;
   while (doc_e!=doc) {
@@ -46,7 +46,7 @@ public U0 PCIDevFileGen()
 //[::/SparrowOS/Misc/PCIDevices.TXT.Z,1] ::/SparrowOS/Misc/PCIDevices.TXT.Z
 U0 PCILookUpSingle(CDoc *doc,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 {
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
   U8 buf[8],*vendor=NULL,*dev=NULL;
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -194,6 +194,7 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,CATARep **_root,I64 
       tempha->next=*_root;
       *_root=tempha;
       tempha->num=*num_hints;
+      tempha->type=type;
       tempha->base0=base0;
       tempha->base1=base1;
       tempha->unit=unit;
@@ -201,11 +202,11 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,CATARep **_root,I64 
   }
 }
 
-BoolI8 hint_ata_disable=FALSE;
+Bool hint_ata_disable=FALSE;
 
 U0 ATARepExitAllApplications()
 {
-  U64 ch;
+  I64 ch;
   PutDefine("ST_GOING_TO_PROBE_HARDWARE");
   PutDefine("ST_EXIT_ALL_APPLICATIONS");
   PutDefine("ST_PRESS_A_KEY");
@@ -217,13 +218,13 @@ U0 ATARepExitAllApplications()
     hint_ata_disable=FALSE;
 }
 
-public I64 ATARep(BoolI8 pmt=TRUE,CATARep **_root=NULL)
+public I64 ATARep(Bool pmt=TRUE,CATARep **_root=NULL)
 {
   U32 d1,d2;
   U8 d3;
   I64 i,unlock_flags=0,num_hints=0;
 #assert NUM_BLKDEVS<=64
-  BoolI8 old_preempt;
+  Bool old_preempt;
 
   if (_root) *_root=NULL;
 

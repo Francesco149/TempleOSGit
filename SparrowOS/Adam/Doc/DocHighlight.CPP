@@ -8,13 +8,13 @@ U0 DocHighlightInit()
 
 DocHighlightInit;
 
-U32 *DocHighlight(CDoc *doc,BoolI8 full_refresh,CDocEntry *doc_e,CDocSettings **_s,
-  U8 *src,I64 len,U64 _temp_u32_attr)
+U32 *DocHighlight(CDoc *doc,Bool full_refresh,CDocEntry *doc_e,CDocSettings **_s,
+  U8 *src,I64 len,I64 _temp_u32_attr)
 { //Be aware of [::/SparrowOS/Adam/ToHtml.CPP.Z,1] ::/SparrowOS/Adam/ToHtml.CPP.Z.
   U32 *result=MAlloc((len+1)*sizeof(U32)),*dst=result;
   U8 *ptr,ch,ch1,last_ch;
   CDocSettings *s=*_s;
-  U64 temp_u32_attr,mask_temp_u32_attr=_temp_u32_attr&0xFFFFF000,
+  I64 temp_u32_attr,mask_temp_u32_attr=_temp_u32_attr&0xFFFFF000,
      comment_depth,brace_depth=s->brace_depth,paren_depth=s->paren_depth;
   CHash *temph;
   nobound_switch (s->state) {
@@ -380,5 +380,6 @@ hl_bpt_cpp_comment:
   }
   *dst=0;
   *_s=s;
+  return result;
 }
 

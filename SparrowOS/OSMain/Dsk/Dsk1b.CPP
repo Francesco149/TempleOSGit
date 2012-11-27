@@ -1,4 +1,4 @@
-BoolI64 MapDrv(U8 drv_let,CPrt *p)
+Bool MapDrv(U8 drv_let,CPrt *p)
 {
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='Z') {
@@ -9,7 +9,7 @@ BoolI64 MapDrv(U8 drv_let,CPrt *p)
     return FALSE;
 }
 
-BoolI64 Drv(U8 drv_let)
+Bool Drv(U8 drv_let)
 {
   CPrt *p=Drv2Prt(drv_let);
   CBlkDev *bdev=p->bdev;
@@ -36,13 +36,12 @@ BoolI64 Drv(U8 drv_let)
   }
 }
 
-BoolI64 Cd(U8 *dirname,BoolI8 make_dirs=FALSE)
+Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 {//Optionally, will create the directories if they don't exist.
-  I64 maxlen;
+  I64 maxlen,cur_dir_cluster=0;
   U8 *chg_to_buf,*new_cur_dir,*buf;
   CPrt *p;
-  U64 cur_dir_cluster=0;
-  result=TRUE;
+  Bool result=TRUE;
   if (!*dirname) return TRUE;
   if (dirname[1]==':') {
     if (*dirname==':') {
@@ -118,6 +117,7 @@ BoolI64 Cd(U8 *dirname,BoolI8 make_dirs=FALSE)
   Free(buf);
   Free(chg_to_buf);
   Free(new_cur_dir);
+  return result;
 }
 
 U0 FileAccessDel(CFileAccess *fa)
@@ -140,11 +140,10 @@ U0 FileAccessDel(CFileAccess *fa)
   Free(fa);
 }
 
-CFileAccess *FileAccessNew(U8 *_mask,BoolI8 make_mask=FALSE,BoolI8 make_dirs=FALSE)
+CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE)
 {
-  BoolI8 valid=TRUE;
+  Bool valid=TRUE,old_silent;
   U8 *buf,*mask,*temp_mask;
-  BoolI8 old_silent;
   CFileAccess *fa=CAlloc(sizeof(CFileAccess));
   mask=MStrUtil(_mask,
     SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
@@ -194,30 +193,32 @@ CFileAccess *FileAccessNew(U8 *_mask,BoolI8 make_mask=FALSE,BoolI8 make_dirs=FAL
   return fa;
 }
 
-CDirEntry *FilesFind(U8 *files_find_mask,U64 fuf_flags=0)
+CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3760] FUF_RECURSE		+r Recurse
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3774] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3770] FUF_JUST_DIRS		+D just directories
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3771] FUF_JUST_FILES		+F just files
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3772] FUF_JUST_TEXT_FILES	+t just text files: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2094] TEXT_FILE_MASK
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3773] FUF_JUST_SRC_FILES	+s just src files : [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2093] SRC_FILE_MASK
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3471] FUF_RECURSE		+r Recurse
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3485] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3481] FUF_JUST_DIRS		+D just directories
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3482] FUF_JUST_FILES		+F just files
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3483] FUF_JUST_TEXT_FILES	+t just text files: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2084] TEXT_FILE_MASK
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3484] FUF_JUST_SRC_FILES	+s just src files : [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2083] SRC_FILE_MASK
 See [C:/SparrowOS/OSMain/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
+  CDirEntry *result;
   CFileAccess *fa=FileAccessNew(files_find_mask,TRUE);
   if (fa) {
     result=SysFilesFind(fa->mask,fuf_flags);
     FileAccessDel(fa);
   } else
     result=NULL;
+  return result;
 }
 
-BoolI64 IsDir(U8 *dir_name)
+Bool IsDir(U8 *dir_name)
 {
   U8 *mask=MSPrintF("%s/*",dir_name);
-  BoolI8 old_silent=Silent(ON);
+  Bool result,old_silent=Silent(ON);
   CFileAccess *fa=FileAccessNew(mask);
   if (fa) {
     FileAccessDel(fa);
@@ -226,9 +227,10 @@ BoolI64 IsDir(U8 *dir_name)
     result=FALSE;
   Free(mask);
   Silent(old_silent);
+  return result;
 }
 
-U0 Dir(U8 *files_find_mask="*",BoolI8 full=FALSE)
+U0 Dir(U8 *files_find_mask="*",Bool full=FALSE)
 {
   CFileAccess *fa;
   fa=FileAccessNew(files_find_mask,TRUE);
@@ -239,7 +241,7 @@ U0 Dir(U8 *files_find_mask="*",BoolI8 full=FALSE)
 }
 
 
-U0 Del(U8 *files_find_mask,BoolI8 print_msg=TRUE)
+U0 Del(U8 *files_find_mask,Bool print_msg=TRUE)
 {
   CFileAccess *fa=FileAccessNew(files_find_mask);
   if (fa) {
@@ -260,14 +262,13 @@ U0 Del(U8 *files_find_mask,BoolI8 print_msg=TRUE)
   }
 }
 
-U8 *FileRead(U8 *filename,U64 *_size=NULL,I64 *_attr=NULL,BoolI8 raw=FALSE)
+U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
 {
   CHashGeneric *temph;
-  U8 *absname;
+  U8 *absname,*result=NULL;
   I64 size=0,attr=0;
   CFileAccess *fa;
   CArcCompress *ac=NULL;
-  result=NULL;
   if (_attr) *_attr=0;
   absname=FileNameAbs(filename);
   if (!raw && (temph=HashFind(absname,adam_task->hash_table,HTT_FILE))) {
@@ -327,21 +328,22 @@ U8 *FileRead(U8 *filename,U64 *_size=NULL,I64 *_attr=NULL,BoolI8 raw=FALSE)
     Free(ac);
   }
   Free(absname);
+  return result;
 }
 
-U8 *TextFileRead(U8 *filename,U64 *_attr=NULL)
+U8 *TextFileRead(U8 *filename,I64 *_attr=NULL)
 {
   return FileRead(filename,NULL,_attr);
 }
 
 
-BoolI64 FileFind(U8 *filename,CDirEntry *rde=NULL,
-      BoolI8 dir_only=FALSE,BoolI8 file_only=FALSE,BoolI8 scan_parents=FALSE)
+Bool FileFind(U8 *filename,CDirEntry *rde=NULL,
+      Bool dir_only=FALSE,Bool file_only=FALSE,Bool scan_parents=FALSE)
 {
-  U64 cur_dir_cluster;
+  I64 cur_dir_cluster;
   CDirEntry de;
   CFileAccess *fa=FileAccessNew(filename);
-  result=FALSE;
+  Bool result=FALSE;
   if (fa) {
     cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
     switch (fa->p->type) {
@@ -386,9 +388,10 @@ BoolI64 FileFind(U8 *filename,CDirEntry *rde=NULL,
   }
   if (result && rde)
     MemCpy(rde,&de,sizeof(CDirEntry));
+  return result;
 }
 
-U64 FileSize(U8 *filename)
+I64 FileSize(U8 *filename)
 {
   CDirEntry de;
   if (FileFind(filename,&de))
@@ -397,10 +400,9 @@ U64 FileSize(U8 *filename)
     return 0;
 }
 
-U64 FileSizeExpanded(U8 *filename)
+I64 FileSizeExpanded(U8 *filename)
 {
-  U8 buf[BLK_SIZE];
-  U8 *full_name;
+  U8 buf[BLK_SIZE],*full_name;
   CPrt *p;
   CDirEntry de;
   if (FileFind(filename,&de)) {
@@ -420,10 +422,10 @@ U64 FileSizeExpanded(U8 *filename)
     return 0;
 }
 
-U64 FileWrite(U8 *filename,U8 *fbuf,
-   U64 size,CDate ltdt=0,U64 attr=0,BoolI8 raw=FALSE)
+I64 FileWrite(U8 *filename,U8 *fbuf,
+   I64 size,CDate ltdt=0,I64 attr=0,Bool raw=FALSE)
 {
-  U64 c=0;
+  I64 c=0;
   CHashGeneric *temph;
   CFileAccess *fa=FileAccessNew(filename,FALSE,TRUE);
   CArcCompress *ac=NULL;
@@ -460,7 +462,7 @@ U64 FileWrite(U8 *filename,U8 *fbuf,
   return c;
 }
 
-U0 TextFileWrite(U8 *filename,U8 *st,U64 attr=0)
+U0 TextFileWrite(U8 *filename,U8 *st,I64 attr=0)
 {
   FileWrite(filename,st,StrLen(st),0,attr);
 }

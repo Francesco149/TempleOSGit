@@ -1,4 +1,4 @@
-BoolI8 record_stop,record_done;
+Bool record_stop,record_done;
 
 U0 (*fp_old_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num)=NULL;
 
@@ -50,7 +50,7 @@ U0 RecordTaskEndCB()
 
 U0 RecordTask(U8 *filename)
 {
-  BoolI8 old_io_snd;
+  Bool old_io_snd;
   U8 *fname=StrNew(filename),*fname2;
   TaskInitExt; //needed for disk access
   record_buf[0]=CAlloc(RECORD_BUF_SIZE*sizeof(SND_IN_CONTAINER));

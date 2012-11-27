@@ -37,5 +37,5 @@ U0 RawAccess(I64 drv_let=0)
 
 RawAccess;
 
-//See [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,276] RBlks(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,308] WBlks(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,15] PrtLock(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,47] PrtUnlock()
+//See [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,278] RBlks(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,311] WBlks(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,15] PrtLock(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,47] PrtUnlock()
 //[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,3] DBlk(), [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,21] DCluster(), [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,1] BlkDevLock() and [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,28] BlkDevUnlock().

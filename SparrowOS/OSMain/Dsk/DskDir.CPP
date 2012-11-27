@@ -1,4 +1,4 @@
-BoolI64 CDirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempm,BoolI8 free_old_chain=TRUE)
+Bool CDirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempm,Bool free_old_chain=TRUE)
 {
   switch (p->type) {
     case PT_NATIVE:
@@ -14,7 +14,7 @@ BoolI64 CDirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempm,BoolI8 free_old_chain=TRUE)
   }
 }
 
-U0 CDirDel(CDirEntry *tempm)
+U0 CDirEntryDel(CDirEntry *tempm)
 { //Doesn't Free user_data
   if (tempm) {
     Free(tempm->full_name);
@@ -22,7 +22,7 @@ U0 CDirDel(CDirEntry *tempm)
   }
 }
 
-U0 CDirDel2(CDirEntry *tempm)
+U0 CDirEntryDel2(CDirEntry *tempm)
 { //Frees user_data
   if (tempm) {
     Free(tempm->full_name);
@@ -38,7 +38,7 @@ U0 CDirListDel(CDirEntry *tempm)
     tempm2=tempm->next;
     if (tempm->sub)
       CDirListDel(tempm->sub);
-    CDirDel(tempm);
+    CDirEntryDel(tempm);
     tempm=tempm2;
   }
 }
@@ -50,15 +50,15 @@ U0 CDirListDel2(CDirEntry *tempm)
     tempm2=tempm->next;
     if (tempm->sub)
       CDirListDel2(tempm->sub);
-    CDirDel2(tempm);
+    CDirEntryDel2(tempm);
     tempm=tempm2;
   }
 }
 
-I64 CDirCompare(CDirEntry *e1,CDirEntry *e2)
+I64 CDirEntryCompare(CDirEntry *e1,CDirEntry *e2)
 {
-  U8 buf1[CDIR_FILENAME_LEN],buf2[CDIR_FILENAME_LEN];
-  U8 buf3[CDIR_FILENAME_LEN],buf4[CDIR_FILENAME_LEN];
+  U8 buf1[CDIR_FILENAME_LEN],buf2[CDIR_FILENAME_LEN],
+     buf3[CDIR_FILENAME_LEN],buf4[CDIR_FILENAME_LEN];
   I64 d1=0,d2=0;
   if (e1->attr & _ATTR_DIR)
     d1=1;
@@ -88,14 +88,14 @@ U0 CDirFilesSort(CDirEntry **_tempm)
       tempm1=tempm1->next;
     }
     if (cnt>1) {
-      sort_buf=MAlloc(cnt*sizeof(U0 *));
+      sort_buf=MAlloc(cnt*sizeof(U8 *));
       i=0;
       tempm1=tempm;
       while (tempm1) {
 	sort_buf[i++]=tempm1;
 	tempm1=tempm1->next;
       }
-      QSortU64(sort_buf,cnt,&CDirCompare);
+      QSortI64(sort_buf,cnt,&CDirEntryCompare);
       tempm=sort_buf[0];
       *_tempm=tempm;
       for (i=0;i<cnt-1;i++) {
@@ -118,10 +118,10 @@ U0 CDirFilesSort(CDirEntry **_tempm)
   }
 }
 
-CDirEntry *CDirFilesFlatten(CDirEntry *tempm,CDirEntry **_result,U64 fuf_flags)
+CDirEntry *CDirFilesFlatten(CDirEntry *tempm,CDirEntry **_result,I64 fuf_flags)
 { //returns last node
   CDirEntry *tempm1;
-  BoolI8 del;
+  Bool del;
   if (tempm)
     while (TRUE) {
       tempm1=tempm->next;
@@ -135,7 +135,7 @@ CDirEntry *CDirFilesFlatten(CDirEntry *tempm,CDirEntry **_result,U64 fuf_flags)
 	tempm->sub=NULL;
       }
       if (del)
-	CDirDel(tempm);
+	CDirEntryDel(tempm);
       if (tempm1)
 	tempm=tempm1;
       else
@@ -145,10 +145,10 @@ CDirEntry *CDirFilesFlatten(CDirEntry *tempm,CDirEntry **_result,U64 fuf_flags)
   return _result;
 }
 
-CDirEntry *SysFilesFind(U8 *files_find_mask,U64 fuf_flags)
+CDirEntry *SysFilesFind(U8 *files_find_mask,I64 fuf_flags)
 {
   CPrt *p=Fs->cur_prt;
-  result=NULL;
+  CDirEntry *result=NULL;
   PrtChk(p);
   switch (p->type) {
     case PT_NATIVE:
@@ -169,9 +169,10 @@ CDirEntry *SysFilesFind(U8 *files_find_mask,U64 fuf_flags)
     if (fuf_flags&(FUF_FLATTEN_TREE|FUF_JUST_FILES))
       CDirFilesFlatten(result,&result,fuf_flags);
   }
+  return result;
 }
 
-U0 PutFileLink(U8 *filename,I64 line=0,BoolI8 plain_text=FALSE)
+U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
 {
   U8 *buf;
   if (!filename) return;
@@ -210,7 +211,7 @@ U0 PutDirLink(U8 *dirname)
   }
 }
 
-U0 Dir2(U8 *files_find_mask,U64 fuf_flags,BoolI8 full)
+U0 Dir2(U8 *files_find_mask,I64 fuf_flags,Bool full)
 {
   CDirEntry *tempm1=NULL,*tempm2;
   U8 *st;
@@ -245,11 +246,11 @@ U0 Dir2(U8 *files_find_mask,U64 fuf_flags,BoolI8 full)
       while (tempm1) {
 	tempm2=tempm1->next;
 	if (full)
-	  "%D %T %0*X %0*X %0*X ",tempm1->datetime,tempm1->datetime,
+	  "%D %T %0*tX %0*tX %0*tX ",tempm1->datetime,tempm1->datetime,
 	    csize,tempm1->size,esize,tempm1->expanded_size,
 	    c, tempm1->cluster;
 	else
-	  "%h1D %h1T %0*X ",tempm1->datetime,tempm1->datetime,
+	  "%h1D %h1T %0*tX ",tempm1->datetime,tempm1->datetime,
 	    csize,tempm1->size;
 	if (tempm1->attr & _ATTR_DIR)
 	  PutDirLink(tempm1->name);
@@ -257,7 +258,7 @@ U0 Dir2(U8 *files_find_mask,U64 fuf_flags,BoolI8 full)
 	  PutFileLink(tempm1->name);
 
 	NewLine;
-	CDirDel(tempm1);
+	CDirEntryDel(tempm1);
 	tempm1=tempm2;
       }
     } else

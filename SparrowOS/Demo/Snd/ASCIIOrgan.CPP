@@ -22,7 +22,7 @@ U0 SPrintFPutChar(U8 ch)
 
 U0 ASCIIOrgan()
 {
-  U64 i,ch;
+  I64 i,ch;
 
   for (i=0;i<32;i++) {
     SPrintFPutChar(i);

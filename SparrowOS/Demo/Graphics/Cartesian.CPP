@@ -6,8 +6,8 @@ F64 x,y,y_last;
 U0 Cartesian()
 {
   U8 *st;
-  U64 ch=0,h,v;
-  BoolI8 first;
+  I64 ch=0,h,v;
+  Bool first;
   CDC *dc=DCAlias;
   do {
     DocClear;
@@ -45,7 +45,7 @@ Cartesian;
 
 /*
 For better performance, compile the expression entered by the user one time 
-with [C:/SparrowOS/Compiler/ExpParser.CPP.Z,1272] CmpExpression() and use
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,285] Call(). See
+with [C:/SparrowOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression() and use
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,286] Call(). See
 [::/SparrowOS/Demo/CompileDemo.CPP.Z,1] ::/SparrowOS/Demo/CompileDemo.CPP.Z.
 */

@@ -40,10 +40,10 @@ class Trooper
 #define NUM_TROOPERS 100
 Trooper tr[2][NUM_TROOPERS];
 
-BoolI8 time_lapse=FALSE;
+Bool time_lapse=FALSE;
 
 #define TAP_MODE_RADIUS	50
-BoolI8 tap_mode;
+Bool tap_mode;
 I64 cmd_intensity;
 
 
@@ -51,7 +51,7 @@ I64 cmd_intensity;
 #define AI_TARGET  1
 #define AI_RANDOM  2
 #define AI_NUM_AI  3
-U64 ai_mode;
+I64 ai_mode;
 
 I64 ai_targets[10];
 
@@ -118,7 +118,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       x=ipx-task->win_pixel_left-task->win_scroll_x,y=ipy-task->win_pixel_top-task->win_scroll_y;
 
   cmd_intensity=(ip_throttle*128)>>32;
-  BoolI8 repulsive=cmd_intensity>0 ^^ ip_rb,
+  Bool repulsive=cmd_intensity>0 ^^ ip_rb,
 	 active=!win_grab_scroll && (ip_lb||ip_rb);
 
   task->text_attr=GREEN<<4;
@@ -227,7 +227,7 @@ U0 UpdateHumanVelocities()
 {
   F64 intensity;
   I64 i,j,x=ipx-Fs->win_pixel_left-Fs->win_scroll_x,y=ipy-Fs->win_pixel_top-Fs->win_scroll_y,dx,dy,d;
-  BoolI8 active=!win_grab_scroll&&(ip_lb||ip_rb);
+  Bool active=!win_grab_scroll&&(ip_lb||ip_rb);
   Trooper *tempt=&tr[0][0];
   if (tap_mode) {
     for (i=0;i<NUM_TROOPERS;i++,tempt++) {

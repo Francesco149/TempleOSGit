@@ -7,362 +7,244 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 
 +] Game Making Skills
   +] Beginner
-    [::/SparrowOS/Demo/Graphics/DotNet.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/DotNet.CPP.Z
-[::/SparrowOS/Demo/Graphics/LowPassFilter.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/LowPassFilter.CPP.Z
-[::/SparrowOS/Demo/Graphics/MathAudioDemo.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/MathAudioDemo.CPP.Z
-[::/SparrowOS/Demo/Graphics/Lines.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Lines.CPP.Z
-[::/SparrowOS/Demo/GameStarters/TicTacToe.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/TicTacToe.CPP.Z
-[::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z
-[::/SparrowOS/Demo/MsgLoop.CPP.Z,1] ::/SparrowOS/Demo/MsgLoop.CPP.Z
-[::/SparrowOS/Demo/Snd/ASCIIOrgan.CPP.Z,1]
-    ::/SparrowOS/Demo/Snd/ASCIIOrgan.CPP.Z
-[::/SparrowOS/Demo/Graphics/Doodle.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Doodle.CPP.Z
-[::/SparrowOS/Demo/Graphics/Speedline.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Speedline.CPP.Z
-[::/SparrowOS/Demo/Graphics/Bounce.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Bounce.CPP.Z
-[::/SparrowOS/Demo/KeyBitMap.CPP.Z,1] ::/SparrowOS/Demo/KeyBitMap.CPP.Z
-[::/SparrowOS/Demo/Graphics/Blink.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Blink.CPP.Z
-[::/SparrowOS/Demo/Graphics/WinZBuf.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/WinZBuf.CPP.Z
-[::/SparrowOS/Demo/Graphics/Golf.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Golf.CPP.Z
-[::/SparrowOS/Demo/Graphics/Mountain.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Mountain.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Coach.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Coach.CPP.Z
-[::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z
-[::/SparrowOS/Demo/Digits.CPP.Z,1] ::/SparrowOS/Demo/Digits.CPP.Z
-[::/SparrowOS/Demo/Progress.CPP.Z,1] ::/SparrowOS/Demo/Progress.CPP.Z //has
-    some ASM, just ignore
-[::/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z
-[::/SparrowOS/Demo/Graphics/Dither.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Dither.CPP.Z
-[::/SparrowOS/Demo/Graphics/Symmetry.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Symmetry.CPP.Z
-[::/SparrowOS/Demo/Graphics/SpritePut.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/SpritePut.CPP.Z
-[::/SparrowOS/Demo/Graphics/SpritePutExt.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/SpritePutExt.CPP.Z
-[::/SparrowOS/Demo/Graphics/Blot.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Blot.CPP.Z
-[::/SparrowOS/Demo/Graphics/CaptureScreen.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/CaptureScreen.CPP.Z
-[::/SparrowOS/Demo/Graphics/EdCSprite.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/EdCSprite.CPP.Z
-[::/SparrowOS/Demo/PullDownMenu.CPP.Z,1] ::/SparrowOS/Demo/PullDownMenu.CPP.Z
-::/SparrowOS/Demo/GameStarters/Stadium
-    `Cd("::/SparrowOS/Demo/GameStarters/Stadium");Dir;View;
-    `
-    
-[::/SparrowOS/Demo/Graphics/Palette.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Palette.CPP.Z
-[::/SparrowOS/Demo/GameStarters/CircleTrace.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/CircleTrace.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Halogen.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Halogen.CPP.Z
-[::/SparrowOS/Demo/GameStarters/TheDead.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/TheDead.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Bomber.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Bomber.CPP.Z
-[::/SparrowOS/Demo/GameStarters/RainDrops.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/RainDrops.CPP.Z
-[::/SparrowOS/Demo/Snd/MorseCode.CPP.Z,1]
-    ::/SparrowOS/Demo/Snd/MorseCode.CPP.Z
-[::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z
-[::/SparrowOS/Demo/GameStarters/BlackDiamond.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/BlackDiamond.CPP.Z
-[::/SparrowOS/Demo/GameStarters/SpaceShip.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/SpaceShip.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Wenceslas.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Wenceslas.CPP.Z
-  +] Intermediate
-    [::/SparrowOS/Demo/Graphics/Box.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Box.CPP.Z
-[::/SparrowOS/Demo/Graphics/Pick.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Pick.CPP.Z
-[::/SparrowOS/Demo/Graphics/3DPoly.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/3DPoly.CPP.Z
-[::/SparrowOS/Demo/Graphics/BSpline.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/BSpline.CPP.Z
-[::/SparrowOS/Demo/Graphics/Extents.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Extents.CPP.Z
-[::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z
-[::/SparrowOS/Demo/Graphics/Logo.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Logo.CPP.Z
-[::/SparrowOS/Demo/Graphics/RotateTank.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/RotateTank.CPP.Z
-[::/SparrowOS/Demo/Graphics/Pic2ASCII.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Pic2ASCII.CPP.Z
-[::/SparrowOS/Demo/ScreenCodes.CPP.Z,1] ::/SparrowOS/Demo/ScreenCodes.CPP.Z
-[::/SparrowOS/Demo/Graphics/NeatTrick.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/NeatTrick.CPP.Z
-[::/SparrowOS/Demo/Graphics/CharGraphics.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/CharGraphics.CPP.Z
-[::/SparrowOS/Demo/Maze.CPP.Z,1] ::/SparrowOS/Demo/Maze.CPP.Z
-[::/SparrowOS/Demo/Graphics/FontEd.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/FontEd.CPP.Z
-[::/SparrowOS/Demo/ExtendedChars.CPP.Z,1]
-    ::/SparrowOS/Demo/ExtendedChars.CPP.Z
-[::/SparrowOS/Demo/TimeIns.CPP.Z,1] ::/SparrowOS/Demo/TimeIns.CPP.Z
-[::/SparrowOS/Demo/Snd/WaterFowl.CPP.Z,1]
-    ::/SparrowOS/Demo/Snd/WaterFowl.CPP.Z
-::/SparrowOS/Apps/MusicOrgan/Examples
-    `Cd("::/SparrowOS/Apps/MusicOrgan/Examples");Dir;View;
-    `
-    
-[::/SparrowOS/Demo/MultiCore/MPPrintF.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/MPPrintF.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Layers3DJob.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Layers3DJob.CPP.Z
-[::/SparrowOS/Demo/Graphics/PredatorPrey.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/PredatorPrey.CPP.Z
-[::/SparrowOS/Demo/Graphics/Cartesian.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Cartesian.CPP.Z
-[::/SparrowOS/Demo/Graphics/Hanoi.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Hanoi.CPP.Z
-[::/SparrowOS/Demo/Graphics/Life.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Life.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Zing.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Zing.CPP.Z
-[::/SparrowOS/Demo/GameStarters/ChessNet.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/ChessNet.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Chess.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Chess.CPP.Z
-[::/SparrowOS/Demo/Graphics/Flowers.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Flowers.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Palindrome.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Palindrome.CPP.Z
-[::/SparrowOS/Demo/MultiCore/MPAdd.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/MPAdd.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Lock.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Lock.CPP.Z
-[::/SparrowOS/Demo/MultiCore/LayersSpawn.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/LayersSpawn.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Clouds.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Clouds.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Noise.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Noise.CPP.Z
-[::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z
-[::/SparrowOS/Demo/Graphics/Bling.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Bling.CPP.Z
-[::/SparrowOS/Demo/Graphics/ScrollBars.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/ScrollBars.CPP.Z
-[::/SparrowOS/Demo/RegistryDemo.CPP.Z,1] ::/SparrowOS/Demo/RegistryDemo.CPP.Z
-[::/SparrowOS/Demo/GameStarters/BirdLand.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/BirdLand.CPP.Z
-[::/SparrowOS/Demo/GameStarters/MissileDefense.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/MissileDefense.CPP.Z
-[::/SparrowOS/Demo/GameStarters/WarGame.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/WarGame.CPP.Z
-[::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Navy.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Navy.CPP.Z
-[::/SparrowOS/Demo/GameStarters/RawHide.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/RawHide.CPP.Z
-[::/SparrowOS/Demo/GameStarters/DunGen.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/DunGen.CPP.Z
-::/SparrowOS/Apps/Timeout
+      [::/SparrowOS/Demo/Graphics/DotNet.CPP.Z,1] ::/SparrowOS/Demo/Graphics/DotNet.CPP.Z
+    [::/SparrowOS/Demo/Graphics/LowPassFilter.CPP.Z,1] ::/SparrowOS/Demo/Graphics/LowPassFilter.CPP.Z
+    [::/SparrowOS/Demo/Graphics/MathAudioDemo.CPP.Z,1] ::/SparrowOS/Demo/Graphics/MathAudioDemo.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Lines.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Lines.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/TicTacToe.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/TicTacToe.CPP.Z
+    [::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z
+    [::/SparrowOS/Demo/MsgLoop.CPP.Z,1] ::/SparrowOS/Demo/MsgLoop.CPP.Z
+    [::/SparrowOS/Demo/Snd/ASCIIOrgan.CPP.Z,1] ::/SparrowOS/Demo/Snd/ASCIIOrgan.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Doodle.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Doodle.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Speedline.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Speedline.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Bounce.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Bounce.CPP.Z
+    [::/SparrowOS/Demo/KeyBitMap.CPP.Z,1] ::/SparrowOS/Demo/KeyBitMap.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Blink.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Blink.CPP.Z
+    [::/SparrowOS/Demo/Graphics/WinZBuf.CPP.Z,1] ::/SparrowOS/Demo/Graphics/WinZBuf.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Golf.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Golf.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Mountain.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Mountain.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Coach.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Coach.CPP.Z
+    [::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z,1] ::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z
+    [::/SparrowOS/Demo/Digits.CPP.Z,1] ::/SparrowOS/Demo/Digits.CPP.Z
+    [::/SparrowOS/Demo/Progress.CPP.Z,1] ::/SparrowOS/Demo/Progress.CPP.Z //has some ASM, just ignore
+    [::/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z,1] ::/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Dither.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Dither.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Symmetry.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Symmetry.CPP.Z
+    [::/SparrowOS/Demo/Graphics/SpritePut.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpritePut.CPP.Z
+    [::/SparrowOS/Demo/Graphics/SpritePutExt.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpritePutExt.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Blot.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Blot.CPP.Z
+    [::/SparrowOS/Demo/Graphics/CaptureScreen.CPP.Z,1] ::/SparrowOS/Demo/Graphics/CaptureScreen.CPP.Z
+    [::/SparrowOS/Demo/Graphics/EdCSprite.CPP.Z,1] ::/SparrowOS/Demo/Graphics/EdCSprite.CPP.Z
+    [::/SparrowOS/Demo/PullDownMenu.CPP.Z,1] ::/SparrowOS/Demo/PullDownMenu.CPP.Z
+    ::/SparrowOS/Demo/GameStarters/Stadium
+`Cd("::/SparrowOS/Demo/GameStarters/Stadium");Dir;View;
+`
+
+    [::/SparrowOS/Demo/Graphics/Palette.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Palette.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/CircleTrace.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/CircleTrace.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Halogen.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Halogen.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/TheDead.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/TheDead.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Bomber.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Bomber.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/RainDrops.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/RainDrops.CPP.Z
+    [::/SparrowOS/Demo/Snd/MorseCode.CPP.Z,1] ::/SparrowOS/Demo/Snd/MorseCode.CPP.Z
+    [::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z,1] ::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/BlackDiamond.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/BlackDiamond.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/SpaceShip.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/SpaceShip.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Wenceslas.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Wenceslas.CPP.Z
+      +] Intermediate
+      [::/SparrowOS/Demo/Graphics/Box.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Box.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Pick.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Pick.CPP.Z
+    [::/SparrowOS/Demo/Graphics/3DPoly.CPP.Z,1] ::/SparrowOS/Demo/Graphics/3DPoly.CPP.Z
+    [::/SparrowOS/Demo/Graphics/BSpline.CPP.Z,1] ::/SparrowOS/Demo/Graphics/BSpline.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Extents.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Extents.CPP.Z
+    [::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Logo.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Logo.CPP.Z
+    [::/SparrowOS/Demo/Graphics/RotateTank.CPP.Z,1] ::/SparrowOS/Demo/Graphics/RotateTank.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Pic2ASCII.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Pic2ASCII.CPP.Z
+    [::/SparrowOS/Demo/ScreenCodes.CPP.Z,1] ::/SparrowOS/Demo/ScreenCodes.CPP.Z
+    [::/SparrowOS/Demo/Graphics/NeatTrick.CPP.Z,1] ::/SparrowOS/Demo/Graphics/NeatTrick.CPP.Z
+    [::/SparrowOS/Demo/Graphics/CharGraphics.CPP.Z,1] ::/SparrowOS/Demo/Graphics/CharGraphics.CPP.Z
+    [::/SparrowOS/Demo/Maze.CPP.Z,1] ::/SparrowOS/Demo/Maze.CPP.Z
+    [::/SparrowOS/Demo/Graphics/FontEd.CPP.Z,1] ::/SparrowOS/Demo/Graphics/FontEd.CPP.Z
+    [::/SparrowOS/Demo/ExtendedChars.CPP.Z,1] ::/SparrowOS/Demo/ExtendedChars.CPP.Z
+    [::/SparrowOS/Demo/TimeIns.CPP.Z,1] ::/SparrowOS/Demo/TimeIns.CPP.Z
+    [::/SparrowOS/Demo/Snd/WaterFowl.CPP.Z,1] ::/SparrowOS/Demo/Snd/WaterFowl.CPP.Z
+    ::/SparrowOS/Apps/MusicOrgan/Examples
+`Cd("::/SparrowOS/Apps/MusicOrgan/Examples");Dir;View;
+`
+
+    [::/SparrowOS/Demo/MultiCore/MPPrintF.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/MPPrintF.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Layers3DJob.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Layers3DJob.CPP.Z
+    [::/SparrowOS/Demo/Graphics/PredatorPrey.CPP.Z,1] ::/SparrowOS/Demo/Graphics/PredatorPrey.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Cartesian.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Cartesian.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Hanoi.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Hanoi.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Life.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Life.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Zing.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Zing.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/ChessNet.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/ChessNet.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Chess.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Chess.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Flowers.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Flowers.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Palindrome.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Palindrome.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/MPAdd.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/MPAdd.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Lock.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Lock.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/LayersSpawn.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/LayersSpawn.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Clouds.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Clouds.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Noise.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Noise.CPP.Z
+    [::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Bling.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Bling.CPP.Z
+    [::/SparrowOS/Demo/Graphics/ScrollBars.CPP.Z,1] ::/SparrowOS/Demo/Graphics/ScrollBars.CPP.Z
+    [::/SparrowOS/Demo/RegistryDemo.CPP.Z,1] ::/SparrowOS/Demo/RegistryDemo.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/BirdLand.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/BirdLand.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/MissileDefense.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/MissileDefense.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/WarGame.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/WarGame.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Navy.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Navy.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/RawHide.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/RawHide.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/DunGen.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/DunGen.CPP.Z
+    ::/SparrowOS/Apps/Timeout
 `Cd("::/SparrowOS/Apps/Timeout");Dir;View;
 `
 
-[::/SparrowOS/Demo/GameStarters/Collision.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Collision.CPP.Z
-  +] Advanced
-    [::/SparrowOS/Demo/MultiCore/LoadTest.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/LoadTest.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Primes.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Primes.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Sort.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Sort.CPP.Z
-[::/SparrowOS/Demo/MultiCore/RadixSort.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/RadixSort.CPP.Z
-[::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z,1]
-    ::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z
-::/SparrowOS/Apps/Pilgrims
+    [::/SparrowOS/Demo/GameStarters/Collision.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Collision.CPP.Z
+      +] Advanced
+      [::/SparrowOS/Demo/MultiCore/LoadTest.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/LoadTest.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Primes.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Primes.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Sort.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Sort.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/RadixSort.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/RadixSort.CPP.Z
+    [::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z
+    ::/SparrowOS/Apps/Pilgrims
 `Cd("::/SparrowOS/Apps/Pilgrims");Dir;View;
 `
 
-::/SparrowOS/Apps/AfterEgypt
+    ::/SparrowOS/Apps/AfterEgypt
 `Cd("::/SparrowOS/Apps/AfterEgypt");Dir;View;
 `
 
-[::/SparrowOS/Demo/GameStarters/Varoom.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Varoom.CPP.Z
-[::/SparrowOS/Demo/Graphics/Shading.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Shading.CPP.Z
-[::/SparrowOS/Demo/Graphics/Transform.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Transform.CPP.Z
-[::/SparrowOS/Demo/Graphics/Shadow.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Shadow.CPP.Z
-[::/SparrowOS/Demo/Graphics/Pick3D.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Pick3D.CPP.Z
-::/SparrowOS/Apps/Tanks
+    [::/SparrowOS/Demo/GameStarters/Varoom.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Varoom.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Shading.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Shading.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Transform.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Transform.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Shadow.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Shadow.CPP.Z
+    [::/SparrowOS/Demo/Graphics/Pick3D.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Pick3D.CPP.Z
+    ::/SparrowOS/Apps/Tanks
 `Cd("::/SparrowOS/Apps/Tanks");Dir;View;
 `
 
-[::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z
-::/SparrowOS/Apps/GrModels
+    [::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z
+    ::/SparrowOS/Apps/GrModels
 `Cd("::/SparrowOS/Apps/GrModels");Dir;View;
 `
 
-::/SparrowOS/Apps/KeepAway
+    ::/SparrowOS/Apps/KeepAway
 `Cd("::/SparrowOS/Apps/KeepAway");Dir;View;
 `
 
-[::/SparrowOS/Demo/Graphics/Camp.CPP.Z,1]
-    ::/SparrowOS/Demo/Graphics/Camp.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Rocket.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Rocket.CPP.Z
-[::/SparrowOS/Demo/GameStarters/RocketScience.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/RocketScience.CPP.Z
-[::/SparrowOS/Demo/GameStarters/MassSpring.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/MassSpring.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Whap.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Whap.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z
-[::/SparrowOS/Demo/GameStarters/Squirt.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/Squirt.CPP.Z
-::/SparrowOS/Apps/X-Caliber
+    [::/SparrowOS/Demo/Graphics/Camp.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Camp.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Rocket.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Rocket.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/RocketScience.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/RocketScience.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/MassSpring.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/MassSpring.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Whap.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Whap.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/Squirt.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Squirt.CPP.Z
+    ::/SparrowOS/Apps/X-Caliber
 `Cd("::/SparrowOS/Apps/X-Caliber");Dir;View;
 `
 
-[::/SparrowOS/Demo/GameStarters/ZoneOut.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/ZoneOut.CPP.Z
-[::/SparrowOS/Demo/GameStarters/FPS.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/FPS.CPP.Z
-[::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1]
-    ::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z
-::/SparrowOS/Apps/Span
+    [::/SparrowOS/Demo/GameStarters/ZoneOut.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/ZoneOut.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/FPS.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/FPS.CPP.Z
+    [::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z
+    ::/SparrowOS/Apps/Span
 `Cd("::/SparrowOS/Apps/Span");Dir;View;
 `
 
-::/SparrowOS/Apps/MusicOrgan
+    ::/SparrowOS/Apps/MusicOrgan
 `Cd("::/SparrowOS/Apps/MusicOrgan");Dir;View;
 `
 
-  
-+] Non-Game Skills
+      
+  +] Non-Game Skills
   [::/SparrowOS/Demo/DbgDemo.CPP.Z,1] ::/SparrowOS/Demo/DbgDemo.CPP.Z
-[::/SparrowOS/Demo/PhoneNumWords.CPP.Z,1]
-  ::/SparrowOS/Demo/PhoneNumWords.CPP.Z
-[::/SparrowOS/Demo/SuggestSpelling.CPP.Z,1]
-  ::/SparrowOS/Demo/SuggestSpelling.CPP.Z
-[::/SparrowOS/Demo/WordSearch.CPP.Z,1] ::/SparrowOS/Demo/WordSearch.CPP.Z
-[::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z,1]
-  ::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z
-[::/SparrowOS/Demo/Dsk/DataBase.CPP.Z,1] ::/SparrowOS/Demo/Dsk/DataBase.CPP.Z
-[::/SparrowOS/Demo/Dsk/OrderedIO.CPP.Z,1]
-  ::/SparrowOS/Demo/Dsk/OrderedIO.CPP.Z
-[::/SparrowOS/Demo/Dsk/FPrintF.CPP.Z,1] ::/SparrowOS/Demo/Dsk/FPrintF.CPP.Z
-[::/SparrowOS/Demo/Dsk/Raw.CPP.Z,1] ::/SparrowOS/Demo/Dsk/Raw.CPP.Z
-[::/SparrowOS/Demo/Dsk/UnusedSpaceRep.CPP.Z,1]
-  ::/SparrowOS/Demo/Dsk/UnusedSpaceRep.CPP.Z
-[::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z,1]
-  ::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z
-[::/SparrowOS/Demo/Lectures/MiniCompiler.CPP.Z,1]
-  ::/SparrowOS/Demo/Lectures/MiniCompiler.CPP.Z
-[::/SparrowOS/Demo/MagicPairs.CPP.Z,1] ::/SparrowOS/Demo/MagicPairs.CPP.Z
-[::/SparrowOS/Demo/Graphics/Circuit.CPP.Z,1]
-  ::/SparrowOS/Demo/Graphics/Circuit.CPP.Z
-[::/SparrowOS/Demo/Graphics/PoleZeros.CPP.Z,1]
-  ::/SparrowOS/Demo/Graphics/PoleZeros.CPP.Z
-[::/SparrowOS/Demo/WebLogExample/WebLogRep.CPP.Z,1]
-  ::/SparrowOS/Demo/WebLogExample/WebLogRep.CPP.Z
-[::/SparrowOS/Demo/WebLogExample/WebLogScramble.CPP.Z,1]
-  ::/SparrowOS/Demo/WebLogExample/WebLogScramble.CPP.Z
-::/SparrowOS/Apps/TimeClock
+  [::/SparrowOS/Demo/PhoneNumWords.CPP.Z,1] ::/SparrowOS/Demo/PhoneNumWords.CPP.Z
+  [::/SparrowOS/Demo/SuggestSpelling.CPP.Z,1] ::/SparrowOS/Demo/SuggestSpelling.CPP.Z
+  [::/SparrowOS/Demo/WordSearch.CPP.Z,1] ::/SparrowOS/Demo/WordSearch.CPP.Z
+  [::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z,1] ::/SparrowOS/Demo/Graphics/CommonAncestor.CPP.Z
+  [::/SparrowOS/Demo/Dsk/DataBase.CPP.Z,1] ::/SparrowOS/Demo/Dsk/DataBase.CPP.Z
+  [::/SparrowOS/Demo/Dsk/OrderedIO.CPP.Z,1] ::/SparrowOS/Demo/Dsk/OrderedIO.CPP.Z
+  [::/SparrowOS/Demo/Dsk/FPrintF.CPP.Z,1] ::/SparrowOS/Demo/Dsk/FPrintF.CPP.Z
+  [::/SparrowOS/Demo/Dsk/Raw.CPP.Z,1] ::/SparrowOS/Demo/Dsk/Raw.CPP.Z
+  [::/SparrowOS/Demo/Dsk/UnusedSpaceRep.CPP.Z,1] ::/SparrowOS/Demo/Dsk/UnusedSpaceRep.CPP.Z
+  [::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z,1] ::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z
+  [::/SparrowOS/Demo/Lectures/MiniCompiler.CPP.Z,1] ::/SparrowOS/Demo/Lectures/MiniCompiler.CPP.Z
+  [::/SparrowOS/Demo/MagicPairs.CPP.Z,1] ::/SparrowOS/Demo/MagicPairs.CPP.Z
+  [::/SparrowOS/Demo/Graphics/Circuit.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Circuit.CPP.Z
+  [::/SparrowOS/Demo/Graphics/PoleZeros.CPP.Z,1] ::/SparrowOS/Demo/Graphics/PoleZeros.CPP.Z
+  [::/SparrowOS/Demo/WebLogExample/WebLogRep.CPP.Z,1] ::/SparrowOS/Demo/WebLogExample/WebLogRep.CPP.Z
+  [::/SparrowOS/Demo/WebLogExample/WebLogScramble.CPP.Z,1] ::/SparrowOS/Demo/WebLogExample/WebLogScramble.CPP.Z
+  ::/SparrowOS/Apps/TimeClock
 `Cd("::/SparrowOS/Apps/TimeClock");Dir;View;
 `
 
-::/SparrowOS/Apps/Logic
+  ::/SparrowOS/Apps/Logic
 `Cd("::/SparrowOS/Apps/Logic");Dir;View;
 `
 
-::/SparrowOS/Demo/Lectures
+  ::/SparrowOS/Demo/Lectures
 `Cd("::/SparrowOS/Demo/Lectures");Dir;View;
 `
 
-
-+] SparrowOS Specific
+  
+  +] SparrowOS Specific
   ::/SparrowOS/Demo/OldSchool
 `Cd("::/SparrowOS/Demo/OldSchool");Dir;View;
 `
 
-::/SparrowOS/Demo/AutoFile
+  ::/SparrowOS/Demo/AutoFile
 `Cd("::/SparrowOS/Demo/AutoFile");Dir;View;
 `
 
-[::/SparrowOS/Demo/PrintF.CPP.Z,1] ::/SparrowOS/Demo/PrintF.CPP.Z
-[::/SparrowOS/Demo/DateTime.CPP.Z,1] ::/SparrowOS/Demo/DateTime.CPP.Z
-[::/SparrowOS/Demo/SubIntAccess.CPP.Z,1] ::/SparrowOS/Demo/SubIntAccess.CPP.Z
-[::/SparrowOS/Demo/ParenWarn.CPP.Z,1] ::/SparrowOS/Demo/ParenWarn.CPP.Z
-[::/SparrowOS/Demo/CompileDemo.CPP.Z,1] ::/SparrowOS/Demo/CompileDemo.CPP.Z
-[::/SparrowOS/Demo/Prompt.CPP.Z,1] ::/SparrowOS/Demo/Prompt.CPP.Z
-[::/SparrowOS/Demo/ClassMeta.CPP.Z,1] ::/SparrowOS/Demo/ClassMeta.CPP.Z
-[::/SparrowOS/Demo/Doc/Form.CPP.Z,1] ::/SparrowOS/Demo/Doc/Form.CPP.Z
-[::/SparrowOS/Demo/Doc/MenuButton.CPP.Z,1]
-  ::/SparrowOS/Demo/Doc/MenuButton.CPP.Z
-[::/SparrowOS/Demo/Doc/MenuSprite.CPP.Z,1]
-  ::/SparrowOS/Demo/Doc/MenuSprite.CPP.Z
-[::/SparrowOS/Demo/Doc/TreeDemo.CPP.Z,1] ::/SparrowOS/Demo/Doc/TreeDemo.CPP.Z
-[::/SparrowOS/Demo/Exceptions.CPP.Z,1] ::/SparrowOS/Demo/Exceptions.CPP.Z
-[::/SparrowOS/Demo/StkGrow.CPP.Z,1] ::/SparrowOS/Demo/StkGrow.CPP.Z
-[::/SparrowOS/Demo/Doc/TextDemo.CPP.Z,1] ::/SparrowOS/Demo/Doc/TextDemo.CPP.Z
-[::/SparrowOS/Demo/Doc/CursorMove.CPP.Z,1]
-  ::/SparrowOS/Demo/Doc/CursorMove.CPP.Z
-[::/SparrowOS/Demo/Doc/DemoDoc.TXT.Z,1] ::/SparrowOS/Demo/Doc/DemoDoc.TXT.Z
-[::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z
-[::/SparrowOS/Demo/Doc/FileRead.CPP.Z,1] ::/SparrowOS/Demo/Doc/FileRead.CPP.Z
-[::/SparrowOS/Demo/Doc/Data.CPP.Z,1] ::/SparrowOS/Demo/Doc/Data.CPP.Z
-[::/SparrowOS/Demo/Doc/DefineStr.CPP.Z,1]
-  ::/SparrowOS/Demo/Doc/DefineStr.CPP.Z
-[::/SparrowOS/Demo/Doc/CallBack.CPP.Z,1] ::/SparrowOS/Demo/Doc/CallBack.CPP.Z
-[::/SparrowOS/Demo/Doc/CallBackAux2.CPP.Z,1]
-  ::/SparrowOS/Demo/Doc/CallBackAux2.CPP.Z
-[::/SparrowOS/Demo/Define.CPP.Z,1] ::/SparrowOS/Demo/Define.CPP.Z
-[C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,151] EdRenumAsm
-[::/SparrowOS/Demo/Doc/UnusedDefine.CPP.Z,1]
-  ::/SparrowOS/Demo/Doc/UnusedDefine.CPP.Z
-[::/SparrowOS/Demo/Asm/AsmHelloWorld.CPP.Z,1]
-  ::/SparrowOS/Demo/Asm/AsmHelloWorld.CPP.Z
-[::/SparrowOS/Demo/Asm/PutDec.CPP.Z,1] ::/SparrowOS/Demo/Asm/PutDec.CPP.Z
-[::/SparrowOS/Demo/Asm/MulByHand.CPP.Z,1]
-  ::/SparrowOS/Demo/Asm/MulByHand.CPP.Z
-[::/SparrowOS/Demo/Asm/DivByHand.CPP.Z,1]
-  ::/SparrowOS/Demo/Asm/DivByHand.CPP.Z
-[::/SparrowOS/Demo/Asm/AsmAndC.CPP.Z,1] ::/SparrowOS/Demo/Asm/AsmAndC.CPP.Z
-[::/SparrowOS/Demo/Asm/AsmAndC2.CPP.Z,1] ::/SparrowOS/Demo/Asm/AsmAndC2.CPP.Z
-[::/SparrowOS/Demo/GlblVars.CPP.Z,1] ::/SparrowOS/Demo/GlblVars.CPP.Z
-[::/SparrowOS/Demo/WinMgr2.CPP.Z,1] ::/SparrowOS/Demo/WinMgr2.CPP.Z
-[::/SparrowOS/Misc/OSTestSuite.CPP.Z,1] ::/SparrowOS/Misc/OSTestSuite.CPP.Z
-::/SparrowOS/Adam
+  [::/SparrowOS/Demo/PrintF.CPP.Z,1] ::/SparrowOS/Demo/PrintF.CPP.Z
+  [::/SparrowOS/Demo/DateTime.CPP.Z,1] ::/SparrowOS/Demo/DateTime.CPP.Z
+  [::/SparrowOS/Demo/SubIntAccess.CPP.Z,1] ::/SparrowOS/Demo/SubIntAccess.CPP.Z
+  [::/SparrowOS/Demo/ParenWarn.CPP.Z,1] ::/SparrowOS/Demo/ParenWarn.CPP.Z
+  [::/SparrowOS/Demo/CompileDemo.CPP.Z,1] ::/SparrowOS/Demo/CompileDemo.CPP.Z
+  [::/SparrowOS/Demo/Prompt.CPP.Z,1] ::/SparrowOS/Demo/Prompt.CPP.Z
+  [::/SparrowOS/Demo/ClassMeta.CPP.Z,1] ::/SparrowOS/Demo/ClassMeta.CPP.Z
+  [::/SparrowOS/Demo/Doc/Form.CPP.Z,1] ::/SparrowOS/Demo/Doc/Form.CPP.Z
+  [::/SparrowOS/Demo/Doc/MenuButton.CPP.Z,1] ::/SparrowOS/Demo/Doc/MenuButton.CPP.Z
+  [::/SparrowOS/Demo/Doc/MenuSprite.CPP.Z,1] ::/SparrowOS/Demo/Doc/MenuSprite.CPP.Z
+  [::/SparrowOS/Demo/Doc/TreeDemo.CPP.Z,1] ::/SparrowOS/Demo/Doc/TreeDemo.CPP.Z
+  [::/SparrowOS/Demo/Exceptions.CPP.Z,1] ::/SparrowOS/Demo/Exceptions.CPP.Z
+  [::/SparrowOS/Demo/StkGrow.CPP.Z,1] ::/SparrowOS/Demo/StkGrow.CPP.Z
+  [::/SparrowOS/Demo/Doc/TextDemo.CPP.Z,1] ::/SparrowOS/Demo/Doc/TextDemo.CPP.Z
+  [::/SparrowOS/Demo/Doc/CursorMove.CPP.Z,1] ::/SparrowOS/Demo/Doc/CursorMove.CPP.Z
+  [::/SparrowOS/Demo/Doc/DemoDoc.TXT.Z,1] ::/SparrowOS/Demo/Doc/DemoDoc.TXT.Z
+  [::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z
+  [::/SparrowOS/Demo/Doc/FileRead.CPP.Z,1] ::/SparrowOS/Demo/Doc/FileRead.CPP.Z
+  [::/SparrowOS/Demo/Doc/Data.CPP.Z,1] ::/SparrowOS/Demo/Doc/Data.CPP.Z
+  [::/SparrowOS/Demo/Doc/DefineStr.CPP.Z,1] ::/SparrowOS/Demo/Doc/DefineStr.CPP.Z
+  [::/SparrowOS/Demo/Doc/CallBack.CPP.Z,1] ::/SparrowOS/Demo/Doc/CallBack.CPP.Z
+  [::/SparrowOS/Demo/Doc/CallBackAux2.CPP.Z,1] ::/SparrowOS/Demo/Doc/CallBackAux2.CPP.Z
+  [::/SparrowOS/Demo/Define.CPP.Z,1] ::/SparrowOS/Demo/Define.CPP.Z
+  [C:/SparrowOS/Adam/Doc/DocCodeTools.CPP.Z,152] EdRenumAsm
+  [::/SparrowOS/Demo/Doc/UnusedDefine.CPP.Z,1] ::/SparrowOS/Demo/Doc/UnusedDefine.CPP.Z
+  [::/SparrowOS/Demo/Asm/AsmHelloWorld.CPP.Z,1] ::/SparrowOS/Demo/Asm/AsmHelloWorld.CPP.Z
+  [::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z,1] ::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z
+  [::/SparrowOS/Demo/Asm/PutDec.CPP.Z,1] ::/SparrowOS/Demo/Asm/PutDec.CPP.Z
+  [::/SparrowOS/Demo/Asm/MulByHand.CPP.Z,1] ::/SparrowOS/Demo/Asm/MulByHand.CPP.Z
+  [::/SparrowOS/Demo/Asm/DivByHand.CPP.Z,1] ::/SparrowOS/Demo/Asm/DivByHand.CPP.Z
+  [::/SparrowOS/Demo/Asm/AsmAndC.CPP.Z,1] ::/SparrowOS/Demo/Asm/AsmAndC.CPP.Z
+  [::/SparrowOS/Demo/Asm/AsmAndC2.CPP.Z,1] ::/SparrowOS/Demo/Asm/AsmAndC2.CPP.Z
+  [::/SparrowOS/Demo/GlblVars.CPP.Z,1] ::/SparrowOS/Demo/GlblVars.CPP.Z
+  [::/SparrowOS/Demo/WinMgr2.CPP.Z,1] ::/SparrowOS/Demo/WinMgr2.CPP.Z
+  [::/SparrowOS/Misc/OSTestSuite.CPP.Z,1] ::/SparrowOS/Misc/OSTestSuite.CPP.Z
+  ::/SparrowOS/Adam
 `Cd("::/SparrowOS/Adam");Dir;View;
 `
 
-
-+] HD Audio
-  [::/SparrowOS/Demo/Snd/BeatFreq.CPP.Z,1]
-  ::/SparrowOS/Demo/Snd/BeatFreq.CPP.Z
-[::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,1]
-  ::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z
-[::/SparrowOS/Demo/Snd/SndScope.CPP.Z,1] ::/SparrowOS/Demo/Snd/SndScope.CPP.Z
-[::/SparrowOS/Demo/Snd/Synth.CPP.Z,1] ::/SparrowOS/Demo/Snd/Synth.CPP.Z
-[::/SparrowOS/Demo/Snd/Record.CPP.Z,1] ::/SparrowOS/Demo/Snd/Record.CPP.Z
-[::/SparrowOS/Demo/Snd/Echo.CPP.Z,1] ::/SparrowOS/Demo/Snd/Echo.CPP.Z
+  
+  +] HD Audio
+  [::/SparrowOS/Demo/Snd/BeatFreq.CPP.Z,1] ::/SparrowOS/Demo/Snd/BeatFreq.CPP.Z
+  [::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,1] ::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z
+  [::/SparrowOS/Demo/Snd/SndScope.CPP.Z,1] ::/SparrowOS/Demo/Snd/SndScope.CPP.Z
+  [::/SparrowOS/Demo/Snd/Synth.CPP.Z,1] ::/SparrowOS/Demo/Snd/Synth.CPP.Z
+  [::/SparrowOS/Demo/Snd/Record.CPP.Z,1] ::/SparrowOS/Demo/Snd/Record.CPP.Z
+  [::/SparrowOS/Demo/Snd/Echo.CPP.Z,1] ::/SparrowOS/Demo/Snd/Echo.CPP.Z
+  

@@ -6,10 +6,10 @@ U0 DrvDftSelect()
   ChgDsk(':');
 }
 
-BoolI64 CopySingleZ(U8 *f1,U8 *f2) //Just one file
+Bool CopySingleZ(U8 *f1,U8 *f2) //Just one file
 {
   U8 *file_buf=NULL;
-  U64 size,attr=0,c;
+  I64 size,attr=0,c;
   CDirEntry de;
  
   if (FileFind(f1,&de,FALSE,TRUE)) {
@@ -26,14 +26,12 @@ BoolI64 CopySingleZ(U8 *f1,U8 *f2) //Just one file
 }
 
 #define COPY_BUF_BLKS	0x80
-BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
+Bool CopySingle(U8 *f1,U8 *f2) //Just one file
 {
-  U8 *absf1=FileNameAbs(f1),
-     *absf2=FileNameAbs(f2);
-  U8 *buf;
-  U64 cnt,n,size,attr1=FileAttr(f1),attr2=FileAttr(f2);
+  U8 *absf1=FileNameAbs(f1),*absf2=FileNameAbs(f2),*buf;
+  I64 cnt,n,size,attr1=FileAttr(f1),attr2=FileAttr(f2),
+      xsum=NATIVE_XSUM,i,j;
   CFile *in_file=NULL,*out_file=NULL;
-  U64 xsum=NATIVE_XSUM,i,j;
 
   if (!StrCmp(absf1,absf2)) { //onto self?
     Free(absf1);
@@ -60,7 +58,7 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
     if (out_file) {
       "Copying %s to %s\n",f1,f2;
       j=size;
-      while (cnt) {
+      while (cnt>0) {
 	if (cnt>COPY_BUF_BLKS) {
 	  n=COPY_BUF_BLKS;
 	  i=n<<BLK_SIZE_BITS;
@@ -94,13 +92,13 @@ BoolI64 CopySingle(U8 *f1,U8 *f2) //Just one file
   return FALSE;
 }
 
-BoolI64 MkDir(U8 *filename)
+Bool MkDir(U8 *filename)
 {
   U8 *name;
   if (FileFind(filename,NULL,TRUE))
     return FALSE;
   CFileAccess *fa=FileAccessNew(filename);
-  result=FALSE;
+  Bool result=FALSE;
   if (fa) {
     if (*fa->mask) {
       if (!FileNameChk(fa->mask))
@@ -129,9 +127,10 @@ BoolI64 MkDir(U8 *filename)
     }
     FileAccessDel(fa);
   }
+  return result;
 }
 
-U0 SysDel(U8 *wild,BoolI8 make_mask)	//this is dangerous
+U0 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 {
   CFileAccess *fa=FileAccessNew(wild,make_mask);
   if (fa) {
@@ -152,11 +151,11 @@ U0 SysDel(U8 *wild,BoolI8 make_mask)	//this is dangerous
   }
 }
 
-U0 Fmt(I64 drv_let,BoolI8 quick=TRUE,BoolI8 confirm=TRUE,U64 type=PT_FAT32)
-{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2705] PT_FAT32 for a list of supported file system types.
+U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FAT32)
+{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2417] PT_FAT32 for a list of supported file system types.
 
   CPrt *p=Drv2Prt(drv_let);
-  BoolI8 old_silent=IsSilent;
+  Bool old_silent=IsSilent;
   if (confirm) {
     if (!AreYouSure)
       return;
@@ -195,17 +194,17 @@ U0 CDImageRead(U8 cd_drv_let,U8 *out_name)
 {
   CBlkDev *bdev=Drv2BlkDev(cd_drv_let);
   CPrt *p=Drv2Prt(cd_drv_let);
-  U8 *buf=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
-  U8 *out_name2=DftExt(out_name,"ISO");
+  U8 *buf=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS),
+     *out_name2=DftExt(out_name,"ISO");
   CFile *f=FOpen(out_name2,"w");
-  U64 n,spc=bdev->blk_size>>BLK_SIZE_BITS,blk=0,cnt,retry;
+  I64 n,spc=bdev->blk_size>>BLK_SIZE_BITS,blk=0,cnt,retry;
   BlkDevInit(bdev);
   if (bdev->type!=BDT_ATAPI)
     throw(EXCEPT_BLKDEV,3);
   if (!out_name)
     out_name=sys_dft_iso_name;
   cnt=CeilU64(p->size,spc);
-  while (cnt) {
+  while (cnt>0) {
     if (cnt>COPY_BUF_BLKS)
       n=COPY_BUF_BLKS;
     else
@@ -239,7 +238,7 @@ U0 CDImageRead(U8 cd_drv_let,U8 *out_name)
 class CDualBuf
 {
   U8 *buf0,*buf1;
-  U64 in_buf,out_buf,cnt;
+  I64 in_buf,out_buf,cnt;
   U8 *filename;
   CBlkDev *CD_bdev;
 };
@@ -248,7 +247,7 @@ class CDualBuf
 U0 CDImageWriteTask(CDualBuf *d)
 {
   U8 *buf;
-  U64 n,blk=0,cnt=d->cnt;
+  I64 n,blk=0,cnt=d->cnt;
   CFile *f;
   if (!IsSysDeterministic)
     Preempt(ON);
@@ -257,7 +256,7 @@ U0 CDImageWriteTask(CDualBuf *d)
     f=FOpen(d->filename,"rc");
   else
     f=FOpen(d->filename,"r");
-  while (cnt) {
+  while (cnt>0) {
     if (cnt>COPY_BUF_BLKS)
       n=COPY_BUF_BLKS;
     else
@@ -280,13 +279,12 @@ U0 CDImageWriteTask(CDualBuf *d)
 U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
 {
   CDualBuf *d=CAlloc(sizeof(CDualBuf));
-  U8 *buf;
-  U8 *in_name2,*in_name3;
-  U64 i,n,spc,blk=0,cnt;
+  U8 *buf,*in_name2,*in_name3;
+  I64 i,n,spc,blk=0,cnt;
   CPrt *p=Drv2Prt(cd_drv_let);
   CBlkDev *bdev=p->bdev,*bdev2;
   CTask *task;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CFile *f;
 
   if (!in_name)
@@ -337,7 +335,7 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
 
   progress1=0; progress1_max=cnt;
   StrCpy(progress1_desc,"Writing");
-  while (cnt) {
+  while (cnt>0) {
     if (cnt>COPY_BUF_BLKS)
       n=COPY_BUF_BLKS;
     else

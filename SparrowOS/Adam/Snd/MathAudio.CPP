@@ -103,7 +103,7 @@ public U0 SndWaveCtrlDel(CSndWaveCtrl *sc)
   Free(sc);
 }
 
-public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U0 *buf,I64 num_samples,
+public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
   F64 _freq,I64 _waveform=WF_SQUARE,F64 _amp=1.0,F64 _left=1.0, F64 _right=1.0)
 {
 //num_samples is multiplied by channels to get buf_len.

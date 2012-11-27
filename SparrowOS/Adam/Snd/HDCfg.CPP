@@ -11,7 +11,7 @@ class MyMass:CMass
      pcm_size_rates,
      in_amp_cap,out_amp_cap;
   U8 pin_widget_ctl;
-  BoolI8 disabled;
+  Bool disabled;
 };
 
 class MySpring:CSpring
@@ -26,7 +26,7 @@ CMathODE *ode=NULL;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  BoolI8 old_suspend,old_preempt;
+  Bool old_suspend,old_preempt;
   I16 *buf;
   I64 i,cxx,cyy,
     cy=task->win_pixel_height>>1;
@@ -35,7 +35,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   MySpring *temps;
 
   old_preempt=Preempt(OFF);
-  old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
+  old_suspend=Suspend(task);
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
     dc->color=temps->color;
@@ -65,7 +65,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	"ST_AUDIO_WIDGET_TYPES");
     tempm=tempm->next;
   }
-  LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
+  Suspend(task,old_suspend);
   Preempt(old_preempt);
   dc->color=BLUE;
   buf=_hda->istr0_buf[0];
@@ -145,8 +145,8 @@ MyMass *FindMassByNID(I64 nid)
 
 MyMass *FindMassByXY(I64 x,I64 y)
 {
-  I64 dd,best_dd=MAX_I64,result=NULL;
-  MyMass   *tempm;
+  I64 dd,best_dd=MAX_I64;
+  MyMass *tempm,*result=NULL;
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     dd=SqrI64(tempm->x-x)+SqrI64(tempm->y-y);
@@ -156,6 +156,7 @@ MyMass *FindMassByXY(I64 x,I64 y)
     }
     tempm=tempm->next;
   }
+  return result;
 }
 
 I64 FindConnectIndex(MyMass *tempm,I64 nid)

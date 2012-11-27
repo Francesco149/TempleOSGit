@@ -16,9 +16,13 @@ Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "Type(\"HOME/PersonalMenu.TXT.Z\");";
 AFPmtStr("\n");
 
-"AFView;\n";
+"Dir;\nAFView;\n";
 PopUpOk(
 "$FG,GREEN$<SHIFT-ESC>$FG$ when finished.\n");
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+
+PopUpOk(
+"$FG,GREEN$Type()$FG$ can also be used on\n"
+"$FG,GREEN$.BMP$FG$ or $FG,GREEN$.GRA$FG$ files!");
 
 

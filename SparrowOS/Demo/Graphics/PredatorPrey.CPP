@@ -1,6 +1,6 @@
 //This is a classic 2nd order nonlinear ordinary differential equation
 
-U64 mp_done_flags;
+I64 mp_done_flags;
 
 #define OX	10
 #define OY	GR_HEIGHT/2-FONT_HEIGHT

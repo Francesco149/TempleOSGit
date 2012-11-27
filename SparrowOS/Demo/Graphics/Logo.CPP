@@ -30,7 +30,7 @@ U0 Logo()
     dc->x=Fs->win_pixel_width>>1;
     dc->y=Fs->win_pixel_height>>1;
 
-//[D:/Export.CPP,67] Wrap() converts an angle to an
+//[E:/Export.CPP,71] Wrap() converts an angle to an
 //equivalent angle in a range starting
 //from [arg2,arg2+pi*2).
     GrIdentEqu(dc->r);
@@ -39,8 +39,8 @@ U0 Logo()
     GrSetRotMat(dc,dc->r);
 
     CSpritePlot3(dc,0,0,0,__BIN_1);
-//See also [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,329] CSpritePlotRotX3b(),
-//[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,336] CSpritePlotRotY3b(),[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,343] CSpritePlotRotZ3b().
+//See also [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,315] CSpritePlotRotX3b(),
+//[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,322] CSpritePlotRotY3b(),[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,329] CSpritePlotRotZ3b().
 
     WinMgrSync;
     DCFill(dc);

@@ -1,6 +1,6 @@
 #help_index "Task/Settings"
 
-public CTaskSettings *SettingsPush(CTask *task=NULL,U64 flags=0)
+public CTaskSettings *SettingsPush(CTask *task=NULL,I64 flags=0)
 { //This is typically used at the start of an application.
   //It saves many settings so they can be restored
   //at the end of the application with [C:/SparrowOS/Adam/TaskSettings.CPP.Z,64] SettingsPop().
@@ -16,14 +16,14 @@ public CTaskSettings *SettingsPush(CTask *task=NULL,U64 flags=0)
 
   if (!(flags&TSF_SAME_SONG)) {
     if (tempse->song_task=task->song_task) {
-      LBts(&task->song_task->task_flags,TASKf_SUSPENDED);
+      Suspend(task->song_task);
       Snd(0);
     }
     task->song_task=NULL;
   }
 
   if (tempse->animate_task=task->animate_task)
-    LBts(&task->animate_task->task_flags,TASKf_SUSPENDED);
+    Suspend(task->animate_task);
   task->animate_task=NULL;
 
   if (doc=DocCur(task)) {
@@ -61,11 +61,11 @@ public CTaskSettings *SettingsPush(CTask *task=NULL,U64 flags=0)
   return tempse;
 }
 
-public U0 SettingsPop(CTask *task=NULL,U64 flags=0)
+public U0 SettingsPop(CTask *task=NULL,I64 flags=0)
 {
   CTaskSettings *tempse;
   CDoc *doc;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   if (!TaskValidate(task)) {
     Preempt(old_preempt);
@@ -80,13 +80,13 @@ public U0 SettingsPop(CTask *task=NULL,U64 flags=0)
     if (task->animate_task)
       Kill(task->animate_task);
     if (task->animate_task=tempse->animate_task)
-      LBtr(&task->animate_task->task_flags,TASKf_SUSPENDED);
+      Suspend(task->animate_task,FALSE);
 
     if (!(flags&TSF_SAME_SONG)) {
       if (task->song_task)
 	Kill(task->song_task);
       if (task->song_task=tempse->song_task)
-	LBtr(&task->song_task->task_flags,TASKf_SUSPENDED);
+	Suspend(task->song_task,FALSE);
     }
 
     if (doc=DocCur(task)) {

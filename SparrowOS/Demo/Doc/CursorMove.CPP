@@ -19,7 +19,7 @@ CursorMovementDemo;
 //The word-wrap Off and On cmds are
 //$WW,0$ and $WW,1$.
 
-//You might need [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,697] DocMax() to adjust
+//You might need [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,698] DocMax() to adjust
 //the cmd line window buf size.
 //It counts cmds, not lines.
 

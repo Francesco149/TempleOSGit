@@ -2,7 +2,7 @@
 //file with:
 //	FileWrite("filename.BIN.Z",gr_font,256*FONT_HEIGHT);
 //You can load it with:
-//	U0 *myfont=FileRead("filename.BIN.Z");
+//	U8 *myfont=FileRead("filename.BIN.Z");
 //	gr_font=myfont; //preserve gr_font if you want to go back.
 
 //If you want to change the system font permanently,
@@ -47,7 +47,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
 }
 
-U0 FESave(BoolI64 pmt)
+U0 FESave(Bool pmt)
 {
   U8 old_draw_it=Fs->draw_it;
   CDoc *doc=DocNew;

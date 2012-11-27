@@ -83,7 +83,7 @@ class Pt
 Pt hex_centers[map_rows][map_cols];
 
 I64 show_visible_row,show_visible_col;
-BoolI8 roads[map_rows][map_cols],
+Bool roads[map_rows][map_cols],
        rivers[map_rows][map_cols],
        visible_map[map_rows][map_cols];
 
@@ -103,7 +103,7 @@ F64 fire_radius,fire_radius_x,fire_radius_y;
 
 //These display "phase", "turn" and "game over".
 U8 msg_buf[136];
-U64 msg_off_timeout; //Jiffies. Goes away after a time.
+I64 msg_off_timeout; //Jiffies. Goes away after a time.
 
 /*I got tricky by not defining a color
 right away in these [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprites so they can
@@ -149,7 +149,7 @@ class Unit
      armored_attack,unarmored_attack,armor;
   I8 type,player,facing,movement,life,
      range,remaining_movement,accuracy;
-  BoolI8 visible[2],fired,infantry,indirect_fire,pad[3];
+  Bool visible[2],fired,infantry,indirect_fire,pad[3];
 };
 
 Unit units[2][MAX_UNITS];
@@ -207,7 +207,7 @@ U0 Toward(I64 &row,I64 &col,I64 direction)
 
 I64 FacingChg(I64 f1,I64 f2)
 {
-  result=(f1+6-f2)%6;
+  I64 result=(f1+6-f2)%6;
   if (result>=3)
     return 6-result;
   else
@@ -248,7 +248,7 @@ Unit *FindUnit(I64 row,I64 col)
   return NULL;
 }
 
-BoolI8 CursorInWindow(CTask *task,I64 x,I64 y)
+Bool CursorInWindow(CTask *task,I64 x,I64 y)
 {
   if (0<=x+task->win_scroll_x<task->win_pixel_width &&
       0<=y+task->win_scroll_y<task->win_pixel_height)
@@ -268,7 +268,7 @@ class LOSCtrl
   I64 r1,c1,r2,c2,distance;
 };
 
-BoolI64 LOSPlot(LOSCtrl *l,I64 x,I64 y,I64 z)
+Bool LOSPlot(LOSCtrl *l,I64 x,I64 y,I64 z)
 { //We got tricky and used z as the distance from the start of the line.
   I64 row,col;
   XY2RowCol(row,col,x,y);
@@ -287,7 +287,7 @@ BoolI64 LOSPlot(LOSCtrl *l,I64 x,I64 y,I64 z)
   return TRUE;
 }
 
-BoolI64 LOS(I64 r1,I64 c1,I64 r2,I64 c2)
+Bool LOS(I64 r1,I64 c1,I64 r2,I64 c2)
 {
   F64 x1,y1,x2,y2;
   LOSCtrl l;
@@ -341,9 +341,9 @@ U0 RVMerge(I64 player)
 }
 
 
-BoolI64 MPRecalcVisible(MPCtrl1 *job)
+Bool MPRecalcVisible(MPCtrl1 *job)
 {
-  BoolI8 result=FALSE,seen;
+  Bool result=FALSE,seen;
   I64 i,j,row,col;
   F64 x1,y1,x2,y2,d,range;
   Unit *ut0,*ut1;
@@ -421,11 +421,13 @@ BoolI64 MPRecalcVisible(MPCtrl1 *job)
 	    LBtr(&visible_unit_bitmap[enemy_player],j+i*MAX_UNITS);
       break;
   }
+  return result;
 }
 
-BoolI64 RecalcVisible(I64 mode,Unit *tempu=NULL)
+Bool RecalcVisible(I64 mode,Unit *tempu=NULL)
 {
   I64 i,hi,k,cnt;
+  Bool result;
 
 /*The compiler doesn't go out of it's way
 to know if something is constant.;-)  This
@@ -433,7 +435,7 @@ just compiles with the val at compile
 time, an advantage of just-in-time over
 static binaries.  SparrowOS has a limited
 stk size, so don't get in the habit.
-[C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() would probably be the better choice.
+[C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() would probably be the better choice.
 */
   MPCtrl1 job[mp_cnt];
   CMPCmd *cmd[mp_cnt];
@@ -475,6 +477,7 @@ stk size, so don't get in the habit.
       result=TRUE;
   if (mode==RV_UPDATE_FRIENDLY_UNIT)
     RVMerge(cur_player);
+  return result;
 }
 
 class MPCtrl2
@@ -522,6 +525,7 @@ U0 RecalcVisibleMap(I64 row,I64 col)
 
 I64 MoveCost(Unit *tempu,I64 r,I64 c,I64 facing)
 {
+  I64 result;
   if (tempu->infantry)
     result=0;
   else {
@@ -539,6 +543,7 @@ I64 MoveCost(Unit *tempu,I64 r,I64 c,I64 facing)
 	result=tempu->movement;
     }
   }
+  return result;
 }
 
 I64 MoveOneHex(I64 &row,I64 &col,F64 x,F64 y)
@@ -566,12 +571,12 @@ I64 MoveOneHex(I64 &row,I64 &col,F64 x,F64 y)
     return -1;
 }
 
-BoolI8 moving=FALSE;
+Bool moving=FALSE;
 I64 move_x,move_y;
 F64 move_facing;
 Unit *moving_unit;
 
-BoolI64 MovePlot(U0,I64 x,I64 y,I64)
+Bool MovePlot(U0,I64 x,I64 y,I64)
 {
   move_x=x; move_y=y;
   Sleep(5*ANIMATION_DELAY);
@@ -608,7 +613,7 @@ U0 MoveUnitAnimation(Unit *tempu,I64 r,I64 c,I64 facing)
   moving=FALSE;
 }
  
-BoolI64 MoveUnit(Unit *tempu,I64 x,I64 y)
+Bool MoveUnit(Unit *tempu,I64 x,I64 y)
 {
   I64 r,c,r0=tempu->row,c0=tempu->col,i,facing;
   while (tempu->remaining_movement>0) {
@@ -658,14 +663,14 @@ U0 PlotShot(Unit *tempu,I64 row,I64 col)
   QueIns(tempi,indirect_root.last);
 }
 
-BoolI8 firing=FALSE;
+Bool firing=FALSE;
 I64 fire_x,fire_y;
 Unit *target_unit;
-BoolI8 target_hit;
-BoolI8 indirect_explosion=FALSE;
+Bool target_hit;
+Bool indirect_explosion=FALSE;
 I64 indirect_row,indirect_col;
 
-BoolI64 FirePlot(U0,I64 x,I64 y,I64)
+Bool FirePlot(U0,I64 x,I64 y,I64)
 {
   fire_x=x; fire_y=y;
   firing=TRUE;
@@ -679,7 +684,7 @@ U0 FireShot(Unit *tempu,Unit *target)
     t1=terrain[tempu->row][tempu->col],
     t2=terrain[target->row][target->col];
   F64 x1,y1,x2,y2,d,a,dammage=0,range_factor;
-  BoolI8 hit;
+  Bool hit;
 
   if (tempu->life<=0 || target->life<=0 || tempu->range<=0)
     return;
@@ -787,7 +792,7 @@ U0 FireShot(Unit *tempu,Unit *target)
       }
     }
   }
-  while (snd_freq) //see [C:/SparrowOS/OSMain/Misc1a.CPP.Z,201] Snd()
+  while (snd_freq) //see [C:/SparrowOS/OSMain/Misc1a.CPP.Z,209] Snd()
     Yield;
   target_unit=NULL;
 }
@@ -801,7 +806,7 @@ U0 IndirectFireResolve()
   I64 i,r,c,facing;
   F64 x1,y1,x2,y2,d,dammage=0,range_factor;
   Unit *tempu,*target;
-  BoolI8 hit;
+  Bool hit;
   IndirectOrders *tempi=indirect_root.next,*tempi1;
   while (tempi!=*indirect_root) {
     tempi1=tempi->next;
@@ -909,7 +914,7 @@ U0 IndirectFireResolve()
     }
     Noise(2000*ANIMATION_DELAY,800,1000);
     Sleep(2000*ANIMATION_DELAY);
-    while (snd_freq) //see [C:/SparrowOS/OSMain/Misc1a.CPP.Z,201] Snd()
+    while (snd_freq) //see [C:/SparrowOS/OSMain/Misc1a.CPP.Z,209] Snd()
       Yield;
     indirect_explosion=FALSE;
 
@@ -1370,7 +1375,7 @@ U0 PickAI(U8 *dirname,I64 player)
   U8 *st;
   CDirEntry *tempm,*tempm1,*tempm2;
   CDoc *doc=DocNew;
-  BoolI8 *old_silent=Silent(ON);
+  Bool *old_silent=Silent(ON);
   st=MSPrintF("%s/*.CPP.Z",dirname);
   tempm=FilesFind(st);
   Free(st);
@@ -1453,7 +1458,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 h,v,i,j,r,c;
   U8 buf[128];
   IndirectOrders *tempi;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   task->horz_scroll.min=0;
   task->horz_scroll.max=map_width-task->win_pixel_width;
@@ -1619,7 +1624,7 @@ U0 TaskEndCB()
 
 U0 Tanks()
 {
-  U64 result,ch;
+  I64 result,ch;
   map=DCNew(DCT_COLOR8,MAP_WIDTH,MAP_HEIGHT);
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush

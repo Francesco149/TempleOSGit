@@ -52,11 +52,12 @@ I64 AddVertex(BallDefineStruct *,I64 x,I64 y,I64 z)
 
 I64 AddTriangle(BallDefineStruct *,I64 c,I64 n0,I64 n1,I64 n2)
 {
-  result=b->triangle_cnt++;
+  I64 result=b->triangle_cnt++;
   b->t[result].color=c;
   b->t[result].nums[0]=n0;
   b->t[result].nums[1]=n1;
   b->t[result].nums[2]=n2;
+  return result;
 }
 
 U8 *Ball2CSprite()
@@ -73,10 +74,12 @@ U8 *Ball2CSprite()
   MemCpy(dst,&b->t,b->triangle_cnt*sizeof(CMeshTri));
   dst+=b->triangle_cnt*sizeof(CMeshTri);
   *dst(U8 *)++ =GRST_END;
+  return result;
 }
 
 public U8 *BallGen()
 {
+  U8 *result;
   I64 i,j,n,m,c,p1,p2,p3,p4;
   BallDefineStruct bd1,bd2;
   F64 r,r1,r2,z1,z2,d_a1,d_a2;
@@ -125,4 +128,5 @@ public U8 *BallGen()
     else
       break;
   }
+  return result;
 }

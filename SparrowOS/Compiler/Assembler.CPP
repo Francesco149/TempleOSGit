@@ -1,5 +1,5 @@
-U0 AsmUnresolvedAdd(CAsmCtrl *a,U8 *exp,I64 type,U64 ip,U64 rel_ip,
-		    CLexUndef *undef_hash,I64 line_num,BoolI8 U8_avail,BoolI8 glbl)
+U0 AsmUnresolvedAdd(CAsmCtrl *a,U8 *exp,I64 type,I64 ip,I64 rel_ip,
+		    CLexUndef *undef_hash,I64 line_num,Bool U8_avail,Bool glbl)
 {
   CAsmUnresolvedRef *tempu=MAlloc(sizeof(CAsmUnresolvedRef));
   tempu->exp=exp;
@@ -130,11 +130,11 @@ U0 AsmStoreCodeU64(CLex *lx,U64 d)
 {
   CAsmCtrl *a=lx->a;
   I64 i=a->ip>>ASM_CODE_BLK_BITS,
-     j=(a->ip+sizeof(U64))>>ASM_CODE_BLK_BITS;
-  U64 *qq;
+      j=(a->ip+sizeof(I64))>>ASM_CODE_BLK_BITS,
+      *qq;
   CAsmCodeBlk *tempc=a->code;
   if (i!=j) {
-    for (i=0;i<sizeof(U64);i++)
+    for (i=0;i<sizeof(I64);i++)
       AsmStoreCodeU8(lx,d.u8[i]);
     return;
   }
@@ -152,7 +152,7 @@ U0 AsmStoreCodeU64(CLex *lx,U64 d)
     }
   qq=tempc->body+ a->ip&(ASM_CODE_BLK_SIZE-1);
   *qq=d;
-  a->ip+=sizeof(U64);
+  a->ip+=sizeof(I64);
   if (a->list) {
     if (a->display_col>=24) {
       NewLine;
@@ -202,7 +202,7 @@ U0 AsmReserveCodeTo(CLex *lx,I64 ip)
 I64 AsmExpressionEval(CLex *lx)
 {
   U8 *exp;
-  result=0;
+  I64 result=0;
   lx->undef_hash_entry=NULL;
   lx->flags&=~(LF_UNRESOLVED+LF_LOCAL);
   lx->abs_cnts=0;
@@ -218,6 +218,7 @@ I64 AsmExpressionEval(CLex *lx)
       ExpressionDel(exp);
     }
   }
+  return result;
 }
 
 U0 AsmLocalsResolve(CLex *lx)
@@ -226,7 +227,7 @@ U0 AsmLocalsResolve(CLex *lx)
   CAsmUnresolvedRef *tempu=a->local_unresolved,*tempu1;
   I64 r=0;
   CLexUndef *templu;
-  BoolI8 undefined;
+  Bool undefined;
   U8 *label=NULL;
 
   if (!a->has_locals)
@@ -296,7 +297,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
   CLexUndef *templu;
   CHashExport *tempess;
   U8 *label;
-  BoolI8 undefined;
+  Bool undefined;
   CExternUsage *tempeu,*tempeu8;
 
   while (tempu) {
@@ -421,7 +422,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
   }
 }
 
-BoolI64 PrsAsmImm(CLex *lx,CAsmArg *arg)
+Bool PrsAsmImm(CLex *lx,CAsmArg *arg)
 {
   if (arg->imm_or_off_present)
     LexExcept(lx,"ST_ALREADY_ONE_IMMEDIATE");
@@ -597,7 +598,7 @@ U0 PrsAsmArg(CLex *lx,CAsmArg *arg)
 }
 
 
-U0 AsmMakeArgMask(CLex *lx,CAsmArg *arg,U64 *mask)
+U0 AsmMakeArgMask(CLex *lx,CAsmArg *arg,I64 *mask)
 {
   CAsmCtrl *a=lx->a;
   if (arg->just_seg) {
@@ -681,7 +682,7 @@ U0 AsmMakeArgMask(CLex *lx,CAsmArg *arg,U64 *mask)
     *mask&=  0x1FFFFFFFFF;
 }
 
-BoolI64 AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,BoolI8 U8_avail)
+Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 {
   CAsmCtrl *a=lx->a;
   I64 i;
@@ -820,14 +821,13 @@ BoolI64 AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,BoolI8 U8_avail)
 
 U8 asm_seg_prefixes[6]={0x26,0x2E,0x36,0x3E,0x64,0x65};
 
-BoolI64 AsmCodeInstruction(CLex *lx,
+Bool AsmCodeInstruction(CLex *lx,
 			  CHashOpcode *tempo,I64 argcnt)
 {
   CAsmCtrl *a=lx->a;
-  I64 i,j,a1,a2,om,seg;
-  U64 arg1mask,arg2mask;
+  I64 i,j,a1,a2,om,seg,arg1mask,arg2mask;
   CAsmArg *tempa1,*tempa2;
-  BoolI8 ModrM_complete,U8_avail=FALSE,found_second_possible=FALSE;
+  Bool ModrM_complete,U8_avail=FALSE,found_second_possible=FALSE;
   CInstruction *tempi;
 
   CAsmIns cur,best;
@@ -1233,7 +1233,7 @@ BoolI64 AsmCodeInstruction(CLex *lx,
 U0 DefineU8s(CLex *lx,I64 U8_cnt)
 {
   CAsmCtrl *a=lx->a;
-  BoolI8 is_dup;
+  Bool is_dup;
   I64 i,dup_val;
   U8 *ptr;
   CAsmNum2 num2;
@@ -1309,12 +1309,11 @@ U0 DefineU8s(CLex *lx,I64 U8_cnt)
 U0 PrsAsmBlk(CLex *lx)
 {
   CAsmCtrl *a=lx->a;
-  I64 i,j,k;
+  I64 i,j,k,argcnt,
+      old_hash_mask=lx->hash_mask,
+      old_flags=lx->flags & LF_ASM_EXPRESSIONS;
   CHashOpcode *tempo;
   CHashExport *tempess;
-  U64 argcnt;
-  U64 old_hash_mask=lx->hash_mask;
-  U64 old_flags=lx->flags & LF_ASM_EXPRESSIONS;
   U8 *next_last_label;
 
   a->seg_size=64;

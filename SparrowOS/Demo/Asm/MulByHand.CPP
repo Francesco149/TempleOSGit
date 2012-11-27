@@ -54,7 +54,7 @@ class U128
   U64 lo,hi;
 };
 
-_extern _MUL_U64_U64_TO_U128 U0 MulU64(U64 n1,U64 n2,U128 *_prod);
+_extern _MUL_U64_U64_TO_U128 U0 MulU64(I64 n1,I64 n2,U128 *_prod);
 
 U0 MulByHand()
 {

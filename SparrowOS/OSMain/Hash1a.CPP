@@ -324,7 +324,7 @@ _HASH_ADD_AFTER::
 	MOV	U64 CHash.next[RCX],RBX
 	MOV	U64 [RAX],RCX
 
-//Queins
+//QueIns
 	MOV	RBX,U64 CHashTable.last_added[RDI]
 	MOV	U64 CHash.last_added[RCX],RBX
 	MOV	U64 CHash.next_added[RBX],RCX
@@ -357,7 +357,7 @@ _HASH_REPLACE::
 	MOV	RCX,U64 SF_ARG1[RBP]
 	JZ	@@05	//Z set by find
 
-//QueRem/Queins
+//QueRem/QueIns
 	MOV	RBX,U64 CHash.next_added[RAX]
 	MOV	U64 CHash.next_added[RCX],RBX
 	MOV	U64 CHash.last_added[RBX],RCX
@@ -368,7 +368,7 @@ _HASH_REPLACE::
 	MOV	RBX,U64 CHash.next[RAX]
 	JMP	@@10
 
-//Queins
+//QueIns
 @@05:	MOV	RBX,U64 CHashTable.last_added[RDI]
 	MOV	U64 CHash.last_added[RCX],RBX
 	MOV	U64 CHash.next_added[RBX],RCX
@@ -445,18 +445,18 @@ _HASH_REM_DEL::
 	RET1	24
 }
 
-_extern _HASH_STR U64 HashStr(U8 *st);
+_extern _HASH_STR I64 HashStr(U8 *st);
 _extern _HASH_FIND CHash *
-  HashFind(U8 *st,CHashTable *table,U64 mask,U64 instance=1);
+  HashFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
 _extern _HASH_SINGLE_TABLE_FIND CHash *
-  HashSingleTableFind(U8 *st,CHashTable *table,U64 mask,U64 instance=1);
+  HashSingleTableFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
 _extern _HASH_BUCKET_FIND CHash **
   HashBucketFind(U8 *st,CHashTable *table);
 _extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table);
 _extern _HASH_REPLACE U0 HashReplace(CHash *temph,CHashTable *table,
-					U64 instance=1);//instance must match temph's
-_extern _HASH_REM_DEL BoolI64 HashRemDel(CHash *temph,CHashTable *table,
-					U64 instance=1);//instance must match temph's
+					I64 instance=1);//instance must match temph's
+_extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
+					I64 instance=1);//instance must match temph's
 
 I64 HashTypeNum(CHash *temph)
 {
@@ -466,7 +466,7 @@ I64 HashTypeNum(CHash *temph)
     return -1;
 }
 
-CHashTable *HashTableNew(U64 size,CTask *mem_task=NULL)
+CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL)
 {
   CHashTable *tempht;
   tempht=CAlloc(sizeof(CHashTable),mem_task);
@@ -492,17 +492,13 @@ U0 HashDel(CHashSrcSym *temph)
     }
     if (temph->type & (HTT_FUN | HTT_CLASS))
     //Assumes code not on heap, so doesn't Free.
-    //[C:/SparrowOS/Compiler/Lex.CPP.Z,561] MemberListDel() is an import to the OSMain module
+    //[C:/SparrowOS/Compiler/Lex.CPP.Z,604] MemberListDel() is an import to the OSMain module
       MemberListDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(CHashDefineStr *)->data);
     else if (temph->type & HTT_GLBL_VAR) {
       if (!(temph(CHashGlblVar *)->flags&GVAF_ALIAS))
 	Free(temph(CHashGlblVar *)->data_addr);
-      LinkedListDel(temph(CHashGlblVar *)->dim.next);
-      if (temph(CHashGlblVar *)->fun_ptr)
-	HashDel(temph(CHashGlblVar *)->fun_ptr-temph(CHashGlblVar *)->fun_ptr->ptr_cnt);
-    } else if (temph->type & HTT_TYPEDEF) {
       LinkedListDel(temph(CHashGlblVar *)->dim.next);
       if (temph(CHashGlblVar *)->fun_ptr)
 	HashDel(temph(CHashGlblVar *)->fun_ptr-temph(CHashGlblVar *)->fun_ptr->ptr_cnt);
@@ -529,13 +525,14 @@ U0 HashTableDel(CHashTable *tempht)
 CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 u0=0,I64 u1=0,I64 u2=0,CTask *task=NULL)
 {
   if (!task) task=Fs;
-  result=CAlloc(sizeof(CHashGeneric),task);
+  CHashGeneric *result=CAlloc(sizeof(CHashGeneric),task);
   result->type=type;
   result->user_data0=u0;
   result->user_data1=u1;
   result->user_data2=u2;
   result->str=StrNew(name,task);
   HashAdd(result,task->hash_table);
+  return result;
 }
 
 I64 NamedFramePtr(U8 *name,CTask *task=NULL)
@@ -566,12 +563,13 @@ I64 NamedFramePtrSet(U8 *name,I64 u0,CTask *task=NULL)
 I64 NamedFramePtrDel(U8 *name,CTask *task=NULL)
 {
   CHashGeneric *temph;
-  result=0;
+  I64 result=0;
   if (!task) task=Fs;
   if (temph=HashFind(name,task->hash_table,HTT_NAMED_FRAME_PTR)) {
     result=temph->user_data0;
     HashRemDel(temph,task->hash_table);
   }
+  return result;
 }
 
 U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
@@ -580,7 +578,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
   I64 i,etype;
   CHashExport *tempess=NULL;
   CHashImport *tempiss;
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
   CHashFun *tempf;
   CHashGlblVar *tempg;
 
@@ -636,7 +634,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
       else if (etype<=EIE_LIT_U32)
 	*ptr2(U32 *)+=i;
       else if (etype<=EIE_LIT_U64)
-	*ptr2(U64 *)+=i;
+	*ptr2(I64 *)+=i;
     }
   }
   *_src=src-1;
@@ -655,8 +653,7 @@ U0 SysSymImportsResolve(U8 *st_ptr,I64 ld_flags)
 
 U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 {
-  U8 *ptr2,*ptr3;
-  U8 *st_ptr;
+  U8 *ptr2,*ptr3,*st_ptr;
   I64 i,j,cnt,etype;
   CHashExport *tempess=NULL;
   while (etype=*src++) {
@@ -692,7 +689,7 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 	}
 	break;
       case EIE_HEAP_GLBL:
-	ptr3=MAlloc(*src(U64 *)++);
+	ptr3=MAlloc(*src(I64 *)++);
 
 	if (*st_ptr) {
 	  tempess=CAlloc(sizeof(CHashExport));
@@ -705,7 +702,7 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 	cnt=i;
 	for (j=0;j<cnt;j++) {
 	  ptr2=module_base+*src(U32 *)++;
-	  *ptr2(U64 *)+=ptr3;
+	  *ptr2(I64 *)+=ptr3;
 	}
 	break;
     }
@@ -735,13 +732,11 @@ U0 LoadPass2(U8 *src,U8 *module_base,I64)
   }
 }
 
-U0 *Load(U8 *filename,U64 ld_flags=0,CBinFile *bfh_addr=-1)
+U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=-1)
 { //See [C:/SparrowOS/Adam/BinRep.CPP.Z,23] BinRep().
   //bfh_addr==-1 means don't care what load addr.
-  U8 *fbuf;
-  U8 *module_base;
-  U8 *absname;
-  U64 size,module_alignment;
+  U8 *fbuf,*module_base,*absname;
+  I64 size,module_alignment;
   CBinFile *bfh2;
   fbuf=DftExt(filename,"BIN.Z");
   if (!(bfh2=FileRead(fbuf,&size))) {
@@ -797,7 +792,7 @@ U0 LoadOSMain()
 {
   HashGenericAdd(OSMAIN_MODULE_NAME,HTT_MODULE|HTF_PUBLIC,sys_boot_base-sizeof(CBinFile));
 
-//Abs patches done here [D:/SparrowOS/OSMain/OSStart.CPP.Z,1] EIE_ABS_ADDR.
+//Abs patches done here [C:/SparrowOS/OSMain/OSStart.CPP.Z,1] EIE_ABS_ADDR.
   LoadPass1(sys_boot_patch_table_base,sys_boot_base,LDF_NO_ABSS|LDF_SILENT);
 
 //No main routines

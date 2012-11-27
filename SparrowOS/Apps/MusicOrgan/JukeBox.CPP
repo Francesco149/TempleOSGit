@@ -1,6 +1,6 @@
 CTask *SingleSong(U8 *msg,U8 *name)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CTask *task=Spawn(&ServantUserCmdLine,NULL,name,Fs);
   LBts(&task->task_flags,TASKf_LOCK_TITLE);
   StrCpy(task->task_title,name);
@@ -19,7 +19,7 @@ task->win_bottom=task->win_top+8;
 #define JB_RUN_LEVEL_ONE	1
 #define JB_RUN_LEVEL_TWO	2
 
-BoolI64 JBPutKey(CDoc *doc,U0 *,U64 ch,U64 sc)
+Bool JBPutKey(CDoc *doc,U8 *,I64 ch,I64 sc)
 {  //ch=ASCII; sc=scancode
   CDocEntry *doc_ce=doc->cur_entry,*doc_e;
   CDirEntry *tempm;

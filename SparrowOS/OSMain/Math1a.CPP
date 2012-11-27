@@ -343,69 +343,6 @@ _SIGN::
 @@05:	LEAVE
 	RET1	8
 // ************************************
-_FABS::
-	ENTER	0
-	FLD	U64 SF_ARG1[RBP]
-	FABS
-	FSTP	U64 SF_ARG1[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP]
-	LEAVE
-	RET1	8
-// ************************************
-_FSQRT::
-	ENTER	0
-	FLD	U64 SF_ARG1[RBP]
-	FSQRT
-	FSTP	U64 SF_ARG1[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP]
-	LEAVE
-	RET1	8
-// ************************************
-_FSIN::
-	ENTER	0
-	FLD	U64 SF_ARG1[RBP]
-	FSIN
-	FSTP	U64 SF_ARG1[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP]
-	LEAVE
-	RET1	8
-// ************************************
-_FCOS::
-	ENTER	0
-	FLD	U64 SF_ARG1[RBP]
-	FCOS
-	FSTP	U64 SF_ARG1[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP]
-	LEAVE
-	RET1	8
-// ************************************
-_FTAN::
-	ENTER	0
-	FLD	U64 SF_ARG1[RBP]
-@@05:	FPTAN
-	FSTSW
-	TEST	AX,0x400
-	JNZ	@@05
-	FFREE	ST0
-	FINCSTP
-	FSTP	U64 SF_ARG1[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP]
-	LEAVE
-	RET1	8
-// ************************************
-_FATAN::
-	ENTER	0
-	FLD	U64 SF_ARG1[RBP]
-	FLD1
-@@05:	FPATAN
-	FSTSW
-	TEST	AX,0x400
-	JNZ	@@05
-	FSTP	U64 SF_ARG1[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP]
-	LEAVE
-	RET1	8
-// ************************************
 _ARG::
 	ENTER	0
 	FLD	U64 SF_ARG2[RBP]

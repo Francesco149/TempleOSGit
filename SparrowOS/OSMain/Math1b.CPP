@@ -98,19 +98,23 @@ I32 RandI32()
 
 U64 RandU64()
 {
+  U64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 I64 RandI64()
 {
+  I64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 F64 Rand()
 { //0.0<=x<1.0
-  U64 result;
+  I64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result&=0x3FFFFFFFFFFFFFFF;
@@ -143,19 +147,23 @@ I32 RandI32()
 
 U64 RandU64()
 {
+  U64 result;
   result.u32[0]=sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
   result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 I64 RandI64()
 {
+  I64 result;
   result.u32[0]=sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
   result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 F64 Rand()
 { //0.0<=x<1.0
-  U64 result;
+  I64 result;
   result.u32[0]=sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTimeStamp>>4;
   result.u32[1]=sys_rnd_seed.i32[0]= 1664525*sys_rnd_seed.i32[0]+1013904223;
   result&=0x3FFFFFFFFFFFFFFF;
@@ -189,26 +197,30 @@ I32 Rand2I32()
 
 U64 Rand2U64()
 {
+  U64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 I64 Rand2I64()
 {
+  I64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
+  return result;
 }
 
 F64 Rand2()
 { //0.0<=x<1.0
-  U64 result;
+  I64 result;
   result.u32[0]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result.u32[1]=Fs->rnd_seed.i32[0]= 1664525*Fs->rnd_seed.i32[0]+1013904223;
   result&=0x3FFFFFFFFFFFFFFF;
   return result/ToF64(0x4000000000000000);
 }
 
-U0 Randomize(U64 seed=0)
+U0 Randomize(I64 seed=0)
 { //Randomizes seed.
   Fs->rnd_seed=seed;
 }

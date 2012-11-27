@@ -1,12 +1,12 @@
 U0 PaletteDemo()
 {
-  U64 i,j;
+  I64 i,j;
   CBGR bgr;
   for (i=0;i<16;i++)
     "$FG,BLACK$$BG,%d$__%-8Z__$FG$$BG$\n",i,i,"ST_COLORS";
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
-//Alternatively, use [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,225] SetVGAPalette4(vga_palette4_gray);
+//Alternatively, use [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,226] SetVGAPalette4(vga_palette4_gray);
   for (i=0;i<16;i++) {
     j=0xFF*i/15;
     bgr.b=j;

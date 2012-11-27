@@ -36,7 +36,7 @@ Tree The item will behave like a tree widget, with this as the root.
 Collapsed The tree or hidden widget will begin collapsed.
 Alias For tree entries, the text of the subentry the cursor is on will appear 
 here.  This is for drop-down lists.
-Define Str will substitute a #define or [C:/SparrowOS/OSMain/Str1a.CPP.Z,627]
+Define Str will substitute a #define or [C:/SparrowOS/OSMain/Str1a.CPP.Z,629]
 DefineLoad() string for the tag.
 
 Quote Make the result suitable for including in a program, in quotes, 
@@ -56,5 +56,5 @@ Refresh Data  updates $DA$ entry continuously.
 
 Html Link  stores a link which will be embedded if you generate a html
 version 
-of a document with [C:/SparrowOS/Adam/ToHtml.CPP.Z,316] ToHtml() or
-[C:/SparrowOS/Adam/ToHtml.CPP.Z,122] Doc2Html().
+of a document with [C:/SparrowOS/Adam/ToHtml.CPP.Z,318] ToHtml() or
+[C:/SparrowOS/Adam/ToHtml.CPP.Z,124] Doc2Html().

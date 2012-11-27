@@ -47,7 +47,7 @@ U0 UpdateDerivedTempoCtrl(CCtrl *c)
   s->stacatto=LimitI64(s->stacatto,0,TEMPO_RANGE-1);
 }
 
-U0 LeftClickTempo(CCtrl *c,I64 x,I64 y,BoolI8)
+U0 LeftClickTempo(CCtrl *c,I64 x,I64 y,Bool)
 {
   TempoState *s=c->state;
   if (x<(c->right+c->left)/2)
@@ -60,7 +60,7 @@ U0 LeftClickTempo(CCtrl *c,I64 x,I64 y,BoolI8)
 
 CCtrl *TempoNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c=CAlloc(sizeof(CCtrl));
   c->win_task=Fs;
   c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
@@ -80,7 +80,7 @@ CCtrl *TempoNew()
 
 U0 TempoDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

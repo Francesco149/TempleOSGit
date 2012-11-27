@@ -1,9 +1,10 @@
 CQueVectU8 *QueVectU8New(I64 min_index=0)
 {
-  result=MAlloc(sizeof(CQueVectU8));
+  CQueVectU8 *result=MAlloc(sizeof(CQueVectU8));
   result->next=result->last=result;
   result->total_cnt=result->node_cnt=0;
   result->min_index=min_index;
+  return result;
 }
 
 U0 QueVectU8Put(CQueVectU8 *v,I64 index,U8 ch)
@@ -50,7 +51,7 @@ U0 QueVectU8Del(CQueVectU8 *v)
   }
 }
 
-U64 QueVectU8Get(CQueVectU8 *v,I64 index)
+I64 QueVectU8Get(CQueVectU8 *v,I64 index)
 {
   CQueVectU8 *tempv;
   index-=v->min_index;

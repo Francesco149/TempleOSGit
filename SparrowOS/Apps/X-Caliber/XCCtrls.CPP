@@ -6,7 +6,7 @@ class CtrlPanelState
 {
   I64 bullet_radius,fuse_time;
   F64 laser_temperature;
-  BoolI8 spacewalk;
+  Bool spacewalk;
 } ctrl_panel;
 
 
@@ -97,7 +97,7 @@ U0 UpdateDerivedCtrlPanelCtrl(CCtrl *c)
   s->fuse_time=LimitI64(s->fuse_time,0,CTRL_PANEL_RANGE-1);
 }
 
-U0 LeftClickCtrlPanel(CCtrl *c,I64 x,I64 y,BoolI8)
+U0 LeftClickCtrlPanel(CCtrl *c,I64 x,I64 y,Bool)
 {
   CtrlPanelState *s=c->state;
   if (y<c->top+CTRL_PANEL_BORDER+(CTRL_PANEL_SPACING-FONT_HEIGHT)/2+FONT_HEIGHT+6)
@@ -114,7 +114,7 @@ U0 LeftClickCtrlPanel(CCtrl *c,I64 x,I64 y,BoolI8)
 
 CCtrl *CtrlPanelNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c=CAlloc(sizeof(CCtrl));
   MemSet(&ctrl_panel,0,sizeof(ctrl_panel));
   c->win_task=Fs;
@@ -133,7 +133,7 @@ CCtrl *CtrlPanelNew()
 
 U0 CtrlPanelDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

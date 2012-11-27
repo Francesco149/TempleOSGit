@@ -1,13 +1,14 @@
-U64 ExceptDepth(CTask *task=NULL)
+I64 ExceptDepth(CTask *task=NULL)
 {
   CExcept *tempt;
-  result=0;
+  I64 result=0;
   if (!task) task=Fs;
   tempt=task->next_except;
   while (tempt!=&task->next_except) {
     result++;
     tempt=tempt->next;
   }
+  return result;
 }
 
 asm {
@@ -58,19 +59,19 @@ _extern _SAVE_EXCEPT_REGS U0 SaveExceptRegs(CExcept *t);
 
 class CTryStk
 {
-  U64 var_tempt;
-  U64 var_old_flags;
-  U64 var_rbp;
-  U64 var_rsp;
-  U64 rbp;
-  U64 ret_rip;
-  U64 arg1;
-  U64 arg2;
+  I64 var_tempt;
+  I64 var_old_flags;
+  I64 var_rbp;
+  I64 var_rsp;
+  I64 rbp;
+  I64 ret_rip;
+  I64 arg1;
+  I64 arg2;
 };
 
 U0 SysTry(U8 *catch_start,U8 *untry_start)
 {
-  U64 *rsp=GetStkPtr,*rbp=GetBasePtr,old_flags=GetFlags;
+  I64 *rsp=GetStkPtr,*rbp=GetBasePtr,old_flags=GetFlags;
   CExcept *tempt=MAlloc(sizeof(CExcept));
   tempt->handler_catch=catch_start;
   tempt->handler_untry=untry_start;
@@ -98,7 +99,7 @@ U0 SysUntry()
 
 U0 AdamLogExcept(I64 argc,I64 *argv)
 {
-  U64 i;
+  I64 i;
   if (!Gs->num) { //TODO: Other cores
     AdamLog("Depth:%02X Task:%08X throw(",
       ExceptDepth(Fs),Fs);
@@ -139,7 +140,7 @@ U0 PutExcept()
 U0 throw_join(I64 argc,I64 *argv)
 {
   CExcept *tempt=Fs->last_except;
-  BoolI8 was_raw;
+  Bool was_raw;
 
   Fs->except_argc=argc;
   Fs->except_argv=argv;
@@ -202,14 +203,15 @@ U0 ThrowBreak(CTask *task=NULL)
     SysThrowBreak;
 }
 
-BoolI64 BreakLock(CTask *task=NULL)
+Bool BreakLock(CTask *task=NULL)
 {
   if (!task) task=Fs;
   return !LBts(&task->task_flags,TASKf_BREAK_LOCKED);
 }
 
-BoolI64 BreakUnlock(CTask *task=NULL)
+Bool BreakUnlock(CTask *task=NULL)
 {
+  Bool result;
   if (!task) task=Fs;
   result=LBtr(&task->task_flags,TASKf_BREAK_LOCKED);
   if (LBtr(&task->task_flags,TASKf_PENDING_BREAK)) {
@@ -218,6 +220,7 @@ BoolI64 BreakUnlock(CTask *task=NULL)
     else
       task->rip=&ThrowBreak;
   }
+  return result;
 }
 
 U0 CatchAll()

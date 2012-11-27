@@ -5,8 +5,8 @@ AcctRegExecuteBranch("SparrowOS/RawHide");
 
 F64 t0,tf;
 
-#define MAP_WIDTH	2048
-#define MAP_HEIGHT	2048
+#define MAP_WIDTH	1500
+#define MAP_HEIGHT	1500
 #define MAP_BORDER	3
 CDC *dc2;
 
@@ -35,7 +35,7 @@ class RHCSprite
 
 
 
-#define NUM_ANIMALS	512
+#define NUM_ANIMALS	128
 
 class Animal
 {
@@ -43,7 +43,7 @@ class Animal
   RHCSprite *ge;
   U32 buddy;
   U8 type;
-  BoolI8 dead,pad[2];
+  Bool dead,pad[2];
 } *a;
 
 
@@ -130,7 +130,7 @@ class RiverDrop
   RiverDrop *next,*last;
   I64 index,dx,dy;
 } rd_root;
-BoolI8 rd_lock;
+Bool rd_lock;
 
 U0 RiverDropsDel()
 {
@@ -190,7 +190,7 @@ U0 RiverDropsDraw(CDC *dc,I64 cx,I64 cy)
 U0 DrawIt(CTask *task,CDC *dc)
 {
   static I64 last_ipx=0;
-  static BoolI8 left=TRUE;
+  static Bool left=TRUE;
   F64 t;
   I64 i,
      cx=(MAP_WIDTH -task->win_pixel_width)/2,
@@ -290,7 +290,7 @@ U0 AnimateTask(CTask *parent)
 	  d=Sqrt(dd);
 	  dx=ddx/d;
 	  dy=ddy/d;
-	  f=1.0e2*MAX_U32/dd;
+	  f=2.0e2*MAX_U32/dd;
 	  tempa->dx+=f*dx;
 	  tempa->dy+=f*dy;
 	}
@@ -387,7 +387,7 @@ U0 AnimateTask(CTask *parent)
   }
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Randomly generated (by God :-)
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;

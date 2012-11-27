@@ -19,8 +19,9 @@ if (YorN) {
 }
 
 
-BoolI64 Quit()
+Bool Quit()
 {
+  Bool result;
   U8 *st;
   I64 i;
   while (TRUE) {
@@ -33,6 +34,7 @@ BoolI64 Quit()
     }
     Free(st);
   }
+  return result;
 }
 
 Quit;

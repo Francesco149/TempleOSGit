@@ -1,22 +1,46 @@
 /*
 +] Main Compiler
-  The mini compiler is like the main compiler, except the main compiler's lexical analyser removes comments and does preprocessing.  See [C:/SparrowOS/Compiler/Lex.CPP.Z,748] Lex().  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,48] Echo(ON) or [C:/SparrowOS/Compiler/Directives.CPP.Z,43] LTrace(ON), to see the output of the lexical analyser.
-  
-  The main compiler generates [::/SparrowOS/Compiler/CmpDefs.HPP.Z,1] Intermediate Code at the parser stage.  See [C:/SparrowOS/Compiler/ExpParser.CPP.Z,44] PrsExpression(), [C:/SparrowOS/Compiler/StmtParser.CPP.Z,1740] PrsStatement().  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,21] PTrace(ON) to see the output of the parser.
-  
-  The main compiler optimizes   See [D:/SparrowOS/Compiler/CmpInit.CPP.Z,1] Intermediate Code Attributes, [::/SparrowOS/Compiler/OptPass012.CPP.Z,1] Combining Constants, [::/SparrowOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg Vars.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the optimization stages.
-  
-  The main compiler makes machine code in the back end.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1572] IC Struct, [C:/SparrowOS/Compiler/CodeGen.CPP.Z,394] CBCompile and [::/SparrowOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [::/SparrowOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of the backend.
-  
+  The mini compiler is like the main compiler, except the main compiler's
+  lexical analyser removes comments and does preprocessing.  See
+  [C:/SparrowOS/Compiler/Lex.CPP.Z,794] Lex().  Set
+  [C:/SparrowOS/Compiler/Directives.CPP.Z,48] Echo(ON) or
+  [C:/SparrowOS/Compiler/Directives.CPP.Z,43] LTrace(ON), to see the output of
+  the lexical analyser.
+
+The main compiler generates [::/SparrowOS/Compiler/CmpDefs.HPP.Z,1]
+  Intermediate Code at the parser stage.  See
+  [C:/SparrowOS/Compiler/ExpParser.CPP.Z,44] PrsExpression(),
+  [C:/SparrowOS/Compiler/StmtParser.CPP.Z,1692] PrsStatement().  Set
+  [C:/SparrowOS/Compiler/Directives.CPP.Z,21] PTrace(ON) to see the output of
+  the parser.
+
+The main compiler optimizes   See [C:/SparrowOS/Compiler/CmpInit.CPP.Z,1]
+  Intermediate Code Attributes, [::/SparrowOS/Compiler/OptPass012.CPP.Z,1]
+  Combining Constants, [::/SparrowOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg
+  Vars.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the
+  optimization stages.
+
+The main compiler makes machine code in the back end.  See
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1564] IC Struct,
+  [C:/SparrowOS/Compiler/CodeGen.CPP.Z,397] CBCompile and
+  [::/SparrowOS/Compiler/OptPass789A.CPP.Z,1]
+  OptPass789A(), [::/SparrowOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set
+  [C:/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of
+  the backend.
+
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:
-  
-  * Putting a 0x48, known as the REX byte, in front of an instruction makes it 64-bit size.
-  
-  * "PUSH EAX", "POP EAX" and "XOR EAX,EAX" will behave as 64-bit even without REX because the stk is always 64 bit and because the XOR clears the upper 32-bits.
-  
-  It is okay in SparrowOS to change RAX, RBX, RCX, RDX, R8 and R9 without restoring them to their original values.
-  */
+
+* Putting a 0x48, known as the REX byte, in front of an instruction makes it
+  64-bit size.
+
+* "PUSH EAX", "POP EAX" and "XOR EAX,EAX" will behave as 64-bit even without
+  REX because the stk is always 64 bit and because the XOR clears the upper
+  32-bits.
+
+It is okay in SparrowOS to change RAX, RBX, RCX, RDX, R8 and R9 without
+  restoring them to their original values.
+*/
 
 #define TK_EOF		0
 #define TK_NUM		1
@@ -30,7 +54,7 @@
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/SparrowOS/Compiler/Lex.CPP.Z,748] Lex().
+{ //See [C:/SparrowOS/Compiler/Lex.CPP.Z,794] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -113,8 +137,7 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 I64 Parse(U8 **_src,U8 **_dst)
 {
 //See [C:/SparrowOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
-//See [::/SparrowOS/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm
-instructions.
+//See [::/SparrowOS/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm instructions.
   I64 i;
   U8 *dst=*_dst;
   switch (Lex(_src,&i)) {
@@ -126,7 +149,7 @@ instructions.
     case TK_NUM:
       *dst++=0x48; //REX
       *dst++=0xB8; //MOV RAX,immediate num
-      *dst(U64 *)++=i;
+      *dst(I64 *)++=i;
 
       *dst++=0x50; //PUSH RAX
       *_dst=dst;
@@ -219,10 +242,8 @@ U0 Main()
 	  throw;
 	"$FG,RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/SparrowOS/OSMain/Adam1b.HPP.Z,285] Call() is a function.  See
-[::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALL::
-//See also [C:/SparrowOS/OSMain/Adam1b.HPP.Z,288] CallInd().  See
-[::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALLIND::
+//[C:/SparrowOS/OSMain/Adam1b.HPP.Z,286] Call() is a function.  See [::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALL::
+//See also [C:/SparrowOS/OSMain/Adam1b.HPP.Z,289] CallInd().  See [::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALLIND::
 	"$FG,LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$FG,RED$Error$FG$\n";

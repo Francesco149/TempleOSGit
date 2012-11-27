@@ -42,11 +42,11 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,273]
+You'll need to do a [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,274]
     MasterBootZero() to restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,155] Fmt('D',TRUE,FALSE,PT_FAT32)
+2) [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,154] Fmt('D',TRUE,FALSE,PT_FAT32)
   This command formats a partition with FAT32 or the SparrowOS native file 
 system type.  Use the drive letter of the partition in place of 'D'.
 
@@ -54,7 +54,7 @@ system type.  Use the drive letter of the partition in place of 'D'.
   /0000Boot/OldM
 BR.BIN.C.
 
-3) [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree("T:/","D:/")
+3) [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree("T:/","D:/")
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
@@ -66,9 +66,9 @@ tition's_ boot record.  You'll need to reenter the
 can be stored in the kernel.
 
 5) Use Linux's [::/SparrowOS/Doc/Grub.TXT.Z,1] Grub or SparrowOS'
-[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot('D')
+[C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,291] InstallMasterBoot('D')
   
-The [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,290] InstallMasterBoot() command
+The [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,291] InstallMasterBoot() command
   places a boot loader on a drive to boot 
 partitions.  It saves the old master boot record to /0000Boot/OldMBR.BIN.C 
 and replaces it.  When you boot, you will have the option of booting the old 

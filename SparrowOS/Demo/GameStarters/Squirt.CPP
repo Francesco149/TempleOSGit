@@ -45,7 +45,7 @@ F64 start_up_timeout;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  BoolI8 old_suspend,first;
+  Bool old_suspend,first;
   F64 dx,dy,d;
   I64  x1b,y1b,x2b,y2b,
       x1a,y1a,x2a,y2a;
@@ -64,9 +64,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     ode->drag_v3=0.0000025;
   }
 
-  if (TaskValidate(task))
-    old_suspend=LBts(&task->task_flags,TASKf_SUSPENDED);
-
+  old_suspend=Suspend(task);
   tempm=faucet;
   dc->color=BLACK;
   GrRect(dc,tempm->x+8,tempm->y,8,GROUND_Y-FAUCET_Y);
@@ -149,9 +147,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
     temps=temps->next;
   }
-
-  if (TaskValidate(task))
-    LBEqu(&task->task_flags,TASKf_SUSPENDED,old_suspend);
+  Suspend(task,old_suspend);
 }
 
 
@@ -230,7 +226,7 @@ U0 HoseNew()
   nozzle_theta=0;
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
 //Preempt is off by default for new task
   MyMass   *tempm,*tempm1;
@@ -240,7 +236,7 @@ U0 AnimateTask(U64)
 //The WinMgr task suspends our parent when it
 //updates the ODE's.  We use this to know when
 //the ODE's are being updated.
-    if (!Bt(&Fs->parent_task->task_flags,TASKf_SUSPENDED)) {
+    if (!IsSuspended(Fs->parent_task)) {
       dx=Cos(nozzle_theta),
       dy=Sin(nozzle_theta),
       PlaceMass(MT_DROPLET,
@@ -329,7 +325,7 @@ U0 CleanUp()
   "$BG$";
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 {
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -343,7 +339,7 @@ U0 SongTask(U64)
 
 U0 Squirt()
 {
-  U64 sc;
+  I64 sc;
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   WinMax;

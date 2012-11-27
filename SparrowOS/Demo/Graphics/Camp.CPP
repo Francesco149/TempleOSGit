@@ -145,7 +145,7 @@ U0 MPDrawMeeting(CTask *task)
 
 U0 DrawMeeting(CTask *task,CDC *dc)
 {
-  static BoolI8 calf=FALSE,determined=FALSE;
+  static Bool calf=FALSE,determined=FALSE;
 
 //"tP" is a function holding time since boot, less pauses.
   I64 i,x,y,z,*r2,*old_r;
@@ -229,7 +229,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
 
 #define MAX_SPEED	2<<32
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,x,z,dx,dz;
   F64 d;

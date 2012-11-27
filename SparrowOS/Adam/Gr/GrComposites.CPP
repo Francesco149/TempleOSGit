@@ -13,7 +13,7 @@ public U0 GrArrow3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,F64 w=2.75,
 {  //transformation with pen width
   I64 _x1,_y1,_z1,_x2,_y2,_z2,dx,dy;
   F64 d;
-  BoolI8 was_transform=FALSE,was_symmetry=FALSE;
+  Bool was_transform=FALSE,was_symmetry=FALSE;
   if (dc->flags & DCF_TRANSFORMATION) {
     (*dc->transform)(dc,&x1,&y1,&z1);
     (*dc->transform)(dc,&x2,&y2,&z2);
@@ -53,9 +53,10 @@ gr_done:
 
 #help_index "Graphics/Char;Char/Graphics"
 
-public BoolI64 GrTextBox3(CDC *dc,I64 x1,I64 y1,I64 z1,U8 *s,I64 border=2)
+public Bool GrTextBox3(CDC *dc,I64 x1,I64 y1,I64 z1,U8 *s,I64 border=2)
 {  //transformation
 //DCF_SYMMETRY is silly.
+  Bool result;
   U8 ch,*ptr=s;
   I64 w=0,w_max=0,h=FONT_HEIGHT;
   if (!s) return FALSE;
@@ -77,14 +78,15 @@ public BoolI64 GrTextBox3(CDC *dc,I64 x1,I64 y1,I64 z1,U8 *s,I64 border=2)
   GrLine(dc,x1-border	   ,y1+h+border,x1+w_max+border,y1+h+border);
   GrLine(dc,x1-border	   ,y1-border  ,x1-border,y1+h+border);
   GrLine(dc,x1+w_max+border,y1-border  ,x1+w_max+border,y1+h+border);
+  return result;
 }
 
 #define MAX_DIAMOND_SLOPE	2.75
 
-public BoolI64 GrTextDiamond3(CDC *dc,I64 x1,I64 y1,I64 z1,U8 *_s,I64 border=2)
+public Bool GrTextDiamond3(CDC *dc,I64 x1,I64 y1,I64 z1,U8 *_s,I64 border=2)
 {  //transformation
 //DCF_SYMMETRY is silly.
-  BoolI8 result=FALSE,first=TRUE;
+  Bool result=FALSE,first=TRUE;
   U8 ch,*ptr,*ptr_end,*st,*s;
   I64 y,dx,dy,dx_old,dy_old,w,h=FONT_HEIGHT;
   F64 m;
@@ -143,6 +145,7 @@ public BoolI64 GrTextDiamond3(CDC *dc,I64 x1,I64 y1,I64 z1,U8 *_s,I64 border=2)
   GrLine(dc,x1+dx,y1,x1,y1+dy);
   GrLine(dc,x1,y1+dy,x1-dx,y1);
   GrLine(dc,x1-dx,y1,x1,y1-dy);
+  return result;
 }
 
 #help_index "Graphics;Input Pointer/Displayed Image"
@@ -156,8 +159,8 @@ public U0 DrawStdInputPtr(CDC *dc,I64 x,I64 y)
 }
 
 public U0 (*fp_draw_input_ptr)(CDC *dc,I64 x,I64 y)=&DrawStdInputPtr;
-public U0 (*fp_draw_grab_input_ptr)(CDC *dc,I64 x,I64 y,BoolI8 closed)=NULL;
-public U0 *gr_empty_sprite=NULL; //Gets assigned [::/SparrowOS/Adam/WallPaper.CPP.Z,1] gr_empty_sprite
+public U0 (*fp_draw_grab_input_ptr)(CDC *dc,I64 x,I64 y,Bool closed)=NULL;
+public U8 *gr_empty_sprite=NULL; //Gets assigned [::/SparrowOS/Adam/WallPaper.CPP.Z,1] gr_empty_sprite
 
 public U0 DrawWaitInputPtr(CDC *dc,I64 x,I64 y)
 {

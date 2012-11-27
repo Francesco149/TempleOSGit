@@ -22,7 +22,7 @@ Install;
 
 U0 SrcExample()
 {
-  U64 f\xFF\xFF=12345;
+  I64 f\xFF\xFF=12345;
   "f\xFF\xFF=%d\n",f\xFF\xFF;
 }
 
@@ -31,6 +31,6 @@ SrcExample;
 //[::/SparrowOS/Demo/Graphics/CharGraphics.CPP.Z,1] ::/SparrowOS/Demo/Graphics/CharGraphics.CPP.Z,
 //and [::/SparrowOS/Demo/Graphics/FontEd.CPP.Z,1] ::/SparrowOS/Demo/Graphics/FontEd.CPP.Z.
 
-//See [C:/SparrowOS/OSMain/Str1a.CPP.Z,341] alpha_bitmap, and
-//[C:/SparrowOS/OSMain/Str1a.CPP.Z,344] alpha_numeric_bitmap.
+//See [C:/SparrowOS/OSMain/Str1a.CPP.Z,342] alpha_bitmap, and
+//[C:/SparrowOS/OSMain/Str1a.CPP.Z,345] alpha_numeric_bitmap.
 

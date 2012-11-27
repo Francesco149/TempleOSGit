@@ -8,7 +8,7 @@
 
 
 class MPCtrl {
-  BoolI8 core0_done,core1_done;
+  Bool core0_done,core1_done;
 } mp;
 
 

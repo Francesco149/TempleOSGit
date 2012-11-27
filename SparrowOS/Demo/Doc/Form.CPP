@@ -38,7 +38,7 @@ U0 FormDemo()
   "\n\nClassRep Example\n";
   ClassRep("DStruct",&gtl);
 
-//See also [C:/SparrowOS/Adam/Dbg2a.CPP.Z,163] ClassRepD().
+//See also [C:/SparrowOS/Adam/Dbg2a.CPP.Z,162] ClassRepD().
 }
 
 FormDemo;

@@ -1,7 +1,7 @@
 U0 NativeFSFreeFreeList(CPrt *p)
 {
   CFreeList *tempf,*tempf1;
-  BoolI8 unlock;
+  Bool unlock;
   try {
     unlock=PrtLock(p);
  
@@ -22,7 +22,7 @@ U0 NativeFSFreeFreeList(CPrt *p)
 
 U0 NativeFSFreeListBuild(CPrt *p)
 {
-  BoolI8 unlock;
+  Bool unlock;
   CFreeList *tempf;
   I64 i,first=0,
       max_cluster=(p->size+p->offset-p->data)/p->spc;
@@ -36,7 +36,7 @@ U0 NativeFSFreeListBuild(CPrt *p)
     while (first<max_cluster) {
       i=0;  //count free clusters
       while (first+i<max_cluster) {
-	SetLTBuf(p,first+i);
+	SetNativeBuf(p,first+i);
 	if (Bt(p->cur_map_blk,(first+i)&(BLK_SIZE<<3-1)))
 	  break;
 	else
@@ -60,13 +60,13 @@ U0 NativeFSFreeListBuild(CPrt *p)
 U0 NativeFSPrtInit(CPrt *p)
 {
   CBootStruct br;
-  BoolI8 unlock;
+  Bool unlock;
   try {
     unlock=PrtLock(p);
     RBlks(p,&br,p->offset,1);
     if (br.signature!=MBR_PT_NATIVE ||
     br.signature2!=0xAA55)
-      throw(EXCEPT_PRT,0);
+      throw(EXCEPT_PRT,7);
     p->type=PT_NATIVE;
     NativeFSFreeFreeList(p);
     p->spc=br.sects_per_cluster;
@@ -83,11 +83,11 @@ U0 NativeFSPrtInit(CPrt *p)
       PrtUnlock(p);
 }
 
-BoolI64 NativeFSDrvValidate(U8 drv_let)
+Bool NativeFSDrvValidate(U8 drv_let)
 {
   CPrt *p;
   CBootStruct br;
-  result=FALSE;
+  Bool result=FALSE;
   try {
     p=Drv2Prt(drv_let);
     if (p->type==PT_NATIVE &&
@@ -98,9 +98,10 @@ BoolI64 NativeFSDrvValidate(U8 drv_let)
       result=TRUE;
   } catch
     Fs->catch_except=TRUE;
+  return result;
 }
 
-U0 NativeFSFmt(U8 drv_let,BoolI8 quick=TRUE)
+U0 NativeFSFmt(U8 drv_let,Bool quick=TRUE)
 {
   U8 *root_dir;
   CDirEntry *d_native;
@@ -174,15 +175,15 @@ U0 NativeFSFmt(U8 drv_let,BoolI8 quick=TRUE)
   Free(root_dir);
 }
 
-BoolI64 NativeFSFileFind(CPrt *p,U64 cur_dir_cluster,U8 *name,CDirEntry *result,
-		     BoolI8 dir_only,BoolI8 file_only)
+Bool NativeFSFileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,
+		     Bool dir_only,Bool file_only)
 {
   CDirEntry *buf,*buf2,*ptr;
   U8 dname[CDIR_FILENAME_LEN];
-  U64 ch;
-  BoolI8 res=FALSE,unlock;
+  I64 ch;
+  Bool result=FALSE,unlock;
  
-  MemSet(result,0,sizeof(CDirEntry));
+  MemSet(_result,0,sizeof(CDirEntry));
   PrtChk(p);
   if (p->type!=PT_NATIVE)
     PutDefineErr("ST_NOT_NATIVE");
@@ -209,8 +210,8 @@ BoolI64 NativeFSFileFind(CPrt *p,U64 cur_dir_cluster,U8 *name,CDirEntry *result,
 	!(dir_only && !(ptr->attr & _ATTR_DIR)) &&
 	!(file_only && ptr->attr & _ATTR_DIR) &&
 	!StrCmp(dname,ptr->name)) {
-	  MemCpy(&result->attr,&ptr->attr,CDIR_SIZE);
-	  res=TRUE;
+	  MemCpy(&_result->attr,&ptr->attr,CDIR_SIZE);
+	  result=TRUE;
 		goto exit_this;
 	}
 	ptr(U8 *)+=CDIR_SIZE;
@@ -223,14 +224,13 @@ exit_this:
       if (unlock)
 	PrtUnlock(p);
   }
- 
-  return res;
+  return result;
 }
 
 
 
 U8 *NativeFSFileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,
-  I64 *_attr,BoolI8 raw,CArcCompress **_ac2)
+  I64 *_attr,Bool raw,CArcCompress **_ac2)
 {
   U8 *buf=NULL;
   CDirEntry de;
@@ -281,7 +281,7 @@ U8 *NativeFSFileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,
   return buf;
 }
 
-BoolI64 NativeFSCd(U8 *name,U64 cur_dir_cluster)
+Bool NativeFSCd(U8 *name,I64 cur_dir_cluster)
 {
   CDirEntry de;
   if (Fs->cur_prt->type!=PT_NATIVE)
@@ -301,7 +301,7 @@ BoolI64 NativeFSCd(U8 *name,U64 cur_dir_cluster)
 U0 NativeFSFreeClusters(CPrt *p,I64 c,I64 cnt)
 {
   CFreeList *tempf;
-  BoolI8 found=FALSE,unlock,unlock_break;
+  Bool found=FALSE,unlock,unlock_break;
   PrtChk(p);
   if (!c) return;
   if (p->type!=PT_NATIVE)
@@ -330,8 +330,8 @@ U0 NativeFSFreeClusters(CPrt *p,I64 c,I64 cnt)
 	tempf->start=c;
 	QueIns(tempf,p->last_free);
       }
-      while (cnt--) {
-	SetLTBuf(p,c);
+      while (cnt-->0) {
+	SetNativeBuf(p,c);
 	LBtr(p->cur_map_blk,c&(BLK_SIZE<<3-1));
 	LBts(p->buffered_map_dirty_bits,0);
 	c++;
@@ -354,9 +354,9 @@ U0 NativeFSFreeClusters(CPrt *p,I64 c,I64 cnt)
 I64 NativeFSAllocClusters(CPrt *p,I64 cnt)
 {
   CFreeList *tempf,*best_free=NULL;
-  I64 i,first,best_size=MAX_U64;
-  BoolI8 unlock,unlock_break;
-  if (!cnt)
+  I64 i,first,best_size=MAX_I64;
+  Bool unlock,unlock_break;
+  if (cnt<=0)
     Dbg;
   try {
     unlock_break=BreakLock;
@@ -377,7 +377,7 @@ I64 NativeFSAllocClusters(CPrt *p,I64 cnt)
       Dbg;
     first=best_free->start;
     for (i=0;i<cnt;i++) {
-      SetLTBuf(p,first+i);
+      SetNativeBuf(p,first+i);
       LBts(p->cur_map_blk,(first+i)&(BLK_SIZE<<3-1));
       LBts(p->buffered_map_dirty_bits,0);
     }
@@ -402,12 +402,12 @@ I64 NativeFSAllocClusters(CPrt *p,I64 cnt)
 }
 
 
-BoolI64 NativeFSDirNew(CPrt *p,U8 *cur_dir,CDirEntry *de,BoolI8 free_old_chain)
+Bool NativeFSDirNew(CPrt *p,U8 *cur_dir,CDirEntry *de,Bool free_old_chain)
 {
   CDirEntry *buf,*buf2,*ptr,de2;
   CBootStruct *br;
   I64 c,ch,i=1,j=0,n=BLK_SIZE/CDIR_SIZE,dir_size,cur_dir_cluster;
-  BoolI8 written=FALSE,unlock,unlock_break;
+  Bool written=FALSE,unlock,unlock_break;
   U8 *temp,*parent_dir;
   try {
     unlock_break=BreakLock;
@@ -514,12 +514,12 @@ BoolI64 NativeFSDirNew(CPrt *p,U8 *cur_dir,CDirEntry *de,BoolI8 free_old_chain)
   return FALSE;
 }
 
-BoolI64 NativeFSFilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,U64 fuf_flags,
-		     BoolI8 del_dir,BoolI8 print_msg)
+Bool NativeFSFilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,I64 fuf_flags,
+		     Bool del_dir,Bool print_msg)
 {
   CDirEntry *buf,*buf2,*ptr;
   I64 i=0,ch,j=0,n=BLK_SIZE/CDIR_SIZE,cur_dir_cluster;
-  BoolI8 unlock_break;
+  Bool unlock_break;
   try {
     unlock_break=BreakLock;
     PrtLock(p);
@@ -571,13 +571,13 @@ BoolI64 NativeFSFilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,U64 fuf_flags,
 }
 
 I64 NativeFSFileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
-		CDate ltdt,I64 attr,BoolI8 raw,
+		CDate ltdt,I64 attr,Bool raw,
 		CArcCompress **_ac2)
 {
   CDirEntry de;
   I64 c=0,flags=0,blk_cnt;
   CArcCompress *ac=NULL;
-  BoolI8 contiguous;
+  Bool contiguous;
   MemSet(&de,0,sizeof(CDirEntry));
   if (_ac2) *_ac2=NULL;
   if (size<0) size=0;
@@ -619,13 +619,11 @@ I64 NativeFSFileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
   return c;
 }
 
-CDirEntry *NativeFSFilesFind(U8 *files_find_mask,U64 fuf_flags,CDirEntry *parent=NULL)
+CDirEntry *NativeFSFilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NULL)
 {
   CPrt *p=Fs->cur_prt;
-  CDirEntry *buf,*buf2,*ptr;
-  U64 ch,cur_dir_cluster;
-  CDirEntry *result=NULL,*tempm;
- 
+  CDirEntry *buf,*buf2,*ptr,*result=NULL,*tempm;
+  I64 ch,cur_dir_cluster;
   try {
     PrtLock(p);
     cur_dir_cluster=Name2DirCluster(p,Fs->cur_dir);
@@ -667,7 +665,7 @@ CDirEntry *NativeFSFilesFind(U8 *files_find_mask,U64 fuf_flags,CDirEntry *parent
 	  result=tempm;
 	  tempm->full_name=FileNameAbs(tempm->name);
 	} else
-	  CDirDel(tempm);
+	  CDirEntryDel(tempm);
       }
       ptr(U8 *)+=CDIR_SIZE;
     }
@@ -675,17 +673,17 @@ CDirEntry *NativeFSFilesFind(U8 *files_find_mask,U64 fuf_flags,CDirEntry *parent
     PrtUnlock(p);
   } catch
     PrtUnlock(p);
+  return result;
 }
 
-BoolI64 NativeFSMkDir(CPrt *p,U8 *cur_dir,U8 *name)
+Bool NativeFSMkDir(CPrt *p,U8 *cur_dir,U8 *name)
 {
-  I64 size=p->spc<<BLK_SIZE_BITS,
-  cur_dir_cluster=Name2DirCluster(p,cur_dir);
+  I64 size=p->spc<<BLK_SIZE_BITS,c,
+      cur_dir_cluster=Name2DirCluster(p,cur_dir);
   U8 *buf=CAlloc(size);
   CDirEntry *d_native=buf-offset(CDirEntry.start);
-  I64 c;
-  BoolI8 unlock_break;
- 
+  Bool unlock_break;
+
   try {
     unlock_break=BreakLock;
     c=FileWrite(name,buf,size,0,_ATTR_DIR,FALSE);

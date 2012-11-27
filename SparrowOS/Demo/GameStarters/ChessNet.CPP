@@ -7,11 +7,11 @@ class Unit
 {
   I64 num,x,y,player,link,bandwidth;
   U8 *img;
-  BoolI8 alive,king;
+  Bool alive,king;
 } u[NUM_UNITS];
 
 I64 cur_player,start_x,start_y,end_x,end_y;
-BoolI8 show_start;
+Bool show_start;
 
 
 
@@ -66,7 +66,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 Unit *FindUnit(I64 x,I64 y,I64 player)
 {
   I64 i,dd,best_dd=MAX_I64;
-  result=NULL;
+  Unit *result=NULL;
   for (i=0;i<NUM_UNITS;i++) {
     if (u[i].player==player && u[i].alive) {
       dd=SqrI64(u[i].x-x)+SqrI64(u[i].y-y);
@@ -76,12 +76,13 @@ Unit *FindUnit(I64 x,I64 y,I64 player)
       }
     }
   }
+  return result;
 }
 
 U0 CheckForKills(I64 x1,I64 y1,I64 player)
 {
   I64 i,j,x2,y2,dd;
-  BoolI8 found;
+  Bool found;
   for (i=0;i<NUM_UNITS;i++) {
     if (u[i].player!=player && u[i].alive && !u[i].king) {
       x2=(u[i].x+u[u[i].link].x)>>1;

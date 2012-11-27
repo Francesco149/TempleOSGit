@@ -4,7 +4,7 @@ start-up file.  See [HOME/Adam3aLocalize.CPP.Z,1] mouse scale.
 
 * You can set your local time zone by setting the local_time_offset global
 var 
-in a start-up file.  It's units are [C:/SparrowOS/OSMain/Adam1a.HPP.Z,494]
+in a start-up file.  It's units are [C:/SparrowOS/OSMain/Adam1a.HPP.Z,490]
 CDATE_FREQ.  See [HOME/Adam3aLocalize.CPP.Z,1] local time.  See 
 [::/SparrowOS/Demo/DateTime.CPP.Z,1] DateTime.CPP.Z for changing date/time
 format maps.

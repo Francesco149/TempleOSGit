@@ -51,7 +51,7 @@ public CDoc *Doc2TXT(CDoc *doc_in)
   CDocEntry *doc_e,*doc_e2;
   I64 y,col;
   CDoc *doc_out=DocNew;
-  BoolI8 unlock_doc_in=DocLock(doc_in),no_backward;
+  Bool unlock_doc_in=DocLock(doc_in),no_backward;
 
   DocRecalc(doc_in);
 

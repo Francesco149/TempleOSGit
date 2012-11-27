@@ -6,7 +6,7 @@
 extern I64 EdLeftClickLink(CDoc *doc,CDocEntry *doc_e);
 extern I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e);
 extern U0 DocPutSPartial(CDoc *doc,U8 *st);
-extern U0 DocFormBackward(CDoc *doc,BoolI8 giveup=FALSE);
+extern U0 DocFormBackward(CDoc *doc,Bool giveup=FALSE);
 extern U0 EdUndoFilter(CDoc *doc);
 
 U0 DocInit()

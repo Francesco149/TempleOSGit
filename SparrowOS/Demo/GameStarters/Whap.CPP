@@ -15,7 +15,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,
     cx=task->win_pixel_width>>1,
     cy=task->win_pixel_height>>1;
-  BoolI8 snd_on=FALSE;
+  Bool snd_on=FALSE;
   dc->color=BLACK;
   GrPutS(dc,0,0,"Protect your base.");
   GrRect(dc,cx-BASE_SIZE,cy-BASE_SIZE,BASE_SIZE*2,BASE_SIZE*2);

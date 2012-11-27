@@ -13,12 +13,13 @@ OptOn(OPTf_WARN_PAREN);
 //Just in case the filesystem gets corrupted while I develop it
 U0 BackupExport()
 {
-  Copy("D:/Export.CPP","C:/Export.CPP");
-  Copy("D:/Export.CPP","D:/ExportB.CPP");
-  Copy("D:/Export.CPP","C:/ExportB.CPP");
+  Copy("E:/Export.CPP","C:/Export.CPP");
+  Copy("E:/Export.CPP","E:/ExportB.CPP");
+  Copy("E:/Export.CPP","C:/ExportB.CPP");
 }
 
-BackupExport;
+//Appears to hang on this version...
+//BackupExport
 
 #define EXPORT_W 78
 
@@ -53,6 +54,9 @@ U8 *ResolveLink(U8 *link_st)
     res=MSPrintF("%s,%s",filename,pattern);
   Free(filename);
   Free(pattern);
+//Temporary hack to prevent random diff's on every file link
+  if (!StrNCmp(res,"D:/",3))
+    res[0]='C';
   return res;
 }
 
@@ -69,7 +73,7 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
   //Also adds indent spaces to every soft and hard newline.
   //Returns new value for base.
   //This is supposed to also take tabs into account but fuck that shit
-  //NOTE: at this point I could use [C:/SparrowOS/Adam/Window.CPP.Z,722] SetWinHorz and append to a CDoc
+  //NOTE: at this point I could use [C:/SparrowOS/Adam/Window.CPP.Z,723] SetWinHorz and append to a CDoc
   I64 len;
   U8 *p,*buf;
   U8 *end;
@@ -179,7 +183,7 @@ U0 FilePassThrough(U8 *in_path,U8 *out_path)
   Free(out);
 }
 
-BoolI64 StrEqAny(U8 *s,...)
+Bool StrEqAny(U8 *s,...)
 { //Returns TRUE if any of the strings match s
   U64 i;
   for (i=0;i<argc;i++) {
@@ -217,14 +221,14 @@ U8 *UnZExtension(U8 *out_path)
 //This whole thing should've been designed to do one big allocation and be
 //done with it but it's too late now.
 
-U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
+U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
 {
   CDoc *l;
   CDocEntry *cl;
   CDocBin *b;
   U8 *out,*buf,*ext,*lnk;
-  U64 len,flags;
-  BoolI64 is_code;
+  U64 len,flags=0;
+  Bool is_code;
   I64 indent=0,line_len=0,prev_len=0;
   U8 *indents=StrNew("");
 
@@ -236,7 +240,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
 
   ext=UnZExtension(out_path);
 
-  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO")) {
+  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO","BMP")) {
     FilePassThrough(in_path,out_path);
     return;
   }
@@ -389,9 +393,10 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
         out=StrAdd(out,">");
         break;
       case DOCT_WORD_WRAP:
-        flags&=~DOCF_WORD_WRAP;
-        if (l->flags & DOCF_WORD_WRAP || cl->flags1 & DOCEF1_WORD_WRAP)
+        if (cl->attr)
           flags|=DOCF_WORD_WRAP;
+        else
+          flags&=~DOCF_WORD_WRAP;
         break;
       case DOCT_INDENT:
         indent+=cl->attr;
@@ -452,9 +457,9 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,BoolI64 debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,129] PutCopyTree which is internally used by [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
+//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,129] PutCopyTree which is internally used by [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree
 U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
-  U8 *dst_dir,BoolI64 debug=FALSE)
+  U8 *dst_dir,Bool debug=FALSE)
 {
   U8 *path;
   while (ent) {
@@ -474,9 +479,9 @@ U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   }
 }
 
-//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
-U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
-  BoolI64 debug=FALSE)
+//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree
+U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="E:/Git",
+  Bool debug=FALSE)
 {
   CFileAccess *fa;
   CDirEntry *ent;
@@ -507,9 +512,9 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
 //to start the export.
 
 U0 ExportTree() {
-  CTask *task=SpawnUser("#include \"D:/Export.CPP\"
+  CTask *task=SpawnUser("#include \"E:/Export.CPP\"
 ExportTreeImpl;
-ExportSingle(\"D:/Export.CPP\",\"D:/Git/Export.CPP\");
+ExportSingle(\"E:/Export.CPP\",\"E:/Git/Export.CPP\");
 ");
   WinToTop(task);
 }

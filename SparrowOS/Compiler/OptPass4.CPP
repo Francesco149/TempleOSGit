@@ -1,4 +1,4 @@
-BoolI64 OptIC4(CIntermediateCode *tempi)
+Bool OptIC4(CIntermediateCode *tempi)
 {
   I64 i,ty,pt,ty1,pt1;
   CIntermediateCode *tempil1,*tempil2;
@@ -221,14 +221,14 @@ BoolI64 OptIC4(CIntermediateCode *tempi)
   return FALSE;
 }
 
-U0 OptPass4(CLex *lx,COptReg *register_offsets,U64 *_type)
+U0 OptPass4(CLex *lx,COptReg *register_offsets,I64 *_type)
 {
   CHashClass *tempc,*tempc1,*tempc2,*tempc3;
   CIntermediateCode *tempi,*tempi1,*tempi2,*tempi3,*tempil1,*tempil2,*tempil3,
   *temp_lag[4];
   I64 code,i;
   CPrsStk *ps=OptStart(lx,temp_lag);
-  BoolI8 dead_code=FALSE;
+  Bool dead_code=FALSE;
   CCodeBlkMisc *lb;
 
   if (_type)
@@ -622,6 +622,13 @@ sib:
 	case IC_TO_I64:
 	case IC_TO_F64:
 	case IC_TO_BOOL:
+	case IC_SQR:
+	case IC_ABS:
+	case IC_SQRT:
+	case IC_SIN:
+	case IC_COS:
+	case IC_TAN:
+	case IC_ATAN:
 	case IC_ABS_I64:
 	case IC_LIMIT_I64:
 	case IC_LIMIT_U64:

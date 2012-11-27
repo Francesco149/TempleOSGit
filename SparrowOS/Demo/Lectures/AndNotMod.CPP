@@ -8,9 +8,9 @@ You may wonder why I use "&" instead of "%".
 
 U0 TimeIns()
 {
-  U64 start1,end1,start2,end2,overhead_time,test_time;
+  I64 start1,end1,start2,end2,overhead_time,test_time;
   I64 reg i,reg temp;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   CPURep;
 

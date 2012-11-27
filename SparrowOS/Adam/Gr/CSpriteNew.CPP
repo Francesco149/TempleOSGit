@@ -82,9 +82,9 @@ offset(CSprite.st), //GRST_TEXT_DIAMOND
 };
 
 
-U64 CSpriteElemSize(CSprite *tempg)
+I64 CSpriteElemSize(CSprite *tempg)
 {
-  U64 i=gr_sprite_base_size[tempg->type];
+  I64 i=gr_sprite_base_size[tempg->type];
   switch (tempg->type) {
     case GRST_POLYLINE:
       i+=tempg->num<<1*sizeof(I32);
@@ -134,13 +134,14 @@ I64 CSpriteTypeMask(U8 *elems)
     Bts(&result,tempg->type);
     tempg(U8 *)+=CSpriteElemSize(tempg);
   }
+  return result;
 }
 
 public U8 *DC2Sprite(CDC *tempb)
 {
   CSprite *tempg;
   CDC *tempb1;
-  BoolI8 temp_bitmap;
+  Bool temp_bitmap;
   if (tempb->type!=DCT_COLOR8) {
     tempb1=DCNew(DCT_COLOR8,tempb->width,tempb->height,Fs);
     tempb1->color=WHITE;
@@ -170,7 +171,7 @@ public U8 *CSprite2Text(CSprite *tempg)
 { //Study [::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z.
   U8 buf[256],buf2[256],buf3[136];
   I32 *ptr;
-  SPrintF(buf,"%Z",tempg->type,"ST_GRSPRITE_TYPES");
+  SPrintF(buf,"%Z",tempg->type,"ST_CSPRITE_TYPES");
   *buf2=0;
   switch (tempg->type) {
     case GRST_COLOR8:

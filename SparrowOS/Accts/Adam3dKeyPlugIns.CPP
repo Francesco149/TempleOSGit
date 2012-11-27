@@ -9,7 +9,7 @@ U0 FillInTime()
 }
 
 
-BoolI64 MyPutKey(U64 ch,U64 sc)
+Bool MyPutKey(I64 ch,I64 sc)
 {  //ch=ASCII; sc=scancode
 
 //See [Char,1] Char for definition of scan codes.
@@ -17,13 +17,13 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
 
 //You can customize keys.  This routine
 //is called before the main editor
-//key handler [C:/SparrowOS/Adam/Doc/DocEd.CPP.Z,1497] DocPutKey().
+//key handler [C:/SparrowOS/Adam/Doc/DocEd.CPP.Z,1504] DocPutKey().
 //You can intercept any key.
 
 //Return TRUE if you completely
 //handled the key.
 
-  U64 i,sc2=sc.u8[0];
+  I64 i,sc2=sc.u8[0];
 
   if (SC_F1<=sc2<=SC_F10 &&
       sc&SCF_ALT &&
@@ -170,7 +170,7 @@ BoolI64 MyPutKey(U64 ch,U64 sc)
   return FALSE;
 }
 
-BoolI64 MyPutS(U8 *st)
+Bool MyPutS(U8 *st)
 {
   nounusedwarn st;
   return FALSE;

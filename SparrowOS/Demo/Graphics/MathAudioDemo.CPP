@@ -1,3 +1,13 @@
+F64 MySin(F64 d)
+{
+  return Sin(d);
+}
+
+F64 MyCos(F64 d)
+{
+  return Cos(d);
+}
+
 U0 FunDraw1(CDC *dc,F64 (*f)(F64 t))
 {
   I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height;
@@ -47,7 +57,7 @@ U0 SndMathDemo()
 
   Init(dc);
   dc->color=RED;
-  FunDraw1(dc,&Sin);
+  FunDraw1(dc,&MySin);
   "$FG,RED$Sin$FG$\n";
   PressAKey;
   dc->color=BLUE;
@@ -57,7 +67,7 @@ U0 SndMathDemo()
 
   Init(dc);
   dc->color=RED;
-  FunDraw1(dc,&Cos);
+  FunDraw1(dc,&MyCos);
   "$FG,RED$Cos$FG$\n";
   PressAKey;
   dc->color=BLUE;
@@ -71,7 +81,7 @@ U0 SndMathDemo()
 
   Init(dc);
   dc->color=RED;
-  FunDraw1(dc,&Sin);
+  FunDraw1(dc,&MySin);
   "$FG,RED$Sin$FG$\n";
   PressAKey;
   dc->color=BLUE;

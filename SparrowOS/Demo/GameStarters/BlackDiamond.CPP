@@ -88,7 +88,7 @@ U0 Init()
 
 U0 BlackDiamond()
 {
-  U64 ch,sc;
+  I64 ch,sc;
 
   MenuPush(
   "File {"

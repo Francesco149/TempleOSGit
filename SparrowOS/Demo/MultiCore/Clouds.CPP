@@ -10,7 +10,7 @@
 class Cloud
 {
   I64 i,x,y,w,h,dx,dy;
-  U64 color;
+  I64 color;
   I64 px[CLOUD_PTS],py[CLOUD_PTS],pc[CLOUD_PTS];
 } clouds[NUM_CLOUDS];
 
@@ -68,7 +68,7 @@ U0 DrawIt(CTask *task,CDC *)
     Yield;
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,j;
   Cloud *c;
@@ -145,7 +145,7 @@ U0 CleanUp()
     DCDel(cp->img);
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by the Holy Spirit
 //This specifies a call-back routine
 //to be called when the task dies.

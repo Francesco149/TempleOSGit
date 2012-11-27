@@ -74,12 +74,11 @@ U0 AsmPrsInsFlags(CLex *lx,CInstruction *tempi)
   }
 }
 
-U0 AsmHashLoad(BoolI8 first)
+U0 AsmHashLoad(Bool first)
 {
-  I64 i,j;
+  I64 i,j,size,size1;
   CInternalType *tempit;
   CLex *lx;
-  I64 size,size1;
   CHashGeneric *temph;
   CHashReg *tempr;
   CHashOpcode *tempo,*tempo1;
@@ -258,9 +257,9 @@ U0 CmpLoadDefines()
   DefineLoad("ST_BRANCH_OUT_OF_RANGE","branch out of range at ");
   DefineLoad("ST_BRANCH_OUT_OF_RANGE_LINE","branch out of range at line:");
   DefineLoad("ST_ATTEMPT_DEFINE_IMPORT","attempt to define import at ");
-  DefineLoad("ST_SHOULD_RENAME_RESULT","should rename 'result' at ");
   DefineLoad("ST_COULD_USE_I8_DISP","could use I8 displacement at ");
   DefineLoad("ST_COULD_USE_I8_DISP_LINE","could use I8 displacement at line:");
+  DefineLoad("ST_PTR_TO_U0","use \"U8 *\" instead of \"U0 *\" at ");
   DefineLoad("ST_NO_SIZE_SPECIFIED","no size specified at ");
   DefineListLoad("ST_IT_TYPES","I0\0U0\0I8\0U8\0I16\0U16\0I32\0U32\0I64\0U64\0F64\0uF64\0");
   DefineListLoad("ST_TY_TYPES","NULL\0IMM\0REG\0DISP\0SIB\0RIP\0STK\0");
@@ -314,7 +313,6 @@ U0 CmpLoadDefines()
   DefineLoad("ST_ADDR_EXTERN","Can't take addr of extern fun");
   DefineLoad("ST_EXTERNS_NOT_ALLOWED","Extern Not Allowed at ");
   DefineLoad("ST_UNNECESSARY_PARENTHESIS","Unnecessary parenthesis");
-  DefineLoad("ST_INVALID_TYPEDEF","Invalid typedef");
   DefineLoad("ST_STATIC_UNION","Static unions are not implemented");
   DefineLoad("ST_IMPORT_HASH_TABLE_NOT_ALLOWED","import_hash_table only allowed in static compiled #exe{} mode.");
   DefineLoad("ST_CANT_INIT_GLBL_ON_HEAP","Can't init glbl var on data heap in static module");
@@ -324,6 +322,7 @@ U0 CmpLoadDefines()
   DefineLoad("ST_ALIGN_TOO_LARGE","In JIT mode, max ALIGN is 8 ");
   DefineLoad("ST_FUN_SIZE_NOT_DEFINED","Function size not defined at ");
   DefineLoad("ST_DUP_MEMBER","Duplicate member at ");
+  DefineLoad("ST_DUP_TYPE","Duplicate type at ");
   DefineLoad("ST_FUN_PTR_FUN_PTR","Duplicate fun pointer at ");
   DefineLoad("ST_EXPECTING_STAR","Expecting '*' at ");
   DefineLoad("ST_EXPECTING_AMPERSAND","Expecting '&' at ");
@@ -564,6 +563,13 @@ Anchor for inserting Compiler Defines
 "20..MOD_U64\0"
 "10..SQRI64\0"
 "10..SQRU64\0"
+"11..SQR\0"
+"11..ABS\0"
+"11..SQRT\0"
+"11..SIN\0"
+"11..COS\0"
+"11..TAN\0"
+"11..ATAN\0"
 );Anchor for adding intermediate codes
 
 }
@@ -572,8 +578,7 @@ U0 CmpFillTables()
 {
   U8 *st;
   I64 i,k;
-  U32 *u;
-  U32 *d4;
+  U32 *u,*d4;
 
   assign_bitmap=CAlloc((IC_NUM_ENTRIES+7)>>3);
   deref_bitmap=CAlloc((IC_NUM_ENTRIES+7)>>3);
@@ -606,6 +611,14 @@ U0 CmpFillTables()
   Bts(fpop_bitmap,IC__MM);
   Bts(fpop_bitmap,IC_PP_);
   Bts(fpop_bitmap,IC_MM_);
+
+  Bts(fpop_bitmap,IC_SQR);
+  Bts(fpop_bitmap,IC_ABS);
+  Bts(fpop_bitmap,IC_SQRT);
+  Bts(fpop_bitmap,IC_SIN);
+  Bts(fpop_bitmap,IC_COS);
+  Bts(fpop_bitmap,IC_TAN);
+  Bts(fpop_bitmap,IC_ATAN);
 
   to_reg_vars_map=CAlloc(NUM_REGS*sizeof(U8));
   num_reg_vars=0;

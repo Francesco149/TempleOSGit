@@ -1,9 +1,9 @@
 #help_index "Utils;Cmd Line (Typically)"
 
-U64 LineCntRepFiles(CDirEntry *tempm)
+I64 LineCntRepFiles(CDirEntry *tempm)
 {
   CDoc *doc;
-  U64 result=0,i;
+  I64 result=0,i;
   while (tempm) {
     i=0;
     if (tempm->attr&_ATTR_DIR)
@@ -20,6 +20,7 @@ U64 LineCntRepFiles(CDirEntry *tempm)
     result+=i;
     tempm=tempm->next;
   }
+  return result;
 }
 
 U0 PutLineCntFiles(CDoc *doc,CDirEntry *tempm)
@@ -40,9 +41,9 @@ U0 PutLineCntFiles(CDoc *doc,CDirEntry *tempm)
   }
 }
 
-public U64 LineCntRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
+public I64 LineCntRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
 {
-  U64 fuf_flags=0,result=0;
+  I64 fuf_flags=0,result=0;
   CDoc *doc=DocNew;
   CDirEntry *tempm1=NULL;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
@@ -56,11 +57,12 @@ public U64 LineCntRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
   }
   DocInsDoc(DocCur,doc);
   DocDel(doc);
+  return result;
 }
 
-U64 TreeSizeRepFiles(CDirEntry *tempm)
+I64 TreeSizeRepFiles(CDirEntry *tempm)
 {
-  U64 result=0,i;
+  I64 result=0,i;
   while (tempm) {
     if (tempm->attr&_ATTR_DIR)
       i=TreeSizeRepFiles(tempm->sub);
@@ -70,6 +72,7 @@ U64 TreeSizeRepFiles(CDirEntry *tempm)
     result+=i;
     tempm=tempm->next;
   }
+  return result;
 }
 
 U0 PutTreeSizeFiles(CDoc *doc,CDirEntry *tempm)
@@ -88,9 +91,9 @@ U0 PutTreeSizeFiles(CDoc *doc,CDirEntry *tempm)
   }
 }
 
-public U64 TreeSizeRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
+public I64 TreeSizeRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
 {
-  U64 fuf_flags=0,result=0;
+  I64 fuf_flags=0,result=0;
   CDoc *doc=DocNew;
   CDirEntry *tempm1=NULL;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
@@ -104,6 +107,7 @@ public U64 TreeSizeRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
   }
   DocInsDoc(DocCur,doc);
   DocDel(doc);
+  return result;
 }
 
 #help_index ""

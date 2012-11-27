@@ -8,7 +8,7 @@ stupid, legacy compatibility issues enter and junk-up SparrowOS.
 cleaner.
 
 * SparrowOS does not figure-out FAT32 short name alias numbers. 
-[C:/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,599] FAT32DirNew()
+[C:/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,601] FAT32DirNew()
 .  It can cause hard drive corruption, so I might have to do it.  It would 
 really take a lot of junky code for this hatefully, detestable, legacy issue.
  

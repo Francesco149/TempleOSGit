@@ -27,10 +27,10 @@ class CFileBMP
 };
 
 
-CFileBMP *BMPFileNew(U64 width,U64 height,U64 bits)
+CFileBMP *BMPFileNew(I64 width,I64 height,I64 bits)
 {
   CFileBMP *r;
-  U64 size;
+  I64 size;
   if (bits==24)
     size=offset(CFileBMP.end)+
 	 width*height*sizeof(CRGB);
@@ -109,9 +109,9 @@ public CFileBMP *BMPFile24To(CDC *dc)
   return r;
 }
 
-public U64 BMPFileWrite(U8 *filename,CDC *dc,U64 bits=4)
+public I64 BMPFileWrite(U8 *filename,CDC *dc,I64 bits=4)
 { //Window's BMP Files
-  U64 size;
+  I64 size;
   CFileBMP *r;
   if (bits==4)
     r=BMPFile4To(dc);
@@ -131,7 +131,7 @@ U8 *BMPFilePaletteNew(CFileBMP *r)
 {
   I64 i,j,best,score,best_score;
   CBGR palette[16];
-  result=CAlloc(16*sizeof(U8));
+  U8 *result=CAlloc(16*sizeof(U8));
   GetVGAPalette4(palette);
   for (i=0;i<16;i++) {
     best=i;
@@ -147,16 +147,17 @@ U8 *BMPFilePaletteNew(CFileBMP *r)
     }
     result[i]=best;
   }
+  return result;
 }
 
 U8 ms_paint_palette[16]={0,4,2,6,1,5,3,8,7,12,10,14,9,13,11,15};
 
-public CDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
+public CDC *BMPFileRead(U8 *filename,Bool use_ms_paint_palette=FALSE)
 { //Window's BMP Files
   I64 i,j;
   U8 *palette_map,*ptr1;
   CFileBMP *r;
-  result=NULL;
+  CDC *result=NULL;
   if (ptr1=FileRead(filename)) {
     r=ptr1;
     if (0<r->width<MAX_I32 && 0<r->height<MAX_I32) {
@@ -187,10 +188,11 @@ public CDC *BMPFileRead(U8 *filename,BoolI8 use_ms_paint_palette=FALSE)
       "Invalid BMP File\n";
     Free(r);
   }
+  return result;
 }
 
 #help_index "Graphics/CSprite;Graphics/Windows BMP Files;Doc/Output"
-public U0 DocPutBMPFile(CDoc *doc=NULL,U8 *fname,BoolI8 use_ms_paint_palette=FALSE)
+public U0 DocPutBMPFile(CDoc *doc=NULL,U8 *fname,Bool use_ms_paint_palette=FALSE)
 {
   CDC *dc=BMPFileRead(fname,use_ms_paint_palette);
   CSprite *elems=DC2Sprite(dc);
@@ -200,10 +202,10 @@ public U0 DocPutBMPFile(CDoc *doc=NULL,U8 *fname,BoolI8 use_ms_paint_palette=FAL
 }
 
 #help_index "Graphics/Windows BMP Files;Graphics/Screen"
-public U64 BMPFileCaptureScreen(U8 *filename,U64 bits=4)
+public I64 BMPFileCaptureScreen(U8 *filename,I64 bits=4)
 {
   CDC *dc=DCCaptureScreen;
-  U64 size=BMPFileWrite(filename,dc,bits);
+  I64 size=BMPFileWrite(filename,dc,bits);
   DCDel(dc);
   return size;
 }

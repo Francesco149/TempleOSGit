@@ -31,7 +31,7 @@ _BEEPS2::
 	PUSH	U64 [&sys_jiffies]
 
 @@05:	PUSH	RCX
-//U0 Beep(U64 freq=500,BoolI8 busy=FALSE)
+//U0 Beep(I64 freq=500,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	U64 [&glbl_hz]	//evaluated at run time
 	CALL	&Beep
@@ -56,7 +56,7 @@ _BEEPS2::
 
 //My convention is to put an underscore
 //on C callable routines.
-_extern _BEEPS2 U0 Beeps2(U64 cnt);
+_extern _BEEPS2 U0 Beeps2(I64 cnt);
 
 U0 AsmAndC2()
 {
@@ -72,7 +72,7 @@ USE64	//Defaults to 64, but this is a good habit.
 	MOV	RCX,R15 //You can clobber RAX,RBX,RCX,RDX.
 			    //You better preserve the rest.
 @@05:	PUSH	RCX
-//U0 Snd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0);
+//U0 Snd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0);
 	MOV	RAX,1.0	//amplitude
 	PUSH	RAX
 	PUSH	WF_SQUARE

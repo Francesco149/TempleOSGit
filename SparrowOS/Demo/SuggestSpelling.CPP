@@ -18,6 +18,7 @@ U8 *SuggestMatchForm(U8 *src)
     ch1=ch;
   }
   *dst=0;
+  return result;
 }
 
 /*
@@ -71,7 +72,7 @@ If you "Adam Include" this file, it will
 install this command as a hot-key.
 */
 
-U0 CtrlAltL(U64)
+U0 CtrlAltL(I64)
 {
 //[C:/SparrowOS/Adam/WordStat/WordStat.CPP.Z,36] ws_cur_word is only set if WordStat
 //is running.
@@ -87,4 +88,4 @@ else {
 }
 
 //Note: It would be more appropriate
-//to define a key in [C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey().
+//to define a key in [C:/SparrowOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey().

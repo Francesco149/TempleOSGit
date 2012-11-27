@@ -57,7 +57,7 @@ U8 *SysMacro2Str(CTaskCmd *macro_root)
   I64 cnt=1; //terminating zero
   U8 *ptr,*m;
   CMacroTemp *tempmt,*tempmt1,root;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   LBtr(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
 
   QueInit(&root);
@@ -108,7 +108,7 @@ U8 *SysMacro2Str(CTaskCmd *macro_root)
 U0 PlaySysMacro(I64 n=1)
 {
   CTask *task=sys_focus_task;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   U8 *m;
   if (TaskValidate(task)) {
     LBtr(&sys_semas[SYS_SEMA_RECORD_MACRO],0);
@@ -127,7 +127,7 @@ U0 PlaySysMacro(I64 n=1)
 
 U0 EdInsCapturedMacro()
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   U8 *st=SysMacro2Str(&sys_macro_root);
   if (sys_focus_task) {
     XTalk(sys_focus_task,"$MA+A+LM+LA,\"%s\",\"%Q\"$",
@@ -150,7 +150,7 @@ I64 PopUpExitRecordPlayStopIns()
   CTaskCmd *tempc;
   CDoc *doc=DocNew;
   CDocEntry *doc_e=DocPutS(doc,"$DA-P,135,\"Name:%s\"$");
-  result=0;
+  I64 result=0;
   doc_e->data=captured_macro_name;
   DocDataFmt(doc_e);
   doc_e=DocPutS(doc,"\n$DA,32,\"Repeat N:%d\"$");
@@ -177,9 +177,10 @@ I64 PopUpExitRecordPlayStopIns()
   sys_macro_util_task=NULL;
   DocDataGet(doc_e);
   DocDel(doc);
+  return result;
 }
 
-U0 MacroTask(U64)
+U0 MacroTask(I64)
 {
   I64 i;
   StrCpy(captured_macro_name,"Click Here");

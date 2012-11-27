@@ -1,4 +1,4 @@
-CFifoU8 *FifoU8New(U64 size,CTask *mem_task=NULL)
+CFifoU8 *FifoU8New(I64 size,CTask *mem_task=NULL)
 {
   CFifoU8 *f;
   if (!mem_task) mem_task=Fs;
@@ -16,9 +16,9 @@ U0 FifoU8Del(CFifoU8 *f)
   Free(f);
 }
 
-BoolI64 FifoU8Ins(CFifoU8 *f,U8 b)
+Bool FifoU8Ins(CFifoU8 *f,U8 b)
 {
-  U64 new_in_ptr;
+  I64 new_in_ptr;
   PushFD;
   Cli;
   new_in_ptr=(f->in_ptr+1)&f->mask;
@@ -33,7 +33,7 @@ BoolI64 FifoU8Ins(CFifoU8 *f,U8 b)
   }
 }
 
-BoolI64 FifoU8Rem(CFifoU8 *f,U8 *_b)
+Bool FifoU8Rem(CFifoU8 *f,U8 *_b)
 {
   PushFD;
   Cli;
@@ -48,7 +48,7 @@ BoolI64 FifoU8Rem(CFifoU8 *f,U8 *_b)
   }
 }
 
-BoolI64 FifoU8Peek(CFifoU8 *f,U8 *_b)
+Bool FifoU8Peek(CFifoU8 *f,U8 *_b)
 {
   PushFD;
   Cli;
@@ -70,8 +70,9 @@ U0 FifoU8Flush(CFifoU8 *f)
   PopFD;
 }
 
-U64 FifoU8Cnt(CFifoU8 *f)
+I64 FifoU8Cnt(CFifoU8 *f)
 {
+  I64 result;
   PushFD;
   Cli;
   if (f->out_ptr>f->in_ptr)
@@ -79,29 +80,30 @@ U64 FifoU8Cnt(CFifoU8 *f)
   else
     result=f->in_ptr-f->out_ptr;
   PopFD;
+  return result;
 }
 
-CFifoU64 *FifoU64New(U64 size,CTask *mem_task=NULL)
+CFifoI64 *FifoI64New(I64 size,CTask *mem_task=NULL)
 {
-  CFifoU64 *f;
+  CFifoI64 *f;
   if (!mem_task) mem_task=Fs;
-  f=MAlloc(sizeof(CFifoU64),mem_task);
-  f->buf=MAlloc(size*sizeof(U64),mem_task);
+  f=MAlloc(sizeof(CFifoI64),mem_task);
+  f->buf=MAlloc(size*sizeof(I64),mem_task);
   f->mask=size-1;
   f->in_ptr=0;
   f->out_ptr=0;
   return f;
 }
 
-U0 FifoU64Del(CFifoU64 *f)
+U0 FifoI64Del(CFifoI64 *f)
 {
   Free(f->buf);
   Free(f);
 }
 
-BoolI64 FifoU64Ins(CFifoU64 *f,U64 q)
+Bool FifoI64Ins(CFifoI64 *f,I64 q)
 {
-  U64 new_in_ptr;
+  I64 new_in_ptr;
   PushFD;
   Cli;
   new_in_ptr=(f->in_ptr+1)&f->mask;
@@ -116,7 +118,7 @@ BoolI64 FifoU64Ins(CFifoU64 *f,U64 q)
   }
 }
 
-BoolI64 FifoU64Rem(CFifoU64 *f,U64 *_q)
+Bool FifoI64Rem(CFifoI64 *f,I64 *_q)
 {
   PushFD;
   Cli;
@@ -131,7 +133,7 @@ BoolI64 FifoU64Rem(CFifoU64 *f,U64 *_q)
   }
 }
 
-BoolI64 FifoU64Peek(CFifoU64 *f,U64 *_q)
+Bool FifoI64Peek(CFifoI64 *f,I64 *_q)
 {
   PushFD;
   Cli;
@@ -145,7 +147,7 @@ BoolI64 FifoU64Peek(CFifoU64 *f,U64 *_q)
   }
 }
 
-U0 FifoU64Flush(CFifoU64 *f)
+U0 FifoI64Flush(CFifoI64 *f)
 {
   PushFD;
   Cli;
@@ -153,8 +155,9 @@ U0 FifoU64Flush(CFifoU64 *f)
   PopFD;
 }
 
-U64 FifoU64Cnt(CFifoU64 *f)
+I64 FifoI64Cnt(CFifoI64 *f)
 {
+  I64 result;
   PushFD;
   Cli;
   if (f->out_ptr>f->in_ptr)
@@ -162,4 +165,5 @@ U64 FifoU64Cnt(CFifoU64 *f)
   else
     result=f->in_ptr-f->out_ptr;
   PopFD;
+  return result;
 }

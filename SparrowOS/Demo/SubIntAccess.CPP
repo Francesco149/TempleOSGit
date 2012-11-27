@@ -6,7 +6,7 @@
   See [::/SparrowOS/OSMain/Adam1a.HPP.Z,1] U64i union
  
   The versions with "i" are internal data types.
-  Use "U64" instead of "U64i" and you
+  Use "I64" instead of "U64i" and you
   will have access to subbytes and
   subwords.
 
@@ -17,7 +17,7 @@
   See [::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z,1] ::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z.
 */
 
-U64 q=0xFEDCBA9876543210,q1;
+I64 q=0xFEDCBA9876543210,q1;
 
 "q\t\t=%016X\n",q;
 q1=q.i16[2];

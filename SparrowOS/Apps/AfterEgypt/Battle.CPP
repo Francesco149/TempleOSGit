@@ -48,7 +48,7 @@
 
 
 F64 t0,xx,t_last;
-BoolI8 held_up;
+Bool held_up;
 
 #define HACK_PERIOD	0.25
 #define SPACING			45

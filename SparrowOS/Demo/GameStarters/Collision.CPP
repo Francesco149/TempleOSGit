@@ -57,7 +57,7 @@ Conservation of Energy:
 
 ****/
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   CTask *task=Fs->parent_task;
   I64 i,j,h,v,distdist,

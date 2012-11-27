@@ -1,6 +1,6 @@
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 
-public U8 *DBlk(U64 blk,BoolI8 write=FALSE)
+public U8 *DBlk(I64 blk,Bool write=FALSE)
 {//Dump Disk Blk.
 //If you set write to TRUE, it will be written when you press <ESC>.
 //See [::/SparrowOS/Demo/Dsk/Raw.CPP.Z,1] ::/SparrowOS/Demo/Dsk/Raw.CPP.Z.
@@ -18,11 +18,11 @@ public U8 *DBlk(U64 blk,BoolI8 write=FALSE)
   return buf;
 }
 
-public U8 *DCluster(U64 c,BoolI8 write=FALSE,I64 num=0)
+public U8 *DCluster(I64 c,Bool write=FALSE,I64 num=0)
 {//Dump Disk Cluster.
 //If you set write to TRUE, it will be written when you press <ESC>.
 //See [::/SparrowOS/Demo/Dsk/Raw.CPP.Z,1] ::/SparrowOS/Demo/Dsk/Raw.CPP.Z.
-//Do [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir("*",TRUE); to get cluster numbers of files.
+//Do [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir("*",TRUE); to get cluster numbers of files.
   U8 *buf=MAlloc(Fs->cur_prt->spc<<BLK_SIZE_BITS);
   c=ClusterNumNext(Fs->cur_prt,c,num);
   RClusters(Fs->cur_prt,buf,c,1);
@@ -47,7 +47,7 @@ U0 OFFlatten(CDirEntry *tempm,CDirEntry **a,I64 *i)
     tempm1=tempm->next;
     if (tempm->attr&_ATTR_DIR) {
       OFFlatten(tempm->sub,a,i);
-      CDirDel(tempm);
+      CDirEntryDel(tempm);
     } else {
       a[*i]=tempm;
       *i=*i+1;
@@ -80,7 +80,7 @@ public CDirEntry **FilesOrder(CDirEntry *tempm,I64 *_cnt=NULL)
   I64 cnt=CFileCnt(tempm),i=0;
   CDirEntry **a=MAlloc(sizeof(CDirEntry *)*cnt);
   OFFlatten(tempm,a,&i);
-  QSortU64(a,cnt,&OFCompare);
+  QSortI64(a,cnt,&OFCompare);
   if (_cnt) *_cnt=cnt;
   return a;
 }
@@ -88,9 +88,9 @@ public CDirEntry **FilesOrder(CDirEntry *tempm,I64 *_cnt=NULL)
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 
-public BoolI64 Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
+public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
 {
-  BoolI8 result=TRUE;
+  Bool result=TRUE;
   CFileAccess *fa;
   CDirEntry *tempm,*tempm1;
   U8 *st;
@@ -107,7 +107,7 @@ public BoolI64 Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
 	    result=FALSE;
 	  Free(st);
 	}
-	CDirDel(tempm);
+	CDirEntryDel(tempm);
 	tempm=tempm1;
       }
       FileAccessDel(fa);
@@ -117,7 +117,7 @@ public BoolI64 Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
     return CopySingle(src_files_find_mask,dst_files_find_mask);
 }
 
-public BoolI64 Move(U8 *f1,U8 *f2)
+public Bool Move(U8 *f1,U8 *f2)
 {
   if (Copy(f1,f2)) {
     Del(f1);
@@ -126,10 +126,10 @@ public BoolI64 Move(U8 *f1,U8 *f2)
   return FALSE;
 }
 
-U64 PutCopyTree(CDirEntry *tempm,U64 src_dir_len,U64 dst_dir_len,U8 *dst_dir)
+I64 PutCopyTree(CDirEntry *tempm,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
 {
   U8 *st;
-  result=1;
+  I64 result=1;
   while (tempm) {
     st=MAlloc(StrLen(tempm->full_name)+dst_dir_len+2);
     MemCpy(st,dst_dir,dst_dir_len);
@@ -143,13 +143,14 @@ U64 PutCopyTree(CDirEntry *tempm,U64 src_dir_len,U64 dst_dir_len,U8 *dst_dir)
     Free(st);
     tempm=tempm->next;
   }
+  return result;
 }
 
-public U64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
+public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
 {  //returns count of copied files (not dirs)
   CFileAccess *fa;
   CDirEntry *tempm=NULL;
-  U64 result=0,i1,i2;
+  I64 result=0,i1,i2;
   U8 *st1,*st2;
 
   st1=DirNameAbs(src_files_find_mask);
@@ -183,6 +184,7 @@ public U64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
     CDirListDel(tempm);
     Free(st1);
   }
+  return result;
 }
 
 U0 DelTreeDirs(CDirEntry *tempm1)
@@ -195,7 +197,7 @@ U0 DelTreeDirs(CDirEntry *tempm1)
 	DelTreeDirs(tempm1->sub);
       SysDel(tempm1->full_name,TRUE);
     }
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
 }
@@ -210,14 +212,14 @@ U0 DelTreeFiles(CDirEntry *tempm1)
 	DelTreeFiles(tempm1->sub);
     } else
       SysDel(tempm1->full_name,FALSE);
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
 }
 
 public U0 DelTree(U8 *files_find_mask,U8 *fu_flags=NULL)
 {
-  U64 fuf_flags=0;
+  I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   if (IsDir(files_find_mask)) {
@@ -230,10 +232,10 @@ public U0 DelTree(U8 *files_find_mask,U8 *fu_flags=NULL)
 
 U0 TouchFile(U8 *filename,U8 *attr,CDate ltdt=0) //Just one file
 {
-  U8 *cur_dir=StrNew(filename);
   CPrt *p=Drv2Prt(*filename);
   CDirEntry de;
-  U8 buf[136];
+  U8 *cur_dir=StrNew(filename),
+     buf[136];
   if (FileFind(filename,&de,FALSE,TRUE)) {
     if (!StrCmp(attr,"+?"))
       "%-32ts %s\n",filename,SPrintFFlags(buf,Define("ST_FILE_ATTRS"),de.attr);
@@ -264,7 +266,7 @@ U0 TouchList(CDirEntry *tempm1,U8 *attr,CDate ltdt=0)
       }
     } else
       TouchFile(tempm1->full_name,attr,ltdt);
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
 }
@@ -273,14 +275,14 @@ public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate ltdt=0
 {
 //Attr "+?" =show
 //     "+T" =resident
-  U64 fuf_flags=0;
+  I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   TouchList(FilesFind(files_find_mask,fuf_flags),attr,ltdt);
 }
 
-U64 FFList(CDirEntry *tempm1)
+I64 FFList(CDirEntry *tempm1)
 {
-  U64 cnt=0;
+  I64 cnt=0;
   CDirEntry *tempm2;
 
   while (tempm1) {
@@ -293,16 +295,16 @@ U64 FFList(CDirEntry *tempm1)
       NewLine;
       cnt++;
     }
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
   return cnt;
 }
 
-public U64 FF(U8 *files_find_mask,U8 *fu_flags=NULL)
+public I64 FF(U8 *files_find_mask,U8 *fu_flags=NULL)
 //Files Find
 {
-  U64 cnt=0,fuf_flags=0;
+  I64 cnt=0,fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   cnt+=FFList(FilesFind(files_find_mask,fuf_flags));
@@ -330,7 +332,7 @@ U0 PrintFDrvTextAttr(U8 drv_let=0)
 I64 NativeFSUnusedDrvSpace(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
-  U64 result=0,i,l;
+  I64 result=0,i,l;
   U8 *bitmap;
   try {
     l=(p->size+p->spc-1)/p->spc;
@@ -349,7 +351,7 @@ I64 NativeFSUnusedDrvSpace(U8 drv_let=0)
 I64 FAT32UnusedDrvSpace(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
-  U64 result=0,i,l;
+  I64 result=0,i,l;
   U32 *bitmap;
   try {
     l=(p->size+p->spc-1)/p->spc;
@@ -369,7 +371,7 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
 { //returns size in bytes
   CPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
   U8 *old_dir=StrNew(Fs->cur_dir);
-  result=0;
+  I64 result=0;
   Drv(drv_let);
   switch (p->type) {
     case PT_NATIVE:
@@ -384,13 +386,14 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
   Drv(Prt2Drv(p_old));
   Cd(old_dir);
   Free(old_dir);
+  return result;
 }
 
 #help_index "File/Program Routines"
 
-U64 TreeSizeFiles(CDirEntry *tempm,I64 round_to)
+I64 TreeSizeFiles(CDirEntry *tempm,I64 round_to)
 {
-  U64 result=0,i;
+  I64 result=0,i;
   while (tempm) {
     if (round_to)
       i=CeilU64(tempm->size,round_to);
@@ -402,13 +405,14 @@ U64 TreeSizeFiles(CDirEntry *tempm,I64 round_to)
     result+=i;
     tempm=tempm->next;
   }
+  return result;
 }
 
-public U64 TreeSize(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL,I64 round_to=0)
+public I64 TreeSize(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL,I64 round_to=0)
 {
 //Does not include directory size of base directory, but
 //does include size of sub directories.
-  U64 fuf_flags=0,result=0;
+  I64 fuf_flags=0,result=0;
   CDirEntry *tempm1=NULL;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
@@ -416,6 +420,7 @@ public U64 TreeSize(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL,I64 rou
     result=TreeSizeFiles(tempm1,round_to);
     CDirListDel(tempm1);
   }
+  return result;
 }
 
 #help_index ""

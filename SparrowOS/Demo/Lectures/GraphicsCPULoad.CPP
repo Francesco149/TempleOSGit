@@ -1,10 +1,10 @@
 //This is the fastest you can update the whole screen.
 //See [::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z,1] ::/SparrowOS/Demo/Lectures/MiniGrLib.CPP.Z if this interests you.
 
-F64 VGAPattern(U64 p)
+F64 VGAPattern(I64 p)
 {//This returns the time to update in seconds.
   F64 start=tP;
-  U64 i,plane,*ptr;
+  I64 i,plane,*ptr;
   for (plane=1;plane<0x10;plane<<=1) {
     OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
     OutU8(VGA_SC_DATA,plane);
@@ -20,7 +20,7 @@ U0 GrDemo()
 {
   I64 i;
   F64 t;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CPURep;
   for (i=0;i<16;i++) {
     t=VGAPattern(0x5555555555555555);

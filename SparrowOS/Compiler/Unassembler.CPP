@@ -58,8 +58,7 @@ U0 UnasmHashLoad()
   CHashTable *h=asm_hash;
   CHashOpcode *temph;
   CInstruction *tempi;
-  U64 cnt=0;
-  I64 j,k;
+  I64 cnt=0,j,k;
 
   unasm_table=NULL;
   unasm_table_entries=0;
@@ -77,7 +76,7 @@ U0 UnasmHashLoad()
   unasm_table_entries=cnt;
 
   j=0;
-  unasm_table=MAlloc(cnt*sizeof(U0 *));
+  unasm_table=MAlloc(cnt*sizeof(U8 *));
   temph=h->next_added;
   while (temph!=h) {
     if (temph->type==HTT_OPCODE) {
@@ -90,7 +89,7 @@ U0 UnasmHashLoad()
     temph=temph->next_added;
   }
 
-  QSortU64(unasm_table,cnt,&InstEntriesCompare);
+  QSortI64(unasm_table,cnt,&InstEntriesCompare);
 }
 
 /*
@@ -109,19 +108,17 @@ U0 DumpUnasmTable()
 
 */
 
-U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
+U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *branch=NULL)
 //Unassembles one instruction
 {
-  U8 *ip=*_ip;
-  I64 disp,imm;
-  I64 opsize,opadd;
-  BoolI8 cont;
-  I64 i,j,k,n,m,o1,o2,a1,a2,aa1,aa2,arg1_size=0,arg2_size=0,a1_size,a2_size,
+  I64 disp,imm,opsize,opadd,
+      i,j,k,n,m,o1,o2,a1,a2,aa1,aa2,arg1_size=0,arg2_size=0,a1_size,a2_size,
       ModrM=-1,SIB=-1,scale,r1,r2,
       Mod=-1,RM1=-1,RM2=-1,REX=-1,REX_r=0,REX_x=0,REX_b=0,oc_cnt,sv;
+  Bool cont;
   CInstruction *tempi;
   CHashOpcode *tempo;
-  U8 *ptr,*a1_st,*a2_st,*bin_data_area,*bin_data_area2,
+  U8 *ip=*_ip,*ptr,*a1_st,*a2_st,*bin_data_area,*bin_data_area2,
       buf2[256],buf3[256],seg_overrides[40],arg1_st[256],arg2_st[256];
 
   if (branch) *branch=-1;
@@ -679,7 +676,7 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
       break;
     case ARGT_IMM64:
     case ARGT_UIMM64:
-      imm=*ip(U64 *)++;
+      imm=*ip(I64 *)++;
       SPrintF(buf2,"%016X",imm);
       StrCat(arg1_st,buf2);
       break;
@@ -771,7 +768,7 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
       break;
     case ARGT_IMM64:
     case ARGT_UIMM64:
-      imm=*ip(U64 *)++;
+      imm=*ip(I64 *)++;
       SPrintF(buf2,"%016X",imm);
       StrCat(arg2_st,buf2);
       break;
@@ -848,7 +845,7 @@ U0 Ui(U8 *buf,U0 **_ip,I64 seg_size=64,I64 *branch=NULL)
 }
 
 
-U0 *U(U0 *ip,U64 cnt=20,I64 seg_size=64)
+U8 *U(U8 *ip,I64 cnt=20,I64 seg_size=64)
 //Unassembles a num of instructions.
 {
   I64 i;
@@ -864,7 +861,7 @@ U0 *U(U0 *ip,U64 cnt=20,I64 seg_size=64)
   return ip;
 }
 
-I64 Un(U0 *ip,U64 cnt=0x80,I64 seg_size=64)
+I64 Un(U8 *ip,I64 cnt=0x80,I64 seg_size=64)
 //Unassembles a num of bytes
 {
   I64 i=0;

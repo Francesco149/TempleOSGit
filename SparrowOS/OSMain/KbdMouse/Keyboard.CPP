@@ -19,7 +19,7 @@ CTRL_KEY_SCAN_DECODE_TABLE::
 	DU8	0,0,0,0,0,0,0,0,0,0,'-',0,0,0,'+',0;
 }
 
-U0 KbdCmdSend(U64 port, U8 val)
+U0 KbdCmdSend(I64 port, U8 val)
 {
   F64 timeout=tS+0.125;
   while (tS<timeout) {
@@ -47,9 +47,9 @@ U0 KbdCmdFlush()
     InU8(KBD_PORT);
 }
 
-U0 KbdSetLEDs(U64 sc)
+U0 KbdSetLEDs(I64 sc)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   U8 v=0;
   BEqu(&v,0,Bt(&sc,SCf_SCROLL));
   BEqu(&v,1,Bt(&sc,SCf_NUM));
@@ -94,7 +94,7 @@ U0 SetTypeMatic(U8 delay)
   }
 }
 
-U64 A2ScanCode(U64 ch,U64 sc_flags=0)
+I64 A2ScanCode(I64 ch,I64 sc_flags=0)
 { //ASCII val to scan code (Slow)
   I64 i;
   U8 *table;
@@ -131,7 +131,7 @@ U64 A2ScanCode(U64 ch,U64 sc_flags=0)
 }
 
 
-U8 ScanCode2A(U64 sc)
+U8 ScanCode2A(I64 sc)
 {//Scan Code to ASCII val
   U8 *table=NORMAL_KEY_SCAN_DECODE_TABLE;
   if (sc & SCF_E0_PREFIX)
@@ -193,9 +193,9 @@ U8 num_lock_map[0x100]={
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
 
-U8 *A2KeyName(U64 ch,BoolI8 include_ctrl=TRUE)
+U8 *A2KeyName(I64 ch,Bool include_ctrl=TRUE)
 {//ASCII val to key name
-  U64 i;
+  I64 i;
   U8 buf[136];
   if (ch<=CH_SPACE) {
     nobound_switch (ch) {
@@ -240,9 +240,9 @@ U8 *A2KeyName(U64 ch,BoolI8 include_ctrl=TRUE)
   return StrNew(buf);
 }
 
-U8 *ScanCode2KeyName(U64 sc)
+U8 *ScanCode2KeyName(I64 sc)
 {
-  U64 ch;
+  I64 ch;
   U8 buf[136],*st;
   *buf=0;
   if (sc&SCF_CTRL)
@@ -291,10 +291,10 @@ U8 *ScanCode2KeyName(U64 sc)
   return StrNew(buf);
 }
 
-U64 KbdBuildSC(U8 raw_byte,U8 *_last_raw_byte,U64 *_last_sc,
-  BoolI8 *_set_LEDs,BoolI8 *_ctrl_alt)
+I64 KbdBuildSC(U8 raw_byte,U8 *_last_raw_byte,I64 *_last_sc,
+  Bool *_set_LEDs,Bool *_ctrl_alt)
 {
-  U64 sc_flags,sc,sc2,sc_raw;
+  I64 sc_flags,sc,sc2,sc_raw;
   *_set_LEDs=FALSE;
   *_ctrl_alt=FALSE;
   if (raw_byte==0xE0) {
@@ -390,10 +390,10 @@ new_key_done:
 U0 KbdPktRead()
 {
   static U8 last_raw_byte=0;
-  static U64 last_sc=0;
+  static I64 last_sc=0;
   U8 raw_byte;
-  U64 ch,sc;
-  BoolI8 set_LEDs,ctrl_alt;
+  I64 ch,sc;
+  Bool set_LEDs,ctrl_alt;
 
   if (GetTimeStamp>kbd_evt_time+time_stamp_freq>>3)
     FifoU8Flush(kbd_fifo);
@@ -441,7 +441,7 @@ interrupt U0 KbdIntHandler()
     kbdmouse_rst=TRUE;
     return;
   }
-  ctrl_alt_let_ret_addr=GetBasePtr()(U64)+8;
+  ctrl_alt_let_ret_addr=GetBasePtr()(I64)+8;
   KbdPktRead;
 }
 
@@ -458,7 +458,7 @@ U0 KbdInit()
     KbdCmdFlush;
     Fs->catch_except=TRUE;
   }
-  SetIDTEntry(0x21,&KbdIntHandler,0);
+  IntEntrySet(0x21,&KbdIntHandler,0);
   OutU8(0x21,InU8(0x21)&~2);
 
   SetCtrlAltLetCB('C',&CtrlAltC,"Sys/Break Execution",TRUE);
@@ -474,8 +474,8 @@ U0 KbdHandler()
 {
   static U8 last_raw_byte=0;
   U8  raw_byte;
-  BoolI8 set_LEDs,ctrl_alt;
-  U64 ch,sc;
+  Bool set_LEDs,ctrl_alt;
+  I64 ch,sc;
 
   FifoU8Rem(kbd2_fifo,&raw_byte);
   sc=KbdBuildSC(raw_byte,&last_raw_byte,&sys_cur_scan_code,&set_LEDs,&ctrl_alt);
@@ -503,7 +503,7 @@ U0 KbdHandler()
   }
   if (Btr(&sys_cur_scan_code,SCf_NEW_KEY)) {
     Btr(&sys_cur_scan_code,32+SCf_NEW_KEY);
-    FifoU64Ins(scan_code_fifo,sys_cur_scan_code);
+    FifoI64Ins(scan_code_fifo,sys_cur_scan_code);
     sys_key_cnt++;
     if (!(sys_cur_scan_code&SCF_KEY_UP)) {
       sys_last_down_scan_code=sys_cur_scan_code;
@@ -516,12 +516,12 @@ U0 KbdHandler()
   }
 }
 
-U64 KbdQueMsgs()
+I64 KbdQueMsgs()
 {
   I64 p1,p2,msg_code=MSG_NULL;
   CTask *task_focus;
   if (task_focus=sys_focus_task) {
-    while (FifoU64Rem(scan_code_fifo,&p2)) {
+    while (FifoI64Rem(scan_code_fifo,&p2)) {
       p1=ScanCode2A(p2);
       if (p2 & SCF_KEY_UP) {
 	QueMsg(task_focus,0,
@@ -537,7 +537,7 @@ U64 KbdQueMsgs()
   return msg_code;
 }
 
-U64 KbdMouseEvtTime()
+I64 KbdMouseEvtTime()
 {
   if (mouse_evt_time>kbd_evt_time)
     return mouse_evt_time;

@@ -14,9 +14,9 @@ U0 MemTaskCorrupt()
   Dbg("Corrupt Task Memory");
 }
 
-public U64 UnusedBPMem(CBlkPool *bp)
+public I64 UnusedBPMem(CBlkPool *bp)
 {
-  U64 result=0,i;
+  I64 result=0,i;
   CMemBlk *tempm;
 
   if (!bp) return 0;
@@ -57,16 +57,16 @@ public U64 UnusedBPMem(CBlkPool *bp)
   return result*PAGE_SIZE;
 }
 
-public U64 UnusedSysMem()
+public I64 UnusedSysMem()
 {
   return UnusedBPMem(sys_code_bp);
 }
 
-public U64 TaskAllocatedMem(CTask *task=NULL,BoolI8 override_validate=FALSE)
+public I64 TaskAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
 {
   CMemBlk *m,*m1;
+  I64 result=0;
 
-  result=0;
   if (!task) task=Fs;
   if (!override_validate && !TaskValidate(task)) return 0;
 
@@ -102,22 +102,24 @@ public U64 TaskAllocatedMem(CTask *task=NULL,BoolI8 override_validate=FALSE)
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
   PopFD;
+  return result;
 }
 
-U64 MemBlkListSize(CHeapCtrl *hc)
+I64 MemBlkListSize(CHeapCtrl *hc)
 {
   CMemBlk *m;
-  result=0;
+  I64 result=0;
   m=hc->next_mem_blk;
   while (m!=&hc->next_mem_blk) {
     result+=sizeof(CMemBlk);
     m=m->next;
   }
+  return result;
 }
 
-public U64 TaskUnusedAllocatedMem(CTask *task=NULL,BoolI8 override_validate=FALSE)
+public I64 TaskUnusedAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
 {
-  U64 result=0,i;
+  I64 result=0,i;
   CMemUnusedAllocated *uum;
   if (!task) task=Fs;
   if (!override_validate && !TaskValidate(task)) return 0;
@@ -164,23 +166,25 @@ public U64 TaskUnusedAllocatedMem(CTask *task=NULL,BoolI8 override_validate=FALS
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
   PopFD;
+  return result;
 }
 
-public U64 TaskUsedMem(CTask *task=NULL,BoolI8 override_validate=FALSE)
+public I64 TaskUsedMem(CTask *task=NULL,Bool override_validate=FALSE)
 {
-  result=0;
+  I64 result=0;
   if (!task) task=Fs;
   if (!override_validate && !TaskValidate(task)) return 0;
   result=task->code_heap->used_u8s;
   if (task->data_heap!=task->code_heap)
     result+=task->data_heap->used_u8s;
+  return result;
 }
 
     #help_index "Memory/Heap Ctrl"
 
-public U64 UnusedHCMem(CHeapCtrl *hc)
+public I64 UnusedHCMem(CHeapCtrl *hc)
 {
-  U64 i;
+  I64 result,i;
   CMemUnusedAllocated *u;
 
   if (!hc) return 0;
@@ -207,10 +211,11 @@ public U64 UnusedHCMem(CHeapCtrl *hc)
 
   LBtr(&hc->locked_flags,HClf_LOCKED);
   PopFD;
+  return result;
 }
 
 #help_index "Info;Memory/Info;Debugging"
-public BoolI64 HeapRep(CTask *task)
+public Bool HeapRep(CTask *task)
 {
   I64 i,cnt;
   CMemUnusedAllocated *uum;
@@ -271,7 +276,7 @@ public BoolI64 HeapRep(CTask *task)
 
 #help_index "Memory;Debugging"
 
-public BoolI64 IsInHeap(U8 *a,CTask *task=NULL,BoolI8 lock=TRUE)
+public Bool IsInHeap(U8 *a,CTask *task=NULL,Bool lock=TRUE)
 {
   CMemBlk *m;
 
@@ -321,12 +326,12 @@ public BoolI64 IsInHeap(U8 *a,CTask *task=NULL,BoolI8 lock=TRUE)
   return FALSE;
 }
 
-public BoolI64 HeapWalk(CTask *task=NULL)
+public Bool HeapWalk(CTask *task=NULL)
 {
   I64 i;
   CMemUnusedAllocated *uum;
+  Bool result=TRUE;
 
-  result=TRUE;
   if (!task) task=Fs;
   if (!TaskValidate(task)) return FALSE;
 
@@ -395,6 +400,7 @@ public BoolI64 HeapWalk(CTask *task=NULL)
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
   PopFD;
+  return result;
 }
 
 #help_index "Info;Task"

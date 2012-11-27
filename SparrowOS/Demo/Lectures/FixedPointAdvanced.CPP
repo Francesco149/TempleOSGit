@@ -76,10 +76,10 @@ _extern _ASM_FLOAT I64 AsmFloat();
 
 U0 Main()
 {
-  U64 start,end,overhead_time,test_time;
+  I64 start,end,overhead_time,test_time;
   F64 d1,fsum;
   I64 reg i,temp,reg d2,reg sum;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   CPURep;
 

@@ -370,7 +370,7 @@ I64 WSSkipCrap(U8 *src,I64 len)
 I64 WSPriorWordInStr(U8 *src,U8 *dst,I64 len,I64 buf_size)
 {
   I64 i,j=0,k;
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE;
   i=len-1;
   while (i>=0 && cont) {
     if (!Bt(alpha_numeric_bitmap,src[i]))
@@ -386,7 +386,7 @@ I64 WSPriorWordInStr(U8 *src,U8 *dst,I64 len,I64 buf_size)
 }
 
 
-BoolI64 WSPartialMatch(U8 *partial,U8 *complete)
+Bool WSPartialMatch(U8 *partial,U8 *complete)
 {
   I64 i,l=StrLen(partial);
   for (i=0;i<l;i++)
@@ -412,7 +412,7 @@ U0 WSMan(I64 n,CTask *parent_task=NULL)
   U8 *buf;
   CHashWS *tempw;
   CHashSrcSym *temph;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (0<=--n<ws_num_fillins) {
     if (tempw=ws_sorted_words[ws_fillin_matches[n]]) {
       if (temph=HashFind(tempw->str,Fs->hash_table,HTG_SRC_SYM)) {
@@ -431,7 +431,7 @@ U0 WSMan(I64 n,CTask *parent_task=NULL)
 
 U0 WSFillInAdd(I64 i,I64 j,I64 old_num_fillins)
 {
-  BoolI8 cont;
+  Bool cont;
   I64 k;
   if (ws_num_fillins<WS_MAX_FILLINS || i>ws_fillin_scores[ws_num_fillins-1] ||
       i==ws_fillin_scores[ws_num_fillins-1] && ws_sorted_words[j]->hits>ws_fillin_hits[ws_num_fillins-1]) {
@@ -528,7 +528,7 @@ pc_done:
   Free(buf1);
 }
 
-U0 WSTask(U64)
+U0 WSTask(I64)
 {
   CTask *focus_task,*original_focus_task;
   CDoc *doc;
@@ -581,7 +581,7 @@ U0 WSMainFileListTraverse(U8 *files_find_mask,I64 pass)
       buf=TextFileRead(flist[i]->full_name);
       WSSingleFileAdd(buf,pass);
       Free(buf);
-      CDirDel(flist[i]);
+      CDirEntryDel(flist[i]);
     }
     } catch
     Fs->catch_except=TRUE;
@@ -606,9 +606,9 @@ U0 WSMatrixDel(CWSMatrix *m)
 }
 
 
-public BoolI64 WordStat(BoolI64 val=OFF)
+public Bool WordStat(Bool val=OFF)
 {
-  BoolI8 old_wordstat=FALSE,
+  Bool old_wordstat=FALSE,
 	 old_preempt=Preempt(OFF);
   if (val) {
     if (TaskValidate(ws_task))
@@ -633,7 +633,7 @@ public BoolI64 WordStat(BoolI64 val=OFF)
   return old_wordstat;
 }
 
-U0 WSProgressTask(BoolI8 *_start_flag)
+U0 WSProgressTask(Bool *_start_flag)
 {
   I64 start=sys_dsk_writes;
   TaskInitExt; //needed for disk access
@@ -652,7 +652,7 @@ U0 WSProgressTask(BoolI8 *_start_flag)
 public U0 WSInit(U8 *mask=NULL)
 {
   I64 i,j=0;
-  BoolI8 start_flag;
+  Bool start_flag;
   CHashWS *tempw;
   CBlkDev *bdev=Drv2BlkDev;
 
@@ -683,14 +683,14 @@ public U0 WSInit(U8 *mask=NULL)
   "\n\nPass #1\n";
   if (mask) WSMainFileListTraverse(mask,1);
   Free(ws_sorted_words);
-  ws_sorted_words=AMAlloc(sizeof(U0 *)*ws_num_words);
+  ws_sorted_words=AMAlloc(sizeof(U8 *)*ws_num_words);
 
   tempw=ws_hash_table->next_added;
   while (tempw!=ws_hash_table) {
     ws_sorted_words[j++]=tempw;
     tempw=tempw->next_added;
   }
-  QSortU64(ws_sorted_words,ws_num_words,&WSCompare);
+  QSortI64(ws_sorted_words,ws_num_words,&WSCompare);
   for (i=0;i<ws_num_words;i++)
     ws_sorted_words[i]->num=i;
   if (ws_num_words<=WS_MAX_MATRIX_WORDS)

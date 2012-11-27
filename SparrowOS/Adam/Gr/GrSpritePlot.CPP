@@ -6,7 +6,7 @@ each operation.  The types available are listed
 here, [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,6] GRST_PT.  They are stored, one after another,
 in a chunk of memory terminated by a type [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,2] GRST_END.
 
-[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] CSpritePlot3() and [C:/SparrowOS/Adam/Gr/CSpriteVect.CPP.Z,204] CSpriteVect() shows how the
+[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] CSpritePlot3() and [C:/SparrowOS/Adam/Gr/CSpriteVect.CPP.Z,207] CSpriteVect() shows how the
 unions are used.  It's kind-of a mess using a union.
 
 [C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,119] CSpriteSize() will return the size of a single
@@ -27,16 +27,15 @@ making CSprite by hand.  Those are type
 [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,31] GRST_MESH, one of the most complicated.
 */
 
-public U0 CSpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FALSE)
+public U0 CSpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 {
   CSprite *tempg=elems-offset(CSprite.start);
-  I64 i,j,k;
-  I64 x1,y1,z1,x2,y2;
+  I64 i,j,k,x1,y1,z1,x2,y2,
+      cur_sprite_elem_num=0,*old_r,*r2,
+      old_flags=dc->flags,
+      old_pen_width=dc->pen_width;
   I32 *ptr;
-  I64 cur_sprite_elem_num=0,*old_r,*r2;
-  U64 old_flags=dc->flags;
   CColorROPU32 old_color=dc->color;
-  I64 old_pen_width=dc->pen_width;
   CDC *img;
   CD3I32 *p;
   CGrSym old_sym;
@@ -293,19 +292,6 @@ public U0 CSpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,BoolI8 just_one=FALSE
 	    old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
 }
 
-public U0 GrSpriteElemPlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
-//**!!!WARNING!!!** This will plot just
-//one element.  You probably do not
-//want this routine.
-//
-//If you do not enter a color or width into
-//a CSprite, you can pass a color and width
-//when you plot it.
-{
-  CSpritePlot3(dc,x,y,z,elems,TRUE);
-}
-
-
 public U0 CSpritePlot3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
 {
   I64 old_x=dc->x,old_y=dc->y,old_z=dc->z;
@@ -316,8 +302,8 @@ public U0 CSpritePlot3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
 
 public U0 CSpritePlotRotMat3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
 {
-  I64 *old_r=dc->r,old_m[16];
-  U64 old_flags=dc->flags&DCF_TRANSFORMATION;
+  I64 *old_r=dc->r,old_m[16],
+      old_flags=dc->flags&DCF_TRANSFORMATION;
   MemCpy(old_m,m,16*sizeof(I64));
   dc->flags|=DCF_TRANSFORMATION;
   GrAddTranslation(m,x,y,z);
@@ -373,10 +359,12 @@ public U0 CSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
 
 public CDC *CSprite2DC(U8 *elems,I64 type=DCT_COLOR8)
 {
+  CDC *result;
   I64 min_x,max_x,min_y,max_y;
   CSpriteExtents(elems,&min_x,&max_x,&min_y,&max_y);
   result=DCNew(type,max_x-min_x+1,max_y-min_y+1);
   CSpritePlot3(result,-min_x,-min_y,0,elems);
+  return result;
 }
 
 public U8 *CSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
@@ -488,6 +476,7 @@ public U8 *CSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
     tempg1(U8 *)+=i;
     tempgr(U8 *)+=i;
   }
+  return result;
 }
 
 
@@ -496,14 +485,14 @@ public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *txt=NULL)
 {
   I64 size;
   U8 *st;
-  BoolI8 unlock;
+  Bool unlock;
   CDocEntry *doc_e;
   CDocBin *tempb;
   if (!doc && !(doc=DocCur)) return NULL;
   unlock=DocLock(doc);
   size=CSpriteSize(elems);
   tempb=CAlloc(sizeof(CDocBin),doc->mem_task);
-  tempb->type=DOCBT_GRSPRITE;
+  tempb->type=DOCBT_CSPRITE;
   tempb->size=size;
   tempb->data=MAlloc(size,doc->mem_task);
   MemCpy(tempb->data,elems,size);

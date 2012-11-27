@@ -1,7 +1,7 @@
 public CCtrl *CtrlFindUnique(CTask *task,I64 type)
 {
   CCtrl *c;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   c=task->next_ctrl;
   while (c!=&task->next_ctrl) {
     if (c->type==type) {
@@ -17,7 +17,7 @@ public CCtrl *CtrlFindUnique(CTask *task,I64 type)
 U0 CtrlsUpdate(CTask *task)
 {
   CCtrl *c;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   c=task->next_ctrl;
   while (c!=&task->next_ctrl) {
     if (c->update_derived_vals)
@@ -41,7 +41,7 @@ U0 CtrlsUpdate(CTask *task)
 fp_update_ctrls=&CtrlsUpdate;
 
 
-BoolI64 CtrlInsideRect(CCtrl *c,I64 x,I64 y)
+Bool CtrlInsideRect(CCtrl *c,I64 x,I64 y)
 {//screen coordinates
   if (c->screen_left<=x<=c->screen_right &&
       c->screen_top<=y<=c->screen_bottom)
@@ -50,7 +50,7 @@ BoolI64 CtrlInsideRect(CCtrl *c,I64 x,I64 y)
     return FALSE;
 }
 
-public BoolI64 CtrlInside(CCtrl *c,I64 x,I64 y)
+public Bool CtrlInside(CCtrl *c,I64 x,I64 y)
 {
   if (c->flags&CTRLF_SHOW) {
     if (c->inside_ctrl)
@@ -65,7 +65,7 @@ U0 DrawCtrls(CTask *task)
 {
   CCtrl *c;
   CDC *dc=DCAlias(gr_dc,task);
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   c=task->next_ctrl;
   while (c!=&task->next_ctrl) {
     if (c->flags&CTRLF_SHOW) {
@@ -118,7 +118,7 @@ U0 DrawCtrls(CTask *task)
 U0 DrawWinScroll(CDC *dc,CCtrl *c)
 {
   CWinScroll *s=c->state;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   if (c->flags&CTRLF_CLICKED)
     dc->color=s->color>>4;
@@ -161,7 +161,7 @@ U0 WinDerivedScrollValsUpdate(CCtrl *c)
   }
 }
 
-U0 LeftClickHWinScroll(CCtrl *c,I64 x,I64,BoolI8 down)
+U0 LeftClickHWinScroll(CCtrl *c,I64 x,I64,Bool down)
 {
   CTask *task=c->win_task;
   CWinScroll *s=c->state;
@@ -176,7 +176,7 @@ U0 LeftClickHWinScroll(CCtrl *c,I64 x,I64,BoolI8 down)
     (*c->update_derived_vals)(c);
 }
 
-U0 LeftClickVWinScroll(CCtrl *c,I64,I64 y,BoolI8 down)
+U0 LeftClickVWinScroll(CCtrl *c,I64,I64 y,Bool down)
 {
   CTask *task=c->win_task;
   CWinScroll *s=c->state;
@@ -202,7 +202,7 @@ U0 WheelChangeWinScroll(CCtrl *c,I64 delta)
 
 U0 WinScrollsInit(CTask *task)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CCtrl *c;
 
   if (!CtrlFindUnique(task,CTRLT_WIN_HSCROLL)) {
@@ -330,7 +330,7 @@ U0 UpdateDerivedViewAnglesCtrl(CCtrl *c)
   s->az=2*pi*s->sz/VIEWANGLES_RANGE;
 }
 
-U0 LeftClickViewAngles(CCtrl *c,I64 x,I64 y,BoolI8)
+U0 LeftClickViewAngles(CCtrl *c,I64 x,I64 y,Bool)
 {
   CViewAngles *s=c->state;
   I64 i;
@@ -351,7 +351,7 @@ U0 LeftClickViewAngles(CCtrl *c,I64 x,I64 y,BoolI8)
 
 public CCtrl *ViewAnglesNew(CTask *task=NULL)
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c;
   CViewAngles *s;
   if (!task) task=Fs;
@@ -382,7 +382,7 @@ public CCtrl *ViewAnglesNew(CTask *task=NULL)
 public U0 ViewAnglesDel(CTask *task=NULL)
 {
   CCtrl *c;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   if (c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES)) {
     QueRem(c);

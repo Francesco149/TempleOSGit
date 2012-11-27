@@ -3,9 +3,9 @@
 #define FBO1_F64	2
 
 
-BoolI64 OptFixupBinaryOp1(CIntermediateCode *tempi,
+Bool OptFixupBinaryOp1(CIntermediateCode *tempi,
      CIntermediateCode *tempi1,CIntermediateCode *tempi2,
-     BoolI8 *is_unsigned)
+     Bool *is_unsigned)
 {
   CHashClass *tempc=tempi->ic_class,*tempc1,*tempc2;
 
@@ -77,7 +77,7 @@ BoolI64 OptFixupBinaryOp1(CIntermediateCode *tempi,
     return FBO1_NOT_CONST;
 }
 
-BoolI64 OptFixupBinaryOp2(CIntermediateCode **tempi1,CIntermediateCode **tempi2)
+Bool OptFixupBinaryOp2(CIntermediateCode **tempi1,CIntermediateCode **tempi2)
 {
   CIntermediateCode *tempii1=*tempi1,
 		   *tempii2=*tempi2;
@@ -93,9 +93,9 @@ BoolI64 OptFixupBinaryOp2(CIntermediateCode **tempi1,CIntermediateCode **tempi2)
   return FALSE;
 }
 
-BoolI64 OptFixupUnaryOp(CIntermediateCode *tempi,
+Bool OptFixupUnaryOp(CIntermediateCode *tempi,
      CIntermediateCode *tempi1,
-     BoolI8 *is_unsigned)
+     Bool *is_unsigned)
 {
   CHashClass *tempc,*tempc1;
   tempc1=tempi1->ic_class;
@@ -561,7 +561,7 @@ here:
   }
 }
 
-CIntermediateCode *OptPass012(CLex *lx,CHashFun *fun_class,BoolI8 combined)
+CIntermediateCode *OptPass012(CLex *lx,CHashFun *fun_class,Bool combined)
 {
 /*
 Simplify CONST arithmetic.
@@ -571,7 +571,7 @@ in int<-->F64 conversions of fun
 args.
 */
   I64 code,i;
-  BoolI8 is_unsigned;
+  Bool is_unsigned;
   CHashClass *tempc,*tempc1,*tempc2,*tempc3;
   CIntermediateCode *tempi,*tempi1,*tempi2,*tempi3,*tempi_push,
       *temp_lag[4],*last_with_class=NULL,*tempii;
@@ -2044,6 +2044,16 @@ args.
 	  }
 	}
 	break;
+
+      case IC_SQR:
+      case IC_ABS:
+      case IC_SQRT:
+      case IC_SIN:
+      case IC_COS:
+      case IC_TAN:
+      case IC_ATAN:
+	break;
+
       case IC_BR_ZERO:
 	if (combined)
 	  tempi_push=OptBrZero(lx,tempi);

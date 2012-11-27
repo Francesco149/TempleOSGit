@@ -9,7 +9,7 @@ Complex *PoleZeroFind(I64 x,I64 y)
 {
   I64 i;
   F64 d,best_d=MAX_F64;
-  result=NULL;
+  Complex *result=NULL;
   for (i=0;i<NUM_POLES;i++) {
     d=Sqr(poles[i].x-x)+Sqr(poles[i].y-y);
     if (d<best_d) {
@@ -24,6 +24,7 @@ Complex *PoleZeroFind(I64 x,I64 y)
       result=&zeros[i];
     }
   }
+  return result;
 }
 
 F64 F(Complex *x)

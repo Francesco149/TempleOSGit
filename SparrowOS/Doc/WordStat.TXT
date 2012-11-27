@@ -8,9 +8,9 @@ jump-to-dictionary_definition functionality.
 
 Tip: If you use consistent var names for items of different classes, you'll 
 usually be able to autocomplete the member vars.  I always use lx for
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2022] CLex 
-ptrs; doc for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc ptrs; doc_e or
-doc_ce for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEntry ptrs, etc.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2012] CLex 
+ptrs; doc for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc ptrs; doc_e or
+doc_ce for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry ptrs, etc.
 
 If you have the raw Project Gutenberg dictionary file, you can generate the 
 SparrowOS processed dictionary files with the stand-alone program 

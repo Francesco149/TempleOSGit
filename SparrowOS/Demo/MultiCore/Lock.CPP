@@ -5,7 +5,7 @@
   read-modify-write statements.
   It will generate invalid instructions
   if you misuse it and it will crash.
-  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,851] U() to see what code was generated.
+  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U() to see what code was generated.
 */
 
 #define CNT	0x1000000
@@ -13,7 +13,7 @@
 I64 glbl;
 
 
-U0 MPUnlockedInc(U64)
+U0 MPUnlockedInc(I64)
 {
   I64 i;
   for (i=0;i<CNT;i++)
@@ -36,7 +36,7 @@ U0 UnlockedInc()
 
 
 
-U0 MPLockedInc(U64)
+U0 MPLockedInc(I64)
 {
   I64 i;
   for (i=0;i<CNT;i++)

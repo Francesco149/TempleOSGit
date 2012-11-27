@@ -6,7 +6,7 @@ AcctRegExecuteBranch("SparrowOS/CircleTrace");
 I64 cx,cy;
 F64 avg_error=0,elapsed_time=0,total_error=0,score=999;
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 {
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -24,7 +24,7 @@ U0 DrawIt(CTask *task,CDC *)
 #define CIRCLE_RADIUS	100
 #define CIRCUMFERENCE	(2*pi*CIRCLE_RADIUS)
 
-BoolI64 CTPlot(CDC *dc,I64 x,I64 y,I64)
+Bool CTPlot(CDC *dc,I64 x,I64 y,I64)
 {
   F64 rad=Sqrt(Sqr(x-cx)+Sqr(y-cy));
   GrPlot(dc,x,y);
@@ -90,7 +90,7 @@ U0 CircleTrace()
 	  avg_error=total_error/total_distance;
 	  score=elapsed_time*avg_error;
 
-	  //This [C:/SparrowOS/OSMain/Misc1a.CPP.Z,190] Sleep()s until the next time the
+	  //This [C:/SparrowOS/OSMain/Misc1a.CPP.Z,198] Sleep()s until the next time the
 	  //window mgr task runs.  The
 	  //window mgr calls the UpdateWin() routine
 	  //and places msgs in the que, so there's

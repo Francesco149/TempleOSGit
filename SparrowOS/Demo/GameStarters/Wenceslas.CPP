@@ -81,10 +81,10 @@ class Flake
 class Tree
 {
   U16 x,y;
-  U64 fire_frame_index;
+  I64 fire_frame_index;
 } trees[NUM_TREES];
 
-U64 snow_x,snow_y;
+I64 snow_x,snow_y;
 I64 king_x,king_y,not_stopped_cnt;
 F64 king_theta,t0,tf,door_open_t0;
 
@@ -93,7 +93,7 @@ class Peasant
 {
   Peasant *next,*last;
   F64 x,y,theta,door_opened_t0;
-  BoolI8 stopped;
+  Bool stopped;
 } peasant_root;
 
 class Step
@@ -110,7 +110,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   Step *temps;
   Peasant *tempp;
   F64 tt;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   dc->pen_width=1;
   for (i=0;i<NUM_TREES;i++) {
@@ -195,7 +195,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   Preempt(old_preempt);
 }
 
-U0 StepNew(CTask *task,I64 x,I64 y,F64 theta,BoolI8 king)
+U0 StepNew(CTask *task,I64 x,I64 y,F64 theta,Bool king)
 {
   Step *temps;
 
@@ -286,7 +286,7 @@ U0 Follow(CTask *task,Peasant *tempp)
   }
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {//preempt off by default after Spawned
   Step *temps,*temps1;
   Peasant *tempp;
@@ -375,7 +375,7 @@ U0 BurnTrees()
       trees[i].fire_frame_index=1;
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 {
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -390,7 +390,7 @@ U0 SongTask(U64)
  
 U0 Wenceslas()
 {
-  U64 sc;
+  I64 sc;
 
   MenuPush(
   "File {"

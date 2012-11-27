@@ -1,6 +1,6 @@
 CDC *dc[2]; //dbl buf
 I64 cur_dc,;
-BoolI8 restart;
+Bool restart;
 
 U0 DrawIt(CTask *,CDC *dc2)
 {
@@ -8,7 +8,7 @@ U0 DrawIt(CTask *,CDC *dc2)
   GrBlot(dc2,0,0,dc[cur_dc]);
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 x,y,x1,y1,cnt,next_dc;
   while (TRUE) {

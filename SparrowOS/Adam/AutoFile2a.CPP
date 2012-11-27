@@ -2,7 +2,7 @@
 
 public U0 AFPmtStr(U8 *st)
 {
-  U64 ch,sc;
+  I64 ch,sc;
   U8 buf[136];
   while (*st) {
     ch=GetKey(&sc,FALSE);
@@ -25,18 +25,18 @@ public U0 AFPmtStr(U8 *st)
   }
 }
 
-public U0 AFDelayedPutS(U8 *st,U64 mS_delay=100)
+public U0 AFDelayedPutS(U8 *st,I64 mS=100)
 {
-  U64 ch;
+  I64 ch;
   while (ch=*st++) {
     '' ch;
-    Sleep(mS_delay);
+    Sleep(mS);
   }
 }
 
-public U0 AFGetKey(U64 scancode,U64 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
+public U0 AFGetKey(I64 scancode,I64 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
 {
-  U64 sc,ch;
+  I64 sc,ch;
   U8 buf[128],*st;
   do {
     ch=GetKey(&sc);
@@ -55,9 +55,9 @@ public U0 AFGetKey(U64 scancode,U64 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
   Msg(MSG_KEY_DOWN,ch,sc);
 }
 
-public U0 AFGetChar(U64 ch1,U64 ch2=0)
+public U0 AFGetChar(I64 ch1,I64 ch2=0)
 {
-  U64 sc,ch;
+  I64 sc,ch;
   U8 buf[256],*st1,*st2;
   while (TRUE) {
     ch=GetKey(&sc);
@@ -85,18 +85,18 @@ public U0 AFGetChar(U64 ch1,U64 ch2=0)
   Msg(MSG_KEY_DOWN,ch,sc);
 }
 
-public U0 AFUntilKey(U64 scancode,U64 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
+public U0 AFUntilKey(I64 scancode,I64 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
 {
-  U64 sc,ch;
+  I64 sc,ch;
   do {
     ch=GetKey(&sc);
     Msg(MSG_KEY_DOWN,ch,sc);
   } while (sc&sc_mask!=scancode&sc_mask);
 }
 
-public U0 AFUntilChar(U64 ch1,U64 ch2=0)
+public U0 AFUntilChar(I64 ch1,I64 ch2=0)
 {
-  U64 sc,ch;
+  I64 sc,ch;
   do {
     ch=GetKey(&sc);
     Msg(MSG_KEY_DOWN,ch,sc);
@@ -105,13 +105,13 @@ public U0 AFUntilChar(U64 ch1,U64 ch2=0)
 
 I64 af_l,af_r,af_c;
 
-U0 AFSetIPPlot(U64 mS_delay,I64 x,I64 y,I64 z)
+U0 AFSetIPPlot(I64 mS,I64 x,I64 y,I64 z)
 {
   SetIP(x,y,z,af_l,af_r,af_c);
-  Sleep(mS_delay);
+  Sleep(mS);
 }
 
-public U0 AFSetIP(U64 mS_delay=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I64 c=MAX_I64)
+public U0 AFSetIP(I64 mS=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I64 c=MAX_I64)
 {
   if (!(0<=x<gr_width))
     x=ipx;
@@ -126,12 +126,13 @@ public U0 AFSetIP(U64 mS_delay=7,I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l
   if (!(FALSE<=r<=TRUE))
     r=ip_rb;
   af_l=l; af_r=r; af_c=c;
-  Line(mS_delay,ipx,ipy,ipz,x,y,z,&AFSetIPPlot);
+  Line(mS,ipx,ipy,ipz,x,y,z,&AFSetIPPlot);
 }
 
-public BoolI64 AFView()
+public Bool AFView()
 {
-  result=View;
+  Bool result=View;
   DocBottom;
+  return result;
 }
 #help_index ""

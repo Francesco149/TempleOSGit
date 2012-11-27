@@ -30,8 +30,8 @@ Some invalid instructions are not flagged and some valid instructions are not
 implemented. 16-bit asm support is limited.
 
 Here are example instruction formats:
-	ADD	RAX,U64 FS:DISP[RSI+RDI*8]
-	ADD	RAX,U64 [DISP]
+	ADD	RAX,I64 FS:DISP[RSI+RDI*8]
+	ADD	RAX,I64 [DISP]
 
 $ Current compiler output pos (instruction ptr).  Even works in C+ 
 expressions.

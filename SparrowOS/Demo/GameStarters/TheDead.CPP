@@ -16,7 +16,7 @@ I64 shots_in=0,shots_out=0,sx[MAX_SHOTS],sy[MAX_SHOTS];
 //This is a fifo which keeps track of the bad guys.
 #define MAX_DEAD 32
 I64 dead_in=0,dead_out=0,gx[MAX_DEAD],gy[MAX_DEAD];
-BoolI8 g_dead[MAX_DEAD];
+Bool g_dead[MAX_DEAD];
 
 
 //This is a graphic for the player's character.
@@ -86,7 +86,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   PlotWinStr(task,"you must learn to make-up rules.",BLUE<<4+YELLOW,0,i++);
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Randomly generate (by God :-)
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -98,8 +98,8 @@ U0 SongTask(U64)
 
 U0 TheDead()
 {
-  U64 i,j,i1,j1,k=0,sc=0,ch=0,msg_code,p1,p2;
-  BoolI8 gun_on=FALSE;
+  I64 i,j,i1,j1,k=0,sc=0,ch=0,msg_code,p1,p2;
+  Bool gun_on=FALSE;
 
   MenuPush(
   "File {"

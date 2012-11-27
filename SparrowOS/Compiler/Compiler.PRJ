@@ -1,4 +1,5 @@
 #exe {OptOn(OPTf_WARN_PAREN);};
+#exe {OptOn(OPTf_WARN_DUP_TYPES);};
 
 #include "/SparrowOS/OSMain/Static.HPP.Z"
 #include "CmpAsm"

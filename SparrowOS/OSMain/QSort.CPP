@@ -1,4 +1,4 @@
-U0 QSortU64(U64 *base,U64 num, I64 (*fp_compare)(U64 e1,U64 e2))
+U0 QSortI64(I64 *base,I64 num, I64 (*fp_compare)(I64 e1,I64 e2))
 {/*
 For assending strings: Compare can return StrCmp(e1,e2);
 
@@ -8,8 +8,7 @@ Don't use e1-e2 if numbers can overflow, return -1,0 or 1 with if's.
 Maybe, look at [::/SparrowOS/Demo/MultiCore/Sort.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Sort.CPP.Z or
 [::/SparrowOS/Demo/MultiCore/RadixSort.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/RadixSort.CPP.Z.
 */
-  I64 i;
-  U64 *less,*greater,pivot;
+  I64 i,*less,*greater,pivot;
   if (num>1) {
     do {
       less=base;
@@ -38,11 +37,11 @@ Maybe, look at [::/SparrowOS/Demo/MultiCore/Sort.CPP.Z,1] ::/SparrowOS/Demo/Mult
 	} else //All equal
 	  break;
       } else if (i<num/2) {
-	QSortU64(base,i,fp_compare);
+	QSortI64(base,i,fp_compare);
 	num-=i;
 	base=greater;
       } else {
-	QSortU64(greater,num-i,fp_compare);
+	QSortI64(greater,num-i,fp_compare);
 	num=i;
       }
     } while (num>1);
@@ -50,10 +49,10 @@ Maybe, look at [::/SparrowOS/Demo/MultiCore/Sort.CPP.Z,1] ::/SparrowOS/Demo/Mult
 }
 
 
-U0 QSort2a(U0 **_base,U64 num,I64 (*fp_compare)(U0 **_e1,U0 **_e2))
-{//Not public, for case of width=size(U0 *)
+U0 QSort2a(U8 **_base,I64 num,I64 (*fp_compare)(U8 **_e1,U8 **_e2))
+{//Not public, for case of width=size(U8 *)
   I64 i;
-  U0 **_less,**_greater,*pivot;
+  U8 **_less,**_greater,*pivot;
   do {
     _less=_base;
     _greater=_base+num;
@@ -94,7 +93,7 @@ U0 QSort2a(U0 **_base,U64 num,I64 (*fp_compare)(U0 **_e1,U0 **_e2))
 }
 
 
-U0 QSort2b(U8 *base,U64 num, U64 width, I64 (*fp_compare)(U0 *e1,U0 *e2),U8 *temp)
+U0 QSort2b(U8 *base,I64 num, I64 width, I64 (*fp_compare)(U8 *e1,U8 *e2),U8 *temp)
 {//Not public
   I64 i;
   U8 *less,*greater,*pivot;
@@ -144,7 +143,7 @@ U0 QSort2b(U8 *base,U64 num, U64 width, I64 (*fp_compare)(U0 *e1,U0 *e2),U8 *tem
 }
 
 
-U0 QSort(U8 *base,U64 num, U64 width, I64 (*fp_compare)(U0 *e1,U0 *e2))
+U0 QSort(U8 *base,I64 num, I64 width, I64 (*fp_compare)(U8 *e1,U8 *e2))
 {/*
 For assending strings: Compare can return StrCmp(*e1,*e2);
 
@@ -157,28 +156,28 @@ Maybe, look at [::/SparrowOS/Demo/MultiCore/Sort.CPP.Z,1] ::/SparrowOS/Demo/Mult
   I64 i;
   U8 *less,*greater,*temp,*pivot;
   if (width && num>1) {
-    if (width==sizeof(U0 *)) {	//assign instead of MemCpy for width 8
+    if (width==sizeof(U8 *)) {	//assign instead of MemCpy for width 8
       do {
 	less=base;
-	greater=base+num*sizeof(U0 *);
-	pivot(U0 *)=base(U0 **)[num/2];
+	greater=base+num*sizeof(U8 *);
+	pivot(U8 *)=base(U8 **)[num/2];
 	while (less<greater) {
 	  if ((*fp_compare)(less,&pivot)<=0)
-	    less+=sizeof(U0 *);
+	    less+=sizeof(U8 *);
 	  else {
-	    greater-=sizeof(U0 *);
+	    greater-=sizeof(U8 *);
 	    SwapU64(less,greater);
 	  }
 	}
-	i=(less-base)/sizeof(U0 *);
+	i=(less-base)/sizeof(U8 *);
 	if (i==num) { //All less or equal to pivot
 
 	  //Point greater to first less
-	  do greater-=sizeof(U0 *);
+	  do greater-=sizeof(U8 *);
 	  while (--i && !(*fp_compare)(greater,&pivot));
 
 	  if (i) {
-	    less=base+num/2*sizeof(U0 *); //Pivot was not moved, point to it
+	    less=base+num/2*sizeof(U8 *); //Pivot was not moved, point to it
 	    if (less<greater)
 	      SwapU64(less,greater);
 	    num=i;

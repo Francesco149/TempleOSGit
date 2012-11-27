@@ -7,7 +7,7 @@ etc.
 * See [::/SparrowOS/Doc/Directives.TXT.Z,1] ::/SparrowOS/Doc/Directives.TXT.Z.
 
 * Built-in types include I0,I8,I16,I32,I64 for signed 0-8 byte ints and U0,U8,
-U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
+U16,U32,I64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 
 	U0	void
 	I8	char
@@ -17,7 +17,7 @@ U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 	I32	int
 	U32	unsigned int
 	I64	long (64-bit)
-	U64	unsigned long (64-bit)
+	I64	unsigned long (64-bit)
 	F64	double
 	no F32 float.
 
@@ -34,7 +34,7 @@ Test(,3);
 * A string or char constant all alone is sent to
 [C:/SparrowOS/OSMain/Display.CPP.Z,205] PutS() or
 [C:/SparrowOS/OSMain/Display.CPP.Z,200] PutChar().  A 
-string with args is sent to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF(). 
+string with args is sent to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF(). 
  An empty string literal signals a 
 variable fmt_str follows.
 
@@ -64,42 +64,20 @@ start-up, in order.
 
 * You can access bytes or words within any int.  i.u8[2] returns bits 24-27
 in 
-the variable, i.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,40] U64 declaration. 
+the variable, i.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,50] I64 declaration. 
 The real feature is that a class can 
 be accessed as a whole, if you put a type in front of the class declaration.
-
-* There is a built-in variable similar to 'this' in C++ called 'result'.  resu
-lt has the same type as the function return and, if no value is returned, resu
-lt is returned.
-  
-U32 EndianU32(U32 d)
-{
-  U32 result;
-  result.u8[3]=d.u8[0];
-  result.u8[2]=d.u8[1];
-  result.u8[1]=d.u8[2];
-  result.u8[0]=d.u8[3];
-  return result;
-}
-
-U32 EndianU32(U32 d)
-{
-  result.u8[3]=d.u8[0];
-  result.u8[2]=d.u8[1];
-  result.u8[1]=d.u8[2];
-  result.u8[0]=d.u8[3];
-}
 
 * Variable arg count functions (...) can access their args with built-in 
 variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.  
   
-U0 GrPrintF(CDC *dc,I64 x,I64 y,U8 *fmt,...)
-{
-  U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
-  GrPutS(dc,x,y,buf);
-  Free(buf);
-}
-
+  U0 GrPrintF(CDC *dc,I64 x,I64 y,U8 *fmt,...)
+  {
+    U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+    GrPutS(dc,x,y,buf);
+    Free(buf);
+  }
+  
 * Allows "5<i<j+1<20" instead of "5<i && i<j+1 && j+1<20".
   
 if (13<=age<20)
@@ -154,8 +132,13 @@ convert to float.)
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1472] OPTf_WARN_PAREN) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1468] OPTf_WARN_PAREN) to find
 unnecessary parentheses in code.
+
+* You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1469] OPTf_WARN_DUP_TYPES) to find
+dup local var type 
+statements.
 
 * With the #exe{} feature in your src code, you can place programs that
 insert 
@@ -168,6 +151,8 @@ program
 stream following the conclusion of the #exe{} blk.
 
 * No #define functions exist (I'm not a fan)
+
+* No typedef, use class.
 
 * No type-checking
 
@@ -190,7 +175,7 @@ declaration, that is the type when used by itself.  See
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See 
 [::/SparrowOS/Demo/ClassMeta.CPP.Z,1] ::/SparrowOS/Demo/ClassMeta.CPP.Z and 
-[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,293] DocFormDo().
+[C:/SparrowOS/Adam/Doc/DocPopUp.CPP.Z,295] DocFormDo().
 
 * See [::/SparrowOS/Demo/Exceptions.CPP.Z,1]
 ::/SparrowOS/Demo/Exceptions.CPP.Z.  try{} catch{} and throw are 
@@ -200,9 +185,9 @@ rgc and Fs->except_argv[] vars.  Within a catch {} blk, set the var Fs->catch_
 except to TRUE if you want to terminate the search for a handler.  By 
 convention, the first arg of except_argv[] specifies the exception type num.  
 A list of assigned exception types can be found at
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2774] EXCEPT_LOCAL.  For a 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2486] EXCEPT_LOCAL.  For a 
 handler that will catch all excepts, you can use
-[C:/SparrowOS/OSMain/Except.CPP.Z,223] CatchAll().
+[C:/SparrowOS/OSMain/Except.CPP.Z,226] CatchAll().
 
 * A function is available similar to sizeof which provides the offset of a 
 member of a class.  It's called offset.  You place the class name and member 
@@ -220,26 +205,26 @@ applied to relevant instructions within.  It's a little shoddy.  See
 [::/SparrowOS/Demo/MultiCore/Lock.CPP.Z,1]
 ::/SparrowOS/Demo/MultiCore/Lock.CPP.Z.
 
-* There is a function called [C:/SparrowOS/OSMain/Memory.CPP.Z,947] MSize()
+* There is a function called [C:/SparrowOS/OSMain/Memory.CPP.Z,951] MSize()
 which gives the size of an object 
 allocated off the heap.  For larger size allocations, the system rounds-up to 
 a power of two, so MSize() lets you know the real size and you can take full 
 advantage of it.
 
-* You can [C:/SparrowOS/OSMain/Memory.CPP.Z,946] Free() a NULL ptr.  Useful
-variants of [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc() can be found
-[C:/SparrowOS/OSMain/Memory.CPP.Z,959] Here.  
+* You can [C:/SparrowOS/OSMain/Memory.CPP.Z,950] Free() a NULL ptr.  Useful
+variants of [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() can be found
+[C:/SparrowOS/OSMain/Memory.CPP.Z,963] Here.  
 Each task has a heap and you can MAlloc and Free off of other task's heaps,
 or 
-make an independent heap with [C:/SparrowOS/OSMain/Memory.CPP.Z,1149]
+make an independent heap with [C:/SparrowOS/OSMain/Memory.CPP.Z,1167]
 HeapCtrlIndependentInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2873] DFT_STK and 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2585] DFT_STK and 
 recompile OSMain or request more when doing a
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,203] Spawn().  You can use 
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,66] CallStkGrow(), but it's odd.  See
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn().  You can use 
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,89] CallStkGrow(), but it's odd.  See
 [::/SparrowOS/Demo/StkGrow.CPP.Z,1] ::/SparrowOS/Demo/StkGrow.CPP.Z. 
 
 * Only one base class is allowed.
@@ -257,7 +242,7 @@ j=i=0x12345678; //Resulting i is 0x5678 but j is 0x12345678
 I64 i=0x8000000000000000;
 PrintF("%X\n",i>>1);  //Result is 0xC000000000000000 as expected
 
-U64 u=0x8000000000000000;
+I64 u=0x8000000000000000;
 PrintF("%X\n",u>>1);  //Result is 0x4000000000000000 as expected
 
 I32 i=0x80000000; 	  //constant is loaded into a 64-bit register var.
@@ -269,37 +254,37 @@ PrintF("%X\n",i>>1);  //Result is 0xC0000000 as expected
 
                                 PrintF Family
 
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2625] MSPrintF() is like
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2309] SPrintF() but it returns a
-[C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAllocated str.  It is vary 
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2628] MSPrintF() is like
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2312] SPrintF() but it returns a
+[C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAllocated str.  It is vary 
 handy because you don't have to worry about overflow.
 
 [C:/SparrowOS/OSMain/Display.CPP.Z,205] PutS() doesn't print a new line.
 
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto(U8 *fmtstr,...) sends text to
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,354] Auto(U8 *fmtstr,...) sends text to
 the current task's input buffer.
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,378] AutoStr(U8 *fmtstr,...) sends text of
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,384] AutoStr(U8 *fmtstr,...) sends text of
 an [::/SparrowOS/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of 
 the current TASK but can also do mouse cmds.
 
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,328] XTalk(CTask *task,U8 *fmtstr,...) and
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,333] XTalk(CTask *task,U8 *fmtstr,...) and
 text to another task's input buffer.
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,403] XTalkStr(CTask *task,U8 *fmtstr,...)
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,409] XTalkStr(CTask *task,U8 *fmtstr,...)
 sends text of an [::/SparrowOS/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
 
 [C:/SparrowOS/Adam/Doc/DocPlain.CPP.Z,1111] DocPutS(CDoc *doc,U8 *src) and
-[C:/SparrowOS/Adam/Doc/DocPlain.CPP.Z,1266] DocPrintF(CDoc *doc,U8
+[C:/SparrowOS/Adam/Doc/DocPlain.CPP.Z,1267] DocPrintF(CDoc *doc,U8
 *fmtstr,...) send text 
 to a linked text file.  You can buffer to a Doc and save it, providing the 
 functionality of fprintf.  See [::/SparrowOS/Demo/Dsk/FPrintF.CPP.Z,1]
 ::/SparrowOS/Demo/Dsk/FPrintF.CPP.Z.
 
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,283] Adam(U8 *fmtstr,...) send text to the
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,286] Adam(U8 *fmtstr,...) send text to the
 adam task to be compiled and run.
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,302] AdamLog(U8 *fmtstr,...) and
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,314] AdamErr(U8 *fmtstr,...) send text to
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,307] AdamLog(U8 *fmtstr,...) and
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,319] AdamErr(U8 *fmtstr,...) send text to
 the adam task 
 to be displayed.
 
@@ -308,15 +293,15 @@ to be displayed.
 stream 
 of code being compiled and must reside in a #exe{} blk.
 
-[C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,842] GrPrintF(CDC *dc,I64 x,I64 y,U8
-*fmtstr,...) and [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,796] GrPutS(CDC *dc,I64
+[C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,845] GrPrintF(CDC *dc,I64 x,I64 y,U8
+*fmtstr,...) and [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,797] GrPutS(CDC *dc,I64
 x,I64 y,U8 
-*src) plots text in graphics mode.  [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,849]
-GrVPrintF() and [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,818] GrVPutS() will
+*src) plots text in graphics mode.  [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,852]
+GrVPrintF() and [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,820] GrVPutS() will
 print 
 vertically.
 
-[C:/SparrowOS/Compiler/CmpMain.CPP.Z,553] ExePrintF(U8 *fmtstr,...) and
+[C:/SparrowOS/Compiler/CmpMain.CPP.Z,555] ExePrintF(U8 *fmtstr,...) and
 [C:/SparrowOS/Compiler/CmpMain.CPP.Z,523] ExePutS(U8 *src) compile and
 execute a string.  
 Note: It returns the result of the last executed expression.
@@ -324,8 +309,8 @@ Note: It returns the result of the last executed expression.
 **Note:** If no PutS variant is available, you can use PrintF("%s",src).
 
 
-The [C:/SparrowOS/OSMain/Str1a.CPP.Z,2617] PrintF() family supports extended
-format codes.  See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1589] SPrintFJoin().
+The [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF() family supports extended
+format codes.  See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin().
   %[-][0][width][.decimals][flags][hsub_fmt][main_fmt]
 
 flags:
@@ -361,12 +346,12 @@ units letters.
 * "%T" and "%D" will display a date or time and the format is selected with 
 a subcode, entered after a "h".  Example: "%20h1D" uses date format code 
 "1". See [::/SparrowOS/Demo/DateTime.CPP.Z,1]
-  ::/SparrowOS/Demo/DateTime.CPP.Z, [C:/SparrowOS/OSMain/Str1a.CPP.Z,1230]
-  MSPrintFDate() and [C:/SparrowOS/OSMain/Str1a.CPP.Z,1139] MSPrintFTime() 
+  ::/SparrowOS/Demo/DateTime.CPP.Z, [C:/SparrowOS/OSMain/Str1a.CPP.Z,1235]
+  MSPrintFDate() and [C:/SparrowOS/OSMain/Str1a.CPP.Z,1144] MSPrintFTime() 
 for subcodes.
 
 * "%z" will display a subentry of an enumerated list of text entries. It 
-calls [C:/SparrowOS/OSMain/Str1a.CPP.Z,392] ListEntryPt().  Pass entry_num
+calls [C:/SparrowOS/OSMain/Str1a.CPP.Z,393] ListEntryPt().  Pass entry_num
   first, list second.
 
 * "%Z" will display a Define subentry.  Pass entry_num first, list_systext 

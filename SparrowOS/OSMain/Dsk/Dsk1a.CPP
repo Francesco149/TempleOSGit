@@ -1,4 +1,4 @@
-BoolI64 BlkDevLock(CBlkDev *bdev)
+Bool BlkDevLock(CBlkDev *bdev)
 {
   BlkDevChk(bdev);
   while (bdev->lock_fwding)
@@ -12,7 +12,7 @@ BoolI64 BlkDevLock(CBlkDev *bdev)
     return FALSE;
 }
 
-BoolI64 PrtLock(CPrt *p)
+Bool PrtLock(CPrt *p)
 {
   PrtChk(p);
   BlkDevLock(p->bdev);
@@ -25,7 +25,7 @@ BoolI64 PrtLock(CPrt *p)
     return FALSE;
 }
 
-BoolI64 BlkDevUnlock(CBlkDev *bdev,BoolI8 rst=FALSE)
+Bool BlkDevUnlock(CBlkDev *bdev,Bool rst=FALSE)
 {
   BlkDevChk(bdev);
   while (bdev->lock_fwding)
@@ -44,7 +44,7 @@ BoolI64 BlkDevUnlock(CBlkDev *bdev,BoolI8 rst=FALSE)
     return FALSE;
 }
 
-BoolI64 PrtUnlock(CPrt *p,BoolI8 rst=FALSE)
+Bool PrtUnlock(CPrt *p,Bool rst=FALSE)
 {
   PrtChk(p);
   if (Bt(&p->locked_flags,Plf_LOCKED) && p->owning_task==Fs) {
@@ -57,10 +57,10 @@ BoolI64 PrtUnlock(CPrt *p,BoolI8 rst=FALSE)
     return FALSE;
 }
 
-BoolI64 BlkDevInit(CBlkDev *bdev)
+Bool BlkDevInit(CBlkDev *bdev)
 {
   CPrt *p=Drv2Prt(bdev->drv_let_base),*p2;
-  BoolI8 old_preempt=Preempt(OFF),result=FALSE;
+  Bool old_preempt=Preempt(OFF),result=FALSE;
   if (!(bdev->flags & BDF_INITIALIZED)) {
     bdev->flags|=BDF_INITIALIZED |
 	       BDF_INIT_IN_PROGRESS;
@@ -121,6 +121,7 @@ BoolI64 BlkDevInit(CBlkDev *bdev)
     result=TRUE;
   }
   Preempt(old_preempt);
+  return result;
 }
 
 U0 BlkDevsRelease()
@@ -164,16 +165,18 @@ U0 CleanMAPBuf(CPrt *p,I64 MAP_select=-1)
   if ((MAP_select==-1 || !MAP_select) && p->map1!=p->map2)
     for (i=0;i<p->num_buffered_map_blks;i++)
       if (Bt(p->buffered_map_dirty_bits,i))
-	WBlks(p,p->cur_map_blk(U64)+i<<BLK_SIZE_BITS,p->map1+i+p->cur_map_blk_num,1);
+	WBlks(p,p->cur_map_blk(I64)+i<<BLK_SIZE_BITS,p->map1+i+p->cur_map_blk_num,1);
   if (MAP_select==-1 || MAP_select==1 || p->map1==p->map2)
     for (i=0;i<p->num_buffered_map_blks;i++)
       if (LBtr(p->buffered_map_dirty_bits,i))
-	WBlks(p,p->cur_map_blk(U64)+i<<BLK_SIZE_BITS,p->map2+i+p->cur_map_blk_num,1);
+	WBlks(p,p->cur_map_blk(I64)+i<<BLK_SIZE_BITS,p->map2+i+p->cur_map_blk_num,1);
 }
 
-U0 SetLTBuf(CPrt *p,I64 c,I64 map_select=-1)
+U0 SetNativeBuf(CPrt *p,I64 c,I64 map_select=-1)
 {
   I64 MAP_blk_num;
+  if (c==INVALID_CLUSTER)
+    throw(EXCEPT_PRT,1);
   if (p->type==PT_FAT32)
     MAP_blk_num=c/(BLK_SIZE>>2);
   else
@@ -193,14 +196,14 @@ U0 WZeroBlks(CPrt *p,I64 blk,I64 cnt)
 {
   I64 n;
   U8 *z=CAlloc(ZERO_BUF_SIZE<<BLK_SIZE_BITS);
-  BoolI8 show_progress;
+  Bool show_progress;
   if (cnt>ZERO_BUF_SIZE && p->bdev->type!=BDT_RAM) {
     progress1=0; progress1_max=cnt;
     StrCpy(progress1_desc,"Zeroing");
     show_progress=TRUE;
   } else
     show_progress=FALSE;
-  while (cnt) {
+  while (cnt>0) {
     n=cnt;
     if (n>ZERO_BUF_SIZE)
       n=ZERO_BUF_SIZE;
@@ -219,10 +222,9 @@ U0 WZeroBlks(CPrt *p,I64 blk,I64 cnt)
 }
 
 //Very dangerous
-BoolI64 SetDrvType(U8 drv_let,U64 type=PT_NATIVE)
+Bool SetDrvType(U8 drv_let,I64 type=PT_NATIVE)
 {
-  I64 i,j,ext_base,num_prt;
-  I64 offset,cur_type;
+  I64 i,j,ext_base,num_prt,offset,cur_type;
   CMasterBoot mbr;
   CBlkDev *bdev=Drv2BlkDev(drv_let);
   num_prt=bdev->drv_let_base-'A';
@@ -273,22 +275,22 @@ BoolI64 SetDrvType(U8 drv_let,U64 type=PT_NATIVE)
 }
 
 
-BoolI64 RBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
+Bool RBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
-  BoolI8 result=TRUE,unlock;
+  Bool result=TRUE,unlock;
   CBlkDev *bdev=p->bdev;
   PrtChk(p);
-  if (!cnt) return result;
+  if (cnt<=0) return result;
   try {
     unlock=PrtLock(p);
     BlkDevInit(bdev);
     if (p->offset && blk<p->offset || blk+cnt>p->offset+p->size)
-      throw(EXCEPT_PRT,3);
+      throw(EXCEPT_PRT,2);
     blk+=bdev->offset;
  
     if (bdev->flags & BDF_READ_CACHE)
       RCache(p,&buf,&blk,&cnt);
-    if (cnt) {
+    if (cnt>0) {
       if (!Bt(&sys_semas[SYS_SEMA_NO_IO_SND],0))
 	Snd(bdev->read_freq);
       result=(*p->rblks)(p,buf,blk,cnt);
@@ -303,14 +305,15 @@ BoolI64 RBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
   } catch
     if (unlock)
       PrtUnlock(p);
+  return result;
 }
 
-BoolI64 WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
+Bool WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
-  BoolI8 result=TRUE,unlock;
+  Bool result=TRUE,unlock;
   CBlkDev *bdev=p->bdev;
   PrtChk(p);
-  if (!cnt) return result;
+  if (cnt<=0) return result;
   try {
     unlock=PrtLock(p);
     BlkDevInit(bdev);
@@ -318,9 +321,9 @@ BoolI64 WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
     !(bdev->flags & BDF_READ_ONLY_OVERRIDE))
       throw(EXCEPT_BLKDEV,0);
     if (p->offset && blk<p->offset || blk+cnt>p->offset+p->size)
-      throw(EXCEPT_PRT,4);
+      throw(EXCEPT_PRT,3);
     blk+=bdev->offset;
-    if (cnt) {
+    if (cnt>0) {
       if (!Bt(&sys_semas[SYS_SEMA_NO_IO_SND],0))
 	Snd(bdev->write_freq);
       result=(*p->wblks)(p,buf,blk,cnt);
@@ -335,12 +338,13 @@ BoolI64 WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
   } catch
     if (unlock)
       PrtUnlock(p);
+  return result;
 }
 
 
 U0 DskCacheInvalidate(CPrt *p)
 {
-  BoolI8 unlock;
+  Bool unlock;
   CBlkDev *bdev=p->bdev;
   PrtChk(p);
   try {
@@ -364,7 +368,7 @@ U0 ChgDsk(U8 drv_let=0)
 { //This is needed for removable media
   CPrt *p=Drv2Prt(drv_let);
   CBlkDev *bdev=p->bdev;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (!BlkDevInit(bdev) && bdev->flags & BDF_REMOVABLE)
     DskCacheInvalidate(p);
   Drv(drv_let);
@@ -399,11 +403,11 @@ U0 PrtRep()
   }
 }
 
-U64 ClusterNumNext(CPrt *p,I64 c,I64 cnt=1)
+I64 ClusterNumNext(CPrt *p,I64 c,I64 cnt=1)
 {
-  BoolI8 unlock;
+  Bool unlock;
   PrtChk(p);
-  if (!cnt) return c;
+  if (cnt<=0) return c;
   try {
     unlock=PrtLock(p);
     switch (p->type) {
@@ -412,11 +416,11 @@ U64 ClusterNumNext(CPrt *p,I64 c,I64 cnt=1)
 	c+=cnt;
 	break;
       case PT_FAT32:
-	while (cnt-- && c && c<0x0FFFFFF8) {
-	  SetLTBuf(p,c);
+	while (cnt-->0 && 0<c<0x0FFFFFF8) {
+	  SetNativeBuf(p,c);
 	  c=p->cur_map_blk[c & (BLK_SIZE/4-1)];
 	}
-	if (!c || c>=0xFFFFFF8)
+	if (!(0<c<0x0FFFFFF8))
 	  c=INVALID_CLUSTER;
 	break;
       default:
@@ -440,9 +444,9 @@ I64 Cluster2Blk(CPrt *p,I64 c)
 I64 RClustersBlks(CPrt *p,U8 *buf,I64 c,I64 blks)
 { //This accepts blk count, so padding on last cluster is not read.
   I64 i;
-  BoolI8 unlock;
+  Bool unlock;
   PrtChk(p);
-  if (!blks) return c;
+  if (blks<=0) return c;
   try {
     unlock=PrtLock(p);
     switch (p->type) {
@@ -452,7 +456,7 @@ I64 RClustersBlks(CPrt *p,U8 *buf,I64 c,I64 blks)
 	c+=(blks+p->spc-1)/p->spc;
 	break;
       case PT_FAT32:
-	while (blks && c && c!=INVALID_CLUSTER) {
+	while (blks && 0<c<0x0FFFFFF8) {
 	  i=blks;
 	  if (i>p->spc)
 	    i=p->spc;
@@ -480,7 +484,7 @@ I64 RClusters(CPrt *p,U8 *buf,I64 c,I64 cnt)
   return RClustersBlks(p,buf,c,cnt*p->spc);
 }
 
-BoolI64 CFileNameTo(U8 *dst,U8 *src)
+Bool CFileNameTo(U8 *dst,U8 *src)
 {
   MemSet(dst,0,CDIR_FILENAME_LEN);
   if (!FileNameChk(src))
@@ -491,11 +495,10 @@ BoolI64 CFileNameTo(U8 *dst,U8 *src)
 
 I64 Name2DirCluster(CPrt *p,U8 *dirname)
 {
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE,unlock;
   I64 cur_dir_cluster;
   CDirEntry de;
   U8 *buf=StrNew(dirname),*buf2=StrNew(dirname);
-  BoolI8 unlock;
   PrtChk(p);
   try {
     unlock=PrtLock(p);
@@ -539,11 +542,10 @@ I64 Name2DirCluster(CPrt *p,U8 *dirname)
 
 I64 Name2ParentDirCluster(CPrt *p,U8 *dirname)
 {
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE,unlock;
   I64 cur_dir_cluster,cur_dir_cluster2;
   CDirEntry de;
   U8 *buf=StrNew(dirname),*buf2=StrNew(dirname);
-  BoolI8 unlock;
   PrtChk(p);
   try {
     unlock=PrtLock(p);
@@ -591,8 +593,9 @@ I64 Name2ParentDirCluster(CPrt *p,U8 *dirname)
 I64 WClustersBlks(CPrt *p,U8 *buf,I64 c,I64 blks)
 { //This accepts blk count, so padding on last cluster is not written.
   I64 i;
-  BoolI8 unlock;
+  Bool unlock;
   PrtChk(p);
+  if (blks<=0) return c;
   try {
     unlock=PrtLock(p);
     switch (p->type) {
@@ -602,7 +605,7 @@ I64 WClustersBlks(CPrt *p,U8 *buf,I64 c,I64 blks)
 	break;
       case PT_FAT32:
 	while (blks) {
-	  if (!c || c>=0x0FFFFFF8)
+	  if (!(0<c<0x0FFFFFF8))
 	    Dbg;
 	  i=blks;
 	  if (i>p->spc)
@@ -630,11 +633,10 @@ I64 WClusters(CPrt *p,U8 *buf,I64 c,I64 cnt)
 }
 
 //c=0 means first cluster in chain
-I64 ClusersAlloc(CPrt *p,I64 c=0,I64 cnt=1,BoolI8 contiguous=FALSE)
+I64 ClusersAlloc(CPrt *p,I64 c=0,I64 cnt=1,Bool contiguous=FALSE)
 {
   PrtChk(p);
-  if (cnt<=0)
-    return c;
+  if (cnt<=0) return c;
   switch (p->type) {
     case PT_NATIVE:
       return NativeFSAllocClusters(p,cnt);

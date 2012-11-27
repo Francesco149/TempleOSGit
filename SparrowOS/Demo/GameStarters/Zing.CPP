@@ -8,7 +8,7 @@ class Arrow
 
    /* <1> <1> (image) */
 
-BoolI8 bow_drawn;
+Bool bow_drawn;
 F64 bow_x,bow_y,bow_theta;
 
 U0 DrawIt(CTask *task,CDC *dc)
@@ -74,7 +74,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 #define ANIMATE_SLEEP_MS	10
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 x,y;
   Arrow *tempa,*tempa1;

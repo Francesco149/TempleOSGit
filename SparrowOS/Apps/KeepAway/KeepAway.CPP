@@ -284,7 +284,7 @@ I64 score0,score1;
 
 #define NUM_PER_SIDE	3
 #define NUM_OBJS	(NUM_PER_SIDE*2+1)
-BoolI8 someone_shooting;
+Bool someone_shooting;
 
 class Obj
 {
@@ -292,7 +292,7 @@ class Obj
   F64 x,y,z,DxDt,DyDt,DzDt,ay,radius,stolen_t0;
   F64 last_t0,next_t0,foul_t0;
   I64 last_img,next_img;
-  BoolI8 stopped,shooting,has_ball,pad[5];
+  Bool stopped,shooting,has_ball,pad[5];
 } objs[NUM_OBJS],*ball,*human;
 
 
@@ -306,7 +306,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,257] CMathODE feat,
+I also didn't use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,254] CMathODE feat,
 just to be different.
 */
 
@@ -375,7 +375,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       }
       if (tt>o->next_t0) {
 	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET || Abs(ball->DzDt)<30)) {
-	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/SparrowOS/OSMain/Adam1b.HPP.Z,245] Exp().
+	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/SparrowOS/OSMain/Adam1b.HPP.Z,246] Exp().
 	//However, we should be syncronized to img frames, so we don't have to be perfect.
 	  d_down=1.0;
 	  d_up	=1.0/COLLISION_DAMP; //Up bounce takes higher percentage because speed lost in collision.
@@ -425,7 +425,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
   }
 
-  QSortU64(o_sort,NUM_OBJS,&ObjCompare);
+  QSortI64(o_sort,NUM_OBJS,&ObjCompare);
   for (i=0;i<NUM_OBJS;i++)
     DrawObj(dc,o_sort[i],tt);
   tt=(game_t_end-tP(task))/60;
@@ -472,7 +472,7 @@ U0 AnimateTask(CTask *parent_task)
 {
   F64 d,dx,dy,dt,dx2,dy2,t0=tP(parent_task);
   I64 i,j,team;
-  BoolI8 gets_ball,ball_stolen;
+  Bool gets_ball,ball_stolen;
   Obj *o;
   while (TRUE) {
     dt=tP(parent_task)-t0;

@@ -1,9 +1,9 @@
 #help_index "Doc/File"
-public U0 DocLoad(CDoc *doc,U8 *src2,U64 size)
+public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 {
   I64 i;
   U8 *src;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocBin *tempb;
   doc->find_replace->filter_lines=0;
   if (src2) {
@@ -32,11 +32,11 @@ public U0 DocLoad(CDoc *doc,U8 *src2,U64 size)
     DocUnlock(doc);
 }
 
-public CDoc *DocRead(U8 *name,U64 flags=0)
+public CDoc *DocRead(U8 *name,I64 flags=0)
 {
   CDoc *doc=DocNew;
   U8 *src,*name2;
-  U64 size=0;
+  I64 size=0;
   doc->flags|=flags;
   name2=FileNameAbs(name);
   StrCpy(doc->filename.name,name2);
@@ -49,15 +49,13 @@ public CDoc *DocRead(U8 *name,U64 flags=0)
   return doc;
 }
 
-public U0 *DocSave(CDoc *doc,U64 *_size=NULL)
+public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 {
   CDocEntry *doc_e;
   CDocBin *b;
-  BoolI8 unlock=DocLock(doc);
-  U8 *st;
-  U64 cnt;
-  U8 *result,*dst,*src,ch;
-  I64 i;
+  Bool unlock=DocLock(doc);
+  I64 i,cnt;
+  U8 *st,*result,*dst,*src,ch;
 
   if (doc->flags&DOCF_NO_CURSOR)
     cnt=1; //terminator
@@ -80,7 +78,7 @@ public U0 *DocSave(CDoc *doc,U64 *_size=NULL)
 	  else
 	    cnt++;
 	  break;
-	case DOCT_TEXT://**Update [D:/SparrowOS/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
+	case DOCT_TEXT://**Update [C:/SparrowOS/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
 	  if (!(doc_e->flags1 & ~(DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
 	    cnt+=StrLen(doc_e->tag);
 	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS)) ||
@@ -176,11 +174,12 @@ public U0 *DocSave(CDoc *doc,U64 *_size=NULL)
   if (_size) *_size=cnt;
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
-public U0 DocWrite(CDoc *doc,BoolI8 prompt=FALSE)
+public U0 DocWrite(CDoc *doc,Bool prompt=FALSE)
 {
-  U64 size;
+  I64 size;
   U8 *buf=DocSave(doc,&size);
   if (prompt) {
     if (DocFormDo(&doc->filename,"CEdFileName"))
@@ -192,16 +191,16 @@ public U0 DocWrite(CDoc *doc,BoolI8 prompt=FALSE)
 
 #help_index "Doc"
 public U0 DocInsDoc(CDoc *doc,CDoc *doc2)
-{  //TODO: [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,436] DocRst
+{  //TODO: [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,438] DocRst
   U8 *dst;
-  BoolI8 unlock_doc=DocLock(doc),
+  Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
   CDocEntry *doc_ne,*doc_e=doc2->root.next;
   DocRemSoftNewLines(doc,NULL);
   if (doc->cur_entry->type_u8==DOCT_TEXT &&
       doc->cur_data_col>doc->cur_entry->min_col) {
     if (doc->cur_data_col<doc->cur_entry->max_col) {
-      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+      doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
       doc_ne->type=DOCT_TEXT | doc->cur_entry->type & 0xFFFFFF00;
       doc_ne->flags1=doc->cur_entry->flags1;
       doc_ne->flags2=doc->cur_entry->flags2;
@@ -243,7 +242,7 @@ public U0 ClipBoardDel()
 public U0 EdCopyToClipboard(CDoc *doc)
 {
   CDoc *doc2=sys_clipboard_doc;
-  BoolI8 unlock_doc=DocLock(doc),
+  Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
   CDocEntry *doc_e=doc->root.next,*doc_ne;
   ClipBoardDel;
@@ -266,7 +265,7 @@ public U0 EdCopyToClipboard(CDoc *doc)
 public U0 EdCutToClipboard(CDoc *doc)
 {
   CDoc *doc2=sys_clipboard_doc;
-  BoolI8 unlock_doc=DocLock(doc),
+  Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
   CDocEntry *doc_e=doc->root.next,*doc_e1,*doc_ne,*doc_e2=NULL;
   ClipBoardDel;
@@ -299,7 +298,7 @@ public U0 EdCutToClipboard(CDoc *doc)
 public U0 EdPasteClipboard(CDoc *doc)
 {
   CDoc *doc2=sys_clipboard_doc;
-  BoolI8 unlock_doc=DocLock(doc),
+  Bool unlock_doc=DocLock(doc),
       unlock_doc2=DocLock(doc2);
   CDocEntry *doc_ce=doc->cur_entry,*doc_e;
   if (doc_ce->type_u8==DOCT_DATA) {
@@ -319,7 +318,7 @@ public U0 EdPasteClipboard(CDoc *doc)
 
 public U0 DocCut(CDoc *doc,CDocEntry *start,CDocEntry *end)
 { //deletes including end points
-  BoolI8 unlock_doc=DocLock(doc);
+  Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e1;
   while (start!=doc) {
     doc_e1=start->next;
@@ -341,7 +340,7 @@ public U0 DocCut(CDoc *doc,CDocEntry *start,CDocEntry *end)
 public CDoc *DocCopy(CDoc *doc,CDocEntry *start,CDocEntry *end)
 {  //copies including end points
   CDoc *doc2=DocNew;
-  BoolI8 unlock_doc=DocLock(doc);
+  Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_ne;
   while (start!=doc) {
     if (!Bt(doc_data_types,start->type_u8)) {
@@ -360,8 +359,8 @@ public CDoc *DocCopy(CDoc *doc,CDocEntry *start,CDocEntry *end)
 #help_index "Doc;Compiler/Directive"
 
 public U0 StreamDoc(CDoc *doc)
-{  //TODO: [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,436] DocRst
-  BoolI8 unlock_doc=DocLock(doc);
+{  //TODO: [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,438] DocRst
+  Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_TEXT)
@@ -378,10 +377,10 @@ public U0 StreamDoc(CDoc *doc)
 
 #help_index "Doc"
 
-BoolI64 DocCaptureUndo(CDoc *doc,BoolI8 force=FALSE)
+Bool DocCaptureUndo(CDoc *doc,Bool force=FALSE)
 {
-  BoolI8 result=FALSE,unlock;
-  U64 time_stamp;
+  Bool result=FALSE,unlock;
+  I64 time_stamp;
   CDocUndo *u;
   if (doc->flags&DOCF_ALLOW_UNDO) {
     unlock=DocLock(doc);
@@ -400,11 +399,12 @@ BoolI64 DocCaptureUndo(CDoc *doc,BoolI8 force=FALSE)
     if (unlock)
       DocUnlock(doc);
   }
+  return result;
 }
  
 U0 DocUndoRestore(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocUndo *u=doc->undo_root.last,*u_next,*u_last;
   if (u!=&doc->undo_root) {
     QueRem(u);
@@ -427,7 +427,7 @@ U0 DocUndoRestore(CDoc *doc)
 
 #help_index "File/Cmd Line (Typically);Doc/Cmd Line (Typically);Cmd Line (Typically)"
 
-public BoolI64 Type(U8 *fname)
+public Bool Type(U8 *fname)
 //Output a file to the cmd line.
 //Even graphics and macros will be sent.
 {

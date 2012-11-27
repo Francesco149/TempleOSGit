@@ -51,7 +51,7 @@ U0 WebLogScramble(U8 *wild)
   while (tempm) {
     tempm1=tempm->next;
     LogScrambleFile(tempm->full_name);
-    CDirDel(tempm);
+    CDirEntryDel(tempm);
     tempm=tempm1;
   }
 }

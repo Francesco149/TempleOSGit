@@ -33,9 +33,9 @@
 #define IC_TO_F64		0x1D
 #define IC_TO_BOOL		0x1E
 #define IC_TOUPPER		0x1F
-#define IC_NATIVE_TYPECAST		0x20
+#define IC_NATIVE_TYPECAST	0x20
 
-#define IC_ADDR		0x21
+#define IC_ADDR			0x21
 #define IC_COM			0x22
 #define IC_NOT			0x23
 #define IC_UNARY_MINUS		0x24
@@ -234,8 +234,14 @@
 #define IC_MOD_U64		0xC8
 #define IC_SQR_I64		0xC9
 #define IC_SQR_U64		0xCA
-
-#define IC_NUM_ENTRIES		0xCB
+#define IC_SQR			0xCB
+#define IC_ABS			0xCC
+#define IC_SQRT			0xCD
+#define IC_SIN			0xCE
+#define IC_COS			0xCF
+#define IC_TAN			0xD0
+#define IC_ATAN			0xD1
+#define IC_NUM_ENTRIES		0xD2
 //Don't forget [::/SparrowOS/Compiler/CmpInit.CPP.Z,1] IC_INIT_TABLE
 
 #define KW_INCLUDE	0
@@ -277,13 +283,12 @@
 #define KW_NOUNUSEDWARN	36
 #define KW_HELP_INDEX	37
 #define KW_HELP_FILE	38
-#define KW_TYPEDEF	39
-#define KW_STATIC	40
-#define KW_INTERRUPT	41
-#define KW_LOCK		42
-#define KW_DEFINED	43
-#define KW_ARGPOP	44
-#define KW_NOARGPOP	45
+#define KW_STATIC	39
+#define KW_INTERRUPT	40
+#define KW_LOCK		41
+#define KW_DEFINED	42
+#define KW_ARGPOP	43
+#define KW_NOARGPOP	44
 
 #define AKW_ALIGN	64
 #define AKW_I0		65
@@ -323,6 +328,13 @@
 #define CMP_TEMPLATE_FSTP		0x0A
 #define CMP_TEMPLATE_FLD		0x0B
 #define CMP_TEMPLATE_HPET		0x0C
+#define CMP_TEMPLATE_SQR		0x0D
+#define CMP_TEMPLATE_ABS		0x0E
+#define CMP_TEMPLATE_SQRT		0x0F
+#define CMP_TEMPLATE_SIN		0x10
+#define CMP_TEMPLATE_COS		0x11
+#define CMP_TEMPLATE_TAN		0x12
+#define CMP_TEMPLATE_ATAN		0x13
 
 #define ASSOCF_LEFT	1
 #define ASSOCF_RIGHT	2
@@ -364,10 +376,10 @@
 #define PRS0__IMPORT		0x000003
 #define PRS0_EXTERN		0x000004
 #define PRS0_IMPORT		0x000005
-#define PRS0_TYPEDEF		0x000006
-#define PRS0_TYPECAST		0x000007
+#define PRS0_TYPECAST		0x000006
 
 //Byte 1
+#define PRS1B_NULL		0
 #define PRS1_NULL		0x000000
 #define PRS1B_LOCAL_VAR		1
 #define PRS1_LOCAL_VAR		0x000100

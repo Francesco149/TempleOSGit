@@ -1,46 +1,57 @@
                        Details of Scoping and Linkages
 
-[::/SparrowOS/Doc/Glossary.TXT.Z,1] Just-In-Time Compilation makes use of the current task's hash sym table and 
+[::/SparrowOS/Doc/Glossary.TXT.Z,1] Just-In-Time Compilation makes use of the
+current task's hash sym table and 
 its parent tasks' tables.  It fetches syms from parent tasks' tables if not 
 found locally in the current task's table and it places new syms in the 
-current task's table.  Conceptually, syms are at the scope of environment vars 
+current task's table.  Conceptually, syms are at the scope of environment
+vars 
 in other operating systems.
 
-[::/SparrowOS/Doc/Glossary.TXT.Z,1] Statical Compilation creates a new, empty, sym table which you must populate 
-by #includeing [::/SparrowOS/OSMain/StaticAdam.HPP.Z,1] ::/SparrowOS/OSMain/StaticAdam.HPP.Z or whatever to import 
+[::/SparrowOS/Doc/Glossary.TXT.Z,1] Statical Compilation creates a new,
+empty, sym table which you must populate 
+by #includeing [::/SparrowOS/OSMain/StaticAdam.HPP.Z,1]
+::/SparrowOS/OSMain/StaticAdam.HPP.Z or whatever to import 
 syms.
 
 When a sym is placed into a table, older syms with identical names will be 
 overshadowed if they exist, unless you use the compiler option 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1481] OPTf_REPLACE_SYMS.  Duplicates are not allowed in many cases, especially in 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1473] OPTf_REPLACE_SYMS.  Duplicates are
+not allowed in many cases, especially in 
 asm blks.  Dupicates are allowed, by design in other cases, so that you can 
 repeatedly #include the same file from the cmd line while developing it.  Or, 
 so you can repeatedly declare a function with a standard name, like "UpdateWin
 ()".  This case might occur when the adam task is starting-up loading-in many 
 little utilities.
 
-extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,590] HTT_FUN or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,586] HTT_GLBL_VAR sym to an existing sym of the same 
+extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to an existing sym of
+the same 
 name if it exists in the sym table (just in just-in-time code).  It also can 
 be used to generate a fwd reference.
 
-import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,590] HTT_FUN or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,586] HTT_GLBL_VAR sym to a sym of the same name 
-imported from the task's sym table at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() time.  If no sym exists to bind 
-to at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() time, the code using this sym will be left incomplete until the 
+import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to a sym of the same
+name 
+imported from the task's sym table at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735]
+Load() time.  If no sym exists to bind 
+to at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() time, the code using this
+sym will be left incomplete until the 
 sym is defined.
 
 
-_extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,590] HTT_FUN or
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,586] HTT_GLBL_VAR sym to an existing sym,
+_extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to an existing sym,
 of a **diffe
 rent** name.  It must exists in the sym table.  Basically, this binds C to
 asm.
 
-_import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,590] HTT_FUN or
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,586] HTT_GLBL_VAR sym to a sym, of a
+_import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to a sym, of a
 **different** name 
-imported from the task's sym table at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738]
+imported from the task's sym table at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735]
 Load() time.  If no sym exists to bind 
-to at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() time, the code using this
+to at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() time, the code using this
 sym will be left incomplete until the 
 sym is defined.  Basically, this binds C to asm from elsewhere.
 
@@ -50,18 +61,12 @@ StaticModule/JustInTime
 | | CCode/AsmCodeBlk
 | | | extern/import/_extern/_import/IMPORT/static/class/goto
 | | | |        CodeHeap/DataHeap/Stack/Register
-| | | |        |         
-TaskHashEntry:ExportSysSym/Macro/Function/Class/Typedef
-| | | |        |          | UsageScope:
-Module/AsmLocal/AsmBlk/TaskAndChildren/Function
-| | | |        |          | |UsageScope:
-Glbl/AsmLocal/Remainder/glblThisBlkAndRemainder
-| | | |        |          | ||
-StaticVarInit/DynamicVarInitAllowed/NoInitAllowed
-| | | |        |          | || | Are dups allowed within the namespace? A dup
-overshadows the original.
-| | | |        |          | || |
-DupsAllowed/NoDups/NoDupsButPad/WarningUnlessClosedOut
+| | | |        |          TaskHashEntry:ExportSysSym/Macro/Function/Class/Typedef
+| | | |        |          | UsageScope: Module/AsmLocal/AsmBlk/TaskAndChildren/Function
+| | | |        |          | |UsageScope: Glbl/AsmLocal/Remainder/glblThisBlkAndRemainder
+| | | |        |          | || StaticVarInit/DynamicVarInitAllowed/NoInitAllowed
+| | | |        |          | || | Are dups allowed within the namespace? A dup overshadows the original.
+| | | |        |          | || | DupsAllowed/NoDups/NoDupsButPad/WarningUnlessClosedOut
 S G A          C label::  S MG   N
 S G A          C label:     MG   N
 S G A          C @@label:   AL   N
@@ -79,7 +84,6 @@ S F C goto     C label:     FG   N
 S G C          C var      S MR D D
 S G C          D var        MR N D
 S G C            class      MR   D
-S G C            typedef    MR   D
 S G C class      member     MR   P
 S G C extern     class      MR   D
 S G C extern   C function   MR   W
@@ -106,7 +110,6 @@ J F C goto     C label:     FG   N
 J G C          C var      G TR D D
 J G C          D var      G TR S D
 J G C            class    C TR   D
-J G C            typedef  T TR   D
 J G C class      member     TR   P
 J G C extern     class    C TR   D
 J G C extern   C function F TR   W
@@ -115,8 +118,10 @@ J G C extern   D var      G TR   D
 J G C _extern C function F TR   D
 J G C _extern C var      G TR   D
 
-* GoTo labels must not have the same name as global scope objects.  GoTo's are 
-rare and I don't want to slow the compiler and add code to fix this.  You will 
+* GoTo labels must not have the same name as global scope objects.  GoTo's
+are 
+rare and I don't want to slow the compiler and add code to fix this.  You
+will 
 get errors if a collision happens, so it's not very dangerous, but the error 
 message is baffling.
 
@@ -126,11 +131,12 @@ with the same name are allowed in a class.
 * Use reg or noreg in front of local var names to override automatic register 
 var allocation.  You can, optionally, specify a reg after the "reg" keyword.
  
-* Local nonregister function vars can be accessed in asm blks with &i[RBP] for 
+* Local nonregister function vars can be accessed in asm blks with &i[RBP]
+for 
 example.
 
 * Glbl vars and functions can be accessed in asm with and & as in
-	MOV	RAX,U64 [&glbl_var]
+	MOV	RAX,I64 [&glbl_var]
 	CALL	I32 &Fun
 	CALL	I32 &SYS_SYM
 
@@ -140,16 +146,20 @@ example.
 
 * The sizeof() and C+ structure members can be used in asm blks.
 
-* No register vars are used in functions with a try/catch.  They will be force 
+* No register vars are used in functions with a try/catch.  They will be
+force 
 to noreg.
 
 * Using &i or i.u8[2] on a local var, i, will force it to noreg.
 
 * An unused gap on the stk is left for reg vars.
 
-* Note: static function vars do not go on the data heap, no matter the setting 
-of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1482] OPTf_GLBLS_ON_DATA_HEAP.  They may in the future.
+* Note: static function vars do not go on the data heap, no matter the
+setting 
+of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1474] OPTf_GLBLS_ON_DATA_HEAP.  They
+may in the future.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1478] OPTf_EXTERNS_TO_IMPORTS will treat _extern as _import and extern as import.  
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1470] OPTf_EXTERNS_TO_IMPORTS will treat
+_extern as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or static compiled 
 header.

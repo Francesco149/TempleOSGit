@@ -8,20 +8,25 @@ U0 PortNop()
 
 U16 EndianU16(U16 d)
 {
+  I64 result=0;
   result.u8[1]=d.u8[0];
   result.u8[0]=d.u8[1];
+  return result;
 }
 
 U32 EndianU32(U32 d)
 {
+  I64 result=0;
   result.u8[3]=d.u8[0];
   result.u8[2]=d.u8[1];
   result.u8[1]=d.u8[2];
   result.u8[0]=d.u8[3];
+  return result;
 }
 
 U64 EndianU64(U64 d)
 {
+  U64 result;
   result.u8[7]=d.u8[0];
   result.u8[6]=d.u8[1];
   result.u8[5]=d.u8[2];
@@ -30,13 +35,15 @@ U64 EndianU64(U64 d)
   result.u8[2]=d.u8[5];
   result.u8[1]=d.u8[6];
   result.u8[0]=d.u8[7];
+  return result;
 }
 
-I64 BCnt(U64 d)
+I64 BCnt(I64 d)
 {
   I64 result=0,i;
   for (i=0;i<8;i++)
     result+=set_bits_table[d.u8[i]];
+  return result;
 }
 
 U0 IntSimpleTimer(CTask *)
@@ -52,9 +59,9 @@ U0 IntSimpleTimer(CTask *)
     MPInt(I_TIMER,i);
 }
 
-U64 SysTimerRead()
+I64 SysTimerRead()
 {
-  I64 i;
+  I64 i,result;
   PushFD;
   Cli;
   if (mp_cnt>1)
@@ -68,17 +75,18 @@ U64 SysTimerRead()
   result=sys_timer+SYS_TIMER0_PERIOD-i;
   LBtr(&sys_semas[SYS_SEMA_SYS_TIMER],0);
   PopFD;
+  return result;
 }
 
-U64 TaskTotalTime()
+I64 TaskTotalTime()
 {
   return GetTimeStamp-Fs->time_slice_start+Fs->total_time;
 }
 
-U64 TimeStampFreqCal()
+I64 TimeStampFreqCal()
 {
-  static U64 time_stamp_start=0,timer_start=0,HPET_start=0;
-  U64 i;
+  static I64 time_stamp_start=0,timer_start=0,HPET_start=0;
+  I64 i;
   if (time_stamp_start) {
     PushFD;
     Cli;
@@ -113,9 +121,9 @@ U64 TimeStampFreqCal()
 F64 tNP()
 //Time since boot in seconds as a float
 {
-  static U64 last_time_stamp=0;
+  static I64 last_time_stamp=0;
   static F64 last_result=0;
-  U64 time_stamp;
+  I64 time_stamp;
   if (HPET_freq)
     return ToF64(HPET)/HPET_freq;
   else { //Monotonically incresing,calibrated.
@@ -136,7 +144,7 @@ F64 tNP()
 F64 tP(CTask *task=NULL)
 { //Time in seconds, stopped during pauses
   F64 result;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_PAUSED))
@@ -160,7 +168,7 @@ F64 tS()
   return SysTimerRead/ToF64(SYS_TIMER_FREQ);
 }
 
-BoolI64 Blink(F64 Hz=2.5,F64 t=0)
+Bool Blink(F64 Hz=2.5,F64 t=0)
 {
   if (!Hz) return 0;
   if (t)
@@ -169,25 +177,25 @@ BoolI64 Blink(F64 Hz=2.5,F64 t=0)
     return ToI64(sys_jiffies*2*Hz/JIFFY_FREQ)&1;
 }
 
-U0 BusyWait(U64 uS) //Loosely timed
+U0 BusyWait(I64 uS) //Loosely timed
 {
-  U64 i;
+  I64 i;
   for (i=0;i<uS;i++)
     PortNop;
 }
 
-U0 SleepUntil(U64 wake_jiffy)
+U0 SleepUntil(I64 wake_jiffy)
 //This routine is not for power-saving
 //it is to make a program pause without
 //hogging the CCPU.
 {
-  BoolI8 old_idle=LBts(&Fs->task_flags,TASKf_IDLE);
+  Bool old_idle=LBts(&Fs->task_flags,TASKf_IDLE);
   Fs->wake_jiffy=wake_jiffy;
   Yield;
   LBEqu(&Fs->task_flags,TASKf_IDLE,old_idle);
 }
 
-U0 Sleep(U64 mS)
+U0 Sleep(I64 mS)
 //This routine is not for power-saving
 //it is to make a program pause without
 //hogging the CCPU.
@@ -198,13 +206,13 @@ U0 Sleep(U64 mS)
     SleepUntil(sys_jiffies+mS*JIFFY_FREQ/1000);
 }
 
-U0 Snd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0)
+U0 Snd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0)
 // The internal PC speaker only does square waves.
 // waveform and amp are for HDAudio.
 // Use [C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,264] SndFilePlay() or [::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,1] ::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z as a template for
 // doing polyphonic or fancy HD Audio snd.
 {
-  U64 p;
+  I64 p;
   if (!Bt(&sys_semas[SYS_SEMA_MUTE],0) && snd_vol &&
       !LBts(&sys_semas[SYS_SEMA_SND],0)) {
     if (!IsInDbg && snd_dev!=SD_PC_SPEAKER) {
@@ -234,7 +242,7 @@ U0 Snd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0)
   }
 }
 
-U0 Beep(U64 freq=500,BoolI8 busy=FALSE)
+U0 Beep(I64 freq=500,Bool busy=FALSE)
 {
   Snd(freq);
   if (busy) BusyWait(500000);
@@ -244,8 +252,9 @@ U0 Beep(U64 freq=500,BoolI8 busy=FALSE)
     else Sleep(200);
 }
 
-BoolI64 Mute(BoolI8 val)
+Bool Mute(Bool val)
 {
+  Bool result;
   if (val) {
     PushFD;
     Cli;
@@ -254,50 +263,52 @@ BoolI64 Mute(BoolI8 val)
     PopFD;
   } else
     result=LBtr(&sys_semas[SYS_SEMA_MUTE],0);
+  return result;
 }
 
-BoolI64 IsMute() {
+Bool IsMute() {
   return Bt(&sys_semas[SYS_SEMA_MUTE],0);
 }
 
-BoolI64 Silent(BoolI8 val) {
+Bool Silent(Bool val) {
 //This turns-off console output, not sound.
   return LBEqu(&Fs->display_flags,DISPLAYf_SILENT,val);
 }
 
-BoolI64 IsSilent() {
+Bool IsSilent() {
   return Bt(&Fs->display_flags,DISPLAYf_SILENT);
 }
 
-BoolI64 IOSnd(BoolI8 val) {
-  result=!LBEqu(&sys_semas[SYS_SEMA_NO_IO_SND],0,!val);
+Bool IOSnd(Bool val) {
+  Bool result=!LBEqu(&sys_semas[SYS_SEMA_NO_IO_SND],0,!val);
   Snd(0);
+  return result;
 }
 
-BoolI64 IsPreempt() {
+Bool IsPreempt() {
   return Bt(&Fs->task_flags,TASKf_PREEMPT);
 }
 
-BoolI64 SysDbg(BoolI8 val) {
+Bool SysDbg(Bool val) {
 //Sets or rsts a bit which you can
 //use while debugging.
   return LBEqu(&sys_semas[SYS_SEMA_DEBUG],0,val);
 }
 
-BoolI64 IsSysDbg() {
+Bool IsSysDbg() {
   return Bt(&sys_semas[SYS_SEMA_DEBUG],0);
 }
 
-BoolI64 SysDeterministic(BoolI8 val) {
+Bool SysDeterministic(Bool val) {
 //Sets or rsts a bit which tries to keep the system deterministic, for debugging.
   return LBEqu(&sys_semas[SYS_SEMA_DETERMINISTIC],0,val);
 }
 
-BoolI64 IsSysDeterministic() {
+Bool IsSysDeterministic() {
   return Bt(&sys_semas[SYS_SEMA_DETERMINISTIC],0);
 }
 
-BoolI64 Raw(BoolI8 val) {
+Bool Raw(Bool val) {
 //Switches to direct screen output
 //mode for when you don't have
 //a working window.
@@ -306,23 +317,23 @@ BoolI64 Raw(BoolI8 val) {
   return !LBEqu(&Fs->task_flags,TASKf_NOT_RAW,!val);
 }
 
-BoolI64 IsRaw() {
+Bool IsRaw() {
   return !Bt(&Fs->task_flags,TASKf_NOT_RAW);
 }
 
-BoolI64 SingleUser(BoolI8 val) {
+Bool SingleUser(Bool val) {
   return LBEqu(&sys_semas[SYS_SEMA_SINGLE_USER],0,val);
 }
 
-BoolI64 IsSingleUser() {
+Bool IsSingleUser() {
   return Bt(&sys_semas[SYS_SEMA_SINGLE_USER],0);
 }
 
-BoolI64 InDbg(BoolI8 val) {
+Bool InDbg(Bool val) {
   return LBEqu(&sys_semas[SYS_SEMA_IN_DEBUGGER],0,val);
 }
 
-BoolI64 IsInDbg() {
+Bool IsInDbg() {
   return Bt(&sys_semas[SYS_SEMA_IN_DEBUGGER],0);
 }
 
@@ -331,43 +342,43 @@ U0 ProgressBarsRst()
   MemSet(sys_progresses,0,sizeof(sys_progresses));
 }
 
-U0 CtrlAltDel(U64)
+U0 CtrlAltDel(I64)
 {
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_DEL);
 }
 
-U0 CtrlAltC(U64)
+U0 CtrlAltC(I64)
 {
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_C);
 }
 
-U0 CtrlAltE(U64)
+U0 CtrlAltE(I64)
 {
   SpawnUser;
 }
 
-U0 CtrlAltF(U64)
+U0 CtrlAltF(I64)
 {
   VGAFlush;
 }
 
-U0 CtrlAltM(U64)
+U0 CtrlAltM(I64)
 {
   Mute(!IsMute);
 }
 
-U0 CtrlAltP(U64)
+U0 CtrlAltP(I64)
 {
   if (sys_focus_task)
     TaskPause(sys_focus_task,!Bt(&sys_focus_task->task_flags,TASKf_PAUSED));
 }
 
-U0 CtrlAltT(U64)
+U0 CtrlAltT(I64)
 {
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_TAB);
 }
 
-U0 CtrlAltX(U64)
+U0 CtrlAltX(I64)
 {
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_X);
 }

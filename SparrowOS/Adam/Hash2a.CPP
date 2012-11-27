@@ -7,7 +7,6 @@ public I64 HashVal(CHash *temph)
     case HTt_IMPORT_SYS_SYM:
       return temph(CHashImport *)->module_base;
     case HTt_DEFINE_STR:
-    case HTt_TYPEDEF:
     case HTt_CLASS:
     case HTt_INTERNAL_TYPE:
     case HTt_WORD:
@@ -135,22 +134,21 @@ I64 HashEntriesCompare3(CHashRep *h1,CHashRep *h2)
 // "adam_task->hash_table"
 // "Fs->hash_table"
 public U0 HashRep(CHashTable *h=NULL,
-  U64 mask=HTG_ALL,U8 *outname=NULL,U8 *flags=NULL,U8 mapfile_drv=0,U8 *index=NULL,
+  I64 mask=HTG_ALL,U8 *outname=NULL,U8 *flags=NULL,U8 mapfile_drv=0,U8 *index=NULL,
   CDoc *_doc=NULL)
 {
   CHashTable *tempht;
   CHashSrcSym *temph;
   CHashGeneric *ptr;
   CHashRep *list;
-  U64 cnt,i,j,k,size,f=0;
+  I64 cnt,i,j,k,size,f=0,
+    dbg_bin_num,indent_bin_num;
   U8 buf[512],*buf4,*last_index=StrNew(""),*cur_index;
-  I64 dbg_bin_num,indent_bin_num;
   CDoc *doc,*doc1;
-  BoolI8 recurse,publics,map;
+  Bool recurse,publics,map,old_preempt=Preempt(OFF);
   CDocBin *tempb;
   CDbgInfo *dbg;
   CIndentInfo *indent;
-  BoolI8 old_preempt=Preempt(OFF);
 
   GetFFlags(&f,Define("ST_FILE_UTIL_FLAGS"),"+r+p");
   GetFFlags(&f,Define("ST_FILE_UTIL_FLAGS"),flags);
@@ -258,7 +256,7 @@ public U0 HashRep(CHashTable *h=NULL,
 	if (outname && doc && ptr->type & HTT_FUN) {
 	  if (dbg=ptr(CHashFun *)->debug) {
 	    size=offset(CDbgInfo.body)+
-		sizeof(U0 *)*
+		sizeof(U8 *)*
 		(dbg->max_line-dbg->min_line+2);
 	    if (size>MSize(dbg)) {
 	      "Corrupt Map Entry\n";
@@ -472,12 +470,12 @@ public U0 PopUpHelpIndex(U8 *index,CTask *parent=NULL)
 #help_index "Hash"
 public U0 MapFileLoad(U8 *filename)
 {
-  U8 *st,*ptr,*name=DftExt(filename,"MAP.Z");
-  U8 *absname=FileNameAbs(name);
+  U8 *st,*ptr,*name=DftExt(filename,"MAP.Z"),
+     *absname=FileNameAbs(name);
   CDoc *doc=DocRead(name);
   CDocEntry *doc_e;
   CHashSrcSym *temph;
-  U64 i,j,base=0;
+  I64 i,j,base=0;
   CDbgInfo *dbg;
   CIndentInfo *indent;
 

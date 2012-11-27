@@ -1,15 +1,16 @@
 U8 hex_digits[16]="0123456789ABCDEF";
-U8 *Bin2Hex(U8 *dst,U64 n;U64 width)
+U8 *Bin2Hex(U8 *dst,I64 n;I64 width)
 {
-  result=dst+width;
+  U8 *result=dst+width;
   dst=result;
   while (width--) {
     *--dst=hex_digits[n&15];
     n>>=4;
   }
+  return result;
 }
 
-U0 PutHex(U64 n,U64 width)
+U0 PutHex(I64 n,I64 width)
 {
   U8 buf[17];
   if (width>16) width=16;
@@ -326,8 +327,8 @@ _STRISTR::
 }
 _extern _STRCMP I64 StrCmp(U8 *st1,U8 *st2);
 _extern _STRICMP I64 StrICmp(U8 *st1,U8 *st2);
-_extern _STRNCMP I64 StrNCmp(U8 *st1,U8 *st2,U64 n);
-_extern _STRNICMP I64 StrNICmp(U8 *st1,U8 *st2,U64 n);
+_extern _STRNCMP I64 StrNCmp(U8 *st1,U8 *st2,I64 n);
+_extern _STRNICMP I64 StrNICmp(U8 *st1,U8 *st2,I64 n);
 _extern _STRSTR U8 *StrStr(U8 *st,U8 *pattern);
 _extern _STRISTR U8 *StrIStr(U8 *st,U8 *pattern);
 _extern _STRCPY U0 StrCpy(U8 *dest,U8 *src);
@@ -335,7 +336,7 @@ _extern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/SparrowOS/Compiler/Lex.CPP.Z,748] Lex() can use them with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1891] Token Codes.
+[C:/SparrowOS/Compiler/Lex.CPP.Z,794] Lex() can use them with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1883] Token Codes.
 */
 U32 alpha_bitmap[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -413,7 +414,7 @@ I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL)
 { //Not especially efficient but handy.  Use hash tables for efficiency.
   I64 n,entry_num=0,result=-1,unutilized_src;
   U8 *s;
-  BoolI8 exact_match=FALSE;
+  Bool exact_match=FALSE;
 
   if (!lst) goto lm_done;
   n=StrLen(src);
@@ -467,6 +468,7 @@ I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL)
 lm_done:
   if (_ambiguity_overkill && result==-1)
     *_ambiguity_overkill=0;
+  return result;
 }
 
 U0 UndefinedDefine(U8 *name)
@@ -489,7 +491,7 @@ U8 *Define(U8 *name)
     return NULL;
 }
 
-U8 *DefineSub(U64 sub,U8 *name)
+U8 *DefineSub(I64 sub,U8 *name)
 {
   CHashDefineStr *temph;
   if (temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR))
@@ -512,7 +514,7 @@ I64 DefineSubCnt(U8 *name)
 }
 
 I64 DefineMatch(U8 *src,U8 *lst_name,
-  U64 flags=0,I64 *_ambiguity_overkill=NULL)
+  I64 flags=0,I64 *_ambiguity_overkill=NULL)
 {
   return ListEntryMatch(src,Define(lst_name),
     flags,_ambiguity_overkill);
@@ -579,9 +581,9 @@ U0 PutDefineWarn(U8 *st)
   PutDefine(st);
 }
 
-BoolI64 YorN()
+Bool YorN()
 {
-  U64 ch;
+  I64 ch;
   "(y or n)? ";
   while (TRUE) {
     ch=ToUpper(GetChar(NULL,FALSE));
@@ -595,9 +597,9 @@ BoolI64 YorN()
   }
 }
 
-BoolI64 PressAKey()
+Bool PressAKey()
 {
-  U64 ch;
+  I64 ch;
   PutDefine("ST_PRESS_A_KEY");
   ch=GetChar(NULL,FALSE);
   if (ch==CH_SHIFT_ESC || ch==CH_ESC)
@@ -606,9 +608,9 @@ BoolI64 PressAKey()
     return TRUE;
 }
 
-BoolI64 ExitAllApplications()
+Bool ExitAllApplications()
 {
-  U64 ch;
+  I64 ch;
   PutDefine("ST_EXIT_ALL_APPLICATIONS");
   PutDefine("ST_PRESS_A_KEY");
   ch=GetChar(NULL,FALSE);
@@ -618,13 +620,13 @@ BoolI64 ExitAllApplications()
     return TRUE;
 }
 
-BoolI64 AreYouSure()
+Bool AreYouSure()
 {
   PutDefine("ST_ARE_YOU_SURE");
   return YorN;
 }
 
-CHashDefineStr *DefineLoad(U8 *name,U8 *st,BoolI8 replace=FALSE)
+CHashDefineStr *DefineLoad(U8 *name,U8 *st,Bool replace=FALSE)
 {
   CHashDefineStr *temph=CAlloc(sizeof(CHashDefineStr));
   temph->type=HTT_DEFINE_STR;
@@ -639,7 +641,7 @@ CHashDefineStr *DefineLoad(U8 *name,U8 *st,BoolI8 replace=FALSE)
   return temph;
 }
 
-CHashDefineStr *DefineListLoad(U8 *name,U8 *st,BoolI8 replace=FALSE)
+CHashDefineStr *DefineListLoad(U8 *name,U8 *st,Bool replace=FALSE)
 { //Not especially efficient but handy.
   I64 cnt=0;
   U8 *ptr;
@@ -662,7 +664,7 @@ CHashDefineStr *DefineListLoad(U8 *name,U8 *st,BoolI8 replace=FALSE)
   return temph;
 }
 
-I64 StrOcc(U8 *src, U64 ch)
+I64 StrOcc(U8 *src, I64 ch)
 {
   I64 i=0;
   if (!src) return 0;
@@ -777,9 +779,9 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3675] flags
+{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3387] flags
   U8 *src=_src,*dst=_src;
-  U64 ch;
+  I64 ch;
 
   if (flags & SUF_REM_LEADING)
     while (Bt(white_space_bitmap,*src))
@@ -840,8 +842,8 @@ U8 *StrUtil(U8 *_src,I64 flags)
   return _src;
 }
 
-U8 *MStrUtil(U8 *src,U64 flags,F64 indent_scale_factor=0)
-//Return a [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc()ed result from StrUtil
+U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0)
+//Return a [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc()ed result from StrUtil
 {
   U8 *dst=StrNew(src),*dst2,*temp;
   StrUtil(dst,flags);
@@ -881,6 +883,7 @@ U8 *StrFirstRem(U8 *src,U8 *marker,U8 *dst=NULL)
     StrCpy(src,ptr);
   else
     *src=0;
+  return result;
 }
 
 U8 *StrLastOcc(U8 *src,U8 *marker)
@@ -889,6 +892,7 @@ U8 *StrLastOcc(U8 *src,U8 *marker)
   while (ch=*src++)
     if (StrOcc(marker,ch))
       result=src-1;
+  return result;
 }
 
 U8 *StrLastRem(U8 *src,U8 *marker,U8 *dst=NULL)
@@ -906,9 +910,9 @@ U8 *StrLastRem(U8 *src,U8 *marker,U8 *dst=NULL)
   return dst;
 }
 
-U8 *SearchStr(U8 *src,U8 *pattern,U64 flags=0)
+U8 *SearchStr(U8 *src,U8 *pattern,I64 flags=0)
 {
-  BoolI8 cont;
+  Bool cont;
   U8 *saved_src=src;
   I64 plen=StrLen(pattern);
   do {
@@ -941,9 +945,9 @@ U8 *SearchStr(U8 *src,U8 *pattern,U64 flags=0)
   return src;
 }
 
-BoolI64 WildCardMatch(U8 *wild,U8 *src)
+Bool WildCardMatch(U8 *wild,U8 *src)
 {
-  U64 ch1,ch2;
+  I64 ch1,ch2;
   U8 *fall_back_src,*fall_back_wild=NULL;
   while (TRUE) {
     if (!(ch1=*src++)) {
@@ -982,8 +986,8 @@ U8 *StrAdd(U8 *base,U8 *addition)
 //Returns new string.
 //Dbls length when it grows.
 {
-  I64 blen=StrLen(base),alen=StrLen(addition);
-  I64 bmem=MSize(base);
+  U8 *result;
+  I64 blen=StrLen(base),alen=StrLen(addition),bmem=MSize(base);
   if (blen+alen+1>bmem) {
     result=MAlloc(bmem<<1+alen+4);
     MemCpy(result,base,blen);
@@ -993,12 +997,13 @@ U8 *StrAdd(U8 *base,U8 *addition)
     result=base;
     StrCpy(result+blen,addition);
   }
+  return result;
 }
 
 
 I64 A2I(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
 { //ASCII to Int
-  BoolI8 neg=FALSE;
+  Bool neg=FALSE;
   U8 ch;
   I64 result=0,k=0;
   if (radix<2||radix>36) return 0;
@@ -1045,7 +1050,7 @@ ai_skip:
   return neg ? -result:result;
 }
 
-U0 GetFFlags(U0 *f,U8 *list,U8 *st)
+U0 GetFFlags(U8 *f,U8 *list,U8 *st)
 {
   I64 i;
   U8 *st2,*ptr;
@@ -1082,7 +1087,7 @@ U0 GetFFlags(U0 *f,U8 *list,U8 *st)
   }
 }
 
-U8 *SPrintFFlags(U8 *dst,U8 *list,U64 flags)
+U8 *SPrintFFlags(U8 *dst,U8 *list,I64 flags)
 {
   I64 i;
   *dst=0;
@@ -1113,7 +1118,7 @@ U0 SPrintFPutChar(U8 **_dst,U8 ch,U8 **_buf)
 }
 
 U0 OutStr(U8 *ptr,U8 **_buf,U8 **_dst,
-     I64 len,BoolI8 left_justify,BoolI8 truncate_flag)
+     I64 len,Bool left_justify,Bool truncate_flag)
 {
   I64 i,j;
   if (!ptr)
@@ -1136,7 +1141,7 @@ U0 OutStr(U8 *ptr,U8 **_buf,U8 **_dst,
 }
 
 
-U8 *MSPrintFTime(CDate ltdt,U64 sub_fmt)
+U8 *MSPrintFTime(CDate ltdt,I64 sub_fmt)
 {
   CDateStruct ds;
   if (sub_fmt<NUM_TIME_FMTS)
@@ -1227,7 +1232,7 @@ U8 *MSPrintFTime(CDate ltdt,U64 sub_fmt)
   }
 }
 
-U8 *MSPrintFDate(CDate ltdt,U64 sub_fmt)
+U8 *MSPrintFDate(CDate ltdt,I64 sub_fmt)
 {
   CDateStruct ds;
   if (sub_fmt<NUM_DATE_FMTS)
@@ -1413,7 +1418,7 @@ U8 *MSPrintFDate(CDate ltdt,U64 sub_fmt)
   }
 }
 
-U8 *MSPrintFQ(U8 *ptr,BoolI8 dollar_flag)
+U8 *MSPrintFQ(U8 *ptr,Bool dollar_flag)
 {
   U8 **_buf,*buf,**_dst,*dst;
   I64 ch;
@@ -1596,14 +1601,12 @@ the decimal point are stored
 in 64-bits.  Use exponentiated forms
 to avoid this.
 */
-
-  U8 *ptr,**_buf,*buf,**_dst,*temp1;
-  BoolI8 pad_zero,left_justify,truncate_flag,neg,neg_e,comma_flag,
+  Bool pad_zero,left_justify,truncate_flag,neg,neg_e,comma_flag,
       dollar_flag,sub_fmt_question,has_sub_fmt,k_flag,has_decimal;
-  I64 i,j,l,ch,k,k0,n,n0,len,dec_len,dec_len0,sub_fmt,comma_cnt,comma_fmt_cnt;
-  U64 m,cur_arg=0;
+  I64 i,j,l,ch,k,k0,n,n0,len,dec_len,dec_len0,sub_fmt,comma_cnt,comma_fmt_cnt,cur_arg=0;
+  U64 m;
   F64 d,d0,d1;
-  U8 temp_buf[TEMP_BUF_LEN];
+  U8 *ptr,**_buf,*buf,**_dst,*temp1,temp_buf[TEMP_BUF_LEN];
 
   if (!src)
     throw(EXCEPT_SPRINTF,0);
@@ -1766,14 +1769,14 @@ sp_in_sub_fmt:
 	case 'c':
 	  if (cur_arg>=argc)
 	    throw(EXCEPT_SPRINTF,1);
-	  temp_buf[0](U64)=argv[cur_arg++];
+	  temp_buf[0](I64)=argv[cur_arg++];
 	  temp_buf[8]	    =0;
 	  OutStr(temp_buf,_buf,_dst,len,left_justify,truncate_flag);
 	  break;
 	case 'C':
 	  if (cur_arg>=argc)
 	    throw(EXCEPT_SPRINTF,1);
-	  temp_buf[0](U64)=argv[cur_arg++];
+	  temp_buf[0](I64)=argv[cur_arg++];
 	  temp_buf[8]	    =0;
 	  ptr=temp_buf;
 	  while (*ptr) {
@@ -2307,7 +2310,7 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *SPrintF(U8 *dst,U8 *fmt,...)
-{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1589] SPrintFJoin()
+{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin()
   return SPrintFJoin(dst,fmt,argc,argv);
 }
 
@@ -2338,8 +2341,8 @@ CDate A2CDate(U8 *_src)
   U8 *src=MStrUtil(_src,SUF_REM_SPACES|SUF_TO_UPPER),
      *v=StrNew(src),
      *p1=src;
-  BoolI8 start_mon=FALSE,end_mon=FALSE;
-  BoolI8 start_year=FALSE,end_year=FALSE;
+  Bool start_mon=FALSE,end_mon=FALSE,
+       start_year=FALSE,end_year=FALSE;
 
   MemSet(&ds,0,sizeof(CDateStruct));
   MemSet(&ds1,0,sizeof(CDateStruct));
@@ -2409,7 +2412,7 @@ to avoid this.
   U8 ch=*src++;
   I64 i,j,k;
   F64 d;
-  BoolI8 neg=FALSE,neg_e=FALSE;
+  Bool neg=FALSE,neg_e=FALSE;
 
   while (Bt(white_space_bitmap,ch))
     ch=*src++;
@@ -2483,7 +2486,7 @@ U8 *GetFJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
 //of array is the same as array--create ptr to array and take addr
 {
   U8 ch,*buf,*ptr,**pptr;
-  BoolI8 left_justify=FALSE;
+  Bool left_justify=FALSE;
   I64 cur_arg=0,i,len,*i_ptr,dec_len;
   F64 *d_ptr;
   if (!fmt)
@@ -2616,17 +2619,18 @@ U8 *GetF(U8 *src,U8 *fmt,...)
 
 U0 PrintF(U8 *fmt,...)
 {//[::/SparrowOS/Doc/Differences.TXT.Z,1] PrintF Extended Codes
- //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1589] SPrintFJoin()
+ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin()
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   "" buf;
   Free(buf);
 }
 
 U8 *MSPrintF(U8 *fmt,...)
-{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1589] SPrintFJoin()
-  U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
+{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin()
+  U8 *result,*buf=SPrintFJoin(NULL,fmt,argc,argv);
   result=StrNew(buf);
   Free(buf);
+  return result;
 }
 
 U0 DefinePrintF(U8 *name,U8 *src,...)

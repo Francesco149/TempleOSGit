@@ -7,15 +7,15 @@
 class CIDE
 {
   I64 type;
-  U0 *cur_line,*next_line;
-  U0 *call_bpt;
-  BoolI8 existing_bpt;
+  U8 *cur_line,*next_line;
+  U8 *call_bpt;
+  Bool existing_bpt;
 };
 
 U0 IDEWaitParent()
 {
   CTask *task=Fs->parent_task;
-  while (!Bt(&task->task_flags,TASKf_SUSPENDED) &&
+  while (!IsSuspended(task) &&
 	 !Bt(&task->task_flags,TASKf_IDLE) &&
 	 !Bt(&task->rflags,RFLAGS_SINGLE_STEP))
     Yield;
@@ -53,14 +53,13 @@ public CHashFun *DbgFunFind(CDoc *doc,I64 line_offset=0)
 
 U0 WatchLocals()
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CTask *task=Fs->parent_task,*dbg_task;
   CDoc *doc;
   CHashFun *tempf,*tempf1;
-  U64 sc,ch;
+  I64 sc,ch,offset,ip;
   F64 timeout;
-  U0 **rbp,**ptr;
-  I64 offset,ip;
+  U8 **rbp,**ptr;
   while (TRUE) {
     IDEWaitParent;
     if (!TaskValidate(dbg_task=task->dbg_task))
@@ -187,7 +186,7 @@ I64 IDELineAdd(CDbgInfo *dbg,I64 line)
   return dbg->body[line];
 }
 
-I64 IDERIPLineNum(CDoc *doc,U0 *rip)
+I64 IDERIPLineNum(CDoc *doc,U8 *rip)
 {
   U8 st[256],*filename=doc->filename.name;
   I64 line;
@@ -252,7 +251,7 @@ U0 IDEToggleBpt(CDoc *doc)
 { //F9
   U8 st[512],*filename=doc->filename.name;
   I64 a,line=doc->cur_entry->y+1;
-  BoolI8 unlock;
+  Bool unlock;
   CHashTable *h=Fs->hash_table;
   CHashFun *tempf;
   CDbgInfo *dbg;
@@ -303,7 +302,7 @@ U0 IDEToggleBpt(CDoc *doc)
 U0 IDEClearAllBpts(CDoc *doc)
 { //SHIFT-F9
   CDocEntry *doc_e,*doc_e2;
-  BoolI8 unlock;
+  Bool unlock;
   IDEWaitParent;
   BptsR(Fs->parent_task);
   unlock=DocLock(doc);
@@ -336,7 +335,7 @@ U0 IDEGo()  //Continue after breakpoint
   tempi->cur_line=task->rip;
   tempi->type=IDET_GO;
   LBts(&task->rflags,RFLAGS_SINGLE_STEP);
-  LBtr(&task->task_flags,TASKf_SUSPENDED);
+  Suspend(task,FALSE);
 }
 
 U0 IDEStepOver(CDoc *doc)
@@ -365,7 +364,7 @@ U0 IDEStepOver(CDoc *doc)
   tempi->call_bpt=NULL;
 
   LBts(&task->rflags,RFLAGS_SINGLE_STEP);
-  LBtr(&task->task_flags,TASKf_SUSPENDED);
+  Suspend(task,FALSE);
 
   opcode=task->rip;
   if (*opcode==OC_CALL) {
@@ -403,15 +402,15 @@ U0 IDEStepInto(CDoc *doc)
   }
   tempi->type=IDET_STEP_INTO;
   LBts(&task->rflags,RFLAGS_SINGLE_STEP);
-  LBtr(&task->task_flags,TASKf_SUSPENDED);
+  Suspend(task,FALSE);
 }
 
-U0 IDEEdTask(U64)
+U0 IDEEdTask(I64)
 {
-  CTask *task=Fs->parent_task;
-  U0 *rip=task->rip;
-  U8 *st,*rip_filename,*bpt_filename;
-  CTask *ed_task=NULL,*dbg_task;
+  CTask *task=Fs->parent_task,
+	*ed_task=NULL,*dbg_task;
+  U8 *rip=task->rip,
+     *st,*rip_filename,*bpt_filename;
   CIDE *tempi,*tempi1;
 
   CDoc *doc;
@@ -460,7 +459,7 @@ U0 IDEResumeDbg()
   U8 *opcode;
   if (!tempi) {
     Spawn(&IDEEdTask,NULL,"Resume Dbg",Fs);
-    LBts(&Fs->task_flags,TASKf_SUSPENDED);
+    Suspend(Fs);
   } else
     switch (tempi->type) {
       case IDET_GO:
@@ -470,21 +469,21 @@ U0 IDEResumeDbg()
 	  if (Fs->rip==tempi->cur_line) {//Jmp to self
 	    tempi->cur_line=NULL;
 	    Spawn(&IDEEdTask,NULL,"Resume Dbg",Fs);
-	    LBts(&Fs->task_flags,TASKf_SUSPENDED);
+	    Suspend(Fs);
 	  } else
 	    tempi->cur_line=NULL;
 	} else {
 	  Spawn(&IDEEdTask,NULL,"Resume Dbg",Fs);
-	  LBts(&Fs->task_flags,TASKf_SUSPENDED);
+	  Suspend(Fs);
 	}
 	break;
       case IDET_STEP_INTO:
 	if (!tempi->cur_line ||
 	    Fs->rip<tempi->cur_line || Fs->rip>=tempi->next_line) {
 	  Spawn(&IDEEdTask,NULL,"Resume Dbg",Fs);
-	  LBts(&Fs->task_flags,TASKf_SUSPENDED);
+	  Suspend(Fs);
 	} else
-	  LBtr(&Fs->task_flags,TASKf_SUSPENDED);
+	  Suspend(Fs,FALSE);
 	break;
       case IDET_STEP_OVER:
 	LBts(&Fs->rflags,RFLAGS_SINGLE_STEP);
@@ -497,7 +496,7 @@ U0 IDEResumeDbg()
 	if (!tempi->cur_line ||
 	    Fs->rip<tempi->cur_line || Fs->rip>=tempi->next_line) {
 	  Spawn(&IDEEdTask,NULL,"Resume Dbg",Fs);
-	  LBts(&Fs->task_flags,TASKf_SUSPENDED);
+	  Suspend(Fs);
 	} else {
 	  opcode=Fs->rip;
 	  if (*opcode==OC_CALL) {
@@ -510,7 +509,7 @@ U0 IDEResumeDbg()
 	    LBtr(&Fs->task_flags,TASKf_DISABLE_BPTS);
 	    LBtr(&Fs->rflags,RFLAGS_SINGLE_STEP);
 	  }
-	  LBtr(&Fs->task_flags,TASKf_SUSPENDED);
+	  Suspend(Fs,FALSE);
 	}
 	break;
     }

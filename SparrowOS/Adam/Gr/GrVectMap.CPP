@@ -179,7 +179,7 @@ public U0 GrVectMapBlotMP(CDC *dc,I64 x,I64 y,CGrVectMap *vm,F64 scale=1.0,I64 _
   Free(mp);
 }
 
-BoolI64 IsSolidSquare(CDC *dc,I64 x,I64 y,I64 edge,CColorROPU32 color)
+Bool IsSolidSquare(CDC *dc,I64 x,I64 y,I64 edge,CColorROPU32 color)
 {
   I64 i,j;
   edge>>=1;
@@ -200,7 +200,7 @@ I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
   I64 step,step_bits,x,y,xx,yy,xx1,yy1,xx2,yy2,cnt=0,k,kk,rect_dft,not_rect_dft,
       cnt_bit,link_bit1,link_bit2,link_bit_limit,bit=_bit,max_poly_line_cnt_bits;
   U8 *body=vm->body;
-  BoolI8 found;
+  Bool found;
   if (_max_poly_line_cnt_bits)
     max_poly_line_cnt_bits=*_max_poly_line_cnt_bits;
   else
@@ -401,7 +401,7 @@ public CGrVectMap *DC2VectMap(CDC *dc,CTask *mem_task=NULL,I64 *_size=NULL)
     rect_cnt=w*h,poly_line_cnt_bits=12,max_poly_line_cnt_bits=3;
   U32 *rect_start_bits;
   U8 *body;
-  CGrVectMap tempv;
+  CGrVectMap *result,tempv;
 
   body=MAlloc(TEMP_BODY_SIZE);
 
@@ -457,6 +457,7 @@ public CGrVectMap *DC2VectMap(CDC *dc,CTask *mem_task=NULL,I64 *_size=NULL)
   rect_start_bits[k]=cnt;
 
   if (_size) *_size=size;
+  return result;
 }
 
 public U0 GrVectMapDel(CGrVectMap *vm)
@@ -470,7 +471,7 @@ U32 *GrVectMapRectStartBits(CGrVectMap *vm,CTask *mem_task=NULL)
 {
   I64 k=0,bit=0;
   U8 *body=vm->body;
-  result=MAlloc((vm->rect_cnt+1)*sizeof(U32),mem_task);
+  U32 *result=MAlloc((vm->rect_cnt+1)*sizeof(U32),mem_task);
   for (k=0;k<vm->rect_cnt;k++) {
     result[k]=bit++;
     while (Bt(body,bit++)) {
@@ -481,4 +482,5 @@ U32 *GrVectMapRectStartBits(CGrVectMap *vm,CTask *mem_task=NULL)
       bit+=2*(R_BITS+1);
   }
   result[k]=bit;
+  return result;
 }

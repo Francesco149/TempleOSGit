@@ -1,4 +1,4 @@
-BoolI64 IsDbgTask()
+Bool IsDbgTask()
 {
   CTask *task=Fs->parent_task;
   if (TaskValidate(task) && task->dbg_task==Fs)
@@ -7,7 +7,7 @@ BoolI64 IsDbgTask()
     return FALSE;
 }
 
-BoolI64 ChkPtr(U0 *ptr)
+Bool ChkPtr(U8 *ptr)
 {
   if (sys_heap_base<=ptr<=MAPPED_MEM_SPACE) {
     if (*MemPtAtPageTableEntry(ptr)&1)
@@ -22,9 +22,9 @@ BoolI64 ChkPtr(U0 *ptr)
     return FALSE;
 }
 
-BoolI64 ChkOnStk(U0 *ptr,CTask *task=NULL)
+Bool ChkOnStk(U8 *ptr,CTask *task=NULL)
 {
-  result=FALSE;
+  Bool result=FALSE;
   PushFD;
   Cli;
   if (task) {
@@ -33,10 +33,12 @@ BoolI64 ChkOnStk(U0 *ptr,CTask *task=NULL)
   } else if (sys_heap_base<=ptr<=sys_heap_limit)
     result=TRUE;
   PopFD;
+  return result;
 }
 
 I64 UnusedStk(CTask *task=NULL)
 {
+  I64 result;
   if (!task) task=Fs;
   PushFD;
   Cli;
@@ -45,14 +47,15 @@ I64 UnusedStk(CTask *task=NULL)
   else
     result=task->rsp(U8 *)-(&task->stk->stk_base)(U8 *);
   PopFD;
+  return result;
 }
 
-U0 *Caller(U64 num=1)
+U8 *Caller(I64 num=1)
 //Returns the addr of the fun
 //which called this one, or the caller
 //of the caller, etc.
 {
-  U0 **rbp=GetBasePtr,**ptr;
+  U8 **rbp=GetBasePtr,**ptr;
   while (num--) {
     if (rbp>=*rbp)
       return NULL;
@@ -64,9 +67,9 @@ U0 *Caller(U64 num=1)
   return *ptr;
 }
 
-U0 *TaskCaller(CTask *task=NULL,I64 num=0,BoolI8 saved_context=FALSE)
+U8 *TaskCaller(CTask *task=NULL,I64 num=0,Bool saved_context=FALSE)
 {
-  U0 **ptr,**rbp,**rsp;
+  U8 **ptr,**rbp,**rsp;
   if (!task) task=Fs;
   if (!saved_context && task==Fs)
     return Caller(num+1);
@@ -96,9 +99,8 @@ U0 *TaskCaller(CTask *task=NULL,I64 num=0,BoolI8 saved_context=FALSE)
 U0 StkRep(CTask *task=NULL)
 //Reports whats on the stk
 {
-  I64 i,j,add;
-  U64 **rbp,**rsp;
-  U64 *my_rsp[STK_REP_LEN];
+  I64 i,j,add,
+      **rbp,**rsp,*my_rsp[STK_REP_LEN];
   CHashTable *old_hash=Fs->hash_table;
   if (!task) task=Fs;
   if (!TaskValidate(task))
@@ -117,12 +119,12 @@ U0 StkRep(CTask *task=NULL)
     add=*rsp;
   else
     add=task->rip;
-  MemCpy(my_rsp,rsp,STK_REP_LEN*sizeof(U0 *));
+  MemCpy(my_rsp,rsp,STK_REP_LEN*sizeof(U8 *));
   PopFD;
   Fs->hash_table=task->hash_table;
   for (i=0;i<STK_REP_LEN;i++) {
     "%08X [RSP+%04X]: %016X ",rsp+i,
-      i*sizeof(U0 *),my_rsp[i];
+      i*sizeof(U8 *),my_rsp[i];
     while (TRUE) {
       if (!(&task->stk->stk_base<=rbp<(&task->stk->stk_base)(U8 *)+task->stk->stk_size))
 	break;
@@ -142,10 +144,10 @@ U0 StkRep(CTask *task=NULL)
   Fs->hash_table=old_hash;
 }
 
-U0 CallerRep(U0 **rbp=NULL,CTask *task=NULL)
+U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL)
 //Prints a report of calling routines
 {
-  U64 **ptr;
+  I64 **ptr;
   if (!task) task=Fs;
   if (!rbp) rbp=GetBasePtr;
   "CallerRep:\n";
@@ -158,12 +160,12 @@ U0 CallerRep(U0 **rbp=NULL,CTask *task=NULL)
   }
 }
 
-U0 DbgStr(U8 *st,U64 mS=100)
+U0 DbgStr(U8 *st,I64 mS=100)
 //Shows a string using
-//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen output for a fixed length
+//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw screen output for a fixed length
 //of time.
 {
-  BoolI8 old_raw,old_input_filter;
+  Bool old_raw,old_input_filter;
   PushFD;
   Cli;
   old_raw=Raw(ON);
@@ -177,12 +179,12 @@ U0 DbgStr(U8 *st,U64 mS=100)
   Raw(old_raw);
 }
 
-U0 DbgNum(U64 num,U64 mS=100)
+U0 DbgNum(I64 num,I64 mS=100)
 //Shows a hex num using
-//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen output for a fixed length
+//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw screen output for a fixed length
 //of time.
 {
-  BoolI8 old_raw,old_input_filter;
+  Bool old_raw,old_input_filter;
   PushFD;
   Cli;
   old_raw=Raw(ON);
@@ -194,12 +196,12 @@ U0 DbgNum(U64 num,U64 mS=100)
   Raw(old_raw);
 }
 
-U0 DbgF(F64 d,U64 mS=100)
+U0 DbgF(F64 d,I64 mS=100)
 //Shows a floating-point val using
-//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen output for a fixed length
+//[C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw screen output for a fixed length
 //of time.
 {
-  BoolI8 old_raw,old_input_filter;
+  Bool old_raw,old_input_filter;
   PushFD;
   Cli;
   old_raw=Raw(ON);
@@ -211,11 +213,11 @@ U0 DbgF(F64 d,U64 mS=100)
   Raw(old_raw);
 }
 
-U0 DbgAdd(U0 *add,U64 mS=100)
-//Shows an addr using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw screen
+U0 DbgAdd(U8 *add,I64 mS=100)
+//Shows an addr using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw screen
 //output for a length of time.
 {
-  BoolI8 old_raw,old_input_filter;
+  Bool old_raw,old_input_filter;
   PushFD;
   Cli;
   old_raw=Raw(ON);
@@ -227,12 +229,12 @@ U0 DbgAdd(U0 *add,U64 mS=100)
   Raw(old_raw);
 }
 
-U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw
+U0 DbgD(U8 *add,I64 cnt=0x80,I64 mS=100)
+//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw
 //screen output for a fixed length
 //of time.
 {
-  BoolI8 old_raw,old_input_filter;
+  Bool old_raw,old_input_filter;
   PushFD;
   Cli;
   old_raw=Raw(ON);
@@ -244,12 +246,12 @@ U0 DbgD(U0 *add,U64 cnt=0x80,U64 mS=100)
   Raw(old_raw);
 }
 
-U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
-//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,300] Raw
+U0 DbgDm(U8 *add,I64 cnt=0x80,I64 mS=100)
+//Dumps a block of mem using [C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw
 //screen output for a fixed length
 //of time.
 {
-  BoolI8 old_raw,old_input_filter;
+  Bool old_raw,old_input_filter;
   PushFD;
   Cli;
   old_raw=Raw(ON);
@@ -261,11 +263,11 @@ U0 DbgDm(U0 *add,U64 cnt=0x80,U64 mS=100)
   Raw(old_raw);
 }
 
-U0 D(U8 *buf,U64 cnt=0x80,BoolI8 show_offset=TRUE)
+U0 D(U8 *buf,I64 cnt=0x80,Bool show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,607] DocD() for a live dump.
+//See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,615] DocD() for a live dump.
 {
-  U64 i,j,ch;
+  I64 i,j,ch;
   U8 *b=buf;
   while (cnt) {
     if (show_offset)
@@ -291,13 +293,13 @@ U0 D(U8 *buf,U64 cnt=0x80,BoolI8 show_offset=TRUE)
   }
 }
 
-U0 Dm(U8 *buf,U64 cnt=0x80)
+U0 Dm(U8 *buf,I64 cnt=0x80)
 //Show mem addr, not offsets
 {
   D(buf,cnt,FALSE);
 }
 
-U0 Da(U0 **b,U64 cnt=0x10)
+U0 Da(U8 **b,I64 cnt=0x10)
 //Dump mem, showing symbolic addresses
 {
   while (cnt-->0) {
@@ -306,7 +308,7 @@ U0 Da(U0 **b,U64 cnt=0x10)
   }
 }
 
-U64 *TaskRegAdd(CTask *task,I64 reg_num)
+I64 *TaskRegAdd(CTask *task,I64 reg_num)
 {
   switch (reg_num) {
     case CREG_RAX: return &task->rax;
@@ -331,7 +333,7 @@ U64 *TaskRegAdd(CTask *task,I64 reg_num)
 
 U0 Dr(CTask *task=NULL)
 {//Dump registers
-  U64 i;
+  I64 i;
   if (!task) task=Fs;
   for (i=0;i<16;i++)
     "%3Z:%016X\n",i,"ST_U64_REGS",*TaskRegAdd(task,i);
@@ -340,7 +342,7 @@ U0 Dr(CTask *task=NULL)
 
 U0 OverRideSingleUserSwap()
 {
-  BoolI8 old_single=SingleUser(OFF);
+  Bool old_single=SingleUser(OFF);
   Yield;
   SingleUser(old_single);
 }
@@ -366,7 +368,7 @@ U0 DefineRegs() //A courtesy for dbgging
   DefineLoad("R15","Fs->r15");
 }
 
-U8 *SysMGetS(U64)
+U8 *SysMGetS(I64)
 {
   U8 buf[512];
   GetS(buf,512,FALSE);
@@ -387,10 +389,10 @@ U0 Go1()
     CallExtNum(EXT_EXIT_DEBUGGER);
 }
 
-U0 SysDbgEnter(BoolI8 was_in_debugger)
+U0 SysDbgEnter(Bool was_in_debugger)
 {
-  BoolI8 old_user_task,old_waiting_msg;
-  U64 i,old_dbg_mgets;
+  Bool old_user_task,old_waiting_msg;
+  I64 i,old_dbg_mgets;
   U8 buf[200];
   CHashTable *tempht;
 
@@ -440,10 +442,10 @@ U0 DbgHelp()
   ">Da(RSP);\t\t\t//Dump stk.\n"
   ">Dr;\t\t\t\t//Dump Registers.\n"
   ">1+2*3+&PutS;\t\t\t//Show calculation result.\n"
-  ">*(0x70000)(U64 *)=0x123456789;\t//Assign value to 0x70000-0x70007.\n"
+  ">*(0x70000)(I64 *)=0x123456789;\t//Assign value to 0x70000-0x70007.\n"
   ">RAX=0x1234;\t\t\t//Set RAX to 0x1234.\n"
   ">RIP=&SysThrowBreak;\t\t//Set RIP.\n"
-  ">U64 i;\t\t\t\t//Declare variable.\n"
+  ">I64 i;\t\t\t\t//Declare variable.\n"
   ">i=RCX+RDX;\t\t\t//Assign to variable.\n"
   ">U(&PrintF+0x8);\t\t//Unassemble PrintF.\n"
   ">Uf(\"PutS\");\t\t\t//Unassembler function \"PutS\".\n"
@@ -459,12 +461,12 @@ U0 DbgHelp()
   "After resuming, <CTRL-ALT-F> flushes screen VGA cache.\n\n";
 }
 
-U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
+U0 Dbg(U8 *msg=NULL,I64 num=0,Bool fault=FALSE)
 //Enters the debugger.
 //This can be used as a kernel panic.
 {
-  BoolI8 was_in_dbg,was_single_user,was_raw;
-  U64 old_dc_flags=sys_raw_dc_flags;
+  Bool was_in_dbg,was_single_user,was_raw;
+  I64 old_dc_flags=sys_raw_dc_flags;
   PushFD;
   Cli;
   if (Gs->num && mp_crash) {
@@ -514,10 +516,10 @@ U0 Dbg(U8 *msg=NULL,U64 num=0,BoolI8 fault=FALSE)
 U0 Fault2() //Called from [::/SparrowOS/OSMain/Interrupts.CPP.Z,1] Fault2
 {
 //**Be careful not to swap-out and ruin the saved context**
-  BoolI8 was_raw,was_single_user;
-  U64  i,old_fault_num=sys_dbg_fault_num;
+  Bool was_raw,was_single_user;
+  I64  i,old_fault_num=sys_dbg_fault_num,
+       old_dc_flags=sys_raw_dc_flags;
   U8 *old_fault_rip=sys_dbg_fault_rip;
-  U64 old_dc_flags=sys_raw_dc_flags;
   if (Fs->fault_num==I_DIVIDE_BY_ZERO)
     throw(EXCEPT_DIVIDE_BY_ZERO,Fs->rip);
   was_single_user=SingleUser(ON);

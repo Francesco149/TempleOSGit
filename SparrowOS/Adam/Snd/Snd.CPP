@@ -6,10 +6,10 @@ class CSndWaveCtrl
   F64 phase,last_y,last_dydt,next_y;
 };
 
-U64 snd_obuf_num,snd_ibuf_num;
+I64 snd_obuf_num,snd_ibuf_num;
 
 #define Sf_FILLING_OUT		0
-U64 snd_flags;
+I64 snd_flags;
 
 public U0 SndTaskEndCB()
 //This will turn-off snd when a task gets killed.
@@ -28,7 +28,7 @@ class CSndData
   F64 time_stamp;
 } snd_record_root;
 
-U0 SndRecord(F64 freq,U64 waveform,F64 amp)
+U0 SndRecord(F64 freq,I64 waveform,F64 amp)
 {
   CSndData *d;
   d=ACAlloc(sizeof(CSndData));
@@ -39,7 +39,7 @@ U0 SndRecord(F64 freq,U64 waveform,F64 amp)
   QueIns(d,snd_record_root.last);
 }
 
-U0 CtrlAltV(U64 sc)
+U0 CtrlAltV(I64 sc)
 {
   if (sc&SCF_SHIFT)
     snd_vol/=1.5;

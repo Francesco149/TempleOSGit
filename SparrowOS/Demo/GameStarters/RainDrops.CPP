@@ -57,7 +57,7 @@ U0 DrawDrops(CTask *,CDC *dc)
 
 U0 UpdateCurBase(CTask *task,CDC *dc)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   cur_dc->color=ROP_EQU;
   dc->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
@@ -73,7 +73,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 }
 
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i,j,cur_drop=0,c1,c2,x0,y0,x1,y1,w,h;
   while (TRUE) {
@@ -150,7 +150,7 @@ U0 Init()
 
 U0 RainDrops()
 {
-  U64 ch,sc;
+  I64 ch,sc;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"

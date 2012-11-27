@@ -23,10 +23,10 @@ U0 SpanDel(CMathODE *ode)
 #define M_SIZE (sizeof(MyMass)-offset(CMass.start_saved_area))
 #define S_SIZE (sizeof(MySpring)-offset(CSpring.start_saved_area))
 
-U0 *SpanSave(CMathODE *ode,U64 *_size=NULL)
+U8 *SpanSave(CMathODE *ode,I64 *_size=NULL)
 {
   I64 cnt;
-  U8 *ptr;
+  U8 *result,*ptr;
   MyMass   *tempm;
   MySpring *temps;
   SpanHeader h;
@@ -62,13 +62,14 @@ U0 *SpanSave(CMathODE *ode,U64 *_size=NULL)
     temps=temps->next;
   }
   if (_size) *_size=cnt;
+  return result;
 }
 
-BoolI64 SpanWrite(CMathODE *ode)
+Bool SpanWrite(CMathODE *ode)
 {
   U8 *name,*buf;
-  U64 size;
-  BoolI8 result=FALSE,old_silent=Silent(ON);
+  I64 size;
+  Bool result=FALSE,old_silent=Silent(ON);
   MkDir("HOME/Span");
   Silent(old_silent);
   if (name=PopUpFileName("HOME/Span/Game.DAT.Z")) {
@@ -79,6 +80,7 @@ BoolI64 SpanWrite(CMathODE *ode)
     }
     Free(name);
   }
+  return result;
 }
 
 U0 SpanLoad(CMathODE *ode,U8 *src)
@@ -113,7 +115,7 @@ U0 SpanLoad(CMathODE *ode,U8 *src)
 U8 *SpanRead()
 {
   U8 *src=NULL,*name;
-  BoolI8 old_silent=Silent(ON);
+  Bool old_silent=Silent(ON);
   MkDir("HOME/Span");
   Silent(old_silent);
   if (name=PopUpPickFile("HOME/Span")) {

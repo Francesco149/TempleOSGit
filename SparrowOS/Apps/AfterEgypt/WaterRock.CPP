@@ -87,7 +87,7 @@
 U8 *imgs[NUM_FRAMES]={__BIN_1,__BIN_2,__BIN_3,__BIN_4};
 
 F64 t0_down,t0_up;
-BoolI8 down_stroke;
+Bool down_stroke;
 
 
 U0 DrawWaterRock(CTask *task,CDC *dc)

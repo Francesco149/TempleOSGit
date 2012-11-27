@@ -1,7 +1,7 @@
 U8 *master_bitmap;
 I64 prime_range,my_mp_cnt,pending;
 
-U0 PrimesJob(U64 i)
+U0 PrimesJob(I64 i)
 {
   I64 j,k,l=Sqrt(prime_range),
      lo=i*prime_range/my_mp_cnt,

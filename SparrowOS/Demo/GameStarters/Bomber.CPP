@@ -43,8 +43,8 @@ AcctRegExecuteBranch("SparrowOS/Bomber");
 
 
 
-#define MAP_WIDTH	800
-#define MAP_HEIGHT	800
+#define MAP_WIDTH	600
+#define MAP_HEIGHT	600
 
 #define NUM_TREES	64
 class Tree
@@ -55,11 +55,11 @@ class Tree
 
 I64 tank_cnt,key_cnt;
 
-#define NUM_TANKS	12
+#define NUM_TANKS	10
 class Tank
 {
   F64 x,y,theta;
-  BoolI8 dead,pad[7];
+  Bool dead,pad[7];
 } tk[NUM_TANKS];
  
 F64 v,x,y,theta,thetaf,bt,bx,by;
@@ -176,7 +176,7 @@ U0 Init()
 
 U0 Bomber()
 {
-  U64 ch,sc;
+  I64 ch,sc;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"

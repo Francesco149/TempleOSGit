@@ -28,7 +28,7 @@ U0 DrawCtrlButton(CDC *dc,CCtrl *c)
     (c->top+c->bottom+1-FONT_HEIGHT)>>1,st);
 }
 
-U0 LeftClickCtrlButton(CCtrl *c,I64,I64,BoolI8 down)
+U0 LeftClickCtrlButton(CCtrl *c,I64,I64,Bool down)
 {
   CCtrlButtonState *s=c->state;
   if (down) {
@@ -41,7 +41,8 @@ U0 LeftClickCtrlButton(CCtrl *c,I64,I64,BoolI8 down)
 public CCtrl *CtrlButtonNew(I64 x,I64 y,I64 width=-1,I64 height=-1,
 	  I64 num_states=1,U8 *state_texts,I32 state_colors[],CCtrlButtonState *_s=NULL)
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
+  CCtrl *result;
   CCtrlButtonState *s;
   I64 i,j,l;
   U8 *st;
@@ -79,11 +80,12 @@ public CCtrl *CtrlButtonNew(I64 x,I64 y,I64 width=-1,I64 height=-1,
   old_preempt=Preempt(OFF);
   QueIns(result,Fs->last_ctrl);
   Preempt(old_preempt);
+  return result;
 }
 
 public U0 CtrlButtonDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
   if (!(c->flags&BTF_DONT_FREE))

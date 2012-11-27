@@ -111,7 +111,7 @@ U0 FMDelUncollapsedList(CFMUncollapsedList *tempc)
   }
 }
 
-CDirEntry *FMRebuildDocDrv(U8 drv_let,CDoc *doc,CDirEntry **_root,BoolI8 init)
+CDirEntry *FMRebuildDocDrv(U8 drv_let,CDoc *doc,CDirEntry **_root,Bool init)
 {
   CDocEntry *doc_e;
   CDirEntry *tempm,*tempm1;
@@ -413,7 +413,7 @@ U0 FMCopy(CDoc *doc)
   U8 *st;
   CDocEntry *doc_ce=doc->cur_entry,*doc_e;
   CDirEntry *tempm,*tempm1=NULL,*tempm2;
-  BoolI8 unlock_doc2=DocLock(doc2);
+  Bool unlock_doc2=DocLock(doc2);
   doc_e=doc2->root.next;
 
   tempm1=doc_ce->user_data;
@@ -553,7 +553,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
   CDoc *doc=NULL,*old_doc=DocCur;
   U8 *result=NULL,*st,*st2,*old_cur_dir=CurDir;
   CDocEntry *doc_ce=NULL,*doc_e;
-  BoolI8 okay;
+  Bool okay;
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   fp_old_final_screen_update=fp_final_screen_update;

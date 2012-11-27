@@ -21,7 +21,6 @@ U0 SysGlblsInit()
   QueInit(&sys_macro_root);
   sys_dft_iso_name="::/Temp/CDDVD.ISO";
   MemSet(mp_apic_ids,0,MP_MAX_PROCESSORS*sizeof(U8));
-  MemSet(sys_usb_devs,0,MAX_USB*sizeof(CUSB));
 
   InDbg(ON);
 
@@ -36,12 +35,12 @@ U0 SysGlblsInit()
       if (Bt(&i,j))
 	set_bits_table[i]++;
 
-  ext=CAlloc(EXT_TABLE_SIZE*sizeof(U0 *));
+  ext=CAlloc(EXT_TABLE_SIZE*sizeof(U8 *));
   ext[EXT_DEBUGGER]=&SysDbgEnter;
   ext[EXT_EXIT_DEBUGGER]=&SysDbgExit;
   fp_mgets=&SysMGetS;
 
-  fp_ctrl_alt_let_cbs=CAlloc(26*sizeof(U0 *));
+  fp_ctrl_alt_let_cbs=CAlloc(26*sizeof(U8 *));
   ctrl_alt_let_descs=CAlloc(26*sizeof(U8 *));;
   ctrl_alt_let_in_irq_flags=0;
 
@@ -79,7 +78,7 @@ U0 SysGlblsInit()
 
 U0 SysGrInit()
 {
-//See [D:/SparrowOS/OSMain/OSStart.CPP.Z,2] SYS_BIOS_GR_MODE
+//See [C:/SparrowOS/OSMain/OSStart.CPP.Z,2] SYS_BIOS_GR_MODE
 //See [::/SparrowOS/Adam/Gr/GrCfg.CPP.Z,1] ::/SparrowOS/Adam/Gr/GrCfg.CPP.Z
   gr_font=sys_font_8x8;
   if (bios_gr_mode==0x12 || bios_gr_mode==0x6A) {
@@ -116,7 +115,7 @@ Mode must be multiple of 32 wide
 
 U0 TimersInit()
 {
-  U64 i,*qq;
+  I64 i,*qq;
   U32 *_d;
 
   OutU8(0x43,0x34);
@@ -185,12 +184,11 @@ U0 OSMain()
 
   LoadSysStrs;
   MPInit;
-  IDTInit1;
+  IntInit1;
 
-//Before this point use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,201] Snd() and [C:/SparrowOS/OSMain/Misc1a.CPP.Z,172] BusyWait()
-//to debug.  After this point, use [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,180] DbgNum()
+//Before this point use [C:/SparrowOS/OSMain/Misc1a.CPP.Z,209] Snd() and [C:/SparrowOS/OSMain/Misc1a.CPP.Z,180] BusyWait()
+//to debug.  After this point, use [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,182] DbgNum()
   LBts(&sys_run_level,RLf_RAW);
-
   if (BIOSTotalMem<250*0x100000)
     Dbg("Requires 256 Meg of RAM Memory");
 
@@ -200,7 +198,7 @@ U0 OSMain()
   "Enable IRQ's\n";
   SetFlags(SYS_NORMAL_RFLAGS);
   BusyWait(2000);
-  IDTInit2;
+  IntInit2;
   LBts(&sys_run_level,RLf_INTERRUPTS);
   TimeStampFreqCal;
   if (!IsSysDeterministic)
@@ -212,8 +210,6 @@ U0 OSMain()
 	       "MPStart;");
 };
   LBts(&sys_run_level,RLf_MP);
-
-//  USBInitAll;
 
   KbdMouseVarsInit;
   IPVarsInit;

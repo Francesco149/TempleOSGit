@@ -24,13 +24,13 @@ AcctRegExecuteBranch("SparrowOS/BirdLand");
 
 #define EAT_TIME	0.5
 
-BoolI8 flap_down,flap_up,rst;
+Bool flap_down,flap_up,rst;
 F64 t_flap,yy,xx,eat_timeout;
 F64 frame_x,percent_completed,t0,tf;
 
 #define MAX_BUGS	32
 I32 bugs_x[MAX_BUGS],bugs_y[MAX_BUGS];
-BoolI8 bugs_dead[MAX_BUGS];
+Bool bugs_dead[MAX_BUGS];
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
@@ -84,7 +84,7 @@ U0 CheckBugs(CTask *task,CTask *song_task)
   if (v<1) v=1;
 
   if (eat_timeout && eat_timeout-tP(task)<0.75*EAT_TIME) {
-    LBtr(&song_task->task_flags,TASKf_SUSPENDED);
+    Suspend(song_task,FALSE);
     if (tP(task)>=eat_timeout)
       eat_timeout=0;
   }
@@ -96,14 +96,14 @@ U0 CheckBugs(CTask *task,CTask *song_task)
 	bugs_dead[i]=TRUE;
 	eat_timeout=tP(task)+EAT_TIME;
 	Snd(1000);
-	LBts(&song_task->task_flags,TASKf_SUSPENDED);
+	Suspend(song_task);
 	j++;
       }
     } else
       j++;
   if (!tf && j==MAX_BUGS) {
     tf=tP(task);
-    LBts(&song_task->task_flags,TASKf_SUSPENDED);
+    Suspend(song_task);
     Snd(0);
     if (tf-t0<best_score)
       best_score=tf-t0;
@@ -128,14 +128,14 @@ U0 Init(CTask *song_task)
     bugs_x[i]=RandU16;
     bugs_y[i]=RandU16;
   }
-  LBtr(&song_task->task_flags,TASKf_SUSPENDED);
+  Suspend(song_task,FALSE);
   eat_timeout=0;
   tf=0;
   t0=tP;
 }
 
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by Terry A. Davis
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -147,7 +147,7 @@ U0 SongTask(U64)
 }
 
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   F64 tt=0;
   while (TRUE) {
@@ -176,7 +176,7 @@ U0 AnimateTask(U64)
 
 U0 BirdLand()
 {
-  BoolI8 rst_space=TRUE;
+  Bool rst_space=TRUE;
   I64 p1,p2;
 
   MenuPush(

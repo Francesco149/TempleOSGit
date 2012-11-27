@@ -2,10 +2,10 @@ F64 glbl;
 
 F64 CompileDemo(U8 *st)
 {
-  U64 type;
-  U0 *code;
+  I64 type;
+  U8 *code;
   CLex *lx=LexNew(st,LF_DONT_FREE_BUF);
-  result=0;
+  F64 result=0;
   Lex(lx);  //Gotta get it started
   "Compile \"%s\"\n",st;
   do {
@@ -21,6 +21,7 @@ F64 CompileDemo(U8 *st)
       Lex(lx);
   } while (lx->token!=TK_EOF);	//end of file?
   LexDel(lx);
+  return result;
 }
 
 CompileDemo("2+Cos(pi)");

@@ -1,8 +1,8 @@
-U64 doc_tag_types[(DOCT_NUM_TYPES+63)/64],
+I64 doc_tag_types[(DOCT_NUM_TYPES+63)/64],
    doc_nontag_invisible_types[(DOCT_NUM_TYPES+63)/64],
    doc_form_types[(DOCT_NUM_TYPES+63)/64],
    doc_data_types[(DOCT_NUM_TYPES+63)/64];
-U64 doc_clean_scancodes[4]={0,0,0,0};
+I64 doc_clean_scancodes[4]={0,0,0,0};
 //Don't forget [::/SparrowOS/Compiler/Lex.CPP.Z,1] doc_stop_btypes
 U0 DocTablesInit()
 {
@@ -91,7 +91,7 @@ U0 DocTablesInit()
 
 DocTablesInit;
 
-public BoolI64 DocLock(CDoc *doc)
+public Bool DocLock(CDoc *doc)
 {
   if (!Bt(&doc->locked_flags,DOClf_LOCKED) || doc->owning_task!=Fs) {
     while (LBts(&doc->locked_flags,DOClf_LOCKED))
@@ -104,9 +104,9 @@ public BoolI64 DocLock(CDoc *doc)
     return FALSE;
 }
 
-public BoolI64 DocUnlock(CDoc *doc)
+public Bool DocUnlock(CDoc *doc)
 {
-  BoolI8 unlock_break;
+  Bool unlock_break;
   if (Bt(&doc->locked_flags,DOClf_LOCKED) && doc->owning_task==Fs) {
     doc->owning_task=0;
     unlock_break=Bt(&doc->flags,DOCf_BREAK_UNLOCKED);
@@ -119,7 +119,7 @@ public BoolI64 DocUnlock(CDoc *doc)
 }
 
 
-CDocBin *DocBinFindNum(CDoc *doc,U64 num)
+CDocBin *DocBinFindNum(CDoc *doc,I64 num)
 {
   CDocBin *b=doc->bin_root.next;
   while (b!=&doc->bin_root) {
@@ -146,7 +146,7 @@ CDocBin *DocBinFindTag(CDoc *doc,U8 *tag)
 
 U0 DocBinsValidate(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocBin *b,*b1;
   CDocEntry *doc_e,*doc_e2;
   I64 renum_num=0;
@@ -243,8 +243,9 @@ public U0 DocEntryDel(CDoc *doc,CDocEntry *doc_e)
   }
 }
 
-public U64 DocEntrySize(CDoc *,CDocEntry *doc_e)
+public I64 DocEntrySize(CDoc *,CDocEntry *doc_e)
 {
+  I64 result;
   if (!doc_e) return 0;
   result=MSize2(doc_e);
   if (Bt(doc_tag_types,doc_e->type_u8))
@@ -261,6 +262,7 @@ public U64 DocEntrySize(CDoc *,CDocEntry *doc_e)
     result+=MSize2(doc_e->left_macro);
   if (doc_e->flags1 & DOCEF1_RIGHT_MACRO)
     result+=MSize2(doc_e->right_macro);
+  return result;
 }
 
 U0 DocUndoDel(CDoc *,CDocUndo *u)
@@ -271,7 +273,7 @@ U0 DocUndoDel(CDoc *,CDocUndo *u)
 
 U0 DocUndoCntSet(CDoc *doc)
 {
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocUndo *u=doc->undo_root.next;
   doc->undo_cnt=0;
   while (u!=&doc->undo_root) {
@@ -320,7 +322,7 @@ public CDocEntry *DocEntryCopy(CDoc *doc,CDocEntry *doc_e)
   return doc_ne;
 }
 
-U0 DocFormFwd(CDoc *doc,BoolI8 giveup=FALSE)
+U0 DocFormFwd(CDoc *doc,Bool giveup=FALSE)
 {
   CDocEntry *doc_e=doc->cur_entry,*doc_e2=doc_e;
   if (doc->flags & DOCF_FORM) {
@@ -348,7 +350,7 @@ recover:
   }
 }
 
-U0 DocFormBackward(CDoc *doc,BoolI8 giveup=FALSE)
+U0 DocFormBackward(CDoc *doc,Bool giveup=FALSE)
 {
   CDocEntry *doc_e=doc->cur_entry,*doc_e2=doc_e;
   if (doc->flags & DOCF_FORM) {
@@ -376,7 +378,7 @@ U0 DocFormBackward(CDoc *doc,BoolI8 giveup=FALSE)
 
 public U0 DocHome(CDoc *doc=NULL)
 {
-  BoolI8 unlock;
+  Bool unlock;
   if (!doc) {
     doc=DocCur;
     if (!doc) return;
@@ -433,9 +435,9 @@ CDocSettings *DocSettingsNext(CDocEntry *doc_e)
   return doc_e->settings;
 }
 
-public U0 DocRst(CDoc *doc,BoolI8 is_old)
+public U0 DocRst(CDoc *doc,Bool is_old)
 {
-  BoolI8 unlock;
+  Bool unlock;
   CDocEntry *doc_e,*doc_e2;
   CDocUndo *u,*u8;
   CDocSettings *s;
@@ -468,7 +470,7 @@ public U0 DocRst(CDoc *doc,BoolI8 is_old)
       b=b1;
     }
   }
-  //Check [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,194] DocInsDoc
+  //Check [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,193] DocInsDoc
   doc->flags&=DOCF_BREAK_UNLOCKED;
   doc->root.next=doc->root.last=doc;
   QueInit(&doc->bin_root);
@@ -542,14 +544,14 @@ public U0 DocDel(CDoc *doc)
   Free(doc);
 }
 
-public U64 DocSize(CDoc *doc)
+public I64 DocSize(CDoc *doc)
 {
-  BoolI8 unlock;
+  Bool unlock;
   CDocEntry *doc_e;
   CDocUndo *u;
   CDocSettings *s;
   CDocBin *b;
-  result=0;
+  I64 result=0;
 
   if (!doc || doc->doc_signature!=DOC_SIGNATURE_VAL) return 0;
   unlock=DocLock(doc);
@@ -585,13 +587,13 @@ public U64 DocSize(CDoc *doc)
   result+=MSize2(doc);
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
 
 U0 DocDataFmt(CDocEntry *doc_e)
 {
-  I64 i;
-  U64 d;
+  I64 i,d;
   U8 *ptr;
   if (doc_e->type_u8==DOCT_DATA || doc_e->type_u8==DOCT_CHECK_BOX) {
     if (doc_e->flags1 & DOCEF1_DATA_IS_PTR) {
@@ -605,7 +607,7 @@ U0 DocDataFmt(CDocEntry *doc_e)
     else if (doc_e->flags1&DOCEF1_U32)
       d=*ptr(U32 *);
     else
-      d=*ptr(U64 *);
+      d=*ptr(I64 *);
     if (doc_e->type_u8==DOCT_DATA) {
       SPrintF(doc_e->tag,doc_e->aux_str,d,doc_e->my_fmt_data);
       if (doc_e->flags1 & DOCEF1_HAS_TERMINATOR) {
@@ -625,8 +627,7 @@ U0 DocDataFmt(CDocEntry *doc_e)
 
 U0 DocDataGet(CDocEntry *doc_e)
 {
-  I64 i;
-  U64 d;
+  I64 i,d;
   U8 *ptr;
   if (doc_e->type_u8==DOCT_DATA || doc_e->type_u8==DOCT_CHECK_BOX) {
     if (doc_e->flags1 & DOCEF1_DATA_IS_PTR) {
@@ -662,14 +663,14 @@ U0 DocDataGet(CDocEntry *doc_e)
     else if (doc_e->flags1&DOCEF1_U32)
       *ptr(U32 *)=d;
     else
-      *ptr(U64 *)=d;
+      *ptr(I64 *)=d;
   }
 }
 
 U0 DocRemSoftNewLines(CDoc *doc=NULL,CDocEntry *doc_e=NULL)
 {
   CDocEntry *doc_e2,*saved_ll=doc_e;
-  BoolI8 unlock;
+  Bool unlock;
   if (!doc) {
     doc=DocCur;
     if (!doc) return;
@@ -699,6 +700,7 @@ public I64 DocMax(I64 i=MAX_I32)
 //Normally, the cmd line deletes
 //entries after a while.
 {
+  I64 result;
   CDoc *doc=DocCur;
   if (doc) {
     result=doc->max_entries;
@@ -737,7 +739,7 @@ sys_clipboard_doc=DocNew;
 public U0 DocQueIns(CDoc *doc,CDoc *pred)
 {
   CDoc *succ;
-  BoolI8 *old_preempt;
+  Bool *old_preempt;
   if (!doc) return;
   old_preempt=Preempt(OFF);
   succ=pred->next_doc;
@@ -752,7 +754,7 @@ public U0 DocQueIns(CDoc *doc,CDoc *pred)
 public U0 DocQueInsRev(CDoc *doc,CDoc *succ)
 {
   CDoc *pred;
-  BoolI8 *old_preempt;
+  Bool *old_preempt;
   if (!doc) return;
   old_preempt=Preempt(OFF);
   pred=succ->last_doc;
@@ -767,7 +769,7 @@ public U0 DocQueInsRev(CDoc *doc,CDoc *succ)
 public U0 DocQueRem(CDoc *doc)
 {
   CDoc *succ,*pred;
-  BoolI8 *old_preempt;
+  Bool *old_preempt;
   if (!doc) return;
   old_preempt=Preempt(OFF);
   doc->doc_in_que_signature=0;
@@ -780,29 +782,33 @@ public U0 DocQueRem(CDoc *doc)
 
 public CDoc *DocCur(CTask *task=NULL)
 {
+  CDoc *result;
   if (!task) task=Fs;
   result=task->last_doc;
   if (result==(&task->next_doc)(U8 *)-offset(CDoc.next_doc) ||
       result->flags&DOCF_AUX_DOC ||
       result->doc_in_que_signature!=DOC_IN_QUE_SIGNATURE_VAL)
     result=NULL;
+  return result;
 }
 
 public CDoc *DocAux(CTask *task=NULL)
 {
+  CDoc *result;
   if (!task) task=Fs;
   result=task->next_doc;
   if (result==(&task->next_doc)(U8 *)-offset(CDoc.next_doc) ||
       !(result->flags&DOCF_AUX_DOC) ||
       result->doc_in_que_signature!=DOC_IN_QUE_SIGNATURE_VAL)
     result=NULL;
+  return result;
 }
 
 
 public CDoc *DocDblBufStart(CTask *task=NULL)
 { //See [::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z
   CDoc *doc,*doc2;
-  BoolI8 unlock_doc2,old_preempt=Preempt(OFF);
+  Bool unlock_doc2,old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   doc2=task->last_doc;
   unlock_doc2=DocLock(doc2); //dont want change during winupdate, so lock DocCur
@@ -820,7 +826,7 @@ public CDoc *DocDblBufStart(CTask *task=NULL)
   doc->user_put_key =doc2->user_put_key;
   doc->user_put_s   =doc2->user_put_s;
   doc->parent_doc	=doc2->parent_doc;
-  doc->desc[0](U64)=doc2->desc[0](U64);
+  doc->desc[0](I64)=doc2->desc[0](I64);
   doc->user_data	=doc2->user_data;
   doc->flags|=doc2->flags&DOCG_DBL_BUF_FLAGS | DOCF_DONT_SHOW;
   DocQueIns(doc,task->last_doc);
@@ -830,9 +836,9 @@ public CDoc *DocDblBufStart(CTask *task=NULL)
   return doc;
 }
 
-public BoolI8 DocDblBufEnd(CTask *task=NULL)
+public Bool DocDblBufEnd(CTask *task=NULL)
 { //See [::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z
-  BoolI8 okay=FALSE,old_preempt=Preempt(OFF);
+  Bool okay=FALSE,old_preempt=Preempt(OFF);
   CDoc *doc1,*doc2;
   if (!task) task=Fs;
   if (doc1=DocCur(task)) {
@@ -853,9 +859,9 @@ public BoolI8 DocDblBufEnd(CTask *task=NULL)
   return okay;
 }
 
-public BoolI8 DocDblBufSwap(CTask *task=NULL)
+public Bool DocDblBufSwap(CTask *task=NULL)
 { //See [::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z
-  BoolI8 okay=FALSE,old_preempt=Preempt(OFF);
+  Bool okay=FALSE,old_preempt=Preempt(OFF);
   CDoc *doc1,*doc2;
   if (!task) task=Fs;
   if (doc1=DocCur(task)) {
@@ -879,7 +885,7 @@ public BoolI8 DocDblBufSwap(CTask *task=NULL)
       doc2->user_put_data=doc1->user_put_data;
       doc2->user_put_key =doc1->user_put_key;
       doc2->user_put_s	 =doc1->user_put_s;
-      doc2->desc[0](U64)=doc1->desc[0](U64);
+      doc2->desc[0](I64)=doc1->desc[0](I64);
       doc2->user_data	 =doc1->user_data;
       DocQueIns(doc2,task->last_doc);
       okay=TRUE;

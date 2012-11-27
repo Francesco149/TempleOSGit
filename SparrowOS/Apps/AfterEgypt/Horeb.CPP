@@ -57,7 +57,7 @@
 
 
 F64 theta,vx,vz;
-BoolI8 horeb_done;
+Bool horeb_done;
 
 #define NUM_OBJS	256
 
@@ -76,7 +76,7 @@ class Obj
 {
   I32 x,y,z;
   I64 x1,y1,z1;
-  BoolI8 sym,pad[3];
+  Bool sym,pad[3];
   U8 *img;
 } objs[NUM_OBJS];
 
@@ -116,7 +116,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
     tempo->x1=tempo->x+vx; tempo->y1=tempo->y; tempo->z1=tempo->z+vz;
     GrRot(r,&tempo->x1,&tempo->y1,&tempo->z1);
   }
-  QSortU64(o_sort,NUM_OBJS,&ObjCompare);
+  QSortI64(o_sort,NUM_OBJS,&ObjCompare);
 
   for (i=0;i<NUM_OBJS;i++) {
     tempo=o_sort[i];
@@ -197,7 +197,7 @@ U0 AnimateVTask(F64 v)
 
 U0 Horeb()
 {
-  U64 ch,sc;
+  I64 ch,sc;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"
@@ -232,16 +232,16 @@ U0 Horeb()
 	  case 0:
 	    switch (sc.u8[0]) {
 	      case SC_CURSOR_LEFT:
-		Spawn(&AnimatethetaTask,(-pi/100)(U64),"Animate theta",Fs);
+		Spawn(&AnimatethetaTask,(-pi/100)(I64),"Animate theta",Fs);
 		break;
 	      case SC_CURSOR_RIGHT:
-		Spawn(&AnimatethetaTask,( pi/100)(U64),"Animate theta",Fs);
+		Spawn(&AnimatethetaTask,( pi/100)(I64),"Animate theta",Fs);
 		break;
 	      case SC_CURSOR_UP:
-		Spawn(&AnimateVTask,(-40.0 )(U64),"Animate V",Fs);
+		Spawn(&AnimateVTask,(-40.0 )(I64),"Animate V",Fs);
 		break;
 	      case SC_CURSOR_DOWN:
-		Spawn(&AnimateVTask,( 40.0 )(U64),"Animate V",Fs);
+		Spawn(&AnimateVTask,( 40.0 )(I64),"Animate V",Fs);
 		break;
 	    }
 	    break;

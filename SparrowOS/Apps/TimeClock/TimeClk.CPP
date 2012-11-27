@@ -37,7 +37,7 @@ U0 TimeFileWrite(TimeEntry *header)
 {
   U8 *buf,*ptr;
   TimeEntry *tempt;
-  U64 size=1; //for eof
+  I64 size=1; //for eof
 
   tempt=header->next;
   while (tempt!=header) {
@@ -72,11 +72,11 @@ U0 TimeEntriesDel(TimeEntry *header)
   Free(header);
 }
 
-public BoolI64 TimeRep(TimeEntry **_header=NULL)
+public Bool TimeRep(TimeEntry **_header=NULL)
 {
-  BoolI8 is_in=FALSE,first=TRUE;
+  Bool is_in=FALSE,first=TRUE;
   TimeEntry *tempt;
-  U64 week,cur_week=-1,week_total;
+  I64 week,cur_week=-1,week_total;
   TimeEntry *header=MAlloc(sizeof(TimeEntry));
   if (_header) *_header=header;
   TimeFileRead(header);
@@ -117,7 +117,7 @@ public BoolI64 TimeRep(TimeEntry **_header=NULL)
 
 public U0 PunchOut()
 {
-  BoolI8 is_in;
+  Bool is_in;
   TimeEntry *tempt,*header;
   is_in=TimeRep(&header);
   if (!is_in)
@@ -137,7 +137,7 @@ public U0 PunchOut()
 
 public U0 PunchIn()
 {
-  BoolI8 is_in;
+  Bool is_in;
   TimeEntry *tempt,*header;
   is_in=TimeRep(&header);
   if (is_in)

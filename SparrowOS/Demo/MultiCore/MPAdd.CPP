@@ -7,6 +7,7 @@ I64 MPSum(I64 my_mp_cnt)
      result=0,i;
   for (i=lo;i<hi;i++)
     result+=i;
+  return result;
 }
 
 I64 Sum(I64 n,I64 my_mp_cnt)
@@ -19,6 +20,7 @@ I64 Sum(I64 n,I64 my_mp_cnt)
   result=MPSum(my_mp_cnt);
   for (i=1;i<my_mp_cnt;i++)
     result+=MPJobResult(tempm[i]);
+  return result;
 }
 
 
@@ -26,7 +28,7 @@ I64 Sum(I64 n,I64 my_mp_cnt)
 
 F64 Test(I64 n,I64 my_mp_cnt)
 {
-  U64 i,val=0;
+  I64 i,val=0;
   F64 start,end;
   start=tNP;
   for (i=0;i<SAMPLE_SIZE;i++)

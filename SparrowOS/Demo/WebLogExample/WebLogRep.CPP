@@ -155,7 +155,7 @@ U0 BlockedStructAdd(BlockedStruct *root,U32 ip_num)
   QueIns(tempb,root->last);
 }
 
-BoolI64 IsBlocked(BlockedStruct *root,U32 ip_num)
+Bool IsBlocked(BlockedStruct *root,U32 ip_num)
 {
   BlockedStruct *tempb=root->next;
   while (tempb!=root) {
@@ -197,7 +197,7 @@ U0 BlockIPNums(LogStruct *root)
   QueDel(&blocked_root);
 }
 
-BoolI64 IsDownLoad(LogStruct *templg)
+Bool IsDownLoad(LogStruct *templg)
 {
   if (
     StrStr(templg->file,DOWNLOAD_FILE1) && templg->size>=DOWNLOAD_FILE1_SIZE ||
@@ -207,7 +207,7 @@ BoolI64 IsDownLoad(LogStruct *templg)
     return FALSE;
 }
 
-BoolI64 IsIndex(LogStruct *templg)
+Bool IsIndex(LogStruct *templg)
 {
   if (!StrCmp(templg->file,"/index.html") ||
       !StrNCmp(templg->file,"/v",2)  ||
@@ -217,7 +217,7 @@ BoolI64 IsIndex(LogStruct *templg)
     return FALSE;
 }
 
-BoolI64 IPNumTreeAdd(LogStruct **_root,LogStruct *templg)
+Bool IPNumTreeAdd(LogStruct **_root,LogStruct *templg)
 {
   LogStruct *root;
   if (UnusedStk<0x200) {

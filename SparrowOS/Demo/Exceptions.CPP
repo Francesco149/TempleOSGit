@@ -1,7 +1,7 @@
 //**WARNING:** Don't return out of a catch{}.  This
 //might get fixed.
 
-//You can use [C:/SparrowOS/OSMain/Except.CPP.Z,223] CatchAll() in a catch statement
+//You can use [C:/SparrowOS/OSMain/Except.CPP.Z,226] CatchAll() in a catch statement
 //and it will report args.
 
 #define EXCEPT_1	1
@@ -19,7 +19,7 @@ U0 Show()
 
 
 
-BoolI64 Pmt(I64 i)
+Bool Pmt(I64 i)
 {
   "%d ",i;
   return YorN;

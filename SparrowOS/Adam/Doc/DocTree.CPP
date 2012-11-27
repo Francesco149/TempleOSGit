@@ -1,12 +1,12 @@
 #help_index "Doc"
 
-public BoolI64 DocTreeFind(CDoc *doc,U8 *path,
+public Bool DocTreeFind(CDoc *doc,U8 *path,
   CDocEntry **_tree_entry=NULL,
   CDocEntry **_start_indent=NULL, CDocEntry **_end_indent=NULL)
 {
   I64 i=0,k=0;
   U8 *st1=StrNew(path),*st2=MAlloc(StrLen(path)+1);
-  BoolI8 result=FALSE,unlock_doc=DocLock(doc);
+  Bool result=FALSE,unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   if (_tree_entry) *_tree_entry=doc;
   if (_start_indent) *_start_indent=doc;
@@ -54,16 +54,17 @@ ft_done:
     DocUnlock(doc);
   Free(st1);
   Free(st2);
+  return result;
 }
 
 
-public BoolI64 DocTreeMake(CDoc *doc,U8 *path)
+public Bool DocTreeMake(CDoc *doc,U8 *path)
 {
   I64 i=0,j=MIN_I64,k=0;
   U8 *st1=StrNew(path),
      *st2=MAlloc(StrLen(path)+1),
      *st3=StrNew(path);
-  BoolI8 result=TRUE,unlock_doc=DocLock(doc);
+  Bool result=TRUE,unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   doc->cur_entry=doc;
   doc->cur_data_col=0;
@@ -108,14 +109,15 @@ mt_done:
   Free(st1);
   Free(st2);
   Free(st3);
+  return result;
 }
 
 #help_index "Doc/Compiler;Compiler"
-public I64 ExeDoc(CDoc *doc,BoolI8 just_load=FALSE)
+public I64 ExeDoc(CDoc *doc,Bool just_load=FALSE)
 {
-  BoolI8 okay=TRUE;
+  I64 result;
+  Bool okay=TRUE,unlock_doc=DocLock(doc);
   CLex *lx;
-  BoolI8 unlock_doc=DocLock(doc);
   lx=LexNew("",LF_DONT_FREE_BUF,FileNameAbs(sys_temp_filename));
   if (just_load)
     lx->flags|=LF_JUST_LOAD;
@@ -141,15 +143,16 @@ public I64 ExeDoc(CDoc *doc,BoolI8 just_load=FALSE)
     LexDel(lx); //TODO: can crash
   if (unlock_doc)
     DocUnlock(doc);
+  return result;
 }
 
 
 public I64 DocTreeBranchExe(CDoc *doc,U8 *path)
 {
   CDoc *doc2;
-  BoolI8 unlock_doc=DocLock(doc);
+  Bool unlock_doc=DocLock(doc);
   CDocEntry *tree_branch,*start_indent,*end_indent;
-  result=0;
+  I64 result=0;
   if (DocTreeFind(doc,path,&tree_branch,&start_indent,&end_indent)) {
     doc2=DocCopy(doc,tree_branch,end_indent);
     result=ExeDoc(doc2);
@@ -157,13 +160,16 @@ public I64 DocTreeBranchExe(CDoc *doc,U8 *path)
   }
   if (unlock_doc)
     DocUnlock(doc);
+  return result;
 }
 
 public I64 ExeTreeBranch(U8 *registry_file,U8 *path)
 {
+  I64 result;
   CDoc *doc=DocRead(registry_file);
   result=DocTreeBranchExe(doc,path);
   DocDel(doc);
+  return result;
 }
 
 #help_index "Doc"

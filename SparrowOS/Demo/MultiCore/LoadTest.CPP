@@ -1,6 +1,6 @@
 I64 load_test_done;
 
-U0 Job1(U64)
+U0 Job1(I64)
 { //Compile Compiler
   TaskInitExt; //Enable file access
   Preempt(ON);	 //Off by default
@@ -12,7 +12,7 @@ U0 Job1(U64)
   lock {load_test_done--;}
 }
 
-U0 Job2(U64)
+U0 Job2(I64)
 { //Log a file
   TaskInitExt; //Enable file access
   Preempt(ON);	 //Off by default
@@ -23,7 +23,7 @@ U0 Job2(U64)
   lock {load_test_done--;}
 }
 
-U0 Job3(U64)
+U0 Job3(I64)
 { //Log a file
   TaskInitExt; //Enable file access
   Preempt(ON);	 //Off by default

@@ -5,16 +5,16 @@ public I64 gr_x_offsets[8]={-1, 0, 1,-1,1,-1,0,1},
 	  gr_x_offsets2[4]={ 0,-1, 1, 0},
 	  gr_y_offsets2[4]={-1, 0, 0, 1};
 
-public BoolI64 Line(U0 *aux_data,
+public Bool Line(U8 *aux_data,
 		 I64 x1,I64 y1,I64 z1,
 		 I64 x2,I64 y2,I64 z2,
-		 BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),
+		 Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
 		 I64 step=1,I64 start=0)
 {
 //This uses [::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
-  I64 i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z;
-  I64 adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz);
-  BoolI8 first=TRUE;
+  I64 i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,
+      adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz);
+  Bool first=TRUE;
   if (adx>=ady) {
     if (adx>=adz) {
       if (d=adx) {
@@ -82,11 +82,11 @@ public BoolI64 Line(U0 *aux_data,
   return TRUE;
 }
 
-public BoolI64 Rect(U0 *aux_data,
+public Bool Rect(U8 *aux_data,
 		I64 x1,I64 y1,I64 z1,
 		I64 x2,I64 y2,I64 z2,
 		I64 x3,I64 y3,I64 z3,
-		BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z))
+		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z))
 {
 //This uses [::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 i,j,
@@ -95,7 +95,7 @@ public BoolI64 Rect(U0 *aux_data,
      adx1=AbsI64(dx1),ady1=AbsI64(dy1),adz1=AbsI64(dz1),
      adx2=AbsI64(dx2),ady2=AbsI64(dy2),adz2=AbsI64(dz2),
      last_x,last_y,last_z;
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
 
   if (adx1>=ady1)
     d1=adx1>=adz1 ? adx1:adz1;
@@ -221,8 +221,7 @@ public I64 *GrMulMat(I64 *m1,I64 *m2,CTask *mem_task=NULL)
 {
   //This uses [::/SparrowOS/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
  //Conceptually, the transform m1 is applied after m2
-  I64 *r=CAlloc(sizeof(I64)*16,mem_task);
-  I64 i,j,k;
+  I64 i,j,k,*r=CAlloc(sizeof(I64)*16,mem_task);
   F64 d;
   for (i=0;i<4;i++) {
     for (j=0;j<4;j++) {
@@ -371,7 +370,7 @@ public I64 *GrAddTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
   return r;
 }
 
-public BoolI64 GrSetSymmetry(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2)
+public Bool GrSetSymmetry(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2)
 {
   F64 d;
   if (y1==y2 && x1==x2)
@@ -393,7 +392,7 @@ public BoolI64 GrSetSymmetry(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2)
   return TRUE;
 }
 
-public BoolI64 GrSetSymmetry3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 x3,I64 y3,I64 z3)
+public Bool GrSetSymmetry3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 x3,I64 y3,I64 z3)
 {
   F64 d,x,y,z,xx,yy,zz;
   I64 xx1,yy1,zz1,xx2,yy2,zz2,*r;
@@ -524,16 +523,16 @@ public U0 GrLighting(CDC *dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p3,CColorROPU32 color
 #define SCALE2	8
 
 #help_index "Graphics/Math"
-public BoolI64 Circle(U0 *aux_data,
+public Bool Circle(U8 *aux_data,
 		I64 cx,I64 cy,I64 cz,
 		I64 radius,
-		BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),
+		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
 		I64 step=1,
 		F64 start_radians=0,
 		F64 len_radians=2*pi)
 {
-  I64 i,j,len=Ceil(len_radians*radius);
-  I64 x,y,x1,y1,s1,s2,c;
+  I64 i,j,len=Ceil(len_radians*radius),
+      x,y,x1,y1,s1,s2,c;
   F64 t;
   if (radius<=0||!step) return TRUE;
   t=1.0/radius;
@@ -567,19 +566,19 @@ public BoolI64 Circle(U0 *aux_data,
   return TRUE;
 }
 
-public BoolI64 Ellipse(U0 *aux_data,
+public Bool Ellipse(U8 *aux_data,
 		I64 cx,I64 cy,I64 cz,
 		I64 x_radius,I64 y_radius,
-		BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),
+		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
 		F64 rot_angle=0,
 		I64 step=1,
 		F64 start_radians=0,
 		F64 len_radians=2*pi)
 {
-  I64 i,j,len;
-  I64 x,y,_x,_y,x1,y1,x2,y2, s1,s2,c, s12,s22,c2;
+  I64 i,j,len,
+      x,y,_x,_y,x1,y1,x2,y2, s1,s2,c, s12,s22,c2;
   F64 t;
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
   if (x_radius<=0 || y_radius<=0 || !step)
     return TRUE;
   if (x_radius>=y_radius) {
@@ -639,10 +638,10 @@ public BoolI64 Ellipse(U0 *aux_data,
   return TRUE;
 }
 
-public BoolI64 RegPoly(U0 *aux_data,
+public Bool RegPoly(U8 *aux_data,
 		I64 cx,I64 cy,I64 cz,
 		I64 x_radius,I64 y_radius,I64 sides,
-		BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),
+		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
 		F64 rot_angle=0,
 		I64 step=1,
 		F64 start_radians=0,
@@ -719,13 +718,13 @@ public I64 P3I32SqrNorm(CD3I32 *p)
 }
 
 #help_index "Graphics/Math"
-public BoolI64 Bezier2(U0 *aux_data,CD3I32 *ctrl,BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),BoolI8 first=TRUE)
+public Bool Bezier2(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool first=TRUE)
 {//2nd order
   I64 x,y,z,xx,yy,zz,dx,dy,dz,d_max;
-  F64 x0=ctrl[0].x,y0=ctrl[0].y,z0=ctrl[0].z;
-  F64 x1=ctrl[1].x-x0,y1=ctrl[1].y-y0,z1=ctrl[1].z-z0;
-  F64 x2=ctrl[2].x-x0,y2=ctrl[2].y-y0,z2=ctrl[2].z-z0;
-  F64 t,d=P3I32Dist(&ctrl[0],&ctrl[1])+
+  F64 x0=ctrl[0].x,y0=ctrl[0].y,z0=ctrl[0].z,
+      x1=ctrl[1].x-x0,y1=ctrl[1].y-y0,z1=ctrl[1].z-z0,
+      x2=ctrl[2].x-x0,y2=ctrl[2].y-y0,z2=ctrl[2].z-z0,
+      t,d=P3I32Dist(&ctrl[0],&ctrl[1])+
 	     P3I32Dist(&ctrl[1],&ctrl[2])+
 	     P3I32Dist(&ctrl[2],&ctrl[0]),
 	 s=0.5/d,t1,t2;
@@ -766,14 +765,14 @@ public BoolI64 Bezier2(U0 *aux_data,CD3I32 *ctrl,BoolI64 (*fp_plot)(U0 *aux,I64 
   return TRUE;
 }
 
-public BoolI64 Bezier3(U0 *aux_data,CD3I32 *ctrl,BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),BoolI8 first=TRUE)
+public Bool Bezier3(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool first=TRUE)
 { //3rd order
   I64 x,y,z,xx,yy,zz,dx,dy,dz,d_max;
-  F64 x0=ctrl[0].x,y0=ctrl[0].y,z0=ctrl[0].z;
-  F64 x1=ctrl[1].x-x0,y1=ctrl[1].y-y0,z1=ctrl[1].z-z0;
-  F64 x2=ctrl[2].x-x0,y2=ctrl[2].y-y0,z2=ctrl[2].z-z0;
-  F64 x3=ctrl[3].x-x0,y3=ctrl[3].y-y0,z3=ctrl[3].z-z0;
-  F64 t,d=P3I32Dist(&ctrl[0],&ctrl[1])+
+  F64 x0=ctrl[0].x,y0=ctrl[0].y,z0=ctrl[0].z,
+      x1=ctrl[1].x-x0,y1=ctrl[1].y-y0,z1=ctrl[1].z-z0,
+      x2=ctrl[2].x-x0,y2=ctrl[2].y-y0,z2=ctrl[2].z-z0,
+      x3=ctrl[3].x-x0,y3=ctrl[3].y-y0,z3=ctrl[3].z-z0,
+      t,d=P3I32Dist(&ctrl[0],&ctrl[1])+
 	     P3I32Dist(&ctrl[1],&ctrl[2])+
 	     P3I32Dist(&ctrl[2],&ctrl[3])+
 	     P3I32Dist(&ctrl[3],&ctrl[0]),
@@ -817,11 +816,11 @@ public BoolI64 Bezier3(U0 *aux_data,CD3I32 *ctrl,BoolI64 (*fp_plot)(U0 *aux,I64 
   return TRUE;
 }
 
-public BoolI64 BSpline2(U0 *aux_data,CD3I32 *ctrl,I64 cnt,BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),BoolI8 closed=FALSE)
+public Bool BSpline2(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool closed=FALSE)
 { //2nd order
   I64 i,j;
   CD3I32 *c;
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
   if (cnt<3) return TRUE;
   if (closed) {
     cnt++;
@@ -884,12 +883,12 @@ public BoolI64 BSpline2(U0 *aux_data,CD3I32 *ctrl,I64 cnt,BoolI64 (*fp_plot)(U0 
   return TRUE;
 }
 
-public BoolI64 BSpline3(U0 *aux_data,CD3I32 *ctrl,I64 cnt,BoolI64 (*fp_plot)(U0 *aux,I64 x,I64 y,I64 z),BoolI8 closed=FALSE)
+public Bool BSpline3(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool closed=FALSE)
 { //3rd order
   I64 i,j;
   F64 x,y,z;
   CD3I32 *c;
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
   if (cnt<3) return TRUE;
   if (closed) {
     cnt++;
@@ -979,11 +978,10 @@ public BoolI64 BSpline3(U0 *aux_data,CD3I32 *ctrl,I64 cnt,BoolI64 (*fp_plot)(U0 
 #define CC_TOP		4
 #define CC_BOTTOM	8
 
-public BoolI64 ClipLine(I64 *_x1,I64 *_y1,I64 *_x2,I64 *_y2,I64 left,I64 top,I64 right,I64 bottom)
+public Bool ClipLine(I64 *_x1,I64 *_y1,I64 *_x2,I64 *_y2,I64 left,I64 top,I64 right,I64 bottom)
 {
-  I64 x,y,x1=*_x1,y1=*_y1,x2=*_x2,y2=*_y2;
-  U64 cc,cc1,cc2;
-
+  I64 x,y,x1=*_x1,y1=*_y1,x2=*_x2,y2=*_y2,
+      cc,cc1,cc2;
   if (y1>bottom)
     cc1=CC_BOTTOM;
   else if (y1<top)

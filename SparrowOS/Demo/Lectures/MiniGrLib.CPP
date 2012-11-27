@@ -105,7 +105,7 @@ U0 MGCircle(I64 x,I64 y,F64 r)
 U0 MiniGrLibDemo()
 {
   I64 i;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   MGInit;
 
   old_preempt=Preempt(OFF);

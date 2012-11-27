@@ -27,11 +27,11 @@ Help
 }
 
 The first arg is the msg code and it is optional with the default being 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3266] MSG_KEY_DOWN_UP.  The second arg is
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2978] MSG_KEY_DOWN_UP.  The second arg is
 the msg p1 value which is ASCII of the key 
-in the case of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3251] MSG_KEY_DOWN.  The
+in the case of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2963] MSG_KEY_DOWN.  The
 third arg is the msg p2 value which is the S
-can Code of the key in the case of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3251]
+can Code of the key in the case of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2963]
 MSG_KEY_DOWN.
 
 See [::/SparrowOS/Demo/PullDownMenu.CPP.Z,1]

@@ -1,10 +1,10 @@
-public U0 DocProfile(U8 *filename,U64 flags)
+public U0 DocProfile(U8 *filename,I64 flags)
 {
-  U64 i,*cmd_stats=CAlloc(sizeof(U64)*DOCT_NUM_TYPES),
-       *flags_stats=CAlloc(sizeof(U64)*64),
-       *type_flags_stats=CAlloc(sizeof(U64)*64);
+  I64 i,*cmd_stats=CAlloc(sizeof(I64)*DOCT_NUM_TYPES),
+       *flags_stats=CAlloc(sizeof(I64)*64),
+       *type_flags_stats=CAlloc(sizeof(I64)*64);
 //Note, word wrap is determined by
-//doc->win_task when a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] CDoc is recalculated
+//doc->win_task when a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc is recalculated
 //use [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
   CDoc *doc=DocRead(filename,flags);
 
@@ -54,11 +54,11 @@ public U0 DocProfile(U8 *filename,U64 flags)
 
 //See [C:/SparrowOS/Adam/Training.CPP.Z,203] TipOfDay.
 
-//Note: Not all [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEntry's are full-sized nodes.
-//Some are [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloced with a smaller size to save
-//mem.	They all have at least the size [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1202] CDocEntryBase.
+//Note: Not all [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry's are full-sized nodes.
+//Some are [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloced with a smaller size to save
+//mem.	They all have at least the size [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1194] CDocEntryBase.
 
-//Note: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEntry's should be allocated from the
+//Note: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry's should be allocated from the
 //heap of the owning task, doc->mem_task.
 
 //The flag arrays [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,2] doc_tag_types, [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,4] doc_form_types, etc

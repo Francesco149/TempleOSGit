@@ -51,8 +51,7 @@ mem even if this task is killed.
 #define FRAMES_PER_CRITTER	4
 
 U8 *imgs[TYPES_OF_CRITTERS][FRAMES_PER_CRITTER]=
-{{__BIN_1,__BIN_2,__BIN_3,__BIN_2},{__BIN_4,__BIN_5,__BIN_6,__BIN_5},{__BIN_7,
-__BIN_8,__BIN_9,__BIN_8}};
+{{__BIN_1,__BIN_2,__BIN_3,__BIN_2},{__BIN_4,__BIN_5,__BIN_6,__BIN_5},{__BIN_7,__BIN_8,__BIN_9,__BIN_8}};
 
 #define NUM_CRITTERS	16
 class Critter

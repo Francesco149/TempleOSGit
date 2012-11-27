@@ -102,18 +102,14 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=tempo->color;
     switch (tempo->type) {
       case PTY_PT:
-	GrLine(dc,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x-2,p
-f->cy+tempo->p.p.y-2);
-	GrLine(dc,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x+2,p
-f->cy+tempo->p.p.y-2);
+	GrLine(dc,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y-2);
+	GrLine(dc,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y-2);
 	break;
       case PTY_CIRCLE:
-	GrCircle(dc,pf->cx+tempo->c.p->p.p.x,pf->cy+tempo->c.p->p.p.y,tempo->c.radius
-);
+	GrCircle(dc,pf->cx+tempo->c.p->p.p.x,pf->cy+tempo->c.p->p.p.y,tempo->c.radius);
 	break;
       case PTY_LINE:
-	GrLine(dc,pf->cx+tempo->l.p1->p.p.x,pf->cy+tempo->l.p1->p.p.y,pf->cx+tempo->l
-.p2->p.p.x,pf->cy+tempo->l.p2->p.p.y);
+	GrLine(dc,pf->cx+tempo->l.p1->p.p.x,pf->cy+tempo->l.p1->p.p.y,pf->cx+tempo->l.p2->p.p.x,pf->cy+tempo->l.p2->p.p.y);
 	break;
       case PTY_SPRITE:
 	old_r=dc->r;
@@ -194,6 +190,7 @@ PObj *PPtFind(PickFrame *pf,I64 x,I64 y)
     }
     tempo=tempo->next;
   }
+  return result;
 }
 
 PObj *PCircleNew(PickFrame *pf,I64 p_num,I64 r)
@@ -236,18 +233,14 @@ PickFrame *Init()
   for (i=0;i<20;i++)
     PCircleNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,6);
   for (i=0;i<20;i++)
-   
-PLineNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,pf->o_cnts[PTY_PT]*RandU16/MAX_
-U16);
+    PLineNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,pf->o_cnts[PTY_PT]*RandU16/MAX_U16);
   for (i=0;i<10;i++) {
     r=GrIdent;
     dr=GrIdent;
     GrRotZEqu(dr,0.05*2*(Rand-0.5));
     GrRotYEqu(dr,0.05*2*(Rand-0.5));
     GrRotXEqu(dr,0.05*2*(Rand-0.5));
-   
-PCSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_PT]*RandU16/MAX_U
-16,r,dr);
+    PCSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_PT]*RandU16/MAX_U16,r,dr);
   }
   NamedFramePtrSet("PickFrame",pf);
   return pf;
@@ -294,9 +287,7 @@ U0 Pick3D()
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
-      switch
-(msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MS
-G_IP_MOVE)) {
+      switch (msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_MOVE)) {
 	case MSG_KEY_DOWN:
 	  switch (p1) {
 	    case CH_NEW_LINE:

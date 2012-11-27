@@ -19,7 +19,7 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempm)
     //Note there is also a routine
     //to delete an entire CDirEntry tree.
     //See [C:/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,34] CDirListDel().
-    CDirDel(tempm);
+    CDirEntryDel(tempm);
     tempm=tempm1;
   }
 }

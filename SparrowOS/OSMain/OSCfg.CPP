@@ -23,9 +23,9 @@ class COSMainCfg
   U8 *dsk_cache_size_exp;
   CDoc *add_dev;
 
-  BoolI8 opts[CFG_NUM_OPTIONS];
+  Bool opts[CFG_NUM_OPTIONS];
   U8 mem_init_val,heap_init_val,var_init_val;
-  BoolI8 cdrom_ports_pmt;
+  Bool cdrom_ports_pmt;
 };
 
 CDoc *OSMainCfgAddDev(COSMainCfg *c)
@@ -160,7 +160,7 @@ U0 OSMainCfgOptions(COSMainCfg *c)
 {
   I64 i;
   U8 *st=NULL;
-  BoolI8 state;
+  Bool state;
   do {
     Free(st);
     for (i=0;i<CFG_NUM_OPTIONS;i++)

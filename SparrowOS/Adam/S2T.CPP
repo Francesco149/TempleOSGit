@@ -1,12 +1,12 @@
 #help_index "Utils;Cmd Line (Typically)"
 
-//[C:/SparrowOS/OSMain/Str1a.CPP.Z,779] StrUtil() operations on files
+//[C:/SparrowOS/OSMain/Str1a.CPP.Z,781] StrUtil() operations on files
 
-public U0 SUFile(U8 *name,U64 su_flags,F64 indent_scale_factor)
+public U0 SUFile(U8 *name,I64 su_flags,F64 indent_scale_factor)
 {//String utility on a single file
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3678] SU Flags
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3390] SU Flags
   U8 *dst;
-  BoolI8 chged=FALSE;
+  Bool chged=FALSE;
   I64 reduced=0;
   CDoc *doc=DocRead(name,DOCF_PLAIN_TEXT_WITH_TABS | DOCF_NO_CURSOR);
   CDocEntry *doc_e=doc->root.next;
@@ -31,7 +31,7 @@ public U0 SUFile(U8 *name,U64 su_flags,F64 indent_scale_factor)
   DocDel(doc);
 }
 
-U0 SUList(CDirEntry *tempm1,U64 su_flags,F64 indent_scale_factor)
+U0 SUList(CDirEntry *tempm1,I64 su_flags,F64 indent_scale_factor)
 {
   CDirEntry *tempm2;
   while (tempm1) {
@@ -43,17 +43,17 @@ U0 SUList(CDirEntry *tempm1,U64 su_flags,F64 indent_scale_factor)
       }
     } else
       SUFile(tempm1->full_name,su_flags,indent_scale_factor);
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
 }
 
-public U0 SU(U8 *files_find_mask,U64 su_flags,U8 *fu_flags=NULL,F64 indent_scale_factor=0)
+public U0 SU(U8 *files_find_mask,I64 su_flags,U8 *fu_flags=NULL,F64 indent_scale_factor=0)
 {//Apply string utilities to files
 //You can convert spaces to tabs, for example
 //or removing trailing spaces on lines.
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3678] SU Flags
-  U64 fuf_flags=0;
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3390] SU Flags
+  I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   SUList(FilesFind(files_find_mask,fuf_flags),su_flags,indent_scale_factor);
 }

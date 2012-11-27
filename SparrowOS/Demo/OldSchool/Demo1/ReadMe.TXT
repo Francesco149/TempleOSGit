@@ -1,4 +1,4 @@
-1) Do a [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,231] Dir() command
+1) Do a [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir() command
 
 2) Right-Click on ModuleDemo.PRJ.Z and click COMPILE.
 

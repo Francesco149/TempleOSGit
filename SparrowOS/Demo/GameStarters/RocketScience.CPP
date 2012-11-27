@@ -19,7 +19,7 @@ Real rockets have dynamics like fuel slosh to consider!
 
 #define THRUST	1000
 
-BoolI8 blast_off,plane_hit;
+Bool blast_off,plane_hit;
 
 CMass m1, //Bottom of rocket
 	   m2, //Top of rocket

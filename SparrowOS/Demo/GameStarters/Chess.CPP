@@ -106,7 +106,7 @@ class GameState
       mv_num,
       moved_mask,
       raw_score;	    //Positive favors player#0
-  BoolI8 is_human[2];
+  Bool is_human[2];
   Move potential_en_passant_victim;
 };
 
@@ -182,7 +182,7 @@ U0 BrdFill(I8 *brd,PieceState *pieces)
   MemSet(brd,T_BLKED,sizeof(I8)*BD_SIDE*BD_SIDE);
 
   for (i=BD_BORDER;i<8+BD_BORDER;i++)
-    brd[BD_SIDE*i+BD_BORDER](U64)=0x0202020202020202;
+    brd[BD_SIDE*i+BD_BORDER](I64)=0x0202020202020202;
 #assert T_CLR==2
 
   for (i=0;i<32;i++)
@@ -383,9 +383,10 @@ I64 PieceMoves(GameState *state,I64 piece_num,Move *mvs)
   }
   for (i=0;i<result;i++)
     mvs[i].piece=piece_num;
+  return result;
 }
 
-BoolI64 SqrInChk(GameState *state,I64 x,I64 y)
+Bool SqrInChk(GameState *state,I64 x,I64 y)
 {
   I64 i,j,mv_cnt;
   Move mvs[32];
@@ -422,11 +423,11 @@ CDC *brd_dc;
 I64 cx,cy,cx2,cy2,g,cursor_x,cursor_y,
     cur_mv_cnt,*s2w,*w2s;
 Move cur_mvs[32],last_mv;
-BoolI8 ai_thinking,game_over;
+Bool ai_thinking,game_over;
 
 extern I64 MoveCnt(GameState *state);
 
-BoolI64 MoveDo(GameState *state,I64 piece_num,I64 x2,I64 y2,BoolI8 final)
+Bool MoveDo(GameState *state,I64 piece_num,I64 x2,I64 y2,Bool final)
 { //returns TRUE if killed a piece.
   PieceState *p=&state->pieces[piece_num];
   I64 j,ty=-1,score_adjust=0,x1=p->x,y1=p->y;
@@ -518,7 +519,7 @@ I64 MoveFind(I64 x,I64 y,Move *mvs,I64 mv_cnt)
   return -1;
 }
 
-BoolI64 HumanMove(GameState *state,I64 piece_num,Move *mvs,I64 mv_cnt,I64 x,I64 y)
+Bool HumanMove(GameState *state,I64 piece_num,Move *mvs,I64 mv_cnt,I64 x,I64 y)
 {
   if (piece_num>=0 && MoveFind(x,y,mvs,mv_cnt)>=0) {
     MoveDo(state,piece_num,x,y,TRUE);
@@ -567,6 +568,7 @@ I64 ChkPieceMoves(GameState *state,I64 piece_num,Move *src,I64 mv_cnt)
 cm_skip:
     src++;
   }
+  return result;
 }
 
 I64 MoveCnt(GameState *state)
@@ -579,6 +581,7 @@ I64 MoveCnt(GameState *state)
       mv_cnt=ChkPieceMoves(state,i,mvs,mv_cnt);
       result+=mv_cnt;
     }
+  return result;
 }
 
 
@@ -743,7 +746,7 @@ I64 AIMove2(GameState *state,I64 depth)
   I64 i,possible_moves=0,best_piece,score,best_score=MIN_I64,mv_cnt,score_adjust;
   Move best_mv,mvs[32],*ptr;
   GameState state2;
-  BoolI8 first=TRUE;
+  Bool first=TRUE;
 
   if (UnusedStk<0x1000) { //Shouldn't happen
     DocPutS(chess_doc,"StkOverflow\n");
@@ -790,7 +793,7 @@ U0 AIMove1(ChessJob *cj)
 {
   GameState state2;
   Move *ptr=cj->mv;
-  BoolI8 old_preempt=Preempt(ON);
+  Bool old_preempt=Preempt(ON);
   MemCpy(&state2,cj->state,sizeof(GameState));
   state2.parent=cj->state;
   MoveDo(&state2,ptr->piece,ptr->x,ptr->y,FALSE);

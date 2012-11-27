@@ -2,8 +2,8 @@ class MPCtrl
 {
   CTask *win_task;
   I64 i;
-  BoolI8 app_done,app_done_ack;
-  BoolI8 refresh_start,refresh_done;
+  Bool app_done,app_done_ack;
+  Bool refresh_start,refresh_done;
 } mp;
 
 
@@ -50,7 +50,7 @@ mp_done:
   mp.refresh_done=TRUE;
 }
 
-U0 MPTask(U64)
+U0 MPTask(I64)
 {
   while (!mp.app_done)
     MPDrawIt;

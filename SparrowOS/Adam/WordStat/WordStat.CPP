@@ -37,7 +37,7 @@ public U8 *ws_cur_word=NULL;
 
 #define WSf_ENABLE		0
 #define WSf_INIT_IN_PROGRESS	1
-U64 ws_flags=0;
+I64 ws_flags=0;
 
 public CWSMatrix *ws_matrix=NULL;
 public CHashWS **ws_sorted_words=NULL;

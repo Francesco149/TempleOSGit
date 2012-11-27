@@ -73,7 +73,7 @@ U0 PixelCollision()
     WinMgrSync;
 
 //This will not flicker as long as it occurs just
-//after a acreen update [C:/SparrowOS/Adam/Window.CPP.Z,609] WinMgrSync.
+//after a acreen update [C:/SparrowOS/Adam/Window.CPP.Z,608] WinMgrSync.
     DCFill(dc);
 
   }
@@ -84,7 +84,7 @@ U0 PixelCollision()
 
 /*  If you are dealing with many objects,
 create a bitmap just for checking collisions
-using [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,40] DCNew().  You probably want to check
+using [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,42] DCNew().  You probably want to check
 only when they are near each other or it will
 take too long.	See [::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z.
 */

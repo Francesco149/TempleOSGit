@@ -106,7 +106,7 @@ U0 Init()
   }
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i;
   while (TRUE) {
@@ -118,7 +118,7 @@ U0 AnimateTask(U64)
   }
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by Terry A. Davis
 //This specifies a call-back routine
 //to be called when the task dies.

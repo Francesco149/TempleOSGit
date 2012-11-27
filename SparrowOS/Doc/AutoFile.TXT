@@ -1,11 +1,11 @@
 AutoFiles are used to generate user input to automate operations.  The 
 SparrowOS tour is done with an AutoFile.
 
-When an AutoFile runs, a child task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,203]
+When an AutoFile runs, a child task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,226]
 Spawn()ed which intercepts real user 
 input and generates fake input.  AutoFiles are C+ programs run by the child 
 who's stdout goes to the parent's input buffer. 
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,211] Msg() can be included in an A
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,214] Msg() can be included in an A
 utoFile to send special keys or mouse cmds to the parent.  While an AutoFile 
 is running, the normal input gets diverted to the AutoFile task and can be 
 filtered and sent back to the parent task.  Unless you are driving functions 
@@ -15,12 +15,12 @@ toFile.
 See [::/SparrowOS/Demo/AutoFile/AFDir.AUT.Z,1]
 ::/SparrowOS/Demo/AutoFile/AFDir.AUT.Z.
 
-Note: [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto("") can be used if all you
+Note: [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,354] Auto("") can be used if all you
 need is to send ASCII characters.  It 
-differs from [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,378] AutoStr().  You'll
-probably use [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto() a lot and not
-[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,378] AutoStr().  
-With [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,349] Auto(), for example, you can
+differs from [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,384] AutoStr().  You'll
+probably use [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,354] Auto() a lot and not
+[C:/SparrowOS/OSMain/TaskCmd.CPP.Z,384] AutoStr().  
+With [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,354] Auto(), for example, you can
 place answers to the prompts for recompiling 
 the OSMain module during [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165]
 InstallBoot().

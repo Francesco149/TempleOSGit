@@ -4,6 +4,7 @@
 
 #exe {
 OptOn(OPTf_WARN_PAREN);
+OptOn(OPTf_WARN_DUP_TYPES);
 #include "OSCfg"
 COSMainCfg *osmain_cfg;
 osmain_cfg=OSMainCfgNew;
@@ -41,7 +42,6 @@ osmain_cfg=OSMainCfgNew;
 #include "QSort"
 #include "Task1a"
 #include "TaskCmd"
-#include "USB1a"
 
 #exe {Cd("Dsk");};
 #include "DskStr"
@@ -52,7 +52,6 @@ osmain_cfg=OSMainCfgNew;
 #include "DskAddDev"
 #include "DskDir"
 #include "FileSysISO1"
-#include "FileSysISO3"
 #include "FileSysNative"
 #include "FileSysFAT"
 #include "Dsk1b"

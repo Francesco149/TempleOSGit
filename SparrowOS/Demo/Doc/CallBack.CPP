@@ -26,11 +26,11 @@ A second framework is kept at Fs->next_doc.
 Normally, the next_doc is used for updating
 the border, primarily.
 
-See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,140] UseTermDoc().
+See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,142] UseTermDoc().
 See [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1799] DocUpdateTaskDocs().
 
 Note: the next_doc is not to be confused
-with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEntry.
+with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry.
 
 */
   CDoc *aux=DocAux, //Fetches Fs->next_doc basically.
@@ -41,7 +41,7 @@ with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEn
 // creating the CDocEntry and defining the
 // callback, so we turn-off preemption.
 
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
 
   DocBottom(aux);  //Ins at the bottom
   DocPutS(aux,"$FG,RED$$CM+BY+LX,5,-3$");
@@ -53,7 +53,7 @@ with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1227] CDocEn
 // Flags are explained here:
 //	[::/SparrowOS/Doc/CtrlL.TXT.Z,1] ::/SparrowOS/Doc/CtrlL.TXT.Z
 //	[::/SparrowOS/Doc/Dollar.TXT.Z,1] ::/SparrowOS/Doc/Dollar.TXT.Z
-//	[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1098] Dollar Flags
+//	[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1090] Dollar Flags
 //	[::/SparrowOS/Adam/Doc/Doc.CPP.Z,1] ST_DOC_FLAGS
 
   doc_e->tag_cb=&tSCB;

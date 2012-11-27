@@ -12,10 +12,10 @@ I64 Compare(I32 *e1,I32 *e2)
 }
 
 
-U0 QSortU32(I32 *base,U64 num)
+U0 QSortU32(I32 *base,I64 num)
 {
 // By customizing, we dramatically improve it!
-// Cut and paste from [C:/SparrowOS/OSMain/QSort.CPP.Z,1] QSortU64().
+// Cut and paste from [C:/SparrowOS/OSMain/QSort.CPP.Z,1] QSortI64().
   I64 i;
   I32 *less,*greater,pivot;
   if (num>1) {
@@ -57,14 +57,14 @@ U0 QSortU32(I32 *base,U64 num)
   }
 }
 
-U0 MPSort(U64 dummy=0)
+U0 MPSort(I64 dummy=0)
 {
   nounusedwarn dummy;
   QSortU32(b[Gs->num],bn[Gs->num]);
   LBts(&mp_done_flags,Gs->num);
 }
 
-U0 MPRadixSortDemo(U64 dummy=0)
+U0 MPRadixSortDemo(I64 dummy=0)
 {
   nounusedwarn dummy;
   I64 i,j,k1,k2;

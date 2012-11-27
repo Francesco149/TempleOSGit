@@ -23,11 +23,11 @@ DefineListLoad("ST_BIN_FILE_TYPES",
 public U0 BinRep(U8 *filename)
 {//This reports imports, exports, etc
  //for a .BI? file.
-//See [::/SparrowOS/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation and [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load().
+//See [::/SparrowOS/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation and [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load().
   U8 *fbuf;
   U8 *ptr,etype;
   U8 *sptr,*absname;
-  U64 size;
+  I64 size;
   CBinFile *bfh,*bfh2;
   I64 i,j;
   CHashExport *saved_hash_ptr=NULL;
@@ -72,7 +72,7 @@ public U0 BinRep(U8 *filename)
 	  "%X ",*ptr(U32 *)++;
 	break;
       case EIE_HEAP_GLBL:
-	"Size:%X ",*ptr(U64 *)++;
+	"Size:%X ",*ptr(I64 *)++;
 	for (j=0;j<i;j++)
 	  "%X ",*ptr(U32 *)++;
 	break;

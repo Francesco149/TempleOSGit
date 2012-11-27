@@ -2,8 +2,8 @@ U0 InputFilterTask()
 {
   U8 *st;
   CTaskCmd *tempc,*tempc1;
-  BoolI8 old_filter;
-  U64 old_flags=GetFlags;
+  Bool old_filter;
+  I64 old_flags=GetFlags;
   LBts(&Fs->task_flags,TASKf_USER);
   TaskInitExt;
   LBts(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
@@ -41,9 +41,9 @@ U0 InputFilterTask()
   SetFlags(old_flags);
 }
 
-I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,U64 mask=~1,CTask *task=NULL)
+I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
 {
-  U64 old_flags;
+  I64 result,old_flags;
   CTaskCmd *tempc,*tempc1;
   if (!task) task=Fs;
   old_flags=GetFlags;
@@ -83,18 +83,21 @@ I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,U64 mask=~1,CTask *task=NULL)
   }
 sm_done:
   SetFlags(old_flags);
+  return result;
 }
 
-U64 FlushMsgs(CTask *task=NULL)
+I64 FlushMsgs(CTask *task=NULL)
 {
-  U64 result=0,p1,p2;
+  I64 result=0,p1,p2;
   while (ScanMsg(&p1,&p2,~1,task))
     result++;
+  return result;
 }
 
-I64 GetMsg(I64 *_p1=NULL,I64 *_p2=NULL,U64 mask=~1,CTask *task=NULL)
+I64 GetMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  I64 result;
+  Bool old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   LBtr(&task->task_flags,TASKf_IDLE);
   while (!(result=ScanMsg(_p1,_p2,mask,task))) {
@@ -103,9 +106,10 @@ I64 GetMsg(I64 *_p1=NULL,I64 *_p2=NULL,U64 mask=~1,CTask *task=NULL)
   }
   LBtr(&task->task_flags,TASKf_IDLE);
   Preempt(old_preempt);
+  return result;
 }
 
-U64 ScanChar()
+I64 ScanChar()
 {
   I64 p1a,p2a,p1b,p2b;
   if (!ScanMsg(&p1a,&p2a,1<<MSG_KEY_DOWN)||!p1a)
@@ -116,9 +120,9 @@ U64 ScanChar()
   return p1a;
 }
 
-BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALSE)
+Bool ScanKey(I64 *_ch=NULL,I64 *_scancode=NULL,Bool echo=FALSE)
 {
-  U64 ch=0,sc=0;
+  I64 ch=0,sc=0;
   if (ScanMsg(&ch,&sc,1<<MSG_KEY_DOWN)) {
     if (_ch) *_ch=ch;
     if (_scancode) *_scancode=sc;
@@ -132,10 +136,10 @@ BoolI64 ScanKey(U64 *_ch=NULL,U64 *_scancode=NULL,BoolI8 echo=FALSE)
   }
 }
 
-U64 GetKey(U64 *_scancode=NULL,BoolI8 echo=FALSE,BoolI8 raw_cursor=FALSE)
+I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
 {
-  U64 ch,sc;
-  BoolI8 old_preempt=Preempt(OFF),cursor_on=FALSE;
+  I64 ch,sc;
+  Bool old_preempt=Preempt(OFF),cursor_on=FALSE;
 
   while (!ScanKey(&ch,&sc,FALSE)) {
     if (IsRaw && raw_cursor) {
@@ -174,9 +178,9 @@ U64 GetKey(U64 *_scancode=NULL,BoolI8 echo=FALSE,BoolI8 raw_cursor=FALSE)
   return ch;
 }
 
-U64 GetChar(U64 *_scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE)
+I64 GetChar(I64 *_scancode=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
 {
-  U64 ch1;
+  I64 ch1;
   do ch1=GetKey(_scancode,FALSE,raw_cursor);
   while (!ch1);
   if (echo)
@@ -184,17 +188,17 @@ U64 GetChar(U64 *_scancode=NULL,BoolI8 echo=TRUE,BoolI8 raw_cursor=FALSE)
   return ch1;
 }
 
-U8 *MGetS(U64 flags=0)
-//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1462] Flags
+U8 *MGetS(I64 flags=0)
+//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1454] Flags
 {
-//Returns a [C:/SparrowOS/OSMain/Memory.CPP.Z,952] MAlloc()ed prompted string.
+//Returns a [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);
 }
 
-U64 GetS(U8 *buf,U64 size,BoolI8 allow_ext=TRUE)
+I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE)
 {
   U8 *st;
-  U64 ch,i=0;
+  I64 ch,i=0;
   if (!size || !buf) return 0;
   if (allow_ext) {
     st=MGetS;

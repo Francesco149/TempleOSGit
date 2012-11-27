@@ -66,7 +66,7 @@ U0 TakeTurn(I64 player)
   board[i]=player;
 }
 
-BoolI64 CheckWinner(I64 player)
+Bool CheckWinner(I64 player)
 {
   if (	player==board[0]==board[1]==board[2] ||
 	player==board[3]==board[4]==board[5] ||

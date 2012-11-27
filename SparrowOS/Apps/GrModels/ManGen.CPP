@@ -119,19 +119,21 @@ U0 MDCorrect(ManDefineStruct *md)
 
 I64 AddVertex(ManDefineStruct *md,I64 x,I64 y,I64 z)
 {
-  result=m->vertex_cnt++;
+  I64 result=m->vertex_cnt++;
   m->v[result].x=-x;
   m->v[result].y=-y-md->leg_len-md->foot_rad*2;
   m->v[result].z=-z;
+  return result;
 }
 
 I64 AddTriangle(ManDefineStruct *,I64 c,I64 n0,I64 n1,I64 n2)
 {
-  result=m->triangle_cnt++;
+  I64 result=m->triangle_cnt++;
   m->t[result].color=c;
   m->t[result].nums[0]=n1;
   m->t[result].nums[1]=n0;
   m->t[result].nums[2]=n2;
+  return result;
 }
 
 U0 AddBox(ManDefineStruct *md,I64 c,I64 x1,I64 y1,I64 z1,F64 w,F64 h,F64 d,F64 h2,F64 h3,F64 az,F64 ay,F64 ax,
@@ -197,10 +199,12 @@ U8 *Man2CSprite()
   MemCpy(dst,&m->t,m->triangle_cnt*sizeof(CMeshTri));
   dst+=m->triangle_cnt*sizeof(CMeshTri);
   *dst(U8 *)++ =GRST_END;
+  return result;
 }
 
 public U8 *ManGen()
 {
+  U8 *result;
   I64 x,y,z,c1,c2,c3,c4;
   ManDefineStruct md1,md2;
   MDInit(&md1);
@@ -287,4 +291,5 @@ public U8 *ManGen()
     else
       break;
   }
+  return result;
 }

@@ -1,7 +1,7 @@
-U0 PrsDocFlags(CLex *lx,U64 *flags1,U64 *flags2,U32 *type)
+U0 PrsDocFlags(CLex *lx,I64 *flags1,I64 *flags2,U32 *type)
 {
   I64 i;
-  BoolI8 turn_on;
+  Bool turn_on;
   while (lx->token=='+' || lx->token=='-') {
     turn_on= lx->token=='+';
     if (Lex(lx)==TK_IDENT) {
@@ -25,7 +25,7 @@ U0 PrsDocFlags(CLex *lx,U64 *flags1,U64 *flags2,U32 *type)
   }
 }
 
-U64 doc_dft_flags1[DOCT_NUM_TYPES]={
+I64 doc_dft_flags1[DOCT_NUM_TYPES]={
 //DOCT_TEXT
 0,
 	
@@ -206,7 +206,7 @@ DOCEF1_AUX_STR,
 //DOCT_ERROR
 0};
 
-U64 doc_dft_flags2[DOCT_NUM_TYPES]={
+I64 doc_dft_flags2[DOCT_NUM_TYPES]={
 //DOCT_TEXT
 0,
 	
@@ -387,7 +387,7 @@ U64 doc_dft_flags2[DOCT_NUM_TYPES]={
 //DOCT_ERROR
 0};
 
-U64 doc_dft_type_flags[DOCT_NUM_TYPES]={
+I64 doc_dft_type_flags[DOCT_NUM_TYPES]={
 //DOCT_TEXT
 0,
 
@@ -617,8 +617,8 @@ I64 DocBinPtrRst(CDoc *doc,CDocEntry *doc_e)
 
 U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 { //TODO: break strs
-  I64 i,j;
-  U64 t1,f1,f2,flags1,flags2,type;
+  I64 i,j,
+      t1,f1,f2,flags1,flags2,type;
   U8 *buf,*buf2;
 
   buf=StrNew(DefineSub(doc_e->type_u8,"ST_DOC_CMDS"));
@@ -821,7 +821,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 
 
 CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
-{//This uses [C:/SparrowOS/Compiler/Lex.CPP.Z,748] Lex() to parse a string and make Doc entries.
+{//This uses [C:/SparrowOS/Compiler/Lex.CPP.Z,794] Lex() to parse a string and make Doc entries.
   I64 i,j,flags1,flags2;
   U8 *ptr,*st2;
   CDocEntry *doc_e=NULL;
@@ -1065,7 +1065,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 public U0 DocIns(CDoc *doc,CDocEntry *doc_e)
 {
   U8 *dst;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry,*doc_ne;
 
   doc_e->x=doc_ce->x;
@@ -1074,10 +1074,10 @@ public U0 DocIns(CDoc *doc,CDocEntry *doc_e)
   doc_e->settings=NULL;
   if (doc->cur_data_col>0 &&
       doc_ce->type_u8==DOCT_TEXT &&
-      !(doc_ce->flags1 &(DOCEF1_TAG_CB|DOCEF1_DEFINE|DOCEF1_HTML_LINK)) &&
+      !(doc_ce->flags1&(DOCEF1_TAG_CB|DOCEF1_DEFINE|DOCEF1_HTML_LINK)) &&
       !(doc_ce->flags2&DOCEF2_BIN_PTR_LINK) &&
       doc->cur_data_col<doc_ce->max_col) {
-    doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+    doc_ne=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
     doc_ne->type=DOCT_TEXT|doc_ce->type&0xFFFFFF00;
     doc_ne->x=doc_ce->x;
     doc_ne->y=doc_ce->y;
@@ -1113,7 +1113,7 @@ public CDocEntry *DocPutS(CDoc *doc,U8 *st)
   //Returns last newly created dollar-sign CDocEntry.
   U8 ch,*ptr=st,*ptr2,*st2,*ptr3,*ptr4,*src,
      *char_bitmap;
-  BoolI8 unlock;
+  Bool unlock;
   I64 j;
   CDocEntry *doc_e=NULL,*result=NULL,*doc_ce;
   if (!st || !doc || doc->doc_signature!=DOC_SIGNATURE_VAL)
@@ -1134,7 +1134,7 @@ public CDocEntry *DocPutS(CDoc *doc,U8 *st)
     ptr--;
     if (!ch) {
       if (j=ptr-ptr2) {
-	doc_e=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_e=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
 	if (doc->flags & DOCF_NO_CURSOR) {
 	  src=MAlloc(j+1);
@@ -1153,7 +1153,7 @@ public CDocEntry *DocPutS(CDoc *doc,U8 *st)
     } else {
       if (j=ptr-ptr2) {
 	*ptr=0;
-	doc_e=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	doc_e=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
 	if (doc->flags & DOCF_NO_CURSOR) {
 	  src=MAlloc(j+1);
@@ -1210,7 +1210,7 @@ public CDocEntry *DocPutS(CDoc *doc,U8 *st)
 	      ptr2++;
 	    }
 	    if (ptr==ptr2) {
-	      doc_e=CAlloc(sizeof(CDocEntryBase)+sizeof(U0 *),doc->mem_task);
+	      doc_e=CAlloc(sizeof(CDocEntryBase)+sizeof(U8 *),doc->mem_task);
 	      doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
 	      doc_e->max_col=1;
 	      if (doc->flags & DOCF_DBL_DOLLARS)
@@ -1260,14 +1260,16 @@ public CDocEntry *DocPutS(CDoc *doc,U8 *st)
   }
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
 
 public CDocEntry *DocPrintF(CDoc *doc,U8 *src,...)
 {
   U8 *buf=SPrintFJoin(NULL,src,argc,argv);
-  result=DocPutS(doc,buf);
+  CDocEntry *result=DocPutS(doc,buf);
   Free(buf);
+  return result;
 }
 
 #help_index "Doc"

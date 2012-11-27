@@ -109,7 +109,7 @@ USE32
 	MOV	AX,GDT_ZERO_DS_SEL
 	MOV	FS,AX
 	MOV	GS,AX
-	//SS already set
+//SS already set
 
 	MOV	EAX,U32 [C32_EAX]
 	MOV	EBX,U32 [C32_EBX]
@@ -161,10 +161,11 @@ _extern SYS_PCI_SERVICES U32 sys_pci_services;
 
 //Not reentrant--used to call BIOS32
 //Takes like, 250uS.
-_extern _FAR_CALL32 BoolI64 FarCall32(U0 (*fp_add)());
+_extern _FAR_CALL32 Bool FarCall32(U0 (*fp_add)());
 
 U8 PCIReadU8(I64 bus,I64 dev,I64 fun,I64 rg)
 {
+  I64 result;
   PushFD;
   Cli;
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
@@ -178,10 +179,12 @@ U8 PCIReadU8(I64 bus,I64 dev,I64 fun,I64 rg)
     result=0xFF;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
   PopFD;
+  return result;
 }
 
 U16 PCIReadU16(I64 bus,I64 dev,I64 fun,I64 rg)
 {
+  I64 result;
   PushFD;
   Cli;
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
@@ -195,10 +198,12 @@ U16 PCIReadU16(I64 bus,I64 dev,I64 fun,I64 rg)
     result=0xFFFF;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
   PopFD;
+  return result;
 }
 
 U32 PCIReadU32(I64 bus,I64 dev,I64 fun,I64 rg)
 {
+  I64 result;
   PushFD;
   Cli;
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
@@ -212,6 +217,7 @@ U32 PCIReadU32(I64 bus,I64 dev,I64 fun,I64 rg)
       result=0xFFFFFFFF;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
   PopFD;
+  return result;
 }
 
 U0 PCIWriteU8(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
@@ -265,6 +271,7 @@ I64 PCIClassFind(I64 class_code,I64 n)
 //n is index starting at zero
 //Returns: -1 not found
 //	  else bus,dev,fun.
+  I64 result;
   PushFD;
   Cli;
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
@@ -278,13 +285,14 @@ I64 PCIClassFind(I64 class_code,I64 n)
     result=-1;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
   PopFD;
+  return result;
 }
 
-BoolI64 BootCdProbe(CBlkDev *bdev)
+Bool BootCdProbe(CBlkDev *bdev)
 {
   COSMain *img=CAlloc(CD_BLK_SIZE);
   I64 i;
-  result=FALSE;
+  Bool result=FALSE;
   "Port: %04X,%04X Unit: %02X  ",bdev->base0,bdev->base1,bdev->unit;
   if (ATAProbe(bdev->base0,bdev->base1,bdev->unit)==BDT_ATAPI) {
     //After preboot + BootCD.BIN.Z comes OSMain.BIN.C
@@ -306,9 +314,10 @@ BoolI64 BootCdProbe(CBlkDev *bdev)
   }
   " Nope\n";
   Free(img);
+  return result;
 }
 
-BoolI64 BootCdProbeAll(CBlkDev *bdev)
+Bool BootCdProbeAll(CBlkDev *bdev)
 {
   U32 d1,d2;
   bdev->base1=0;

@@ -1,7 +1,7 @@
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3515] CDC's have a 4x4 matrix for rotating,
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC's have a 4x4 matrix for rotating,
 scaling, skewing and shifting in 3 
 dimensions.  To make the graphics routines respond to the transformation, you 
-must set the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3480] DCF_TRANSFORMATION flag.
+must set the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3192] DCF_TRANSFORMATION flag.
 
 The matrix consists of integers that have been scaled 32 bits
 ([C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,142] gr_scale).  See 
@@ -12,14 +12,14 @@ See [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,163] GrRotX(),
 [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,179] GrRotY(),
 [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,195] GrRotZ(),
 [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,211] GrScaleMat(),
-[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,240] GrRotXEqu(),
-[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,260] GrRotYEqu(), 
-[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,280] GrRotZEqu() and
-[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,300] GrScaleMatEqu() to rotate about axes
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,239] GrRotXEqu(),
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,259] GrRotYEqu(), 
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,279] GrRotZEqu() and
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,299] GrScaleMatEqu() to rotate about axes
 and scale.  Combine them 
 with [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,220] GrMulMat() and assign them to
-the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3515] CDC.dc with
-[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,308] GrSetRotMat().  See 
+the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC.dc with
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,307] GrSetRotMat().  See 
 [::/SparrowOS/Demo/Graphics/Box.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Box.CPP.Z.
 
 You can rotate single points using [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,144]
@@ -29,15 +29,15 @@ The 4th dimension allows a neat trick where you can place pos shifts
 (translations), into the matrix and [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,220]
 GrMulMat them to combine rotation/shift 
 operations.  Normally, you can't combine pos shift operations.  See 
-[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,354] GrSetTranslation() and
+[C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,353] GrSetTranslation() and
 [::/SparrowOS/Demo/Graphics/Transform.CPP.Z,1]
 ::/SparrowOS/Demo/Graphics/Transform.CPP.Z.
 
-Finally, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3515] CDC's have an x, y and z
+Finally, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC's have an x, y and z
 which is an additional shift (translation).
 
 The transformation is implemented as a callback on the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3515] CDC's transform() 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC's transform() 
 member.  The default transfrom() callback is
 [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,154] GrTransform().  See 
 [::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1]

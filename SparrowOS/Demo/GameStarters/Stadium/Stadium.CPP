@@ -19,7 +19,7 @@ CDC *background;
 #define BALL_TIME	0.2
 #define MAX_FANS 10
 I64 x[MAX_FANS],y[MAX_FANS];
-BoolI8 hit[MAX_FANS];
+Bool hit[MAX_FANS];
 F64 theta[MAX_FANS],ball_t;
 I64 target_x,target_y,pitcher_x,pitcher_y;
 
@@ -51,7 +51,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrPutS(dc,FONT_WIDTH,FONT_HEIGHT,"Peg the Fans");
 }
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   I64 i;
   F64 xx,yy,t0;

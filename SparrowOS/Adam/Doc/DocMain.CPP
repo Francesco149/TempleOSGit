@@ -1,10 +1,10 @@
 #help_index "Doc/Cmd Line (Typically);Cmd Line (Typically)"
 
-BoolI64 EdJoin(U8 *link_st,U64 ed_flags)
+Bool EdJoin(U8 *link_st,I64 ed_flags)
 {
   U8 *filename,*pattern;
   I64 i,num;
-  BoolI8 cont,result=FALSE;
+  Bool cont,result=FALSE;
   CDoc *doc;
 
   switch (i=EdLinkCvt(link_st,&filename,&pattern,&num,ed_flags)) {
@@ -36,6 +36,7 @@ ej_doc:
   }
   Free(filename);
   Free(pattern);
+  return result;
 }
 
 public U0 Ed(U8 *link_st=NULL)
@@ -56,11 +57,11 @@ public U0 Plain(U8 *filename)
 }
 
 #help_index "Doc"
-public BoolI64 DocLinkChk(U8 *link_st)
+public Bool DocLinkChk(U8 *link_st)
 {
   U8 *filename,*pattern;
   I64 num;
-  result=FALSE;
+  Bool result=FALSE;
   if (link_st) {
     switch (EdLinkCvt(link_st,&filename,&pattern,&num,0)) {
       case -1:
@@ -81,6 +82,7 @@ public BoolI64 DocLinkChk(U8 *link_st)
     Free(filename);
     Free(pattern);
   }
+  return result;
 }
 
 #help_index "Doc/Task"
@@ -139,7 +141,7 @@ public CDoc *SysAuxDocInit()
 
 public U0 UseTermDoc()
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CDoc *doc=DocNew;
   doc->start_text_attr=WHITE<<4+BLUE;
   DocQueIns(doc,Fs->last_doc);
@@ -158,9 +160,9 @@ public U0 UseTermDoc()
 public U8 *DocGetLine(CDoc *doc,CDocEntry *doc_e,I64 *cur_col=NULL,CDocEntry **_do_e_end=NULL)
 {
   CDocEntry *doc_e2=doc_e;
-  BoolI8 unlock=DocLock(doc);
-  U8 *dst,*src,*start;
-  U64 i=0;
+  Bool unlock=DocLock(doc);
+  U8 *dst,*src,*start,*result;
+  I64 i=0;
   if (cur_col)
     *cur_col=-1;
   while (doc_e2!=doc && doc_e2->type_u8!=DOCT_NEW_LINE) {
@@ -191,14 +193,15 @@ public U8 *DocGetLine(CDoc *doc,CDocEntry *doc_e,I64 *cur_col=NULL,CDocEntry **_
     *cur_col=dst-result;
   if (unlock)
     DocUnlock(doc);
+  return result;
 }
 
 #help_index "Doc/Output"
-public U0 DocDump(CDoc *doc,U64 uS_delay=0)
+public U0 DocDump(CDoc *doc,I64 uS_delay=0)
 {
   U8 *st;
   CDocEntry *doc_e,*doc_e2;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   doc_e=doc->root.next;
   while (doc_e!=doc) {
     st=DocGetLine(doc,doc_e,NULL,&doc_e2);
@@ -245,14 +248,14 @@ public CDocEntry *DocPutLine(CDocEntry *doc_e)
 }
 
 #help_index "Doc/Input"
-public U8 *DocMGetS(U64 flags=0)
-//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1462] Flags
+public U8 *DocMGetS(I64 flags=0)
+//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1454] Flags
 {
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
-  BoolI8 old_preempt=IsPreempt;
-  U8 *st;
-  U64 ch,sc;
+  Bool old_preempt=IsPreempt;
+  U8 *st,*result;
+  I64 ch,sc;
   "$FU$";
   do {
     ch=DocGetKey(&sc);
@@ -324,14 +327,16 @@ public U8 *DocMGetS(U64 flags=0)
 mgets_done:
   "$FU$$FG$$BG$";
   Preempt(old_preempt);
+  return result;
 }
 
 #help_index "Char/Input"
 
 public I64 PmtI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64)
 {
-  BoolI8 okay;
+  Bool okay;
   U8 *st;
+  I64 result;
   while (TRUE) {
     "" msg,dft;
     st=MGetS;
@@ -353,8 +358,9 @@ public I64 PmtI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64)
 
 public F64 PmtF64(U8 *msg,F64 dft,F64 lo=MIN_F64,F64 hi=MAX_F64)
 {
-  BoolI8 okay;
+  Bool okay;
   U8 *st;
+  F64 result;
   while (TRUE) {
     "" msg,dft;
     st=MGetS;
@@ -397,6 +403,7 @@ public U8 *PmtStr(U8 *msg=NULL,U8 *dft=NULL)
 public CDate PmtCDate(U8 *msg,CDate dft,CDate lo=MIN_I64,CDate hi=MAX_I64)
 {
   U8 *st;
+  CDate result;
   while (TRUE) {
     "" msg,dft,dft;
     st=MGetS;
@@ -461,7 +468,7 @@ I64 EdLeftClickLink(CDoc *doc,CDocEntry *doc_e)
 
 I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e)
 { //called with doc locked, exit unlocked
-  BoolI8 send_new_line=FALSE,result=FALSE;
+  Bool send_new_line=FALSE,result=FALSE;
   U8 *st;
   I64 i;
   CEdFileName fn;
@@ -573,6 +580,7 @@ I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e)
   "$FU$$FG$$BG$";
   if (send_new_line)
     '' CH_NEW_LINE;
+  return result;
 }
 
 #help_index "Doc/Cmd Line (Typically);Cmd Line (Typically);Training"
@@ -588,14 +596,14 @@ public U0 Man(U8 *_st)
 
 #help_index "Debugging;Doc/Cmd Line (Typically);Doc/Output;Cmd Line (Typically)"
 
-public U0 DocDm(U8 *buf,U64 cnt=0x80)
+public U0 DocDm(U8 *buf,I64 cnt=0x80)
 //Dumps a chunk of mem, showing
 //addresses.  It is live and can be
 //edited.
 {
   CDocEntry *doc_e;
   CDoc *doc=DocCur;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   doc_e=DocPrintF(doc,"$HX-Z,%d,16$",cnt);
   doc_e->data=buf;
   doc->cur_entry=doc_e->next;
@@ -604,14 +612,14 @@ public U0 DocDm(U8 *buf,U64 cnt=0x80)
     DocUnlock(doc);
 }
 
-public U0 DocD(U8 *buf,U64 cnt=0x80)
+public U0 DocD(U8 *buf,I64 cnt=0x80)
 //Dumps a chunk of mem, showing
 //offsets.  It is live and can be
 //edited.
 {
   CDocEntry *doc_e;
   CDoc *doc=DocCur;
-  BoolI8 unlock=DocLock(doc);
+  Bool unlock=DocLock(doc);
   doc_e=DocPrintF(doc,"$HX,%d,16$",cnt);
   doc_e->data=buf;
   doc->cur_entry=doc_e->next;
@@ -621,7 +629,7 @@ public U0 DocD(U8 *buf,U64 cnt=0x80)
 }
 
 #help_index "Doc/Output"
-BoolI64 AKDDocPutS(U8 *st)
+Bool AKDDocPutS(U8 *st)
 {
   CDoc *doc;
   if (doc=DocCur)

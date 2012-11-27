@@ -1,4 +1,4 @@
-BoolI8 chged;
+Bool chged;
 
 #define DAWG_SETTINGS_SPACING 16
 #define DAWG_SETTINGS_RANGE   60
@@ -57,7 +57,7 @@ U0 UpdateDerivedDawgSettingsCtrl(CCtrl *c)
   s->color_scale=LimitI64(s->color_scale,0,DAWG_SETTINGS_RANGE-1);
 }
 
-U0 LeftClickDawgSettings(CCtrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickDawgSettings(CCtrl *c,I64 x,I64 y,Bool down)
 {
   DawgSettingsState *s=c->state;
   if (x<c->left+(c->right-c->left)/3)
@@ -73,7 +73,7 @@ U0 LeftClickDawgSettings(CCtrl *c,I64 x,I64 y,BoolI8 down)
 
 CCtrl *DawgSettingsNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c=CAlloc(sizeof(CCtrl));
   c->win_task=Fs;
   c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
@@ -95,7 +95,7 @@ CCtrl *DawgSettingsNew()
 
 U0 DawgSettingsDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
 //  Free(c->state);
@@ -119,6 +119,7 @@ I64 Norm(Simplex *n1)
 
 Simplex *CopySimplex(Simplex *dst, Simplex *src)
 {
+  Simplex *result;
   MemCpy(dst,src,sizeof(Simplex));
   return dst;
 }
@@ -128,32 +129,36 @@ Simplex *Mix(Simplex *result,Simplex *n1,Simplex *n2)
 { //This is something I made-up.  It's not standard math.
   result->x=n1->x*n2->x;
   result->y=n1->y*n2->y;
+  return result;
 }
 
 Simplex *Mangle(Simplex *result,Simplex *n1,Simplex *n2)
 { //This is something I made-up.  It's not standard math.
   result->x=n1->x*n2->y;
   result->y=n1->y*n2->x;
+  return result;
 }
 
 Simplex *Add(Simplex *result,Simplex *n1,Simplex *n2)
 {
   result->x=n1->x+n2->x;
   result->y=n1->y+n2->y;
+  return result;
 }
 
 Simplex *Sub(Simplex *result,Simplex *n1,Simplex *n2)
 {
   result->x=n1->x-n2->x;
   result->y=n1->y-n2->y;
+  return result;
 }
 
 
 U0 Bling()
 {
-  U64 ch;
+  I64 ch;
   I64 x,y,cnt;
-  U64 d;
+  I64 d;
   F64 color,color_scale;
   Simplex n1,n2,n3,n4,n5,n6,n7,n8;
   F64 timeout_time;

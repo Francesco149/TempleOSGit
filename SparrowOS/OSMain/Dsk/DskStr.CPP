@@ -19,7 +19,7 @@ U8 *FileExtRem(U8 *src,U8 *dst=NULL)
   return dst;
 }
 
-BoolI64 IsDotZ(U8 *filename)
+Bool IsDotZ(U8 *filename)
 {
   I64 i=StrLen(filename);
   if (i>6 && filename[i-1]=='Z' && filename[i-2]=='.' && filename[i-6]=='.')
@@ -28,7 +28,7 @@ BoolI64 IsDotZ(U8 *filename)
     return FALSE;
 }
 
-BoolI64 IsDotC(U8 *filename)
+Bool IsDotC(U8 *filename)
 {
   I64 i=StrLen(filename);
   if (i>6 && filename[i-1]=='C' && filename[i-2]=='.' && filename[i-6]=='.')
@@ -37,21 +37,21 @@ BoolI64 IsDotC(U8 *filename)
     return FALSE;
 }
 
-BoolI64 IsTextFile(U8 *filename)
+Bool IsTextFile(U8 *filename)
 {
   return FilesFindMatch(TEXT_FILE_MASK,filename);
 }
 
-BoolI64 IsSrcFile(U8 *filename)
+Bool IsSrcFile(U8 *filename)
 {
   return FilesFindMatch(SRC_FILE_MASK,filename);
 }
 
-BoolI64 FilesFindMatch(U8 *files_find_mask,U8 *filename,U64 fuf_flags=0)
+Bool FilesFindMatch(U8 *files_find_mask,U8 *filename,I64 fuf_flags=0)
 {
   U8 *st1=StrNew(files_find_mask),
      *st2=MAlloc(StrLen(files_find_mask)+1);
-  result=FALSE;
+  Bool result=FALSE;
   while (TRUE) {
     StrFirstRem(st1,";",st2);
     if (*st2) {
@@ -77,12 +77,13 @@ BoolI64 FilesFindMatch(U8 *files_find_mask,U8 *filename,U64 fuf_flags=0)
   }
   Free(st1);
   Free(st2);
+  return result;
 }
 
 U0 PrtChk(CPrt *p)
 {
   if (!p || p->pt_signature!=PRT_SIGNATURE_VAL)
-    throw(EXCEPT_PRT,9);
+    throw(EXCEPT_PRT,4);
 }
 
 U8 Prt2Drv(CPrt *p=NULL)
@@ -130,7 +131,7 @@ CBlkDev *Drv2BlkDevFwded(U8 drv_let=0)
   return bdev;
 }
 
-BoolI64 IsDrvWritable(U8 drv_let=0)
+Bool IsDrvWritable(U8 drv_let=0)
 {
   CBlkDev *bdev=Drv2BlkDev(drv_let);
   if (bdev->flags & BDF_READ_ONLY)
@@ -249,22 +250,24 @@ U8 *FileNameAbs(U8 *_filename)
 
 U8 *ChgExt(U8 *filename,U8 *extension)
 {//Change file name extension
-  result=MAlloc(StrLen(filename)+1+StrLen(extension)+1);
+  U8 *result=MAlloc(StrLen(filename)+1+StrLen(extension)+1);
   StrCpy(result,filename);
   if (FileExtDot(filename))
     FileExtRem(result);
   StrCat(result,".");
   StrCat(result,extension);
+  return result;
 }
 
 U8 *DftExt(U8 *filename,U8 *extension)
 {//Give extension if has none.
-  result=MAlloc(StrLen(filename)+1+StrLen(extension)+1);
+  U8 *result=MAlloc(StrLen(filename)+1+StrLen(extension)+1);
   StrCpy(result,filename);
   if (!FileExtDot(filename)) {
     StrCat(result,".");
     StrCat(result,extension);
   }
+  return result;
 }
 
 CDirEntry *CdDir(CDirEntry *tempm,U8 *abs_name)
@@ -283,7 +286,7 @@ CDirEntry *CdDir(CDirEntry *tempm,U8 *abs_name)
   return NULL;
 }
 
-U64 FileAttr(U8 *name,U64 attr=0)
+I64 FileAttr(U8 *name,I64 attr=0)
 {
   if (IsDotZ(name))
     attr|=_ATTR_COMPRESSED;
@@ -294,7 +297,7 @@ U64 FileAttr(U8 *name,U64 attr=0)
   return attr;
 }
 
-BoolI64 FileNameChk(U8 *filename)
+Bool FileNameChk(U8 *filename)
 {
   U8 *ptr=filename;
   if (!filename) return FALSE;
@@ -364,7 +367,7 @@ Strips file from dirname, scans for file upward until found or returns default.
 U8 *ZorNotZ(U8 *name)
 { //Compressed file name unless only uncompressed is available
   I64 i;
-  result=StrNew(name);
+  U8 *result=StrNew(name);
   if (!*result||FileFind(result)||!IsDotZ(name))
     return result;
   i=StrLen(name)-2;
@@ -372,4 +375,5 @@ U8 *ZorNotZ(U8 *name)
   if (FileFind(result))
     return result;
   result[i]='.';
+  return result;
 }

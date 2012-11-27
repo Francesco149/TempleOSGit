@@ -1,7 +1,7 @@
-public I64 DocEntryRun(CDoc *doc,CDocEntry *doc_e,BoolI8 exited)
+public I64 DocEntryRun(CDoc *doc,CDocEntry *doc_e,Bool exited)
 { //sometimes returns locked, sometimes unlocked
   U8 ch=doc->cmd_U8,*st;
-  result=-1;
+  I64 result=-1;
   DocLock(doc);
   if (!exited) {
     if (doc_e->flags1 & DOCEF1_ESC) {
@@ -70,6 +70,7 @@ public I64 DocEntryRun(CDoc *doc,CDocEntry *doc_e,BoolI8 exited)
   catch
     DocBottom(doc);
   doc->cmd_U8=CH_SPACE;
+  return result;
 }
 
 U8 *EdOverStrikeCB(CDoc *,CDocEntry *doc_e,CTask *mem_task)
@@ -140,8 +141,8 @@ U8 *EdSemicolonCB(CDoc *,CDocEntry *,CTask *mem_task)
 U8 *EdDollarTypeCB(CDoc *,CDocEntry *doc_e,CTask *mem_task)
 {
   CDoc *doc=doc_e->user_data;
-  U8 *src=DefineSub(doc->cur_entry->type_u8,"ST_DOC_CMDS");
-  U8 *st=CAlloc(8,mem_task);
+  U8 *src=DefineSub(doc->cur_entry->type_u8,"ST_DOC_CMDS"),
+     *st=CAlloc(8,mem_task);
   if (doc->cur_entry==doc)
     src="EOF";
   else if (!src)
@@ -150,10 +151,10 @@ U8 *EdDollarTypeCB(CDoc *,CDocEntry *doc_e,CTask *mem_task)
   return st;
 }
 
-public U64 DocGetKey(U64 *_sc=NULL)
+public I64 DocGetKey(I64 *_sc=NULL)
 {
-  U64 ch,sc;
-  BoolI8 cont,old_preempt=IsPreempt;
+  I64 ch,sc;
+  Bool cont,old_preempt=IsPreempt;
   do {
     ch=GetKey(&sc,TRUE);
     DocRecalc(DocCur);
@@ -172,23 +173,23 @@ public U64 DocGetKey(U64 *_sc=NULL)
 }
 
 #help_index "Doc/Output"
-public BoolI64 View()
+public Bool View()
 {
-  U64 ch;
+  I64 ch;
   do ch=DocGetKey;
   while (ch!=CH_ESC && ch!=CH_SHIFT_ESC);
   return ch==CH_ESC;
 }
 
 #help_index "Doc"
-public BoolI64 DocDo(CDoc *doc,U64 doc_flags=0)
+public Bool DocDo(CDoc *doc,I64 doc_flags=0)
 {
   CDoc *old_doc=DocCur,*old_aux_doc=DocAux,*aux;
-  I64 old_attr=Fs->text_attr;
   CDocEntry *doc_e;
-  I64 old_top=Fs->win_top,old_bottom=Fs->win_bottom,
-      old_left=Fs->win_left,old_right=Fs->win_right;
-  BoolI8 unlock,old_preempt;
+  I64 old_attr=Fs->text_attr,
+      old_top =Fs->win_top, old_bottom=Fs->win_bottom,
+      old_left=Fs->win_left,old_right =Fs->win_right;
+  Bool result,unlock,old_preempt;
 
   if (doc_flags&DOF_WIN_MAX)
     WinMax;
@@ -286,12 +287,13 @@ public BoolI64 DocDo(CDoc *doc,U64 doc_flags=0)
     TaskDerivedValsUpdate;
   }
   Preempt(old_preempt);
+  return result;
 }
 
 
 #help_index "Doc/Input"
-public BoolI64 DocFormDo(U8 *D,U8 *class_name,
-    U64 doc_flags=0,U8 *header=NULL,U8 *footer=NULL)
+public Bool DocFormDo(U8 *D,U8 *class_name,
+    I64 doc_flags=0,U8 *header=NULL,U8 *footer=NULL)
 //Supply a class name that has fmtstr definitions
 //and this routine will allow user input.
 {
@@ -300,7 +302,7 @@ public BoolI64 DocFormDo(U8 *D,U8 *class_name,
   U8 *fmtstr;
   CHashClass *tempc;
   CDoc *doc;
-  result=FALSE;
+  Bool result=FALSE;
   if (!(tempc=HashFind(class_name,Fs->hash_table,HTT_CLASS)))
     return FALSE;
   doc=DocNew;
@@ -333,6 +335,7 @@ public BoolI64 DocFormDo(U8 *D,U8 *class_name,
     }
   }
   DocDel(doc);
+  return result;
 }
 
 U0 DocMenuDoEndTaskCB()
@@ -341,13 +344,12 @@ U0 DocMenuDoEndTaskCB()
   throw(EXCEPT_LOCAL);
 }
 
-public I64 DocMenuDo(CDoc *m,U64 doc_flags=0)
+public I64 DocMenuDo(CDoc *m,I64 doc_flags=0)
 { //returns m unlocked
-  U0 *old_end_cb=Fs->task_end_cb;
-  BoolI8 old_break_shift_esc=LBts(&Fs->task_flags,TASKf_BREAK_TO_SHIFT_ESC);
+  U8 *old_end_cb=Fs->task_end_cb;
+  Bool old_break_shift_esc=LBts(&Fs->task_flags,TASKf_BREAK_TO_SHIFT_ESC);
   CDocEntry *doc_e;
-  U64 old_doc_flags=m->flags;
-  result=DOCM_CANCEL;
+  I64 old_doc_flags=m->flags,result=DOCM_CANCEL;
   Fs->task_end_cb=&DocMenuDoEndTaskCB;
   try {
     if (m) {
@@ -371,13 +373,14 @@ public I64 DocMenuDo(CDoc *m,U64 doc_flags=0)
   m->flags|=old_doc_flags&(DOCF_ATTR_BY_PRT | DOCF_ATTR_BY_FILENAME);
   LBEqu(&Fs->task_flags,TASKf_BREAK_TO_SHIFT_ESC,old_break_shift_esc);
   Fs->task_end_cb=old_end_cb;
+  return result;
 }
 
 #help_index "Doc"
 public I64 PopUp(U8 *msg,CTask *parent=NULL,CTask **_pu_task=NULL)
 {
-  U64 result=0;
-  BoolI8 old_preempt=Preempt(OFF);
+  I64 result=0;
+  Bool old_preempt=Preempt(OFF);
   CTaskCmd *tempc;
   CTask *task=Spawn(&ServantUserCmdLine,NULL,"System",parent);
   if (!parent) {
@@ -400,7 +403,7 @@ public I64 PopUp(U8 *msg,CTask *parent=NULL,CTask **_pu_task=NULL)
 }
 
 #help_index "Doc/Output"
-public CTask *PopUpViewDoc(CDoc *doc,U64 doc_flags=0)
+public CTask *PopUpViewDoc(CDoc *doc,I64 doc_flags=0)
 {
   U8 *buf=MSPrintF("if (!IsSysDeterministic) Preempt(ON);DocDo(0x%X,0x%X);",doc,doc_flags);
   CTask *task=Spawn(&ServantUserCmdLine,NULL,"View",Fs);
@@ -427,13 +430,13 @@ public CTask *PopUpViewStr(U8 *msg)
 }
 
 #help_index "Doc/Input"
-public I64 PopUpMenu(CDoc *doc,U64 doc_flags=0)
+public I64 PopUpMenu(CDoc *doc,I64 doc_flags=0)
 {
   doc->flags|=DOCF_MIN_SIZE | DOCF_FORM;
   return ServantUser("DocMenuDo(0x%X,0x%X);",doc,doc_flags);
 }
 
-public BoolI64 PopUpForm(U8 *D,U8 *class_name,U64 doc_flags=DOF_MIN_SIZE,
+public Bool PopUpForm(U8 *D,U8 *class_name,I64 doc_flags=DOF_MIN_SIZE,
     U8 *header=NULL,U8 *footer=NULL)
 {
   return ServantUser("DocFormDo(0x%X,0x%X,0x%X,0x%X,0x%X);",D,class_name,
@@ -443,7 +446,7 @@ public BoolI64 PopUpForm(U8 *D,U8 *class_name,U64 doc_flags=DOF_MIN_SIZE,
 #help_index "Doc/Input;File/FileNames"
 public U8 *PopUpPickFile(U8 *dir=NULL)
 {
-  U8 *st,*st2;
+  U8 *result,*st,*st2;
   if (dir)
     st=MSPrintF("Cd(\"%Q\");FileMgr(FM_PICK_FILE,Fs->parent_task);",dir);
   else {
@@ -453,11 +456,12 @@ public U8 *PopUpPickFile(U8 *dir=NULL)
   }
   result=PopUp(st,Fs);
   Free(st);
+  return result;
 }
 
 public U8 *PopUpPickDir(U8 *dir=NULL)
 {
-  U8 *st,*st2;
+  U8 *result,*st,*st2;
   if (dir)
     st=MSPrintF("Cd(\"%Q\");FileMgr(FM_PICK_DIR,Fs->parent_task);",dir);
   else {
@@ -467,9 +471,10 @@ public U8 *PopUpPickDir(U8 *dir=NULL)
   }
   result=PopUp(st,Fs);
   Free(st);
+  return result;
 }
 
-public U8 *FileNameForm(U8 *dft=NULL,U64 doc_flags=0,CTask *mem_task=NULL)
+public U8 *FileNameForm(U8 *dft=NULL,I64 doc_flags=0,CTask *mem_task=NULL)
 {
   CEdFileName fn;
   if (dft)
@@ -482,23 +487,25 @@ public U8 *FileNameForm(U8 *dft=NULL,U64 doc_flags=0,CTask *mem_task=NULL)
     return NULL;
 }
 
-public U8 *PopUpFileName(U8 *dft=NULL,U64 doc_flags=0)
+public U8 *PopUpFileName(U8 *dft=NULL,I64 doc_flags=0)
 {
-  U8 *st;
-  st=MSPrintF("FileNameForm(\"%Q\",0x%X,Fs->parent_task);",dft,doc_flags|DOF_MIN_SIZE);
-  result=PopUp(st,Fs);
+  U8 *st=MSPrintF("FileNameForm(\"%Q\",0x%X,Fs->parent_task);",dft,doc_flags|DOF_MIN_SIZE),
+     *result=PopUp(st,Fs);
   Free(st);
+  return result;
 }
 
 #help_index "Doc"
-public BoolI64 PopUpCd()
+public Bool PopUpCd()
 {
+  Bool result;
   U8 *st=PopUpPickDir;
   if (st) {
     result=Cd(st);
     Free(st);
   } else
     result=FALSE;
+  return result;
 }
 
 #help_index "Doc/Input"
@@ -557,17 +564,17 @@ public I64 PopUp2(U8 *b1,I64 n1,U8 *b2,I64 n2,U8 *header=NULL,U8 *footer=NULL)
   return i;
 }
 
-public BoolI64 PopUpOk(U8 *header=NULL,U8 *footer=NULL)
+public Bool PopUpOk(U8 *header=NULL,U8 *footer=NULL)
 {
   return PopUp1("OKAY",1,header,footer)>0;
 }
 
-public BoolI64 PopUpNoYes(U8 *header=NULL,U8 *footer=NULL)
+public Bool PopUpNoYes(U8 *header=NULL,U8 *footer=NULL)
 {
   return PopUp2("YES",1,"NO",0,header,footer)>0;
 }
 
-public BoolI64 PopUpCancelOk(U8 *header=NULL,U8 *footer=NULL)
+public Bool PopUpCancelOk(U8 *header=NULL,U8 *footer=NULL)
 {
   return PopUp2("OKAY",1,"CANCEL",0,header,footer)>0;
 }
@@ -594,19 +601,21 @@ public I64 PopUpReplaceSkipAllCancel(U8 *header=NULL,U8 *footer=NULL)
 
 U8 *DoPopUpMGetS(U8 *header,CTask *mem_task)
 {
-  U8 *result=NULL,*st;
+  U8 *result,*st;
   if (header)
     "" header;
   st=MGetS(GETSF_WITH_NEW_LINE);
   result=StrNew(st,mem_task);
   Free(st);
+  return result;
 }
 
 public U8 *PopUpMGetS(U8 *header=NULL)
 {
-  U8 *st=MSPrintF("DoPopUpMGetS(0x%X,0x%X);",header,Fs);
-  result=PopUp(st,Fs);
+  U8 *st=MSPrintF("DoPopUpMGetS(0x%X,0x%X);",header,Fs),
+     *result=PopUp(st,Fs);
   Free(st);
+  return result;
 }
 
 public I64 PopUpRangeI64(I64 lo,I64 hi,I64 step=1,U8 *header=NULL,U8 *footer=NULL)
@@ -671,12 +680,12 @@ public F64 PopUpRangeF64Log(F64 lo,F64 hi,I64 steps,
 }
 
 #help_index "Task/Rqsts"
-public I64 AdamFile(U8 *filename,BoolI8 warn_ext=TRUE)
+public I64 AdamFile(U8 *filename,Bool warn_ext=TRUE)
 {
-  BoolI8 okay=TRUE;
+  Bool okay=TRUE;
   U8 *name=FileNameAbs(filename),
      *name2=DftExt(name,"CPP.Z");
-  result=0;
+  I64 result=0;
   if (warn_ext &&
       !WildCardMatch("*.CPP.Z",name2) &&
       !PopUpCancelOk(ST_WARN_ST "Not .CPP.Z File\n\n"))
@@ -685,15 +694,16 @@ public I64 AdamFile(U8 *filename,BoolI8 warn_ext=TRUE)
     result=Adam("#include \"%s\";",name2);
   Free(name2);
   Free(name);
+  return result;
 }
 #help_index "Doc"
 
-public I64 PopUpFile(U8 *filename,BoolI8 warn_ext=TRUE,CTask *parent=NULL,CTask **_pu_task=NULL)
+public I64 PopUpFile(U8 *filename,Bool warn_ext=TRUE,CTask *parent=NULL,CTask **_pu_task=NULL)
 {
-  BoolI8 okay=TRUE;
+  Bool okay=TRUE;
   U8 *st,*name=FileNameAbs(filename),
      *name2=DftExt(name,"CPP.Z");
-  result=0;
+  I64 result=0;
   if (warn_ext &&
       !WildCardMatch("*.CPP.Z",name2) &&
       !PopUpCancelOk(ST_WARN_ST "Not .CPP.Z File\n\n"))
@@ -705,17 +715,11 @@ public I64 PopUpFile(U8 *filename,BoolI8 warn_ext=TRUE,CTask *parent=NULL,CTask 
   }
   Free(name2);
   Free(name);
-}
-
-#help_index "Doc/Input;Input Pointer"
-public I64 PopUpInputPtr()
-{ //Not yet relevant
-  ip_dev=PopUp2("Mouse",IP_MOUSE,"JoyStick",IP_JOYSTICK0);
-  return ip_dev;
+  return result;
 }
 
 #help_index "Graphics/Input"
-public I64 PopUpColor(U8 *header=NULL,BoolI8 allow_transparent=TRUE,BoolI8 allow_dft=TRUE)
+public I64 PopUpColor(U8 *header=NULL,Bool allow_transparent=TRUE,Bool allow_dft=TRUE)
 {
   I64 i;
   CDoc *doc=DocNew;
@@ -767,7 +771,7 @@ class CTransformForm
   F64 z_offset	fmtstr "$DA-T,32,\"Z Offset:%12.6f\"$\n";
 };
 
-BoolI64 PopUpTransform(I64 *r)
+Bool PopUpTransform(I64 *r)
 {
   CTransformForm *tf=MAlloc(sizeof(CTransformForm));
   tf->x_scale=1.0;
@@ -851,6 +855,7 @@ I64 DitherColorDo(U8 *header=NULL)
 dcd_done:
   SettingsPop;
   NamedFramePtrDel("DitherDoFrame");
+  return result;
 }
 
 public I64 PopUpDitherColor(U8 *header=NULL)

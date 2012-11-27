@@ -26,15 +26,15 @@ I64 PopUpReplaceSkipAllCancelEd(U8 *msg)
 
 
 
-U64 GrepFile(U8 *pattern,U8 *name,U64 *_fuf_flags,U8 *replace_text)
+I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
 {
-  BoolI8 first_on_line,write_this_file=FALSE,cont=!Bt(_fuf_flags,FUf_CANCEL);
+  Bool first_on_line,write_this_file=FALSE,cont=!Bt(_fuf_flags,FUf_CANCEL);
   U8 *src,*dst,*dst2,*name_buf=NULL;
-  U64 ss_flags;
+  I64 ss_flags;
   CDoc *cur_l,*doc=DocRead(name,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR);
   CDocEntry *doc_e;
   I64 i,j,plen,rlen,dlen;
-  U64 cnt=0,old_flags;
+  I64 cnt=0,old_flags;
 
   ss_flags=Bt(_fuf_flags,FUf_IGNORE) ? SRF_IGNORE_CASE :0;
   if (Bt(_fuf_flags,FUf_WHOLE_LABELS))
@@ -142,9 +142,9 @@ U64 GrepFile(U8 *pattern,U8 *name,U64 *_fuf_flags,U8 *replace_text)
   return cnt;
 }
 
-U64 GrepList(U8 *pattern,CDirEntry *tempm1,U64 *_fuf_flags,U8 *replace_text)
+I64 GrepList(U8 *pattern,CDirEntry *tempm1,I64 *_fuf_flags,U8 *replace_text)
 {
-  U64 cnt=0;
+  I64 cnt=0;
   CDirEntry *tempm2;
 
   while (tempm1 && !Bt(_fuf_flags,FUf_CANCEL)) {
@@ -156,13 +156,13 @@ U64 GrepList(U8 *pattern,CDirEntry *tempm1,U64 *_fuf_flags,U8 *replace_text)
       }
     } else
       cnt+=GrepFile(pattern,tempm1->full_name,_fuf_flags,replace_text);
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
   return cnt;
 }
 
-public U64 Grep(U8 *pattern,U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL,U8 *replace_text=NULL)
+public I64 Grep(U8 *pattern,U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL,U8 *replace_text=NULL)
 /*
 This does not do regular expressions--my bad.
 Anyway, it's good for searching and replacing.
@@ -179,7 +179,7 @@ Let's say it stands for global replace ;-)
 */
 
 {
-  U64 cnt=0,fuf_flags=0;
+  I64 cnt=0,fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+i"); //Set dft flags
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   LBEqu(&fuf_flags,FUf_REPLACE,replace_text);
@@ -187,14 +187,14 @@ Let's say it stands for global replace ;-)
   return cnt;
 }
 
-public U64 FileOcc(U8 *pattern,U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags="+r+i+l")
+public I64 FileOcc(U8 *pattern,U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags="+r+i+l")
 {/*
 "+r"=recurse
 "+i"=ignore case
 "+l"=whole labels only.
 */
-  U64 cnt=0;
-  BoolI8 old_silent=Silent(TRUE);
+  I64 cnt=0;
+  Bool old_silent=Silent(TRUE);
   cnt=Grep(pattern,files_find_mask,fu_flags);
   Silent(old_silent);
   return cnt;
@@ -204,19 +204,19 @@ class CGrep
 {
   U8	find_text[136]	    fmtstr "$DA-P,135,\"FIND        :%s\"$\n";
   U8	replace_text[136]   fmtstr "$DA-P,135,\"REPLACE     :%s\"$\n";
-  BoolI8 replace	    fmtstr "$CB,\"REPLACE\"$\n";
-  BoolI8 match_case	    fmtstr "$CB,\"MATCH CASE\"$\n";
-  BoolI8 whole_labels	    fmtstr "$CB,\"WHOLE LABELS\"$\n";
+  Bool	replace	    fmtstr "$CB,\"REPLACE\"$\n";
+  Bool	match_case	    fmtstr "$CB,\"MATCH CASE\"$\n";
+  Bool	whole_labels	    fmtstr "$CB,\"WHOLE LABELS\"$\n";
   U8	filemask[136]	    fmtstr "$DA-P,135,\"FILE MASK   :%s\"$\n";
-  BoolI8 recurse	    fmtstr "$CB,\"RECURSE\"$\n";
+  Bool	recurse	    fmtstr "$CB,\"RECURSE\"$\n";
 };
 
-U64 GrepWiz()
+I64 GrepWiz()
 {
   CDoc *doc;
   U8 buf[32],*dir,*st;
   CGrep *g=CAlloc(sizeof(CGrep));
-  result=0;
+  I64 result=0;
   g->recurse=TRUE;
   StrCpy(g->filemask,TEXT_FILE_MASK);
   if (doc=DocCur) {
@@ -252,6 +252,7 @@ U64 GrepWiz()
     Free(dir);
   }
   Free(g);
+  return result;
 }
 
 #help_index ""

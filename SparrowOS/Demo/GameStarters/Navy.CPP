@@ -52,7 +52,7 @@ class Torpedo
 
 class Squadron : Obj
 {
-  U64 action,dead_mask,total_mask;
+  I64 action,dead_mask,total_mask;
 } *squadrons;
 
 
@@ -82,8 +82,8 @@ I64 num_carriers[NUM_PLAYERS]={2,3},
     num_squadrons;
 
 Obj *ObjFind(F64 x,F64 y,
-	     U64 flag_mask=OF_ACTIVE|OF_RETURNING,U64 flag_val=OF_ACTIVE,
-	     U64 type_mask=-1,U64 player_mask=-1,F64 *_d=NULL)
+	     I64 flag_mask=OF_ACTIVE|OF_RETURNING,I64 flag_val=OF_ACTIVE,
+	     I64 type_mask=-1,I64 player_mask=-1,F64 *_d=NULL)
 {
   Obj *tempo=obj_root.next,*best=NULL;
   F64 dd,best_dd=MAX_F64;
@@ -151,7 +151,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   F64 d,cur_time=tP(task);
   Obj *tempo;
   Torpedo *tempt;
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   task->text_attr=BLUE<<4+WHITE;
 
 
@@ -476,7 +476,7 @@ Squadron *SquadronSettheta(I64 player,F64 x=MAX_F64,F64 y=MAX_F64,F64 theta=MAX_
 
 U0 SquadronActions()
 {
-  U64 i,completed_mask;
+  I64 i,completed_mask;
   Obj *tempo;
   Squadron *temps;
   for (i=0,temps=squadrons;i<num_squadrons;i++,temps++) {
@@ -607,7 +607,7 @@ U0 Combat(F64 period)
 }
 
 #define ANIMATE_FREQ	50
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 { //Preemption is off after Spawn
   Obj *tempo;
   Torpedo *tempt,*tempt1;

@@ -1,6 +1,6 @@
 class MPCtrl
 {
-  BoolI8 done[MP_MAX_PROCESSORS];
+  Bool done[MP_MAX_PROCESSORS];
 } mp;
 
 I32 *a1=NULL, //This is the master copy of random nums

@@ -17,7 +17,7 @@ CMgdSC *PmtSliderCtrl()
 {
   CMgdSCSlider *temps;
   U8 *st,pmt[136];
-  result=CAlloc(sizeof(CMgdSC));
+  CMgdSC *result=CAlloc(sizeof(CMgdSC));
 
   "$FG,PURPLE$Slider Ctrl$FG$\n\n";
 
@@ -39,6 +39,7 @@ CMgdSC *PmtSliderCtrl()
     QueIns(temps,result->last_slider);
     temps->num=result->num_sliders++;
   }
+  return result;
 }
 
 U0 MgdSliderCtrl(CDoc *doc)
@@ -143,7 +144,7 @@ U0 UpdateDerivedSliderCtrl(CCtrl *c)
   DocPutS(doc,
 "}
 
-U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,BoolI8 down)
+U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,Bool down)
 {
   nounusedwarn down;
   CSliderState *s=c->state;
@@ -171,7 +172,7 @@ U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,BoolI8 down)
 
 CCtrl *SliderNew()
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   CCtrl *c=CAlloc(sizeof(CCtrl));
   c->win_task=Fs;
   c->flags=CTRLF_SHOW|CTRLF_CAPTURE_LEFT_IP;
@@ -195,7 +196,7 @@ CCtrl *SliderNew()
 
 U0 SliderDel(CCtrl *c)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(c);
   Preempt(old_preempt);
 ");

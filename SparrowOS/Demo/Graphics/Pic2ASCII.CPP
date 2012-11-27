@@ -1,6 +1,6 @@
 U0 Convert()
 {
-  U64 *ptr;
+  I64 *ptr;
 
 //Normally, allocate large objects on the heap
 //because stk size can't grow. 256 bytes, however,

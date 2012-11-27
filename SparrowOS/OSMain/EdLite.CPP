@@ -9,7 +9,7 @@ U0 EdLiteUpdate(CLine *root,CLine *cur_line,I64 cur_col,I64 line_start_col)
   I64 ch,i,j,k,k2,cursor_col,cursor_row=-1;
   U8 *st;
   CLine *templ=cur_line;
-  BoolI8 done_eof=FALSE;
+  Bool done_eof=FALSE;
   sys_raw_dc_col=0;
   for (i=0;i<text_rows/2;i++)
     if (templ->last!=root)
@@ -59,12 +59,11 @@ U0 EdLiteUpdate(CLine *root,CLine *cur_line,I64 cur_col,I64 line_start_col)
 U0 EdLite(U8 *filename)
 {
 //Light weight text editor for debugging
-  U8 *src,*src2,*src3,*dst;
-  I64 i,ch,sc,size,bin_size=0,line_start_col=0,cur_col=0;
-  U8 *buf,*bin_data=NULL;
+  U8 *src,*src2,*src3,*dst,*buf,*bin_data=NULL;
+  I64 i,ch,sc,size,bin_size=0,line_start_col=0,cur_col=0,
+      old_dc_flags=sys_raw_dc_flags;
   CLine root,*templ,*templ1,*cur_line;
-  U64 old_dc_flags=sys_raw_dc_flags;
-  BoolI8 old_raw=Raw(ON),
+  Bool old_raw=Raw(ON),
 	old_debug=InDbg(ON),
 	old_single=SingleUser(ON);
 

@@ -187,9 +187,9 @@ U0 Init()
   }
 }
 
-U0 DrawDesign(CDC *dc,I64 &y,U64 output,I64 depth,I64 *_x_out,I64 *_y_out)
+U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 {
-  I64 type=gate_type_table[output],
+  I64 y=*_y,type=gate_type_table[output],
       xx=(passes-depth)*(GATE_WIDTH+CONNECT_WIDTH),yy=y,
       x1,y1,x2,y2,x3,y3;
   if (_x_out) *_x_out=xx;
@@ -208,7 +208,7 @@ U0 DrawDesign(CDC *dc,I64 &y,U64 output,I64 depth,I64 *_x_out,I64 *_y_out)
       case GT_NOT:
 	if (!Bt(displayed_design,output)) {
 	  y+=16;
-	  DrawDesign(dc,y,input1_table[output],depth+1,&x1,&y1);
+	  DrawDesign(dc,&y,input1_table[output],depth+1,&x1,&y1);
 	  yy=y1;
 
 	  dc->color=BLUE;
@@ -227,8 +227,8 @@ U0 DrawDesign(CDC *dc,I64 &y,U64 output,I64 depth,I64 *_x_out,I64 *_y_out)
       case GT_XOR:
 	if (!Bt(displayed_design,output)) {
 	  y+=24;
-	  DrawDesign(dc,y,input1_table[output],depth+1,&x1,&y1);
-	  DrawDesign(dc,y,input2_table[output],depth+1,&x2,&y2);
+	  DrawDesign(dc,&y,input1_table[output],depth+1,&x1,&y1);
+	  DrawDesign(dc,&y,input2_table[output],depth+1,&x2,&y2);
 	  yy=(y1+y2)/2;
 
 	  dc->color=BLUE;
@@ -246,9 +246,9 @@ U0 DrawDesign(CDC *dc,I64 &y,U64 output,I64 depth,I64 *_x_out,I64 *_y_out)
       case GT_NOR3:
 	if (!Bt(displayed_design,output)) {
 	  y+=32;
-	  DrawDesign(dc,y,input1_table[output],depth+1,&x1,&y1);
-	  DrawDesign(dc,y,input2_table[output],depth+1,&x2,&y2);
-	  DrawDesign(dc,y,input3_table[output],depth+1,&x3,&y3);
+	  DrawDesign(dc,&y,input1_table[output],depth+1,&x1,&y1);
+	  DrawDesign(dc,&y,input2_table[output],depth+1,&x2,&y2);
+	  DrawDesign(dc,&y,input3_table[output],depth+1,&x3,&y3);
 	  yy=(y1+y2+y3)/3;
 
 	  dc->color=BLUE;
@@ -265,18 +265,19 @@ U0 DrawDesign(CDC *dc,I64 &y,U64 output,I64 depth,I64 *_x_out,I64 *_y_out)
   dc->color=BLACK;
   GrPrintF(dc,xx,yy+3,"%04X",output);
   Bts(displayed_design,output);
+  if (_y) *_y=y;
 }
 
 U0 DrawIt(CTask *,CDC *dc)
 {
   I64 y=0;
-  MemSet(displayed_design,0,(table_size+7)/8*sizeof(BoolI8));
-  DrawDesign(dc,y,output_found,0,NULL,NULL);
+  MemSet(displayed_design,0,(table_size+7)/8*sizeof(Bool));
+  DrawDesign(dc,&y,output_found,0,NULL,NULL);
 }
 
-U0 FillNot(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillNot(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j;
+  I64 i,j;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i)) {
@@ -296,9 +297,9 @@ U0 FillNot(BoolI8 *chged,I64 *num_outputs_found)
     }
 }
 
-U0 FillAnd(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillAnd(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k;
+  I64 i,j,k;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -321,9 +322,9 @@ U0 FillAnd(BoolI8 *chged,I64 *num_outputs_found)
 	}
 }
 
-U0 FillOr(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillOr(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k;
+  I64 i,j,k;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -346,9 +347,9 @@ U0 FillOr(BoolI8 *chged,I64 *num_outputs_found)
 	}
 }
 
-U0 FillNAnd(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillNAnd(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k;
+  I64 i,j,k;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -371,9 +372,9 @@ U0 FillNAnd(BoolI8 *chged,I64 *num_outputs_found)
 	}
 }
 
-U0 FillNOr(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillNOr(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k;
+  I64 i,j,k;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -396,9 +397,9 @@ U0 FillNOr(BoolI8 *chged,I64 *num_outputs_found)
 	}
 }
 
-U0 FillXor(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillXor(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k;
+  I64 i,j,k;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -421,9 +422,9 @@ U0 FillXor(BoolI8 *chged,I64 *num_outputs_found)
 	}
 }
 
-U0 FillAnd3(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillAnd3(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k,l;
+  I64 i,j,k,l;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -449,9 +450,9 @@ U0 FillAnd3(BoolI8 *chged,I64 *num_outputs_found)
 	    }
 }
 
-U0 FillOr3(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillOr3(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k,l;
+  I64 i,j,k,l;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -477,9 +478,9 @@ U0 FillOr3(BoolI8 *chged,I64 *num_outputs_found)
 	    }
 }
 
-U0 FillNAnd3(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillNAnd3(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k,l;
+  I64 i,j,k,l;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -505,9 +506,9 @@ U0 FillNAnd3(BoolI8 *chged,I64 *num_outputs_found)
 	    }
 }
 
-U0 FillNOr3(BoolI8 *chged,I64 *num_outputs_found)
+U0 FillNOr3(Bool *chged,I64 *num_outputs_found)
 {
-  U64 i,j,k,l;
+  I64 i,j,k,l;
   U8 old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
@@ -537,7 +538,7 @@ U0 FillNOr3(BoolI8 *chged,I64 *num_outputs_found)
 I64 FillGateTable()
 {
   I64 current_gate,num_outputs_found=0;
-  BoolI8 chged=TRUE;
+  Bool chged=TRUE;
   passes=1;
   output_found=-1;
   ProgressBarsRst;

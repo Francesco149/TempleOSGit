@@ -1,7 +1,7 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 136,281 lines of SparrowOS over 
-the past 15.5 years (full-time).  It runs on bare hardware with no layering, 
+* I, Terry A. Davis, wrote every one of the 137,965 lines of SparrowOS over 
+the past -0.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
 call 
@@ -33,7 +33,7 @@ kernel privilege, so "Kernel" is deceptive!
 * [C:/SparrowOS/OSMain/Adam1b.HPP.Z,57] Bt() is "bit test", like the x86
 instruction, not "bit torrent".
 
-* [C:/SparrowOS/OSMain/Adam1b.HPP.Z,282] Fs is a segment register, not "file
+* [C:/SparrowOS/OSMain/Adam1b.HPP.Z,283] Fs is a segment register, not "file
 system".  (It is kept pointing to the 
 current task's record.)  There is no memory segmentation -- FS and GS are
 used 
@@ -42,7 +42,7 @@ as general purpose registers, more or less.
 * SparrowOS uses a flavor of C/C++.  It is not PASCAL.  I altered the syntax 
 making parenthesis optional on function calls with no paramaters.
 
-* [C:/SparrowOS/OSMain/Misc1a.CPP.Z,190] Sleep() makes a program pause.  It
+* [C:/SparrowOS/OSMain/Misc1a.CPP.Z,198] Sleep() makes a program pause.  It
 is not hybernation for a laptop.
 
 * [C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield() saves the current task's
@@ -68,11 +68,11 @@ distribution.  Use [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot()
 to compile the kernel and compiler.
 
 * SparrowOS does not use object files or a linker.  You can link .BIN.Z 
-modules at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() time, though. 
+modules at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() time, though. 
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,493] JIFFY_FREQ.
+interrupt.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,489] JIFFY_FREQ.
 
 * Refresh rate is how often SparrowOS updates screen mem.  It is not 
 syncronized to the hardware rate, having nothing to do with it.

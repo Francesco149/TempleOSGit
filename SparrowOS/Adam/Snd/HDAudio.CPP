@@ -186,9 +186,9 @@ class CHDBufDesc
 class CHDAudioCtrl
 {
   U8 *bar;
-  U64 cad;
+  I64 cad;
   U32 *corb;
-  U64 *rirb;
+  I64 *rirb;
   CHDBufDesc *ostr0_bdl,*istr0_bdl;
   SND_OUT_CONTAINER *ostr0_buf[2];
   SND_IN_CONTAINER  *istr0_buf[2];
@@ -197,12 +197,12 @@ class CHDAudioCtrl
   F64 freq,amp;
   CSndWaveCtrl *sc;
   U8 rirb_rp,corb_wp;
-  BoolI8 audio_task_started,in_running,out_running;
+  Bool audio_task_started,in_running,out_running;
 } *_hda=NULL;
 
 I64 AudioSize()
-{//[C:/SparrowOS/Adam/MemRep.CPP.Z,184] MemRep uses this for Adam Heap
-  result=MSize2(snd_reverb_buf);
+{//[C:/SparrowOS/Adam/MemRep.CPP.Z,190] MemRep uses this for Adam Heap
+  I64 result=MSize2(snd_reverb_buf);
   if (_hda) {
     result+=MSize2(_hda);
 /* uncached heap
@@ -215,6 +215,7 @@ I64 AudioSize()
       result+=MSize2(_hda->istr0_buf[i]);
 */
   }
+  return result;
 }
 
 U0 HDSyncCORB()
@@ -233,31 +234,31 @@ U0 HDWriteCORB(I64 cad,I64 nid,U32 val)
   _hda->corb[++_hda->corb_wp]=val;
 }
 
-U64 HDSyncRIRB()
+I64 HDSyncRIRB()
 {
   U16 *_w;
-  U8 wp;
-  result=0;
+  I64 wp,result=0;
   _w=_hda->bar+HD_RIRBWP;
   wp=*_w;
   while (_hda->rirb_rp!=wp)
     result=_hda->rirb[++_hda->rirb_rp];
+  return result;
 }
 
-U64 HDReadRIRB()
+I64 HDReadRIRB()
 {
   U16 *_w;
-  U8 wp;
-  result=0;
+  I64 wp,result=0;
   _w=_hda->bar+HD_RIRBWP;
   do {
     Yield;
     wp=*_w;
   } while (wp==_hda->rirb_rp);
   result=_hda->rirb[++_hda->rirb_rp];
+  return result;
 }
 
-U64 HDWriteCORBSync(I64 cad,I64 nid,U32 val)
+I64 HDWriteCORBSync(I64 cad,I64 nid,U32 val)
 {
   HDSyncCORB;
   HDSyncRIRB;
@@ -266,7 +267,7 @@ U64 HDWriteCORBSync(I64 cad,I64 nid,U32 val)
   return HDReadRIRB;
 }
 
-BoolI64 HDTestCORBSync(I64 cad,I64 nid,U32 val)
+Bool HDTestCORBSync(I64 cad,I64 nid,U32 val)
 { //Checks for a response
   U16 *_w;
   U8 wp;
@@ -330,7 +331,7 @@ U0 HDTraverse(I64 cad,I64 nid)
   }
 }
 
-U0 HDRun(BoolI8 in,BoolI8 out)
+U0 HDRun(Bool in,Bool out)
 {
   U32 *_d;
   if (_hda->bar) {
@@ -347,7 +348,7 @@ U0 HDRun(BoolI8 in,BoolI8 out)
   }
 }
 
-U0 HDStop(BoolI8 in,BoolI8 out)
+U0 HDStop(Bool in,Bool out)
 {
   U32 *_d;
   if (_hda->bar) {
@@ -364,7 +365,7 @@ U0 HDStop(BoolI8 in,BoolI8 out)
   }
 }
 
-U0 HDSnd(F64 freq,U64 waveform=WF_SQUARE,F64 amp=1.0)
+U0 HDSnd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0)
 {
   _hda->waveform=waveform;
   _hda->amp=amp;
@@ -386,7 +387,7 @@ U0 HDAudioTaskEndCB()
 }
 
 
-U0 HDAudioTask(U64)
+U0 HDAudioTask(I64)
 {
 //I didn't feel like messing around with PCI interrupts
 //so this task polls every millisecond to know when to
@@ -457,7 +458,7 @@ U0 HDRst()
   Sleep(1);
 }
 
-public U0 HDAudioEnd(BoolI8 rst=TRUE)
+public U0 HDAudioEnd(Bool rst=TRUE)
 {
   snd_dev=SD_PC_SPEAKER;
   if (_hda && _hda->bar) {
@@ -479,7 +480,7 @@ public U0 HDAudioEnd(BoolI8 rst=TRUE)
   }
 }
 
-public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
+public Bool HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
 {
   I64 i;
   U32 *_d;
@@ -490,8 +491,8 @@ public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
   if (PCIReadU16(hd_bus,hd_dev,hd_fun,0)==0x8086 &&
       (_hda=ACAlloc(sizeof(CHDAudioCtrl))) &&
       (_hda->bar=Mem32DevAlloc(0x4000,0x4000)) ) {
-    PCIWriteU32(hd_bus,hd_dev,hd_fun,0x14,_hda->bar(U64).u32[1]);
-    PCIWriteU32(hd_bus,hd_dev,hd_fun,0x10,_hda->bar(U64).u32[0]);
+    PCIWriteU32(hd_bus,hd_dev,hd_fun,0x14,_hda->bar(I64).u32[1]);
+    PCIWriteU32(hd_bus,hd_dev,hd_fun,0x10,_hda->bar(I64).u32[0]);
     PCIWriteU16(hd_bus,hd_dev,hd_fun,0x04,
     PCIReadU16(hd_bus,hd_dev,hd_fun,0x04)|0x406);
 
@@ -499,15 +500,15 @@ public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
 
     _hda->corb=CAllocAligned(HD_CORB_ENTRIES*sizeof(U32),128,sys_uncached_heap);
     _d=_hda->bar+HD_CORBLBASE;
-    *_d=_hda->corb(U64).u32[0];
+    *_d=_hda->corb(I64).u32[0];
     _d=_hda->bar+HD_CORBUBASE;
-    *_d=_hda->corb(U64).u32[1];
+    *_d=_hda->corb(I64).u32[1];
 
-    _hda->rirb=CAllocAligned(HD_RIRB_ENTRIES*sizeof(U64),128,sys_uncached_heap);
+    _hda->rirb=CAllocAligned(HD_RIRB_ENTRIES*sizeof(I64),128,sys_uncached_heap);
     _d=_hda->bar+HD_RIRBLBASE;
-    *_d=_hda->rirb(U64).u32[0];
+    *_d=_hda->rirb(I64).u32[0];
     _d=_hda->bar+HD_RIRBUBASE;
-    *_d=_hda->rirb(U64).u32[1];
+    *_d=_hda->rirb(I64).u32[1];
 
     _w=_hda->bar+HD_CORBRP;
     *_w=0x8000; //Rst read ptr
@@ -536,9 +537,9 @@ public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
 
     _hda->ostr0_bdl =CAllocAligned(HD_BDL_ENTRIES*sizeof(CHDBufDesc),128,sys_uncached_heap);
     _d=_hda->bar+OSTR0+STRBDPL;
-    *_d=_hda->ostr0_bdl(U64).u32[0];
+    *_d=_hda->ostr0_bdl(I64).u32[0];
     _d=_hda->bar+OSTR0+STRBDPU;
-    *_d=_hda->ostr0_bdl(U64).u32[1];
+    *_d=_hda->ostr0_bdl(I64).u32[1];
     for (i=0;i<2;i++) {
       _hda->ostr0_bdl[i].buf=_hda->ostr0_buf[i]=CAllocAligned(SND_BUF_LEN*sizeof(SND_OUT_CONTAINER),128,sys_uncached_heap);
       _hda->ostr0_bdl[i].len=SND_BUF_LEN*sizeof(SND_OUT_CONTAINER);
@@ -547,9 +548,9 @@ public BoolI64 HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
 
     _hda->istr0_bdl =CAllocAligned(HD_BDL_ENTRIES*sizeof(CHDBufDesc),128,sys_uncached_heap);
     _d=_hda->bar+ISTR0+STRBDPL;
-    *_d=_hda->istr0_bdl(U64).u32[0];
+    *_d=_hda->istr0_bdl(I64).u32[0];
     _d=_hda->bar+ISTR0+STRBDPU;
-    *_d=_hda->istr0_bdl(U64).u32[1];
+    *_d=_hda->istr0_bdl(I64).u32[1];
     for (i=0;i<2;i++) {
       _hda->istr0_bdl[i].buf=_hda->istr0_buf[i]=CAllocAligned(SND_BUF_LEN*sizeof(SND_IN_CONTAINER),128,sys_uncached_heap);
       _hda->istr0_bdl[i].len=SND_BUF_LEN*sizeof(SND_IN_CONTAINER);

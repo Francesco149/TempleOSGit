@@ -39,7 +39,7 @@ class CGrMFrame
   CTask *task;
   I64 mode,cx,cy;
   CColorROPU32 cur_color;
-  BoolI8 grid_on,flip_y,select_rect,vertex_on,pad[4];
+  Bool grid_on,flip_y,select_rect,vertex_on,pad[4];
   I64 mp_done_flags; //Used for multiprocessing signaling.
   F64 view_scale;
   CDC *dc;
@@ -89,6 +89,7 @@ CGrMVertex *GrMVertexFindS(CGrMFrame *e,I64 x,I64 y)
     }
     tempv=tempv->next;
   }
+  return result;
 }
 
 CGrMVertex *GrMVertexFindNum(CGrMFrame *e,I64 num)
@@ -134,7 +135,7 @@ U0 GrMVertexDel(CGrMFrame *e,CGrMVertex *tempv)
   }
 }
 
-U0 GrMVertexSelectAll(CGrMFrame *e,BoolI8 val)
+U0 GrMVertexSelectAll(CGrMFrame *e,Bool val)
 {
   CGrMVertex *tempv=e->vertex_root.next;
   while (tempv!=&e->vertex_root) {
@@ -146,7 +147,7 @@ U0 GrMVertexSelectAll(CGrMFrame *e,BoolI8 val)
   }
 }
 
-U0 GrMTriangleSelectAll(CGrMFrame *e,BoolI8 val)
+U0 GrMTriangleSelectAll(CGrMFrame *e,Bool val)
 {
   CGrMTri *tempt=e->triangle_root.next;
   while (tempt!=&e->triangle_root) {
@@ -158,7 +159,7 @@ U0 GrMTriangleSelectAll(CGrMFrame *e,BoolI8 val)
   }
 }
 
-U0 GrMVertexIgnoreSet(CGrMFrame *e,BoolI8 val)
+U0 GrMVertexIgnoreSet(CGrMFrame *e,Bool val)
 {
   CGrMVertex *tempv=e->vertex_root.next;
   while (tempv!=&e->vertex_root) {
@@ -260,11 +261,12 @@ I64 GrMSelectCnt(CGrMFrame *e)
       result++;
     tempt=tempt->next;
   }
+  return result;
 }
 
 U0 GrMSwapAxes(CGrMFrame *e,I64 o1,I64 o2)
 {
-  BoolI8 unselect;
+  Bool unselect;
   CGrMVertex *tempv=e->vertex_root.next;
   if (!GrMSelectCnt(e)) {
     GrMVertexSelectAll(e,TRUE);
@@ -282,7 +284,7 @@ U0 GrMSwapAxes(CGrMFrame *e,I64 o1,I64 o2)
 
 U0 GrMInvertAxis(CGrMFrame *e,I64 o)
 {
-  BoolI8 unselect;
+  Bool unselect;
   CGrMVertex *tempv=e->vertex_root.next;
   if (!GrMSelectCnt(e)) {
     GrMVertexSelectAll(e,TRUE);
@@ -300,7 +302,7 @@ U0 GrMInvertAxis(CGrMFrame *e,I64 o)
 
 U0 GrMTransformSelect(CGrMFrame *e)
 {
-  BoolI8 unselect;
+  Bool unselect;
   I64 r[16],x,y,z;
   CGrMVertex *tempv=e->vertex_root.next;
   if (PopUpTransform(r)) {
@@ -324,7 +326,7 @@ U0 GrMTransformSelect(CGrMFrame *e)
 
 U0 GrMFlipTriangles(CGrMFrame *e)
 {
-  BoolI8 unselect;
+  Bool unselect;
   CGrMTri *tempt=e->triangle_root.next;
   if (!GrMSelectCnt(e)) {
     GrMTriangleSelectAll(e,TRUE);
@@ -440,7 +442,7 @@ U0 MPDrawIt(CGrMFrame *e) //Multiprocessing draw it, called by each core.
   }
   dc->r=old_r;
 
-//e->dc's depth buf was copied but we don't want it freed during [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,72] DCDel().
+//e->dc's depth buf was copied but we don't want it freed during [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,76] DCDel().
   dc->depth_buf=NULL;
 
   DCDel(dc);
@@ -483,7 +485,7 @@ I64 *GrMSetW2S(CGrMFrame *e,CTask *task)
   e->w2s=GrMW2S(e,task);
   Free(e->s2w);
   e->s2w=GrMS2W(e,task);
-  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,72] DCDel().
+  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,76] DCDel().
 }
 
 U0 GrMCursorW(CGrMFrame *e,CTask *task,I64 *_x,I64 *_y,I64 *_z)
@@ -745,7 +747,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Yield;
 }
 
-U0 GrMInit(CGrMFrame *e,BoolI8 flip_y)
+U0 GrMInit(CGrMFrame *e,Bool flip_y)
 {
   MemSet(e,0,sizeof(CGrMFrame));
   e->task=Fs;
@@ -840,6 +842,7 @@ I32 *GrMSave(CGrMFrame *e,I64 *_size=NULL)
     tempt=tempt->next;
   }
   if (_size) *_size=size;
+  return result;
 }
 
 U0 GrMCleanUp(CGrMFrame *e)
@@ -869,7 +872,7 @@ U0 GrMUpdateMenu(CGrMFrame *e)
     tempse->checked=ToBool(e->flip_y);
 }
 
-I32 *CSpriteMesh(I32 *root=NULL,I64 *_size=NULL,BoolI8 flip_y=FALSE)
+I32 *CSpriteMesh(I32 *root=NULL,I64 *_size=NULL,Bool flip_y=FALSE)
 /*
 
 Fmt for mesh:
@@ -885,7 +888,8 @@ If root points to a mesh, it will load it.
 Returns a newly malloced mesh or NULL.
 
 
-See [::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z.
+See [::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z.
 
 
 */
@@ -895,7 +899,7 @@ See [::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] ::/SparrowOS/Demo/Graphics
   I64 i,msg_code,p1,p2,vn=0,x,y,z;
   CD3I32 p0a,p0b;
   CGrMVertex *va[3],*tempv;
-  BoolI8 adjusting_z=FALSE,moving,save_and_exit;
+  Bool adjusting_z=FALSE,moving,save_and_exit;
   CGrMFrame e;
 
   if (c) {
@@ -976,8 +980,7 @@ See [::/SparrowOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] ::/SparrowOS/Demo/Graphics
 	"$FG,GREEN$'s'$FG$: Set snap\n"
 	"\nSee menu at top of screen for more.\n");
 
- 
-Fs->win_inhibit=WIF_ALL|WIF_DOC-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
+  Fs->win_inhibit=WIF_ALL|WIF_DOC-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
   WordStat;
@@ -992,9 +995,7 @@ Fs->win_inhibit=WIF_ALL|WIF_DOC-WIF_BORDER-WIF_CTRLS-WIF_MENU-WIF_GRAB_SCROLL;
   try { //In case of <CTRL-ALT-C>
     while (TRUE) {
       GrMUpdateMenu(&e);
-     
-msg_code=GetMsg(&p1,&p2,1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG
-_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
+      msg_code=GetMsg(&p1,&p2,1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
 gm_restart:
       switch (msg_code) {
 	case MSG_KEY_DOWN:
@@ -1011,9 +1012,7 @@ gm_restart:
 		    if (GrMSelectCnt(&e))
 		      GrMClipBoardDel(&e);
 		    else if (e.mode!='t')
-		     
-GrMVertexDel(&e,GrMVertexFindS(&e,ipx_presnap-Fs->win_pixel_left-Fs->win_scrol
-l_x,ipy_presnap-Fs->win_pixel_top-Fs->win_scroll_y));
+		      GrMVertexDel(&e,GrMVertexFindS(&e,ipx_presnap-Fs->win_pixel_left-Fs->win_scroll_x,ipy_presnap-Fs->win_pixel_top-Fs->win_scroll_y));
 		    GrMVertexSelectAll(&e,FALSE);
 		    GrMTriangleSelectAll(&e,FALSE);
 		    vn=0;
@@ -1085,9 +1084,7 @@ l_x,ipy_presnap-Fs->win_pixel_top-Fs->win_scroll_y));
 		i=GRM_AND;
 	      else
 		i=GRM_OR;
-	      if
-((msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<M
-SG_IP_R_DOWN|1<<MSG_IP_R_UP))!=MSG_IP_L_DOWN) {
+	      if ((msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP))!=MSG_IP_L_DOWN) {
 		Beep; Beep;
 		goto gm_restart;
 	      }
@@ -1095,8 +1092,7 @@ SG_IP_R_DOWN|1<<MSG_IP_R_UP))!=MSG_IP_L_DOWN) {
 	      e.x2=p1; e.y2=p2;
 	      e.select_rect=TRUE;
 	      while (TRUE) {
-		msg_code=GetMsg(&p1,&p2,1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<M
-SG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
+		msg_code=GetMsg(&p1,&p2,1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
 		if (msg_code==MSG_IP_MOVE) {
 		  e.x2=p1; e.y2=p2;
 		} else if (msg_code==MSG_IP_L_UP) {
@@ -1176,9 +1172,7 @@ SG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_R_UP);
 	    case 'j':
 	      if (moving)
 		GrMVertexIgnoreSet(&e,TRUE);
-	      if
-(tempv=GrMVertexFindS(&e,ipx-Fs->win_pixel_left-Fs->win_scroll_x,ipy-Fs->win_p
-ixel_top-Fs->win_scroll_y)) {
+	      if (tempv=GrMVertexFindS(&e,ipx-Fs->win_pixel_left-Fs->win_scroll_x,ipy-Fs->win_pixel_top-Fs->win_scroll_y)) {
 		Noise(25,2000,8000);
 		e.my_ipz=RoundI64(tempv->p.z,e.cur_snap);
 	      } else {
@@ -1281,9 +1275,7 @@ ixel_top-Fs->win_scroll_y)) {
 	    case 'M':
 	      if (moving) {
 		if (adjusting_z) {
-		 
-e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.
-y-ipy_presnap))+p0b.z,e.cur_snap);
+		  e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.y-ipy_presnap))+p0b.z,e.cur_snap);
 		  Snd(0);
 		  adjusting_z=FALSE;
 		  GrMCursorW(&e,Fs,&x,&y,&z);
@@ -1338,9 +1330,7 @@ y-ipy_presnap))+p0b.z,e.cur_snap);
 	  break;
 	case MSG_IP_R_UP:
 	  if (e.mode!='M' && adjusting_z) {
-	   
-e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.
-y-ipy_presnap))+p0b.z,e.cur_snap);
+	    e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.y-ipy_presnap))+p0b.z,e.cur_snap);
 	    Snd(0);
 	    adjusting_z=FALSE;
 	    if (moving) {
@@ -1355,9 +1345,7 @@ y-ipy_presnap))+p0b.z,e.cur_snap);
 	  break;
 	case MSG_IP_MOVE:
 	  if (adjusting_z) {
-	   
-e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.
-y-ipy_presnap))+p0b.z,e.cur_snap);
+	    e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.y-ipy_presnap))+p0b.z,e.cur_snap);
 	    Snd(LimitI64(3*e.my_ipz+1500,0,15000));
 	  }
 	  if (moving) {

@@ -33,7 +33,7 @@ computations intermediately.  Assembler has minimal 16-bit support, good
 enough for compiling boot loaders.
 
 * No object files.  Linking can be done at
-[C:/SparrowOS/OSMain/Hash1a.CPP.Z,738] Load() time for static modules, if 
+[C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() time for static modules, if 
 you insist on not using JIT.  Modules have imports and exports.
 
 * Whole files are processed almost exclusively, allowing compression.
@@ -58,7 +58,7 @@ instead of SMP.  Core zero explicitly
 assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
 access, though.
 
-* [C:/SparrowOS/Adam/Snd/Music.CPP.Z,103] Music is done with an elegant
+* [C:/SparrowOS/Adam/Snd/Music.CPP.Z,104] Music is done with an elegant
 one-voice notation.
 
 * All tasks have a heap and a sym table.  Scope is that of environment vars

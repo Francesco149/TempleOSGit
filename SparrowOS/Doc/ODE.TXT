@@ -2,8 +2,8 @@ SparrowOS has an advanced algorithm for integrating ordinary differential
 equations suitable for use in video games.  (Not scientific work.)  It also 
 has some support for systems of masses and springs, to save you some work.
 
-See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,257] CMathODE and
-[C:/SparrowOS/Adam/MathODE.CPP.Z,514] ODEsUpdate for an overview.
+See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,254] CMathODE and
+[C:/SparrowOS/Adam/MathODE.CPP.Z,512] ODEsUpdate for an overview.
 See [C:/SparrowOS/Adam/MathODE.CPP.Z,336] ODECallDerivative to see what
 support there is for masses and springs.
 

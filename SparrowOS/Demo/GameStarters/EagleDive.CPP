@@ -93,14 +93,14 @@ F64 game_t0,v_grid_size,span_factor,phi,theta1,theta2,speed;
 
 I64 x,y,z,game_score;
 
-BoolI8 game_over;
+Bool game_over;
 
 class MPCtrl {
   I64 mp_cnt;
-  U64 doc_update;
+  I64 doc_update;
   F64 update_done_t[MP_MAX_PROCESSORS];
-  U64 done_flags;
-  BoolI64 app_done;
+  I64 done_flags;
+  Bool app_done;
 } mp;
 
 U0 FSTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
@@ -200,7 +200,7 @@ panels.
   }
 }
 
-BoolI64 TestSameSlope(I64 x,I64 y,I64 w,I64 h)
+Bool TestSameSlope(I64 x,I64 y,I64 w,I64 h)
 {
   I64 k1,k2,xx,yy,s;
   if (!(0<=x && x+w<MAP_WIDTH && 0<=y && y+h<MAP_HEIGHT))
@@ -221,7 +221,7 @@ BoolI64 TestSameSlope(I64 x,I64 y,I64 w,I64 h)
 U0 MPDoPanels(CTask *task)
 {
   I64 i,j,k,l,k1,k2,w,h,threshold,lo,hi;
-  BoolI8 cont;
+  Bool cont;
   Panel *tempp,*start_ptr=NULL,*end_ptr=NULL;
   CD3I32 *poly;
   Fish *tempf;
@@ -766,7 +766,7 @@ U0 BSPEagleDive()
 
 #define ANIMATE_MS	10
 
-U0 AnimateTask(U64)
+U0 AnimateTask(I64)
 {
   //This just steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1;
@@ -834,7 +834,7 @@ U0 TaskEndCB()
   Exit;
 }
 
-U0 SongTask(U64)
+U0 SongTask(I64)
 { //Song by Terry A. Davis
 #ifstatic
   Fs->task_end_cb=ExtFind("SndTaskEndCB");//(Can't take addr of an extern function.)

@@ -1,16 +1,16 @@
-U0 RawDrawChar(U64 ch)
+U0 RawDrawChar(I64 ch)
 {
 /* This is for RAW output during boot
 before the window mgr is running
 and for the debugger.
 
-See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,627] GrUpdateForegroundOfText for
+See [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,628] GrUpdateForegroundOfText for
 the normal screen text output routine.
 
 See also [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen().
 
 */
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   I64 i,row,col;
   U8 *ptr,*ptr1,*ptr2;
 
@@ -131,7 +131,7 @@ U0 WinDerivedValsUpdate(CTask *task=NULL)
   PopFD;
 }
 
-BoolI64 AKDRawDisplayPutKey(U64 ch,U64)
+Bool AKDRawDisplayPutKey(I64 ch,I64)
 {
   if (IsRaw) {
     RawDrawChar(ch);
@@ -140,7 +140,7 @@ BoolI64 AKDRawDisplayPutKey(U64 ch,U64)
     return FALSE;
 }
 
-BoolI64 AKDRawDisplayPutS(U8 *st)
+Bool AKDRawDisplayPutS(U8 *st)
 {
   U8 ch;
   if (IsRaw) {
@@ -151,9 +151,9 @@ BoolI64 AKDRawDisplayPutS(U8 *st)
     return FALSE;
 }
 
-BoolI64 AKDInputFilterPutKey(U64 ch,U64 scancode)
+Bool AKDInputFilterPutKey(I64 ch,I64 scancode)
 {
-  BoolI8 old_preempt;
+  Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
     old_preempt=Preempt(OFF);
     Msg(MSG_KEY_DOWN,ch,scancode);
@@ -163,10 +163,10 @@ BoolI64 AKDInputFilterPutKey(U64 ch,U64 scancode)
     return FALSE;
 }
 
-BoolI64 AKDInputFilterPutS(U8 *st)
+Bool AKDInputFilterPutS(U8 *st)
 {
   U8 ch;
-  BoolI8 old_preempt;
+  Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
     old_preempt=Preempt(OFF);
     while (ch=*st++)
@@ -177,7 +177,7 @@ BoolI64 AKDInputFilterPutS(U8 *st)
     return FALSE;
 }
 
-U0 PutKey(U64 ch,U64 sc)
+U0 PutKey(I64 ch,I64 sc)
 { //See [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
   CKeyDev *tempp=sys_put_key_root.next;
   if (!Bt(&Fs->display_flags,DISPLAYf_SILENT)) {
@@ -197,7 +197,7 @@ U0 PutKey(U64 ch,U64 sc)
   }
 }
 
-U0 PutChar(U64 ch)
+U0 PutChar(I64 ch)
 {
   PutKey(ch,0);
 }
@@ -205,7 +205,7 @@ U0 PutChar(U64 ch)
 U0 PutS(U8 *st)
 { //See [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
   U8 ch,*ptr;
-  BoolI8 cont=TRUE;
+  Bool cont=TRUE;
   if (!st) return;
   CKeyDev *tempp=sys_put_key_root.next;
   if (!Bt(&Fs->display_flags,DISPLAYf_SILENT)) {
@@ -241,7 +241,7 @@ U0 SetKeyDesc(U8 *fmt,...)
     Yield;  //This makes KeyMap work better
 }
 
-U0 SetCtrlAltLetCB(U8 ch,U0 (*fp_handler)(U64 sc),U8 *desc,BoolI8 in_irq=FALSE)
+U0 SetCtrlAltLetCB(U8 ch,U0 (*fp_handler)(I64 sc),U8 *desc,Bool in_irq=FALSE)
 {
   ch=ToUpper(ch)-'A';
   if (ch<26) {
@@ -252,10 +252,10 @@ U0 SetCtrlAltLetCB(U8 ch,U0 (*fp_handler)(U64 sc),U8 *desc,BoolI8 in_irq=FALSE)
   }
 }
 
-CKeyDev *KeyDevAdd(BoolI64 (*fp_put_key)(U64 ch,U64 sc),BoolI64 (*fp_puts)(U8 *st),U64 priority,BoolI8 key_descs=FALSE)
+CKeyDev *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE)
 //Places hook in StdOut chain
 { //See [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   CKeyDev *tempp,*tempp1=sys_put_key_root.last;
   tempp=ACAlloc(sizeof(CKeyDev));
   tempp->put_key=fp_put_key;
@@ -272,7 +272,7 @@ CKeyDev *KeyDevAdd(BoolI64 (*fp_put_key)(U64 ch,U64 sc),BoolI64 (*fp_puts)(U8 *s
 
 U0 KeyDevRem(CKeyDev *tempp)
 {
-  BoolI8 old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF);
   QueRem(tempp);
   Preempt(old_preempt);
   Free(tempp);

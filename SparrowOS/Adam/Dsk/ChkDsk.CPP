@@ -1,6 +1,6 @@
 #help_index "Info;File/Cmd Line (Typically);Cmd Line (Typically)"
 
-BoolI64 ChkDskConfirm(BoolI8 *_fix,BoolI8 *_confirm)
+Bool ChkDskConfirm(Bool *_fix,Bool *_confirm)
 {
   if (*_fix && *_confirm) {
     "Fix ";
@@ -11,11 +11,10 @@ BoolI64 ChkDskConfirm(BoolI8 *_fix,BoolI8 *_confirm)
   return *_fix;
 }
 
-I64 NativeFSChkDskList(CDirEntry *tempm1,U8 *bits,U8 *bits2,U64 size,U64 bpc)
+I64 NativeFSChkDskList(CDirEntry *tempm1,U8 *bits,U8 *bits2,I64 size,I64 bpc)
 {
   CDirEntry *tempm2;
-  U64 i,j;
-  I64 errs=0;
+  I64 i,j,errs=0;
   while (tempm1) {
     tempm2=tempm1->next;
     if (tempm1->attr & _ATTR_DIR) {
@@ -41,19 +40,19 @@ I64 NativeFSChkDskList(CDirEntry *tempm1,U8 *bits,U8 *bits2,U64 size,U64 bpc)
 	errs++;
       }
     }
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
   return errs;
 }
 
-I64 NativeFSChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
+I64 NativeFSChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
 {
   I64 i,j,bpc,size,errs=0;
   CPrt *p=Drv2Prt(drv_let),*old_prt=Fs->cur_prt;
   U8 *files_find_mask=MSPrintF("%c:/*",Prt2Drv(p)),
-     *old_dir=StrNew(Fs->cur_dir);
-  U8 *bits,*bits2;
+     *old_dir=StrNew(Fs->cur_dir),
+     *bits,*bits2;
   CDirEntry *ptr,*ptr2;
 
   Drv(drv_let);
@@ -105,7 +104,7 @@ I64 NativeFSChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   return errs;
 }
 
-I64 FAT32ChkDskList(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,U64 size,U64 bpc)
+I64 FAT32ChkDskList(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,I64 size,I64 bpc)
 {
   CDirEntry *tempm2;
   I64 i,c,errs=0;
@@ -117,7 +116,7 @@ I64 FAT32ChkDskList(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,U64 size,U64 b
     }
     i=0;
     c=tempm1->cluster;
-    while (c && c!=INVALID_CLUSTER) {
+    while (0<c<0x0FFFFFF8) {
       if (c>size) {
 	PrintFErr("Invalid Cluster:%s Cluster:%X\n",tempm1->full_name,c);
 	errs++;
@@ -146,21 +145,20 @@ I64 FAT32ChkDskList(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,U64 size,U64 b
 	errs++;
       }
     }
-    CDirDel(tempm1);
+    CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
   return errs;
 }
 
-I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
+I64 FAT32ChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
 {
-  U64 i,bpc,size;
+  I64 i,bpc,size,c,errs=0;
   CPrt *p=Drv2Prt(drv_let),*old_prt=Fs->cur_prt;
   U8 *files_find_mask=MSPrintF("%c:/*",Prt2Drv(p)),
-     *old_dir=StrNew(Fs->cur_dir);
-  U8 *bits;
+     *old_dir=StrNew(Fs->cur_dir),
+     *bits;
   U32 *bits2;
-  I64 c,errs=0;
   Drv(drv_let);
   "Scanning...\n";
   size=(p->size-(p->data-p->offset))/p->spc;
@@ -170,7 +168,7 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   RBlks(p,bits2,p->map1,(size*4+BLK_SIZE-1)>>BLK_SIZE_BITS);
 
   c=p->root_cluster;
-  while (c!=INVALID_CLUSTER) {
+  while (0<c<0x0FFFFFF8) {
     if (c>size) {
       PrintFErr("Invalid Cluster: RootDir Cluster:%X\n",c);
       errs++;
@@ -190,7 +188,7 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
 
   errs+=FAT32ChkDskList(p,FilesFind(files_find_mask,1<<FUf_RECURSE),bits,bits2,size,bpc);
 
-  bits2[1]=0; //See [C:/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,63] FAT32Fmt()
+  bits2[1]=0; //See [C:/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,64] FAT32Fmt()
   for (i=1;i<size;i++)
     if (bits2[i]) {
       PrintFWarn("Shouldn't Alloc Cluster:%0X\n",i);
@@ -207,7 +205,7 @@ I64 FAT32ChkDsk(U8 drv_let,BoolI8 *_fix,BoolI8 *_confirm)
   return errs;
 }
 
-public I64 ChkDsk(U8 drv_let=0,BoolI8 fix=FALSE,BoolI8 confirm=TRUE)
+public I64 ChkDsk(U8 drv_let=0,Bool fix=FALSE,Bool confirm=TRUE)
 { //Check for allocation errors.
   I64 errs=0;
   CPrt *p=Drv2Prt(drv_let);

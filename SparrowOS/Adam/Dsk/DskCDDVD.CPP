@@ -6,7 +6,7 @@ U0 FillU16Palindrome(CPalindromeU16 *dst,U16 w)
   dst->little=w;
 }
 
-U0 FillU32Palindrome(CPalindromeU32 *dst,U64 d)
+U0 FillU32Palindrome(CPalindromeU32 *dst,I64 d)
 {
   dst->big=EndianU32(d);
   dst->little=d;
@@ -15,24 +15,24 @@ U0 FillU32Palindrome(CPalindromeU32 *dst,U64 d)
 
 class CCCDUserData //Create CD
 {
-  U64 loc,path_entry_num,
+  I64 loc,path_entry_num,
 	short_dir_blks,long_dir_blks;
 };
 
-U64 CDFileCreate2(CFile *out_file,CDirEntry *tempm,
+I64 CDFileCreate2(CFile *out_file,CDirEntry *tempm,
 		    CISO1DirEntry *tempi,CISO1DirEntry *tempi2,
-		    U64 *_cur_blk,
-		    CDirEntry *parent,BoolI8 write)
+		    I64 *_cur_blk,
+		    CDirEntry *parent,Bool write)
 {
   CCCDUserData *tempc;
   CDirEntry *tempm1,*tempm2;
   CFile *in_file;
   U8 *buf=MAlloc(CD_BLK_SIZE),*ptr1,*ptr2;
-  CISO1DirEntry *dir_blk_buf=CAlloc(CD_BLK_SIZE*128),
-	      *de=dir_blk_buf,*de1;
-  CISO1DirEntry *dir_blk_buf2=CAlloc(CD_BLK_SIZE*128),
-	      *de2=dir_blk_buf2,*de12;
-  U64 i,n;
+  CISO1DirEntry *dir_blk_buf =CAlloc(CD_BLK_SIZE*128),
+		*de =dir_blk_buf, *de1,
+		*dir_blk_buf2=CAlloc(CD_BLK_SIZE*128),
+		*de2=dir_blk_buf2,*de12;
+  I64 i,n;
 
   tempc=parent->user_data;
 
@@ -227,11 +227,11 @@ U64 CDFileCreate2(CFile *out_file,CDirEntry *tempm,
   return tempi->name_len;
 }
 
-U64 CDTableLen(CDirEntry *tempm,U64 *size1,U64 *size2,U64 cur_depth)
+I64 CDTableLen(CDirEntry *tempm,I64 *size1,I64 *size2,I64 cur_depth)
 //returns depth
 {
   CDirEntry *tempm1=tempm->sub;
-  U64 max_depth=cur_depth,i;
+  I64 max_depth=cur_depth,i;
   while (tempm1) {
     if (tempm1->attr & _ATTR_DIR) {
       *size1+=sizeof(CISO1PathEntry)-2+ (StrLen(tempm1->name)+1)&-0x2;
@@ -246,12 +246,12 @@ U64 CDTableLen(CDirEntry *tempm,U64 *size1,U64 *size2,U64 cur_depth)
 
 U0 CDFillPathTable(CDirEntry *tempm,
   CISO1PathEntry **_itabbuf,CISO1PathEntry **_itabbuf2,
-  U64 parent_entry_num,BoolI8 big_endian,U64 *first_free,I64 cur_level,I64 output_level)
+  I64 parent_entry_num,Bool big_endian,I64 *first_free,I64 cur_level,I64 output_level)
 {
   U8 *ptr1,*ptr2;
-  U64 i;
-  CISO1PathEntry *tabbuf=*_itabbuf;
-  CISO1PathEntry *tabbuf2=*_itabbuf2;
+  I64 i;
+  CISO1PathEntry *tabbuf =*_itabbuf,
+		 *tabbuf2=*_itabbuf2;
   CDirEntry *tempm1=tempm->sub,*tempm2;
   CCCDUserData *tempc;
  
@@ -372,7 +372,7 @@ U0 BurnProductionCDImage()
 Study my account examples my technique [::/SparrowOS/Demo/AcctExample/TSAdam.CPP.Z,1] Cfg Strs [::/SparrowOS/Demo/AcctExample/TSDistribute.CPP.Z,1] Update Funs.
 ****/
 
-public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=NULL,
+public I64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=NULL,
 		  U8 *bootfile=NULL,I64 emulation=0)
 //NULL filename uses sys_dft_iso_name.
 //See the above sample code
@@ -387,16 +387,16 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
 		       *iso2=CAlloc(CD_BLK_SIZE),
 		       *iso3=CAlloc(CD_BLK_SIZE);
   CDirEntry *rootdir=CAlloc(sizeof(CDirEntry));
-  U64 cur_blk=0,bootfile_cd_blks=0,tabsize,tabsize2,first_free,max_depth,
+  I64 i,j,
+      cur_blk=0,bootfile_cd_blks=0,tabsize,tabsize2,first_free,max_depth,
       fuf_flags=0;
   U32 *d;
-  U8 *filename2;
   CElTorito *et=CAlloc(CD_BLK_SIZE);
-  U8 *zero_buf=CAlloc(CD_BLK_SIZE),
+  U8 *filename2,
+     *zero_buf=CAlloc(CD_BLK_SIZE),
      *bootfile_buf=NULL;
   CISO1PathEntry *tabbuf=NULL,*tabbuf2=NULL,*itabbuf,*itabbuf2;
-  BoolI8 okay=TRUE;
-  U64 i,j;
+  Bool okay=TRUE;
   CFile *out_file=NULL;
   CISO1DirEntry *tempi;
   CCCDUserData *tempc;
@@ -496,7 +496,7 @@ public U64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
       et->sect_cnt=4;  //5 seems like the limit, 4 is safer
       et->load_rba=cur_blk+1;
 //CDBOOT See [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] CDBootFileCreate
-//See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,283] BootCdProbe().
+//See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,291] BootCdProbe().
       "%X: Pre Boot Blk\n",cur_blk;
       FWBlks(out_file,et,cur_blk<<2,4);
       cur_blk++;
