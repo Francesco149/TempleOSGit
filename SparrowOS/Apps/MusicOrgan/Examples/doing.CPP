@@ -30,6 +30,8 @@ U0 DrawIt(CTask *,CDC *dc)
   GrRotXEqu(dc->r,0.140*pi);
   GrRotZEqu(dc->r,0.250*pi*Sin(pi*dt));
   GrRotYEqu(dc->r,0.230*pi);
+  if (dt>16)
+    GrRotYEqu(dc->r,0.5*Sin(pi/2*dt));
   CSpritePlot3(dc,0,0,0,__BIN_1);
 }
 

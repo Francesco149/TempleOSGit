@@ -30,11 +30,9 @@ I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
 {
   Bool first_on_line,write_this_file=FALSE,cont=!Bt(_fuf_flags,FUf_CANCEL);
   U8 *src,*dst,*dst2,*name_buf=NULL;
-  I64 ss_flags;
+  I64 i,j,plen,rlen,dlen,cnt=0,old_flags,ss_flags;
   CDoc *cur_l,*doc=DocRead(name,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR);
   CDocEntry *doc_e;
-  I64 i,j,plen,rlen,dlen;
-  I64 cnt=0,old_flags;
 
   ss_flags=Bt(_fuf_flags,FUf_IGNORE) ? SRF_IGNORE_CASE :0;
   if (Bt(_fuf_flags,FUf_WHOLE_LABELS))

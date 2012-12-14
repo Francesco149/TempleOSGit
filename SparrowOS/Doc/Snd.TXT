@@ -12,7 +12,7 @@ write a driver for your snd card following the HDAudio template.
 
 See [::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,1]
 ::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,
-[C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,223] SndFileFillBuf() and
+[C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,222] SndFileFillBuf() and
 [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,375] HDFillBuf() 
 for using HD Audio.  The buffers are managed by
 [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,390] HDAudioTask().

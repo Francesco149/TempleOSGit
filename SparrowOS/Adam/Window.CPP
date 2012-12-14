@@ -1124,6 +1124,7 @@ wmt_start:
 	if (task==Fs)
 	  break;
       }
+      TaskDerivedValsUpdate(Fs,FALSE);
 
       task=Fs->last_task;
       while (TRUE) {

@@ -37,10 +37,9 @@ I64 DiffEntriesCompare(CDocEntry *doc_e1,CDocEntry *doc_e2)
 U0 DiffSelect(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,
 		 I64 j2_lo,I64 j2_hi,CDocEntry **doc_us1,CDocEntry **doc_us2)
 {
-  I64 i;
   CDocEntry *doc_e,*doc_e1,*doc_e2;
   Bool use_file1;
-  I64 old_flags;
+  I64 i,old_flags;
   CDoc *cur_l;
   if (!(*_df_flags & (DF_ABORT_FILE|DF_ABORT_ALL_FILES))) {
     "$FG,RED$%d,%d---------------------$FG$\n",j1_lo,j2_lo;
@@ -120,8 +119,8 @@ U0 DiffSelect(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,
 U0 DiffSub(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,I64 j2_lo,I64 j2_hi,
   I64 cnt1,I64 cnt2,CDocEntry **doc_s1,CDocEntry **doc_s2,CDocEntry **doc_us1,CDocEntry **doc_us2)
 {
-  I64 i,i1=0,i2=0,i2b,j1,j2,n;
-  I64 best_j1,best_j2,best_score=0,score;
+  I64 i,i1=0,i2=0,i2b,j1,j2,n,
+      best_j1,best_j2,best_score=0,score;
 
   if (j1_lo>=j1_hi || j2_lo>=j2_hi) {
     if (j1_lo<j1_hi || j2_lo<j2_hi)
@@ -202,8 +201,8 @@ Bool DiffBins(CDoc *doc1,CDoc *doc2)
 
 public I64 Diff(U8 *dst_file,U8 *src_file,I64 df_flags=0)
 { //The df_flags arg is used when this is called by [C:/SparrowOS/Adam/Merge.CPP.Z,41] MergeChk().
-  CDoc *doc1=DocRead(dst_file, DOCF_PLAIN_TEXT_WITH_TABS | DOCF_NO_CURSOR);
-  CDoc *doc2=DocRead(src_file, DOCF_PLAIN_TEXT_WITH_TABS | DOCF_NO_CURSOR);
+  CDoc *doc1=DocRead(dst_file, DOCF_PLAIN_TEXT_WITH_TABS | DOCF_NO_CURSOR),
+       *doc2=DocRead(src_file, DOCF_PLAIN_TEXT_WITH_TABS | DOCF_NO_CURSOR);
   CDocEntry *doc_e,**doc_s1,**doc_s2,**doc_us1,**doc_us2;
   I64 i,cnt1=0,cnt2=0;
 

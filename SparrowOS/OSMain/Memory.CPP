@@ -1242,7 +1242,7 @@ Bool MemLowPagesProtect(Bool val)
 { //FALSE if any were not protected
   U8 *a=0;
   Bool result=TRUE;
-  while (a<PROTECTED_LOW_PAGE_LIMIT) {
+  while (a<=PROTECTED_LOW_PAGE_LIMIT) {
     result&=!MemPagePresentMark(a,!val);
     a+=MemPageSize(a);
   }

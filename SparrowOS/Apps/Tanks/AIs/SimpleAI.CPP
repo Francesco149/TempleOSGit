@@ -8,11 +8,11 @@ Unit *FindNearestUnit(I64 row,I64 col,I64 player,Bool in_LOS,F64 range=-1)
     range=MAX_F64;
   else
     range*=range;
-  RowCol2XY(x1,y1,row,col);
+  RowCol2XY(&x1,&y1,row,col);
   for (i=0;i<MAX_UNITS;i++)
     if (units[player][i].life>0) {
       if (!in_LOS || LOS(row,col,units[player][i].row,units[player][i].col)) {
-	RowCol2XY(x2,y2,units[player][i].row,units[player][i].col);
+	RowCol2XY(&x2,&y2,units[player][i].row,units[player][i].col);
 	d=Sqr(x2-x1)+Sqr(y2-y1);
 	if (d<=range && d<best_d) {
 	  best=&units[player][i];
@@ -48,9 +48,9 @@ U0 TanksMove()
     if (tempu->life>0) {
       //This cheats because it violates Line-of-Sight
       if (target=FindNearestUnit(tempu->row,tempu->col,enemy_player,FALSE)) {
-	RowCol2XY(x,y,target->row,target->col);
+	RowCol2XY(&x,&y,target->row,target->col);
 	if (!MoveUnit(tempu,x,y)) {
-	  RowCol2XY(x,y,tempu->row,tempu->col);
+	  RowCol2XY(&x,&y,tempu->row,tempu->col);
 	  MoveUnit(tempu,x+RandI16,y+RandI16);
 	}
       }

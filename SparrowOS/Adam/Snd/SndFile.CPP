@@ -28,13 +28,12 @@ public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
 //Set reverb_delay to like 0.3 sec and reverb_intensity to like 0.4.
 
 {
-  I64 i,k,cnt,cnt2,level;
+  I64 i,k,cnt,cnt2,level,file_num;
   F64 avg,dt;
   CFileSND *s;
   CSndWaveCtrl *sc=SndWaveCtrlNew(SNDFILE_SAMPLE_RATE,16,1);
   CSndData *d,*d1;
   U8 *name,*name2;
-  I64 file_num;
 
   snd_record=FALSE;
 

@@ -6820,7 +6820,7 @@
 	0405	9500MGS NVIDIA
 	0710	Virtual SVGA
 	0720	VMXNET VMware PCI Ethernet Adapter
-	0740	0X0880 VMWare VMCI Bus Device
+	0740	0X0880 VMware VMCI Bus Device
 	0770	n/a Standard Enhanced PCI to USB Host Controller
 	07B0	VMXNET 3 VMware vSphere 4 PCI Ethernet Adapter
 	0801	n/a PCI Memory Controller

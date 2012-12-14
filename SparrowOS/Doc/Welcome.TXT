@@ -13,7 +13,7 @@ count down, so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-137,965 lines of code including the kernel, the 64-bit compiler, the graphics 
+138,038 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -200,15 +200,15 @@ it very often, believe it or not.
 <CTRL-ALT-E> creates a new terminal window.  <CTRL-ALT-X> kills a window.  
 You'll do these periodically.
 
-[C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() is your best friend.  There's a
-wrapper function called [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,8] F() in
-your HOM
+[C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() is your best friend.  There's a
+wrapper function called [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,8] F()
+in your HOM
 E/Adam3eWrappers.CPP.Z file.  Feel free to make wrapper functions for 
 functions you use often and customize the args.  By the way,
-[C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() or
-[C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R() can 
+[C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() or
+[C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() can 
 be used to replace strings across multiple files.  You can access
-[C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() using 
+[C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() using 
 <CTRL-SHIFT-F>.
 
 As you browse code, use the WordStat window to look-up functions, etc.  <CTRL-

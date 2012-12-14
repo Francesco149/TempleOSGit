@@ -13,13 +13,12 @@ OptOn(OPTf_WARN_PAREN);
 //Just in case the filesystem gets corrupted while I develop it
 U0 BackupExport()
 {
-  Copy("E:/Export.CPP","C:/Export.CPP");
-  Copy("E:/Export.CPP","E:/ExportB.CPP");
-  Copy("E:/Export.CPP","C:/ExportB.CPP");
+  Copy("D:/Export.CPP","C:/Export.CPP");
+  Copy("D:/Export.CPP","D:/ExportB.CPP");
+  Copy("D:/Export.CPP","C:/ExportB.CPP");
 }
 
-//Appears to hang on this version...
-//BackupExport
+BackupExport;
 
 #define EXPORT_W 78
 
@@ -54,9 +53,6 @@ U8 *ResolveLink(U8 *link_st)
     res=MSPrintF("%s,%s",filename,pattern);
   Free(filename);
   Free(pattern);
-//Temporary hack to prevent random diff's on every file link
-  if (!StrNCmp(res,"D:/",3))
-    res[0]='C';
   return res;
 }
 
@@ -240,7 +236,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
 
   ext=UnZExtension(out_path);
 
-  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO","BMP")) {
+  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO")) {
     FilePassThrough(in_path,out_path);
     return;
   }
@@ -480,7 +476,7 @@ U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
 }
 
 //Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree
-U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="E:/Git",
+U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
   Bool debug=FALSE)
 {
   CFileAccess *fa;
@@ -512,9 +508,9 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="E:/Git",
 //to start the export.
 
 U0 ExportTree() {
-  CTask *task=SpawnUser("#include \"E:/Export.CPP\"
+  CTask *task=SpawnUser("#include \"D:/Export.CPP\"
 ExportTreeImpl;
-ExportSingle(\"E:/Export.CPP\",\"E:/Git/Export.CPP\");
+ExportSingle(\"D:/Export.CPP\",\"D:/Git/Export.CPP\");
 ");
   WinToTop(task);
 }

@@ -61,4 +61,5 @@ SndInit;
 #include "MathAudio"
 #include "Music"
 #include "SndEffects"
+#include "SndFile"
 #help_index ""

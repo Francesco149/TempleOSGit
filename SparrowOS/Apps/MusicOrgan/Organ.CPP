@@ -483,8 +483,7 @@ U0 OrgRightClick(I64 x,I64 y)
 {
   U8 *st,*st2;
   OrgNote *tempo,*tempo1;
-  I64 i;
-  I64 old_doc_flags;
+  I64 i,old_doc_flags;
   if (DocCur) old_doc_flags=DocCur->flags;
   oc.cur_note=tempo=OrgFindNote(x,y);
   if (tempo!=&oc.root) {
@@ -1451,14 +1450,14 @@ U0 OrgPopMode()
 U0 MusicOrgan(U8 *dirname=NULL)
 {
   Bool is_note,was_playing;
-  I64 p1,p2,ch,sc,msg_code=0,col;
-  I64 note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3,timeout_val,timeout_val2;
-  F64 f=0,last_f=0,org_duration=1.0;
+  I64 p1,p2,ch,sc,msg_code=0,col,
+      note=NOTE_REST,octave=OCTAVE_REST,accent=0,org_waveform=WF_SQUARE,org_octave=3,timeout_val,timeout_val2,
+      old_doc_flags;
   U8 *filename=NULL,*st,*st2;
   CTask *play_task=Spawn(&OrgPlayTask,NULL,"Organ Play",Fs);
   OrgNote *tempo;
-  I64 old_doc_flags;
-  F64 d,evt_time=tP,note_down_time=tP;
+  F64 f=0,last_f=0,org_duration=1.0,
+      d,evt_time=tP,note_down_time=tP;
   CCtrl *c=TempoNew;
 
   if (DocCur) old_doc_flags=DocCur->flags;

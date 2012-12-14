@@ -30,7 +30,7 @@ area after making changes.
 
 * You can adjust the num of answers displayed by setting
 Fs->answers_displayed 
-to a num from 0-3 in your [C:/SparrowOS/Accts/TS/TAD/Adam3fSys.CPP.Z,1]
+to a num from 0-3 in your [C:/SparrowOS/Accts/TAD/Adam3fSys.CPP.Z,4]
 UserStartUp routine.
 
 * You can use ans0,ans1, etc. in cmd line expressions.  They hold results
@@ -55,14 +55,14 @@ in a start-up file.  It's units are [C:/SparrowOS/OSMain/Adam1a.HPP.Z,490]
 CDATE_FREQ.  See [HOME/Adam3aLocalize.CPP.Z,1] local time.
 
 * Use [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1745] DocCurAttr() in
-[C:/SparrowOS/Accts/TS/TAD/Adam3fSys.CPP.Z,1] UserStartUp() to set terminal
+[C:/SparrowOS/Accts/TAD/Adam3fSys.CPP.Z,4] UserStartUp() to set terminal
 window colors.
 
 * See Key Map
 `KeyMap;View;
 `
  for a list of defined keys.  Define your own keys in
-[C:/SparrowOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey(). 
+[C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey(). 
  See [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] ::/SparrowOS/Doc/KeyBoard.TXT.Z.
 
 * <CTRL-SHIFT-L> in the editor to autoindent a C+ function or renumber an asm 
@@ -113,7 +113,7 @@ easily viewed.  See [::/SparrowOS/Demo/Progress.CPP.Z,1]
 ::/SparrowOS/Demo/Progress.CPP.Z.
 
 * You can save the cmd line doc as text with <CTRL-A>.  For a bitmap screen 
-capture, use [C:/SparrowOS/Adam/FileBMP.CPP.Z,205] BMPFileCaptureScreen(). 
+capture, use [C:/SparrowOS/Adam/FileBMP.CPP.Z,204] BMPFileCaptureScreen(). 
 You might want to make a hot key.  See 
 [::/SparrowOS/Demo/AcctExample/TSAdam.CPP.Z,1] BMPFileCaptureScreen.
 
@@ -198,7 +198,7 @@ The +lf and +lb flags limit to whole labels, just front or back.  You are
 encouraged to add or modify handy wrapper functions to make cmd line 
 operations easier.
 
-* When using [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() while modifying code,
+* When using [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() while modifying code,
 work from the bottom-up so that line 
 numbers are correct.  If you work top-down, then inserting or deleting lines 
 causes the lower file links will be incorrect.
@@ -282,8 +282,8 @@ fills work well.  If you are doing interpolation, however, they must be vect.
 [C:/SparrowOS/Adam/Gr/GrBitMap.CPP.Z,860] GrRect() is fast.
 
 * You can customize the wallpaper.  See 
-[::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z,1]
-::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z.
+[::/SparrowOS/Demo/Graphics/WallPaperFish.CPP.Z,1]
+::/SparrowOS/Demo/Graphics/WallPaperFish.CPP.Z.
 
 * You can adjust the screen refresh rate (software).  It is automatically 
 adjusted based on load.  The range is [C:/SparrowOS/Adam/Window.CPP.Z,19]
@@ -303,7 +303,7 @@ will restore defaults.  It should plain text, if you want to edit it.  Be
 careful of tree indentations.
 
 * Study [::/SparrowOS/Adam/MemRep.CPP.Z,1] ::/SparrowOS/Adam/MemRep.CPP.Z and
-[C:/SparrowOS/Adam/WallPaper.CPP.Z,19] WallPaper() to learn how the system 
+[C:/SparrowOS/Adam/WallPaper.CPP.Z,21] WallPaper() to learn how the system 
 resources are put together.
 
 * The editor's select-text mechanism allows for disjoint portions of selected 

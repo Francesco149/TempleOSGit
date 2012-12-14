@@ -89,7 +89,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- OSMain.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot(). 
-SparrowOS is 137,965 lines.  Roughly 50,000 is 
+SparrowOS is 138,038 lines.  Roughly 50,000 is 
 compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 

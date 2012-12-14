@@ -68,11 +68,17 @@ U0 TSInit()
 	if (atapi_drv)
 	  DefinePrintF("CFG_CDROM_DRVS","\"t3p%d\n\"",atapi_drv->num);
       } else {
-	bd=Drv2BlkDev('D');
-	DefinePrintF("CFG_HARD_DRVS","\"d2s0x%X\n0x%X\n%d\"",
-	  bd->base0,bd->base1,bd->unit);
-	bd=Drv2BlkDev('T');
-	DefinePrintF("CFG_CDROM_DRVS","\"t3s0x%X\n%d\"",bd->base0,bd->unit);
+	try {
+	  bd=Drv2BlkDev('D');
+	  DefinePrintF("CFG_HARD_DRVS","\"d2s0x%X\n0x%X\n%d\"",
+	    bd->base0,bd->base1,bd->unit);
+	} catch
+	  Fs->catch_except=TRUE;
+	try {
+	  bd=Drv2BlkDev('T');
+	  DefinePrintF("CFG_CDROM_DRVS","\"t3s0x%X\n%d\"",bd->base0,bd->unit);
+	} catch
+	  Fs->catch_except=TRUE;
       }
       DefinePrintF("CFG_DSK_CACHE","\"Scale2Mem(0x80000,0x8000000)\n\"");
       DefinePrintF("TS_HDS","\"DEF\"");
@@ -140,7 +146,11 @@ if (ts_has_cdrom_drv)
 
 U0 CtrlAltR(I64)
 {
-  snd_record=!snd_record;
+  static F64 last_time=0;
+  if (tNP-last_time>1.0) {
+    last_time=tNP;
+    wallpaper_record_on=snd_record=!snd_record;
+  }
 }
 SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
 
@@ -163,72 +173,87 @@ public U0 MyScreenShot(I64 bits=4)
   Beep;
 }
 
-//This is the max rate for Windows Movie Maker.
 #define VIDEO_FRAME_RATE	8
-
-#exe {
-  if (ts_cid==CID_TAD8)
-    StreamPutS("#define FRAME_DIR_CNT	600\n");
-  else
-    StreamPutS("#define FRAME_DIR_CNT	200\n");
-};
 
 U0 FrameGrabberTask(I64)
 {
+
+/**** TO MAKE MOVIE ****
+
+SparrowOS
+ <ALT-SHIFT-V>
+ [Do stuff you want recorded]
+ <ALT-SHIFT-V>
+
+Boot Windows
+ Copy /Temp
+ Download "ffmpeg" from the Internet
+ 
+ >CD SCREENSHOTS
+ >TSZ -expand .
+ >ffmpeg -r 8 -i VID%05d.BMP -y Movie.avi
+
+*/
+
   I64 frame_num=0;
-  I64 buf[136],buf2[136],buf3[136];
+  U8  buf[136],buf2[136];
   F64 end_time=tNP,f;
   TaskInitExt;
   Silent(ON);	//no output to screen
+  MkDir("::/Temp/ScreenShots");
   while (frame_grabber_on) {
-    SPrintF(buf2,"::/Temp/ScreenShots/V%03d",frame_num/FRAME_DIR_CNT);
-    MkDir(buf2);
-    SPrintF(buf,"%s/VID%05d.BMP.Z",buf2,frame_num%FRAME_DIR_CNT);
-    frame_num++;
-    Suspend(sys_winmgr_task,FALSE);
+    SPrintF(buf,"::/Temp/ScreenShots/VID%05d.BMP.Z",frame_num++);
+    StrCpy(buf2,buf);
     BMPFileCaptureScreen(buf);
-    Suspend(sys_winmgr_task);
-    StrCpy(buf3,buf);
 
     f=tNP;
     while (end_time<f) {
       end_time+=1.0/VIDEO_FRAME_RATE;
       if (end_time<f) {
-	SPrintF(buf2,"::/Temp/ScreenShots/V%03d",frame_num/FRAME_DIR_CNT);
-	MkDir(buf2);
-	SPrintF(buf,"%s/VID%05d.BMP.Z",buf2,frame_num%FRAME_DIR_CNT);
-	frame_num++;
-	Copy(buf3,buf);
+	SPrintF(buf,"::/Temp/ScreenShots/VID%05d.BMP.Z",frame_num++);
+	Copy(buf2,buf);
       }
     }
     LBts(&Fs->task_flags,TASKf_IDLE);
     while (sys_cur_scan_code&SCF_NUM) {
-      Suspend(sys_winmgr_task,FALSE);
       Yield;
       end_time=tNP;
     }
-    while (end_time>tNP) {
-      Suspend(sys_winmgr_task,FALSE);
+    while (end_time>tNP)
       Yield;
-    }
     LBtr(&Fs->task_flags,TASKf_IDLE);
   }
-  Suspend(sys_winmgr_task,FALSE);
+}
+
+U0 CopyVideo()
+{
+  if (ts_has_tra_drv) {
+    Del(TS_TRA_DRV ":/Temp/*.SND");
+    SndFileCreate(TS_TRA_DRV ":/Temp/Audio",0.23,0.0,WF_NULL,0.45,0.35);
+    DelTree(TS_TRA_DRV ":/Temp/ScreenShots");
+    CopyTree("::/Temp/ScreenShots",TS_TRA_DRV ":/Temp/ScreenShots");
+  }
 }
 
 public U0 FrameGrabberToggle()
 {
-  if (frame_grabber_on) {
-    IOSnd(ON);
-    frame_grabber_on=FALSE;
-    Snd(0);
-    snd_record=FALSE;
-  } else {
-    IOSnd(OFF); //You don't want to hear screen capture file writes
-    frame_grabber_on=TRUE;
-    Spawn(&FrameGrabberTask,NULL,"Frame Grabber");
-    snd_record=TRUE;
-    Snd(0);
+  static F64 last_time=0;
+  if (tNP-last_time>1.0) {
+    last_time=tNP;
+    if (frame_grabber_on) {
+      IOSnd(ON);
+      frame_grabber_on=FALSE;
+      Snd(0);
+      wallpaper_record_on=snd_record=FALSE;
+      Sleep(1000);
+      CopyVideo;
+    } else {
+      IOSnd(OFF); //You don't want to hear screen capture file writes
+      frame_grabber_on=TRUE;
+      Spawn(&FrameGrabberTask,NULL,"Frame Grabber");
+      wallpaper_record_on=snd_record=TRUE;
+      Snd(0);
+    }
   }
 }
 
@@ -247,8 +272,7 @@ SetCtrlAltLetCB('S',&CtrlAltS,"Cmd/Screen Shot");
 public U0 MBRRep(U8 drv_let='C')
 {
   CBlkDev *bdev=Drv2BlkDev(drv_let);
-  I64 type,i,j,ext_base;
-  I64 offset;
+  I64 type,i,j,ext_base,offset;
   CMasterBoot mbr;
 
   if (bdev->type!=BDT_ATA)
@@ -324,9 +348,8 @@ public U0 MyHAllRep(U8 *flags="-p",U8 *index=NULL)
 
 public CDoc *DC2Doc(CDC *dc,I64 dx=0,I64 dy=0,I64 *_total_score=NULL)
 {
-  I64 *ptr;
   U8 byte_bit_cnts[256],st[2];
-  I64 i,j,row,col,ch,best_ch,score,best_score,cur_char_image,diff_image,total_score=0;
+  I64 i,j,*ptr,row,col,ch,best_ch,score,best_score,cur_char_image,diff_image,total_score=0;
   CDoc *doc=DocNew;
 
   MemSet(st,0,sizeof(st));
@@ -397,19 +420,4 @@ public U0 BMP2TXT(U8 *_in_name,U8 *_out_name=NULL)
   }
   Free(in_name);
   Free(out_name);
-}
-
-
-U0 CopyVideo()
-{
-  U8 *st;
-  if (ts_has_tra_drv) {
-    Del(TS_TRA_DRV ":/Temp/*.SND");
-    st=MSPrintF("#include \"::/SparrowOS/Apps/MusicOrgan/Load\";"
-	"SndFileCreate(\"" TS_TRA_DRV ":/Temp/Audio\",0.23,0.0,WF_NULL,0.45,0.35);");
-    PopUp(st);
-    Free(st);
-    DelTree(TS_TRA_DRV ":/Temp/ScreenShots");
-    CopyTree("::/Temp/ScreenShots",TS_TRA_DRV ":/Temp/ScreenShots");
-  }
 }

@@ -24,7 +24,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [::/SparrowOS/Demo/Graphics/Golf.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Golf.CPP.Z
     [::/SparrowOS/Demo/Graphics/Mountain.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Mountain.CPP.Z
     [::/SparrowOS/Demo/GameStarters/Coach.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/Coach.CPP.Z
-    [::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z,1] ::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z
+    [::/SparrowOS/Demo/Graphics/WallPaperFish.CPP.Z,1] ::/SparrowOS/Demo/Graphics/WallPaperFish.CPP.Z
     [::/SparrowOS/Demo/Digits.CPP.Z,1] ::/SparrowOS/Demo/Digits.CPP.Z
     [::/SparrowOS/Demo/Progress.CPP.Z,1] ::/SparrowOS/Demo/Progress.CPP.Z //has some ASM, just ignore
     [::/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z,1] ::/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z

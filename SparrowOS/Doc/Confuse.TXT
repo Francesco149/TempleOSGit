@@ -1,7 +1,7 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 137,965 lines of SparrowOS over 
-the past -0.5 years (full-time).  It runs on bare hardware with no layering, 
+* I, Terry A. Davis, wrote every one of the 138,038 lines of SparrowOS over 
+the past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
 call 

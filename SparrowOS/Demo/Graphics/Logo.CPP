@@ -30,7 +30,7 @@ U0 Logo()
     dc->x=Fs->win_pixel_width>>1;
     dc->y=Fs->win_pixel_height>>1;
 
-//[E:/Export.CPP,71] Wrap() converts an angle to an
+//[D:/Export.CPP,67] Wrap() converts an angle to an
 //equivalent angle in a range starting
 //from [arg2,arg2+pi*2).
     GrIdentEqu(dc->r);

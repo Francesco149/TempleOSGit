@@ -1,7 +1,14 @@
-Use [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R() to rename if I change a
-label.
+Use [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I
+change a label.
 
-----11/26/12 23:05:27----
+----12/11/12 00:30:28----
+* Added [::/SparrowOS/Demo/Lectures/64Bit.TXT.Z,1]
+::/SparrowOS/Demo/Lectures/64Bit.TXT.Z.
+
+----12/06/12 12:56:52----
+* Added [C:/SparrowOS/Adam/WallPaper.CPP.Z,13] wallpaper_record_on.
+
+----11/26/12 16:42:50----
 * Added graphics to [::/SparrowOS/Apps/MusicOrgan/Examples/mightest.CPP.Z,1]
 ::/SparrowOS/Apps/MusicOrgan/Examples/mightest.CPP.Z.
 
@@ -12,16 +19,17 @@ label.
 * Got rid of typedef.
 * Got rid of pass-by-ref fun args.
 * Got rid of result special variable.
-* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("BoolI8","Bool");
-* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("BoolI64","Bool");
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BoolI8","Bool");
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BoolI64","Bool");
 
 ----11/21/12 12:09:36----
-* Added VMWare install.
+* Added VMware install.
 
 ----11/15/12 12:00:17----
 * Added [::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z,1]
 ::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z
-* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("CDirDel","CDirEntryDel");
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("CDirDel","CDirEntryDel");
 
 ----11/09/12 02:20:37----
 * Added [C:/SparrowOS/OSMain/Task1a.CPP.Z,54] Suspend() and
@@ -42,7 +50,7 @@ label.
 ::/SparrowOS/Apps/MusicOrgan/Examples/furnishing.CPP.Z.
 
 ----10/31/12 08:45:21----
-* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("Unwrap","Wrap");
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Unwrap","Wrap");
 * Worked on [::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z,1]
 ::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z.
 
@@ -50,7 +58,7 @@ label.
 * Added .BMP and .GRA to [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type().
 * Added [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type() to
 [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,469] TermRightClickLink().
-* Added [C:/SparrowOS/Adam/FileBMP.CPP.Z,195] DocPutBMPFile() and
+* Added [C:/SparrowOS/Adam/FileBMP.CPP.Z,194] DocPutBMPFile() and
 [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,258] DocPutGRAFile().
 * Added [::/SparrowOS/Adam/Ctrls/CtrlsButton.CPP.Z,1]
 ::/SparrowOS/Adam/Ctrls/CtrlsButton.CPP.Z to the API.
@@ -72,7 +80,7 @@ label.
 
 ----10/16/12 10:22:14----
 * **SparrowOS version 1.01 Released**
-* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("BigEndian","Endian");
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BigEndian","Endian");
 * Added result as a built-in local variable like this in C++.
 
 ----10/13/12 19:52:59----

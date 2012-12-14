@@ -41,7 +41,7 @@ public U0 MergeChk(
   U8 *dst_files_find_mask="/SparrowOS/*",
   U8 *src_files_find_mask="/SparrowOS/*",
   U8 *fu_flags=NULL)
-//"+d"=Do [C:/SparrowOS/Adam/Diff.CPP.Z,203] Diff() on files
+//"+d"=Do [C:/SparrowOS/Adam/Diff.CPP.Z,202] Diff() on files
 {
   I64 df_flags=0,fuf_flags=0;
   CDirEntry *tempm1=NULL,*tempm2=NULL;

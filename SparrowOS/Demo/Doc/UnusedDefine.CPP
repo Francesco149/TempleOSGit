@@ -6,9 +6,9 @@ it only occurs once in files.
 It's a brute force solution, but
 gets the job done... slowly.
 
-[C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() returns a count of matches.
+[C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() returns a count of matches.
 
-[C:/SparrowOS/Adam/Grep.CPP.Z,190] FileOcc() is [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() with
+[C:/SparrowOS/Adam/Grep.CPP.Z,188] FileOcc() is [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() with
 output [C:/SparrowOS/OSMain/Misc1a.CPP.Z,273] Silent().
 
 */

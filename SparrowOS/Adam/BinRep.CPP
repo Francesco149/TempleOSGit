@@ -24,12 +24,9 @@ public U0 BinRep(U8 *filename)
 {//This reports imports, exports, etc
  //for a .BI? file.
 //See [::/SparrowOS/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation and [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load().
-  U8 *fbuf;
-  U8 *ptr,etype;
-  U8 *sptr,*absname;
-  I64 size;
+  U8 *fbuf,*ptr,etype,*sptr,*absname;
+  I64 i,j,size;
   CBinFile *bfh,*bfh2;
-  I64 i,j;
   CHashExport *saved_hash_ptr=NULL;
   fbuf=DftExt(filename,"BIN.Z");
   if (!(bfh2=FileRead(fbuf,&size))) {

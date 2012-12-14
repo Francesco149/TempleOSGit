@@ -32,7 +32,7 @@
 [::/SparrowOS/Compiler/CodeGen.CPP.Z,1] CBPutClass                [CBPutClass,1] 0000009170    0001 00000000C5 Funct  
 [::/SparrowOS/Compiler/CodeGen.CPP.Z,71] CBPutIC                   [CBPutIC,1] 0000009530    0006 00000003C7 Funct  
 [::/SparrowOS/Compiler/CodeGen.CPP.Z,26] CBPutICArg                [CBPutICArg,1] 0000009238    0004 00000002F3 Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC16010    0002 000000000A Class 
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC10B30    0002 000000000A Class 
 CMP_OPT_NOP               0000000000    0003            ExportSysSym 
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,164] CMP_TEMPLATES             0000000206    0001            ExportSysSym  
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,337] CMP_TEMPLATES_DONT_POP    000000039B    0001            ExportSysSym  
@@ -44,9 +44,9 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,222] CN_P2                     2             0007 0000000008 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,223] CN_P3                     3             0003 0000000008 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,224] CN_R                      4             0003 0000000008 DefineStr 
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1424] CSwitchCase               007FC374B0    0004 0000000018 Class 
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1424] CSwitchCase               007FC37CB0    0004 0000000018 Class 
 [::/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace                    [CTrace,1] 0000003AE8    0000 0000000017 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,214] CVI2                      007FC3A830    0003 0000000010 Class 
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,214] CVI2                      007FC3B030    0003 0000000010 Class 
 [::/SparrowOS/Compiler/CmpMain.CPP.Z,372] Cmp                       [Cmp,1] 0000038E20    0000 0000000598 Funct  
 [::/SparrowOS/Compiler/CmpMain.CPP.Z,179] CmpBuf                    [CmpBuf,1] 00000386F0    0001 00000000F7 Funct  
 [::/SparrowOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression             [CmpExpression,1] 000001330E    0004 00000000BB Funct  
@@ -229,7 +229,7 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [::/SparrowOS/Compiler/OptPass012.CPP.Z,186] OptLag1                   [OptLag1,1] 0000027400    0005 000000003A Funct  
 [::/SparrowOS/Compiler/OptPass012.CPP.Z,197] OptLead1                  [OptLead1,1] 0000027440    0002 0000000039 Funct  
 [::/SparrowOS/Compiler/OptPass3.CPP.Z,46] OptMVCompare              [OptMVCompare,1] 000002C2D0    0001 000000001A Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,41] OptMemberVar              007FC1C8B0    0005 0000000020 Class 
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,41] OptMemberVar              007FC1D0B0    0005 0000000020 Class 
 [::/SparrowOS/Compiler/OptPass012.CPP.Z,142] OptMissing                [OptMissing,1] 00000271E6    0004 0000000070 Funct  
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,686] OptNext                   0000000098    0002            Funct 
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,689] OptNext2                  000000010A    0001            Funct 

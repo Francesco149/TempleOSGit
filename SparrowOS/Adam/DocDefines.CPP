@@ -29,7 +29,7 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distribution.
   //See [::/SparrowOS/Demo/AcctExample/TSDistribute.CPP.Z,1] DD_SPARROWOS_LOC.
   -] LineCnt
-    DefinePrintF("DD_SPARROWOS_LOC","137,965");
+    DefinePrintF("DD_SPARROWOS_LOC","138,038");
     
   DefinePrintF(
     "DD_PAGE_TABLE_BASE","%08X",PAGE_TABLE_BASE);

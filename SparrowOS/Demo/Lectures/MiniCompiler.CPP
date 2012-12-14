@@ -14,7 +14,7 @@ The main compiler generates [::/SparrowOS/Compiler/CmpDefs.HPP.Z,1]
   [C:/SparrowOS/Compiler/Directives.CPP.Z,21] PTrace(ON) to see the output of
   the parser.
 
-The main compiler optimizes   See [C:/SparrowOS/Compiler/CmpInit.CPP.Z,1]
+The main compiler optimizes   See [D:/SparrowOS/Compiler/CmpInit.CPP.Z,1]
   Intermediate Code Attributes, [::/SparrowOS/Compiler/OptPass012.CPP.Z,1]
   Combining Constants, [::/SparrowOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg
   Vars.  Set [C:/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the

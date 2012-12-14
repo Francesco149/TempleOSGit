@@ -209,7 +209,7 @@ U0 Sleep(I64 mS)
 U0 Snd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0)
 // The internal PC speaker only does square waves.
 // waveform and amp are for HDAudio.
-// Use [C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,264] SndFilePlay() or [::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,1] ::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z as a template for
+// Use [C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,263] SndFilePlay() or [::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z,1] ::/SparrowOS/Demo/Snd/PolyPhonic.CPP.Z as a template for
 // doing polyphonic or fancy HD Audio snd.
 {
   I64 p;

@@ -2,7 +2,6 @@
 //acct file or others.
 
 Cd("/SparrowOS/Adam/Snd");;
-#include "SndFile"
 #include "HDAudio"
 //Uncomment this after running [::/SparrowOS/Adam/Snd/HDCfg.CPP.Z,1] ::/SparrowOS/Adam/Snd/HDCfg.CPP.Z.
 //#include "HOME/HDAudioCfg.CPP.Z"

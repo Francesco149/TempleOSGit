@@ -75,9 +75,8 @@ U0 TimeEntriesDel(TimeEntry *header)
 public Bool TimeRep(TimeEntry **_header=NULL)
 {
   Bool is_in=FALSE,first=TRUE;
-  TimeEntry *tempt;
   I64 week,cur_week=-1,week_total;
-  TimeEntry *header=MAlloc(sizeof(TimeEntry));
+  TimeEntry *tempt,*header=MAlloc(sizeof(TimeEntry));
   if (_header) *_header=header;
   TimeFileRead(header);
   tempt=header->next;

@@ -95,7 +95,7 @@ Top of Screen Pull-down menu
     editor, compiler, assembler and operating system are seamlessly equiped to
     handle SparrowOS rich text.  Cmds like
     [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir() and
-    [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() can output links to the cmd line.
+    [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() can output links to the cmd line.
 
   +] CMD PROMPT
     
@@ -126,7 +126,7 @@ Ed("FILENAME.TXT.Z"); Invokes the editor. See
     [C:/SparrowOS/Adam/Doc/Doc.CPP.Z,44] DOC LINK TYPES.
 
 
-Some cmds like [C:/SparrowOS/Adam/Grep.CPP.Z,165] Grep() take a
+Some cmds like [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() take a
     "find_files_mask".  They begin with the name of a dir tree and end with a
     list of filename masks.  See [C:/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50]
     FilesFindMatch().

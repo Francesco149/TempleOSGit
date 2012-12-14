@@ -9,6 +9,8 @@ F64 last_refresh_delta_time=1.0;
 
 #define KEYNAME_BUF_SIZE	18
 #define WALLPAPER_ATTR		(BLUE<<4+WHITE)
+#define WALLPAPER_CPU_TEXT_COL	45
+Bool wallpaper_record_on=FALSE;
 
 class CTaskWallPaperData
 {
@@ -35,17 +37,20 @@ U0 WallPaper(CTask *_task)
   ltdt=GetCurTimeCDate;
   if (!(win_updates&63))
     last_unused_sysmem=UnusedSysMem+data_heap_unused;
-  SPrintF(buf,"%h2D %h4T Ref:%2tf Mem:%010X CPU:",
+  SPrintF(buf,"%h2D %h4T Ref:%2tf Mem:%010X CPU",
     ltdt,ltdt,win_actual_refresh,last_unused_sysmem);
   PlotScreenStr(buf,WALLPAPER_ATTR,0,0);
+ 
+  if (wallpaper_record_on)
+    PlotScreenStr("*",WALLPAPER_ATTR&0xF0+RED,WALLPAPER_CPU_TEXT_COL-4,0);
 
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
     SPrintF(buf,"%2tf",100.0*(1.0-c->idle_factor));
     if (i&1)
-      PlotScreenStr(buf,WALLPAPER_ATTR,45+i*2,0);
+      PlotScreenStr(buf,WALLPAPER_ATTR,WALLPAPER_CPU_TEXT_COL+i*2,0);
     else
-      PlotScreenStr(buf,WALLPAPER_ATTR&0xF0+YELLOW,45+i*2,0);
+      PlotScreenStr(buf,WALLPAPER_ATTR&0xF0+YELLOW,WALLPAPER_CPU_TEXT_COL+i*2,0);
   }
 
   st=ScanCode2KeyName(sys_last_down_scan_code);

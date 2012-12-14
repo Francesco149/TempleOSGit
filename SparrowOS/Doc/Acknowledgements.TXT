@@ -68,7 +68,7 @@ windows.  He also guided my progress, very obviously.
 20) I got Webster's Dictionary and The King James Bible from 
 Project Gutenberg.
 
-In short, I wrote every one of the 137,965 lines myself, no GPL code, no 
+In short, I wrote every one of the 138,038 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 

@@ -66,10 +66,9 @@ CFileBMP *BMPFileNew(I64 width,I64 height,I64 bits)
 public CFileBMP *BMPFile4To(CDC *dc)
 {
 //To Windows 4 bit BMP
-  U8 *src;
+  U8 *src,*bgr;
   CFileBMP *r=BMPFileNew(dc->width,dc->height,4);
   I64 x,y,w=dc->width>>1;
-  U8 *bgr;
   bgr=r(U8 *)+r->data_offset;
   for (y=dc->height-1;y>=0;y--) {
     src=y*dc->width_internal+dc->body;

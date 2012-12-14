@@ -21,7 +21,7 @@ U0 TanksPlot()
 	    if (tempu->player==enemy_player || tempu->fired || !tempu->indirect_fire)
 	      tempu=NULL;
 	    else {
-	      RowCol2XY(fire_radius_x,fire_radius_y,tempu->row,tempu->col);
+	      RowCol2XY(&fire_radius_x,&fire_radius_y,tempu->row,tempu->col);
 	      fire_radius=tempu->range*2*HEX_RADIUS;
 	    }
 	  }
@@ -30,7 +30,7 @@ U0 TanksPlot()
       case MSG_IP_L_UP:
 	if (CursorInWindow(Fs,p1,p2)) {
 	  UpdateCursor(Fs,p1,p2);
-	  RowCol2XY(target_x,target_y,cursor_row,cursor_col);
+	  RowCol2XY(&target_x,&target_y,cursor_row,cursor_col);
 	  if (!tempu)
 	    Beep;
 	  else {
@@ -123,7 +123,7 @@ U0 TanksFire()
 	      tempu=NULL;
 	    else {
 	      RVSetUp(cur_player);
-	      RowCol2XY(fire_radius_x,fire_radius_y,tempu->row,tempu->col);
+	      RowCol2XY(&fire_radius_x,&fire_radius_y,tempu->row,tempu->col);
 	      fire_radius=tempu->range*2*HEX_RADIUS;
 	      RecalcVisible(RV_ONE_FRIENDLY_UNIT,tempu);
 	    }

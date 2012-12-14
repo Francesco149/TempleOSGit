@@ -7,7 +7,7 @@ that you can place ctrls on the
 wall paper.
 
 See [::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SliderCtrl.CPP.Z
-and [::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z,1] ::/SparrowOS/Demo/Graphics/MyWallPaper.CPP.Z
+and [::/SparrowOS/Demo/Graphics/WallPaperFish.CPP.Z,1] ::/SparrowOS/Demo/Graphics/WallPaperFish.CPP.Z
 before messing with this program.
 
 It must be "Adam Included".

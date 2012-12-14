@@ -173,34 +173,34 @@ I64 phase,cur_player,enemy_player,view_player,turn,cursor_row,cursor_col,alive_c
    plot_routines[2],move_routines[2],fire_routines[2];
 
 
-U0 Toward(I64 &row,I64 &col,I64 direction)
+U0 Toward(I64 *_row,I64 *_col,I64 direction)
 {
   switch (direction) {
     case 0:
-      row-=2;
+      *_row-=2;
       break;
     case 1:
-      if (row&1)
-	col++;
-      row--;
+      if (*_row&1)
+	*_col+=1;
+      *_row-=1;
       break;
     case 2:
-      if (row&1)
-	col++;
-      row++;
+      if (*_row&1)
+	*_col+=1;
+      *_row+=1;
       break;
     case 3:
-      row+=2;
+      *_row+=2;
       break;
     case 4:
-      if (!(row&1))
-	col--;
-      row++;
+      if (!(*_row&1))
+	*_col-=1;
+      *_row+=1;
       break;
     case 5:
-      if (!(row&1))
-	col--;
-      row--;
+      if (!(*_row&1))
+	*_col-=1;
+      *_row-=1;
       break;
   }
 }
@@ -214,26 +214,26 @@ I64 FacingChg(I64 f1,I64 f2)
     return result;
 }
 
-U0 RowCol2XY(F64 &x,F64 &y,I64 row,I64 col)
+U0 RowCol2XY(F64 *_x,F64 *_y,I64 row,I64 col)
 {
   Pt *c;
   row=LimitI64(row,0,map_rows);
   col=LimitI64(col,0,map_cols);
   c=&hex_centers[row][col];
-  x=c->x;
-  y=c->y;
+  *_x=c->x;
+  *_y=c->y;
 }
 
-U0 XY2RowCol(I64 &row,I64 &col,F64 x,F64 y)
+U0 XY2RowCol(I64 *_row,I64 *_col,F64 x,F64 y)
 {
-  col=(x-DCOS/2)/(HEX_SIDE+DCOS);
-  if (col&1)
-    row=ToI64((y-DSIN)/(2*DSIN))*2+1;
+  *_col=(x-DCOS/2)/(HEX_SIDE+DCOS);
+  if (*_col&1)
+    *_row=ToI64((y-DSIN)/(2*DSIN))*2+1;
   else
-    row=ToI64(y/(2*DSIN))*2;
-  col>>=1;
-  row=LimitI64(row,0,map_rows-1);
-  col=LimitI64(col,0,map_cols-1);
+    *_row=ToI64(y/(2*DSIN))*2;
+  *_col>>=1;
+  *_row=LimitI64(*_row,0,map_rows-1);
+  *_col=LimitI64(*_col,0,map_cols-1);
 }
 
 Unit *FindUnit(I64 row,I64 col)
@@ -260,7 +260,7 @@ Bool CursorInWindow(CTask *task,I64 x,I64 y)
 U0 UpdateCursor(CTask *task,I64 x,I64 y)
 {
   if (CursorInWindow(task,x,y))
-    XY2RowCol(cursor_row,cursor_col,x+task->horz_scroll.pos,y+task->vert_scroll.pos);
+    XY2RowCol(&cursor_row,&cursor_col,x+task->horz_scroll.pos,y+task->vert_scroll.pos);
 }
 
 class LOSCtrl
@@ -271,7 +271,7 @@ class LOSCtrl
 Bool LOSPlot(LOSCtrl *l,I64 x,I64 y,I64 z)
 { //We got tricky and used z as the distance from the start of the line.
   I64 row,col;
-  XY2RowCol(row,col,x,y);
+  XY2RowCol(&row,&col,x,y);
   if ((row!=l->r1 || col!=l->c1) &&
       (row!=l->r2 || col!=l->c2) &&
       terrain[row][col]!=PLAINS) {
@@ -291,8 +291,8 @@ Bool LOS(I64 r1,I64 c1,I64 r2,I64 c2)
 {
   F64 x1,y1,x2,y2;
   LOSCtrl l;
-  RowCol2XY(x1,y1,r1,c1);
-  RowCol2XY(x2,y2,r2,c2);
+  RowCol2XY(&x1,&y1,r1,c1);
+  RowCol2XY(&x2,&y2,r2,c2);
   l.r1=r1; l.c1=c1;
   l.r2=r2; l.c2=c2;
   l.distance=Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2));
@@ -360,12 +360,12 @@ Bool MPRecalcVisible(MPCtrl1 *job)
     case RV_ONE_FRIENDLY_UNIT:
       if (job->mode==RV_UPDATE_FRIENDLY_UNIT)
 	range=MAX_F64;
-      RowCol2XY(x1,y1,row,col);
+      RowCol2XY(&x1,&y1,row,col);
       for (i=job->lo;i<job->hi;i++,ut1++) {
 	seen=FALSE;
 	if (ut1->life>0 &&
 	    LOS(row,col,ut1->row,ut1->col)) {
-	    RowCol2XY(x2,y2,ut1->row,ut1->col);
+	    RowCol2XY(&x2,&y2,ut1->row,ut1->col);
 	  d=Sqr(x2-x1)+Sqr(y2-y1);
 	  if (d<range) {
 	    seen=TRUE;
@@ -377,7 +377,7 @@ Bool MPRecalcVisible(MPCtrl1 *job)
       }
       break;
     case RV_ONE_ENEMY_UNIT:
-      RowCol2XY(x1,y1,row,col);
+      RowCol2XY(&x1,&y1,row,col);
       for (i=job->lo;i<job->hi;i++,ut1++)
 	if (ut1->life>0 &&
 	    LOS(row,col,ut1->row,ut1->col)) {
@@ -390,7 +390,7 @@ Bool MPRecalcVisible(MPCtrl1 *job)
       ut0=&units[cur_player][0];
       for (i=0;i<MAX_UNITS;i++,ut0++)
 	if (ut0->life>0) {
-	  RowCol2XY(x1,y1,ut0->row,ut0->col);
+	  RowCol2XY(&x1,&y1,ut0->row,ut0->col);
 	  ut1=&units[enemy_player][job->lo];
 	  for (j=job->lo;j<job->hi;j++,ut1++) {
 	    if (ut1->life>0 &&
@@ -406,7 +406,7 @@ Bool MPRecalcVisible(MPCtrl1 *job)
       ut0=&units[enemy_player][0];
       for (i=0;i<MAX_UNITS;i++,ut0++)
 	if (ut0->life>0) {
-	  RowCol2XY(x1,y1,ut0->row,ut0->col);
+	  RowCol2XY(&x1,&y1,ut0->row,ut0->col);
 	  ut1=&units[cur_player][job->lo];
 	  for (j=job->lo;j<job->hi;j++,ut1++) {
 	    if (ut1->life>0 &&
@@ -546,16 +546,16 @@ I64 MoveCost(Unit *tempu,I64 r,I64 c,I64 facing)
   return result;
 }
 
-I64 MoveOneHex(I64 &row,I64 &col,F64 x,F64 y)
+I64 MoveOneHex(I64 *_row,I64 *_col,F64 x,F64 y)
 {
   I64 direction,best_direction=-1,r,c;
   F64 d,best_d,x1,y1;
-  RowCol2XY(x1,y1,row,col);
+  RowCol2XY(&x1,&y1,*_row,*_col);
   best_d=Sqr(x1-x)+Sqr(y1-y);
   for (direction=0;direction<6;direction++) {
-    r=row; c=col;
-    Toward(r,c,direction);
-    RowCol2XY(x1,y1,r,c);
+    r=*_row; c=*_col;
+    Toward(&r,&c,direction);
+    RowCol2XY(&x1,&y1,r,c);
     d=Sqr(x1-x)+Sqr(y1-y);
     if (0<=r<map_rows &&
 	0<=c<map_cols &&
@@ -565,7 +565,7 @@ I64 MoveOneHex(I64 &row,I64 &col,F64 x,F64 y)
     }
   }
   if (best_direction>=0) {
-    Toward(row,col,best_direction);
+    Toward(_row,_col,best_direction);
     return best_direction;
   } else
     return -1;
@@ -587,7 +587,7 @@ U0 MoveUnitAnimation(Unit *tempu,I64 r,I64 c,I64 facing)
 {
   F64 x1,y1,x2,y2,f=facing*60.0*pi/180.0;
   moving_unit=tempu;
-  RowCol2XY(x1,y1,tempu->row,tempu->col);
+  RowCol2XY(&x1,&y1,tempu->row,tempu->col);
   move_x=x1; move_y=y1;
   moving=TRUE;
   if (tempu->infantry)
@@ -606,7 +606,7 @@ U0 MoveUnitAnimation(Unit *tempu,I64 r,I64 c,I64 facing)
     Snd(100);
   }
   move_facing=f;
-  RowCol2XY(x2,y2,r,c);
+  RowCol2XY(&x2,&y2,r,c);
   Line(NULL,x1,y1,0,x2,y2,0,&MovePlot);
   Snd(0);
   moving_unit=NULL;
@@ -619,7 +619,7 @@ Bool MoveUnit(Unit *tempu,I64 x,I64 y)
   while (tempu->remaining_movement>0) {
     r=tempu->row;
     c=tempu->col;
-    if ((facing=MoveOneHex(r,c,x,y))<0)
+    if ((facing=MoveOneHex(&r,&c,x,y))<0)
       break;
     else {
       i=MoveCost(tempu,r,c,facing);
@@ -688,8 +688,8 @@ U0 FireShot(Unit *tempu,Unit *target)
 
   if (tempu->life<=0 || target->life<=0 || tempu->range<=0)
     return;
-  RowCol2XY(x1,y1,tempu->row,tempu->col);
-  RowCol2XY(x2,y2,target->row,target->col);
+  RowCol2XY(&x1,&y1,tempu->row,tempu->col);
+  RowCol2XY(&x2,&y2,target->row,target->col);
 
   NewLine(2);
 
@@ -741,7 +741,7 @@ U0 FireShot(Unit *tempu,Unit *target)
 
   if (hit) {
     r=target->row;c=target->col;
-    if ((facing=MoveOneHex(r,c,x1,y1))>=0)
+    if ((facing=MoveOneHex(&r,&c,x1,y1))>=0)
       facing=FacingChg(facing,target->facing);
     else
       facing=0;
@@ -811,8 +811,8 @@ U0 IndirectFireResolve()
   while (tempi!=*indirect_root) {
     tempi1=tempi->next;
     tempu=tempi->attacker;
-    RowCol2XY(x1,y1,tempu->row,tempu->col);
-    RowCol2XY(x2,y2,tempi->row,tempi->col);
+    RowCol2XY(&x1,&y1,tempu->row,tempu->col);
+    RowCol2XY(&x2,&y2,tempi->row,tempi->col);
 
     NewLine(2);
 
@@ -849,7 +849,7 @@ U0 IndirectFireResolve()
       else
 	tempi->col+=col_offsets_even[i];
       tempi->row+=row_offsets[i];
-      RowCol2XY(x2,y2,tempi->row,tempi->col);
+      RowCol2XY(&x2,&y2,tempi->row,tempi->col);
     }
     Line(NULL,x1,y1,0,x2,y2,0,&FirePlot);
     firing=FALSE;
@@ -984,7 +984,7 @@ U0 MakeTerrain(U8 color,I64 cnt,I64 cluster_lo,I64 cluster_hi)
     l=cluster_lo+RandU16%(cluster_hi-cluster_lo+1);
     for (j=0;j<l;j++) {
       terrain[row][col]=color;
-      Toward(row,col,RandU16%6);
+      Toward(&row,&col,RandU16%6);
       col=LimitI64(col,0,map_cols-1);
       row=LimitI64(row,0,map_rows-1);
     }
@@ -1000,7 +1000,7 @@ U0 MakeRivers()
     direction=RandU16%6;
     while (TRUE) {
       rivers[row][col]=TRUE;
-      Toward(row,col,direction);
+      Toward(&row,&col,direction);
       if (!(0<=row<map_rows && 0<=col<map_cols))
 	break;
       if (!(RandU16&3))
@@ -1018,7 +1018,7 @@ U0 MakeRoads()
     direction=RandU16%6;
     while (TRUE) {
       roads[row][col]=TRUE;
-      Toward(row,col,direction);
+      Toward(&row,&col,direction);
       if (!(0<=row<map_rows && 0<=col<map_cols))
 	break;
       if (!(RandU16%3))
@@ -1034,7 +1034,7 @@ U0 DrawTerrain()
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
       map->color=terrain[j][i];
-      RowCol2XY(x,y,j,i);
+      RowCol2XY(&x,&y,j,i);
       GrFloodFill(map,x,y);
     }
 }
@@ -1046,13 +1046,13 @@ U0 DrawRivers()
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
       if (rivers[j][i]) {
-	RowCol2XY(x1,y1,j,i);
+	RowCol2XY(&x1,&y1,j,i);
 	for (k=0;k<6;k++) {
 	  r=j;c=i;
-	  Toward(r,c,k);
+	  Toward(&r,&c,k);
 	  if (0<=r<map_rows && 0<=c<map_cols &&
 	    rivers[r][c]) {
-	    RowCol2XY(x2,y2,r,c);
+	    RowCol2XY(&x2,&y2,r,c);
 	    map->color=LTBLUE;
 	    map->pen_width=4;
 	    GrLine3(map,x1,y1,0,x2,y2,0);
@@ -1074,13 +1074,13 @@ U0 DrawRoads()
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
       if (roads[j][i]) {
-	RowCol2XY(x1,y1,j,i);
+	RowCol2XY(&x1,&y1,j,i);
 	for (k=0;k<6;k++) {
 	  r=j;c=i;
-	  Toward(r,c,k);
+	  Toward(&r,&c,k);
 	  if (0<=r<map_rows && 0<=c<map_cols &&
 	    roads[r][c]) {
-	    RowCol2XY(x2,y2,r,c);
+	    RowCol2XY(&x2,&y2,r,c);
 	    GrLine3(map,x1,y1,0,x2,y2,0);
 	  }
 	}
@@ -1111,7 +1111,7 @@ U0 DrawDots()
   map->color=BLACK;
   for (j=0;j<map_rows;j++)
     for (i=0;i<map_cols;i++) {
-      RowCol2XY(x,y,j,i);
+      RowCol2XY(&x,&y,j,i);
       GrPlot(map,x,y);
     }
 }
@@ -1441,7 +1441,7 @@ U0 DrawUnits(CTask *task,CDC *dc)
 	  dc->color=LTCYAN;
       }
       if (tempu->life>0 && Bt(&tempu->visible[view_player],0) && tempu!=moving_unit) {
-	RowCol2XY(x,y,tempu->row,tempu->col);
+	RowCol2XY(&x,&y,tempu->row,tempu->col);
 	if (phase&~1==PHASE_MOVE && tempu->remaining_movement ||
 	    (phase&~1==PHASE_PLOT&& tempu->indirect_fire||
 	     phase&~1==PHASE_FIRE&&!tempu->indirect_fire) && !tempu->fired ||
@@ -1475,7 +1475,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   j=ipy-task->win_pixel_top -task->win_scroll_y;
   if (CursorInWindow(task,i,j))
     UpdateCursor(task,i,j);
-  RowCol2XY(x,y,cursor_row,cursor_col);
+  RowCol2XY(&x,&y,cursor_row,cursor_col);
 
 //Roads require multiple cursor fills
   dc->color=YELLOW;
@@ -1501,7 +1501,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	c=indirect_col+col_offsets_even[i];
       r=indirect_row+row_offsets[i];
       if (0<=r<map_rows && 0<=c<map_cols) {
-	RowCol2XY(x,y,r,c);
+	RowCol2XY(&x,&y,r,c);
 	for (j=0;j<10;j++)  {
 	  if (j&1)
 	    dc->color=LTRED;
@@ -1537,7 +1537,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     tempi=indirect_root.next;
     while (tempi!=&indirect_root) {
       if (tempi->attacker->player==view_player) {
-	RowCol2XY(x,y,tempi->row,tempi->col);
+	RowCol2XY(&x,&y,tempi->row,tempi->col);
 	CSpritePlot3(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,__BIN_5);
       }
       tempi=tempi->next;
@@ -1554,7 +1554,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     for (j=0;j<map_rows;j++)
       for (i=0;i<map_cols;i++)
 	if (!visible_map[j][i]) {
-	  RowCol2XY(x,y,j,i);
+	  RowCol2XY(&x,&y,j,i);
 	  GrLine(dc,x-6-h,y-6-v,x+6-h,y+6-v);
 	  GrLine(dc,x+6-h,y-6-v,x-6-h,y+6-v);
 	  GrLine(dc,x-h,y-6-v,x-h,y+6-v);

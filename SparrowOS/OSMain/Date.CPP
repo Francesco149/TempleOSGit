@@ -120,7 +120,7 @@ I64 LastDayOfYear(I64 i)
 }
 
 
-I64 Bcd2Bin(I64 b)
+I64 Bcd2Bin(U64 b)
 {
   I64 i,result=0;
   for (i=0;i<16;i++) {

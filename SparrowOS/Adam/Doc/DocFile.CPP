@@ -78,7 +78,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	  else
 	    cnt++;
 	  break;
-	case DOCT_TEXT://**Update [C:/SparrowOS/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
+	case DOCT_TEXT://**Update [D:/SparrowOS/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
 	  if (!(doc_e->flags1 & ~(DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
 	    cnt+=StrLen(doc_e->tag);
 	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS)) ||

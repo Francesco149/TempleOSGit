@@ -62,7 +62,7 @@ class Critter
 
 U0 (*old_wall_paper)(CTask *task);
 
-U0 MyWallPaper(CTask *task)
+U0 WallPaperFish(CTask *task)
 {
   I64 i,j,x,y;
   CDC *dc=DCAlias(gr_dc,task);
@@ -112,7 +112,7 @@ U0 WallInit()
     c->dy=RandI16;
     c->t_offset=Rand*FRAMES_PER_CRITTER;
   }
-  fp_wall_paper=&MyWallPaper;
+  fp_wall_paper=&WallPaperFish;
 }
 
 WallInit;

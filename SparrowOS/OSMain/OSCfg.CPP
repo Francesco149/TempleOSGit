@@ -170,7 +170,7 @@ U0 OSMainCfgOptions(COSMainCfg *c)
     i=ListEntryMatch(st,osmain_cfg_options,LEF_IGNORE_CASE);
     if (i==CFG_HELP)
 "\n"
-"$FG,PURPLE$ProtectLow$FG$ Marks memory below 0x%0X as not present.\n"
+"$FG,PURPLE$ProtectLow$FG$ Marks memory at and below 0x%0X as not present.\n"
 "$FG,PURPLE$Deterministic$FG$ Tries to keep deterministic.\n"
 "$FG,PURPLE$MemInit$FG$ Initializes memory above 0x100000 to a val at boot.\n"
 "$FG,PURPLE$HeapInit$FG$ Initializes MAlloc() memory to a val.\n"
