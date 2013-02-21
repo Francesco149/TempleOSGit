@@ -21,7 +21,7 @@ Bool ISOPrtInit(CPrt *p,I64 blk)
       RBlks(p,iso,i*spc,spc);
       buf[0](U32)=iso->id[0](U32);
       buf[4](U16)=iso->id[4](U8);
-      switch (ListEntryMatch(buf,"CD001\0CDW02\0BEA01\0BOOT2\0NSR02\0NSR03\0TEA01\0",LEF_EXACT)) {
+      switch (LstEntryMatch(buf,"CD001\0CDW02\0BEA01\0BOOT2\0NSR02\0NSR03\0TEA01\0",LEF_EXACT)) {
 	case 0:
 	  p->type=PT_ISO9660;
 	  switch (iso->type) {
@@ -57,10 +57,10 @@ ipi_done:
   return result;
 }
 
-U0 CDate2ISO1(CISO1Date *dst,CDate ltdt)
+U0 CDate2ISO1(CISO1Date *dst,CDate spdt)
 {
   CDateStruct ds;
-  CDate2CDateStruct(&ds,ltdt);
+  CDate2CDateStruct(&ds,spdt);
   dst->year=ds.year-ISO1_BASE_YEAR;
   dst->mon=ds.mon;
   dst->day=ds.day_of_mon;

@@ -67,7 +67,7 @@ U0 RotateTank()
 //not drawn because they are in front of the screen.
       dc->z=GR_Z_ALL;
  
-      CSpritePlot3(dc,0,0,0,__BIN_1);
+      SpritePlot3(dc,0,0,0,__BIN_1);
       WinMgrSync;
       DCFill;
     }

@@ -20,7 +20,7 @@ F64 t0=tMBeat;
 U0 DrawIt(CTask *,CDC *dc)
 {
   F64 dt=tMBeat-t0,y;
-  CSpritePlot3(dc,LH_X,LH_Y,0,__BIN_1);
+  SpritePlot3(dc,LH_X,LH_Y,0,__BIN_1);
   if (dt>24) {
     dc->color=YELLOW;
     for (y=-30;y<30;y+=5)

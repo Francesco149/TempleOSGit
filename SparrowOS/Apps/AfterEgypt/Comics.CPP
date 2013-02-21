@@ -22,6 +22,6 @@ U0 ViewComics()
       break;
   }
   DocDel(doc);
-  CDirListDel(tempm);
+  CDirLstDel(tempm);
 }
 

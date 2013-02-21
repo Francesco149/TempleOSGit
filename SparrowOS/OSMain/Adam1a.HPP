@@ -194,8 +194,89 @@ public class CFifoI64
   I64 mask,in_ptr,out_ptr;
 };
 
-#define NUM_DATE_FMTS	57
-#define NUM_TIME_FMTS	23
+#define TF_HH24_MM_SS		0
+#define TF_HH24_MM		1
+#define TF_HH12_MM_SS_AM	2
+#define TF_HH12_MM_AM		3
+#define TF_HH12_MM_SSA		4
+#define TF_HH12_MMA		5
+#define TF_H_M			6
+#define TF_H_M_S		7
+#define TF_D_H_M		8
+#define TF_D_H_M_S		9
+#define TF_D_H_M_Sh		10
+#define TF_H_M_Sh		11
+#define TF_Sh			12
+#define TF_M_Sh			13
+#define TF_H_M_Sh2		14
+#define TF_D_H_M_Sht		15
+#define TF_H_M_Sht		16
+#define TF_Sht			17
+#define TF_M_Sht		18
+#define TF_H_M_Sht2		19
+#define TF_HH24			20
+#define TF_MM			21
+#define TF_SS			22
+#define TF_NUM			23
+
+#define DF_MM_DD_YY		0
+#define DF_MM_DD		1
+#define DF_wek_MM_DD		2
+#define DF_wek_MM_DD_YY		3
+#define DF_MM_DD_YYYY		4
+#define DF_wek_MM_DD_YYYY	5
+#define DF_mon_DD		6
+#define DF_wek_mon_DD		7
+#define DF_mon_DD_YYYY		8
+#define DF_wek_mon_DD_YYYY	9
+#define DF_month_DD		10
+#define DF_week_month_DD	11
+#define DF_month_DD_YYYY	12
+#define DF_week_month_DD_YYYY	13
+#define DF_DD_MM_YY		14
+#define DF_DD_MM		15
+#define DF_wek_DD_MM		16
+#define DF_wek_DD_MM_YY		17
+#define DF_DD_MM_YYYY		18
+#define DF_wek_DD_MM_YYYY	19
+#define DF_DD_mon		20
+#define DF_wek_DD_mon		21
+#define DF_DD_mon_YYYY		22
+#define DF_wek_DD_mon_YYYY	23
+#define DF_DD_month		24
+#define DF_week_DD_month	25
+#define DF_DD_month_YYYY	26
+#define DF_week_DD_month_YYYY	27
+#define DF_YY_MM_DD		28
+#define DF_YYYY_MM_DD		29
+#define DF_YYMMDD		30
+#define DF_YYYYMMDD		31
+#define DF_MMDDYY		32
+#define DF_MMDDYYYY		33
+#define DF_wek			34
+#define DF_week			35
+#define DF_mon			36
+#define DF_month		37
+#define DF_YYYY_mon		38
+#define DF_YYYY_month		39
+#define DF_YY_mon		40
+#define DF_YY_month		41
+#define DF_mon_YYYY		42
+#define DF_month_YYYY		43
+#define DF_mon_YY		44
+#define DF_month_YY		45
+#define DF_YY			46
+#define DF_YYYY			47
+#define DF_D			48
+#define DF_M			49
+#define DF_Y			50
+#define DF_D2			51
+#define DF_M2			52
+#define DF_Y2			53
+#define DF_D3			54
+#define DF_M3			55
+#define DF_Y3			56
+#define DF_NUM			57
 
 #define CDATE_YEAR_DAYS		365.24225
 #define CDATE_YEAR_DAYS_INT	36524225
@@ -330,11 +411,27 @@ See [::/SparrowOS/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation and [C
 
 #define SYS_START_CR0		0x0031
 
-#define RFLAGS_SINGLE_STEP	8
-#define RFLAGS_INTERRUPTS	9
+#define RFLAGf_CARRY		0
+#define RFLAGf_PARITY		2
+#define RFLAGf_AUX_CARRY	4
+#define RFLAGf_ZERO		6
+#define RFLAGf_SIGN		7
+#define RFLAGf_TRAP		8 //Single Step
+#define RFLAGf_INT		9
+#define RFLAGf_DIR		10
+#define RFLAGf_OVERFLOW		11
+#define RFLAGf_IOPL0		12 // I/O Privilege Level
+#define RFLAGf_IOPL1		13
+#define RFLAGf_NESTED_TASK	14
+#define RFLAGf_RESUME		16
+#define RFLAGf_V8086		17
+#define RFLAGf_ALIGN_CHECK	18
+#define RFLAGf_VINT		19 //Virtual Interrupt
+#define RFLAGf_VINT_PENDING	20
+#define RFLAGf_ID		21
 
 #define SYS_START_RFLAGS	0x0000
-#define SYS_NORMAL_RFLAGS	0x0200
+#define SYS_NORMAL_RFLAGS	(1<<RFLAGf_INT)
 
 #define NUM_MEM_E820_ENTRIES	48
 #define MEM_E820_ENTRY_SIZE	20
@@ -533,9 +630,9 @@ class CSema
 
 //Extern calls
 //I'm the only one allowed to create these.
-//They work with [C:/SparrowOS/OSMain/Adam1b.HPP.Z,295] CallExtNum().
+//They work with [C:/SparrowOS/OSMain/Adam1b.HPP.Z,296] CallExtNum().
 //I guess you could reallocate
-//and extend [C:/SparrowOS/OSMain/Adam1b.HPP.Z,294] ext[] and copy it.
+//and extend [C:/SparrowOS/OSMain/Adam1b.HPP.Z,295] ext[] and copy it.
 #define EXT_WIN_TO_TOP		0
 #define EXT_DEBUGGER		1
 #define EXT_EXIT_DEBUGGER	2
@@ -651,7 +748,7 @@ public class CHashSrcSym:CHash
   CDbgInfo *debug;
   CIndentInfo *indent;
   U8 *import_name;
-  CExeImportExport *list;
+  CExeImportExport *ie_lst;
 };
 
 public class CHashGeneric:CHash
@@ -701,12 +798,12 @@ public class CHashImport:CHashSrcSym
 
 public class CHashDefineStr:CHashSrcSym
 {
-  U8 *data;
+  U8 *data,**sub_lst;
   I64 cnt;
   U8 *caller;
 };
 
-//Member List Flags
+//Member Lst Flags
 #define MLF_DFT_AVAILABLE	1
 #define MLF_STR_DFT_AVAILABLE	2
 #define MLF_FUN			4
@@ -721,20 +818,20 @@ public class CArrayDim
 };
 
 #define MLMF_IS_STR	1
-public class CMemberListMeta
+public class CMemberLstMeta
 {
-  CMemberListMeta *next;
+  CMemberLstMeta *next;
   U8 *str;
   I64 flags;
   I64 user_data;
 };
 
-public class CMemberList
+public class CMemberLst
 {
-  CMemberList *next,*left,*right,*left2,*right2;
+  CMemberLst *next,*left,*right,*left2,*right2;
   U8 *str;
   CHashClass *member_class,*member_class2;
-  CMemberListMeta *meta;
+  CMemberLstMeta *meta;
   U32 use_cnt;
   U16 flags;
   I8 register,pad;
@@ -752,12 +849,12 @@ public class CMemberList
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{ //See [C:/SparrowOS/Compiler/StmtParser.CPP.Z,1] PrsClassNew().	baseclass of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,784] CHashFun
-  I64 size; //must be at same offset as [C:/SparrowOS/OSMain/Adam1a.HPP.Z,829] CHashGlblVar.size
+{ //See [C:/SparrowOS/Compiler/StmtParser.CPP.Z,1] PrsClassNew().	baseclass of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,881] CHashFun
+  I64 size; //must be at same offset as [C:/SparrowOS/OSMain/Adam1a.HPP.Z,926] CHashGlblVar.size
   U32 member_cnt;
   U8 ptr_cnt,sub_type,flags[2];
-  CMemberList *member_list,*member_list2;
-  CMemberList *last_in_member_list;
+  CMemberLst *member_lst,*member_lst2;
+  CMemberLst *last_in_member_lst;
   CHashClass *base_class;
   //fun return or ptr to
   //union-no-member-specified class
@@ -786,7 +883,7 @@ public class CHashFun:CHashClass
   U32 arg_cnt,pad;
   U32 used_reg_mask,clobbered_reg_mask;
   U8 *executable_addr;
-  CExternUsage *ext_list;
+  CExternUsage *ext_lst;
 };
 
 //Internal type definitions
@@ -828,7 +925,7 @@ public class CHashFun:CHashClass
 
 public class CHashGlblVar:CHashSrcSym
 {
-  I64 size; //must be at same offset as [C:/SparrowOS/OSMain/Adam1a.HPP.Z,754] CHashClass.size
+  I64 size; //must be at same offset as [C:/SparrowOS/OSMain/Adam1a.HPP.Z,851] CHashClass.size
   I64 flags;
   CHashClass *var_class;
   CHashFun *fun_ptr;
@@ -1372,7 +1469,6 @@ class CEdFileName
 
 //locked flags
 #define DOClf_LOCKED		0
-
 class CDocUndo
 {
   CDocUndo *next,*last;
@@ -1980,10 +2076,10 @@ class CAsmCtrl
   CExeAbsAddr *abss;
   CExeHeapGlbl *heap_glbls;
   I64 display_col,last_ip;
-  U8 *last_label,*last_line_listed;
+  U8 *last_label,*last_line_lsted;
   CLexFile *last_lfn;
   I64 seg_size;
-  Bool has_locals,list;
+  Bool has_locals,lst;
 };
 
 class CStreamBlk
@@ -2003,7 +2099,7 @@ class CLexCodeBlkCtrl
   CCodeBlk		*cb_in_first;
   CIntermediateCode	*cb_in_end;
   CIntermediateCode	*cb_in_ptr;
-  CCodeBlkMisc		*cb_misc_list,*cb_misc_list_end;
+  CCodeBlkMisc		*cb_misc_lst,*cb_misc_lst_end;
 };
 
 #define NUM_REGS	16
@@ -2035,12 +2131,12 @@ public class CLex
   CHashTable	*glbl_hash_table;
   CHashTable	*stream_parent_glbl_hash_table;
   I64 hash_mask;
-  CHashTable	 *hash_table_list;
+  CHashTable	 *hash_table_lst;
   CHashGeneric *hash_entry;
   CAbsCntsI64 abs_cnts;
   CLexUndef  *undef_hash_entry;
-  CHashFun	   *local_var_list;
-  CMemberList *local_var_entry;
+  CHashFun	   *local_var_lst;
+  CMemberLst *local_var_entry;
   CCodeBlkMisc	*lb_leave;
   U8 *cur_buf_ptr;
   CLexFile *cur_lfn,*fun_lfn;
@@ -2433,9 +2529,9 @@ class CATARep
 #define MBR_PT_NTFS	0x07
 #define MBR_PT_NATIVE	0x88
 
-public class CFreeList
+public class CFreeLst
 {
-  CFreeList *next,*last;
+  CFreeLst *next,*last;
   I64 start,size;
 };
 
@@ -2466,7 +2562,7 @@ public class CPrt
   I64 cur_map_blk_num;
   U32 *cur_map_blk;
   U8 *buffered_map_dirty_bits;
-  CFreeList *next_free,*last_free;
+  CFreeLst *next_free,*last_free;
 
   Bool (*rblks)(CPrt *p,U8 *buf,I64 blk,I64 cnt);
   Bool (*wblks)(CPrt *p,U8 *buf,I64 blk,I64 cnt);
@@ -2596,8 +2692,8 @@ public class CBlkPool
 {
   I64 locked_flags,size;
   I64 allocated_u8s;
-  CMemBlk *mem_free_list;
-  CMemBlk *mem_free_2meg_list;
+  CMemBlk *mem_free_lst;
+  CMemBlk *mem_free_2meg_lst;
   CMemBlk *free_page_hash[FREE_PAGE_HASH_SIZE];
   CMemBlk *free_page_hash2[64-PAGE_BITS];
 };
@@ -2615,7 +2711,7 @@ public class CHeapCtrl
   I64 used_u8s;
   CTask *mem_task;
   CMemBlk *next_mem_blk,*last_mem_blk;
-  CMemUnusedAllocated *malloc_free_list;
+  CMemUnusedAllocated *malloc_free_lst;
   CMemUsedAllocated   *next_um,*last_um;
   CMemUnusedAllocated *heap_hash[HEAP_HASH_SIZE/sizeof(U8 *)];
 };
@@ -2626,7 +2722,7 @@ public class CHeapCtrl
 #define ROP_COLLISION			0x0200
 #define ROP_MONO			0x0300
 
-//These are just for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2636] ROPF_PROBABILITY_DITHER
+//These are just for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2732] ROPF_PROBABILITY_DITHER
 //See [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,459] GrLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2950,7 +3046,7 @@ public class CTask //The Fs segment register points to current CTask
   I64	except_argc;
   I64	*except_argv;
   Bool catch_except,ignore_except,pad[6];
-  CBpt *bpt_list;
+  CBpt *bpt_lst;
   CCtrl	*next_ctrl,*last_ctrl;
   CMenu	*cur_menu;
   CTaskSettings *next_settings;
@@ -2996,9 +3092,8 @@ public class CTask //The Fs segment register points to current CTask
   U0	(*task_end_cb)();
   CTask *song_task,*animate_task;
   I64	rnd_seed;
-  U32	user_num;
-  U32	fault_num;
-  I64	fault_err_code;
+  I64	task_num,user_num;
+  I64	fault_num,fault_err_code;
   I64	answers[4];
   U16	answer_types[4];
   I64	answers_displayed;
@@ -3233,12 +3328,12 @@ public class CDC
 
 //public--change directly
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2626] ROP_COLLISION
+	bkcolor, //Set for use with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2722] ROP_COLLISION
 	color2; //Internally used for [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,236] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability is basically a U16.
-  //It is activated by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2636] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2732] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3273,7 +3368,7 @@ public class CDC
   I32 cur_x,cur_y,cur_z,pad;
   I64 collision_cnt;
 
-  //Set by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3206] DCF_RECORD_EXTENTS
+  //Set by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3301] DCF_RECORD_EXTENTS
   I64 min_x,max_x,min_y,max_y; //screen coordinates
 
   U32 dc_signature,pad;
@@ -3297,7 +3392,7 @@ public class CGrVectMap
   CColorROPU32 bkcolor,pad;
 
 //Array of bit numbers for rectangle starts
-//Can be regenerated with [C:/SparrowOS/Adam/Gr/GrVectMap.CPP.Z,470] GrVectMapRectStartBits()
+//Can be regenerated with [C:/SparrowOS/Adam/Gr/GrVectMap.CPP.Z,470] VectMapRectStartBits()
   U32 *rect_start_bits;
 
   U8 *body;
@@ -3403,7 +3498,7 @@ public class CArcCompress
 #define SRF_WHOLE_LABELS_BACK	4
 #define SRG_WHOLE_LABELS	(SRF_WHOLE_LABELS_FRONT|SRF_WHOLE_LABELS_BACK)
 
-//Flags for ListEntryMatch
+//Flags for LstEntryMatch
 #define LEF_IGNORE_CASE		1
 #define LEF_EXACT		2
 
@@ -3500,11 +3595,10 @@ public class CCPU //The Gs segment register points to current CCPU
   I64 total_jiffies;
   CTask *seth_task,*idle_task;
   CMPCmdCtrl cmd_ctrl;
-  I64 *idt; //interrupt descriptor table
   I64 tr;   //task register
   I64 swap_cnter;
   U0 (*timer_irq_chain)(CTask *task);
-  CTask *dying_task_list;
+  CTask *dying_task_lst;
   CTSS *tss;
   U8 wallpaper_data[CPU_WALLPAPER_DATA_SIZE]; //doubles as start-up stk
   I64 start_stk[8];

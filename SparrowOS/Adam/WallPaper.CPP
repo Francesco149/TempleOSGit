@@ -26,7 +26,7 @@ U0 WallPaper(CTask *_task)
   CHashTable *old_hash=Fs->hash_table;
   CCPU *c;
   Bool old_preempt=Preempt(OFF);
-  CDate ltdt;
+  CDate spdt;
   U8 buf[256],buf2[256],*st;
   CDC *dc=DCAlias(gr_dc,_task);
   static I64 code_heap_unused=0,code_heap_used=0,
@@ -34,11 +34,11 @@ U0 WallPaper(CTask *_task)
 
   _task->text_attr=WALLPAPER_ATTR;
 
-  ltdt=GetCurTimeCDate;
+  spdt=GetCurTimeCDate;
   if (!(win_updates&63))
     last_unused_sysmem=UnusedSysMem+data_heap_unused;
   SPrintF(buf,"%h2D %h4T Ref:%2tf Mem:%010X CPU",
-    ltdt,ltdt,win_actual_refresh,last_unused_sysmem);
+    spdt,spdt,win_actual_refresh,last_unused_sysmem);
   PlotScreenStr(buf,WALLPAPER_ATTR,0,0);
  
   if (wallpaper_record_on)
@@ -183,7 +183,7 @@ fp_wall_paper=&WallPaper;
 U0 DrawTermButton(CDC *dc,CCtrl *c)
 {
   if (Blink)
-    CSpritePlot3(dc,c->left,c->top,0,__BIN_1);
+    SpritePlot3(dc,c->left,c->top,0,__BIN_1);
 }
 
 U0 LeftClickTermButton(CCtrl *,I64,I64,Bool down)
@@ -204,7 +204,7 @@ CCtrl *TermButtonNew()
   c->draw_it=&DrawTermButton;
   c->left_click=&LeftClickTermButton;
 
-  CSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
+  SpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
   //min must be zero
   c->left=sys_winmgr_task->win_pixel_width-(max_x-min_x+1);
   c->right=c->left+(max_x-min_x+1)-1;
@@ -236,9 +236,9 @@ public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,Bool closed)
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   dc->color=ROP_EQU;
   if (closed)
-    CSpritePlot3(dc,x,y,0,__BIN_3);
+    SpritePlot3(dc,x,y,0,__BIN_3);
   else
-    CSpritePlot3(dc,x,y,0,__BIN_4);
+    SpritePlot3(dc,x,y,0,__BIN_4);
 }
 fp_draw_grab_input_ptr=&DrawGrabInputPtr;
 

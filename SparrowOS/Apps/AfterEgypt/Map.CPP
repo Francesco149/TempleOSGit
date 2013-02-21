@@ -8,7 +8,7 @@ I64 x=0,y=0;
 
 U0 DrawMap(CTask *,CDC *dc)
 {
-  CSpritePlot3(dc,x,y,0,__BIN_1);
+  SpritePlot3(dc,x,y,0,__BIN_1);
 }
 
 #define A1_MIN	0.02

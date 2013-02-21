@@ -64,6 +64,7 @@ C32_ECX::	DU32	0;
 C32_EDX::	DU32	0;
 C32_ESI::	DU32	0;
 C32_EDI::	DU32	0;
+C32_EFLAGS::	DU32	0;
 
 C32_RSP::	DU64	0;
 
@@ -117,10 +118,14 @@ USE32
 	MOV	EDX,U32 [C32_EDX]
 	MOV	ESI,U32 [C32_ESI]
 	MOV	EDI,U32 [C32_EDI]
+	MOV	U32 [C32_EFLAGS],0
 
 	DU8	0x9A;		 //CALL GDT_CS_SEL:[C32_ADD]
 C32_ADD:: DU32	0;
 	DU16	GDT_CS_SEL;
+
+	PUSHFD
+	POP	U32 [C32_EFLAGS]
 
 	MOV	U32 [C32_EAX],EAX
 	MOV	U32 [C32_EBX],EBX
@@ -157,6 +162,7 @@ _extern C32_ECX U32 c32_ecx;
 _extern C32_EDX U32 c32_edx;
 _extern C32_ESI U32 c32_esi;
 _extern C32_EDI U32 c32_edi;
+_extern C32_EFLAGS U32 c32_eflags;
 _extern SYS_PCI_SERVICES U32 sys_pci_services;
 
 //Not reentrant--used to call BIOS32

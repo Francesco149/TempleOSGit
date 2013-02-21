@@ -26,13 +26,13 @@ U0 AsmUnresolvedAdd(CAsmCtrl *a,U8 *exp,I64 type,I64 ip,I64 rel_ip,
   }
 }
 
-U0 AsmLineList(CLex *lx)
+U0 AsmLineLst(CLex *lx)
 {
   CAsmCtrl *a=lx->a;
   CLexFile *tempf=lx->cur_lfn;
   CDocEntry *doc_e=tempf->line_start,*doc_e2;
-  if (a->list && a->last_lfn==tempf && doc_e) {
-    if (doc_e2=a->last_line_listed) {
+  if (a->lst && a->last_lfn==tempf && doc_e) {
+    if (doc_e2=a->last_line_lsted) {
       if (tempf->flags& LFSF_IS_DOC) {
 	while (doc_e2->y<doc_e->y) {
 	  Spaces(24-a->display_col);
@@ -48,11 +48,11 @@ U0 AsmLineList(CLex *lx)
 	  doc_e2=LexPutLine(lx,doc_e2);
 	}
       }
-      a->last_line_listed=doc_e2;
+      a->last_line_lsted=doc_e2;
     } else
-      a->last_line_listed=doc_e;
+      a->last_line_lsted=doc_e;
   } else {
-    a->last_line_listed=NULL;
+    a->last_line_lsted=NULL;
     a->last_lfn=tempf;
   }
   a->last_ip=a->ip;
@@ -75,7 +75,7 @@ U0 AsmStoreCodeU8(CLex *lx,U8 b)
       break;
     }
   tempc->body[a->ip++ & (ASM_CODE_BLK_SIZE-1)]=b;
-  if (a->list) {
+  if (a->lst) {
     if (a->display_col>=24) {
       NewLine;
       a->display_col=0;
@@ -114,7 +114,7 @@ U0 AsmStoreCodeU32(CLex *lx,U32 d)
   _d=tempc->body+ a->ip&(ASM_CODE_BLK_SIZE-1);
   *_d=d;
   a->ip+=sizeof(U32);
-  if (a->list) {
+  if (a->lst) {
     if (a->display_col>=24) {
       NewLine;
       a->display_col=0;
@@ -153,7 +153,7 @@ U0 AsmStoreCodeU64(CLex *lx,U64 d)
   qq=tempc->body+ a->ip&(ASM_CODE_BLK_SIZE-1);
   *qq=d;
   a->ip+=sizeof(I64);
-  if (a->list) {
+  if (a->lst) {
     if (a->display_col>=24) {
       NewLine;
       a->display_col=0;
@@ -275,12 +275,12 @@ U0 AsmLocalsResolve(CLex *lx)
       }
     }
     ExpressionDel(tempu->exp);
-    LinkedListDel(tempu->undef_hash);
+    LinkedLstDel(tempu->undef_hash);
     Free(tempu);
     tempu=tempu1;
   }
   HashTableDel(lx->local_hash_table);
-  lx->local_hash_table=lx->hash_table_list->next=
+  lx->local_hash_table=lx->hash_table_lst->next=
     HashTableNew(16);
   lx->local_hash_table->next=lx->glbl_hash_table;
   a->local_unresolved=NULL;
@@ -311,7 +311,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
 	if (tempess->type & HTT_EXPORT_SYS_SYM &&
 	    tempess->type & HTF_UNRESOLVED &&
 	    !(tempess->type & HTF_IMPORT) &&
-	    (tempf=HashFind(tempess->str,lx->hash_table_list,HTT_FUN)) &&
+	    (tempf=HashFind(tempess->str,lx->hash_table_lst,HTT_FUN)) &&
 	    !Bt(tempf->flags,Cf_EXTERN)) {
 	  tempess->val=tempf->executable_addr;
 	  tempess->type&=~HTF_UNRESOLVED;
@@ -335,8 +335,8 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
       templu=tempu->undef_hash;
       if (templu->hash->type & HTF_IMPORT) {
 	tempe=CAlloc(sizeof(CExeImportExport));
-	tempe->next=templu->hash->list;
-	templu->hash->list=tempe;
+	tempe->next=templu->hash->ie_lst;
+	templu->hash->ie_lst=tempe;
 	tempe->ip=tempu->ip;
 	tempe->type=tempu->type;
       }
@@ -368,7 +368,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
       }
     }
     ExpressionDel(tempu->exp);
-    LinkedListDel(tempu->undef_hash);
+    LinkedLstDel(tempu->undef_hash);
     Free(tempu);
     tempu=tempu1;
   }
@@ -376,7 +376,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
   tempess=lx->glbl_hash_table->next_added;
   while (tempess!=lx->glbl_hash_table) {
     if (tempess->type & HTF_IMPORT && tempess->use_cnt) {
-      if (tempe=tempess->list) {
+      if (tempe=tempess->ie_lst) {
 	if (tempess->import_name)
 	  tempe->str=StrNew(tempess->import_name);
 	else
@@ -385,7 +385,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
 	  tempe1=tempe->next;
 	  QueIns(tempe,ex->last_ie);
 	} while (tempe=tempe1);
-	tempess->list=NULL;
+	tempess->ie_lst=NULL;
       }
     } else if (tempess->type & HTF_EXPORT) {
       if (tempess->type & HTF_UNRESOLVED) {
@@ -397,7 +397,7 @@ U0 AsmGlblsResolve(CLex *lx,CExe *ex)
       if (tempess->type & HTT_FUN) {
 	tempf=tempess;
 	tempe->ip=tempf->executable_addr;
-	tempeu=tempf->ext_list;
+	tempeu=tempf->ext_lst;
 	while (tempeu) {
 	  tempeu8=tempeu->next;
 	  j=tempf->executable_addr-(tempeu->ip+4);
@@ -1324,7 +1324,7 @@ U0 PrsAsmBlk(CLex *lx)
   else
     Lex(lx);
   while (lx->token && lx->token!='}') {
-    AsmLineList(lx);
+    AsmLineLst(lx);
     if (lx->token==TK_IDENT && lx->hash_entry) {
       if (lx->hash_entry->type&HTT_ASM_KEYWORD) {
 	i=lx->hash_entry->user_data0;
@@ -1352,7 +1352,7 @@ U0 PrsAsmBlk(CLex *lx)
 	      Lex(lx); //skip ';';
 	    break;
 	  case AKW_ALIGN:
-	    if (lx->local_var_list)
+	    if (lx->local_var_lst)
 	      LexExcept(lx,"ST_NO_FUN_ASM_ALIGN");
 	    i=AsmExpressionEval(lx);
 	    if (Bsf(i)!=Bsr(i))
@@ -1379,11 +1379,11 @@ U0 PrsAsmBlk(CLex *lx)
 	  case AKW_DU64:
 	    DefineU8s(lx,8);
 	    break;
-	  case AKW_LIST:
-	    a->list=TRUE;
+	  case AKW_LST:
+	    a->lst=TRUE;
 	    break;
-	  case AKW_NOLIST:
-	    a->list=FALSE;
+	  case AKW_NOLST:
+	    a->lst=FALSE;
 	    break;
 	  case AKW_USE16:
 	    a->seg_size=16;

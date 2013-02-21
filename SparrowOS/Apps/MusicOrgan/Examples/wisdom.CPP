@@ -13,9 +13,9 @@ F64 t0=0.0;
 
 U0 DrawIt(CTask *,CDC *dc)
 {
-  CSpritePlot3(dc,20,8,0,__BIN_1);
+  SpritePlot3(dc,20,8,0,__BIN_1);
   if (t0) {
-    CSpritePlot3(dc,20,24,0,__BIN_2);
+    SpritePlot3(dc,20,24,0,__BIN_2);
     Snd((tM-t0)*100);
     if (tM>t0+0.25)
       t0=0.0;

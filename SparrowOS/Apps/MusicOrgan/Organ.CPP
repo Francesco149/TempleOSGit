@@ -3,10 +3,10 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2688] CCtrl type for the
+  2) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2784] CCtrl type for the
 tempo/stacatto sliders.
 
-  3) The active [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc sprite buttons
+  3) The active [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc sprite buttons
 with macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
@@ -16,7 +16,7 @@ with macros for left/record/play/right.
 
 This uses four types of output
 
-  1) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc for the text and
+  1) The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc for the text and
 buttons and kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
@@ -85,7 +85,7 @@ class OrgCtrl
   Bool playing;
 } oc;
 
-U8 *org_note_list="A\0A#\0B\0C\0C#\0D\0D#\0E\0F\0F#\0G\0G#\0";
+U8 *org_note_lst="A\0A#\0B\0C\0C#\0D\0D#\0E\0F\0F#\0G\0G#\0";
 U8 org_note_map[12]={6,6,5,4,4,3,3,2,1,1,0,0};
 U8 org_note_inverse_map[7]={10,8,7,5,3,2,0};
 
@@ -163,7 +163,7 @@ U8 org_note_inverse_map[7]={10,8,7,5,3,2,0};
 
 F64 org_durations[ORG_NUM_DURATIONS+1]={
 2*.25/3,.25,2*.5/3,.5,2.0/3.0,0.5*1.5,1.0,1.5,2.0,3.0,4.0,6.0,1000000.0};
-U8 *org_duration_list="st\0s\0et\0e\0qt\0e.\0q\0q.\0h\0h.\0w\0w.\0";
+U8 *org_duration_lst="st\0s\0et\0e\0qt\0e.\0q\0q.\0h\0h.\0w\0w.\0";
 U8 *org_duration_imgs[ORG_NUM_DURATIONS]={__BIN_1,__BIN_1,__BIN_2,
 			__BIN_2,__BIN_3,__BIN_2,__BIN_3,__BIN_3,
 			__BIN_4,__BIN_4,__BIN_5,__BIN_5};
@@ -181,7 +181,7 @@ Bool OrgHasWords(U8 *st)
 
 Bool OrgIsDotted(I64 duration)
 {
-  U8 *st=ListEntryPt(duration,org_duration_list);
+  U8 *st=LstEntryPt(duration,org_duration_lst);
   if (st[1]=='.')
     return TRUE;
   else
@@ -227,7 +227,7 @@ U0 OrgRecalcNoteXY()
 	    note=0;
 	    octave++;
 	  }
-	  note=music_note_map[*ListEntryPt(note,org_note_list)-'A'];
+	  note=music_note_map[*LstEntryPt(note,org_note_lst)-'A'];
 	  tempo->y=(15+(org_note_map[note]-7*(octave-2)))*4;
 	}
       }
@@ -352,11 +352,11 @@ Bool OrgBlink(F64 t)
 U0 DrawNote(CDC *dc,I64 x,I64 y,I64 duration)
 {
   if (0<=duration<=ORG_NUM_DURATIONS) {
-    CSpritePlot3(dc,x,y,0,org_duration_imgs[duration]);
+    SpritePlot3(dc,x,y,0,org_duration_imgs[duration]);
     if (org_triplet_durations[duration])
-      CSpritePlot3(dc,x,y,0,__BIN_18);
+      SpritePlot3(dc,x,y,0,__BIN_18);
     if (OrgIsDotted(duration))
-      CSpritePlot3(dc,x,y,0,__BIN_19);
+      SpritePlot3(dc,x,y,0,__BIN_19);
   }
 }
 
@@ -422,17 +422,17 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  dc->color=GREEN;
       }
       if (tempo->accent==1)
-	CSpritePlot3(dc,x,y,0,__BIN_20);
+	SpritePlot3(dc,x,y,0,__BIN_20);
       else if (tempo->accent==2)
-	CSpritePlot3(dc,x,y,0,__BIN_21);
+	SpritePlot3(dc,x,y,0,__BIN_21);
       DrawNote(dc,x,y,tempo->duration);
       if (OrgIsDotted(tempo->duration))
 	x+=ORG_NOTE_SPACING/2;
 
       if (Bt(&tempo->flags,Of_SHARP))
-	CSpritePlot3(dc,x,y,0,__BIN_22);
+	SpritePlot3(dc,x,y,0,__BIN_22);
       else if (Bt(&tempo->flags,Of_FLAT))
-	CSpritePlot3(dc,x,y,0,__BIN_23);
+	SpritePlot3(dc,x,y,0,__BIN_23);
       measure_left-=org_durations[tempo->duration];
     }
     tempo=tempo->next;
@@ -442,7 +442,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=BROWN;
   else
     dc->color=BLACK;
-  CSpritePlot3(dc,oc.root.x,50,0,__BIN_24);
+  SpritePlot3(dc,oc.root.x,50,0,__BIN_24);
   Preempt(old_preempt);
 }
 
@@ -1118,7 +1118,7 @@ U8 *OrgCvtSong()
 	  note=0;
 	  octave++;
 	}
-	note=music_note_map[*ListEntryPt(note,org_note_list)-'A'];
+	note=music_note_map[*LstEntryPt(note,org_note_lst)-'A'];
       }
       accent=tempo->accent;
       waveform=tempo->waveform;
@@ -1136,14 +1136,14 @@ U8 *OrgCvtSong()
 	last_octave=octave;
       }
       if (tempo->duration!=last_duration) {
-	src=ListEntryPt(tempo->duration,org_duration_list);
+	src=LstEntryPt(tempo->duration,org_duration_lst);
 	*dst++=src[0];
 	if (src[1])
 	  *dst++=src[1];
 	last_duration=tempo->duration;
       }
       if (note!=NOTE_REST) {
-	src=ListEntryPt(note,org_note_list);
+	src=LstEntryPt(note,org_note_lst);
 	*dst++=src[0];
 	if (src[1])
 	  *dst++=src[1];
@@ -1927,7 +1927,7 @@ got_msg:
       }
       if (f!=last_f) {
 	if (f>0) {
-	  st=ListEntryPt(note,org_note_list);
+	  st=LstEntryPt(note,org_note_lst);
 	  org_play_f=f;
 	} else {
 	  if (f<0)

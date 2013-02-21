@@ -1,7 +1,7 @@
 #help_index "Doc/Bible"
 DefineLoad("ST_BIBLE_FILE","::/SparrowOS/Misc/Bible.TXT.Z");
 
-DefineListLoad("ST_BIBLE_BOOKS",
+DefineLstLoad("ST_BIBLE_BOOKS",
 "Genesis\0"
 "Exodus\0"
 "Leviticus\0"
@@ -77,7 +77,7 @@ DefineListLoad("ST_BIBLE_BOOKS",
 "Revelation\0"
 "\0");
 
-DefineListLoad("ST_BIBLE_BOOK_LINES",
+DefineLstLoad("ST_BIBLE_BOOK_LINES",
 "297\0"
 "5068\0"
 "9123\0"

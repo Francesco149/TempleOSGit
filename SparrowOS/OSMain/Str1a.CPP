@@ -336,7 +336,7 @@ _extern _STRCAT U0 StrCat(U8 *dest,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/SparrowOS/Compiler/Lex.CPP.Z,794] Lex() can use them with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1883] Token Codes.
+[C:/SparrowOS/Compiler/Lex.CPP.Z,794] Lex() can use them with [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1979] Token Codes.
 */
 U32 alpha_bitmap[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -390,15 +390,15 @@ U32 non_eol_chars_bitmap[16]=
 {0xFFFFDBFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
 0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
 
-U8 *ListEntryPt(I64 entry_num, U8 *lst)
-{//Point to list entry.
+U8 *LstEntryPt(I64 entry_num, U8 *lst)
+{//Point to lst entry.
  //Not especially efficient but handy.  Use an array of U8*'s for efficiency.
   if (!lst) return NULL;
   while (*lst && entry_num>0) {
     while (*lst)  // Advance to end of cur entry.
       lst++;
     lst++;    // Skip trailing zero
-    if (*lst=='@') // Check for '@' alias list entry
+    if (*lst=='@') // Check for '@' alias lst entry
       lst++;
     else
       entry_num--;
@@ -409,7 +409,7 @@ U8 *ListEntryPt(I64 entry_num, U8 *lst)
     return lst;
 }
 
-I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL)
+I64 LstEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL)
 // RETURNS: -2 if Ambiguous, -1 if not found, else entry_num
 { //Not especially efficient but handy.  Use hash tables for efficiency.
   I64 n,entry_num=0,result=-1,unutilized_src;
@@ -421,7 +421,7 @@ I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL)
   if (_ambiguity_overkill)
     *_ambiguity_overkill=n;
   while (*lst) {
-    if (*lst=='@') { //Check for '@' alias list entry
+    if (*lst=='@') { //Check for '@' alias lst entry
       entry_num--;
       lst++;
     }
@@ -439,7 +439,7 @@ I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL)
       }
     unutilized_src=n-(s-src);
     if (!*s) {	  // Did we reach end of src
-      if (!*lst) {  // Did we reach end of list entrycount
+      if (!*lst) {  // Did we reach end of lst entrycount
 	if (!_ambiguity_overkill)
 	  return entry_num;  // Found Exact match
 	result=entry_num;
@@ -494,9 +494,12 @@ U8 *Define(U8 *name)
 U8 *DefineSub(I64 sub,U8 *name)
 {
   CHashDefineStr *temph;
-  if (temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR))
-    return ListEntryPt(sub,temph->data);
-  else if (name)
+  if (temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR)) {
+    if (0<=sub<temph->cnt)
+      return temph->sub_lst[sub];
+    else
+      return NULL;
+  } else if (name)
     UndefinedDefine(name);
   else
     return NULL;
@@ -516,7 +519,7 @@ I64 DefineSubCnt(U8 *name)
 I64 DefineMatch(U8 *src,U8 *lst_name,
   I64 flags=0,I64 *_ambiguity_overkill=NULL)
 {
-  return ListEntryMatch(src,Define(lst_name),
+  return LstEntryMatch(src,Define(lst_name),
     flags,_ambiguity_overkill);
 }
 
@@ -641,10 +644,10 @@ CHashDefineStr *DefineLoad(U8 *name,U8 *st,Bool replace=FALSE)
   return temph;
 }
 
-CHashDefineStr *DefineListLoad(U8 *name,U8 *st,Bool replace=FALSE)
+CHashDefineStr *DefineLstLoad(U8 *name,U8 *st,Bool replace=FALSE)
 { //Not especially efficient but handy.
   I64 cnt=0;
-  U8 *ptr;
+  U8 *ptr,**lst;
   CHashDefineStr *temph=CAlloc(sizeof(CHashDefineStr));
   temph->type=HTT_DEFINE_STR;
   temph->str=StrNew(name);
@@ -657,6 +660,15 @@ CHashDefineStr *DefineListLoad(U8 *name,U8 *st,Bool replace=FALSE)
   MemCpy(temph->data,st,ptr+1-st);
   temph->cnt=cnt;
   temph->caller=Caller;
+
+  lst=temph->sub_lst=MAlloc(cnt*sizeof(U8 *));
+  ptr=st;
+  while (*ptr) {
+    if (*ptr!='@')
+      *lst++=ptr;
+    while (*ptr++);
+  }
+
   if (replace)
     HashReplace(temph,Fs->hash_table);
   else
@@ -779,7 +791,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3387] flags
+{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3482] flags
   U8 *src=_src,*dst=_src;
   I64 ch;
 
@@ -1050,7 +1062,7 @@ ai_skip:
   return neg ? -result:result;
 }
 
-U0 GetFFlags(U8 *f,U8 *list,U8 *st)
+U0 GetFFlags(U8 *f,U8 *lst,U8 *st)
 {
   I64 i;
   U8 *st2,*ptr;
@@ -1066,7 +1078,7 @@ U0 GetFFlags(U8 *f,U8 *list,U8 *st)
 	  while (*st && *st!='+' && *st!='-' && *st!=CH_SPACE && *st!=CH_SHIFT_SPACE)
 	    *ptr++=*st++;
 	  *ptr=0;
-	  i=ListEntryMatch(st2,list);
+	  i=LstEntryMatch(st2,lst);
 	  if (i>=0)
 	    LBts(f,i);
 	}
@@ -1077,7 +1089,7 @@ U0 GetFFlags(U8 *f,U8 *list,U8 *st)
 	  while (*st && *st!='+' && *st!='-' && *st!=CH_SPACE && *st!=CH_SHIFT_SPACE)
 	    *ptr++=*st++;
 	  *ptr=0;
-	  i=ListEntryMatch(st2,list);
+	  i=LstEntryMatch(st2,lst);
 	  if (i>=0)
 	    LBtr(f,i);
 	}
@@ -1087,14 +1099,14 @@ U0 GetFFlags(U8 *f,U8 *list,U8 *st)
   }
 }
 
-U8 *SPrintFFlags(U8 *dst,U8 *list,I64 flags)
+U8 *SPrintFFlags(U8 *dst,U8 *lst,I64 flags)
 {
   I64 i;
   *dst=0;
   for (i=0;i<=63;i++)
     if (Bt(&flags,i)) {
       StrCat(dst,"+");
-      StrCat(dst,ListEntryPt(i,list));
+      StrCat(dst,LstEntryPt(i,lst));
     }
   return dst;
 }
@@ -1137,284 +1149,6 @@ U0 OutStr(U8 *ptr,U8 **_buf,U8 **_dst,
       SPrintFPutChar(_dst,CH_SPACE,_buf);
     for (j=len-i;j<len;j++)
       SPrintFPutChar(_dst,*ptr++,_buf);
-  }
-}
-
-
-U8 *MSPrintFTime(CDate ltdt,I64 sub_fmt)
-{
-  CDateStruct ds;
-  if (sub_fmt<NUM_TIME_FMTS)
-    sub_fmt=time_fmt_map[sub_fmt];
-  switch (sub_fmt) {
-    case 1:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d:%02d",ds.hour,ds.min);
-    case 2:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      if (ds.hour>=12)
-	return MSPrintF("%02d:%02d:%02d pm",ds.hour-12,ds.min,ds.sec);
-      else
-	return MSPrintF("%02d:%02d:%02d am",ds.hour,ds.min,ds.sec);
-    case 3:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      if (ds.hour>=12)
-	return MSPrintF("%02d:%02d pm",ds.hour-12,ds.min);
-      else
-	return MSPrintF("%02d:%02d am",ds.hour,ds.min);
-    case 4:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      if (ds.hour>=12)
-	return MSPrintF("%02d:%02d:%02dp",ds.hour-12,ds.min,ds.sec);
-      else
-	return MSPrintF("%02d:%02d:%02da",ds.hour,ds.min,ds.sec);
-    case 5:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      if (ds.hour>=12)
-	return MSPrintF("%02d:%02dp",ds.hour-12,ds.min);
-      else
-	return MSPrintF("%02d:%02da",ds.hour,ds.min);
-    case 6:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dh %02dm",ds.hour+ltdt.date*24,ds.min);
-    case 7:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dh %02dm %02ds",ds.hour+ltdt.date*24,ds.min,ds.sec);
-    case 8:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dd %02dh %02dm",ltdt.date,ds.hour,ds.min);
-    case 9:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dd %02dh %02dm %02ds",ltdt.date,ds.hour,ds.min,ds.sec);
-    case 10:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dd %02dh %02dm %02d.%02ds",ltdt.date,ds.hour,ds.min,ds.sec,ds.sec100);
-    case 11:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dh %02dm %02d.%02ds",ds.hour+ltdt.date*24,ds.min,ds.sec,ds.sec100);
-    case 12:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%d.%02d",60*((ltdt.date*24+ds.hour)*60+ds.min)+ds.sec,ds.sec100);
-    case 13:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%02d:%02d.%02d",60*(ltdt.date*24+ds.hour)+ds.min,ds.sec,ds.sec100);
-    case 14:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%02d:%02d:%02d.%02d",ltdt.date*24+ds.hour,ds.min,ds.sec,ds.sec100);
-    case 15:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dd %02dh %02dm %02d.%04ds",ltdt.date,ds.hour,ds.min,ds.sec,100*ds.sec100+ds.sec10000);
-    case 16:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%dh %02dm %02d.%04ds",ds.hour+ltdt.date*24,ds.min,ds.sec,100*ds.sec100+ds.sec10000);
-    case 17:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%d.%04d",60*((ltdt.date*24+ds.hour)*60+ds.min)+ds.sec,100*ds.sec100+ds.sec10000);
-    case 18:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%02d:%02d.%04d",60*(ltdt.date*24+ds.hour)+ds.min,ds.sec,100*ds.sec100+ds.sec10000);
-    case 19:
-      CDate2CDateStruct(&ds,ltdt);
-      return MSPrintF("%02d:%02d:%02d.%04d",ltdt.date*24+ds.hour,ds.min,ds.sec,100*ds.sec100+ds.sec10000);
-    case 20:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d",ds.hour);
-    case 21:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d",ds.min);
-    case 22:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d",ds.sec);
-#assert NUM_TIME_FMTS==23
-    default:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d:%02d:%02d",ds.hour,ds.min,ds.sec);
-  }
-}
-
-U8 *MSPrintFDate(CDate ltdt,I64 sub_fmt)
-{
-  CDateStruct ds;
-  if (sub_fmt<NUM_DATE_FMTS)
-    sub_fmt=date_fmt_map[sub_fmt];
-  switch (sub_fmt) {
-    case 1:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d",ds.mon,ds.day_of_mon);
-    case 2:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d/%02d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon,ds.day_of_mon);
-    case 3:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d/%02d/%02d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon,ds.day_of_mon,ds.year%100);
-    case 4:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d/%d",ds.mon,ds.day_of_mon,ds.year);
-    case 5:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d/%02d/%d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon,ds.day_of_mon,ds.year);
-    case 6:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d",ds.mon-1,"ST_MONTHS",ds.day_of_mon);
-    case 7:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ, %3tZ %02d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon-1,"ST_MONTHS",ds.day_of_mon);
-    case 8:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d,%04d",ds.mon-1,"ST_MONTHS",ds.day_of_mon,ds.year);
-    case 9:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ, %3tZ %02d,%d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon-1,"ST_MONTHS",ds.day_of_mon,ds.year);
-    case 10:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z %d",ds.mon-1,"ST_MONTHS",ds.day_of_mon);
-    case 11:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z, %Z %d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon-1,"ST_MONTHS",ds.day_of_mon);
-    case 12:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z %d,%d",ds.mon-1,"ST_MONTHS",ds.day_of_mon,ds.year);
-    case 13:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z, %Z %d,%d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.mon-1,"ST_MONTHS",ds.day_of_mon,ds.year);
-    case 14:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d/%02d",ds.day_of_mon,ds.mon,ds.year%100);
-    case 15:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d",ds.day_of_mon,ds.mon);
-    case 16:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d/%02d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon);
-    case 17:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d/%02d/%02d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon,ds.year%100);
-    case 18:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d/%d",ds.day_of_mon,ds.mon,ds.year);
-    case 19:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d/%02d/%d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon,ds.year);
-    case 20:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d %3tZ",ds.day_of_mon,ds.mon-1,"ST_MONTHS");
-    case 21:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ, %02d %3tZ",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon-1,"ST_MONTHS");
-    case 22:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d %3tZ,%04d",ds.day_of_mon,ds.mon-1,"ST_MONTHS",ds.year);
-    case 23:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ, %02d %3tZ,%d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon-1,"ST_MONTHS",ds.year);
-    case 24:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d %Z",ds.day_of_mon,ds.mon-1,"ST_MONTHS");
-    case 25:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z, %d %Z",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon-1,"ST_MONTHS");
-    case 26:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d %Z,%d",ds.day_of_mon,ds.mon-1,"ST_MONTHS",ds.year);
-    case 27:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z, %d %Z,%d",ds.day_of_week,"ST_DAYS_OF_WEEK",
-	ds.day_of_mon,ds.mon-1,"ST_MONTHS",ds.year);
-    case 28:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d/%02d",ds.year%100,ds.mon,ds.day_of_mon);
-    case 29:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d/%02d/%02d",ds.year,ds.mon,ds.day_of_mon);
-    case 30:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d%02d%02d",ds.year%100,ds.mon,ds.day_of_mon);
-    case 31:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d%02d%02d",ds.year,ds.mon,ds.day_of_mon);
-    case 32:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d%02d%02d",ds.mon,ds.day_of_mon,ds.year%100);
-    case 33:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d%02d%d",ds.mon,ds.day_of_mon,ds.year);
-    case 34:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ",ds.day_of_week,"ST_DAYS_OF_WEEK");
-    case 35:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z",ds.day_of_week,"ST_DAYS_OF_WEEK");
-    case 36:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ",ds.mon-1,"ST_MONTHS");
-    case 37:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z",ds.mon-1,"ST_MONTHS");
-    case 38:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d %3tZ",ds.year,ds.mon-1,"ST_MONTHS");
-    case 39:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d %Z",ds.year,ds.mon-1,"ST_MONTHS");
-    case 40:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d %3tZ",ds.year%100,ds.mon-1,"ST_MONTHS");
-    case 41:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d %Z",ds.year%100,ds.mon-1,"ST_MONTHS");
-    case 42:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %d",ds.mon-1,"ST_MONTHS",ds.year);
-    case 43:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z %d",ds.mon-1,"ST_MONTHS",ds.year);
-    case 44:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%3tZ %02d",ds.mon-1,"ST_MONTHS",ds.year%100);
-    case 45:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%Z %02d",ds.mon-1,"ST_MONTHS",ds.year%100);
-    case 46:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d",ds.year%100);
-    case 47:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%d",ds.year);
-    case 48:
-      return MSPrintF("%d days",ltdt.date);
-    case 49:
-      return MSPrintF("%d mons",ToI64(ltdt/(CDATE_YEAR_DAYS/12))>>32);
-    case 50:
-      return MSPrintF("%d years",ToI64(ltdt/CDATE_YEAR_DAYS)>>32);
-    case 51:
-      return MSPrintF("%d",ltdt.date);
-    case 52:
-      return MSPrintF("%d",ToI64(ltdt/(CDATE_YEAR_DAYS/12))>>32);
-    case 53:
-      return MSPrintF("%d",ToI64(ltdt/CDATE_YEAR_DAYS)>>32);
-    case 54:
-      return MSPrintF("%0.1f",ltdt/ToF64(MAX_U32+1));
-    case 55:
-      return MSPrintF("%0.1f",ltdt/ToF64(MAX_U32+1)/(CDATE_YEAR_DAYS/12));
-    case 56:
-      return MSPrintF("%0.1f",ltdt/ToF64(MAX_U32+1)/CDATE_YEAR_DAYS);
-#assert NUM_DATE_FMTS==57
-    default:
-      CDate2CDateStruct(&ds,ltdt+local_time_offset);
-      return MSPrintF("%02d/%02d/%02d",ds.mon,ds.day_of_mon,ds.year%100);
   }
 }
 
@@ -1578,12 +1312,12 @@ sq_octal:
   return buf;
 }
 
-U8 *sprintf_pos_powers_list=
+U8 *sprintf_pos_powers_lst=
 "kilo\0mega\0giga\0tera\0peta\0exa\0zetta\0yotta\0";
 U8 *sprintf_pos_powers_lets=
 " kMGTPEZY";
 
-U8 *sprintf_neg_powers_list=
+U8 *sprintf_neg_powers_lst=
 "milli\0micro\0nano\0pico\0femto\0atto\0zepto\0yocto\0";
 U8 *sprintf_neg_powers_lets=
 " munpfazy";
@@ -1755,7 +1489,7 @@ sp_in_sub_fmt:
 	case 'z':
 	  if (cur_arg+1>=argc)
 	    throw(EXCEPT_SPRINTF,1);
-	  ptr=ListEntryPt(argv[cur_arg],argv[cur_arg+1]);
+	  ptr=LstEntryPt(argv[cur_arg],argv[cur_arg+1]);
 	  cur_arg=cur_arg+2;
 	  OutStr(ptr,_buf,_dst,len,left_justify,truncate_flag);
 	  break;
@@ -2310,7 +2044,7 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *SPrintF(U8 *dst,U8 *fmt,...)
-{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin()
+{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1328] SPrintFJoin()
   return SPrintFJoin(dst,fmt,argc,argv);
 }
 
@@ -2558,7 +2292,7 @@ U8 *GetFJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
 	    if (cur_arg+1>=argc)
 	      throw(EXCEPT_GETF,1);
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=ListEntryMatch(buf,argv[cur_arg++]);
+	    *i_ptr=LstEntryMatch(buf,argv[cur_arg++]);
 	    break;
 	  case 'Z':
 	    if (cur_arg+1>=argc)
@@ -2619,14 +2353,14 @@ U8 *GetF(U8 *src,U8 *fmt,...)
 
 U0 PrintF(U8 *fmt,...)
 {//[::/SparrowOS/Doc/Differences.TXT.Z,1] PrintF Extended Codes
- //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin()
+ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1328] SPrintFJoin()
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   "" buf;
   Free(buf);
 }
 
 U8 *MSPrintF(U8 *fmt,...)
-{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin()
+{ //See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1328] SPrintFJoin()
   U8 *result,*buf=SPrintFJoin(NULL,fmt,argc,argv);
   result=StrNew(buf);
   Free(buf);

@@ -45,7 +45,7 @@ U0 DrawMountain(CTask *task,CDC *dc)
   dc->color=BROWN;
   GrPutS(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
 
-  CSpritePlot3(dc,x+cx,y+cy,0,man_imgs[frame&3]);
+  SpritePlot3(dc,x+cx,y+cy,0,man_imgs[frame&3]);
 }
 
 //This is the path of the man.

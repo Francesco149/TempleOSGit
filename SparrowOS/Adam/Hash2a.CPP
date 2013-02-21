@@ -140,7 +140,7 @@ public U0 HashRep(CHashTable *h=NULL,
   CHashTable *tempht;
   CHashSrcSym *temph;
   CHashGeneric *ptr;
-  CHashRep *list;
+  CHashRep *lst;
   I64 cnt,i,j,k,size,f=0,
     dbg_bin_num,indent_bin_num;
   U8 buf[512],*buf4,*last_index=StrNew(""),*cur_index;
@@ -190,7 +190,7 @@ public U0 HashRep(CHashTable *h=NULL,
   }
   if (!cnt) goto end_hash;
 
-  list=CAlloc(cnt*sizeof(CHashRep));
+  lst=CAlloc(cnt*sizeof(CHashRep));
   j=0;
   tempht=h;
   while (tempht) {
@@ -200,14 +200,14 @@ public U0 HashRep(CHashTable *h=NULL,
 	  temph->type & mask &&
 	  (temph->type & HTF_PUBLIC || !publics))
 	if (!index)
-	  list[j++].h=temph;
+	  lst[j++].h=temph;
 	else
 	  if (temph->type&HTG_SRC_SYM &&
 	    (cur_index=temph->index))
 	  if (k=HelpIndexCnt(cur_index,index)) {
 	    while (k--) {
-	      list[j].index=HelpIndexStr(&cur_index,index);
-	      list[j++].h=temph;
+	      lst[j].index=HelpIndexStr(&cur_index,index);
+	      lst[j++].h=temph;
 	    }
 	  }
       temph=temph->next_added;
@@ -220,17 +220,17 @@ public U0 HashRep(CHashTable *h=NULL,
   Preempt(old_preempt);
 
   if (map)
-    QSort(list,cnt,sizeof(CHashRep),&HashEntriesCompare2);
+    QSort(lst,cnt,sizeof(CHashRep),&HashEntriesCompare2);
   else if (index)
-    QSort(list,cnt,sizeof(CHashRep),&HashEntriesCompare3);
+    QSort(lst,cnt,sizeof(CHashRep),&HashEntriesCompare3);
   else
-    QSort(list,cnt,sizeof(CHashRep),&HashEntriesCompare);
+    QSort(lst,cnt,sizeof(CHashRep),&HashEntriesCompare);
 
   for (i=0;i<cnt;i++) {
-    ptr=list[i].h;
+    ptr=lst[i].h;
     dbg=NULL;
     if (index)
-      if (cur_index=list[i].index) {
+      if (cur_index=lst[i].index) {
 	if (StrCmp(cur_index,last_index)) {
 	  Free(last_index);
 	  last_index=StrNew(cur_index);
@@ -364,9 +364,9 @@ public U0 HashRep(CHashTable *h=NULL,
       else
 	"" buf;
     }
-    Free(list[i].index);
+    Free(lst[i].index);
   }
-  Free(list);
+  Free(lst);
 
 end_hash:
   Preempt(old_preempt);

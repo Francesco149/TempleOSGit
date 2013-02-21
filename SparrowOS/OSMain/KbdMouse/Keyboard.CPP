@@ -458,7 +458,7 @@ U0 KbdInit()
     KbdCmdFlush;
     Fs->catch_except=TRUE;
   }
-  IntEntrySet(0x21,&KbdIntHandler,0);
+  IntEntrySet(0x21,&KbdIntHandler);
   OutU8(0x21,InU8(0x21)&~2);
 
   SetCtrlAltLetCB('C',&CtrlAltC,"Sys/Break Execution",TRUE);

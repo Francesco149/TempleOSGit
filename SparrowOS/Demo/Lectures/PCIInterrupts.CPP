@@ -42,7 +42,7 @@ U0 Main()
 
   ProgressBarsRst;
   for (i=I_USER;i<I_USER+4;i++)
-    IntEntrySet(i,vect[i&3],DEST_CPU,IDTET_IRQ);
+    IntEntrySet(i,vect[i&3],IDTET_IRQ);
 
 //There are like 4*6 vects.  Bus zero
 //has the first four vects.

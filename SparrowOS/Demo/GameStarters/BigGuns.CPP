@@ -45,14 +45,14 @@ U0 DrawIt(CTask *task,CDC *dc)
   map->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,h,v,map);
 
-  CSpritePlot3(dc,gun_x+h,gun_y+v,0,__BIN_2);
+  SpritePlot3(dc,gun_x+h,gun_y+v,0,__BIN_2);
 
   if (theta<-pi/2) {
     dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
     GrSetSymmetry(dc,gun_x+h,0,gun_x+h,1);
     theta=-pi-theta;
   }
-  CSpritePlotRotZ3b(dc,
+  SpritePlotRotZ3b(dc,
       gun_x+h-gun_recoil*Cos(theta),
       gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
   dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);

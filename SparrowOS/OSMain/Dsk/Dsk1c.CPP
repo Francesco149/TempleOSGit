@@ -95,11 +95,11 @@ Bool CopySingle(U8 *f1,U8 *f2) //Just one file
 Bool MkDir(U8 *filename)
 {
   U8 *name;
+  CFileAccess *fa;
+  Bool result=FALSE;
   if (FileFind(filename,NULL,TRUE))
     return FALSE;
-  CFileAccess *fa=FileAccessNew(filename);
-  Bool result=FALSE;
-  if (fa) {
+  if (fa=FileAccessNew(filename)) {
     if (*fa->mask) {
       if (!FileNameChk(fa->mask))
 	PutDefineErr("ST_INVALID_FILENAME");
@@ -132,8 +132,8 @@ Bool MkDir(U8 *filename)
 
 U0 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 {
-  CFileAccess *fa=FileAccessNew(wild,make_mask);
-  if (fa) {
+  CFileAccess *fa;
+  if (fa=FileAccessNew(wild,make_mask)) {
     switch (fa->p->type) {
       case PT_NATIVE:
 	NativeFSFilesDel(fa->p,Fs->cur_dir,fa->mask,0,TRUE,TRUE);
@@ -152,7 +152,7 @@ U0 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 }
 
 U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FAT32)
-{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2417] PT_FAT32 for a list of supported file system types.
+{//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2513] PT_FAT32 for a lst of supported file system types.
 
   CPrt *p=Drv2Prt(drv_let);
   Bool old_silent=IsSilent;

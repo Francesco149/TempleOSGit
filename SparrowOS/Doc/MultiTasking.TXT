@@ -2,7 +2,7 @@
 
 SparrowOS is a preemptive multitasking operating system.  However, you can 
 turn-off preemption on a task by task basis and the task will not yield ctrl 
-unless it volunteers with [C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield(),
+unless it volunteers with [C:/SparrowOS/OSMain/Scheduler.CPP.Z,369] Yield(),
 [C:/SparrowOS/OSMain/Misc1a.CPP.Z,198] Sleep() or a call to I/O which yields
 ctrl. 
  Use the [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt() cmd to turn on or
@@ -11,9 +11,9 @@ have multiple tasks modifying data structures simultaneously.  Interrupts
 still occur when preemption is off.   
 
 **Preemption is turned-off by default when a task is
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn()ed.**
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn()ed.**
 
-The time-slice rate is set by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,489]
+The time-slice rate is set by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,586]
 JIFFY_FREQ.
 
 SparrowOS does not remove tasks from "the queue" when they are waiting.  They 

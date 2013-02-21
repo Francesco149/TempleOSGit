@@ -5,12 +5,12 @@ CHashSrcSym *HashEntryImportCopy(CHashSrcSym *temph)
   result->use_cnt=0;
   result->src_link=NULL;
   result->index=NULL;
-  result->list=NULL;
+  result->ie_lst=NULL;
   result->debug=NULL;
   result->indent=NULL;
   if (temph->type & (HTT_FUN | HTT_CLASS)) {
-    result(CHashClass *)->member_list =MemberListCopy(temph);
-    result(CHashClass *)->member_list2=temph(CHashClass *)->member_list2;
+    result(CHashClass *)->member_lst =MemberLstCopy(temph);
+    result(CHashClass *)->member_lst2=temph(CHashClass *)->member_lst2;
     if (temph->type & HTT_FUN) {
       if (Bt(temph(CHashFun *)->flags,Ff_INTERNAL)) {
 	result->import_name=NULL;
@@ -28,7 +28,7 @@ CHashSrcSym *HashEntryImportCopy(CHashSrcSym *temph)
       result->type|=HTF_UNRESOLVED;
       result(CHashExport *)->val=0;
     } else {
-      result(CHashGlblVar *)->dim.next=LinkedListCopy(temph(CHashGlblVar *)->dim.next);
+      result(CHashGlblVar *)->dim.next=LinkedLstCopy(temph(CHashGlblVar *)->dim.next);
       result(CHashGlblVar *)->flags|=GVAF_IMPORT|GVAF_ALIAS;
       if (temph(CHashGlblVar *)->fun_ptr)
 	result(CHashGlblVar *)->fun_ptr=HashEntryImportCopy(temph(CHashGlblVar *)->fun_ptr-temph(CHashGlblVar *)->fun_ptr->ptr_cnt)(CHashFun *)+temph(CHashGlblVar *)->fun_ptr->ptr_cnt;
@@ -47,7 +47,7 @@ U0 HashTableImport(CHashTable *src,CHashTable *dst)
     temph=src->body[i];
     while (temph) {
       if (temph->type & HTG_SRC_SYM) {
-	//Only add first in list
+	//Only add first in lst
 	temph2=src->body[i];
 	while (temph2!=temph)
 	  if (!StrCmp(temph->str,temph2->str) &&
@@ -110,22 +110,22 @@ I64 HashEntrySize2(CHashSrcSym *temph)
     result+=MSize2(temph->src_link);
     result+=MSize2(temph->index);
     result+=MSize2(temph->import_name);
-    result+=LinkedListSize(temph->list);
+    result+=LinkedLstSize(temph->ie_lst);
     if (temph->type & (HTT_FUN | HTT_EXPORT_SYS_SYM)) {
       result+=MSize2(temph->debug);
       result+=MSize2(temph->indent);
     }
     if (temph->type & HTT_CLASS)
-      result+=MemberListSize(temph);
+      result+=MemberLstSize(temph);
     else if (temph->type & HTT_FUN) {
-      result+=MemberListSize(temph);
+      result+=MemberLstSize(temph);
       if (dbg=temph->debug)
 	//This should be [C:/SparrowOS/OSMain/Memory.CPP.Z,951] MSize() but it would crash on static .BIN.Z file funs.
 	result+=dbg->body[dbg->max_line-dbg->min_line+1]-temph(CHashFun *)->executable_addr;
     } else if (temph->type&HTT_DEFINE_STR)
       result+=MSize2(temph(CHashDefineStr *)->data);
     else if (temph->type & HTT_GLBL_VAR) {
-      result+=LinkedListSize(temph(CHashGlblVar *)->dim.next);
+      result+=LinkedLstSize(temph(CHashGlblVar *)->dim.next);
       if (!(temph(CHashGlblVar *)->flags&GVAF_ALIAS))
 	result+=MSize2(temph(CHashGlblVar *)->data_addr);
       if (temph(CHashGlblVar *)->fun_ptr)

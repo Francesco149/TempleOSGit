@@ -90,7 +90,7 @@ U0 DrawTrooper(CTask *task,CDC *dc,Trooper *tempt)
 	gx+=13;
 	gy-=7;
       }
-      CSpritePlot3(dc,x,y,0,__BIN_5);
+      SpritePlot3(dc,x,y,0,__BIN_5);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
       if (!tempt->player)
 	dc->color=WHITE;
@@ -103,8 +103,8 @@ U0 DrawTrooper(CTask *task,CDC *dc,Trooper *tempt)
 	GrSetSymmetry(dc,x,y,x,y+1);
       } else
 	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
-      inter=CSpriteInterpolate(trooper_imgs[tt%NUM_FRAMES],trooper_imgs[(tt+1.0)%NUM_FRAMES],tt%1.0);
-      CSpritePlot3(dc,x,y,0,inter);
+      inter=SpriteInterpolate(trooper_imgs[tt%NUM_FRAMES],trooper_imgs[(tt+1.0)%NUM_FRAMES],tt%1.0);
+      SpritePlot3(dc,x,y,0,inter);
       Free(inter);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }

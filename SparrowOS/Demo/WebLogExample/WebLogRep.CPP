@@ -39,7 +39,7 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
 {
   CDoc *doc=DocRead(name,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_DBL_DOLLARS);
   CDocEntry *doc_e=doc->root.next;
-  U8 *src,*src2,*mon_list=Define("ST_MONTHS");
+  U8 *src,*src2,*mon_lst=Define("ST_MONTHS");
   LogStruct *templg;
   CDateStruct ds;
   I64 i;
@@ -66,7 +66,7 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
 	do if (!*src2) throw;
 	while (*src2++!='/');
 	* --src2=0;
-	ds.mon=1+ListEntryMatch(src,mon_list,LEF_IGNORE_CASE);
+	ds.mon=1+LstEntryMatch(src,mon_lst,LEF_IGNORE_CASE);
 	src=++src2;
 	ds.year=A2I(src,10,&src);
 	if (*src++!=':') throw;
@@ -134,11 +134,11 @@ LogStruct *PrsLogFiles(U8 *files_find_mask)
     PrsSingleLogFile(root,tempm->full_name);
     tempm=tempm->next;
   }
-  CDirListDel(tempm1);
+  CDirLstDel(tempm1);
   return root;
 }
 
-U0 LogListDel(LogStruct *root)
+U0 LogLstDel(LogStruct *root)
 {
   LogStruct *templg=root->next,*templg1;
   while (templg!=root) {
@@ -175,7 +175,7 @@ U0 BlockIPNums(LogStruct *root)
   BlockedStructAdd(&blocked_root,68<<24+224<<16+130<<8+96); //Me 68.224.130.96
   BlockedStructAdd(&blocked_root,68<<24+96<<16+100<<8+126); //Me 68.96.100.126
 
-  //pass 1: collect robot list
+  //pass 1: collect robot lst
   while (templg!=root) {
     if (StrIStr(templg->file,"ROBOT") &&
 	!IsBlocked(&blocked_root,templg->ip_num))
@@ -435,7 +435,7 @@ U0 WebLogRep(U8 *mask,U8 *output_filename)
   DocWrite(DocCur,TRUE);
 
   "$WW,1$";
-  LogListDel(root);
+  LogLstDel(root);
 }
 
 #if IncludeDepth<2

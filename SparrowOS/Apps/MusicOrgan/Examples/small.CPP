@@ -57,11 +57,11 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   U8 *inter;
   F64 tt=4.0*tM,dt=tMBeat-t0;
-  inter=CSpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
-  CSpritePlot3(dc,180,40,0,inter);
+  inter=SpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
+  SpritePlot3(dc,180,40,0,inter);
   Free(inter);
   if (dt>24.0)
-    CSpritePlot3(dc,task->win_pixel_width-12.0*(dt-24.0),40,0,__BIN_6);
+    SpritePlot3(dc,task->win_pixel_width-12.0*(dt-24.0),40,0,__BIN_6);
 }
 
 U0 Song()

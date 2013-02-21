@@ -911,7 +911,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       y1+=ipy-rubber_band_y;
     } else
       img=tempe->type->black_img;
-    CSpritePlotRotZ3b(dc,x1,y1,0,img,tempe->theta*pi/2);
+    SpritePlotRotZ3b(dc,x1,y1,0,img,tempe->theta*pi/2);
     tempe=tempe->next;
   }
   while (tempn!=&node_root) {
@@ -959,7 +959,7 @@ U0 Init()
   ElementType *tempt;
   for (i=0;i<ET_NUM_TYPES;i++) {
     tempt=&et[i];
-    CSpriteExtents(tempt->black_img,&tempt->min_x,&tempt->max_x,&tempt->min_y,&tempt->max_y);
+    SpriteExtents(tempt->black_img,&tempt->min_x,&tempt->max_x,&tempt->min_y,&tempt->max_y);
   }
   mode=MD_CONNECT;
   RubberReset;

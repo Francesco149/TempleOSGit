@@ -7,7 +7,7 @@ U0 DrawIt(CTask *,CDC *dc)
   tt+=(tM-last_t)*Abs(Sin(tM));
   last_t=tM;
   tt%=3.5;
-  CSpritePlotRotZ3b(dc,180+tt,tt*30,0,__BIN_1,0.25*Sin(tt)+0.1);
+  SpritePlotRotZ3b(dc,180+tt,tt*30,0,__BIN_1,0.25*Sin(tt)+0.1);
 }
 
 

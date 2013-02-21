@@ -13,7 +13,7 @@ U0 DrawIt(CTask *,CDC *dc)
   F64 dt=tMBeat-t0;
   dc->flags|=DCF_SYMMETRY;
   GrSetSymmetry(dc,CENTER_X,0,CENTER_X,1);
-  CSpritePlot3(dc,CENTER_X-40,75+dt,0,__BIN_1);
+  SpritePlot3(dc,CENTER_X-40,75+dt,0,__BIN_1);
 }
 
 U0 Song()

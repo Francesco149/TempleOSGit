@@ -122,13 +122,13 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  img=__BIN_5;
       } else
 	img=__BIN_3;
-      CSpritePlot3(dc,trees[i].x,trees[i].y,0,img);
+      SpritePlot3(dc,trees[i].x,trees[i].y,0,img);
     }
   }
 
-  CSpritePlot3(dc,w/2,h/2,0,__BIN_6);
+  SpritePlot3(dc,w/2,h/2,0,__BIN_6);
   if (tP(task)<door_open_t0+1.0)
-    CSpritePlot3(dc,w/2,h/2,0,__BIN_7);
+    SpritePlot3(dc,w/2,h/2,0,__BIN_7);
 
   for (i=0;i<NUM_TREES;i++) {
     if (trees[i].y>h/2) { //Draw trees in front of house
@@ -139,7 +139,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  img=__BIN_5;
       } else
 	img=__BIN_3;
-      CSpritePlot3(dc,trees[i].x,trees[i].y,0,img);
+      SpritePlot3(dc,trees[i].x,trees[i].y,0,img);
     }
   }
 
@@ -164,7 +164,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       dc->color=LTCYAN;
     else
       dc->color=CYAN;
-    CSpritePlotRotMat3b(dc,tempp->x,tempp->y,0,__BIN_2,r);
+    SpritePlotRotMat3b(dc,tempp->x,tempp->y,0,__BIN_2,r);
     tempp=tempp->next;
   }
  
@@ -172,7 +172,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrIdentEqu(r);
   GrRotYEqu(r,king_theta+pi/2);
   GrRotXEqu(r,pi/6);
-  CSpritePlotRotMat3b(dc,king_x,king_y,0,__BIN_1,r);
+  SpritePlotRotMat3b(dc,king_x,king_y,0,__BIN_1,r);
 
   dc->pen_width=1;
   dc->color=WHITE;
@@ -232,7 +232,7 @@ U0 Init()
     flakes[i].y=RandU16;
   }
 
-  CSpriteExtents(__BIN_3,&min_x,&max_x,&min_y,&max_y);
+  SpriteExtents(__BIN_3,&min_x,&max_x,&min_y,&max_y);
   for (i=0;i<NUM_TREES;i++) {
     trees[i].x=RandU16%(w-2*BORDER-(max_x-min_x+1))+BORDER-min_x;
     trees[i].y=RandU16%(h-2*BORDER-(max_y-min_y+1))+BORDER-min_y;
@@ -242,7 +242,7 @@ U0 Init()
   QueInit(&step_root);
   QueInit(&king_step_root);
 
-  CSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
+  SpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
   QueInit(&peasant_root);
   for (i=0;i<NUM_PEASANTS;i++) {
     tempp=MAlloc(sizeof(Peasant));

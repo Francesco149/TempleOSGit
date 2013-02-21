@@ -1,7 +1,7 @@
 AutoFiles are used to generate user input to automate operations.  The 
 SparrowOS tour is done with an AutoFile.
 
-When an AutoFile runs, a child task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,226]
+When an AutoFile runs, a child task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,228]
 Spawn()ed which intercepts real user 
 input and generates fake input.  AutoFiles are C+ programs run by the child 
 who's stdout goes to the parent's input buffer. 

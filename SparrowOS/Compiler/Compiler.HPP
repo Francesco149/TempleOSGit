@@ -21,11 +21,11 @@ public extern U8 *CmpStatement(CLex *lx,I64 *type);
 public extern I64 GetExpression(CLex *lx,U8 **ex); //FALSE=no err
 public extern I64 Expression(CLex *lx);
 public extern U0 ExpressionDel(U8 *code);
-public extern I64 MemberMetaData(U8 *st,CMemberList *ml);
-extern U0 MemberListDel(CHashClass *c);
-public extern CMemberListMeta *MemberMetaFind(U8 *st,CMemberList *ml);
-public extern CMemberList *MemberFind(U8 *st,CHashClass *c);
-public extern CMemberList *MemberFind2(CHashClass *pattern,CHashClass *tempc);
+public extern I64 MemberMetaData(U8 *st,CMemberLst *ml);
+extern U0 MemberLstDel(CHashClass *c);
+public extern CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *ml);
+public extern CMemberLst *MemberFind(U8 *st,CHashClass *c);
+public extern CMemberLst *MemberFind2(CHashClass *pattern,CHashClass *tempc);
 public extern U0 LexIncludeDoc(CLex *lx,U8 *filename,CDoc *_doc);
 
 #help_index "Compiler/Directive"

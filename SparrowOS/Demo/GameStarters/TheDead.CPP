@@ -64,7 +64,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   //<CTRL-T> now to see the hidden part
   //where the sprite num is encoded. IB stands
   //for "insert ptr to binary object".
-  CSpritePlot3(dc,x,y,0,__BIN_1);
+  SpritePlot3(dc,x,y,0,__BIN_1);
 
   i=shots_out;
   while (i!=shots_in) {
@@ -76,9 +76,9 @@ U0 DrawIt(CTask *task,CDC *dc)
     j=i++ &(MAX_SHOTS-1);
     if (!g_dead[j]) {
       if (gx[j]%10>5)
-	CSpritePlot3(dc,gx[j],gy[j],0,__BIN_2);
+	SpritePlot3(dc,gx[j],gy[j],0,__BIN_2);
       else
-	CSpritePlot3(dc,gx[j],gy[j],0,__BIN_3);
+	SpritePlot3(dc,gx[j],gy[j],0,__BIN_3);
     }
   }
   i=0;

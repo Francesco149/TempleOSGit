@@ -1806,6 +1806,7 @@ args.
       case IC_CLFLUSH:
       case IC_PAUSE:
       case IC_GET_FLAGS:
+      case IC_CARRY:
       case IC_GET_BASE_PTR:
       case IC_GET_STK_PTR:
       case IC_GET_RAX:

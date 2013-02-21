@@ -41,7 +41,7 @@ U0 ODERstPtrs(CMathODE *ode)
 
 public CMathODE *ODENew(I64 n,F64 max_tolerance=1e-6,I64 flags=0)
 {
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,248] flags.
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,329] flags.
 
 //The tolerance is not precise.
 //You can min_tolerance and it will

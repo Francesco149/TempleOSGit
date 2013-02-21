@@ -3,7 +3,7 @@ import CDoc *DocRead(U8 *name,I64 flags=0);
 import U0 DocLoad(CDoc *doc,U8 *src2,I64 size);
 import U0 DocWrite(CDoc *doc,Bool prompt=FALSE);
 import CDoc *DocNew(CTask *task=NULL);
-import U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL);
+import Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL);
 import U0 DocDel(CDoc *doc);
 import U0 DocRst(CDoc *doc,Bool is_old);
 import CDocEntry *DocPutLine(CDocEntry *doc_e);
@@ -15,9 +15,9 @@ import U0 HashRep(CHashTable *h=NULL,
 
 extern I64 Expression(CLex *lx);
 extern Bool GetExpression(CLex *lx,U8 **_ex);
-extern I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,
+extern I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempad,
     I64 *max_prec,I64 *unary_pre_prec,I64 *paren_prec);
-extern I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,I64 *unary_post_prec);
+extern I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempad,I64 *unary_post_prec);
 extern U0 PrsDereference(CLex *lx);
 extern U0 LexExcept(CLex *lx,U8 *name=NULL,CHashFun *fun_class=NULL);
 extern CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,U8 *map_name=NULL,U8 mapfile_drv=0);
@@ -25,7 +25,7 @@ extern U0 CmpFixUpJITAsm(CLex *lx,CExe *ex,I64 ip2);
 extern U0 CmpFixUpStaticAsm(CLex *lx,CExe *ex,I64 ip2);
 extern CHashClass *PrsClass(CLex *lx,Bool is_union,I64 cps_flags,Bool is_extern);
 extern CHashClass *PrsType(CLex *lx,CHashClass **tempc1,
-  I64 *_mode,CMemberList *tempm,U8 **_ident,CHashFun **_fun_ptr,
+  I64 *_mode,CMemberLst *tempm,U8 **_ident,CHashFun **_fun_ptr,
   CHashExport **_tempess,CArrayDim *tempad,I64 cps_flags);
 extern U0 PrsVarInit2(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_addr_ip,U8 **_base,Bool data_heap,I64 pass);
 extern CHashFun *PrsFunJoin(CLex *lx,

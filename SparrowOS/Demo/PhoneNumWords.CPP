@@ -2,7 +2,7 @@ U8 char_map[26]="22233344455566677778889999";
 
 
 /*
-Fmt of word list entry:
+Fmt of word lst entry:
   U8 WSD_WORD_CHAR
   U8 word[] with terminating zero
   I16 block; //definition offset in ::/SparrowOS/Adam/WordStat/WSDefs.DAT
@@ -10,7 +10,7 @@ Fmt of word list entry:
 U0 PhoneNumWords(U8 *num)
 {
   U8 ch,*_num=StrNew(num),*dst=_num,
-      *dict=ws_dict_word_list,*st,*src;
+      *dict=ws_dict_word_lst,*st,*src;
   while (*num) {
     if ('0'<=*num<='9')
       *dst++=*num;

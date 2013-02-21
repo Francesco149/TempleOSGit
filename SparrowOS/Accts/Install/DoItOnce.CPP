@@ -94,7 +94,7 @@ U0 VMInstallWizard(CTask *task)
     VMInstallBoot(task,dft_drv,'D',acct_name,ata_drv,atapi_drv);
     InstallMasterBoot('C');
   }
-  LinkedListDel(root);
+  LinkedLstDel(root);
   Free(acct_name);
 }
 
@@ -157,7 +157,7 @@ U0 RegularInstallWizard(CTask *task)
 	break;
     }
   }
-  LinkedListDel(root);
+  LinkedLstDel(root);
   XTalk(task,"%s\n",base0);
   XTalk(task,"%s\n",base1);
   XTalk(task,"%C",'0'+unit);

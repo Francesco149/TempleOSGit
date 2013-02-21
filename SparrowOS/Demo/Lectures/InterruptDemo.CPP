@@ -1,5 +1,5 @@
 //This is the software interrupt num
-//we will use.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,321] Software Int's for
+//we will use.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,402] Software Int's for
 //picking a num.  Nums are subject to change.
 
 #define I_F_UNARY_MINUS	I_USER
@@ -59,7 +59,7 @@ U0 TimeIns()
   Bool old_preempt=Preempt(OFF);
 
   CPURep;
-  old_irq=IntEntrySet(I_F_UNARY_MINUS,F_UNARY_MINUS_INT,0,IDTET_TRAP);
+  old_irq=IntEntrySet(I_F_UNARY_MINUS,F_UNARY_MINUS_INT,IDTET_TRAP);
 
 //Measure interrupt time
   start=GetTimeStamp;
@@ -76,7 +76,7 @@ U0 TimeIns()
   "Call      Cycles: %10.5f\n",ToF64(end-start)/SAMPLE_SIZE;
 
   Preempt(old_preempt);
-  IntEntrySet(I_F_UNARY_MINUS,old_irq,0,IDTET_IRQ);
+  IntEntrySet(I_F_UNARY_MINUS,old_irq,IDTET_IRQ);
 }
 
 TimeIns;

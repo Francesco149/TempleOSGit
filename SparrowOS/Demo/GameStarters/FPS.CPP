@@ -204,7 +204,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    z1=0;
 	    GrTransform(dc,&x1,&y1,&z1);
 	    if (z1>0)
-	      CSpritePlotRotMat3b(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
+	      SpritePlotRotMat3b(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
 	  }
 
 	  if (!map[(yy+1)*map_width+xx]) {
@@ -293,11 +293,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       GrTransform(dc,&xx,&yy,&zz);
       if (zz>0) {
 	if (monsters[i].dead)
-	  CSpritePlotRotMat3b(dc,x,y,0,__BIN_2,r2);
+	  SpritePlotRotMat3b(dc,x,y,0,__BIN_2,r2);
 	else {
 	  tt=Tri(tP(task),1.0);
-	  inter=CSpriteInterpolate(__BIN_3,__BIN_4,tt);
-	  CSpritePlotRotMat3b(dc,x,y,0,inter,r1);
+	  inter=SpriteInterpolate(__BIN_3,__BIN_4,tt);
+	  SpritePlotRotMat3b(dc,x,y,0,inter,r1);
 	  Free(inter);
 	}
       }
@@ -379,7 +379,7 @@ U0 Init()
   I64 i,x,y;
   I64 min_map_x,max_map_x,min_map_y,max_map_y;
   CDC *dc;
-  CSpriteExtents(__BIN_1,&min_map_x,&max_map_x,&min_map_y,&max_map_y);
+  SpriteExtents(__BIN_1,&min_map_x,&max_map_x,&min_map_y,&max_map_y);
   map_width =(max_map_x-min_map_x+1)/MAP_SCALE+2;
   map_height=(max_map_y-min_map_y+1)/MAP_SCALE+2;
   Free(map);
@@ -387,7 +387,7 @@ U0 Init()
   map=CAlloc(map_width*map_height*sizeof(U8));
   panels_processed_bitmap=MAlloc((map_width*map_height+7)>>3);
   dc=DCNew(DCT_COLOR8,map_width*MAP_SCALE,map_height*MAP_SCALE);
-  CSpritePlot3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
+  SpritePlot3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
   for (y=1;y<map_height-1;y++)
     for (x=1;x<map_width-1;x++)
       map[(map_height-1-y)*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);

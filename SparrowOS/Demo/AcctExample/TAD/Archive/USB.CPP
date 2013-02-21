@@ -18,7 +18,7 @@ extern CUSBTD *USBAllocTD();
 extern U0 USBFreeTD(CUSBTD *temptd);
 extern U0 USBEndAll();
 extern U0 USBInitAll();
-extern U32 *USBAllocFrameList(I64 usb_num,I64 size);
+extern U32 *USBAllocFrameLst(I64 usb_num,I64 size);
 
 U8 *StatCB(CDoc *,CDocEntry *doc_e,CTask *mem_task)
 { //This routine shows the stat of the USB ports

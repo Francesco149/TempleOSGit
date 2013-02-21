@@ -28,7 +28,7 @@ U0 ProfTimerInt(CTask *task)
     case PFM_ALL:
       for (k=0;k<=pf_depth;k++) {
 	if (task==Gs->idle_task)
-	  j=SYS_IDLE_START;
+	  j=SYS_IDLE_PT;
 	else
 	  j=TaskCaller(task,k,TRUE);
 	if (pf_ptr<PF_ARRAY_CNT) {

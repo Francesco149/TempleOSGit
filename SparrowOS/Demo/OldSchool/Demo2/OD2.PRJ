@@ -9,7 +9,7 @@ _MY_BEEP::
 
 	PUSH	FALSE
 	PUSH	300
-	CALL	&Beep
+	CALL	Beep
 
 	LEAVE
 	RET

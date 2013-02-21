@@ -13,8 +13,8 @@
 #define IC_IMM			0x0B
 #define IC_F64			0x0C
 #define IC_STR_CONST		0x0D
-#define IC_ABS_ADDR	0x0E
-#define IC_ADDR_IMPORT	0x0F
+#define IC_ABS_ADDR		0x0E
+#define IC_ADDR_IMPORT		0x0F
 #define IC_HEAP_GLBL		0x10
 #define IC_SIZEOF		0x11
 #define IC_TYPE			0x12
@@ -142,106 +142,107 @@
 #define IC_OUTU32		0x77
 
 #define IC_GET_FLAGS		0x78
-#define IC_SET_FLAGS		0x79
-#define IC_GET_RAX		0x7A
-#define IC_SET_RAX		0x7B
-#define IC_GET_BASE_PTR		0x7C
-#define IC_SET_BASE_PTR		0x7D
-#define IC_GET_STK_PTR		0x7E
-#define IC_SET_STK_PTR		0x7F
-#define IC_RIP			0x80
+#define IC_CARRY		0x79
+#define IC_SET_FLAGS		0x7A
+#define IC_GET_RAX		0x7B
+#define IC_SET_RAX		0x7C
+#define IC_GET_BASE_PTR		0x7D
+#define IC_SET_BASE_PTR		0x7E
+#define IC_GET_STK_PTR		0x7F
+#define IC_SET_STK_PTR		0x80
+#define IC_RIP			0x81
 
-#define IC_RDTSC		0x81
-#define IC_HPET			0x82
+#define IC_RDTSC		0x82
+#define IC_HPET			0x83
 
-#define IC_BT			0x83
-#define IC_BTS			0x84
-#define IC_BTR			0x85
-#define IC_BTC			0x86
-#define IC_BEQU			0x87
-#define IC_LBTS			0x88
-#define IC_LBTR			0x89
-#define IC_LBTC			0x8A
-#define IC_LBEQU		0x8B
-#define IC_BSF			0x8C
-#define IC_BSR			0x8D
+#define IC_BT			0x84
+#define IC_BTS			0x85
+#define IC_BTR			0x86
+#define IC_BTC			0x87
+#define IC_BEQU			0x88
+#define IC_LBTS			0x89
+#define IC_LBTR			0x8A
+#define IC_LBTC			0x8B
+#define IC_LBEQU		0x8C
+#define IC_BSF			0x8D
+#define IC_BSR			0x8E
 
-#define IC_QUE_INIT		0x8E
-#define IC_QUE_INS		0x8F
-#define IC_QUE_INS_REV		0x90
-#define IC_QUE_REM		0x91
+#define IC_QUE_INIT		0x8F
+#define IC_QUE_INS		0x90
+#define IC_QUE_INS_REV		0x91
+#define IC_QUE_REM		0x92
 
-#define IC_STRLEN		0x92
-#define IC_MEMCPY		0x93
+#define IC_STRLEN		0x93
+#define IC_MEMCPY		0x94
 
-#define IC_MEMSET		0x94
-#define IC_MEMSET_U16		0x95
-#define IC_MEMSET_U32		0x96
-#define IC_MEMSET_U64		0x97
+#define IC_MEMSET		0x95
+#define IC_MEMSET_U16		0x96
+#define IC_MEMSET_U32		0x97
+#define IC_MEMSET_U64		0x98
 
-#define IC_BR_ZERO		0x98
-#define IC_BR_NOT_ZERO		0x99
+#define IC_BR_ZERO		0x99
+#define IC_BR_NOT_ZERO		0x9A
 
-#define IC_BR_NOT_EQUAL		0x9A
-#define IC_BR_EQUAL_EQUAL	0x9B
-#define IC_BR_GREATER_EQUAL	0x9C
-#define IC_BR_LESS_EQUAL	0x9D
-#define IC_BR_GREATER		0x9E
-#define IC_BR_LESS		0x9F
-#define IC_BR_NOT_EQUAL2	0xA0
-#define IC_BR_EQUAL_EQUAL2	0xA1
-#define IC_BR_GREATER_EQUAL2	0xA2
-#define IC_BR_LESS_EQUAL2	0xA3
-#define IC_BR_GREATER2		0xA4
-#define IC_BR_LESS2		0xA5
-#define IC_BR_AND_ZERO		0xA6
-#define IC_BR_AND_NOT_ZERO	0xA7
-#define IC_BR_MM_ZERO		0xA8
-#define IC_BR_MM_NOT_ZERO	0xA9
-#define IC_BR_AND_AND_ZERO	0xAA
-#define IC_BR_AND_AND_NOT_ZERO	0xAB
-#define IC_BR_OR_OR_ZERO	0xAC
-#define IC_BR_OR_OR_NOT_ZERO	0xAD
+#define IC_BR_NOT_EQUAL		0x9B
+#define IC_BR_EQUAL_EQUAL	0x9C
+#define IC_BR_GREATER_EQUAL	0x9D
+#define IC_BR_LESS_EQUAL	0x9E
+#define IC_BR_GREATER		0x9F
+#define IC_BR_LESS		0xA0
+#define IC_BR_NOT_EQUAL2	0xA1
+#define IC_BR_EQUAL_EQUAL2	0xA2
+#define IC_BR_GREATER_EQUAL2	0xA3
+#define IC_BR_LESS_EQUAL2	0xA4
+#define IC_BR_GREATER2		0xA5
+#define IC_BR_LESS2		0xA6
+#define IC_BR_AND_ZERO		0xA7
+#define IC_BR_AND_NOT_ZERO	0xA8
+#define IC_BR_MM_ZERO		0xA9
+#define IC_BR_MM_NOT_ZERO	0xAA
+#define IC_BR_AND_AND_ZERO	0xAB
+#define IC_BR_AND_AND_NOT_ZERO	0xAC
+#define IC_BR_OR_OR_ZERO	0xAD
+#define IC_BR_OR_OR_NOT_ZERO	0xAE
 
-#define IC_BR_BT		0xAE
-#define IC_BR_BTS		0xAF
-#define IC_BR_BTR		0xB0
-#define IC_BR_BTC		0xB1
-#define IC_BR_LBTS		0xB2
-#define IC_BR_LBTR		0xB3
-#define IC_BR_LBTC		0xB4
-#define IC_BR_NOT_BT		0xB5
-#define IC_BR_NOT_BTS		0xB6
-#define IC_BR_NOT_BTR		0xB7
-#define IC_BR_NOT_BTC		0xB8
-#define IC_BR_NOT_LBTS		0xB9
-#define IC_BR_NOT_LBTR		0xBA
-#define IC_BR_NOT_LBTC		0xBB
+#define IC_BR_BT		0xAF
+#define IC_BR_BTS		0xB0
+#define IC_BR_BTR		0xB1
+#define IC_BR_BTC		0xB2
+#define IC_BR_LBTS		0xB3
+#define IC_BR_LBTR		0xB4
+#define IC_BR_LBTC		0xB5
+#define IC_BR_NOT_BT		0xB6
+#define IC_BR_NOT_BTS		0xB7
+#define IC_BR_NOT_BTR		0xB8
+#define IC_BR_NOT_BTC		0xB9
+#define IC_BR_NOT_LBTS		0xBA
+#define IC_BR_NOT_LBTR		0xBB
+#define IC_BR_NOT_LBTC		0xBC
 
-#define IC_SWAP_U8		0xBC
-#define IC_SWAP_U16		0xBD
-#define IC_SWAP_U32		0xBE
-#define IC_SWAP_U64		0xBF
+#define IC_SWAP_U8		0xBD
+#define IC_SWAP_U16		0xBE
+#define IC_SWAP_U32		0xBF
+#define IC_SWAP_U64		0xC0
 
-#define IC_ABS_I64		0xC0
-#define IC_SIGN_I64		0xC1
-#define IC_MIN_I64		0xC2
-#define IC_MIN_U64		0xC3
-#define IC_MAX_I64		0xC4
-#define IC_MAX_U64		0xC5
-#define IC_LIMIT_I64		0xC6
-#define IC_LIMIT_U64		0xC7
-#define IC_MOD_U64		0xC8
-#define IC_SQR_I64		0xC9
-#define IC_SQR_U64		0xCA
-#define IC_SQR			0xCB
-#define IC_ABS			0xCC
-#define IC_SQRT			0xCD
-#define IC_SIN			0xCE
-#define IC_COS			0xCF
-#define IC_TAN			0xD0
-#define IC_ATAN			0xD1
-#define IC_NUM_ENTRIES		0xD2
+#define IC_ABS_I64		0xC1
+#define IC_SIGN_I64		0xC2
+#define IC_MIN_I64		0xC3
+#define IC_MIN_U64		0xC4
+#define IC_MAX_I64		0xC5
+#define IC_MAX_U64		0xC6
+#define IC_LIMIT_I64		0xC7
+#define IC_LIMIT_U64		0xC8
+#define IC_MOD_U64		0xC9
+#define IC_SQR_I64		0xCA
+#define IC_SQR_U64		0xCB
+#define IC_SQR			0xCC
+#define IC_ABS			0xCD
+#define IC_SQRT			0xCE
+#define IC_SIN			0xCF
+#define IC_COS			0xD0
+#define IC_TAN			0xD1
+#define IC_ATAN			0xD2
+#define IC_NUM_ENTRIES		0xD3
 //Don't forget [::/SparrowOS/Compiler/CmpInit.CPP.Z,1] IC_INIT_TABLE
 
 #define KW_INCLUDE	0
@@ -311,8 +312,8 @@
 #define AKW_USE32	82
 #define AKW_USE64	83
 #define AKW_IMPORT	84
-#define AKW_LIST	85
-#define AKW_NOLIST	86
+#define AKW_LST	85
+#define AKW_NOLST	86
 #define KW_NUM_KEYWORDS	87
 
 #define CMP_TEMPLATE_INC		0x00
@@ -395,5 +396,5 @@
 class COptReg
 {
   I64 offset;
-  CMemberList *m;
+  CMemberLst *m;
 };

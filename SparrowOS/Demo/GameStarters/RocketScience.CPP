@@ -84,15 +84,15 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 
   if (plane_hit)
-    CSpritePlot3(dc,cx+m3.x,cy-m3.y,0,__BIN_2);
+    SpritePlot3(dc,cx+m3.x,cy-m3.y,0,__BIN_2);
   else
-    CSpritePlot3(dc,cx+m3.x,cy-m3.y,0,__BIN_1);
+    SpritePlot3(dc,cx+m3.x,cy-m3.y,0,__BIN_1);
 
   if (blast_off && !plane_hit) {
     dc->color=ROP_COLLISION;
     dc->bkcolor=LTCYAN;
     dc->collision_cnt=0;
-    CSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
+    SpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
     if (dc->collision_cnt>100) {
       Noise(1000,500,1500);
       plane_hit=TRUE;
@@ -102,7 +102,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Snd(0);
 
   dc->color=ROP_EQU;
-  CSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
+  SpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
 
   dc->color=RED;
   GrCircle(dc,cx+target.x,cy-target.y,5);

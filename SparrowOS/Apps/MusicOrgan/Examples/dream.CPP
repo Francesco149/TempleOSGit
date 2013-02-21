@@ -1,4 +1,4 @@
-//7 has words
+//8 has words
 U0 Song()
 {
   Fs->task_end_cb=&SndTaskEndCB;
@@ -14,7 +14,7 @@ U0 Song()
 	Play("!!GF!G!!FE!!BE!BeCB2qG3sFAFAqCEA",
 		"Hi-\0 \0i-\0gh \0as \0 \0your \0 \0thoughts \0will \0go.\n\0 \0 \0 \0 \0 \0 \0 \0");
 	Play("!!sGF!G!!FE!!BE!BeCB2qG3sFAFAqCEA",
-		"Stu-\0 \0u-\0ck \0on \0 \0this \0 \0Earth \0be\0low.\n\0 \0 \0 \0 \0 \0 \0 \0");
+		"Deep \0 \0 \0as \0 \0 \0we \0 \0ought \0to \0know.\n\0 \0 \0 \0 \0 \0 \0 \0");
   }
   } catch
     CatchAll;

@@ -17,7 +17,7 @@ U0 IDEWaitParent()
   CTask *task=Fs->parent_task;
   while (!IsSuspended(task) &&
 	 !Bt(&task->task_flags,TASKf_IDLE) &&
-	 !Bt(&task->rflags,RFLAGS_SINGLE_STEP))
+	 !Bt(&task->rflags,RFLAGf_TRAP))
     Yield;
 }
 
@@ -334,7 +334,7 @@ U0 IDEGo()  //Continue after breakpoint
   LBts(&task->task_flags,TASKf_DISABLE_BPTS);
   tempi->cur_line=task->rip;
   tempi->type=IDET_GO;
-  LBts(&task->rflags,RFLAGS_SINGLE_STEP);
+  LBts(&task->rflags,RFLAGf_TRAP);
   Suspend(task,FALSE);
 }
 
@@ -363,7 +363,7 @@ U0 IDEStepOver(CDoc *doc)
   tempi->type=IDET_STEP_OVER;
   tempi->call_bpt=NULL;
 
-  LBts(&task->rflags,RFLAGS_SINGLE_STEP);
+  LBts(&task->rflags,RFLAGf_TRAP);
   Suspend(task,FALSE);
 
   opcode=task->rip;
@@ -375,7 +375,7 @@ U0 IDEStepOver(CDoc *doc)
       tempi->existing_bpt=FALSE;
     tempi->call_bpt=opcode+5;
     LBtr(&task->task_flags,TASKf_DISABLE_BPTS);
-    LBtr(&task->rflags,RFLAGS_SINGLE_STEP);
+    LBtr(&task->rflags,RFLAGf_TRAP);
   }
 }
 
@@ -401,7 +401,7 @@ U0 IDEStepInto(CDoc *doc)
     tempi->next_line=NULL;
   }
   tempi->type=IDET_STEP_INTO;
-  LBts(&task->rflags,RFLAGS_SINGLE_STEP);
+  LBts(&task->rflags,RFLAGf_TRAP);
   Suspend(task,FALSE);
 }
 
@@ -435,7 +435,7 @@ U0 IDEEdTask(I64)
       Kill(dbg_task);
     }
     task->dbg_task=ed_task;
-    tempb=task->bpt_list;
+    tempb=task->bpt_lst;
     while (tempb) {
       if (bpt_filename=SrcFileName(tempb->addr)) {
 	if (!StrCmp(rip_filename,bpt_filename)) {
@@ -465,7 +465,7 @@ U0 IDEResumeDbg()
       case IDET_GO:
 	if (tempi->cur_line) {
 	  LBtr(&Fs->task_flags,TASKf_DISABLE_BPTS);
-	  LBtr(&Fs->rflags,RFLAGS_SINGLE_STEP);
+	  LBtr(&Fs->rflags,RFLAGf_TRAP);
 	  if (Fs->rip==tempi->cur_line) {//Jmp to self
 	    tempi->cur_line=NULL;
 	    Spawn(&IDEEdTask,NULL,"Resume Dbg",Fs);
@@ -486,7 +486,7 @@ U0 IDEResumeDbg()
 	  Suspend(Fs,FALSE);
 	break;
       case IDET_STEP_OVER:
-	LBts(&Fs->rflags,RFLAGS_SINGLE_STEP);
+	LBts(&Fs->rflags,RFLAGf_TRAP);
 	LBts(&Fs->task_flags,TASKf_DISABLE_BPTS);
 	if (Fs->rip==tempi->call_bpt) {
 	  if (!tempi->existing_bpt)
@@ -507,7 +507,7 @@ U0 IDEResumeDbg()
 	      tempi->existing_bpt=FALSE;
 	    tempi->call_bpt=opcode+5;
 	    LBtr(&Fs->task_flags,TASKf_DISABLE_BPTS);
-	    LBtr(&Fs->rflags,RFLAGS_SINGLE_STEP);
+	    LBtr(&Fs->rflags,RFLAGf_TRAP);
 	  }
 	  Suspend(Fs,FALSE);
 	}

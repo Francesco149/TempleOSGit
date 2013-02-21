@@ -1,4 +1,4 @@
-//SparrowOS supports standard [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF()
+//SparrowOS supports standard [C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF()
 //codes and extended ones.
 //See [::/SparrowOS/Doc/Differences.TXT.Z,1] printF codes.
 

@@ -1,9 +1,66 @@
 Use [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I
 change a label.
 
+----02/20/13 00:04:12----
+* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,414] RFLAG Defines
+* Added [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,631] HDAudioScan().
+* Changed [C:/SparrowOS/OSMain/BIOS32.CPP.Z,274] PCIClassFind().
+
+----02/19/13 14:16:31----
+* Fixed line nums in [C:/SparrowOS/Adam/Diff.CPP.Z,215] Diff().
+* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask.task_num
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("list","lst");
+* Sped-up [C:/SparrowOS/OSMain/Str1a.CPP.Z,494] DefineSub().
+* Added date/time format defines [C:/SparrowOS/OSMain/Adam1a.HPP.Z,220]
+TF_NUM, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,279] DF_NUM
+* Modified [C:/SparrowOS/OSMain/Scheduler.CPP.Z,258] SYS_IDLE_PT code.
+* Added [::/SparrowOS/Apps/HolySpirit/Vocab.TXT.Z,1]
+::/SparrowOS/Apps/HolySpirit/Vocab.TXT.Z.
+
+----02/17/13 22:49:30----
+* Added [C:/SparrowOS/OSMain/Adam1b.HPP.Z,157] Carry().
+* Got rid of GrLine3b().
+
+----01/26/13 06:04:12----
+* Changed [C:/SparrowOS/OSMain/Interrupts.CPP.Z,111] IntEntrySet(),
+[C:/SparrowOS/OSMain/Interrupts.CPP.Z,99] IntEntryGet().
+* Expanded [::/SparrowOS/Apps/MusicOrgan/MakeSong.CPP.Z,1] MakeSong.CPP.Z.
+
+----01/15/13 17:26:17----
+* Added [::/SparrowOS/Demo/Snd/Guitar.CPP.Z,1]
+::/SparrowOS/Demo/Snd/Guitar.CPP.Z and 
+[::/SparrowOS/Demo/Snd/Chords.CPP.Z,1] ::/SparrowOS/Demo/Snd/Chords.CPP.Z.
+
+----01/07/13 06:21:05----
+* Added [::/SparrowOS/Apps/Strut/Strut.CPP.Z,1]
+::/SparrowOS/Apps/Strut/Strut.CPP.Z.
+
+----12/31/12 01:41:29----
+* Sheep move in [::/SparrowOS/Apps/AfterEgypt/Horeb.CPP.Z,1]
+::/SparrowOS/Apps/AfterEgypt/Horeb.CPP.Z.
+
+----12/29/12 06:29:00----
+* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("CSprite...","Sprite..."); for many routines.
+* Changed [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc locking.
+
+----12/27/12 09:29:23----
+* Added limited RLE4 support to [::/SparrowOS/Adam/FileBMP.CPP.Z,1]
+::/SparrowOS/Adam/FileBMP.CPP.Z.
+
+----12/24/12 20:29:15----
+* Added [C:/SparrowOS/Adam/Snd/MathAudio.CPP.Z,13] FullSaw().
+
+----12/19/12 02:06:59----
+* Added graphics to [::/SparrowOS/Apps/MusicOrgan/Examples/free.CPP.Z,1]
+::/SparrowOS/Apps/MusicOrgan/Examples/free.CPP.Z.
+
+----12/14/12 06:09:21----
+* Made unassemble display 64-bit reg names for XOR, PUSH & POP.
+
 ----12/11/12 00:30:28----
-* Added [::/SparrowOS/Demo/Lectures/64Bit.TXT.Z,1]
-::/SparrowOS/Demo/Lectures/64Bit.TXT.Z.
+* Added [::/SparrowOS/Demo/Lectures/64BitAsmQuiz.TXT.Z,1]
+::/SparrowOS/Demo/Lectures/64BitAsmQuiz.TXT.Z.
 
 ----12/06/12 12:56:52----
 * Added [C:/SparrowOS/Adam/WallPaper.CPP.Z,13] wallpaper_record_on.
@@ -14,7 +71,7 @@ change a label.
 
 ----11/25/12 13:04:05----
 * **SparrowOS version 1.02 Released**
-* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1469] OPTf_WARN_DUP_TYPES.
+* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1565] OPTf_WARN_DUP_TYPES.
 * Converted U64 to I64 except where required.
 * Got rid of typedef.
 * Got rid of pass-by-ref fun args.
@@ -36,13 +93,13 @@ R("CDirDel","CDirEntryDel");
 [C:/SparrowOS/OSMain/Task1a.CPP.Z,68] IsSuspended().
 
 ----11/03/12 11:52:45----
-* Made [C:/SparrowOS/OSMain/Adam1b.HPP.Z,227] Sqr(),
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,228] Abs(),
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,229] Sqrt(),
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,230] Sin(),
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,231] Cos(),
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,232] Tan() and
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,233] ATan() in-line.
+* Made [C:/SparrowOS/OSMain/Adam1b.HPP.Z,228] Sqr(),
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,229] Abs(),
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,230] Sqrt(),
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,231] Sin(),
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,232] Cos(),
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,233] Tan() and
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,234] ATan() in-line.
 
 ----11/02/12 11:28:40----
 * Added graphics to
@@ -58,7 +115,7 @@ R("CDirDel","CDirEntryDel");
 * Added .BMP and .GRA to [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type().
 * Added [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type() to
 [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,469] TermRightClickLink().
-* Added [C:/SparrowOS/Adam/FileBMP.CPP.Z,194] DocPutBMPFile() and
+* Added [C:/SparrowOS/Adam/FileBMP.CPP.Z,269] DocPutBMPFile() and
 [C:/SparrowOS/Adam/Gr/GrDC.CPP.Z,258] DocPutGRAFile().
 * Added [::/SparrowOS/Adam/Ctrls/CtrlsButton.CPP.Z,1]
 ::/SparrowOS/Adam/Ctrls/CtrlsButton.CPP.Z to the API.
@@ -69,7 +126,7 @@ R("CDirDel","CDirEntryDel");
 
 ----10/26/12 05:06:53----
 * Changed to /0000Boot/0000OSMain.BIN.C.
-* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1267] DOF_WIN_MAX.
+* Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1364] DOF_WIN_MAX.
 
 ----10/22/12 21:10:06----
 * Worked on [::/SparrowOS/Apps/MusicOrgan/Examples/risen.CPP.Z,1] risen,
@@ -85,20 +142,20 @@ R("CDirDel","CDirEntryDel");
 
 ----10/13/12 19:52:59----
 * Fixed bug in comma'ed leading zeros in
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF().
-* Added octal to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF().
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF().
+* Added octal to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF().
 * Added comma flag to hex, octal and binary in
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF().
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF().
 
 ----10/12/12 05:16:20----
-* Changed Binary File Format.  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1733] EIE_END
+* Changed Binary File Format.  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1829] EIE_END
 
 ----10/06/12 12:37:05----
 * Made [C:/SparrowOS/Adam/Window.CPP.Z,713] WinFocus(),
 [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,386] Go1(),
 [C:/SparrowOS/Adam/Dbg2a.CPP.Z,354] Go2() and
 [C:/SparrowOS/Adam/Dbg2a.CPP.Z,375] Go3().
-* Added [C:/SparrowOS/OSMain/Str1a.CPP.Z,2659] Help(),
+* Added [C:/SparrowOS/OSMain/Str1a.CPP.Z,2393] Help(),
 [C:/SparrowOS/OSMain/Display.CPP.Z,96] VGAFlush() and <CTRL-ALT-F>.
 * Added [::/SparrowOS/Demo/DbgDemo.CPP.Z,1] ::/SparrowOS/Demo/DbgDemo.CPP.Z.
 
@@ -112,7 +169,7 @@ not implemented.
 
 ----10/03/12 07:59:33----
 * Expanded CDocEntry.flags to CDocEntry.flags1 and CDocEntry.flags2.
-* Added +BP [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1067] DOCEF2_BIN_PTR_LINK flag
+* Added +BP [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1164] DOCEF2_BIN_PTR_LINK flag
 to allow importing sprites from other 
 files.
 

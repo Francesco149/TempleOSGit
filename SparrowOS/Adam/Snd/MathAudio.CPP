@@ -10,6 +10,17 @@ public F64 Saw(F64 t,F64 period)
     return 0.0;
 }
 
+public F64 FullSaw(F64 t,F64 period)
+{ //1.0 - -1.0 think "Sin"
+  if (period) {
+    if (t>=0.0)
+      return 2.0*(t%period/period)-1.0;
+    else
+      return 2.0*(t%period/period)+1.0;
+  } else
+    return 0.0;
+}
+
 public F64 Caw(F64 t,F64 period)
 { //1.0 - 0.0 think "(Cos+1)/2"
   if (period) {
@@ -25,9 +36,9 @@ public F64 FullCaw(F64 t,F64 period)
 { //1.0 - -1.0 think "Cos"
   if (period) {
     if (t>=0.0)
-      return 1.0-2.0*(t%period/period);
+      return -2.0*(t%period/period)+1.0;
     else
-      return -1.0-2.0*(t%period/period);
+      return -2.0*(t%period/period)-1.0;
   } else
     return 1.0;
 }
@@ -90,20 +101,22 @@ F64 SinPhaseCont(F64 last_y,F64 last_dydt,
 public CSndWaveCtrl *SndWaveCtrlNew(I64 sample_rate=SND_SAMPLE_RATE,I64 sample_bits=SND_SAMPLE_BITS,
   I64 channels=SND_OCHANNELS,CTask *mem_task=NULL)
 {
-  CSndWaveCtrl *sc=CAlloc(sizeof(CSndWaveCtrl),mem_task);
-  sc->sample_rate=sample_rate;
-  sc->sample_bits=sample_bits;
-  sc->channels=channels;
-  sc->last_dydt=1.0;
-  return sc;
+  CSndWaveCtrl *swc=CAlloc(sizeof(CSndWaveCtrl),mem_task);
+  swc->freq_multiplier=1.0;
+  swc->amp_multiplier=1.0;
+  swc->sample_rate=sample_rate;
+  swc->sample_bits=sample_bits;
+  swc->channels=channels;
+  swc->last_dydt=1.0;
+  return swc;
 }
 
-public U0 SndWaveCtrlDel(CSndWaveCtrl *sc)
+public U0 SndWaveCtrlDel(CSndWaveCtrl *swc)
 {
-  Free(sc);
+  Free(swc);
 }
 
-public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
+public U0 SndWaveAddBuf(CSndWaveCtrl *swc,U8 *buf,I64 num_samples,
   F64 _freq,I64 _waveform=WF_SQUARE,F64 _amp=1.0,F64 _left=1.0, F64 _right=1.0)
 {
 //num_samples is multiplied by channels to get buf_len.
@@ -111,16 +124,17 @@ public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
 //Supports 16,24 and 32 bits
   I64 reg i,reg j,reg k;
   F64 a,f,amp,reg phase;
-  if (!sc) return;
-  if (!_freq) {
-    MemSet(buf,0,num_samples*sc->channels*(sc->sample_bits>16 ? sizeof(I32):sizeof(I16)));
-    sc->last_y=sc->phase=0;
-    sc->last_dydt=1.0;
+  if (!swc) return;
+  _freq*=swc->freq_multiplier;
+  _amp*=swc->amp_multiplier;
+  if (!_freq||!_amp) {
+    swc->last_y=swc->phase=0;
+    swc->last_dydt=1.0;
   } else {
-    phase=sc->phase;
+    phase=swc->phase;
     i=0;
     amp=Min(MAX_I32,MAX_I32*_amp);
-    f=2*pi/sc->sample_rate*_freq;
+    f=2*pi/swc->sample_rate*_freq;
     switch (_waveform) {
       case WF_NOISE:
 	a=2.0/pi*amp;
@@ -129,14 +143,14 @@ public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
 	a=amp/pi;
 	break;
       case WF_SINE:
-	phase=SinPhaseCont(sc->last_y,sc->last_dydt,amp,0.0);
+	phase=SinPhaseCont(swc->last_y,swc->last_dydt,amp,0.0);
 	break;
     }
     while (phase<0)
       phase+=2*pi;
     while (phase>=2*pi)
       phase-=2*pi;
-    num_samples*=sc->channels;
+    num_samples*=swc->channels;
     while (i<num_samples) {
       switch (_waveform) {
 	case WF_SQUARE:
@@ -150,11 +164,11 @@ public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
 	  break;
 	case WF_TRIANGLE:
 	  if (phase>=pi) {
-	    sc->last_y=sc->next_y;
-	    sc->next_y=-amp*Sign(sc->last_y)+.00001;
+	    swc->last_y=swc->next_y;
+	    swc->next_y=-amp*Sign(swc->last_y)+.00001;
 	    phase-=pi;
 	  }
-	  j=(sc->last_y*(pi-phase)+sc->next_y*phase)/pi;
+	  j=(swc->last_y*(pi-phase)+swc->next_y*phase)/pi;
 	  break;
 	case WF_SAWTOOTH:
 	  j=a*(phase-pi);
@@ -162,39 +176,39 @@ public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
 	case WF_NOISE:
 	  if (phase<pi) {
 	    if (phase<f) {
-	      sc->last_y=sc->next_y;
-	      sc->next_y=a*RandI16/MAX_U16;
+	      swc->last_y=swc->next_y;
+	      swc->next_y=a*RandI16/MAX_U16;
 	    }
-	    j=sc->last_y*(pi-phase)+sc->next_y*phase;
+	    j=swc->last_y*(pi-phase)+swc->next_y*phase;
 	  } else {
 	    if (phase-pi<f) {
-	      sc->last_y=sc->next_y;
-	      sc->next_y=a*RandI16/MAX_U16;
+	      swc->last_y=swc->next_y;
+	      swc->next_y=a*RandI16/MAX_U16;
 	    }
-	    j=sc->last_y*(2.0*pi-phase)+sc->next_y*(phase-pi);
+	    j=swc->last_y*(2.0*pi-phase)+swc->next_y*(phase-pi);
 	  }
 	  break;
       }
       //left channel
       k=j*_left;
-      if (sc->sample_bits==16) {
+      if (swc->sample_bits==16) {
 	k>>=16;
-	buf(I16 *)[i++]=k;
+	buf(I16 *)[i++]+=k;
       } else {
-	if (sc->sample_bits==24)
+	if (swc->sample_bits==24)
 	  k&=0xFFFFFF00;
-	buf(I32 *)[i++]=k;
+	buf(I32 *)[i++]+=k;
       }
       //right channel
-      if (sc->channels==2) {
+      if (swc->channels==2) {
 	k=j*_right;
-	if (sc->sample_bits==16) {
+	if (swc->sample_bits==16) {
 	  k>>=16;
-	  buf(I16 *)[i++]=k;
+	  buf(I16 *)[i++]+=k;
 	} else {
-	  if (sc->sample_bits==24)
+	  if (swc->sample_bits==24)
 	    k&=0xFFFFFF00;
-	  buf(I32 *)[i++]=k;
+	  buf(I32 *)[i++]+=k;
 	}
       }
       phase+=f;
@@ -202,10 +216,10 @@ public U0 SndWaveFillBuf(CSndWaveCtrl *sc,U8 *buf,I64 num_samples,
 	phase-=2*pi;
     }
     if (_waveform==WF_SINE) {
-      sc->last_y=amp*Sin(phase);
-      sc->last_dydt=Cos(phase);
+      swc->last_y=amp*Sin(phase);
+      swc->last_dydt=Cos(phase);
     }
-    sc->phase=phase;
+    swc->phase=phase;
   }
 }
 

@@ -852,7 +852,7 @@ class CEdData
   Bool	u8	fmtstr "$CB,\"U8\"$\n";
   Bool	u16	fmtstr "$CB,\"U16\"$\n";
   Bool	u32	fmtstr "$CB,\"U32\"$\n";
-  Bool	u64	fmtstr "$CB,\"I64\"$\n";
+  Bool	u64	fmtstr "$CB,\"U64\"$\n";
 };
 
 U0 EdInsData()
@@ -869,9 +869,9 @@ U0 EdInsData()
     if (dt->refresh)  StrCat(buf,"+RD");
     if (dt->update)   StrCat(buf,"+UD");
 
-    if (dt->u8)        StrCat(buf,"-I64+U8");
-    else if (dt->u16)  StrCat(buf,"-I64+U16");
-    else if (dt->u32)  StrCat(buf,"-I64+U32");
+    if (dt->u8)        StrCat(buf,"-U64+U8");
+    else if (dt->u16)  StrCat(buf,"-U64+U16");
+    else if (dt->u32)  StrCat(buf,"-U64+U32");
 
     st=MSPrintF("%q",dt->fmt_str);
     "$$DA%s,%d,\\\"%Q\\\"$$",buf,dt->len,st;
@@ -1060,7 +1060,7 @@ I64 PopUpSpriteType()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPutS(doc,"A sprite is composed of an ordered list of elements\n"
+  DocPutS(doc,"A sprite is composed of an ordered lst of elements\n"
 	"such as lines and color changes.  You can create an icon\n"
 	"by placing a sprite with a payload of C+ code to execute.\n"
 	"This is a called a \"sprite macro\".  Check \"Pop-Up\" for\n"
@@ -1130,7 +1130,7 @@ U8 *EdSprite(I64 bin_num)
   *buf=0;
   switch (type) {
     case PT_SPRITE:
-      SPrintF(dt->tag,"<%d>",DocCur->cur_bin_num);
+      SPrintF(dt->tag,"<%d>",bin_num);
       if (DocFormDo(dt,"CEdJustSprite",,,ctrl_L_footer))
 	st1=MSPrintF("\"%Q\"",dt->tag);
       break;
@@ -1159,16 +1159,16 @@ U8 *EdSprite(I64 bin_num)
       st1=EdSpriteLink(&html_link);
       break;
     case PT_SPRITE_PTR:
-      EdInsBinary(bin_num,DOCT_INS_BINARY);
+      EdInsBinary(--bin_num,DOCT_INS_BINARY);
       break;
     case PT_SPRITE_SIZE:
-      EdInsBinary(bin_num,DOCT_INS_BINARY_SIZE);
+      EdInsBinary(--bin_num,DOCT_INS_BINARY_SIZE);
       break;
     case PT_DUP_SPRITE:
-      EdInsBinary(bin_num,DOCT_SPRITE);
+      EdInsBinary(--bin_num,DOCT_SPRITE);
       break;
     case PT_SPRITE_TYPE:
-      EdInsBinary(bin_num,DOCT_INS_BINARY_TYPE);
+      EdInsBinary(--bin_num,DOCT_INS_BINARY_TYPE);
       break;
   }
   if (st1) {

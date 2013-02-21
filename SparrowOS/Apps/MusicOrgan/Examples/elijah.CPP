@@ -54,7 +54,7 @@ U0 DrawIt(CTask *,CDC *dc)
     img=__BIN_2;
   else
     img=__BIN_3;
-  CSpritePlot3(dc,WOOD_X,WOOD_Y,0,img);
+  SpritePlot3(dc,WOOD_X,WOOD_Y,0,img);
 }
 
 

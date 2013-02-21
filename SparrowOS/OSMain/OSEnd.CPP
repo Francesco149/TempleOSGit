@@ -1,12 +1,3 @@
-U0 DateTimeFmtMapsRst()
-{
-  I64 i;
-  for (i=0;i<NUM_DATE_FMTS;i++)
-    date_fmt_map[i]=i;
-  for (i=0;i<NUM_TIME_FMTS;i++)
-    time_fmt_map[i]=i;
-}
-
 U0 SysGlblsInit()
 {
   I64 i,j;
@@ -70,8 +61,8 @@ U0 SysGlblsInit()
   m=MemBlksUncachedAlloc(&i,sys_code_bp);
   sys_uncached_heap=HeapCtrlIndependentInit(m,i*0x200000/0x200);
   ProgressBarsRst;
-  date_fmt_map=MAlloc(NUM_DATE_FMTS);
-  time_fmt_map=MAlloc(NUM_TIME_FMTS);
+  date_fmt_map=MAlloc(DF_NUM);
+  time_fmt_map=MAlloc(TF_NUM);
   DateTimeFmtMapsRst;
   sys_fault_handlers_code=IntFaultHandlersNew;
 }

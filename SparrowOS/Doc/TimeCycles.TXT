@@ -1,6 +1,6 @@
 Intel has an instruction that returns the num of CPU cycles since boot.  This 
 is not calibrated to an accurate real time value, but SparrowOS measures it 
-and you can convert with [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,46]
+and you can convert with [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,47]
 time_stamp_freq, a value continuously calibrated from 
 other timers.  This is the fastest timer available.
 

@@ -28,7 +28,7 @@ U0 DrawIt(CTask *,CDC *)
 //define in <CTRL-R>.
   dc->pen_width=2;
   DCDepthBufRst(dc);
-  CSpritePlot3(dc,0,0,0,__BIN_1);
+  SpritePlot3(dc,0,0,0,__BIN_1);
 }
 
 U0 SpritePlot3D()

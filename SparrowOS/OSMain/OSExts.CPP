@@ -4,7 +4,7 @@ before import is resolved, you can use
 "import".  Otherwise, use a fun pointer
 var and check it before calling.
 */
-import U0 MemberListDel(CHashClass *tempc);
+import U0 MemberLstDel(CHashClass *tempc);
 import I64 ExePutS(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE);
 import I64 ExeFile(U8 *name,Bool just_load=FALSE);
 import U0 DisplaySpecialKeys(I64 sc);
@@ -44,7 +44,7 @@ extern Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result
 		     Bool dir_only,Bool file_only);
 extern CDirEntry *ISO1FilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NULL);
 
-extern U0 NativeFSFreeFreeList(CPrt *p);
+extern U0 NativeFSFreeFreeLst(CPrt *p);
 extern U0 NativeFSPrtInit(CPrt *p);
 extern U0 FAT32PrtInit(CPrt *p);
 extern Bool NativeFSDrvValidate(U8 drv_let);
@@ -62,7 +62,7 @@ extern Bool FAT32DirNew(CPrt *p,U8 *cur_dir,CDirEntry *de,Bool free_old_chain);
 extern CDirEntry *NativeFSFilesFind (U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NULL);
 extern CDirEntry *FAT32FilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NULL,I64 *_dir_size=NULL);
 extern I64 FileWrite(U8 *filename,U8 *fbuf,
-   I64 size,CDate ltdt=0,I64 attr=0,Bool raw=FALSE);
+   I64 size,CDate spdt=0,I64 attr=0,Bool raw=FALSE);
 
 extern U0 Exit();
 extern U0 AdamLog(U8 *fmt,...);

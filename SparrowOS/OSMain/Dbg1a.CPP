@@ -88,7 +88,7 @@ U8 *TaskCaller(CTask *task=NULL,I64 num=0,Bool saved_context=FALSE)
     }
     return NULL;
   } else {
-    if (task->rip==SYS_IDLE_PT)
+    if (task->rip==SYS_RET)
       return *rsp;
     else
       return task->rip;
@@ -115,7 +115,7 @@ U0 StkRep(CTask *task=NULL)
     rsp=task->rsp;
     rbp=task->rbp;
   }
-  if (task->rip==SYS_IDLE_PT)
+  if (task->rip==SYS_RET)
     add=*rsp;
   else
     add=task->rip;

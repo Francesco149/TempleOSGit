@@ -1,12 +1,12 @@
 A SparrowOS document is a [Circular Queue,1] Circular Queue of cmds and
-graphics.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry 
+graphics.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1316] CDocEntry 
 for the entry structure.  See [C:/SparrowOS/Adam/Training.CPP.Z,203]
 TipOfDay() for a nice example.
 
 There is one document format for the editor/ viewer/ browser/ cmd line.
 
-Each task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc queue.  There is
-one [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc for the border, called 
+Each task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc queue.  There is
+one [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc for the border, called 
 "auxiliary" and one for the main window.  The aux is at Fs->next_doc and the 
 main at Fs->last_doc.  When dbl buffering, there are two main's.  See 
 [::/SparrowOS/Demo/Spy.CPP.Z,1] ::/SparrowOS/Demo/Spy.CPP.Z.  It is possible

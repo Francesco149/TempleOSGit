@@ -106,7 +106,7 @@ The SparrowOS cmd line interface is based on C/C++. Explore the ".CPP.Z"
 
 Dir("*");
 `Dir("*");`
- will list files in the current directory.
+ will lst files in the current directory.
 
 Dir;
 `Dir;`
@@ -127,14 +127,14 @@ Ed("FILENAME.TXT.Z"); Invokes the editor. See
 
 
 Some cmds like [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() take a
-    "find_files_mask".  They begin with the name of a dir tree and end with a
-    list of filename masks.  See [C:/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50]
+    "find_files_mask".  They begin with the name of a dir tree and end with a lst
+    of filename masks.  See [C:/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50]
     FilesFindMatch().
 
 Grep("pattern","/SparrowOS/Demo/*.CPP.Z;*.TXT.Z;");
 
-Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2084] TEXT_FILE_MASK and
-    [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2083] SRC_FILE_MASK.
+Be aware of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2180] TEXT_FILE_MASK and
+    [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2179] SRC_FILE_MASK.
 
   +] BURNING CD-ROMs/DVDs
     
@@ -179,6 +179,7 @@ Use [C:/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,183] Mount() to mount disk
 +] Level 4: SYSTEM PROGRAMMER HELP
   
 [::/SparrowOS/Doc/SysPgmGuide.TXT.Z,1] System Programming Guide-Lines
+[::/SparrowOS/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,1] Hash Tables
 [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] Keyboard Handling
 [::/SparrowOS/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1

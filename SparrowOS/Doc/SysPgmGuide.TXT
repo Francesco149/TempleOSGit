@@ -25,11 +25,11 @@ values, not just nonzero.  Boolean assignments don't have short circuit logic
 and are not compiled efficiently.  The Bool type is just an alias for a 1
 byte 
 int -- nothing forces it to 1 or 0.  There is a
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,211] ToBool() function.
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,212] ToBool() function.
 
 * If you use floats in your interrupt routine, save and restore the fpu state 
-with [C:/SparrowOS/OSMain/Adam1b.HPP.Z,251] Fxsave() and
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,252] Fxrstor().  The timer interrupt does
+with [C:/SparrowOS/OSMain/Adam1b.HPP.Z,252] Fxsave() and
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,253] Fxrstor().  The timer interrupt does
 this.  The keyboard and 
 mouse don't use floats.
 

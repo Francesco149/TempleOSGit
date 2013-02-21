@@ -1,7 +1,7 @@
-U0 CDate2Dos(U16 *t,U16 *d,CDate ltdt)
+U0 CDate2Dos(U16 *t,U16 *d,CDate spdt)
 {
   CDateStruct ds;
-  CDate2CDateStruct(&ds,ltdt+local_time_offset);
+  CDate2CDateStruct(&ds,spdt+local_time_offset);
   *d=ds.day_of_mon+(ds.mon+(ds.year-1980)<<4)<<5;
   *t=ds.sec>>1+(ds.min+ds.hour<<6)<<5;
 }
@@ -833,7 +833,7 @@ Bool FAT32FilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,I64 fuf_flags,
 }
 
 I64 FAT32FileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
-		CDate ltdt=0,I64 attr=0,Bool raw=FALSE,
+		CDate spdt=0,I64 attr=0,Bool raw=FALSE,
 		CArcCompress **_ac2=NULL)
 {
   CDirEntry de;
@@ -843,8 +843,8 @@ I64 FAT32FileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
   MemSet(&de,0,sizeof(CDirEntry));
   if (_ac2) *_ac2=NULL;
   if (size<0) size=0;
-  if (!ltdt)
-    ltdt=GetCurTimeCDate;
+  if (!spdt)
+    spdt=GetCurTimeCDate;
   if (p->type!=PT_FAT32)
     PutDefine("ST_NOT_FAT32");
   else if (!CFileNameTo(de.name,name))
@@ -868,7 +868,7 @@ I64 FAT32FileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
       c=0x0FFFFFFF;
     de.cluster=c;
     de.attr=attr;
-    de.datetime=ltdt;
+    de.datetime=spdt;
     if (blk_cnt)
       WClustersBlks(p,buf,c,blk_cnt);
     FAT32DirNew(p,cur_dir,&de,TRUE);

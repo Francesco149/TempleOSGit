@@ -7,8 +7,9 @@ CTask *sys_macro_util_task=NULL,
 CMPCmdCtrl *mp_ctrl=NULL;
 CMPCrash *mp_crash=NULL;
 U8 mp_apic_ids[MP_MAX_PROCESSORS];
+I64 *sys_idt=NULL;
 CTask *adam_task;
-I64 sys_num_spawned_users=0;
+I64 sys_num_spawned_users=0,sys_num_task_inits=0;
 
 U8 *sys_fault_handlers_code;
 
@@ -128,5 +129,5 @@ U8 *sys_dbg_fault_rip=0;
 
 CPSectCache *psect_cache;
 I64 psect_cache_index;
-//These are for [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintF()
+//These are for [C:/SparrowOS/OSMain/Str1a.CPP.Z,1328] SPrintF()
 U8 *date_fmt_map,*time_fmt_map;

@@ -47,7 +47,7 @@ U8 *PopUpSysAcctGet()
 
   DocDel(doc);
   result=AStrNew(tempm->full_name);
-  CDirListDel(tempm1);
+  CDirLstDel(tempm1);
   return result;
 }
 

@@ -42,15 +42,15 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (h<1) h=1;
   if (v<1) v=1;
   tt=t_flap*t_flap*t_flap;
-  inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
+  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
   if (eat_timeout && tP(task)<eat_timeout) {
-    inter2=CSpriteInterpolate(__BIN_3,__BIN_4,tt);
-    inter3=CSpriteInterpolate(inter2,inter,1.0-(eat_timeout-tP(task))/EAT_TIME);
+    inter2=SpriteInterpolate(__BIN_3,__BIN_4,tt);
+    inter3=SpriteInterpolate(inter2,inter,1.0-(eat_timeout-tP(task))/EAT_TIME);
     Free(inter);
     Free(inter2);
     inter=inter3;
   }
-  CSpritePlot3(dc,xx,yy,0,inter);
+  SpritePlot3(dc,xx,yy,0,inter);
   Free(inter);
   for (i=0;i<MAX_BUGS;i++)
     if (!bugs_dead[i]) {

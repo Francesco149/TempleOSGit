@@ -121,10 +121,10 @@ SYS_INIT_MEM::
 	MOV	ECX,(64-PAGE_BITS)*2
 	REP_STOSD
 
-	MOV	U32 [SYS_BP_MEM_FREE_LIST],0
-	MOV	U32 [SYS_BP_MEM_FREE_LIST+4],0
-	MOV	U32 [SYS_BP_MEM_FREE_2MEG_LIST],0
-	MOV	U32 [SYS_BP_MEM_FREE_2MEG_LIST+4],0
+	MOV	U32 [SYS_BP_MEM_FREE_LST],0
+	MOV	U32 [SYS_BP_MEM_FREE_LST+4],0
+	MOV	U32 [SYS_BP_MEM_FREE_2MEG_LST],0
+	MOV	U32 [SYS_BP_MEM_FREE_2MEG_LST+4],0
 
 	XOR	EAX,EAX
 	MOV	AX,U16 [SYS_MEM_E801] //1 Kb blks between 1M and 16M
@@ -161,11 +161,11 @@ pain without MAlloc up-and-running.
 	POP	EAX
 
 @@40:	SHR	EAX,PAGE_BITS
-	MOV	EDI,U32 [SYS_BP_MEM_FREE_LIST]
+	MOV	EDI,U32 [SYS_BP_MEM_FREE_LST]
 	MOV	U32 CMemBlk.next[EBX],EDI
 	MOV	U32 CMemBlk.next+4[EBX],0
-	MOV	U32 [SYS_BP_MEM_FREE_LIST],EBX
-	MOV	U32 [SYS_BP_MEM_FREE_LIST+4],0
+	MOV	U32 [SYS_BP_MEM_FREE_LST],EBX
+	MOV	U32 [SYS_BP_MEM_FREE_LST+4],0
 	MOV	U32 CMemBlk.mb_signature[EBX],MBS_UNUSED_SIGNATURE_VAL
 	MOV	U32 CMemBlk.pages[EBX],EAX
 	ADD	U32 [SYS_BP_SIZE],EAX
@@ -249,7 +249,7 @@ U8 *MemBlksNonTaskAlloc(I64 *_pages512,CBlkPool *bp=NULL)
       goto at_done;
     }
   }
-  m=&bp->mem_free_list;
+  m=&bp->mem_free_lst;
   while (TRUE) {
     if (!(result=m->next)) {
       //We're probably out of luck, but lets search for a
@@ -338,7 +338,7 @@ U8 *MemBlks2MegAlloc(I64 *_pages2Meg,CBlkPool *bp=NULL)
     Pause;
   num<<=21-PAGE_BITS;
 
-  m=&bp->mem_free_2meg_list;
+  m=&bp->mem_free_2meg_lst;
   while (TRUE) {
     if (!(result=m->next))
       break;
@@ -357,7 +357,7 @@ U8 *MemBlks2MegAlloc(I64 *_pages2Meg,CBlkPool *bp=NULL)
     }
   }
 
-  m=&bp->mem_free_list;
+  m=&bp->mem_free_lst;
   while (TRUE) {
     if (!(result=m->next)) {
       num=0;
@@ -498,8 +498,8 @@ U0 MemBlks2MegFree(CMemBlk *m,I64 pages2Meg,CBlkPool *bp=NULL)
     m->mb_signature=MBS_UNUSED_SIGNATURE_VAL;
     m->pages=pages2Meg<<(21-PAGE_BITS);
     bp->allocated_u8s-=pages2Meg<<21;
-    m->next=bp->mem_free_2meg_list;
-    bp->mem_free_2meg_list=m;
+    m->next=bp->mem_free_2meg_lst;
+    bp->mem_free_2meg_lst=m;
     LBtr(&bp->locked_flags,BPlf_LOCKED);
     PopFD;
   }
@@ -519,13 +519,13 @@ CMemBlk *MemBlksAlloc(I64 *_pages512,CHeapCtrl *hc)
       QueIns(result,hc->last_mem_blk);
     result->mb_signature=MBS_USED_SIGNATURE_VAL;
 
-    //Tidy-up free list (Move into heap hash)
-    //because if free list gets long, delay causes crash
+    //Tidy-up free lst (Move into heap hash)
+    //because if free lst gets long, delay causes crash
     threshold=HEAP_HASH_SIZE>>4;
 #assert HEAP_HASH_SIZE>>4>=sizeof(U8 *)
     do {
       cnt=0;
-      _uum=&hc->malloc_free_list;
+      _uum=&hc->malloc_free_lst;
       while (uum=*_uum) {
 #assert !offset(CMemUnusedAllocated.next)
 	size=uum->size;
@@ -562,7 +562,7 @@ U0 MemBlksFree(CMemBlk *m,CHeapCtrl *hc)
 }
 
 
-U0 MemBlkListFree(CHeapCtrl *hc)
+U0 MemBlkLstFree(CHeapCtrl *hc)
 {
   CMemBlk *m,*m1;
   PushFD;
@@ -652,8 +652,8 @@ _MALLOC::
 	ADD	RSI,sizeof(CMemBlk)
 	JMP	I32 MALLOC_ALMOST_DONE
 
-//Little allocation, chunk-off piece from free list chunks
-@@35:	LEA	RSI,U64 CHeapCtrl.malloc_free_list-CMemUnusedAllocated.next[RDX]
+//Little allocation, chunk-off piece from free lst chunks
+@@35:	LEA	RSI,U64 CHeapCtrl.malloc_free_lst-CMemUnusedAllocated.next[RDX]
 
 @@40:	MOV	RBX,RSI
 	MOV	RSI,U64 CMemUnusedAllocated.next[RBX]
@@ -687,7 +687,7 @@ _MALLOC::
 @@50:	LEA	RSI,U64 sizeof(CMemBlk)[RSI]
 	SHL	RAX,PAGE_BITS
 	SUB	RAX,sizeof(CMemBlk)
-	LEA	RBX,U64 CHeapCtrl.malloc_free_list-CMemUnusedAllocated.next[RDX]
+	LEA	RBX,U64 CHeapCtrl.malloc_free_lst-CMemUnusedAllocated.next[RDX]
 	MOV	RDI,U64 CMemUnusedAllocated.next[RBX]
 	MOV	U64 CMemUnusedAllocated.next[RSI],RDI
 	MOV	U64 CMemUnusedAllocated.size[RSI],RAX
@@ -827,7 +827,7 @@ _FREE::
 	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RSI]
 	OR	RAX,RAX
 	JGE	@@25	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2563] CMemUsedAllocated struct.
+			//The neg size is offset to start of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2659] CMemUsedAllocated struct.
 	ADD	RSI,RAX
 
 @@25:	PUSHFD
@@ -950,9 +950,9 @@ _MHEAP_CTRL::
 _extern _FREE U0 Free(U8 *add);
 _extern _MSIZE I64 MSize(U8 *src); //size of heap object
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
-_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrl of object
+_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2707] CHeapCtrl of object
 
-//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2707] CHeapCtrl.  NULL allocs off current task's heap.
 _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL);
 
 U8 *AMAlloc(I64 size)
@@ -961,7 +961,7 @@ U8 *AMAlloc(I64 size)
 }
 
 U8 *CAlloc(I64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2707] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -973,7 +973,7 @@ U8 *ACAlloc(I64 size)
 }
 
 U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2707] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (!src) return NULL;
@@ -1010,7 +1010,7 @@ U8 *CAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2707] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (buf) {
@@ -1029,42 +1029,42 @@ U8 *AStrNew(U8 *buf)
   return StrNew(buf,adam_task);
 }
 
-U0 LinkedListDel(U8 **_list)
+U0 LinkedLstDel(U8 **_lst)
 {
   U8 **d;
-  while (_list) {
-    d=*_list;
-    Free(_list);
-    _list=d;
+  while (_lst) {
+    d=*_lst;
+    Free(_lst);
+    _lst=d;
   }
 }
 
-U8 *LinkedListCopy(U8 **_list,CTask *mem_task=NULL)
+U8 *LinkedLstCopy(U8 **_lst,CTask *mem_task=NULL)
 {
   U8 *result=NULL,**d=&result;
-  while (_list) {
-    d=*d=MAllocIdentical(_list,mem_task);
-    _list=*_list;
+  while (_lst) {
+    d=*d=MAllocIdentical(_lst,mem_task);
+    _lst=*_lst;
   }
   return result;
 }
 
-I64 LinkedListCnt(U8 **_list)
+I64 LinkedLstCnt(U8 **_lst)
 {
   I64 result=0;
-  while (_list) {
+  while (_lst) {
     result++;
-    _list=*_list;
+    _lst=*_lst;
   }
   return result;
 }
 
-I64 LinkedListSize(U8 **_list)
+I64 LinkedLstSize(U8 **_lst)
 {
   I64 result=0;
-  while (_list) {
-    result+=MSize2(_list);
-    _list=*_list;
+  while (_lst) {
+    result+=MSize2(_lst);
+    _lst=*_lst;
   }
   return result;
 }
@@ -1123,11 +1123,11 @@ U0 BlkPoolAdd(CBlkPool *bp,CMemBlk *m,I64 pages512)
   Cli;
   while (LBts(&bp->locked_flags,BPlf_LOCKED))
     Pause;
-  m->next=bp->mem_free_list;
+  m->next=bp->mem_free_lst;
   m->pages=pages512;
   m->mb_signature=MBS_UNUSED_SIGNATURE_VAL;
   bp->size+=pages512;
-  bp->mem_free_list=m;
+  bp->mem_free_lst=m;
   LBtr(&bp->locked_flags,BPlf_LOCKED);
   PopFD;
 }
@@ -1160,7 +1160,7 @@ CHeapCtrl *TaskHeapCtrlNew(CTask *task,CBlkPool *bp)
 
 U0 TaskHeapCtrlDel(CHeapCtrl *hc)
 {
-  MemBlkListFree(hc);
+  MemBlkLstFree(hc);
   Free(hc);
 }
 
@@ -1220,6 +1220,7 @@ U0 Mem32DevInit()
   tempmr=AMAlloc(sizeof(CMemRange));
   tempmr->type=MRT_UNUSED;
   tempmr->flags=0;
+//Maybe !!! Change this to 0xE0000000 !!!
   tempmr->base=0xF0000000;
   tempmr->size=0x10000000;
   QueIns(tempmr,sys_mem32_dev_root.last);

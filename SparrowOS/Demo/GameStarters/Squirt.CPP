@@ -68,7 +68,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempm=faucet;
   dc->color=BLACK;
   GrRect(dc,tempm->x+8,tempm->y,8,GROUND_Y-FAUCET_Y);
-  CSpritePlot3(dc,tempm->x,tempm->y,0,__BIN_1);
+  SpritePlot3(dc,tempm->x,tempm->y,0,__BIN_1);
   dc->color=BLACK;
   GrCircle(dc,tempm->x,tempm->y,tempm->radius);
   dc->color=GREEN;
@@ -79,7 +79,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dx=tempm->x-tempm1->x;
   dy=tempm->y-tempm1->y;
   nozzle_theta=Wrap(Arg(dx,dy));
-  CSpritePlotRotZ3b(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
+  SpritePlotRotZ3b(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
   dc->color=BLACK;
   GrCircle(dc,tempm->x,tempm->y,tempm->radius);
   dc->color=GREEN;
@@ -127,7 +127,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       x1b=x2b;
       y1b=y2b;
     } else if (tempm->type==MT_DROPLET)
-      CSpritePlot3(dc,tempm->x,tempm->y,0,__BIN_3);
+      SpritePlot3(dc,tempm->x,tempm->y,0,__BIN_3);
     tempm=tempm->next;
   }
 

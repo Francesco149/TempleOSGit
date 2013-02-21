@@ -197,17 +197,17 @@ CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3471] FUF_RECURSE		+r Recurse
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3485] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3481] FUF_JUST_DIRS		+D just directories
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3482] FUF_JUST_FILES		+F just files
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3483] FUF_JUST_TEXT_FILES	+t just text files: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2084] TEXT_FILE_MASK
- [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3484] FUF_JUST_SRC_FILES	+s just src files : [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2083] SRC_FILE_MASK
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3566] FUF_RECURSE		+r Recurse
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3580] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3576] FUF_JUST_DIRS		+D just directories
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3577] FUF_JUST_FILES		+F just files
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3578] FUF_JUST_TEXT_FILES	+t just text files: [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2180] TEXT_FILE_MASK
+ [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3579] FUF_JUST_SRC_FILES	+s just src files : [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2179] SRC_FILE_MASK
 See [C:/SparrowOS/OSMain/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   CDirEntry *result;
-  CFileAccess *fa=FileAccessNew(files_find_mask,TRUE);
-  if (fa) {
+  CFileAccess *fa;
+  if (fa=FileAccessNew(files_find_mask,TRUE)) {
     result=SysFilesFind(fa->mask,fuf_flags);
     FileAccessDel(fa);
   } else
@@ -219,8 +219,8 @@ Bool IsDir(U8 *dir_name)
 {
   U8 *mask=MSPrintF("%s/*",dir_name);
   Bool result,old_silent=Silent(ON);
-  CFileAccess *fa=FileAccessNew(mask);
-  if (fa) {
+  CFileAccess *fa;
+  if (fa=FileAccessNew(mask)) {
     FileAccessDel(fa);
     result=TRUE;
   } else
@@ -233,8 +233,7 @@ Bool IsDir(U8 *dir_name)
 U0 Dir(U8 *files_find_mask="*",Bool full=FALSE)
 {
   CFileAccess *fa;
-  fa=FileAccessNew(files_find_mask,TRUE);
-  if (fa) {
+  if (fa=FileAccessNew(files_find_mask,TRUE)) {
     Dir2(fa->mask,0,full);
     FileAccessDel(fa);
   }
@@ -243,8 +242,8 @@ U0 Dir(U8 *files_find_mask="*",Bool full=FALSE)
 
 U0 Del(U8 *files_find_mask,Bool print_msg=TRUE)
 {
-  CFileAccess *fa=FileAccessNew(files_find_mask);
-  if (fa) {
+  CFileAccess *fa;
+  if (fa=FileAccessNew(files_find_mask)) {
     switch (fa->p->type) {
       case PT_NATIVE:
 	NativeFSFilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
@@ -284,8 +283,7 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
       if (_size) *_size=temph->user_data1;
     }
   } else {
-    fa=FileAccessNew(absname);
-    if (fa) {
+    if (fa=FileAccessNew(absname)) {
       switch (fa->p->type) {
 	case PT_NATIVE:
 	  result=NativeFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
@@ -342,9 +340,9 @@ Bool FileFind(U8 *filename,CDirEntry *rde=NULL,
 {
   I64 cur_dir_cluster;
   CDirEntry de;
-  CFileAccess *fa=FileAccessNew(filename);
+  CFileAccess *fa;
   Bool result=FALSE;
-  if (fa) {
+  if (fa=FileAccessNew(filename)) {
     cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
     switch (fa->p->type) {
       case PT_NATIVE:
@@ -423,22 +421,22 @@ I64 FileSizeExpanded(U8 *filename)
 }
 
 I64 FileWrite(U8 *filename,U8 *fbuf,
-   I64 size,CDate ltdt=0,I64 attr=0,Bool raw=FALSE)
+   I64 size,CDate spdt=0,I64 attr=0,Bool raw=FALSE)
 {
   I64 c=0;
   CHashGeneric *temph;
-  CFileAccess *fa=FileAccessNew(filename,FALSE,TRUE);
+  CFileAccess *fa;
   CArcCompress *ac=NULL;
   U8 *absname=FileNameAbs(filename);
-  if (fa) {
+  if (fa=FileAccessNew(filename,FALSE,TRUE)) {
     switch (fa->p->type) {
       case PT_NATIVE:
 	c=NativeFSFileWrite(fa->p,Fs->cur_dir,fa->mask,
-	  fbuf,size,ltdt,attr,raw,&ac);
+	  fbuf,size,spdt,attr,raw,&ac);
 	break;
       case PT_FAT32:
 	c=FAT32FileWrite(fa->p,Fs->cur_dir,fa->mask,
-	  fbuf,size,ltdt,attr,raw,&ac);
+	  fbuf,size,spdt,attr,raw,&ac);
 	break;
       case PT_ISO9660:
 	PutDefineErr("ST_NOT_WRITABLE");

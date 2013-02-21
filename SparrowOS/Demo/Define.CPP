@@ -5,7 +5,7 @@ See [Char/Define,1] Define.
 //These might be in the Adam task.
 DefineLoad("ST_YES_NO","(Yes or No)");
 DefineLoad("ST_EXIT","Exit");
-DefineListLoad("ST_NO_YES_LIST","No\0Yes\0");
+DefineLstLoad("ST_NO_YES_LST","No\0Yes\0");
 
 
 //New strings might be loaded for each user
@@ -15,7 +15,7 @@ DefineListLoad("ST_NO_YES_LIST","No\0Yes\0");
 if (YorN) {
   DefineLoad("ST_YES_NO","(Si or No)");
   DefineLoad("ST_EXIT","Salida");
-  DefineListLoad("ST_NO_YES_LIST","No\0Si\0");
+  DefineLstLoad("ST_NO_YES_LST","No\0Si\0");
 }
 
 
@@ -27,7 +27,7 @@ Bool Quit()
   while (TRUE) {
     "%S %S?","ST_EXIT","ST_YES_NO";
     st=MGetS;
-    i=DefineMatch(st,"ST_NO_YES_LIST",LEF_IGNORE_CASE);
+    i=DefineMatch(st,"ST_NO_YES_LST",LEF_IGNORE_CASE);
     if (i>=0) {
       result=i;
       break;

@@ -3,7 +3,7 @@
 Bool ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,I64 max_depth,Bool dynamic,I64 types=HTT_CLASS,I64 offset=0)
 {
   I64 i,j,*ptr;
-  CMemberList *ml;
+  CMemberLst *ml;
   CDocEntry *doc_e;
   Bool unlock;
   CHashClass *tempc,*tempc2;
@@ -20,7 +20,7 @@ Bool ClassRep2(CDoc *doc,U8 *class_name,U8 *_b,I64 depth,I64 max_depth,Bool dyna
     return FALSE;
   unlock=DocLock(doc);
   DocPrintF(doc,"Class:\"%s\"\n",class_name);
-  ml=tempc->member_list;
+  ml=tempc->member_lst;
   while (ml) {
     tempc2=ml->member_class;
     ptr=_b(U8 *)+ml->offset;
@@ -186,9 +186,9 @@ public U0 ClassRepD(U8 *class_name,U8 *_b,I64 max_depth=2,Bool fun=FALSE,I64 off
 
 U0 UpdateRegVarImg(CHashFun *tempf,U8 *_b,CTask *task)
 {
-  CMemberList *ml;
+  CMemberLst *ml;
   CHashClass *tempc;
-  ml=tempf->member_list;
+  ml=tempf->member_lst;
   while (ml) {
     if (ml->register!=CREG_NONE) {
       tempc=ml->member_class;
@@ -208,7 +208,7 @@ public U0 FunRep(U8 *st,U8 *rbp=NULL,I64 max_depth=2,CTask *task=NULL)
   I64 size;
   U8 *img;
   CHashFun *tempf=HashFind(st,Fs->hash_table,HTT_FUN);
-  CMemberList *tempm;
+  CMemberLst *tempm;
   if (tempf) {
     if (rbp) {
       if (task) {
@@ -224,7 +224,7 @@ public U0 FunRep(U8 *st,U8 *rbp=NULL,I64 max_depth=2,CTask *task=NULL)
       } else
 	ClassRep(st,rbp,max_depth,TRUE);
     } else {
-      tempm=tempf->member_list;
+      tempm=tempf->member_lst;
       while (tempm) {
 	if (0<=tempm->register<NUM_REGS)
 	  "%08Z %s\n",tempm->register,"ST_U64_REGS",tempm->str;
@@ -259,8 +259,8 @@ CBpt *BptFind(CTask *task,U8 *a,Bool rem=FALSE)
   CBpt *result=NULL,*tempb,*tempb1,*tempb2;
   PushFD;
   Cli;
-  tempb1=&task->bpt_list;
-  tempb=task->bpt_list;
+  tempb1=&task->bpt_lst;
+  tempb=task->bpt_lst;
   while (tempb) {
     tempb2=tempb->next;
     if (tempb->addr==a) {
@@ -293,8 +293,8 @@ public Bool BptS(U8 *a,CTask *task=NULL,Bool live=TRUE)	//set Bpt
     tempb->addr=a;
     tempb->val=*a;
     result=FALSE;
-    tempb->next=task->bpt_list;
-    task->bpt_list=tempb;
+    tempb->next=task->bpt_lst;
+    task->bpt_lst=tempb;
     if (task==Fs && live)
       *a=OC_BPT;
   }
@@ -339,8 +339,8 @@ public U0 BptsR(CTask *task=NULL,Bool live=TRUE)	//clear Bpts
   if (!task) task=Fs;
   PushFD;
   Cli;
-  tempb=task->bpt_list;
-  task->bpt_list=NULL;
+  tempb=task->bpt_lst;
+  task->bpt_lst=NULL;
   while (tempb) {
     tempb1=tempb->next;
     if (task==Fs && live)
@@ -363,7 +363,7 @@ public U0 Go2(CTask *task=NULL)
     "After resuming, <CTRL-ALT-F> flushes screen VGA cache.\n\n";
   else {
     LBtr(&task->task_flags,TASKf_DISABLE_BPTS);
-    LBtr(&task->rflags,RFLAGS_SINGLE_STEP);
+    LBtr(&task->rflags,RFLAGf_TRAP);
     Suspend(task,FALSE);
     if (task==Fs)
       Go1;
@@ -387,7 +387,7 @@ public U0 Step(CTask *task=NULL)
 {
   if (!task) task=Fs;
   LBts(&task->task_flags,TASKf_DISABLE_BPTS);
-  LBts(&task->rflags,RFLAGS_SINGLE_STEP);
+  LBts(&task->rflags,RFLAGf_TRAP);
   Suspend(task,FALSE);
   if (task==Fs)
     Go1;

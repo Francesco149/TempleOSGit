@@ -18,8 +18,8 @@ U0 DrawIt(CTask *,CDC *dc)
     tt=((dt-16)/2)%1;
   else
     tt=1.0;
-  inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
-  CSpritePlot3(dc,180,40,0,inter);
+  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  SpritePlot3(dc,180,40,0,inter);
   Free(inter);
 }
 

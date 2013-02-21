@@ -223,7 +223,7 @@ air is approximated by V and V2
 terms and is smaller.  However, I use
 this to produce a rolling friction
 value, too.  If you want to see my
-best attempt at realistic physics
+best attempt at realstic physics
 download SimStructure.
 
 http://www.sparrowos.com/files/SimStrSetUp.ZIP
@@ -306,7 +306,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,254] CMathODE feat,
+I also didn't use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,335] CMathODE feat,
 just to be different.
 */
 
@@ -323,12 +323,12 @@ U0 DrawObj(CDC *dc,Obj *o,F64 tt)
   GrFloodFill(dc,o->x,o->y/2);
 
   if (o==ball)
-    CSpritePlot3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
+    SpritePlot3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
   else {
-    inter=CSpriteInterpolate(man_imgs[o->last_img].img[o->team],
+    inter=SpriteInterpolate(man_imgs[o->last_img].img[o->team],
 	man_imgs[o->next_img].img[o->team],
 	(tt-o->last_t0)/(o->next_t0-o->last_t0));
-    CSpritePlotRotY3b(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,inter,o->ay);
+    SpritePlotRotY3b(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,inter,o->ay);
     Free(inter);
   }
 }
@@ -375,7 +375,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       }
       if (tt>o->next_t0) {
 	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET || Abs(ball->DzDt)<30)) {
-	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/SparrowOS/OSMain/Adam1b.HPP.Z,246] Exp().
+	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/SparrowOS/OSMain/Adam1b.HPP.Z,247] Exp().
 	//However, we should be syncronized to img frames, so we don't have to be perfect.
 	  d_down=1.0;
 	  d_up	=1.0/COLLISION_DAMP; //Up bounce takes higher percentage because speed lost in collision.

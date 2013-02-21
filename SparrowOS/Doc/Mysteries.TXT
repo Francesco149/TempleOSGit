@@ -19,7 +19,7 @@ heap never gets freed.  That's as close to "kernel memory" as it gets.
 be 
 used.  SparrowOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1474] OPTf_GLBLS_ON_DATA_HEAP. 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1570] OPTf_GLBLS_ON_DATA_HEAP. 
 [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc() can allocate any memory, of
 course.
 
@@ -74,8 +74,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask, GS for 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] CCPU.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask, GS for 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3588] CCPU.
 
 * SparrowOS uses JIT file compression on a file-by-file basis.  Files are 
 [::/SparrowOS/OSMain/Compress.CPP.Z,1] compressed, not encrypted.
@@ -89,7 +89,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- OSMain.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,165] InstallBoot(). 
-SparrowOS is 138,038 lines.  Roughly 50,000 is 
+SparrowOS is 139,466 lines.  Roughly 50,000 is 
 compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -130,7 +130,7 @@ around.  Data on classes can be accessed by code.  See
 [C:/SparrowOS/Adam/Dbg2a.CPP.Z,136] ClassRep().
 
 * Filenames ending in ".Z" are automatically compressed and uncompressed when 
-writing to disk.  File size in directory listing is the compressed size.  You 
+writing to disk.  File size in directory lsting is the compressed size.  You 
 can view uncompressed size with [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233]
 Dir("*",TRUE); if you use the native SparrowOS 
 filesystem.  See [::/SparrowOS/Doc/TSZ.TXT.Z,1] ::/SparrowOS/Doc/TSZ.TXT.Z

@@ -62,12 +62,12 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->pen_width=1;
 
   if (bow_drawn)
-    CSpritePlotRotZ3b(dc,x,y,0,__BIN_1,bow_theta);
+    SpritePlotRotZ3b(dc,x,y,0,__BIN_1,bow_theta);
 
   tempa=root.next;
   while (tempa!=&root) {
     theta=Arg(tempa->dx,tempa->dy);
-    CSpritePlotRotZ3b(dc,tempa->x,tempa->y,0,__BIN_1,theta);
+    SpritePlotRotZ3b(dc,tempa->x,tempa->y,0,__BIN_1,theta);
     tempa=tempa->next;
   }
 }

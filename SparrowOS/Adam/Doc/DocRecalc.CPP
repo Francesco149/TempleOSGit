@@ -72,7 +72,7 @@ U0 DocDelToEntry(CDoc *doc,CDocEntry *clear_entry)
   }
 }
 
-U0 DocBorderListDraw(CDoc *doc)
+U0 DocBorderLstDraw(CDoc *doc)
 {
   CTask *win_task=doc->win_task;
   I64 i,y=-1,attr=win_task->border_attr<<8;
@@ -105,7 +105,7 @@ U0 DocBorderListDraw(CDoc *doc)
 U8 doc_spaces[9]=
 {0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0};
 
-U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
+Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
 {
   I64 i,ii,j,k,x,x0,y,y0,D,d2,col,col2,best_col=0,best_d=MAX_I64,xx,yy,zz,
       num_entries=0,ijif,cur_u8_attr,temp_u32_attr,
@@ -128,14 +128,13 @@ U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
   CWinScroll *vss,*hss;
   CHashDefineStr *temph;
 
-  if (!doc || doc->doc_signature!=DOC_SIGNATURE_VAL) return;
+  if (!doc || doc->doc_signature!=DOC_SIGNATURE_VAL) return FALSE;
 
-  if (recalc==DOC_RECALC_TO_SCREEN &&
-     (!Bt(&doc->locked_flags,DOClf_LOCKED) || doc->owning_task!=Fs)) {
-    i=8;
+  if (recalc==DOC_RECALC_TO_SCREEN && doc->owning_task!=Fs) {
+    ijif=sys_jiffies+JIFFY_FREQ/240;
     while (Bt(&doc->locked_flags,DOClf_LOCKED)) {
-      if (!--i)
-	return;
+      if (sys_jiffies>=ijif)
+	return FALSE;
       Yield;
     }
   }
@@ -143,7 +142,7 @@ U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
   unlock=DocLock(doc);
   if (doc->doc_signature!=DOC_SIGNATURE_VAL) {
     DocUnlock(doc);
-    return;
+    return FALSE;
   }
 
   win_task=doc->win_task;
@@ -249,7 +248,7 @@ U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL)
     y_plot_top=y0-scroll_y/FONT_HEIGHT;
     y_plot_bottom=y0+height-1-scroll_y/FONT_HEIGHT;
     if (!(doc->flags&DOCF_AUX_DOC) && !Bt(&win_task->display_flags,DISPLAYf_NO_BORDER))
-      DocBorderListDraw(doc);
+      DocBorderLstDraw(doc);
   }
 
   if (doc->cur_data_col<=doc->cur_entry->min_col)
@@ -1232,10 +1231,10 @@ adjust_xy:
 	  if (recalc!=DOC_RECALC_TO_SCREEN || doc_e->flags1&DOCEF1_DONT_DRAW)
 	    dc->flags|=DCF_DONT_DRAW;
 	  bptr=tempb->data;
-	  ii=CSpriteTypeMask(bptr);
+	  ii=SpriteTypeMask(bptr);
 	  if (ii&1<<GRST_NUM_TYPES) {
 	    bptr=gr_empty_sprite;
-	    ii=CSpriteTypeMask(bptr);
+	    ii=SpriteTypeMask(bptr);
 	  }
 	  if (ii&(1<<GRST_FLOOD_FILL|1<<GRST_FLOOD_FILL_NOT))
 	    i=cur_u8_attr>>4 &0xF ^ win_task->text_attr>>4 & 0xF;
@@ -1287,7 +1286,7 @@ adjust_xy:
 	    dc->z=GR_Z_ALL;
 	    xx=0; yy=0; zz=0;
 	  }
-	  CSpritePlot3(dc,xx,yy,zz,bptr);
+	  SpritePlot3(dc,xx,yy,zz,bptr);
 	  dc->depth_buf=NULL;
 	  if (recalc==DOC_RECALC_TO_SCREEN && doc->cur_sprite==bptr)
 	    doc->cur_sprite_elem_num=dc->nearest_sprite_elem_num;
@@ -1641,6 +1640,7 @@ skip:
   Free(depth_buf);
   if (unlock)
     DocUnlock(doc);
+  return TRUE;
 }
 
 public U0 DocInsSafe(CDoc *doc,U8 *st)
@@ -1759,8 +1759,8 @@ public I64 DocCurAttr(I64 attr=WHITE<<4+BLUE,CTask *task=NULL)
 
 public I64 DocAuxAttr(I64 attr=WHITE<<4+BLUE,CTask *task=NULL)
 { //This will probably be ineffective since the
-  //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1307] DOCF_ATTR_BY_PRT or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1308] DOCF_ATTR_BY_FILENAME flag is probably set
-  //which means [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,314] SetDrvTextAttr() is overriding it.
+  //[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1404] DOCF_ATTR_BY_PRT or [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1405] DOCF_ATTR_BY_FILENAME flag is probably set
+  //which means [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,309] SetDrvTextAttr() is overriding it.
   CDoc *doc;
   I64 result=0;
   if (!task) task=Fs;
@@ -1802,14 +1802,14 @@ U0 DocUpdateTaskDocs(CTask *task)
   I64 attr=task->border_attr;
   CDoc *doc=task->last_doc;
   CD3I64 saved_scroll;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt(OFF),okay=TRUE;
   while (doc!=(&task->next_doc)(U8 *)-offset(CDoc.next_doc)) {
-    if (!(doc->flags&DOCF_DONT_SHOW)&&!Bt(&doc->locked_flags,DOClf_LOCKED)) {
+    if (!(doc->flags&DOCF_DONT_SHOW)) {
       if (doc->flags&DOCF_AUX_DOC) {
 	if (attr&0xF!=attr>>4)
 	  doc->start_text_attr=attr;
 	WinScrollNull(task,&saved_scroll);
-	DocRecalc(doc,FALSE,DOC_RECALC_TO_SCREEN);
+	okay=DocRecalc(doc,FALSE,DOC_RECALC_TO_SCREEN);
 	WinScrollRestore(task,&saved_scroll);
       } else {
 	if (doc->flags&DOCF_ATTR_BY_PRT) {
@@ -1829,10 +1829,12 @@ U0 DocUpdateTaskDocs(CTask *task)
 	if (attr&0xF!=attr>>4)
 	  task->border_attr=attr;
 	Preempt(old_preempt);
-	DocRecalc(doc,TRUE,DOC_RECALC_TO_SCREEN);
+	okay=DocRecalc(doc,TRUE,DOC_RECALC_TO_SCREEN);
 	Preempt(OFF);
       }
     }
+    if (!okay || doc->doc_in_que_signature!=DOC_IN_QUE_SIGNATURE_VAL)
+      break;
     doc=doc->last_doc;
   }
   Preempt(old_preempt);

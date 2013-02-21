@@ -11,7 +11,7 @@ Press <CTRL-ALT-D> to enter Dbg.
 
 Press <CTRL-ALT-D> to enter Dbg.
 > [C:/SparrowOS/Adam/Dbg2a.CPP.Z,240] Uf("DbgDemo");
-> [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U(RIP);
+> [C:/SparrowOS/Compiler/Unassembler.CPP.Z,862] U(RIP);
 
 See [Debugging,1] Debugging
 

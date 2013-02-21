@@ -31,7 +31,7 @@ tCAGqFC after pressing <CTRL-T>, now.
 JukeBox("HOME/MusicOrgan"); to play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,63] snd_record to TRUE, play
+the Bool [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,64] snd_record to TRUE, play
 music, and set it to FALSE.  Then, call 
 [C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to
 make a <CTRL-ALT-key> to toggle this 
@@ -49,7 +49,7 @@ SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
 
 * The note accent feature only works when exporting songs.  When calling 
 [C:/SparrowOS/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you can set a
-waveform.  The PC speaker is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3580]
+waveform.  The PC speaker is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3674]
 WF_SQUARE.  You can 
 select reverb and averaging, also.
 

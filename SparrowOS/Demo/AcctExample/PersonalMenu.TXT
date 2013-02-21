@@ -138,9 +138,9 @@ Cd("/SparrowOS/Apps/AfterEgypt");Dir;
 `Cd("/SparrowOS/Apps/AfterEgypt");Dir;
 `
 
-Cd("/SparrowOS/Apps/KeepAway");Dir;
+Cd("/SparrowOS/Apps/Strut");Dir;
 
-`Cd("/SparrowOS/Apps/KeepAway");Dir;
+`Cd("/SparrowOS/Apps/Strut");Dir;
 `
 
 Cd("/SparrowOS/Misc/Tour");Dir;
@@ -341,18 +341,18 @@ Make Production ISO
   
   
   
-  Chess <23> (image) Navy <24> (image) Bomber <25> (image)
+  Chess <23> (image) Navy <24> (image) Bomber <25> (image) Strut <26> (image)
   
-List functions in alphabetic order
+Lst functions in alphabetic order
 `HFunsRep;View;`
  
-List all functions in alphabetic order
+Lst all functions in alphabetic order
 `HFunsRep("-p");View;`
  
-List all syms in alphabetic order
+Lst all syms in alphabetic order
 `DocMax;HAllRep;View;`
  
-List functions in numeric order
+Lst functions in numeric order
 `HMapRep;View;`
  
 Key Map
@@ -376,13 +376,13 @@ Compile BAK
 `CmpDrv(TS_BAK_DRV_LET);
 `
 
-List all syms in alphabetic order
+Lst all syms in alphabetic order
 `DocMax;MyHAllRep;View;`
  
-List all hash entries in alphabetic order
+Lst all hash entries in alphabetic order
 `DocMax;HashRep(Fs->hash_table,HTG_ALL,NULL,"-p",0,NULL);View;`
 
-List all hash entries in numeric order
+Lst all hash entries in numeric order
 `DocMax;HashRep(Fs->hash_table,HTG_ALL,NULL,"-p+m",0,NULL);View;`
 
 Test Suite

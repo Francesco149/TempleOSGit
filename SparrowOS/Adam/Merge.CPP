@@ -1,16 +1,16 @@
 #help_index "Utils;Cmd Line (Typically)"
 
-CDirEntry MCMatchFind(CDirEntry *pattern,CDirEntry *list)
+CDirEntry MCMatchFind(CDirEntry *pattern,CDirEntry *lst)
 {
-  while (list) {
-    if (!StrCmp(pattern->name,list->name))
-      return list;
-    list=list->next;
+  while (lst) {
+    if (!StrCmp(pattern->name,lst->name))
+      return lst;
+    lst=lst->next;
   }
   return NULL;
 }
 
-U0 MergeChkList(CDirEntry *m1,CDirEntry *m2,I64 *_fuf_flags,I64 *df_flags)
+U0 MergeChkLst(CDirEntry *m1,CDirEntry *m2,I64 *_fuf_flags,I64 *df_flags)
 {
   I64 i;
   CDirEntry *tempm2;
@@ -20,7 +20,7 @@ U0 MergeChkList(CDirEntry *m1,CDirEntry *m2,I64 *_fuf_flags,I64 *df_flags)
       "$FG,BROWN$Does Not Exist:%s$FG$\n",m1->full_name;
     else {
       if (m1->attr & _ATTR_DIR)
-	MergeChkList(m1->sub,tempm2->sub,_fuf_flags,df_flags);
+	MergeChkLst(m1->sub,tempm2->sub,_fuf_flags,df_flags);
       else {
 	i=m1->datetime-tempm2->datetime;
 	if (AbsI64(i)>CDATE_FREQ*2) { //Filedates can shift due to conversion
@@ -41,7 +41,7 @@ public U0 MergeChk(
   U8 *dst_files_find_mask="/SparrowOS/*",
   U8 *src_files_find_mask="/SparrowOS/*",
   U8 *fu_flags=NULL)
-//"+d"=Do [C:/SparrowOS/Adam/Diff.CPP.Z,202] Diff() on files
+//"+d"=Do [C:/SparrowOS/Adam/Diff.CPP.Z,215] Diff() on files
 {
   I64 df_flags=0,fuf_flags=0;
   CDirEntry *tempm1=NULL,*tempm2=NULL;
@@ -50,38 +50,38 @@ public U0 MergeChk(
   PrintFWarn("This is based strictly on file dates.\n");
   tempm1=FilesFind(src_files_find_mask,fuf_flags);
   tempm2=FilesFind(dst_files_find_mask,fuf_flags);
-  MergeChkList(tempm1,tempm2,&fuf_flags,&df_flags);
-  CDirListDel(tempm1);
-  CDirListDel(tempm2);
+  MergeChkLst(tempm1,tempm2,&fuf_flags,&df_flags);
+  CDirLstDel(tempm1);
+  CDirLstDel(tempm2);
 }
 
 #help_index "Utils;Cmd Line (Typically)"
 
-U0 ListNewFilesList(CDirEntry *tempm,CDate ltdt)
+U0 LstNewFilesLst(CDirEntry *tempm,CDate spdt)
 {
   while (tempm) {
-    if (tempm->datetime>ltdt) {
+    if (tempm->datetime>spdt) {
       "" tempm->full_name;
       NewLine;
     }
-    ListNewFilesList(tempm->sub,ltdt);
+    LstNewFilesLst(tempm->sub,spdt);
     tempm=tempm->next;
   }
 }
 
-public U0 ListNewFiles(U8 *files_find_mask="/SparrowOS/*",CDate ltdt=0,
+public U0 LstNewFiles(U8 *files_find_mask="/SparrowOS/*",CDate spdt=0,
   U8 *fu_flags=NULL)
 //"+t"=is just text files
 {
   I64 fuf_flags=0;
   CDirEntry *tempm1=NULL;
-  if (!ltdt)
-    ltdt=sys_compile_time;
+  if (!spdt)
+    spdt=sys_compile_time;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+t");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   if (tempm1=FilesFind(files_find_mask,fuf_flags)) {
-    ListNewFilesList(tempm1,ltdt);
-    CDirListDel(tempm1);
+    LstNewFilesLst(tempm1,spdt);
+    CDirLstDel(tempm1);
   }
 }
 

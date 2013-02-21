@@ -36,8 +36,8 @@ U0 DumpStruct(U8 *class_name,U8 *data)
   U0 (* fp_output_fun)(I64 i);
   F64 percentile;
   if (!tempc) return;
-  CMemberList *ml;
-  ml=tempc->member_list;
+  CMemberLst *ml;
+  ml=tempc->member_lst;
   while (ml) {
     "%s:",ml->str;
 
@@ -54,7 +54,7 @@ U0 DumpStruct(U8 *class_name,U8 *data)
 
 //This corrects for the ambiguity, allowing zero percentile.
     if (MemberMetaFind("percentile",ml)) { //check if it exists
-//We could use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,725] CMemberListMeta structure returned by
+//We could use the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,822] CMemberLstMeta structure returned by
 //[C:/SparrowOS/Compiler/Lex.CPP.Z,510] MemberMetaFind() and save a search.
       percentile=MemberMetaData("percentile",ml)(F64);
       " percentile: %5.2f",percentile;

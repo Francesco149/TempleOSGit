@@ -1503,7 +1503,7 @@ U0 DocFlagsToggle(CDoc *doc,I64 tog_flags)
 #help_index "Doc/Output"
 public U0 DocPutKey(CDoc *doc,I64 ch,I64 sc)
 {
-  I64 i,x,y,sc2,ext_ascii_cnt=0,timeout;
+  I64 i,x,y,sc2,ext_ascii_cnt=0;
   CDoc *m;
   CDocEntry *doc_ce;
   U8 *st;
@@ -2194,13 +2194,8 @@ public U0 DocPutKey(CDoc *doc,I64 ch,I64 sc)
   doc->ext_ascii_cnt=ext_ascii_cnt;
   if (unlock)
     DocUnlock(doc);
-  if (doc==Fs->last_doc && !(doc->flags&DOCF_DONT_SWAP_OUT)) {
-    timeout=GetTimeStamp;
-    if (timeout>doc->swap_out_time) {
-      doc->swap_out_time=timeout+time_stamp_freq>>4;
-      Yield;
-    }
-  }
+  if (!(doc->flags&DOCF_DONT_SWAP_OUT))
+    Yield;
 }
 
 Bool AKDDocPutKey(I64 ch,I64 scancode)
@@ -2225,7 +2220,7 @@ public U0 DocPutSPartial(CDoc *doc,U8 *st)
   U8 ch,*b,*src,*dst,*ptr=st,*ptr2;
   Bool unlock;
   CDocEntry *doc_ce,*doc_ne;
-  I64 i,j,timeout;
+  I64 i,j;
   if (!st)
     return;
   if (doc->user_put_s)
@@ -2287,14 +2282,8 @@ public U0 DocPutSPartial(CDoc *doc,U8 *st)
     }
   if (unlock)
     DocUnlock(doc);
-  if (doc==Fs->last_doc &&
-      !(doc->flags&DOCF_DONT_SWAP_OUT)) {
-    timeout=GetTimeStamp;
-    if (timeout>doc->swap_out_time) {
-      doc->swap_out_time=timeout+time_stamp_freq>>4;
-      Yield;
-    }
-  }
+  if (!(doc->flags&DOCF_DONT_SWAP_OUT))
+    Yield;
 }
 
 #help_index "Doc"

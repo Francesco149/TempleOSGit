@@ -23,7 +23,7 @@ public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
 
 //Averaging should be a num from 0.0 to 0.999.
 //Vol should be from 0.0 to 1.0.
-//If waveform is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3579] WF_NULL, the original passed to [C:/SparrowOS/OSMain/Misc1a.CPP.Z,209] Snd() will be used.
+//If waveform is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3673] WF_NULL, the original passed to [C:/SparrowOS/OSMain/Misc1a.CPP.Z,209] Snd() will be used.
 
 //Set reverb_delay to like 0.3 sec and reverb_intensity to like 0.4.
 
@@ -31,7 +31,7 @@ public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
   I64 i,k,cnt,cnt2,level,file_num;
   F64 avg,dt;
   CFileSND *s;
-  CSndWaveCtrl *sc=SndWaveCtrlNew(SNDFILE_SAMPLE_RATE,16,1);
+  CSndWaveCtrl *swc=SndWaveCtrlNew(SNDFILE_SAMPLE_RATE,16,1);
   CSndData *d,*d1;
   U8 *name,*name2;
 
@@ -58,7 +58,7 @@ public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
     d1=d->next;
     dt=d1->time_stamp-d->time_stamp;
     cnt2=dt*SNDFILE_SAMPLE_RATE;
-    SndWaveFillBuf(sc,&s->body[k],cnt2,d->freq,waveform ?waveform:d->waveform,d->amp*normalized_vol);
+    SndWaveAddBuf(swc,&s->body[k],cnt2,d->freq,waveform ?waveform:d->waveform,d->amp*normalized_vol);
     k+=cnt2;
     QueRem(d);
     Free(d);
@@ -119,7 +119,7 @@ public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
   Free(name);
   Free(name2);
 
-  SndWaveCtrlDel(sc);
+  SndWaveCtrlDel(swc);
   return cnt;
 }
 

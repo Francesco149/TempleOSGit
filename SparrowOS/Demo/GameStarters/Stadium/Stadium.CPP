@@ -30,7 +30,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   background->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,0,0,background);
   for (i=0;i<MAX_FANS;i++)
-    CSpritePlotRotZ3b(dc,x[i],y[i],0,__BIN_1,theta[i]);
+    SpritePlotRotZ3b(dc,x[i],y[i],0,__BIN_1,theta[i]);
   if (ball_t) {
     t0=(tP(task)-ball_t)/BALL_TIME;
     if (t0>1.0)
@@ -44,7 +44,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       Free(dc->r);
       GrSetRotMat(dc,r);
       dc->flags|=DCF_TRANSFORMATION;
-      CSpritePlotRotZ3b(dc,xx,yy,0,__BIN_2,t0);
+      SpritePlotRotZ3b(dc,xx,yy,0,__BIN_2,t0);
     }
   }
   dc->color=RED;

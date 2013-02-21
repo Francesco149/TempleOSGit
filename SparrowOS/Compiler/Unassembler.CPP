@@ -53,6 +53,131 @@ I64 InstEntriesCompare(CInstruction *tempi1,CInstruction *tempi2)
   }
 }
 
+/*
+U0 DumpUnasmIns(CInstruction *tempi)
+{
+  CHashOpcode *tempo=tempi(U8 *)-tempi->ins_entry_num*sizeof(CInstruction)-offset(CHashOpcode.ins);
+  "%10s:%02d,%02d SV:%02d\n",tempo->str,tempi->arg1,tempi->arg2,tempi->slash_val;
+}
+
+U0 DumpUnasmTable()
+{
+  I64 k;
+  for (k=0;k<unasm_table_entries;k++)
+    DumpUnasmIns(unasm_table[k]);
+}
+*/
+
+CInstruction *InstEntryFind(U8 *ip,I64 opsize)
+{//Binary Search
+  I64 i,j,n,m,k,a1,a2,o1,o2,oc_cnt,sv;
+  CInstruction *tempi;
+  i=0;
+  j=unasm_table_entries-1;
+  while (TRUE) {
+    k=(i+j)>>1;  //binary search
+    tempi=unasm_table[k];
+//DumpUnasmIns(tempi);
+    m=0;
+    n=0;
+    while (TRUE) {
+      a1=tempi->arg1;
+      a2=tempi->arg2;
+      oc_cnt=tempi->opcode_cnt;
+      if (tempi->flags&IEF_STI)
+	oc_cnt--;
+      if (n<oc_cnt) {
+	o1=ip[n];
+	if (n==tempi->opcode_cnt-1 && tempi->flags & IEF_PLUS_OPCODE)
+	  o1&=-8;
+	o2=tempi->opcode[n++];
+	if (m=o1-o2)
+	  break;
+      } else {
+	if (tempi->flags&IEF_STI)
+	  sv=tempi->opcode[tempi->opcode_cnt-1]>>3&7;
+	else
+	  sv=tempi->slash_val;
+	if (sv<8) {
+	  if (!(m=ip[n]>>3&7-sv)) {
+	    if ((Bt(&uasm_mem_mask,a1) || Bt(&uasm_mem_mask,a2)) &&
+		ip[n]&0xC0==0xC0) {
+	      m=1;
+	      break;
+	    } else if (tempi->flags&IEF_STI) {
+	      if (ip[n]&0xC0!=0xC0) {
+		m=-1;
+		break;
+	      }
+	      if (a1!=ARGT_STI && a2!=ARGT_STI)
+		m=ip[n]&0x7-tempi->opcode[tempi->opcode_cnt-1]&7;
+	      break;
+	    }
+	    if (opsize==16) {
+	      if (tempi->flags & IEF_OP_SIZE32) {
+		m=-1;
+		break;
+	      }
+	    } else {
+	      if (tempi->flags & IEF_OP_SIZE16) {
+		m=1;
+		break;
+	      }
+	    }
+	    if (opsize==64||a1==ARGT_M64||a2==ARGT_M64||tempi->flags&IEF_NO_REX) {
+	      if (!Bt(&uasm_ins64_mask,a1) && !Bt(&uasm_ins64_mask,a2) && !(tempi->flags&IEF_48_REX))
+		m=1;
+	    } else {
+	      if (Bt(&uasm_ins64_mask,a1) || Bt(&uasm_ins64_mask,a2) || tempi->flags&IEF_48_REX)
+		m=-1;
+	    }
+	  }
+	} else {
+	  m=0;
+	  if (opsize==16) {
+	    if (tempi->flags & IEF_OP_SIZE32) {
+	      m=-1;
+	      break;
+	    }
+	  } else {
+	    if (tempi->flags & IEF_OP_SIZE16) {
+	      m=1;
+	      break;
+	    }
+	  }
+	  if (opsize==64 || a1==ARGT_M64 || a2==ARGT_M64) {
+	    if (!Bt(&uasm_ins64_mask,a1) && !Bt(&uasm_ins64_mask,a2) && !(tempi->flags&IEF_48_REX)&&
+		!(a2==ARGT_NO &&
+	    (ARGT_UIMM8<=a1<=ARGT_UIMM64 ||
+		ARGT_IMM8<=a1<=ARGT_IMM64 ) ))
+	      m=1;
+	  } else {
+	    if (Bt(&uasm_ins64_mask,a1) || Bt(&uasm_ins64_mask,a2) || tempi->flags&IEF_48_REX)
+	      m=-1;
+	  }
+	}
+	break;
+      }
+    }
+
+    if (m>0) {
+      if (k==i) {
+	k=j;
+	break;
+      } else
+	i=k;
+    } else if (m<0) {
+      if (k-i<=1) {
+	k=i;
+	break;
+      } else
+	j=k;
+    } else
+      break;
+  }
+  return unasm_table[k];
+}
+
 U0 UnasmHashLoad()
 {
   CHashTable *h=asm_hash;
@@ -92,31 +217,15 @@ U0 UnasmHashLoad()
   QSortI64(unasm_table,cnt,&InstEntriesCompare);
 }
 
-/*
-U0 DumpUnasmIns(CInstruction *tempi)
-{
-  CHashOpcode *tempo=tempi(U8 *)-tempi->ins_entry_num*sizeof(CInstruction)-offset(CHashOpcode.ins);
-  "%10s:%02d,%02d SV:%02d\n",tempo->str,tempi->arg1,tempi->arg2,tempi->slash_val;
-}
-
-U0 DumpUnasmTable()
-{
-  I64 k;
-  for (k=0;k<unasm_table_entries;k++)
-    DumpUnasmIns(unasm_table[k]);
-}
-
-*/
-
 U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *branch=NULL)
 //Unassembles one instruction
 {
   I64 disp,imm,opsize,opadd,
-      i,j,k,n,m,o1,o2,a1,a2,aa1,aa2,arg1_size=0,arg2_size=0,a1_size,a2_size,
+      i,a1,a2,aa1,aa2,arg1_size=0,arg2_size=0,a1_size,a2_size,
       ModrM=-1,SIB=-1,scale,r1,r2,
-      Mod=-1,RM1=-1,RM2=-1,REX=-1,REX_r=0,REX_x=0,REX_b=0,oc_cnt,sv;
+      Mod=-1,RM1=-1,RM2=-1,REX=-1,REX_r=0,REX_x=0,REX_b=0;
   Bool cont;
-  CInstruction *tempi;
+  CInstruction *tempi,*tempi2;
   CHashOpcode *tempo;
   U8 *ip=*_ip,*ptr,*a1_st,*a2_st,*bin_data_area,*bin_data_area2,
       buf2[256],buf3[256],seg_overrides[40],arg1_st[256],arg2_st[256];
@@ -270,111 +379,16 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *branch=NULL)
   } while (cont);
   ip--;
 
-  i=0;
-  j=unasm_table_entries-1;
-  while (TRUE) {
-    k=(i+j)>>1;  //binary search
-    tempi=unasm_table[k];
-//DumpUnasmIns(tempi);
-    m=0;
-    n=0;
-    while (TRUE) {
-      a1=tempi->arg1;
-      a2=tempi->arg2;
-      oc_cnt=tempi->opcode_cnt;
-      if (tempi->flags&IEF_STI)
-	oc_cnt--;
-      if (n<oc_cnt) {
-	o1=ip[n];
-	if (n==tempi->opcode_cnt-1 && tempi->flags & IEF_PLUS_OPCODE)
-	  o1&=-8;
-	o2=tempi->opcode[n++];
-	if (m=o1-o2)
-	  break;
-      } else {
-	if (tempi->flags&IEF_STI)
-	  sv=tempi->opcode[tempi->opcode_cnt-1]>>3&7;
-	else
-	  sv=tempi->slash_val;
-	if (sv<8) {
-	  if (!(m=ip[n]>>3&7-sv)) {
-	    if ((Bt(&uasm_mem_mask,a1) || Bt(&uasm_mem_mask,a2)) &&
-		ip[n]&0xC0==0xC0) {
-	      m=1;
-	      break;
-	    } else if (tempi->flags&IEF_STI) {
-	      if (ip[n]&0xC0!=0xC0) {
-		m=-1;
-		break;
-	      }
-	      if (a1!=ARGT_STI && a2!=ARGT_STI)
-		m=ip[n]&0x7-tempi->opcode[tempi->opcode_cnt-1]&7;
-	      break;
-	    }
-	    if (opsize==16) {
-	      if (tempi->flags & IEF_OP_SIZE32) {
-		m=-1;
-		break;
-	      }
-	    } else {
-	      if (tempi->flags & IEF_OP_SIZE16) {
-		m=1;
-		break;
-	      }
-	    }
-	    if (opsize==64||a1==ARGT_M64||a2==ARGT_M64||tempi->flags&IEF_NO_REX) {
-	      if (!Bt(&uasm_ins64_mask,a1) && !Bt(&uasm_ins64_mask,a2) && !(tempi->flags&IEF_48_REX))
-		m=1;
-	    } else {
-	      if (Bt(&uasm_ins64_mask,a1) || Bt(&uasm_ins64_mask,a2) || tempi->flags&IEF_48_REX)
-		m=-1;
-	    }
-	  }
-	} else {
-	  m=0;
-	  if (opsize==16) {
-	    if (tempi->flags & IEF_OP_SIZE32) {
-	      m=-1;
-	      break;
-	    }
-	  } else {
-	    if (tempi->flags & IEF_OP_SIZE16) {
-	      m=1;
-	      break;
-	    }
-	  }
-	  if (opsize==64 || a1==ARGT_M64 || a2==ARGT_M64) {
-	    if (!Bt(&uasm_ins64_mask,a1) && !Bt(&uasm_ins64_mask,a2) && !(tempi->flags&IEF_48_REX)&&
-		!(a2==ARGT_NO &&
-	    (ARGT_UIMM8<=a1<=ARGT_UIMM64 ||
-		ARGT_IMM8<=a1<=ARGT_IMM64 ) ))
-	      m=1;
-	  } else {
-	    if (Bt(&uasm_ins64_mask,a1) || Bt(&uasm_ins64_mask,a2) || tempi->flags&IEF_48_REX)
-	      m=-1;
-	  }
-	}
-	break;
-      }
-    }
 
-    if (m>0) {
-      if (k==i) {
-	k=j;
-	break;
-      } else
-	i=k;
-    } else if (m<0) {
-      if (k-i<=1) {
-	k=i;
-	break;
-      } else
-	j=k;
-    } else
-      break;
+  tempi =InstEntryFind(ip,opsize);
+  if (opsize==32 && seg_size==64) {
+    tempi2=InstEntryFind(ip,64);
+    if (tempi2!=tempi &&
+	tempi2->flags&IEF_REX_ONLY_R8_R15 ||
+	tempi2->flags&IEF_REX_XOR_LIKE&& ip[1]>>3&7==ip[1]&7)
+      tempi=tempi2;
   }
 
-  tempi=unasm_table[k];
   ip+=tempi->opcode_cnt;
   tempo=tempi(U8 *)-tempi->ins_entry_num*sizeof(CInstruction)-offset(CHashOpcode.ins);
   StrCat(buf,tempo->str);

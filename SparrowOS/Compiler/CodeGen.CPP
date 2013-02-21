@@ -179,8 +179,8 @@ U0 CBOutPtrsInit(CLex *lx)
   CCodeBlk *cb=MAlloc(sizeof(CCodeBlk));
   cb->next=NULL;
   tempcbh->cb_out_first=tempcbh->cb_out_last=cb;
-  tempcbh->cb_misc_list=NULL;
-  tempcbh->cb_misc_list_end=&tempcbh->cb_misc_list;
+  tempcbh->cb_misc_lst=NULL;
+  tempcbh->cb_misc_lst_end=&tempcbh->cb_misc_lst;
   tempcbh->cb_out_ptr=&cb->data;
   tempcbh->cb_out_end=tempcbh->cb_out_ptr+CB_IC_CNT;
   tempcbh->cb_last_out_ptr=&cb->data;
@@ -225,8 +225,8 @@ U0 CBPush(CLex *lx)
 {
   CLexCodeBlkCtrl *tempcbh=MAlloc(sizeof(CLexCodeBlkCtrl));
   MemCpy(tempcbh,&lx->cbh,sizeof(CLexCodeBlkCtrl));
-  if (lx->cbh.cb_misc_list_end==&lx->cbh.cb_misc_list)
-    tempcbh->cb_misc_list_end=&tempcbh->cb_misc_list;
+  if (lx->cbh.cb_misc_lst_end==&lx->cbh.cb_misc_lst)
+    tempcbh->cb_misc_lst_end=&tempcbh->cb_misc_lst;
   lx->cbh.cb_next=tempcbh;
 }
 
@@ -234,14 +234,14 @@ U0 CBPop(CLex *lx)
 {
   CLexCodeBlkCtrl *tempcbh=lx->cbh.cb_next;
   MemCpy(&lx->cbh,tempcbh,sizeof(CLexCodeBlkCtrl));
-  if (tempcbh->cb_misc_list_end==&tempcbh->cb_misc_list)
-    lx->cbh.cb_misc_list_end=&lx->cbh.cb_misc_list;
+  if (tempcbh->cb_misc_lst_end==&tempcbh->cb_misc_lst)
+    lx->cbh.cb_misc_lst_end=&lx->cbh.cb_misc_lst;
   Free(tempcbh);
 }
 
 CCodeBlkMisc *CBGoToLabelFind(CLex *lx,U8 *name)
 {
-  CCodeBlkMisc *mc=lx->cbh.cb_misc_list;
+  CCodeBlkMisc *mc=lx->cbh.cb_misc_lst;
   while (mc) {
     if (mc->type==CBMT_GOTO_LABEL) {
       if (!StrCmp(mc->str,name))
@@ -255,8 +255,8 @@ CCodeBlkMisc *CBGoToLabelFind(CLex *lx,U8 *name)
 CCodeBlkMisc *CBMiscNew(CLex *lx,I64 ty)
 {
   CCodeBlkMisc *result=CAlloc(sizeof(CCodeBlkMisc));
-  lx->cbh.cb_misc_list_end->next=result;
-  lx->cbh.cb_misc_list_end=result;
+  lx->cbh.cb_misc_lst_end->next=result;
+  lx->cbh.cb_misc_lst_end=result;
   result->addr=INVALID_PTR;
   result->type=ty;
   return result;
@@ -265,7 +265,7 @@ CCodeBlkMisc *CBMiscNew(CLex *lx,I64 ty)
 I64 CBFloatConstFind(CLex *lx,F64 d)
 {
   I64 i;
-  CCodeBlkMisc *mc=lx->cbh.cb_misc_list;
+  CCodeBlkMisc *mc=lx->cbh.cb_misc_lst;
   while (mc) {
     if (mc->type==CBMT_FLOAT_CONSTS) {
       for (i=0;i<mc->num_consts;i++)
@@ -284,9 +284,9 @@ I64 CBFloatConstFind(CLex *lx,F64 d)
   return mc->addr;
 }
 
-U0 CBMiscListDel(CLex *lx)
+U0 CBMiscLstDel(CLex *lx)
 {
-  CCodeBlkMisc *mc=lx->cbh.cb_misc_list,*mc1;
+  CCodeBlkMisc *mc=lx->cbh.cb_misc_lst,*mc1;
   U8 *undef=NULL;
   while (mc) {
     mc1=mc->next;
@@ -307,7 +307,7 @@ U0 CBMiscListDel(CLex *lx)
 	Free(mc->float_consts);
 	break;
       case CBMT_ARRAY_DIM:
-	LinkedListDel(mc->dim);
+	LinkedLstDel(mc->dim);
 	break;
       case CBMT_HASH_ENTRY:
 	HashDel(mc->h);
@@ -328,8 +328,8 @@ CLex *CBPopNoFree(CLex *lx)
 {
   CLexCodeBlkCtrl *tempcbh=lx->cbh.cb_next;
   MemCpy(&lx->cbh,tempcbh,sizeof(CLexCodeBlkCtrl));
-  if (tempcbh->cb_misc_list_end==&tempcbh->cb_misc_list)
-    lx->cbh.cb_misc_list_end=&lx->cbh.cb_misc_list;
+  if (tempcbh->cb_misc_lst_end==&tempcbh->cb_misc_lst)
+    lx->cbh.cb_misc_lst_end=&lx->cbh.cb_misc_lst;
   return tempcbh;
 }
 
@@ -345,11 +345,11 @@ U0 CBAppend(CLex *lx, CLexCodeBlkCtrl *tempcbh)
       tempi1->ic_line=tempi->ic_line;
     }
   } while (tempi->ic_opcode);
-  LinkedListDel(tempcbh->cb_out_first);
+  LinkedLstDel(tempcbh->cb_out_first);
 
-  if (tempcbh->cb_misc_list_end!=&tempcbh->cb_misc_list) {
-    lx->cbh.cb_misc_list_end->next=tempcbh->cb_misc_list;
-    lx->cbh.cb_misc_list_end=tempcbh->cb_misc_list_end;
+  if (tempcbh->cb_misc_lst_end!=&tempcbh->cb_misc_lst) {
+    lx->cbh.cb_misc_lst_end->next=tempcbh->cb_misc_lst;
+    lx->cbh.cb_misc_lst_end=tempcbh->cb_misc_lst_end;
   }
   Free(tempcbh);
 }
@@ -492,8 +492,8 @@ U8 *CBCompile(CLex *lx,CHashFun *fun_class,
   if (_indent && lx->indent_que_vect)
     *_indent=CBIndents(lx);
 
-  LinkedListDel(lx->cbh.cb_out_first);
-  CBMiscListDel(lx);
+  LinkedLstDel(lx->cbh.cb_out_first);
+  CBMiscLstDel(lx);
   if (Bt(&lx->opts,OPTf_COMPILE_TRACE)) {
     if (lx->flags&LF_STATIC_COMPILE) {
       if (lx->a->seg_size==16)

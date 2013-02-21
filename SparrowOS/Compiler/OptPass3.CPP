@@ -40,7 +40,7 @@ U0 CmpF2PushPop(CIntermediateCode *tempi,CIntermediateCode *tempi1,CIntermediate
 class OptMemberVar
 {
   I64 score,offset,lea_balance;
-  CMemberList *m;
+  CMemberLst *m;
 };
 
 I64 OptMVCompare(OptMemberVar *mv1,OptMemberVar *mv2)
@@ -56,7 +56,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *register_offsets)
       *tempil1,*tempil2,
   *temp_lag[4];
   I64 code,i,j,l,member_cnt,used_reg_mask=0;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CPrsStk *ps=OptStart(lx,temp_lag);
   OptMemberVar *mv=NULL;
   for (i=0;i<NUM_REGS;i++) {
@@ -69,7 +69,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *register_offsets)
       member_cnt+=2;
     mv=CAlloc(member_cnt*sizeof(OptMemberVar));
     member_cnt=0;
-    tempm=fun_class->member_list;
+    tempm=fun_class->member_lst;
     while (tempm) {
       tempc=tempm->member_class;
       while (tempc->fwd_class)
@@ -379,6 +379,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *register_offsets)
 	case IC_CLFLUSH:
 	case IC_PAUSE:
 	case IC_GET_FLAGS:
+	case IC_CARRY:
 	case IC_RDTSC:
 	case IC_HPET:
 	case IC_SET_FLAGS:

@@ -34,7 +34,7 @@ Test(,3);
 * A string or char constant all alone is sent to
 [C:/SparrowOS/OSMain/Display.CPP.Z,205] PutS() or
 [C:/SparrowOS/OSMain/Display.CPP.Z,200] PutChar().  A 
-string with args is sent to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF(). 
+string with args is sent to [C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF(). 
  An empty string literal signals a 
 variable fmt_str follows.
 
@@ -103,9 +103,9 @@ optionally, specify a register after the reg keyword.
 it won't issue warnings. 
 
 * Type casting is postfix.  To typecast int or F64, use
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,209] ToI64(),
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,211] ToBool() or 
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,210] ToF64(). (SparrowOS follows normal C
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,210] ToI64(),
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,212] ToBool() or 
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,211] ToF64(). (SparrowOS follows normal C
 float<-->int conversion, but sometimes 
 you want to override.  These functions are better than multiplying by "1.0"
 to 
@@ -132,11 +132,11 @@ convert to float.)
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1468] OPTf_WARN_PAREN) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1564] OPTf_WARN_PAREN) to find
 unnecessary parentheses in code.
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1469] OPTf_WARN_DUP_TYPES) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1565] OPTf_WARN_DUP_TYPES) to find
 dup local var type 
 statements.
 
@@ -184,9 +184,9 @@ passed in throw() can be accessed from within a catch{} using the Fs->except_a
 rgc and Fs->except_argv[] vars.  Within a catch {} blk, set the var Fs->catch_
 except to TRUE if you want to terminate the search for a handler.  By 
 convention, the first arg of except_argv[] specifies the exception type num.  
-A list of assigned exception types can be found at
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2486] EXCEPT_LOCAL.  For a 
-handler that will catch all excepts, you can use
+A lst of assigned exception types can be found at
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2582] EXCEPT_LOCAL.  For a handler 
+that will catch all excepts, you can use
 [C:/SparrowOS/OSMain/Except.CPP.Z,226] CatchAll().
 
 * A function is available similar to sizeof which provides the offset of a 
@@ -221,9 +221,9 @@ HeapCtrlIndependentInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2585] DFT_STK and 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2681] DFT_STK and 
 recompile OSMain or request more when doing a
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn().  You can use 
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn().  You can use 
 [C:/SparrowOS/OSMain/Task1a.CPP.Z,89] CallStkGrow(), but it's odd.  See
 [::/SparrowOS/Demo/StkGrow.CPP.Z,1] ::/SparrowOS/Demo/StkGrow.CPP.Z. 
 
@@ -254,8 +254,8 @@ PrintF("%X\n",i>>1);  //Result is 0xC0000000 as expected
 
                                 PrintF Family
 
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2628] MSPrintF() is like
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2312] SPrintF() but it returns a
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2362] MSPrintF() is like
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2046] SPrintF() but it returns a
 [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAllocated str.  It is vary 
 handy because you don't have to worry about overflow.
 
@@ -309,8 +309,8 @@ Note: It returns the result of the last executed expression.
 **Note:** If no PutS variant is available, you can use PrintF("%s",src).
 
 
-The [C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF() family supports extended
-format codes.  See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1594] SPrintFJoin().
+The [C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF() family supports extended
+format codes.  See [C:/SparrowOS/OSMain/Str1a.CPP.Z,1328] SPrintFJoin().
   %[-][0][width][.decimals][flags][hsub_fmt][main_fmt]
 
 flags:
@@ -346,15 +346,15 @@ units letters.
 * "%T" and "%D" will display a date or time and the format is selected with 
 a subcode, entered after a "h".  Example: "%20h1D" uses date format code 
 "1". See [::/SparrowOS/Demo/DateTime.CPP.Z,1]
-  ::/SparrowOS/Demo/DateTime.CPP.Z, [C:/SparrowOS/OSMain/Str1a.CPP.Z,1235]
-  MSPrintFDate() and [C:/SparrowOS/OSMain/Str1a.CPP.Z,1144] MSPrintFTime() 
+  ::/SparrowOS/Demo/DateTime.CPP.Z, [C:/SparrowOS/OSMain/Date.CPP.Z,299]
+  MSPrintFDate() and [C:/SparrowOS/OSMain/Date.CPP.Z,208] MSPrintFTime() 
 for subcodes.
 
-* "%z" will display a subentry of an enumerated list of text entries. It 
-calls [C:/SparrowOS/OSMain/Str1a.CPP.Z,393] ListEntryPt().  Pass entry_num
-  first, list second.
+* "%z" will display a subentry of an enumerated lst of text entries. It 
+calls [C:/SparrowOS/OSMain/Str1a.CPP.Z,393] LstEntryPt().  Pass entry_num
+  first, lst second.
 
-* "%Z" will display a Define subentry.  Pass entry_num first, list_systext 
+* "%Z" will display a Define subentry.  Pass entry_num first, lst_systext 
 second.
 
 * "%Q" will convert "\" to "\\" and quote to backslash quote. (For use in 

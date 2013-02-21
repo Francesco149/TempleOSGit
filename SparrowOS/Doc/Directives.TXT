@@ -65,7 +65,7 @@ USE16, USE32, USE64
 
 IMPORT sym1name, sym2name;
 
-LIST, NOLIST
+LST, NOLST
 
 ALIGN num, fill_byte
   Align to num boundary and fill with fill_byte.

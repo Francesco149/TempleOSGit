@@ -24,7 +24,7 @@ U0 DrawShapes(CDC *dc,I64 x,I64 y,I64 rop)
   dc->color=rop+RED;
   GrRect      (dc,x-10,y-30-10,20,20);
   GrRect      (dc,x-10-30,y-10,20,20);
-  CSpritePlot3(dc,x,y,0,__BIN_1); //This just shows it works with CSprite
+  SpritePlot3(dc,x,y,0,__BIN_1); //This just shows it works with CSprite
   dc->color=rop+BLACK;
   GrRect      (dc,x-10,y+30-10,20,20);
   GrRect      (dc,x-10+30,y-10,20,20);

@@ -35,14 +35,27 @@ I64 DiffEntriesCompare(CDocEntry *doc_e1,CDocEntry *doc_e2)
 #define DF_NO_MORE_PROMPTS_THIS_FILE	64
 
 U0 DiffSelect(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,
-		 I64 j2_lo,I64 j2_hi,CDocEntry **doc_us1,CDocEntry **doc_us2)
+		 I64 j2_lo,I64 j2_hi,I64 cnt1,I64 cnt2,CDocEntry **doc_us1,CDocEntry **doc_us2)
 {
   CDocEntry *doc_e,*doc_e1,*doc_e2;
   Bool use_file1;
   I64 i,old_flags;
   CDoc *cur_l;
   if (!(*_df_flags & (DF_ABORT_FILE|DF_ABORT_ALL_FILES))) {
-    "$FG,RED$%d,%d---------------------$FG$\n",j1_lo,j2_lo;
+    "$FG,RED$";
+    if (0<=j1_lo<cnt1)
+      "%d,",doc_us1[j1_lo]->y+1;
+    else if (0<=j1_hi-1<cnt1)
+      "%d,",doc_us1[j1_hi-1]->y+1;
+    else
+      "***,";
+    if (0<=j2_lo<cnt2)
+      "%d",doc_us2[j2_lo]->y+1;
+    else if (0<=j2_hi-1<cnt2)
+      "%d",doc_us2[j2_hi-1]->y+1;
+    else
+      "***";
+    "---------------------$FG$\n";
     i= j1_lo<=0 ? 0:j1_lo-1;
     while (i<j1_hi) {
       if (cur_l=DocCur) {
@@ -124,15 +137,15 @@ U0 DiffSub(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,I64 j2_lo,I64 j2_hi,
 
   if (j1_lo>=j1_hi || j2_lo>=j2_hi) {
     if (j1_lo<j1_hi || j2_lo<j2_hi)
-      DiffSelect(doc,_df_flags,j1_lo,j1_hi,j2_lo,j2_hi,doc_us1,doc_us2);
+      DiffSelect(doc,_df_flags,j1_lo,j1_hi,j2_lo,j2_hi,cnt1,cnt2,doc_us1,doc_us2);
     return;
   }
 
   //Locate longest matching str in intervals
   while (i1<cnt1 && i2<cnt2) {
-    if (doc_s1[i1]->y<j1_lo || doc_s1[i1]->y>=j1_hi)
+    if (!(j1_lo<=doc_s1[i1]->x<j1_hi)) //x is the new y
       i1++;
-    else if (doc_s2[i2]->y<j2_lo || doc_s2[i2]->y>=j2_hi)
+    else if (!(j2_lo<=doc_s2[i2]->x<j2_hi)) //x is the new y
       i2++;
     else {
       i=StrCmp(doc_s1[i1]->tag,doc_s2[i2]->tag);
@@ -143,10 +156,10 @@ U0 DiffSub(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,I64 j2_lo,I64 j2_hi,
       else {
 	i2b=i2;
 	while (!StrCmp(doc_s1[i1]->tag,doc_s2[i2]->tag)) {
-	  if (doc_s2[i2]->y>=j2_lo && doc_s2[i2]->y<j2_hi) {
+	  if (j2_lo<=doc_s2[i2]->x<j2_hi) { //x is the new y
 	    score=0;
-	    j1=doc_s1[i1]->y;
-	    j2=doc_s2[i2]->y;
+	    j1=doc_s1[i1]->x; //x is the new y
+	    j2=doc_s2[i2]->x; //x is the new y
 	    n=j1_hi-j1;
 	    if (j2_hi-j2<n)
 	      n=j2_hi-j2;
@@ -172,7 +185,7 @@ U0 DiffSub(CDoc *doc,I64 *_df_flags,I64 j1_lo,I64 j1_hi,I64 j2_lo,I64 j2_hi,
     }
   }
   if (!best_score)
-    DiffSelect(doc,_df_flags,j1_lo,j1_hi,j2_lo,j2_hi,doc_us1,doc_us2);
+    DiffSelect(doc,_df_flags,j1_lo,j1_hi,j2_lo,j2_hi,cnt1,cnt2,doc_us1,doc_us2);
   else {
     DiffSub(doc,_df_flags,j1_lo,best_j1,j2_lo,best_j2,cnt1,cnt2,doc_s1,doc_s2,doc_us1,doc_us2);
     DiffSub(doc,_df_flags,best_j1+best_score,j1_hi,best_j2+best_score,j2_hi,cnt1,cnt2,
@@ -211,14 +224,14 @@ public I64 Diff(U8 *dst_file,U8 *src_file,I64 df_flags=0)
   doc_e=doc1->root.next;
   while (doc_e!=doc1) {
     if (doc_e->type_u8==DOCT_TEXT)
-      doc_e->y=cnt1++;
+      doc_e->x=cnt1++; //x is the new y
     doc_e=doc_e->next;
   }
 
   doc_e=doc2->root.next;
   while (doc_e!=doc2) {
     if (doc_e->type_u8==DOCT_TEXT)
-      doc_e->y=cnt2++;
+      doc_e->x=cnt2++; //x is the new y
     doc_e=doc_e->next;
   }
 

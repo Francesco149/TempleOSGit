@@ -55,7 +55,7 @@ U0 DrawShadow(CTask *task)
   GrSetRotMat(dc1,r2);
 
   dc1->lighting=&GrBlackLighting;
-  CSpritePlot3(dc1,0,0,0,__BIN_1);
+  SpritePlot3(dc1,0,0,0,__BIN_1);
 }
 
 U0 DrawIt(CTask *task,CDC *)
@@ -73,7 +73,7 @@ U0 DrawIt(CTask *task,CDC *)
     MPJob(&DrawShadow,task,1);
   else
     DrawShadow(task);
-  CSpritePlot3(dc0,0,0,0,__BIN_1);
+  SpritePlot3(dc0,0,0,0,__BIN_1);
 }
 
 U0 Shadow()

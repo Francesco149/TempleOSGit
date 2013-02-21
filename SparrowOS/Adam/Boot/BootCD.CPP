@@ -143,7 +143,7 @@ BCD_MAIN::
 	POP	CX
 	LOOP	@@20
 
-//See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,291] BootCdProbe().
+//See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,297] BootCdProbe().
 	MOV	EBX,U32 [BCD_BLK_LO-BCD_START]
 	SHL	EBX,16
 	MOV	BX,BOOT_CODE_CDROM  //See sys_boot_code

@@ -8,7 +8,7 @@ public U0 PressKeyHelp(CTask *task=NULL)
   if (!task) task=Fs;
 
 //This feat is a burden in code.
-//It would be nice to list key
+//It would be nice to lst key
 //cmds for all applications,
 //but it makes the code too ugly.
 //
@@ -186,7 +186,7 @@ public U0 KeyMap(CTask *task=NULL)
   if (!task) task=Fs;
 
 //This feat is a burden in code.
-//It would be nice to list key
+//It would be nice to lst key
 //cmds for all applications,
 //but it makes the code too ugly.
 //
@@ -227,7 +227,7 @@ public U0 TipOfDay(U8 *tip_file="::/SparrowOS/Doc/Tips.TXT.Z")
 
 /****
 //This feat is a burden in code.
-//It would be nice to list key
+//It would be nice to lst key
 //cmds for all applications,
 //but it makes the code too ugly.
 //

@@ -55,7 +55,7 @@ SYMBOL LOOK-UP (Especially, used by JIT compiler and Loader)
 1) Symbol text name is hashed -- Adding the ASCII values of all
 chars with shifts.
 2) Hash body array is indexed.
-3) Linked-list is traversed until match of text and type-of-entry
+3) Linked-lst is traversed until match of text and type-of-entry
 4) If not found, next hash table is searched.
 
 Duplicate entries are allowed--they overshadow old entries.
@@ -485,21 +485,21 @@ U0 HashDel(CHashSrcSym *temph)
     Free(temph->src_link);
     Free(temph->index);
     Free(temph->import_name);
-    LinkedListDel(temph->list);
+    LinkedLstDel(temph->ie_lst);
     if (temph->type & (HTT_FUN | HTT_EXPORT_SYS_SYM)) {
       Free(temph->debug);
       Free(temph->indent);
     }
     if (temph->type & (HTT_FUN | HTT_CLASS))
     //Assumes code not on heap, so doesn't Free.
-    //[C:/SparrowOS/Compiler/Lex.CPP.Z,604] MemberListDel() is an import to the OSMain module
-      MemberListDel(temph);
+    //[C:/SparrowOS/Compiler/Lex.CPP.Z,604] MemberLstDel() is an import to the OSMain module
+      MemberLstDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(CHashDefineStr *)->data);
     else if (temph->type & HTT_GLBL_VAR) {
       if (!(temph(CHashGlblVar *)->flags&GVAF_ALIAS))
 	Free(temph(CHashGlblVar *)->data_addr);
-      LinkedListDel(temph(CHashGlblVar *)->dim.next);
+      LinkedLstDel(temph(CHashGlblVar *)->dim.next);
       if (temph(CHashGlblVar *)->fun_ptr)
 	HashDel(temph(CHashGlblVar *)->fun_ptr-temph(CHashGlblVar *)->fun_ptr->ptr_cnt);
     }
@@ -545,17 +545,17 @@ I64 NamedFramePtr(U8 *name,CTask *task=NULL)
     return 0;
 }
 
-CHashGeneric *NamedFramePtrAdd(U8 *name,I64 u0,CTask *task=NULL)
+CHashGeneric *NamedFramePtrAdd(U8 *name,I64 val,CTask *task=NULL)
 {
-  return HashGenericAdd(name,HTT_NAMED_FRAME_PTR,u0,0,0,task);
+  return HashGenericAdd(name,HTT_NAMED_FRAME_PTR,val,0,0,task);
 }
 
-I64 NamedFramePtrSet(U8 *name,I64 u0,CTask *task=NULL)
+I64 NamedFramePtrSet(U8 *name,I64 val,CTask *task=NULL)
 {
   CHashGeneric *temph;
   if (!task) task=Fs;
   if (temph=HashFind(name,task->hash_table,HTT_NAMED_FRAME_PTR))
-    return LXchgU64(&temph->user_data0,u0);
+    return LXchgU64(&temph->user_data0,val);
   else
     return 0;
 }

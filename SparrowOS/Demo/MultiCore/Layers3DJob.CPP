@@ -30,7 +30,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->flags|=DCF_TRANSFORMATION;
 
   dc->pen_width=2;
-  CSpritePlot3(dc,0,0,0,__BIN_1);
+  SpritePlot3(dc,0,0,0,__BIN_1);
 
   dc->color=BLUE;
   GrRect3(dc,50,75,0,100,50);
@@ -65,7 +65,7 @@ U0 MPDrawIt(CTask *main_task)
   DCFill(dc);
 
   dc->pen_width=2;
-  CSpritePlot3(dc,0,0,0,__BIN_1);
+  SpritePlot3(dc,0,0,0,__BIN_1);
 
   dc->color=BLUE;
   GrRect3(dc,50,75,0,100,50);

@@ -264,7 +264,7 @@ Bool MouseDriverInstall(I64 dummy=0) //can be spawned
   mouse_install_attempt_in_progress=TRUE;
   OutU8(0xA1,InU8(0xA1)|0x10);
   mouse_installed=mouse_irqs_working=FALSE;
-  IntEntrySet(0x2C,&MouseIntHandler,0);
+  IntEntrySet(0x2C,&MouseIntHandler);
   for(i=0;i<5;i++)
     mouse_buttons[i]=0;
   if (i=MouseRst)

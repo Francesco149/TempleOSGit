@@ -22,7 +22,7 @@ U8 *SuggestMatchForm(U8 *src)
 }
 
 /*
-Fmt of word list entry:
+Fmt of word lst entry:
   U8 WSD_WORD_CHAR
   U8 word[] with terminating zero
   I16 block; //definition offset in ::/SparrowOS/Adam/WordStat/WSDefs.DAT
@@ -30,7 +30,7 @@ Fmt of word list entry:
 
 U0 SuggestSpelling(U8 *pattern)
 {
-  U8 *dict=ws_dict_word_list,
+  U8 *dict=ws_dict_word_lst,
      *pf=SuggestMatchForm(pattern),
      *wf;
   I64 len=StrLen(pf),

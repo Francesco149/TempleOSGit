@@ -3,9 +3,9 @@
 
 U0 FillInTime()
 {
-  CDate ltdt;
-  ltdt=GetCurTimeCDate;
-  "$IV,1$----%D %T----$IV,0$\n",ltdt,ltdt;
+  CDate spdt;
+  spdt=GetCurTimeCDate;
+  "$IV,1$----%D %T----$IV,0$\n",spdt,spdt;
 }
 
 U0 RandQuote(I64 num)
@@ -45,7 +45,7 @@ U0 BadCodeJump(I64 num)
     }
     tempm=tempm->next;
   }
-  CDirListDel(root);
+  CDirLstDel(root);
   Ed(st);
   Free(st);
 }
@@ -139,12 +139,12 @@ Bool MyPutKey(I64 ch,I64 sc)
       case SC_F6:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
-	    SetKeyDesc("Cmd/Init WordStat Text");
+	    SetKeyDesc("Cmd/Init WordStat Spirit");
 	  else
-	    SetKeyDesc("Cmd/Init WordStat LT");
+	    SetKeyDesc("Cmd/Init WordStat SparrowOS");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    PopUp("WSInit(\"::/SparrowOS/Misc/Bible.TXT.Z\");");
+	    PopUp("WSInit(\"::/SparrowOS/Apps/HolySpirit/Vocab.TXT.Z\");");
 	  else
 	    PopUp("WSInit(\"::/SparrowOS/\" TEXT_FILE_MASK \";~*Bible.TXT.Z\");");
 	}

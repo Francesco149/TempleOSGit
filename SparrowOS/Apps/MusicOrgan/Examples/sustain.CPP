@@ -13,7 +13,7 @@ U0 DrawIt(CTask *,CDC *dc)
   GrRotYEqu(dc->r,tt);
   dc->x=325;
   dc->y=35;
-  CSpritePlot3(dc,0,0,0,__BIN_1);
+  SpritePlot3(dc,0,0,0,__BIN_1);
 }
 
 

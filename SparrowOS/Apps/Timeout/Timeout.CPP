@@ -125,7 +125,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   for (i=0;i<MAX_LANDSCAPE;i++) {
     yy=(ls[i].y-scroll_y)&(MAP_HEIGHT-1);
     if (-32<=yy<=Fs->win_pixel_bottom+32)
-      CSpritePlot3(dc,ls[i].x,yy,0,ls[i].img);
+      SpritePlot3(dc,ls[i].x,yy,0,ls[i].img);
   }
 
   dc->pen_width=3;
@@ -146,9 +146,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  tP(task)<tempm->corpse_timeout)
 	if (!(RandU16&15)) {
 	  if (tempm->friendly)
-	    CSpritePlot3(dc,tempm->x,yy,0,__BIN_4);
+	    SpritePlot3(dc,tempm->x,yy,0,__BIN_4);
 	  else
-	    CSpritePlot3(dc,tempm->x,yy,0,__BIN_5);
+	    SpritePlot3(dc,tempm->x,yy,0,__BIN_5);
 	}
    }
   }
@@ -157,13 +157,13 @@ U0 DrawIt(CTask *task,CDC *dc)
     if (-32<=yy<=Fs->win_pixel_bottom+32) {
       if (!tempm->dead) {
 	if (tempm->friendly)
-	  CSpritePlot3(dc,tempm->x,yy,0,__BIN_2);
+	  SpritePlot3(dc,tempm->x,yy,0,__BIN_2);
 	else
-	  CSpritePlot3(dc,tempm->x,yy,0,__BIN_3);
+	  SpritePlot3(dc,tempm->x,yy,0,__BIN_3);
       }
     }
   }
-  CSpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
+  SpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
 
   if (tf) {
     t1=tf;
@@ -195,9 +195,9 @@ U0 CheckCollisions()
 	*friend=DCNew(DCT_COLOR8,MONO_MAN_WIDTH,MONO_MAN_HEIGHT),
 	*enemy =DCNew(DCT_COLOR8,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
   DCFill(friend);
-  CSpritePlot3(friend,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_2);
+  SpritePlot3(friend,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_2);
   DCFill(enemy);
-  CSpritePlot3(enemy ,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_3);
+  SpritePlot3(enemy ,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_3);
 
   dc2->color=WHITE;
   for (i=0,temps=s;i<MAX_SHOTS;i++,temps++)

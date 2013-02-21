@@ -188,7 +188,7 @@ U0 UncollapseFile(U8 *filename,I64 *)
   DocDel(doc);
 }
 
-U0 UncollapseList(CDirEntry *tempm1,I64 *flags)
+U0 UncollapseLst(CDirEntry *tempm1,I64 *flags)
 {
   CDirEntry *tempm2;
   while (tempm1 && !Bt(flags,FUf_CANCEL)) {
@@ -196,7 +196,7 @@ U0 UncollapseList(CDirEntry *tempm1,I64 *flags)
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub) {
 	"%S %s\n","ST_SCANNING_DIR",tempm1->full_name;
-	UncollapseList(tempm1->sub,flags);
+	UncollapseLst(tempm1->sub,flags);
       }
     } else
       UncollapseFile(tempm1->full_name,flags);
@@ -210,7 +210,7 @@ U0 Uncollapse(U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL)
   I64 f=0;
   GetFFlags(&f,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&f,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  UncollapseList(FilesFind(files_find_mask,f),&f);
+  UncollapseLst(FilesFind(files_find_mask,f),&f);
 }
 
 U0 CopySongDir(U8 *files_find_mask,U8 threshold)
@@ -226,7 +226,7 @@ U0 CopySongDir(U8 *files_find_mask,U8 threshold)
       Copy(tempm1->full_name,"/SparrowOS/Apps/MusicOrgan/Examples");
     tempm1=tempm1->next;
   }
-  CDirListDel(tempm);
+  CDirLstDel(tempm);
 }
 
 public U0 CopySongs(U8 threshold='7')
@@ -420,7 +420,7 @@ U0 MakeWebSite()
       TSWebFile(tempm->full_name);
       tempm=tempm->next;
     }
-    CDirListDel(tempm2);
+    CDirLstDel(tempm2);
     Drv(TS_MAIN_DRV_LET);
   }
 }
@@ -529,7 +529,7 @@ U0 TSPrtDsk()
 }
 
 
-public U0 TSUpdate()
+public U0 TSUpgrade()
 {
   TSMount;
   TSCopy;

@@ -13,7 +13,7 @@ count down, so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-138,038 lines of code including the kernel, the 64-bit compiler, the graphics 
+139,466 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -56,7 +56,7 @@ to what would be main() functions and you invoke them by calling them with a
 statement in the global scope, usually at the bottom of your file.
 
 I started with C syntax, but didn't like the command line for a directory 
-listing looking like this:
+lsting looking like this:
 
  >Dir("*.*",FALSE);
 
@@ -101,8 +101,8 @@ whole files are processed, checksums and compression are possible.  Filenames
 ending in 'Z' are automatically compressed or uncompressed when stored or 
 fetched.  SparrowOS supports direct block random access into files, however
 -- 
-[C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,149] FRBlks() and
-[C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,198] FWBlks().  There is no PATH, but
+[C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,130] FRBlks() and
+[C:/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,179] FWBlks().  There is no PATH, but
 parent directories are searched 
 when a file is not found.  This feature is used for default account files.  
 Note: the FAT32 filesystem is supported, which makes exchanging files with a 
@@ -119,7 +119,7 @@ rowOS runs all programs in kernel mode, ring 0, so no instructions are
 off-limits.  Turning-off and on preemption with
 [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt() is a less drastic 
 measure that is usually sufficient.  A newly
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn()ed task begins with 
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn()ed task begins with 
 preemption off.
 
 The graphic resolution is poor, 640x480 16 color, but that's all I feel 
@@ -143,10 +143,10 @@ so this is possible.  See [::/SparrowOS/Doc/MultiCore.TXT.Z,1] SparrowOS
 MultiCore.
 
 There is no distinction between the terms "task", "process" or "thread".  All 
-have a task record, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask(), pointed
+have a task record, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask(), pointed
 to by the FS segment register and are 
 accessed with Fs-> while Gs-> points to a
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3493] CCPU for the current CPU core.  Each 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3588] CCPU for the current CPU core.  Each 
 task can have just one window, but a task can have children with windows.  
 (The segment registers are just used as extra registers -- there is nothing 
 segmented about SparrowOS' memory.)
@@ -163,7 +163,7 @@ task and even had a "/SparrowOS/Root" directory ;-)  Adam executes
 time.
 
 For easy back-ups, place everything you author in your HOME directory and 
-subdirectories.  Then, use [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149]
+subdirectories.  Then, use [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148]
 CopyTree().  That should make upgrading easy, too.  
 To make an account use [C:/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,95] MkDir() to
 create a directory under /SparrowOS/Accts.  
@@ -179,7 +179,7 @@ Copy the start-up files you wish to customize into HOME and modify them.  See
 Typically, your usage pattern through the day will be repeatedly left or
 right 
 clicking on filenames in a cmd line [C:/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233]
-Dir() listing.  You left-click files to 
+Dir() lsting.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
 [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,42] Ed(""); 
 and supply a filename.  You can also run programs with <F5> when in the 

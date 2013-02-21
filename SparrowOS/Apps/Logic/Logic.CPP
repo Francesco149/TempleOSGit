@@ -55,7 +55,7 @@ U16 *input1_table=NULL,
       
       
 
-U8 *gate_type_list="NULL\0OUTPUT\0INPUT\0"
+U8 *gate_type_lst="NULL\0OUTPUT\0INPUT\0"
      "NOT\0AND\0OR\0NAND\0NOR\0XOR\0AND3\0OR3\0NAND3\0NOR3\0";
 
 #define GT_NULL   0  //Specifies that table entry has not been filled-in
@@ -92,7 +92,7 @@ U0 PmtGates()
   "\nEnter the available gate types in the order you prefer them to be used.\n"
   "Your choices are:\n";
   for (i=GT_FIRST_REAL_GATE;i<GT_NUM_ENTRIES;i++)
-    "%z ",i,gate_type_list;
+    "%z ",i,gate_type_lst;
   NewLine;
 
   num_selected_gates=0;
@@ -103,7 +103,7 @@ U0 PmtGates()
       Free(st);
       return;
     }
-    i=ListEntryMatch(st,gate_type_list,LEF_IGNORE_CASE);
+    i=LstEntryMatch(st,gate_type_lst,LEF_IGNORE_CASE);
     Free(st);
     if (i<GT_FIRST_REAL_GATE)
       "Invalid response\n";
@@ -212,7 +212,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=y1;
 
 	  dc->color=BLUE;
-	  CSpritePlot3(dc,xx,yy,0,
+	  SpritePlot3(dc,xx,yy,0,
 	      imgs[type]);
 
 	  dc->color=RED;
@@ -232,7 +232,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=(y1+y2)/2;
 
 	  dc->color=BLUE;
-	  CSpritePlot3(dc,xx,yy,0,imgs[type]);
+	  SpritePlot3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy-4,x1,y1);
@@ -252,7 +252,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=(y1+y2+y3)/3;
 
 	  dc->color=BLUE;
-	  CSpritePlot3(dc,xx,yy,0,imgs[type]);
+	  SpritePlot3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy-8,x1,y1);

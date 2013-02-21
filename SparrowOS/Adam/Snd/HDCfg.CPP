@@ -5,8 +5,8 @@ class MyMass:CMass
   F64 radius;
   U8 nid,type,num_connects,cur_connect;
   U32 audio_widget_capabilities;
-  U8 connect_list[MAX_CONNECTS];
-  U8 gain_list[MAX_CONNECTS];
+  U8 connect_lst[MAX_CONNECTS];
+  U8 gain_lst[MAX_CONNECTS];
   U32 pin_capabilities,pin_sense,
      pcm_size_rates,
      in_amp_cap,out_amp_cap;
@@ -125,8 +125,8 @@ MyMass *PlaceMass(I64 nid)
   tempm->drag_profile_factor=100.0;
   tempm->radius=5;
   tempm->nid=nid;
-  tempm->gain_list[0]=0x7F;
-  MemSet(tempm->gain_list+1,0x80,(MAX_CONNECTS-1)*sizeof(U8));
+  tempm->gain_lst[0]=0x7F;
+  MemSet(tempm->gain_lst+1,0x80,(MAX_CONNECTS-1)*sizeof(U8));
   QueIns(tempm,ode->last_mass);
   return tempm;
 }
@@ -163,7 +163,7 @@ I64 FindConnectIndex(MyMass *tempm,I64 nid)
 {
   I64 i;
   for (i=0;i<tempm->num_connects;i++)
-    if (tempm->connect_list[i]==nid)
+    if (tempm->connect_lst[i]==nid)
       return i;
   return -1;
 }
@@ -191,12 +191,12 @@ U0 RedoSprings()
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     for (i=0;i<tempm->num_connects;i++) {
-      if ((k=tempm->connect_list[i]) &&
+      if ((k=tempm->connect_lst[i]) &&
 	  (tempm1=FindMassByNID(k)) ) {
 	temps=PlaceSpring(tempm,tempm1);
 	switch (tempm->type) {
 	  case AWT_MIXER:
-	    if (!(tempm->gain_list[i]&0x80)) { //If not mute
+	    if (!(tempm->gain_lst[i]&0x80)) { //If not mute
 	      temps->color=GREEN;
 	      temps->constant=100;
 	    }
@@ -236,28 +236,28 @@ U0 CleanUp()
   ODEDel(ode);
 }
 
-U0 HDCfgConnectList(MyMass *tempm,I64 cad,I64 nid)
+U0 HDCfgConnectLst(MyMass *tempm,I64 cad,I64 nid)
 {
-  I64 i,j,connection_list_len;
-  j=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_CONNECT_LIST_LEN);
-  connection_list_len=j&127;
+  I64 i,j,connection_lst_len;
+  j=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_CONNECT_LST_LEN);
+  connection_lst_len=j&127;
   if (j&128) { //Long form?
-    for (i=0;i<connection_list_len;i+=2) {
-      j=HDWriteCORBSync(cad,nid,VERB_GET_CONNECT_LIST+i);
-      tempm->connect_list[tempm->num_connects++]=j.u16[0];
-      if (i+1<connection_list_len)
-	tempm->connect_list[tempm->num_connects++]=j.u16[1];
+    for (i=0;i<connection_lst_len;i+=2) {
+      j=HDWriteCORBSync(cad,nid,VERB_GET_CONNECT_LST+i);
+      tempm->connect_lst[tempm->num_connects++]=j.u16[0];
+      if (i+1<connection_lst_len)
+	tempm->connect_lst[tempm->num_connects++]=j.u16[1];
     }
   } else {
-    for (i=0;i<connection_list_len;i+=4) {
-      j=HDWriteCORBSync(cad,nid,VERB_GET_CONNECT_LIST+i);
-      tempm->connect_list[tempm->num_connects++]=j.u8[0];
-      if (i+1<connection_list_len)
-	tempm->connect_list[tempm->num_connects++]=j.u8[1];
-      if (i+2<connection_list_len)
-	tempm->connect_list[tempm->num_connects++]=j.u8[2];
-      if (i+3<connection_list_len)
-	tempm->connect_list[tempm->num_connects++]=j.u8[3];
+    for (i=0;i<connection_lst_len;i+=4) {
+      j=HDWriteCORBSync(cad,nid,VERB_GET_CONNECT_LST+i);
+      tempm->connect_lst[tempm->num_connects++]=j.u8[0];
+      if (i+1<connection_lst_len)
+	tempm->connect_lst[tempm->num_connects++]=j.u8[1];
+      if (i+2<connection_lst_len)
+	tempm->connect_lst[tempm->num_connects++]=j.u8[2];
+      if (i+3<connection_lst_len)
+	tempm->connect_lst[tempm->num_connects++]=j.u8[3];
     }
   }
 }
@@ -294,7 +294,7 @@ U0 HDCfgTraverse(I64 cad,I64 nid)
 	break;
     }
     if (Bt(&tempm->audio_widget_capabilities,8))
-      HDCfgConnectList(tempm,cad,nid);
+      HDCfgConnectLst(tempm,cad,nid);
   }
 }
 
@@ -335,7 +335,7 @@ U0 HDCfgPopUpInfoTask(MyMass *tempm)
   if (Bt(&i,7))
      "Unsolicited, ";
   if (Bt(&i,8))
-     "Cnt List, ";
+     "Cnt Lst, ";
   if (Bt(&i,9))
      "Digital, ";
   if (Bt(&i,10))
@@ -366,14 +366,14 @@ U0 HDCfgPopUpInfoTask(MyMass *tempm)
   NewLine;
 
  
-  "\n$FG,RED$Connection List:$FG$\n";
+  "\n$FG,RED$Connection Lst:$FG$\n";
   for (i=0;i<tempm->num_connects;i++)
-    "%02X,",tempm->connect_list[i];
+    "%02X,",tempm->connect_lst[i];
   NewLine;
 
-  "\n$FG,RED$Gain List:$FG$\n";
+  "\n$FG,RED$Gain Lst:$FG$\n";
   for (i=0;i<tempm->num_connects;i++)
-    "%02X,",tempm->gain_list[i];
+    "%02X,",tempm->gain_lst[i];
   NewLine;
 
   switch (tempm->type) {
@@ -449,11 +449,11 @@ U0 HDCfgEdLink(MyMass *tempm_out,MyMass *tempm_in)
   if ((i=FindConnectIndex(tempm_in,tempm_out->nid))>=0) {
     switch (tempm_in->type) {
       case AWT_MIXER:
-	MemSet(tempm_in->gain_list,0x80,sizeof(U8)*MAX_CONNECTS);
-	tempm_in->gain_list[i]=0x7F;
+	MemSet(tempm_in->gain_lst,0x80,sizeof(U8)*MAX_CONNECTS);
+	tempm_in->gain_lst[i]=0x7F;
 	for (j=0;j<tempm_in->num_connects;j++)
 	  HDWriteCORBSync(_hda->cad,tempm_in->nid,
-	    VERB_AMPLIFIER_GAIN_SET+0x7000+tempm_in->gain_list[j]+j<<8);
+	    VERB_AMPLIFIER_GAIN_SET+0x7000+tempm_in->gain_lst[j]+j<<8);
 	break;
       case AWT_INPUT:
       case AWT_SELECTOR:
@@ -478,17 +478,17 @@ U0 HDCfgSave()
   while (tempm!=&ode->next_mass) {
     DocPrintF(doc,"  //0x%02X %Z\n",tempm->nid,tempm->type,"ST_AUDIO_WIDGET_TYPES");
     if (tempm->num_connects) {
-      DocPutS(doc,"  //Connection List:");
+      DocPutS(doc,"  //Connection Lst:");
       for (i=0;i<tempm->num_connects;i++) {
 	if (i==tempm->cur_connect)
 	  DocPutS(doc,"*");
-	DocPrintF(doc,"0x%02X ",tempm->connect_list[i]);
+	DocPrintF(doc,"0x%02X ",tempm->connect_lst[i]);
       }
       DocPutS(doc,"\n");
       if (tempm->type==AWT_MIXER) {
-	DocPutS(doc,"  //Gain List:");
+	DocPutS(doc,"  //Gain Lst:");
 	for (i=0;i<tempm->num_connects;i++)
-	  DocPrintF(doc,"0x%02X ",tempm->gain_list[i]);
+	  DocPrintF(doc,"0x%02X ",tempm->gain_lst[i]);
 	DocPutS(doc,"\n");
       }
     }
@@ -506,7 +506,7 @@ U0 HDCfgSave()
 	    tempm->nid);
 	for (i=0;i<tempm->num_connects;i++)
 	  DocPrintF(doc,"  HDWriteCORBSync(_hda->cad,0x%02X,VERB_AMPLIFIER_GAIN_SET+0x%04X);\n",
-	    tempm->nid,0x7000+tempm->gain_list[i]+i<<8);
+	    tempm->nid,0x7000+tempm->gain_lst[i]+i<<8);
 	break;
       case AWT_INPUT:
 	if (tempm->disabled)

@@ -1,6 +1,6 @@
 /* There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc
+hold the file until you are done.  The [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc
 framework is convenient for this.
 */
 

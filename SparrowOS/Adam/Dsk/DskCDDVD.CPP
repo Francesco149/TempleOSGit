@@ -496,7 +496,7 @@ public I64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
       et->sect_cnt=4;  //5 seems like the limit, 4 is safer
       et->load_rba=cur_blk+1;
 //CDBOOT See [C:/SparrowOS/Adam/Boot/InsBoot.CPP.Z,30] CDBootFileCreate
-//See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,291] BootCdProbe().
+//See [C:/SparrowOS/OSMain/BIOS32.CPP.Z,297] BootCdProbe().
       "%X: Pre Boot Blk\n",cur_blk;
       FWBlks(out_file,et,cur_blk<<2,4);
       cur_blk++;
@@ -562,7 +562,7 @@ public I64 CDFileCreate(U8 *filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=N
     FWBlks(out_file,tabbuf2,cur_blk<<2,tabsize2<<2);
     cur_blk+=tabsize2;
 
-    CDirListDel2(rootdir);
+    CDirLstDel2(rootdir);
     FillU32Palindrome(&iso->vol_space_size,cur_blk);
     FillU32Palindrome(&iso2->vol_space_size,cur_blk);
     FWBlks(out_file,iso,16<<2,4);

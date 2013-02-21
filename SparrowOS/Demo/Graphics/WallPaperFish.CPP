@@ -86,7 +86,7 @@ U0 WallPaperFish(CTask *task)
       GrSetSymmetry(dc,x,y-1,x,y+1);
     } else
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-    CSpritePlot3(dc,x,y,0,imgs[c->type][j]);
+    SpritePlot3(dc,x,y,0,imgs[c->type][j]);
     c->x+=c->dx;  c->y+=c->dy;
   }
   DCDel(dc);

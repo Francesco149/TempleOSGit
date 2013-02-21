@@ -161,7 +161,7 @@ I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
       KbdMouseHandler(TRUE,FALSE);
       KbdQueMsgs;
       PopFD;
-      if (old_preempt && GetFlags&1<<RFLAGS_INTERRUPTS)
+      if (old_preempt && GetFlags&1<<RFLAGf_INT)
 	Yield;
     } else {
       LBts(&Fs->task_flags,TASKf_AWAITING_MSG);
@@ -189,7 +189,7 @@ I64 GetChar(I64 *_scancode=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
 }
 
 U8 *MGetS(I64 flags=0)
-//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1454] Flags
+//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1550] Flags
 {
 //Returns a [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);

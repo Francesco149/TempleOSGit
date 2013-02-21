@@ -12,9 +12,9 @@ U0 Song()
 	Play("FeDhFeDhFE");
 	Play("M4/4");
 	Play("qD!!2G3AeBF!FE2qG!!3D!!A",
-		" \0 \0 \0 \0It's \0gon\0na \0be \0fine.\n\0 \0");
+		"Hold \0 \0on!\n\0 \0It's \0gon\0na \0be \0fine.\n\0 \0");
 	Play("D!!2G3AeBF!FE2qG!!3D!!A",
-		" \0 \0 \0 \0It's \0gon\0na \0be \0fine.\n\0 \0");
+		"Hold \0 \0on!\n\0 \0It's \0gon\0na \0be \0fine.\n\0 \0");
   }
   } catch
     CatchAll;

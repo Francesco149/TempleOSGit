@@ -372,7 +372,7 @@ U0 ChgDsk(U8 drv_let=0)
   if (!BlkDevInit(bdev) && bdev->flags & BDF_REMOVABLE)
     DskCacheInvalidate(p);
   Drv(drv_let);
-  NativeFSFreeFreeList(p);
+  NativeFSFreeFreeLst(p);
   Preempt(old_preempt);
 }
 

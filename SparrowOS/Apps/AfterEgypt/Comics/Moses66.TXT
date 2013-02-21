@@ -1,8 +1,6 @@
 
-
-		Our camp is getting dirty.	You want ME to fix this?
-
-
+	You get a haircut, God?			Didn't I tell you no 
+						animals on this mountain?
 
 
 
@@ -14,3 +12,4 @@
 
  <1> (image)
 
+[::/SparrowOS/Misc/Bible.TXT.Z,5068] Exodus,19:13

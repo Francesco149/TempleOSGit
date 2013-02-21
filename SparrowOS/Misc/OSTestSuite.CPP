@@ -109,6 +109,7 @@ U0 DoMathAudioDemo()
   CTask *task=SpawnUser;
   XTalkWait(task,"#include \"::/SparrowOS/Demo/Graphics/MathAudioDemo.CPP.Z\";\n");
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
 
@@ -649,8 +650,8 @@ U0 DoBlackDiamond()
 
 U0 DoCtrlR1()
 {
-  I64 i;
-  CTask *task=SpawnUser,*task1;
+  I64 i,task_num=-1;
+  CTask *task=SpawnUser;
   XTalkWait(task,"//");
   PostMsg(task,MSG_KEY_DOWN_UP,CH_CTRLR,0);
   while (!TaskValidate(task->popup_task))
@@ -666,35 +667,35 @@ U0 DoCtrlR1()
 //Color
   while (!TaskValidate(task->popup_task))
     Yield;
-  task1=task->popup_task;
+  task_num=task->popup_task->task_num;
   TaskWait(task->popup_task);
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+  while (!TaskValidate(task->popup_task)||task->popup_task->task_num==task_num)
     Yield;
   TaskWait(task->popup_task);
   for (i=0;i<2;i++)
     SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  task1=task->popup_task;
+  task_num=task->popup_task->task_num;
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
 
 //Width
-  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+  while (!TaskValidate(task->popup_task)||task->popup_task->task_num==task_num)
     Yield;
   TaskWait(task->popup_task);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  task1=task->popup_task;
+  task_num=task->popup_task->task_num;
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+  while (!TaskValidate(task->popup_task)||task->popup_task->task_num==task_num)
     Yield;
   TaskWait(task->popup_task);
   for (i=0;i<4;i++)
     SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  task1=task->popup_task;
+  task_num=task->popup_task->task_num;
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
 
 //Line
-  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+  while (!TaskValidate(task->popup_task)||task->popup_task->task_num==task_num)
     Yield;
   TaskWait(task->popup_task);
   for (i=0;i<6;i++)
@@ -716,19 +717,19 @@ U0 DoCtrlR1()
 //Color
   while (!TaskValidate(task->popup_task))
     Yield;
-  task1=task->popup_task;
+  task_num=task->popup_task->task_num;
   TaskWait(task->popup_task);
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+  while (!TaskValidate(task->popup_task)||task->popup_task->task_num==task_num)
     Yield;
   TaskWait(task->popup_task);
   for (i=0;i<3;i++)
     SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-  task1=task->popup_task;
+  task_num=task->popup_task->task_num;
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
 
 //Circle
-  while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+  while (!TaskValidate(task->popup_task)||task->popup_task->task_num==task_num)
     Yield;
   TaskWait(task->popup_task);
   for (i=0;i<9;i++)
@@ -1105,8 +1106,6 @@ U0 DoBling()
 {
   CTask *task=SpawnUser;
   XTalkWait(task,"#include \"::/SparrowOS/Demo/Graphics/Bling.CPP.Z\";\n");
-  Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   Sleep(500);
@@ -1488,19 +1487,20 @@ U0 Do()
 
 U0 DoGrModels()
 {
-  CTask *task=SpawnUser,*task1=NULL;
-  I64 i,j;
+  CTask *task=SpawnUser;
+  I64 i,j,task_num=-1;
   XTalkWait(task,"#include \"::/SparrowOS/Apps/GrModels/Run\";\n");
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   PostMsg(task,MSG_KEY_DOWN_UP,CH_ESC,0);
   for (i=0;i<4;i++) {
-    while (task->popup_task==task1 || !TaskValidate(task->popup_task))
+    while (!TaskValidate(task->popup_task)||
+	   task->popup_task->task_num==task_num)
       Yield;
-    task1=task->popup_task;
-    TaskWait(task1);
+    TaskWait(task->popup_task);
+    task_num=task->popup_task->task_num;
     for (j=0;j<=i;j++)
-      SendMsg(task1,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-    SendMsg(task1,MSG_KEY_DOWN_UP,CH_SPACE,0);
+      SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
+    SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   }
   Sleep(1000);
   SendMsg(task,MSG_KEY_DOWN_UP,'n',0);
@@ -2264,7 +2264,6 @@ TS; XTalkWait(task,"TaskRep;Sleep(1000);\n");
 U0 OSTestSuite()
 {
 TSStart;
-
 TS; DoSpaceShip;
 TS; DoBlackDiamond;
 TS; if (IsDrvWritable(':')) DoEagleDive;
@@ -2282,7 +2281,7 @@ TS; DoBigGuns;
 TS; DoBirdLand;
 TS; DoTimeOut;
 TS; DoPilgrims;
-TS; DoSpan;
+TS; if (!sys_heap_init_flag) /* FloodFill */ DoSpan;
 TS; DoRawHide;
 TS; DoKeepAway;
 TS; DoAfterEgypt;
@@ -2292,7 +2291,6 @@ TS; DoBomber;
 TS; DoTheDead;
 TS; DoChess;
 TS; DoChessNet;
-
 TS; DoMPAdd;
 TS; DoPrimes;
 TS; DoPalindrome;
@@ -2306,7 +2304,6 @@ TS; if (mp_cnt>1) DoLock;
 TS; if (mp_cnt>1) DoLayersSpawn;
 TS; if (mp_cnt>1) DoInterrupts;
 TS; if (mp_cnt>1) DoSort;
-
 TS; DoSpritePlot;
 TS; DoSpritePlot3D;
 TS; DoSpritePut;
@@ -2318,7 +2315,7 @@ TS; DoDotNet;
 TS; DoLowPassFilter;
 TS; DoMathAudioDemo;
 TS; DoLines;
-TS; DoBounce;
+TS; if (!IsSysDeterministic) DoBounce;
 TS; DoMsgLoop;
 TS; DoASCIIOrgan;
 TS; DoMorseCode;
@@ -2411,7 +2408,6 @@ TS; DoDivByHand;
 TS; DoBuzzFizz;
 TS; DoPageTableEntries2;
 DoReps;
-
 TSEnd;
 }
 

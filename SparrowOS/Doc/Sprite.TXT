@@ -1,6 +1,6 @@
-A CSprite, is an ordered list of the [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,2]
-following elements, created with <CTRL-R>
-.  Normally, they are packed together in a list and the addr of the first is 
+A CSprite, is an ordered lst of the [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,15]
+following elements, created with <CTRL-R>. 
+ Normally, they are packed together in a lst and the addr of the first is 
 passed to routines.
 
 See [::/SparrowOS/Demo/Graphics/SpritePlot.CPP.Z,1]

@@ -580,6 +580,7 @@ sib:
 	case IC_CLFLUSH:
 	case IC_PAUSE:
 	case IC_GET_FLAGS:
+	case IC_CARRY:
 	case IC_RDTSC:
 	case IC_HPET:
 	case IC_SET_FLAGS:

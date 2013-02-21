@@ -97,8 +97,7 @@ public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
   if (!(tempm=FilesFind(src_files_find_mask)))
     return FALSE;
   if (IsDir(dst_files_find_mask)) {
-    fa=FileAccessNew(dst_files_find_mask,TRUE);
-    if (fa) {
+    if (fa=FileAccessNew(dst_files_find_mask,TRUE)) {
       while (tempm) {
 	tempm1=tempm->next;
 	if (!(tempm->attr & _ATTR_DIR)) {
@@ -163,17 +162,13 @@ public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
   }
   Free(st1);
   Free(st2);
-
-  fa=FileAccessNew(src_files_find_mask,TRUE);
-  if (fa) {
+  if (fa=FileAccessNew(src_files_find_mask,TRUE)) {
     tempm=SysFilesFind(fa->mask,1<<FUf_RECURSE);
     st1=CurDir;
     FileAccessDel(fa);
     i1=StrLen(st1);
     if (i1==3) i1--;
-
-    fa=FileAccessNew(dst_files_find_mask,TRUE,TRUE);
-    if (fa) {
+    if (fa=FileAccessNew(dst_files_find_mask,TRUE,TRUE)) {
       st2=CurDir;
       i2=StrLen(st2);
       if (i2==3) i2--;
@@ -181,7 +176,7 @@ public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
       FileAccessDel(fa);
       Free(st2);
     }
-    CDirListDel(tempm);
+    CDirLstDel(tempm);
     Free(st1);
   }
   return result;
@@ -230,7 +225,7 @@ public U0 DelTree(U8 *files_find_mask,U8 *fu_flags=NULL)
     DelTreeFiles(FilesFind(files_find_mask,fuf_flags));
 }
 
-U0 TouchFile(U8 *filename,U8 *attr,CDate ltdt=0) //Just one file
+U0 TouchFile(U8 *filename,U8 *attr,CDate spdt=0) //Just one file
 {
   CPrt *p=Drv2Prt(*filename);
   CDirEntry de;
@@ -245,8 +240,8 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate ltdt=0) //Just one file
       if (!*cur_dir)
 	StrCpy(cur_dir,"/");
       GetFFlags(&de.attr,Define("ST_FILE_ATTRS"),attr);
-      if (ltdt)
-	de.datetime=ltdt;
+      if (spdt)
+	de.datetime=spdt;
       else
 	de.datetime=GetCurTimeCDate;
       CDirNew(p,cur_dir,&de,FALSE);
@@ -254,7 +249,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate ltdt=0) //Just one file
   } else PutDefineErr("ST_FILE_NOT_FOUND");
 }
 
-U0 TouchList(CDirEntry *tempm1,U8 *attr,CDate ltdt=0)
+U0 TouchLst(CDirEntry *tempm1,U8 *attr,CDate spdt=0)
 {
   CDirEntry *tempm2;
   while (tempm1) {
@@ -262,25 +257,25 @@ U0 TouchList(CDirEntry *tempm1,U8 *attr,CDate ltdt=0)
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub) {
 	"%S%s\n","ST_SCANNING_DIR",tempm1->full_name;
-	TouchList(tempm1->sub,attr,ltdt);
+	TouchLst(tempm1->sub,attr,spdt);
       }
     } else
-      TouchFile(tempm1->full_name,attr,ltdt);
+      TouchFile(tempm1->full_name,attr,spdt);
     CDirEntryDel(tempm1);
     tempm1=tempm2;
   }
 }
 
-public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate ltdt=0)
+public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate spdt=0)
 {
 //Attr "+?" =show
 //     "+T" =resident
   I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  TouchList(FilesFind(files_find_mask,fuf_flags),attr,ltdt);
+  TouchLst(FilesFind(files_find_mask,fuf_flags),attr,spdt);
 }
 
-I64 FFList(CDirEntry *tempm1)
+I64 FFLst(CDirEntry *tempm1)
 {
   I64 cnt=0;
   CDirEntry *tempm2;
@@ -289,7 +284,7 @@ I64 FFList(CDirEntry *tempm1)
     tempm2=tempm1->next;
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub)
-	cnt+=FFList(tempm1->sub);
+	cnt+=FFLst(tempm1->sub);
     } else {
       PutFileLink(tempm1->full_name);
       NewLine;
@@ -307,7 +302,7 @@ public I64 FF(U8 *files_find_mask,U8 *fu_flags=NULL)
   I64 cnt=0,fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  cnt+=FFList(FilesFind(files_find_mask,fuf_flags));
+  cnt+=FFLst(FilesFind(files_find_mask,fuf_flags));
   return cnt;
 }
 
@@ -418,7 +413,7 @@ public I64 TreeSize(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL,I64 rou
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   if (tempm1=FilesFind(files_find_mask,fuf_flags)) {
     result=TreeSizeFiles(tempm1,round_to);
-    CDirListDel(tempm1);
+    CDirLstDel(tempm1);
   }
   return result;
 }

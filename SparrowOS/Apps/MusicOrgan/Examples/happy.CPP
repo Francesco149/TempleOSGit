@@ -25,7 +25,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
   if (dt>16)
     theta=(dt-16)*2*pi;
-  CSpritePlotRotZ3b(dc,x+SUN_X-32,y+SUN_Y,0,__BIN_1,theta);
+  SpritePlotRotZ3b(dc,x+SUN_X-32,y+SUN_Y,0,__BIN_1,theta);
 }
 
 

@@ -154,6 +154,7 @@ public _intern IC_PUSH U0 Push(I64 d);
 public _intern IC_CLD U0 Cld();
 public _intern IC_STD U0 Std();
 public _intern IC_GET_FLAGS I64 GetFlags();
+public _intern IC_CARRY I64 Carry();
 public _intern IC_SET_FLAGS U0 SetFlags(I64 d);
 public _intern IC_GET_STK_PTR U8 *GetStkPtr();
 public _intern IC_SET_STK_PTR U0 SetStkPtr(U8 *d);
@@ -171,7 +172,7 @@ public _extern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d);
 public _extern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d);
 
 //Model Specific REgisters
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,469] MSRs
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,566] MSRs
 public _extern _SET_MSR U0 SetMSR(I64 model_specific_reg,I64 val);
 
 #help_index "Processor/Cache;Memory/Cache"
@@ -183,7 +184,7 @@ public _intern IC_CLFLUSH U0 CLFlush(U8 *a);
 #help_file "::/SparrowOS/Doc/MultiCore"
 _extern _SET_GS_BASE U0 SetGs(CCPU *c);
 public _extern SYS_MP_CNT I64 mp_cnt;
-_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/SparrowOS/OSMain/MultiProc.CPP.Z,395] MPStart
+_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/SparrowOS/OSMain/MultiProc.CPP.Z,400] MPStart
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_TEMP_CPU0_STRUCT CCPU sys_temp_cpu0_struct;
 public _extern SYS_CPU_STRUCTS	 CCPU *cpu_structs;
@@ -289,7 +290,7 @@ public _extern _CALL I64 Call(U8 *s);
 public _extern _CALLIND I64 CallInd(/*argpop*/I64 (*fp_add)(...),...);
 
 //This is just an array of ptrs to funs.
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,546] Extern Num Definitions
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,643] Extern Num Definitions
 public _extern SYS_EXTERN_TABLE /*argpop*/ I64 (**ext)(...);
 //Can have any fixed number of arguments.
 public _extern _CALLEXTNUM I64 CallExtNum(I64 num,...);

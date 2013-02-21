@@ -10,12 +10,10 @@ public extern I64 SysTimerRead();
 extern U8 *sys_acct;
 extern CTask *sys_winmgr_task,*sys_task_being_screen_updated;
 public extern CTask *adam_task;
-public extern I64 sys_num_spawned_users;
+public extern I64 sys_num_spawned_users,sys_num_task_inits;
 extern U0 TaskFinishOffDying();
 public _extern SYS_SAVE_CONTEXT_YIELD U0 Yield();
 public extern U0 TSSBusy(I64 tr,Bool val=OFF);
-_extern SYS_IDLE_START U8 sys_idle_start;
-_extern SYS_IDLE_END	U8 sys_idle_end;
 _extern SYS_TASK_END_NOW U0 TaskEndNow();
 
 
@@ -58,8 +56,9 @@ public extern U0 (*fp_snd_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num);
 
 #help_index "Processor"
 extern U8 *sys_fault_handlers_code;
-public extern U8 *IntEntryGet(I64 irq,I64 cpu_num=-1);
-public extern U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,I64 type=IDTET_IRQ,I64 dpl=0);
+extern I64 *sys_idt;
+public extern U8 *IntEntryGet(I64 irq);
+public extern U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0);
 extern CPCIDev sys_pci_dev_root;
 extern CMemRange sys_mem32_dev_root;
 
@@ -179,15 +178,15 @@ public extern Bool YorN();
 public extern I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE);
 public extern I64 KbdMouseEvtTime();
 
-//Gets [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1454] Flags
+//Gets [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1550] Flags
 public extern U8 *MGetS(I64 flags=0);
 extern U8  *(*fp_mgets)(I64 flags=0);
 extern U8 *GetFJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *GetF(U8 *src,U8 *fmt,...);
 
 #help_index "Char/Lists"
-public extern U8 *ListEntryPt(I64 entry_num, U8 *lst);
-public extern I64 ListEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL);
+public extern U8 *LstEntryPt(I64 entry_num, U8 *lst);
+public extern I64 LstEntryMatch(U8 *src, U8 *lst,I64 flags=0,I64 *_ambiguity_overkill=NULL);
 
 #help_index "Char/Operations"
 public extern I64 StrOcc(U8 *src, U8 ch);
@@ -210,13 +209,13 @@ public extern U8 *MSPrintF(U8 *fmt,...);
 #help_index "Char/Define"
 #help_file "::/SparrowOS/Doc/Define"
 public extern CHashDefineStr *DefineLoad(U8 *name,U8 *st,Bool replace=FALSE);
-public extern CHashDefineStr *DefineListLoad(U8 *name,U8 *st,Bool replace=FALSE);
 public extern U0 DefinePrintF(U8 *name,U8 *src,...);
 public extern U8 *Define(U8 *name);
-public extern U8 *DefineSub(I64 sub,U8 *name);
-public extern I64 DefineSubCnt(U8 *name);
 public extern U0 PutDefine(U8 *name);
 #help_index "Char/Define;Char/Lists"
+public extern CHashDefineStr *DefineLstLoad(U8 *name,U8 *st,Bool replace=FALSE);
+public extern U8 *DefineSub(I64 sub,U8 *name);
+public extern I64 DefineSubCnt(U8 *name);
 public extern I64 DefineMatch(U8 *src,U8 *lst_name,I64 flags=0,I64 *_ambiguity_overkill=NULL);
 
 #help_index "Memory"
@@ -241,10 +240,10 @@ public extern U8 *CAlloc(I64 size,CTask *mem_task=NULL);
 public extern U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL);
 public extern U8 *MAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0);
 public extern U8 *CAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0);
-public extern U0 LinkedListDel(U8 **_list);
-public extern U8 *LinkedListCopy(U8 **_list,CTask *mem_task=NULL);
-public extern I64 LinkedListCnt(U8 **_list);
-public extern I64 LinkedListSize(U8 **_list);
+public extern U0 LinkedLstDel(U8 **_lst);
+public extern U8 *LinkedLstCopy(U8 **_lst,CTask *mem_task=NULL);
+public extern I64 LinkedLstCnt(U8 **_lst);
+public extern I64 LinkedLstSize(U8 **_lst);
 public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
 #help_index "Memory;Circular Queue"
 public extern U0 QueDel(CQue *root,Bool querem=FALSE);
@@ -406,14 +405,14 @@ public extern U16 mon_start_days1[12];
 public extern U16 mon_start_days2[12];
 public extern I64 YearStartDate(I64 year);
 public extern CDate CDateStruct2CDate(CDateStruct *_ds);
-public extern U0 CDate2CDateStruct(CDateStruct *_ds,CDate ltdt);
+public extern U0 CDate2CDateStruct(CDateStruct *_ds,CDate spdt);
 public extern I64 FirstDayOfMon(I64 i);
 public extern I64 LastDayOfMon(I64 i);
 public extern I64 FirstDayOfYear(I64 i);
 public extern I64 LastDayOfYear(I64 i);
 public extern I64 DayOfWeek(I64 i);
 public extern CDate GetCurTimeCDate();
-public extern U0 CDate2ISO1(CISO1Date *dst,CDate ltdt);
+public extern U0 CDate2ISO1(CISO1Date *dst,CDate spdt);
 
 #help_index "File/System"
 extern U8 sys_temp_filename[136];
@@ -489,7 +488,6 @@ extern I64 Name2ParentDirCluster(CPrt *p,U8 *dirname);
 #help_index "File/Program Routines/CFile"
 public extern CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0);
 public extern I64 FSize(CFile *f);
-public extern U0 FSync(CFile *f);
 public extern U0 FClose(CFile *f);
 public extern Bool FRBlks(CFile *f,U8 *buf,I64 blk=FFB_NEXT_BLK,I64 cnt=1);
 public extern Bool FWBlks(CFile *f,U8 *buf,I64 blk=FFB_NEXT_BLK,I64 cnt=1);
@@ -522,15 +520,15 @@ public extern Bool IsDrvWritable(U8 drv_let=0);
 extern CDirEntry *CdDir(CDirEntry *tempm,U8 *abs_name);
 
 #help_index "File/Program Routines/Utils"
-public extern U0 GetFFlags(U8 *f,U8 *list,U8 *st);
-public extern U8 *SPrintFFlags(U8 *dst,U8 *list,I64 flags);
+public extern U0 GetFFlags(U8 *f,U8 *lst,U8 *st);
+public extern U8 *SPrintFFlags(U8 *dst,U8 *lst,I64 flags);
 public extern U0 FileAccessDel(CFileAccess *fa);
 public extern CFileAccess *FileAccessNew(U8 *mask,Bool make_mask=FALSE,Bool make_dirs=FALSE);
 extern I64 FileAttr(U8 *name,I64 old_attr=0);
 public extern U0 CDirEntryDel(CDirEntry *tempm);
 public extern U0 CDirEntryDel2(CDirEntry *tempm);
-public extern U0 CDirListDel(CDirEntry *tempm);
-public extern U0 CDirListDel2(CDirEntry *tempm);
+public extern U0 CDirLstDel(CDirEntry *tempm);
+public extern U0 CDirLstDel2(CDirEntry *tempm);
 public extern Bool CDirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempm,Bool free_old_chain=TRUE);
 
 #help_index "File/Program Routines"
@@ -542,7 +540,7 @@ public extern Bool FileFind(U8 *filename,CDirEntry *de=NULL,
 public extern U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE);
 public extern U8 *TextFileRead(U8 *filename,I64 *_attr=NULL);
 public extern I64 FileWrite(U8 *filename,U8 *fbuf,
-   I64 size,CDate ltdt=0,I64 attr=0,Bool raw=FALSE);
+   I64 size,CDate spdt=0,I64 attr=0,Bool raw=FALSE);
 public extern U0 TextFileWrite(U8 *filename,U8 *st,I64 attr=0);
 
 #help_index "Install;File/Install Related;File/Cmd Line (Typically);Cmd Line (Typically);"
@@ -572,7 +570,7 @@ public _extern _HASH_REPLACE U0 HashReplace(CHash *temph,CHashTable *table,
 public _extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
 					I64 instance=1);//instance must match temph's
 public _extern _EXT_FIND U8 *ExtFind(U8 *st,I64 instance=1);
-public extern CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 u0=0,I64 u8=0,I64 u16=0,CTask *task=NULL);
+public extern CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 val=0,I64 u8=0,I64 u16=0,CTask *task=NULL);
 public extern I64 HashTypeNum(CHash *temph);
 public extern CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL);
 public extern U0 HashDel(CHashSrcSym *temph);
@@ -582,8 +580,8 @@ extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
 #help_index "Hash/Named Frame"
 #help_file "::/SparrowOS/Doc/NamedFrame"
 public extern I64 NamedFramePtr(U8 *name,CTask *task=NULL);
-public extern CHashGeneric *NamedFramePtrAdd(U8 *name,I64 u0,CTask *task=NULL);
-public extern I64 NamedFramePtrSet(U8 *name,I64 u0,CTask *task=NULL);
+public extern CHashGeneric *NamedFramePtrAdd(U8 *name,I64 val,CTask *task=NULL);
+public extern I64 NamedFramePtrSet(U8 *name,I64 val,CTask *task=NULL);
 public extern I64 NamedFramePtrDel(U8 *name,CTask *task=NULL);
 
 #help_index "Compiler;Cmd Line (Typically)"
@@ -645,6 +643,7 @@ public _extern C32_ECX U32 c32_ecx;
 public _extern C32_EDX U32 c32_edx;
 public _extern C32_ESI U32 c32_esi;
 public _extern C32_EDI U32 c32_edi;
+public _extern C32_EFLAGS U32 c32_eflags;
 //Not reentrant
 public _extern _FAR_CALL32 Bool FarCall32(U0 (*fp_add)());
 

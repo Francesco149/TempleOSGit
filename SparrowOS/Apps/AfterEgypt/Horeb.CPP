@@ -74,9 +74,9 @@ __BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_5};
 
 class Obj
 {
-  I32 x,y,z;
+  F64 x,y,z,dx,dy,dz,theta;
   I64 x1,y1,z1;
-  Bool sym,pad[3];
+  Bool sym,moving,pad[2];
   U8 *img;
 } objs[NUM_OBJS];
 
@@ -88,7 +88,7 @@ I64 ObjCompare(Obj *o1,Obj *o2)
 
 U0 DrawHoreb(CTask *task,CDC *dc)
 {
-  I64 i,j,x,y,z,
+  I64 i,j,x,y,z,dx,dy,dz,
       w=task->win_pixel_width,
       h=task->win_pixel_height,r[16],
       cx=w>>1,cy=h>>1;
@@ -115,6 +115,14 @@ U0 DrawHoreb(CTask *task,CDC *dc)
     o_sort[i]=tempo;
     tempo->x1=tempo->x+vx; tempo->y1=tempo->y; tempo->z1=tempo->z+vz;
     GrRot(r,&tempo->x1,&tempo->y1,&tempo->z1);
+    if (tempo->moving) {
+      dx=100*tempo->dx; dy=100*tempo->dy; dz=100*tempo->dz;
+      GrRot(r,&dx,&dy,&dz);
+      if (dx<0)
+	tempo->sym=TRUE;
+      else
+	tempo->sym=FALSE;
+    }
   }
   QSortI64(o_sort,NUM_OBJS,&ObjCompare);
 
@@ -130,7 +138,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,s*tempo->x1+cx,s*tempo->y1+h,s*tempo->x1+cx,s*tempo->y1+h+10);
     }
-    CSpritePlot3b(dc,s*tempo->x1+cx,s*tempo->y1+h,0,tempo->img);
+    SpritePlot3b(dc,s*tempo->x1+cx,s*tempo->y1+h,0,tempo->img);
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     if (o_sort[i]==objs) { //draw burning bush
       dc->x=s*tempo->x1+cx;
@@ -158,17 +166,42 @@ U0 DrawHoreb(CTask *task,CDC *dc)
   }
 }
 
+U0 AnimateTask(I64)
+{ //Preemption is off after Spawn
+  I64 i;
+  F64 t;
+  Obj *tempo;
+  while (TRUE) {
+    t=tP(Fs->parent_task);
+    for (i=0;i<NUM_OBJS;i++) {
+      tempo=&objs[i];
+      if (tempo->moving) {
+	tempo->x+=tempo->dx;
+	tempo->y+=tempo->dy;
+	tempo->z+=tempo->dz;
+	tempo->dx=5*Cos(0.5*t+tempo->theta);
+	tempo->dz=5*Sin(0.5*t+tempo->theta);
+      }
+    }
+    Sleep(20);
+  }
+}
+
 U0 Init()
 {
   Obj *tempo;
   I64 i;
+  MemSet(objs,0,sizeof(objs));
   for (i=0;i<NUM_OBJS;i++) {
     tempo=&objs[i];
     tempo->x=RandU32&0x1FFF-0x1000;
     tempo->y=0;
     tempo->z=RandU32&0x1FFF-0x1000;
+    tempo->theta=2*pi*Rand;
     tempo->sym=RandU16&1;
     tempo->img=imgs[i%NUM_WEIGHED_IMGS];
+    if (i%NUM_WEIGHED_IMGS==NUM_WEIGHED_IMGS-1)
+      tempo->moving=TRUE; //sheep
   }
   vx=0; vz=0; theta=0;
   horeb_done=FALSE;
@@ -225,6 +258,7 @@ U0 Horeb()
     NewLine(30);
     PutBibleVerse("Exodus,3:1",21);
     Init;
+    Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
     Fs->draw_it=&DrawHoreb;
     while (!horeb_done) {
       while (ScanKey(&ch,&sc))

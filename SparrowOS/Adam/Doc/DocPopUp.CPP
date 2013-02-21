@@ -297,7 +297,7 @@ public Bool DocFormDo(U8 *D,U8 *class_name,
 //Supply a class name that has fmtstr definitions
 //and this routine will allow user input.
 {
-  CMemberList *ml;
+  CMemberLst *ml;
   CDocEntry *doc_e;
   U8 *fmtstr;
   CHashClass *tempc;
@@ -311,7 +311,7 @@ public Bool DocFormDo(U8 *D,U8 *class_name,
   doc->flags|=DOCF_OVERSTRIKE|DOCF_FORM;
   if (doc_flags&DOF_MIN_SIZE)
     doc->flags|=DOCF_MIN_SIZE;
-  ml=tempc->member_list;
+  ml=tempc->member_lst;
   while (ml) {
     if (fmtstr=MemberMetaData("fmtstr",ml)) {
       doc_e=DocPutS(doc,fmtstr);
@@ -509,12 +509,12 @@ public Bool PopUpCd()
 }
 
 #help_index "Doc/Input"
-public U8 *PopUpPickListEntry(U8 *lst)
+public U8 *PopUpPickLstEntry(U8 *lst)
 {
   I64 i=0;
   CDoc *doc=DocNew;
   while (*lst) {
-    if (*lst=='@') { //Check for '@' alias list entry
+    if (*lst=='@') { //Check for '@' alias lst entry
       i--;
       lst++;
     }
@@ -530,7 +530,7 @@ public U8 *PopUpPickListEntry(U8 *lst)
 
 public U8 *PopUpPickDefineSub(U8 *st)
 {
-  return PopUpPickListEntry(Define(st));
+  return PopUpPickLstEntry(Define(st));
 }
 
 public I64 PopUp1(U8 *b1,I64 n1,U8 *header=NULL,U8 *footer=NULL)

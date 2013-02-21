@@ -5,7 +5,7 @@
   read-modify-write statements.
   It will generate invalid instructions
   if you misuse it and it will crash.
-  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U() to see what code was generated.
+  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,862] U() to see what code was generated.
 */
 
 #define CNT	0x1000000

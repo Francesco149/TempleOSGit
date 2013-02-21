@@ -2,7 +2,7 @@
 //else used in low RAM.
 //See [::/SparrowOS/Doc/Mem.TXT.Z,1] ::/SparrowOS/Doc/Mem.TXT.Z.
 
-//At least [C:/SparrowOS/OSMain/Adam1a.HPP.Z,495] DFT_CACHE_LINE_WIDTH alignment.
+//At least [C:/SparrowOS/OSMain/Adam1a.HPP.Z,592] DFT_CACHE_LINE_WIDTH alignment.
 #define BOOT_RAM_BASE		0x07C00
 #define BOOT_RAM_LIMIT		0x80000
 

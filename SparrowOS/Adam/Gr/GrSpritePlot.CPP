@@ -1,17 +1,17 @@
 #help_index "Graphics/CSprite"
 /*
-[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprites are stored as a sequence of var
+[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,60] CSprites are stored as a sequence of var
 length operations with a 1-byte type leading
-each operation.  The types available are listed
-here, [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,6] GRST_PT.  They are stored, one after another,
-in a chunk of memory terminated by a type [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,2] GRST_END.
+each operation.  The types available are lsted
+here, [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,19] GRST_PT.  They are stored, one after another,
+in a chunk of memory terminated by a type [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,15] GRST_END.
 
-[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] CSpritePlot3() and [C:/SparrowOS/Adam/Gr/CSpriteVect.CPP.Z,207] CSpriteVect() shows how the
+[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3() and [C:/SparrowOS/Adam/Gr/CSpriteVect.CPP.Z,207] SpriteVect() shows how the
 unions are used.  It's kind-of a mess using a union.
 
-[C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,119] CSpriteSize() will return the size of a single
-operation, while [C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,119] CSpriteSize() with an 's' will
-return the size of an entire list.  Look at
+[C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,119] SpriteSize() will return the size of a single
+operation, while [C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,119] SpriteSize() with an 's' will
+return the size of an entire lst.  Look at
 [C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,5] gr_sprite_base_size.
 
 To get familiar, type <CTRL-R> on sprite in
@@ -24,10 +24,10 @@ See ::/SparrowOS/Apps/GrModels
 `
  for an example of
 making CSprite by hand.  Those are type
-[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,31] GRST_MESH, one of the most complicated.
+[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,44] GRST_MESH, one of the most complicated.
 */
 
-public U0 CSpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
+public U0 SpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 {
   CSprite *tempg=elems-offset(CSprite.start);
   I64 i,j,k,x1,y1,z1,x2,y2,
@@ -283,7 +283,7 @@ public U0 CSpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	break;
     }
     if (just_one) break;
-    tempg(U8 *)+=CSpriteElemSize(tempg);
+    tempg(U8 *)+=SpriteElemSize(tempg);
   }
   MemCpy(&dc->sym,&old_sym,sizeof(CGrSym));
   dc->color=old_color;
@@ -292,15 +292,18 @@ public U0 CSpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	    old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
 }
 
-public U0 CSpritePlot3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
+public U0 SpritePlot3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
 {
-  I64 old_x=dc->x,old_y=dc->y,old_z=dc->z;
+  I64 old_x=dc->x,old_y=dc->y,old_z=dc->z,
+      old_flags=dc->flags&DCF_TRANSFORMATION;
   dc->x=x; dc->y=y; dc->z=z;
-  CSpritePlot3(dc,0,0,0,elems);
+  dc->flags|=DCF_TRANSFORMATION;
+  SpritePlot3(dc,0,0,0,elems);
   dc->x=old_x; dc->y=old_y; dc->z=old_z;
+  dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
-public U0 CSpritePlotRotMat3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
+public U0 SpritePlotRotMat3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
 {
   I64 *old_r=dc->r,old_m[16],
       old_flags=dc->flags&DCF_TRANSFORMATION;
@@ -308,40 +311,40 @@ public U0 CSpritePlotRotMat3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
   dc->flags|=DCF_TRANSFORMATION;
   GrAddTranslation(m,x,y,z);
   dc->r=GrMulMat(old_r,m);
-  CSpritePlot3(dc,0,0,0,elems);
+  SpritePlot3(dc,0,0,0,elems);
   Free(dc->r);
   dc->r=old_r;
   MemCpy(m,old_m,16*sizeof(I64));
   dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
-public U0 CSpritePlotRotX3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
+public U0 SpritePlotRotX3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
 {
   I64 *r=GrRotX(phi);
-  CSpritePlotRotMat3b(dc,x,y,z,elems,r);
+  SpritePlotRotMat3b(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 CSpritePlotRotY3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
+public U0 SpritePlotRotY3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
 {
   I64 *r=GrRotY(omega);
-  CSpritePlotRotMat3b(dc,x,y,z,elems,r);
+  SpritePlotRotMat3b(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 CSpritePlotRotZ3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
+public U0 SpritePlotRotZ3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
 {
   I64 *r=GrRotZ(theta);
-  CSpritePlotRotMat3b(dc,x,y,z,elems,r);
+  SpritePlotRotMat3b(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 CSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
+public U0 SpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
 				   I64 *min_y=NULL,I64 *max_y=NULL)
 { //Ignores flood fills.
   CDC *dc=DCNew(DCT_COLOR8,MAX_I32,MAX_I32,Fs,TRUE);
   DCExtentsInit(dc);
-  CSpritePlot3(dc,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
+  SpritePlot3(dc,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
   if (dc->min_x<=dc->max_x) {
     dc->min_x-=MAX_I32/2;
     dc->max_x-=MAX_I32/2;
@@ -357,24 +360,24 @@ public U0 CSpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
   DCDel(dc);
 }
 
-public CDC *CSprite2DC(U8 *elems,I64 type=DCT_COLOR8)
+public CDC *Sprite2DC(U8 *elems,I64 type=DCT_COLOR8)
 {
   CDC *result;
   I64 min_x,max_x,min_y,max_y;
-  CSpriteExtents(elems,&min_x,&max_x,&min_y,&max_y);
+  SpriteExtents(elems,&min_x,&max_x,&min_y,&max_y);
   result=DCNew(type,max_x-min_x+1,max_y-min_y+1);
-  CSpritePlot3(result,-min_x,-min_y,0,elems);
+  SpritePlot3(result,-min_x,-min_y,0,elems);
   return result;
 }
 
-public U8 *CSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
+public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 {
 //The two CSprite should be identical
 //except for points shifted around.
 //t ranges from 0.0 to 1.0
 //
 //See [::/SparrowOS/Demo/Graphics/Golf.CPP.Z,1] ::/SparrowOS/Demo/Graphics/Golf.CPP.Z for an example.
-  I64 i=CSpriteSize(elems0),
+  I64 i=SpriteSize(elems0),
       t1=gr_scale*t,t0=gr_scale-t1;
   I32 *ptr0,*ptr1,*ptrr;
   CD3I32 *p0,*p1,*pr;
@@ -471,7 +474,7 @@ public U8 *CSpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 	}
 	break;
     }
-    i=CSpriteElemSize(tempg0);
+    i=SpriteElemSize(tempg0);
     tempg0(U8 *)+=i;
     tempg1(U8 *)+=i;
     tempgr(U8 *)+=i;
@@ -490,7 +493,7 @@ public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *txt=NULL)
   CDocBin *tempb;
   if (!doc && !(doc=DocCur)) return NULL;
   unlock=DocLock(doc);
-  size=CSpriteSize(elems);
+  size=SpriteSize(elems);
   tempb=CAlloc(sizeof(CDocBin),doc->mem_task);
   tempb->type=DOCBT_CSPRITE;
   tempb->size=size;

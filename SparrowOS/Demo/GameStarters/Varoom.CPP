@@ -175,7 +175,7 @@ U0 MPUpdateWin(CDC *dc2)
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	GrSetSymmetry(dc,s*x+cx,s*y+h,s*x+cx,s*y+h+10);
       }
-      CSpritePlot3b(dc,s*x+cx,s*y+h,z,b[i].img);
+      SpritePlot3b(dc,s*x+cx,s*y+h,z,b[i].img);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
   }

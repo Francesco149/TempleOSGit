@@ -43,7 +43,7 @@ U0 SoundEffectTask(CSoundEffectFrame *ns)
   }
 }
 
-public U0 Noise(I64 mS,F64 min_freq,F64 max_freq,I64 waveform=WF_NOISE)
+public CTask *Noise(I64 mS,F64 min_freq,F64 max_freq,I64 waveform=WF_NOISE)
 {
   CSoundEffectFrame *ns=MAlloc(sizeof(CSoundEffectFrame));
   ns->type=SE_NOISE;
@@ -52,10 +52,10 @@ public U0 Noise(I64 mS,F64 min_freq,F64 max_freq,I64 waveform=WF_NOISE)
   ns->freq1=min_freq;
   ns->freq2=max_freq;
   music_mute++;
-  Spawn(&SoundEffectTask,ns,"Noise",Fs);
+  return Spawn(&SoundEffectTask,ns,"Noise",Fs);
 }
 
-public U0 Sweep(I64 mS,F64 freq1,F64 freq2,I64 waveform=WF_SINE)
+public CTask *Sweep(I64 mS,F64 freq1,F64 freq2,I64 waveform=WF_SINE)
 {
   CSoundEffectFrame *ns=MAlloc(sizeof(CSoundEffectFrame));
   ns->type=SE_SWEEP;
@@ -64,5 +64,5 @@ public U0 Sweep(I64 mS,F64 freq1,F64 freq2,I64 waveform=WF_SINE)
   ns->freq1=freq1;
   ns->freq2=freq2;
   music_mute++;
-  Spawn(&SoundEffectTask,ns,"Noise",Fs);
+  return Spawn(&SoundEffectTask,ns,"Noise",Fs);
 }

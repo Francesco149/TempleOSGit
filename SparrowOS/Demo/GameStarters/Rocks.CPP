@@ -196,14 +196,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  case OT_SHIP:
 	    if (bounce) {
 	      if (cmd_code==CMD_THRUST && RandU16&0x8000)
-		CSpritePlotRotZ3b(dc,x,y,0,__BIN_2,o_state[i].theta);
+		SpritePlotRotZ3b(dc,x,y,0,__BIN_2,o_state[i].theta);
 	      else
-		CSpritePlotRotZ3b(dc,x,y,0,__BIN_1,o_state[i].theta);
+		SpritePlotRotZ3b(dc,x,y,0,__BIN_1,o_state[i].theta);
 	    } else {
 	      if (cmd_code==CMD_THRUST && RandU16&0x8000)
-		CSpritePlotRotZ3b(dc,x,y,0,__BIN_4,o_state[i].theta);
+		SpritePlotRotZ3b(dc,x,y,0,__BIN_4,o_state[i].theta);
 	      else
-		CSpritePlotRotZ3b(dc,x,y,0,__BIN_3,o_state[i].theta);
+		SpritePlotRotZ3b(dc,x,y,0,__BIN_3,o_state[i].theta);
 	    }
 	    break;
 	  case OT_BULLET:
@@ -212,7 +212,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  case OT_MEDIUM_ROCK:
 	  case OT_LARGE_ROCK:
 	  case OT_CARGO:
-	    CSpritePlotRotZ3b(dc,x,y,0,objs[i].img,o_state[i].theta);
+	    SpritePlotRotZ3b(dc,x,y,0,objs[i].img,o_state[i].theta);
 	    break;
 	}
       }
@@ -512,10 +512,10 @@ U0 CheckCollisions()
 	  d1=objs[i].radius+objs[j].radius;
 	  if (dd<Sqr(d1)) {
 	    dc=DCNew(DCT_COLOR8,64,64,Fs);
-	    CSpritePlotRotZ3b(dc,32,32,0,objs[i].img,o_state[i].theta);
+	    SpritePlotRotZ3b(dc,32,32,0,objs[i].img,o_state[i].theta);
 	    dc->color=ROP_COLLISION;
 	    dc->bkcolor=BLACK;
-	    CSpritePlotRotZ3b(dc,o_state[j].x-o_state[i].x+32,
+	    SpritePlotRotZ3b(dc,o_state[j].x-o_state[i].x+32,
 			       o_state[j].y-o_state[i].y+32,0,
 			       objs[j].img,o_state[j].theta);
 	    if (dc->collision_cnt>0)

@@ -1,7 +1,127 @@
-//8 has words
+//8 has graphics
+
+class CBubble
+{
+  CBubble *next,*last;
+  F64 x,y,dx,dy,radius;
+} root;
+
+F64 t0;
+U64 flags;
+
+#define X	360
+#define Y	52
+
+F64 Windtheta()
+{
+  F64 t=pi*(tMBeat-t0);
+  return Arg(Sin(t/8),1.0+Sin(t/4));
+}
+
+U0 DrawIt(CTask *,CDC *dc)
+{
+  CBubble *tempb;
+  F64 theta;
+
+  if (LBts(&flags,0))
+    return;
+
+  dc->flags|=DCF_TRANSFORMATION;
+  GrRotXEqu(dc->r,pi/4);
+
+  theta=Wrap(pi-Windtheta);
+  GrRotZEqu(dc->r,-pi/2+theta/4);
+
+  dc->color=BLUE;
+  dc->x=X;
+  dc->y=Y;
+  dc->pen_width=2;
+  GrCircle3(dc,0,0,0,10);
+  GrLine3(dc,-10,0,0,-30,0,0);
+
+  tempb=root.next;
+  while (tempb!=&root) {
+    dc->color=LTBLUE;
+    GrCircle(dc,tempb->x,tempb->y,tempb->radius);
+    dc->color=LTGRAY;
+    GrCircle(dc,
+	      tempb->x+0.65*tempb->radius*Cos(5*pi/8),
+	      tempb->y-0.65*tempb->radius*Sin(5*pi/8),
+	      1.0+0.2*tempb->radius);
+    tempb=tempb->next;
+  }
+  LBtr(&flags,0);
+}
+
+U0 AnimateTask(I64)
+{ //Preemption is off after Spawn
+  CTask *task=Fs->parent_task;
+  CBubble *tempb,*tempb1;
+  F64 t_last=tMBeat,dt,tSpawn=0,theta;
+
+  while (TRUE) {
+    dt=tMBeat-t_last;
+    t_last=tMBeat;
+
+    while (LBts(&flags,0))
+      Yield;
+
+    tSpawn+=dt;
+    while (tSpawn>1.0) {
+      tempb=MAlloc(sizeof(CBubble));
+      tempb->x=X;
+      tempb->y=Y;
+      tempb->dx=0;
+      tempb->dy=0;
+      tempb->radius=Rand*6+4;
+      QueIns(tempb,root.last);
+      tSpawn-=Rand;
+    }
+
+    theta=Windtheta;
+    tempb=root.next;
+    while (tempb!=&root) {
+      tempb1=tempb->next;
+
+      tempb->dx+=25*dt*(Rand-0.5);
+      tempb->dy+=25*dt*(Rand-0.5);
+      tempb->x += dt*(20*Cos(theta)+tempb->dx);
+      tempb->y +=-dt*(20*Sin(theta)+tempb->dy);
+
+      if (!(0<=tempb->x<task->win_pixel_width) ||
+	  !(0<=tempb->y<task->win_pixel_height) ) {
+	QueRem(tempb);
+	Free(tempb);
+      }
+
+      tempb=tempb1;
+    }
+
+    LBtr(&flags,0);
+    Sleep(20);
+  }
+}
+
+U0 Init()
+{
+  flags=0;
+  QueInit(&root);
+  t0=tMBeat;
+}
+
+U0 CleanUp()
+{
+  QueDel(&root);
+}
+
 U0 Song()
 {
   CTask *task;
+  SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Preempt(OFF);
+  Init;
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
+  Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   music_tempo= 2.480;
@@ -28,7 +148,8 @@ U0 Song()
   }
   } catch
     CatchAll;
-  Snd(0);
+  SettingsPop;
+  CleanUp;
 }
 
 Song;

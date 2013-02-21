@@ -1,5 +1,5 @@
 //See [D:/SparrowOS/OSMain/OSStart.CPP.Z,2] SYS_BIOS_GR_MODE
-//See [C:/SparrowOS/OSMain/OSEnd.CPP.Z,79] SysGrInit()
+//See [C:/SparrowOS/OSMain/OSEnd.CPP.Z,70] SysGrInit()
 
 //This allows constants to be used
 //instead of vars.

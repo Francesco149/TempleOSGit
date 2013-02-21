@@ -18,9 +18,9 @@ waiting for a certain time or waiting
 on a message and skips it if it's not
 ready.  A task runs until it
 voluntarily yields ctrl with a call
-to [C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield or gets preempted by the
+to [C:/SparrowOS/OSMain/Scheduler.CPP.Z,369] Yield or gets preempted by the
 timer interrupt.  See [C:/SparrowOS/OSMain/Interrupts.CPP.Z,15] SYS_TIMER_HANDLER.
-The timer freqency is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,489] JIFFY_FREQ.  Tasks
+The timer freqency is [C:/SparrowOS/OSMain/Adam1a.HPP.Z,586] JIFFY_FREQ.  Tasks
 can ask not to be preempted with
 [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt(ON/OFF).  Tasks waiting on I/O
 often loop, checking for a stat and
@@ -38,7 +38,7 @@ Each core has it's own circular task
 que.  For AP processors, they have a
 "Seth" task which stays in a loop
 waiting for jobs or requests to spawn
-tasks.  See [C:/SparrowOS/OSMain/MultiProc.CPP.Z,271] MPSethServerTask().
+tasks.  See [C:/SparrowOS/OSMain/MultiProc.CPP.Z,276] MPSethServerTask().
 
 All cores have an idle task.  If the
 scheduler determined an IRQ opportunity
@@ -50,7 +50,6 @@ the idle task(enabling IRQs).
 asm {
 USE64
 // ************************************
-SYS_IDLE_START::
 SYS_SAVE_CONTEXT::
 //OUT:	RSI=FS
 	PUSH	RSI
@@ -92,7 +91,7 @@ It's a little faster.
 	MOV	RAX,U64 CTask.fpu_mmx[RSI]
 	FXSAVE	U64 [RAX]
 
-	MOV	RDX,U64 CTask.bpt_list[RSI]
+	MOV	RDX,U64 CTask.bpt_lst[RSI]
 @@05:	OR	RDX,RDX
 	JZ	@@10
 	MOV	RDI,U64 CBpt.addr[RDX]
@@ -108,7 +107,7 @@ SYS_RESTORE_CONTEXT::
 	XOR	RAX,RAX
 	INC	U64 GS:CCPU.swap_cnter[RAX]
 	MOV	RSI,FS:CTask.addr[RAX]
-	BT	U32 CTask.rflags[RSI],RFLAGS_INTERRUPTS
+	BT	U32 CTask.rflags[RSI],RFLAGf_INT
 	JNC	@@05
 	LOCK	//We will be enabling IRQ's
 	BTS	U32 GS:CCPU.cpu_flags[RAX],CPUf_HAD_IRQ_OPPORTUNITY
@@ -116,7 +115,7 @@ SYS_RESTORE_CONTEXT::
 	BTS	U64 CTask.task_flags[RSI],TASKf_CURRENTLY_RUNNING
 	BT	U64 CTask.task_flags[RSI],TASKf_DISABLE_BPTS
 	JC	@@15
-	MOV	RDX,U64 CTask.bpt_list[RSI]
+	MOV	RDX,U64 CTask.bpt_lst[RSI]
 @@10:	OR	RDX,RDX
 	JZ	@@15
 	MOV	RDI,U64 CBpt.addr[RDX]
@@ -177,6 +176,9 @@ RESTORE_RSI_NO_PREEMPT_TASK:
 	JNE	RESTORE_RSI_TASK_NO_KEY_CHECK
 	JMP	I32 SWAP_IN_SETH_TASK
 
+SYS_RET::
+	RET
+
 SYS_SAVE_CONTEXT_YIELD::
 	PUSHFD
 	PUSH	RAX
@@ -210,7 +212,7 @@ SYS_SAVE_CONTEXT_YIELD::
 @@15:	POP	RSI
 	CALL	SYS_SAVE_CONTEXT
 
-	MOV	EBX,U32 SYS_IDLE_PT
+	MOV	EBX,U32 SYS_RET
 	MOV	U64 CTask.rip[RSI],RBX
 	POP	U64 CTask.rflags[RSI]
 	MOV	U64 CTask.rsp[RSI],RSP
@@ -252,17 +254,13 @@ RESTORE_RSI_TASK_NO_KEY_CHECK:
 	CALL	SET_FS_BASE
 	STI
 	HLT
+SYS_IDLE_PT::
 	CLI
 
 SWAP_IN_SETH_TASK:
 	XOR	RAX,RAX
 	MOV	RSI,GS:CCPU.seth_task[RAX]
 	JMP	I32 RESTORE_RSI_TASK_WITH_KEY_CHECK
-
-SYS_IDLE_PT::
-	RET
-
-SYS_IDLE_END::
 
 HANDLE_SWAP_KEY_EVENT:
 	MOV	RAX,RSI
@@ -369,8 +367,6 @@ FOCUS_RSI_NEXT_USER:
 
 _extern SYS_RESTORE_CONTEXT U0 RestoreContext();
 _extern SYS_SAVE_CONTEXT_YIELD U0 Yield();
-_extern SYS_IDLE_START U8 sys_idle_start;
-_extern SYS_IDLE_END	U8 sys_idle_end;
 _extern SYS_TASK_END_NOW U0 TaskEndNow();
 
 U0 TaskQueIns(CTask *task,CTask *pred=NULL)

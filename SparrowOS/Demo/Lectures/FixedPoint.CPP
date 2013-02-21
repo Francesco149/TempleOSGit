@@ -16,7 +16,7 @@ as integer and lower 32-bits as fraction.
 See [::/SparrowOS/Demo/SubIntAccess.CPP.Z,1] ::/SparrowOS/Demo/SubIntAccess.CPP.Z for how
 to access upper or lower 32-bits.
 
-For a complete list of nonstandard compiler
+For a complete lst of nonstandard compiler
 features, see [::/SparrowOS/Doc/Differences.TXT.Z,1] ::/SparrowOS/Doc/Differences.TXT.Z.
 
 */
@@ -72,7 +72,7 @@ public U64i union I64
   place i into a register, so there is a
   penalty.
 
-For a complete list of nonstandard compiler
+For a complete lst of nonstandard compiler
 features, see [::/SparrowOS/Doc/Differences.TXT.Z,1] ::/SparrowOS/Doc/Differences.TXT.Z.
 
 */

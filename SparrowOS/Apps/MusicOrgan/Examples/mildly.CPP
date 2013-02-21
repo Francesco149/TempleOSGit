@@ -34,11 +34,11 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   F64 y,dt=tMBeat-t0;
   if (dt>=24.0)
-    CSpritePlot3(dc,0,0,0,__BIN_2);
+    SpritePlot3(dc,0,0,0,__BIN_2);
   else {
     y=Sin(2*pi*(tM%1.0-0.5)/1.0);
-    CSpritePlot3(dc,0,5.0*y,0,__BIN_1);
-    CSpritePlot3(dc,0,-5.0*y,0,__BIN_2);
+    SpritePlot3(dc,0,5.0*y,0,__BIN_1);
+    SpritePlot3(dc,0,-5.0*y,0,__BIN_2);
   }
 }
 

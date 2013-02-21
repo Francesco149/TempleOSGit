@@ -18,7 +18,7 @@ AFPmtStr("\n");
 PopUpOk(
 "Now, we're going to edit a file.  Normally,\n"
 "you'll probably left-click on a directory\n"
-"listing to edit a file, but we're going to\n"
+"lsting to edit a file, but we're going to\n"
 "type it on the command line.\n\n"
 "$FG,GREEN$<ENTER>$FG$ to complete the command.\n");
 
@@ -118,7 +118,7 @@ PopUpOk(
 "Explore the $LK,\"DemoIndex\",\"FI:::/SparrowOS/Doc/DemoIndex.TXT.Z\"$.\n"
 "You'll find it on your menu.\n"
 "It's arranged by increasing difficulty.\n"
-"Hit $FG,GREEN$<SPACE BAR>$FG$ on a demo index listing\n"
+"Hit $FG,GREEN$<SPACE BAR>$FG$ on a demo index lsting\n"
 "and $FG,GREEN$<F5>$FG$ to run from the editor.\n"
 );
  

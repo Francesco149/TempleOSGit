@@ -1,5 +1,5 @@
 #help_index "Graphics/CSprite"
-#help_file "::/SparrowOS/Doc/CSprite"
+#help_file "::/SparrowOS/Doc/Sprite"
 
 I64 gr_sprite_base_size[GRST_NUM_TYPES]=
 {
@@ -82,7 +82,7 @@ offset(CSprite.st), //GRST_TEXT_DIAMOND
 };
 
 
-I64 CSpriteElemSize(CSprite *tempg)
+I64 SpriteElemSize(CSprite *tempg)
 {
   I64 i=gr_sprite_base_size[tempg->type];
   switch (tempg->type) {
@@ -116,15 +116,15 @@ I64 CSpriteElemSize(CSprite *tempg)
   return i;
 }
 
-public I64 CSpriteSize(U8 *elems)
+public I64 SpriteSize(U8 *elems)
 {
   CSprite *tempg=elems-offset(CSprite.start),*tempg1=tempg;
   while (tempg->type)
-    tempg(U8 *)+=CSpriteElemSize(tempg);
+    tempg(U8 *)+=SpriteElemSize(tempg);
   return tempg(U8 *)-tempg1(U8 *)+gr_sprite_base_size[GRST_END];
 }
 
-I64 CSpriteTypeMask(U8 *elems)
+I64 SpriteTypeMask(U8 *elems)
 {
   I64 result=0;
   CSprite *tempg=elems-offset(CSprite.start);
@@ -132,7 +132,7 @@ I64 CSpriteTypeMask(U8 *elems)
     if (tempg->type>=GRST_NUM_TYPES)
       return 1<<GRST_NUM_TYPES;
     Bts(&result,tempg->type);
-    tempg(U8 *)+=CSpriteElemSize(tempg);
+    tempg(U8 *)+=SpriteElemSize(tempg);
   }
   return result;
 }
@@ -167,7 +167,7 @@ public U8 *DC2Sprite(CDC *tempb)
   return tempg(U8 *)+offset(CSprite.start);
 }
 
-public U8 *CSprite2Text(CSprite *tempg)
+public U8 *Sprite2Text(CSprite *tempg)
 { //Study [::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z,1] ::/SparrowOS/Demo/Graphics/SpriteText.CPP.Z.
   U8 buf[256],buf2[256],buf3[136];
   I32 *ptr;

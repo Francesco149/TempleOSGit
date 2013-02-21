@@ -12,7 +12,7 @@ MSG_NEW_LINE:	DU8	"\n\0";
  
 _BUZZ_FIZZ::
 	ENTER	0	//Always use Enter/Leave
-	PUSH	ESI	//RSI must be preserved.  This instruction is 64-bit.
+	PUSH	RSI	//RSI must be preserved.
 	MOV	RAX,RANGE_START
 	MOV	DX,(FIZZ_SPAN-RANGE_START%FIZZ_SPAN+1)<<8+
 		   (BUZZ_SPAN-RANGE_START%BUZZ_SPAN+1)
@@ -40,7 +40,7 @@ _BUZZ_FIZZ::
 	INC	RAX
 	CMP	RAX,RANGE_END	//Actually only a 32-bit instruction.
 	JBE	@@05
-	POP	ESI
+	POP	RSI
 	LEAVE
 	RET
 }

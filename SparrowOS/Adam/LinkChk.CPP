@@ -48,7 +48,7 @@ I64 LinkChkFile(U8 *filename,I64 *_fuf_flags)
   return result;
 }
 
-I64 LinkChkList(CDirEntry *tempm1,I64 *_fuf_flags)
+I64 LinkChkLst(CDirEntry *tempm1,I64 *_fuf_flags)
 {
   CDirEntry *tempm2;
   I64 result=0;
@@ -57,7 +57,7 @@ I64 LinkChkList(CDirEntry *tempm1,I64 *_fuf_flags)
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub) {
 	"%S %s\n","ST_SCANNING_DIR",tempm1->full_name;
-	result+=LinkChkList(tempm1->sub,_fuf_flags);
+	result+=LinkChkLst(tempm1->sub,_fuf_flags);
       }
     } else
       result+=LinkChkFile(tempm1->full_name,_fuf_flags);
@@ -73,6 +73,6 @@ public I64 LinkChk(U8 *files_find_mask=TEXT_FILE_MASK,U8 *fu_flags=NULL)
   I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+t");
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  return LinkChkList(FilesFind(files_find_mask,fuf_flags),&fuf_flags);
+  return LinkChkLst(FilesFind(files_find_mask,fuf_flags),&fuf_flags);
 }
 #help_index ""

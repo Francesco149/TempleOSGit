@@ -48,9 +48,9 @@ U8 *CmpStatement(CLex *lx,I64 *type)
 	}
       }
     } else
-      LinkedListDel(lx->cbh.cb_out_first);
+      LinkedLstDel(lx->cbh.cb_out_first);
   } else
-    LinkedListDel(lx->cbh.cb_out_first);
+    LinkedLstDel(lx->cbh.cb_out_first);
   if (lx->a_depth==2)
     CBPop(lx);
   return result;
@@ -65,12 +65,12 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
   CAsmCodeBlk *tempc;
   CExeImportExport *tempe;
   Bool okay=TRUE;
-  CHashTable *ht1=lx->hash_table_list,
+  CHashTable *ht1=lx->hash_table_lst,
 	       *ht2=lx->define_hash_table,
 	       *ht3=lx->glbl_hash_table,
 	       *ht4=lx->local_hash_table,
 	       *asm_hash_alias=MAllocIdentical(asm_hash);
-  CHashFun     *old_var_list=lx->local_var_list;
+  CHashFun     *old_var_lst=lx->local_var_lst;
   CExe *result=CAlloc(sizeof(CExe));
   result->parent_exe=lx->exe_struct;
   lx->exe_struct=result;
@@ -92,9 +92,9 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
     lx->define_hash_table=lx->glbl_hash_table;
   else
     lx->glbl_hash_table->next=Fs->hash_table;
-  lx->hash_table_list =asm_hash_alias;
+  lx->hash_table_lst =asm_hash_alias;
 
-  lx->local_var_list=locals; //C+ local vars
+  lx->local_var_lst=locals; //C+ local vars
   try {
     if (first_lex)
       Lex(lx);
@@ -129,7 +129,7 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
       lx->error_cnt=1;
     lx->exe_struct=result->parent_exe;
     Free(result);
-    LinkedListDel(a->code);
+    LinkedLstDel(a->code);
     result=NULL;
   } else {
     if (map_name && !cmp_do_not_write_to_dsk)
@@ -158,17 +158,17 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
 	tempc=tempc->next;
       }
     }
-    LinkedListDel(a->code);
+    LinkedLstDel(a->code);
     result->abss=a->abss;
     result->heap_glbls=a->heap_glbls;
     result->max_align=a->max_align;
     lx->exe_struct=result->parent_exe;
   }
-  lx->hash_table_list  =ht1,
+  lx->hash_table_lst  =ht1,
   lx->define_hash_table=ht2;
   lx->glbl_hash_table  =ht3;
   lx->local_hash_table =ht4;
-  lx->local_var_list=old_var_list;
+  lx->local_var_lst=old_var_lst;
   Free(asm_hash_alias);
   Free(a);
   lx->a=old_a;

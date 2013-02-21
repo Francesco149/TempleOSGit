@@ -171,6 +171,8 @@ I64 TaskInit(CTask *task,I64 stk_size)
     task->last_input_filter_task=
     task;
 
+  task->task_num=sys_num_task_inits++;
+
   task->rflags=SYS_NORMAL_RFLAGS;
   task->win_max_refresh=WIN_DFT_MAX_REFRESH;
   SetSnap(&task->snap,1,1.0);
@@ -547,8 +549,8 @@ I64 TaskEnd()
   LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
 
   if (sys_winmgr_task) {
-    task->next_task=Gs->dying_task_list;
-    Gs->dying_task_list=task;
+    task->next_task=Gs->dying_task_lst;
+    Gs->dying_task_lst=task;
   } else
     TaskFinishOff(task); //dangerous (stk in use)
 //Never happens--winmgr exists except during boot and no tasks die during boot
@@ -575,12 +577,12 @@ doesn't use [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt(OFF) and could get bur
 by a task being reincarnated.
 */
   CTask *task1,*task2;
-  if (task1=Gs->dying_task_list) {
+  if (task1=Gs->dying_task_lst) {
     do {
       task2=task1->next_task;
       TaskFinishOff(task1);
       task1=task2;
     } while (task1);
-    Gs->dying_task_list=NULL;
+    Gs->dying_task_lst=NULL;
   }
 }

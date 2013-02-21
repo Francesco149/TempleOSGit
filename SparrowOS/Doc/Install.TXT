@@ -54,7 +54,7 @@ system type.  Use the drive letter of the partition in place of 'D'.
   /0000Boot/OldM
 BR.BIN.C.
 
-3) [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree("T:/","D:/")
+3) [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree("T:/","D:/")
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 

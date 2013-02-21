@@ -60,7 +60,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Snd(50);
   } else
     Snd(0);
-  CSpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
+  SpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
 }
 
 U0 MyDerivative(CMathODE *,F64,COrder2D3 *,COrder2D3 *)

@@ -33,8 +33,8 @@ U0 DrawGodTalking(CTask *,CDC *dc)
 {
   I64 i;
   F64 m,a,x1,y1,x2,y2;
-  CSpritePlot3(dc,0,70,0,__BIN_1);
-  CSpritePlot3(dc,200,70,0,__BIN_2);
+  SpritePlot3(dc,0,70,0,__BIN_1);
+  SpritePlot3(dc,200,70,0,__BIN_2);
   dc->color=win_updates&15;
   for (i=0;i<256;i++) {
     m=Sqr(Rand); a=2*pi*Rand;
@@ -98,15 +98,15 @@ U0 HoldCourt()
 
   NewLine;
   accused=RandU32%3;
-  "" ListEntryPt(accused,"A man \0A woman \0A child \0");
+  "" LstEntryPt(accused,"A man \0A woman \0A child \0");
 
   crime=RandU32&3;
-  "" ListEntryPt(crime,"commits murder\0commits adultery\0commits blasphemy\0commits idolatry\0");
+  "" LstEntryPt(crime,"commits murder\0commits adultery\0commits blasphemy\0commits idolatry\0");
 
   if (crime<=1) {
     '' CH_SPACE;
     victim=RandU32%3;
-    "" ListEntryPt(victim,"to a man\0to a woman\0to a child\0to an animal\0");
+    "" LstEntryPt(victim,"to a man\0to a woman\0to a child\0to an animal\0");
   }
   if (!(RandU32%5))
     ", again!";
@@ -260,7 +260,6 @@ U0 Trailer()
 U0 AfterEgypt()
 {
   Bool was_mute=IsMute;
-  U8 *bible_filename=Define("ST_BIBLE_FILE");
 
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinBorder;
@@ -270,7 +269,7 @@ U0 AfterEgypt()
   Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
   PopUp("Trailer;",Fs);
 
-  WSInit(bible_filename);
+  WSInit("::/SparrowOS/Apps/HolySpirit/Vocab.TXT.Z");
   WordStat;
 
   try //This is to catch <CTRL-ALT-C>.

@@ -50,7 +50,7 @@ Bool PrsExpression(CLex *lx,I64 *_max_prec,Bool end_exp,CPrsStk *_ps=NULL)
   CIntermediateCode *tempi,*tempi2;
   CHashClass *tempc,*tempc1;
   CPrsStk *ps;
-  CMemberList *local_var;
+  CMemberLst *local_var;
   CArrayDim *tempad=NULL;
   if (!(lx->flags&LF_INSIDE_EXPRESSION)) {
     if (lx->fun_lfn)
@@ -365,7 +365,7 @@ done3:
 U0 PrsSizeOf(CLex *lx)
 {
   CHashClass *tempc;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CDbgInfo *dbg;
   I64 i;
   if (lx->token!=TK_IDENT)
@@ -413,7 +413,7 @@ pu_sizeof_member:
 U0 PrsOffsetOf(CLex *lx)
 {
   CHashClass *tempc;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   I64 i;
   if (lx->token!=TK_IDENT)
     LexExcept(lx,"ST_INVALID_CLASS");
@@ -446,21 +446,21 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
   I64 i,argc_cnt;
   Bool is_first_arg=TRUE,needs_right_paren,is_str_out,is_putchar,is_template_fun;
   CHashClass *tempc1,*tempc2;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CLexCodeBlkCtrl *tempcbh,*tempcbh1;
   CCodeBlkMisc *mc;
   CIntermediateCode *tempi;
 
   if (!tempf) {
     if (lx->token==TK_U8) {
-      if (!(tempf=HashFind("PutChar",lx->hash_table_list,HTT_FUN)))
+      if (!(tempf=HashFind("PutChar",lx->hash_table_lst,HTT_FUN)))
 	LexExcept(lx,"ST_HEADER_FOR_PRINTF");
       if (!lx->cur_i) //empty char signals PutChar with variable
 	Lex(lx);
       is_str_out=FALSE;
       is_putchar=TRUE;
     } else {
-      if (!(tempf=HashFind("PrintF",lx->hash_table_list,HTT_FUN)))
+      if (!(tempf=HashFind("PrintF",lx->hash_table_lst,HTT_FUN)))
 	LexExcept(lx,"ST_HEADER_FOR_PRINTF");
       if (!*lx->ident) //empty string signals PrintF with variable fmt_str
 	Lex(lx);
@@ -488,7 +488,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
   tempcbh=lx->cbh.cb_next;
   lx->cbh.cb_next=NULL;
   i=tempf->arg_cnt;
-  tempm=tempf->member_list;
+  tempm=tempf->member_lst;
   argc_cnt=0;
   if (lx->token=='(') {
     Lex(lx);
@@ -555,7 +555,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
     tempm=tempm->next;
   }
   if (is_str_out && lx->token==';') {
-    if (!(tempf=HashFind("PutS",lx->hash_table_list,HTT_FUN)))
+    if (!(tempf=HashFind("PutS",lx->hash_table_lst,HTT_FUN)))
       LexExcept(lx,"ST_HEADER_FOR_PRINTF");
     tempm=NULL;
   }
@@ -663,7 +663,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
   return PRST_UNARY_MODIFIERS;
 }
 
-I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,
+I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempad,
     I64 *max_prec,I64 *unary_pre_prec,I64 *paren_prec)
 {
   I64 i,*i_ptr,j,d,size;
@@ -671,7 +671,7 @@ I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_temp
   CHashClass *tempc;
   CHashFun *tempf;
   CHashGlblVar *tempg;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CLexUndef *templu;
   CCodeBlkMisc *mc;
   Bool paren_warn;
@@ -761,7 +761,7 @@ I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_temp
 	    if (Bt(tempf->flags,Cf_EXTERN)) {
 	      if (lx->flags&LF_STATIC_COMPILE) {
 		if (lx->flags&LF_ASM_EXPRESSIONS) {
-		  if (tempess=HashFind(tempf->str,lx->hash_table_list,HTT_EXPORT_SYS_SYM))
+		  if (tempess=HashFind(tempf->str,lx->hash_table_lst,HTT_EXPORT_SYS_SYM))
 		    goto pu_export_sys_sym;
 		  else
 		    goto pu_new_sys_sym;
@@ -1067,11 +1067,11 @@ pu_export_sys_sym:
   LexExcept(lx,"ST_MISSING_EXPRESSION");
 }
 
-I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberList **_local_var,CArrayDim **_tempad,I64 *unary_post_prec)
+I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempad,I64 *unary_post_prec)
 {
   CHashClass *tempc,*tempc1;
   CHashFun *fun_ptr;
-  CMemberList *tempm=*_local_var;
+  CMemberLst *tempm=*_local_var;
   CIntermediateCode *tempi,*tempi1;
   CArrayDim *tempad1,tempad2;
   CCodeBlkMisc *mc;

@@ -60,7 +60,7 @@
 #define VERB_GET_PARAM		0xF0000
 #define VERB_CONNECT_SELECT_GET	0xF0100
 #define VERB_CONNECT_SELECT_SET	0x70100
-#define VERB_GET_CONNECT_LIST	0xF0200
+#define VERB_GET_CONNECT_LST	0xF0200
 #define VERB_PROCESS_STATE_GET	0xF0300
 #define VERB_PROCESS_STATE_SET	0x70300
 #define VERB_COEFF_INDEX_GET	0xD0000
@@ -148,7 +148,7 @@
 #define P_PIN_CAP		0x0C
 #define P_INPUT_AMP_CAP		0x0D
 #define P_OUTPUT_AMP_CAP	0x12
-#define P_CONNECT_LIST_LEN	0x0E
+#define P_CONNECT_LST_LEN	0x0E
 #define P_POWER_STATES		0x0F
 #define P_PROCESSING_CAP	0x10
 #define P_GPIO_CNT		0x11
@@ -172,7 +172,7 @@
 #define AWT_BEEP_GEN_WIDGET	0x7
 #define AWT_VENDOR		0xF
 #define AWT_NODE		0x10
-DefineListLoad("ST_AUDIO_WIDGET_TYPES",
+DefineLstLoad("ST_AUDIO_WIDGET_TYPES",
 "Output\0Input\0Mixer\0Selector\0Pin Complex\0"
 "Power Widget\0Vol Knob\0Beep Gen\0 \0 \0 \0 \0 \0 \0 \0Vendor\0Node\0");
 
@@ -183,6 +183,8 @@ class CHDBufDesc
   U32 ctrl;
 };
 
+#define HD_TONES	8
+
 class CHDAudioCtrl
 {
   U8 *bar;
@@ -190,12 +192,12 @@ class CHDAudioCtrl
   U32 *corb;
   I64 *rirb;
   CHDBufDesc *ostr0_bdl,*istr0_bdl;
-  SND_OUT_CONTAINER *ostr0_buf[2];
+  SND_OUT_CONTAINER *ostr0_buf[2],*o_temp_buf;
   SND_IN_CONTAINER  *istr0_buf[2];
   CTask *task;
   I64 waveform;
   F64 freq,amp;
-  CSndWaveCtrl *sc;
+  CSndWaveCtrl *tone_swcs[HD_TONES];
   U8 rirb_rp,corb_wp;
   Bool audio_task_started,in_running,out_running;
 } *_hda=NULL;
@@ -204,11 +206,10 @@ I64 AudioSize()
 {//[C:/SparrowOS/Adam/MemRep.CPP.Z,190] MemRep uses this for Adam Heap
   I64 result=MSize2(snd_reverb_buf);
   if (_hda) {
-    result+=MSize2(_hda);
+    result+=MSize2(_hda)+MSize2(_hda->o_temp_buf);
 /* uncached heap
-    result+=MSize2(_hda->corb)+MSize(_hda->rirb);
-    result+=MSize2(_hda->ostr0_bdl);
-    result+=MSize2(_hda->istr0_bdl);
+    result+=MSize2(_hda->corb)+MSize(_hda->rirb)+
+	    MSize2(_hda->ostr0_bdl)+MSize2(_hda->istr0_bdl);
     for (i=0;i<2;i++)
       result+=MSize2(_hda->ostr0_buf[i]);
     for (i=0;i<2;i++)
@@ -301,7 +302,7 @@ U0 HDTraverse(I64 cad,I64 nid)
     aud_cap=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_AUDIO_WIDGET_CAP);
     type=aud_cap>>20&15;
     if (Bt(&aud_cap,8))
-      len=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_CONNECT_LIST_LEN)&127;
+      len=HDWriteCORBSync(cad,nid,VERB_GET_PARAM+P_CONNECT_LST_LEN)&127;
     else
       len=0;
     HDWriteCORBSync(cad,nid,VERB_AMPLIFIER_GAIN_SET+0xF07F); //set I/O amp #0
@@ -374,32 +375,54 @@ U0 HDSnd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0)
 
 U0 HDFillBuf(SND_OUT_CONTAINER *buf,I64)
 {
-  SndWaveFillBuf(_hda->sc,buf,SND_BUF_LEN/SND_OCHANNELS,_hda->freq,_hda->waveform,snd_vol*_hda->amp);
+  I64 i,size=SND_BUF_LEN*sizeof(SND_OUT_CONTAINER);
+  if (!_hda->o_temp_buf)
+    _hda->o_temp_buf=AMAlloc(size);
+  MemSet(_hda->o_temp_buf,0,size);
+  for (i=0;i<HD_TONES;i++)
+    SndWaveAddBuf(_hda->tone_swcs[i],_hda->o_temp_buf,SND_BUF_LEN/SND_OCHANNELS,_hda->freq,_hda->waveform,snd_vol*_hda->amp);
+  MemCpy(buf,_hda->o_temp_buf,size);
 }
 
 U0 HDAudioTaskEndCB()
 {
+  I64 i;
   HDStop(FALSE,TRUE);
   fp_snd=NULL;
-  SndWaveCtrlDel(_hda->sc);
-  _hda->sc=NULL;
+  for (i=0;i<HD_TONES;i++) {
+    SndWaveCtrlDel(_hda->tone_swcs[i]);
+    _hda->tone_swcs[i]=NULL;
+  }
   Exit;
 }
 
+public U0 HDTonesInit()
+{
+  I64 i;
+  if (_hda) {
+    for (i=0;i<HD_TONES;i++) {
+      _hda->tone_swcs[i]->freq_multiplier=1.0;
+      _hda->tone_swcs[i]->amp_multiplier=0;
+    }
+    _hda->tone_swcs[0]->amp_multiplier=1.0;
+  }
+}
 
 U0 HDAudioTask(I64)
 {
 //I didn't feel like messing around with PCI interrupts
 //so this task polls every millisecond to know when to
 //switch buffers.
-  I64 next_obuf_trigger=SND_BUF_LEN*sizeof(SND_OUT_CONTAINER)/2,
+  I64 i,next_obuf_trigger=SND_BUF_LEN*sizeof(SND_OUT_CONTAINER)/2,
      obuf_rollover=0,
      next_ibuf_trigger=SND_BUF_LEN*sizeof(SND_IN_CONTAINER),
      ibuf_rollover=0;
   U32 *pos_in_obuf=_hda->bar+OSTR0+STRLPIB,
      *pos_in_ibuf=_hda->bar+ISTR0+STRLPIB;
   Fs->task_end_cb=&HDAudioTaskEndCB;
-  _hda->sc=SndWaveCtrlNew;
+  for (i=0;i<HD_TONES;i++)
+    _hda->tone_swcs[i]=SndWaveCtrlNew;
+  HDTonesInit;
   _hda->freq=0;
   Snd(0);
   fp_snd=&HDSnd;
@@ -468,6 +491,7 @@ public U0 HDAudioEnd(Bool rst=TRUE)
       HDRst;
     Free(_hda->corb);
     Free(_hda->rirb);
+    Free(_hda->o_temp_buf);
     Free(_hda->ostr0_buf[0]);
     Free(_hda->ostr0_buf[1]);
     Free(_hda->istr0_buf[0]);
@@ -604,7 +628,24 @@ public Bool HDAudioInit(I64 hd_bus,I64 hd_dev,I64 hd_fun)
   return FALSE;
 }
 
-HDAudioInit(0,27,0);
+Bool HDAudioScan()
+{
+  I64 i=-1,j;
+  while (TRUE) {
+    j=PCIClassFind(0x040300,++i);
+    if (j<0)
+      return FALSE;
+
+    //!!! Remove the following line. !!!
+    if (j.u8[1]!=0x1B) break;
+    //!!! We got problems with [::/SparrowOS/OSMain/Memory.CPP.Z,1] 0xF0000000 !!!
+
+    if (HDAudioInit(j.u8[2],j.u8[1],j.u8[0]))
+      return TRUE;
+  }
+}
+
+HDAudioScan;
 
 //**Run [::/SparrowOS/Adam/Snd/HDCfg.CPP.Z,1] ::/SparrowOS/Adam/Snd/HDCfg.CPP.Z.**
 #help_index ""

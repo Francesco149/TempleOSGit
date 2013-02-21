@@ -58,17 +58,17 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   dc->color=ROP_EQU;
   if (enemy_destroyed_time) {
-    CSpritePlot3(dc,x,y,0,__BIN_3);
+    SpritePlot3(dc,x,y,0,__BIN_3);
     if (tP(task)>=enemy_destroyed_time)
       enemy_destroyed_time=0;
   } else
-    CSpritePlot3(dc,x,y,0,__BIN_1);
+    SpritePlot3(dc,x,y,0,__BIN_1);
 
   if (tP(task)>=start_time+0.2 && !player_destroyed_time) {
     dc->collision_cnt=0;
     dc->color=ROP_COLLISION;
     dc->bkcolor=BLACK;
-    CSpritePlot3(dc,xx,yy,0,__BIN_2);
+    SpritePlot3(dc,xx,yy,0,__BIN_2);
     if (dc->collision_cnt>0x20) {
       player_destroyed_time=tP(task)+1.0;  //one second
       Noise(700,150,200);
@@ -77,11 +77,11 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   dc->color=ROP_EQU;
   if (player_destroyed_time) {
-    CSpritePlot3(dc,xx,yy,0,__BIN_3);
+    SpritePlot3(dc,xx,yy,0,__BIN_3);
     if (tP(task)>=player_destroyed_time)
       player_destroyed_time=0;
   } else
-    CSpritePlot3(dc,xx,yy,0,__BIN_2);
+    SpritePlot3(dc,xx,yy,0,__BIN_2);
 
   if (phasor_time) {
     dc->collision_cnt=0;

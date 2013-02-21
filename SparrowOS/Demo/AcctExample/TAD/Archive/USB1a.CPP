@@ -18,7 +18,7 @@ class CUSB //Not implemented
   U8 num, //USB dev num
      bus,dev,fun;
   U16 ports,pad;
-  U32 *frame_list;
+  U32 *frame_lst;
 };
 
 //USB Pkt ID's
@@ -98,17 +98,17 @@ U0 USBFreeTD(CUSBTD *temptd)
   Free(temptd);
 }
 
-U32 *USBAllocFrameList(I64 usb_num,I64 size)
+U32 *USBAllocFrameLst(I64 usb_num,I64 size)
 { //aligned to 0x1000
   CUSB *u;
   if (0<=usb_num<sys_num_usb) {
     u=&sys_usb_devs[usb_num];
-    Free(u->frame_list);
-    u->frame_list=MAllocAligned(size*sizeof(U32),0x1000,sys_uncached_heap);
+    Free(u->frame_lst);
+    u->frame_lst=MAllocAligned(size*sizeof(U32),0x1000,sys_uncached_heap);
     OutU16(u->ports+USBP_CMD,0); //Stop
     OutU16(u->ports+USBP_FRNUM,0);
-    OutU32(u->ports+USBP_FRBASEADD,u->frame_list);
-    return u->frame_list;
+    OutU32(u->ports+USBP_FRBASEADD,u->frame_lst);
+    return u->frame_lst;
   }
   return NULL;
 }

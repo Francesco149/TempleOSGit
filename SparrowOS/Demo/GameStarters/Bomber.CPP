@@ -74,25 +74,25 @@ U0 DrawIt(CTask *task,CDC *dc)
 	GrSetSymmetry(dc,tk[i].x,tk[i].y,tk[i].x+1024*Cos(tk[i].theta),tk[i].y-1024*Sin(tk[i].theta));
       }
       if (Blink(15,tP(task)))
-	CSpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
+	SpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
       else
-	CSpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_5,tk[i].theta);
+	SpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_5,tk[i].theta);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     } else
-      CSpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_3,tk[i].theta);
+      SpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_3,tk[i].theta);
   for (i=0;i<NUM_TREES;i++)
-    CSpritePlot3(dc,tr[i].x,tr[i].y,0,__BIN_2);
+    SpritePlot3(dc,tr[i].x,tr[i].y,0,__BIN_2);
   if (bt) {
     if (bt+.25<tP(task))
       bt=0;
     else {
       if (Blink(10,tP(task)))
-	CSpritePlot3(dc,bx,by,0,__BIN_6);
+	SpritePlot3(dc,bx,by,0,__BIN_6);
       else
-	CSpritePlot3(dc,bx,by,0,__BIN_7);
+	SpritePlot3(dc,bx,by,0,__BIN_7);
     }
   }
-  CSpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
+  SpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
   dc->color=RED;
   GrPrintF(dc,-task->win_scroll_x,-task->win_scroll_y,
     "Tanks:%02d  KeyStrokes:%04d Best:%04d",tank_cnt,key_cnt,best_score);

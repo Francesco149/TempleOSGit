@@ -1,5 +1,5 @@
 //See [::/SparrowOS/Doc/Acknowledgements.TXT.Z,1] ::/SparrowOS/Doc/Acknowledgements.TXT.Z (4).
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3379] CArcCompress, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3346] CArcEntry, and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3354] CArcCtrl
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3474] CArcCompress, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3441] CArcEntry, and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3449] CArcCtrl
 
 asm {
 USE64

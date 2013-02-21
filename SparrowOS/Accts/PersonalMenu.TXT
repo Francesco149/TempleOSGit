@@ -179,7 +179,7 @@ AfterEgypt <22> (image) Pilgrims <23> (image) Wenceslas <24> (image)
 
 
 
-Navy <25> (image) Bomber <26> (image)
+Navy <25> (image) Bomber <26> (image) Strut <27> (image) 
 
 CPUPlot
   `#include "/SparrowOS/Demo/Graphics/CPUPlot.CPP.Z";`
@@ -211,18 +211,18 @@ CTRL-ALT-V	Sound volume +
 CTRL-ALT-v	Sound volume -
 CTRL-ALT-X	Kill window
  
-List public functions in alphabetic order
+Lst public functions in alphabetic order
 `DocMax;HFunsRep;View;`
 
-List all functions in alphabetic order
+Lst all functions in alphabetic order
 `DocMax;HFunsRep("-p");View;`
 
-List all functions in numeric order
+Lst all functions in numeric order
 `DocMax;HMapRep;View;`
 
-List all syms in alpabetic order
+Lst all syms in alpabetic order
 `DocMax;HAllRep;View;`
 
-List all syms in numeric order
+Lst all syms in numeric order
 `DocMax;HAllRep("-p+m");View;`
 

@@ -44,7 +44,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
   for (i=0;i<NUM_UNITS;i++)
     if (u[i].alive)
-      CSpritePlot3(dc,u[i].x,u[i].y,0,u[i].img);
+      SpritePlot3(dc,u[i].x,u[i].y,0,u[i].img);
   if (show_start) {
     dc->color=LTRED;
     GrLine(dc,start_x-4,start_y-4,start_x+4,start_y+4);

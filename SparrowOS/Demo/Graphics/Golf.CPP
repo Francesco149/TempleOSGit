@@ -33,11 +33,11 @@ U0 DrawIt(CTask *task,CDC *dc)
   U8 *inter;
 
   if (tP(task)-t0<1.0) {
-    inter=CSpriteInterpolate(__BIN_1,__BIN_2,(tP(task)-t0)%1.0);
-    CSpritePlot3(dc,100,100,0,inter);
+    inter=SpriteInterpolate(__BIN_1,__BIN_2,(tP(task)-t0)%1.0);
+    SpritePlot3(dc,100,100,0,inter);
     Free(inter);
   } else
-    CSpritePlot3(dc,100,100,0,__BIN_1);
+    SpritePlot3(dc,100,100,0,__BIN_1);
 }
 
 U0 Golf()

@@ -39,8 +39,8 @@ is you can't use the <CTRL-SHIFT-L> auto-indent feature.
   PopUpFile("/SparrowOS/Demo/Graphics/RotateTank.CPP.Z",FALSE,NULL,&task);
   F64 d;
   PopUpOk("This aspires to be a rip-off of\n"
-	  "the	Perfect General, but has tank\n"
-	  "facing like in the board game,\n"
+	  "the Perfect General, but has tank\n"
+	  "facing like the board game,\n"
 	  "Stalin's Tanks.\n");
   if (!PopUpNoYes("Tournament Settings")) {
     d=PopUpRangeF64Log(300,2000,20,"%4f","Map Width In Pixels\n");
@@ -106,7 +106,7 @@ U8 msg_buf[136];
 I64 msg_off_timeout; //Jiffies. Goes away after a time.
 
 /*I got tricky by not defining a color
-right away in these [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprites so they can
+right away in these [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,60] CSprites so they can
 work for both players by setting dc->color
 before drawing them.  I actually made these
 graphics by defining a color in the <CTRL-R>
@@ -1407,8 +1407,8 @@ U0 PickAI(U8 *dirname,I64 player)
   while ((tempm1=PopUpMenu(doc))<0);
   ExeFile(tempm1->full_name);
   DocDel(doc);
-  CDirListDel(tempm);
-  CDirListDel(tempm2);
+  CDirLstDel(tempm);
+  CDirLstDel(tempm2);
   ExePrintF("plot_routines[%d]=&TanksPlot;move_routines[%d]=&TanksMove;fire_routines[%d]=&TanksFire;",player,player,player);
 }
 
@@ -1416,9 +1416,9 @@ U0 PickAI(U8 *dirname,I64 player)
 U0 DrawUnit(CTask *task,CDC *dc,Unit *tempu,I64 x,I64 y,F64 f)
 {
   if (tempu->infantry)
-    CSpritePlot3(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img);
+    SpritePlot3(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img);
   else
-    CSpritePlotRotZ3b(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img,f);
+    SpritePlotRotZ3b(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,tempu->img,f);
 }
 
 U0 DrawUnits(CTask *task,CDC *dc)
@@ -1538,7 +1538,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     while (tempi!=&indirect_root) {
       if (tempi->attacker->player==view_player) {
 	RowCol2XY(&x,&y,tempi->row,tempi->col);
-	CSpritePlot3(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,__BIN_5);
+	SpritePlot3(dc,x-task->horz_scroll.pos,y-task->vert_scroll.pos,0,__BIN_5);
       }
       tempi=tempi->next;
     }

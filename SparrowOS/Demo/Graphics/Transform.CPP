@@ -7,7 +7,7 @@
 //Scroll bar works.
 
 //The multiplication takes place in the
-//[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,329] CSpritePlotRotZ3b routine.
+//[C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,332] SpritePlotRotZ3b routine.
 
 
 #define SLIDER_SPACING 20
@@ -140,7 +140,7 @@ U0 MPDrawIt(CTask *task)
   MemCpy(dc->r,mp.r,sizeof(I64)*16);
   dc->flags|=DCF_TRANSFORMATION;
   for (i=lo;i<hi;i++)
-    CSpritePlotRotZ3b(dc,tree_x[i],
+    SpritePlotRotZ3b(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
   DCDel(dc);
 }

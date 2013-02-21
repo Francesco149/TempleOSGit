@@ -37,7 +37,7 @@ U0 DrawQuail(CTask *task,CDC *dc)
 	q[i].y=SKY_HEIGHT;
 	q[i].dx=0;
       }
-      CSpritePlot3(dc,q[i].x,q[i].y,0,__BIN_3);
+      SpritePlot3(dc,q[i].x,q[i].y,0,__BIN_3);
     } else {
       q[i].x+=(t1-t_last)*q[i].dx;
       q[i].y+=(t1-t_last)*q[i].dy;
@@ -45,8 +45,8 @@ U0 DrawQuail(CTask *task,CDC *dc)
 	q[i].dy=-q[i].dy;
 	q[i].y+=(t1-t_last)*q[i].dy;
       }
-      inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
-      CSpritePlot3(dc,q[i].x,q[i].y,0,inter);
+      inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+      SpritePlot3(dc,q[i].x,q[i].y,0,inter);
       Free(inter);
       if (q[i].x>0 && t1-t_last>10*Rand)
 	q[i].dead=TRUE;

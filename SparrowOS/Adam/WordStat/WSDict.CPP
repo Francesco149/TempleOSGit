@@ -9,10 +9,10 @@ public U0 WSDWordsLoad()
   ws_dict_num_words=0;
   if (in_ptr=FileRead(WSD_WORD_FILENAME,&size)) {
     in_start=in_ptr;
-    Free(ws_dict_word_list);
-    ws_dict_word_list=AMAlloc(size);
-    MemCpy(ws_dict_word_list,in_start,size);
-    ws_dict_word_list_size=size;
+    Free(ws_dict_word_lst);
+    ws_dict_word_lst=AMAlloc(size);
+    MemCpy(ws_dict_word_lst,in_start,size);
+    ws_dict_word_lst_size=size;
 
     while (in_ptr<in_start+size) {
       if (*in_ptr==WSD_WORD_CHAR)
@@ -123,7 +123,7 @@ public U8 *WSDGetWord(U8 *st)
 
 
 /*
-Fmt of word list entry:
+Fmt of word lst entry:
   U8 WSD_WORD_CHAR
   U8 word[] with terminating zero
   I16 block;
@@ -131,17 +131,17 @@ Fmt of word list entry:
 public U8 *WSDPtAtWord(U8 *st)
 {
   I64 i;
-  U8 *start=ws_dict_word_list,*r=start,
-     *end=ws_dict_word_list+ws_dict_word_list_size;
+  U8 *start=ws_dict_word_lst,*r=start,
+     *end=ws_dict_word_lst+ws_dict_word_lst_size;
   if (!st || !*st)
-    return ws_dict_word_list;
-  if (ws_dict_word_list_size) {
+    return ws_dict_word_lst;
+  if (ws_dict_word_lst_size) {
     while (start+3<end) {
       r=(start+end)>>1;
       while (TRUE) {
-	while (*r!=WSD_WORD_CHAR && r>ws_dict_word_list)
+	while (*r!=WSD_WORD_CHAR && r>ws_dict_word_lst)
 	  r--;
-	if ((r[2]==WSD_WORD_CHAR||r[1]==WSD_WORD_CHAR)&&r-3>ws_dict_word_list)
+	if ((r[2]==WSD_WORD_CHAR||r[1]==WSD_WORD_CHAR)&&r-3>ws_dict_word_lst)
 	  r--;
 	else
 	  break;
@@ -159,9 +159,9 @@ public U8 *WSDPtAtWord(U8 *st)
     }
     r=(start+end)>>1;
     while (TRUE) {
-      while (*r!=WSD_WORD_CHAR && r>ws_dict_word_list)
+      while (*r!=WSD_WORD_CHAR && r>ws_dict_word_lst)
 	r--;
-      if ((r[2]==WSD_WORD_CHAR||r[1]==WSD_WORD_CHAR)&&r-3>ws_dict_word_list)
+      if ((r[2]==WSD_WORD_CHAR||r[1]==WSD_WORD_CHAR)&&r-3>ws_dict_word_lst)
 	r--;
       else
 	break;
@@ -172,7 +172,7 @@ public U8 *WSDPtAtWord(U8 *st)
   if (*r==WSD_WORD_CHAR)
     return r;
   else
-    return ws_dict_word_list;
+    return ws_dict_word_lst;
 }
 
 

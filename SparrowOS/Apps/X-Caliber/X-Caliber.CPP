@@ -441,7 +441,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    D3AddEqu(D3Mul(t_left/25,&p,&p1),&temps->p[3].x);
 	    GrLine(dc,temps->p[1].x,temps->p[1].y,p1.x,p1.y);
 	    arg=Arg(p.x,p.y);
-	    CSpritePlotRotZ3b(dc,temps->p[3].x,temps->p[3].y,0,__BIN_1,arg);
+	    SpritePlotRotZ3b(dc,temps->p[3].x,temps->p[3].y,0,__BIN_1,arg);
 	  }
 
 	  if (!(temps->s[5].flags&SSF_INACTIVE)) {
@@ -449,7 +449,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    D3AddEqu(D3Mul(t_right/25,&p,&p2),&temps->p[4].x);
 	    GrLine(dc,temps->p[2].x,temps->p[2].y,p2.x,p2.y);
 	    arg=Arg(p.x,p.y);
-	    CSpritePlotRotZ3b(dc,temps->p[4].x,temps->p[4].y,0,__BIN_1,arg);
+	    SpritePlotRotZ3b(dc,temps->p[4].x,temps->p[4].y,0,__BIN_1,arg);
 	  }
 
 	  if (tP(task)>temps->reload_timeout)
@@ -460,19 +460,19 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  switch (level) {
 	    case 3:
 	      if (!(temps->s[3].flags&SSF_INACTIVE))
-		CSpritePlotRotZ3b(dc,temps->p[3].x,temps->p[3].y,0,img,arg);
+		SpritePlotRotZ3b(dc,temps->p[3].x,temps->p[3].y,0,img,arg);
 	      if (!(temps->s[5].flags&SSF_INACTIVE))
-		CSpritePlotRotZ3b(dc,temps->p[4].x,temps->p[4].y,0,img,arg);
+		SpritePlotRotZ3b(dc,temps->p[4].x,temps->p[4].y,0,img,arg);
 	    case 2:
 	      if (!(temps->s[1].flags&SSF_INACTIVE))
-		CSpritePlotRotZ3b(dc,temps->p[1].x,temps->p[1].y,0,img,arg);
+		SpritePlotRotZ3b(dc,temps->p[1].x,temps->p[1].y,0,img,arg);
 	      if (!(temps->s[2].flags&SSF_INACTIVE))
-		CSpritePlotRotZ3b(dc,temps->p[2].x,temps->p[2].y,0,img,arg);
+		SpritePlotRotZ3b(dc,temps->p[2].x,temps->p[2].y,0,img,arg);
 	    case 1:
-	      CSpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,img,arg);
+	      SpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,img,arg);
 	      break;
 	    default:
-	      CSpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,__BIN_6,arg);
+	      SpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,__BIN_6,arg);
 	      if (temps->lasering && !temps->laser_overheat) {
 		draw_laser_line=TRUE;
 		Snd(1000);
@@ -497,7 +497,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 		x=temps->p[temps->spacewalk_side].x*(1.0-d)+temps->p[0].x*(d);
 		y=temps->p[temps->spacewalk_side].y*(1.0-d)+temps->p[0].y*(d);
 	      }
-	      CSpritePlotRotZ3b(dc,x,y,0,__BIN_4,arg+0.75*Sin(tP(task)*2));
+	      SpritePlotRotZ3b(dc,x,y,0,__BIN_4,arg+0.75*Sin(tP(task)*2));
 	    }
 	  } else {
 	    if (ctrl_panel.spacewalk) {
@@ -525,11 +525,11 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  else
 	    img=__BIN_3;
 	  arg=Arg(p.x,p.y);
-	  CSpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,img,arg);
+	  SpritePlotRotZ3b(dc,temps->p[0].x,temps->p[0].y,0,img,arg);
 	  arg=Arg(p1.x,p1.y);
-	  CSpritePlotRotZ3b(dc,temps->p[0].x+p1.x,temps->p[0].y+p1.y,0,__BIN_5,arg);
+	  SpritePlotRotZ3b(dc,temps->p[0].x+p1.x,temps->p[0].y+p1.y,0,__BIN_5,arg);
 	  arg=Arg(p2.x,p2.y);
-	  CSpritePlotRotZ3b(dc,temps->p[0].x+p2.x,temps->p[0].y+p2.y,0,__BIN_5,arg);
+	  SpritePlotRotZ3b(dc,temps->p[0].x+p2.x,temps->p[0].y+p2.y,0,__BIN_5,arg);
 	  for (i=0;i<temps->masses;i++) {
 	    dc->color=YELLOW;
 	    if (temps->p[i].temperature>=1.0)

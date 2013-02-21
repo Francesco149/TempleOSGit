@@ -56,12 +56,12 @@ U0 DrawIt(CTask *task,CDC *dc)
 //<CTLR-T> to see the syntax of the
 //"Insert Binary" statement in the following.
   for (i=0;i<NUM_TREES;i++)
-    CSpritePlot3(dc,trees_x[i],trees_y[i]-cur_screen_y,0,__BIN_2);
+    SpritePlot3(dc,trees_x[i],trees_y[i]-cur_screen_y,0,__BIN_2);
 
   dc->collision_cnt=0;
   dc->color=ROP_COLLISION;
   dc->bkcolor=WHITE;
-  CSpritePlot3(dc,x,y,0,__BIN_1);
+  SpritePlot3(dc,x,y,0,__BIN_1);
   if (dc->collision_cnt) {
     Snd(400);
     penalty++;
@@ -69,7 +69,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Snd(0);
 
   dc->color=ROP_EQU;
-  CSpritePlot3(dc,x,y,0,__BIN_1);
+  SpritePlot3(dc,x,y,0,__BIN_1);
 //Text attr include forground in the
 //lowest 4 bits and background in the upper 4.
   SPrintF(buf,"Penalty:%d",penalty);

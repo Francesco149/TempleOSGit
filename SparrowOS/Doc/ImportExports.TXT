@@ -16,7 +16,7 @@ syms.
 
 When a sym is placed into a table, older syms with identical names will be 
 overshadowed if they exist, unless you use the compiler option 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1473] OPTf_REPLACE_SYMS.  Duplicates are
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1569] OPTf_REPLACE_SYMS.  Duplicates are
 not allowed in many cases, especially in 
 asm blks.  Dupicates are allowed, by design in other cases, so that you can 
 repeatedly #include the same file from the cmd line while developing it.  Or, 
@@ -24,14 +24,14 @@ so you can repeatedly declare a function with a standard name, like "UpdateWin
 ()".  This case might occur when the adam task is starting-up loading-in many 
 little utilities.
 
-extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to an existing sym of
+extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,681] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,678] HTT_GLBL_VAR sym to an existing sym of
 the same 
 name if it exists in the sym table (just in just-in-time code).  It also can 
 be used to generate a fwd reference.
 
-import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to a sym of the same
+import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,681] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,678] HTT_GLBL_VAR sym to a sym of the same
 name 
 imported from the task's sym table at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735]
 Load() time.  If no sym exists to bind 
@@ -40,14 +40,14 @@ sym will be left incomplete until the
 sym is defined.
 
 
-_extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to an existing sym,
+_extern binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,681] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,678] HTT_GLBL_VAR sym to an existing sym,
 of a **diffe
 rent** name.  It must exists in the sym table.  Basically, this binds C to
 asm.
 
-_import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,584] HTT_FUN or
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,581] HTT_GLBL_VAR sym to a sym, of a
+_import binds a new [C:/SparrowOS/OSMain/Adam1a.HPP.Z,681] HTT_FUN or
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,678] HTT_GLBL_VAR sym to a sym, of a
 **different** name 
 imported from the task's sym table at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735]
 Load() time.  If no sym exists to bind 
@@ -156,10 +156,10 @@ to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1474] OPTf_GLBLS_ON_DATA_HEAP.  They
+of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1570] OPTf_GLBLS_ON_DATA_HEAP.  They
 may in the future.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1470] OPTf_EXTERNS_TO_IMPORTS will treat
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1566] OPTf_EXTERNS_TO_IMPORTS will treat
 _extern as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or static compiled 
 header.

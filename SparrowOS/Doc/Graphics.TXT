@@ -49,7 +49,7 @@
 core0 are allowed to 
 have windows.  There is one window per task and no child windows.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDCs (device contexts) are a data
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3322] CDCs (device contexts) are a data
 type for controlling graphics on the 
 screen or graphics in mem, not on the screen.  The device context structure 
 has pen width and color associated with it, so you use
@@ -60,7 +60,7 @@ when finished.
 
 * [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,5] gr_dc is a global var for a bitmap
 redrawn each refresh and placed on the 
-screen.  You use an alias [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC.  You
+screen.  You use an alias [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3322] CDC.  You
 change the "Fs->draw_it" var to point to 
 your "DrawIt()" which gets called each screen refresh.  You draw everything
 in 
@@ -97,19 +97,19 @@ rotations.
 * See [::/SparrowOS/Doc/Transform.TXT.Z,1] ::/SparrowOS/Doc/Transform.TXT.Z
 for adding a transformation.
 
-* Set [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3195] DCF_SYMMETRY in the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC.flags and call
+* Set [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3290] DCF_SYMMETRY in the
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3322] CDC.flags and call
 [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,373] GrSetSymmetry() or 
 [C:/SparrowOS/Adam/Gr/MathGr.CPP.Z,395] GrSetSymmetry3().  This will plot a
 mirror image in addition to the primary 
-image.  Set [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3199] DCF_JUST_MIRROR to plot
+image.  Set [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3294] DCF_JUST_MIRROR to plot
 just the image, but this required 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3195] DCF_SYMMETRY to be set at the same
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,3290] DCF_SYMMETRY to be set at the same
 time.  Note: You can only have one symmetry 
-active at a time including in [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprites.
+active at a time including in [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,60] CSprites.
 
 * Use the resource editor, <CTRL-R>, to create a sprite that can be plotted 
-with [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] CSpritePlot3().  Use
+with [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3().  Use
 $IB,"",1$ in a src program to insert the addr of 
 sprite #1.  After creating a sprite with <CTRL-R> in your src code, toggle to 
 plain text with <CTRL-T> and check its num.  Then, make an assignment to a
@@ -122,44 +122,43 @@ var with $IB,"",n$ as the value. See
 a 
 sprite is defined by the cursor location when you press <CTRL-R>.  The "x", "y
 " and "z" values you pass to [C:/SparrowOS/Adam/Gr/GrSpritePlot.CPP.Z,27]
-CSpritePlot3() shift it around.  You can edit a 
+SpritePlot3() shift it around.  You can edit a 
 sprite by clicking the cursor on it and pressing <CTRL-R> again.
 
 * There is a mechanism built-in for generating motion based on differential 
-equations, which allows realistic physics.  You create an
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,254] CMathODE struct with 
+equations, which allows realstic physics.  You create an
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,335] CMathODE struct with 
 [C:/SparrowOS/Adam/MathODE.CPP.Z,42] ODENew(), passing it the num of vars in
-the state vect.  For realistic 
-physics, you usually have 2 state vars for each dimension (for each mass) 
-because motion is governed by f=ma which is a 2nd order equation.  The two 
-states are pos and velocity and to solve these you need to supply the 
-derivative of pos and velocity.  The derivative of pos is usually simply the 
-current velocity and the derivative of velocity is the acceleration (the sum 
-of forces on a mass divided by mass).  To help provide meaningful names for 
-values in the state vect, you can create an
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,210] COrder2D3 ptr and point it to a 
-mass in the state vect.  Six elements in the state vect are required for each 
-mass.
+the state vect.  For realstic physics, 
+you usually have 2 state vars for each dimension (for each mass) because 
+motion is governed by f=ma which is a 2nd order equation.  The two states are 
+pos and velocity and to solve these you need to supply the derivative of pos 
+and velocity.  The derivative of pos is usually simply the current velocity 
+and the derivative of velocity is the acceleration (the sum of forces on a 
+mass divided by mass).  To help provide meaningful names for values in the 
+state vect, you can create an [C:/SparrowOS/OSMain/Adam1a.HPP.Z,291]
+COrder2D3 ptr and point it to a mass in the 
+state vect.  Six elements in the state vect are required for each mass.
 
 See [Math/CMathODE,1] Math/CMathODE.
 See [::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1]
 ::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z.
 
-* There are several [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2624] raster operations
+* There are several [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2720] raster operations
 available.  They go in bits 8-11 of the 
 dc->color member var.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2626] ROP_COLLISION is special.  It
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2722] ROP_COLLISION is special.  It
 counts the num of pixels drawn on 
-non-background locations.  Using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2626]
-ROP_COLLISION with vector [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprite's is
+non-background locations.  Using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2722]
+ROP_COLLISION with vector [C:/SparrowOS/Adam/Gr/Gr.CPP.Z,60] CSprite's is
 tricky 
 because overlapping pixels from lines in the
-[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprite register as collisions.  
+[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,60] CSprite register as collisions.  
 You can either work with a nonzero count or convert your
-[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,59] CSprite to a bitmap 
+[C:/SparrowOS/Adam/Gr/Gr.CPP.Z,60] CSprite to a bitmap 
 if your subelements draw on top of each other.  Be sure to set ->bkcolor 
-before using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2626] ROP_COLLISION.  See 
+before using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2722] ROP_COLLISION.  See 
 [::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z,1]
 ::/SparrowOS/Demo/Graphics/PixelCollision.CPP.Z, 
 [::/SparrowOS/Demo/GameStarters/Rocks.CPP.Z,1]
@@ -167,7 +166,7 @@ before using [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2626] ROP_COLLISION.  See
 [::/SparrowOS/Apps/Timeout/Timeout.CPP.Z,1]
 ::/SparrowOS/Apps/Timeout/Timeout.CPP.Z.
  
-* The ->dither_probability member of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227]
+* The ->dither_probability member of [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3322]
 CDC is a U16 used to statistically select 
 between two colors.  See [::/SparrowOS/Demo/Graphics/Shading.CPP.Z,1]
 ::/SparrowOS/Demo/Graphics/Shading.CPP.Z.  It works 

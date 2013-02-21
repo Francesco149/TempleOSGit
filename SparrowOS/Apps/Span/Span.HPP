@@ -41,7 +41,7 @@ CColorROPU32 snap_colors[2]={RED,GREEN};
 #define MD_NUM_MODES	6
 CColorROPU32 mode_colors[MD_NUM_MODES]=
 {BROWN,LTGRAY,DKGRAY,RED,PURPLE,RED};
-DefineListLoad("ST_SPAN_MODES","Mass\0Concrete\0Steel\0Wire\0Move\0Delete\0");
+DefineLstLoad("ST_SPAN_MODES","Mass\0Concrete\0Steel\0Wire\0Move\0Delete\0");
 
 class SpanAnimateStruct
 {

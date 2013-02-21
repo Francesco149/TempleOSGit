@@ -16,14 +16,14 @@ partition or boot to a standard SparrowOS CD-ROM and use
 hard drive.
 
 * I copy my files to a mirrored identical partition, periodically with 
-[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree() commands in scripts.  I do
+[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree() commands in scripts.  I do
 merge commands with a menu entry like 
 this:
 M(\"D:/SparrowOS/*\",\"E:/SparrowOS/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-M> at the cmd line to access your personal menu.  Place macros there 
 with <CTRL-L>, or icon-like sprites with <CTRL-R>.  Use the Pop-Up option on 
-macros to [C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn() a task to run a
+macros to [C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn() a task to run a
 file.  It dies when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-S> to save your macro/menu 
 area after making changes.
@@ -50,8 +50,8 @@ start-up file.  See [HOME/Adam3aLocalize.CPP.Z,1] mouse scale.
 new machine does not have PS/2 ports.
 
 * You can set your local time zone by setting the
-[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,43] local_time_offset global var 
-in a start-up file.  It's units are [C:/SparrowOS/OSMain/Adam1a.HPP.Z,490]
+[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,44] local_time_offset global var 
+in a start-up file.  It's units are [C:/SparrowOS/OSMain/Adam1a.HPP.Z,587]
 CDATE_FREQ.  See [HOME/Adam3aLocalize.CPP.Z,1] local time.
 
 * Use [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1745] DocCurAttr() in
@@ -61,9 +61,9 @@ window colors.
 * See Key Map
 `KeyMap;View;
 `
- for a list of defined keys.  Define your own keys in
-[C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey(). 
- See [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] ::/SparrowOS/Doc/KeyBoard.TXT.Z.
+ for a lst of defined keys.  Define your own keys in
+[C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey().  
+See [::/SparrowOS/Doc/KeyBoard.TXT.Z,1] ::/SparrowOS/Doc/KeyBoard.TXT.Z.
 
 * <CTRL-SHIFT-L> in the editor to autoindent a C+ function or renumber an asm 
 routine's local labels.  If it does not have #exe config stuff, select 
@@ -95,7 +95,7 @@ to answer the cfg questions.  See my technique
 in [HOME/Adam3fSys.CPP.Z,1] HOME/Adam3fSys.CPP.Z.
 
 * You can rst MultiCore CPU's if they get hung with
-[C:/SparrowOS/OSMain/MultiProc.CPP.Z,395] MPStart().  HD Audio will 
+[C:/SparrowOS/OSMain/MultiProc.CPP.Z,400] MPStart().  HD Audio will 
 get screwed-up, however.
 
 * Boolean expressions **not** in if statements don't have short circuit logic
@@ -113,32 +113,32 @@ easily viewed.  See [::/SparrowOS/Demo/Progress.CPP.Z,1]
 ::/SparrowOS/Demo/Progress.CPP.Z.
 
 * You can save the cmd line doc as text with <CTRL-A>.  For a bitmap screen 
-capture, use [C:/SparrowOS/Adam/FileBMP.CPP.Z,204] BMPFileCaptureScreen(). 
+capture, use [C:/SparrowOS/Adam/FileBMP.CPP.Z,279] BMPFileCaptureScreen(). 
 You might want to make a hot key.  See 
 [::/SparrowOS/Demo/AcctExample/TSAdam.CPP.Z,1] BMPFileCaptureScreen.
 
 * Use [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,698] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc 
+the cmd line buf.  It counts [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
 to store a data item, for convenience. 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2864] CTask,
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry and
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2331] CDirEntry have 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask,
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1316] CDocEntry and
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2427] CDirEntry have 
 them.  You shouldn't encounter conflicts with SparrowOS using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn(
-), changing [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2585] DFT_STK, and using
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn(
+), changing [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2681] DFT_STK, and using
 [C:/SparrowOS/Adam/Doc/DocNew.CPP.Z,698] DocMax() to reduce the cmd line
 buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
 when read or written.  The compression method is not supported by other 
 operating systems.  You can store files uncompressed by
-[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,120] Move()ing them to a 
+[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,119] Move()ing them to a 
 filename not ending in ".Z".  See [::/SparrowOS/Doc/TSZ.TXT.Z,1]
 ::/SparrowOS/Doc/TSZ.TXT.Z if you want to 
 uncompress while in WINDOWS.
@@ -153,16 +153,16 @@ will check for broken links in
 documentation.
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1468] OPTf_WARN_PAREN) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1564] OPTf_WARN_PAREN) to find
 unnecessary parentheses in code.
 
 * You can use [C:/SparrowOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1469] OPTf_WARN_DUP_TYPES) to find
+OptOn([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1565] OPTf_WARN_DUP_TYPES) to find
 unnecessary local var type 
 statements.
 
 * [C:/SparrowOS/Compiler/Directives.CPP.Z,1]
-OptEqu([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1462] OPTf_ECHO,ON) can be placed in
+OptEqu([C:/SparrowOS/OSMain/Adam1a.HPP.Z,1558] OPTf_ECHO,ON) can be placed in
 [::/SparrowOS/OSMain/Adam1.CPP.Z,1] Adam1.CPP.Z to echo start-up scripts.
 
 * Use [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,50] Plain() to edit a plain text
@@ -232,24 +232,24 @@ probably turn-off preemption or interrupts momentarily to copy it.
 
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
-lx for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2012] CLex ptrs; doc for
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc ptrs; doc_e or doc_ce for
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry ptrs, etc.
+lx for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2108] CLex ptrs; doc for
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc ptrs; doc_e or doc_ce for
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1316] CDocEntry ptrs, etc.
 
 
 * [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt() is used to keep a task from
 being interrupted and swapped-out.  It 
 has a similar effect to turning-off interrupts.  Each task has it's own 
 preemption ctrl.  A task with preemption turned-off can voluntarily
-[C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield() 
+[C:/SparrowOS/OSMain/Scheduler.CPP.Z,369] Yield() 
 with preemption off.
 
 * You can set a color for different drives with
-[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,314] SetDrvTextAttr().  Place calls 
+[C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,309] SetDrvTextAttr().  Place calls 
 to this in [HOME/Adam3aLocalize.CPP.Z,1] HOME/Adam3aLocalize.CPP.Z.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc cmd under the 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc cmd under the 
 cursor.  See [::/SparrowOS/Demo/Doc/TextDemo.CPP.Z,1]
 ::/SparrowOS/Demo/Doc/TextDemo.CPP.Z.
  
@@ -270,7 +270,7 @@ S2T() for spaces-to-tabs.
 * You can edit an existing sprite by putting the cursor on it and pressing <CT
 RL-R>.
 
-* When editing a sprite, you can cut and paste the elements in the text list 
+* When editing a sprite, you can cut and paste the elements in the text lst 
 window.
 
 * I recommend keeping CSprite in vect format until you are done creating
@@ -309,21 +309,21 @@ resources are put together.
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
-* [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,46] time_stamp_freq is continuously
+* [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,47] time_stamp_freq is continuously
 calibrated, so be careful because 
 expressions involving it might decrease.  Take a snap-shot, like this: timeout
-=[C:/SparrowOS/OSMain/Adam1b.HPP.Z,198]
-GetTimeStamp+[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,46] time_stamp_freq x
-seconds; and compare against [C:/SparrowOS/OSMain/Adam1b.HPP.Z,198]
+=[C:/SparrowOS/OSMain/Adam1b.HPP.Z,199]
+GetTimeStamp+[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,47] time_stamp_freq x
+seconds; and compare against [C:/SparrowOS/OSMain/Adam1b.HPP.Z,199]
 GetTimeStamp().
 
 * Use [C:/SparrowOS/Adam/HeapLog.CPP.Z,121] HeapLog() and
 [C:/SparrowOS/Adam/HeapLog.CPP.Z,80] HeapLogRep() to find leaks.  Don't be
-confused by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc 
+confused by [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
 * For advanced heap debugging, play with
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2536] _CFG_HEAP_DBG.  You're on your own.
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2632] _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/SparrowOS/Adam/Doc/DocFile.CPP.Z,430] Type() to display
 .BMP or .GRA files.

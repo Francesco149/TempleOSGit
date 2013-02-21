@@ -5,7 +5,7 @@ U8 *RandVocabWord()
   if (!ws_dict_num_words)
     return NULL;
   i=RandU32%ws_dict_num_words;
-  ptr=ws_dict_word_list;
+  ptr=ws_dict_word_lst;
   while (i-- && *ptr==WSD_WORD_CHAR)
     ptr+=StrLen(ptr)+3;
   if (*ptr++!=WSD_WORD_CHAR)

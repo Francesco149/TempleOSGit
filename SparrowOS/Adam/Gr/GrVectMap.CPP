@@ -5,7 +5,7 @@ representations of the map broken into small rectangles.  The rectangles
 are encoded a bit-oriented structure.
 
 PolyLineStruct {
-1 Bit	  : set is valid polyline, clear is end of polyline list
+1 Bit	  : set is valid polyline, clear is end of polyline lst
 (R_BITS)  : X-coordinate of polyline start
 (R_BITS)  : Y-coordinate of polyline start
 (poly_line_cnt_bits): Number of polyline direction entries
@@ -13,15 +13,15 @@ N*3  : N-long seq of 1 pixel directional movements
 }
 
 FloodFillStruct {
-1 Bit	  : set is valid flood fill entry, clear is end of floodfill list
+1 Bit	  : set is valid flood fill entry, clear is end of floodfill lst
 (1+R_BITS): X-coordinate*2 of flood fill (half pixels)
 (1+R_BITS): Y-coordinate*2 of flood fill (half pixels)
 }
 
 Rect {
-1 Bit	  : set is valid rectangle entry, clear is end of rectangle list
-PolyLineStructList
-FloodFillStructList
+1 Bit	  : set is valid rectangle entry, clear is end of rectangle lst
+PolyLineStructLst
+FloodFillStructLst
 }
 */
 
@@ -30,7 +30,7 @@ FloodFillStructList
 #define R_WIDTH		(1<<R_BITS-2*R_BORDER)
 #define R_HEIGHT	(1<<R_BITS-2*R_BORDER)
 
-U0 GrVectMapBlotRect(CDC *dc,CGrVectMap *vm,I64 bit,F64 scale)
+U0 VectMapBlotRect(CDC *dc,CGrVectMap *vm,I64 bit,F64 scale)
 {
   I64 k,cnt,i0,j0,i,j,rect_dft,not_rect_dft;
   U8 *body=vm->body;
@@ -86,15 +86,15 @@ class CMPVMBlot
 };
 
 
-U0 MPGrVectMapBlotRect(CMPVMBlot *mp)
+U0 VectMapBlotRectMP(CMPVMBlot *mp)
 {
-  GrVectMapBlotRect(mp->rect_dc,mp->vm,mp->bit,mp->scale);
+  VectMapBlotRect(mp->rect_dc,mp->vm,mp->bit,mp->scale);
   GrBlot(mp->dc,mp->xx,mp->yy,mp->rect_dc);
   mp->busy=FALSE;
 }
 
 
-public U0 GrVectMapBlotMP(CDC *dc,I64 x,I64 y,CGrVectMap *vm,F64 scale=1.0,I64 _mp_cnt=0)
+public U0 VectMapBlotMP(CDC *dc,I64 x,I64 y,CGrVectMap *vm,F64 scale=1.0,I64 _mp_cnt=0)
 {
   I64 i,i_lo,i_hi,j,j_lo,j_hi,k,cpu,pass,
       w=(vm->width +R_WIDTH-1)/R_WIDTH,
@@ -160,10 +160,10 @@ public U0 GrVectMapBlotMP(CDC *dc,I64 x,I64 y,CGrVectMap *vm,F64 scale=1.0,I64 _
       mp[cpu].yy=yy;
       mp[cpu].bit=vm->rect_start_bits[k];
       if (!cpu)
-	MPGrVectMapBlotRect(mp);
+	VectMapBlotRectMP(mp);
       else {
 	mp[cpu].busy=TRUE;
-	MPJob(&MPGrVectMapBlotRect,&mp[cpu],cpu);
+	MPJob(&VectMapBlotRectMP,&mp[cpu],cpu);
       }
       k+=w;
       yy+=R_HEIGHT*scale;
@@ -190,7 +190,7 @@ Bool IsSolidSquare(CDC *dc,I64 x,I64 y,I64 edge,CColorROPU32 color)
   return TRUE;
 }
 
-I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
+I64 VectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
   I64 poly_line_cnt_bits,I64 *_max_poly_line_cnt_bits)
 { //Returns number of bits to represent rect
   CDC *b_desired	=DCExtract(dc,_x-R_BORDER,_y-R_BORDER,_x+R_WIDTH+R_BORDER*2-1,_y+R_BORDER*2+R_HEIGHT-1),
@@ -222,8 +222,8 @@ I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
 
   if (!cnt || cnt==R_WIDTH*R_HEIGHT) {
   //Rect is all ON or OFF
-    Btr(body,bit++); //End of poly-line list
-    Btr(body,bit++); //End of flood-fill list
+    Btr(body,bit++); //End of poly-line lst
+    Btr(body,bit++); //End of flood-fill lst
   } else {
     for (y=0;y<R_HEIGHT+R_BORDER*2;y++)
       for (x=0;x<R_WIDTH+R_BORDER*2;x++) {
@@ -240,7 +240,7 @@ I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
     for (y=0;y<R_HEIGHT+R_BORDER*2;y++)
       for (x=0;x<R_WIDTH+R_BORDER*2;x++)
 	if (GrPeek(b_edge,x,y)==1) {
-	  Bts(body,bit++); //Show not end of poly-line list
+	  Bts(body,bit++); //Show not end of poly-line lst
 	  GrPlot(b_edge,x,y);
 	  BFieldOrU32(body,bit,x); //Poly-line starting X coordinate in rect
 	  bit+=R_BITS;
@@ -328,16 +328,16 @@ I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
 
       link_bit1=link_bit2;
     }
-    Btr(body,bit++); //End of poly-line list
+    Btr(body,bit++); //End of poly-line lst
 
     b_desired->color=rect_dft;
     GrLineRect4(b_desired,0,0,R_WIDTH+2*R_BORDER-1,R_HEIGHT+2*R_BORDER-1);
-    Btr(body,bit); //Temp end of flood-fill list
+    Btr(body,bit); //Temp end of flood-fill lst
 
     for (step_bits=2;step_bits>=1;step_bits-=1) {
       step=1<<step_bits;
       b_actual=DCNew(DCT_COLOR8,R_WIDTH/step,R_HEIGHT/step,Fs);
-      GrVectMapBlotRect(b_actual,vm,_bit,1.0/step);
+      VectMapBlotRect(b_actual,vm,_bit,1.0/step);
 
       b_actual->color=not_rect_dft;
       GrLineRect4(b_actual,0,0,R_WIDTH+2*R_BORDER-1,R_HEIGHT+2*R_BORDER-1);
@@ -346,7 +346,7 @@ I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
       for (y=R_BORDER;y<R_HEIGHT+R_BORDER;y+=step)
 	for (x=R_BORDER;x<R_WIDTH+R_BORDER;x+=step)
 	  if (IsSolidSquare(b_desired,x,y,step,not_rect_dft) && GrPeek(b_actual,x>>step_bits,y>>step_bits)==rect_dft) {
-	    Bts(body,bit++); //Show not end of flood-fill list
+	    Bts(body,bit++); //Show not end of flood-fill lst
 	    yy=y; xx=x;
 	    for (k=0;k<4;k++) {
 	      yy2=yy;
@@ -377,9 +377,9 @@ I64 GrVectizeRect(CDC *dc,I64 _x,I64 _y,CGrVectMap *vm,I64 _bit,
 	    bit+=R_BITS+1;
 	  }
       DCDel(b_actual);
-      Btr(body,bit); //Temp end of flood-fill list
+      Btr(body,bit); //Temp end of flood-fill lst
     }
-    bit++; //End of flood-fill list
+    bit++; //End of flood-fill lst
   }
 
   DCDel(b_desired);
@@ -416,7 +416,7 @@ public CGrVectMap *DC2VectMap(CDC *dc,CTask *mem_task=NULL,I64 *_size=NULL)
       tempv.rect_cnt=rect_cnt;
       tempv.r_bits=R_BITS;
       tempv.poly_line_cnt_bits=poly_line_cnt_bits;
-      GrVectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,&max_poly_line_cnt_bits);
+      VectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,&max_poly_line_cnt_bits);
     }
 
   //Pass 2: Get cnt
@@ -432,7 +432,7 @@ public CGrVectMap *DC2VectMap(CDC *dc,CTask *mem_task=NULL,I64 *_size=NULL)
       tempv.rect_cnt=rect_cnt;
       tempv.r_bits=R_BITS;
       tempv.poly_line_cnt_bits=poly_line_cnt_bits;
-      cnt+=GrVectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,NULL);
+      cnt+=VectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,&tempv,0,poly_line_cnt_bits,NULL);
     }
   Free(body);
 
@@ -452,7 +452,7 @@ public CGrVectMap *DC2VectMap(CDC *dc,CTask *mem_task=NULL,I64 *_size=NULL)
   for (i=0;i<h;i++)
     for (j=0;j<w;j++) {
       rect_start_bits[k++]=cnt;
-      cnt+=GrVectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,result,cnt,poly_line_cnt_bits,NULL);
+      cnt+=VectizeRect(dc,R_BORDER+j*R_WIDTH,R_BORDER+i*R_HEIGHT,result,cnt,poly_line_cnt_bits,NULL);
     }
   rect_start_bits[k]=cnt;
 
@@ -460,14 +460,14 @@ public CGrVectMap *DC2VectMap(CDC *dc,CTask *mem_task=NULL,I64 *_size=NULL)
   return result;
 }
 
-public U0 GrVectMapDel(CGrVectMap *vm)
+public U0 VectMapDel(CGrVectMap *vm)
 {
   Free(vm->rect_start_bits);
   Free(vm->body);
   Free(vm);
 }
 
-U32 *GrVectMapRectStartBits(CGrVectMap *vm,CTask *mem_task=NULL)
+U32 *VectMapRectStartBits(CGrVectMap *vm,CTask *mem_task=NULL)
 {
   I64 k=0,bit=0;
   U8 *body=vm->body;

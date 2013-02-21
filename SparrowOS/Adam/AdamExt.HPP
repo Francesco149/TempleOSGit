@@ -40,7 +40,7 @@ extern U0 DocDump(CDoc *doc,I64 uS_delay=0);
 extern CDocEntry *DocEntryCopy(CDoc *doc,CDocEntry *doc_e);
 extern U0 DocInsDoc(CDoc *doc,CDoc *doc2);
 extern U0 DocD(U8 *buf,I64 cnt=0x80);
-extern U0 DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL);
+extern Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC_ALL);
 extern Bool DocFormDo(U8 *D,U8 *class_name,I64 doc_flags=0,U8 *header=NULL,U8 *footer=NULL);
 extern CDoc *DocCur(CTask *task=NULL);
 extern U0 DocClear(CDoc *doc=NULL);
@@ -92,7 +92,7 @@ extern CMenu *MenuPush(U8 *st);
 extern U0 MenuPop();
 extern CMenu *MenuFilePush(U8 *filename);
 
-extern U0 Noise(I64 mS,I64 min_freq,I64 max_freq,I64 waveform=WF_NOISE);
+extern CTask *Noise(I64 mS,I64 min_freq,I64 max_freq,I64 waveform=WF_NOISE);
 
 extern CCtrl *CtrlFindUnique(CTask *task,I64 type);
 extern Bool CtrlInside(CCtrl *c,I64 x,I64 y);

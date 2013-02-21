@@ -7,7 +7,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1551] CICArg.  RAX is the most common register
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1647] CICArg.  RAX is the most common register
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -1374,7 +1374,7 @@ U0 ICFPow(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 { //for POW
   I64 i;
   CExeImportExport *tempe;
-  CHashExport *tempess=HashFind("SYS_POW",lx->hash_table_list,HTT_EXPORT_SYS_SYM);
+  CHashExport *tempess=HashFind("SYS_POW",lx->hash_table_lst,HTT_EXPORT_SYS_SYM);
 
   if (tempi->ic_flags & ICF_P1_FIRST) {
     ICMov(tempi,TY_REG+IT_I64,CREG_RDX,0,
@@ -1402,8 +1402,8 @@ U0 ICFPow(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 	  tempe=CAlloc(sizeof(CExeImportExport));
 	  tempe->type=EIE_LIT_U64;
 	  tempe->ip=ip+tempi->ic_cnt-8;
-	  tempe->next=tempess->list;
-	  tempess->list=tempe;
+	  tempe->next=tempess->ie_lst;
+	  tempess->ie_lst=tempe;
 	}
 	ICU16(tempi,0xD3FF);
       } else {
@@ -1413,8 +1413,8 @@ U0 ICFPow(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 	  tempe=CAlloc(sizeof(CExeImportExport));
 	  tempe->type=EIE_REL_U32;
 	  tempe->ip=ip+tempi->ic_cnt-4;
-	  tempe->next=tempess->list;
-	  tempess->list=tempe;
+	  tempe->next=tempess->ie_lst;
+	  tempess->ie_lst=tempe;
 	}
       }
     } else { //OSMain

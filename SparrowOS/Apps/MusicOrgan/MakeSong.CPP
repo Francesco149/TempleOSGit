@@ -1,6 +1,8 @@
 class MakeSongSettings
 {
   Bool simple_rhythms		fmtstr "$CB,\"Simple Rhythms\"$\n";
+  Bool normal_rhythms		fmtstr "$CB,\"Normal Rhythms\"$\n";
+  Bool complex_rhythms		fmtstr "$CB,\"Complex Rhythms\"$\n";
   Bool rests			fmtstr "$CB,\"Rests\"$\n";
   Bool change_waveforms	fmtstr "$CB,\"Change Waveforms\"$\n";
   Bool six_eight		fmtstr "$CB,\"Six Eight\"$\n";
@@ -42,13 +44,17 @@ U0 InsNote(MakeSongSettings *mss,U8 *buf,I64 k,I64 *j)
   }
 }
 
-#define DUR_QUARTER	0
-#define DUR_EIGHTH	1
-#define DUR_TRIPLET	2
-#define DUR_SIXTEENTH	3
+#define DUR_4		0
+#define DUR_8_8		1
+#define DUR_3_3_3	2
+#define DUR_16_16_16_16	3
+#define DUR_8DOT_16	4
+#define DUR_8_16_16	5
+#define DUR_16_16_8	6
 
-U8 simple_songs [5]={DUR_EIGHTH,DUR_QUARTER,DUR_QUARTER,DUR_QUARTER,DUR_QUARTER};
-U8 complex_songs[6]={DUR_EIGHTH,DUR_TRIPLET,DUR_SIXTEENTH,DUR_QUARTER,DUR_QUARTER,DUR_QUARTER};
+U8 simple_songs [5]={DUR_4,DUR_4,DUR_4,DUR_4,DUR_8_8};
+U8 normal_songs [5]={DUR_4,DUR_4,DUR_8_8,DUR_3_3_3,DUR_16_16_16_16};
+U8 complex_songs[9]={DUR_4,DUR_4,DUR_8_8,DUR_8_8,DUR_8DOT_16,DUR_3_3_3,DUR_8_16_16,DUR_16_16_8,DUR_16_16_16_16};
 
 U8 *MakeSong()
 {
@@ -58,6 +64,8 @@ U8 *MakeSong()
      wf[2],w=0,len;
 
   mss.simple_rhythms=FALSE;
+  mss.normal_rhythms=TRUE;
+  mss.complex_rhythms=FALSE;
   mss.rests=FALSE;
   mss.change_waveforms=FALSE;
   mss.octave=music_octave;
@@ -106,22 +114,34 @@ U8 *MakeSong()
       }
     }
 
-    n=TimerPickedNibble;
-    k=TimerPickedNibble;
-    if (mss.simple_rhythms)
-      duration=simple_songs[n%5];
+    n=TimerPickedNibble<<4+TimerPickedNibble;
+    if (mss.complex_rhythms)
+      duration=complex_songs[n%9];
+    else if (mss.normal_rhythms)
+      duration=normal_songs[n%5];
     else
-      duration=complex_songs[n%6];
+      duration=simple_songs[n%5];
+
+    k=TimerPickedNibble;
     switch (duration) {
-      case DUR_EIGHTH:
-	if (last_duration!=DUR_EIGHTH)
+      case DUR_8_8:
+	if (last_duration!=DUR_8_8)
 	  buf[j++]='e';
 	InsNote(&mss,buf,k,&j);
 	k=TimerPickedNibble;
 	InsNote(&mss,buf,k,&j);
 	break;
-      case DUR_TRIPLET:
-	if (last_duration!=DUR_TRIPLET) {
+      case DUR_8DOT_16:
+	buf[j++]='e';
+	buf[j++]='.';
+	InsNote(&mss,buf,k,&j);
+	buf[j++]='s';
+	k=TimerPickedNibble;
+	InsNote(&mss,buf,k,&j);
+	duration=DUR_16_16_16_16;
+	break;
+      case DUR_3_3_3:
+	if (last_duration!=DUR_3_3_3) {
 	  buf[j++]='e';
 	  buf[j++]='t';
 	}
@@ -131,8 +151,30 @@ U8 *MakeSong()
 	k=TimerPickedNibble;
 	InsNote(&mss,buf,k,&j);
 	break;
-      case DUR_SIXTEENTH:
-	if (last_duration!=DUR_SIXTEENTH)
+      case DUR_8_16_16:
+	if (last_duration!=DUR_8_8)
+	  buf[j++]='e';
+	InsNote(&mss,buf,k,&j);
+	buf[j++]='s';
+	k=TimerPickedNibble;
+	InsNote(&mss,buf,k,&j);
+	k=TimerPickedNibble;
+	InsNote(&mss,buf,k,&j);
+	duration=DUR_16_16_16_16;
+	break;
+      case DUR_16_16_8:
+	if (last_duration!=DUR_16_16_16_16)
+	  buf[j++]='s';
+	InsNote(&mss,buf,k,&j);
+	k=TimerPickedNibble;
+	InsNote(&mss,buf,k,&j);
+	buf[j++]='e';
+	k=TimerPickedNibble;
+	InsNote(&mss,buf,k,&j);
+	duration=DUR_8_8;
+	break;
+      case DUR_16_16_16_16:
+	if (last_duration!=DUR_16_16_16_16)
 	  buf[j++]='s';
 	InsNote(&mss,buf,k,&j);
 	k2=k;
@@ -142,7 +184,7 @@ U8 *MakeSong()
 	InsNote(&mss,buf,k,&j);
 	break;
       default:
-	if (last_duration!=DUR_QUARTER)
+	if (last_duration!=DUR_4)
 	  buf[j++]='q';
 	InsNote(&mss,buf,k,&j);
     }

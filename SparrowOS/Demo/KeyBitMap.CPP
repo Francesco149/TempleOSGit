@@ -11,7 +11,7 @@ I64 x=0;
 
 U0 DrawIt(CTask *,CDC *dc)
 {
-  CSpritePlot3(dc,x%100,100,0,__BIN_1);
+  SpritePlot3(dc,x%100,100,0,__BIN_1);
 }
 
 
@@ -27,11 +27,11 @@ U0 KeyDownBitMapDemo()
   SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
 
-//[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,113] key_down_bitmap is indexed with the
+//[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,114] key_down_bitmap is indexed with the
 //merged scan code.  (left shift and
 //right shift combined for example.)
-//[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,115] key_down_bitmap2 is indexed with the
-//distinct scan code.  See [Char,1] Char and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3146] Scan Codes.
+//[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,116] key_down_bitmap2 is indexed with the
+//distinct scan code.  See [Char,1] Char and [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3241] Scan Codes.
 
   while (Bt(key_down_bitmap,i_sc)) {
     x++;

@@ -3,9 +3,9 @@
 
 U0 FillInTime()
 {
-  CDate ltdt;
-  ltdt=GetCurTimeCDate;
-  "$IV,1$----%D %T----$IV,0$\n",ltdt,ltdt;
+  CDate spdt;
+  spdt=GetCurTimeCDate;
+  "$IV,1$----%D %T----$IV,0$\n",spdt,spdt;
 }
 
 

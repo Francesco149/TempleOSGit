@@ -18,7 +18,8 @@ U0 BackupExport()
   Copy("D:/Export.CPP","C:/ExportB.CPP");
 }
 
-BackupExport;
+//Appears to hang on this version...
+//BackupExport
 
 #define EXPORT_W 78
 
@@ -150,6 +151,7 @@ U8 *StrToASCII(U8 *s)
       case 'omega': ext="omega"; break;
       case '-': ext="-"; break;
       case 'u': ext="u"; break;
+      case 'alpha': ext="alpha"; break;
       case 255: ext="\\xFF"; break; //Only used in the extended chars demo
       default:
         if (*buf&0x80)
@@ -236,7 +238,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
 
   ext=UnZExtension(out_path);
 
-  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO")) {
+  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO","BMP")) {
     FilePassThrough(in_path,out_path);
     return;
   }
@@ -453,7 +455,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,129] PutCopyTree which is internally used by [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree
+//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,128] PutCopyTree which is internally used by [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
 U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   U8 *dst_dir,Bool debug=FALSE)
 {
@@ -475,7 +477,7 @@ U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   }
 }
 
-//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,149] CopyTree
+//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
 U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
   Bool debug=FALSE)
 {
@@ -499,7 +501,7 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
       FileAccessDel(fa);
       Free(dst_dir);
     }
-    CDirListDel(ent);
+    CDirLstDel(ent);
   }
 }
 

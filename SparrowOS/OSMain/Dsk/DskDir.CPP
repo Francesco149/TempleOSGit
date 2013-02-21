@@ -31,25 +31,25 @@ U0 CDirEntryDel2(CDirEntry *tempm)
   }
 }
 
-U0 CDirListDel(CDirEntry *tempm)
+U0 CDirLstDel(CDirEntry *tempm)
 { //Doesn't Free user_data
   CDirEntry *tempm2;
   while (tempm) {
     tempm2=tempm->next;
     if (tempm->sub)
-      CDirListDel(tempm->sub);
+      CDirLstDel(tempm->sub);
     CDirEntryDel(tempm);
     tempm=tempm2;
   }
 }
 
-U0 CDirListDel2(CDirEntry *tempm)
+U0 CDirLstDel2(CDirEntry *tempm)
 { //Frees user_data
   CDirEntry *tempm2;
   while (tempm) {
     tempm2=tempm->next;
     if (tempm->sub)
-      CDirListDel2(tempm->sub);
+      CDirLstDel2(tempm->sub);
     CDirEntryDel2(tempm);
     tempm=tempm2;
   }

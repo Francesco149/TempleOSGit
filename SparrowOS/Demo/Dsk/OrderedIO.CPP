@@ -1,8 +1,8 @@
 /*
-This gets a list of files, flattens the list from a tree into an array and 
-sorts them by cluster num, to speed-up access time by avoiding moving the
-disk 
-head around.
+This gets a lst of files, flattens the lst from a tree into an array and
+sorts 
+them by cluster num, to speed-up access time by avoiding moving the disk head 
+around.
 */
 
 U0 Main()

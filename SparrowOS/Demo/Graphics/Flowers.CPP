@@ -97,7 +97,7 @@ U0 DrawStem(CDC *dc,Seed *tempe,Stem *temps,Stem *parent,I64 w,I64 h)
   dc->color=GREEN;
   dc->pen_width=2;
   while (temps) {
-  //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,544] GrLine3() because it has pen_width
+  //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,507] GrLine3() because it has pen_width
     if (parent) {
       dc->color=GREEN;
       dc->pen_width=2;
@@ -144,8 +144,8 @@ U0 DrawSeeds(CDC *dc,Seed *tempe,I64 w,I64 h)
 {
   Stem *temps;
   while (tempe) {
-    CSpritePlot3(dc,tempe->x+w/2,h-tempe->y,0,__BIN_1);
-    //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,544] GrLine3() because it has pen_width
+    SpritePlot3(dc,tempe->x+w/2,h-tempe->y,0,__BIN_1);
+    //We use [C:/SparrowOS/Adam/Gr/GrPrimatives.CPP.Z,507] GrLine3() because it has pen_width
     if (temps=tempe->sub) {
       dc->color=GREEN;
       dc->pen_width=2;

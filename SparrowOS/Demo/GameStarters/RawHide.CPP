@@ -215,7 +215,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	dc->flags|=DCF_JUST_MIRROR|DCF_SYMMETRY;
 	GrSetSymmetry(dc,a[i].x.i32[1]-cx,0,a[i].x.i32[1]-cx,1);
       }
-      CSpritePlot3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
+      SpritePlot3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
       dc->flags&=~(DCF_JUST_MIRROR|DCF_SYMMETRY);
     }
 
@@ -228,7 +228,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->flags|=DCF_JUST_MIRROR|DCF_SYMMETRY;
     GrSetSymmetry(dc,ipx-task->win_pixel_left-task->win_scroll_x,0,ipx-task->win_pixel_left-task->win_scroll_x,1);
   }
-  CSpritePlot3(dc,
+  SpritePlot3(dc,
     ipx-task->win_pixel_left-task->win_scroll_x,
     ipy-task->win_pixel_top -task->win_scroll_y,0,rh_sprite[GE_HORSE].img);
   dc->flags&=~(DCF_JUST_MIRROR|DCF_SYMMETRY);
@@ -442,7 +442,7 @@ U0 Init()
   rh_sprite[2].img=__BIN_3;
   for (i=0;i<GE_NUM;i++) {
     ge=&rh_sprite[i];
-    CSpriteExtents(ge->img,&ge->min_x,&ge->max_x,&ge->min_y,&ge->max_y);
+    SpriteExtents(ge->img,&ge->min_x,&ge->max_x,&ge->min_y,&ge->max_y);
   }
 
   RiverNew;

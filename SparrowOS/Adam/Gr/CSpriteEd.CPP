@@ -277,7 +277,7 @@ CSprite *GrTransformBitMap(I64 r[4][4],CSprite *tempg)
 }
 
 
-U0 CSpriteTransform(I64 r[4][4],CSprite *root)
+U0 SpriteTransform(I64 r[4][4],CSprite *root)
 {
   I64 i,j,k,num,
       x,y,z,x1,y1,z1,x2,y2,z2,x3,y3,z3;
@@ -473,7 +473,7 @@ U0 CSpriteTransform(I64 r[4][4],CSprite *root)
   }
 }
 
-CSprite *CSpriteDoc2Que(CDoc *doc,CSprite *root,I64 *cur_num)
+CSprite *SpriteDoc2Que(CDoc *doc,CSprite *root,I64 *cur_num)
 {
   CSprite *result=CAlloc(sizeof(CSprite)),*tempg;
   CDocEntry *doc_e=doc->root.next;
@@ -502,7 +502,7 @@ CSprite *CSpriteDoc2Que(CDoc *doc,CSprite *root,I64 *cur_num)
   return result;
 }
 
-U0 PickCSpriteDocNew(CDoc *doc,CSprite *root,I64 old_num)
+U0 PickSpriteDocNew(CDoc *doc,CSprite *root,I64 old_num)
 {
   CSprite *tempg;
   CDocEntry *doc_e=NULL;
@@ -511,7 +511,7 @@ U0 PickCSpriteDocNew(CDoc *doc,CSprite *root,I64 old_num)
 
   tempg=root->next;
   while (tempg!=root) {
-    st=CSprite2Text(tempg);
+    st=Sprite2Text(tempg);
     if (cur_num==old_num) {
       DocPutS(doc,"$FM,LTRED$");
       doc_e=DocPrintF(doc,"$MU-UL,\"%Q\",%d$\n",st,cur_num++);
@@ -533,7 +533,7 @@ U0 PickCSpriteDocNew(CDoc *doc,CSprite *root,I64 old_num)
     doc->cur_entry=doc_e;
 }
 
-U0 CSpriteSideBarTask2(CTask *grand_parent)
+U0 SpriteSideBarTask2(CTask *grand_parent)
 {
   I64 w,h;
   CTask *parent=Fs->parent_task,*pu_task;
@@ -551,24 +551,24 @@ U0 CSpriteSideBarTask2(CTask *grand_parent)
   }
 }
 
-U0 CSpriteSideBarTask(CTask *parent,CSprite **_root,I64 *cur_num)
+U0 SpriteSideBarTask(CTask *parent,CSprite **_root,I64 *cur_num)
 {
   CDocEntry *doc_e;
   CDoc *doc=DocCur;
-  Spawn(&CSpriteSideBarTask2,parent,"CSpriteTask",Fs);
+  Spawn(&SpriteSideBarTask2,parent,"CSpriteTask",Fs);
   doc->flags|=DOCF_MIN_SIZE|DOCF_FORM;
   while (TRUE) {
-    PickCSpriteDocNew(doc,*_root,*cur_num);
+    PickSpriteDocNew(doc,*_root,*cur_num);
     View;
     doc_e=doc->cur_entry;
     if (doc_e->type_u8==DOCT_MENU_VAL)
       *cur_num=doc_e->left_exp;
-    *_root=CSpriteDoc2Que(doc,*_root,cur_num);
+    *_root=SpriteDoc2Que(doc,*_root,cur_num);
     DocClear(doc);
   }
 }
 
-U8 *CSpriteHexDoc2CSprite(CDoc *doc,I64 *cur_num,CTask *mem_task=NULL)
+U8 *SpriteHexDoc2Sprite(CDoc *doc,I64 *cur_num,CTask *mem_task=NULL)
 {
   I64 num=0,size=gr_sprite_base_size[GRST_END];
   U8 *result,*dst;
@@ -598,7 +598,7 @@ U8 *CSpriteHexDoc2CSprite(CDoc *doc,I64 *cur_num,CTask *mem_task=NULL)
   return result;
 }
 
-Bool CSpriteTextEd(CSprite **_root,I64 *cur_num)
+Bool SpriteTextEd(CSprite **_root,I64 *cur_num)
 {
   Bool result;
   U8 *st;
@@ -608,18 +608,18 @@ Bool CSpriteTextEd(CSprite **_root,I64 *cur_num)
   doc->flags|=DOCF_FORM;
   tempg=root->next;
   while (tempg!=root) {
-    st=CSprite2Text(tempg);
+    st=Sprite2Text(tempg);
     DocPrintF(doc,"$FG,BLUE$%s$FG$\n",st);
     Free(st);
-    doc_e=DocPrintF(doc,"$HX,%d,16$",CSpriteElemSize(tempg));
+    doc_e=DocPrintF(doc,"$HX,%d,16$",SpriteElemSize(tempg));
     doc_e->data=&tempg->start;
     tempg=tempg->next;
   }
   if (result=ServantUser("DocDo(0x%X,0x%X);",doc,0)) {
-    tempg=CSpriteHexDoc2CSprite(doc,cur_num);
+    tempg=SpriteHexDoc2Sprite(doc,cur_num);
     QueDel(root);
     Free(root);
-    root=CSprite2Que(tempg);
+    root=Sprite2Que(tempg);
   }
   DocDel(doc);
   if (_root) *_root=root;
@@ -642,13 +642,13 @@ Bool CSpriteTextEd(CSprite **_root,I64 *cur_num)
 
 U0 GrInit2()
 {
-  DefineListLoad("ST_CSPRITE_ED_MENU"," \0Pick Graphically\0Set Origin\0"
+  DefineLstLoad("ST_CSPRITE_ED_MENU"," \0Pick Graphically\0Set Origin\0"
 	"Shift Origin\0Shift Points\0Shift Rects\0Transform\0Shift SubOrigin\0Insert Object\0"
 	"Insert Clipboard\0Delete Object\0Edit\0Snap\0");
 }
 GrInit2;
 
-I64 PopUpCSpriteEd(CSprite **_root,I64 snap,F64 ip_scaler,I64 *cur_num)
+I64 PopUpSpriteEd(CSprite **_root,I64 snap,F64 ip_scaler,I64 *cur_num)
 {
   U8 *st;
   CTask *pu_task;
@@ -669,12 +669,12 @@ I64 PopUpCSpriteEd(CSprite **_root,I64 snap,F64 ip_scaler,I64 *cur_num)
 	"$MU-UL,\"Insert Clipboard CSprite's\",GED_INS_CLIPBOARD$\n"
 	"\n$MU-UL,\"End\",GED_END$\n"
 	"$MU-UL,\"Cancel\",DOCM_CANCEL$",snap,ip_scaler);
-  st=MSPrintF("CSpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,_root,cur_num);
+  st=MSPrintF("SpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,_root,cur_num);
   PopUp(st,NULL,&pu_task);
   Free(st);
   i=PopUpMenu(doc);
   if (TaskValidate(pu_task)) {
-    *_root=CSpriteDoc2Que(DocCur(pu_task),*_root,cur_num);
+    *_root=SpriteDoc2Que(DocCur(pu_task),*_root,cur_num);
     Kill(pu_task);
   }
   DocDel(doc);
@@ -693,7 +693,7 @@ class CSpritePt
   I32 *x,*y,*z,*w,*h;
 };
 
-U0 CSpritePtQueNew(U8 *elems,I64 x,I64 y,CSpritePt *root)
+U0 SpritePtQueNew(U8 *elems,I64 x,I64 y,CSpritePt *root)
 {
   I64 i,cur_num=0;
   I32 *ptr;
@@ -813,7 +813,7 @@ U0 CSpritePtQueNew(U8 *elems,I64 x,I64 y,CSpritePt *root)
 	QueIns(temppe,root->last);
 	break;
     }
-    tempg(U8 *)+=CSpriteElemSize(tempg);
+    tempg(U8 *)+=SpriteElemSize(tempg);
     cur_num++;
   }
 }
@@ -869,14 +869,14 @@ U0 GESPCtrlPtsMove(CSpritePt *root,I64 dx,I64 dy)
   }
 }
 
-Bool CSpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
+Bool SpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_num,I64 mode)
 {
   I64 msg_code,p1,p2,xx,yy,xx2,yy2,dd,best_dd,cur_num;
   Bool old_preempt,result=TRUE;
   CDC *dc=DCAlias;
   CSpritePt root,*temppe,*best_pe;
 
-  CSpritePtQueNew(elems,x,y,&root);
+  SpritePtQueNew(elems,x,y,&root);
   cur_num=0;
   if (root.next!=&root) {
     old_preempt=Preempt(OFF);
@@ -1022,9 +1022,9 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
   tempb=doc_ce->bin_data;
   old_size=tempb->size;
   old_CSprite=tempb->data;
-  root=CSprite2Que(old_CSprite);
+  root=Sprite2Que(old_CSprite);
 
-  cur_num=CSpriteCntQue(root);
+  cur_num=SpriteCntQue(root);
   tempb->data=MAllocIdentical(old_CSprite);
   DocUnlock(doc);
   do {
@@ -1032,7 +1032,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
     StrCpy(doc->filename.name,old_filename);
     doc->flags|=old_doc_flags;
     doc_ce->flags1|=DOCEF1_DONT_DRAW;
-    i=PopUpCSpriteEd(&root,new_snap,new_ip_scaler,&cur_num);
+    i=PopUpSpriteEd(&root,new_snap,new_ip_scaler,&cur_num);
     GrEdUpdate(doc,tempb,root);
     if (i>=0) {
       StrCpy(Fs->task_title,DefineSub(i,"ST_CSPRITE_ED_MENU"));
@@ -1105,16 +1105,16 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
 	"Press '$FG,GREEN$r$FG$' after one rectangle\n"
 	"to OR another rectangle.\n");
 	doc_ce->flags1=old_ce_flags1;
-	if (CSpriteShiftPts(tempb->data,x,y,&cur_num,i)) {
+	if (SpriteShiftPts(tempb->data,x,y,&cur_num,i)) {
 	  QueDel(root);
 	  Free(root);
-	  root=CSprite2Que(tempb->data);
+	  root=Sprite2Que(tempb->data);
 	} else
 	  GrEdUpdate(doc,tempb,root);
 	break;
       case GED_TRANSFORM:
 	if (PopUpTransform(r)) {
-	  CSpriteTransform(r,root);
+	  SpriteTransform(r,root);
 	  GrEdUpdate(doc,tempb,root);
 	}
 	break;
@@ -1149,7 +1149,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
 	doc_e=sys_clipboard_doc->root.next;
 	while (doc_e!=sys_clipboard_doc) {
 	  if (doc_e->type_u8==DOCT_SPRITE) {
-	    root2=CSprite2Que(doc_e->bin_data->data);
+	    root2=Sprite2Que(doc_e->bin_data->data);
 	    if (root2->next!=root2) {
 	      tempg=root2->next;
 	      while (tempg!=root2) {
@@ -1173,7 +1173,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
 	break;
       case GED_VECT:
 	doc_ce->flags1=old_ce_flags1;
-	switch (CSpriteVect(doc,doc_ce,&root,&cur_num,x,y,FALSE,&new_snap,&new_ip_scaler)) {
+	switch (SpriteVect(doc,doc_ce,&root,&cur_num,x,y,FALSE,&new_snap,&new_ip_scaler)) {
 	  case GE_OKAY_DONE:
 	    i=GED_END;
 	    break;
@@ -1191,7 +1191,7 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y,I64 *_import_snap=NULL,F64 *_import_i
 	}
 	break;
       case GED_ED:
-	if (CSpriteTextEd(&root,&cur_num))
+	if (SpriteTextEd(&root,&cur_num))
 	  GrEdUpdate(doc,tempb,root);
 	break;
     }

@@ -529,7 +529,7 @@ Bool HumanMove(GameState *state,I64 piece_num,Move *mvs,I64 mv_cnt,I64 x,I64 y)
 }
 
 I64 ChkPieceMoves(GameState *state,I64 piece_num,Move *src,I64 mv_cnt)
-{ //Goes through moves list for one piece, eliminating invalid moves.
+{ //Goes through moves lst for one piece, eliminating invalid moves.
   I64 k,cnt=mv_cnt,result=0,x,y,dy;
   GameState state2,*tempg;
   Move *dst=src;
@@ -628,7 +628,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	z=GR_Z_ALL+s->x-s->y;
 
 	dc->flags&=~DCF_TRANSFORMATION;
-	CSpritePlot3(dc,x,y,z,imgs[s->type*2+s->player]);
+	SpritePlot3(dc,x,y,z,imgs[s->type*2+s->player]);
 	dc->flags|=DCF_TRANSFORMATION;
       }
     } else { //Dead
@@ -652,7 +652,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	z=0;
       }
       dc->flags&=~DCF_TRANSFORMATION;
-      CSpritePlot3(dc,x,y,z,imgs[s->type*2+s->player+2]);
+      SpritePlot3(dc,x,y,z,imgs[s->type*2+s->player+2]);
       dc->flags|=DCF_TRANSFORMATION;
     }
   }

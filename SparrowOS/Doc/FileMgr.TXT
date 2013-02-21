@@ -45,13 +45,13 @@ SHIFT-F5
 'M'
   Make CD/DVD ISO file.  This creates a file image of the directory the
   cursor 
-is on.  The name of the ISO file is [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,30]
+is on.  The name of the ISO file is [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,31]
   sys_dft_iso_name and can be redefined in 
 your start-up scripts.  You may wish to place it on a different drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,30] sys_dft_iso_name to the drive the
+[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,31] sys_dft_iso_name to the drive the
   cursor is on.
 
 

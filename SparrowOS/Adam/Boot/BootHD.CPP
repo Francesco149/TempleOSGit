@@ -4,7 +4,7 @@ asm {
 
 USE16
 BHD_START::
-	DU8	0x5A DUP(0); //See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2122] CFAT32Boot.code[]
+	DU8	0x5A DUP(0); //See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2218] CFAT32Boot.code[]
 BHD_CODE::
 	CLD
 

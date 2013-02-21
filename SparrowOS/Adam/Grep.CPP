@@ -140,7 +140,7 @@ I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
   return cnt;
 }
 
-I64 GrepList(U8 *pattern,CDirEntry *tempm1,I64 *_fuf_flags,U8 *replace_text)
+I64 GrepLst(U8 *pattern,CDirEntry *tempm1,I64 *_fuf_flags,U8 *replace_text)
 {
   I64 cnt=0;
   CDirEntry *tempm2;
@@ -150,7 +150,7 @@ I64 GrepList(U8 *pattern,CDirEntry *tempm1,I64 *_fuf_flags,U8 *replace_text)
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub) {
 	"%S %s\n","ST_SCANNING_DIR",tempm1->full_name;
-	cnt+=GrepList(pattern,tempm1->sub,_fuf_flags,replace_text);
+	cnt+=GrepLst(pattern,tempm1->sub,_fuf_flags,replace_text);
       }
     } else
       cnt+=GrepFile(pattern,tempm1->full_name,_fuf_flags,replace_text);
@@ -181,7 +181,7 @@ Let's say it stands for global replace ;-)
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+i"); //Set dft flags
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   LBEqu(&fuf_flags,FUf_REPLACE,replace_text);
-  cnt+=GrepList(pattern,FilesFind(files_find_mask,fuf_flags),&fuf_flags,replace_text);
+  cnt+=GrepLst(pattern,FilesFind(files_find_mask,fuf_flags),&fuf_flags,replace_text);
   return cnt;
 }
 

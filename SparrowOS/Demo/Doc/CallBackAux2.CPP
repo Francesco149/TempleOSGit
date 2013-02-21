@@ -3,8 +3,8 @@
 U8 *tSCB(CDoc *,CDocEntry *,CTask *mem_task)
 {
   U8 *st=MAlloc(64,mem_task);
-  CDate ltdt=tS*CDATE_FREQ;
-  SPrintF(st,"%d=%h11T",ltdt,ltdt);
+  CDate spdt=tS*CDATE_FREQ;
+  SPrintF(st,"%d=%h11T",spdt,spdt);
   return st;
 }
 

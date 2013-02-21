@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 138,038 lines of SparrowOS over 
+* I, Terry A. Davis, wrote every one of the 139,466 lines of SparrowOS over 
 the past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
@@ -33,7 +33,7 @@ kernel privilege, so "Kernel" is deceptive!
 * [C:/SparrowOS/OSMain/Adam1b.HPP.Z,57] Bt() is "bit test", like the x86
 instruction, not "bit torrent".
 
-* [C:/SparrowOS/OSMain/Adam1b.HPP.Z,283] Fs is a segment register, not "file
+* [C:/SparrowOS/OSMain/Adam1b.HPP.Z,284] Fs is a segment register, not "file
 system".  (It is kept pointing to the 
 current task's record.)  There is no memory segmentation -- FS and GS are
 used 
@@ -45,12 +45,12 @@ making parenthesis optional on function calls with no paramaters.
 * [C:/SparrowOS/OSMain/Misc1a.CPP.Z,198] Sleep() makes a program pause.  It
 is not hybernation for a laptop.
 
-* [C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield() saves the current task's
+* [C:/SparrowOS/OSMain/Scheduler.CPP.Z,369] Yield() saves the current task's
 registers (context) and loads in the next 
 task.  When waiting, it's better to do this than check a condition in a loop 
 until you get preempted.  Checking a condition until you get preempted wastes 
 CPU.  SparrowOS does not use virtual memory, so
-[C:/SparrowOS/OSMain/Scheduler.CPP.Z,371] Yield() involves no disk 
+[C:/SparrowOS/OSMain/Scheduler.CPP.Z,369] Yield() involves no disk 
 activity.  A swap takes half a microsecond.  See 
 [::/SparrowOS/Demo/Lectures/Spinning.CPP.Z,1]
 ::/SparrowOS/Demo/Lectures/Spinning.CPP.Z.
@@ -60,7 +60,7 @@ code placed into mem, ready to be called.
 
 * Files with names ending in "Z" are compressed, not encrypted. 
 [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,91] Copy() or 
-rename them with [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,120] Move() to store them
+rename them with [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,119] Move() to store them
 uncompressed.
 
 * SparrowOS is open src and every bit of the src code is included in the 
@@ -72,7 +72,7 @@ modules at [C:/SparrowOS/OSMain/Hash1a.CPP.Z,735] Load() time, though.
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,489] JIFFY_FREQ.
+interrupt.  See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,586] JIFFY_FREQ.
 
 * Refresh rate is how often SparrowOS updates screen mem.  It is not 
 syncronized to the hardware rate, having nothing to do with it.

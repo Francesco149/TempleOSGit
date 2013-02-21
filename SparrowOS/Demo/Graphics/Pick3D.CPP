@@ -118,7 +118,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	dc->y=pf->cy+tempo->g.p->p.p.y;
 	dc->z=GR_Z_ALL;
 	dc->flags|=DCF_TRANSFORMATION;
-	CSpritePlot3(dc,0,0,0,tempo->g.img);
+	SpritePlot3(dc,0,0,0,tempo->g.img);
 	dc->flags&=~DCF_TRANSFORMATION;
 	dc->r=old_r;
 

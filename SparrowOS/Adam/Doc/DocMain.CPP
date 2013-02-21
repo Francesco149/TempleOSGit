@@ -249,7 +249,7 @@ public CDocEntry *DocPutLine(CDocEntry *doc_e)
 
 #help_index "Doc/Input"
 public U8 *DocMGetS(I64 flags=0)
-//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1454] Flags
+//[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1550] Flags
 {
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;

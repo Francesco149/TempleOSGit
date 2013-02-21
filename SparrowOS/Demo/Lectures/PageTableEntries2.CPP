@@ -33,13 +33,13 @@ asm {  MOV_RAX_CR2}
 
 U0 PageTableDemo2()
 {
-  U8 *old_idte=IntEntrySet(I_PAGE_FAULT,&PageFault,0,IDTET_IRQ);
+  U8 *old_idte=IntEntrySet(I_PAGE_FAULT,&PageFault,IDTET_IRQ);
   err_code=0;
   *pte_addr &=~1; //Not present
   InvlPg(addr);
   WinMgrSync; //wait for VGA update
   WinMgrSync;
-  IntEntrySet(I_PAGE_FAULT,old_idte,0,IDTET_IRQ);
+  IntEntrySet(I_PAGE_FAULT,old_idte,IDTET_IRQ);
   "Err Code:%X Addr:%X\n",err_code,reported_fault_addr;
 }
 

@@ -27,5 +27,5 @@ public U0 Dollar(U8 *files_find_mask,U8 *fu_flags=NULL)
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   tempm1=FilesFind(files_find_mask,fuf_flags);
   DollarFile(tempm1);
-  CDirListDel(tempm1);
+  CDirLstDel(tempm1);
 }

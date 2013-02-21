@@ -1,7 +1,7 @@
 U0 MsgLoop()
 {
   I64 p1,p2,msg_code;
-  "Use [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2962] these defines in your programs instead of hardcoded nums.\n"
+  "Use [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3058] these defines in your programs instead of hardcoded nums.\n"
   "<ESC> to Exit\n";
 
   //We don't want the mouse buttons to reposition the cursor,

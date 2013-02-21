@@ -80,9 +80,9 @@ U8 *PSectCacheFind(U8 *add,I64 *_offset)
   I64 i;
   F64 timeout;
   CPSectCache *temppc=psect_cache;
-  if (&sys_idle_start<=add<&sys_idle_end) {
-    *_offset=add-&sys_idle_start;
-    return "SYS_IDLE_START";
+  if (add==SYS_IDLE_PT) {
+    *_offset=0;
+    return "SYS_IDLE_PT";
   } else {
     timeout=tS+8.0;
     for (i=0;i<PSECT_CACHE_SIZE;i++,temppc++)
@@ -103,7 +103,7 @@ U0 SPrintFPSect(U8 *buf,I64 add,I64 field_len)
   Bool is_fun=FALSE;
   if (add) {
     if (str=PSectCacheFind(add,&offset)) {
-      if (!(&sys_idle_start<=add<&sys_idle_end))
+      if (add!=SYS_IDLE_PT)
 	is_fun=TRUE;
     } else  {
       if (tempess=PSectFind(add,&offset)) {

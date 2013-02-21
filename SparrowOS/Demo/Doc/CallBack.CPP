@@ -5,17 +5,17 @@ U8 *tSCB(CDoc *,CDocEntry *,CTask *mem_task)
 //if the window mgr used it's own
 //heap, so we use the owning task's heap.
   U8 *st=MAlloc(64,mem_task);
-  CDate ltdt=tS*CDATE_FREQ;
+  CDate spdt=tS*CDATE_FREQ;
   //Doesn't have to be fixed width!!
-  SPrintF(st,"%d=%h11T",ltdt,ltdt);
+  SPrintF(st,"%d=%h11T",spdt,spdt);
   return st;
 }
 
 U8 *CurTimeCB(CDoc *,CDocEntry *,CTask *mem_task)
 {
   U8 *st=MAlloc(64,mem_task);
-  CDate ltdt=GetCurTimeCDate;
-  SPrintF(st,"%h0D %h0T",ltdt,ltdt);
+  CDate spdt=GetCurTimeCDate;
+  SPrintF(st,"%h0D %h0T",spdt,spdt);
   return st;
 }
 
@@ -30,7 +30,7 @@ See [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,142] UseTermDoc().
 See [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1799] DocUpdateTaskDocs().
 
 Note: the next_doc is not to be confused
-with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEntry.
+with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1316] CDocEntry.
 
 */
   CDoc *aux=DocAux, //Fetches Fs->next_doc basically.
@@ -53,7 +53,7 @@ with the aux_str, a member of the [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1219] CDocEn
 // Flags are explained here:
 //	[::/SparrowOS/Doc/CtrlL.TXT.Z,1] ::/SparrowOS/Doc/CtrlL.TXT.Z
 //	[::/SparrowOS/Doc/Dollar.TXT.Z,1] ::/SparrowOS/Doc/Dollar.TXT.Z
-//	[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1090] Dollar Flags
+//	[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1187] Dollar Flags
 //	[::/SparrowOS/Adam/Doc/Doc.CPP.Z,1] ST_DOC_FLAGS
 
   doc_e->tag_cb=&tSCB;

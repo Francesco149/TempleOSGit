@@ -144,5 +144,5 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **_filename=NULL)
     Free(st);
   }
   DocDel(doc);
-  CDirListDel(tempm);
+  CDirLstDel(tempm);
 }

@@ -74,8 +74,8 @@ I64 ws_num_fillins=0,ws_fillin_scores[WS_MAX_FILLINS+1],ws_fillin_hits[WS_MAX_FI
 #define WSD_POS_CHAR	0x04
 #define WSD_EXTRA_CHAR	0x05
 
-public U8 *ws_dict_word_list=NULL;
-public I64 ws_dict_word_list_size=0,
+public U8 *ws_dict_word_lst=NULL;
+public I64 ws_dict_word_lst_size=0,
    ws_dict_num_words=0,ws_structs_size=0;
 
 extern U0 WSDWordsLoad();

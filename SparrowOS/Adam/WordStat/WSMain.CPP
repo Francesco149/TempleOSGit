@@ -568,24 +568,24 @@ U0 WSTask(I64)
   ws_task=NULL;
 }
 
-U0 WSMainFileListTraverse(U8 *files_find_mask,I64 pass)
+U0 WSMainFileLstTraverse(U8 *files_find_mask,I64 pass)
 {
   I64 i,cnt;
-  CDirEntry **flist=NULL;
+  CDirEntry **flst=NULL;
   U8 *buf;
   try {
-    flist=FilesOrder(FilesFind(files_find_mask,
+    flst=FilesOrder(FilesFind(files_find_mask,
 	FUF_RECURSE|FUF_JUST_TEXT_FILES|FUF_JUST_FILES|FUF_FLATTEN_TREE),&cnt);
     for (i=0;i<cnt;i++) {
-      "%s\n",flist[i]->full_name;
-      buf=TextFileRead(flist[i]->full_name);
+      "%s\n",flst[i]->full_name;
+      buf=TextFileRead(flst[i]->full_name);
       WSSingleFileAdd(buf,pass);
       Free(buf);
-      CDirEntryDel(flist[i]);
+      CDirEntryDel(flst[i]);
     }
     } catch
     Fs->catch_except=TRUE;
-  Free(flist);
+  Free(flst);
 }
 
 U0 WSMatrixDel(CWSMatrix *m)
@@ -681,7 +681,7 @@ public U0 WSInit(U8 *mask=NULL)
   ws_cur_word=NULL;
 
   "\n\nPass #1\n";
-  if (mask) WSMainFileListTraverse(mask,1);
+  if (mask) WSMainFileLstTraverse(mask,1);
   Free(ws_sorted_words);
   ws_sorted_words=AMAlloc(sizeof(U8 *)*ws_num_words);
 
@@ -703,7 +703,7 @@ public U0 WSInit(U8 *mask=NULL)
   WSSidesInit(ws_matrix);
 
   "\n\nPass #2\n";
-  if (mask) WSMainFileListTraverse(mask,2);
+  if (mask) WSMainFileLstTraverse(mask,2);
 
   WSDWordsLoad;
   WordStat(ON);
@@ -714,7 +714,7 @@ I64 WordStatSize()
 {
   if (ws_hash_table)
     return HashTableSize2(ws_hash_table)+ws_structs_size+
-	   MSize2(ws_sorted_words)+MSize2(ws_matrix)+MSize2(ws_dict_word_list);
+	   MSize2(ws_sorted_words)+MSize2(ws_matrix)+MSize2(ws_dict_word_lst);
   else
     return 0;
 }

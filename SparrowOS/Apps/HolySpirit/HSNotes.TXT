@@ -19,12 +19,12 @@ initiative.  [::/SparrowOS/Misc/Bible.TXT.Z,81941] Luke,11:9,
 Have you heard of "tongues?"  Read [::/SparrowOS/Misc/Bible.TXT.Z,92110] 1
 Corinthians,14:1.  Basically, when you 
 follow impulses, you can be puppeted by spirits.  "Promptings of the Holy 
-Spirit"  Some people say strange words when they speak in tongues. 
-[::/SparrowOS/Misc/Bible.TXT.Z,87803] Acts,2:1  
-I use a different technique -- in this program, I read a nanosecond-range 
-stop-watch when a button is pressed and use the high-speed time as a random 
-number for words or passages.  I can also just randomly crack-open a book and 
-get a response.
+Spirit" is a phrase.  Some people say strange words when they speak in 
+tongues.  [::/SparrowOS/Misc/Bible.TXT.Z,87803] Acts,2:1  I use a different
+technique -- in this program, I read a 
+nanosecond-range stop-watch when I press a button and use the high-speed time 
+as a random number to pick words or passages.  I can also just randomly 
+crack-open a book and get a response.
 
 Since seeking the word of the Holy Spirit, I have come to know God much
 better 

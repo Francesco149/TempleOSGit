@@ -237,8 +237,8 @@ I64 OptPass789A(CLex *lx,CHashFun *fun_class,
 	      tempe=CAlloc(sizeof(CExeImportExport));
 	      tempe->type=EIE_LIT_U32;
 	      tempe->ip=ip2+tempi->ic_cnt-4;
-	      tempe->next=tempg->list;
-	      tempg->list=tempe;
+	      tempe->next=tempg->ie_lst;
+	      tempg->ie_lst=tempe;
 	    }
 	    ICU24(tempi,0xC06348);
 	    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
@@ -603,8 +603,8 @@ I64 OptPass789A(CLex *lx,CHashFun *fun_class,
 	    if (buf) {
 	      tempf=tempi->ic_data;
 	      tempeu=CAlloc(sizeof(CExternUsage));
-	      tempeu->next=tempf->ext_list;
-	      tempf->ext_list=tempeu;
+	      tempeu->next=tempf->ext_lst;
+	      tempf->ext_lst=tempeu;
 	      tempeu->ip=ip2+1;
 	    }
 	    tempi->ic_flags&=~ICF_CODE_FINAL;
@@ -641,8 +641,8 @@ I64 OptPass789A(CLex *lx,CHashFun *fun_class,
 		tempe=CAlloc(sizeof(CExeImportExport));
 		tempe->type=EIE_LIT_U64;
 		tempe->ip=ip2+tempi->ic_cnt-8;
-		tempe->next=tempf->list;
-		tempf->list=tempe;
+		tempe->next=tempf->ie_lst;
+		tempf->ie_lst=tempe;
 	      }
 	      ICU16(tempi,0xD3FF);
 	    } else {
@@ -653,8 +653,8 @@ I64 OptPass789A(CLex *lx,CHashFun *fun_class,
 		tempe=CAlloc(sizeof(CExeImportExport));
 		tempe->type=EIE_REL_U32;
 		tempe->ip=ip2+tempi->ic_cnt-4;
-		tempe->next=tempf->list;
-		tempf->list=tempe;
+		tempe->next=tempf->ie_lst;
+		tempf->ie_lst=tempe;
 	      }
 	    }
 	    tempi->ic_flags&=~ICF_CODE_FINAL;
@@ -702,6 +702,10 @@ I64 OptPass789A(CLex *lx,CHashFun *fun_class,
 	  case IC_GET_FLAGS:
 	    ICU8(tempi,0x9C);
 	    ICPop(tempi,TY_REG+IT_I64,CREG_RAX,0,ip2);
+	    break;
+	  case IC_CARRY:
+	    ICU24(tempi,0xC0920F); //SETC AL
+	    ICU24(tempi,0x01E083); //AND EAX,1
 	    break;
 	  case IC_RDTSC:
 	    ICCopyTemplate(lx,tempi,CMP_TEMPLATE_RDTSC,TRUE,FALSE,FALSE,CN_MAIN);
@@ -1287,7 +1291,7 @@ skip_copy:
     tempi++;
   }
 
-  lb=lx->cbh.cb_misc_list;
+  lb=lx->cbh.cb_misc_lst;
   while (lb) {
     switch (lb->type) {
       case CBMT_STR_CONST:

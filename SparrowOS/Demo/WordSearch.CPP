@@ -92,7 +92,7 @@ I64 WordsCompare(U8 *e1,U8 *e2)
 }
 
 /*
-Fmt of word list entry:
+Fmt of word lst entry:
   U8 WSD_WORD_CHAR
   U8 word[] with terminating zero
   I16 block; //definition offset in ::/SparrowOS/Adam/WordStat/WSDefs.DAT
@@ -101,7 +101,7 @@ Fmt of word list entry:
 U0 DisplayWords(I64 n)
 {
   I64 i=0,k;
-  U8 *w1,*w2,*dict=ws_dict_word_list;
+  U8 *w1,*w2,*dict=ws_dict_word_lst;
   for (i=0;i<n;i++)
     while (*dict) {
       w1=word_ptrs[i];

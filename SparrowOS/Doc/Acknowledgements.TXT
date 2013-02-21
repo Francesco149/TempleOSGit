@@ -38,7 +38,7 @@ converted with a program I wrote.)
 command-line.  There is a lot of MSDOS , Windows, VAXTMOS (VAX Ticketmaster 
 O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 
-11) I included [::/SparrowOS/Misc/PCIDevices.TXT.Z,1] PCIDevice List File.
+11) I included [::/SparrowOS/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
 
 12) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
 and 
@@ -68,7 +68,7 @@ windows.  He also guided my progress, very obviously.
 20) I got Webster's Dictionary and The King James Bible from 
 Project Gutenberg.
 
-In short, I wrote every one of the 138,038 lines myself, no GPL code, no 
+In short, I wrote every one of the 139,466 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 

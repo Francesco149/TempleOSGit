@@ -125,13 +125,13 @@ U0 MPDrawMeeting(CTask *task)
       if (objs[i].type==CO_PERSON) {
 	img1=people_img[(i+ToI64(frame))&3];
 	img2=people_img[(i+ToI64(frame)+1)&3];
-	img=CSpriteInterpolate(img1,img2,frame%1.0);
+	img=SpriteInterpolate(img1,img2,frame%1.0);
       } else
 	img=tent_img;
 
       r2=GrScaleMat(old_r,s);
       GrSetRotMat(dc,r2);
-      CSpritePlot3b(dc,x,y,z,img);
+      SpritePlot3b(dc,x,y,z,img);
       Free(r2);
       if (objs[i].type==CO_PERSON)
 	Free(img);
@@ -207,7 +207,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
     s=0.5*ToF64(CAMP_SCALE)/z;
     r2=GrScaleMat(old_r,s,task);
     GrSetRotMat(dc,r2);
-    CSpritePlot3b(dc,x,y,z,__BIN_5);
+    SpritePlot3b(dc,x,y,z,__BIN_5);
     Free(r2);
   }
 

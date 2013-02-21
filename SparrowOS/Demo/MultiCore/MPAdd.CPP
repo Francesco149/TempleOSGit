@@ -69,7 +69,7 @@ U0 MPAdd()
   for (i=0;i<NUM_TESTS-1;i++) {
     dc->color=RED;
     dc->pen_width=2;
-    GrLine3(dc,i*h/(NUM_TESTS-1),v-results[i	]/MAX_PERCENT*v,0,
+    GrLine3(dc,i*h/(NUM_TESTS-1),      v-results[i  ]/MAX_PERCENT*v,0,
 		 (i+1)*h/(NUM_TESTS-1),v-results[i+1]/MAX_PERCENT*v,0);
     dc->color=GREEN;
     GrPrintF(dc,i*h/(NUM_TESTS-1),v-FONT_HEIGHT,"10e%d",i+1);

@@ -26,7 +26,7 @@ public I64 UnusedBPMem(CBlkPool *bp)
   while (LBts(&bp->locked_flags,BPlf_LOCKED))
     Pause;
 
-  tempm=bp->mem_free_list;
+  tempm=bp->mem_free_lst;
   while (tempm) {
     if (tempm->mb_signature!=MBS_UNUSED_SIGNATURE_VAL)
       MemSysCorrupt;
@@ -105,7 +105,7 @@ public I64 TaskAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
   return result;
 }
 
-I64 MemBlkListSize(CHeapCtrl *hc)
+I64 MemBlkLstSize(CHeapCtrl *hc)
 {
   CMemBlk *m;
   I64 result=0;
@@ -132,7 +132,7 @@ public I64 TaskUnusedAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
     while (LBts(&task->data_heap->locked_flags,HClf_LOCKED))
       Pause;
 
-  result+=MemBlkListSize(task->code_heap);
+  result+=MemBlkLstSize(task->code_heap);
   for (i=0;i<HEAP_HASH_SIZE>>3;i++) {
     uum=task->code_heap->heap_hash[i];
     while (uum) {
@@ -140,14 +140,14 @@ public I64 TaskUnusedAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
       uum=uum->next;
     }
   }
-  uum=task->code_heap->malloc_free_list;
+  uum=task->code_heap->malloc_free_lst;
   while (uum) {
     result+=uum->size;
     uum=uum->next;
   }
 
   if (task->data_heap!=task->code_heap) {
-    result+=MemBlkListSize(task->data_heap);
+    result+=MemBlkLstSize(task->data_heap);
     for (i=0;i<HEAP_HASH_SIZE>>3;i++) {
       uum=task->data_heap->heap_hash[i];
       while (uum) {
@@ -155,7 +155,7 @@ public I64 TaskUnusedAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
 	uum=uum->next;
       }
     }
-    uum=task->data_heap->malloc_free_list;
+    uum=task->data_heap->malloc_free_lst;
     while (uum) {
       result+=uum->size;
       uum=uum->next;
@@ -203,7 +203,7 @@ public I64 UnusedHCMem(CHeapCtrl *hc)
       u=u->next;
     }
   }
-  u=hc->malloc_free_list;
+  u=hc->malloc_free_lst;
   while (u) {
     result+=u->size;
     u=u->next;
@@ -253,13 +253,13 @@ public Bool HeapRep(CTask *task)
   }
   NewLine;
 
-  uum=task->code_heap->malloc_free_list;
+  uum=task->code_heap->malloc_free_lst;
   while (uum) {
     "%X, ",uum->size;
     uum=uum->next;
   }
   if (task->data_heap!=task->code_heap) {
-    uum=task->data_heap->malloc_free_list;
+    uum=task->data_heap->malloc_free_lst;
     while (uum) {
       "%X, ",uum->size;
       uum=uum->next;
@@ -360,7 +360,7 @@ public Bool HeapWalk(CTask *task=NULL)
     }
   }
 
-  uum=task->code_heap->malloc_free_list;
+  uum=task->code_heap->malloc_free_lst;
   while (uum) {
     if (!IsInHeap(uum,task,FALSE))
       result=FALSE;
@@ -368,7 +368,7 @@ public Bool HeapWalk(CTask *task=NULL)
   }
 
   if (task->data_heap!=task->code_heap) {
-    uum=task->data_heap->malloc_free_list;
+    uum=task->data_heap->malloc_free_lst;
     while (uum) {
       if (!IsInHeap(uum,task,FALSE))
 	result=FALSE;

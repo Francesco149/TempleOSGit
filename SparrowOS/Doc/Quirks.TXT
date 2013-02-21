@@ -18,9 +18,9 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2585] DFT_STK and 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2681] DFT_STK and 
 recompile OSMain or request more when doing a
-[C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn().
+[C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
@@ -34,26 +34,26 @@ Drv() or [C:/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,367] ChgDsk() twice.
 which 
 binds a C+ definition to a asm sym.  This, too, can only be done once.
 
-* You must call [C:/SparrowOS/OSMain/Task1a.CPP.Z,295] TaskInitExt() in a
-task you [C:/SparrowOS/OSMain/Task1a.CPP.Z,226] Spawn() before you can do
+* You must call [C:/SparrowOS/OSMain/Task1a.CPP.Z,297] TaskInitExt() in a
+task you [C:/SparrowOS/OSMain/Task1a.CPP.Z,228] Spawn() before you can do
 file 
 I/O.  And, preemption is off by default, so use
 [C:/SparrowOS/OSMain/Adam1b.HPP.Z,94] Preempt(ON) if you wish.
 
-* A terminal task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc document
+* A terminal task has a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc document
 structure that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc from being activated 
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
 A) [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1666] DocBottom() followed by
   [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1698] DocClear() to clear the
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1396] CDoc so it has no active 
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2737] WIF_IP_L and
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2738] WIF_IP_R.  This inhibits window mgr
+[C:/SparrowOS/OSMain/Adam1a.HPP.Z,2833] WIF_IP_L and
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2834] WIF_IP_R.  This inhibits window mgr
   operations but still 
 generates messages from button clicks.
 

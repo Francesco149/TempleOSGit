@@ -67,8 +67,8 @@ U0 DrawBattle(CTask *task,CDC *dc)
     tt*=tt;
     if (tt>1.0) tt=1.0;
   }
-  inter=CSpriteInterpolate(__BIN_3,__BIN_4,tt);
-  CSpritePlot3(dc,cx,cy+SPACING,0,inter);
+  inter=SpriteInterpolate(__BIN_3,__BIN_4,tt);
+  SpritePlot3(dc,cx,cy+SPACING,0,inter);
   Free(inter);
 
   if (t_last) {
@@ -80,20 +80,20 @@ U0 DrawBattle(CTask *task,CDC *dc)
 
   tt=Saw(tP(task)+0.0*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
-  CSpritePlot3(dc,xx+cx+SPACING,cy-SPACING,0,inter);
+  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  SpritePlot3(dc,xx+cx+SPACING,cy-SPACING,0,inter);
   Free(inter);
 
   tt=Saw(tP(task)+0.333*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
-  CSpritePlot3(dc,xx+cx+2*SPACING,cy-SPACING,0,inter);
+  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  SpritePlot3(dc,xx+cx+2*SPACING,cy-SPACING,0,inter);
   Free(inter);
 
   tt=Saw(tP(task)+0.666*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
-  CSpritePlot3(dc,xx+cx+SPACING,cy-2*SPACING,0,inter);
+  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  SpritePlot3(dc,xx+cx+SPACING,cy-2*SPACING,0,inter);
   Free(inter);
 
   t_last=tP(task);

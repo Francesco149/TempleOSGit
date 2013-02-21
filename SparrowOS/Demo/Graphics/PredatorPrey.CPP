@@ -69,8 +69,8 @@ U0 PredatorPrey()
       for (i=1;i<mp_cnt;i++)
 	MPJob(&PlotTrajectory,Fs,i);
       PlotTrajectory(Fs);
-      while (mp_done_flags!=1<<mp_cnt-1)
-	Yield;
+      do Yield;
+      while (mp_done_flags!=1<<mp_cnt-1);
     }
   } catch
     CatchAll;

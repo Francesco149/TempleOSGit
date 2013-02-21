@@ -10,7 +10,7 @@ for one * and two fwd for two **.
 
   CHashClass *result=CAlloc(sizeof(CHashClass)*5,Fs->code_heap),
       *tempc=result;
-  tempc->last_in_member_list=&tempc->member_list;
+  tempc->last_in_member_lst=&tempc->member_lst;
   tempc->type=HTT_CLASS;
   tempc->sub_type=IT_PTR;
   tempc->ptr_cnt=0;
@@ -46,7 +46,7 @@ CHashFun *PrsFunNew()
 {
   CHashFun *result=CAlloc(sizeof(CHashFun)*5,Fs->code_heap),
 	    *tempf=result;
-  tempf->last_in_member_list=&tempf->member_list;
+  tempf->last_in_member_lst=&tempf->member_lst;
   tempf->type=HTT_FUN;
   tempf->sub_type=IT_PTR;
   tempf->ptr_cnt=0;
@@ -78,9 +78,9 @@ CHashFun *PrsFunNew()
   return result;
 }
 
-CMemberList *MemberListNew(I64 register)
+CMemberLst *MemberLstNew(I64 register)
 {
-  CMemberList *result=CAlloc(sizeof(CMemberList));
+  CMemberLst *result=CAlloc(sizeof(CMemberLst));
   result->register=register;
   return result;
 }
@@ -100,7 +100,7 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
 {
   U8 *dst=*_dst,*ex;
   I64 i,j,r,old_flags,type,size;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CIntermediateCode *tempi;
   CAsmCtrl *a=lx->a;
   CExeAbsAddr *tempa;
@@ -109,7 +109,7 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
 
   while (tempc->fwd_class)
     tempc=tempc->fwd_class;
-  if (tempm=tempc->member_list) {
+  if (tempm=tempc->member_lst) {
     if (lx->token!='{')
       LexExcept(lx,"ST_EXPECTING_LEFT_BRACE");
     lx->stk_ptr--;  //grows up
@@ -309,7 +309,7 @@ U0 PrsGlblInit(CLex *lx,CHashGlblVar *tempg,I64 pass)
     Bt(&lx->flags,Lf_STATIC_COMPILE),pass);
 }
 
-U0 PrsStaticInit(CLex *lx,CMemberList *tempm,I64 pass)
+U0 PrsStaticInit(CLex *lx,CMemberLst *tempm,I64 pass)
 {
   U8 *ex,*dst=tempm->static_data;
   CHashClass *tempc=tempm->member_class;
@@ -340,7 +340,7 @@ U0 PrsStaticInit(CLex *lx,CMemberList *tempm,I64 pass)
 	ExpressionDel(ex);
       }
     } else
-      LinkedListDel(lx->cbh.cb_out_first);
+      LinkedLstDel(lx->cbh.cb_out_first);
     CBPop(lx);
   }
 }
@@ -386,13 +386,13 @@ Bool PrsArrayDims(CLex *lx,CArrayDim *dim)
 
 U0 PrsDotDotDot(CLex *lx,CHashFun *tempf,I64 register)
 {
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CArrayDim *tempad;
 
   Bts(&tempf->flags,Ff_DOT_DOT_DOT);
 
   Lex(lx);
-  tempm=MemberListNew(register);
+  tempm=MemberLstNew(register);
   tempm->flags=MLF_DOT_DOT_DOT;
   tempm->member_class=sys_internal_types[IT_I64];
   tempm->str=StrNew("argc");
@@ -400,7 +400,7 @@ U0 PrsDotDotDot(CLex *lx,CHashFun *tempf,I64 register)
   tempf->size+=8;
   MemberAdd(lx,tempm,tempf,PRS1B_FUN_ARG);
 
-  tempm=MemberListNew(register);
+  tempm=MemberLstNew(register);
   tempm->flags=MLF_DOT_DOT_DOT;
   tempm->member_class=sys_internal_types[IT_I64];
   tempm->str=StrNew("argv");
@@ -418,7 +418,7 @@ U0 PrsDotDotDot(CLex *lx,CHashFun *tempf,I64 register)
 }
 
 CHashClass *PrsType(CLex *lx,CHashClass **_tempc1,
-  I64 *_mode,CMemberList *tempm,U8 **_ident,CHashFun **_fun_ptr,
+  I64 *_mode,CMemberLst *tempm,U8 **_ident,CHashFun **_fun_ptr,
   CHashExport **_tempess,CArrayDim *tempad,I64 cps_flags)
 {
   I64 fun_ptr_cnt,mode=*_mode;
@@ -515,14 +515,14 @@ start:
   return tempc1;
 }
 
-U0 PrsVarList(CLex *lx,CHashClass *tempc,
+U0 PrsVarLst(CLex *lx,CHashClass *tempc,
 		     I64 mode,I64 union_base=0)
 {
   I64 i,k,old_flags=lx->flags,old_flags2,type,register;
   CHashClass *tempc1,*tempc2;
   CHash *temph;
-  CMemberList *tempm;
-  CMemberListMeta *temp_meta;
+  CMemberLst *tempm;
+  CMemberLstMeta *temp_meta;
   U8 *ex;
   Bool undef_array_size,first;
   lx->flags|=LF_DONT_MAKE_RESULT;
@@ -584,7 +584,7 @@ U0 PrsVarList(CLex *lx,CHashClass *tempc,
       LexExcept(lx,"ST_EXPECTING_TYPE");
     if (k==KW_UNION) {
       Lex(lx);
-      PrsVarList(lx,tempc,mode|PRSF_UNION,tempc->size);
+      PrsVarLst(lx,tempc,mode|PRSF_UNION,tempc->size);
     } else {
       if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
 	LexExcept(lx,"ST_EXPECTING_TYPE");
@@ -602,7 +602,7 @@ restart:
 	  lx->expression_start_line_num=1;
       } else
 	Lex(lx); //skip type or ','
-      tempm=MemberListNew(register);
+      tempm=MemberLstNew(register);
       if (mode.u8[1]==PRS1B_STATIC_LOCAL_VAR) {
 	tempm->flags=MLF_STATIC;
 	tempm->register=CREG_NONE;
@@ -779,7 +779,7 @@ restart:
 	    tempc->size+=i;
 	  }
 	  while (lx->token==TK_IDENT) {
-	    temp_meta=MAlloc(sizeof(CMemberListMeta));
+	    temp_meta=MAlloc(sizeof(CMemberLstMeta));
 	    temp_meta->next=tempm->meta;
 	    tempm->meta=temp_meta;
 	    temp_meta->str=lx->ident;
@@ -900,9 +900,9 @@ CHashClass *PrsClass(CLex *lx,Bool is_union,I64 cps_flags,Bool is_extern)
       tempc->size+=base_class->size;
     }
     if (is_union)
-      PrsVarList(lx,tempc,PRS0_NULL|PRS1_CLASS|PRSF_UNION);
+      PrsVarLst(lx,tempc,PRS0_NULL|PRS1_CLASS|PRSF_UNION);
     else
-      PrsVarList(lx,tempc,PRS0_NULL|PRS1_CLASS);
+      PrsVarLst(lx,tempc,PRS0_NULL|PRS1_CLASS);
   }
   return tempc;
 }
@@ -910,7 +910,7 @@ CHashClass *PrsClass(CLex *lx,Bool is_union,I64 cps_flags,Bool is_extern)
 CHashFun *PrsFunJoin(CLex *lx,
 	CHashClass *temp_return,U8 *name,I64 cps_flags)
 {
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CAsmCtrl *a=lx->a;
   CHashFun *tempf;
   if (name) { //if not fun_ptr
@@ -959,17 +959,17 @@ CHashFun *PrsFunJoin(CLex *lx,
     Free(tempf->src_link);
     Free(tempf->index);
     Free(name);
-    MemberListDel(tempf);
+    MemberLstDel(tempf);
   }
   BEqu(&tempf->type,HTf_PUBLIC,cps_flags&CPS_IS_PUBLIC);
   tempf->return_class=temp_return;
   tempf->use_cnt=0;
   SetSrcFileInfo(lx,tempf);
-  PrsVarList(lx,tempf,PRS0_NULL|PRS1_FUN_ARG);
+  PrsVarLst(lx,tempf,PRS0_NULL|PRS1_FUN_ARG);
   tempf->arg_cnt=tempf->member_cnt;
   if (0<tempf->arg_cnt<<3<=MAX_I16 && !Bt(tempf->flags,Ff_DOT_DOT_DOT))
     LBts(tempf->flags,Ff_RET1);
-  tempm=tempf->member_list;
+  tempm=tempf->member_lst;
   while (tempm) {
     tempm->offset+=16; //RBP+RETURN
     tempm=tempm->next;
@@ -982,7 +982,7 @@ U0 PrsFun(CLex *lx,
 	CHashClass *temp_return,U8 *name,I64 cps_flags)
 {
   CHashFun *tempf;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   CCodeBlkMisc *saved_leave_label;
   I64 i,j,size,*r;
   Bool old_ctrace;
@@ -994,7 +994,7 @@ U0 PrsFun(CLex *lx,
 
   lx->flags&=~LF_NO_REG_OPT;
   tempf=PrsFunJoin(lx,temp_return,name,cps_flags);
-  lx->local_var_list=tempf;
+  lx->local_var_lst=tempf;
 
   CBPush(lx);
   Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
@@ -1036,8 +1036,8 @@ U0 PrsFun(CLex *lx,
   }
   LBtr(tempf->flags,Cf_EXTERN);
   CBPop(lx);
-  lx->local_var_list=NULL;
-  tempm=tempf->member_list;
+  lx->local_var_lst=NULL;
+  tempm=tempf->member_lst;
   while (tempm) {
     if (tempm->flags & MLF_NO_UNUSED_WARN) {
       if (tempm->use_cnt>1&&StrCmp(tempm->str,"_anon_"))
@@ -1054,7 +1054,7 @@ U0 PrsFun(CLex *lx,
   lx->fun_lfn=NULL;
 }
 
-U0 PrsGlblVarList(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
+U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
   I64 saved_val,I64 cps_flags)
 {
   I64 i,j,mode,k,val;
@@ -1546,7 +1546,7 @@ U0 PrsSwitch(CLex *lx,Bool nobound,CHashFun *locals,I64 try_cnt)
 
 U0 PrsNoUnusedWarn(CLex *lx)
 {
-  CMemberList *tempm;
+  CMemberLst *tempm;
   while (lx->token==TK_IDENT) {
     if (!(tempm=lx->local_var_entry))
       LexExcept(lx,"ST_EXPECTING_LOCAL_VAR");
@@ -1562,7 +1562,7 @@ U0 PrsNoUnusedWarn(CLex *lx)
 
 U0 PrsStreamBlk(CLex *lx)
 {
-  CHashTable *ht1=lx->hash_table_list,
+  CHashTable *ht1=lx->hash_table_lst,
 	       *ht2=lx->define_hash_table,
 	       *ht3=lx->glbl_hash_table,
 	       *ht4=lx->local_hash_table,
@@ -1570,18 +1570,18 @@ U0 PrsStreamBlk(CLex *lx)
   I64 old_hash_mask=lx->hash_mask,
       old_flags=lx->flags & (LF_ASM_EXPRESSIONS | LF_EXE_BLK|LF_STATIC_COMPILE);
   CStreamBlk *tempe=MAlloc(sizeof(CStreamBlk));
-  CHashFun *old_var_list=lx->local_var_list;
-  lx->local_var_list=NULL;
+  CHashFun *old_var_lst=lx->local_var_lst;
+  lx->local_var_lst=NULL;
 
   tempe->body=StrNew("");
   QueIns(tempe,lx->last_stream_blk);
   CBPush(lx);
-  lx->cbh.cb_misc_list=NULL;
-  lx->cbh.cb_misc_list_end=&lx->cbh.cb_misc_list;
+  lx->cbh.cb_misc_lst=NULL;
+  lx->cbh.cb_misc_lst_end=&lx->cbh.cb_misc_lst;
 
   lx->stream_parent_glbl_hash_table=lx->glbl_hash_table;
   lx->hash_mask=HTG_ALL-HTT_IMPORT_SYS_SYM-HTT_ASM_KEYWORD;
-  lx->define_hash_table=lx->hash_table_list=lx->glbl_hash_table=lx->local_hash_table=Fs->hash_table;
+  lx->define_hash_table=lx->hash_table_lst=lx->glbl_hash_table=lx->local_hash_table=Fs->hash_table;
   lx->flags=lx->flags & ~(LF_ASM_EXPRESSIONS|LF_STATIC_COMPILE) | LF_EXE_BLK;
   if (lx->token=='{')
     Lex(lx);
@@ -1590,13 +1590,13 @@ U0 PrsStreamBlk(CLex *lx)
   while (lx->token && lx->token!='}')
     ExeCmdLine(lx);
 
-  lx->hash_table_list  =ht1,
+  lx->hash_table_lst  =ht1,
   lx->define_hash_table=ht2;
   lx->glbl_hash_table  =ht3;
   lx->local_hash_table =ht4;
   lx->stream_parent_glbl_hash_table=ht5;
 
-  lx->local_var_list=old_var_list;
+  lx->local_var_lst=old_var_lst;
   lx->hash_mask=old_hash_mask;
   lx->flags= lx->flags&~LF_EXE_BLK | old_flags;
   CBPop(lx);
@@ -1615,8 +1615,8 @@ U0 PrsTryBlk(CLex *lx,CHashFun *locals,I64 try_cnt)
   CCodeBlkMisc *lb_catch,*lb_done,*lb_untry;
   Bool has_brace;
   CHashClass *tempc=sys_internal_types[IT_PTR];
-  CHashFun *temp_try=HashFind("SysTry",lx->hash_table_list,HTT_FUN),
-	    *temp_untry=HashFind("SysUntry",lx->hash_table_list,HTT_FUN);
+  CHashFun *temp_try=HashFind("SysTry",lx->hash_table_lst,HTT_FUN),
+	    *temp_untry=HashFind("SysUntry",lx->hash_table_lst,HTT_FUN);
 
   if (!temp_try || !temp_untry)
     LexExcept(lx,"ST_HEADER_FOR_SYSTRY");
@@ -1790,7 +1790,7 @@ Bool PrsStatement(CLex *lx,CHashFun *locals,I64 try_cnt=0,
 		    !(tempess->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
 		  LexExcept(lx,"ST_EXPECTING_TYPE");
 		Lex(lx);
-		PrsGlblVarList(lx,PRS0__EXTERN|PRS1_NULL,tempess,i,last_cps_flags);
+		PrsGlblVarLst(lx,PRS0__EXTERN|PRS1_NULL,tempess,i,last_cps_flags);
 		prs_semicolon=FALSE;
 		cont=TRUE;
 		break;
@@ -1807,7 +1807,7 @@ keyword_LTimport:
 		   !(tempess->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
 		  LexExcept(lx,"ST_EXPECTING_TYPE");
 		Lex(lx);
-		PrsGlblVarList(lx,PRS0__IMPORT|PRS1_NULL,tempess,import_name,FALSE);
+		PrsGlblVarLst(lx,PRS0__IMPORT|PRS1_NULL,tempess,import_name,FALSE);
 		Free(import_name);
 		prs_semicolon=FALSE;
 		cont=TRUE;
@@ -1821,7 +1821,7 @@ keyword_LTimport:
 		    !(tempess->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
 		  LexExcept(lx,"ST_EXPECTING_TYPE");
 		Lex(lx);
-		PrsGlblVarList(lx,PRS0__INTERN|PRS1_NULL,tempess,i,last_cps_flags);
+		PrsGlblVarLst(lx,PRS0__INTERN|PRS1_NULL,tempess,i,last_cps_flags);
 		prs_semicolon=FALSE;
 		cont=TRUE;
 		break;
@@ -1844,7 +1844,7 @@ keyword_LTimport:
 		  if (Bt(&lx->opts,OPTf_EXTERNS_TO_IMPORTS))
 		    goto keyword_import;
 		  Lex(lx);
-		  PrsGlblVarList(lx,PRS0_EXTERN|PRS1_NULL,tempess,0,last_cps_flags);
+		  PrsGlblVarLst(lx,PRS0_EXTERN|PRS1_NULL,tempess,0,last_cps_flags);
 		  prs_semicolon=FALSE;
 		  cont=TRUE;
 		}
@@ -1858,7 +1858,7 @@ keyword_LTimport:
 		  LexExcept(lx,"ST_EXPECTING_TYPE");
 keyword_import:
 		Lex(lx);
-		PrsGlblVarList(lx,PRS0_IMPORT|PRS1_NULL,tempess,0,FALSE);
+		PrsGlblVarLst(lx,PRS0_IMPORT|PRS1_NULL,tempess,0,FALSE);
 		prs_semicolon=FALSE;
 		cont=TRUE;
 		break;
@@ -1898,7 +1898,7 @@ keyword_import:
 		  LexExcept(lx,"ST_CANT_RETURN_VAL");
 		if (try_cnt) {
 		  temp_untry=HashFind("SysUntry",
-		    lx->hash_table_list,HTT_FUN);
+		    lx->hash_table_lst,HTT_FUN);
 		  for (i=0;i<try_cnt;i++) {
 		    if (Bt(temp_untry->flags,Cf_EXTERN)) {
 		      lx->abs_cnts.externs++;
@@ -1944,7 +1944,7 @@ keyword_import:
 		Lex(lx);
 		tempess=PrsClass(lx,FALSE,last_cps_flags,FALSE);
 		if (!locals && lx->token!=';') {
-		  PrsGlblVarList(lx,PRS0_NULL|PRS1_NULL,tempess,0,last_cps_flags);
+		  PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempess,0,last_cps_flags);
 		  cont=TRUE;
 		  prs_semicolon=FALSE;
 		}
@@ -1953,7 +1953,7 @@ keyword_import:
 		Lex(lx);
 		tempess=PrsClass(lx,TRUE,last_cps_flags,FALSE);
 		if (!locals && lx->token!=';') {
-		  PrsGlblVarList(lx,PRS0_NULL|PRS1_NULL,tempess,0,last_cps_flags);
+		  PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempess,0,last_cps_flags);
 		  cont=TRUE;
 		  prs_semicolon=FALSE;
 		}
@@ -1995,17 +1995,17 @@ keyword_import:
 	  } else if (tempess->type & (HTT_CLASS|HTT_INTERNAL_TYPE)) {
 	    if (locals) {
 	      if (cps_flags&CPS_IS_STATIC) {
-		PrsVarList(lx,locals,PRS0_NULL|PRS1_STATIC_LOCAL_VAR);
+		PrsVarLst(lx,locals,PRS0_NULL|PRS1_STATIC_LOCAL_VAR);
 		cps_flags&=~CPS_IS_STATIC;
 	      } else
-		PrsVarList(lx,locals,PRS0_NULL|PRS1_LOCAL_VAR);
+		PrsVarLst(lx,locals,PRS0_NULL|PRS1_LOCAL_VAR);
 	      if (lx->token=='}')
 		cont=FALSE;
 	      else
 		cont=TRUE;
 	    } else {
 	      Lex(lx);
-	      PrsGlblVarList(lx,PRS0_NULL|PRS1_NULL,tempess,0,last_cps_flags);
+	      PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempess,0,last_cps_flags);
 	      cont=TRUE;
 	    }
 	    prs_semicolon=FALSE;

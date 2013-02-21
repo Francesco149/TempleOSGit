@@ -21,7 +21,7 @@ The main compiler optimizes   See [D:/SparrowOS/Compiler/CmpInit.CPP.Z,1]
   optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1564] IC Struct,
+  [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1660] IC Struct,
   [C:/SparrowOS/Compiler/CodeGen.CPP.Z,397] CBCompile and
   [::/SparrowOS/Compiler/OptPass789A.CPP.Z,1]
   OptPass789A(), [::/SparrowOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set
@@ -242,8 +242,8 @@ U0 Main()
 	  throw;
 	"$FG,RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/SparrowOS/OSMain/Adam1b.HPP.Z,286] Call() is a function.  See [::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALL::
-//See also [C:/SparrowOS/OSMain/Adam1b.HPP.Z,289] CallInd().  See [::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALLIND::
+//[C:/SparrowOS/OSMain/Adam1b.HPP.Z,287] Call() is a function.  See [::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALL::
+//See also [C:/SparrowOS/OSMain/Adam1b.HPP.Z,290] CallInd().  See [::/SparrowOS/OSMain/Utils1a.CPP.Z,1] _CALLIND::
 	"$FG,LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$FG,RED$Error$FG$\n";

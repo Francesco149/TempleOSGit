@@ -37,7 +37,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 //Check bounds if you wish better performance.
   for (i=0;i<NUM_TREES;i++)
-    CSpritePlot3(dc,tree_x[i]-h,tree_y[i]-v,0,__BIN_1);
+    SpritePlot3(dc,tree_x[i]-h,tree_y[i]-v,0,__BIN_1);
 }
 
 U0 Init()

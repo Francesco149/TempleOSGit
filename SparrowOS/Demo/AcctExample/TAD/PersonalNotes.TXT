@@ -1,21 +1,22 @@
-* Preempt-->cli
 
-* Why is bitmap different from vector in [::/SparrowOS/Accts/TS/TAD/Archive/Logo.TXT.Z,1] Logo?
+* TestSuite Strut
 
-* Hangs after pressing Compile MAIN in menu.
+* Might want to convert some Preempt() to Cli
+
+* Bug? Hung after pressing CmpMain in personal menu.  Haven't seen in a while.
 * Crashes after back-up-script.  Went away maybe after spurious IRQ fix.
 * Might be same as last one. Back-up-script cause jumps back and forth in ToHtml
-* Music organ hangs when cursoring around.
+* Music organ hangs when cursoring around.  Haven't seen in while.
 
-* [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1799] DocUpdateTaskDocs() skips locked docs. [C:/SparrowOS/Adam/Window.CPP.Z,608] WinMgrSync() needs to check.
+* [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,1799] DocUpdateTaskDocs() used to skips locked docs. [C:/SparrowOS/Adam/Window.CPP.Z,608] WinMgrSync() needs to check?
 
-* Why is wordstat so slow on "OldMasterBootWrite" for example.
+* Why was wordstat so slow on "OldMasterBootWrite" for example.
 
-* [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,50] Plain() might be better not saving [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3069] CH_CURSOR.
+* [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,50] Plain() might be better not saving [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3164] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
-* It would be nice if [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U() NOP were better.
+* It would be nice if [C:/SparrowOS/Compiler/Unassembler.CPP.Z,862] U() NOP were better.
 
 * Autoindent is very bad.
 
@@ -27,17 +28,17 @@
 
 * make aware of ctrl-r side bar 
 
-* fix problem -- remembering 0 terminator in str or not for $DA
+* fix documentation problem -- remembering 0 terminator in str or not for $DA
 * GetS, crazy putkey code
-* editor page formatting
+* editor page formatting is FUBAR
 
 * [C:/SparrowOS/Adam/Gr/GrScreen.CPP.Z,2] gr_screen_image
   >Might want to do ZOOM in U8 graphics and convert screen capture to U8
   >Might want to reverse bit order
 
-* wenceslas crashes in testsuite, sometimes
+* wenceslas crashes in testsuite, sometimes.  went away?
 
-* CGrVectMap sucks
+* CGrVectMap sucks -- Pilgrim
 * return vals for grrect, grblot, grputchar?
 * collisions for grrect, grblot, grputchar?
 
@@ -47,7 +48,6 @@
 
 * Race condition in Navy.CPP.Z torpedo
 
-* Logrep throw for out-of-mem?
 * {Lock|Rep}{Seg|2E=NotBr|3E=Br}{OP}{ADD}{REX}
 * Virtual Box MP reboot
 * Std local var names
@@ -75,7 +75,7 @@ can plan a big alloc.
 * This [::/SparrowOS/OSMain/TaskCmd.CPP.Z,1] Fs->catch_except=TRUE causes
 problems because it catches divide and 
 out-of-mem.  Not sure what to do, yet.
-* [C:/SparrowOS/OSMain/MultiProc.CPP.Z,395] MPStart() free old task memory.
+* [C:/SparrowOS/OSMain/MultiProc.CPP.Z,400] MPStart() free old task memory.
 (Prolly never gonna do anything about this.)
 * [C:/SparrowOS/OSMain/Adam1b.HPP.Z,129] sys_var_init_flag local vars.
 * sprite shift pts, ctrl pt for ellipse/polygon w,h is off when rotated.
@@ -121,7 +121,7 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3195] DCF_SYMMETRY, before
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3290] DCF_SYMMETRY, before
 transformation? (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -167,7 +167,7 @@ registry-like routines... or registry I guess.
 * Look for mem leaks.
 * Move stuff out of OSmain.
 
-* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2625] ROP_XOR with pen_width>1 is broken.
+* [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2721] ROP_XOR with pen_width>1 is broken.
 
 * use width and height in line clipping for pen_width>1 or blot.
 * SIMD transformation
@@ -210,4 +210,3 @@ F64.
 * recalc_start could be more accurate before recalculating?
 * Maybe, get rid of [::/SparrowOS/Compiler/CmpMain.CPP.Z,1] 0x20000 in
 compiler.
-* get rid of "$PI" alias.

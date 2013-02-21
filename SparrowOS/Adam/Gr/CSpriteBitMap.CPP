@@ -24,7 +24,7 @@
 #define GEBM_TRIM_TO_EXTENTS	23
 #define GEBM_UNDO		24
 
-I64 PopUpCSpriteBitMap(CColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
+I64 PopUpSpriteBitMap(CColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
 {
   I64 i;
   U8 *st1,*st2,buf[136];
@@ -138,7 +138,7 @@ tr_done:
   DCDel(img);
 }
 
-I64 CSpriteBitMap(CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,CDC **_img,CColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
+I64 SpriteBitMap(CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,CDC **_img,CColorROPU32 bkcolor,I64 *_import_snap=NULL,F64 *_import_ip_scaler=NULL)
 {
   I64 i,j,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,new_snap=1,
       result,xx1=*_xx1,yy1=*_yy1,xx2=*_xx2,yy2=*_yy2;
@@ -179,7 +179,7 @@ I64 CSpriteBitMap(CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,CDC **_img,CCo
 	case MSG_IP_R_DOWN:
 bm_menu:
 	  DCFill(dc);
-	  switch (i=PopUpCSpriteBitMap(color,width,new_snap,new_ip_scaler)) {
+	  switch (i=PopUpSpriteBitMap(color,width,new_snap,new_ip_scaler)) {
 	    case DOCM_CANCEL:
 	      result=GE_CANCEL;
 	      goto bm_done;

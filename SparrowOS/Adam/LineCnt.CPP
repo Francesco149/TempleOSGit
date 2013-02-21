@@ -53,7 +53,7 @@ public I64 LineCntRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
     DocPrintF(doc,"%8,d $TR+C,\"%s\"$\n$ID,2$",result,files_find_mask);
     PutLineCntFiles(doc,tempm1);
     DocPutS(doc,"$ID,-2$");
-    CDirListDel(tempm1);
+    CDirLstDel(tempm1);
   }
   DocInsDoc(DocCur,doc);
   DocDel(doc);
@@ -103,7 +103,7 @@ public I64 TreeSizeRep(U8 *files_find_mask="/SparrowOS/*",U8 *fu_flags=NULL)
     DocPrintF(doc,"%10,d $TR+C,\"%s\"$\n$ID,2$",result,files_find_mask);
     PutTreeSizeFiles(doc,tempm1);
     DocPutS(doc,"$ID,-2$");
-    CDirListDel(tempm1);
+    CDirLstDel(tempm1);
   }
   DocInsDoc(DocCur,doc);
   DocDel(doc);

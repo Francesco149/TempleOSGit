@@ -288,7 +288,7 @@ public U0 MasterBootZero(U8 dst_drv)
   BlkDevUnlock(bdev);
 }
 
-public Bool InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
+public Bool InstallMasterBoot(U8 drv_let,U8 *drv_lst=NULL)
 { //Create new MBR on the disk that has drv_let as a partition.
   //Puts stage 2 in /0000Boot dir of drv_let.
   CBlkDev *bdev,*bd1;
@@ -300,8 +300,8 @@ public Bool InstallMasterBoot(U8 drv_let,U8 *drv_list=NULL)
   Bool result=FALSE;
 
   try {
-    if (drv_list)
-      StrCpy(buf2,drv_list);
+    if (drv_lst)
+      StrCpy(buf2,drv_lst);
     else {
       j=0;
       for (i='A';i<='Z';i++)

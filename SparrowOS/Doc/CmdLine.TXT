@@ -16,7 +16,7 @@ Dir;
 There is a current directory, but not a path.  To run a program, you
 typically 
 #include it.  There are several shortcuts for #includeing files.  Right-click 
-or hit enter on a directory listing or press F5 while editing.
+or hit enter on a directory lsting or press F5 while editing.
 
 Ed("NewFile.CPP.Z");
 

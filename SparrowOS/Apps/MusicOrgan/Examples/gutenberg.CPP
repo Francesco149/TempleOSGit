@@ -16,8 +16,8 @@ U0 DrawIt(CTask *,CDC *dc)
   F64 theta,dt=tMBeat-t0;
   if (dt>12) dt=12;
   theta=0.2*FullTri(dt,4);
-  CSpritePlotRotZ3b(dc,140+30*Sin(dt),40,0,__BIN_1,theta);
-  CSpritePlot3(dc,170,15,0,__BIN_2);
+  SpritePlotRotZ3b(dc,140+30*Sin(dt),40,0,__BIN_1,theta);
+  SpritePlot3(dc,170,15,0,__BIN_2);
 }
 
 

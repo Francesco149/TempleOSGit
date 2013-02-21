@@ -17,7 +17,7 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i;
   F64 x,y,dt=tMBeat-t0;
-  CSpritePlot3(dc,X,Y,0,__BIN_1);
+  SpritePlot3(dc,X,Y,0,__BIN_1);
   if (tMBeat-t0<24) {
     if (Rand<0.7) {
       dc->color=YELLOW;

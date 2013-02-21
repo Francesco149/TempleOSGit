@@ -708,7 +708,7 @@ U0 BSPEagleDive()
     tempf=fish_root.next;
     while (tempf!=&fish_root) {
       if (SqrI64(tempf->x-xx)+SqrI64(tempf->y-yy)<MAP_SCALE*MAP_SCALE*20*20)
-	CSpritePlot3(dc,tempf->x,tempf->y,tempf->z,__BIN_1);
+	SpritePlot3(dc,tempf->x,tempf->y,tempf->z,__BIN_1);
       tempf=tempf->next;
     }
 

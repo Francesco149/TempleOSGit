@@ -1,7 +1,7 @@
 #define M_DASH_THRESHOLD  0.140
 #define M_SPACE_THRESHOLD 0.300
 
-U8 *morse_list=
+U8 *morse_lst=
 
 "A.-\0"
 "B-...\0"
@@ -61,13 +61,13 @@ U0 MorseTable()
   U8 *st;
   I64 i=0;
   for (i=0;i<13;i++ ) {
-    if (st=ListEntryPt(i,morse_list))
+    if (st=LstEntryPt(i,morse_lst))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    if (st=ListEntryPt(i+13,morse_list))
+    if (st=LstEntryPt(i+13,morse_lst))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    if (st=ListEntryPt(i+26,morse_list))
+    if (st=LstEntryPt(i+26,morse_lst))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
-    if (st=ListEntryPt(i+39,morse_list))
+    if (st=LstEntryPt(i+39,morse_lst))
       "$FG,RED$%C$FG$ %-7s ",*st,st+1;
     NewLine;
   }
@@ -158,7 +158,7 @@ U0 Morse()
     ch=MorseWaitKey;
     if (ch==CH_SPACE) {
       *dst=0;
-      src=morse_list;
+      src=morse_lst;
       while (*src) {
 	if (!StrCmp(src+1,buf)) {
 	  "$FG,GREEN$%C$FG$",*src;

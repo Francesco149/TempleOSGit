@@ -64,6 +64,10 @@ U0 SndMathDemo()
   FunDraw2(dc,&Saw,1.0);
   "$FG,BLUE$Saw$FG$\n";
   PressAKey;
+  dc->color=GREEN;
+  FunDraw2(dc,&FullSaw,1.0);
+  "$FG,GREEN$FullSaw$FG$\n";
+  PressAKey;
 
   Init(dc);
   dc->color=RED;

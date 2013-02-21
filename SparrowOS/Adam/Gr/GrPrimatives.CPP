@@ -504,8 +504,8 @@ public U0 Gr3BSpline(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
   BSpline3(dc,ctrl,cnt,&GrLinePlot,closed);
 }
 
-public U0 GrLine3b(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
-{  //transformation but not pen width
+public U0 GrLine3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
+{
   I64 _x1,_y1,_z1,_x2,_y2,_z2;
   Bool was_transform=FALSE,was_symmetry=FALSE;
   if (dc->flags & DCF_TRANSFORMATION) {
@@ -520,49 +520,20 @@ public U0 GrLine3b(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,
     _x2=x2; _y2=y2; _z2=z2;
     GrReflect(dc,&_x2,&_y2,&_z2);
     dc->flags&=~DCF_SYMMETRY;
-    if (step==1 && !start && !dc->brush && !dc->depth_buf) { //TODO: clip z for depth buf
+    if (step==1 && !start && !dc->brush && dc->pen_width<2 && !dc->depth_buf) { //TODO: clip z for depth buf
       if (DCClipLine(dc,&_x1,&_y1,&_x2,&_y2))
 	Line(dc,_x1,_y1,0,_x2,_y2,0,&GrLinePlot0,step,start);
     } else
-      Line(dc,_x1,_y1,_z1,_x2,_y2,_z2,&GrLinePlot,step,start);
+      Line(dc,_x1,_y1,_z1,_x2,_y2,_z2,&GrPlot3,step,start);
     was_symmetry=TRUE;
     if (dc->flags&DCF_JUST_MIRROR)
       goto gr_done;
   }
-  if (step==1 && !start && !dc->brush && !dc->depth_buf) { //TODO: clip z for depth buf
+  if (step==1 && !start && !dc->brush && dc->pen_width<2 && !dc->depth_buf) { //TODO: clip z for depth buf
     if (DCClipLine(dc,&x1,&y1,&x2,&y2))
       Line(dc,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
   } else
-    Line(dc,x1,y1,z1,x2,y2,z2,&GrLinePlot,step,start);
-gr_done:
-  if (was_transform)
-    dc->flags|=DCF_TRANSFORMATION;
-  if (was_symmetry)
-    dc->flags|=DCF_SYMMETRY;
-}
-
-public U0 GrLine3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
-{  //transformation with pen width
-  I64 _x1,_y1,_z1,_x2,_y2,_z2;
-  Bool was_transform=FALSE,was_symmetry=FALSE;
-  if (dc->flags & DCF_TRANSFORMATION) {
-    (*dc->transform)(dc,&x1,&y1,&z1);
-    (*dc->transform)(dc,&x2,&y2,&z2);
-    dc->flags&=~DCF_TRANSFORMATION;
-    was_transform=TRUE;
-  }
-  if (dc->flags & DCF_SYMMETRY) {
-    _x1=x1; _y1=y1; _z1=z1;
-    GrReflect(dc,&_x1,&_y1,&_z1);
-    _x2=x2; _y2=y2; _z2=z2;
-    GrReflect(dc,&_x2,&_y2,&_z2);
-    dc->flags&=~DCF_SYMMETRY;
-    Line(dc,_x1,_y1,_z1,_x2,_y2,_z2,&GrPlot3,step,start);
-    was_symmetry=TRUE;
-    if (dc->flags&DCF_JUST_MIRROR)
-      goto gr_done;
-  }
-  Line(dc,x1,y1,z1,x2,y2,z2,&GrPlot3,step,start);
+    Line(dc,x1,y1,z1,x2,y2,z2,&GrPlot3,step,start);
 gr_done:
   if (was_transform)
     dc->flags|=DCF_TRANSFORMATION;

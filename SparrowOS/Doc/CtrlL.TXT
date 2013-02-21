@@ -35,8 +35,8 @@ horizontally by this many pixels.
 Tree The item will behave like a tree widget, with this as the root.
 Collapsed The tree or hidden widget will begin collapsed.
 Alias For tree entries, the text of the subentry the cursor is on will appear 
-here.  This is for drop-down lists.
-Define Str will substitute a #define or [C:/SparrowOS/OSMain/Str1a.CPP.Z,629]
+here.  This is for drop-down lsts.
+Define Str will substitute a #define or [C:/SparrowOS/OSMain/Str1a.CPP.Z,632]
 DefineLoad() string for the tag.
 
 Quote Make the result suitable for including in a program, in quotes, 

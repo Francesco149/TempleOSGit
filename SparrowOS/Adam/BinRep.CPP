@@ -1,5 +1,5 @@
 #help_index "Compiler"
-DefineListLoad("ST_BIN_FILE_TYPES",
+DefineLstLoad("ST_BIN_FILE_TYPES",
 "END\0 \0"
 "REL_EXPORT\0"
 "LIT_EXPORT\0"

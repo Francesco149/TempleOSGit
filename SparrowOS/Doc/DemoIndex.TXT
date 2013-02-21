@@ -151,6 +151,10 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [::/SparrowOS/Demo/GameStarters/ZoneOut.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/ZoneOut.CPP.Z
     [::/SparrowOS/Demo/GameStarters/FPS.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/FPS.CPP.Z
     [::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/EagleDive.CPP.Z
+    ::/SparrowOS/Apps/Strut
+`Cd("::/SparrowOS/Apps/Strut");Dir;View;
+`
+
     ::/SparrowOS/Apps/Span
 `Cd("::/SparrowOS/Apps/Span");Dir;View;
 `

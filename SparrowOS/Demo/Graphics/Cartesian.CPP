@@ -46,6 +46,6 @@ Cartesian;
 /*
 For better performance, compile the expression entered by the user one time 
 with [C:/SparrowOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression() and use
-[C:/SparrowOS/OSMain/Adam1b.HPP.Z,286] Call(). See
+[C:/SparrowOS/OSMain/Adam1b.HPP.Z,287] Call(). See
 [::/SparrowOS/Demo/CompileDemo.CPP.Z,1] ::/SparrowOS/Demo/CompileDemo.CPP.Z.
 */

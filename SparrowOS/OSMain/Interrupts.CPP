@@ -29,39 +29,35 @@ SYS_TIMER_HANDLER::
 	INC	U64 CCPU.total_jiffies[RDI]
 
 	BT	U64 CTask.task_flags[RSI],TASKf_IDLE
-	JC	@@05
-	CMP	RBX,U32 SYS_IDLE_START
-	JB	@@10
-	CMP	RBX,U32 SYS_IDLE_END
-	JA	@@10
-@@05:	LOCK
+	JNC	@@05
+	LOCK
 	INC	U64 CCPU.idle_pt_hits[RDI]
 
-@@10:	MOV	RAX,U64 CCPU.timer_irq_chain[RDI]
+@@05:	MOV	RAX,U64 CCPU.timer_irq_chain[RDI]
 	OR	RAX,RAX
-	JZ	@@15
+	JZ	@@10
 	PUSH	RSI
 	CALL	RAX
-	JMP	@@20
-@@15:	ADD	RSP,8
-@@20:	CLI
+	JMP	@@15
+@@10:	ADD	RSP,8
+@@15:	CLI
 	MOV	RAX,U64 CCPU.num[RDI]
 	OR	RAX,RAX
-	JZ	@@25
+	JZ	@@20
 
 	MOV	EAX,U32 LAPIC_EOI
 	MOV	U32 [RAX],0
-	JMP	@@30
+	JMP	@@25
 
-@@25:	MOV	AL,0x20 		 //ACKNOWLEDGE INTERRUPT
+@@20:	MOV	AL,0x20 		 //ACKNOWLEDGE INTERRUPT
 	OUT	0x20,AL
 
-@@30:	MOV	RAX,SYS_SEMAS
+@@25:	MOV	RAX,SYS_SEMAS
 	BT	U32 SYS_SEMA_SINGLE_USER*SEMA_STRUCT_SIZE[RAX],0
-	JC	@@35
+	JC	@@30
 	BT	U64 CTask.task_flags[RSI],TASKf_PREEMPT
 	JC	I32 RESTORE_NEXT_RSI_TASK
-@@35:	JMP	I32 RESTORE_RSI_NO_PREEMPT_TASK
+@@30:	JMP	I32 RESTORE_RSI_NO_PREEMPT_TASK
 
 // ************************************
 SYS_IRQ_FAULT::
@@ -100,14 +96,11 @@ SYS_FAULT_ERR_CODE_BITMAP::
 	DU32	0x00027D00,0,0,0,0,0,0,0;
 }
 
-U8 *IntEntryGet(I64 irq,I64 cpu_num=-1)
+U8 *IntEntryGet(I64 irq)
 {
   U8 *result;
   I64 *src;
-  if (cpu_num<0) cpu_num=Gs->num;
-  if (cpu_num>=mp_cnt&&cpu_num>Gs->num)
-    throw(EXCEPT_MULTICORE,3);
-  src=cpu_structs[cpu_num].idt(U8 *)+irq*16;
+  src=sys_idt(U8 *)+irq*16;
   result(I64).u16[0]=*src(U16 *);
   src(U8 *)+=6;
   result(I64).u16[1]=*src(U16 *)++;
@@ -115,20 +108,15 @@ U8 *IntEntryGet(I64 irq,I64 cpu_num=-1)
   return result;
 }
 
-U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 cpu_num=-1,
-    I64 type=IDTET_IRQ,I64 dpl=0)
+U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
 {
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,307] IDTET_IRQ
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,388] IDTET_IRQ
 //See [::/SparrowOS/Demo/Lectures/InterruptDemo.CPP.Z,1] ::/SparrowOS/Demo/Lectures/InterruptDemo.CPP.Z
 //See [::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z,1] ::/SparrowOS/Demo/MultiCore/Interrupts.CPP.Z
   I64 fp=fp_new_handler;
   U8 *result,*dst;
-
-  if (cpu_num<0) cpu_num=Gs->num;
-
-  result=IntEntryGet(irq,cpu_num);
-  dst=cpu_structs[cpu_num].idt(U8 *)+irq*16;
-
+  result=IntEntryGet(irq);
+  dst=sys_idt(U8 *)+irq*16;
   PushFD;
   Cli;
   *dst(U16 *)++=fp.u16[0];
@@ -161,14 +149,7 @@ U0 IntEOI()
   *LAPIC_EOI(U32 *)=0;
 }
 
-interrupt U0 IntNop1()
-{ //Make unplanned IRQs stop!
-  //IRQs on cores other than zero are APIC, I'm pretty sure.
-  //I think the PIC only generates core 0 IRQs.
-  IntEOI;
-}
-
-interrupt U0 IntNop2()
+interrupt U0 IntNop()
 { //Make unplanned IRQs stop by all means!
   OutU8(0xA0,0x20);
   OutU8(0x20,0x20);
@@ -193,34 +174,22 @@ U0 IntInit1()
 { //Interrupt descriptor table part1
   I64 i,temp_ptr[2];
   U32 *ptr;
-  Gs->idt=CAlloc(16*256);
-/*
-During boot, we don't know what hardware PIC IRQ's were set to.
-When we unmask for the first time, after initializing the PIC, I'm
-not sure of old pending IRQs will be issued.
-
-After boot, we might get a APIC IRQ because we never initialize that.
-Acknowledging unplanned IRQs seems safest to me, even
-if we accidentally turn-off a valid IRQ and miss it.
-We only support keyboard, mouse and timer, anyway.
-*/
-  for (i=0;i<256;i++)
-    if (!Gs->num)
-      IntEntrySet(i,&IntNop2);
-    else
-      IntEntrySet(i,&IntNop1);
-
+  if (!Gs->num) {
+    sys_idt=CAlloc(16*256);
+    for (i=0;i<256;i++)
+      IntEntrySet(i,&IntNop);
+  }
   ptr=temp_ptr;
   *ptr(U16 *)++=256*16-1;
-  *ptr(U32 *)++=Gs->idt(I64).u32[0];
-  *ptr(U32 *)++=Gs->idt(I64).u32[1];
+  *ptr(U32 *)++=sys_idt(I64).u32[0];
+  *ptr(U32 *)++=sys_idt(I64).u32[1];
   *ptr(U16 *)++=0;
   SetRAX(temp_ptr);
   asm {	LIDT U64 [RAX] }
 }
 
 U0 IntInit2()
-{ //Interrupt descriptor table part2
+{ //Interrupt descriptor table part2: Core 0 Only
   I64 i;
   PushFD;
   Cli;
@@ -230,7 +199,7 @@ U0 IntInit2()
 In theory, we use the PIC mask register to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
-I go ahead and ACK PIC in [C:/SparrowOS/OSMain/Interrupts.CPP.Z,171] IntNop2().
+I go ahead and ACK PIC in [C:/SparrowOS/OSMain/Interrupts.CPP.Z,152] IntNop().
 I have no idea why I got a IRQ 0x27.
 */
   IntEntrySet(I_NMI,_SYS_HLT);

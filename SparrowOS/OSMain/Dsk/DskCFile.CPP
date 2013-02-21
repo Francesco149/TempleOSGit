@@ -1,17 +1,3 @@
-U0 FAllocFile(CFile *f,I64 cnt,Bool contiguous)
-{
-  CPrt *fp=f->p;
-  CFileAccess *fa=FileAccessNew(f->de.full_name);
-  f->de.cluster=ClusersAlloc(fp,0,(cnt+fp->spc-1)/fp->spc,contiguous);
-  f->de.size=cnt<<BLK_SIZE_BITS;
-  f->de.expanded_size=f->de.size;
-  if (fa) {
-    CDirNew(fa->p,Fs->cur_dir,&f->de,TRUE);
-    FileAccessDel(fa);
-  }
-  f->flags&=~FF_NEW_FILE;
-}
-
 I64 FSize(CFile *f)
 {
   if (f)
@@ -20,20 +6,11 @@ I64 FSize(CFile *f)
     return 0;
 }
 
-U0 FSync(CFile *f)
-{
-  if (f->flags & FF_BUF_DIRTY) {
-    WClusters(f->p,f->cluster_buf,f->cluster,1);
-    f->flags&=~FF_BUF_DIRTY;
-  }
-}
-
-
 CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
-{  //allows flags "r","w","w+" and "c" (contiguous)
+{  //allows flags "r","w","w+".  Include a "c" for contiguous.
   CFile *f=CAlloc(sizeof(CFile));
   CFileAccess *fa;
-  U8 *full_name,*full_name2;
+  U8 *full_name;
   Bool contiguous=StrOcc(flags,'c');
 
   f->cluster=INVALID_CLUSTER;
@@ -43,9 +20,7 @@ CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
   else
     f->max_blk=MAX_I64;
   f->file_cluster_num=INVALID_CLUSTER;
-  full_name2=FileNameAbs(filename);
-  full_name=AStrNew(full_name2);
-  Free(full_name2);
+  full_name=FileNameAbs(filename);
   f->p=Drv2Prt(*full_name);
   if (f->p->type==PT_NATIVE)
     contiguous=TRUE;
@@ -70,12 +45,16 @@ CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
       Del(full_name,FALSE);
     f->de.full_name=full_name;
     f->flags|=FF_NEW_FILE;
-    fa=FileAccessNew(full_name);
-    if (fa) {
+    if (fa=FileAccessNew(full_name)) {
       StrCpy(f->de.name,fa->mask);
+      if (cnt>0) { //We pre-alloc the whole thing.
+	f->de.cluster=ClusersAlloc(f->p,0,
+	  (cnt+f->p->spc-1)/f->p->spc,contiguous);
+	f->de.expanded_size=f->de.size=cnt<<BLK_SIZE_BITS;
+	CDirNew(fa->p,Fs->cur_dir,&f->de,TRUE);
+	f->flags&=~FF_NEW_FILE;
+      }
       FileAccessDel(fa);
-      if (cnt>0)
-	FAllocFile(f,cnt,contiguous);
       if (!contiguous || cnt>0)
 	return f;
     }
@@ -96,10 +75,12 @@ U0 FClose(CFile *f)
 {
   CFileAccess *fa;
   if (f) {
-    FSync(f);
+    if (f->flags & FF_BUF_DIRTY) {
+      WClusters(f->p,f->cluster_buf,f->cluster,1);
+      f->flags&=~FF_BUF_DIRTY;
+    }
     if (f->flags & FF_NEEDS_WRITE) {
-      fa=FileAccessNew(f->de.full_name);
-      if (fa) {
+      if (fa=FileAccessNew(f->de.full_name)) {
 	if (!(f->flags & FF_USE_OLD_DATETIME))
 	  f->de.datetime=GetCurTimeCDate;
 	if (f->flags & FF_NEW_FILE)

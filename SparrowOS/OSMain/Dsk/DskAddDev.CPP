@@ -228,7 +228,7 @@ U0 Mount(Bool repartition=FALSE)
 	  } while (!(0<=k<=1));
 	  NewLine;
 	}
-	LinkedListDel(root);
+	LinkedLstDel(root);
       }
       if (type==BDT_NON_NATIVE_FILE) {
 	PutDefine("ST_MOUNT_NON_NATIVE_LET");

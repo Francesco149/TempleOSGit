@@ -44,7 +44,7 @@ CLex *LexNew(U8 *buf,I64 flags,U8 *filename=NULL)
   lx->expression_start_line_num=lx->last_line_num=1;
   lx->pass_trace_mask=0b10001111101;
   lx->hash_mask=HTG_ALL-HTT_IMPORT_SYS_SYM-HTT_ASM_KEYWORD;
-  lx->define_hash_table=lx->hash_table_list=lx->glbl_hash_table=lx->local_hash_table=Fs->hash_table;
+  lx->define_hash_table=lx->hash_table_lst=lx->glbl_hash_table=lx->local_hash_table=Fs->hash_table;
   if (flags&LF_KEEP_AT_SIGN)
     lx->alpha_numeric_bitmap=alpha_numeric_no_at_bitmap;
   else
@@ -496,9 +496,9 @@ U0 LexPop(CLex *lx)
   MemCpy(tempf,tempf1,sizeof(CLexFile));
 }
 
-I64 MemberMetaData(U8 *st,CMemberList *tempm)
+I64 MemberMetaData(U8 *st,CMemberLst *tempm)
 {
-  CMemberListMeta *meta=tempm->meta;
+  CMemberLstMeta *meta=tempm->meta;
   while (meta) {
     if (!StrCmp(meta->str,st))
       return meta->user_data;
@@ -507,9 +507,9 @@ I64 MemberMetaData(U8 *st,CMemberList *tempm)
   return 0;
 }
 
-CMemberListMeta *MemberMetaFind(U8 *st,CMemberList *tempm)
+CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *tempm)
 {
-  CMemberListMeta *meta=tempm->meta;
+  CMemberLstMeta *meta=tempm->meta;
   while (meta) {
     if (!StrCmp(meta->str,st))
       return meta;
@@ -518,12 +518,12 @@ CMemberListMeta *MemberMetaFind(U8 *st,CMemberList *tempm)
   return NULL;
 }
 
-CMemberList *MemberFind(U8 *st,CHashClass *tempc)
+CMemberLst *MemberFind(U8 *st,CHashClass *tempc)
 {
   I64 i;
-  CMemberList *tempm;
+  CMemberLst *tempm;
   do {
-    tempm=tempc->member_list;
+    tempm=tempc->member_lst;
     while (tempm) {
       if (!(i=StrCmp(tempm->str,st))) {
 	tempm->use_cnt++;
@@ -538,10 +538,10 @@ CMemberList *MemberFind(U8 *st,CHashClass *tempc)
   return NULL;
 }
 
-CMemberList *MemberFind2(CHashClass *pattern,CHashClass *tempc)
+CMemberLst *MemberFind2(CHashClass *pattern,CHashClass *tempc)
 {//just offset<0
-  CMemberList *tempm;
-  tempm=tempc->member_list2;
+  CMemberLst *tempm;
+  tempm=tempc->member_lst2;
   while (tempm) {
     if (pattern==tempm->member_class2)
       return tempm;
@@ -553,10 +553,10 @@ CMemberList *MemberFind2(CHashClass *pattern,CHashClass *tempc)
   return NULL;
 }
 
-U0 MemberAdd(CLex *lx,CMemberList *tempm,CHashClass *tempc,I64 mode)
+U0 MemberAdd(CLex *lx,CMemberLst *tempm,CHashClass *tempc,I64 mode)
 {
   U8 *st=tempm->str;
-  CMemberList **tempm1,*tempm2;
+  CMemberLst **tempm1,*tempm2;
   CHashClass *tempc2;
   if (MemberFind(st,tempc) && StrCmp(st,"pad") && StrCmp(st,"reserved") && StrCmp(st,"_anon_"))
     LexExcept(lx,"ST_DUP_MEMBER");
@@ -568,7 +568,7 @@ U0 MemberAdd(CLex *lx,CMemberList *tempm,CHashClass *tempc,I64 mode)
     tempc2=NULL;
   tempm->member_class2=tempc2;
 
-  tempm1=&tempc->member_list;
+  tempm1=&tempc->member_lst;
   while (tempm2=*tempm1) {
     if (StrCmp(tempm2->str,st)<=0)
       tempm1=&tempm2->left;
@@ -578,7 +578,7 @@ U0 MemberAdd(CLex *lx,CMemberList *tempm,CHashClass *tempc,I64 mode)
   *tempm1=tempm;
 
   if (tempc2) {
-    tempm1=&tempc->member_list2;
+    tempm1=&tempc->member_lst2;
     while (tempm2=*tempm1) {
       if (tempc2<tempm2->member_class2)
 	tempm1=&tempm2->left2;
@@ -597,19 +597,19 @@ U0 MemberAdd(CLex *lx,CMemberList *tempm,CHashClass *tempc,I64 mode)
   tempm->right=NULL;
   tempm->left2=NULL;
   tempm->right2=NULL;
-  tempm2=tempc->last_in_member_list;
-  tempm2->next=tempc->last_in_member_list=tempm;
+  tempm2=tempc->last_in_member_lst;
+  tempm2->next=tempc->last_in_member_lst=tempm;
 }
 
-U0 MemberListDel(CHashClass *tempc)
+U0 MemberLstDel(CHashClass *tempc)
 {
-  CMemberList *tempm,*tempm1;
-  CMemberListMeta *temp_meta,*temp_meta1;
-  tempm=tempc->member_list;
+  CMemberLst *tempm,*tempm1;
+  CMemberLstMeta *temp_meta,*temp_meta1;
+  tempm=tempc->member_lst;
   while (tempm) {
     tempm1=tempm->next;
     Free(tempm->str);
-    LinkedListDel(tempm->dim.next);
+    LinkedLstDel(tempm->dim.next);
     if (tempm->flags & MLF_STR_DFT_AVAILABLE)
       Free(tempm->dft_val);
     if (tempm->flags & MLF_FUN)
@@ -627,26 +627,26 @@ U0 MemberListDel(CHashClass *tempc)
     tempm=tempm1;
   }
   tempc->size=0;
-  tempc->last_in_member_list=&tempc->member_list;
-  tempc->member_list=NULL;
-  tempc->member_list2=NULL;
+  tempc->last_in_member_lst=&tempc->member_lst;
+  tempc->member_lst=NULL;
+  tempc->member_lst2=NULL;
   tempc->member_cnt=0;
   if (tempc->type&HTT_FUN)
     tempc(CHashFun *)->arg_cnt=0;
 }
 
-#assert !offset(CMemberList.next)
-#assert !offset(CMemberListMeta.next)
+#assert !offset(CMemberLst.next)
+#assert !offset(CMemberLstMeta.next)
 
-CMemberList *MemberListCopy(CHashClass *tempc)
+CMemberLst *MemberLstCopy(CHashClass *tempc)
 {
-  CMemberList *result=NULL,*tempm,*tempm1=&result;
-  CMemberListMeta *temp_meta,*temp_meta1;
-  tempm=tempc->member_list;
+  CMemberLst *result=NULL,*tempm,*tempm1=&result;
+  CMemberLstMeta *temp_meta,*temp_meta1;
+  tempm=tempc->member_lst;
   while (tempm) {
     tempm1=tempm1->next=MAllocIdentical(tempm);
     tempm1->str=MAllocIdentical(tempm->str);
-    tempm1->dim.next=LinkedListCopy(tempm->dim.next);
+    tempm1->dim.next=LinkedLstCopy(tempm->dim.next);
     if (tempm->flags & MLF_STR_DFT_AVAILABLE)
       tempm1->dft_val=MAllocIdentical(tempm->dft_val);
     if (tempm->flags & MLF_FUN)
@@ -666,15 +666,15 @@ CMemberList *MemberListCopy(CHashClass *tempc)
   return result;
 }
 
-I64 MemberListSize(CHashClass *tempc)
+I64 MemberLstSize(CHashClass *tempc)
 {
-  CMemberList *tempm;
-  CMemberListMeta *temp_meta;
+  CMemberLst *tempm;
+  CMemberLstMeta *temp_meta;
   I64 result=0;
-  tempm=tempc->member_list;
+  tempm=tempc->member_lst;
   while (tempm) {
     result+=MSize2(tempm->str);
-    result+=LinkedListSize(tempm->dim.next);
+    result+=LinkedLstSize(tempm->dim.next);
     if (tempm->flags & MLF_STR_DFT_AVAILABLE)
       result+=MSize2(tempm->dft_val);
     if (tempm->flags & MLF_FUN)
@@ -852,13 +852,13 @@ lex_ident:
 	}
 	buf[i++]=0;
 	temph=NULL;
-	if (lx->local_var_list)
-	  lx->local_var_entry=MemberFind(buf,lx->local_var_list);
+	if (lx->local_var_lst)
+	  lx->local_var_entry=MemberFind(buf,lx->local_var_lst);
 	else
 	  lx->local_var_entry=NULL;
-	if (!lx->local_var_entry && lx->hash_table_list)
+	if (!lx->local_var_entry && lx->hash_table_lst)
 	  temph=HashFind(buf,
-	      lx->hash_table_list,lx->hash_mask);
+	      lx->hash_table_lst,lx->hash_mask);
 	if (temph)
 	  j=temph->type;
 	else

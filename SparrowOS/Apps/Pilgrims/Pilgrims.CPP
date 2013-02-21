@@ -165,7 +165,7 @@ U0 PosChurch(F64 x,F64 y)
   dc->bkcolor=BLACK;
   while (x>0) {
     dc->collision_cnt=0;
-    CSpritePlot3(dc,x,y,0,__BIN_2);
+    SpritePlot3(dc,x,y,0,__BIN_2);
     if (dc->collision_cnt>2000)
       break;
     x--;
@@ -238,16 +238,16 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //Draw Dolphins
   for (i=0;i<NUM_DOLPHINS;i++)
-    CSpritePlotRotZ3b(dc,dolphins[i].x*view_scale-screen_x,dolphins[i].y*view_scale-screen_y,0,__BIN_7,dolphins[i].theta);
+    SpritePlotRotZ3b(dc,dolphins[i].x*view_scale-screen_x,dolphins[i].y*view_scale-screen_y,0,__BIN_7,dolphins[i].theta);
 
   //Draw Land
   dc->color=ROP_MONO+YELLOW;
-  GrVectMapBlotMP(dc,-screen_x,-screen_y,vm,view_scale);
+  VectMapBlotMP(dc,-screen_x,-screen_y,vm,view_scale);
 
   //Draw Ship
   dc->color=ROP_EQU;
   ship_r=ShipMat;
-  CSpritePlotRotMat3b(dc,ship.x*view_scale-screen_x,ship.y*view_scale-screen_y,0,__BIN_6,ship_r);
+  SpritePlotRotMat3b(dc,ship.x*view_scale-screen_x,ship.y*view_scale-screen_y,0,__BIN_6,ship_r);
 
   //Rudder
   x=-AFT_LEN; y=0; z=0;
@@ -402,13 +402,13 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (ship_landed) {
     //Draw Gardens
     for (i=0;i<MAX_GARDENS;i++)
-      CSpritePlot3(dc,gardens[i].x*view_scale-screen_x,gardens[i].y*view_scale-screen_y,0,__BIN_5);
+      SpritePlot3(dc,gardens[i].x*view_scale-screen_x,gardens[i].y*view_scale-screen_y,0,__BIN_5);
 
     //Draw Church
-    CSpritePlot3(dc,church_x*view_scale-screen_x,church_y*view_scale-screen_y,0,__BIN_2);
+    SpritePlot3(dc,church_x*view_scale-screen_x,church_y*view_scale-screen_y,0,__BIN_2);
     //Draw Pilgrims
     for (i=0;i<NUM_PIGRAIMS;i++)
-      CSpritePlot3(dc,pilgrims[i].x*view_scale-screen_x,pilgrims[i].y*view_scale-screen_y,0,(i&1)?__BIN_3:__BIN_4);
+      SpritePlot3(dc,pilgrims[i].x*view_scale-screen_x,pilgrims[i].y*view_scale-screen_y,0,(i&1)?__BIN_3:__BIN_4);
     if (tNP>game_over_time && Blink(,tP(task))) {
       dc->color=LTRED;
       GrPrintF(dc,(task->win_pixel_width-14*FONT_WIDTH)/2,
@@ -742,6 +742,6 @@ pilgrim_done:
   MenuPop;
   SettingsPop;
   CtrlButtonDel(bt_pray);
-  GrVectMapDel(vm);
+  VectMapDel(vm);
   DCDel(master_map);
 }

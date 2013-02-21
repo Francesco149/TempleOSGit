@@ -5,7 +5,7 @@
 enter debugger or you might enter the 
 debugger through a fault.  You might place a call in your code at fatal error 
 points to enter the debugger.  If you see a stk dump, record the label+offset 
-and unassemble,  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U(), possibly
+and unassemble,  [C:/SparrowOS/Compiler/Unassembler.CPP.Z,862] U(), possibly
 when not in the debugger, find the offset and 
 follow the link to source code.  [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,386] Go1()
 might exit the debugger and retain the 
@@ -23,7 +23,7 @@ functions as in &PrintF+0x10.
 
 * You can use [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,307] AdamLog() to send text
 to the Adam task window.  It works like 
-[C:/SparrowOS/OSMain/Str1a.CPP.Z,2620] PrintF().  I never use this.  Instead
+[C:/SparrowOS/OSMain/Str1a.CPP.Z,2354] PrintF().  I never use this.  Instead
 I use [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,182] DbgNum().
 
 * [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,266] D()
@@ -44,7 +44,7 @@ display and modify registers in the debugger
 with var-like labels, RAX, RBX, etc.  See
 [C:/SparrowOS/OSMain/Dbg1a.CPP.Z,350] DefineRegs().
 
-* [C:/SparrowOS/Compiler/Unassembler.CPP.Z,848] U(&FunName+offset) to
+* [C:/SparrowOS/Compiler/Unassembler.CPP.Z,862] U(&FunName+offset) to
 unassemble mem or [C:/SparrowOS/Adam/Dbg2a.CPP.Z,240] Uf("FunName") to
 unassemble a 
 function.
@@ -113,7 +113,7 @@ find other heap issues.
 * You can define functions for <CTRL-ALT-letter> keys, but they must operate 
 in a interrupt environment or in the window mgr when in ques kbd msgs.  You 
 can do [C:/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw() output.  Search for
-[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,40] fp_ctrl_alt_let_cbs[] and look at the
+[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,41] fp_ctrl_alt_let_cbs[] and look at the
 code.  
 They take scancode as an arg.
 

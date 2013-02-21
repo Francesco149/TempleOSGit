@@ -74,13 +74,13 @@ U0 OutLine()
   U8 *out_img;
   CDC *dc;
   for (n=0;n<NUM;n++) {
-    CSpriteExtents(in_img[n],&minx,&maxx,&miny,&maxy);
+    SpriteExtents(in_img[n],&minx,&maxx,&miny,&maxy);
     w=maxx-minx+1+2;
     h=maxy-miny+1+2;
     dc=DCNew(DCT_COLOR8,w,h);
     dc->color=LTGREEN;
     GrRect(dc,0,0,w,h);
-    CSpritePlot3(dc,-minx+1,-miny+1,0,in_img[n]);
+    SpritePlot3(dc,-minx+1,-miny+1,0,in_img[n]);
 
     for (i=0;i<h;i++)
       for (j=0;j<w;j++)

@@ -11,7 +11,7 @@ Bool ChkDskConfirm(Bool *_fix,Bool *_confirm)
   return *_fix;
 }
 
-I64 NativeFSChkDskList(CDirEntry *tempm1,U8 *bits,U8 *bits2,I64 size,I64 bpc)
+I64 NativeFSChkDskLst(CDirEntry *tempm1,U8 *bits,U8 *bits2,I64 size,I64 bpc)
 {
   CDirEntry *tempm2;
   I64 i,j,errs=0;
@@ -19,7 +19,7 @@ I64 NativeFSChkDskList(CDirEntry *tempm1,U8 *bits,U8 *bits2,I64 size,I64 bpc)
     tempm2=tempm1->next;
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub)
-	errs+=NativeFSChkDskList(tempm1->sub,bits,bits2,size,bpc);
+	errs+=NativeFSChkDskLst(tempm1->sub,bits,bits2,size,bpc);
     }
     j=(tempm1->size+bpc-1)/bpc;
     for (i=0;i<j;i++) {
@@ -86,7 +86,7 @@ I64 NativeFSChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
     }
   }
 
-  errs+=NativeFSChkDskList(FilesFind(files_find_mask,1<<FUf_RECURSE),bits,bits2,size,bpc);
+  errs+=NativeFSChkDskLst(FilesFind(files_find_mask,1<<FUf_RECURSE),bits,bits2,size,bpc);
   for (i=1;i<size;i++)
     if (Bt(bits2,i)) {
       PrintFWarn("Shouldn't Alloc Cluster:%0X\n",i);
@@ -104,7 +104,7 @@ I64 NativeFSChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
   return errs;
 }
 
-I64 FAT32ChkDskList(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,I64 size,I64 bpc)
+I64 FAT32ChkDskLst(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,I64 size,I64 bpc)
 {
   CDirEntry *tempm2;
   I64 i,c,errs=0;
@@ -112,7 +112,7 @@ I64 FAT32ChkDskList(CPrt *p,CDirEntry *tempm1,U8 *bits,U32 *bits2,I64 size,I64 b
     tempm2=tempm1->next;
     if (tempm1->attr & _ATTR_DIR) {
       if (tempm1->sub)
-	errs+=FAT32ChkDskList(p,tempm1->sub,bits,bits2,size,bpc);
+	errs+=FAT32ChkDskLst(p,tempm1->sub,bits,bits2,size,bpc);
     }
     i=0;
     c=tempm1->cluster;
@@ -186,7 +186,7 @@ I64 FAT32ChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
     c=ClusterNumNext(p,c);
   }
 
-  errs+=FAT32ChkDskList(p,FilesFind(files_find_mask,1<<FUf_RECURSE),bits,bits2,size,bpc);
+  errs+=FAT32ChkDskLst(p,FilesFind(files_find_mask,1<<FUf_RECURSE),bits,bits2,size,bpc);
 
   bits2[1]=0; //See [C:/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,64] FAT32Fmt()
   for (i=1;i<size;i++)

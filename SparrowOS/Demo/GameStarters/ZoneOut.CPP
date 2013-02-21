@@ -135,11 +135,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       img=__BIN_2;
     else
       img=__BIN_1;
-    CSpritePlotRotY3b(dc,them[i].x,y,them[i].z,img,-them[i].theta);
+    SpritePlotRotY3b(dc,them[i].x,y,them[i].z,img,-them[i].theta);
   }
   tempo=shots.next;
   while (tempo!=&shots) {
-    CSpritePlotRotY3b(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
+    SpritePlotRotY3b(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
     tempo=tempo->next;
   }
   dc->flags&=~DCF_TRANSFORMATION;

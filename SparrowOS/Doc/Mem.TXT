@@ -30,12 +30,12 @@ See [C:/SparrowOS/Adam/MemRep.CPP.Z,190] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003CEDF
+ 0x0000007C00- 0x000003CDAF
   OSMain kernel module, placed here by the boot-loader,
   [C:/SparrowOS/OSMain/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
 
  0x000007F000- 0x000007F02E
-  Multicore start-up vect code, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,453]
+  Multicore start-up vect code, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,550]
   MPN_VECT.
 
  0x000007F600- 0x000007FFFF
@@ -67,13 +67,13 @@ memory starting at 0xF0000000 going up.
   64-bit devices are mapped counting backward from 128 Gig.
   
 
-                                      [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2595] CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2611] CHeapCtrls
+                                      [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2691] CBlkPools [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2707] CHeapCtrls
  <1> (image)
 
 0000,0000,0000,0000                   Core 0   
 
 0000,0000,0000,7C00 OSMain
-0000,0000,0003,CEDF 
+0000,0000,0003,CDAF 
 
 0000,0000,0010,0000 Page_Tables                    AdamTask
 
@@ -127,7 +127,7 @@ Gig machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
-the total.  See [C:/SparrowOS/OSMain/Memory.CPP.Z,1370] HeapsInit().
+the total.  See [C:/SparrowOS/OSMain/Memory.CPP.Z,1371] HeapsInit().
 
 * See [::/SparrowOS/OSMain/OSEnd.CPP.Z,1] Independent Heap Ctrl Example.
 

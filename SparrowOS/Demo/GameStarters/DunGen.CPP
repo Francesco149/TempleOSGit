@@ -85,7 +85,7 @@
 
 
 //These are indexed by color #.
-//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3172] COLORS.
+//See [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3267] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -159,7 +159,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z,1] ::/SparrowOS/Demo/GameStarters/BigGuns.CPP.Z
-  //with a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3227] CDC.
+  //with a [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3322] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -174,7 +174,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      CSpritePlot3(dc,x1,y1,z1,_tiles[color]);
+	      SpritePlot3(dc,x1,y1,z1,_tiles[color]);
 	    } else { //If no tile defined, do solid color.
 	      poly[0].x=x*SCREEN_SCALE;
 	      poly[0].y=y*SCREEN_SCALE;
@@ -214,14 +214,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      CSpritePlot3(dc,x1,y1,z1,__BIN_10);
+	      SpritePlot3(dc,x1,y1,z1,__BIN_10);
 	    }
 	    if (xx+1<map_width && LOS(xx+1,yy,man_x,man_y)) {
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      CSpritePlot3(dc,x1,y1,z1,__BIN_11);
+	      SpritePlot3(dc,x1,y1,z1,__BIN_11);
 	    }
 	  }
 	}
@@ -239,7 +239,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	GrSetSymmetry(dc,x1,y1,x1,y1+1);
       } else
 	dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-      CSpritePlot3(dc,x1,y1,z1,__BIN_9);
+      SpritePlot3(dc,x1,y1,z1,__BIN_9);
     }
 
   x1=(man_x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
@@ -257,9 +257,9 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
 
   if (tP(task)-man_attack_t0<0.2)
-    CSpritePlot3(dc,x1,y1,z1,__BIN_3);
+    SpritePlot3(dc,x1,y1,z1,__BIN_3);
   else
-    CSpritePlot3(dc,x1,y1,z1,__BIN_2);
+    SpritePlot3(dc,x1,y1,z1,__BIN_2);
 
   DCDel(dc_t);
 }
@@ -282,13 +282,13 @@ U0 Init()
 {
   I64 i,x,y,minx,maxx,miny,maxy;
   CDC *dc;
-  CSpriteExtents(__BIN_1,&minx,&maxx,&miny,&maxy);
+  SpriteExtents(__BIN_1,&minx,&maxx,&miny,&maxy);
   map_width =(maxx-minx+1)/MAP_SCALE;
   map_height=(maxy-miny+1)/MAP_SCALE;
   Free(map);
   map=MAlloc(map_width*map_height*sizeof(U8));
   dc=DCNew(DCT_COLOR8,map_width*MAP_SCALE,map_height*MAP_SCALE);
-  CSpritePlot3(dc,-minx,-miny,0,__BIN_1);
+  SpritePlot3(dc,-minx,-miny,0,__BIN_1);
   for (y=0;y<map_height;y++)
     for (x=0;x<map_width;x++)
        map[y*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);

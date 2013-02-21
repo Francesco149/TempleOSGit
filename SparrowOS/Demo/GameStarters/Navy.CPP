@@ -165,7 +165,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempo=obj_root.next;
   while (tempo!=&obj_root) {
     if (tempo->flags&OF_ACTIVE && tempo->flags&OF_SHIP) {
-      CSpritePlotRotZ3b(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
+      SpritePlotRotZ3b(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
       if (Blink(,cur_time)) {
 	dc->color=BLACK;
 	GrLine(dc,tempo->x+5,tempo->y,tempo->x+5+10,tempo->y);
@@ -200,7 +200,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempo=obj_root.next;
   while (tempo!=&obj_root) {
     if (tempo->flags&OF_ACTIVE && !(tempo->flags&OF_SHIP))
-      CSpritePlotRotZ3b(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
+      SpritePlotRotZ3b(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
     if (tempo->flags&OF_SHOOTING) {
       dc->color=LTRED;
       GrLine(dc,tempo->x,tempo->y,tempo->target_x,tempo->target_y,3);

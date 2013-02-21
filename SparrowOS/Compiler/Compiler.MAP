@@ -1,295 +1,296 @@
-[::/SparrowOS/Compiler/Assembler.CPP.Z,824] AsmCodeInstruction        [AsmCodeInstruction,1] 000000CCC6    0001 0000001423 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,202] AsmExpressionEval         [AsmExpressionEval,1] 000000B2C8    0003 00000000B8 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,290] AsmGlblsResolve           [AsmGlblsResolve,1] 000000B6B0    0001 00000005D7 Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,77] AsmHashLoad               [AsmHashLoad,1] 0000034BD0    0001 0000000667 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,29] AsmLineList               [AsmLineList,1] 000000ACC0    0001 0000000143 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,224] AsmLocalsResolve          [AsmLocalsResolve,1] 000000B380    0003 0000000329 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,601] AsmMakeArgMask            [AsmMakeArgMask,1] 000000C250    0002 000000045D Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,27] AsmPrsInsFlags            [AsmPrsInsFlags,1] 0000034370    0001 000000085D Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,185] AsmReserveCodeTo          [AsmReserveCodeTo,1] 000000B248    0001 000000007D Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,90] AsmStoreCodeU32           [AsmStoreCodeU32,1] 000000AF08    0001 0000000149 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,129] AsmStoreCodeU64           [AsmStoreCodeU64,1] 000000B058    0005 000000014A Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,61] AsmStoreCodeU8            [AsmStoreCodeU8,1] 000000AE08    001C 00000000FF Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,168] AsmStoreCodeU8At          [AsmStoreCodeU8At,1] 000000B1A8    0016 00000000A0 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,685] AsmStoreNum               [AsmStoreNum,1] 000000C6B0    0004 000000060E Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,1] AsmUnresolvedAdd          [AsmUnresolvedAdd,1] 000000ABE0    0008 00000000DF Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,336] CBAppend                  [CBAppend,1] 0000009F28    0002 000000009D Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,357] CBCombine                 [CBCombine,1] 0000009FC8    0001 00000000EA Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,397] CBCompile                 [CBCompile,1] 000000A128    0006 00000004D6 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,265] CBFloatConstFind          [CBFloatConstFind,1] 0000009C88    000F 00000000BE Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,209] CBGetIC1                  [CBGetIC1,1] 0000009AE8    0004 000000004C Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,242] CBGoToLabelFind           [CBGoToLabelFind,1] 0000009BF0    0002 0000000048 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,142] CBICAdd                   [CBICAdd,1] 00000098F8    00B9 0000000104 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,189] CBInPtrsInit              [CBInPtrsInit,1] 0000009A70    0003 0000000030 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,385] CBIndents                 [CBIndents,1] 000000A0B8    0001 0000000069 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,287] CBMiscListDel             [CBMiscListDel,1] 0000009D48    0001 000000018D Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,255] CBMiscNew                 [CBMiscNew,1] 0000009C38    001A 000000004A Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,176] CBOutPtrsInit             [CBOutPtrsInit,1] 0000009A00    000A 000000006C Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,233] CBPop                     [CBPop,1] 0000009B98    0009 0000000051 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,327] CBPopNoFree               [CBPopNoFree,1] 0000009ED8    0001 000000004E Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,224] CBPush                    [CBPush,1] 0000009B38    000E 000000005D Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,197] CBPutAllIC                [CBPutAllIC,1] 0000009AA0    0007 0000000043 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,1] CBPutClass                [CBPutClass,1] 0000009170    0001 00000000C5 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,71] CBPutIC                   [CBPutIC,1] 0000009530    0006 00000003C7 Funct  
-[::/SparrowOS/Compiler/CodeGen.CPP.Z,26] CBPutICArg                [CBPutICArg,1] 0000009238    0004 00000002F3 Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC10B30    0002 000000000A Class 
+[::/SparrowOS/Compiler/Assembler.CPP.Z,824] AsmCodeInstruction        [AsmCodeInstruction,1] 000000CBF6    0001 0000001423 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,202] AsmExpressionEval         [AsmExpressionEval,1] 000000B1F8    0003 00000000B8 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,290] AsmGlblsResolve           [AsmGlblsResolve,1] 000000B5E0    0001 00000005D7 Funct  
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,77] AsmHashLoad               [AsmHashLoad,1] 0000034B40    0001 0000000667 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,29] AsmLineLst                [AsmLineLst,1] 000000ABF0    0001 0000000143 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,224] AsmLocalsResolve          [AsmLocalsResolve,1] 000000B2B0    0003 0000000329 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,601] AsmMakeArgMask            [AsmMakeArgMask,1] 000000C180    0002 000000045D Funct  
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,27] AsmPrsInsFlags            [AsmPrsInsFlags,1] 00000342E0    0001 000000085D Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,185] AsmReserveCodeTo          [AsmReserveCodeTo,1] 000000B178    0001 000000007D Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,90] AsmStoreCodeU32           [AsmStoreCodeU32,1] 000000AE38    0001 0000000149 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,129] AsmStoreCodeU64           [AsmStoreCodeU64,1] 000000AF88    0005 000000014A Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,61] AsmStoreCodeU8            [AsmStoreCodeU8,1] 000000AD38    001C 00000000FF Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,168] AsmStoreCodeU8At          [AsmStoreCodeU8At,1] 000000B0D8    0016 00000000A0 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,685] AsmStoreNum               [AsmStoreNum,1] 000000C5E0    0004 000000060E Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,1] AsmUnresolvedAdd          [AsmUnresolvedAdd,1] 000000AB10    0008 00000000DF Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,336] CBAppend                  [CBAppend,1] 0000009E58    0002 000000009D Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,357] CBCombine                 [CBCombine,1] 0000009EF8    0001 00000000EA Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,397] CBCompile                 [CBCompile,1] 000000A058    0006 00000004D6 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,265] CBFloatConstFind          [CBFloatConstFind,1] 0000009BB8    000F 00000000BE Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,209] CBGetIC1                  [CBGetIC1,1] 0000009A18    0004 000000004C Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,242] CBGoToLabelFind           [CBGoToLabelFind,1] 0000009B20    0002 0000000048 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,142] CBICAdd                   [CBICAdd,1] 0000009828    00B9 0000000104 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,189] CBInPtrsInit              [CBInPtrsInit,1] 00000099A0    0003 0000000030 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,385] CBIndents                 [CBIndents,1] 0000009FE8    0001 0000000069 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,287] CBMiscLstDel              [CBMiscLstDel,1] 0000009C78    0001 000000018D Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,255] CBMiscNew                 [CBMiscNew,1] 0000009B68    001A 000000004A Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,176] CBOutPtrsInit             [CBOutPtrsInit,1] 0000009930    000A 000000006C Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,233] CBPop                     [CBPop,1] 0000009AC8    0009 0000000051 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,327] CBPopNoFree               [CBPopNoFree,1] 0000009E08    0001 000000004E Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,224] CBPush                    [CBPush,1] 0000009A68    000E 000000005D Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,197] CBPutAllIC                [CBPutAllIC,1] 00000099D0    0007 0000000043 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,1] CBPutClass                [CBPutClass,1] 00000090A0    0001 00000000C5 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,71] CBPutIC                   [CBPutIC,1] 0000009460    0006 00000003C7 Funct  
+[::/SparrowOS/Compiler/CodeGen.CPP.Z,26] CBPutICArg                [CBPutICArg,1] 0000009168    0004 00000002F3 Funct  
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC0E130    0002 000000000A Class 
 CMP_OPT_NOP               0000000000    0003            ExportSysSym 
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,164] CMP_TEMPLATES             0000000206    0001            ExportSysSym  
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,337] CMP_TEMPLATES_DONT_POP    000000039B    0001            ExportSysSym  
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,426] CMP_TEMPLATES_DONT_PUSH   0000000467    0001            ExportSysSym  
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,617] CMP_TEMPLATES_DONT_PUSH2  000000063D    0001            ExportSysSym  
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,553] CMP_TEMPLATES_DONT_PUSH_POP00000005AD    0001            ExportSysSym  
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,338] CMP_TEMPLATES_DONT_POP    000000039B    0001            ExportSysSym  
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,427] CMP_TEMPLATES_DONT_PUSH   0000000467    0001            ExportSysSym  
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,618] CMP_TEMPLATES_DONT_PUSH2  000000063D    0001            ExportSysSym  
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,554] CMP_TEMPLATES_DONT_PUSH_POP00000005AD    0001            ExportSysSym  
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,220] CN_MAIN                   0             0028 0000000008 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,221] CN_P1                     1             000A 0000000008 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,222] CN_P2                     2             0007 0000000008 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,223] CN_P3                     3             0003 0000000008 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,224] CN_R                      4             0003 0000000008 DefineStr 
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1424] CSwitchCase               007FC37CB0    0004 0000000018 Class 
-[::/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace                    [CTrace,1] 0000003AE8    0000 0000000017 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,214] CVI2                      007FC3B030    0003 0000000010 Class 
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,372] Cmp                       [Cmp,1] 0000038E20    0000 0000000598 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,179] CmpBuf                    [CmpBuf,1] 00000386F0    0001 00000000F7 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression             [CmpExpression,1] 000001330E    0004 00000000BB Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,23] CmpF1PushPop              [CmpF1PushPop,1] 000002C218    0002 0000000033 Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,29] CmpF2PushPop              [CmpF2PushPop,1] 000002C250    0005 0000000080 Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,577] CmpFillTables             [CmpFillTables,1] 0000037870    0001 000000064C Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,198] CmpFixUpJITAsm            [CmpFixUpJITAsm,1] 00000387E8    0000 00000003D8 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,306] CmpFixUpStaticAsm         [CmpFixUpStaticAsm,1] 0000038BC0    0000 000000025B Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,667] CmpInit                   [CmpInit,1] 0000039978    0001 00000000B9 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,60] CmpJoin                   [CmpJoin,1] 00000380A8    0001 0000000642 Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,222] CmpLoadDefines            [CmpLoadDefines,1] 0000035238    0001 0000002634 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,226] CmpNoteFloatOp            [CmpNoteFloatOp,1] 0000018F56    000E 0000000251 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,133] CmpOffset2Reg             [CmpOffset2Reg,1] 000002719E    0005 0000000042 Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,11] CmpPType                  [CmpPType,1] 000002C1D8    0006 000000003F Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,1] CmpPmt                    [CmpPmt,1] 0000003C28    0001 0000000209 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,281] CmpSetFloatOpPushPop      [CmpSetFloatOpPushPop,1] 00000191AE    000E 000000007B Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,24] CmpStatement              [CmpStatement,1] 0000037F58    0001 000000014C Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,1] CmpType                   [CmpType,1] 000002C1A0    0007 0000000031 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,1233] DefineU8s                 [DefineU8s,1] 000000E0EE    0004 00000002D6 Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,48] Echo                      [Echo,1] 0000003B18    0000 0000000017 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,564] ExeFile                   [ExeFile,1] 0000039550    0000 0000000075 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,616] ExeFile2                  [ExeFile2,1] 0000039770    0000 0000000075 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,656] ExeFile3                  [ExeFile3,1] 0000039900    0000 0000000075 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,555] ExePrintF                 [ExePrintF,1] 0000039508    0000 0000000043 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,607] ExePrintF2                [ExePrintF2,1] 0000039728    0000 0000000043 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,646] ExePrintF3                [ExePrintF3,1] 00000398B8    0000 0000000043 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,523] ExePutS                   [ExePutS,1] 00000393B8    0002 000000014F Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,575] ExePutS2                  [ExePutS2,1] 00000395C8    0002 000000015F Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,627] ExePutS3                  [ExePutS3,1] 00000397E8    0002 00000000CA Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,1287] Expression                [Expression,1] 00000133FE    0007 000000003B Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,370] ExpressionDel             [ExpressionDel,1] 0000005904    000B 0000000014 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1424] CSwitchCase               007FC35330    0004 0000000018 Class 
+[::/SparrowOS/Compiler/Directives.CPP.Z,38] CTrace                    [CTrace,1] 0000003A18    0000 0000000017 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,214] CVI2                      007FC386B0    0003 0000000010 Class 
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,372] Cmp                       [Cmp,1] 0000038D98    0000 0000000598 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,179] CmpBuf                    [CmpBuf,1] 0000038668    0001 00000000F7 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression             [CmpExpression,1] 000001323E    0004 00000000BB Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,23] CmpF1PushPop              [CmpF1PushPop,1] 000002C150    0002 0000000033 Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,29] CmpF2PushPop              [CmpF2PushPop,1] 000002C188    0005 0000000080 Funct  
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,578] CmpFillTables             [CmpFillTables,1] 00000377E8    0001 000000064C Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,198] CmpFixUpJITAsm            [CmpFixUpJITAsm,1] 0000038760    0000 00000003D8 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,306] CmpFixUpStaticAsm         [CmpFixUpStaticAsm,1] 0000038B38    0000 000000025B Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,667] CmpInit                   [CmpInit,1] 00000398F0    0001 00000000B9 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,60] CmpJoin                   [CmpJoin,1] 0000038020    0001 0000000642 Funct  
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,222] CmpLoadDefines            [CmpLoadDefines,1] 00000351A8    0001 000000263E Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,226] CmpNoteFloatOp            [CmpNoteFloatOp,1] 0000018E86    000E 0000000251 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,133] CmpOffset2Reg             [CmpOffset2Reg,1] 00000270CE    0005 0000000042 Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,11] CmpPType                  [CmpPType,1] 000002C110    0006 000000003F Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,1] CmpPmt                    [CmpPmt,1] 0000003B58    0001 0000000209 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,281] CmpSetFloatOpPushPop      [CmpSetFloatOpPushPop,1] 00000190DE    000E 000000007B Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,24] CmpStatement              [CmpStatement,1] 0000037ED0    0001 000000014C Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,1] CmpType                   [CmpType,1] 000002C0D8    0007 0000000031 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,1233] DefineU8s                 [DefineU8s,1] 000000E01E    0004 00000002D6 Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,48] Echo                      [Echo,1] 0000003A48    0000 0000000017 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,564] ExeFile                   [ExeFile,1] 00000394C8    0000 0000000075 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,616] ExeFile2                  [ExeFile2,1] 00000396E8    0000 0000000075 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,656] ExeFile3                  [ExeFile3,1] 0000039878    0000 0000000075 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,555] ExePrintF                 [ExePrintF,1] 0000039480    0000 0000000043 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,607] ExePrintF2                [ExePrintF2,1] 00000396A0    0000 0000000043 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,646] ExePrintF3                [ExePrintF3,1] 0000039830    0000 0000000043 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,523] ExePutS                   [ExePutS,1] 0000039330    0002 000000014F Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,575] ExePutS2                  [ExePutS2,1] 0000039540    0002 000000015F Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,627] ExePutS3                  [ExePutS3,1] 0000039760    0002 00000000CA Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,1287] Expression                [Expression,1] 000001332E    0007 000000003B Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,370] ExpressionDel             [ExpressionDel,1] 0000005834    000B 0000000014 Funct  
 [::/SparrowOS/Compiler/OptPass012.CPP.Z,3] FBO1_F64                  2             0002 0000000008 DefineStr 
 [::/SparrowOS/Compiler/OptPass012.CPP.Z,2] FBO1_INT                  1             0013 0000000008 DefineStr 
 [::/SparrowOS/Compiler/OptPass012.CPP.Z,1] FBO1_NOT_CONST            0             0004 0000000008 DefineStr 
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,1282] GetExpression             [GetExpression,1] 00000133CE    0000 0000000029 Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,16] GetOpt                    [GetOpt,1] 0000003A50    0005 000000002B Funct  
-[::/SparrowOS/Compiler/Hash1b.CPP.Z,1] HashEntryImportCopy       [HashEntryImportCopy,1] 000000A600    0002 0000000167 Funct  
-[::/SparrowOS/Compiler/Hash1b.CPP.Z,72] HashEntrySize             [HashEntrySize,1] 000000A850    0000 0000000165 Funct  
-[::/SparrowOS/Compiler/Hash1b.CPP.Z,103] HashEntrySize2            [HashEntrySize2,1] 000000A9B8    0002 00000001B6 Funct  
-[::/SparrowOS/Compiler/Hash1b.CPP.Z,41] HashTableImport           [HashTableImport,1] 000000A768    0000 00000000E8 Funct  
-[::/SparrowOS/Compiler/Hash1b.CPP.Z,142] HashTableSize2            [HashTableSize2,1] 000000AB70    0000 000000006B Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,947] ICAddConst                [ICAddConst,1] 000001AE56    000C 00000008B6 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,882] ICAddEct                  [ICAddEct,1] 000001AAF6    0005 000000035E Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,163] ICAddRSP                  [ICAddRSP,1] 0000018CCE    0016 0000000286 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2754] ICAddSubEctEqual          [ICAddSubEctEqual,1] 0000020216    0005 000000073F Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3050] ICAndAnd                  [ICAndAnd,1] 0000020FDE    0001 0000000149 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4033] ICAndBranch               [ICAndBranch,1] 0000023BDE    0002 000000078D Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4784] ICAndEqual                [ICAndEqual,1] 0000025EB6    0001 0000000109 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4202] ICAssign                  [ICAssign,1] 000002436E    0001 000000030F Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3677] ICAssignPostIncDec        [ICAssignPostIncDec,1] 0000022CCE    0002 0000000248 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3420] ICBEqu                    [ICBEqu,1] 00000220BE    0001 0000000256 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3298] ICBitOps                  [ICBitOps,1] 0000021ADE    000B 00000005DE Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4252] ICBrBitOps                [ICBrBitOps,1] 000002467E    0008 0000000AC9 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,607] ICBuiltInFloatConst       [ICBuiltInFloatConst,1] 0000019DEE    000F 00000000BD Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3178] ICCmp                     [ICCmp,1] 00000215F6    0006 00000004E6 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3719] ICCmpAndBranch            [ICCmpAndBranch,1] 0000022F16    000C 0000000936 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3144] ICColon                   [ICColon,1] 00000213E6    0001 000000020F Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,293] ICCopyTemplate            [ICCopyTemplate,1] 000001922E    0019 0000000286 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,864] ICDeref                   [ICDeref,1] 000001AA3E    0001 00000000B5 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3634] ICDerefPostIncDec         [ICDerefPostIncDec,1] 0000022A9E    0002 000000022B Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2662] ICDiv                     [ICDiv,1] 000001FD46    0001 00000000F2 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2681] ICDivEqual                [ICDivEqual,1] 000001FE3E    0002 00000002E0 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2533] ICFAdd                    [ICFAdd,1] 000001F61E    0001 00000001FB Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1651] ICFCmp                    [ICFCmp,1] 000001CD1E    0004 0000000188 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2082] ICFCmpAndBranch           [ICFCmpAndBranch,1] 000001E30E    0004 0000000A6E Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1217] ICFCvt                    [ICFCvt,1] 000001BB66    0014 0000000188 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1265] ICFCvt2                   [ICFCvt2,1] 000001BCEE    0010 0000000122 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2509] ICFDiv                    [ICFDiv,1] 000001F4DE    0001 000000013D Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1343] ICFMod                    [ICFMod,1] 000001BFFE    0001 0000000142 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1691] ICFModEqual               [ICFModEqual,1] 000001CEA6    0001 00000003FA Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2469] ICFMul                    [ICFMul,1] 000001F2A6    0001 0000000235 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1452] ICFOp                     [ICFOp,1] 000001C436    0004 00000008E5 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1758] ICFOpEqual                [ICFOpEqual,1] 000001D2A6    0004 0000001066 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2383] ICFPostIncDec             [ICFPostIncDec,1] 000001EE8E    0002 0000000151 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1373] ICFPow                    [ICFPow,1] 000001C146    0001 00000002ED Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2361] ICFPreIncDec              [ICFPreIncDec,1] 000001ED7E    0002 000000010A Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2571] ICFSub                    [ICFSub,1] 000001F81E    0001 0000000120 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3541] ICFTemplateFun            [ICFTemplateFun,1] 00000225A6    0007 00000000A8 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1292] ICFUnaryMinus             [ICFUnaryMinus,1] 000001BE16    0001 00000001E8 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,135] ICLastIns                 [ICLastIns,1] 0000018C26    0002 00000000A1 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,821] ICLea                     [ICLea,1] 000001A806    0004 0000000233 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4547] ICLimit                   [ICLimit,1] 0000025546    0002 0000000227 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4941] ICLocalVarInit            [ICLocalVarInit,1] 0000026606    0001 0000000078 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4953] ICMemCpy                  [ICMemCpy,1] 000002667E    0001 000000047C Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,5055] ICMemSet                  [ICMemSet,1] 0000026AFE    0001 000000032C Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4605] ICMinMax                  [ICMinMax,1] 000002576E    0004 00000002B7 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2735] ICMod                     [ICMod,1] 000002011E    0001 00000000F2 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4684] ICModU64                  [ICModU64,1] 0000025A76    0001 00000001BB Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,348] ICModr                    [ICModr,1] 00000194B6    0018 0000000331 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,630] ICMov                     [ICMov,1] 0000019EAE    01DD 0000000957 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2411] ICMul                     [ICMul,1] 000001EFE6    0001 00000002BA Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2594] ICMulEqual                [ICMulEqual,1] 000001F93E    0001 0000000408 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3021] ICNot                     [ICNot,1] 0000020E6E    0001 000000016E Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,46] ICOpSizeRex               [ICOpSizeRex,1] 000001884E    0006 0000000121 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,597] ICOr                      [ICOr,1] 0000019D9E    000F 000000004A Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4807] ICOrEqual                 [ICOrEqual,1] 0000025FC6    0001 0000000109 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3079] ICOrOr                    [ICOrOr,1] 000002112E    0001 000000015E Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,548] ICPop                     [ICPop,1] 0000019BD6    000A 000000010B Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,575] ICPopRegs                 [ICPopRegs,1] 0000019CE6    000F 0000000054 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3594] ICPostIncDec              [ICPostIncDec,1] 0000022866    0002 0000000237 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3557] ICPreIncDec               [ICPreIncDec,1] 000002264E    0004 0000000213 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3474] ICPreempt                 [ICPreempt,1] 0000022316    0001 0000000122 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,497] ICPush                    [ICPush,1] 00000199B6    0020 00000001C1 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,535] ICPushRegs                [ICPushRegs,1] 0000019B7E    000A 0000000052 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4435] ICQueInit                 [ICQueInit,1] 000002514E    0001 0000000070 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4449] ICQueIns                  [ICQueIns,1] 00000251BE    0001 0000000179 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4490] ICQueInsRev               [ICQueInsRev,1] 000002533E    0001 0000000179 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4531] ICQueRem                  [ICQueRem,1] 00000254BE    0001 0000000088 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,32] ICRex                     [ICRex,1] 00000187C6    0017 0000000088 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2910] ICShift                   [ICShift,1] 0000020956    0004 0000000196 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,2944] ICShiftEqual              [ICShiftEqual,1] 0000020AEE    0002 000000030D Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,460] ICSlashOp                 [ICSlashOp,1] 00000197EE    0027 00000001C4 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4677] ICSqr                     [ICSqr,1] 0000025A26    0002 000000004A Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,1130] ICSub                     [ICSub,1] 000001B70E    0001 0000000454 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4726] ICSwap                    [ICSwap,1] 0000025C36    0001 000000027C Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4854] ICSwitch                  [ICSwitch,1] 00000261DE    0002 0000000427 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3938] ICTestAndBranch           [ICTestAndBranch,1] 000002384E    0002 0000000273 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3526] ICToBool                  [ICToBool,1] 000002252E    0001 0000000071 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3521] ICToF64                   [ICToF64,1] 00000224EE    0001 000000003D Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3516] ICToI64                   [ICToI64,1] 00000224AE    0001 000000003D Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3505] ICToUpper                 [ICToUpper,1] 000002243E    0001 000000006B Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,72] ICU16                     [ICU16,1] 0000018976    0099 00000000AF Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,87] ICU24                     [ICU24,1] 0000018A26    0067 00000000DA Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,104] ICU32                     [ICU32,1] 0000018B06    007B 0000000089 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,120] ICU64                     [ICU64,1] 0000018B96    0009 0000000089 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,20] ICU8                      [ICU8,1] 000001873E    0089 0000000083 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3012] ICUnaries                 [ICUnaries,1] 0000020DFE    0002 0000000069 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,4830] ICXorEqual                [ICXorEqual,1] 00000260D6    0001 0000000103 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3111] ICXorXor                  [ICXorXor,1] 000002128E    0001 0000000153 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,3997] ICZFlagBranch             [ICZFlagBranch,1] 0000023AC6    0002 0000000112 Funct  
-[::/SparrowOS/Compiler/BackEnd.CPP.Z,588] ICZero                    [ICZero,1] 0000019D3E    0018 000000005E Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,56] ImportHashTable           [ImportHashTable,1] 0000003B40    0000 00000000B3 Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,75] IncludeDepth              [IncludeDepth,1] 0000003BF8    0000 000000002C Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,1282] GetExpression             [GetExpression,1] 00000132FE    0000 0000000029 Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,16] GetOpt                    [GetOpt,1] 0000003980    0005 000000002B Funct  
+[::/SparrowOS/Compiler/Hash1b.CPP.Z,1] HashEntryImportCopy       [HashEntryImportCopy,1] 000000A530    0002 0000000167 Funct  
+[::/SparrowOS/Compiler/Hash1b.CPP.Z,72] HashEntrySize             [HashEntrySize,1] 000000A780    0000 0000000165 Funct  
+[::/SparrowOS/Compiler/Hash1b.CPP.Z,103] HashEntrySize2            [HashEntrySize2,1] 000000A8E8    0002 00000001B6 Funct  
+[::/SparrowOS/Compiler/Hash1b.CPP.Z,41] HashTableImport           [HashTableImport,1] 000000A698    0000 00000000E8 Funct  
+[::/SparrowOS/Compiler/Hash1b.CPP.Z,142] HashTableSize2            [HashTableSize2,1] 000000AAA0    0000 000000006B Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,947] ICAddConst                [ICAddConst,1] 000001AD86    000C 00000008B6 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,882] ICAddEct                  [ICAddEct,1] 000001AA26    0005 000000035E Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,163] ICAddRSP                  [ICAddRSP,1] 0000018BFE    0016 0000000286 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2754] ICAddSubEctEqual          [ICAddSubEctEqual,1] 0000020146    0005 000000073F Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3050] ICAndAnd                  [ICAndAnd,1] 0000020F0E    0001 0000000149 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4033] ICAndBranch               [ICAndBranch,1] 0000023B0E    0002 000000078D Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4784] ICAndEqual                [ICAndEqual,1] 0000025DE6    0001 0000000109 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4202] ICAssign                  [ICAssign,1] 000002429E    0001 000000030F Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3677] ICAssignPostIncDec        [ICAssignPostIncDec,1] 0000022BFE    0002 0000000248 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3420] ICBEqu                    [ICBEqu,1] 0000021FEE    0001 0000000256 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3298] ICBitOps                  [ICBitOps,1] 0000021A0E    000B 00000005DE Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4252] ICBrBitOps                [ICBrBitOps,1] 00000245AE    0008 0000000AC9 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,607] ICBuiltInFloatConst       [ICBuiltInFloatConst,1] 0000019D1E    000F 00000000BD Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3178] ICCmp                     [ICCmp,1] 0000021526    0006 00000004E6 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3719] ICCmpAndBranch            [ICCmpAndBranch,1] 0000022E46    000C 0000000936 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3144] ICColon                   [ICColon,1] 0000021316    0001 000000020F Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,293] ICCopyTemplate            [ICCopyTemplate,1] 000001915E    0019 0000000286 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,864] ICDeref                   [ICDeref,1] 000001A96E    0001 00000000B5 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3634] ICDerefPostIncDec         [ICDerefPostIncDec,1] 00000229CE    0002 000000022B Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2662] ICDiv                     [ICDiv,1] 000001FC76    0001 00000000F2 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2681] ICDivEqual                [ICDivEqual,1] 000001FD6E    0002 00000002E0 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2533] ICFAdd                    [ICFAdd,1] 000001F54E    0001 00000001FB Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1651] ICFCmp                    [ICFCmp,1] 000001CC4E    0004 0000000188 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2082] ICFCmpAndBranch           [ICFCmpAndBranch,1] 000001E23E    0004 0000000A6E Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1217] ICFCvt                    [ICFCvt,1] 000001BA96    0014 0000000188 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1265] ICFCvt2                   [ICFCvt2,1] 000001BC1E    0010 0000000122 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2509] ICFDiv                    [ICFDiv,1] 000001F40E    0001 000000013D Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1343] ICFMod                    [ICFMod,1] 000001BF2E    0001 0000000142 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1691] ICFModEqual               [ICFModEqual,1] 000001CDD6    0001 00000003FA Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2469] ICFMul                    [ICFMul,1] 000001F1D6    0001 0000000235 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1452] ICFOp                     [ICFOp,1] 000001C366    0004 00000008E5 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1758] ICFOpEqual                [ICFOpEqual,1] 000001D1D6    0004 0000001066 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2383] ICFPostIncDec             [ICFPostIncDec,1] 000001EDBE    0002 0000000151 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1373] ICFPow                    [ICFPow,1] 000001C076    0001 00000002ED Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2361] ICFPreIncDec              [ICFPreIncDec,1] 000001ECAE    0002 000000010A Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2571] ICFSub                    [ICFSub,1] 000001F74E    0001 0000000120 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3541] ICFTemplateFun            [ICFTemplateFun,1] 00000224D6    0007 00000000A8 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1292] ICFUnaryMinus             [ICFUnaryMinus,1] 000001BD46    0001 00000001E8 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,135] ICLastIns                 [ICLastIns,1] 0000018B56    0002 00000000A1 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,821] ICLea                     [ICLea,1] 000001A736    0004 0000000233 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4547] ICLimit                   [ICLimit,1] 0000025476    0002 0000000227 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4941] ICLocalVarInit            [ICLocalVarInit,1] 0000026536    0001 0000000078 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4953] ICMemCpy                  [ICMemCpy,1] 00000265AE    0001 000000047C Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,5055] ICMemSet                  [ICMemSet,1] 0000026A2E    0001 000000032C Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4605] ICMinMax                  [ICMinMax,1] 000002569E    0004 00000002B7 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2735] ICMod                     [ICMod,1] 000002004E    0001 00000000F2 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4684] ICModU64                  [ICModU64,1] 00000259A6    0001 00000001BB Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,348] ICModr                    [ICModr,1] 00000193E6    0018 0000000331 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,630] ICMov                     [ICMov,1] 0000019DDE    01DD 0000000957 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2411] ICMul                     [ICMul,1] 000001EF16    0001 00000002BA Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2594] ICMulEqual                [ICMulEqual,1] 000001F86E    0001 0000000408 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3021] ICNot                     [ICNot,1] 0000020D9E    0001 000000016E Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,46] ICOpSizeRex               [ICOpSizeRex,1] 000001877E    0006 0000000121 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,597] ICOr                      [ICOr,1] 0000019CCE    000F 000000004A Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4807] ICOrEqual                 [ICOrEqual,1] 0000025EF6    0001 0000000109 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3079] ICOrOr                    [ICOrOr,1] 000002105E    0001 000000015E Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,548] ICPop                     [ICPop,1] 0000019B06    000A 000000010B Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,575] ICPopRegs                 [ICPopRegs,1] 0000019C16    000F 0000000054 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3594] ICPostIncDec              [ICPostIncDec,1] 0000022796    0002 0000000237 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3557] ICPreIncDec               [ICPreIncDec,1] 000002257E    0004 0000000213 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3474] ICPreempt                 [ICPreempt,1] 0000022246    0001 0000000122 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,497] ICPush                    [ICPush,1] 00000198E6    0020 00000001C1 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,535] ICPushRegs                [ICPushRegs,1] 0000019AAE    000A 0000000052 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4435] ICQueInit                 [ICQueInit,1] 000002507E    0001 0000000070 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4449] ICQueIns                  [ICQueIns,1] 00000250EE    0001 0000000179 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4490] ICQueInsRev               [ICQueInsRev,1] 000002526E    0001 0000000179 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4531] ICQueRem                  [ICQueRem,1] 00000253EE    0001 0000000088 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,32] ICRex                     [ICRex,1] 00000186F6    0017 0000000088 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2910] ICShift                   [ICShift,1] 0000020886    0004 0000000196 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,2944] ICShiftEqual              [ICShiftEqual,1] 0000020A1E    0002 000000030D Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,460] ICSlashOp                 [ICSlashOp,1] 000001971E    0027 00000001C4 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4677] ICSqr                     [ICSqr,1] 0000025956    0002 000000004A Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,1130] ICSub                     [ICSub,1] 000001B63E    0001 0000000454 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4726] ICSwap                    [ICSwap,1] 0000025B66    0001 000000027C Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4854] ICSwitch                  [ICSwitch,1] 000002610E    0002 0000000427 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3938] ICTestAndBranch           [ICTestAndBranch,1] 000002377E    0002 0000000273 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3526] ICToBool                  [ICToBool,1] 000002245E    0001 0000000071 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3521] ICToF64                   [ICToF64,1] 000002241E    0001 000000003D Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3516] ICToI64                   [ICToI64,1] 00000223DE    0001 000000003D Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3505] ICToUpper                 [ICToUpper,1] 000002236E    0001 000000006B Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,72] ICU16                     [ICU16,1] 00000188A6    0099 00000000AF Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,87] ICU24                     [ICU24,1] 0000018956    0069 00000000DA Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,104] ICU32                     [ICU32,1] 0000018A36    007B 0000000089 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,120] ICU64                     [ICU64,1] 0000018AC6    0009 0000000089 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,20] ICU8                      [ICU8,1] 000001866E    0089 0000000083 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3012] ICUnaries                 [ICUnaries,1] 0000020D2E    0002 0000000069 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,4830] ICXorEqual                [ICXorEqual,1] 0000026006    0001 0000000103 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3111] ICXorXor                  [ICXorXor,1] 00000211BE    0001 0000000153 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,3997] ICZFlagBranch             [ICZFlagBranch,1] 00000239F6    0002 0000000112 Funct  
+[::/SparrowOS/Compiler/BackEnd.CPP.Z,588] ICZero                    [ICZero,1] 0000019C6E    0018 000000005E Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,56] ImportHashTable           [ImportHashTable,1] 0000003A70    0000 00000000B3 Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,75] IncludeDepth              [IncludeDepth,1] 0000003B28    0000 000000002C Funct  
 [::/SparrowOS/Compiler/Unassembler.CPP.Z,1] InstEntriesCompare        [InstEntriesCompare,1] 0000000A18    0001 0000000227 Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,52] IsReplaceSyms             [IsReplaceSyms,1] 0000003B30    000A 000000000D Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,43] LTrace                    [LTrace,1] 0000003B00    0000 0000000017 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,794] Lex                       [Lex,1] 00000067B0    00FC 00000025F4 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,140] LexBackupLastChar         [LexBackupLastChar,1] 000000423C    0003 000000003D Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,65] LexDel                    [LexDel,1] 0000003F80    0005 000000008D Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,406] LexDocRead                [LexDocRead,1] 00000059C0    0001 0000000090 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,151] LexDollar                 [LexDollar,1] 000000427C    0003 000000006C Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,1683] LexExcept                 [LexExcept,1] 00000090B0    009D 00000000B9 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,1602] LexExtStr                 [LexExtStr,1] 0000008DA8    0004 00000000DB Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,165] LexGetChar                [LexGetChar,1] 00000042EC    0030 00000015EE Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,696] LexInStr                  [LexInStr,1] 0000006280    0001 000000052C Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,424] LexIncludeDoc             [LexIncludeDoc,1] 0000005A50    0001 0000000162 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,375] LexIncludeStr             [LexIncludeStr,1] 000000591C    0003 0000000095 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,36] LexNew                    [LexNew,1] 0000003E38    0005 0000000141 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,487] LexPop                    [LexPop,1] 0000005C48    0004 000000007E Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,475] LexPush                   [LexPush,1] 0000005BB8    000F 0000000090 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,1627] LexPutLine                [LexPutLine,1] 0000008E88    0003 000000009D Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,1654] LexPutPos                 [LexPutPos,1] 0000008F28    0003 00000000AF Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,117] LexPutToken               [LexPutToken,1] 0000004128    0002 0000000110 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,1667] LexPutWarn                [LexPutWarn,1] 0000008FD8    0011 00000000D3 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,85] LexSize                   [LexSize,1] 0000004010    0000 0000000098 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,363] LexSkipEol                [LexSkipEol,1] 00000058DC    0004 0000000026 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,556] MemberAdd                 [MemberAdd,1] 0000005DF0    0004 00000001AE Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,521] MemberFind                [MemberFind,1] 0000005D48    0005 0000000063 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,541] MemberFind2               [MemberFind2,1] 0000005DB0    0001 0000000040 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,641] MemberListCopy            [MemberListCopy,1] 0000006098    0001 0000000118 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,604] MemberListDel             [MemberListDel,1] 0000005FA0    0001 00000000F1 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,81] MemberListNew             [MemberListNew,1] 00000135AE    0003 0000000026 Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,669] MemberListSize            [MemberListSize,1] 00000061B0    0002 00000000CB Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,499] MemberMetaData            [MemberMetaData,1] 0000005CC8    0000 000000003D Funct  
-[::/SparrowOS/Compiler/Lex.CPP.Z,510] MemberMetaFind            [MemberMetaFind,1] 0000005D08    0000 000000003C Funct  
+[::/SparrowOS/Compiler/Unassembler.CPP.Z,71] InstEntryFind             [InstEntryFind,1] 0000000C40    0002 000000037A Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,52] IsReplaceSyms             [IsReplaceSyms,1] 0000003A60    000A 000000000D Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,43] LTrace                    [LTrace,1] 0000003A30    0000 0000000017 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,794] Lex                       [Lex,1] 00000066E0    00FC 00000025F4 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,140] LexBackupLastChar         [LexBackupLastChar,1] 000000416C    0003 000000003D Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,65] LexDel                    [LexDel,1] 0000003EB0    0005 000000008D Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,406] LexDocRead                [LexDocRead,1] 00000058F0    0001 0000000090 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,151] LexDollar                 [LexDollar,1] 00000041AC    0003 000000006C Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,1683] LexExcept                 [LexExcept,1] 0000008FE0    009D 00000000B9 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,1602] LexExtStr                 [LexExtStr,1] 0000008CD8    0004 00000000DB Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,165] LexGetChar                [LexGetChar,1] 000000421C    0030 00000015EE Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,696] LexInStr                  [LexInStr,1] 00000061B0    0001 000000052C Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,424] LexIncludeDoc             [LexIncludeDoc,1] 0000005980    0001 0000000162 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,375] LexIncludeStr             [LexIncludeStr,1] 000000584C    0003 0000000095 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,36] LexNew                    [LexNew,1] 0000003D68    0005 0000000141 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,487] LexPop                    [LexPop,1] 0000005B78    0004 000000007E Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,475] LexPush                   [LexPush,1] 0000005AE8    000F 0000000090 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,1627] LexPutLine                [LexPutLine,1] 0000008DB8    0003 000000009D Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,1654] LexPutPos                 [LexPutPos,1] 0000008E58    0003 00000000AF Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,117] LexPutToken               [LexPutToken,1] 0000004058    0002 0000000110 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,1667] LexPutWarn                [LexPutWarn,1] 0000008F08    0011 00000000D3 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,85] LexSize                   [LexSize,1] 0000003F40    0000 0000000098 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,363] LexSkipEol                [LexSkipEol,1] 000000580C    0004 0000000026 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,556] MemberAdd                 [MemberAdd,1] 0000005D20    0004 00000001AE Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,521] MemberFind                [MemberFind,1] 0000005C78    0005 0000000063 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,541] MemberFind2               [MemberFind2,1] 0000005CE0    0001 0000000040 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,641] MemberLstCopy             [MemberLstCopy,1] 0000005FC8    0001 0000000118 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,604] MemberLstDel              [MemberLstDel,1] 0000005ED0    0001 00000000F1 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,81] MemberLstNew              [MemberLstNew,1] 00000134DE    0003 0000000026 Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,669] MemberLstSize             [MemberLstSize,1] 00000060E0    0002 00000000CB Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,499] MemberMetaData            [MemberMetaData,1] 0000005BF8    0000 000000003D Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,510] MemberMetaFind            [MemberMetaFind,1] 0000005C38    0000 000000003C Funct  
 [::/SparrowOS/Compiler/CmpInit.CPP.Z,1] NUM_INTERNAL_TYPES        16            0002 0000000008 DefineStr 
-[::/SparrowOS/Compiler/Directives.CPP.Z,31] OPassTraceMask            [OPassTraceMask,1] 0000003AB0    0000 0000000035 Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace                    [OTrace,1] 0000003A98    0000 0000000017 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,374] OptBrNotZero              [OptBrNotZero,1] 0000027B48    0004 00000006C3 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,209] OptBrZero                 [OptBrZero,1] 0000027480    0006 00000006C3 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,165] OptEnd                    [OptEnd,1] 0000027360    0005 000000006F Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,1] OptEqu                    [OptEqu,1] 00000039D8    0007 0000000045 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,538] OptFixSizeOf              [OptFixSizeOf,1] 0000028210    0003 00000000CC Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,6] OptFixupBinaryOp1         [OptFixupBinaryOp1,1] 0000026E2E    0013 0000000223 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,80] OptFixupBinaryOp2         [OptFixupBinaryOp2,1] 0000027056    0001 0000000058 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,96] OptFixupUnaryOp           [OptFixupUnaryOp,1] 00000270AE    0003 00000000EF Funct  
-[::/SparrowOS/Compiler/OptPass4.CPP.Z,1] OptIC4                    [OptIC4,1] 000002DCB0    0001 0000000826 Funct  
-[::/SparrowOS/Compiler/OptPass6.CPP.Z,1] OptIC6                    [OptIC6,1] 00000300B0    0001 0000000162 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,175] OptLag                    [OptLag,1] 00000273D0    0004 0000000030 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,186] OptLag1                   [OptLag1,1] 0000027400    0005 000000003A Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,197] OptLead1                  [OptLead1,1] 0000027440    0002 0000000039 Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,46] OptMVCompare              [OptMVCompare,1] 000002C2D0    0001 000000001A Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,41] OptMemberVar              007FC1D0B0    0005 0000000020 Class 
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,142] OptMissing                [OptMissing,1] 00000271E6    0004 0000000070 Funct  
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,686] OptNext                   0000000098    0002            Funct 
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,689] OptNext2                  000000010A    0001            Funct 
-[::/SparrowOS/Compiler/CmpAsm.CPP.Z,692] OptNext3                  000000017C    0001            Funct 
-[::/SparrowOS/Compiler/Directives.CPP.Z,11] OptOff                    [OptOff,1] 0000003A38    0000 0000000016 Funct  
-[::/SparrowOS/Compiler/Directives.CPP.Z,6] OptOn                     [OptOn,1] 0000003A20    0000 0000000016 Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,564] OptPass012                [OptPass012,1] 00000282E0    0000 0000003EB9 Funct  
-[::/SparrowOS/Compiler/OptPass3.CPP.Z,51] OptPass3                  [OptPass3,1] 000002C2F0    0000 00000019BF Funct  
-[::/SparrowOS/Compiler/OptPass4.CPP.Z,224] OptPass4                  [OptPass4,1] 000002E4D8    0000 0000001601 Funct  
-[::/SparrowOS/Compiler/OptPass5.CPP.Z,1] OptPass5                  [OptPass5,1] 000002FAE0    0000 00000005CF Funct  
-[::/SparrowOS/Compiler/OptPass6.CPP.Z,146] OptPass6                  [OptPass6,1] 00000305D0    0000 00000004E9 Funct  
-[::/SparrowOS/Compiler/OptPass6.CPP.Z,37] OptPass6Lag               [OptPass6Lag,1] 0000030218    0001 00000003B2 Funct  
-[::/SparrowOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A               [OptPass789A,1] 0000030AC0    0000 000000380F Funct  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,152] OptStart                  [OptStart,1] 00000272F0    0005 000000006D Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,31] OPassTraceMask            [OPassTraceMask,1] 00000039E0    0000 0000000035 Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,26] OTrace                    [OTrace,1] 00000039C8    0000 0000000017 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,374] OptBrNotZero              [OptBrNotZero,1] 0000027A78    0004 00000006C3 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,209] OptBrZero                 [OptBrZero,1] 00000273B0    0006 00000006C3 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,165] OptEnd                    [OptEnd,1] 0000027290    0005 000000006F Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,1] OptEqu                    [OptEqu,1] 0000003908    0007 0000000045 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,538] OptFixSizeOf              [OptFixSizeOf,1] 0000028140    0003 00000000CC Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,6] OptFixupBinaryOp1         [OptFixupBinaryOp1,1] 0000026D5E    0013 0000000223 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,80] OptFixupBinaryOp2         [OptFixupBinaryOp2,1] 0000026F86    0001 0000000058 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,96] OptFixupUnaryOp           [OptFixupUnaryOp,1] 0000026FDE    0003 00000000EF Funct  
+[::/SparrowOS/Compiler/OptPass4.CPP.Z,1] OptIC4                    [OptIC4,1] 000002DBF0    0001 0000000826 Funct  
+[::/SparrowOS/Compiler/OptPass6.CPP.Z,1] OptIC6                    [OptIC6,1] 000002FFF8    0001 0000000162 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,175] OptLag                    [OptLag,1] 0000027300    0004 0000000030 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,186] OptLag1                   [OptLag1,1] 0000027330    0005 000000003A Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,197] OptLead1                  [OptLead1,1] 0000027370    0002 0000000039 Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,46] OptMVCompare              [OptMVCompare,1] 000002C208    0001 000000001A Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,41] OptMemberVar              007FC1A730    0005 0000000020 Class 
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,142] OptMissing                [OptMissing,1] 0000027116    0004 0000000070 Funct  
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,687] OptNext                   0000000098    0002            Funct 
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,690] OptNext2                  000000010A    0001            Funct 
+[::/SparrowOS/Compiler/CmpAsm.CPP.Z,693] OptNext3                  000000017C    0001            Funct 
+[::/SparrowOS/Compiler/Directives.CPP.Z,11] OptOff                    [OptOff,1] 0000003968    0000 0000000016 Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,6] OptOn                     [OptOn,1] 0000003950    0000 0000000016 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,564] OptPass012                [OptPass012,1] 0000028210    0000 0000003EC1 Funct  
+[::/SparrowOS/Compiler/OptPass3.CPP.Z,51] OptPass3                  [OptPass3,1] 000002C228    0000 00000019C7 Funct  
+[::/SparrowOS/Compiler/OptPass4.CPP.Z,224] OptPass4                  [OptPass4,1] 000002E418    0000 0000001609 Funct  
+[::/SparrowOS/Compiler/OptPass5.CPP.Z,1] OptPass5                  [OptPass5,1] 000002FA28    0000 00000005CF Funct  
+[::/SparrowOS/Compiler/OptPass6.CPP.Z,146] OptPass6                  [OptPass6,1] 0000030518    0000 00000004E9 Funct  
+[::/SparrowOS/Compiler/OptPass6.CPP.Z,37] OptPass6Lag               [OptPass6Lag,1] 0000030160    0001 00000003B2 Funct  
+[::/SparrowOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A               [OptPass789A,1] 0000030A08    0000 0000003832 Funct  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,152] OptStart                  [OptStart,1] 0000027220    0005 000000006D Funct  
 [::/SparrowOS/Compiler/ExpParser.CPP.Z,42] PRST_CHECK_BINARY_OPS     4             0001 0000000008 DefineStr 
 [::/SparrowOS/Compiler/ExpParser.CPP.Z,41] PRST_DEREFERENCE          3             0004 0000000008 DefineStr 
 [::/SparrowOS/Compiler/ExpParser.CPP.Z,39] PRST_MAYBE_MODIFIERS      1             000F 0000000008 DefineStr 
 [::/SparrowOS/Compiler/ExpParser.CPP.Z,40] PRST_UNARY_MODIFIERS      2             0009 0000000008 DefineStr 
 [::/SparrowOS/Compiler/ExpParser.CPP.Z,38] PRST_UNARY_TERM           0             0005 0000000008 DefineStr 
-[::/SparrowOS/Compiler/Directives.CPP.Z,21] PTrace                    [PTrace,1] 0000003A80    0000 0000000017 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,1] ParenWarning              [ParenWarning,1] 000000EBEE    0004 0000000055 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,349] PrsArrayDims              [PrsArrayDims,1] 0000014056    0001 0000000134 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,460] PrsAsmArg                 [PrsAsmArg,1] 000000BDD0    0002 000000047E Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,1309] PrsAsmBlk                 [PrsAsmBlk,1] 000000E3C6    0001 0000000823 Funct  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,425] PrsAsmImm                 [PrsAsmImm,1] 000000BC88    0006 0000000145 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,844] PrsClass                  [PrsClass,1] 00000154A6    0004 0000000267 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1] PrsClassNew               [PrsClassNew,1] 000001343E    0003 00000000B3 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,1232] PrsDereference            [PrsDereference,1] 0000013256    0000 00000000B8 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1359] PrsDoWhile                [PrsDoWhile,1] 00000168CE    0001 0000000155 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,387] PrsDotDotDot              [PrsDotDotDot,1] 000001418E    0001 0000000100 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,44] PrsExpression             [PrsExpression,1] 000000ED3E    0010 000000125F Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1383] PrsFor                    [PrsFor,1] 0000016A26    0001 00000001C7 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,981] PrsFun                    [PrsFun,1] 000001593E    0001 00000003CA Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,444] PrsFunCall                [PrsFunCall,1] 00000102F6    0003 00000008DF Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,910] PrsFunJoin                [PrsFunJoin,1] 000001570E    0005 0000000229 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,45] PrsFunNew                 [PrsFunNew,1] 00000134F6    0001 00000000B3 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,303] PrsGlblInit               [PrsGlblInit,1] 0000013E5E    0002 0000000084 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1057] PrsGlblVarList            [PrsGlblVarList,1] 0000015D0E    0008 0000000958 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1305] PrsIf                     [PrsIf,1] 0000016666    0001 000000015B Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,88] PrsKeyWord                [PrsKeyWord,1] 00000135D6    000B 000000003C Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1547] PrsNoUnusedWarn           [PrsNoUnusedWarn,1] 000001712E    0001 000000008F Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,413] PrsOffsetOf               [PrsOffsetOf,1] 00000101A6    0002 0000000149 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,13] PrsPop                    [PrsPop,1] 000000EC6E    001B 0000000022 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,23] PrsPop2                   [PrsPop2,1] 000000ECCE    0001 000000002D Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,28] PrsPopDeref               [PrsPopDeref,1] 000000ECFE    0004 000000003F Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,8] PrsPush                   [PrsPush,1] 000000EC46    0017 0000000028 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,18] PrsPush2                  [PrsPush2,1] 000000EC96    0004 0000000033 Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,365] PrsSizeOf                 [PrsSizeOf,1] 000000FF9E    0001 0000000207 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1692] PrsStatement              [PrsStatement,1] 0000017716    0004 0000001024 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,312] PrsStaticInit             [PrsStaticInit,1] 0000013EE6    0002 000000016E Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1563] PrsStreamBlk              [PrsStreamBlk,1] 00000171BE    0001 0000000211 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1430] PrsSwitch                 [PrsSwitch,1] 0000016BEE    0002 000000053B Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1613] PrsTryBlk                 [PrsTryBlk,1] 00000173D6    0001 0000000339 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,420] PrsType                   [PrsType,1] 000001428E    0002 000000039F Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,1070] PrsUnaryModifier          [PrsUnaryModifier,1] 0000012416    0000 0000000E3A Funct  
-[::/SparrowOS/Compiler/ExpParser.CPP.Z,666] PrsUnaryTerm              [PrsUnaryTerm,1] 0000010BD6    0000 000000183E Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,99] PrsVarInit                [PrsVarInit,1] 0000013616    0001 0000000513 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,220] PrsVarInit2               [PrsVarInit2,1] 0000013B2E    0004 000000032A Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,518] PrsVarList                [PrsVarList,1] 000001462E    0006 0000000DD1 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,1337] PrsWhile                  [PrsWhile,1] 00000167C6    0001 0000000105 Funct  
+[::/SparrowOS/Compiler/Directives.CPP.Z,21] PTrace                    [PTrace,1] 00000039B0    0000 0000000017 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,1] ParenWarning              [ParenWarning,1] 000000EB1E    0004 0000000055 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,349] PrsArrayDims              [PrsArrayDims,1] 0000013F86    0001 0000000134 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,460] PrsAsmArg                 [PrsAsmArg,1] 000000BD00    0002 000000047E Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,1309] PrsAsmBlk                 [PrsAsmBlk,1] 000000E2F6    0001 0000000823 Funct  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,425] PrsAsmImm                 [PrsAsmImm,1] 000000BBB8    0006 0000000145 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,844] PrsClass                  [PrsClass,1] 00000153D6    0004 0000000267 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1] PrsClassNew               [PrsClassNew,1] 000001336E    0003 00000000B3 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,1232] PrsDereference            [PrsDereference,1] 0000013186    0000 00000000B8 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1359] PrsDoWhile                [PrsDoWhile,1] 00000167FE    0001 0000000155 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,387] PrsDotDotDot              [PrsDotDotDot,1] 00000140BE    0001 0000000100 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,44] PrsExpression             [PrsExpression,1] 000000EC6E    0010 000000125F Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1383] PrsFor                    [PrsFor,1] 0000016956    0001 00000001C7 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,981] PrsFun                    [PrsFun,1] 000001586E    0001 00000003CA Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,444] PrsFunCall                [PrsFunCall,1] 0000010226    0003 00000008DF Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,910] PrsFunJoin                [PrsFunJoin,1] 000001563E    0005 0000000229 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,45] PrsFunNew                 [PrsFunNew,1] 0000013426    0001 00000000B3 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,303] PrsGlblInit               [PrsGlblInit,1] 0000013D8E    0002 0000000084 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1057] PrsGlblVarLst             [PrsGlblVarLst,1] 0000015C3E    0008 0000000958 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1305] PrsIf                     [PrsIf,1] 0000016596    0001 000000015B Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,88] PrsKeyWord                [PrsKeyWord,1] 0000013506    000B 000000003C Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1547] PrsNoUnusedWarn           [PrsNoUnusedWarn,1] 000001705E    0001 000000008F Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,413] PrsOffsetOf               [PrsOffsetOf,1] 00000100D6    0002 0000000149 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,13] PrsPop                    [PrsPop,1] 000000EB9E    001B 0000000022 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,23] PrsPop2                   [PrsPop2,1] 000000EBFE    0001 000000002D Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,28] PrsPopDeref               [PrsPopDeref,1] 000000EC2E    0004 000000003F Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,8] PrsPush                   [PrsPush,1] 000000EB76    0017 0000000028 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,18] PrsPush2                  [PrsPush2,1] 000000EBC6    0004 0000000033 Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,365] PrsSizeOf                 [PrsSizeOf,1] 000000FECE    0001 0000000207 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1692] PrsStatement              [PrsStatement,1] 0000017646    0004 0000001024 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,312] PrsStaticInit             [PrsStaticInit,1] 0000013E16    0002 000000016E Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1563] PrsStreamBlk              [PrsStreamBlk,1] 00000170EE    0001 0000000211 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1430] PrsSwitch                 [PrsSwitch,1] 0000016B1E    0002 000000053B Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1613] PrsTryBlk                 [PrsTryBlk,1] 0000017306    0001 0000000339 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,420] PrsType                   [PrsType,1] 00000141BE    0002 000000039F Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,1070] PrsUnaryModifier          [PrsUnaryModifier,1] 0000012346    0000 0000000E3A Funct  
+[::/SparrowOS/Compiler/ExpParser.CPP.Z,666] PrsUnaryTerm              [PrsUnaryTerm,1] 0000010B06    0000 000000183E Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,99] PrsVarInit                [PrsVarInit,1] 0000013546    0001 0000000513 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,220] PrsVarInit2               [PrsVarInit2,1] 0000013A5E    0004 000000032A Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,518] PrsVarLst                 [PrsVarLst,1] 000001455E    0006 0000000DD1 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,1337] PrsWhile                  [PrsWhile,1] 00000166F6    0001 0000000105 Funct  
 [::/SparrowOS/Compiler/CmpQueVect.CPP.Z,46] QueVectU8Del              [QueVectU8Del,1] 0000000990    0004 0000000021 Funct  
 [::/SparrowOS/Compiler/CmpQueVect.CPP.Z,54] QueVectU8Get              [QueVectU8Get,1] 00000009B8    0001 000000005E Funct  
 [::/SparrowOS/Compiler/CmpQueVect.CPP.Z,1] QueVectU8New              [QueVectU8New,1] 0000000868    0001 0000000040 Funct  
@@ -314,20 +315,20 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,441] SLASH_OP_NOT              0x00000000    0001 0000000018 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,448] SLASH_OP_POP              0x00000000    0001 0000000018 DefineStr 
 [::/SparrowOS/Compiler/BackEnd.CPP.Z,447] SLASH_OP_PUSH             0x00000000    0001 0000000018 DefineStr 
-[::/SparrowOS/Compiler/Lex.CPP.Z,105] SetSrcFileInfo            [SetSrcFileInfo,1] 00000040A8    0008 0000000079 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,14] StreamPrintF              [StreamPrintF,1] 0000037F20    0000 0000000034 Funct  
-[::/SparrowOS/Compiler/CmpMain.CPP.Z,1] StreamPutS                [StreamPutS,1] 0000037EC0    0001 0000000060 Funct  
-[::/SparrowOS/Compiler/Unassembler.CPP.Z,848] U                         [U,1] 0000003890    0000 0000000099 Funct  
-[::/SparrowOS/Compiler/Unassembler.CPP.Z,111] Ui                        [Ui,1] 0000000D50    0002 0000002B3F Funct  
-[::/SparrowOS/Compiler/Unassembler.CPP.Z,864] Un                        [Un,1] 0000003930    0009 00000000A4 Funct  
-[::/SparrowOS/Compiler/Unassembler.CPP.Z,56] UnasmHashLoad             [UnasmHashLoad,1] 0000000C40    0001 0000000109 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,831] UndefinedExtern           [UndefinedExtern,1] 0000015406    0001 0000000050 Funct  
-[::/SparrowOS/Compiler/StmtParser.CPP.Z,838] UnusedExternWarning       [UnusedExternWarning,1] 0000015456    0004 000000004E Funct  
+[::/SparrowOS/Compiler/Lex.CPP.Z,105] SetSrcFileInfo            [SetSrcFileInfo,1] 0000003FD8    0008 0000000079 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,14] StreamPrintF              [StreamPrintF,1] 0000037E98    0000 0000000034 Funct  
+[::/SparrowOS/Compiler/CmpMain.CPP.Z,1] StreamPutS                [StreamPutS,1] 0000037E38    0001 0000000060 Funct  
+[::/SparrowOS/Compiler/Unassembler.CPP.Z,862] U                         [U,1] 00000037C0    0000 0000000099 Funct  
+[::/SparrowOS/Compiler/Unassembler.CPP.Z,220] Ui                        [Ui,1] 00000010D0    0002 00000026E9 Funct  
+[::/SparrowOS/Compiler/Unassembler.CPP.Z,878] Un                        [Un,1] 0000003860    0009 00000000A4 Funct  
+[::/SparrowOS/Compiler/Unassembler.CPP.Z,181] UnasmHashLoad             [UnasmHashLoad,1] 0000000FC0    0001 0000000109 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,831] UndefinedExtern           [UndefinedExtern,1] 0000015336    0001 0000000050 Funct  
+[::/SparrowOS/Compiler/StmtParser.CPP.Z,838] UnusedExternWarning       [UnusedExternWarning,1] 0000015386    0004 000000004E Funct  
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,10] _OPTNEXT                  0000000098    0001            ExportSysSym  
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,58] _OPTNEXT2                 000000010A    0001            ExportSysSym  
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,107] _OPTNEXT3                 000000017C    0001            ExportSysSym  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,2] asm_hash                  0000000708    0009 0000000008 GlbVar  
-[::/SparrowOS/Compiler/Assembler.CPP.Z,822] asm_seg_prefixes          000000CCC0    0001 0000000006 GlbVar  
+[::/SparrowOS/Compiler/Assembler.CPP.Z,822] asm_seg_prefixes          000000CBF0    0001 0000000006 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,8] assign_bitmap             00000007B8    0003 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,6] binary_ops_table          0000000790    0003 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,7] cmp_arg_cnt               00000007A0    0009 0000000008 GlbVar  
@@ -343,20 +344,20 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,14] compiled_funs             0000000830    0002 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,14] compiled_lines            0000000828    0003 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,8] deref_bitmap              00000007B0    0004 0000000008 GlbVar  
-[::/SparrowOS/Compiler/Lex.CPP.Z,397] doc_stop_btypes           00000059B8    0001 0000000008 GlbVar  
+[::/SparrowOS/Compiler/Lex.CPP.Z,397] doc_stop_btypes           00000058E8    0001 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,5] dual_U16_tokens1          0000000778    0002 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,5] dual_U16_tokens2          0000000780    0002 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,6] dual_U16_tokens3          0000000788    0002 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,9] fpop_bitmap               00000007D0    0013 0000000008 GlbVar  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,8] internal_types_table      00000342D0    0001 00000000A0 GlbVar  
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,8] internal_types_table      0000034240    0001 00000000A0 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,2] is_first_compiler         0000000710    0004 0000000001 GlbVar  
-[::/SparrowOS/Compiler/Lex.CPP.Z,138] lex_zeros                 0000004238    000B 0000000004 GlbVar  
+[::/SparrowOS/Compiler/Lex.CPP.Z,138] lex_zeros                 0000004168    000B 0000000004 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,11] non_ptr_vars_mask         0000000800    0006 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,8] not_constant_bitmap       00000007C0    0003 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,10] num_non_ptr_vars          00000007E8    0005 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,9] num_reg_vars              00000007E0    0006 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,9] num_stk_temps             00000007D8    0004 0000000008 GlbVar  
-[::/SparrowOS/Compiler/OptPass012.CPP.Z,150] opt_nop                   0000027258    0007 0000000098 GlbVar  
+[::/SparrowOS/Compiler/OptPass012.CPP.Z,150] opt_nop                   0000027188    0007 0000000098 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,10] reg_vars_mask             00000007F8    0002 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,10] stk_temps_mask            00000007F0    0003 0000000008 GlbVar  
 [::/SparrowOS/Compiler/CmpGlbls.CPP.Z,4] sys_internal_types        0000000718    00B5 0000000060 GlbVar  

@@ -87,8 +87,8 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   for (i=0;i<NUM_GEESE;i++) {
     tt=1.2*Tri(tP(task)-t0_s[i],0.7);
-    inter=CSpriteInterpolate(__BIN_1,__BIN_2,tt);
-    CSpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
+    inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+    SpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
     Free(inter);
   }
 }

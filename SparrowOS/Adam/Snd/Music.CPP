@@ -124,11 +124,11 @@ public U0 Play(U8 *st,U8 *words=NULL)
     '!!'  *1.5`2
 
   [C:/SparrowOS/Adam/Snd/Music.CPP.Z,8] music_waveform is set with
-    "W1" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3580] WF_SQUARE
-    "W2" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3581] WF_SINE
-    "W3" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3582] WF_TRIANGLE
-    "W4" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3583] WF_SAWTOOTH
-    "W5" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3584] WF_NOISE
+    "W1" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3674] WF_SQUARE
+    "W2" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3675] WF_SINE
+    "W3" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3676] WF_TRIANGLE
+    "W4" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3677] WF_SAWTOOTH
+    "W5" for [C:/SparrowOS/OSMain/Adam1a.HPP.Z,3678] WF_NOISE
 
   [C:/SparrowOS/Adam/Snd/Music.CPP.Z,8] music_meter_top,[C:/SparrowOS/Adam/Snd/Music.CPP.Z,9] music_meter_bottom is set with
     "M3/4"
@@ -191,7 +191,7 @@ public U0 Play(U8 *st,U8 *words=NULL)
     } else
       f=0;
     if (words) {
-      if (word=ListEntryPt(i++,words))
+      if (word=LstEntryPt(i++,words))
 	if (StrCmp(word," "))
 	  "" word;
     }

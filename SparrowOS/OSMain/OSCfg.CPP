@@ -86,7 +86,7 @@ CDoc *OSMainCfgAddDev(COSMainCfg *c)
 	  } while (!(0<=k<=1));
 	  NewLine;
 	}
-	LinkedListDel(root);
+	LinkedLstDel(root);
       }
       if (type==BDT_NON_NATIVE_FILE) {
 	PutDefine("ST_MOUNT_NON_NATIVE_LET");
@@ -167,7 +167,7 @@ U0 OSMainCfgOptions(COSMainCfg *c)
       "$FG,PURPLE$%13tz$FG$:%Z\n",i,osmain_cfg_options,c->opts[i],"ST_OFF_ON";
     "\nType '$FG,PURPLE$Help$FG$' for help.\n";
     st=PmtStr("Option ($FG,PURPLE$<ENTER>$FG$ when done):","");
-    i=ListEntryMatch(st,osmain_cfg_options,LEF_IGNORE_CASE);
+    i=LstEntryMatch(st,osmain_cfg_options,LEF_IGNORE_CASE);
     if (i==CFG_HELP)
 "\n"
 "$FG,PURPLE$ProtectLow$FG$ Marks memory at and below 0x%0X as not present.\n"

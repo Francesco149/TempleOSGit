@@ -48,11 +48,11 @@ U0 DrawIt(CTask *,CDC *dc)
   I64 i,x,radius,site;
 
   dc->color=BLACK;
-  CSpritePlot3(dc,	    200,GR_HEIGHT-100,0,__BIN_1);
-  CSpritePlot3(dc,GR_WIDTH-200,GR_HEIGHT-100,0,__BIN_1);
+  SpritePlot3(dc,	    200,GR_HEIGHT-100,0,__BIN_1);
+  SpritePlot3(dc,GR_WIDTH-200,GR_HEIGHT-100,0,__BIN_1);
   for (site=0;site<3;site++) {
       x=100+site*((GR_WIDTH-200)/2);
-      CSpritePlot3(dc,x,GR_HEIGHT-100,0,__BIN_2);
+      SpritePlot3(dc,x,GR_HEIGHT-100,0,__BIN_2);
   }
 
   for (i=0;i<MAX_SHOTS;i++)
@@ -133,8 +133,8 @@ U0 FireShot(I64 site)
     if (s[i].cnt<-EXPLOSION_CNT) {
       s[i].x=(100+site*((GR_WIDTH-200)/2))<<32;
       s[i].y=(GR_HEIGHT-100)<<32;
-//([C:/SparrowOS/OSMain/OSGlbls.CPP.Z,71] ipx, [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,71] ipy) is the input pointer -- mouse --location.
-//[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,80] ip_lb,[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,81] ip_rb is the button state.
+//([C:/SparrowOS/OSMain/OSGlbls.CPP.Z,72] ipx, [C:/SparrowOS/OSMain/OSGlbls.CPP.Z,72] ipy) is the input pointer -- mouse --location.
+//[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,81] ip_lb,[C:/SparrowOS/OSMain/OSGlbls.CPP.Z,82] ip_rb is the button state.
       x=ipx-Fs->win_pixel_left-Fs->win_scroll_x;
       y=ipy-Fs->win_pixel_top-Fs->win_scroll_y;
       d=Sqrt(SqrI64(s[i].x.i32[1]-x)+SqrI64(s[i].y.i32[1]-y));

@@ -1,12 +1,38 @@
-//8 has words
+//8 has graphics
+
+
+
+/* <1> <1> (image) */
+
+
+
+
+F64 t0=tMBeat;
+
+U0 DrawIt(CTask *,CDC *dc)
+{
+  F64 dt=tMBeat-t0;
+  if (dt>26) {
+    dc->flags|=DCF_TRANSFORMATION;
+    GrRotZEqu(dc->r,0.2);
+    GrScaleMatEqu(dc->r,(15+Sin(pi*(dt-26)))/15);
+    dc->x=330;
+    dc->y=35;
+    SpritePlot3(dc,0,0,0,__BIN_1);
+  }
+}
+
 U0 Song()
 {
+  SettingsPush; //See [C:/SparrowOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   music_tempo= 2.151;
   music_stacatto_factor= 0.780;
   try {
   while (!ScanKey) {
+	t0=tMBeat;
 	Play("W13eCsBBeA#BCDCBCsBBeA#BCDCB");
 	Play("etDCBeCBCBABetDCBeCBCBAB");
 	Play("!A2G!3sBG!B!GFC!FCBFBFetF!GAsFGF!G!qG!D",
@@ -16,7 +42,7 @@ U0 Song()
   }
   } catch
     CatchAll;
-  Snd(0);
+  SettingsPop;
 }
 
 Song;

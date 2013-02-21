@@ -52,7 +52,7 @@ U0 SpritePlot()
   "$CL$";
   for (i=0;i<GR_WIDTH>>2;i++) {
     DCFill;
-    CSpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
+    SpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
     Sleep(3);
   }
   "Image size:%d\n",__BIN_1_SIZE;

@@ -76,7 +76,7 @@ Sleep(1000);
 PopUpOk(
 "The macro changed directories and did\n"
 "a $FG,GREEN$Dir;$FG$ command.\n\n"
-"The $FG,RED$RED$FG$ filenames listed are file\n"
+"The $FG,RED$RED$FG$ filenames lsted are file\n"
 "links.  Left-clicking will edit/view them.\n"
 "Right-clicking or pressing $FG,GREEN$<ENTER>$FG$\n"
 "when the cursor is on top will bring-up a\n"

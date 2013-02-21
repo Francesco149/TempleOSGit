@@ -28,7 +28,7 @@ U0 Extents()
   DCExtentsInit(dc);
 
   dc->pen_width=3;
-  CSpritePlot3(dc,40,GR_HEIGHT>>1,0,__BIN_1);
+  SpritePlot3(dc,40,GR_HEIGHT>>1,0,__BIN_1);
 
   dc->color=LTRED;
   dc->pen_width=1;
@@ -42,7 +42,7 @@ U0 Extents()
   PressAKey;
   DCFill;
 
-  CSpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
+  SpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
   "X: %d to %d\n",min_x,max_x;
   "Y: %d to %d\n",min_y,max_y;
 }

@@ -6,7 +6,7 @@ U0 (*fp_old_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
 F64 freq1,freq2;
 
 U0 BeatFillBuf(SND_OUT_CONTAINER *buf,I64 buf_num)
-{ //Gets called by HD Audio task -- [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,390] HDAudioTask().
+{ //Gets called by HD Audio task -- [C:/SparrowOS/Adam/Snd/HDAudio.CPP.Z,411] HDAudioTask().
   I64 j,m;
   F64 t;
   if (beat_done) return;

@@ -24,22 +24,22 @@ U0 CDirFileDoc(CDoc *doc,CDirEntry *tempm)
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 
-class CFMUncollapsedList
+class CFMUncollapsedLst
 {
-  CFMUncollapsedList *next;
+  CFMUncollapsedLst *next;
   U8 *name;
 };
 
-CFMUncollapsedList *FMCollectUncollapsedList(CDoc *doc)
+CFMUncollapsedLst *FMCollectUncollapsedLst(CDoc *doc)
 {
   CDocEntry *doc_e=doc->root.next;
-  CFMUncollapsedList *result=NULL,*tempc;
+  CFMUncollapsedLst *result=NULL,*tempc;
   CDirEntry *tempm;
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_TREE) {
       if (!(doc_e->flags1&DOCEF1_CHECKED_COLLAPSED)) {
 	if (tempm=doc_e->user_data) {
-	  tempc=MAlloc(sizeof(CFMUncollapsedList));
+	  tempc=MAlloc(sizeof(CFMUncollapsedLst));
 	  tempc->next=result;
 	  result=tempc;
 	  tempc->name=StrNew(tempm->full_name);
@@ -51,10 +51,10 @@ CFMUncollapsedList *FMCollectUncollapsedList(CDoc *doc)
   return result;
 }
 
-U0 FMMarkUncollapsed(CDoc *doc,CFMUncollapsedList *tempc,U8 *cur_entry,U8 *next_entry)
+U0 FMMarkUncollapsed(CDoc *doc,CFMUncollapsedLst *tempc,U8 *cur_entry,U8 *next_entry)
 {
   CDocEntry *doc_e=doc->root.next;
-  CFMUncollapsedList *tempc1;
+  CFMUncollapsedLst *tempc1;
   CDirEntry *tempm;
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_TREE) {
@@ -100,9 +100,9 @@ U0 FMMarkUncollapsed(CDoc *doc,CFMUncollapsedList *tempc,U8 *cur_entry,U8 *next_
   }
 }
 
-U0 FMDelUncollapsedList(CFMUncollapsedList *tempc)
+U0 FMDelUncollapsedLst(CFMUncollapsedLst *tempc)
 {
-  CFMUncollapsedList *tempc1;
+  CFMUncollapsedLst *tempc1;
   while (tempc) {
     tempc1=tempc->next;
     Free(tempc->name);
@@ -148,7 +148,7 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
   CPrt *p;
   I64 i;
   CDoc *doc=*_doc,*doc2=sys_clipboard_doc,*parent_doc;
-  CFMUncollapsedList *tempc=NULL;
+  CFMUncollapsedLst *tempc=NULL;
   U8 *cur_entry=NULL,*next_entry=NULL;
   CDocEntry *doc_ce;
   CDirEntry *tempm,*tempm1,*cur_tree_entry;
@@ -191,11 +191,11 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
     if (tempm)
       next_entry=StrNew(tempm->full_name);
 
-    tempc=FMCollectUncollapsedList(doc);
+    tempc=FMCollectUncollapsedLst(doc);
     DocDel(doc);
   }
   if (*_root) {
-    CDirListDel(*_root);
+    CDirLstDel(*_root);
     *_root=NULL;
   }
   doc=DocNew;
@@ -233,7 +233,7 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
   FMMarkUncollapsed(doc,tempc,cur_entry,next_entry);
   DocCenter(doc);
   DocRst(doc2,TRUE);
-  FMDelUncollapsedList(tempc);
+  FMDelUncollapsedLst(tempc);
   Free(cur_entry);
   Free(next_entry);
   *_doc=doc;
@@ -754,7 +754,7 @@ regular_key:
   DocQueIns(old_doc,Fs->last_doc);
   SettingsPop;
   DocDel(doc);
-  CDirListDel(root);
+  CDirLstDel(root);
   Cd(old_cur_dir);
   Free(old_cur_dir);
   if (mode!=FM_NORMAL && !result)

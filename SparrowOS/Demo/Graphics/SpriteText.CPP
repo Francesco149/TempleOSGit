@@ -11,11 +11,11 @@ U0 SpriteText(U8 *elems)
   CSprite *tempg=elems-offset(CSprite.start);
   U8 *st;
   while (tempg->type) {
-    //Study this routine [C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,170] CSprite2Text().
-    st=CSprite2Text(tempg);
+    //Study this routine [C:/SparrowOS/Adam/Gr/CSpriteNew.CPP.Z,170] Sprite2Text().
+    st=Sprite2Text(tempg);
     "%s\n",st;
     Free(st);
-    tempg(U8 *)+=CSpriteElemSize(tempg);
+    tempg(U8 *)+=SpriteElemSize(tempg);
   }
 }
 
