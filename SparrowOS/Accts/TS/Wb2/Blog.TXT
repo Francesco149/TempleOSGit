@@ -1,0 +1,141 @@
+                                  SparrowOS
+
+----02/08/13 16:45:52----
+
+All programmers work on hobby projects.  "Open source" gets everybody
+excited. 
+ Linux is a monstrocity, however.  We all learned on Apple ][s and C64s.  Do 
+you remember those... when programming was fun, instead of overwhelming and 
+depressing?  Do you remember editing disk blocks and poking hardware?  Do you 
+remember changing video memory so the screen showed flashing live dumps of 
+memory?
+
+It's my computer.  The way I play with my computer is I poke around at 
+anything I want.  It's like a car and I like to get under the hood.  Thanks, 
+but I don't need a lock on the hood.  Linux is like a modern car engine with 
+no user servicable parts, but SparrowOS is like a simple 60's engine.... and, 
+incidentally, it has lots of raw horsepower, too.  It actually outperforms 
+Linux or Windows, but that's silly.  Obviously, bare metal outperforms 
+anything else.  It's not bare metal but identity-mapping and ring-0-only are 
+superior performance -- you cannot argue, if you know what they mean.  No 
+privilege level changes and no memory map penalties is optimal.
+
+----02/08/13 17:00:08----
+
+SparrowOS does master/slave multicore, not SMP.  You directly assign tasks to 
+other cores.  It's optimal.  If your multicore API does not tell you how many 
+cores you have to assign tasks to, you cannot do real-time multicore.  I set 
+VMware to 8 cores and ran my flight simulator.  My flight simulator divided 
+the screen in 8 strips for the 8 cores.  VMware decided to give me 7,
+thinking 
+I didn't care.  I'm sorry, but 7 cores, then 1 core is not at all like 8 
+cores.  Suddenly my refresh did not complete and it took two refresh cycles 
+instead of one, completely ruining it, making half the performance and
+causing 
+stuttering.  I haven't repeated this in VMware, but I'm pretty sure that's
+how 
+the whole industry treats multicore -- not suitable for real-time.
+
+----02/08/13 17:38:47----
+
+There are lots of innovations that SparrowOS could stand-on, but minimalism
+is 
+a big reason-to-be, so for my users, getting under the hood and getting their 
+head around the whole thing is feasible.  I support 64-bit multicored CPUs
+but 
+when it comes to every other type of hardware on the system I only support
+1st 
+generation PC devices -- VGA, PC Speaker, ATA/ATAPI PIO, PS2 keyboard/mouse 
+(USB has a PS2 compatibility mode).  Do you remember "it's the economy, 
+stupid"?  With PC operating systems, "It's compatibility, stupid."  After 
+doing HD Audio and learning it's a hundred times more complicated and LESS 
+LIKELY TO WORK on multiple systems... forget it!  Also, I realized that if a 
+feature is not available on all systems, it's no fun writing applications.  I 
+learned that for each type of hardware, I'd need 30 drivers and I'd have to 
+have the hardware in my physical possession to do them!
+
+My HD Audio driver did not use interrupts.  PCI interrupts are really 
+compilicated, in general.  I have an
+[::/SparrowOS/Demo/Lectures/PCIInterrupts.CPP.Z,1] example that does PCI
+interrupts on my 
+system, but working-out which devices share what interrupts for all systems
+is 
+beyond me.
+
+----02/08/13 18:34:25----
+
+One feature I had to have was simple graphics for new programmers.
+
+HGR: HCOLOR=7: HLINE 100,100 TO 200,200
+
+In my operating system
+
+CDC *dc=DCAlias; dc->color=RED; GrLine(dc,100,100,200,200);
+
+You can even type it JIT at the command-line like an Apple ][.  Qt is a joke!
+
+My command-line feeds into a JIT C compiler that I wrote with a much  
+[::/SparrowOS/Doc/Differences.TXT.Z,1] beautified version of the language. 
+It has an assembler that is also 
+beautiful.
+
+You know the crap with printf("%ld",i), for example, instead of 
+PrintF("%d",i);
+You know having "l" on constants?  You know long-long?  You have none of that 
+32-bit cruft.
+
+It's really neat with one address map, system-wide.  The whole operating 
+system is orders of magnitude simpler.
+
+In Unix, everything is a file; In SparrowOS, everything is a document.  A 
+document is a doubly-linked-lst of command entries.  There are text, links, 
+macros, sprites, page settings, colors, trees, check boxes, forms.  You can 
+have dynamic items that change in the document because documents are not for 
+printing, but for the screen.  The command-line is a document, the editor is
+a 
+document, forms and dialog boxes are documents, help is documents.
+
+There is no distinction between process and thread, everything is a task -- 
+there is a single address map for everybody, so address-to-symbol look-up is 
+trivial.
+
+Tasks can have one window, tasks have a heap and a symbol table, with scope 
+like environment variables.  They inherit symbols from parent tasks.  Adam is 
+the father of all and He compiles a bunch of symbols during boot so nobody 
+needs header files because his symbols are inherited.
+
+There!  You now have a big-picture.  Soon, you will have your head around the 
+whole thing!  How cool is that?  Satisfaction comes from mastering something.
+
+----02/08/13 19:10:24----
+
+All memory is identity-mapped so virtual addresses are physical addresses.
+
+There is a heap allocator.  Each task has a heap that can be traced back to 
+that task for when it dies.  Adam never dies.  You can freely allocate and 
+free off other heaps -- they have multicore safe locks.
+
+Memory is one mixed-up mess, but elegantly simple -- there is no kernel or 
+heap or stack area.  When a task is [C:/SparrowOS/OSMain/Task1a.CPP.Z,228]
+Spawned, 128K is [C:/SparrowOS/OSMain/Memory.CPP.Z,956] MAlloced for the
+stack.  
+Adam is the closest thing to kernel.  Since it is multitasking and 
+single-address map, when you load one application's code it goes at one 
+address and when a different task loads another application, it goes at a 
+different address.  The loader calls malloc to find a place for the code.
+
+It will fragment, in theory, and need to be rebooted.  Never happens in 
+practice.
+
+All code is placed in the lowest 2 Gig so that 32-bit relative CALLs can be 
+used for all subroutine calls.  No syscalls or software interrupts are used, 
+since those are slower and it never changes privilege levels.
+
+It's actually really simple -- don't make it complicated!
+
+----02/08/13 19:21:54----
+
+I wrote all 139,000 lines of code myself over 10 years from scratch.  I paid 
+an artist $3000 for some art.  He made homo stuff I had to fix.  He told me 
+his name was "Cody Smedly" which sounds like Mike Hunt.
+

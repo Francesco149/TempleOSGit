@@ -6,8 +6,8 @@ When you are at the cmd line, editing documents, browsing documentation and
 help, entering items in forms or in menu's, the
 [C:/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc editor handles keys.  It 
 allows you to define your own key handlers in a
-[C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() function.  If
-you 
+[C:/SparrowOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey() function. 
+If you 
 choose, you can catch most keys, overriding the default handlers.  See 
 [C:/SparrowOS/Adam/Doc/DocEd.CPP.Z,1504] DocPutKey().  The following is an
 overview of key allocations.
@@ -15,8 +15,8 @@ overview of key allocations.
 ALT-keys and ALT-SHIFT-keys
 
 Free for user cfgurations in your
-[C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() handler, except
-for ALT-BACKSPACE 
+[C:/SparrowOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey() handler,
+except for ALT-BACKSPACE 
 (undo).  There are a few examples pre-defined, but you can change them if you 
 wish.
 
@@ -84,8 +84,8 @@ misnomer.  Currently, the following are defined:
 
 Priority    Handler
 ---------- ---------
-0x20000000 [C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() user
-handler
+0x20000000 [C:/SparrowOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey()
+user handler
 0x40000000 [C:/SparrowOS/OSMain/Display.CPP.Z,154] AKDInputFilterPutKey() for
 [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,354] Auto(),
 [C:/SparrowOS/OSMain/TaskCmd.CPP.Z,384] AutoStr(), and

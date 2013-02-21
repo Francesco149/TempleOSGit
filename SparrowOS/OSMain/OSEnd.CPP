@@ -69,7 +69,7 @@ U0 SysGlblsInit()
 
 U0 SysGrInit()
 {
-//See [D:/SparrowOS/OSMain/OSStart.CPP.Z,2] SYS_BIOS_GR_MODE
+//See [C:/SparrowOS/OSMain/OSStart.CPP.Z,2] SYS_BIOS_GR_MODE
 //See [::/SparrowOS/Adam/Gr/GrCfg.CPP.Z,1] ::/SparrowOS/Adam/Gr/GrCfg.CPP.Z
   gr_font=sys_font_8x8;
   if (bios_gr_mode==0x12 || bios_gr_mode==0x6A) {

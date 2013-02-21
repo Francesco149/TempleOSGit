@@ -88,4 +88,4 @@ else {
 }
 
 //Note: It would be more appropriate
-//to define a key in [C:/SparrowOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey().
+//to define a key in [C:/SparrowOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey().

@@ -201,12 +201,12 @@ it very often, believe it or not.
 You'll do these periodically.
 
 [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() is your best friend.  There's a
-wrapper function called [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,8] F()
-in your HOM
+wrapper function called [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,8] F() in
+your HOM
 E/Adam3eWrappers.CPP.Z file.  Feel free to make wrapper functions for 
 functions you use often and customize the args.  By the way,
 [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() or
-[C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() can 
+[C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R() can 
 be used to replace strings across multiple files.  You can access
 [C:/SparrowOS/Adam/Grep.CPP.Z,163] Grep() using 
 <CTRL-SHIFT-F>.

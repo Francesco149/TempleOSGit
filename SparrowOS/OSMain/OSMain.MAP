@@ -241,13 +241,13 @@ BREAK_FOCUS_USER          00000047F1    0000            ExportSysSym
 [::/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,60] BlkDevInit                [BlkDevInit,1] 000001E567    0009 000000026F Funct  
 [::/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,1] BlkDevLock                [BlkDevLock,1] 000001E3CF    0002 000000005B Funct  
 [::/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,28] BlkDevUnlock              [BlkDevUnlock,1] 000001E487    0003 0000000086 Funct  
-[::/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,344] BlkDevsInitAll            [BlkDevsInitAll,1] 0000020E17    0001 000000016B Funct  
+[::/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,344] BlkDevsInitAll            [BlkDevsInitAll,1] 0000020E17    0001 0000000156 Funct  
 [::/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,127] BlkDevsRelease            [BlkDevsRelease,1] 000001E7D7    0000 0000000049 Funct  
 [::/SparrowOS/OSMain/Memory.CPP.Z,1118] BlkPoolAdd                [BlkPoolAdd,1] 0000006364    0004 0000000078 Funct  
 [::/SparrowOS/OSMain/Memory.CPP.Z,1135] BlkPoolInit               [BlkPoolInit,1] 00000063DC    0001 0000000067 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,104] Bool                      I8            01CF 0000000008 DefineStr 
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,297] BootCdProbe               [BootCdProbe,1] 000002C167    000C 000000017B Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,326] BootCdProbeAll            [BootCdProbeAll,1] 000002C2E7    0000 0000000291 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,297] BootCdProbe               [BootCdProbe,1] 000002C147    000C 000000017B Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,326] BootCdProbeAll            [BootCdProbeAll,1] 000002C2C7    0000 0000000291 Funct  
 [::/SparrowOS/OSMain/Except.CPP.Z,206] BreakLock                 [BreakLock,1] 000001516F    000B 0000000038 Funct  
 [::/SparrowOS/OSMain/Except.CPP.Z,212] BreakUnlock               [BreakUnlock,1] 00000151A7    0016 0000000066 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,71] Bsf                       000000008D    0004            Funct  
@@ -257,15 +257,15 @@ BREAK_FOCUS_USER          00000047F1    0000            ExportSysSym
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,59] Btr                       0000000086    0008            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,58] Bts                       0000000085    0003            Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,180] BusyWait                  [BusyWait,1] 0000012AE2    000D 0000000021 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,124] C32_ADD                   000002BCCD    0001            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,61] C32_EAX                   000002BBFE    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,62] C32_EBX                   000002BC02    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,63] C32_ECX                   000002BC06    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,66] C32_EDI                   000002BC12    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,64] C32_EDX                   000002BC0A    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,67] C32_EFLAGS                000002BC16    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,65] C32_ESI                   000002BC0E    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,69] C32_RSP                   000002BC1A    0002            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,124] C32_ADD                   000002BCAD    0001            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,61] C32_EAX                   000002BBDE    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,62] C32_EBX                   000002BBE2    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,63] C32_ECX                   000002BBE6    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,66] C32_EDI                   000002BBF2    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,64] C32_EDX                   000002BBEA    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,67] C32_EFLAGS                000002BBF6    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,65] C32_ESI                   000002BBEE    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,69] C32_RSP                   000002BBFA    0002            ExportSysSym  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3632] CALWAYS_CLOBBERED_MASK    0x003F        0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2302] CATAPITrack               007FD023B0    0008 0000000030 Class 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2503] CATARep                   007FD03C70    0005 0000000038 Class 
@@ -321,29 +321,29 @@ BREAK_FOCUS_USER          00000047F1    0000            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3322] CDC                       007FCF0190    0004 0000000128 Class  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2425] CDIR_FILENAME_LEN         26            000C 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2443] CDIR_SIZE                 (sizeof(CD    0011 0000000030 DefineStr 
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,193] CDImageRead               [CDImageRead,1] 000002A48C    0000 0000000220 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,279] CDImageWrite              [CDImageWrite,1] 000002A7E4    0000 000000041D Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,247] CDImageWriteTask          [CDImageWriteTask,1] 000002A6AC    0001 0000000137 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,193] CDImageRead               [CDImageRead,1] 000002A474    0000 0000000220 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,279] CDImageWrite              [CDImageWrite,1] 000002A7CC    0000 000000041D Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,247] CDImageWriteTask          [CDImageWriteTask,1] 000002A694    0001 0000000137 Funct  
 [::/SparrowOS/OSMain/BootDefs.HPP.Z,15] CD_BLK_SIZE               (4*BLK_SIZ    0005 0000000010 DefineStr 
 [::/SparrowOS/OSMain/BootDefs.HPP.Z,18] CD_BOOT_LOADER_SIZE       CD_BLK_SIZ    0000 0000000010 DefineStr 
 [::/SparrowOS/OSMain/BootDefs.HPP.Z,16] CD_FILE_OFFSET            80            0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,285] CDate                     007FCF2990    0018 0000000008 Class  
 [::/SparrowOS/OSMain/Date.CPP.Z,38] CDate2CDateStruct         [CDate2CDateStruct,1] 0000008D26    004E 00000001C6 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,1] CDate2Dos                 [CDate2Dos,1] 0000024E1F    0001 000000007A Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,60] CDate2ISO1                [CDate2ISO1,1] 000002235F    0000 000000005C Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,1] CDate2Dos                 [CDate2Dos,1] 0000024E07    0001 000000007A Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,60] CDate2ISO1                [CDate2ISO1,1] 0000022347    0000 000000005C Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2413] CDateStruct               007FD033D0    0014 000000000C Class  
 [::/SparrowOS/OSMain/Date.CPP.Z,14] CDateStruct2CDate         [CDateStruct2CDate,1] 0000008BF6    0008 00000000E1 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,709] CDbgInfo                  007FCF51F0    0004 0000000010 Class 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2427] CDirEntry                 007FD036B0    009A 0000000070 Class  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,58] CDirEntryCompare          [CDirEntryCompare,1] 0000021107    0001 00000000AE Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,17] CDirEntryDel              [CDirEntryDel,1] 000002103F    0008 0000000022 Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,25] CDirEntryDel2             [CDirEntryDel2,1] 0000021067    0001 000000002B Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,121] CDirFilesFlatten          [CDirFilesFlatten,1] 00000212B7    0002 000000008A Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,80] CDirFilesSort             [CDirFilesSort,1] 00000211B7    0003 00000000FE Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,201] CDirLongNameFill          [CDirLongNameFill,1] 0000025774    0004 0000000131 Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,34] CDirLstDel                [CDirLstDel,1] 0000021097    0001 0000000035 Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,46] CDirLstDel2               [CDirLstDel2,1] 00000210CF    0001 0000000035 Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,1] CDirNew                   [CDirNew,1] 0000020F87    0003 00000000B5 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,58] CDirEntryCompare          [CDirEntryCompare,1] 00000210EF    0001 00000000AE Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,17] CDirEntryDel              [CDirEntryDel,1] 0000021027    0008 0000000022 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,25] CDirEntryDel2             [CDirEntryDel2,1] 000002104F    0001 000000002B Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,121] CDirFilesFlatten          [CDirFilesFlatten,1] 000002129F    0002 000000008A Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,80] CDirFilesSort             [CDirFilesSort,1] 000002119F    0003 00000000FE Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,201] CDirLongNameFill          [CDirLongNameFill,1] 000002575C    0004 0000000131 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,34] CDirLstDel                [CDirLstDel,1] 000002107F    0001 0000000035 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,46] CDirLstDel2               [CDirLstDel2,1] 00000210B7    0001 0000000035 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,1] CDirNew                   [CDirNew,1] 0000020F6F    0003 00000000B5 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,1492] CDoc                      007FCEE4F0    0011 0000000360 Class  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,1255] CDocBin                   007FCF8D50    0003 000000003C Class  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,1316] CDocEntry                 007FCF95F0    0009 00000000C0 Class  
@@ -510,8 +510,8 @@ BREAK_FOCUS_USER          00000047F1    0000            ExportSysSym
 [::/SparrowOS/Compiler/CmpDefs.HPP.Z,367] CPS_IS_STATIC             8             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3694] CPSectCache               007FD12360    0006 0000000040 Class 
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,138] CPUId                     000000302F    0003            Funct  
-CPUStructInit             000002AF42    0001            ExportSysSym 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,141] CPUStructInit             [CPUStructInit,1] 000002AF42    0002 0000000068 Funct  
+CPUStructInit             000002AF22    0001            ExportSysSym 
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,141] CPUStructInit             [CPUStructInit,1] 000002AF22    0002 0000000068 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3584] CPU_WALLPAPER_DATA_SIZE   128           0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3585] CPUf_HAD_IRQ_OPPORTUNITY  0             0002 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3586] CPUf_SETH_SLEEP           1             0005 0000000008 DefineStr 
@@ -574,7 +574,7 @@ CPUStructInit             000002AF42    0001            ExportSysSym
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,147] CallerRep                 [CallerRep,1] 00000136B2    0001 000000008A Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,157] Carry                     0000000079    0000            Funct  
 [::/SparrowOS/OSMain/Except.CPP.Z,226] CatchAll                  [CatchAll,1] 000001520F    0002 0000000018 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,39] Cd                        [Cd,1] 0000028134    0008 00000003A0 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,39] Cd                        [Cd,1] 000002811C    0008 00000003A0 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,273] CdDir                     [CdDir,1] 000001BFBF    0001 0000000079 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,241] Ceil                      000000355F    0000            Funct  
 [::/SparrowOS/OSMain/Math1b.CPP.Z,62] CeilI64                   [CeilI64,1] 0000004048    0000 0000000054 Funct  
@@ -594,8 +594,8 @@ CPUStructInit             000002AF42    0001            ExportSysSym
 [::/SparrowOS/OSMain/Define1a.CPP.Z,110] Color2Text                [Color2Text,1] 0000011972    0000 0000000109 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,60] Complex                   007FCEDE90    0000 0000000010 Class  
 [::/SparrowOS/OSMain/Compress.CPP.Z,268] CompressBuf               [CompressBuf,1] 0000007950    0002 0000000142 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,29] CopySingle                [CopySingle,1] 0000029E4C    0000 00000002A0 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,9] CopySingleZ               [CopySingleZ,1] 0000029D54    0001 00000000F4 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,29] CopySingle                [CopySingle,1] 0000029E34    0000 00000002A0 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,9] CopySingleZ               [CopySingleZ,1] 0000029D3C    0001 00000000F4 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,232] Cos                       00000000D0    0000            Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,350] CtrlAltC                  [CtrlAltC,1] 0000013162    0001 0000000017 Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,345] CtrlAltDel                [CtrlAltDel,1] 000001314A    0001 0000000017 Funct  
@@ -625,11 +625,11 @@ CPUStructInit             000002AF42    0001            ExportSysSym
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,268] D3SubEqu                  00000033B1    0000            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,278] D3Unit                    000000341F    0000            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,259] D3Zero                    0000003327    0000            Funct  
-[::/SparrowOS/OSMain/Adam1b.HPP.Z,57] D:/SparrowOS/Doc/Bit.TXT.Z031C0B4EB8    0000            HelpFile  
-[::/SparrowOS/OSMain/Adam1b.HPP.Z,258] D:/SparrowOS/Doc/D3.TXT.Z 031C0B5400    0000            HelpFile  
-[::/SparrowOS/OSMain/Adam1b.HPP.Z,185] D:/SparrowOS/Doc/MultiCore.TXT.Z031C0B5538    0000            HelpFile  
-[::/SparrowOS/OSMain/Adam1b.HPP.Z,84] D:/SparrowOS/Doc/Que.TXT.Z031C0B52C8    0000            HelpFile  
-[::/SparrowOS/OSMain/Adam1b.HPP.Z,206] D:/SparrowOS/Doc/TimeJiffy.TXT.Z031C0B5190    0000            HelpFile  
+[::/SparrowOS/OSMain/Adam1b.HPP.Z,57] D:/SparrowOS/Doc/Bit.TXT.Z031C4745A0    0000            HelpFile  
+[::/SparrowOS/OSMain/Adam1b.HPP.Z,258] D:/SparrowOS/Doc/D3.TXT.Z 031C474AE8    0000            HelpFile  
+[::/SparrowOS/OSMain/Adam1b.HPP.Z,185] D:/SparrowOS/Doc/MultiCore.TXT.Z031C474C20    0000            HelpFile  
+[::/SparrowOS/OSMain/Adam1b.HPP.Z,84] D:/SparrowOS/Doc/Que.TXT.Z031C4749B0    0000            HelpFile  
+[::/SparrowOS/OSMain/Adam1b.HPP.Z,206] D:/SparrowOS/Doc/TimeJiffy.TXT.Z031C474878    0000            HelpFile  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3298] DCF_ALIAS                 0x2000        0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3284] DCF_COMPRESSED            1             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3297] DCF_DONT_DRAW             0x1000        0000 0000000008 DefineStr 
@@ -1034,20 +1034,20 @@ CPUStructInit             000002AF42    0001            ExportSysSym
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,350] DefineRegs                [DefineRegs,1] 0000013E2A    0001 00000001EF Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,494] DefineSub                 [DefineSub,1] 000000BAB0    0003 0000000067 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,508] DefineSubCnt              [DefineSubCnt,1] 000000BB18    0001 0000000045 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,243] Del                       [Del,1] 00000288CC    0001 00000000DE Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,243] Del                       [Del,1] 00000288B4    0001 00000000DE Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,262] DftExt                    [DftExt,1] 000001BF37    0002 0000000081 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir                       [Dir,1] 000002888C    0000 000000003E Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,214] Dir2                      [Dir2,1] 00000215DF    0001 00000002A1 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,233] Dir                       [Dir,1] 0000028874    0000 000000003E Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,214] Dir2                      [Dir2,1] 00000215C7    0001 00000002A1 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,316] DirFile                   [DirFile,1] 000001C11F    0000 00000001CC Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,156] DirNameAbs                [DirNameAbs,1] 000001BA8F    0006 00000002C1 Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,296] Dm                        [Dm,1] 0000013BCA    0000 000000001D Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,9] Dos2CDate                 [Dos2CDate,1] 0000024E9F    0001 0000000086 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,9] Dos2CDate                 [Dos2CDate,1] 0000024E87    0001 0000000086 Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,334] Dr                        [Dr,1] 0000013D82    0000 0000000084 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,12] Drv                       [Drv,1] 0000028034    0009 00000000FA Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,12] Drv                       [Drv,1] 000002801C    0009 00000000FA Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,118] Drv2BlkDev                [Drv2BlkDev,1] 000001B977    0007 000000002C Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,126] Drv2BlkDevFwded           [Drv2BlkDevFwded,1] 000001B9A7    0000 0000000039 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,97] Drv2Prt                   [Drv2Prt,1] 000001B8BF    0018 0000000065 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,1] DrvDftSelect              [DrvDftSelect,1] 0000029CFC    0001 0000000056 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,1] DrvDftSelect              [DrvDftSelect,1] 0000029CE4    0001 0000000056 Funct  
 [::/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,158] DrvEnable                 [DrvEnable,1] 0000020627    0000 000000008B Funct  
 [::/SparrowOS/OSMain/Dsk/DskCache.CPP.Z,75] DskCacheAdd               [DskCacheAdd,1] 000001C5F7    0003 00000000AE Funct  
 [::/SparrowOS/OSMain/Dsk/DskCache.CPP.Z,63] DskCacheFind              [DskCacheFind,1] 000001C5AF    0003 0000000048 Funct  
@@ -1115,9 +1115,9 @@ END_RSI_TASK              0000004673    0002            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,641] EXT_RESUME_DBG            5             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,643] EXT_TABLE_SIZE            6             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,636] EXT_WIN_TO_TOP            0             0002 0000000008 DefineStr 
-[::/SparrowOS/OSMain/PSect.CPP.Z,249] EdAddSrc                  [EdAddSrc,1] 000002DA37    0000 0000000040 Funct  
-[::/SparrowOS/OSMain/EdLite.CPP.Z,59] EdLite                    [EdLite,1] 000002C71F    0000 0000000A95 Funct  
-[::/SparrowOS/OSMain/EdLite.CPP.Z,7] EdLiteUpdate              [EdLiteUpdate,1] 000002C57F    0001 000000019D Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,249] EdAddSrc                  [EdAddSrc,1] 000002DA17    0000 0000000040 Funct  
+[::/SparrowOS/OSMain/EdLite.CPP.Z,59] EdLite                    [EdLite,1] 000002C6FF    0000 0000000A95 Funct  
+[::/SparrowOS/OSMain/EdLite.CPP.Z,7] EdLiteUpdate              [EdLiteUpdate,1] 000002C55F    0001 000000019D Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,9] EndianU16                 [EndianU16,1] 000001253A    0001 0000000024 Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,17] EndianU32                 [EndianU32,1] 0000012562    0002 0000000034 Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,27] EndianU64                 [EndianU64,1] 000001259A    0000 000000004C Funct  
@@ -1128,27 +1128,27 @@ END_RSI_TASK              0000004673    0002            ExportSysSym
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,247] Exp                       0000003682    0000            Funct  
 [::/SparrowOS/OSMain/Compress.CPP.Z,301] ExpandBuf                 [ExpandBuf,1] 0000007A98    0007 00000000BD Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,101] FALSE                     0             0132 0000000008 DefineStr 
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,480] FAT32AllocClusters        [FAT32AllocClusters,1] 00000263FC    0000 000000027E Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,539] FAT32AllocContiguousClusters[FAT32AllocContiguousClusters,1] 000002667C    0000 00000002F5 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,229] FAT32CDirFill             [FAT32CDirFill,1] 00000258AC    0002 0000000074 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,419] FAT32Cd                   [FAT32Cd,1] 000002616C    0001 0000000092 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,243] FAT32DirFill              [FAT32DirFill,1] 0000025924    0003 00000002D8 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,601] FAT32DirNew               [FAT32DirNew,1] 0000026974    0001 0000000A67 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,47] FAT32DrvValidate          [FAT32DrvValidate,1] 00000250A7    0000 00000000A0 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,299] FAT32FileFind             [FAT32FileFind,1] 0000025BFC    0004 00000002F9 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,367] FAT32FileRead             [FAT32FileRead,1] 0000025EFC    0002 000000026F Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,835] FAT32FileWrite            [FAT32FileWrite,1] 000002788C    0001 00000001BF Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,748] FAT32FilesDel             [FAT32FilesDel,1] 00000273DC    0003 00000004AF Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,883] FAT32FilesFind            [FAT32FilesFind,1] 0000027A4C    0001 0000000401 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,64] FAT32Fmt                  [FAT32Fmt,1] 0000025147    0001 00000003DF Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,436] FAT32FreeClusters         [FAT32FreeClusters,1] 0000026204    0002 00000001F5 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,961] FAT32MkDir                [FAT32MkDir,1] 0000027E54    0001 0000000174 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,22] FAT32PrtInit              [FAT32PrtInit,1] 0000024F27    0002 000000017E Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,480] FAT32AllocClusters        [FAT32AllocClusters,1] 00000263E4    0000 000000027E Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,539] FAT32AllocContiguousClusters[FAT32AllocContiguousClusters,1] 0000026664    0000 00000002F5 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,229] FAT32CDirFill             [FAT32CDirFill,1] 0000025894    0002 0000000074 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,419] FAT32Cd                   [FAT32Cd,1] 0000026154    0001 0000000092 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,243] FAT32DirFill              [FAT32DirFill,1] 000002590C    0003 00000002D8 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,601] FAT32DirNew               [FAT32DirNew,1] 000002695C    0001 0000000A67 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,47] FAT32DrvValidate          [FAT32DrvValidate,1] 000002508F    0000 00000000A0 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,299] FAT32FileFind             [FAT32FileFind,1] 0000025BE4    0004 00000002F9 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,367] FAT32FileRead             [FAT32FileRead,1] 0000025EE4    0002 000000026F Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,835] FAT32FileWrite            [FAT32FileWrite,1] 0000027874    0001 00000001BF Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,748] FAT32FilesDel             [FAT32FilesDel,1] 00000273C4    0003 00000004AF Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,883] FAT32FilesFind            [FAT32FilesFind,1] 0000027A34    0001 0000000401 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,64] FAT32Fmt                  [FAT32Fmt,1] 000002512F    0001 00000003DF Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,436] FAT32FreeClusters         [FAT32FreeClusters,1] 00000261EC    0002 00000001F5 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,961] FAT32MkDir                [FAT32MkDir,1] 0000027E3C    0001 0000000174 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,22] FAT32PrtInit              [FAT32PrtInit,1] 0000024F0F    0002 000000017E Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2289] FAT32_ENTRIES_PER_BLK     (BLK_SIZE/    0022 0000000028 DefineStr 
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,170] FATFromName               [FATFromName,1] 000002569F    0004 00000000C2 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,135] FATNameTo                 [FATNameTo,1] 0000025527    0002 0000000115 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,162] FATNameXSum               [FATNameXSum,1] 000002563F    0005 000000005E Funct  
-[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,74] FClose                    [FClose,1] 00000295CC    0006 00000000CE Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,170] FATFromName               [FATFromName,1] 0000025687    0004 00000000C2 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,135] FATNameTo                 [FATNameTo,1] 000002550F    0002 0000000115 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,162] FATNameXSum               [FATNameXSum,1] 0000025627    0005 000000005E Funct  
+[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,74] FClose                    [FClose,1] 00000295B4    0006 00000000CE Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3528] FFB_NEXT_BLK              MAX_U32       0006 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3532] FF_BUF_DIRTY              4             0007 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3534] FF_CONTIGUOUS             16            0003 0000000008 DefineStr 
@@ -1159,12 +1159,12 @@ END_RSI_TASK              0000004673    0002            ExportSysSym
 FOCUS_RSI_NEXT_USER       0000004894    0002            ExportSysSym 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3261] FONT_HEIGHT               8             000E 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3260] FONT_WIDTH                8             0008 0000000008 DefineStr 
-[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,9] FOpen                     [FOpen,1] 000002933C    0008 000000028C Funct  
-[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,130] FRBlks                    [FRBlks,1] 00000297BC    0002 0000000221 Funct  
+[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,9] FOpen                     [FOpen,1] 0000029324    0008 000000028C Funct  
+[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,130] FRBlks                    [FRBlks,1] 00000297A4    0002 0000000221 Funct  
 FREE_DONE                 0000005EB1    0001            ExportSysSym 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2676] FREE_PAGE_HASH_SIZE       0x100         0006 0000000008 DefineStr 
-[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,100] FSetCluster               [FSetCluster,1] 000002969C    0006 0000000120 Funct  
-[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,1] FSize                     [FSize,1] 000002931C    0004 000000001B Funct  
+[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,100] FSetCluster               [FSetCluster,1] 0000029684    0006 0000000120 Funct  
+[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,1] FSize                     [FSize,1] 0000029304    0004 000000001B Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3571] FUF_ALL                   0x00020       0000 0000000010 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3572] FUF_CANCEL                0x00040       0000 0000000010 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3567] FUF_DIFF                  0x00002       0000 0000000010 DefineStr 
@@ -1199,8 +1199,8 @@ FREE_DONE                 0000005EB1    0001            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3551] FUf_WHOLE_LABELS          3             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3564] FUf_WHOLE_LABELS_BACK     16            0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3563] FUf_WHOLE_LABELS_FRONT    15            0000 0000000008 DefineStr 
-[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,179] FWBlks                    [FWBlks,1] 00000299E4    0002 0000000318 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,170] FarCall32                 000002BC22    0007            Funct 
+[::/SparrowOS/OSMain/Dsk/DskCFile.CPP.Z,179] FWBlks                    [FWBlks,1] 00000299CC    0002 0000000318 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,170] FarCall32                 000002BC02    0007            Funct 
 Fault2                    0000014892    0001            ExportSysSym 
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,516] Fault2                    [Fault2,1] 0000014892    0001 000000025E Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,249] Fclex                     0000003730    0000            Funct 
@@ -1224,19 +1224,19 @@ Fault2                    0000014892    0001            ExportSysSym
 [::/SparrowOS/OSMain/FIFO.CPP.Z,1] FifoU8New                 [FifoU8New,1] 0000007085    0004 0000000057 Funct  
 [::/SparrowOS/OSMain/FIFO.CPP.Z,51] FifoU8Peek                [FifoU8Peek,1] 000000718D    0000 0000000037 Funct  
 [::/SparrowOS/OSMain/FIFO.CPP.Z,36] FifoU8Rem                 [FifoU8Rem,1] 0000007145    0006 0000000046 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,123] FileAccessDel             [FileAccessDel,1] 00000284D4    000C 000000009C Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,143] FileAccessNew             [FileAccessNew,1] 0000028574    000B 000000024C Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,123] FileAccessDel             [FileAccessDel,1] 00000284BC    000C 000000009C Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,143] FileAccessNew             [FileAccessNew,1] 000002855C    000B 000000024C Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,289] FileAttr                  [FileAttr,1] 000001C03F    0015 000000003E Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,1] FileExtDot                [FileExtDot,1] 000001B54F    0003 0000000041 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,10] FileExtRem                [FileExtRem,1] 000001B597    0003 0000000047 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,338] FileFind                  [FileFind,1] 0000028D9C    0006 0000000251 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,338] FileFind                  [FileFind,1] 0000028D84    0006 0000000251 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,222] FileNameAbs               [FileNameAbs,1] 000001BD57    000B 000000014F Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,300] FileNameChk               [FileNameChk,1] 000001C07F    0006 000000009F Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,264] FileRead                  [FileRead,1] 00000289AC    0003 00000003CF Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,392] FileSize                  [FileSize,1] 0000028FF4    0000 000000002C Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,401] FileSizeExpanded          [FileSizeExpanded,1] 0000029024    0000 00000000C6 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,423] FileWrite                 [FileWrite,1] 00000290EC    0003 00000001EB Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,196] FilesFind                 [FilesFind,1] 00000287C4    0000 000000004A Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,264] FileRead                  [FileRead,1] 0000028994    0003 00000003CF Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,392] FileSize                  [FileSize,1] 0000028FDC    0000 000000002C Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,401] FileSizeExpanded          [FileSizeExpanded,1] 000002900C    0000 00000000C6 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,423] FileWrite                 [FileWrite,1] 00000290D4    0003 00000001EB Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,196] FilesFind                 [FilesFind,1] 00000287AC    0000 000000004A Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,50] FilesFindMatch            [FilesFindMatch,1] 000001B787    0005 00000000DD Funct  
 [::/SparrowOS/OSMain/Date.CPP.Z,70] FirstDayOfMon             [FirstDayOfMon,1] 0000008EEE    0001 000000003D Funct  
 [::/SparrowOS/OSMain/Date.CPP.Z,97] FirstDayOfYear            [FirstDayOfYear,1] 0000008F86    0001 0000000041 Funct  
@@ -1245,7 +1245,7 @@ Fault2                    0000014892    0001            ExportSysSym
 [::/SparrowOS/OSMain/Math1b.CPP.Z,52] FloorI64                  [FloorI64,1] 0000003FF8    0001 0000000049 Funct  
 [::/SparrowOS/OSMain/Math1b.CPP.Z,36] FloorU64                  [FloorU64,1] 0000003F78    0001 0000000028 Funct  
 [::/SparrowOS/OSMain/KbdMouse/Message.CPP.Z,89] FlushMsgs                 [FlushMsgs,1] 000001887F    0002 0000000031 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,154] Fmt                       [Fmt,1] 000002A344    0000 0000000143 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,154] Fmt                       [Fmt,1] 000002A32C    0000 0000000143 Funct  
 [::/SparrowOS/OSMain/Memory.CPP.Z,950] Free                      0000005DEF    00FF            Funct 
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,284] Fs                        0000000016    0162            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,250] Fstcw                     000000371D    0000            Funct 
@@ -1369,7 +1369,7 @@ HANDLE_SWAP_KEY_EVENT     0000004792    0002            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,658] HTt_OPCODE                11            0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,659] HTt_REG                   12            0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,654] HTt_WORD                  7             0000 0000000008 DefineStr 
-[::/SparrowOS/OSMain/PSect.CPP.Z,1] HasLower                  [HasLower,1] 000002D1B7    0002 0000000036 Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,1] HasLower                  [HasLower,1] 000002D197    0002 0000000036 Funct  
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,455] HashAdd                   0000007CFE    0006            Funct 
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,454] HashBucketFind            0000007CE5    0000            Funct 
 HashDel                   0000007F06    0002            ExportSysSym 
@@ -1675,13 +1675,13 @@ INIT_EM64T                0000002DEB    0003            ExportSysSym
 [::/SparrowOS/OSMain/KbdMouse/InputPointer.CPP.Z,35] IPVarsUpdate              [IPVarsUpdate,1] 00000153E7    0001 0000000306 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3690] IP_MOUSE                  1             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3689] IP_NULL                   0             0001 0000000008 DefineStr 
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,115] ISO1CDirFill              [ISO1CDirFill,1] 00000224EF    0002 00000000C1 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,244] ISO1Cd                    [ISO1Cd,1] 0000022A5F    0001 0000000094 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,73] ISO1DateStruct2CDate      [ISO1DateStruct2CDate,1] 00000223BF    0001 0000000067 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,137] ISO1FileFind              [ISO1FileFind,1] 00000225B7    0004 000000024B Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,196] ISO1FileRead              [ISO1FileRead,1] 0000022807    0002 0000000251 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,260] ISO1FilesFind             [ISO1FilesFind,1] 0000022AF7    0001 0000000225 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,87] ISO1FromName              [ISO1FromName,1] 0000022427    0002 00000000C6 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,115] ISO1CDirFill              [ISO1CDirFill,1] 00000224D7    0002 00000000C1 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,244] ISO1Cd                    [ISO1Cd,1] 0000022A47    0001 0000000094 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,73] ISO1DateStruct2CDate      [ISO1DateStruct2CDate,1] 00000223A7    0001 0000000067 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,137] ISO1FileFind              [ISO1FileFind,1] 000002259F    0004 000000024B Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,196] ISO1FileRead              [ISO1FileRead,1] 00000227EF    0002 0000000251 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,260] ISO1FilesFind             [ISO1FilesFind,1] 0000022ADF    0001 0000000225 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,87] ISO1FromName              [ISO1FromName,1] 000002240F    0002 00000000C6 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2363] ISO1T_BOOT_RECORD         0             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2364] ISO1T_PRI_VOL_DESC        1             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2365] ISO1T_SUPPLEMENTARY_DESC  2             0001 0000000008 DefineStr 
@@ -1689,7 +1689,7 @@ INIT_EM64T                0000002DEB    0003            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2366] ISO1T_VOL_PRT_DESC        3             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3505] ISO1_ATTR_DIR             2             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2406] ISO1_BASE_YEAR            1900          0002 0000000008 DefineStr 
-[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,5] ISOPrtInit                [ISOPrtInit,1] 0000021887    0000 0000000AD8 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysISO1.CPP.Z,5] ISOPrtInit                [ISOPrtInit,1] 000002186F    0000 0000000AD8 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,901] IT_F64                    10            0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,890] IT_I0                     0             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,894] IT_I16                    4             0000 0000000008 DefineStr 
@@ -1730,7 +1730,7 @@ INIT_EM64T                0000002DEB    0003            ExportSysSym
 [::/SparrowOS/OSMain/Interrupts.CPP.Z,132] IntsInit                  [IntsInit,1] 0000006E8D    0001 0000000042 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,179] InvlPg                    0000000071    0006            Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,1] IsDbgTask                 [IsDbgTask,1] 000001323A    0000 0000000034 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,218] IsDir                     [IsDir,1] 0000028814    0000 0000000072 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,218] IsDir                     [IsDir,1] 00000287FC    0000 0000000072 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,31] IsDotC                    [IsDotC,1] 000001B64F    0001 0000000069 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,22] IsDotZ                    [IsDotZ,1] 000001B5DF    0002 0000000069 Funct  
 [::/SparrowOS/OSMain/Dsk/DskStr.CPP.Z,134] IsDrvWritable             [IsDrvWritable,1] 000001B9E7    0000 0000000029 Funct  
@@ -1969,36 +1969,36 @@ MALLOC_FINAL_EXIT         0000005DE9    0002            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,812] MLF_STATIC                32            0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,808] MLF_STR_DFT_AVAILABLE     2             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,820] MLMF_IS_STR               1             0000 0000000008 DefineStr 
-MP2_START2                000002AC1C    0001            ExportSysSym 
-MP2_SYS_TEMP_PTR          000002AC14    0001            ExportSysSym 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,212] MPAPICInit                [MPAPICInit,1] 000002B16A    0002 0000000094 Funct  
+MP2_START2                000002ABFC    0001            ExportSysSym 
+MP2_SYS_TEMP_PTR          000002ABF4    0001            ExportSysSym 
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,212] MPAPICInit                [MPAPICInit,1] 000002B14A    0002 0000000094 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,999] MPCCf_LOCKED              0             000C 0000000008 DefineStr 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,379] MPCPUTaskInit             [MPCPUTaskInit,1] 000002B68A    0001 0000000043 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,379] MPCPUTaskInit             [MPCPUTaskInit,1] 000002B66A    0001 0000000043 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,981] MPCT_CALL                 1             0002 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,982] MPCT_SPAWN_TASK           2             0002 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,978] MPCf_DISPATCHED           1             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,977] MPCf_DONE                 0             0003 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,979] MPCf_FREE_ON_COMPLETE     2             0003 0000000008 DefineStr 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,236] MPCmdCtrlDo               [MPCmdCtrlDo,1] 000002B202    0002 000000015D Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,127] MPCmdCtrlInit             [MPCmdCtrlInit,1] 000002AECA    0002 0000000032 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,388] MPCmdQueDel               [MPCmdQueDel,1] 000002B6D2    0004 0000000041 Funct  
-MPCrash                   000002BAE2    0001            ExportSysSym 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,516] MPCrash                   [MPCrash,1] 000002BAE2    0001 0000000084 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,187] MPHalt                    [MPHalt,1] 000002B072    0002 0000000020 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,484] MPInit                    [MPInit,1] 000002B9D2    0001 0000000109 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,155] MPInt                     [MPInt,1] 000002AFAA    0001 0000000077 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,172] MPIntAll                  [MPIntAll,1] 000002B022    0000 0000000031 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,330] MPJob                     [MPJob,1] 000002B51A    0000 000000003C Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,338] MPJobResult               [MPJobResult,1] 000002B55A    0000 0000000087 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,182] MPNMInt                   [MPNMInt,1] 000002B05A    0001 0000000011 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,236] MPCmdCtrlDo               [MPCmdCtrlDo,1] 000002B1E2    0002 000000015D Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,127] MPCmdCtrlInit             [MPCmdCtrlInit,1] 000002AEAA    0002 0000000032 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,388] MPCmdQueDel               [MPCmdQueDel,1] 000002B6B2    0004 0000000041 Funct  
+MPCrash                   000002BAC2    0001            ExportSysSym 
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,516] MPCrash                   [MPCrash,1] 000002BAC2    0001 0000000084 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,187] MPHalt                    [MPHalt,1] 000002B052    0002 0000000020 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,484] MPInit                    [MPInit,1] 000002B9B2    0001 0000000109 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,155] MPInt                     [MPInt,1] 000002AF8A    0001 0000000077 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,172] MPIntAll                  [MPIntAll,1] 000002B002    0000 0000000031 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,330] MPJob                     [MPJob,1] 000002B4FA    0000 000000003C Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,338] MPJobResult               [MPJobResult,1] 000002B53A    0000 0000000087 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,182] MPNMInt                   [MPNMInt,1] 000002B03A    0001 0000000011 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,550] MPN_VECT                  0x7F          0005 0000000008 DefineStr 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,295] MPQueJob                  [MPQueJob,1] 000002B3F2    0002 0000000122 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,276] MPSethServerTask          [MPSethServerTask,1] 000002B362    0001 000000008B Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,358] MPSpawn                   [MPSpawn,1] 000002B5E2    0001 00000000A4 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,400] MPStart                   [MPStart,1] 000002B71A    0001 00000002B6 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,194] MPWake                    [MPWake,1] 000002B092    0001 00000000D7 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,295] MPQueJob                  [MPQueJob,1] 000002B3D2    0002 0000000122 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,276] MPSethServerTask          [MPSethServerTask,1] 000002B342    0001 000000008B Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,358] MPSpawn                   [MPSpawn,1] 000002B5C2    0001 00000000A4 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,400] MPStart                   [MPStart,1] 000002B6FA    0001 00000002B6 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,194] MPWake                    [MPWake,1] 000002B072    0001 00000000D7 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2682] MP_DFT_STK                (PAGE_SIZE    0001 0000000010 DefineStr 
-MP_INIT_OS                000002AC3F    0001            ExportSysSym 
+MP_INIT_OS                000002AC1F    0001            ExportSysSym 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,410] MP_MAX_PROCESSORS         64            0014 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2686] MP_STD_HASH_SIZE          (1<<12)       0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,551] MP_VECT_ADDR              (MPN_VECT*    0002 0000000018 DefineStr 
@@ -2040,7 +2040,7 @@ MP_INIT_OS                000002AC3F    0001            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2409] MT_CD                     1             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2410] MT_DVD                    2             0001 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Dsk/Dsk1a.CPP.Z,149] MapBufAlloc               [MapBufAlloc,1] 000001E86F    0002 000000007C Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,1] MapDrv                    [MapDrv,1] 0000027FCC    0000 0000000061 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,1] MapDrv                    [MapDrv,1] 0000027FB4    0000 0000000061 Funct  
 [::/SparrowOS/OSMain/Math1b.CPP.Z,18] Max                       [Max,1] 0000003F10    0000 0000000020 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,224] MaxI64                    00000000C5    0002            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,226] MaxU64                    00000000C6    0000            Funct  
@@ -2073,7 +2073,7 @@ MP_INIT_OS                000002AC3F    0001            ExportSysSym
 [::/SparrowOS/OSMain/Math1b.CPP.Z,10] Min                       [Min,1] 0000003EF0    0000 0000000020 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,223] MinI64                    00000000C3    0001            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,225] MinU64                    00000000C4    0000            Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,95] MkDir                     [MkDir,1] 000002A0EC    0000 0000000178 Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,95] MkDir                     [MkDir,1] 000002A0D4    0000 0000000178 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,227] ModU64                    00000000C9    000C            Funct  
 [::/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,183] Mount                     [Mount,1] 00000206EF    0000 0000000529 Funct  
 [::/SparrowOS/OSMain/KbdMouse/Mouse.CPP.Z,257] MouseDriverInstall        [MouseDriverInstall,1] 000001820F    0003 00000000E3 Funct  
@@ -2105,21 +2105,21 @@ MP_INIT_OS                000002AC3F    0001            ExportSysSym
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,548] NamedFramePtrAdd          [NamedFramePtrAdd,1] 000000811E    0000 000000002E Funct  
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,563] NamedFramePtrDel          [NamedFramePtrDel,1] 00000081AE    0000 0000000060 Funct  
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,553] NamedFramePtrSet          [NamedFramePtrSet,1] 000000814E    0000 000000005B Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,354] NativeFSAllocClusters     [NativeFSAllocClusters,1] 0000023C87    0000 0000000204 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,284] NativeFSCd                [NativeFSCd,1] 00000239B7    0001 0000000093 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,405] NativeFSDirNew            [NativeFSDirNew,1] 0000023E8F    0002 00000006AF Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,86] NativeFSDrvValidate       [NativeFSDrvValidate,1] 00000230CF    0000 00000000AF Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,178] NativeFSFileFind          [NativeFSFileFind,1] 000002351F    0005 000000020F Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,232] NativeFSFileRead          [NativeFSFileRead,1] 000002372F    0002 0000000282 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,573] NativeFSFileWrite         [NativeFSFileWrite,1] 00000247BF    0001 00000001D8 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,517] NativeFSFilesDel          [NativeFSFilesDel,1] 000002453F    0003 000000027A Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,622] NativeFSFilesFind         [NativeFSFilesFind,1] 0000024997    0001 00000002F4 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,104] NativeFSFmt               [NativeFSFmt,1] 000002317F    0001 000000039A Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,301] NativeFSFreeClusters      [NativeFSFreeClusters,1] 0000023A4F    0003 0000000237 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,1] NativeFSFreeFreeLst       [NativeFSFreeFreeLst,1] 0000022D1F    0002 00000000A4 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,23] NativeFSFreeLstBuild      [NativeFSFreeLstBuild,1] 0000022DC7    0002 00000001A4 Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,679] NativeFSMkDir             [NativeFSMkDir,1] 0000024C8F    0001 000000018D Funct  
-[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,60] NativeFSPrtInit           [NativeFSPrtInit,1] 0000022F6F    0002 000000015B Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,354] NativeFSAllocClusters     [NativeFSAllocClusters,1] 0000023C6F    0000 0000000204 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,284] NativeFSCd                [NativeFSCd,1] 000002399F    0001 0000000093 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,405] NativeFSDirNew            [NativeFSDirNew,1] 0000023E77    0002 00000006AF Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,86] NativeFSDrvValidate       [NativeFSDrvValidate,1] 00000230B7    0000 00000000AF Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,178] NativeFSFileFind          [NativeFSFileFind,1] 0000023507    0005 000000020F Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,232] NativeFSFileRead          [NativeFSFileRead,1] 0000023717    0002 0000000282 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,573] NativeFSFileWrite         [NativeFSFileWrite,1] 00000247A7    0001 00000001D8 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,517] NativeFSFilesDel          [NativeFSFilesDel,1] 0000024527    0003 000000027A Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,622] NativeFSFilesFind         [NativeFSFilesFind,1] 000002497F    0001 00000002F4 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,104] NativeFSFmt               [NativeFSFmt,1] 0000023167    0001 000000039A Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,301] NativeFSFreeClusters      [NativeFSFreeClusters,1] 0000023A37    0003 0000000237 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,1] NativeFSFreeFreeLst       [NativeFSFreeFreeLst,1] 0000022D07    0002 00000000A4 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,23] NativeFSFreeLstBuild      [NativeFSFreeLstBuild,1] 0000022DAF    0002 00000001A4 Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,679] NativeFSMkDir             [NativeFSMkDir,1] 0000024C77    0001 000000018D Funct  
+[::/SparrowOS/OSMain/Dsk/FileSysNative.CPP.Z,60] NativeFSPrtInit           [NativeFSPrtInit,1] 0000022F57    0002 000000015B Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,543] NewLine                   [NewLine,1] 000000BC18    0010 0000000023 Funct  
 [::/SparrowOS/OSMain/Dsk/DskCache.CPP.Z,162] NonNativeFileRBlks        [NonNativeFileRBlks,1] 000001C91F    0001 0000000059 Funct  
 [::/SparrowOS/OSMain/Dsk/DskCache.CPP.Z,170] NonNativeFileWBlks        [NonNativeFileWBlks,1] 000001C97F    0001 0000000059 Funct  
@@ -2161,8 +2161,8 @@ MP_INIT_OS                000002AC3F    0001            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,1564] OPTf_WARN_PAREN           0x11          0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,1563] OPTf_WARN_UNUSED_VAR      0x10          0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,706] OSMAIN_MODULE_NAME        \"/Sparrow    0001 0000000020 DefineStr 
-OSMain                    000002E09F    0001            ExportSysSym 
-[::/SparrowOS/OSMain/OSEnd.CPP.Z,154] OSMain                    [OSMain,1] 000002E09F    0001 000000037C Funct  
+OSMain                    000002E087    0001            ExportSysSym 
+[::/SparrowOS/OSMain/OSEnd.CPP.Z,154] OSMain                    [OSMain,1] 000002E087    0001 000000037C Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,1132] OutStr                    [OutStr,1] 000000CDB0    000C 00000000EA Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,101] OutU16                    0000000076    0002            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,102] OutU32                    0000000077    0000            Funct  
@@ -2172,13 +2172,13 @@ OSMain                    000002E09F    0001            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2673] PAGE_SIZE                 (1<<PAGE_B    000F 0000000010 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3646] PAGE_TABLE_BASE           0x100000      000E 0000000010 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3651] PAGE_TABLE_SIZE           (NUM_PML1+    0000 0000000030 DefineStr 
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,274] PCIClassFind              [PCIClassFind,1] 000002C0B7    0000 00000000AB Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,191] PCIReadU16                [PCIReadU16,1] 000002BDD7    0003 0000000095 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,210] PCIReadU32                [PCIReadU32,1] 000002BE6F    0009 0000000093 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,172] PCIReadU8                 [PCIReadU8,1] 000002BD3F    0000 0000000095 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,244] PCIWriteU16               [PCIWriteU16,1] 000002BF97    0000 0000000089 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,259] PCIWriteU32               [PCIWriteU32,1] 000002C027    0000 0000000089 Funct  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,229] PCIWriteU8                [PCIWriteU8,1] 000002BF07    0000 0000000089 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,274] PCIClassFind              [PCIClassFind,1] 000002C097    0000 00000000AB Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,191] PCIReadU16                [PCIReadU16,1] 000002BDB7    0003 0000000095 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,210] PCIReadU32                [PCIReadU32,1] 000002BE4F    0009 0000000093 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,172] PCIReadU8                 [PCIReadU8,1] 000002BD1F    0000 0000000095 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,244] PCIWriteU16               [PCIWriteU16,1] 000002BF77    0000 0000000089 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,259] PCIWriteU32               [PCIWriteU32,1] 000002C007    0000 0000000089 Funct  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,229] PCIWriteU8                [PCIWriteU8,1] 000002BEE7    0000 0000000089 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3638] POP_C_REGS                POP R9 POP    000A 0000000030 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3642] POP_REGS                  POP R15 PO    0001 0000000078 DefineStr 
 [::/SparrowOS/Compiler/CmpDefs.HPP.Z,353] PREC_ADD                  0x24          0000 0000000008 DefineStr 
@@ -2223,9 +2223,9 @@ OSMain                    000002E09F    0001            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2540] PRT_SIGNATURE_VAL         'PTSV'        0003 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3692] PSECT_CACHE_SIZE          256           0003 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3700] PSECT_CACHE_STR_LEN       (sizeof(CP    0001 0000000030 DefineStr 
-[::/SparrowOS/OSMain/PSect.CPP.Z,53] PSectCacheAdd             [PSectCacheAdd,1] 000002D2FF    0001 000000011D Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,78] PSectCacheFind            [PSectCacheFind,1] 000002D41F    0001 00000000AE Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,10] PSectFind                 [PSectFind,1] 000002D1EF    0003 000000010B Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,53] PSectCacheAdd             [PSectCacheAdd,1] 000002D2DF    0001 000000011D Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,78] PSectCacheFind            [PSectCacheFind,1] 000002D3FF    0001 00000000AE Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,10] PSectFind                 [PSectFind,1] 000002D1CF    0003 000000010B Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2513] PT_FAT32                  2             0021 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2516] PT_ISO13346               5             0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2515] PT_ISO13490               4             0000 0000000008 DefineStr 
@@ -2274,15 +2274,15 @@ PutChar                   0000012232    0000            ExportSysSym
 [::/SparrowOS/OSMain/Str1a.CPP.Z,526] PutDefine                 [PutDefine,1] 000000BB98    0022 000000001A Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,575] PutDefineErr              [PutDefineErr,1] 000000BCD8    002A 000000001B Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,581] PutDefineWarn             [PutDefineWarn,1] 000000BCF8    0000 000000001B Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,201] PutDirLink                [PutDirLink,1] 000002156F    0001 0000000069 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,201] PutDirLink                [PutDirLink,1] 0000021557    0001 0000000069 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,555] PutErr                    [PutErr,1] 000000BC68    0002 0000000036 Funct  
 [::/SparrowOS/OSMain/Except.CPP.Z,115] PutExcept                 [PutExcept,1] 0000014D5F    0002 00000001F1 Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,175] PutFileLink               [PutFileLink,1] 0000021437    0001 0000000131 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,175] PutFileLink               [PutFileLink,1] 000002141F    0001 0000000131 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,13] PutHex                    [PutHex,1] 000000B0BE    0004 0000000038 Funct  
 [::/SparrowOS/OSMain/Display.CPP.Z,180] PutKey                    [PutKey,1] 000001219A    0003 0000000092 Funct  
 PutS                      000001224A    0000            ExportSysSym 
 [::/SparrowOS/OSMain/Display.CPP.Z,205] PutS                      [PutS,1] 000001224A    002C 00000000D5 Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,234] PutSrcLink                [PutSrcLink,1] 000002D99F    0000 0000000095 Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,234] PutSrcLink                [PutSrcLink,1] 000002D97F    0000 0000000095 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,565] PutWarn                   [PutWarn,1] 000000BCA0    0002 0000000037 Funct  
 [::/SparrowOS/OSMain/QSort.CPP.Z,146] QSort                     [QSort,1] 0000019167    0000 0000000305 Funct  
 [::/SparrowOS/OSMain/QSort.CPP.Z,52] QSort2a                   [QSort2a,1] 0000018E67    0004 0000000121 Funct  
@@ -2407,8 +2407,8 @@ RESTORE_RSI_TASK_WITH_KEY_000000470C    0005            ExportSysSym
 [::/SparrowOS/OSMain/Math1b.CPP.Z,223] Randomize                 [Randomize,1] 0000004520    0000 000000001B Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,311] Raw                       [Raw,1] 0000013002    0015 0000000060 Funct  
 [::/SparrowOS/OSMain/Display.CPP.Z,1] RawDrawChar               [RawDrawChar,1] 0000011A82    0008 0000000441 Funct  
-Reboot                    000002E04F    0001            ExportSysSym 
-[::/SparrowOS/OSMain/OSEnd.CPP.Z,139] Reboot                    [Reboot,1] 000002E04F    0001 0000000050 Funct  
+Reboot                    000002E037    0001            ExportSysSym 
+[::/SparrowOS/OSMain/OSEnd.CPP.Z,139] Reboot                    [Reboot,1] 000002E037    0001 0000000050 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,104] RepInU16                  0000002FB5    0001            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,105] RepInU32                  0000002F9D    0001            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,103] RepInU8                   0000002FCE    0000            Funct  
@@ -2513,7 +2513,7 @@ SPARROWOS_CONT_START      0000001694    0001            ExportSysSym
 [::/SparrowOS/OSMain/Str1a.CPP.Z,2046] SPrintF                   [SPrintF,1] 000000FD42    000A 0000000028 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,1102] SPrintFFlags              [SPrintFFlags,1] 000000CCE0    0000 0000000050 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,1328] SPrintFJoin               [SPrintFJoin,1] 000000D8AA    0012 0000002493 Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,98] SPrintFPSect              [SPrintFPSect,1] 000002D4CF    0000 00000001AE Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,98] SPrintFPSect              [SPrintFPSect,1] 000002D4AF    0000 00000001AE Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,1114] SPrintFPutChar            [SPrintFPutChar,1] 000000CD30    0036 0000000080 Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2179] SRC_FILE_MASK             \"*.CPP.Z;    0002 0000000040 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3496] SRF_IGNORE_CASE           1             0001 0000000008 DefineStr 
@@ -2545,8 +2545,8 @@ SPARROWOS_CONT_START      0000001694    0001            ExportSysSym
 SWAP_IN_SETH_TASK         0000004786    0004            ExportSysSym 
 [::/SparrowOS/OSMain/OSStart.CPP.Z,59] SYS_ADAM_HC               0000001188    0002            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,58] SYS_ADAM_TASK             0000000C68    0005            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,46] SYS_BIOS32_SERVICE_CALL   000002BBDF    0001            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,4] SYS_BIOS32_SERVICE_DIR    000002BB6A    0003            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,46] SYS_BIOS32_SERVICE_CALL   000002BBBF    0001            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,4] SYS_BIOS32_SERVICE_DIR    000002BB4A    0003            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,53] SYS_BIOS_GR_MODE          0000000C60    0003            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,27] SYS_BOOT_BASE             0000000004    0006            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,35] SYS_BOOT_CODE             0000000018    0002            ExportSysSym  
@@ -2571,8 +2571,8 @@ SWAP_IN_SETH_TASK         0000004786    0004            ExportSysSym
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,200] SYS_EXT_FIND              0000007C13    0000            ExportSysSym  
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,198] SYS_EXT_FIND1             0000007C0C    0001            ExportSysSym  
 [::/SparrowOS/OSMain/Interrupts.CPP.Z,96] SYS_FAULT_ERR_CODE_BITMAP 0000006D7D    0001            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,8] SYS_FIND_BIOS32_SERVICE_DIR000002BB72    0001            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,38] SYS_FIND_PCI_SERVICES     000002BBC2    0001            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,8] SYS_FIND_BIOS32_SERVICE_DIR000002BB52    0001            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,38] SYS_FIND_PCI_SERVICES     000002BBA2    0001            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,338] SYS_FOCUS_TASK            0000002338    0009            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,40] SYS_GDTTAB                00000003E0    0003            ExportSysSym  
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,185] SYS_HASH_BUCKET_FIND      0000007BF8    0002            ExportSysSym  
@@ -2600,13 +2600,13 @@ SWAP_IN_SETH_TASK         0000004786    0004            ExportSysSym
 [::/SparrowOS/OSMain/OSStart.CPP.Z,343] SYS_MP_CNT_INITIAL        0000002360    0003            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,344] SYS_MP_CNT_LOCK           0000002368    0003            ExportSysSym  
 [::/SparrowOS/OSMain/Interrupts.CPP.Z,3] SYS_MP_CRASH_HANDLER_ADDR 0000006C5C    0001            ExportSysSym  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,33] SYS_MP_INIT_END           000002AC3F    0001            ExportSysSym  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,9] SYS_MP_INIT_START         000002AC10    0003            ExportSysSym  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,33] SYS_MP_INIT_END           000002AC1F    0001            ExportSysSym  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,9] SYS_MP_INIT_START         000002ABF0    0003            ExportSysSym  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,434] SYS_NORMAL_RFLAGS         (1<<RFLAGf    0003 0000000010 DefineStr 
-[::/SparrowOS/OSMain/OSEnd.CPP.Z,248] SYS_OSMAIN_END            000002E420    0000            ExportSysSym  
+[::/SparrowOS/OSMain/OSEnd.CPP.Z,248] SYS_OSMAIN_END            000002E410    0000            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,34] SYS_OS_32START            0000000014    0001            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,54] SYS_PCI_BUSSES            0000000C62    0003            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,5] SYS_PCI_SERVICES          000002BB6E    0004            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,5] SYS_PCI_SERVICES          000002BB4E    0004            ExportSysSym  
 [::/SparrowOS/OSMain/Math1a.CPP.Z,434] SYS_POW                   0000003590    0009            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,324] SYS_PROGRESS1             0000002238    0001            ExportSysSym  
 [::/SparrowOS/OSMain/OSStart.CPP.Z,326] SYS_PROGRESS1_DESC        0000002248    0001            ExportSysSym  
@@ -2671,7 +2671,7 @@ SWAP_IN_SETH_TASK         0000004786    0004            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,629] SYSf_CTRL_ALT_TAB         3             0003 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,628] SYSf_CTRL_ALT_X           2             0003 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Except.CPP.Z,56] SaveExceptRegs            0000014B83    0001            Funct 
-[::/SparrowOS/OSMain/Memory.CPP.Z,1416] Scale2Mem                 [Scale2Mem,1] 0000006C04    0002 0000000056 Funct  
+[::/SparrowOS/OSMain/Memory.CPP.Z,1416] Scale2Mem                 [Scale2Mem,1] 0000006C04    0001 0000000056 Funct  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,770] ScaleIndent               [ScaleIndent,1] 000000C2A0    0001 00000000F0 Funct  
 [::/SparrowOS/OSMain/KbdMouse/Message.CPP.Z,112] ScanChar                  [ScanChar,1] 000001895F    0000 000000004B Funct  
 [::/SparrowOS/OSMain/KbdMouse/Keyboard.CPP.Z,134] ScanCode2A                [ScanCode2A,1] 0000015ED7    0004 0000000082 Funct  
@@ -2717,9 +2717,9 @@ SWAP_IN_SETH_TASK         0000004786    0004            ExportSysSym
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,217] SqrI64                    00000000CA    0000            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,218] SqrU64                    00000000CB    0000            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,230] Sqrt                      00000000CE    0001            Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,220] SrcEdLink                 [SrcEdLink,1] 000002D91F    0002 000000007E Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,181] SrcFileName               [SrcFileName,1] 000002D7DF    0001 0000000139 Funct  
-[::/SparrowOS/OSMain/PSect.CPP.Z,142] SrcLineNum                [SrcLineNum,1] 000002D67F    0001 0000000159 Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,220] SrcEdLink                 [SrcEdLink,1] 000002D8FF    0002 000000007E Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,181] SrcFileName               [SrcFileName,1] 000002D7BF    0001 0000000139 Funct  
+[::/SparrowOS/OSMain/PSect.CPP.Z,142] SrcLineNum                [SrcLineNum,1] 000002D65F    0001 0000000159 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,155] Std                       0000000069    0000            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,142] Sti                       0000000066    0002            Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,99] StkRep                    [StkRep,1] 00000134D2    0000 00000001E0 Funct  
@@ -2750,11 +2750,11 @@ SWAP_IN_SETH_TASK         0000004786    0004            ExportSysSym
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,292] SysDbg                    [SysDbg,1] 0000012F62    0000 0000000034 Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,392] SysDbgEnter               [SysDbgEnter,1] 00000140B2    0001 000000017A Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,378] SysDbgExit                [SysDbgExit,1] 000001404A    0001 0000000036 Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,133] SysDel                    [SysDel,1] 000002A264    0000 00000000DF Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1c.CPP.Z,133] SysDel                    [SysDel,1] 000002A24C    0000 00000000DF Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,302] SysDeterministic          [SysDeterministic,1] 0000012FB2    0001 0000000034 Funct  
-[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,148] SysFilesFind              [SysFilesFind,1] 0000021347    0002 00000000EF Funct  
-[::/SparrowOS/OSMain/OSEnd.CPP.Z,1] SysGlblsInit              [SysGlblsInit,1] 000002DA77    0001 0000000390 Funct  
-[::/SparrowOS/OSMain/OSEnd.CPP.Z,70] SysGrInit                 [SysGrInit,1] 000002DE07    0001 0000000160 Funct  
+[::/SparrowOS/OSMain/Dsk/DskDir.CPP.Z,148] SysFilesFind              [SysFilesFind,1] 000002132F    0002 00000000EF Funct  
+[::/SparrowOS/OSMain/OSEnd.CPP.Z,1] SysGlblsInit              [SysGlblsInit,1] 000002DA57    0001 0000000393 Funct  
+[::/SparrowOS/OSMain/OSEnd.CPP.Z,70] SysGrInit                 [SysGrInit,1] 000002DDEF    0001 0000000160 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,146] SysHlt                    0000003160    0003            Funct  
 [::/SparrowOS/OSMain/Dbg1a.CPP.Z,371] SysMGetS                  [SysMGetS,1] 000001401A    0002 000000002B Funct  
 [::/SparrowOS/OSMain/Dsk/DskAddDev.CPP.Z,304] SysPmtI64                 [SysPmtI64,1] 0000020C1F    0001 0000000040 Funct  
@@ -2873,8 +2873,8 @@ SysThrowBreak             00000150BF    0001            ExportSysSym
 [::/SparrowOS/OSMain/Str1a.CPP.Z,130] TO_UPPER                  000000B1FC    0004            ExportSysSym  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,100] TRUE                      1             0138 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,2876] TSF_SAME_SONG             1             0000 0000000008 DefineStr 
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,82] TSSBusy                   [TSSBusy,1] 000002ACC2    0000 0000000037 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,87] TSSNew                    [TSSNew,1] 000002ACFA    0002 00000001CD Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,82] TSSBusy                   [TSSBusy,1] 000002ACA2    0000 0000000037 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,87] TSSNew                    [TSSNew,1] 000002ACDA    0002 00000001CD Funct  
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,910] TY_DISP                   0x30          0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,908] TY_IMM                    0x10          0000 0000000008 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,916] TY_MASK                   0xF0          0000 0000000008 DefineStr 
@@ -2896,7 +2896,7 @@ TaskEnd                   000001A3DF    0001            ExportSysSym
 [::/SparrowOS/OSMain/Task1a.CPP.Z,563] TaskFinishOffDying        [TaskFinishOffDying,1] 000001A67F    0001 0000000042 Funct  
 [::/SparrowOS/OSMain/Memory.CPP.Z,1161] TaskHeapCtrlDel           [TaskHeapCtrlDel,1] 00000064A4    0002 000000001A Funct  
 [::/SparrowOS/OSMain/Memory.CPP.Z,1146] TaskHeapCtrlNew           [TaskHeapCtrlNew,1] 0000006444    0003 0000000059 Funct  
-[::/SparrowOS/OSMain/MultiProc.CPP.Z,134] TaskIdleInit              [TaskIdleInit,1] 000002AF02    0002 0000000039 Funct  
+[::/SparrowOS/OSMain/MultiProc.CPP.Z,134] TaskIdleInit              [TaskIdleInit,1] 000002AEE2    0002 0000000039 Funct  
 TaskInit                  0000019867    0001            ExportSysSym 
 [::/SparrowOS/OSMain/Task1a.CPP.Z,159] TaskInit                  [TaskInit,1] 0000019867    0002 000000023B Funct  
 [::/SparrowOS/OSMain/Task1a.CPP.Z,297] TaskInitExt               [TaskInitExt,1] 0000019D27    0003 0000000099 Funct  
@@ -2913,12 +2913,12 @@ TaskRstAwaitingMsg        000001A6C7    0000            ExportSysSym
 [::/SparrowOS/OSMain/Task1a.CPP.Z,19] TaskValidate              [TaskValidate,1] 000001952F    0014 000000003D Funct  
 [::/SparrowOS/OSMain/TaskCmd.CPP.Z,177] TaskWait                  [TaskWait,1] 000001AC5F    0004 0000000070 Funct  
 [::/SparrowOS/OSMain/Except.CPP.Z,54] TestExcept                0000014B3A    0001            Funct 
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,332] TextFileRead              [TextFileRead,1] 0000028D7C    0000 000000001F Funct  
-[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,463] TextFileWrite             [TextFileWrite,1] 00000292DC    0000 000000003F Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,332] TextFileRead              [TextFileRead,1] 0000028D64    0000 000000001F Funct  
+[::/SparrowOS/OSMain/Dsk/Dsk1b.CPP.Z,463] TextFileWrite             [TextFileWrite,1] 00000292C4    0000 000000003F Funct  
 [::/SparrowOS/OSMain/TaskCmd.CPP.Z,54] TextInputQue              [TextInputQue,1] 000001A85F    0006 00000001BB Funct  
 [::/SparrowOS/OSMain/Except.CPP.Z,195] ThrowBreak                [ThrowBreak,1] 0000015127    0002 0000000048 Funct  
 [::/SparrowOS/OSMain/Misc1a.CPP.Z,86] TimeStampFreqCal          [TimeStampFreqCal,1] 0000012752    0002 000000013A Funct  
-[::/SparrowOS/OSMain/OSEnd.CPP.Z,107] TimersInit                [TimersInit,1] 000002DF67    0001 00000000E4 Funct  
+[::/SparrowOS/OSMain/OSEnd.CPP.Z,107] TimersInit                [TimersInit,1] 000002DF4F    0001 00000000E4 Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,212] ToBool                    000000001E    0001            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,211] ToF64                     000000001D    0009            Funct  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,210] ToI64                     000000001C    000B            Funct  
@@ -3055,7 +3055,7 @@ TaskRstAwaitingMsg        000001A6C7    0000            ExportSysSym
 [::/SparrowOS/OSMain/Math1a.CPP.Z,192] _D3_ZERO                  0000003327    0001            ExportSysSym  
 [::/SparrowOS/OSMain/Math1a.CPP.Z,525] _EXP                      0000003682    0001            ExportSysSym  
 [::/SparrowOS/OSMain/Hash1a.CPP.Z,217] _EXT_FIND                 0000007C49    0000            ExportSysSym  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,72] _FAR_CALL32               000002BC22    0001            ExportSysSym  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,72] _FAR_CALL32               000002BC02    0001            ExportSysSym  
 [::/SparrowOS/OSMain/Math1a.CPP.Z,605] _FCLEX                    0000003730    0001            ExportSysSym  
 [::/SparrowOS/OSMain/Math1a.CPP.Z,587] _FLDCW                    0000003712    0001            ExportSysSym  
 [::/SparrowOS/OSMain/Math1a.CPP.Z,396] _FLOOR                    000000352E    0001            ExportSysSym  
@@ -3130,13 +3130,13 @@ TaskRstAwaitingMsg        000001A6C7    0000            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,3132] ansf3                     (Fs->answe    0000 0000000018 DefineStr 
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,28] bios_gr_mode              0000000C60    0003 0000000002 GlbVar   
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,35] boot_drv_pmt              00000039A1    0002 0000000001 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,160] c32_eax                   000002BBFE    0008 0000000004 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,161] c32_ebx                   000002BC02    0009 0000000004 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,162] c32_ecx                   000002BC06    0007 0000000004 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,165] c32_edi                   000002BC12    0006 0000000004 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,163] c32_edx                   000002BC0A    0000 0000000004 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,166] c32_eflags                000002BC16    0000 0000000004 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,164] c32_esi                   000002BC0E    0001 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,160] c32_eax                   000002BBDE    0008 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,161] c32_ebx                   000002BBE2    0009 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,162] c32_ecx                   000002BBE6    0007 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,165] c32_edi                   000002BBF2    0006 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,163] c32_edx                   000002BBEA    0000 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,166] c32_eflags                000002BBF6    0000 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,164] c32_esi                   000002BBEE    0001 0000000004 GlbVar  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,191] cpu_structs               0000002350    000C 0000000008 GlbVar   
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,44] ctrl_alt_let_descs        0000003AE0    0003 0000000008 GlbVar  
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,42] ctrl_alt_let_in_irq_flags 0000003AD0    0004 0000000008 GlbVar  
@@ -3150,7 +3150,7 @@ TaskRstAwaitingMsg        000001A6C7    0000            ExportSysSym
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,139] eps                       (0x3CB0000    0000 0000000020 DefineStr 
 [::/SparrowOS/OSMain/Adam1a.HPP.Z,132] exp_1                     (0x4005BF0    0000 0000000020 DefineStr 
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,295] ext                       0000001840    0006 0000000008 GlbVar   
-[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,185] fat_long_name_map         0000025767    0006 000000000D GlbVar  
+[::/SparrowOS/OSMain/Dsk/FileSysFAT.CPP.Z,185] fat_long_name_map         000002574F    0006 000000000D GlbVar  
 [::/SparrowOS/OSMain/Str1a.CPP.Z,354] filename_chars_bitmap     000000B4C8    0002 0000000040 GlbVar  
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,41] fp_ctrl_alt_let_cbs       0000003AC8    0006 0000000008 GlbVar  
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,124] fp_doc_cur                0000003E78    0002 0000000008 GlbVar  
@@ -3329,7 +3329,7 @@ TaskRstAwaitingMsg        000001A6C7    0000            ExportSysSym
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,12] sys_num_task_inits        00000038D8    0001 0000000008 GlbVar  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,30] sys_pci_busses            0000000C62    0000 0000000002 GlbVar   
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,59] sys_pci_dev_root          0000003BD8    0001 0000000030 GlbVar  
-[::/SparrowOS/OSMain/BIOS32.CPP.Z,167] sys_pci_services          000002BB6E    0007 0000000004 GlbVar  
+[::/SparrowOS/OSMain/BIOS32.CPP.Z,167] sys_pci_services          000002BB4E    0007 0000000004 GlbVar  
 [::/SparrowOS/OSMain/Adam1b.HPP.Z,42] sys_progresses            0000002238    0002 0000000100 GlbVar   
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,33] sys_prts                  0000003990    0006 0000000008 GlbVar  
 [::/SparrowOS/OSMain/OSGlbls.CPP.Z,4] sys_put_key_root          0000003830    0007 0000000030 GlbVar  

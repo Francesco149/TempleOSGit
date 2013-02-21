@@ -32,7 +32,7 @@
 [::/SparrowOS/Compiler/CodeGen.CPP.Z,1] CBPutClass                [CBPutClass,1] 00000090A0    0001 00000000C5 Funct  
 [::/SparrowOS/Compiler/CodeGen.CPP.Z,71] CBPutIC                   [CBPutIC,1] 0000009460    0006 00000003C7 Funct  
 [::/SparrowOS/Compiler/CodeGen.CPP.Z,26] CBPutICArg                [CBPutICArg,1] 0000009168    0004 00000002F3 Funct  
-[::/SparrowOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC0E130    0002 000000000A Class 
+[::/SparrowOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC112F8    0002 000000000A Class 
 CMP_OPT_NOP               0000000000    0003            ExportSysSym 
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,164] CMP_TEMPLATES             0000000206    0001            ExportSysSym  
 [::/SparrowOS/Compiler/CmpAsm.CPP.Z,338] CMP_TEMPLATES_DONT_POP    000000039B    0001            ExportSysSym  

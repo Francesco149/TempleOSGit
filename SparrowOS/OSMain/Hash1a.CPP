@@ -792,7 +792,7 @@ U0 LoadOSMain()
 {
   HashGenericAdd(OSMAIN_MODULE_NAME,HTT_MODULE|HTF_PUBLIC,sys_boot_base-sizeof(CBinFile));
 
-//Abs patches done here [D:/SparrowOS/OSMain/OSStart.CPP.Z,1] EIE_ABS_ADDR.
+//Abs patches done here [C:/SparrowOS/OSMain/OSStart.CPP.Z,1] EIE_ABS_ADDR.
   LoadPass1(sys_boot_patch_table_base,sys_boot_base,LDF_NO_ABSS|LDF_SILENT);
 
 //No main routines

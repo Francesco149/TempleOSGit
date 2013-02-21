@@ -1,5 +1,5 @@
-Use [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I
-change a label.
+Use [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R() to rename if I change a
+label.
 
 ----02/20/13 00:04:12----
 * Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,414] RFLAG Defines
@@ -9,7 +9,7 @@ change a label.
 ----02/19/13 14:16:31----
 * Fixed line nums in [C:/SparrowOS/Adam/Diff.CPP.Z,215] Diff().
 * Added [C:/SparrowOS/OSMain/Adam1a.HPP.Z,2960] CTask.task_num
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("list","lst");
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("list","lst");
 * Sped-up [C:/SparrowOS/OSMain/Str1a.CPP.Z,494] DefineSub().
 * Added date/time format defines [C:/SparrowOS/OSMain/Adam1a.HPP.Z,220]
 TF_NUM, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,279] DF_NUM
@@ -40,8 +40,8 @@ TF_NUM, [C:/SparrowOS/OSMain/Adam1a.HPP.Z,279] DF_NUM
 ::/SparrowOS/Apps/AfterEgypt/Horeb.CPP.Z.
 
 ----12/29/12 06:29:00----
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("CSprite...","Sprite..."); for many routines.
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("CSprite...","Sprite...");
+for many routines.
 * Changed [C:/SparrowOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc locking.
 
 ----12/27/12 09:29:23----
@@ -76,8 +76,8 @@ R("CSprite...","Sprite..."); for many routines.
 * Got rid of typedef.
 * Got rid of pass-by-ref fun args.
 * Got rid of result special variable.
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BoolI8","Bool");
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BoolI64","Bool");
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("BoolI8","Bool");
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("BoolI64","Bool");
 
 ----11/21/12 12:09:36----
 * Added VMware install.
@@ -85,8 +85,7 @@ R("CSprite...","Sprite..."); for many routines.
 ----11/15/12 12:00:17----
 * Added [::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z,1]
 ::/SparrowOS/Demo/Asm/BuzzFizz.CPP.Z
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("CDirDel","CDirEntryDel");
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("CDirDel","CDirEntryDel");
 
 ----11/09/12 02:20:37----
 * Added [C:/SparrowOS/OSMain/Task1a.CPP.Z,54] Suspend() and
@@ -107,7 +106,7 @@ R("CDirDel","CDirEntryDel");
 ::/SparrowOS/Apps/MusicOrgan/Examples/furnishing.CPP.Z.
 
 ----10/31/12 08:45:21----
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Unwrap","Wrap");
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("Unwrap","Wrap");
 * Worked on [::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z,1]
 ::/SparrowOS/Apps/Pilgrims/Pilgrims.CPP.Z.
 
@@ -137,7 +136,7 @@ R("CDirDel","CDirEntryDel");
 
 ----10/16/12 10:22:14----
 * **SparrowOS version 1.01 Released**
-* [C:/SparrowOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BigEndian","Endian");
+* [C:/SparrowOS/Accts/Adam3eWrappers.CPP.Z,13] R("BigEndian","Endian");
 * Added result as a built-in local variable like this in C++.
 
 ----10/13/12 19:52:59----
