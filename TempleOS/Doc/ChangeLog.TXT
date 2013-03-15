@@ -1,0 +1,5 @@
+Use [C:/TempleOS/Accts/Adam3eWrappers.CPP.Z,13] R() to rename if I change a
+label.
+
+----03/15/13 21:13:02----
+* **TempleOS version 1.00 Released**

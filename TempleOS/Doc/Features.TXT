@@ -1,0 +1,61 @@
+                              TempleOS' Features
+
+* x86_64, ring-0-only, single-address-map (identity), multitasking kernel
+with 
+multicore support.
+
+* Free, public domain, and 100% open source.
+
+* 64-bit compiler/assembler that truly compiles, no interpreter.
+
+* No 32-bit krufty code.
+
+* 640x480 16 color VGA graphics.
+
+* Keyboard & mouse support.
+
+* Hard drives, support for FAT32 and TempleOS native file systems with file 
+compression.
+
+* [C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,86] Partitionming tool.
+
+* Boot loaders for CD-ROM and hard disk.
+
+* CD/DVD reading and writing, ISO9660 file system. Can make bootable ISO9660 
+ISO files so you can roll-your-own distro's.
+
+* Source files and the command line window can have graphics, links, icons, 
+trees, colors, super/sub scripts, margins.  Everything is seamless
+through-out 
+the tool chain.  No need for separate resource files.
+
+* Just-in-time compilation.  No need for object or exe files.
+
+* Graphics in source code.  No need for resource files.
+
+* 64-bit pointers.  All memory, even more than 4 Gig, can be directly
+accessed 
+by all tasks on all cores at all times.
+
+* Ring-0-only.  Highest CPU privileged mode at all times.  No off-limits 
+instructions.  No time lost changing modes or address maps.  Switches tasks
+in 
+half a microsecond.
+
+* 2D/3D graphics library
+
+* Real-time fancy differential-equation solver (physics engine) for use in 
+games.  (Adaptive step-size Runge-Kutta, interpolated for real-time.)
+
+* Code [C:/TempleOS/Adam/Profiler.CPP.Z,82] profiler,
+[C:/TempleOS/Adam/Merge.CPP.Z,41] merge, [C:/TempleOS/Adam/Diff.CPP.Z,222]
+diff utils.
+
+* HD Audio and many songs.
+
+* [C:/TempleOS/Doc/DemoIndex.TXT.Z,1] Demos and
+[C:/TempleOS/Doc/HelpIndex.TXT.Z,1] documentation.
+
+* All source code included.  Only compiles with the included TempleOS
+compiler 
+and assembler.

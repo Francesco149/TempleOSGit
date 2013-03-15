@@ -1,0 +1,17 @@
+A CSprite, is an ordered list of the [C:/TempleOS/Adam/Gr/Gr.CPP.Z,15]
+following elements, created with <CTRL-R>
+.  Normally, they are packed together in a list and the addr of the first is 
+passed to routines.
+
+See [C:/TempleOS/Demo/Graphics/SpritePlot.CPP.Z,1], 
+[C:/TempleOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] and 
+[C:/TempleOS/Demo/Graphics/SpritePut.CPP.Z,1] and
+[C:/TempleOS/Adam/Gr/CSpriteMesh.CPP.Z,875] CSpriteMesh().
+
+Be aware that copying SP, IB, or IS entries with the clipboard results in 
+duplicate entries with different nums.  You can manually remove dups by 
+editing with <CTRL-T> and setting to the original num.
+
+See [C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,1]
+::/TempleOS/Adam/Gr/GrSpritePlot.CPP for how CSprite are stored.
+

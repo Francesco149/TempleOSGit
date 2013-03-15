@@ -1,0 +1,373 @@
+[C:/TempleOS/Compiler/Assembler.CPP.Z,824] AsmCodeInstruction        [E:/Git/AsmCodeInstruction,1] 000000CC7E    0001 0000001423 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,202] AsmExpressionEval         [E:/Git/AsmExpressionEval,1] 000000B280    0004 00000000B8 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,290] AsmGlblsResolve           [E:/Git/AsmGlblsResolve,1] 000000B668    0001 00000005D7 Funct  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,77] AsmHashLoad               [E:/Git/AsmHashLoad,1] 0000034C80    0001 0000000665 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,29] AsmLineLst                [E:/Git/AsmLineLst,1] 000000AC78    0001 0000000143 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,224] AsmLocalsResolve          [E:/Git/AsmLocalsResolve,1] 000000B338    0003 0000000329 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,601] AsmMakeArgMask            [E:/Git/AsmMakeArgMask,1] 000000C208    0002 000000045D Funct  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,27] AsmPrsInsFlags            [E:/Git/AsmPrsInsFlags,1] 0000034420    0001 000000085D Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,185] AsmReserveCodeTo          [E:/Git/AsmReserveCodeTo,1] 000000B200    0001 000000007D Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,90] AsmStoreCodeU32           [E:/Git/AsmStoreCodeU32,1] 000000AEC0    0001 0000000149 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,129] AsmStoreCodeU64           [E:/Git/AsmStoreCodeU64,1] 000000B010    0005 000000014A Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,61] AsmStoreCodeU8            [E:/Git/AsmStoreCodeU8,1] 000000ADC0    001C 00000000FF Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,168] AsmStoreCodeU8At          [E:/Git/AsmStoreCodeU8At,1] 000000B160    0016 00000000A0 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,685] AsmStoreNum               [E:/Git/AsmStoreNum,1] 000000C668    0004 000000060E Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,1] AsmUnresolvedAdd          [E:/Git/AsmUnresolvedAdd,1] 000000AB98    0008 00000000DF Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,336] CBAppend                  [E:/Git/CBAppend,1] 0000009EE0    0002 000000009D Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,357] CBCombine                 [E:/Git/CBCombine,1] 0000009F80    0001 00000000EA Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,397] CBCompile                 [E:/Git/CBCompile,1] 000000A0E0    0006 00000004D6 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,265] CBFloatConstFind          [E:/Git/CBFloatConstFind,1] 0000009C40    000F 00000000BE Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,209] CBGetIC1                  [E:/Git/CBGetIC1,1] 0000009AA0    0004 000000004C Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,242] CBGoToLabelFind           [E:/Git/CBGoToLabelFind,1] 0000009BA8    0002 0000000048 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,142] CBICAdd                   [E:/Git/CBICAdd,1] 00000098B0    00B9 0000000104 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,189] CBInPtrsInit              [E:/Git/CBInPtrsInit,1] 0000009A28    0003 0000000030 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,385] CBIndents                 [E:/Git/CBIndents,1] 000000A070    0001 0000000069 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,287] CBMiscLstDel              [E:/Git/CBMiscLstDel,1] 0000009D00    0001 000000018D Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,255] CBMiscNew                 [E:/Git/CBMiscNew,1] 0000009BF0    001A 000000004A Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,176] CBOutPtrsInit             [E:/Git/CBOutPtrsInit,1] 00000099B8    000A 000000006C Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,233] CBPop                     [E:/Git/CBPop,1] 0000009B50    0009 0000000051 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,327] CBPopNoFree               [E:/Git/CBPopNoFree,1] 0000009E90    0001 000000004E Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,224] CBPush                    [E:/Git/CBPush,1] 0000009AF0    000E 000000005D Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,197] CBPutAllIC                [E:/Git/CBPutAllIC,1] 0000009A58    0007 0000000043 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,1] CBPutClass                [E:/Git/CBPutClass,1] 0000009128    0001 00000000C5 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,71] CBPutIC                   [E:/Git/CBPutIC,1] 00000094E8    0006 00000003C7 Funct  
+[C:/TempleOS/Compiler/CodeGen.CPP.Z,26] CBPutICArg                [E:/Git/CBPutICArg,1] 00000091F0    0004 00000002F3 Funct  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FD11CB0    0002 000000000A Class 
+CMP_OPT_NOP               0000000000    0003            ExportSysSym 
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,164] CMP_TEMPLATES             0000000206    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,338] CMP_TEMPLATES_DONT_POP    000000039B    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,427] CMP_TEMPLATES_DONT_PUSH   0000000467    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,618] CMP_TEMPLATES_DONT_PUSH2  000000063D    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,554] CMP_TEMPLATES_DONT_PUSH_POP00000005AD    0001            ExportSysSym  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,220] CN_MAIN                   0             0028 0000000008 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,221] CN_P1                     1             000A 0000000008 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,222] CN_P2                     2             0007 0000000008 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,223] CN_P3                     3             0003 0000000008 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,224] CN_R                      4             0003 0000000008 DefineStr 
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1424] CSwitchCase               007FC32130    0004 0000000018 Class 
+[C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace                    [E:/Git/CTrace,1] 0000003A40    0000 0000000017 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,214] CVI2                      007FC35730    0003 0000000010 Class 
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,378] Cmp                       [E:/Git/Cmp,1] 0000038FF0    0000 00000005BE Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,185] CmpBuf                    [E:/Git/CmpBuf,1] 00000388C0    0001 00000000F7 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression             [E:/Git/CmpExpression,1] 0000013376    0004 00000000BB Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,23] CmpF1PushPop              [E:/Git/CmpF1PushPop,1] 000002C290    0002 0000000033 Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,29] CmpF2PushPop              [E:/Git/CmpF2PushPop,1] 000002C2C8    0005 0000000080 Funct  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,581] CmpFillTables             [E:/Git/CmpFillTables,1] 00000379E8    0001 000000064C Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,312] CmpFixUpAOTAsm            [E:/Git/CmpFixUpAOTAsm,1] 0000038D90    0000 000000025B Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,204] CmpFixUpJITAsm            [E:/Git/CmpFixUpJITAsm,1] 00000389B8    0000 00000003D8 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,680] CmpInit                   [E:/Git/CmpInit,1] 0000039B80    0001 00000000B9 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,60] CmpJoin                   [E:/Git/CmpJoin,1] 0000038220    0001 00000006A0 Funct  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,222] CmpLoadDefines            [E:/Git/CmpLoadDefines,1] 00000352E8    0001 0000002700 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,226] CmpNoteFloatOp            [E:/Git/CmpNoteFloatOp,1] 0000018FC6    000E 0000000251 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,133] CmpOffset2Reg             [E:/Git/CmpOffset2Reg,1] 000002720E    0005 0000000042 Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,11] CmpPType                  [E:/Git/CmpPType,1] 000002C250    0006 000000003F Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,1] CmpPmt                    [E:/Git/CmpPmt,1] 0000003B80    0001 0000000241 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,281] CmpSetFloatOpPushPop      [E:/Git/CmpSetFloatOpPushPop,1] 000001921E    000E 000000007B Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,24] CmpStatement              [E:/Git/CmpStatement,1] 00000380D0    0001 000000014C Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,1] CmpType                   [E:/Git/CmpType,1] 000002C218    0007 0000000031 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,1233] DefineU8s                 [E:/Git/DefineU8s,1] 000000E0A6    0004 00000002D6 Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,48] Echo                      [E:/Git/Echo,1] 0000003A70    0000 0000000017 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,577] ExeFile                   [E:/Git/ExeFile,1] 0000039750    0000 0000000075 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,629] ExeFile2                  [E:/Git/ExeFile2,1] 0000039978    0000 0000000075 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,669] ExeFile3                  [E:/Git/ExeFile3,1] 0000039B08    0000 0000000075 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,568] ExePrintF                 [E:/Git/ExePrintF,1] 0000039708    0000 0000000043 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,620] ExePrintF2                [E:/Git/ExePrintF2,1] 0000039930    0000 0000000043 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,659] ExePrintF3                [E:/Git/ExePrintF3,1] 0000039AC0    0000 0000000043 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,536] ExePutS                   [E:/Git/ExePutS,1] 00000395B0    0002 0000000151 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,588] ExePutS2                  [E:/Git/ExePutS2,1] 00000397C8    0002 0000000161 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,640] ExePutS3                  [E:/Git/ExePutS3,1] 00000399F0    0002 00000000CC Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,1287] Expression                [E:/Git/Expression,1] 0000013466    0007 000000003B Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,372] ExpressionDel             [E:/Git/ExpressionDel,1] 0000005894    000B 0000000014 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,3] FBO1_F64                  2             0002 0000000008 DefineStr 
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,2] FBO1_INT                  1             0013 0000000008 DefineStr 
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,1] FBO1_NOT_CONST            0             0004 0000000008 DefineStr 
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,1282] GetExpression             [E:/Git/GetExpression,1] 0000013436    0000 0000000029 Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,16] GetOpt                    [E:/Git/GetOpt,1] 00000039A8    0005 000000002B Funct  
+[C:/TempleOS/Compiler/Hash1b.CPP.Z,1] HashEntryImportCopy       [E:/Git/HashEntryImportCopy,1] 000000A5B8    0002 0000000167 Funct  
+[C:/TempleOS/Compiler/Hash1b.CPP.Z,72] HashEntrySize             [E:/Git/HashEntrySize,1] 000000A808    0000 0000000164 Funct  
+[C:/TempleOS/Compiler/Hash1b.CPP.Z,103] HashEntrySize2            [E:/Git/HashEntrySize2,1] 000000A970    0002 00000001B5 Funct  
+[C:/TempleOS/Compiler/Hash1b.CPP.Z,41] HashTableImport           [E:/Git/HashTableImport,1] 000000A720    0000 00000000E8 Funct  
+[C:/TempleOS/Compiler/Hash1b.CPP.Z,142] HashTableSize2            [E:/Git/HashTableSize2,1] 000000AB28    0000 000000006B Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,947] ICAddConst                [E:/Git/ICAddConst,1] 000001AEC6    000C 00000008B6 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,882] ICAddEct                  [E:/Git/ICAddEct,1] 000001AB66    0005 000000035E Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,163] ICAddRSP                  [E:/Git/ICAddRSP,1] 0000018D3E    0016 0000000286 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2754] ICAddSubEctEqual          [E:/Git/ICAddSubEctEqual,1] 0000020286    0005 000000073F Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3050] ICAndAnd                  [E:/Git/ICAndAnd,1] 000002104E    0001 0000000149 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4033] ICAndBranch               [E:/Git/ICAndBranch,1] 0000023C4E    0002 000000078D Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4784] ICAndEqual                [E:/Git/ICAndEqual,1] 0000025F26    0001 0000000109 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4202] ICAssign                  [E:/Git/ICAssign,1] 00000243DE    0001 000000030F Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3677] ICAssignPostIncDec        [E:/Git/ICAssignPostIncDec,1] 0000022D3E    0002 0000000248 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3420] ICBEqu                    [E:/Git/ICBEqu,1] 000002212E    0001 0000000256 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3298] ICBitOps                  [E:/Git/ICBitOps,1] 0000021B4E    000B 00000005DE Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4252] ICBrBitOps                [E:/Git/ICBrBitOps,1] 00000246EE    0008 0000000AC9 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,607] ICBuiltInFloatConst       [E:/Git/ICBuiltInFloatConst,1] 0000019E5E    000F 00000000BD Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3178] ICCmp                     [E:/Git/ICCmp,1] 0000021666    0006 00000004E6 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3719] ICCmpAndBranch            [E:/Git/ICCmpAndBranch,1] 0000022F86    000C 0000000936 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3144] ICColon                   [E:/Git/ICColon,1] 0000021456    0001 000000020F Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,293] ICCopyTemplate            [E:/Git/ICCopyTemplate,1] 000001929E    0019 0000000286 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,864] ICDeref                   [E:/Git/ICDeref,1] 000001AAAE    0001 00000000B5 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3634] ICDerefPostIncDec         [E:/Git/ICDerefPostIncDec,1] 0000022B0E    0002 000000022B Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2662] ICDiv                     [E:/Git/ICDiv,1] 000001FDB6    0001 00000000F2 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2681] ICDivEqual                [E:/Git/ICDivEqual,1] 000001FEAE    0002 00000002E0 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2533] ICFAdd                    [E:/Git/ICFAdd,1] 000001F68E    0001 00000001FB Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1651] ICFCmp                    [E:/Git/ICFCmp,1] 000001CD8E    0004 0000000188 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2082] ICFCmpAndBranch           [E:/Git/ICFCmpAndBranch,1] 000001E37E    0004 0000000A6E Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1217] ICFCvt                    [E:/Git/ICFCvt,1] 000001BBD6    0014 0000000188 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1265] ICFCvt2                   [E:/Git/ICFCvt2,1] 000001BD5E    0010 0000000122 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2509] ICFDiv                    [E:/Git/ICFDiv,1] 000001F54E    0001 000000013D Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1343] ICFMod                    [E:/Git/ICFMod,1] 000001C06E    0001 0000000142 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1691] ICFModEqual               [E:/Git/ICFModEqual,1] 000001CF16    0001 00000003FA Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2469] ICFMul                    [E:/Git/ICFMul,1] 000001F316    0001 0000000235 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1452] ICFOp                     [E:/Git/ICFOp,1] 000001C4A6    0004 00000008E5 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1758] ICFOpEqual                [E:/Git/ICFOpEqual,1] 000001D316    0004 0000001066 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2383] ICFPostIncDec             [E:/Git/ICFPostIncDec,1] 000001EEFE    0002 0000000151 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1373] ICFPow                    [E:/Git/ICFPow,1] 000001C1B6    0001 00000002ED Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2361] ICFPreIncDec              [E:/Git/ICFPreIncDec,1] 000001EDEE    0002 000000010A Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2571] ICFSub                    [E:/Git/ICFSub,1] 000001F88E    0001 0000000120 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3541] ICFTemplateFun            [E:/Git/ICFTemplateFun,1] 0000022616    0007 00000000A8 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1292] ICFUnaryMinus             [E:/Git/ICFUnaryMinus,1] 000001BE86    0001 00000001E8 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,135] ICLastIns                 [E:/Git/ICLastIns,1] 0000018C96    0002 00000000A1 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,821] ICLea                     [E:/Git/ICLea,1] 000001A876    0004 0000000233 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4547] ICLimit                   [E:/Git/ICLimit,1] 00000255B6    0002 0000000227 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4941] ICLocalVarInit            [E:/Git/ICLocalVarInit,1] 0000026676    0001 0000000078 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4953] ICMemCpy                  [E:/Git/ICMemCpy,1] 00000266EE    0001 000000047C Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,5055] ICMemSet                  [E:/Git/ICMemSet,1] 0000026B6E    0001 000000032C Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4605] ICMinMax                  [E:/Git/ICMinMax,1] 00000257DE    0004 00000002B7 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2735] ICMod                     [E:/Git/ICMod,1] 000002018E    0001 00000000F2 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4684] ICModU64                  [E:/Git/ICModU64,1] 0000025AE6    0001 00000001BB Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,348] ICModr                    [E:/Git/ICModr,1] 0000019526    0018 0000000331 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,630] ICMov                     [E:/Git/ICMov,1] 0000019F1E    01DD 0000000957 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2411] ICMul                     [E:/Git/ICMul,1] 000001F056    0001 00000002BA Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2594] ICMulEqual                [E:/Git/ICMulEqual,1] 000001F9AE    0001 0000000408 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3021] ICNot                     [E:/Git/ICNot,1] 0000020EDE    0001 000000016E Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,46] ICOpSizeRex               [E:/Git/ICOpSizeRex,1] 00000188BE    0006 0000000121 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,597] ICOr                      [E:/Git/ICOr,1] 0000019E0E    000F 000000004A Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4807] ICOrEqual                 [E:/Git/ICOrEqual,1] 0000026036    0001 0000000109 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3079] ICOrOr                    [E:/Git/ICOrOr,1] 000002119E    0001 000000015E Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,548] ICPop                     [E:/Git/ICPop,1] 0000019C46    000A 000000010B Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,575] ICPopRegs                 [E:/Git/ICPopRegs,1] 0000019D56    000F 0000000054 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3594] ICPostIncDec              [E:/Git/ICPostIncDec,1] 00000228D6    0002 0000000237 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3557] ICPreIncDec               [E:/Git/ICPreIncDec,1] 00000226BE    0004 0000000213 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3474] ICPreempt                 [E:/Git/ICPreempt,1] 0000022386    0001 0000000122 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,497] ICPush                    [E:/Git/ICPush,1] 0000019A26    0020 00000001C1 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,535] ICPushRegs                [E:/Git/ICPushRegs,1] 0000019BEE    000A 0000000052 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4435] ICQueInit                 [E:/Git/ICQueInit,1] 00000251BE    0001 0000000070 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4449] ICQueIns                  [E:/Git/ICQueIns,1] 000002522E    0001 0000000179 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4490] ICQueInsRev               [E:/Git/ICQueInsRev,1] 00000253AE    0001 0000000179 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4531] ICQueRem                  [E:/Git/ICQueRem,1] 000002552E    0001 0000000088 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,32] ICRex                     [E:/Git/ICRex,1] 0000018836    0017 0000000088 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2910] ICShift                   [E:/Git/ICShift,1] 00000209C6    0004 0000000196 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,2944] ICShiftEqual              [E:/Git/ICShiftEqual,1] 0000020B5E    0002 000000030D Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,460] ICSlashOp                 [E:/Git/ICSlashOp,1] 000001985E    0027 00000001C4 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4677] ICSqr                     [E:/Git/ICSqr,1] 0000025A96    0002 000000004A Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,1130] ICSub                     [E:/Git/ICSub,1] 000001B77E    0001 0000000454 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4726] ICSwap                    [E:/Git/ICSwap,1] 0000025CA6    0001 000000027C Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4854] ICSwitch                  [E:/Git/ICSwitch,1] 000002624E    0002 0000000427 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3938] ICTestAndBranch           [E:/Git/ICTestAndBranch,1] 00000238BE    0002 0000000273 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3526] ICToBool                  [E:/Git/ICToBool,1] 000002259E    0001 0000000071 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3521] ICToF64                   [E:/Git/ICToF64,1] 000002255E    0001 000000003D Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3516] ICToI64                   [E:/Git/ICToI64,1] 000002251E    0001 000000003D Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3505] ICToUpper                 [E:/Git/ICToUpper,1] 00000224AE    0001 000000006B Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,72] ICU16                     [E:/Git/ICU16,1] 00000189E6    0099 00000000AF Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,87] ICU24                     [E:/Git/ICU24,1] 0000018A96    0069 00000000DA Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,104] ICU32                     [E:/Git/ICU32,1] 0000018B76    007B 0000000089 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,120] ICU64                     [E:/Git/ICU64,1] 0000018C06    0009 0000000089 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,20] ICU8                      [E:/Git/ICU8,1] 00000187AE    0089 0000000083 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3012] ICUnaries                 [E:/Git/ICUnaries,1] 0000020E6E    0002 0000000069 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,4830] ICXorEqual                [E:/Git/ICXorEqual,1] 0000026146    0001 0000000103 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3111] ICXorXor                  [E:/Git/ICXorXor,1] 00000212FE    0001 0000000153 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,3997] ICZFlagBranch             [E:/Git/ICZFlagBranch,1] 0000023B36    0002 0000000112 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,588] ICZero                    [E:/Git/ICZero,1] 0000019DAE    0018 000000005E Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,56] ImportHashTable           [E:/Git/ImportHashTable,1] 0000003A98    0000 00000000B3 Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,75] IncludeDepth              [E:/Git/IncludeDepth,1] 0000003B50    0000 000000002C Funct  
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,1] InstEntriesCompare        [E:/Git/InstEntriesCompare,1] 0000000A18    0001 0000000227 Funct  
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,71] InstEntryFind             [E:/Git/InstEntryFind,1] 0000000C40    0002 000000037A Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,52] IsReplaceSyms             [E:/Git/IsReplaceSyms,1] 0000003A88    000A 000000000D Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,43] LTrace                    [E:/Git/LTrace,1] 0000003A58    0000 0000000017 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,796] Lex                       [E:/Git/Lex,1] 0000006740    00FC 00000025F8 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,142] LexBackupLastChar         [E:/Git/LexBackupLastChar,1] 00000041CC    0003 000000003D Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,67] LexDel                    [E:/Git/LexDel,1] 0000003F10    0005 000000008D Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,408] LexDocRead                [E:/Git/LexDocRead,1] 0000005950    0001 0000000090 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,153] LexDollar                 [E:/Git/LexDollar,1] 000000420C    0003 000000006C Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,1686] LexExcept                 [E:/Git/LexExcept,1] 0000009060    00A0 00000000C6 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,1604] LexExtStr                 [E:/Git/LexExtStr,1] 0000008D38    0004 00000000DB Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,167] LexGetChar                [E:/Git/LexGetChar,1] 000000427C    0030 00000015EE Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,698] LexInStr                  [E:/Git/LexInStr,1] 0000006210    0001 000000052C Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,426] LexIncludeDoc             [E:/Git/LexIncludeDoc,1] 00000059E0    0001 0000000162 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,377] LexIncludeStr             [E:/Git/LexIncludeStr,1] 00000058AC    0003 0000000095 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,38] LexNew                    [E:/Git/LexNew,1] 0000003DC8    0005 0000000141 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,489] LexPop                    [E:/Git/LexPop,1] 0000005BD8    0004 000000007E Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,477] LexPush                   [E:/Git/LexPush,1] 0000005B48    000F 0000000090 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,1629] LexPutLine                [E:/Git/LexPutLine,1] 0000008E18    0003 000000009D Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,1656] LexPutPos                 [E:/Git/LexPutPos,1] 0000008EB8    0003 00000000CA Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,119] LexPutToken               [E:/Git/LexPutToken,1] 00000040B8    0002 0000000110 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,1670] LexPutWarn                [E:/Git/LexPutWarn,1] 0000008F88    0011 00000000D3 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,87] LexSize                   [E:/Git/LexSize,1] 0000003FA0    0000 0000000098 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,365] LexSkipEol                [E:/Git/LexSkipEol,1] 000000586C    0004 0000000026 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,558] MemberAdd                 [E:/Git/MemberAdd,1] 0000005D80    0004 00000001AE Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,523] MemberFind                [E:/Git/MemberFind,1] 0000005CD8    0005 0000000063 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,543] MemberFind2               [E:/Git/MemberFind2,1] 0000005D40    0001 0000000040 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,643] MemberLstCopy             [E:/Git/MemberLstCopy,1] 0000006028    0001 0000000118 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,606] MemberLstDel              [E:/Git/MemberLstDel,1] 0000005F30    0001 00000000F1 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,81] MemberLstNew              [E:/Git/MemberLstNew,1] 0000013616    0003 0000000026 Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,671] MemberLstSize             [E:/Git/MemberLstSize,1] 0000006140    0002 00000000CB Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,501] MemberMetaData            [E:/Git/MemberMetaData,1] 0000005C58    0000 000000003D Funct  
+[C:/TempleOS/Compiler/Lex.CPP.Z,512] MemberMetaFind            [E:/Git/MemberMetaFind,1] 0000005C98    0000 000000003C Funct  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,1] NUM_INTERNAL_TYPES        16            0002 0000000008 DefineStr 
+[C:/TempleOS/Compiler/Directives.CPP.Z,31] OPassTraceMask            [E:/Git/OPassTraceMask,1] 0000003A08    0000 0000000035 Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace                    [E:/Git/OTrace,1] 00000039F0    0000 0000000017 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,374] OptBrNotZero              [E:/Git/OptBrNotZero,1] 0000027BB8    0004 00000006C3 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,209] OptBrZero                 [E:/Git/OptBrZero,1] 00000274F0    0006 00000006C3 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,165] OptEnd                    [E:/Git/OptEnd,1] 00000273D0    0005 000000006F Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,1] OptEqu                    [E:/Git/OptEqu,1] 0000003930    0007 0000000045 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,538] OptFixSizeOf              [E:/Git/OptFixSizeOf,1] 0000028280    0003 00000000CC Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,6] OptFixupBinaryOp1         [E:/Git/OptFixupBinaryOp1,1] 0000026E9E    0013 0000000223 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,80] OptFixupBinaryOp2         [E:/Git/OptFixupBinaryOp2,1] 00000270C6    0001 0000000058 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,96] OptFixupUnaryOp           [E:/Git/OptFixupUnaryOp,1] 000002711E    0003 00000000EF Funct  
+[C:/TempleOS/Compiler/OptPass4.CPP.Z,1] OptIC4                    [E:/Git/OptIC4,1] 000002DD30    0001 0000000826 Funct  
+[C:/TempleOS/Compiler/OptPass6.CPP.Z,1] OptIC6                    [E:/Git/OptIC6,1] 0000030138    0001 0000000162 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,175] OptLag                    [E:/Git/OptLag,1] 0000027440    0004 0000000030 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,186] OptLag1                   [E:/Git/OptLag1,1] 0000027470    0005 000000003A Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,197] OptLead1                  [E:/Git/OptLead1,1] 00000274B0    0002 0000000039 Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,46] OptMVCompare              [E:/Git/OptMVCompare,1] 000002C348    0001 000000001A Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,41] OptMemberVar              007FC17530    0005 0000000020 Class 
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,142] OptMissing                [E:/Git/OptMissing,1] 0000027256    0004 0000000070 Funct  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,687] OptNext                   0000000098    0002            Funct 
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,690] OptNext2                  000000010A    0001            Funct 
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,693] OptNext3                  000000017C    0001            Funct 
+[C:/TempleOS/Compiler/Directives.CPP.Z,11] OptOff                    [E:/Git/OptOff,1] 0000003990    0000 0000000016 Funct  
+[C:/TempleOS/Compiler/Directives.CPP.Z,6] OptOn                     [E:/Git/OptOn,1] 0000003978    0000 0000000016 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,564] OptPass012                [E:/Git/OptPass012,1] 0000028350    0000 0000003EC1 Funct  
+[C:/TempleOS/Compiler/OptPass3.CPP.Z,51] OptPass3                  [E:/Git/OptPass3,1] 000002C368    0000 00000019C7 Funct  
+[C:/TempleOS/Compiler/OptPass4.CPP.Z,224] OptPass4                  [E:/Git/OptPass4,1] 000002E558    0000 0000001609 Funct  
+[C:/TempleOS/Compiler/OptPass5.CPP.Z,1] OptPass5                  [E:/Git/OptPass5,1] 000002FB68    0000 00000005CF Funct  
+[C:/TempleOS/Compiler/OptPass6.CPP.Z,146] OptPass6                  [E:/Git/OptPass6,1] 0000030658    0000 00000004E9 Funct  
+[C:/TempleOS/Compiler/OptPass6.CPP.Z,37] OptPass6Lag               [E:/Git/OptPass6Lag,1] 00000302A0    0001 00000003B2 Funct  
+[C:/TempleOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A               [E:/Git/OptPass789A,1] 0000030B48    0000 0000003832 Funct  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,152] OptStart                  [E:/Git/OptStart,1] 0000027360    0005 000000006D Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,42] PRST_CHECK_BINARY_OPS     4             0001 0000000008 DefineStr 
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,41] PRST_DEREFERENCE          3             0004 0000000008 DefineStr 
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,39] PRST_MAYBE_MODIFIERS      1             000F 0000000008 DefineStr 
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,40] PRST_UNARY_MODIFIERS      2             0009 0000000008 DefineStr 
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,38] PRST_UNARY_TERM           0             0005 0000000008 DefineStr 
+[C:/TempleOS/Compiler/Directives.CPP.Z,21] PTrace                    [E:/Git/PTrace,1] 00000039D8    0000 0000000017 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,1] ParenWarning              [E:/Git/ParenWarning,1] 000000EC56    0004 0000000055 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,349] PrsArrayDims              [E:/Git/PrsArrayDims,1] 00000140BE    0001 0000000134 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,460] PrsAsmArg                 [E:/Git/PrsAsmArg,1] 000000BD88    0002 000000047E Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,1309] PrsAsmBlk                 [E:/Git/PrsAsmBlk,1] 000000E37E    0001 00000008D2 Funct  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,425] PrsAsmImm                 [E:/Git/PrsAsmImm,1] 000000BC40    0006 0000000145 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,844] PrsClass                  [E:/Git/PrsClass,1] 000001550E    0004 0000000267 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1] PrsClassNew               [E:/Git/PrsClassNew,1] 00000134A6    0003 00000000B3 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,1232] PrsDereference            [E:/Git/PrsDereference,1] 00000132BE    0000 00000000B8 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1359] PrsDoWhile                [E:/Git/PrsDoWhile,1] 0000016936    0001 0000000155 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,387] PrsDotDotDot              [E:/Git/PrsDotDotDot,1] 00000141F6    0001 0000000100 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression             [E:/Git/PrsExpression,1] 000000EDA6    0010 000000125F Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1383] PrsFor                    [E:/Git/PrsFor,1] 0000016A8E    0001 00000001C7 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,981] PrsFun                    [E:/Git/PrsFun,1] 00000159A6    0001 00000003CA Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,444] PrsFunCall                [E:/Git/PrsFunCall,1] 000001035E    0003 00000008DF Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,910] PrsFunJoin                [E:/Git/PrsFunJoin,1] 0000015776    0005 0000000229 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,45] PrsFunNew                 [E:/Git/PrsFunNew,1] 000001355E    0001 00000000B3 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,303] PrsGlblInit               [E:/Git/PrsGlblInit,1] 0000013EC6    0002 0000000084 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1057] PrsGlblVarLst             [E:/Git/PrsGlblVarLst,1] 0000015D76    0008 0000000958 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1305] PrsIf                     [E:/Git/PrsIf,1] 00000166CE    0001 000000015B Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,88] PrsKeyWord                [E:/Git/PrsKeyWord,1] 000001363E    000B 000000003C Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1547] PrsNoUnusedWarn           [E:/Git/PrsNoUnusedWarn,1] 0000017196    0001 000000008F Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,413] PrsOffsetOf               [E:/Git/PrsOffsetOf,1] 000001020E    0002 0000000149 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,13] PrsPop                    [E:/Git/PrsPop,1] 000000ECD6    001B 0000000022 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,23] PrsPop2                   [E:/Git/PrsPop2,1] 000000ED36    0001 000000002D Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,28] PrsPopDeref               [E:/Git/PrsPopDeref,1] 000000ED66    0004 000000003F Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,8] PrsPush                   [E:/Git/PrsPush,1] 000000ECAE    0017 0000000028 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,18] PrsPush2                  [E:/Git/PrsPush2,1] 000000ECFE    0004 0000000033 Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,365] PrsSizeOf                 [E:/Git/PrsSizeOf,1] 0000010006    0001 0000000207 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1692] PrsStatement              [E:/Git/PrsStatement,1] 000001777E    0004 000000102C Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,312] PrsStaticInit             [E:/Git/PrsStaticInit,1] 0000013F4E    0002 000000016E Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1563] PrsStreamBlk              [E:/Git/PrsStreamBlk,1] 0000017226    0001 0000000211 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1430] PrsSwitch                 [E:/Git/PrsSwitch,1] 0000016C56    0002 000000053B Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1613] PrsTryBlk                 [E:/Git/PrsTryBlk,1] 000001743E    0001 0000000339 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,420] PrsType                   [E:/Git/PrsType,1] 00000142F6    0002 000000039F Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,1070] PrsUnaryModifier          [E:/Git/PrsUnaryModifier,1] 000001247E    0000 0000000E3A Funct  
+[C:/TempleOS/Compiler/ExpParser.CPP.Z,666] PrsUnaryTerm              [E:/Git/PrsUnaryTerm,1] 0000010C3E    0000 000000183E Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,99] PrsVarInit                [E:/Git/PrsVarInit,1] 000001367E    0001 0000000513 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,220] PrsVarInit2               [E:/Git/PrsVarInit2,1] 0000013B96    0004 000000032A Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,518] PrsVarLst                 [E:/Git/PrsVarLst,1] 0000014696    0006 0000000DD1 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,1337] PrsWhile                  [E:/Git/PrsWhile,1] 000001682E    0001 0000000105 Funct  
+[C:/TempleOS/Compiler/CmpQueVect.CPP.Z,46] QueVectU8Del              [E:/Git/QueVectU8Del,1] 0000000990    0004 0000000021 Funct  
+[C:/TempleOS/Compiler/CmpQueVect.CPP.Z,54] QueVectU8Get              [E:/Git/QueVectU8Get,1] 00000009B8    0001 000000005E Funct  
+[C:/TempleOS/Compiler/CmpQueVect.CPP.Z,1] QueVectU8New              [E:/Git/QueVectU8New,1] 0000000868    0001 0000000040 Funct  
+[C:/TempleOS/Compiler/CmpQueVect.CPP.Z,10] QueVectU8Put              [E:/Git/QueVectU8Put,1] 00000008A8    0001 00000000E3 Funct  
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,440] SLASH_OP_DEC              0x00000000    0006 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,445] SLASH_OP_DIV              0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,449] SLASH_OP_FADD             0x01C1DE00    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,453] SLASH_OP_FDIV             0x01F9DE00    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,454] SLASH_OP_FDIVR            0x01F1DE00    0003 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,458] SLASH_OP_FILD             0x01000000    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,457] SLASH_OP_FISTTP           0x01000000    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,455] SLASH_OP_FLD              0x01000000    0008 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,452] SLASH_OP_FMUL             0x01C9DE00    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,456] SLASH_OP_FSTP             0x01000000    000D 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,450] SLASH_OP_FSUB             0x01E9DE00    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,451] SLASH_OP_FSUBR            0x01E1DE00    0003 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,444] SLASH_OP_IMUL             0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,439] SLASH_OP_INC              0x00000000    000C 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,446] SLASH_OP_MOV              0x00000000    0002 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,443] SLASH_OP_MUL              0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,442] SLASH_OP_NEG              0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,441] SLASH_OP_NOT              0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,448] SLASH_OP_POP              0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/BackEnd.CPP.Z,447] SLASH_OP_PUSH             0x00000000    0001 0000000018 DefineStr 
+[C:/TempleOS/Compiler/Lex.CPP.Z,107] SetSrcFileInfo            [E:/Git/SetSrcFileInfo,1] 0000004038    0008 0000000079 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,14] StreamPrintF              [E:/Git/StreamPrintF,1] 0000038098    0000 0000000034 Funct  
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,1] StreamPutS                [E:/Git/StreamPutS,1] 0000038038    0001 0000000060 Funct  
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U                         [E:/Git/U,1] 00000037E8    0000 000000009B Funct  
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,220] Ui                        [E:/Git/Ui,1] 00000010D0    0002 0000002711 Funct  
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,882] Un                        [E:/Git/Un,1] 0000003888    0009 00000000A6 Funct  
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,181] UnasmHashLoad             [E:/Git/UnasmHashLoad,1] 0000000FC0    0001 0000000109 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,831] UndefinedExtern           [E:/Git/UndefinedExtern,1] 000001546E    0001 0000000050 Funct  
+[C:/TempleOS/Compiler/StmtParser.CPP.Z,838] UnusedExternWarning       [E:/Git/UnusedExternWarning,1] 00000154BE    0004 000000004E Funct  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,10] _OPTNEXT                  0000000098    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,58] _OPTNEXT2                 000000010A    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpAsm.CPP.Z,107] _OPTNEXT3                 000000017C    0001            ExportSysSym  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,2] asm_hash                  0000000708    0009 0000000008 GlbVar  
+[C:/TempleOS/Compiler/Assembler.CPP.Z,822] asm_seg_prefixes          000000CC78    0001 0000000006 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,8] assign_bitmap             00000007B8    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,6] binary_ops_table          0000000790    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,7] cmp_arg_cnt               00000007A0    0009 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,8] cmp_bitmap                00000007C8    0004 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,3] cmp_do_not_write_to_dsk   0000000711    0003 0000000001 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,8] cmp_result_cnt            00000007A8    0005 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpExts.CPP.Z,49] cmp_templates             0000000206    0002 0000000004 GlbVar  
+[C:/TempleOS/Compiler/CmpExts.CPP.Z,50] cmp_templates_dont_pop    000000039B    0002 0000000004 GlbVar  
+[C:/TempleOS/Compiler/CmpExts.CPP.Z,51] cmp_templates_dont_push   0000000467    0002 0000000004 GlbVar  
+[C:/TempleOS/Compiler/CmpExts.CPP.Z,53] cmp_templates_dont_push2  000000063D    0002 0000000004 GlbVar  
+[C:/TempleOS/Compiler/CmpExts.CPP.Z,52] cmp_templates_dont_push_pop00000005AD    0002 0000000004 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,15] compiled_bytes            0000000838    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,14] compiled_funs             0000000830    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,14] compiled_lines            0000000828    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,8] deref_bitmap              00000007B0    0004 0000000008 GlbVar  
+[C:/TempleOS/Compiler/Lex.CPP.Z,399] doc_stop_btypes           0000005948    0001 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,5] dual_U16_tokens1          0000000778    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,5] dual_U16_tokens2          0000000780    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,6] dual_U16_tokens3          0000000788    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,9] fpop_bitmap               00000007D0    0013 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,8] internal_types_table      0000034380    0001 00000000A0 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,2] is_first_compiler         0000000710    0004 0000000001 GlbVar  
+[C:/TempleOS/Compiler/Lex.CPP.Z,140] lex_zeros                 00000041C8    000B 0000000004 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,11] non_ptr_vars_mask         0000000800    0006 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,8] not_constant_bitmap       00000007C0    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,10] num_non_ptr_vars          00000007E8    0005 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,9] num_reg_vars              00000007E0    0006 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,9] num_stk_temps             00000007D8    0004 0000000008 GlbVar  
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,150] opt_nop                   00000272C8    0007 0000000098 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,10] reg_vars_mask             00000007F8    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,10] stk_temps_mask            00000007F0    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,4] sys_internal_types        0000000718    00B5 0000000060 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,14] to_non_ptr_vars_map       0000000820    0004 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,13] to_reg_vars_map           0000000818    0004 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,13] to_stk_temps_map_even     0000000810    0008 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,12] to_stk_temps_map_odd      0000000808    0008 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,19] uasm_ins64_mask           0000000850    000D 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,20] uasm_mem_mask             0000000860    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,19] uasm_signed_arg_mask      0000000858    0003 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,7] unary_ops_table           0000000798    0002 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,18] unasm_table               0000000840    0006 0000000008 GlbVar  
+[C:/TempleOS/Compiler/CmpGlbls.CPP.Z,19] unasm_table_entries       0000000848    0003 0000000008 GlbVar  

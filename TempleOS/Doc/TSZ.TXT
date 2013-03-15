@@ -1,0 +1,52 @@
+                              Linux TSZ Utility
+
+
+TSZ [-ascii] filename
+
+Will uncompress a single file from Linux.  The -ascii flag will convert the 
+irregular TempleOS ASCII 5 and ASCII 31 characters to spaces.  (ASCII 5 is 
+used to mark the cursor pos and ASCII 31 is used for shifted space characters 
+and will cause problems unless you convert them.)
+
+
+                             Windows TSZ Utility
+
+TSZ is a Windows cmd line program which will assist transferring files from 
+TempleOS to Windows.  It will also uncompress TempleOS files you have gotten 
+to Windows.  There are three ways to get files from TempleOS to Windows --
+via 
+CD-ROM, a FAT32 partition or via a "file partition" you have created with TSZ 
+on a Windows partition.
+
+
+TSZ -expand [-ascii] dirname:
+
+will uncompress all TempleOS files with names ending in ".Z" in a Windows 
+directory and in all subdirectories.  The -ascii flag used in combination
+will 
+convert the irregular TempleOS ASCII 5 and ASCII 31 characters to spaces.  
+(ASCII 5 is used to mark the cursor pos and ASCII 31 is used for shifted
+space 
+characters and will cause problems unless you convert them.)  Note: If you 
+pick names not ending in ".Z", they will not need to be uncompressed.  You
+can 
+[C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,119] Move() or
+[C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,91] Copy() them to a name not ending in
+".Z" and they will be stored 
+uncompressed.
+
+allocated by Windows and located by TempleOS, and if you don't mess with
+them, 
+you can use them to transfer files between TempleOS and Windows.  This is a 
+little risky.  It's pretty safe if you create this file on a partition 
+dedicated for this purpose.
+
+**WARNING:** Do not run a defrag operation on a partition holding a file 
+partition.  If you store files to it after such an operation, you'll ruin
+data 
+on your hard drive.
+
+
+
+* "Windows" is a trademark of MicroSoft Corp.
+* "Linux" is probably a trademark owned by Linus Torvalds.

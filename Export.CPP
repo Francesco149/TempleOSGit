@@ -13,9 +13,9 @@ OptOn(OPTf_WARN_PAREN);
 //Just in case the filesystem gets corrupted while I develop it
 U0 BackupExport()
 {
-  Copy("E:/Export.CPP","C:/Export.CPP");
+  Copy("E:/Export.CPP","D:/Export.CPP");
   Copy("E:/Export.CPP","E:/ExportB.CPP");
-  Copy("E:/Export.CPP","C:/ExportB.CPP");
+  Copy("E:/Export.CPP","D:/ExportB.CPP");
 }
 
 //Appears to hang on this version...
@@ -43,7 +43,7 @@ U0 ExportBinary(U8 *src_file,CDocBin *b)
 }
 
 U8 *ResolveLink(U8 *link_st)
-{ //Adapted from [C:/SparrowOS/Adam/Doc/DocMain.CPP.Z,3] EdJoin. Resolves stuff like MN:Func to the file
+{ //Adapted from [MN:EdJoin] EdJoin. Resolves stuff like MN:Func to the file
   U8 *res,*filename=NULL,*pattern=NULL;
   I64 num;
   if (EdLinkCvt(link_st,&filename,&pattern,&num,0)==-1)
@@ -73,7 +73,7 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
   //Also adds indent spaces to every soft and hard newline.
   //Returns new value for base.
   //This is supposed to also take tabs into account but fuck that shit
-  //NOTE: at this point I could use [C:/SparrowOS/Adam/Window.CPP.Z,723] SetWinHorz and append to a CDoc
+  //NOTE: at this point I could use [C:/TempleOS/Adam/Window.CPP.Z,730] SetWinHorz and append to a CDoc
   I64 len;
   U8 *p,*buf;
   U8 *end;
@@ -155,6 +155,18 @@ U8 *StrToASCII(U8 *s)
       case '-': ext="-"; break;
       case 'u': ext="u"; break;
       case 'alpha': ext="alpha"; break;
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+': ext="+"; break;
+      case '-': ext="-"; break;
+      case '|':
+      case '|': ext="|"; break;
+      case '_': ext="_"; break;
       case 255: ext="\\xFF"; break; //Only used in the extended chars demo
       default:
         if (*buf&0x80)
@@ -207,7 +219,7 @@ U8 *StrStrAny(U8 *s,...)
 
 U8 *UnZExtension(U8 *out_path)
 { //Changes out_path to a non-compressed extension, returns ptr to extension.
-  //See [::/SparrowOS/Doc/Glossary.TXT.Z,1] Filename Extention Types.
+  //See [C:/TempleOS/Doc/Glossary.TXT.Z,1] Filename Extention Types.
   U8 *ext=FileExtDot(out_path)+1;
   if (StrEqAny(ext,"TXT.Z","LOG.Z","CPP.Z","HPP.Z","PRJ.Z","MAP.Z","DAT.Z",
                    "BIN.Z","AUT.Z","GRA.Z"))
@@ -253,7 +265,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
 //Special case: I know these large files don't have any Doc syntax so no point
 //in wasting time parsing them
 //NOTE: PCIDevices contains non-ASCII but they shouldn't be converted because
-//it's not SparrowOS extended ASCII, it was probably created in Linux/Windows
+//it's not TempleOS extended ASCII, it was probably created in Linux/Windows
     FilePassThrough(in_path,out_path);
     return;
   }
@@ -447,7 +459,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
     prev_len=StrLen(out);
   }
 //Special case: this file just contains garbage because there's a hex view
-  if (!StrStr(out_path,"/SparrowOS/Demo/MultiCore/RadixSort.CPP"))
+  if (!StrStr(out_path,"/TempleOS/Demo/MultiCore/RadixSort.CPP"))
     out=StrToASCII(out);
 //Terry uses a mix of tabs and spaces all over the place and converting tabs
 //to 8 spaces is not good enough because some formatting relies on tabs align
@@ -458,7 +470,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,128] PutCopyTree which is internally used by [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
+//Adapted from [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,128] PutCopyTree which is internally used by [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
 U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   U8 *dst_dir,Bool debug=FALSE)
 {
@@ -480,7 +492,7 @@ U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
   }
 }
 
-//Adapted from [C:/SparrowOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
+//Adapted from [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
 U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="E:/Git",
   Bool debug=FALSE)
 {

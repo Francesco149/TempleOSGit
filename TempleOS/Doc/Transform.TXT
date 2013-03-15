@@ -1,0 +1,45 @@
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3335] CDC's have a 4x4 matrix for rotating,
+scaling, skewing and shifting in 3 
+dimensions.  To make the graphics routines respond to the transformation, you 
+must set the [C:/TempleOS/Kernel/Adam1a.HPP.Z,3300] DCF_TRANSFORMATION flag.
+
+The matrix consists of integers that have been scaled 32 bits
+([C:/TempleOS/Adam/Gr/MathGr.CPP.Z,142] gr_scale).  See 
+[C:/TempleOS/Demo/Lectures/FixedPoint.CPP.Z,1] to learn why.
+
+See [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,163] GrRotX(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,179] GrRotY(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,195] GrRotZ(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,211] GrScaleMat(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,239] GrRotXEqu(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,259] GrRotYEqu(), 
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,279] GrRotZEqu() and
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,299] GrScaleMatEqu() to rotate about axes
+and scale.  Combine them 
+with [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,220] GrMulMat() and assign them to the
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3335] CDC.dc with
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,307] GrSetRotMat().  See 
+[C:/TempleOS/Demo/Graphics/Box.CPP.Z,1].
+
+You can rotate single points using [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,144]
+GrRot().
+
+The 4th dimension allows a neat trick where you can place pos shifts 
+(translations), into the matrix and [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,220]
+GrMulMat them to combine rotation/shift 
+operations.  Normally, you can't combine pos shift operations.  See 
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,353] GrSetTranslation() and
+[C:/TempleOS/Demo/Graphics/Transform.CPP.Z,1].
+
+Finally, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3335] CDC's have an x, y and z
+which is an additional shift (translation).
+
+The transformation is implemented as a callback on the
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3335] CDC's transform() 
+member.  The default transfrom() callback is
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,154] GrTransform().  See 
+[C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1] or 
+[C:/TempleOS/Demo/GameStarters/FPS.CPP.Z,1] to see how to change the
+transfrom() 
+callback for foreshortening.
+

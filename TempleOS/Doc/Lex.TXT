@@ -1,0 +1,6 @@
+The compiler's lexical analyzer can be used in your programs to simplify 
+parsing.  See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] Doc Parsing or
+[C:/TempleOS/Compiler/CmpInit.CPP.Z,1] Parse Opcode File.
+
+See [C:/TempleOS/Kernel/Adam1a.HPP.Z,2010] Tokens.
+

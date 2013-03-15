@@ -1,0 +1,222 @@
+Place this file in your HOME directory if you modify it.  This version is the 
+default for all accts. 
+
+Cd("HOME");Dir;
+
+`Cd("HOME");Dir;
+`
+
+Cd("::/TempleOS/Demo");Dir;
+
+`Cd("::/TempleOS/Demo");Dir;
+`
+
+Cd("::/TempleOS/Demo/OldSchool");Dir;
+
+`Cd("::/TempleOS/Demo/OldSchool");Dir;
+`
+
+Cd("::/TempleOS/Demo/Graphics");Dir;
+
+`Cd("::/TempleOS/Demo/Graphics");Dir;
+`
+
+Cd("::/TempleOS/Demo/Snd");Dir;
+
+`Cd("::/TempleOS/Demo/Snd");Dir;
+`
+
+Cd("::/TempleOS/Demo/Doc");Dir;
+
+`Cd("::/TempleOS/Demo/Doc");Dir;
+`
+
+Cd("::/TempleOS/Demo/GameStarters");Dir;
+
+`Cd("::/TempleOS/Demo/GameStarters");Dir;
+`
+
+Cd("::/TempleOS/Demo/MultiCore");Dir;
+
+`Cd("::/TempleOS/Demo/MultiCore");Dir;
+`
+
+Cd("::/TempleOS/Demo/Asm");Dir;
+
+`Cd("::/TempleOS/Demo/Asm");Dir;
+`
+
+Cd("::/TempleOS/Doc");Dir;
+
+`Cd("::/TempleOS/Doc");Dir;
+`
+
+Cd("::/TempleOS/Demo/Lectures");Dir;
+
+`Cd("::/TempleOS/Demo/Lectures");Dir;
+`
+
+Cd("::/TempleOS/Apps");Dir;
+
+`Cd("::/TempleOS/Apps");Dir;
+`
+
+Cd("::/TempleOS/Apps/MusicOrgan/Examples");Dir;
+
+`Cd("::/TempleOS/Apps/MusicOrgan/Examples");Dir;
+`
+
+
+You can examine my acct files for tricks and tips.  Be careful because my 
+set-up is different.
+Cd("::/TempleOS/Demo/AcctExample");Dir;
+
+`Cd("::/TempleOS/Demo/AcctExample");Dir;
+`
+
+
+MakeAll with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164]
+MakeOSInstallPrtBootLoader().
+Cd("::/TempleOS/Kernel");Dir;
+
+`Cd("::/TempleOS/Kernel");Dir;
+`
+
+Cd("::/TempleOS/Compiler");Dir;
+
+`Cd("::/TempleOS/Compiler");Dir;
+`
+
+
+These operating system files are compiled during every boot.
+Cd("::/TempleOS/Adam");Dir;
+
+`Cd("::/TempleOS/Adam");Dir;
+`
+    
+
+[C:/TempleOS/Doc/Welcome.TXT.Z,1] Welcome [C:/TempleOS/Doc/HelpIndex.TXT.Z,1]
+Help Index [C:/TempleOS/Doc/DemoIndex.TXT.Z,1] Demo Index
+Take Tour
+`Cd("::/TempleOS/Misc/Tour");;AutoFile("Tour");
+`
+ Key Map
+`KeyMap;View;
+`
+
+SoftBoot
+`SoftBoot("/Kernel.BIN.C");`
+
+  
+
+
+
+
+
+
+
+
+Tanks <1> (image) Logic <2> (image) WarGame <3> (image) Timeout <4> (image)
+  Span <5> (image)
+
+
+
+
+
+
+
+
+X-Caliber <6> (image) JukeBox <7> (image) Organ <8> (image)  Vocab <9>
+  (image) 
+
+
+
+
+
+KeepAway <10> (image) Models <11> (image) RawHide <12> (image) Chess <13>
+  (image)
+
+
+
+
+
+
+
+
+
+BigGuns <14> (image) EagleDive <15> (image) MisDef <16> (image) BirdLand <17>
+  (image)
+
+
+
+
+
+
+
+Rocks <18> (image) SpaceShip <19> (image) TheDead <20> (image) FPS <21>
+  (image)
+
+
+
+
+
+
+
+
+
+
+AfterEgypt <22> (image) Pilgrims <23> (image) Wenceslas <24> (image) 
+
+
+
+
+
+
+Navy <25> (image) Bomber <26> (image) Strut <27> (image) 
+
+CPUPlot
+`#include "/TempleOS/Demo/Graphics/CPUPlot";`
+ MemRep
+`MemRep;View;`
+
+
+Digits (Memory Game)
+`Cd("::/TempleOS/Demo");;#include "Digits"
+`
+
+Bling (A fractel-like thing)
+  `Cd("::/TempleOS/Demo/Graphics");;#include "Bling"
+  `
+  
+
+
+
+CTRL-R	Add graphics 
+CTRL-L	Add widgets such as trees
+CTRL-ALT-A	Extended ASCII from menu
+ALT-digit keys	Extended ASCII from code
+CTRL-ALT-C	Break(interrupt) program
+CTRL-ALT-D	Enter debugger
+CTRL-ALT-E	Spawn new user shell window
+CTRL-ALT-F	Flush screen VGA cache
+CTRL-ALT-G	Grid on/off
+CTRL-ALT-M	Mute ssound
+CTRL-ALT-V	Sound volume +
+CTRL-ALT-v	Sound volume -
+CTRL-ALT-X	Kill window
+ 
+List public functions in alphabetic order
+`DocMax;HFunsRep;View;`
+
+List all functions in alphabetic order
+`DocMax;HFunsRep("-p");View;`
+
+List all functions in numeric order
+`DocMax;HMapRep;View;`
+
+List all syms in alpabetic order
+`DocMax;HAllRep;View;`
+
+List all syms in numeric order
+`DocMax;HAllRep("-p+m");View;`
+

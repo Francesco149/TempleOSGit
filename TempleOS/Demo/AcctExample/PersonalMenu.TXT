@@ -1,0 +1,382 @@
+Cd("HOME");Dir;
+
+`Cd("HOME");Dir;
+`
+
+Drv(TS_MAIN_DRV_LET);
+
+`Drv(TS_MAIN_DRV_LET);
+`
+
+Drv(TS_BAK_DRV_LET);
+
+`Drv(TS_BAK_DRV_LET);
+`
+
+SoftBoot(TS_MAIN_DRV ":/Kernel.BIN.C");
+`SoftBoot(TS_MAIN_DRV ":/Kernel.BIN.C");`
+
+TSMakeOSInstallPrtBootLoader(TS_MAIN_DRV_LET);
+
+`TSMakeOSInstallPrtBootLoader(TS_MAIN_DRV_LET);
+`
+
+
+[C:/TempleOS/Doc/ChangeLog.TXT.Z,1] ChangeLog [C:/TempleOS/Doc/HelpIndex.TXT.Z,1] Help [C:/TempleOS/Doc/DemoIndex.TXT.Z,1] Demo Key Map
+`KeyMap;View;
+`
+ Take Tour
+`Cd("::/TempleOS/Misc/Tour");;AutoFile("Tour");
+`
+
+
+Cd("/TempleOS/Kernel");Dir;
+
+`Cd("/TempleOS/Kernel");Dir;
+`
+
+Cd("/TempleOS/Kernel/Dsk");Dir;
+
+`Cd("/TempleOS/Kernel/Dsk");Dir;
+`
+
+Cd("/TempleOS/Compiler");Dir;
+
+`Cd("/TempleOS/Compiler");Dir;
+`
+
+Cd("/TempleOS/Adam");Dir;
+
+`Cd("/TempleOS/Adam");Dir;
+`
+
+Cd("/TempleOS/Adam/Boot");Dir;
+
+`Cd("/TempleOS/Adam/Boot");Dir;
+`
+
+Cd("/TempleOS/Adam/Ctrls");Dir;
+
+`Cd("/TempleOS/Adam/Ctrls");Dir;
+`
+
+Cd("/TempleOS/Adam/Dsk");Dir;
+
+`Cd("/TempleOS/Adam/Dsk");Dir;
+`
+
+Cd("/TempleOS/Adam/Doc");Dir;
+
+`Cd("/TempleOS/Adam/Doc");Dir;
+`
+
+Cd("/TempleOS/Adam/WordStat");Dir;
+
+`Cd("/TempleOS/Adam/WordStat");Dir;
+`
+
+Cd("/TempleOS/Adam/Gr");Dir;
+
+`Cd("/TempleOS/Adam/Gr");Dir;
+`
+
+Cd("/TempleOS/Adam/Snd");Dir;
+
+`Cd("/TempleOS/Adam/Snd");Dir;
+`
+
+Cd("/TempleOS/Accts");Dir;
+
+`Cd("/TempleOS/Accts");Dir;
+`
+
+Cd("/TempleOS/Accts/TS");Dir;
+
+`Cd("/TempleOS/Accts/TS");Dir;
+`
+
+Cd("/TempleOS/Accts/TS/TAD");Dir;
+
+`Cd("/TempleOS/Accts/TS/TAD");Dir;
+`
+
+Cd("/TempleOS/Accts/TS/TAD/MusicOrgan");Dir;
+
+`Cd("/TempleOS/Accts/TS/TAD/MusicOrgan");Dir;
+`
+
+Cd("/TempleOS/Accts/TS/Wb2");Dir;
+
+`Cd("/TempleOS/Accts/TS/Wb2");Dir;
+`
+
+Cd("/TempleOS/Accts/User");Dir;
+
+`Cd("/TempleOS/Accts/User");Dir;
+`
+
+Cd("/TempleOS/Accts/Install");Dir;
+
+`Cd("/TempleOS/Accts/Install");Dir;
+`
+
+Cd("/TempleOS/Apps");Dir;
+
+`Cd("/TempleOS/Apps");Dir;
+`
+
+Cd("/TempleOS/Apps/Pilgrims");Dir;
+
+`Cd("/TempleOS/Apps/Pilgrims");Dir;
+`
+
+Cd("/TempleOS/Apps/X-Caliber");Dir;
+
+`Cd("/TempleOS/Apps/X-Caliber");Dir;
+`
+
+Cd("/TempleOS/Apps/MusicOrgan");Dir;
+
+`Cd("/TempleOS/Apps/MusicOrgan");Dir;
+`
+
+Cd("/TempleOS/Apps/AfterEgypt");Dir;
+
+`Cd("/TempleOS/Apps/AfterEgypt");Dir;
+`
+
+Cd("/TempleOS/Apps/Strut");Dir;
+
+`Cd("/TempleOS/Apps/Strut");Dir;
+`
+
+Cd("/TempleOS/Misc/Tour");Dir;
+
+`Cd("/TempleOS/Misc/Tour");Dir;
+`
+
+Cd("/TempleOS/Demo");Dir;
+
+`Cd("/TempleOS/Demo");Dir;
+`
+
+Cd("/TempleOS/Demo/Doc");Dir;
+
+`Cd("/TempleOS/Demo/Doc");Dir;
+`
+
+Cd("/TempleOS/Demo/Asm");Dir;
+
+`Cd("/TempleOS/Demo/Asm");Dir;
+`
+
+Cd("/TempleOS/Demo/Snd");Dir;
+
+`Cd("/TempleOS/Demo/Snd");Dir;
+`
+
+Cd("/TempleOS/Demo/Dsk");Dir;
+
+`Cd("/TempleOS/Demo/Dsk");Dir;
+`
+
+Cd("/TempleOS/Demo/OldSchool");Dir;
+
+`Cd("/TempleOS/Demo/OldSchool");Dir;
+`
+
+Cd("/TempleOS/Demo/Graphics");Dir;
+
+`Cd("/TempleOS/Demo/Graphics");Dir;
+`
+
+Cd("/TempleOS/Demo/MultiCore");Dir;
+
+`Cd("/TempleOS/Demo/MultiCore");Dir;
+`
+
+Cd("/TempleOS/Demo/GameStarters");Dir;
+
+`Cd("/TempleOS/Demo/GameStarters");Dir;
+`
+
+Cd("/TempleOS/Demo/Lectures");Dir;
+
+`Cd("/TempleOS/Demo/Lectures");Dir;
+`
+
+Cd("/TempleOS/Doc");Dir;
+
+`Cd("/TempleOS/Doc");Dir;
+`
+
+Cd("/TempleOS/Misc");Dir;
+
+`Cd("/TempleOS/Misc");Dir;
+`
+
+Cd("/Temp");Dir;
+
+`Cd("/Temp");Dir;
+`
+
+Cd("/0000Boot");Dir;
+
+`Cd("/0000Boot");Dir;
+`
+
+Copy Screen Shots
+`Del(TS_BAK_DRV ":/Temp/ScreenShots/*");Copy("::/Temp/ScreenShots/*",TS_BAK_DRV ":/Temp/ScreenShots");
+`
+
+Del(TS_BAK_DRV ":/Temp/*.SND");DelTree(TS_BAK_DRV ":/Temp/ScreenShots");MkDir(TS_BAK_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+
+`Del(TS_BAK_DRV ":/Temp/*.SND");DelTree(TS_BAK_DRV ":/Temp/ScreenShots");MkDir(TS_BAK_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+`
+
+TSPmtCopyDrv;
+
+`TSPmtCopyDrv;
+`
+
+MakeDistrosAndBackUp;
+
+`MakeDistrosAndBackUp;
+`
+
+M(TS_MAIN_DRV ":/TempleOS/*;~*LineCnt*",TS_BAK_DRV ":/TempleOS/*;~*LineCnt*","+r+d");
+
+`M(TS_MAIN_DRV ":/TempleOS/*;~*LineCnt*",TS_BAK_DRV ":/TempleOS/*;~*LineCnt*","+r+d");
+`
+
+M(TS_MAIN_DRV ":/TempleOS/*;~*LineCnt*",TS_CDROM_DRV ":/TempleOS/*;~*LineCnt*","+r+d");
+
+`M(TS_MAIN_DRV ":/TempleOS/*;~*LineCnt*",TS_CDROM_DRV ":/TempleOS/*;~*LineCnt*","+r+d");
+`
+
+ChgDsk(TS_CDROM_DRV_LET);
+
+`ChgDsk(TS_CDROM_DRV_LET);
+`
+
+SoftBootMenu(TS_MAIN_DRV_LET);
+
+`SoftBootMenu(TS_MAIN_DRV_LET);
+`
+
+Burn TS Distro CD 
+`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+
+Burn TS Distro DVD
+`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+Make TS Distro ISO
+`MakeTSDistro;   Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSTS.ISO");
+`
+
+Burn Std Distro CD 
+`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+
+Burn Std Distro DVD
+`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+Make Std Distro ISO
+`MakeStdDistro;Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSCD.ISO");
+`
+
+  
+  
+  
+  
+  
+  
+  
+   
+  JukeBox <1> (image) Rocks <2> (image) Vocab <3> (image)  EagleDive <4> (image) WarGame <5> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Timeout <6> (image) TheDead <7> (image) Logic <8> (image) X-Caliber <9> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Span <10> (image)  BigGuns <11> (image) BirdLand <12> (image) Tanks <13> (image) Pilgrims <14> (image)
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  FPS <15> (image)      AfterEgypt <16> (image)  Organ <17> (image) MisDef <18> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  Wenceslas <19> (image) KeepAway <20> (image) Models <21> (image) RawHide <22> (image)
+  
+  
+  
+  
+  
+  Chess <23> (image) Navy <24> (image) Bomber <25> (image) Strut <26> (image)
+  
+
+[C:/TempleOS/Misc/Bible.TXT.Z,297] Bible
+SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");
+`SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");`
+
+TSMakeOSInstallPrtBootLoader(TS_BAK_DRV_LET);
+
+`TSMakeOSInstallPrtBootLoader(TS_BAK_DRV_LET);
+`
+
+List public functions in alphabetic order
+`DocMax;HFunsRep;View;`
+
+List all functions in alphabetic order
+`DocMax;HFunsRep("-p");View;`
+
+List all functions in numeric order
+`DocMax;HMapRep;View;`
+
+List all syms in alpabetic order
+`DocMax;HAllRep;View;`
+
+List all syms in numeric order
+`DocMax;HAllRep("-p+m");View;`
+
+Test Suite
+`#include "::/TempleOS/Misc/OSTestSuite";
+`
+
+MusicOrgan GODSongs
+`#include
+"::/TempleOS/Apps/MusicOrgan/Load";MusicOrgan("::/TempleOS/Accts/TS/TAD/MusicO
+rgan");
+`

@@ -1,0 +1,133 @@
+                                 Booting A PC
+
+When you turn-on (better term is "power-up"!) a computer or do a hardware
+rst, 
+it starts in the BIOS.  Sometimes, you must change the BIOS boot order to
+boot 
+stuff.
+
+The BIOS loads a boot sect from CD-ROM or hard disk or whatever.  The boot 
+sect runs in 16-bit mode and often loads-in a second file that's bigger if it 
+can't be done by just one sect.  It's a safe bet that boot sects are 
+hand-coded assembly language  Most boot sects use the BIOS to load-in the 
+rest.
+
+Not only do boot sects have a size limit, 512 bytes or 2048 bytes for CD-ROM, 
+the files they load have to fit within 640K because they run in 16-bit mode.  
+This means they usually can't just load the whole operating system and start 
+it running.  I guess some boot loaders, like [C:/TempleOS/Doc/Grub.TXT.Z,1]
+Grub, have a capability of 
+switching modes before handing-off ctrl to the operating system.  Anyway, the 
+operating system must load the rest of itself.  My
+[C:/TempleOS/Kernel/KStart.CPP.Z,1] Kernel module is what the 
+boot sect loads and I try to put a minimum in it so that it will always fit
+in 
+640K.  It switches to 32-bit mode, then, to 64-bit mode allowing access to 
+more memory.  It loads in the rest of TempleOS.
+
+All the boot related stuff for TempleOS is in the /TempleOS/Adam/Boot 
+directory.
+
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,1] InsBoot.CPP	Installs and patches boot
+sects
+[C:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] BootCD.CPP	CD-ROM Boot sect
+[C:/TempleOS/Adam/Boot/BootMHD.CPP.Z,1] BootMHD.CPP	Master HD boot record
+[C:/TempleOS/Adam/Boot/BootMHD2.CPP.Z,1] BootMHD2.CPP	Stage 2 master boot
+loader
+[C:/TempleOS/Adam/Boot/BootHD.CPP.Z,1] BootHD.CPP	HD partition boot record
+
+BootCD is the CD-ROM boot sect.  If you are curious on the layout of ISO9660 
+CD-ROMs, see [C:/TempleOS/Adam/Dsk/DskCDDVD.CPP.Z,1] DiskCDDVD.CPP.  To make
+a custom bootable CD-ROM, look here 
+[C:/TempleOS/Demo/MakeDistro.CPP.Z,1] Bootable CD.
+
+BootMHD is the master boot record for a hard drive.  This goes on block zero.
+ 
+It loads-in BootMHD2 which is stored as a file on a partition, kinda risky
+and 
+unusual -- most other master boot loaders place stage 2 in a gap that's not
+in 
+any particular partition.   BootMHD2 displays a menu and will boot a 
+partition.  Each partition has it's own partition boot record, the first
+block 
+of the partition.  BootHD is the boot record for a TempleOS partition.
+
+My boot records don't access directories because that would make them too big 
+for one block and would make them depend on a file system layout.  Instead, 
+they get patched with the LBA, logical block addresses, to load other stuff.  
+To update with a new TempleOS kernel, you must create a binary file and patch 
+the boot loader so it knows the LBA blocks to load.  Therefore, you usually 
+recompile the kernel and update the boot sect at the same time.  
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164] MakeOSInstallPrtBootLoader() does
+this.  [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,292] InstallMasterBootLoader()
+will 
+install a master boot loader.
+
+With TempleOS , the Kernel module loads the Compiler module so it can process 
+start-up scripts and works with srource code from then on.  
+[C:/TempleOS/Kernel/Adam1.CPP.Z,1] is the starting start-up script.  It
+processes 
+(compiles into memory) the stuff in the /TempleOS/Adam directory and ends by #
+includeing the [C:/TempleOS/Accts/TS/TAD/Adam3.CPP,1] file.
+
+It is possible to reboot without doing a hardware rst.  This is faster.  You 
+might do this when working on Kernel or your start-up scripts when you want 
+them to take effect.  See [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,68] SoftBoot().
+
+ <1> (image)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
