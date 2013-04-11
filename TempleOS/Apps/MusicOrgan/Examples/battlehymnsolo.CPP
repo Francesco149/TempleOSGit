@@ -1,0 +1,62 @@
+//7 has graphics
+
+
+
+/*  <1> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+U0 Song()
+{
+  Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
+  music_tempo= 2.480;
+  music_stacatto_factor= 0.9;
+  try {
+  while (!ScanKey) {
+	"$CL$$BG,BLACK$$FG,WHITE$\n\n\n\n\nWait for the end...";
+	NewLine(5);
+	Spaces(17);
+	PutSprite(__BIN_1);
+	Play("3e.GsGe.GsFe.EsG4e.CsDe.EsEe.EsDqCe.CsB");
+	NewLine;
+	Play("e.AsAe.AsBe.CsBe.CsA3e.G4sA3e.GsEqGe.GsG");
+	NewLine;
+	Play("e.GsGe.GsFe.EsG4e.CsDe.EsEe.EsDqCC");
+	NewLine;
+	Play("DDCBh.CqR");
+	NewLine;
+	Play("3(Ge.G");
+	NewLine;
+	Play("sFe.EsG4e.CsDhEq.CeR");
+	NewLine;
+	Play("q(Ae.A");
+	NewLine;
+	Play("sBe.CsBe.CsA3hGq.EeR");
+	NewLine;
+	Play("q(Ge.G");
+	NewLine;
+	Play("sFe.EsG4e.CsDhEqCC");
+	NewLine;
+	Play("DDCBh.CqR");
+	NewLine;
+	Play("!etEEGqCsDCDCFCFCqAetCDBBD3G4F!CF");
+	NewLine;
+	Play("!EEGqCsDCDCFCFCqAetCDBBD3G4F!CF");
+	NewLine;
+  }
+  } catch
+    CatchAll;
+  Snd(0);
+}
+
+Song;

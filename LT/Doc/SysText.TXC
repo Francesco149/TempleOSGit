@@ -1,5 +1,0 @@
-To allow different languages and customization, LoseThos uses strings to 
-identify actual strings to be displayed.  This is basically a level of 
-indirection.  Support for lists of strings is also provided, but it's not 
-especially efficient.
-

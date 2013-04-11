@@ -1,8 +1,0 @@
-/*
-This is the startup file for System() cmds
-
-If you modify this file, you should place it
-into your HOME directory.  This version is the
-default for accounts without a version in HOME.
-*/
-UseConsoleLtf(NULL);

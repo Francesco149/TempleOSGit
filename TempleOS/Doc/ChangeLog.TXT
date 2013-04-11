@@ -1,0 +1,74 @@
+Use [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I change
+a label.
+
+----04/10/13 12:41:18----
+* dft_drv is now *sys_acct.
+* Added LowRAMDrv kernel config option.
+* Made so RAM drives are not reformatted at boot.
+* **WARNING**: Added new prompt to RAM disk creation.
+* Added [C:/TempleOS/Compiler/CmpMain.CPP.Z,680] StreamExePutS() and
+[C:/TempleOS/Compiler/CmpMain.CPP.Z,697] StreamExePrintF().
+
+----04/08/13 10:46:20----
+* **TempleOS version 1.01 Released**
+* Compiler optimization for [C:/TempleOS/Kernel/Adam1b.HPP.Z,57] Bt(),
+[C:/TempleOS/Kernel/Adam1b.HPP.Z,58] Bts(),
+[C:/TempleOS/Kernel/Adam1b.HPP.Z,59] Btr(), etc.
+
+----04/06/13 07:39:53----
+* Added [C:/TempleOS/Compiler/OptPass012.CPP.Z,40] OptClassFwd() and
+[C:/TempleOS/Compiler/OptPass012.CPP.Z,32] OptLabelFwd().
+
+----04/04/13 06:54:53----
+* Cleaned-up [C:/TempleOS/Apps/AfterEgypt/Horeb.CPP.Z,1].
+
+----04/04/13 03:31:30----
+* Cleaned-up [C:/TempleOS/Demo/GameStarters/Rocks.CPP.Z,1] code.
+* Cleaned-up compiler code.
+* Improved [C:/TempleOS/Demo/Snd/WaterFowl.CPP.Z,1].
+
+----04/02/13 16:58:49----
+* Redid ReIndent in <CTRL-SHIFT-L> menu.  Got rid of old nasty indent code.
+* Added CompileChk to <CTRL-SHIFT-L> menu.
+* Changed [C:/TempleOS/Compiler/Lex.CPP.Z,37] LexNew() filename arg.
+* Added [C:/TempleOS/Compiler/Lex.CPP.Z,425] LexAttachDoc() to replace
+LexIncludeDoc().
+* Fixed registry bug.
+
+----04/02/13 03:09:24----
+* Warning: Changed [C:/TempleOS/Adam/Boot/DskCDDVD.CPP.Z,328] CDFileCreate().
+* Improved [C:/TempleOS/Adam/Boot/DskCDDVD.CPP.Z,1].
+* Improved [C:/TempleOS/Adam/WallPaper.CPP.Z,1].
+
+----03/31/13 20:15:32----
+* Added background to [C:/TempleOS/Demo/GameStarters/Squirt.CPP.Z,1].
+* Added background to [C:/TempleOS/Demo/GameStarters/ZoneOut.CPP.Z,1].
+* Added option to edit sprite bitmap extents as text. 
+[C:/TempleOS/Adam/Gr/CSpriteVect.CPP.Z,68] PopUpExtents().
+* Added background to [C:/TempleOS/Demo/Graphics/Camp.CPP.Z,1], Quail and
+Clouds.
+
+----03/30/13 16:32:31----
+* Changed [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc que to put_doc,
+display_doc, and border_doc.
+* Got rid of HDAudio support -- never worked for very many people.
+
+----03/27/13 04:18:15----
+* Changed Tour
+`Cd("::/TempleOS/Misc/Tour");;AutoFile("Tour");
+`
+.
+
+----03/24/13 14:44:28----
+* Made [C:/TempleOS/Kernel/Display.CPP.Z,200] PutChar('Hello') accept
+multiple chars.  This is tricky.  My compiler 
+allows multi-byte char constants.
+
+----03/19/13 16:18:53----
+* Added [C:/TempleOS/Adam/Doc/DocFile.CPP.Z,429] DocType() and
+[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2198] DocNewLine().
+* Added option for extra new_lines to
+[C:/TempleOS/Adam/Doc/DocFile.CPP.Z,459] Type().
+
+----03/19/13 00:38:44----
+* **TempleOS version 1.00 Released**
