@@ -1,4 +1,4 @@
- /* Unknown token: 8 */ I64 ts_num;
+I64 ts_num;
 U0 TSStart()
 {
   ts_num=0;

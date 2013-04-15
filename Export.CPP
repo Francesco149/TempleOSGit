@@ -25,7 +25,7 @@ U0 BackupExport()
 
 U0 ExportBinary(U8 *src_file,CDocBin *b)
 {
-  U64 len;
+  I64 len;
   U8 *buf,*buf1;
 
   len=StrLen(src_file);
@@ -139,7 +139,7 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
 U8 *StrToASCII(U8 *s)
 { //Convert non-standard ASCII
   U8 *ext,*buf,*buf1;
-  U64 len;
+  I64 len;
   for (buf=s;*buf;buf++) {
     switch (*buf) {
       case CH_SHIFT_SPACE: ext=" "; break; //Special space, not conv. to tabs
@@ -187,7 +187,7 @@ next_char:
 
 U0 FilePassThrough(U8 *in_path,U8 *out_path)
 {
-  U64 len;
+  I64 len;
   U8 *out=FileRead(in_path,&len);
   FileWrite(out_path,out,len);
   Free(out);
@@ -195,7 +195,7 @@ U0 FilePassThrough(U8 *in_path,U8 *out_path)
 
 Bool StrEqAny(U8 *s,...)
 { //Returns TRUE if any of the strings match s
-  U64 i;
+  I64 i;
   for (i=0;i<argc;i++) {
     if (!StrCmp(s,argv[i]))
       return TRUE;
@@ -206,7 +206,7 @@ Bool StrEqAny(U8 *s,...)
 U8 *StrStrAny(U8 *s,...)
 { //Returns a pointer to the first substring matched
   U8 *res;
-  U64 i;
+  I64 i;
   for (i=0;i<argc;i++) {
     if (res=StrStr(s,argv[i]))
       break;
@@ -237,7 +237,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   CDocEntry *cl;
   CDocBin *b;
   U8 *out,*buf,*ext,*lnk;
-  U64 len,flags=0;
+  I64 len,flags=0;
   Bool is_code;
   I64 indent=0,line_len=0,prev_len=0;
   U8 *indents=StrNew("");
@@ -444,11 +444,12 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
       case DOCT_HTML_IMG:
       case DOCT_HTML_VIDEO:
       case DOCT_HIGHLIGHT:
+      case DOCT_PAGE_LEN:
         break;
       default:
         buf=MSPrintF("%s /* Unknown token: %d */ ",out,cl->type_u8);
         Free(out); out=buf;
-        "Unknown token: %d\n",cl->type_u8;
+        "%s: Unknown token: %d\n",ST_WARN_ST,cl->type_u8;
         break;
     }
     if (flags & DOCF_WORD_WRAP)
@@ -468,7 +469,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
 }
 
 //Adapted from [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,128] PutCopyTree which is internally used by [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree
-U0 PutExportTree(CDirEntry *ent,U64 src_dir_len,U64 dst_dir_len,
+U0 PutExportTree(CDirEntry *ent,I64 src_dir_len,I64 dst_dir_len,
   U8 *dst_dir,Bool debug=FALSE)
 {
   U8 *path;
@@ -495,7 +496,7 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
 {
   CFileAccess *fa;
   CDirEntry *ent;
-  U64 dst_dir_len,src_dir_len;
+  I64 dst_dir_len,src_dir_len;
   U8 *dst_dir,*src_dir;
 
   fa=FileAccessNew(src_mask,TRUE);

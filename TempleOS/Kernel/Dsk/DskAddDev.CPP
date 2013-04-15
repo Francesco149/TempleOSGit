@@ -31,7 +31,7 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
   if (make_free)
     p=PrtMakeFree(bdev->first_drv_let+result);
   else
-    p=PrtNextFree(bdev->first_drv_let);
+    p=PrtNextFree(bdev->first_drv_let+result);
   p->bdev=bdev;
   p->size=bdev->max_blk+1;
   switch (bdev->type) {
@@ -82,7 +82,7 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
 	      if (make_free)
 		p=PrtMakeFree(bdev->first_drv_let+result);
 	      else
-		p=PrtNextFree(bdev->first_drv_let);
+		p=PrtNextFree(bdev->first_drv_let+result);
 	      p->bdev=bdev;
 	      p->rblks=&ATARBlks;
 	      p->wblks=&ATAWBlks;

@@ -78,7 +78,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136]
-MakeOSInstallPrtBootLoader().  TempleOS is 142,985 lines.  
+MakeOSInstallPrtBootLoader().  TempleOS is 142,995 lines.  
 Roughly 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT 
 demos and applications.
 

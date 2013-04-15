@@ -1,5 +1,5 @@
 //This is the main TempleOS header file
-//for data structures and vals.
+//for data structures and classes.
 //There is no code in this file.
 
 //The internal types are U16i,I32i, etc.

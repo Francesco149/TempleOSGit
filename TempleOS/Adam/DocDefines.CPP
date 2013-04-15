@@ -29,7 +29,7 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distro.
   //See [C:/TempleOS/Demo/AcctExample/TSDistro.CPP.Z,1] DD_TEMPLEOS_LOC.
   -] LineCnt
-    DefinePrintF("DD_TEMPLEOS_LOC","142,985");
+    DefinePrintF("DD_TEMPLEOS_LOC","142,995");
     
   DefinePrintF(
     "DD_PAGE_TABLE_BASE","%08X",PAGE_TABLE_BASE);

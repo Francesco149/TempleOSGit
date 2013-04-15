@@ -245,7 +245,7 @@ BREAK_FOCUS_USER          0000004831    0000            ExportSysSym
 [D:/TempleOS/Kernel/Misc1a.CPP.Z,223] Beep                      0000012FC2    0001 000000007A Funct  
 [D:/TempleOS/Kernel/Str1a.CPP.Z,2] Bin2Hex                   000000B29C    0001 000000005F Funct  
 [D:/TempleOS/Kernel/Misc1a.CPP.Z,154] Blink                     0000012CCA    0000 0000000052 Funct  
-[D:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,23] BlkDevAdd                 0000021A53    0004 000000084C Funct  
+[D:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,23] BlkDevAdd                 0000021A53    0004 0000000850 Funct  
 [D:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,110] BlkDevChk                 000001C493    0008 000000004F Funct  
 [D:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,60] BlkDevInit                000001FF13    0009 00000001D1 Funct  
 [D:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,1] BlkDevLock                000001FD7B    0002 000000005B Funct  
@@ -623,11 +623,11 @@ CPUStructInit             000002CDD2    0001            ExportSysSym
 [D:/TempleOS/Kernel/Adam1b.HPP.Z,268] D3SubEqu                  00000033F0    0000            Funct  
 [D:/TempleOS/Kernel/Adam1b.HPP.Z,278] D3Unit                    000000345E    0000            Funct  
 [D:/TempleOS/Kernel/Adam1b.HPP.Z,259] D3Zero                    0000003366    0000            Funct  
-[D:/TempleOS/Kernel/Adam1b.HPP.Z,57] D:/TempleOS/Doc/Bit.TXT.Z 0194F63080    0000            HelpFile  
-[D:/TempleOS/Kernel/Adam1b.HPP.Z,258] D:/TempleOS/Doc/D3.TXT.Z  0194F634C0    0000            HelpFile  
-[D:/TempleOS/Kernel/Adam1b.HPP.Z,185] D:/TempleOS/Doc/MultiCore.TXT.Z0194F632A0    0000            HelpFile  
-[D:/TempleOS/Kernel/Adam1b.HPP.Z,84] D:/TempleOS/Doc/Que.TXT.Z 0194F63190    0000            HelpFile  
-[D:/TempleOS/Kernel/Adam1b.HPP.Z,206] D:/TempleOS/Doc/TimeJiffy.TXT.Z0194F633B0    0000            HelpFile  
+[D:/TempleOS/Kernel/Adam1b.HPP.Z,57] D:/TempleOS/Doc/Bit.TXT.Z 0194F64860    0000            HelpFile  
+[D:/TempleOS/Kernel/Adam1b.HPP.Z,258] D:/TempleOS/Doc/D3.TXT.Z  0194F64CA0    0000            HelpFile  
+[D:/TempleOS/Kernel/Adam1b.HPP.Z,185] D:/TempleOS/Doc/MultiCore.TXT.Z0194F64A80    0000            HelpFile  
+[D:/TempleOS/Kernel/Adam1b.HPP.Z,84] D:/TempleOS/Doc/Que.TXT.Z 0194F64970    0000            HelpFile  
+[D:/TempleOS/Kernel/Adam1b.HPP.Z,206] D:/TempleOS/Doc/TimeJiffy.TXT.Z0194F64B90    0000            HelpFile  
 [D:/TempleOS/Kernel/Adam1a.HPP.Z,3333] DCF_ALIAS                 0x2000        0000 0000000008 DefineStr 
 [D:/TempleOS/Kernel/Adam1a.HPP.Z,3319] DCF_COMPRESSED            1             0000 0000000008 DefineStr 
 [D:/TempleOS/Kernel/Adam1a.HPP.Z,3332] DCF_DONT_DRAW             0x1000        0000 0000000008 DefineStr 
@@ -1126,7 +1126,7 @@ END_RSI_TASK              00000046B3    0002            ExportSysSym
 [D:/TempleOS/Kernel/Task1a.CPP.Z,1] Exit                      0000019A4F    0003 00000000C9 Funct  
 [D:/TempleOS/Kernel/Adam1b.HPP.Z,247] Exp                       00000036C1    0000            Funct  
 [D:/TempleOS/Kernel/Compress.CPP.Z,301] ExpandBuf                 0000007CAE    0007 00000000BD Funct  
-[D:/TempleOS/Kernel/Adam1a.HPP.Z,101] FALSE                     0             012F 0000000008 DefineStr 
+[D:/TempleOS/Kernel/Adam1a.HPP.Z,101] FALSE                     0             012D 0000000008 DefineStr 
 [D:/TempleOS/Kernel/Dsk/FileSysFAT.CPP.Z,480] FAT32AllocClusters        0000027F40    0000 000000027C Funct  
 [D:/TempleOS/Kernel/Dsk/FileSysFAT.CPP.Z,539] FAT32AllocContiguousClusters00000281C0    0000 00000002F3 Funct  
 [D:/TempleOS/Kernel/Dsk/FileSysFAT.CPP.Z,229] FAT32CDirFill             00000273D0    0002 0000000074 Funct  
