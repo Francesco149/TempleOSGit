@@ -212,7 +212,7 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//[C:/TempleOS/Kernel/Adam1a.HPP.Z,3620] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3621] FUF_SCAN_PARENTS
+{//[C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
   U8 *buf,*buf2,*buf3,*filename,*temp_name,*temp_buf;
   CDirEntry de;
   filename=MStrUtil(_filename,

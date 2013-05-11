@@ -217,7 +217,7 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
   }
   for (i=0;i<NUM_PRTS;i++) {
     p=&sys_prts[i];
-    if (p->type==PT_NATIVE||p->type==PT_FAT32)
+    if (p->type==PT_REDSEA||p->type==PT_FAT32)
       FMRebuildDocDrv(Prt2Drv(p),doc,_root,TRUE);
     else if (p->type==PT_ISO9660) {
       if (p->bdev->flags&BDF_INITIALIZED)

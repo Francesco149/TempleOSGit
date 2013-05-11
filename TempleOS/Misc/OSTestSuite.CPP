@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=153;
+  progress4_max=147;
   *progress4_desc=0;
 }
 U0 TSEnd()
@@ -239,7 +239,7 @@ U0 DoMountain()
 U0 DoCoach()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Coach\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Coach\";\n");
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   Sleep(1000);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
@@ -249,7 +249,7 @@ U0 DoCoach()
 U0 DoDigits()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/Digits\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Digits\";\n");
   Sleep(100);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   Sleep(100);
@@ -346,7 +346,7 @@ U0 DoPullDownMenu()
 U0 DoStadium()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Stadium/Stadium\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Stadium/Stadium\";\n");
   Sleep(50);
   SendMsg(task,MSG_IP_L_DOWN_UP,100,10);
   Sleep(300);
@@ -372,7 +372,7 @@ U0 DoPalette()
 U0 DoHalogen()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Halogen\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Halogen\";\n");
   SendMsg(task,MSG_KEY_DOWN,0,SC_CURSOR_UP);
   Sleep(1000);
   SendMsg(task,MSG_KEY_UP,0,SC_CURSOR_UP);
@@ -387,7 +387,7 @@ U0 DoTheDead()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/TheDead\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/TheDead\";\n");
   for (i=0;i<15;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
     SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
@@ -406,7 +406,7 @@ U0 DoBomber()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Bomber\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Bomber\";\n");
   for (i=0;i<7;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
@@ -424,7 +424,7 @@ U0 DoZoneOut()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/ZoneOut\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/ZoneOut\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -443,7 +443,7 @@ U0 DoVaroom()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Varoom\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Varoom\";\n");
   for (i=0;i<15;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
     Sleep(50);
@@ -455,32 +455,10 @@ U0 DoVaroom()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoRocks()
-{
-  I64 i;
-  CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/Rocks\";\n");
-  while (!TaskValidate(task->popup_task))
-    Yield;
-  TaskWait(task->popup_task);
-  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (TaskValidate(task->popup_task))
-    Yield;
-  SendMsg(task,MSG_KEY_DOWN,0,SC_CURSOR_RIGHT);
-  Sleep(300);
-  for (i=0;i<15;i++) {
-    SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-    Sleep(100);
-  }
-  SendMsg(task,MSG_KEY_UP,0,SC_CURSOR_RIGHT);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalk(task,"Exit;\n");
-}
-
 U0 DoNavy()
 {
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/Navy\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/Navy\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -497,7 +475,7 @@ U0 DoWenceslas()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/Wenceslas\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/Wenceslas\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -522,42 +500,10 @@ U0 DoWenceslas()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoChess()
-{
-  I64 i;
-  CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/Chess\";\n");
-  while (!TaskValidate(task->popup_task))
-    Yield;
-  TaskWait(task->popup_task);
-  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  Sleep(100);
-  while (!TaskValidate(task->popup_task))
-    Yield;
-  TaskWait(task->popup_task);
-  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  Sleep(100);
-  for (i=0;i<8;i++) {
-    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
-    SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
-    Sleep(25);
-  }
-  SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
-  Sleep(250);
-  SendMsg(task,MSG_KEY_DOWN,CH_SPACE,0);
-  SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
-  Sleep(250);
-  SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
-  SendMsg(task,MSG_KEY_UP,CH_SPACE,0);
-  Sleep(1000);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalk(task,"Exit;\n");
-}
-
 U0 DoChessNet()
 {
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/ChessNet\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/ChessNet\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -572,7 +518,7 @@ U0 DoChessNet()
 U0 DoRainDrops()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/RainDrops\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/RainDrops\";\n");
   Sleep(1000);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
@@ -626,7 +572,7 @@ U0 DoBlackDiamond()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/BlackDiamond\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/BlackDiamond\";\n");
   for (i=0;i<15;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
     Sleep(75);
@@ -755,7 +701,7 @@ U0 DoSpaceShip()
 {
   CTask *task=SpawnUser;
   SetIP(300,300);
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/SpaceShip\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/SpaceShip\";\n");
   Sleep(150);
   AFSetIP(3,125,125);
   SetIP(,,,TRUE);
@@ -873,7 +819,7 @@ U0 DoCharGraphics()
 U0 DoMaze()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/Maze\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Maze\";\n");
   Sleep(750);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
   XTalk(task,"Exit;\n");
@@ -926,15 +872,6 @@ U0 DoMPPrintF()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoLayers3DJob()
-{
-  CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/MultiCore/Layers3DJob\";\n");
-  Sleep(1500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  XTalk(task,"Exit;\n");
-}
-
 U0 DoCartesian()
 {
   CTask *task=SpawnUser;
@@ -967,7 +904,7 @@ U0 DoLife()
 U0 DoZing()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Zing\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Zing\";\n");
   Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
@@ -1037,15 +974,6 @@ U0 DoClouds()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoNoise()
-{
-  CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/MultiCore/Noise\";\n");
-  Sleep(1500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  XTalk(task,"Exit;\n");
-}
-
 /*
 U0 Do()
 {
@@ -1055,20 +983,7 @@ U0 Do()
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
 }
-*/
 
-U0 DoBling()
-{
-  CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/Graphics/Bling\";\n");
-  Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalk(task,"Exit;\n");
-}
-
-/*
 U0 Do()
 {
   CTask *task=SpawnUser;
@@ -1092,7 +1007,7 @@ U0 DoBirdLand()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/BirdLand\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/BirdLand\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -1108,36 +1023,10 @@ U0 DoBirdLand()
   XTalk(task,"Exit;\n");
 }
 
-
-U0 DoMissileDefense()
-{
-  I64 i;
-  CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/MissileDefense\";\n");
-  while (!TaskValidate(task->popup_task))
-    Yield;
-  task->popup_task->user_data0=Fs;
-  TaskWait(task->popup_task);
-  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (!TaskValidate(task->popup_task)||task->popup_task->user_data0==Fs)
-    Yield;
-  TaskWait(task->popup_task);
-  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (TaskValidate(task->popup_task))
-    Yield;
-  for (i=0;i<10;i++) {
-    SetIP(RandU16%task->win_pixel_width,RandU16%task->win_pixel_height);
-    SendMsg(task,MSG_KEY_DOWN_UP,RandU16%3+'1',0);
-    Sleep(200);
-  }
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalk(task,"Exit;\n");
-}
-
 U0 DoWarGame()
 {
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/WarGame\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/WarGame\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -1155,7 +1044,7 @@ U0 DoBigGuns()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/BigGuns\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/BigGuns\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   task->popup_task->user_data0=Fs;
@@ -1181,7 +1070,7 @@ U0 DoDunGen()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/DunGen\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/DunGen\";\n");
   for (i=0;i<10;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_RIGHT);
     Sleep(100);
@@ -1226,7 +1115,7 @@ U0 DoTimeOut()
 U0 DoCollision()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Collision\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Collision\";\n");
   Sleep(1500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
@@ -1291,19 +1180,6 @@ U0 DoStkGrow()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoPilgrims()
-{
-  CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Apps/Pilgrims/Run\";\n");
-  while (!TaskValidate(task->popup_task))
-    Yield;
-  TaskWait(task->popup_task);
-  SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  Sleep(2500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalk(task,"Exit;\n");
-}
-
 U0 DoSpan()
 {
   CTask *task=SpawnUser;
@@ -1317,10 +1193,83 @@ U0 DoSpan()
   XTalk(task,"Exit;\n");
 }
 
+U0 DoStrut()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/TempleOS/Apps/Strut/Run\";\n");
+  WinMgrSync;
+  SetIP(200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH-200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH/2,400,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+
+  SendMsg(task,MSG_KEY_DOWN_UP,'s',0);
+
+  SetIP(200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH-200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH/2,400,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(GR_WIDTH-200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH/2,400,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(GR_WIDTH/2,GR_HEIGHT/2,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH-200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(GR_WIDTH/2,GR_HEIGHT/2,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH/2,400,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(GR_WIDTH/2,GR_HEIGHT/2,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SendMsg(task,MSG_KEY_DOWN_UP,'t',0);
+
+  SetIP(GR_WIDTH/2,400,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(GR_WIDTH-200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(GR_WIDTH/2,400,,TRUE);
+  SendMsg(task,MSG_IP_L_DOWN,0,0);
+  SetIP(200,200,,TRUE);
+  SendMsg(task,MSG_IP_L_UP,0,0);
+
+  SetIP(,,,FALSE);
+
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  LBts(key_down_bitmap,A2ScanCode('1'));
+  Sleep(600);
+  LBtr(key_down_bitmap,A2ScanCode('1'));
+  SendMsg(task,MSG_KEY_DOWN_UP,'Z',0);
+  Sleep(200);
+  SendMsg(task,MSG_KEY_DOWN_UP,'Z',0);
+  Sleep(200);
+  SendMsg(task,MSG_KEY_DOWN_UP,'Z',0);
+  Sleep(200);
+
+  SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
+  XTalk(task,"Exit;\n");
+}
+
 U0 DoRawHide()
 {
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/RawHide\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/RawHide\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -1380,7 +1329,7 @@ U0 DoPoleZeros()
 U0 DoWhap()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Whap\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Whap\";\n");
   SetIP(300,200);
   Sleep(500);
   AFSetIP(3,350,300);
@@ -1481,7 +1430,7 @@ U0 DoKeepAway()
 U0 DoRocket()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Rocket\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Rocket\";\n");
   SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
   Bts(key_down_bitmap,SC_CURSOR_UP);
   Sleep(1000);
@@ -1498,7 +1447,7 @@ U0 DoRocket()
 U0 DoRocketScience()
 {
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/RocketScience\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/RocketScience\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -1514,7 +1463,7 @@ U0 DoRocketScience()
 U0 DoMassSpring()
 {
   CTask *task=SpawnUser;
-  XTalk(task,"#include \"::/TempleOS/Demo/GameStarters/MassSpring\";\n");
+  XTalk(task,"#include \"::/TempleOS/Demo/Games/MassSpring\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);
@@ -1546,7 +1495,7 @@ U0 DoMassSpring()
 U0 Do()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Whap\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Whap\";\n");
   Sleep(500);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
@@ -1557,7 +1506,7 @@ U0 DoSquirt()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/Squirt\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/Squirt\";\n");
   for (i=0;i<5;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
     Sleep(100);
@@ -1602,7 +1551,7 @@ U0 DoFPS()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/GameStarters/FPS\";\n");
+  XTalkWait(task,"#include \"::/TempleOS/Demo/Games/FPS\";\n");
   for (i=0;i<15;i++) {
     SendMsg(task,MSG_KEY_DOWN_UP,0,SC_CURSOR_UP);
     Sleep(50);
@@ -1627,7 +1576,7 @@ U0 DoEagleDive()
 {
   I64 i;
   CTask *task=SpawnUser;
-  XTalkWait(task,"Cd(\"::/TempleOS/Demo/GameStarters\");Del(\"EagleDive.BIN.Z\");\n");
+  XTalkWait(task,"Cd(\"::/TempleOS/Demo/Games\");Del(\"EagleDive.BIN.Z\");\n");
   XTalkWait(task,"Cmp(\"EagleDive.CPP\");\n");
   Sleep(500);
   XTalkWait(task,"Load(\"EagleDive\");\n");
@@ -1640,7 +1589,7 @@ U0 DoEagleDive()
     Sleep(50);
   }
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalkWait(task,"Del(\"::/TempleOS/Demo/GameStarters/EagleDive.BIN.Z\");\n");
+  XTalkWait(task,"Del(\"::/TempleOS/Demo/Games/EagleDive.BIN.Z\");\n");
   XTalk(task,"Exit;\n");
 }
 
@@ -2119,18 +2068,6 @@ U0 DoGlblVars()
   XTalk(task,"Exit;\n");
 }
 
-/*
-U0 Do()
-{
-  CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/TempleOS/Demo/WinMgr2\";\n");
-  Sleep(500);
-  SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  XTalk(task,"Exit;\n");
-}
-*/
-
-
 U0 DoReps()
 {
   CTask *task=SpawnUser;
@@ -2156,14 +2093,12 @@ U0 DoReps()
   XTalk(task,"Exit;\n");
 }
 
-  
 U0 OSTestSuite()
 {
   TSStart;
   TS; DoSpaceShip;
   TS; DoBlackDiamond;
   TS; if (IsDrvWritable(':')) DoEagleDive;
-  TS; DoRocks;
   TS; DoNavy;
   TS; DoDunGen;
   TS; DoFPS;
@@ -2171,13 +2106,12 @@ U0 OSTestSuite()
   TS; DoVaroom;
   TS; DoRocket;
   TS; DoRocketScience;
-  TS; DoMissileDefense;
   TS; DoWarGame;
   TS; DoBigGuns;
   TS; DoBirdLand;
   TS; DoTimeOut;
-  TS; DoPilgrims;
   TS; if (!sys_heap_init_flag) /* FloodFill */ DoSpan;
+  TS; DoStrut;
   TS; DoRawHide;
   TS; DoKeepAway;
   TS; DoAfterEgypt;
@@ -2185,17 +2119,14 @@ U0 OSTestSuite()
   TS; DoWenceslas;
   TS; DoBomber;
   TS; DoTheDead;
-  TS; DoChess;
   TS; DoChessNet;
   TS; DoMPAdd;
   TS; DoPrimes;
   TS; DoPalindrome;
   TS; DoClouds;
-  TS; DoNoise;
   TS; if (mp_cnt>1) DoRadixSort;
   TS; if (mp_cnt>1) DoLoadTest;
   TS; if (mp_cnt>1) DoMPPrintF;
-  TS; if (mp_cnt>1) DoLayers3DJob;
   TS; if (mp_cnt>1) DoLock;
   TS; if (mp_cnt>1) DoLayersSpawn;
   TS; if (mp_cnt>1) DoInterrupts;
@@ -2268,7 +2199,6 @@ U0 OSTestSuite()
   TS; DoSquirt;
   TS; DoCommonAncestor;
   TS; DoCartesian;
-  TS; DoBling;
   TS; DoRainDrops;
   TS; DoCollision;
   TS; DoOrderedIO;

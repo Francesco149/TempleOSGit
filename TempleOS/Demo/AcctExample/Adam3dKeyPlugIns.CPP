@@ -9,7 +9,7 @@ U0 FillInTime()
 }
 
 U0 RandQuote(I64 num)
-{ //[C:/TempleOS/Apps/AfterEgypt/AENotes.TXT.Z,1]
+{ //[C:/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z,1]
   I64 i,size,l=512;
   U8 *bible_filename=Define("ST_BIBLE_FILE"),
      *buf=FileRead(bible_filename,&size);
@@ -22,7 +22,7 @@ U0 RandQuote(I64 num)
 }
 
 U0 BadCodeJump(I64 num)
-{ //[C:/TempleOS/Apps/AfterEgypt/AENotes.TXT.Z,1]
+{ //[C:/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z,1]
   CDirEntry *root=FilesFind("/TempleOS/*",FUF_JUST_FILES|FUF_RECURSE|FUF_FLATTEN_TREE|FUF_JUST_SRC_FILES),
 	     *tempm=root;
   I64 cnt=0;
@@ -58,7 +58,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 
 //You can customize keys.  This routine
 //is called before the main editor
-//key handler [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1501] DocPutKey().
+//key handler [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1503] DocPutKey().
 //You can intercept any key.
 
 //Return TRUE if you completely
@@ -129,7 +129,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	  else
 	    SetKeyDesc("God Word");
 	} else {
-	  //[C:/TempleOS/Apps/AfterEgypt/AENotes.TXT.Z,1]
+	  //[C:/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z,1]
 	  if (sc & SCF_SHIFT)
 	    RandQuote(KbdMouseEvtTime>>4);
 	  else
@@ -234,7 +234,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	  case 'b':
 	    if (sc&SCF_KEY_DESC)
 	      SetKeyDesc("Cmd/Jump to Bad Code");
-	    else //[C:/TempleOS/Apps/AfterEgypt/AENotes.TXT.Z,1]
+	    else //[C:/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z,1]
 	      BadCodeJump(KbdMouseEvtTime>>4);
 	    return TRUE;
 

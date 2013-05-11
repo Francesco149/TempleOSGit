@@ -3,7 +3,7 @@ In this file, syms defined Kernel assembly
 files are given C+ definitions.  This file
 is included when you compile the kernel, after
 the assembly files have been assembled, making
-the C+ definitions available for the C+ Kernel
+the Holy C definitions available for the Holy C Kernel
 files.	It is also included as part of booting.
 
 The assembly global labels are stored as HTT_EXPORT_SYS_SYM

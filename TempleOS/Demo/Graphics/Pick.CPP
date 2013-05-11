@@ -70,7 +70,7 @@ U0 Main()
     msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN);
 
     //Use screen coordinates, not window (p1,p2)
-    //[C:/TempleOS/Kernel/KGlbls.CPP.Z,82] ipx and [C:/TempleOS/Kernel/KGlbls.CPP.Z,82] ipy are global vars updated
+    //[C:/TempleOS/Kernel/KGlbls.CPP.Z,80] ipx and [C:/TempleOS/Kernel/KGlbls.CPP.Z,80] ipy are global vars updated
     //updated by the window mgr to hold the
     //screen coordinates of the input ptr (mouse).
     cur_x=ipx; cur_y=ipy;

@@ -55,6 +55,10 @@ U0 SysGlblsInit()
   for (i=-308;i<309;i++)
     pow10_I64[i+309]=Pow10(i);
 
+  QueInit(&snd_record_root);
+  snd_record_root.freq=0;
+  snd_record_root.time_stamp=tT;
+
 //Independent Heap Ctrl Example
   i=1; //Rqst 1 blk, we might get more.
   m=MemBlksUncachedAlloc(&i,sys_code_bp);

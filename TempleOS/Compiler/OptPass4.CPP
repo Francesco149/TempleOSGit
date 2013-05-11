@@ -274,7 +274,7 @@ U0 OptPass4(CLex *lx,COptReg *register_offsets,I64 *_type)
 	case IC_RBP:
 	case IC_REG:
 	case IC_COM:
-	case IC_NATIVE_TYPECAST:
+	case IC_HOLYC_TYPECAST:
 	case IC_NOT:
 	case IC_UNARY_MINUS:
 	case IC_PUSH_CMP:

@@ -8,7 +8,7 @@
 //If you want to change the system font permanently,
 //save to a file with this font editor program
 //and cut and paste the code into [C:/TempleOS/Kernel/Font8x8.CPP.Z,1].
-//You will need to recompile Kernel by calling [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader().
+//You will need to recompile Kernel by calling [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader().
 
 //See [C:/TempleOS/Demo/ExtendedChars.CPP.Z,1] and
 //[C:/TempleOS/Demo/ScreenCodes.CPP.Z,1].

@@ -1,5 +1,5 @@
 //See [D:/TempleOS/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
-//See [C:/TempleOS/Kernel/KEnd.CPP.Z,69] SysGrInit()
+//See [C:/TempleOS/Kernel/KEnd.CPP.Z,73] SysGrInit()
 
 //This allows constants to be used
 //instead of vars.

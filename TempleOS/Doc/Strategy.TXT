@@ -59,7 +59,7 @@ of SMP.  Core zero explicitly
 assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
 access, though.
 
-* [C:/TempleOS/Adam/Snd/Music.CPP.Z,104] Music is done with an elegant
+* [C:/TempleOS/Adam/Snd/Music.CPP.Z,91] Music is done with an elegant
 one-voice notation.
 
 * All tasks have a heap and a sym table.  Scope is that of environment vars

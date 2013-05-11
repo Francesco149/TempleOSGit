@@ -1,5 +1,5 @@
 //You should compile this by calling
-//[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader(), not doing it directly.
+//[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader(), not doing it directly.
 //See [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,1] Cmp("Kernel").
 
 #exe {
@@ -53,7 +53,7 @@ kernel_cfg=KernelCfgNew;
 #include "DskAddDev"
 #include "DskDir"
 #include "FileSysISO1"
-#include "FileSysNative"
+#include "FileSysRedSea"
 #include "FileSysFAT"
 #include "Dsk1b"
 #include "DskCFile"

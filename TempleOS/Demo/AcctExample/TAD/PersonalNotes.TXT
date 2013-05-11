@@ -1,4 +1,6 @@
-* ATA/ATAPI ID
+* transform invidual elements
+
+* ATA/ATAPI ID in VMware, when not booted to CD?  I forgot.
 
 * I use fixed-point in [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,526] Circle(),
 [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,569] Ellipse(),
@@ -13,8 +15,6 @@ God says I might want to change to float.
 * # in reindention
 
 * clean-up addDev pmt
-
-* TestSuite Strut
 
 * Might want to convert some Preempt() to Cli
 
@@ -31,14 +31,14 @@ check?
 * Why was wordstat so slow on "OldMasterBootWrite" for example.
 
 * [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,46] Plain() might be better not saving
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3216] CH_CURSOR.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3215] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
 * It would be nice if [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U() NOP
 were better.
 
-* Make native file system expanded size set in Copy.
+* Make RedSea file system expanded size set in Copy.
 
 * unhandled exception on MP message gets overwritten by WinMgr
 
@@ -56,7 +56,6 @@ were better.
 
 * wenceslas crashes in testsuite, sometimes.  went away?
 
-* CGrVectMap sucks -- Pilgrim
 * return vals for grrect, grblot, grputchar?
 * collisions for grrect, grblot, grputchar?
 
@@ -137,7 +136,7 @@ or whatever. S081130-0001.BMP crashed windows--two identical short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/TempleOS/Kernel/Adam1a.HPP.Z,3325] DCF_SYMMETRY, before transformation?
+* [C:/TempleOS/Kernel/Adam1a.HPP.Z,3324] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -175,7 +174,7 @@ registry-like routines... or registry I guess.
 * Make use of flag potential in SysFilesFind and possibly CFileAccess
 * implement fixed pos files
 
-* new C+ language features
+* new Holy C language features
 * better debugging
 
 * Change hardcoded stuff to Define

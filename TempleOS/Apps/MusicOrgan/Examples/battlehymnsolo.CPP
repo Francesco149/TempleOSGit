@@ -49,9 +49,9 @@ U0 Song()
 	NewLine;
 	Play("DDCBh.CqR");
 	NewLine;
-	Play("!etEEGqCsDCDCFCFCqAetCDBBD3G4F!CF");
+	Play("etEEGqCsDCDCFCFCqAetCDBBD3G4FCF");
 	NewLine;
-	Play("!EEGqCsDCDCFCFCqAetCDBBD3G4F!CF");
+	Play("EEGqCsDCDCFCFCqAetCDBBD3G4FCF");
 	NewLine;
   }
   } catch

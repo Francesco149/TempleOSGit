@@ -9,7 +9,7 @@ gets the job done... slowly.
 [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() returns a count of matches.
 
 [C:/TempleOS/Adam/Grep.CPP.Z,195] FileOcc() is [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() with
-output [C:/TempleOS/Kernel/Misc1a.CPP.Z,251] Silent().
+output [C:/TempleOS/Kernel/Misc1a.CPP.Z,244] Silent().
 
 */
 

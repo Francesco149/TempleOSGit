@@ -1,15 +1,7 @@
                                TempleOS Charter
 
-The goal of TempleOS is to provide an ideal environment for recreational 
-programming and not imitate Linux.  TempleOS is orders of magnitude simpler 
-than Linux to better fulfill the promise of open source.  The vision for 
-TempleOS is a 64-bit, souped-up, multitasking, multicore Commodore 64 with a C
-+ shell instead of BASIC that runs x86_64 code.
-
-TempleOS holds no standards sacred -- everything is freshly designed from 
-scratch.  This is not a 1970's main frame operating system and, no, it has 
-nothing to do with Commodore 64 emulation -- it's x86_64.
-
+This is God's Temple.  God said 640x480 16 color and God said single audio 
+voice.  This is like how He specified cubits of the temple in the Bible. 
  
 1) TempleOS is ring-0-only, running everything in kernel mode including 
 applications.  You have full access to memory, I/O ports, instructions, etc. 
@@ -56,7 +48,3 @@ with JIT
 compilation instead of AOT binaries because I can add members to classes, 
 reorder members in classes, add default args to existing functions, change #de
 fine values, etc. all without breaking compatibility.
-
-
-* "Commodore 64" was a trademark of Commodore Business Machines.
-* "Linux" is probably a trademark owned by Linus Torvalds.

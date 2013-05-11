@@ -777,7 +777,7 @@ U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
 lo_skip:
   module_base=bfh_addr(U8 *)+sizeof(CBinFile);
 
-  if (ArcXSum(bfh_addr,bfh_addr->file_size)!=NATIVE_XSUM)
+  if (ArcXSum(bfh_addr,bfh_addr->file_size)!=TEMPLEOS_XSUM)
     throw(EXCEPT_ARC_XSUM);
 
   absname=FileNameAbs(fbuf);

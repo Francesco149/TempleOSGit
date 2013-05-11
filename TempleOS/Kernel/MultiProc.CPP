@@ -460,7 +460,7 @@ U0 MPStart()
     SPrintF(buf,"Seth Task CPU#%d",i);
     task=Spawn(&MPCPUTaskInit,NULL,buf,NULL,SETH_STK,0);
     task->rflags=SYS_START_RFLAGS;
-    //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3009] CTask allocated off this core's seth_task's heap (Which is Adam)
+    //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask allocated off this core's seth_task's heap (Which is Adam)
     task->task_in_que_signature=TASK_IN_QUE_SIGNATURE_VAL;
     CPUStructInit(i,c);
     c->tss=TSSNew(i);

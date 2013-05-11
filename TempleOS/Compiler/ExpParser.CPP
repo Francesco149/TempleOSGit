@@ -1138,7 +1138,7 @@ I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_t
 	tempc++;
       tempi=lx->cbh.cb_last_out_ptr;
       tempi->ic_class=tempc;
-      CBICAdd(lx,IC_NATIVE_TYPECAST,was_paren,tempc);
+      CBICAdd(lx,IC_HOLYC_TYPECAST,was_paren,tempc);
       if (lx->token!=')')
 	LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
       Lex(lx);

@@ -1,4 +1,4 @@
-//See [C:/TempleOS/Demo/GameStarters/Stadium/StadiumGen.CPP.Z,1].
+//See [C:/TempleOS/Demo/Games/Stadium/StadiumGen.CPP.Z,1].
 
 U0 ViewScreenCapture(U8 *filename)
 {

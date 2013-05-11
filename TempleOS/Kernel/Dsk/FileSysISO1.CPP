@@ -135,7 +135,7 @@ Bool ISO1CDirFill(CPrt *p,CDirEntry *tempm,CISO1DirEntry *de)
 }
 
 Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3613] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] FUF_JUST_FILES
+{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool result=FALSE,unlock;

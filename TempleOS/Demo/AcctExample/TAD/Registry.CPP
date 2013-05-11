@@ -10,24 +10,24 @@
     +] SimpleVal
           1234;
             +] TempleOS
-  +] FPS
-      F64 best_score=62.5994;
+  +] EagleDive
+      I64 best_score=5;
+      +] FPS
+      F64 best_score=55.2079;
       +] ZoneOut
       F64 best_score=9999.0000;
       +] BirdLand
-      F64 best_score=9999.0000;
+      F64 best_score=16.1659;
       +] Timeout
-      I64 best_score=0;
+      I64 best_score=14797;
       +] RawHide
       F64 best_score=9999.0000;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
-      +] Wenceslas
-      F64 best_score=9999.0000;
       +] XCaliber
       I64 best_score=118;
+      +] Wenceslas
+      F64 best_score=9999.0000;
       +] Bomber
       I64 best_score=99999;
-      +] EagleDive
-      I64 best_score=0;
       

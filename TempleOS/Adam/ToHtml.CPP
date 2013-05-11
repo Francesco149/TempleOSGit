@@ -1,6 +1,6 @@
 #help_index "Utils;Cmd Line (Typically);Doc/Html"
 
-//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1] (12).
+//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 
 U0 HtmlPutS(CDoc *doc,I64 c,I64 *_old_c,U8 *st,I64 *_col,U8 *style_bitmap=NULL)
 {

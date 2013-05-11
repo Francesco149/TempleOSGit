@@ -70,9 +70,7 @@ CMemRange sys_mem32_dev_root;
 U8 *sys_mem64_dev_ptr=MAPPED_MEM_SPACE;
 
 F64 snd_freq=0;
-I64 snd_dev=SD_PC_SPEAKER;
 Bool snd_record=FALSE;
-F64 snd_vol=0.1,snd_reverb_intensity=0.2,snd_reverb_delay=0.3;
 
 F64 *pow10_I64;
 
@@ -124,10 +122,8 @@ U32	key_down_bitmap[8];
 //BitTest, [C:/TempleOS/Kernel/Adam1b.HPP.Z,57] Bt(), with an unmerged scan code.
 U32	key_down_bitmap2[8];
 
-U0 (*fp_snd)(F64 freq,I64 waveform,F64 amp)=NULL;
-U0 (*fp_snd_record)(F64 freq,I64 waveform,F64 amp)=NULL;
-U0 (*fp_snd_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num)=NULL;
-U0 (*fp_snd_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num)=NULL;
+CSndData snd_record_root;
+
 U8  *(*fp_mgets)(I64 flags=0)=NULL;
 U0 (*fp_prs_stream_blk)(CLex *lx)=NULL;
 U0 (*fp_update_ctrls)(CTask *task)=NULL;

@@ -179,7 +179,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *register_offsets)
 	  break;
 	case IC_REG:
 	case IC_COM:
-	case IC_NATIVE_TYPECAST:
+	case IC_HOLYC_TYPECAST:
 	case IC_NOT:
 	case IC_UNARY_MINUS:
 	  break;

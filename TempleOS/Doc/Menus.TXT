@@ -27,11 +27,11 @@ Help
 }
 
 The first arg is the msg code and it is optional with the default being 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3129] MSG_KEY_DOWN_UP.  The second arg is
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3128] MSG_KEY_DOWN_UP.  The second arg is
 the msg p1 value which is ASCII of the key 
-in the case of [C:/TempleOS/Kernel/Adam1a.HPP.Z,3114] MSG_KEY_DOWN.  The
+in the case of [C:/TempleOS/Kernel/Adam1a.HPP.Z,3113] MSG_KEY_DOWN.  The
 third arg is the msg p2 value which is the S
-can Code of the key in the case of [C:/TempleOS/Kernel/Adam1a.HPP.Z,3114]
+can Code of the key in the case of [C:/TempleOS/Kernel/Adam1a.HPP.Z,3113]
 MSG_KEY_DOWN.
 
 See [C:/TempleOS/Demo/PullDownMenu.CPP.Z,1].

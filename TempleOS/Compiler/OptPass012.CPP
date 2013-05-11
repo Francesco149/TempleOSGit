@@ -645,7 +645,7 @@ args.
 	  tempi->ic_class=sys_internal_types[IT_F64];
 	}
 	break;
-      case IC_NATIVE_TYPECAST:
+      case IC_HOLYC_TYPECAST:
 	if (tempi1->ic_opcode==IC_IMM_U64 || tempi1->ic_opcode==IC_IMM_F64) {
 	  if (tempi->ic_class->sub_type==IT_F64)
 	    tempi1->ic_opcode=IC_IMM_F64;

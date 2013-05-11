@@ -76,7 +76,7 @@ U0 Song()
     "$BG+H,LTCYAN$$FD+H,BLACK$";
     while (!ScanKey) {
 	t0=tMBeat;
-	Play("W13eDEqFFetEEFqDeCDDEetCGF");
+	Play("3eDEqFFetEEFqDeCDDEetCGF");
 	Play("eDEqFFetEEFqDeCDDEetCGF");
 	Play("eDCqDEeAAetEEFEDGBDCqF");
 	Play("eDCqDEeAAetEEFEDGBDCqF");

@@ -10,7 +10,7 @@
 [C:/TempleOS/Doc/Features.TXT.Z,1] Features               [C:/TempleOS/Doc/Requirements.TXT.Z,1] Requirements
 [C:/TempleOS/Doc/Charter.TXT.Z,1] TempleOS Charter [C:/TempleOS/Doc/Strategy.TXT.Z,1] Strategic Decisions
 [C:/TempleOS/Doc/Mysteries.TXT.Z,1] Mysteries Explained    [C:/TempleOS/Doc/Confuse.TXT.Z,1] Clearing Confusions
-[C:/TempleOS/Doc/Differences.TXT.Z,1] Differences from C/C++ [C:/TempleOS/Doc/Directives.TXT.Z,1] Compiler Directives
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C [C:/TempleOS/Doc/Directives.TXT.Z,1] Compiler Directives
 [C:/TempleOS/Doc/ChangeLog.TXT.Z,1] ChangeLog
 	
 +] Level 1: USER HELP
@@ -120,7 +120,7 @@ Use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk
 +] Level 3: PROGRAMMER HELP
   
 [C:/TempleOS/Doc/GuideLines.TXT.Z,1] Guidelines
-[C:/TempleOS/Doc/Differences.TXT.Z,1] Differences from C/C++
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C
 [C:/TempleOS/Doc/Graphics.TXT.Z,1] Graphics
 [C:/TempleOS/Doc/MultiTasking.TXT.Z,1] Multitasking
 [C:/TempleOS/Demo/Doc/FileRead.CPP.Z,1] Doc Documents
@@ -186,8 +186,8 @@ Use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk
 [Hash/Named Frame,1] Named Frames
 [CMathODE,1] CMathODE
 [C:/TempleOS/Compiler/OpCodes.TXT.Z,1] OpCodes
-[C:/TempleOS/Doc/Differences.TXT.Z,1] Operator Precedences
-[C:/TempleOS/Doc/Differences.TXT.Z,1] PrintF Extended Codes
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] Operator Precedences
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] PrintF Extended Codes
 [Processor,1] Processor
 [Profiler,1] Profiler
 [PCI,1] PCI

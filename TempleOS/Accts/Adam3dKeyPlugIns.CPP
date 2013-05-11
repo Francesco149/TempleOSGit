@@ -17,7 +17,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 
 //You can customize keys.  This routine
 //is called before the main editor
-//key handler [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1501] DocPutKey().
+//key handler [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1503] DocPutKey().
 //You can intercept any key.
 
 //Return TRUE if you completely

@@ -36,7 +36,7 @@ MY_WORLD_MSG:
 //My convention is to put an underscore
 //on C callable routines.
 _HELLO_WORLD::
-	PUSH	RSI	//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3700] CREG_VARS_MASK & [C:/TempleOS/Kernel/Adam1a.HPP.Z,3701] CREG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3682] CREG_VARS_MASK & [C:/TempleOS/Kernel/Adam1a.HPP.Z,3683] CREG_NON_PTR_MASK
 	MOV	RCX,10
 @@05:	MOV	RAX,RCX
 	CALL	PUT_HEX_U8
@@ -44,6 +44,7 @@ _HELLO_WORLD::
 	CALL	PUT_CHAR
 	MOV	RAX,'Hello ' //Supports multi-byte char constants
 	CALL	PUT_CHAR
+//We broke it in two pieces to show different ways.
 	MOV	RSI,MY_WORLD_MSG
 //Alternatively, if you use an '&', you don't need
 //to import a SYS_SYM.  This only works for JIT asm.

@@ -15,7 +15,7 @@ U0 ScrollBars()
 {
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
-  GetChar(NULL,FALSE);
+  GetChar(,FALSE);
   SettingsPop;
 }
 

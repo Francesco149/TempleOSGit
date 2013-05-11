@@ -36,21 +36,14 @@ public extern F64 tS(); //From SysTimerFreq.
 public extern Bool Blink(F64 Hz=2.5);
 
 #help_index "Snd"
-public extern I64 snd_dev;
-public extern F64 snd_vol,snd_reverb_intensity,snd_reverb_delay;
-public extern U0 Snd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0);
+public extern U0 Snd(F64 freq);
 public extern Bool Mute(Bool val);
 public extern Bool IsMute();
 public extern F64 snd_freq;
 public extern U0 Beep(I64 freq=500,Bool busy=FALSE);
 public extern Bool IOSnd(Bool val);
-#help_index "Snd/Snd Files"
 public extern Bool snd_record;
-extern U0 (*fp_snd_record)(F64 freq,I64 waveform,F64 amp);
-#help_index "Snd/HDAudio"
-public extern U0 (*fp_snd)(F64 freq,I64 waveform,F64 amp);
-public extern U0 (*fp_snd_fill_buf)(SND_OUT_CONTAINER *buf,I64 buf_num);
-public extern U0 (*fp_snd_copy_buf)(SND_IN_CONTAINER *buf,I64 buf_num);
+extern CSndData snd_record_root;
 
 #help_index "Processor"
 extern U8 *sys_fault_handlers_code;
@@ -237,7 +230,7 @@ public extern U8 *MemBlksUncachedAlloc(I64 *_pages2Meg,CBlkPool *bp=NULL);
 public extern U8 *MemBlksWriteThroughAlloc(I64 *_pages2Meg,CBlkPool *bp=NULL);
 public extern U0 MemBlks2MegFree(CMemBlk *m,I64 pages2Meg,CBlkPool *bp=NULL);
 public extern U8 *MemBlksNonTaskAlloc(I64 *_pages512,CBlkPool *bp=NULL);
-public extern I64 *MemPtAtPageTableEntry(U8 *a);
+public extern I64 *MemPageTable(U8 *a);
 public extern U0 MemBlksNonTaskFree(CMemBlk *m,I64 pages512,CBlkPool *bp=NULL);
 public _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL);
 public _extern _FREE U0 Free(U8 *add);
@@ -464,7 +457,7 @@ extern I64 SysDel(U8 *wild,Bool make_mask);	//this is dangerous
 extern Bool CopySingle(U8 *f1,U8 *f2); //Just one file
 extern U0 CleanMAPBuf(CPrt *p);
 extern U0 FAT32FreeClusters(CPrt *p,I64 c);
-extern U0 NativeFSFreeClusters(CPrt *p,I64 c,I64 cnt);
+extern U0 RedSeaFSFreeClusters(CPrt *p,I64 c,I64 cnt);
 public extern Bool BlkDevLock(CBlkDev *bdev);
 public extern Bool PrtLock(CPrt *p);
 public extern Bool BlkDevUnlock(CBlkDev *bdev,Bool rst=FALSE);

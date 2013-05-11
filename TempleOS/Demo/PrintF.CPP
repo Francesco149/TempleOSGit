@@ -1,8 +1,8 @@
 //TempleOS supports standard [C:/TempleOS/Kernel/Str1a.CPP.Z,2351] PrintF()
 //codes and extended ones.
-//See [C:/TempleOS/Doc/Differences.TXT.Z,1] printF codes.
+//See [C:/TempleOS/Doc/HolyC.TXT.Z,1] printF codes.
 
-//This file demonstrates [C:/TempleOS/Doc/Differences.TXT.Z,1] sub_fmt codes.
+//This file demonstrates [C:/TempleOS/Doc/HolyC.TXT.Z,1] sub_fmt codes.
 
 
 

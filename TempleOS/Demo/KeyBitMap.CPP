@@ -27,11 +27,11 @@ U0 KeyDownBitMapDemo()
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
 
-//[C:/TempleOS/Kernel/KGlbls.CPP.Z,124] key_down_bitmap is indexed with the
+//[C:/TempleOS/Kernel/KGlbls.CPP.Z,122] key_down_bitmap is indexed with the
 //merged scan code.  (left shift and
 //right shift combined for example.)
-//[C:/TempleOS/Kernel/KGlbls.CPP.Z,126] key_down_bitmap2 is indexed with the
-//distinct scan code.  See [Char,1] Char and [C:/TempleOS/Kernel/Adam1a.HPP.Z,3276] Scan Codes.
+//[C:/TempleOS/Kernel/KGlbls.CPP.Z,124] key_down_bitmap2 is indexed with the
+//distinct scan code.  See [Char,1] Char and [C:/TempleOS/Kernel/Adam1a.HPP.Z,3275] Scan Codes.
 
   while (Bt(key_down_bitmap,i_sc)) {
     x++;

@@ -14,7 +14,7 @@ multicore support.
 
 * Keyboard & mouse support.
 
-* Hard drives, support for FAT32 and TempleOS native file systems with file 
+* Hard drives, support for FAT32 and RedSea file systems with file 
 compression.
 
 * [C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,86] Partitionming tool.

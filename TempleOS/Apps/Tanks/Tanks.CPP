@@ -1364,7 +1364,7 @@ U0 CheckUser()
 {
   U8 ch;
   if (!alive_cnt[0] || !alive_cnt[1])
-    throw (EXCEPT_LOCAL,T_GAME_OVER);
+    throw(EXCEPT_LOCAL,T_GAME_OVER);
   if (ch=ScanChar)
     HandleChar(ch);
 }
@@ -1694,7 +1694,7 @@ U0 Tanks()
 	    msg_off_timeout=0;
 	    StrCpy(msg_buf,"Game Over");
 	    Snd(0);
-	    ch=GetChar(NULL,FALSE);
+	    ch=GetChar(,FALSE);
 	    if (ch=='\n') {
 	      Init;
 	      NewPhase;

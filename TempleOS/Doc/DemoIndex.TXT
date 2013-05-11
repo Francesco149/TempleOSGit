@@ -11,7 +11,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [C:/TempleOS/Demo/Graphics/LowPassFilter.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/MathAudioDemo.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Lines.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/TicTacToe.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/TicTacToe.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/SpritePlot.CPP.Z,1]
     [C:/TempleOS/Demo/MsgLoop.CPP.Z,1]
     [C:/TempleOS/Demo/Snd/ASCIIOrgan.CPP.Z,1]
@@ -22,9 +22,9 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [C:/TempleOS/Demo/Graphics/WinZBuf.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Golf.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Mountain.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Coach.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Coach.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/WallPaperFish.CPP.Z,1]
-    [C:/TempleOS/Demo/Digits.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Digits.CPP.Z,1]
     [C:/TempleOS/Demo/Progress.CPP.Z,1] //has some ASM, just ignore
     [C:/TempleOS/Demo/Graphics/CPUPlot.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Dither.CPP.Z,1]
@@ -35,21 +35,21 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [C:/TempleOS/Demo/Graphics/CaptureScreen.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/EdCSprite.CPP.Z,1]
     [C:/TempleOS/Demo/PullDownMenu.CPP.Z,1]
-    ::/TempleOS/Demo/GameStarters/Stadium
-`Cd("::/TempleOS/Demo/GameStarters/Stadium");Dir;View;
+    ::/TempleOS/Demo/Games/Stadium
+`Cd("::/TempleOS/Demo/Games/Stadium");Dir;View;
 `
 
     [C:/TempleOS/Demo/Graphics/Palette.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/CircleTrace.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Halogen.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/TheDead.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Bomber.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/RainDrops.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/CircleTrace.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Halogen.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/TheDead.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Bomber.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/RainDrops.CPP.Z,1]
     [C:/TempleOS/Demo/Snd/MorseCode.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/PixelCollision.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/BlackDiamond.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/SpaceShip.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Wenceslas.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/BlackDiamond.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/SpaceShip.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Wenceslas.CPP.Z,1]
       +] Intermediate
       [C:/TempleOS/Demo/Graphics/Box.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Pick.CPP.Z,1]
@@ -63,7 +63,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [C:/TempleOS/Demo/ScreenCodes.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/NeatTrick.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/CharGraphics.CPP.Z,1]
-    [C:/TempleOS/Demo/Maze.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Maze.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/FontEd.CPP.Z,1]
     [C:/TempleOS/Demo/ExtendedChars.CPP.Z,1]
     [C:/TempleOS/Demo/TimeIns.CPP.Z,1]
@@ -73,51 +73,42 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 `
 
     [C:/TempleOS/Demo/MultiCore/MPPrintF.CPP.Z,1]
-    [C:/TempleOS/Demo/MultiCore/Layers3DJob.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/PredatorPrey.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Cartesian.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Hanoi.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Life.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Zing.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/ChessNet.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Chess.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Zing.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/ChessNet.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/Palindrome.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/MPAdd.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/Lock.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/LayersSpawn.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/Clouds.CPP.Z,1]
-    [C:/TempleOS/Demo/MultiCore/Noise.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/SliderCtrl.CPP.Z,1]
-    [C:/TempleOS/Demo/Graphics/Bling.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/ScrollBars.CPP.Z,1]
     [C:/TempleOS/Demo/RegistryDemo.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/BirdLand.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/MissileDefense.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/WarGame.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/BigGuns.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Navy.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/RawHide.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/DunGen.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/BirdLand.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/WarGame.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/BigGuns.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Navy.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/RawHide.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/DunGen.CPP.Z,1]
     ::/TempleOS/Apps/Timeout
 `Cd("::/TempleOS/Apps/Timeout");Dir;View;
 `
 
-    [C:/TempleOS/Demo/GameStarters/Collision.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Collision.CPP.Z,1]
       +] Advanced
       [C:/TempleOS/Demo/MultiCore/LoadTest.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/Primes.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/Sort.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/RadixSort.CPP.Z,1]
     [C:/TempleOS/Demo/MultiCore/Interrupts.CPP.Z,1]
-    ::/TempleOS/Apps/Pilgrims
-`Cd("::/TempleOS/Apps/Pilgrims");Dir;View;
-`
-
     ::/TempleOS/Apps/AfterEgypt
 `Cd("::/TempleOS/Apps/AfterEgypt");Dir;View;
 `
 
-    [C:/TempleOS/Demo/GameStarters/Varoom.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Varoom.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Shading.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Transform.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Shadow.CPP.Z,1]
@@ -136,19 +127,18 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 `
 
     [C:/TempleOS/Demo/Graphics/Camp.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Rocket.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/RocketScience.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/MassSpring.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Whap.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Rocks.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/Squirt.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Rocket.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/RocketScience.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/MassSpring.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Whap.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/Squirt.CPP.Z,1]
     ::/TempleOS/Apps/X-Caliber
 `Cd("::/TempleOS/Apps/X-Caliber");Dir;View;
 `
 
-    [C:/TempleOS/Demo/GameStarters/ZoneOut.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/FPS.CPP.Z,1]
-    [C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/ZoneOut.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/FPS.CPP.Z,1]
+    [C:/TempleOS/Demo/Games/EagleDive.CPP.Z,1]
     ::/TempleOS/Apps/Strut
 `Cd("::/TempleOS/Apps/Strut");Dir;View;
 `
@@ -234,7 +224,6 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/TempleOS/Demo/Asm/AsmAndC.CPP.Z,1]
   [C:/TempleOS/Demo/Asm/AsmAndC2.CPP.Z,1]
   [C:/TempleOS/Demo/GlblVars.CPP.Z,1]
-  [C:/TempleOS/Demo/WinMgr2.CPP.Z,1]
   [C:/TempleOS/Misc/OSTestSuite.CPP.Z,1]
   ::/TempleOS/Adam
 `Cd("::/TempleOS/Adam");Dir;View;

@@ -297,7 +297,7 @@ Bool FAT32DirFill(CFAT32DirEntry *de,CDirEntry *tempm,I64 *_de_cnt=NULL)
 
 
 Bool FAT32FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3613] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] FUF_JUST_FILES
+{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES
   Bool result=FALSE,unlock;
   CFAT32DirEntry *buf;
   I64 xsum=0,attr,cur_dir_entry,entries_per_cluster;
@@ -447,7 +447,7 @@ U0 FAT32FreeClusters(CPrt *p,I64 c)
       unlock=PrtLock(p);
       CleanMAPBuf(p);
       do {
-	SetNativeBuf(p,c,0);
+	SetFSBuf(p,c,0);
 	next=p->cur_map_blk[c&(BLK_SIZE/4-1)];
 	p->cur_map_blk[c&(BLK_SIZE/4-1)]=0;
 	LBts(p->buffered_map_dirty_bits,0);
@@ -457,7 +457,7 @@ U0 FAT32FreeClusters(CPrt *p,I64 c)
  
       c=saved_c;
       do {
-	SetNativeBuf(p,c,1);
+	SetFSBuf(p,c,1);
 	next=p->cur_map_blk[c&(BLK_SIZE/4-1)];
 	p->cur_map_blk[c&(BLK_SIZE/4-1)]=0;
 	LBts(p->buffered_map_dirty_bits,0);
@@ -498,14 +498,14 @@ I64 FAT32AllocClusters(CPrt *p,I64 c,I64 cnt)
 	  j=1;
 	  wrap_around=TRUE;
 	}
-	SetNativeBuf(p,j);
+	SetFSBuf(p,j);
 	if (!p->cur_map_blk[j&(BLK_SIZE/4-1)])
 	  break;
       }
       if (!(0<first<0x0FFFFFF8))
 	first=j;
       if (0<c<l) {
-	SetNativeBuf(p,c);
+	SetFSBuf(p,c);
 	p->cur_map_blk[c&(BLK_SIZE/4-1)]=j;
 	LBts(p->buffered_map_dirty_bits,0);
       }
@@ -513,7 +513,7 @@ I64 FAT32AllocClusters(CPrt *p,I64 c,I64 cnt)
     }
  
     if (0<c<l) {
-      SetNativeBuf(p,c);
+      SetFSBuf(p,c);
       p->cur_map_blk[c&(BLK_SIZE/4-1)]=0x0FFFFFFF;
       LBts(p->buffered_map_dirty_bits,0);
     }
@@ -552,7 +552,7 @@ I64 FAT32AllocContiguousClusters(CPrt *p,I64 cnt)
       while (cont && i<cnt) {
 	if ((first+i+1)*p->spc+p->data>p->size+p->offset)
 	  Dbg;
-	SetNativeBuf(p,first+i);
+	SetFSBuf(p,first+i);
 	if (p->cur_map_blk[(first+i)&(BLK_SIZE/4-1)])
 	  cont=FALSE;
 	else
@@ -564,7 +564,7 @@ I64 FAT32AllocContiguousClusters(CPrt *p,I64 cnt)
 	CleanMAPBuf(p);
  
 	for (i=0;i<cnt;i++) {
-	  SetNativeBuf(p,first+i,0);
+	  SetFSBuf(p,first+i,0);
 	  if (i+1==cnt)
 	    p->cur_map_blk[(first+i)&(BLK_SIZE/4-1)]=0x0FFFFFFF;
 	  else
@@ -574,7 +574,7 @@ I64 FAT32AllocContiguousClusters(CPrt *p,I64 cnt)
 	CleanMAPBuf(p,0);
  
 	for (i=0;i<cnt;i++) {
-	  SetNativeBuf(p,first+i,1);
+	  SetFSBuf(p,first+i,1);
 	  if (i+1==cnt)
 	    p->cur_map_blk[(first+i)&(BLK_SIZE/4-1)]=0x0FFFFFFF;
 	  else

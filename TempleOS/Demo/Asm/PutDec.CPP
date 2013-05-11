@@ -3,8 +3,12 @@ PUT_DEC_U64::
 //RAX is number to print in decimal.
 //Preserves all regs.
 	ENTER	24		//24 char buffer on stack
-	PUSH_C_REGS		//[C:/TempleOS/Kernel/Adam1a.HPP.Z,1] Save regs which C code is free to clobber
-	PUSH	RSI		//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3700] CREG_VARS_MASK & [C:/TempleOS/Kernel/Adam1a.HPP.Z,3701] CREG_NON_PTR_MASK
+
+//[C:/TempleOS/Kernel/Adam1a.HPP.Z,1] Save regs which C code is free to clobber.  We don't have to for C callers,
+//but this function will be nice for ASM callers if it saves all regs.
+	PUSH_C_REGS
+
+	PUSH	RSI		//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3682] CREG_VARS_MASK & [C:/TempleOS/Kernel/Adam1a.HPP.Z,3683] CREG_NON_PTR_MASK
 	LEA	RSI,-1[RBP]	//Load addr of end of buffer.
 				//We picked RSI because of PUT_STR
 				//We'll move backward

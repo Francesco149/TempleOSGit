@@ -35,7 +35,7 @@ public Bool BinRep(U8 *filename)
   }
   bfh=bfh2;
 
-  if (ArcXSum(bfh,bfh->file_size)!=NATIVE_XSUM) {
+  if (ArcXSum(bfh,bfh->file_size)!=TEMPLEOS_XSUM) {
     "Bad XSum\n\n";
     return FALSE;
   }

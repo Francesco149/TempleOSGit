@@ -64,8 +64,9 @@ window colors.
 [C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey(). 
  See [C:/TempleOS/Doc/KeyBoard.TXT.Z,1].
 
-* <CTRL-SHIFT-L> in the editor to reindent a C+ function or renumber an asm 
-routine's local labels.
+* <CTRL-SHIFT-L> in the editor to reindent a [C:/TempleOS/Doc/HolyC.TXT.Z,1]
+Holy C function or renumber an 
+asm routine's local labels.
 
 * You can use filter_lines in the editor text search form (<CTRL-F>) to 
 temporarily display just lines near each match.  A value of filter lines set 
@@ -74,7 +75,7 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader()
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader()
 .  You'll probably want to make a function for recompiling that uses the
 [C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto(
 ) function to answer the cfg questions.  See my technique
@@ -113,7 +114,7 @@ entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
 to store a data item, for convenience. 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3009] CTask,
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask,
 [C:/TempleOS/Kernel/Adam1a.HPP.Z,1334] CDocEntry and
 [C:/TempleOS/Kernel/Adam1a.HPP.Z,2460] CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
@@ -161,10 +162,10 @@ s.  Use the [C:/TempleOS/Misc/Dollar.CPP.Z,1] utility to strip dollar signs
 in text 
 files.
 
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,251] Silent() to disable screen text
+* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,244] Silent() to disable screen text
 output.
 
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,260] IOSnd() to disable noise from
+* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,253] IOSnd() to disable noise from
 disk access.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-DRAG}.  Null 

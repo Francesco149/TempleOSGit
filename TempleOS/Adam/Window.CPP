@@ -751,7 +751,6 @@ public Bool SetWinHorz(I64 left,I64 right,CTask *task=NULL)
   Cli; //TODO Multiprocessor safe
   if (task->win_left!=left || task->win_right!=right) {
     LBts(&task->display_flags,DISPLAYf_HAS_BEEN_RESIZED);
-    LBts(&task->display_flags,DISPLAYf_USER_HAS_BEEN_RESIZED);
     task->win_left=left;
     task->win_right=right;
     TaskDerivedValsUpdate(task);
@@ -787,7 +786,6 @@ public Bool SetWinVert(I64 top,I64 bottom,CTask *task=NULL)
   Cli; //TODO Multiprocessor safe
   if (task->win_top!=top || task->win_bottom!=bottom) {
     LBts(&task->display_flags,DISPLAYf_HAS_BEEN_RESIZED);
-    LBts(&task->display_flags,DISPLAYf_USER_HAS_BEEN_RESIZED);
     task->win_top=top;
     task->win_bottom=bottom;
     TaskDerivedValsUpdate(task);

@@ -42,7 +42,7 @@ interrupt besides the timer and
 keyboard interrupt.  Since the interrupt flag is part of your task context
 and 
 since you are voluntarily swapped-out if you call
-[C:/TempleOS/Kernel/KbdMouse/Message.CPP.Z,181] GetChar() or whatever, you 
+[C:/TempleOS/Kernel/KbdMouse/Message.CPP.Z,180] GetChar() or whatever, you 
 won't even notice if you turn-off interrupts at the cmd prompt because you
 are 
 being swapped-out and interrupts are being turned-on by the next task.  

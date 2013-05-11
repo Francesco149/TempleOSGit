@@ -257,13 +257,13 @@ U0 KernelLowRAMDrv(CKernelCfg *c)
 
   task=SpawnUser;
   XTalkWait(task,"Mount;\n%C1\n0x%X\n\n",c->low_RAM_drv_dst_let,blks);
-  Fmt(c->low_RAM_drv_dst_let,,FALSE,PT_NATIVE);
+  Fmt(c->low_RAM_drv_dst_let,,FALSE,PT_REDSEA);
   bdev=Drv2BlkDev(c->low_RAM_drv_dst_let);
 
   //Recreate it because original was MSize2
   XTalkWait(task,"Mount;\n%C10x%X\n0x%X\n\n",c->low_RAM_drv_dst_let,bdev->RAM_dsk,blks);
   XTalk(task,"Exit;\n");
-  Fmt(c->low_RAM_drv_dst_let,FALSE,FALSE,PT_NATIVE);
+  Fmt(c->low_RAM_drv_dst_let,FALSE,FALSE,PT_REDSEA);
 
   SPrintF(buf,"%C:/",c->low_RAM_drv_dst_let);
   CopyTree(c->low_RAM_drv_src_dir,buf);

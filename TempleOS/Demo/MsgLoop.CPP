@@ -1,7 +1,7 @@
 U0 MsgLoop()
 {
   I64 p1,p2,msg_code;
-  "Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,3113] these defines in your programs instead of hardcoded nums.\n"
+  "Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,3112] these defines in your programs instead of hardcoded nums.\n"
   "<ESC> to Exit\n";
 
   //We don't want the mouse buttons to reposition the cursor,

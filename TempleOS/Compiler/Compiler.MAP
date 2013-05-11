@@ -30,7 +30,7 @@
 [D:/TempleOS/Compiler/CodeGen.CPP.Z,1] CBPutClass                0000008EC0    0001 00000000C5 Funct  
 [D:/TempleOS/Compiler/CodeGen.CPP.Z,71] CBPutIC                   0000009280    0006 00000003C7 Funct  
 [D:/TempleOS/Compiler/CodeGen.CPP.Z,26] CBPutICArg                0000008F88    0004 00000002F3 Funct  
-[D:/TempleOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC8CCC0    0002 000000000A Class 
+[D:/TempleOS/Compiler/CmpInit.CPP.Z,4] CInternalType             007FC91318    0002 000000000A Class 
 CMP_OPT_NOP               0000000000    0003            ExportSysSym 
 [D:/TempleOS/Compiler/CmpAsm.CPP.Z,164] CMP_TEMPLATES             0000000206    0001            ExportSysSym  
 [D:/TempleOS/Compiler/CmpAsm.CPP.Z,338] CMP_TEMPLATES_DONT_POP    000000039B    0001            ExportSysSym  
@@ -42,9 +42,9 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [D:/TempleOS/Compiler/BackEnd.CPP.Z,222] CN_P2                     2             0007 0000000008 DefineStr 
 [D:/TempleOS/Compiler/BackEnd.CPP.Z,223] CN_P3                     3             0003 0000000008 DefineStr 
 [D:/TempleOS/Compiler/BackEnd.CPP.Z,224] CN_R                      4             0003 0000000008 DefineStr 
-[D:/TempleOS/Compiler/StmtParser.CPP.Z,1396] CSwitchCase               007FCACF48    0004 0000000018 Class 
+[D:/TempleOS/Compiler/StmtParser.CPP.Z,1396] CSwitchCase               007FCB8AA8    0004 0000000018 Class 
 [D:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace                    0000003808    0000 0000000017 Funct  
-[D:/TempleOS/Compiler/StmtParser.CPP.Z,213] CVI2                      007FCAFEA8    0003 0000000010 Class 
+[D:/TempleOS/Compiler/StmtParser.CPP.Z,213] CVI2                      007FCBBA98    0003 0000000010 Class 
 [D:/TempleOS/Compiler/CmpMain.CPP.Z,372] Cmp                       0000037910    0000 00000005D2 Funct  
 [D:/TempleOS/Compiler/CmpMain.CPP.Z,179] CmpBuf                    00000371D8    0001 00000000F7 Funct  
 [D:/TempleOS/Compiler/ExpParser.CPP.Z,1236] CmpExpression             0000012E36    0004 00000000B9 Funct  
@@ -55,7 +55,7 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [D:/TempleOS/Compiler/CmpMain.CPP.Z,198] CmpFixUpJITAsm            00000372D0    0000 00000003DC Funct  
 [D:/TempleOS/Compiler/CmpMain.CPP.Z,706] CmpInit                   00000385F0    0001 00000000B9 Funct  
 [D:/TempleOS/Compiler/CmpMain.CPP.Z,60] CmpJoin                   0000036B80    0001 0000000653 Funct  
-[D:/TempleOS/Compiler/CmpInit.CPP.Z,222] CmpLoadDefines            0000033BD0    0001 0000002777 Funct  
+[D:/TempleOS/Compiler/CmpInit.CPP.Z,222] CmpLoadDefines            0000033BD0    0001 0000002776 Funct  
 [D:/TempleOS/Compiler/BackEnd.CPP.Z,226] CmpNoteFloatOp            0000018786    000E 0000000251 Funct  
 [D:/TempleOS/Compiler/OptPass012.CPP.Z,96] CmpOffset2Reg             0000026090    0005 0000000042 Funct  
 [D:/TempleOS/Compiler/OptPass3.CPP.Z,10] CmpPType                  000002ADE0    0006 0000000033 Funct  
@@ -239,7 +239,7 @@ CMP_OPT_NOP               0000000000    0003            ExportSysSym
 [D:/TempleOS/Compiler/OptPass012.CPP.Z,75] OptLag1                   0000026010    0005 000000003A Funct  
 [D:/TempleOS/Compiler/OptPass012.CPP.Z,86] OptLead1                  0000026050    0002 0000000039 Funct  
 [D:/TempleOS/Compiler/OptPass3.CPP.Z,44] OptMVCompare              000002AED0    0001 000000001A Funct  
-[D:/TempleOS/Compiler/OptPass3.CPP.Z,39] OptMemberVar              007FC94800    0005 0000000020 Class 
+[D:/TempleOS/Compiler/OptPass3.CPP.Z,39] OptMemberVar              007FCA03F0    0005 0000000020 Class 
 [D:/TempleOS/Compiler/OptPass012.CPP.Z,1] OptMissing                0000025D26    0004 0000000070 Funct  
 [D:/TempleOS/Compiler/CmpAsm.CPP.Z,687] OptNext                   0000000098    0002            Funct 
 [D:/TempleOS/Compiler/CmpAsm.CPP.Z,690] OptNext2                  000000010A    0001            Funct 

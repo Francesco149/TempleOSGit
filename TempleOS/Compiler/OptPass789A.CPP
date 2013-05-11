@@ -308,7 +308,7 @@ p2_RAX_p1_RDX:
 		  TY_REG+IT_I64,CREG_RAX,0,ip2);
 	    tempi->ic_flags&=~ICF_CODE_FINAL;
 	    break;
-	  case IC_NATIVE_TYPECAST:
+	  case IC_HOLYC_TYPECAST:
 	    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 		  tempi->p1.type,tempi->p1.reg,tempi->p1.disp,ip2);
 	    break;

@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 142,995 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 129,664 lines of TempleOS over
 the 
 past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
@@ -38,8 +38,10 @@ current task's record.)  There is no memory segmentation -- FS and GS are
 used 
 as general purpose registers, more or less.
 
-* TempleOS uses a flavor of C/C++.  It is not PASCAL.  I altered the syntax 
-making parenthesis optional on function calls with no paramaters.
+* TempleOS uses a dialect of C/C++ called [C:/TempleOS/Doc/HolyC.TXT.Z,1]
+Holy C.  It is not PASCAL.  I 
+altered the syntax making parenthesis optional on function calls with no 
+paramaters.
 
 * [C:/TempleOS/Kernel/Misc1a.CPP.Z,178] Sleep() makes a program pause.  It is
 not hybernation for a laptop.
@@ -62,7 +64,7 @@ rename them with [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,119] Move() to store them
 uncompressed.
 
 * TempleOS is open src and every bit of the src code is included in the 
-distro.  Use [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136]
+distro.  Use [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128]
 MakeOSInstallPrtBootLoader() to compile the kernel and compiler.
 
 * TempleOS does not use object files or a linker.  You can link .BIN.Z

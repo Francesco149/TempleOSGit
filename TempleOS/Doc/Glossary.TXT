@@ -115,7 +115,7 @@ WSD	WordStat Dictionary
 +] Task/Process/Thread
   There is no distinction between "task", "process" or "thread."  The Fs
   segment register is kept pointing to the current task's
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3009] CTask.  There is only one window per
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask.  There is only one window per
   task.
 
 +] Adam Task
@@ -160,15 +160,14 @@ WSD	WordStat Dictionary
   [C:/TempleOS/Adam/Utils2a.CPP.Z,429] TaskRep().  There is just one possible
   window per task, so child tasks are needed.
 
-+] C+
-  The language used by TempleOS is more than C and less than C++, so it's
-  just C+, perhaps.  See [C:/TempleOS/Doc/Differences.TXT.Z,1] Differences.  It
-  has the default arg feature of C++ and uses class in place of struct.  It
-  uses U0,U8,U16,U32,I64 and I0,I8,I16,I32,I64 for signed and unsigned
-  integers.  It has a slightly different operator precedence.  See
-  [C:/TempleOS/Doc/Differences.TXT.Z,1] OP_precedence  It has the PASCAL-like
-  feature of function calls with no parens, but requires an "&" when referring
-  to function addresses.
++] Holy C
+  The language used by TempleOS is more than C and less than C++.  See
+  [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C.  It has the default arg feature of
+  C++ and uses class in place of struct.  It uses U0,U8,U16,U32,I64 and
+  I0,I8,I16,I32,I64 for signed and unsigned integers.  It has a slightly
+  different operator precedence.  See [C:/TempleOS/Doc/HolyC.TXT.Z,1]
+  OP_precedence  It has the PASCAL-like feature of function calls with no
+  parens, but requires an "&" when referring to function addresses.
 
 +] AOT Compile Mode
   I coined this term to refer to conventional AOT compilation mode, but it is
@@ -183,8 +182,8 @@ WSD	WordStat Dictionary
   link.  The Kernel modules and compiler are made in AOT compiled mode and
   stored in Kernel.BIN.C and Compiler.BIN.Z, respectively.
 
-See [C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1] for an example of an
-  AOT module.
+See [C:/TempleOS/Demo/Games/EagleDive.CPP.Z,1] for an example of an AOT
+  module.
 
 +] JIT Compile Mode
   In just-in-time mode, the compiler allocates objects, code and data, from
@@ -222,7 +221,7 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().  An optional
   directory plus a list of file name masks, as in /TempleOS/Demo/*.TXT.Z;*.CPP.Z
 
-See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3605] FUF_RECURSE and
+See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE and
   [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS.
 
 Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
@@ -238,11 +237,11 @@ Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
 *.TXT.Z;*.TXT;*.LOG.Z;*.LOG
   Text Files
 *.CPP.Z;*.CPP
-  C+ src files.  The default C+ compiler type is ".CPP.Z".
+  Holy C src files.  The default Holy C compiler type is ".CPP.Z".
 *.PRJ.Z;*.PRJ
-  C+ src files to be compiled AOT.
+  Holy C src files to be compiled AOT.
 *.HPP.Z;*.HPP
-  C+ src header files.
+  Holy C src header files.
 *.MAP.Z;*.MAP
   Compiler "map" files
 *.BIN.Z;*.BIN.C;*.BIN
@@ -254,8 +253,8 @@ Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
 *.ISO
   CD-ROM image file--ISO9660.
 *.AUT.Z;*.AUT
-  "AutoFile" Basically a C+ program who's stdout goes to the input of a task
-  when [C:/TempleOS/Kernel/TaskCmd.CPP.Z,396] AutoFile() is called.
+  "AutoFile" Basically a Holy C program who's stdout goes to the input of a
+  task when [C:/TempleOS/Kernel/TaskCmd.CPP.Z,396] AutoFile() is called.
 *.GRA.Z;*.GRA
   Graphics file
 
@@ -276,10 +275,12 @@ ALL_CAPS
   So are #define's.
 
 _ALL_CAPS
-  Asm routines which are C+ callible should have a leading underscore.
+  Asm routines which are [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C callible
+  should have a leading underscore.
 
 MixedCaps
-  C+ Functions and class names are MixedCaps.
+  [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C Functions and class names are
+  MixedCaps.
 
 lower_case
   Local function vars and glbl vars are lower case.  Class member names are
@@ -304,10 +305,10 @@ DOCG_????
 
 
 Fs The CPU FS segment register.  This register points to the current task's 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3009] CTask.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask.
 
 Gs The CPU GS segment register.  This register points to the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3636] CCPU.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.
 
 Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
   These are bit manipulation functions named after Intel instructions.  They 

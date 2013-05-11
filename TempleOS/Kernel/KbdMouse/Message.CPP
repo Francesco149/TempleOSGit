@@ -140,7 +140,6 @@ I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
 {
   I64 ch,sc;
   Bool old_preempt=Preempt(OFF),cursor_on=FALSE;
-
   while (!ScanKey(&ch,&sc,FALSE)) {
     if (IsRaw && raw_cursor) {
       if (!cursor_on && ToI64(GetTimeStamp*5/time_stamp_freq)&1) {
@@ -211,7 +210,7 @@ I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE)
     Free(st);
   } else {
     while (TRUE) {
-      ch=GetChar(NULL,FALSE,IsInDbg);
+      ch=GetChar(,FALSE,IsInDbg);
       if (ch=='\n') {
 	'' ch;
 	break;

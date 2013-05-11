@@ -45,13 +45,14 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,246]
+You'll need to do a [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,238]
     MasterBootZero() to restore your drive to a state 
 where other operating systems can partition it.
   
 2) [C:/TempleOS/Kernel/Dsk/Dsk1c.CPP.Z,181] Fmt('D',TRUE,FALSE,PT_FAT32)
-  This command formats a partition with FAT32 or the TempleOS native file 
-system type.  Use the drive letter of the partition in place of 'D'.
+  This command formats a partition with FAT32 or the RedSea file system type.
+   
+Use the drive letter of the partition in place of 'D'.
 
 **WARNING:**  If you are upgrading, be sure not to lose the file,
   /0000Boot/OldM
@@ -61,7 +62,7 @@ BR.BIN.C.
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader('D')
+4) [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader('D')
   This command recompiles the source code on a partition and writes to the
   _par
 tition's_ boot record.  You'll need to reenter the
@@ -69,9 +70,9 @@ tition's_ boot record.  You'll need to reenter the
 can be stored in the kernel.
 
 5) Use Linux's [C:/TempleOS/Doc/Grub.TXT.Z,1] Grub or TempleOS'
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,263] InstallMasterBootLoader('D')
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,255] InstallMasterBootLoader('D')
   
-The [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,263] InstallMasterBootLoader()
+The [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,255] InstallMasterBootLoader()
   command places a boot loader on a drive to 
 boot partitions.  It saves the old master boot record to /0000Boot/OldMBR.BI
 N.C and replaces it.  When you boot, you will have the option of booting the 

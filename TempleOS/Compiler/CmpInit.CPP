@@ -396,7 +396,7 @@ Anchor for inserting Compiler Defines
 "10..TO_F64\0"
 "10..TO_BOOL\0"
 "10..TOUPPER\0"
-"11..NATIVE_TYPECAST\0"
+"11..HOLYC_TYPECAST\0"
 "11.NADDR\0"
 "11..COM\0"
 "11..NOT\0"

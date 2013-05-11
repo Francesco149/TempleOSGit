@@ -37,7 +37,7 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
   switch (bdev->type) {
     case BDT_RAM:
       p->pt_signature=PRT_SIGNATURE_VAL;
-      p->type=PT_NATIVE;
+      p->type=PT_REDSEA;
       p->rblks=&RAMRBlks;
       p->wblks=&RAMWBlks;
 //This is to force creation of a RAM
@@ -61,7 +61,7 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
 	if (one_prt) {
 	  p->pt_signature=PRT_SIGNATURE_VAL;
 	  result++;
-	  p->type=PT_NATIVE;
+	  p->type=PT_REDSEA;
 	  p->rblks=&ATARBlks;
 	  p->wblks=&ATAWBlks;
 	  p->size=bdev->max_blk+1;
@@ -89,11 +89,11 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
 	      p->offset=mbr.p[i].offset+offset;
 	      p->size  =mbr.p[i].size;
 	      switch (mbr.p[i].type) {
-		case MBR_PT_NATIVE:
+		case MBR_PT_REDSEA:
 		  p->pt_signature=PRT_SIGNATURE_VAL;
 		  result++;
-		  p->type=PT_NATIVE;
-		  NativeFSPrtInit(p);
+		  p->type=PT_REDSEA;
+		  RedSeaFSPrtInit(p);
 		  break;
 		case MBR_PT_FAT32a:
 		case MBR_PT_FAT32b:
@@ -104,9 +104,9 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
 		  ATAReadBlks(bdev,&br,p->offset,1);
 		  p->pt_signature=PRT_SIGNATURE_VAL;
 		  result++;
-		  if (br.signature==MBR_PT_NATIVE) {
-		    p->type=PT_NATIVE;
-		    NativeFSPrtInit(p);
+		  if (br.signature==MBR_PT_REDSEA) {
+		    p->type=PT_REDSEA;
+		    RedSeaFSPrtInit(p);
 		  } else {
 		    p->type=PT_FAT32;
 		    FAT32PrtInit(p);
@@ -298,7 +298,7 @@ Bool PmtBaseUnit(CBlkDev *bdev)
     bdev->unit =0;
     if (bdev->base0) {
       "\nUnit (0 or 1): ";
-      do ch=GetChar(NULL,FALSE);
+      do ch=GetChar(,FALSE);
       while (!('0'<=ch<='1'));
       '' ch;
       bdev->unit=ch-'0';

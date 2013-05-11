@@ -7,17 +7,19 @@ edit and save them.
 
 * The clipboard can be used to cut and paste.
 
-* MusicOrgan uses C+ files as it's fmt!  See 
+* MusicOrgan uses [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C files as it's fmt! 
+See 
 [C:/TempleOS/Apps/MusicOrgan/Examples/personal.CPP.Z,1].  It does not fully
 parse 
 them when loading back in, so changes made outside MusicOrgan can be lost.
 
-* The first line of the C+ files has a comment with a category recognized by 
-[C:/TempleOS/Apps/MusicOrgan/JukeBox.CPP.Z,1] JukeBox().  The categories are
-"no nothing", "has words", "has graphics", or "
-special".  The third character in the comment is a digit rating number.
+* The first line of the [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C files has a
+comment with a category recognized 
+by [C:/TempleOS/Apps/MusicOrgan/JukeBox.CPP.Z,1] JukeBox().  The categories
+are "no nothing", "has words", "has graphics", 
+or "special".  The third character in the comment is a digit rating number.
 
-* You can take the [C:/TempleOS/Adam/Snd/Music.CPP.Z,104] Play() statements
+* You can take the [C:/TempleOS/Adam/Snd/Music.CPP.Z,91] Play() statements
 out of a song file and place them in your 
 programs.  You can also add a song to a document with <CTRL-L>, but you
 should 
@@ -30,7 +32,7 @@ tCAGqFC after pressing <CTRL-T>, now.
 JukeBox("HOME/MusicOrgan"); to play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/TempleOS/Kernel/KGlbls.CPP.Z,74] snd_record to TRUE, play music,
+the Bool [C:/TempleOS/Kernel/KGlbls.CPP.Z,73] snd_record to TRUE, play music,
 and set it to FALSE.  Then, call 
 [C:/TempleOS/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to
 make a <CTRL-ALT-key> to toggle this 
@@ -46,9 +48,8 @@ U0 CtrlAltR(I64)
 SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
 
 
-* The note accent feature only works when exporting songs.  When calling 
-[C:/TempleOS/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you can set a
-waveform.  The PC speaker is [C:/TempleOS/Kernel/Adam1a.HPP.Z,3740]
-WF_SQUARE.  You can 
-select reverb and averaging, also.
+* When calling [C:/TempleOS/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you
+can set a waveform.  The PC speaker is 
+[C:/TempleOS/Adam/Snd/MathAudio.CPP.Z,120] WF_SQUARE.  You can select reverb
+and averaging, also.
 

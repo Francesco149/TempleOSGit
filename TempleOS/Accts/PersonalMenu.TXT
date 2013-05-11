@@ -31,9 +31,9 @@ Cd("::/TempleOS/Demo/Doc");Dir;
 `Cd("::/TempleOS/Demo/Doc");Dir;
 `
 
-Cd("::/TempleOS/Demo/GameStarters");Dir;
+Cd("::/TempleOS/Demo/Games");Dir;
 
-`Cd("::/TempleOS/Demo/GameStarters");Dir;
+`Cd("::/TempleOS/Demo/Games");Dir;
 `
 
 Cd("::/TempleOS/Demo/MultiCore");Dir;
@@ -75,7 +75,7 @@ Cd("::/TempleOS/Demo/AcctExample");Dir;
 `
 
 
-MakeAll with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136]
+MakeAll with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128]
 MakeOSInstallPrtBootLoader().
 Cd("::/TempleOS/Kernel");Dir;
 
@@ -133,7 +133,7 @@ X-Caliber <6> (image) JukeBox <7> (image) Organ <8> (image)  Vocab <9>
 
 
 
-KeepAway <10> (image) Models <11> (image) RawHide <12> (image) Chess <13>
+KeepAway <10> (image) Models <11> (image) RawHide <12> (image) BirdLand <13>
   (image)
 
 
@@ -143,18 +143,7 @@ KeepAway <10> (image) Models <11> (image) RawHide <12> (image) Chess <13>
 
 
 
-
-BigGuns <14> (image) EagleDive <15> (image) MisDef <16> (image) BirdLand <17>
-  (image)
-
-
-
-
-
-
-
-Rocks <18> (image) SpaceShip <19> (image) TheDead <20> (image) FPS <21>
-  (image)
+EagleDive <14> (image) BigGuns <15> (image) SpaceShip <16> (image)
 
 
 
@@ -165,14 +154,14 @@ Rocks <18> (image) SpaceShip <19> (image) TheDead <20> (image) FPS <21>
 
 
 
-AfterEgypt <22> (image) Pilgrims <23> (image) Wenceslas <24> (image) 
+ FPS <17> (image)   AfterEgypt <18> (image) Wenceslas <19> (image) 
 
 
 
 
 
 
-Navy <25> (image) Bomber <26> (image) Strut <27> (image) 
+Navy <20> (image) Bomber <21> (image) Strut <22> (image) TheDead <23> (image) 
 
 CPUPlot
 `#include "/TempleOS/Demo/Graphics/CPUPlot";`
@@ -184,10 +173,6 @@ Digits (Memory Game)
 `Cd("::/TempleOS/Demo");;#include "Digits"
 `
 
-Bling (A fractel-like thing)
-  `Cd("::/TempleOS/Demo/Graphics");;#include "Bling"
-  `
-  
 
 
 
@@ -201,8 +186,6 @@ CTRL-ALT-E	Spawn new user shell window
 CTRL-ALT-F	Flush screen VGA cache
 CTRL-ALT-G	Grid on/off
 CTRL-ALT-M	Mute ssound
-CTRL-ALT-V	Sound volume +
-CTRL-ALT-v	Sound volume -
 CTRL-ALT-X	Kill window
  
 List public functions in alphabetic order

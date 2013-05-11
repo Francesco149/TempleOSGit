@@ -35,7 +35,7 @@ for (i=0;i<TF_NUM;i++)
 
 /*
   You can customize to your locality
-  with [C:/TempleOS/Kernel/KGlbls.CPP.Z,140] date_fmt_map[] and [C:/TempleOS/Kernel/KGlbls.CPP.Z,141] time_fmt_map[].
+  with [C:/TempleOS/Kernel/KGlbls.CPP.Z,136] date_fmt_map[] and [C:/TempleOS/Kernel/KGlbls.CPP.Z,137] time_fmt_map[].
   [C:/TempleOS/Kernel/Date.CPP.Z,199] DateTimeFmtMapsRst() will rst
   them.
 */

@@ -4,7 +4,7 @@
 
 //The internal types are U16i,I32i, etc.
 //They are defined [C:/TempleOS/Compiler/CmpInit.CPP.Z,8] internal_types_table.
-//TempleOS C+ has a feat where a
+//Holy C has a feature where a
 //union structure is treated as a
 //whole if no member is specified.
 //See [C:/TempleOS/Demo/SubIntAccess.CPP.Z,1].
@@ -2205,7 +2205,7 @@ class CPCIDev
   U8 *vendor_str,*dev_id_str;
 };
 
-#define NATIVE_XSUM		0xA5CF3796
+#define TEMPLEOS_XSUM		0xA5CF3796
 #define FILENAME_MASK_JIT		"*.CPP*;*.HPP*"
 #define FILENAME_MASK_AOT		"*.CPP*;*.HPP*;*.PRJ*"
 #define FILENAME_MASK_SRC		"*.CPP*;*.HPP*;*.AUT*;*.PRJ*"
@@ -2236,7 +2236,7 @@ public class CMasterBoot
 public class CBootStruct
 {
   U8 jump_and_nop[3];
-  U8 signature;		//MBR_PT_NATIVE=0x88
+  U8 signature;		//MBR_PT_REDSEA=0x88
   U16 U8s_per_sect;
   U16 sects_per_cluster;
   I64 sects;
@@ -2537,7 +2537,7 @@ class CATARep
 
 //See [C:/TempleOS/Kernel/Define1a.CPP.Z,47] ST_PRT_TYPES
 #define PT_NULL		0
-#define PT_NATIVE	1 //Supported
+#define PT_REDSEA	1 //Supported
 #define PT_FAT32	2 //Supported except for short names, to some degree
 #define PT_ISO9660	3 //Supported (CD-ROM)
 #define PT_ISO13490	4 //Not Supported (CD-ROM)
@@ -2556,7 +2556,7 @@ class CATARep
 #define MBR_PT_FAT32e	0x8B
 #define MBR_PT_FAT32f	0x8C
 #define MBR_PT_NTFS	0x07
-#define MBR_PT_NATIVE	0x88
+#define MBR_PT_REDSEA	0x88
 
 public class CFreeLst
 {
@@ -2568,7 +2568,7 @@ public class CFreeLst
 
 #define PRT_SIGNATURE_VAL	'PTSV'
 public class CPrt
-{//Native Partition
+{
 //Don't access ->drive directly in case a drive has been remapped.
 //Use [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,88] Prt2Drv().
   I64 locked_flags;
@@ -2987,7 +2987,6 @@ class CProgress
 #define DISPLAYf_WIN_ON_TOP		4
 #define DISPLAYf_CHILDREN_NOT_ON_TOP	5
 #define DISPLAYf_HAS_BEEN_RESIZED	6
-#define DISPLAYf_USER_HAS_BEEN_RESIZED	7
 
 #define SPAWNF_ADD_TO_QUE		1
 
@@ -3325,7 +3324,7 @@ class CTSS
 #define DCF_SYMMETRY		0x200
 
 //Must be used with DCF_SYMMETRY set also.
-//See [C:/TempleOS/Demo/GameStarters/BigGuns.CPP.Z,1]
+//See [C:/TempleOS/Demo/Games/BigGuns.CPP.Z,1]
 #define DCF_JUST_MIRROR		0x400
 
 #define DCF_LOCATE_NEAREST	0x800
@@ -3403,7 +3402,7 @@ public class CDC
   I32 cur_x,cur_y,cur_z,pad;
   I64 collision_cnt;
 
-  //Set by [C:/TempleOS/Kernel/Adam1a.HPP.Z,3336] DCF_RECORD_EXTENTS
+  //Set by [C:/TempleOS/Kernel/Adam1a.HPP.Z,3335] DCF_RECORD_EXTENTS
   I64 min_x,max_x,min_y,max_y; //screen coordinates
 
   U32 dc_signature,pad;
@@ -3414,23 +3413,6 @@ public class CDC
   //Set by [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,103] DCAllocDepthBuf()
   I32 *depth_buf;
   I64 db_z; //private
-};
-
-public class CGrVectMap
-{
-  U0 start_saved_area;
-  I32 width,height;
-  U8 r_bits,poly_line_cnt_bits,pad,pad;
-  U32 rect_cnt;
-  U0 end_saved_area;
- 
-  CColorROPU32 bkcolor,pad;
-
-//Array of bit numbers for rectangle starts
-//Can be regenerated with [C:/TempleOS/Adam/Gr/GrVectMap.CPP.Z,470] VectMapRectStartBits()
-  U32 *rect_start_bits;
-
-  U8 *body;
 };
 
 class CRAXRBCRCXRDX
@@ -3720,30 +3702,12 @@ POP R8 POP RDI POP RSI POP RBP POP RBX POP RDX POP RCX POP RAX
 #define ST_ERR_ST   "$FG,LTRED$$BK,1$ERROR:$FG$$BK,0$ "
 #define ST_WARN_ST  "$FG,RED$$BK,1$WARNING:$FG$$BK,0$ "
 
-//snd devs
-#define SD_PC_SPEAKER		0
-#define SD_HD_AUDIO		1
-
-#define SND_SAMPLE_RATE		48000
-#define SND_SAMPLE_BITS		24
-#define SND_OCHANNELS		2
-#define SND_ICHANNELS		2
-#define SND_OUT_CONTAINER	I32
-#define SND_IN_CONTAINER	I16
-#define SND_BUF_LEN		0x400
-#define SND_BUF_TIME_mS		(SND_BUF_LEN/SND_OCHANNELS*1000.0/SND_SAMPLE_RATE)
-//buffer byte size is SND_BUF_LEN*sizeof(I32).
-//It's 24 bit packed in 32 bit containers
-//There are 2 channels for stereo, so half as many blocks.
-
-#define WF_NULL			0
-#define WF_SQUARE		1
-#define WF_SINE			2
-#define WF_TRIANGLE		3
-#define WF_SAWTOOTH		4
-#define WF_NOISE		5
-
-#define WF_NUM_WAVEFORMS	6
+class CSndData
+{
+  CSndData *next,*last;
+  F64 freq; //Hz
+  F64 time_stamp;
+};
 
 //sys_raw_dc_flags flags
 #define RDCF_IN_DOLLAR		1

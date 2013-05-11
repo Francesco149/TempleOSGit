@@ -289,7 +289,7 @@ U0 CopyVideo()
 {
   if (ts_has_bak_drv) {
     Del(TS_BAK_DRV ":/Temp/*.SND");
-    SndFileCreate(TS_BAK_DRV ":/Temp/Audio",0.23,0.0,WF_NULL,0.45,0.35);
+    SndFileCreate(TS_BAK_DRV ":/Temp/Audio",0.23,0.0,WF_SQUARE,0.45,0.35);
     DelTree(TS_BAK_DRV ":/Temp/ScreenShots");
     CopyTree("::/Temp/ScreenShots",TS_BAK_DRV ":/Temp/ScreenShots");
   }

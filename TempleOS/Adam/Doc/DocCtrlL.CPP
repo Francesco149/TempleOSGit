@@ -1062,7 +1062,7 @@ I64 PopUpSpriteType()
   CDoc *doc=DocNew;
   DocPutS(doc,"A sprite is composed of an ordered list of elements\n"
 	"such as lines and color changes.  You can create an icon\n"
-	"by placing a sprite with a payload of C+ code to execute.\n"
+	"by placing a sprite with a payload of Holy C code to execute.\n"
 	"This is a called a \"sprite macro\".  Check \"Pop-Up\" for\n"
 	"icons and \"Esc\" for shelling-to-the-cmd-line macros.\n\n"
 	"In a program, you first make a sprite.  Then, you insert\n"

@@ -212,7 +212,7 @@ public U0 CopySongs(U8 threshold='7')
 U0 DistroPrep()
 {
   Del("/TempleOS/Demo/WebLogExample/WebLog.TXT*");
-  Del("/TempleOS/Demo/GameStarters/EagleDive.BIN*");
+  Del("/TempleOS/Demo/Games/EagleDive.BIN*");
   DelTree("/TempleOS/Accts/*Temp.TXT.Z");
   CopySongs;
 

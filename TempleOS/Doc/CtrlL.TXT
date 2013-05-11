@@ -1,7 +1,8 @@
 See [C:/TempleOS/Doc/Dollar.TXT.Z,1] for details on dollar sign cmds.
 
-"Expression" a num or C+ algebraic term with operators and C+ syms can be 
-entered.
+"Expression" a num or Holy C algebraic term with operators and Holy C syms
+can 
+be entered.
 "Macro" Most entries can behave like macro entries if you assign them macro 
 strs.
 "AutoStr" Like a macro except it is an [C:/TempleOS/Doc/Glossary.TXT.Z,1]

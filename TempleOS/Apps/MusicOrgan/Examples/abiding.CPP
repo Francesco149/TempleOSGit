@@ -55,13 +55,13 @@ U0 Song()
     "$BD+H,LTCYAN$$FD+H,BLACK$";
     while (!ScanKey) {
       "$FG,WHITE$To God...\n$FG$";
-      Play("W13etCFE!!sDDDDD2G!3D2G!!3qC2eG3EqEetAA!F2qG",
+      Play("3etCFEsDDDDD2G3D2G3qC2eG3EqEetAAF2qG",
       "I \0am \0a\0biding \0 \0 \0 \0in \0 \0Your \0 \0presence.\n\0 \0 \0 \0 \0 \0 \0 \0");
-      Play("3etCFE!!sDDDDD2G!3D2G!!3qC2eG3EqEetAA!F2qG",
+      Play("3etCFEsDDDDD2G3D2G3qC2eG3EqEetAAF2qG",
       "I \0am \0a\0biding \0 \0 \0 \0in \0 \0Your \0 \0presence.\n\0 \0 \0 \0 \0 \0 \0 \0");
-      Play("!3DBsFGF!G2eG!!3FRDqEGeB!E",
+      Play("3DBsFGFG2eG3FRDqEGeBE",
       "What \0a \0joy!\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
-      Play("!qDBsFGF!G2eG!!3FRDqEGeB!E",
+      Play("qDBsFGFG2eG3FRDqEGeBE",
       "I'm \0so \0coy!\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
     }
     } catch

@@ -25,7 +25,7 @@ Bool Drv(U8 drv_let)
   Free(Fs->cur_dir);
   Fs->cur_dir=StrNew("/");
   switch (p->type) {
-    case PT_NATIVE:
+    case PT_REDSEA:
     case PT_FAT32:
     case PT_ISO9660:
       return TRUE;
@@ -85,8 +85,8 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 	p=Fs->cur_prt;
 	cur_dir_cluster=Name2DirCluster(p,new_cur_dir);
 	switch (p->type) {
-	  case PT_NATIVE:
-	    result=NativeFSCd(buf,cur_dir_cluster);
+	  case PT_REDSEA:
+	    result=RedSeaFSCd(buf,cur_dir_cluster);
 	    break;
 	  case PT_FAT32:
 	    result=FAT32Cd(buf,cur_dir_cluster);
@@ -197,12 +197,12 @@ CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3605] FUF_RECURSE		+r Recurse
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3622] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3613] FUF_JUST_DIRS		+D just directories
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] FUF_JUST_FILES		+F just files
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3615] FUF_JUST_TXT_FILES	+T just text files: [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3616] FUF_JUST_SRC_FILES	+S just src files : [C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC
+ [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE		+r Recurse
+ [C:/TempleOS/Kernel/Adam1a.HPP.Z,3604] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
+ [C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS		+D just directories
+ [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES		+F just files
+ [C:/TempleOS/Kernel/Adam1a.HPP.Z,3597] FUF_JUST_TXT_FILES	+T just text files: [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT
+ [C:/TempleOS/Kernel/Adam1a.HPP.Z,3598] FUF_JUST_SRC_FILES	+S just src files : [C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC
 See [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   CDirEntry *result;
@@ -248,8 +248,8 @@ I64 Del(U8 *files_find_mask,Bool print_msg=TRUE)
   CFileAccess *fa;
   if (fa=FileAccessNew(files_find_mask)) {
     switch (fa->p->type) {
-      case PT_NATIVE:
-	result=NativeFSFilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
+      case PT_REDSEA:
+	result=RedSeaFSFilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
 	break;
       case PT_FAT32:
 	result=FAT32FilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
@@ -296,8 +296,8 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
 	curname=altname;
       if (fa=FileAccessNew(curname)) {
 	switch (fa->p->type) {
-	  case PT_NATIVE:
-	    result=NativeFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	  case PT_REDSEA:
+	    result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
 	    break;
 	  case PT_FAT32:
 	    result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
@@ -322,8 +322,8 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
 	while (!result && StrCmp(Fs->cur_dir,"/")) {
 	  Cd("..");
 	  switch (Fs->cur_prt->type) {
-	    case PT_NATIVE:
-	      result=NativeFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	    case PT_REDSEA:
+	      result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
 	      break;
 	    case PT_FAT32:
 	      result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
@@ -360,7 +360,7 @@ U8 *TextFileRead(U8 *filename,I64 *_attr=NULL)
 
 
 Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3613] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3620] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3621] FUF_SCAN_PARENTS
+{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
   //If you pass rde, you must Free(rde->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;
@@ -383,8 +383,8 @@ Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
     if (fa=FileAccessNew(curname)) {
       cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
       switch (fa->p->type) {
-	case PT_NATIVE:
-	  result=NativeFSFileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	case PT_REDSEA:
+	  result=RedSeaFSFileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	  break;
 	case PT_FAT32:
 	  result=FAT32FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
@@ -411,8 +411,8 @@ Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
 	Cd("..");
 	cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
 	switch (fa->p->type) {
-	   case PT_NATIVE:
-	     result=NativeFSFileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	   case PT_REDSEA:
+	     result=RedSeaFSFileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	     break;
 	   case PT_FAT32:
 	     result=FAT32FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
@@ -441,7 +441,7 @@ Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
 }
 
 I64 FileSize(U8 *filename,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3613] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3620] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3621] FUF_SCAN_PARENTS
+{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
   CDirEntry de;
   if (FileFind(filename,&de,fuf_flags)) {
     Free(de.full_name);
@@ -451,14 +451,14 @@ I64 FileSize(U8 *filename,I64 fuf_flags=0)
 }
 
 I64 FileSizeExpanded(U8 *filename,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3613] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3620] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3621] FUF_SCAN_PARENTS
+{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
   U8 buf[BLK_SIZE];
   CPrt *p;
   CDirEntry de;
   if (FileFind(filename,&de,fuf_flags)) {
     p=Drv2Prt(*de.full_name);
     Free(de.full_name);
-    if (p->type==PT_NATIVE && de.expanded_size)
+    if (p->type==PT_REDSEA && de.expanded_size)
       return de.expanded_size;
     else {
       if (de.size && FileAttr(de.name) & _ATTR_COMPRESSED) {
@@ -481,8 +481,8 @@ I64 FileWrite(U8 *filename,U8 *fbuf,
   U8 *absname=FileNameAbs(filename);
   if (fa=FileAccessNew(filename,FALSE,TRUE)) {
     switch (fa->p->type) {
-      case PT_NATIVE:
-	c=NativeFSFileWrite(fa->p,Fs->cur_dir,fa->mask,
+      case PT_REDSEA:
+	c=RedSeaFSFileWrite(fa->p,Fs->cur_dir,fa->mask,
 	  fbuf,size,spdt,attr,raw,&ac);
 	break;
       case PT_FAT32:

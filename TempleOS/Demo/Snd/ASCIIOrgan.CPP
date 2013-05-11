@@ -36,7 +36,7 @@ U0 ASCIIOrgan()
   "and press $FG,GREEN$<SHIFT-ESC>$FG$ to exit.\n";
   do {
     //We don't want echo or scan codes, so we use NULL and FALSE...
-    ch=GetChar(NULL,FALSE);
+    ch=GetChar(,FALSE);
     Snd((ch-28)*25);
   } while (ch!=CH_ESC && ch!=CH_SHIFT_ESC);
   Snd(0);

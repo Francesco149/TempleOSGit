@@ -6,7 +6,7 @@ U0 TanksPlot()
   SetViewPlayer(cur_player);
   while (TRUE) {
     if (!alive_cnt[0] || !alive_cnt[1])
-      throw (EXCEPT_LOCAL,T_GAME_OVER);
+      throw(EXCEPT_LOCAL,T_GAME_OVER);
     msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|
 	1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|
 	1<<MSG_IP_R_UP);
@@ -45,7 +45,7 @@ U0 TanksPlot()
 	break;
       case MSG_IP_R_UP:
 	if (CursorInWindow(Fs,p1,p2))
-	  throw (EXCEPT_LOCAL,T_TURN_OVER);
+	  throw(EXCEPT_LOCAL,T_TURN_OVER);
 	break;
     }
   }
@@ -58,7 +58,7 @@ U0 TanksMove()
   SetViewPlayer(cur_player);
   while (TRUE) {
     if (!alive_cnt[0] || !alive_cnt[1])
-      throw (EXCEPT_LOCAL,T_GAME_OVER);
+      throw(EXCEPT_LOCAL,T_GAME_OVER);
     msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|
 	1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|
 	1<<MSG_IP_R_UP);
@@ -94,7 +94,7 @@ U0 TanksMove()
 	break;
       case MSG_IP_R_UP:
 	if (CursorInWindow(Fs,p1,p2))
-	  throw (EXCEPT_LOCAL,T_TURN_OVER);
+	  throw(EXCEPT_LOCAL,T_TURN_OVER);
 	break;
     }
   }
@@ -107,7 +107,7 @@ U0 TanksFire()
   SetViewPlayer(cur_player);
   while (TRUE) {
     if (!alive_cnt[0] || !alive_cnt[1])
-      throw (EXCEPT_LOCAL,T_GAME_OVER);
+      throw(EXCEPT_LOCAL,T_GAME_OVER);
     msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|
 	1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|
 	1<<MSG_IP_R_UP);
@@ -149,7 +149,7 @@ U0 TanksFire()
 	break;
       case MSG_IP_R_UP:
 	if (CursorInWindow(Fs,p1,p2))
-	  throw (EXCEPT_LOCAL,T_TURN_OVER);
+	  throw(EXCEPT_LOCAL,T_TURN_OVER);
 	break;
     }
   }

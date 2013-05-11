@@ -28,7 +28,7 @@ U0 KbdCmdSend(I64 port, U8 val)
       return;
     }
   }
-  throw (EXCEPT_LOCAL);
+  throw(EXCEPT_LOCAL);
 }
 
 I64 KbdCmdRead()
@@ -37,7 +37,7 @@ I64 KbdCmdRead()
   while (tS<timeout)
     if (InU8(KBD_CTRL)&1)
       return InU8(KBD_PORT);
-  throw (EXCEPT_LOCAL);
+  throw(EXCEPT_LOCAL);
 }
 
 U0 KbdCmdFlush()
@@ -77,7 +77,7 @@ U0 KbdMouseCmdAck(U8 val)
     }
   } while (ack!=0xFA && --timeout);
   if (!timeout)
-    throw (EXCEPT_LOCAL);
+    throw(EXCEPT_LOCAL);
 }
 
 U0 SetTypeMatic(U8 delay)

@@ -49,7 +49,7 @@
 are allowed to 
 have windows.  There is one window per task and no child windows.
 
-* [C:/TempleOS/Kernel/Adam1a.HPP.Z,3357] CDCs (device contexts) are a data
+* [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDCs (device contexts) are a data
 type for controlling graphics on the 
 screen or graphics in mem, not on the screen.  The device context structure 
 has pen width and color associated with it, so you use
@@ -60,7 +60,7 @@ when finished.
 
 * [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,5] gr_dc is a global var for a bitmap
 redrawn each refresh and placed on the 
-screen.  You use an alias [C:/TempleOS/Kernel/Adam1a.HPP.Z,3357] CDC.  You
+screen.  You use an alias [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC.  You
 change the "Fs->draw_it" var to point to 
 your "DrawIt()" which gets called each screen refresh.  You draw everything
 in 
@@ -93,14 +93,14 @@ rotations.
 
 * See [C:/TempleOS/Doc/Transform.TXT.Z,1] for adding a transformation.
 
-* Set [C:/TempleOS/Kernel/Adam1a.HPP.Z,3325] DCF_SYMMETRY in the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3357] CDC.flags and call
+* Set [C:/TempleOS/Kernel/Adam1a.HPP.Z,3324] DCF_SYMMETRY in the
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC.flags and call
 [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,373] GrSetSymmetry() or 
 [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,395] GrSetSymmetry3().  This will plot a
 mirror image in addition to the primary 
-image.  Set [C:/TempleOS/Kernel/Adam1a.HPP.Z,3329] DCF_JUST_MIRROR to plot
+image.  Set [C:/TempleOS/Kernel/Adam1a.HPP.Z,3328] DCF_JUST_MIRROR to plot
 just the image, but this required 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3325] DCF_SYMMETRY to be set at the same
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3324] DCF_SYMMETRY to be set at the same
 time.  Note: You can only have one symmetry 
 active at a time including in [C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprites.
 
@@ -135,7 +135,7 @@ ptr and point it to a mass in the
 state vect.  Six elements in the state vect are required for each mass.
 
 See [Math/CMathODE,1] Math/CMathODE.
-See [C:/TempleOS/Demo/GameStarters/Rocks.CPP.Z,1].
+See [C:/TempleOS/Demo/Games/Rocket.CPP.Z,1].
 
 * There are several [C:/TempleOS/Kernel/Adam1a.HPP.Z,2770] raster operations
 available.  They go in bits 8-11 of the 
@@ -152,11 +152,10 @@ You can either work with a nonzero count or convert your
 [C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprite to a bitmap 
 if your subelements draw on top of each other.  Be sure to set ->bkcolor 
 before using [C:/TempleOS/Kernel/Adam1a.HPP.Z,2772] ROP_COLLISION.  See
-[C:/TempleOS/Demo/Graphics/PixelCollision.CPP.Z,1], 
-[C:/TempleOS/Demo/GameStarters/Rocks.CPP.Z,1] and 
-[C:/TempleOS/Apps/Timeout/Timeout.CPP.Z,1].
+[C:/TempleOS/Demo/Graphics/PixelCollision.CPP.Z,1] 
+and [C:/TempleOS/Apps/Timeout/Timeout.CPP.Z,1].
  
-* The ->dither_probability member of [C:/TempleOS/Kernel/Adam1a.HPP.Z,3357]
+* The ->dither_probability member of [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356]
 CDC is a U16 used to statistically select 
 between two colors.  See [C:/TempleOS/Demo/Graphics/Shading.CPP.Z,1].  It
 works with 

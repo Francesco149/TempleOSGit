@@ -174,7 +174,7 @@ public U0 PrtDsk(U8 drv_let=0)
     mbr.p[i].active=0x80;
     mbr.p[i].start_head=0;
     mbr.p[i].start_cyl=0x101;
-    mbr.p[i].type=1; //Will get set to MBR_PT_NATIVE
+    mbr.p[i].type=1; //Will get set to MBR_PT_REDSEA
     mbr.p[i].end_head=0xFE;
     mbr.p[i].end_cyl=0xFFFF;
     mbr.p[i].offset=PRT_HEADER+offset;
@@ -205,7 +205,7 @@ public U0 PrtDsk(U8 drv_let=0)
     mbr.p[0].active=0x80;
     mbr.p[0].start_head=1;
     mbr.p[0].start_cyl=0x101;
-    mbr.p[0].type=1; //Will get set to MBR_PT_NATIVE
+    mbr.p[0].type=1; //Will get set to MBR_PT_REDSEA
     mbr.p[0].end_head=0xFE;
     mbr.p[0].end_cyl=0xFFFF;
     mbr.p[0].offset=PRT_HEADER;
@@ -241,7 +241,7 @@ pd_done:
 
 #help_index "Info;File/Cmd Line (Typically);Cmd Line (Typically)"
 
-U0 NativeFSDrvView(U8 drv_let=0)
+U0 RedSeaFSDrvView(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
   I64 lohi,c1,i,x,y,l,s;
@@ -335,8 +335,8 @@ public U0 DrvView(U8 drv_let=0)
   CPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
   Drv(drv_let);
   switch (p->type) {
-    case PT_NATIVE:
-      NativeFSDrvView(drv_let);
+    case PT_REDSEA:
+      RedSeaFSDrvView(drv_let);
       break;
     case PT_FAT32:
       FAT32DrvView(drv_let);
@@ -393,7 +393,7 @@ public U0 DskView(U8 drv_let=0)
     }
   }
 
-  GetChar(NULL,FALSE);
+  GetChar(,FALSE);
   SettingsPop;
   DCFill;
   DCDel(dc);

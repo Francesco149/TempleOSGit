@@ -264,7 +264,7 @@ U0 SongTask(I64)
   music_tempo= 3.636;
   music_stacatto_factor= 0.902;
   while (TRUE) {
-	Play("W13q.EeDqED2G3DhE");
+	Play("3q.EeDqED2G3DhE");
 	Play("q.EeDqED2G3DhE");
 	Play("q.FeEFEqF2G3EhF");
 	Play("q.FeEFEqF2G3EhF");

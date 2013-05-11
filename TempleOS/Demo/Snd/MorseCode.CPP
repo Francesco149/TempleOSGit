@@ -112,7 +112,7 @@ I64 MorseWaitKey()
 	  Yield;
 	}
       } else
-	ch=GetChar(NULL,FALSE);
+	ch=GetChar(,FALSE);
       m_start=tT;
       Snd(1000);
       if (ch==CH_SHIFT_ESC || ch==CH_ESC) {

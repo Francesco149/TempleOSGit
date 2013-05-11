@@ -58,8 +58,8 @@ they get patched with the LBA, logical block addresses, to load other stuff.
 To update with a new TempleOS kernel, you must create a binary file and patch 
 the boot loader so it knows the LBA blocks to load.  Therefore, you usually 
 recompile the kernel and update the boot sect at the same time.  
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader() does
-this.  [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,263] InstallMasterBootLoader()
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader() does
+this.  [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,255] InstallMasterBootLoader()
 will 
 install a master boot loader.
 

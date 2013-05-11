@@ -159,7 +159,7 @@ U0 RegularInstallWizard()
     NewLine;
     while (TRUE) {
     "$FG,PURPLE$1$FG$) Use FAT32\n"
-      "$FG,PURPLE$2$FG$) Use TempleOS Native\n"
+      "$FG,PURPLE$2$FG$) Use RedSea\n"
       "\nFile System Type: ";
       ch=GetChar;
       NewLine;
@@ -169,7 +169,7 @@ U0 RegularInstallWizard()
     if (ch=='1')
       Fmt(*dst,TRUE,FALSE,PT_FAT32);
     else
-      Fmt(*dst,TRUE,FALSE,PT_NATIVE);
+      Fmt(*dst,TRUE,FALSE,PT_REDSEA);
   } else {
   "\n$BK,1$WARNING$BK,0$ if you answer yes to the following "
     "you will lose all TempleOS files in your /TempleOS directory tree.\n"

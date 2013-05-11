@@ -519,15 +519,15 @@ U0 AnimateTask(CTask *parent_task)
 		  o->has_ball=TRUE;
 		  if (o==human) {
 		    if (ball_stolen && team) {
-		      Noise(250,2000,2000,WF_SQUARE);
+		      Noise(250,2000,2000);
 		      score0+=2;
 		    }
 		  } else {
 		    if (o->team) {
-		      Noise(250,1000,1000,WF_SQUARE);
+		      Noise(250,1000,1000);
 		      score1+=2;
 		    } else {
-		      Noise(250,2000,2000,WF_SQUARE);
+		      Noise(250,2000,2000);
 		      score0+=2;
 		    }
 		  }
@@ -563,7 +563,7 @@ U0 AnimateTask(CTask *parent_task)
 		      d=(dx-objs[j].DxDt)*dx2+(dy-objs[j].DyDt)*dy2;
 		      if (o==human && t0>o->foul_t0+1.0 &&
 			  dt && d/dt>FOUL_VELOCITY_THRESHOLD && objs[j].team) {
-			Noise(250,500,500,WF_SQUARE);
+			Noise(250,500,500);
 			score1+=1;
 			foul_t_end=t0+1.0;
 		      }

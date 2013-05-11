@@ -24,7 +24,7 @@ See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003E59F
+ 0x0000007C00- 0x000003E3AF
   Kernel module, placed here by the boot-loader,
   [C:/TempleOS/Kernel/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
 
@@ -67,7 +67,7 @@ memory starting at 0xF0000000 going up.
 0000,0000,0000,0000                   Core 0   
 
 0000,0000,0000,7C00 Kernel
-0000,0000,0003,E59F 
+0000,0000,0003,E3AF 
 
 0000,0000,0010,0000 Page_Tables                    AdamTask
 

@@ -46,14 +46,6 @@ public U0 SoftBoot(U8 *filename) //No hardware rst
 		reg *shutdown,*hi_image2;
 
   if (!(hi_image2=FileRead(filename,&size))) return;
-  switch (snd_dev) {
-    case SD_PC_SPEAKER:
-      break;
-    case SD_HD_AUDIO:
-      CallExtStr("HDAudioEnd",TRUE);
-      break;
-  }
-
   shutdown=MAlloc(SYS_RESTART_KERNEL_END-SYS_RESTART_KERNEL,Fs->code_heap);
   hi_image=MAlloc(size,Fs->code_heap);
   MemCpy(hi_image,hi_image2,size);
@@ -118,7 +110,7 @@ U8 ChkWritable(U8 drv_let=0)
 
 #help_index "Install"
 public U0 MakeAll()
-//Call from [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader()  because loader must be patched with block address.
+//Call from [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader()  because loader must be patched with block address.
 
 //These 2 modules (and bootloaders at top) are the only AOT
 //compiled code in TempleOS.  Everything else is JIT.
@@ -214,8 +206,8 @@ public U0 OldMasterBootRead(U8 src_drv,U8 dst_drv)
   CMasterBoot mbr;
   Drv(dst_drv);
   p=Fs->cur_prt;
-  if (p->type!=PT_NATIVE && p->type!=PT_FAT32)
-    PutDefineErr("ST_NOT_NATIVE");
+  if (p->type!=PT_REDSEA && p->type!=PT_FAT32)
+    PutDefineErr("ST_NOT_REDSEA");
   else {
     //Bypass partition bounds-checking
     BlkDevLock(bdev);
@@ -283,8 +275,8 @@ public Bool InstallMasterBootLoader(U8 drv_let,U8 *drv_lst=NULL)
 
     Drv(drv_let);
     p=Fs->cur_prt;
-    if (p->type!=PT_NATIVE && p->type!=PT_FAT32)
-      PutDefineErr("ST_NOT_NATIVE");
+    if (p->type!=PT_REDSEA && p->type!=PT_FAT32)
+      PutDefineErr("ST_NOT_REDSEA");
     else {
       bdev=Drv2BlkDev(drv_let);
       if (!FileFind(OLDMBR_BIN_C,,FUF_JUST_FILES))

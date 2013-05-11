@@ -42,7 +42,7 @@
 
     /* <4> <4> (image) */
 
-//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1] (8).
+//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 
 
 

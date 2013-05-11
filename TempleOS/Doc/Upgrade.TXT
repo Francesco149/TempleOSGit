@@ -3,7 +3,7 @@
 To upgrade, you generally boot the new TempleOS CD/DVD, install on top of
 your 
 partition, modify your files and set it to boot your account by executing 
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader(). 
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader(). 
 Often, your code will have to be modified to 
 work with the new version.  See [C:/TempleOS/Doc/ChangeLog.TXT.Z,1]
 ChangeLog.  You might have to boot an 

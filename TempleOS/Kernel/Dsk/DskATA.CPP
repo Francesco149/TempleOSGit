@@ -777,7 +777,7 @@ Bool ATARepExitAllApplications()
   PutDefine("ST_GOING_TO_PROBE_HARDWARE");
   PutDefine("ST_EXIT_ALL_APPLICATIONS");
   PutDefine("ST_PROBE_OR_SKIP");
-  if (ToUpper(GetChar(NULL,FALSE))=='S')
+  if (ToUpper(GetChar(,FALSE))=='S')
     return TRUE;
   else
     return FALSE;

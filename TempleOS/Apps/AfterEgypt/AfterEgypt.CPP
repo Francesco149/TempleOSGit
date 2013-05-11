@@ -208,7 +208,7 @@ Bool TakeTurn()
 	Mute(!IsMute);
 	break;
       case T_HELP:
-	PopUp("Cd(Fs->parent_task->cur_dir);Ed(\"FL:AENotes.TXT.Z,1\");",Fs);
+	PopUp("Ed(\"::/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z\");",Fs);
 	PopUpOk("Add your own story-line...\nLike old school toys.\n");
 	break;
     }

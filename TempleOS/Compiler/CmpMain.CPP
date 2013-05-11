@@ -92,7 +92,7 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
     lx->htc.glbl_hash_table->next=Fs->hash_table;
   lx->htc.hash_table_lst =asm_hash_alias;
 
-  lx->htc.local_var_lst=locals; //C+ local vars
+  lx->htc.local_var_lst=locals; //Holy C local vars
   try {
     if (first_lex)
       Lex(lx);
@@ -495,7 +495,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     *ptr++=EIE_END;
     MemSet(ptr,0,16);
     i=ptr-patch_table;
-    //[C:/TempleOS/Kernel/KStart.CPP.Z,1] NATIVE_XSUM needs 16 ALIGN
+    //[C:/TempleOS/Kernel/KStart.CPP.Z,1] TEMPLEOS_XSUM needs 16 ALIGN
     size=(sizeof(CBinFile)+code_U8s+i+15)&-16;
     bfh=MAlloc(size);
     bfh->jmp=0xEB+256*(sizeof(CBinFile)-2);
@@ -503,7 +503,7 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     bfh->type=0;
     bfh->loader_patch_table_offset=sizeof(CBinFile)+code_U8s;
     bfh->file_size=size;
-    bfh->xsum=NATIVE_XSUM;
+    bfh->xsum=TEMPLEOS_XSUM;
     MemCpy(bfh(U8 *)+sizeof(CBinFile),ex->code,code_U8s);
     MemCpy(bfh(U8 *)+sizeof(CBinFile)+code_U8s,patch_table,
       size-code_U8s-sizeof(CBinFile));

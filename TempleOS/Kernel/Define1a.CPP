@@ -12,7 +12,7 @@ U0 LoadSysStrs()
   DefineLoad("ST_EXIT_ALL_APPLICATIONS","$FG,RED$Exit all other applications.$FG$\n");
   DefineLoad("ST_GOING_TO_PROBE_HARDWARE","\nWe're going to probe hardware.\n");
   DefineLoad("ST_ARE_YOU_SURE","ARE YOU SURE ");
-  DefineLoad("ST_NOT_NATIVE","Not Native Partition\n");
+  DefineLoad("ST_NOT_REDSEA","Not RedSea Partition\n");
   DefineLoad("ST_NOT_FAT32","Not FAT32 Partition\n");
   DefineLoad("ST_NOT_ISO9660","Not ISO9660 Partition\n");
   DefineLoad("ST_NOT_ISO13346","Not ISO13346 Partition\n");
@@ -40,7 +40,7 @@ U0 LoadSysStrs()
   DefineLstLoad("ST_FILE_ATTRS","R\0H\0S\0V\0D\0A\0 \0 \0X\0Y\0T\0Z\0C\0F\0");
   DefineLstLoad("ST_FILE_UTIL_FLAGS","r\0d\0i\0a\0c\0R\0p\0m\0D\0F\0T\0S\0A\0J\0G\0Z\0P\0f\0l\0lf\0lb\0");
   DefineLstLoad("ST_BLKDEV_TYPES","NULL\0RAM\0ATA\0ATAPI\0");
-  DefineLstLoad("ST_PRT_TYPES","NULL\0NATIVE\0FAT32\0ISO9660\0ISO13490\0ISO13346\0NTFS\0UNKNOWN\0");
+  DefineLstLoad("ST_PRT_TYPES","NULL\0REDSEA\0FAT32\0ISO9660\0ISO13490\0ISO13346\0NTFS\0UNKNOWN\0");
 
   DefineLoad("ST_MOUNT_INTRO",
 	"\n\n\n$BK,1$$FG,PURPLE$Mount drives so they will "

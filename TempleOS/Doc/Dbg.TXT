@@ -13,7 +13,8 @@ because they show on the wallpaper.
 They're just global integer vars.
 
 * While debugging, you specify addresses of assembly  routines with just the 
-label, as in _MALLOC+0x20.  You specify C+ function names with & before 
+label, as in _MALLOC+0x20.  You specify [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy
+C function names with & before 
 functions as in &PrintF+0x10.
 
 * You can use [C:/TempleOS/Kernel/TaskCmd.CPP.Z,307] AdamLog() to send text
@@ -54,18 +55,18 @@ ProfBin(),[C:/TempleOS/Adam/Profiler.CPP.Z,82] ProfAll() and
 [C:/TempleOS/Kernel/Dbg1a.CPP.Z,221] DbgAdd() to print debug info bypassing
 the window 
 framework.  You pass these routines a count in milliseconds for how long it 
-should be displayed.  You can use [C:/TempleOS/Kernel/Misc1a.CPP.Z,289]
+should be displayed.  You can use [C:/TempleOS/Kernel/Misc1a.CPP.Z,282]
 Raw(TRUE) to make all output bypass the 
 window framework.  The WinMgr runs on core0 and will overwrite raw text from 
 other cores when it updates the screen.
 
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,270] SysDbg() to set a flag which you
-can read with [C:/TempleOS/Kernel/Misc1a.CPP.Z,276] IsSysDbg() when you wish 
+* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,263] SysDbg() to set a flag which you
+can read with [C:/TempleOS/Kernel/Misc1a.CPP.Z,269] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,280] SysDeterministic() to set a flag
+* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,273] SysDeterministic() to set a flag
 which tries to keep the system 
-deterministic for debugging.  [C:/TempleOS/Kernel/Misc1a.CPP.Z,285]
+deterministic for debugging.  [C:/TempleOS/Kernel/Misc1a.CPP.Z,278]
 IsSysDeterministic().  There is a Deterministic 
 Kernel config flag.
 
@@ -80,7 +81,7 @@ are compiler bugs.  Often, you place them in #exe{} blocks.
   out of the lexical analyzer.
 
 [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace() unassembles code
-  generated from the C+ compiler.
+  generated from the Holy C compiler.
 
 [C:/TempleOS/Compiler/Directives.CPP.Z,21] PTrace() shows intermediate code
   comming out of the first stage of the 
@@ -101,12 +102,12 @@ find other heap issues.
 
 * You can define functions for <CTRL-ALT-letter> keys, but they must operate 
 in a interrupt environment or in the window mgr when in ques kbd msgs.  You 
-can do [C:/TempleOS/Kernel/Misc1a.CPP.Z,289] Raw() output.  Search for
+can do [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw() output.  Search for
 [C:/TempleOS/Kernel/KGlbls.CPP.Z,51] fp_ctrl_alt_let_cbs[] and look at the
 code.  
 They take scancode as an arg.
 
-* If you recompile Kernel with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136]
+* If you recompile Kernel with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128]
 MakeOSInstallPrtBootLoader(), you can set the M
 emInit, option to initialize memory to a value at boot, the HeapInit option
 to 

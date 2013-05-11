@@ -170,10 +170,10 @@ U0 SongTask(I64)
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {
-    Play("W13qBetDA2G3qD2sG!3E2G!3EetCEDqFEeDC");
-    Play("qBetDA2G3qD2sG!3E2G!3EetCEDqFEeDC");
-    Play("C!GqDeADsDCDCqGEetDAD!2sG3D2G!!3D");
-    Play("eC!GqDeADsDCDCqGEetDAD!2sG3D2G!!3D");
+    Play("3qBetDA2G3qD2sG3E2G3EetCEDqFEeDC");
+    Play("qBetDA2G3qD2sG3E2G3EetCEDqFEeDC");
+    Play("CGqDeADsDCDCqGEetDAD2sG3D2G3D");
+    Play("eCGqDeADsDCDCqGEetDAD2sG3D2G3D");
   }
 }
 

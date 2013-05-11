@@ -332,7 +332,7 @@ U0 PrintFDrvTextAttr(U8 drv_let=0)
     "$FG,%d$$BG,%d$",fg,bg;
 }
 
-I64 NativeFSUnusedDrvSpace(U8 drv_let=0)
+I64 RedSeaFSUnusedDrvSpace(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
   I64 result=0,i,l;
@@ -377,8 +377,8 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
   I64 result=0;
   Drv(drv_let);
   switch (p->type) {
-    case PT_NATIVE:
-      result=NativeFSUnusedDrvSpace(drv_let);
+    case PT_REDSEA:
+      result=RedSeaFSUnusedDrvSpace(drv_let);
       break;
     case PT_FAT32:
       result=FAT32UnusedDrvSpace(drv_let);

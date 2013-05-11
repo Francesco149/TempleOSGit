@@ -4,7 +4,31 @@ hold the file until you are done.  The [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CD
 framework is convenient for this.
 */
 
-#include "/TempleOS/Demo/Shared/TreeDemoJoin"
+U0 TreeSub(CDoc *doc,CDirEntry *tempm)
+{
+  CDirEntry *tempm1;
+  while (tempm) {
+    tempm1=tempm->next;
+    if (tempm->attr & _ATTR_DIR) {
+      DocPutS(doc,"$TR,\"\"$");
+      DocPrintF(doc,"$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\n\"$\n",
+      tempm->name,tempm->full_name);
+      if (tempm->sub) {
+	DocPutS(doc,"$ID,+2$");
+	TreeSub(doc,tempm->sub);
+	DocPutS(doc,"$ID,-2$");
+      }
+    } else {
+      DocPrintF(doc,"$LK,\"%s\",\"FI:%s\"$\n",
+	tempm->name,tempm->full_name);
+    }
+    //Note there is also a routine
+    //to delete an entire CDirEntry tree.
+    //See [C:/TempleOS/Kernel/Dsk/DskDir.CPP.Z,34] CDirLstDel().
+    CDirEntryDel(tempm);
+    tempm=tempm1;
+  }
+}
 
 U0 FPrintFDemo(U8 *output_filename=NULL)
 {

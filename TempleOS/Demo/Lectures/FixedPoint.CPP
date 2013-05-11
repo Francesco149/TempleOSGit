@@ -17,7 +17,7 @@ See [C:/TempleOS/Demo/SubIntAccess.CPP.Z,1] for how
 to access upper or lower 32-bits.
 
 For a complete lst of nonstandard compiler
-features, see [C:/TempleOS/Doc/Differences.TXT.Z,1].
+features, see [C:/TempleOS/Doc/HolyC.TXT.Z,1].
 
 */
 
@@ -73,7 +73,7 @@ public U64i union I64
   penalty.
 
 For a complete lst of nonstandard compiler
-features, see [C:/TempleOS/Doc/Differences.TXT.Z,1].
+features, see [C:/TempleOS/Doc/HolyC.TXT.Z,1].
 
 */
 

@@ -589,7 +589,7 @@ Bool YorN()
   I64 ch;
   "(y or n)? ";
   while (TRUE) {
-    ch=ToUpper(GetChar(NULL,FALSE));
+    ch=ToUpper(GetChar(,FALSE));
     if (ch=='Y') {
       "$FU$YES$FG$\n";
       return TRUE;
@@ -604,7 +604,7 @@ Bool PressAKey()
 {
   I64 ch;
   PutDefine("ST_PRESS_A_KEY");
-  ch=GetChar(NULL,FALSE);
+  ch=GetChar(,FALSE);
   if (ch==CH_SHIFT_ESC || ch==CH_ESC)
     return FALSE;
   else
@@ -779,7 +779,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3517] flags
+{//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3499] flags
   U8 *src=_src,*dst=_src;
   I64 ch;
 
@@ -1323,7 +1323,7 @@ U8 *sprintf_neg_powers_lets=
 #define SLOP		8
 
 U8 *SPrintFJoin(U8 *dst,U8 *src,I64 argc,I64 *argv)
-{ //[C:/TempleOS/Doc/Differences.TXT.Z,1] printF codes
+{ //[C:/TempleOS/Doc/HolyC.TXT.Z,1] printF codes
 /*
 In float formatting, do not exceed 18-digits
 before or after the decimal point
@@ -2349,7 +2349,7 @@ U8 *GetF(U8 *src,U8 *fmt,...)
 
 
 U0 PrintF(U8 *fmt,...)
-{//[C:/TempleOS/Doc/Differences.TXT.Z,1] PrintF Extended Codes
+{//[C:/TempleOS/Doc/HolyC.TXT.Z,1] PrintF Extended Codes
  //See [C:/TempleOS/Kernel/Str1a.CPP.Z,1325] SPrintFJoin()
   U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
   "" buf;

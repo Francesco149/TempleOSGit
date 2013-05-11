@@ -8,6 +8,8 @@ public Bool DocLineNumGoTo(CDoc *doc,I64 line_num) //one based
     doc->y=line_num-1;
     DocRecalc(doc,FALSE,DOC_RECALC_FIND_CURSOR);
     DocCenter(doc);
+    if (doc->cur_entry->y==line_num-1)
+      result=TRUE;
     if (unlock)
       DocUnlock(doc);
   }

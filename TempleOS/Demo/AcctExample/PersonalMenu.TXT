@@ -125,11 +125,6 @@ Cd("/TempleOS/Apps");Dir;
 `Cd("/TempleOS/Apps");Dir;
 `
 
-Cd("/TempleOS/Apps/Pilgrims");Dir;
-
-`Cd("/TempleOS/Apps/Pilgrims");Dir;
-`
-
 Cd("/TempleOS/Apps/X-Caliber");Dir;
 
 `Cd("/TempleOS/Apps/X-Caliber");Dir;
@@ -195,9 +190,9 @@ Cd("/TempleOS/Demo/MultiCore");Dir;
 `Cd("/TempleOS/Demo/MultiCore");Dir;
 `
 
-Cd("/TempleOS/Demo/GameStarters");Dir;
+Cd("/TempleOS/Demo/Games");Dir;
 
-`Cd("/TempleOS/Demo/GameStarters");Dir;
+`Cd("/TempleOS/Demo/Games");Dir;
 `
 
 Cd("/TempleOS/Demo/Lectures");Dir;
@@ -292,7 +287,7 @@ Make Std Distro ISO
   
   
    
-  JukeBox <1> (image) Rocks <2> (image) Vocab <3> (image)  EagleDive <4> (image) WarGame <5> (image)
+  JukeBox <1> (image) Vocab <2> (image)  EagleDive <3> (image) WarGame <4> (image)
   
   
   
@@ -302,7 +297,7 @@ Make Std Distro ISO
   
   
   
-  Timeout <6> (image) TheDead <7> (image) Logic <8> (image) X-Caliber <9> (image)
+  Timeout <5> (image) TheDead <6> (image) Logic <7> (image) X-Caliber <8> (image)
   
   
   
@@ -312,7 +307,7 @@ Make Std Distro ISO
   
   
   
-  Span <10> (image)  BigGuns <11> (image) BirdLand <12> (image) Tanks <13> (image) Pilgrims <14> (image)
+  Span <9> (image)  BigGuns <10> (image) BirdLand <11> (image) Tanks <12> (image)
    
   
   
@@ -323,7 +318,7 @@ Make Std Distro ISO
   
   
   
-  FPS <15> (image)      AfterEgypt <16> (image)  Organ <17> (image) MisDef <18> (image)
+  FPS <13> (image)      AfterEgypt <14> (image)  Organ <15> (image)
   
   
   
@@ -334,13 +329,13 @@ Make Std Distro ISO
   
   
   
-  Wenceslas <19> (image) KeepAway <20> (image) Models <21> (image) RawHide <22> (image)
+  Wenceslas <16> (image) KeepAway <17> (image) Models <18> (image) RawHide <19> (image)
   
   
   
   
   
-  Chess <23> (image) Navy <24> (image) Bomber <25> (image) Strut <26> (image)
+  Chess <20> (image) Navy <21> (image) Bomber <22> (image) Strut <23> (image)
   
 
 [C:/TempleOS/Misc/Bible.TXT.Z,297] Bible

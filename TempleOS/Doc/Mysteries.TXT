@@ -42,8 +42,8 @@ Master-Boot-Loader-Stage2,
 [C:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] CD-DVD-Boot-Loader.
 
 * The boot-loaders must be patched by you running
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136] MakeOSInstallPrtBootLoader() 
-or [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,263] InstallMasterBootLoader(). 
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader() 
+or [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,255] InstallMasterBootLoader(). 
 Those will write the block address into the 
 boot-loader because the boot-loaders do not navigate file systems to find the 
 [C:/TempleOS/Kernel/KStart.CPP.Z,1] Stage2 if you relocate it.
@@ -62,8 +62,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3009] CTask, GS for 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3636] CCPU.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask, GS for 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.
 
 * TempleOS uses JIT file compression on a file-by-file basis.  Files are 
 [C:/TempleOS/Kernel/Compress.CPP.Z,1] compressed, not encrypted.
@@ -77,8 +77,8 @@ scratch and it is self-contained.
 
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
-recompile with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,136]
-MakeOSInstallPrtBootLoader().  TempleOS is 142,995 lines.  
+recompile with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128]
+MakeOSInstallPrtBootLoader().  TempleOS is 129,664 lines.  
 Roughly 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT 
 demos and applications.
 
@@ -120,7 +120,7 @@ around.  Data on classes can be accessed by code.  See
 * Filenames ending in ".Z" are automatically compressed and uncompressed when 
 writing to disk.  File size in directory listing is the compressed size.  You 
 can view uncompressed size with [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,235]
-Dir("*",TRUE); if you use the native TempleOS 
+Dir("*",TRUE); if you use the RedSea TempleOS 
 filesystem.  See [C:/TempleOS/Doc/TSZ.TXT.Z,1] for uncompressing from WINDOWS.
 
 * Some memory objects are allocated when needed and will decrease the 
@@ -156,13 +156,12 @@ file is still not found, the parent directories are searched for a file of
 the 
 same name.
 
-* TempleOS supports FAT32 and a native TempleOS file system type.  The native
- 
-TempleOS partitions will appear as FAT32 to other operating systems, but will 
-not work.  Do not access the native TempleOS partitions from other operating 
-systems.  This was to fool a bootloader when I tricked it to use it's
-recovery 
-partition feature.
+* TempleOS supports FAT32 and RedSea file systems.  The RedSea partitions
+will 
+appear as FAT32 to other operating systems, but will not work.  Do not access 
+the native TempleOS partitions from other operating systems.  This was to
+fool 
+a bootloader when I tricked it to use it's recovery partition feature.
 
 * The CPU usage during disk operation expands to 99%.  It polls while 
 swapping-out.  You can do other, non-disk activity during disk operations 

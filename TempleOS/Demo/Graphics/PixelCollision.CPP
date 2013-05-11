@@ -86,7 +86,7 @@ U0 PixelCollision()
 create a bitmap just for checking collisions
 using [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,42] DCNew().  You probably want to check
 only when they are near each other or it will
-take too long.	See [C:/TempleOS/Demo/GameStarters/Rocks.CPP.Z,1].
+take too long.
 */
 
 PixelCollision;

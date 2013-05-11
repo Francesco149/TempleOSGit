@@ -96,7 +96,7 @@ extern CMenu *MenuPush(U8 *st);
 extern U0 MenuPop();
 extern CMenu *MenuFilePush(U8 *filename);
 
-extern CTask *Noise(I64 mS,I64 min_freq,I64 max_freq,I64 waveform=WF_NOISE);
+extern CTask *Noise(I64 mS,I64 min_freq,I64 max_freq);
 
 extern CCtrl *CtrlFindUnique(CTask *task,I64 type);
 extern Bool CtrlInside(CCtrl *c,I64 x,I64 y);

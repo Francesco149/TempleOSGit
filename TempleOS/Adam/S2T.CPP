@@ -4,7 +4,7 @@
 
 public U0 SUFile(U8 *name,I64 su_flags,F64 indent_scale_factor)
 {//String utility on a single file
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3520] SU Flags
+//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3502] SU Flags
   U8 *dst;
   Bool chged=FALSE;
   I64 reduced=0;
@@ -52,7 +52,7 @@ public U0 SU(U8 *files_find_mask,I64 su_flags,U8 *fu_flags=NULL,F64 indent_scale
 {//Apply string utilities to files
 //You can convert spaces to tabs, for example
 //or removing trailing spaces on lines.
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3520] SU Flags
+//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3502] SU Flags
   I64 fuf_flags=0;
   GetFFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   SULst(FilesFind(files_find_mask,fuf_flags),su_flags,indent_scale_factor);

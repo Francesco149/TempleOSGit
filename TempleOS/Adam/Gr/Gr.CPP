@@ -124,6 +124,5 @@ extern U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor);
 #include "CSpriteBitMap"
 #include "CSpriteVect"
 #include "CSpriteEd"
-#include "GrVectMap"
 #help_index ""
 

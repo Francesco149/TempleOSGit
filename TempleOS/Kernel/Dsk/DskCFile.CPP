@@ -22,11 +22,11 @@ CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
   f->file_cluster_num=INVALID_CLUSTER;
   full_name=FileNameAbs(filename);
   f->p=Drv2Prt(*full_name);
-  if (f->p->type==PT_NATIVE)
+  if (f->p->type==PT_REDSEA)
     contiguous=TRUE;
   if (contiguous) {
     f->flags|=FF_CONTIGUOUS;
-    if (f->p->type!=PT_NATIVE) {
+    if (f->p->type!=PT_REDSEA) {
       if (!(FileAttr(filename) & _ATTR_CONTIGUOUS))
 	throw(EXCEPT_FILE,2);
     }

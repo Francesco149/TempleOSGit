@@ -45,7 +45,7 @@ If there is a ':', the space after the first ':' in the format string marks
   
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3298] color defines) to indicate which of
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3297] color defines) to indicate which of
   the 16 colors to use. If you enter no num, color returns to the default.
 FD Default Foreground Color
 BD Default Background Color

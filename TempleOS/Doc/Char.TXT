@@ -4,12 +4,12 @@ The TempleOS term is a U8.
 ASCII values range from 0 to 127.  Values below 32 are ctrl key's.  So, an 
 ASCII #3 is a <CTRL-C>.  TempleOS uses a few nonstandard values.  In TempleOS 
 ASCII #5 is the cursor location, ASCII 28 is <SHIFT-ESC> and ASCII #31 is a <S
-HIFT-SPACE>.  See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3221] Char Definitions.
+HIFT-SPACE>.  See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3220] Char Definitions.
 
 A Key is typically specified with a scan code.  TempleOS scan codes contain 
 the key value in the lowest U8, and flags in the upper bytes.  See 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3242] Scan Code Flags and
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3276] Scan Codes.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3241] Scan Code Flags and
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3275] Scan Codes.
 
 TempleOS stores scan codes in 8 bytes.
   Byte 0   is the code with left and right keys combined.

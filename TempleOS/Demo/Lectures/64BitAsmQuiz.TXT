@@ -80,7 +80,7 @@ ANSWERS:
 TSS_SOME_MEMBER.  (Useless)
 
 5) The R13 instruction takes one more byte because it is like
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3689] CREG_RBP in the 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3671] CREG_RBP in the 
 ModR.
 
 6) The RAX instruction has a REX byte prefix to specify 64-bit size.  So does 

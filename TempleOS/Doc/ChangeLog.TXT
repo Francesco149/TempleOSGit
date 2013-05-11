@@ -1,7 +1,25 @@
 Use [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I change
 a label.
 
-----04/12/13 18:23:08----
+----05/11/13 03:31:59----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("MemPtAtPageTableEntry","MemPageTable");
+* Removed CGrVectMap.
+* Removed demos: WinMgr2, Bling, Noise, Layers3DJob, Rocks, MissileDefense, 
+Chess and Pilgrim.
+* Removed hooks for HD Audio.
+* Removed accents and waveforms from [C:/TempleOS/Adam/Snd/Music.CPP.Z,91]
+Play().
+
+----05/08/13 13:04:22----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("NativeFS","RedSeaFS");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("C+","Holy C");
+
+----04/30/13 06:15:35----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GameStarters","Games");
+
+----04/26/13 07:25:50----
+* Fixed bug with Bible links.
 
 ----04/10/13 12:41:18----
 * dft_drv is now *sys_acct.
@@ -25,7 +43,7 @@ a label.
 * Cleaned-up [C:/TempleOS/Apps/AfterEgypt/Horeb.CPP.Z,1].
 
 ----04/04/13 03:31:30----
-* Cleaned-up [C:/TempleOS/Demo/GameStarters/Rocks.CPP.Z,1] code.
+* Cleaned-up ::/TempleOS/Demo/Games/Rocks.CPP.Z.
 * Cleaned-up compiler code.
 * Improved [C:/TempleOS/Demo/Snd/WaterFowl.CPP.Z,1].
 
@@ -43,8 +61,8 @@ LexIncludeDoc().
 * Improved [C:/TempleOS/Adam/WallPaper.CPP.Z,1].
 
 ----03/31/13 20:15:32----
-* Added background to [C:/TempleOS/Demo/GameStarters/Squirt.CPP.Z,1].
-* Added background to [C:/TempleOS/Demo/GameStarters/ZoneOut.CPP.Z,1].
+* Added background to [C:/TempleOS/Demo/Games/Squirt.CPP.Z,1].
+* Added background to [C:/TempleOS/Demo/Games/ZoneOut.CPP.Z,1].
 * Added option to edit sprite bitmap extents as text. 
 [C:/TempleOS/Adam/Gr/CSpriteVect.CPP.Z,68] PopUpExtents().
 * Added background to [C:/TempleOS/Demo/Graphics/Camp.CPP.Z,1], Quail and
@@ -62,13 +80,13 @@ display_doc, and border_doc.
 .
 
 ----03/24/13 14:44:28----
-* Made [C:/TempleOS/Kernel/Display.CPP.Z,200] PutChar('Hello') accept
+* Made [C:/TempleOS/Kernel/Display.CPP.Z,199] PutChar('Hello') accept
 multiple chars.  This is tricky.  My compiler 
 allows multi-byte char constants.
 
 ----03/19/13 16:18:53----
 * Added [C:/TempleOS/Adam/Doc/DocFile.CPP.Z,429] DocType() and
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2198] DocNewLine().
+[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2200] DocNewLine().
 * Added option for extra new_lines to
 [C:/TempleOS/Adam/Doc/DocFile.CPP.Z,459] Type().
 

@@ -9,7 +9,7 @@ allows you to define your own key handlers in a
 [C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() function.  If
 you 
 choose, you can catch most keys, overriding the default handlers.  See 
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1501] DocPutKey().  The following is an
+[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1503] DocPutKey().  The following is an
 overview of key allocations.
 
 ALT-keys and ALT-SHIFT-keys
@@ -78,7 +78,7 @@ where keys are acted-upon.  TempleOS has a chain of putkey handlers in a
 handlers can choose to 
 terminate handling, otherwise, the keys get sent on down the chain.
 
-[C:/TempleOS/Kernel/Display.CPP.Z,258] KeyDevAdd() defines a putkey device
+[C:/TempleOS/Kernel/Display.CPP.Z,254] KeyDevAdd() defines a putkey device
 with a priority.  "Device" might be a 
 misnomer.  Currently, the following are defined:
 
@@ -93,11 +93,11 @@ handler
 handling.
 0x60000000 [C:/TempleOS/Kernel/Display.CPP.Z,134] AKDRawDisplayPutKey()
 direct to video mem debug output. 
-0x80000000 [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2204] AKDDocPutKey() standard
+0x80000000 [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2206] AKDDocPutKey() standard
 document cmds
 
 Since handling individual keys is slow, TempleOS supports
-[C:/TempleOS/Kernel/Display.CPP.Z,208] PutS() as well.  If 
+[C:/TempleOS/Kernel/Display.CPP.Z,207] PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
 [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc.user_put_key and

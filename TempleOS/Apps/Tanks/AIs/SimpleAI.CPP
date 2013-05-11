@@ -34,7 +34,7 @@ U0 TanksPlot()
 	(target=FindNearestUnit(tempu->row,tempu->col,enemy_player,TRUE,tempu->range*2*HEX_RADIUS)))
       PlotShot(tempu,target->row,target->col);
   }
-  throw (EXCEPT_LOCAL,T_TURN_OVER);
+  throw(EXCEPT_LOCAL,T_TURN_OVER);
 }
 
 U0 TanksMove()
@@ -56,7 +56,7 @@ U0 TanksMove()
       }
     }
   }
-  throw (EXCEPT_LOCAL,T_TURN_OVER);
+  throw(EXCEPT_LOCAL,T_TURN_OVER);
 }
 
 U0 TanksFire()
@@ -72,5 +72,5 @@ U0 TanksFire()
       Sleep(250*ANIMATION_DELAY);
     }
   }
-  throw (EXCEPT_LOCAL,T_TURN_OVER);
+  throw(EXCEPT_LOCAL,T_TURN_OVER);
 }

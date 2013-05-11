@@ -33,7 +33,7 @@
 #define IC_TO_F64		0x1D
 #define IC_TO_BOOL		0x1E
 #define IC_TOUPPER		0x1F
-#define IC_NATIVE_TYPECAST	0x20
+#define IC_HOLYC_TYPECAST	0x20
 
 #define IC_ADDR			0x21
 #define IC_COM			0x22
