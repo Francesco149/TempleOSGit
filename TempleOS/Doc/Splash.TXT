@@ -1,5 +1,5 @@
 
-              TempleOS V1.00
+                                       
                          
 
 
@@ -28,4 +28,3 @@
             Operating System
 
             [C:/TempleOS/Doc/TrivialSolutions.TXT.Z,1] Trivial Solutions
-

@@ -70,7 +70,7 @@ U0 DrawIt(CTask *task,CDC *)
   dc0->flags|=DCF_TRANSFORMATION;
   GrSetRotMat(dc0,dc0->r);
   if (mp_cnt>1)
-    MPJob(&DrawShadow,task,1);
+    JobQue(&DrawShadow,task,1);
   else
     DrawShadow(task);
   SpritePlot3(dc0,0,0,0,__BIN_1);
@@ -78,8 +78,8 @@ U0 DrawIt(CTask *task,CDC *)
 
 U0 Shadow()
 {
-  dc0=DCAlias(gr_dc,Fs);
-  dc1=DCAlias(gr_dc,Fs);
+  dc0=DCAlias(gr_dc2,Fs);
+  dc1=DCAlias(gr_dc2,Fs);
   DCAllocDepthBuf(dc0);
   dc1->depth_buf=dc0->depth_buf;
 
@@ -96,8 +96,8 @@ U0 Shadow()
   while (!ScanChar) {
     Sleep(20);
     theta+=2*pi/70;
-    phi  +=2*pi/90;
-    omega +=2*pi/110;
+    phi+=2*pi/90;
+    omega+=2*pi/110;
   }
   SettingsPop;
   DCDel(dc0);

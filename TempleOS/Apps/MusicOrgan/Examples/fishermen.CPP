@@ -10,7 +10,6 @@
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,w=task->win_pixel_width,h=task->win_pixel_height;
-  task->text_attr=LTCYAN<<4;
   dc->color=BROWN;
   for (i=3*tM%20;i<w;i+=20)
     GrLine(dc,i,h,w,h-i/4);
@@ -24,6 +23,7 @@ U0 Song()
   CTask *task;
 
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=LTCYAN<<4+BLACK;
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   music_tempo=2.5;

@@ -30,9 +30,9 @@ U0 AEMap()
   CDC *dc=DCAlias;
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=YELLOW<<4+BLUE;
   DocClear;
-  "$BG,YELLOW$";
-  NewLine(54);
+  "$BG,YELLOW$"; NewLine(TEXT_ROWS);
   PutBibleVerse("Exodus,16:35",3);
   Fs->draw_it=&DrawMap;
   try {
@@ -63,15 +63,9 @@ U0 AEMap()
     }
   } catch
     Fs->catch_except=TRUE;
-  "$BG$\n";
+  DocClear;
   SettingsPop(Fs,TSF_SAME_SONG);
   Free(r);
   DCFill(dc);
   DCDel(dc);
 }
-
-//This is so I can use this file stand alone
-//or as a component of a program.
-#if IncludeDepth<2
-AEMap;
-#endif

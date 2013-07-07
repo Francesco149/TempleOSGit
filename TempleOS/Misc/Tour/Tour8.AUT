@@ -6,7 +6,7 @@ PopUpOk(
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
-"We will now use [C:/TempleOS/Adam/Dbg2a.CPP.Z,239] Uf() to\n"
+"We will now use [C:/TempleOS/Adam/Dbg2a.CPP.Z,236] Uf() to\n"
 "unassemble a function.\n"
 "It takes the function name\n"
 "as a string arg.\n\n"

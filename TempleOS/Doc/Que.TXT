@@ -5,6 +5,3 @@ must be stored in the first locations in the structure.
 
 Be careful when writing multitasking code not to access Queues while in the 
 middle of a change.  You might turn-off preemption or interrupts.
-
-
-

@@ -105,6 +105,7 @@ U0 Battle()
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
+    Fs->text_attr=YELLOW<<4+BLUE;
     DocClear;
     "$BG,YELLOW$";
 
@@ -127,9 +128,10 @@ U0 Battle()
 	}
       }
     } while (msg_code!=MSG_KEY_DOWN || ch!=CH_SHIFT_ESC && ch!=CH_ESC);
+    GetMsg(,,1<<MSG_KEY_UP);
   } catch
     CatchAll;
-  "$BG$\n";
+  DocClear;
   SettingsPop(Fs,TSF_SAME_SONG);
 }
 

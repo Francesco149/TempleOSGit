@@ -42,7 +42,7 @@
 
     /* <4> <4> (image) */
 
-//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1] (8).
+//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-	   /*  <5> (image) */
+	/*  <5> (image) */
 
 
 
@@ -66,41 +66,46 @@
 
 
 
-	   /*  <6> (image) */
+	/*  <6> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+	/*  <7> (image) */
+
+#define OT_BUSH1	0
+#define OT_BUSH2	1
+#define OT_LOG		2
+#define OT_TREE		3
+#define OT_SHEEP	4
+#define OT_GOAT1	5
+#define OT_GOAT2	6
+#define OT_NUM_TYPES	7
+
+U8 *type_imgs	[OT_NUM_TYPES]={__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7};
+I64 type_weights[OT_NUM_TYPES]={30,30,15,30,1,1,1};
 
 F64 theta,vx,vz;
 Bool horeb_done;
 
-#define NUM_OBJS	256
-
-#define NUM_WEIGHED_IMGS	128
-U8 *imgs[NUM_WEIGHED_IMGS]=
-{
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_5,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4,
-__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_6
-};
+#define O_BURNING_BUSH	0
+#define O_NUM_OBJS	256
 
 class Obj
 {
   F64 x,y,z,dx,dy,dz,theta;
   I64 x1,y1,z1;
-  Bool sym,moving,pad[2];
-  U8 *img;
-} objs[NUM_OBJS];
+  U16 type;
+  Bool sym,pad[5];
+} objs[O_NUM_OBJS];
 
 
 I64 ObjCompare(Obj *o1,Obj *o2)
@@ -115,7 +120,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       h=task->win_pixel_height,r[16],
       cx=w>>1,cy=h>>1;
   F64 s,m,a,x1,y1,x2,y2;
-  Obj *o_sort[NUM_OBJS],*tempo;
+  Obj *o_sort[O_NUM_OBJS],*tempo;
 
   GrIdentEqu(r);
   GrRotYEqu(r,-theta);
@@ -132,12 +137,12 @@ U0 DrawHoreb(CTask *task,CDC *dc)
     GrFloodFill(dc,s*x+cx,15);
   }
 
-  for (i=0;i<NUM_OBJS;i++) {
+  for (i=0;i<O_NUM_OBJS;i++) {
     tempo=&objs[i];
     o_sort[i]=tempo;
     tempo->x1=tempo->x+vx; tempo->y1=tempo->y; tempo->z1=tempo->z+vz;
     GrRot(r,&tempo->x1,&tempo->y1,&tempo->z1);
-    if (tempo->moving) {
+    if (tempo->type==OT_SHEEP || tempo->type==OT_GOAT1 || tempo->type==OT_GOAT2) {
       dx=100*tempo->dx; dy=100*tempo->dy; dz=100*tempo->dz;
       GrRot(r,&dx,&dy,&dz);
       if (dx<0)
@@ -146,9 +151,9 @@ U0 DrawHoreb(CTask *task,CDC *dc)
 	tempo->sym=FALSE;
     }
   }
-  QSortI64(o_sort,NUM_OBJS,&ObjCompare);
+  QSortI64(o_sort,O_NUM_OBJS,&ObjCompare);
 
-  for (i=0;i<NUM_OBJS;i++) {
+  for (i=0;i<O_NUM_OBJS;i++) {
     tempo=o_sort[i];
     if (tempo->z1<0) break;
     s=100.0/(AbsI64(tempo->z1)+50);
@@ -160,9 +165,9 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,s*tempo->x1+cx,s*tempo->y1+h,s*tempo->x1+cx,s*tempo->y1+h+10);
     }
-    SpritePlot3b(dc,s*tempo->x1+cx,s*tempo->y1+h,0,tempo->img);
+    SpritePlot3b(dc,s*tempo->x1+cx,s*tempo->y1+h,0,type_imgs[tempo->type]);
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-    if (o_sort[i]==objs) { //draw burning bush
+    if (o_sort[i]==&objs[O_BURNING_BUSH]) { //draw burning bush
       dc->x=s*tempo->x1+cx;
       dc->y=s*tempo->y1+h;
       dc->z=0;
@@ -195,9 +200,9 @@ U0 AnimateTask(I64)
   Obj *tempo;
   while (TRUE) {
     t=tT;
-    for (i=0;i<NUM_OBJS;i++) {
+    for (i=0;i<O_NUM_OBJS;i++) {
       tempo=&objs[i];
-      if (tempo->moving) {
+      if (tempo->type==OT_SHEEP || tempo->type==OT_GOAT1 || tempo->type==OT_GOAT2) {
 	tempo->x+=tempo->dx;
 	tempo->y+=tempo->dy;
 	tempo->z+=tempo->dz;
@@ -212,19 +217,34 @@ U0 AnimateTask(I64)
 U0 Init()
 {
   Obj *tempo;
-  I64 i;
+  I64 i,j,k,total=0;
+
+  for (i=0;i<OT_NUM_TYPES;i++)
+    total+=type_weights[i];
+
   MemSet(objs,0,sizeof(objs));
-  for (i=0;i<NUM_OBJS;i++) {
+  for (i=0;i<O_NUM_OBJS;i++) {
     tempo=&objs[i];
     tempo->x=RandU32&0x1FFF-0x1000;
     tempo->y=0;
     tempo->z=RandU32&0x1FFF-0x1000;
     tempo->theta=2*pi*Rand;
     tempo->sym=RandU16&1;
-    tempo->img=imgs[i%NUM_WEIGHED_IMGS];
-    if (i%(NUM_WEIGHED_IMGS/2)==(NUM_WEIGHED_IMGS/2)-1)
-      tempo->moving=TRUE; //sheep
+
+    k=0;
+    j=RandU32%total;
+    while (TRUE) {
+      j-=type_weights[k];
+      if (j<0)
+	break;
+      else
+	k++;
+    }
+
+    tempo->type=k;
   }
+  objs[O_BURNING_BUSH].type=OT_BUSH1;
+
   vx=0; vz=0; theta=0;
   horeb_done=FALSE;
 }
@@ -268,19 +288,19 @@ U0 Horeb()
       );
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
+    Fs->text_attr=YELLOW<<4+BLUE;
     Fs->win_inhibit=WIF_ALL-WIF_GRAB_SCROLL-WIF_MENU;
     WordStat;
     WinMax;
     WinBorder;
     Preempt(OFF);
 
-    "$CL$$BG,LTCYAN$";
-    NewLine(6);
-    "$BG,YELLOW$";
-    NewLine(30);
+    DocClear;
+    "$BG,LTCYAN$"; NewLine(6);
+    "$BG,YELLOW$"; NewLine(30);
     PutBibleVerse("Exodus,3:1",21);
     Init;
-    Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
+    Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
     Fs->draw_it=&DrawHoreb;
     while (!horeb_done) {
       while (ScanKey(&ch,&sc))
@@ -288,16 +308,16 @@ U0 Horeb()
 	  case 0:
 	    switch (sc.u8[0]) {
 	      case SC_CURSOR_LEFT:
-		Spawn(&AnimatethetaTask,(-pi/100)(I64),"Animate theta",Fs);
+		Spawn(&AnimatethetaTask,(-pi/100)(I64),"Animate theta",,Fs);
 		break;
 	      case SC_CURSOR_RIGHT:
-		Spawn(&AnimatethetaTask,( pi/100)(I64),"Animate theta",Fs);
+		Spawn(&AnimatethetaTask,( pi/100)(I64),"Animate theta",,Fs);
 		break;
 	      case SC_CURSOR_UP:
-		Spawn(&AnimateVTask,(-40.0 )(I64),"Animate V",Fs);
+		Spawn(&AnimateVTask,(-40.0 )(I64),"Animate V",,Fs);
 		break;
 	      case SC_CURSOR_DOWN:
-		Spawn(&AnimateVTask,( 40.0 )(I64),"Animate V",Fs);
+		Spawn(&AnimateVTask,( 40.0 )(I64),"Animate V",,Fs);
 		break;
 	    }
 	    break;
@@ -313,14 +333,7 @@ U0 Horeb()
 hr_done: //Don't goto out of try
   } catch
     Fs->catch_except=TRUE;
-  SettingsPop(Fs,TSF_SAME_SONG);
   DocClear;
-  "$BG$";
+  SettingsPop(Fs,TSF_SAME_SONG);
   MenuPop;
 }
-
-//This is so I can use this file stand alone
-//or as a component of a program.
-#if IncludeDepth<2
-Horeb;
-#endif

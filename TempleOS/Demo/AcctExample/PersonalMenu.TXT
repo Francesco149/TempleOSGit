@@ -70,19 +70,24 @@ Cd("/TempleOS/Adam/Doc");Dir;
 `Cd("/TempleOS/Adam/Doc");Dir;
 `
 
-Cd("/TempleOS/Adam/WordStat");Dir;
-
-`Cd("/TempleOS/Adam/WordStat");Dir;
-`
-
 Cd("/TempleOS/Adam/Gr");Dir;
 
 `Cd("/TempleOS/Adam/Gr");Dir;
 `
 
+Cd("/TempleOS/Adam/Utils");Dir;
+
+`Cd("/TempleOS/Adam/Utils");Dir;
+`
+
 Cd("/TempleOS/Adam/Snd");Dir;
 
 `Cd("/TempleOS/Adam/Snd");Dir;
+`
+
+Cd("/TempleOS/Adam/WordStat");Dir;
+
+`Cd("/TempleOS/Adam/WordStat");Dir;
 `
 
 Cd("/TempleOS/Accts");Dir;
@@ -125,14 +130,9 @@ Cd("/TempleOS/Apps");Dir;
 `Cd("/TempleOS/Apps");Dir;
 `
 
-Cd("/TempleOS/Apps/Pilgrims");Dir;
+Cd("/TempleOS/Apps/Span");Dir;
 
-`Cd("/TempleOS/Apps/Pilgrims");Dir;
-`
-
-Cd("/TempleOS/Apps/X-Caliber");Dir;
-
-`Cd("/TempleOS/Apps/X-Caliber");Dir;
+`Cd("/TempleOS/Apps/Span");Dir;
 `
 
 Cd("/TempleOS/Apps/MusicOrgan");Dir;
@@ -195,9 +195,9 @@ Cd("/TempleOS/Demo/MultiCore");Dir;
 `Cd("/TempleOS/Demo/MultiCore");Dir;
 `
 
-Cd("/TempleOS/Demo/GameStarters");Dir;
+Cd("/TempleOS/Demo/Games");Dir;
 
-`Cd("/TempleOS/Demo/GameStarters");Dir;
+`Cd("/TempleOS/Demo/Games");Dir;
 `
 
 Cd("/TempleOS/Demo/Lectures");Dir;
@@ -264,29 +264,25 @@ SoftBootMenu(TS_MAIN_DRV_LET);
 `SoftBootMenu(TS_MAIN_DRV_LET);
 `
 
-Burn TS Distro CD 
-`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
-`
-
-Burn TS Distro DVD
-`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
-`
-
 Make TS Distro ISO
 `MakeTSDistro;   Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSTS.ISO");
 `
-
-Burn Std Distro CD 
-`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+  Burn TS Distro CD 
+`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
-
-Burn Std Distro DVD
-`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+  Burn TS Distro DVD
+`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
 Make Std Distro ISO
 `MakeStdDistro;Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSCD.ISO");
 `
+ Burn Std Distro CD 
+`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+ Burn Std Distro DVD
+`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
 
   
   
@@ -295,8 +291,8 @@ Make Std Distro ISO
   
   
   
-   
-  JukeBox <1> (image) Rocks <2> (image) Vocab <3> (image)  EagleDive <4> (image) WarGame <5> (image)
+  
+  ToTheFront <1> (image) Logic <2> (image) Lines <3> (image) TimeOut <4> (image) 
   
   
   
@@ -305,19 +301,13 @@ Make Std Distro ISO
   
   
   
-  
-  Timeout <6> (image) TheDead <7> (image) Logic <8> (image) X-Caliber <9> (image)
-  
+  X-Caliber <5> (image) JukeBox <6> (image) Organ <7> (image)  Vocab <8> (image) 
   
   
   
   
   
-  
-  
-  
-  Span <10> (image)  BigGuns <11> (image) BirdLand <12> (image) Tanks <13> (image) Pilgrims <14> (image)
-   
+  KeepAway <9> (image) Models <10> (image) RawHide <11> (image) BugBird <12> (image)
   
   
   
@@ -326,8 +316,7 @@ Make Std Distro ISO
   
   
   
-  
-  FPS <15> (image)      AfterEgypt <16> (image)  Organ <17> (image) MisDef <18> (image)
+  EagleDive <13> (image) BigGuns <14> (image)  Span <15> (image)  ZoneOut <16> (image)
   
   
   
@@ -338,13 +327,14 @@ Make Std Distro ISO
   
   
   
-  Wenceslas <19> (image) KeepAway <20> (image) Models <21> (image) RawHide <22> (image)
+  AfterEgypt <17> (image) Frankenstein <18> (image) Wenceslas <19> (image)
   
   
   
   
   
-  Chess <23> (image) Navy <24> (image) Bomber <25> (image) Strut <26> (image)
+  
+  FlatTops <20> (image) Bomber <21> (image) Strut <22> (image) TheDead <23> (image) DunGen <24> (image)  
   
 
 [C:/TempleOS/Misc/Bible.TXT.Z,297] Bible
@@ -380,3 +370,4 @@ MusicOrgan GODSongs
 "::/TempleOS/Apps/MusicOrgan/Load";MusicOrgan("::/TempleOS/Accts/TS/TAD/MusicO
 rgan");
 `
+

@@ -11,7 +11,7 @@ the routine executing, but the routines which called it, as well.
 
 When done collecting statistics, use [C:/TempleOS/Adam/Profiler.CPP.Z,109]
 ProfRep() for a report.  You might need a 
-[C:/TempleOS/Adam/Doc/DocNew.CPP.Z,709] DocMax() to expand the command line
+[C:/TempleOS/Adam/Doc/DocNew.CPP.Z,708] DocMax() to expand the command line
 window buffer to fit it all.
 
 You can set the CPU to monitor with [C:/TempleOS/Adam/Profiler.CPP.Z,68]
@@ -19,4 +19,3 @@ ProfCPUSet().
 
 Study the code.  The profiler is very simple and you might want to enhance it 
 or modify it to debug something in particular.
-

@@ -1,27 +1,25 @@
                                Dollar Sign Cmds
 
 TempleOS supports rich-text type cmds which are bracketed with '$'.  Use <CTRL
--L> to experiment with them.  Use CTRL-T to toggle between plain text and
-rich 
-text.
+-L> to experiment with them.  Use <CTRL-T> to toggle between plain text and 
+rich text.
 
 The format of '$' cmds includes a two character code, +/-flags, a comma and 
 args separated by commas.  The flags often determine how many and what args 
 the cmd takes.
 
-See [C:/TempleOS/Doc/CtrlL.TXT.Z,1] and
-[C:/TempleOS/Demo/Doc/DemoDoc.TXT.Z,1].
+See [C:/TempleOS/Doc/Widget.TXT,1] and [C:/TempleOS/Demo/Doc/DemoDoc.TXT.Z,1].
 
-See [C:/TempleOS/Kernel/Adam1a.HPP.Z,1052] Doc Type Defines and
+See [C:/TempleOS/Kernel/Adam1a.HPP.Z,1045] Doc Type Defines and
 [C:/TempleOS/Adam/Doc/Doc.CPP.Z,1] Doc Type Codes
 +] TX Text
   Normally, text is not bracketed with "$", but if you wish to specify flag
   attr to center text, you can bracket them with "$" and enter flags such as
   "+CX".  You can't edit them if they are bracketed by "$" unless you toggle to
   plain text mode with <CTRL-T>.
-+] CR Hard Carriage Return
++] CR Hard Carriage Return (New Line)
   Carriage returns are normally specified without being bracketed with "$".
-+] SR Soft Carriage Return
++] SR Soft Carriage Return (New Line)
   Word wrap uses soft carriage returns which are not saved.  You never place
   soft carriage returns by yourself.
 +] TB Tab
@@ -37,7 +35,7 @@ See [C:/TempleOS/Kernel/Adam1a.HPP.Z,1052] Doc Type Defines and
   editor-type thing to generate the text you'll need in your "fmtstr" cmd in a
   class.  If you add it directly with
   [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1111] DocPutS(), you'll need to fill-in
-  the data addr.  See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,294]
+  the data addr.  See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291]
   DocFormDo(),[C:/TempleOS/Demo/Doc/Form.CPP.Z,1].
 
 If there is a ':', the space after the first ':' in the format string marks
@@ -45,24 +43,12 @@ If there is a ':', the space after the first ':' in the format string marks
   
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3276] color defines) to indicate which of
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3297] color defines) to indicate which of
   the 16 colors to use. If you enter no num, color returns to the default.
 FD Default Foreground Color
 BD Default Background Color
 FG Foreground Color
 BG Background Color
-F2 Alt Foreground Color (Paren & Brace coloring)
-FL Foreground of Links
-FM Foreground of Macros/Menu-Values 
-FA Foreground of Anchors
-FH Foreground of Hidden widgets
-FE Foreground of Trees
-FU Foreground of User Text
-FB Foreground of Binary Tags
-FY Foreground of Keywords
-FR Foreground of Keywords2
-FC Foreground of Comments
-FQ Foreground of Quotes
 +] FU,BU User Prompts
   special color changing cmds.  They are used when the user is prompted for
   text at the cmd line.  They rst the cursor pos if the cursor is posed before
@@ -70,7 +56,9 @@ FQ Foreground of Quotes
 +] CL clear
   Clear all previous entries except ones with hold(+H) flags.  You might want
   +H on word wrap entries.  Alternatively, you can use
-  [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1699] DocClear().
+  [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1697] DocClear().
++] PT User Prompt
+  Start of a user prompt.
 +] WW Word Wrap
   Include a 1 or 0.
 +] HL Highlighting
@@ -107,7 +95,7 @@ Examples: <CTRL-T> to see
 3)File link without different tag str.[C:/TempleOS/Doc/HelpIndex.TXT.Z,1]
 4)[C:/TempleOS/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
 5)[C:/TempleOS/Kernel/Adam1a.HPP.Z,5] File find link searching for 5th 'CTRL'
-6)[C:/TempleOS/Kernel/Str1a.CPP.Z,2363] Manual page link
+6)[C:/TempleOS/Kernel/Str1a.CPP.Z,2351] Manual page link
 7)[C:/TempleOS/Kernel/Adam1a.HPP.Z,200] File line num link
 8)[C:/TempleOS/Kernel/Define1a.CPP.Z,1] File anchor link -- <CTRL-T> to see
   anchor after you click
@@ -126,9 +114,9 @@ Examples: <CTRL-T> to see
   you cancel the <ESC> with a '-X'.
 
 +] MU Menu Value
-  See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,620] PopUpRangeI64().
+  See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,617] PopUpRangeI64().
 +] HX Hex Edit
-  See [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,661] DocD().
+  See [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD().
 +] Hidden Text Widget
   HS Start of hidden text
 HE End of hidden text
@@ -167,7 +155,7 @@ The main reason for the $IB$ cmd at this point is to pass a arg to the
 +] IT Insert Binary Type
   See $IB$.  This cmd inserts a number into the compiled stream describing
   the type of binary data associated with a num.  See
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1276] DOCBT_CSPRITE for the types of binary
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1269] DOCBT_CSPRITE for the types of binary
   data in DOC's.
 +] IS Insert Binary Size
   See $IB$.  This cmd inserts a number into the compiled stream describing
@@ -185,7 +173,7 @@ The main reason for the $IB$ cmd at this point is to pass a arg to the
   When errors are detected in dollar cmds, an ER entry is generated to hold
   the garbage so it is not lost.
 
-See [C:/TempleOS/Kernel/Adam1a.HPP.Z,1213] Doc Flag Defines and
+See [C:/TempleOS/Kernel/Adam1a.HPP.Z,1206] Doc Flag Defines and
 [C:/TempleOS/Adam/Doc/Doc.CPP.Z,1] Doc Flag Codes
 See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] dft_flags.
 +] FLAGS
@@ -199,7 +187,7 @@ See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] dft_flags.
   +] +D Define Str
     A +D means a define str is present.  The tag will be regenerated by
     substituting the value of a system #define or
-    [C:/TempleOS/Kernel/Str1a.CPP.Z,632] DefineLoad() string.  See
+    [C:/TempleOS/Kernel/Str1a.CPP.Z,620] DefineLoad() string.  See
     [C:/TempleOS/Demo/Doc/DefineStr.CPP.Z,1].
   +] +TR Tree
     * Make a tree branch.  Usually, this is placed on a text(TX) entry.  The

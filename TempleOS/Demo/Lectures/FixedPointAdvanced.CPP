@@ -121,8 +121,8 @@ U0 Main()
   }
   end=GetTimeStamp;
   test_time=end-start;
-  "Fixed Point Sum       :%X\n",sum;
-  "$FG,RED$Fixed Point Cycles    :%10.5f$FG$\n",
+  "Fixed-Point Sum       :%X\n",sum;
+  "$FG,RED$Fixed-Point Cycles    :%10.5f$FG$\n",
     ToF64(test_time)/SAMPLE_SIZE;
 
 //Measure fixed point arithmetic
@@ -130,8 +130,8 @@ U0 Main()
   sum=AsmFixedPt;
   end=GetTimeStamp;
   test_time=end-start;
-  "Asm Fixed Point Sum   :%X\n",sum;
-  "$FG,RED$Asm Fixed Point Cycles:%10.5f$FG$\n",
+  "Asm Fixed-Point Sum   :%X\n",sum;
+  "$FG,RED$Asm Fixed-Point Cycles:%10.5f$FG$\n",
     ToF64(test_time)/SAMPLE_SIZE;
 
 //Measure float arithmetic
@@ -150,15 +150,28 @@ Main;
 
 /*  Program Output
 
+Machine 1:
 8 Cores 2.660GHz
 Overhead Cycles       :   2.00814
 Float Sum             :FFFFE1D361BEED68
 Float Cycles          :  10.16076
-Fixed Point Sum       :FFFFE1D361729914
-Fixed Point Cycles    :   5.29392
-Asm Fixed Point Sum   :FFFFE1D361729914
-Asm Fixed Point Cycles:   4.20464
+Fixed-Point Sum       :FFFFE1D361729914
+Fixed-Point Cycles    :   5.29392
+Asm Fixed-Point Sum   :FFFFE1D361729914
+Asm Fixed-Point Cycles:   4.20464
 Asm Float Sum         :FFFFE1D361BEED56
 Asm Float Cycles      :   3.04635
+
+Machine 2:
+8 Cores 3.395GHz
+Overhead Cycles       :   4.87040
+Float Sum             :D20A01DB177
+Float Cycles          :  10.11558
+Fixed-Point Sum       :D209FD18CC7
+Fixed-Point Cycles    :   4.50618
+Asm Fixed-Point Sum   :D209FD18CC7
+Asm Fixed-Point Cycles:   3.02426
+Asm Float Sum         :D20A01DB17B
+Asm Float Cycles      :   3.21070
 
 */

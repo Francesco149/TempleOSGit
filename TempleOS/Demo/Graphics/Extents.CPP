@@ -18,7 +18,7 @@ U0 Extents()
 //We want screen, not window coordinates.
   I64 h=Fs->win_pixel_left+Fs->win_scroll_x,v=Fs->win_pixel_top+Fs->win_scroll_y;
 
-  "$CL$";
+  DocClear;
   DCFill;
 
 //This sets a flag to record the

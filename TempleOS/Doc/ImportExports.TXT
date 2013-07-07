@@ -1,20 +1,20 @@
                        Details of Scoping and Linkages
 
-[C:/TempleOS/Doc/Glossary.TXT.Z,1] Just-In-Time Compilation makes use of the
-current task's hash sym table and 
-its parent tasks' tables.  It fetches syms from parent tasks' tables if not 
-found locally in the current task's table and it places new syms in the 
-current task's table.  Conceptually, syms are at the scope of environment
-vars 
-in other operating systems.
+[C:/TempleOS/Doc/Glossary.TXT.Z,1] JIT Compile Mode makes use of the current
+task's hash sym table and its parent 
+tasks' tables.  It fetches syms from parent tasks' tables if not found
+locally 
+in the current task's table and it places new syms in the current task's 
+table.  Conceptually, syms are at the scope of environment vars in other 
+operating systems.
 
-[C:/TempleOS/Doc/Glossary.TXT.Z,1] AOT Compilation creates a new, empty, sym
-table which you must populate by #in
-cludeing [C:/TempleOS/Kernel/AOTAdam.HPP.Z,1] or whatever to import syms.
+[C:/TempleOS/Doc/Glossary.TXT.Z,1] AOT Compile Mode creates a new, empty, sym
+table which you must populate by #i
+ncludeing [C:/TempleOS/Kernel/AOTAdam.HPP.Z,1] or whatever to import syms.
 
 When a sym is placed into a table, older syms with identical names will be 
 overshadowed if they exist, unless you use the compiler option 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1595] OPTf_REPLACE_SYMS.  Duplicates are not
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1586] OPTf_REPLACE_SYMS.  Duplicates are not
 allowed in many cases, especially in 
 asm blks.  Dupicates are allowed, by design in other cases, so that you can 
 repeatedly #include the same file from the cmd line while developing it.  Or, 
@@ -31,9 +31,9 @@ be used to generate a fwd reference.
 import binds a new [C:/TempleOS/Kernel/Adam1a.HPP.Z,707] HTT_FUN or
 [C:/TempleOS/Kernel/Adam1a.HPP.Z,704] HTT_GLBL_VAR sym to a sym of the same
 name 
-imported from the task's sym table at [C:/TempleOS/Kernel/Hash1a.CPP.Z,735]
+imported from the task's sym table at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
 Load() time.  If no sym exists to bind 
-to at [C:/TempleOS/Kernel/Hash1a.CPP.Z,735] Load() time, the code using this
+to at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time, the code using this
 sym will be left incomplete until the 
 sym is defined.
 
@@ -47,14 +47,14 @@ asm.
 _import binds a new [C:/TempleOS/Kernel/Adam1a.HPP.Z,707] HTT_FUN or
 [C:/TempleOS/Kernel/Adam1a.HPP.Z,704] HTT_GLBL_VAR sym to a sym, of a
 **different** name 
-imported from the task's sym table at [C:/TempleOS/Kernel/Hash1a.CPP.Z,735]
+imported from the task's sym table at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
 Load() time.  If no sym exists to bind 
-to at [C:/TempleOS/Kernel/Hash1a.CPP.Z,735] Load() time, the code using this
+to at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time, the code using this
 sym will be left incomplete until the 
 sym is defined.  Basically, this binds C to asm from elsewhere.
 
 
-StaticModule/JustInTime
+AheadOfTime/JustInTime
 | Code occurs in GlobalScope/FunctionScope
 | | CCode/AsmCodeBlk
 | | | extern/import/_extern/_import/IMPORT/static/class/goto
@@ -65,32 +65,32 @@ StaticModule/JustInTime
 | | | |        |          | || StaticVarInit/DynamicVarInitAllowed/NoInitAllowed
 | | | |        |          | || | Are dups allowed within the namespace? A dup overshadows the original.
 | | | |        |          | || | DupsAllowed/NoDups/NoDupsButPad/WarningUnlessClosedOut
-S G A          C label::  S MG   N
-S G A          C label:     MG   N
-S G A          C @@label:   AL   N
-S G A IMPORT   C label;     MR   N
-S F A          C label::  S BG   N
-S F A          C label:     BG   N
-S F A          C @@label:   AL   N
-S F A IMPORT   C label;     BR   N
-S x x            #define    MR   D
-S G C          C function S MR   D
-S F C          R var        FR   N
-S F C          S var        FR   N
-S F C static   C var        FR D N
-S F C goto     C label:     FG   N
-S G C          C var      S MR D D
-S G C          D var        MR N D
-S G C            class      MR   D
-S G C class      member     MR   P
-S G C extern     class      MR   D
-S G C extern   C function   MR   W
-S G C import   C function   MR   D
-S G C import   C var        MR   D
-S G C _extern C function   MR   D
-S G C _extern C var        MR   D
-S G C _import C function   MR   D
-S G C _import C var        MR   D
+A G A          C label::  S MG   N
+A G A          C label:     MG   N
+A G A          C @@label:   AL   N
+A G A IMPORT   C label;     MR   N
+A F A          C label::  S BG   N
+A F A          C label:     BG   N
+A F A          C @@label:   AL   N
+A F A IMPORT   C label;     BR   N
+A x x            #define    MR   D
+A G C          C function S MR   D
+A F C          R var        FR   N
+A F C          S var        FR   N
+A F C static   C var        FR D N
+A F C goto     C label:     FG   N
+A G C          C var      S MR D D
+A G C          D var        MR N D
+A G C            class      MR   D
+A G C class      member     MR   P
+A G C extern     class      MR   D
+A G C extern   C function   MR   W
+A G C import   C function   MR   D
+A G C import   C var        MR   D
+A G C _extern  C function   MR   D
+A G C _extern  C var        MR   D
+A G C _import  C function   MR   D
+A G C _import  C var        MR   D
 J G A          C label::  S Tg   N
 J G A          C label:     BG   N
 J G A          C @@label:   AL   N
@@ -113,8 +113,8 @@ J G C extern     class    C TR   D
 J G C extern   C function F TR   W
 J G C extern   C var      G TR   D
 J G C extern   D var      G TR   D
-J G C _extern C function F TR   D
-J G C _extern C var      G TR   D
+J G C _extern  C function F TR   D
+J G C _extern  C var      G TR   D
 
 * GoTo labels must not have the same name as global scope objects.  GoTo's
 are 
@@ -129,9 +129,8 @@ with the same name are allowed in a class.
 * Use reg or noreg in front of local var names to override automatic register 
 var allocation.  You can, optionally, specify a reg after the "reg" keyword.
  
-* Local nonregister function vars can be accessed in asm blks with &i[RBP]
-for 
-example.
+* Local non-register function vars can be accessed in asm blks with &i[RBP] 
+for example.
 
 * Glbl vars and functions can be accessed in asm with and & as in
 	MOV	RAX,I64 [&glbl_var]
@@ -142,7 +141,7 @@ example.
 
 * All offspring tasks of a task inherit syms.
 
-* The sizeof() and C+ structure members can be used in asm blks.
+* The sizeof() and Holy C structure members can be used in asm blks.
 
 * No register vars are used in functions with a try/catch.  They will be
 force 
@@ -154,10 +153,10 @@ to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/TempleOS/Kernel/Adam1a.HPP.Z,1596] OPTf_GLBLS_ON_DATA_HEAP.  They
+of the [C:/TempleOS/Kernel/Adam1a.HPP.Z,1587] OPTf_GLBLS_ON_DATA_HEAP.  They
 may in the future.
 
-* [C:/TempleOS/Kernel/Adam1a.HPP.Z,1592] OPTf_EXTERNS_TO_IMPORTS will treat
+* [C:/TempleOS/Kernel/Adam1a.HPP.Z,1583] OPTf_EXTERNS_TO_IMPORTS will treat
 _extern as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.

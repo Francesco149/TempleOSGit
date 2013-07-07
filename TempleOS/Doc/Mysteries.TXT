@@ -18,7 +18,7 @@ heap never gets freed.  That's as close to "kernel memory" as it gets.
 * TempleOS puts all code in the lowest 2 Gig, so that REL32 addressing can be 
 used.  TempleOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1596] OPTf_GLBLS_ON_DATA_HEAP. 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1587] OPTf_GLBLS_ON_DATA_HEAP. 
 [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() can allocate any memory, of
 course.
 
@@ -42,21 +42,11 @@ Master-Boot-Loader-Stage2,
 [C:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] CD-DVD-Boot-Loader.
 
 * The boot-loaders must be patched by you running
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164] MakeOSInstallPrtBootLoader() 
-or [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,292] InstallMasterBootLoader(). 
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader() 
+or [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,255] InstallMasterBootLoader(). 
 Those will write the block address into the 
 boot-loader because the boot-loaders do not navigate file systems to find the 
 [C:/TempleOS/Kernel/KStart.CPP.Z,1] Stage2 if you relocate it.
-
-* The /0000Boot directory and the 0000Kernel.BIN.C file are named so that
-they 
-are first in alphabetical order and, therefore, at a predictable block 
-address.  The [C:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] CD/DVD Boot Loader will
-find 0000Kernel.BIN.C at [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,30] Block
-#0x16.  
-The TempleOS boot loader can be used with http://www.magiciso.com if you
-place 
-0000Kernel.BIN.C in the right spot.
 
 * TempleOS is 64-bit.  Like all PC operating systems, the boot-loader starts 
 in 16-bit real-mode.  TempleOS calls a few BIOS info routines, switches to 
@@ -72,8 +62,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask, GS for 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] CCPU.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask, GS for 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.
 
 * TempleOS uses JIT file compression on a file-by-file basis.  Files are 
 [C:/TempleOS/Kernel/Compress.CPP.Z,1] compressed, not encrypted.
@@ -87,8 +77,8 @@ scratch and it is self-contained.
 
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
-recompile with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164]
-MakeOSInstallPrtBootLoader().  TempleOS is 139,640 lines.  
+recompile with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128]
+MakeOSInstallPrtBootLoader().  TempleOS is 129,664 lines.  
 Roughly 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT 
 demos and applications.
 
@@ -125,12 +115,12 @@ public and nonpublic syms Click Here
 
 * When compilation takes place, the structures used by the compiler stick 
 around.  Data on classes can be accessed by code.  See
-[C:/TempleOS/Adam/Dbg2a.CPP.Z,135] ClassRep().
+[C:/TempleOS/Adam/Dbg2a.CPP.Z,134] ClassRep().
 
 * Filenames ending in ".Z" are automatically compressed and uncompressed when 
 writing to disk.  File size in directory listing is the compressed size.  You 
 can view uncompressed size with [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,235]
-Dir("*",TRUE); if you use the native TempleOS 
+Dir("*",TRUE); if you use the RedSea TempleOS 
 filesystem.  See [C:/TempleOS/Doc/TSZ.TXT.Z,1] for uncompressing from WINDOWS.
 
 * Some memory objects are allocated when needed and will decrease the 
@@ -166,13 +156,12 @@ file is still not found, the parent directories are searched for a file of
 the 
 same name.
 
-* TempleOS supports FAT32 and a native TempleOS file system type.  The native
- 
-TempleOS partitions will appear as FAT32 to other operating systems, but will 
-not work.  Do not access the native TempleOS partitions from other operating 
-systems.  This was to fool a bootloader when I tricked it to use it's
-recovery 
-partition feature.
+* TempleOS supports FAT32 and RedSea file systems.  The RedSea partitions
+will 
+appear as FAT32 to other operating systems, but will not work.  Do not access 
+the native TempleOS partitions from other operating systems.  This was to
+fool 
+a bootloader when I tricked it to use it's recovery partition feature.
 
 * The CPU usage during disk operation expands to 99%.  It polls while 
 swapping-out.  You can do other, non-disk activity during disk operations 

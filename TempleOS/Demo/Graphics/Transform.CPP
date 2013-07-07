@@ -115,7 +115,7 @@ U0 SliderDel(CCtrl *c)
 
 
 
-/* Tree <1> (image) */
+/* <1> <1> (image) */
 
 
 
@@ -133,9 +133,11 @@ class MPCtrl {
 } mp;
 
 
+I64 mp_not_done_flags;
+
 U0 MPDrawIt(CTask *task)
 {
-  CDC *dc=DCAlias(gr_dc,task);
+  CDC *dc=DCAlias(gr_dc2,task);
   I64 i,lo=Gs->num*NUM_TREES/mp.mp_cnt,hi=(Gs->num+1)*NUM_TREES/mp.mp_cnt;
   MemCpy(dc->r,mp.r,sizeof(I64)*16);
   dc->flags|=DCF_TRANSFORMATION;
@@ -143,6 +145,7 @@ U0 MPDrawIt(CTask *task)
     SpritePlotRotZ3b(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
   DCDel(dc);
+  LBtr(&mp_not_done_flags,Gs->num);
 }
 
 U0 DrawIt(CTask *task,CDC *dc)
@@ -164,9 +167,11 @@ U0 DrawIt(CTask *task,CDC *dc)
   MemCpy(mp.r,dc->r,sizeof(I64)*16);
   mp.a=s.a2;
 
-  for (i=1;i<mp.mp_cnt;i++)
-    MPJob(&MPDrawIt,task,i);
-  MPDrawIt(task);
+  mp_not_done_flags=1<<mp_cnt-1;
+  for (i=0;i<mp.mp_cnt;i++)
+    JobQue(&MPDrawIt,task,i);
+  while (mp_not_done_flags)
+    Yield;
 
   dc->flags|=DCF_TRANSFORMATION;
   dc->color=BROWN;

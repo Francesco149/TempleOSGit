@@ -4,6 +4,7 @@
 
                            After Egypt: Moses Game
 [C:/TempleOS/Apps/AfterEgypt/AfterEgypt.CPP.Z,1]
+[C:/TempleOS/Apps/AfterEgypt/GodTalking.CPP.Z,1]
 [C:/TempleOS/Apps/AfterEgypt/Battle.CPP.Z,1]
 [C:/TempleOS/Apps/AfterEgypt/Horeb.CPP.Z,1]
 [C:/TempleOS/Apps/AfterEgypt/Map.CPP.Z,1]
@@ -20,20 +21,9 @@
 
 
 
-                                 Pilgrim Game
-[C:/TempleOS/Apps/Pilgrims/Pilgrims.CPP.Z,1]
-
-
-
-
-
-
-
-
-
                       Flight Sim / First Person Shooter
-[C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1]
-[C:/TempleOS/Demo/GameStarters/FPS.CPP.Z,1]
+[C:/TempleOS/Demo/Games/EagleDive.CPP.Z,1]
+[C:/TempleOS/Demo/Games/CastleFrankenstein.CPP,1]
 
 
 
@@ -46,8 +36,8 @@
                        X-Caliber / Raw Hide / Wenceslas
 [C:/TempleOS/Apps/X-Caliber/X-Caliber.CPP.Z,1]
 [C:/TempleOS/Apps/X-Caliber/XCCtrls.CPP.Z,1]
-[C:/TempleOS/Demo/GameStarters/RawHide.CPP.Z,1]
-[C:/TempleOS/Demo/GameStarters/Wenceslas.CPP.Z,1]
+[C:/TempleOS/Demo/Games/RawHide.CPP.Z,1]
+[C:/TempleOS/Demo/Games/Wenceslas.CPP.Z,1]
 
 
 
@@ -71,8 +61,8 @@
 
 
 
-                                    Tanks
-[C:/TempleOS/Apps/Tanks/Tanks.CPP.Z,1]
+                                  ToTheFront
+[C:/TempleOS/Apps/ToTheFront/ToTheFront.CPP,1]
 
 
 

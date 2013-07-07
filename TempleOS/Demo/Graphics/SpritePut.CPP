@@ -12,7 +12,7 @@
 
 
 
-
+//Used by [C:/TempleOS/Apps/MusicOrgan/Examples/battlehymnsolo.CPP.Z,1].
 
 
 /*  <2> (image) */
@@ -25,7 +25,7 @@
 
 
 
-
+//Used by [C:/TempleOS/Demo/Graphics/SpritePutExt.CPP.Z,1].
 
 
 

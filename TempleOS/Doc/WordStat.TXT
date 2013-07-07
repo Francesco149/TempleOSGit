@@ -1,5 +1,5 @@
 WordStat collects statistics from all text files in subdirectories when you 
-call [C:/TempleOS/Adam/WordStat/WSMain.CPP.Z,651] WSInit().  It counts which
+call [C:/TempleOS/Adam/WordStat/WSMain.CPP.Z,648] WSInit().  It counts which
 words follow which other words with what 
 frequency in a big sparse matrix.
 
@@ -8,11 +8,10 @@ jump-to-dictionary_definition functionality.
 
 Tip: If you use consistent var names for items of different classes, you'll 
 usually be able to autocomplete the member vars.  I always use lx for
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2135] CLex 
-ptrs; doc for [C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc ptrs; doc_e or
-doc_ce for [C:/TempleOS/Kernel/Adam1a.HPP.Z,1342] CDocEntry ptrs, etc.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2147] CLex 
+ptrs; doc for [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc ptrs; doc_e or
+doc_ce for [C:/TempleOS/Kernel/Adam1a.HPP.Z,1334] CDocEntry ptrs, etc.
 
 If you have the raw Project Gutenberg dictionary file, you can generate the 
 TempleOS processed dictionary files with the stand-alone program 
 [C:/TempleOS/Adam/WordStat/WSDictGen.CPP.Z,1].
-

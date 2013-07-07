@@ -2,19 +2,18 @@
 
 
 
-/* <1> <1> (image) */	/* <2> <2> (image) */	  /* <3> <3> (image) */
+
+/* <1> <1> (image) */	/* <2> <2> (image) */
+
 
 
 Bool animate_done;
-CSprite *man_imgs[4]={__BIN_1,__BIN_2,__BIN_3,__BIN_2};
+CSprite *man_imgs[2]={__BIN_1,__BIN_2};
 I64 x=0,y=0;
 
 U0 DrawMountain(CTask *task,CDC *dc)
 {
-  I64 frame=4*Saw(tT,0.5),
-      cx=task->win_pixel_width/2,
-      cy=task->win_pixel_height/2;
-  task->text_attr=YELLOW<<4;
+  I64 cx=task->win_pixel_width/2,cy=task->win_pixel_height/2;
   dc->color=BROWN;
   dc->pen_width=2;
   GrLine3(dc,cx-400,cy,0,    cx-30 ,cy-120,0);
@@ -44,7 +43,7 @@ U0 DrawMountain(CTask *task,CDC *dc)
   dc->color=BROWN;
   GrPutS(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
 
-  SpritePlot3(dc,x+cx,y+cy,0,man_imgs[frame&3]);
+  SpritePlot3(dc,x+cx,y+cy,0,man_imgs[ToI64(8.0*tT)&1]);
 }
 
 //This is the path of the man.
@@ -73,6 +72,7 @@ U0 Mountain()
 {
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
+    Fs->text_attr=YELLOW<<4+BLUE;
     WordStat;
     WinMax;
     WinBorder;
@@ -81,7 +81,7 @@ U0 Mountain()
     Fs->draw_it=&DrawMountain;
 
     animate_done=FALSE;
-    Spawn(&MountainTask,NULL,"Animate",Fs);
+    Spawn(&MountainTask,NULL,"Animate",,Fs);
     while (!animate_done)
       Yield;
   } catch

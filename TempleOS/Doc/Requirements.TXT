@@ -13,7 +13,7 @@ Supported Hardware
 
 * Minimum 256 Meg RAM; Maximum 128 Gig RAM (easily increased).
 
-* HD Audio or internal PC Speakers.
+* Internal PC Speakers.
 
 * CD/DVD-ROMs (not SCSI).  ISO9660 file system.
 
@@ -22,7 +22,7 @@ Supported Hardware
 Unsupported Hardware
 * No graphics acceleration.
 
-* No sound cards besides HD Audio.
+* No sound cards.
 
 * No networking.
 
@@ -31,5 +31,3 @@ use
 flash memory cards.
 
 * No printers.
-
-

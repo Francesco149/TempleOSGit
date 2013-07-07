@@ -14,9 +14,9 @@ really take a lot of junky code for this hatefully, detestable, legacy issue.
  
 "Please don't make me ruin my beautiful shiny-new TempleOS with that!"  I am 
 also not enthused about FAT32 because it is in patent limbo.  FAT32 might get 
-removed from TempleOS.  There is a TempleOS native, 64-bit, file system that 
-works perfectly well.  FAT32 is useful, however, because it assists in 
-transferring between dual booted operating systems.
+removed from TempleOS.  There is the RedSea 64-bit file system that works 
+perfectly well.  FAT32 is useful, however, because it assists in transferring 
+between dual booted operating systems.
 
 * I changed the [C:/TempleOS/Compiler/OpCodes.TXT.Z,1] asm opcodes names to
 remove the ambiguity between instructions 

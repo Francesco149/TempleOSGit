@@ -37,7 +37,7 @@ loader
 [C:/TempleOS/Adam/Boot/BootHD.CPP.Z,1] BootHD.CPP	HD partition boot record
 
 BootCD is the CD-ROM boot sect.  If you are curious on the layout of ISO9660 
-CD-ROMs, see [C:/TempleOS/Adam/Dsk/DskCDDVD.CPP.Z,1] DiskCDDVD.CPP.  To make
+CD-ROMs, see [C:/TempleOS/Adam/Boot/DskCDDVD.CPP.Z,1] DiskCDDVD.CPP.  To make
 a custom bootable CD-ROM, look here 
 [C:/TempleOS/Demo/MakeDistro.CPP.Z,1] Bootable CD.
 
@@ -58,8 +58,8 @@ they get patched with the LBA, logical block addresses, to load other stuff.
 To update with a new TempleOS kernel, you must create a binary file and patch 
 the boot loader so it knows the LBA blocks to load.  Therefore, you usually 
 recompile the kernel and update the boot sect at the same time.  
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164] MakeOSInstallPrtBootLoader() does
-this.  [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,292] InstallMasterBootLoader()
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader() does
+this.  [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,255] InstallMasterBootLoader()
 will 
 install a master boot loader.
 
@@ -68,15 +68,13 @@ start-up scripts and works with srource code from then on.
 [C:/TempleOS/Kernel/Adam1.CPP.Z,1] is the starting start-up script.  It
 processes 
 (compiles into memory) the stuff in the /TempleOS/Adam directory and ends by #
-includeing the [C:/TempleOS/Accts/TS/TAD/Adam3.CPP,1] file.
+includeing the [C:/TempleOS/Accts/TAD/Adam3.CPP,1] file.
 
 It is possible to reboot without doing a hardware rst.  This is faster.  You 
 might do this when working on Kernel or your start-up scripts when you want 
-them to take effect.  See [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,68] SoftBoot().
+them to take effect.  See [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,40] SoftBoot().
 
  <1> (image)
-
-
 
 
 

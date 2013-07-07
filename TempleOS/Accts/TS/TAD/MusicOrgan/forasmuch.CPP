@@ -19,13 +19,13 @@ U0 Song()
   while (!ScanKey) {
 	PutSprite(__BIN_1);
 	NewLine(6);
-	Play("qRW1!3etD!!2GGG!3CAqD!EeF!G!C!EqD",
+	Play("qR3etD2GGG3CAqDEeFGCEqD",
 		" \0For \0as \0much \0as \0you \0give, \0 \0 \0Go\0d \0giv\0es \0more.\n\0");
-	Play("R!etD!!2GGG!3CAqD!EeF!G!C!EqD",
+	Play("RetD2GGG3CAqDEeFGCEqD",
 		" \0For \0as \0long \0as \0you \0live, \0 \0 \0love, \0 \0love \0the \0Lord.\n\0");
-	Play("!eB!DqRetEDFqR2GR3C!!2etG!3GC",
+	Play("eBDqRetEDFqR2GR3C2etG3GC",
 		" \0 \0 \0He\0's \0like \0 \0that.\n\0 \0 \0 \0 \0 \0");
-	Play("!eB!DqRetEDFqR2GR3C!!2etG!3GC",
+	Play("eBDqRetEDFqR2GR3C2etG3GC",
 		" \0 \0 \0He \0 \0gives \0 \0back.\n\0 \0 \0 \0 \0 \0");
   }
   } catch

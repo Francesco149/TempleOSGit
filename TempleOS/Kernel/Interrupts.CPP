@@ -112,7 +112,7 @@ U8 *IntEntryGet(I64 irq)
 
 U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
 {
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,413] IDTET_IRQ
+//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,414] IDTET_IRQ
 //See [C:/TempleOS/Demo/Lectures/InterruptDemo.CPP.Z,1]
 //See [C:/TempleOS/Demo/MultiCore/Interrupts.CPP.Z,1]
   I64 fp=fp_new_handler;
@@ -183,8 +183,7 @@ U0 IntInit1()
   }
   ptr=temp_ptr;
   *ptr(U16 *)++=256*16-1;
-  *ptr(U32 *)++=sys_idt(I64).u32[0];
-  *ptr(U32 *)++=sys_idt(I64).u32[1];
+  *ptr(I64 *)++=sys_idt;
   *ptr(U16 *)++=0;
   SetRAX(temp_ptr);
   asm {	LIDT U64 [RAX] }

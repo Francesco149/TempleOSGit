@@ -1,47 +1,47 @@
 U8 *poem=
+"Will lead my steps aright.
+In the long way that I must tread alone,
+Guides through the boundless sky thy certain flight,
+He, who, from zone to zone,
 
-"To a Waterfowl\0"
-"by William Cullen Bryant\0"
-" \0"
-"Whither, 'midst falling dew,\0"
-"While glow the heavens with the last steps of day,\0"
-"Far, through their rosy depths, dost thou pursue\0"
-"Thy solitary way?\0"
-" \0"
-"Vainly the fowler's eye\0"
-"Might mark thy distant flight to do thee wrong,\0"
-"As, darkly painted on the crimson sky,\0"
-"Thy figure floats along.\0"
-" \0"
-"Seek'st thou the plashy brink\0"
-"Of weedy lake, or marge of river wide,\0"
-"Or where the rocking billows rise and sink\0"
-"On the chafed ocean side?\0"
-" \0"
-"There is a Power whose care\0"
-"Teaches thy way along that pathless coast,--\0"
-"The desert and illimitable air,--\0"
-"Lone wandering, but not lost.\0"
-" \0"
-"All day thy wings have fann'd\0"
-"At that far height, the cold thin atmosphere:\0"
-"Yet stoop not, weary, to the welcome land,\0"
-"Though the dark night is near.\0"
-" \0"
-"And soon that toil shall end,\0"
-"Soon shalt thou find a summer home, and rest,\0"
-"And scream among thy fellows; reed shall bend\0"
-"Soon o'er thy sheltered nest.\0"
-" \0"
-"Thou'rt gone, the abyss of heaven\0"
-"Hath swallowed up thy form; yet, on my heart\0"
-"Deeply hath sunk the lesson thou hast given,\0"
-"And shall not soon depart.\0"
-" \0"
-"He, who, from zone to zone,\0"
-"Guides through the boundless sky thy certain flight,\0"
-"In the long way that I must tread alone,\0"
-"Will lead my steps aright.\0";
+And shall not soon depart.
+Deeply hath sunk the lesson thou hast given,
+Hath swallowed up thy form; yet, on my heart
+Thou'rt gone, the abyss of heaven
+
+Soon o'er thy sheltered nest.
+And scream among thy fellows; reed shall bend
+Soon shalt thou find a summer home, and rest,
+And soon that toil shall end,
+
+Though the dark night is near.
+Yet stoop not, weary, to the welcome land,
+At that far height, the cold thin atmosphere:
+All day thy wings have fann'd
+
+Lone wandering, but not lost.
+The desert and illimitable air,--
+Teaches thy way along that pathless coast,--
+There is a Power whose care
+
+On the chafed ocean side?
+Or where the rocking billows rise and sink
+Of weedy lake, or marge of river wide,
+Seek'st thou the plashy brink
+
+Thy figure floats along.
+As, darkly painted on the crimson sky,
+Might mark thy distant flight to do thee wrong,
+Vainly the fowler's eye
+
+Thy solitary way?
+Far, through their rosy depths, dost thou pursue
+While glow the heavens with the last steps of day,
+Whither, 'midst falling dew,
+ 
+by William Cullen Bryant
+To a Waterfowl;
+";
 
 #define POEM_LINES	42
 #define POEM_COLS	53
@@ -56,38 +56,22 @@ U8 *poem=
 /* <2> <2> (image) */
 
 
-
 #define NUM_GEESE	11
 F64 t0,t0_s[NUM_GEESE];
 I64 x[NUM_GEESE],y[NUM_GEESE];
 I64 x0[NUM_GEESE],y0[NUM_GEESE];
 
-U0 PutPoem(CTask *,CDC *dc,I64 w,I64 h)
-{
-  F64 tt=Saw(tT-t0,POEM_TIME);
-  I64 i,j=tt*(POEM_LINES+4)*FONT_HEIGHT-h/2,
-     x=w>>1-(POEM_COLS*FONT_WIDTH)>>1;
-  U8 *st=poem;
-  dc->color=DKGRAY;
-  for (i=POEM_LINES-1;i>=0;i--) {
-    GrPutS(dc,x,
-      (FONT_HEIGHT*i+j)%((POEM_LINES+4)*FONT_HEIGHT),
-      st);
-    st+=StrLen(st)+1;
-  }
-}
-
 U0 DrawIt(CTask *task,CDC *dc)
 {
   U8 *inter;
   I64 i,w=task->win_pixel_width,h=task->win_pixel_height;
-  F64 tt;
-  task->text_attr=LTGRAY<<4+BLACK;
-  PutPoem(task,dc,w,h);
+
+  dc->color=DKGRAY;
+  GrPutS(dc,w>>1-(POEM_COLS*FONT_WIDTH)>>1,
+	    (Saw(tT-t0,POEM_TIME)-.8)*POEM_LINES*FONT_HEIGHT, poem);
 
   for (i=0;i<NUM_GEESE;i++) {
-    tt=1.2*Tri(tT-t0_s[i],0.7);
-    inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+    inter=SpriteInterpolate(__BIN_1,__BIN_2,1.2*Tri(tT-t0_s[i],0.7));
     SpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
     Free(inter);
   }
@@ -134,10 +118,11 @@ U0 SongTask(I64)
 U0 WaterFowl()
 {
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=LTGRAY<<4+BLACK;
   WinMax;
   Init;
-  Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
-  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
+  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   WordStat;
   DocCursor;
   DocClear;

@@ -85,7 +85,7 @@ U0 Song()
     Fs->task_end_cb=&SndTaskEndCB;
     while (!ScanKey) {
       t0=tMBeat;
-      Play("M5/4W13qEAeDDCCqBEAeDD",
+      Play("M5/43qEAeDDCCqBEAeDD",
 	  "Up \0a\0bove \0He \0gen\0tly \0smiles\n\0as \0we \0meet \0and \0");
       Play("CCqBFBeEEDDqCF",
 	  "con\0quer \0trials.\n\0$FG,RED$You \0can \0do \0it \0lit\0tle \0one.\n\0With\0");

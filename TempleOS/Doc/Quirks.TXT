@@ -17,9 +17,9 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2709] DFT_STK and 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2731] DFT_STK and 
 recompile Kernel or request more when doing a
-[C:/TempleOS/Kernel/Task1a.CPP.Z,228] Spawn().
+[C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
@@ -31,27 +31,27 @@ Drv() or [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,409] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
-binds a C+ definition to a asm sym.  This, too, can only be done once.
+binds a Holy C definition to a asm sym.  This, too, can only be done once.
 
-* You must call [C:/TempleOS/Kernel/Task1a.CPP.Z,297] TaskInitExt() in a task
-you [C:/TempleOS/Kernel/Task1a.CPP.Z,228] Spawn() before you can do file 
+* You must call [C:/TempleOS/Kernel/Task1a.CPP.Z,293] TaskInitExt() in a task
+you [C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn() before you can do file 
 I/O.  And, preemption is off by default, so use
 [C:/TempleOS/Kernel/Adam1b.HPP.Z,94] Preempt(ON) if you wish.
 
-* A terminal task has a [C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc document
+* A terminal task has a [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc document
 structure that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc from being activated 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
-A) [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1667] DocBottom() followed by
-  [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1699] DocClear() to clear the
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc so it has no active 
+A) [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1665] DocBottom() followed by
+  [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1697] DocClear() to clear the
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2861] WIF_IP_L and
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,2862] WIF_IP_R.  This inhibits window mgr
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2883] WIF_IP_L and
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,2884] WIF_IP_R.  This inhibits window mgr
   operations but still 
 generates messages from button clicks.
 

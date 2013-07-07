@@ -2,9 +2,8 @@
 
 
 The trivial solution in math is the simple, obvious answer.  The fable that 
-NASA spent millions on a space pen while Russia used a pencil is another 
-example.  TempleOS uses many [C:/TempleOS/Doc/Strategy.TXT.Z,1] trivial
-solutions.
+NASA spent millions on a space pen while Russia used a pencil is an example.  
+TempleOS uses many [C:/TempleOS/Doc/Strategy.TXT.Z,1] trivial solutions.
 
 See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 

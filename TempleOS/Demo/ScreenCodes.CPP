@@ -18,7 +18,7 @@ U0 ScreenCodes()
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
   Fs->draw_it=&DrawIt;
-  GetChar(NULL,FALSE);
+  GetChar(,FALSE);
   SettingsPop;
 }
 

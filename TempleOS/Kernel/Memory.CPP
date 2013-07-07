@@ -1,6 +1,6 @@
 asm {
 /*
-See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1] (3).
+See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 See [C:/TempleOS/Doc/Mem.TXT.Z,1]
 */
 
@@ -190,7 +190,7 @@ I64 MemPageSize(U8 *a)
     return 0x200000;
 }
 
-I64 *MemPtAtPageTableEntry(U8 *a)
+I64 *MemPageTable(U8 *a)
 {
   if (a<NUM_PML1*0x1000*0x200)
     return PAGE_TABLE_BASE+ a>>12 *8;
@@ -201,7 +201,7 @@ I64 *MemPtAtPageTableEntry(U8 *a)
 
 Bool MemPagePresentMark(U8 *a,Bool val)
 {
-  I64 *pte=MemPtAtPageTableEntry(a);
+  I64 *pte=MemPageTable(a);
   Bool result=*pte&1;
   if (val)
     *pte=*pte|1;  //Mark present
@@ -415,7 +415,7 @@ am_done:
   m=result;
   m1=m(U8 *)+i;
   while (m<m1) {
-    pte=MemPtAtPageTableEntry(m);
+    pte=MemPageTable(m);
     *pte &= ~0x18;
     InvlPg(m);
     m(U8 *)+=MemPageSize(m);
@@ -442,7 +442,7 @@ U8 *MemBlksUncachedAlloc(I64 *_pages2Meg,CBlkPool *bp=NULL)
     m=result;
     m1=m(U8 *)+num<<21;
     while (m<m1) {
-      pte=MemPtAtPageTableEntry(m);
+      pte=MemPageTable(m);
       *pte= *pte& ~0x18 |0x10;
       InvlPg(m);
       m(U8 *)+=MemPageSize(m);
@@ -468,7 +468,7 @@ U8 *MemBlksWriteThroughAlloc(I64 *_pages2Meg,CBlkPool *bp=NULL)
     m=result;
     m1=m(U8 *)+num<<21;
     while (m<m1) {
-      pte=MemPtAtPageTableEntry(m);
+      pte=MemPageTable(m);
       *pte= *pte& ~0x18 |8;
       InvlPg(m);
       m(U8 *)+=MemPageSize(m);
@@ -486,7 +486,7 @@ U0 MemBlks2MegFree(CMemBlk *m,I64 pages2Meg,CBlkPool *bp=NULL)
     m2=m;
     m1=m(U8 *)+pages2Meg<<21;
     while (m2<m1) {
-      pte=MemPtAtPageTableEntry(m2);
+      pte=MemPageTable(m2);
       *pte=*pte & ~0x18;
       InvlPg(m2);
       m2(U8 *)+=MemPageSize(m2);
@@ -827,7 +827,7 @@ _FREE::
 	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RSI]
 	OR	RAX,RAX
 	JGE	@@25	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2687] CMemUsedAllocated struct.
+			//The neg size is offset to start of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2690] CMemUsedAllocated struct.
 	ADD	RSI,RAX
 
 @@25:	PUSHFD
@@ -950,9 +950,9 @@ _MHEAP_CTRL::
 _extern _FREE U0 Free(U8 *add);
 _extern _MSIZE I64 MSize(U8 *src); //size of heap object
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
-_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/TempleOS/Kernel/Adam1a.HPP.Z,2735] CHeapCtrl of object
+_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl of object
 
-//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2735] CHeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
 _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL);
 
 U8 *AMAlloc(I64 size)
@@ -961,7 +961,7 @@ U8 *AMAlloc(I64 size)
 }
 
 U8 *CAlloc(I64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2735] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -973,7 +973,7 @@ U8 *ACAlloc(I64 size)
 }
 
 U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2735] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (!src) return NULL;
@@ -1010,7 +1010,7 @@ U8 *CAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2735] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (buf) {
@@ -1027,92 +1027,6 @@ U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
 U8 *AStrNew(U8 *buf)
 {
   return StrNew(buf,adam_task);
-}
-
-U0 LinkedLstDel(U8 **_lst)
-{
-  U8 **d;
-  while (_lst) {
-    d=*_lst;
-    Free(_lst);
-    _lst=d;
-  }
-}
-
-U8 *LinkedLstCopy(U8 **_lst,CTask *mem_task=NULL)
-{
-  U8 *result=NULL,**d=&result;
-  while (_lst) {
-    d=*d=MAllocIdentical(_lst,mem_task);
-    _lst=*_lst;
-  }
-  return result;
-}
-
-I64 LinkedLstCnt(U8 **_lst)
-{
-  I64 result=0;
-  while (_lst) {
-    result++;
-    _lst=*_lst;
-  }
-  return result;
-}
-
-I64 LinkedLstSize(U8 **_lst)
-{
-  I64 result=0;
-  while (_lst) {
-    result+=MSize2(_lst);
-    _lst=*_lst;
-  }
-  return result;
-}
-
-U0 QueDel(CQue *root,Bool querem=FALSE) //Does not delete root
-{
-  CQue *d=root->next,*d1;
-  while (d!=root) {
-    d1=d->next;
-    if (querem)
-      QueRem(d);
-    Free(d);
-    d=d1;
-  }
-}
-
-CQue *QueCopy(CQue *root,CTask *mem_task=NULL)
-{
-  CQue *result=MAllocIdentical(root,mem_task),*d=root->next,*d1;
-  QueInit(result);
-  while (d!=root) {
-    d1=MAllocIdentical(d,mem_task);
-    QueIns(d1,result->last);
-    d=d->next;
-  }
-  return result;
-}
-
-I64 QueCnt(CQue *root) //Does not include root
-{
-  CQue *d=root->next;
-  I64 result=0;
-  while (d!=root) {
-    result++;
-    d=d->next;
-  }
-  return result;
-}
-
-I64 QueSize(CQue *root) //Does not include root
-{
-  CQue *d=root->next;
-  I64 result=0;
-  while (d!=root) {
-    result+=MSize2(d);
-    d=d->next;
-  }
-  return result;
 }
 
 U0 BlkPoolAdd(CBlkPool *bp,CMemBlk *m,I64 pages512)
@@ -1330,7 +1244,7 @@ U8 *Mem64DevAlloc(I64 *_pages2Meg)
     Yield;
   while (i--) {
     sys_mem64_dev_ptr-=0x200000;
-    pte=MemPtAtPageTableEntry(sys_mem64_dev_ptr);
+    pte=MemPageTable(sys_mem64_dev_ptr);
     *pte=*pte&~0x18 |0x11; //Uncached and present
     InvlPg(sys_mem64_dev_ptr);
   }

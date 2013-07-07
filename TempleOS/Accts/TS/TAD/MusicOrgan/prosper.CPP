@@ -3,7 +3,7 @@
 //When using flood-fill in a graphic
 //element, you probably want to
 //convert it to a bitmap using the
-//feat in the <CTRL-R> menu.
+//feature in the <CTRL-R> menu.
 
    /* <1> <1> (image) */
 
@@ -30,6 +30,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 Song()
 {
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=GREEN<<4+YELLOW;
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
 

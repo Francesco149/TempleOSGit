@@ -31,9 +31,9 @@ Cd("::/TempleOS/Demo/Doc");Dir;
 `Cd("::/TempleOS/Demo/Doc");Dir;
 `
 
-Cd("::/TempleOS/Demo/GameStarters");Dir;
+Cd("::/TempleOS/Demo/Games");Dir;
 
-`Cd("::/TempleOS/Demo/GameStarters");Dir;
+`Cd("::/TempleOS/Demo/Games");Dir;
 `
 
 Cd("::/TempleOS/Demo/MultiCore");Dir;
@@ -75,7 +75,7 @@ Cd("::/TempleOS/Demo/AcctExample");Dir;
 `
 
 
-MakeAll with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164]
+MakeAll with [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128]
 MakeOSInstallPrtBootLoader().
 Cd("::/TempleOS/Kernel");Dir;
 
@@ -116,24 +116,34 @@ SoftBoot
 
 
 
-Tanks <1> (image) Logic <2> (image) WarGame <3> (image) Timeout <4> (image)
-  Span <5> (image)
-
-
-
-
-
-
-
-
-X-Caliber <6> (image) JukeBox <7> (image) Organ <8> (image)  Vocab <9>
+ToTheFront <1> (image) Logic <2> (image) Lines <3> (image) TimeOut <4>
   (image) 
 
 
 
 
 
-KeepAway <10> (image) Models <11> (image) RawHide <12> (image) Chess <13>
+
+
+
+X-Caliber <5> (image) JukeBox <6> (image) Organ <7> (image)  Vocab <8>
+  (image) 
+
+
+
+
+
+KeepAway <9> (image) Models <10> (image) RawHide <11> (image) BugBird <12>
+  (image)
+
+
+
+
+
+
+
+
+EagleDive <13> (image) BigGuns <14> (image)  Span <15> (image)  ZoneOut <16>
   (image)
 
 
@@ -144,55 +154,28 @@ KeepAway <10> (image) Models <11> (image) RawHide <12> (image) Chess <13>
 
 
 
-BigGuns <14> (image) EagleDive <15> (image) MisDef <16> (image) BirdLand <17>
-  (image)
+
+AfterEgypt <17> (image) Frankenstein <18> (image) Wenceslas <19> (image)
 
 
 
 
 
 
-
-Rocks <18> (image) SpaceShip <19> (image) TheDead <20> (image) FPS <21>
-  (image)
-
+FlatTops <20> (image) Bomber <21> (image) Strut <22> (image) TheDead <23>
+  (image) DunGen <24> (image)  
 
 
-
-
-
-
-
-
-
-AfterEgypt <22> (image) Pilgrims <23> (image) Wenceslas <24> (image) 
-
-
-
-
-
-
-Navy <25> (image) Bomber <26> (image) Strut <27> (image) 
-
-CPUPlot
-`#include "/TempleOS/Demo/Graphics/CPUPlot";`
- MemRep
-`MemRep;View;`
-
-
-Digits (Memory Game)
-`Cd("::/TempleOS/Demo");;#include "Digits"
-`
-
-Bling (A fractel-like thing)
-  `Cd("::/TempleOS/Demo/Graphics");;#include "Bling"
+MemRep
+  `MemRep;View;`
+   Digits (Memory Game)
+  `Cd("::/TempleOS/Demo");;#include "Digits"
   `
   
 
 
-
-CTRL-R	Add graphics 
-CTRL-L	Add widgets such as trees
+CTRL-R	Add graphic resource 
+CTRL-L	Add text-widgets such as trees
 CTRL-ALT-A	Extended ASCII from menu
 ALT-digit keys	Extended ASCII from code
 CTRL-ALT-C	Break(interrupt) program
@@ -201,8 +184,6 @@ CTRL-ALT-E	Spawn new user shell window
 CTRL-ALT-F	Flush screen VGA cache
 CTRL-ALT-G	Grid on/off
 CTRL-ALT-M	Mute ssound
-CTRL-ALT-V	Sound volume +
-CTRL-ALT-v	Sound volume -
 CTRL-ALT-X	Kill window
  
 List public functions in alphabetic order

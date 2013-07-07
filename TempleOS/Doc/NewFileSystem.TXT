@@ -7,5 +7,3 @@ your file system type.  Click here for search.
 
 
 You will also need to add an entry [C:/TempleOS/Kernel/Define1a.CPP.Z,1] here.
-
-  

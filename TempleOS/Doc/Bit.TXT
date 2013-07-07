@@ -8,11 +8,9 @@ BEqu:	Set bit to value.
 
 Bit operations are "atomic" meaning they won't be interrupted between the 
 testing of the bit and the alteration.  This is important when multitasking.  
-With multiprocessing, you should "Lock" these operations.
+With multicore processing, you should "Lock" these operations.
 
 These don't take a pointer, but the actual field.
 Bsf:	Bit Scan Fwd (Pos of first low one bit or -1)
 Bsr:	Bit Scan Reverse (Pos of first high one bit or -1)
 BCnt:	Bit Cnt (Cnt of set bits)
-
-

@@ -1,11 +1,13 @@
 asm {
 #define MODULE_SIZE		1*BLK_SIZE
 #define BOOT_HIGH_LOC	((BOOT_RAM_LIMIT-(BOOT_STK_SIZE+MODULE_SIZE))>>4)
+#assert BOOT_HIGH_LOC>=KERNEL_BIN_LIMIT
 
 USE16
-BHD_START::
-	DU8	0x5A DUP(0); //See [C:/TempleOS/Kernel/Adam1a.HPP.Z,2248] CFAT32Boot.code[]
 BHD_CODE::
+
+#define BHD_START (BHD_CODE-offset(CFAT32Boot.code))
+
 	CLD
 
 	MOV	AX,VGA_TEXT_MEM_BASE/16
@@ -44,12 +46,12 @@ BHD_GET_IP:
 
 BHD_BIOS_DRV_NUM: DU8	0;
 
-//Gets patched by [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164] MakeOSInstallPrtBootLoader().
+//Gets patched by [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader().
 BHD_BLK_CNT::	DU16	0;
 
 BHD_DAP:	DU8	16,0,1,0; //One blk at a time
 BHD_DAP_BUF:	DU16	0,0;
-//Gets patched by [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164] MakeOSInstallPrtBootLoader().
+//Gets patched by [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader().
 BHD_DAP_BLK::	//64-bit
 BHD_DAP_BLK_LO:	DU32	0;
 BHD_DAP_BLK_HI:	DU32	0;

@@ -10,7 +10,22 @@ Bool IsDbgTask()
 Bool ChkPtr(U8 *ptr)
 {
   if (sys_heap_base<=ptr<=MAPPED_MEM_SPACE) {
-    if (*MemPtAtPageTableEntry(ptr)&1)
+    if (*MemPageTable(ptr)&1)
+      return TRUE;
+    else
+      return FALSE;
+  } else if (ptr<sys_boot_base)
+    return FALSE;
+  else if (ptr<VGA_GRAPHIC_MEM_BASE)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+Bool ChkCodePtr(U8 *ptr)
+{
+  if (sys_heap_base<=ptr<=sys_heap_limit) {
+    if (*MemPageTable(ptr)&1)
       return TRUE;
     else
       return FALSE;
@@ -167,7 +182,7 @@ U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL)
 
 U0 DbgStr(U8 *st,I64 mS=100)
 //Shows a string using
-//[C:/TempleOS/Kernel/Misc1a.CPP.Z,291] Raw screen output for a fixed length
+//[C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw screen output for a fixed length
 //of time.
 {
   Bool old_raw,old_input_filter;
@@ -186,7 +201,7 @@ U0 DbgStr(U8 *st,I64 mS=100)
 
 U0 DbgI64(I64 num,I64 mS=100)
 //Shows a hex num using
-//[C:/TempleOS/Kernel/Misc1a.CPP.Z,291] Raw screen output for a fixed length
+//[C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw screen output for a fixed length
 //of time.
 {
   Bool old_raw,old_input_filter;
@@ -203,7 +218,7 @@ U0 DbgI64(I64 num,I64 mS=100)
 
 U0 DbgF64(F64 d,I64 mS=100)
 //Shows a floating-point val using
-//[C:/TempleOS/Kernel/Misc1a.CPP.Z,291] Raw screen output for a fixed length
+//[C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw screen output for a fixed length
 //of time.
 {
   Bool old_raw,old_input_filter;
@@ -219,7 +234,7 @@ U0 DbgF64(F64 d,I64 mS=100)
 }
 
 U0 DbgAdd(U8 *add,I64 mS=100)
-//Shows an addr using [C:/TempleOS/Kernel/Misc1a.CPP.Z,291] Raw screen
+//Shows an addr using [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw screen
 //output for a length of time.
 {
   Bool old_raw,old_input_filter;
@@ -235,7 +250,7 @@ U0 DbgAdd(U8 *add,I64 mS=100)
 }
 
 U0 DbgD(U8 *add,I64 cnt=0x80,I64 mS=100)
-//Dumps a block of mem using [C:/TempleOS/Kernel/Misc1a.CPP.Z,291] Raw
+//Dumps a block of mem using [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -252,7 +267,7 @@ U0 DbgD(U8 *add,I64 cnt=0x80,I64 mS=100)
 }
 
 U0 DbgDm(U8 *add,I64 cnt=0x80,I64 mS=100)
-//Dumps a block of mem using [C:/TempleOS/Kernel/Misc1a.CPP.Z,291] Raw
+//Dumps a block of mem using [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw
 //screen output for a fixed length
 //of time.
 {
@@ -270,7 +285,7 @@ U0 DbgDm(U8 *add,I64 cnt=0x80,I64 mS=100)
 
 U0 D(U8 *add,I64 cnt=0x80,Bool show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,661] DocD() for a live dump.
+//See [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD() for a live dump.
 {
   I64 i,j,ch;
   U8 *ptr=add;
@@ -279,7 +294,10 @@ U0 D(U8 *add,I64 cnt=0x80,Bool show_offset=TRUE)
       "%08X ",ptr-add;
     else
       "%010X ",ptr;
-    j=cnt>16 ? 16:cnt;
+    if (cnt>16)
+      j=16;
+    else
+      j=cnt;
     for (i=0;i<j;i++)
       "%02X ",ptr[i];
     for (;i<16;i++)

@@ -21,7 +21,7 @@ U0 DrawIt(CTask *,CDC *)
 U0 Box()
 {
   F64 theta=0,phi=0,omega=0,s=1,s1=1.05;
-  dc=DCAlias(gr_dc,Fs);
+  dc=DCAlias(gr_dc2,Fs);
 
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
@@ -41,9 +41,9 @@ U0 Box()
 
     Sleep(20);
     theta+=2*pi/70;
-    phi  +=2*pi/90;
-    omega +=2*pi/110;
-    s *=s1;
+    phi+=2*pi/90;
+    omega+=2*pi/110;
+    s*=s1;
     if ( !(0.2<s<1.4) ) s1=1/s1;
   }
   SettingsPop;

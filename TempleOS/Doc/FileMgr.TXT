@@ -73,4 +73,3 @@ drive, exit the file mgr and use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184]
   Mount.
 
 [C:/TempleOS/Demo/MakeDistro.CPP.Z,1] Making Your Own Distro
-

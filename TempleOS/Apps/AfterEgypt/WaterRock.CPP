@@ -128,6 +128,7 @@ U0 WaterRock()
   I64 msg_code,ch,sc;
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=YELLOW<<4+BLUE;
   try {
     DocClear;
     "$BG,YELLOW$";
@@ -150,8 +151,9 @@ U0 WaterRock()
 	}
       }
     } while (msg_code!=MSG_KEY_DOWN || ch!=CH_SHIFT_ESC && ch!=CH_ESC);
+    GetMsg(,,1<<MSG_KEY_UP);
   } catch
     CatchAll;
-  "$BG$\n";
+  DocClear;
   SettingsPop(Fs,TSF_SAME_SONG);
 }

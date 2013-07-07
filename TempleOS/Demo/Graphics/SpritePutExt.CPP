@@ -4,7 +4,7 @@ If you press <CTRL-T> you will see this:
 $IB+BP,"<1>",1,"::/TempleOS/Demo/Graphics/SpritePut.CPP,2"$
 
 That imports an external sprite.  It's
-called a [C:/TempleOS/Kernel/Adam1a.HPP.Z,1190] DOCEF2_BIN_PTR_LINK.
+called a [C:/TempleOS/Kernel/Adam1a.HPP.Z,1183] DOCEF2_BIN_PTR_LINK.
 
 Press <CTRL-R> and "pointer to sprite".
 Then, enter a file and the number of

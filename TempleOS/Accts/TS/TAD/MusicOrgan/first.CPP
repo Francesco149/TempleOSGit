@@ -1,6 +1,6 @@
 //8 has graphics
 
-/* <heart> <1> (image) */
+/* <1> <1> (image) */
 
 
 

@@ -7,4 +7,3 @@ Each task can load it's own Define strings.  If a string is not found, the
 parent task's table is searched.
 
 See [C:/TempleOS/Demo/Define.CPP.Z,1].
-

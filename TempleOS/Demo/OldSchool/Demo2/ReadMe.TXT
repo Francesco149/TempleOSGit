@@ -23,5 +23,5 @@ do the following:
   
 
 
-#include the file [C:/TempleOS/Adam/BinRep.CPP.Z,1] and
+#include the file [C:/TempleOS/Adam/Utils/BinRep.CPP,1] and
 call [C:/TempleOS/Adam/BinRep.CPP.Z,23] BinRep() to analyze the .BIN.Z files.  

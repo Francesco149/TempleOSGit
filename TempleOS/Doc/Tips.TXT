@@ -22,14 +22,14 @@ M(\"D:/TempleOS/*\",\"E:/TempleOS/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-M> at the cmd line to access your personal menu.  Place macros there 
 with <CTRL-L>, or icon-like sprites with <CTRL-R>.  Use the Pop-Up option on 
-macros to [C:/TempleOS/Kernel/Task1a.CPP.Z,228] Spawn() a task to run a file.
+macros to [C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn() a task to run a file.
  It dies when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-S> to save your macro/menu 
 area after making changes.
 
 * You can adjust the num of answers displayed by setting
 Fs->answers_displayed 
-to a num from 0-3 in your [C:/TempleOS/Accts/TS/TAD/Adam3fSys.CPP.Z,1]
+to a num from 0-3 in your [C:/TempleOS/Accts/TAD/Adam3fSys.CPP.Z,4]
 UserStartUp routine.
 
 * You can use ans0,ans1, etc. in cmd line expressions.  They hold results
@@ -43,8 +43,7 @@ or ansf1.
 games.
 
 * You can adjust the mouse movement rate by setting global vars in your 
-start-up file.  See [C:/TempleOS/Accts/TS/TAD/Adam3aLocalize.CPP.Z,1] mouse
-scale.
+start-up file.  See [C:/TempleOS/Accts/TAD/Adam3aLocalize.CPP,1] mouse scale.
 
 * If your mouse wheel doesn't work, you might try an actual PS/2 mouse.  My 
 new machine does not have PS/2 ports.
@@ -52,30 +51,18 @@ new machine does not have PS/2 ports.
 * You can set your local time zone by setting the
 [C:/TempleOS/Kernel/KGlbls.CPP.Z,54] local_time_offset global var 
 in a start-up file.  It's units are [C:/TempleOS/Kernel/Adam1a.HPP.Z,613]
-CDATE_FREQ.  See [C:/TempleOS/Accts/TS/TAD/Adam3aLocalize.CPP.Z,1] local time.
-
-* Use [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1746] DocCurAttr() in
-[C:/TempleOS/Accts/TS/TAD/Adam3fSys.CPP.Z,1] UserStartUp() to set terminal
-window colors.
+CDATE_FREQ.  See [C:/TempleOS/Accts/TAD/Adam3aLocalize.CPP,1] local time.
 
 * See Key Map
 `KeyMap;View;
 `
  for a list of defined keys.  Define your own keys in
-[C:/TempleOS/Accts/TS/TAD/Adam3dKeyPlugIns.CPP.Z,53] MyPutKey(). 
+[C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey(). 
  See [C:/TempleOS/Doc/KeyBoard.TXT.Z,1].
 
-* <CTRL-SHIFT-L> in the editor to autoindent a C+ function or renumber an asm 
-routine's local labels.  If it does not have #exe config stuff, select 
-"recompile."  Otherwise, don't recompile and it will use the compiler info 
-collected when it was most recently compiled.  **<CTRL-SHIFT-L> can be used
-to 
-test if a file will compile.**
-
-* While developing applications, keeping everything in one source file allows 
-you to use the <CTRL-SHIFT-L> compile check/autoindent feature.  
-Alternatively, you can #include the files in a project a file depends on 
-before entering the editor and <CTRL-SHIFT-L> it.
+* <CTRL-SHIFT-L> in the editor to reindent a [C:/TempleOS/Doc/HolyC.TXT.Z,1]
+Holy C function or renumber an 
+asm routine's local labels.
 
 * You can use filter_lines in the editor text search form (<CTRL-F>) to 
 temporarily display just lines near each match.  A value of filter lines set 
@@ -84,7 +71,7 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,164] MakeOSInstallPrtBootLoader()
+[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,128] MakeOSInstallPrtBootLoader()
 .  You'll probably want to make a function for recompiling that uses the
 [C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto(
 ) function to answer the cfg questions.  See my technique
@@ -92,8 +79,8 @@ C>.
 [C:/TempleOS/Demo/AcctExample/TSDistro.CPP.Z,1] Update Funs.
 
 * You can disable WORDSTAT commenting-out
-[C:/TempleOS/Accts/TS/TAD/Adam3fSys.CPP,1] WSInit() in
-[C:/TempleOS/Accts/TS/TAD/Adam3fSys.CPP,1] HOME/Adam3fSys.CPP.
+[C:/TempleOS/Accts/TAD/Adam3fSys.CPP,1] WSInit() in
+[C:/TempleOS/Accts/TAD/Adam3fSys.CPP,1] HOME/Adam3fSys.CPP.
 
 * You can rst MultiCore CPU's if they get hung with
 [C:/TempleOS/Kernel/MultiProc.CPP.Z,400] MPStart().  HD Audio will 
@@ -117,22 +104,22 @@ capture, use [C:/TempleOS/Adam/FileBMP.CPP.Z,279] BMPFileCaptureScreen().
 You might want to make a hot key.  See 
 [C:/TempleOS/Demo/AcctExample/TSAdam.CPP.Z,1] BMPFileCaptureScreen.
 
-* Use [C:/TempleOS/Adam/Doc/DocNew.CPP.Z,709] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc 
+* Use [C:/TempleOS/Adam/Doc/DocNew.CPP.Z,708] DocMax() to adjust the size of
+the cmd line buf.  It counts [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
 to store a data item, for convenience. 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask,
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1342] CDocEntry and
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2457] CDirEntry have 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask,
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1334] CDocEntry and
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2460] CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * You can reduce mem usage by making a smaller disk cache when you recompile 
 the kernel; disabling WORDSTAT; Specifying smaller stk sizes when doing
-[C:/TempleOS/Kernel/Task1a.CPP.Z,228] Spawn(
-), changing [C:/TempleOS/Kernel/Adam1a.HPP.Z,2709] DFT_STK, and using
-[C:/TempleOS/Adam/Doc/DocNew.CPP.Z,709] DocMax() to reduce the cmd line
+[C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn(
+), changing [C:/TempleOS/Kernel/Adam1a.HPP.Z,2731] DFT_STK, and using
+[C:/TempleOS/Adam/Doc/DocNew.CPP.Z,708] DocMax() to reduce the cmd line
 buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
@@ -148,21 +135,21 @@ changed.  The +d flag will show
 differences of files which have changed and allow you to merge code.  (The +r 
 flag will recurse.)
 
-* There is a utility [C:/TempleOS/Adam/LinkChk.CPP.Z,67] LinkChk() which will
+* There is a utility [C:/TempleOS/Adam/LinkChk.CPP.Z,66] LinkChk() which will
 check for broken links in 
 documentation.
 
 * You can use [C:/TempleOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1590] OPTf_WARN_PAREN) to find
+OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1581] OPTf_WARN_PAREN) to find
 unnecessary parentheses in code.
 
 * You can use [C:/TempleOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1591] OPTf_WARN_DUP_TYPES) to find
+OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1582] OPTf_WARN_DUP_TYPES) to find
 unnecessary local var type 
 statements.
 
 * [C:/TempleOS/Compiler/Directives.CPP.Z,1]
-OptEqu([C:/TempleOS/Kernel/Adam1a.HPP.Z,1584] OPTf_ECHO,ON) can be placed in
+OptEqu([C:/TempleOS/Kernel/Adam1a.HPP.Z,1575] OPTf_ECHO,ON) can be placed in
 [C:/TempleOS/Kernel/Adam1.CPP.Z,1] Adam1.CPP to echo start-up scripts.
 
 * Use [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,46] Plain() to edit a plain text
@@ -171,10 +158,10 @@ s.  Use the [C:/TempleOS/Misc/Dollar.CPP.Z,1] utility to strip dollar signs
 in text 
 files.
 
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,253] Silent() to disable screen text
+* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,244] Silent() to disable screen text
 output.
 
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,262] IOSnd() to disable noise from
+* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,253] IOSnd() to disable noise from
 disk access.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-DRAG}.  Null 
@@ -190,7 +177,7 @@ if you want.
 * Use <CTRL-ALT-A> to enter an extended ASCII char.
 
 * There are handy functions--F(),R(),FD() and RD() which are defined in 
-[C:/TempleOS/Accts/TS/TAD/Adam3eWrappers.CPP,1].  You're encouraged to change
+[C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP,1].  You're encouraged to change
 them, since they're in 
 acct files.  They will perform find-and-replace operations accross multiple 
 files.  The +l flag is particularly useful since it limits to whole labels.  
@@ -218,9 +205,9 @@ middle of compilation and data inserted into the compilation stream.  Click
 here for an example: [C:/TempleOS/Kernel/KEnd.CPP.Z,1] #exe {.
 
 * If you output to the cmd line and wish to allow users to scroll around and 
-view data, you can use [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,176] View().
+view data, you can use [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,175] View().
 
-* Use [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,176] View() in Pop-up macros to
+* Use [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,175] View() in Pop-up macros to
 linger until the user presses <ESC> or <SHIFT
 -ESC>.
 
@@ -232,9 +219,9 @@ probably turn-off preemption or interrupts momentarily to copy it.
 
 * If you use consistent var names for items of different classes, you'll 
 usually be able to use WORDSTAT's autocomplete for member vars.  I always use 
-lx for [C:/TempleOS/Kernel/Adam1a.HPP.Z,2135] CLex ptrs; doc for
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc ptrs; doc_e or doc_ce for
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1342] CDocEntry ptrs, etc.
+lx for [C:/TempleOS/Kernel/Adam1a.HPP.Z,2147] CLex ptrs; doc for
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc ptrs; doc_e or doc_ce for
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1334] CDocEntry ptrs, etc.
 
 
 * [C:/TempleOS/Kernel/Adam1b.HPP.Z,94] Preempt() is used to keep a task from
@@ -246,10 +233,10 @@ with preemption off.
 
 * You can set a color for different drives with
 [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,317] SetDrvTextAttr().  Place calls 
-to this in [C:/TempleOS/Accts/TS/TAD/Adam3aLocalize.CPP.Z,1].
+to this in [C:/TempleOS/Accts/TAD/Adam3aLocalize.CPP,1].
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc cmd under the 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc cmd under the 
 cursor.  See [C:/TempleOS/Demo/Doc/TextDemo.CPP.Z,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -300,9 +287,9 @@ it
 will restore defaults.  It should plain text, if you want to edit it.  Be 
 careful of tree indentations.
 
-* Study [C:/TempleOS/Adam/MemRep.CPP.Z,1] and
-[C:/TempleOS/Adam/WallPaper.CPP.Z,21] WallPaper() to learn how the system 
-resources are put together.
+* Study [C:/TempleOS/Adam/Utils/MemRep.CPP,1] and
+[C:/TempleOS/Adam/WallPaper.CPP.Z,29] WallPaper() to learn how the 
+system resources are put together.
 
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
@@ -316,20 +303,22 @@ and compare against [C:/TempleOS/Kernel/Adam1b.HPP.Z,199] GetTimeStamp().
 
 * Use [C:/TempleOS/Adam/HeapLog.CPP.Z,121] HeapLog() and
 [C:/TempleOS/Adam/HeapLog.CPP.Z,80] HeapLogRep() to find leaks.  Don't be
-confused by [C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc 
+confused by [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
 * For advanced heap debugging, play with
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2660] _CFG_HEAP_DBG.  You're on your own.
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2663] _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/TempleOS/Adam/Doc/DocFile.CPP.Z,430] Type() to display .BMP
+* You can use [C:/TempleOS/Adam/Doc/DocFile.CPP.Z,459] Type() to display .BMP
 or .GRA files.
 
 * Use [C:/TempleOS/Kernel/PSect.CPP.Z,265] Man() to jump to short sym name
 src code.
 
-* Use [C:/TempleOS/Kernel/EdLite.CPP.Z,320] Fix() to edit and fix the last
+* Use [C:/TempleOS/Kernel/EdLite.CPP.Z,329] Fix() to edit and fix the last
 compiler err.
+
+* You can use <CTRL-SHIFT-L> to do a check for compile errors.
 
 * You can use [C:/TempleOS/Adam/Doc/DocOpt.CPP.Z,109] DocOpt() to optimize
 links. (Mostly just removes .Z)

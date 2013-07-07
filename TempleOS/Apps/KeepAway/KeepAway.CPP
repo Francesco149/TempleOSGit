@@ -223,7 +223,7 @@ air is approximated by V and V2
 terms and is smaller.  However, I use
 this to produce a rolling friction
 value, too.  If you want to see my
-best attempt at realstic physics
+best attempt at realistic physics
 download SimStructure.
 
 http://www.templeos.org/files/SimStrSetUp.zip
@@ -276,7 +276,7 @@ Frame man_imgs[LAST_STOPPED_DRIBBLING+1]={
 };
 
 AcctRegSetDftEntry("TempleOS/KeepAway","I64 best_score0=0,best_score1=9999;\n");
-AcctRegExecuteBranch("TempleOS/KeepAway");
+AcctRegExeBranch("TempleOS/KeepAway");
 
 F64 game_t_end,foul_t_end;
 I64 score0,score1;
@@ -305,7 +305,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/TempleOS/Kernel/Adam1a.HPP.Z,335] CMathODE feat,
+I also didn't use the [C:/TempleOS/Kernel/Adam1a.HPP.Z,336] CMathODE feat,
 just to be different.
 */
 
@@ -519,15 +519,15 @@ U0 AnimateTask(CTask *parent_task)
 		  o->has_ball=TRUE;
 		  if (o==human) {
 		    if (ball_stolen && team) {
-		      Noise(250,2000,2000,WF_SQUARE);
+		      Noise(250,2000,2000);
 		      score0+=2;
 		    }
 		  } else {
 		    if (o->team) {
-		      Noise(250,1000,1000,WF_SQUARE);
+		      Noise(250,1000,1000);
 		      score1+=2;
 		    } else {
-		      Noise(250,2000,2000,WF_SQUARE);
+		      Noise(250,2000,2000);
 		      score0+=2;
 		    }
 		  }
@@ -563,7 +563,7 @@ U0 AnimateTask(CTask *parent_task)
 		      d=(dx-objs[j].DxDt)*dx2+(dy-objs[j].DyDt)*dy2;
 		      if (o==human && t0>o->foul_t0+1.0 &&
 			  dt && d/dt>FOUL_VELOCITY_THRESHOLD && objs[j].team) {
-			Noise(250,500,500,WF_SQUARE);
+			Noise(250,500,500);
 			score1+=1;
 			foul_t_end=t0+1.0;
 		      }
@@ -668,10 +668,10 @@ U0 KeepAway()
     "Left-Click to pass.\n"
     "Right-Click to jump.\n");
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=BLACK+YELLOW<<4;
   WinMax;
   WinBorder;
   Preempt(OFF);
-  DocCurAttr(BLACK+YELLOW<<4);
 
   Fs->win_inhibit|=WIF_DBL_CLICK;
   WordStat;
@@ -692,7 +692,7 @@ U0 KeepAway()
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;
-  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",Fs);
+  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
 
   try {
     while (TRUE) {
@@ -724,6 +724,7 @@ ka_jump:
       }
     }
 ka_done: //Don't goto out of try
+    GetMsg(,,1<<MSG_KEY_UP);
   } catch
     CatchAll;
   SettingsPop;
@@ -732,10 +733,3 @@ ka_done: //Don't goto out of try
   CleanUp;
   MenuPop;
 }
-
-//This is so I can use this file stand alone
-//or as a component of a program.
-#if IncludeDepth<2
-KeepAway;
-#endif
-

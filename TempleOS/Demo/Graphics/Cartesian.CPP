@@ -45,7 +45,7 @@ Cartesian;
 
 /*
 For better performance, compile the expression entered by the user one time 
-with [C:/TempleOS/Compiler/ExpParser.CPP.Z,1262] CmpExpression() and use
+with [C:/TempleOS/Compiler/ExpParser.CPP.Z,1236] CmpExpression() and use
 [C:/TempleOS/Kernel/Adam1b.HPP.Z,287] Call(). See
 [C:/TempleOS/Demo/CompileDemo.CPP.Z,1].
 */

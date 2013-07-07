@@ -2,7 +2,7 @@
 +] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's
   lexical analyser removes comments and does preprocessing.  See
-  [C:/TempleOS/Compiler/Lex.CPP.Z,796] Lex().  Set
+  [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex().  Set
   [C:/TempleOS/Compiler/Directives.CPP.Z,48] Echo(ON) or
   [C:/TempleOS/Compiler/Directives.CPP.Z,43] LTrace(ON), to see the output of
   the lexical analyser.
@@ -10,19 +10,19 @@
 The main compiler generates [C:/TempleOS/Compiler/CmpDefs.HPP.Z,1]
   Intermediate Code at the parser stage.  See
   [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression(),
-  [C:/TempleOS/Compiler/StmtParser.CPP.Z,1692] PrsStatement().  Set
+  [C:/TempleOS/Compiler/StmtParser.CPP.Z,1627] PrsStatement().  Set
   [C:/TempleOS/Compiler/Directives.CPP.Z,21] PTrace(ON) to see the output of
   the parser.
 
-The main compiler optimizes   See [C:/TempleOS/Compiler/CmpInit.CPP.Z,1]
+The main compiler optimizes   See [D:/TempleOS/Compiler/CmpInit.CPP.Z,1]
   Intermediate Code Attributes, [C:/TempleOS/Compiler/OptPass012.CPP.Z,1]
   Combining Constants, [C:/TempleOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg
   Vars.  Set [C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the
   optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1686] IC Struct,
-  [C:/TempleOS/Compiler/CodeGen.CPP.Z,397] CBCompile and
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1677] IC Struct,
+  [C:/TempleOS/Compiler/CodeGen.CPP.Z,384] CBCompile and
   [C:/TempleOS/Compiler/OptPass789A.CPP.Z,1]
   OptPass789A(), [C:/TempleOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set
   [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of
@@ -54,7 +54,7 @@ It is okay in TempleOS to change RAX, RBX, RCX, RDX, R8 and R9 without
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/TempleOS/Compiler/Lex.CPP.Z,796] Lex().
+{ //See [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -64,7 +64,7 @@ I64 Lex(U8 **_src,I64 *num)
 	*_src=src;
 	return TK_EOF;
       case CH_SPACE:
-      case CH_CARRIAGE_RETURN:
+      case '\r':
       case '\n':
 	src++;
 	break;

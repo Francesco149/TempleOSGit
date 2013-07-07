@@ -16,8 +16,8 @@ selecting "Pointer to CSprite Data".
 They behave like string constants when compiled.
 That is, they are ptrs to data.
 
-SpritePlot.CPP.Z uses the persistent graphic CDC, gr_dc2,
-while the other demo's use gr_dc which must
+SpritePlot.CPP.Z uses the persistent graphic CDC, gr_dc,
+while the other demo's use gr_dc2 which must
 be redrawn each update of the screen (by the
 window mgr task).  This demo is simpler
 because you do not need a window update routine.
@@ -50,7 +50,7 @@ U0 SpritePlot()
 {
   CDC *dc=DCAlias;
   I64 i;
-  "$CL$";
+  DocClear;
   for (i=0;i<GR_WIDTH>>2;i++) {
     DCFill;
     SpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);

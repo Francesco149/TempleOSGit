@@ -57,10 +57,10 @@ ipi_done:
   return result;
 }
 
-U0 CDate2ISO1(CISO1Date *dst,CDate spdt)
+U0 Date2ISO1(CISO1Date *dst,CDate cdt)
 {
   CDateStruct ds;
-  CDate2CDateStruct(&ds,spdt);
+  Date2DateStruct(&ds,cdt);
   dst->year=ds.year-ISO1_BASE_YEAR;
   dst->mon=ds.mon;
   dst->day=ds.day_of_mon;
@@ -81,7 +81,7 @@ CDate ISO1DateStruct2CDate(CISO1Date *dt)
   ds.sec=dt->sec;
   ds.min=dt->min;
   ds.hour=dt->hour;
-  return CDateStruct2CDate(&ds);
+  return DateStruct2Date(&ds);
 }
 
 Bool ISO1FromName(U8 *dst,U8 *src)
@@ -135,7 +135,7 @@ Bool ISO1CDirFill(CPrt *p,CDirEntry *tempm,CISO1DirEntry *de)
 }
 
 Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3591] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3592] FUF_JUST_FILES
+{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool result=FALSE,unlock;

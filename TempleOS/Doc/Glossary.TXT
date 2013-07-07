@@ -96,12 +96,14 @@ Sect	Sector
 Seq	Sequence
 Snd	Sound
 Src	Source
+Srv	Servant
 Stat	Status or Statistic
 Stk	Stack
 Str	String
 Sym	Symbol
 Sys	System
 Term	Terminal
+Tri	Triangle
 Tx	Transmit
 Val	Value
 Var	Variable
@@ -115,7 +117,7 @@ WSD	WordStat Dictionary
 +] Task/Process/Thread
   There is no distinction between "task", "process" or "thread."  The Fs
   segment register is kept pointing to the current task's
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask.  There is only one window per
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask.  There is only one window per
   task.
 
 +] Adam Task
@@ -142,49 +144,48 @@ WSD	WordStat Dictionary
   calling routines +/-2 Gig from the current code location.  To prevent
   out-of-range issues, I decided to separate code and data, placing all code
   within the lowest 2 Gig of memory.  The compiler and
-  [C:/TempleOS/Kernel/Hash1a.CPP.Z,735] Load()er allocate memory from the code
+  [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load()er allocate memory from the code
   heap to store code and glbl vars, unless the compiler option
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1596] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1587] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() is comes from
   the data heap, which in not limited in size, except by how much physical RAM
   memory you have.  You can allocate from any heap you like, or even make
   independent heaps.
 
 +] Parent/Child Task
-  Often a task will [C:/TempleOS/Kernel/Task1a.CPP.Z,228] Spawn() or
-  [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,379] PopUp() a task as a helper.  The
+  Often a task will [C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn() or
+  [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,376] PopUp() a task as a helper.  The
   helper is known as a Child Task, though you can Spawn a task and assign it a
-  different parent... like Adam.  Links are kept as to who spawned what so that
-  when one task is [C:/TempleOS/Kernel/Task1a.CPP.Z,28] Kill()ed the helper
-  tasks disappear, too.  You can get a report on current system tasks with
+  different parent... like Adam.  Links are kept as to who spawned what so when
+  one task is [C:/TempleOS/Kernel/Task1a.CPP.Z,28] Kill()ed the helper tasks
+  disappear, too.  You can get a report on current system tasks with
   [C:/TempleOS/Adam/Utils2a.CPP.Z,429] TaskRep().  There is just one possible
   window per task, so child tasks are needed.
 
-+] C+
-  The language used by TempleOS is more than C and less than C++, so it's
-  just C+, perhaps.  See [C:/TempleOS/Doc/Differences.TXT.Z,1] Differences.  It
-  has the default arg feature of C++ and uses class in place of struct.  It
-  uses U0,U8,U16,U32,I64 and I0,I8,I16,I32,I64 for signed and unsigned
-  integers.  It has a slightly different operator precedence.  See
-  [C:/TempleOS/Doc/Differences.TXT.Z,1] OP_precedence  It has the PASCAL-like
-  feature of function calls with no parens, but requires an "&" when referring
-  to function addresses.
++] Holy C
+  The language used by TempleOS is more than C and less than C++.  See
+  [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C.  It has the default arg feature of
+  C++ and uses class in place of struct.  It uses U0,U8,U16,U32,I64 and
+  I0,I8,I16,I32,I64 for signed and unsigned integers.  It has a slightly
+  different operator precedence.  See [C:/TempleOS/Doc/HolyC.TXT.Z,1]
+  OP_precedence  It has the PASCAL-like feature of function calls with no
+  parens, but requires an "&" when referring to function addresses.
 
 +] AOT Compile Mode
-  I coined this term to refer to conventional AOT compilation mode, but it is
-  not the preferred mode for this operating system and is discouraged.  .SP?
-  files are compiled to .BI? files, skipping .OBJ files.  After compiling, you
-  do a [C:/TempleOS/Kernel/Hash1a.CPP.Z,735] Load() cmd which is available from
+  This term to refers to conventional compilation mode.  It is not the
+  preferred mode for this operating system and is discouraged.  .PRJ files are
+  compiled to .BIN files, skipping .OBJ files.  After compiling, you do a
+  [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() cmd which is available by
   right-clicking on a link (like from [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,235]
   Dir()).  There is no main() routine.  Instead, statements outside functions
   are automatically executed upon loading.  There is no way to unload except by
   killing the task.  To invoke AOT Compiled Mode, use the
-  [C:/TempleOS/Compiler/CmpMain.CPP.Z,378] Cmp() routine or right-click on a
+  [C:/TempleOS/Compiler/CmpMain.CPP.Z,372] Cmp() routine or right-click on a
   link.  The Kernel modules and compiler are made in AOT compiled mode and
   stored in Kernel.BIN.C and Compiler.BIN.Z, respectively.
 
-See [C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1] for an example of an
-  AOT module.
+See [C:/TempleOS/Demo/Games/EagleDive.CPP.Z,1] for an example of an AOT
+  module.
 
 +] JIT Compile Mode
   In just-in-time mode, the compiler allocates objects, code and data, from
@@ -192,16 +193,16 @@ See [C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1] for an example of an
   you #include a file, it is compiled function by function and objects are
   placed all over in mem.  The [C:/TempleOS/Compiler/CmpMain.CPP.Z,577]
   ExeFile() routine is the same as #include but can be placed in programs. 
-  [C:/TempleOS/Compiler/CmpMain.CPP.Z,536] ExePutS() routine will compile and
+  [C:/TempleOS/Compiler/CmpMain.CPP.Z,530] ExePutS() routine will compile and
   run a string.
 
 +] Compiler Intermediate Code
-  The compiler generates instructions one step before making actual
-  assembly(machine) language instructions.  This code is reverse polish in
-  nature and can be viewed with [C:/TempleOS/Compiler/Directives.CPP.Z,21]
-  PTrace() or [C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace().  The
-  compiler does not "interpret" code, except in the process of optimization. 
-  The assembly language can be viewed when it is compiled with the
+  The compiler generates instructions one step before making actual assembly
+  (machine) language instructions.  This code is reverse polish in nature and
+  can be viewed with [C:/TempleOS/Compiler/Directives.CPP.Z,21] PTrace() or
+  [C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace().  The compiler does not
+  "interpret" code, except in the process of optimization.  The assembly
+  language can be viewed when it is compiled with the
   [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace() routine, or afterward
   with [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U().
 
@@ -213,6 +214,12 @@ See [C:/TempleOS/Demo/GameStarters/EagleDive.CPP.Z,1] for an example of an
 
 For commands taking a drive letter as an argument, 0 is the current drive.
 
++] RedSea File System
+  This is a simple, 64-bit, file system which is, basically, FAT32 with nice
+  fixed-size directory entries and no FAT table, just an allocation bitmap. 
+  Files cannot grow in size.  Directory entries have compressed and
+  uncompressed size and file check-sums.
+
 [AutoFile,1] AutoFile
 [Graphics/CSprite,1] Sprite
 [Hash,1] Hash Table
@@ -222,11 +229,11 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().  An optional
   directory plus a list of file name masks, as in /TempleOS/Demo/*.TXT.Z;*.CPP.Z
 
-See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3583] FUF_RECURSE and
-  [C:/TempleOS/Kernel/Define1a.CPP.Z,41] ST_FILE_UTIL_FLAGS.
+See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE and
+  [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS.
 
-Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2209] FILENAME_MASK_TXT and
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,2208] FILENAME_MASK_SRC.
+Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC.
 
 +] Filename Extention Types
   
@@ -238,30 +245,30 @@ Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2209] FILENAME_MASK_TXT and
 *.TXT.Z;*.TXT;*.LOG.Z;*.LOG
   Text Files
 *.CPP.Z;*.CPP
-  C+ src files.  The default C+ compiler type is ".CPP.Z".
+  Holy C src files.  The default Holy C compiler type is ".CPP.Z".
 *.PRJ.Z;*.PRJ
-  C+ src files to be compiled AOT.
+  Holy C src files to be compiled AOT.
 *.HPP.Z;*.HPP
-  C+ src header files.
+  Holy C src header files.
 *.MAP.Z;*.MAP
   Compiler "map" files
 *.BIN.Z;*.BIN.C;*.BIN
   Binary executable files, created by
-  [C:/TempleOS/Compiler/CmpMain.CPP.Z,378] Cmp() and read by
-  [C:/TempleOS/Kernel/Hash1a.CPP.Z,735] Load().
+  [C:/TempleOS/Compiler/CmpMain.CPP.Z,372] Cmp() and read by
+  [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load().
 *.DAT.Z;*.DAT
   Data files
 *.ISO
   CD-ROM image file--ISO9660.
 *.AUT.Z;*.AUT
-  "AutoFile" Basically a C+ program who's stdout goes to the input of a task
-  when [C:/TempleOS/Kernel/TaskCmd.CPP.Z,396] AutoFile() is called.
+  "AutoFile" Basically a Holy C program who's stdout goes to the input of a
+  task when [C:/TempleOS/Kernel/TaskCmd.CPP.Z,396] AutoFile() is called.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2208] FILENAME_MASK_SRC
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC
   This #define holds a list of src file extensions.
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2209] FILENAME_MASK_TXT
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT
   This #define holds a list of text file extensions.
 
 +] Naming Convention
@@ -276,14 +283,21 @@ ALL_CAPS
   So are #define's.
 
 _ALL_CAPS
-  Asm routines which are C+ callible should have a leading underscore.
+  Asm routines which are [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C callible
+  should have a leading underscore.
 
 MixedCaps
-  C+ Functions and class names are MixedCaps.
+  [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C Functions and class names are
+  MixedCaps.
 
 lower_case
   Local function vars and glbl vars are lower case.  Class member names are
   also lower_case.
+
+_lower_case
+  Function args which are outputs (passed as ptrs) have leading underscores. 
+  Also, args which have identically named local variable counterparts have
+  leading underscores. 
 
 DOCf_????
   Flags bit nums instead of bit values are designated with a lower case "f".
@@ -291,39 +305,50 @@ DOCf_????
 DOCG_????
   Flag groups are designated with "G".
 
-Fs The CPU FS segment register.  This register points to the current task's 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2987] CTask.
+"result" is reserved for local variables that hold the function return val.
 
-Gs The CPU GS segment register.  This register points to the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3614] CCPU.
+* I used C++ like naming.  I place "New", "Del", "Init", "Rst", ect. on the
+  end of a function name instead of at the beginning.  "RstMusicSettings"
+  should be "MusicSettingsRst".
 
-Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
-  These are bit manipulation functions named after Intel instructions.  They 
-stand for "Bit Test", "Bit Test and Set", "Bit Test and Rst" and "Bit Test
-and 
-Compliment".  An 'L' means locked.
++] Fs
+  The CPU FS segment register.  This register points to the current task's
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask.
 
-Cli,Sti Turn on or off interrupts.  They are named after the x86
-instructions. 
- "Cli" turns off interrupts.
++] Gs
+  The CPU GS segment register.  This register points to the
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.
 
-Heap Programs can dynamically request chunks of memory allocated from a
-"heap" 
-using [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().  They must
-[C:/TempleOS/Kernel/Memory.CPP.Z,950] Free() it when finished.  Ptrs are used
-to refer to 
-it.  The "heap" is dynamically allocated mem.
++] Bt,Bts,Btr,Btc,LBts,LBtr,LBtc
+  These are bit manipulation functions named after x86 instructions.  They
+  stand for "Bit Test", "Bit Test and Set", "Bit Test and Reset" and "Bit Test
+  and Compliment".  An 'L' means locked with an ASM lock prefix.
 
-Root The base of a binary tree or the head of a queue.  (I don't like the
-word 
-"head.")
++] Cli,Sti
+  Turn on or off interrupts.  They are named after the x86 instructions. 
+  "Cli" turns off interrupts.
 
-Join When two parts of a program have a common low-level routine, that
-routine 
-is often labeled SomethingJoin.
++] Heap
+  Programs can dynamically request chunks of memory allocated from a "heap"
+  using [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().  They must
+  [C:/TempleOS/Kernel/Memory.CPP.Z,950] Free() it when finished.  Ptrs are used
+  to refer to it.  The "heap" is dynamically allocated mem.
 
-user_data Many operating system structures have space set aside for you to 
-store values.  You are on your own managing these with multiple applications 
-and libraries.
++] Root
+  The base of a binary tree or the head of a queue is the root.  (I don't
+  like the word "head.")
 
-BSP/AP Boot-strap Processor/Application Processor
++] Join
+  When two parts of a program have a common low-level routine, that routine
+  is often labeled SomethingJoin.
+
++] user_data
+  Many operating system structures have space set aside for you to store
+  values.  You are on your own managing these with multiple applications and
+  libraries.
+
++] BSP/AP
+  The "boot-strap processor" is core#0, has the Adam task, and is the master.
+   The "application processors" have Seth tasks and are the slave processors. 
+  Only the BSP processor's tasks can have windows.
+

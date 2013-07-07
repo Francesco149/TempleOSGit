@@ -1,7 +1,7 @@
 U0 MsgLoop()
 {
   I64 p1,p2,msg_code;
-  "Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,3090] these defines in your programs instead of hardcoded nums.\n"
+  "Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,3112] these defines in your programs instead of hardcoded nums.\n"
   "<ESC> to Exit\n";
 
   //We don't want the mouse buttons to reposition the cursor,
@@ -13,6 +13,7 @@ U0 MsgLoop()
     msg_code=GetMsg(&p1,&p2,~(1<<MSG_NULL));
     "CMD:%02X P1:%08X P2:%016X\n",msg_code,p1,p2;
   } while (msg_code!=MSG_KEY_DOWN || p1!=CH_ESC && p1!=CH_SHIFT_ESC);
+  GetMsg(,,1<<MSG_KEY_UP);
 
   Fs->win_inhibit=0;
 }

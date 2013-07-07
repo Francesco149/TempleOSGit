@@ -2,7 +2,7 @@
 This demonstrates dynamic initialization of
 vars.  It even works for AOT modules
 because code is generated which runs at
-[C:/TempleOS/Kernel/Hash1a.CPP.Z,735] Load() time to initialize them.
+[C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time to initialize them.
 
 This file is dual use -- you can JIT compile
 it or AOT compile it.  If you AOT compile

@@ -33,5 +33,3 @@ Remember to terminate cmds with a semicolon.
 
 [C:/TempleOS/Doc/HelpIndex.TXT.Z,1] Help Index  [Cmd Line (Typically),1]
 Quick Start--Command Line
-
-

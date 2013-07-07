@@ -20,7 +20,7 @@ U0 PaletteDemo()
   SetVGAPaletteColor(WHITE,0xFFFF00);
   PressAKey;
 
-//[C:/TempleOS/Adam/TaskSettings.CPP.Z,64] SettingsPop() restores original palette
+//[C:/TempleOS/Adam/TaskSettings.CPP.Z,92] SettingsPop() restores original palette
   SettingsPop;
 }
 

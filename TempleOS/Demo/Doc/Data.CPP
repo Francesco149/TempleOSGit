@@ -6,9 +6,9 @@
      +RD refreshes the data.
      +UD updates the val when you edit it.
      +U32 means the val is 4 bytes.
-     -I64 I64 is the default so we might
+     -U64 U64 is the default so we might
 	 want to turn-it-off.  Strings
-	 use I64.
+	 use U64.
     ,32  sets the tag string width.
 	 See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] Data Tag Width.
      -P  Means it is a string var, basically.
@@ -33,17 +33,17 @@ U0 DataDemo()
   CDocEntry *doc_e;
 
 //This is the command line document.
-  CDoc *doc=DocCur;
+  CDoc *doc=DocPut;
 
 //We do this to prevent access to
 //doc_e->data before it is set.
   Bool unlock=DocLock(doc);
 
-//You might set the [C:/TempleOS/Kernel/Adam1a.HPP.Z,1429] DOCF_FORM flag.
+//You might set the [C:/TempleOS/Kernel/Adam1a.HPP.Z,1421] DOCF_FORM flag.
 //  doc->flags|=DOCF_FORM
 //if you wish.
 
-  Spawn(&UpdateGlblTask,NULL,"Update Glbl",Fs);
+  Spawn(&UpdateGlblTask,NULL,"Update Glbl",,Fs);
 
   "Enter editor overstrike mode\n"
   "and you can modify the val.\n"
@@ -62,3 +62,5 @@ U0 DataDemo()
 }
 
 DataDemo;
+
+//See [C:/TempleOS/Adam/Gr/CSpriteVect.CPP.Z,68] PopUpExtents().

@@ -70,7 +70,7 @@ I64 CeilI64(I64 num,I64 to)
   }
 }
 
-//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1] (6).
+//See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 #ifdef SYS_DETERMINISTIC
 U16 RandU16()
 {

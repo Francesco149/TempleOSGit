@@ -69,6 +69,23 @@ U8 *tent_img=__BIN_4;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <6> <6> (image) */ //Used as <6> in quail, clouds, and squirt.
+
+
+
 I64 num_objs;
 Obj objs[MAX_PEOPLE+MAX_TENTS];
 Obj camp_view_pt;
@@ -93,13 +110,13 @@ U0 CTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
   *z=dc->z-*z;
 }
 
-I64 mp_done_flags;
+I64 mp_not_done_flags;
 I64 cx,cy,*r1; //could put these in a record and pass in
 F64 frame;
 I32 *depth_buf;
 U0 MPDrawMeeting(CTask *task)
 {
-  CDC *dc=DCAlias(gr_dc,task);
+  CDC *dc=DCAlias(gr_dc2,task);
   F64 s;
   U8 *img,*img1,*img2;
   I64 i,x,y,z,*r2,*old_r=dc->r,
@@ -140,7 +157,7 @@ U0 MPDrawMeeting(CTask *task)
   dc->r=old_r;
   dc->depth_buf=NULL;
   DCDel(dc);
-  LBts(&mp_done_flags,Gs->num);
+  LBtr(&mp_not_done_flags,Gs->num);
 }
 
 U0 DrawMeeting(CTask *task,CDC *dc)
@@ -150,7 +167,6 @@ U0 DrawMeeting(CTask *task,CDC *dc)
   I64 i,x,y,z,*r2,*old_r;
   F64 s;
 
-  task->text_attr=LTGREEN<<4+WHITE; //bk/fg
   frame=4.0*Saw(tT,0.5);
   cx=task->win_pixel_width/2;
   cy=task->win_pixel_height/2;
@@ -161,7 +177,6 @@ U0 DrawMeeting(CTask *task,CDC *dc)
 
   DCAllocDepthBuf(dc);
   depth_buf=dc->depth_buf;
-  dc->flags|=DCF_TRANSFORMATION;
   r1=GrRotX(30.0*pi/180.0,task);
   old_r=dc->r;
 
@@ -174,12 +189,10 @@ U0 DrawMeeting(CTask *task,CDC *dc)
 
   x=0;y=0;z=-16*CAMP_WIDTH;
   dc->transform(dc,&x,&y,&z);
-  dc->color=LTCYAN;
-  GrRect(dc,0,0,task->win_pixel_width,y);
+  SpritePlot3(dc,0,y,0,__BIN_6);
+  dc->flags|=DCF_TRANSFORMATION;
 
   dc->color=BLACK;
-  GrLine3(dc,-32*CAMP_WIDTH,0,-16*CAMP_WIDTH,32*CAMP_WIDTH,0,-16*CAMP_WIDTH);
-
   GrLine3(dc,-CAMP_WIDTH/2,0,0	  ,CAMP_WIDTH/2,0,0);
   GrLine3(dc,-CAMP_WIDTH/2,0,-CAMP_WIDTH,CAMP_WIDTH/2,0,-CAMP_WIDTH);
   GrLine3(dc,-CAMP_WIDTH/2,0,0,-CAMP_WIDTH/2,0,-CAMP_WIDTH);
@@ -210,10 +223,9 @@ U0 DrawMeeting(CTask *task,CDC *dc)
     Free(r2);
   }
 
-  mp_done_flags=0;
-  for (i=1;i<mp_cnt;i++)
-    MPJob(&MPDrawMeeting,task,i);
-  MPDrawMeeting(task);
+  mp_not_done_flags=1<<mp_cnt-1;
+  for (i=0;i<mp_cnt;i++)
+    JobQue(&MPDrawMeeting,task,i);
 
   GrSetRotMat(dc,old_r);
   if (calf && Blink(4.0)) {
@@ -221,7 +233,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
     GrPutS(dc,cx-(15*FONT_WIDTH)/2,cy-3*FONT_HEIGHT,"!!Golden Calf!!");
   }
  
-  while (mp_done_flags!=1<<mp_cnt-1)
+  while (mp_not_done_flags)
     Yield;
   Free(r1);
 }
@@ -303,9 +315,10 @@ U0 Camp(I64 num_people=100)
   DocClear;
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=LTGREEN<<4+WHITE; //bk/fg
   try {
     WordStat;
-    Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",Fs);
+    Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
     DocCursor;
     DocClear;
     Fs->draw_it=&DrawMeeting;
@@ -319,5 +332,7 @@ U0 Camp(I64 num_people=100)
 //This is so I can use this file stand alone
 //or as a component of a program.
 #if IncludeDepth<2
+WinMax;
+WinBorder;
 Camp;
 #endif

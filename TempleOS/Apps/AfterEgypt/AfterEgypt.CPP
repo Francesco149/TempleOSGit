@@ -13,85 +13,11 @@ U0 SongTask(I64)
   }
 }
 
-
-
-
-/* <1> <1> (image) */
-
-
-
-
-
-
-
-/* <2> <2> (image) */
-
-
-
-
-U0 DrawGodTalking(CTask *,CDC *dc)
-{
-  I64 i;
-  F64 m,a,x1,y1,x2,y2;
-  SpritePlot3(dc,0,70,0,__BIN_1);
-  SpritePlot3(dc,200,70,0,__BIN_2);
-  dc->color=win_updates&15;
-  for (i=0;i<256;i++) {
-    m=Sqr(Rand); a=2*pi*Rand;
-    P2R(&x1,&y1,m,a);
-    m=Sqr(Rand); a=2*pi*Rand;
-    P2R(&x2,&y2,m,a);
-    GrLine(dc,235+30*x1,40+30*y1,235+30*x2,40+30*y2);
-  }
-}
-
-U0 RandWord()
-{
-  I64 i;
-  if (ws_num_words) {
-    i=TimerPickedU32;
-    "%s ",ws_sorted_words[i%ws_num_words]->str;
-  }
-}
-
-U0 RandQuote()
-{
-  I64 i,size,l=300;
-  U8 *bible_filename=Define("ST_BIBLE_FILE");
-  U8 *buf=FileRead(bible_filename,&size);
-  if (buf) {
-    i=TimerPickedU32%(size-l);
-    buf[i+l]=0;
-    "" buf+i;
-    Free(buf);
-  }
-}
-
-U0 UpTheMountain()
-{
-  I64 i;
-  Mountain;
-  Horeb;
-
-  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->draw_it=&DrawGodTalking;
-  "$BG,YELLOW$$WW,1$$CM,0,30$God Says...$FG,RED$\n";
-  if (RandU32&1) {
-    for (i=0;i<16;i++)
-      RandWord;
-  } else
-    RandQuote;
-  "$FG$\n\nPress <SHIFT-ESC>.\n";
-  View;
-  SettingsPop(Fs,TSF_SAME_SONG);
-}
-
-
 U0 HoldCourt()
 {
   I64 i;
   I64 accused,crime,victim;
-  Bool old_form=LBts(&(DocCur)->flags,DOCf_FORM);
+  Bool old_form=LBts(&(DocPut)->flags,DOCf_FORM);
 
   FlushMsgs;
   DocDblBufStart;
@@ -120,9 +46,9 @@ U0 HoldCourt()
   "\n\n$BT,\"Really Punish\",3$\n\n"
   "$LM,0$";
   DocDblBufEnd;
-  i=DocMenuDo(DocCur);
+  i=DocMenuDo(DocPut);
 
-  LBEqu(&(DocCur)->flags,DOCf_FORM,old_form);
+  LBEqu(&(DocPut)->flags,DOCf_FORM,old_form);
   DocBottom;
 }
 
@@ -143,7 +69,7 @@ U0 HoldCourt()
 Bool TakeTurn()
 {
   I64 i;
-  Bool result,old_form=LBts(&(DocCur)->flags,DOCf_FORM);
+  Bool result,old_form=LBts(&(DocPut)->flags,DOCf_FORM);
   num_people*=1.0+0.01*((RandU16%100)-30);
   if (num_people>MAX_PEOPLE)
     num_people=MAX_PEOPLE;
@@ -166,9 +92,9 @@ Bool TakeTurn()
 	"\n\n$BT,\"Quit\",T_QUIT$\n\n"
 	"$LM,0$";
   DocDblBufEnd;
-  i=DocMenuDo(DocCur);
+  i=DocMenuDo(DocPut,DOF_DONT_TEXT_ATTR);
 
-  LBEqu(&(DocCur)->flags,DOCf_FORM,old_form);
+  LBEqu(&(DocPut)->flags,DOCf_FORM,old_form);
   DocBottom;
 
   if (i<0 || i==T_QUIT)
@@ -208,7 +134,7 @@ Bool TakeTurn()
 	Mute(!IsMute);
 	break;
       case T_HELP:
-	PopUp("Cd(Fs->parent_task->cur_dir);Ed(\"FL:AENotes.TXT.Z,1\");",Fs);
+	PopUp("Ed(\"::/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z\");",Fs);
 	PopUpOk("Add your own story-line...\nLike old school toys.\n");
 	break;
     }
@@ -266,7 +192,7 @@ U0 AfterEgypt()
   WordStat;
   DocClear;
   WinMax;
-  Fs->song_task=Spawn(&SongTask,NULL,"Song",Fs);
+  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   PopUp("Trailer;",Fs);
 
   WSInit("::/TempleOS/Apps/HolySpirit/Vocab.TXT*");
@@ -276,7 +202,7 @@ U0 AfterEgypt()
     while (TakeTurn);
   catch
     CatchAll;
+  DocClear;
   SettingsPop;
   Mute(was_mute);
 }
-

@@ -5,7 +5,7 @@
 
 
 
-/* Tree <1> (image) */
+/* <1> <1> (image) */
 
 
 #define MAP_HEIGHT	2048
@@ -61,7 +61,7 @@ U0 ScrollBars()
 
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
-  GetChar(NULL,FALSE);
+  GetChar(,FALSE);
   SettingsPop;
   //If you care, you might want to
   //save the original state of the

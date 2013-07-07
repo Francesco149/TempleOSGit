@@ -1,6 +1,6 @@
 /*
-This demo uses gr_dc, so you must add a
-draw_it routine because gr_dc is not
+This demo uses gr_dc2, so you must add a
+draw_it routine because gr_dc2 is not
 persistent.  (It gets erased each update by
 the system.)
 */
@@ -34,7 +34,7 @@ U0 DrawIt(CTask *,CDC *)
 U0 SpritePlot3D()
 {
   F64 theta=0,phi=0;
-  dc=DCAlias(gr_dc,Fs);
+  dc=DCAlias(gr_dc2,Fs);
 
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;

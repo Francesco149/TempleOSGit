@@ -39,13 +39,13 @@ U0 Song()
   try {
   while (!ScanKey) {
 	t0=tMBeat;
-	Play("!3qBRE2sG3C!2G!3CeCF!qEeG!!AsR2GR!G",
+	Play("3qBRE2sG3C2G3CeCFqEeGAsR2GRG",
 		"The \0 \0quill\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
-	Play("!3qBRE2sG3C!2G!3CeCF!qEeG!!AsR2GR!G",
+	Play("3qBRE2sG3C2G3CeCFqEeGAsR2GRG",
 		"is \0 \0still\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
-	Play("3qER!!etA!!C!GqF2G3etD2G3F!BF!2G3DRF",
+	Play("3qERetACGqF2G3etD2G3FBF2G3DRF",
 		" \0 \0God's \0 \0 \0word \0for \0all \0 \0his \0 \0hap\0 \0py \0 \0peo\0");
-	Play("qER!!etA!!C!G!qF2G3etD2G3F!BF!2G3DRF",
+	Play("qERetACGqF2G3etD2G3FBF2G3DRF",
 		"ple.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	"$FG,GREEN$Gutenberg invented the printing press and made Bibles.  Until then, "
 	"I wonder how many man-hours for one word in the Bible!\n$FG$";

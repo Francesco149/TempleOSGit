@@ -39,23 +39,20 @@ _extern _BEEPS U0 Beeps(I64 cnt);
 I64 AsmAndC()
 {
   I64 noreg i;	//Normally this would be stored in a reg
-		//Check with [C:/TempleOS/Adam/Dbg2a.CPP.Z,239] Uf("AsmAndC").
+		//Check with [C:/TempleOS/Adam/Dbg2a.CPP.Z,236] Uf("AsmAndC").
 
   i=PmtI64("Num of beeps 1-5 (%d):",3,1,5);
   Beeps(i);
 
   asm {
-//You can clobber RAX,RBX,RCX,RDX, but preserve the rest for code in a C+ routine.
+//You can clobber RAX,RBX,RCX,RDX, but preserve the rest for code in a Holy C routine.
 USE64	//Defaults to 64, but this is a good habit.
 	IMPORT	Snd;
 	MOV	RCX,&i[RBP] //You can clobber RAX,RBX,RCX,RDX.
 			    //You better preserve the rest.
 
 @@05:	PUSH	RCX
-//U0 Snd(F64 freq,I64 waveform=WF_SQUARE,F64 amp=1.0);
-	MOV	RAX,1.0	//amplitude
-	PUSH	RAX
-	PUSH	WF_SQUARE
+//U0 Snd(F64 freq);
 
 	MOV	RAX,RCX	//freq=loop*100.0+100.0
 	IMUL2	RAX,100 //TempleOS uses nonstandard opcodes

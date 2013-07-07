@@ -8,12 +8,36 @@ Doc is taken off-line by disabling preemption so there
 are no screen updates until all data has been inserted.
 
 There is a special Doc function which is also
-available to take an Doc off-line.  See [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1647] DocInsSafe.
+available to take an Doc off-line.  See [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1645] DocInsSafe.
 For this example, however, I wanted to use DocPrintF
 and disabled Preemption myself.
 */
 
-#include "/TempleOS/Demo/Shared/TreeDemoJoin"
+U0 TreeSub(CDoc *doc,CDirEntry *tempm)
+{
+  CDirEntry *tempm1;
+  while (tempm) {
+    tempm1=tempm->next;
+    if (tempm->attr & _ATTR_DIR) {
+      DocPutS(doc,"$TR,\"\"$");
+      DocPrintF(doc,"$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\n\"$\n",
+      tempm->name,tempm->full_name);
+      if (tempm->sub) {
+	DocPutS(doc,"$ID,+2$");
+	TreeSub(doc,tempm->sub);
+	DocPutS(doc,"$ID,-2$");
+      }
+    } else {
+      DocPrintF(doc,"$LK,\"%s\",\"FI:%s\"$\n",
+	tempm->name,tempm->full_name);
+    }
+    //Note there is also a routine
+    //to delete an entire CDirEntry tree.
+    //See [C:/TempleOS/Kernel/Dsk/DskDir.CPP.Z,34] CDirLstDel().
+    CDirEntryDel(tempm);
+    tempm=tempm1;
+  }
+}
 
 U0 TreeDemo()
 {
@@ -24,7 +48,7 @@ U0 TreeDemo()
   DocPutS(doc,"$ID,+2$");
   TreeSub(doc,FilesFind("/TempleOS/*",fuf_flags));
   DocPutS(doc,"$ID,-2$");
-  DocInsDoc(DocCur,doc);
+  DocInsDoc(DocPut,doc);
   DocDel(doc);
 }
  

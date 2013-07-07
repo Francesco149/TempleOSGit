@@ -33,7 +33,7 @@ Here are example instruction formats:
 	ADD	RAX,I64 FS:DISP[RSI+RDI*8]
 	ADD	RAX,I64 [DISP]
 
-$ Current compiler output pos (instruction ptr).  Even works in C+ 
+$ Current compiler output pos (instruction ptr).  Even works in Holy C 
 expressions.
 
 $ works in classes.
@@ -71,8 +71,8 @@ ALIGN num, fill_byte
   Align to num boundary and fill with fill_byte.
 
 MODULE_ORG num
-  Set code addr for JIT or set module [C:/TempleOS/Kernel/Hash1a.CPP.Z,735]
-Load() addr -- has 16-byte [C:/TempleOS/Kernel/Adam1a.HPP.Z,370] CBinFile 
+  Set code addr for JIT or set module [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
+Load() addr -- has 16-byte [C:/TempleOS/Kernel/Adam1a.HPP.Z,371] CBinFile 
 header and patch table trailing.
 
 See [C:/TempleOS/Demo/Asm/AsmAndC.CPP.Z,1] and

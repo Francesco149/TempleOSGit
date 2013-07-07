@@ -1,15 +1,9 @@
                                TempleOS Charter
 
-The goal of TempleOS is to provide an ideal environment for recreational 
-programming and not imitate Linux.  TempleOS is orders of magnitude simpler 
-than Linux to better fulfill the promise of open source.  The vision for 
-TempleOS is a 64-bit, souped-up, multitasking, multicore Commodore 64 with a C
-+ shell instead of BASIC that runs x86_64 code.
-
-TempleOS holds no standards sacred -- everything is freshly designed from 
-scratch.  This is not a 1970's main frame operating system and, no, it has 
-nothing to do with Commodore 64 emulation -- it's x86_64.
-
+TempleOS is God's official temple.  God said to use 640x480 16 color graphics 
+and God said to have a single audio voice.  That is just like how He
+specified 
+cubits in the Bible! 
  
 1) TempleOS is ring-0-only, running everything in kernel mode including 
 applications.  You have full access to memory, I/O ports, instructions, etc. 
@@ -29,34 +23,33 @@ used.
 that 
 mode becomes unavailable on computers in the future.
 
-6) TempleOS will always be free.  I might sell applications, support, or, 
+6) TempleOS will always just have PC Speaker sound.
+
+7) TempleOS will always be free.  I might sell applications, support, or, 
 possibly, do adware.
 
-7) TempleOS will always be 100% open source with all source included, unless 
+8) TempleOS will always be 100% open source with all source included, unless 
 device drivers or something can only be included with non-disclosure 
 agreements.
 
-8) All function args and returns will be 64-bit.  No plans for C++.
+9) All function args and returns will be 64-bit.  No plans for C++.
 
-9) TempleOS documents are not for printing.  They're dynamic and intended for 
+10) TempleOS documents are not for printing.  They're dynamic and intended
+for 
 the screen.  There will always be just one font, a fixed-width font.  No 
 Unicode, just ASCII.
 
-10) TempleOS is not for multimedia.  Games will be created by programmers,
+11) TempleOS is not for multimedia.  Games will be created by programmers,
 not 
 artists.  Sounds and images will be, primarily, calculated in real-time, not 
 fetched.
 
-11) All functions, variables and class members will be accessible.  There are 
+12) All functions, variables and class members will be accessible.  There are 
 no C++ public/private protections and all functions, even secondary ones in 
 the kernel, can be called.
 
-12) **Backward compatibility is NOT guaranteed.**  You are safest working
+13) **Backward compatibility is NOT guaranteed.**  You are safest working
 with JIT 
 compilation instead of AOT binaries because I can add members to classes, 
 reorder members in classes, add default args to existing functions, change #de
 fine values, etc. all without breaking compatibility.
-
-
-* "Commodore 64" was a trademark of Commodore Business Machines.
-* "Linux" is probably a trademark owned by Linus Torvalds.

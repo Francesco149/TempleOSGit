@@ -1,0 +1,7 @@
+                           Sprite Edit as Text Help
+
+You can cut, paste and duplicate elements.
+
+See the format for [C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprites.
+
+Sadly, you cannot change the length of variable-length element types.

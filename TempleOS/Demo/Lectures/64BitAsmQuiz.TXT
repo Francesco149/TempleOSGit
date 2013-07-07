@@ -56,8 +56,6 @@ size pages in 64-bit mode?
 14) On a fresh CPU with an empty TLB, how many memory accesses (page tables) 
 does it take to access one virtual address?
 
-15) Is there an instruction to PUSH or POP all registers?
-
 ----
 
 TempleOS identity-maps everything, all the time, so the usual convention of 
@@ -82,7 +80,7 @@ ANSWERS:
 TSS_SOME_MEMBER.  (Useless)
 
 5) The R13 instruction takes one more byte because it is like
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3667] CREG_RBP in the 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3671] CREG_RBP in the 
 ModR.
 
 6) The RAX instruction has a REX byte prefix to specify 64-bit size.  So does 
@@ -115,6 +113,3 @@ better than TSSes.
 
 14) For one access, there are 3-4 levels of page tables plus the location 
 itself.
-
-15) There is no instruction to PUSH or POP all registers.
- 

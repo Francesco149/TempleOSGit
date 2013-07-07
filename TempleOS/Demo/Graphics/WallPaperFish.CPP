@@ -65,11 +65,10 @@ U0 (*old_wall_paper)(CTask *task);
 U0 WallPaperFish(CTask *task)
 {
   I64 i,j,x,y;
-  CDC *dc=DCAlias(gr_dc,task);
+  CDC *dc=DCAlias(gr_dc2,task);
   Critter *c=wall_crits;
  
   task->text_attr=CYAN<<4+WHITE;
-
   dc->color=YELLOW;
   for (i=0;i<GR_HEIGHT;i+=20) {
     j=16*Tri(tT*10,20);

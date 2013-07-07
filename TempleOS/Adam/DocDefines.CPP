@@ -3,7 +3,7 @@
 U0 LoadDocDefines()
 {
 //These are used in documents such as [C:/TempleOS/Doc/TrivialSolutions.TXT.Z,1]
-//The [C:/TempleOS/Kernel/Adam1a.HPP.Z,1518] CDoc framework will search the sym table for define string
+//The [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc framework will search the sym table for define string
 //constants if you specify that.
   CBinFile *bfh=sys_boot_base-sizeof(CBinFile);
 
@@ -22,14 +22,15 @@ U0 LoadDocDefines()
   DefinePrintF(
     "DD_MP_VECT_END","%08X",MP_VECT_ADDR+SYS_MP_INIT_END-SYS_MP_INIT_START-1);
 
-
   DefinePrintF(
-    "DD_TEMPLEOS_AGE","%h56D",GetCurTimeCDate-A2CDate("8/1/2003"));
+    "DD_OS_NAME_VERSION","TempleOS V%0.2f",os_version);
+  DefinePrintF(
+    "DD_TEMPLEOS_AGE","%h56D",GetCurTimeDate-A2Date("8/1/2003"));
 
   //This is cut and replaced when I generate a distro.
   //See [C:/TempleOS/Demo/AcctExample/TSDistro.CPP.Z,1] DD_TEMPLEOS_LOC.
   -] LineCnt
-    DefinePrintF("DD_TEMPLEOS_LOC","139,640");
+    DefinePrintF("DD_TEMPLEOS_LOC","122,808");
     
   DefinePrintF(
     "DD_PAGE_TABLE_BASE","%08X",PAGE_TABLE_BASE);
@@ -42,6 +43,11 @@ U0 LoadDocDefines()
     "DD_SYS_HEAP_BASE","%08X",sys_heap_base);
   DefinePrintF(
     "DD_SYS_HEAP_BASE2","%09,X",sys_heap_base);
+
+  DefinePrintF(
+    "DD_SYS_HEAP_LIMIT","%08X",sys_heap_limit);
+  DefinePrintF(
+    "DD_SYS_HEAP_LIMIT2","%09,X",sys_heap_limit);
 
   DefinePrintF(
     "DD_MAPPED_MEM_SPACE_GIG","%d Gig",MAPPED_MEM_SPACE/0x40000000);

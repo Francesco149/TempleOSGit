@@ -6,4 +6,3 @@ multiple topics separated by a ';'.  The index ctrls HI:topic links.
 #help_file "filename[.TXT.Z]"
 The help file preprocessor directive places a file as the heading text in a HI
 :topic link for the current help index.
-

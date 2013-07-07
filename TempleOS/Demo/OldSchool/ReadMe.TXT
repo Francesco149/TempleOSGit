@@ -2,7 +2,7 @@ If you insist on doing AOT compiled, old school, programs instead of
 just-in-time compiled programs, this directory tree has some examples.  The 
 main reason to do AOT programs is to make closed-source applications.  Why
 not 
-do it like the programs in /TempleOS/Apps instead?
+do it like the programs in /TempleOS/Apps, instead?
 
 See [C:/TempleOS/Doc/ImportExports.TXT.Z,1] Scoping and Linkages for details
 on extern, import, _extern, _import, etc.

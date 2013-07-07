@@ -47,13 +47,13 @@ U0 Song()
   while (!ScanKey) {
 	t0=tMBeat;
 	"$FG,GREEN$To God...$FG$\n";
-	Play("W13qGBAsED!ED!qCGB!!C",
+	Play("3qGBAsEDEDqCGBC",
 		"Fa\0ther, \0 \0what \0 \0 \0 \0You \0been \0do\0ing?\n\0");
-	Play("GBAsED!ED!qCGB!!C",
+	Play("GBAsEDEDqCGBC",
 		"Watch\0-it!  \0 \0Or, \0 \0 \0 \0they'll \0be \0su\0ing.\n\0");
-	Play("eG!DD!BG!!BqBeE!A!!ED!FE2qG",
+	Play("eGDDBGBqBeEAEDFE2qG",
 		"They \0don't \0real\0ly \0un\0der\0stand\n\0What \0 \0You're \0 \0up \0 \0to.\n\0");
-	Play("3eG!DD!BG!!BqBeE!A!!ED!FE2qG",
+	Play("3eGDDBGBqBeEAEDFE2qG",
 		"High \0a\0bove \0our \0ways,\n\0 \0 \0If \0 \0they \0 \0on\0ly \0knew.\n\0");
   }
   } catch

@@ -10,7 +10,7 @@ and #include this file.
 
 I ran [C:/TempleOS/Misc/Dollar.CPP.Z,1] on it, first.
 
-See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1] (20).
+See [C:/TempleOS/Doc/Acknowledgements.TXT.Z,1].
 */
 
 I64 WSDNextCmd(U8 **_ptr)

@@ -10,5 +10,3 @@ Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,612] JIFFY_FREQ to convert
 
 Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,614] SYS_TIMER_FREQ to convert
 [C:/TempleOS/Kernel/Misc1a.CPP.Z,62] SysTimerRead.
-
-
