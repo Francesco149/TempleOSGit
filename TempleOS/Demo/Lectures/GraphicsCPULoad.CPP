@@ -37,7 +37,7 @@ U0 GrDemo()
 
 GrDemo;
 
-/*  Program Output
+/*  Program Output (Not VMware)
 
 8 Cores 2.660GHz
 Rate:369.7 FPS	Load@60Hz: 16.2%

@@ -16,15 +16,14 @@ The main compiler generates [C:/TempleOS/Compiler/CmpDefs.HPP.Z,1]
 
 The main compiler optimizes   See [D:/TempleOS/Compiler/CmpInit.CPP.Z,1]
   Intermediate Code Attributes, [C:/TempleOS/Compiler/OptPass012.CPP.Z,1]
-  Combining Constants, [C:/TempleOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg
+  Combining Consts, [C:/TempleOS/Compiler/OptPass3.CPP.Z,1] Choosing Reg
   Vars.  Set [C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the
   optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1677] IC Struct,
-  [C:/TempleOS/Compiler/CodeGen.CPP.Z,384] CBCompile and
-  [C:/TempleOS/Compiler/OptPass789A.CPP.Z,1]
-  OptPass789A(), [C:/TempleOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1677] IC Struct, [MN:LCCCompile] LCCCompile
+  and [C:/TempleOS/Compiler/OptPass789.CPP,1]
+  OptPass789(), [C:/TempleOS/Compiler/BackEnd.CPP.Z,1] BackEnd.  Set
   [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of
   the backend.
 

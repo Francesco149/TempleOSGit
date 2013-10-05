@@ -2,8 +2,7 @@
 
 See [C:/TempleOS/Doc/Dollar.TXT.Z,1] for details on dollar sign cmds.
 
-"Expression" a num or Holy C algebraic term with operators and Holy C syms
-can 
+"Expression" a num or HolyC algebraic term with operators and HolyC syms can 
 be entered.
 "Macro" Most entries can behave like macro entries if you assign them macro 
 strs.

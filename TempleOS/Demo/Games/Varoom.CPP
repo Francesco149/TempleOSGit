@@ -43,12 +43,11 @@
     /* <4> <4> (image) */
 
 
-
-
-
+AcctRegSetDftEntry("TempleOS/Varoom","F64 best_score=9999;\n");
+AcctRegExeBranch("TempleOS/Varoom");
 
 I64 vx,vy,vz;
-F64 theta,speed;
+F64 theta,speed,distance,t0,tf;
 
 #define NUM_BUSHES	512
 
@@ -182,7 +181,7 @@ U0 MPUpdateWin(CDC *dc2)
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	GrSetSymmetry(dc,s*x+cx,s*y+h,s*x+cx,s*y+h+10);
       }
-      SpritePlot3b(dc,s*x+cx,s*y+h,z,b[i].img);
+      SpritePlot3B(dc,s*x+cx,s*y+h,z,b[i].img);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
   }
@@ -234,16 +233,36 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   dc->color=WHITE;
   GrPlot(dc,w-64+64*(-vx+0x5000)/0xA000,h-64*(-vz+0x5000)/0xA000);
+
+  if (tf) {
+    s=tf-t0;
+    dc->color=LTRED;
+    if (Blink)
+      GrPrint(dc,(w-FONT_WIDTH*14)/2,(h-FONT_HEIGHT)/2,"Game Completed");
+  } else
+    s=tT-t0;
+  dc->color=BLACK;
+  GrPrint(dc,0,0,"theta:%5.1f Time:%3.2f Best:%3.2f",180+180/pi*Arg(vx,vz),s,best_score);
 }
 
 
 U0 AnimateTask(I64)
 {
+  F64 m,a;
   while (TRUE) {
     Snd(speed*3+10);
     vx-=speed*Sin(theta);
     vz-=speed*Cos(theta);
     vy=DipY(vx,vz);
+    R2P(&m,&a,vx,vz);
+    if (!tf && TRACK_INNER<=m<=TRACK_OUTER) {
+      distance+=speed;
+      if (distance>2*pi*TRACK_INNER && a>0.0) {
+	tf=tT;
+	if (tf-t0<best_score)
+	  best_score=tf-t0;
+      }
+    }
     Sleep(10);
   }
 }
@@ -267,6 +286,9 @@ U0 Init()
   InitTrack;
   vx=-(TRACK_INNER+TRACK_OUTER)/2; vz=0; vy=DipY(vx,vz);
   theta=0; speed=0;
+  distance=0;
+  tf=0;
+  t0=tT;
 }
 
 U0 Varoom()
@@ -331,6 +353,7 @@ vr_done: //Don't goto out of try
     Fs->catch_except=TRUE;
   SettingsPop(Fs,TSF_SAME_SONG);
   MenuPop;
+  AcctRegWriteBranch("TempleOS/Varoom","F64 best_score=%5.4f;\n",best_score);
 }
 
 Varoom;

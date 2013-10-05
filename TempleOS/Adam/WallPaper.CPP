@@ -1,6 +1,6 @@
 #help_index "Windows"
 
-U0 WallPrintF(I64 attr=-1,I64 x,I64 y,U8 *fmt,...)
+U0 WallPrint(I64 attr=-1,I64 x,I64 y,U8 *fmt,...)
 { //Be careful, this is not fool-proof in x and can overflow.
   U8 buf[256];
   if (0<=y<TEXT_ROWS) {
@@ -8,7 +8,7 @@ U0 WallPrintF(I64 attr=-1,I64 x,I64 y,U8 *fmt,...)
       attr=BLUE<<4+WHITE;
     else
       attr=BLUE<<4+attr;
-    SPrintFJoin(buf,fmt,argc,argv);
+    SPrintJoin(buf,fmt,argc,argv);
     buf[TEXT_COLS-x]=0;
     PlotScreenStr(buf,attr,x,y);
   }
@@ -39,10 +39,10 @@ U0 WallPaper(CTask *_task)
   static I64 code_heap_unused=0,code_heap_used=0,
 	     data_heap_unused=0,data_heap_used=0;
   _task->text_attr=BLUE<<4+WHITE;
-  WallPrintF(,0,l--,"Reads:%d Writes:%d lines=%d funs=%d bytes=%010X",
+  WallPrint(,0,l--,"Reads:%d Writes:%d lines=%d funs=%d bytes=%010X",
     sys_dsk_reads,sys_dsk_writes,compiled_lines,compiled_funs,compiled_bytes);
-  WallPrintF(,0,l--,"progress1=%016X progress2=%016X",progress1,progress2);
-  WallPrintF(,0,l--,"progress3=%016X progress4=%016X",progress3,progress4);
+  WallPrint(,0,l--,"progress1=%016X progress2=%016X",progress1,progress2);
+  WallPrint(,0,l--,"progress3=%016X progress4=%016X",progress3,progress4);
   l--;
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
@@ -55,24 +55,24 @@ U0 WallPaper(CTask *_task)
 	  Fs->hash_table=task->hash_table;
 	else //precaution
 	  Fs->hash_table=old_hash;
-	SPrintF(wpd->caller_stk,"%19tP %19tP %19tP %19tP",
+	SPrint(wpd->caller_stk,"%19tP %19tP %19tP %19tP",
 	  TaskCaller(task,0),TaskCaller(task,1),
 	  TaskCaller(task,2),TaskCaller(task,3));
       }
-      WallPrintF(YELLOW,0,l--,wpd->caller_stk);
+      WallPrint(YELLOW,0,l--,wpd->caller_stk);
 
       j=UnusedStk(task);
       if (j<0)
 	StkOverflow(task);
       if (task->user_num)
-	SPrintF(buf,"#%02td",task->user_num);
+	SPrint(buf,"#%02td",task->user_num);
       else
 	StrCpy(buf,"   ");
       if (!(win_updates&63)) {
 	wpd->allocated_u8s=TaskAllocatedMem(task);
 	wpd->used_u8s	  =TaskUsedMem(task);
       }
-      WallPrintF(,0,l--,"%s %08X %010X %010X %010X %-16ts %05X:%02tX %6.2fm",buf,task,j,
+      WallPrint(,0,l--,"%s %08X %010X %010X %010X %-16ts %05X:%02tX %6.2fm",buf,task,j,
 	wpd->allocated_u8s,wpd->used_u8s,task->task_title,
 	task->task_flags,task->display_flags,
 	task->total_time/60.0/time_stamp_freq_initial);
@@ -80,7 +80,7 @@ U0 WallPaper(CTask *_task)
       task=task->next_task;
     } while (task!=c->seth_task);
   }
-  WallPrintF(,0,l--,"____Task____ UnusedStk_ _AllocMem_ _UsedMem__ __Description___ _Flags__ _Time__");
+  WallPrint(,0,l--,"____Task____ UnusedStk_ _AllocMem_ _UsedMem__ __Description___ _Flags__ _Time__");
   l--;
   if (win_updates&63==32) {
     code_heap_unused=UnusedBPMem(sys_code_bp);
@@ -92,15 +92,15 @@ U0 WallPaper(CTask *_task)
   }
 
   if (sys_data_bp) {
-    WallPrintF(,0,l--,"Data Heap Unused:%010X Data Heap Used:%010X",data_heap_unused,data_heap_used);
-    WallPrintF(,0,l--,"Code Heap Unused:%010X Code Heap Used:%010X",code_heap_unused,code_heap_used);
+    WallPrint(,0,l--,"Data Heap Unused:%010X Data Heap Used:%010X",data_heap_unused,data_heap_used);
+    WallPrint(,0,l--,"Code Heap Unused:%010X Code Heap Used:%010X",code_heap_unused,code_heap_used);
   } else
-    WallPrintF(,0,l--,"Code/Data Heap Unused:%010X Used:%010X",code_heap_unused,code_heap_used);
+    WallPrint(,0,l--,"Code/Data Heap Unused:%010X Used:%010X",code_heap_unused,code_heap_used);
 
   l--;
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
-    WallPrintF(,0,l--,"%03d %9,d",i,
+    WallPrint(,0,l--,"%03d %9,d",i,
       ToI64((last_swap_cnter[i]-last_swap_cnter2[i])/last_refresh_delta_time));
     if (win_calc_refresh_cnt!=last_calc_refresh_cnt) {
       last_refresh_delta_time=refresh_delta_time;
@@ -109,28 +109,28 @@ U0 WallPaper(CTask *_task)
     }
   }
 
-  WallPrintF(,0,l--,"CPU   Swaps/s");
-  WallPrintF(,0,l--,"      Context");
+  WallPrint(,0,l--,"CPU   Swaps/s");
+  WallPrint(,0,l--,"      Context");
 
-  cdt=GetCurTimeDate;
+  cdt=GetDateTime;
   if (!(win_updates&63))
     last_unused_sysmem=UnusedSysMem+data_heap_unused;
 
-  WallPrintF(,0,0,"%h2D %h4T Ref:%2tf Mem:%010X CPU",
+  WallPrint(,0,0,"%h2D %h4T Ref:%2tf Mem:%010X CPU",
     cdt,cdt,win_actual_refresh,last_unused_sysmem);
  
   if (wallpaper_record_on)
-    WallPrintF(RED,45-4,0,"*");
+    WallPrint(RED,45-4,0,"*");
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
     if (i&1)
-      WallPrintF(WHITE,45+i*2,0,"%2tf",100.0*(1.0-c->idle_factor));
+      WallPrint(WHITE,45+i*2,0,"%2tf",100.0*(1.0-c->idle_factor));
     else
-      WallPrintF(YELLOW,45+i*2,0,"%2tf",100.0*(1.0-c->idle_factor));
+      WallPrint(YELLOW,45+i*2,0,"%2tf",100.0*(1.0-c->idle_factor));
   }
 
   st=ScanCode2KeyName(sys_last_down_scan_code);
-  WallPrintF(YELLOW,80-18,0,"%18ts",st);
+  WallPrint(YELLOW,80-18,0,"%18ts",st);
   Free(st);
 
   Fs->hash_table=old_hash;

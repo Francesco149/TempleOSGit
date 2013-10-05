@@ -4,9 +4,8 @@ semicolon after the directive if it's not taking affect right away.
 
 #include "" 	There is no angle bracket <> form of this directive.
 #exe {}		Will execute code at compile-time and can be used to insert 
-code into the stream being compiled using
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,14] StreamPrintF().
-#define		Define string constant
+code into the stream being compiled using [MN:StreamPrint] StreamPrint().
+#define		Define string const
 #assert		Print a warning during compilation if an expression is not 
 true. 
 #if		Include code if an expresion is true.
@@ -33,7 +32,7 @@ Here are example instruction formats:
 	ADD	RAX,I64 FS:DISP[RSI+RDI*8]
 	ADD	RAX,I64 [DISP]
 
-$ Current compiler output pos (instruction ptr).  Even works in Holy C 
+$ Current compiler output pos (instruction ptr).  Even works in HolyC 
 expressions.
 
 $ works in classes.

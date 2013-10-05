@@ -105,11 +105,10 @@ links.  This is how the [C:/TempleOS/Kernel/PSect.CPP.Z,265] Man()/WORDSTAT
 feature can find src lines.
 
 * The word "public" does very little except allow the
-[C:/TempleOS/Doc/HelpIndex.TXT.Z,1] help_index and
-[C:/TempleOS/Adam/Hash2a.CPP.Z,136] HashRep() 
+[C:/TempleOS/Doc/HelpIndex.TXT.Z,1] help_index and [MN:Who] Who() 
 program varients to exclude meaningless syms.  If you wish a full report of 
 public and nonpublic syms Click Here
-`DocMax(1000000);HAllRep;View;
+`DocMax(1000000);Who;View;
 `
 .
 

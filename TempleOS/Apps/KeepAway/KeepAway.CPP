@@ -311,7 +311,7 @@ just to be different.
 
 U0 DrawObj(CDC *dc,Obj *o,F64 tt)
 {
-  U8 *inter;
+  U8 *temps;
   F64 r1=Max(9-0.1*o->z,1),r2=Max(r1/4,1);
 
   if (o==human)
@@ -324,11 +324,11 @@ U0 DrawObj(CDC *dc,Obj *o,F64 tt)
   if (o==ball)
     SpritePlot3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
   else {
-    inter=SpriteInterpolate(man_imgs[o->last_img].img[o->team],
+    temps=SpriteInterpolate(man_imgs[o->last_img].img[o->team],
 	man_imgs[o->next_img].img[o->team],
 	(tt-o->last_t0)/(o->next_t0-o->last_t0));
-    SpritePlotRotY3b(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,inter,o->ay);
-    Free(inter);
+    SpritePlotRotY3B(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,temps,o->ay);
+    Free(temps);
   }
 }
 
@@ -348,7 +348,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->ls.x=10000;
   dc->ls.y=60000;
   dc->ls.z=10000;
-  d=65535/P3I32Norm(&dc->ls);
+  d=65535/D3I32Norm(&dc->ls);
   dc->ls.x*=d;
   dc->ls.y*=d;
   dc->ls.z*=d;
@@ -432,29 +432,29 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=RED;
     tt=0;
     if (Blink)
-      GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
+      GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
 		    (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
   } else {
     if (tT<foul_t_end) {
       dc->color=LTRED;
       if (Blink)
-	GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*4)>>1,
+	GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*4)>>1,
 		     (task->win_pixel_height-FONT_HEIGHT)>>1,"Foul");
     }
     dc->color=BLACK;
   }
-  GrPrintF(dc,0,0,"Time:%d:%04.1f  Score:",ToI64(tt),(tt-ToI64(tt))*60);
-  GrPutS  (dc,FONT_WIDTH*27,0,"Best Score:");
+  GrPrint(dc,0,0,"Time:%d:%04.1f  Score:",ToI64(tt),(tt-ToI64(tt))*60);
+  GrPrint  (dc,FONT_WIDTH*27,0,"Best Score:");
 
   dc->color=LTCYAN;
-  GrPrintF(dc,FONT_WIDTH*20,0,"%02d",score0);
+  GrPrint(dc,FONT_WIDTH*20,0,"%02d",score0);
   dc->color=LTPURPLE;
-  GrPrintF(dc,FONT_WIDTH*23,0,"%02d",score1);
+  GrPrint(dc,FONT_WIDTH*23,0,"%02d",score1);
 
   dc->color=LTCYAN;
-  GrPrintF(dc,FONT_WIDTH*39,0,"%02d",best_score0);
+  GrPrint(dc,FONT_WIDTH*39,0,"%02d",best_score0);
   dc->color=LTPURPLE;
-  GrPrintF(dc,FONT_WIDTH*42,0,"%02d",best_score1);
+  GrPrint(dc,FONT_WIDTH*42,0,"%02d",best_score1);
 }
 
 

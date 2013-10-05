@@ -1,8 +1,8 @@
 //Practice your ASCII knowledge ;-)
 
-U0 SPrintFPutChar(U8 ch)
+U0 SafePutChar(U8 ch)
 {
-  if (ch>=CH_SHIFT_SPACE && ch!=CH_BACKSPACE) {
+  if (CH_SHIFT_SPACE<=ch<0x7F) {
     if (ch=='$')
       "%02X $FG,RED$$$$FG$ ",ch;
     else
@@ -25,10 +25,10 @@ U0 ASCIIOrgan()
   I64 i,ch;
 
   for (i=0;i<32;i++) {
-    SPrintFPutChar(i);
-    SPrintFPutChar(i+32);
-    SPrintFPutChar(i+64);
-    SPrintFPutChar(i+96);
+    SafePutChar(i);
+    SafePutChar(i+32);
+    SafePutChar(i+64);
+    SafePutChar(i+96);
     NewLine;
   }
 

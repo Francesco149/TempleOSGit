@@ -1,7 +1,12 @@
-asm {
 #define CD_BOOT_LOADER_SIZE	CD_BLK_SIZE*1 //Max CD_BLK_SIZE*4, I think
 #define BOOT_HIGH_LOC	((BOOT_RAM_LIMIT-(BOOT_STK_SIZE+CD_BOOT_LOADER_SIZE))>>4)
-#assert BOOT_HIGH_LOC>=KERNEL_BIN_LIMIT
+
+DefinePrint(
+  "DD_BOOT_HIGH_LOC","%08X",BOOT_HIGH_LOC<<4);
+DefinePrint(
+  "DD_BOOT_HIGH_LOC_END","%08X",BOOT_RAM_LIMIT-1);
+
+asm {
 USE16
 BCD_START::
 //DL is supposed to have the BIOS drive number
@@ -65,7 +70,7 @@ BCD_RET::
 	RET
 BCD_PUTS::
 @@1:	LODSB
-	OR	AL,AL
+	TEST	AL,AL
 	JZ	BCD_RET
 	CALL	BCD_PUTCHAR
 	JMP	@@1
@@ -148,7 +153,7 @@ BCD_MAIN::
 	MOV	EBX,U32 [BCD_BLK_LO-BCD_START] //TODO: oops overflow?
 	SHL	EBX,16
 	MOV	BX,BOOT_CODE_CDROM  //See sys_boot_code
-`Grep("sys_boot_code","/TempleOS/"FILENAME_MASK_TXT);View;
+`Grep("sys_boot_code","/TempleOS/*");View;
 `
 
 

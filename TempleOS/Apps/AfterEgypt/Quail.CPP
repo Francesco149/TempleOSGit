@@ -43,7 +43,7 @@ F64 t0,t_last;
 U0 DrawQuail(CTask *,CDC *dc)
 {
   I64 i;
-  U8 *inter;
+  U8 *temps;
   F64 tt,t1=tT-t0;
   SpritePlot3(dc,0,SKY_HEIGHT,0,__BIN_4);
   for (i=0;i<NUM_QUAIL;i++) {
@@ -63,9 +63,9 @@ U0 DrawQuail(CTask *,CDC *dc)
 	q[i].dy=-q[i].dy;
 	q[i].y+=(t1-t_last)*q[i].dy;
       }
-      inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
-      SpritePlot3(dc,q[i].x,q[i].y,0,inter);
-      Free(inter);
+      temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+      SpritePlot3(dc,q[i].x,q[i].y,0,temps);
+      Free(temps);
       if (q[i].x>0 && t1-t_last>10*Rand)
 	q[i].dead=TRUE;
     }

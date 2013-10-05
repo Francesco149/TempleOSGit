@@ -115,6 +115,11 @@ Cd("/TempleOS/Accts/TS/Wb2");Dir;
 `Cd("/TempleOS/Accts/TS/Wb2");Dir;
 `
 
+Cd("/TempleOS/Accts/TS/Wb2/Rants/TAD");Dir;
+
+`Cd("/TempleOS/Accts/TS/Wb2/Rants/TAD");Dir;
+`
+
 Cd("/TempleOS/Accts/User");Dir;
 
 `Cd("/TempleOS/Accts/User");Dir;
@@ -128,6 +133,11 @@ Cd("/TempleOS/Accts/Install");Dir;
 Cd("/TempleOS/Apps");Dir;
 
 `Cd("/TempleOS/Apps");Dir;
+`
+
+Cd("/TempleOS/Apps/HolySpirit");Dir;
+
+`Cd("/TempleOS/Apps/HolySpirit");Dir;
 `
 
 Cd("/TempleOS/Apps/Span");Dir;
@@ -244,6 +254,11 @@ MakeDistrosAndBackUp;
 `MakeDistrosAndBackUp;
 `
 
+MakeWebSitePartial;
+
+`MakeWebSitePartial;
+`
+
 M(TS_MAIN_DRV ":/TempleOS/*;~*LineCnt*",TS_BAK_DRV ":/TempleOS/*;~*LineCnt*","+r+d");
 
 `M(TS_MAIN_DRV ":/TempleOS/*;~*LineCnt*",TS_BAK_DRV ":/TempleOS/*;~*LineCnt*","+r+d");
@@ -346,20 +361,11 @@ TSMakeOSInstallPrtBootLoader(TS_BAK_DRV_LET);
 `TSMakeOSInstallPrtBootLoader(TS_BAK_DRV_LET);
 `
 
-List public functions in alphabetic order
-`DocMax;HFunsRep;View;`
-
-List all functions in alphabetic order
-`DocMax;HFunsRep("-p");View;`
-
-List all functions in numeric order
-`DocMax;HMapRep;View;`
-
 List all syms in alpabetic order
-`DocMax;HAllRep;View;`
+`DocMax;Who;View;`
 
 List all syms in numeric order
-`DocMax;HAllRep("-p+m");View;`
+`DocMax;Who("+m");View;`
 
 Test Suite
 `#include "::/TempleOS/Misc/OSTestSuite";

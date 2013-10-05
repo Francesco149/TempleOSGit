@@ -39,8 +39,8 @@ U0 Logo()
     GrSetRotMat(dc,dc->r);
 
     SpritePlot3(dc,0,0,0,__BIN_1);
-//See also [C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,318] SpritePlotRotX3b(),
-//[C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,325] SpritePlotRotY3b(),[C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,332] SpritePlotRotZ3b().
+//See also [MN:SpritePlotRotX3B] SpritePlotRotX3B(),
+//[MN:SpritePlotRotY3B] SpritePlotRotY3B(),[MN:SpritePlotRotZ3B] SpritePlotRotZ3B().
 
     WinMgrSync;
     DCFill(dc);

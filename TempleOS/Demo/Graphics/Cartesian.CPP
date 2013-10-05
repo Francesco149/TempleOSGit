@@ -24,7 +24,7 @@ U0 Cartesian()
 	first=TRUE;
 	dc->color=BLACK;
 	for (x=-h;x<=h;x++) {
-	  y=-ExePrintF("ToF64(%s);",st)(F64);
+	  y=-ExePrint("ToF64(%s);",st)(F64);
 	  if (!first)
 	    GrLine(dc,x-1+h,y_last+v,x+h,y+v);
 	  y_last=y;
@@ -45,7 +45,7 @@ Cartesian;
 
 /*
 For better performance, compile the expression entered by the user one time 
-with [C:/TempleOS/Compiler/ExpParser.CPP.Z,1236] CmpExpression() and use
+with [MN:LexExpression2Bin] LexExpression2Bin() and use
 [C:/TempleOS/Kernel/Adam1b.HPP.Z,287] Call(). See
 [C:/TempleOS/Demo/CompileDemo.CPP.Z,1].
 */

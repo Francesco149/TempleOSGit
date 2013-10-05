@@ -37,21 +37,21 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,y,x,
     h=task->win_pixel_width-10,
     v=task->win_pixel_height-10;
-  U8 *inter,*inter2,*inter3;
+  U8 *temps,*inter2,*inter3;
   F64 tt;
   if (h<1) h=1;
   if (v<1) v=1;
   tt=t_flap*t_flap*t_flap;
-  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
   if (eat_timeout && tT<eat_timeout) {
     inter2=SpriteInterpolate(__BIN_3,__BIN_4,tt);
-    inter3=SpriteInterpolate(inter2,inter,1.0-(eat_timeout-tT)/EAT_TIME);
-    Free(inter);
+    inter3=SpriteInterpolate(inter2,temps,1.0-(eat_timeout-tT)/EAT_TIME);
+    Free(temps);
     Free(inter2);
-    inter=inter3;
+    temps=inter3;
   }
-  SpritePlot3(dc,xx,yy,0,inter);
-  Free(inter);
+  SpritePlot3(dc,xx,yy,0,temps);
+  Free(temps);
   for (i=0;i<MAX_BUGS;i++)
     if (!bugs_dead[i]) {
       x=(bugs_x[i]+frame_x)%h+5;
@@ -64,14 +64,14 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
   if (tf) {
     dc->color=RED;
-    GrPutS(dc,(task->win_pixel_width-FONT_WIDTH*14)/2,
+    GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*14)/2,
 		(task->win_pixel_height-FONT_HEIGHT)/2,"Game Completed");
     tt=tf;
   } else {
     dc->color=GREEN;
     tt=tT;
   }
-  GrPrintF(dc,0,0,"Bugs:%3.1f%% Time:%3.2f Best:%3.2f",
+  GrPrint(dc,0,0,"Bugs:%3.1f%% Time:%3.2f Best:%3.2f",
     percent_completed,tt-t0,best_score);
 }
 

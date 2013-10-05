@@ -41,7 +41,7 @@ U0 DrawMountain(CTask *task,CDC *dc)
   GrFloodFill(dc,cx+70,35);
 
   dc->color=BROWN;
-  GrPutS(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
+  GrPrint(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
 
   SpritePlot3(dc,x+cx,y+cy,0,man_imgs[ToI64(8.0*tT)&1]);
 }

@@ -30,14 +30,17 @@ See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
   Kernel module, placed here by the boot-loader,
   [C:/TempleOS/Kernel/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
 
- 0x0000097000- 0x000009702E
-  Multicore start-up vect code, [C:/TempleOS/Kernel/Adam1a.HPP.Z,576]
-  MPN_VECT.
+ 0x00- 0x00
+  Compiler module, loaded by [MN:LoadCompiler] LoadCompiler().
 
- 0x000007F600- 0x000007FFFF
+ 0x00- 0x00
   Boot block relocated here before loading the Kernel module,
   [C:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] BootCD &
   [C:/TempleOS/Adam/Boot/BootHD.CPP.Z,1] BootHD.
+
+ 0x0000097000- 0x000009702E
+  Multicore start-up vect code, [C:/TempleOS/Kernel/Adam1a.HPP.Z,576]
+  MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -52,15 +55,19 @@ See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
   Code Heap mem.
 
  0x00E0000000- 0x00FFFFFFFF
-  Various hardware devices have addresses here.  32-bit devices are allocated 
-memory starting at 0xF0000000 going up.
+  32-bit devices could allocate memory at 0xF0000000 going up, but this is 
+wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
+are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
+  flaws are not an issue.
 
  0x0080000000-~0x00DFFFFFFF
  0x0100000000-~0x1FFFFFFFFF
   Data Heap mem.
 
              - 0x1FFFFFFFFF
-  64-bit devices are mapped counting backward from 128 Gig.
+  64-bit devices are allocated with [C:/TempleOS/Kernel/Memory.CPP.Z,1239]
+  Mem64DevAlloc() counting backward from 
+128 Gig, but no PCI devices are actually supported.
   
 
 				      [C:/TempleOS/Kernel/Adam1a.HPP.Z,2741] CBlkPools [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrls
@@ -70,6 +77,9 @@ memory starting at 0xF0000000 going up.
 
 0000,0000,0000,7C00 Kernel
 0000,0000,0003,E3AF 
+
+0000,0000, Compiler
+0000,0000, 
 
 0000,0000,0010,0000 Page_Tables			   AdamTask
 

@@ -154,7 +154,7 @@ CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE)
       if (!Drv(*mask)) valid=FALSE;
     mask+=2;
   }
-  if (StrStr(mask,"HOME") && Fs->cur_prt!=Drv2Prt(*sys_acct))
+  if (StrMatch("HOME",mask) && Fs->cur_prt!=Drv2Prt(*sys_acct))
     Drv(*sys_acct);
   fa->p=Fs->cur_prt;
   PrtChk(fa->p);
@@ -197,12 +197,16 @@ CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 {
 /*
 Flags:
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE		+r Recurse
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3604] FUF_FLATTEN_TREE	+f **be sure to use this along with '+F'**.
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS		+D just directories
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES		+F just files
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3597] FUF_JUST_TXT_FILES	+T just text files: [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT
- [C:/TempleOS/Kernel/Adam1a.HPP.Z,3598] FUF_JUST_SRC_FILES	+S just src files : [C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE		+r Recurse
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3604] FUF_FLATTEN_TREE	+f **use with '+F'**.  Just use +F, probably.
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS		+D just directories
+  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES	+F just files (Flattens trees)
+  [MN:FUF_JUST_TXT] FUF_JUST_TXT	+T just text files	: [MN:FILEMASK_TXT] FILEMASK_TXT
+  [MN:FUF_JUST_SRC] FUF_JUST_SRC	+S just src files	: [MN:FILEMASK_SRC] FILEMASK_SRC
+  [MN:FUF_JUST_AOT] FUF_JUST_AOT	+A just aot files	: [MN:FILEMASK_AOT] FILEMASK_AOT
+  [MN:FUF_JUST_JIT] FUF_JUST_JIT	+J just jit files	: [MN:FILEMASK_JIT] FILEMASK_JIT
+  [MN:FUF_JUST_GRA] FUF_JUST_GRA	+G just graphic files	: [MN:FILEMASK_GRA] FILEMASK_GRA
+
 See [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   CDirEntry *result;
@@ -219,7 +223,7 @@ See [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS when used in calli
 
 Bool IsDir(U8 *dir_name)
 {
-  U8 *mask=MSPrintF("%s/*",dir_name);
+  U8 *mask=MPrint("%s/*",dir_name);
   Bool result,old_silent=Silent(ON);
   CFileAccess *fa;
   if (fa=FileAccessNew(mask)) {
@@ -359,9 +363,9 @@ U8 *TextFileRead(U8 *filename,I64 *_attr=NULL)
 }
 
 
-Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
+Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 { //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
-  //If you pass rde, you must Free(rde->full_name);
+  //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;
   CDirEntry de;
@@ -395,8 +399,8 @@ Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
 	default:
 	  PutDefineErr("ST_UNSUPPORTED_FILE_SYSTEM");
       }
-      if (result && rde)
-	full_name=MSPrintF("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
+      if (result && _de)
+	full_name=MPrint("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
       FileAccessDel(fa);
     }
   }
@@ -424,17 +428,17 @@ Bool FileFind(U8 *filename,CDirEntry *rde=NULL,I64 fuf_flags=0)
 	     PutDefineErr("ST_UNSUPPORTED_FILE_SYSTEM");
 	}
       }
-      if (result && rde)
-	full_name=MSPrintF("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
+      if (result && _de)
+	full_name=MPrint("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
       FileAccessDel(fa);
     }
   }
-  if (rde) {
+  if (_de) {
     if (result) {
-      MemCpy(rde,&de,sizeof(CDirEntry));
-      rde->full_name=full_name;
+      MemCpy(_de,&de,sizeof(CDirEntry));
+      _de->full_name=full_name;
     } else
-      MemSet(rde,0,sizeof(CDirEntry));
+      MemSet(_de,0,sizeof(CDirEntry));
   }
   Free(altname);
   return result;
@@ -458,15 +462,11 @@ I64 FileSizeExpanded(U8 *filename,I64 fuf_flags=0)
   if (FileFind(filename,&de,fuf_flags)) {
     p=Drv2Prt(*de.full_name);
     Free(de.full_name);
-    if (p->type==PT_REDSEA && de.expanded_size)
-      return de.expanded_size;
-    else {
-      if (de.size && FileAttr(de.name) & _ATTR_COMPRESSED) {
-	RBlks(p,buf,Cluster2Blk(p,de.cluster),1);
-	return (&buf)(CArcCompress *)->expanded_size;
-      } else
-	return de.size;
-    }
+    if (de.size && FileAttr(de.name) & _ATTR_COMPRESSED) {
+      RBlks(p,buf,Cluster2Blk(p,de.cluster),1);
+      return (&buf)(CArcCompress *)->expanded_size;
+    } else
+      return de.size;
   } else
     return 0;
 }

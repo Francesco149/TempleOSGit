@@ -150,6 +150,11 @@ U8 *StrToASCII(U8 *s)
       case 'phi': ext="phi"; break;
       case 'omega': ext="omega"; break;
       case '-': ext="-"; break;
+      case 'u':
+      case 'u':
+      case 'u':
+      case 'u':
+      case 'u':
       case 'u': ext="u"; break;
       case 'alpha': ext="alpha"; break;
       case '+':
@@ -164,10 +169,112 @@ U8 *StrToASCII(U8 *s)
       case '|':
       case '|': ext="|"; break;
       case '_': ext="_"; break;
+      case 'a':
+      case 'a':
+      case 'a':
+      case 'a': ext="a"; break;
+      case 'c':
+      case 'c':
+      case 'c': ext="c"; break;
+      case 'e':
+      case 'e':
+      case 'e':
+      case 'e': ext="e"; break;
+      case 'i':
+      case 'i':
+      case 'i':
+      case 'i': ext="i"; break;
+      case 'a':
+      case 'a':
+      case 'a':
+      case 'a': ext="a"; break;
+      case 'E': ext="E"; break;
+      case 'ae': ext="ae"; break;
+      case 'AE': ext="AE"; break;
+      case 'o':
+      case 'o':
+      case 'o':
+      case 'o':
+      case 'o':
+      case 'o': ext="o"; break;
+      case 'y': ext="y"; break;
+      case 'pounds': ext="pounds"; break;
+      case 'yen': ext="yen"; break;
+      case 'Pt': ext="Pt"; break;
+      case 'f': ext="f"; break;
+      case 'n':
+      case 'n': ext="n"; break;
+      case '?': ext="?"; break;
+      case ''':
+      case ''': ext="'"; break;
+      case '1/2': ext="1/2"; break;
+      case '1/4': ext="1/4"; break;
+      case '!': ext="!"; break;
+      case '<<': ext="<<"; break;
+      case '>>': ext=">>"; break;
+      case '.': ext="."; break;
+      case ':': ext=":"; break;
+      case '#': ext="#"; break;
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+':
+      case '+': ext="+"; break;
+      case '-':
+      case '-': ext="-"; break;
+      case '|':
+      case '|': ext="|"; break;
+      case 'beta': ext="beta"; break;
+      case 'gamma': ext="gamma"; break;
+      case 'SIGMA': ext="SIGMA"; break;
+      case 'sigma': ext="sigma"; break;
+      case 'upsilon': ext="upsilon"; break;
+      case 'delta': ext="delta"; break;
+      case 'phi': ext="phi"; break;
+      case 'ei': ext="ei"; break;
+      case 'eta': ext="eta"; break;
+      case '===': ext="==="; break;
+      case '+-': ext="+-"; break;
+      case '>=': ext=">="; break;
+      case '>=': ext-"<="; break;
+      case 'integral_top': ext="integral_top"; break;
+      case 'integral_bot': ext="integral_bot"; break;
+      case '/': ext="/"; break;
+      case '~=': ext="~="; break;
+      case 'degrees': ext="degrees"; break;
+      case '.':
+      case '.': ext="."; break;
+      case 'sqrt': ext="sqrt"; break;
+      case '^n': ext="^n"; break;
+      case '^2': ext="^2"; break;
+      case '.': ext="."; break;
       case 255: ext="\\xFF"; break; //Only used in the extended chars demo
       default:
         if (*buf&0x80)
-          "W: extended ASCII char: '%c'\n",*buf;
+          "%s: extended ASCII char '%c'\n",ST_WARN_ST,*buf;
         goto next_char;
     }
     if (StrLen(ext)!=1) {

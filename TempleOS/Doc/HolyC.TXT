@@ -1,4 +1,4 @@
-                                    Holy C
+                                    HolyC
 
 * See [C:/TempleOS/Doc/ImportExports.TXT.Z,1] Scoping and Linkages for
 details on extern, import, _extern, _import, 
@@ -21,33 +21,33 @@ U16,U32,I64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 	F64	double
 	no F32 float.
 
-* Function with no, or just default args can be called without parentheses. 
+* Function with no args, or just default args can be called without 
+parentheses. 
 
 * Default args don't have to be on the end.  This code is valid:
   U0 Test(I64 i=4,I64 j,I64 k=5)
 {
-  PrintF("%X %X %X\n",i,j,k);
+  Print("%X %X %X\n",i,j,k);
 }
 
 Test(,3);
 
-* A string or char constant all alone is sent to
-[C:/TempleOS/Kernel/Display.CPP.Z,207] PutS() or
-[C:/TempleOS/Kernel/Display.CPP.Z,199] PutChar().  A 
-string with args is sent to [C:/TempleOS/Kernel/Str1a.CPP.Z,2351] PrintF().  
-An empty string literal signals a 
-variable fmt_str follows.
+* A char const all alone is sent to [C:/TempleOS/Kernel/Display.CPP.Z,199]
+PutChar().  A string with or without args 
+is sent to [MN:Print] Print().  An empty string literal signals a variable
+fmt_str 
+follows.
 
-  U0 Demo1(U8 drv,U8 *fmt,U8 *name,I64 age)
+  void Demo(char drv,char *fmt,char *name,int age)
 {
-  PutS("Hello World!\n");
-  PrintF("%s age %d\n",name,age);
-  PrintF(fmt,name,age);
-  PutChar(drv);
-  PutChar('*');
+  printf("Hello World!\n");
+  printf("%s age %d\n",name,age);
+  printf(fmt,name,age);
+  putchar(drv);
+  putchar('*');
 }
 
-U0 Demo2(U8 drv,U8 *fmt,U8 *name,I64 age)
+U0 Demo(U8 drv,U8 *fmt,U8 *name,I64 age)
 {
   "Hello World!\n";
   "%s age %d\n",name,age;
@@ -71,10 +71,10 @@ be accessed as a whole, if you put a type in front of the class declaration.
 * Variable arg count functions (...) can access their args with built-in 
 variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.  
   
-  U0 GrPrintF(CDC *dc,I64 x,I64 y,U8 *fmt,...)
+  U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=SPrintFJoin(NULL,fmt,argc,argv);
-    GrPutS(dc,x,y,buf);
+    U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
+    GrPrint(dc,x,y,buf);
     Free(buf);
   }
   
@@ -95,7 +95,8 @@ check.
 * noreg or reg can be placed before a function local var name.  You can, 
 optionally, specify a register after the reg keyword.
 
-* interrupt, public, argpop or noargpop are function flags.
+* interrupt, haserrcode, public, argpop or noargpop are function flags. See 
+[C:/TempleOS/Demo/Lectures/PageTableEntries2.CPP.Z,1].
 
 * A nounusedwarn statement will suppress an unused var warning.
 
@@ -145,10 +146,9 @@ insert
 text into the stream of code being compiled.  See
 [C:/TempleOS/Kernel/KEnd.CPP.Z,1] #exe {} for an example where 
 the date/time and compile-time prompting for cfguration data is placed into a 
-program.  The [C:/TempleOS/Compiler/CmpMain.CPP.Z,14] StreamPrintF() and
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,1] StreamPutS() place text into a src
-program 
-stream following the conclusion of the #exe{} blk.
+program.  [MN:StreamPrint] StreamPrint() places text into a src program
+stream following the 
+conclusion of the #exe{} blk.
 
 * No #define functions exist (I'm not a fan)
 
@@ -160,7 +160,7 @@ stream following the conclusion of the #exe{} blk.
 
 * "$" is an escape character.  Two dollar signs signify an ordinary $.  See 
 [C:/TempleOS/Doc/Dollar.TXT.Z,1].  In asm or [C:/TempleOS/Doc/HolyC.TXT.Z,1]
-Holy C code, it also refers to the 
+HolyC code, it also refers to the 
 instruction's addr. 
 
 * union is more like a class, so you don't reference it with a union label 
@@ -176,6 +176,9 @@ types now used.  All compiler structures are saved and you can access the
 compiler's info about classes and vars.  See
 [C:/TempleOS/Demo/ClassMeta.CPP.Z,1] 
 and  [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291] DocFormDo().
+
+* There is a keyword lastclass you use as a dft arg.  It is set to the class 
+name of the previous arg.  See [C:/TempleOS/Adam/Dbg2a.CPP.Z,134] ClassRep().
 
 * See [C:/TempleOS/Demo/Exceptions.CPP.Z,1].  try{} catch{} and throw are
 different 
@@ -239,75 +242,72 @@ I32 j;
 j=i=0x12345678; //Resulting i is 0x5678 but j is 0x12345678
 
 I64 i=0x8000000000000000;
-PrintF("%X\n",i>>1);  //Result is 0xC000000000000000 as expected
+Print("%X\n",i>>1);  //Result is 0xC000000000000000 as expected
 
-I64 u=0x8000000000000000;
-PrintF("%X\n",u>>1);  //Result is 0x4000000000000000 as expected
+U64 u=0x8000000000000000;
+Print("%X\n",u>>1);  //Result is 0x4000000000000000 as expected
 
-I32 i=0x80000000; 	  //constant is loaded into a 64-bit register var.
-PrintF("%X\n",i>>1);  //Result is 0x40000000
+I32 i= 0x80000000;   //const is loaded into a 64-bit register var.
+Print("%X\n",i>>1);  //Result is 0x40000000
 
 I32 i=-0x80000000;
-PrintF("%X\n",i>>1);  //Result is 0xC0000000 as expected
+Print("%X\n",i>>1);  //Result is 0xC0000000 as expected
 
 
-                                PrintF Family
+                                 Print Family
 
-[C:/TempleOS/Kernel/Str1a.CPP.Z,2359] MSPrintF() is like
-[C:/TempleOS/Kernel/Str1a.CPP.Z,2043] SPrintF() but it returns a
-[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAllocated str.  It is vary 
-handy because you don't have to worry about overflow.
+[MN:MPrint] MPrint() is like [MN:SPrint] SPrint() but it returns a
+[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAllocated str.  It is vary handy 
+because you don't have to worry about overflow.
 
-[C:/TempleOS/Kernel/Display.CPP.Z,207] PutS() doesn't print a new line.
-
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto(U8 *fmtstr,...) sends text to the
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto(U8 *fmt,...) sends text to the
 current task's input buffer.
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,384] AutoStr(U8 *fmtstr,...) sends text of
-an [C:/TempleOS/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of 
-the current TASK but can also do mouse cmds.
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,384] AutoStr(U8 *fmt,...) sends text of an
+[C:/TempleOS/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
+current TASK but can also do mouse cmds.
 
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,333] XTalk(CTask *task,U8 *fmtstr,...) and
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,333] XTalk(CTask *task,U8 *fmt,...) and
 text to another task's input buffer.
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,409] XTalkStr(CTask *task,U8 *fmtstr,...)
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,409] XTalkStr(CTask *task,U8 *fmt,...)
 sends text of an [C:/TempleOS/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
+[MN:DocPrint] DocPrint(CDoc *doc,U8 *fmt,...) sends text to a document.  You
+can buffer to a 
+Doc and save it, providing the functionality of fprintf.  See 
+[C:/TempleOS/Demo/Dsk/FPrintF.CPP.Z,1].
 
-[C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1111] DocPutS(CDoc *doc,U8 *src) and
-[C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1267] DocPrintF(CDoc *doc,U8
-*fmtstr,...) send text 
-to a linked text file.  You can buffer to a Doc and save it, providing the 
-functionality of fprintf.  See [C:/TempleOS/Demo/Dsk/FPrintF.CPP.Z,1].
-
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,286] Adam(U8 *fmtstr,...) send text to the
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,286] Adam(U8 *fmt,...) sends text to the
 adam task to be compiled and run.
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,307] AdamLog(U8 *fmtstr,...) and
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,319] AdamErr(U8 *fmtstr,...) send text to
-the adam task 
-to be displayed.
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,307] AdamLog(U8 *fmt,...) and
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,319] AdamErr(U8 *fmt,...) send text to the
+adam task to be 
+displayed.
 
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,14] StreamPrintF(U8 *fmtstr,...) and
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,1] StreamPutS(U8 *src) send text to the
-stream 
-of code being compiled and must reside in a #exe{} blk.
+[MN:StreamPrint] StreamPrint(U8 *fmt,...) sends text to the stream of code
+being compiled and 
+must reside in a #exe{} blk.
 
-[C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,845] GrPrintF(CDC *dc,I64 x,I64 y,U8
-*fmtstr,...) and [C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,797] GrPutS(CDC *dc,I64
-x,I64 y,U8 
-*src) plots text in graphics mode.  [C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,852]
-GrVPrintF() and [C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,820] GrVPutS() will print 
-vertically.
+[MN:GrPrint] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and [MN:GrVPrint]
+GrVPrint() plots text in graphics 
+mode.
 
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,568] ExePrintF(U8 *fmtstr,...) and
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,530] ExePutS(U8 *src) compile and execute
-a string.  
-Note: It returns the result of the last executed expression.
+[MN:ExePrint] ExePrint(U8 *fmt,...) compiles and execute a string.  Note: It
+returns the 
+result of the last executed expression.
 
-**Note:** If no PutS variant is available, you can use PrintF("%s",src).
+[MN:AFPrint] AFPrint(I64 mS,U8 *fmt) [C:/TempleOS/Kernel/Display.CPP.Z,199]
+PutChar()s one at a time with a delay.
+
+[MN:RawPrint] RawPrint(I64 mS,U8 *fmt) sends direct to screen memory,
+bypassing window 
+manager.
+
+**Note:** Use Print("%s",src) if you need an unmodified string.
 
 
-The [C:/TempleOS/Kernel/Str1a.CPP.Z,2351] PrintF() family supports extended
-format codes.  See [C:/TempleOS/Kernel/Str1a.CPP.Z,1325] SPrintFJoin().
+The [MN:Print] Print() family supports extended format codes.  See
+[MN:SPrintJoin] SPrintJoin().
   %[-][0][width][.decimals][flags][hsub_fmt][main_fmt]
 
 flags:
@@ -325,7 +325,7 @@ sub_fmt:
 On "%n", "%d" or "%u", the sub_fmt causes thousands mode.
   "%h?n" will pick a var exponent multiples of three unit, while "%h-3n", 
 for example, will display milli units or "%h6n" will display mega units.  
-The 'k' flag is always on for "%n".  See [C:/TempleOS/Demo/PrintF.CPP.Z,1].
+The 'k' flag is always on for "%n".  See [C:/TempleOS/Demo/Print.CPP,1].
   
 *  "%n" will print a floating point in engineering notation, exponents being 
 multiples of three.  If it has a sub_fmt code, it will display scientific 
@@ -341,16 +341,14 @@ units letters.
 
 * "%T" and "%D" will display a date or time and the format is selected with 
 a subcode, entered after a "h".  Example: "%20h1D" uses date format code 
-"1". See [C:/TempleOS/Demo/DateTime.CPP.Z,1],
-  [C:/TempleOS/Kernel/Date.CPP.Z,299] MSPrintFDate() and
-  [C:/TempleOS/Kernel/Date.CPP.Z,208] MSPrintFTime() 
-for subcodes.
+"1". See [C:/TempleOS/Demo/DateTime.CPP.Z,1], [MN:MPrintDate] MPrintDate()
+  and [MN:MPrintTime] MPrintTime() for 
+subcodes.
 
-* "%z" will display a subentry of an enumerated list of text entries. It 
-calls [C:/TempleOS/Kernel/Str1a.CPP.Z,393] LstEntryPt().  Pass entry_num
-  first, list second.
+* "%z" will display a subentry of an enumerated list of text entries.  It 
+calls [MN:LstSub] LstSub().  Pass subentry first, list second.
 
-* "%Z" will display a Define subentry.  Pass entry_num first, lst_systext 
+* "%Z" will display a Define subentry.  Pass subentry first, lst_define 
 second.
 
 * "%Q" will convert "\" to "\\" and quote to backslash quote. (For use in 

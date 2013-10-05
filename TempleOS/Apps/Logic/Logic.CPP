@@ -103,7 +103,7 @@ U0 PmtGates()
       Free(st);
       return;
     }
-    i=LstEntryMatch(st,gate_type_lst,LEF_IGNORE_CASE);
+    i=LstMatch(st,gate_type_lst,LMF_IGNORE_CASE);
     Free(st);
     if (i<GT_FIRST_REAL_GATE)
       "Invalid response\n";
@@ -196,13 +196,13 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
   if (_y_out) *_y_out=yy;
   if (Bt(displayed_design,output) && type!=GT_INPUT) {
     dc->color=GREEN;
-    GrPutS(dc,xx-FONT_WIDTH*3,y-4,"Dup");
+    GrPrint(dc,xx-FONT_WIDTH*3,y-4,"Dup");
     y+=10;
   } else
     switch (type) {
       case GT_INPUT:
 	dc->color=GREEN;
-	GrPrintF(dc,xx-FONT_WIDTH-4,y-4,"%C",'A'+input1_table[output]);
+	GrPrint(dc,xx-FONT_WIDTH-4,y-4,"%C",'A'+input1_table[output]);
 	y+=10;
 	break;
       case GT_NOT:
@@ -263,7 +263,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	break;
     }
   dc->color=BLACK;
-  GrPrintF(dc,xx,yy+3,"%04X",output);
+  GrPrint(dc,xx,yy+3,"%04X",output);
   Bts(displayed_design,output);
   if (_y) *_y=y;
 }

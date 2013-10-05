@@ -30,7 +30,7 @@ U0 DrawIt(CTask *,CDC *dc)
   background->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,0,0,background);
   for (i=0;i<MAX_FANS;i++)
-    SpritePlotRotZ3b(dc,x[i],y[i],0,__BIN_1,theta[i]);
+    SpritePlotRotZ3B(dc,x[i],y[i],0,__BIN_1,theta[i]);
   if (ball_t) {
     t0=(tT-ball_t)/BALL_TIME;
     if (t0>1.0)
@@ -44,11 +44,11 @@ U0 DrawIt(CTask *,CDC *dc)
       Free(dc->r);
       GrSetRotMat(dc,r);
       dc->flags|=DCF_TRANSFORMATION;
-      SpritePlotRotZ3b(dc,xx,yy,0,__BIN_2,t0);
+      SpritePlotRotZ3B(dc,xx,yy,0,__BIN_2,t0);
     }
   }
   dc->color=RED;
-  GrPutS(dc,FONT_WIDTH,FONT_HEIGHT,"Peg the Fans");
+  GrPrint(dc,FONT_WIDTH,FONT_HEIGHT,"Peg the Fans");
 }
 
 U0 AnimateTask(I64)

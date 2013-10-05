@@ -63,17 +63,17 @@ I64 x0[NUM_GEESE],y0[NUM_GEESE];
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  U8 *inter;
+  U8 *temps;
   I64 i,w=task->win_pixel_width,h=task->win_pixel_height;
 
   dc->color=DKGRAY;
-  GrPutS(dc,w>>1-(POEM_COLS*FONT_WIDTH)>>1,
+  GrPrint(dc,w>>1-(POEM_COLS*FONT_WIDTH)>>1,
 	    (Saw(tT-t0,POEM_TIME)-.8)*POEM_LINES*FONT_HEIGHT, poem);
 
   for (i=0;i<NUM_GEESE;i++) {
-    inter=SpriteInterpolate(__BIN_1,__BIN_2,1.2*Tri(tT-t0_s[i],0.7));
-    SpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,inter);
-    Free(inter);
+    temps=SpriteInterpolate(__BIN_1,__BIN_2,1.2*Tri(tT-t0_s[i],0.7));
+    SpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,temps);
+    Free(temps);
   }
 }
 

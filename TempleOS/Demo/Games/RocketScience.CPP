@@ -91,7 +91,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=ROP_COLLISION;
     dc->bkcolor=LTCYAN;
     dc->collision_cnt=0;
-    SpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
+    SpritePlotRotZ3B(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
     if (dc->collision_cnt>100) {
       Noise(1000,500,1500);
       plane_hit=TRUE;
@@ -101,7 +101,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Snd(0);
 
   dc->color=ROP_EQU;
-  SpritePlotRotZ3b(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
+  SpritePlotRotZ3B(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_3,-theta);
 
   dc->color=RED;
   GrCircle(dc,cx+target.x,cy-target.y,5);
@@ -110,7 +110,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrCircle(dc,cx+m3.x,cy-m3.y,5);
 
   dc->color=BLACK;
-  GrPrintF(dc,0,FONT_HEIGHT,"%12.6f",dbg);
+  GrPrint(dc,0,FONT_HEIGHT,"%12.6f",dbg);
 }
 
 
@@ -215,7 +215,7 @@ U0 Init()
   s.end1=&m1;
   s.end2=&m2;
   s.rest_len=PT_SPAN;
-  s.constant=10000;
+  s.const=10000;
 
   ode->state[STATE_NOZZLE_ANGLE]=0;
   ode->state[STATE_NOZZLE_ANGLE_VELOCITY]=0;

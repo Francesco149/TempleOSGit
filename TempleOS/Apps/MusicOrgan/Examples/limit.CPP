@@ -10,10 +10,10 @@ U0 DrawIt(CTask *,CDC *dc)
 
   dc->color=BLACK;
   if (dt<21.5)
-    GrPutS(dc,235,30,"- -");
+    GrPrint(dc,235,30,"- -");
   else {
     SpritePlot3(dc,235,30,0,__BIN_1);
-    GrPutS(dc,235,30,"o o");
+    GrPrint(dc,235,30,"o o");
   }
 }
 

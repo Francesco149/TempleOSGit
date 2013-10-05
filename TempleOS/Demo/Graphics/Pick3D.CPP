@@ -85,7 +85,7 @@ U8 *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 *r,*old_r;
-  PickFrame *pf=NamedFramePtr("PickFrame",task);
+  PickFrame *pf=FramePtr("PickFrame",task);
   PObj *tempo=pf->o_root.next;
 
   pf->cx=task->win_pixel_width>>1;
@@ -242,7 +242,7 @@ PickFrame *Init()
     GrRotXEqu(dr,0.05*2*(Rand-0.5));
     PCSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_PT]*RandU16/MAX_U16,r,dr);
   }
-  NamedFramePtrSet("PickFrame",pf);
+  FramePtrSet("PickFrame",pf);
   return pf;
 }
 
@@ -263,7 +263,7 @@ U0 Pick3D()
   PObj *tempo;
   PickFrame *pf=NULL;
 
-  NamedFramePtrAdd("PickFrame",pf);
+  FramePtrAdd("PickFrame",pf);
 
   MenuPush(
 "File {"
@@ -325,7 +325,7 @@ pd_done:
   SettingsPop;
   MenuPop;
   CleanUp(pf);
-  NamedFramePtrDel("PickFrame");
+  FramePtrDel("PickFrame");
 }
 
 Pick3D;

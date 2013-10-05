@@ -46,7 +46,7 @@ U0 DrawIt(CTask *,CDC *dc)
   dc->color=WHITE;
   GrRect(dc,5,5,StrLen(buf)*FONT_WIDTH,FONT_HEIGHT);
   dc->color=BLACK;
-  GrPutS(dc,5,5,buf);
+  GrPrint(dc,5,5,buf);
 }
 
 
@@ -81,7 +81,7 @@ U0 Main()
       best_i=cur_apple;
       old_x=x[best_i];
       old_y=y[best_i];
-      SPrintF(buf,"Elem #%d Dist Squared:%d",cur_sprite_elem_num,cur_dist);
+      SPrint(buf,"Elem #%d Dist Squared:%d",cur_sprite_elem_num,cur_dist);
       do {
 	msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_MOVE|1<<MSG_IP_L_UP);
 	if (msg_code!=MSG_KEY_DOWN) {

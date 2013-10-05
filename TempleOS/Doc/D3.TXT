@@ -1,4 +1,4 @@
-TempleOS has a class for 3 dimensional points consisting of F64s.  Holy C is 
+TempleOS has a class for 3 dimensional points consisting of F64s.  HolyC is 
 not C++ -- it does not support passing or returning values from functions 
 which are not 64-bits, therefore, it can't be implemented with operator 
 overloading.  Making all function args and returns 64-bit is a core prinicple 

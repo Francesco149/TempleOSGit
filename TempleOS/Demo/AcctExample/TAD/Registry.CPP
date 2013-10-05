@@ -1,37 +1,30 @@
 +] Adam
   +] TempleOS
       +] SysMsgFlags
-          sys_msg_flags[0]=0x205;
+          sys_msg_flags[0]=0;
           +] SysRegVer
-          registry_version=1.040;
-            +] DemoCompany
-  +] Game1
-      F64 best_score=1.23;
-    +] SimpleVal
-          1234;
+          registry_version=1.060;
             +] TempleOS
-  +] CircleTrace
-      F64 best_score=999.0000;
-      +] FPS
-      F64 best_score=55.2079;
-      +] EagleDive
-      I64 best_score=6;
-      +] CastleFrankenstein
-      F64 best_score=56.7504;
-      +] ZoneOut
-      F64 best_score=79.0963;
+  +] Varoom
+      F64 best_score=9999.0000;
       +] BugBird
-      F64 best_score=16.1659;
+      F64 best_score=9999.0000;
       +] TimeOut
-      I64 best_score=14797;
+      I64 best_score=0;
       +] RawHide
-      F64 best_score=60.9434;
+      F64 best_score=9999.0000;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
       +] XCaliber
-      I64 best_score=118;
+      I64 best_score=0;
       +] Wenceslas
       F64 best_score=9999.0000;
       +] BulgeBomber
-      I64 best_score=53;
+      I64 best_score=99999;
+      +] EagleDive
+      I64 best_score=0;
+      +] CastleFrankenstein
+      F64 best_score=69.1680;
+      +] ZoneOut
+      F64 best_score=76.8861;
       

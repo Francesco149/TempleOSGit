@@ -186,18 +186,9 @@ CTRL-ALT-G	Grid on/off
 CTRL-ALT-M	Mute ssound
 CTRL-ALT-X	Kill window
  
-List public functions in alphabetic order
-`DocMax;HFunsRep;View;`
-
-List all functions in alphabetic order
-`DocMax;HFunsRep("-p");View;`
-
-List all functions in numeric order
-`DocMax;HMapRep;View;`
-
 List all syms in alpabetic order
-`DocMax;HAllRep;View;`
+`DocMax;Who;View;`
 
 List all syms in numeric order
-`DocMax;HAllRep("-p+m");View;`
+`DocMax;Who("+m");View;`
 

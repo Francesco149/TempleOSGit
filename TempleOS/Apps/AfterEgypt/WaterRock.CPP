@@ -95,7 +95,7 @@ U0 DrawWaterRock(CTask *task,CDC *dc)
   I64 i,r,
       cx=task->win_pixel_width>>1,
       cy=task->win_pixel_height>>1;
-  U8 *inter;
+  U8 *temps;
   F64 tt;
   if (t0_down) {
     tt=(tT-t0_down);
@@ -117,10 +117,10 @@ U0 DrawWaterRock(CTask *task,CDC *dc)
     tt=1.0-tt;
   }
   i=(NUM_FRAMES-1)*tt;
-  inter=SpriteInterpolate(imgs[i],imgs[i+1],(NUM_FRAMES-1)*tt-i);
-  SpritePlot3(dc,cx,cy,0,inter);
+  temps=SpriteInterpolate(imgs[i],imgs[i+1],(NUM_FRAMES-1)*tt-i);
+  SpritePlot3(dc,cx,cy,0,temps);
   SpritePlot3(dc,cx,cy,0,__BIN_5);
-  Free(inter);
+  Free(temps);
 }
 
 U0 WaterRock()

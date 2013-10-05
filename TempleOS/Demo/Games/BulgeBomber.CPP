@@ -83,12 +83,12 @@ U0 DrawIt(CTask *task,CDC *dc)
 	     tk[i].x+1024*Cos(tk[i].theta),tk[i].y+1024*Sin(tk[i].theta),0);
       }
       if (Blink(15))
-	SpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
+	SpritePlotRotZ3B(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
       else
-	SpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_5,tk[i].theta);
+	SpritePlotRotZ3B(dc,tk[i].x,tk[i].y,0,__BIN_5,tk[i].theta);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     } else
-      SpritePlotRotZ3b(dc,tk[i].x,tk[i].y,0,__BIN_3,tk[i].theta);
+      SpritePlotRotZ3B(dc,tk[i].x,tk[i].y,0,__BIN_3,tk[i].theta);
   for (i=0;i<NUM_TREES;i++)
     SpritePlot3(dc,tr[i].x,tr[i].y,0,__BIN_2);
   if (bt) {
@@ -104,10 +104,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->flags&=~DCF_TRANSFORMATION;
   SpritePlot3(dc,task->win_pixel_width>>1,task->win_pixel_height>>1,0,__BIN_1);
   dc->color=RED;
-  GrPrintF(dc,0,0,
+  GrPrint(dc,0,0,
     "Tanks:%02d  KeyStrokes:%04d Best:%04d",tank_cnt,key_cnt,best_score);
   if (!tank_cnt && Blink(4))
-    GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
+    GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
 		(task->win_pixel_height-FONT_HEIGHT)>>1-32,"Game Over");
 }
  
@@ -140,7 +140,7 @@ I64 AnimateTask(CTask *parent)
       h=parent->win_pixel_height;
   while (TRUE) {
     if (tank_cnt)
-      Snd(60+0.001*(1.0+Abs(Wrap(thetaf-theta,-pi)))`8.0);
+      Snd(100+(1.0+Abs(Wrap(thetaf-theta,-pi)))`4.0);
     theta+=.01*(thetaf-theta);
     x+=v*Sin(theta);
     y+=v*Cos(theta);

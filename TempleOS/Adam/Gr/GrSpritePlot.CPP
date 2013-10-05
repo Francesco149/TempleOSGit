@@ -12,7 +12,7 @@ unions are used.  It's kind-of a mess using a union.
 [C:/TempleOS/Adam/Gr/CSpriteNew.CPP.Z,119] SpriteSize() will return the size of a single
 operation, while [C:/TempleOS/Adam/Gr/CSpriteNew.CPP.Z,119] SpriteSize() with an 's' will
 return the size of an entire lst.  Look at
-[C:/TempleOS/Adam/Gr/CSpriteNew.CPP.Z,5] gr_sprite_base_size.
+[MN:sprite_base_size] sprite_base_size.
 
 To get familiar, type <CTRL-R> on sprite in
 a document and select "Display as Text".  It
@@ -75,7 +75,7 @@ public U0 SpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	GrPlot3(dc,tempg->x1+x,tempg->y1+y,z);
 	break;
       case GRST_TEXT:
-	GrPutS3(dc,tempg->x1+x,tempg->y1+y,z,tempg->st);
+	GrPrint3(dc,tempg->x1+x,tempg->y1+y,z,"%s",tempg->st);
 	break;
       case GRST_TEXT_BOX:
 	GrTextBox3(dc,tempg->x1+x,tempg->y1+y,z,tempg->st);
@@ -292,7 +292,7 @@ public U0 SpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	    old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
 }
 
-public U0 SpritePlot3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
+public U0 SpritePlot3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
 {
   I64 old_x=dc->x,old_y=dc->y,old_z=dc->z,
       old_flags=dc->flags&DCF_TRANSFORMATION;
@@ -303,7 +303,7 @@ public U0 SpritePlot3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
   dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
-public U0 SpritePlotRotMat3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
+public U0 SpritePlotRotMat3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
 {
   I64 *old_r=dc->r,old_m[16],
       old_flags=dc->flags&DCF_TRANSFORMATION;
@@ -318,24 +318,24 @@ public U0 SpritePlotRotMat3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
   dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
-public U0 SpritePlotRotX3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
+public U0 SpritePlotRotX3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
 {
   I64 *r=GrRotX(phi);
-  SpritePlotRotMat3b(dc,x,y,z,elems,r);
+  SpritePlotRotMat3B(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 SpritePlotRotY3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
+public U0 SpritePlotRotY3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
 {
   I64 *r=GrRotY(omega);
-  SpritePlotRotMat3b(dc,x,y,z,elems,r);
+  SpritePlotRotMat3B(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 SpritePlotRotZ3b(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
+public U0 SpritePlotRotZ3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
 {
   I64 *r=GrRotZ(theta);
-  SpritePlotRotMat3b(dc,x,y,z,elems,r);
+  SpritePlotRotMat3B(dc,x,y,z,elems,r);
   Free(r);
 }
 
@@ -501,10 +501,10 @@ public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *txt=NULL)
   tempb->use_cnt=1;
   QueIns(tempb,doc->bin_root.last);
   if (txt)
-    st=MSPrintF(txt,doc->cur_bin_num++);
+    st=MPrint(txt,doc->cur_bin_num++);
   else
-    st=MSPrintF("$SP,\"\",%d$",doc->cur_bin_num++);
-  doc_e=DocPutS(doc,st);
+    st=MPrint("$SP,\"\",%d$",doc->cur_bin_num++);
+  doc_e=DocPrint(doc,"%s",st);
   Free(st);
   doc_e->bin_data=tempb;
   if (doc_e && Bt(doc_tag_types,doc_e->type_u8) && doc_e->tag && *doc_e->tag)

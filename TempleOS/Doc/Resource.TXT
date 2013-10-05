@@ -6,7 +6,7 @@ color changes.  In a program's source code, you first make a sprite.  Then,
 you insert a pointer to it.
 
 You can create an icon on your personal menu or in any document by placing a 
-sprite with a payload of [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C code to
+sprite with a payload of [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC code to
 execute.  This is a called "sprite 
 macro".  If you check "Pop-Up", it will spawn a new task and run the payload.
  

@@ -13,7 +13,7 @@ You make use of a sprite in a program by entering
 "insert binary", $IB$ cmds by hand after pressing
 <CTRL-T> or using <CTRL-R> and
 selecting "Pointer to CSprite Data".
-They behave like string constants when compiled.
+They behave like string consts when compiled.
 That is, they are ptrs to data.
 
 SpritePlot.CPP.Z uses the persistent graphic CDC, gr_dc,

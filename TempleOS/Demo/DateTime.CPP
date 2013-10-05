@@ -11,9 +11,9 @@
   is stored in the lower 32-bits.  The upper
   32-bits hold the num of days since Christ.
 
-  [C:/TempleOS/Kernel/Str1a.CPP.Z,2351] PrintF() and the file datetimes use
+  [MN:Print] Print() and the file datetimes use
   this format, otherwise you might want to
-  use [C:/TempleOS/Kernel/Adam1b.HPP.Z,199] GetTimeStamp() for a higher frequency
+  use [MN:GetTSC] GetTSC() for a higher frequency
   timing, divide by [C:/TempleOS/Kernel/KGlbls.CPP.Z,57] time_stamp_freq,
   but this num is tied to your CPU's
   clock frequency which is inexact when
@@ -21,7 +21,7 @@
 */
 
 
-CDate cdt=GetCurTimeDate;
+CDate cdt=GetDateTime;
 
 I64 i;
 for (i=0;i<DF_NUM;i++)

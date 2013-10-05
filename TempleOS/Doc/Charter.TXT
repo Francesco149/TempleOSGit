@@ -37,7 +37,7 @@ agreements.
 10) TempleOS documents are not for printing.  They're dynamic and intended
 for 
 the screen.  There will always be just one font, a fixed-width font.  No 
-Unicode, just ASCII.
+Unicode, just "8-bit ASCII".
 
 11) TempleOS is not for multimedia.  Games will be created by programmers,
 not 

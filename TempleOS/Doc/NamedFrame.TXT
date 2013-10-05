@@ -1,4 +1,0 @@
-If you require separate global vars for multiple instances of a routine, you 
-can use NamedFrames.  See [C:/TempleOS/Adam/Gr/CSpriteMesh.CPP.Z,875]
-CSpriteMesh(), [C:/TempleOS/Demo/Graphics/Pick3D.CPP.Z,1] 
-or [C:/TempleOS/Adam/Snd/SndEffects.CPP.Z,46] Noise().

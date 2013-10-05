@@ -72,7 +72,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   SpritePlot3(dc,x,y,0,__BIN_1);
 //Text attr include forground in the
 //lowest 4 bits and background in the upper 4.
-  SPrintF(buf,"Penalty:%d",penalty);
+  SPrint(buf,"Penalty:%d",penalty);
   PlotWinStr(task,buf,BLACK+WHITE*16,1,1);
 }
 

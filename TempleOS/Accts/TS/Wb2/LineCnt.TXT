@@ -1,5 +1,5 @@
- 122,808 +] /TempleOS/*
-       613 +] Accts
+ 124,033 +] /TempleOS/*
+       604 +] Accts
          290 +] Install
             40 [D:/TempleOS/Accts/Install/Adam3fSys.CPP.Z,1] Adam3fSys.CPP.Z
      250 [D:/TempleOS/Accts/Install/DoItOnce.CPP.Z,1] DoItOnce.CPP.Z
@@ -7,14 +7,14 @@
                  9 [D:/TempleOS/Accts/Adam3.CPP.Z,1] Adam3.CPP.Z
       20 [D:/TempleOS/Accts/Adam3aLocalize.CPP.Z,1] Adam3aLocalize.CPP.Z
       26 [D:/TempleOS/Accts/Adam3bPkgs.CPP.Z,1] Adam3bPkgs.CPP.Z
-     180 [D:/TempleOS/Accts/Adam3dKeyPlugIns.CPP.Z,1] Adam3dKeyPlugIns.CPP.Z
+     171 [D:/TempleOS/Accts/Adam3dKeyPlugIns.CPP.Z,1] Adam3dKeyPlugIns.CPP.Z
       28 [D:/TempleOS/Accts/Adam3eWrappers.CPP.Z,1] Adam3eWrappers.CPP.Z
       43 [D:/TempleOS/Accts/Adam3fSys.CPP.Z,1] Adam3fSys.CPP.Z
       17 [D:/TempleOS/Accts/DoItOnce.CPP.Z,1] DoItOnce.CPP.Z
-    37,180 +] Adam
-       1,382 +] Boot
-           159 [D:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] BootCD.CPP.Z
-      95 [D:/TempleOS/Adam/Boot/BootHD.CPP.Z,1] BootHD.CPP.Z
+    36,945 +] Adam
+       1,386 +] Boot
+           164 [D:/TempleOS/Adam/Boot/BootCD.CPP.Z,1] BootCD.CPP.Z
+      94 [D:/TempleOS/Adam/Boot/BootHD.CPP.Z,1] BootHD.CPP.Z
      107 [D:/TempleOS/Adam/Boot/BootMHD.CPP.Z,1] BootMHD.CPP.Z
      121 [D:/TempleOS/Adam/Boot/BootMHD2.CPP.Z,1] BootMHD2.CPP.Z
      536 [D:/TempleOS/Adam/Boot/DskCDDVD.CPP.Z,1] DskCDDVD.CPP.Z
@@ -24,64 +24,64 @@
      394 [D:/TempleOS/Adam/Ctrls/Ctrls2a.CPP.Z,1] Ctrls2a.CPP.Z
       95 [D:/TempleOS/Adam/Ctrls/CtrlsButton.CPP.Z,1] CtrlsButton.CPP.Z
      218 [D:/TempleOS/Adam/Ctrls/CtrlsSlider.CPP.Z,1] CtrlsSlider.CPP.Z
-      11,727 +] Doc
-           100 [D:/TempleOS/Adam/Doc/Doc.CPP.Z,1] Doc.CPP.Z
-     193 [D:/TempleOS/Adam/Doc/DocBible.CPP.Z,1] DocBible.CPP.Z
+      11,494 +] Doc
+            98 [D:/TempleOS/Adam/Doc/Doc.CPP.Z,1] Doc.CPP.Z
+     196 [D:/TempleOS/Adam/Doc/DocBible.CPP.Z,1] DocBible.CPP.Z
      576 [D:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,1] DocCodeTools.CPP.Z
-   1,190 [D:/TempleOS/Adam/Doc/DocCtrlL.CPP.Z,1] DocCtrlL.CPP.Z
-   2,491 [D:/TempleOS/Adam/Doc/DocEd.CPP.Z,1] DocEd.CPP.Z
+   1,181 [D:/TempleOS/Adam/Doc/DocCtrlL.CPP.Z,1] DocCtrlL.CPP.Z
+   2,321 [D:/TempleOS/Adam/Doc/DocEd.CPP.Z,1] DocEd.CPP.Z
      466 [D:/TempleOS/Adam/Doc/DocFile.CPP.Z,1] DocFile.CPP.Z
      386 [D:/TempleOS/Adam/Doc/DocHighlight.CPP.Z,1] DocHighlight.CPP.Z
      507 [D:/TempleOS/Adam/Doc/DocIDE.CPP.Z,1] DocIDE.CPP.Z
      220 [D:/TempleOS/Adam/Doc/DocMacro.CPP.Z,1] DocMacro.CPP.Z
      693 [D:/TempleOS/Adam/Doc/DocMain.CPP.Z,1] DocMain.CPP.Z
-     839 [D:/TempleOS/Adam/Doc/DocNew.CPP.Z,1] DocNew.CPP.Z
+     860 [D:/TempleOS/Adam/Doc/DocNew.CPP.Z,1] DocNew.CPP.Z
      117 [D:/TempleOS/Adam/Doc/DocOpt.CPP.Z,1] DocOpt.CPP.Z
-   1,154 [D:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] DocPlain.CPP.Z
-     917 [D:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,1] DocPopUp.CPP.Z
-   1,702 [D:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1] DocRecalc.CPP.Z
+   1,122 [D:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] DocPlain.CPP.Z
+     926 [D:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,1] DocPopUp.CPP.Z
+   1,649 [D:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1] DocRecalc.CPP.Z
      176 [D:/TempleOS/Adam/Doc/DocTree.CPP.Z,1] DocTree.CPP.Z
-       1,839 +] Dsk
+       1,815 +] Dsk
            233 [D:/TempleOS/Adam/Dsk/ChkDsk.CPP.Z,1] ChkDsk.CPP.Z
        5 [D:/TempleOS/Adam/Dsk/Dsk2.CPP.Z,1] Dsk2.CPP.Z
-     422 [D:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,1] Dsk2a.CPP.Z
+     398 [D:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,1] Dsk2a.CPP.Z
      413 [D:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,1] Dsk2b.CPP.Z
      766 [D:/TempleOS/Adam/Dsk/FileMgr.CPP.Z,1] FileMgr.CPP.Z
-      12,015 +] Gr
-           682 [D:/TempleOS/Adam/Gr/CSpriteBitMap.CPP.Z,1] CSpriteBitMap.CPP.Z
-   1,269 [D:/TempleOS/Adam/Gr/CSpriteEd.CPP.Z,1] CSpriteEd.CPP.Z
-   1,234 [D:/TempleOS/Adam/Gr/CSpriteMain.CPP,1] CSpriteMain.CPP.Z
-   1,383 [D:/TempleOS/Adam/Gr/CSpriteMesh.CPP.Z,1] CSpriteMesh.CPP.Z
-     236 [D:/TempleOS/Adam/Gr/CSpriteNew.CPP.Z,1] CSpriteNew.CPP.Z
-     127 [D:/TempleOS/Adam/Gr/Gr.CPP.Z,1] Gr.CPP.Z
+      12,113 +] Gr
+           121 [D:/TempleOS/Adam/Gr/Gr.CPP.Z,1] Gr.CPP.Z
      766 [D:/TempleOS/Adam/Gr/GrAsm.CPP.Z,1] GrAsm.CPP.Z
-   1,730 [D:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,1] GrBitMap.CPP.Z
+   1,734 [D:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,1] GrBitMap.CPP.Z
       11 [D:/TempleOS/Adam/Gr/GrCfg.CPP.Z,1] GrCfg.CPP.Z
      107 [D:/TempleOS/Adam/Gr/GrChar.CPP.Z,1] GrChar.CPP.Z
-     184 [D:/TempleOS/Adam/Gr/GrComposites.CPP.Z,1] GrComposites.CPP.Z
-     305 [D:/TempleOS/Adam/Gr/GrDC.CPP.Z,1] GrDC.CPP.Z
-   1,513 [D:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,1] GrPrimatives.CPP.Z
-     796 [D:/TempleOS/Adam/Gr/GrScreen.CPP.Z,1] GrScreen.CPP.Z
+     209 [D:/TempleOS/Adam/Gr/GrComposites.CPP.Z,1] GrComposites.CPP.Z
+     307 [D:/TempleOS/Adam/Gr/GrDC.CPP.Z,1] GrDC.CPP.Z
+   1,557 [D:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,1] GrPrimatives.CPP.Z
+     867 [D:/TempleOS/Adam/Gr/GrScreen.CPP.Z,1] GrScreen.CPP.Z
      525 [D:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,1] GrSpritePlot.CPP.Z
    1,147 [D:/TempleOS/Adam/Gr/MathGr.CPP.Z,1] MathGr.CPP.Z
-         680 +] Snd
+     682 [D:/TempleOS/Adam/Gr/SpriteBitMap.CPP,1] SpriteBitMap.CPP.Z
+   1,269 [D:/TempleOS/Adam/Gr/SpriteEd.CPP,1] SpriteEd.CPP.Z
+   1,234 [D:/TempleOS/Adam/Gr/SpriteMain.CPP,1] SpriteMain.CPP.Z
+   1,383 [D:/TempleOS/Adam/Gr/SpriteMesh.CPP,1] SpriteMesh.CPP.Z
+     194 [D:/TempleOS/Adam/Gr/SpriteNew.CPP,1] SpriteNew.CPP.Z
+         677 +] Snd
            235 [D:/TempleOS/Adam/Snd/MathAudio.CPP.Z,1] MathAudio.CPP.Z
-     225 [D:/TempleOS/Adam/Snd/Music.CPP.Z,1] Music.CPP.Z
+     221 [D:/TempleOS/Adam/Snd/Music.CPP.Z,1] Music.CPP.Z
       22 [D:/TempleOS/Adam/Snd/Snd.CPP.Z,1] Snd.CPP.Z
       75 [D:/TempleOS/Adam/Snd/SndEffects.CPP.Z,1] SndEffects.CPP.Z
-     123 [D:/TempleOS/Adam/Snd/SndFile.CPP.Z,1] SndFile.CPP.Z
-       2,405 +] Utils
+     124 [D:/TempleOS/Adam/Snd/SndFile.CPP.Z,1] SndFile.CPP.Z
+       2,354 +] Utils
             84 [D:/TempleOS/Adam/Utils/BinRep.CPP,1] BinRep.CPP.Z
      304 [D:/TempleOS/Adam/Utils/Diff.CPP,1] Diff.CPP.Z
      288 [D:/TempleOS/Adam/Utils/FileBMP.CPP,1] FileBMP.CPP.Z
-     267 [D:/TempleOS/Adam/Utils/Grep.CPP,1] Grep.CPP.Z
+     253 [D:/TempleOS/Adam/Utils/Grep.CPP,1] Grep.CPP.Z
      160 [D:/TempleOS/Adam/Utils/HeapLog.CPP,1] HeapLog.CPP.Z
-     114 [D:/TempleOS/Adam/Utils/LineCnt.CPP,1] LineCnt.CPP.Z
-      75 [D:/TempleOS/Adam/Utils/LinkChk.CPP,1] LinkChk.CPP.Z
-     246 [D:/TempleOS/Adam/Utils/MemRep.CPP,1] MemRep.CPP.Z
-      92 [D:/TempleOS/Adam/Utils/Merge.CPP,1] Merge.CPP.Z
+     108 [D:/TempleOS/Adam/Utils/LineCnt.CPP,1] LineCnt.CPP.Z
+      63 [D:/TempleOS/Adam/Utils/LinkChk.CPP,1] LinkChk.CPP.Z
+     249 [D:/TempleOS/Adam/Utils/MemRep.CPP,1] MemRep.CPP.Z
+      80 [D:/TempleOS/Adam/Utils/Merge.CPP,1] Merge.CPP.Z
      201 [D:/TempleOS/Adam/Utils/Profiler.CPP,1] Profiler.CPP.Z
-      70 [D:/TempleOS/Adam/Utils/S2T.CPP,1] S2T.CPP.Z
+      60 [D:/TempleOS/Adam/Utils/S2T.CPP,1] S2T.CPP.Z
      354 [D:/TempleOS/Adam/Utils/ToHtml.CPP,1] ToHtml.CPP.Z
      150 [D:/TempleOS/Adam/Utils/ToTXT.CPP,1] ToTXT.CPP.Z
        1,341 +] WordStat
@@ -89,12 +89,12 @@
      220 [D:/TempleOS/Adam/WordStat/WSDictGen.CPP.Z,1] WSDictGen.CPP.Z
      720 [D:/TempleOS/Adam/WordStat/WSMain.CPP.Z,1] WSMain.CPP.Z
       94 [D:/TempleOS/Adam/WordStat/WordStat.CPP.Z,1] WordStat.CPP.Z
-          71 [D:/TempleOS/Adam/Adam2.CPP.Z,1] Adam2.CPP.Z
-     140 [D:/TempleOS/Adam/AutoFile2a.CPP.Z,1] AutoFile2a.CPP.Z
+          70 [D:/TempleOS/Adam/Adam2.CPP.Z,1] Adam2.CPP.Z
+     142 [D:/TempleOS/Adam/AutoFile2a.CPP.Z,1] AutoFile2a.CPP.Z
      253 [D:/TempleOS/Adam/Dbg2a.CPP.Z,1] Dbg2a.CPP.Z
      210 [D:/TempleOS/Adam/DevInfo.CPP.Z,1] DevInfo.CPP.Z
-      62 [D:/TempleOS/Adam/DocDefines.CPP.Z,1] DocDefines.CPP.Z
-     496 [D:/TempleOS/Adam/Hash2a.CPP.Z,1] Hash2a.CPP.Z
+      74 [D:/TempleOS/Adam/DocDefines.CPP.Z,1] DocDefines.CPP.Z
+     458 [D:/TempleOS/Adam/Hash2a.CPP.Z,1] Hash2a.CPP.Z
      162 [D:/TempleOS/Adam/LogIn.CPP.Z,1] LogIn.CPP.Z
      139 [D:/TempleOS/Adam/Math2a.CPP.Z,1] Math2a.CPP.Z
      636 [D:/TempleOS/Adam/MathODE.CPP.Z,1] MathODE.CPP.Z
@@ -105,15 +105,15 @@
      444 [D:/TempleOS/Adam/Utils2a.CPP.Z,1] Utils2a.CPP.Z
      212 [D:/TempleOS/Adam/WallPaper.CPP.Z,1] WallPaper.CPP.Z
    1,500 [D:/TempleOS/Adam/Window.CPP.Z,1] Window.CPP.Z
-     113 [D:/TempleOS/Adam/AdamExt.HPP.Z,1] AdamExt.HPP.Z
-    14,962 +] Apps
-       1,154 +] AfterEgypt
+     112 [D:/TempleOS/Adam/AdamExt.HPP.Z,1] AdamExt.HPP.Z
+    15,110 +] Apps
+       1,153 +] AfterEgypt
              0 +] Comics
                    209 [D:/TempleOS/Apps/AfterEgypt/AfterEgypt.CPP.Z,1]
       AfterEgypt.CPP.Z
      138 [D:/TempleOS/Apps/AfterEgypt/Battle.CPP.Z,1] Battle.CPP.Z
       29 [D:/TempleOS/Apps/AfterEgypt/Comics.CPP.Z,1] Comics.CPP.Z
-      76 [D:/TempleOS/Apps/AfterEgypt/GodTalking.CPP,1] GodTalking.CPP.Z
+      75 [D:/TempleOS/Apps/AfterEgypt/GodTalking.CPP,1] GodTalking.CPP.Z
      340 [D:/TempleOS/Apps/AfterEgypt/Horeb.CPP.Z,1] Horeb.CPP.Z
       18 [D:/TempleOS/Apps/AfterEgypt/Load.CPP.Z,1] Load.CPP.Z
       72 [D:/TempleOS/Apps/AfterEgypt/Map.CPP.Z,1] Map.CPP.Z
@@ -126,8 +126,8 @@
      296 [D:/TempleOS/Apps/GrModels/ManGen.CPP.Z,1] ManGen.CPP.Z
       26 [D:/TempleOS/Apps/GrModels/Models.CPP.Z,1] Models.CPP.Z
        3 [D:/TempleOS/Apps/GrModels/Run.CPP.Z,1] Run.CPP.Z
-          75 +] HolySpirit
-            75 [D:/TempleOS/Apps/HolySpirit/HolySpirit.CPP.Z,1]
+          77 +] HolySpirit
+            77 [D:/TempleOS/Apps/HolySpirit/HolySpirit.CPP.Z,1]
       HolySpirit.CPP.Z
          741 +] KeepAway
            736 [D:/TempleOS/Apps/KeepAway/KeepAway.CPP.Z,1] KeepAway.CPP.Z
@@ -137,13 +137,14 @@
              2 [D:/TempleOS/Apps/Logic/Load.CPP.Z,1] Load.CPP.Z
      612 [D:/TempleOS/Apps/Logic/Logic.CPP.Z,1] Logic.CPP.Z
        3 [D:/TempleOS/Apps/Logic/Run.CPP.Z,1] Run.CPP.Z
-       6,346 +] MusicOrgan
-         4,057 +] Examples
+       6,503 +] MusicOrgan
+         4,141 +] Examples
               74 [D:/TempleOS/Apps/MusicOrgan/Examples/abiding.CPP.Z,1]
         abiding.CPP.Z
       42 [D:/TempleOS/Apps/MusicOrgan/Examples/abyss.CPP.Z,1] abyss.CPP.Z
       23 [D:/TempleOS/Apps/MusicOrgan/Examples/almighty.CPP.Z,1]
         almighty.CPP.Z
+      21 [D:/TempleOS/Apps/MusicOrgan/Examples/alone.CPP,1] alone.CPP.Z
       23 [D:/TempleOS/Apps/MusicOrgan/Examples/appreciate.CPP.Z,1]
         appreciate.CPP.Z
       75 [D:/TempleOS/Apps/MusicOrgan/Examples/awake.CPP.Z,1] awake.CPP.Z
@@ -181,6 +182,7 @@
         epicurus.CPP.Z
       41 [D:/TempleOS/Apps/MusicOrgan/Examples/exalt.CPP.Z,1] exalt.CPP.Z
       64 [D:/TempleOS/Apps/MusicOrgan/Examples/exiled.CPP.Z,1] exiled.CPP.Z
+      21 [D:/TempleOS/Apps/MusicOrgan/Examples/exodus.CPP,1] exodus.CPP.Z
       45 [D:/TempleOS/Apps/MusicOrgan/Examples/expedition.CPP.Z,1]
         expedition.CPP.Z
       35 [D:/TempleOS/Apps/MusicOrgan/Examples/fairness.CPP.Z,1]
@@ -203,6 +205,7 @@
       59 [D:/TempleOS/Apps/MusicOrgan/Examples/gutenberg.CPP.Z,1]
         gutenberg.CPP.Z
       57 [D:/TempleOS/Apps/MusicOrgan/Examples/happy.CPP.Z,1] happy.CPP.Z
+      21 [D:/TempleOS/Apps/MusicOrgan/Examples/hearsay.CPP,1] hearsay.CPP.Z
       21 [D:/TempleOS/Apps/MusicOrgan/Examples/honestly.CPP.Z,1]
         honestly.CPP.Z
       56 [D:/TempleOS/Apps/MusicOrgan/Examples/hope.CPP.Z,1] hope.CPP.Z
@@ -225,6 +228,7 @@
         personal.CPP.Z
       21 [D:/TempleOS/Apps/MusicOrgan/Examples/population.CPP.Z,1]
         population.CPP.Z
+      21 [D:/TempleOS/Apps/MusicOrgan/Examples/project.CPP,1] project.CPP.Z
       17 [D:/TempleOS/Apps/MusicOrgan/Examples/proponent.CPP.Z,1]
         proponent.CPP.Z
       56 [D:/TempleOS/Apps/MusicOrgan/Examples/prosper.CPP.Z,1] prosper.CPP.Z
@@ -271,9 +275,10 @@
       66 [D:/TempleOS/Apps/MusicOrgan/Examples/zip.CPP.Z,1] zip.CPP.Z
              2 [D:/TempleOS/Apps/MusicOrgan/Install.CPP.Z,1] Install.CPP.Z
      147 [D:/TempleOS/Apps/MusicOrgan/JukeBox.CPP.Z,1] JukeBox.CPP.Z
-       8 [D:/TempleOS/Apps/MusicOrgan/Load.CPP.Z,1] Load.CPP.Z
-     172 [D:/TempleOS/Apps/MusicOrgan/MakeSong.CPP.Z,1] MakeSong.CPP.Z
-   1,868 [D:/TempleOS/Apps/MusicOrgan/Organ.CPP.Z,1] Organ.CPP.Z
+      93 [D:/TempleOS/Apps/MusicOrgan/JukePuppet.CPP,1] JukePuppet.CPP.Z
+       9 [D:/TempleOS/Apps/MusicOrgan/Load.CPP.Z,1] Load.CPP.Z
+     155 [D:/TempleOS/Apps/MusicOrgan/MakeSong.CPP.Z,1] MakeSong.CPP.Z
+   1,864 [D:/TempleOS/Apps/MusicOrgan/Organ.CPP.Z,1] Organ.CPP.Z
       88 [D:/TempleOS/Apps/MusicOrgan/OrganCtrls.CPP.Z,1] OrganCtrls.CPP.Z
        4 [D:/TempleOS/Apps/MusicOrgan/Run.CPP.Z,1] Run.CPP.Z
          833 +] Span
@@ -293,18 +298,18 @@
              7 [D:/TempleOS/Apps/TimeClock/Install.CPP.Z,1] Install.CPP.Z
        2 [D:/TempleOS/Apps/TimeClock/Load.CPP.Z,1] Load.CPP.Z
      156 [D:/TempleOS/Apps/TimeClock/TimeClk.CPP.Z,1] TimeClk.CPP.Z
-         605 +] TimeOut
+         593 +] TimeOut
              6 [D:/TempleOS/Apps/TimeOut/Load.CPP,1] Load.CPP.Z
        3 [D:/TempleOS/Apps/TimeOut/Run.CPP,1] Run.CPP.Z
-     596 [D:/TempleOS/Apps/TimeOut/TimeOut.CPP,1] TimeOut.CPP.Z
-       1,969 +] ToTheFront
+     584 [D:/TempleOS/Apps/TimeOut/TimeOut.CPP,1] TimeOut.CPP.Z
+       1,971 +] ToTheFront
            235 +] AIs
              157 [D:/TempleOS/Apps/ToTheFront/AIs/Human.CPP,1] Human.CPP.Z
       78 [D:/TempleOS/Apps/ToTheFront/AIs/SimpleAI.CPP,1] SimpleAI.CPP.Z
              3 [D:/TempleOS/Apps/ToTheFront/Install.CPP,1] Install.CPP.Z
        2 [D:/TempleOS/Apps/ToTheFront/Load.CPP,1] Load.CPP.Z
        3 [D:/TempleOS/Apps/ToTheFront/Run.CPP,1] Run.CPP.Z
-   1,726 [D:/TempleOS/Apps/ToTheFront/ToTheFront.CPP,1] ToTheFront.CPP.Z
+   1,728 [D:/TempleOS/Apps/ToTheFront/ToTheFront.CPP,1] ToTheFront.CPP.Z
           67 +] Vocabulary
              6 [D:/TempleOS/Apps/Vocabulary/Load.CPP.Z,1] Load.CPP.Z
        3 [D:/TempleOS/Apps/Vocabulary/Run.CPP.Z,1] Run.CPP.Z
@@ -314,53 +319,57 @@
        3 [D:/TempleOS/Apps/X-Caliber/Run.CPP.Z,1] Run.CPP.Z
    1,135 [D:/TempleOS/Apps/X-Caliber/X-Caliber.CPP.Z,1] X-Caliber.CPP.Z
      141 [D:/TempleOS/Apps/X-Caliber/XCCtrls.CPP.Z,1] XCCtrls.CPP.Z
-        20,410 +] Compiler
-       1,479 [D:/TempleOS/Compiler/Assembler.CPP.Z,1] Assembler.CPP.Z
-   4,656 [D:/TempleOS/Compiler/BackEnd.CPP.Z,1] BackEnd.CPP.Z
-     695 [D:/TempleOS/Compiler/CmpAsm.CPP.Z,1] CmpAsm.CPP.Z
-      57 [D:/TempleOS/Compiler/CmpExts.CPP.Z,1] CmpExts.CPP.Z
-      21 [D:/TempleOS/Compiler/CmpGlbls.CPP.Z,1] CmpGlbls.CPP.Z
+        20,074 +] Compiler
+       1,469 [D:/TempleOS/Compiler/Assembler.CPP.Z,1] Assembler.CPP.Z
+   4,642 [D:/TempleOS/Compiler/BackEnd.CPP.Z,1] BackEnd.CPP.Z
+     527 [D:/TempleOS/Compiler/CmpAsm.CPP.Z,1] CmpAsm.CPP.Z
+      52 [D:/TempleOS/Compiler/CmpExts.CPP.Z,1] CmpExts.CPP.Z
+      22 [D:/TempleOS/Compiler/CmpGlbls.CPP.Z,1] CmpGlbls.CPP.Z
      731 [D:/TempleOS/Compiler/CmpInit.CPP.Z,1] CmpInit.CPP.Z
-     728 [D:/TempleOS/Compiler/CmpMain.CPP.Z,1] CmpMain.CPP.Z
-     483 [D:/TempleOS/Compiler/CodeGen.CPP.Z,1] CodeGen.CPP.Z
+     716 [D:/TempleOS/Compiler/CmpMain.CPP.Z,1] CmpMain.CPP.Z
       81 [D:/TempleOS/Compiler/Directives.CPP.Z,1] Directives.CPP.Z
-   1,269 [D:/TempleOS/Compiler/ExpParser.CPP.Z,1] ExpParser.CPP.Z
+   1,223 [D:/TempleOS/Compiler/ExpParser.CPP.Z,1] ExpParser.CPP.Z
      156 [D:/TempleOS/Compiler/Hash1b.CPP.Z,1] Hash1b.CPP.Z
-   1,687 [D:/TempleOS/Compiler/Lex.CPP.Z,1] Lex.CPP.Z
+     369 [D:/TempleOS/Compiler/ICLCC.CPP,1] ICLCC.CPP.Z
+   1,683 [D:/TempleOS/Compiler/Lex.CPP.Z,1] Lex.CPP.Z
    2,078 [D:/TempleOS/Compiler/OptPass012.CPP.Z,1] OptPass012.CPP.Z
-     619 [D:/TempleOS/Compiler/OptPass3.CPP.Z,1] OptPass3.CPP.Z
-     723 [D:/TempleOS/Compiler/OptPass4.CPP.Z,1] OptPass4.CPP.Z
-     122 [D:/TempleOS/Compiler/OptPass5.CPP.Z,1] OptPass5.CPP.Z
-     238 [D:/TempleOS/Compiler/OptPass6.CPP.Z,1] OptPass6.CPP.Z
-   1,246 [D:/TempleOS/Compiler/OptPass789A.CPP.Z,1] OptPass789A.CPP.Z
-   1,985 [D:/TempleOS/Compiler/StmtParser.CPP.Z,1] StmtParser.CPP.Z
+     646 [D:/TempleOS/Compiler/OptPass3.CPP.Z,1] OptPass3.CPP.Z
+     728 [D:/TempleOS/Compiler/OptPass4.CPP.Z,1] OptPass4.CPP.Z
+     124 [D:/TempleOS/Compiler/OptPass5.CPP.Z,1] OptPass5.CPP.Z
+     245 [D:/TempleOS/Compiler/OptPass6.CPP.Z,1] OptPass6.CPP.Z
+   1,256 [D:/TempleOS/Compiler/OptPass789.CPP,1] OptPass789.CPP.Z
+   1,973 [D:/TempleOS/Compiler/StmtParser.CPP.Z,1] StmtParser.CPP.Z
      851 [D:/TempleOS/Compiler/Unassembler.CPP.Z,1] Unassembler.CPP.Z
-     389 [D:/TempleOS/Compiler/CmpDefs.HPP.Z,1] CmpDefs.HPP.Z
-      91 [D:/TempleOS/Compiler/Compiler.HPP.Z,1] Compiler.HPP.Z
+     391 [D:/TempleOS/Compiler/CmpDefs.HPP.Z,1] CmpDefs.HPP.Z
+      86 [D:/TempleOS/Compiler/Compiler.HPP.Z,1] Compiler.HPP.Z
       25 [D:/TempleOS/Compiler/Compiler.PRJ.Z,1] Compiler.PRJ.Z
-    20,893 +] Demo
-       1,357 +] AcctExample
-            37 +] TAD
-              13 [D:/TempleOS/Demo/AcctExample/TAD/Adam3.CPP.Z,1] Adam3.CPP.Z
+    22,402 +] Demo
+       2,396 +] AcctExample
+           741 +] TAD
+             707 +] Archive
+               707
+          [D:/TempleOS/Demo/AcctExample/TAD/Archive/DiningStars.CPP,1] DiningStars.CPP.Z
+              11 [D:/TempleOS/Demo/AcctExample/TAD/Adam3.CPP.Z,1] Adam3.CPP.Z
       19 [D:/TempleOS/Demo/AcctExample/TAD/Adam3aLocalize.CPP.Z,1]
         Adam3aLocalize.CPP.Z
-       5 [D:/TempleOS/Demo/AcctExample/TAD/Registry.CPP.Z,1] Registry.CPP.Z
-             9 [D:/TempleOS/Demo/AcctExample/Adam3bPkgs.CPP.Z,1]
+       4 [D:/TempleOS/Demo/AcctExample/TAD/Registry.CPP.Z,1] Registry.CPP.Z
+            10 [D:/TempleOS/Demo/AcctExample/Adam3bPkgs.CPP.Z,1]
       Adam3bPkgs.CPP.Z
-     267 [D:/TempleOS/Demo/AcctExample/Adam3dKeyPlugIns.CPP.Z,1]
+     257 [D:/TempleOS/Demo/AcctExample/Adam3dKeyPlugIns.CPP.Z,1]
       Adam3dKeyPlugIns.CPP.Z
       10 [D:/TempleOS/Demo/AcctExample/Adam3eWrappers.CPP.Z,1]
       Adam3eWrappers.CPP.Z
       60 [D:/TempleOS/Demo/AcctExample/Adam3fSys.CPP.Z,1] Adam3fSys.CPP.Z
       12 [D:/TempleOS/Demo/AcctExample/DbgAdam1.CPP.Z,1] DbgAdam1.CPP.Z
       13 [D:/TempleOS/Demo/AcctExample/DoItOnce.CPP.Z,1] DoItOnce.CPP.Z
-     416 [D:/TempleOS/Demo/AcctExample/TSAdam.CPP.Z,1] TSAdam.CPP.Z
-     533 [D:/TempleOS/Demo/AcctExample/TSDistro.CPP.Z,1] TSDistro.CPP.Z
-         425 +] Asm
+     445 [D:/TempleOS/Demo/AcctExample/TSAdam.CPP.Z,1] TSAdam.CPP.Z
+     541 [D:/TempleOS/Demo/AcctExample/TSDistro.CPP.Z,1] TSDistro.CPP.Z
+     307 [D:/TempleOS/Demo/AcctExample/TSHolySpirit.CPP,1] TSHolySpirit.CPP.Z
+         559 +] Asm
             79 [D:/TempleOS/Demo/Asm/AsmAndC.CPP.Z,1] AsmAndC.CPP.Z
       96 [D:/TempleOS/Demo/Asm/AsmAndC2.CPP.Z,1] AsmAndC2.CPP.Z
       58 [D:/TempleOS/Demo/Asm/AsmHelloWorld.CPP.Z,1] AsmHelloWorld.CPP.Z
-      49 [D:/TempleOS/Demo/Asm/BuzzFizz.CPP.Z,1] BuzzFizz.CPP.Z
+     183 [D:/TempleOS/Demo/Asm/BuzzFizz.CPP.Z,1] BuzzFizz.CPP.Z
       24 [D:/TempleOS/Demo/Asm/DivByHand.CPP.Z,1] DivByHand.CPP.Z
       71 [D:/TempleOS/Demo/Asm/MulByHand.CPP.Z,1] MulByHand.CPP.Z
       48 [D:/TempleOS/Demo/Asm/PutDec.CPP.Z,1] PutDec.CPP.Z
@@ -385,11 +394,11 @@
       85 [D:/TempleOS/Demo/Doc/UnusedDefine.CPP.Z,1] UnusedDefine.CPP.Z
          200 +] Dsk
             69 [D:/TempleOS/Demo/Dsk/DataBase.CPP.Z,1] DataBase.CPP.Z
+      42 [D:/TempleOS/Demo/Dsk/DskRaw.CPP,1] DskRaw.CPP.Z
       52 [D:/TempleOS/Demo/Dsk/FPrintF.CPP.Z,1] FPrintF.CPP.Z
       20 [D:/TempleOS/Demo/Dsk/OrderedIO.CPP.Z,1] OrderedIO.CPP.Z
-      42 [D:/TempleOS/Demo/Dsk/Raw.CPP.Z,1] Raw.CPP.Z
       17 [D:/TempleOS/Demo/Dsk/UnusedSpaceRep.CPP.Z,1] UnusedSpaceRep.CPP.Z
-       9,131 +] Games
+       9,193 +] Games
            175 +] Stadium
              142 [D:/TempleOS/Demo/Games/Stadium/Stadium.CPP.Z,1]
         Stadium.CPP.Z
@@ -402,16 +411,16 @@
      594 [D:/TempleOS/Demo/Games/CastleFrankenstein.CPP,1]
       CastleFrankenstein.CPP.Z
      258 [D:/TempleOS/Demo/Games/ChessNet.CPP.Z,1] ChessNet.CPP.Z
-     126 [D:/TempleOS/Demo/Games/CircleTrace.CPP.Z,1] CircleTrace.CPP.Z
+     129 [D:/TempleOS/Demo/Games/CircleTrace.CPP.Z,1] CircleTrace.CPP.Z
      172 [D:/TempleOS/Demo/Games/Coach.CPP.Z,1] Coach.CPP.Z
      168 [D:/TempleOS/Demo/Games/Collision.CPP.Z,1] Collision.CPP.Z
       81 [D:/TempleOS/Demo/Games/Digits.CPP.Z,1] Digits.CPP.Z
      436 [D:/TempleOS/Demo/Games/DunGen.CPP.Z,1] DunGen.CPP.Z
-     976 [D:/TempleOS/Demo/Games/EagleDive.CPP.Z,1] EagleDive.CPP.Z
+   1,007 [D:/TempleOS/Demo/Games/EagleDive.CPP.Z,1] EagleDive.CPP.Z
      769 [D:/TempleOS/Demo/Games/FlatTops.CPP,1] FlatTops.CPP.Z
      166 [D:/TempleOS/Demo/Games/Halogen.CPP.Z,1] Halogen.CPP.Z
      190 [D:/TempleOS/Demo/Games/MassSpring.CPP.Z,1] MassSpring.CPP.Z
-     108 [D:/TempleOS/Demo/Games/Maze.CPP.Z,1] Maze.CPP.Z
+     113 [D:/TempleOS/Demo/Games/Maze.CPP.Z,1] Maze.CPP.Z
      193 [D:/TempleOS/Demo/Games/RainDrops.CPP.Z,1] RainDrops.CPP.Z
      524 [D:/TempleOS/Demo/Games/RawHide.CPP.Z,1] RawHide.CPP.Z
      194 [D:/TempleOS/Demo/Games/Rocket.CPP.Z,1] Rocket.CPP.Z
@@ -419,17 +428,17 @@
      423 [D:/TempleOS/Demo/Games/Squirt.CPP.Z,1] Squirt.CPP.Z
      206 [D:/TempleOS/Demo/Games/TheDead.CPP.Z,1] TheDead.CPP.Z
      131 [D:/TempleOS/Demo/Games/TicTacToe.CPP.Z,1] TicTacToe.CPP.Z
-     337 [D:/TempleOS/Demo/Games/Varoom.CPP.Z,1] Varoom.CPP.Z
+     360 [D:/TempleOS/Demo/Games/Varoom.CPP.Z,1] Varoom.CPP.Z
      532 [D:/TempleOS/Demo/Games/Wenceslas.CPP.Z,1] Wenceslas.CPP.Z
      174 [D:/TempleOS/Demo/Games/Whap.CPP.Z,1] Whap.CPP.Z
      201 [D:/TempleOS/Demo/Games/Zing.CPP.Z,1] Zing.CPP.Z
      342 [D:/TempleOS/Demo/Games/ZoneOut.CPP.Z,1] ZoneOut.CPP.Z
-       3,995 +] Graphics
+       4,247 +] Graphics
            118 [D:/TempleOS/Demo/Graphics/3DPoly.CPP.Z,1] 3DPoly.CPP.Z
       34 [D:/TempleOS/Demo/Graphics/BSpline.CPP.Z,1] BSpline.CPP.Z
       42 [D:/TempleOS/Demo/Graphics/Blot.CPP.Z,1] Blot.CPP.Z
       58 [D:/TempleOS/Demo/Graphics/Bounce.CPP.Z,1] Bounce.CPP.Z
-      54 [D:/TempleOS/Demo/Graphics/Box.CPP.Z,1] Box.CPP.Z
+      55 [D:/TempleOS/Demo/Graphics/Box.CPP.Z,1] Box.CPP.Z
      339 [D:/TempleOS/Demo/Graphics/Camp.CPP.Z,1] Camp.CPP.Z
       28 [D:/TempleOS/Demo/Graphics/CaptureScreen.CPP.Z,1] CaptureScreen.CPP.Z
       50 [D:/TempleOS/Demo/Graphics/Cartesian.CPP.Z,1] Cartesian.CPP.Z
@@ -440,8 +449,9 @@
       50 [D:/TempleOS/Demo/Graphics/Doodle.CPP.Z,1] Doodle.CPP.Z
       17 [D:/TempleOS/Demo/Graphics/DotNet.CPP.Z,1] DotNet.CPP.Z
      109 [D:/TempleOS/Demo/Graphics/EdCSprite.CPP.Z,1] EdCSprite.CPP.Z
+     202 [D:/TempleOS/Demo/Graphics/Elephant.CPP,1] Elephant.CPP.Z
       51 [D:/TempleOS/Demo/Graphics/Extents.CPP.Z,1] Extents.CPP.Z
-     144 [D:/TempleOS/Demo/Graphics/FontEd.CPP.Z,1] FontEd.CPP.Z
+     148 [D:/TempleOS/Demo/Graphics/FontEd.CPP.Z,1] FontEd.CPP.Z
      142 [D:/TempleOS/Demo/Graphics/Hanoi.CPP.Z,1] Hanoi.CPP.Z
       99 [D:/TempleOS/Demo/Graphics/Life.CPP.Z,1] Life.CPP.Z
       27 [D:/TempleOS/Demo/Graphics/Lines.CPP.Z,1] Lines.CPP.Z
@@ -450,6 +460,7 @@
      105 [D:/TempleOS/Demo/Graphics/MathAudioDemo.CPP.Z,1] MathAudioDemo.CPP.Z
       97 [D:/TempleOS/Demo/Graphics/Mountain.CPP.Z,1] Mountain.CPP.Z
       28 [D:/TempleOS/Demo/Graphics/Palette.CPP.Z,1] Palette.CPP.Z
+      36 [D:/TempleOS/Demo/Graphics/PanText.CPP,1] PanText.CPP.Z
       99 [D:/TempleOS/Demo/Graphics/Pick.CPP.Z,1] Pick.CPP.Z
      332 [D:/TempleOS/Demo/Graphics/Pick3D.CPP.Z,1] Pick3D.CPP.Z
       44 [D:/TempleOS/Demo/Graphics/PixelCollision.CPP.Z,1]
@@ -466,13 +477,13 @@
       63 [D:/TempleOS/Demo/Graphics/SpritePlot3D.CPP.Z,1] SpritePlot3D.CPP.Z
       47 [D:/TempleOS/Demo/Graphics/SpritePut.CPP.Z,1] SpritePut.CPP.Z
       29 [D:/TempleOS/Demo/Graphics/SpritePutExt.CPP.Z,1] SpritePutExt.CPP.Z
-      23 [D:/TempleOS/Demo/Graphics/SpriteText.CPP.Z,1] SpriteText.CPP.Z
+      32 [D:/TempleOS/Demo/Graphics/SpriteText.CPP.Z,1] SpriteText.CPP.Z
       63 [D:/TempleOS/Demo/Graphics/Symmetry.CPP.Z,1] Symmetry.CPP.Z
      225 [D:/TempleOS/Demo/Graphics/Transform.CPP.Z,1] Transform.CPP.Z
      104 [D:/TempleOS/Demo/Graphics/WallPaperCtrl.CPP.Z,1] WallPaperCtrl.CPP.Z
      118 [D:/TempleOS/Demo/Graphics/WallPaperFish.CPP.Z,1] WallPaperFish.CPP.Z
       24 [D:/TempleOS/Demo/Graphics/WinZBuf.CPP.Z,1] WinZBuf.CPP.Z
-       1,457 +] Lectures
+       1,451 +] Lectures
             54 [D:/TempleOS/Demo/Lectures/AndNotMod.CPP.Z,1] AndNotMod.CPP.Z
      104 [D:/TempleOS/Demo/Lectures/FixedPoint.CPP.Z,1] FixedPoint.CPP.Z
      178 [D:/TempleOS/Demo/Lectures/FixedPointAdvanced.CPP.Z,1]
@@ -486,7 +497,7 @@
       74 [D:/TempleOS/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP.Z
       49 [D:/TempleOS/Demo/Lectures/PageTableEntries1.CPP.Z,1]
       PageTableEntries1.CPP.Z
-      47 [D:/TempleOS/Demo/Lectures/PageTableEntries2.CPP.Z,1]
+      41 [D:/TempleOS/Demo/Lectures/PageTableEntries2.CPP.Z,1]
       PageTableEntries2.CPP.Z
       84 [D:/TempleOS/Demo/Lectures/Ring3.CPP.Z,1] Ring3.CPP.Z
       56 [D:/TempleOS/Demo/Lectures/ScreenMemory.CPP.Z,1] ScreenMemory.CPP.Z
@@ -498,7 +509,7 @@
       55 [D:/TempleOS/Demo/MultiCore/LoadTest.CPP.Z,1] LoadTest.CPP.Z
       57 [D:/TempleOS/Demo/MultiCore/Lock.CPP.Z,1] Lock.CPP.Z
       87 [D:/TempleOS/Demo/MultiCore/MPAdd.CPP.Z,1] MPAdd.CPP.Z
-      19 [D:/TempleOS/Demo/MultiCore/MPPrintF.CPP.Z,1] MPPrintF.CPP.Z
+      19 [D:/TempleOS/Demo/MultiCore/MPPrint.CPP,1] MPPrint.CPP.Z
       98 [D:/TempleOS/Demo/MultiCore/Palindrome.CPP.Z,1] Palindrome.CPP.Z
       76 [D:/TempleOS/Demo/MultiCore/Primes.CPP.Z,1] Primes.CPP.Z
      165 [D:/TempleOS/Demo/MultiCore/RadixSort.CPP.Z,1] RadixSort.CPP.Z
@@ -528,7 +539,8 @@
       WebLogRep.CPP.Z
       64 [D:/TempleOS/Demo/WebLogExample/WebLogScramble.CPP.Z,1]
       WebLogScramble.CPP.Z
-          82 [D:/TempleOS/Demo/ClassMeta.CPP.Z,1] ClassMeta.CPP.Z
+          29 [D:/TempleOS/Demo/Carry.CPP,1] Carry.CPP.Z
+      82 [D:/TempleOS/Demo/ClassMeta.CPP.Z,1] ClassMeta.CPP.Z
       38 [D:/TempleOS/Demo/CompileDemo.CPP.Z,1] CompileDemo.CPP.Z
       46 [D:/TempleOS/Demo/DateTime.CPP.Z,1] DateTime.CPP.Z
       29 [D:/TempleOS/Demo/DbgDemo.CPP.Z,1] DbgDemo.CPP.Z
@@ -541,8 +553,8 @@
       55 [D:/TempleOS/Demo/MakeDistro.CPP.Z,1] MakeDistro.CPP.Z
       22 [D:/TempleOS/Demo/MsgLoop.CPP.Z,1] MsgLoop.CPP.Z
       20 [D:/TempleOS/Demo/ParenWarn.CPP.Z,1] ParenWarn.CPP.Z
-      65 [D:/TempleOS/Demo/PhoneNumWords.CPP.Z,1] PhoneNumWords.CPP.Z
-      34 [D:/TempleOS/Demo/PrintF.CPP.Z,1] PrintF.CPP.Z
+      64 [D:/TempleOS/Demo/PhoneNumWords.CPP.Z,1] PhoneNumWords.CPP.Z
+      34 [D:/TempleOS/Demo/Print.CPP,1] Print.CPP.Z
       54 [D:/TempleOS/Demo/Progress.CPP.Z,1] Progress.CPP.Z
       26 [D:/TempleOS/Demo/Prompt.CPP.Z,1] Prompt.CPP.Z
       90 [D:/TempleOS/Demo/PullDownMenu.CPP.Z,1] PullDownMenu.CPP.Z
@@ -555,20 +567,20 @@
       45 [D:/TempleOS/Demo/TimeIns.CPP.Z,1] TimeIns.CPP.Z
      156 [D:/TempleOS/Demo/WordSearch.CPP.Z,1] WordSearch.CPP.Z
          0 +] Doc
-        25,879 +] Kernel
-       6,072 +] Dsk
-           730 [D:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,1] Dsk1a.CPP.Z
+        25,762 +] Kernel
+       6,012 +] Dsk
+           713 [D:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,1] Dsk1a.CPP.Z
      518 [D:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,1] Dsk1b.CPP.Z
-     396 [D:/TempleOS/Kernel/Dsk/Dsk1c.CPP.Z,1] Dsk1c.CPP.Z
+     377 [D:/TempleOS/Kernel/Dsk/Dsk1c.CPP.Z,1] Dsk1c.CPP.Z
      946 [D:/TempleOS/Kernel/Dsk/DskATA.CPP.Z,1] DskATA.CPP.Z
      334 [D:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,1] DskAddDev.CPP.Z
-     269 [D:/TempleOS/Kernel/Dsk/DskCFile.CPP.Z,1] DskCFile.CPP.Z
+     268 [D:/TempleOS/Kernel/Dsk/DskCFile.CPP.Z,1] DskCFile.CPP.Z
      161 [D:/TempleOS/Kernel/Dsk/DskCache.CPP.Z,1] DskCache.CPP.Z
-     269 [D:/TempleOS/Kernel/Dsk/DskDir.CPP.Z,1] DskDir.CPP.Z
+     265 [D:/TempleOS/Kernel/Dsk/DskDir.CPP.Z,1] DskDir.CPP.Z
      375 [D:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,1] DskStr.CPP.Z
    1,008 [D:/TempleOS/Kernel/Dsk/FileSysFAT.CPP.Z,1] FileSysFAT.CPP.Z
-     315 [D:/TempleOS/Kernel/Dsk/FileSysISO1.CPP.Z,1] FileSysISO1.CPP.Z
-     719 [D:/TempleOS/Kernel/Dsk/FileSysRedSea.CPP.Z,1] FileSysRedSea.CPP.Z
+     307 [D:/TempleOS/Kernel/Dsk/FileSysISO1.CPP.Z,1] FileSysISO1.CPP.Z
+     708 [D:/TempleOS/Kernel/Dsk/FileSysRedSea.CPP.Z,1] FileSysRedSea.CPP.Z
       32 [D:/TempleOS/Kernel/Dsk/ATADef.HPP.Z,1] ATADef.HPP.Z
        1,259 +] KbdMouse
            129 [D:/TempleOS/Kernel/KbdMouse/InputPointer.CPP.Z,1]
@@ -581,39 +593,39 @@
      328 [D:/TempleOS/Kernel/Compress.CPP.Z,1] Compress.CPP.Z
      324 [D:/TempleOS/Kernel/DataTypes1a.CPP.Z,1] DataTypes1a.CPP.Z
      484 [D:/TempleOS/Kernel/Date.CPP.Z,1] Date.CPP.Z
-     720 [D:/TempleOS/Kernel/Dbg1a.CPP.Z,1] Dbg1a.CPP.Z
-     137 [D:/TempleOS/Kernel/Define1a.CPP.Z,1] Define1a.CPP.Z
+     738 [D:/TempleOS/Kernel/Dbg1a.CPP.Z,1] Dbg1a.CPP.Z
+     138 [D:/TempleOS/Kernel/Define1a.CPP.Z,1] Define1a.CPP.Z
      279 [D:/TempleOS/Kernel/Display.CPP.Z,1] Display.CPP.Z
      345 [D:/TempleOS/Kernel/EdLite.CPP.Z,1] EdLite.CPP.Z
      224 [D:/TempleOS/Kernel/Except.CPP.Z,1] Except.CPP.Z
-     262 [D:/TempleOS/Kernel/Font8x8.CPP.Z,1] Font8x8.CPP.Z
-     808 [D:/TempleOS/Kernel/Hash1a.CPP.Z,1] Hash1a.CPP.Z
+     261 [D:/TempleOS/Kernel/Font8x8.CPP.Z,1] Font8x8.CPP.Z
+     795 [D:/TempleOS/Kernel/Hash1a.CPP.Z,1] Hash1a.CPP.Z
      213 [D:/TempleOS/Kernel/Interrupts.CPP.Z,1] Interrupts.CPP.Z
      230 [D:/TempleOS/Kernel/KCfg.CPP.Z,1] KCfg.CPP.Z
-     253 [D:/TempleOS/Kernel/KEnd.CPP.Z,1] KEnd.CPP.Z
-     109 [D:/TempleOS/Kernel/KExts.CPP.Z,1] KExts.CPP.Z
+     256 [D:/TempleOS/Kernel/KEnd.CPP.Z,1] KEnd.CPP.Z
+     106 [D:/TempleOS/Kernel/KExts.CPP.Z,1] KExts.CPP.Z
      136 [D:/TempleOS/Kernel/KGlbls.CPP.Z,1] KGlbls.CPP.Z
-     525 [D:/TempleOS/Kernel/KStart.CPP.Z,1] KStart.CPP.Z
+     524 [D:/TempleOS/Kernel/KStart.CPP.Z,1] KStart.CPP.Z
      622 [D:/TempleOS/Kernel/Math1a.CPP.Z,1] Math1a.CPP.Z
-     227 [D:/TempleOS/Kernel/Math1b.CPP.Z,1] Math1b.CPP.Z
+     230 [D:/TempleOS/Kernel/Math1b.CPP.Z,1] Math1b.CPP.Z
    1,340 [D:/TempleOS/Kernel/Memory.CPP.Z,1] Memory.CPP.Z
-     360 [D:/TempleOS/Kernel/Misc1a.CPP.Z,1] Misc1a.CPP.Z
+     359 [D:/TempleOS/Kernel/Misc1a.CPP.Z,1] Misc1a.CPP.Z
      439 [D:/TempleOS/Kernel/MultiProc.CPP.Z,1] MultiProc.CPP.Z
      298 [D:/TempleOS/Kernel/PSect.CPP.Z,1] PSect.CPP.Z
      246 [D:/TempleOS/Kernel/QSort.CPP.Z,1] QSort.CPP.Z
      411 [D:/TempleOS/Kernel/Scheduler.CPP.Z,1] Scheduler.CPP.Z
-     523 [D:/TempleOS/Kernel/SrvCmd.CPP,1] SrvCmd.CPP.Z
-   2,403 [D:/TempleOS/Kernel/Str1a.CPP.Z,1] Str1a.CPP.Z
+     516 [D:/TempleOS/Kernel/SrvCmd.CPP,1] SrvCmd.CPP.Z
+   2,379 [D:/TempleOS/Kernel/Str1a.CPP.Z,1] Str1a.CPP.Z
      564 [D:/TempleOS/Kernel/Task1a.CPP.Z,1] Task1a.CPP.Z
      455 [D:/TempleOS/Kernel/Utils1a.CPP.Z,1] Utils1a.CPP.Z
       15 [D:/TempleOS/Kernel/AOT.HPP.Z,1] AOT.HPP.Z
        3 [D:/TempleOS/Kernel/AOTAdam.HPP.Z,1] AOTAdam.HPP.Z
-   3,725 [D:/TempleOS/Kernel/Adam1a.HPP.Z,1] Adam1a.HPP.Z
+   3,702 [D:/TempleOS/Kernel/Adam1a.HPP.Z,1] Adam1a.HPP.Z
      303 [D:/TempleOS/Kernel/Adam1b.HPP.Z,1] Adam1b.HPP.Z
-     825 [D:/TempleOS/Kernel/Adam1c.HPP.Z,1] Adam1c.HPP.Z
-      32 [D:/TempleOS/Kernel/BootDefs.HPP.Z,1] BootDefs.HPP.Z
+     820 [D:/TempleOS/Kernel/Adam1c.HPP.Z,1] Adam1c.HPP.Z
+      28 [D:/TempleOS/Kernel/BootDefs.HPP.Z,1] BootDefs.HPP.Z
       70 [D:/TempleOS/Kernel/Kernel.PRJ.Z,1] Kernel.PRJ.Z
-     2,871 +] Misc
+     3,136 +] Misc
          681 +] Tour
             42 [D:/TempleOS/Misc/Tour/Tour.AUT.Z,1] Tour.AUT.Z
       98 [D:/TempleOS/Misc/Tour/Tour1.AUT.Z,1] Tour1.AUT.Z
@@ -626,6 +638,7 @@
       55 [D:/TempleOS/Misc/Tour/Tour8.AUT.Z,1] Tour8.AUT.Z
       29 [D:/TempleOS/Misc/Tour/Tour9.AUT.Z,1] Tour9.AUT.Z
       11 [D:/TempleOS/Misc/Tour/TourA.AUT.Z,1] TourA.AUT.Z
-          32 [D:/TempleOS/Misc/Dollar.CPP.Z,1] Dollar.CPP.Z
-   2,158 [D:/TempleOS/Misc/OSTestSuite.CPP.Z,1] OSTestSuite.CPP.Z
+          21 [D:/TempleOS/Misc/Dollar.CPP.Z,1] Dollar.CPP.Z
+   2,178 [D:/TempleOS/Misc/OSTestSuite.CPP.Z,1] OSTestSuite.CPP.Z
+     256 [D:/TempleOS/Misc/SpriteCvt0106.CPP,1] SpriteCvt0106.CPP.Z
   

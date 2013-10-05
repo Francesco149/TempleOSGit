@@ -1,6 +1,6 @@
-The cmd line feeds into the [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C compiler
-as you type.  A statement outside 
-a function executes immediately.  Remember to add a semicolon.
+The cmd line feeds into the [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC compiler as
+you type.  A statement outside a 
+function executes immediately.  Remember to add a semicolon.
 
 Look-up the function headers with WordStat by hitting <CTRL-SHIFT-F1> after 
 typing the first few letters.

@@ -11,16 +11,16 @@ F64 t0=tMBeat;
 U0 DrawIt(CTask *,CDC *dc)
 {
   F64 dt=tMBeat-t0,tt;
-  U8 *inter;
+  U8 *temps;
   if (dt<16.0)
     tt=0;
   else if (dt<18.0)
     tt=((dt-16)/2)%1;
   else
     tt=1.0;
-  inter=SpriteInterpolate(__BIN_1,__BIN_2,tt);
-  SpritePlot3(dc,180,40,0,inter);
-  Free(inter);
+  temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  SpritePlot3(dc,180,40,0,temps);
+  Free(temps);
 }
 
 U0 Song()

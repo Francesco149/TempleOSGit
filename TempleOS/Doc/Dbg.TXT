@@ -6,6 +6,8 @@ call to [C:/TempleOS/Kernel/Dbg1a.CPP.Z,691] Dbg() in your code at fatal
 error points to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U().
+[C:/TempleOS/Compiler/Unassembler.CPP.Z,866]
+U([C:/TempleOS/Kernel/Adam1a.HPP.Z,3656] _RIP); 
 
 * I use [C:/TempleOS/Kernel/Adam1b.HPP.Z,43]
 progress1-[C:/TempleOS/Kernel/Adam1b.HPP.Z,52] progress4 for debugging
@@ -13,24 +15,23 @@ because they show on the wallpaper.
 They're just global integer vars.
 
 * While debugging, you specify addresses of assembly  routines with just the 
-label, as in _MALLOC+0x20.  You specify [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy
-C function names with & before 
-functions as in &PrintF+0x10.
+label, as in _MALLOC+0x20.  You specify [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC
+function names with & before 
+functions as in &Print+0x10.
 
 * You can use [C:/TempleOS/Kernel/TaskCmd.CPP.Z,307] AdamLog() to send text
 to the Adam task window.  It works like 
-[C:/TempleOS/Kernel/Str1a.CPP.Z,2351] PrintF().  I never use this.  Instead I
-use [C:/TempleOS/Kernel/Dbg1a.CPP.Z,187] DbgI64().
+[MN:Print] Print().  I never use this.  Instead I use [MN:RawI64] RawI64().
 
-* [C:/TempleOS/Kernel/Dbg1a.CPP.Z,271] D()
-[C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD() to do 16 column hex dump mem
-with numbering from zero.  With 
-[C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD the values are updated
+* [C:/TempleOS/Kernel/Dbg1a.CPP.Z,271] D(),
+[C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD(), [MN:RawD] RawD() to do 16
+column hex dump mem with numbering from zero.  
+With [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD the values are updated
 continually and you can alter mem by editing.
 
-* [C:/TempleOS/Kernel/Dbg1a.CPP.Z,301] Dm()
-[C:/TempleOS/Adam/Doc/DocMain.CPP.Z,635] DocDm() to do 16 column hex dump mem
-with addresses showing.
+* [C:/TempleOS/Kernel/Dbg1a.CPP.Z,301] Dm(),
+[C:/TempleOS/Adam/Doc/DocMain.CPP.Z,635] DocDm(), [MN:RawDm] RawDm() to do 16
+column hex dump mem with addresses showing.
 
 * [C:/TempleOS/Kernel/Dbg1a.CPP.Z,307] Da() to do one column address dump
 (for stk, etc.) with symbolic addresses.
@@ -42,7 +43,8 @@ with var-like labels, _RAX, _RBX, etc.
 * [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U(&FunName+offset) to
 unassemble mem or [C:/TempleOS/Adam/Dbg2a.CPP.Z,236] Uf("FunName") to
 unassemble a 
-function.
+function. [C:/TempleOS/Compiler/Unassembler.CPP.Z,866]
+U([C:/TempleOS/Kernel/Adam1a.HPP.Z,3656] _RIP-16);
 
 * [C:/TempleOS/Adam/Profiler.CPP.Z,46]
 ProfBin(),[C:/TempleOS/Adam/Profiler.CPP.Z,82] ProfAll() and
@@ -50,15 +52,14 @@ ProfBin(),[C:/TempleOS/Adam/Profiler.CPP.Z,82] ProfAll() and
 [C:/TempleOS/Demo/AutoFile/AFProfile.AUT.Z,1] (This is an
 [C:/TempleOS/Doc/Glossary.TXT.Z,1] AutoFile.)
 
-* Use [C:/TempleOS/Kernel/Dbg1a.CPP.Z,187] DbgI64(),
-[C:/TempleOS/Kernel/Dbg1a.CPP.Z,168] DbgStr() and
-[C:/TempleOS/Kernel/Dbg1a.CPP.Z,221] DbgAdd() to print debug info bypassing
-the window 
-framework.  You pass these routines a count in milliseconds for how long it 
-should be displayed.  You can use [C:/TempleOS/Kernel/Misc1a.CPP.Z,282]
-Raw(TRUE) to make all output bypass the 
-window framework.  The WinMgr runs on core0 and will overwrite raw text from 
-other cores when it updates the screen.
+* Use [MN:RawI64] RawI64(), [MN:RawF64] RawF64(), [MN:RawStr] RawStr(),
+[MN:RawAdd] RawAdd(), [C:/TempleOS/Kernel/Display.CPP.Z,1] RawPutChar() and
+[MN:RawPrint] RawPrint() to 
+print debug info bypassing the window framework.  You pass these routines a 
+count in milliseconds for how long it should be displayed.  You can use
+[C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw(TR
+UE) to make all output bypass the window framework.  The WinMgr runs on core0 
+and will overwrite raw text from other cores when it updates the screen.
 
 * Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,263] SysDbg() to set a flag which you
 can read with [C:/TempleOS/Kernel/Misc1a.CPP.Z,269] IsSysDbg() when you wish 
@@ -81,7 +82,7 @@ are compiler bugs.  Often, you place them in #exe{} blocks.
   out of the lexical analyzer.
 
 [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace() unassembles code
-  generated from the Holy C compiler.
+  generated from the HolyC compiler.
 
 [C:/TempleOS/Compiler/Directives.CPP.Z,21] PTrace() shows intermediate code
   comming out of the first stage of the 

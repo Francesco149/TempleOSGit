@@ -31,7 +31,7 @@ Drv() or [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,409] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
-binds a Holy C definition to a asm sym.  This, too, can only be done once.
+binds a HolyC definition to a asm sym.  This, too, can only be done once.
 
 * You must call [C:/TempleOS/Kernel/Task1a.CPP.Z,293] TaskInitExt() in a task
 you [C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn() before you can do file 

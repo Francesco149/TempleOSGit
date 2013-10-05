@@ -1,7 +1,150 @@
 Use [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I change
 a label.
 
-----07/07/13 11:58:10----
+----10/05/13 00:44:25----
+
+----10/03/13 20:25:16----
+* Improved [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,3] Ed() code.
+* Added [C:/TempleOS/Apps/MusicOrgan/JukePuppet.CPP.Z,1].
+
+----09/29/13 15:42:18----
+* Added [MN:PutBibleLines] PutBibleLines().
+* Changed dft return from [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,1]
+DocEntryRun() to [MN:DOCM_EXIT] DOCM_EXIT for
+[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291] DocFormDo().  I hope 
+it doesn't have side effects.
+
+----09/27/13 23:55:48----
+* **TempleOS version 1.06 Released**
+* Renumbered sprite commands -- old sprites are invalid until converted. 
+[C:/TempleOS/Misc/SpriteCvt0106.CPP.Z,1].
+
+----09/27/13 07:03:37----
+* Added haserrcode keyword to compiler to help make interrupt handlers. See 
+[C:/TempleOS/Demo/Lectures/PageTableEntries2.CPP.Z,1].
+* Improved compiler's [C:/TempleOS/Compiler/StmtParser.CPP.Z,829] PrsClass().
+
+----09/25/13 20:59:12----
+* Made compiler N passes.
+* Compiler change: Made compare to zero same as test.
+* Fixed signed and unsigned asm opcodes.  (Optimizes some cases.)
+* Moved compiler to low mem.
+* Added lastclass as a special compiler dft arg.
+* Used  lastclass in [C:/TempleOS/Adam/Dbg2a.CPP.Z,134] ClassRep() and
+[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291] DocFormDo().
+* Chged arg order in [C:/TempleOS/Adam/Dbg2a.CPP.Z,134] ClassRep().
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("NamedFrame","Frame");
+* Changed imports in binary file format.
+
+----09/25/13 00:12:26----
+* Added [C:/TempleOS/Demo/Graphics/Elephant.CPP.Z,1].
+
+----09/14/13 22:16:43----
+* Added [C:/TempleOS/Demo/Carry.CPP.Z,1].
+* Got rid of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2460] CDirEntry.expanded_size.
+  **!!! Warning !!!** RedSea file system is different, old RedSea partitions
+will
+  not work.
+
+----09/11/13 14:17:45----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("FUF_JUST_TXT_FILES","FUF_JUST_TXT");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("FILENAME_MASK","FILEMASK");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Lit","Imm");
+* Compiler optimization: Compare immediates.
+
+----08/31/13 14:36:22----
+* Made [C:/TempleOS/Kernel/Misc1a.CPP.Z,149] tS use
+[C:/TempleOS/Kernel/Adam1b.HPP.Z,202] HPET if available.
+
+----08/30/13 03:21:38----
+* **TempleOS version 1.05 Released**
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("GetCurTimeDate","GetDateTime");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GetTimeStamp","GetTSC");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GetF","Scan");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BASE_PTR","RBP");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("STK_PTR","RSP");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Getlags","GetRFlags");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("SetFlags","SetRFlags");
+* Changed args on [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("SearchStr","StrFind");
+and change args.
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("WildCardMatch","WildMatch"); and change args.
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("StrStr","StrMatch"); and
+changed args.
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("LstEntryMatch","LstMatch");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("LstEntryPt","LstSub");
+* Added [MN:RawPrint] RawPrint().
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("DbgI64","RawI64"); etc.
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("MSPrintF","MPrint");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("PrintF","Print");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("AFDelayedPutS","AFPrint");
+* Converted PutS to Print
+
+----08/28/13 13:00:02----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("HashRep","Who");
+* Converted file utils to flattened list.
+* Got rid of "hidden widgets".
+
+----08/27/13 19:31:01----
+* Fixed [C:/TempleOS/Kernel/Math1b.CPP.Z,223] Randomize().
+* Added [MN:PopUpI64] PopUpI64().
+* Added seed to [C:/TempleOS/Apps/ToTheFront/ToTheFront.CPP.Z,1].
+
+----08/27/13 12:13:35----
+* Got rid of IOSnd().
+* Got rid of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2460] CDirEntry.xsum
+
+----08/26/13 15:54:09----
+* Improved [C:/TempleOS/Demo/Games/EagleDive.CPP.Z,1].
+* Improved [C:/TempleOS/Apps/HolySpirit/HolySpirit.CPP.Z,1].
+* Songs
+
+----08/20/13 11:19:56----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("CDirEntryDel","DirEntryDel");
+
+----08/12/13 08:42:47----
+* Added [C:/TempleOS/Demo/Graphics/PanText.CPP.Z,1].
+* Added [MN:gr_pan_text_x] gr_pan_text_x, [MN:gr_pan_text_y] gr_pan_text_y.
+* Fixed compiler bug -- Pow() operator type conversion.
+
+----08/04/13 10:31:36----
+* New Logo
+
+----07/27/13 07:17:43----
+* Fixed bug in [C:/TempleOS/Apps/MusicOrgan/MakeSong.CPP.Z,1].
+* Improved [C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,723] GrRect3();
+
+----07/25/13 08:01:06----
+* Fixed [C:/TempleOS/Kernel/Adam1a.HPP.Z,2771] ROP_XOR in
+[C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,860] GrRect().
+
+----07/24/13 22:56:09----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("SpritePlot3b","SpritePlot3B");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("P3I32","D3I32");
+* Added [MN:GrRectB] GrRectB().
+
+----07/14/13 21:14:25----
+* Fixed bug with saved cursor location.
+
+----07/12/13 11:54:11----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("CONSTANT","CONST");
+
+----07/11/13 22:52:45----
+* Fixed bug in [C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto().
+* Added score to [C:/TempleOS/Demo/Games/Varoom.CPP.Z,1].
+
+----07/08/13 05:12:13----
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+R("Expression","LexExpression");
+* Cleaned-up compiler.
 * Made graphics routines return I64, not Bool.
 
 ----06/30/13 00:41:54----
@@ -96,7 +239,7 @@ Play().
 
 ----05/08/13 13:04:22----
 * [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("NativeFS","RedSeaFS");
-* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("C+","Holy C");
+* [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("C+","HolyC");
 
 ----04/30/13 06:15:35----
 * [C:/TempleOS/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GameStarters","Games");
@@ -108,8 +251,7 @@ Play().
 * dft_drv is now *sys_acct.
 * Made so RAM drives are not reformatted at boot.
 * **WARNING**: Added new prompt to RAM disk creation.
-* Added [C:/TempleOS/Compiler/CmpMain.CPP.Z,680] StreamExePutS() and
-[C:/TempleOS/Compiler/CmpMain.CPP.Z,697] StreamExePrintF().
+* Added [MN:StreamExePrint] StreamExePrint().
 
 ----04/08/13 10:46:20----
 * **TempleOS version 1.01 Released**
@@ -164,7 +306,7 @@ display_doc, and border_doc.
 ----03/24/13 14:44:28----
 * Made [C:/TempleOS/Kernel/Display.CPP.Z,199] PutChar('Hello') accept
 multiple chars.  This is tricky.  My compiler 
-allows multi-byte char constants.
+allows multi-byte char consts.
 
 ----03/19/13 16:18:53----
 * Added [C:/TempleOS/Adam/Doc/DocFile.CPP.Z,429] DocType() and

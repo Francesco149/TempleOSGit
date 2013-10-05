@@ -112,7 +112,7 @@ class Monster
   Bool dead,pad[7];
 } monsters[NUM_MONSTERS];
 
-U0 FPSTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
+U0 CFTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
   GrRot(dc->r,x,y,z);
@@ -146,27 +146,26 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,j,*r1,*r2,*r3,*s2w,xx,yy,zz,x,y,x1,y1,z1,
       c,x1w,y1w,x1h,y1h,xh,yh,zh,
       cx=task->win_pixel_width/2,
-      cy=task->win_pixel_height/2,
-      _man_xx=man_xx,_man_yy=man_yy;
-  U8 *inter;
-  F64 tt,_man_theta=man_theta;
+      cy=task->win_pixel_height/2;
+  U8 *temps;
+  F64 tt;
   CD3I32 poly[4];
 
   DCAllocDepthBuf(dc);
   MemSet(panels_processed_bitmap,0,(map_width*map_height+7)>>3);
 
   //World to screen
-  GrRotZEqu(dc->r,_man_theta+pi/2);
+  GrRotZEqu(dc->r,man_theta+pi/2);
   GrRotXEqu(dc->r,pi/2);
   GrSetRotMat(dc,dc->r);
 
-  xh=-_man_xx/SCREEN_SCALE; yh=-_man_yy/SCREEN_SCALE; zh=0;
+  xh=-man_xx/SCREEN_SCALE; yh=-man_yy/SCREEN_SCALE; zh=0;
   GrRot(dc->r,&xh,&yh,&zh);
   GrSetTranslation(dc->r,xh,yh,zh);
 
   //Screen to world
   s2w=GrRotX(-pi/2,task);
-  GrRotZEqu(s2w,-_man_theta-pi/2);
+  GrRotZEqu(s2w,-man_theta-pi/2);
   xh=0; yh=0; zh=SCREEN_SCALE;
   GrRot(s2w,&xh,&yh,&zh);
 
@@ -176,7 +175,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->ls.x=xx; dc->ls.y=yy; dc->ls.z=zz;
 
   dc->flags|=DCF_TRANSFORMATION;
-  dc->transform=&FPSTransform;
+  dc->transform=&CFTransform;
   dc->x=cx;
   dc->y=cy;
   r1=GrRotX(-pi/2,task);
@@ -189,20 +188,20 @@ U0 DrawIt(CTask *task,CDC *dc)
   r3=GrRotX(-pi/2,task);
   GrScaleMatEqu(r3,PLANT_SCALE);
 
-  x1h=_man_xx+yh*PLOT_GRID_WIDTH/2+xh*(PLOT_GRID_HEIGHT-1);
-  y1h=_man_yy-xh*PLOT_GRID_WIDTH/2+yh*(PLOT_GRID_HEIGHT-1);
+  x1h=man_xx+yh*PLOT_GRID_WIDTH/2+xh*(PLOT_GRID_HEIGHT-1);
+  y1h=man_yy-xh*PLOT_GRID_WIDTH/2+yh*(PLOT_GRID_HEIGHT-1);
   xh>>=1; yh>>=1;
   for (j=0;j<PLOT_GRID_HEIGHT*2;j++) {
     x1w=x1h;
     y1w=y1h;
     for (i=0;i<PLOT_GRID_WIDTH*4;i++) {
       xx=x1w/SCREEN_SCALE; yy=y1w/SCREEN_SCALE;
-      x=xx*SCREEN_SCALE-_man_xx; y=yy*SCREEN_SCALE-_man_yy;
+      x=xx*SCREEN_SCALE-man_xx; y=yy*SCREEN_SCALE-man_yy;
       if (1<=xx<map_width-1 && 1<=yy<map_height-1 &&
 	  !LBts(panels_processed_bitmap,yy*map_width+xx)) {
 	if ((c=map[yy*map_width+xx]) &&
 	    LOS(xx*SCREEN_SCALE+SCREEN_SCALE/2,yy*SCREEN_SCALE+SCREEN_SCALE/2,
-		_man_xx,_man_yy)) {
+		man_xx,man_yy)) {
 	  if (c==YELLOW)
 	    dc->color=RED;
 	  else
@@ -226,14 +225,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    z1=0;
 	    GrTransform(dc,&x1,&y1,&z1);
 	    if (z1>0)
-	      SpritePlotRotMat3b(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
+	      SpritePlotRotMat3B(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
 	  } else if (c==YELLOW) {
 	    x1=x+SCREEN_SCALE/2;
 	    y1=y+SCREEN_SCALE/2;
 	    z1=0;
 	    GrTransform(dc,&x1,&y1,&z1);
 	    if (z1>0)
-	      SpritePlotRotMat3b(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_6,r3);
+	      SpritePlotRotMat3B(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_6,r3);
 	  }
 
 	  if (!map[(yy+1)*map_width+xx]) {
@@ -313,21 +312,21 @@ U0 DrawIt(CTask *task,CDC *dc)
   for (i=0;i<NUM_MONSTERS;i++) {
     x=monsters[i].x;
     y=monsters[i].y;
-    if (LOS(x,y,_man_xx,_man_yy)) {
-      x-=_man_xx;
-      y-=_man_yy;
+    if (LOS(x,y,man_xx,man_yy)) {
+      x-=man_xx;
+      y-=man_yy;
       xx=x;
       yy=y;
       zz=0;
       GrTransform(dc,&xx,&yy,&zz);
       if (zz>0) {
 	if (monsters[i].dead)
-	  SpritePlotRotMat3b(dc,x,y,0,__BIN_2,r2);
+	  SpritePlotRotMat3B(dc,x,y,0,__BIN_2,r2);
 	else {
 	  tt=Tri(tT,1.0);
-	  inter=SpriteInterpolate(__BIN_3,__BIN_4,tt);
-	  SpritePlotRotMat3b(dc,x,y,0,inter,r1);
-	  Free(inter);
+	  temps=SpriteInterpolate(__BIN_3,__BIN_4,tt);
+	  SpritePlotRotMat3B(dc,x,y,0,temps,r1);
+	  Free(temps);
 	}
       }
     }
@@ -356,13 +355,13 @@ U0 DrawIt(CTask *task,CDC *dc)
     if (!monsters[i].dead)
       GrPlot3(dc,2*(monsters[i].x/SCREEN_SCALE),2*(map_height-1-monsters[i].y/SCREEN_SCALE),0);
   dc->color=LTCYAN;
-  GrPlot3(dc,2*(_man_xx/SCREEN_SCALE),2*(map_height-1-_man_yy/SCREEN_SCALE),0);
+  GrPlot3(dc,2*(man_xx/SCREEN_SCALE),2*(map_height-1-man_yy/SCREEN_SCALE),0);
 
 
   if (tf) {
     dc->color=LTRED;
     if (Blink)
-      GrPutS(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
+      GrPrint(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
     tt=tf;
   } else {
     dc->color=LTGREEN;
@@ -370,7 +369,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrLine(dc,cx,cy-5,cx,cy+5);
     tt=tT;
   }
-  GrPrintF(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
+  GrPrint(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
   Free(s2w);
 }
 
@@ -542,6 +541,7 @@ U0 CastleFrankenstein()
   SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=RED<<4+WHITE;
   Preempt(OFF);
+  WinBorder;
   WinMax;
   WordStat;
   Init;

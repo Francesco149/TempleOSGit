@@ -18,11 +18,11 @@ F64 t0=tMBeat;
 U0 DrawIt(CTask *,CDC *dc)
 {
   F64 dt=tMBeat-t0;
-  U8 *inter;
+  U8 *temps;
   if (dt>=16.0) {
-    inter=SpriteInterpolate(__BIN_1,__BIN_2,Abs((4.0*tM%2-1)%1));
-    SpritePlot3(dc,20,20,0,inter);
-    Free(inter);
+    temps=SpriteInterpolate(__BIN_1,__BIN_2,Abs((4.0*tM%2-1)%1));
+    SpritePlot3(dc,20,20,0,temps);
+    Free(temps);
   }
 }
 

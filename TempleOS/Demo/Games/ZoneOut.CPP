@@ -154,11 +154,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       img=__BIN_2;
     else
       img=__BIN_1;
-    SpritePlotRotY3b(dc,them[i].x,y,them[i].z,img,-them[i].theta);
+    SpritePlotRotY3B(dc,them[i].x,y,them[i].z,img,-them[i].theta);
   }
   tempo=shots.next;
   while (tempo!=&shots) {
-    SpritePlotRotY3b(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
+    SpritePlotRotY3B(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
     tempo=tempo->next;
   }
   dc->flags&=~DCF_TRANSFORMATION;
@@ -170,7 +170,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (tf) {
     dc->color=LTRED;
     if (Blink)
-      GrPutS(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
+      GrPrint(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
     tt=tf;
   } else {
     dc->color=LTGREEN;
@@ -178,7 +178,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrLine(dc,cx,cy-5,cx,cy+5);
     tt=tT;
   }
-  GrPrintF(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
+  GrPrint(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
 }
 
 U0 Fire()

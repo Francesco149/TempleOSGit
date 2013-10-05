@@ -1,4 +1,4 @@
-0033	Paradyne Corp.
+0033	Paradyne Corp.
 	002F	. ieee 1394 controller
 	00333	1 1
 003D	master

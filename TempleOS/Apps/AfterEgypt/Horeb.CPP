@@ -165,7 +165,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,s*tempo->x1+cx,s*tempo->y1+h,s*tempo->x1+cx,s*tempo->y1+h+10);
     }
-    SpritePlot3b(dc,s*tempo->x1+cx,s*tempo->y1+h,0,type_imgs[tempo->type]);
+    SpritePlot3B(dc,s*tempo->x1+cx,s*tempo->y1+h,0,type_imgs[tempo->type]);
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     if (o_sort[i]==&objs[O_BURNING_BUSH]) { //draw burning bush
       dc->x=s*tempo->x1+cx;
@@ -189,7 +189,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
 
   if (Blink) {
     dc->color=LTRED;
-    GrPutS(dc,cx-21*FONT_WIDTH/2,cy-FONT_HEIGHT/2,"Find the Burning Bush.");
+    GrPrint(dc,cx-21*FONT_WIDTH/2,cy-FONT_HEIGHT/2,"Find the Burning Bush.");
   }
 }
 

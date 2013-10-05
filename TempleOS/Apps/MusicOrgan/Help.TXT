@@ -7,13 +7,13 @@ edit and save them.
 
 * The clipboard can be used to cut and paste.
 
-* MusicOrgan uses [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C files as it's fmt! 
+* MusicOrgan uses [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC files as it's fmt! 
 See 
 [C:/TempleOS/Apps/MusicOrgan/Examples/personal.CPP.Z,1].  It does not fully
 parse 
 them when loading back in, so changes made outside MusicOrgan can be lost.
 
-* The first line of the [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C files has a
+* The first line of the [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC files has a
 comment with a category recognized 
 by [C:/TempleOS/Apps/MusicOrgan/JukeBox.CPP.Z,1] JukeBox().  The categories
 are "no nothing", "has words", "has graphics", 

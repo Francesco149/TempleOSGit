@@ -2,8 +2,7 @@ One jiffy is one time slice.  [C:/TempleOS/Kernel/Adam1b.HPP.Z,208]
 sys_jiffies returns time slices since boot.
 
 [C:/TempleOS/Kernel/Misc1a.CPP.Z,62] SysTimerRead reads the timer ticks since
-boot.  It's not as fast as 
-[C:/TempleOS/Kernel/Adam1b.HPP.Z,199] GetTimeStamp.
+boot.  It's not as fast as [MN:GetTSC] GetTSC.
 
 Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,612] JIFFY_FREQ to convert
 [C:/TempleOS/Kernel/Adam1b.HPP.Z,208] sys_jiffies.

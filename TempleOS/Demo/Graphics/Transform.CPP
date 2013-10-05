@@ -7,7 +7,7 @@
 //Scroll bar works.
 
 //The multiplication takes place in the
-//[C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,332] SpritePlotRotZ3b routine.
+//[MN:SpritePlotRotZ3B] SpritePlotRotZ3B routine.
 
 
 #define SLIDER_SPACING 20
@@ -38,13 +38,13 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 	      c->left+3*SLIDER_SPACING+2,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
 
   dc->color=LTGREEN;
-  GrPrintF(dc,c->left+SLIDER_SPACING-FONT_WIDTH/2,
+  GrPrint(dc,c->left+SLIDER_SPACING-FONT_WIDTH/2,
 	      c->top+SLIDER_SPACING+SLIDER_RANGE+3,
     "%d",s->s1*10/SLIDER_RANGE);
-  GrPrintF(dc,c->left+2*SLIDER_SPACING+1-FONT_WIDTH/2,
+  GrPrint(dc,c->left+2*SLIDER_SPACING+1-FONT_WIDTH/2,
 	      c->top+SLIDER_SPACING+SLIDER_RANGE+3,
     "%d",s->s2*10/SLIDER_RANGE);
-  GrPrintF(dc,c->left+3*SLIDER_SPACING+2-FONT_WIDTH/2,
+  GrPrint(dc,c->left+3*SLIDER_SPACING+2-FONT_WIDTH/2,
 	      c->top+SLIDER_SPACING+SLIDER_RANGE+3,
     "%d",s->s3*10/SLIDER_RANGE);
   GrRect(dc,c->left+SLIDER_SPACING-3,	 c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s1-2 ,7,5);
@@ -142,7 +142,7 @@ U0 MPDrawIt(CTask *task)
   MemCpy(dc->r,mp.r,sizeof(I64)*16);
   dc->flags|=DCF_TRANSFORMATION;
   for (i=lo;i<hi;i++)
-    SpritePlotRotZ3b(dc,tree_x[i],
+    SpritePlotRotZ3B(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
   DCDel(dc);
   LBtr(&mp_not_done_flags,Gs->num);

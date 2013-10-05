@@ -39,9 +39,8 @@ used
 as general purpose registers, more or less.
 
 * TempleOS uses a dialect of C/C++ called [C:/TempleOS/Doc/HolyC.TXT.Z,1]
-Holy C.  It is not PASCAL.  I 
-altered the syntax making parenthesis optional on function calls with no 
-paramaters.
+HolyC.  It is not PASCAL.  I altered 
+the syntax making parenthesis optional on function calls with no paramaters.
 
 * [C:/TempleOS/Kernel/Misc1a.CPP.Z,178] Sleep() makes a program pause.  It is
 not hybernation for a laptop.

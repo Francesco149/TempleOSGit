@@ -41,7 +41,7 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   F64 tt=tT-t0;
   I64 i=(NUM_BATTER_IMGS-1)*tt/BATTER_T;
-  U8 *inter;
+  U8 *temps;
 
   dc->color=WHITE;
   dc->pen_width=3;
@@ -54,28 +54,28 @@ U0 DrawIt(CTask *,CDC *dc)
   if (!t0)
     SpritePlot3(dc,BASE_X-23,BASE_Y,0,batter_imgs[0]);
   else if (i<NUM_BATTER_IMGS-1) {
-    inter=SpriteInterpolate(batter_imgs[i],batter_imgs[i+1],
+    temps=SpriteInterpolate(batter_imgs[i],batter_imgs[i+1],
       ((NUM_BATTER_IMGS-1)/BATTER_T)*(tt%(BATTER_T/(NUM_BATTER_IMGS-1))));
-    SpritePlot3(dc,BASE_X-23,BASE_Y,0,inter);
-    Free(inter);
+    SpritePlot3(dc,BASE_X-23,BASE_Y,0,temps);
+    Free(temps);
     if (!hit_t0 && tt>BATTER_T/2)
       hit_t0=tT;
   } else {
     tt-=BATTER_T;
     i=(NUM_RUNNER1_IMGS-1)*tt/RUNNER1_T;
     if (i<NUM_RUNNER1_IMGS-1 ) {
-      inter=SpriteInterpolate(runner1_imgs[i],runner1_imgs[i+1],
+      temps=SpriteInterpolate(runner1_imgs[i],runner1_imgs[i+1],
 	((NUM_RUNNER1_IMGS-1)/RUNNER1_T)*(tt%(RUNNER1_T/(NUM_RUNNER1_IMGS-1))));
-      SpritePlot3(dc,BASE_X-23,BASE_Y,0,inter);
-      Free(inter);
+      SpritePlot3(dc,BASE_X-23,BASE_Y,0,temps);
+      Free(temps);
     } else {
       tt-=RUNNER1_T;
       i=NUM_RUNNER2_IMGS*tt/RUNNER2_T;
       if (i<30) {
-	inter=SpriteInterpolate(runner2_imgs[i%NUM_RUNNER2_IMGS],runner2_imgs[(i+1)%NUM_RUNNER2_IMGS],
+	temps=SpriteInterpolate(runner2_imgs[i%NUM_RUNNER2_IMGS],runner2_imgs[(i+1)%NUM_RUNNER2_IMGS],
 	  (NUM_RUNNER2_IMGS/RUNNER2_T)*(tt%(RUNNER2_T/NUM_RUNNER2_IMGS)));
-	SpritePlot3(dc,BASE_X-23-50*tt,BASE_Y-50*tt,0,inter);
-	Free(inter);
+	SpritePlot3(dc,BASE_X-23-50*tt,BASE_Y-50*tt,0,temps);
+	Free(temps);
       } else {
 	t0=0;
 	ball_x=0;

@@ -4,14 +4,14 @@ TempleOS tour is done with an AutoFile.
 When an AutoFile runs, a child task is [C:/TempleOS/Kernel/Task1a.CPP.Z,224]
 Spawn()ed which intercepts real user 
 input and generates fake input.  AutoFiles are
-[C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C programs run by the 
-child who's stdout goes to the parent's input buffer. 
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,214] Msg() can be included 
-in an AutoFile to send special keys or mouse cmds to the parent.  While an Aut
-oFile is running, the normal input gets diverted to the AutoFile task and can 
-be filtered and sent back to the parent task.  Unless you are driving 
-functions which prompt for data, you can probably use an #include file in 
-place of an AutoFile.
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC programs run by the child 
+who's stdout goes to the parent's input buffer. 
+[C:/TempleOS/Kernel/TaskCmd.CPP.Z,214] Msg() can be included in an A
+utoFile to send special keys or mouse cmds to the parent.  While an AutoFile 
+is running, the normal input gets diverted to the AutoFile task and can be 
+filtered and sent back to the parent task.  Unless you are driving functions 
+which prompt for data, you can probably use an #include file in place of an Au
+toFile.
 
 See [C:/TempleOS/Demo/AutoFile/AFDir.AUT.Z,1].
 

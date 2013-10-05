@@ -96,8 +96,7 @@ direct to video mem debug output.
 0x80000000 [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2206] AKDDocPutKey() standard
 document cmds
 
-Since handling individual keys is slow, TempleOS supports
-[C:/TempleOS/Kernel/Display.CPP.Z,207] PutS() as well.  If 
+Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
 [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc.user_put_key and

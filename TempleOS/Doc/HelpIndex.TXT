@@ -10,7 +10,7 @@
 [C:/TempleOS/Doc/Features.TXT.Z,1] Features               [C:/TempleOS/Doc/Requirements.TXT.Z,1] Requirements
 [C:/TempleOS/Doc/Charter.TXT.Z,1] TempleOS Charter [C:/TempleOS/Doc/Strategy.TXT.Z,1] Strategic Decisions
 [C:/TempleOS/Doc/Mysteries.TXT.Z,1] Mysteries Explained    [C:/TempleOS/Doc/Confuse.TXT.Z,1] Clearing Confusions
-[C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C [C:/TempleOS/Doc/Directives.TXT.Z,1] Compiler Directives
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC [C:/TempleOS/Doc/Directives.TXT.Z,1] Compiler Directives
 [C:/TempleOS/Doc/ChangeLog.TXT.Z,1] ChangeLog
 	
 +] Level 1: USER HELP
@@ -62,17 +62,11 @@ The TempleOS cmd line interface is based on C/C++. Explore the ".CPP.Z"
     semicolon.  Cmds with args require placing the arg in parentheses like a
     function call.
 
-Dir("*");
-`Dir("*");`
- will list files in the current directory.
+Dir(\"*\"); will list files in the current directory.
 
-Dir;
-`Dir;`
- uses default of "*".
+Dir; uses default of "*".
 
-Cd("::/TempleOS/Apps");
-`Cd("::/TempleOS/Apps");`
- will change directories.
+Cd(\"::/TempleOS/Apps\"); will change directories.
 
 Directories are referenced with "/" not "\".  The boot drive is referred to
     with "::".  Other drives are referred to by a letter and a colon.  Your user
@@ -88,13 +82,14 @@ Ed("FILENAME.TXT.Z"); Invokes the editor. See
 
 Some cmds like [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() take a
     "find_files_mask".  They begin with the name of a dir tree and end with a
-    list of filename masks.  See [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40]
-    FilesFindMatch().
+    list of filename masks.  A "~" before a mask will exclude files.  See
+    [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().
 
 Grep("pattern","/TempleOS/Demo/*.CPP.Z;*.TXT.Z;");
 
-Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
-    [C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC.
+Be aware of [MN:FILEMASK_TXT] FILEMASK_TXT, [MN:FILEMASK_SRC] FILEMASK_SRC,
+    [MN:FILEMASK_AOT] FILEMASK_AOT, [MN:FILEMASK_JIT] FILEMASK_JIT, and
+    [MN:FILEMASK_GRA] FILEMASK_GRA.
 
   +] BURNING CD-ROMs/DVDs
     
@@ -120,7 +115,7 @@ Use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk
 +] Level 3: PROGRAMMER HELP
   
 [C:/TempleOS/Doc/GuideLines.TXT.Z,1] Guidelines
-[C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC
 [C:/TempleOS/Doc/Graphics.TXT.Z,1] Graphics
 [C:/TempleOS/Doc/MultiTasking.TXT.Z,1] Multitasking
 [C:/TempleOS/Demo/Doc/FileRead.CPP.Z,1] Doc Documents
@@ -169,6 +164,7 @@ Use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk
 [Doc,1] Doc
 [Exceptions,1] Exceptions
 [File,1] File
+[Hash/Frame,1] Frames
 [C:/TempleOS/Doc/Graphics.TXT.Z,1] Graphics Overview
 [Graphics,1] Graphic Routines
 [Hash,1] Hash
@@ -184,11 +180,10 @@ Use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk
 [Messages,1] Messages
 [Misc,1] Misc
 [MultiCore,1] MultiCore
-[Hash/Named Frame,1] Named Frames
 [CMathODE,1] MathODE
 [C:/TempleOS/Compiler/OpCodes.TXT.Z,1] OpCodes
 [C:/TempleOS/Doc/HolyC.TXT.Z,1] Operator Precedences
-[C:/TempleOS/Doc/HolyC.TXT.Z,1] PrintF Extended Codes
+[C:/TempleOS/Doc/HolyC.TXT.Z,1] Print Extended Codes
 [Processor,1] Processor
 [Profiler,1] Profiler
 [PCI,1] PCI

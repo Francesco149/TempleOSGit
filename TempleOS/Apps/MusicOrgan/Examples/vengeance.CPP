@@ -24,7 +24,7 @@ U0 DrawIt(CTask *,CDC *dc)
     GrRotZEqu(dc->r,5.0*(dt-0.5));
     GrRotXEqu(dc->r,1.5-2.0*dt);
     GrSetRotMat(dc,dc->r);
-    SpritePlot3b(dc,200,55,0,__BIN_1);
+    SpritePlot3B(dc,200,55,0,__BIN_1);
   }
 }
 

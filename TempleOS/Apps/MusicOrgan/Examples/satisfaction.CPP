@@ -45,23 +45,23 @@ F64 t0=tMBeat;
 U0 DrawIt(CTask *,CDC *dc)
 {
   F64 dt=tMBeat-t0;
-  U8 *inter;
+  U8 *temps;
 	 if (dt<PHASE1)
     SpritePlot3(dc,MAN_X,MAN_Y,0,__BIN_1);
   else if (dt<PHASE2) {
-    inter=SpriteInterpolate(__BIN_1,__BIN_2,(dt-PHASE1)/(PHASE2-PHASE1));
-    SpritePlot3(dc,MAN_X,MAN_Y,0,inter);
-    Free(inter);
+    temps=SpriteInterpolate(__BIN_1,__BIN_2,(dt-PHASE1)/(PHASE2-PHASE1));
+    SpritePlot3(dc,MAN_X,MAN_Y,0,temps);
+    Free(temps);
   } else if (dt<PHASE3) {
-    inter=SpriteInterpolate(__BIN_2,__BIN_3,(dt-PHASE2)/(PHASE3-PHASE2));
-    SpritePlot3(dc,MAN_X,MAN_Y,0,inter);
-    Free(inter);
+    temps=SpriteInterpolate(__BIN_2,__BIN_3,(dt-PHASE2)/(PHASE3-PHASE2));
+    SpritePlot3(dc,MAN_X,MAN_Y,0,temps);
+    Free(temps);
   } else if (dt<PHASE4)
     SpritePlot3(dc,MAN_X,MAN_Y,0,__BIN_3);
   else if (dt<PHASE5) {
-    inter=SpriteInterpolate(__BIN_3,__BIN_1,(dt-PHASE4)/(PHASE5-PHASE4));
-    SpritePlot3(dc,MAN_X-100*(dt-PHASE4),MAN_Y-5*(dt-PHASE4),0,inter);
-    Free(inter);
+    temps=SpriteInterpolate(__BIN_3,__BIN_1,(dt-PHASE4)/(PHASE5-PHASE4));
+    SpritePlot3(dc,MAN_X-100*(dt-PHASE4),MAN_Y-5*(dt-PHASE4),0,temps);
+    Free(temps);
   } else
     SpritePlot3(dc,MAN_X-100*(PHASE5-PHASE4),MAN_Y-5*(PHASE5-PHASE4),0,__BIN_1);
 }

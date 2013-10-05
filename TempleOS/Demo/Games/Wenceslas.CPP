@@ -164,7 +164,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       dc->color=LTCYAN;
     else
       dc->color=CYAN;
-    SpritePlotRotMat3b(dc,tempp->x,tempp->y,0,__BIN_2,r);
+    SpritePlotRotMat3B(dc,tempp->x,tempp->y,0,__BIN_2,r);
     tempp=tempp->next;
   }
  
@@ -172,7 +172,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrIdentEqu(r);
   GrRotYEqu(r,king_theta+pi/2);
   GrRotXEqu(r,pi/6);
-  SpritePlotRotMat3b(dc,king_x,king_y,0,__BIN_1,r);
+  SpritePlotRotMat3B(dc,king_x,king_y,0,__BIN_1,r);
 
   dc->pen_width=1;
   dc->color=WHITE;
@@ -183,13 +183,13 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (tf) {
     dc->color=LTRED;
     if (Blink)
-      GrPutS(dc,w/2-(FONT_WIDTH*14)/2,h/2+FONT_HEIGHT,"Game Completed");
+      GrPrint(dc,w/2-(FONT_WIDTH*14)/2,h/2+FONT_HEIGHT,"Game Completed");
     tt=tf;
   } else {
     tt=tT;
   }
   dc->color=LTBLUE;
-  GrPrintF(dc,0,0,"Freezing Peasants:%d Time:%3.2f Best:%3.2f",
+  GrPrint(dc,0,0,"Freezing Peasants:%d Time:%3.2f Best:%3.2f",
     not_stopped_cnt,tt-t0,best_score);
 
   Preempt(old_preempt);

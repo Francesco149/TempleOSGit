@@ -57,7 +57,7 @@ I64 ai_targets[10];
 
 U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 {
-  U8 *inter;
+  U8 *temps;
   I64 x,y,gx,gy;
   F64 speed,tt;
 
@@ -103,9 +103,9 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 	GrSetSymmetry(dc,x,y,x,y+1);
       } else
 	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
-      inter=SpriteInterpolate(trooper_imgs[tt%NUM_FRAMES],trooper_imgs[(tt+1.0)%NUM_FRAMES],tt%1.0);
-      SpritePlot3(dc,x,y,0,inter);
-      Free(inter);
+      temps=SpriteInterpolate(trooper_imgs[tt%NUM_FRAMES],trooper_imgs[(tt+1.0)%NUM_FRAMES],tt%1.0);
+      SpritePlot3(dc,x,y,0,temps);
+      Free(temps);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
   }
@@ -148,9 +148,9 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrCircle(dc,x,y,AbsI64(cmd_intensity));
   }
   dc->color=LTCYAN;
-  GrPrintF(dc,(task->win_right-8)*FONT_WIDTH,0,"%03d",cnt[0]);
+  GrPrint(dc,(task->win_right-8)*FONT_WIDTH,0,"%03d",cnt[0]);
   dc->color=LTPURPLE;
-  GrPrintF(dc,(task->win_right-4)*FONT_WIDTH,0,"%03d",cnt[1]);
+  GrPrint(dc,(task->win_right-4)*FONT_WIDTH,0,"%03d",cnt[1]);
 }
 
 U0 DoAiTarget()

@@ -148,7 +148,7 @@ U0 MPDrawMeeting(CTask *task)
 
       r2=GrScaleMat(old_r,s);
       GrSetRotMat(dc,r2);
-      SpritePlot3b(dc,x,y,z,img);
+      SpritePlot3B(dc,x,y,z,img);
       Free(r2);
       if (objs[i].type==CO_PERSON)
 	Free(img);
@@ -219,7 +219,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
     s=0.5*ToF64(CAMP_SCALE)/z;
     r2=GrScaleMat(old_r,s,task);
     GrSetRotMat(dc,r2);
-    SpritePlot3b(dc,x,y,z,__BIN_5);
+    SpritePlot3B(dc,x,y,z,__BIN_5);
     Free(r2);
   }
 
@@ -230,7 +230,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
   GrSetRotMat(dc,old_r);
   if (calf && Blink(4.0)) {
     dc->color=YELLOW;
-    GrPutS(dc,cx-(15*FONT_WIDTH)/2,cy-3*FONT_HEIGHT,"!!Golden Calf!!");
+    GrPrint(dc,cx-(15*FONT_WIDTH)/2,cy-3*FONT_HEIGHT,"!!Golden Calf!!");
   }
  
   while (mp_not_done_flags)

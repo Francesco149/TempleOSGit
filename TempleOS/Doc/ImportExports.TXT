@@ -141,7 +141,7 @@ for example.
 
 * All offspring tasks of a task inherit syms.
 
-* The sizeof() and Holy C structure members can be used in asm blks.
+* The sizeof() and HolyC structure members can be used in asm blks.
 
 * No register vars are used in functions with a try/catch.  They will be
 force 

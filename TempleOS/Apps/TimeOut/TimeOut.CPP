@@ -158,13 +158,13 @@ U0 DrawIt(CTask *task,CDC *dc)
       }
     }
   }
-  SpritePlotRotZ3b(dc,x,y,0,__BIN_1,theta);
+  SpritePlotRotZ3B(dc,x,y,0,__BIN_1,theta);
 
   if (tf) {
     t1=tf;
     dc->color=RED;
     if (game_over && Blink)
-      GrPutS(dc,task->win_pixel_width/2-9*FONT_WIDTH/2,
+      GrPrint(dc,task->win_pixel_width/2-9*FONT_WIDTH/2,
 		  task->win_pixel_height/2,"Game Over");
   } else {
     t1=tT;
@@ -172,29 +172,19 @@ U0 DrawIt(CTask *task,CDC *dc)
      game_over=TRUE;
   }
   dc->color=BROWN;
-  GrPrintF(dc,0,0,"Enemy:%d Friends:%d Friendly Fire:%d Time:%6.2f Shots:%d",
+  GrPrint(dc,0,0,"Enemy:%d Friends:%d Friendly Fire:%d Time:%6.2f Shots:%d",
     enemy_left,friendly_left,friendly_fire,t1-t0,shots_fired);
-  GrPrintF(dc,0,8,"Total Score:%,d High Score:%,d",
+  GrPrint(dc,0,8,"Total Score:%,d High Score:%,d",
       total_score,best_score);
 }
-
-#define MONO_MAN_WIDTH	32
-#define MONO_MAN_HEIGHT	32
 
 U0 CheckCollisions()
 {
   I64 i,x,y;
   Man *tempm;
   Shot *temps;
-  CDC	*dc2   =DCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT),
-	*friend=DCNew(DCT_COLOR8,MONO_MAN_WIDTH,MONO_MAN_HEIGHT),
-	*enemy =DCNew(DCT_COLOR8,MONO_MAN_WIDTH,MONO_MAN_HEIGHT);
-  DCFill(friend);
-  SpritePlot3(friend,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_2);
-  DCFill(enemy);
-  SpritePlot3(enemy ,MONO_MAN_WIDTH/2,MONO_MAN_HEIGHT/2,0,__BIN_3);
-
-  dc2->color=WHITE;
+  CDC	*dc2   =DCNew(DCT_COLOR8,GR_WIDTH,GR_HEIGHT);
+  dc2->color=LTRED;
   for (i=0,temps=s;i<MAX_SHOTS;i++,temps++)
     if (!temps->dead)
       GrLine(dc2,temps->x>>32,temps->y>>32,
@@ -210,9 +200,9 @@ U0 CheckCollisions()
       if (0<=x<GR_WIDTH && 0<=y<GR_HEIGHT) {
 	dc2->collision_cnt=0;
 	if (tempm->friendly)
-	  GrBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,friend);
+	  SpritePlot3(dc2,x,y,0,__BIN_2);
 	else
-	  GrBlot(dc2,x-MONO_MAN_WIDTH/2,y-MONO_MAN_HEIGHT/2,enemy);
+	  SpritePlot3(dc2,x,y,0,__BIN_3);
 	if (dc2->collision_cnt) {
 	  tempm->dead=TRUE;
 	  tempm->corpse_timeout=tT+30.0;
@@ -229,8 +219,6 @@ U0 CheckCollisions()
       }
     }
   }
-  DCDel(friend);
-  DCDel(enemy);
   DCDel(dc2);
 }
 

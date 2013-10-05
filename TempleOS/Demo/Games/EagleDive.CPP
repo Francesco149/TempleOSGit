@@ -89,16 +89,16 @@ I64 num_panels;
 Panel *panel_root;
 U8 *panels_processed_bitmap;
 
-F64 game_t0,v_grid_size,span_factor,phi,theta1,theta2,speed;
+F64 game_t0,phi,theta1,theta2,speed;
 
-I64 x,y,z,game_score;
+I64 strip_height,x,y,z,game_score;
 
 Bool game_over;
 
 class MPCtrl {
   I64 mp_cnt;
   I64 init_not_done_flags,update_not_done_flags,app_not_done_flags;
-  F64 update_done_time[MP_MAX_PROCESSORS];
+  I64 strip_width[MP_MAX_PROCESSORS];
   Bool app_done;
 } mp;
 
@@ -401,12 +401,10 @@ U0 DrawIt(CTask *,CDC *dc)
   GrBlot(dc,0,0,main_dc);
 }
 
-
-/*/*  <2> (image) */
-
+/*
 
 
-
+/* <2> <2> (image) */
 
 
 
@@ -424,24 +422,59 @@ U0 DrawIt(CTask *,CDC *dc)
 
 
 
-Cores render strips.  The strips are wider toward the horizon by span_factor
-and overlap +/- 15%. The cores check the panel map array
-and render the panel for each square and mark-it done.
+
+
+/* <3> <3> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cores render strips that +/- 15%. The cores check the panel map array
+and render the panel for each square, marking-it done.
 
 The depth buf is not locked in the graphic routines
 so we get some glitches.
 
 */
 
+I64 update_jiffy_limit;
+
 U0 MPDrawIt(CTask *task,CDC *dc)
 {
 //This is identical to the previous routine but is run by core#1
-  I64 i,j,ww,hh,*s2w,x1,y1,z1, xx,yy,
-      xh,yh,zh, yh2,xh2, reg x1w, reg y1w, x1h,y1h,
+  I64 j,strip_width,*s2w,x1,y1,z1, xx,yy,
+      xh,yh,zh,yh2,xh2,x1h,y1h,x1wa,y1wa,x1wb,y1wb,
       x3,y3,z3,
       cx=task->win_pixel_width>>1,
       cy=task->win_pixel_height>>1;
-  F64 h_grid_size,t=tT;
   Panel reg *tempp;
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
@@ -497,7 +530,6 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     yy+=y3;
   }
 
-  h_grid_size=4.0*v_grid_size*(Gs->num+span_factor)/span_factor;
   if (Gs->num&1) { //alternate left-right,right-left
     yh2=-yh;
     xh2=-xh;
@@ -506,11 +538,11 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     xh2=xh;
   }
 
-  ww=h_grid_size;
-  hh=1.30*v_grid_size; //Cores overlap 15% on each side of strip.
   //Calc starting point.
-  x1h=xx<<8+0.5*yh2*h_grid_size+xh*v_grid_size*(Gs->num+1.15);
-  y1h=yy<<8-0.5*xh2*h_grid_size+yh*v_grid_size*(Gs->num+1.15);
+  x1wa=xx<<8+xh*strip_height>>1/1.3*(Gs->num+1.15);
+  y1wa=yy<<8+yh*strip_height>>1/1.3*(Gs->num+1.15);
+  x1wb=0;
+  y1wb=0;
 
   xh=-xh; //Back to front to help with depth.
   yh=-yh;
@@ -518,14 +550,11 @@ U0 MPDrawIt(CTask *task,CDC *dc)
   //Take half steps to cover whole grid.
   xh>>=1;  yh>>=1;
   xh2>>=1; yh2>>=1;
-  ww<<=1;
-  hh<<=1;
-
-  for (j=0;j<hh;j++) {
-    x1w=x1h;
-    y1w=y1h;
-    for (i=0;i<ww;i++) {
-      x1=x1w>>8; y1=y1w>>8;
+  for (strip_width=0;sys_jiffies<update_jiffy_limit;strip_width++) {
+    x1h=x1wa;
+    y1h=y1wa;
+    for (j=0;j<strip_height && sys_jiffies<update_jiffy_limit;j++) {
+      x1=x1h>>8; y1=y1h>>8;
       if (0<=x1<MAP_WIDTH && 0<=y1<MAP_HEIGHT) {
 	  if ((tempp=panels[y1][x1*2]) && !LBts(panels_processed_bitmap,tempp->num)) {
 	    if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
@@ -535,14 +564,22 @@ U0 MPDrawIt(CTask *task,CDC *dc)
 	      tempp->cnt++;
 	  }
       }
-      x1w-=yh2;
-      y1w+=xh2;
+      x1h+=xh;
+      y1h+=yh;
     }
-    x1h+=xh;
-    y1h+=yh;
+    x1wb-=yh2;
+    y1wb+=xh2;
+    if (strip_width&1) {
+      x1wa-=x1wb;
+      y1wa-=y1wb;
+    } else {
+      x1wa+=x1wb;
+      y1wa+=y1wb;
+    }
   }
+
   Free(s2w);
-  mp.update_done_time[Gs->num]=Limit(tT-t,.001,0.5);
+  mp.strip_width[Gs->num]=strip_width;
   LBtr(&mp.update_not_done_flags,Gs->num);
 }
 
@@ -660,12 +697,13 @@ U0 DrawHorizon(CDC *dc)
 U0 BSPEagleDive()
 {
   CDC *dc=DCAlias(main_dc,Fs);
-  F64 max_t;
   I64 i,xx,yy,height,bkcolor,
       cx=Fs->win_pixel_width>>1,
       cy=Fs->win_pixel_height>>1;
+  F64 min_strip_width;
   Fish *tempf;
 
+  update_jiffy_limit=sys_jiffies+JIFFY_FREQ/40;
   MemSet(panels_processed_bitmap,0,(num_panels+7)>>3);
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
@@ -705,18 +743,10 @@ U0 BSPEagleDive()
     while (mp.update_not_done_flags)
       Sleep(1);
 
-    max_t=mp.update_done_time[0];
-    for (i=1;i<mp.mp_cnt;i++)
-      max_t=Max(max_t,mp.update_done_time[i]);
-
-      //Adjust size of updated grid.
-    v_grid_size  *=0.90+0.10*(0.65/Fs->win_max_refresh)/max_t;
-    v_grid_size=Limit(v_grid_size,20,200);
-    //Regulate how much grid expands in the distance.
-    if (mp.mp_cnt>1)
-      span_factor*=0.90+0.10*mp.update_done_time[mp.mp_cnt-1]/mp.update_done_time[0];
-    span_factor=Limit(span_factor,.30,3.0);
-
+    min_strip_width=MAX_F64;
+    for (i=0;i<mp.mp_cnt;i++)
+      min_strip_width=Min(min_strip_width,32.0*mp.strip_width[i]/(i+32.0));
+    strip_height=LimitI64(strip_height*Limit(0.25*min_strip_width/strip_height,0.9,1.1),64,1024);
   } else {
     dc->color=bkcolor;
     GrRect(dc,0,0,dc->width,dc->height);
@@ -729,19 +759,19 @@ U0 BSPEagleDive()
   dc->flags&=~DCF_TRANSFORMATION;
   GrLine3(dc,cx+5,cy,0,cx-5,cy,0);
   GrLine3(dc,cx,cy+5,0,cx,cy-5,0);
-  GrPrintF(dc,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Box:%5.1f",
-      theta1*180/pi,phi*180/pi,theta2*180/pi,v_grid_size);
-  GrPrintF(dc,0,FONT_HEIGHT,"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
+  GrPrint(dc,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Strip:%5d",
+      theta1*180/pi,phi*180/pi,theta2*180/pi,strip_height);
+  GrPrint(dc,0,FONT_HEIGHT,"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
       ToF64(x)/COORDINATE_SCALE,ToF64(y)/COORDINATE_SCALE,ToF64(z)/COORDINATE_SCALE,
       height,game_score,best_score);
 
   if (game_over && Blink) {
     dc->color=RED;
-    GrPutS(dc,(Fs->win_pixel_width-9*FONT_WIDTH)/2,
+    GrPrint(dc,(Fs->win_pixel_width-9*FONT_WIDTH)/2,
 	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Game Over");
   } else if (tT-game_t0<5.0 && Blink) {
     dc->color=WHITE;
-    GrPutS(dc,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
+    GrPrint(dc,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
 	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Catch Fish");
   }
 //We made an alias of this we don't want freed.
@@ -774,6 +804,7 @@ U0 AnimateTask(I64)
       z+=z1;
       Free(s2w);
       x1=x/COORDINATE_SCALE; y1=y/COORDINATE_SCALE; z1=z/COORDINATE_SCALE;
+
       if (z1<WATER_ELEVATION*MAP_SCALE) {
 	speed=0.5;
 	tempf=fish_root.next;
@@ -807,6 +838,7 @@ U0 AnimateTask(I64)
 
 U0 MPEnd()
 {
+  update_jiffy_limit=0;
   mp.app_not_done_flags=1<<mp.mp_cnt-1-1;
   mp.app_done=TRUE;
   //Wait for all cores to exit
@@ -853,8 +885,7 @@ U0 Init(I64 _mp_cnt)
 
   Fs->win_max_refresh=30.0;
 
-  v_grid_size=64.0;
-  span_factor=1.0;
+  strip_height=128;
   phi	=-90.0*pi/180.0;
   theta1=  0.0*pi/180.0;
   theta2=  0.0*pi/180.0;

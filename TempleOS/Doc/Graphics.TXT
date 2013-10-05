@@ -41,20 +41,19 @@
 * See [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen() and
 [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,378] GrUpdateWins().  Only tasks on core0
 are allowed to 
-have windows.  There is one window per task and no child windows.
+have windows.  There is one window per task, no child windows.
 
 * [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDCs (device contexts) are a data
 type for controlling graphics on the 
-screen or graphics in mem, not on the screen.  The device context structure 
-has pen width and color associated with it, so you use
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() to create 
-your own structure, with its own color and pen width.  Free it with
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,76] DCDel() 
-when finished.
+screen or graphics in mem.  The device context structure has pen width and 
+color.  You use [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() to create your
+own structure, with its own color and 
+pen width.  Free it with [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,76] DCDel() when
+finished.
 
-* You change the "Fs->draw_it" var to point to your "DrawIt()" which gets 
-called each screen refresh.  You draw everything in the window over and over 
-again.  See [C:/TempleOS/Demo/Graphics/Box.CPP.Z,1].
+* You change the "Fs->draw_it" var to point to your "DrawIt()" function which 
+gets called each screen refresh (60 fps).  You draw everything in the window 
+over and over again.  See [C:/TempleOS/Demo/Graphics/Box.CPP.Z,1].
  
 * gr_dc is a device context for persistent data on the screen, not needing to 
 be redrawn.  You create an alias for this by using
@@ -73,8 +72,7 @@ another CDC, all the graphic routines will
 * There are various flavors of line and point plotting routines. 
 [C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,437] GrLine() and 
 [C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,47] GrPlot() are the simplest.  The
-others allow 3 dimensional graphics and 
-rotations.
+others allow 3D graphics and rotations.
 
 * See [C:/TempleOS/Doc/Transform.TXT.Z,1] for adding a transformation.
 
@@ -123,9 +121,9 @@ mass.
 See [Math/CMathODE,1] Math/CMathODE.
 See [C:/TempleOS/Demo/Games/Rocket.CPP.Z,1].
 
-* There are several [C:/TempleOS/Kernel/Adam1a.HPP.Z,2770] raster operations
-available.  They go in bits 8-11 of the 
-dc->color member var.
+* There are a few [C:/TempleOS/Kernel/Adam1a.HPP.Z,2770] raster operations
+available.  They go in bits 8-11 of the dc
+->color member var.
 
 * [C:/TempleOS/Kernel/Adam1a.HPP.Z,2772] ROP_COLLISION is special.  It counts
 the num of pixels drawn on 

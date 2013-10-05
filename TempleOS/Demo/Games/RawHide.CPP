@@ -238,14 +238,14 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=RED;
     t=tf-t0;
     if (Blink)
-      GrPutS(dc,(task->win_pixel_width-FONT_WIDTH*14)>>1-task->win_scroll_x,
+      GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*14)>>1-task->win_scroll_x,
 		  (task->win_pixel_height-FONT_HEIGHT)>>1-task->win_scroll_y,
 	"Game Completed");
   } else {
     dc->color=BLACK;
     t=tT-t0;
   }
-  GrPrintF(dc,-task->win_scroll_x,-task->win_scroll_y,"Time:%7.2fs  Best:%7.2fs",t,best_score);
+  GrPrint(dc,-task->win_scroll_x,-task->win_scroll_y,"Time:%7.2fs  Best:%7.2fs",t,best_score);
 }
 
 

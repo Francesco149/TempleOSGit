@@ -33,12 +33,9 @@ U0 DrawGodTalking(CTask *,CDC *dc)
 
 U0 RandWord()
 {// [C:/TempleOS/Apps/HolySpirit/HSNotes.TXT.Z,1] Holy Spirit Instructions
-  I64 i;
-  if (ws_num_words) {
-    i=TimerPickedU32; //[C:/TempleOS/Apps/HolySpirit/HolySpirit.CPP.Z,1]
-HolySpirit.CPP.Z
-    "%s ",ws_sorted_words[i%ws_num_words]->str;
-  }
+ // [C:/TempleOS/Apps/HolySpirit/HolySpirit.CPP.Z,1] HolySpirit.CPP.Z
+  if (ws_num_words)
+    "%s ",ws_sorted_words[TimerPickedBits(32)%ws_num_words]->str;
 }
 
 U0 RandQuote()
@@ -47,10 +44,10 @@ U0 RandQuote()
   U8 *bible_filename=Define("ST_BIBLE_FILE");
   U8 *buf=FileRead(bible_filename,&size);
   if (buf) {
-    i=TimerPickedU32%(size-l);
+    i=TimerPickedBits(32)%(size-l);
 //[C:/TempleOS/Apps/HolySpirit/HolySpirit.CPP.Z,1] HolySpirit.CPP.Z
     buf[i+l]=0;
-    "" buf+i;
+    "%s",buf+i;
     Free(buf);
   }
 }
@@ -66,7 +63,8 @@ U0 UpTheMountain()
   Fs->text_attr=YELLOW<<4+BLUE;
   Fs->draw_it=&DrawGodTalking;
   "$BG,YELLOW$$WW,1$$CM,0,30$God Says...$FG,RED$\n";
-  if (RandU32&1)
+  TimerPickFlush;
+  if (TimerPickedBits(1))
     for (i=0;i<16;i++)
       RandWord;
   else

@@ -61,8 +61,8 @@ CDATE_FREQ.  See [C:/TempleOS/Accts/TAD/Adam3aLocalize.CPP,1] local time.
  See [C:/TempleOS/Doc/KeyBoard.TXT.Z,1].
 
 * <CTRL-SHIFT-L> in the editor to reindent a [C:/TempleOS/Doc/HolyC.TXT.Z,1]
-Holy C function or renumber an 
-asm routine's local labels.
+HolyC function or renumber an asm 
+routine's local labels.
 
 * You can use filter_lines in the editor text search form (<CTRL-F>) to 
 temporarily display just lines near each match.  A value of filter lines set 
@@ -83,8 +83,7 @@ C>.
 [C:/TempleOS/Accts/TAD/Adam3fSys.CPP,1] HOME/Adam3fSys.CPP.
 
 * You can rst MultiCore CPU's if they get hung with
-[C:/TempleOS/Kernel/MultiProc.CPP.Z,400] MPStart().  HD Audio will 
-get screwed-up, however.
+[C:/TempleOS/Kernel/MultiProc.CPP.Z,400] MPStart().
 
 * Boolean expressions **not** in if statements don't have short circuit logic
 and 
@@ -160,9 +159,6 @@ files.
 
 * Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,244] Silent() to disable screen text
 output.
-
-* Use [C:/TempleOS/Kernel/Misc1a.CPP.Z,253] IOSnd() to disable noise from
-disk access.
 
 * Grab-scroll any window at any time with {CTRL-LEFT-DRAG}.  Null 
 grab-scrolling with {CTRL-RIGHT}.
@@ -297,9 +293,8 @@ text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/TempleOS/Kernel/KGlbls.CPP.Z,57] time_stamp_freq is continuously
 calibrated, so be careful because 
 expressions involving it might decrease.  Take a snap-shot, like this: timeout
-=[C:/TempleOS/Kernel/Adam1b.HPP.Z,199]
-GetTimeStamp+[C:/TempleOS/Kernel/KGlbls.CPP.Z,57] time_stamp_freq x seconds;
-and compare against [C:/TempleOS/Kernel/Adam1b.HPP.Z,199] GetTimeStamp().
+=[MN:GetTSC] GetTSC+[C:/TempleOS/Kernel/KGlbls.CPP.Z,57] time_stamp_freq x
+seconds; and compare against [MN:GetTSC] GetTSC().
 
 * Use [C:/TempleOS/Adam/HeapLog.CPP.Z,121] HeapLog() and
 [C:/TempleOS/Adam/HeapLog.CPP.Z,80] HeapLogRep() to find leaks.  Don't be

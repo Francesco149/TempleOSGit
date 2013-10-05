@@ -5,7 +5,7 @@
 SetTypeMatic(0);
 
 //Set Time Zone
-local_time_offset=0*60*60*CDATE_FREQ;
+local_time_offset=0*60*60*CDATE_FREQ; //Do daylight savings by hand
 
 //adjust these to set mouse move scale
 mxx_scale=0.5;

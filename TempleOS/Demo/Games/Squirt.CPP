@@ -74,7 +74,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     ode->drag_v2=0.01; //Let hose settle during start-up
     ode->drag_v3=0.0001;
     dc->color=RED;
-    GrPutS(dc,(GR_WIDTH-FONT_WIDTH*6)>>1,GR_HEIGHT>>1,"Squirt");
+    GrPrint(dc,(GR_WIDTH-FONT_WIDTH*6)>>1,GR_HEIGHT>>1,"Squirt");
     return;
   } else {
     ode->drag_v2=0.0005;
@@ -96,7 +96,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dx=tempm->x-tempm1->x;
   dy=tempm->y-tempm1->y;
   nozzle_theta=Wrap(Arg(dx,dy));
-  SpritePlotRotZ3b(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
+  SpritePlotRotZ3B(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
   dc->color=BLACK;
   GrCircle(dc,tempm->x,tempm->y,tempm->radius);
   dc->color=GREEN;
@@ -217,7 +217,7 @@ MySpring PlaceSpring(MyMass *tempm1,MyMass *tempm2)
   MySpring *temps=CAlloc(sizeof(MySpring));
   temps->end1=tempm1;
   temps->end2=tempm2;
-  temps->constant=20000;
+  temps->const=20000;
   QueIns(temps,ode->last_spring);
   return temps;
 }

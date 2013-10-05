@@ -33,9 +33,8 @@ See [C:/TempleOS/Kernel/Adam1a.HPP.Z,1045] Doc Type Defines and
 +] DA Data
   primarily used for forms that prompt for data. Use <CTRL-L> as a resource
   editor-type thing to generate the text you'll need in your "fmtstr" cmd in a
-  class.  If you add it directly with
-  [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1111] DocPutS(), you'll need to fill-in
-  the data addr.  See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291]
+  class.  If you add it directly with [MN:DocPrint] DocPrint(), you'll need to
+  fill-in the data addr.  See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291]
   DocFormDo(),[C:/TempleOS/Demo/Doc/Form.CPP.Z,1].
 
 If there is a ':', the space after the first ':' in the format string marks
@@ -95,13 +94,15 @@ Examples: <CTRL-T> to see
 3)File link without different tag str.[C:/TempleOS/Doc/HelpIndex.TXT.Z,1]
 4)[C:/TempleOS/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
 5)[C:/TempleOS/Kernel/Adam1a.HPP.Z,5] File find link searching for 5th 'CTRL'
-6)[C:/TempleOS/Kernel/Str1a.CPP.Z,2351] Manual page link
+6)[MN:Print] Manual page link
 7)[C:/TempleOS/Kernel/Adam1a.HPP.Z,200] File line num link
 8)[C:/TempleOS/Kernel/Define1a.CPP.Z,1] File anchor link -- <CTRL-T> to see
   anchor after you click
 9)[C:/TempleOS/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually
   just does a text search.
 10) [Doc,1] Help Index Link.
+11) [C:/TempleOS/Kernel/Hash1a.CPP.Z,570] Address Link.
+
 +] BT Button
   See [C:/TempleOS/Demo/Doc/MenuButton.CPP.Z,1].
 +] CB Check Box
@@ -117,13 +118,6 @@ Examples: <CTRL-T> to see
   See [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,617] PopUpRangeI64().
 +] HX Hex Edit
   See [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD().
-+] Hidden Text Widget
-  HS Start of hidden text
-HE End of hidden text
-Hidden text widgets allow text to be placed in collapsable brackets like this
-  <-This is hidden.> which can be expanded by clicking them. If you place a
-  '-C' flag to uncollapse it, it will start expanded like this <-Click to
-  hide>. They can be nestled like this <-Click here:<-This is nestled.> okay?>.
 +] TR Tree Widget
   A tree widget is a branch in a collapsable tree.  The domain of the branch
   extends from the first +indent until enough -indents bring it back to where
@@ -145,8 +139,8 @@ Hidden text widgets allow text to be placed in collapsable brackets like this
   and back requires renuming. To use a $IB$ cmd, toggle to plain text
   (<CTRL-T>) after inserting a sprite and check the number in the $SP$ cmd.
   Create a $IB$ cmd with the same number and the sprite will be inserted into
-  the compiled stream like a string constant.  You can optionally include tag
-  text to be displayed for the $IB$ cmd.
+  the compiled stream like a string const.  You can optionally include tag text
+  to be displayed for the $IB$ cmd.
 
 The main reason for the $IB$ cmd at this point is to pass a arg to the
   [C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3() function.  See
@@ -198,8 +192,8 @@ See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] dft_flags.
     A PopUp flag on a macro (MA) will cause the cmds to run in a new task, a
     pop-up window.
   +] +C Collapsed
-    A collapsed flag on a tree TR entry or a hide start HS will cause it to
-    start collapsed.  A -C flag will make it start open.
+    A collapsed flag on a tree TR entry will cause it to start collapsed.  A
+    -C flag will make it start open.
   +] +X <ESC> (Exit)
     * A exit flag will cause a macro to send an <ESC> before running(to exit
     the personal menu screen and return to the cmd prompt).  Actually, the
@@ -217,7 +211,7 @@ See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,1] dft_flags.
     [C:/TempleOS/Adam/ToHtml.CPP.Z,127] Doc2Html() routines will generate a html
     version of a document.  You can cause html link on an item with +HTML.
   +] +BP
-    The Bin Ptr Link flags lets you specify a file name and bin num to import
+    The Bin Ptr Link flags lets you specify a filename and bin num to import
     a bin.  $SP+BP,"<tag>",1,"filename,1"$ will import bin num "1" from filename.
   +] +AL Alias
     An alias flag on a tree entry (+TR) will cause the text of the current

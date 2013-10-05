@@ -100,7 +100,7 @@ use the heap for most things.  (The "heap" refers to
 Compile Mode and [C:/TempleOS/Doc/Glossary.TXT.Z,1] JIT Compile Mode.  
 Actual compilation is done in both -- nothing is "interpreted".
 
-* [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C
+* [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC
 
 * I often use 64-bit values when smaller would be more appropriate because
 the 
@@ -150,9 +150,9 @@ are
 set-up.  Basically, syms are placed into hash tables and child process hash 
 tables are chained to parents.  This provides scopes for vars and functions.
 
-* adam_task->hash_table holds the Holy C syms loaded in on start-up.
+* adam_task->hash_table holds the HolyC syms loaded in on start-up.
 
-* Fs->hash_table holds user Holy C syms and if a sym is not found, it checks 
+* Fs->hash_table holds user HolyC syms and if a sym is not found, it checks 
 parents.  When a duplicate sym is added to the table, it overshadows the 
 previous sym unless you have done [C:/TempleOS/Compiler/Directives.CPP.Z,6]
 OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1586] OPTf_REPLACE_SYMS).  When
@@ -165,8 +165,8 @@ applications to free themselves instead of staying in mem, spawn or
 [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,376] PopUp() a 
 task to run the application and kill it when it's done.
 
-* To display the contents of a hash table, use the
-[C:/TempleOS/Adam/Hash2a.CPP.Z,136] HashRep() routine or the 
+* To display the contents of a hash table, use the [MN:Who] Who() routine or
+the 
 varients.  [C:/TempleOS/Adam/Hash2a.CPP.Z,387] HashDepthRep() gives a
 histogram  of how long the chains are, in 
 case you wish to make hash table sizes bigger.

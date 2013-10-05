@@ -22,6 +22,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [C:/TempleOS/Demo/Graphics/Bounce.CPP.Z,1]
     [C:/TempleOS/Demo/KeyBitMap.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/WinZBuf.CPP.Z,1]
+    [C:/TempleOS/Demo/Graphics/Elephant.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Mountain.CPP.Z,1]
     [C:/TempleOS/Demo/Games/Coach.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/WallPaperFish.CPP.Z,1]
@@ -56,6 +57,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
     [C:/TempleOS/Demo/Graphics/Logo.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/RotateTank.CPP.Z,1]
     [C:/TempleOS/Demo/ScreenCodes.CPP.Z,1]
+    [C:/TempleOS/Demo/Graphics/PanText.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/CharGraphics.CPP.Z,1]
     [C:/TempleOS/Demo/Games/Maze.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/FontEd.CPP.Z,1]
@@ -66,7 +68,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 `Cd("::/TempleOS/Apps/MusicOrgan/Examples");Dir;View;
 `
 
-    [C:/TempleOS/Demo/MultiCore/MPPrintF.CPP.Z,1]
+    [C:/TempleOS/Demo/MultiCore/MPPrint.CPP,1]
     [C:/TempleOS/Demo/Graphics/PredatorPrey.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Cartesian.CPP.Z,1]
     [C:/TempleOS/Demo/Graphics/Hanoi.CPP.Z,1]
@@ -152,10 +154,11 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/TempleOS/Demo/SuggestSpelling.CPP.Z,1]
   [C:/TempleOS/Demo/WordSearch.CPP.Z,1]
   [C:/TempleOS/Demo/Graphics/CommonAncestor.CPP.Z,1]
+  [C:/TempleOS/Demo/Carry.CPP.Z,1]
   [C:/TempleOS/Demo/Dsk/DataBase.CPP.Z,1]
   [C:/TempleOS/Demo/Dsk/OrderedIO.CPP.Z,1]
   [C:/TempleOS/Demo/Dsk/FPrintF.CPP.Z,1]
-  [C:/TempleOS/Demo/Dsk/Raw.CPP.Z,1]
+  [C:/TempleOS/Demo/Dsk/DskRaw.CPP,1]
   [C:/TempleOS/Demo/Dsk/UnusedSpaceRep.CPP.Z,1]
   [C:/TempleOS/Demo/Lectures/MiniGrLib.CPP.Z,1]
   [C:/TempleOS/Demo/Lectures/MiniCompiler.CPP.Z,1]
@@ -185,7 +188,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 `Cd("::/TempleOS/Demo/AutoFile");Dir;View;
 `
 
-  [C:/TempleOS/Demo/PrintF.CPP.Z,1]
+  [C:/TempleOS/Demo/Print.CPP,1]
   [C:/TempleOS/Demo/DateTime.CPP.Z,1]
   [C:/TempleOS/Demo/SubIntAccess.CPP.Z,1]
   [C:/TempleOS/Demo/ParenWarn.CPP.Z,1]

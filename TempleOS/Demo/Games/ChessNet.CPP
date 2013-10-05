@@ -54,10 +54,10 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=LTCYAN;
   else
     dc->color=LTPURPLE;
-  GrPrintF(dc,0,0,"Player %d",cur_player+1);
+  GrPrint(dc,0,0,"Player %d",cur_player+1);
   if ((num_alive[0]==1 || num_alive[1]==1) && Blink(4)) {
     dc->color=BLACK;
-    GrPrintF(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
+    GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
 		  (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
   }
 }

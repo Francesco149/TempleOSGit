@@ -15,7 +15,7 @@ I16 elevs[MAP_WIDTH];
 
 F64 wind_x;
 #define NUM_DUST	512
-I32 dust_x[NUM_DUST],dust_y[NUM_DUST];
+I64 dust_x[NUM_DUST],dust_y[NUM_DUST];
 
 CMathODE *ode=NULL;
 
@@ -57,7 +57,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrSetSymmetry(dc,gun_x+h,0,gun_x+h,1);
     theta=-pi-theta;
   }
-  SpritePlotRotZ3b(dc,
+  SpritePlotRotZ3B(dc,
       gun_x+h-gun_recoil*Cos(theta),
       gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
   dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);

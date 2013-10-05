@@ -14,6 +14,7 @@ CB	Call-Back or Code Block
 Cfg	Config
 Chg	Change
 Chk	Check
+Const	Consant
 Cmd	Command
 Cmp	Compiler
 Cnt	Count
@@ -57,7 +58,6 @@ Kbd	Keyboard
 Len	Length
 Let	Letter
 Lex	Lexical Analyser
-Lit	Literal
 Loc	Location, Lines of Code
 Log	Logarithm or Logical
 Lst	List
@@ -162,10 +162,10 @@ WSD	WordStat Dictionary
   [C:/TempleOS/Adam/Utils2a.CPP.Z,429] TaskRep().  There is just one possible
   window per task, so child tasks are needed.
 
-+] Holy C
++] HolyC
   The language used by TempleOS is more than C and less than C++.  See
-  [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C.  It has the default arg feature of
-  C++ and uses class in place of struct.  It uses U0,U8,U16,U32,I64 and
+  [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC.  It has the default arg feature of C++
+  and uses class in place of struct.  It uses U0,U8,U16,U32,I64 and
   I0,I8,I16,I32,I64 for signed and unsigned integers.  It has a slightly
   different operator precedence.  See [C:/TempleOS/Doc/HolyC.TXT.Z,1]
   OP_precedence  It has the PASCAL-like feature of function calls with no
@@ -193,8 +193,7 @@ See [C:/TempleOS/Demo/Games/EagleDive.CPP.Z,1] for an example of an AOT
   you #include a file, it is compiled function by function and objects are
   placed all over in mem.  The [C:/TempleOS/Compiler/CmpMain.CPP.Z,577]
   ExeFile() routine is the same as #include but can be placed in programs. 
-  [C:/TempleOS/Compiler/CmpMain.CPP.Z,530] ExePutS() routine will compile and
-  run a string.
+  [MN:ExePrint] ExePrint() routine will compile and run a string.
 
 +] Compiler Intermediate Code
   The compiler generates instructions one step before making actual assembly
@@ -229,11 +228,10 @@ For commands taking a drive letter as an argument, 0 is the current drive.
   [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().  An optional
   directory plus a list of file name masks, as in /TempleOS/Demo/*.TXT.Z;*.CPP.Z
 
-See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE and
-  [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS.
-
-Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC.
+See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE,
+  [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS, [MN:FILEMASK_TXT]
+  FILEMASK_TXT, [MN:FILEMASK_SRC] FILEMASK_SRC, [MN:FILEMASK_AOT] FILEMASK_AOT,
+  [MN:FILEMASK_JIT] FILEMASK_JIT, and [MN:FILEMASK_GRA] FILEMASK_GRA.
 
 +] Filename Extention Types
   
@@ -245,11 +243,11 @@ Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
 *.TXT.Z;*.TXT;*.LOG.Z;*.LOG
   Text Files
 *.CPP.Z;*.CPP
-  Holy C src files.  The default Holy C compiler type is ".CPP.Z".
+  HolyC src files.  The default HolyC compiler type is ".CPP.Z".
 *.PRJ.Z;*.PRJ
-  Holy C src files to be compiled AOT.
+  HolyC src files to be compiled AOT.
 *.HPP.Z;*.HPP
-  Holy C src header files.
+  HolyC src header files.
 *.MAP.Z;*.MAP
   Compiler "map" files
 *.BIN.Z;*.BIN.C;*.BIN
@@ -261,15 +259,16 @@ Be aware of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT and
 *.ISO
   CD-ROM image file--ISO9660.
 *.AUT.Z;*.AUT
-  "AutoFile" Basically a Holy C program who's stdout goes to the input of a
+  "AutoFile" Basically a HolyC program who's stdout goes to the input of a
   task when [C:/TempleOS/Kernel/TaskCmd.CPP.Z,396] AutoFile() is called.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2211] FILENAME_MASK_SRC
-  This #define holds a list of src file extensions.
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2212] FILENAME_MASK_TXT
-  This #define holds a list of text file extensions.
+[MN:FILEMASK_TXT] FILEMASK_TXT
+[MN:FILEMASK_SRC] FILEMASK_SRC
+[MN:FILEMASK_AOT] FILEMASK_AOT
+[MN:FILEMASK_JIT] FILEMASK_JIT
+[MN:FILEMASK_GRA] FILEMASK_GRA
 
 +] Naming Convention
   The following are rules I stick to.  If you work on the operating system,
@@ -283,11 +282,11 @@ ALL_CAPS
   So are #define's.
 
 _ALL_CAPS
-  Asm routines which are [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C callible
+  Asm routines which are [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC callible
   should have a leading underscore.
 
 MixedCaps
-  [C:/TempleOS/Doc/HolyC.TXT.Z,1] Holy C Functions and class names are
+  [C:/TempleOS/Doc/HolyC.TXT.Z,1] HolyC Functions and class names are
   MixedCaps.
 
 lower_case

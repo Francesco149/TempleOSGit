@@ -55,11 +55,11 @@ F64 t0=tMBeat;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  U8 *inter;
+  U8 *temps;
   F64 tt=4.0*tM,dt=tMBeat-t0;
-  inter=SpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
-  SpritePlot3(dc,180,40,0,inter);
-  Free(inter);
+  temps=SpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
+  SpritePlot3(dc,180,40,0,temps);
+  Free(temps);
   if (dt>24.0)
     SpritePlot3(dc,task->win_pixel_width-12.0*(dt-24.0),40,0,__BIN_6);
 }
