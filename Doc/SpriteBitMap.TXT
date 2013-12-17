@@ -1,0 +1,4 @@
+                           Sprite BitMap Menu Help
+
+Bitmaps have a background color.  If you delete to the clipboard, what's left 
+will be background colored.

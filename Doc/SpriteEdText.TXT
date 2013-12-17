@@ -1,0 +1,7 @@
+                           Sprite Edit as Text Help
+
+You can cut, paste and duplicate elements.
+
+See the format for [C:/Adam/Gr/Gr.CPP.Z,54] CSprites.
+
+Sadly, you cannot change the length of variable-length element types.
