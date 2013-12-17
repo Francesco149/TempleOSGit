@@ -1,0 +1,137 @@
+Paging is almost not used, but 64-bit mode requires it to be active.  Virtual 
+is identity-mapped to physical.  All tasks on all cores use the same page 
+table map, just as though all addresses are physical addresses.  2 Meg page 
+table entries are used, except the first 2 Meg, which uses 4K page tables 
+entries.  Nothing swaps to disk, either.
+
+In TempleOS, the lowest 2 Gig of memory is called the "code heap". 
+TempleOS's 
+compiler always uses 32-bit signed relative JMP & CALL instructions because 
+64-bit CALLs take two instructions.  With signed +/- 32-bit values, code can 
+only call a function within 2 Gig distance.  Therefore, TempleOS keeps all 
+code in the lowest 2 Gig memory addresses including what would normally be 
+called "the kernel".  Two Gig is plenty, don't worry.
+
+You can create new, independent heaps by first allocating mem with 
+[C:/TempleOS/Kernel/Memory.CPP.Z,428] MemBlksUncachedAlloc() or
+[MN:MemBlksIndependentAlloc] MemBlksIndependentAlloc(), then calling 
+[MN:HeapCtrlBPInit] HeapCtrlBPInit() and, then, using
+[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().
+
+Memory allocated by a task will be freed when the task is killed.
+
+Eventually, memory will become fragmented, requiring a reboot.
+
+See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
+
+                          Single System-wide Mem Map
+
+ 0x0000000000- 0x00
+  Pages marked not present so NULL ptr dereference causes a fault.
+
+ 0x0000007C00- 0x000003E3AF
+  Kernel module, placed here by the boot-loader,
+  [C:/TempleOS/Kernel/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
+
+ 0x00- 0x00
+  Boot block relocated here before loading the Kernel module,
+  [C:/Adam/Boot/BootCD.CPP,1] BootCD & [C:/Adam/Boot/BootHD.CPP,1] BootHD.
+
+ 0x0000097000- 0x000009702E
+  Multicore start-up vect code, [C:/TempleOS/Kernel/Adam1a.HPP.Z,576]
+  MPN_VECT.
+
+~0x000009F000- 0x000009FFFF
+  Extended BIOS data area.
+
+ 0x00000A0000- 0x00000BFFFF
+  VGA graphics mem, marked as write-through cache.
+
+ 0x0000100000- 0x0000182FFF
+  Page tables, 128 Gig of address space
+
+ 0x0000183000- 0x00
+  Code Heap mem.
+
+ 0x00E0000000- 0x00FFFFFFFF
+  32-bit devices could allocate memory at 0xF0000000 going up, but this is 
+wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
+are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
+  flaws are not an issue.
+
+ 0x0080000000-~0x00DFFFFFFF
+ 0x0100000000-~0x1FFFFFFFFF
+  Data Heap mem.
+
+             - 0x1FFFFFFFFF
+  64-bit devices are allocated with [C:/TempleOS/Kernel/Memory.CPP.Z,1239]
+  Mem64DevAlloc() counting backward from 
+128 Gig, but no PCI devices are actually supported.
+  
+
+				      [C:/TempleOS/Kernel/Adam1a.HPP.Z,2741] CBlkPools [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrls
+ <1> (image)
+
+
+
+0000,0000,0000,0000 *NULL Protected
+0000,0000,		      Core 0
+
+0000,0000,0000,7C00 Kernel
+0000,0000,0003,E3AF 
+
+0000,0000,0010,0000 Page_Tables			   AdamTask
+
+0000,0000,0018,3000
+
+		    sys_code_bp
+
+						   Task
+
+
+
+
+				      Core 1
+						   SethTask
+
+0000,0000,
+0000,0000,8000,0000
+
+
+
+		    sys_data_bp
+						   Task
+0000,0000,DFFF,FFFF 
+0000,0000,F000,0000 32-bit devices
+
+0000,0001,0000,0000
+
+						   SethTask
+
+
+
+
+		    sys_data_bp       Core n 
+
+
+
+
+				      Independent
+
+
+
+
+		    64-bit devices
+
+0000,001F,FFFF,FFFF
+
+* Note: There is a break in the data-heap block pool.  This has no effect 
+except the obvious effect that fragmentation has on contiguous requests.  I 
+can [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() an 8 Gig chunk on my 12
+Gig machine.
+
+* Note: For systems with less than 2 Gig RAM, the code and data heap block 
+pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
+the total.  See [C:/TempleOS/Kernel/Memory.CPP.Z,1285] HeapsInit().
+
+* See [C:/Kernel/KEnd.CPP,1] Independent Heap Ctrl Example.

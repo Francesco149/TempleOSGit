@@ -1,0 +1,92 @@
+                             Installing TempleOS
+
+Burn a CD with software that supports ISO files.  Then, boot it.  It's a live 
+CD, so you can look around with or without installing.
+
+Dual booting with another operating system is the best way to use TempleOS.  
+You'll need a partition for TempleOS.  Windows often comes with a restore
+disk 
+that does not allow repartitioning.  I recommend connecting a spare
+additional 
+hard drive and using the BIOS to select which drive to boot.
+
+If you boot the CD-ROM and log-in as the "Install" account it will automate 
+much of this.
+
+See [C:/Doc/Boot.TXT,1] Boot.TXT for an overview of booting.  See
+[C:/Doc/Requirements.TXT,1] Requirements for supported 
+hardware.  See [C:/Doc/Upgrade.TXT,1] Upgrading if you are upgrading.
+
+Two TempleOS partitions are highly recommended, so you can boot to a back-up 
+and fix the primary when you work on it.  Odds are, you only need a couple 
+gigabytes for your TempleOS partitions.
+
+1)
+  [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() use if the drive is
+  partitioned.
+    This command mounts a drive making it accessible.  For simplicity, select 
+'C' as the first drive letter for your hard drive.  The first partition 
+will be 'C', second, 'D', etc.  TempleOS needs 3 numbers to utilize a hard 
+drive -- base0, base1, and unit.  When you enter a hexadecimal number, do 
+it like in C with a 0x prefix.  If the probe was successful, you can just 
+enter the number in the probe box instead of base0.
+  
+[C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,86] PrtDsk('C') use if drive is not
+  partitioned
+
+    This will perform a special [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184]
+    Mount() automatically.
+
+**WARNING:**  This command erases everything on a hard drive.  It
+    repartitions 
+a whole drive and formats the partitions.  This command should be skipped 
+if you already have your hard drive partitioned.
+
+
+**WARNING:**  This command doesn't play well with other operating systems.  
+You'll need to do a [C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,238]
+    MasterBootZero() to restore your drive to a state 
+where other operating systems can partition it.
+  
+2) [C:/TempleOS/Kernel/Dsk/Dsk1c.CPP.Z,181] Fmt('D',TRUE,FALSE,PT_FAT32)
+  This command formats a partition with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
+  RedSea file system type.  
+Use the drive letter of the partition in place of 'D'.
+
+**WARNING:**  If you are upgrading, be sure not to lose the file,
+  /0000Boot/OldM
+BR.BIN.C.
+
+3) [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,148] CopyTree("T:/","D:/")
+  This command is used to copy files onto a hard drive partition from the 
+CD-ROM.  Use the drive letter of the partition in place of 'D'.
+
+4) [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall('D')
+  This command recompiles the source code on a partition and writes to the
+  _par
+tition's_ boot record.  You'll need to reenter the
+  [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount information so it 
+can be stored in the kernel.
+
+5) Use Linux's [C:/Doc/Grub.TXT,1] Grub or TempleOS' [MN:MasterBootIntall]
+MasterBootIntall('D')
+  
+The [MN:MasterBootIntall] MasterBootIntall() command places a boot loader on
+  a drive to boot 
+partitions.  It saves the old master boot record to /0000Boot/OldMBR.BIN.C 
+and replaces it.  When you boot, you will have the option of booting the old 
+master boot record.  This command can be skipped if you already have a boot 
+loader.  Be sure not to lose the copy of the old boot record, like if you 
+reformat the partition.
+
+Delete /0000Boot/OldMBR.BIN.C if you want to get a fresh copy of a mbr, like 
+if installing from your own custom CD containing it's own /0000Boot/OldMBR.B
+IN.C onto a system with a non-TempleOS boot loader.
+
+If you have anti-virus software, it might object to having a different 
+master boot record.
+
+
+
+* "Windows" is a trademark of MicroSoft Corp.
+* "Linux" is probably a trademark owned by Linus Torvalds.

@@ -1,0 +1,141 @@
+                                   TempleOS
+
+               Download Hymn Player/Maker for Windows (6.99MB)
+
+
+                                   Hymns #1
+[C:/Apps/MusicOrgan/Examples/abiding.CPP.Z,1]  1) Abiding       
+[C:/Apps/MusicOrgan/Examples/abyss.CPP.Z,1]  2) Abyss         
+[C:/Apps/MusicOrgan/Examples/almighty.CPP.Z,1]  3) Almighty      
+[C:/Apps/MusicOrgan/Examples/alone.CPP.Z,1]  4) Alone         
+[C:/Apps/MusicOrgan/Examples/appreciate.CPP.Z,1]  5) Appreciate    
+[C:/Apps/MusicOrgan/Examples/awake.CPP.Z,1]  6) Awake         
+[C:/Apps/MusicOrgan/Examples/battlehymnsolo.CPP.Z,1]  7) Battlehymnsolo
+[C:/Apps/MusicOrgan/Examples/bedewed.CPP.Z,1]  8) Bedewed       
+[C:/Apps/MusicOrgan/Examples/blinded.CPP.Z,1]  9) Blinded       
+[C:/Apps/MusicOrgan/Examples/born.CPP.Z,1] 10) Born          
+
+
+
+                                   Hymns #2
+[C:/Apps/MusicOrgan/Examples/childish.CPP.Z,1]  1) Childish     
+[C:/Apps/MusicOrgan/Examples/compassions.CPP.Z,1]  2) Compassions  
+[C:/Apps/MusicOrgan/Examples/completed.CPP.Z,1]  3) Completed    
+[C:/Apps/MusicOrgan/Examples/cosam.CPP.Z,1]  4) Cosam        
+[C:/Apps/MusicOrgan/Examples/depending.CPP.Z,1]  5) Depending    
+[C:/Apps/MusicOrgan/Examples/despairing.CPP.Z,1]  6) Despairing   
+[C:/Apps/MusicOrgan/Examples/determination.CPP.Z,1]  7) Determination
+[C:/Apps/MusicOrgan/Examples/dialogue.CPP.Z,1]  8) Dialogue     
+[C:/Apps/MusicOrgan/Examples/disputing.CPP.Z,1]  9) Disputing    
+[C:/Apps/MusicOrgan/Examples/doing.CPP.Z,1] 10) Doing        
+
+
+
+                                   Hymns #3
+[C:/Apps/MusicOrgan/Examples/downfall.CPP.Z,1]  1) Downfall  
+[C:/Apps/MusicOrgan/Examples/dream.CPP.Z,1]  2) Dream     
+[C:/Apps/MusicOrgan/Examples/efforts.CPP.Z,1]  3) Efforts   
+[C:/Apps/MusicOrgan/Examples/elijah.CPP.Z,1]  4) Elijah    
+[C:/Apps/MusicOrgan/Examples/environeth.CPP.Z,1]  5) Environeth
+[C:/Apps/MusicOrgan/Examples/epicurus.CPP.Z,1]  6) Epicurus  
+[C:/Apps/MusicOrgan/Examples/exalt.CPP.Z,1]  7) Exalt     
+[C:/Apps/MusicOrgan/Examples/exiled.CPP.Z,1]  8) Exiled    
+[C:/Apps/MusicOrgan/Examples/exodus.CPP.Z,1]  9) Exodus    
+[C:/Apps/MusicOrgan/Examples/expedition.CPP.Z,1] 10) Expedition
+
+
+
+                                   Hymns #4
+[C:/Apps/MusicOrgan/Examples/fairness.CPP.Z,1]  1) Fairness 
+[C:/Apps/MusicOrgan/Examples/feigned.CPP.Z,1]  2) Feigned  
+[C:/Apps/MusicOrgan/Examples/finger.CPP.Z,1]  3) Finger   
+[C:/Apps/MusicOrgan/Examples/first.CPP.Z,1]  4) First    
+[C:/Apps/MusicOrgan/Examples/fishermen.CPP.Z,1]  5) Fishermen
+[C:/Apps/MusicOrgan/Examples/fixing.CPP.Z,1]  6) Fixing   
+[C:/Apps/MusicOrgan/Examples/flung.CPP.Z,1]  7) Flung    
+[C:/Apps/MusicOrgan/Examples/fog.CPP.Z,1]  8) Fog      
+[C:/Apps/MusicOrgan/Examples/forasmuch.CPP.Z,1]  9) Forasmuch
+[C:/Apps/MusicOrgan/Examples/freaks.CPP.Z,1] 10) Freaks   
+
+
+
+                                   Hymns #5
+[C:/Apps/MusicOrgan/Examples/free.CPP.Z,1]  1) Free      
+[C:/Apps/MusicOrgan/Examples/furnishing.CPP.Z,1]  2) Furnishing
+[C:/Apps/MusicOrgan/Examples/good.CPP.Z,1]  3) Good      
+[C:/Apps/MusicOrgan/Examples/gutenberg.CPP.Z,1]  4) Gutenberg 
+[C:/Apps/MusicOrgan/Examples/happy.CPP.Z,1]  5) Happy     
+[C:/Apps/MusicOrgan/Examples/hearsay.CPP.Z,1]  6) Hearsay   
+[C:/Apps/MusicOrgan/Examples/honestly.CPP.Z,1]  7) Honestly  
+[C:/Apps/MusicOrgan/Examples/hope.CPP.Z,1]  8) Hope      
+[C:/Apps/MusicOrgan/Examples/image.CPP.Z,1]  9) Image     
+[C:/Apps/MusicOrgan/Examples/josh.CPP.Z,1] 10) Josh      
+
+
+
+                                   Hymns #6
+[C:/Apps/MusicOrgan/Examples/keeping.CPP.Z,1]  1) Keeping 
+[C:/Apps/MusicOrgan/Examples/kept.CPP.Z,1]  2) Kept    
+[C:/Apps/MusicOrgan/Examples/limit.CPP.Z,1]  3) Limit   
+[C:/Apps/MusicOrgan/Examples/mary.CPP.Z,1]  4) Mary    
+[C:/Apps/MusicOrgan/Examples/mightest.CPP.Z,1]  5) Mightest
+[C:/Apps/MusicOrgan/Examples/mildly.CPP.Z,1]  6) Mildly  
+[C:/Apps/MusicOrgan/Examples/nay.CPP.Z,1]  7) Nay     
+[C:/Apps/MusicOrgan/Examples/night.CPP.Z,1]  8) Night   
+[C:/Apps/MusicOrgan/Examples/o.CPP.Z,1]  9) O       
+[C:/Apps/MusicOrgan/Examples/partake.CPP.Z,1] 10) Partake 
+
+
+
+                                   Hymns #7
+[C:/Apps/MusicOrgan/Examples/permitted.CPP.Z,1]  1) Permitted 
+[C:/Apps/MusicOrgan/Examples/personal.CPP.Z,1]  2) Personal  
+[C:/Apps/MusicOrgan/Examples/population.CPP.Z,1]  3) Population
+[C:/Apps/MusicOrgan/Examples/project.CPP.Z,1]  4) Project   
+[C:/Apps/MusicOrgan/Examples/proponent.CPP.Z,1]  5) Proponent 
+[C:/Apps/MusicOrgan/Examples/prosper.CPP.Z,1]  6) Prosper   
+[C:/Apps/MusicOrgan/Examples/psalm.CPP.Z,1]  7) Psalm     
+[C:/Apps/MusicOrgan/Examples/purpose.CPP.Z,1]  8) Purpose   
+[C:/Apps/MusicOrgan/Examples/reasoning.CPP.Z,1]  9) Reasoning 
+[C:/Apps/MusicOrgan/Examples/reliance.CPP.Z,1] 10) Reliance  
+
+
+
+                                   Hymns #8
+[C:/Apps/MusicOrgan/Examples/reposes.CPP.Z,1]  1) Reposes     
+[C:/Apps/MusicOrgan/Examples/restless.CPP.Z,1]  2) Restless    
+[C:/Apps/MusicOrgan/Examples/rifled.CPP.Z,1]  3) Rifled      
+[C:/Apps/MusicOrgan/Examples/risen.CPP.Z,1]  4) Risen       
+[C:/Apps/MusicOrgan/Examples/satisfaction.CPP.Z,1]  5) Satisfaction
+[C:/Apps/MusicOrgan/Examples/scriptures.CPP.Z,1]  6) Scriptures  
+[C:/Apps/MusicOrgan/Examples/service.CPP.Z,1]  7) Service     
+[C:/Apps/MusicOrgan/Examples/shield.CPP.Z,1]  8) Shield      
+[C:/Apps/MusicOrgan/Examples/signifies.CPP.Z,1]  9) Signifies   
+[C:/Apps/MusicOrgan/Examples/silver.CPP.Z,1] 10) Silver      
+
+
+
+                                   Hymns #9
+[C:/Apps/MusicOrgan/Examples/small.CPP.Z,1]  1) Small    
+[C:/Apps/MusicOrgan/Examples/struggles.CPP.Z,1]  2) Struggles
+[C:/Apps/MusicOrgan/Examples/sustain.CPP.Z,1]  3) Sustain  
+[C:/Apps/MusicOrgan/Examples/teachings.CPP.Z,1]  4) Teachings
+[C:/Apps/MusicOrgan/Examples/thereupon.CPP.Z,1]  5) Thereupon
+[C:/Apps/MusicOrgan/Examples/thither.CPP.Z,1]  6) Thither  
+[C:/Apps/MusicOrgan/Examples/twins.CPP.Z,1]  7) Twins    
+[C:/Apps/MusicOrgan/Examples/valued.CPP.Z,1]  8) Valued   
+[C:/Apps/MusicOrgan/Examples/vengeance.CPP.Z,1]  9) Vengeance
+[C:/Apps/MusicOrgan/Examples/verses.CPP.Z,1] 10) Verses   
+
+
+
+                                  Hymns #10
+[C:/Apps/MusicOrgan/Examples/villa.CPP.Z,1]  1) Villa   
+[C:/Apps/MusicOrgan/Examples/wisdom.CPP.Z,1]  2) Wisdom  
+[C:/Apps/MusicOrgan/Examples/witherto.CPP.Z,1]  3) Witherto
+[C:/Apps/MusicOrgan/Examples/worship.CPP.Z,1]  4) Worship 
+[C:/Apps/MusicOrgan/Examples/you.CPP.Z,1]  5) You     
+[C:/Apps/MusicOrgan/Examples/zip.CPP.Z,1]  6) Zip     
+
+
+* "Windows" is a trademark of MicroSoft Corp.

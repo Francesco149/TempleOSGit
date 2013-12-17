@@ -1,0 +1,193 @@
+[C:/Doc/Welcome.TXT,1] Welcome    [C:/Doc/TrivialSolutions.TXT,1] Trivial Solutions
+[Cmd Line (Typically),1] Quick Start--Command Line
+[C:/Doc/DemoIndex.TXT,1] Demo Index Take Tour
+`SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
+");`
+   Key Map
+`KeyMap;View;
+`
+
+[C:/Doc/Features.TXT,1] Features               [C:/Doc/Requirements.TXT,1] Requirements
+[C:/Doc/Charter.TXT,1] TempleOS Charter [C:/Doc/Strategy.TXT,1] Strategic Decisions
+[C:/Doc/Mysteries.TXT,1] Mysteries Explained    [C:/Doc/Confuse.TXT,1] Clearing Confusions
+[C:/Doc/HolyC.TXT,1] HolyC [C:/Doc/Directives.TXT,1] Compiler Directives
+[C:/Doc/ChangeLog.TXT,1] ChangeLog [C:/Doc/Demands.TXT.Z,1] Demands
+	
++] Level 1: USER HELP
+  
++] Keyboard Ctrls
+    
+Enter	Right-click menu
+Space Bar	Edit (view)
+Esc		Save and exit
+Shift-Esc	Abort
+Ctrl-m	Personal Menu
+Windows Key Pull-down Menu
+
+Other keys: Key Map
+`KeyMap;View;
+`
+
+
+  +] Mouse Ctrls
+    
+Right-Click	Right-click menu
+Left-Click	Edit (view)
+Double-Left	Save and exit
+Double-Right Abort
+Top of Screen Pull-down menu
+
+  [C:/Doc/Glossary.TXT,1] Glossary
+[C:/Doc/GuideLines.TXT,1] Acct Files
+[C:/Doc/TSZ.TXT,1] TSZ Window's Utility
+[C:/Doc/Tips.TXT,1] Tips on Using TempleOS
+[C:/Doc/Quirks.TXT,1] TempleOS Quirks
+[C:/Doc/GuideLines.TXT,1] Directory Structure
+
+ <1> (image)	This button on the wall paper
+	starts a terminal window.
+
++] DOLLAR SIGN CMDS
+    
+[C:/Doc/Dollar.TXT,1] Dollar Sign Cmds are rich-text cmds.  The editor,
+    compiler, assembler and operating system are seamlessly equiped to handle
+    TempleOS rich text.  Cmds like [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,235] Dir()
+    and [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() can output links to the cmd line.
+
+  +] CMD PMT
+    
+The TempleOS cmd line interface is based on C/C++. Explore the ".CPP.Z"
+    files.  A cmd which takes no args may be executed by typing the name and a
+    semicolon.  Cmds with args require placing the arg in parentheses like a
+    function call.
+
+Dir(\"*\"); will list files in the current directory.
+
+Dir; uses default of "*".
+
+Cd(\"::/Apps\"); will change directories.
+
+Directories are referenced with "/" not "\".  The boot drive is referred to
+    with "::".  Other drives are referred to by a letter and a colon.  Your user
+    acct directory is referred to with "HOME".
+
+If it is not found, ".Z" is added or removed and a search is done, again.  If
+    a file is still not found, all parent directories are searched.
+
+
+Ed("FILENAME.TXT.Z"); Invokes the editor. See
+    [C:/TempleOS/Adam/Doc/Doc.CPP.Z,44] DOC LINK TYPES.
+
+
+Some cmds like [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() take a
+    "find_files_mask".  They begin with the name of a dir tree and end with a
+    list of filename masks.  A "~" before a mask will exclude files.  See
+    [C:/TempleOS/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().
+
+Grep("pattern","/Demo/*.CPP.Z;*.TXT.Z;");
+
+Be aware of [MN:FILEMASK_TXT] FILEMASK_TXT, [MN:FILEMASK_SRC] FILEMASK_SRC,
+    [MN:FILEMASK_AOT] FILEMASK_AOT, [MN:FILEMASK_JIT] FILEMASK_JIT, and
+    [MN:FILEMASK_GRA] FILEMASK_GRA.
+
+  +] BURNING CD-ROMs/DVDs
+    
+0) Prepare a directory with the files you wish to burn.
+1) Use [C:/TempleOS/Adam/Boot/DskCDDVD.CPP.Z,328] CDFileCreate() to make an
+    ISO image file.
+2) Use [C:/TempleOS/Kernel/Dsk/Dsk1c.CPP.Z,306] CDImageWrite() to burn an ISO
+    file onto a CD or DVD.
+
+Or, see [C:/Demo/MakeDistro.CPP,1] Making a Distro ISO.
+
+  
++] Level 2: ADMIN HELP
+  
+Use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk
+  drives.  
+
+[C:/Doc/Install.TXT,1] Installing
+
+[C:/Kernel/Adam1.CPP,1] the TempleOS equivalent of the AUTOEXEC.BAT.
+
++] Level 3: PROGRAMMER HELP
+  
+[C:/Doc/GuideLines.TXT,1] Guidelines
+[C:/Doc/HolyC.TXT,1] HolyC
+[C:/Doc/Graphics.TXT,1] Graphics
+[C:/Doc/MultiTasking.TXT,1] Multitasking
+[C:/Demo/Doc/FileRead.CPP,1] Doc Documents
+[C:/Demo/Lectures/AndNotMod.CPP,1] Lectures/AndNotMod.CPP
+[C:/Demo/Lectures/FixedPoint.CPP,1] Lectures/FixedPoint.CPP
+[C:/Demo/Lectures/Uncached.CPP,1] Lectures/Uncached.CPP
+[C:/Demo/Lectures/Optimization.CPP,1] Lectures/Optimization.CPP
+[C:/Demo/Lectures/ScreenMemory.CPP,1] Lectures/ScreenMemory.CPP
+[C:/Demo/Lectures/GraphicsCPULoad.CPP,1] Lectures/GraphicsCPULoad.CPP
+[C:/Demo/Lectures/InterruptDemo.CPP,1] Lectures/InterruptDemo.CPP
+[C:/Demo/Lectures/Spinning.CPP,1] Lectures/Spinning.CPP
+
++] Level 4: SYSTEM PROGRAMMER HELP
+  
+[C:/Demo/Lectures/64BitAsmQuiz.TXT,1] 64BitAsmQuiz
+[C:/Kernel/Hash1a.CPP,1] Hash Tables
+[C:/Doc/KeyBoard.TXT,1] Keyboard Handling
+[C:/Demo/Lectures/PageTableEntries1.CPP,1] Page Table Entries 1
+[C:/Demo/Lectures/PageTableEntries2.CPP,1] Page Table Entries 2
+[C:/Demo/Lectures/PCIInterrupts.CPP,1] PCIInterrupts.CPP
+[C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep
+[C:/Adam/WallPaper.CPP,1] WallPaper.CPP
+[C:/Kernel/Scheduler.CPP,1] Scheduler.CPP
+[C:/Adam/Doc/Doc.CPP,1] Doc
+[C:/Demo/Lectures/MiniGrLib.CPP,1] MiniGrLib
+[C:/Demo/Lectures/MiniCompiler.CPP,1] MiniCompiler
+[C:/Compiler/BackLib.CPP,1] Backend
+
+
+[AutoFile,1] AutoFile
+[Bit,1] Bit
+[Boot,1] Boot
+[Call,1] Call
+[Char,1] Char
+[Data Types/Circular Queue,1] Circular Queue
+[Cmd Line (Typically),1] Cmd Line (Typically)
+[Compiler,1] Compiler
+[Compression,1] Compression
+[Ctrls,1] Ctrls
+[Data Types,1] Data Types
+[Date,1] Date
+[Debugging,1] Debugging
+[Device,1] Device
+[Doc,1] Doc
+[Exceptions,1] Exceptions
+[File,1] File
+[Hash/Frame,1] Frames
+[C:/Doc/Graphics.TXT,1] Graphics Overview
+[Graphics,1] Graphic Routines
+[Hash,1] Hash
+[Help System,1] Help System
+[Info,1] Info
+[Input Pointer,1] Input Pointer (Mouse)
+[Install,1] Install
+[International,1] International
+[I/O,1] I/O
+[C:/Doc/TSZ.TXT,1] TSZ
+[Math,1] Math
+[Memory,1] Memory
+[Menus,1] Menus
+[Messages,1] Messages
+[Misc,1] Misc
+[MultiCore,1] MultiCore
+[CMathODE,1] MathODE
+[C:/Compiler/OpCodes.TXT,1] OpCodes
+[C:/Doc/HolyC.TXT,1] Operator Precedences
+[C:/Doc/HolyC.TXT,1] Print Extended Codes
+[Processor,1] Processor
+[Profiler,1] Profiler
+[PCI,1] PCI
+[Snd,1] Sound
+[Task,1] Task
+[Time,1] Time
+[Training,1] Training
+[Windows,1] Windows
+[WordStat,1] WordStat
+[Utils,1] Utils

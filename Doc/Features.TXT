@@ -1,0 +1,80 @@
+                              TempleOS' Features
+
+* Oracle in program, AfterEgypt, for [C:/Apps/HolySpirit/HSNotes.TXT.Z,1]
+tongues.
+
+* x86_64, ring-0-only, single-address-map (identity), multitasking kernel
+with 
+multicore support.
+
+* Master/Slave MultiCore 
+
+* Free, public domain, 100% open source.
+
+* 64-bit compiler/assembler for [C:/Doc/HolyC.TXT.Z,1] HolyC.  Truly
+compiles, not interprets.  Just-
+in-Time and Ahead-of-Time compilation.  With JIT, no need for object or exe 
+files.
+
+* No 32-bit krufty code.
+
+* 640x480 16 color VGA graphics.
+
+* Keyboard & Mouse support.
+
+* Hard drives, support for FAT32 and [C:/Doc/RedSea.TXT.Z,1] RedSea file
+systems with file 
+compression.
+
+* CD/DVD support with ISO9660 file system.  Can make bootable ISO9660 ISO 
+files so you can roll-your-own distro's.
+
+* [C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,86] Partitioning tool, installer, boot
+loaders for CD-ROM and hard disk.
+
+* Editor/Browser for a new [C:/Doc/Dollar.TXT.Z,1] Document Format.  Source
+files and the command line 
+window can have graphics, links, icons, trees, colors, super/sub scripts, 
+margins.  Everything is seamless through-out the tool chain.  No need for 
+separate resource files.
+
+* 8-bit ASCII, not just 7-bit.  Supported in entire tool chain.  <CTRL-ALT-A>
+
+* Graphics in source code, no resource files, graphic resource editor. <CTRL-R
+>
+
+* 64-bit pointers.  All memory, even more than 4 Gig, can be directly
+accessed 
+by all tasks on all cores at all times.
+
+* Ring-0-only.  Highest CPU privileged mode at all times.  No off-limits 
+instructions.  No time lost changing modes or address maps.  Switches tasks
+in 
+half a microsecond.
+
+* 2D/3D graphics library
+
+* Real-time fancy differential-equation solver for physics engines, to use in 
+games.  (Adaptive step-size Runge-Kutta, interpolated for real-time.)
+
+* Auto-completion, jump-to-source tool called WordStat with Dictionary.
+
+* Window Manager.  Pan screen with <CTRL-LeftDrag>.  Zoom screen on mouse 
+cursor with <CTRL-ALT-Z>/<CTRL-ALT-SHIFT-Z>.
+
+* File Manager, <CTRL-D>.
+
+* Code [C:/TempleOS/Adam/Profiler.CPP.Z,82] profiler,
+[C:/TempleOS/Adam/Merge.CPP.Z,41] merge, [C:/TempleOS/Adam/Diff.CPP.Z,222]
+diff utils.
+
+* PC Speaker support with many hymns.
+
+* Music composing tool.
+
+* Many games, [C:/Doc/DemoIndex.TXT,1] demos and [C:/Doc/HelpIndex.TXT,1]
+documentation.
+
+* All source code included.  Only compiles with the included TempleOS
+compiler 
+and assembler.

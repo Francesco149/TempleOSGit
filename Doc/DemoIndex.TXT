@@ -1,0 +1,231 @@
+                             TempleOS Demo Index
+
+These are arranged in increasing order of difficulty, more or less.  This can 
+be used as a tutorial if you start at the beginning and work your way fwd.
+
+<SPACE BAR> to edit a file and F5 to run it.
+
++] Game Making Skills
+  +] Beginner
+      [C:/Demo/Graphics/DotNet.CPP,1]
+    [C:/Demo/Graphics/Moon.CPP.Z,1]
+    [C:/Demo/Graphics/LowPassFilter.CPP,1]
+    [C:/Demo/Graphics/MathAudioDemo.CPP,1]
+    [C:/Demo/Graphics/Lines.CPP,1]
+    [C:/Demo/Games/TicTacToe.CPP,1]
+    [C:/Demo/Graphics/SpritePlot.CPP,1]
+    [C:/Demo/Graphics/SpritePut.CPP,1]
+    [C:/Demo/Graphics/SpritePutExt.CPP,1]
+    [C:/Demo/Snd/ASCIIOrgan.CPP,1]
+    [C:/Demo/MsgLoop.CPP,1]
+    [C:/Demo/Graphics/Doodle.CPP,1]
+    [C:/Demo/Graphics/Speedline.CPP,1]
+    [C:/Demo/Graphics/Bounce.CPP,1]
+    [C:/Demo/KeyBitMap.CPP,1]
+    [C:/Demo/Graphics/WinZBuf.CPP,1]
+    [C:/Demo/Graphics/Elephant.CPP.Z,1]
+    [C:/Demo/Graphics/Mountain.CPP,1]
+    [C:/Demo/Games/Coach.CPP,1]
+    [C:/Demo/Graphics/WallPaperFish.CPP,1]
+    [C:/Demo/Games/Digits.CPP,1]
+    [C:/Demo/Progress.CPP,1] //has some ASM, just ignore
+    [C:/Demo/Graphics/Dither.CPP,1]
+    [C:/Demo/Graphics/Symmetry.CPP,1]
+    [C:/Demo/Graphics/Blot.CPP,1]
+    [C:/Demo/Graphics/CaptureScreen.CPP,1]
+    [C:/Demo/Graphics/EdCSprite.CPP,1]
+    [C:/Demo/PullDownMenu.CPP,1]
+    ::/Demo/Games/Stadium
+`Cd("::/Demo/Games/Stadium");Dir;View;
+`
+
+    [C:/Demo/Graphics/Palette.CPP,1]
+    [C:/Demo/Games/CircleTrace.CPP,1]
+    [C:/Demo/Games/Halogen.CPP,1]
+    [C:/Demo/Games/TheDead.CPP,1]
+    [C:/Demo/Games/RainDrops.CPP,1]
+    [C:/Demo/Snd/MorseCode.CPP,1]
+    [C:/Demo/Graphics/PixelCollision.CPP,1]
+    [C:/Demo/Games/BlackDiamond.CPP,1]
+    [C:/Demo/Games/Wenceslas.CPP,1]
+      +] Intermediate
+      [C:/Demo/Graphics/Box.CPP,1]
+    [C:/Demo/Graphics/Pick.CPP,1]
+    [C:/Demo/Graphics/3DPoly.CPP,1]
+    [C:/Demo/Graphics/BSpline.CPP,1]
+    [C:/Demo/Graphics/Extents.CPP,1]
+    [C:/Demo/Graphics/SpritePlot3D.CPP,1]
+    [C:/Demo/Graphics/Logo.CPP,1]
+    [C:/Demo/Graphics/RotateTank.CPP,1]
+    [C:/Demo/ScreenCodes.CPP,1]
+    [C:/Demo/Graphics/PanText.CPP.Z,1]
+    [C:/Demo/Graphics/CharGraphics.CPP,1]
+    [C:/Demo/Games/Maze.CPP,1]
+    [C:/Demo/Graphics/FontEd.CPP,1]
+    [C:/Demo/ExtendedChars.CPP,1]
+    [C:/Demo/TimeIns.CPP,1]
+    [C:/Demo/Snd/WaterFowl.CPP,1]
+    ::/Apps/MusicOrgan/Examples
+`Cd("::/Apps/MusicOrgan/Examples");Dir;View;
+`
+
+    [C:/Demo/MultiCore/MPPrint.CPP,1]
+    [C:/Demo/Graphics/PredatorPrey.CPP,1]
+    [C:/Demo/Graphics/Cartesian.CPP,1]
+    [C:/Demo/Graphics/Hanoi.CPP,1]
+    [C:/Demo/Graphics/Life.CPP,1]
+    [C:/Demo/Games/Zing.CPP,1]
+    [C:/Demo/Games/ChessNet.CPP,1]
+    [C:/Demo/MultiCore/Palindrome.CPP,1]
+    [C:/Demo/MultiCore/MPAdd.CPP,1]
+    [C:/Demo/MultiCore/Lock.CPP,1]
+    [C:/Demo/MultiCore/Clouds.CPP,1]
+    [C:/Demo/Graphics/SliderCtrl.CPP,1]
+    [C:/Demo/Graphics/ScrollBars.CPP,1]
+    [C:/Demo/RegistryDemo.CPP,1]
+    [C:/Demo/Games/BugBird.CPP,1]
+    [C:/Demo/Games/BattleLines.CPP,1]
+    [C:/Demo/Games/BigGuns.CPP,1]
+    [C:/Demo/Games/FlatTops.CPP,1]
+    [C:/Demo/Games/RawHide.CPP,1]
+    [C:/Demo/Games/DunGen.CPP,1]
+    ::/Apps/TimeOut
+`Cd("::/Apps/TimeOut");Dir;View;
+`
+
+    [C:/Demo/Games/Collision.CPP,1]
+      +] Advanced
+      [C:/Demo/MultiCore/LoadTest.CPP,1]
+    [C:/Demo/MultiCore/Primes.CPP,1]
+    [C:/Demo/MultiCore/RadixSort.CPP,1]
+    [C:/Demo/MultiCore/Interrupts.CPP,1]
+    ::/Apps/AfterEgypt
+`Cd("::/Apps/AfterEgypt");Dir;View;
+`
+
+    [C:/Demo/Games/Varoom.CPP,1]
+    [C:/Demo/Graphics/Shading.CPP,1]
+    [C:/Demo/Graphics/Transform.CPP,1]
+    [C:/Demo/Games/BulgeBomber.CPP,1]
+    [C:/Demo/Graphics/Shadow.CPP,1]
+    [C:/Demo/Graphics/Pick3D.CPP,1]
+    ::/Apps/ToTheFront
+`Cd("::/Apps/ToTheFront");Dir;View;
+`
+
+    [C:/Demo/Graphics/SpriteText.CPP,1]
+    ::/Apps/GrModels
+`Cd("::/Apps/GrModels");Dir;View;
+`
+
+    ::/Apps/KeepAway
+`Cd("::/Apps/KeepAway");Dir;View;
+`
+
+    [C:/Demo/Graphics/Camp.CPP,1]
+    [C:/Demo/Games/Rocket.CPP,1]
+    [C:/Demo/Games/RocketScience.CPP,1]
+    [C:/Demo/Games/MassSpring.CPP,1]
+    [C:/Demo/Games/Whap.CPP,1]
+    [C:/Demo/Games/Squirt.CPP,1]
+    ::/Apps/X-Caliber
+`Cd("::/Apps/X-Caliber");Dir;View;
+`
+
+    [C:/Demo/Games/ZoneOut.CPP,1]
+    [C:/Demo/Games/CastleFrankenstein.CPP,1]
+    [C:/Demo/Games/EagleDive.CPP,1]
+    ::/Apps/Strut
+`Cd("::/Apps/Strut");Dir;View;
+`
+
+    ::/Apps/Span
+`Cd("::/Apps/Span");Dir;View;
+`
+
+    ::/Apps/MusicOrgan
+`Cd("::/Apps/MusicOrgan");Dir;View;
+`
+
+      
+  +] Non-Game Skills
+  [C:/Demo/MakeDistro.CPP,1]
+  [C:/Demo/DbgDemo.CPP,1]
+  [C:/Demo/SubSwitch.CPP.Z,1]
+  [C:/Demo/DateTime.CPP.Z,1]
+  [C:/Demo/PhoneNumWords.CPP,1]
+  [C:/Demo/SuggestSpelling.CPP,1]
+  [C:/Demo/WordSearch.CPP,1]
+  [C:/Demo/Graphics/CommonAncestor.CPP,1]
+  [C:/Demo/Carry.CPP.Z,1]
+  [C:/Demo/Dsk/DataBase.CPP,1]
+  [C:/Demo/Dsk/OrderedIO.CPP,1]
+  [C:/Demo/Dsk/FPrintF.CPP,1]
+  [C:/Demo/Dsk/DskRaw.CPP,1]
+  [C:/Demo/Dsk/UnusedSpaceRep.CPP,1]
+  [C:/Demo/Lectures/MiniGrLib.CPP,1]
+  [C:/Demo/Lectures/MiniCompiler.CPP,1]
+  [C:/Demo/MagicPairs.CPP,1]
+  [C:/Demo/Graphics/PoleZeros.CPP,1]
+  [C:/Demo/WebLogExample/WebLogRep.CPP,1]
+  [C:/Demo/WebLogExample/WebLogScramble.CPP,1]
+  ::/Apps/TimeClock
+`Cd("::/Apps/TimeClock");Dir;View;
+`
+
+  ::/Apps/Logic
+`Cd("::/Apps/Logic");Dir;View;
+`
+
+  ::/Demo/Lectures
+`Cd("::/Demo/Lectures");Dir;View;
+`
+
+  
+  +] TempleOS Specific
+  ::/Demo/OldSchool
+`Cd("::/Demo/OldSchool");Dir;View;
+`
+
+  ::/Demo/AutoFile
+`Cd("::/Demo/AutoFile");Dir;View;
+`
+
+  [C:/Demo/Print.CPP,1]
+  [C:/Demo/SubIntAccess.CPP,1]
+  [C:/Demo/ParenWarn.CPP,1]
+  [C:/Demo/CompileDemo.CPP,1]
+  [C:/Demo/Prompt.CPP,1]
+  [C:/Demo/ClassMeta.CPP,1]
+  [C:/Demo/Doc/Form.CPP,1]
+  [C:/Demo/Doc/MenuButton.CPP,1]
+  [C:/Demo/Doc/MenuSprite.CPP,1]
+  [C:/Demo/Doc/TreeDemo.CPP,1]
+  [C:/Demo/Exceptions.CPP,1]
+  [C:/Demo/StkGrow.CPP,1]
+  [C:/Demo/Doc/TextDemo.CPP,1]
+  [C:/Demo/Doc/CursorMove.CPP,1]
+  [C:/Demo/Doc/DemoDoc.TXT,1]
+  [C:/Demo/Spy.CPP,1]
+  [C:/Demo/Doc/FileRead.CPP,1]
+  [C:/Demo/Doc/Data.CPP,1]
+  [C:/Demo/Doc/DefineStr.CPP,1]
+  [C:/Demo/Doc/CallBack.CPP,1]
+  [C:/Demo/Define.CPP,1]
+  [C:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,319] EdRenumAsm
+  [C:/Demo/Doc/UnusedDefine.CPP,1]
+  [C:/Demo/Asm/AsmHelloWorld.CPP,1]
+  [C:/Demo/Asm/BuzzFizz.CPP,1]
+  [C:/Demo/Asm/PutDec.CPP,1]
+  [C:/Demo/Asm/MulByHand.CPP,1]
+  [C:/Demo/Asm/DivByHand.CPP,1]
+  [C:/Demo/Asm/AsmAndC.CPP,1]
+  [C:/Demo/Asm/AsmAndC2.CPP,1]
+  [C:/Demo/GlblVars.CPP,1]
+  [C:/Misc/OSTestSuite.CPP,1]
+  ::/Adam
+`Cd("::/Adam");Dir;View;
+`
+
+  
+  

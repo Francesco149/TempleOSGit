@@ -1,0 +1,10 @@
+
+* You can adjust the mouse movement rate by setting global vars in your 
+start-up file.  See [C:/TempleOS/Accts/TAD/Adam3aLocalize.CPP,1] mouse scale.
+
+* You can set your local time zone by setting the local_time_offset global
+var 
+in a start-up file.  It's units are [C:/TempleOS/Kernel/Adam1a.HPP.Z,613]
+CDATE_FREQ.  See [C:/TempleOS/Accts/TAD/Adam3aLocalize.CPP,1] local time.
+
+* Get rid of this msg [C:/TempleOS/Accts/TAD/DoItOnce.CPP,1] here.

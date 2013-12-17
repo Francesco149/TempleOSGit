@@ -1,0 +1,58 @@
+                                   Demands
+
+When God is manifest to the World and He claims this operating system, 
+publically, here's what I want:
+
+* VMware to again support PC Speaker and provide emulation if no PC Speaker
+is 
+present.
+
+* Windows and Linux will support [C:/Doc/RedSea.TXT.Z,1] RedSea file system
+so I can get rid of 2,000 
+lines of redundant, blemished code -- FAT32 and ISO9660.  God's temple must
+be 
+perfect.
+[C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
+[C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:1004
+[C:/Kernel/Dsk/FileSysISO1.CPP.Z,1]	:306
+[C:/Adam/Boot/DskCDDVD.CPP.Z,1]	:536
+
+* No secure boot.  TempleOS is a additional operating system that must be
+used 
+along-side Windows or Linux.  It must dual boot.
+
+* Mandate to PC hardware manufacturers: ATA/ATAPI PIO must work.
+
+* PS2 emulated Keyboard and Mouse must work.  The BIOS must enable these.
+
+* VMware should allow ATAPI to connect real CD/DVD hardware.
+
+* Perhaps, VMware can enable faster than standard x86 IN/OUT instruction 
+timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
+
+* VMware and others should list TempleOS as one of the official 64-bit 
+operating systems.
+
+* Windows and Linux should support TempleOS .GRA graphics files.  These are 
+just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+transparency, with no palette.  Compression comes from the
+[C:/Doc/RedSea.TXT.Z,1] RedSea .Z LZW 
+compression.  (Let me know when you want it.) 
+[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,154] DCSave(),
+[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,234] GRAWrite(),
+[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,197] DCLoad(), 
+and [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,245] GRARead(). 
+[C:/Kernel/Compress.CPP.Z,1]
+
+
+
+
+In other words, all hardware and BIOSes must support TempleOS as a native and 
+as a virtual system, dual booted with Windows or Linux.
+
+It would be neat if TempleOS were burned into BIOS ROMs.  My hope is that it 
+will be finished and largely unchanging.  I need a good dictionary, first.  
+Maybe, we leave the dictionary out.
+
+I do not intend to ever support UEFI.  That monstrocity uses elf and various 
+propriatary graphics formats.

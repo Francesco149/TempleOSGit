@@ -1,0 +1,74 @@
+                                   TempleOS
+
+In 1990 at age 20, I was hired to work on Ticketmaster's VAX operating system 
+in VAX assembly language while going to school.  I was basically, an intern, 
+but we weren't called that.  I worked there 1990-1996.  Here are my 
+ASU Transcripts.
+
+In about 1993, I got a 486 and was eager to try 32-bit mode, so I wrote a DOS 
+program in TASM that changed to protected mode and never returned to DOS.  
+Ticketmaster's OS was "VAXTMOS", so I called mine "Terry's Protected Mode OS, 
+TPMOS".  I had 0xB8000 text mode working, and echoed keyboard to screen.  I 
+had simple multitasking and barely a MALLOC.  I set it asside.
+
+In 2003, I resurrected TPMOS and installed FreeDOS to launch it.  I used 
+Visual Studio to edit my files when doing lots of editing, then booted 
+FreeDOS, used TASM to compile and test it.  Back in those days, FreeDOS ran
+in 
+real mode.  Today's FreeDOS is not real mode, it emulates with V8086 mode.  
+DOSBox is not real mode either.
+
+I had started a company H.A.R.E., so I renamed TPMOS to HOPPY.
+
+I named it Doors, DAVOS, J, LoseThos, SparrowOS and, finally, TempleOS.
+
+
+* Collection of Binaries
+
+
+
+* Hoppy Archive
+
+* Hoppy Downloads
+
+
+
+* JustRighteous Archive
+
+* J Downloads
+
+
+
+* LoseThos Archive
+
+* LoseThos Downloads
+
+* LoseThos Videos
+
+
+
+* SparrowOS Archive
+
+* SparrowOS Downloads
+
+
+
+* J on OSNews
+
+* TempleOS on Major Geeks
+
+* TempleOS on BetaNews
+
+* Start64 Search for "LoseThos"
+
+
+
+The ISO files are ISO9660 format.  The Z files are compressed.  I changed the 
+Z compressed format at about the start of LoseThos.  It has been 64-bit since 
+2007.
+
+TSZ Full Package (Also, on the distribution)
+
+TSZ uncompress V1.0 (Old)
+
+TSZ uncompress V2.0

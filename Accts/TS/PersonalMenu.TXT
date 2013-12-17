@@ -1,0 +1,377 @@
+Cd("HOME");Dir;
+
+`Cd("HOME");Dir;
+`
+
+Drv(TS_MAIN_DRV_LET);
+
+`Drv(TS_MAIN_DRV_LET);
+`
+
+Drv(TS_BAK_DRV_LET);
+
+`Drv(TS_BAK_DRV_LET);
+`
+
+SoftBoot(TS_MAIN_DRV ":/Kernel.BIN.C");
+`SoftBoot(TS_MAIN_DRV ":/Kernel.BIN.C");`
+
+TSMakeOSPrtBootInstall(TS_MAIN_DRV_LET);
+
+`TSMakeOSPrtBootInstall(TS_MAIN_DRV_LET);
+`
+
+
+[C:/Doc/ChangeLog.TXT,1] ChangeLog [C:/Doc/HelpIndex.TXT,1] Help [C:/Doc/DemoIndex.TXT,1] Demo Key Map
+`KeyMap;View;
+`
+ Take Tour
+`Cd("::/Misc/Tour");;AutoFile("Tour");
+`
+
+
+Cd("/Kernel");Dir;
+
+`Cd("/Kernel");Dir;
+`
+
+Cd("/Kernel/Dsk");Dir;
+
+`Cd("/Kernel/Dsk");Dir;
+`
+
+Cd("/Compiler");Dir;
+
+`Cd("/Compiler");Dir;
+`
+
+Cd("/Adam");Dir;
+
+`Cd("/Adam");Dir;
+`
+
+Cd("/Adam/Boot");Dir;
+
+`Cd("/Adam/Boot");Dir;
+`
+
+Cd("/Adam/Ctrls");Dir;
+
+`Cd("/Adam/Ctrls");Dir;
+`
+
+Cd("/Adam/Dsk");Dir;
+
+`Cd("/Adam/Dsk");Dir;
+`
+
+Cd("/Adam/Doc");Dir;
+
+`Cd("/Adam/Doc");Dir;
+`
+
+Cd("/Adam/Gr");Dir;
+
+`Cd("/Adam/Gr");Dir;
+`
+
+Cd("/Adam/Utils");Dir;
+
+`Cd("/Adam/Utils");Dir;
+`
+
+Cd("/Adam/Snd");Dir;
+
+`Cd("/Adam/Snd");Dir;
+`
+
+Cd("/Adam/WordStat");Dir;
+
+`Cd("/Adam/WordStat");Dir;
+`
+
+Cd("/Accts");Dir;
+
+`Cd("/Accts");Dir;
+`
+
+Cd("/Accts/TS");Dir;
+
+`Cd("/Accts/TS");Dir;
+`
+
+Cd("/Accts/TS/TAD");Dir;
+
+`Cd("/Accts/TS/TAD");Dir;
+`
+
+Cd("/Accts/TS/TAD/MusicOrgan");Dir;
+
+`Cd("/Accts/TS/TAD/MusicOrgan");Dir;
+`
+
+Cd("/Accts/TS/Wb2");Dir;
+
+`Cd("/Accts/TS/Wb2");Dir;
+`
+
+Cd(TS_BLOG_DIR);Dir;
+
+`Cd(TS_BLOG_DIR);Dir;
+`
+
+Cd("/Accts/User");Dir;
+
+`Cd("/Accts/User");Dir;
+`
+
+Cd("/Accts/Install");Dir;
+
+`Cd("/Accts/Install");Dir;
+`
+
+Cd("/Apps");Dir;
+
+`Cd("/Apps");Dir;
+`
+
+Cd("/Apps/HolySpirit");Dir;
+
+`Cd("/Apps/HolySpirit");Dir;
+`
+
+Cd("/Apps/Span");Dir;
+
+`Cd("/Apps/Span");Dir;
+`
+
+Cd("/Apps/MusicOrgan");Dir;
+
+`Cd("/Apps/MusicOrgan");Dir;
+`
+
+Cd("/Apps/AfterEgypt");Dir;
+
+`Cd("/Apps/AfterEgypt");Dir;
+`
+
+Cd("/Apps/Strut");Dir;
+
+`Cd("/Apps/Strut");Dir;
+`
+
+Cd("/Misc/Tour");Dir;
+
+`Cd("/Misc/Tour");Dir;
+`
+
+Cd("/Demo");Dir;
+
+`Cd("/Demo");Dir;
+`
+
+Cd("/Demo/Doc");Dir;
+
+`Cd("/Demo/Doc");Dir;
+`
+
+Cd("/Demo/Asm");Dir;
+
+`Cd("/Demo/Asm");Dir;
+`
+
+Cd("/Demo/Snd");Dir;
+
+`Cd("/Demo/Snd");Dir;
+`
+
+Cd("/Demo/Dsk");Dir;
+
+`Cd("/Demo/Dsk");Dir;
+`
+
+Cd("/Demo/OldSchool");Dir;
+
+`Cd("/Demo/OldSchool");Dir;
+`
+
+Cd("/Demo/Graphics");Dir;
+
+`Cd("/Demo/Graphics");Dir;
+`
+
+Cd("/Demo/MultiCore");Dir;
+
+`Cd("/Demo/MultiCore");Dir;
+`
+
+Cd("/Demo/Games");Dir;
+
+`Cd("/Demo/Games");Dir;
+`
+
+Cd("/Demo/Lectures");Dir;
+
+`Cd("/Demo/Lectures");Dir;
+`
+
+Cd("/Doc");Dir;
+
+`Cd("/Doc");Dir;
+`
+
+Cd("/Misc");Dir;
+
+`Cd("/Misc");Dir;
+`
+
+Cd("/Temp");Dir;
+
+`Cd("/Temp");Dir;
+`
+
+Cd("/0000Boot");Dir;
+
+`Cd("/0000Boot");Dir;
+`
+
+Copy Screen Shots
+`Del(TS_BAK_DRV ":/Temp/ScreenShots/*");Copy("::/Temp/ScreenShots/*",TS_BAK_DRV ":/Temp/ScreenShots");
+`
+
+Del(TS_BAK_DRV ":/Temp/*.SND");DelTree(TS_BAK_DRV ":/Temp/ScreenShots");MkDir(TS_BAK_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+
+`Del(TS_BAK_DRV ":/Temp/*.SND");DelTree(TS_BAK_DRV ":/Temp/ScreenShots");MkDir(TS_BAK_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+`
+
+TSPmtCopyDrv;
+
+`TSPmtCopyDrv;
+`
+
+MakeDistrosAndBackUp;
+
+`MakeDistrosAndBackUp;
+`
+
+MakeWebSitePartial;
+
+`MakeWebSitePartial;
+`
+
+M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_BAK_DRV ":/*;~*LineCnt*","+r+d");
+
+`M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_BAK_DRV ":/*;~*LineCnt*","+r+d");
+`
+
+M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_CDROM_DRV ":/*;~*LineCnt*","+r+d");
+
+`M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_CDROM_DRV ":/*;~*LineCnt*","+r+d");
+`
+
+ChgDsk(TS_CDROM_DRV_LET);
+
+`ChgDsk(TS_CDROM_DRV_LET);
+`
+
+SoftBootMenu(TS_MAIN_DRV_LET);
+
+`SoftBootMenu(TS_MAIN_DRV_LET);
+`
+
+Make TS Distro ISO
+`MakeTSDistro;   Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSTS.ISO");
+`
+  Burn TS Distro CD 
+`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+  Burn TS Distro DVD
+`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+Make Std Distro ISO
+`MakeStdDistro;Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSCD.ISO");
+`
+ Burn Std Distro CD 
+`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+ Burn Std Distro DVD
+`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+  
+  
+  
+  
+  
+  
+  
+  
+  ToTheFront <1> (image) Logic <2> (image) Lines <3> (image) TimeOut <4> (image) 
+  
+  
+  
+  
+  
+  
+  
+  
+  X-Caliber <5> (image) JukeBox <6> (image) Organ <7> (image)  Vocab <8> (image) 
+  
+  
+  
+  
+  
+  KeepAway <9> (image) Models <10> (image) RawHide <11> (image) BugBird <12> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  EagleDive <13> (image) BigGuns <14> (image)  Span <15> (image)  ZoneOut <16> (image)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  AfterEgypt <17> (image) Frankenstein <18> (image) Wenceslas <19> (image)
+  
+  
+  
+  
+  
+  
+  FlatTops <20> (image) Bomber <21> (image) Strut <22> (image) TheDead <23> (image) DunGen <24> (image)  
+  
+
+[C:/TempleOS/Misc/Bible.TXT.Z,297] Bible
+SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");
+`SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");`
+
+TSMakeOSPrtBootInstall(TS_BAK_DRV_LET);
+
+`TSMakeOSPrtBootInstall(TS_BAK_DRV_LET);
+`
+
+List all syms in alpabetic order
+`DocMax;Who;View;`
+
+List all syms in numeric order
+`DocMax;Who("+m");View;`
+
+Test Suite
+`#include "::/Misc/OSTestSuite";
+`
+
+MusicOrgan GODSongs
+`#include "::/Apps/MusicOrgan/Load";MusicOrgan("::/Accts/TS/TAD/MusicOrgan");
+`
+

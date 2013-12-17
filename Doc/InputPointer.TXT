@@ -1,0 +1,15 @@
+"Input Ptr" is the mouse at this point.
+
+[C:/TempleOS/Kernel/KGlbls.CPP.Z,80] ipx and
+[C:/TempleOS/Kernel/KGlbls.CPP.Z,80] ipy can be used to access the x and y
+coordinates of the input ptr.  
+They are relative to the screen, not window.  These can be used if you don't 
+want to use msg passing.  [C:/TempleOS/Kernel/KGlbls.CPP.Z,80] ipz is the
+wheel.
+
+[C:/TempleOS/Kernel/KGlbls.CPP.Z,86] iptx and
+[C:/TempleOS/Kernel/KGlbls.CPP.Z,87] ipty are the text column and row of the
+input ptr.  See 
+[C:/Demo/Games/Maze.CPP,1].
+
+You can make the input ptr snap to a grid by adjusting Fs->snap.

@@ -1,0 +1,146 @@
+                              Graphics Overview
+
+
+
+
+
+
+
+
+
+
+
+ <1> (image)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* See [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen() and
+[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,378] GrUpdateWins().  Only tasks on core0
+are allowed to 
+have windows.  There is one window per task, no child windows.  You can have 
+child tasks.
+
+* [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDCs (device contexts) are a data
+type for controlling graphics on the 
+screen or graphics in mem.  The device context structure has pen width and 
+color.  You use [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() to create your
+own structure, with its own color and 
+pen width.  Free it with [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,76] DCDel() when
+finished.
+
+* You change the "Fs->draw_it" var to point to your "DrawIt()" function which 
+gets called each screen refresh (60 fps).  You draw everything in the window 
+over and over again.  See [C:/Demo/Graphics/Box.CPP,1].
+ 
+* gr_dc is a device context for persistent data on the screen, not needing to 
+be redrawn.  You create an alias for this by using
+[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() and work with 
+that.  See [C:/Demo/Graphics/DotNet.CPP,1].
+
+* Use [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,42] DCNew() to create a mem bitmap
+which can be used to work off-screen and 
+which can be [C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,76] GrBloted onto the
+screen.  If you set brush member of CDC to 
+another CDC, all the graphic routines will
+[C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,76] GrBlot() the brush instead of 
+[C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,47] GrPlot().  See
+[C:/Demo/Graphics/Blot.CPP,1].
+
+* There are various flavors of line and point plotting routines. 
+[C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,437] GrLine() and 
+[C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,47] GrPlot() are the simplest.  The
+others allow 3D graphics and rotations.
+
+* See [C:/Doc/Transform.TXT,1] for adding a transformation.
+
+* Set [C:/TempleOS/Kernel/Adam1a.HPP.Z,3324] DCF_SYMMETRY in the
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC.flags and call
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,373] GrSetSymmetry() or 
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,395] GrSetSymmetry3().  This will plot a
+mirror image in addition to the primary 
+image.  Set [C:/TempleOS/Kernel/Adam1a.HPP.Z,3328] DCF_JUST_MIRROR to plot
+just the image, but this required 
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3324] DCF_SYMMETRY to be set at the same
+time.  Note: You can only have one symmetry 
+active at a time including in [C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprites.
+
+* Use the resource editor, <CTRL-R>, to create a sprite that can be plotted 
+with [C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3().  Use
+$IB,"",1$ in a src program to insert the addr of 
+sprite #1.  After creating a sprite with <CTRL-R> in your src code, toggle to 
+plain text with <CTRL-T> and check its num.  Then, make an assignment to a
+ptr 
+var with $IB,"",n$ as the value. See [C:/Demo/Graphics/SpritePlot.CPP,1] and 
+[C:/Demo/Graphics/SpritePlot3D.CPP,1].)  The origin (zero point) for a sprite
+is 
+defined by the cursor location when you press <CTRL-R>.  The "x", "y" and "z" 
+values you pass to [C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3()
+shift it around.  You can edit a sprite by 
+clicking the cursor on it and pressing <CTRL-R> again.
+
+* There is a mechanism built-in for generating motion based on differential 
+equations, which allows realistic physics.  You create an
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,336] CMathODE struct with 
+[C:/TempleOS/Adam/MathODE.CPP.Z,42] ODENew(), passing it the num of vars in
+the state vect.  For realistic 
+physics, you usually have 2 state vars for each dimension (for each mass) 
+because motion is governed by f=ma which is a 2nd order equation.  The two 
+states are pos and velocity and to solve these you need to supply the 
+derivative of pos and velocity.  The derivative of pos is usually simply the 
+current velocity and the derivative of velocity is the acceleration (the sum 
+of forces on a mass divided by mass).  To help provide meaningful names for 
+values in the state vect, you can create an
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,292] COrder2D3 ptr and point it to a 
+mass in the state vect.  Six elements in the state vect are required for each 
+mass.
+
+See [Math/CMathODE,1] Math/CMathODE.
+See [C:/Demo/Games/Rocket.CPP,1].
+
+* There are a few [C:/TempleOS/Kernel/Adam1a.HPP.Z,2770] raster operations
+available.  They go in bits 8-11 of the dc
+->color member var.
+
+* [C:/TempleOS/Kernel/Adam1a.HPP.Z,2772] ROP_COLLISION is special.  It counts
+the num of pixels drawn on 
+non-background locations.  Using [C:/TempleOS/Kernel/Adam1a.HPP.Z,2772]
+ROP_COLLISION with vector [C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprite's is
+tricky 
+because overlapping pixels from lines in the
+[C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprite reg as collisions.  You 
+can either work with a nonzero count or convert your
+[C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprite to a bitmap if 
+your subelements draw on top of each other.  Be sure to set ->bkcolor before 
+using [C:/TempleOS/Kernel/Adam1a.HPP.Z,2772] ROP_COLLISION.  See
+[C:/Demo/Graphics/PixelCollision.CPP,1] and 
+[C:/Apps/TimeOut/TimeOut.CPP,1].
+ 
+* The ->dither_probability_u16 member of
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC is a U16 used to statistically 
+select between two colors.  See [C:/Demo/Graphics/Shading.CPP,1].  It works
+with 
+many graphic routines, but not those with pens.

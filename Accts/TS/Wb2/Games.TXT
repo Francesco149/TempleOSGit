@@ -1,0 +1,77 @@
+                                   TempleOS
+
+
+
+                           After Egypt: Moses Game
+[C:/Apps/HolySpirit/HolySpirit.CPP,1]
+[C:/Apps/AfterEgypt/AfterEgypt.CPP,1]
+[C:/Apps/AfterEgypt/Battle.CPP,1]
+[C:/Apps/AfterEgypt/Comics.CPP,1]
+[C:/Apps/AfterEgypt/GodTalking.CPP.Z,1]
+[C:/Apps/AfterEgypt/Horeb1.CPP,1]
+[C:/Apps/AfterEgypt/Horeb2SP.CPP,1]
+[C:/Apps/AfterEgypt/Horeb2MP.CPP,1]
+[C:/Apps/AfterEgypt/Horeb3.CPP,1]
+[C:/Apps/AfterEgypt/Map.CPP,1]
+[C:/Apps/AfterEgypt/Quail.CPP,1]
+[C:/Apps/AfterEgypt/WaterRock.CPP,1]
+[C:/Demo/Graphics/Camp.CPP,1]
+[C:/Demo/Graphics/Mountain.CPP,1]
+[C:/Demo/MultiCore/Clouds.CPP,1]
+
+
+
+
+
+
+
+
+
+                      Flight Sim / First Person Shooter
+[C:/Demo/Games/EagleDive.CPP,1]
+[C:/Demo/Games/CastleFrankenstein.CPP,1]
+
+
+
+
+
+
+
+
+
+                       X-Caliber / Raw Hide / Wenceslas
+[C:/Apps/X-Caliber/X-Caliber.CPP,1]
+[C:/Apps/X-Caliber/XCCtrls.CPP,1]
+[C:/Demo/Games/RawHide.CPP,1]
+[C:/Demo/Games/Wenceslas.CPP,1]
+
+
+
+
+
+
+
+
+
+                             Span: Bridge Design
+[C:/Apps/Span/Span.HPP,1]
+[C:/Apps/Span/SpanBridge1.CPP,1]
+[C:/Apps/Span/SpanDerive.CPP,1]
+[C:/Apps/Span/SpanMain.CPP,1]
+[C:/Apps/Span/SpanNew.CPP,1]
+
+
+
+
+
+
+
+
+                                  ToTheFront
+[C:/Apps/ToTheFront/ToTheFront.CPP,1]
+
+
+
+
+
+

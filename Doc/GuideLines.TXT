@@ -1,0 +1,199 @@
+                             DIRECTORY STRUCTURE
+
+/Accts Each subdirectory is an acct.  When you boot, you can select an acct
+to 
+login to, unless you compile Kernel soas to pick one.  Your acct directory is 
+your HOME directory and all your user data should be placed in here to ease 
+backing-up your data.  When you Install an application it will create a 
+subdirectory of your HOME directory for storage.
+
+/Apps Applications are placed in subdirectories of /Apps.  Applications
+should 
+have a file called Install.CPP.Z which will install the app for the current 
+user acct.  The file, Load.CPP.Z will load the application into mem.  The 
+file, Run.CPP.Z, will usually load and execute the app.  To add an app to
+your 
+personal menu, use <CTRL-L>, insert a macro with the PopUp option checked and 
+invoke the Run.CPP.Z file.
+
+/Demo Here you can find lots of sample code to do various things.
+
+/Doc Here you can find documentation.
+
+/Kernel The core of the operating system is found here.  Since priviledge 
+levels are not used, calling it a "kernel" is deceptive.  It is AOT compiled 
+by [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().  It is loaded by the
+boot loader and must fit in 
+640K.
+
+/Compiler The compiler module src code is found here.  The compiler is AOT 
+compiled to produce a binary file which is loaded at boot.  It is also AOT 
+compiled by [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+
+/Adam The non-kernel part of the operating system is found here.  It is JIT 
+compiled during boot.
+
+
+
+                                  ACCT FILES
+
+You can add and remove accts by making or removing directories in the
+::/Accts 
+directory.  An empty account directory should be valid because it will get 
+default files from the parent directory.  Compile the
+[MN:MakeOSPrtBootInstall] Kernel to set the active 
+acct or cause it to prompt an account at boot. 
+
+[C:/TempleOS/Accts/TAD/PersonalMenu.TXT,1] a menu viewed with the <CTRL-M>
+key or by clicking "MENU
+" in the upper left border area of a window.
+
+[C:/TempleOS/Accts/TAD/PersonalNotes.TXT,1] a personal note file viewed with
+the <CTRL-SHIFT-M> 
+key.
+
+[C:/TempleOS/Accts/TAD/DoItOnce.CPP,1] a file invoked at the start-up of the
+first user.  Customize 
+this!
+
+[C:/TempleOS/Accts/TAD/Adam3.CPP,1] files invoked when the adam task
+starts-up.  Customize these!
+
+[C:/TempleOS/Accts/TAD/Registry.CPP.Z,1] can be edited by hand or deleted to
+reset to defaults.  
+Takes affect next boot.
+
+
+
+                             APPLICATION POLICIES
+
+* Place applications in their own /Apps subdirectory.
+
+* Make a file called Load.CPP.Z to load the application.
+
+* Make a file called Run.CPP.Z to load and run the application, preferable by 
+#includeing the Load.CPP.Z file.
+
+* Place user data in a subdirectory of HOME, preferably naming the 
+subdirectory the same as the /Apps subdirectory.  Or, place data in the Regist
+ry.CPP.Z file.  See [C:/Demo/RegistryDemo.CPP,1].
+
+* Make a file called Install.CPP.Z or Install.AUT.Z to create the HOME 
+subdirectory and do similar stuff.
+
+ 
+
+                            PROGRAMMING GUIDELINES
+
+* Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
+The 
+stk does not grow, so allocate enough when the task (process) is
+[C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawned and 
+use the heap for most things.  (The "heap" refers to
+[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() and
+[C:/TempleOS/Kernel/Memory.CPP.Z,950] Free().)
+
+* See [C:/Doc/Glossary.TXT,1] Naming Convention and [C:/Doc/Glossary.TXT,1]
+Abbreviations.
+
+* There are two modes of compiling, [C:/Doc/Glossary.TXT,1] AOT Compile Mode
+and [C:/Doc/Glossary.TXT,1] JIT Compile Mode.  
+Compilation is done in both -- neither is "interpreted".  Use
+[C:/Doc/Glossary.TXT,1] JIT Mode.
+
+* [C:/Doc/HolyC.TXT,1] HolyC
+
+* Use I64 in place of smaller int sizes because the compiler converts 
+everything to 64-bit.  Don't use unsigned unless it physically breaks.  A 
+policy of "signed unless it breaks if not unsigned" keeps it simple so you 
+don't have to agonize over choices.
+
+* In-order short circuit logic is used, in fact required.
+
+* Avoid boolean expression assignments.  Boolean assignments don't have short 
+circuit logic and are not compiled efficiently.  The Bool type is just an 
+alias for a 1 byte signed int -- nothing forces it to 1 or 0.  There is a 
+[C:/TempleOS/Kernel/Adam1b.HPP.Z,212] ToBool() function that will for to 1 ot
+0, however.
+
+* If you use floats in your interrupt routine, save and restore the fpu state 
+with [C:/TempleOS/Kernel/Adam1b.HPP.Z,252] Fxsave() and
+[C:/TempleOS/Kernel/Adam1b.HPP.Z,253] Fxrstor().  The timer interrupt does
+this.  The keyboard and 
+mouse don't use floats.
+
+* Bracketing code with PushFD;Cli; and PopFD; will protect against 
+simultaneous accesses from tasks on _one_ core.  To protect against multiple 
+cores, you need a locked semaphore.  I think semiphores need to be in their 
+own cache line, but I'm not sure.  I use lock bits in a lot of places not 
+aligned.
+
+* [C:/TempleOS/Kernel/Misc1a.CPP.Z,263] SysDbg() and
+[C:/TempleOS/Kernel/Misc1a.CPP.Z,269] IsSysDbg() are really handy when
+working on the compiler or 
+kernel.  It's just a bit you can set and test.
+
+* I don't use "U0 *" because the size is zero for ptr arithmetic.
+
+* Use [C:/TempleOS/Kernel/Adam1a.HPP.Z,3220] CH_SHIFT_SPACE for spaces in
+quotes in source code because I run 
+[C:/Adam/Utils/S2T.CPP.Z,1] Spaces-to-Tabs on source code.
+
+
+
+                               HASH SYM TABLES
+
+* See [C:/Adam/Hash2a.CPP,1] for examples of how the hash tables are set-up.  
+Basically, syms are placed into hash tables and child process hash tables are 
+chained to parents.  This provides scopes for vars and functions.
+
+* adam_task->hash_table holds the HolyC syms loaded in on start-up.
+
+* Fs->hash_table holds user HolyC syms and if a sym is not found, it checks 
+parents.  When a duplicate sym is added to the table, it overshadows the 
+previous sym.  When developing software, typically you include the file at
+the 
+cmd prompt, make changes and reinclude it.  Old syms are overshadowed but
+they 
+are still there.  Periodically, kill the TASK and start fresh when mem is
+low. 
+ If you wish your applications to free themselves instead of staying in mem, 
+spawn or [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,376] PopUp() a task to run the
+application and kill it when it's done.
+
+* To display the contents of a hash table, use the [MN:Who] Who() routine or
+the 
+varients.  [C:/TempleOS/Adam/Hash2a.CPP.Z,387] HashDepthRep() gives a
+histogram  of how long the chains are, in 
+case you wish to make hash table sizes bigger.
+
+
+
+                          ASSEMBLY LANGUAGE CONCERNS
+
+* FS must always point to the [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask.
+
+* GS must always point to the [C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.
+
+* Don't change the segment regs unless interrupts are off.  It's hard to do, 
+anyway.  [C:/TempleOS/Kernel/Utils1a.CPP.Z,306] SET_FS_BASE and
+[MN:SET_GS_BASE] SET_GS_BASE.
+
+* When interacting with compiled code, preserve RBP, RSI, RDI, R10-R15
+because 
+the compiler uses these for reg vars.  You are free to clobber RAX, RBX, RCX, 
+RDX, R8 and R9.  See [MN:REG_VARS_MASK] Compiler Reg Masks.
+
+* I recommend using the standard stk frame for functions because
+[C:/TempleOS/Kernel/Dbg1a.CPP.Z,53] Caller() is 
+used to display the call stk, such as for the wallpaper.
+	PUSH	RBP
+	MOV	RBP,RSP
+	SUB	RSP,nnnn
+...
+	LEAVE
+	RET
+
+* The args are removed from the stack with RET1 statements.
+
+	RET1	16	//remove two args

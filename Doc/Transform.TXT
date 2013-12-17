@@ -1,0 +1,40 @@
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC's have a 4x4 matrix for rotating,
+scaling, skewing and shifting in 3 
+dimensions.  To make the graphics routines respond to the transformation, you 
+must set the [C:/TempleOS/Kernel/Adam1a.HPP.Z,3321] DCF_TRANSFORMATION flag.
+
+The matrix consists of integers that have been scaled 32 bits
+([C:/TempleOS/Adam/Gr/MathGr.CPP.Z,142] gr_scale).  See 
+[C:/Demo/Lectures/FixedPoint.CPP,1] to learn why.
+
+See [MN:GrRotXNew] GrRotXNew(), [MN:GrRotYNew] GrRotYNew(), [MN:GrRotZNew]
+GrRotZNew(), [MN:GrScaleNew] GrScaleNew(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,239] GrRotXEqu(), 
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,259] GrRotYEqu(),
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,279] GrRotZEqu() and [MN:GrScaleEqu]
+GrScaleEqu() to rotate about axes and scale.  
+Combine them with [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,220] GrMulMat() and
+assign them to the [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC.dc with
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,307] GrSetRotMat(). 
+ See [C:/Demo/Graphics/Box.CPP,1].
+
+You can rotate single points using [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,144]
+GrRot().
+
+The 4th dimension allows a neat trick where you can place pos shifts 
+(translations), into the matrix and [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,220]
+GrMulMat them to combine rotation/shift 
+operations.  Normally, you can't combine pos shift operations.  See 
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,353] GrSetTranslation() and
+[C:/Demo/Graphics/Transform.CPP,1].
+
+Finally, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC's have an x, y and z
+which is an additional shift (translation).
+
+The transformation is implemented as a callback on the
+[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC's transform() 
+member.  The default transfrom() callback is
+[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,154] GrTransform().  See 
+[C:/Demo/Games/EagleDive.CPP,1] or [C:/Demo/Games/CastleFrankenstein.CPP,1]
+to see how 
+to change the transfrom() callback for foreshortening.

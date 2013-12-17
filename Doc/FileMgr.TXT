@@ -1,0 +1,75 @@
+                                 File Manager
+
+SHIFT CURSOR
+  Select files.
+
+CTRL-Y or DELETE KEY
+  Delete file or tree.
+
+CTRL-C or CTRL-INS
+  Copy selected files to clipboard.
+
+CTRL-V or SHIFT-INS
+  Paste clipboard.
+
+LEFT-CLICK,drag-drop
+  Move a file or tree to a directory.
+
+LEFT-CLICK,same file or <SPACE BAR>
+  Edit file.
+
+SHIFT-SPACE KEY
+  Edit Plain Text File.
+
+RIGHT-CLICK or <ENTER>
+  Bring-up menu.
+
+F5
+  #include file.
+
+SHIFT-F5
+  Adam #include file.
+
+'r'
+  Rename file.
+
+'d'
+  Make Directory.
+
+'m'
+  ChgDsk (Remount removable media).  Do not do this on blank disks.
+
+'f'
+  Format drive.
+
+'M'
+  Make CD/DVD ISO file.  This creates a file image of the directory the
+  cursor 
+is on.  The name of the ISO file is [C:/TempleOS/Kernel/KGlbls.CPP.Z,34]
+  sys_dft_iso_name and can be redefined in 
+your start-up scripts.  You may wish to place it on a different drive.
+
+'B'
+  Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
+[C:/TempleOS/Kernel/KGlbls.CPP.Z,34] sys_dft_iso_name to the drive the cursor
+  is on.
+
+
+Instructions on Using CD/DVD's
+  If you have not recompiled Kernel and defined your CD/DVD drive, exit the 
+file mgr and use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount to define
+  your CD/DVD drive.  Place a CD/DVD in the 
+drive and press 'm' when on top of the CD/DVD drive letter to mount the 
+drive.  It will call [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,409] ChgDsk(), the
+  TempleOS cmd to mount removable media.
+
+
+Instructions on Burning CD/DVD's
+  Create a temporary holding drive in RAM or on disk, copy files into the 
+holding drive.  Make an ISO image of the drive by pressing 'M' when on top 
+of the holding drive.  Press 'B' when on top of the CD/DVD ROM drive to burn 
+the ISO to disk.  If you have not recompiled Kernel and defined your CD/DVD 
+drive, exit the file mgr and use [C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,184]
+  Mount.
+
+[C:/Demo/MakeDistro.CPP,1] Making Your Own Distro

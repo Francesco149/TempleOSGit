@@ -357,7 +357,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
 
   ext=UnZExtension(out_path);
 
-  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO","BMP")) {
+  if (StrEqAny(ext,"BIN.C","BIN","DAT","GRA","ISO","BMP","html","log")) {
     FilePassThrough(in_path,out_path);
     return;
   }
