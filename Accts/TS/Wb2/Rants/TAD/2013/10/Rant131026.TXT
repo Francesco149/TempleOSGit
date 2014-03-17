@@ -3,7 +3,11 @@
 Draw a map of Your house, God.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img047.BMP"
+width="640" height="472" alt="">
+```
 
 
 I'll do a poem.
@@ -19,7 +23,11 @@ God is about.
 Do some Christmas stuff, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img048.BMP"
+width="640" height="472" alt="">
+```
 Dud.
 
 God says...
@@ -42,7 +50,11 @@ month old and already tearing apart, but I walk funny 'cause I blew-out my
 knee, one time.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img049.BMP"
+width="640" height="472" alt="">
+```
 Looks like a old monitor inside a car?
 
 God says...
@@ -108,7 +120,11 @@ LOL.  Sperm on hands got Mary?
 Draw a scene from Jesus' life, God.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img050.BMP"
+width="640" height="472" alt="">
+```
 Dud?
 
 ----10/26/13 01:37:26----
@@ -160,7 +176,11 @@ employest refuse
 Draw a picture for Chinese people.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img051.BMP"
+width="640" height="472" alt="">
+```
 That's a wrench.
 
 ----10/26/13 02:22:10----
@@ -461,7 +481,11 @@ before, you might interpret in an entirely different way.
 
 Draw a picture, God!
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img052.BMP"
+width="640" height="472" alt="">
+```
 That's a rabbit.  (Not that that means much.)
 
 ----10/26/13 04:26:23----
@@ -1355,7 +1379,7 @@ another what the rising from the dead should mean.
 Someone is talking about my scripts.  You have no idea how much shit my 
 scripts do.
 
-//The CFG defines are [C:/Demo/AcctExample/TSAdam.CPP,1] Here.
+//The CFG defines are [C:/Demo/AcctExample/TSAdam.CPP.Z,1] Here.
 
 U8 TSPmtDrv()
 {
@@ -1558,7 +1582,7 @@ U0 MakeSymFiles()
   }
 }
 
-I64 MakeLineCntFile()
+I64 MakeLineRepFile()
 {
   U8 *st;
   CDoc *doc;
@@ -1578,19 +1602,19 @@ I64 MakeLineCntFile()
 
   DocMax;
   DocClear;
-  result=LineCntRep;
+  result=LineRep;
   if (doc=DocPut) {
     st=StrNew(doc->filename.name);
-    StrCpy(doc->filename.name,TS_RAM_DRV ":/TS/Wb2/LineCnt.TXT.Z");
+    StrCpy(doc->filename.name,TS_RAM_DRV ":/TS/Wb2/LineRep.TXT.Z");
     DocWrite(doc);
     StrCpy(doc->filename.name,st);
     Free(st);
   }
   DocClear;
-  official=LineCntRep(TS_MAIN_DRV ":/Accts/*")+
-	   LineCntRep(TS_MAIN_DRV ":/Adam/*")+
-	   LineCntRep(TS_MAIN_DRV ":/Compiler/*","-S+T")+
-	   LineCntRep(TS_MAIN_DRV ":/Kernel/*");
+  official=LineRep(TS_MAIN_DRV ":/Accts/*")+
+	   LineRep(TS_MAIN_DRV ":/Adam/*")+
+	   LineRep(TS_MAIN_DRV ":/Compiler/*","-S+T")+
+	   LineRep(TS_MAIN_DRV ":/Kernel/*");
   DocClear;
   if (ts_has_ram_drv) {
     CopyTree(TS_RAM_DRV ":/TS",TS_MAIN_DRV ":/Accts/TS");
@@ -1598,7 +1622,7 @@ I64 MakeLineCntFile()
   }
 
   doc=DocRead(TS_MAIN_DRV ":/Adam/DocDefines.CPP.Z");
-  DocTreeFind(doc,"LineCnt",&tree_branch,&start_indent,&end_indent);
+  DocTreeFind(doc,"LineRep",&tree_branch,&start_indent,&end_indent);
   DocCut(doc,start_indent->next,end_indent->last);
   doc->cur_entry=start_indent->next;
   doc->cur_data_col=0;
@@ -1743,19 +1767,20 @@ U0 TSUncompress()
 U0 UpdateISODocDefines()
 {
   I64 size;
-  size=10*FileSize(TS_BAK_DRV ":/Wb/TempleOSCD.ISO")/1024/1024;
+  size=10*Size(TS_BAK_DRV ":/Wb/TempleOSCD.ISO")/1024/1024;
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-    "Download  - Std. Distro (%0.1f MB)",0.1*size);
-  size=10*FileSize(TS_BAK_DRV ":/Wb/TempleOSTS.ISO")/1024/1024;
+    "Download TempleOS V2.03 - Std. Distro (%0.1f MB)",0.1*size);
+  size=10*Size(TS_BAK_DRV ":/Wb/TempleOSTS.ISO")/1024/1024;
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-    "Download  - T.S. Company Internal Distro (%0.1f MB)",0.1*size);
+    "Download TempleOS V2.03 - T.S. Company Internal Distro (%0.1f 
+MB)",0.1*size);
 }
 
 UpdateISODocDefines;
 
 U0 MakeDistrosAndBackUp()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   progress4=*progress4_desc=0;
   progress4_max=14;
   WordStat;
@@ -1763,7 +1788,7 @@ U0 MakeDistrosAndBackUp()
   WinBorder;
   ChkAll; progress4++;
   if (ts_has_bak_drv) {
-    MakeLineCntFile; progress4++;
+    MakeLineRepFile; progress4++;
     TSCopyDrv(TS_MAIN_DRV_LET,TS_BAK_DRV_LET); progress4++;
     DelTree (TS_BAK_DRV  ":/Wb"); progress4++;
     CopyTree(TS_MAIN_DRV ":/",TS_BAK_DRV ":/Wb"); progress4++;
@@ -1898,7 +1923,10 @@ whence also he received him in a figure.
 
 This is the figure.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 ----10/26/13 11:15:03----
 
@@ -1932,7 +1960,10 @@ weight whereof was an hundred and thirty shekels, one silver bowl of
 
 This is the figure.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 ----10/26/13 11:24:01----
 

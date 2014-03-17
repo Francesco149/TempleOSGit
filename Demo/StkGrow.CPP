@@ -30,23 +30,23 @@ U0 StkGrowDemo()
 {
   F64 t0;
 
-  t0=tT;
+  t0=tS;
   "%X:%X\n",DEPTH,Recurse(DEPTH);
-  "Time:%7.5fs\n",tT-t0;
+  "Time:%7.5fs\n",tS-t0;
 
   //If you know the max stack ahead of time...
   //Recurse2's stack is 16 because you have 1 arg,
   //a return addr and no local variables.
-  t0=tT;
+  t0=tS;
   "%X:%X\n",DEPTH,CallStkGrow(DEPTH*16+0x800,DEPTH*16+0x800,&Recurse2,DEPTH);
-  "Time:%7.5fs\n",tT-t0;
+  "Time:%7.5fs\n",tS-t0;
 
 
-  //[C:/TempleOS/Kernel/Task1a.CPP.Z,89] CallStkGrow() works with multiple args.
-  t0=tT;
+  //[C:/Kernel/Task1a.CPP.Z,89] CallStkGrow() works with multiple args.
+  t0=tS;
   "%X:%X\n",DEPTH,CallStkGrow(DEPTH*32+0x800,DEPTH*32+0x800,
     &Recurse3,DEPTH,1000,2000);
-  "Time:%7.5fs\n",tT-t0;
+  "Time:%7.5fs\n",tS-t0;
 }
 
 StkGrowDemo;

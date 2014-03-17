@@ -32,7 +32,14 @@ monkeys.
 
 The announcer flat lies in this video.  Spec is spec.  150% of spec is over 
 spec.
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/9nA7B-JWt3M"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/9nA7B-JWt3M"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Here's an inside joke.  There's one video where they stress the wing
 gradually 
@@ -201,7 +208,14 @@ otherwhere salted Vintage 2 mistaken Anon servitude fleeting 1971
 
 ----12/07/13 01:35:53----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/8J-a3nE2Hmo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/8J-a3nE2Hmo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I asked God what makes elephants happy?  "Baths"
 I asked God what elephants think about? "Skin hunger"
@@ -832,7 +846,14 @@ violence and robbery in their palaces.
 
 This is world-wise and world unwise people.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/eB5VXJXxnNU&hl=enUS&start=140"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/eB5VXJXxnNU&hl=enUS&start=140"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 The unwise ones sure look dumb once you become world-wise, not a sleepwalker, 
 LOL.  Sheep, basically.

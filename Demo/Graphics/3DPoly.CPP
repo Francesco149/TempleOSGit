@@ -8,13 +8,13 @@ U0 Main()
   try {
     while (!ScanChar) {
       DCDepthBufRst(dc);
-      GrSetSymmetry(dc,Fs->win_pixel_width/2,Fs->win_pixel_height/2,
-	ipx-Fs->win_pixel_left-Fs->win_scroll_x,
-	ipy-Fs->win_pixel_top-Fs->win_scroll_y);
+      GrSetSymmetry(dc,Fs->pix_width/2,Fs->pix_height/2,
+	ipx-Fs->pix_left-Fs->scroll_x,
+	ipy-Fs->pix_top-Fs->scroll_y);
       dc->color=LTBLUE;
-      GrLine(dc,Fs->win_pixel_width/2,Fs->win_pixel_height/2,
-	ipx-Fs->win_pixel_left-Fs->win_scroll_x,
-	ipy-Fs->win_pixel_top-Fs->win_scroll_y);
+      GrLine(dc,Fs->pix_width/2,Fs->pix_height/2,
+	ipx-Fs->pix_left-Fs->scroll_x,
+	ipy-Fs->pix_top-Fs->scroll_y);
  
       GrIdentEqu(dc->r);
       GrRotXEqu(dc->r,omega);
@@ -22,8 +22,8 @@ U0 Main()
       GrRotZEqu(dc->r,theta);
       GrSetRotMat(dc,dc->r);
 
-      dc->x=Fs->win_pixel_width/2;
-      dc->y=Fs->win_pixel_height/2;
+      dc->x=Fs->pix_width/2;
+      dc->y=Fs->pix_height/2;
       dc->z=500;
  
       dc->color=GREEN;

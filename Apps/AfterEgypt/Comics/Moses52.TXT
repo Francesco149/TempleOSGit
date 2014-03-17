@@ -17,5 +17,5 @@
 
  <1> (image)
 
-[C:/TempleOS/Misc/Bible.TXT.Z,5068] Exodus,7:12
+[C:/Misc/Bible.TXT.Z,5068] Exodus,7:12
 

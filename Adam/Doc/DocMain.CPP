@@ -2,12 +2,12 @@
 
 Bool Ed(U8 *link_st,I64 ed_flags=0)
 {
-  U8 *filename,*pattern;
+  U8 *filename,*needle_str;
   I64 i,num;
   Bool cont,result=FALSE;
   CDoc *doc;
 
-  switch (i=EdLinkCvt(link_st,&filename,&pattern,&num,ed_flags)) {
+  switch (i=EdLinkCvt(link_st,&filename,&needle_str,&num,ed_flags)) {
     case -1:
       break;
     case LK_DEF:
@@ -35,11 +35,11 @@ ej_doc:
 	    !PopUpCancelOk(ST_WARN_ST "Not Text File\n\n"))
 	  cont=FALSE;
 	if (cont)
-	  result=DocFileEd(i,filename,pattern,&num,ed_flags);
+	  result=DocFileEd(i,filename,needle_str,&num,ed_flags);
       }
   }
   Free(filename);
-  Free(pattern);
+  Free(needle_str);
   return result;
 }
 
@@ -82,7 +82,7 @@ public Bool DocLinkChk(U8 *link_st)
 }
 
 public U8 *DocLinkFile(U8 *link_st,CTask *mem_task=NULL)
-{
+{//Return the file for an [C:/Adam/Doc/Doc.CPP.Z,37] Editor Link Types.
   U8 *filename=NULL,*st,*result=NULL;
   if (link_st) {
     switch (EdLinkCvt(link_st,&filename)) {
@@ -134,7 +134,7 @@ public CDoc *DocBorderNew(CDoc *pdoc)
     doc_e->tag_cb=&EdDollarTypeCB;
   }
   DocPrint(bdoc,"$CM+H+TY+NC,0,-1$");
-  doc_e=DocPrint(bdoc,"$DA+H-T-P+BD+RD+CX+SCX+IV,140,\"%%s...\",15$");
+  doc_e=DocPrint(bdoc,"$DA+H-TRM-P+BD+RD+CX+IV,140,A=\"%%s...\",SCX=15$");
   doc_e->data=&Fs->task_title;
   DocDataFmt(doc_e);
   DocPrint(bdoc,"$CM+H+NC,1,0$$TX+H+BD+IV,\"%X\"$",Fs);
@@ -169,7 +169,7 @@ public U8 *DocScanLine(CDoc *doc,CDocEntry *doc_e,I64 *cur_col=NULL,CDocEntry **
   if (cur_col)
     *cur_col=-1;
   while (doc_e2!=doc && doc_e2->type_u8!=DOCT_NEW_LINE) {
-    if (Bt(doc_type_flags_tag,doc_e2->type_u8)) {
+    if (doc_e2->flags1&DOCEF1_TAG) {
       src=doc_e2->tag;
       i+=StrLen(src);
     } else if (doc_e2->type_u8==DOCT_TAB)
@@ -180,7 +180,7 @@ public U8 *DocScanLine(CDoc *doc,CDocEntry *doc_e,I64 *cur_col=NULL,CDocEntry **
   dst=result;
   while (doc_e!=doc && doc_e->type_u8!=DOCT_NEW_LINE) {
     start=dst;
-    if (Bt(doc_type_flags_tag,doc_e->type_u8)) {
+    if (doc_e->flags1&DOCEF1_TAG) {
       src=doc_e->tag;
       while (*src)
 	*dst++=*src++;
@@ -223,13 +223,14 @@ U0 DocDump(CDoc *doc,I64 uS_delay=0)
 
 public CDocEntry *DocPutLine(CDoc *doc=NULL,CDocEntry *doc_e)
 {
-  U8 ch,*ptr,*ptr2;
+  I64 ch;
+  U8 *ptr,*ptr2;
   Bool unlock;
   if (!doc && !(doc=DocPut) || doc->doc_signature!=DOC_SIGNATURE_VAL)
     return NULL;
   unlock=DocLock(doc);
   while (doc_e!=doc && doc_e->type_u8!=DOCT_NEW_LINE) {
-    if (Bt(doc_type_flags_tag,doc_e->type_u8)) {
+    if (doc_e->flags1&DOCEF1_TAG) {
       ptr=doc_e->tag;
       do {
 	ptr2=ptr;
@@ -260,7 +261,7 @@ public CDocEntry *DocPutLine(CDoc *doc=NULL,CDocEntry *doc_e)
 
 #help_index "Doc/Input"
 public U8 *DocMGetS(I64 flags=0)
-//[C:/TempleOS/Kernel/Adam1a.HPP.Z,1567] Flags
+//[C:/Kernel/Adam1a.HPP.Z,1457] Flags
 {
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
@@ -447,19 +448,19 @@ I64 PopUpTermRight(U8 *header)
   if (header) DocPrint(doc,"%s",header);
   DocPrint(doc,"\n\n"
 	"TXT=%s\nSRC=%s\nAOT=%s\nJIT=%s\nGRA=%s"
-	"$CM+LX,1,3 $$BT,\"INCLUDE          JIT\",RIGHT_INCLUDE$"
-	"$CM+LX,26,0$$BT,\"ADAM_INCLUDE     JIT\",RIGHT_AINCLUDE$"
-	"$CM+LX,1,3 $$BT,\"AOT COMPILE      AOT\",RIGHT_COMPILE$"
-	"$CM+LX,26,0$$BT,\"LOAD             BIN\",RIGHT_LOAD$"
-	"$CM+LX,1,3 $$BT,\"AUTOFILE         AUT\",RIGHT_AUTOFILE$"
-	"$CM+LX,26,0$$BT,\"BINREP           BIN\",RIGHT_BINREP$"
-	"$CM+LX,1,3 $$BT,\"COPY                \",RIGHT_COPY$"
-	"$CM+LX,26,0$$BT,\"MOVE                \",RIGHT_MOVE$"
-	"$CM+LX,1,3 $$BT,\"DELETE              \",RIGHT_DELETE$"
-	"$CM+LX,26,0$$BT,\"TYPE         TXT;GRA\",RIGHT_TYPE$"
-	"$CM+LX,1,3 $$BT,\"ED               TXT\",RIGHT_ED$"
-	"$CM+LX,26,0$$BT,\"PLAIN ED         TXT\",RIGHT_PLAIN$"
-	"$CM+LX,1,3 $$BT,\"CANCEL              \",DOCM_CANCEL$\n",
+	"$CM+LX,1,3 $$BT,\"INCLUDE          JIT\",LE=RIGHT_INCLUDE$"
+	"$CM+LX,26,0$$BT,\"ADAM_INCLUDE     JIT\",LE=RIGHT_AINCLUDE$"
+	"$CM+LX,1,3 $$BT,\"AOT COMPILE      AOT\",LE=RIGHT_COMPILE$"
+	"$CM+LX,26,0$$BT,\"LOAD             BIN\",LE=RIGHT_LOAD$"
+	"$CM+LX,1,3 $$BT,\"AUTOFILE         AUT\",LE=RIGHT_AUTOFILE$"
+	"$CM+LX,26,0$$BT,\"BINREP           BIN\",LE=RIGHT_BINREP$"
+	"$CM+LX,1,3 $$BT,\"COPY                \",LE=RIGHT_COPY$"
+	"$CM+LX,26,0$$BT,\"MOVE                \",LE=RIGHT_MOVE$"
+	"$CM+LX,1,3 $$BT,\"DELETE              \",LE=RIGHT_DELETE$"
+	"$CM+LX,26,0$$BT,\"TYPE         TXT;GRA\",LE=RIGHT_TYPE$"
+	"$CM+LX,1,3 $$BT,\"ED               TXT\",LE=RIGHT_ED$"
+	"$CM+LX,26,0$$BT,\"PLAIN ED         TXT\",LE=RIGHT_PLAIN$"
+	"$CM+LX,1,3 $$BT,\"CANCEL              \",LE=DOCM_CANCEL$\n",
 	FILEMASK_TXT,FILEMASK_SRC,FILEMASK_AOT,FILEMASK_JIT,FILEMASK_GRA);
   i=PopUpMenu(doc);
   DocDel(doc);
@@ -642,16 +643,14 @@ public U0 DocD(U8 *buf,I64 cnt=0x80)
 }
 
 #help_index "Doc/Output"
-Bool AKDDocPutS(U8 *st)
+Bool KDDocPutS(U8 *st)
 {
   CDoc *doc;
   if (doc=DocPut)
-    DocPutSPartial(doc,st);
+    DocPrintPartial(doc,"%s",st);
   return FALSE;
 }
 
-KeyDevAdd(&AKDDocPutKey,&AKDDocPutS,0x80000000,TRUE);
+KeyDevAdd(&KDDocPutKey,&KDDocPutS,0x80000000,TRUE);
 fp_mgets=&DocMGetS;
 fp_doc_put=&DocPut;
-
-#help_index "Doc"

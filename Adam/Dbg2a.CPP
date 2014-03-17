@@ -33,7 +33,7 @@ Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,I64 depth,I64 max_depth
 	ptr=*ptr;
 	if (ChkPtr(ptr)) {
 	  if (dynamic) {
-	    doc_e=DocPrint(doc,"$DA-T-P+RD,64,\"%%40ts\"$\n");
+	    doc_e=DocPrint(doc,"$DA-TRM-P+RD,64,A=\"%%40ts\"$\n");
 	    doc_e->data=ptr;
 	    DocDataFmt(doc_e);
 	  } else
@@ -44,13 +44,13 @@ Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,I64 depth,I64 max_depth
 	if (tempc2->raw_type==RT_I8 || tempc2->raw_type==RT_U8) {
 	  if (j==1) {
 	    if (dynamic) {
-	      doc_e=DocPrint(doc,"$DA-T+RD+UD-I64+U8,32,\"%%c\"$\n");
+	      doc_e=DocPrint(doc,"$DA-TRM+RD+UD-I64+U8,32,A=\"%%c\"$\n");
 	      doc_e->data=ptr;
 	    } else
 	      DocPrint(doc,"%c\n",*ptr(U8 *));
 	  } else {
 	    if (dynamic) {
-	      doc_e=DocPrint(doc,"$DA-T-P+RD,64,\"%%40ts\"$\n");
+	      doc_e=DocPrint(doc,"$DA-TRM-P+RD,64,A=\"%%40ts\"$\n");
 	      doc_e->data=ptr;
 	      DocDataFmt(doc_e);
 	    } else
@@ -65,7 +65,7 @@ Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,I64 depth,I64 max_depth
 	    case RT_I8:
 	    case RT_U8:
 	      if (dynamic) {
-		doc_e=DocPrint(doc,"$DA-T+RD+UD-I64+U8,32,\"%%02X\"$ ");
+		doc_e=DocPrint(doc,"$DA-TRM+RD+UD-I64+U8,32,A=\"%%02X\"$ ");
 		doc_e->data=ptr(U8 *)++;
 	      } else
 		DocPrint(doc,"%02X ",*ptr(U8 *)++);
@@ -73,7 +73,7 @@ Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,I64 depth,I64 max_depth
 	    case RT_I16:
 	    case RT_U16:
 	      if (dynamic) {
-		doc_e=DocPrint(doc,"$DA-T+RD+UD-I64+U16,32,\"%%04X\"$ ");
+		doc_e=DocPrint(doc,"$DA-TRM+RD+UD-I64+U16,32,A=\"%%04X\"$ ");
 		doc_e->data=ptr(U16 *)++;
 	      } else
 		DocPrint(doc,"%04X ",*ptr(U16 *)++);
@@ -81,21 +81,21 @@ Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,I64 depth,I64 max_depth
 	    case RT_I32:
 	    case RT_U32:
 	      if (dynamic) {
-		doc_e=DocPrint(doc,"$DA-T+RD+UD-I64+U32,32,\"%%08X\"$ ");
+		doc_e=DocPrint(doc,"$DA-TRM+RD+UD-I64+U32,32,A=\"%%08X\"$ ");
 		doc_e->data=ptr(U32 *)++;
 	      } else
 		DocPrint(doc,"%08X ",*ptr(U32 *)++);
 	      break;
 	    case RT_F64:
 	      if (dynamic) {
-		doc_e=DocPrint(doc,"$DA-T+RD+UD,32,\"%%16g\"$ ");
+		doc_e=DocPrint(doc,"$DA-TRM+RD+UD,32,A=\"%%16g\"$ ");
 		doc_e->data=ptr(I64 *)++;
 	      } else
 		DocPrint(doc,"%16g ",*ptr(I64 *)++);
 	      break;
 	    default:
 	      if (dynamic) {
-		doc_e=DocPrint(doc,"$DA-T+RD+UD,32,\"%%016X\"$ ");
+		doc_e=DocPrint(doc,"$DA-TRM+RD+UD,32,A=\"%%016X\"$ ");
 		doc_e->data=ptr(I64 *)++;
 	      } else
 		DocPrint(doc,"%016X ",*ptr(I64 *)++);
@@ -190,7 +190,7 @@ U0 UpdateRegVarImg(CHashFun *tempf,U8 *_b,CTask *task)
   while (ml) {
     if (ml->reg!=REG_NONE) {
       tempc=OptClassFwd(ml->member_class);
-      MemCpy(_b+ml->offset,TaskRegAdd(task,ml->reg),tempc->size);
+      MemCpy(_b+ml->offset,TaskRegAddr(task,ml->reg),tempc->size);
     }
     ml=ml->next;
   }
@@ -236,16 +236,17 @@ public U0 FunRep(U8 *st,U8 *rbp=NULL,I64 max_depth=2,CTask *task=NULL)
 public U0 Uf(U8 *st)
 {//Unassemble named fun
   I64 i;
-  CHashFun *tempf=HashFind(st,Fs->hash_table,HTT_FUN);
+  CHashSrcSym *tempf;
   CDbgInfo *dbg;
-  if (tempf) {
-    FunRep(st);
+  if (tempf=HashFind(st,Fs->hash_table,HTT_FUN|HTT_EXPORT_SYS_SYM)) {
+    if (tempf->type&HTT_FUN)
+      FunRep(st);
     if (dbg=tempf->debug) {
-      i=dbg->body[dbg->max_line-dbg->min_line+1]-tempf->executable_addr;
-      Un(tempf->executable_addr,i);
+      i=dbg->body[dbg->max_line+1-dbg->min_line]-dbg->body[0];
+      Un(dbg->body[0],i);
       "Code Size:%04X\n",i;
     } else
-      U(tempf->executable_addr);
+      U(HashVal(tempf));
   }
 }
 

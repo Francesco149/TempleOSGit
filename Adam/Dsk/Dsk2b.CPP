@@ -11,7 +11,6 @@ I64 DirTreeFlattenSize(CDirEntry *tempde)
   }
   return result+1;
 }
-
 I64 DirTreeFlattenFill(CDirEntry *tempde,U8 *dst)
 {
   I64 result=0,i;
@@ -32,7 +31,6 @@ I64 DirTreeFlattenFill(CDirEntry *tempde,U8 *dst)
   *dst=0;
   return result+1;
 }
-
 public U8 *DirTreeFlatten(CDirEntry *tempde,I64 *_size=NULL)
 {
   I64 size=DirTreeFlattenSize(tempde);
@@ -59,7 +57,6 @@ U8 *DirTreeDoUnflatten(U8 *src,CDirEntry **tempde)
     *tempde=NULL;
   return src;
 }
-
 public CDirEntry *DirTreeUnflatten(U8 *src)
 {
   CDirEntry *tempde=NULL;
@@ -252,9 +249,8 @@ U0 RedSeaFSDrvView(U8 drv_let=0)
 
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
   s=(p->size+p->spc-1)/p->spc;
- 
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   DocCursor;
   DocClear;
@@ -287,7 +283,6 @@ U0 RedSeaFSDrvView(U8 drv_let=0)
   DCFill;
   DCDel(dc);
 }
-
 U0 FAT32DrvView(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
@@ -297,8 +292,7 @@ U0 FAT32DrvView(U8 drv_let=0)
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
   s=(p->size+p->spc-1)/p->spc;
  
-
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   DocCursor;
   DocClear;
@@ -331,7 +325,6 @@ U0 FAT32DrvView(U8 drv_let=0)
   DCFill;
   DCDel(dc);
 }
-
 public U0 DrvView(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
@@ -344,7 +337,7 @@ public U0 DrvView(U8 drv_let=0)
       FAT32DrvView(drv_let);
       break;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
   }
   Drv(Prt2Drv(p_old));
 }
@@ -352,15 +345,15 @@ public U0 DrvView(U8 drv_let=0)
 public U0 DskView(U8 drv_let=0)
 {
   I64 i,j,
-    h=Fs->win_pixel_width,
-    v=Fs->win_pixel_height,
+    h=Fs->pix_width,
+    v=Fs->pix_height,
     radius;
   CPrt *p;
   CBlkDev *bdev=Drv2BlkDev(drv_let);
   CDC *dc=DCAlias;
   F64 sect_start,sect_end;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocCursor;
   DocClear;
   DCFill;

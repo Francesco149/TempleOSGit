@@ -126,7 +126,7 @@ to pass over a transgression.
 
 ----11/08/13 17:36:53----
 
-[C:/Apps/HolySpirit/HSNotes.TXT.Z,1] Guidelines for Talking with God
+[C:/Adam/God/HSNotes.TXT.Z,1] Guidelines for Talking with God
 
 God said it is a covenant to do an offering before consulting Him.  He also 
 said "honest measures" applies.  That means you get back love equal to what 
@@ -672,7 +672,11 @@ You wanna draw something?
 
 I should get a Nobel Prize for the God drawing program, LOL.
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img005.BMP"
+width="640" height="472" alt="">
+```
 
 http://beacon.nist.gov/rest/record/1383968280
 
@@ -1059,9 +1063,9 @@ hated them ruled over them.
 
 106:42 Their enemies also oppressed them, and they were brought into
 
-Study the [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush() and
-[C:/TempleOS/Adam/TaskSettings.CPP.Z,92] SettingsPop() and see that I am
-tempted to not 
+Study the [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush() and
+[C:/Adam/TaskSettings.CPP.Z,89] SettingsPop() and see that I am tempted to
+not 
 impose them.  They are unfriendly to kids.  I don't like managed code or 
 blemishes.  Those are well intended functions, but do you see what evil they 
 do?

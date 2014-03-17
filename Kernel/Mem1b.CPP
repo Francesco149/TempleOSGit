@@ -208,7 +208,7 @@ MALLOC_FINAL_EXIT:
 	RET1	16
 // ************************************
 _FREE::
-//Be aware of [C:/Kernel/Mem1b.CPP,1] heap_hash in [C:/TempleOS/Kernel/Memory.CPP.Z,508] MemBlksAlloc().
+//Be aware of [C:/Kernel/Mem1b.CPP.Z,1] heap_hash in [C:/Kernel/Mem1a.CPP.Z,488] MemBlksAlloc().
 	PUSH	RBP
 	MOV	RBP,RSP
 	PUSH	RSI
@@ -244,7 +244,7 @@ _FREE::
 	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RSI]
 	TEST	RAX,RAX
 	JGE	@@20	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/TempleOS/Kernel/Adam1a.HPP.Z,2690] CMemUsedAllocated struct.
+			//The neg size is offset to start of [C:/Kernel/Adam1a.HPP.Z,2544] CMemUsedAllocated struct.
 	ADD	RSI,RAX
 
 @@20:	PUSHFD
@@ -367,12 +367,12 @@ _MHEAP_CTRL::
 	RET1	8
 }
 
-_extern _FREE U0 Free(U8 *add);
+_extern _FREE U0 Free(U8 *addr);
 _extern _MSIZE I64 MSize(U8 *src); //size of heap object
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
-_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl of object
+_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrl of object
 
-//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
+//Accepts a [C:/Kernel/Adam1a.HPP.Z,2879] CTask or [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrl.  NULL allocs off current task's heap.
 _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL);
 
 U8 *AMAlloc(I64 size)
@@ -381,7 +381,7 @@ U8 *AMAlloc(I64 size)
 }
 
 U8 *CAlloc(I64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/Adam1a.HPP.Z,2879] CTask or [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -393,7 +393,7 @@ U8 *ACAlloc(I64 size)
 }
 
 U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/Adam1a.HPP.Z,2879] CTask or [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (!src) return NULL;
@@ -409,7 +409,7 @@ U8 *AMAllocIdentical(U8 *src)
 }
 
 U8 *MAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0)
-{ //only powers of two alignment.
+{ //only powers of two alignment. This is awful.
   I64 mask=alignment-1;
   U8 *ptr=MAlloc(size+mask+sizeof(I64)+misalignment,mem_task),
      *result=(ptr+sizeof(I64)+mask)&~mask+misalignment;
@@ -419,7 +419,7 @@ U8 *MAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0
 }
 
 U8 *CAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0)
-{ //only powers of two alignment.
+{ //only powers of two alignment. This is awful.
   I64 mask=alignment-1;
   U8 *ptr=MAlloc(size+mask+sizeof(I64)+misalignment,mem_task),
      *result=(ptr+sizeof(I64)+mask)&~mask+misalignment;
@@ -430,7 +430,7 @@ U8 *CAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask or [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/Adam1a.HPP.Z,2879] CTask or [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (buf) {

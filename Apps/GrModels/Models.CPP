@@ -8,8 +8,8 @@ U0 Models()
   DocClear;
   "Make a CSprite model.  Then, cut-and-Paste it.\n\n";
   "$LM,4$";
-  "\n\n$BT,\"Man\",T_MAN$\n\n";
-  "\n\n$BT,\"Ball\",T_BALL$\n\n";
+  "\n\n$BT,\"Man\",LE=T_MAN$\n\n";
+  "\n\n$BT,\"Ball\",LE=T_BALL$\n\n";
   "$LM,0$";
   i=DocMenuDo(DocPut);
   LBEqu(&(DocPut)->flags,DOCf_FORM,old_form);

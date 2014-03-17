@@ -14,16 +14,16 @@ F64 t0=Beat;
 U0 DrawIt(CTask *,CDC *dc)
 {
   F64 dt=Beat-t0;
-  SpritePlot3(dc,20,8,0,__BIN_1);
+  Sprite3(dc,20,8,0,__BIN_1);
   if (8<dt<8.5) {
-    SpritePlot3(dc,20,24,0,__BIN_2);
+    Sprite3(dc,20,24,0,__BIN_2);
     Snd((dt-8)*100);
   }
 }
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
 

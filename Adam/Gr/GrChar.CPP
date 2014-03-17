@@ -1,7 +1,7 @@
 #help_index "Graphics/Char;Char/Graphics"
 public U0 PlotScreenStr(U8 *s,I64 attr,I64 x,I64 y)
 {
-  U8 ch;
+  I64 ch;
   attr<<=8;
   while (ch=*s++) {
     PlotScreenU8(ch+attr,x,y);
@@ -11,7 +11,7 @@ public U0 PlotScreenStr(U8 *s,I64 attr,I64 x,I64 y)
 
 public U0 PlotWinStr(CTask *task,U8 *s,I64 attr,I64 x,I64 y)
 {
-  U8 ch;
+  I64 ch;
   attr<<=8;
   while (ch=*s++) {
     PlotWinU8(task,ch+attr,x,y);
@@ -21,7 +21,7 @@ public U0 PlotWinStr(CTask *task,U8 *s,I64 attr,I64 x,I64 y)
 
 public U0 PlotBorderStr(CTask *task,U8 *s,I64 attr,I64 x,I64 y)
 {
-  U8 ch;
+  I64 ch;
   attr<<=8;
   while (ch=*s++) {
     PlotBorderU8(task,ch+attr,x,y);
@@ -94,13 +94,11 @@ public U0 DrawBorder(CTask *task,Bool solid,I64 l,I64 r,I64 t,I64 b,I64 attr,Boo
 
 U0 DrawTaskBorder(CTask *task)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   DrawBorder(task,task==sys_focus_task,
     task->win_left,task->win_right,
     task->win_top,task->win_bottom,
     task->border_attr,FALSE);
-  PopFD;
+  POPFD
 }
-
-#help_index "Graphics"

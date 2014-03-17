@@ -15,19 +15,20 @@ U0 StreamPrint(U8 *fmt,...)
   Free(buf);
 }
 
-U8 *LexStatement2Bin(CLex *lx,I64 *type)
+U8 *LexStatement2Bin(CLex *lx,I64 *_type,I64 cmp_flags=0)
 {
   I64 size,i,j,k,*result=INVALID_PTR;
-  if (type) *type=RT_I64;
+  CLexCodeCtrl *tempcbh;
+  if (_type) *_type=RT_I64;
   Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
   if (lx->a_depth==2)
     LCCPush(lx);
   LCCInit(lx);
-  if (!PrsStatement(lx,NULL)) {
+  if (!PrsStatement(lx,,,cmp_flags)) {
     if (lx->lcc.lcc_root.next!=&lx->lcc.lcc_root) {
       LCCAdd(lx,IC_RETURN_VAL2,0,NULL);
       LCCAdd(lx,IC_RET,0,0);
-      if (result=LCCCompile(lx,NULL,&size,NULL,type)) {
+      if (result=LCCCompile(lx,&size,NULL,_type)) {
 	if (lx->flags&LF_AOT_COMPILE) {
 	  j=lx->a->ip;
 	  k=(size+7)>>3;
@@ -40,26 +41,31 @@ U8 *LexStatement2Bin(CLex *lx,I64 *type)
     } //TODO: else del misc?
   } else //TODO: too dangerous to del Misc?
     QueDel(&lx->lcc.lcc_root.next);
-  if (lx->a_depth==2)
-    LCCPop(lx);
+  if (lx->a_depth==2) {
+progress1++;
+    tempcbh=LCCPopNoFree(lx);
+    LCCAppend(lx,tempcbh);
+  }
   return result;
 }
 
 
-CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
-  U8 *map_name=NULL,U8 mapfile_drv=0)
+CExe *CmpJoin(CLex *lx,I64 cmp_flags,U8 *map_name=NULL,U8 mapfile_drv=0)
 {
   CAsmCtrl *a,*old_a=lx->a;
   I64 i,j,l;
-  U8 *ex;
+  U8 *buf;
   CAsmCodeBlk *tempc;
   CExeImportExport *tempe;
   Bool okay=TRUE;
   CLexHashTableContext *htc=MAlloc(sizeof(CLexHashTableContext));
-  CHashTable   *asm_hash_alias=MAllocIdentical(asm_hash);
-  CExe *result=CAlloc(sizeof(CExe));
-  result->parent_exe=lx->exe_struct;
-  lx->exe_struct=result;
+  CExe *result=CAlloc(sizeof(CExe)),*parent;
+  if (parent=lx->exe) {
+    result->parent_exe=parent;
+    QueIns(result,parent->last);
+  } else
+    QueInit(result);
+  lx->exe=result;
 
   result->next_ie=result->last_ie=&result->next_ie;
   lx->a=a=CAlloc(sizeof(CAsmCtrl));
@@ -70,39 +76,44 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
   a->module_org=INVALID_PTR;
 
   MemCpy(htc,&lx->htc,sizeof(CLexHashTableContext));
-  lx->htc.local_hash_table=HashTableNew(16);
-  lx->htc.glbl_hash_table =HashTableNew(2048);
-
-  asm_hash_alias->next=lx->htc.local_hash_table;
-  lx->htc.local_hash_table->next=lx->htc.glbl_hash_table;
-
-  if (lx->flags&LF_AOT_COMPILE)
-    lx->htc.define_hash_table=lx->htc.glbl_hash_table;
+  if (lx->htc.fun)
+    lx->htc.glbl_hash_table=HashTableNew(128);
   else
+    lx->htc.glbl_hash_table=HashTableNew(2048);
+  if (lx->flags&LF_AOT_COMPILE) {
+    lx->htc.define_hash_table=lx->htc.glbl_hash_table;
+    if (lx->a_depth<=1)
+      lx->htc.glbl_hash_table->next=asm_hash;
+    else
+      lx->htc.glbl_hash_table->next=htc->glbl_hash_table;
+  } else
     lx->htc.glbl_hash_table->next=Fs->hash_table;
-  lx->htc.hash_table_lst =asm_hash_alias;
-
-  lx->htc.local_var_lst=locals; //HolyC local vars
+  lx->htc.hash_table_lst=lx->htc.local_hash_table=HashTableNew(16);
+  lx->htc.local_hash_table->next=lx->htc.glbl_hash_table;
+  lx->htc.local_var_lst=lx->htc.fun; //HolyC local vars
+  lx->htc.fun=NULL;
   try {
-    if (first_lex)
+    if (cmp_flags&CMPF_LEX_FIRST)
       Lex(lx);
+    if (!(cmp_flags&CMPF_ONE_ASM_INS))
+      cmp_flags|=CMPF_PRS_SEMICOLON;
     if (lx->flags&LF_AOT_COMPILE) {
       while (lx->token!=TK_EOF) {
-	ex=LexStatement2Bin(lx,NULL);
-	if (ex!=INVALID_PTR) {
+	buf=LexStatement2Bin(lx,NULL,cmp_flags);
+	if (buf!=INVALID_PTR) {
 	  tempe=CAlloc(sizeof(CExeImportExport));
 	  tempe->type=EIT_MAIN;
-	  tempe->ip=ex;
+	  tempe->ip=buf;
 	  QueIns(tempe,result->last_ie);
 	}
-	if (asm_blk)
+	if (cmp_flags&CMPF_ASM_BLK)
 	  break;
       }
     } else
-      PrsStatement(lx,NULL);
+      PrsStatement(lx,,,cmp_flags);
     AsmGlblsResolve(lx,result);
   } catch {
-    if (Fs->except_ch=='Compiler' && !asm_blk) {
+    if (Fs->except_ch=='Compiler' && !(cmp_flags&CMPF_ASM_BLK)) {
       LexPutPos(lx);
       Fs->catch_except=TRUE;
     }
@@ -111,7 +122,7 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
   if (!okay) {
     if (lx->error_cnt<1)
       lx->error_cnt=1;
-    lx->exe_struct=result->parent_exe;
+    lx->exe=result->parent_exe;
     Free(result);
     LinkedLstDel(a->cb);
     result=NULL;
@@ -122,15 +133,15 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
     HashTableDel(lx->htc.glbl_hash_table);
 
     if (!a->num_ex_U8s)
-      result->ex=NULL;
+      result->buf=NULL;
     else {
       if (lx->flags&LF_AOT_COMPILE)
-	result->ex=MAlloc(a->num_ex_U8s);
+	result->buf=MAlloc(a->num_ex_U8s);
       else {
 	if (a->module_org==INVALID_PTR)
-	  result->ex=MAlloc(a->num_ex_U8s,Fs->code_heap);
+	  result->buf=MAlloc(a->num_ex_U8s,Fs->code_heap);
 	else
-	  result->ex=a->module_org;
+	  result->buf=a->module_org;
       }
       result->ex_U8s=a->num_ex_U8s;
       tempc=a->cb;
@@ -140,7 +151,7 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
 	i=l;
 	if (i>ASM_CODE_BLK_SIZE)
 	  i=ASM_CODE_BLK_SIZE;
-	MemCpy(result->ex+j,tempc->body,i);
+	MemCpy(result->buf+j,tempc->body,i);
 	j+=i;
 	l-=i;
 	tempc=tempc->next;
@@ -151,11 +162,10 @@ CExe *CmpJoin(CLex *lx,CHashFun *locals,Bool first_lex,Bool asm_blk=FALSE,
     result->heap_glbls=a->heap_glbls;
     result->max_align =a->max_align;
     result->module_org=a->module_org;
-    lx->exe_struct=result->parent_exe;
   }
+  lx->exe=parent;
   MemCpy(&lx->htc,htc,sizeof(CLexHashTableContext));
   Free(htc);
-  Free(asm_hash_alias);
   Free(a);
   lx->a=old_a;
   lx->a_depth--;
@@ -167,13 +177,11 @@ CExe *CmpBuf(U8 *buf,U8 *map_name=NULL,
 {
   CLex *lx;
   CExe *result=NULL;
-  if (!is_first_compiler)
-    "$PURPLE$**** Not First Compiler ****$FG$\n";
   lx=LexNew(buf,LF_DONT_FREE_BUF);
   lx->flags|=LF_AOT_COMPILE;
   QueIns(lx,Fs->last_lex);
-  result=CmpJoin(lx,NULL,TRUE,FALSE,map_name,mapfile_drv);
-  if (error_cnt) *error_cnt=lx->error_cnt;
+  result=CmpJoin(lx,CMPF_LEX_FIRST,map_name,mapfile_drv);
+  if (error_cnt)   *error_cnt=lx->error_cnt;
   if (warning_cnt) *warning_cnt=lx->warning_cnt;
   QueRem(lx);
   if (result)
@@ -181,10 +189,11 @@ CExe *CmpBuf(U8 *buf,U8 *map_name=NULL,
   return result;
 }
 
-U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx,I64 ip2)
+U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx)
 {
-  I64 i,*str=NULL;
+  I64 i,ip2=tempx->buf+tempx->ip,*str=NULL;
   U8 *ptr;
+  CLexCodeMisc *g_lb;
   CExeAbsAddr *tempa,*tempa1;
   CExeImportExport *tempe,*tempe1;
   CHashExport *tempex;
@@ -192,7 +201,7 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx,I64 ip2)
   tempa=tempx->abss;
   while (tempa) {
     tempa1=tempa->next;
-    ptr=tempx->ex+tempa->ip;
+    ptr=ip2+tempa->ip;
     nobound_switch (tempa->type) {
       case EAT_ADD_U8:	*ptr(U8 *) +=ip2; break;
       case EAT_SUB_U8:	*ptr(U8 *) -=ip2; break;
@@ -229,26 +238,64 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx,I64 ip2)
 	HashAdd(tempex,Fs->hash_table);
 	SysSymImportsResolve(tempex->str);
 	break;
-      case EIT_REL_U8...EIT_IMM_U64:
-	if (tempe->str && !(tempex=HashFind(str,Fs->hash_table,HTG_ALL-HTT_IMPORT_SYS_SYM)))
-	  "%S%s\n","ST_UNRESOLVED_REFERENCE",str;
-	else {
+      case EIT_REL_I8...EIT_IMM_U64:
+	if (tempe->str) {
+	  if (tempe->flags&EIF_GOTO_LABEL) {
+	    if(!(g_lb=LCCGoToLabelFind(lx,str)))
+	      "Unresolved Reference:%s\n",str;
+	    else {
+	      g_lb->use_cnt++;
+	      g_lb=OptLabelFwd(g_lb);
+	      i=g_lb->addr+tempx->buf;
+	    }
+	    tempex=NULL;
+	  } else {
+	    if (!(tempex=HashFind(str,Fs->hash_table,HTG_ALL-HTT_IMPORT_SYS_SYM)))
+	      "Unresolved Reference:%s\n",str;
+	    else {
+	      if (tempex->type & HTT_FUN)
+		i=tempex(CHashFun *)->executable_addr;
+	      else if (tempex->type & HTT_GLBL_VAR)
+		i=tempex(CHashGlblVar *)->data_addr;
+	      else
+		i=tempex->val;
+	    }
+	    g_lb=NULL;
+	  }
+	}
+	if (tempex || g_lb) {
 	  ptr=tempe->ip+ip2;
-	  if (tempex->type & HTT_FUN)
-	    i=tempex(CHashFun *)->executable_addr;
-	  else if (tempex->type & HTT_GLBL_VAR)
-	    i=tempex(CHashGlblVar *)->data_addr;
-	  else
-	    i=tempex->val;
 	  nobound_switch (tempe->type) {
-	    case EIT_REL_U8:  *ptr(U8 *) =i-ptr-1;	break;
-	    case EIT_IMM_U8:  *ptr(U8 *) =i;		break;
-	    case EIT_REL_U16: *ptr(U16 *)=i-ptr-2;	break;
-	    case EIT_IMM_U16: *ptr(U16 *)=i;		break;
-	    case EIT_REL_U32: *ptr(U32 *)=i-ptr-4;	break;
-	    case EIT_IMM_U32: *ptr(U32 *)=i;		break;
-	    case EIT_REL_U64: *ptr(I64 *)=i-ptr-8;	break;
-	    case EIT_IMM_U64: *ptr(I64 *)=i;		break;
+	    case EIT_REL_I8:
+	      if (!(MIN_I8<=i-ptr-1<=MAX_I8))
+		LexExcept(lx,"branch out of range at ");
+	      *ptr(U8 *) =i-ptr-1;
+	      break;
+	    case EIT_IMM_U8:
+	      *ptr(U8 *) =i;
+	      break;
+	    case EIT_REL_I16:
+	      if (!(MIN_I16<=i-ptr-2<=MAX_I16))
+		LexExcept(lx,"branch out of range at ");
+	      *ptr(U16 *)=i-ptr-2;
+	      break;
+	    case EIT_IMM_U16:
+	      *ptr(U16 *)=i;
+	      break;
+	    case EIT_REL_I32:
+	      if (!(MIN_I32<=i-ptr-4<=MAX_I32))
+		LexExcept(lx,"branch out of range at ");
+	      *ptr(U32 *)=i-ptr-4;
+	      break;
+	    case EIT_IMM_U32:
+	      *ptr(U32 *)=i;
+	      break;
+	    case EIT_REL_I64:
+	      *ptr(I64 *)=i-ptr-8;
+	      break;
+	    case EIT_IMM_U64:
+	      *ptr(I64 *)=i;
+	      break;
 	  }
 	}
 	break;
@@ -259,14 +306,17 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx,I64 ip2)
   }
   Free(str);
   if (!lx->a_depth && Bt(&lx->opts,OPTf_COMPILE_TRACE))
-    Un(tempx->ex,tempx->ex_U8s,64);
+    Un(ip2,tempx->ex_U8s,64);
+  QueRem(tempx);
   Free(tempx);
 }
 
-U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx,I64 ip2)
+U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx)
 {
   CAsmCtrl *a=lx->a;
+  I64 i,ip2=tempx->ip+lx->a->ip;
   U8 *ptr;
+  CLexCodeMisc *g_lb=NULL;
   CExeAbsAddr *tempa,*tempa1;
   CExeImportExport *tempe,*tempe1;
 
@@ -274,7 +324,7 @@ U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx,I64 ip2)
   while (tempa) {
     tempa1=tempa->next;
     tempa->next=a->abss;
-    ptr=tempx->ex+tempa->ip;
+    ptr=tempx->buf+tempx->ip+tempa->ip;
     nobound_switch (tempa->type) {
       case EAT_ADD_U8:
 	*ptr(U8 *)+=ip2;
@@ -310,37 +360,89 @@ U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx,I64 ip2)
   while (tempe!=&tempx->next_ie) {
     tempe1=tempe->next;
     QueRem(tempe);
-    ptr=tempx->ex+tempe->ip;
-    switch (tempe->type) {
-      case EIT_REL_EXPORT:
-      case EIT_IMM_EXPORT:
-	tempe->ip+=ip2;
-	break;
-      case EIT_REL_U8:
-      case EIT_IMM_U8:
-	*ptr(U8 *) -=ip2;
-	tempe->ip+=ip2;
-	break;
-      case EIT_REL_U16:
-      case EIT_IMM_U16:
-	*ptr(U16 *)-=ip2;
-	tempe->ip+=ip2;
-	break;
-      case EIT_REL_U32:
-      case EIT_IMM_U32:
-	*ptr(U32 *)-=ip2;
-	tempe->ip+=ip2;
-	break;
-      case EIT_REL_U64:
-      case EIT_IMM_U64:
-	*ptr(I64 *)-=ip2;
-	tempe->ip+=ip2;
-	break;
+    if (EIT_REL_I8<=tempe->type<=EIT_IMM_U64) {
+      if (tempe->str) {
+	if (tempe->flags&EIF_GOTO_LABEL) {
+	  if(!(g_lb=LCCGoToLabelFind(lx,tempe->str)))
+	    "Unresolved Reference:%s\n",tempe->str;
+	  else {
+	    g_lb->use_cnt++;
+	    g_lb=OptLabelFwd(g_lb);
+	  }
+	} else
+	  g_lb=NULL;
+      }
+    } else
+      g_lb=NULL;
+
+    ptr=tempx->buf+tempx->ip+tempe->ip;
+    if (g_lb) {
+      i=g_lb->addr+tempx->buf;
+      nobound_switch (tempe->type) {
+	case EIT_REL_I8:
+	  if (!(MIN_I8<=i-ptr-1<=MAX_I8))
+	    LexExcept(lx,"branch out of range at ");
+	  *ptr(U8 *) =i-ptr-1;
+	  break;
+	case EIT_IMM_U8:
+	  *ptr(U8 *) =i;
+	  break;
+	case EIT_REL_I16:
+	  if (!(MIN_I16<=i-ptr-2<=MAX_I16))
+	    LexExcept(lx,"branch out of range at ");
+	  *ptr(U16 *)=i-ptr-2;
+	  break;
+	case EIT_IMM_U16:
+	  *ptr(U16 *)=i;
+	  break;
+	case EIT_REL_I32:
+	  if (!(MIN_I32<=i-ptr-4<=MAX_I32))
+	    LexExcept(lx,"branch out of range at ");
+	  *ptr(U32 *)=i-ptr-4;
+	  break;
+	case EIT_IMM_U32:
+	  *ptr(U32 *)=i;
+	  break;
+	case EIT_REL_I64:
+	  *ptr(I64 *)=i-ptr-8;
+	  break;
+	case EIT_IMM_U64:
+	  *ptr(I64 *)=i;
+	  break;
+      }
+      Free(tempe->src_link);
+      Free(tempe);
+    } else {
+      switch (tempe->type) {
+	sub_switch_start:
+	  case EIT_REL_EXPORT:
+	  case EIT_IMM_EXPORT:
+	  case EIT_IMM_U8:
+	  case EIT_IMM_U16:
+	  case EIT_IMM_U32:
+	  case EIT_IMM_U64:
+	    break;
+	  case EIT_REL_I8:
+	    *ptr(U8 *) -=ip2;
+	    break;
+	  case EIT_REL_I16:
+	    *ptr(U16 *)-=ip2;
+	    break;
+	  case EIT_REL_I32:
+	    *ptr(U32 *)-=ip2;
+	    break;
+	  case EIT_REL_I64:
+	    *ptr(I64 *)-=ip2;
+	    break;
+	sub_switch_end:
+	  tempe->ip+=ip2;
+	  break;
+      }
+      tempe->exe=NULL;
+      QueIns(tempe,tempx->parent_exe->last_ie);
     }
-    QueIns(tempe,tempx->parent_exe->last_ie);
     tempe=tempe1;
   }
-  Free(tempx);
 }
 
 I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
@@ -359,17 +461,16 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
   fbuf2=MPrint("#include \"%s\"",fbuf);
   if (map_name)
     fbuf3=DftExt(map_name,"MAP.Z");
-  tempx=CmpBuf(fbuf2,fbuf3,&error_cnt,&warning_cnt,mapfile_drv);
 
-  if (tempx) {
+  if (tempx=CmpBuf(fbuf2,fbuf3,&error_cnt,&warning_cnt,mapfile_drv)) {
     ex_U8s=tempx->ex_U8s;
     ptr=patch_table;
-    //See [C:/TempleOS/Kernel/Adam1a.HPP.Z,388] CBinFilePatchTableWithoutOrg
-    *ptr++=EIT_MODULE_ALIGNMENT; //See [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() and [C:/TempleOS/Adam/BinRep.CPP.Z,23] BinRep()
+    //See [C:/Kernel/Adam1a.HPP.Z,299] CBinFilePatchTableWithoutOrg
+    *ptr++=EIT_MODULE_ALIGNMENT; //See [C:/Kernel/Hash1b.CPP.Z,386] Load() and [C:/Adam/Utils/BinRep.CPP.Z,23] BinRep()
     *ptr(U32 *)++=tempx->max_align;
     *ptr++=0;
     if (tempx->module_org!=INVALID_PTR) {
-      //See [C:/TempleOS/Kernel/Adam1a.HPP.Z,399] CBinFilePatchTableWithOrg
+      //See [C:/Kernel/Adam1a.HPP.Z,310] CBinFilePatchTableWithOrg
       *ptr++=EIT_MODULE_ORG;
       *ptr(U32 *)++=tempx->module_org;
       *ptr++=0;
@@ -453,6 +554,8 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
       tempe1=tempe->next;
       QueRem(tempe);
       *ptr++=tempe->type;
+      if (tempe->exe)
+	tempe->ip+=tempe->exe->ip2;
       *ptr(U32 *)++=tempe->ip;
       if (tempe->str) {
 	i=StrLen(tempe->str);
@@ -469,19 +572,16 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     *ptr++=EIT_END;
     MemSet(ptr,0,16);
     i=ptr-patch_table;
-    //[C:/Kernel/KStart.CPP,1] TEMPLEOS_XSUM needs 16 ALIGN
+    //Needs 16 ALIGN
     size=(sizeof(CBinFile)+ex_U8s+i+15)&-16;
     bfh=MAlloc(size);
     bfh->jmp=0xEB+256*(sizeof(CBinFile)-2);
 #assert sizeof(CBinFile)-2<=MAX_I8
-    bfh->type=0;
+    bfh->type=0; //Reserved. Allow other types, maybe.	Must be 16 bytes, anyway.
     bfh->loader_patch_table_offset=sizeof(CBinFile)+ex_U8s;
     bfh->file_size=size;
-    bfh->xsum=TEMPLEOS_XSUM;
-    MemCpy(bfh(U8 *)+sizeof(CBinFile),tempx->ex,ex_U8s);
-    MemCpy(bfh(U8 *)+sizeof(CBinFile)+ex_U8s,patch_table,
-      size-ex_U8s-sizeof(CBinFile));
-    bfh->xsum=ArcXSum(bfh,size);
+    MemCpy(bfh(U8 *)+sizeof(CBinFile),tempx->buf,ex_U8s);
+    MemCpy(bfh(U8 *)+sizeof(CBinFile)+ex_U8s,patch_table,size-ex_U8s-sizeof(CBinFile));
     Free(fbuf2);
     if (out_name)
       fbuf2=DftExt(out_name,"BIN.Z");
@@ -490,14 +590,15 @@ I64 Cmp(U8 *filename,U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv=0)
     if (!cmp_do_not_write_to_dsk)
       FileWrite(fbuf2,bfh,size);
     Free(bfh);
-    ExpressionBinDel(tempx->ex);
+    Free(tempx->buf);
+    QueDel(tempx);
     Free(tempx);
   }
   Free(patch_table);
   Free(fbuf);
   Free(fbuf2);
   Free(fbuf3);
-  Print(Define("ST_ERRORS_WARNINGS"),error_cnt,warning_cnt,ex_U8s,size);
+  Print("Errs:%d Warns:%d Code:%X Size:%X\n",error_cnt,warning_cnt,ex_U8s,size);
   return error_cnt;
 }
 
@@ -605,7 +706,7 @@ I64 StreamExePrint(U8 *fmt,...)
     PrintErr("Not Compiling\n");
   else {
     if (!(lx->flags&LF_EXE_BLK))
-      LexExcept(lx,"ST_STREAM_EXE_PRINT_NOT_ALLOWED");
+      LexExcept(lx,"StreamExePrint only allowed in AOT compiled #exe{} mode.");
     if (htc=lx->htc.next)
       result=ExePutS(buf,,,htc);
   }
@@ -615,11 +716,6 @@ I64 StreamExePrint(U8 *fmt,...)
 
 U0 CmpInit()
 {
-  if (!sys_num_installed_compilers++) {
-    is_first_compiler=TRUE;
-    fp_prs_stream_blk=&PrsStreamBlk;
-  } else
-    is_first_compiler=FALSE;
   compiled_lines=0;
   compiled_funs=0;
   compiled_bytes=0;
@@ -632,7 +728,7 @@ U0 CmpInit()
   opt_nop.ic_class=sys_internal_types[RT_I64];
   opt_nop.ic_code=IC_NOP1;
 
-  AsmHashLoad(is_first_compiler);
+  AsmHashLoad;
   UnasmHashLoad;
 }
 

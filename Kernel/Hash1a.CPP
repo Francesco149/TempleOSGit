@@ -66,7 +66,7 @@ ADDRESS-TO-SYMBOL LOOK-UP  (Slow because not important--could add tree)
 2)"next_added,last_added" que links are traversed.  This speeds look-up
 instead of scanning hash table because hash table is so sparce.
 
-See [C:/TempleOS/Kernel/PSect.CPP.Z,10] PSectFind().
+See [C:/Kernel/PSect.CPP.Z,10] PSectFind().
 
 ****/
 
@@ -353,11 +353,11 @@ _HASH_REM_DEL::
 
 _extern _HASH_STR I64 HashStr(U8 *st);
 _extern _HASH_FIND CHash *
-  HashFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
+  HashFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 _extern _HASH_SINGLE_TABLE_FIND CHash *
-  HashSingleTableFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
+  HashSingleTableFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 _extern _HASH_BUCKET_FIND CHash **
-  HashBucketFind(U8 *st,CHashTable *table);
+  HashBucketFind(U8 *needle_str,CHashTable *haystack_table);
 _extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table);
 _extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
 					I64 instance=1);//instance must match temph's

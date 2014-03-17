@@ -1,16 +1,38 @@
-I64 A2I(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
-{ //ASCII to Int
+I64 A2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
+{//ASCII to I64.  Similar to strtoul().
+//Allows radix change with "0x20" "0b1010" "0d123" "0o18".
+//Be careful of A2I64("0b101",16)-->0xB101.
   Bool neg=FALSE;
-  U8 ch;
-  I64 result=0,k=0;
-  if (!(2<=radix<=36)) return 0;
+  I64 ch,result=0;
+  if (!st || !(2<=radix<=36)) {
+    if (_end_ptr) *_end_ptr=st;
+    return 0;
+  }
   while (Bt(chars_bitmap_white_space,*st))
     st++;
-  if (*st=='-') {
-    st++;
-    neg=TRUE;
-  } else if (*st=='+')
-    st++;
+  while (TRUE)
+    switch (*st) {
+      case '-':
+	st++;
+	neg=!neg;
+	break;
+      case '+':
+	st++;
+	break;
+      case '0':
+	st++;
+	ch=ToUpper(*st);
+	if (ch>='B' && (radix<=10 || ch>'A'+radix-11))
+	  switch (ch) {
+	    case 'B': radix=2;	st++; break;
+	    case 'O': radix=8;	st++; break;
+	    case 'D': radix=10; st++; break;
+	    case 'X': radix=16; st++; break;
+	  }
+      default:
+	goto ai_cont;
+    }
+ai_cont:
   while (ch=ToUpper(*st++)) {
     if (radix>10) {
       if ('0'<=ch<='9')
@@ -19,29 +41,10 @@ I64 A2I(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
 	result=result*radix+ch-'A'+10;
       else
 	break;
-    } else {
-      if (k==1 && !result) {
-	if (ch=='X') {
-	  radix=16;
-	  goto ai_skip;
-	} else if (ch=='B') {
-	  radix=2;
-	  goto ai_skip;
-	} else if (ch=='O') {
-	  radix=8;
-	  goto ai_skip;
-	} else if (ch=='D') {
-	  radix=10;
-	  goto ai_skip;
-	}
-      }
-      if ('0'<=ch<='0'+radix-1)
-	result=result*radix+ch-'0';
-      else
-	break;
-    }
-ai_skip:
-    k++;
+    } else if ('0'<=ch<='0'+radix-1)
+      result=result*radix+ch-'0';
+    else
+      break;
   }
   if (_end_ptr) *_end_ptr=st-1;
   if (neg)
@@ -51,8 +54,7 @@ ai_skip:
 }
 
 F64 A2F64(U8 *src,U8 **_end_ptr=NULL)
-//ASCII string to F64
-/*
+{/*ASCII string to F64.
 Does not allow more than 18-digits
 before or after the decimal point
 because the numbers before and after
@@ -60,12 +62,11 @@ the decimal point are stored
 in 64-bits.  Use exponentiated forms
 to avoid this.
 */
-{
-  U8 ch=*src++;
-  I64 i,j,k;
+  I64 i,j,k,ch;
   F64 d;
   Bool neg=FALSE,neg_e=FALSE;
 
+  ch=*src++;
   while (Bt(chars_bitmap_white_space,ch))
     ch=*src++;
   if (ch=='-') {
@@ -182,19 +183,19 @@ CDate A2Date(U8 *_src)
   if (*p1=='*') {
     p1++;
     if (*p1=='+' || *p1=='-')
-      result.date=A2I(p1,10,&p1);
+      result.date=A2I64(p1,,&p1);
     result+=Now+local_time_offset;
   } else {
     StrFirstRem(p1,"/",v); //Put mon into v
-    ds.mon=A2I(v);
+    ds.mon=A2I64(v);
     if (StrOcc(p1,'/')) {
       StrFirstRem(p1,"/",v); //Put day into v leaving year in p1
-      ds.day_of_mon=A2I(v);
-      ds.year=A2I(p1,10,&p1);
+      ds.day_of_mon=A2I64(v);
+      ds.year=A2I64(p1,,&p1);
       if (ds.year<100) //if not 4 digit year
 	ds.year+=2000;
     } else {
-      ds.day_of_mon=A2I(p1,10,&p1);
+      ds.day_of_mon=A2I64(p1,,&p1);
       ds.year=Year;
     }
     result=Struct2Date(&ds);
@@ -211,7 +212,7 @@ CDate A2Date(U8 *_src)
     result.date=LastDayOfYear(result.date);
 
   if (*p1=='+' || *p1=='-')
-    result.date+=A2I(p1);
+    result.date+=A2I64(p1);
   Free(src);
   Free(v);
   return result-local_time_offset;
@@ -307,19 +308,19 @@ U8 *ScanJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2I(buf);
+	    *i_ptr=A2I64(buf);
 	    break;
 	  case 'X':
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2I(buf,16);
+	    *i_ptr=A2I64(buf,16);
 	    break;
 	  case 'b':
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2I(buf,2);
+	    *i_ptr=A2I64(buf,2);
 	    break;
 	  case 'e':
 	  case 'f':

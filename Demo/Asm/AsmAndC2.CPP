@@ -3,7 +3,7 @@ This is a JIT file, not AOT.
 
 Asm labels can only be defined once
 in a task.  Hit F5 to spawn a new task
-and run it.
+each time and run it.
 */
 
 //This is to demo glbl var access.
@@ -12,22 +12,18 @@ I64 glbl_hz=400,glbl_hz_step=100,glbl_hz_base=100;
 
 asm {
 //Opcodes are slightly different to make writing my x86_64 assembler easier.
-//See [C:/Compiler/OpCodes.TXT,1].
+//See [C:/Compiler/OpCodes.TXT.Z,1].
 USE64	//Defaults to 64, but this is a good habit.
-
-
-//See [C:/Kernel/Str1a.CPP,1] ::/Kernel/Str1a.CPP and [C:/Kernel/Utils1a.CPP,1].
-//These are asm syms and must be imported to work properly.
-//When in doubt, import syms.
-	IMPORT	PUT_STR,PUT_CHARS,PUT_HEX_U64;
 
 JIFFIES_MSG:	DU8 "Jiffies:",0;
 
+//See [C:/Kernel/Str1a.CPP.Z,1] ::/Kernel/Str1a.CPP and [C:/Kernel/Utils1a.CPP.Z,1].
+
 _BEEPS2::
-//You can clobber RAX,RBX,RCX,RDX,R8,R9 in a pure asm subroutine.
+//You can clobber RAX,RBX,RCX,RDX,R8,R9
 	PUSH	RBP
 	MOV	RBP,RSP
-	MOV	RCX,U64 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP,1] SF_ARG1
+	MOV	RCX,U64 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP.Z,1] SF_ARG1
 
 	PUSH	U64 [&sys_jiffies]
 
@@ -39,7 +35,7 @@ _BEEPS2::
 	POP	RCX
 	LOOP	@@05
 
-	PUSH	RSI	//See [MN:REG_VARS_MASK] REG_VARS_MASK & [MN:REG_NON_PTR_MASK] REG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/Kernel/Adam1a.HPP.Z,3553] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,3554] REG_NON_PTR_MASK
 	MOV	RSI,JIFFIES_MSG
 	CALL	PUT_STR
 	POP	RSI
@@ -68,10 +64,10 @@ U0 AsmAndC2()
 
   asm {
 LIST
-//You can clobber RAX,RBX,RCX,RDX, but preserve the rest for code in a HolyC routine.
+//You can clobber RAX,RBX,RCX,RDX, but preserve the rest.
 USE64	//Defaults to 64, but this is a good habit.
-	MOV	RCX,R15 //You can clobber RAX,RBX,RCX,RDX.
-			    //You better preserve the rest.
+	MOV	RCX,R15 //You can clobber RAX,RBX,RCX,RDX. Preserve the rest.
+
 @@05:	PUSH	RCX
 //U0 Snd(F64 freq);
 
@@ -82,9 +78,9 @@ USE64	//Defaults to 64, but this is a good habit.
 	FILD	U64 [RSP]	//Convert from int to floating
 	FSTP	U64 [RSP]
 
-	CALL	&Snd	//We can skip IMPORT for this symbol if JIT.
+	CALL	&Snd	//We can skip IMPORT with & if JIT compiling.
 
-	MOV	RCX,0x20000000	//Simple delay loop
+	MOV	RCX,time_stamp_freq>>3	//JIT Const.  Simple delay loop.
 @@10:	LOOP	@@10
 
 	POP	RCX

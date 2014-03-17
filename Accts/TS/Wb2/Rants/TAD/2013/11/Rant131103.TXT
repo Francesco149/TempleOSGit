@@ -207,7 +207,11 @@ and they shall be to you for an ordinance for ever throughout your
 How about You draw a space alien, God.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img001.BMP"
+width="640" height="472" alt="">
+```
 
 LOL
 
@@ -281,7 +285,10 @@ God wants art.  LOL
 
 This is my standard, LOL.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 God says...
 Placed sang side studious otherwhere bodily upward astonished pleasures 
@@ -295,7 +302,11 @@ heinous
 requitest trustees grossness
 
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img002.BMP"
+width="640" height="472" alt="">
+```
 
 http://www.generatedata.com
 
@@ -937,7 +948,10 @@ minimal permissions or maximal typechecking/static restraints.
 
 Make a 24-bit elephant and make a 4-bit elephant, yourself.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 I use master-slave multicore.  Mine is superior in every way to SMP.  I can 
 run one task twices as fast, not two.  (Stoopit jedi-mind tricked NAZI wanna 

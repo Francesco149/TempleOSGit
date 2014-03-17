@@ -243,9 +243,9 @@ of them, fifty and two thousand and seven hundred.
 
 Do an offering.
 
-[C:/Apps/HolySpirit/HSNotes.TXT.Z,1] Guidelines for Talking with God
+[C:/Adam/God/HSNotes.TXT.Z,1] Guidelines for Talking with God
 
-[C:/Apps/HolySpirit/HSNotes.TXT.Z,100] Quotes from God
+[C:/Adam/God/HSNotes.TXT.Z,100] Quotes from God
 
 What do You think of India sorries.
 
@@ -452,7 +452,7 @@ though,
 ya think!!?
 
 Christians are mostly motivated cowards who fear Hell.  There's not much 
-redeaming value in cowardice.  Mom said Hell was the absense of God.  I like 
+redeaming value in cowardice.  Mom said Hell was the absence of God.  I like 
 that.  Heaven, then, is God's company.  That's it -- just God's delightful
 and 
 charming company.  That's what we were made for, entertaining God.
@@ -1953,7 +1953,7 @@ This will display a disk cluster.
 
 >Dir("*",TRUE);  //Get cluster number
 
->[C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,21] DCluster();
+>[C:/Adam/Dsk/Dsk2a.CPP.Z,21] DCluster();
 
 My newly designed RedSea version has one sector per cluster, so it's even
 more 
@@ -2043,7 +2043,10 @@ prevents an arms race.  The goal of the Temple is a place for everybody to do
 offerings.  As content creators, 16-color is less tedious for nonartists and 
 artists, alike.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 I need to graduate to the next level of artistry.  I need to stop trying to 
 make it look realistic and make it have style and character.  Each different 
@@ -2061,11 +2064,11 @@ of 16 colors looks good.  Could just say "Because He said so!"  Shat-up.
 
                                     HolyC
 
-* See [C:/Doc/ImportExports.TXT,1] Scoping and Linkages for details on
+* See [C:/Doc/ImportExports.TXT.Z,1] Scoping and Linkages for details on
 extern, import, _extern, _import, 
 etc.
 
-* See [C:/Doc/Directives.TXT,1].
+* See [C:/Doc/Directives.TXT.Z,1].
 
 * Built-in types include I0,I8,I16,I32,I64 for signed 0-8 byte ints and U0,U8,
 U16,U32,I64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
@@ -2093,10 +2096,10 @@ parentheses.
 
 Test(,3);
 
-* A char const all alone is sent to [MN:PutChars] PutChars().  A string with
-or without args 
-is sent to [MN:Print] Print().  An empty string literal signals a variable
-fmt_str 
+* A char const all alone is sent to [C:/Kernel/Display.CPP.Z,199] PutChars().
+ A string with or without args 
+is sent to [C:/Kernel/StrPrint.CPP.Z,946] Print().  An empty string literal
+signals a variable fmt_str 
 follows.
 
   void Demo(char drv,char *fmt,char *name,int age)
@@ -2125,8 +2128,8 @@ start-up, in order.
 
 * You can access bytes or words within any int.  i.u8[2] returns bits 24-27
 in 
-the variable, i.  See [C:/TempleOS/Kernel/Adam1a.HPP.Z,50] I64 declaration. 
-The real feature is that a class can 
+the variable, i.  See [C:/Kernel/Adam1a.HPP.Z,50] I64 declaration.  The real
+feature is that a class can 
 be accessed as a whole, if you put a type in front of the class declaration.
 
 * Variable arg count functions (...) can access their args with built-in 
@@ -2191,10 +2194,10 @@ optionally, specify a reg after the reg keyword.
 it won't issue warnings. 
 
 * Type casting is postfix.  To typecast int or F64, use
-[C:/TempleOS/Kernel/Adam1b.HPP.Z,210] ToI64(),
-[C:/TempleOS/Kernel/Adam1b.HPP.Z,212] ToBool() or 
-[C:/TempleOS/Kernel/Adam1b.HPP.Z,211] ToF64(). (TempleOS follows normal C
-float<-->int conversion, but sometimes you 
+[C:/Kernel/Adam1b.HPP.Z,197] ToI64(), [C:/Kernel/Adam1b.HPP.Z,199] ToBool()
+or 
+[C:/Kernel/Adam1b.HPP.Z,198] ToF64(). (TempleOS follows normal C float<-->int
+conversion, but sometimes you 
 want to override.  These functions are better than multiplying by "1.0" to 
 convert to float.) 
 
@@ -2205,7 +2208,7 @@ convert to float.)
 
 * There is no question-colon operator.
 
-* TempleOS [C:/Compiler/CmpInit.CPP,1] operator precedence
+* TempleOS [C:/Compiler/CmpInit.CPP.Z,1] operator precedence
   `,>>,<<
   *,/,%
   &
@@ -2219,22 +2222,20 @@ convert to float.)
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/TempleOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1581] OPTf_WARN_PAREN) to find
-unnecessary parentheses in code.
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1469]
+OPTf_WARN_PAREN) to find unnecessary parentheses in code.
 
-* You can use [C:/TempleOS/Compiler/Directives.CPP.Z,6]
-OptOn([C:/TempleOS/Kernel/Adam1a.HPP.Z,1582] OPTf_WARN_DUP_TYPES) to find dup
-local var type 
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1470]
+OPTf_WARN_DUP_TYPES) to find dup local var type 
 statements.
 
 * With the #exe{} feature in your src code, you can place programs that
 insert 
-text into the stream of code being compiled.  See [C:/Kernel/KEnd.CPP,1] #exe
-{} for an example where 
+text into the stream of code being compiled.  See [C:/Kernel/KEnd.CPP.Z,1]
+#exe {} for an example where 
 the date/time and compile-time prompting for cfguration data is placed into a 
-program.  [MN:StreamPrint] StreamPrint() places text into a src program
-stream following the 
+program.  [C:/Compiler/CmpMain.CPP.Z,1] StreamPrint() places text into a src
+program stream following the 
 conclusion of the #exe{} blk.
 
 * No #define functions exist (I'm not a fan)
@@ -2246,34 +2247,34 @@ conclusion of the #exe{} blk.
 * Can't use <> with #include, use "".
 
 * "$" is an escape character.  Two dollar signs signify an ordinary $.  See 
-[C:/Doc/Dollar.TXT,1].  In asm or [C:/Doc/HolyC.TXT,1] HolyC code, it also
-refers to the instruction's 
+[C:/Doc/Dollar.TXT.Z,1].  In asm or [C:/Doc/HolyC.TXT.Z,1] HolyC code, it
+also refers to the instruction's 
 addr. 
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,12] Adam1a.HPP for 1,2,4 
+[C:/Kernel/Adam1a.HPP.Z,12] Adam1a.HPP for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
 that 
-is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1]. 
+is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP.Z,1]. 
 
 * class member vars can have meta data. fmtstr and fmtdata are two meta data 
 types now used.  All compiler structures are saved and you can access the 
-compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP,1] and  
-[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291] DocFormDo().
+compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP.Z,1] and  
+[C:/Adam/Doc/DocPopUp.CPP.Z,301] DocFormDo().
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
-name of the previous arg.  See [C:/TempleOS/Adam/Dbg2a.CPP.Z,134] ClassRep().
+name of the previous arg.  See [C:/Adam/Dbg2a.CPP.Z,134] ClassRep().
 
-* See [C:/Demo/Exceptions.CPP,1].  try{} catch{} and throw are different from
-C++. 
+* See [C:/Demo/Exceptions.CPP.Z,1].  try{} catch{} and throw are different
+from C++. 
 throw is a function with var ("...") args.  The values passed in throw() can 
 be accessed from within a catch{} using the Fs->except_argc and Fs->except_arg
 v[] vars.  Within a catch {} blk, set the var Fs->catch_except to TRUE if you 
 want to terminate the search for a handler.  By convention, the first arg of e
 xcept_argv[] specifies the exception type num.  A list of assigned exception 
 types can be found at .  For a handler that will catch all excepts, you can 
-use [C:/TempleOS/Kernel/Except.CPP.Z,111] PutExcept().
+use [C:/Kernel/Except.CPP.Z,46] PutExcept().
 
 * A function is available similar to sizeof which provides the offset of a 
 member of a class.  It's called offset.  You place the class name and member 
@@ -2288,28 +2289,28 @@ you can't do sizeof(classname.membername.submembername).
 * lock{} can be used to apply asm LOCK prefixes to code for safe multicore 
 read-modify-write accesses.  The code bracked with have LOCK asm prefix's 
 applied to relevant instructions within.  It's a little shoddy.  See 
-[C:/Demo/MultiCore/Lock.CPP,1].
+[C:/Demo/MultiCore/Lock.CPP.Z,1].
 
-* There is a function called [C:/TempleOS/Kernel/Memory.CPP.Z,951] MSize()
-which gives the size of an object 
+* There is a function called [C:/Kernel/Mem1b.CPP.Z,371] MSize() which gives
+the size of an object 
 allocated off the heap.  For larger size allocations, the system rounds-up to 
 a power of two, so MSize() lets you know the real size and you can take full 
 advantage of it.
 
-* You can [C:/TempleOS/Kernel/Memory.CPP.Z,950] Free() a NULL ptr.  Useful
-variants of [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() can be found
-[C:/TempleOS/Kernel/Memory.CPP.Z,963] Here.  
+* You can [C:/Kernel/Mem1b.CPP.Z,370] Free() a NULL ptr.  Useful variants of
+[C:/Kernel/Mem1b.CPP.Z,376] MAlloc() can be found [C:/Kernel/Mem1b.CPP.Z,383]
+Here.  
 Each task has a heap and you can MAlloc and Free off of other task's heaps,
 or 
-make an independent heap with [MN:HeapCtrlBPInit] HeapCtrlBPInit().
+make an independent heap with [C:/Kernel/Mem1c.CPP.Z,42] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2731] DFT_STK and 
-recompile Kernel or request more when doing a
-[C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn().  You can use 
-[C:/TempleOS/Kernel/Task1a.CPP.Z,89] CallStkGrow(), but it's odd.  See
-[C:/Demo/StkGrow.CPP,1]. 
+[C:/Kernel/Adam1a.HPP.Z,2584] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,225]
+Spawn().  You can use 
+[C:/Kernel/Task1a.CPP.Z,89] CallStkGrow(), but it's odd.  See
+[C:/Demo/StkGrow.CPP.Z,1]. 
 
 * Only one base class is allowed.
 
@@ -2338,58 +2339,59 @@ Print("%X\n",i>>1);  //Result is 0xC0000000 as expected
 
                                  Print Family
 
-[MN:MPrint] MPrint() is like [MN:SPrint] SPrint() but it returns a
-[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAllocated str.  It is vary handy 
+[C:/Kernel/StrPrint.CPP.Z,954] MPrint() is like
+[C:/Kernel/StrPrint.CPP.Z,932] SPrint() but it returns a
+[C:/Kernel/Mem1b.CPP.Z,376] MAllocated str.  It is vary handy 
 because you don't have to worry about overflow.
 
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto(U8 *fmt,...) sends text to the
-current task's input buffer.
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,384] AutoStr(U8 *fmt,...) sends text of an
-[C:/Doc/Glossary.TXT,1] AutoFile to the keyboard stream of the 
+[C:/Kernel/SrvCmd.CPP.Z,491] Auto(U8 *fmt,...) sends text to the current
+task's input buffer.
+[C:/Kernel/SrvCmd.CPP.Z,472] AutoStr(U8 *fmt,...) sends text of an
+[C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
 current TASK but can also do mouse cmds.
 
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,333] XTalk(CTask *task,U8 *fmt,...) and
-text to another task's input buffer.
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,409] XTalkStr(CTask *task,U8 *fmt,...)
-sends text of an [C:/Doc/Glossary.TXT,1] AutoFile to the keyboard 
+[C:/Kernel/SrvCmd.CPP.Z,451] XTalk(CTask *task,U8 *fmt,...) and text to
+another task's input buffer.
+[C:/Kernel/SrvCmd.CPP.Z,501] XTalkStr(CTask *task,U8 *fmt,...) sends text of
+an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
-[MN:DocPrint] DocPrint(CDoc *doc,U8 *fmt,...) sends text to a document.  You
-can buffer to a 
+[C:/Adam/Doc/DocPlain.CPP.Z,679] DocPrint(CDoc *doc,U8 *fmt,...) sends text
+to a document.  You can buffer to a 
 Doc and save it, providing the functionality of fprintf.  See 
-[C:/Demo/Dsk/FPrintF.CPP,1].
+[C:/Demo/Dsk/FPrintF.CPP.Z,1].
 
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,286] Adam(U8 *fmt,...) sends text to the
-adam task to be compiled and run.
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,307] AdamLog(U8 *fmt,...) and
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,319] AdamErr(U8 *fmt,...) send text to the
-adam task to be 
+[C:/Kernel/SrvCmd.CPP.Z,404] Adam(U8 *fmt,...) sends text to the adam task to
+be compiled and run.
+[C:/Kernel/SrvCmd.CPP.Z,425] AdamLog(U8 *fmt,...) and
+[C:/Kernel/SrvCmd.CPP.Z,437] AdamErr(U8 *fmt,...) send text to the adam task
+to be 
 displayed.
 
-[MN:StreamPrint] StreamPrint(U8 *fmt,...) sends text to the stream of code
-being compiled and 
+[C:/Compiler/CmpMain.CPP.Z,1] StreamPrint(U8 *fmt,...) sends text to the
+stream of code being compiled and 
 must reside in a #exe{} blk.
 
-[MN:GrPrint] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and [MN:GrVPrint]
-GrVPrint() plots text in graphics 
+[C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
+[C:/Adam/Gr/GrBitMap.CPP.Z,875] GrVPrint() plots text in graphics 
 mode.
 
-[MN:ExePrint] ExePrint(U8 *fmt,...) compiles and execute a string.  Note: It
-returns the 
+[C:/Compiler/CmpMain.CPP.Z,640] ExePrint(U8 *fmt,...) compiles and execute a
+string.  Note: It returns the 
 result of the last executed expression.
 
-[MN:AFPrint] AFPrint(I64 mS,U8 *fmt) [MN:PutChars] PutChars()s one at a time
-with a delay.
+[C:/Adam/AutoFile2a.CPP.Z,28] AFPrint(I64 mS,U8 *fmt)
+[C:/Kernel/Display.CPP.Z,199] PutChars()s one at a time with a delay.
 
-[MN:RawPrint] RawPrint(I64 mS,U8 *fmt) sends direct to screen memory,
-bypassing window 
+[C:/Kernel/Dbg1a.CPP.Z,222] RawPrint(I64 mS,U8 *fmt) sends direct to screen
+memory, bypassing window 
 manager.
 
 **Note:** Use Print("%s",src) if you need an unmodified string.
 
 
-The [MN:Print] Print() family supports extended format codes.  See
-[MN:SPrintJoin] SPrintJoin().
+The [C:/Kernel/StrPrint.CPP.Z,946] Print() family supports extended format
+codes.  See [C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin().
   %[-][0][width][.decimals][flags][hsub_fmt][main_fmt]
 
 flags:
@@ -2406,7 +2408,7 @@ sub_fmt:
     For "%n", "%d" or "%u", the sub_fmt causes thousands mode.  "%h?n" will 
 pick a var exponent multiples of three unit, while "%h-3n" will display 
 milli units or "%h6n" will display mega units.  The 'k' flag is always on 
-for "%n".  See [C:/Demo/Print.CPP,1].
+for "%n".  See [C:/Demo/Print.CPP.Z,1].
   
 *  "%n" will print a floating point in engineering notation, exponents being 
 multiples of three.  If it has a sub_fmt code, it will display scientific 
@@ -2421,10 +2423,10 @@ units letters.
 * "%P" will display a PSECT expression which is good for ptrs or addresses.
 
 * "%T" and "%D" will display a date or time if you pass a
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,286] CDate.
+  [C:/Kernel/Adam1a.HPP.Z,202] CDate.
 
 * "%z" will display a subentry of an enumerated list of text entries.  It 
-calls [MN:LstSub] LstSub().  Pass subentry first, list second.
+calls [C:/Kernel/Str1a.CPP.Z,385] LstSub().  Pass subentry first, list second.
 
 * "%Z" will display a Define subentry.  Pass subentry first, lst_define 
 second.
@@ -4167,7 +4169,11 @@ and out of the middle into the third.
 You need a logo, God.  Hey!! Draw sompin!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img014.BMP"
+width="640" height="472" alt="">
+```
 
 I think Niki would object.  Before it went black, it looked like a hat with a 
 turned-up lip on the side.
@@ -4263,7 +4269,11 @@ The Lord is his delight.
 Wait!! This ain't fucken right!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img015.BMP"
+width="640" height="472" alt="">
+```
 Full of shit, I am.  It's a man with a helmet looking down a gun with sight.  
 It's an overhead projector.  It's an angel with wings standing like batman, 
 LOL.

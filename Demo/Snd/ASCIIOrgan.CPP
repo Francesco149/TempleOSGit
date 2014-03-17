@@ -43,7 +43,7 @@ U0 ASCIIOrgan()
 
 //Note the %d in the string for sprite number.
   NewLine(7);
-  PutSprite(__BIN_1,"$SP+LM+PU,\"Click for better organ\",\"#include \\\"::/Apps/MusicOrgan/Run\\\";\",%d$");
+  Sprite(__BIN_1,"$SP+PU,\"Click for better organ\",LM=\"#include \\\"::/Apps/MusicOrgan/Run\\\";\",BI=%d$");
   NewLine(5);
 
 }

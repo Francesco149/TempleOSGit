@@ -222,7 +222,7 @@ closed unlikeness instruct seventh
 
 ----11/05/13 02:37:58----
 
-I used Magic ISO, then I wrote my own ISO program.  
+I used Magic ISO, then I wrote my own ISO program. 
 [C:/Adam/Boot/DskCDDVD.CPP.Z,1]
 
 I am white.  You are niggers.  A compiler is more or less the highest thing.  
@@ -752,8 +752,8 @@ Charity reached subtle sakes false Had abominable raisest
 
 The osdev niggers can't even do algebra, yet they talk arrogantly.
 
-I wrote this for filling a triange.  How you think you do it! [MN:GrFillTri0]
-GrFillTri0()
+I wrote this for filling a triange.  How you think you do it!
+[C:/Adam/Gr/GrPrimatives.CPP.Z,1131] GrFillTri0()
 
 Algebra can be an IQ test.  Carmack can do algebra, but not a single one of 
 the niggers at OSDev.

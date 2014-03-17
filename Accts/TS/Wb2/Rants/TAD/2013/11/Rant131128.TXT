@@ -272,8 +272,8 @@ public U0 CommInit8n1(I64 port,I64 baud)
 {
   I64 base=comm_base[port];
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (comm_fifos[port])
     FifoU8Del(comm_fifos[port]);
   comm_fifos[port]=FifoU8New(256);
@@ -292,7 +292,7 @@ public U0 CommInit8n1(I64 port,I64 baud)
   OutU8(base+UART_MCR,0xA);       //out2 and rts
   OutU8(0x21,InU8(0x21) & (0xFF-0x18)); //Enable 8259 IRQ 3 & 4
   OutU8(base+UART_IER,1);         //Enable RX IRQ
-  PopFD;
+  POPFD
 }
 
 public U0 CommBusyPutChar(I64 port,U8 b)
@@ -511,10 +511,10 @@ breasts: let the bridegroom go forth of his chamber, and the bride out
 
 You must use my compiler which only runs when you boot the ISO.
 
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,112] MakeAll() will compile the two BIN
-files, Kernel.BIN and Compiler.BIN. Don't 
-use that, use [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().  It will
-compile Kernel.BIN and update 
+[C:/Adam/Boot/InsBoot.CPP.Z,125] MakeAll() will compile the two BIN files,
+Kernel.BIN and Compiler.BIN. Don't 
+use that, use [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().  It
+will compile Kernel.BIN and update 
 the boot block with the new block address of Kernel.BIN.
 
 Booting is explained here: [C:/Doc/Boot.TXT.Z,1]
@@ -522,7 +522,7 @@ Booting is explained here: [C:/Doc/Boot.TXT.Z,1]
 When you compile the kernel, you must enter config information.
 
 These will help
-[C:/Demo/MakeDistro.CPP.Z,1]
+[C:/Misc/MakeDistro.CPP.Z,1]
 
 [C:/Demo/AcctExample/TSDistro.CPP.Z,1]
 
@@ -767,26 +767,26 @@ stones together; a time to embrace, and a time to refrain from
 -] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's 
 lexical analyser removes comments and does
-  preprocessing.  [C:/TempleOS/Compiler/Lex.CPP.Z,789]
-  Lex(),[C:/TempleOS/Compiler/Directives.CPP.Z,48] Echo(ON).
+  preprocessing.  [C:/Compiler/Lex.CPP.Z,742]
+  Lex(),[C:/Compiler/ICLCC.CPP.Z,38] Echo(ON).
 
-The main compiler generates [C:/Compiler/CmpDefs.HPP,1] Intermediate Code at
-  the parser stage.  See 
-[C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression(),
-  [C:/TempleOS/Compiler/StmtParser.CPP.Z,1627] PrsStatement().
+The main compiler generates [C:/Compiler/CmpDefs.HPP.Z,1] Intermediate Code
+  at the parser stage.  See 
+[C:/Compiler/ExpParser.CPP.Z,298] PrsExpression(),
+  [C:/Compiler/StmtParser.CPP.Z,1689] PrsStatement().
 
-The main compiler optimizes   See [D:/Compiler/CmpInit.CPP,1] Intermediate
+The main compiler optimizes   See [C:/Compiler/CmpInit.CPP.Z,1] Intermediate
   Code Attributes, 
-[C:/Compiler/OptPass012.CPP,1] Combining Consts, [C:/Compiler/OptPass3.CPP,1]
-  Choosing Reg Vars.  Set [C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace(ON)
-  to see the optimization 
+[C:/Compiler/OptPass012.CPP.Z,1] Combining Consts,
+  [C:/Compiler/OptPass3.CPP.Z,1] Choosing Reg Vars.  Set
+  [C:/Compiler/ICLCC.CPP.Z,21] OTrace(ON) to see the optimization 
 stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1677] IC Struct, 
-[MN:LCCCompile] LCCCompile and [C:/Compiler/OptPass789.CPP,1]
-  OptPass789(), [C:/Compiler/Back1a.CPP,1] BackEnd.  Set
-  [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see the output of 
+  [C:/Kernel/Adam1a.HPP.Z,1564] IC Struct, 
+[C:/Compiler/ICLCC.CPP.Z,376] LCCCompile and [C:/Compiler/OptPass789.CPP.Z,1]
+  OptPass789(), [C:/Compiler/Back1a.CPP.Z,1] BackEnd.  Set
+  [C:/Compiler/ICLCC.CPP.Z,33] CTrace(ON) to see the output of 
 the backend.
 
 -] Mini Compiler
@@ -815,7 +815,7 @@ restoring them to their original values.
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex().
+{ //See [C:/Compiler/Lex.CPP.Z,742] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -875,7 +875,7 @@ I64 Lex(U8 **_src,I64 *num)
 extern I64 Parse(U8 **_src,U8 **_dst);
 
 U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
-{ //See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
+{ //See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
   I64 i;
   U8 *src2;
   U8 *dst2;
@@ -897,8 +897,9 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 
 I64 Parse(U8 **_src,U8 **_dst)
 {
-//See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
-//See [C:/Compiler/OpCodes.TXT,1] Opcode Fmts for details on asm instructions.
+//See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
+//See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm
+instructions.
   I64 i;
   U8 *dst=*_dst;
   switch (Lex(_src,&i)) {
@@ -1003,10 +1004,10 @@ U0 Main()
 	  throw;
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/TempleOS/Kernel/Adam1b.HPP.Z,287] Call() is a function.  See
-[C:/Kernel/Utils1a.CPP,1] _CALL::
-//See also [C:/TempleOS/Kernel/Adam1b.HPP.Z,290] CallInd().  See
-[C:/Kernel/Utils1a.CPP,1] _CALLIND::
+//[C:/Kernel/Adam1b.HPP.Z,273] Call() is a function.  See
+[C:/Kernel/Utils1a.CPP.Z,1] _CALL::
+//See also [C:/Kernel/Adam1b.HPP.Z,276] CallInd().  See
+[C:/Kernel/Utils1a.CPP.Z,1] _CALLIND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";
@@ -1207,17 +1208,16 @@ entered into them, and they stood upon their feet; and great fear fell
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003E3AF
+ 0x0000007C00- 0x0000035F9F
   Kernel module, placed here by the boot-loader,
-  [C:/TempleOS/Kernel/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
+  [C:/Kernel/Adam1a.HPP.Z,3618] BOOT_RAM_BASE.
 
- 0x00- 0x00
+ 0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
-  [C:/Adam/Boot/BootCD.CPP,1] BootCD & [C:/Adam/Boot/BootHD.CPP,1] BootHD.
+  [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x000009702E
-  Multicore start-up vect code, [C:/TempleOS/Kernel/Adam1a.HPP.Z,576]
-  MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/Adam1a.HPP.Z,494] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -1225,24 +1225,24 @@ entered into them, and they stood upon their feet; and great fear fell
  0x00000A0000- 0x00000BFFFF
   VGA graphics mem, marked as write-through cache.
 
- 0x0000100000- 0x0000182FFF
+ 0x0000100000- 0x00001845FF
   Page tables, 128 Gig of address space
 
- 0x0000183000- 0x00
+ 0x0000184600- 0x007FFDFFFF
   Code Heap mem.
 
  0x00E0000000- 0x00FFFFFFFF
   32-bit devices could allocate memory at 0xF0000000 going up, but this is 
 wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
-are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
-  flaws are not an issue.
+are supported, so [C:/Kernel/Mem1c.CPP.Z,165] Mem32DevAlloc() flaws are not
+  an issue.
 
  0x0080000000-~0x00DFFFFFFF
  0x0100000000-~0x1FFFFFFFFF
   Data Heap mem.
 
              - 0x1FFFFFFFFF
-  64-bit devices are allocated with [C:/TempleOS/Kernel/Memory.CPP.Z,1239]
+  64-bit devices are allocated with [C:/Kernel/Mem1c.CPP.Z,213]
   Mem64DevAlloc() counting backward from 
 128 Gig, but no PCI devices are actually supported.
 
@@ -1634,7 +1634,7 @@ I sort all symbols by alphabetical order and make a file.
 I sort all symbols by address and make a file.
 
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
 
 Source Code By Sym
 
@@ -1654,7 +1654,7 @@ file in memory that you write-out.
 A document is a circular-doubly-linked-list of commands.  One command is
 ASCII 
 text.  One command is carriage return, soft or hard.  There are commands for 
-links and trees and colors and sprite. [C:/TempleOS/Kernel/Adam1a.HPP.Z,1045]
+links and trees and colors and sprite. [C:/Kernel/Adam1a.HPP.Z,955]
 DOCT_TEXT, [C:/Adam/Doc/Doc.CPP.Z,1]
 
 You will use Windows or Linux for enterprise stuff.  You will use templeOS
@@ -1735,14 +1735,12 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 systems.
 
 10) Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the RedSea .Z LZW 
-compression.  (Let me know when you want it.) 
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,154] DCSave(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,234] GRAWrite(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,197] DCLoad(), 
-and [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,245] GRARead(). 
-[C:/Kernel/Compress.CPP.Z,1]
+compression.  (Let me know when you want it.)  [C:/Adam/Gr/GrDC.CPP.Z,284]
+DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,354] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,323]
+DCLoad(), 
+and [C:/Adam/Gr/GrDC.CPP.Z,365] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
 
 In other words, all hardware and BIOSes must support TempleOS as a native and 
 as a virtual system, dual booted with Windows or Linux.
@@ -1808,7 +1806,10 @@ like the Jew males had to do offerings 3 times a year.
 Go draw a 640x480 16 color elephant, then go draw a 24-bit color elephant.  
 Then, you will be enlightened.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 AntiGun people say "there is no legitimate use for them" and pick apart uses.
  
@@ -1819,7 +1820,7 @@ like
 God's children playing with raw disk blocks in His temple.
 
 RedSea directories are made of 64-byte fixed-length directory entries with 
-64-bit block numbers.[C:/TempleOS/Kernel/Adam1a.HPP.Z,2460] CDirEntry.
+64-bit block numbers.[C:/Kernel/Adam1a.HPP.Z,2341] CDirEntry.
 
 Go fuck yerself if you don't want God's people accessing raw disk block. 
 Suck 
@@ -1860,18 +1861,16 @@ The limit of 100,000 lines of code for all time includes drivers and we are
 at 
 83,000.
 
-You can do raw blocks off of a file.
-[C:/TempleOS/Kernel/Dsk/DskCFile.CPP.Z,9] FOpen()
-[C:/TempleOS/Kernel/Dsk/DskCFile.CPP.Z,130] FRBlks()
-[C:/TempleOS/Kernel/Dsk/DskCFile.CPP.Z,179] FWBlks() and
-[C:/TempleOS/Kernel/Dsk/DskCFile.CPP.Z,74] FClose().  
+You can do raw blocks off of a file. [C:/Kernel/Dsk/DskCFile.CPP.Z,9] FOpen()
+[C:/Kernel/Dsk/DskCFile.CPP.Z,129] FRBlks()
+[C:/Kernel/Dsk/DskCFile.CPP.Z,181] FWBlks() and
+[C:/Kernel/Dsk/DskCFile.CPP.Z,73] FClose().  
 You must specify the entire size of the file at open time and you cannot 
 change it.
 [C:/Demo/Dsk/DataBase.CPP.Z,1]
 
 You mostly will do text files by writing to a CDoc in memory, then calling 
-[C:/TempleOS/Adam/Doc/DocFile.CPP.Z,180] DocWrite() to write it to disk in
-one piece.
+[C:/Adam/Doc/DocFile.CPP.Z,185] DocWrite() to write it to disk in one piece.
 
 ----11/29/13 01:37:25----
 
@@ -1920,10 +1919,10 @@ heathen multitude judges ceasing earthly defended deem moist revelations
 
 CTRL-ALT-C will break a program.
 It sends an exception.
-You can tell it not to permit break with
-[C:/TempleOS/Kernel/Except.CPP.Z,199] BreakLock().  In certain code, you do 
+You can tell it not to permit break with [C:/Kernel/Except.CPP.Z,136]
+BreakLock().  In certain code, you do 
 not want breaks to immediately take effect.  You can call
-[C:/TempleOS/Kernel/Except.CPP.Z,188] ThrowBreak() to fake 
+[C:/Kernel/Except.CPP.Z,125] ThrowBreak() to fake 
 a CTRL-ALT-C.
 
 ----11/29/13 02:02:39----
@@ -1985,9 +1984,9 @@ big-picture ideas for reducing line count like the throw() idea, saved maybe
 100 lines.
 
 I'm sure some of my silly babies need to go.  Perhaps
-[C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,403] BlkDevRep() or
-[C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,350] DskView() 
-or [C:/TempleOS/Adam/Dsk/Dsk2b.CPP.Z,333] DrvView().  The serve as examples. 
+[C:/Adam/Dsk/Dsk2b.CPP.Z,398] BlkDevRep() or [C:/Adam/Dsk/Dsk2b.CPP.Z,345]
+DskView() 
+or [C:/Adam/Dsk/Dsk2b.CPP.Z,328] DrvView().  The serve as examples. 
 Actually, I could move them out of the 
 counted code into the demos which don't count.
 
@@ -2028,7 +2027,11 @@ I know!  We hook a geiger counter up to a keyboard, LOL.  You do it.  Make
 some movies, God.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img023.BMP"
+width="640" height="472" alt="">
+```
 That is a rat balancing on his front paw.
 
 ----11/29/13 03:25:05----

@@ -2,7 +2,7 @@
 
 public I64 EdCurU8(CDoc *doc)
 {
-//See [C:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,319] EdRenumAsm for an example.
+//See [C:/Adam/Doc/DocCodeTools.CPP.Z,349] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry;
   I64 result=-1;
@@ -18,8 +18,8 @@ public I64 EdCurU8(CDoc *doc)
 }
 
 public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
-{//You might need a call to [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,319] EdRenumAsm for an example.
+{//You might need a call to [C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc().
+//See [C:/Adam/Doc/DocCodeTools.CPP.Z,349] EdRenumAsm for an example.
   U8 *dst;
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry,*original_ce=doc_ce,*doc_ne;
@@ -90,8 +90,8 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 }
 
 public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
-{//You might need a call to [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,319] EdRenumAsm for an example.
+{//You might need a call to [C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc().
+//See [C:/Adam/Doc/DocCodeTools.CPP.Z,349] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   CDocEntry *doc_ce=doc->cur_entry,*original_ce=doc_ce,*doc_ne;
@@ -128,7 +128,7 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 	doc_ne=DocEntryNew(doc,doc_ce,StrNew(dst,doc->mem_task));
 	*dst=0;
 	doc_ne->type=DOCT_TEXT | old_color & -0x100;
-	doc_ne->flags1=old_flags1;
+	doc_ne->flags1=old_flags1|doc_dft_flags1[DOCT_TEXT];
 	doc_ce->max_col=cc;
 	QueIns(doc_ne,doc_ce);
 	doc_ce=doc_ne;
@@ -166,8 +166,8 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 }
 
 public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
-{//You might need a call to [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,319] EdRenumAsm for an example.
+{//You might need a call to [C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc().
+//See [C:/Adam/Doc/DocCodeTools.CPP.Z,349] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x;
@@ -234,7 +234,7 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
       }
     }
   }
-  if (Bt(doc_type_flags_tag,doc_ce->type_u8)) {
+  if (doc_ce->flags1&DOCEF1_TAG) {
     doc->cur_data_col=x-doc_ce->x;
     if (IsEditableText(doc_ce)) {
       if (doc->cur_data_col>doc_ce->max_col)
@@ -280,8 +280,8 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 }
 
 public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
-{//You might need a call to [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
-//See [C:/TempleOS/Adam/Doc/DocCodeTools.CPP.Z,319] EdRenumAsm for an example.
+{//You might need a call to [C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc().
+//See [C:/Adam/Doc/DocCodeTools.CPP.Z,349] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x,old_flags1=0,old_color;
@@ -347,7 +347,7 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
     if (doc_ce2==doc_ce) break;
     doc_ce2=doc_ce2->next;
   }
-  if (Bt(doc_type_flags_tag,doc_ce->type_u8)) {
+  if (doc_ce->flags1&DOCEF1_TAG) {
     doc->cur_data_col=x-doc_ce->x;
     if (IsEditableText(doc_ce)) {
       if (doc->cur_data_col>doc_ce->max_col)
@@ -366,7 +366,7 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
       doc_ne=DocEntryNew(doc,doc_ce,StrNew(dst,doc->mem_task));
       *dst=0;
       doc_ne->type=DOCT_TEXT | old_color & -0x100;
-      doc_ne->flags1=old_flags1;
+      doc_ne->flags1=old_flags1|doc_dft_flags1[DOCT_TEXT];
       doc_ce->max_col=doc->cur_data_col;
       doc_ne->x=doc_ce->x+doc->cur_data_col;
       QueIns(doc_ne,doc_ce);
@@ -552,8 +552,8 @@ ic_overstrike_char:
       *b=ch;
       b[1]=0;
       doc_ne=DocEntryNew(doc,doc_ce,b);
-      doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
-      doc_ne->flags1=0;
+      doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
+      doc_ne->flags1=doc_dft_flags1[DOCT_TEXT];
       QueIns(doc_ne,doc_ce->last);
     } else if (ch=='\n') {
       while (doc->cur_entry->next!=doc && doc->cur_entry->y==y)
@@ -567,11 +567,14 @@ ic_overstrike_char:
   }
   if (ch=='\n') {
     doc_ne=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-    if (sc&SCF_CTRL && !(sc&SCF_SHIFT))
-      doc_ne->type=DOCT_PAGE_BREAK | doc->settings_root.dft_text_attr << 8;
-    else
-      doc_ne->type=DOCT_NEW_LINE | doc->settings_root.dft_text_attr << 8;
-    DocIns(doc,doc_ne);
+    if (sc&SCF_CTRL && !(sc&SCF_SHIFT)) {
+      doc_ne->type=DOCT_PAGE_BREAK | doc->settings_root.dft_text_attr<<8;
+      doc_ne->flags1=doc_dft_flags1[DOCT_PAGE_BREAK];
+    } else {
+      doc_ne->type=DOCT_NEW_LINE | doc->settings_root.dft_text_attr<<8;
+      doc_ne->flags1=doc_dft_flags1[DOCT_NEW_LINE];
+    }
+    DocInsEntry(doc,doc_ne);
   } else if (ch=='\t') {
     if (doc->flags&DOCF_FORM &&
        Bt(doc_type_flags_form,doc->cur_entry->type_u8) &&
@@ -583,8 +586,9 @@ ic_form_tab:
       goto ic_done;
     } else {
       doc_ne=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-      doc_ne->type=DOCT_TAB | doc->settings_root.dft_text_attr << 8;
-      DocIns(doc,doc_ne);
+      doc_ne->type=DOCT_TAB | doc->settings_root.dft_text_attr<<8;
+      doc_ne->flags1=doc_dft_flags1[DOCT_TAB];
+      DocInsEntry(doc,doc_ne);
     }
   } else {
     if (Bt(chars_bitmap_displayable,ch)) {
@@ -616,8 +620,8 @@ ic_form_tab:
 	*b=ch;
 	b[1]=0;
 	doc_ne=DocEntryNew(doc,doc_ce,b);
-	doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
-	doc_ne->flags1=0;
+	doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
+	doc_ne->flags1=doc_dft_flags1[DOCT_TEXT];
 	doc_ne->x=doc_ce->x+1;
 	QueIns(doc_ne,doc_ce->last);
       }
@@ -662,7 +666,7 @@ U0 DocEntryToggle(CDoc *doc)
   U8 ch,*st,*st2;
   I64 i,j,k;
   if (doc_ce!=doc && !(doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_WITH_TABS))) {
-    if (doc_ce->type_u8==DOCT_TEXT && !(doc_ce->flags1 & ~(DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
+    if (doc_ce->type_u8==DOCT_TEXT && !(doc_ce->flags1 & ~(DOCEF1_TAG|DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
       doc_ce2=doc_ce->last;
       for (k=0;k<20;k++) {
 	if (doc_ce2!=doc) {

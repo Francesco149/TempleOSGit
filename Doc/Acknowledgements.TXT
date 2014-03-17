@@ -1,18 +1,20 @@
                                Acknowledgements
 
-1) The font, [C:/Kernel/Font8x8.CPP,1], is taken from FreeDOS.
+1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.
 
-2) [C:/Kernel/Dsk/ATADef.HPP,1] originally
+2) [C:/Kernel/Dsk/ATADef.HPP.Z,1] originally
 from Linux.  I later got the spec.
 
-3) The heap algorithm, [C:/Kernel/Mem1b.CPP,1], is adapted from one I saw at 
+3) The heap algorithm, [C:/Kernel/Mem1b.CPP.Z,1], is adapted from one I saw
+at 
 Ticketmaster when I worked on their VAX operating system.
 
-4) The LZW compression algorithm, [C:/Kernel/Compress.CPP,1], came from a
+4) The LZW compression algorithm, [C:/Kernel/Compress.CPP.Z,1], came from a
 magazine 
 and I implemented it when I worked for Ticketmaster.
 
-5) The adaptive-step-size-Runge-Kutta algorithm, [C:/Adam/MathODE.CPP,1], is 
+5) The adaptive-step-size-Runge-Kutta algorithm, [C:/Adam/MathODE.CPP.Z,1],
+is 
 adapted from the book, _Numeric Recipies in C_.
 
 6) The random number generator is from the book, _Numeric Recipies in C_.
@@ -26,11 +28,11 @@ http://www.public-domain-photos.com.
 command-line.  There is a lot of MSDOS , Windows, VAXTMOS (VAX Ticketmaster 
 O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 
-10) I included [C:/Misc/PCIDevices.TXT,1] PCIDevice Lst File.
+10) I included [C:/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
 
 11) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
 and 
-you helped me with html.  See [C:/Adam/Utils/ToHtml.CPP,1] ToHtml.
+you helped me with html.  See [C:/Adam/Utils/ToHtml.CPP.Z,1] ToHtml.
 
 12) I used MagicISO to burn test CD's to help me understand the ISO9660 file 
 system format.  I mostly used the ISO9660 spec.
@@ -54,7 +56,7 @@ very obviously.
 18) I got Webster's Dictionary and The King James Bible from 
 Project Gutenberg.
 
-In short, I wrote every one of the 129,664 lines myself, no GPL code, no 
+In short, I wrote every one of the 120,796 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 

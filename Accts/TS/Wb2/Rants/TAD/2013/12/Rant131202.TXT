@@ -341,12 +341,12 @@ calves of our lips.
 
 ----12/02/13 15:54:20----
 
-Each task has a [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() heap.  If the
-task dies, the memory blocks are 
+Each task has a [C:/Kernel/Mem1b.CPP.Z,376] MAlloc() heap.  If the task dies,
+the memory blocks are 
 returned to the system.
 
-I have a [C:/TempleOS/Adam/HeapLog.CPP.Z,121] HeapLog() utility that hooks
-into MAlloc() and Free().  It displays 
+I have a [C:/Adam/Utils/HeapLog.CPP.Z,99] HeapLog() utility that hooks into
+MAlloc() and Free().  It displays 
 memory which has not been freed.
 
 To make HeapLog() function, I allocate structures from a 3rd Party heap to 
@@ -519,7 +519,11 @@ Dud.
 Draw a picture, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img000.BMP"
+width="640" height="472" alt="">
+```
 I don't know what that is.  Might be a switch.
 
 ----12/02/13 21:40:14----
@@ -598,7 +602,11 @@ saith the LORD.
 Draw sompin!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img001.BMP"
+width="640" height="472" alt="">
+```
 That's a man with his head close, looking at a printer.
 
 God says...

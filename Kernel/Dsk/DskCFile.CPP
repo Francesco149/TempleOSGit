@@ -8,7 +8,7 @@ I64 FSize(CFile *f)
 
 CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
 {  //allows flags "r","w","w+".  Include a "c" for contiguous.
-   //(It uses [C:/TempleOS/Kernel/Str1a.CPP.Z,667] StrOcc() for 'w', 'r', '+', 'c')
+   //(It uses [C:/Kernel/Str1a.CPP.Z,449] StrOcc() for 'w', 'r', '+', 'c')
   CFile *f=CAlloc(sizeof(CFile));
   CFileAccess *fa;
   U8 *full_name;

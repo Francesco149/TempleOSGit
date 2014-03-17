@@ -40,9 +40,9 @@ U0 HoldCourt()
   NewLine(4);
 
   "$LM,4$"
-  "\n\n$BT,\"Show Mercy\",0$\n\n"
-  "\n\n$BT,\"Punish\",1$\n\n"
-  "\n\n$BT,\"Really Punish\",2$\n\n"
+  "\n\n$BT,\"Show Mercy\",LE=0$\n\n"
+  "\n\n$BT,\"Punish\",LE=1$\n\n"
+  "\n\n$BT,\"Really Punish\",LE=2$\n\n"
   "$LM,0$";
   DocDblBufEnd;
   DocMenuDo(DocPut);
@@ -60,9 +60,8 @@ U0 HoldCourt()
 #define T_BATTLE	6
 #define T_QUAIL		7
 #define T_MOSES_COMICS	8
-#define T_MUTE		9
-#define T_HELP		10
-#define T_QUIT		11
+#define T_HELP		9
+#define T_QUIT		10
 
 
 Bool TakeTurn()
@@ -72,23 +71,26 @@ Bool TakeTurn()
   num_people*=1.0+0.01*((RandU16%100)-30);
   if (num_people>MAX_PEOPLE)
     num_people=MAX_PEOPLE;
+
+  if (!Fs->song_task)
+    Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   Camp(num_people);
+  Kill(Fs->song_task);
 
   FlushMsgs;
   DocDblBufStart;
 	"$LM,4$"
-	"\n\n$BT,\"Break Camp\",T_BREAK_CAMP$\n\n"
-	"\n\n$BT,\"Talk with God\",T_TALK_WITH_GOD$\n\n"
-	"\n\n$BT,\"View Clouds\",T_VIEW_CLOUDS$\n\n"
-	"\n\n$BT,\"Hold Court\",T_HOLD_COURT$\n\n"
-	"\n\n$BT,\"View Map\",T_VIEW_MAP$\n\n"
-	"\n\n$BT,\"Make Water\",T_WATER_ROCK$\n\n"
-	"\n\n$BT,\"Battle\",T_BATTLE$\n\n"
-	"\n\n$BT,\"Beg for Meat\",T_QUAIL$\n\n"
-	"\n\n$BT,\"Moses Comics\",T_MOSES_COMICS$\n\n"
-	"\n\n$BT,\"Toggle Mute\",T_MUTE$\n\n"
-	"\n\n$BT,\"Help\",T_HELP$\n\n"
-	"\n\n$BT,\"Quit\",T_QUIT$\n\n"
+	"\n\n$BT,\"Break Camp\",LE=T_BREAK_CAMP$\n\n"
+	"\n\n$BT,\"Talk with God\",LE=T_TALK_WITH_GOD$\n\n"
+	"\n\n$BT,\"View Clouds\",LE=T_VIEW_CLOUDS$\n\n"
+	"\n\n$BT,\"Hold Court\",LE=T_HOLD_COURT$\n\n"
+	"\n\n$BT,\"View Map\",LE=T_VIEW_MAP$\n\n"
+	"\n\n$BT,\"Make Water\",LE=T_WATER_ROCK$\n\n"
+	"\n\n$BT,\"Battle\",LE=T_BATTLE$\n\n"
+	"\n\n$BT,\"Beg for Meat\",LE=T_QUAIL$\n\n"
+	"\n\n$BT,\"Moses Comics\",LE=T_MOSES_COMICS$\n\n"
+	"\n\n$BT,\"Help\",LE=T_HELP$\n\n"
+	"\n\n$BT,\"Quit\",LE=T_QUIT$\n\n"
 	"$LM,0$";
   DocDblBufEnd;
   i=DocMenuDo(DocPut,DOF_DONT_TEXT_ATTR);
@@ -124,29 +126,24 @@ Bool TakeTurn()
 	Quail;
 	break;
       case T_MOSES_COMICS:
-	Suspend(Fs->song_task);
-	Snd(0);
 	ViewComics;
-	Suspend(Fs->song_task,FALSE);
-	break;
-      case T_MUTE:
-	Mute(!IsMute);
 	break;
       case T_HELP:
-	PopUp("Ed(\"::/Apps/HolySpirit/HSNotes.TXT.Z\");",Fs);
+	PopUp("Ed(\"::/Adam/God/HSNotes.TXT.Z\");",Fs);
 	PopUpOk("Add your own story-line...\nLike old school toys.\n");
 	break;
     }
     result=TRUE;
   }
   WinMgrSync;
+  Fs->song_task=NULL;
   return result;
 }
 
 U0 TMsg(CDC *dc,U8 *msg)
 {
-  F64 t0=tT;
-  while (tT-t0<1.5) {
+  F64 t0=tS;
+  while (tS-t0<1.5) {
     if (Blink(5))
       dc->color=BLACK;
     else
@@ -184,14 +181,12 @@ U0 Trailer()
 
 U0 AfterEgypt()
 {
-  Bool was_mute=IsMute;
-
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   WinBorder;
   WordStat;
   DocClear;
   WinMax;
-  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   PopUp("Trailer;",Fs);
   WordStat;
   try //This is to catch <CTRL-ALT-C>.
@@ -200,5 +195,4 @@ U0 AfterEgypt()
     PutExcept;
   DocClear;
   SettingsPop;
-  Mute(was_mute);
 }

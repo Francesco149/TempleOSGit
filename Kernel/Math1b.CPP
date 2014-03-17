@@ -1,10 +1,10 @@
-F64 Limit(F64 p,F64 lo,F64 hi)
+F64 Clamp(F64 num,F64 lo,F64 hi)
 {
-  if (p<lo)
+  if (num<lo)
     return lo;
-  if (p>hi)
+  if (num>hi)
     return hi;
-  return p;
+  return num;
 }
 
 F64 Min(F64 n1,F64 n2)
@@ -70,7 +70,7 @@ I64 CeilI64(I64 num,I64 to)
   }
 }
 
-//See [C:/Doc/Acknowledgements.TXT,1].
+//See [C:/Doc/Acknowledgements.TXT.Z,1].
 U16 RandU16()
 {
   sys_rnd_seed.i32[0]=(1664525*sys_rnd_seed.i32[0]+1013904223)^GetTSC>>4;

@@ -1,7 +1,7 @@
 U8 *Tabs2Spaces(U8 *src)
 {
-  I64 i,j,l=StrLen(src)<<1+2,col=0;
-  U8 ch,*dst=MAlloc(l),*temp;
+  I64 ch,i,j,l=StrLen(src)<<1+2,col=0;
+  U8 *dst=MAlloc(l),*temp;
   while (ch=*src++) {
     if (ch=='\t') {
       j=(col+8) & ~7;
@@ -34,8 +34,8 @@ U8 *Tabs2Spaces(U8 *src)
 
 U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 {
-  I64 i,col=0;
-  U8 ch,*dst,*dst2;
+  I64 ch,i,col=0;
+  U8 *dst,*dst2;
   while (ch=*src++) {
     if (ch=='\t')
       col=(col+8) & -0x8;
@@ -56,7 +56,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0)
-//Return a [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc()ed result from StrUtil
+//Return a [C:/Kernel/Mem1b.CPP.Z,376] MAlloc()ed result from StrUtil
 {
   U8 *dst=StrNew(src),*dst2,*temp;
   StrUtil(dst,flags);
@@ -115,13 +115,13 @@ Bool YorN()
 
 I64 PressAKey()
 {
-  "%S","ST_PRESS_A_KEY";
+  "$BK,1$PRESS A KEY$BK,0$\n";
   return GetChar(,FALSE);
 }
 
 Bool AreYouSure()
 {
-  "%S","ST_ARE_YOU_SURE";
+  "ARE YOU SURE ";
   return YorN;
 }
 
@@ -183,10 +183,10 @@ U8 *SPrintFlags(U8 *dst,U8 *lst,I64 flags)
 {
   I64 i;
   *dst=0;
-  for (i=0;i<=63;i++)
-    if (Bt(&flags,i)) {
-      StrCat(dst,"+");
-      StrCat(dst,LstSub(i,lst));
-    }
+  while (flags) {
+    i=Bsf(flags);
+    Btr(&flags,i);
+    CatPrint(dst,"+%z",i,lst);
+  }
   return dst;
 }

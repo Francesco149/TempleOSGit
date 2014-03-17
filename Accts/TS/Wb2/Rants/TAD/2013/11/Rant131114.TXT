@@ -558,7 +558,7 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 systems.
 
 10) Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the RedSea .Z LZW 
 compression.  (Let me know when you want it.)
 

@@ -13,4 +13,4 @@
  <1> (image)
 
 
-(Biblical humor: [C:/TempleOS/Misc/Bible.TXT.Z,34961] 1 Chronicles,25:9)
+(Biblical humor: [C:/Misc/Bible.TXT.Z,34961] 1 Chronicles,25:9)

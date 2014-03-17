@@ -8,7 +8,7 @@ the last write wins.
 * When using FAT32, TempleOS does not generate unique short-entry names.  Not 
 all FAT32 filenames are valid TempleOS names and it will complain.  Do not 
 access FAT32 drives not dedicated to TempleOS.  Disable them with
-[C:/TempleOS/Kernel/Dsk/DskAddDev.CPP.Z,160] DrvEnable(OF
+[C:/Kernel/Dsk/DskAddDev.CPP.Z,152] DrvEnable(OF
 F), or they will generate error messages.  FAT32 involves a long and short 
 name for each file.  TempleOS isn't so good at making distinct short names,
 so 
@@ -17,37 +17,37 @@ accessing from Windows.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2731] DFT_STK and 
-recompile Kernel or request more when doing a
-[C:/TempleOS/Kernel/Task1a.CPP.Z,224] Spawn().
+[C:/Kernel/Adam1a.HPP.Z,2584] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,225]
+Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
-* Call [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,409] ChgDsk() when you insert a
-new removable media.
+* Call [C:/Kernel/Dsk/Dsk1a.CPP.Z,408] ChgDsk() when you insert a new
+removable media.
 
-* Accessing CD-ROM's is flacky.  Try [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,12]
-Drv() or [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,409] ChgDsk() twice.
+* Accessing CD-ROM's is flacky.  Try [C:/Kernel/Dsk/Dsk1b.CPP.Z,12] Drv() or
+[C:/Kernel/Dsk/Dsk1a.CPP.Z,408] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
 binds a HolyC definition to a asm sym.  This, too, can only be done once.
 
-* A terminal task has a [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc document
-structure that remains active even when 
+* A terminal task has a [C:/Kernel/Adam1a.HPP.Z,1401] CDoc document structure
+that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc from being activated 
+[C:/Kernel/Adam1a.HPP.Z,1401] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
-A) [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1665] DocBottom() followed by
-  [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1697] DocClear() to clear the
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc so it has no active 
+A) [C:/Adam/Doc/DocRecalc2a.CPP.Z,102] DocBottom() followed by
+  [C:/Adam/Doc/DocRecalc2a.CPP.Z,128] DocClear() to clear the
+  [C:/Kernel/Adam1a.HPP.Z,1401] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,2883] WIF_IP_L|[MN:WIF_IP_L_D]
-  WIF_IP_L_D|[C:/TempleOS/Kernel/Adam1a.HPP.Z,2884] WIF_IP_R|[MN:WIF_IP_R_D]
-  WIF_IP_R_D.  This inhibits window mgr 
+[C:/Kernel/Adam1a.HPP.Z,2734] WIF_IP_L|[C:/Kernel/Adam1a.HPP.Z,2735]
+  WIF_IP_L_D|[C:/Kernel/Adam1a.HPP.Z,2736]
+  WIF_IP_R|[C:/Kernel/Adam1a.HPP.Z,2737] WIF_IP_R_D.  This inhibits window mgr 
 operations but still generates messages from button clicks.
 
 * switch/case statements allocate a single jump table--do not use with wide, 
@@ -58,9 +58,9 @@ sparse ranges of case values.
 * A goto label name must not match a global scope object's name.  (It's not 
 worth slowing-down the compiler to handle this case.)
 
-* [C:/TempleOS/Kernel/Adam1b.HPP.Z,113] MemCpy() only goes fwd.
+* [C:/Kernel/Adam1b.HPP.Z,112] MemCpy() only goes fwd.
 
-* A [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,38] Cd() cmd must be followed by two
+* A [C:/Kernel/Dsk/Dsk1b.CPP.Z,37] Cd() cmd must be followed by two
 semicolons if a #include is after it.  
 This is because the preprocessor processes the next token ahead.
 

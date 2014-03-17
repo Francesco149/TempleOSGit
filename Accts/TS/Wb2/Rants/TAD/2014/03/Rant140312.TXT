@@ -1,0 +1,700 @@
+----03/12/14 00:12:59----
+
+RISC is easy.  I made mine use bigger instructions with a lot of work. 
+Didn't 
+matter much since CPU was putting them back into RISC and the CPU was 
+reordering and optimizing.
+
+Having 16 registers and flat memory is easier than real mode.
+
+I started with a stack machine.  I allocated RAX,RBX,RCX,RDX for any use on 
+each operation.  The top of the stack was RAX for passing from one operation 
+to the next.
+
+I looked for the most common offsets on the stack and allocated RSI,RDI, and 
+others to register variables.  R13 and R12 cannot be used for certain 
+addressing modes so I only use those as local nonpointer register variables.
+I 
+go deeper on the stack with R8,R9.
+
+I do not pass arguments to functions in registers.
+
+64-bit compilers are easier since 16 registers.  It's similar to 4 color 
+problem with 16 colors, LOL.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394608680
+
+(Modulo is just remainder.)
+0x212F07-->(2174727 mod 100091)+1-->Line:72817
+
+KingJamesBible (Daniel 9:16) God says...
+9:16 O LORD, according to all thy righteousness, I beseech thee, let
+thine anger and thy fury be turned away from thy city Jerusalem, thy
+holy mountain: because for our sins, and for the iniquities of our
+fathers, Jerusalem and thy people are become a reproach to all that
+are about us.
+
+9:17 Now therefore, O our God, hear the prayer of thy servant, and his
+supplications, and cause thy face to shine upon thy sanctuary that is
+desolate, for the Lord's sake.
+
+9:18 O my God, incline thine ear, and hear; open thine eyes, and
+behold our desolations, and the city which is called by thy name: for
+we do not present our supplications before thee for our
+righteousnesses, but for thy great mercies.
+
+9:19 O Lord, hear; O Lord, forgive; O Lord, hearken and do; defer not,
+for thine own sake, O my God: for thy city and thy people are called
+by thy name.
+
+----03/12/14 00:22:59----
+
+My compiler does both JIT and AOT.  It does 64-bit [C:/Doc/HolyC.TXT.Z,1]
+HolyC and kinda nasty asm 
+[C:/Compiler/OpCodes.TXT.Z,1].  No MMX SSE.  Real-mode asm is really bad, but
+you 
+only need 64-bit and I saved a lot of complexity with no segmentation and 
+using 32-bit MODR instead of 16-bit MODR.  I did an unassembler.  I made my 
+own BIN file format. The JIT interacts with the tasks' symbol tables.
+
+
+Everything I said is true, basically.  Quit fighting me, you retard niggers 
+and get onboard with God cause this train is not stopping.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394609160
+
+(Modulo is just remainder.)
+0xC07015-->(12611605 mod 100091)+1-->Line:140
+
+KingJamesBible () God says...
+cd etext90 through etext99
+dir [to see files]
+get or mget [to get files. . .set bin for zip files]
+GET GUTINDEX.??  [to get a year's listing of books, e.g., GUTINDEX.99]
+GET GUTINDEX.ALL [to get a listing of ALL books]
+
+***
+
+**Information prepared by the Project Gutenberg legal advisor**
+
+(Three Pages)
+
+
+***START**THE SMALL PRINT!**FOR PUBLIC DOMAIN ETEXTS**START***
+Why is this "Small Print!" statement here?  You know: lawyers.
+They tell us you might sue us if there is something wrong with
+your copy of this etext, even if you got it for free from
+someone other than us, and even if what's wrong is not our
+fault.  So, among other things, this "Small Print!" statement
+disclaims most of our liability to you.  It also tells you how
+
+----03/12/14 00:27:32----
+One thing I need is a better dictionary.  It puts "Co-op" "Coordinate" 
+"cohabitate".    It puts all the CO words out of order and fucks everything 
+up.  I need a spell checker.  I got a half ass.  I could give it to an intern.
+
+So, why not get familar with God's temple and rationally converse on how to 
+perfect it.  It must be perfect.
+
+----03/12/14 00:30:20----
+
+                                   Demands
+
+When God is manifest to the World and He claims this operating system, 
+publically, here's what I want:
+
+* VMware to again support PC Speaker and provide emulation if no PC Speaker
+is 
+present.
+
+* Windows and Linux will support [C:/Doc/RedSea.TXT.Z,1] RedSea file system
+so I can get rid of 2,000 
+lines of redundant, blemished code -- FAT32 and ISO9660.  God's temple must
+be 
+perfect.  I view redundant code that performs the same function as imperfect.
+ 
+More than one filesystem type is bad, not good!
+
+[C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
+[C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:1004
+[C:/Kernel/Dsk/FileSysISO1.CPP.Z,1]	:306
+[C:/Adam/Boot/DskCDDVD.CPP.Z,1]	:536
+
+* No secure boot.  TempleOS is a additional operating system that must be
+used 
+along-side Windows or Linux, not as a replacement.  It must dual boot.
+
+* Mandate to PC hardware manufacturers: ATA/ATAPI PIO must work.
+
+* PS2 emulated Keyboard and Mouse must work.  The BIOS must enable these.
+
+* VMware should allow ATAPI to connect real CD/DVD hardware.
+
+* Perhaps, VMware can enable faster than standard x86 IN/OUT instruction 
+timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
+
+* VMware and others should list TempleOS as one of the official 64-bit 
+operating systems.
+
+* Windows and Linux should support TempleOS .GRA graphics files.  These are 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
+transparency, with no palette.  Compression is an LZW compression. 
+[C:/Adam/Gr/GrDC.CPP.Z,284] DCSave(), 
+[C:/Adam/Gr/GrDC.CPP.Z,354] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,323] DCLoad(),
+and [C:/Adam/Gr/GrDC.CPP.Z,365] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
+
+
+
+
+In other words, all hardware and BIOSes must support TempleOS as a native and 
+as a virtual system, dual booted with Windows or Linux.
+
+It would be neat if TempleOS were burned into BIOS ROMs in the factory, or 
+maybe Intel CPU chips, in factory!  My hope is that it will be finished and 
+largely unchanging for centuries.  I need a good dictionary, first.  Maybe,
+we 
+leave the dictionary out.
+
+I do not intend to ever support UEFI.  That monstrocity uses elf and various 
+propriatary graphics formats.
+
+
+
+
+
+
+                                  New Rules
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/z3qu-sCei3U"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/z3qu-sCei3U"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+Guess what, biotches?  Daddy's home!  [C:/Misc/Bible.TXT.Z,15977]
+Deuteronomy,16:16  Y'all have to do 
+three offerings per year in the Temple.
+
+
+These are examples of my offerings.
+
+1) Hymn Videos
+
+2) Moses Comics
+
+[C:/Misc/Bible.TXT.Z,46190] Psalms,50:11-15
+
+[C:/Misc/Bible.TXT.Z,76684] Malachi,1:1-14
+
+[C:/Misc/Bible.TXT.Z,73189] Hosea,6:6
+
+
+
+
+
+                                 God's Temple
+
+God said 640x480 16 color.
+
+God said single audio voice.  (Waveforms okay)
+
+God said lots of arcane stuff, like no child windows.
+
+I said there is a 100,000 line-of-code limit.
+
+We have 82,000 lines of code, currently, and can expand up to 100,000, but 
+code comments count.  I am opening-this-up to letting other people
+contribute. 
+ We'll have some kind of organization.
+
+When you have a 100,000 line of code limit, you do not get mellow-dramatic 
+code.  The vision is a C64, not a manned mission NASA mainframe.  If you 
+prance around adding rare-case code, that subtracts from other potential 
+features.  So, long as you know that every line of code added, subtracts a 
+feature, we'll be okay.
+
+
+The 640x480 16 color limit is certainly astounding.  God said it was for kid 
+offerings, I guess like 8 crayola colors for kindergardeners.  If you must 
+make a art drawing for you three yearly offerings, you'll be happy only 16 
+colors exist.  Just think!  Everybody's workload on doing offerings is eased 
+by having only 16 colors.  Isn't that good?
+
+Today, God said dull causes craftiness.  I think what God means is... on a 
+C64, you saw fantasticly crafty creativity because you were not burdened with 
+high-demand photo-realism graphics and sound.  Otherwise, you spend all your 
+energy just burdened with getting something presentable.  Now, you will 
+achieve "presentable" easily and advance to embelishing and getting creative.
+
+The 100,000 line of code limit should ensure God's temple stays on-course for 
+a thousand years.  Also, it must be kept perfect.  With these, it will not go 
+astray.  I could hand it over to NASA (for example) and, so long as they kept 
+the 100,000 line of code limit, it would be in good hands.  For the future, I 
+expect low driver-line-count hardware to be created and utilized when all 
+(mostly) computers have advanced to contain it.  All computer are 64-bit,
+now, 
+for example, if you catch my drift.
+
+
+
+The original core values for this operating system were based on providing 
+kids, today, what I had as a kid -- Ring-0-Only and Identity-mapped
+simplicity 
+and accessibility.  I had this book, Mapping the Commodore 64, and it
+provided 
+years of entertainment.  All the public and private operating system code and 
+locations were explained and accessible, useful or not.  What I did was learn 
+and tinker.  That was the entertainment.
+
+Today, I imposed the 100,000 line of code limit because -- when you see the 
+light at the end of the tunnel, it is a qualitatively different ball game.
+
+Look at chapter 6: Commodore 64 User's Manual.  The thing you did with a C64 
+was write BASIC programs with hand-coded binary sprite data statements.  Bill 
+Gates would say, "You kids are so lucky today, you can pick from 100 fonts
+and 
+write HTML webpages."
+
+
+I would hope NASA (If they were caretakers... 'cause SETI or something, LOL) 
+would not need to be told that Ring-0-Only and Identity-Mapped are core 
+values.  I thought maybe I wouldn't have to enshrine that and they would, on 
+their own, just know that.  You could fix the gaps in address space, very 
+easily, but you lose a big principle -- virtual same as physical.  That's 
+worth fight for and sacrificing for.  It's simpler.  Think of the kids!  It's 
+also fast.
+
+----03/12/14 00:33:32----
+
+* There is a concept in BASIC -- one size integer.  Remember this principle
+as 
+an intersting thing to remember.
+
+* To me, not using getter/setters is less abstract and requires one-less 
+look-up operation to understand.  My compiler does not do in-line, also.
+
+* I saw Linux #ifdef mess for different architectures.  I said, "I will do
+the 
+opposite.   One architecture."  I saw 7 levels of functions when I chased
+down 
+IDE port instructions.  That seemed bad, so I wanted minimal levels, minimal 
+abstraction.
+
+I want no virtual file system -- just real file system once we get rid of 
+FAT32 and ISO9660 so we just have [C:/Doc/RedSea.TXT.Z,1] RedSea.  One file
+system is perfect -- 
+multiple filesystems is crappy.  Minimal lines of code, remember.
+
+----03/12/14 00:40:55----
+
+I will cripple this operating system by making it read and write whole files.
+ 
+This idea is a core value.  We get text compression.  We get simple code for 
+beginers.  We get high performace because all blocks are contiguous.
+
+If this is not acceptable, just use Linux or Windows.  This is acceptible.
+
+Look, people, if it is not different in a useful way, it's just an inferior 
+Linux.  You actually get a pleasant system when you do whole files.
+
+This operating system has been proven to work on 20 applications and hymns.  
+These applications cover the whole range of anticipated usage model.  The 
+vision was a souped-up Commodore 64.  It is proven to work as planned.
+
+----03/12/14 01:01:03----
+
+I wrote my own Computer Graphics Library.  It might be a little weak.  I
+don't 
+want to hear any of you people with SAT below 1440 making any comments.  If 
+you have higher SAT, maybe you'd enjoy improving God's temple.
+
+I did a line draw with slope and fixed point math.  Wouldn't that be 
+interesting if the DIV for slope was no longer expensive and my way was now 
+best.
+
+None of this is for GPUs.  Those will never be used.  I think they violate
+the 
+transparency feature where the whole point is you can tinker with the kernel 
+and gain understanding.
+
+I promise you my original vision was based on remembering what I did with
+this 
+book and the years of entertainment it provided.
+
+* Mapping the Commodore 64
+
+The book is about all the public AND private code in the C64 ROM and the 
+hardware.
+
+Did you know the main usage of a C64 was hobby programming.  The people who 
+bought the first computer were nerds who made little basic programs with 
+sprite data hand calculated on graphic paper like they show in the C64 users 
+guide.
+
+Just white people, I guess.
+
+Y'all can do hymns though... and participate if software happens.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394611620
+
+(Modulo is just remainder.)
+0xE405AA-->(14943658 mod 100091)+1-->Line:30100
+
+KingJamesBible (1 Kings 6:38) God says...
+Bul, which is the eighth month, was the house finished throughout all
+the parts thereof, and according to all the fashion of it. So was he
+seven years in building it.
+
+7:1 But Solomon was building his own house thirteen years, and he
+finished all his house.
+
+7:2 He built also the house of the forest of Lebanon; the length
+thereof was an hundred cubits, and the breadth thereof fifty cubits,
+and the height thereof thirty cubits, upon four rows of cedar pillars,
+with cedar beams upon the pillars.
+
+7:3 And it was covered with cedar above upon the beams, that lay on
+forty five pillars, fifteen in a row.
+
+7:4 And there were windows in three rows, and light was against light
+in three ranks.
+
+7:5 And all the doors and posts were square, with the windows: and
+light was against light in three ranks.
+
+----03/12/14 01:10:40----
+
+God said 640x480 16 color.  Go draw a 16 color elephant.  It's best for 
+content creation, not content consumption.  The purpose is for kids and 
+everyone to create offerings for God.  FUCK YOU!!  Didn't I tell you to draw
+a 
+16 color elephant yesterday?
+
+God is firm on 640x480 16 color for all time.
+
+I imposed a 100,000 line of code limit for everything.  How much of Qt could 
+we add.  We are at 81,500.  Fuck-off.  
+
+Can you draw a circle in one line of code at the command-line?
+
+
+>HGR
+>HCOLOR=16
+>HLINE 100,100 TO 200,200
+
+It was manditory, to me, to compete with the simplicity of AppleII
+
+>GrCircle(,100,100,100);
+
+I beat AppleII in simplicity.
+
+Fucken niggers at Qt?  Do you need 50 lines of code to draw a circle?  Fucken 
+retard niggers.
+
+I have binary sprites data built into my entire tool chain.  My compiler will 
+put binary sprite data into the code from source code.
+
+Fuck off -- you are nothing but 1970's mainframe shit.  Grotesque fucken 50 
+lines of code to draw a triangle?
+
+I value simplicity, you value complexity.
+
+I am chosen by God.  I'll fucken kick yer ass, if I am in prison, now, or
+not, 
+cause yer in deep shit.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394612160
+
+(Modulo is just remainder.)
+0x64724D-->(6582861 mod 100091)+1-->Line:76947
+
+KingJamesBible (Matthew 1:20) God says...
+1:20 But while he thought on these things, behold, the angel of the
+LORD appeared unto him in a dream, saying, Joseph, thou son of David,
+fear not to take unto thee Mary thy wife: for that which is conceived
+in her is of the Holy Ghost.
+
+1:21 And she shall bring forth a son, and thou shalt call his name
+JESUS: for he shall save his people from their sins.
+
+1:22 Now all this was done, that it might be fulfilled which was
+spoken of the Lord by the prophet, saying, 1:23 Behold, a virgin shall
+be with child, and shall bring forth a son, and they shall call his
+name Emmanuel, which being interpreted is, God with us.
+
+1:24 Then Joseph being raised from sleep did as the angel of the Lord
+had bidden him, and took unto him his wife: 1:25 And knew her not till
+she had brought forth her firstborn son: and he called his name JESUS.
+
+2:1 Now when Jesus was born in Bethlehem of Judaea in the days of
+Herod the king, behold, there came wise men from the east to
+Jerusalem, 2:2 Saying, Where is he that is born King of the Jews? for
+
+I didn't look at Qt or DirectX.  I did MFC.
+
+I did one project in DirectX, partially.  I started doing SimStructure.
+
+----03/12/14 01:26:11----
+
+All the code is on-line.  81,500 is count not including demos and 
+applications.
+
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
+
+Source Code By Sym
+
+Source Code By Address
+
+Source Code (Raw)
+
+You cannot compile unless you boot my ISO and use my compiler to compile 
+itself and everything.
+
+                                   TempleOS
+
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/RzhRYGm_b9A" frameborder="0"
+allowfullscreen></iframe>
+```
+
+                           After Egypt: Moses Game
+[C:/Adam/God/HolySpirit.CPP.Z,1]
+[C:/Apps/AfterEgypt/AfterEgypt.CPP.Z,1]
+[C:/Apps/AfterEgypt/Battle.CPP.Z,1]
+[C:/Apps/AfterEgypt/Comics.CPP.Z,1]
+[C:/Apps/AfterEgypt/GodTalking.CPP.Z,1]
+[C:/Apps/AfterEgypt/Horeb1.CPP.Z,1]
+[C:/Apps/AfterEgypt/Horeb2SP.CPP.Z,1]
+[C:/Apps/AfterEgypt/Horeb2MP.CPP.Z,1]
+[C:/Apps/AfterEgypt/Horeb3.CPP.Z,1]
+[C:/Apps/AfterEgypt/Map.CPP.Z,1]
+[C:/Apps/AfterEgypt/Quail.CPP.Z,1]
+[C:/Apps/AfterEgypt/WaterRock.CPP.Z,1]
+[C:/Demo/Graphics/Camp.CPP.Z,1]
+[C:/Demo/Graphics/Mountain.CPP.Z,1]
+[C:/Demo/MultiCore/Clouds.CPP.Z,1]
+
+
+
+
+
+
+
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/FxEq6IM43sA" frameborder="0"
+allowfullscreen></iframe>
+```
+
+                      Flight Sim / First Person Shooter
+[C:/Demo/Games/EagleDive.CPP.Z,1]
+[C:/Demo/Games/CastleFrankenstein.CPP.Z,1]
+
+
+
+
+
+
+
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/t2ta1rKko1k" frameborder="0"
+allowfullscreen></iframe>
+```
+
+                       X-Caliber / Raw Hide / Wenceslas
+[C:/Apps/X-Caliber/X-Caliber.CPP.Z,1]
+[C:/Apps/X-Caliber/XCCtrls.CPP.Z,1]
+[C:/Demo/Games/RawHide.CPP.Z,1]
+[C:/Demo/Games/Wenceslas.CPP.Z,1]
+
+
+
+
+
+
+
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/UbW5WLLhhgk" frameborder="0"
+allowfullscreen></iframe>
+```
+
+                             Span: Bridge Design
+[C:/Apps/Span/Span.HPP.Z,1]
+[C:/Apps/Span/SpanBridge1.CPP.Z,1]
+[C:/Apps/Span/SpanDerive.CPP.Z,1]
+[C:/Apps/Span/SpanMain.CPP.Z,1]
+[C:/Apps/Span/SpanNew.CPP.Z,1]
+
+
+
+
+
+
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/BSZRbo0lMp4" frameborder="0"
+allowfullscreen></iframe>
+```
+
+                                  ToTheFront
+[C:/Apps/ToTheFront/ToTheFront.CPP.Z,1]
+
+
+----03/12/14 23:22:30----
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/w4lnVx2BAYk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/w4lnVx2BAYk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394691900
+
+(Modulo is just remainder.)
+0x7622A3-->(7742115 mod 100091)+1-->Line:35109
+
+KingJamesBible (1 Chronicles 2:15) God says...
+sixth, David the seventh: 2:16 Whose sisters were Zeruiah, and
+Abigail. And the sons of Zeruiah; Abishai, and Joab, and Asahel,
+three.
+
+2:17 And Abigail bare Amasa: and the father of Amasa was Jether the
+Ishmeelite.
+
+2:18 And Caleb the son of Hezron begat children of Azubah his wife,
+and of Jerioth: her sons are these; Jesher, and Shobab, and Ardon.
+
+2:19 And when Azubah was dead, Caleb took unto him Ephrath, which bare
+him Hur.
+
+2:20 And Hur begat Uri, and Uri begat Bezaleel.
+
+2:21 And afterward Hezron went in to the daughter of Machir the father
+of Gilead, whom he married when he was threescore years old; and she
+bare him Segub.
+
+2:22 And Segub begat Jair, who had three and twenty cities in the land
+
+Ben Hur?
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/kxcMwRdNuTk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/kxcMwRdNuTk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+----03/12/14 23:44:26----
+
+Skeptic
+
+That CIA nigger wants to fight God.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394693160
+
+(Modulo is just remainder.)
+0xB3961A-->(11769370 mod 100091)+1-->Line:58724
+
+KingJamesBible (Isaiah 22:24) God says...
+from the vessels of cups, even to all the vessels of flagons.
+
+22:25 In that day, saith the LORD of hosts, shall the nail that is
+fastened in the sure place be removed, and be cut down, and fall; and
+the burden that was upon it shall be cut off: for the LORD hath spoken
+it.
+
+23:1 The burden of Tyre. Howl, ye ships of Tarshish; for it is laid
+waste, so that there is no house, no entering in: from the land of
+Chittim it is revealed to them.
+
+23:2 Be still, ye inhabitants of the isle; thou whom the merchants of
+Zidon, that pass over the sea, have replenished.
+
+23:3 And by great waters the seed of Sihor, the harvest of the river,
+is her revenue; and she is a mart of nations.
+
+23:4 Be thou ashamed, O Zidon: for the sea hath spoken, even the
+strength of the sea, saying, I travail not, nor bring forth children,
+neither do I nourish up young men, nor bring up virgins.
+
+Could be virgins.
+
+----03/12/14 23:51:24----
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/HDb-9bXoIQU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/HDb-9bXoIQU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+You saw all that, huh, God?  I was going to be sober in my question, but, 
+instead, what was the best fight?
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1394693580
+
+(Modulo is just remainder.)
+0x4CC2A4-->(5030564 mod 100091)+1-->Line:26015
+
+KingJamesBible (1 Samuel 22:2) God says...
+debt, and every one that was discontented, gathered themselves unto
+him; and he became a captain over them: and there were with him about
+four hundred men.
+
+22:3 And David went thence to Mizpeh of Moab: and he said unto the
+king of Moab, Let my father and my mother, I pray thee, come forth,
+and be with you, till I know what God will do for me.
+
+22:4 And he brought them before the king of Moab: and they dwelt with
+him all the while that David was in the hold.
+
+22:5 And the prophet Gad said unto David, Abide not in the hold;
+depart, and get thee into the land of Judah. Then David departed, and
+came into the forest of Hareth.
+
+22:6 When Saul heard that David was discovered, and the men that were
+with him, (now Saul abode in Gibeah under a tree in Ramah, having his
+spear in his hand, and all his servants were standing about him;) 22:7
+Then Saul said unto his servants that stood about him, Hear now, ye
+Benjamites; will the son of Jesse give every one of you fields and

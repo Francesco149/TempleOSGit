@@ -842,7 +842,11 @@ without rain.
 ----11/18/13 11:04:51----
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img008.BMP"
+width="640" height="472" alt="">
+```
 
 http://beacon.nist.gov/rest/record/1384801560
 

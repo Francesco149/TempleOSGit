@@ -9,7 +9,7 @@ U0 SongPuppet(CTask *task,I64 passes)
     Sleep(1);
   }
   if (tempf && (dbg=tempf->debug)) {
-    start=tempf->executable_addr;
+    start=dbg->body[0];
     end  =dbg->body[dbg->max_line+1-dbg->min_line];
     last_rip=0;
     while (TRUE) {

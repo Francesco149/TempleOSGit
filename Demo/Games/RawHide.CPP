@@ -1,4 +1,4 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
 AcctRegSetDftEntry("TempleOS/RawHide","F64 best_score=9999;\n");
 AcctRegExeBranch("TempleOS/RawHide");
@@ -74,10 +74,10 @@ U0 RiverMake()
       river_hi=i++;
       old_x=x; old_y=y;
     }
-    dx=LimitI64(dx+RandI32/64,-MAX_I32,MAX_I32);
-    dy=LimitI64(dy+RandI32/64,0,MAX_I32);
+    dx=ClampI64(dx+RandI32/64,-MAX_I32,MAX_I32);
+    dy=ClampI64(dy+RandI32/64,0,MAX_I32);
     x+=dx; y+=dy;
-    w=LimitI64(w+RandI32*2,10*MAX_U32,150*MAX_U32);
+    w=ClampI64(w+RandI32*2,10*MAX_U32,150*MAX_U32);
   }
   //Plan upper course of river
   old_x=-1;old_y=-1;
@@ -91,10 +91,10 @@ U0 RiverMake()
       river_lo=i--;
       old_x=x; old_y=y;
     }
-    dx=LimitI64(dx+RandI32/64,-MAX_I32,MAX_I32);
-    dy=LimitI64(dy+RandI32/64,-MAX_I32,0);
+    dx=ClampI64(dx+RandI32/64,-MAX_I32,MAX_I32);
+    dy=ClampI64(dy+RandI32/64,-MAX_I32,0);
     x+=dx; y+=dy;
-    w=LimitI64(w+RandI32*2,10*MAX_U32,150*MAX_U32);
+    w=ClampI64(w+RandI32*2,10*MAX_U32,150*MAX_U32);
   }
 
   //Plot sand bar
@@ -104,8 +104,8 @@ U0 RiverMake()
     dc2->pen_width=rw[i]+5;
     GrPlot3(dc2,rx[i]+x.i32[1],ry[i]+y.i32[1],0);
 
-    x=LimitI64(x+RandI32,-6*MAX_U32,6*MAX_U32);
-    y=LimitI64(y+RandI32,-6*MAX_U32,6*MAX_U32);
+    x=ClampI64(x+RandI32,-6*MAX_U32,6*MAX_U32);
+    y=ClampI64(y+RandI32,-6*MAX_U32,6*MAX_U32);
   }
 
   //Plot water
@@ -157,8 +157,8 @@ U0 RiverDropsNext(CTask *mem_task)
 	if (RandU16&1 &&
 	    GrPeek(dc2,rx[tempr->index]+tempr->dx,ry[tempr->index]+tempr->dy)==BLUE)
 	  break;
-	tempr->dx=LimitI64(tempr->dx+RandU16%3-1,-rw[tempr->index]/2,rw[tempr->index]/2);
-	tempr->dy=LimitI64(tempr->dy+RandU16%3-1,-rw[tempr->index]/2,rw[tempr->index]/2);
+	tempr->dx=ClampI64(tempr->dx+RandU16%3-1,-rw[tempr->index]/2,rw[tempr->index]/2);
+	tempr->dy=ClampI64(tempr->dy+RandU16%3-1,-rw[tempr->index]/2,rw[tempr->index]/2);
       } while (GrPeek(dc2,rx[tempr->index]+tempr->dx,ry[tempr->index]+tempr->dy)!=BLUE &&
 	       GrPeek(dc2,rx[tempr->index]	      ,ry[tempr->index])	  ==BLUE); //Might be reinitializing
     }
@@ -193,16 +193,16 @@ U0 DrawIt(CTask *task,CDC *dc)
   static Bool left=TRUE;
   F64 t;
   I64 i,
-     cx=(MAP_WIDTH -task->win_pixel_width)/2,
-     cy=(MAP_HEIGHT-task->win_pixel_height)/2;
-  if (task->win_scroll_x+cx<0)
-    task->win_scroll_x=-cx;
-  if (task->win_scroll_x+cx>MAP_WIDTH-task->win_pixel_width)
-    task->win_scroll_x=MAP_WIDTH-task->win_pixel_width-cx;
-  if (task->win_scroll_y+cy<0)
-    task->win_scroll_y=-cy;
-  if (task->win_scroll_y+cy>MAP_HEIGHT-task->win_pixel_height)
-    task->win_scroll_y=MAP_HEIGHT-task->win_pixel_height-cy;
+     cx=(MAP_WIDTH -task->pix_width)/2,
+     cy=(MAP_HEIGHT-task->pix_height)/2;
+  if (task->scroll_x+cx<0)
+    task->scroll_x=-cx;
+  if (task->scroll_x+cx>MAP_WIDTH-task->pix_width)
+    task->scroll_x=MAP_WIDTH-task->pix_width-cx;
+  if (task->scroll_y+cy<0)
+    task->scroll_y=-cy;
+  if (task->scroll_y+cy>MAP_HEIGHT-task->pix_height)
+    task->scroll_y=MAP_HEIGHT-task->pix_height-cy;
 
   dc2->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,-cx,-cy,dc2);
@@ -215,7 +215,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	dc->flags|=DCF_JUST_MIRROR|DCF_SYMMETRY;
 	GrSetSymmetry(dc,a[i].x.i32[1]-cx,0,a[i].x.i32[1]-cx,1);
       }
-      SpritePlot3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
+      Sprite3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
       dc->flags&=~(DCF_JUST_MIRROR|DCF_SYMMETRY);
     }
 
@@ -226,11 +226,11 @@ U0 DrawIt(CTask *task,CDC *dc)
     left=TRUE;
   if (left) {
     dc->flags|=DCF_JUST_MIRROR|DCF_SYMMETRY;
-    GrSetSymmetry(dc,ipx-task->win_pixel_left-task->win_scroll_x,0,ipx-task->win_pixel_left-task->win_scroll_x,1);
+    GrSetSymmetry(dc,ipx-task->pix_left-task->scroll_x,0,ipx-task->pix_left-task->scroll_x,1);
   }
-  SpritePlot3(dc,
-    ipx-task->win_pixel_left-task->win_scroll_x,
-    ipy-task->win_pixel_top -task->win_scroll_y,0,rh_sprite[GE_HORSE].img);
+  Sprite3(dc,
+    ipx-task->pix_left-task->scroll_x,
+    ipy-task->pix_top -task->scroll_y,0,rh_sprite[GE_HORSE].img);
   dc->flags&=~(DCF_JUST_MIRROR|DCF_SYMMETRY);
   last_ipx=ipx;
 
@@ -238,14 +238,14 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=RED;
     t=tf-t0;
     if (Blink)
-      GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*14)>>1-task->win_scroll_x,
-		  (task->win_pixel_height-FONT_HEIGHT)>>1-task->win_scroll_y,
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*14)>>1-task->scroll_x,
+		  (task->pix_height-FONT_HEIGHT)>>1-task->scroll_y,
 	"Game Completed");
   } else {
     dc->color=BLACK;
-    t=tT-t0;
+    t=tS-t0;
   }
-  GrPrint(dc,-task->win_scroll_x,-task->win_scroll_y,"Time:%7.2fs  Best:%7.2fs",t,best_score);
+  GrPrint(dc,-task->scroll_x,-task->scroll_y,"Time:%7.2fs  Best:%7.2fs",t,best_score);
 }
 
 
@@ -273,11 +273,11 @@ U0 AnimateTask(CTask *parent)
   F64 f,d,dx,dy,s,stress;
   Animal *tempa,*tempa1;
   while (TRUE) {
-    max_speed=LimitU64(max_speed,MAX_U32/3,200*MAX_U32);
-    cx=(MAP_WIDTH -parent->win_pixel_width)/2,
-    cy=(MAP_HEIGHT-parent->win_pixel_height)/2;
-    cursor_x=ipx+cx-parent->win_pixel_left-parent->win_scroll_x;
-    cursor_y=ipy+cy-parent->win_pixel_top -parent->win_scroll_y;
+    max_speed=ClampU64(max_speed,MAX_U32/3,200*MAX_U32);
+    cx=(MAP_WIDTH -parent->pix_width)/2,
+    cy=(MAP_HEIGHT-parent->pix_height)/2;
+    cursor_x=ipx+cx-parent->pix_left-parent->scroll_x;
+    cursor_y=ipy+cy-parent->pix_top -parent->scroll_y;
     min_x=max_x=min_y=max_y=cnt=0;
     stress=0;
     for (i=0;i<NUM_ANIMALS;i++) {
@@ -322,8 +322,8 @@ U0 AnimateTask(CTask *parent)
 
 
 //Add random movement, limit speed and dampen speed
-	tempa->dx=0.995*LimitI64(tempa->dx+RandI32/32,-max_speed,max_speed);
-	tempa->dy=0.995*LimitI64(tempa->dy+RandI32/32,-max_speed,max_speed);
+	tempa->dx=0.995*ClampI64(tempa->dx+RandI32/32,-max_speed,max_speed);
+	tempa->dy=0.995*ClampI64(tempa->dy+RandI32/32,-max_speed,max_speed);
 
 //Slow in river
 	if (GrPeek(dc2,tempa->x.i32[1],tempa->y.i32[1])!=LTGREEN) {
@@ -361,7 +361,7 @@ U0 AnimateTask(CTask *parent)
       RiverDropsNext(parent);
 
     if (!tf && (max_x-min_x)>>32<GR_WIDTH && (max_y-min_y)>>32<GR_HEIGHT) {
-      tf=tT;
+      tf=tS;
       music_mute=TRUE;
       Snd(2000);Sleep(200);Snd(0);Sleep(100);
       if (tf-t0<best_score) {
@@ -428,7 +428,7 @@ U0 ReInit()
       a[i].ge=&rh_sprite[GE_BULL];
     BuddySelect(i);
   }
-  t0=tT;
+  t0=tS;
   tf=0;
 }
 
@@ -464,7 +464,7 @@ U0 CleanUp()
 U0 RawHide()
 {
   I64 msg_code,p1,p2;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   PopUpOk(
 	"Coral the cattle into an area\n"
 	"the size of a screen.\n\n"

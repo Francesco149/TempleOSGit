@@ -42,30 +42,28 @@ U0 DrawIt(CTask *,CDC *dc)
 U0 Song()
 {
   CTask *task;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   music_tempo= 2.480;
   music_stacatto_factor= 0.902;
   try {
-  task=PopUpViewStr(
-    "[C:/TempleOS/Misc/Bible.TXT.Z,79970] Mark,14:37\n"
-    );
-  TaskWait(task);
-  SetWinHorz(Fs->win_left,Fs->win_right,task);
-  SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
-  while (!ScanKey) {
-	"$GREEN$Jesus talking...$FG$\n";
-	Play("3eBCqB2sG3D2G3DetCGFsCBCBetCGBeBGsBCBC",
-		"Stay \0a\0wake.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
-	Play("eBCqB2sG3D2G3DetCGFsCBCBetCGBeBGsBCBC",
-		"Stay \0a\0wake.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
-	Play("qDsDBDBetA2G3GqB2G3sADADqDetGFD",
-		" \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\n\0");
-	Play("qDsDBDBetA2G3GqB2G3sADADqDetGFD",
-		" \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\n\0");
-  }
+    task=PopUpViewStr("[C:/Misc/Bible.TXT.Z,79970] Mark,14:37\n");
+    TaskWait(task);
+    SetWinHorz(Fs->win_left,Fs->win_right,task);
+    SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
+    while (!ScanKey) {
+      "$GREEN$Jesus talking...$FG$\n";
+      Play("3eBCqB2sG3D2G3DetCGFsCBCBetCGBeBGsBCBC",
+	    "Stay \0a\0wake.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+      Play("eBCqB2sG3D2G3DetCGFsCBCBetCGBeBGsBCBC",
+	    "Stay \0a\0wake.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+      Play("qDsDBDBetA2G3GqB2G3sADADqDetGFD",
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\n\0");
+      Play("qDsDBDBetA2G3GqB2G3sADADqDetGFD",
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0am \0a \0dead \0 \0man.\n\0");
+    }
   } catch
     PutExcept;
   SettingsPop;

@@ -6,11 +6,11 @@ PUT_DEC_U64::
 	MOV	RBP,RSP
 	SUB	RSP,24		//24 char buffer on stack
 
-//[C:/Kernel/Adam1a.HPP,1] Save regs which C code is free to clobber.  We don't have to for C callers,
+//[C:/Kernel/Adam1a.HPP.Z,1] Save regs which C code is free to clobber.  We don't have to for C callers,
 //but this function will be nice for ASM callers if it saves all regs.
 	PUSH_C_REGS
 
-	PUSH	RSI		//See [MN:REG_VARS_MASK] REG_VARS_MASK & [MN:REG_NON_PTR_MASK] REG_NON_PTR_MASK
+	PUSH	RSI		//See [C:/Kernel/Adam1a.HPP.Z,3553] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,3554] REG_NON_PTR_MASK
 	LEA	RSI,-1[RBP]	//Load addr of end of buffer.
 				//We picked RSI because of PUT_STR
 				//We'll move backward
@@ -32,7 +32,7 @@ PUT_DEC_U64::
 	TEST	RAX,RAX
 	JNZ	@@10
 
-@@15:	CALL	&PUT_STR
+@@15:	CALL	PUT_STR
 	POP	RSI
 	POP_C_REGS
 	LEAVE

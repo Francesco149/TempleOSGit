@@ -47,8 +47,8 @@ U0 DrawIt(CTask *,CDC *dc)
   dc->z=GR_Z_ALL;
   dc->flags|=DCF_TRANSFORMATION;
   for (i=0;i<NUM_BIRDS;i++) {
-    bx[i]=Limit(bx[i]+0.25*SignI64(RandI16),-RANGE,RANGE);
-    by[i]=Limit(by[i]+0.25*SignI64(RandI16),-RANGE,RANGE);
+    bx[i]=Clamp(bx[i]+0.25*SignI64(RandI16),-RANGE,RANGE);
+    by[i]=Clamp(by[i]+0.25*SignI64(RandI16),-RANGE,RANGE);
     theta=pi/2*i/NUM_BIRDS+0.2*pi*dt+pi/2;
     GrIdentEqu(dc->r);
     GrRotXEqu(dc->r,pi/2);
@@ -62,7 +62,7 @@ U0 DrawIt(CTask *,CDC *dc)
 U0 Song()
 {
   I64 i;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=LTCYAN<<4+BLACK;
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;

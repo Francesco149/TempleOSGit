@@ -31,8 +31,7 @@ I64 HashEntriesCompare2(CWho *h1,CWho *h2)
 
 I64 HelpIndexCnt(U8 *ptr,U8 *index)
 {
-  U8 cnt=0,ch;
-  I64 index_len=StrLen(index);
+  I64 cnt=0,ch,index_len=StrLen(index);
   while (*ptr) {
     if (!StrNCmp(ptr,index,index_len))
       cnt++;
@@ -47,8 +46,8 @@ I64 HelpIndexCnt(U8 *ptr,U8 *index)
 
 U8 *HelpIndexStr(U8 **ptr_,U8 *index)
 {
-  U8 *ptr=*ptr_,*ptr2,ch,*result;
-  I64 index_len=StrLen(index);
+  U8 *ptr=*ptr_,*ptr2,*result;
+  I64 ch,index_len=StrLen(index);
   while (*ptr) {
     ptr2=ptr;
     while (ch=*ptr++)
@@ -91,15 +90,15 @@ I64 HashEntriesCompare3(CWho *h1,CWho *h2)
 public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
   U8 *outname=NULL,U8 mapfile_drv=0,U8 *index=NULL,CDoc *_doc=NULL)
 {//Dump Symbol Table
-// +p for only public symbols
-// +m to order by number (normally alphabetical)
-// -r just local hash table
+// "+p" for only public symbols
+// "+m" to order by number (normally alphabetical)
+// "-r" just local hash table
   CHashTable *tempht;
   CHashSrcSym *temph;
   CHashGeneric *ptr;
   CWho *lst;
   I64 cnt,i,j,k,size,f=0,dbg_bin_num;
-  U8 buf[512],*buf4,*last_index=StrNew(""),*cur_index;
+  U8 buf[512],*st,*src_link,*last_index=StrNew(""),*cur_index;
   CDoc *doc;
   Bool recurse,publics,map,old_preempt=Preempt(OFF);
   CDocBin *tempb;
@@ -118,9 +117,8 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
   if (_doc)
     doc=_doc;
   else if (outname) {
-    doc=DocNew;
+    doc=DocNew(outname);
     doc->flags|=DOCF_NO_CURSOR;
-    StrCpy(doc->filename.name,outname);
   } else
     doc=NULL;
 
@@ -195,26 +193,24 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
 	    "$GREEN$%s$FG$\n",cur_index;
 	}
       }
+
     if (index && ptr->type & HTT_HELP_FILE)
       DocType(doc,ptr->str);
     else {
       if (ptr->type&HTG_SRC_SYM && ptr(CHashSrcSym *)->src_link) {
-	buf4=StrNew(ptr(CHashSrcSym *)->src_link);
-	if (mapfile_drv && StrLen(buf4)>4 && buf[1]==':' && buf4[4]==':')
-	  buf4[3]=mapfile_drv;
+	src_link=StrNew(ptr(CHashSrcSym *)->src_link);
+	if (mapfile_drv && StrLen(src_link)>4 && buf[1]==':' && src_link[4]==':')
+	  src_link[3]=mapfile_drv;
 	dbg=NULL;
 	if (outname && doc && ptr->type & HTT_FUN) {
 	  if (dbg=ptr(CHashFun *)->debug) {
-	    size=offset(CDbgInfo.body)+
-		  sizeof(U8 *)*
-		  (dbg->max_line-dbg->min_line+2);
+	    size=offset(CDbgInfo.body)+sizeof(U32)*(dbg->max_line+2-dbg->min_line);
 	    if (size>MSize(dbg)) {
 	      "Corrupt Map Entry\n";
 	      dbg=NULL;
 	    } else {
 	      if (dbg->min_line<=dbg->max_line) {
 		tempb=CAlloc(sizeof(CDocBin));
-		tempb->type=DOCBT_DEBUG_LINES;
 		tempb->size=size;
 		tempb->data=MAlloc(size);
 		MemCpy(tempb->data,dbg,size);
@@ -227,17 +223,17 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
 	  }
 	}
 	if (dbg)
-	  DocPrint(doc,"$LK+BI,\"%-26s\",\"%s\",%d$",
-		ptr->str,buf4,dbg_bin_num);
+	  DocPrint(doc,"$LK,\"%-26s\",A=\"%s\",BI=%d$",
+		ptr->str,src_link,dbg_bin_num);
 	else {
-	  SPrint(buf,"$LK,\"%-26s\",\"%s\"$",
-		ptr->str,buf4);
+	  SPrint(buf,"$LK,\"%-26s\",A=\"%s\"$",
+		ptr->str,src_link);
 	  if (doc)
 	    DocPrint(doc,"%s",buf);
 	  else
 	    "%s",buf;
 	}
-	Free(buf4);
+	Free(src_link);
       } else {
 	SPrint(buf,"%-26ts",ptr->str);
 	if (doc)
@@ -248,11 +244,13 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
 
       if (!index) {
 	if (ptr->type & HTT_DEFINE_STR) {
+	  st=MStrUtil(ptr(CHashDefineStr *)->data,SUF_SAFE_DOLLAR);
 	  j=ptr(CHashDefineStr *)->cnt;
 	  if (j==-1)
-	    SPrint(buf,"%-10tQ   ",ptr(CHashDefineStr *)->data);
+	    SPrint(buf,"%-10tQ   ",st);
 	  else
-	    SPrint(buf,"%-10tQ %02X",ptr(CHashDefineStr *)->data,j);
+	    SPrint(buf,"%-10tQ %02X",st,j);
+	  Free(st);
 	} else if (ptr->type & HTT_GLBL_VAR) {
 	  if (outname)
 	    SPrint(buf,"%010X   ",ptr(CHashGlblVar *)->data_addr_ip);
@@ -276,7 +274,7 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
       for (j=0;j<32;j++)
 	if (Bt(&k,j))
 	  SPrint(buf+StrLen(buf),"%Z ",j,"ST_HTT_TYPES");
-      StrCat(buf,"\n");
+      CatPrint(buf,"\n");
       if (doc)
 	DocPrint(doc,"%s",buf);
       else
@@ -354,7 +352,7 @@ public U0 PopUpHelpIndex(U8 *index,CTask *parent=NULL)
 public U0 MapFileLoad(U8 *filename)
 {
   U8 *st,*ptr,*name=DftExt(filename,"MAP.Z"),
-     *absname=FileNameAbs(name);
+	*absname=FileNameAbs(name);
   CDoc *doc=DocRead(name);
   CDocEntry *doc_e;
   CHashSrcSym *temph;
@@ -363,8 +361,8 @@ public U0 MapFileLoad(U8 *filename)
 
   FileExtRem(absname);
   if (absname[1]==':' && StrLen(absname)>2 &&
-      (temph=HashSingleTableFind(absname+2,Fs->hash_table,HTT_MODULE)))
-      base=temph(CHashGeneric *)->user_data0+sizeof(CBinFile);
+	(temph=HashSingleTableFind(absname+2,Fs->hash_table,HTT_MODULE)))
+    base=temph(CHashGeneric *)->user_data0+sizeof(CBinFile);
 
   if (!doc) return;
   doc_e=doc->root.next;
@@ -382,24 +380,21 @@ public U0 MapFileLoad(U8 *filename)
 	  ptr=temph->src_link;
 	  if (ptr[0] && ptr[1] && ptr[2]==':' && ptr[3]==':')
 	    ptr[3]=*sys_acct;
- 
+
 	  doc_e->aux_str=NULL;
 	}
-	if (temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM)) {
-	  dbg	=temph->debug;
-	  if (!dbg && doc_e->bin_data && doc_e->bin_data->type==DOCBT_DEBUG_LINES) {
-	    if (dbg=doc_e->bin_data->data) {
-	      if (doc_e->bin_data->size>MSize(dbg))
-		"Corrupt Map Entry\n";
-	      else {
-		doc_e->bin_data->data=NULL;
-		temph->debug=dbg;
-		for (i=dbg->min_line;i<=dbg->max_line+1;i++) {
-		  j=i-dbg->min_line;
-		  if (dbg->body[j])
-		    dbg->body[j]=dbg->body[j]+base;
-		}
-	      }
+	if (temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM) &&
+	      !(dbg=temph->debug) && doc_e->bin_data &&
+	      (dbg=doc_e->bin_data->data)) {
+	  if (doc_e->bin_data->size>MSize(dbg))
+	    "Corrupt Map Entry\n";
+	  else {
+	    doc_e->bin_data->data=NULL;
+	    temph->debug=dbg;
+	    for (i=dbg->min_line;i<=dbg->max_line+1;i++) {
+	      j=i-dbg->min_line;
+	      if (dbg->body[j])
+		dbg->body[j]=dbg->body[j]+base;
 	    }
 	  }
 	}

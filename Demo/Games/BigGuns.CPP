@@ -1,4 +1,4 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
 class MyMass:CMass
 {
@@ -44,20 +44,20 @@ U0 DrawIt(CTask *task,CDC *dc)
       v=-task->vert_scroll.pos;
   Bool old_suspend=Suspend(task);
   task->horz_scroll.min=0;
-  task->horz_scroll.max=MAP_WIDTH-task->win_pixel_width;
+  task->horz_scroll.max=MAP_WIDTH-task->pix_width;
   task->vert_scroll.min=0;
-  task->vert_scroll.max=MAP_HEIGHT-task->win_pixel_height;
+  task->vert_scroll.max=MAP_HEIGHT-task->pix_height;
   map->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,h,v,map);
 
-  SpritePlot3(dc,gun_x+h,gun_y+v,0,__BIN_2);
+  Sprite3(dc,gun_x+h,gun_y+v,0,__BIN_2);
 
   if (theta<-pi/2) {
     dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
     GrSetSymmetry(dc,gun_x+h,0,gun_x+h,1);
     theta=-pi-theta;
   }
-  SpritePlotRotZ3B(dc,
+  SpriteZ3B(dc,
       gun_x+h-gun_recoil*Cos(theta),
       gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
   dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
@@ -78,7 +78,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 
   dc->color=LTGRAY;
-  w=tT*wind_x;
+  w=tS*wind_x;
   for (i=0;i<NUM_DUST;i++) {
     x=(dust_x[i]+w)%MAP_WIDTH;
     y=dust_y[i];
@@ -159,7 +159,7 @@ U0 ManageShots()
       QueRem(tempm);
       for (i=tempm->x-4;i<=tempm->x+4;i++)
 	if (0<=i<MAP_WIDTH)
-	  elevs[i]=LimitI64(elevs[i]+10-2*AbsI64(i-tempm->x),0,MAP_HEIGHT-2);
+	  elevs[i]=ClampI64(elevs[i]+10-2*AbsI64(i-tempm->x),0,MAP_HEIGHT-2);
       Free(tempm);
       chged=TRUE;
     }
@@ -173,12 +173,12 @@ U0 MoveTask(I64)
 {
   static F64 quit_time=0;
   if (quit_time)
-    quit_time=tT+0.1;
+    quit_time=tS+0.1;
   else {
     Snd(100);
     Fs->task_end_cb=&SndTaskEndCB;
-    quit_time=tT+0.1;
-    while (quit_time>tT)
+    quit_time=tS+0.1;
+    while (quit_time>tS)
       Yield;
     quit_time=0;
   }
@@ -201,8 +201,8 @@ U0 Init()
   y=ToI64(0.7*MAP_HEIGHT)<<32;
   dy=0;
   for (x=0;x<MAP_WIDTH;x++) {
-    dy=LimitI64(SignI64(RandI16)<<30+dy,-3<<32,3<<32);
-    y=LimitI64(y+dy,ToI64(0.3*MAP_HEIGHT)<<32,(MAP_HEIGHT-2)<<32);
+    dy=ClampI64(SignI64(RandI16)<<30+dy,-3<<32,3<<32);
+    y=ClampI64(y+dy,ToI64(0.3*MAP_HEIGHT)<<32,(MAP_HEIGHT-2)<<32);
     elevs[x]=y.i32[1];
   }
   gun_x=RandU32%(MAP_WIDTH-100)+50;
@@ -226,10 +226,10 @@ U0 Init()
   ode->acceleration_limit=5e5;
   QueIns(ode,Fs->last_ode);
   Fs->horz_scroll.min=0;
-  Fs->horz_scroll.max=MAP_WIDTH-Fs->win_pixel_width;
-  Fs->horz_scroll.pos=gun_x-Fs->win_pixel_width/2;
+  Fs->horz_scroll.max=MAP_WIDTH-Fs->pix_width;
+  Fs->horz_scroll.pos=gun_x-Fs->pix_width/2;
   Fs->vert_scroll.min=0;
-  Fs->vert_scroll.max=MAP_HEIGHT-Fs->win_pixel_height;
+  Fs->vert_scroll.max=MAP_HEIGHT-Fs->pix_height;
   Fs->vert_scroll.pos=0;
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
@@ -259,7 +259,7 @@ U0 BigGuns()
 
   PopUpOk("The map scrolls.\n");
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
 
   MenuPush(

@@ -15,7 +15,7 @@ I64 Compare(I32 *e1,I32 *e2)
 U0 QSortU32(I32 *base,I64 num)
 {
 // By customizing, we dramatically improve it!
-// Cut and paste from [C:/TempleOS/Kernel/QSort.CPP.Z,1] QSortI64().
+// Cut and paste from [C:/Kernel/QSort.CPP.Z,1] QSortI64().
   I64 i;
   I32 *less,*greater,pivot;
   if (num>1) {
@@ -77,18 +77,18 @@ U0 MPRadixSortDemo(I64 dummy=0)
   a2=MAlloc(NUM*sizeof(I32));
 
   "$GREEN$QSort$FG$\n";
-  t0=tT;
+  t0=tS;
   MemCpy(a2,a1,sizeof(I32)*NUM);
   QSort(a2,NUM,sizeof(I32),&Compare);
-  "Time:%9.6f\n",tT-t0;
+  "Time:%9.6f\n",tS-t0;
   D(a2+NUM/4);
 
 
   "$GREEN$QSortU32$FG$\n";
-  t0=tT;
+  t0=tS;
   MemCpy(a2,a1,sizeof(I32)*NUM);
   QSortU32(a2,NUM);
-  "Time:%9.6f\n",tT-t0;
+  "Time:%9.6f\n",tS-t0;
   D(a2+NUM/4);
 
   for (i=0;i<my_mp_cnt;i++) {
@@ -102,7 +102,7 @@ U0 MPRadixSortDemo(I64 dummy=0)
   if (my_mp_cnt<2) throw('MultCore');
 
   "$GREEN$MP Radix QSortU32$FG$\n";
-  t0=tT;
+  t0=tS;
   k1=32-Bsr(my_mp_cnt);
   k2=my_mp_cnt/2;
   for (i=0;i<NUM;i++) {
@@ -119,7 +119,7 @@ U0 MPRadixSortDemo(I64 dummy=0)
     MemCpy(&a2[j],b[i],bn[i]*sizeof(I32));
     j+=bn[i];
   }
-  "Time:%9.6f\n",tT-t0;
+  "Time:%9.6f\n",tS-t0;
   D(a2+NUM/4);
 
   Free(a1);
@@ -133,32 +133,32 @@ MPRadixSortDemo;
 /* Results on 8 Cores 2.660GHz Core i7:
 QSort
 Time: 1.535474
-00000000 EA 1D F6 BF 16 2E F6 BF 0B 3C F6 BF CD 44 F6 BF omega./+../+.</+-D/+
-00000010 B1 45 F6 BF 52 4A F6 BF 96 71 F6 BF 9F 78 F6 BF :E/+RJ/+uq/+fx/+
-00000020 52 87 F6 BF 23 9F F6 BF EF AD F6 BF 2D B4 F6 BF Rc/+#f/+eta!/+-+/+
-00000030 4B EE F6 BF 60 FA F6 BF 31 08 F7 BF 1A 0E F7 BF Kei/+`./+1.~=+..~=+
-00000040 5C 39 F7 BF 26 3B F7 BF C7 3D F7 BF CF 3D F7 BF \9~=+&;~=++=~=++=~=+
-00000050 7D 51 F7 BF 2F 79 F7 BF 7B 7A F7 BF CF 8C F7 BF }Q~=+/y~=+{z~=++i~=+
-00000060 09 95 F7 BF 04 A3 F7 BF D2 A8 F7 BF 61 EA F7 BF .o~=+.u~=++?~=+aomega~=+
-00000070 2D ED F7 BF F2 03 F8 BF 4C 09 F8 BF BB 09 F8 BF -phi~=+>=.degrees+L.degrees++.degrees+
+00000000 EA 1D F6 BF 16 2E F6 BF 0B 3C F6 BF CD 44 F6 BF ê.ö¿..ö¿.<ö¿ÍDö¿
+00000010 B1 45 F6 BF 52 4A F6 BF 96 71 F6 BF 9F 78 F6 BF ±Eö¿RJö¿–qö¿Ÿxö¿
+00000020 52 87 F6 BF 23 9F F6 BF EF AD F6 BF 2D B4 F6 BF R‡ö¿#Ÿö¿ï­ö¿-´ö¿
+00000030 4B EE F6 BF 60 FA F6 BF 31 08 F7 BF 1A 0E F7 BF Kîö¿`úö¿1.÷¿..÷¿
+00000040 5C 39 F7 BF 26 3B F7 BF C7 3D F7 BF CF 3D F7 BF \9÷¿&;÷¿Ç=÷¿Ï=÷¿
+00000050 7D 51 F7 BF 2F 79 F7 BF 7B 7A F7 BF CF 8C F7 BF }Q÷¿/y÷¿{z÷¿ÏŒ÷¿
+00000060 09 95 F7 BF 04 A3 F7 BF D2 A8 F7 BF 61 EA F7 BF .•÷¿.£÷¿Ò¨÷¿aê÷¿
+00000070 2D ED F7 BF F2 03 F8 BF 4C 09 F8 BF BB 09 F8 BF -í÷¿ò.ø¿L.ø¿».ø¿
 QSortU32
 Time: 0.132599
-00000000 EA 1D F6 BF 16 2E F6 BF 0B 3C F6 BF CD 44 F6 BF omega./+../+.</+-D/+
-00000010 B1 45 F6 BF 52 4A F6 BF 96 71 F6 BF 9F 78 F6 BF :E/+RJ/+uq/+fx/+
-00000020 52 87 F6 BF 23 9F F6 BF EF AD F6 BF 2D B4 F6 BF Rc/+#f/+eta!/+-+/+
-00000030 4B EE F6 BF 60 FA F6 BF 31 08 F7 BF 1A 0E F7 BF Kei/+`./+1.~=+..~=+
-00000040 5C 39 F7 BF 26 3B F7 BF C7 3D F7 BF CF 3D F7 BF \9~=+&;~=++=~=++=~=+
-00000050 7D 51 F7 BF 2F 79 F7 BF 7B 7A F7 BF CF 8C F7 BF }Q~=+/y~=+{z~=++i~=+
-00000060 09 95 F7 BF 04 A3 F7 BF D2 A8 F7 BF 61 EA F7 BF .o~=+.u~=++?~=+aomega~=+
-00000070 2D ED F7 BF F2 03 F8 BF 4C 09 F8 BF BB 09 F8 BF -phi~=+>=.degrees+L.degrees++.degrees+
+00000000 EA 1D F6 BF 16 2E F6 BF 0B 3C F6 BF CD 44 F6 BF ê.ö¿..ö¿.<ö¿ÍDö¿
+00000010 B1 45 F6 BF 52 4A F6 BF 96 71 F6 BF 9F 78 F6 BF ±Eö¿RJö¿–qö¿Ÿxö¿
+00000020 52 87 F6 BF 23 9F F6 BF EF AD F6 BF 2D B4 F6 BF R‡ö¿#Ÿö¿ï­ö¿-´ö¿
+00000030 4B EE F6 BF 60 FA F6 BF 31 08 F7 BF 1A 0E F7 BF Kîö¿`úö¿1.÷¿..÷¿
+00000040 5C 39 F7 BF 26 3B F7 BF C7 3D F7 BF CF 3D F7 BF \9÷¿&;÷¿Ç=÷¿Ï=÷¿
+00000050 7D 51 F7 BF 2F 79 F7 BF 7B 7A F7 BF CF 8C F7 BF }Q÷¿/y÷¿{z÷¿ÏŒ÷¿
+00000060 09 95 F7 BF 04 A3 F7 BF D2 A8 F7 BF 61 EA F7 BF .•÷¿.£÷¿Ò¨÷¿aê÷¿
+00000070 2D ED F7 BF F2 03 F8 BF 4C 09 F8 BF BB 09 F8 BF -í÷¿ò.ø¿L.ø¿».ø¿
 MP Radix QSortU32
 Time: 0.024471
-00000000 EA 1D F6 BF 16 2E F6 BF 0B 3C F6 BF CD 44 F6 BF omega./+../+.</+-D/+
-00000010 B1 45 F6 BF 52 4A F6 BF 96 71 F6 BF 9F 78 F6 BF :E/+RJ/+uq/+fx/+
-00000020 52 87 F6 BF 23 9F F6 BF EF AD F6 BF 2D B4 F6 BF Rc/+#f/+eta!/+-+/+
-00000030 4B EE F6 BF 60 FA F6 BF 31 08 F7 BF 1A 0E F7 BF Kei/+`./+1.~=+..~=+
-00000040 5C 39 F7 BF 26 3B F7 BF C7 3D F7 BF CF 3D F7 BF \9~=+&;~=++=~=++=~=+
-00000050 7D 51 F7 BF 2F 79 F7 BF 7B 7A F7 BF CF 8C F7 BF }Q~=+/y~=+{z~=++i~=+
-00000060 09 95 F7 BF 04 A3 F7 BF D2 A8 F7 BF 61 EA F7 BF .o~=+.u~=++?~=+aomega~=+
-00000070 2D ED F7 BF F2 03 F8 BF 4C 09 F8 BF BB 09 F8 BF -phi~=+>=.degrees+L.degrees++.degrees+
+00000000 EA 1D F6 BF 16 2E F6 BF 0B 3C F6 BF CD 44 F6 BF ê.ö¿..ö¿.<ö¿ÍDö¿
+00000010 B1 45 F6 BF 52 4A F6 BF 96 71 F6 BF 9F 78 F6 BF ±Eö¿RJö¿–qö¿Ÿxö¿
+00000020 52 87 F6 BF 23 9F F6 BF EF AD F6 BF 2D B4 F6 BF R‡ö¿#Ÿö¿ï­ö¿-´ö¿
+00000030 4B EE F6 BF 60 FA F6 BF 31 08 F7 BF 1A 0E F7 BF Kîö¿`úö¿1.÷¿..÷¿
+00000040 5C 39 F7 BF 26 3B F7 BF C7 3D F7 BF CF 3D F7 BF \9÷¿&;÷¿Ç=÷¿Ï=÷¿
+00000050 7D 51 F7 BF 2F 79 F7 BF 7B 7A F7 BF CF 8C F7 BF }Q÷¿/y÷¿{z÷¿ÏŒ÷¿
+00000060 09 95 F7 BF 04 A3 F7 BF D2 A8 F7 BF 61 EA F7 BF .•÷¿.£÷¿Ò¨÷¿aê÷¿
+00000070 2D ED F7 BF F2 03 F8 BF 4C 09 F8 BF BB 09 F8 BF -í÷¿ò.ø¿L.ø¿».ø¿
 */

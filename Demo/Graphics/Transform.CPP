@@ -7,7 +7,7 @@
 //Scroll bar works.
 
 //The multiplication takes place in the
-//[MN:SpritePlotRotZ3B] SpritePlotRotZ3B routine.
+//[C:/Adam/Gr/GrSpritePlot.CPP.Z,298] SpriteZ3B routine.
 
 
 #define SLIDER_SPACING 20
@@ -59,13 +59,13 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedSliderCtrl(CCtrl *c)
 {
   CSliderState *s=c->state;
-  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*4+3)/2;
+  c->left=c->win_task->pix_width/2-(SLIDER_SPACING*4+3)/2;
   c->right=c->left+SLIDER_SPACING*4+3;
-  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->top=c->win_task->pix_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
   c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
-  s->s1=LimitI64(s->s1,0,SLIDER_RANGE-1);
-  s->s2=LimitI64(s->s2,0,SLIDER_RANGE-1);
-  s->s3=LimitI64(s->s3,1,SLIDER_RANGE-1);
+  s->s1=ClampI64(s->s1,0,SLIDER_RANGE-1);
+  s->s2=ClampI64(s->s2,0,SLIDER_RANGE-1);
+  s->s3=ClampI64(s->s3,1,SLIDER_RANGE-1);
   s->a1=pi/2.0*s->s1/SLIDER_RANGE;
   s->a2=1.0*(s->s2-SLIDER_RANGE/2)/SLIDER_RANGE;
   s->scale=2.0*s->s3/SLIDER_RANGE;
@@ -142,7 +142,7 @@ U0 MPDrawIt(CTask *task)
   MemCpy(dc->r,mp.r,sizeof(I64)*16);
   dc->flags|=DCF_TRANSFORMATION;
   for (i=lo;i<hi;i++)
-    SpritePlotRotZ3B(dc,tree_x[i],
+    SpriteZ3B(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
   DCDel(dc);
   LBtr(&mp_not_done_flags,Gs->num);
@@ -152,9 +152,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,h,v;
   task->horz_scroll.min=-s.scale*MAP_HEIGHT*Sin(s.a1);
-  task->horz_scroll.max=s.scale*MAP_WIDTH*Cos(s.a1)-task->win_pixel_width;
+  task->horz_scroll.max=s.scale*MAP_WIDTH*Cos(s.a1)-task->pix_width;
   task->vert_scroll.min=0;
-  task->vert_scroll.max=s.scale*(MAP_HEIGHT*Cos(s.a1)+MAP_WIDTH*Sin(s.a1))-task->win_pixel_height;
+  task->vert_scroll.max=s.scale*(MAP_HEIGHT*Cos(s.a1)+MAP_WIDTH*Sin(s.a1))-task->pix_height;
   TaskDerivedValsUpdate(task);
 
   h=task->horz_scroll.pos;
@@ -194,7 +194,7 @@ U0 Init()
 
 U0 TransformDemo(I64 _mp_cnt=mp_cnt)
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Init;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER-WIF_GRAB_SCROLL-WIF_MENU-WIF_CTRLS;
   DocCursor;

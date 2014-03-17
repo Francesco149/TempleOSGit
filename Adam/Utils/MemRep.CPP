@@ -43,10 +43,10 @@ I64 TaskQueSize(CTask *task)
 {
   CSrvCmd *tempc,*tempc1;
   I64 result=0;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&task->srv_ctrl.flags,SVCRf_LOCKED))
-    Pause;
+    PAUSE
 
   tempc1=&task->srv_ctrl.next_waiting;
   tempc=tempc1->next;
@@ -63,7 +63,7 @@ I64 TaskQueSize(CTask *task)
   }
 
   LBtr(&task->srv_ctrl.flags,SVCRf_LOCKED);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -142,17 +142,7 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
   }
 
   if (task==sys_winmgr_task) {
-    "gr_dc\t\t:%010X\n",DCSize(gr_dc);
-    "gr_dc2\t\t:%010X\n",DCSize(gr_dc2);
-    "gr_dc_cache\t\t:%010X\n",DCSize(gr_dc_cache);
-    "gr_screen_image\t:%010X\n",DCSize(gr_screen_image);
-    "gr_zoomed_dc\t:%010X\n",DCSize(gr_zoomed_dc);
     "gr_pen_brushes\t:%010X\n",PenBrushesSize;
-    "gr_1_to_8_bits\t:%010X\n",MSize2(gr_1_to_8_bits);
-    "gr_1_to_8_colors\t:%010X\n",MSize2(gr_1_to_8_colors);
-    "gr_text_base\t:%010X\n",MSize2(gr_text_base);
-    "gr_vga_text_cache\t:%010X\n",MSize2(gr_vga_text_cache);
-    "gr_win_z_buf\t:%010X\n",MSize2(gr_win_z_buf)+MSize2(gr_win_uncovered_bitmap);
     "gr_screen_zoom_tbles:%010X\n",ScreenZoomTablesSize;
   } else if (task==adam_task) {
     j=0;k=0;m=0;n=0;
@@ -188,6 +178,17 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
 	  MSize2(sys_dsk_cache_base)+MSize2(sys_dsk_cache_hash_table)+MSize2(sys_dsk_cache_ctrl);
     "WordStat\t:%010X\n",CallExtStr("WordStatSize");
     "Clipboard\t:%010X\n",DocSize(sys_clipboard_doc);
+    "gr_1_to_8_bits\t:%010X\n",MSize2(gr_1_to_8_bits);
+    "gr_1_to_8_colors\t:%010X\n",MSize2(gr_1_to_8_colors);
+    "gr_text_base\t:%010X\n",MSize2(gr_text_base);
+    "gr_vga_text_cache\t:%010X\n",MSize2(gr_vga_text_cache);
+    "gr_win_z_buf\t:%010X\n",MSize2(gr_win_z_buf)+MSize2(gr_win_uncovered_bitmap);
+    "gr_dc\t\t:%010X\n",DCSize(gr_dc);
+    "gr_dc1\t\t:%010X\n",DCSize(gr_dc1);
+    "gr_dc2\t\t:%010X\n",DCSize(gr_dc2);
+    "gr_dc_cache\t\t:%010X\n",DCSize(gr_dc_cache);
+    "gr_screen_image\t:%010X\n",DCSize(gr_screen_image);
+    "gr_zoomed_dc\t:%010X\n",DCSize(gr_zoomed_dc);
   }
   "$ID,-2$";
   return TRUE;
@@ -208,8 +209,9 @@ public U0 MemRep()
 
   "VGA\t\t:00000A0000-00000BFFFF\n";
   "$ID,-2$$BLACK$High Memory\t:0000100000-%010X$FG$\n",
-  sys_heap_limit;
-  "$ID,2$Page Tables\t:%010X-%010X\n",MEM_PAGE_TABLE_BASE,sys_heap_base-1;
+	sys_heap_limit;
+  "$ID,2$Fixed Area for page tables and misc\n\t\t:%010X-%010X\n",
+	SYS_FIXED_AREA,SYS_FIXED_AREA+sizeof(CSysFixedArea)-1;
   "$ID,-2$";
 
   if (sys_data_bp) {

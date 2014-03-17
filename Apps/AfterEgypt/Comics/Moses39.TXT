@@ -33,4 +33,4 @@
 
  <3> (image)
 
-[C:/TempleOS/Misc/Bible.TXT.Z,12005] Numbers,11:11
+[C:/Misc/Bible.TXT.Z,12005] Numbers,11:11

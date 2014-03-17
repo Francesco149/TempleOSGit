@@ -1,7 +1,6 @@
 #exe {OptOn(OPTf_WARN_PAREN);};
 #exe {OptOn(OPTf_WARN_DUP_TYPES);};
 #exe {OptOn(OPTf_KEEP_PRIVATE);};
-#include "/Kernel/BootDefs.HPP"
 #include "/Kernel/Adam1a.HPP"
 #exe {OptOn(OPTf_EXTERNS_TO_IMPORTS);};
 #include "/Compiler/CmpDefs.HPP"
@@ -17,8 +16,8 @@
 #include "Lex"
 #include "Hash1b"
 #include "Assembler"
-#include "ExpParser"
 #include "OptLib"
+#include "ExpParser"
 #include "StmtParser"
 #include "OptPass012"
 #include "OptPass3"

@@ -9,7 +9,8 @@ Fmt of word lst entry:
 */
 U0 PhoneNumWords(U8 *num)
 {
-  U8 ch,*_num=StrNew(num),*dst=_num,
+  I64 ch;
+  U8 *_num=StrNew(num),*dst=_num,
       *dict=ws_dict_word_lst,*st,*src;
   while (*num) {
     if ('0'<=*num<='9')

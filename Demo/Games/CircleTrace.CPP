@@ -41,12 +41,12 @@ U0 CircleTrace()
   F64 rad,t0,total_distance;
   CDC *dc=DCAlias;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   WordStat;
 
-  cx=Fs->win_pixel_width/2;
-  cy=Fs->win_pixel_height/2;
+  cx=Fs->pix_width/2;
+  cy=Fs->pix_height/2;
 
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
   DocCursor;
@@ -67,7 +67,7 @@ U0 CircleTrace()
 	dc->color=ROP_XOR+BLACK^COLOR_TRANSPARENT;
 	GrCircle(dc,cx,cy,CIRCLE_RADIUS);
 	dc->color=ROP_XOR+RED^COLOR_TRANSPARENT;
-	t0=tT;
+	t0=tS;
 	total_distance=0.001;
 	total_error=0;
 	x1=p1; y1=p2;
@@ -82,18 +82,18 @@ U0 CircleTrace()
 		total_distance+=Sqrt(Sqr(x1-p1)+Sqr(y1-p2));
 		Line(dc,x1,y1,0,p1,p2,0,&CTPlot);
 		x1=p1;y1=p2;
-		//undo overlapping pixels on segments
+		//undo overlapping pixs on segments
 		GrPlot(dc,x1,y1);
 		rad=Sqrt(Sqr(x1-cx)+Sqr(y1-cy));
 		total_error-=Abs(rad-CIRCLE_RADIUS);
 	      }
 	      break;
 	  }
-	  elapsed_time=tT-t0;
+	  elapsed_time=tS-t0;
 	  avg_error=total_error/total_distance;
 	  score=elapsed_time*avg_error;
 
-	  //This [C:/TempleOS/Kernel/Misc1a.CPP.Z,178] Sleep()s until the next time the
+	  //This [C:/Kernel/Misc1a.CPP.Z,154] Sleep()s until the next time the
 	  //window mgr task runs.  The
 	  //window mgr calls the UpdateWin() routine
 	  //and places msgs in the que, so there's

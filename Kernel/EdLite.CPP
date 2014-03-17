@@ -70,8 +70,8 @@ U0 EdLite(U8 *filename,I64 num=1)
   if (!filename) filename=sys_temp_filename;
   buf=FileRead(filename,&size);
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   sys_raw_flags=sys_raw_flags&~RWF_SCROLL|RWF_SHOW_DOLLAR;
   sys_cur_scan_code=0;
   QueInit(&root);
@@ -180,9 +180,7 @@ U0 EdLite(U8 *filename,I64 num=1)
 	    if (cur_col==StrLen(cur_line->line)) {
 	      templ=cur_line->next;
 	      if (cur_line!=&root && templ!=&root) {
-		src=MAlloc(StrLen(cur_line->line)+StrLen(templ->line)+1);
-		StrCpy(src,cur_line->line);
-		StrCat(src,templ->line);
+		src=MPrint("%s%s",cur_line->line,templ->line);
 		Free(cur_line->line);
 		Free(templ->line);
 		cur_line->line=src;
@@ -209,9 +207,7 @@ U0 EdLite(U8 *filename,I64 num=1)
 	  cur_col--;
 	} else if (cur_line!=&root && cur_line->last!=&root) {
 	  templ=cur_line->last;
-	  src=MAlloc(StrLen(cur_line->line)+StrLen(templ->line)+1);
-	  StrCpy(src,templ->line);
-	  StrCat(src,cur_line->line);
+	  src=MPrint("%s%s",templ->line,cur_line->line);
 	  cur_col=StrLen(templ->line);
 	  Free(cur_line->line);
 	  Free(templ->line);
@@ -290,7 +286,7 @@ U0 EdLite(U8 *filename,I64 num=1)
   InDbg(old_debug);
   SingleUser(old_single);
   sys_raw_flags=sys_raw_flags&~RWF_SHOW_DOLLAR|old_raw_flags&RWF_SHOW_DOLLAR;
-  PopFD;
+  POPFD
 }
 
 U0 ToFileLine(U8 *_fl_file_line,U8 **_filename,I64 *_linenum)
@@ -300,7 +296,7 @@ U0 ToFileLine(U8 *_fl_file_line,U8 **_filename,I64 *_linenum)
   StrFirstRem(fl_file_line,":");
   st=StrNew(fl_file_line);
   StrLastRem(fl_file_line,",",st);
-  linenum=A2I(st);
+  linenum=A2I64(st);
   Free(st);
   *_filename=fl_file_line;
   *_linenum=linenum;

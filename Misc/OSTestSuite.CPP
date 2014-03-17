@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=147;
+  progress4_max=150;
   *progress4_desc=0;
 }
 U0 TSEnd()
@@ -67,6 +67,20 @@ U0 DoSpriteText()
   XTalkWait(task,"#include \"::/Demo/Graphics/SpriteText\";\n");
   Sleep(1000);
   XTalk(task,"Exit;\n");
+}
+
+U0 DoCarry()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/Demo/Carry\";\n");
+  Sleep(750);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoBalloon()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/Demo/Graphics/Balloon\";Exit;\n");
 }
 
 U0 DoEdCSprite()
@@ -551,13 +565,13 @@ U0 DoMorseCode()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoPixelCollision()
+U0 DoPixCollision()
 {
   I64 w,h;
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/Demo/Graphics/PixelCollision\";\n");
-  w=task->win_pixel_width>>1 +task->win_pixel_left+task->win_scroll_x;
-  h=task->win_pixel_height>>1+task->win_pixel_top +task->win_scroll_y;
+  XTalkWait(task,"#include \"::/Demo/Graphics/PixCollision\";\n");
+  w=task->pix_width>>1 +task->pix_left+task->scroll_x;
+  h=task->pix_height>>1+task->pix_top +task->scroll_y;
   SetIP(w-35,h-35);
   AFSetIP(10,w+35,w+35);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
@@ -637,7 +651,7 @@ U0 DoCtrlR1()
     Yield;
   TaskWait(task->popup_task);
   task_num=task->popup_task->task_num;
-  for (i=0;i<7;i++)
+  for (i=0;i<6;i++)
     SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   while (TaskValidate(task->popup_task))
@@ -674,7 +688,7 @@ U0 DoCtrlR1()
     Yield;
   TaskWait(task->popup_task);
   task_num=task->popup_task->task_num;
-  for (i=0;i<10;i++)
+  for (i=0;i<9;i++)
     SendMsg(task->popup_task,MSG_KEY_DOWN_UP,0,SC_CURSOR_DOWN);
   PostMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   while (TaskValidate(task->popup_task))
@@ -1030,10 +1044,10 @@ U0 DoBigGuns()
   XTalk(task,"#include \"::/Demo/Games/BigGuns\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
-  task->popup_task->user_data0=Fs;
+  task->popup_task->user_data=Fs;
   TaskWait(task->popup_task);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  while (!TaskValidate(task->popup_task)||task->popup_task->user_data0==Fs)
+  while (!TaskValidate(task->popup_task)||task->popup_task->user_data==Fs)
     Yield;
   TaskWait(task->popup_task);
   SendMsg(task->popup_task,MSG_KEY_DOWN_UP,CH_SPACE,0);
@@ -1617,17 +1631,7 @@ U0 Do()
   SendMsg(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
   XTalk(task,"Exit;\n");
 }
-*/
 
-U0 DoOrderedIO()
-{
-  CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/Demo/Dsk/OrderedIO\";\n");
-  Sleep(1500);
-  XTalk(task,"Exit;\n");
-}
-
-/*
 U0 DoFPrintF()
 {
   CTask *task=SpawnUser;
@@ -1680,6 +1684,26 @@ U0 DoWebLog()
   SendMsg(task,MSG_KEY_DOWN_UP,'\n',0);
   SendMsg(task,MSG_KEY_DOWN_UP,'\n',0);
   SendMsg(task,MSG_KEY_DOWN_UP,CH_ESC,0);
+  Sleep(1000);
+  XTalk(task,"Exit;\n");
+}
+
+U0 DoReverseFile()
+{
+  CTask *task=SpawnUser;
+  Del("::/Demo/ReverseFileExample/PoemForward.TXT.Z");
+  XTalk(task,"#include \"::/Demo/ReverseFileExample/Reverse\";"
+    "Type(\"::/Demo/ReverseFileExample/PoemForeward.TXT.Z\");"
+    "Sleep(1000);"
+    "Exit;\n");
+  while (TaskValidate(task));
+}
+
+U0 DoSortFile()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/Demo/SortFileExample/F64FileGen\";\n");
+  XTalkWait(task,"#include \"::/Demo/SortFileExample/F64FileSort\";\n");
   Sleep(1000);
   XTalk(task,"Exit;\n");
 }
@@ -1970,10 +1994,10 @@ U0 DoAsmHelloWorld()
   XTalk(task,"Exit;\n");
 }
 
-U0 DoAsmAndC()
+U0 DoAsmAndC1()
 {
   CTask *task=SpawnUser;
-  XTalkWait(task,"#include \"::/Demo/Asm/AsmAndC\";\n2\n");
+  XTalkWait(task,"#include \"::/Demo/Asm/AsmAndC1\";\n2\n");
   XTalk(task,"Exit;\n");
   while (TaskValidate(task))
     Yield;
@@ -1986,6 +2010,14 @@ U0 DoAsmAndC2()
   XTalk(task,"Exit;\n");
   while (TaskValidate(task))
     Yield;
+}
+
+U0 DoAsmAndC3()
+{
+  CTask *task=SpawnUser;
+  XTalkWait(task,"#include \"::/Demo/Asm/AsmAndC3\";\n");
+  Sleep(750);
+  XTalk(task,"Exit;\n");
 }
 
 U0 DoBuzzFizz()
@@ -2081,7 +2113,7 @@ U0 OSTestSuite()
   TS; DoChessNet;
   TS; DoMPAdd;
   TS; DoPrimes;
-  TS; DoPalindrome;
+  TS; if (FileFind(Define("ST_BIBLE_FILE"))) DoPalindrome;
   TS; DoClouds;
   TS; if (mp_cnt>1) DoRadixSort;
   TS; if (mp_cnt>1) DoLoadTest;
@@ -2095,6 +2127,8 @@ U0 OSTestSuite()
   TS; DoSpritePutExt;
   TS; DoSpriteText;
   TS; DoEdCSprite;
+  TS; DoBalloon;
+  TS; DoCarry;
   TS; DoExtents;
   TS; DoDotNet;
   TS; DoMoon;
@@ -2105,7 +2139,7 @@ U0 OSTestSuite()
   TS; DoMsgLoop;
   TS; DoASCIIOrgan;
   TS; DoMorseCode;
-  TS; DoPixelCollision;
+  TS; DoPixCollision;
   TS; DoDoodle;
   TS; DoMassSpring;
   TS; DoSpeedLine;
@@ -2161,11 +2195,12 @@ U0 OSTestSuite()
   TS; DoCartesian;
   TS; DoRainDrops;
   TS; DoCollision;
-  TS; DoOrderedIO;
   TS; DoLogic;
   TS; DoCompileDemo;
   TS; DoPrompt;
   TS; if (IsDrvWritable(':')) DoWebLog;
+  TS; if (IsDrvWritable(':')) DoReverseFile;
+  TS; if (IsDrvWritable(':')) DoSortFile;
   TS; DoDefine;
   TS; DoGlblVars;
   TS; DoFileRead;
@@ -2182,8 +2217,9 @@ U0 OSTestSuite()
   TS; DoStkGrow;
   TS; DoWaterFowl;
   TS; DoAsmHelloWorld;
-  TS; DoAsmAndC;
+  TS; DoAsmAndC1;
   TS; DoAsmAndC2;
+  TS; DoAsmAndC3;
   TS; DoMulByHand;
   TS; DoDivByHand;
   TS; DoBuzzFizz;
@@ -2195,5 +2231,5 @@ U0 OSTestSuite()
 
 OSTestSuite;
 
-//[C:/Demo/Carry.CPP.Z,1]
 //[C:/Demo/Dsk/DskRaw.CPP.Z,1]
+//[C:/Demo/Graphics/InputPointer.CPP.Z,1]

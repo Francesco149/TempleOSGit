@@ -78,7 +78,7 @@ U0 MPPalindrome(I64 dummy=0)
 U0 Palindrome(U8 *filename)
 {
   I64 i;
-  F64 t0=tT;
+  F64 t0=tS;
 
   buf=FileRead(filename,&size);
   PDNormalize;
@@ -91,7 +91,7 @@ U0 Palindrome(U8 *filename)
     Yield;
 
   Free(buf);
-  "Time:%9.5f\n",tT-t0;
+  "Time:%9.5f\n",tS-t0;
 }
 
 Palindrome(Define("ST_BIBLE_FILE"));

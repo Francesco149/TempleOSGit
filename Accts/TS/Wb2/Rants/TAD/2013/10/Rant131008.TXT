@@ -280,7 +280,7 @@ If you are working on the kernel or compiler modules, you static compile the
 
 You call MakeAll
 
-[MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 
 ----10/08/13 05:10:26----
 
@@ -313,10 +313,10 @@ Just use my boot-loader.  [C:/Doc/Boot.TXT.Z,1]
 The trick to my boot-loader is you must run an Install to patch it.
 
 
-[MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 
 
 There's one for the master too.
 
-[MN:MasterBootIntall] MasterBootIntall().
+[C:/Adam/Boot/InsBoot.CPP.Z,263] MasterBootIntall().
 

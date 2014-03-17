@@ -8,8 +8,8 @@ I64 ObjCompare(Obj *o1,Obj *o2)
 U0 DrawHoreb(CTask *task,CDC *dc)
 {
   I64 i,j,x,y,z,dx,dy,dz,
-      w=task->win_pixel_width,
-      h=task->win_pixel_height,r[16],
+      w=task->pix_width,
+      h=task->pix_height,r[16],
       cx=w>>1,cy=h>>1;
   F64 s,m,a,x1,y1,x2,y2;
   Obj *o_sort[O_NUM_OBJS],*tempo;
@@ -57,7 +57,7 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
       GrSetSymmetry(dc,s*tempo->x1+cx,s*tempo->y1+h,s*tempo->x1+cx,s*tempo->y1+h+10);
     }
-    SpritePlot3B(dc,s*tempo->x1+cx,s*tempo->y1+h,0,type_imgs[tempo->type]);
+    Sprite3B(dc,s*tempo->x1+cx,s*tempo->y1+h,0,imgs[tempo->type]);
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     if (o_sort[i]==&objs[O_BURNING_BUSH]) { //draw burning bush
       dc->x=s*tempo->x1+cx;

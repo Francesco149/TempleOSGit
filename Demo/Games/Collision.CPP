@@ -1,7 +1,7 @@
 /*
-This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point arithmetic
+This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point arithmetic
 because it used to be faster than floating
-point.	See [C:/Demo/Lectures/FixedPoint.CPP,1].
+point.	See [C:/Demo/Lectures/FixedPoint.CPP.Z,1].
 
 The decimal place is between
 bits 31 and 32.
@@ -66,8 +66,8 @@ U0 AnimateTask(I64)
     delta_x,delta_y,v_t1,v_n1,v_t2,v_n2;
   F64 dist;
   while (TRUE) {
-    h=task->win_pixel_width;
-    v=task->win_pixel_height;
+    h=task->pix_width;
+    v=task->pix_height;
     for (i=0;i<NUM_BALLS;i++) {
       ball_x[i]+=ball_velocity_x[i];
       ball_y[i]+=ball_velocity_y[i];
@@ -145,8 +145,8 @@ U0 Init()
 {
   I64 i;
   for (i=0;i<NUM_BALLS;i++) {
-    ball_x[i]=(RandU16%(Fs->win_pixel_width-BALL_RADIUS*2)+BALL_RADIUS)<<32;
-    ball_y[i]=(RandU16%(Fs->win_pixel_height-BALL_RADIUS*2)+BALL_RADIUS)<<32;
+    ball_x[i]=(RandU16%(Fs->pix_width-BALL_RADIUS*2)+BALL_RADIUS)<<32;
+    ball_y[i]=(RandU16%(Fs->pix_height-BALL_RADIUS*2)+BALL_RADIUS)<<32;
     ball_velocity_x[i]=RandI32/4;
     ball_velocity_y[i]=RandI32/4;
   }
@@ -154,7 +154,7 @@ U0 Init()
 
 U0 Collision()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   DocCursor;

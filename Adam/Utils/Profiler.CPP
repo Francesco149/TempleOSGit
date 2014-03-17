@@ -47,7 +47,7 @@ public U0 ProfBin(U8 *start,I64 cnt=PF_ARRAY_CNT*3)
 //Start profiler in bin mode.  Profilers
 //report where time is spent by checking
 //the instruction ptr during the
-//timer interrupt.  Do a [C:/TempleOS/Adam/Profiler.CPP.Z,109] ProfRep(), (profiler report)
+//timer interrupt.  Do a [C:/Adam/Utils/Profiler.CPP.Z,109] ProfRep(), (profiler report)
 //after you have collected data.
 {
   if (cnt<PF_ARRAY_CNT)
@@ -62,7 +62,7 @@ public U0 ProfBin(U8 *start,I64 cnt=PF_ARRAY_CNT*3)
   pf_time_end=0;
   pf_time_start=sys_jiffies;
   prof_mode=PFM_BIN;
-  pf_t0=tT;
+  pf_t0=tS;
 }
 
 public U0 ProfCPUSet(I64 num)
@@ -83,7 +83,7 @@ public U0 ProfAll(I64 depth=0)
 //Start profiler in record-all mode.  Profilers
 //report where time is spent by checking
 //the instruction ptr during the
-//timer interrupt.  Do a [C:/TempleOS/Adam/Profiler.CPP.Z,109] ProfRep(), (profiler report)
+//timer interrupt.  Do a [C:/Adam/Utils/Profiler.CPP.Z,109] ProfRep(), (profiler report)
 //after you have collected data.
 {
   pf_depth=depth;
@@ -93,7 +93,7 @@ public U0 ProfAll(I64 depth=0)
   pf_time_end=0;
   pf_time_start=sys_jiffies;
   prof_mode=PFM_ALL;
-  pf_t0=tT;
+  pf_t0=tS;
 }
 
 I64 PFACompare(U8 *i1,U8 *i2)
@@ -108,7 +108,7 @@ I64 PFACompare(U8 *i1,U8 *i2)
 
 public U0 ProfRep(I64 filter_cnt=1)
 {
-  F64 pf_tf=tT;
+  F64 pf_tf=tS;
   I64 i,ip,last_ip=pf_low,hits,
       total_time,routine_total=0,old_mode=prof_mode;
   U8 buf[128],buf2[128],buf3[128],last_buf[128];

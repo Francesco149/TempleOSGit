@@ -13,9 +13,9 @@ sym hash table at boot before this file
 gets #included during boot.
 
 See
-[C:/Kernel/Kernel.PRJ,1] Adam1b for where it is included during compiling the kernel.
-[C:/Kernel/Adam1.CPP,1] Adam1b for where it is included during boots.
-[C:/Kernel/KEnd.CPP,1] LoadKernel for where the Kernel syms are added to the hash tables.
+[C:/Kernel/Kernel.PRJ.Z,1] Adam1b for where it is included during compiling the kernel.
+[C:/Kernel/Adam1.CPP.Z,1] Adam1b for where it is included during boots.
+[C:/Kernel/KEnd.CPP.Z,1] LoadKernel for where the Kernel syms are added to the hash tables.
 
 */
 
@@ -138,21 +138,10 @@ public _intern IC_STRLEN I64 StrLen(U8 *st);
 public _extern _CPUID U0 CPUId(U32 rax,CRAXRBCRCXRDX *result);
 public _intern IC_SET_RAX U0 SetRAX(I64 d);
 public _intern IC_GET_RAX I64 GetRAX();
-public _intern IC_CLI U0 Cli();
-public _intern IC_STI U0 Sti();
-public _intern IC_PUSHFD U0 PushFD();
-public _intern IC_POPFD U0 PopFD();
-public _intern IC_HLT U0 Hlt();
 public _extern _SYS_HLT U0 SysHlt(); //Loops
-
-//This instruction hints to the processor
-//that a spin-loop is taking place.
-public _intern IC_PAUSE U0 Pause();
 
 public _intern IC_POP I64 Pop();
 public _intern IC_PUSH U0 Push(I64 d);
-public _intern IC_CLD U0 Cld();
-public _intern IC_STD U0 Std();
 public _intern IC_GET_RFLAGS I64 GetRFlags();
 public _intern IC_CARRY I64 Carry();
 public _intern IC_SET_RFLAGS U0 SetRFlags(I64 d);
@@ -161,7 +150,7 @@ public _intern IC_SET_RSP U0 SetRSP(U8 *d);
 public _intern IC_GET_RBP U8 *GetRBP();
 public _intern IC_SET_RBP U0 SetRBP(U8 *d);
 public _extern SYS_CACHE_LINE_WIDTH I64 sys_cache_line_width;
-_extern SYS_GDTTAB U8 sys_gdttab[GDT_SIZE];
+_extern SYS_GDT CGDT sys_gdt;
 public _extern _XCHG_U64 U64 XchgU64(U64 *dst,U64 d);
 public _extern _XCHG_U32 U64 XchgU32(U32 *dst,U32 d);
 public _extern _XCHG_U16 U64 XchgU16(U16 *dst,U16 d);
@@ -172,7 +161,7 @@ public _extern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d);
 public _extern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d);
 
 //Model Specific Reg
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,592] MSRs
+//See [C:/Kernel/Adam1a.HPP.Z,510] MSRs
 public _extern _SET_MSR U0 SetMSR(I64 model_specific_reg,I64 val);
 
 #help_index "Processor/Cache;Memory/Cache"
@@ -183,13 +172,13 @@ public _intern IC_CLFLUSH U0 CLFlush(U8 *a);
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
 public _extern SYS_MP_CNT I64 mp_cnt;
-_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/TempleOS/Kernel/MultiProc.CPP.Z,400] MPStart
+_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,312] MPStart
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 public _extern SYS_CPU_STRUCTS	 CCPU *cpu_structs;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-//This pts to the current CPU structure.
+//This points to the current [C:/Kernel/Adam1a.HPP.Z,3488] CCPU structure.
 //It returns the val in the GS segment reg.
 public _intern IC_GS CCPU *Gs();
 
@@ -209,8 +198,6 @@ public _intern IC_TO_I64 I64 ToI64(F64 d);  //This truncates
 public _intern IC_TO_F64 F64 ToF64(I64 i);
 public _intern IC_TO_BOOL Bool ToBool(I64 i);
 public _intern IC_ABS_I64 I64 AbsI64(I64 i);
-public _extern _LIMIT_I64 I64 LimitI64(I64 p,I64 lo,I64 hi);
-public _extern _LIMIT_U64 U64 LimitU64(U64 p,U64 lo,U64 hi);
 public _intern IC_SIGN_I64 I64 SignI64(I64 i);
 public _intern IC_SQR_I64  I64 SqrI64(I64 i);
 public _intern IC_SQR_U64  U64 SqrU64(U64 i);
@@ -231,6 +218,8 @@ public _intern IC_COS F64 Cos(F64 d);
 public _intern IC_TAN F64 Tan(F64 d);
 public _intern IC_ATAN F64 ATan(F64 d);
 
+public _extern _CLAMP_I64 I64 ClampI64(I64 p,I64 lo,I64 hi);
+public _extern _CLAMP_U64 U64 ClampU64(U64 p,U64 lo,U64 hi);
 public _extern _SIGN F64 Sign(F64 d);
 public _extern _ARG F64 Arg(F64 x,F64 y);
 public _extern _ROUND F64 Round(F64 d);
@@ -249,7 +238,6 @@ _extern _FSTCW U16 Fstcw();
 _extern _FSTSW U16 Fstsw();
 _extern _FXSAVE  U0 Fxsave(CFPU *fpu_mmx);
 _extern _FXRSTOR U0 Fxrstor(CFPU *fpu_mmx);
-_extern SYS_INIT_FPU_MMX CFPU sys_init_fpu_mmx;
 
 #help_index "Math/CD3;ODE/CD3"
 #help_file "::/Doc/D3"
@@ -277,18 +265,18 @@ public _extern _D3_UNIT CD3 *D3Unit(CD3 *d);
 
 
 #help_index "Task;Processor"
-//This pts to the current task record.
+//This points to the current [C:/Kernel/Adam1a.HPP.Z,2879] CTask structure.
 //It returns the val in the FS segment reg.
 public _intern IC_FS CTask *Fs();
 
 #help_index "Call"
 public _extern _CALL I64 Call(U8 *s);
 
-//fp_add can have any fixed number of arguments.
-public _extern _CALLIND I64 CallInd(/*argpop*/I64 (*fp_add)(...),...);
+//fp_addr can have any fixed number of arguments.
+public _extern _CALLIND I64 CallInd(/*argpop*/I64 (*fp_addr)(...),...);
 
 //This is just an array of ptrs to funs.
-//See [MN:EXT_NUM_ENTRIES] Extern Num Definitions
+//See [C:/Kernel/Adam1a.HPP.Z,582] Extern Num Definitions
 public _extern SYS_EXTERN_TABLE /*argpop*/ I64 (**ext)(...);
 //Can have any fixed number of arguments.
 public _extern _CALLEXTNUM I64 CallExtNum(I64 num,...);

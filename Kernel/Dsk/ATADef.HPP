@@ -1,4 +1,4 @@
-//See [C:/Doc/Acknowledgements.TXT,1].
+//See [C:/Doc/Acknowledgements.TXT.Z,1].
 
 #define ATA_NOP			0x00
 #define ATA_DEV_RST		0x08

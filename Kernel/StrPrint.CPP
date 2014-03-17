@@ -1,16 +1,15 @@
-#define SPF_PAD_ZERO		0x0001
-#define SPF_LEFT_JUSTIFY	0x0002
-#define SPF_TRUNCATE		0x0004
-#define SPF_COMMA		0x0008
-#define SPF_DOLLAR		0x0010
-#define SPF_SLASH		0x0020
-#define SPF_QUESTION		0x0040
-#define SPF_SUB_FMT		0x0080
-#define SPF_DECIMAL		0x0100
-#define SPF_K			0x0200
-#define SPF_NEG			0x0400
-#define SPF_NEG_E		0x0800
-#define SPF_NEG_SUB_FMT		0x1000
+#define SPF_PAD_ZERO		0x001
+#define SPF_LEFT_JUSTIFY	0x002
+#define SPF_TRUNCATE		0x004
+#define SPF_COMMA		0x008
+#define SPF_DOLLAR		0x010
+#define SPF_SLASH		0x020
+#define SPF_QUESTION		0x040
+#define SPF_SUB_FMT		0x080
+#define SPF_DECIMAL		0x100
+#define SPF_NEG			0x200
+#define SPF_NEG_E		0x400
+#define SPF_NEG_SUB_FMT		0x800
 
 U0 SPutChar(U8 **_dst,U8 ch,U8 **_buf)
 {
@@ -139,84 +138,82 @@ U8 *MPrintq(U8 *ptr,I64 flags)
       switch (ch) {
 	case '\\':
 	  switch (ch1) {
-	    case 'n':
-	      SPutChar(_dst,'\n',_buf);
+	    sub_switch_start:
+	      case 'n':
+		SPutChar(_dst,'\n',_buf);
+		break;
+	      case 'r':
+		SPutChar(_dst,'\r',_buf);
+		break;
+	      case '"':
+		SPutChar(_dst,'"',_buf);
+		break;
+	      case '\'':
+		SPutChar(_dst,'\'',_buf);
+		break;
+	      case '\`':
+		SPutChar(_dst,'\`',_buf);
+		break;
+	      case '\\':
+		SPutChar(_dst,'\\',_buf);
+		break;
+	      case 't':
+		SPutChar(_dst,'\t',_buf);
+		break;
+	    sub_switch_end:
 	      ptr++;
 	      break;
-	    case 'r':
-	      SPutChar(_dst,'\r',_buf);
-	      ptr++;
-	      break;
-	    case '"':
-	      SPutChar(_dst,'"',_buf);
-	      ptr++;
-	      break;
-	    case '\'':
-	      SPutChar(_dst,'\'',_buf);
-	      ptr++;
-	      break;
-	    case '\`':
-	      SPutChar(_dst,'\`',_buf);
-	      ptr++;
-	      break;
-	    case '\\':
-	      SPutChar(_dst,'\\',_buf);
-	      ptr++;
-	      break;
-	    case 't':
-	      SPutChar(_dst,'\t',_buf);
-	      ptr++;
-	      break;
-	    case 'x':
-	    case 'X':
-	      i=0;
-	      ptr++;
-	      while (TRUE) {
-		ch1=ToUpper(*ptr++);
-		if (Bt(chars_bitmap_hex_numeric,ch1)) {
-		  if (ch1<='9')
-		    i=i<<4+ch1-'0';
+
+	    sub_switch_start:
+	      case 'x':
+	      case 'X':
+		i=0;
+		ptr++;
+		while (TRUE) {
+		  ch1=ToUpper(*ptr++);
+		  if (Bt(chars_bitmap_hex_numeric,ch1)) {
+		    if (ch1<='9')
+		      i=i<<4+ch1-'0';
+		    else
+		      i=i<<4+ch1-'A'+10;
+		  } else
+		    break;
+		}
+		break;
+	      case 'b':
+	      case 'B':
+		i=0;
+		ptr++;
+		while (TRUE) {
+		  ch1=*ptr++;
+		  if ('0'<=ch1<='1')
+		    i=i<<1+ch1-'0';
 		  else
-		    i=i<<4+ch1-'A'+10;
-		} else
-		  break;
-	      }
-	      ptr--;
-	      SPutChar(_dst,i,_buf);
-	      break;
-	    case 'b':
-	    case 'B':
-	      i=0;
-	      ptr++;
-	      while (TRUE) {
-		ch1=*ptr++;
-		if ('0'<=ch1<='1')
-		  i=i<<1+ch1-'0';
-		else
-		  break;
-	      }
-	      ptr--;
-	      SPutChar(_dst,i,_buf);
-	      break;
-	    case 'o':
-	    case 'O':
-	      i=0;
-	      ptr++;
-	      goto sq_octal;
-	    case '0'...'7':
-	      i=ch1-'0';
-	      ptr++;
+		    break;
+		}
+		break;
+	      case 'o':
+	      case 'O':
+		i=0;
+		ptr++;
+		goto sq_octal;
+	      case '0'...'7':
+		i=ch1-'0';
+		ptr++;
 sq_octal:
-	      while (TRUE) {
-		ch1=*ptr++;
-		if ('0'<=ch1<='7')
-		  i=i<<3+ch1-'0';
-		else
-		  break;
-	      }
-	      ptr--;
+		while (TRUE) {
+		  ch1=*ptr++;
+		  if ('0'<=ch1<='7')
+		    i=i<<3+ch1-'0';
+		  else
+		    break;
+		}
+		break;
+	    sub_switch_end:
 	      SPutChar(_dst,i,_buf);
+	      ptr--;
 	      break;
+
 	    default:
 	      SPutChar(_dst,ch,_buf);
 	  }
@@ -239,35 +236,27 @@ sq_octal:
   return buf;
 }
 
-U8 *sprint_pos_powers_lst=
-"kilo\0mega\0giga\0tera\0peta\0exa\0zetta\0yotta\0";
-U8 *sprint_pos_powers_lets=
-" kMGTPEZY";
-
-U8 *sprint_neg_powers_lst=
-"milli\0micro\0nano\0pico\0femto\0atto\0zepto\0yocto\0";
-U8 *sprint_neg_powers_lets=
-" munpfazy";
+U8 *sys_pos_powers_lets=" KMGTPEZY",
+   *sys_neg_powers_lets=" munpfazy",
+   *sys_pos_powers_lst="kilo\0mega\0giga\0tera\0peta\0exa\0zetta\0yotta\0",
+   *sys_neg_powers_lst="milli\0micro\0nano\0pico\0femto\0atto\0zepto\0yocto\0";
 
 #define TEMP_BUF_LEN	256
 #define SLOP		8
 
 U8 *SPrintJoin(U8 *dst,U8 *src,I64 argc,I64 *argv)
-{ //[C:/Doc/HolyC.TXT,1] Print Codes
-/*
-In float formatting, do not exceed 18-digits
-before or after the decimal point
-because the numbers before and after
-the decimal point are stored
-in 64-bits.  Use exponentiated forms
-to avoid this.
-*/
+{//[C:/Doc/HolyC.TXT.Z,1] Print Extended Codes
+// In float formatting, do not exceed 18-digits
+// before or after the decimal point
+// because the numbers before and after
+// the decimal point are stored
+// in 64-bits.  Use exponentiated forms
+// to avoid this.
   I64 i,j,l,ch,k,k0,n,n0,len,dec_len,flags,
 	sub_fmt,comma_cnt,comma_fmt_cnt,cur_arg=0;
   U64 m;
   F64 d,d1;
-  U8 *ptr,**_buf,*buf,**_dst,*temp1,
-     temp_buf[TEMP_BUF_LEN],temp_buf2[TEMP_BUF_LEN*2];
+  U8 *ptr,**_buf,*buf,**_dst,temp_buf[TEMP_BUF_LEN],temp_buf2[TEMP_BUF_LEN*2];
 
   if (!src)
     throw('SPrint');
@@ -317,35 +306,31 @@ to avoid this.
 
       while (TRUE) {
 	switch (*src) {
-	  case '$':
-	    src++;
-	    flags|=SPF_DOLLAR;
-	    break;
-	  case '/':
-	    src++;
-	    flags|=SPF_SLASH;
-	    break;
-	  case ',':
-	    src++;
-	    flags|=SPF_COMMA;
-	    break;
-	  case 't':
-	    src++;
-	    flags|=SPF_TRUNCATE;
-	    break;
-	  case 'k':
-	    src++;
-	    flags|=SPF_K;
-	    break;
-	  case 'l': //harmless
+	  sub_switch_start:
+	    case '$':
+	      flags|=SPF_DOLLAR;
+	      break;
+	    case '/':
+	      flags|=SPF_SLASH;
+	      break;
+	    case ',':
+	      flags|=SPF_COMMA;
+	      break;
+	    case 't':
+	      flags|=SPF_TRUNCATE;
+	      break;
+	    case 'l': //harmless
+	      break;
+	  sub_switch_end:
 	    src++;
 	    break;
+
 	  default:
 	    goto sp_in_sub_fmt;
 	}
       }
 
-      sp_in_sub_fmt:
+sp_in_sub_fmt:
       sub_fmt=0;
       if (*src=='h') {
 	src++;
@@ -374,95 +359,94 @@ to avoid this.
 
       k=0;
       switch (*src++) {
-	case 's':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  ptr=argv[cur_arg++];
-	  OutStr(ptr,_buf,_dst,len,flags);
-	  break;
-	case 'S':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  ptr=Define(argv[cur_arg++]);
-	  OutStr(ptr,_buf,_dst,len,flags);
-	  break;
-	case 'F':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  ptr=TextFileRead(argv[cur_arg++]);
-	  OutStr(ptr,_buf,_dst,len,flags);
-	  Free(ptr);
-	  break;
-	case 'Q':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  ptr=MPrintQ(argv[cur_arg++],flags);
-	  OutStr(ptr,_buf,_dst,len,flags);
-	  Free(ptr);
-	  break;
-	case 'q':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  ptr=MPrintq(argv[cur_arg++],flags);
+	sub_switch_start:
+	  case 'F':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=FileRead(argv[cur_arg++]);
+	    break;
+	  case 'Q':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=MPrintQ(argv[cur_arg++],flags);
+	    break;
+	  case 'q':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=MPrintq(argv[cur_arg++],flags);
+	    break;
+	  case 'D':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=MPrintDate(argv[cur_arg++]);
+	    break;
+	  case 'T':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=MPrintTime(argv[cur_arg++]);
+	    break;
+	sub_switch_end:
 	  OutStr(ptr,_buf,_dst,len,flags);
 	  Free(ptr);
 	  break;
-	case 'z':
-	  if (cur_arg+1>=argc)
-	    throw('SPrint');
-	  ptr=LstSub(argv[cur_arg],argv[cur_arg+1]);
-	  cur_arg=cur_arg+2;
+
+	sub_switch_start:
+	  case 's':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=argv[cur_arg++];
+	    break;
+	  case 'S':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    ptr=Define(argv[cur_arg++]);
+	    break;
+	  case 'z':
+	    if (cur_arg+1>=argc)
+	      throw('SPrint');
+	    ptr=LstSub(argv[cur_arg],argv[cur_arg+1]);
+	    cur_arg=cur_arg+2;
+	    break;
+	  case 'Z':
+	    if (cur_arg+1>=argc)
+	      throw('SPrint');
+	    ptr=DefineSub(argv[cur_arg],argv[cur_arg+1]);
+	    cur_arg=cur_arg+2;
+	    break;
+	sub_switch_end:
 	  OutStr(ptr,_buf,_dst,len,flags);
 	  break;
-	case 'Z':
-	  if (cur_arg+1>=argc)
-	    throw('SPrint');
-	  ptr=DefineSub(argv[cur_arg],argv[cur_arg+1]);
-	  cur_arg=cur_arg+2;
-	  OutStr(ptr,_buf,_dst,len,flags);
-	  break;
-	case 'c':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  temp_buf[0](I64)=argv[cur_arg++];
-	  temp_buf[8]=0;
+
+	sub_switch_start:
+	  case 'c':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    temp_buf[0](I64)=argv[cur_arg++];
+	    temp_buf[8]=0;
+	    break;
+	  case 'C':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    temp_buf[0](I64)=argv[cur_arg++];
+	    temp_buf[8]=0;
+	    ptr=temp_buf;
+	    while (*ptr) {
+	      *ptr=ToUpper(*ptr);
+	      ptr++;
+	    }
+	    break;
+	  case 'p':
+	    if (cur_arg>=argc)
+	      throw('SPrint');
+	    if (flags&SPF_TRUNCATE)
+	      SPrintPSect(temp_buf,argv[cur_arg++],len);
+	    else
+	      SPrintPSect(temp_buf,argv[cur_arg++],0);
+	    break;
+	sub_switch_end:
 	  OutStr(temp_buf,_buf,_dst,len,flags);
 	  break;
-	case 'C':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  temp_buf[0](I64)=argv[cur_arg++];
-	  temp_buf[8]=0;
-	  ptr=temp_buf;
-	  while (*ptr) {
-	    *ptr=ToUpper(*ptr);
-	    ptr++;
-	  }
-	  OutStr(temp_buf,_buf,_dst,len,flags);
-	  break;
-	case 'D':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  temp1=MPrintDate(argv[cur_arg++]);
-	  OutStr(temp1,_buf,_dst,len,flags);
-	  Free(temp1);
-	  break;
-	case 'T':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  temp1=MPrintTime(argv[cur_arg++]);
-	  OutStr(temp1,_buf,_dst,len,flags);
-	  Free(temp1);
-	  break;
-	case 'p':
-	  if (cur_arg>=argc)
-	    throw('SPrint');
-	  if (flags&SPF_TRUNCATE)
-	    SPrintPSect(temp_buf,argv[cur_arg++],len);
-	  else
-	    SPrintPSect(temp_buf,argv[cur_arg++],0);
-	  OutStr(temp_buf,_buf,_dst,len,flags);
-	  break;
+
 	case 'P':
 	  if (cur_arg>=argc)
 	    throw('SPrint');
@@ -471,7 +455,7 @@ to avoid this.
 	  else
 	    SPrintPSect(temp_buf,argv[cur_arg],0);
 	  if (!IsRaw || !_buf) {
-	    SPrint(temp_buf2,"$LK,\"%s\",\"AD:0x%X\"$",temp_buf,argv[cur_arg]);
+	    SPrint(temp_buf2,"$LK,\"%s\",A=\"AD:0x%X\"$",temp_buf,argv[cur_arg]);
 	    OutStr(temp_buf2,_buf,_dst,len,flags);
 	  } else
 	    OutStr(temp_buf,_buf,_dst,len,flags);
@@ -753,28 +737,17 @@ sp_out_e:
 	  if (cur_arg>=argc)
 	    throw('SPrint');
 	  d=argv[cur_arg++](F64);
-	  flags|=SPF_K;
 	  if (d<0) {
 	    flags|=SPF_NEG;
 	    d=-d;
 	  }
 sp_out_eng: //Engineering notation
 	  if (d==inf) goto sp_out_inf;
-	  if (flags&SPF_K) {
-	    if (d)
-	      n=FloorI64(Floor(Log10(d)),3);
-	    else
-	      n=0;
-	    d/=Pow10I64(n);
-	  } else {
-	    if (d)
-	      n=Floor(Ln(d)/Ln(1024));
-	    else
-	      n=0;
-
-	    d/=1024`n;
-	    n*=3;
-	  }
+	  if (d)
+	    n=FloorI64(Floor(Log10(d)),3);
+	  else
+	    n=0;
+	  d/=Pow10I64(n);
 
 	  if (n<0) {
 	    n=-n;
@@ -792,16 +765,13 @@ sp_out_eng: //Engineering notation
 		j=-n-sub_fmt;
 	      else
 		j=n-sub_fmt;
-	      if (flags&SPF_K)
-		d*=Pow10I64(j);
-	      else
-		d*=1024`(j/3.0);
+	      d*=Pow10I64(j);
 	      i=sub_fmt/3;
 	    }
 	    if (i<0)
-	      temp_buf[k++]=sprint_neg_powers_lets[-i];
+	      temp_buf[k++]=sys_neg_powers_lets[-i];
 	    else if (i>0)
-	      temp_buf[k++]=sprint_pos_powers_lets[i];
+	      temp_buf[k++]=sys_pos_powers_lets[i];
 	    else if (len!=0)
 	      temp_buf[k++]=CH_SPACE;
 	    if (!(flags&SPF_DECIMAL)) {
@@ -960,20 +930,29 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *SPrint(U8 *dst,U8 *fmt,...)
-{ //See [MN:SPrintJoin] SPrintJoin()
+{ //See [C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin()
   return SPrintJoin(dst,fmt,argc,argv);
 }
 
+U8 *CatPrint(U8 *_dst,U8 *fmt,...)
+{ //StrCat().  See [C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin()
+  U8 *dst=_dst;
+  while (*dst)
+    dst++;
+  SPrintJoin(dst,fmt,argc,argv);
+  return _dst;
+}
+
 U0 Print(U8 *fmt,...)
-{//[C:/Doc/HolyC.TXT,1] Print Extended Codes
- //See [MN:SPrintJoin] SPrintJoin()
+{//[C:/Doc/HolyC.TXT.Z,1] Print Extended Codes
+ //See [C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin()
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
   PutS(buf);
   Free(buf);
 }
 
 U8 *MPrint(U8 *fmt,...)
-{ //See [MN:SPrintJoin] SPrintJoin()
+{ //See [C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin()
   U8 *result,*buf=SPrintJoin(NULL,fmt,argc,argv);
   result=StrNew(buf);
   Free(buf);
@@ -984,7 +963,7 @@ U0 PrintErr(U8 *fmt,...)
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
   GetOutOfDollar;
-  "%S%s","ST_ERR",buf;
+  ST_ERR_ST "%s",buf;
   Free(buf);
 }
 
@@ -992,6 +971,6 @@ U0 PrintWarn(U8 *fmt,...)
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
   GetOutOfDollar;
-  "%S%s","ST_WARN",buf;
+  ST_WARN_ST "%s",buf;
   Free(buf);
 }

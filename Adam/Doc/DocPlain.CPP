@@ -1,30 +1,42 @@
-U0 PrsDocFlags(CLex *lx,I64 *flags1,U32 *type)
+#help_index "Doc"
+
+I64 PrsDocFlagSingle(CLex *lx,I64 *_flags1,U32 *_type,Bool turn_on)
 {
-  I64 i;
-  Bool turn_on;
+  I64 result=-1;
   CHashGeneric *temph;
-  while (lx->token=='+' || lx->token=='-') {
-    turn_on= lx->token=='+';
-    if (Lex(lx)==TK_IDENT) {
-      if (!(temph=HashFind(lx->ident,doc_hash,DHT_DOC_FLAG)))
-	*type=DOCT_ERROR;
-      else {
-	i=temph->user_data0;
-	if (i<64) {
-	  BEqu(flags1,i,turn_on);
-	  switch (i) {
-	    case DOCEf1_SELECTED:
-	    case DOCEf1_UNDERLINE:
-	    case DOCEf1_INVERT:
-	    case DOCEf1_BLINK:
-	      BEqu(type,i,turn_on);
-	      break;
-	  }
-	}
+  if (lx->token==TK_IDENT && (temph=HashFind(lx->cur_str,doc_hash,DHT_DOC_FLAG))) {
+    result=temph->user_data0;
+    if (result<64) {
+      BEqu(_flags1,result,turn_on);
+      switch (result) {
+	case DOCEf1_SELECTED:
+	case DOCEf1_UNDERLINE:
+	case DOCEf1_INVERT:
+	case DOCEf1_BLINK:
+	  BEqu(_type,result,turn_on);
+	  break;
       }
-      Lex(lx);	//skip flag
     }
+    Lex(lx);	//skip flag
   }
+  return result;
+}
+
+I64 PrsDocFlags(CLex *lx,I64 *_flags1,U32 *_type)
+{
+  I64 result=-1;
+  Bool turn_on;
+  while (TRUE) {
+    if (lx->token=='+')
+      turn_on=TRUE;
+    else if (lx->token=='-')
+      turn_on=FALSE;
+    else
+      break;
+    Lex(lx);
+    result=PrsDocFlagSingle(lx,_flags1,_type,turn_on);
+  }
+  return result;
 }
 
 I64 DocBinPtrRst(CDoc *doc,CDocEntry *doc_e)
@@ -38,7 +50,7 @@ I64 DocBinPtrRst(CDoc *doc,CDocEntry *doc_e)
     st=StrNew(doc_e->bin_ptr_link);
     st2=StrNew(st);
     StrLastRem(st,",",st2);
-    i=A2I(st2);
+    i=A2I64(st2);
     if (i>0||*st2) {
       doc2=DocRead(st);
       if (i>0  && (tempb2=DocBinFindNum(doc2,i)) ||
@@ -56,7 +68,7 @@ I64 DocBinPtrRst(CDoc *doc,CDocEntry *doc_e)
 	tempb->data=MAllocIdentical(tempb2->data,doc->mem_task);
 	tempb->num=bin_num;
 	doc_e->bin_data=tempb;
-	if (Bt(doc_type_flags_tag,doc_e->type_u8) && doc_e->tag && *doc_e->tag)
+	if (doc_e->flags1&DOCEF1_TAG && doc_e->tag && *doc_e->tag)
 	  tempb->tag=StrNew(doc_e->tag,doc->mem_task);
 	else
 	  tempb->tag=NULL;
@@ -91,11 +103,15 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
     flags1=doc_e->flags1&~(DOCG_BL_IV_UL|DOCEF1_SELECTED|DOCEF1_HIGHLIGHT|DOCEF1_WORD_WRAP|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_FILTER_SKIP);
     for (i=0;i<DOCEf1_NUM_FLAGS;i++)
       if (Bt(&f1,i)!=Bt(&flags1,i)) {
-	if (Bt(&flags1,i))
-	  buf2=MPrint("%s+%Z",buf,i,"ST_DOC_FLAGS");
-	else
+	if (Bt(&flags1,i)) {
+	  if (!(1<<i&DOCEG1_HAS_ARG)) {
+	    buf2=MPrint("%s+%Z",buf,i,"ST_DOC_FLAGS");
+	    Free(buf); buf=buf2;
+	  }
+	} else {
 	  buf2=MPrint("%s-%Z",buf,i,"ST_DOC_FLAGS");
-	Free(buf); buf=buf2;
+	  Free(buf); buf=buf2;
+	}
       }
     type=doc_e->type&~DOCET_SELECTED;
     for (i=DOCEt_BLINK;i<=DOCEt_UNDERLINE;i++)
@@ -110,27 +126,6 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
     Free(buf); buf=buf2;
     nobound_switch (doc_e->type_u8) {
       sub_switch_start:
-	case DOCT_TEXT:
-	case DOCT_LINK:
-	case DOCT_ANCHOR:
-	case DOCT_MENU_VAL:
-	case DOCT_BUTTON:
-	case DOCT_CHECK_BOX:
-	case DOCT_TREE:
-	case DOCT_SPRITE:
-	case DOCT_INS_BINARY:
-	case DOCT_INS_BINARY_TYPE:
-	case DOCT_INS_BINARY_SIZE:
-	case DOCT_SONG:
-	case DOCT_HTML_CODE:
-	  if (i==DOCT_CHECK_BOX)
-	    buf2=doc_e->tag+4;
-	  else if (doc_e->flags1 & DOCEF1_TREE)
-	    buf2=doc_e->tag+3;
-	  else
-	    buf2=doc_e->tag;
-	  buf2=MPrint("%s\"%$Q\",",buf,buf2);
-	  break;
 	case DOCT_DATA:
 	  buf2=MPrint("%s%d,",buf,doc_e->len);
 	  break;
@@ -174,60 +169,81 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
       case DOCT_NUM_TYPES-1: //nobound_switch
 	break;
     }
-    flags1=doc_e->flags1& (DOCEF1_SCROLLING_X|DOCEF1_SHIFTED_X|DOCEF1_SCROLLING_Y|
-	  DOCEF1_AUX_STR|DOCEF1_LEFT_EXP|DOCEF1_LEFT_MACRO|
-	  DOCEF1_HAS_BIN|DOCEF1_RIGHT_EXP|DOCEF1_RIGHT_MACRO|
-	  DOCEF1_WIDTH|DOCEF1_HEIGHT|DOCEF1_DEFINE|DOCEF1_HTML_LINK|
-	  DOCEF1_BIN_PTR_LINK);
+    flags1=doc_e->flags1 & DOCEG1_HAS_ARG;
     while (flags1) {
       j=Bsf(flags1);
       Btr(&flags1,j);
       nobound_switch (j) {
+	case DOCEf1_TAG:
+	  if (doc_e->type_u8==DOCT_DATA || doc_e->type_u8==DOCT_MACRO &&
+	      (doc_e->flags1&DOCEF1_LEFT_MACRO && !StrCmp(doc_e->tag,doc_e->left_macro) ||
+	       doc_e->flags1&DOCEF1_RIGHT_MACRO && !StrCmp(doc_e->tag,doc_e->right_macro))) {
+	    buf2=buf;
+	    buf=NULL;
+	  } else {
+	    if (doc_e->type_u8==DOCT_CHECK_BOX) {
+	      if (StrLen(doc_e->tag)>=4)
+		buf2=doc_e->tag+4;
+	      else
+		buf2="";
+	    } else if (doc_e->flags1 & DOCEF1_TREE) {
+	      if (StrLen(doc_e->tag)>=3)
+		buf2=doc_e->tag+3;
+	      else
+		buf2="";
+	    } else
+	      buf2=doc_e->tag;
+	    if (Bt(&doc_dft_flags1[doc_e->type_u8],DOCEf1_TAG))
+	      buf2=MPrint("%s\"%$Q\",",buf,buf2);
+	    else
+	      buf2=MPrint("%sT=\"%$Q\",",buf,buf2);
+	  }
+	  break;
 	case DOCEf1_SCROLLING_X:
-	  buf2=MPrint("%s%d,",buf,doc_e->scroll_len);
+	  buf2=MPrint("%sSCX=%d,",buf,doc_e->scroll_len);
 	  break;
 	case DOCEf1_SHIFTED_X:
 	  j=doc_e->type.u16[1]&0x1F;
 	  if (j&0x10) j|=0xFFFFFFF0;
-	  buf2=MPrint("%s%d,",buf,j);
+	  buf2=MPrint("%sSX=%d,",buf,j);
 	  break;
 	case DOCEf1_SHIFTED_Y:
 	  j=doc_e->type>>21 &0x1F;
 	  if (j&0x10) j|=0xFFFFFFF0;
-	  buf2=MPrint("%s%d,",buf,j);
+	  buf2=MPrint("%sSY=%d,",buf,j);
 	  break;
 	case DOCEf1_AUX_STR:
-	  buf2=MPrint("%s\"%$Q\",",buf,doc_e->aux_str);
+	  buf2=MPrint("%sA=\"%$Q\",",buf,doc_e->aux_str);
 	  break;
 	case DOCEf1_LEFT_EXP:
-	  buf2=MPrint("%s%d,",buf,doc_e->left_exp);
+	  buf2=MPrint("%sLE=%d,",buf,doc_e->left_exp);
 	  break;
 	case DOCEf1_LEFT_MACRO:
-	  buf2=MPrint("%s\"%$Q\",",buf,doc_e->left_macro);
+	  buf2=MPrint("%sLM=\"%$Q\",",buf,doc_e->left_macro);
 	  break;
 	case DOCEf1_RIGHT_EXP:
-	  buf2=MPrint("%s%d,",buf,doc_e->right_exp);
+	  buf2=MPrint("%sRE=%d,",buf,doc_e->right_exp);
 	  break;
 	case DOCEf1_RIGHT_MACRO:
-	  buf2=MPrint("%s\"%$Q\",",buf,doc_e->right_macro);
+	  buf2=MPrint("%sRM=\"%$Q\",",buf,doc_e->right_macro);
 	  break;
 	case DOCEf1_HAS_BIN:
-	  buf2=MPrint("%s%d,",buf,doc_e->bin_num);
+	  buf2=MPrint("%sBI=%d,",buf,doc_e->bin_num);
 	  break;
 	case DOCEf1_WIDTH:
-	  buf2=MPrint("%s%d,",buf,doc_e->width);
+	  buf2=MPrint("%sWD=%d,",buf,doc_e->width);
 	  break;
 	case DOCEf1_HEIGHT:
-	  buf2=MPrint("%s%d,",buf,doc_e->height);
+	  buf2=MPrint("%sHT=%d,",buf,doc_e->height);
 	  break;
 	case DOCEf1_DEFINE:
-	  buf2=MPrint("%s\"%$Q\",",buf,doc_e->define_str);
+	  buf2=MPrint("%sD=\"%$Q\",",buf,doc_e->define_str);
 	  break;
 	case DOCEf1_HTML_LINK:
-	  buf2=MPrint("%s\"%$Q\",",buf,doc_e->html_link);
+	  buf2=MPrint("%sHTML=\"%$Q\",",buf,doc_e->html_link);
 	  break;
 	case DOCEf1_BIN_PTR_LINK:
-	  buf2=MPrint("%s\"%$Q\",",buf,doc_e->bin_ptr_link);
+	  buf2=MPrint("%sBP=\"%$Q\",",buf,doc_e->bin_ptr_link);
 	  break;
 #assert DOCEf1_BIN_PTR_LINK==DOCEf1_NUM_FLAGS-1 //nobound_switch
       }
@@ -242,8 +258,8 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 
 
 CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
-{//This uses [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex() to parse a string and make Doc entries.
-  I64 i,j,flags1,attr=DOC_DFT;
+{//This uses [C:/Compiler/Lex.CPP.Z,742] Lex() to parse a string and make Doc entries.
+  I64 i,j,flags1,processed_flags,attr=DOC_DFT;
   U8 *ptr,*st2;
   CDocEntry *doc_e=NULL;
   CHashGeneric *temph;
@@ -251,7 +267,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
   CHashTable *old_hash_table_lst=lx->htc.hash_table_lst;
   lx->htc.hash_table_lst=NULL;
   if (Lex(lx)==TK_IDENT) {
-    if (temph=HashFind(lx->ident,doc_hash,DHT_DOC_CMD|DHT_COLOR)) {
+    if (temph=HashFind(lx->cur_str,doc_hash,DHT_DOC_CMD|DHT_COLOR)) {
       if (temph->type&DHT_DOC_CMD)
 	i=temph->user_data0;
       else { //DHT_COLOR
@@ -265,55 +281,19 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
     doc_e->type=i;
     doc_e->flags1=doc_dft_flags1[i];
     doc_e->type|=doc_dft_type_flags[i];
-    PrsDocFlags(lx,&doc_e->flags1,&doc_e->type);
+    j=PrsDocFlags(lx,&doc_e->flags1,&doc_e->type);
     lx->htc.hash_table_lst=old_hash_table_lst;
-    if (lx->token==',')
-      Lex(lx);
     nobound_switch (i) {
-      case DOCT_TEXT:
-      case DOCT_LINK:
-      case DOCT_ANCHOR:
-      case DOCT_MENU_VAL:
-      case DOCT_BUTTON:
-      case DOCT_CHECK_BOX:
-      case DOCT_TREE:
-      case DOCT_SPRITE:
-      case DOCT_INS_BINARY:
-      case DOCT_INS_BINARY_TYPE:
-      case DOCT_INS_BINARY_SIZE:
-      case DOCT_SONG:
-      case DOCT_HTML_CODE:
-	if (lx->token==TK_STR) {
-	  st2=LexExtStr(lx);
-	  if (i==DOCT_CHECK_BOX) {
-	    st=MPrint("[X] %s",st2);
-	    Free(st2);
-	    doc_e->min_col=1;
-	  } else if (doc_e->flags1 & DOCEF1_TREE) {
-	    st=MPrint("+] %s",st2);
-	    Free(st2);
-	    doc_e->min_col=1;
-	  } else
-	    st=st2;
-	  doc_e->tag=StrNew(st,doc->mem_task);
-	  Free(st);
-	} else {
-	  if (DOCT_SPRITE<=i<=DOCT_INS_BINARY_SIZE ||
-	      i==DOCT_SONG)
-	    doc_e->tag=StrNew("",doc->mem_task);
-	  else {
-	    doc_e->tag=NULL;
-	    doc_e->type=DOCT_ERROR;
-	  }
-	}
-	break;
       case DOCT_DATA:
-	doc_e->flags1|=DOCEF1_AUX_STR; //don't allow switched off
+	while (lx->token==',')
+	  Lex(lx);
 	doc_e->len=LexExpression(lx);
 	break;
       case DOCT_HEX_ED:
+	while (lx->token==',')
+	  Lex(lx);
 	doc_e->len=LexExpression(lx);
-	if (lx->token==',')
+	while (lx->token==',')
 	  Lex(lx);
 	doc_e->hex_ed_width=LexExpression(lx);
 	break;
@@ -336,6 +316,8 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
       case DOCT_BLINK:
       case DOCT_SHIFTED_X:
       case DOCT_SHIFTED_Y:
+	while (lx->token==',')
+	  Lex(lx);
 	if (lx->token)
 	  doc_e->attr=LexExpression(lx);
 	else
@@ -345,21 +327,52 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	doc_e->flags1=0;
 	doc_e->type=DOCT_ERROR;
 #assert DOCT_ERROR==DOCT_NUM_TYPES-1
-//	case DOCT_NUM_TYPES-1: //nobound_switch
+	//	case DOCT_NUM_TYPES-1: //nobound_switch
 	break;
     }
- 
-    flags1=doc_e->flags1& (DOCEF1_SCROLLING_X|DOCEF1_SHIFTED_X|DOCEF1_SCROLLING_Y|
-      DOCEF1_AUX_STR|DOCEF1_LEFT_EXP|DOCEF1_LEFT_MACRO|
-      DOCEF1_HAS_BIN|DOCEF1_RIGHT_EXP|DOCEF1_RIGHT_MACRO|
-      DOCEF1_WIDTH|DOCEF1_HEIGHT|DOCEF1_DEFINE|DOCEF1_HTML_LINK|
-      DOCEF1_BIN_PTR_LINK);
-    while (flags1) {
-      j=Bsf(flags1);
-      Btr(&flags1,j);
+
+    processed_flags=0;
+    while (TRUE) {
+      lx->htc.hash_table_lst=NULL;
       while (lx->token==',')
 	Lex(lx);
+      lx->htc.hash_table_lst=old_hash_table_lst;
+      j=PrsDocFlagSingle(lx,&doc_e->flags1,&doc_e->type,TRUE);
+      if (!(flags1=~processed_flags & doc_e->flags1 & DOCEG1_HAS_ARG))
+	break;
+      if (lx->token=='=')
+	Lex(lx);
+      else
+	j=Bsf(flags1);
+      if (j<0 || Bts(&processed_flags,j)) {
+	doc_e->flags1=0;
+	doc_e->type=DOCT_ERROR;
+	break;
+      }
       nobound_switch (j) {  //TODO: Might check for expression errors
+	case DOCEf1_TAG:
+	  if (!doc_e->tag) {	//If a $MA,LM=""$  Tag is filled when the LM is
+				//processed. The dft_flag1.tag calls this after.
+	    if (lx->token==TK_STR) {
+	      st2=LexExtStr(lx);
+	      if (i==DOCT_CHECK_BOX) {
+		st=MPrint("[X] %s",st2);
+		Free(st2);
+		doc_e->min_col=1;
+	      } else if (doc_e->flags1 & DOCEF1_TREE) {
+		st=MPrint("+] %s",st2);
+		Free(st2);
+		doc_e->min_col=1;
+	      } else
+		st=st2;
+	      doc_e->tag=StrNew(st,doc->mem_task);
+	      Free(st);
+	    } else {
+	      doc_e->tag=NULL;
+	      doc_e->type=DOCT_ERROR;
+	    }
+	  }
+	  break;
 	case DOCEf1_SCROLLING_X:
 	  doc_e->scroll_len=LexExpression(lx);
 	  break;
@@ -374,9 +387,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	    st2=LexExtStr(lx);
 	    doc_e->aux_str=StrNew(st2,doc->mem_task);
 	    Free(st2);
-	    if (i==DOCT_MACRO && !doc_e->tag)
-	      doc_e->tag=StrNew(doc_e->aux_str,doc->mem_task);
-	    //Anchor
+//Anchor
 	    if (i==DOCT_DATA) {
 	      if (ptr=StrMatch(":",doc_e->aux_str))
 		doc_e->min_col=ptr-doc_e->aux_str+1;
@@ -460,7 +471,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
   return doc_e;
 }
 
-public U0 DocIns(CDoc *doc,CDocEntry *doc_e)
+public U0 DocInsEntry(CDoc *doc,CDocEntry *doc_e)
 {
   U8 *dst;
   Bool unlock=DocLock(doc);
@@ -500,13 +511,13 @@ public U0 DocIns(CDoc *doc,CDocEntry *doc_e)
 
 #help_index "Doc/Output"
 CDocEntry *DocPutS(CDoc *doc,U8 *st)
-{ //Don't use this.  Use [MN:DocPrint] DocPrint().
+{ //Don't use this.  Use [C:/Adam/Doc/DocPlain.CPP.Z,679] DocPrint().
   //Does not handle partial Doc entries
   //Returns last newly created dollar-sign CDocEntry.
-  U8 ch,*ptr=st,*ptr2,*st2,*ptr3,*ptr4,*src,
+  U8 *ptr=st,*ptr2,*st2,*ptr3,*ptr4,*src,
      *char_bitmap;
   Bool unlock;
-  I64 j;
+  I64 ch,j;
   CDocEntry *doc_e=NULL,*result=NULL,*doc_ce;
   if (!st || !doc && !(doc=DocPut) || doc->doc_signature!=DOC_SIGNATURE_VAL)
     return NULL;
@@ -527,7 +538,8 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
     if (!ch) {
       if (j=ptr-ptr2) {
 	doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
+	doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
+	doc_e->flags1=doc_dft_flags1[DOCT_TEXT];
 	if (doc->flags & DOCF_NO_CURSOR) {
 	  src=MAlloc(j+1);
 	  MemCpy(src,ptr2,j+1);
@@ -538,7 +550,7 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
 	doc_e->tag=MAlloc(j+1,doc->mem_task);
 	MemCpy(doc_e->tag,src,j+1);
 	doc_e->max_col=j;
-	DocIns(doc,doc_e);
+	DocInsEntry(doc,doc_e);
 	if (doc->flags & DOCF_NO_CURSOR)
 	  Free(src);
       }
@@ -546,7 +558,8 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
       if (j=ptr-ptr2) {
 	*ptr=0;
 	doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
+	doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
+	doc_e->flags1=doc_dft_flags1[DOCT_TEXT];
 	if (doc->flags & DOCF_NO_CURSOR) {
 	  src=MAlloc(j+1);
 	  MemCpy(src,ptr2,j+1);
@@ -564,7 +577,7 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
 	doc_e->tag=MAlloc(j+1,doc->mem_task);
 	MemCpy(doc_e->tag,src,j+1);
 	doc_e->max_col=j;
-	DocIns(doc,doc_e);
+	DocInsEntry(doc,doc_e);
 	if (doc->flags & DOCF_NO_CURSOR)
 	  Free(src);
 	*ptr=ch;
@@ -572,20 +585,23 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
       switch (ch) {
 	case CH_CURSOR:
 	  doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	  doc_e->type=DOCT_CURSOR | doc->settings_root.dft_text_attr << 8;
-	  DocIns(doc,doc_e);
+	  doc_e->type=DOCT_CURSOR | doc->settings_root.dft_text_attr<<8;
+	  doc_e->flags1=doc_dft_flags1[DOCT_CURSOR];
+	  DocInsEntry(doc,doc_e);
 	  ptr++;
 	  break;
 	case CH_FORM_FEED:
 	  doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	  doc_e->type=DOCT_PAGE_BREAK | doc->settings_root.dft_text_attr << 8;
-	  DocIns(doc,doc_e);
+	  doc_e->type=DOCT_PAGE_BREAK | doc->settings_root.dft_text_attr<<8;
+	  doc_e->flags1=doc_dft_flags1[DOCT_PAGE_BREAK];
+	  DocInsEntry(doc,doc_e);
 	  ptr++;
 	  break;
 	case '\t':
 	  doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	  doc_e->type=DOCT_TAB | doc->settings_root.dft_text_attr << 8;
-	  DocIns(doc,doc_e);
+	  doc_e->type=DOCT_TAB | doc->settings_root.dft_text_attr<<8;
+	  doc_e->flags1=doc_dft_flags1[DOCT_TAB];
+	  DocInsEntry(doc,doc_e);
 	  ptr++;
 	  break;
 	case '$':
@@ -597,19 +613,21 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
 	    *ptr=0; //zero second dollar
 	    if (ptr-1==ptr2 && *ptr2==CH_CURSOR) {
 	      doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	      doc_e->type=DOCT_CURSOR | doc->settings_root.dft_text_attr << 8;
-	      DocIns(doc,doc_e);
+	      doc_e->type=DOCT_CURSOR | doc->settings_root.dft_text_attr<<8;
+	      doc_e->flags1=doc_dft_flags1[DOCT_CURSOR];
+	      DocInsEntry(doc,doc_e);
 	      ptr2++;
 	    }
 	    if (ptr==ptr2) {
 	      doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	      doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
+	      doc_e->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
 	      doc_e->max_col=1;
 	      if (doc->flags & DOCF_DBL_DOLLARS)
 		doc_e->tag=StrNew("$$",doc->mem_task);
 	      else
 		doc_e->tag=StrNew("$",doc->mem_task);
-	      DocIns(doc,doc_e);
+	      doc_e->flags1=doc_dft_flags1[DOCT_TEXT];
+	      DocInsEntry(doc,doc_e);
 	    } else {
 	      st2=MAlloc(ptr-ptr2+1);
 	      ptr3=ptr2;
@@ -617,19 +635,21 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
 	      while (ch=*ptr3++) {
 		if (ch==CH_CURSOR) {
 		  doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-		  doc_e->type=DOCT_CURSOR | doc->settings_root.dft_text_attr << 8;
-		  DocIns(doc,doc_e);
+		  doc_e->type=DOCT_CURSOR | doc->settings_root.dft_text_attr<<8;
+		  doc_e->flags1=doc_dft_flags1[DOCT_CURSOR];
+		  DocInsEntry(doc,doc_e);
 		} else if (ch==CH_FORM_FEED) {
 		  doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-		  doc_e->type=DOCT_PAGE_BREAK | doc->settings_root.dft_text_attr << 8;
-		  DocIns(doc,doc_e);
+		  doc_e->type=DOCT_PAGE_BREAK | doc->settings_root.dft_text_attr<<8;
+		  doc_e->flags1=doc_dft_flags1[DOCT_PAGE_BREAK];
+		  DocInsEntry(doc,doc_e);
 		} else
 		  *ptr4++=ch;
 	      }
 	      *ptr4=0;
 	      if (doc_e=PrsDollarCmd(doc,st2)) {
 		result=doc_e;
-		DocIns(doc,doc_e);
+		DocInsEntry(doc,doc_e);
 	      }
 	      Free(st2);
 	    }
@@ -638,8 +658,9 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
 	  break;
 	default:
 	  doc_e=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-	  doc_e->type=DOCT_NEW_LINE | doc->settings_root.dft_text_attr << 8;
-	  DocIns(doc,doc_e);
+	  doc_e->type=DOCT_NEW_LINE | doc->settings_root.dft_text_attr<<8;
+	  doc_e->flags1=doc_dft_flags1[DOCT_NEW_LINE];
+	  DocInsEntry(doc,doc_e);
 	  if (ch=='\r')
 	    while (*ptr=='\r')
 	      ptr++;
@@ -656,12 +677,9 @@ CDocEntry *DocPutS(CDoc *doc,U8 *st)
 }
 
 public CDocEntry *DocPrint(CDoc *doc,U8 *fmt,...)
-{
+{//You must not print partial doc cmds.
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
   CDocEntry *result=DocPutS(doc,buf);
   Free(buf);
   return result;
 }
-
-#help_index "Doc"
-

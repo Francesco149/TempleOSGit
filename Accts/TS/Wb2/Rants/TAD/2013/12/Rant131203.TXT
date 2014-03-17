@@ -678,15 +678,13 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 operating systems.
 
 10) Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the
 [C:/Doc/RedSea.TXT.Z,1] RedSea .Z LZW 
-compression.  (Let me know when you want it.) 
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,154] DCSave(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,234] GRAWrite(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,197] DCLoad(), 
-and [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,245] GRARead(). 
-[C:/Kernel/Compress.CPP.Z,1]
+compression.  (Let me know when you want it.)  [C:/Adam/Gr/GrDC.CPP.Z,284]
+DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,354] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,323]
+DCLoad(), 
+and [C:/Adam/Gr/GrDC.CPP.Z,365] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
 
 
 
@@ -773,7 +771,10 @@ Your assignment is to draw an elephant as an offering for God as a 16 color
 BMP and as a 24-bit color high res elephant.  (You will learn why 16 color is 
 better for offerings.)
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 National Institute of Standards Public Randomness Beacon
 

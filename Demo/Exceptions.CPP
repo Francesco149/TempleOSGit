@@ -1,7 +1,7 @@
 //**WARNING:** Don't return out of a catch{}.  This
 //might get fixed.
 
-//You can use [C:/TempleOS/Kernel/Except.CPP.Z,111] PutExcept() in a catch statement
+//You can use [C:/Kernel/Except.CPP.Z,46] PutExcept() in a catch statement
 //and it will report args.
 
 Bool Pmt(I64 i)

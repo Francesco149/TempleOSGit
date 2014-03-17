@@ -112,8 +112,8 @@ U0 MassSpringDemo()
   PopUpOk("Left-Click to place mas\n"
 	  "Right-Click and drag to\n"
 	  "connect with spring.\n\n"
-	  "Springs are 100 pixels long.\n");
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+	  "Springs are 100 pixs long.\n");
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
 
 //This Preempt() eliminates a lot of hassles.

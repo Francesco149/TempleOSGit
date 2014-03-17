@@ -523,9 +523,9 @@ no rule for underscore, but I put underscore on HolyC callable asm routines.
 Crazy OSDev lady?  I searched for a way to transfer clipboard in and out of 
 VMware but found none.
 
-[MN:DocBibleLines] DocBibleLines().
+[C:/Adam/God/GodBible.CPP.Z,209] BibleLines().
 
-[C:/Demo/AcctExample/Adam3dKeyPlugIns.CPP.Z,1]
+[C:/Demo/AcctExample/Adam3cKeyPlugIns.CPP.Z,1]
 
 [C:/Demo/AcctExample/TSHolySpirit.CPP.Z,1]
 
@@ -556,7 +556,7 @@ every nation under heaven.
 
 ----10/05/13 14:24:49----
 
-Yeah, I could in-line the RAND for [C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,1504]
+Yeah, I could in-line the RAND for [C:/Adam/Gr/GrBitMap.CPP.Z,1590]
 GrHLine().  It would help FPS but not 
 FlightSim.
 
@@ -589,10 +589,10 @@ their thirst, and promisedst them that they should go in to possess
 
 I could ban AOT bin files and force JIT.  
 
-A BIN file needs headers declared after [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
-Load().  You could make it do the 
-header with a [C:/TempleOS/Compiler/CmpMain.CPP.Z,577] ExeFile() or
-[MN:ExePrint] ExePrint() in the main().
+A BIN file needs headers declared after [C:/Kernel/Hash1b.CPP.Z,386] Load(). 
+You could make it do the 
+header with a [C:/Compiler/CmpMain.CPP.Z,649] ExeFile() or
+[C:/Compiler/CmpMain.CPP.Z,640] ExePrint() in the main().
 
 Nobody, give me any feedback, fucken CIA kill yerselves.
 

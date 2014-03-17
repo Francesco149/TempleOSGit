@@ -54,8 +54,8 @@ public U0 CommInit8n1(I64 port,I64 baud)
 {
   I64 base=comm_base[port];
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (comm_fifos[port])
     FifoU8Del(comm_fifos[port]);
   comm_fifos[port]=FifoU8New(256);
@@ -74,7 +74,7 @@ public U0 CommInit8n1(I64 port,I64 baud)
   OutU8(base+UART_MCR,0xA);	  //out2 and rts
   OutU8(0x21,InU8(0x21) & (0xFF-0x18)); //Enable 8259 IRQ 3 & 4
   OutU8(base+UART_IER,1);	  //Enable RX IRQ
-  PopFD;
+  POPFD
 }
 
 public U0 CommBusyPutChar(I64 port,U8 b)

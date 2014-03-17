@@ -79,7 +79,7 @@ class PickFrame
 
 
 
-U8 *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
+CSprite *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
 
 
 U0 DrawIt(CTask *task,CDC *dc)
@@ -88,8 +88,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   PickFrame *pf=FramePtr("PickFrame",task);
   PObj *tempo=pf->o_root.next;
 
-  pf->cx=task->win_pixel_width>>1;
-  pf->cy=task->win_pixel_height>>1;
+  pf->cx=task->pix_width>>1;
+  pf->cy=task->pix_height>>1;
 
   DCAllocDepthBuf(dc);
 
@@ -118,7 +118,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	dc->y=pf->cy+tempo->g.p->p.p.y;
 	dc->z=GR_Z_ALL;
 	dc->flags|=DCF_TRANSFORMATION;
-	SpritePlot3(dc,0,0,0,tempo->g.img);
+	Sprite3(dc,0,0,0,tempo->g.img);
 	dc->flags&=~DCF_TRANSFORMATION;
 	dc->r=old_r;
 
@@ -224,8 +224,8 @@ PickFrame *Init()
   PickFrame *pf=CAlloc(sizeof(PickFrame));
   I64 i,*r,*dr;
 
-  pf->cx=Fs->win_pixel_width>>1;
-  pf->cy=Fs->win_pixel_height>>1;
+  pf->cx=Fs->pix_width>>1;
+  pf->cy=Fs->pix_height>>1;
 
   pf->o_root.next=pf->o_root.last=&pf->o_root;
   for (i=0;i<50;i++)
@@ -274,7 +274,7 @@ U0 Pick3D()
 "  Restart(,'\n');"
 "}"
 );
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   WinBorder;
   DocClear;

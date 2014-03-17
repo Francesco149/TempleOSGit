@@ -2,7 +2,7 @@
 This demonstrates dynamic initialization of
 vars.  It even works for AOT modules
 because code is generated which runs at
-[C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time to initialize them.
+[C:/Kernel/Hash1b.CPP.Z,386] Load() time to initialize them.
 
 This file is dual use -- you can JIT compile
 it or AOT compile it.  If you AOT compile
@@ -23,7 +23,7 @@ class Test
 
 Test g1[]={
   {10,"Name1"},
-  {(tT%10.0)*100,"Name2"}, //Dynamic initialization
+  {(tS%10.0)*100,"Name2"}, //Dynamic initialization
   {30,"Name3"}
 };
 
@@ -34,7 +34,7 @@ U0 Main1()
 {
   static Test s1[]={
     {10,"Static1"},
-    {(tT%10.0)*100,"Static2"}, //Dynamic initialization
+    {(tS%10.0)*100,"Static2"}, //Dynamic initialization
     {30,"Static3"}
   };
   D(s1,sizeof(s1));
@@ -68,7 +68,7 @@ because they don't take-up room in the .BIN.Z file.
 
 Test g2[]={
   {10,"name1"},
-  {(tT%10.0)*100,"name2"}, //No dynamic initialization--converted to a const
+  {(tS%10.0)*100,"name2"}, //No dynamic initialization--converted to a const
   {30,"name3"}
 };
 
@@ -79,7 +79,7 @@ U0 Main2()
 {
   static Test s2[]={
     {10,"static1"},
-    {(tT%10.0)*100,"static2"}, //No dynamic initialization--converted to a const
+    {(tS%10.0)*100,"static2"}, //No dynamic initialization--converted to a const
     {30,"static3"}
   };
   D(s2,sizeof(s2));

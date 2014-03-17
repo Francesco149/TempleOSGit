@@ -16,9 +16,9 @@ Bool zap_on,finger_on;
 U0 DrawIt(CTask *,CDC *dc)
 {
   if (finger_on)
-    SpritePlot3(dc,20*8,3*8,0,__BIN_1);
+    Sprite3(dc,20*8,3*8,0,__BIN_1);
   if (zap_on)
-    SpritePlot3(dc,20*8,7*8,0,__BIN_2);
+    Sprite3(dc,20*8,7*8,0,__BIN_2);
 }
 
 
@@ -41,7 +41,7 @@ U0 ZapTask(I64)
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   music_tempo=2.5;

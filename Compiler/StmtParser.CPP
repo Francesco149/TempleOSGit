@@ -1,12 +1,10 @@
 CHashClass *PrsClassNew()
 {
-/*
-Ptrs to classes are handled by
-allocating 5 structures for each
-new class and representing a pointer
-to a class by advancing 1 struct fwd
-for one * and two fwd for two **.
-*/
+// Ptrs to classes are handled by
+// allocating 5 structures for each
+// new class and representing a pointer
+// to a class by advancing 1 struct fwd
+// for one * and two fwd for two **.
 
   CHashClass *result=CAlloc(sizeof(CHashClass)*5,Fs->code_heap),
       *tempc=result;
@@ -44,8 +42,7 @@ for one * and two fwd for two **.
 
 CHashFun *PrsFunNew()
 {
-  CHashFun *result=CAlloc(sizeof(CHashFun)*5,Fs->code_heap),
-	    *tempf=result;
+  CHashFun *result=CAlloc(sizeof(CHashFun)*5,Fs->code_heap),*tempf=result;
   tempf->last_in_member_lst=&tempf->member_lst;
   tempf->type=HTT_FUN;
   tempf->raw_type=RT_PTR;
@@ -88,9 +85,7 @@ CMemberLst *MemberLstNew(I64 _reg)
 I64 PrsKeyWord(CLex *lx)
 {
   CHashGeneric *temph;
-  if (lx->token==TK_IDENT &&
-      (temph=lx->hash_entry) &&
-      temph->type&HTT_KEYWORD)
+  if (lx->token==TK_IDENT &&(temph=lx->hash_entry) && temph->type&HTT_KEYWORD)
     return temph->user_data0;
   else
     return -1;
@@ -98,13 +93,13 @@ I64 PrsKeyWord(CLex *lx)
 
 U0 UndefinedExtern()
 {
-  PrintErr("%S at %P\n","ST_UNDEFINED_EXTERN",Caller);
+  PrintErr("Undefined Extern\nat %P\n",Caller);
   throw('UndefExt');
 }
 
 U0 UnusedExternWarning(CLex *lx,CHashClass *tempc)
 {
-  PrintWarn("%S '%s'\n","ST_UNUSED_EXTERN",tempc->str);
+  PrintWarn("Unused extern '%s'\n",tempc->str);
   lx->warning_cnt++;
 }
 
@@ -122,7 +117,7 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
   tempc=OptClassFwd(tempc);
   if (tempm=tempc->member_lst) {
     if (lx->token!='{')
-      LexExcept(lx,"ST_EXPECTING_LEFT_BRACE");
+      LexExcept(lx,"expecting '{' at ");
     lx->stk_ptr--;  //grows up
     LexPush(lx);
     Lex(lx);
@@ -134,7 +129,7 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
     }
     lx->stk_ptr--;  //grows up
     if (lx->token!='}')
-      LexExcept(lx,"ST_MISSING_RIGHT_BRACE");
+      LexExcept(lx,"missing '}' at ");
     Lex(lx);
   } else {
     if (tempc->ptr_cnt==1 && ((tempc-1)->raw_type==RT_I8 || (tempc-1)->raw_type==RT_U8) &&
@@ -164,7 +159,7 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
 	lx->flags&LF_NOT_CONST &&
 	 !Bt(&lx->opts,OPTf_GLBLS_ON_DATA_HEAP)) {
 	lx->flags=lx->flags&~LF_NO_ABSS|LF_AOT_COMPILE;
-	ExpressionBinDel(ex);
+	Free(ex);
 	if (pass==2) {
 	  MemSet(dst,0,tempc->size);
 	  LexPop(lx);
@@ -182,14 +177,14 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
 	  LCCAdd(lx,IC_ASSIGN,0,tempc);
 	  LCCAdd(lx,IC_END_EXP,0,tempc);
 	  LCCAdd(lx,IC_RET,0,0);
-	  if (ex=LCCCompile(lx,NULL,&size,NULL)) {
+	  if (ex=LCCCompile(lx,&size,NULL,NULL)) {
 	    tempe=CAlloc(sizeof(CExeImportExport));
 	    tempe->type=EIT_MAIN;
 	    tempe->ip=lx->a->ip;
-	    QueIns(tempe,lx->exe_struct->last_ie);
+	    QueIns(tempe,lx->exe->last_ie);
 	    for (i=0;i<size;i++)
 	      AsmStoreCodeU8(lx,ex[i]);
-	    ExpressionBinDel(ex);
+	    Free(ex);
 	  }
 	  LCCPop(lx);
 	} else
@@ -200,7 +195,7 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
 	  throw('Compiler');
 	r=Call(ex);
 	if (!(lx->flags & LF_HAS_MISC_DATA)||pass==1)
-	  ExpressionBinDel(ex);
+	  Free(ex);
 
 	if (type==RT_F64 &&
 	    tempc->raw_type!=RT_F64)
@@ -331,22 +326,21 @@ U0 PrsStaticInit(CLex *lx,CMemberLst *tempm,I64 pass)
   if (lx->flags&LF_AOT_COMPILE && pass==2) {
     if (lx->lcc.lcc_root.next!=&lx->lcc.lcc_root) {
       LCCAdd(lx,IC_RET,0,0);
-      if (ex=LCCCompile(lx,NULL,&size,NULL)) {
+      if (ex=LCCCompile(lx,&size,NULL,NULL)) {
 	if (pass==2) {
 	  tempe=CAlloc(sizeof(CExeImportExport));
 	  tempe->type=EIT_MAIN;
 	  tempe->ip=lx->a->ip;
-	  QueIns(tempe,lx->exe_struct->last_ie);
+	  QueIns(tempe,lx->exe->last_ie);
 	  for (i=0;i<size;i++)
 	    AsmStoreCodeU8(lx,ex[i]);
 	}
-	ExpressionBinDel(ex);
+	Free(ex);
       }
     } //TODO: else del misc?
     LCCPop(lx);
   }
 }
-
 
 Bool PrsArrayDims(CLex *lx,CArrayDim *dim)
 { //returns false on empty []
@@ -364,7 +358,7 @@ Bool PrsArrayDims(CLex *lx,CArrayDim *dim)
       result=FALSE;
     } else {
       if ((j=LexExpression(lx))<0)
-	LexExcept(lx,"ST_INVALID_ARRAY_SIZE");
+	LexExcept(lx,"Invalid array size at ");
     }
     tempad1=&dim->next;
     while (tempad1->next) {
@@ -379,12 +373,11 @@ Bool PrsArrayDims(CLex *lx,CArrayDim *dim)
     tempad->total_cnt=1;
     dim->total_cnt*=j;
     if (lx->token!=']')
-      LexExcept(lx,"ST_MISSING_RIGHT_BRACKET");
+      LexExcept(lx,"missing ']' at ");
     Lex(lx);
   }
   return result;
 }
-
 
 U0 PrsDotDotDot(CLex *lx,CHashFun *tempf,I64 _reg)
 {
@@ -399,6 +392,7 @@ U0 PrsDotDotDot(CLex *lx,CHashFun *tempf,I64 _reg)
   tempm->member_class=sys_internal_types[RT_I64];
   tempm->str=StrNew("argc");
   tempm->offset=tempf->size;
+  tempm->size=8;
   tempf->size+=8;
   MemberAdd(lx,tempm,tempf,PRS1B_FUN_ARG);
 
@@ -412,7 +406,8 @@ U0 PrsDotDotDot(CLex *lx,CHashFun *tempf,I64 _reg)
   tempad->cnt=127; //arbitrary
   tempad->total_cnt=1;
   tempm->offset=tempf->size;
-  tempf->size+=8;
+  tempm->size=8; //Close enough
+  tempf->size+=8;//Close enough
   MemberAdd(lx,tempm,tempf,PRS1B_FUN_ARG);
 
   if (lx->token==')')
@@ -429,9 +424,9 @@ CHashClass *PrsType(CLex *lx,CHashClass **_tempc1,
   CHashExport *tempex=NULL;
   CArrayDim *tempad2;
 
-start:
+pt_start:
   if (!tempc1 || !(tempc1->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-    LexExcept(lx,"ST_INVALID_CLASS");
+    LexExcept(lx,"invalid class at ");
 
   while (lx->token=='*') {
     if (mode.u8[1]) {
@@ -450,12 +445,12 @@ start:
     tempc1=tempc2;
     if (_tempc1) *_tempc1=tempc1;
     mode=PRS0_NULL|PRS1_NULL;
-    goto start;
+    goto pt_start;
   }
 
   if (lx->token=='(') {
     if (Lex(lx)!='*')
-      LexExcept(lx,"ST_EXPECTING_STAR");
+      LexExcept(lx,"expecting '*' at ");
     fun_ptr_cnt=1;
     while (Lex(lx)=='*')
       fun_ptr_cnt++;
@@ -465,8 +460,8 @@ start:
   if (_ident) {
     if (lx->token==TK_IDENT) {
       tempex=lx->hash_entry;
-      *_ident=lx->ident;
-      lx->ident=NULL;
+      *_ident=lx->cur_str;
+      lx->cur_str=NULL;
       Lex(lx);
     } else {
       if (!mode.u8[1])
@@ -476,15 +471,15 @@ start:
 	*_ident=StrNew("_anon_");
 	tempm->flags|=MLF_NO_UNUSED_WARN;
       } else
-	LexExcept(lx,"ST_EXPECTING_IDENTIFIER");
+	LexExcept(lx,"expecting identifier at ");
     }
   }
 
   if (fun_ptr_cnt>=0) {
     if (lx->token!=')')
-      LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+      LexExcept(lx,"missing ')' at ");
     if (Lex(lx)!='(')
-      LexExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+      LexExcept(lx,"expecting '(' at ");
     fun_ptr=PrsFunJoin(lx,tempc1,NULL,fsp_flags)+fun_ptr_cnt;
     tempc1=sys_internal_types[RT_PTR]+fun_ptr_cnt;
   }
@@ -499,7 +494,7 @@ start:
   if (tempc2->ptr_cnt) {
     tempc2-=tempc2->ptr_cnt;
     if (tempc2->type&HTT_INTERNAL_TYPE && !tempc2->size)
-      LexPutWarn(lx,"ST_PTR_TO_U0");
+      LexWarn(lx,"use \"U8 *\" instead of \"U0 *\" at ");
   }
 
   if (_mode)	*_mode=mode;
@@ -508,8 +503,7 @@ start:
   return tempc1;
 }
 
-U0 PrsVarLst(CLex *lx,CHashClass *tempc,
-		     I64 mode,I64 union_base=0)
+U0 PrsVarLst(CLex *lx,CHashClass *tempc,I64 mode,I64 union_base=0)
 {
   I64 i,k,old_flags=lx->flags,old_flags2,type,_reg;
   CHashClass *tempc1,*tempc2;
@@ -534,15 +528,17 @@ U0 PrsVarLst(CLex *lx,CHashClass *tempc,
       lx->class_ip=tempc->size;
     while (lx->token=='$') {
       if (Lex(lx)!='=') //skip $
-	LexExcept(lx,"ST_EXPECTING_EQUAL");
+	LexExcept(lx,"expecting '=' at ");
       Lex(lx); //skip =
       lx->class_ip=LexExpression(lx);
+      if (-lx->class_ip>tempc->neg_offset)
+	tempc->neg_offset=-lx->class_ip;
       if (mode&PRSF_UNION)
 	union_base=lx->class_ip;
       else
 	tempc->size=lx->class_ip;
       if (lx->token!=';')
-	LexExcept(lx,"ST_MISSING_SEMICOLON");
+	LexExcept(lx,"missing ';' at");
       Lex(lx); //skip ;
     }
     if (lx->token==')' || lx->token=='}') {
@@ -555,7 +551,7 @@ pvl_restart1:
       case KW_REG:
 	_reg=REG_ALLOC;
 	if (Lex(lx)==TK_IDENT) {
-	  k=DefineMatch(lx->ident,"ST_U64_REGS");
+	  k=DefineMatch(lx->cur_str,"ST_U64_REGS");
 	  if (k>=0) {
 	    _reg=k;
 	    Lex(lx);
@@ -577,14 +573,14 @@ pvl_restart1:
     else
       temph=NULL;
     if (!temph)
-      LexExcept(lx,"ST_EXPECTING_TYPE");
+      LexExcept(lx,"expecting type at ");
     k=PrsKeyWord(lx);
     if (k==KW_UNION) {
       Lex(lx);
       PrsVarLst(lx,tempc,mode|PRSF_UNION,tempc->size);
     } else {
       if (!(temph->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-	LexExcept(lx,"ST_EXPECTING_TYPE");
+	LexExcept(lx,"expecting type at ");
       first=TRUE;
 pvl_restart2:
       tempc1=temph;
@@ -604,7 +600,7 @@ pvl_restart3:
 	    lx->stk_ptr--;  //grows up
 	    LexPush(lx);
 	    if (Lex(lx)==TK_IDENT) {
-	      k=DefineMatch(lx->ident,"ST_U64_REGS");
+	      k=DefineMatch(lx->cur_str,"ST_U64_REGS");
 	      if (k>=0) {
 		tempm->reg=k;
 		lx->stk_ptr--;	//grows up
@@ -641,7 +637,7 @@ pvl_restart3:
 	  } else
 	    undef_array_size=FALSE;
 	  if (mode&PRSF_UNION)
-	    LexExcept(lx,"ST_STATIC_UNION");
+	    LexExcept(lx,"Static unions are not implemented ");
 	  k=(i+7)&~7;
 	  if (lx->flags&LF_AOT_COMPILE)
 	    tempm->static_data=MAlloc(k);
@@ -714,6 +710,7 @@ pvl_restart3:
 	  else
 	    tempc->size-=i;
 	  tempm->offset=tempc->size;
+	  tempm->size=i;
 	  if (lx->token=='=') {
 	    lx->flags=lx->flags&~LF_DONT_MAKE_RESULT|old_flags&LF_DONT_MAKE_RESULT;
 	    LexPop(lx);
@@ -734,6 +731,7 @@ pvl_restart3:
 	    tempm->offset=tempc->size;
 	    tempc->size+=8;
 	  }
+	  tempm->size=8;
 	  if (lx->token=='=') {
 	    Lex(lx);
 	    if (PrsKeyWord(lx)==KW_LASTCLASS) {
@@ -758,7 +756,7 @@ pvl_restart3:
 		tempm->dft_val=StrNew(tempm->dft_val);
 		tempm->flags|=MLF_STR_DFT_AVAILABLE;
 	      }
-	      ExpressionBinDel(ex);
+	      Free(ex);
 	      lx->flags|=old_flags2&LF_HAS_MISC_DATA;
 	    }
 	    tempm->flags|=MLF_DFT_AVAILABLE;
@@ -774,13 +772,14 @@ pvl_restart3:
 	    tempm->offset=tempc->size;
 	    tempc->size+=i;
 	  }
+	  tempm->size=i;
 	  while (lx->token==TK_IDENT) {
 	    temp_meta=MAlloc(sizeof(CMemberLstMeta));
 	    temp_meta->next=tempm->meta;
 	    tempm->meta=temp_meta;
-	    temp_meta->str=lx->ident;
+	    temp_meta->str=lx->cur_str;
 	    temp_meta->flags=0;
-	    lx->ident=NULL;
+	    lx->cur_str=NULL;
 	    if (Lex(lx)==TK_STR) {
 	      temp_meta->user_data=LexExtStr(lx);
 	      temp_meta->flags|=MLMF_IS_STR;
@@ -811,7 +810,7 @@ pvl_restart3:
 	    goto pvl_done;
 	  break;
 	default:
-	  LexExcept(lx,"ST_MISSING_SEMICOLON");
+	  LexExcept(lx,"missing ';' at");
       }
     }
   }
@@ -824,25 +823,25 @@ CHashClass *PrsClass(CLex *lx,I64 keyword,I64 fsp_flags,Bool is_extern)
 {
   CHashClass *tempc,*base_class;
   if (lx->token!=TK_IDENT)
-    LexExcept(lx,"ST_EXPECTING_IDENTIFIER");
+    LexExcept(lx,"expecting identifier at ");
   if (is_extern) {
     tempc=PrsClassNew;
-    tempc->str=lx->ident;
-    lx->ident=NULL;
+    tempc->str=lx->cur_str;
+    lx->cur_str=NULL;
     HashAdd(tempc,lx->htc.glbl_hash_table);
     LBts(&tempc->flags,Cf_EXTERN);
     SetSrcFileInfo(lx,tempc);
     Lex(lx);
   } else {
     if (lx->flags&LF_AOT_COMPILE) {
-      if (tempc=HashFind(lx->ident,lx->htc.glbl_hash_table,HTT_CLASS)) {
+      if (tempc=HashFind(lx->cur_str,lx->htc.glbl_hash_table,HTT_CLASS)) {
 	if (!Bt(&tempc->flags,Cf_EXTERN))
 	  tempc=NULL;
 	else if (tempc->use_cnt<3)
 	  UnusedExternWarning(lx,tempc);
       }
     } else {
-      if (tempc=HashSingleTableFind(lx->ident,lx->htc.glbl_hash_table,HTT_CLASS)) {
+      if (tempc=HashSingleTableFind(lx->cur_str,lx->htc.glbl_hash_table,HTT_CLASS)) {
 	if (!Bt(&tempc->flags,Cf_EXTERN))
 	  tempc=NULL;
 	else if (tempc->use_cnt<3)
@@ -854,8 +853,8 @@ CHashClass *PrsClass(CLex *lx,I64 keyword,I64 fsp_flags,Bool is_extern)
       Free(tempc->index);
     } else {
       tempc=PrsClassNew;
-      tempc->str=lx->ident;
-      lx->ident=NULL;
+      tempc->str=lx->cur_str;
+      lx->cur_str=NULL;
       HashAdd(tempc,lx->htc.glbl_hash_table);
     }
     LBtr(&tempc->flags,Cf_EXTERN);
@@ -866,9 +865,9 @@ CHashClass *PrsClass(CLex *lx,I64 keyword,I64 fsp_flags,Bool is_extern)
     if (Lex(lx)==':') {
       if (Lex(lx)!=TK_IDENT || !(base_class=lx->hash_entry) ||
 	!(base_class->type&HTT_CLASS))
-	LexExcept(lx,"ST_INVALID_CLASS");
+	LexExcept(lx,"invalid class at ");
       if (Lex(lx)==',')
-	LexExcept(lx,"ST_ONE_BASE_CLASS");
+	LexExcept(lx,"Only one base class allowed at this time at ");
       tempc->base_class=base_class;
       tempc->size+=base_class->size;
     }
@@ -876,12 +875,12 @@ CHashClass *PrsClass(CLex *lx,I64 keyword,I64 fsp_flags,Bool is_extern)
       PrsVarLst(lx,tempc,PRS0_NULL|PRS1_CLASS|PRSF_UNION);
     else
       PrsVarLst(lx,tempc,PRS0_NULL|PRS1_CLASS);
+    tempc->size+=tempc->neg_offset;
   }
   return tempc;
 }
 
-CHashFun *PrsFunJoin(CLex *lx,
-	CHashClass *temp_return,U8 *name,I64 fsp_flags)
+CHashFun *PrsFunJoin(CLex *lx,CHashClass *temp_return,U8 *name,I64 fsp_flags)
 {
   CMemberLst *tempm;
   CAsmCtrl *a=lx->a;
@@ -942,10 +941,8 @@ CHashFun *PrsFunJoin(CLex *lx,
   return tempf;
 }
 
-U0 PrsFun(CLex *lx,
-	CHashClass *temp_return,U8 *name,I64 fsp_flags)
+U0 PrsFun(CLex *lx,CHashClass *temp_return,U8 *name,I64 fsp_flags)
 {
-  CHashFun *tempf;
   CMemberLst *tempm;
   CLexCodeMisc *saved_leave_label;
   I64 i,j,size,*r;
@@ -955,8 +952,7 @@ U0 PrsFun(CLex *lx,
   lx->min_line=lx->max_line=lx->cur_lfn->line_num;
 
   lx->flags&=~LF_NO_REG_OPT;
-  tempf=PrsFunJoin(lx,temp_return,name,fsp_flags);
-  lx->htc.local_var_lst=tempf;
+  lx->htc.local_var_lst=lx->htc.fun=PrsFunJoin(lx,temp_return,name,fsp_flags);
 
   LCCPush(lx);
   Btr(&lx->flags,Lf_OPT_TRACE_PRESENT);
@@ -965,17 +961,17 @@ U0 PrsFun(CLex *lx,
   saved_leave_label=lx->lb_leave;
   lx->lb_leave=LCCMiscNew(lx,CMT_LABEL);
   lx->flags&=~LF_HAS_RETURN;
-  PrsStatement(lx,tempf,0,NULL,FALSE);
-  if (tempf->return_class->size && !(lx->flags&LF_HAS_RETURN))
-    LexPutWarn(lx,"ST_SHOULD_RETURN_VAL");
+  PrsStatement(lx,,,0);
+  if (lx->htc.fun->return_class->size && !(lx->flags&LF_HAS_RETURN))
+    LexWarn(lx,"Function should return val ");
   LCCAdd(lx,IC_LABEL,lx->lb_leave,0);
   lx->lb_leave=saved_leave_label;
-  LCCAdd(lx,IC_LEAVE,0,tempf->return_class);
-  tempf->size&=~7;
+  LCCAdd(lx,IC_LEAVE,0,lx->htc.fun->return_class);
+  lx->htc.fun->size&=~7;
   if (lx->flags&LF_AOT_COMPILE) {
-    tempf->executable_addr=lx->a->ip;
-    tempf->type|=HTF_EXPORT|HTF_RESOLVE;
-    r=LCCCompile(lx,tempf,&size,&tempf->debug);
+    lx->htc.fun->executable_addr=lx->a->ip;
+    lx->htc.fun->type|=HTF_EXPORT|HTF_RESOLVE;
+    r=LCCCompile(lx,&size,&lx->htc.fun->debug,NULL);
     if (r) {
       j=(size+7)>>3;
       for (i=0;i<j;i++)
@@ -984,28 +980,27 @@ U0 PrsFun(CLex *lx,
     }
   } else {
     old_ctrace=Btr(&lx->opts,OPTf_COMPILE_TRACE);
-    tempf->executable_addr=LCCCompile(lx,tempf,&size,&tempf->debug);
+    lx->htc.fun->executable_addr=LCCCompile(lx,&size,&lx->htc.fun->debug,NULL);
     if (old_ctrace) {
       Bts(&lx->opts,OPTf_COMPILE_TRACE);
-      Un(tempf->executable_addr,size,64);
+      Un(lx->htc.fun->executable_addr,size,64);
     }
-    SysSymImportsResolve(tempf->str);
+    SysSymImportsResolve(lx->htc.fun->str);
   }
-  LBtr(&tempf->flags,Cf_EXTERN);
+  LBtr(&lx->htc.fun->flags,Cf_EXTERN);
   LCCPop(lx);
-  lx->htc.local_var_lst=NULL;
-  tempm=tempf->member_lst;
+  tempm=lx->htc.fun->member_lst;
   while (tempm) {
     if (tempm->flags & MLF_NO_UNUSED_WARN) {
       if (tempm->use_cnt>1&&StrCmp(tempm->str,"_anon_"))
-	PrintWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_UNNEEDED_NOUNUSEDWARN",
-	  lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,tempf->str);
+	PrintWarn("Unneeded nounusedwarn\n $LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+	  lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,lx->htc.fun->str);
     } else if (!tempm->use_cnt && GetOpt(OPTf_WARN_UNUSED_VAR))
-      PrintWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_UNUSED_VAR",
-	lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,tempf->str);
+      PrintWarn("Unused var\n $LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+	lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,lx->htc.fun->str);
     tempm=tempm->next;
   }
-  lx->fun_lfn=NULL;
+  lx->htc.local_var_lst=lx->htc.fun=lx->fun_lfn=NULL;
 }
 
 U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
@@ -1064,7 +1059,7 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
 	case PRS0_IMPORT:
 	case PRS0__IMPORT:
 	  if (!(lx->flags&LF_AOT_COMPILE))
-	    LexExcept(lx,"ST_IMPORT_NOT_NEEDED");
+	    LexExcept(lx,"import not needed at ");
 	  else {
 	    tempf=PrsFunJoin(lx,tempc,st,fsp_flags);
 	    tempf->type|=HTF_IMPORT;
@@ -1109,7 +1104,7 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
 	case PRS0__IMPORT:
 	case PRS0_IMPORT:
 	  if (!(lx->flags&LF_AOT_COMPILE))
-	    LexExcept(lx,"ST_IMPORT_NOT_NEEDED");
+	    LexExcept(lx,"import not needed at ");
 	  else {
 	    tempg=CAlloc(sizeof(CHashGlblVar));
 	    tempg->type=HTT_GLBL_VAR | HTF_IMPORT;
@@ -1132,7 +1127,7 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
 	  if (lx->flags&LF_AOT_COMPILE) {
 	    if (Bt(&lx->opts,OPTf_GLBLS_ON_DATA_HEAP)) {
 	      if (lx->token=='=')
-		LexExcept(lx,"ST_CANT_INIT_GLBL_ON_HEAP");
+		LexExcept(lx,"Can't init glbl var on data heap in AOT module ");
 	      tempg=CAlloc(sizeof(CHashGlblVar));
 	      temphg=tempg->heap_glbl=CAlloc(sizeof(CExeHeapGlbl));
 	      temphg->size=j;
@@ -1142,7 +1137,7 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
 	      tempg->flags=GVF_DATA_HEAP;
 	      tempg->type=HTT_GLBL_VAR; //TODO: HTF_EXPORT
 	      if (tempex && tempex->type & HTT_GLBL_VAR) //TODO!! extern
-		LexExcept(lx,"ST_NOT_IMPLEMENTED");
+		LexExcept(lx,"Feature not implemented ");
 	    } else {
 	      tempg=CAlloc(sizeof(CHashGlblVar));
 	      if (lx->token=='=')
@@ -1238,6 +1233,10 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
 	lx->stk_ptr--;	//grows up
       }
       if (has_alias) {
+	if (tempex(CHashGlblVar *)->use_cnt<2) {
+	  PrintWarn("Unused extern '%s'\n",tempex(CHashGlblVar *)->str);
+	  lx->warning_cnt++;
+	}
 	tempex(CHashGlblVar *)->flags|=GVF_ALIAS;
 	tempex(CHashGlblVar *)->data_addr=tempg->data_addr;
 	tempex(CHashGlblVar *)->data_addr_ip=tempg->data_addr_ip;
@@ -1246,7 +1245,7 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
 	Lex(lx);
       else {
 	if (lx->token!=';')
-	  LexExcept(lx,"ST_MISSING_SEMICOLON");
+	  LexExcept(lx,"missing ';' at");
 	Lex(lx);
 	return;
       }
@@ -1254,90 +1253,89 @@ U0 PrsGlblVarLst(CLex *lx,I64 saved_mode,CHashClass *saved_tempc,
   }
 }
 
-U0 PrsIf(CLex *lx,CHashFun *locals,I64 try_cnt,
-  CLexCodeMisc *lb_break)
+U0 PrsIf(CLex *lx,I64 try_cnt,CLexCodeMisc *lb_break)
 {
   CLexCodeMisc *lb,*lb1;
   I64 k;
 
   if (lx->token!='(')
-    LexExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+    LexExcept(lx,"expecting '(' at ");
   Lex(lx);
   if (!PrsExpression(lx,NULL,FALSE))
     throw('Compiler');
   if (lx->token!=')')
-    LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+    LexExcept(lx,"missing ')' at ");
   Lex(lx);
   lb=LCCMiscNew(lx,CMT_LABEL);
   LCCAdd(lx,IC_BR_ZERO,lb,0);
-  PrsStatement(lx,locals,try_cnt,lb_break);
+  PrsStatement(lx,try_cnt,lb_break);
   k=PrsKeyWord(lx);
   if (k==KW_ELSE) {
     Lex(lx);
     lb1=LCCMiscNew(lx,CMT_LABEL);
     LCCAdd(lx,IC_JMP,lb1,0);
     LCCAdd(lx,IC_LABEL,lb,0);
-    PrsStatement(lx,locals,try_cnt,lb_break,TRUE);
+    PrsStatement(lx,try_cnt,lb_break);
     LCCAdd(lx,IC_LABEL,lb1,0);
   } else
     LCCAdd(lx,IC_LABEL,lb,0);
 }
 
-U0 PrsWhile(CLex *lx,CHashFun *locals,I64 try_cnt)
+U0 PrsWhile(CLex *lx,I64 try_cnt)
 {
   CLexCodeMisc *lb,*lb_done;
 
   if (lx->token!='(')
-    LexExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+    LexExcept(lx,"expecting '(' at ");
   Lex(lx);
   lb=LCCMiscNew(lx,CMT_LABEL);
   LCCAdd(lx,IC_LABEL,lb,0);
   if (!PrsExpression(lx,NULL,FALSE))
     throw('Compiler');
   if (lx->token!=')')
-    LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+    LexExcept(lx,"missing ')' at ");
   Lex(lx);
 
   lb_done=LCCMiscNew(lx,CMT_LABEL);
   LCCAdd(lx,IC_BR_ZERO,lb_done,0);
-  PrsStatement(lx,locals,try_cnt,lb_done);
+  PrsStatement(lx,try_cnt,lb_done);
   LCCAdd(lx,IC_JMP,lb,0);
   LCCAdd(lx,IC_LABEL,lb_done,0);
 }
 
-U0 PrsDoWhile(CLex *lx,CHashFun *locals,I64 try_cnt)
+U0 PrsDoWhile(CLex *lx,I64 try_cnt)
 {
   CLexCodeMisc *lb,*lb_done;
 
   lb=LCCMiscNew(lx,CMT_LABEL);
   lb_done=LCCMiscNew(lx,CMT_LABEL);
   LCCAdd(lx,IC_LABEL,lb,0);
-  PrsStatement(lx,locals,try_cnt,lb_done);
+  PrsStatement(lx,try_cnt,lb_done);
   if (PrsKeyWord(lx)!=KW_WHILE)
-    LexExcept(lx,"ST_MISSING_WHILE");
+    LexExcept(lx,"missing 'while' at");
   if (Lex(lx)!='(')
-    LexExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+    LexExcept(lx,"expecting '(' at ");
   Lex(lx);
   if (!PrsExpression(lx,NULL,FALSE))
     throw('Compiler');
   if (lx->token!=')')
-    LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+    LexExcept(lx,"missing ')' at ");
   LCCAdd(lx,IC_BR_NOT_ZERO,lb,0);
   LCCAdd(lx,IC_LABEL,lb_done,0);
   if (Lex(lx)!=';')
-    LexExcept(lx,"ST_MISSING_SEMICOLON");
+    LexExcept(lx,"missing ';' at");
   Lex(lx);
 }
 
-U0 PrsFor(CLex *lx,CHashFun *locals,I64 try_cnt)
+U0 PrsFor(CLex *lx,I64 try_cnt)
 {
   CLexCodeCtrl *tempcbh;
   CLexCodeMisc *lb,*lb_done;
 
   if (lx->token!='(')
-    LexExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+    LexExcept(lx,"expecting '(' at ");
   Lex(lx);
-  PrsStatement(lx,locals,try_cnt);
+  PrsStatement(lx,try_cnt);
 
   lb=LCCMiscNew(lx,CMT_LABEL);
   LCCAdd(lx,IC_LABEL,lb,0);
@@ -1346,21 +1344,21 @@ U0 PrsFor(CLex *lx,CHashFun *locals,I64 try_cnt)
   lb_done=LCCMiscNew(lx,CMT_LABEL);
   LCCAdd(lx,IC_BR_ZERO,lb_done,0);
   if (lx->token!=';')
-    LexExcept(lx,"ST_MISSING_SEMICOLON");
+    LexExcept(lx,"missing ';' at");
   Lex(lx);
 
   LCCPush(lx);
   LCCInit(lx);
   if (lx->token!=')')
-    PrsStatement(lx,locals,try_cnt,NULL,FALSE);
+    PrsStatement(lx,try_cnt,NULL,0);
   LCCPush(lx);
   tempcbh=LCCPopNoFree(lx);
   LCCPop(lx);
   if (lx->token!=')')
-    LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+    LexExcept(lx,"missing ')' at ");
   Lex(lx);
 
-  PrsStatement(lx,locals,try_cnt,lb_done);
+  PrsStatement(lx,try_cnt,lb_done);
   LCCAppend(lx,tempcbh);
   LCCAdd(lx,IC_JMP,lb,0);
   LCCAdd(lx,IC_LABEL,lb_done,0);
@@ -1378,7 +1376,7 @@ class CSwitchCase {
   CSubSwitch *ss;
 };
 
-U0 PrsSwitch(CLex *lx,Bool nobound,CHashFun *locals,I64 try_cnt)
+U0 PrsSwitch(CLex *lx,Bool nobound,I64 try_cnt)
 {
   CSwitchCase *header=NULL,*temps,*temps1;	//Leaks on except
   CSubSwitch root,*tempss;			//Leaks on except
@@ -1388,7 +1386,7 @@ U0 PrsSwitch(CLex *lx,Bool nobound,CHashFun *locals,I64 try_cnt)
   I64 i,k,k2,lo=MAX_I64,hi=MIN_I64,range;
 
   if (lx->token!='(')
-    LexExcept(lx,"ST_EXPECTING_LEFT_PAREN");
+    LexExcept(lx,"expecting '(' at ");
   Lex(lx);
   QueInit(&root);
 
@@ -1409,9 +1407,9 @@ U0 PrsSwitch(CLex *lx,Bool nobound,CHashFun *locals,I64 try_cnt)
   else
     LCCAdd(lx,IC_SWITCH,mc_jt,0);
   if (lx->token!=')')
-    LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+    LexExcept(lx,"missing ')' at ");
   if (Lex(lx)!='{')
-    LexExcept(lx,"ST_EXPECTING_LEFT_BRACE");
+    LexExcept(lx,"expecting '{' at ");
   Lex(lx);
   LCCAdd(lx,IC_LABEL,mc_jt->begin,0);
   while (TRUE) {
@@ -1424,7 +1422,7 @@ sw_cont:
 	  if (Lex(lx)==':')
 	    Lex(lx);
 	  else
-	    LexExcept(lx,"ST_EXPECTING_COLON");
+	    LexExcept(lx,"expecting ':' at ");
 	  tempss=MAlloc(sizeof(CSubSwitch));
 	  QueIns(tempss,root.last);
 	  root.last->lb_break=LCCMiscNew(lx,CMT_LABEL);
@@ -1452,7 +1450,7 @@ sw_cont:
 		}
 		goto sw_cont;
 	      default:
-		PrsStatement(lx,locals,try_cnt,root.last->last->lb_break);
+		PrsStatement(lx,try_cnt,root.last->last->lb_break);
 	    }
 	  }
 	  break;
@@ -1501,9 +1499,9 @@ sw_cont:
 		header=temps;
 	      }
 	    } else
-	      LexExcept(lx,"ST_EXPECTING_COLON");
+	      LexExcept(lx,"expecting ':' at ");
 	  } else
-	    LexExcept(lx,"ST_EXPECTING_COLON");
+	    LexExcept(lx,"expecting ':' at ");
 	  break;
 	case KW_DFT:
 	  if (root.next!=&root) {
@@ -1515,7 +1513,7 @@ sw_cont:
 	  if (lx->token==':')
 	    Lex(lx);
 	  else
-	    LexExcept(lx,"ST_EXPECTING_COLON");
+	    LexExcept(lx,"expecting ':' at ");
 	  if (root.next!=&root) {
 	    tempss=root.next;
 	    while (tempss!=&root) {
@@ -1528,7 +1526,7 @@ sw_cont:
 	  dft_found=TRUE;
 	  break;
 	default:
-	  PrsStatement(lx,locals,try_cnt,root.last->lb_break);
+	  PrsStatement(lx,try_cnt,root.last->lb_break);
       }
     }
 sw_sub_end:
@@ -1536,18 +1534,18 @@ sw_sub_end:
     LCCAdd(lx,IC_LABEL,tempss->lb_break,0);
     if (tempss==&root) {
       if (lx->token!='}')
-	LexExcept(lx,"ST_MISSING_RIGHT_BRACE");
+	LexExcept(lx,"missing '}' at ");
       Lex(lx);
       break;
     } else {
       QueRem(tempss);
       Free(tempss);
       if (PrsKeyWord(lx)!=KW_SUB_SWITCH_END)
-	LexExcept(lx,"ST_MISSING_SUB_SWITCH_END");
+	LexExcept(lx,"missing 'sub_switch_end' at ");
       if (Lex(lx)==':')
 	Lex(lx);
       else
-	LexExcept(lx,"ST_EXPECTING_COLON");
+	LexExcept(lx,"expecting ':' at ");
     }
   }
   if (!dft_found)
@@ -1557,7 +1555,7 @@ sw_sub_end:
     lo=0;
   range=hi-lo+1;
   if (lo>hi || !(0<range<=0xFFFF))
-    LexExcept(lx,"ST_CASE_RANGE_ERROR");
+    LexExcept(lx,"switch range error at ");
   jmp_table=MAlloc((sizeof(CLexCodeMisc *)*range+0x1FF)&~0x1FF);
   MemSetU64(jmp_table,lb_dft,range);
   tempi_sub->ic_data=lo;
@@ -1566,7 +1564,7 @@ sw_sub_end:
   while (temps) {
     temps1=temps->next;
     if (jmp_table[temps->val-lo]!=lb_dft)
-      LexExcept(lx,"ST_DUP_CASE");
+      LexExcept(lx,"Duplicate case at ");
     else
       jmp_table[temps->val-lo]=temps->label;
     Free(temps);
@@ -1582,12 +1580,12 @@ U0 PrsNoUnusedWarn(CLex *lx)
   CMemberLst *tempm;
   while (lx->token==TK_IDENT) {
     if (!(tempm=lx->local_var_entry))
-      LexExcept(lx,"ST_EXPECTING_LOCAL_VAR");
+      LexExcept(lx,"expecting local var at ");
     tempm->flags|=MLF_NO_UNUSED_WARN;
     if (Lex(lx)==',')
       Lex(lx);
     else if (lx->token!=';')
-      LexExcept(lx,"ST_EXPECTING_COMMA");
+      LexExcept(lx,"expecting ',' at ");
   }
 }
 
@@ -1595,7 +1593,6 @@ U0 PrsStreamBlk(CLex *lx)
 {
   CLexHashTableContext *htc=MAlloc(sizeof(CLexHashTableContext));
   CStreamBlk *tempe=MAlloc(sizeof(CStreamBlk));
-
   tempe->body=StrNew("");
   QueIns(tempe,lx->last_stream_blk);
   LCCPush(lx);
@@ -1604,14 +1601,13 @@ U0 PrsStreamBlk(CLex *lx)
   MemCpy(htc,&lx->htc,sizeof(CLexHashTableContext));
   htc->old_flags=lx->flags;
   lx->htc.next=htc;
-  lx->htc.local_var_lst=NULL;
-  lx->htc.hash_mask=HTG_ALL-HTT_IMPORT_SYS_SYM-HTT_ASM_KEYWORD;
+  lx->htc.fun=lx->htc.local_var_lst=NULL;
   lx->htc.define_hash_table=lx->htc.hash_table_lst=lx->htc.glbl_hash_table=lx->htc.local_hash_table=Fs->hash_table;
   lx->flags=lx->flags & ~(LF_ASM_EXPRESSIONS|LF_AOT_COMPILE) | LF_EXE_BLK;
   if (lx->token=='{')
     Lex(lx);
   else
-    LexExcept(lx,"ST_MISSING_RIGHT_BRACE");
+    LexExcept(lx,"missing '}' at ");
   while (lx->token && lx->token!='}')
     ExeCmdLine(lx);
 
@@ -1619,7 +1615,6 @@ U0 PrsStreamBlk(CLex *lx)
   lx->flags=lx->flags&~LF_EXE_BLK |
     htc->old_flags & (LF_ASM_EXPRESSIONS|LF_EXE_BLK|LF_AOT_COMPILE);
   Free(htc);
-
   LCCPop(lx);
   QueRem(tempe);
   if (*tempe->body)
@@ -1630,15 +1625,15 @@ U0 PrsStreamBlk(CLex *lx)
   Lex(lx); //Skip '}'
 }
 
-U0 PrsTryBlk(CLex *lx,CHashFun *locals,I64 try_cnt)
+U0 PrsTryBlk(CLex *lx,I64 try_cnt)
 {
-  CLexCodeMisc *lb_catch,*lb_done,*lb_untry;
-  CHashClass *tempc=sys_internal_types[RT_PTR];
-  CHashFun *temp_try=HashFind("SysTry",lx->htc.hash_table_lst,HTT_FUN),
-	    *temp_untry=HashFind("SysUntry",lx->htc.hash_table_lst,HTT_FUN);
+  CLexCodeMisc	*lb_catch,*lb_done,*lb_untry;
+  CHashClass	*tempc=sys_internal_types[RT_PTR];
+  CHashFun	*temp_try=HashFind("SysTry",lx->htc.hash_table_lst,HTT_FUN),
+		*temp_untry=HashFind("SysUntry",lx->htc.hash_table_lst,HTT_FUN);
 
   if (!temp_try || !temp_untry)
-    LexExcept(lx,"ST_HEADER_FOR_SYSTRY");
+    LexExcept(lx,"Missing header for SysTry() and SysUntry() at ");
 
   lx->flags|=LF_NO_REG_OPT; //TODO (Currently no reg vars in funs with try/catch)
 
@@ -1664,7 +1659,7 @@ U0 PrsTryBlk(CLex *lx,CHashFun *locals,I64 try_cnt)
   LCCAdd(lx,IC_CALL_END,0,tempc);
   LCCAdd(lx,IC_END_EXP,0,0);
 
-  PrsStatement(lx,locals,try_cnt+1);
+  PrsStatement(lx,try_cnt+1);
 
   LCCAdd(lx,IC_LABEL,lb_untry,0);
   LCCAdd(lx,IC_CALL_START,0,0);
@@ -1682,17 +1677,17 @@ U0 PrsTryBlk(CLex *lx,CHashFun *locals,I64 try_cnt)
   LCCAdd(lx,IC_JMP,lb_done,0);
 
   if (PrsKeyWord(lx)!=KW_CATCH)
-    LexExcept(lx,"ST_MISSING_CATCH");
+    LexExcept(lx,"missing 'catch' at");
 
   Lex(lx);
   LCCAdd(lx,IC_LABEL,lb_catch,0);
-  PrsStatement(lx,locals,try_cnt+1);
+  PrsStatement(lx,try_cnt+1);
   LCCAdd(lx,IC_RET,0,tempc);
   LCCAdd(lx,IC_LABEL,lb_done,0);
 }
 
-Bool PrsStatement(CLex *lx,CHashFun *locals,I64 try_cnt=0,
-  CLexCodeMisc *lb_break=NULL,Bool prs_semicolon=TRUE)
+Bool PrsStatement(CLex *lx,I64 try_cnt=0,
+  CLexCodeMisc *lb_break=NULL,I64 cmp_flags=CMPF_PRS_SEMICOLON)
 {
   I64 i,fsp_flags=0;
   CHashExport *tempex;
@@ -1700,291 +1695,308 @@ Bool PrsStatement(CLex *lx,CHashFun *locals,I64 try_cnt=0,
   U8 *import_name;
   CHashFun *temp_untry;
   CExe *tempx;
-  while (TRUE) {
-    while (lx->token==',')
-      Lex(lx);
-    if (lx->token=='{') {
-      Lex(lx);
-      while (lx->token!='}' && lx->token!=TK_EOF)
-	PrsStatement(lx,locals,try_cnt,lb_break);
-      if (Lex(lx)!=',') goto sm_done;
-    } else if (lx->token==';') {
-      if (prs_semicolon)
+  if (cmp_flags&CMPF_ONE_ASM_INS) {
+    if (lx->flags&LF_AOT_COMPILE || lx->a_depth)
+      PrsAsmBlk(lx,CMPF_ONE_ASM_INS);
+    else if (tempx=CmpJoin(lx,CMPF_ASM_BLK|CMPF_ONE_ASM_INS))
+      CmpFixUpJITAsm(lx,tempx);
+    fsp_flags=FSF_ASM;
+  } else
+    while (TRUE) {
+      while (lx->token==',')
 	Lex(lx);
-      if (lx->token!=',') goto sm_done;
-    } else {
-      if (lx->token==TK_IDENT) {
-	if (tempex=lx->hash_entry) {
-	  if (tempex->type & HTT_KEYWORD) {
-	    i=tempex(CHashGeneric *)->user_data0;
-	    nobound_switch (i) {
-	      case KW_NUM_KEYWORDS-1: //nobound_switch
-	      default: //A keyword that is not valid here is just a symbol.
-		goto sm_not_keyword_afterall;
-	      sub_switch_start:
-		case KW_ASM:
-		  if (locals) {
-		    if (tempx=CmpJoin(lx,locals,FALSE,TRUE))
-		      LCCAdd(lx,IC_ASM,tempx,0);
-		    Lex(lx); //Skip '}' of asm{}
-		  } else {
-		    if (lx->flags&LF_AOT_COMPILE || lx->a_depth) {
-		      Lex(lx);
-		      PrsAsmBlk(lx);
-		      if (lx->flags&LF_AOT_COMPILE && lx->a_depth==1)
-			Lex(lx); //Skip '}' of asm{}
-		    } else {
-		      if (tempx=CmpJoin(lx,NULL,FALSE,TRUE))
-			CmpFixUpJITAsm(lx,tempx,tempx->ex);
+      if (lx->token=='{') {
+	Lex(lx);
+	while (lx->token!='}' && lx->token!=TK_EOF)
+	  PrsStatement(lx,try_cnt,lb_break);
+	if (Lex(lx)!=',') goto sm_done;
+      } else if (lx->token==';') {
+	if (cmp_flags&CMPF_PRS_SEMICOLON)
+	  Lex(lx);
+	if (lx->token!=',') goto sm_done;
+      } else {
+	if (lx->token==TK_IDENT) {
+	  if (tempex=lx->hash_entry) {
+	    if (tempex->type & HTT_KEYWORD) {
+	      i=tempex(CHashGeneric *)->user_data0;
+	      nobound_switch (i) {
+		case KW_NUM_KEYWORDS-1: //nobound_switch
+		default: //A keyword that is not valid here is just a symbol.
+		  goto sm_not_keyword_afterall;
+		sub_switch_start:
+		  case KW_ASM:
+		    if (lx->htc.fun) {
+		      if (tempx=CmpJoin(lx,CMPF_ASM_BLK))
+			LCCAdd(lx,IC_ASM,tempx,0);
 		      Lex(lx); //Skip '}' of asm{}
+		    } else {
+		      if (lx->flags&LF_AOT_COMPILE || lx->a_depth) {
+			Lex(lx);
+			PrsAsmBlk(lx,0);
+			if (lx->flags&LF_AOT_COMPILE && lx->a_depth==1)
+			  Lex(lx); //Skip '}' of asm{}
+		      } else {
+			if (tempx=CmpJoin(lx,CMPF_ASM_BLK))
+			  CmpFixUpJITAsm(lx,tempx);
+			Lex(lx); //Skip '}' of asm{}
+		      }
+		      fsp_flags=FSF_ASM;
 		    }
-		    fsp_flags=FSF_ASM;
-		  }
+		    break;
+		  sub_switch_start:
+		    Lex(lx);
+		    case KW_LOCK:
+		      lx->lock_cnt++;
+		      PrsStatement(lx,try_cnt);
+		      lx->lock_cnt--;
+		      break;
+		    case KW_TRY:
+		      PrsTryBlk(lx,try_cnt);
+		      break;
+		    case KW_IF:
+		      PrsIf(lx,try_cnt,lb_break);
+		      break;
+		    case KW_FOR:
+		      PrsFor(lx,try_cnt);
+		      break;
+		    case KW_WHILE:
+		      PrsWhile(lx,try_cnt);
+		      break;
+		    case KW_DO:
+		      PrsDoWhile(lx,try_cnt);
+		      break;
+		    case KW_NOBOUND_SWITCH:
+		      PrsSwitch(lx,TRUE,try_cnt);
+		      break;
+		    case KW_SWITCH:
+		      PrsSwitch(lx,FALSE,try_cnt);
+		      break;
+		  sub_switch_end:
+		sub_switch_end:
+		  if (lx->token!=',') goto sm_done;
 		  break;
 		sub_switch_start:
+		  if (lx->htc.fun)
+		    LexExcept(lx,"Not allowed in fun");
 		  Lex(lx);
-		  case KW_LOCK:
-		    lx->lock_cnt++;
-		    PrsStatement(lx,locals,try_cnt);
-		    lx->lock_cnt--;
+		  case KW__EXTERN:
+		    if (Bt(&lx->opts,OPTf_EXTERNS_TO_IMPORTS))
+		      goto sm_underscore_import;
+		    if (lx->flags&LF_AOT_COMPILE) {
+		      if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
+			    !(tempex->type & HTT_EXPORT_SYS_SYM))
+			LexExcept(lx,"expecting System sym at ");
+		      i=tempex->val;
+		      Lex(lx);
+		    } else
+		      i=LexExpression(lx);
+		    if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
+			  !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		      LexExcept(lx,"expecting type at ");
+		    Lex(lx);
+		    PrsGlblVarLst(lx,PRS0__EXTERN|PRS1_NULL,tempex,i,fsp_flags);
 		    break;
-		  case KW_TRY:
-		    PrsTryBlk(lx,locals,try_cnt);
+		  case KW__IMPORT:
+sm_underscore_import:
+		    if (lx->token!=TK_IDENT)
+		      LexExcept(lx,"expecting System sym at ");
+		    import_name=lx->cur_str;
+		    lx->cur_str=0;
+		    if (Lex(lx)!=TK_IDENT || !(tempex=lx->hash_entry) ||
+			  !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		      LexExcept(lx,"expecting type at ");
+		    Lex(lx);
+		    PrsGlblVarLst(lx,PRS0__IMPORT|PRS1_NULL,tempex,import_name,FALSE);
+		    Free(import_name);
 		    break;
-		  case KW_IF:
-		    PrsIf(lx,locals,try_cnt,lb_break);
+		  case KW_EXTERN:
+		    if (lx->token!=TK_IDENT)
+		      LexExcept(lx,"expecting type at ");
+		    tempex=lx->hash_entry;
+		    i=PrsKeyWord(lx);
+		    if (i==KW_CLASS||i==KW_UNION) {
+		      Lex(lx);
+		      PrsClass(lx,i,fsp_flags,TRUE);
+		      fsp_flags&=FSF_ASM;
+		      goto sm_semicolon;
+		    }
+		    if (!tempex || !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		      LexExcept(lx,"expecting type at ");
+		    if (Bt(&lx->opts,OPTf_EXTERNS_TO_IMPORTS))
+		      goto sm_import;
+		    Lex(lx);
+		    PrsGlblVarLst(lx,PRS0_EXTERN|PRS1_NULL,tempex,0,fsp_flags);
 		    break;
-		  case KW_FOR:
-		    PrsFor(lx,locals,try_cnt);
+		  case KW_IMPORT:
+		    if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
+			  !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		      LexExcept(lx,"expecting type at ");
+sm_import:
+		    Lex(lx);
+		    PrsGlblVarLst(lx,PRS0_IMPORT|PRS1_NULL,tempex,0,FALSE);
 		    break;
-		  case KW_WHILE:
-		    PrsWhile(lx,locals,try_cnt);
-		    break;
-		  case KW_DO:
-		    PrsDoWhile(lx,locals,try_cnt);
-		    break;
-		  case KW_NOBOUND_SWITCH:
-		    PrsSwitch(lx,TRUE,locals,try_cnt);
-		    break;
-		  case KW_SWITCH:
-		    PrsSwitch(lx,FALSE,locals,try_cnt);
+		  case KW__INTERN:
+		    i=LexExpression(lx);
+		    if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
+			  !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
+		      LexExcept(lx,"expecting type at ");
+		    Lex(lx);
+		    PrsGlblVarLst(lx,PRS0__INTERN|PRS1_NULL,tempex,i,fsp_flags);
 		    break;
 		sub_switch_end:
-	      sub_switch_end:
-		if (lx->token!=',') goto sm_done;
-		break;
-	      sub_switch_start:
-		if (locals)
-		  LexExcept(lx,"ST_NOT_ALLOWED_IN_FUN");
-		Lex(lx);
-		case KW__EXTERN:
-		  if (Bt(&lx->opts,OPTf_EXTERNS_TO_IMPORTS))
-		    goto sm_underscore_import;
-		  if (lx->flags&LF_AOT_COMPILE) {
-		    if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
-			  !(tempex->type & HTT_EXPORT_SYS_SYM))
-		      LexExcept(lx,"ST_EXPECTING_SYS_SYM");
-		    i=tempex->val;
-		    Lex(lx);
-		  } else
-		    i=LexExpression(lx);
-		  if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
-			!(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-		    LexExcept(lx,"ST_EXPECTING_TYPE");
-		  Lex(lx);
-		  PrsGlblVarLst(lx,PRS0__EXTERN|PRS1_NULL,tempex,i,fsp_flags);
+		  fsp_flags&=FSF_ASM;
 		  break;
-		case KW__IMPORT:
-sm_underscore_import:
-		  if (lx->token!=TK_IDENT)
-		    LexExcept(lx,"ST_EXPECTING_SYS_SYM");
-		  import_name=lx->ident;
-		  lx->ident=0;
-		  if (Lex(lx)!=TK_IDENT || !(tempex=lx->hash_entry) ||
-			!(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-		    LexExcept(lx,"ST_EXPECTING_TYPE");
+		sub_switch_start:
+		  case KW_STATIC:
+		    fsp_flags=FSF_STATIC|fsp_flags&FSF_ASM;
+		    break;
+		  case KW_INTERRUPT:
+		    fsp_flags=FSF_INTERRUPT|FSF_NOARGPOP|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
+		    break;
+		  case KW_HASERRCODE:
+		    fsp_flags=FSF_HASERRCODE|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
+		    break;
+		  case KW_ARGPOP:
+		    fsp_flags=FSF_ARGPOP|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
+		    break;
+		  case KW_NOARGPOP:
+		    fsp_flags=FSF_NOARGPOP|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
+		    break;
+		  case KW_PUBLIC:
+		    fsp_flags=FSF_PUBLIC|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
+		    break;
+		sub_switch_end:
 		  Lex(lx);
-		  PrsGlblVarLst(lx,PRS0__IMPORT|PRS1_NULL,tempex,import_name,FALSE);
-		  Free(import_name);
 		  break;
-		case KW_EXTERN:
-		  if (lx->token!=TK_IDENT)
-		    LexExcept(lx,"ST_EXPECTING_TYPE");
-		  tempex=lx->hash_entry;
-		  i=PrsKeyWord(lx);
-		  if (i==KW_CLASS||i==KW_UNION) {
-		    Lex(lx);
-		    PrsClass(lx,i,fsp_flags,TRUE);
+		case KW_RETURN:
+		  if (!lx->htc.fun)
+		    LexExcept(lx,"Not in fun.  Can't return a val ");
+		  if (try_cnt) {
+		    temp_untry=HashFind("SysUntry",
+			  lx->htc.hash_table_lst,HTT_FUN);
+		    for (i=0;i<try_cnt;i++) {
+		      if (Bt(&temp_untry->flags,Cf_EXTERN)) {
+			lx->abs_cnts.externs++;
+			if (lx->flags&LF_AOT_COMPILE)
+			  LCCAdd(lx,IC_CALL_IMPORT,
+				temp_untry,sys_internal_types[RT_PTR]);
+			else
+			  LCCAdd(lx,IC_CALL_INDIRECT2,
+				&temp_untry->executable_addr,sys_internal_types[RT_PTR]);
+		      } else
+			LCCAdd(lx,IC_CALL,temp_untry->executable_addr,sys_internal_types[RT_PTR]);
+		    }
+		  }
+		  if (Lex(lx)!=';') {
+		    if (!lx->htc.fun->return_class->size)
+		      LexWarn(lx,"Function should NOT return val ");
+		    if (!PrsExpression(lx,NULL,FALSE))
+		      throw('Compiler');
+		    LCCAdd(lx,IC_RETURN_VAL,0,lx->htc.fun->return_class);
+		    lx->flags|=LF_HAS_RETURN;
+		  } else if (lx->htc.fun->return_class->size)
+		    LexWarn(lx,"Function should return val ");
+		  LCCAdd(lx,IC_JMP,lx->lb_leave,0);
+		  goto sm_semicolon;
+		case KW_GOTO:
+		  if (Lex(lx)!=TK_IDENT)
+		    LexExcept(lx,"expecting identifier at ");
+		  if (!(g_lb=LCCGoToLabelFind(lx,lx->cur_str))) {
+		    g_lb=LCCMiscNew(lx,CMT_GOTO_LABEL);
+		    g_lb->str=lx->cur_str;
+		    lx->cur_str=NULL;
+		  }
+		  g_lb->use_cnt++;
+		  LCCAdd(lx,IC_JMP,g_lb,0);
+		  Lex(lx);
+		  goto sm_semicolon;
+		case KW_BREAK:
+		  Lex(lx);
+		  if (!lb_break)
+		    LexExcept(lx,"'break' not allowed\n");
+		  LCCAdd(lx,IC_JMP,lb_break,0);
+		  goto sm_semicolon;
+		case KW_NOUNUSEDWARN:
+		  Lex(lx);
+		  PrsNoUnusedWarn(lx);
+		  goto sm_semicolon;
+		case KW_UNION:
+		case KW_CLASS:
+		  Lex(lx);
+		  tempex=PrsClass(lx,i,fsp_flags,FALSE);
+		  if (!lx->htc.fun && lx->token!=';') {
+		    PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempex,0,fsp_flags);
+		    fsp_flags&=FSF_ASM;
+		    break;
+		  } else {
 		    fsp_flags&=FSF_ASM;
 		    goto sm_semicolon;
 		  }
-		  if (!tempex || !(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-		    LexExcept(lx,"ST_EXPECTING_TYPE");
-		  if (Bt(&lx->opts,OPTf_EXTERNS_TO_IMPORTS))
-		    goto sm_import;
-		  Lex(lx);
-		  PrsGlblVarLst(lx,PRS0_EXTERN|PRS1_NULL,tempex,0,fsp_flags);
-		  break;
-		case KW_IMPORT:
-		  if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
-			!(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-		    LexExcept(lx,"ST_EXPECTING_TYPE");
-sm_import:
-		  Lex(lx);
-		  PrsGlblVarLst(lx,PRS0_IMPORT|PRS1_NULL,tempex,0,FALSE);
-		  break;
-		case KW__INTERN:
-		  i=LexExpression(lx);
-		  if (lx->token!=TK_IDENT || !(tempex=lx->hash_entry) ||
-			!(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-		    LexExcept(lx,"ST_EXPECTING_TYPE");
-		  Lex(lx);
-		  PrsGlblVarLst(lx,PRS0__INTERN|PRS1_NULL,tempex,i,fsp_flags);
-		  break;
-	      sub_switch_end:
-		fsp_flags&=FSF_ASM;
-		break;
-	      sub_switch_start:
-		case KW_STATIC:
-		  fsp_flags=FSF_STATIC|fsp_flags&FSF_ASM;
-		  break;
-		case KW_INTERRUPT:
-		  fsp_flags=FSF_INTERRUPT|FSF_NOARGPOP|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
-		  break;
-		case KW_HASERRCODE:
-		  fsp_flags=FSF_HASERRCODE|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
-		  break;
-		case KW_ARGPOP:
-		  fsp_flags=FSF_ARGPOP|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
-		  break;
-		case KW_NOARGPOP:
-		  fsp_flags=FSF_NOARGPOP|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
-		  break;
-		case KW_PUBLIC:
-		  fsp_flags=FSF_PUBLIC|fsp_flags&(FSG_FUN_FLAGS2|FSF_ASM);
-		  break;
-	      sub_switch_end:
-		Lex(lx);
-		break;
-	      case KW_RETURN:
-		if (!locals)
-		  LexExcept(lx,"ST_CANT_RETURN_VAL");
-		if (try_cnt) {
-		  temp_untry=HashFind("SysUntry",
-			lx->htc.hash_table_lst,HTT_FUN);
-		  for (i=0;i<try_cnt;i++) {
-		    if (Bt(&temp_untry->flags,Cf_EXTERN)) {
-		      lx->abs_cnts.externs++;
-		      if (lx->flags&LF_AOT_COMPILE)
-			LCCAdd(lx,IC_CALL_IMPORT,
-			      temp_untry,sys_internal_types[RT_PTR]);
-		      else
-			LCCAdd(lx,IC_CALL_INDIRECT2,
-			      &temp_untry->executable_addr,sys_internal_types[RT_PTR]);
-		    } else
-		      LCCAdd(lx,IC_CALL,temp_untry->executable_addr,sys_internal_types[RT_PTR]);
-		  }
-		}
-		if (Lex(lx)!=';') {
-		  if (!locals->return_class->size)
-		    LexPutWarn(lx,"ST_SHOULD_NOT_RETURN_VAL");
-		  if (!PrsExpression(lx,NULL,FALSE))
-		    throw('Compiler');
-		  LCCAdd(lx,IC_RETURN_VAL,0,locals->return_class);
-		  lx->flags|=LF_HAS_RETURN;
-		} else if (locals->return_class->size)
-		  LexPutWarn(lx,"ST_SHOULD_RETURN_VAL");
-		LCCAdd(lx,IC_JMP,lx->lb_leave,0);
-		goto sm_semicolon;
-	      case KW_GOTO:
-		if (Lex(lx)!=TK_IDENT)
-		  LexExcept(lx,"ST_EXPECTING_IDENTIFIER");
-		if (!(g_lb=LCCGoToLabelFind(lx,lx->ident))) {
-		  g_lb=LCCMiscNew(lx,CMT_GOTO_LABEL);
-		  g_lb->str=lx->ident;
-		  lx->ident=NULL;
-		}
-		g_lb->use_cnt++;
-		LCCAdd(lx,IC_JMP,g_lb,0);
-		Lex(lx);
-		goto sm_semicolon;
-	      case KW_BREAK:
-		Lex(lx);
-		if (!lb_break)
-		  LexExcept(lx,"ST_BREAK_NOT_ALLOWED");
-		LCCAdd(lx,IC_JMP,lb_break,0);
-		goto sm_semicolon;
-	      case KW_NOUNUSEDWARN:
-		Lex(lx);
-		PrsNoUnusedWarn(lx);
-		goto sm_semicolon;
-	      case KW_UNION:
-	      case KW_CLASS:
-		Lex(lx);
-		tempex=PrsClass(lx,i,fsp_flags,FALSE);
-		if (!locals && lx->token!=';') {
-		  PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempex,0,fsp_flags);
-		  fsp_flags&=FSF_ASM;
-		  break;
-		} else {
-		  fsp_flags&=FSF_ASM;
-		  goto sm_semicolon;
-		}
-	    }
-	  } else { //Ident, found in hash table, not keyword
+	      }
+	    } else { //Ident, found in hash table, not keyword
 sm_not_keyword_afterall:
-	    if (!(tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)))
-	      goto sm_prs_exp;
-	    if (locals) {
-	      if (fsp_flags&FSF_STATIC)
-		PrsVarLst(lx,locals,PRS0_NULL|PRS1_STATIC_LOCAL_VAR);
-	      else
-		PrsVarLst(lx,locals,PRS0_NULL|PRS1_LOCAL_VAR);
-	      if (lx->token=='}') goto sm_done;
-	    } else {
-	      Lex(lx);
-	      PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempex,0,fsp_flags);
+	      if (tempex->type & (HTT_CLASS|HTT_INTERNAL_TYPE)) {
+		if (lx->htc.fun) {
+		  if (fsp_flags&FSF_STATIC)
+		    PrsVarLst(lx,lx->htc.fun,PRS0_NULL|PRS1_STATIC_LOCAL_VAR);
+		  else
+		    PrsVarLst(lx,lx->htc.fun,PRS0_NULL|PRS1_LOCAL_VAR);
+		  if (lx->token=='}') goto sm_done;
+		} else {
+		  Lex(lx);
+		  PrsGlblVarLst(lx,PRS0_NULL|PRS1_NULL,tempex,0,fsp_flags);
+		}
+	      } else {
+		if (tempex->type & HTT_OPCODE) {
+		  if (lx->htc.fun) {
+		    if (tempx=CmpJoin(lx,CMPF_ASM_BLK|CMPF_ONE_ASM_INS))
+		      LCCAdd(lx,IC_ASM,tempx,0);
+		  } else
+		    LexExcept(lx,"Use Asm Blk at ");
+		  if (lx->token!=',') goto sm_done;
+		} else
+		  goto sm_prs_exp;
+	      }
+	      fsp_flags&=FSF_ASM;
 	    }
-	    fsp_flags&=FSF_ASM;
+	  } else { //Ident, not in hash table
+	    if (lx->local_var_entry)
+	      goto sm_prs_exp;
+	    if (!(g_lb=LCCGoToLabelFind(lx,lx->cur_str))) {
+	      g_lb=LCCMiscNew(lx,CMT_GOTO_LABEL);
+	      g_lb->str=lx->cur_str;
+	      lx->cur_str=NULL;
+	    } else if (g_lb->flags&CMF_DEFINED)
+	      LexExcept(lx,"Duplicate goto label at ");
+	    g_lb->flags|=CMF_DEFINED;
+	    LCCAdd(lx,IC_LABEL,g_lb,0);
+	    if (Lex(lx)==':') //skip cur_str
+	      Lex(lx); //skip colon
+	    else
+	      LexExcept(lx,"undefined identifier at ");
+	    if (!lx->htc.fun)
+	      LexExcept(lx,"No global labels at ");
+	    if (lx->token!=',') goto sm_done;
 	  }
-	} else { //Ident, not in hash table
-	  if (lx->local_var_entry)
-	    goto sm_prs_exp;
-	  if (!(g_lb=LCCGoToLabelFind(lx,lx->ident))) {
-	    g_lb=LCCMiscNew(lx,CMT_GOTO_LABEL);
-	    g_lb->str=lx->ident;
-	    lx->ident=NULL;
-	  } else if (g_lb->flags&CMF_DEFINED)
-	    LexExcept(lx,"ST_DUP_GOTO_LABEL");
-	  g_lb->flags|=CMF_DEFINED;
-	  LCCAdd(lx,IC_LABEL,g_lb,0);
-	  if (Lex(lx)==':') //skip ident
-	    Lex(lx); //skip colon
-	  else
-	    LexExcept(lx,"ST_UNDEFINED_IDENTIFIER");
-	  if (!locals)
-	    LexExcept(lx,"ST_NO_GLBL_LABELS");
-	  if (lx->token!=',') goto sm_done;
-	}
-      } else if (lx->token==TK_STR||lx->token==TK_CHAR_CONST) {
-	PrsFunCall(lx,NULL,FALSE,NULL);
-	goto sm_semicolon;
-      } else if (lx->token!=TK_EOF) { //Non-ident symbol, number or something
+	} else if (lx->token==TK_STR||lx->token==TK_CHAR_CONST) {
+	  PrsFunCall(lx,NULL,FALSE,NULL);
+	  goto sm_semicolon;
+	} else if (lx->token!=TK_EOF) { //Non-cur_str symbol, number or something
 sm_prs_exp:
-	if (!PrsExpression(lx,NULL,TRUE))
-	  throw('Compiler');
+	  if (!PrsExpression(lx,NULL,TRUE))
+	    throw('Compiler');
 sm_semicolon:
-	if (prs_semicolon) {
-	  if (lx->token==';')
-	    Lex(lx);
-	  else if (lx->token!=',')
-	    LexExcept(lx,"ST_MISSING_SEMICOLON");
-	}
-	if (lx->token!=',') goto sm_done;
-      } else
-	goto sm_done; //TK_EOF
+	  if (cmp_flags&CMPF_PRS_SEMICOLON) {
+	    if (lx->token==';')
+	      Lex(lx);
+	    else if (lx->token!=',')
+	      LexExcept(lx,"missing ';' at");
+	  }
+	  if (lx->token!=',') goto sm_done;
+	} else
+	  goto sm_done; //TK_EOF
+      }
     }
-  }
 sm_done:
   return fsp_flags&FSF_ASM;
 }

@@ -5,7 +5,7 @@
   read-modify-write statements.
   It will generate invalid instructions
   if you misuse it and it will crash.
-  [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U() to see what code was generated.
+  [C:/Compiler/Unassembler.CPP.Z,647] U() to see what code was generated.
 */
 
 #define CNT	0x1000000

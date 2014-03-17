@@ -25,13 +25,13 @@ U0 DrawIt(CTask *,CDC *dc)
 
   if (dt>16)
     theta=(dt-16)*2*pi;
-  SpritePlotRotZ3B(dc,x+SUN_X-32,y+SUN_Y,0,__BIN_1,theta);
+  SpriteZ3B(dc,x+SUN_X-32,y+SUN_Y,0,__BIN_1,theta);
 }
 
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;

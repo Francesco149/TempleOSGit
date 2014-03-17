@@ -561,6 +561,8 @@ p4_sib:
 	case IC_BR_LESS2:
 	case IC_BR_ZERO:
 	case IC_BR_NOT_ZERO:
+	case IC_BR_CARRY:
+	case IC_BR_NOT_CARRY:
 	case IC_BR_NOT_EQUAL:
 	case IC_BR_EQUAL_EQUAL:
 	case IC_BR_GREATER_EQUAL:
@@ -622,18 +624,10 @@ p4_sib:
 	case IC_CALL_INDIRECT2:
 	case IC_CALL_EXTERN:
 	case IC_CALL_IMPORT:
-	case IC_CLI:
-	case IC_STI:
-	case IC_HLT:
-	case IC_PUSHFD:
-	case IC_POPFD:
 	case IC_PUSH:
 	case IC_POP:
-	case IC_CLD:
-	case IC_STD:
 	case IC_INVLPG:
 	case IC_CLFLUSH:
-	case IC_PAUSE:
 	case IC_GET_RFLAGS:
 	case IC_CARRY:
 	case IC_RDTSC:
@@ -726,7 +720,7 @@ p4_sib:
 	default:
 	  "Pass:%d Missing IC handler\n",lx->pass;
 	  ICPut(tempi);
-	  LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+	  LexExcept(lx,"Compiler Optimization Error at ");
       }
       if (tempi) {
 	while (OptIC4(tempi));
@@ -739,6 +733,6 @@ p4_sib:
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
 }

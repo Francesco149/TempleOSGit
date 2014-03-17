@@ -46,16 +46,16 @@ F64 F(Complex *x)
 F64 MPDraw(CTask *task)
 {
   Complex xx;
-  I64 x,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w/2,cy=h/2,
+  I64 x,y,w=task->pix_width,h=task->pix_height,cx=w/2,cy=h/2,
      lo=Gs->num*h/mp_cnt,hi=(Gs->num+1)*h/mp_cnt;
   F64 yy,y_total=0;
-  CDC *dc=DCAlias(gr_dc,task);
+  CDC *dc=DCAlias(,task);
   for (y=lo;y<hi;y++) {
     for (x=0;x<w;x++) {
       CEqu(&xx,x-cx,cy-y);
       yy=scale*F(&xx);
-      dc->color=Limit(yy,0,14);
-      y_total+=Limit(yy,-14,14);
+      dc->color=Clamp(yy,0,14);
+      y_total+=Clamp(yy,-14,14);
       GrPlot(dc,x,y);
     }
     }
@@ -67,7 +67,7 @@ U0 Draw()
 {
   CSrvCmd *tempm[MP_MAX_PROCESSORS];
   F64 y_total,old_y_total=MAX_F64;
-  I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height,cx=w/2,cy=h/2;
+  I64 i,w=Fs->pix_width,h=Fs->pix_height,cx=w/2,cy=h/2;
   CDC *dc=DCAlias;
   while (TRUE) {
     for (i=0;i<mp_cnt;i++)
@@ -103,7 +103,7 @@ U0 PoleZeros()
   );
   WinMgrSync;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
   SetVGAPalette4(vga_palette4_gray);
   SetVGAPaletteColor(15,0xFF0000); //White is red
@@ -121,8 +121,8 @@ U0 PoleZeros()
     while (TRUE) {
       msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+1<<MSG_IP_L_UP+1<<MSG_IP_R_DOWN+1<<MSG_IP_R_UP+1<<MSG_IP_MOVE);
 pz_msg:
-      cx=Fs->win_pixel_width/2;
-      cy=Fs->win_pixel_height/2;
+      cx=Fs->pix_width/2;
+      cy=Fs->pix_height/2;
       switch (msg_code) {
 	case MSG_IP_L_DOWN:
 	  tempc=PoleZeroFind(p1-cx,cy-p2);

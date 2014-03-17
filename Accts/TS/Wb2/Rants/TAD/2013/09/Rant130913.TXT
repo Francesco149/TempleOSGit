@@ -55,7 +55,7 @@ I will interpret like 1 Corinthians 14, says:
 "t" is time since boot in seconds...
 
 >while (TRUE)
->  "%12.6f\n",tT;
+>  "%12.6f\n",tS;
 
 Press CTRL-ALT-C.
 
@@ -162,7 +162,7 @@ changing fonts.
 ----09/13/13 10:52:30----
 
 At this point, I did it all myself, but I hired an artist for $3,000 worth of 
-pixel art.
+pix art.
 
 I am not going to do what Linux does, exactly.  This is God's Holy Temple and 
 it must be perfect and glorious.  What I want most is things which reduce
@@ -188,9 +188,8 @@ Apostolic justifieth Alexandria
 
 I really hope for a lot of art, like the Sistene Chapel.  I can set-up a 
 website to exchange hymns.  This should be glorious, to the degree 16 color 
-pixel art can be.  God said 640x480 16 color is good for kids' offerings.  
-This is a wisdom you might not understand.  God's ways are far above man's 
-ways.
+pix art can be.  God said 640x480 16 color is good for kids' offerings.  This 
+is a wisdom you might not understand.  God's ways are far above man's ways.
 
 ----09/13/13 11:17:49----
 
@@ -214,8 +213,8 @@ I want VMware to support ATAPI CD/DVD burning.  I want VMware to support PC
 Speaker in 9 and 10 like 8.  I want VMware to provide emulated PC Speaker, if 
 not present.  They could just do emulated in all cases.
 
-You can call [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep() for a memory
-report.  You need at least 512 Meg.  Don't 
+You can call [C:/Adam/Utils/MemRep.CPP.Z,198] MemRep() for a memory report. 
+You need at least 512 Meg.  Don't 
 argue.
 
 ------------------------------------------
@@ -340,12 +339,12 @@ Stk Size	:00000403E8 Unused:0000040000
 
 
 
-Here's what I get when I do [C:/TempleOS/Adam/DevInfo.CPP.Z,176] MemBIOSRep().
+Here's what I get when I do [C:/Adam/DevInfo.CPP.Z,175] MemBIOSRep().
 ------------------------------------------
 D:/Accts/TS/TAD>MemBIOSRep;
 Standard Addresses
 0x000A0000-0x000BFFFF VGA
-0xFEE00000-0xFEE00FFF See [C:/TempleOS/Kernel/Adam1a.HPP.Z,548] APIC
+0xFEE00000-0xFEE00FFF See [C:/Kernel/Adam1a.HPP.Z,466] APIC
 
 32 Bit Device Mem
 00:0x00000000F0000000-0x00000000FEBFFFFF
@@ -396,30 +395,29 @@ code in the lowest 2 Gig memory addresses including what would normally be
 called "the kernel".  Two Gig is plenty, don't worry.
 
 You can create new, independent heaps by first allocating mem with 
-[C:/TempleOS/Kernel/Memory.CPP.Z,428] MemBlksUncachedAlloc() or
-[MN:MemBlksIndependentAlloc] MemBlksIndependentAlloc(), then calling 
-[MN:HeapCtrlBPInit] HeapCtrlBPInit() and, then, using
-[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().
+[C:/Kernel/Mem1a.CPP.Z,408] MemBlksUncachedAlloc() or
+[C:/Kernel/Mem1a.CPP.Z,195] MemBlksIndependentAlloc(), then calling 
+[C:/Kernel/Mem1c.CPP.Z,42] HeapCtrlBPInit() and, then, using
+[C:/Kernel/Mem1b.CPP.Z,376] MAlloc().
 
 Memory allocated by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
+See [C:/Adam/Utils/MemRep.CPP.Z,198] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003E3AF
+ 0x0000007C00- 0x0000035F9F
   Kernel module, placed here by the boot-loader,
-  [C:/TempleOS/Kernel/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
+  [C:/Kernel/Adam1a.HPP.Z,3618] BOOT_RAM_BASE.
 
  0x000007F600- 0x000007FFFF
   Boot block relocated here before loading the Kernel module,
-  [C:/Adam/Boot/BootCD.CPP,1] BootCD & [C:/Adam/Boot/BootHD.CPP,1] BootHD.
+  [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x000009702E
-  Multicore start-up vect code, [C:/TempleOS/Kernel/Adam1a.HPP.Z,576]
-  MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/Adam1a.HPP.Z,494] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -427,39 +425,39 @@ See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
  0x00000A0000- 0x00000BFFFF
   VGA graphics mem, marked as write-through cache.
 
- 0x0000100000- 0x0000182FFF
+ 0x0000100000- 0x00001845FF
   Page tables, 128 Gig of address space
 
- 0x0000183000- 0x00
+ 0x0000184600- 0x007FFDFFFF
   Code Heap mem.
 
  0x00E0000000- 0x00FFFFFFFF
   32-bit devices could allocate memory at 0xF0000000 going up, but this is 
 wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
-are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
-  flaws are not an issue.
+are supported, so [C:/Kernel/Mem1c.CPP.Z,165] Mem32DevAlloc() flaws are not
+  an issue.
 
  0x0080000000-~0x00DFFFFFFF
  0x0100000000-~0x1FFFFFFFFF
   Data Heap mem.
 
              - 0x1FFFFFFFFF
-  64-bit devices are allocated with [C:/TempleOS/Kernel/Memory.CPP.Z,1239]
+  64-bit devices are allocated with [C:/Kernel/Mem1c.CPP.Z,213]
   Mem64DevAlloc() counting backward from 
 128 Gig, but no PCI devices are actually supported.
   
 
-				      [C:/TempleOS/Kernel/Adam1a.HPP.Z,2741] CBlkPools [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrls
+				      [C:/Kernel/Adam1a.HPP.Z,2594] CBlkPools [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrls
 
 
 0000,0000,0000,0000		      Core 0
 
 0000,0000,0000,7C00 Kernel
-0000,0000,0003,E3AF 
+0000,0000,0003,5F9F 
 
 0000,0000,0010,0000 Page_Tables			   AdamTask
 
-0000,0000,0018,3000
+0000,0000,0018,4600
 
 		    sys_code_bp
 
@@ -471,7 +469,7 @@ are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
 				      Core 1
 						   SethTask
 
-0000,0000,
+0000,0000,7FFD,FFFF
 0000,0000,8000,0000
 
 
@@ -504,156 +502,154 @@ are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() an 8 Gig chunk on my 12
-Gig machine.
+can [C:/Kernel/Mem1b.CPP.Z,376] MAlloc() an 8 Gig chunk on my 12 Gig machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
-the total.  See [C:/TempleOS/Kernel/Memory.CPP.Z,1285] HeapsInit().
+the total.  See [C:/Kernel/Mem1c.CPP.Z,259] HeapsInit().
 
-* See [C:/Kernel/KEnd.CPP,1] Independent Heap Ctrl Example.
+* See [C:/Kernel/KEnd.CPP.Z,1] Independent Heap Ctrl Example.
 
 
 ------------------------------------------
 
 
-Here is a [C:/TempleOS/Adam/Profiler.CPP.Z,109] ProfRep() for the flight
+Here is a [C:/Adam/Utils/Profiler.CPP.Z,109] ProfRep() for the flight
 simulator.
 It is the log of Core 0.
 [C:/Demo/Games/EagleDive.CPP.Z,1]
 
-  0.07% 0000003E:[D:/Kernel/Adam1b.HPP,114] &MemSet+0x0012
+  0.07% 0000003E:[C:/Kernel/Adam1b.HPP.Z,114] &MemSet+0x0012
   0.07% 0000003E:&MemSet
-  0.08% 00000043:[D:/Kernel/Scheduler.CPP,369] &Yield+0x0001
+  0.08% 00000043:[C:/Kernel/Scheduler.CPP.Z,369] &Yield+0x0001
   0.13% 0000006A:&Yield
-  0.17% 00000090:[D:/Kernel/Scheduler.CPP,258] SYS_IDLE_PT+0x0000
   0.17% 00000090:SYS_IDLE_PT
-  0.08% 00000043:[D:/Kernel/Mem1b.CPP,956] &MAlloc+0x0144
+  0.08% 00000043:[C:/Kernel/Mem1b.CPP.Z,956] &MAlloc+0x0144
   0.08% 00000043:&MAlloc
-  0.33% 00000111:[D:/Kernel/Date.CPP,180] GetDateTimeStruct+0x00CE
+  0.33% 00000111:[C:/Kernel/Date.CPP.Z,180] GetDateTimeStruct+0x00CE
   0.35% 0000011F:GetDateTimeStruct
-  0.82% 00000299:[D:/Kernel/Misc1a.CPP,129] &tT+0x0019
-  0.82% 00000299:&tT
-  0.34% 00000119:[D:/Kernel/Misc1a.CPP,156] &tS+0x0018
+  0.82% 00000299:[C:/Kernel/Misc1a.CPP.Z,129] &tS+0x0019
+  0.82% 00000299:&tS
+  0.34% 00000119:[C:/Kernel/Misc1a.CPP.Z,156] &tS+0x0018
   0.34% 00000119:&tS
   0.09% 00000050:&PSectFind
   0.12% 00000068:&InitMap
-  0.11% 0000005D:[D:/Demo/Games/EagleDive.CPP,111] &FSTransform+0x0004
-  0.68% 00000229:[D:/Demo/Games/EagleDive.CPP,121] &FSTransform+0x004E
-  0.54% 000001B6:[D:/Demo/Games/EagleDive.CPP,123] &FSTransform+0x0060
+  0.11% 0000005D:[C:/Demo/Games/EagleDive.CPP.Z,111] &FSTransform+0x0004
+  0.68% 00000229:[C:/Demo/Games/EagleDive.CPP.Z,121] &FSTransform+0x004E
+  0.54% 000001B6:[C:/Demo/Games/EagleDive.CPP.Z,123] &FSTransform+0x0060
   1.75% 00000590:&FSTransform
-  0.56% 000001C7:[D:/Demo/Games/EagleDive.CPP,557] &MPDrawIt+0x03A3
+  0.56% 000001C7:[C:/Demo/Games/EagleDive.CPP.Z,557] &MPDrawIt+0x03A3
   0.18% 00000099:&MPDrawIt+0x03AA
   0.54% 000001B9:&MPDrawIt+0x03BE
-  0.10% 00000055:[D:/Demo/Games/EagleDive.CPP,557] &MPDrawIt+0x03C4
+  0.10% 00000055:[C:/Demo/Games/EagleDive.CPP.Z,557] &MPDrawIt+0x03C4
   0.54% 000001BA:&MPDrawIt+0x03D0
   0.09% 00000050:&MPDrawIt+0x03D4
-  0.67% 00000227:[D:/Demo/Games/EagleDive.CPP,559] &MPDrawIt+0x03E0
+  0.67% 00000227:[C:/Demo/Games/EagleDive.CPP.Z,559] &MPDrawIt+0x03E0
   0.10% 00000052:&MPDrawIt+0x03E9
   0.53% 000001AF:&MPDrawIt+0x03FD
-  0.54% 000001B6:[D:/Demo/Games/EagleDive.CPP,560] &MPDrawIt+0x041A
+  0.54% 000001B6:[C:/Demo/Games/EagleDive.CPP.Z,560] &MPDrawIt+0x041A
   0.50% 0000019B:&MPDrawIt+0x042C
   7.91% 0000190B:&MPDrawIt+0x0436
   0.33% 00000110:&MPDrawIt+0x0439
   0.09% 0000004E:&MPDrawIt+0x043E
   9.79% 00001EFF:&MPDrawIt+0x0449
  11.99% 000025F9:&MPDrawIt+0x044E
-  0.16% 00000087:[D:/Demo/Games/EagleDive.CPP,560] &MPDrawIt+0x0450
+  0.16% 00000087:[C:/Demo/Games/EagleDive.CPP.Z,560] &MPDrawIt+0x0450
   0.33% 0000010F:&MPDrawIt+0x0457
   0.18% 00000095:&MPDrawIt+0x0461
   0.12% 00000064:&MPDrawIt+0x0467
   0.09% 00000050:&MPDrawIt+0x046B
   1.42% 00000484:&MPDrawIt+0x046E
-  0.13% 0000006D:[D:/Demo/Games/EagleDive.CPP,565] &MPDrawIt+0x049C
-  0.53% 000001AE:[D:/Demo/Games/EagleDive.CPP,568] &MPDrawIt+0x04A4
+  0.13% 0000006D:[C:/Demo/Games/EagleDive.CPP.Z,565] &MPDrawIt+0x049C
+  0.53% 000001AE:[C:/Demo/Games/EagleDive.CPP.Z,568] &MPDrawIt+0x04A4
   0.08% 00000045:&MPDrawIt+0x04A8
   0.10% 00000056:&MPDrawIt+0x04AC
-  0.61% 000001F1:[D:/Demo/Games/EagleDive.CPP,570] &MPDrawIt+0x04B0
+  0.61% 000001F1:[C:/Demo/Games/EagleDive.CPP.Z,570] &MPDrawIt+0x04B0
  39.40% 00007CC0:&MPDrawIt
-  0.09% 00000049:[D:/Adam/Win2b.CPP,636] &WinMgrSync+0x00CA
- 20.96% 0000425E:[D:/Adam/Win2b.CPP,642] &WinMgrSync+0x0100
+  0.09% 00000049:[C:/Adam/Win2b.CPP.Z,636] &WinMgrSync+0x00CA
+ 20.96% 0000425E:[C:/Adam/Win2b.CPP.Z,642] &WinMgrSync+0x0100
  21.09% 000042C8:&WinMgrSync
-  0.11% 0000005A:[D:/Adam/Gr/GrPrimatives.CPP,1186] &GrFillTri0+0x01C9
-  0.09% 0000004F:[D:/Adam/Gr/GrPrimatives.CPP,1187] &GrFillTri0+0x01F1
-  0.09% 0000004B:[D:/Adam/Gr/GrPrimatives.CPP,1189] &GrFillTri0+0x0217
-  0.11% 0000005B:[D:/Adam/Gr/GrPrimatives.CPP,1190] &GrFillTri0+0x023F
-  0.08% 00000046:[D:/Adam/Gr/GrPrimatives.CPP,1217] &GrFillTri0+0x037D
-  0.12% 00000068:[D:/Adam/Gr/GrPrimatives.CPP,1271] &GrFillTri0+0x04CF
-  0.09% 0000004A:[D:/Adam/Gr/GrPrimatives.CPP,1272] &GrFillTri0+0x04F7
-  0.09% 00000049:[D:/Adam/Gr/GrPrimatives.CPP,1274] &GrFillTri0+0x051D
-  0.09% 0000004D:[D:/Adam/Gr/GrPrimatives.CPP,1275] &GrFillTri0+0x0545
-  0.08% 00000046:[D:/Adam/Gr/GrPrimatives.CPP,1302] &GrFillTri0+0x066E
-  0.10% 00000056:[D:/Adam/Gr/GrPrimatives.CPP,1373] &GrFillTri0+0x0797
-  0.09% 00000049:[D:/Adam/Gr/GrPrimatives.CPP,1374] &GrFillTri0+0x07BF
-  0.09% 0000004A:[D:/Adam/Gr/GrPrimatives.CPP,1376] &GrFillTri0+0x0806
-  0.08% 00000045:[D:/Adam/Gr/GrPrimatives.CPP,1398] &GrFillTri0+0x08F9
-  0.08% 00000042:[D:/Adam/Gr/GrPrimatives.CPP,1400] &GrFillTri0+0x0901
-  0.08% 00000043:[D:/Adam/Gr/GrPrimatives.CPP,1402] &GrFillTri0+0x0905
-  0.08% 00000048:[D:/Adam/Gr/GrPrimatives.CPP,1405] &GrFillTri0+0x094F
-  0.11% 0000005A:[D:/Adam/Gr/GrPrimatives.CPP,1406] &GrFillTri0+0x0977
-  0.08% 00000045:[D:/Adam/Gr/GrPrimatives.CPP,1408] &GrFillTri0+0x09BE
-  0.09% 0000004D:[D:/Adam/Gr/GrPrimatives.CPP,1409] &GrFillTri0+0x09E6
+  0.11% 0000005A:[C:/Adam/Gr/GrPrimatives.CPP.Z,1186] &GrFillTri0+0x01C9
+  0.09% 0000004F:[C:/Adam/Gr/GrPrimatives.CPP.Z,1187] &GrFillTri0+0x01F1
+  0.09% 0000004B:[C:/Adam/Gr/GrPrimatives.CPP.Z,1189] &GrFillTri0+0x0217
+  0.11% 0000005B:[C:/Adam/Gr/GrPrimatives.CPP.Z,1190] &GrFillTri0+0x023F
+  0.08% 00000046:[C:/Adam/Gr/GrPrimatives.CPP.Z,1217] &GrFillTri0+0x037D
+  0.12% 00000068:[C:/Adam/Gr/GrPrimatives.CPP.Z,1271] &GrFillTri0+0x04CF
+  0.09% 0000004A:[C:/Adam/Gr/GrPrimatives.CPP.Z,1272] &GrFillTri0+0x04F7
+  0.09% 00000049:[C:/Adam/Gr/GrPrimatives.CPP.Z,1274] &GrFillTri0+0x051D
+  0.09% 0000004D:[C:/Adam/Gr/GrPrimatives.CPP.Z,1275] &GrFillTri0+0x0545
+  0.08% 00000046:[C:/Adam/Gr/GrPrimatives.CPP.Z,1302] &GrFillTri0+0x066E
+  0.10% 00000056:[C:/Adam/Gr/GrPrimatives.CPP.Z,1373] &GrFillTri0+0x0797
+  0.09% 00000049:[C:/Adam/Gr/GrPrimatives.CPP.Z,1374] &GrFillTri0+0x07BF
+  0.09% 0000004A:[C:/Adam/Gr/GrPrimatives.CPP.Z,1376] &GrFillTri0+0x0806
+  0.08% 00000045:[C:/Adam/Gr/GrPrimatives.CPP.Z,1398] &GrFillTri0+0x08F9
+  0.08% 00000042:[C:/Adam/Gr/GrPrimatives.CPP.Z,1400] &GrFillTri0+0x0901
+  0.08% 00000043:[C:/Adam/Gr/GrPrimatives.CPP.Z,1402] &GrFillTri0+0x0905
+  0.08% 00000048:[C:/Adam/Gr/GrPrimatives.CPP.Z,1405] &GrFillTri0+0x094F
+  0.11% 0000005A:[C:/Adam/Gr/GrPrimatives.CPP.Z,1406] &GrFillTri0+0x0977
+  0.08% 00000045:[C:/Adam/Gr/GrPrimatives.CPP.Z,1408] &GrFillTri0+0x09BE
+  0.09% 0000004D:[C:/Adam/Gr/GrPrimatives.CPP.Z,1409] &GrFillTri0+0x09E6
   4.28% 00000D90:&GrFillTri0
-  0.83% 000002A8:[D:/Adam/Gr/GrPrimatives.CPP,1485] &GrFillPoly3+0x0244
+  0.83% 000002A8:[C:/Adam/Gr/GrPrimatives.CPP.Z,1485] &GrFillPoly3+0x0244
   1.32% 00000430:&GrFillPoly3
   0.52% 000001A7:&GrBlot3
-  0.34% 00000116:[D:/Adam/Gr/GrBitMap.CPP,1560] &GrHLine+0x0004
+  0.34% 00000116:[C:/Adam/Gr/GrBitMap.CPP.Z,1560] &GrHLine+0x0004
   0.08% 00000047:&GrHLine+0x0005
   0.08% 00000042:&GrHLine+0x000C
-  0.07% 0000003D:[D:/Adam/Gr/GrBitMap.CPP,1564] &GrHLine+0x0028
-  0.10% 00000052:[D:/Adam/Gr/GrBitMap.CPP,1593] &GrHLine+0x0190
-  1.55% 000004EC:[D:/Adam/Gr/GrBitMap.CPP,1625] &GrHLine+0x02C6
-  0.09% 00000051:[D:/Adam/Gr/GrBitMap.CPP,1671] &GrHLine+0x044C
-  0.21% 000000AC:[D:/Adam/Gr/GrBitMap.CPP,1674] &GrHLine+0x045D
+  0.07% 0000003D:[C:/Adam/Gr/GrBitMap.CPP.Z,1564] &GrHLine+0x0028
+  0.10% 00000052:[C:/Adam/Gr/GrBitMap.CPP.Z,1593] &GrHLine+0x0190
+  1.55% 000004EC:[C:/Adam/Gr/GrBitMap.CPP.Z,1625] &GrHLine+0x02C6
+  0.09% 00000051:[C:/Adam/Gr/GrBitMap.CPP.Z,1671] &GrHLine+0x044C
+  0.21% 000000AC:[C:/Adam/Gr/GrBitMap.CPP.Z,1674] &GrHLine+0x045D
   0.17% 0000008C:&GrHLine+0x0461
-  0.23% 000000BB:[D:/Adam/Gr/GrBitMap.CPP,1675] &GrHLine+0x046B
-  0.12% 00000069:[D:/Adam/Gr/GrBitMap.CPP,1676] &GrHLine+0x0474
-  0.13% 0000006C:[D:/Adam/Gr/GrBitMap.CPP,1678] &GrHLine+0x047D
+  0.23% 000000BB:[C:/Adam/Gr/GrBitMap.CPP.Z,1675] &GrHLine+0x046B
+  0.12% 00000069:[C:/Adam/Gr/GrBitMap.CPP.Z,1676] &GrHLine+0x0474
+  0.13% 0000006C:[C:/Adam/Gr/GrBitMap.CPP.Z,1678] &GrHLine+0x047D
   0.14% 00000074:&GrHLine+0x0482
   0.07% 0000003E:&GrHLine+0x0485
   1.00% 00000332:&GrHLine+0x0488
-  0.21% 000000AE:[D:/Adam/Gr/GrBitMap.CPP,1678] &GrHLine+0x048D
+  0.21% 000000AE:[C:/Adam/Gr/GrBitMap.CPP.Z,1678] &GrHLine+0x048D
   0.14% 00000074:&GrHLine+0x0491
-  0.09% 0000004D:[D:/Adam/Gr/GrBitMap.CPP,1679] &GrHLine+0x0494
-  0.22% 000000B7:[D:/Adam/Gr/GrBitMap.CPP,1682] &GrHLine+0x049A
-  0.21% 000000B1:[D:/Adam/Gr/GrBitMap.CPP,1682] &GrHLine+0x049E
+  0.09% 0000004D:[C:/Adam/Gr/GrBitMap.CPP.Z,1679] &GrHLine+0x0494
+  0.22% 000000B7:[C:/Adam/Gr/GrBitMap.CPP.Z,1682] &GrHLine+0x049A
+  0.21% 000000B1:[C:/Adam/Gr/GrBitMap.CPP.Z,1682] &GrHLine+0x049E
   0.31% 000000FC:&GrHLine+0x04A3
-  0.11% 0000005C:[D:/Adam/Gr/GrBitMap.CPP,1684] &GrHLine+0x04A9
-  0.29% 000000F2:[D:/Adam/Gr/GrBitMap.CPP,1685] &GrHLine+0x04B4
-  0.08% 00000041:[D:/Adam/Gr/GrBitMap.CPP,1687] &GrHLine+0x04C2
+  0.11% 0000005C:[C:/Adam/Gr/GrBitMap.CPP.Z,1684] &GrHLine+0x04A9
+  0.29% 000000F2:[C:/Adam/Gr/GrBitMap.CPP.Z,1685] &GrHLine+0x04B4
+  0.08% 00000041:[C:/Adam/Gr/GrBitMap.CPP.Z,1687] &GrHLine+0x04C2
   0.10% 00000058:&GrHLine+0x04C7
-  0.40% 00000148:[D:/Adam/Gr/GrBitMap.CPP,1689] &GrHLine+0x04D7
+  0.40% 00000148:[C:/Adam/Gr/GrBitMap.CPP.Z,1689] &GrHLine+0x04D7
   0.08% 00000047:&GrHLine+0x04DE
-  0.51% 000001A0:[D:/Adam/Gr/GrBitMap.CPP,1692] &GrHLine+0x04E0
-  0.26% 000000D4:[D:/Adam/Gr/GrBitMap.CPP,1706] &GrHLine+0x0523
-  0.13% 0000006A:[D:/Adam/Gr/GrBitMap.CPP,1715] &GrHLine+0x0572
-  0.27% 000000DC:[D:/Adam/Gr/GrBitMap.CPP,1718] &GrHLine+0x0579
-  0.12% 00000062:[D:/Adam/Gr/GrBitMap.CPP,1720] &GrHLine+0x0582
-  0.23% 000000BF:[D:/Adam/Gr/GrBitMap.CPP,1721] &GrHLine+0x058A
+  0.51% 000001A0:[C:/Adam/Gr/GrBitMap.CPP.Z,1692] &GrHLine+0x04E0
+  0.26% 000000D4:[C:/Adam/Gr/GrBitMap.CPP.Z,1706] &GrHLine+0x0523
+  0.13% 0000006A:[C:/Adam/Gr/GrBitMap.CPP.Z,1715] &GrHLine+0x0572
+  0.27% 000000DC:[C:/Adam/Gr/GrBitMap.CPP.Z,1718] &GrHLine+0x0579
+  0.12% 00000062:[C:/Adam/Gr/GrBitMap.CPP.Z,1720] &GrHLine+0x0582
+  0.23% 000000BF:[C:/Adam/Gr/GrBitMap.CPP.Z,1721] &GrHLine+0x058A
   0.16% 00000086:&GrHLine+0x058E
   0.13% 0000006B:&GrHLine+0x0596
   0.19% 000000A2:&GrHLine+0x059A
-  0.08% 00000047:[D:/Adam/Gr/GrBitMap.CPP,1722] &GrHLine+0x05A4
-  0.21% 000000AF:[D:/Adam/Gr/GrBitMap.CPP,1732] &GrHLine+0x05EA
+  0.08% 00000047:[C:/Adam/Gr/GrBitMap.CPP.Z,1722] &GrHLine+0x05A4
+  0.21% 000000AF:[C:/Adam/Gr/GrBitMap.CPP.Z,1732] &GrHLine+0x05EA
   0.26% 000000D5:&GrHLine+0x05EE
   0.17% 0000008A:&GrHLine+0x05FD
  13.03% 00002946:&GrHLine
   0.11% 0000005A:&GrPeek
   0.12% 00000063:&GrPeek0
-  0.10% 00000055:[D:/Adam/Gr/GrScreen.CPP,750] &DCBlotColor8+0x0037
-  0.09% 00000049:[D:/Adam/Gr/GrScreen.CPP,750] &DCBlotColor8+0x003C
-  0.10% 00000055:[D:/Adam/Gr/GrScreen.CPP,755] &DCBlotColor8+0x0054
+  0.10% 00000055:[C:/Adam/Gr/GrScreen.CPP.Z,750] &DCBlotColor8+0x0037
+  0.09% 00000049:[C:/Adam/Gr/GrScreen.CPP.Z,750] &DCBlotColor8+0x003C
+  0.10% 00000055:[C:/Adam/Gr/GrScreen.CPP.Z,755] &DCBlotColor8+0x0054
   0.30% 000000FB:&DCBlotColor8
-  0.80% 0000028A:[D:/Adam/Gr/GrAsm.CPP,760] &GrUpdateLine32+0x0027
-  0.12% 00000068:[D:/Adam/Gr/GrAsm.CPP,760] &GrUpdateLine32+0x002B
-  0.19% 0000009B:[D:/Adam/Gr/GrAsm.CPP,760] &GrUpdateLine32+0x002E
- 11.49% 00002465:[D:/Adam/Gr/GrAsm.CPP,760] &GrUpdateLine32+0x0040
-  0.15% 0000007D:[D:/Adam/Gr/GrAsm.CPP,760] &GrUpdateLine32+0x0044
+  0.80% 0000028A:[C:/Adam/Gr/GrAsm.CPP.Z,760] &GrUpdateLine32+0x0027
+  0.12% 00000068:[C:/Adam/Gr/GrAsm.CPP.Z,760] &GrUpdateLine32+0x002B
+  0.19% 0000009B:[C:/Adam/Gr/GrAsm.CPP.Z,760] &GrUpdateLine32+0x002E
+ 11.49% 00002465:[C:/Adam/Gr/GrAsm.CPP.Z,760] &GrUpdateLine32+0x0040
+  0.15% 0000007D:[C:/Adam/Gr/GrAsm.CPP.Z,760] &GrUpdateLine32+0x0044
  13.12% 0000298A:&GrUpdateLine32
-  0.10% 00000055:[D:/Adam/Gr/GrAsm.CPP,762] &GrUpdateLine32FlushCache+0x003C
+  0.10% 00000055:[C:/Adam/Gr/GrAsm.CPP.Z,762] &GrUpdateLine32FlushCache+0x003C
   0.11% 0000005E:&GrUpdateLine32FlushCache
   0.11% 00000061:&DCBlotColor4
-  0.08% 00000047:[D:/Adam/Gr/MathGr.CPP,237] &GrRot+0x0004
+  0.08% 00000047:[C:/Adam/Gr/MathGr.CPP.Z,237] &GrRot+0x0004
   0.71% 00000242:&GrRot
   0.07% 0000003E:&GrUpdateVGAGraphics
 Total Time:   80.956136s
@@ -693,7 +689,7 @@ put palette support in there, but feel weird using it.
 
 ----09/13/13 14:39:57----
 
-Here's a task record with [C:/TempleOS/Adam/Dbg2a.CPP.Z,134] ClassRep():
+Here's a task record with [C:/Adam/Dbg2a.CPP.Z,134] ClassRep():
 
 D:/Accts/TS/TAD>ClassRep(Fs,,1);
 Class:"CTask"
@@ -728,19 +724,19 @@ Class:"CTask"
   7FD8A4F0 +] last_child_task
   7FD8A4F8 win_width           :000000000000004E 
 7FD8A500 win_height          :000000000000002E 
-7FD8A508 win_pixel_left      :0000000000000008 
-7FD8A510 win_pixel_right     :0000000000000277 
-7FD8A518 win_pixel_width     :0000000000000270 
-7FD8A520 win_pixel_top       :0000000000000068 
-7FD8A528 win_pixel_bottom    :00000000000001D7 
-7FD8A530 win_pixel_height    :0000000000000170 
-7FD8A538 win_border_pixel_lef:0000000000000000 
-7FD8A540 win_border_pixel_rig:000000000000027F 
-7FD8A548 win_border_pixel_top:0000000000000060 
-7FD8A550 win_border_pixel_bot:00000000000001DF 
-7FD8A558 win_scroll_x        :0000000000000000 
-7FD8A560 win_scroll_y        :0000000000000000 
-7FD8A568 win_scroll_z        :0000000000000000 
+7FD8A508 pix_left      :0000000000000008 
+7FD8A510 pix_right     :0000000000000277 
+7FD8A518 pix_width     :0000000000000270 
+7FD8A520 pix_top       :0000000000000068 
+7FD8A528 pix_bottom    :00000000000001D7 
+7FD8A530 pix_height    :0000000000000170 
+7FD8A538 border_pix_lef:0000000000000000 
+7FD8A540 border_pix_rig:000000000000027F 
+7FD8A548 border_pix_top:0000000000000060 
+7FD8A550 border_pix_bot:00000000000001DF 
+7FD8A558 scroll_x        :0000000000000000 
+7FD8A560 scroll_y        :0000000000000000 
+7FD8A568 scroll_z        :0000000000000000 
 7FD8A570 win_max_refresh     :              60 
 7FD8A578 +] snap
   7FD8A5A8 rip                 :000000000000C3C9 

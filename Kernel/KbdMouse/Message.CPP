@@ -9,7 +9,7 @@ U0 InputFilterTask()
   LBEqu(&Fs->task_flags,TASKf_FILTER_INPUT,old_filter);
   while (TRUE) {
     SrvCmdsHandler;
-    Cli;
+    CLI
     tempc1=&Fs->srv_ctrl.next_waiting;
     tempc=tempc1->next;
     if (tempc==tempc1)
@@ -46,7 +46,7 @@ I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
   while (TRUE) {
     if (task==Fs)
       SrvCmdsHandler;
-    Cli;
+    CLI
     tempc=tempc1->next;
     if (tempc==tempc1)
       break;
@@ -150,11 +150,11 @@ I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
       //We don't want interrupt-driven keyboard when in debugger
       //because that could have side-effects or crash, so we poll
       //keyboard when in debugger with interrupts off.
-      PushFD;
-      Cli;
+      PUSHFD
+      CLI
       KbdMouseHandler(TRUE,FALSE);
       KbdMsgsQue;
-      PopFD;
+      POPFD
       if (old_preempt && GetRFlags&1<<RFLAGf_INT)
 	Yield;
     } else {
@@ -183,9 +183,9 @@ I64 GetChar(I64 *_scancode=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
 }
 
 U8 *MGetS(I64 flags=0)
-//[C:/TempleOS/Kernel/Adam1a.HPP.Z,1567] Flags
+//[C:/Kernel/Adam1a.HPP.Z,1457] Flags
 {
-//Returns a [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc()ed prompted string.
+//Returns a [C:/Kernel/Mem1b.CPP.Z,376] MAlloc()ed prompted string.
   return (*fp_mgets)(flags);
 }
 

@@ -1,9 +1,8 @@
 #help_index "Compiler/Lex"
 #help_file "::/Doc/Lex"
-public extern CLex *LexNew(U8 *buf,I64 flags,U8 *filename=NULL);
+public extern CLex *LexNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL);
 public extern U0 LexDel(CLex *lx);
 public extern I64 LexSize(CLex *lx);
-public extern U0 SetSrcFileInfo(CLex *lx,CHashSrcSym *h);
 public extern U0 LexPutToken(CLex *lx);
 public extern I64 LexGetChar(CLex *lx);
 public extern U0 LexSkipEol(CLex *lx);
@@ -13,19 +12,18 @@ public extern I64 Lex(CLex *lx);
 public extern U8 *LexExtStr(CLex *lx,I64 *_size=NULL);
 public extern U0 LexPutLine(CLex *lx,U8 *start);
 public extern U0 LexPutPos(CLex *lx);
-public extern U0 LexPutWarn(CLex *lx,U8 *name=NULL,CHashFun *fun_class=NULL);
 public extern I64 PrsKeyWord(CLex *lx);
-public extern U0 LexExcept(CLex *lx,U8 *name=NULL,CHashFun *fun_class=NULL);
-public extern U8 *LexExpression2Bin(CLex *lx,I64 *type=NULL);
-public extern U8 *LexStatement2Bin(CLex *lx,I64 *type);
+public extern U0 LexWarn(CLex *lx,U8 *str=NULL);
+public extern U0 LexExcept(CLex *lx,U8 *str=NULL);
+public extern U8 *LexExpression2Bin(CLex *lx,I64 *_type=NULL);
+public extern U8 *LexStatement2Bin(CLex *lx,I64 *_type,I64 cmp_flags=CMPF_PRS_SEMICOLON);
 public extern I64 IsLexExpression2Bin(CLex *lx,U8 **ex); //FALSE=no err
 public extern I64 LexExpression(CLex *lx);
-public extern U0 ExpressionBinDel(U8 *ex);
 public extern I64 MemberMetaData(U8 *st,CMemberLst *ml);
 extern U0 MemberLstDel(CHashClass *c);
 public extern CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *ml);
-public extern CMemberLst *MemberFind(U8 *st,CHashClass *c);
-public extern CMemberLst *MemberFind2(CHashClass *pattern,CHashClass *tempc);
+public extern CMemberLst *MemberFind(U8 *needle_str,CHashClass *haystack_class);
+public extern CMemberLst *MemberFind2(CHashClass *needle_class,CHashClass *haystack_class);
 public extern U0 LexAttachDoc(CLex *lx,CLexFile *tempf=NULL,
 	CDoc *doc=NULL,U8 *abs_filename=NULL,CDocEntry *doc_e=NULL,I64 col=0);
 public extern CHashClass *OptClassFwd(CHashClass *tempc);

@@ -3,9 +3,9 @@
 
 The trivial solution in math is the simple, obvious answer.  The fable that 
 NASA spent millions on a space pen while Russia used a pencil is an example.  
-TempleOS uses many [C:/Doc/Strategy.TXT,1] trivial solutions.
+TempleOS uses many [C:/Doc/Strategy.TXT.Z,1] trivial solutions.
 
-See [C:/Doc/Acknowledgements.TXT,1].
+See [C:/Doc/Acknowledgements.TXT.Z,1].
 See [C:/Doc/Demands.TXT.Z,1].
 
 Website:

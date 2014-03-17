@@ -29,7 +29,7 @@ U0 Song()
   while (!ScanKey) {
 	Play("3etCFC2qG3DsGDGD2qG3C2sG3D2G3D2G3D2G3D");
 	Play("etCFC2qG3DsGDGD2qG3C2sG3D2G3D2G3D2G3D");
-	PutSprite(__BIN_1);
+	Sprite(__BIN_1);
 	"$CM,0,8$";
 	Play("2qG3EAEADFC",
 		" \0Off \0 \0to \0 \0yon\0der \0star.\n\0");

@@ -109,7 +109,11 @@ genius abstinence
 Make a logic circuit, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img060.BMP"
+width="640" height="472" alt="">
+```
 
 What if He draws silicon patterns?
 

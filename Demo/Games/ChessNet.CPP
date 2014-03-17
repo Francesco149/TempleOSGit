@@ -23,8 +23,8 @@ Bool show_start;
 
 
 
-U8 *pawn_imgs[2]={__BIN_1,__BIN_2};
-U8 *king_imgs[2]={__BIN_3,__BIN_4};
+CSprite *pawn_imgs[2]={__BIN_1,__BIN_2};
+CSprite *king_imgs[2]={__BIN_3,__BIN_4};
 I64 num_alive[2];
 
 U0 DrawIt(CTask *task,CDC *dc)
@@ -43,7 +43,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
   for (i=0;i<NUM_UNITS;i++)
     if (u[i].alive)
-      SpritePlot3(dc,u[i].x,u[i].y,0,u[i].img);
+      Sprite3(dc,u[i].x,u[i].y,0,u[i].img);
   if (show_start) {
     dc->color=LTRED;
     GrLine(dc,start_x-4,start_y-4,start_x+4,start_y+4);
@@ -57,8 +57,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrPrint(dc,0,0,"Player %d",cur_player+1);
   if ((num_alive[0]==1 || num_alive[1]==1) && Blink(4)) {
     dc->color=BLACK;
-    GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
-		  (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
+    GrPrint(dc,(task->pix_width-FONT_WIDTH*9)>>1,
+		  (task->pix_height-FONT_HEIGHT)>>1,"Game Over");
   }
 }
 
@@ -183,7 +183,7 @@ U0 ChessNet()
   I64 msg_code,p1,p2,ch,sc;
   Unit *tempu,saved_u;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=GREEN<<4+WHITE;
   Preempt(OFF);
   MenuPush(

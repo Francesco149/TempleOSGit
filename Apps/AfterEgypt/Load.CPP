@@ -1,7 +1,6 @@
 #help_index "Games"
 
 Cd("/Apps/AfterEgypt");;
-#include "/Apps/HolySpirit/HolySpirit"
 #include "Comics"
 #include "/Demo/Graphics/Camp"
 #include "/Demo/MultiCore/Clouds"

@@ -327,7 +327,7 @@ class CElTorito
 
 public I64 CDFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=NULL,
 		  U8 *_stage2_filename=NULL)
-//See [C:/Demo/MakeDistro.CPP,1]
+//See [C:/Misc/MakeDistro.CPP.Z,1]
 
 //Use "C:/Distro/*" if you want all files in the C:/Distro directory.
 //Default flags are "+r" recurse.
@@ -505,7 +505,7 @@ public I64 CDFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,U8 *fu_flags=
     FWBlks(out_file,iso_boot,17<<2,4);
     FWBlks(out_file,iso_sup,18<<2,4);
     FWBlks(out_file,iso_term,19<<2,4);
-    stage2_size=(FileSize(stage2_filename)+CD_BLK_SIZE-1)/CD_BLK_SIZE;
+    stage2_size=(Size(stage2_filename,"+s")+CD_BLK_SIZE-1)/CD_BLK_SIZE;
     MemCpy(stage1_buf,BCD_START,BCD_END-BCD_START);
     *(BCD_BLK_CNT-BCD_START+stage1_buf)(U16 *)=stage2_size;
     *(BCD_BLK_LO -BCD_START+stage1_buf)(U32 *)=stage2_blk;

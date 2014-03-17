@@ -42,9 +42,9 @@ ip_lb	is mouse left button
 
 */
   if (player==1)
-    DrawX(dc,ipx-Fs->win_pixel_left,ipy-Fs->win_pixel_top);
+    DrawX(dc,ipx-Fs->pix_left,ipy-Fs->pix_top);
   else
-    DrawO(dc,ipx-Fs->win_pixel_left,ipy-Fs->win_pixel_top);
+    DrawO(dc,ipx-Fs->pix_left,ipy-Fs->pix_top);
   DCDel(dc);
 }
 
@@ -65,8 +65,8 @@ U0 TakeTurn(I64 player)
       DrawBoard(player);
       WinMgrSync;
     }
-    x=ipx-Fs->win_pixel_left;
-    y=ipy-Fs->win_pixel_top;
+    x=ipx-Fs->pix_left;
+    y=ipy-Fs->pix_top;
     i=(x-100)/100+(y-100)/100*3;
   }
   board[i]=player;

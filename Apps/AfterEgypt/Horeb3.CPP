@@ -4,7 +4,7 @@ U0 AnimateTask(I64)
   F64 t;
   Obj *tempo;
   while (TRUE) {
-    t=tT;
+    t=tS;
     for (i=0;i<O_NUM_OBJS;i++) {
       tempo=&objs[i];
       if (tempo->type==OT_SHEEP || tempo->type==OT_GOAT1 || tempo->type==OT_GOAT2) {
@@ -91,7 +91,7 @@ U0 Horeb()
   "  Right(,,SC_CURSOR_RIGHT);"
       "}"
       );
-  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
     Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_GRAB_SCROLL-WIF_MENU;
@@ -103,7 +103,7 @@ U0 Horeb()
     DocClear;
     "$BG,LTCYAN$"; NewLine(6);
     "$BG,YELLOW$"; NewLine(30);
-    DocBibleVerse(,"Exodus,3:1",21);
+    BibleVerse(,"Exodus,3:1",21);
     Init;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
     Fs->draw_it=&DrawHoreb;

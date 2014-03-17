@@ -5,87 +5,13 @@ public I64 gr_x_offsets[8]={-1, 0, 1,-1,1,-1,0,1},
 	  gr_x_offsets2[4]={ 0,-1, 1, 0},
 	  gr_y_offsets2[4]={-1, 0, 0, 1};
 
-public I64 Line(U8 *aux_data,
+public Bool Line(U8 *aux_data,
 		 I64 x1,I64 y1,I64 z1,
 		 I64 x2,I64 y2,I64 z2,
 		 Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
 		 I64 step=1,I64 start=0)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-  I64 i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,
-      adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz),result=0;
-  Bool first=TRUE;
-  if (adx>=ady) {
-    if (adx>=adz) {
-      if (d=adx) {
-	if (dx>=0)
-	  dx=0x100000000;
-	else
-	  dx=-0x100000000;
-	dy=dy<<32/d;
-	dz=dz<<32/d;
-      }
-    } else {
-      if (d=adz) {
-	dx=dx<<32/d;
-	dy=dy<<32/d;
-	if (dz>=0)
-	  dz=0x100000000;
-	else
-	  dz=-0x100000000;
-      }
-    }
-  } else {
-    if (ady>=adz) {
-      if (d=ady) {
-	dx=dx<<32/d;
-	if (dy>=0)
-	  dy=0x100000000;
-	else
-	  dy=-0x100000000;
-	dz=dz<<32/d;
-      }
-    } else {
-      if (d=adz) {
-	dx=dx<<32/d;
-	dy=dy<<32/d;
-	if (dz>=0)
-	  dz=0x100000000;
-	else
-	  dz=-0x100000000;
-      }
-    }
-  }
-  x1<<=32; y1<<=32; z1<<=32;
-  for (j=0;j<start;j++) {
-      x1+=dx; y1+=dy; z1+=dz;
-  }
-  if (step!=1 && step!=0) {
-    dx*=step;
-    dy*=step;
-    dz*=step;
-    d/=step;
-  }
-  for (i=start;i<=d;i++) {
-    if ((_x!=x1.i32[1] || _y!=y1.i32[1] || _z!=z1.i32[1] || first) &&
-	(*fp_plot)(aux_data,x1.i32[1],y1.i32[1],z1.i32[1]))
-	result++;
-    first=FALSE;
-    _x=x1.i32[1]; _y=y1.i32[1]; _z=z1.i32[1];
-    x1+=dx; y1+=dy; z1+=dz;
-  }
-  if (step==1 && (_x!=x2||_y!=y2||_z!=z2) && (*fp_plot)(aux_data,x2,y2,z2))
-    result++;
-  return result;
-}
-
-public Bool LOSLine(U8 *aux_data,
-		 I64 x1,I64 y1,I64 z1,
-		 I64 x2,I64 y2,I64 z2,
-		 Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
-		 I64 step=1,I64 start=0)
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,
       adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz);
   Bool first=TRUE;
@@ -153,100 +79,10 @@ public Bool LOSLine(U8 *aux_data,
   return TRUE;
 }
 
-public I64 Rect(U8 *aux_data,
-		I64 x1,I64 y1,I64 z1,
-		I64 x2,I64 y2,I64 z2,
-		I64 x3,I64 y3,I64 z3,
-		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z))
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-  I64 i,j,result=0,
-     d1,dx1=x2-x1,dy1=y2-y1,dz1=z2-z1,
-     d2,dx2=x3-x1,dy2=y3-y1,dz2=z3-z1,
-     adx1=AbsI64(dx1),ady1=AbsI64(dy1),adz1=AbsI64(dz1),
-     adx2=AbsI64(dx2),ady2=AbsI64(dy2),adz2=AbsI64(dz2),
-     last_x,last_y,last_z;
-  Bool first=TRUE;
-
-  if (adx1>=ady1) {
-    if (adx1>=adz1)
-      d1=adx1;
-    else
-      d1=adz1;
-  } else {
-    if (ady1>=adz1)
-      d1=ady1;
-    else
-      d1=adz1;
-  }
-  if (adx2>=ady2) {
-    if (adx2>=adz2)
-      d2=adx2;
-    else
-      d2=adz2;
-  } else {
-    if (ady2>=adz2)
-      d2=ady2;
-    else
-      d2=adz2;
-  }
-  d1<<=1;
-  d2<<=1;
-  if (d1) {
-    dx1=dx1<<32/d1;
-    dy1=dy1<<32/d1;
-    dz1=dz1<<32/d1;
-  }
-
-  if (d2) {
-    dx2=dx2<<32/d2;
-    dy2=dy2<<32/d2;
-    dz2=dz2<<32/d2;
-  }
-
-  x1<<=32; y1<<=32; z1<<=32;
-  for (j=0;j<=d1;j++) {
-    x2=x1; y2=y1; z2=z1;
-    for (i=0;i<=d2;i++) {
-      if ((x2.i32[1]!=last_x || y2.i32[1]!=last_y || z2.i32[1]!=last_z ||first) &&
-	  (*fp_plot)(aux_data,x2.i32[1],y2.i32[1],z2.i32[1]))
-	result++;
-      first=FALSE;
-      last_x=x2.i32[1]; last_y=y2.i32[1]; last_z=z2.i32[1];
-      x2+=dx2; y2+=dy2; z2+=dz2;
-    }
-    x1+=dx1; y1+=dy1; z1+=dz1;
-  }
-  return result;
-}
-
 #help_index "Graphics/Math/3D Transformation"
-#help_file "::/Doc/Transform"
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-I64 gr_scale=1<<32;
-
-public U0 GrRot(I64 r[4][4],I64 *_x,I64 *_y,I64 *_z)
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-  I64 x1,y1,z1,xx=*_x,yy=*_y,zz=*_z;
-  x1=(r[0][0]*xx+r[0][1]*yy+r[0][2]*zz+r[0][3])>>32;
-  y1=(r[1][0]*xx+r[1][1]*yy+r[1][2]*zz+r[1][3])>>32;
-  z1=(r[2][0]*xx+r[2][1]*yy+r[2][2]*zz+r[2][3])>>32;
-  *_x=x1;*_y=y1;*_z=z1;
-}
-
-public U0 GrTransform(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-  GrRot(dc->r,_x,_y,_z);
-  *_x+=dc->x;
-  *_y+=dc->y;
-  *_z+=dc->z;
-}
-
 public I64 *GrRotXNew(F64 phi,CTask *mem_task=NULL)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   F64 my_cos=Cos(phi)*gr_scale,
      my_sin=Sin(phi)*gr_scale;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
@@ -262,7 +98,7 @@ public I64 *GrRotXNew(F64 phi,CTask *mem_task=NULL)
 
 public I64 *GrRotYNew(F64 omega,CTask *mem_task=NULL)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   F64 my_cos=Cos(omega)*gr_scale,
      my_sin=Sin(omega)*gr_scale;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
@@ -278,7 +114,7 @@ public I64 *GrRotYNew(F64 omega,CTask *mem_task=NULL)
 
 public I64 *GrRotZNew(F64 theta,CTask *mem_task=NULL)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   F64 my_cos=Cos(theta)*gr_scale,
      my_sin=Sin(theta)*gr_scale;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
@@ -294,7 +130,7 @@ public I64 *GrRotZNew(F64 theta,CTask *mem_task=NULL)
 
 public I64 *GrScaleNew(I64 *m1,F64 s,CTask *mem_task=NULL)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 i,*r=CAlloc(sizeof(I64)*16,mem_task);
   for (i=0;i<16;i++)
     r[i]=m1[i]*s;
@@ -303,7 +139,7 @@ public I64 *GrScaleNew(I64 *m1,F64 s,CTask *mem_task=NULL)
 
 public I64 *GrMulMat(I64 *m1,I64 *m2,CTask *mem_task=NULL)
 {
-  //This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+  //This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
  //Conceptually, the transform m1 is applied after m2
   I64 i,j,k,*r=CAlloc(sizeof(I64)*16,mem_task);
   F64 d;
@@ -322,7 +158,7 @@ public I64 *GrMulMat(I64 *m1,I64 *m2,CTask *mem_task=NULL)
 
 public I64 *GrRotXEqu(I64 *m1,F64 phi)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   F64 my_cos=Cos(phi)*gr_scale,
      my_sin=Sin(phi)*gr_scale;
   I64 r[16],*r2;
@@ -342,7 +178,7 @@ public I64 *GrRotXEqu(I64 *m1,F64 phi)
 
 public I64 *GrRotYEqu(I64 *m1,F64 omega)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   F64 my_cos=Cos(omega)*gr_scale,
      my_sin=Sin(omega)*gr_scale;
   I64 r[16],*r2;
@@ -362,7 +198,7 @@ public I64 *GrRotYEqu(I64 *m1,F64 omega)
 
 public I64 *GrRotZEqu(I64 *m1,F64 theta)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   F64 my_cos=Cos(theta)*gr_scale,
      my_sin=Sin(theta)*gr_scale;
   I64 r[16],*r2;
@@ -388,55 +224,22 @@ public I64 *GrScaleEqu(I64 *m1,F64 s)
   return m1;
 }
 
-public U0 GrSetRotMat(CDC *dc,I64 r[4][4])
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-// (1.0/Sqrt(3))*65536=37837.22
-  I64 xx=37838,yy=37837,zz=37837;
-  dc->r=r;
-  GrRot(r,&xx,&yy,&zz);
-  //scaled 32 bits
-  dc->r_norm=Sqrt(xx*xx+yy*yy+zz*zz)*65536;
-}
-
-public U0 GrScalePenWidth(CDC *dc)
+public U0 GrScalePenWidth(CDC *dc=gr_dc)
 {
   I64 d;
   if (dc->flags&DCF_TRANSFORMATION) {
     if (dc->pen_width) {
-      d=dc->pen_width*dc->r_norm+0x80000000;
-      dc->pen_width=d.u32[1];
+      d=dc->pen_width*dc->r_norm+0x80000000; //Round
+      dc->pen_width=d.i32[1];
       if (dc->pen_width<1)
 	dc->pen_width=1;
     }
   }
 }
 
-public I64 *GrIdentNew(CTask *mem_task=NULL)
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-  I64 *r=CAlloc(sizeof(I64)*16,mem_task);
-  r[0] .i32[1]=1;
-  r[5] .i32[1]=1;
-  r[10].i32[1]=1;
-  r[15].i32[1]=1;
-  return r;
-}
-
-public I64 *GrIdentEqu(I64 r[4][4])
-{
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-  MemSet(r,0,sizeof(I64)*16);
-  r[0][0].i32[1]=1;
-  r[1][1].i32[1]=1;
-  r[2][2].i32[1]=1;
-  r[3][3].i32[1]=1;
-  return r;
-}
-
 public I64 *GrSetTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   r[0][3]=x<<32;
   r[1][3]=y<<32;
   r[2][3]=z<<32;
@@ -446,7 +249,7 @@ public I64 *GrSetTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
 
 public I64 *GrAddTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   r[0][3]+=x<<32;
   r[1][3]+=y<<32;
   r[2][3]+=z<<32;
@@ -454,7 +257,7 @@ public I64 *GrAddTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
   return r;
 }
 
-public Bool GrSetSymmetry(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2)
+public Bool GrSetSymmetry(CDC *dc=gr_dc,I64 x1,I64 y1,I64 x2,I64 y2)
 {
   F64 d;
   if (y1==y2 && x1==x2)
@@ -476,7 +279,7 @@ public Bool GrSetSymmetry(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2)
   return TRUE;
 }
 
-public Bool GrSetSymmetry3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 x3,I64 y3,I64 z3)
+public Bool GrSetSymmetry3(CDC *dc=gr_dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 x3,I64 y3,I64 z3)
 {
   F64 d,x,y,z,xx,yy,zz;
   I64 xx1,yy1,zz1,xx2,yy2,zz2,*r;
@@ -513,7 +316,7 @@ public Bool GrSetSymmetry3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64
 
 public U0 GrReflect(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 x=*_x<<32,y=*_y<<32,z=*_z<<32,
     xx=*_x-dc->sym.sx,yy=*_y-dc->sym.sy,zz=*_z-dc->sym.sz,
     d=(xx*dc->sym.snx+yy*dc->sym.sny+zz*dc->sym.snz)>>16,
@@ -539,75 +342,10 @@ public U0 GrReflect(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
   }
 }
 
-#help_index "Graphics/Mesh"
-public U0 GrLighting(CDC *dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p3,CColorROPU32 color)
-{
-  CD3I32 v1,v2;
-  I64 i,vn_x,vn_y,vn_z;
-  F64 d;
-
-  v1.x=p1->x-p2->x;
-  v1.y=p1->y-p2->y;
-  v1.z=p1->z-p2->z;
-
-  v2.x=p3->x-p2->x;
-  v2.y=p3->y-p2->y;
-  v2.z=p3->z-p2->z;
-
-//V1 and V2 are vects along two sides
-//of the tri joined at p2.
-
-  vn_x=v1.y*v2.z-v1.z*v2.y;
-  vn_y=v1.z*v2.x-v1.x*v2.z;
-  vn_z=v1.x*v2.y-v1.y*v2.x;
-  if (d=Sqrt(SqrI64(vn_x)+SqrI64(vn_y)+SqrI64(vn_z)))
-    d=1<<16/d;
-  vn_x*=d;
-  vn_y*=d;
-  vn_z*=d;
-//Vn is the cross product of V1 and V3
-//which means it is perpendicular.  It
-//is the normal vect to the surface.
-//It has been scaled to length 65536.
-
-//Light source has been scaled to length 65536.
-  i=(vn_x*dc->ls.x+vn_y*dc->ls.y+vn_z*dc->ls.z)>>16;
-//The dot product of the light source
-//vect and the surface normal
-//gives an illumination number.
-//65536*65536>>16=65536
-
-//TempleOS will generate a random U16
-//and compare to dither_probability_u16 and
-//will pick from two colors.
-//Probability dithering does not work with pen_width>1 at this time.
-  if (color.c0.rop&ROPBF_TWO_SIDED) {
-    color.c0.rop&=~ROPBF_TWO_SIDED;
-    i=AbsI64(i)<<1;
-  } else
-    i+=65536;
-  if (color.c0.rop&ROPBF_HALF_RANGE_COLOR) {
-    color.c0.rop&=~ROPBF_HALF_RANGE_COLOR;
-    i>>=1;
-    if (color>=8) {
-      color-=8;
-      i+=65536;
-    }
-  }
-  if (i<65536) {
-    dc->color=ROPF_PROBABILITY_DITHER+color<<16+BLACK;
-    dc->dither_probability_u16=i;
-  } else {
-    dc->color=ROPF_PROBABILITY_DITHER+(color^8)<<16+color;
-    dc->dither_probability_u16=i-65536;
-  }
-}
-
+#help_index "Graphics/Math"
 #define SCALE1	24
 #define SCALE2	8
-
-#help_index "Graphics/Math"
-public I64 Circle(U8 *aux_data,
+public Bool Circle(U8 *aux_data,
 		I64 cx,I64 cy,I64 cz,
 		I64 radius,
 		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
@@ -616,9 +354,9 @@ public I64 Circle(U8 *aux_data,
 		F64 len_radians=2*pi)
 {
   I64 i,j,len=Ceil(len_radians*radius),
-      x,y,x1,y1,s1,s2,c,result=0;
+      x,y,x1,y1,s1,s2,c;
   F64 t;
-  if (radius<=0||!step) return 0;
+  if (radius<=0||!step) return TRUE;
   t=1.0/radius;
   c=1<<SCALE1*Cos(t);
   if (step<0) {
@@ -639,18 +377,18 @@ public I64 Circle(U8 *aux_data,
   x<<=SCALE2;
   y<<=SCALE2;
   for (i=0;i<=len;i+=step) {
-    if ((*fp_plot)(aux_data,cx+x>>SCALE2,cy+y>>SCALE2,cz))
-      result++;
+    if (!(*fp_plot)(aux_data,cx+x>>SCALE2,cy+y>>SCALE2,cz))
+      return FALSE;
     for (j=0;j<step;j++) {
       x1=(c*x+s1*y)>>SCALE1;
       y1=(s2*x+c*y)>>SCALE1;
       x=x1; y=y1;
     }
   }
-  return result;
+  return TRUE;
 }
 
-public I64 Ellipse(U8 *aux_data,
+public Bool Ellipse(U8 *aux_data,
 		I64 cx,I64 cy,I64 cz,
 		I64 x_radius,I64 y_radius,
 		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
@@ -660,12 +398,11 @@ public I64 Ellipse(U8 *aux_data,
 		F64 len_radians=2*pi)
 {
   I64 i,j,len,
-      x,y,_x,_y,x1,y1,x2,y2, s1,s2,c, s12,s22,c2,result;
+      x,y,_x,_y,x1,y1,x2,y2, s1,s2,c, s12,s22,c2;
   F64 t;
   Bool first=TRUE;
   if (x_radius<=0 || y_radius<=0 || !step)
-    return 0;
-  result=0;
+    return TRUE;
   if (x_radius>=y_radius) {
     t=1.0/x_radius;
     len=Ceil(len_radians*x_radius);
@@ -705,10 +442,10 @@ public I64 Ellipse(U8 *aux_data,
   y=(s22*x2+c2*y1)>>SCALE1;
 
   for (i=0;i<=len;i+=step) {
-    if (x>>SCALE2!=_x || y>>SCALE2!=_y || first) {
-      if ((*fp_plot)(aux_data,cx+x>>SCALE2,cy+y>>SCALE2,cz))
-	result++;
-    }
+    if ((x>>SCALE2!=_x || y>>SCALE2!=_y || first) &&
+	!(*fp_plot)(aux_data,cx+x>>SCALE2,cy+y>>SCALE2,cz))
+      return FALSE;
+
     _x=x>>SCALE2; _y=y>>SCALE2; first=FALSE;
     for (j=0;j<step;j++) {
       x1=(c*x2+s1*y2)>>SCALE1;
@@ -720,10 +457,10 @@ public I64 Ellipse(U8 *aux_data,
       y=(s22*x1+c2*y1)>>SCALE1;
     }
   }
-  return result;
+  return TRUE;
 }
 
-public I64 RegPoly(U8 *aux_data,
+public Bool RegPoly(U8 *aux_data,
 		I64 cx,I64 cy,I64 cz,
 		I64 x_radius,I64 y_radius,I64 sides,
 		Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
@@ -734,13 +471,11 @@ public I64 RegPoly(U8 *aux_data,
 {
   I64 i,n,x,y,x1,y1,x2,y2,
     xx1,yy1,xx2,yy2,
-    s1,s2,c, s12,s22,c2,result;
+    s1,s2,c, s12,s22,c2;
   F64 angle_step;
 
   if (sides<=0 || x_radius<=0 || y_radius<=0)
-    return 0;
-
-  result=0;
+    return TRUE;
 
   angle_step=2*pi/sides;
   n=len_radians*sides/(2*pi);
@@ -781,16 +516,22 @@ public I64 RegPoly(U8 *aux_data,
     y=(s22*x1+c2*y1)>>SCALE1;
     xx2=cx+x>>SCALE2;
     yy2=cy+y>>SCALE2;
-    result+=Line(aux_data,xx1,yy1,cz,xx2,yy2,cz,fp_plot,step);
+    if (!Line(aux_data,xx1,yy1,cz,xx2,yy2,cz,fp_plot,step))
+      return FALSE;
     xx1=xx2; yy1=yy2;
   }
-  return result;
+  return TRUE;
 }
 
 #help_index "Graphics/CD3I32;Math/CD3I32"
 public F64 D3I32Dist(CD3I32 *p1,CD3I32 *p2)
 {
   return Sqrt(SqrI64(p1->x-p2->x)+SqrI64(p1->y-p2->y)+SqrI64(p1->z-p2->z));
+}
+
+public I64 D3I32SqrDist(CD3I32 *p1,CD3I32 *p2)
+{
+  return SqrI64(p1->x-p2->x)+SqrI64(p1->y-p2->y)+SqrI64(p1->z-p2->z);
 }
 
 public F64 D3I32Norm(CD3I32 *p)
@@ -804,9 +545,9 @@ public I64 D3I32SqrNorm(CD3I32 *p)
 }
 
 #help_index "Graphics/Math"
-public I64 Bezier2(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool first=TRUE)
+public Bool Bezier2(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool first=TRUE)
 {//2nd order
-  I64 x,y,z,xx,yy,zz,dx,dy,dz,d_max,result=0;
+  I64 x,y,z,xx,yy,zz,dx,dy,dz,d_max;
   F64 x0=ctrl[0].x,y0=ctrl[0].y,z0=ctrl[0].z,
       x1=ctrl[1].x-x0,y1=ctrl[1].y-y0,z1=ctrl[1].z-z0,
       x2=ctrl[2].x-x0,y2=ctrl[2].y-y0,z2=ctrl[2].z-z0,
@@ -815,8 +556,8 @@ public I64 Bezier2(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y
 	     D3I32Dist(&ctrl[2],&ctrl[0]),
 	 s=0.5/d,t1,t2;
   xx=x0; yy=y0; zz=z0;
-  if (first && (*fp_plot)(aux_data,xx,yy,zz))
-    result++;
+  if (first && !(*fp_plot)(aux_data,xx,yy,zz))
+    return FALSE;
   for (t=0.0;t<=1.0;t+=s) {
     t1=t*(1.0-t);
     t2=t*t;
@@ -836,21 +577,21 @@ public I64 Bezier2(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y
       s*=1.1;
     else {
       s*=0.9;
-      if ((*fp_plot)(aux_data,x,y,z))
-	result++;
+      if (!(*fp_plot)(aux_data,x,y,z))
+	return FALSE;
       xx=x;yy=y;zz=z;
     }
   }
   x=ctrl[2].x; y=ctrl[2].y; z=ctrl[2].z;
   if ((xx!=x || yy!=y || zz!=z) &&
-      (*fp_plot)(aux_data,x,y,z))
-    result++;
-  return result;
+      !(*fp_plot)(aux_data,x,y,z))
+    return FALSE;
+  return TRUE;
 }
 
-public I64 Bezier3(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool first=TRUE)
+public Bool Bezier3(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool first=TRUE)
 { //3rd order
-  I64 x,y,z,xx,yy,zz,dx,dy,dz,d_max,result=0;
+  I64 x,y,z,xx,yy,zz,dx,dy,dz,d_max;
   F64 x0=ctrl[0].x,y0=ctrl[0].y,z0=ctrl[0].z,
       x1=ctrl[1].x-x0,y1=ctrl[1].y-y0,z1=ctrl[1].z-z0,
       x2=ctrl[2].x-x0,y2=ctrl[2].y-y0,z2=ctrl[2].z-z0,
@@ -861,8 +602,8 @@ public I64 Bezier3(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y
 	     D3I32Dist(&ctrl[3],&ctrl[0]),
 	 s=0.5/d,nt,t1,t2,t3;
   xx=x0; yy=y0; zz=z0;
-  if (first && (*fp_plot)(aux_data,xx,yy,zz))
-    result++;
+  if (first && !(*fp_plot)(aux_data,xx,yy,zz))
+    return FALSE;
   for (t=0.0;t<=1.0;t+=s) {
     nt=1.0-t;
     t1=t*nt*nt;
@@ -884,26 +625,25 @@ public I64 Bezier3(U8 *aux_data,CD3I32 *ctrl,Bool (*fp_plot)(U8 *aux,I64 x,I64 y
       s*=1.1;
     else {
       s*=0.9;
-      if ((*fp_plot)(aux_data,x,y,z))
-	result++;
+      if (!(*fp_plot)(aux_data,x,y,z))
+	return FALSE;
       xx=x;yy=y;zz=z;
     }
   }
   x=ctrl[3].x; y=ctrl[3].y; z=ctrl[3].z;
   if ((xx!=x || yy!=y || zz!=z) &&
-      (*fp_plot)(aux_data,x,y,z))
-    result++;
-  return result;
+      !(*fp_plot)(aux_data,x,y,z))
+    return FALSE;
+  return TRUE;
 }
 
-public I64 BSpline2(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool closed=FALSE)
+public Bool BSpline2(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool closed=FALSE)
 { //2nd order
-  I64 i,j,result;
+  I64 i,j;
   CD3I32 *c;
   Bool first;
-  if (cnt<3) return 0;
+  if (cnt<3) return FALSE;
   first=TRUE;
-  result=0;
   if (closed) {
     cnt++;
     c=MAlloc(sizeof(CD3I32)*(cnt*2-1));
@@ -955,22 +695,22 @@ public I64 BSpline2(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I6
     }
   }
   for (i=0;i<cnt*2-2;i+=2) {
-    result+=Bezier2(aux_data,&c[i],fp_plot,first);
+    if (!Bezier2(aux_data,&c[i],fp_plot,first))
+      return FALSE;
     first=FALSE;
   }
   Free(c);
-  return result;
+  return TRUE;
 }
 
-public I64 BSpline3(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool closed=FALSE)
+public Bool BSpline3(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),Bool closed=FALSE)
 { //3rd order
-  I64 i,j,result;
+  I64 i,j;
   F64 x,y,z;
   CD3I32 *c;
   Bool first;
-  if (cnt<3) return 0;
+  if (cnt<3) return FALSE;
   first=TRUE;
-  result=0;
   if (closed) {
     cnt++;
     c=MAlloc(sizeof(CD3I32)*(cnt*3-2));
@@ -1044,11 +784,12 @@ public I64 BSpline3(U8 *aux_data,CD3I32 *ctrl,I64 cnt,Bool (*fp_plot)(U8 *aux,I6
     }
   }
   for (i=0;i<cnt*3-3;i+=3) {
-    result+=Bezier3(aux_data,&c[i],fp_plot,first);
+    if (!Bezier3(aux_data,&c[i],fp_plot,first))
+      return FALSE;
     first=FALSE;
   }
   Free(c);
-  return result;
+  return TRUE;
 }
 
 #define CC_LEFT		1
@@ -1136,5 +877,3 @@ public Bool ClipLine(I64 *_x1,I64 *_y1,I64 *_x2,I64 *_y2,I64 left,I64 top,I64 ri
     }
   }
 }
-
-#help_index "Graphics"

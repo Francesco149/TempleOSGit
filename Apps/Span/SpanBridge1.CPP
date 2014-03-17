@@ -62,7 +62,7 @@ U0 SpanBridge1Init(CMathODE *)
   }
 }
 
-U0 AdjustLoads(CTask *task,CMathODE *ode)
+U0 AdjustLoads(CMathODE *ode)
 {
   MyMass *tempm=ode->next_mass;
   F64 d,tt=SpanTime/10.0;

@@ -13,9 +13,9 @@ Bool CopySingleZ(U8 *f1,U8 *f2) //Just one file
       Free(file_buf);
       return ToBool(c);
     } else
-      PrintErr("%S","ST_FILE_NOT_FOUND");
+      PrintErr("File not found.\n");
   } else
-    PrintErr("%S","ST_FILE_NOT_FOUND");
+    PrintErr("File not found.\n");
   return FALSE;
 }
 
@@ -25,13 +25,11 @@ Bool CopySingle(U8 *f1,U8 *f2) //Just one file
   U8 *absf1=FileNameAbs(f1),*absf2=FileNameAbs(f2),*buf;
   I64 cnt,n,size,attr1=FileAttr(f1),attr2=FileAttr(f2),i,j;
   CFile *in_file=NULL,*out_file=NULL;
-
   if (!StrCmp(absf1,absf2)) { //onto self?
     Free(absf1);
     Free(absf2);
     return FALSE;
   }
-
   Free(absf1);
   Free(absf2);
   if (attr1!=attr2)
@@ -73,10 +71,10 @@ Bool CopySingle(U8 *f1,U8 *f2) //Just one file
       Free(buf);
       return TRUE;
     } else
-      PrintErr("%S","ST_FILE_NOT_FOUND");
+      PrintErr("File not found.\n");
     FClose(in_file);
   } else
-    PrintErr("%S","ST_FILE_NOT_FOUND");
+    PrintErr("File not found.\n");
   Free(buf);
   return FALSE;
 }
@@ -91,11 +89,10 @@ Bool MkDir(U8 *filename)
   if (fa=FileAccessNew(filename)) {
     if (*fa->mask) {
       if (!FileNameChk(fa->mask))
-	PrintErr("%S","ST_INVALID_FILENAME");
+	PrintErr("Invalid FileName.\n");
       else {
 	"Make Directory:%s\n",filename;
-	name=MStrUtil(fa->mask,
-	SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+	name=MStrUtil(fa->mask,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
 	switch (fa->p->type) {
 	  case PT_REDSEA:
 	    result=RedSeaFSMkDir(fa->p,Fs->cur_dir,name);
@@ -104,10 +101,10 @@ Bool MkDir(U8 *filename)
 	    result=FAT32MkDir(fa->p,Fs->cur_dir,name);
 	    break;
 	  case PT_ISO9660:
-	    PrintErr("%S","ST_NOT_WRITABLE");
+	    PrintErr("Not Writable\n");
 	    break;
 	  default:
-	    PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	    PrintErr("File System Not Supported\n");
 	}
 	Free(name);
       }
@@ -130,10 +127,10 @@ I64 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 	result=FAT32FilesDel(fa->p,Fs->cur_dir,fa->mask,0,TRUE,TRUE);
 	break;
       case PT_ISO9660:
-	PrintErr("%S","ST_NOT_WRITABLE");
+	PrintErr("Not Writable\n");
 	break;
       default:
-	PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	PrintErr("File System Not Supported\n");
     }
     FileAccessDel(fa);
   }
@@ -141,16 +138,14 @@ I64 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 }
 
 U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FAT32)
-{//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,2541] PT_FAT32 for a lst of supported file system types.
+{//See [C:/Kernel/Adam1a.HPP.Z,2419] PT_FAT32 for a lst of supported file system types.
 
   CPrt *p=Drv2Prt(drv_let);
   Bool old_silent=IsSilent;
-  if (confirm) {
-    if (!AreYouSure)
-      return;
-  }
+  if (confirm && !AreYouSure)
+    return;
   if (!p)  {
-    PrintErr("%S","ST_INVALID_DRV");
+    PrintErr("Invalid Drive\n");
     return;
   }
   switch (type) {
@@ -171,10 +166,10 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FAT32)
       Drv(drv_let);
       break;
     case PT_ISO9660:
-      PrintErr("%S","ST_NOT_WRITABLE");
+      PrintErr("Not Writable\n");
       break;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
   }
 }
 
@@ -279,7 +274,6 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
     Free(d);
     return;
   }
-
   cnt=(FSize(f)+BLK_SIZE-1)>>BLK_SIZE_BITS;
   FClose(f);
   if (bdev->type!=BDT_ATAPI)
@@ -365,4 +359,3 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
   Preempt(old_preempt);
   Free(d);
 }
-

@@ -67,29 +67,6 @@ PUT_STR::
 	POP_C_REGS
 	RET
 // ************************************
-_STRCAT::
-	PUSH	RBP
-	MOV	RBP,RSP
-	PUSH	RSI
-	PUSH	RDI
-	MOV	RSI,U64 SF_ARG1[RBP]
-@@05:	LODSB
-	TEST	AL,AL
-	JNZ	@@05
-	MOV	RDI,RSI
-	DEC	RDI
-	MOV	RSI,U64 SF_ARG2[RBP]
-	TEST	RSI,RSI
-	JZ	@@15
-@@10:	LODSB
-	STOSB
-	TEST	AL,AL
-	JNZ	@@10
-@@15:	POP	RDI
-	POP	RSI
-	POP	RBP
-	RET1	16
-// ************************************
 _STRCPY::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -345,14 +322,13 @@ _extern _STRCMP I64 StrCmp(U8 *st1,U8 *st2);
 _extern _STRICMP I64 StrICmp(U8 *st1,U8 *st2);
 _extern _STRNCMP I64 StrNCmp(U8 *st1,U8 *st2,I64 n);
 _extern _STRNICMP I64 StrNICmp(U8 *st1,U8 *st2,I64 n);
-_extern _STRMATCH U8 *StrMatch(U8 *pattern,U8 *st);
-_extern _STRIMATCH U8 *StrIMatch(U8 *pattern,U8 *st);
+_extern _STRMATCH U8 *StrMatch(U8 *needle,U8 *haystack_str);
+_extern _STRIMATCH U8 *StrIMatch(U8 *needle,U8 *haystack_str);
 _extern _STRCPY U0 StrCpy(U8 *dst,U8 *src);
-_extern _STRCAT U0 StrCat(U8 *dst,U8 *src);
 
 /*
 These bitmaps go to 0-511 so that
-[C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex() can use them with [C:/TempleOS/Kernel/Adam1a.HPP.Z,2007] Token Codes.
+[C:/Compiler/Lex.CPP.Z,742] Lex() can use them with [C:/Kernel/Adam1a.HPP.Z,1891] Token Codes.
 */
 U32 chars_bitmap_alpha[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -425,32 +401,32 @@ U8 *LstSub(I64 sub, U8 *lst)
     return lst;
 }
 
-I64 LstMatch(U8 *pattern, U8 *lst,I64 flags=0)
+I64 LstMatch(U8 *needle, U8 *haystack_lst,I64 flags=0)
 // RETURNS: -2 if Ambiguous, -1 if not found, else entry num
 { //Not especially efficient but handy.  Use hash tables for efficiency.
   I64 n,sub=0,result=-1;
   U8 *ptr;
   Bool exact_match=FALSE;
-  if (!lst) return -1;
-  n=StrLen(pattern);
-  while (*lst) {
-    if (*lst=='@') { //Check for '@' alias lst entry
+  if (!haystack_lst) return -1;
+  n=StrLen(needle);
+  while (*haystack_lst) {
+    if (*haystack_lst=='@') { //Check for '@' alias haystack_lst entry
       sub--;
-      lst++;
+      haystack_lst++;
     }
-    ptr=pattern;
+    ptr=needle;
     if (flags & LMF_IGNORE_CASE)
-      while (*ptr && ToUpper(*ptr)==ToUpper(*lst)) {
+      while (*ptr && ToUpper(*ptr)==ToUpper(*haystack_lst)) {
 	ptr++;
-	lst++;
+	haystack_lst++;
       }
     else
-      while (*ptr && *ptr==*lst) {
+      while (*ptr && *ptr==*haystack_lst) {
 	ptr++;
-	lst++;
+	haystack_lst++;
       }
-    if (!*ptr) {	  // Did we reach end of pattern
-      if (!*lst)  // Did we reach end of lst entrycount
+    if (!*ptr) {	  // Did we reach end of needle
+      if (!*haystack_lst)  // Did we reach end of haystack_lst entrycount
 	return sub;  // Found Exact match
       else {
 	if (result!=-1) {
@@ -462,9 +438,9 @@ I64 LstMatch(U8 *pattern, U8 *lst,I64 flags=0)
 	}
       }
     }
-    while (*lst)  // Advance to end of cur entry.
-      lst++;
-    lst++;    // Skip trailing zero
+    while (*haystack_lst)  // Advance to end of cur entry.
+      haystack_lst++;
+    haystack_lst++;    // Skip trailing zero
     sub++;
   }
   return result;
@@ -528,14 +504,14 @@ I64 Spaces2Tabs(U8 *dst,U8 *src)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3499] flags
+{//See [C:/Kernel/Adam1a.HPP.Z,3368] flags
   U8 *src=_src,*dst=_src;
   I64 ch;
 
   if (flags & SUF_REM_LEADING)
     while (Bt(chars_bitmap_white_space,*src))
       src++;
-  while (ch=*src++) {
+  while (ch=*src++)
     if (Bt(chars_bitmap_white_space,ch)) {
       if (!(flags & SUF_REM_SPACES)) {
 	if (flags & SUF_SINGLE_SPACE) {
@@ -545,25 +521,9 @@ U8 *StrUtil(U8 *_src,I64 flags)
 	} else
 	  *dst++ = ch;
       }
-    } else {
-      if (!(flags & SUF_REM_CTRL_CHARS) || ch>=CH_SHIFT_SPACE)
-	*dst++=ch;
-    }
-  }
+    } else if (!(flags & SUF_REM_CTRL_CHARS) || ch>=CH_SHIFT_SPACE)
+      *dst++=ch;
   *dst=0;
-
-  if (flags & SUF_CAP_UNDERSCORES) {
-    src=_src;
-    dst=_src;
-    while (*src) {
-      *dst++=ToUpper(*src++);
-      while (*src && *src!='_')
-	*dst++=*src++;
-      if (*src=='_')
-	src++;
-    }
-    *dst=0;
-  }
 
   if (flags & SUF_REM_TRAILING)
     while (dst!=_src && (!*dst || Bt(chars_bitmap_white_space,*dst)))
@@ -593,7 +553,7 @@ U8 *StrUtil(U8 *_src,I64 flags)
 
 U8 *StrFirstOcc(U8 *src,U8 *marker)
 {
-  U8 ch;
+  I64 ch;
   while ((ch=*src++) && !StrOcc(marker,ch));
   if (ch)
     return src-1;
@@ -603,7 +563,8 @@ U8 *StrFirstOcc(U8 *src,U8 *marker)
 
 U8 *StrFirstRem(U8 *src,U8 *marker,U8 *dst=NULL)
 {
-  U8 *ptr=src,*result=dst,ch;
+  I64 ch;
+  U8 *ptr=src,*result=dst;
   if (dst) {
     while ((ch=*ptr++) && !StrOcc(marker,ch))
       *dst++=ch;
@@ -619,7 +580,8 @@ U8 *StrFirstRem(U8 *src,U8 *marker,U8 *dst=NULL)
 
 U8 *StrLastOcc(U8 *src,U8 *marker)
 {
-  U8 ch,*result=NULL;
+  I64 ch;
+  U8 *result=NULL;
   while (ch=*src++)
     if (StrOcc(marker,ch))
       result=src-1;
@@ -641,68 +603,68 @@ U8 *StrLastRem(U8 *src,U8 *marker,U8 *dst=NULL)
   return dst;
 }
 
-U8 *StrFind(U8 *pattern,U8 *src,I64 flags=0)
+U8 *StrFind(U8 *needle,U8 *haystack_str,I64 flags=0)
 {
   Bool cont;
-  U8 *saved_src=src;
-  I64 plen=StrLen(pattern);
+  U8 *saved_haystack_str=haystack_str;
+  I64 plen=StrLen(needle);
   do {
     cont=FALSE;
     if (flags & SFF_IGNORE_CASE)
-      src=StrIMatch(pattern,src);
+      haystack_str=StrIMatch(needle,haystack_str);
     else
-      src=StrMatch(pattern,src);
-    if (src && flags & SFF_WHOLE_LABELS_FRONT) {
-      if (src!=saved_src) {
-	if (Bt(chars_bitmap_alpha_numeric,*(src-1))) {
-	  src++;
-	  if (*src)
+      haystack_str=StrMatch(needle,haystack_str);
+    if (haystack_str && flags & SFF_WHOLE_LABELS_BEFORE) {
+      if (haystack_str!=saved_haystack_str) {
+	if (Bt(chars_bitmap_alpha_numeric,*(haystack_str-1))) {
+	  haystack_str++;
+	  if (*haystack_str)
 	    cont=TRUE;
 	  else
-	    src=NULL;
+	    haystack_str=NULL;
 	}
       }
     }
-    if (src && flags & SFF_WHOLE_LABELS_BACK) {
-      if (Bt(chars_bitmap_alpha_numeric,*(src+plen))) {
-	src++;
-	if (*src)
+    if (haystack_str && flags & SFF_WHOLE_LABELS_AFTER) {
+      if (Bt(chars_bitmap_alpha_numeric,*(haystack_str+plen))) {
+	haystack_str++;
+	if (*haystack_str)
 	  cont=TRUE;
 	else
-	  src=NULL;
+	  haystack_str=NULL;
       }
     }
   } while (cont);
-  return src;
+  return haystack_str;
 }
 
-Bool WildMatch(U8 *pattern,U8 *wild)
+Bool WildMatch(U8 *test_str,U8 *wild_str)
 {
   I64 ch1,ch2;
   U8 *fall_back_src=NULL,*fall_back_wild=NULL;
   while (TRUE) {
-    if (!(ch1=*pattern++)) {
-      if (*wild && *wild!='*')
+    if (!(ch1=*test_str++)) {
+      if (*wild_str && *wild_str!='*')
 	return FALSE;
       else
 	return TRUE;
     } else {
-      if (!(ch2=*wild++))
+      if (!(ch2=*wild_str++))
 	return FALSE;
       else {
 	if (ch2=='*') {
-	  fall_back_wild=wild-1;
-	  fall_back_src=pattern;
-	  if (!(ch2=*wild++))
+	  fall_back_wild=wild_str-1;
+	  fall_back_src=test_str;
+	  if (!(ch2=*wild_str++))
 	    return TRUE;
 	  while (ch2!=ch1)
-	    if (!(ch1=*pattern++))
+	    if (!(ch1=*test_str++))
 	      return FALSE;
 	} else
 	  if (ch2!='?' && ch1!=ch2) {
 	    if (fall_back_wild) {
-	      wild=fall_back_wild;
-	      pattern=fall_back_src;
+	      wild_str=fall_back_wild;
+	      test_str=fall_back_src;
 	      fall_back_wild=NULL;
 	      fall_back_src=NULL;
 	    } else

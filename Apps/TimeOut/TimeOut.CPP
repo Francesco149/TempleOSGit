@@ -35,24 +35,24 @@ Bool game_over;
 
 
 
-/* <1> <1> (image) */
+	/* <1> <1> (image) */
 
 
 
 
 
-/* <2> <2> (image) */
+	/* <2> <2> (image) */
 
 
 
-/* <3> <3> (image) */
+	/* <3> <3> (image) */
 
 
 
-/* <4> <4> (image) */
+	/* <4> <4> (image) */
 
 
-/* <5> <5> (image) */
+	/* <5> <5> (image) */
 
 
 #define LANDSCAPE_TYPES	4
@@ -62,18 +62,13 @@ Bool game_over;
 
 
 
-/* <6> <6> (image) */
-
-
-
-
-/* <7> <7> (image) */
+	/* <6> <6> (image) */
 
 
 
 
 
-/* <8> <8> (image) */
+	/* <7> <7> (image) */
 
 
 
@@ -81,7 +76,9 @@ Bool game_over;
 
 
 
-/* <9> <9> (image) */
+
+
+	/* <8> <8> (image) */
 
 
 
@@ -98,8 +95,11 @@ Bool game_over;
 
 
 
+	/* <9> <9> (image) */
 
-CSprite *l_imgs[LANDSCAPE_TYPES]=
+
+
+CSprite *landscape_imgs[LANDSCAPE_TYPES]=
   {__BIN_6,__BIN_7,__BIN_8,__BIN_9};
 
 #define MAX_LANDSCAPE 64
@@ -119,8 +119,8 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   for (i=0;i<MAX_LANDSCAPE;i++) {
     yy=(ls[i].y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=Fs->win_pixel_bottom+32)
-      SpritePlot3(dc,ls[i].x,yy,0,ls[i].img);
+    if (-32<=yy<=Fs->pix_bottom+32)
+      Sprite3(dc,ls[i].x,yy,0,ls[i].img);
   }
 
   dc->pen_width=3;
@@ -136,38 +136,38 @@ U0 DrawIt(CTask *task,CDC *dc)
 	(temps->y+temps->dy*SHOT_LEN)>>32);
   for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
     yy=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=Fs->win_pixel_bottom+32) {
+    if (-32<=yy<=Fs->pix_bottom+32) {
       if (tempm->dead &&
-	  tT<tempm->corpse_timeout)
+	  tS<tempm->corpse_timeout)
 	if (!(RandU16&15)) {
 	  if (tempm->friendly)
-	    SpritePlot3(dc,tempm->x,yy,0,__BIN_4);
+	    Sprite3(dc,tempm->x,yy,0,__BIN_4);
 	  else
-	    SpritePlot3(dc,tempm->x,yy,0,__BIN_5);
+	    Sprite3(dc,tempm->x,yy,0,__BIN_5);
 	}
    }
   }
   for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
     yy=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=Fs->win_pixel_bottom+32) {
+    if (-32<=yy<=Fs->pix_bottom+32) {
       if (!tempm->dead) {
 	if (tempm->friendly)
-	  SpritePlot3(dc,tempm->x,yy,0,__BIN_2);
+	  Sprite3(dc,tempm->x,yy,0,__BIN_2);
 	else
-	  SpritePlot3(dc,tempm->x,yy,0,__BIN_3);
+	  Sprite3(dc,tempm->x,yy,0,__BIN_3);
       }
     }
   }
-  SpritePlotRotZ3B(dc,x,y,0,__BIN_1,theta);
+  SpriteZ3B(dc,x,y,0,__BIN_1,theta);
 
   if (tf) {
     t1=tf;
     dc->color=RED;
     if (game_over && Blink)
-      GrPrint(dc,task->win_pixel_width/2-9*FONT_WIDTH/2,
-		  task->win_pixel_height/2,"Game Over");
+      GrPrint(dc,task->pix_width/2-9*FONT_WIDTH/2,
+		  task->pix_height/2,"Game Over");
   } else {
-    t1=tT;
+    t1=tS;
     if (!enemy_left || !friendly_left)
      game_over=TRUE;
   }
@@ -200,12 +200,12 @@ U0 CheckCollisions()
       if (0<=x<GR_WIDTH && 0<=y<GR_HEIGHT) {
 	dc2->collision_cnt=0;
 	if (tempm->friendly)
-	  SpritePlot3(dc2,x,y,0,__BIN_2);
+	  Sprite3(dc2,x,y,0,__BIN_2);
 	else
-	  SpritePlot3(dc2,x,y,0,__BIN_3);
+	  Sprite3(dc2,x,y,0,__BIN_3);
 	if (dc2->collision_cnt) {
 	  tempm->dead=TRUE;
-	  tempm->corpse_timeout=tT+30.0;
+	  tempm->corpse_timeout=tS+30.0;
 	  if (tempm->friendly) {
 	    friendly_fire++;
 	    friendly_left--;
@@ -214,7 +214,7 @@ U0 CheckCollisions()
 	    enemy_left--;
 	    Snd(50);
 	  }
-	  snd_death_timeout=tT+0.01;
+	  snd_death_timeout=tS+0.01;
 	}
       }
     }
@@ -235,33 +235,33 @@ U0 Init()
   main_loop_pass=0;
 
   scroll_y=MAP_HEIGHT-100;
-  x=Fs->win_pixel_width>>1;
-  y=0.9*Fs->win_pixel_height;
+  x=Fs->pix_width>>1;
+  y=0.9*Fs->pix_height;
   finish_line=scroll_y+y;
   dx=0;
   dy=0;
   theta=0;
  
   for (i=0;i<MAX_LANDSCAPE;i++) {
-    ls[i].x=(Fs->win_pixel_width-100)*RandU32/MAX_U32+50;
+    ls[i].x=(Fs->pix_width-100)*RandU32/MAX_U32+50;
     ls[i].y=(MAP_HEIGHT-100)*RandU32/MAX_U32+50;
-    ls[i].img=l_imgs[RandU16%(LANDSCAPE_TYPES-2)];
+    ls[i].img=landscape_imgs[RandU16%(LANDSCAPE_TYPES-2)];
   }
-  ls[0].img=l_imgs[LANDSCAPE_TYPES-2]; //mountain
-  ls[1].img=l_imgs[LANDSCAPE_TYPES-2]; //mountain
-  ls[2].img=l_imgs[LANDSCAPE_TYPES-1]; //castle
+  ls[0].img=landscape_imgs[LANDSCAPE_TYPES-2]; //mountain
+  ls[1].img=landscape_imgs[LANDSCAPE_TYPES-2]; //mountain
+  ls[2].img=landscape_imgs[LANDSCAPE_TYPES-1]; //castle
 
   for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
     if (i<MAX_FRIENDLY) {
       tempm->friendly=TRUE;
       if (!(i&7)) {
-	xx=(Fs->win_pixel_width-200)*RandU32/MAX_U32;
+	xx=(Fs->pix_width-200)*RandU32/MAX_U32;
 	yy=(MAP_HEIGHT-200)*RandU32/MAX_U32;
       }
     } else {
       tempm->friendly=FALSE;
       if (!(i&31)) {
-	xx=(Fs->win_pixel_width-200)*RandU32/MAX_U32;
+	xx=(Fs->pix_width-200)*RandU32/MAX_U32;
 	yy=(MAP_HEIGHT-200)*RandU32/MAX_U32;
       }
     }
@@ -277,7 +277,7 @@ U0 Init()
   enemy_by_friendly=0;
   shots_fired=0;
   friendly_fire=0;
-  t0=tT;
+  t0=tS;
   tf=0;
 }
 
@@ -306,7 +306,7 @@ U0 FireShot()
   temps->dead=FALSE;
   if (!snd_death_timeout) {
     Snd(1000);
-    snd_shot_timeout=tT+0.0005;
+    snd_shot_timeout=tS+0.0005;
   }
 }
 
@@ -375,7 +375,7 @@ U0 MenFight(I64 phase_group)
 	  enemy_left--;
 	  enemy_by_friendly++;
 	  m[closest].dead=TRUE;
-	  m[closest].corpse_timeout=tT+30.0;
+	  m[closest].corpse_timeout=tS+30.0;
 	}
     }
   }
@@ -396,7 +396,7 @@ U0 MenFight(I64 phase_group)
 	if (!(RandU16&1)) {
 	  friendly_left--;
 	  m[closest].dead=TRUE;
-	  m[closest].corpse_timeout=tT+30.0;
+	  m[closest].corpse_timeout=tS+30.0;
 	}
     }
   }
@@ -408,7 +408,7 @@ U0 TimeOut()
   Bool gun_on;
 
   I64 next_update_jiffy;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
   WinBorder;
   WordStat;
@@ -475,11 +475,11 @@ U0 TimeOut()
 	}
       }
       if (snd_death_timeout) {
-	if (tT>snd_death_timeout) {
+	if (tS>snd_death_timeout) {
 	  snd_death_timeout=0;
 	  Snd(0);
 	}
-      } else if (snd_shot_timeout && tT>snd_shot_timeout) {
+      } else if (snd_shot_timeout && tS>snd_shot_timeout) {
 	snd_shot_timeout=0;
 	Snd(0);
       }
@@ -489,8 +489,8 @@ U0 TimeOut()
 	  s[i].x+=s[i].dx2;
 	  s[i].y+=s[i].dy2;
 	  if (s[i].y<0||s[i].x<0||
-	  s[i].x>>32>=Fs->win_pixel_width||
-	  s[i].y>>32>=Fs->win_pixel_height)
+	  s[i].x>>32>=Fs->pix_width||
+	  s[i].y>>32>=Fs->pix_height)
 	    s[i].dead=TRUE;
 	}
       }
@@ -504,10 +504,10 @@ U0 TimeOut()
 	dx=2;
       }
       x+=dx;
-      while (x>=Fs->win_pixel_width)
-	x-=Fs->win_pixel_width;
+      while (x>=Fs->pix_width)
+	x-=Fs->pix_width;
       while (x<0)
-	x+=Fs->win_pixel_width;
+	x+=Fs->pix_width;
 
       //It takes too much CPU do do all these all the time.
       nobound_switch (main_loop_pass&7) {
@@ -550,10 +550,10 @@ U0 TimeOut()
       total_score=5*(MAX_ENEMY-enemy_left)
 	+10*enemy_by_friendly
 	-200*friendly_fire
-	-10*(tT-t0)
+	-10*(tS-t0)
 	-shots_fired;
       if (game_over) {
-	tf=tT;
+	tf=tS;
 	Sleep(500);
 	FlushMsgs;
 	while (!ScanKey(&p1)&&friendly_left) {

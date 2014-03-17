@@ -73,14 +73,14 @@ ANSWERS:
 2) The upper 32-bits are set to zero.
 
 3) To set FS or GS, you use WRMSR to write a model specific reg.  See 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,593] IA32_FS_BASE and
-[C:/TempleOS/Kernel/Utils1a.CPP.Z,306] SET_FS_BASE.
+[C:/Kernel/Adam1a.HPP.Z,511] IA32_FS_BASE and [C:/Kernel/Utils1a.CPP.Z,472]
+SET_FS_BASE.
 
 4) Displacement addressing is now RIP relative, so RIP would be added to 
 TSS_SOME_MEMBER.  (Useless)
 
-5) The R13 instruction takes one more byte because it is like [MN:REG_RBP]
-REG_RBP in the 
+5) The R13 instruction takes one more byte because it is like
+[C:/Kernel/Adam1a.HPP.Z,3542] REG_RBP in the 
 ModR.
 
 6) The RAX instruction has a REX byte prefix to specify 64-bit size.  So does 
@@ -96,7 +96,7 @@ RAX,
 then CALL RAX.
 
 9) CALL REL32 is significantly faster.  See 
-[C:/Demo/Lectures/InterruptDemo.CPP,1].
+[C:/Demo/Lectures/InterruptDemo.CPP.Z,1].
 
 10) IN or OUT instructions happen at a fixed speed based on the original ISA 
 bus clock.

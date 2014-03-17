@@ -16,8 +16,8 @@ U8 *RandVocabWord()
 
 U0 VocabQuiz()
 {
-  I64 i,num;
-  U8 ch,*right_word,*words[4];
+  I64 ch,i,num;
+  U8 *right_word,*words[4];
   if (!FileFind(WSD_DEF_FILENAME)) {
     "Uncompressed dictionary not present.\n";
     return;
@@ -31,7 +31,7 @@ U0 VocabQuiz()
 
     "$WW,1$$CM-LE,5$$RED$$BK,1$%s$BK,0$:$FG$$LM,4$\n",right_word;
     for (i=0;i<4;i++)
-      "\n\n$GREEN$$BT-LE+LM-X,\"%d\",\"%d\"$$FG$"
+      "\n\n$GREEN$$BT-X,\"%d\",LM=\"%d\"$$FG$"
       "$LM,7$%s\n$LM,4$",i+1,i+1,WSDGetDef(words[i]);
     "\n\n$LTBLUE$Answer:$FG$";
     do {

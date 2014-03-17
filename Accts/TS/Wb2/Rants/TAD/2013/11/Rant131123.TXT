@@ -930,7 +930,11 @@ Wordly
 Do a drawing, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img012.BMP"
+width="640" height="472" alt="">
+```
 There's an upside-down humming bird feeding at a feeder on the left.  There's 
 a white preying mantis at the bottom left with a squirrel tail.  (When my 
 screen is stretched and it looks like a mantis.)
@@ -1223,7 +1227,11 @@ Are You fast, God?
 Draw something!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img013.BMP"
+width="640" height="472" alt="">
+```
 It's a park bench with chess board?  And a bowling alley.
 
 ----11/23/13 23:10:50----

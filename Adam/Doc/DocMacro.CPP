@@ -1,3 +1,5 @@
+#help_index "Doc/Misc"
+
 U8 captured_macro_name[136];
 StrCpy(captured_macro_name,"Test");
 
@@ -130,7 +132,7 @@ U0 EdInsCapturedMacro()
   Bool old_preempt=Preempt(OFF);
   U8 *st=SysMacro2Str(&sys_macro_root);
   if (sys_focus_task) {
-    XTalk(sys_focus_task,"$MA+A+LM+LA,\"%s\",\"%Q\"$",
+    XTalk(sys_focus_task,"$MA+LA,T=\"%s\",LM=\"%Q\"$",
 	captured_macro_name,st);
     Free(st);
   }
@@ -148,7 +150,7 @@ I64 PopUpMacroMenu()
   U8 buf[136];
   CSrvCmd *tempc;
   CDoc *doc=DocNew;
-  CDocEntry *doc_e=DocPrint(doc,"$DA-P,135,\"Name:%%s\"$");
+  CDocEntry *doc_e=DocPrint(doc,"$DA-P,135,A=\"Name:%%s\"$");
   I64 result=0;
   doc_e->data=captured_macro_name;
   DocDataFmt(doc_e);
@@ -156,19 +158,19 @@ I64 PopUpMacroMenu()
   doc_e->data=&sys_macro_repeat_n;
   DocDataFmt(doc_e);
   DocPrint(doc,"\n"
-	"$CM+LX,1,3$$BT,\"RECORD\",SM_RECORD$"
-	"$CM+LX,17,0$$BT,\"INSERT\",SM_INS$"
-	"$CM+LX,1,3$$BT,\"PLAY\",SM_PLAY$"
-	"$CM+LX,17,0$$BT,\"REPEAT N\",SM_REPEAT_N$"
-	"$CM+LX,1,3$$BT,\"STOP\",SM_STOP$"
-	"$CM+LX,17,0$$BT,\"CANCEL\",DOCM_CANCEL$"
+	"$CM+LX,1,3$$BT,\"RECORD\",LE=SM_RECORD$"
+	"$CM+LX,17,0$$BT,\"INSERT\",LE=SM_INS$"
+	"$CM+LX,1,3$$BT,\"PLAY\",LE=SM_PLAY$"
+	"$CM+LX,17,0$$BT,\"REPEAT N\",LE=SM_REPEAT_N$"
+	"$CM+LX,1,3$$BT,\"STOP\",LE=SM_STOP$"
+	"$CM+LX,17,0$$BT,\"CANCEL\",LE=DOCM_CANCEL$"
 	"\n\n\n$GREEN$SHIFT-F2$FG$ will play macro.\n");
   doc->flags|=DOCF_MIN_SIZE | DOCF_FORM;
   SPrint(buf,"DocMenuDo(%d);",doc);
   sys_macro_util_task=Spawn(&SrvUserCmdLine,NULL,"Macro Popup",,Fs);
   Fs->popup_task=sys_macro_util_task;
   LBts(&sys_macro_util_task->display_flags,DISPLAYf_WIN_ON_TOP);
-  tempc=TaskExeStrQue(sys_macro_util_task,Fs,buf,
+  tempc=TaskExe(sys_macro_util_task,Fs,buf,
       1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
   ScanResult(tempc,&result);
   Fs->popup_task=NULL;
@@ -215,4 +217,3 @@ U0 EdMacroUtil()
   if (!sys_macro_util_task)
     Spawn(&MacroTask,NULL,"Macro");
 }
-

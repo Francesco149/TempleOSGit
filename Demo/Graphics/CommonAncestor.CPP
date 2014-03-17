@@ -97,7 +97,7 @@ U0 TreeCommonAncestor()
   root=NULL;
   n1=n2=common_ancestor=0;
  
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   DocClear;
   "Scroll with {CTRL-Left Grab}.\n";
@@ -115,5 +115,5 @@ TreeCommonAncestor;
 Be careful with recursive routines in TempleOS
 because the stack does not grow and will overflow.
 
-See [C:/Demo/StkGrow.CPP,1].
+See [C:/Demo/StkGrow.CPP.Z,1].
 */

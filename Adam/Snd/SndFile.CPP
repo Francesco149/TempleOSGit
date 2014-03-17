@@ -83,7 +83,7 @@ public I64 SndFileCreate(U8 *base_filename,F64 normalized_vol=1.0,F64 averaging=
       level+=s->body[i];
     level/=cnt-1;
     for (i=0;i<cnt-1;i++)
-      s->body[i]=LimitI64(s->body[i]-level,MIN_I16,MAX_I16);
+      s->body[i]=ClampI64(s->body[i]-level,MIN_I16,MAX_I16);
     }
 
   for (i=0;i<cnt-1;i++)

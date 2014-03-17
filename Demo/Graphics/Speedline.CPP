@@ -6,7 +6,7 @@ public U0 SpeedLineDemo()
   CDC *dc=DCAlias;
   dc->color=color;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
 
   WinMax;

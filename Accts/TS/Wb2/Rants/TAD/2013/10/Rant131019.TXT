@@ -2,7 +2,7 @@
 
 Currently, I have a "probability dither" feature.  It's strange.  I am 
 thinking about providing a GrRGB24() function to it set-up in a more friendly 
-way.  These dither probabilities are expensive, doing on a per-pixel basis.
+way.  These dither probabilities are expensive, doing on a per-pix basis.
 
 http://virtual-notary.org
 
@@ -600,7 +600,11 @@ Afric mount knows uncertain None sucklings
 Somebody (Rome or Greece, I forgot) salted Carthage's fields so they could 
 never grow.
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img010.BMP"
+width="640" height="472" alt="">
+```
 
 ----10/19/13 23:25:45----
 
@@ -686,7 +690,7 @@ I64 mp_not_done_flags;
 U0 MPDrawIt(CJob *tempj)
 {
   CTask *task=tempj->win_task;
-  I64 i,j,k,w=task->win_pixel_width,h=task->win_pixel_height,
+  I64 i,j,k,w=task->pix_width,h=task->pix_height,
       lo=Gs->num*h/mp_cnt,hi=(Gs->num+1)*h/mp_cnt;
   CDC *dc=DCAlias(tempj->dc,task);
   for (j=lo;j<hi;j++)
@@ -713,7 +717,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 U0 Main()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
   WinMax;
   WinBorder;
@@ -726,7 +730,10 @@ U0 Main()
 Main;
 
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/RGB.BMP"
+width="640" height="472" alt="">
+```
 
 God says...
 vile feareth overthrew oblation Was fetters joyed _ idol Highness secondary 

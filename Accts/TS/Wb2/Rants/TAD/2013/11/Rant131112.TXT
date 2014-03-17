@@ -122,10 +122,10 @@ knocking Food fling
 It's better not to switch away from ICU8(), ICU16(), ICU24(), ICU32() to a 
 single ICU8(...).
 
-The [C:/TempleOS/Compiler/Lex.CPP.Z,165] LexGetChar() is ugly because it is a
-critical routine in profile [C:/TempleOS/Adam/Profiler.CPP.Z,109] ProfRep()
-.  It must handle both plain ASCII and [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509]
-CDoc files.  It's ugly, but it's good.
+The [C:/Compiler/Lex.CPP.Z,157] LexGetChar() is ugly because it is a critical
+routine in profile [C:/Adam/Utils/Profiler.CPP.Z,109] ProfRep()
+.  It must handle both plain ASCII and [C:/Kernel/Adam1a.HPP.Z,1401] CDoc
+files.  It's ugly, but it's good.
 
 My code is perfect.  I have changed anything not perfect ignoring backward 
 compatibility.  That's the key.  So long as you do not keep blemished code on 
@@ -225,7 +225,7 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 systems.
 
 10) Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the RedSea .Z LZW 
 compression.  (Let me know when you want it.)
 
@@ -310,7 +310,7 @@ excellency of Israel: for the emptiers have emptied them out, and
 D:/Accts/TS/TAD>MemBIOSRep;
 Standard Addresses
 0x000A0000-0x000BFFFF VGA
-0xFEE00000-0xFEE00FFF See [C:/TempleOS/Kernel/Adam1a.HPP.Z,548] APIC
+0xFEE00000-0xFEE00FFF See [C:/Kernel/Adam1a.HPP.Z,466] APIC
 
 32 Bit Device Mem
 00:0x00000000F0000000-0x00000000FEBFFFFF
@@ -464,30 +464,29 @@ code in the lowest 2 Gig memory addresses including what would normally be
 called "the kernel".  Two Gig is plenty, don't worry.
 
 You can create new, independent heaps by first allocating mem with 
-[C:/TempleOS/Kernel/Memory.CPP.Z,428] MemBlksUncachedAlloc() or
-[MN:MemBlksIndependentAlloc] MemBlksIndependentAlloc(), then calling 
-[MN:HeapCtrlBPInit] HeapCtrlBPInit() and, then, using
-[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().
+[C:/Kernel/Mem1a.CPP.Z,408] MemBlksUncachedAlloc() or
+[C:/Kernel/Mem1a.CPP.Z,195] MemBlksIndependentAlloc(), then calling 
+[C:/Kernel/Mem1c.CPP.Z,42] HeapCtrlBPInit() and, then, using
+[C:/Kernel/Mem1b.CPP.Z,376] MAlloc().
 
 Memory allocated by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
+See [C:/Adam/Utils/MemRep.CPP.Z,198] MemRep().
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003E3AF
+ 0x0000007C00- 0x0000035F9F
   Kernel module, placed here by the boot-loader,
-  [C:/TempleOS/Kernel/BootDefs.HPP.Z,6] BOOT_RAM_BASE.
+  [C:/Kernel/Adam1a.HPP.Z,3618] BOOT_RAM_BASE.
 
- 0x00- 0x00
+ 0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
-  [C:/Adam/Boot/BootCD.CPP,1] BootCD & [C:/Adam/Boot/BootHD.CPP,1] BootHD.
+  [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x000009702E
-  Multicore start-up vect code, [C:/TempleOS/Kernel/Adam1a.HPP.Z,576]
-  MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/Adam1a.HPP.Z,494] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -495,42 +494,42 @@ See [C:/TempleOS/Adam/MemRep.CPP.Z,192] MemRep().
  0x00000A0000- 0x00000BFFFF
   VGA graphics mem, marked as write-through cache.
 
- 0x0000100000- 0x0000182FFF
+ 0x0000100000- 0x00001845FF
   Page tables, 128 Gig of address space
 
- 0x0000183000- 0x00
+ 0x0000184600- 0x007FFDFFFF
   Code Heap mem.
 
  0x00E0000000- 0x00FFFFFFFF
   32-bit devices could allocate memory at 0xF0000000 going up, but this is 
 wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
-are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
-  flaws are not an issue.
+are supported, so [C:/Kernel/Mem1c.CPP.Z,165] Mem32DevAlloc() flaws are not
+  an issue.
 
  0x0080000000-~0x00DFFFFFFF
  0x0100000000-~0x1FFFFFFFFF
   Data Heap mem.
 
              - 0x1FFFFFFFFF
-  64-bit devices are allocated with [C:/TempleOS/Kernel/Memory.CPP.Z,1239]
+  64-bit devices are allocated with [C:/Kernel/Mem1c.CPP.Z,213]
   Mem64DevAlloc() counting backward from 
 128 Gig, but no PCI devices are actually supported.
   
 
-				      [C:/TempleOS/Kernel/Adam1a.HPP.Z,2741] CBlkPools [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrls
+				      [C:/Kernel/Adam1a.HPP.Z,2594] CBlkPools [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrls
  <1> (image)
 
 0000,0000,0000,0000		      Core 0
 
 0000,0000,0000,7C00 Kernel
-0000,0000,0003,E3AF 
+0000,0000,0003,5F9F 
 
 
 
 
 0000,0000,0010,0000 Page_Tables			   AdamTask
 
-0000,0000,0018,3000
+0000,0000,0018,4600
 
 		    sys_code_bp
 
@@ -542,7 +541,7 @@ are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
 				      Core 1
 						   SethTask
 
-0000,0000,
+0000,0000,7FFD,FFFF
 0000,0000,8000,0000
 
 
@@ -575,14 +574,13 @@ are supported, so [C:/TempleOS/Kernel/Memory.CPP.Z,1191] Mem32DevAlloc()
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() an 8 Gig chunk on my 12
-Gig machine.
+can [C:/Kernel/Mem1b.CPP.Z,376] MAlloc() an 8 Gig chunk on my 12 Gig machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
-the total.  See [C:/TempleOS/Kernel/Memory.CPP.Z,1285] HeapsInit().
+the total.  See [C:/Kernel/Mem1c.CPP.Z,259] HeapsInit().
 
-* See [C:/Kernel/KEnd.CPP,1] Independent Heap Ctrl Example.
+* See [C:/Kernel/KEnd.CPP.Z,1] Independent Heap Ctrl Example.
 
 ----11/12/13 08:23:21----
 
@@ -725,7 +723,7 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 systems.
 
 10) Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the RedSea .Z LZW 
 compression.  (Let me know when you want it.)
 
@@ -844,7 +842,7 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 systems.
 
 10) Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the RedSea .Z LZW 
 compression.  (Let me know when you want it.)
 
@@ -1074,7 +1072,10 @@ Judah and Jerusalem by the hand of Nebuchadnezzar.
 Everybody draw a 4-bit color 640x480 elephant.
 Everybody draw a 24-bit color elephant 1920x1080.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 Now, you know why God said 640x480 16 color.
 
@@ -1111,7 +1112,11 @@ fifth to Nethaniah, he, his sons, and his brethren, were twelve: 25:13
 
 Draw something, God!
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img006.BMP"
+width="640" height="472" alt="">
+```
 
 Say sompin about elephants, God!!
 
@@ -1401,7 +1406,11 @@ Yeah, that's cool.  Good for elephants?  That's cool when elephants paint.
 You wanna do some painting, God?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img007.BMP"
+width="640" height="472" alt="">
+```
 
 That looks like bowling.
 
@@ -2077,8 +2086,8 @@ LOL  cannot contain Him.  Joke.
 
 ----11/12/13 19:57:18----
 
-I'm excited to tell you about my [MN:SPrintJoin] PrintF()!  It's awesome.  It
-puts integer in 
+I'm excited to tell you about my [C:/Kernel/StrPrint.CPP.Z,247] PrintF()! 
+It's awesome.  It puts integer in 
 a 64-bit number and prints it.  It puts decimal portion in a 64-bit number... 
 with some leading zeros.  It is really fast and elegant, but it fails if you 
 do 50 decimal places for 10 decimal place numbers because 50 overflows the 
@@ -2136,8 +2145,8 @@ Saying something which would imply it has never booted in ten years, or that
 it's not 64-bit o0r that I didn't write an honest-to-God compiler, or that I 
 stole code... Those things piss me off... and doubting God pisses me off.
 
-[MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().  That pads. 
-[MN:MasterBootIntall] MasterBootIntall().
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().  That pads. 
+[C:/Adam/Boot/InsBoot.CPP.Z,263] MasterBootIntall().
 
 [C:/Doc/Boot.TXT.Z,1]
 
@@ -2331,7 +2340,7 @@ that guy calling me a liar because it was a good one.
 
 What do you think a JIT C compiler looks like?
 
-[C:/TempleOS/Compiler/Assembler.CPP.Z,273] AsmGlblsResolve().
+[C:/Compiler/Assembler.CPP.Z,286] AsmGlblsResolve().
 
 
 God says...

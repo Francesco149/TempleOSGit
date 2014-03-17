@@ -211,8 +211,8 @@ U0 WSDFillin(I64 n)
 
 public U0 WSDDisplayDefs(CDoc *doc,U8 *st,I64 num=-1)
 {
-  U8 *st2,*st3,ch;
-  I64 i=0;
+  U8 *st2,*st3;
+  I64 ch,i=0;
   if (!st) return;
   if (*st==WSD_WORD_CHAR)
     st++;
@@ -272,7 +272,7 @@ U0 WSFindMisspelled(CDoc *doc)
   CDocEntry *doc_e=doc->cur_entry;
   I64 col=doc->cur_data_col,col2,ch;
   do {
-    if (doc_e!=doc && Bt(doc_type_flags_tag,doc_e->type_u8)) {
+    if (doc_e!=doc && doc_e->flags1&DOCEF1_TAG) {
       while (col<doc_e->max_col) {
 	while (col<doc_e->max_col && !Bt(chars_bitmap_word,doc_e->tag[col]))
 	  col++;

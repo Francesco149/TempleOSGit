@@ -12,7 +12,7 @@ CDC *cur_dc;
 
 U0 DrawFrame(CTask *task,CDC *dc)
 {
-  I64 w=task->win_pixel_width,h=task->win_pixel_height,
+  I64 w=task->pix_width,h=task->pix_height,
      cx=w>>1,cy=h>>1;
 
   dc->color=LTRED;
@@ -60,7 +60,7 @@ U0 UpdateCurBase(CTask *task,CDC *dc)
   Bool old_preempt=Preempt(OFF);
   cur_dc->color=ROP_EQU;
   dc->flags|=DCF_NO_TRANSPARENTS;
-  GrBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
+  GrBlot(cur_dc,-task->pix_left-task->scroll_x,-task->pix_top-task->scroll_y,dc);
   dc->flags&=~DCF_NO_TRANSPARENTS;
   Preempt(old_preempt);
 }
@@ -77,8 +77,8 @@ U0 AnimateTask(I64)
 {
   I64 i,j,cur_drop=0,c1,c2,x0,y0,x1,y1,w,h;
   while (TRUE) {
-    w=Fs->parent_task->win_pixel_width;
-    h=Fs->parent_task->win_pixel_height;
+    w=Fs->parent_task->pix_width;
+    h=Fs->parent_task->pix_height;
 
     for (i=0;i<2;i++) {
       j=0;
@@ -162,7 +162,7 @@ U0 RainDrops()
   "  OpenLower(,'2');"
       "}"
       );
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   cur_dc=DCNew(GR_WIDTH,GR_HEIGHT);
   sc_1=A2ScanCode('1');

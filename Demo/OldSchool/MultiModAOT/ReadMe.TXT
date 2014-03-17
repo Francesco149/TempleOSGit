@@ -1,0 +1,27 @@
+This demonstrates that linking can be done
+at LOAD time.  This is the TempleOS answer
+to OBJ files.  
+
+Right-Click MakeFile.CPP.Z and click INCLUDE or
+do the following:
+
+1) Do a [C:/Kernel/Dsk/Dsk1b.CPP.Z,243] Dir() command
+
+2) Right-Click on OD1.PRJ.Z and click AOT COMPILE.
+   Right-Click on OD2.PRJ.Z and click AOT COMPILE.
+   Right-Click on ODMain.PRJ.Z and click AOT COMPILE.
+
+3) In any order, do the following and ignore warnings.
+   Right-Click on OD1.BIN.Z and click LOAD.
+   Right-Click on ODMain.BIN.Z and click LOAD.
+   Right-Click on OD2.BIN.Z and click LOAD.
+
+4) Right-Click on ObjDemo.HPP.Z and click INCLUDE.
+
+5) Type at the command-line:
+  >ObjDemo("Arg1","Arg2");
+  
+
+
+#include the file [C:/Adam/Utils/BinRep.CPP.Z,1] and
+call [C:/Adam/Utils/BinRep.CPP.Z,23] BinRep() to analyze the .BIN.Z files.  

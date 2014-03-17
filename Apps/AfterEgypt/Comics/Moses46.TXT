@@ -42,4 +42,4 @@
 
  <3> (image)
 
-[C:/TempleOS/Misc/Bible.TXT.Z,5068] Exodus,16:19
+[C:/Misc/Bible.TXT.Z,5068] Exodus,16:19

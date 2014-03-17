@@ -288,7 +288,8 @@ organs ascended joking familiarised
 
 ----10/03/13 22:37:48----
 
-[MN:GrFillTri0] GrFillTri0() [C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,76] GrBlot()
+[C:/Adam/Gr/GrPrimatives.CPP.Z,1131] GrFillTri0()
+[C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot()
 
 I did everything by myself from scratch.  Just ask God.
 

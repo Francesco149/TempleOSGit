@@ -49,7 +49,7 @@ public U0 PCIDevFileGen()
 
 ****/
 
-//[C:/Misc/PCIDevices.TXT,1] ::/Misc/PCIDevices.TXT
+//[C:/Misc/PCIDevices.TXT.Z,1] ::/Misc/PCIDevices.TXT
 U0 PCILookUpSingle(CDoc *doc,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 {
   Bool first=TRUE;
@@ -61,7 +61,7 @@ U0 PCILookUpSingle(CDoc *doc,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 	buf[0](U16)='0x';
 	buf[2](U32)=doc_e->tag(U32 *)[0];
 	buf[6]=0;
-	if (A2I(buf)==m) {
+	if (A2I64(buf)==m) {
 	  doc_e=doc_e->next->next;
 	  if (doc_e->type_u8==DOCT_TEXT) {
 	    vendor=AStrNew(doc_e->tag);
@@ -86,7 +86,7 @@ U0 PCILookUpSingle(CDoc *doc,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 	    buf[0](U16)='0x';
 	    buf[2](U32)=doc_e->tag(U32 *)[0];
 	    buf[6]=0;
-	    if (A2I(buf)==d) {
+	    if (A2I64(buf)==d) {
 	      doc_e=doc_e->next->next;
 	      if (doc_e->type_u8==DOCT_TEXT) {
 		dev=AStrNew(doc_e->tag);
@@ -118,8 +118,7 @@ U0 PCILookUpSingle(CDoc *doc,I64 m,I64 d,U8 **_vendor,U8 **_dev)
 U0 PCILookUpDevs()
 {
   CPCIDev *temppci;
-  U16 w1,w2;
-  I64 b,d,f,timeout=32*8*2;
+  I64 w1,w2,b,d,f,timeout=32*8*2;
   CDoc *doc;
   if (sys_pci_dev_root.next!=&sys_pci_dev_root)
     return;
@@ -180,7 +179,7 @@ public U0 MemBIOSRep()
   CMemRange	*tempmr;
 	"Standard Addresses\n"
 	"0x000A0000-0x000BFFFF VGA\n"
-	"0xFEE00000-0xFEE00FFF See $LK,\"APIC\",\"MN:LAPIC_BASE\"$\n\n"
+	"0xFEE00000-0xFEE00FFF See $LK,\"APIC\",A=\"MN:LAPIC_BASE\"$\n\n"
 	"32 Bit Device Mem\n";
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;

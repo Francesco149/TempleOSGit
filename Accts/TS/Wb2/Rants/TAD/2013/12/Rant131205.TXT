@@ -383,7 +383,14 @@ Stubborn niggers! Get on the winning side!  Support God's temple.
 You want to be on the winning side, don't you?  Isn't it obvious God 
 outclasses you beings?  You are retard-niggers.  I out-class you.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/FSRlUsQ7TJ8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/FSRlUsQ7TJ8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I could talk about my operating system.  It really seems like there are just
 a 
@@ -427,11 +434,11 @@ others cut down branches from the trees, and strawed them in the way.
 
 
 //This is the fastest you can update the whole screen.
-//See [C:/Demo/Lectures/MiniGrLib.CPP,1] if this interests you.
+//See [C:/Demo/Lectures/MiniGrLib.CPP.Z,1] if this interests you.
 
 F64 VGAPattern(I64 p)
 {//This returns the time to update in seconds.
-  F64 start=tT;
+  F64 start=tS;
   I64 i,plane,*ptr;
   for (plane=1;plane<0x10;plane<<=1) {
     OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
@@ -440,7 +447,7 @@ F64 VGAPattern(I64 p)
     for (i=0;i<640*480/64;i++)
       *ptr++=p;
   }
-  return tT-start;
+  return tS-start;
 }
  
  
@@ -630,7 +637,14 @@ system, but mostly I have to emphasize it's God's temple.
 
 As a philosopher who doesn't know... what would kids think of M.U.L.E?
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/p6L6MhSgpgo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/p6L6MhSgpgo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I might think all games are big production games, but what I think without 
 knowing is there are many thousands and thousands and thousands of games, big 

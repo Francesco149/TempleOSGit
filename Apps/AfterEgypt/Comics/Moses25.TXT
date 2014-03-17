@@ -14,4 +14,4 @@
 
  <1> (image)
 
-[C:/TempleOS/Misc/Bible.TXT.Z,5068] Exodus,18:13
+[C:/Misc/Bible.TXT.Z,5068] Exodus,18:13

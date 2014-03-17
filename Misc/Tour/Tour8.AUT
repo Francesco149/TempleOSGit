@@ -6,7 +6,7 @@ PopUpOk(
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
-"We will now use [C:/TempleOS/Adam/Dbg2a.CPP.Z,236] Uf() to\n"
+"We will now use [C:/Adam/Dbg2a.CPP.Z,236] Uf() to\n"
 "unassemble a function.\n"
 "It takes the function name\n"
 "as a string arg.\n\n"
@@ -36,7 +36,7 @@ AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
 "We can unassemble a\n"
-"numeric address with [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U().\n\n"
+"numeric address with [C:/Compiler/Unassembler.CPP.Z,647] U().\n\n"
 "Press $GREEN$<ENTER>$FG$.");
 "U(&CAlloc);";
 AFPmtStr("\n");

@@ -40,14 +40,16 @@ I64 InstEntriesCompare(CInstruction *tempi1,CInstruction *tempi2)
       i2=tempi2->flags & IEF_OP_SIZE32;
 	if (result=i1-i2) return result;
 
-      i1=Bt(&uasm_ins64_mask,tempi1->arg1) ||
-      Bt(&uasm_ins64_mask,tempi1->arg2);
-      i2=Bt(&uasm_ins64_mask,tempi2->arg1) ||
-      Bt(&uasm_ins64_mask,tempi2->arg2);
+      i1=Bt(&uasm_ins64_mask,tempi1->arg1) || Bt(&uasm_ins64_mask,tempi1->arg2);
+      i2=Bt(&uasm_ins64_mask,tempi2->arg1) || Bt(&uasm_ins64_mask,tempi2->arg2);
 	if (result=i1-i2) return result;
 
       i1=tempi1->flags & IEF_48_REX;
       i2=tempi2->flags & IEF_48_REX;
+	if (result=i1-i2) return result;
+
+      i1=tempi1->arg2==ARGT_IMM64 || tempi1->arg2==ARGT_UIMM64;
+      i2=tempi2->arg2==ARGT_IMM64 || tempi2->arg2==ARGT_UIMM64;
       return i1-i2;
     }
   }
@@ -151,6 +153,11 @@ CInstruction *InstEntryFind(U8 *ip,I64 opsize)
 	    (ARGT_UIMM8<=a1<=ARGT_UIMM64 ||
 		ARGT_IMM8<=a1<=ARGT_IMM64 ) ))
 	      m=1;
+	    else if (tempi->arg2==ARGT_IMM64 || tempi->arg2==ARGT_UIMM64) {
+	      if (a2!=ARGT_IMM64&&a2!=ARGT_UIMM64)
+		m=1;
+	    } else if (a2==ARGT_IMM64||a2==ARGT_UIMM64)
+		m=-1;
 	  } else {
 	    if (Bt(&uasm_ins64_mask,a1) || Bt(&uasm_ins64_mask,a2) || tempi->flags&IEF_48_REX)
 	      m=-1;
@@ -180,7 +187,6 @@ CInstruction *InstEntryFind(U8 *ip,I64 opsize)
 
 U0 UnasmHashLoad()
 {
-  CHashTable *h=asm_hash;
   CHashOpcode *temph;
   CInstruction *tempi;
   I64 cnt=0,j,k;
@@ -192,8 +198,8 @@ U0 UnasmHashLoad()
     1<<ARGT_IMM8+1<<ARGT_IMM16+1<<ARGT_IMM32+1<<ARGT_IMM64;
   uasm_mem_mask=1<<ARGT_M8+1<<ARGT_M16+1<<ARGT_M32+1<<ARGT_M64;
 
-  temph=h->next_added;
-  while (temph!=h) {
+  temph=asm_hash->next_added;
+  while (temph!=asm_hash) {
     if (temph->type==HTT_OPCODE)
       cnt+=temph->instruction_entry_cnt;
     temph=temph->next_added;
@@ -202,8 +208,8 @@ U0 UnasmHashLoad()
 
   j=0;
   unasm_table=MAlloc(cnt*sizeof(U8 *));
-  temph=h->next_added;
-  while (temph!=h) {
+  temph=asm_hash->next_added;
+  while (temph!=asm_hash) {
     if (temph->type==HTT_OPCODE) {
       tempi=&temph->ins;
       for (k=0;k<temph->instruction_entry_cnt;k++) {
@@ -242,7 +248,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
   CInstruction *tempi,*tempi2;
   CHashOpcode *tempo;
   U8 *ip=*_ip,*ptr,*reloced_a1_st,*reloced_a2_st,*bin_data_area1,*bin_data_area2,
-	buf2[512],line1[512],line2[512],a1_st[512],a2_st[512],seg_overrides[32];
+	line1[512],line2[512],a1_st[512],a2_st[512],seg_overrides[32];
 
   if (_jmp_dst) *_jmp_dst=-1;
   if (seg_size==16) {
@@ -258,35 +264,31 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
   *a1_st=0;
   *a2_st=0;
   if (!IsRaw && PutSrcLink(ip,1,line1))
-    StrCat(line1,"\n");
+    CatPrint(line1,"\n");
   else
     *line1=0;
 
   SPrint(line1+StrLen(line1),"%24tp ",ip);
   bin_data_area1=line1+StrLen(line1);
-  for (i=0;i<6;i++) {
-    SPrint(buf2,"%02X",ip[i]);
-    StrCat(line1,buf2);
-  }
-  StrCat(line1," ");
+  for (i=0;i<6;i++)
+    CatPrint(line1,"%02X",ip[i]);
+  CatPrint(line1," ");
 
   SPrint(line2,"%24tp ",ip+6);
   bin_data_area2=line2+StrLen(line2);
-  for (i=6;i<12;i++) {
-    SPrint(buf2,"%02X",ip[i]);
-    StrCat(line2,buf2);
-  }
+  for (i=6;i<12;i++)
+    CatPrint(line2,"%02X",ip[i]);
 
   *seg_overrides=0;
   cont=TRUE;
   do {
     switch (*ip++) {
-      case 0x2E: if (StrLen(seg_overrides)<24) StrCat(seg_overrides,"CS:"); break;
-      case 0x36: if (StrLen(seg_overrides)<24) StrCat(seg_overrides,"SS:"); break;
-      case 0x3E: if (StrLen(seg_overrides)<24) StrCat(seg_overrides,"DS:"); break;
-      case 0x26: if (StrLen(seg_overrides)<24) StrCat(seg_overrides,"ES:"); break;
-      case 0x64: if (StrLen(seg_overrides)<24) StrCat(seg_overrides,"FS:"); break;
-      case 0x65: if (StrLen(seg_overrides)<24) StrCat(seg_overrides,"GS:"); break;
+      case 0x2E: if (StrLen(seg_overrides)<24) CatPrint(seg_overrides,"CS:"); break;
+      case 0x36: if (StrLen(seg_overrides)<24) CatPrint(seg_overrides,"SS:"); break;
+      case 0x3E: if (StrLen(seg_overrides)<24) CatPrint(seg_overrides,"DS:"); break;
+      case 0x26: if (StrLen(seg_overrides)<24) CatPrint(seg_overrides,"ES:"); break;
+      case 0x64: if (StrLen(seg_overrides)<24) CatPrint(seg_overrides,"FS:"); break;
+      case 0x65: if (StrLen(seg_overrides)<24) CatPrint(seg_overrides,"GS:"); break;
       case OC_OP_SIZE_PREFIX:
 	if (opsize==16)
 	  opsize=32;
@@ -316,7 +318,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
   ip--;
 
 
-  tempi =InstEntryFind(ip,opsize);
+  tempi=InstEntryFind(ip,opsize);
   if (opsize==32 && seg_size==64) {
     tempi2=InstEntryFind(ip,64);
     if (tempi2!=tempi &&
@@ -329,25 +331,23 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
   tempo=tempi(U8 *)-tempi->ins_entry_num*sizeof(CInstruction)-offset(CHashOpcode.ins);
   if (just_ins)
     *line1=0;
-  StrCat(line1,tempo->str);
+  CatPrint(line1,tempo->str);
 
   a1=tempi->arg1;
   a2=tempi->arg2;
 
   if (a1_size=StrMatchBits(DefineSub(a1,"ST_ARG_TYPES"))) {
     if (Bt(&uasm_signed_arg_mask,a1))
-      SPrint(buf2,"I%d ",a1_size);
+      CatPrint(a1_st,"I%d ",a1_size);
     else
-      SPrint(buf2,"U%d ",a1_size);
-    StrCat(a1_st,buf2);
+      CatPrint(a1_st,"U%d ",a1_size);
   }
 
   if (a2_size=StrMatchBits(DefineSub(a2,"ST_ARG_TYPES"))) {
     if (Bt(&uasm_signed_arg_mask,a2))
-      SPrint(buf2,"I%d ",a2_size);
+      CatPrint(a2_st,"I%d ",a2_size);
     else
-      SPrint(buf2,"U%d ",a2_size);
-    StrCat(a2_st,buf2);
+      CatPrint(a2_st,"U%d ",a2_size);
   }
 
   if (tempi->flags & IEF_PLUS_OPCODE) {
@@ -367,7 +367,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
       else if (a1_size==64)
 	ptr="ST_U64_REGS";
       if (ptr)
-	StrCat(a1_st,DefineSub(RM1,ptr));
+	CatPrint(a1_st,"%Z",RM1,ptr);
     } else {
       if (a2_size==8) {
 	if (REX!=-1)
@@ -381,7 +381,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
       else if (a2_size==64)
 	ptr="ST_U64_REGS";
       if (ptr)
-	StrCat(a2_st,DefineSub(RM1,ptr));
+	CatPrint(a2_st,"%Z",RM1,ptr);
     }
   }
 
@@ -406,7 +406,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
       reloced_a2_st=a2_st;
     }
 
-    StrCat(reloced_a1_st,seg_overrides);
+    CatPrint(reloced_a1_st,seg_overrides);
     ModrM=*ip++;
     Mod=ModrM>>6 & 3;
     RM1=ModrM & 7+REX_b;
@@ -415,12 +415,10 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
       SIB=*ip++;
     if (Mod==1) {
       disp=*ip(U8 *)++;
-      SPrint(buf2,"%02X",disp);
-      StrCat(reloced_a1_st,buf2);
+      CatPrint(reloced_a1_st,"%02X",disp);
     } else if (Mod==2) {
       disp=*ip(U32 *)++;
-      SPrint(buf2,"%08X",disp);
-      StrCat(reloced_a1_st,buf2);
+      CatPrint(reloced_a1_st,"%08X",disp);
     }
     if (tempi->slash_val<8)
       RM2=-1;
@@ -444,7 +442,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
 	  ptr="ST_U64_REGS";
       }
       if (ptr)
-	StrCat(reloced_a2_st,DefineSub(RM2,ptr));
+	CatPrint(reloced_a2_st,"%Z",RM2,ptr);
     }
     if (RM1&7==5 && !Mod) {
       disp=*ip(I32 *)++;
@@ -459,8 +457,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
 	else if (reloced_a2==ARGT_IMM64 || reloced_a2==ARGT_UIMM64)
 	  disp+=8;
       }
-      SPrint(buf2,"[%X]",disp);
-      StrCat(reloced_a1_st,buf2);
+      CatPrint(reloced_a1_st,"[%X]",disp);
       RM1=-1;
     } else {
       if (Mod<3) {
@@ -483,17 +480,11 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
 	    ptr="ST_U32_REGS";
 	  if (r1==REG_RBP && !Mod) {
 	    disp=*ip(U32 *)++;
-	    SPrint(buf2,"%08X",disp);
-	    StrCat(reloced_a1_st,buf2);
-	    SPrint(buf2,"[%Z*%d]",r2,ptr,scale);
-	    StrCat(reloced_a1_st,buf2);
-	  } else if (r2==4) {
-	    SPrint(buf2,"[%Z]",r1,ptr);
-	    StrCat(reloced_a1_st,buf2);
-	  } else {
-	    SPrint(buf2,"[%Z+%Z*%d]",r1,ptr,r2,ptr,scale);
-	    StrCat(reloced_a1_st,buf2);
-	  }
+	    CatPrint(reloced_a1_st,"%08X[%Z*%d]",disp,r2,ptr,scale);
+	  } else if (r2==4)
+	    CatPrint(reloced_a1_st,"[%Z]",r1,ptr);
+	  else
+	    CatPrint(reloced_a1_st,"[%Z+%Z*%d]",r1,ptr,r2,ptr,scale);
 	} else {
 	  if (opadd==16)
 	    ptr="ST_U16_REGS";
@@ -501,8 +492,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
 	    ptr="ST_U32_REGS";
 	  else
 	    ptr="ST_U64_REGS";
-	  SPrint(buf2,"[%Z]",RM1,ptr);
-	  StrCat(reloced_a1_st,buf2);
+	  CatPrint(reloced_a1_st,"[%Z]",RM1,ptr);
 	}
       } else {
 	ptr=NULL;
@@ -518,7 +508,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
 	else if (reloced_a1_size==64)
 	  ptr="ST_U64_REGS";
 	if (ptr)
-	  StrCat(reloced_a1_st,DefineSub(RM1,ptr));
+	  CatPrint(reloced_a1_st,DefineSub(RM1,ptr));
       }
     }
   }
@@ -527,144 +517,116 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
     case ARGT_IMM8:
     case ARGT_UIMM8:
       imm=*ip(U8 *)++;
-      SPrint(buf2,"%02X",imm);
-      StrCat(a1_st,buf2);
-      if (tempi->opcode[0]==0xCD) {
-	if (ptr=DefineSub(imm,"ST_INT_NAMES")) {
-	  StrCat(a1_st," ");
-	  StrCat(a1_st,ptr);
-	}
-      }
+      CatPrint(a1_st,"%02X",imm);
+      if (tempi->opcode[0]==0xCD && (ptr=DefineSub(imm,"ST_INT_NAMES")))
+	CatPrint(a1_st," %s",ptr);
       break;
     case ARGT_IMM16:
     case ARGT_UIMM16:
-      imm=*ip(U16 *)++;
-      SPrint(buf2,"%04X",imm);
-      StrCat(a1_st,buf2);
+      CatPrint(a1_st,"%04X",*ip(U16 *)++);
       break;
     case ARGT_IMM32:
     case ARGT_UIMM32:
-      imm=*ip(U32 *)++;
-      SPrint(buf2,"%08X",imm);
-      StrCat(a1_st,buf2);
+      CatPrint(a1_st,"%08X",*ip(U32 *)++);
       break;
     case ARGT_IMM64:
     case ARGT_UIMM64:
-      imm=*ip(I64 *)++;
-      SPrint(buf2,"%016X",imm);
-      StrCat(a1_st,buf2);
+      CatPrint(a1_st,"%016X",*ip(I64 *)++);
       break;
     case ARGT_REL8:
       disp=*ip(I8 *)++;
       disp+=ip;
       if (IsDbg)
-	SPrint(buf2,"%p ",disp);
+	CatPrint(a1_st,"%p ",disp);
       else
-	SPrint(buf2,"%P ",disp);
+	CatPrint(a1_st,"%P ",disp);
       if (_jmp_dst) *_jmp_dst=disp;
-      StrCat(a1_st,buf2);
       break;
     case ARGT_REL16:
       disp=*ip(I16 *)++;
       disp+=ip;
       if (IsDbg)
-	SPrint(buf2,"%p ",disp);
+	CatPrint(a1_st,"%p ",disp);
       else
-	SPrint(buf2,"%P ",disp);
+	CatPrint(a1_st,"%P ",disp);
       if (_jmp_dst) *_jmp_dst=disp;
-      StrCat(a1_st,buf2);
       break;
     case ARGT_REL32:
       disp=*ip(I32 *)++;
       disp+=ip;
       if (IsDbg)
-	SPrint(buf2,"%p ",disp);
+	CatPrint(a1_st,"%p ",disp);
       else
-	SPrint(buf2,"%P ",disp);
+	CatPrint(a1_st,"%P ",disp);
       if (_jmp_dst) *_jmp_dst=disp;
-      StrCat(a1_st,buf2);
       break;
     case ARGT_MOFFS8...ARGT_MOFFS64:
-      StrCat(a1_st,seg_overrides);
+      CatPrint(a1_st,seg_overrides);
       if (a1_size==8)
 	disp=*ip(U8 *)++;
       else if (opadd==16)
 	disp=*ip(U16 *)++;
       else
 	disp=*ip(U32 *)++;
-      SPrint(buf2,"[%X]",disp);
-      StrCat(a1_st,buf2);
+      CatPrint(a1_st,"[%X]",disp);
       break;
     case ARGT_AL ... ARGT_DX:
     case ARGT_SS ... ARGT_ST0:
-      StrCat(a1_st,LstSub(a1-ARGT_AL,
-	    "AL\0AX\0EAX\0RAX\0CL\0DX\0 \0 \0SS\0DS\0ES\0FS\0GS\0CS\0ST0\0"));
+      CatPrint(a1_st,"%z",a1-ARGT_AL,
+	    "AL\0AX\0EAX\0RAX\0CL\0DX\0 \0 \0SS\0DS\0ES\0FS\0GS\0CS\0ST0\0");
       break;
     case ARGT_STI:
       ip--;
-      StrCat(a1_st,DefineSub(*ip++ - tempi->opcode[tempi->opcode_cnt-1],"ST_FSTK_REGS"));
+      CatPrint(a1_st,"%Z",*ip++ - tempi->opcode[tempi->opcode_cnt-1],"ST_FSTK_REGS");
       break;
   }
 
   switch (a2) {
     case ARGT_IMM8:
     case ARGT_UIMM8:
-      imm=*ip(U8 *)++;
-      SPrint(buf2,"%02X",imm);
-      StrCat(a2_st,buf2);
+      CatPrint(a2_st,"%02X",*ip(U8 *)++);
       break;
     case ARGT_IMM16:
     case ARGT_UIMM16:
-      imm=*ip(U16 *)++;
-      SPrint(buf2,"%04X",imm);
-      StrCat(a2_st,buf2);
+      CatPrint(a2_st,"%04X",*ip(U16 *)++);
       break;
     case ARGT_IMM32:
     case ARGT_UIMM32:
-      imm=*ip(U32 *)++;
-      SPrint(buf2,"%08X",imm);
-      StrCat(a2_st,buf2);
+      CatPrint(a2_st,"%08X",*ip(U32 *)++);
       break;
     case ARGT_IMM64:
     case ARGT_UIMM64:
-      imm=*ip(I64 *)++;
-      SPrint(buf2,"%016X",imm);
-      StrCat(a2_st,buf2);
+      CatPrint(a2_st,"%016X",*ip(I64 *)++);
       break;
     case ARGT_MOFFS8...ARGT_MOFFS64:
-      StrCat(a2_st,seg_overrides);
+      CatPrint(a2_st,seg_overrides);
       if (a2_size==8)
 	disp=*ip(U8 *)++;
       else if (opadd==16)
 	disp=*ip(U16 *)++;
       else
 	disp=*ip(U32 *)++;
-      SPrint(buf2,"[%X]",disp);
-      StrCat(a2_st,buf2);
+      CatPrint(a2_st,"[%X]",disp);
       break;
     case ARGT_AL ... ARGT_DX:
     case ARGT_SS ... ARGT_ST0:
-      StrCat(a2_st,LstSub(a2-ARGT_AL,
-	    "AL\0AX\0EAX\0RAX\0CL\0DX\0 \0 \0SS\0DS\0ES\0FS\0GS\0CS\0ST0\0"));
+      CatPrint(a2_st,"%z",a2-ARGT_AL,
+	    "AL\0AX\0EAX\0RAX\0CL\0DX\0 \0 \0SS\0DS\0ES\0FS\0GS\0CS\0ST0\0");
       break;
     case ARGT_STI:
       ip--;
-      StrCat(a2_st,DefineSub(*ip++ - tempi->opcode[tempi->opcode_cnt-1],"ST_FSTK_REGS"));
+      CatPrint(a2_st,"%Z",*ip++ - tempi->opcode[tempi->opcode_cnt-1],"ST_FSTK_REGS");
       break;
   }
   if (tempi->flags&IEF_ENDING_ZERO)
     ip++;
 
-  if (*a1_st) {
-    StrCat(line1,"\t");
-    StrCat(line1,a1_st);
-  }
-  if (*a2_st) {
-    StrCat(line1,",");
-    StrCat(line1,a2_st);
-  }
-  StrCat(line1,"\n");
-  StrCat(line2,"\n");
+  if (*a1_st)
+    CatPrint(line1,"\t%s",a1_st);
+  if (*a2_st)
+    CatPrint(line1,",%s",a2_st);
+  CatPrint(line1,"\n");
+  CatPrint(line2,"\n");
   if (!just_ins) {
     for (i=ip-(*_ip)(I64);i<6;i++) {
       bin_data_area1[i<<1]=CH_SPACE;
@@ -677,7 +639,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
   }
   StrCpy(buf,line1);
   if (!just_ins && ip-(*_ip)(I64)>6)
-    StrCat(buf,line2);
+    CatPrint(buf,line2);
   *_ip=ip;
 }
 
@@ -688,7 +650,7 @@ U8 *U(U8 *ip,I64 cnt=20,I64 seg_size=64)
   I64 i;
   U8 buf[1024];
   if (seg_size==16)
-    PrintWarn("%S","ST_16BIT_UNASM");
+    PrintWarn("16-bit unassembly is not well supported.\n");
   "$HL,1$";
   for (i=0;i<cnt;i++) {
     Ui(buf,&ip,seg_size);
@@ -704,7 +666,7 @@ I64 Un(U8 *ip,I64 cnt=0x80,I64 seg_size=64)
   I64 i=0;
   U8 buf[1024],*end_ip=ip(I64)+cnt;
   if (seg_size==16)
-    PrintWarn("%S","ST_16BIT_UNASM");
+    PrintWarn("16-bit unassembly is not well supported.\n");
   "$HL,1$";
   while (ip<end_ip) {
     Ui(buf,&ip,seg_size);

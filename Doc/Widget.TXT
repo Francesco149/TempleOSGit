@@ -1,13 +1,13 @@
                                Text-Widget Help
 
-See [C:/Doc/Dollar.TXT,1] for details on dollar sign cmds.
+See [C:/Doc/Dollar.TXT.Z,1] for details on dollar sign cmds.
 
 "Expression" a num or HolyC algebraic term with operators and HolyC syms can 
 be entered.
 "Macro" Most entries can behave like macro entries if you assign them macro 
 strs.
-"AutoStr" Like a macro except it is an [C:/Doc/Glossary.TXT,1] AutoFile.  You
-can't have both an 
+"AutoStr" Like a macro except it is an [C:/Doc/Glossary.TXT.Z,1] AutoFile. 
+You can't have both an 
 autostr and macro text defined.  
 
 Tag Text is the text that will be displayed for the item.  For links, you can 
@@ -29,13 +29,13 @@ Scroll X Length Expression if a value is entered, the text will scroll in an
 area of this width.
 Y Offset Expression if a value is entered, the text will be shifted
 vertically 
-by this many pixels, so you can make superscripts or subscripts.
+by this many pixs, so you can make superscripts or subscripts.
 X Offset Expression if a value is entered, the text will be shifted 
-horizontally by this many pixels.
+horizontally by this many pixs.
 
 Tree The item will behave like a tree widget, with this as the root.
 Collapsed The tree or hidden widget will begin collapsed.
-Define Str will substitute a #define or [C:/TempleOS/Kernel/Str1a.CPP.Z,620]
+Define Str will substitute a #define or [C:/Kernel/Define1a.CPP.Z,1]
 DefineLoad() string for the tag.
 
 Quote Make the result suitable for including in a program, in quotes, 
@@ -55,5 +55,5 @@ Refresh Data  updates $DA$ entry continuously.
 
 Html Link  stores a link which will be embedded if you generate a html
 version 
-of a document with [C:/TempleOS/Adam/ToHtml.CPP.Z,318] ToHtml() or
-[C:/TempleOS/Adam/ToHtml.CPP.Z,127] Doc2Html().
+of a document with [C:/Adam/Utils/ToHtml.CPP.Z,274] ToHtml() or
+[C:/Adam/Utils/ToHtml.CPP.Z,107] Doc2Html().

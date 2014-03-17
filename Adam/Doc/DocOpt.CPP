@@ -6,10 +6,8 @@ I64 DocOptEntry(CDoc *,CDocEntry *doc_e)
   I64 i,result=0;
 
   if (doc_e->flags1&DOCEF1_LINK) {
-    if (doc_e->flags1 & DOCEF1_AUX_STR &&
-	Bt(doc_type_flags_tag,doc_e->type_u8) &&
-	!MemCmp(doc_e->aux_str,"FI:",3) &&
-	!StrCmp(doc_e->aux_str+3,doc_e->tag)) {
+    if (doc_e->flags1 & DOCEF1_AUX_STR && doc_e->flags1 & DOCEF1_TAG &&
+	!MemCmp(doc_e->aux_str,"FI:",3) && !StrCmp(doc_e->aux_str+3,doc_e->tag)) {
       Free(doc_e->aux_str);
       doc_e->aux_str=NULL;
       doc_e->flags1&=~DOCEF1_AUX_STR;
@@ -39,21 +37,13 @@ I64 DocOptEntry(CDoc *,CDocEntry *doc_e)
 	result++;
       }
     }
-    if (Bt(doc_type_flags_tag,doc_e->type_u8)) {
+    if (doc_e->flags1&DOCEF1_TAG) {
       if (st=StrMatch(".Z",doc_e->tag)) {
 	StrCpy(st,st+2);
 	result++;
       }
     }
 */
-  }
-  if (doc_e->type_u8==DOCT_MACRO && doc_e->flags1&DOCEF1_AUX_STR &&
-      doc_e->flags1&DOCEF1_LEFT_MACRO && !StrCmp(doc_e->tag,doc_e->left_macro) ||
-      doc_e->flags1&DOCEF1_RIGHT_MACRO && !StrCmp(doc_e->tag,doc_e->right_macro)) {
-    doc_e->flags1&=~DOCEF1_AUX_STR;
-    Free(doc_e->aux_str);
-    doc_e->aux_str=NULL;
-    result++;
   }
   return result;
 }
@@ -95,7 +85,7 @@ I64 DocOptLst(CDirEntry *tempde)
     tempde1=tempde->next;
     if (tempde->attr & _ATTR_DIR) {
       if (tempde->sub) {
-	"%S %s\n","ST_SCANNING_DIR",tempde->full_name;
+	"Scanning Directory: %s\n",tempde->full_name;
 	result+=DocOptLst(tempde->sub);
       }
     } else

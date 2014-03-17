@@ -134,7 +134,7 @@ It's fucken Planet of the Apes.  Confused nigger is staring in disbelief.
 You must run this program to patch the boot-loader with the LBA block address 
 of my Kernel.BIN and the Kernel.BIN must be contiguous.
 
-[MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall()
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall()
 
 
 Give-up niggers.  I have God's endorsement.  My operating system alone will 
@@ -756,8 +756,8 @@ kneadingtroughs being bound up in their clothes upon their shoulders.
 and they borrowed of the Egyptians jewels of silver
 
 Well, no wonder God hated them Jew-niggers when they complained about manna.  
-[C:/TempleOS/Misc/Bible.TXT.Z,12005] Numbers,11:1   God hated the slave
-generation, waited for them to die before 
+[C:/Misc/Bible.TXT.Z,12005] Numbers,11:1   God hated the slave generation,
+waited for them to die before 
 the promised land. Those silly spiteful fuckers stole silver!  How pathetic
 is 
 that for a Jew to steal silver from the Egyptians?  That's so... God damn 
@@ -1669,13 +1669,13 @@ Tutorial Videos
 
 Game Videos
 
-[C:/Doc/Welcome.TXT,1] Introduction
+[C:/Doc/Welcome.TXT.Z,1] Introduction
 
-[C:/Doc/Mysteries.TXT,1] F.A.Q.
+[C:/Doc/Mysteries.TXT.Z,1] F.A.Q.
 
-[C:/Doc/HelpIndex.TXT,1] TempleOS Help
+[C:/Doc/HelpIndex.TXT.Z,1] TempleOS Help
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
 
 Source Code By Sym      This is source code symbols in alpha order
 
@@ -1683,4 +1683,4 @@ Source Code By Address  This is source code symbols in numeric address order
 
 Source Code (Raw)
 
-[C:/Doc/ChangeLog.TXT,1] Change Log
+[C:/Doc/ChangeLog.TXT.Z,1] Change Log

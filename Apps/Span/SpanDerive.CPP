@@ -36,8 +36,8 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
   }
 
   if (cursor_mass) {
-    p2.x=ipx-task->win_pixel_left-task->win_scroll_x;
-    p2.y=ipy-task->win_pixel_top-task->win_scroll_y;
+    p2.x=ipx-task->pix_left-task->scroll_x;
+    p2.y=ipy-task->pix_top-task->scroll_y;
     p2.z=0;
     D3Sub(&p2,&cursor_mass->state->x,&p);
     d=10.0*D3SqrNorm(&p);

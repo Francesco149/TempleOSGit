@@ -1,4 +1,137 @@
-#help_index "Graphics/DCs"
+#help_index "Graphics/Math/3D Transformation"
+#help_file "::/Doc/Transform"
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+I64 gr_scale=1<<32;
+
+public U0 GrRot(I64 r[4][4],I64 *_x,I64 *_y,I64 *_z)
+{
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+  I64 x1,y1,z1,xx=*_x,yy=*_y,zz=*_z;
+  x1=(r[0][0]*xx+r[0][1]*yy+r[0][2]*zz+r[0][3])>>32;
+  y1=(r[1][0]*xx+r[1][1]*yy+r[1][2]*zz+r[1][3])>>32;
+  z1=(r[2][0]*xx+r[2][1]*yy+r[2][2]*zz+r[2][3])>>32;
+  *_x=x1;*_y=y1;*_z=z1;
+}
+
+public U0 GrTransform(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
+{//This is a callback.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+  GrRot(dc->r,_x,_y,_z);
+  *_x+=dc->x;
+  *_y+=dc->y;
+  *_z+=dc->z;
+}
+
+public I64 *GrIdentNew(CTask *mem_task=NULL)
+{
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+  I64 *r=CAlloc(sizeof(I64)*16,mem_task);
+  r[0] .i32[1]=1;
+  r[5] .i32[1]=1;
+  r[10].i32[1]=1;
+  r[15].i32[1]=1;
+  return r;
+}
+
+public I64 *GrIdentEqu(I64 r[4][4])
+{
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+  MemSet(r,0,sizeof(I64)*16);
+  r[0][0].i32[1]=1;
+  r[1][1].i32[1]=1;
+  r[2][2].i32[1]=1;
+  r[3][3].i32[1]=1;
+  return r;
+}
+
+public U0 GrSetRotMat(CDC *dc=NULL,I64 r[4][4])
+{//NULL means gr_dc
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+// (1.0/Sqrt(3))*65536=37837.22
+  I64 xx=37838,yy=37837,zz=37837;
+  if (!dc)   dc=gr_dc;
+  dc->r=r;
+  GrRot(r,&xx,&yy,&zz);
+  //scaled 32 bits
+  dc->r_norm=Sqrt(xx*xx+yy*yy+zz*zz)*65536;
+}
+
+#help_index "Graphics/Mesh"
+public U0 GrLighting(CDC *dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p3,CColorROPU32 color)
+{//This is a callback.
+  CD3I32 v1,v2;
+  I64 i,vn_x,vn_y,vn_z;
+  F64 d;
+
+  v1.x=p1->x-p2->x;
+  v1.y=p1->y-p2->y;
+  v1.z=p1->z-p2->z;
+
+  v2.x=p3->x-p2->x;
+  v2.y=p3->y-p2->y;
+  v2.z=p3->z-p2->z;
+
+//V1 and V2 are vects along two sides
+//of the tri joined at p2.
+
+  vn_x=v1.y*v2.z-v1.z*v2.y;
+  vn_y=v1.z*v2.x-v1.x*v2.z;
+  vn_z=v1.x*v2.y-v1.y*v2.x;
+  if (d=Sqrt(SqrI64(vn_x)+SqrI64(vn_y)+SqrI64(vn_z)))
+    d=1<<16/d;
+  vn_x*=d;
+  vn_y*=d;
+  vn_z*=d;
+//Vn is the cross product of V1 and V3
+//which means it is perpendicular.  It
+//is the normal vect to the surface.
+//It has been scaled to length 65536.
+
+//Light source has been scaled to length 65536.
+  i=(vn_x*dc->ls.x+vn_y*dc->ls.y+vn_z*dc->ls.z)>>16;
+//The dot product of the light source
+//vect and the surface normal
+//gives an illumination number.
+//65536*65536>>16=65536
+
+//TempleOS will generate a random U16
+//and compare to dither_probability_u16 and
+//will pick from two colors.
+//Probability dithering does not work with pen_width>1 at this time.
+  if (color.c0.rop&ROPBF_TWO_SIDED) {
+    color.c0.rop&=~ROPBF_TWO_SIDED;
+    i=AbsI64(i)<<1;
+  } else
+    i+=65536;
+  if (color.c0.rop&ROPBF_HALF_RANGE_COLOR) {
+    color.c0.rop&=~ROPBF_HALF_RANGE_COLOR;
+    i>>=1;
+    if (color>=8) {
+      color-=8;
+      i+=65536;
+    }
+  }
+  if (i<65536) {
+    dc->color=ROPF_PROBABILITY_DITHER+color<<16+BLACK;
+    dc->dither_probability_u16=i;
+  } else {
+    dc->color=ROPF_PROBABILITY_DITHER+(color^8)<<16+color;
+    dc->dither_probability_u16=i-65536;
+  }
+}
+
+#help_index "Graphics/Device Contexts"
+public U0 DCFill(CDC *dc=NULL,CColorROPU32 val=COLOR_TRANSPARENT)
+{
+  if (!dc) dc=gr_dc;
+  MemSet(dc->body,val,dc->width_internal*dc->height);
+}
+
+public U0 DCClear(CDC *dc=NULL)
+{
+  if (!dc) dc=gr_dc;
+  DCFill(dc,0);
+}
 
 public U0 DCRst(CDC *dc)
 {
@@ -20,8 +153,20 @@ public U0 DCRst(CDC *dc)
   dc->flags&=~(DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR);
 }
 
+public U0 DCExtentsInit(CDC *dc=NULL)
+{//NULL means gr_dc
+//See [C:/Demo/Graphics/Extents.CPP.Z,1]
+//You should clear the record flag yourself
+  if (!dc)   dc=gr_dc;
+  dc->flags|=DCF_RECORD_EXTENTS;
+  dc->min_x=MAX_I64;
+  dc->max_x=MIN_I64;
+  dc->min_y=MAX_I64;
+  dc->max_y=MIN_I64;
+}
+
 public CDC *DCAlias(CDC *dc=NULL,CTask *task=NULL)
-{
+{//NULL means gr_dc
   CDC *result;
   if (!dc)   dc=gr_dc;
   if (!task) task=Fs;
@@ -207,6 +352,7 @@ public CDC *DCLoad(U8 *src,I64 *_size=NULL,CTask *task=NULL)
   return result;
 }
 
+#help_index "Graphics/Device Contexts;Graphics/GRA Files"
 public I64 GRAWrite(U8 *filename,CDC *dc)
 { // TempleOS GRA File
   I64 size;
@@ -230,17 +376,17 @@ public CDC *GRARead(U8 *filename,CTask *task=NULL)
   return dc;
 }
 
-#help_index "Graphics/CSprite;Graphics/DCs;Doc/Output"
-public U0 DocPutGRAFile(CDoc *doc=NULL,U8 *filename)
-{
+#help_index "Graphics/Sprite;Graphics/GRA Files;Doc/Output"
+public U0 DocGRAFile(CDoc *doc=NULL,U8 *filename)
+{//Put a GRA file into a document as a	sprite.
   CDC *dc=GRARead(filename);
   CSprite *elems=DC2Sprite(dc);
-  DocPutSprite(doc,elems);
+  DocSprite(doc,elems);
   Free(elems);
   DCDel(dc);
 }
 
-#help_index "Graphics/DCs;Graphics/Screen"
+#help_index "Graphics/Device Contexts;Graphics/Screen"
 public CDC *DCCaptureScreen(CTask *task=NULL)
 {
   CDC *dc;
@@ -254,6 +400,7 @@ public CDC *DCCaptureScreen(CTask *task=NULL)
   return dc;
 }
 
+#help_index "Graphics/GRA Files;Graphics/Screen"
 public I64 GRACaptureScreen(U8 *filename)
 { // TempleOS GRA File
   I64 size;
@@ -261,16 +408,4 @@ public I64 GRACaptureScreen(U8 *filename)
   size=GRAWrite(filename,dc);
   DCDel(dc);
   return size;
-}
-
-#help_index "Graphics;Graphics/DCs"
-
-public U0 DCExtentsInit(CDC *dc)
-{//See [C:/Demo/Graphics/Extents.CPP,1]
-//You should clear the record flag yourself
-  dc->flags|=DCF_RECORD_EXTENTS;
-  dc->min_x=MAX_I64;
-  dc->max_x=MIN_I64;
-  dc->min_y=MAX_I64;
-  dc->max_y=MIN_I64;
 }

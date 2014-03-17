@@ -1,6 +1,6 @@
 /* There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc
+hold the file until you are done.  The [C:/Kernel/Adam1a.HPP.Z,1401] CDoc
 framework is convenient for this.
 */
 
@@ -11,20 +11,19 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
     tempde1=tempde->next;
     if (tempde->attr & _ATTR_DIR) {
       DocPrint(doc,"$TR,\"\"$");
-      DocPrint(doc,"$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\n\"$\n",
+      DocPrint(doc,"$MA,T=\"%s\",LM=\"Cd(\\\"%s\\\");Dir;\n\"$\n",
       tempde->name,tempde->full_name);
       if (tempde->sub) {
 	DocPrint(doc,"$ID,+2$");
 	TreeSub(doc,tempde->sub);
 	DocPrint(doc,"$ID,-2$");
       }
-    } else {
-      DocPrint(doc,"$LK,\"%s\",\"FI:%s\"$\n",
+    } else
+      DocPrint(doc,"$LK,\"%s\",A=\"FI:%s\"$\n",
 	tempde->name,tempde->full_name);
-    }
     //Note there is also a routine
     //to delete an entire CDirEntry tree.
-    //See [MN:DirLstDel] DirLstDel().
+    //See [C:/Kernel/Dsk/DskDir.CPP.Z,34] DirLstDel().
     DirEntryDel(tempde);
     tempde=tempde1;
   }
@@ -33,17 +32,16 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
 U0 FPrintFDemo(U8 *output_filename=NULL)
 {
   I64 fuf_flags=0;
-  CDoc *doc=DocNew;
+  CDoc *doc=DocNew(output_filename);
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   DocPrint(doc,"$TR-C,\"\"$\n");
   DocPrint(doc,"$ID,+2$");
   TreeSub(doc,FilesFind("/*",fuf_flags));
   DocPrint(doc,"$ID,-2$");
   DocRecalc(doc);
-  if (output_filename) {
-    StrCpy(doc->filename.name,output_filename);
+  if (output_filename)
     DocWrite(doc,FALSE);
-  } else
+  else
     DocWrite(doc,TRUE);
   DocDel(doc);
 }

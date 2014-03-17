@@ -1,59 +1,29 @@
-U0 SetSnap(CSnap *s,I64 i=0,F64 d=0)
+U0 GridInit()
 {
-  if (i) {
-    s->x=i;
-    s->y=i;
-    s->z=i;
-  }
-  if (d) {
-    s->dx=d;
-    s->dy=d;
-    s->dz=d;
-  }
-}
-
-CSnap *SnapCur()
-{
-  static CSnap s;
-  Bool old_preempt=Preempt(OFF);
-  if (sys_focus_task && TaskValidate(sys_focus_task) &&
-      sys_focus_task->win_pixel_left<=ipx_presnap<=sys_focus_task->win_pixel_right &&
-      sys_focus_task->win_pixel_top <=ipy_presnap<=sys_focus_task->win_pixel_bottom)
-    MemCpy(&s,&sys_focus_task->snap,sizeof(CSnap));
-  else
-    SetSnap(&s,1,1.0);
-  Preempt(old_preempt);
-  return &s;
-}
-
-U0 GetSnap(CSnap *_s)
-{
-  CSnap *s=SnapCur;
-  MemCpy(_s,s,sizeof(CSnap));
+  ip_grid.x=ip_grid.y=ip_grid.z=8;
+  ip_grid.x_offset=ip_grid.y_offset=ip_grid.z_offset=0;
+  ip_grid.x_speed =ip_grid.y_speed =ip_grid.z_speed =1;
+  ip_grid.show=ip_grid.snap=FALSE;
 }
 
 U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool c,Bool r)
 {
-  CSnap s;
-  GetSnap(&s);
   ipx_presnap=ToI64(ipx_scale*x)+ipx_offset;
-  ipx=RoundI64(ipx_presnap,s.x);
-  if (sys_focus_task)
-    ipx+=(sys_focus_task->win_pixel_left+sys_focus_task->win_scroll_x)%s.x;
-
   ipy_presnap=ToI64(ipy_scale*y)+ipy_offset;
-  ipy=RoundI64(ipy_presnap,s.y);
-  if (sys_focus_task)
-    ipy+=(sys_focus_task->win_pixel_top+sys_focus_task->win_scroll_y)%s.y;
-
   ipz_presnap=ToI64(ipz_scale*z)+ipz_offset;
-  ipz=RoundI64(ipz_presnap,s.z);
-  if (sys_focus_task)
-    ipz+=sys_focus_task->win_scroll_y%s.z;
+  if (ip_grid.snap) {
+    ipx=Trunc(ipx_presnap/ip_grid.x)*ip_grid.x+ip_grid.x_offset;
+    ipy=Trunc(ipy_presnap/ip_grid.y)*ip_grid.y+ip_grid.y_offset;
+    ipz=Trunc(ipz_presnap/ip_grid.z)*ip_grid.z+ip_grid.z_offset;
+  } else {
+    ipx=ipx_presnap;
+    ipy=ipy_presnap;
+    ipz=ipz_presnap;
+  }
 
-  ipx=LimitI64(ipx,0,gr_width-1);
-  ipy=LimitI64(ipy,0,gr_height-1);
-  ip_throttle=LimitI64(ip_throttle,MIN_I32,MAX_I32);
+  ipx=ClampI64(ipx,0,gr_width-1);
+  ipy=ClampI64(ipy,0,gr_height-1);
+  ip_throttle=ClampI64(ip_throttle,MIN_I32,MAX_I32);
   iptx=ipx/FONT_WIDTH;
   if (iptx>=text_cols) {
     iptx=text_cols-1;
@@ -106,6 +76,7 @@ U0 IPVarsInit()
   ipy=0;
   ipz=0;
   ip_throttle=0;
+  ip_throttle_step=(MAX_I32+1)>>3;
   ipx_offset=0;
   ipy_offset=0;
   ipz_offset=0;
@@ -124,5 +95,5 @@ U0 IPVarsInit()
   ip_rb=FALSE;
   ip_has_wheel=FALSE;
   ip_last_move_time=tS;
-  SetSnap(&ip_snap_last,1,1.0);
+  GridInit;
 }

@@ -1,11 +1,8 @@
-//Change anything you want in this
-//acct file or others.
+OptOn(OPTf_WARN_PAREN);
+OptOn(OPTf_WARN_DUP_TYPES);
 
-//This makes your keyboard fast
 SetTypeMatic(0);
-
-//Set Time Zone
-local_time_offset=-8*60*60*CDATE_FREQ; //Pacific
+local_time_offset=-7*60*60*CDATE_FREQ; //Pacific
 
 //adjust these to set mouse move scale
 mxx_scale=0.5;

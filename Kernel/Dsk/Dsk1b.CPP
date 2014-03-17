@@ -15,8 +15,7 @@ Bool Drv(U8 drv_let)
   CBlkDev *bdev=p->bdev;
   BlkDevChk(bdev);
   if (p!=Fs->cur_prt) {
-    if ( bdev->flags & BDF_REMOVABLE &&
-       !(bdev->flags & BDF_INITIALIZED) )
+    if (bdev->flags & BDF_REMOVABLE && !(bdev->flags & BDF_INITIALIZED))
       ChgDsk(Prt2Drv(p));
     if (bdev->type==BDT_RAM)
       BlkDevInit(bdev);
@@ -30,7 +29,7 @@ Bool Drv(U8 drv_let)
     case PT_ISO9660:
       return TRUE;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
       return FALSE;
   }
 }
@@ -41,16 +40,14 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
   U8 *chg_to_buf,*new_cur_dir,*buf;
   CPrt *p;
   Bool result=TRUE;
-  if (!*dirname) return TRUE;
+  if (!*dirname)
+    return TRUE;
   if (dirname[1]==':') {
     if (*dirname==':') {
-      if (Fs->cur_prt->drv_let!=*sys_acct)
-	if (!Drv(*dirname)) return FALSE;
-    } else {
-      if (Fs->cur_prt!=
-	Drv2Prt(*dirname))
-	  if (!Drv(*dirname)) return FALSE;
-    }
+      if (Fs->cur_prt->drv_let!=*sys_acct && !Drv(*dirname))
+	return FALSE;
+    } else if (Fs->cur_prt!=Drv2Prt(*dirname) && !Drv(*dirname))
+      return FALSE;
     dirname+=2;
   }
   if (*dirname=='/' || !*dirname || !Fs->cur_dir) {
@@ -59,8 +56,7 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
     if (*dirname=='/')
       dirname++;
   }
-  chg_to_buf=MStrUtil(dirname,
-    SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+  chg_to_buf=MStrUtil(dirname,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   maxlen=StrLen(Fs->cur_dir)+1+StrLen(chg_to_buf)+1;
   new_cur_dir=MAlloc(maxlen);
   buf=MAlloc(maxlen);
@@ -93,7 +89,7 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 	    result=ISO1Cd(buf,cur_dir_cluster);
 	    break;
 	  default:
-	    PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	    PrintErr("File System Not Supported\n");
 	    result=FALSE;
 	}
 	if (!result && make_dirs) {
@@ -103,8 +99,8 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 	}
 	if (result) {
 	  if (StrCmp(new_cur_dir,"/"))
-	    StrCat(new_cur_dir,"/");
-	  StrCat(new_cur_dir,buf);
+	    CatPrint(new_cur_dir,"/");
+	  CatPrint(new_cur_dir,buf);
 	}
       }
     }
@@ -137,19 +133,18 @@ U0 FileAccessDel(CFileAccess *fa)
   Free(fa);
 }
 
-CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE)
+CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE,Bool no_mask=FALSE)
 {
   Bool valid=TRUE,old_silent;
   U8 *buf,*mask,*temp_mask;
   CFileAccess *fa=CAlloc(sizeof(CFileAccess));
-  mask=MStrUtil(_mask,
-    SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+  mask=MStrUtil(_mask,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   temp_mask=mask;
   fa->old_dir=StrNew(Fs->cur_dir);
   fa->old_prt=Fs->cur_prt;
   if (*mask && mask[1]==':') {
-    if (Fs->cur_prt!=Drv2Prt(*mask))
-      if (!Drv(*mask)) valid=FALSE;
+    if (Fs->cur_prt!=Drv2Prt(*mask) && !Drv(*mask))
+      valid=FALSE;
     mask+=2;
   }
   if (StrMatch("HOME",mask) && Fs->cur_prt!=Drv2Prt(*sys_acct))
@@ -159,7 +154,10 @@ CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE)
   buf=MAlloc(StrLen(mask)+2);
   StrCpy(buf,mask);
   fa->mask=MAlloc(StrLen(mask)+2);
-  StrLastRem(buf,"/",fa->mask);
+  if (no_mask)
+    *fa->mask=0;
+  else
+    StrLastRem(buf,"/",fa->mask);
   if (*mask=='/' && !*buf)
     StrCpy(buf,"/");
   //If began with Dir, change to Dir.
@@ -195,27 +193,35 @@ CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 {
 /*
 Flags:
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3587] FUF_RECURSE		+r Recurse
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3604] FUF_FLATTEN_TREE	+f **use with '+F'**.  Just use +F, probably.
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS		+D just directories
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES	+F just files (Flattens trees)
-  [MN:FUF_JUST_TXT] FUF_JUST_TXT	+T just text files	: [MN:FILEMASK_TXT] FILEMASK_TXT
-  [MN:FUF_JUST_SRC] FUF_JUST_SRC	+S just src files	: [MN:FILEMASK_SRC] FILEMASK_SRC
-  [MN:FUF_JUST_AOT] FUF_JUST_AOT	+A just aot files	: [MN:FILEMASK_AOT] FILEMASK_AOT
-  [MN:FUF_JUST_JIT] FUF_JUST_JIT	+J just jit files	: [MN:FILEMASK_JIT] FILEMASK_JIT
-  [MN:FUF_JUST_GRA] FUF_JUST_GRA	+G just graphic files	: [MN:FILEMASK_GRA] FILEMASK_GRA
+  [C:/Kernel/Adam1a.HPP.Z,3454] FUF_RECURSE		+r Recurse
+  [C:/Kernel/Adam1a.HPP.Z,3463] FUF_SINGLE		+s Single File (Optimization for one file in mask.)
+  [C:/Kernel/Adam1a.HPP.Z,3474] FUF_FLATTEN_TREE	+f **use with '+F'**.  Just use +F, probably.
+  [C:/Kernel/Adam1a.HPP.Z,3464] FUF_JUST_DIRS		+D just directories
+  [C:/Kernel/Adam1a.HPP.Z,3465] FUF_JUST_FILES	+F just files (Flattens trees)
+  [C:/Kernel/Adam1a.HPP.Z,3472] FUF_CLUSTER_ORDER	+O sort by cluster (move head one direction)
+  [C:/Kernel/Adam1a.HPP.Z,3466] FUF_JUST_TXT	+T just text files	: [C:/Kernel/Adam1a.HPP.Z,2089] FILEMASK_TXT
+  [C:/Kernel/Adam1a.HPP.Z,3467] FUF_JUST_SRC	+S just src files	: [C:/Kernel/Adam1a.HPP.Z,2088] FILEMASK_SRC
+  [C:/Kernel/Adam1a.HPP.Z,3468] FUF_JUST_AOT	+A just aot files	: [C:/Kernel/Adam1a.HPP.Z,2087] FILEMASK_AOT
+  [C:/Kernel/Adam1a.HPP.Z,3469] FUF_JUST_JIT	+J just jit files	: [C:/Kernel/Adam1a.HPP.Z,2086] FILEMASK_JIT
+  [C:/Kernel/Adam1a.HPP.Z,3470] FUF_JUST_GRA	+G just graphic files	: [C:/Kernel/Adam1a.HPP.Z,2090] FILEMASK_GRA
 
-See [C:/TempleOS/Kernel/Define1a.CPP.Z,42] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
+See [C:/Kernel/Define1a.CPP.Z,112] ST_FILE_UTIL_FLAGS when used in calling program taking text flags.
 */
   CDirEntry *result;
   CFileAccess *fa;
   if (fuf_flags&~FUG_FILES_FIND)
     throw('FUF');
-  if (fa=FileAccessNew(files_find_mask,TRUE)) {
+  if (fuf_flags&FUF_SINGLE) {
+    result=MAlloc(sizeof(CDirEntry));
+    if (!FileFind(files_find_mask,result)) {
+      Free(result);
+      return NULL;
+    }
+  } else if (fa=FileAccessNew(files_find_mask,TRUE)) {
     result=SysFilesFind(fa->mask,fuf_flags);
     FileAccessDel(fa);
   } else
-    result=NULL;
+    return NULL;
   return result;
 }
 
@@ -260,10 +266,10 @@ I64 Del(U8 *files_find_mask,Bool print_msg=TRUE)
 	result=FAT32FilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
 	break;
       case PT_ISO9660:
-	PrintErr("%S","ST_NOT_WRITABLE");
+	PrintErr("Not Writable\n");
 	break;
       default:
-	PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	PrintErr("File System Not Supported\n");
     }
     FileAccessDel(fa);
   }
@@ -276,23 +282,16 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
   U8 *absname,*altname,*curname,*result=NULL;
   I64 i,size=0,attr=0;
   CFileAccess *fa;
-  CArcCompress *ac=NULL;
-  if (_attr) *_attr=0;
+  CArcCompress *ac;
   absname=FileNameAbs(filename);
   altname=ToggleZorNotZ(absname);
   if (!raw && ((temph=HashFind(absname,adam_task->hash_table,HTT_FILE))||
 	       (temph=HashFind(altname,adam_task->hash_table,HTT_FILE)))) {
-    if (FileAttr(absname) & _ATTR_COMPRESSED) {
-      ac=temph->user_data0;
-      if (_size) *_size=ac->expanded_size;
-      if (_attr) *_attr=FileAttr(absname,*_attr);
-      result=ExpandBuf(ac);
-    } else {
-      result=MAlloc(temph->user_data1+1);
-      MemCpy(result,temph->user_data0,temph->user_data1);
-      result[temph->user_data1]=0; //Terminate
-      if (_size) *_size=temph->user_data1;
-    }
+    size=temph->user_data1;
+    result=MAlloc(size+1);
+    MemCpy(result,temph->user_data0,size);
+    result[size]=0; //Terminate
+    attr=FileAttr(temph->str,attr);
   } else {
     for (i=0;i<2 && !result;i++) {//Try name, then altname
       if (!i)
@@ -302,16 +301,16 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
       if (fa=FileAccessNew(curname)) {
 	switch (fa->p->type) {
 	  case PT_REDSEA:
-	    result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	    result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
 	    break;
 	  case PT_FAT32:
-	    result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	    result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
 	    break;
 	  case PT_ISO9660:
-	    result=ISO1FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	    result=ISO1FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
 	    break;
 	  default:
-	    PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	    PrintErr("File System Not Supported\n");
 	}
 	FileAccessDel(fa);
       }
@@ -328,16 +327,16 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
 	  Cd("..");
 	  switch (Fs->cur_prt->type) {
 	    case PT_REDSEA:
-	      result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	      result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
 	      break;
 	    case PT_FAT32:
-	      result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	      result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
 	      break;
 	    case PT_ISO9660:
-	      result=ISO1FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr,raw,&ac);
+	      result=ISO1FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
 	      break;
 	    default:
-	      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	      PrintErr("File System Not Supported\n");
 	  }
 	}
 	FileAccessDel(fa);
@@ -345,27 +344,26 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
     }
     if (!result) {
       "%s ",filename;
-      PrintErr("%S","ST_FILE_NOT_FOUND");
+      PrintErr("File not found.\n");
     }
-    if (_size) *_size=size;
-    if (_attr) *_attr=attr;
     if (result && !raw && attr & _ATTR_RESIDENT)
-      HashGenericAdd(curname,HTT_FILE,AMAllocIdentical(ac),size,0,adam_task);
+      HashGenericAdd(curname,HTT_FILE,AMAllocIdentical(result),size,0,adam_task);
+  }
+  if (result && !raw && attr & _ATTR_COMPRESSED) {
+    ac=result;
+    size=ac->expanded_size;
+    result=ExpandBuf(ac);
     Free(ac);
   }
+  if (_attr) *_attr=attr;
+  if (_size) *_size=size;
   Free(absname);
   Free(altname);
   return result;
 }
 
-U8 *TextFileRead(U8 *filename,I64 *_attr=NULL)
-{
-  return FileRead(filename,NULL,_attr);
-}
-
-
 Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
+{ //[C:/Kernel/Adam1a.HPP.Z,3464] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,3465] FUF_JUST_FILES, [C:/Kernel/Adam1a.HPP.Z,3471] FUF_Z_OR_NOT_Z, [C:/Kernel/Adam1a.HPP.Z,3473] FUF_SCAN_PARENTS
   //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;
@@ -398,7 +396,7 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 	  result=ISO1FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	  break;
 	default:
-	  PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	  PrintErr("File System Not Supported\n");
       }
       if (result && _de)
 	full_name=MPrint("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
@@ -426,7 +424,7 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 	     result=ISO1FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	     break;
 	   default:
-	     PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	     PrintErr("File System Not Supported\n");
 	}
       }
       if (result && _de)
@@ -445,74 +443,47 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
   return result;
 }
 
-I64 FileSize(U8 *filename,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
-  CDirEntry de;
-  if (FileFind(filename,&de,fuf_flags)) {
-    Free(de.full_name);
-    return de.size;
-  } else
-    return 0;
-}
-
-I64 FileSizeExpanded(U8 *filename,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
-  U8 buf[BLK_SIZE];
-  CPrt *p;
-  CDirEntry de;
-  if (FileFind(filename,&de,fuf_flags)) {
-    p=Drv2Prt(*de.full_name);
-    Free(de.full_name);
-    if (de.size && FileAttr(de.name) & _ATTR_COMPRESSED) {
-      RBlks(p,buf,Cluster2Blk(p,de.cluster),1);
-      return (&buf)(CArcCompress *)->expanded_size;
-    } else
-      return de.size;
-  } else
-    return 0;
-}
-
 I64 FileWrite(U8 *filename,U8 *fbuf,
    I64 size,CDate cdt=0,I64 attr=0,Bool raw=FALSE)
 {
   I64 c=0;
   CHashGeneric *temph;
   CFileAccess *fa;
-  CArcCompress *ac=NULL;
-  U8 *absname=FileNameAbs(filename);
+  U8 *fbuf2,*absname=FileNameAbs(filename);
   if (fa=FileAccessNew(filename,FALSE,TRUE)) {
+    attr=FileAttr(fa->mask,attr);
+    if (attr&_ATTR_COMPRESSED && !raw) {
+      fbuf=CompressBuf(fbuf,size);
+      size=fbuf(CArcCompress *)->compressed_size;
+      fbuf2=fbuf;
+    } else
+      fbuf2=NULL;
+    if (!cdt) cdt=Now;
     switch (fa->p->type) {
       case PT_REDSEA:
-	c=RedSeaFSFileWrite(fa->p,Fs->cur_dir,fa->mask,
-	  fbuf,size,cdt,attr,raw,&ac);
+	c=RedSeaFSFileWrite(fa->p,Fs->cur_dir,fa->mask,fbuf,size,cdt,attr);
 	break;
       case PT_FAT32:
-	c=FAT32FileWrite(fa->p,Fs->cur_dir,fa->mask,
-	  fbuf,size,cdt,attr,raw,&ac);
+	c=FAT32FileWrite(fa->p,Fs->cur_dir,fa->mask,fbuf,size,cdt,attr);
 	break;
       case PT_ISO9660:
-	PrintErr("%S","ST_NOT_WRITABLE");
+	PrintErr("Not Writable\n");
 	break;
       default:
-	PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	PrintErr("File System Not Supported\n");
     }
     if (temph=HashFind(absname,adam_task->hash_table,HTT_FILE)) {
-      if (!raw && ac && attr & _ATTR_RESIDENT) {
+      if (!raw && attr & _ATTR_RESIDENT) {
 	Free(temph->user_data0);
-	temph->user_data0=AMAllocIdentical(ac);
+	temph->user_data0=AMAllocIdentical(fbuf);
 	temph->user_data1=size;
       } else
 	HashRemDel(temph,adam_task->hash_table);
-    } else if (!raw && ac && attr & _ATTR_RESIDENT)
-      HashGenericAdd(absname,HTT_FILE,AMAllocIdentical(ac),size,0,adam_task);
-    Free(ac);
+    } else if (!raw && attr & _ATTR_RESIDENT)
+      HashGenericAdd(absname,HTT_FILE,AMAllocIdentical(fbuf),size,0,adam_task);
+    Free(fbuf2);
     FileAccessDel(fa);
   }
   Free(absname);
   return c;
-}
-
-U0 TextFileWrite(U8 *filename,U8 *st,I64 attr=0)
-{
-  FileWrite(filename,st,StrLen(st),0,attr);
 }

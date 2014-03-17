@@ -22,11 +22,11 @@ public F64 tM()
 public F64 Beat()
 { //Time in music beats
   F64 result,cur_tM;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (mp_cnt>1)
     while (LBts(&sys_semas[SYS_SEMA_TMBEAT],0))
-      Pause;
+      PAUSE
   cur_tM=tM;
   result=music_last_Beat;
   if (music_tempo)
@@ -34,14 +34,15 @@ public F64 Beat()
   music_last_tM=cur_tM;
   music_last_Beat=result;
   LBtr(&sys_semas[SYS_SEMA_TMBEAT],0);
-  PopFD;
+  POPFD
   return result;
 }
 
 #help_index "Snd/Music"
 U8 *MusicSetOctave(U8 *st)
 {
-  U8 ch=*st++;
+  I64 ch;
+  ch=*st++;
   while ('0'<=ch<='9') {
     music_octave=ch-'0';
     ch=*st++;
@@ -51,7 +52,8 @@ U8 *MusicSetOctave(U8 *st)
 
 U8 *MusicSetMeter(U8 *st)
 {
-  U8 ch=*st++;
+  I64 ch;
+  ch=*st++;
   while (ch=='M') {
     ch=*st++;
     if ('0'<=ch<='9') {
@@ -106,7 +108,7 @@ public U0 Play(U8 *st,U8 *words=NULL)
 
     '(' tie, placed before the note to be extended
 
-  [C:/TempleOS/Adam/Snd/Music.CPP.Z,8] music_meter_top,[C:/TempleOS/Adam/Snd/Music.CPP.Z,9] music_meter_bottom is set with
+  [C:/Adam/Snd/Music.CPP.Z,8] music_meter_top,[C:/Adam/Snd/Music.CPP.Z,9] music_meter_bottom is set with
     "M3/4"
     "M4/4"
     etc.
@@ -196,15 +198,15 @@ U0 MusicSettingsRst()
   music_meter_top=4;
   music_meter_bottom=4;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (mp_cnt>1)
     while (LBts(&sys_semas[SYS_SEMA_TMBEAT],0))
-      Pause;
+      PAUSE
   music_last_tM=tM;
   music_last_Beat=0.0;
   LBtr(&sys_semas[SYS_SEMA_TMBEAT],0);
-  PopFD;
+  POPFD
 }
 
 MusicSettingsRst;

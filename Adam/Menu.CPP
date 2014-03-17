@@ -11,29 +11,31 @@ CTask *MenuTask()
 
 CMenuEntry *sys_cur_submenu_entry=NULL;
 
-public CMenuEntry *MenuSubEntryFind(CMenuEntry *first,U8 *entry_name)
+public CMenuEntry *MenuSubEntryFind(CMenuEntry *haystack_first,U8 *needle_entry_name)
 {
-  while (first) {
-    if (!StrCmp(first->name,entry_name))
-      return first;
-    first=first->next;
+  while (haystack_first) {
+    if (!StrCmp(haystack_first->name,needle_entry_name))
+      return haystack_first;
+    haystack_first=haystack_first->next;
   }
   return NULL;
 }
 
-public CMenuEntry *MenuEntryFind(CMenu *m,U8 *full_name)
+public CMenuEntry *MenuEntryFind(CMenu *haystack_menu,U8 *needle_full_name)
 {
   U8 *st,*st2;
   CMenuEntry *tempse;
-  if (!m || m->mu_signature!=MENU_SIGNATURE_VAL || !full_name)
+  if (!haystack_menu || haystack_menu->mu_signature!=MENU_SIGNATURE_VAL || !needle_full_name)
     return NULL;
-  st=StrNew(full_name);
-  st2=StrNew(full_name);
-  tempse=(&m->sub)(U8 *)-offset(CMenuEntry.sub);
+  st=StrNew(needle_full_name);
+  st2=StrNew(needle_full_name);
+  tempse=(&haystack_menu->sub)(U8 *)-offset(CMenuEntry.sub);
   while (*st && tempse) {
     StrFirstRem(st,"/",st2);
     tempse=MenuSubEntryFind(tempse->sub,st2);
   }
+  Free(st);
+  Free(st2);
   return tempse;
 }
 
@@ -42,9 +44,9 @@ CMenuEntry *MenuNewSub(CLex *lx,CTask *task)
   CMenuEntry *tempme=NULL,*tempse;
   if (lx->token==TK_IDENT) {
     tempme=CAlloc(sizeof(CMenuEntry),task);
-    if (StrLen(lx->ident)>31)
-      lx->ident[31]=0;
-    StrCpy(tempme->name,lx->ident);
+    if (StrLen(lx->cur_str)>31)
+      lx->cur_str[31]=0;
+    StrCpy(tempme->name,lx->cur_str);
     if (Lex(lx)=='(') {
       tempme->msg_code=MSG_KEY_DOWN_UP;
       if (Lex(lx)!=',' && lx->token!=')')
@@ -58,9 +60,9 @@ CMenuEntry *MenuNewSub(CLex *lx,CTask *task)
       if (lx->token!=',' && lx->token!=')')
 	tempme->p2=LexExpression(lx);
       if (lx->token!=')')
-	LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+	LexExcept(lx,"missing ')' at ");
       if (Lex(lx)!=';')
-	LexExcept(lx,"ST_MISSING_SEMICOLON");
+	LexExcept(lx,"missing ';' at");
       Lex(lx); //Skip ;
     } else if (lx->token=='{') {
       Lex(lx); //Skip {
@@ -69,11 +71,11 @@ CMenuEntry *MenuNewSub(CLex *lx,CTask *task)
       while (tempse && lx->token!='}')
 	tempse=tempse->next=MenuNewSub(lx,task);
       if (lx->token!='}')
-	LexExcept(lx,"ST_MISSING_RIGHT_BRACE");
+	LexExcept(lx,"missing '}' at ");
       else
 	Lex(lx); //Skip }
     } else
-      LexExcept(lx,"ST_EXPECTING_LEFT_BRACE");
+      LexExcept(lx,"expecting '{' at ");
   }
   return tempme;
 }

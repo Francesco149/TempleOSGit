@@ -55,7 +55,11 @@ the horses came into the king's house: and there was she slain.
 Draw something, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img004.BMP"
+width="640" height="472" alt="">
+```
 Not sure what that was.
 
 I like elephants.  Do You have a favorite elephant?

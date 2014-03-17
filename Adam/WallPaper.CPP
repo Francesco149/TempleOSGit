@@ -65,7 +65,7 @@ U0 WallPaper(CTask *_task)
 
       j=UnusedStk(task);
       if (j<0)
-	StkOverflow(task);
+	Dbg("Stk Overflow",task);
       if (!(win_updates&63)) {
 	wpd->allocated_u8s=TaskAllocatedMem(task);
 	wpd->used_u8s	  =TaskUsedMem(task);
@@ -149,7 +149,7 @@ fp_wall_paper=&WallPaper;
 U0 DrawTermButton(CDC *dc,CCtrl *c)
 {
   if (Blink)
-    SpritePlot3(dc,c->left,c->top,0,__BIN_1);
+    Sprite3(dc,c->left,c->top,0,__BIN_1);
 }
 
 U0 LeftClickTermButton(CCtrl *,I64,I64,Bool down)
@@ -172,9 +172,9 @@ CCtrl *TermButtonNew()
 
   SpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
   //min must be zero
-  c->left=sys_winmgr_task->win_pixel_width-(max_x-min_x+1);
+  c->left=sys_winmgr_task->pix_width-(max_x-min_x+1);
   c->right=c->left+(max_x-min_x+1)-1;
-  c->top=sys_winmgr_task->win_pixel_height-(max_y-min_y+1);
+  c->top=sys_winmgr_task->pix_height-(max_y-min_y+1);
   c->bottom=c->top+(max_y-min_y+1)-1;
 
   old_preempt=Preempt(OFF);
@@ -196,15 +196,15 @@ gr_empty_sprite=__BIN_2;
 
 /* <4> <4> (image) */
 
-#help_index "Graphics;Input Pointer/Displayed Image"
+#help_index "Graphics/Misc;Input Pointer/Displayed Image"
 public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,Bool closed)
 {
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   dc->color=ROP_EQU;
   if (closed)
-    SpritePlot3(dc,x,y,0,__BIN_3);
+    Sprite3(dc,x,y,0,__BIN_3);
   else
-    SpritePlot3(dc,x,y,0,__BIN_4);
+    Sprite3(dc,x,y,0,__BIN_4);
 }
 fp_draw_grab_input_ptr=&DrawGrabInputPtr;
 

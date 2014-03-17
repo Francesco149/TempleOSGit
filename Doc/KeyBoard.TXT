@@ -3,20 +3,18 @@
 See [Char,1] Char for definition of scan codes.
 
 When you are at the cmd line, editing documents, browsing documentation and 
-help, entering items in forms or in menu's, the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc editor handles keys.  It 
+help, entering items in forms or in menu's, the [C:/Kernel/Adam1a.HPP.Z,1401]
+CDoc editor handles keys.  It 
 allows you to define your own key handlers in a
-[C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() function.  If
-you 
+[C:/Accts/TS/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() function.  If you 
 choose, you can catch most keys, overriding the default handlers.  See 
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1503] DocPutKey().  The following is an
-overview of key allocations.
+[C:/Adam/Doc/DocEd2b.CPP.Z,3] DocPutKey().  The following is an overview of
+key allocations.
 
 ALT-keys and ALT-SHIFT-keys
 
-Free for user cfgurations in your
-[C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() handler, except
-for ALT-BACKSPACE 
+Free for user cfgurations in your [C:/Accts/TS/TAD/Adam3cKeyPlugIns.CPP.Z,11]
+MyPutKey() handler, except for ALT-BACKSPACE 
 (undo).  There are a few examples pre-defined, but you can change them if you 
 wish.
 
@@ -28,11 +26,11 @@ Extended ASCII (3 digit decimal number).
 
 CTRL-ALT-keys and CTRL-ALT-SHIFT-keys
 
-Handled at a system level, NOT by the [C:/TempleOS/Kernel/Adam1a.HPP.Z,1509]
-CDoc editor.  I reserve the right to 
+Handled at a system level, NOT by the [C:/Kernel/Adam1a.HPP.Z,1401] CDoc
+editor.  I reserve the right to 
 allocate these, but in the mean time, you can make your own by assigning 
-handlers to the [C:/TempleOS/Kernel/KGlbls.CPP.Z,51] fp_ctrl_alt_let_cbs[]
-array.  Be aware that they operate in an 
+handlers to the [C:/Kernel/KGlbls.CPP.Z,51] fp_ctrl_alt_let_cbs[] array.  Be
+aware that they operate in an 
 interrupt framework, so they are tricky to use.
 
 
@@ -70,38 +68,35 @@ I reserve the right to allocate to these.  There are not many free.
 
                               Behind the Scenes
 
-The editor mostly stays in a [C:/TempleOS/Kernel/KbdMouse/Message.CPP.Z,139]
-GetKey()/[C:/TempleOS/Kernel/Display.CPP.Z,180] PutKey() loop.  The putkey
-portion is 
+The editor mostly stays in a [C:/Kernel/KbdMouse/Message.CPP.Z,134]
+GetKey()/[C:/Kernel/Display.CPP.Z,180] PutKey() loop.  The putkey portion is 
 where keys are acted-upon.  TempleOS has a chain of putkey handlers in a 
 [Circular Queue,1] Circular Queue with priorities.  The highest priority
 handlers can choose to 
 terminate handling, otherwise, the keys get sent on down the chain.
 
-[C:/TempleOS/Kernel/Display.CPP.Z,254] KeyDevAdd() defines a putkey device
-with a priority.  "Device" might be a 
+[C:/Kernel/Display.CPP.Z,255] KeyDevAdd() defines a putkey device with a
+priority.  "Device" might be a 
 misnomer.  Currently, the following are defined:
 
 Priority    Handler
 ---------- ---------
-0x20000000 [C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey() user
-handler
-0x40000000 [C:/TempleOS/Kernel/Display.CPP.Z,154] AKDInputFilterPutKey() for
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,354] Auto(),
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,384] AutoStr(), and
-[C:/TempleOS/Kernel/TaskCmd.CPP.Z,396] AutoFile() 
+0x20000000 [C:/Accts/TS/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() user handler
+0x40000000 [C:/Kernel/Display.CPP.Z,154] KDInputFilterPutKey() for
+[C:/Kernel/SrvCmd.CPP.Z,491] Auto(), [C:/Kernel/SrvCmd.CPP.Z,472] AutoStr(),
+and [C:/Kernel/SrvCmd.CPP.Z,484] AutoFile() 
 handling.
-0x60000000 [C:/TempleOS/Kernel/Display.CPP.Z,134] AKDRawDisplayPutKey()
-direct to video mem debug output. 
-0x80000000 [C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2206] AKDDocPutKey() standard
-document cmds
+0x60000000 [C:/Kernel/Display.CPP.Z,134] KDRawDisplayPutKey() direct to video
+mem debug output. 
+0x80000000 [C:/Adam/Doc/DocEd2b.CPP.Z,679] KDDocPutKey() standard document
+cmds
 
 Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc.user_put_key and
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc.user_put_s are call back routines
-which offer some 
-neat tricks.  See [C:/Apps/MusicOrgan/JukeBox.CPP,1].  There is a var
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1509] CDoc.user_pu
+[C:/Kernel/Adam1a.HPP.Z,1401] CDoc.user_put_key and
+[C:/Kernel/Adam1a.HPP.Z,1401] CDoc.user_put_s are call back routines which
+offer some 
+neat tricks.  See [C:/Apps/MusicOrgan/JukeBox.CPP.Z,1].  There is a var
+[C:/Kernel/Adam1a.HPP.Z,1401] CDoc.user_pu
 t_data which gets passed to them.

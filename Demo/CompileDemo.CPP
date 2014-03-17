@@ -14,7 +14,7 @@ F64 CompileDemo(U8 *st)
 	result=ToF64(Call(ex));
       else
 	result=Call(ex)(F64);
-      ExpressionBinDel(ex);
+      Free(ex);
     }
     "result=%9.4f\n",result;
     if (lx->token==';')

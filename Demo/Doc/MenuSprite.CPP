@@ -15,13 +15,13 @@ U0 MenuSprite()
     NewLine(1);
 
 //Sprite with flags for left-expression and an exit.
-//See [C:/TempleOS/Adam/Doc/DocPlain.CPP.Z,28] doc_dft_flags1.	Note the %d in the string for the sprite number.
-    PutSprite(__BIN_1,"$LTBLUE$$SP+LE+X,\"50 Hz\",50,%d$");
+//See [C:/Adam/Doc/Doc.CPP.Z,63] doc_dft_flags1.	Note the %d in the string for the sprite number.
+    Sprite(__BIN_1,"$LTBLUE$$SP+X,\"50 Hz\",LE=50,BI=%d$");
 
     NewLine(3);
-    "$MU,\"100 Hz\",100$\n";
-    "$MU,\"200 Hz\",200$\n";
-    "$MU,\"CANCEL\",DOCM_CANCEL$\n";
+    "$MU,\"100 Hz\",LE=100$\n";
+    "$MU,\"200 Hz\",LE=200$\n";
+    "$MU,\"CANCEL\",LE=DOCM_CANCEL$\n";
     i=DocMenuDo(DocPut);
     if (i>0)
       Snd(i);

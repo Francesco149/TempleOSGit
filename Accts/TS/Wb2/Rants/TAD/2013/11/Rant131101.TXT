@@ -711,7 +711,11 @@ like a C64 ROM as the vision.  I wrote a compiler for [C:/Doc/HolyC.TXT.Z,1]
 HolyC.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img000.BMP"
+width="640" height="472" alt="">
+```
  
 It looks like an airport from the air.  No!  It's a C64 logo.
 
@@ -721,12 +725,15 @@ and get responses.
 Just imagine a kid.  If you give him 4-bit colors and He draws an elephant, 
 it's better than 24-bit.  He will feel inadequate with 24-bit, trying to do 
 cylinder  gradients and stuff.
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 Sing a new song to God like I did.
 
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] All the Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] All the Source Code By File
 
 http://virtual-notary.org
 

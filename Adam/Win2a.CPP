@@ -78,38 +78,37 @@ U0 DrawProgressBars(CDC *dc)
   }
 }
 
-Bool win_show_grid=FALSE;
-F64 win_grid_spacing=8.0,
-    win_grid_x_offset=0,
-    win_grid_y_offset=0;
-
 U0 DrawWinGrid(CDC *dc)
 {
   F64 d;
   dc->color=BLACK;
   dc->pen_width=1;
-  for (d=win_grid_x_offset;d<GR_WIDTH;d+=win_grid_spacing)
+  for (d=ip_grid.x_offset;d<GR_WIDTH; d+=ip_grid.x)
     GrLine(dc,d,0,d,GR_HEIGHT-1);
-  for (d=win_grid_y_offset;d<GR_HEIGHT;d+=win_grid_spacing)
+  for (d=ip_grid.y_offset;d<GR_HEIGHT;d+=ip_grid.y)
     GrLine(dc,0,d,GR_WIDTH-1,d);
 }
 
-U0 WinGrid()
+U0 WinGrid(Bool val)
 {
-  win_grid_spacing =PmtF64("Spacing  (%12.5f):",win_grid_spacing,2.0);
-  win_grid_x_offset=PmtF64("X-Offset (%12.5f):",win_grid_x_offset,0.0);
-  win_grid_y_offset=PmtF64("Y-Offset (%12.5f):",win_grid_y_offset,0.0);
-  win_show_grid=TRUE;
+  CGrid last_grid;
+  MemCpy(&last_grid,&ip_grid,sizeof(CGrid));
+  if (!val || PopUpForm(&ip_grid)) {
+    if (!val)
+      GridInit;
+    mxx_prescale*=last_grid.x_speed/ip_grid.x_speed;
+    myy_prescale*=last_grid.y_speed/ip_grid.y_speed;
+    mzz_prescale*=last_grid.z_speed/ip_grid.z_speed;
+  } else
+    MemCpy(&ip_grid,&last_grid,sizeof(CGrid));
 }
-
 U0 CtrlAltG(I64 sc)
 {
   if (sc&SCF_SHIFT)
-    win_show_grid=FALSE;
+    PopUp("WinGrid(FALSE);");
   else
-    PopUp("WinGrid;");
+    PopUp("WinGrid(TRUE);");
 }
-
 SetCtrlAltLetCB('G',&CtrlAltG,"Sys/Grid On or Off");
 
 CTask *ext_ASCII_task;
@@ -121,13 +120,13 @@ U0 ExtendedASCII()
   for (i=0;i<256;i++) {
     if (i>=CH_SHIFT_SPACE && i!=127) {
       if (i==CH_SHIFT_SPACE)
-	DocPrint(doc,"$MU-UL,\"\\37\",%d$",i);
+	DocPrint(doc,"$MU-UL,\"\\37\",LE=%d$",i);
       else if (i=='$')
-	DocPrint(doc,"$MU-UL,\"\\44\",%d$",i);
+	DocPrint(doc,"$MU-UL,\"\\44\",LE=%d$",i);
       else if (i=='\"'||i=='\\')
-	DocPrint(doc,"$MU-UL,\"\\%c\",%d$",i,i);
+	DocPrint(doc,"$MU-UL,\"\\%c\",LE=%d$",i,i);
       else
-	DocPrint(doc,"$MU-UL,\"%c\",%d$",i,i);
+	DocPrint(doc,"$MU-UL,\"%c\",LE=%d$",i,i);
     } else
       DocPrint(doc," ");
     if (i&15==15)
@@ -150,29 +149,29 @@ SetCtrlAltLetCB('A',&CtrlAltA,"Sys/Extended ASCII");
 Bool win_grab_scroll=FALSE,win_grab_scroll_closed=FALSE;
 public U0 WinScrollNull(CTask *task,CD3I64 *s)
 {
-  s->x=task->win_scroll_x;
-  s->y=task->win_scroll_y;
-  s->z=task->win_scroll_z;
-  task->win_scroll_x=0;
-  task->win_scroll_y=0;
-  task->win_scroll_z=0;
+  s->x=task->scroll_x;
+  s->y=task->scroll_y;
+  s->z=task->scroll_z;
+  task->scroll_x=0;
+  task->scroll_y=0;
+  task->scroll_z=0;
 }
 
 public U0 WinScrollRestore(CTask *task,CD3I64 *s)
 {
-  task->win_scroll_x=s->x;
-  task->win_scroll_y=s->y;
-  task->win_scroll_z=s->z;
+  task->scroll_x=s->x;
+  task->scroll_y=s->y;
+  task->scroll_z=s->z;
 }
 
 U0 DrawInputPtr(CDC *dc)
 {
   I64 x,y;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   x=ipx;
   y=ipy;
-  PopFD;
+  POPFD
   if (ip_on && ip_dev!=IP_NULL) {
     if (text_mode)
       gr_text_base[iptx+ipty*TEXT_COLS]^=0x7F00;
@@ -196,7 +195,7 @@ U0 DrawInputPtr(CDC *dc)
 Bool win_show_menu=FALSE;
 U0 WinFinalUpdate(CDC *dc)
 {
-  if (win_show_grid)
+  if (ip_grid.show)
     DrawWinGrid(dc);
   DrawProgressBars(dc);
   if (win_show_menu)
@@ -211,13 +210,11 @@ fp_final_screen_update=&WinFinalUpdate;
 U0 WinIPUpdate()
 {
   I64 dd;
-  F64 temp,temp2;
   Bool set=FALSE;
- 
   if (ip_dev==IP_MOUSE) {
     ip_has_wheel=mouse_has_wheel;
     if (mouse_evt) {
-      ip_throttle+=ipz_scale*(mzz-ipz)*0x10000000;
+      ip_throttle+=ip_throttle_step*SignI64(mzz-ipz);
       IPVarsUpdate(mxx,myy,mzz,mouse_buttons[0],ip_cb,mouse_buttons[1]);
       mouse_evt=FALSE;
       set=TRUE;
@@ -229,16 +226,6 @@ U0 WinIPUpdate()
     if (ip_dev==IP_MOUSE) {
       ip_speed=mouse_speed;
       ip_last_move_time=mouse_evt_time;
-    } else {
-      if (dd=SqrI64(old_ipx_presnap-ipx_presnap)+
-	  SqrI64(old_ipy_presnap-ipy_presnap)) {
-	temp2=tS;
-	temp=temp2-ip_last_move_time;
-	ip_last_move_time=temp2;
-	if (!temp) temp=1;
-	ip_speed=Sqrt(dd)/temp;
-      } else
-	ip_speed=0.0;
     }
   } else
     ip_speed*=0.95;
@@ -247,11 +234,11 @@ U0 WinIPUpdate()
       GrScaleZoom(1.0);
     else {
       dd=(ipx-grsx)*gr_screen_zoom;
-      if (dd<8 || dd>=GR_WIDTH-8)
+      if (!(8<=dd<GR_WIDTH-8))
 	GrScaleZoom(1.0);
       else {
 	dd=(ipy-grsy)*gr_screen_zoom;
-	if (dd<8 || dd>=GR_HEIGHT-8)
+	if (!(8<=dd<GR_HEIGHT-8))
 	  GrScaleZoom(1.0);
       }
     }
@@ -261,8 +248,8 @@ U0 WinIPUpdate()
 CTask *WinRefocus()
 {
   CTask *task;
-  Cli;
-  PushFD;
+  CLI
+  PUSHFD
   task=sys_focus_task;
   if (!task) {
     task=sys_winmgr_task->last_task;
@@ -274,7 +261,7 @@ CTask *WinRefocus()
       task=task->last_task;
     }
   }
-  PopFD;
+  POPFD
   return sys_focus_task;
 }
 
@@ -282,13 +269,13 @@ I64 WinOnTopWindows()
 {
   CTask *task,*task1,*first_moved_fwd=NULL;
   I64 result=0;
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   task=sys_winmgr_task->next_task;
   while (task!=sys_winmgr_task && task!=first_moved_fwd) {
     task1=task->next_task;
     if (!TaskValidate(task)) {
-      PopFD;
+      POPFD
       return result;
     }
     if (Bt(&task->display_flags,DISPLAYf_WIN_ON_TOP) &&
@@ -301,7 +288,7 @@ I64 WinOnTopWindows()
     }
     task=task1;
   }
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -315,10 +302,10 @@ public I64 WinToTop(CTask *task=NULL,Bool update_z_buf=TRUE)
   TaskDerivedValsUpdate(task,FALSE);
   if (!sys_winmgr_task || task==sys_winmgr_task)
     return 0;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (!TaskValidate(task)) {
-    PopFD;
+    POPFD
     return 0;
   }
   if (task!=sys_winmgr_task->last_task) {
@@ -340,7 +327,7 @@ public I64 WinToTop(CTask *task=NULL,Bool update_z_buf=TRUE)
       task->popup_task->parent_task==task)
       result+=WinToTop(task->popup_task,FALSE);
   }
-  PopFD;
+  POPFD
   result+=WinOnTopWindows;
   if (result && update_z_buf)
     WinZBufUpdate;
@@ -350,12 +337,12 @@ ext[EXT_WIN_TO_TOP]=&WinToTop;
 
 public U0 WinFocus(CTask *task=NULL)
 {
-  Cli;
-  PushFD;
+  CLI
+  PUSHFD
   if (!TaskValidate(task)||Bt(&task->win_inhibit,WIf_FOCUS))
     task=WinRefocus;
   WinToTop(sys_focus_task=task);
-  PopFD;
+  POPFD
 }
 ext[EXT_WIN_FOCUS]=&WinFocus;
 
@@ -379,16 +366,16 @@ public Bool SetWinHorz(I64 left,I64 right,CTask *task=NULL)
     else
       left=right;
   }
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   if (task->win_left!=left || task->win_right!=right) {
     task->win_left=left;
     task->win_right=right;
     TaskDerivedValsUpdate(task);
-    PopFD;
+    POPFD
     return TRUE;
   } else {
-    PopFD;
+    POPFD
     return FALSE;
   }
 }
@@ -413,16 +400,16 @@ public Bool SetWinVert(I64 top,I64 bottom,CTask *task=NULL)
     else
       top=bottom;
   }
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   if (task->win_top!=top || task->win_bottom!=bottom) {
     task->win_top=top;
     task->win_bottom=bottom;
     TaskDerivedValsUpdate(task);
-    PopFD;
+    POPFD
     return TRUE;
   } else {
-    PopFD;
+    POPFD
     return FALSE;
   }
 }
@@ -432,8 +419,8 @@ public U0 WinTileHorz()
   CTask *task,*last_task=Fs;
   I64 cnt,c,i,vert_size,no_border;
 
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   task=sys_winmgr_task;
   cnt=0;
   do {
@@ -465,15 +452,15 @@ public U0 WinTileHorz()
     task=task->last_task;
   } while (task!=sys_winmgr_task);
   SetWinVert(last_task->win_top,TEXT_ROWS-2,last_task);
-  PopFD;
+  POPFD
 }
 
 public U0 WinTileVert()
 {
   CTask *task,*last_task=Fs;
   I64 cnt,c,i,horz_size,no_border;
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   task=sys_winmgr_task;
   cnt=0;
   do {
@@ -503,7 +490,7 @@ public U0 WinTileVert()
     task=task->last_task;
   } while (task!=sys_winmgr_task);
   SetWinHorz(last_task->win_left,TEXT_COLS-2,last_task);
-  PopFD;
+  POPFD
 }
 
 
@@ -512,13 +499,13 @@ public U0 WinMax(CTask *task=NULL)
   I64 no_border;
   if (!task) task=Fs;
   if (!TaskValidate(task)) return;
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   no_border=Bt(&task->display_flags,DISPLAYf_NO_BORDER);
   SetWinHorz(1-no_border,TEXT_COLS-2+no_border,task);
   SetWinVert(2-no_border,TEXT_ROWS-2+no_border,task);
   WinToTop(task);
-  PopFD;
+  POPFD
 }
 
 public Bool WinBorder(Bool val=OFF,CTask *task=NULL)
@@ -526,8 +513,8 @@ public Bool WinBorder(Bool val=OFF,CTask *task=NULL)
   Bool old_has_border;
   if (!task) task=Fs;
   if (!TaskValidate(task)) return FALSE;
-  PushFD;
-  Cli; //TODO Multiprocessor safe
+  PUSHFD
+  CLI //TODO Multiprocessor safe
   old_has_border=!Bt(&task->display_flags,DISPLAYf_NO_BORDER);
   if (val) {
     if (!old_has_border) {
@@ -544,7 +531,7 @@ public Bool WinBorder(Bool val=OFF,CTask *task=NULL)
       TaskDerivedValsUpdate(task,FALSE);
     }
   }
-  PopFD;
+  POPFD
   return old_has_border;
 }
 

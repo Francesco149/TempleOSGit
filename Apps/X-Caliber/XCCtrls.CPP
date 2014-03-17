@@ -88,13 +88,13 @@ U0 DrawCtrlPanelCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedCtrlPanelCtrl(CCtrl *c)
 {
   CtrlPanelState *s=c->state;
-  c->left=c->win_task->win_pixel_width-(CTRL_PANEL_SPACING*3+2);
+  c->left=c->win_task->pix_width-(CTRL_PANEL_SPACING*3+2);
   c->right=c->left+CTRL_PANEL_SPACING*3+2;
-  c->top=c->win_task->win_pixel_height-(CTRL_PANEL_SPACING*2+CTRL_PANEL_RANGE+CTRL_PANEL_BUTTON_SIZE);
+  c->top=c->win_task->pix_height-(CTRL_PANEL_SPACING*2+CTRL_PANEL_RANGE+CTRL_PANEL_BUTTON_SIZE);
   c->bottom=c->top+CTRL_PANEL_SPACING*2+CTRL_PANEL_RANGE;
 
-  s->bullet_radius =LimitI64(s->bullet_radius,0,CTRL_PANEL_RANGE-1);
-  s->fuse_time=LimitI64(s->fuse_time,0,CTRL_PANEL_RANGE-1);
+  s->bullet_radius =ClampI64(s->bullet_radius,0,CTRL_PANEL_RANGE-1);
+  s->fuse_time=ClampI64(s->fuse_time,0,CTRL_PANEL_RANGE-1);
 }
 
 U0 LeftClickCtrlPanel(CCtrl *c,I64 x,I64 y,Bool)

@@ -7,11 +7,10 @@ public U0 PressKeyHelp(CTask *task=NULL)
   CTask *old_hash=Fs->hash_table;
   if (!task) task=Fs;
 
-//This feat is a burden in code.
-//It would be nice to lst key
-//cmds for all applications,
-//but it makes the code too ugly.
-//
+/*
+This feature is a burden in code.  It would be nice to lst key
+cmds for all applications, but it makes the code too ugly.
+*/
 task=Fs;
 
   Fs->hash_table=task->hash_table;
@@ -44,21 +43,21 @@ U0 KeyMapCtrlAltFamily()
   p2=SC_DELETE+SCF_CTRL+SCF_ALT;
   st2=ScanCode2KeyName(p2);
   st=SrcEdLink(&Reboot,256);
-  "%20s $LK,\"%s\",\"%s\"$\n",st2,"Sys/Reboot",st;
+  "%20s $LK,\"%s\",A=\"%s\"$\n",st2,"Sys/Reboot",st;
   Free(st);
   Free(st2);
 
   p2=SC_ESC+SCF_CTRL+SCF_ALT;
   st2=ScanCode2KeyName(p2);
   st=SrcEdLink(&SpawnUser,256);
-  "%20s $LK,\"%s\",\"%s\"$\n",st2,"Sys/Spawn New User Task",st;
+  "%20s $LK,\"%s\",A=\"%s\"$\n",st2,"Sys/Spawn New User Task",st;
   Free(st);
   Free(st2);
 
   p2=SC_TAB+SCF_CTRL+SCF_ALT;
   st2=ScanCode2KeyName(p2);
   st=SrcEdLink(&WinToTop,256);
-  "%20s $LK,\"%s\",\"%s\"$\n",st2,"Sys/Switch Focus to Next Task",st;
+  "%20s $LK,\"%s\",A=\"%s\"$\n",st2,"Sys/Switch Focus to Next Task",st;
   Free(st);
   Free(st2);
 
@@ -68,7 +67,7 @@ U0 KeyMapCtrlAltFamily()
       p2=A2ScanCode(i+'a')+SCF_CTRL+SCF_ALT;
       st2=ScanCode2KeyName(p2);
       st=SrcEdLink(fp_ctrl_alt_let_cbs[i],256);
-      "%20s $LK,\"%s\",\"%s\"$\n",st2,ctrl_alt_let_descs[i],st;
+      "%20s $LK,\"%s\",A=\"%s\"$\n",st2,ctrl_alt_let_descs[i],st;
       Free(st);
       Free(st2);
     }
@@ -77,8 +76,8 @@ U0 KeyMapCtrlAltFamily()
 
 I64 KMCompare(U8 *e1,U8 *e2)
 {
-  I64 i;
-  U8 *ee1,*ee2,ch1,ch2;
+  I64 i,ch1,ch2;
+  U8 *ee1,*ee2;
   Bool e1_shift=FALSE,e2_shift=FALSE;
   if (e1) {
     if (e2) {
@@ -155,7 +154,7 @@ U0 KeyMapFamily2(U8 **entries,U8 *family,CTask *task,I64 scf)
       st2=MPrint("%s %s",family,st);
       Free(st);
       st=SrcEdLink(key_handler,256);
-      entries[i]=MPrint("%20s $LK,\"%s\",\"%s\"$\n",
+      entries[i]=MPrint("%20s $LK,\"%s\",A=\"%s\"$\n",
 	  st2,key_desc,st);
       Free(st);
       Free(st2);
@@ -184,12 +183,10 @@ U0 KeyMapFamily(U8 *family,CTask *task,I64 scf)
 public U0 KeyMap(CTask *task=NULL)
 {
   if (!task) task=Fs;
-
-//This feat is a burden in code.
-//It would be nice to lst key
-//cmds for all applications,
-//but it makes the code too ugly.
-//
+/*
+This feature is a burden in code.  It would be nice to lst key
+cmds for all applications, but it makes the code too ugly.
+*/
 task=Fs;
 
   DocMax;
@@ -197,7 +194,7 @@ task=Fs;
   KeyMapFamily("CTRL",task,SCF_CTRL);
   KeyMapFamily("ALT",task,SCF_ALT);
   KeyMapCtrlAltFamily;
-  "\n$MA+A-X+PU,\"Click for help on key pressed\",\"PressKeyHelp(0x%X);\"$\n",task;
+  "\n$MA-X+PU,T=\"Click for help on key pressed\",LM=\"PressKeyHelp(0x%X);\"$\n",task;
 }
 
 public U0 TipOfDay(U8 *tip_file="::/Doc/Tips.TXT")
@@ -214,7 +211,7 @@ public U0 TipOfDay(U8 *tip_file="::/Doc/Tips.TXT")
   if (doc_e->type_u8==DOCT_TEXT && *doc_e->tag=='*') {
     while (doc_e!=doc) {
       if (doc_e->type_u8!=DOCT_ERROR)
-	DocIns(doc2,DocEntryCopy(doc2,doc_e));
+	DocInsEntry(doc2,DocEntryCopy(doc2,doc_e));
       doc_e=doc_e->next;
       if (doc_e->type_u8==DOCT_TEXT && *doc_e->tag=='*')
 	break;
@@ -224,19 +221,3 @@ public U0 TipOfDay(U8 *tip_file="::/Doc/Tips.TXT")
   DocDel(doc2);
   DocDel(doc);
 }
-
-/****
-//This feat is a burden in code.
-//It would be nice to lst key
-//cmds for all applications,
-//but it makes the code too ugly.
-//
-U0 CtrlAltK(I64)
-{
-  U8 buf[136];
-  SPrint(buf,"KeyMap(0x%X);View;",
-    sys_focus_task);
-  PopUp(buf);
-}
-SetCtrlAltLetCB('K',&CtrlAltK,"Sys/Show KeyMap");
-****/

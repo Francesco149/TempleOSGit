@@ -1158,7 +1158,11 @@ If you look at entertainment as money...
 Let's get God to draw.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img024.BMP"
+width="640" height="472" alt="">
+```
 That's Massachusetts.
 
 The radio said they could make faux gras by being nice to geese.
@@ -2083,7 +2087,7 @@ summer fruit.
 
 
  //This is the software interrupt num
-//we will use.  See [C:/TempleOS/Kernel/Adam1a.HPP.Z,428] Software Int's for
+//we will use.  See [C:/Kernel/Adam1a.HPP.Z,339] Software Int's for
 //picking a num.  Nums are subject to change.
 
 #define I_F_UNARY_MINUS	I_USER
@@ -2097,7 +2101,6 @@ F_UNARY_MINUS_INT::
 	FLD	U64 [RSP]
 	FCHS
 	FSTP	U64 [RSP]
-	FWAIT
 	POP	RAX
 	IRET
 
@@ -2108,7 +2111,6 @@ F_UNARY_MINUS_CALL::
 	FLD	U64 [RSP]
 	FCHS
 	FSTP	U64 [RSP]
-	FWAIT
 	POP	RAX
 	RET
 

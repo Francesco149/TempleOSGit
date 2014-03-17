@@ -11,7 +11,7 @@ TempleOS is identity-mapped.  It is not the case that user programs run at
 address zero, like every other operating system.  Applications do not have a 
 standard address map -- their memory for code and data and stack is all over 
 the place because the kernel simply requests memory from the system
-[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().  
+[C:/Kernel/Mem1b.CPP.Z,376] MAlloc().  
 Virtual addresses are set equal to physical addresses.  Therefore, if two 
 applications are running, the kernel must place them at different addresses 
 and they run from different addresses.
@@ -124,7 +124,7 @@ My assembler does not support segments.
 
 The [C:/Adam/Boot/BootHD.CPP.Z,1] Hard Drive Boot Sector loads
 [C:/Kernel/KStart.CPP.Z,1] Kernel.BIN.C and starts execution at 0x7C00 
-in real mode.  You boot the CD, run [MN:MakeOSPrtBootInstall]
+in real mode.  You boot the CD, run [C:/Adam/Boot/InsBoot.CPP.Z,141]
 MakeOSPrtBootInstall() and it installs my 
 boot sector on the first block of the partition.
 
@@ -184,18 +184,18 @@ restricted
 ----09/29/13 06:33:01----
 
 Somebody at WWW.OSDEV.ORG is hacking my files instead of using the CDROM 
-installer which calls [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().  I
-told them that the format of 
+installer which calls [C:/Adam/Boot/InsBoot.CPP.Z,141]
+MakeOSPrtBootInstall().  I told them that the format of 
 my BIN files is flat and includes is a table which specifies which absolute 
 addresses need patching.  My kernel patches itself at start-up.
 
-[C:/TempleOS/Adam/BinRep.CPP.Z,23] BinRep() will dump one of my binary files.
- [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() will load one of my binary 
-files.  The kernel patches itself at start-up
-[C:/TempleOS/Kernel/KStart.CPP.Z,356] SYS_INIT_OS.
+[C:/Adam/Utils/BinRep.CPP.Z,23] BinRep() will dump one of my binary files. 
+[C:/Kernel/Hash1b.CPP.Z,386] Load() will load one of my binary 
+files.  The kernel patches itself at start-up [C:/Kernel/KStart.CPP.Z,284]
+SYS_INIT_OS.
 
-Yes, BIN files have a 16-byte header, [C:/TempleOS/Kernel/Adam1a.HPP.Z,371]
-CBinFile.  There is a patch table after 
+Yes, BIN files have a 16-byte header, [C:/Kernel/Adam1a.HPP.Z,285] CBinFile. 
+There is a patch table after 
 the flat code portion.
 
 God says...
@@ -224,8 +224,8 @@ data
 starting at zero.  All your knowledge of standard address spaces is not 
 applicable.
 
-The FS segment reg points to the current
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask record.
+The FS segment reg points to the current [C:/Kernel/Adam1a.HPP.Z,2879] CTask
+record.
 
 For my own personal version, I mark page zero of memory as not present so
 that 
@@ -307,7 +307,7 @@ Take a look.  Here is all the source code.  You can examine all source files.
  
 You can examine all symbols in alphabetical order or by address order.
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
 
 Source Code By Sym
 
@@ -387,12 +387,10 @@ The first 2-Meg is mapped with 4K, so that it can mark 0xA0000-0xBFFFF as
 write-thru.
 
 The BIN file format I invented has a 16-byte header. 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,371] CBinFile.  The Kernel 
+[C:/Kernel/Adam1a.HPP.Z,285] CBinFile.  The Kernel 
 has this header and is loaded at 0x7C00.  The [C:/Adam/Boot/BootHD.CPP.Z,1]
 Hard Drive Boot Loader JMPs to 
-0x7C00 in real mode after loading it.  [C:/Kernel/BootDefs.HPP.Z,1] Here are
-Boot Definitions you might 
-need.
+0x7C00 in real mode after loading it.
 
 God says...
 en, and the beautiful rod!
@@ -447,8 +445,8 @@ Fucken stupid fucks.
 
 ----09/29/13 10:25:09----
 
-My assembler uses the same [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex() as my
-HolyC compiler.  The assembler's 
+My assembler uses the same [C:/Compiler/Lex.CPP.Z,742] Lex() as my HolyC
+compiler.  The assembler's 
 expressions are, basically, [C:/Doc/HolyC.TXT.Z,1] HolyC, too.
 
 I'm going to order Microsoft and Linux to support RedSea filesystem.  RedSea 
@@ -483,7 +481,7 @@ the cleanness of my hands hath he recompensed me.
 departed from my God.
 
 That was about a Laser Cutter. God's Nostrils.  The laser cutter was about my 
-fancy [C:/Demo/AcctExample/Adam3dKeyPlugIns.CPP.Z,1] FillInMyURL()
+fancy [C:/Demo/AcctExample/Adam3cKeyPlugIns.CPP.Z,1] FillInMyURL()
 ALT-SHIFT-F7 key (lame and stupid-seeming).
 
 ----09/29/13 10:36:21----
@@ -687,11 +685,11 @@ long mode.
 You can use my boot-loaders in place of grub if you like.
 
 
-[C:/Adam/Boot/InsBoot.CPP,1] InsBoot.CPP	Installs and patches boot sects
-[C:/Adam/Boot/BootCD.CPP,1] BootCD.CPP	CD-ROM Boot sect
-[C:/Adam/Boot/BootMHD.CPP,1] BootMHD.CPP	Master HD boot record
-[C:/Adam/Boot/BootMHD2.CPP,1] BootMHD2.CPP	Stage 2 master boot loader
-[C:/Adam/Boot/BootHD.CPP,1] BootHD.CPP	HD partition boot record
+[C:/Adam/Boot/InsBoot.CPP.Z,1] InsBoot.CPP	Installs and patches boot sects
+[C:/Adam/Boot/BootCD.CPP.Z,1] BootCD.CPP	CD-ROM Boot sect
+[C:/Adam/Boot/BootMHD.CPP.Z,1] BootMHD.CPP	Master HD boot record
+[C:/Adam/Boot/BootMHD2.CPP.Z,1] BootMHD2.CPP	Stage 2 master boot loader
+[C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.CPP	HD partition boot record
 
 
 Fucken niggers.  I wrote my own boot-loader, obviously, if I could write my 
@@ -823,8 +821,8 @@ earnest
 
 My [C:/Adam/Boot/BootHD.CPP.Z,1] BootLoader must be installed onto the first
 block of the partition by the 
-command [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().  That command runs
-when you boot my CDROM ISO 
+command [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().  That
+command runs when you boot my CDROM ISO 
 and run the install script.
 
 You have no business loading my Kernel.BIN.  It is none of your business.  
@@ -833,8 +831,8 @@ on the first block.  Every time you change the kernel.bin, you must update
 the 
 boot sector with the block address of the new kernel file.
 
-I made it easy -- when you change the kernel, do [MN:MakeOSPrtBootInstall]
-MakeOSPrtBootInstall().  It 
+I made it easy -- when you change the kernel, do
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().  It 
 compiles everything and modifies to boot sector.
 
 My kernel.bin file starts with a code in EBX telling if it was booted from 

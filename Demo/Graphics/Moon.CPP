@@ -1,7 +1,7 @@
 /*
-[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,5] gr_dc is the persistent layer.  You can access
+[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr_dc is the persistent layer.  You can access
 it directly but two tasks accessing it simultaneously
-with no [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() will screw-up color and stuff.
+with no [C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() will screw-up color and stuff.
 */
 
 U0 Moon()

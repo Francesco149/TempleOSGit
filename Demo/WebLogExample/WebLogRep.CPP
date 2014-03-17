@@ -49,18 +49,18 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
       templg=CAlloc(sizeof(LogStruct));
       try {
 	src=doc_e->tag;
-	templg->ip_num.u8[3]=A2I(src,10,&src);
+	templg->ip_num.u8[3]=A2I64(src,10,&src);
 	if (*src++!='.') throw;
-	templg->ip_num.u8[2]=A2I(src,10,&src);
+	templg->ip_num.u8[2]=A2I64(src,10,&src);
 	if (*src++!='.') throw;
-	templg->ip_num.u8[1]=A2I(src,10,&src);
+	templg->ip_num.u8[1]=A2I64(src,10,&src);
 	if (*src++!='.') throw;
-	templg->ip_num.u8[0]=A2I(src,10,&src);
+	templg->ip_num.u8[0]=A2I64(src,10,&src);
 
 	do if (!*src) throw;
 	while (*src++!='[');
 	MemSet(&ds,0,sizeof(CDateStruct));
-	ds.day_of_mon=A2I(src,10,&src);
+	ds.day_of_mon=A2I64(src,10,&src);
 	if (*src++!='/') throw;
 	src2=src;
 	do if (!*src2) throw;
@@ -68,16 +68,16 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
 	* --src2=0;
 	ds.mon=1+LstMatch(src,mon_lst,LMF_IGNORE_CASE);
 	src=++src2;
-	ds.year=A2I(src,10,&src);
+	ds.year=A2I64(src,10,&src);
 	if (*src++!=':') throw;
-	ds.hour=A2I(src,10,&src);
+	ds.hour=A2I64(src,10,&src);
 	if (*src++!=':') throw;
-	ds.min=A2I(src,10,&src);
+	ds.min=A2I64(src,10,&src);
 	if (*src++!=':') throw;
-	ds.sec=A2I(src,10,&src);
+	ds.sec=A2I64(src,10,&src);
 	templg->datetime=Struct2Date(&ds);
 	if (*src++!=CH_SPACE) throw;
-	i=A2I(src,10,&src);
+	i=A2I64(src,10,&src);
 	templg->datetime-=(i/100+i%100/60.0)*CDATE_FREQ*60*60;
 
 	do if (!*src) throw;
@@ -96,9 +96,9 @@ U0 PrsSingleLogFile(LogStruct *root,U8 *name)
 	  do if (!*src) throw;
 	  while (*src++!='\"');
 
-	  templg->code=A2I(src,10,&src);
+	  templg->code=A2I64(src,10,&src);
 	  if (*src++!=CH_SPACE) throw;
-	  templg->size=A2I(src,10,&src);
+	  templg->size=A2I64(src,10,&src);
 	  if (*src++!=CH_SPACE) throw;
 
 	  if (*src++!='\"') throw;

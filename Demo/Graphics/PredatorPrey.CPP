@@ -27,7 +27,7 @@ U0 Steps(State *s)
 U0 PlotTrajectory(CTask *parent)
 {
   I64 i;
-  CDC *dc=DCAlias(gr_dc,parent);
+  CDC *dc=DCAlias(,parent);
   State s;
 
   MemSet(&s,0,sizeof(State));
@@ -53,7 +53,7 @@ U0 PredatorPrey()
   PopUpOk("This will plot multiple predator-prey\n"
 	"trajectories.  It restarts many times\n"
 	"with different, random, initial populations.\n");
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     DocClear;
     WinMax;

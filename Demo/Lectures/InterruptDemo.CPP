@@ -1,5 +1,5 @@
  //This is the software interrupt num
-//we will use.  See [C:/TempleOS/Kernel/Adam1a.HPP.Z,428] Software Int's for
+//we will use.  See [C:/Kernel/Adam1a.HPP.Z,339] Software Int's for
 //picking a num.  Nums are subject to change.
 
 #define I_F_UNARY_MINUS	I_USER
@@ -13,7 +13,6 @@ F_UNARY_MINUS_INT::
 	FLD	U64 [RSP]
 	FCHS
 	FSTP	U64 [RSP]
-	FWAIT
 	POP	RAX
 	IRET
 
@@ -24,7 +23,6 @@ F_UNARY_MINUS_CALL::
 	FLD	U64 [RSP]
 	FCHS
 	FSTP	U64 [RSP]
-	FWAIT
 	POP	RAX
 	RET
 
@@ -85,8 +83,8 @@ TimeIns;
 
 /*  Program Output
 
-8 Cores 2.660GHz
-Interrupt Cycles:  492.36652
-Call	  Cycles:   22.40882
+6 Cores 3.395GHz
+Interrupt Cycles:  573.98543
+Call	  Cycles:    9.74349
 
 */

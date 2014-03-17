@@ -241,42 +241,12 @@ if (ts_has_cdrom_drv)
 //STD_DISTRO_CDROM_CFG
 `F("STD_DISTRO_CDROM_CFG");View;`
 
-//[C:/Accts/Install/DoItOnce.CPP,1] Install Acct
-
-
-U0 CtrlAltR(I64)
-{
-  static F64 last_time=0;
-  if (tT-last_time>1.0) {
-    last_time=tT;
-    wallpaper_record_on=snd_record=!snd_record;
-  }
-}
-SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd_record");
+//[C:/Accts/Install/DoOnce.CPP.Z,1] Install Acct
 
 Bool frame_grabber_on=FALSE;
-
-public U8 *FileNameNumNext(U8 *files_find_mask,U8 *fmt)
-{
-  CDirEntry *tempde=FilesFind(files_find_mask);
-  U8 *result=MPrint(fmt,FileCnt(tempde));
-  DirLstDel(tempde);
-  return result;
-}
-
-public U0 MyScreenShot(I64 bits=4)
-{
-  U8 *st=FileNameNumNext("::/Temp/ScreenShots/*.BMP.Z","::/Temp/ScreenShots/SCRN%04d.BMP.Z");
-  BMPFileCaptureScreen(st,bits);
-  Free(st);
-  Beep;
-}
-
 #define VIDEO_FRAME_RATE	8
-
 U0 FrameGrabberTask(I64)
 {
-
 /**** TO MAKE MOVIE ****
 
 TempleOS
@@ -293,10 +263,9 @@ Boot Windows
  >ffmpeg -r 8 -i VID%05d.BMP -y Movie.avi
 
 */
-
   I64 frame_num=0;
   U8  buf[136],buf2[136];
-  F64 end_time=tT;
+  F64 end_time=tS;
   Silent(ON);	//no output to screen
   MkDir("::/Temp/ScreenShots");
   while (frame_grabber_on) {
@@ -305,13 +274,13 @@ Boot Windows
     BMPFileCaptureScreen(buf);
     while (TRUE) {
       end_time+=1.0/VIDEO_FRAME_RATE;
-      if (end_time<tT) {
+      if (end_time<tS) {
 	SPrint(buf,"::/Temp/ScreenShots/VID%05d.BMP.Z",frame_num++);
 	Copy(buf2,buf);
       } else
 	break;
     }
-    SleepUntil(sys_jiffies+(end_time-tT)*JIFFY_FREQ);
+    SleepUntil(sys_jiffies+(end_time-tS)*JIFFY_FREQ);
   }
 }
 
@@ -328,8 +297,8 @@ U0 CopyVideo()
 public U0 FrameGrabberToggle()
 {
   static F64 last_time=0;
-  if (tT-last_time>3.0) {
-    last_time=tT;
+  if (tS-last_time>3.0) {
+    last_time=tS;
     if (frame_grabber_on) {
       frame_grabber_on=FALSE;
       Snd(0);
@@ -374,7 +343,7 @@ U0 JukeSongsPut(U8 *dir,I64 start_song,I64 end_song)
   else
     j=3;
   for (i=start_song;tempde && i<end_song;i++) {
-    "$LK+CX,\"%*d) %-*s\",\"FI:%s\"$\n",j,i-start_song+1,len,tempde->name,tempde->full_name;
+    "$LK+CX,\"%*d) %-*s\",A=\"FI:%s\"$\n",j,i-start_song+1,len,tempde->name,tempde->full_name;
     tempde=tempde->next;
   }
 
@@ -391,12 +360,6 @@ public U0 JukeLines(I64 start_line,I64 end_line)
     FrameGrabberToggle;
   JukeSongsPut("::/Apps/MusicOrgan/Examples",start_line*5,end_line*5);
 }
-
-U0 CtrlAltS(I64)
-{
-  Spawn(&MyScreenShot,4);
-}
-SetCtrlAltLetCB('S',&CtrlAltS,"Cmd/Screen Shot");
 
 public U0 ChkAll()
 {

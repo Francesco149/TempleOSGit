@@ -20,8 +20,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=RED;
   GrLineRect4(dc,box_x_min,box_y_min,box_x_max,box_y_max);
 
-  x=LimitI64(ipx-task->win_pixel_left-task->win_scroll_x,box_x_min,box_x_max);
-  y=LimitI64(ipy-task->win_pixel_top-task->win_scroll_y, box_y_min,box_y_max);
+  x=ClampI64(ipx-task->pix_left-task->scroll_x,box_x_min,box_x_max);
+  y=ClampI64(ipy-task->pix_top-task->scroll_y, box_y_min,box_y_max);
   dx=bow_x-x;
   dy=bow_y-y;
 
@@ -62,12 +62,12 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->pen_width=1;
 
   if (bow_drawn)
-    SpritePlotRotZ3B(dc,x,y,0,__BIN_1,bow_theta);
+    SpriteZ3B(dc,x,y,0,__BIN_1,bow_theta);
 
   tempa=root.next;
   while (tempa!=&root) {
     theta=Arg(tempa->dx,tempa->dy);
-    SpritePlotRotZ3B(dc,tempa->x,tempa->y,0,__BIN_1,theta);
+    SpriteZ3B(dc,tempa->x,tempa->y,0,__BIN_1,theta);
     tempa=tempa->next;
   }
 }
@@ -78,15 +78,15 @@ U0 AnimateTask(I64)
 {
   I64 x,y;
   Arrow *tempa,*tempa1;
-  F64 dt,t0=tT;
+  F64 dt,t0=tS;
   while (TRUE) {
-    dt=tT-t0;
-    t0=tT;
+    dt=tS-t0;
+    t0=tS;
  
-    x=LimitI64(ipx-Fs->parent_task->win_pixel_left-Fs->parent_task->win_scroll_x,
-       box_x_min,box_x_max)+Fs->parent_task->win_pixel_left+Fs->parent_task->win_scroll_x;
-    y=LimitI64(ipy-Fs->parent_task->win_pixel_top-Fs->parent_task->win_scroll_y,
-       box_y_min,box_y_max)+Fs->parent_task->win_pixel_top+Fs->parent_task->win_scroll_y;
+    x=ClampI64(ipx-Fs->parent_task->pix_left-Fs->parent_task->scroll_x,
+       box_x_min,box_x_max)+Fs->parent_task->pix_left+Fs->parent_task->scroll_x;
+    y=ClampI64(ipy-Fs->parent_task->pix_top-Fs->parent_task->scroll_y,
+       box_y_min,box_y_max)+Fs->parent_task->pix_top+Fs->parent_task->scroll_y;
     if (ipx!=x || ipy!=y)
       SetIP(x,y);
 
@@ -95,8 +95,8 @@ U0 AnimateTask(I64)
       tempa1=tempa->next;
       tempa->x+=tempa->dx*dt;
       tempa->y+=tempa->dy*dt;
-      if (!(-Fs->parent_task->win_scroll_x<=tempa->x<Fs->parent_task->win_pixel_width-Fs->parent_task->win_scroll_x) ||
-	  !(-Fs->parent_task->win_scroll_y<=tempa->y<Fs->parent_task->win_pixel_height-Fs->parent_task->win_scroll_y)) {
+      if (!(-Fs->parent_task->scroll_x<=tempa->x<Fs->parent_task->pix_width-Fs->parent_task->scroll_x) ||
+	  !(-Fs->parent_task->scroll_y<=tempa->y<Fs->parent_task->pix_height-Fs->parent_task->scroll_y)) {
 	QueRem(tempa);
 	Free(tempa);
       }
@@ -108,8 +108,8 @@ U0 AnimateTask(I64)
 
 U0 Init()
 {
-  I64 w=Fs->win_pixel_width,
-      h=Fs->win_pixel_height;
+  I64 w=Fs->pix_width,
+      h=Fs->pix_height;
   QueInit(&root);
   bow_drawn=FALSE;
   box_x_min=7*w/16;
@@ -119,8 +119,8 @@ U0 Init()
   bow_theta=-pi/2;
   bow_x=(box_x_min+box_x_max)/2;
   bow_y=(box_y_min+box_y_max)/2;
-  SetIP(bow_x+Fs->win_pixel_left+Fs->win_scroll_x,
-	bow_y+Fs->win_pixel_top+Fs->win_scroll_y);
+  SetIP(bow_x+Fs->pix_left+Fs->scroll_x,
+	bow_y+Fs->pix_top+Fs->scroll_y);
 }
 
 U0 CleanUp()
@@ -141,7 +141,7 @@ U0 Zing()
     "  Restart(,'\n');"
     "}"
   );
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
   WinBorder;
   WinMax;
@@ -156,7 +156,7 @@ U0 Zing()
   Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_GRAB_SCROLL;
   try {
-    while (TRUE) {
+    while (TRUE)
       switch (GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP)) {
 	case MSG_KEY_DOWN:
 	  switch (p1) {
@@ -187,7 +187,6 @@ U0 Zing()
 	  bow_drawn=FALSE;
 	  break;
       }
-    }
 zi_done:
     GetMsg(,,1<<MSG_KEY_UP);
   } catch

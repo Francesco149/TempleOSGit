@@ -10,7 +10,7 @@ documentation.
 
 
 DefineLoad("COMPANY","Trivial Solutions");
-"Company: $TX+D,\"\",\"COMPANY\"$\n";
+"Company: $TX,\"\",D=\"COMPANY\"$\n";
 
 DefinePrint("COMPANY_TIME","%T",Now);
 
@@ -21,5 +21,5 @@ DefinePrint("COMPANY_TIME","%T",Now);
 };
 
 
-"Age : $TX+D,\"\",\"COMPANY_AGE\"$ years\n";
-"Time: $TX+D,\"\",\"COMPANY_TIME\"$\n";
+"Age : $TX,\"\",D=\"COMPANY_AGE\"$ years\n";
+"Time: $TX,\"\",D=\"COMPANY_TIME\"$\n";

@@ -12,8 +12,8 @@ a hash.  A better hash is sum with a bit shift.
 
 So, I have 3 redundant techniques for dealing with imports in my kernel 
 module.  I use function-pointers, I use HolyC function imports and I have an 
-array called [C:/TempleOS/Kernel/Adam1b.HPP.Z,295] ext[] with function
-pointers that can be called from ASM.  The 
+array called [C:/Kernel/Adam1b.HPP.Z,281] ext[] with function pointers that
+can be called from ASM.  The 
 function-pointers can be check for NULL and not-called.  I am thinking of 
 making HolyC imports call an empty function if used before they are defined.  
 I can point them to an empty function, when I get around to it.
@@ -70,8 +70,8 @@ before a fall, humility before honors.
 
 Jacob, in the Bible was a cook.
 
-[C:/TempleOS/Misc/Bible.TXT.Z,76684] Malachi,1:1 demanded unblemished
-offerings for God's temple.
+[C:/Misc/Bible.TXT.Z,76684] Malachi,1:1 demanded unblemished offerings for
+God's temple.
 
 I thought Gordon Ramsay might be a good CEO for God's temple.
 

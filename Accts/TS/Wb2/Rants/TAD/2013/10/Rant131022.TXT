@@ -58,7 +58,11 @@ not escape.
 
 You wanna do some art, God? (Christ is laughing)
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img029.BMP"
+width="640" height="472" alt="">
+```
 
 God says...
 prepare equably cutting play student unteach none earnestness beareth
@@ -98,10 +102,18 @@ greater is he that is in you, than he that is in the world.
 
 ----10/22/13 09:16:45----
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img030.BMP"
+width="640" height="472" alt="">
+```
 
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img031.BMP"
+width="640" height="472" alt="">
+```
 
 God says...
 grow custom suppress enjoinest thinks fit discussed weaken Helper beholds 
@@ -362,22 +374,23 @@ War Pigs
 Hand of God has struck the hour.
 
 In my disk code, [C:/Kernel/Dsk/DskATA.CPP.Z,1] you'll find
-[C:/TempleOS/Kernel/Scheduler.CPP.Z,369] Yield()-->[MN:_YIELD] _YIELD.
+[C:/Kernel/Scheduler.CPP.Z,345] Yield()-->[C:/Kernel/Scheduler.CPP.Z,167]
+_YIELD.
 
 ----10/22/13 16:57:43----
 
 Guy hates C
 
 That guy is directly attacking me.  My stack doesn't grow, so I use heap for 
-most things.  My [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc() is fast.  I
-don't have size limits on my strings and 
+most things.  My [C:/Kernel/Mem1b.CPP.Z,376] MAlloc() is fast.  I don't have
+size limits on my strings and 
 stuff, which is better.  If you have multiusers, you'd want limits.  I detest 
 size limits.  With modern code, you should never hit a limit.
 
 Stack is faster, true.
 
-You lie, however, about [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc().  It's
-wonderful and your language is just a 
+You lie, however, about [C:/Kernel/Mem1b.CPP.Z,376] MAlloc().  It's wonderful
+and your language is just a 
 clusterfuck made by some good-for-nothing liberal who was proud of heart and 
 wanted to make it simpler for niggers, but just made an abomination.
 

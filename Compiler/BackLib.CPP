@@ -7,7 +7,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1664] CICArg.  RAX is the most common reg
+[C:/Kernel/Adam1a.HPP.Z,1542] CICArg.  RAX is the most common reg
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -19,166 +19,78 @@ sign or zero extended to 64-bits.
 
 U0 ICU8(CIntermediateCode *tempi,U8 b)
 {
-  if (tempi->ic_cnt>=IC_BODY_SIZE-1|| tempi->ic_ext_body) {
-    if (!tempi->ic_ext_body) {
-      tempi->ic_ext_body=MAlloc(256);
-      MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-    }
-    tempi->ic_ext_body[tempi->ic_cnt++]=b;
-  } else
-    tempi->ic_body[tempi->ic_cnt++]=b;
+  tempi->ic_body[tempi->ic_cnt++]=b;
 }
 
 U0 ICRex(CIntermediateCode *tempi,U8 b)
 {
-  if (b) {
-    if (tempi->ic_cnt>=IC_BODY_SIZE-1|| tempi->ic_ext_body) {
-      if (!tempi->ic_ext_body) {
-	tempi->ic_ext_body=MAlloc(256);
-	MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-      }
-      tempi->ic_ext_body[tempi->ic_cnt++]=b;
-    } else
-      tempi->ic_body[tempi->ic_cnt++]=b;
-  }
+  if (b)
+    tempi->ic_body[tempi->ic_cnt++]=b;
 }
 
 U0 ICOpSizeRex(CIntermediateCode *tempi,U8 b)
 {
-  if (!b) {
-    if (tempi->ic_cnt>=IC_BODY_SIZE-1|| tempi->ic_ext_body) {
-      if (!tempi->ic_ext_body) {
-	tempi->ic_ext_body=MAlloc(256);
-	MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-      }
-      tempi->ic_ext_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
-    } else
-      tempi->ic_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
-  } else {
-    if (tempi->ic_cnt>=IC_BODY_SIZE-2|| tempi->ic_ext_body) {
-      if (!tempi->ic_ext_body) {
-	tempi->ic_ext_body=MAlloc(256);
-	MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-      }
-      tempi->ic_ext_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
-      tempi->ic_ext_body[tempi->ic_cnt++]=b;
-    } else {
-      tempi->ic_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
-      tempi->ic_body[tempi->ic_cnt++]=b;
-    }
-  }
+  tempi->ic_body[tempi->ic_cnt++]=OC_OP_SIZE_PREFIX;
+  if (b)
+    tempi->ic_body[tempi->ic_cnt++]=b;
 }
 
 U0 ICU16(CIntermediateCode *tempi,U16 w)
 {
-  if (tempi->ic_cnt>=IC_BODY_SIZE-2|| tempi->ic_ext_body) {
-    if (!tempi->ic_ext_body) {
-      tempi->ic_ext_body=MAlloc(256);
-      MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-    }
-    tempi->ic_ext_body[tempi->ic_cnt++]=w.u8[0];
-    tempi->ic_ext_body[tempi->ic_cnt++]=w.u8[1];
-  } else {
-    tempi->ic_body[tempi->ic_cnt++]=w.u8[0];
-    tempi->ic_body[tempi->ic_cnt++]=w.u8[1];
-  }
+  *(&tempi->ic_body[tempi->ic_cnt])(U16)=w;
+  tempi->ic_cnt+=2;
 }
 
 U0 ICU24(CIntermediateCode *tempi,U32 d)
-{
-  if (tempi->ic_cnt>=IC_BODY_SIZE-3|| tempi->ic_ext_body) {
-    if (!tempi->ic_ext_body) {
-      tempi->ic_ext_body=MAlloc(256);
-      MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-    }
-    tempi->ic_ext_body[tempi->ic_cnt++]=d.u8[0];
-    tempi->ic_ext_body[tempi->ic_cnt++]=d.u8[1];
-    tempi->ic_ext_body[tempi->ic_cnt++]=d.u8[2];
-  } else {
-    tempi->ic_body[tempi->ic_cnt++]=d.u8[0];
-    tempi->ic_body[tempi->ic_cnt++]=d.u8[1];
-    tempi->ic_body[tempi->ic_cnt++]=d.u8[2];
-  }
+{//Writes extra harmless overhanging byte.
+  *(&tempi->ic_body[tempi->ic_cnt])(U32)=d;
+  tempi->ic_cnt+=3;
 }
 
 U0 ICU32(CIntermediateCode *tempi,U32 d)
 {
-  U32 *_d;
-  if (tempi->ic_cnt>=IC_BODY_SIZE-4|| tempi->ic_ext_body) {
-    if (!tempi->ic_ext_body) {
-      tempi->ic_ext_body=MAlloc(256);
-      MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-    }
-    _d=&tempi->ic_ext_body[tempi->ic_cnt];
-  } else {
-    _d=&tempi->ic_body[tempi->ic_cnt];
-  }
-  *_d=d;
+  *(&tempi->ic_body[tempi->ic_cnt])(U32)=d;
   tempi->ic_cnt+=4;
 }
 
-U0 ICU64(CIntermediateCode *tempi,I64 q)
+U0 ICU64(CIntermediateCode *tempi,U64 q)
 {
-  I64 *_q;
-  if (tempi->ic_cnt>=IC_BODY_SIZE-8 || tempi->ic_ext_body) {
-    if (!tempi->ic_ext_body) {
-      tempi->ic_ext_body=MAlloc(256);
-      MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-    }
-    _q=&tempi->ic_ext_body[tempi->ic_cnt];
-  } else
-    _q=&tempi->ic_body[tempi->ic_cnt];
-  *_q=q;
+  *(&tempi->ic_body[tempi->ic_cnt])(U64)=q;
   tempi->ic_cnt+=8;
 }
 
-Bool ICLastIns(CIntermediateCode *tempi,CIntermediateCode **_tempi1,U8 **_body)
+CIntermediateCode *ICLastIns(CIntermediateCode *tempi)
 {
-  CIntermediateCode *tempil1;
-  if (tempi->ic_last_cnt>=0) {
-    if (tempi->ic_ext_body)
-      *_body=tempi->ic_ext_body;
-    else
-      *_body=tempi->ic_body;
-    *_tempi1=tempi;
-    return TRUE;
-  } else {
-    if (!tempi->ic_cnt &&
-      (tempil1=OptLag1(tempi)) && tempil1->ic_last_cnt>=0) {
-      if (tempil1->ic_ext_body)
-	*_body=tempil1->ic_ext_body;
-      else
-	*_body=tempil1->ic_body;
-      *_tempi1=tempil1;
-      return TRUE;
-    } else {
-      *_body=NULL;
-      *_tempi1=NULL;
-      return FALSE;
-    }
-  }
+  if (tempi->ic_last_cnt>=0)
+    return tempi;
+  else if (!tempi->ic_cnt &&(tempi=OptLag1(tempi)) && tempi->ic_last_cnt>=0)
+    return tempi;
+  else
+    return NULL;
 }
-
 
 U0 ICAddRSP(CIntermediateCode *tempi,I64 i,Bool optimize=TRUE)
 {
   I64 j,last_cnt;
-  U8 *body;
   CIntermediateCode *tempil1;
-  if (optimize && ICLastIns(tempi,&tempil1,&body)) {
+  if (optimize && (tempil1=ICLastIns(tempi))) {
     j=tempil1->ic_cnt;
-    if (tempil1->ic_last_cnt==j-4 && body[j-3]==0x83 && body[j-4]==0x48) {
-      if (body[j-2]==0xEC)
-	j=-body[j-1](I8);
-      else if (body[j-2]==0xC4)
-	j=body[j-1](I8);
+    if (tempil1->ic_last_cnt==j-4 &&
+	tempil1->ic_body[j-3]==0x83 &&
+	tempil1->ic_body[j-4]==0x48) {
+      if (tempil1->ic_body[j-2]==0xEC)
+	j=-tempil1->ic_body[j-1](I8);
+      else if (tempil1->ic_body[j-2]==0xC4)
+	j=tempil1->ic_body[j-1](I8);
       else
 	j=0;
-    } else if (tempil1->ic_last_cnt==j-7 && body[j-6]==0x81 && body[j-7]==0x48) {
-      if (body[j-5]==0xEC)
-	j=-body[j-4](I32);
-      else if (body[j-5]==0xC4)
-	j=body[j-4](I32);
+    } else if (tempil1->ic_last_cnt==j-7 &&
+	tempil1->ic_body[j-6]==0x81 &&
+	tempil1->ic_body[j-7]==0x48) {
+      if (tempil1->ic_body[j-5]==0xEC)
+	j=-tempil1->ic_body[j-4](I32);
+      else if (tempil1->ic_body[j-5]==0xC4)
+	j=tempil1->ic_body[j-4](I32);
       else
 	j=0;
     } else
@@ -536,7 +448,6 @@ U0 ICMov(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 t2,I64 r2,I64 d2,I64 
 {
   I64 i,j,last_cnt=tempi->ic_cnt;
   CIntermediateCode *tempil1;
-  U8 *body;
   Bool old_lock=Btr(&tempi->ic_flags,ICf_LOCK);
   switch (t1>>4) {
     case TY_REG>>4:
@@ -599,14 +510,14 @@ U0 ICMov(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,I64 t2,I64 r2,I64 d2,I64 
 	  goto move_done;
 	if (t2&TY_MASK==TY_REG) {
 	  t2=TY_REG+RT_I64;
-	  if (ICLastIns(tempi,&tempil1,&body)) {
+	  if (tempil1=ICLastIns(tempi)) {
 	    i=tempil1->ic_cnt;
 	    j=0x48+(r1>7);
 	    if (r2>7) j+=4;
 	    if (tempil1->ic_last_cnt==i-3 &&
-		body[i-2]==0x8B &&
-		body[i-1]==0xC0+r1&7+(r2&7)<<3 &&
-		body[i-3]==j ) {
+		tempil1->ic_body[i-2]==0x8B &&
+		tempil1->ic_body[i-1]==0xC0+r1&7+(r2&7)<<3 &&
+		tempil1->ic_body[i-3]==j ) {
 	      goto move_done;
 	    }
 	  }

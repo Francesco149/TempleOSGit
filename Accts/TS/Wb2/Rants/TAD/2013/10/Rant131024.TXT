@@ -48,7 +48,11 @@ military is good for minorities.  They have had minority generals.  The
 charisma of a leader is important.
 
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img037.BMP"
+width="640" height="472" alt="">
+```
 Is that Germany on a map?  Merkel is upset about spying.  I didn't do 
 anything.  God spies.
 
@@ -76,7 +80,11 @@ rejected sacrifices skin Perverseness Seeing Anon face lord Hereupon commands
 
 Do another picture, God!
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img038.BMP"
+width="640" height="472" alt="">
+```
 I think that's an airport.
 
 ----10/24/13 05:43:45----
@@ -86,7 +94,11 @@ I wish we had the game Elite.
 What game do You want, God?
 
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img039.BMP"
+width="640" height="472" alt="">
+```
 A bird!  That's fantastic.
 
 You want a good [C:/Demo/Games/EagleDive.CPP.Z,1] Eagle Dive?
@@ -204,7 +216,11 @@ comprehend twenty Etext recesses believes longer instructest
 Do a picture!  How about a Mona Lisa?
 
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img040.BMP"
+width="640" height="472" alt="">
+```
 Dud
 
 I'll do a poem.
@@ -475,8 +491,8 @@ the field, let him likewise not return back.
 I have a firm limit of 100,000 lines of code.  I wanted to not be volunteers.
  
 To this point I wrote all of it.  Now, however, I will accept improvements 
-that stay with-in the 100,000 limit.  It is at  lines of code.  This is not a 
-resource limit in any way.
+that stay with-in the 100,000 limit.  It is at 81,488 lines of code.  This is 
+not a resource limit in any way.
 
 ----10/24/13 21:00:40----
 
@@ -484,7 +500,10 @@ I have a good way to explain why God wants 640x480 16 color.  Suppose you are
 making a game with an elephant.  If I gave you 24-bits of color, you would 
 have to make a gradient for all the cylinders in this drawing:
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 By giving you just 4-bits of color, you have a good excuse for making a
 ghetto 

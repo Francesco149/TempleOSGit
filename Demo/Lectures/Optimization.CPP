@@ -80,24 +80,24 @@ F64 t0;
 CPURep;
 
 "Bad Code\n";
-t0=tT;
+t0=tS;
 i=Loop1;
-"Result:%d Time:%9.6f\n",i,tT-t0;
+"Result:%d Time:%9.6f\n",i,tS-t0;
 
 "Good Code #1\n";
-t0=tT;
+t0=tS;
 i=Loop2;
-"Result:%d Time:%9.6f\n",i,tT-t0;
+"Result:%d Time:%9.6f\n",i,tS-t0;
 
 "Good Code #2\n";
-t0=tT;
+t0=tS;
 i=Loop3;
-"Result:%d Time:%9.6f\n",i,tT-t0;
+"Result:%d Time:%9.6f\n",i,tS-t0;
 
 "Good Code #3\n";
-t0=tT;
+t0=tS;
 i=Loop4;
-"Result:%d Time:%9.6f\n",i,tT-t0;
+"Result:%d Time:%9.6f\n",i,tS-t0;
 
 
 /*  Program Output

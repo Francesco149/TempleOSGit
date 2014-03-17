@@ -1,6 +1,6 @@
 #help_index "Misc/Accts"
 
-//This is temporary until defined in [C:/TempleOS/Accts/TAD/Adam3fSys.CPP,1].
+//This is temporary until defined in [C:/Accts/TS/TAD/Adam3eSys.CPP,1].
 U0 UserStartUp()
 { //Run each time a user a spawned
   DocTermNew;
@@ -11,7 +11,7 @@ U0 UserStartUp()
   Preempt(ON);
 }
 
-//This is temporary until defined in [C:/TempleOS/Accts/TAD/Adam3fSys.CPP,1].
+//This is temporary until defined in [C:/Accts/TS/TAD/Adam3eSys.CPP,1].
 U0 SrvStartUp()
 { //Run each time a srv task is spawned.
   DocTermNew;
@@ -27,15 +27,15 @@ U8 *PopUpSysAcct()
   CDoc *doc=DocNew;
   CDirEntry	*tempde=FilesFind("/Accts/*",FUF_RECURSE|FUF_JUST_DIRS|FUF_FLATTEN_TREE),
 		*tempde1=tempde;
-  DocPrint(doc,"$CM+CX-LE,8$");
-  DocPutSprite(doc,<1>,"$SP+SIF,\"\",%d$");
-  DocPrint(doc,"$CM+LX,0,14$Select Account.\nCursor down and press <SPACE BAR>.\n");
+  DocPrint(doc,"$CM+CX-LE,10$");
+  DocSprite(doc,__BIN_1,"$SP+SIF,\"\",BI=%d$");
+  DocPrint(doc,"$CM+LX,0,12$Select Account.\nCursor down and press <SPACE BAR>.\n");
   while (tempde) {
     if (*tempde->name!='.') {
       st=tempde->full_name;
       if (!StrNCmp(st+2,"/Accts/",7))
 	st+=9;
-      DocPrint(doc,"$CM+LX,2,3$$BT,\"%s\",%d$",st,tempde);
+      DocPrint(doc,"$CM+LX,2,3$$BT,\"%s\",LE=%d$",st,tempde);
     }
     tempde=tempde->next;
   }
@@ -126,22 +126,30 @@ public Bool AcctRegWriteBranch(U8 *path,U8 *fmt,...)
   return result;
 }
  
-U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
-{ //You're not supposed to make system pop-up flags, only me.
+public Bool OneTimePopUp(U8 *_flags,I64 flag_num,U8 *msg)
+{ // See [C:/Apps/X-Caliber/X-Caliber.CPP.Z,1].
+  Bool result=FALSE;
   CDoc *doc=DocNew;
   CDocEntry *doc_e;
-  if (!Bt(sys_msg_flags,flag_num)) {
+  if (!Bt(_flags,flag_num)) {
     if (msg) DocPrint(doc,"%s",msg);
-    doc_e=DocPrint(doc,"\n$CB+LE,\"Do not show this msg again.\",1$");
-    DocPrint(doc,"$CM+CX,0,4$$BT,\"OKAY\",1$\n");
+    doc_e=DocPrint(doc,"\n$CB,\"Do not show this msg again.\",LE=1$");
+    DocPrint(doc,"$CM+CX,0,4$$BT,\"OKAY\",LE=1$\n");
     if (PopUpMenu(doc)==1 && doc_e->flags1&DOCEF1_CHECKED_COLLAPSED) {
-      LBts(sys_msg_flags,flag_num);
-      AcctRegWriteBranch("Adam/SysMsgFlags",
-	"sys_msg_flags[0]=0x%X;\n",
-	sys_msg_flags[0]);
+      LBts(_flags,flag_num);
+      result=TRUE;
     }
     DocDel(doc);
   }
+  return result;
+}
+
+U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
+{ //You're not supposed to make system pop-up flags, only me.
+  if (OneTimePopUp(sys_msg_flags,flag_num,msg))
+    AcctRegWriteBranch("Adam/SysMsgFlags",
+	"sys_msg_flags[0]=0x%X;\n",
+	sys_msg_flags[0]);
 }
 
 U0 RegistryInit()

@@ -43,8 +43,8 @@ U0 UpdateDerivedTempoCtrl(CCtrl *c)
   TempoState *s=c->state;
   c->right=c->left+TEMPO_SPACING*3+2;
   c->bottom=c->top+TEMPO_SPACING*2+TEMPO_RANGE;
-  s->tempo =LimitI64(s->tempo,0,TEMPO_RANGE-1);
-  s->stacatto=LimitI64(s->stacatto,0,TEMPO_RANGE-1);
+  s->tempo =ClampI64(s->tempo,0,TEMPO_RANGE-1);
+  s->stacatto=ClampI64(s->stacatto,0,TEMPO_RANGE-1);
 }
 
 U0 LeftClickTempo(CCtrl *c,I64 x,I64 y,Bool)

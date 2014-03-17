@@ -4,14 +4,14 @@
 
 
 I64 PopUpFreq()
-{ //See also [C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,617] PopUpRangeI64()
+{ //See also [C:/Adam/Doc/DocPopUp.CPP.Z,643] PopUpRangeI64()
   I64 i;
   CDoc *doc=DocNew;
   DocPrint(doc,"$TX+CX,\"Set Freq\"$\n" //Centered text
-	"$CM+LX,2,4$$BT,\"100 Hz\",100$"
-	"$CM+LX,18,0$$BT,\"200 Hz\",200$"
-	"$CM+LX,2,4$$BT,\"400 Hz\",400$"
-	"$CM+LX,18,0$$BT,\"800 Hz\",800$\n");
+	"$CM+LX,2,4$$BT,\"100 Hz\",LE=100$"
+	"$CM+LX,18,0$$BT,\"200 Hz\",LE=200$"
+	"$CM+LX,2,4$$BT,\"400 Hz\",LE=400$"
+	"$CM+LX,18,0$$BT,\"800 Hz\",LE=800$\n");
   i=PopUpMenu(doc);
   if (i<0) i=0; // <SHIFT-ESC>
   DocDel(doc);
@@ -37,12 +37,12 @@ U0 MenuButton()
     "$LM,8$"; //Set left margin
 //These are buttons that return a val from a menu selection.
     if (!j)
-      "\n$BT,\"Snd On\",MU_SND_ON$\n\n\n";
+      "\n$BT,\"Snd On\",LE=MU_SND_ON$\n\n\n";
     else
-      "\n$BT,\"Snd Off\",MU_SND_OFF$\n\n\n";
-    "\n$BT,\"Set Freq\",MU_SET_FREQ$\n\n\n"
-    "\n$BT,\"Nothing\",MU_NOTHING$\n\n\n"
-    "\n$BT,\"Done\",DOCM_CANCEL$\n\n\n";
+      "\n$BT,\"Snd Off\",LE=MU_SND_OFF$\n\n\n";
+    "\n$BT,\"Set Freq\",LE=MU_SET_FREQ$\n\n\n"
+    "\n$BT,\"Nothing\",LE=MU_NOTHING$\n\n\n"
+    "\n$BT,\"Done\",LE=DOCM_CANCEL$\n\n\n";
     i=DocMenuDo(DocPut);
     DocBottom;
     switch (i) {

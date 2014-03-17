@@ -25,20 +25,19 @@ U0 SrvCtrlInit(CSrvCtrl *ctrl)
 U0 TaskRstAwaitingMsg(CTask *task=NULL)
 { //Pop-ups get parent messages so wake-up our pop-ups if we got a msg.
   if (!task) task=Fs;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   do {
     if (TaskValidate(task))
       LBtr(&task->task_flags,TASKf_AWAITING_MSG);
     else
       break;
   } while (task=task->popup_task);
-  PopFD;
+  POPFD
 }
 
-CSrvCmd *TaskExeStrQue(CTask *srv,CTask *master,
-		     U8 *data,I64 flags)
-{
+CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags)
+{//This queues a request to compile and execute text.
   CSrvCmd *result;
   if (!data || !TaskValidate(srv) ||
       master && !TaskValidate(master) ||
@@ -51,12 +50,12 @@ CSrvCmd *TaskExeStrQue(CTask *srv,CTask *master,
   result->aux_str=AStrNew(data);
   result->ctrl=&srv->srv_ctrl;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&srv->srv_ctrl.flags,SVCRf_LOCKED))
-    Pause;
+    PAUSE
   if (!TaskValidate(srv)) {
-    PopFD;
+    POPFD
     SrvCmdDel(result);
     return NULL;
   } else {
@@ -69,11 +68,11 @@ CSrvCmd *TaskExeStrQue(CTask *srv,CTask *master,
       Yield;
     }
   }
-  PopFD;
+  POPFD
   return result;
 }
 
-CSrvCmd *TaskTextInputQue(CTask *srv,CTask *master,
+CSrvCmd *TaskText(CTask *srv,CTask *master,
 		     U8 *data,I64 flags)
 {
   CSrvCmd *result;
@@ -91,24 +90,24 @@ CSrvCmd *TaskTextInputQue(CTask *srv,CTask *master,
   result->flags=flags;
   result->aux_str=AStrNew(data);
 
-  PushFD;
+  PUSHFD
   task=srv->last_input_filter_task;
   if (Bt(&flags,SVCf_HIGHEST_PRIORITY) || task==srv) {
     if (task!=srv)
       TaskWait(srv);
     task=Spawn(&InputFilterTask,NULL,"Input Filter",,srv);
-    Cli;
+    CLI
     task->next_input_filter_task=srv->next_input_filter_task;
     task->last_input_filter_task=srv;
     srv->next_input_filter_task=task;
     task->next_input_filter_task->last_input_filter_task=task;
   } else {
-    Cli;
+    CLI
     task=srv->next_input_filter_task;
   }
   result->ctrl=&task->srv_ctrl;
   while (LBts(&task->srv_ctrl.flags,SVCRf_LOCKED))
-    Pause;
+    PAUSE
   if (!TaskValidate(task)) {
     SrvCmdDel(result);
     result=NULL;
@@ -118,12 +117,12 @@ CSrvCmd *TaskTextInputQue(CTask *srv,CTask *master,
     QueIns(result,task->srv_ctrl.last_waiting);
     LBtr(&task->srv_ctrl.flags,SVCRf_LOCKED);
   }
-  PopFD;
+  POPFD
   Preempt(old_preempt);
   return result;
 }
 
-CSrvCmd *TaskMsgQue(CTask *_srv,CTask *master,
+CSrvCmd *TaskMsg(CTask *_srv,CTask *master,
 		     I64 msg_code,I64 p1,I64 p2,I64 flags)
 {
   CSrvCmd *tempc1,*tempc;
@@ -139,21 +138,21 @@ CSrvCmd *TaskMsgQue(CTask *_srv,CTask *master,
   tempc->aux1=p1;
   tempc->aux2=p2;
   tempc->flags=flags;
-  PushFD;
+  PUSHFD
   if (Bt(&sys_semas[SYS_SEMA_RECORD_MACRO],0) &&
       srv!=sys_macro_util_task &&
       msg_code==MSG_KEY_DOWN) {
     tempc1=AMAllocIdentical(tempc);
-    Cli;
+    CLI
     QueIns(tempc1,sys_macro_root.last);
   }
-  Cli;
+  CLI
   while (Bt(&srv->task_flags,TASKf_FILTER_INPUT) &&
       !Bt(&flags,SVCf_DONT_FILTER))
     srv=srv->next_input_filter_task;
   tempc->ctrl=&srv->srv_ctrl;
   while (LBts(&srv->srv_ctrl.flags,SVCRf_LOCKED))
-    Pause;
+    PAUSE
   if (!TaskValidate(srv)) {
     SrvCmdDel(tempc);
     tempc=NULL;
@@ -163,9 +162,9 @@ CSrvCmd *TaskMsgQue(CTask *_srv,CTask *master,
     QueIns(tempc,srv->srv_ctrl.last_waiting);
     LBtr(&srv->srv_ctrl.flags,SVCRf_LOCKED);
   }
-  PopFD;
+  POPFD
   if (msg_code<0) //Down-Up
-    TaskMsgQue(_srv,master,-msg_code+1,p1,p2,flags);
+    TaskMsg(_srv,master,-msg_code+1,p1,p2,flags);
   return tempc;
 }
 
@@ -178,17 +177,17 @@ Bool ScanResult(CSrvCmd *rqst=NULL,I64 *_result=NULL)
       ctrl=&Fs->srv_ctrl;
     else
       ctrl=rqst->ctrl;
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     while (LBts(&ctrl->flags,SVCRf_LOCKED))
-      Pause;
+      PAUSE
     tempc1=&ctrl->next_done;
     tempc=tempc1->next;
     while (tempc!=tempc1) {
       if (!rqst || rqst==tempc) {
 	QueRem(tempc);
 	LBtr(&ctrl->flags,SVCRf_LOCKED);
-	PopFD;
+	POPFD
 	if (_result)
 	  *_result=tempc->result;
 	SrvCmdDel(tempc);
@@ -197,7 +196,7 @@ Bool ScanResult(CSrvCmd *rqst=NULL,I64 *_result=NULL)
       tempc=tempc->next;
     }
     LBtr(&ctrl->flags,SVCRf_LOCKED);
-    PopFD;
+    POPFD
   }
   if (_result)
     *_result=0;
@@ -227,13 +226,13 @@ I64 GetResult(CSrvCmd *rqst=NULL)
 }
 
 U0 TaskWait(CTask *task=NULL)
-{
+{//Wait for idle
   CTask *task1;
   CSrvCmd *tempc1;
   if (!task) task=Fs;
   if (TaskValidate(task)) {
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     while (TRUE) {
       task1=task->last_input_filter_task;
       tempc1=&task1->srv_ctrl.next_waiting;
@@ -242,7 +241,7 @@ U0 TaskWait(CTask *task=NULL)
 	break;
       Yield;
     }
-    PopFD;
+    POPFD
   }
 }
 
@@ -250,10 +249,10 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,I64 flags=0)
 {
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
-      TaskMsgQue(task->last_input_filter_task,NULL,msg_code,p1,p2,
+      TaskMsg(task->last_input_filter_task,NULL,msg_code,p1,p2,
 	  flags|1<<SVCf_DONT_FILTER);
     else
-      TaskMsgQue(task,NULL,msg_code,p1,p2,flags);
+      TaskMsg(task,NULL,msg_code,p1,p2,flags);
   }
 }
 
@@ -289,9 +288,9 @@ I64 SrvCmdRun(CSrvCmd *tempc,I64 old_flags)
       tempc->servant_cpu_num=Gs->num;
       LBtr(&ctrl->flags,SVCRf_LOCKED);
       if (tempc->aux_str)
-	tempc->spawned_task=Spawn(tempc->add,tempc->fun_arg,tempc->aux_str,,tempc->aux1,tempc->aux2,tempc->flags);
+	tempc->spawned_task=Spawn(tempc->addr,tempc->fun_arg,tempc->aux_str,,tempc->aux1,tempc->aux2,tempc->flags);
       else
-	tempc->spawned_task=Spawn(tempc->add,tempc->fun_arg,"Unnamed",,tempc->aux1,tempc->aux2,tempc->flags);
+	tempc->spawned_task=Spawn(tempc->addr,tempc->fun_arg,"Unnamed",,tempc->aux1,tempc->aux2,tempc->flags);
       break;
     case SVCT_CALL:
       QueRem(tempc);
@@ -301,7 +300,7 @@ I64 SrvCmdRun(CSrvCmd *tempc,I64 old_flags)
       SetRFlags(old_flags);
       LBtr(&Fs->task_flags,TASKf_IDLE);
       try
-	tempc->result=(*tempc->add)(tempc->fun_arg);
+	tempc->result=(*tempc->addr)(tempc->fun_arg);
       catch
 	Fs->catch_except=TRUE;
       SetRFlags(old_flags);
@@ -325,9 +324,9 @@ I64 SrvCmdRun(CSrvCmd *tempc,I64 old_flags)
   if (result) {
     if (master=tempc->master_task) {
       if (!Bt(&flags,SVCf_FREE_ON_COMPLETE)) {
-	Cli;
+	CLI
 	while (LBts(&master->srv_ctrl.flags,SVCRf_LOCKED))
-	  Pause;
+	  PAUSE
 	QueIns(tempc,master->srv_ctrl.last_done);
 	LBts(&tempc->flags,SVCf_DONE);
 	LBtr(&master->srv_ctrl.flags,SVCRf_LOCKED);
@@ -342,7 +341,7 @@ I64 SrvCmdRun(CSrvCmd *tempc,I64 old_flags)
     if (Bt(&flags,SVCf_FREE_ON_COMPLETE))
       SrvCmdDel(tempc);
     else if (!master) {
-      Cli;
+      CLI
       while (LBts(&ctrl->flags,SVCRf_LOCKED))
 	Yield;
       QueIns(tempc,ctrl->last_done);
@@ -361,9 +360,9 @@ I64 SrvCmdsHandler(CTask *task=NULL)
   CSrvCmd *tempc,*tempc1;
   if (!task) task=Fs;
   while (TRUE) {
-    Cli;
+    CLI
     while (LBts(&task->srv_ctrl.flags,SVCRf_LOCKED))
-      Pause;
+      PAUSE
     tempc1=&task->srv_ctrl.next_waiting;
     tempc=tempc1->next;
     if (tempc==tempc1)
@@ -394,7 +393,7 @@ I64 SrvUser(U8 *fmt,...)
   CSrvCmd *tempc;
   CTask *task=Spawn(&SrvUserCmdLine,NULL,"Servant",,Fs);
   Fs->popup_task=task;
-  tempc=TaskExeStrQue(task,Fs,buf,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+  tempc=TaskExe(task,Fs,buf,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
   ScanResult(tempc,&result);
   Fs->popup_task=NULL;
   Kill(task,FALSE);
@@ -411,11 +410,11 @@ I64 Adam(U8 *fmt,...)
   Bool old_preempt=Preempt(OFF);
   CSrvCmd *tempc;
   if (Fs==adam_task) {
-    tempc=TaskExeStrQue(adam_task,Fs,buf,0);
+    tempc=TaskExe(adam_task,Fs,buf,0);
     SrvCmdsHandler;
   } else {
     TaskWait(adam_task);
-    tempc=TaskExeStrQue(adam_task,Fs,buf,1<<SVCf_WAKE_MASTER);
+    tempc=TaskExe(adam_task,Fs,buf,1<<SVCf_WAKE_MASTER);
   }
   Preempt(old_preempt);
   ScanResult(tempc,&result);
@@ -440,7 +439,7 @@ U0 AdamErr(U8 *fmt,...)
 //displayed as red and blinking.
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv),
-     *st=MPrint("%S%s","ST_ERR",buf);
+     *st=MPrint(ST_ERR_ST "%s",buf);
   if (Fs==adam_task)
     "%s",st;
   else if (!IsSingleUser)
@@ -455,7 +454,7 @@ U0 XTalk(CTask *task,U8 *fmt,...)
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv),*st=AStrNew(buf),
      *st2=MPrint("\"%%s\",%d;Free(%d);",st,st);
-  TaskTextInputQue(task,0,st2,0);
+  TaskText(task,0,st2,0);
   Free(st2);
   Free(buf);
 }
@@ -464,7 +463,7 @@ U0 XTalkWait(CTask *task,U8 *fmt,...)
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv),*st=AStrNew(buf),
      *st2=MPrint("\"%%s\",%d;Free(%d);",st,st);
-  TaskTextInputQue(task,0,st2,0);
+  TaskText(task,0,st2,0);
   Free(st2);
   Free(buf);
   TaskWait(task);
@@ -478,7 +477,7 @@ U0 AutoStr(U8 *fmt,...)
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK))
     ExePrint("%s",buf);
   else
-    TaskTextInputQue(Fs,0,buf,1<<SVCf_HIGHEST_PRIORITY);
+    TaskText(Fs,0,buf,1<<SVCf_HIGHEST_PRIORITY);
   Free(buf);
 }
 
@@ -502,14 +501,14 @@ U0 Auto(U8 *fmt,...)
 U0 XTalkStr(CTask *task,U8 *fmt,...)
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
-  TaskTextInputQue(task,0,buf,0);
+  TaskText(task,0,buf,0);
   Free(buf);
 }
 
 U0 XTalkStrWait(CTask *task,U8 *fmt,...)
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
-  TaskTextInputQue(task,0,buf,0);
+  TaskText(task,0,buf,0);
   Free(buf);
   TaskWait(task);
 }

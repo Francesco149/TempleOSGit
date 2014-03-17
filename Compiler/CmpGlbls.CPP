@@ -1,10 +1,10 @@
 CHashTable *asm_hash;
-Bool is_first_compiler,cmp_do_not_write_to_dsk;
+Bool cmp_do_not_write_to_dsk;
 CHashClass *sys_internal_types[RT_NUM_IT];
 CIntermediateCode opt_nop;
 
 U32 *dual_U16_tokens1,*dual_U16_tokens2,*dual_U16_tokens3;
-U32 *binary_ops_table,*unary_ops_table;
+U32 *binary_ops_table;
 U8 *cmp_arg_cnt,*cmp_result_cnt;
 U8 *ic_bitmap_deref,*ic_bitmap_assign,*ic_bitmap_not_const,*ic_bitmap_cmp,*ic_bitmap_fpop;
 I64 num_stk_temps,num_reg_vars,num_non_ptr_vars;

@@ -188,7 +188,7 @@ I64 FAT32ChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
 
   errs+=FAT32ChkDskLst(p,FilesFind(files_find_mask,FUF_RECURSE),bits,bits2,size,bpc);
 
-  bits2[1]=0; //See [C:/TempleOS/Kernel/Dsk/FileSysFAT.CPP.Z,64] FAT32Fmt()
+  bits2[1]=0; //See [C:/Kernel/Dsk/FileSysFAT.CPP.Z,64] FAT32Fmt()
   for (i=1;i<size;i++)
     if (bits2[i]) {
       PrintWarn("Shouldn't Alloc Cluster:%0X\n",i);
@@ -217,7 +217,7 @@ public I64 ChkDsk(U8 drv_let=0,Bool fix=FALSE,Bool confirm=TRUE)
       errs=FAT32ChkDsk(drv_let,&fix,&confirm);
       break;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
   }
   if (errs) {
     if (fix)

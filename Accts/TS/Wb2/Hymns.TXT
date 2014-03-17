@@ -2,7 +2,11 @@
 
                Download Hymn Player/Maker for Windows (6.99MB)
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/1okW1RTPZ7Q" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #1
 [C:/Apps/MusicOrgan/Examples/abiding.CPP.Z,1]  1) Abiding       
 [C:/Apps/MusicOrgan/Examples/abyss.CPP.Z,1]  2) Abyss         
@@ -16,7 +20,11 @@
 [C:/Apps/MusicOrgan/Examples/born.CPP.Z,1] 10) Born          
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/2sIHcAM5fs0" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #2
 [C:/Apps/MusicOrgan/Examples/childish.CPP.Z,1]  1) Childish     
 [C:/Apps/MusicOrgan/Examples/compassions.CPP.Z,1]  2) Compassions  
@@ -30,7 +38,11 @@
 [C:/Apps/MusicOrgan/Examples/doing.CPP.Z,1] 10) Doing        
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/z4BWEktDV1E" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #3
 [C:/Apps/MusicOrgan/Examples/downfall.CPP.Z,1]  1) Downfall  
 [C:/Apps/MusicOrgan/Examples/dream.CPP.Z,1]  2) Dream     
@@ -44,7 +56,11 @@
 [C:/Apps/MusicOrgan/Examples/expedition.CPP.Z,1] 10) Expedition
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/B-Ocw0IzmKA" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #4
 [C:/Apps/MusicOrgan/Examples/fairness.CPP.Z,1]  1) Fairness 
 [C:/Apps/MusicOrgan/Examples/feigned.CPP.Z,1]  2) Feigned  
@@ -58,7 +74,11 @@
 [C:/Apps/MusicOrgan/Examples/freaks.CPP.Z,1] 10) Freaks   
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/JvNKaXIQn04" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #5
 [C:/Apps/MusicOrgan/Examples/free.CPP.Z,1]  1) Free      
 [C:/Apps/MusicOrgan/Examples/furnishing.CPP.Z,1]  2) Furnishing
@@ -72,7 +92,11 @@
 [C:/Apps/MusicOrgan/Examples/josh.CPP.Z,1] 10) Josh      
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/VUci7odbmbg" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #6
 [C:/Apps/MusicOrgan/Examples/keeping.CPP.Z,1]  1) Keeping 
 [C:/Apps/MusicOrgan/Examples/kept.CPP.Z,1]  2) Kept    
@@ -86,7 +110,11 @@
 [C:/Apps/MusicOrgan/Examples/partake.CPP.Z,1] 10) Partake 
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/u9DERJDljeU" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #7
 [C:/Apps/MusicOrgan/Examples/permitted.CPP.Z,1]  1) Permitted 
 [C:/Apps/MusicOrgan/Examples/personal.CPP.Z,1]  2) Personal  
@@ -100,7 +128,11 @@
 [C:/Apps/MusicOrgan/Examples/reliance.CPP.Z,1] 10) Reliance  
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/kEuqcR-iNZ8" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #8
 [C:/Apps/MusicOrgan/Examples/reposes.CPP.Z,1]  1) Reposes     
 [C:/Apps/MusicOrgan/Examples/restless.CPP.Z,1]  2) Restless    
@@ -114,7 +146,11 @@
 [C:/Apps/MusicOrgan/Examples/silver.CPP.Z,1] 10) Silver      
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/8ZAZNb8exjc" frameborder="0"
+allowfullscreen></iframe>
+```
                                    Hymns #9
 [C:/Apps/MusicOrgan/Examples/small.CPP.Z,1]  1) Small    
 [C:/Apps/MusicOrgan/Examples/struggles.CPP.Z,1]  2) Struggles
@@ -128,7 +164,11 @@
 [C:/Apps/MusicOrgan/Examples/verses.CPP.Z,1] 10) Verses   
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/W091nVwcBmE" frameborder="0"
+allowfullscreen></iframe>
+```
                                   Hymns #10
 [C:/Apps/MusicOrgan/Examples/villa.CPP.Z,1]  1) Villa   
 [C:/Apps/MusicOrgan/Examples/wisdom.CPP.Z,1]  2) Wisdom  

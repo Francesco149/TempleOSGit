@@ -104,8 +104,8 @@ U0 AnimateTask(I64)
       tempb->x += dt*(20*Cos(theta)+tempb->dx);
       tempb->y +=-dt*(20*Sin(theta)+tempb->dy);
 
-      if (!(0<=tempb->x<task->win_pixel_width) ||
-	  !(0<=tempb->y<task->win_pixel_height) ) {
+      if (!(0<=tempb->x<task->pix_width) ||
+	  !(0<=tempb->y<task->pix_height) ) {
 	QueRem(tempb);
 	Free(tempb);
       }
@@ -134,7 +134,7 @@ U0 CleanUp()
 U0 Song()
 {
   CTask *task;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
@@ -144,22 +144,20 @@ U0 Song()
   music_tempo= 2.480;
   music_stacatto_factor= 0.902;
   try {
-  task=PopUpViewStr(
-    "[C:/TempleOS/Misc/Bible.TXT.Z,90914] Romans,8:28\n"
-    );
-  TaskWait(task);
-  SetWinHorz(Fs->win_left,Fs->win_right,task);
-  SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
-  while (!ScanKey) {
-	Play("3qEEBeBDsBBBBqDsBFBFD2G3D2G",
-		"Free \0will... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0fail.\n\0 \0 \0 \0");
-	Play("3qEEBeBDsBBBBqDsBFBFD2G3D2G",
-		"God \0still... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0hail.\n\0 \0 \0 \0");
-	Play("3qD2G3eA2G3qCetECAqBsACACqA",
-		"All \0things \0work \0for \0good... \0to \0the \0Lord.\n\0 \0 \0 \0 \0 \0 \0");
-	Play("D2G3eA2G3qCetECAqBsACACqA",
-		"It's \0all \0good... \0 \0 \0as\0 \0sured.\n\0 \0 \0 \0 \0 \0 \0");
-  }
+    task=PopUpViewStr("[C:/Misc/Bible.TXT.Z,90914] Romans,8:28\n");
+    TaskWait(task);
+    SetWinHorz(Fs->win_left,Fs->win_right,task);
+    SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
+    while (!ScanKey) {
+      Play("3qEEBeBDsBBBBqDsBFBFD2G3D2G",
+	    "Free \0will... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0fail.\n\0 \0 \0 \0");
+      Play("3qEEBeBDsBBBBqDsBFBFD2G3D2G",
+	    "God \0still... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0hail.\n\0 \0 \0 \0");
+      Play("3qD2G3eA2G3qCetECAqBsACACqA",
+	    "All \0things \0work \0for \0good... \0to \0the \0Lord.\n\0 \0 \0 \0 \0 \0 \0");
+      Play("D2G3eA2G3qCetECAqBsACACqA",
+	    "It's \0all \0good... \0 \0 \0as\0 \0sured.\n\0 \0 \0 \0 \0 \0 \0");
+    }
   } catch
     PutExcept;
   SettingsPop;

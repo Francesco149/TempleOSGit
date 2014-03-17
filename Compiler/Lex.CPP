@@ -34,8 +34,10 @@ U8 *CmpPmt(Bool dbl_semicolon=FALSE)
   return result;
 }
 
-CLex *LexNew(U8 *buf,I64 flags,U8 *filename=NULL)
-{
+CLex *LexNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
+{//Frees buf in [C:/Compiler/Lex.CPP.Z,67] LexDel unless [C:/Kernel/Adam1a.HPP.Z,1939] LF_DONT_FREE_BUF flag is set.
+//FileName is for error reporting.  If files are #included, new names are used.
+//See [C:/Apps/MusicOrgan/Organ.CPP.Z,1] MusicOrgan LexNew.
   CLex *lx=MAlloc(sizeof(CLex));
   CLexFile *tempf=&lx->lfns[0];
   MemSet(lx,0,offset(CLex.end_of_zeroed_members)+sizeof(CLexFile));
@@ -43,7 +45,7 @@ CLex *LexNew(U8 *buf,I64 flags,U8 *filename=NULL)
   lx->flags=flags;
   lx->opts=1<<OPTf_WARN_UNUSED_VAR;
   lx->pass_trace_mask=0b1001111101;
-  lx->htc.hash_mask=HTG_ALL-HTT_IMPORT_SYS_SYM-HTT_ASM_KEYWORD;
+  lx->htc.hash_mask=HTG_TYPE_MASK-HTT_IMPORT_SYS_SYM;
   lx->htc.define_hash_table=lx->htc.hash_table_lst=lx->htc.glbl_hash_table=lx->htc.local_hash_table=Fs->hash_table;
   if (flags&LF_KEEP_AT_SIGN)
     lx->chars_bitmap_alpha_numeric=chars_bitmap_alpha_numeric_no_at;
@@ -78,7 +80,7 @@ U0 LexDel(CLex *lx)
   if (!(lx->flags & LF_DONT_FREE_BUF))
     Free(tempf->buf);
   Free(lx->ps);
-  Free(lx->ident);
+  Free(lx->cur_str);
   Free(lx->cur_index);
   Free(lx->dollar);
   Free(lx);
@@ -99,34 +101,22 @@ I64 LexSize(CLex *lx)
   result+=MSize2(tempf->name);
   if (!(lx->flags & LF_DONT_FREE_BUF))
     result+=MSize2(tempf->buf);
-  result+=MSize2(lx->ident);
+  result+=MSize2(lx->cur_str);
   result+=MSize2(lx);
   return result;
-}
-
-U0 SetSrcFileInfo(CLex *lx,CHashSrcSym *h)
-{
-  CLexFile *tempf=lx->cur_lfn;
-  h->src_link=MPrint("FL:%s,%d",tempf->name,tempf->line_num);
-  if (Bt(&lx->opts,OPTf_KEEP_PRIVATE))
-    h->type|=HTF_PRIVATE;
-  if (lx->cur_index)
-    h->index=StrNew(lx->cur_index);
-  else
-    h->index=NULL;
 }
 
 U0 LexPutToken(CLex *lx)
 {
   '"';
   if (lx->token==TK_IDENT || lx->token==TK_STR)
-    "%s",lx->ident;
+    "%s",lx->cur_str;
   else if (lx->token==TK_INTEGER)
-    "INT:%X",lx->cur_i;
+    "INT:%X",lx->cur_i64;
   else if (lx->token==TK_CHAR_CONST)
-    "U8:%X",lx->cur_i;
+    "U8:%X",lx->cur_i64;
   else if (lx->token==TK_F64)
-    "FLOAT:%e",lx->cur_f;
+    "FLOAT:%e",lx->cur_f64;
   else if (lx->token=='\n')
     "<NEW_LINE>";
   else if (Bt(chars_bitmap_displayable,lx->token))
@@ -189,7 +179,10 @@ lgc_start2:
 	    tempf->cur_entry=doc_e;
 	    nobound_switch (doc_e->type_u8) {
 	      case DOCT_TEXT:
-		if (doc_e->flags1 & ~(DOCEF1_DEFINE|DOCEF1_TAG_CB|DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP) &&
+		if (doc_e->flags1 & ~(DOCEF1_TAG|DOCEF1_DEFINE|DOCEF1_TAG_CB|
+			DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|
+			DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|
+			DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP) &&
 		      LexDollar(lx,doc,doc_e) && *(src=lx->dollar)) {
 		  tempf->line_num=doc_e->y+1;
 		  tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=src;
@@ -222,33 +215,24 @@ lgc_start2:
 	      case DOCT_INS_BINARY:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		tempf->line_num=doc_e->y+1;
-		Free(lx->ident);
-		lx->ident=NULL;
-		lx->ident_len=0;
+		Free(lx->cur_str);
+		lx->cur_str=NULL;
+		lx->cur_str_len=0;
 		if (doc_e->bin_data) {
 		  ptr=MAlloc(doc_e->bin_data->size);
 		  if (doc_e->bin_data->data)
 		    MemCpy(ptr,doc_e->bin_data->data,doc_e->bin_data->size);
-		  lx->ident=ptr;
-		  lx->ident_len=doc_e->bin_data->size;
+		  lx->cur_str=ptr;
+		  lx->cur_str_len=doc_e->bin_data->size;
 		}
 		lx->last_U16=TK_INS_BINARY;
-		goto lgc_done;
-	      case DOCT_INS_BINARY_TYPE:
-		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
-		if (doc_e->bin_data)
-		  lx->cur_i=doc_e->bin_data->type;
-		else
-		  lx->cur_i=0;
-		tempf->line_num=doc_e->y+1;
-		lx->last_U16=TK_INS_BINARY_TYPE;
 		goto lgc_done;
 	      case DOCT_INS_BINARY_SIZE:
 		tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=&lex_zeros;
 		if (doc_e->bin_data)
-		  lx->cur_i=doc_e->bin_data->size;
+		  lx->cur_i64=doc_e->bin_data->size;
 		else
-		  lx->cur_i=0;
+		  lx->cur_i64=0;
 		tempf->line_num=doc_e->y+1;
 		lx->last_U16=TK_INS_BINARY_SIZE;
 		goto lgc_done;
@@ -342,7 +326,7 @@ lgc_done:
 
 U0 LexSkipEol(CLex *lx)
 {
-  U8 ch;
+  I64 ch;
   do ch=LexGetChar(lx);
   while (Bt(chars_bitmap_non_eol,ch));
 }
@@ -370,18 +354,16 @@ I64 doc_type_flags_src_code[(DOCT_NUM_TYPES+63)/64]=
 1<<DOCT_TEXT|
 1<<DOCT_TAB|
 1<<DOCT_INS_BINARY|
-1<<DOCT_INS_BINARY_TYPE|
 1<<DOCT_INS_BINARY_SIZE
 };
 
 
 CDoc *LexDocRead(U8 *abs_filename,I64 flags)
 {
-  CDoc *doc=DocNew;
+  CDoc *doc=DocNew(abs_filename);
   U8 *src;
   I64 size=0;
   doc->flags|=flags;
-  StrCpy(doc->filename.name,abs_filename);
   src=FileRead(abs_filename,&size);
   if (!src || !size) {
     Free(src);
@@ -413,7 +395,7 @@ U0 LexAttachDoc(CLex *lx,CLexFile *tempf=NULL,
     col=doc_e->min_col;
   }
   if (doc_e!=doc) {
-    col=LimitI64(col,doc_e->min_col,doc_e->max_col);
+    col=ClampI64(col,doc_e->min_col,doc_e->max_col);
     tempf->line_start=doc_e;
     tempf->line_num=doc_e->y+1;
     if (doc_e->type_u8==DOCT_TEXT) {
@@ -443,7 +425,7 @@ U0 LexPush(CLex *lx)
   CLexFile *tempf=lx->cur_lfn,
     *tempf1=&lx->stk[lx->stk_ptr++];
   if (lx->stk_ptr>=LFN_STK_CNT)
-    LexExcept(lx,"ST_LEX_STK_OVERFLOW");
+    LexExcept(lx,"Lex Stk overflow");
   LexBackupLastChar(lx);
   if (tempf->last_U16)
     lx->flags|=LF_USE_LAST_U16;
@@ -462,36 +444,36 @@ U0 LexPop(CLex *lx)
   MemCpy(tempf,tempf1,sizeof(CLexFile));
 }
 
-I64 MemberMetaData(U8 *st,CMemberLst *tempm)
+I64 MemberMetaData(U8 *needle_str,CMemberLst *haystack_member_lst)
 {
-  CMemberLstMeta *meta=tempm->meta;
+  CMemberLstMeta *meta=haystack_member_lst->meta;
   while (meta) {
-    if (!StrCmp(meta->str,st))
+    if (!StrCmp(meta->str,needle_str))
       return meta->user_data;
     meta=meta->next;
   }
   return 0;
 }
 
-CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *tempm)
+CMemberLstMeta *MemberMetaFind(U8 *needle_str,CMemberLst *haystack_member_lst)
 {
-  CMemberLstMeta *meta=tempm->meta;
+  CMemberLstMeta *meta=haystack_member_lst->meta;
   while (meta) {
-    if (!StrCmp(meta->str,st))
+    if (!StrCmp(meta->str,needle_str))
       return meta;
     meta=meta->next;
   }
   return NULL;
 }
 
-CMemberLst *MemberFind(U8 *st,CHashClass *tempc)
+CMemberLst *MemberFind(U8 *needle_str,CHashClass *haystack_class)
 {
   I64 i;
   CMemberLst *tempm;
   do {
-    tempm=tempc->member_lst;
+    tempm=haystack_class->member_lst;
     while (tempm) {
-      if (!(i=StrCmp(tempm->str,st))) {
+      if (!(i=StrCmp(tempm->str,needle_str))) {
 	tempm->use_cnt++;
 	return tempm;
       }
@@ -500,18 +482,18 @@ CMemberLst *MemberFind(U8 *st,CHashClass *tempc)
       else
 	tempm=tempm->right;
     }
-  } while (tempc=tempc->base_class);
+  } while (haystack_class=haystack_class->base_class);
   return NULL;
 }
 
-CMemberLst *MemberFind2(CHashClass *pattern,CHashClass *tempc)
+CMemberLst *MemberFind2(CHashClass *needle_class,CHashClass *haystack_class)
 {//just offset<0
   CMemberLst *tempm;
-  tempm=tempc->member_lst2;
+  tempm=haystack_class->member_lst2;
   while (tempm) {
-    if (pattern==tempm->member_class2)
+    if (needle_class==tempm->member_class2)
       return tempm;
-    if (pattern<tempm->member_class2)
+    if (needle_class<tempm->member_class2)
       tempm=tempm->left2;
     else
       tempm=tempm->right2;
@@ -525,11 +507,11 @@ U0 MemberAdd(CLex *lx,CMemberLst *tempm,CHashClass *tempc,I64 mode)
   CMemberLst **tempm1,*tempm2;
   CHashClass *tempc2;
   if (MemberFind(st,tempc) && StrCmp(st,"pad") && StrCmp(st,"reserved") && StrCmp(st,"_anon_"))
-    LexExcept(lx,"ST_DUP_MEMBER");
+    LexExcept(lx,"Duplicate member at ");
   if (mode==PRS1B_LOCAL_VAR) {
     tempc2=tempm->member_class-tempm->member_class->ptr_cnt;
     if (Bt(&lx->opts,OPTf_WARN_DUP_TYPES) && MemberFind2(tempc2,tempc))
-      LexPutWarn(lx,"ST_DUP_TYPE");
+      LexWarn(lx,"Duplicate type at ");
   } else
     tempc2=NULL;
   tempm->member_class2=tempc2;
@@ -827,9 +809,9 @@ lex_ident:
 	  lx->cur_lfn->flags|=LFSF_DEFINE;
 	} else {
 	  lx->hash_entry=temph;
-	  Free(lx->ident);
-	  lx->ident=StrNew(buf);
-	  lx->ident_len=i;
+	  Free(lx->cur_str);
+	  lx->cur_str=StrNew(buf);
+	  lx->cur_str_len=i;
 	  lx->token=TK_IDENT;
 	  goto lex_end;
 	}
@@ -846,7 +828,7 @@ lex_ident:
 	      else
 		i=i<<4+ch-'A'+10;
 	    } else {
-	      lx->cur_i=i;
+	      lx->cur_i64=i;
 	      lx->flags|=LF_USE_LAST_U16;
 	      lx->token=TK_INTEGER;
 	      goto lex_end;
@@ -860,7 +842,7 @@ lex_ident:
 	    else if (ch=='1')
 	      i=i<<1+1;
 	    else {
-	      lx->cur_i=i;
+	      lx->cur_i64=i;
 	      lx->flags|=LF_USE_LAST_U16;
 	      lx->token=TK_INTEGER;
 	      goto lex_end;
@@ -872,7 +854,7 @@ lex_ident:
 	    if ('0'<=ch<='7')
 	      i=i<<3+ch-'0';
 	    else {
-	      lx->cur_i=i;
+	      lx->cur_i64=i;
 	      lx->flags|=LF_USE_LAST_U16;
 	      lx->token=TK_INTEGER;
 	      goto lex_end;
@@ -885,7 +867,7 @@ lex_ident:
 	  else {
 	    if (ch=='.' || ch=='e' || ch=='E') break;
 lex_is_int:
-	    lx->cur_i=i;
+	    lx->cur_i64=i;
 	    lx->flags|=LF_USE_LAST_U16;
 	    lx->token=TK_INTEGER;
 	    goto lex_end;
@@ -908,7 +890,7 @@ lex_float_start:
 	  } else {
 	    if (ch=='e' || ch=='E')
 	      break;
-	    lx->cur_f=i*Pow10I64(-k);
+	    lx->cur_f64=i*Pow10I64(-k);
 	    lx->flags|=LF_USE_LAST_U16;
 	    lx->token=TK_F64;
 	    goto lex_end;
@@ -927,9 +909,9 @@ lex_float_start:
 	    j=j*10+ch-'0';
 	  else {
 	    if (neg_e)
-	      lx->cur_f=i*Pow10I64(-j-k);
+	      lx->cur_f64=i*Pow10I64(-j-k);
 	    else
-	      lx->cur_f=i*Pow10I64(j-k);
+	      lx->cur_f64=i*Pow10I64(j-k);
 	    lx->flags|=LF_USE_LAST_U16;
 	    lx->token=TK_F64;
 	    goto lex_end;
@@ -955,11 +937,11 @@ lex_float_start:
 	  }
 	  i+=j;
 	} while (!str_done);
-	Free(lx->ident);
-	lx->ident=MAlloc(i);
-	MemCpy(lx->ident,buf2,i);
+	Free(lx->cur_str);
+	lx->cur_str=MAlloc(i);
+	MemCpy(lx->cur_str,buf2,i);
 	Free(buf2);
-	lx->ident_len=i;
+	lx->cur_str_len=i;
 	lx->flags&=~LF_IN_QUOTES;
 	lx->token=TK_STR;
 	goto lex_end;
@@ -1054,7 +1036,7 @@ lex_octal:
 		break;
 	    }
 	}
-	lx->cur_i=k;
+	lx->cur_i64=k;
 	lx->token=TK_CHAR_CONST;
 	goto lex_end;
       case '#':
@@ -1072,21 +1054,21 @@ lex_octal:
 	  case KW_INCLUDE:
 	    if (Lex(lx)!=TK_STR)
 	      goto lex_end;
-	    fbuf=DftExt(lx->ident,"CPP.Z");
+	    fbuf=DftExt(lx->cur_str,"CPP.Z");
 	    buf2=FileNameAbs(fbuf);
 	    Free(fbuf);
 	    if (Bt(&sys_run_level,RLf_DOC))
 	      LexAttachDoc(lx,,,buf2);
 	    else
-	      LexIncludeStr(lx,buf2,TextFileRead(buf2),TRUE);
+	      LexIncludeStr(lx,buf2,FileRead(buf2),TRUE);
 	    Free(buf2);
 	    break;
 	  case KW_DEFINE:
 	    lx->flags|=LF_NO_DEFINES;
 	    if (Lex(lx)==TK_IDENT) {
 	      temph=CAlloc(sizeof(CHashDefineStr));
-	      temph->str=lx->ident;
-	      lx->ident=0;
+	      temph->str=lx->cur_str;
+	      lx->cur_str=0;
 	      temph->type=HTT_DEFINE_STR;
 	      SetSrcFileInfo(lx,temph);
 
@@ -1377,25 +1359,25 @@ lex_ifjit:
 	    if (!Lex(lx))
 	      goto lex_end;
 	    if (!LexExpression(lx))
-	      LexPutWarn(lx,"ST_ASSERT_FAILED");
+	      LexWarn(lx,"Assert Failed ");
 	    goto lex_end;
 	  case KW_EXE:
 	    if (!Lex(lx))
 	      goto lex_end;
-	    (*fp_prs_stream_blk)(lx);
+	    PrsStreamBlk(lx);
 	    goto lex_end;
 	  case KW_HELP_INDEX:
 	    if (Lex(lx)!=TK_STR)
 	      goto lex_end;
 	    Free(lx->cur_index);
-	    lx->cur_index=lx->ident;
-	    lx->ident=NULL;
+	    lx->cur_index=lx->cur_str;
+	    lx->cur_str=NULL;
 	    break;
 	  case KW_HELP_FILE:
 	    if (Lex(lx)!=TK_STR)
 	      goto lex_end;
 	    temph=CAlloc(sizeof(CHashSrcSym));
-	    fbuf=DftExt(lx->ident,"TXT.Z");
+	    fbuf=DftExt(lx->cur_str,"TXT.Z");
 	    temph->str=FileNameAbs(fbuf);
 	    Free(fbuf);
 	    temph->type=HTT_HELP_FILE|HTF_PUBLIC;
@@ -1408,7 +1390,6 @@ lex_ifjit:
 	if (!(lx->flags&LF_KEEP_NEW_LINES))
 	  break; //else fall through
       case TK_INS_BINARY:
-      case TK_INS_BINARY_TYPE:
       case TK_INS_BINARY_SIZE:
 	lx->token=ch;
 	goto lex_end;
@@ -1550,16 +1531,16 @@ lex_end:
 
 U8 *LexExtStr(CLex *lx,I64 *_size=NULL)
 { //_size includes terminator
-  I64 len=lx->ident_len,len1,len2;
-  U8 *st=lx->ident,*st1,*st2;
-  lx->ident=NULL;
+  I64 len=lx->cur_str_len,len1,len2;
+  U8 *st=lx->cur_str,*st1,*st2;
+  lx->cur_str=NULL;
   while (lx->token==TK_STR) {
     st1=st;
     len1=len;
     if (Lex(lx)==TK_STR) {
-      len2=lx->ident_len;
-      st2=lx->ident;
-      lx->ident=NULL;
+      len2=lx->cur_str_len;
+      st2=lx->cur_str;
+      lx->cur_str=NULL;
       len=len1+len2-1;
       st=MAlloc(len);
       if (len1>1)
@@ -1575,7 +1556,8 @@ U8 *LexExtStr(CLex *lx,I64 *_size=NULL)
 
 U8 *LexPutLine(CLex *lx,U8 *start)
 {
-  U8 *ptr,ch;
+  I64 ch;
+  U8 *ptr;
   if (!start) return NULL;
   if (lx->cur_lfn->flags&LFSF_DOC)
     return DocPutLine(lx->cur_lfn->doc,start);
@@ -1614,32 +1596,31 @@ U0 LexPutPos(CLex *lx)
   LexPutLine(lx,lx->cur_lfn->line_start);
 }
 
-U0 LexPutWarn(CLex *lx,U8 *name=NULL,CHashFun *fun_class=NULL)
+U0 LexWarn(CLex *lx,U8 *str=NULL)
 {
-  if (name) PrintWarn("%S",name);
-  if (fun_class) {
-    "%S'%s'.\n","ST_IN_FUN",fun_class->str;
+  if (str) PrintWarn(str);
+  if (lx->htc.fun) {
+    "in fun '%s'.\n",lx->htc.fun->str;
     if (IsRaw)
-      "%s\n",fun_class->src_link;
+      "%s\n",lx->htc.fun->src_link;
     else {
-      "$LK-A,\"%s\"$\n",fun_class->src_link;
-      AdamErr("%s\n",fun_class->src_link);
+      "$LK,\"%s\"$\n",lx->htc.fun->src_link;
+      AdamErr("%s\n",lx->htc.fun->src_link);
     }
   } else
     LexPutPos(lx);
   lx->warning_cnt++;
 }
 
-U0 LexExcept(CLex *lx,U8 *name=NULL,CHashFun *fun_class=NULL)
+U0 LexExcept(CLex *lx,U8 *str=NULL)
 {
-  nounusedwarn fun_class;
   if (!Bt(&sys_run_level,RLf_ADAM_SERVER)) {
     Preempt(OFF);
     Raw(ON);
   }
-  if (name) PrintErr("%S",name);
+  if (str) PrintErr(str);
   if (!IsRaw)
-    AdamErr("Task:%08X %S\n",Fs,name);
+    AdamErr("Task:%08X %s\n",Fs,str);
   LexPutPos(lx);
   lx->error_cnt++;
   FlushMsgs;

@@ -16,7 +16,7 @@ CDC *dc2;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 i,x,y,cx=task->win_pixel_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
+  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
   Bool engine_on;
   F64 nozzle_angle,theta=Arg(m2.x-m1.x,m2.y-m1.y);
 
@@ -60,7 +60,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Snd(50);
   } else
     Snd(0);
-  SpritePlotRotZ3B(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
+  SpriteZ3B(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
 }
 
 U0 MyDerivative(CMathODE *,F64,COrder2D3 *,COrder2D3 *)
@@ -120,7 +120,7 @@ U0 Rocket()
 {
   CMathODE *ode=ODENew(0,1e-2,ODEF_HAS_MASSES);
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
   DocCursor;
   WordStat;

@@ -1,6 +1,6 @@
 #help_index "Graphics"
 
-public Bool GrPlot0(CDC *dc,I64 x,I64 y)
+public Bool GrPlot0(CDC *dc=gr_dc,I64 x,I64 y)
 {  //No clipping or transformation or pen width
   U8 *dst;
   I32 *db;
@@ -61,14 +61,14 @@ public Bool GrPlot0(CDC *dc,I64 x,I64 y)
   return TRUE;
 }
 
-public I64 GrPeek0(CDC *dc,I64 x,I64 y)
+public I64 GrPeek0(CDC *dc=gr_dc,I64 x,I64 y)
 {  //No clipping or transformation
   return dc->body[dc->width_internal*y+x];
 }
 
-#help_index "Graphics;Graphics/DCs"
+#help_index "Graphics;Graphics/Device Contexts"
 
-public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
+public I64 GrBlot(CDC *dc=gr_dc,I64 x,I64 y,CDC *img)
 {  //Clipping but not transformation
   I64 i,j,k,k1,kk,kk1,w1,h1,w2,h2,
 	leading_bits,leading_bit_mask,whole_bytes,trailing_bits,trailing_bit_mask,
@@ -82,8 +82,8 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
   if (x<0)
     w1=-x;
@@ -96,8 +96,8 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
   w2=img->width;
   h2=img->height;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x+=win_task->win_pixel_left;
-    y+=win_task->win_pixel_top;
+    x+=win_task->pix_left;
+    y+=win_task->pix_top;
   }
   if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
     dist=DistI64(x+img->width>>1,y+img->height>>1,dc->cur_x,dc->cur_y);
@@ -108,12 +108,12 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
   }
   if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
-    if (x+w2>win_task->win_pixel_right+1)
-      w2=win_task->win_pixel_right+1-x;
+    if (x+w2>win_task->pix_right+1)
+      w2=win_task->pix_right+1-x;
 
     if (y+h1<0) h1=-y;
-    if (y+h2>win_task->win_pixel_bottom+1)
-      h2=win_task->win_pixel_bottom+1-y;
+    if (y+h2>win_task->pix_bottom+1)
+      h2=win_task->pix_bottom+1-y;
   }
   if (x+w2>dc->width)
     w2=dc->width-x;
@@ -559,6 +559,8 @@ here1a:
     return 0;
 }
 
+#help_index "Graphics/Device Contexts"
+
 U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor)
 {
   I64 c,k,i=src_size*2,i1=i>>3;
@@ -586,7 +588,7 @@ U8 *GrBitMap1ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor)
   return dst;
 }
 
-public CDC *DCExtract(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
+public CDC *DCExtract(CDC *dc=gr_dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
 {
   CDC *result;
   CTask *win_task;
@@ -594,10 +596,10 @@ public CDC *DCExtract(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
   if (y1>y2) SwapU64(&y1,&y2);
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x1+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y1+=win_task->win_pixel_top+win_task->win_scroll_y;
-    x2+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y2+=win_task->win_pixel_top+win_task->win_scroll_y;
+    x1+=win_task->pix_left+win_task->scroll_x;
+    y1+=win_task->pix_top+win_task->scroll_y;
+    x2+=win_task->pix_left+win_task->scroll_x;
+    y2+=win_task->pix_top+win_task->scroll_y;
   }
   result=DCNew(x2-x1+1,y2-y1+1,task);
   DCFill(result);
@@ -607,7 +609,7 @@ public CDC *DCExtract(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
 
 #help_index "Graphics/Char;Char/Graphics"
 
-public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
+public I64 GrPutChar(CDC *dc=gr_dc,I64 x,I64 y,U8 ch)
 {  //Clipping but not transformation
   U8 reg *src,reg *dst,*font_ptr;
   I64 i,m,leading_bits,trailing_bits,leading_bit_mask,trailing_bit_mask,
@@ -617,8 +619,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
 
   if (x<0)
@@ -633,8 +635,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
   h2=FONT_HEIGHT;
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x+=win_task->win_pixel_left;
-    y+=win_task->win_pixel_top;
+    x+=win_task->pix_left;
+    y+=win_task->pix_top;
   }
   if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
     dist=DistI64(x+w2>>1,y+h2>>1,dc->cur_x,dc->cur_y);
@@ -645,12 +647,12 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
   }
   if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
-    if (x+w2>win_task->win_pixel_right+1)
-      w2=win_task->win_pixel_right+1-x;
+    if (x+w2>win_task->pix_right+1)
+      w2=win_task->pix_right+1-x;
 
     if (y+h1<0) h1=-y;
-    if (y+h2>win_task->win_pixel_bottom+1)
-      h2=win_task->win_pixel_bottom+1-y;
+    if (y+h2>win_task->pix_bottom+1)
+      h2=win_task->pix_bottom+1-y;
   }
   if (x+w2>dc->width)
     w2=dc->width-x;
@@ -760,7 +762,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_EQU:
 	    case ROPB_MONO:
 	      for (j=h1;j<h2;j++) {
-		if (!IsPixelCovered0(win_task,k1,y+j)) {
+		if (!IsPixCovered0(win_task,k1,y+j)) {
 		  m=gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF];
 		  *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(color_mask&m|*dst(I64 *)&~m)&~leading_bit_mask;
 		}
@@ -771,7 +773,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_XOR:
 	      if (color_mask) {
 		for (j=h1;j<h2;j++) {
-		  if (!IsPixelCovered0(win_task,k1,y+j))
+		  if (!IsPixCovered0(win_task,k1,y+j))
 		    *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(*dst(I64 *)^gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~leading_bit_mask;
 		  src++;
 		  dst+=dc->width_internal;
@@ -791,7 +793,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_EQU:
 	    case ROPB_MONO:
 	      for (j=h1;j<h2;j++) {
-		if (!IsPixelCovered0(win_task,k1,y+j)) {
+		if (!IsPixCovered0(win_task,k1,y+j)) {
 		  m=gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF];
 		  *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(color_mask&m|*dst(I64 *)&~m)&~trailing_bit_mask;
 		}
@@ -802,7 +804,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_XOR:
 	      if (color_mask) {
 		for (j=h1;j<h2;j++) {
-		  if (!IsPixelCovered0(win_task,k1,y+j))
+		  if (!IsPixCovered0(win_task,k1,y+j))
 		    *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(*dst(I64 *)^gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~trailing_bit_mask;
 		  src++;
 		  dst+=dc->width_internal;
@@ -818,8 +820,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
     return 0;
 }
 
-I64 GrPutS(CDC *dc,I64 x,I64 y,U8 *_s)
-{ //Use [MN:GrPrint] GrPrint()
+I64 GrPutS(CDC *dc=gr_dc,I64 x,I64 y,U8 *_s)
+{ //Use [C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint()
   I64 x0,ch,result;
   if (!_s) return 0;
   x0=x;
@@ -838,8 +840,8 @@ I64 GrPutS(CDC *dc,I64 x,I64 y,U8 *_s)
   return result;
 }
 
-I64 GrVPutS(CDC *dc,I64 x,I64 y,U8 *_s)
-{ //Vertical Text.  Use [MN:GrVPrint] GrVPrint()
+I64 GrVPutS(CDC *dc=gr_dc,I64 x,I64 y,U8 *_s)
+{ //Vertical Text.  Use [C:/Adam/Gr/GrBitMap.CPP.Z,875] GrVPrint()
   I64 y0,result;
   U8 buf[2];
   if (!_s) return 0;
@@ -861,7 +863,7 @@ I64 GrVPutS(CDC *dc,I64 x,I64 y,U8 *_s)
   return result;
 }
 
-public I64 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
+public I64 GrPrint(CDC *dc=gr_dc,I64 x,I64 y,U8 *fmt,...)
 {
   I64 result;
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
@@ -870,7 +872,7 @@ public I64 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   return result;
 }
 
-public I64 GrVPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
+public I64 GrVPrint(CDC *dc=gr_dc,I64 x,I64 y,U8 *fmt,...)
 { //Vertical text
   I64 result;
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
@@ -880,9 +882,9 @@ public I64 GrVPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
 }
 
 #help_index "Graphics"
-public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
+public I64 GrRect(CDC *dc=gr_dc,I64 x,I64 y,I64 w,I64 h)
 {  //Clipping but not transformation
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 i,result=0,j,k1,kk1,w1,h1,w2,h2,dist,
 	leading_bits,whole_bytes,trailing_bits,leading_bit_mask,trailing_bit_mask,
 	win_z_buf_line_inc,win_z_buf_line_dec,win_z_num,color_mask;
@@ -894,8 +896,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
 
   if (x<0)
@@ -910,8 +912,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
   h2=h;
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x+=win_task->win_pixel_left;
-    y+=win_task->win_pixel_top;
+    x+=win_task->pix_left;
+    y+=win_task->pix_top;
   }
   if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
     if (dc->cur_x>=x && dc->cur_y>=y &&
@@ -928,12 +930,12 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
   }
   if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
-    if (x+w2>win_task->win_pixel_right+1)
-      w2=win_task->win_pixel_right+1-x;
+    if (x+w2>win_task->pix_right+1)
+      w2=win_task->pix_right+1-x;
 
     if (y+h1<0) h1=-y;
-    if (y+h2>win_task->win_pixel_bottom+1)
-      h2=win_task->win_pixel_bottom+1-y;
+    if (y+h2>win_task->pix_bottom+1)
+      h2=win_task->pix_bottom+1-y;
   }
   if (x+w2>dc->width)
     w2=dc->width-x;
@@ -1308,7 +1310,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 
 I64 GrRayLenMinus(CDC *dc,I64 x,I64 y)
 {
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result=0,c,x3,y3,d;
   U8 *dst,*dst2;
   Bool not_color=ToBool(dc->flags&DCF_FILL_NOT_COLOR);
@@ -1316,21 +1318,21 @@ I64 GrRayLenMinus(CDC *dc,I64 x,I64 y)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
   x3=x;
   y3=y;
   if (x3<0 || y3<0)
     goto gr_done;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x3+=win_task->win_pixel_left;
-    y3+=win_task->win_pixel_top;
+    x3+=win_task->pix_left;
+    y3+=win_task->pix_top;
     if (x3<0 || y3<0 ||
-	  x3>win_task->win_pixel_right ||
-	  y3>win_task->win_pixel_bottom ||
+	  x3>win_task->pix_right ||
+	  y3>win_task->pix_bottom ||
 	  !(dc->flags&DCF_ON_TOP) &&
-	  IsPixelCovered0(win_task,x3,y3))
+	  IsPixCovered0(win_task,x3,y3))
       goto gr_done;
   }
   if (x3>=dc->width || y3>=dc->height)
@@ -1343,17 +1345,17 @@ I64 GrRayLenMinus(CDC *dc,I64 x,I64 y)
     if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	if (x3<0) break;
-	x3+=win_task->win_pixel_left;
-	if (x3<0 || x3>win_task->win_pixel_right ||
+	x3+=win_task->pix_left;
+	if (x3<0 || x3>win_task->pix_right ||
 	      x3>=dc->width ||
 	      !(dc->flags&DCF_ON_TOP) &&
-	      IsPixelCovered0(win_task,x3,y3))
+	      IsPixCovered0(win_task,x3,y3))
 	  break;
       } else
 	if (!(0<=x3<dc->width))
 	  break;
     } else if (dc->flags & DCF_SCREEN_BITMAP)
-      x3+=win_task->win_pixel_left;
+      x3+=win_task->pix_left;
     dst=dst2+x3;
     c=*dst;
     if (not_color) {
@@ -1377,7 +1379,7 @@ gr_done:
 
 I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 {
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result=0,d,x=*x1,x2,x3,y3,dist;
   Bool plot,dither,probability_dither,not_color=ToBool(dc->flags&DCF_FILL_NOT_COLOR);
   U8 *dst,*dst2;
@@ -1387,9 +1389,9 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
-    z+=win_task->win_scroll_z;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
+    z+=win_task->scroll_z;
   }
   x2=x;
   x3=x;
@@ -1397,13 +1399,13 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
   if (x3<0 || y3<0)
     goto gr_done;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x3+=win_task->win_pixel_left;
-    y3+=win_task->win_pixel_top;
+    x3+=win_task->pix_left;
+    y3+=win_task->pix_top;
     if (x3<0 || y3<0 ||
-	  x3>win_task->win_pixel_right ||
-	  y3>win_task->win_pixel_bottom ||
+	  x3>win_task->pix_right ||
+	  y3>win_task->pix_bottom ||
 	  !(dc->flags&DCF_ON_TOP) &&
-	  IsPixelCovered0(win_task,x3,y3))
+	  IsPixCovered0(win_task,x3,y3))
       goto gr_done;
   }
   if (x3>=dc->width || y3>=dc->height)
@@ -1430,18 +1432,18 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
     if (!(x3&(FONT_WIDTH-1))) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	if (x3<0) break;
-	x3+=win_task->win_pixel_left;
-	if (x3<0 || x3>win_task->win_pixel_right ||
+	x3+=win_task->pix_left;
+	if (x3<0 || x3>win_task->pix_right ||
 	      x3>=dc->width ||
 	      !(dc->flags&DCF_ON_TOP) &&
-	      IsPixelCovered0(win_task,x3,y3))
+	      IsPixCovered0(win_task,x3,y3))
 	  break;
       } else {
 	if (!(0<=x3<dc->width))
 	  break;
       }
     } else if (dc->flags & DCF_SCREEN_BITMAP)
-      x3+=win_task->win_pixel_left;
+      x3+=win_task->pix_left;
 
     dst=dst2+x3;
 
@@ -1502,7 +1504,7 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
       break;
   }
   if (dc->flags & DCF_SCREEN_BITMAP)
-    *x1=x-1-win_task->win_scroll_x;
+    *x1=x-1-win_task->scroll_x;
   else
     *x1=x-1;
   x=x2-1;
@@ -1511,17 +1513,17 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
     if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	if (x3<0) break;
-	x3+=win_task->win_pixel_left;
-	if (x3<0 || x3>win_task->win_pixel_right ||
+	x3+=win_task->pix_left;
+	if (x3<0 || x3>win_task->pix_right ||
 	      x3>=dc->width ||
 	      !(dc->flags&DCF_ON_TOP) &&
-	      IsPixelCovered0(win_task,x3,y3))
+	      IsPixCovered0(win_task,x3,y3))
 	  break;
       } else
 	if (!(0<=x3<dc->width))
 	  break;
     } else if (dc->flags & DCF_SCREEN_BITMAP)
-      x3+=win_task->win_pixel_left;
+      x3+=win_task->pix_left;
 
     dst=dst2+x3;
     c=*dst;
@@ -1585,10 +1587,10 @@ gr_done:
   return 0;
 }
 
-public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
+public I64 GrHLine(CDC *dc=gr_dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
 {  //No transformation or pen width
-//returns cnt of pixels changed
-  //This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//returns cnt of pixs changed
+  //This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 dx,dz,z,result=0,i,j,d,dist;
   U8 *dst;
   CColorROPU32 c,c2,color=dc->color,bkcolor=dc->bkcolor,dither_colors;
@@ -1603,11 +1605,11 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x1+=win_task->win_scroll_x;
-    x2+=win_task->win_scroll_x;
-    y +=win_task->win_scroll_y;
-    z1+=win_task->win_scroll_z;
-    z2+=win_task->win_scroll_z;
+    x1+=win_task->scroll_x;
+    x2+=win_task->scroll_x;
+    y +=win_task->scroll_y;
+    z1+=win_task->scroll_z;
+    z2+=win_task->scroll_z;
   }
   if (dc->flags & DCF_RECORD_EXTENTS) {
     if (x1<dc->min_x) dc->min_x=x1;
@@ -1631,16 +1633,16 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
     i=0;
   j=0;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x1+=win_task->win_pixel_left;
-    x2+=win_task->win_pixel_left;
-    if (x1>win_task->win_pixel_right)
+    x1+=win_task->pix_left;
+    x2+=win_task->pix_left;
+    if (x1>win_task->pix_right)
       goto gr_done;
-    if (x2>win_task->win_pixel_right) {
-      j=x2-win_task->win_pixel_right;
-      x2=win_task->win_pixel_right;
+    if (x2>win_task->pix_right) {
+      j=x2-win_task->pix_right;
+      x2=win_task->pix_right;
     }
-    y+=win_task->win_pixel_top;
-    if (y>win_task->win_pixel_bottom ||
+    y+=win_task->pix_top;
+    if (y>win_task->pix_bottom ||
 	  y<0 ||
 	  x2<0)
       goto gr_done;
@@ -1681,7 +1683,7 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
   if (!(dc->flags & DCF_SCREEN_BITMAP) ||
 	win_task->next_task==sys_winmgr_task ||
 	dc->flags&DCF_ON_TOP ||
-	!IsPixelCovered0(win_task,x1,y))
+	!IsPixCovered0(win_task,x1,y))
     char_clear=TRUE;
   else
     char_clear=FALSE;
@@ -1750,7 +1752,7 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       if (!(dc->flags & DCF_SCREEN_BITMAP)||
 	    win_task->next_task==sys_winmgr_task ||
 	    dc->flags&DCF_ON_TOP ||
-	    !IsPixelCovered0(win_task,x1,y))
+	    !IsPixCovered0(win_task,x1,y))
 	char_clear=TRUE;
       else
 	char_clear=FALSE;

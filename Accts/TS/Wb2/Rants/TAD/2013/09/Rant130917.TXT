@@ -310,7 +310,7 @@ LOL.  You get back what you put into it -- the same amount of love.
 
 All my source code is on-line and 100% is on every distribution.
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
 
 Lemme do an offering.
 

@@ -21,7 +21,8 @@ I64 sys_dsk_cache_size;
 I64 sys_raw_col=0,sys_raw_flags=0;
 U8 *sys_raw_screen_image;
 Bool text_mode;
-I64 text_rows,text_cols,gr_width,gr_height;
+I64 text_rows,text_cols, //Use TEXT_ROWS,TEXT_COLS
+    gr_width,gr_height;  //Use GR_WIDTH,GR_HEIGHT
 U8 *gr_font;
 U8 *sys_fix_file_line=NULL;
 
@@ -48,7 +49,7 @@ U8 *sys_acct;
 U8 *reverse_bits_table,*set_bits_table;
 U0 (**fp_ctrl_alt_let_cbs)(I64 sc);
 I64 ctrl_alt_let_in_irq_flags;
-I64 **ctrl_alt_let_ret_addr; //addr of ret add on stack in kbd irq
+I64 **ctrl_alt_let_ret_addr; //addr of ret addr on stack in kbd irq
 U8 **ctrl_alt_let_descs;
 CDate local_time_offset=0;
 Bool time_stamp_freq_calibrated=FALSE;
@@ -62,7 +63,6 @@ I64 sys_cur_scan_code=0;
 U8 key_desc[128];
 Bool kbd_irqs_working;
 U8 *key_handler;
-I64 sys_num_installed_compilers=0;
 
 CPCIDev sys_pci_dev_root;
 CMemRange sys_mem32_dev_root;
@@ -76,7 +76,7 @@ F64 *pow10_I64;
 CHeapCtrl *sys_uncached_heap;
 
 
-I64 ipx,ipy,ipz,ip_throttle;
+I64 ipx,ipy,ipz,ip_throttle,ip_throttle_step; //Throttle is [MIN_I32,MAX_I32]
 I64 ipx_presnap,ipy_presnap,ipz_presnap;
 I64 ipx_offset,ipy_offset,ipz_offset;
 F64 ipx_scale,ipy_scale,ipz_scale;
@@ -88,7 +88,7 @@ Bool ip_on,  //Show or hide cursor
      ip_lb,ip_cb,ip_rb;
 Bool ip_has_wheel;
 F64 ip_last_move_time;
-CSnap ip_snap_last;
+CGrid ip_grid;
 
 F64 mxx_scale,myy_scale,mzz_scale;
 
@@ -115,16 +115,15 @@ I64	sys_key_cnt,
 	mouse_install_attempts,
 	mouse_last_evt_time;
 
-//BitTest, [C:/TempleOS/Kernel/Adam1b.HPP.Z,57] Bt(), with a merged scan code.
+//BitTest, [C:/Kernel/Adam1b.HPP.Z,57] Bt(), with a merged scan code.
 //(Left and right shift merged, for example.)
 U32	key_down_bitmap[8];
-//BitTest, [C:/TempleOS/Kernel/Adam1b.HPP.Z,57] Bt(), with an unmerged scan code.
+//BitTest, [C:/Kernel/Adam1b.HPP.Z,57] Bt(), with an unmerged scan code.
 U32	key_down_bitmap2[8];
 
 CSndData snd_record_root;
 
 U8  *(*fp_mgets)(I64 flags=0)=NULL;
-U0 (*fp_prs_stream_blk)(CLex *lx)=NULL;
 U0 (*fp_update_ctrls)(CTask *task)=NULL;
 CDoc *(*fp_doc_put)(CTask *task=NULL)=NULL;
 U0 (*fp_set_std_palette)()=NULL;

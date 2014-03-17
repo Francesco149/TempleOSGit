@@ -27,7 +27,7 @@ U0 LogScrambleFile(U8 *name)
 
       for (i=3;i>=0;i--) {
 	StrFirstRem(st,".",st2);
-	num.u8[i]=key[i][A2I(st2)&255];
+	num.u8[i]=key[i][A2I64(st2)&255];
       }
  
       Free(st);

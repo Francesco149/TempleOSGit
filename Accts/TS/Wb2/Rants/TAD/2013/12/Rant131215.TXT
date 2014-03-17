@@ -1,8 +1,8 @@
 ----12/15/13 16:01:43----
 
 I just found a couple nasty bugs.  Preemption was getting turned-on because a 
-REG in [C:/TempleOS/Adam/Gr/GrAsm.CPP.Z,453] _DC_BLOT_COLOR4() was being
-clobbered and [C:/TempleOS/Kernel/Task1a.CPP.Z,539] TaskFinishOffDying(), if 
+REG in [C:/Adam/Gr/GrAsm.CPP.Z,461] _DC_BLOT_COLOR4() was being clobbered and
+[C:/Kernel/Task1a.CPP.Z,516] TaskFinishOffDying(), if 
 preempted, was leaking memory because the Gs->dying_task_lst was not atomicly 
 changed.
 
@@ -274,7 +274,14 @@ to become fishers of men.
 
 ----12/15/13 20:46:48----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/8E-6odML7lI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/8E-6odML7lI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -414,8 +421,8 @@ Linus on C++ vs C
 
 I implemented the easier C++ features in my [C:/Doc/HolyC.TXT.Z,1] HolyC
 compiler.  I'm happy with 
-what I have.  I like being able to [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep()
-for a function name.  When you have 
+what I have.  I like being able to [C:/Adam/Utils/Grep.CPP.Z,145] Grep() for
+a function name.  When you have 
 "Class::FunName" instead of "ClassFunName", you cannot grep for the ones with 
 just "FunName".
 

@@ -16,7 +16,7 @@ U0 Game()
   "High Score:%6.5f\n",best_score;
   "Val:%d\n",i;
   i++;
-  best_score=tT;
+  best_score=tS;
 //You could combine these into one write by making
 //the $TR$ and $ID,2$, $ID-2$, cmds yourself.
   AcctRegWriteBranch("DemoCompany/Game1","F64 best_score=%9.5f;\n",best_score);

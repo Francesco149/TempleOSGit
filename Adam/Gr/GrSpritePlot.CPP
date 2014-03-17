@@ -1,18 +1,18 @@
-#help_index "Graphics/CSprite"
+#help_index "Graphics/Sprite"
 /*
-[C:/TempleOS/Adam/Gr/Gr.CPP.Z,60] CSprites are stored as a sequence of var
+[C:/Adam/Gr/Gr.CPP.Z,54] CSprites are stored as a sequence of var
 length operations with a 1-byte type leading
 each operation.  The types available are lsted
-here, [C:/TempleOS/Adam/Gr/Gr.CPP.Z,19] GRST_PT.  They are stored, one after another,
-in a chunk of memory terminated by a type [C:/TempleOS/Adam/Gr/Gr.CPP.Z,15] GRST_END.
+here, [C:/Adam/Gr/Gr.CPP.Z,23] GRST_PT.  They are stored, one after another,
+in a chunk of memory terminated by a type [C:/Adam/Gr/Gr.CPP.Z,15] GRST_END.
 
-[C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3() and [MN:SpriteMain] SpriteMain() shows how the
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,27] Sprite3() and [C:/Adam/Gr/SpriteMain.CPP.Z,149] SpriteMain() shows how the
 unions are used.  It's kind-of a mess using a union.
 
-[C:/TempleOS/Adam/Gr/CSpriteNew.CPP.Z,119] SpriteSize() will return the size of a single
-operation, while [C:/TempleOS/Adam/Gr/CSpriteNew.CPP.Z,119] SpriteSize() with an 's' will
+[C:/Adam/Gr/SpriteNew.CPP.Z,77] SpriteSize() will return the size of a single
+operation, while [C:/Adam/Gr/SpriteNew.CPP.Z,77] SpriteSize() with an 's' will
 return the size of an entire lst.  Look at
-[MN:sprite_base_size] sprite_base_size.
+[C:/Adam/Gr/SpriteNew.CPP.Z,5] sprite_base_size.
 
 To get familiar, type <CTRL-R> on sprite in
 a document and select "Display as Text".  It
@@ -24,11 +24,11 @@ See ::/Apps/GrModels
 `
  for an example of
 making CSprite by hand.  Those are type
-[C:/TempleOS/Adam/Gr/Gr.CPP.Z,44] GRST_MESH, one of the most complicated.
+[C:/Adam/Gr/Gr.CPP.Z,39] GRST_MESH, one of the most complicated.
 */
 
-public U0 SpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
-{
+public U0 Sprite3(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
+{//Plot a sprite into a CDC.
   CSprite *tempg=elems-offset(CSprite.start);
   I64 i,j,k,x1,y1,z1,x2,y2,
 	cur_sprite_elem_num=0,*old_r,*r2,
@@ -258,50 +258,50 @@ public U0 SpritePlot3(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	old_flags&(DCF_SYMMETRY|DCF_TRANSFORMATION);
 }
 
-public U0 SpritePlot3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems)
-{
+public U0 Sprite3B(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *elems)
+{//Plot a sprite into a CDC, post transform xyz translation.
   I64 old_x=dc->x,old_y=dc->y,old_z=dc->z,
       old_flags=dc->flags&DCF_TRANSFORMATION;
   dc->x=x; dc->y=y; dc->z=z;
   dc->flags|=DCF_TRANSFORMATION;
-  SpritePlot3(dc,0,0,0,elems);
+  Sprite3(dc,0,0,0,elems);
   dc->x=old_x; dc->y=old_y; dc->z=old_z;
   dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
-public U0 SpritePlotRotMat3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
-{
+public U0 SpriteMat3B(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
+{//Plot rotated by matrix
   I64 *old_r=dc->r,old_m[16],
       old_flags=dc->flags&DCF_TRANSFORMATION;
   MemCpy(old_m,m,16*sizeof(I64));
   dc->flags|=DCF_TRANSFORMATION;
   GrAddTranslation(m,x,y,z);
   dc->r=GrMulMat(old_r,m);
-  SpritePlot3(dc,0,0,0,elems);
+  Sprite3(dc,0,0,0,elems);
   Free(dc->r);
   dc->r=old_r;
   MemCpy(m,old_m,16*sizeof(I64));
   dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 }
 
-public U0 SpritePlotRotX3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
-{
+public U0 SpriteX3B(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
+{//Plot rotated around X axis
   I64 *r=GrRotXNew(phi);
-  SpritePlotRotMat3B(dc,x,y,z,elems,r);
+  SpriteMat3B(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 SpritePlotRotY3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
-{
+public U0 SpriteY3B(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
+{//Plot rotated around Y axis
   I64 *r=GrRotYNew(omega);
-  SpritePlotRotMat3B(dc,x,y,z,elems,r);
+  SpriteMat3B(dc,x,y,z,elems,r);
   Free(r);
 }
 
-public U0 SpritePlotRotZ3B(CDC *dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
-{
+public U0 SpriteZ3B(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
+{//Plot rotated around Z axis
   I64 *r=GrRotZNew(theta);
-  SpritePlotRotMat3B(dc,x,y,z,elems,r);
+  SpriteMat3B(dc,x,y,z,elems,r);
   Free(r);
 }
 
@@ -310,7 +310,7 @@ public U0 SpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
 { //Ignores flood fills.
   CDC *dc=DCNew(MAX_I32,MAX_I32,Fs,TRUE);
   DCExtentsInit(dc);
-  SpritePlot3(dc,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
+  Sprite3(dc,MAX_I32/2,MAX_I32/2,MAX_I32/2,elems);
   if (dc->min_x<=dc->max_x) {
     dc->min_x-=MAX_I32/2;
     dc->max_x-=MAX_I32/2;
@@ -332,7 +332,7 @@ public CDC *Sprite2DC(U8 *elems)
   I64 min_x,max_x,min_y,max_y;
   SpriteExtents(elems,&min_x,&max_x,&min_y,&max_y);
   result=DCNew(max_x-min_x+1,max_y-min_y+1);
-  SpritePlot3(result,-min_x,-min_y,0,elems);
+  Sprite3(result,-min_x,-min_y,0,elems);
   return result;
 }
 
@@ -341,15 +341,22 @@ public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 //The two CSprite should be identical
 //except for points shifted around.
 //t ranges from 0.0 to 1.0
-  I64 i=SpriteSize(elems0),
-      t1=gr_scale*t,t0=gr_scale-t1;
+  I64 i,t1=gr_scale*t,t0=gr_scale-t1;
   I32 *ptr0,*ptr1,*ptrr;
   CD3I32 *p0,*p1,*pr;
-  U8 *result=MAlloc(i);
+  U8 *result;
   CSprite *tempg0=elems0-offset(CSprite.start),
-      *tempg1=elems1-offset(CSprite.start),
-      *tempgr=result-offset(CSprite.start);
-  MemCpy(result,elems0,i);
+	  *tempg1=elems1-offset(CSprite.start),*tempgr;
+  if (t<0.5) {
+    i=SpriteSize(elems0),
+    result=MAlloc(i);
+    MemCpy(result,elems0,i);
+  } else {
+    i=SpriteSize(elems1),
+    result=MAlloc(i);
+    MemCpy(result,elems1,i);
+  }
+  tempgr=result-offset(CSprite.start);
   while (tempg0->type) {
     if (tempg0->type!=tempg1->type)
       throw('Graphics');
@@ -438,18 +445,18 @@ public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 	}
 	break;
     }
-    i=SpriteElemSize(tempg0);
-    tempg0(U8 *)+=i;
-    tempg1(U8 *)+=i;
-    tempgr(U8 *)+=i;
+    tempg0(U8 *)+=SpriteElemSize(tempg0);
+    tempg1(U8 *)+=SpriteElemSize(tempg1);
+    tempgr(U8 *)+=SpriteElemSize(tempgr);
   }
   return result;
 }
 
 
-#help_index "Graphics/CSprite;Doc/Output"
-public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
-{
+#help_index "Graphics/Sprite;Doc/Output"
+public CDocEntry *DocSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
+{//Put a sprite into a document.  You can, optionally, supply a fmt string
+ //for [C:/Doc/Dollar.TXT.Z,1] Dollar cmd with a %d for the bin_num.
   I64 size;
   U8 *st;
   Bool unlock;
@@ -459,7 +466,6 @@ public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
   unlock=DocLock(doc);
   size=SpriteSize(elems);
   tempb=CAlloc(sizeof(CDocBin),doc->mem_task);
-  tempb->type=DOCBT_CSPRITE;
   tempb->size=size;
   tempb->data=MAlloc(size,doc->mem_task);
   MemCpy(tempb->data,elems,size);
@@ -469,18 +475,18 @@ public CDocEntry *DocPutSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
   if (fmt)
     st=MPrint(fmt,doc->cur_bin_num++);
   else
-    st=MPrint("$SP,\"\",%d$",doc->cur_bin_num++);
+    st=MPrint("$SP,\"\",BI=%d$",doc->cur_bin_num++);
   doc_e=DocPrint(doc,"%s",st);
   Free(st);
   doc_e->bin_data=tempb;
-  if (doc_e && Bt(doc_type_flags_tag,doc_e->type_u8) && doc_e->tag && *doc_e->tag)
+  if (doc_e && doc_e->flags1&DOCEF1_TAG && doc_e->tag && *doc_e->tag)
     tempb->tag=StrNew(doc_e->tag,doc->mem_task);
   if (unlock)
     DocUnlock(doc);
   return doc_e;
 }
 
-public CDocEntry *PutSprite(U8 *elems,U8 *fmt=NULL)
+public CDocEntry *Sprite(U8 *elems,U8 *fmt=NULL)
 {
 //If you set fmt,
 //then include dollarsigns ("$SP ...$")
@@ -488,6 +494,6 @@ public CDocEntry *PutSprite(U8 *elems,U8 *fmt=NULL)
 
   CDoc *doc;
   if (doc=DocPut)
-    return DocPutSprite(doc,elems,fmt);
+    return DocSprite(doc,elems,fmt);
   return NULL;
 }

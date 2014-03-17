@@ -1,8 +1,8 @@
-//See [C:/Adam/Gr/GrScreen.CPP,1] ExtScreenCodes for the format
+//See [C:/Adam/Gr/GrScreen.CPP.Z,1] ExtScreenCodes for the format
 //of the U32 you pass to PlotWinU8()
 
-//See [C:/Demo/ExtendedChars.CPP,1]
-//and [C:/Demo/Graphics/FontEd.CPP,1].
+//See [C:/Demo/ExtendedChars.CPP.Z,1]
+//and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 //Hold ALT and press a 3 digit decimal number
 //or press <CTRL-ALT-A>.
 
@@ -15,7 +15,7 @@ U0 DrawIt(CTask *task,CDC *)
 
 U0 ScreenCodes()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
   Fs->draw_it=&DrawIt;
   GetChar(,FALSE);

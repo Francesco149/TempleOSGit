@@ -12,4 +12,4 @@
 
  <1> (image)
 
-[C:/TempleOS/Misc/Bible.TXT.Z,19168] Joshua,4:18
+[C:/Misc/Bible.TXT.Z,19168] Joshua,4:18

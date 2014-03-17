@@ -142,19 +142,3 @@ U0 RCache(CPrt *p,U8 **_buf, I64 *_blk, I64 *_cnt)
     LBtr(&sys_semas[SYS_SEMA_DSK_CACHE],0);
   }
 }
-
-Bool RAMRBlks(CPrt *p,U8 *buf,I64 blk,I64 cnt)
-{
-  CBlkDev *bdev=p->bdev;
-  BlkDevChk(bdev);
-  MemCpy(buf,bdev->RAM_dsk+blk<<BLK_SIZE_BITS,cnt<<BLK_SIZE_BITS);
-  return TRUE;
-}
-
-Bool RAMWBlks(CPrt *p,U8 *buf,I64 blk,I64 cnt)
-{
-  CBlkDev *bdev=p->bdev;
-  BlkDevChk(bdev);
-  MemCpy(bdev->RAM_dsk+blk<<BLK_SIZE_BITS,buf,cnt<<BLK_SIZE_BITS);
-  return TRUE;
-}

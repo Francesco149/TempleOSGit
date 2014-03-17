@@ -1,54 +1,52 @@
-#help_index "Graphics/CSprite"
+#help_index "Graphics/Sprite"
 
 #define GRST_MENU	-2
-#define GRST_SNAP	-3
-#define GRST_INS_SCREEN_BITMAP			-4
-#define GRST_INS_TRANSPARENT_SCREEN_BITMAP	-5
-#define GRST_ED_MENU	-6
-#define GRST_EXIT	-7
+#define GRST_INS_SCREEN_BITMAP			-3
+#define GRST_INS_TRANSPARENT_SCREEN_BITMAP	-4
+#define GRST_ED_MENU	-5
+#define GRST_EXIT	-6
 
-I64 PopUpSpriteMain(CSprite **_root,I64 snap,F64 ip_scaler,I64 *_cur_num)
+I64 PopUpSpriteMain(CSprite **_root,I64 *_cur_num)
 {
   U8 *st;
   CTask *pu_task;
   I64 i;
   CDoc *doc=DocNew;
   DocPrint(doc,"$PURPLE$$TX+CX,\"Sprite Main Menu\"$\n"
-	"$LK+PU+CX,\"Click for Help\",\"FI:::/Doc/SpriteMain.TXT.Z\"$\n"
-	"\n$LTBLUE$$MU-UL,\"Color (4-bit)\",GRST_COLOR8$\n"
-	"$MU-UL,\"Dither Color (4-bit)\",GRST_DITHER_COLOR8$\n"
-	"$MU-UL,\"Width\",GRST_WIDTH$\n"
-	"$MU-UL,\"Snap %d %5.3f\",GRST_SNAP$\n"
-	"$MU-UL,\"Planar Symmetry\",GRST_PLANAR_SYMMETRY$\n"
-	"\n$MU-UL,\"Point\",GRST_PT$\n"
-	"$MU-UL,\"Line\",GRST_LINE$\n"
-	"$MU-UL,\"Arrow\",GRST_ARROW$\n"
-	"$MU-UL,\"Rect\",GRST_RECT$\n"
-	"$MU-UL,\"Circle\",GRST_CIRCLE$\n"
-	"$MU-UL,\"Ellipse\",GRST_ELLIPSE$\n"
-	"$MU-UL,\"Polygon\",GRST_POLYGON$\n"
-	"$MU-UL,\"Text\",GRST_TEXT$\n"
-	"$MU-UL,\"Text Box\",GRST_TEXT_BOX$\n"
-	"$MU-UL,\"Text Diamond\",GRST_TEXT_DIAMOND$\n"
-	"$MU-UL,\"Flood Fill\",GRST_FLOOD_FILL$\n"
-	"$MU-UL,\"Flood Fill Not Color\",GRST_FLOOD_FILL_NOT$\n"
-	"$MU-UL,\"PolyLine\",GRST_POLYLINE$\n"
-	"$MU-UL,\"PolyPoint\",GRST_POLYPT$\n"
-	"$MU-UL,\"BSpline2\",GRST_BSPLINE2$\n"
-	"$MU-UL,\"BSpline3\",GRST_BSPLINE3$\n"
-	"$MU-UL,\"BSpline2 Closed\",GRST_BSPLINE2_CLOSED$\n"
-	"$MU-UL,\"BSpline3 Closed\",GRST_BSPLINE3_CLOSED$\n"
-	"$MU-UL,\"Insert Screen-Captured BitMap\",GRST_INS_SCREEN_BITMAP$\n"
-	"$MU-UL,\"Insert Transparent Screen-Captured BitMap\",GRST_INS_TRANSPARENT_SCREEN_BITMAP$\n"
-	"$PURPLE$$MU-UL,\"+] Create or Edit 3D Mesh\",GRST_MESH$\n"
-	"$MU-UL,\"+] Create or Edit Shiftable 3D Mesh\",GRST_SHIFTABLE_MESH$\n"
-	"$MU-UL,\"+] Convert to BitMap or Edit BitMap\",GRST_BITMAP8$$LTBLUE$\n"
-	"\n$MU-UL,\"Transform On  (for use with 3D icons)\",GRST_TRANSFORM_ON$\n"
-	"$MU-UL,\"Transform Off (for use with 3D icons)\",GRST_TRANSFORM_OFF$\n"
+	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/SpriteMain.TXT.Z\"$\n"
+	"\n$LTBLUE$$MU-UL,\"Color (4-bit)\",LE=GRST_COLOR8$\n"
+	"$MU-UL,\"Dither Color (4-bit)\",LE=GRST_DITHER_COLOR8$\n"
+	"$MU-UL,\"Width\",LE=GRST_WIDTH$\n"
+	"$MU-UL,\"Planar Symmetry\",LE=GRST_PLANAR_SYMMETRY$\n"
+	"\n$MU-UL,\"Point\",LE=GRST_PT$\n"
+	"$MU-UL,\"Line\",LE=GRST_LINE$\n"
+	"$MU-UL,\"Arrow\",LE=GRST_ARROW$\n"
+	"$MU-UL,\"Rect\",LE=GRST_RECT$\n"
+	"$MU-UL,\"Circle\",LE=GRST_CIRCLE$\n"
+	"$MU-UL,\"Ellipse\",LE=GRST_ELLIPSE$\n"
+	"$MU-UL,\"Polygon\",LE=GRST_POLYGON$\n"
+	"$MU-UL,\"Text\",LE=GRST_TEXT$\n"
+	"$MU-UL,\"Text Box\",LE=GRST_TEXT_BOX$\n"
+	"$MU-UL,\"Text Diamond\",LE=GRST_TEXT_DIAMOND$\n"
+	"$MU-UL,\"Flood Fill\",LE=GRST_FLOOD_FILL$\n"
+	"$MU-UL,\"Flood Fill Not Color\",LE=GRST_FLOOD_FILL_NOT$\n"
+	"$MU-UL,\"PolyLine\",LE=GRST_POLYLINE$\n"
+	"$MU-UL,\"PolyPoint\",LE=GRST_POLYPT$\n"
+	"$MU-UL,\"BSpline2\",LE=GRST_BSPLINE2$\n"
+	"$MU-UL,\"BSpline3\",LE=GRST_BSPLINE3$\n"
+	"$MU-UL,\"BSpline2 Closed\",LE=GRST_BSPLINE2_CLOSED$\n"
+	"$MU-UL,\"BSpline3 Closed\",LE=GRST_BSPLINE3_CLOSED$\n"
+	"$MU-UL,\"Insert Screen-Captured BitMap\",LE=GRST_INS_SCREEN_BITMAP$\n"
+	"$MU-UL,\"Insert Transparent Screen-Captured BitMap\",LE=GRST_INS_TRANSPARENT_SCREEN_BITMAP$\n"
+	"$PURPLE$$MU-UL,\"+] Create or Edit 3D Mesh\",LE=GRST_MESH$\n"
+	"$MU-UL,\"+] Create or Edit Shiftable 3D Mesh\",LE=GRST_SHIFTABLE_MESH$\n"
+	"$MU-UL,\"+] Convert to BitMap or Edit BitMap\",LE=GRST_BITMAP8$$LTBLUE$\n"
+	"\n$MU-UL,\"Transform On  (for use with 3D icons)\",LE=GRST_TRANSFORM_ON$\n"
+	"$MU-UL,\"Transform Off (for use with 3D icons)\",LE=GRST_TRANSFORM_OFF$\n"
 	"\n"
-	"$PURPLE$$MU-UL,\"+] Sprite Edit Menu\",GRST_ED_MENU$$LTBLUE$\n"
-	"$MU-UL,\"Exit  Sprite\",GRST_EXIT$\n"
-	"$MU-UL,\"Abort Sprite\",DOCM_CANCEL$\n",snap,ip_scaler);
+	"$PURPLE$$MU-UL,\"+] Sprite Edit Menu\",LE=GRST_ED_MENU$$LTBLUE$\n"
+	"$MU-UL,\"Exit  Sprite\",LE=GRST_EXIT$\n"
+	"$MU-UL,\"Abort Sprite\",LE=DOCM_CANCEL$\n");
   DocPrint(doc,"\nRight-Click to get back to this menu.");
   st=MPrint("SpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,_root,_cur_num);
   PopUp(st,NULL,&pu_task);
@@ -80,8 +78,8 @@ Bool PopUpExtents(I64 *_x1,I64 *_x2,I64 *_y1,I64 *_y2)
   doc_e->data=_y2;
   DocDataFmt(doc_e);
 
-  DocPrint(doc," $BT,\"Use These Extents\",TRUE$");
-  DocPrint(doc,"$CM,3,0$$BT,\"Drag-Out New Extents\",FALSE$\n\n");
+  DocPrint(doc," $BT,\"Use These Extents\",LE=TRUE$");
+  DocPrint(doc,"$CM,3,0$$BT,\"Drag-Out New Extents\",LE=FALSE$\n\n");
   do i=PopUpMenu(doc);
   while (i!=FALSE && i!=TRUE);
   DocDel(doc);
@@ -123,7 +121,7 @@ U0 GrSetSettings(CDC *dc,CSprite *root,I64 cur_num,CColorROPU32 *_color,I64 *_wi
 
 U0 GrScreenInit(CDC *dc,I64,I64)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 xx,yy,old_pen_width=dc->pen_width;
   CColorROPU32 old_color=dc->color;
   WinMgrSync;
@@ -151,23 +149,23 @@ U0 GrScreenInit(CDC *dc,I64,I64)
 I64 SpriteMain(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 {
   I64 result,i,msg_code,z,x1,y1,z1,x2,y2,x3,y3,p1,p2,xx1,yy1,xx2,yy2,
-	num,old_width,size,eletype=GRST_MENU,width,ip_snap=1,cur_num,
+	num,old_width,size,eletype=GRST_MENU,width,cur_num,
 	old_border_src=Fs->border_src,
 	old_title_src =Fs->title_src,
 	old_e_flags1=doc_e->flags1,old_flags;
   CColorROPU32 bm_bkcolor,color;
   CSprite *root,root2,*tempg,*tempg1,*tempg2,*insert_pt;
-  CDC *dc=DCAlias(gr_dc,Fs),
-	*dc2=DCAlias(gr_dc,sys_winmgr_task),
+  CDC *dc=DCAlias(,Fs),
+	*dc2=DCAlias(,sys_winmgr_task),
 	*dc3,
 	*img;
   CD3I32 *p;
   CDocBin *tempb=doc_e->bin_data;
-  F64 a1,a2,ip_scaler=1.0;
+  F64 a1,a2;
   I32 *ptr,*mesh,*old_mesh;
   U8 *st,*old_task_title=StrNew(Fs->task_title);
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WordStat;
   WinMgrSync(2,TRUE);
   dc2->flags|=DCF_ON_TOP;
@@ -176,7 +174,6 @@ I64 SpriteMain(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
   insert_pt=GrNum2Que(root,cur_num,&x1,&y1);
   x+=x1; y+=y1;
 
-  SetSnap(&Fs->snap,ip_snap,ip_scaler);
   Fs->win_inhibit=CSPRITE_WIF;
   while (TRUE) {
     GrSetSettings(dc,root,cur_num,&color,&width,x,y);
@@ -188,7 +185,7 @@ I64 SpriteMain(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
       Fs->border_src=old_border_src;
       Fs->title_src =old_title_src;
 
-      eletype=PopUpSpriteMain(&root,ip_snap,ip_scaler,&cur_num);
+      eletype=PopUpSpriteMain(&root,&cur_num);
       GrEdUpdate(doc,tempb,root);
       insert_pt=GrNum2Que(root,cur_num);
       switch (eletype) {
@@ -256,7 +253,7 @@ I64 SpriteMain(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	eletype=GRST_MENU;
 	break;
       case GRST_ED_MENU:
-	switch (SpriteEd(doc,doc_e,x,y,&root,&cur_num,&ip_snap,&ip_scaler)) {
+	switch (SpriteEd(doc,doc_e,x,y,&root,&cur_num)) {
 	  case GE_ABORT:
 	    eletype=DOCM_CANCEL;
 	    break;
@@ -397,14 +394,6 @@ I64 SpriteMain(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	doc_e->flags1=old_e_flags1;
 	if (i<3)
 	  eletype=GRST_MENU;
-	break;
-      case GRST_SNAP:
-	doc_e->flags1|=DOCEF1_DONT_DRAW;
-	PopUpSnap(&Fs->snap);
-	ip_snap=Fs->snap.x;
-	ip_scaler=Fs->snap.dx;
-	doc_e->flags1=old_e_flags1;
-	eletype=GRST_MENU;
 	break;
       case GRST_TEXT:
 	doc_e->flags1|=DOCEF1_DONT_DRAW;
@@ -614,8 +603,8 @@ ei_restart:
 	      dc2->pen_width=1;
 	      do {
 		dc2->color=ROPF_DITHER+WHITE<<16+BLACK;
-		GrLineRect4(dc2,xx1+Fs->win_pixel_left+Fs->win_scroll_x,yy1+Fs->win_pixel_top+Fs->win_scroll_y,
-		      xx2+Fs->win_pixel_left+Fs->win_scroll_x,yy2+Fs->win_pixel_top+Fs->win_scroll_y);
+		GrLineRect4(dc2,xx1+Fs->pix_left+Fs->scroll_x,yy1+Fs->pix_top+Fs->scroll_y,
+		      xx2+Fs->pix_left+Fs->scroll_x,yy2+Fs->pix_top+Fs->scroll_y);
 		msg_code=GetMsg(&p1,&p2,
 		      1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 		GrScreenInit(dc,x,y);
@@ -646,8 +635,8 @@ ei_restart:
 
 	      dc3=DCCaptureScreen;
 	      img=DCExtract(dc3,
-		    Fs->win_pixel_left+Fs->win_scroll_x+xx1,Fs->win_pixel_top+Fs->win_scroll_y+yy1,
-		    Fs->win_pixel_left+Fs->win_scroll_x+xx2-1,Fs->win_pixel_top+Fs->win_scroll_y+yy2-1);
+		    Fs->pix_left+Fs->scroll_x+xx1,Fs->pix_top+Fs->scroll_y+yy1,
+		    Fs->pix_left+Fs->scroll_x+xx2-1,Fs->pix_top+Fs->scroll_y+yy2-1);
 	      if (eletype==GRST_INS_TRANSPARENT_SCREEN_BITMAP)
 		DCColorChg(img,bm_bkcolor);
 	      GrScaleZoom(i);
@@ -944,20 +933,20 @@ ei_bitmap:
 	    tempg1=insert_pt;
 	    if (tempg1==root || tempg1->type!=GRST_BITMAP8) {
 	      GrSetSettings(img,root,0,&color,&width,-(xx1-x),-(yy1-y));
-	      SpritePlot3(img,-(xx1-x),-(yy1-y),0,tempb->data);
+	      Sprite3(img,-(xx1-x),-(yy1-y),0,tempb->data);
 	      QueDel(root);
 	      insert_pt=root->next=root->last=root;
 	      cur_num=1;
 	    } else {
 	      GrSetSettings(img,root,cur_num,&color,&width,-(xx1-x),-(yy1-y));
-	      SpritePlot3(img,-(xx1-x),-(yy1-y),0,tempg1(U8 *)+offset(CSprite.start),TRUE);
+	      Sprite3(img,-(xx1-x),-(yy1-y),0,tempg1(U8 *)+offset(CSprite.start),TRUE);
 	      insert_pt=tempg1->next;
 	      QueRem(tempg1);
 	      Free(tempg1);
 	    }
 	    MemCpy(tempg(U8 *)+offset(CSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 
-	    switch (i=SpriteBitMap(doc,doc_e,dc,&xx1,&yy1,&xx2,&yy2,&img,bm_bkcolor,&ip_snap,&ip_scaler)) {
+	    switch (i=SpriteBitMap(doc,doc_e,dc,&xx1,&yy1,&xx2,&yy2,&img,bm_bkcolor)) {
 	      case GE_EXIT:
 	      case GE_CONT:
 		Free(tempg);
@@ -971,7 +960,6 @@ ei_bitmap:
 		MemCpy(tempg(U8 *)+offset(CSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 		break;
 	    }
-	    SetSnap(&Fs->snap,ip_snap,ip_scaler);
 	    doc_e->flags1=old_e_flags1;
 
 	    QueIns(tempg,insert_pt->last);
@@ -1089,7 +1077,6 @@ U0 EdInsGraphic(CDoc *doc,I64 x,I64 y)
   if (st=EdSprite(doc->cur_bin_num)) {
     unlock=DocLock(doc);
     tempb=CAlloc(sizeof(CDocBin),doc->mem_task);
-    tempb->type=DOCBT_CSPRITE;
     tempb->size=sprite_base_size[GRST_END];
     tempb->data=CAlloc(tempb->size,doc->mem_task);
     tempb->num=doc->cur_bin_num++;
@@ -1098,7 +1085,7 @@ U0 EdInsGraphic(CDoc *doc,I64 x,I64 y)
     doc_e=DocPrint(doc,"%s",st);
     doc_e->bin_data=tempb;
     Free(st);
-    if (doc_e && Bt(doc_type_flags_tag,doc_e->type_u8) && doc_e->tag && *doc_e->tag)
+    if (doc_e && doc_e->flags1&DOCEF1_TAG && doc_e->tag && *doc_e->tag)
       tempb->tag=StrNew(doc_e->tag,doc->mem_task);
     DocUnlock(doc);
     x+=StrLen(doc_e->tag)*FONT_WIDTH;
@@ -1143,5 +1130,3 @@ U0 EdExistingGraphic(CDoc *doc,I64 x,I64 y)
   } else
     Free(old_csprite);
 }
-
-#help_index "Graphics"

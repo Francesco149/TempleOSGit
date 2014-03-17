@@ -603,64 +603,30 @@ U0 ICFCmpAndBranch(CLex *lx,CIntermediateCode *tempi,I64 ip,
 
 U0 ICFMul(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 {
-  Bool dont_push_float,dont_pop_float;
-  CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
   if (tempi->a1.type&TY_MASK==TY_IMM &&
       tempi->a1.type_pointed&RT_MASK==RT_F64 &&
       tempi->a1.disp(F64)==1.0) {
-    if (dont_push_float) {
-      ICCopyTemplate(lx,tempi,CMP_TEMPLATE_FSTP,FALSE,TRUE,TRUE,CN_MAIN);
-      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	  TY_REG+RT_I64,REG_RAX,0,ip);
-    } else if (dont_pop_float) {
-      ICMov(tempi,TY_REG+RT_I64,REG_RAX,0,
+    CmpNoteFloatOp(lx,tempi,FALSE,FALSE,CN_MAIN);
+    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 	  tempi->a2.type,tempi->a2.reg,tempi->a2.disp,ip);
-      ICCopyTemplate(lx,tempi,CMP_TEMPLATE_FLD,FALSE,TRUE,TRUE,CN_MAIN);
-    } else {
-      CmpNoteFloatOp(lx,tempi,TRUE,TRUE,CN_MAIN);
-      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	  tempi->a2.type,tempi->a2.reg,tempi->a2.disp,ip);
-    }
   } else if (tempi->a2.type&TY_MASK==TY_IMM &&
       tempi->a2.type_pointed&RT_MASK==RT_F64 &&
       tempi->a2.disp(F64)==1.0) {
-    if (dont_push_float) {
-      ICCopyTemplate(lx,tempi,CMP_TEMPLATE_FSTP,FALSE,TRUE,TRUE,CN_MAIN);
-      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	  TY_REG+RT_I64,REG_RAX,0,ip);
-    } else if (dont_pop_float) {
-      ICMov(tempi,TY_REG+RT_I64,REG_RAX,0,
-	  tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip);
-      ICCopyTemplate(lx,tempi,CMP_TEMPLATE_FLD,FALSE,TRUE,TRUE,CN_MAIN);
-    } else {
-      CmpNoteFloatOp(lx,tempi,TRUE,TRUE,CN_MAIN);
-      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	  tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip);
-    }
+    CmpNoteFloatOp(lx,tempi,FALSE,FALSE,CN_MAIN);
+    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
+	tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip);
   } else
     ICFOp(lx,tempi,SLASH_OP_FMUL,buf,ip);
 }
 
 U0 ICFDiv(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 {
-  Bool dont_push_float,dont_pop_float;
   if (tempi->a2.type&TY_MASK==TY_IMM &&
       tempi->a2.type_pointed&RT_MASK==RT_F64 &&
       tempi->a2.disp(F64)==1.0) {
-    CmpSetFloatOpPushPop(lx,tempi,&dont_push_float,&dont_pop_float);
-    if (dont_push_float) {
-      ICCopyTemplate(lx,tempi,CMP_TEMPLATE_FSTP,FALSE,TRUE,TRUE,CN_MAIN);
-      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	  TY_REG+RT_I64,REG_RAX,0,ip);
-    } else if (dont_pop_float) {
-      ICMov(tempi,TY_REG+RT_I64,REG_RAX,0,
-	  tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip);
-      ICCopyTemplate(lx,tempi,CMP_TEMPLATE_FLD,FALSE,TRUE,TRUE,CN_MAIN);
-    } else {
-      CmpNoteFloatOp(lx,tempi,TRUE,TRUE,CN_MAIN);
-      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	  tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip);
-    }
+    CmpNoteFloatOp(lx,tempi,FALSE,FALSE,CN_MAIN);
+    ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
+	tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip);
   } else
     ICFOp(lx,tempi,SLASH_OP_FDIV,buf,ip);
 }

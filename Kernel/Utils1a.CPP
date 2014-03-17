@@ -127,7 +127,7 @@ _LBEQU::
 	POP	RBP
 	RET1	24
 // ************************************
-_LIMIT_I64::
+_CLAMP_I64::
 	PUSH	RBP
 	MOV	RBP,RSP
 	MOV	RAX,U64 SF_ARG1[RBP]
@@ -140,7 +140,7 @@ _LIMIT_I64::
 	POP	RBP
 	RET1	24
 // ************************************
-_LIMIT_U64::
+_CLAMP_U64::
 	PUSH	RBP
 	MOV	RBP,RSP
 	MOV	RAX,U64 SF_ARG1[RBP]
@@ -479,6 +479,7 @@ SET_FS_BASE::
 	POP	RDX
 	POP	RCX
 	POP	RAX
+_RET::
 	RET
 _SET_MSR::
 	PUSH	RBP

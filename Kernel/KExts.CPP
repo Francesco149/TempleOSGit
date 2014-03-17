@@ -63,17 +63,17 @@ extern I64 FileWrite(U8 *filename,U8 *fbuf,
 extern U0 Exit();
 extern U0 AdamLog(U8 *fmt,...);
 extern U0 Dbg(U8 *msg=NULL,I64 msg_num=0);
-extern Bool BptS(U8 *add,CTask *task=NULL,Bool live=TRUE);
+extern Bool BptS(U8 *addr,CTask *task=NULL,Bool live=TRUE);
 extern U0 DbgHelp();
 extern U8 *Caller(I64 num=1);
-extern CTask *SpawnQue(U0 (*fp_add)(U8 *data),U8 *data=NULL,
+extern CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	    U8 *task_name=NULL,
 	    I64 target_cpu,
 	    CTask *parent=NULL, //NULL means adam
 	    I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
 extern CTask *SpawnUser(U8 *fmt=NULL,...);
 extern U0 TaskRstAwaitingMsg(CTask *task=NULL);
-extern CSrvCmd *TaskMsgQue(CTask *_srv,CTask *master,
+extern CSrvCmd *TaskMsg(CTask *_srv,CTask *master,
 		     I64 code,I64 p1,I64 p2,I64 flags);
 extern U0 TaskWait(CTask *task=NULL);
 extern I64 SrvCmdsHandler(CTask *task=NULL);
@@ -82,15 +82,15 @@ extern U8 *SPrint(U8 *dst,U8 *fmt,...);
 extern U8 *MPrint(U8 *fmt,...);
 extern U8 *Define(U8 *name);
 extern U8 *DefineSub(I64 sub,U8 *name);
-extern I64 DefineMatch(U8 *pattern,U8 *lst_name,I64 flags=0);
-extern U0 PutS(U8 *st); //Use [MN:Print] Print()
+extern I64 DefineMatch(U8 *needle,U8 *haystack_lst_name,I64 flags=0);
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,946] Print()
 extern U0 PutChars(U64 ch);
 extern I64 GetChar(I64 *scancode=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE);
 extern Bool IsDbg();
 extern I64 FlushMsgs(CTask *task=NULL);
 extern U0 SetMouseIP(I64 x,I64 y,I64 z,I64 l,I64 r,I64 c);
-extern U8 *TextFileRead(U8 *filename,I64 *_attr=NULL);
-extern U0 SPrintPSect(U8 *buf,I64 add,I64 field_len);
+extern U0 SPrintPSect(U8 *buf,I64 addr,I64 field_len);
+extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 extern I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE);
 extern U0 UserTaskCont();
 

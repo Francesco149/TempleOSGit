@@ -1,4 +1,4 @@
-//See [C:/Doc/TimeDate.TXT,1]
+//See [C:/Doc/TimeDate.TXT.Z,1]
 
 U16 mon_start_days1[12]={
 0,31,59,90,120,151,181,212,243,273,304,334};
@@ -138,15 +138,15 @@ U0 GetDateTimeStruct(CDateStruct *_ds)
   Bool is_bcd;
 
   MemSet(_ds,0,sizeof(CDateStruct));
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_SYS_DATE],0))
-    Pause;
+    PAUSE
 
   OutU8(0x70,0x0A);
   do {
     while (InU8(0x71) & 0x80)
-      Pause;
+      PAUSE
 
     OutU8(0x70,0);
     b[2]=InU8(0x71);
@@ -174,7 +174,7 @@ U0 GetDateTimeStruct(CDateStruct *_ds)
     is_bcd=TRUE;
 
   LBtr(&sys_semas[SYS_SEMA_SYS_DATE],0);
-  PopFD;
+  POPFD
   if (is_bcd)
     for (i=2;i<9;i++)
       b[i]=Bcd2Bin(b[i]);

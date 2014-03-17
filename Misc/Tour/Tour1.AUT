@@ -72,14 +72,6 @@ PopUpOk(
 "are macros and will change directories.\n");
 
 PopUpOk(
-"As you can see, the command line is not\n"
-"different from the personal menu.\n"
-"Both use the same commands and have the same\n"
-"'widgets' available.\n\n"
-"Both utilize the same underlying document\n"
-"format.  It is similar to $GREEN$html$FG$ because\n"
-"it has ASCII behind it.  TempleOS documents\n"
-"can include graphics.\n\n"
 "\"$GREEN$<CTRL-T>$FG$\" after clicking $GREEN$[OKAY]$FG$ to toggle\n"
 "to plain text mode.\n");
 AFGetChar(CH_CTRLT);

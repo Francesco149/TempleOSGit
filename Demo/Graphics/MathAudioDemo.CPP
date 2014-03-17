@@ -10,7 +10,7 @@ F64 MyCos(F64 d)
 
 U0 FunDraw1(CDC *dc,F64 (*f)(F64 t))
 {
-  I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height;
+  I64 i,w=Fs->pix_width,h=Fs->pix_height;
   F64 scale=h/5.0;
   for (i=-w/2;i<=w/2;i++)
     GrLine(dc,w/2+i,h/2-scale*f(i/scale*2*pi),w/2+i+1,h/2-scale*f((i+1)/scale*2*pi));
@@ -18,7 +18,7 @@ U0 FunDraw1(CDC *dc,F64 (*f)(F64 t))
 
 U0 FunDraw2(CDC *dc,F64 (*f)(F64 t,F64 p),F64 T)
 {
-  I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height;
+  I64 i,w=Fs->pix_width,h=Fs->pix_height;
   F64 scale=h/5.0;
   for (i=-w/2;i<=w/2;i++)
     GrLine(dc,w/2+i,h/2-scale*f(i/scale,T),w/2+i+1,h/2-scale*f((i+1)/scale,T));
@@ -26,7 +26,7 @@ U0 FunDraw2(CDC *dc,F64 (*f)(F64 t,F64 p),F64 T)
 
 U0 Init(CDC *dc)
 {
-  I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height;
+  I64 i,w=Fs->pix_width,h=Fs->pix_height;
   F64 scale=h/5.0;
   DocClear;
   DCFill(dc);

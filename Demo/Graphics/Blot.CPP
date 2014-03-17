@@ -29,7 +29,7 @@ for (i=0;i<256;i+=4) {
   Sleep(10);
 }
 U8 *tempg=DC2Sprite(img1);
-PutSprite(tempg);
+Sprite(tempg);
 Free(tempg);
 NewLine(9);
 

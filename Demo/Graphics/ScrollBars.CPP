@@ -20,9 +20,9 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,h,v;
 
   task->horz_scroll.min=0;
-  task->horz_scroll.max=MAP_WIDTH-task->win_pixel_width;
+  task->horz_scroll.max=MAP_WIDTH-task->pix_width;
   task->vert_scroll.min=0;
-  task->vert_scroll.max=MAP_HEIGHT-task->win_pixel_height;
+  task->vert_scroll.max=MAP_HEIGHT-task->pix_height;
   TaskDerivedValsUpdate(task);
 
   h=task->horz_scroll.pos;
@@ -37,7 +37,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 //Check bounds if you wish better performance.
   for (i=0;i<NUM_TREES;i++)
-    SpritePlot3(dc,tree_x[i]-h,tree_y[i]-v,0,__BIN_1);
+    Sprite3(dc,tree_x[i]-h,tree_y[i]-v,0,__BIN_1);
 }
 
 U0 Init()
@@ -51,7 +51,7 @@ U0 Init()
 
 U0 ScrollBars()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Init;
   DocCursor;
   DocClear;

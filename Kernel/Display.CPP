@@ -4,10 +4,10 @@ U0 RawPutChar(I64 ch)
 before the window mgr is running
 and for the debugger.
 
-See [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,628] GrUpdateForegroundOfText for
+See [C:/Adam/Gr/GrScreen.CPP.Z,276] GrUpdateForegroundOfText for
 the normal screen text output routine.
 
-See also [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen().
+See also [C:/Adam/Gr/GrScreen.CPP.Z,423] GrUpdateScreen().
 
 */
   Bool old_preempt=Preempt(OFF);
@@ -75,8 +75,8 @@ See also [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen().
 	sys_raw_col-=text_cols;
 	row=text_rows-1;
       }
-      PushFD;
-      Cli;
+      PUSHFD
+      CLI
       ptr=ptr1=col+row*gr_width;
       ptr+=VGA_GRAPHIC_MEM_BASE;
       ptr1+=sys_raw_screen_image; //Write to cached image as well
@@ -86,7 +86,7 @@ See also [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen().
 	ptr+=gr_width>>3;
 	ptr1+=gr_width>>3;
       }
-      PopFD;
+      POPFD
     }
     sys_raw_col++;
   }
@@ -103,35 +103,35 @@ U0 WinDerivedValsUpdate(CTask *task=NULL)
   if (!task) task=Fs;
 
 //Assert: This is called with TASKLf_TASK_LOCK set
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   task->win_width =task->win_right-task->win_left+1;
   task->win_height=task->win_bottom-task->win_top+1;
 
 //Inside the Border
-  task->win_pixel_left	=FONT_WIDTH*task->win_left;
-  task->win_pixel_right =FONT_WIDTH*(task->win_right+1)-1;
-  task->win_pixel_width =task->win_pixel_right-task->win_pixel_left+1;
-  task->win_pixel_top	=FONT_HEIGHT*task->win_top;
-  task->win_pixel_bottom=FONT_HEIGHT*(task->win_bottom+1)-1;
-  task->win_pixel_height=task->win_pixel_bottom-task->win_pixel_top+1;
+  task->pix_left	=FONT_WIDTH*task->win_left;
+  task->pix_right =FONT_WIDTH*(task->win_right+1)-1;
+  task->pix_width =task->pix_right-task->pix_left+1;
+  task->pix_top	=FONT_HEIGHT*task->win_top;
+  task->pix_bottom=FONT_HEIGHT*(task->win_bottom+1)-1;
+  task->pix_height=task->pix_bottom-task->pix_top+1;
 
 //Outside the border
   if (Bt(&task->display_flags,DISPLAYf_NO_BORDER)) {
-    task->win_border_pixel_left	=task->win_pixel_left;
-    task->win_border_pixel_right =task->win_pixel_right;
-    task->win_border_pixel_top	=task->win_pixel_top;
-    task->win_border_pixel_bottom=task->win_pixel_bottom;
+    task->border_pix_left	=task->pix_left;
+    task->border_pix_right =task->pix_right;
+    task->border_pix_top	=task->pix_top;
+    task->border_pix_bottom=task->pix_bottom;
   } else {
-    task->win_border_pixel_left	=task->win_pixel_left-FONT_WIDTH;
-    task->win_border_pixel_right =task->win_pixel_right+FONT_WIDTH;
-    task->win_border_pixel_top	=task->win_pixel_top-FONT_HEIGHT;
-    task->win_border_pixel_bottom=task->win_pixel_bottom+FONT_HEIGHT;
+    task->border_pix_left	=task->pix_left-FONT_WIDTH;
+    task->border_pix_right =task->pix_right+FONT_WIDTH;
+    task->border_pix_top	=task->pix_top-FONT_HEIGHT;
+    task->border_pix_bottom=task->pix_bottom+FONT_HEIGHT;
   }
-  PopFD;
+  POPFD
 }
 
-Bool AKDRawDisplayPutKey(I64 ch,I64)
+Bool KDRawDisplayPutKey(I64 ch,I64)
 {
   if (IsRaw) {
     RawPutChar(ch);
@@ -140,9 +140,9 @@ Bool AKDRawDisplayPutKey(I64 ch,I64)
     return FALSE;
 }
 
-Bool AKDRawDisplayPutS(U8 *st)
+Bool KDRawDisplayPutS(U8 *st)
 {
-  U8 ch;
+  I64 ch;
   if (IsRaw) {
     while (ch=*st++)
       RawPutChar(ch);
@@ -151,7 +151,7 @@ Bool AKDRawDisplayPutS(U8 *st)
     return FALSE;
 }
 
-Bool AKDInputFilterPutKey(I64 ch,I64 scancode)
+Bool KDInputFilterPutKey(I64 ch,I64 scancode)
 {
   Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
@@ -163,9 +163,9 @@ Bool AKDInputFilterPutKey(I64 ch,I64 scancode)
     return FALSE;
 }
 
-Bool AKDInputFilterPutS(U8 *st)
+Bool KDInputFilterPutS(U8 *st)
 {
-  U8 ch;
+  I64 ch;
   Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
     old_preempt=Preempt(OFF);
@@ -178,7 +178,7 @@ Bool AKDInputFilterPutS(U8 *st)
 }
 
 U0 PutKey(I64 ch=0,I64 sc=0)
-{ //See [C:/Doc/KeyBoard.TXT,1] PutKeyHandling
+{ //See [C:/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
   CKeyDev *tempp;
   if (ch||sc) {
     tempp=sys_put_key_root.next;
@@ -205,8 +205,9 @@ U0 PutChars(U64 ch)
 }
 
 U0 PutS(U8 *st)
-{ //Use [MN:Print] Print().  See [C:/Doc/KeyBoard.TXT,1] PutKeyHandling
-  U8 ch,*ptr;
+{ //Use [C:/Kernel/StrPrint.CPP.Z,946] Print().  See [C:/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
+  I64 ch;
+  U8 *ptr;
   Bool cont=TRUE;
   if (!st) return;
   CKeyDev *tempp=sys_put_key_root.next;
@@ -253,7 +254,7 @@ U0 SetCtrlAltLetCB(U8 ch,U0 (*fp_handler)(I64 sc),U8 *desc,Bool in_irq=FALSE)
 
 CKeyDev *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE)
 //Places hook in StdOut chain
-{ //See [C:/Doc/KeyBoard.TXT,1] PutKeyHandling
+{ //See [C:/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
   Bool old_preempt=Preempt(OFF);
   CKeyDev *tempp,*tempp1=sys_put_key_root.last;
   tempp=ACAlloc(sizeof(CKeyDev));

@@ -1,6 +1,13 @@
 ----12/14/13 00:13:29----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/qTDlyf2yfjU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/qTDlyf2yfjU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Jesus was a carpenter.
 
@@ -69,13 +76,27 @@ mine iniquity.
 
 One time this song was in my head:
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ljbBayiWglg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ljbBayiWglg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I asked God to get it out of my head.
 
 He suggested this:
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/p6L6MhSgpgo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/p6L6MhSgpgo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God says...
 nineteenth mystery Known ask mouths ON reading circumstance sinned pleased 
@@ -135,7 +156,14 @@ remember my covenant with Jacob, and also my covenant with Isaac, and
 also my covenant with Abraham will I remember; and I will remember the
 land.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/-21AtiWV3TE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/-21AtiWV3TE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God says...
 The unbelievers harmonizing DISTRIBUTION City flowed submitting bowing 
@@ -175,7 +203,14 @@ all Bashan, which was called the land of giants.
 coasts of Geshuri and Maachathi; and called them after his own name,
 Bashanhavothjair, unto this day.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/1BiMYjVvhxE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/1BiMYjVvhxE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 ----12/14/13 01:38:21----
 
@@ -241,7 +276,14 @@ doesn't sound like fun.  The kid has fun, but the adult does not have fun.
 That's where I'm at.
 
 This is the most profound thing:
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/qIOjWtm-bZo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/qIOjWtm-bZo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Elephants are slackers.  They have so much potential, but mostly just chew.
 
 There are millions and millions of old people in this word who vegetate.  
@@ -693,15 +735,13 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 operating systems.
 
 * Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the
 [C:/Doc/RedSea.TXT.Z,1] RedSea .Z LZW 
-compression.  (Let me know when you want it.) 
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,154] DCSave(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,234] GRAWrite(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,197] DCLoad(), 
-and [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,245] GRARead(). 
-[C:/Kernel/Compress.CPP.Z,1]
+compression.  (Let me know when you want it.)  [C:/Adam/Gr/GrDC.CPP.Z,284]
+DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,354] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,323]
+DCLoad(), 
+and [C:/Adam/Gr/GrDC.CPP.Z,365] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
 
 
 
@@ -947,7 +987,14 @@ they soon become hell-holes, and they do not break compatibility.  We have a
 
 ----12/14/13 14:43:50----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/hLFCcFCHh9E"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/hLFCcFCHh9E"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 On the Commodore 64, that game probably had an artist and a professional 
 programmer or two.  It probably took 6 months.  Also, maybe, a lot of game 
@@ -988,7 +1035,10 @@ You must do an offering before inquiring at the oracle, this is a covenant.
 
 God said 640x480 16 color for all time.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 You assignment is to draw a 16 color elephant and draw a 24-bit color 
 elephant.
@@ -1063,8 +1113,8 @@ on an 8x8 grid.  It can run in Text mode if graphic initialization fails.
 computations intermediately.  Assembler has minimal 16-bit support, good 
 enough for compiling boot loaders.
 
-* No object files.  Linking can be done at
-[C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time for AOT modules, if you 
+* No object files.  Linking can be done at [C:/Kernel/Hash1b.CPP.Z,386]
+Load() time for AOT modules, if you 
 insist on not using JIT.  Modules have imports and exports.
 
 * Whole files are processed almost exclusively, allowing compression.
@@ -1079,18 +1129,18 @@ windows.  There are child tasks, however.
 
 * No distinction between "thread", "process" or "task".
 
-* The [C:/Kernel/Scheduler.CPP,1] Scheduler is mostly for home systems, not
+* The [C:/Kernel/Scheduler.CPP.Z,1] Scheduler is mostly for home systems, not
 servers or mainframes.  The 
 focus task is all important.  Disk requests are not broken-up, so sharing is 
 bad, however.
 
-* [C:/Doc/MultiCore.TXT,1] MultiCore is done master/slave, instead of SMP. 
+* [C:/Doc/MultiCore.TXT.Z,1] MultiCore is done master/slave, instead of SMP. 
 Core zero explicitly 
 assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
 access, though.
 
-* [C:/TempleOS/Adam/Snd/Music.CPP.Z,91] Music is done with an elegant
-one-voice notation.
+* [C:/Adam/Snd/Music.CPP.Z,93] Music is done with an elegant one-voice
+notation.
 
 * All tasks have a heap and a sym table.  Scope is that of environment vars
 in 
@@ -1102,7 +1152,7 @@ API syms you'll need waiting in it's table.  No need to #include headers.
 * No need for namespaces -- scoping occurs automatically based on task symbol 
 table hierarchy with the Adam task's symbol system-wide global.
 
-* Sometimes, I [C:/Doc/CutCorners.TXT,1] cut corners in the interest of
+* Sometimes, I [C:/Doc/CutCorners.TXT.Z,1] cut corners in the interest of
 keeping the code beautiful.
 
 ----12/14/13 15:48:06----

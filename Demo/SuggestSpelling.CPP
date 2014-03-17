@@ -6,7 +6,8 @@ one for fun.
 
 U8 *SuggestMatchForm(U8 *src)
 {
-  U8 ch,ch1=0,*result=MStrUtil(src,SUF_TO_UPPER),*dst;
+  I64 ch,ch1=0;
+  U8 *result=MStrUtil(src,SUF_TO_UPPER),*dst;
   dst=src=result;
   while (ch=*src++)  {
     if (!StrOcc("AEIOU",ch)) {
@@ -28,10 +29,10 @@ Fmt of word lst entry:
   I16 block; //definition offset in ::/Adam/WordStat/WSDefs.DAT
 */
 
-U0 SuggestSpelling(U8 *pattern)
+U0 SuggestSpelling(U8 *word)
 {
   U8 *dict=ws_dict_word_lst,
-     *pf=SuggestMatchForm(pattern),
+     *pf=SuggestMatchForm(word),
      *wf;
   I64 len=StrLen(pf),
      num_cols=Fs->win_width/16,
@@ -74,7 +75,7 @@ install this command as a hot-key.
 
 U0 CtrlAltL(I64)
 {
-//[C:/TempleOS/Adam/WordStat/WordStat.CPP.Z,36] ws_cur_word is only set if WordStat
+//[C:/Adam/WordStat/WordStat.CPP.Z,36] ws_cur_word is only set if WordStat
 //is running.
   PopUp("SuggestSpelling(ws_cur_word);View;");
 }
@@ -88,4 +89,4 @@ else {
 }
 
 //Note: It would be more appropriate
-//to define a key in [C:/TempleOS/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,12] MyPutKey().
+//to define a key in [C:/Accts/TS/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey().

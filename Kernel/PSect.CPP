@@ -1,20 +1,20 @@
 I64 HasLower(U8 *src)
 {
-  U8 ch;
+  I64 ch;
   while (ch=*src++)
     if ('a'<=ch<='z')
      return TRUE;
   return FALSE;
 }
 
-CHash *PSectFind(U8 *add,I64 *_offset)
-{ //See [C:/Kernel/Hash1a.CPP,1] ::/Kernel/Hash1a.CPP
+CHash *PSectFind(U8 *addr,I64 *_offset)
+{ //See [C:/Kernel/Hash1a.CPP.Z,1] ::/Kernel/Hash1a.CPP
   CHash *result=NULL;
   CHashExport *tempex;
   Bool has_lower=FALSE;
   CHashTable *h=Fs->hash_table;
   U64 best=0xFFFF,j;
-  if (!ChkCodePtr(add)) {
+  if (!ChkCodePtr(addr)) {
     *_offset=best;
     return NULL;
   }
@@ -29,7 +29,7 @@ CHash *PSectFind(U8 *add,I64 *_offset)
       } else if (tempex->type&HTT_EXPORT_SYS_SYM)
 	j=tempex->val;
       if (j) {
-	j=add(I64)-j;
+	j=addr(I64)-j;
 	if (0<=j<=best) {
 	  if (tempex->type&HTT_EXPORT_SYS_SYM) {
 	    if (j<best || j==best && !has_lower) {
@@ -55,7 +55,7 @@ CHash *PSectFind(U8 *add,I64 *_offset)
   return result;
 }
 
-U0 PSectCacheAdd(CHash *temps,U8 *add)
+U0 PSectCacheAdd(CHash *temps,U8 *addr)
 {
   I64 i;
   CDbgInfo *dbg;
@@ -67,11 +67,11 @@ U0 PSectCacheAdd(CHash *temps,U8 *add)
     lock {i=psect_cache_index++;}
     temppc=&psect_cache[i&(PSECT_CACHE_SIZE-1)];
     temppc->base=dbg->body[0];
-    if (add<temppc->base)
-      temppc->base=add;
-    temppc->limit=dbg->body[dbg->max_line-dbg->min_line];
-    if (add>=temppc->limit)
-      temppc->limit=add(I64)+1;
+    if (addr<temppc->base)
+      temppc->base=addr;
+    temppc->limit=dbg->body[dbg->max_line+1-dbg->min_line];
+    if (addr>=temppc->limit)
+      temppc->limit=addr+1;
     i=MinI64(StrLen(temps->str),PSECT_CACHE_STR_LEN-1);
     MemCpy(temppc->str,temps->str,i);
     temppc->str[i]=0;
@@ -80,41 +80,41 @@ U0 PSectCacheAdd(CHash *temps,U8 *add)
   }
 }
 
-U8 *PSectCacheFind(U8 *add,I64 *_offset)
+U8 *PSectCacheFind(U8 *addr,I64 *_offset)
 {
   I64 i;
   F64 timeout;
   CPSectCache *temppc=psect_cache;
-  if (add==SYS_IDLE_PT) {
+  if (addr==SYS_IDLE_PT) {
     *_offset=0;
     return "SYS_IDLE_PT";
   } else {
     timeout=tS+8.0;
     for (i=0;i<PSECT_CACHE_SIZE;i++,temppc++)
-      if (temppc->base<=add<temppc->limit &&
+      if (temppc->base<=addr<temppc->limit &&
 	  temppc->time_stamp>timeout) {
-	*_offset=add-temppc->base;
+	*_offset=addr-temppc->base;
 	return temppc->str;
       }
     return NULL;
   }
 }
 
-U0 SPrintPSect(U8 *buf,I64 add,I64 field_len)
+U0 SPrintPSect(U8 *buf,I64 addr,I64 field_len)
 {
   I64 offset;
   CHashExport *tempex;
   U8 *str,*str2;
   Bool is_fun=FALSE;
-  if (add) {
-    if (str=PSectCacheFind(add,&offset)) {
-      if (add!=SYS_IDLE_PT)
+  if (addr) {
+    if (str=PSectCacheFind(addr,&offset)) {
+      if (addr!=SYS_IDLE_PT)
 	is_fun=TRUE;
     } else  {
-      if (tempex=PSectFind(add,&offset)) {
+      if (tempex=PSectFind(addr,&offset)) {
 	if (tempex->type&HTT_FUN)
 	  is_fun=TRUE;
-	PSectCacheAdd(tempex,add);
+	PSectCacheAdd(tempex,addr);
 	str=tempex->str;
       }
     }
@@ -137,19 +137,20 @@ U0 SPrintPSect(U8 *buf,I64 add,I64 field_len)
     }
   }
   if (field_len)
-    SPrint(buf,"%*tX",field_len,add);
+    SPrint(buf,"%*tX",field_len,addr);
   else
-    SPrint(buf,"%X",add);
+    SPrint(buf,"%X",addr);
 }
 
 
-I64 SrcLineNum(U8 *add,I64 cnt=1)
+I64 SrcLineNum(U8 *addr,I64 cnt=1)
 {
   CHashSrcSym *temph;
   I64 cur_line,first_line,last_line,num_lines,offset;
   CDbgInfo *dbg;
-  U8 **body,*src,*src2;
-  if (temph=PSectFind(add,&offset)) {
+  U32 *body;
+  U8 *src,*src2;
+  if (temph=PSectFind(addr,&offset)) {
     if (temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM)) {
       if (dbg=temph->debug) {
 	num_lines=dbg->max_line-dbg->min_line+1;
@@ -169,25 +170,25 @@ I64 SrcLineNum(U8 *add,I64 cnt=1)
 	  last_line--;
 
 	//interpolate to guess line num
-	cur_line=LimitI64(ToF64(add-body[first_line])*(last_line-first_line+1)/
+	cur_line=ClampI64(ToF64(addr-body[first_line])*(last_line-first_line+1)/
 		 (body[last_line]-body[first_line]+1),first_line,last_line);
 
 	//retreat while too high
-	while ((!body[cur_line] || body[cur_line]>=add) && cur_line>first_line)
+	while ((!body[cur_line] || body[cur_line]>=addr) && cur_line>first_line)
 	  cur_line--;
 
 	//advance while to low
-	while ((!body[cur_line] || body[cur_line]<add) && cur_line<last_line)
+	while ((!body[cur_line] || body[cur_line]<addr) && cur_line<last_line)
 	  cur_line++;
 
-	if (add<body[cur_line]+cnt)
+	if (addr<body[cur_line]+cnt)
 	  return cur_line+dbg->min_line;
 
       } else if (temph->src_link) {
 	src =StrNew(temph->src_link);
 	src2=StrNew(temph->src_link);
 	StrLastRem(src,",",src2);
-	cur_line=A2I(src2);
+	cur_line=A2I64(src2);
 	Free(src);
 	Free(src2);
 	return cur_line;
@@ -197,35 +198,35 @@ I64 SrcLineNum(U8 *add,I64 cnt=1)
   return -1;
 }
 
-U8 *SrcFileName(U8 *add,I64 cnt=1,CTask *mem_task=NULL)
+U8 *SrcFileName(U8 *addr,I64 cnt=1,CTask *mem_task=NULL)
 {
   CHashSrcSym *temph;
   I64 i,j,ii,offset,best=NULL,d,best_d;
+  U32 *body;
   CDbgInfo *dbg;
-  U8 **body,*src;
-  if (temph=PSectFind(add,&offset)) {
-    if (temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM)) {
-      if (dbg=temph->debug) {
-	j=dbg->max_line-dbg->min_line+1;
-	body=dbg->body;
-	best_d=MAX_I64;
-	for (i=0;i<j;i++) {
-	  if (0<body[i]<=add<body[i]+cnt) {
-	    ii=i+1;
-	    while (!body[ii])
-	      ii++;
-	    if (add<body[ii]) {
-	      d=add(I64)-body[i];
-	      if (d<best_d) {
-		best_d=d;
-		best=temph->src_link;
-	      }
+  U8 *src;
+  if ((temph=PSectFind(addr,&offset)) &&
+	temph->type&(HTT_FUN|HTT_EXPORT_SYS_SYM)) {
+    if (dbg=temph->debug) {
+      j=dbg->max_line-dbg->min_line+1;
+      body=dbg->body;
+      best_d=MAX_I64;
+      for (i=0;i<j;i++) {
+	if (0<body[i]<=addr<body[i]+cnt) {
+	  ii=i+1;
+	  while (!body[ii])
+	    ii++;
+	  if (addr<body[ii]) {
+	    d=addr(I64)-body[i];
+	    if (d<best_d) {
+	      best_d=d;
+	      best=temph->src_link;
 	    }
 	  }
 	}
-      } else
-	best=temph->src_link;
-    }
+      }
+    } else
+      best=temph->src_link;
   }
   if (best) {
     src=StrNew(best,mem_task);
@@ -236,12 +237,12 @@ U8 *SrcFileName(U8 *add,I64 cnt=1,CTask *mem_task=NULL)
     return NULL;
 }
 
-U8 *SrcEdLink(U8 *add,I64 cnt=1,CTask *mem_task=NULL)
+U8 *SrcEdLink(U8 *addr,I64 cnt=1,CTask *mem_task=NULL)
 {
   U8 *filename,*st,*st2;
   I64 linenum;
-  if (filename=SrcFileName(add,cnt)) {
-    linenum=SrcLineNum(add,cnt);
+  if (filename=SrcFileName(addr,cnt)) {
+    linenum=SrcLineNum(addr,cnt);
     if (linenum<1)
       linenum=1;
     st2=MPrint("FL:%s,%d",filename,linenum);
@@ -254,14 +255,14 @@ U8 *SrcEdLink(U8 *add,I64 cnt=1,CTask *mem_task=NULL)
 }
 
 
-Bool PutSrcLink(U8 *add,I64 cnt=1,U8 *buf=NULL)
+Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL)
 {
   U8 *src;
-  if (src=SrcEdLink(add,cnt)) {
+  if (src=SrcEdLink(addr,cnt)) {
     if (buf)
-      SPrint(buf,"$LK,\"%p\",\"%s\"$",add,src);
+      SPrint(buf,"$LK,\"%p\",A=\"%s\"$",addr,src);
     else
-      "$LK,\"%p\",\"%s\"$",add,src;
+      "$LK,\"%p\",A=\"%s\"$",addr,src;
     Free(src);
     return TRUE;
   } else if (buf)
@@ -269,10 +270,10 @@ Bool PutSrcLink(U8 *add,I64 cnt=1,U8 *buf=NULL)
   return FALSE;
 }
 
-U0 E(U8 *add,I64 cnt=512,I64 ed_flags=0)
-{//Edit src at add
+U0 E(U8 *addr,I64 cnt=512,I64 ed_flags=0)
+{//Edit src at addr
   U8 *st;
-  if (st=SrcEdLink(add,cnt)) {
+  if (st=SrcEdLink(addr,cnt)) {
     if (IsRaw)
       EdLiteFileLine(st);
     else

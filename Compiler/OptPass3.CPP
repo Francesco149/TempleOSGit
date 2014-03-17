@@ -1,4 +1,4 @@
-U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
+U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 {
   CHashClass *tempc,*tempc1,*tempc2;
   CLexCodeMisc *lb;
@@ -6,7 +6,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 	*tempil1,*tempil2;
   I64 code,i,j,l,member_cnt,used_reg_mask=0;
   CMemberLst *tempm;
-  OptMemberVar *mv=NULL;
+  COptMemberVar *mv=NULL;
   CPrsStk *ps=lx->ps;
   ps->ptr=0;
   ps->ptr2=0;
@@ -15,31 +15,32 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
     reg_offsets[i].offset=MAX_I64;
     reg_offsets[i].m=NULL;
   }
-  if (fun_class) {
-    member_cnt=fun_class->member_cnt;
-    if (Bt(&fun_class->flags,Ff_DOT_DOT_DOT))
+  if (lx->htc.fun) {
+    member_cnt=lx->htc.fun->member_cnt;
+    if (Bt(&lx->htc.fun->flags,Ff_DOT_DOT_DOT))
       member_cnt+=2;
-    mv=CAlloc(member_cnt*sizeof(OptMemberVar));
+    mv=CAlloc(member_cnt*sizeof(COptMemberVar));
     member_cnt=0;
-    tempm=fun_class->member_lst;
+    tempm=lx->htc.fun->member_lst;
     while (tempm) {
       tempc=OptClassFwd(tempm->member_class);
       if (0<=tempm->reg<NUM_REGS) {
 	if (Bts(&used_reg_mask,tempm->reg))
-	  PrintWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_REG_IN_USE",
-		lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,fun_class->str);
+	  PrintWarn("Reg in use\n $LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+		lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,lx->htc.fun->str);
 	reg_offsets[tempm->reg].offset=tempm->offset;
 	reg_offsets[tempm->reg].m=tempm;
       } else if (tempc->raw_type!=RT_F64 && tempm->reg!=REG_NONE ||
 	    tempm->reg==REG_ALLOC) {
 	if (tempm->reg==REG_ALLOC)
 	  mv[member_cnt].score=MAX_I64/2; //big but not too big
-	mv[member_cnt].offset=tempm->offset;
+	mv[member_cnt].offset_start=tempm->offset;
+	mv[member_cnt].offset_end=tempm->offset+MaxI64(1,tempm->size);
 	mv[member_cnt++].m=tempm;
       } else {
 	if (tempm->reg==REG_ALLOC)
-	  PrintWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_CANT_REG_VAR",
-		lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,fun_class->str);
+	  PrintWarn("Can't reg var\n $LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+		lx->cur_lfn->name,lx->cur_lfn->line_num,tempm->str,lx->htc.fun->str);
       }
       tempm=tempm->next;
     }
@@ -127,7 +128,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 	    OptFree(tempi1);
 	    if (tempi->a1.reg==REG_RBP)
 	      for (i=0;i<member_cnt;i++)
-		if (mv[i].offset==tempi->a1.disp) {
+		if (mv[i].offset_start==tempi->a1.disp) {
 		  mv[i].lea_balance--;
 		  mv[i].score++;
 		  break;
@@ -156,7 +157,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 		tempi1->a1.type&TY_MASK==TY_DISP &&
 		tempi1->a1.reg==REG_RBP)
 	    for (i=0;i<member_cnt;i++)
-	      if (mv[i].offset==tempi1->a1.disp) {
+	      if (mv[i].offset_start==tempi1->a1.disp) {
 		mv[i].lea_balance--;
 		mv[i].score++;
 		break;
@@ -192,7 +193,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 	      tempi->a1.type=TY_DISP+tempi->a1.type&RT_MASK;
 	      tempi->a1.disp=tempi->ic_data;
 	      for (i=0;i<member_cnt;i++)
-		if (mv[i].offset==tempi->ic_data) {
+		if (mv[i].offset_start<=tempi->ic_data<mv[i].offset_end) {
 		  mv[i].lea_balance++;
 		  mv[i].score++;
 		  break;
@@ -240,7 +241,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 		tempi1->a1.type&TY_MASK==TY_DISP &&
 		tempi1->a1.reg==REG_RBP)
 	    for (i=0;i<member_cnt;i++)
-	      if (mv[i].offset==tempi1->a1.disp) {
+	      if (mv[i].offset_start==tempi1->a1.disp) {
 		mv[i].lea_balance--;
 		mv[i].score++;
 		break;
@@ -351,7 +352,7 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 		tempi1->a1.type&TY_MASK==TY_DISP &&
 		tempi1->a1.reg==REG_RBP)
 	    for (i=0;i<member_cnt;i++)
-	      if (mv[i].offset==tempi1->a1.disp) {
+	      if (mv[i].offset_start==tempi1->a1.disp) {
 		mv[i].lea_balance--;
 		mv[i].score++;
 		break;
@@ -364,6 +365,8 @@ U0 OptPass3(CLex *lx,CHashFun *fun_class,COptReg *reg_offsets)
 	case IC_BR_LESS:
 	  if (tempi->ic_flags&ICF_USE_F64)
 	    CmpF2PushPop(tempi,tempi1,tempi2);
+	case IC_BR_CARRY:
+	case IC_BR_NOT_CARRY:
 	case IC_BR_GREATER_EQUAL2:
 	case IC_BR_LESS_EQUAL2:
 	case IC_BR_GREATER2:
@@ -410,18 +413,10 @@ here1:
 	case IC_CALL_INDIRECT2:
 	case IC_CALL_EXTERN:
 	case IC_CALL_IMPORT:
-	case IC_CLI:
-	case IC_STI:
-	case IC_HLT:
-	case IC_PUSHFD:
-	case IC_POPFD:
 	case IC_PUSH:
 	case IC_POP:
-	case IC_CLD:
-	case IC_STD:
 	case IC_INVLPG:
 	case IC_CLFLUSH:
-	case IC_PAUSE:
 	case IC_GET_RFLAGS:
 	case IC_CARRY:
 	case IC_RDTSC:
@@ -515,30 +510,33 @@ here1:
 	default:
 	  "Pass:%d Missing IC handler\n",lx->pass;
 	  ICPut(tempi);
-	  LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+	  LexExcept(lx,"Compiler Optimization Error at ");
       }
     }
     tempi=tempi_next;
   }
-  if (fun_class) {
-    fun_class->used_reg_mask=fun_class->used_reg_mask&~(REG_VARS_MASK|REG_NON_PTR_MASK)|used_reg_mask;
+  if (lx->htc.fun) {
+    lx->htc.fun->used_reg_mask=lx->htc.fun->used_reg_mask&~(REG_VARS_MASK|REG_NON_PTR_MASK)|used_reg_mask;
     if (!Bt(&lx->opts,OPTf_NO_REG_VAR) &&
 	  !(lx->flags & LF_NO_REG_OPT)) {
-      QSort(mv,member_cnt,sizeof(OptMemberVar),&OptMVCompare);
+      QSort(mv,member_cnt,sizeof(COptMemberVar),&OptMVCompare);
       while (member_cnt && !mv[member_cnt-1].score)
 	member_cnt--;
       j=0;
       for (i=0;i<member_cnt;i++) {
-	if (!mv[i].lea_balance && mv[i].offset) {//addr operator cancels
+	if (!mv[i].lea_balance && mv[i].offset_start) {//addr operator cancels
 	  mv[j].m=mv[i].m;
-	  mv[j++].offset=mv[i].offset;
+	  mv[j].offset_start=mv[i].offset_start;
+	  mv[j++].offset_end=mv[i].offset_end;
 	} else {
 	  if (mv[i].m->reg==REG_ALLOC)
-	    PrintWarn("%S\n $LK-A,\"FL:%s,%d\"$ '%s' in '%s'\n","ST_CANT_REG_VAR",
-		  lx->cur_lfn->name,lx->cur_lfn->line_num,mv[i].m->str,fun_class->str);
+	    PrintWarn("Can't reg var\n $LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+		lx->cur_lfn->name,lx->cur_lfn->line_num,mv[i].m->str,lx->htc.fun->str);
 	}
       }
       if (j>0) {
+	if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
+	  "Fun:%s\n",lx->htc.fun->str;
 	if (j>num_reg_vars) {
 	  l=0;
 	  for (i=0;i<j && l<num_non_ptr_vars;i++) {
@@ -546,17 +544,22 @@ here1:
 	    tempc=OptClassFwd(tempm->member_class);
 	    if (!tempc->ptr_cnt && !tempm->dim.next) {
 	      while (l<num_non_ptr_vars &&
-		    Bts(&fun_class->used_reg_mask,to_non_ptr_vars_map[l]))
+		    Bts(&lx->htc.fun->used_reg_mask,to_non_ptr_vars_map[l]))
 		l++;
 	      if (l<num_non_ptr_vars) {
 		tempm->reg=to_non_ptr_vars_map[l++];
-		reg_offsets[tempm->reg].offset=mv[i].offset;
+		reg_offsets[tempm->reg].offset=mv[i].offset_start;
 		reg_offsets[tempm->reg].m=tempm;
 		if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
-		  "Fun:%s\nReg %Z Var \"%s\" %08X[RBP]\n",
-			fun_class->str,tempm->reg,"ST_U64_REGS",
+		  "Reg %Z Var \"%s\" %08X[RBP]\n",tempm->reg,"ST_U64_REGS",
 			tempm->str,reg_offsets[tempm->reg].offset;
-		mv[i].offset=0; //flag as reg var
+		mv[i].offset_start=0; //flag as reg var
+		if (tempm->size<8 && !StrIMatch("Bool",tempm->member_class->str) &&
+		  tempm->member_class->type&HTT_INTERNAL_TYPE)
+		  PrintWarn("Using 64-bit reg var.\n "
+			"$LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+			lx->cur_lfn->name,lx->cur_lfn->line_num,
+			tempm->str,lx->htc.fun->str);
 	      }
 	    }
 	  }
@@ -565,18 +568,24 @@ here1:
 	for (i=0;i<j && l<num_reg_vars;i++) {
 	  tempm=mv[i].m;
 //if not just flagged as reg var
-	  if (mv[i].offset && (!mv[i].m->dim.next||
+	  if (mv[i].offset_start && (!mv[i].m->dim.next||
 		tempm->offset>0 && StrCmp(tempm->str,"argv"))) {
 	    while (l<num_reg_vars &&
-		  Bts(&fun_class->used_reg_mask,to_reg_vars_map[l]))
+		  Bts(&lx->htc.fun->used_reg_mask,to_reg_vars_map[l]))
 	      l++;
 	    if (l<num_reg_vars) {
 	      tempm->reg=to_reg_vars_map[l++];
-	      reg_offsets[tempm->reg].offset=mv[i].offset;
+	      reg_offsets[tempm->reg].offset=mv[i].offset_start;
 	      reg_offsets[tempm->reg].m=tempm;
 	      if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT))
 		"Reg %Z Var \"%s\" %08X[RBP]\n",tempm->reg,"ST_U64_REGS",
 		      tempm->str,reg_offsets[tempm->reg].offset;
+	      if (tempm->size<8 && !StrIMatch("Bool",tempm->member_class->str) &&
+		  tempm->member_class->type&HTT_INTERNAL_TYPE)
+		PrintWarn("Using 64-bit reg var.\n "
+			"$LK,\"FL:%s,%d\"$ '%s' in '%s'\n",
+			lx->cur_lfn->name,lx->cur_lfn->line_num,
+			tempm->str,lx->htc.fun->str);
 	    }
 	  }
 	}
@@ -586,7 +595,7 @@ here1:
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
 }
 

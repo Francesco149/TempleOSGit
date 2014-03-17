@@ -31,7 +31,7 @@ U0 DrawIt(CTask *,CDC *dc)
     GrRotZEqu(dc->r,5*pi/4);
   GrRotXEqu(dc->r,-5*pi/4);
   GrScaleEqu(dc->r,0.75);
-  SpritePlot3(dc,0,0,0,__BIN_1);
+  Sprite3(dc,0,0,0,__BIN_1);
   if (dt>=16) {
     dc->color=GREEN;
     dt=0.5*(dt-16);
@@ -50,7 +50,7 @@ U0 Song()
   for (i=0;i<BLADES;i++)
     blades_theta[i]=2*Rand*pi;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;

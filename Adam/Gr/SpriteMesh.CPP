@@ -36,7 +36,6 @@ class CGrMTri
 class CGrMFrame
 {
   I64 my_ipz; //This is the Z-coordinate of the input pointer (mouse).
-  CTask *task;
   I64 mode,cx,cy;
   CColorROPU32 cur_color;
   Bool grid_on,flip_y,select_rect,vertex_on,pad[4];
@@ -73,7 +72,7 @@ CGrMTri *GrMTriNew(CGrMFrame *e,CColorROPU32 color,CGrMVertex *v1,CGrMVertex *v2
   return tempt;
 }
 
-CGrMVertex *GrMVertexFindS(CGrMFrame *e,I64 x,I64 y)
+CGrMVertex *GrMVertexFindScrPt(CGrMFrame *e,I64 x,I64 y)
 {//Screen coordinates
   CGrMVertex *result=NULL,*tempv=e->vertex_root.next;
   I64 dd,dz,best_dd=MAX_I64,best_dz=MAX_I64;
@@ -92,11 +91,11 @@ CGrMVertex *GrMVertexFindS(CGrMFrame *e,I64 x,I64 y)
   return result;
 }
 
-CGrMVertex *GrMVertexFindNum(CGrMFrame *e,I64 num)
+CGrMVertex *GrMVertexFindNum(CGrMFrame *haystack_e,I64 needle_num)
 {
-  CGrMVertex *tempv=e->vertex_root.next;
-  while (tempv!=&e->vertex_root) {
-    if (tempv->num==num)
+  CGrMVertex *tempv=haystack_e->vertex_root.next;
+  while (tempv!=&haystack_e->vertex_root) {
+    if (tempv->num==needle_num)
       return tempv;
     tempv=tempv->next;
   }
@@ -344,30 +343,29 @@ U0 GrMFlipTris(CGrMFrame *e)
 
 U0 GrMRecalcCxCy(CTask *task,CGrMFrame *e)
 {
-  e->cx=RoundI64(task->win_pixel_width/2 -task->horz_scroll.pos,e->cur_snap);
-  e->cy=RoundI64(task->win_pixel_height/2-task->vert_scroll.pos,e->cur_snap);
+  e->cx=RoundI64(task->pix_width/2 -task->horz_scroll.pos,e->cur_snap);
+  e->cy=RoundI64(task->pix_height/2-task->vert_scroll.pos,e->cur_snap);
 }
 
 U0 GrMCurSnap(CGrMFrame *e)
 {
-  CTask *task=e->task;
   I64 x1,y1,z1,x2,y2,z2;
   if (e->w2s) {
     x1=e->cur_snap<<16; y1=0; z1=0;
     GrRot(e->w2s,&x1,&y1,&z1);
     x2=0; y2=e->cur_snap<<16; z2=0;
     GrRot(e->w2s,&x2,&y2,&z2);
-    task->snap.x=MaxI64(1,MaxI64(x1,x2)>>16);
-    task->snap.y=MaxI64(1,MaxI64(y1,y2)>>16);
-    task->snap.z=MinI64(task->snap.x,task->snap.y);
+    ip_grid.x=Max(1,MaxI64(x1,x2)>>16);
+    ip_grid.y=Max(1,MaxI64(y1,y2)>>16);
+    ip_grid.z=Min(ip_grid.x,ip_grid.y);
   }
 }
 
 U0 GrMScaleZoom(CGrMFrame *e,F64 scale)
 {
   CTask *task=Fs;
-  I64 x=ipx-task->win_pixel_left-task->win_scroll_x-task->win_pixel_width/2,
-     y=ipy-task->win_pixel_top-task->win_scroll_y-task->win_pixel_height/2;
+  I64 x=ipx-task->pix_left-task->scroll_x-task->pix_width/2,
+     y=ipy-task->pix_top-task->scroll_y-task->pix_height/2;
   task->horz_scroll.pos*=scale;
   task->vert_scroll.pos*=scale;
   task->horz_scroll.pos+=scale*x-x;
@@ -386,7 +384,7 @@ U0 MPDrawIt(CGrMFrame *e) //Multiprocessing draw it, called by each core.
   CGrMTri *tempt=e->tri_root.next;
   I64 i,*old_r=dc->r;
 
-//[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,23] DCAlias() allocates a new identity rotation matrix.
+//[C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() allocates a new identity rotation matrix.
 //We want e->dc's rotation matrix.
   dc->r=e->dc->r;
 
@@ -442,7 +440,7 @@ U0 MPDrawIt(CGrMFrame *e) //Multiprocessing draw it, called by each core.
   }
   dc->r=old_r;
 
-//e->dc's depth buf was copied but we don't want it freed during [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,76] DCDel().
+//e->dc's depth buf was copied but we don't want it freed during [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel().
   dc->depth_buf=NULL;
 
   DCDel(dc);
@@ -485,13 +483,13 @@ I64 *GrMSetW2S(CGrMFrame *e,CTask *task)
   e->w2s=GrMW2S(e,task);
   Free(e->s2w);
   e->s2w=GrMS2W(e,task);
-  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,76] DCDel().
+  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel().
 }
 
 U0 GrMCursorW(CGrMFrame *e,CTask *task,I64 *_x,I64 *_y,I64 *_z)
 {
   I64 x_shadow,y_shadow,z_shadow,
-     xc=ipx-task->win_pixel_left-task->win_scroll_x-e->cx,yc=ipy-task->win_pixel_top-task->win_scroll_y-e->cy,zc=0,
+     xc=ipx-task->pix_left-task->scroll_x-e->cx,yc=ipy-task->pix_top-task->scroll_y-e->cy,zc=0,
      x=0,y=0,z=e->my_ipz,
      i,x2,y2,z2;
   GrRot(e->w2s,&x,&y,&z); //screen of Z vect
@@ -521,25 +519,25 @@ U0 GrMCursorW(CGrMFrame *e,CTask *task,I64 *_x,I64 *_y,I64 *_z)
 CGrMVertex sys_vertex_root;
 CGrMTri	  sys_tri_root;
 
-U0 GrMClipBoardInit()
+U0 GrMClipboardInit()
 {
   QueInit(&sys_vertex_root);
   QueInit(&sys_tri_root);
 }
 
-U0 GrMClipBoardRst()
+U0 GrMClipboardRst()
 {
   QueDel(&sys_vertex_root,TRUE);
   QueDel(&sys_tri_root,TRUE);
-  GrMClipBoardInit;
+  GrMClipboardInit;
 }
 
-U0 GrMClipBoardCopy(CGrMFrame *e)
+U0 GrMClipboardCopy(CGrMFrame *e)
 {
   CGrMVertex *tempv=e->vertex_root.next,*tempv2;
   CGrMTri *tempt=e->tri_root.next,*tempt2;
 
-  GrMClipBoardRst;
+  GrMClipboardRst;
   while (tempv!=&e->vertex_root) {
     if (tempv->flags&VF_SELECTED) {
       tempv->copy=tempv2=ACAlloc(sizeof(CGrMVertex));
@@ -570,11 +568,11 @@ U0 GrMClipBoardCopy(CGrMFrame *e)
   }
 }
 
-U0 GrMClipBoardCut(CGrMFrame *e)
+U0 GrMClipboardCut(CGrMFrame *e)
 {
   CGrMVertex *tempv=e->vertex_root.next,*tempv1;
   CGrMTri  *tempt=e->tri_root.next,*tempt1;
-  GrMClipBoardCopy(e);
+  GrMClipboardCopy(e);
   while (tempt!=&e->tri_root) {
     tempt1=tempt->next;
     if (tempt->flags&TF_COPIED)
@@ -589,7 +587,7 @@ U0 GrMClipBoardCut(CGrMFrame *e)
   }
 }
 
-U0 GrMClipBoardDel(CGrMFrame *e)
+U0 GrMClipboardDel(CGrMFrame *e)
 {//Technically not clipboard
   CGrMVertex *tempv=e->vertex_root.next,*tempv1;
   CGrMTri *tempt=e->tri_root.next,*tempt1;
@@ -607,7 +605,7 @@ U0 GrMClipBoardDel(CGrMFrame *e)
   }
 }
 
-U0 GrMClipBoardPaste(CGrMFrame *e)
+U0 GrMClipboardPaste(CGrMFrame *e)
 {
   CGrMVertex *tempv2=sys_vertex_root.next,*tempv;
   CGrMTri *tempt2=sys_tri_root.next,*tempt;
@@ -629,7 +627,7 @@ U0 GrMClipBoardPaste(CGrMFrame *e)
   }
 }
 
-GrMClipBoardInit;
+GrMClipboardInit;
 
 
 U0 DrawIt(CTask *task,CDC *dc)
@@ -640,10 +638,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,x,y,z;
   CGrMVertex *tempv;
  
-  task->horz_scroll.min=-(GE_WORKSPACE_SIZE-task->win_pixel_width)/2;
-  task->horz_scroll.max= (GE_WORKSPACE_SIZE-task->win_pixel_width)/2;
-  task->vert_scroll.min=-(GE_WORKSPACE_SIZE-task->win_pixel_height)/2;
-  task->vert_scroll.max= (GE_WORKSPACE_SIZE-task->win_pixel_height)/2;
+  task->horz_scroll.min=-(GE_WORKSPACE_SIZE-task->pix_width)/2;
+  task->horz_scroll.max= (GE_WORKSPACE_SIZE-task->pix_width)/2;
+  task->vert_scroll.min=-(GE_WORKSPACE_SIZE-task->pix_height)/2;
+  task->vert_scroll.max= (GE_WORKSPACE_SIZE-task->pix_height)/2;
   TaskDerivedValsUpdate(task);
   GrMRecalcCxCy(task,e);
 
@@ -713,7 +711,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 
   if (CtrlInside(c,ipx_presnap,ipy_presnap)||win_show_menu) {
-    SetSnap(&task->snap,1,1.0);
+    GridInit;
     task->win_inhibit=WIF_DOC;
   } else {
     GrMCurSnap(e);
@@ -749,7 +747,6 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 GrMInit(CGrMFrame *e,Bool flip_y)
 {
   MemSet(e,0,sizeof(CGrMFrame));
-  e->task=Fs;
   e->vertex_root.next=e->vertex_root.last=&e->vertex_root;
   e->tri_root.next=e->tri_root.last=&e->tri_root;
   e->mode='v';
@@ -887,7 +884,7 @@ If root points to a mesh, it will load it.
 Returns a newly malloced mesh or NULL.
 
 
-See [C:/Demo/Graphics/SpritePlot3D.CPP,1].
+See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
 
 
 */
@@ -965,7 +962,7 @@ See [C:/Demo/Graphics/SpritePlot3D.CPP,1].
   "  FlipTri(,'F');"
   "}");
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WordStat;
   Preempt(OFF); //We don't really want window update while modifying links
   AcctOneTimePopUp(ARf_MESH_ED,
@@ -1005,12 +1002,12 @@ gm_restart:
 		    if (e.mode=='t') {
 		      Beep;Beep;
 		    } else
-		      GrMClipBoardCut(&e);
+		      GrMClipboardCut(&e);
 		  } else {
 		    if (GrMSelectCnt(&e))
-		      GrMClipBoardDel(&e);
+		      GrMClipboardDel(&e);
 		    else if (e.mode!='t')
-		      GrMVertexDel(&e,GrMVertexFindS(&e,ipx_presnap-Fs->win_pixel_left-Fs->win_scroll_x,ipy_presnap-Fs->win_pixel_top-Fs->win_scroll_y));
+		      GrMVertexDel(&e,GrMVertexFindScrPt(&e,ipx_presnap-Fs->pix_left-Fs->scroll_x,ipy_presnap-Fs->pix_top-Fs->scroll_y));
 		    GrMVertexSelectAll(&e,FALSE);
 		    GrMTriSelectAll(&e,FALSE);
 		    vn=0;
@@ -1021,9 +1018,9 @@ gm_restart:
 		    Beep; Beep;
 		  } else {
 		    if (p2&SCF_CTRL)
-		      GrMClipBoardCopy(&e);
+		      GrMClipboardCopy(&e);
 		    else if (p2&SCF_SHIFT) {
-		      GrMClipBoardPaste(&e);
+		      GrMClipboardPaste(&e);
 		      e.mode='m';
 		    }
 		  }
@@ -1117,13 +1114,13 @@ gm_restart:
 	      if (e.mode=='t') {
 		Beep;Beep;
 	      } else
-		GrMClipBoardCopy(&e);
+		GrMClipboardCopy(&e);
 	      break;
 	    case CH_CTRLV:
 	      if (e.mode=='t') {
 		Beep;Beep;
 	      } else {
-		GrMClipBoardPaste(&e);
+		GrMClipboardPaste(&e);
 		e.mode='m';
 	      }
 	      break;
@@ -1131,7 +1128,7 @@ gm_restart:
 	      if (e.mode=='t') {
 		Beep;Beep;
 	      } else
-		GrMClipBoardCut(&e);
+		GrMClipboardCut(&e);
 	      break;
 	    case CH_SHIFT_ESC:
 	      save_and_exit=FALSE;
@@ -1170,7 +1167,7 @@ gm_restart:
 	    case 'j':
 	      if (moving)
 		GrMVertexIgnoreSet(&e,TRUE);
-	      if (tempv=GrMVertexFindS(&e,ipx-Fs->win_pixel_left-Fs->win_scroll_x,ipy-Fs->win_pixel_top-Fs->win_scroll_y)) {
+	      if (tempv=GrMVertexFindScrPt(&e,ipx-Fs->pix_left-Fs->scroll_x,ipy-Fs->pix_top-Fs->scroll_y)) {
 		Noise(25,2000,8000);
 		e.my_ipz=RoundI64(tempv->p.z,e.cur_snap);
 	      } else {
@@ -1223,7 +1220,7 @@ gm_restart:
 	    case 'm':
 	      if (!moving) {
 		if (!GrMSelectCnt(&e) &&
-		    (tempv=GrMVertexFindS(&e,p1,p2))) {
+		    (tempv=GrMVertexFindScrPt(&e,p1,p2))) {
 		  tempv->flags|=VF_SELECTED;
 		  e.my_ipz=RoundI64(tempv->p.z,e.cur_snap);
 		}
@@ -1240,7 +1237,7 @@ gm_restart:
 	    case 'M':
 	      if (!adjusting_z && !moving) {
 		if (!GrMSelectCnt(&e) &&
-		    (tempv=GrMVertexFindS(&e,p1,p2))) {
+		    (tempv=GrMVertexFindScrPt(&e,p1,p2))) {
 		  tempv->flags|=VF_SELECTED;
 		  e.my_ipz=RoundI64(tempv->p.z,e.cur_snap);
 		}
@@ -1256,7 +1253,7 @@ gm_restart:
 		  p0b.y=ipy_presnap;
 		  p0b.z=e.my_ipz;
 		  adjusting_z=TRUE;
-		  Snd(LimitI64(3*e.my_ipz+1500,0,15000));
+		  Snd(ClampI64(3*e.my_ipz+1500,0,15000));
 		}
 	      }
 	      break;
@@ -1288,7 +1285,7 @@ gm_restart:
 	      }
 	      break;
 	    case 't':
-	      if (tempv=GrMVertexFindS(&e,p1,p2)) {
+	      if (tempv=GrMVertexFindScrPt(&e,p1,p2)) {
 		for (i=0;i<vn;i++)
 		  if (va[i]==tempv) {
 		    Beep; Beep;
@@ -1323,7 +1320,7 @@ gm_restart:
 	    p0b.y=ipy_presnap;
 	    p0b.z=e.my_ipz;
 	    adjusting_z=TRUE;
-	    Snd(LimitI64(3*e.my_ipz+1500,0,15000));
+	    Snd(ClampI64(3*e.my_ipz+1500,0,15000));
 	  }
 	  break;
 	case MSG_IP_R_UP:
@@ -1344,7 +1341,7 @@ gm_restart:
 	case MSG_IP_MOVE:
 	  if (adjusting_z) {
 	    e.my_ipz=RoundI64(Sign(p0b.y-ipy_presnap)*Sqrt(Sqr(p0b.x-ipx_presnap)+Sqr(p0b.y-ipy_presnap))+p0b.z,e.cur_snap);
-	    Snd(LimitI64(3*e.my_ipz+1500,0,15000));
+	    Snd(ClampI64(3*e.my_ipz+1500,0,15000));
 	  }
 	  if (moving) {
 	    GrMCursorW(&e,Fs,&x,&y,&z);
@@ -1378,5 +1375,3 @@ mesh_done:
     ViewAnglesDel;
   return root;
 }
-
-#help_index "Graphics"

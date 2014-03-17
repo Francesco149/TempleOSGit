@@ -2,10 +2,10 @@
 
 //This changes a page table entry for VGA graphics memory.
 //TempleOS keeps a cached copy of VGA memory in
-//[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,2] gr_screen_image.  See [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,719] GrUpdateVGAGraphics.
+//[C:/Adam/Gr/GrGlbls.CPP.Z,2] gr_screen_image.  See [C:/Adam/Gr/GrScreen.CPP.Z,390] GrUpdateVGAGraphics.
 
 //TempleOS used 4096 size pages for memory below addr 2 Meg
-//and 2 Meg pages above two Meg.  See [C:/TempleOS/Kernel/Memory.CPP.Z,185] MemPageSize() and [C:/Kernel/Mem1a.CPP,1] INIT_MEMORY.
+//and 2 Meg pages above two Meg.  See [C:/Kernel/Mem1a.CPP.Z,166] MemPageSize() and [C:/Kernel/Mem1a.CPP.Z,1] INIT_MEMORY.
 
 
 U0 PageTableDemo1()
@@ -26,7 +26,7 @@ U0 PageTableDemo1()
 //the page table reg.
 
 //  SetRAX(0x100000+0x1000*(MEM_NUM_PML1+MEM_NUM_PML2+MEM_NUM_PML3));
-//  asm {MOV_CR3_EAX}
+//  MOV_CR3_EAX
 
 //<CTRL-ALT-F> will flush screen VGA cache.
   VGAFlush;
@@ -43,6 +43,6 @@ U0 PageTableDemo1()
 
 PageTableDemo1;
 
-//See [C:/TempleOS/Kernel/Memory.CPP.Z,321] MemBlks2MegAlloc(), [C:/TempleOS/Kernel/Memory.CPP.Z,480] MemBlks2MegFree() for page aligned allocations.
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,2741] CBlkPool, [C:/TempleOS/Kernel/Adam1a.HPP.Z,2757] CHeapCtrl, [C:/TempleOS/Kernel/Adam1b.HPP.Z,120] sys_code_bp, [C:/TempleOS/Kernel/Adam1b.HPP.Z,121] sys_data_bp.
+//See [C:/Kernel/Mem1a.CPP.Z,301] MemBlks2MegAlloc(), [C:/Kernel/Mem1a.CPP.Z,460] MemBlks2MegFree() for page aligned allocations.
+//See [C:/Kernel/Adam1a.HPP.Z,2594] CBlkPool, [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrl, [C:/Kernel/Adam1b.HPP.Z,120] sys_code_bp, [C:/Kernel/Adam1b.HPP.Z,121] sys_data_bp.
 //See [Memory,1] Memory

@@ -11,7 +11,7 @@ Constant expressions are simplified.
 Eliminated opcodes are set to NOP.
 Types are determined by reconstructing an
 expression tree for operators
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,1677] CIntermediateCode.[C:/TempleOS/Kernel/Adam1a.HPP.Z,1671] CICTreeLinks.
+[C:/Kernel/Adam1a.HPP.Z,1564] CIntermediateCode.[C:/Kernel/Adam1a.HPP.Z,1549] CICTreeLinks.
 
 Pointer arithmetic size is set, once
 the type is determined.
@@ -21,7 +21,7 @@ logic. 3-Arg comparisons are established.
 
 */
 
-CIntermediateCode *OptPass012(CLex *lx,CHashFun *fun_class)
+CIntermediateCode *OptPass012(CLex *lx)
 {
 /*
 Simplify CONST arithmetic.
@@ -276,7 +276,7 @@ args.
       case IC_DEREF:
 	if (lx->pass==2) {
 	  if (!tempc->size)
-	    LexPutWarn(lx,"ST_DEREF_U0",fun_class);
+	    LexWarn(lx,"Dereference U0 ");
 	  if (tempi1->ic_class->raw_type!=RT_F64) {
 	    if (tempi1->ic_code==IC__PP) {
 	      tempi->ic_code=IC_DEREF_PP;
@@ -295,7 +295,7 @@ args.
       case IC_PP_:
       case IC_MM_:
 	if (lx->pass==2 && !tempc->size)
-	  LexPutWarn(lx,"ST_DEREF_U0",fun_class);
+	  LexWarn(lx,"Dereference U0 ");
 	break;
       case IC_POWER:
 	tempc=tempi->ic_class=sys_internal_types[RT_F64];
@@ -315,8 +315,7 @@ args.
 		tempi->ic_data=tempi1->ic_data(I64)*tempi2->ic_data(I64);
 	      tempi->ic_code=IC_IMM_U64;
 	    } else {
-	      tempi->ic_data(F64)=tempi1->ic_data(F64)*
-		    tempi2->ic_data(F64);
+	      tempi->ic_data(F64)=tempi1->ic_data(F64)*tempi2->ic_data(F64);
 	      tempi->ic_code=IC_IMM_F64;
 	    }
 	  } else {
@@ -377,7 +376,7 @@ args.
 	      }
 	    } else if (tempi2->ic_code==IC_IMM_F64 && lx->pass==2) {
 	      if (tempi2->ic_data(F64)==1.0) {
-		tempi1->ic_flags|=tempi2->ic_flags|tempi->ic_flags;
+		tempi1->ic_flags|=tempi->ic_flags|tempi2->ic_flags;
 		tempi1->ic_class2=tempi->ic_class2;
 		tempi_push=tempi1;
 		OptSetNOP1(tempi2);
@@ -831,7 +830,7 @@ args.
 	break;
       sub_switch_start:
 	if (lx->pass==2 && (!tempc->size||!tempc2->size))
-	  LexPutWarn(lx,"ST_ASSIGN_U0",fun_class);
+	  LexWarn(lx,"Assign U0 ");
 	sub_switch_start:
 	  case IC_MUL_EQUAL:
 	    if (tempi2->ic_code==IC_IMM_U64 &&
@@ -908,7 +907,7 @@ args.
 	break;
       case IC_ENTER:
       case IC_LEAVE:
-	tempi->ic_data=-fun_class->size;
+	tempi->ic_data=-lx->htc.fun->size;
 	break;
       case IC_ADD_RSP:
 	if (tempi1=OptLag(tempi)) {
@@ -1179,6 +1178,8 @@ args.
       case IC_COS:
       case IC_TAN:
       case IC_ATAN:
+      case IC_BR_CARRY:
+      case IC_BR_NOT_CARRY:
       case IC_BR_NOT_EQUAL:
       case IC_BR_EQUAL_EQUAL:
       case IC_BR_GREATER_EQUAL:
@@ -1222,18 +1223,10 @@ args.
       case IC_CALL_INDIRECT2:
       case IC_CALL_EXTERN:
       case IC_CALL_IMPORT:
-      case IC_CLI:
-      case IC_STI:
-      case IC_HLT:
-      case IC_PUSHFD:
-      case IC_POPFD:
       case IC_PUSH:
       case IC_POP:
-      case IC_CLD:
-      case IC_STD:
       case IC_INVLPG:
       case IC_CLFLUSH:
-      case IC_PAUSE:
       case IC_GET_RFLAGS:
       case IC_CARRY:
       case IC_GET_RBP:
@@ -1289,7 +1282,7 @@ args.
       default:
 	"Pass:%d Missing IC handler\n",lx->pass;
 	ICPut(tempi);
-	LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+	LexExcept(lx,"Compiler Optimization Error at ");
     }
     if (cmp_arg_cnt[code]==2) {
       if (tempi_push->ic_precedence.u8[0]&~ASSOC_MASK==PREC_ASSIGN)
@@ -1315,7 +1308,7 @@ args.
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
 
   /*

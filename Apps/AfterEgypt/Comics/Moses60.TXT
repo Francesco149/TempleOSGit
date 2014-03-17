@@ -16,4 +16,4 @@
 
 
 
-[C:/TempleOS/Misc/Bible.TXT.Z,21329] Judges,16:6
+[C:/Misc/Bible.TXT.Z,21329] Judges,16:6

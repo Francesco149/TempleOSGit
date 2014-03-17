@@ -3,13 +3,13 @@ DefineLstLoad("ST_BIN_FILE_TYPES",
 "END\0 \0"
 "REL_EXPORT\0"
 "IMM_EXPORT\0"
-"REL_U8\0"
+"REL_I8\0"
 "IMM_U8\0"
-"REL_U16\0"
+"REL_I16\0"
 "IMM_U16\0"
-"REL_U32\0"
+"REL_I32\0"
 "IMM_U32\0"
-"REL_U64\0"
+"REL_I64\0"
 "IMM_U64\0"
 " \0 \0 \0 \0"
 "MAIN\0"
@@ -23,23 +23,16 @@ DefineLstLoad("ST_BIN_FILE_TYPES",
 public Bool BinRep(U8 *filename)
 {//This reports imports, exports, etc
  //for a .BI* file.
-//See [C:/Compiler/CmpMain.CPP,1] Loader Patch Table Generation and [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load().
-  U8 *fbuf,*ptr,etype,*sptr,*absname;
-  I64 i,j,size;
-  CBinFile *bfh,*bfh2;
+//See [C:/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation and [C:/Kernel/Hash1b.CPP.Z,386] Load().
+  U8 *fbuf,*ptr,*sptr,*absname;
+  I64 i,j,size,etype;
+  CBinFile *bfh;
   CHashExport *saved_hash_ptr=NULL;
   fbuf=DftExt(filename,"BIN.Z");
-  if (!(bfh2=FileRead(fbuf,&size))) {
+  if (!(bfh=FileRead(fbuf,&size))) {
     Free(fbuf);
     return FALSE;
   }
-  bfh=bfh2;
-
-  if (ArcXSum(bfh,bfh->file_size)!=TEMPLEOS_XSUM) {
-    "Bad XSum\n\n";
-    return FALSE;
-  }
-
   absname=FileNameAbs(fbuf);
   Free(fbuf);
   fbuf=StrNew(absname);
@@ -57,11 +50,11 @@ public Bool BinRep(U8 *filename)
     ptr+=StrLen(sptr)+1;
     "%16Z:$GREEN$%s$FG$:%X ",etype,"ST_BIN_FILE_TYPES",sptr,i;
     switch (etype) {
-      case EIT_REL_U8...EIT_IMM_U64:
+      case EIT_REL_I8...EIT_IMM_U64:
 	if (*sptr)
 	  saved_hash_ptr=HashFind(sptr,Fs->hash_table,HTG_ALL);
 	if (!saved_hash_ptr)
-	  "%S%s\n","ST_UNRESOLVED_REFERENCE",sptr;
+	  "Unresolved Reference:%s\n",sptr;
 	break;
       case EIT_ABS_ADDR:
 	NewLine;

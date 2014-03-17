@@ -7,7 +7,7 @@ HashTablePurge(adam_task->hash_table);
 
 //Use Dbg("Type 'G;'"); to debug before window mgr is running.
 
-public F64 os_version=1.10;
+public F64 os_version=2.03; //Fix here, too: [C:/Demo/AcctExample/DbgAdam2.CPP.Z,1]
 
 #include "AdamExt.HPP"
 #include "Math2a"
@@ -29,6 +29,8 @@ Cd("::/Adam");;
 #include "Win2b"
 #include "Dbg2a"
 
+#include "::/Adam/God/GodExt"
+
 Cd("::/Adam/Doc");;
 #include "Doc"
 LBts(&sys_run_level,RLf_DOC);
@@ -42,6 +44,9 @@ Cd("::/Adam");;
 
 Cd("::/Adam/WordStat");;
 #include "WordStat"
+
+Cd("::/Adam/God");;
+#include "God"
 
 Cd("::/Adam");;
 #include "Hash2a"

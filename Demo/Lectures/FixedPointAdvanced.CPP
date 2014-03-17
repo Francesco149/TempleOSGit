@@ -12,7 +12,7 @@ and my compiler used to do floats poorly.
 I often use 64-bit ints with upper 32-bits
 as integer and lower 32-bits as fraction.
 
-See [C:/Demo/SubIntAccess.CPP,1] for how
+See [C:/Demo/SubIntAccess.CPP.Z,1] for how
 to access upper or lower 32-bits.
 
 */
@@ -21,8 +21,6 @@ to access upper or lower 32-bits.
 I32 coordinates[65536];
 
 asm {
-	IMPORT coordinates;
-
 _ASM_FIXED_POINT::
 	PUSH	RBP
 	MOV	RBP,RSP

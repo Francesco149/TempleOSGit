@@ -64,7 +64,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   //<CTRL-T> now to see the hidden part
   //where the sprite num is encoded. IB stands
   //for "insert ptr to binary object".
-  SpritePlot3(dc,x,y,0,__BIN_1);
+  Sprite3(dc,x,y,0,__BIN_1);
 
   i=shots_out;
   while (i!=shots_in) {
@@ -75,10 +75,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   while (i!=dead_in) {
     j=i++ &(MAX_SHOTS-1);
     if (!g_dead[j]) {
-      if (gx[j]%10>5)
-	SpritePlot3(dc,gx[j],gy[j],0,__BIN_2);
+      if (gx[j]%10>4)
+	Sprite3(dc,gx[j],gy[j],0,__BIN_2);
       else
-	SpritePlot3(dc,gx[j],gy[j],0,__BIN_3);
+	Sprite3(dc,gx[j],gy[j],0,__BIN_3);
     }
   }
   i=0;
@@ -112,7 +112,7 @@ U0 TheDead()
   "  Down(,,SC_CURSOR_DOWN);"
       "}"
       );
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   WordStat;

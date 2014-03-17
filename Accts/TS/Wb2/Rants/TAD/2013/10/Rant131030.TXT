@@ -1144,7 +1144,14 @@ watch.  Bummer.
 God said He was gonna get to work evolving a suckerfish to a cliff sucking 
 alien.  LOL
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/QUubBsYRaDg&hl=enUS&start=60"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/QUubBsYRaDg&hl=enUS&start=60"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 
 Some tin-foil-hat nigger at OSDev didn't believe HotBits was real.

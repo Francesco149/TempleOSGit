@@ -71,9 +71,7 @@ AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 PopUpOk(
 "$GREEN$<CTRL-ALT-A>$FG$\tExtended ASCII\n"
 "$GREEN$<CTRL-ALT-C>$FG$\tBreak(interrupt) program\n"
-"$GREEN$<CTRL-ALT-D>$FG$\tEnter debugger\n"
 "$GREEN$<CTRL-ALT-E>$FG$\tSpawn new user terminal window\n"
-"$GREEN$<CTRL-ALT-F>$FG$\tFlush screen VGA cache\n"
 "$GREEN$<CTRL-ALT-M>$FG$\tMutes sound\n"
 "$GREEN$<CTRL-ALT-T>$FG$\tSwitch tasks\n"
 "$GREEN$<CTRL-ALT-X>$FG$\tKill task (window)\n"

@@ -108,14 +108,14 @@ U0 OptPass6Lag(CLex *lx,
   *_clobbered_reg_mask=clobbered_reg_mask;
 }
 
-U0 OptPass6(CLex *lx,CHashFun *fun_class)
+U0 OptPass6(CLex *lx)
 {
   CIntermediateCode *tempi,*tempil1,*tempil2,*tempil3,*tempif1,*tempif2,*old_tempil2;
   I64 i=0,code,num_stk,clobbered_reg_mask=REG_ALWAYS_CLOBBERED_MASK,fun_num=0;
   CPrsStk *ps=lx->ps;
   ps->ptr=0;
   ps->ptr2=0;
-  if (fun_class)
+  if (lx->htc.fun)
     fun_num=compiled_funs++;
   if (Bt(&lx->opts,OPTf_NO_REG_VAR) || lx->flags&LF_NO_REG_OPT)
     num_stk=0;
@@ -200,15 +200,15 @@ U0 OptPass6(CLex *lx,CHashFun *fun_class)
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
-  if (fun_class) {
-    fun_class->used_reg_mask&=~REG_STK_TEMPS_MASK;
-    fun_class->used_reg_mask|=clobbered_reg_mask;
-    fun_class->clobbered_reg_mask=clobbered_reg_mask;
+  if (lx->htc.fun) {
+    lx->htc.fun->used_reg_mask&=~REG_STK_TEMPS_MASK;
+    lx->htc.fun->used_reg_mask|=clobbered_reg_mask;
+    lx->htc.fun->clobbered_reg_mask=clobbered_reg_mask;
     if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) &&
 	  Bt(&lx->pass_trace_mask,6)) {
-      "Used      Reg Mask:%04X\n",fun_class->used_reg_mask;
+      "Used      Reg Mask:%04X\n",lx->htc.fun->used_reg_mask;
       "Clobbered Reg Mask:%04X\n",clobbered_reg_mask;
     }
   }

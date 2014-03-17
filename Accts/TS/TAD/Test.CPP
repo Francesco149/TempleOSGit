@@ -1,10 +1,11 @@
-U0 Main()
+
+
+
+U0 Main(U8 reg R15 *msg)
 {
-  while (!ScanChar) {
-    "%d ",ToI64((Now-A2Date("1/1/1970"))/CDATE_FREQ+6*3600-330);
-    "%d\n",FloorI64((Now-A2Date("1/1/1970"))/CDATE_FREQ+6*3600-330,60);
-    Sleep(100);
-  }
+  "%s\n",msg;
 }
 
-Main;
+
+Uf("Main");
+

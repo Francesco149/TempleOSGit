@@ -117,6 +117,6 @@ U0 OptPass5(CLex *lx)
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
 }

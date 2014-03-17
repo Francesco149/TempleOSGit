@@ -43,9 +43,9 @@
 
 
 
-#define MAN_FRAMES 8
+#define FRAMES 8
 
-U8 *man_imgs[MAN_FRAMES]=
+CSprite *imgs[FRAMES]=
 {
 __BIN_1,__BIN_2,__BIN_3,__BIN_4,
 __BIN_5,__BIN_4,__BIN_3,__BIN_1
@@ -55,18 +55,18 @@ F64 t0=Beat;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  U8 *temps;
+  CSprite *temps;
   F64 tt=Beat,dt=Beat-t0;
-  temps=SpriteInterpolate(man_imgs[tt%MAN_FRAMES],man_imgs[(tt+1)%MAN_FRAMES],tt%1.0);
-  SpritePlot3(dc,180,40,0,temps);
+  temps=SpriteInterpolate(imgs[tt%FRAMES],imgs[(tt+1)%FRAMES],tt%1.0);
+  Sprite3(dc,180,40,0,temps);
   Free(temps);
   if (dt>24.0)
-    SpritePlot3(dc,task->win_pixel_width-12.0*(dt-24.0),40,0,__BIN_6);
+    Sprite3(dc,task->pix_width-12.0*(dt-24.0),40,0,__BIN_6);
 }
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
 

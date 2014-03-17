@@ -1,9 +1,9 @@
 U8 *old_font=gr_font;
 
-// See [C:/Kernel/Font8x8.CPP,1].
-// See [C:/Demo/ScreenCodes.CPP,1].
-// See [C:/Demo/ExtendedChars.CPP,1].
-// See [C:/Demo/Graphics/FontEd.CPP,1].
+// See [C:/Kernel/Font8x8.CPP.Z,1].
+// See [C:/Demo/ScreenCodes.CPP.Z,1].
+// See [C:/Demo/ExtendedChars.CPP.Z,1].
+// See [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
 U8 waves[8*4]={
 0x00,0x11,0xAA,0x44,0x00,0x11,0xAA,0x44,

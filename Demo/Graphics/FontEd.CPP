@@ -7,11 +7,11 @@
 
 //If you want to change the system font permanently,
 //save to a file with this font editor program
-//and cut and paste the code into [C:/Kernel/Font8x8.CPP,1].
-//You will need to recompile Kernel by calling [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+//and cut and paste the code into [C:/Kernel/Font8x8.CPP.Z,1].
+//You will need to recompile Kernel by calling [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 
-//See [C:/Demo/ExtendedChars.CPP,1] and
-//[C:/Demo/ScreenCodes.CPP,1].
+//See [C:/Demo/ExtendedChars.CPP.Z,1] and
+//[C:/Demo/ScreenCodes.CPP.Z,1].
 
 #define BLOW_UP_CHAR_X	(18*FONT_WIDTH)
 #define BLOW_UP_CHAR_Y	(2*FONT_HEIGHT)
@@ -70,7 +70,7 @@ U0 FESave(Bool pmt)
 U0 FontEd()
 {
   I64 msg_code,p1,p2,k;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   MenuPush(
   "File {"
   "  SaveAs(,CH_CTRLA);"

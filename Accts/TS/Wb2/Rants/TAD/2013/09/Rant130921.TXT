@@ -14,12 +14,12 @@ scene where a drug deal is happening, but from an observer's perspective, it
 looks like a homosexual act.
 
 I chuckle at people arguing over what God says in tongues.  Much of it is 
-noise.  It's funny that in [C:/TempleOS/Misc/Bible.TXT.Z,87803] Acts,2:1,
-they don't bother to record any of what 
-the spirit said.  [C:/TempleOS/Misc/Bible.TXT.Z,71804] Daniel,5:1 shows
-tongues -- it's mean to tickle/to-kill a 
-person or the president.  In [C:/TempleOS/Misc/Bible.TXT.Z,92110] 1
-Corinthians,14:1 they say only five words in 
+noise.  It's funny that in [C:/Misc/Bible.TXT.Z,87803] Acts,2:1, they don't
+bother to record any of what 
+the spirit said.  [C:/Misc/Bible.TXT.Z,71804] Daniel,5:1 shows tongues --
+it's mean to tickle/to-kill a 
+person or the president.  In [C:/Misc/Bible.TXT.Z,92110] 1 Corinthians,14:1
+they say only five words in 
 ten-thousand makes sense.
 
 God says...
@@ -62,29 +62,29 @@ of 35,000 for the language.  Perhaps, they mean library code.  here is my
 glorious compiler.  I love my compiler.
 
 20,184 -] Compiler
-   1,478 [C:/Compiler/Assembler.CPP.Z,1] Assembler.CPP.Z
-   4,634 [C:/Compiler/BackLib.CPP.Z,1] BackLib.CPP.Z
-     692 [C:/Compiler/CmpAsm.CPP.Z,1] CmpAsm.CPP.Z
-      57 [C:/Compiler/CmpExts.CPP.Z,1] CmpExts.CPP.Z
-      21 [C:/Compiler/CmpGlbls.CPP.Z,1] CmpGlbls.CPP.Z
-     730 [C:/Compiler/CmpInit.CPP.Z,1] CmpInit.CPP.Z
-     709 [C:/Compiler/CmpMain.CPP.Z,1] CmpMain.CPP.Z
-   1,220 [C:/Compiler/ExpParser.CPP.Z,1] ExpParser.CPP.Z
-     156 [C:/Compiler/Hash1b.CPP.Z,1] Hash1b.CPP.Z
-     402 [C:/Compiler/ICLCC.CPP.Z,1] ICLCC.CPP.Z
-   1,683 [C:/Compiler/Lex.CPP.Z,1] Lex.CPP.Z
-   2,060 [C:/Compiler/OptPass012.CPP.Z,1] OptPass012.CPP.Z
-     617 [C:/Compiler/OptPass3.CPP.Z,1] OptPass3.CPP.Z
-     721 [C:/Compiler/OptPass4.CPP.Z,1] OptPass4.CPP.Z
-     120 [C:/Compiler/OptPass5.CPP.Z,1] OptPass5.CPP.Z
-     236 [C:/Compiler/OptPass6.CPP.Z,1] OptPass6.CPP.Z
-   1,244 [C:/Compiler/OptPass789.CPP.Z,1] OptPass789.CPP.Z
-   1,973 [C:/Compiler/StmtParser.CPP.Z,1] StmtParser.CPP.Z
-     851 [C:/Compiler/Unassembler.CPP.Z,1] Unassembler.CPP.Z
-     388 [C:/Compiler/CmpDefs.HPP.Z,1] CmpDefs.HPP.Z
-      86 [C:/Compiler/Cmp.HPP.Z,1] Cmp.HPP.Z
-      25 [C:/Compiler/Compiler.PRJ.Z,1] Compiler.PRJ.Z
-         [C:/Compiler/OpCodes.TXT.Z,1] OpCodes.TXT.Z
+   1,478 [C:/Compiler/Assembler.CPP.Z,1] Assembler.CPP
+   4,634 [C:/Compiler/BackLib.CPP.Z,1] BackLib.CPP
+     692 [C:/Compiler/CmpAsm.CPP.Z,1] CmpAsm.CPP
+      57 [C:/Compiler/CmpExts.CPP.Z,1] CmpExts.CPP
+      21 [C:/Compiler/CmpGlbls.CPP.Z,1] CmpGlbls.CPP
+     730 [C:/Compiler/CmpInit.CPP.Z,1] CmpInit.CPP
+     709 [C:/Compiler/CmpMain.CPP.Z,1] CmpMain.CPP
+   1,220 [C:/Compiler/ExpParser.CPP.Z,1] ExpParser.CPP
+     156 [C:/Compiler/Hash1b.CPP.Z,1] Hash1b.CPP
+     402 [C:/Compiler/ICLCC.CPP.Z,1] ICLCC.CPP
+   1,683 [C:/Compiler/Lex.CPP.Z,1] Lex.CPP
+   2,060 [C:/Compiler/OptPass012.CPP.Z,1] OptPass012.CPP
+     617 [C:/Compiler/OptPass3.CPP.Z,1] OptPass3.CPP
+     721 [C:/Compiler/OptPass4.CPP.Z,1] OptPass4.CPP
+     120 [C:/Compiler/OptPass5.CPP.Z,1] OptPass5.CPP
+     236 [C:/Compiler/OptPass6.CPP.Z,1] OptPass6.CPP
+   1,244 [C:/Compiler/OptPass789.CPP.Z,1] OptPass789.CPP
+   1,973 [C:/Compiler/StmtParser.CPP.Z,1] StmtParser.CPP
+     851 [C:/Compiler/Unassembler.CPP.Z,1] Unassembler.CPP
+     388 [C:/Compiler/CmpDefs.HPP.Z,1] CmpDefs.HPP
+      86 [C:/Compiler/Cmp.HPP.Z,1] Cmp.HPP
+      25 [C:/Compiler/Compiler.PRJ.Z,1] Compiler.PRJ
+         [C:/Compiler/OpCodes.TXT.Z,1] OpCodes.TXT
 
 
 I could show you code it makes.
@@ -107,7 +107,7 @@ fish, that I wuved too much.
 ----09/21/13 01:57:53----
 
 Someone posted an on-line disassembler.  I have my own unassembler
-[C:/TempleOS/Compiler/Unassembler.CPP.Z,220] Ui().
+[C:/Compiler/Unassembler.CPP.Z,239] Ui().
 
 How about this function.
 
@@ -115,7 +115,7 @@ U0 IntInit1()
 { //Interrupt descriptor table part1
   I64 i,temp_ptr[2];
   U32 *ptr;
-  if (!Gs->num) { //Gs cur [C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU struct
+  if (!Gs->num) { //Gs cur [C:/Kernel/Adam1a.HPP.Z,3488] CCPU struct
     sys_idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);
@@ -125,7 +125,7 @@ U0 IntInit1()
   *ptr(I64 *)++=sys_idt;
   *ptr(U16 *)=0;
   SetRAX(temp_ptr);
-  asm {	LIDT U64 [RAX] }
+  	LIDT U64 [RAX]
 }
 
 
@@ -266,19 +266,20 @@ Hello World
 --------------------------
 
 U0 Print(U8 *fmt,...)
-{//[C:/Doc/HolyC.TXT,1] Print Extended Codes
- //See [MN:SPrintJoin] SPrintJoin()
+{//[C:/Doc/HolyC.TXT.Z,1] Print Extended Codes
+ //See [C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin()
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
   PutS(buf);
   Free(buf);
 }
 
-[MN:SPrintJoin] SPrintJoin()
+[C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin()
 
-[C:/TempleOS/Kernel/Display.CPP.Z,207] PutS()
+[C:/Kernel/Display.CPP.Z,207] PutS()
 
 U0 PutS(U8 *st)
-{ //Use [MN:Print] Print().  See [C:/Doc/KeyBoard.TXT,1] PutKeyHandling
+{ //Use [C:/Kernel/StrPrint.CPP.Z,946] Print().  See
+[C:/Doc/KeyBoard.TXT.Z,1] PutKeyHandling
   U8 ch,*ptr;
   Bool cont=TRUE;
   if (!st) return;
@@ -302,19 +303,19 @@ U0 PutS(U8 *st)
   }
 }
 
-Bool AKDDocPutS(U8 *st)
+Bool KDDocPutS(U8 *st)
 {
   CDoc *doc;
   if (doc=DocPut)
-    DocPutSPartial(doc,st);
+    DocPrintPartial(doc,st);
   return FALSE;
 }
 
-KeyDevAdd(&AKDDocPutKey,&AKDDocPutS,0x80000000,TRUE);
+KeyDevAdd(&KDDocPutKey,&KDDocPutS,0x80000000,TRUE);
 fp_mgets=&DocMGetS;
 fp_doc_put=&DocPut;
 
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2214] DocPutSPartial();
+[C:/Adam/Doc/DocEd2b.CPP.Z,687] DocPrintPartial();
 
 
 U0 WinMgrTask(I64)
@@ -331,23 +332,23 @@ wmt_start:
   }
 }
 
-[C:/TempleOS/Adam/Window.CPP.Z,530] WinMgrSleep()
+[C:/Adam/Win2b.CPP.Z,281] WinMgrSleep()
 
-[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,752] GrUpdateScreen()
+[C:/Adam/Gr/GrScreen.CPP.Z,423] GrUpdateScreen()
 
-[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,378] GrUpdateWins()
+[C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins()
 
-[C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1798] DocUpdateTaskDocs()
+[C:/Adam/Doc/DocRecalc2a.CPP.Z,195] DocUpdateTaskDocs()
 
-[C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc()
+[C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc()
 
-[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,574] GrUpdateBackgroundOfText()
+[C:/Adam/Gr/GrScreen.CPP.Z,177] GrUpdateBackgroundOfText()
 
-[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,628] GrUpdateForegroundOfText()
+[C:/Adam/Gr/GrScreen.CPP.Z,276] GrUpdateForegroundOfText()
 
-[C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,719] GrUpdateVGAGraphics()
+[C:/Adam/Gr/GrScreen.CPP.Z,390] GrUpdateVGAGraphics()
 
-[C:/TempleOS/Adam/Gr/GrAsm.CPP.Z,411] _GR_UPDATE_LINE32_FLUSH_CACHE()
+[C:/Adam/Gr/GrAsm.CPP.Z,418] _GR_UPDATE_LINE32_FLUSH_CACHE()
 
 
 
@@ -376,31 +377,31 @@ I haven't seen Joe,James,Jonny Miraglia is many years.
 
 Someone wants to know how focus transition works.
 
-If you click, the [C:/TempleOS/Adam/Window.CPP.Z,1057] WinMgrTask() calls
-[C:/TempleOS/Adam/Window.CPP.Z,800] SetCursorPos() which calls
-[C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc().
+If you click, the [C:/Adam/Win2b.CPP.Z,479] WinMgrTask() calls
+[C:/Adam/Win2b.CPP.Z,354] SetCursorPos() which calls
+[C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc().
 
 If you press cursor keys...
 
-[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,175] View()
+[C:/Adam/Doc/DocPopUp.CPP.Z,175] View()
 
-[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,153] DocGetKey()
+[C:/Adam/Doc/DocPopUp.CPP.Z,153] DocGetKey()
 
-[C:/TempleOS/Kernel/KbdMouse/Message.CPP.Z,139] GetKey()
+[C:/Kernel/KbdMouse/Message.CPP.Z,134] GetKey()
 
-[C:/TempleOS/Kernel/Display.CPP.Z,180] PutKey()
+[C:/Kernel/Display.CPP.Z,180] PutKey()
 
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,2206] AKDDocPutKey()
+[C:/Adam/Doc/DocEd2b.CPP.Z,679] KDDocPutKey()
 
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,1503] DocPutKey()
+[C:/Adam/Doc/DocEd2b.CPP.Z,3] DocPutKey()
 
-[C:/TempleOS/Adam/Doc/DocEd.CPP.Z,492] EdLineDown()
+[C:/Adam/Doc/DocEd2a.CPP.Z,282] EdLineDown()
 
-[C:/TempleOS/Adam/Doc/DocNew.CPP.Z,336] DocFormFwd() //This gets you off of
-static text in a form.
+[C:/Adam/Doc/DocNew.CPP.Z,265] DocFormFwd() //This gets you off of static
+text in a form.
 
-[C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc() //This gets called a
-lot, prolly straightens-things-up.
+[C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc() //This gets called a lot,
+prolly straightens-things-up.
 
 
 
@@ -426,14 +427,14 @@ class FDStruct
 //Use <CTRL-L> and select "Data" to generate the fmtstrs
 
 //The number is the field from after the ':' to the end.
-//  See [C:/Adam/Doc/DocPlain.CPP,1] Data Tag Width.
+//  See [C:/Adam/Doc/DocPlain.CPP.Z,1] Data Tag Width.
 
-  F64 num1	fmtstr "$DA-T,32,\"F64   1:%12.8f\"$\n";
-  F64 num2	fmtstr "$DA-T,32,\"F64   2:%12e\"$\n";
-  I64 num3	fmtstr "$DA-T,32,\"I64   1:0x%016X\"$\n";
-  I64 num4	fmtstr "$DA-T,32,\"I64   2:%12d\"$\n";
+  F64 num1	fmtstr "$DA-TRM,32,\"F64   1:%12.8f\"$\n";
+  F64 num2	fmtstr "$DA-TRM,32,\"F64   2:%12e\"$\n";
+  I64 num3	fmtstr "$DA-TRM,32,\"I64   1:0x%016X\"$\n";
+  I64 num4	fmtstr "$DA-TRM,32,\"I64   2:%12d\"$\n";
   U8 name[32]	fmtstr "$DA-P,31,\"Name  :%s\"$\n";
-  CDate datetime fmtstr "$DA-T,32,\"Date  :%8D\"$\n";
+  CDate datetime fmtstr "$DA-TRM,32,\"Date  :%8D\"$\n";
 };
 
 U0 FormDemo()
@@ -461,14 +462,14 @@ U0 FormDemo()
   "\n\nClassRep Example\n";
   ClassRep(&fds);
 
-//See also [C:/TempleOS/Adam/Dbg2a.CPP.Z,160] ClassRepD().
+//See also [C:/Adam/Dbg2a.CPP.Z,160] ClassRepD().
 }
 
 FormDemo;
 
 --------------------------------------------------------------
 
-[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,291] DocFormDo();
+[C:/Adam/Doc/DocPopUp.CPP.Z,301] DocFormDo();
 
 public Bool DocFormDo(U8 *_d,U8 *class_name=lastclass,
     I64 dof_flags=0,U8 *header=NULL,U8 *footer=NULL)
@@ -520,9 +521,9 @@ public Bool DocFormDo(U8 *_d,U8 *class_name=lastclass,
 
 --------------------------------------------------------------
 
-[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,184] DocDo()
+[C:/Adam/Doc/DocPopUp.CPP.Z,184] DocDo()
 
-[C:/TempleOS/Adam/Doc/DocPopUp.CPP.Z,175] View()
+[C:/Adam/Doc/DocPopUp.CPP.Z,175] View()
 
 
 
@@ -546,7 +547,7 @@ north
 
 How are icons drawn?
 
---------------------- [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,108] DocRecalc()
+--------------------- [C:/Adam/Doc/DocRecalc2b.CPP.Z,250] DocRecalc()
 ----------------------------
 
       case DOCT_SPRITE:
@@ -588,8 +589,8 @@ temp_u32_attr&DOCET_BLINK))
 	    dc->cur_x=ipx;
 	    dc->cur_y=ipy;
 	  } else {
-	    dc->cur_x=(doc->x-x0)*FONT_WIDTH+pixel_left+scroll_x;
-	    dc->cur_y=(doc->y-y0)*FONT_HEIGHT+pixel_top+scroll_y;
+	    dc->cur_x=(doc->x-x0)*FONT_WIDTH+pix_left+scroll_x;
+	    dc->cur_y=(doc->y-y0)*FONT_HEIGHT+pix_top+scroll_y;
 	  }
 	  dc->cur_z=0;
 	  dc->bkcolor=i;
@@ -617,7 +618,7 @@ temp_u32_attr&DOCET_BLINK))
 	    dc->z=GR_Z_ALL;
 	    xx=0; yy=0; zz=0;
 	  }
-	  SpritePlot3(dc,xx,yy,zz,bptr);
+	  Sprite3(dc,xx,yy,zz,bptr);
 	  dc->depth_buf=NULL;
 	  if (recalc==DOC_RECALC_TO_SCREEN && doc->cur_sprite==bptr)
 	    doc->cur_sprite_elem_num=dc->nearest_sprite_elem_num;
@@ -630,35 +631,34 @@ temp_u32_attr&DOCET_BLINK))
 	break;
 
 --------------------------------------------------------------
-[C:/TempleOS/Adam/Gr/Gr.CPP.Z,44] GRST_MESH
+[C:/Adam/Gr/Gr.CPP.Z,39] GRST_MESH
 
-[C:/TempleOS/Adam/Gr/GrSpritePlot.CPP.Z,27] SpritePlot3()
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,27] Sprite3()
 
 Source Code By Sym
 
-[C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,1423] Gr3Mesh()
+[C:/Adam/Gr/GrPrimatives.CPP.Z,1519] Gr3Mesh()
 
-[MN:GrFillTri0] GrFillTri0()
+[C:/Adam/Gr/GrPrimatives.CPP.Z,1131] GrFillTri0()
 
-[C:/TempleOS/Adam/Gr/GrBitMap.CPP.Z,1504] GrHLine()
+[C:/Adam/Gr/GrBitMap.CPP.Z,1590] GrHLine()
 
 God says...
 Young parting mode declare
 
 ----09/21/13 04:53:52----
 
-[MN:PopUpColorLighting] PopUpColorLighting()
+[C:/Adam/Doc/DocPopUp.CPP.Z,764] PopUpColorLighting()
 
-[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,459] GrLighting()
+[C:/Adam/Gr/GrDC.CPP.Z,60] GrLighting()
 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC device context. 
-[C:/Doc/Graphics.TXT.Z,1] Graphics
+[C:/Kernel/Adam1a.HPP.Z,3220] CDC device context.  [C:/Doc/Graphics.TXT.Z,1]
+Graphics
 
-This sets it to [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,459] GrLighting() and
-[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,154]
-GrTransform()-->[C:/TempleOS/Adam/Gr/MathGr.CPP.Z,144] GrRot().
+This sets it to [C:/Adam/Gr/GrDC.CPP.Z,60] GrLighting() and
+[C:/Adam/Gr/GrDC.CPP.Z,16] GrTransform()-->[C:/Adam/Gr/GrDC.CPP.Z,6] GrRot().
 
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,3] DCRst() 
+[C:/Adam/Gr/GrDC.CPP.Z,136] DCRst() 
 
 
 God says...
@@ -707,7 +707,7 @@ I wrote a simple 250-line expression compiler because I get so many skeptics.
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex().
+{ //See [C:/Compiler/Lex.CPP.Z,742] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -767,7 +767,7 @@ I64 Lex(U8 **_src,I64 *num)
 extern I64 Parse(U8 **_src,U8 **_dst);
 
 U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
-{ //See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
+{ //See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
   I64 i;
   U8 *src2;
   U8 *dst2;
@@ -789,8 +789,9 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 
 I64 Parse(U8 **_src,U8 **_dst)
 {
-//See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
-//See [C:/Compiler/OpCodes.TXT,1] Opcode Fmts for details on asm instructions.
+//See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
+//See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm
+instructions.
   I64 i;
   U8 *dst=*_dst;
   switch (Lex(_src,&i)) {
@@ -895,10 +896,10 @@ U0 Main()
 	  throw;
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/TempleOS/Kernel/Adam1b.HPP.Z,287] Call() is a function.  See
-[C:/Kernel/Utils1a.CPP,1] _CALL::
-//See also [C:/TempleOS/Kernel/Adam1b.HPP.Z,290] CallInd().  See
-[C:/Kernel/Utils1a.CPP,1] _CALLIND::
+//[C:/Kernel/Adam1b.HPP.Z,273] Call() is a function.  See
+[C:/Kernel/Utils1a.CPP.Z,1] _CALL::
+//See also [C:/Kernel/Adam1b.HPP.Z,276] CallInd().  See
+[C:/Kernel/Utils1a.CPP.Z,1] _CALLIND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";
@@ -1034,7 +1035,7 @@ growth strengthenest die
 
 ----09/21/13 06:39:28----
 
-I have written all 129,664 over the past 15.5 years all by myself.  It is a 
+I have written all 120,796 over the past 15.5 years all by myself.  It is a 
 x86_64 PC operating system.  It is God's official temple with an oracle.  It 
 will last a thousand years.  Little kids will come and do offerings.  The
 main 
@@ -1434,8 +1435,8 @@ company that came against us into our hand.
 
 If you are a black-belt assembly programmer, operator precedence is the 
 hardest part in a compiler, except for arbitrarily complex optimizations.  I 
-took a compiler course--learned to [C:/TempleOS/Compiler/Lex.CPP.Z,789]
-Lex().  I am a very experienced assembly 
+took a compiler course--learned to [C:/Compiler/Lex.CPP.Z,742] Lex().  I am a
+very experienced assembly 
 programmer.
 
 When do I just get God to kill people?
@@ -1581,13 +1582,13 @@ To recompile everything and make the kernel bootable
 
 calls
 
-[MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall()
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall()
 
-[MN:MasterBootIntall] MasterBootIntall()
+[C:/Adam/Boot/InsBoot.CPP.Z,263] MasterBootIntall()
 
 calls
 
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,112] MakeAll();
+[C:/Adam/Boot/InsBoot.CPP.Z,125] MakeAll();
 
 God says...
 l be purified, and made white, and tried; but the
@@ -1643,8 +1644,7 @@ Interpretation of God might be tricky, but I think God will speak in a way
 for 
 whomever to understand.  No, He might be too much of a riddle at some point.  
 If you are a simple-plain-talking-unsophisticated person, you might have a 
-problem with interpreting.  [C:/TempleOS/Misc/Bible.TXT.Z,92110] 1
-Corinthians,14:1
+problem with interpreting.  [C:/Misc/Bible.TXT.Z,92110] 1 Corinthians,14:1
 
 A young person will struggle.  You get better as you get older.  You can
 learn 
@@ -1864,7 +1864,7 @@ stone thee; and goest thou thither again?  11:9 J
 
 Here's a mini graphics library I wrote as a lecture.
 
-//See [C:/Demo/Lectures/GraphicsCPULoad.CPP,1]
+//See [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1]
 U8 reverse[256],	//The VGA bits are backward
 
    image[640*480/8];	//We need read-modify write.
@@ -1996,9 +1996,9 @@ This bit tells TempleOS to update whole screen.
  
 MiniGrLibDemo;
 
-//See [C:/TempleOS/Kernel/Display.CPP.Z,1] RawPutChar() for text.
-//See [C:/Demo/Lectures/ScreenMemory.CPP,1] for color.
-//See [C:/Demo/Lectures/GraphicsCPULoad.CPP,1].
+//See [C:/Kernel/Display.CPP.Z,1] RawPutChar() for text.
+//See [C:/Demo/Lectures/ScreenMemory.CPP.Z,1] for color.
+//See [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1].
 
 ----09/21/13 19:49:08----
 

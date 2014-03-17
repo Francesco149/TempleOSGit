@@ -17,34 +17,34 @@ public Bool DocLineNumGoTo(CDoc *doc,I64 line_num) //one based
   return result;
 }
 
-public Bool DocPatternFind(CDoc *doc,I64 start_line_num=MIN_I64,
-			      U8 *pattern,I64 match=1)
+public Bool DocFind(CDoc *haystack_doc,I64 start_line_num=MIN_I64,
+			      U8 *needle,I64 match=1)
 {
   Bool result=FALSE,unlock;
   CDocEntry *doc_e;
   U8 *ptr;
   I64 i;
-  if (doc) {
-    unlock=DocLock(doc);
+  if (haystack_doc) {
+    unlock=DocLock(haystack_doc);
     if (start_line_num==MIN_I64) {
       result=TRUE;
-      doc_e=doc->root.next;
+      doc_e=haystack_doc->root.next;
     } else {
-      result=DocLineNumGoTo(doc,start_line_num);
-      doc_e=doc->cur_entry;
+      result=DocLineNumGoTo(haystack_doc,start_line_num);
+      doc_e=haystack_doc->cur_entry;
     }
     if (result) {
-      if (pattern) {
+      if (needle) {
 	result=FALSE;
-	while (doc_e!=doc) {
-	  if (Bt(doc_type_flags_tag,doc_e->type_u8) &&
-		(ptr=StrIMatch(pattern,doc_e->tag))) { //TODO: handle multientry strings
+	while (doc_e!=haystack_doc) {
+	  if (doc_e->flags1&DOCEF1_TAG &&
+		(ptr=StrIMatch(needle,doc_e->tag))) { //TODO: handle multientry strings
 	    i=ptr-doc_e->tag;
 	    if (!--match) {
-	      doc->cur_entry=doc_e;
+	      haystack_doc->cur_entry=doc_e;
 	      if (i<doc_e->min_col) i=doc_e->min_col;
 	      if (i>doc_e->max_col) i=doc_e->max_col;
-	      doc->cur_data_col=i;
+	      haystack_doc->cur_data_col=i;
 	      result=TRUE;
 	      break;
 	    }
@@ -54,37 +54,37 @@ public Bool DocPatternFind(CDoc *doc,I64 start_line_num=MIN_I64,
       } else
 	result=FALSE;
     }
-    if (!result) DocBottom(doc);
-    DocCenter(doc);
+    if (!result) DocBottom(haystack_doc);
+    DocCenter(haystack_doc);
     if (unlock)
-      DocUnlock(doc);
+      DocUnlock(haystack_doc);
   }
   return result;
 }
 
-public Bool DocAnchorFind(CDoc *doc,U8 *pattern)
+public Bool DocAnchorFind(CDoc *haystack_doc,U8 *needle_str)
 {
   Bool result=FALSE,unlock;
   CDocEntry *doc_e;
-  if (doc) {
-    unlock=DocLock(doc);
-    doc_e=doc->root.next;
-    if (pattern)
-      while (doc_e!=doc) {
+  if (haystack_doc) {
+    unlock=DocLock(haystack_doc);
+    doc_e=haystack_doc->root.next;
+    if (needle_str)
+      while (doc_e!=haystack_doc) {
 	if (doc_e->type_u8==DOCT_ANCHOR) {
-	  if (!StrCmp(pattern,doc_e->aux_str)) {
-	    doc->cur_entry=doc_e;
-	    doc->cur_data_col=doc_e->min_col;
+	  if (!StrCmp(needle_str,doc_e->aux_str)) {
+	    haystack_doc->cur_entry=doc_e;
+	    haystack_doc->cur_data_col=doc_e->min_col;
 	    result=TRUE;
 	    break;
 	  }
 	}
 	doc_e=doc_e->next;
       }
-    if (!result) DocBottom(doc);
-    DocCenter(doc);
+    if (!result) DocBottom(haystack_doc);
+    DocCenter(haystack_doc);
     if (unlock)
-      DocUnlock(doc);
+      DocUnlock(haystack_doc);
   }
   return result;
 }
@@ -103,7 +103,7 @@ public U0 EdFindNext(CDoc *doc)
     sf_flags|=SFG_WHOLE_LABELS;
   do {
     if (doc_e!=doc) {
-      if (Bt(doc_type_flags_tag,doc_e->type_u8)&&
+      if (doc_e->flags1&DOCEF1_TAG&&
 	!(doc_e->flags1&(DOCEG1_DONT_EDIT|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
 	if (doc_e->type & DOCET_SELECTED || !doc->find_replace->scan_selected_text) {
 	  if (doc->find_replace->scan_fwd) {
@@ -180,8 +180,8 @@ public U0 EdSelectAll(CDoc *doc,Bool select)
 public Bool EdFindPaired(CDoc *doc,U8 plus,U8 minus,Bool fwd,Bool abort_on_dbl_colon=FALSE)
 {
   Bool unlock=DocLock(doc),result=FALSE;
-  U8 ch,*ptr,original_col=doc->cur_data_col;
-  I64 levels=0,colons=0;
+  U8 *ptr;
+  I64 ch,levels=0,colons=0,original_col=doc->cur_data_col;
   CDocEntry *doc_ce=doc->cur_entry,*doc_e=doc_ce,*original_ce=doc_ce;
   if (abort_on_dbl_colon && EdCurU8(doc)==':')
     colons=1;
@@ -189,7 +189,7 @@ public Bool EdFindPaired(CDoc *doc,U8 plus,U8 minus,Bool fwd,Bool abort_on_dbl_c
     colons=0;
   do {
     if (doc_e!=doc) {
-      if (Bt(doc_type_flags_tag,doc_e->type_u8)&&!(doc_e->flags1&(DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
+      if (doc_e->flags1&DOCEF1_TAG&&!(doc_e->flags1&(DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
 	if (fwd) {
 	  if (doc_e==doc_ce)
 	    ptr=doc_e->tag+doc->cur_data_col+1;
@@ -316,8 +316,8 @@ public Bool EdGoToFun(CDoc *doc,Bool fwd,Bool abort_on_dbl_colon)
 public U0 EdSelectFun(CDoc *doc,Bool abort_on_dbl_colon=FALSE)
 {
   Bool unlock=DocLock(doc);
-  U8 ch,*ptr;
-  I64 levels=0,colons=0;
+  U8 *ptr;
+  I64 ch,levels=0,colons=0;
   CDocEntry *doc_e;
   EdSelectAll(doc,FALSE);
   EdGoToFun(doc,FALSE,abort_on_dbl_colon);
@@ -556,7 +556,7 @@ public I64 EdReplace(CDoc *doc,U8 *find,U8 *replace,
 
 class CEdLineGoTo
 {
-  I64 line fmtstr "$DA,256,\"Go to Line:%d\"$";
+  I64 line fmtstr "$DA,256,A=\"Go to Line:%d\"$";
 };
 
 public U0 EdGoToLine(CDoc *doc)

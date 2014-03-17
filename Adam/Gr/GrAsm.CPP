@@ -39,10 +39,10 @@ _PLOT_WIN_U8::
 	PUSH	RBP
 	MOV	RBP,RSP
 	MOV	RCX,U64 SF_ARG1[RBP]
-	MOV	RBX,U64 CTask.win_scroll_x[RCX]
+	MOV	RBX,U64 CTask.scroll_x[RCX]
 	SAR	RBX,3
 	ADD	RBX,U64 SF_ARG3[RBP]
-	MOV	RAX,U64 CTask.win_scroll_y[RCX]
+	MOV	RAX,U64 CTask.scroll_y[RCX]
 	SAR	RAX,3
 	ADD	RAX,U64 SF_ARG4[RBP]
 
@@ -92,7 +92,7 @@ _PLOT_WIN_STR2::
 	PUSH	RDI
 	MOV	RBX,U64 SF_ARG1[RBP]
 	MOV	RSI,U64 SF_ARG2[RBP]
-	MOV	RDI,U64 CTask.win_scroll_x[RBX]
+	MOV	RDI,U64 CTask.scroll_x[RBX]
 	SAR	RDI,3
 	ADD	RDI,U64 SF_ARG5[RBP]
 	MOV	RCX,U64 SF_ARG3[RBP]
@@ -124,7 +124,7 @@ _PLOT_WIN_STR2::
 @@20:	CMP	RCX,1
 	JL	@@30
 
-	MOV	RAX,U64 CTask.win_scroll_y[RBX]
+	MOV	RAX,U64 CTask.scroll_y[RBX]
 	SAR	RAX,3
 	ADD	RAX,U64 SF_ARG6[RBP]
 	TEST	RAX,RAX
@@ -170,7 +170,7 @@ _PLOT_ATTR_STR2::
 	PUSH	RDI
 	MOV	RBX,U64 SF_ARG1[RBP]
 	MOV	RSI,U64 SF_ARG2[RBP]
-	MOV	RDI,U64 CTask.win_scroll_x[RBX]
+	MOV	RDI,U64 CTask.scroll_x[RBX]
 	SAR	RDI,3
 	ADD	RDI,U64 SF_ARG4[RBP]
 	MOV	RCX,U64 SF_ARG3[RBP]
@@ -204,7 +204,7 @@ _PLOT_ATTR_STR2::
 @@20:	CMP	RCX,1
 	JL	@@30
 
-	MOV	RAX,U64 CTask.win_scroll_y[RBX]
+	MOV	RAX,U64 CTask.scroll_y[RBX]
 	SAR	RAX,3
 	ADD	RAX,U64 SF_ARG5[RBP]
 	TEST	RAX,RAX
@@ -248,7 +248,7 @@ _PLOT_ATTR::
 	PUSH	RSI
 	PUSH	RDI
 	MOV	RBX,U64 SF_ARG1[RBP]
-	MOV	RDI,U64 CTask.win_scroll_x[RBX]
+	MOV	RDI,U64 CTask.scroll_x[RBX]
 	SAR	RDI,3
 	ADD	RDI,U64 SF_ARG4[RBP]
 	MOV	RCX,U64 SF_ARG2[RBP]
@@ -278,7 +278,7 @@ _PLOT_ATTR::
 @@20:	CMP	RCX,1
 	JL	@@35
 
-	MOV	RAX,U64 CTask.win_scroll_y[RBX]
+	MOV	RAX,U64 CTask.scroll_y[RBX]
 	SAR	RAX,3
 	ADD	RAX,U64 SF_ARG5[RBP]
 	TEST	RAX,RAX
@@ -322,10 +322,10 @@ _PLOT_BORDER_U8::
 	MOV	RBP,RSP
 	MOV	R9,U64 [&gr_text_base]
 	MOV	RCX,U64 SF_ARG1[RBP]
-	MOV	RBX,U64 CTask.win_scroll_x[RCX]
+	MOV	RBX,U64 CTask.scroll_x[RCX]
 	SAR	RBX,3
 	ADD	RBX,U64 SF_ARG3[RBP]
-	MOV	RAX,U64 CTask.win_scroll_y[RCX]
+	MOV	RAX,U64 CTask.scroll_y[RCX]
 	SAR	RAX,3
 	ADD	RAX,U64 SF_ARG4[RBP]
 
@@ -602,7 +602,7 @@ _DC_BLOT_COLOR4::
 	POP	RBP
 	RET1	32
 // ************************************
-_IS_PIXEL_COVERED0::
+_IS_PIX_COVERED0::
 	PUSH	RBP
 	MOV	RBP,RSP
 #assert FONT_WIDTH==FONT_HEIGHT==8
@@ -763,9 +763,9 @@ public _extern _PLOT_ATTR	  Bool PlotWinAttr(
 public _extern _PLOT_BORDER_U8 Bool PlotBorderU8(CTask *task,I64 w,I64 x,I64 y);
 _extern _GR_ROP_EQU_U8_NO_CLIPPING U0 GrRopEquU8NoClipping(I64 ch,U8 *dst,I64 width_internal);
 
-#help_index "Graphics"
+#help_index "Graphics/Misc"
 //No clipping
-public _extern _IS_PIXEL_COVERED0 Bool IsPixelCovered0(CTask *task,I64 x,I64 y);
+public _extern _IS_PIX_COVERED0 Bool IsPixCovered0(CTask *task,I64 x,I64 y);
 
 _extern _GR_UPDATE_LINE32 U0 GrUpdateLine32(
   U32 **_dst3,U32 **_src2,I64 w,U8 **_vga);
@@ -773,4 +773,3 @@ _extern _GR_UPDATE_LINE32_FLUSH_CACHE U0 GrUpdateLine32FlushCache(
   U32 **_dst3,U32 **_src2,I64 w,U8 **_vga);
 _extern _DC_BLOT_COLOR4 U0 DCBlotColor4(
   U8 *dst,I64 *img,I64 *img_cache,I64 cnt);
-#help_index ""

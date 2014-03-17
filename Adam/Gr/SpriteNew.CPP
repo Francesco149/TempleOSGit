@@ -1,4 +1,4 @@
-#help_index "Graphics/CSprite"
+#help_index "Graphics/Sprite"
 #help_file "::/Doc/Sprite"
 
 I64 sprite_base_size[GRST_NUM_TYPES]=
@@ -113,68 +113,63 @@ public U8 *DC2Sprite(CDC *tempb)
 }
 
 public U8 *Sprite2Text(CSprite *tempg)
-{ //Study [C:/Demo/Graphics/SpriteText.CPP,1].
-  U8 buf[256],buf2[256],buf3[136];
+{ //Study [C:/Demo/Graphics/SpriteText.CPP.Z,1].
+  U8 buf[256],buf2[136];
   I32 *ptr;
   SPrint(buf,"%Z",tempg->type,"ST_SPRITE_TYPES");
-  *buf2=0;
   switch (tempg->type) {
     case GRST_COLOR8:
-      SPrint(buf2," %s",Color2Text(buf3,tempg->color8));
+      CatPrint(buf," %s",Color2Text(buf2,tempg->color8));
       break;
     case GRST_PT:
     case GRST_FLOOD_FILL:
     case GRST_FLOOD_FILL_NOT:
     case GRST_SHIFT:
-      SPrint(buf2," %d,%d",tempg->x1,tempg->y1);
+      CatPrint(buf," %d,%d",tempg->x1,tempg->y1);
       break;
     case GRST_LINE:
     case GRST_ARROW:
     case GRST_PLANAR_SYMMETRY:
     case GRST_RECT:
     case GRST_ROTATED_RECT:
-      SPrint(buf2," (%d,%d)-(%d,%d)",
-	  tempg->x1,tempg->y1,tempg->x2,tempg->y2);
+      CatPrint(buf," (%d,%d)-(%d,%d)",tempg->x1,tempg->y1,tempg->x2,tempg->y2);
       break;
     case GRST_CIRCLE:
-      SPrint(buf2," %d,%d:%dR",
-	  tempg->x1,tempg->y1,tempg->x2);
+      CatPrint(buf," %d,%d:%dR",tempg->x1,tempg->y1,tempg->x2);
       break;
     case GRST_WIDTH:
-      SPrint(buf2," %d",tempg->width);
+      CatPrint(buf," %d",tempg->width);
       break;
     case GRST_TEXT:
     case GRST_TEXT_BOX:
     case GRST_TEXT_DIAMOND:
-      SPrint(buf2," %d,%d:%-16tQ",tempg->x1,tempg->y1,tempg->st);
+      CatPrint(buf," %d,%d:%-16tQ",tempg->x1,tempg->y1,tempg->st);
       break;
     case GRST_DITHER_COLOR8:
-      SPrint(buf2," %s",Color2Text(buf3,ROPF_DITHER|tempg->dither_color8.u8[0]|tempg->dither_color8.u8[1]<<COLORROP_BITS));
+      CatPrint(buf," %s",Color2Text(buf2,ROPF_DITHER|tempg->dither_color8.u8[0]|tempg->dither_color8.u8[1]<<COLORROP_BITS));
       break;
     case GRST_POLYLINE:
     case GRST_POLYPT:
       ptr=&tempg->y1;
-      SPrint(buf2," %d %d,%d",tempg->num,ptr[0],ptr[1]);
+      CatPrint(buf," %d %d,%d",tempg->num,ptr[0],ptr[1]);
       break;
     case GRST_ELLIPSE:
     case GRST_POLYGON:
     case GRST_BITMAP8:
-      SPrint(buf2," %dW,%dH:%d,%d",
-	  tempg->width,tempg->height,tempg->x2,tempg->y2);
+      CatPrint(buf," %dW,%dH:%d,%d",tempg->width,tempg->height,tempg->x2,tempg->y2);
       break;
     case GRST_BSPLINE2:
     case GRST_BSPLINE3:
     case GRST_BSPLINE2_CLOSED:
     case GRST_BSPLINE3_CLOSED:
-      SPrint(buf2," %d",tempg->num);
+      CatPrint(buf," %d",tempg->num);
       break;
     case GRST_MESH:
-      SPrint(buf2," %dV,%dT",tempg->vertex_cnt,tempg->tri_cnt);
+      CatPrint(buf," %dV,%dT",tempg->vertex_cnt,tempg->tri_cnt);
       break;
     case GRST_SHIFTABLE_MESH:
-      SPrint(buf2," %dV,%dT",tempg->shiftable_vertex_cnt,tempg->shiftable_tri_cnt);
+      CatPrint(buf," %dV,%dT",tempg->shiftable_vertex_cnt,tempg->shiftable_tri_cnt);
       break;
   }
-  StrCat(buf,buf2);
   return StrNew(buf);
 }

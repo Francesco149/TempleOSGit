@@ -4,13 +4,13 @@ Press <CTRL-ALT-C> to break.
 Rerun Program
 
 Press <CTRL-ALT-D> to enter Dbg.
-> [C:/TempleOS/Kernel/Dbg1a.CPP.Z,378] Dr;	//Dump Regs
-> [C:/TempleOS/Kernel/Dbg1a.CPP.Z,527] G2;	//Cont program
+> [C:/Kernel/Dbg1a.CPP.Z,337] Dr;	//Dump Regs
+> [C:/Kernel/Dbg1a.CPP.Z,486] G2;	//Cont program
 
 
 Press <CTRL-ALT-D> to enter Dbg.
-> [C:/TempleOS/Adam/Dbg2a.CPP.Z,236] Uf("DbgDemo");
-> [C:/TempleOS/Compiler/Unassembler.CPP.Z,866] U(_RIP);
+> [C:/Adam/Dbg2a.CPP.Z,236] Uf("DbgDemo");
+> [C:/Compiler/Unassembler.CPP.Z,647] U(_RIP);
 
 See [Debugging,1] Debugging
 

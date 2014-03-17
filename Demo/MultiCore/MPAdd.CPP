@@ -29,10 +29,10 @@ F64 Test(I64 n,I64 my_mp_cnt)
 {
   I64 i,val=0;
   F64 start,end;
-  start=tT;
+  start=tS;
   for (i=0;i<SAMPLE_SIZE;i++)
     val+=Sum(n,my_mp_cnt);
-  end=tT;
+  end=tS;
   "Val:%,d\n",val/SAMPLE_SIZE;
   "$RED$N:%12,d Time:%10.8f$FG$\n",n,(end-start)/SAMPLE_SIZE;
   return end-start;
@@ -47,8 +47,8 @@ F64 Test(I64 n,I64 my_mp_cnt)
 U0 MPAdd()
 {
   I64 i,n,
-    h=Fs->win_pixel_width,
-    v=Fs->win_pixel_height;
+    h=Fs->pix_width,
+    v=Fs->pix_height;
   F64 t1,t2,results[NUM_TESTS];
   CDC *dc=DCAlias;
 

@@ -2,24 +2,23 @@
 +] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's
   lexical analyser removes comments and does
-  preprocessing.  [C:/TempleOS/Compiler/Lex.CPP.Z,789]
-  Lex(),[C:/TempleOS/Compiler/Directives.CPP.Z,48] Echo(ON).
+  preprocessing.  [C:/Compiler/Lex.CPP.Z,742]
+  Lex(),[C:/Compiler/ICLCC.CPP.Z,38] Echo(ON).
 
-The main compiler generates [C:/Compiler/CmpDefs.HPP,1] Intermediate Code at
-  the parser stage.  See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44]
-  PrsExpression(), [C:/TempleOS/Compiler/StmtParser.CPP.Z,1627] PrsStatement().
+The main compiler generates [C:/Compiler/CmpDefs.HPP.Z,1] Intermediate Code
+  at the parser stage.  See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression(),
+  [C:/Compiler/StmtParser.CPP.Z,1689] PrsStatement().
 
-The main compiler optimizes   See [D:/Compiler/CmpInit.CPP,1] Intermediate
-  Code Attributes, [C:/Compiler/OptPass012.CPP,1] Combining Consts,
-  [C:/Compiler/OptPass3.CPP,1] Choosing Reg Vars.  Set
-  [C:/TempleOS/Compiler/Directives.CPP.Z,26] OTrace(ON) to see the optimization
-  stages.
+The main compiler optimizes   See [C:/Compiler/CmpInit.CPP.Z,1] Intermediate
+  Code Attributes, [C:/Compiler/OptPass012.CPP.Z,1] Combining Consts,
+  [C:/Compiler/OptPass3.CPP.Z,1] Choosing Reg Vars.  Set
+  [C:/Compiler/ICLCC.CPP.Z,21] OTrace(ON) to see the optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/TempleOS/Kernel/Adam1a.HPP.Z,1677] IC Struct, [MN:LCCCompile] LCCCompile
-  and [C:/Compiler/OptPass789.CPP,1] OptPass789(), [C:/Compiler/Back1a.CPP,1]
-  BackEnd.  Set [C:/TempleOS/Compiler/Directives.CPP.Z,38] CTrace(ON) to see
-  the output of the backend.
+  [C:/Kernel/Adam1a.HPP.Z,1564] IC Struct, [C:/Compiler/ICLCC.CPP.Z,376]
+  LCCCompile and [C:/Compiler/OptPass789.CPP.Z,1]
+  OptPass789(), [C:/Compiler/Back1a.CPP.Z,1] BackEnd.  Set
+  [C:/Compiler/ICLCC.CPP.Z,33] CTrace(ON) to see the output of the backend.
 
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:
@@ -47,7 +46,7 @@ It is okay in TempleOS to change RAX, RBX, RCX, RDX, R8 and R9 without
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex().
+{ //See [C:/Compiler/Lex.CPP.Z,742] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -107,7 +106,7 @@ I64 Lex(U8 **_src,I64 *num)
 extern I64 Parse(U8 **_src,U8 **_dst);
 
 U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
-{ //See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
+{ //See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
   I64 i;
   U8 *src2;
   U8 *dst2;
@@ -129,8 +128,8 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 
 I64 Parse(U8 **_src,U8 **_dst)
 {
-//See [C:/TempleOS/Compiler/ExpParser.CPP.Z,44] PrsExpression().
-//See [C:/Compiler/OpCodes.TXT,1] Opcode Fmts for details on asm instructions.
+//See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
+//See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm instructions.
   I64 i;
   U8 *dst=*_dst;
   switch (Lex(_src,&i)) {
@@ -235,8 +234,8 @@ U0 Main()
 	  throw;
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/TempleOS/Kernel/Adam1b.HPP.Z,287] Call() is a function.  See [C:/Kernel/Utils1a.CPP,1] _CALL::
-//See also [C:/TempleOS/Kernel/Adam1b.HPP.Z,290] CallInd().  See [C:/Kernel/Utils1a.CPP,1] _CALLIND::
+//[C:/Kernel/Adam1b.HPP.Z,273] Call() is a function.  See [C:/Kernel/Utils1a.CPP.Z,1] _CALL::
+//See also [C:/Kernel/Adam1b.HPP.Z,276] CallInd().  See [C:/Kernel/Utils1a.CPP.Z,1] _CALLIND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";

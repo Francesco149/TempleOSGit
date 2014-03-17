@@ -1,4 +1,4 @@
-//See [C:/Demo/Lectures/GraphicsCPULoad.CPP,1]
+//See [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1]
 U8 reverse[256],	//The VGA bits are backward
 
    image[640*480/8];	//We need read-modify write.
@@ -130,6 +130,6 @@ This bit tells TempleOS to update whole screen.
  
 MiniGrLibDemo;
 
-//See [C:/TempleOS/Kernel/Display.CPP.Z,1] RawPutChar() for text.
-//See [C:/Demo/Lectures/ScreenMemory.CPP,1] for color.
-//See [C:/Demo/Lectures/GraphicsCPULoad.CPP,1].
+//See [C:/Kernel/Display.CPP.Z,1] RawPutChar() for text.
+//See [C:/Demo/Lectures/ScreenMemory.CPP.Z,1] for color.
+//See [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1].

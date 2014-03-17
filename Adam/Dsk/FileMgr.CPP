@@ -12,7 +12,7 @@ U0 DirFileDoc(CDoc *doc,CDirEntry *tempde)
 	DirFileDoc(doc,tempde->sub);
       DocPrint(doc,"$ID,-2$");
     } else {
-      doc_e=DocPrint(doc,"$MU-LE,\"%s\"$",
+      doc_e=DocPrint(doc,"$MU,\"%s\"$",
 	tempde->name);
       doc_e->user_data=tempde;
       tempde->user_data=doc_e;
@@ -472,19 +472,19 @@ I64 PopUpFMRight(U8 *header=NULL,U8 *footer=NULL)
   I64 i;
   CDoc *doc=DocNew;
   if (header) DocPrint(doc,"%s",header);
-  DocPrint(doc,"$CM+LX,1,1 $$BT,\"INCLUDE               \",FMR_INCLUDE$"
-	"$CM+LX,27,0$$BT,\"ADAM INCLUDE          \",FMR_ADAM_INCLUDE$"
-	"$CM+LX,1,3 $$BT,\"DELETE                \",FMR_DELETE$"
-	"$CM+LX,27,0$$BT,\"RENAME                \",FMR_RENAME$"
-	"$CM+LX,1,3 $$BT,\"MAKE DIRECTORY        \",FMR_MKDIR$"
-	"$CM+LX,27,0$$BT,\"PLAIN-TEXT EDIT       \",FMR_PLAIN$"
-	"$CM+LX,1,3 $$BT,\"PASTE CLIPBOARD FILES \",FMR_PASTE$"
-	"$CM+LX,27,0$$BT,\"CHANGE DISK(MOUNT IT) \",FMR_CHG_DSK$"
-	"$CM+LX,1,3 $$BT,\"FORMAT                \",FMR_FORMAT$"
-	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD-ROM) FILE\",FMR_MAKE_ISO$"
-	"$CM+LX,27,0$$BT,\"BURN ISO (CD-ROM) FILE\",FMR_BURN_ISO$"
-	"$CM+LX,1,3 $$BT,\"HELP                  \",FMR_HELP$"
-	"$CM+LX,27,0$$BT,\"CANCEL                \",DOCM_CANCEL$\n");
+  DocPrint(doc,"$CM+LX,1,1 $$BT,\"INCLUDE               \",LE=FMR_INCLUDE$"
+	"$CM+LX,27,0$$BT,\"ADAM INCLUDE          \",LE=FMR_ADAM_INCLUDE$"
+	"$CM+LX,1,3 $$BT,\"DELETE                \",LE=FMR_DELETE$"
+	"$CM+LX,27,0$$BT,\"RENAME                \",LE=FMR_RENAME$"
+	"$CM+LX,1,3 $$BT,\"MAKE DIRECTORY        \",LE=FMR_MKDIR$"
+	"$CM+LX,27,0$$BT,\"PLAIN-TEXT EDIT       \",LE=FMR_PLAIN$"
+	"$CM+LX,1,3 $$BT,\"PASTE CLIPBOARD FILES \",LE=FMR_PASTE$"
+	"$CM+LX,27,0$$BT,\"CHANGE DISK(MOUNT IT) \",LE=FMR_CHG_DSK$"
+	"$CM+LX,1,3 $$BT,\"FORMAT                \",LE=FMR_FORMAT$"
+	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD-ROM) FILE\",LE=FMR_MAKE_ISO$"
+	"$CM+LX,27,0$$BT,\"BURN ISO (CD-ROM) FILE\",LE=FMR_BURN_ISO$"
+	"$CM+LX,1,3 $$BT,\"HELP                  \",LE=FMR_HELP$"
+	"$CM+LX,27,0$$BT,\"CANCEL                \",LE=DOCM_CANCEL$\n");
   if (footer) DocPrint(doc,"%s",footer);
   i=PopUpMenu(doc);
   DocDel(doc);
@@ -555,7 +555,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
   CDocEntry *doc_ce=NULL,*doc_e;
   Bool okay;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   fp_old_final_screen_update=fp_final_screen_update;
   MenuFilePush("::/Doc/FileMgrPullDown.TXT");
   FMRebuildDoc(&doc,&root,mode);
@@ -587,7 +587,7 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
       case MSG_IP_L_UP:
 	if (doc_ce) {
 	  fp_final_screen_update=fp_old_final_screen_update;
-	  if (SetCursorPos(Fs,p1/FONT_WIDTH+Fs->win_left+Fs->win_scroll_x/FONT_WIDTH,p2/FONT_HEIGHT+Fs->win_top+Fs->win_scroll_y/FONT_HEIGHT,TRUE)) {
+	  if (SetCursorPos(Fs,p1/FONT_WIDTH+Fs->win_left+Fs->scroll_x/FONT_WIDTH,p2/FONT_HEIGHT+Fs->win_top+Fs->scroll_y/FONT_HEIGHT,TRUE)) {
 	    doc_e=doc->cur_entry;
 	    if (doc_e!=doc_ce) {
 	      st2=NULL;
@@ -657,35 +657,29 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
 	    DocLock(doc);
 	    break;
 	  sub_switch_start:
+	    DocUnlock(doc);
 	    case CH_CTRLV:
 	      FMCopy(doc);
 	      break;
 	    case 'r':
-	      DocUnlock(doc);
 	      FMRename(doc);
 	      break;
 	    case 'd':
-	      DocUnlock(doc);
 	      FMMkDir(doc);
 	      break;
 	    case CH_CTRLY:
-	      DocUnlock(doc);
 	      FMDelete(doc);
 	      break;
 	    case 'm':
-	      DocUnlock(doc);
 	      FMMount(doc);
 	      break;
 	    case 'M':
-	      DocUnlock(doc);
 	      FMMakeISO(doc);
 	      break;
 	    case 'B':
-	      DocUnlock(doc);
 	      FMBurnISO(doc);
 	      break;
 	    case 'f':
-	      DocUnlock(doc);
 	      FMFmtDrv(doc);
 	      break;
 	  sub_switch_end:

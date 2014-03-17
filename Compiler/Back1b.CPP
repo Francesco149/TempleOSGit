@@ -802,7 +802,7 @@ U0 ICTestAndBranch(CIntermediateCode *tempi,I64 ip,I64 is,U8 *buf,I64 ip2)
   }
 }
 
-U0 ICZFlagBranch(CIntermediateCode *tempi,I64 ip,I64 is,U8 *buf)
+U0 ICFlagBranch(CIntermediateCode *tempi,I64 ip,I64 is,U8 *buf)
 {
   I64 i;
   Bool short_jmp;

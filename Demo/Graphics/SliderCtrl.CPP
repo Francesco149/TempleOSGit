@@ -3,7 +3,7 @@ This was done with <CTRL-SHIFT-L> managed code.
 It's conceptually easy to do a ctrl,
 but tedious.  You have complete freedom.
 
-See [C:/TempleOS/Kernel/Adam1a.HPP.Z,2834] CCtrl.
+See [C:/Kernel/Adam1a.HPP.Z,2685] CCtrl.
 */
 
 // Start of autocreated Code
@@ -48,12 +48,12 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedSliderCtrl(CCtrl *c)
 {
   CSliderState *s=c->state;
-  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*3+2)/2;
+  c->left=c->win_task->pix_width/2-(SLIDER_SPACING*3+2)/2;
   c->right=c->left+3*SLIDER_SPACING+2;
-  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->top=c->win_task->pix_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
   c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
-  s->left_pos=LimitI64(s->left_pos,0,SLIDER_RANGE-1);
-  s->right_pos=LimitI64(s->right_pos,0,SLIDER_RANGE-1);
+  s->left_pos=ClampI64(s->left_pos,0,SLIDER_RANGE-1);
+  s->right_pos=ClampI64(s->right_pos,0,SLIDER_RANGE-1);
 }
 
 U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,Bool)

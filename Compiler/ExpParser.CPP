@@ -2,7 +2,7 @@ U0 ParenWarning(CLex *lx)
 {
   if (Bt(&lx->opts,OPTf_WARN_PAREN) &&
       !(lx->cur_lfn->flags&LFSF_DEFINE))
-    LexPutWarn(lx,"ST_UNNECESSARY_PARENTHESIS");
+    LexWarn(lx,"Unnecessary parenthesis ");
 }
 
 U0 PrsPush(CPrsStk *ps,I64 val)
@@ -188,7 +188,7 @@ pe_check_binary_ops2:
 	  else if (stk_op.u16[0]==IC_ADDR) {
 	    lx->abs_cnts.c_addres++;
 	    if (Bt(ic_bitmap_deref,tempi->ic_code))
-	      tempi->ic_code=IC_NOP1;
+	      OptFree(tempi);
 	    tempc++;
 	  }
 	  tempc=OptClassFwd(tempc);
@@ -238,8 +238,8 @@ pe_do_binary_op:
 	  tempc=OptClassFwd(tempi->ic_class);
 	  if (!Bt(ic_bitmap_deref,tempi->ic_code) ||
 		!tempc->ptr_cnt && !Bt(&tempc->flags,Cf_INTERNAL_TYPE))
-	    LexExcept(lx,"ST_INVALID_LVAL");
-	  tempi->ic_code=IC_NOP1;
+	    LexExcept(lx,"invalid lval at ");
+	  tempi->ic_code=IC_NOP1; //Important for setting class (pretty sure)
 	  cur_op.u8[2]=PREC_ASSIGN|ASSOCF_RIGHT;
 	}
 
@@ -319,7 +319,7 @@ Bool PrsExpression(CLex *lx,I64 *_max_prec,Bool end_exp,CPrsStk *_ps=NULL)
   }
   if (!_ps) {
     if (ps->ptr)
-      LexExcept(lx,"ST_PRS_INTERNAL_ERROR");
+      LexExcept(lx,"Compiler Parse Error at ");
     Free(ps);
   }
   if (end_exp && result)
@@ -335,31 +335,31 @@ U0 PrsSizeOf(CLex *lx)
   CDbgInfo *dbg;
   I64 i;
   if (lx->token!=TK_IDENT)
-    LexExcept(lx,"ST_INVALID_CLASS");
+    LexExcept(lx,"invalid class at ");
   if (tempm=lx->local_var_entry) {
     tempc=tempm->member_class;
     i=tempc->size*tempm->dim.total_cnt;
     if (Lex(lx)=='.')
       goto pu_sizeof_member;
   } else {
-    tempc=lx->hash_entry;
-    if (!tempc || !(tempc->type & (HTT_CLASS|HTT_INTERNAL_TYPE|HTT_GLBL_VAR|HTT_FUN)))
-      LexExcept(lx,"ST_INVALID_CLASS");
-    if (tempc->type&HTT_FUN) {
+    if (!(tempc=lx->hash_entry) || !(tempc->type &
+	(HTT_CLASS|HTT_INTERNAL_TYPE|HTT_GLBL_VAR|HTT_FUN|HTT_EXPORT_SYS_SYM)))
+      LexExcept(lx,"invalid class at ");
+    if (tempc->type&(HTT_FUN|HTT_EXPORT_SYS_SYM)) {
       if (!(dbg=tempc(CHashFun *)->debug))
-	LexExcept(lx,"ST_FUN_SIZE_NOT_DEFINED");
-      i=dbg->body[dbg->max_line+1-dbg->min_line]-tempc(CHashFun *)->executable_addr;
+	LexExcept(lx,"Size not defined at ");
+      i=dbg->body[dbg->max_line+1-dbg->min_line]-dbg->body[0];
       Lex(lx);
     } else {
       i=tempc->size;
       while (Lex(lx)=='.') {
 pu_sizeof_member:
 	if (!(tempc->type & (HTT_CLASS|HTT_GLBL_VAR)))
-	  LexExcept(lx,"ST_INVALID_CLASS");
+	  LexExcept(lx,"invalid class at ");
 	else if (tempc->type & HTT_GLBL_VAR)
 	  tempc=tempc(CHashGlblVar *)->var_class;
-	if (Lex(lx)!=TK_IDENT || !(tempm=MemberFind(lx->ident,tempc)))
-	  LexExcept(lx,"ST_INVALID_MEMBER");
+	if (Lex(lx)!=TK_IDENT || !(tempm=MemberFind(lx->cur_str,tempc)))
+	  LexExcept(lx,"invalid member at ");
 	else if (lx->local_var_entry)
 	  lx->local_var_entry->use_cnt--;
 	tempc=tempm->member_class;
@@ -382,22 +382,22 @@ U0 PrsOffsetOf(CLex *lx)
   CMemberLst *tempm;
   I64 i;
   if (lx->token!=TK_IDENT)
-    LexExcept(lx,"ST_INVALID_CLASS");
+    LexExcept(lx,"invalid class at ");
   if (tempm=lx->local_var_entry)
     tempc=tempm->member_class;
   else {
     tempc=lx->hash_entry;
     if (!tempc || !(tempc->type & (HTT_CLASS|HTT_GLBL_VAR)))
-      LexExcept(lx,"ST_INVALID_CLASS");
+      LexExcept(lx,"invalid class at ");
     else if (tempc->type & HTT_GLBL_VAR)
       tempc=tempc(CHashGlblVar *)->var_class;
   }
   if (Lex(lx)!='.')
-    LexExcept(lx,"ST_EXPECTING_DOT");
+    LexExcept(lx,"expecting '.' at ");
   i=0;
   do {
-    if (Lex(lx)!=TK_IDENT || !(tempm=MemberFind(lx->ident,tempc)))
-      LexExcept(lx,"ST_INVALID_MEMBER");
+    if (Lex(lx)!=TK_IDENT || !(tempm=MemberFind(lx->cur_str,tempc)))
+      LexExcept(lx,"invalid member at ");
     else if (lx->local_var_entry)
       lx->local_var_entry->use_cnt--;
     i+=tempm->offset;
@@ -419,15 +419,15 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
   if (!tempf) {
     if (lx->token==TK_CHAR_CONST) {
       if (!(tempf=HashFind("PutChars",lx->htc.hash_table_lst,HTT_FUN)))
-	LexExcept(lx,"ST_HEADER_FOR_PRINT");
-      if (!lx->cur_i) //empty char signals PutChars with variable
+	LexExcept(lx,"Missing header for Print() and PutChars() at ");
+      if (!lx->cur_i64) //empty char signals PutChars with variable
 	Lex(lx);
       is_str_out=FALSE;
       is_putchars=TRUE;
     } else {
       if (!(tempf=HashFind("Print",lx->htc.hash_table_lst,HTT_FUN)))
-	LexExcept(lx,"ST_HEADER_FOR_PRINT");
-      if (!*lx->ident) //empty string signals Print with variable fmt_str
+	LexExcept(lx,"Missing header for Print() and PutChars() at ");
+      if (!*lx->cur_str) //empty string signals Print with variable fmt_str
 	Lex(lx);
       is_putchars=FALSE;
       is_str_out=TRUE;
@@ -467,13 +467,13 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 	if (lx->token==',')
 	  Lex(lx);
 	else if (lx->token!=';')
-	  LexExcept(lx,"ST_EXPECTING_COMMA");
+	  LexExcept(lx,"expecting ',' at ");
       } else {
 	if (needs_right_paren) {
 	  if (lx->token==',')
 	    Lex(lx);
 	  else if (lx->token!=')')
-	    LexExcept(lx,"ST_EXPECTING_COMMA");
+	    LexExcept(lx,"expecting ',' at ");
 	}
       }
     }
@@ -496,10 +496,8 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 	throw('Compiler');
       else {
 	LCCPush(lx);
-	lx->pass=0;
-	      OptPass012(lx,NULL);
-	lx->pass=1;
-	tempi=OptPass012(lx,NULL);
+	lx->pass=0;	  OptPass012(lx);
+	lx->pass=1; tempi=OptPass012(lx);
 	LCCPop(lx);
 	last_class=OptClassFwd(tempi->ic_class);
 	tempc2=OptClassFwd(tempm->member_class);
@@ -527,7 +525,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 	    if (lx->token==',')
 	      Lex(lx);
 	    else
-	      LexExcept(lx,"ST_EXPECTING_COMMA");
+	      LexExcept(lx,"expecting ',' at ");
 	  }
 	  LCCInit(lx);
 	  if (!PrsExpression(lx,NULL,FALSE,ps))
@@ -544,7 +542,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 	    if (lx->token==',')
 	      Lex(lx);
 	    else
-	      LexExcept(lx,"ST_EXPECTING_COMMA");
+	      LexExcept(lx,"expecting ',' at ");
 	  }
 	  LCCInit(lx);
 	  if (!PrsExpression(lx,NULL,FALSE,ps))
@@ -561,7 +559,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
     if (lx->token==')')
       Lex(lx);
     else
-      LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+      LexExcept(lx,"missing ')' at ");
   }
   tempcbh1=tempcbh->lcc_next;
   tempcbh->lcc_next=lx->lcc.lcc_next;
@@ -620,7 +618,7 @@ I64 PrsFunCall(CLex *lx,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempad,
     I64 *max_prec,I64 *unary_pre_prec,I64 *paren_prec)
 {
-  I64 i,*i_ptr,j,d,size;
+  I64 i,j;
   CHashExport *tempex;
   CHashClass *tempc;
   CHashFun *tempf;
@@ -633,56 +631,127 @@ I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempa
   *_local_var=NULL;
   *paren_prec=PREC_NULL;
   switch (lx->token) {
-    case TK_INTEGER:
-    case TK_CHAR_CONST:
+    sub_switch_start:
+      if (PREC_UNARY_PRE>*max_prec)
+	*max_prec=PREC_UNARY_PRE;
+      *unary_pre_prec=PREC_UNARY_PRE;
+      sub_switch_start:
+	case '~': i=IC_COM;		break;
+	case '!': i=IC_NOT;		break;
+	case '-': i=IC_UNARY_MINUS;	break;
+	case '*': i=IC_DEREF;		break;
+      sub_switch_end:
+	Lex(lx); //Skip op
+	break;
+      case '&':
+	if (Lex(lx)==TK_IDENT) {
+	  if (tempc=lx->hash_entry) {
+	    if (tempc->type & HTT_FUN) {
+	      tempf=tempc;
+	      if (!Bt(&tempf->flags,Ff_INTERNAL)) {
+		if (Bt(&tempf->flags,Cf_EXTERN)) {
+		  if (lx->flags&LF_AOT_COMPILE) {
+		    if (lx->flags&LF_ASM_EXPRESSIONS) {
+		      if (tempex=HashFind(tempf->str,lx->htc.hash_table_lst,HTT_EXPORT_SYS_SYM))
+			goto pu_export_sys_sym;
+		      else
+			goto pu_new_sys_sym;
+		    }
+		    LexExcept(lx,"Can't take addr of extern fun");
+		  }
+		  lx->abs_cnts.externs++;
+		  LCCAdd(lx,IC_IMM_U64,
+			&tempf->executable_addr,sys_internal_types[RT_PTR]);
+		  LCCAdd(lx,IC_DEREF,0,
+			sys_internal_types[RT_PTR]);
+		} else {
+		  if (lx->flags&LF_AOT_COMPILE) {
+		    LCCAdd(lx,IC_ABS_ADDR,
+			  tempf->executable_addr,sys_internal_types[RT_PTR]);
+		    if (lx->flags&LF_ASM_EXPRESSIONS)
+		      lx->abs_cnts.abs_addres++;
+		  } else
+		    LCCAdd(lx,IC_IMM_U64,
+			  tempf->executable_addr,sys_internal_types[RT_PTR]);
+		}
+		lx->abs_cnts.c_addres++;
+		Lex(lx);
+		return PE_MAYBE_MODIFIERS;
+	      }
+	    } else if (tempc->type & HTT_EXPORT_SYS_SYM) {
+	      tempex=tempc;
+	      if (lx->flags&LF_ASM_EXPRESSIONS && !(lx->flags&LF_AOT_COMPILE) &&
+		    tempex->type&HTF_IMM) {
+		lx->abs_cnts.c_addres++;
+		LCCAdd(lx,IC_IMM_U64,
+		      tempex->val,sys_internal_types[RT_PTR]);
+		Lex(lx);
+		return PE_MAYBE_MODIFIERS;
+	      } else
+		goto pu_export_sys_sym;
+	    }
+	  } else if (lx->flags&LF_ASM_EXPRESSIONS && !lx->local_var_entry)
+	    goto pu_ident_but_not_local_var;
+	}
+	i=IC_ADDR;
+	break;
+    sub_switch_end:
+      PrsPush(ps,tempc);
+      PrsPush(ps,PREC_UNARY_PRE<<16+i);
+      return PE_UNARY_TERM2;
+
+    sub_switch_start:
+      case TK_INTEGER:
+      case TK_CHAR_CONST:
+      case TK_INS_BINARY_SIZE:
+	if (lx->cur_i64<0)
+	  LCCAdd(lx,IC_IMM_U64,lx->cur_i64,sys_internal_types[RT_U64]);
+	else
+	  LCCAdd(lx,IC_IMM_U64,lx->cur_i64,sys_internal_types[RT_I64]);
+	Lex(lx);
+	break;
+      case TK_F64:
+	LCCAdd(lx,IC_IMM_F64,lx->cur_f64(I64),sys_internal_types[RT_F64]);
+	Lex(lx);
+	break;
+      case TK_STR:
+	mc=LCCMiscNew(lx,CMT_STR_CONST);
+	LCCAdd(lx,IC_STR_CONST,mc,sys_internal_types[RT_U8]+1);
+	mc->str=LexExtStr(lx,&mc->st_len);
+	lx->flags|=LF_HAS_MISC_DATA;
+	break;
+      case TK_INS_BINARY:
+	mc=LCCMiscNew(lx,CMT_STR_CONST);
+	LCCAdd(lx,IC_STR_CONST,mc,sys_internal_types[RT_U8]+1);
+	mc->str=lx->cur_str;
+	mc->st_len=lx->cur_str_len;
+	lx->cur_str=NULL;
+	lx->flags|=LF_HAS_MISC_DATA;
+	Lex(lx);
+	break;
+      case '$':
+	if (lx->flags & LF_ASM_EXPRESSIONS) {
+	  lx->abs_cnts.abs_addres++;
+	  if (lx->flags&LF_AOT_COMPILE)
+	    LCCAdd(lx,IC_ABS_ADDR,lx->a->ip,sys_internal_types[RT_PTR]);
+	  else
+	    LCCAdd(lx,IC_IMM_U64,lx->a->ip,sys_internal_types[RT_PTR]);
+	} else {
+	  if (lx->flags&LF_CLASS_IP)
+	    LCCAdd(lx,IC_IMM_U64,lx->class_ip,sys_internal_types[RT_I64]);
+	  else
+	    LCCAdd(lx,IC_RIP,0,sys_internal_types[RT_PTR]);
+	}
+	Lex(lx);
+	break;
+    sub_switch_end:
       if (PREC_TERM>*max_prec)
 	*max_prec=PREC_TERM;
-      if (lx->cur_i<0)
-	LCCAdd(lx,IC_IMM_U64,lx->cur_i,sys_internal_types[RT_U64]);
-      else
-	LCCAdd(lx,IC_IMM_U64,lx->cur_i,sys_internal_types[RT_I64]);
-      Lex(lx);
       return PE_MAYBE_MODIFIERS;
-    case TK_F64:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      i_ptr=&lx->cur_f;
-      LCCAdd(lx,IC_IMM_F64,*i_ptr,sys_internal_types[RT_F64]);
-      Lex(lx);
-      return PE_MAYBE_MODIFIERS;
-    case TK_STR:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      d=LexExtStr(lx,&size);
-      mc=LCCMiscNew(lx,CMT_STR_CONST);
-      LCCAdd(lx,IC_STR_CONST,mc,sys_internal_types[RT_U8]+1);
-      mc->st_len=size;
-      mc->str=d;
-      lx->flags|=LF_HAS_MISC_DATA;
-      return PE_MAYBE_MODIFIERS;
-    case TK_INS_BINARY:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      d=lx->ident;
-      size=lx->ident_len;
-      lx->ident=NULL;
-      mc=LCCMiscNew(lx,CMT_STR_CONST);
-      LCCAdd(lx,IC_STR_CONST,mc,sys_internal_types[RT_U8]+1);
-      mc->st_len=size;
-      mc->str=d;
-      lx->flags|=LF_HAS_MISC_DATA;
-      Lex(lx);
-      return PE_MAYBE_MODIFIERS;
-    case TK_INS_BINARY_TYPE:
-    case TK_INS_BINARY_SIZE:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      LCCAdd(lx,IC_IMM_U64,lx->cur_i,sys_internal_types[RT_U64]);
-      Lex(lx);
-      return PE_MAYBE_MODIFIERS;
+
     case '(':
       if (Lex(lx)==TK_IDENT && lx->hash_entry && lx->hash_entry->type & (HTT_CLASS|HTT_INTERNAL_TYPE))
-	LexExcept(lx,"ST_USE_POSTFIX_CAST");
+	LexExcept(lx,"Use TempleOS postfix typecasting at ");
       else {
 	if (PREC_TERM>*max_prec)
 	  *max_prec=PREC_TERM;
@@ -695,316 +764,218 @@ I64 PrsUnaryTerm(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempa
 	if (!paren_warn)
 	  *paren_prec=PREC_NULL;
 	if (lx->token!=')')
-	  LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+	  LexExcept(lx,"missing ')' at ");
 	Lex(lx); //skip )
 	lx->flags= lx->flags & ~LF_ARRAY | LF_RAX | LF_PAREN;
 	return PE_UNARY_MODIFIERS;
       }
-  }
-  i=unary_ops_table[lx->token];
-  if (i.u8[2]) {
-    if (i.u8[2]>*max_prec)
-      *max_prec=i.u8[2];
-    *unary_pre_prec=i.u8[2];
-    Lex(lx); //Skip op
-    if (i.u16[0]==IC_ADDR && lx->token==TK_IDENT) {
-      if (tempc=lx->hash_entry) {
-	if (tempc->type & HTT_FUN) {
-	  tempf=tempc;
-	  if (!Bt(&tempf->flags,Ff_INTERNAL)) {
-	    if (Bt(&tempf->flags,Cf_EXTERN)) {
-	      if (lx->flags&LF_AOT_COMPILE) {
-		if (lx->flags&LF_ASM_EXPRESSIONS) {
-		  if (tempex=HashFind(tempf->str,lx->htc.hash_table_lst,HTT_EXPORT_SYS_SYM))
-		    goto pu_export_sys_sym;
-		  else
-		    goto pu_new_sys_sym;
-		}
-		LexExcept(lx,"ST_ADDR_EXTERN");
-	      }
-	      lx->abs_cnts.externs++;
-	      LCCAdd(lx,IC_IMM_U64,
-		  &tempf->executable_addr,sys_internal_types[RT_PTR]);
-	      LCCAdd(lx,IC_DEREF,0,
-		  sys_internal_types[RT_PTR]);
-	    } else {
-	      if (lx->flags&LF_AOT_COMPILE) {
-		LCCAdd(lx,IC_ABS_ADDR,
-		    tempf->executable_addr,sys_internal_types[RT_PTR]);
-		if (lx->flags&LF_ASM_EXPRESSIONS)
-		  lx->abs_cnts.abs_addres++;
-	      } else
-		LCCAdd(lx,IC_IMM_U64,
-		    tempf->executable_addr,sys_internal_types[RT_PTR]);
-	    }
-	    lx->abs_cnts.c_addres++;
-	    Lex(lx);
-	    return PE_MAYBE_MODIFIERS;
-	  }
-	} else if (tempc->type & HTT_EXPORT_SYS_SYM) {
-	  tempex=tempc;
-	  if (lx->flags&LF_ASM_EXPRESSIONS && !(lx->flags&LF_AOT_COMPILE) &&
-	      tempex->type&HTF_IMM) {
-	    lx->abs_cnts.c_addres++;
-	    LCCAdd(lx,IC_IMM_U64,
-		tempex->val,sys_internal_types[RT_PTR]);
-	    Lex(lx);
-	    return PE_MAYBE_MODIFIERS;
+
+    sub_switch_start:
+      case '+': 					break;
+      case TK_PLUS_PLUS:   lx->flags|=LF_PREINC;	break;
+      case TK_MINUS_MINUS: lx->flags|=LF_PREDEC;	break;
+    sub_switch_end:
+      if (PREC_UNARY_PRE>*max_prec)
+	*max_prec=PREC_UNARY_PRE;
+      *unary_pre_prec=PREC_UNARY_PRE;
+      Lex(lx);
+      return PE_UNARY_TERM2;
+
+    case TK_IDENT:
+      if (tempm=lx->local_var_entry) {
+	if (PREC_TERM>*max_prec)
+	  *max_prec=PREC_TERM;
+	lx->flags&=~(LF_RAX|LF_ARRAY|LF_FUN_EXP);
+	tempc=tempm->member_class+1;
+	if (tempm->flags & MLF_FUN && !(lx->flags&LF_ASM_EXPRESSIONS)) {
+	  PrsPopDeref(ps);
+	  lx->flags|=LF_FUN_EXP;
+	  PrsPush2(ps,tempm->fun_ptr-tempm->fun_ptr->ptr_cnt);
+	}
+	if (tempm->dim.next) {
+	  *_tempad=tempm->dim.next;
+	  lx->flags|=LF_ARRAY;
+	}
+	if (tempm->flags&MLF_STATIC) {
+	  if (lx->flags&LF_AOT_COMPILE) {
+//	if (tempg->flags&GVF_DATA_HEAP) //TODO
+	    //	  LCCAdd(lx,IC_HEAP_GLBL,tempm->static_data,tempc);
+	    //	else
+	    LCCAdd(lx,IC_ABS_ADDR,tempm->static_data_ip,tempc);
 	  } else
-	    goto pu_export_sys_sym;
+	    LCCAdd(lx,IC_IMM_U64,tempm->static_data,tempc);
+	} else {
+	  if (lx->flags&LF_ASM_EXPRESSIONS) {
+	    i=PrsPop(ps);
+	    ps->ptr--;
+	    if (i.u16[0]!=IC_ADDR)
+	      LexExcept(lx,"expecting '&' at ");
+	    LCCAdd(lx,IC_IMM_U64,tempm->offset,sys_internal_types[RT_PTR]);
+	    *_local_var=tempm;
+	    Lex(lx);
+	    return PE_MAYBE_MODIFIERS;
+	  } else {
+	    if (tempm->dim.next && tempm->offset>0 && StrCmp(tempm->str,"argv")) {
+	      tempc++;
+	      lx->flags&=~LF_ARRAY;
+	    }
+	    LCCAdd(lx,IC_RBP,0,tempc);
+	    LCCAdd(lx,IC_IMM_U64,tempm->offset,tempc);
+	    LCCAdd(lx,IC_ADD,0,tempc);
+	  }
 	}
-      } else if (lx->flags&LF_ASM_EXPRESSIONS && !lx->local_var_entry)
-	goto pu_ident_but_not_local_var;
-    }
-    PrsPush(ps,tempc);
-    PrsPush(ps,i);
-    return PE_UNARY_TERM2;
-  }
-  if (lx->token=='+') {
-    if (PREC_UNARY_PRE>*max_prec)
-      *max_prec=PREC_UNARY_PRE;
-    *unary_pre_prec=PREC_UNARY_PRE;
-    Lex(lx);
-    return PE_UNARY_TERM2;
-  }
-
-  if (lx->token!=TK_IDENT) {
-    if (lx->token==TK_PLUS_PLUS) {
-      if (PREC_UNARY_PRE>*max_prec)
-	*max_prec=PREC_UNARY_PRE;
-      *unary_pre_prec=PREC_UNARY_PRE;
-      Lex(lx);
-      lx->flags|=LF_PREINC;
-      return PE_UNARY_TERM2;
-    }
-    if (lx->token==TK_MINUS_MINUS) {
-      if (PREC_UNARY_PRE>*max_prec)
-	*max_prec=PREC_UNARY_PRE;
-      *unary_pre_prec=PREC_UNARY_PRE;
-      Lex(lx);
-      lx->flags|=LF_PREDEC;
-      return PE_UNARY_TERM2;
-    }
-    if (lx->token=='$') {
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      if (lx->flags & LF_ASM_EXPRESSIONS) {
-	lx->abs_cnts.abs_addres++;
-	if (lx->flags&LF_AOT_COMPILE)
-	  LCCAdd(lx,IC_ABS_ADDR,lx->a->ip,sys_internal_types[RT_PTR]);
-	else
-	  LCCAdd(lx,IC_IMM_U64,lx->a->ip,sys_internal_types[RT_PTR]);
-      } else {
-	if (lx->flags&LF_CLASS_IP)
-	  LCCAdd(lx,IC_IMM_U64,lx->class_ip,sys_internal_types[RT_I64]);
-	else
-	  LCCAdd(lx,IC_RIP,0,sys_internal_types[RT_PTR]);
-      }
-      Lex(lx);
-      return PE_MAYBE_MODIFIERS;
-    }
-    LexExcept(lx,"ST_MISSING_EXPRESSION");
-  }
-
-  if (tempm=lx->local_var_entry) {
-    if (PREC_TERM>*max_prec)
-      *max_prec=PREC_TERM;
-    lx->flags&=~(LF_RAX|LF_ARRAY|LF_FUN_EXP);
-    tempc=tempm->member_class+1;
-    if (tempm->flags & MLF_FUN && !(lx->flags&LF_ASM_EXPRESSIONS)) {
-      PrsPopDeref(ps);
-      lx->flags|=LF_FUN_EXP;
-      PrsPush2(ps,tempm->fun_ptr-tempm->fun_ptr->ptr_cnt);
-    }
-    if (tempm->dim.next) {
-      *_tempad=tempm->dim.next;
-      lx->flags|=LF_ARRAY;
-    }
-    if (tempm->flags&MLF_STATIC) {
-      if (lx->flags&LF_AOT_COMPILE) {
-      //	if (tempg->flags&GVF_DATA_HEAP) //TODO
-      //	  LCCAdd(lx,IC_HEAP_GLBL,tempm->static_data,tempc);
-      //	else
-	LCCAdd(lx,IC_ABS_ADDR,tempm->static_data_ip,tempc);
-      } else
-	LCCAdd(lx,IC_IMM_U64,tempm->static_data,tempc);
-    } else {
-      if (lx->flags&LF_ASM_EXPRESSIONS) {
-	i=PrsPop(ps);
-	ps->ptr--;
-	if (i.u16[0]!=IC_ADDR)
-	  LexExcept(lx,"ST_EXPECTING_AMPERSAND");
-	LCCAdd(lx,IC_IMM_U64,tempm->offset,sys_internal_types[RT_PTR]);
+	Lex(lx); //skip var name
 	*_local_var=tempm;
-	Lex(lx);
-	return PE_MAYBE_MODIFIERS;
-      } else {
-	if (tempm->dim.next && tempm->offset>0 && StrCmp(tempm->str,"argv")) {
-	  tempc++;
-	  lx->flags&=~LF_ARRAY;
-	}
-	LCCAdd(lx,IC_RBP,0,tempc);
-	LCCAdd(lx,IC_IMM_U64,tempm->offset,tempc);
-	LCCAdd(lx,IC_ADD,0,tempc);
+	return PE_UNARY_MODIFIERS;
       }
-    }
-    Lex(lx); //skip var name
-    *_local_var=tempm;
-    return PE_UNARY_MODIFIERS;
-  }
-
 pu_ident_but_not_local_var:
-  if (!(tempex=lx->hash_entry)) {
-    if (!(lx->flags & LF_ASM_EXPRESSIONS))
-      LexExcept(lx,"ST_INVALID_LVAL");
-    tempc=NULL;
+      if (!(tempex=lx->hash_entry)) {
+	if (!(lx->flags & LF_ASM_EXPRESSIONS))
+	  LexExcept(lx,"invalid lval at ");
+	tempc=NULL;
 pu_new_sys_sym:
-    tempex=CAlloc(sizeof(CHashExport),Fs->code_heap);
-    tempex->str=lx->ident;
-    lx->ident=NULL;
-    if (*tempex->str=='@' &&
-	tempex->str[1]=='@') {
-      tempex->type=HTT_EXPORT_SYS_SYM | HTF_UNRESOLVED | HTF_LOCAL;
-      HashAdd(tempex,lx->htc.local_hash_table);
-    } else {
-      tempex->type=HTT_EXPORT_SYS_SYM | HTF_UNRESOLVED;
-      if (tempc)
-	HashAddAfter(tempex,tempc,lx->htc.glbl_hash_table);
-      else
-	HashAdd(tempex,lx->htc.glbl_hash_table);
-    }
-  }
-
-  if (tempex->type & HTT_EXPORT_SYS_SYM) {
-pu_export_sys_sym:
-    if (PREC_TERM>*max_prec)
-      *max_prec=PREC_TERM;
-    if (!(tempex->type & (HTF_IMM|HTF_IMPORT)))
-      lx->abs_cnts.abs_addres++;
-    if (tempex->type & HTF_UNRESOLVED) {
-      if (!(lx->flags&LF_ASM_EXPRESSIONS))
-	LexExcept(lx,"ST_ILLEGAL_FWD_REF");
-      templu=MAlloc(sizeof(CLexUndef));
-      templu->hash=tempex;
-      templu->next=lx->undef_hash_entry;
-      lx->undef_hash_entry=templu;
-      if (tempex->type & HTF_LOCAL)
-	lx->flags|=LF_UNRESOLVED|LF_LOCAL;
-      else
-	lx->flags|=LF_UNRESOLVED;
-      LCCAdd(lx,IC_IMM_U64,&tempex->val,sys_internal_types[RT_PTR],ICF_NO_RIP);
-      LCCAdd(lx,IC_DEREF,0,sys_internal_types[RT_PTR]);
-    } else {
-      if (lx->flags&LF_AOT_COMPILE && !(tempex->type & HTF_IMM))
-	LCCAdd(lx,IC_ABS_ADDR,tempex->val,sys_internal_types[RT_PTR]);
-      else {
-	if (tempex->type&HTF_IMM)
-	  lx->abs_cnts.c_addres++;
-	LCCAdd(lx,IC_IMM_U64,tempex->val,sys_internal_types[RT_PTR]);
-      }
-    }
-    Lex(lx);
-    return PE_MAYBE_MODIFIERS;
-  }
-
-  if (tempex->type & HTT_FUN) {
-    if (PREC_TERM>*max_prec)
-      *max_prec=PREC_TERM;
-    Lex(lx);  //skip fun name
-    return PrsFunCall(lx,ps,FALSE,tempex);
-  }
-  if (tempex->type & HTT_GLBL_VAR) {
-    if (PREC_TERM>*max_prec)
-      *max_prec=PREC_TERM;
-    tempg=tempex;
-    tempc=tempg->var_class+1;
-    lx->flags&=~(LF_RAX|LF_ARRAY|LF_FUN_EXP);
-    if (tempg->flags&GVF_ARRAY) {
-      *_tempad=tempg->dim.next;
-      lx->flags|=LF_ARRAY;
-    }
-    if (lx->flags&LF_AOT_COMPILE) {
-      if (tempg->flags & GVF_EXTERN) //TODO
-	LexExcept(lx,"ST_NOT_IMPLEMENTED");
-      else {
-	if (tempg->flags & GVF_IMPORT)
-	  LCCAdd(lx,IC_ADDR_IMPORT,tempg,tempc);
-	else {
-	  if (tempg->flags&GVF_DATA_HEAP)
-	    LCCAdd(lx,IC_HEAP_GLBL,tempg->heap_glbl,tempc);
+	tempex=CAlloc(sizeof(CHashExport),Fs->code_heap);
+	tempex->str=lx->cur_str;
+	lx->cur_str=NULL;
+	if (!lx->htc.local_var_lst &&
+	    *tempex->str=='@' && tempex->str[1]=='@') {
+	  tempex->type=HTT_EXPORT_SYS_SYM | HTF_UNRESOLVED | HTF_LOCAL;
+	  HashAdd(tempex,lx->htc.local_hash_table);
+	} else {
+	  tempex->type=HTT_EXPORT_SYS_SYM | HTF_UNRESOLVED;
+	  if (tempc)
+	    HashAddAfter(tempex,tempc,lx->htc.glbl_hash_table);
 	  else
-	    LCCAdd(lx,IC_ABS_ADDR,tempg->data_addr_ip,tempc);
+	    HashAdd(tempex,lx->htc.glbl_hash_table);
 	}
       }
-    } else {
-      if (tempg->flags & GVF_EXTERN) {
-	lx->abs_cnts.externs++;
-	LCCAdd(lx,IC_IMM_U64,&tempg->data_addr,tempc);
-	LCCAdd(lx,IC_DEREF,0,tempc);
-      } else
-	LCCAdd(lx,IC_IMM_U64,tempg->data_addr,tempc);
-    }
-    Lex(lx);
-    if (tempg->flags & GVF_FUN) {
-      PrsPopDeref(ps);
-      lx->flags|=LF_FUN_EXP;
-      PrsPush2(ps,tempg->fun_ptr-tempg->fun_ptr->ptr_cnt);
-    }
-    return PE_UNARY_MODIFIERS;
-  } else if (tempex->type & HTT_CLASS) {
-    PrsOffsetOf(lx);
-    return PE_MAYBE_MODIFIERS;
+      switch (Bsf(tempex->type)) {
+	case HTt_EXPORT_SYS_SYM:
+pu_export_sys_sym:
+	  if (PREC_TERM>*max_prec)
+	    *max_prec=PREC_TERM;
+	  if (!(tempex->type & (HTF_IMM|HTF_IMPORT)))
+	    lx->abs_cnts.abs_addres++;
+	  if (tempex->type & HTF_UNRESOLVED) {
+	    if (!(lx->flags&LF_ASM_EXPRESSIONS))
+	      LexExcept(lx,"Illegal fwd ref at ");
+	    templu=MAlloc(sizeof(CLexUndef));
+	    templu->hash=tempex;
+	    templu->next=lx->undef_hash_entry;
+	    lx->undef_hash_entry=templu;
+	    if (tempex->type & HTF_LOCAL)
+	      lx->flags|=LF_UNRESOLVED|LF_LOCAL;
+	    else
+	      lx->flags|=LF_UNRESOLVED;
+	    LCCAdd(lx,IC_IMM_U64,&tempex->val,sys_internal_types[RT_PTR],ICF_NO_RIP);
+	    LCCAdd(lx,IC_DEREF,0,sys_internal_types[RT_PTR]);
+	  } else {
+	    if (lx->flags&LF_AOT_COMPILE && !(tempex->type & HTF_IMM))
+	      LCCAdd(lx,IC_ABS_ADDR,tempex->val,sys_internal_types[RT_PTR]);
+	    else {
+	      if (tempex->type&HTF_IMM)
+		lx->abs_cnts.c_addres++;
+	      LCCAdd(lx,IC_IMM_U64,tempex->val,sys_internal_types[RT_PTR]);
+	    }
+	  }
+	  Lex(lx);
+	  return PE_MAYBE_MODIFIERS;
+	case HTt_FUN:
+	  if (PREC_TERM>*max_prec)
+	    *max_prec=PREC_TERM;
+	  Lex(lx);  //skip fun name
+	  return PrsFunCall(lx,ps,FALSE,tempex);
+	case HTt_GLBL_VAR:
+	  if (PREC_TERM>*max_prec)
+	    *max_prec=PREC_TERM;
+	  tempg=tempex;
+	  tempc=tempg->var_class+1;
+	  lx->flags&=~(LF_RAX|LF_ARRAY|LF_FUN_EXP);
+	  if (tempg->flags&GVF_ARRAY) {
+	    *_tempad=tempg->dim.next;
+	    lx->flags|=LF_ARRAY;
+	  }
+	  if (lx->flags&LF_AOT_COMPILE) {
+	    if (tempg->flags & GVF_EXTERN) //TODO
+	      LexExcept(lx,"Feature not implemented ");
+	    else {
+	      if (tempg->flags & GVF_IMPORT)
+		LCCAdd(lx,IC_ADDR_IMPORT,tempg,tempc);
+	      else {
+		if (tempg->flags&GVF_DATA_HEAP)
+		  LCCAdd(lx,IC_HEAP_GLBL,tempg->heap_glbl,tempc);
+		else
+		  LCCAdd(lx,IC_ABS_ADDR,tempg->data_addr_ip,tempc);
+	      }
+	    }
+	  } else {
+	    if (tempg->flags & GVF_EXTERN) {
+	      lx->abs_cnts.externs++;
+	      LCCAdd(lx,IC_IMM_U64,&tempg->data_addr,tempc);
+	      LCCAdd(lx,IC_DEREF,0,tempc);
+	    } else
+	      LCCAdd(lx,IC_IMM_U64,tempg->data_addr,tempc);
+	  }
+	  Lex(lx);
+	  if (tempg->flags & GVF_FUN) {
+	    PrsPopDeref(ps);
+	    lx->flags|=LF_FUN_EXP;
+	    PrsPush2(ps,tempg->fun_ptr-tempg->fun_ptr->ptr_cnt);
+	  }
+	  return PE_UNARY_MODIFIERS;
+	case HTt_CLASS:
+	  PrsOffsetOf(lx);
+	  return PE_MAYBE_MODIFIERS;
+	case HTt_KEYWORD:
+	  switch (tempex(CHashGeneric *)->user_data0) {
+	    case KW_SIZEOF:
+	      if (PREC_TERM>*max_prec)
+		*max_prec=PREC_TERM;
+	      j=0;
+	      while (Lex(lx)=='(')
+		j++;
+	      PrsSizeOf(lx);
+	      while (j--) {
+		if (lx->token!=')')
+		  LexExcept(lx,"missing ')' at ");
+		Lex(lx);
+	      }
+	      return PE_MAYBE_MODIFIERS;
+	    case KW_OFFSET:
+	      if (PREC_TERM>*max_prec)
+		*max_prec=PREC_TERM;
+	      j=0;
+	      while (Lex(lx)=='(')
+		j++;
+	      PrsOffsetOf(lx);
+	      while (j--) {
+		if (lx->token!=')')
+		  LexExcept(lx,"missing ')' at ");
+		Lex(lx);
+	      }
+	      return PE_MAYBE_MODIFIERS;
+	    case KW_DEFINED:
+	      if (PREC_TERM>*max_prec)
+		*max_prec=PREC_TERM;
+	      j=0;
+	      while (Lex(lx)=='(')
+		j++;
+	      if (lx->token==TK_IDENT &&
+		    (lx->hash_entry || lx->local_var_entry))
+		LCCAdd(lx,IC_IMM_U64,TRUE,sys_internal_types[RT_I64]);
+	      else
+		LCCAdd(lx,IC_IMM_U64,FALSE,sys_internal_types[RT_I64]);
+	      Lex(lx);
+	      while (j--) {
+		if (lx->token!=')')
+		  LexExcept(lx,"missing ')' at ");
+		Lex(lx);
+	      }
+	      return PE_MAYBE_MODIFIERS;
+	  }
+      }
   }
-
-  if (!(tempex->type & HTT_KEYWORD))
-    LexExcept(lx,"ST_MISSING_EXPRESSION");
-  switch (tempex(CHashGeneric *)->user_data0) {
-    case KW_SIZEOF:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      j=0;
-      while (Lex(lx)=='(')
-	j++;
-      PrsSizeOf(lx);
-      while (j--) {
-	if (lx->token!=')')
-	  LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
-	Lex(lx);
-      }
-      return PE_MAYBE_MODIFIERS;
-    case KW_OFFSET:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      j=0;
-      while (Lex(lx)=='(')
-	j++;
-      PrsOffsetOf(lx);
-      while (j--) {
-	if (lx->token!=')')
-	  LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
-	Lex(lx);
-      }
-      return PE_MAYBE_MODIFIERS;
-    case KW_DEFINED:
-      if (PREC_TERM>*max_prec)
-	*max_prec=PREC_TERM;
-      j=0;
-      while (Lex(lx)=='(')
-	j++;
-      if (lx->token==TK_IDENT &&
-	  (lx->hash_entry || lx->local_var_entry))
-	LCCAdd(lx,IC_IMM_U64,TRUE,sys_internal_types[RT_I64]);
-      else
-	LCCAdd(lx,IC_IMM_U64,FALSE,sys_internal_types[RT_I64]);
-      Lex(lx);
-      while (j--) {
-	if (lx->token!=')')
-	  LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
-	Lex(lx);
-      }
-      return PE_MAYBE_MODIFIERS;
-  }
-  LexExcept(lx,"ST_MISSING_EXPRESSION");
+  LexExcept(lx,"missing expression at ");
 }
 
 I64 PrsUnaryModifier(CLex *lx,CPrsStk *ps,CMemberLst **_local_var,CArrayDim **_tempad,I64 *unary_post_prec)
@@ -1036,14 +1007,14 @@ um_join:
 	*unary_post_prec=PREC_TERM;
       tempc=lx->lcc.lcc_root.last->ic_class;
       if (!tempc->ptr_cnt && lx->token=='.')
-	LexExcept(lx,"ST_ADD_NOT_VAL");
+	LexExcept(lx,"Must be address, not value ");
       if (!(lx->flags & LF_RAX))
 	tempc--;
       if (!(tempc->type & HTT_CLASS))
-	LexExcept(lx,"ST_INVALID_CLASS");
+	LexExcept(lx,"invalid class at ");
       if (Lex(lx)!=TK_IDENT ||
-	    !(tempm=MemberFind(lx->ident,tempc)))
-	LexExcept(lx,"ST_INVALID_MEMBER");
+	    !(tempm=MemberFind(lx->cur_str,tempc)))
+	LexExcept(lx,"invalid member at ");
       else if (lx->local_var_entry)
 	lx->local_var_entry->use_cnt--;
       Lex(lx);	//skip member name
@@ -1070,7 +1041,7 @@ um_join:
       if (!*unary_post_prec)
 	*unary_post_prec=PREC_TERM;
       if (Lex(lx)!=TK_IDENT)
-	LexExcept(lx,"ST_INVALID_CLASS");
+	LexExcept(lx,"invalid class at ");
       if (Btr(&lx->flags,Lf_FUN_EXP))
 	ps->ptr2--;
       lx->flags&=~LF_ARRAY;
@@ -1097,7 +1068,7 @@ um_join:
       tempi->ic_class=tempc;
       LCCAdd(lx,IC_HOLYC_TYPECAST,was_paren,tempc);
       if (lx->token!=')')
-	LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+	LexExcept(lx,"missing ')' at ");
       Lex(lx);
       return PE_UNARY_MODIFIERS;
     case '[':
@@ -1106,11 +1077,11 @@ um_join:
       Lex(lx);
       tempc=OptClassFwd(lx->lcc.lcc_root.last->ic_class);
       if (!tempc->ptr_cnt)
-	LexExcept(lx,"ST_NOT_ARRAY_OR_PTR");
+	LexExcept(lx,"not array or ptr ");
       if (!(lx->flags & (LF_ARRAY | LF_RAX))) {
 	tempc=OptClassFwd(tempc-1);
 	if (!tempc->ptr_cnt)
-	  LexExcept(lx,"ST_NOT_ARRAY_OR_PTR");
+	  LexExcept(lx,"not array or ptr ");
 	LCCAdd(lx,IC_DEREF+PREC_UNARY_PRE<<16,0,tempc);
       }
       tempc1=tempc-1;
@@ -1122,7 +1093,7 @@ um_join:
 	    throw('Compiler');
 	  lx->flags=lx->flags&~LF_FUN_EXP|old_flags&LF_FUN_EXP;
 	  if (lx->token!=']')
-	    LexExcept(lx,"ST_MISSING_RIGHT_BRACKET");
+	    LexExcept(lx,"missing ']' at ");
 	  Lex(lx); //skip ]
 	  tempi1=lx->lcc.lcc_root.last;
 	  tempi1->ic_flags|=ICF_R_TO_INT;
@@ -1138,7 +1109,7 @@ um_join:
 	throw('Compiler');
       lx->flags=lx->flags&~LF_FUN_EXP|old_flags&LF_FUN_EXP;
       if (lx->token!=']')
-	LexExcept(lx,"ST_MISSING_RIGHT_BRACKET");
+	LexExcept(lx,"missing ']' at ");
       Lex(lx); //skip ]
       tempi1=lx->lcc.lcc_root.last;
       tempi1->ic_flags|=ICF_R_TO_INT;
@@ -1146,28 +1117,23 @@ um_join:
       LCCAdd(lx,IC_ADD,0,tempc);
       lx->flags&=~(LF_RAX|LF_ARRAY);
       return PE_UNARY_MODIFIERS;
-    case TK_PLUS_PLUS:
+    sub_switch_start:
+      case TK_PLUS_PLUS:
+	lx->flags|=LF_POSTINC;
+	break;
+      case TK_MINUS_MINUS:
+	lx->flags|=LF_POSTDEC;
+	break;
+    sub_switch_end:
       if (!*unary_post_prec)
 	*unary_post_prec=PREC_UNARY_POST;
       Lex(lx);
-      lx->flags|=LF_POSTINC;
-      return PE_DEREFERENCE;
-    case TK_MINUS_MINUS:
-      if (!*unary_post_prec)
-	*unary_post_prec=PREC_UNARY_POST;
-      Lex(lx);
-      lx->flags|=LF_POSTDEC;
       return PE_DEREFERENCE;
   }
   return PE_DEREFERENCE;
 }
 
-U0 ExpressionBinDel(U8 *ex)
-{
-  Free(ex);
-}
-
-U8 *LexExpression2Bin(CLex *lx,I64 *type=NULL)
+U8 *LexExpression2Bin(CLex *lx,I64 *_type=NULL)
 {
   U8 *result;
   I64 size;
@@ -1177,7 +1143,7 @@ U8 *LexExpression2Bin(CLex *lx,I64 *type=NULL)
   if (PrsExpression(lx,NULL,FALSE)) {
     LCCAdd(lx,IC_RETURN_VAL,0,NULL);
     LCCAdd(lx,IC_RET,0,0);
-    result=LCCCompile(lx,NULL,&size,NULL,type);
+    result=LCCCompile(lx,&size,NULL,_type);
   } else
     result=NULL;
   LCCPop(lx);
@@ -1192,11 +1158,11 @@ Bool IsLexExpression2Bin(CLex *lx,U8 **_ex)
 
 I64 LexExpression(CLex *lx)
 {
+  U8 *ex;
   I64 result;
-  U8 *ex=LexExpression2Bin(lx);
-  if (ex) {
+  if (ex=LexExpression2Bin(lx)) {
     result=Call(ex);
-    ExpressionBinDel(ex);
+    Free(ex);
   } else
     result=0;
   return result;

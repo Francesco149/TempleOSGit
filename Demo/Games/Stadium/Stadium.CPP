@@ -30,9 +30,9 @@ U0 DrawIt(CTask *,CDC *dc)
   background->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(dc,0,0,background);
   for (i=0;i<MAX_FANS;i++)
-    SpritePlotRotZ3B(dc,x[i],y[i],0,__BIN_1,theta[i]);
+    SpriteZ3B(dc,x[i],y[i],0,__BIN_1,theta[i]);
   if (ball_t) {
-    t0=(tT-ball_t)/BALL_TIME;
+    t0=(tS-ball_t)/BALL_TIME;
     if (t0>1.0)
       ball_t=0;
     else {
@@ -44,7 +44,7 @@ U0 DrawIt(CTask *,CDC *dc)
       Free(dc->r);
       GrSetRotMat(dc,r);
       dc->flags|=DCF_TRANSFORMATION;
-      SpritePlotRotZ3B(dc,xx,yy,0,__BIN_2,t0);
+      SpriteZ3B(dc,xx,yy,0,__BIN_2,t0);
     }
   }
   dc->color=RED;
@@ -57,7 +57,7 @@ U0 AnimateTask(I64)
   F64 xx,yy,t0;
   while (TRUE) {
     if (ball_t) {
-      t0=(tT-ball_t)/BALL_TIME;
+      t0=(tS-ball_t)/BALL_TIME;
       xx=t0*target_x+(1.0-t0)*pitcher_x;
       yy=t0*target_y+(1.0-t0)*pitcher_y;
     }
@@ -96,7 +96,7 @@ U0 Stadium()
 {
   I64 msg_code,p1,p2,ch=0;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit|=WIG_DBL_CLICK;
 
   MenuPush(
@@ -128,7 +128,7 @@ U0 Stadium()
     } else {
       target_x=p1; target_y=p2;
       pitcher_x=GR_WIDTH/2; pitcher_y=GR_HEIGHT;
-      ball_t=tT;
+      ball_t=tS;
     }
   } while (ch!=CH_SHIFT_ESC && ch!=CH_ESC);
   GetMsg(,,1<<MSG_KEY_UP);

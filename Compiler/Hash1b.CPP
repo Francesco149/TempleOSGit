@@ -77,7 +77,7 @@ I64 HashEntrySize(CHashSrcSym *temph)
       return temph(CHashClass *)->size;
     case HTt_FUN:
       if (dbg=temph->debug)
-	return dbg->body[dbg->max_line-dbg->min_line+1]-temph(CHashFun *)->executable_addr;
+	return dbg->body[dbg->max_line+1-dbg->min_line]-dbg->body[0];
       else
 	return -1;
     case HTt_FILE:
@@ -113,8 +113,8 @@ I64 HashEntrySize2(CHashSrcSym *temph)
     else if (temph->type & HTT_FUN) {
       result+=MemberLstSize(temph);
       if (dbg=temph->debug)
-	//This should be [C:/TempleOS/Kernel/Memory.CPP.Z,951] MSize() but it would crash on AOT .BIN.Z file funs.
-	result+=dbg->body[dbg->max_line-dbg->min_line+1]-temph(CHashFun *)->executable_addr;
+	//This should be [C:/Kernel/Mem1b.CPP.Z,371] MSize() but it would crash on AOT .BIN.Z file funs.
+	result+=dbg->body[dbg->max_line+1-dbg->min_line]-dbg->body[0];
     } else if (temph->type&HTT_DEFINE_STR)
       result+=MSize2(temph(CHashDefineStr *)->data);
     else if (temph->type & HTT_GLBL_VAR) {

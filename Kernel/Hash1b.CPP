@@ -71,7 +71,7 @@ U0 HashDel(CHashSrcSym *temph)
       Free(temph->debug);
     if (temph->type & (HTT_FUN | HTT_CLASS))
     //Assumes code not on heap, so doesn't Free.
-    //[C:/TempleOS/Compiler/Lex.CPP.Z,599] MemberLstDel() is an import to the Kernel module
+    //[C:/Compiler/Lex.CPP.Z,552] MemberLstDel() is an import to the Kernel module
       MemberLstDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(CHashDefineStr *)->data);
@@ -106,8 +106,8 @@ I64 HashTablePurge(CHashTable *tempht)
   I64 result=0;
   CHashSrcSym *temph,*temph1,*temph2;
   if (!tempht) return 0;
-  PushFD;
-  Cli;	 //Precaution
+  PUSHFD
+  CLI	 //Precaution
   temph=tempht->next_added;
   while (temph!=tempht) {
     temph1=temph->next_added; //We delete only older ones
@@ -127,7 +127,7 @@ I64 HashTablePurge(CHashTable *tempht)
     }
     temph=temph1;
   }
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -144,8 +144,35 @@ CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 u0=0,I64 u1=0,I64 u2=0,CTask 
   return result;
 }
 
-I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table)
+U0 SetSrcFileInfo(CLex *lx,CHashSrcSym *h)
 {
+  CLexFile *tempf=lx->cur_lfn;
+  h->src_link=MPrint("FL:%s,%d",tempf->name,tempf->line_num);
+  if (Bt(&lx->opts,OPTf_KEEP_PRIVATE))
+    h->type|=HTF_PRIVATE;
+  if (lx->cur_index)
+    h->index=StrNew(lx->cur_index);
+  else
+    h->index=NULL;
+}
+
+CHashGeneric *HashPublic(U8 *st,I64 mask,Bool val=TRUE)
+{
+  CHashGeneric *result;
+  if (result=HashFind(st,Fs->hash_table,mask)) {
+    if (val)
+      result->type|=HTF_PUBLIC;
+    else
+      result->type&=~HTF_PUBLIC;
+    if (result->type&HTG_SRC_SYM)
+      SetSrcFileInfo(Fs->last_lex,result);
+    return result;
+  } else
+    return NULL;
+}
+
+I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table)
+{//Add a list to a hash table.
   I64 i=0;
   CHashGeneric *temph;
   if (lst) {
@@ -166,7 +193,7 @@ I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table)
 }
 
 I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table)
-{
+{//Add a define list to a hash table.
   CHashDefineStr *temph;
   if (temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR))
     return HashLstAdd(temph->data,type,table);
@@ -231,7 +258,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
 	first=FALSE;
 	if (!(tempex=HashFind(st_ptr,Fs->hash_table,HTG_ALL-HTT_IMPORT_SYS_SYM))) {
 	  if (!(ld_flags & LDF_SILENT))
-	    "%S%s\n","ST_UNRESOLVED_REFERENCE",st_ptr;
+	    "Unresolved Reference:%s\n",st_ptr;
 	  tempiss=CAlloc(sizeof(CHashImport));
 	  tempiss->str=StrNew(st_ptr);
 	  tempiss->type=HTT_IMPORT_SYS_SYM;
@@ -250,13 +277,13 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
       else
 	i=tempex->val;
       switch (etype) {
-	case EIT_REL_U8:  *ptr2(U8 *) =i-ptr2-1; break;
+	case EIT_REL_I8:  *ptr2(U8 *) =i-ptr2-1; break;
 	case EIT_IMM_U8:  *ptr2(U8 *) =i;  break;
-	case EIT_REL_U16: *ptr2(U16 *)=i-ptr2-2; break;
+	case EIT_REL_I16: *ptr2(U16 *)=i-ptr2-2; break;
 	case EIT_IMM_U16: *ptr2(U16 *)=i; break;
-	case EIT_REL_U32: *ptr2(U32 *)=i-ptr2-4; break;
+	case EIT_REL_I32: *ptr2(U32 *)=i-ptr2-4; break;
 	case EIT_IMM_U32: *ptr2(U32 *)=i; break;
-	case EIT_REL_U64: *ptr2(I64 *)=i-ptr2-8; break;
+	case EIT_REL_I64: *ptr2(I64 *)=i-ptr2-8; break;
 	case EIT_IMM_U64: *ptr2(I64 *)=i; break;
       }
     }
@@ -297,7 +324,7 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 	HashAdd(tempex,Fs->hash_table);
 	SysSymImportsResolve(st_ptr,ld_flags);
 	break;
-      case EIT_REL_U8...EIT_IMM_U64:
+      case EIT_REL_I8...EIT_IMM_U64:
 	src=st_ptr-5;
 	LoadOneImport(&src,module_base,ld_flags);
 	break;
@@ -357,20 +384,20 @@ U0 LoadPass2(U8 *src,U8 *module_base,I64)
 }
 
 U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
-{ //See [C:/TempleOS/Adam/BinRep.CPP.Z,23] BinRep().
+{ //See [C:/Adam/Utils/BinRep.CPP.Z,23] BinRep().
   //bfh_addr==INVALID_PTR means don't care what load addr.
   U8 *fbuf,*module_base,*absname;
   I64 size,module_alignment,module_org;
-  CBinFile *bfh2;
+  CBinFile *bfh;
   CBinFilePatchTableWithOrg *bfpt;
   fbuf=DftExt(filename,"BIN.Z");
-  if (!(bfh2=FileRead(fbuf,&size))) {
+  if (!(bfh=FileRead(fbuf,&size))) {
     Free(fbuf);
     return NULL;
   }
 
-  //See [C:/Compiler/CmpMain.CPP,1] Loader Patch Table Generation
-  bfpt=bfh2(U8 *)+bfh2->loader_patch_table_offset;
+  //See [C:/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation
+  bfpt=bfh(U8 *)+bfh->loader_patch_table_offset;
   module_alignment=bfpt->module_alignment;
   if (bfpt->eit_module_org==EIT_MODULE_ORG)
     module_org=bfpt->module_org;
@@ -391,20 +418,17 @@ U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
       } else if (module_alignment>8)
 	bfh_addr=MAllocAligned(size,module_alignment,NULL,module_alignment-sizeof(CBinFile));
       else { //Less than 2Gig system memory
-	bfh_addr=bfh2;
+	bfh_addr=bfh;
 	goto lo_skip; //File is already in code heap area, don't copy.
       }
     } else
       bfh_addr=module_org;
   }
-  MemCpy(bfh_addr,bfh2,size);
-  Free(bfh2);
+  MemCpy(bfh_addr,bfh,size);
+  Free(bfh);
 
 lo_skip:
   module_base=bfh_addr(U8 *)+sizeof(CBinFile);
-
-  if (ArcXSum(bfh_addr,bfh_addr->file_size)!=TEMPLEOS_XSUM)
-    throw('ArcXSum');
 
   absname=FileNameAbs(fbuf);
   Free(fbuf);
@@ -425,7 +449,7 @@ U0 LoadKernel()
 {
   HashGenericAdd(KERNEL_MODULE_NAME,HTT_MODULE|HTF_PUBLIC,sys_boot_base-sizeof(CBinFile));
 
-//Abs patches done here [D:/Kernel/KStart.CPP,1] CBinFilePatchTableWithoutOrg.
+//Abs patches done here [C:/Kernel/KStart.CPP.Z,1] CBinFilePatchTableWithoutOrg.
   LoadPass1(sys_boot_patch_table_base,sys_boot_base,LDF_NO_ABSS|LDF_SILENT);
 
 //No main routines

@@ -51,7 +51,7 @@ U0 IntSimpleTimer(CTask *)
   I64 i;
   if (mp_cnt>1)
     while (LBts(&sys_semas[SYS_SEMA_SYS_TIMER],0))
-      Pause;
+      PAUSE
   lock sys_jiffies++;
   sys_timer+=SYS_TIMER0_PERIOD+1;
   LBtr(&sys_semas[SYS_SEMA_SYS_TIMER],0);
@@ -62,11 +62,11 @@ U0 IntSimpleTimer(CTask *)
 I64 SysTimerRead()
 {
   I64 i,result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (mp_cnt>1)
     while (LBts(&sys_semas[SYS_SEMA_SYS_TIMER],0))
-      Pause;
+      PAUSE
   OutU8(0x43,0); //Latch Timer0
   if ((i=InU8(0x40)+InU8(0x40)<<8)==SYS_TIMER0_PERIOD) {
     if (InU8(0x20) & 1)
@@ -74,7 +74,7 @@ I64 SysTimerRead()
   }
   result=sys_timer+SYS_TIMER0_PERIOD-i;
   LBtr(&sys_semas[SYS_SEMA_SYS_TIMER],0);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -88,8 +88,8 @@ I64 TimeStampFreqCal()
   static I64 time_stamp_start=0,timer_start=0,HPET_start=0;
   I64 i;
   if (time_stamp_start) {
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     if (HPET_start) {
       time_stamp_freq=HPET_freq*(GetTSC-time_stamp_start);
       i=HPET-HPET_start;
@@ -101,11 +101,11 @@ I64 TimeStampFreqCal()
       Dbg("Timer Cal Error");
     time_stamp_freq/=i;
     time_stamp_kHz_freq=time_stamp_freq/1000;
-    PopFD;
+    POPFD
     time_stamp_freq_calibrated=TRUE;
   }
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (HPET_freq) {
     timer_start=0;
     HPET_start=HPET;
@@ -114,37 +114,8 @@ I64 TimeStampFreqCal()
     HPET_start=0;
   }
   time_stamp_start=GetTSC;
-  PopFD;
+  POPFD
   return time_stamp_freq;
-}
-
-F64 tT()
-//Time since boot in seconds as a float
-{//This is fast but inaccurate if not HPET.
-  static I64 last_time_stamp=0;
-  static F64 last_result=0;
-  I64 time_stamp;
-  if (HPET_freq)
-    return ToF64(HPET-HPET_initial)/HPET_freq;
-  else { //Monotonically incresing,calibrated.
-    PushFD;
-    Cli;
-    if (mp_cnt>1)
-      while (LBts(&sys_semas[SYS_SEMA_TT],0))
-	Pause;
-    time_stamp=GetTSC;
-    last_result+=ToF64(time_stamp-last_time_stamp)/time_stamp_freq;
-    last_time_stamp=time_stamp;
-    LBtr(&sys_semas[SYS_SEMA_TT],0);
-    PopFD;
-    return last_result;
-  }
-}
-
-F64 tJ()
-//Time since boot in seconds as a float
-{
-  return sys_jiffies/ToF64(JIFFY_FREQ);
 }
 
 F64 tS()
@@ -211,7 +182,7 @@ U0 Snd(F64 freq)
     if (!IsDbg && snd_record) {
       d=ACAlloc(sizeof(CSndData));
       d->freq=freq;
-      d->time_stamp=tT;
+      d->time_stamp=tS;
       QueIns(d,snd_record_root.last);
     }
     LBtr(&sys_semas[SYS_SEMA_SND],0);
@@ -221,22 +192,26 @@ U0 Snd(F64 freq)
 U0 Beep(I64 freq=500,Bool busy=FALSE)
 {
   Snd(freq);
-  if (busy) BusyWait(500000);
-    else Sleep(500);
+  if (busy)
+    BusyWait(500000);
+  else
+    Sleep(500);
   Snd(0);
-  if (busy) BusyWait(200000);
-    else Sleep(200);
+  if (busy)
+    BusyWait(200000);
+  else
+    Sleep(200);
 }
 
 Bool Mute(Bool val)
 {
   Bool result;
   if (val) {
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     Snd(0);
     result=LBts(&sys_semas[SYS_SEMA_MUTE],0);
-    PopFD;
+    POPFD
   } else
     result=LBtr(&sys_semas[SYS_SEMA_MUTE],0);
   return result;

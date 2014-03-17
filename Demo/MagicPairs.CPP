@@ -335,7 +335,7 @@ I64 TestCoreRange(RangeJob *r)
 
 I64 MagicPairs(I64 N)
 {
-  F64 t0=tT;
+  F64 t0=tS;
   I64 result=0;
   I64 sqrt_primes,cbrt_primes,num_powprimes,
     i,k,n=(N-1)/mp_cnt+1;
@@ -361,7 +361,7 @@ I64 MagicPairs(I64 N)
     result+=GetResult(rj[i].cmd);
   Free(powprimes);
   Free(primes);
-  "Found:%u Time:%9.4f\n",result,tT-t0;
+  "Found:%u Time:%9.4f\n",result,tS-t0;
   return result;
 }
 

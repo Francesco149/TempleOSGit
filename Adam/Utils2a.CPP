@@ -1,19 +1,4 @@
 #help_index "Memory"
-U0 StkOverflow(CTask *task)
-{
-  Dbg("Stk Overflow",task);
-}
-
-U0 MemSysCorrupt()
-{
-  Dbg("Corrupt Sys Memory");
-}
-
-U0 MemTaskCorrupt()
-{
-  Dbg("Corrupt Task Memory");
-}
-
 public I64 UnusedBPMem(CBlkPool *bp)
 {
   I64 result=0,i;
@@ -21,15 +6,15 @@ public I64 UnusedBPMem(CBlkPool *bp)
 
   if (!bp) return 0;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&bp->locked_flags,BPlf_LOCKED))
-    Pause;
+    PAUSE
 
   tempm=bp->mem_free_lst;
   while (tempm) {
     if (tempm->mb_signature!=MBS_UNUSED_SIGNATURE_VAL)
-      MemSysCorrupt;
+      Dbg("Corrupt Sys Memory");
     result+=tempm->pages;
     tempm=tempm->next;
   }
@@ -37,7 +22,7 @@ public I64 UnusedBPMem(CBlkPool *bp)
     tempm=bp->free_page_hash[i];
     while (tempm) {
       if (tempm->mb_signature!=MBS_UNUSED_SIGNATURE_VAL)
-	MemSysCorrupt;
+	Dbg("Corrupt Sys Memory");
       result+=tempm->pages;
       tempm=tempm->next;
     }
@@ -47,13 +32,13 @@ public I64 UnusedBPMem(CBlkPool *bp)
     tempm=bp->free_page_hash2[i];
     while (tempm) {
       if (tempm->mb_signature!=MBS_UNUSED_SIGNATURE_VAL)
-	MemSysCorrupt;
+	Dbg("Corrupt Sys Memory");
       result+=tempm->pages;
       tempm=tempm->next;
     }
   }
   LBtr(&bp->locked_flags,BPlf_LOCKED);
-  PopFD;
+  POPFD
   return result*PAGE_SIZE;
 }
 
@@ -70,19 +55,19 @@ public I64 TaskAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
   if (!task) task=Fs;
   if (!override_validate && !TaskValidate(task)) return 0;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&task->code_heap->locked_flags,HClf_LOCKED))
-    Pause;
+    PAUSE
   if (task->code_heap!=task->data_heap)
     while (LBts(&task->data_heap->locked_flags,HClf_LOCKED))
-      Pause;
+      PAUSE
 
   m=task->code_heap->next_mem_blk;
   m1=&task->code_heap->next_mem_blk;
   while (m!=m1) {
     if (m->mb_signature!=MBS_USED_SIGNATURE_VAL)
-      MemTaskCorrupt;
+      Dbg("Corrupt Task Memory");
     result+=m->pages*PAGE_SIZE;
     m=m->next;
   }
@@ -92,7 +77,7 @@ public I64 TaskAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
     m1=&task->data_heap->next_mem_blk;
     while (m!=m1) {
       if (m->mb_signature!=MBS_USED_SIGNATURE_VAL)
-	MemTaskCorrupt;
+	Dbg("Corrupt Task Memory");
       result+=m->pages*PAGE_SIZE;
       m=m->next;
     }
@@ -101,7 +86,7 @@ public I64 TaskAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
   if (task->code_heap!=task->data_heap)
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -124,13 +109,13 @@ public I64 TaskUnusedAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
   if (!task) task=Fs;
   if (!override_validate && !TaskValidate(task)) return 0;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&task->code_heap->locked_flags,HClf_LOCKED))
-    Pause;
+    PAUSE
   if (task->data_heap!=task->code_heap)
     while (LBts(&task->data_heap->locked_flags,HClf_LOCKED))
-      Pause;
+      PAUSE
 
   result+=MemBlkLstSize(task->code_heap);
   for (i=0;i<HEAP_HASH_SIZE>>3;i++) {
@@ -165,7 +150,7 @@ public I64 TaskUnusedAllocatedMem(CTask *task=NULL,Bool override_validate=FALSE)
   if (task->data_heap!=task->code_heap)
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -191,10 +176,10 @@ public I64 UnusedHCMem(CHeapCtrl *hc)
 
   result=UnusedBPMem(hc->bp);
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&hc->locked_flags,HClf_LOCKED))
-    Pause;
+    PAUSE
 
   for (i=0;i<HEAP_HASH_SIZE>>3;i++) {
     u=hc->heap_hash[i];
@@ -210,7 +195,7 @@ public I64 UnusedHCMem(CHeapCtrl *hc)
   }
 
   LBtr(&hc->locked_flags,HClf_LOCKED);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -226,13 +211,13 @@ public Bool HeapRep(CTask *task)
   }
   if (!TaskValidate(task)) return FALSE;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&task->code_heap->locked_flags,HClf_LOCKED))
-    Pause;
+    PAUSE
   if (task->data_heap!=task->code_heap)
     while (LBts(&task->data_heap->locked_flags,HClf_LOCKED))
-      Pause;
+      PAUSE
 
   for (i=0;i<HEAP_HASH_SIZE>>3;i++) {
     cnt=0;
@@ -269,7 +254,7 @@ public Bool HeapRep(CTask *task)
   if (task->data_heap!=task->code_heap)
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
-  PopFD;
+  POPFD
 
   NewLine;
 }
@@ -283,14 +268,14 @@ public Bool IsInHeap(U8 *a,CTask *task=NULL,Bool lock=TRUE)
   if (!task) task=Fs;
   if (!TaskValidate(task)) return FALSE;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (lock) {
     while (LBts(&task->code_heap->locked_flags,HClf_LOCKED))
-      Pause;
+      PAUSE
     if (task->data_heap!=task->code_heap)
       while (LBts(&task->data_heap->locked_flags,HClf_LOCKED))
-	Pause;
+	PAUSE
   }
 
   m=task->code_heap->next_mem_blk;
@@ -298,7 +283,7 @@ public Bool IsInHeap(U8 *a,CTask *task=NULL,Bool lock=TRUE)
     if (a>=m && a<m(U8 *)+m->pages*PAGE_SIZE) {
       if (lock)
 	LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
-      PopFD;
+      POPFD
       return TRUE;
     }
     m=m->next;
@@ -309,7 +294,7 @@ public Bool IsInHeap(U8 *a,CTask *task=NULL,Bool lock=TRUE)
       if (a>=m && a<m(U8 *)+m->pages*PAGE_SIZE) {
 	if (lock)
 	  LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
-	PopFD;
+	POPFD
 	return TRUE;
       }
       m=m->next;
@@ -321,7 +306,7 @@ public Bool IsInHeap(U8 *a,CTask *task=NULL,Bool lock=TRUE)
     if (task->data_heap!=task->code_heap)
       LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   }
-  PopFD;
+  POPFD
 
   return FALSE;
 }
@@ -335,13 +320,13 @@ public Bool HeapWalk(CTask *task=NULL)
   if (!task) task=Fs;
   if (!TaskValidate(task)) return FALSE;
 
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&task->code_heap->locked_flags,HClf_LOCKED))
-    Pause;
+    PAUSE
   if (task->data_heap!=task->code_heap)
     while (LBts(&task->data_heap->locked_flags,HClf_LOCKED))
-      Pause;
+      PAUSE
 
   for (i=0;i<HEAP_HASH_SIZE>>3;i++) {
     uum=task->code_heap->heap_hash[i];
@@ -399,7 +384,7 @@ public Bool HeapWalk(CTask *task=NULL)
   if (task->data_heap!=task->code_heap)
     LBtr(&task->data_heap->locked_flags,HClf_LOCKED);
   LBtr(&task->code_heap->locked_flags,HClf_LOCKED);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -408,10 +393,10 @@ public Bool HeapWalk(CTask *task=NULL)
 U0 TaskRepTask(CTask *task,I64 indent)
 {
   CTask *task1;
-  U8 *st,*desc=MPrint("%q",task->task_title);
-  st=MPrint("$MA+A,\"%08X\",\"Kill(0x%X);\n\",$",task,task,task);
+  U8 *st,*desc=MStrUtil(task->task_title,SUF_SAFE_DOLLAR);
+  st=MPrint("$MA,T=\"%08X\",LM=\"Kill(0x%X);\n\",$",task,task,task);
   Spaces(indent);
-  "%s $TX+SCX,\"%Q...\",16$ Mem:%08X\n",
+  "%s $TX,\"%Q...\",SCX=16$ Mem:%08X\n",
     st,desc,TaskAllocatedMem(task);
   Spaces(indent+2);
   "Flags:%04X:%04X\n",task->task_flags,task->display_flags;
@@ -427,16 +412,16 @@ U0 TaskRepTask(CTask *task,I64 indent)
 
 public U0 TaskRep()
 {
-  U8 i;
+  I64 i;
   CCPU *c;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
     "$RED$CPU:%d$FG$\n",i;
     TaskRepTask(c->seth_task,2);
   }
-  PopFD;
+  POPFD
 }
 
 #help_index ""

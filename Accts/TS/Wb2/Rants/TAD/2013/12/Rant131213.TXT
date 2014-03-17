@@ -76,7 +76,14 @@ Maybe, time travel joke (tower falling) because of Arnold article.
 
 ----12/13/13 13:13:17----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/OdkGA_rgHRY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/OdkGA_rgHRY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 You like Jon Stewart, God?
 
@@ -232,7 +239,14 @@ eh?  I gotta find better material.
 
 ----12/13/13 14:20:02----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Vd8N78Up4gg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Vd8N78Up4gg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -410,7 +424,14 @@ inaccessible confidentially doth advice Texas mistress wrested false raise sit
 
 ----12/13/13 15:31:16----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/IY2j_GPIqRA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/IY2j_GPIqRA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -443,7 +464,14 @@ are come to the full, a king of fierce countenance, and understanding
 
 ----12/13/13 15:51:13----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/8DGgvE6hLAU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/8DGgvE6hLAU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -546,7 +574,14 @@ after; among them were the damsels playing with timbrels.
 
 ----12/13/13 16:52:38----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/qw1vm_wdpy0"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/qw1vm_wdpy0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -578,7 +613,14 @@ earth.
 
 ----12/13/13 17:26:14----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/N10ujWcuHT8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/N10ujWcuHT8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -808,7 +850,14 @@ Are You handy with DNA, God?
 
 How long would it take for You to design this?
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/QUubBsYRaDg&hl=enUS&start=60"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/QUubBsYRaDg&hl=enUS&start=60"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -871,7 +920,14 @@ grammar requital fleeing Munday warring
 
 ----12/13/13 19:49:42----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/T8dyxGiBx3g"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/T8dyxGiBx3g"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 You like that, God?
 
@@ -1049,7 +1105,14 @@ difficulty transformed
 
 ----12/13/13 20:58:58----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/45bpYbUUHzk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/45bpYbUUHzk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Who'd You like better Reagan or Kennedy, God?
 
@@ -1084,7 +1147,14 @@ here John Baptist's head in a charger.
 
 ----12/13/13 21:15:23----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/y36iVzlH4fs"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/y36iVzlH4fs"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Did You like Alexander the Great, God?
 Or, Julius Caesar?
@@ -1127,12 +1197,20 @@ Monad
 
 ----12/13/13 21:50:13----
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img012.BMP"
+width="640" height="472" alt="">
+```
 
 I drew something for You, God.  Now, You draw.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img013.BMP"
+width="640" height="472" alt="">
+```
 That's a foot and leg swinging in an overcoat.  Windshield wipers from the 
 back seat with driver seat.
 
@@ -1396,7 +1474,14 @@ overflow with wine and oil.
 
 ----12/13/13 23:46:51----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/kKoRp05L95c"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/kKoRp05L95c"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 God's favorite song.
 
 God?  Tell us about when the first bird flew.
@@ -1410,7 +1495,14 @@ amendment the thenceforth intended fragrance crisis
 
 I like this:
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/fPmruHc4S9Q"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/fPmruHc4S9Q"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1441,7 +1533,14 @@ And they told Shimei, saying, Behold, thy servants be in Gath.
 
 You like this?
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Zj9qAvOZq28"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Zj9qAvOZq28"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God says...
 believer Presently hour acquiesce foretold reveal united imagine seized 

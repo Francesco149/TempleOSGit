@@ -1,15 +1,15 @@
 /*
 This scans the sym table and checks
-each [C:/TempleOS/Kernel/Adam1a.HPP.Z,703] HTT_DEFINE_STR entry to see if
+each [C:/Kernel/Adam1a.HPP.Z,618] HTT_DEFINE_STR entry to see if
 it only occurs once in files.
 
 It's a brute force solution, but
 gets the job done... slowly.
 
-[C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() returns a count of matches.
+[C:/Adam/Utils/Grep.CPP.Z,145] Grep() returns a count of matches.
 
-[C:/TempleOS/Adam/Grep.CPP.Z,195] FileOcc() is [C:/TempleOS/Adam/Grep.CPP.Z,163] Grep() with
-output [C:/TempleOS/Kernel/Misc1a.CPP.Z,244] Silent().
+[C:/Adam/Utils/Grep.CPP.Z,181] FileOcc() is [C:/Adam/Utils/Grep.CPP.Z,145] Grep() with
+output [C:/Kernel/Misc1a.CPP.Z,224] Silent().
 
 */
 
@@ -61,7 +61,7 @@ U0 UnusedDefineScan()
 	      if (doc_e->type_u8==DOCT_LINK) {
 		"%s ",temph->str;
 		doc_e2=DocEntryCopy(doc,doc_e);
-		DocIns(old_put_doc,doc_e2);
+		DocInsEntry(old_put_doc,doc_e2);
 		NewLine;
 	      }
 	      doc_e=doc_e->next;

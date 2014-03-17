@@ -38,8 +38,8 @@ U0 SysGlblsInit()
   StrCpy(sys_temp_filename,"HOME/Temp.TXT.Z");
   MemSet(&sys_put_key_root,0,sizeof(CKeyDev));
   QueInit(&sys_put_key_root);
-  KeyDevAdd(&AKDInputFilterPutKey,&AKDInputFilterPutS,0x40000000,FALSE);
-  KeyDevAdd(&AKDRawDisplayPutKey,&AKDRawDisplayPutS,0x60000000,FALSE);
+  KeyDevAdd(&KDInputFilterPutKey,&KDInputFilterPutS,0x40000000,FALSE);
+  KeyDevAdd(&KDRawDisplayPutKey,&KDRawDisplayPutS,0x60000000,FALSE);
   #exe {
     if (*kernel_cfg->acct_name)
       StreamPrint("sys_acct=StrNew(\"%C:/Accts/%s\");",kernel_cfg->sys_acct_drv,kernel_cfg->acct_name);
@@ -55,7 +55,8 @@ U0 SysGlblsInit()
 
   QueInit(&snd_record_root);
   snd_record_root.freq=0;
-  snd_record_root.time_stamp=tT;
+
+  snd_record_root.time_stamp=tS;
 
 //Independent Heap Ctrl Example
   i=1; //Rqst 1 blk, we might get more.
@@ -67,15 +68,15 @@ U0 SysGlblsInit()
 
 U0 SysGrInit()
 {
-//See [D:/Kernel/KStart.CPP,2] SYS_BIOS_GR_MODE
-//See [C:/Adam/Gr/GrCfg.CPP,1]
+//See [C:/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
+//See [C:/Adam/Gr/GrGlbls.CPP.Z,1] GR_WIDTH
   gr_font=sys_font_8x8;
   if (bios_gr_mode==0x12 || bios_gr_mode==0x6A) {
     text_mode=FALSE;
 
 /*
 Mode must be multiple of 32 wide
-[C:/TempleOS/Adam/Gr/GrAsm.CPP.Z,760] GrUpdateLine32().
+[C:/Adam/Gr/GrAsm.CPP.Z,771] GrUpdateLine32().
 */
 
     if (bios_gr_mode==0x6A) {
@@ -139,7 +140,7 @@ U0 TimersInit()
 U0 Reboot()
 {
   U16 *_w=0x472;
-  Cli;
+  CLI
   if (mp_cnt>1)
     MPHalt;
   MemPagePresentMark(_w,TRUE);
@@ -152,7 +153,7 @@ U0 Reboot()
 }
 
 U0 KernelMain()
-{ //Continued from [C:/Kernel/KStart.CPP,1] Kernel
+{ //Continued from [C:/Kernel/KStart.CPP.Z,1] Kernel
   adam_task=Fs;
   HeapsInit;
   LBts(&sys_run_level,RLf_FULL_HEAP);
@@ -173,8 +174,8 @@ U0 KernelMain()
   MPInit;
   IntInit1;
 
-//Before this point use [C:/TempleOS/Kernel/Misc1a.CPP.Z,189] Snd() and [C:/TempleOS/Kernel/Misc1a.CPP.Z,160] BusyWait()
-//to debug.  After this point, use [MN:RawPrint] RawPrint()
+//Before this point use [C:/Kernel/Misc1a.CPP.Z,165] Snd() and [C:/Kernel/Misc1a.CPP.Z,136] BusyWait()
+//to debug.  After this point, use [C:/Kernel/Dbg1a.CPP.Z,222] RawPrint()
   LBts(&sys_run_level,RLf_RAW);
   if (BIOSTotalMem<250*0x100000)
     Dbg("Requires 256 Meg of RAM Memory");
@@ -185,6 +186,7 @@ U0 KernelMain()
   "Enable IRQ's\n";
   SetRFlags(SYS_NORMAL_RFLAGS);
   BusyWait(2000);
+
   IntInit2;
   LBts(&sys_run_level,RLf_INTERRUPTS);
   TimeStampFreqCal;
@@ -200,7 +202,6 @@ U0 KernelMain()
   KbdMouseVarsInit;
   IPVarsInit;
   KbdInit;
-
   if (mp_cnt<2)
     Spawn(&MouseDriverInstall);
   else
@@ -225,7 +226,7 @@ U0 KernelMain()
   time_stamp_freq_initial=TimeStampFreqCal;
   Cd("/Kernel");
   try
-    ExeFile("Adam1"); //Continues [D:/Kernel/Adam1.CPP,1] /Kernel/Adam1.CPP
+    ExeFile("Adam1"); //Continues [E:/Kernel/Adam1.CPP.Z,1] /Kernel/Adam1.CPP
   catch {
     Raw(ON);
     PutExcept;

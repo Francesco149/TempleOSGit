@@ -300,7 +300,7 @@ Bool FAT32DirFill(CFAT32DirEntry *de,CDirEntry *tempde,I64 *_de_cnt=NULL)
 
 
 Bool FAT32FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES
+{ //[C:/Kernel/Adam1a.HPP.Z,3464] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,3465] FUF_JUST_FILES
   Bool result=FALSE,unlock;
   CFAT32DirEntry *buf;
   I64 xsum=0,attr,cur_dir_entry,entries_per_cluster;
@@ -312,10 +312,10 @@ Bool FAT32FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 f
   MemSet(&long_name,0,sizeof(CDirEntry));
   PrtChk(p);
   if (p->type!=PT_FAT32)
-    "%S","ST_NOT_FAT32";
+    PrintErr("Not FAT32 Partition\n");
   else if (!CFileNameTo(dname,name))
-    "%S","ST_INVALID_FILENAME";
-  else {
+    PrintErr("Invalid FileName.\n");
+  else
     try {
       unlock=PrtLock(p);
       buf=MAlloc(BLK_SIZE*p->spc);
@@ -363,31 +363,24 @@ exit_this:
     } catch
       if (unlock)
 	PrtUnlock(p);
-  }
   return result;
 }
 
-U8 *FAT32FileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,
-  I64 *_attr=NULL,Bool raw,CArcCompress **_ac2)
+U8 *FAT32FileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
 {
   U8 *buf=NULL;
   CDirEntry de;
   I64 c,blk_cnt,cur_dir_cluster;
-  CArcCompress *ac;
- 
   PrtChk(p);
-  if (_size) *_size=0;
-  if (_ac2)  *_ac2=NULL;
-  if (_attr) *_attr=0;
+  *_size=0;
+  *_attr=0;
   if (p->type!=PT_FAT32)
-    "%S","ST_NOT_FAT32";
-  else {
+    PrintErr("Not FAT32 Partition\n");
+  else
     try {
       PrtLock(p);
       cur_dir_cluster=Name2DirCluster(p,cur_dir);
       if (FAT32FileFind(p,cur_dir_cluster,filename,&de,FUF_JUST_FILES)) {
-	if (_attr)
-	  *_attr=de.attr;
 	blk_cnt=(de.size+BLK_SIZE-1)>>BLK_SIZE_BITS;
 	buf=MAlloc(blk_cnt<<BLK_SIZE_BITS+1);
 	c=de.cluster;
@@ -395,27 +388,13 @@ U8 *FAT32FileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,
 	  c=0x0FFFFFFF;
 	else
 	  c=RClustersBlks(p,buf,c,blk_cnt);
-	if (FileAttr(de.name) & _ATTR_COMPRESSED && !raw) {
-	  ac=buf;
-	  if (_attr) *_attr=FileAttr(de.name,*_attr);
-	  if (_size) *_size=ac->expanded_size;
-	  if (_ac2) {
-	    *_ac2=ac;
-	    buf=ExpandBuf(ac);
-	  } else {
-	    buf=ExpandBuf(ac);
-	    Free(ac);
-	  }
-	} else {
-	  buf[de.size]=0; //Terminate
-	  if (_size) *_size=de.size;
-	}
-	if (_attr) *_attr=FileAttr(de.name,*_attr);
+	buf[de.size]=0; //Terminate
+	*_size=de.size;
+	*_attr=FileAttr(de.name,de.attr);
       }
       PrtUnlock(p);
     } catch
       PrtUnlock(p);
-  }
   return buf;
 }
 
@@ -423,14 +402,12 @@ Bool FAT32Cd(U8 *name,I64 cur_dir_cluster)
 {
   CDirEntry de;
   if (Fs->cur_prt->type!=PT_FAT32)
-    "%S","ST_NOT_FAT32";
+    PrintErr("Not FAT32 Partition\n");
+  else if (FAT32FileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
+    return TRUE;
   else {
-    if (FAT32FileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
-      return TRUE;
-    else {
-      "%s ",name;
-      PrintErr("%S","ST_FILE_NOT_FOUND");
-    }
+    "%s ",name;
+    PrintErr("File not found.\n");
   }
   return FALSE;
 }
@@ -443,8 +420,8 @@ U0 FAT32FreeClusters(CPrt *p,I64 c)
   PrtChk(p);
   if (!(0<c<0x0FFFFFF8)) return;
   if (p->type!=PT_FAT32)
-    "%S","ST_NOT_FAT32";
-  else {
+    PrintErr("Not FAT32 Partition\n");
+  else
     try {
       unlock_break=BreakLock;
       unlock=PrtLock(p);
@@ -477,7 +454,6 @@ U0 FAT32FreeClusters(CPrt *p,I64 c)
       if (unlock_break)
 	BreakUnlock;
     }
-  }
 }
 
 I64 FAT32AllocClusters(CPrt *p,I64 c,I64 cnt)
@@ -603,7 +579,7 @@ I64 FAT32AllocContiguousClusters(CPrt *p,I64 cnt)
 
 Bool FAT32DirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain)
 {
-//See [C:/Doc/CutCorners.TXT,1].
+//See [C:/Doc/CutCorners.TXT.Z,1].
   CFAT32DirEntry *buf,*last_buf,*temp_buf,de[3];
   I64 i,attr,avail_cnt,de_cnt,c,
       cur_dir_entry,entries_per_cluster,
@@ -782,7 +758,7 @@ I64 FAT32FilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,I64 fuf_flags,
 	    if (FilesFindMatch(long_name.name,files_find_mask,fuf_flags)) {
 	      if (!(attr & _ATTR_DIR)) result++;
 	      if (print_msg)
-		"%S%s\n","ST_DELETE",long_name.name;
+		"Del %s\n",long_name.name;
 	      *buf[cur_dir_entry].name=0xE5;
 	      i=1;
 	      while (i<=cur_dir_entry &&
@@ -834,34 +810,23 @@ I64 FAT32FilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,I64 fuf_flags,
 }
 
 I64 FAT32FileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
-		CDate cdt=0,I64 attr=0,Bool raw=FALSE,
-		CArcCompress **_ac2=NULL)
+	CDate cdt,I64 attr)
 {
   CDirEntry de;
   I64 c=0,blk_cnt;
-  CArcCompress *ac=NULL;
   Bool contiguous;
   MemSet(&de,0,sizeof(CDirEntry));
-  if (_ac2) *_ac2=NULL;
   if (size<0) size=0;
-  if (!cdt)
-    cdt=Now;
   if (p->type!=PT_FAT32)
-    "%S","ST_NOT_FAT32";
+    PrintErr("Not FAT32 Partition\n");
   else if (!CFileNameTo(de.name,name))
-    "%S","ST_INVALID_FILENAME";
+    PrintErr("Invalid FileName.\n");
   else {
     FAT32FilesDel(p,cur_dir,de.name,0,FALSE,FALSE);
-    attr=FileAttr(name,attr);
     if (attr & _ATTR_CONTIGUOUS)
       contiguous=TRUE;
     else
       contiguous=FALSE;
-    if (attr & _ATTR_COMPRESSED && !raw) {
-      ac=CompressBuf(buf,size);
-      buf=ac;
-      size=ac->compressed_size;
-    }
     de.size=size;
     if (blk_cnt=(size+BLK_SIZE-1)>>BLK_SIZE_BITS)
       c=ClustersAlloc(p,0,(blk_cnt+p->spc-1)/p->spc,contiguous);
@@ -873,10 +838,6 @@ I64 FAT32FileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
     if (blk_cnt)
       WClustersBlks(p,buf,c,blk_cnt);
     FAT32DirNew(p,cur_dir,&de,TRUE);
-    if (_ac2)
-      *_ac2=ac;
-    else
-      Free(ac);
   }
   return c;
 }

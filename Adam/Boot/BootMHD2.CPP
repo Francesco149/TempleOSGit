@@ -115,6 +115,6 @@ BMHD2_HISTART:
 BMHD2_OLD_CS_IP:
 	DU16	0,0;
 BMHD2_END::
-//Continues here [C:/Adam/Boot/BootHD.CPP,1] ::/Adam/Boot/BootHD.CPP
+//Continues here [C:/Adam/Boot/BootHD.CPP.Z,1] ::/Adam/Boot/BootHD.CPP
 #assert BMHD2_END-BMHD2_START<MODULE_SIZE
 }

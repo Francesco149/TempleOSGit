@@ -23,7 +23,7 @@ U0 Song()
 	Play("2etG3BCqGeDBqC2G3sGAGAeEFsGGGG",
 		"It \0is \0 \0finished.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
 	NewLine(1);
-	PutSprite(__BIN_1);
+	Sprite(__BIN_1);
 	NewLine(7);
 	Play("2etG3BCqGeDBqC2G3sGAGAeEFsGGGG",
 		"It \0is \0 \0finished.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");

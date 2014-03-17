@@ -15,5 +15,5 @@
  <1> (image)
 
 
-[C:/TempleOS/Misc/Bible.TXT.Z,21329] Judges,6:37
+[C:/Misc/Bible.TXT.Z,21329] Judges,6:37
 

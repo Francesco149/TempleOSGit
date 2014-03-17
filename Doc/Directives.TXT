@@ -4,7 +4,8 @@ semicolon after the directive if it's not taking affect right away.
 
 #include "" 	There is no angle bracket <> form of this directive.
 #exe {}		Will execute code at compile-time and can be used to insert 
-code into the stream being compiled using [MN:StreamPrint] StreamPrint().
+code into the stream being compiled using [C:/Compiler/CmpMain.CPP.Z,1]
+StreamPrint().
 #define		Define string const
 #assert		Print a warning during compilation if an expression is not 
 true. 
@@ -14,16 +15,16 @@ true.
 #ifdef,#ifndef	Include code if a sym is defined.
 #ifaot,#ifjit	Include code if in AOT compiler mode.
 defined()	Is a function that can be used in expressions.
-#help_index, #help_file See [C:/Doc/HelpSystem.TXT,1] Help System.
+#help_index, #help_file See [C:/Doc/HelpSystem.TXT.Z,1] Help System.
 
-See [C:/Doc/ImportExports.TXT,1] Scoping and Linkages,
-[C:/Compiler/Lex.CPP,1] preprocessor and [C:/Doc/Options.TXT,1] Compiler
+See [C:/Doc/ImportExports.TXT.Z,1] Scoping and Linkages,
+[C:/Compiler/Lex.CPP.Z,1] preprocessor and [C:/Doc/Options.TXT.Z,1] Compiler
 Options.
 
 
 Assembler Directives
 
-See [C:/Compiler/OpCodes.TXT,1] for opcodes.  They're not standard.  Some
+See [C:/Compiler/OpCodes.TXT.Z,1] for opcodes.  They're not standard.  Some
 invalid 
 instructions are not flagged and some valid instructions are not implemented. 
 16-bit asm support is limited.
@@ -70,10 +71,11 @@ ALIGN num, fill_byte
   Align to num boundary and fill with fill_byte.
 
 MODULE_ORG num
-  Set code addr for JIT or set module [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
-Load() addr -- has 16-byte [C:/TempleOS/Kernel/Adam1a.HPP.Z,371] CBinFile 
+  Set code addr for JIT or set module [C:/Kernel/Hash1b.CPP.Z,386] Load()
+addr -- has 16-byte [C:/Kernel/Adam1a.HPP.Z,285] CBinFile 
 header and patch table trailing.
 
 BINFILE "FileName.BIN";
 
-See [C:/Demo/Asm/AsmAndC.CPP,1] and [C:/Demo/Asm/AsmAndC2.CPP,1].
+See [C:/Demo/Asm/AsmAndC1.CPP.Z,1], [C:/Demo/Asm/AsmAndC2.CPP.Z,1] and 
+[C:/Demo/Asm/AsmAndC3.CPP.Z,1].

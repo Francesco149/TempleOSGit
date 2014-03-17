@@ -10,9 +10,8 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 
   if (!doc && !(doc=DocPut) || doc->doc_signature!=DOC_SIGNATURE_VAL)
     return;
-  if (doc->user_put_key)
-    if ((*doc->user_put_key)(doc,doc->user_put_data,ch,sc))
-      return;
+  if (doc->user_put_key && (*doc->user_put_key)(doc,doc->user_put_data,ch,sc))
+    return;
   unlock=DocLock(doc);
   if (!Bt(doc_clean_scancodes,sc.u8[0]))
     doc->flags|=DOCF_UNDO_DIRTY;
@@ -371,14 +370,14 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  else
 		    SetKeyDesc("Edit/Autocomplete Sym");
 		} else {
+		  DocUnlock(doc);
 		  if (WordStat(ON)) {
-		    DocUnlock(doc);
 		    if (sc&SCF_SHIFT)
 		      WSMan(sc2-SC_F1+1,Fs);
 		    else
 		      WSFillIn(sc2-SC_F1+1);
-		    DocLock(doc);
 		  }
+		  DocLock(doc);
 		}
 	      } else {
 		switch (sc2) {
@@ -429,7 +428,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		      if (sc&SCF_SHIFT)
 			SetKeyDesc("Misc/Insert Directory Name");
 		      else
-			SetKeyDesc("Misc/Insert File Name");
+			SetKeyDesc("Misc/Insert FileName");
 		    } else {
 		      DocUnlock(doc);
 		      if (sc&SCF_SHIFT)
@@ -438,7 +437,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 			st=PopUpPickFile;
 		      DocLock(doc);
 		      if (st) {
-			DocPutSPartial(doc,st);
+			DocPrintPartial(doc,"%s",st);
 			Free(st);
 		      }
 		    }
@@ -471,6 +470,36 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 			  PopUpFile(st);
 			Free(st);
 		      }
+		    }
+		    break;
+		  case SC_F6:
+		    if (sc&SCF_KEY_DESC) {
+		      if (sc & SCF_SHIFT)
+			SetKeyDesc("God Doodle");
+		      else
+			SetKeyDesc("God Song");
+		    } else {
+		      //[C:/Adam/God/HSNotes.TXT.Z,1]
+		      if (sc & SCF_SHIFT)
+			GodDoodle;
+		      else
+			GodSong;
+		    }
+		    break;
+		  case SC_F7:
+		    if (sc&SCF_KEY_DESC) {
+		      if (sc & SCF_SHIFT)
+			SetKeyDesc("God Passage");
+		      else
+			SetKeyDesc("God Word");
+		    } else {
+		      //[C:/Adam/God/HSNotes.TXT.Z,1]
+		      FifoU8Flush(god_fifo);
+		      GodBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
+		      if (sc & SCF_SHIFT)
+			GodPassage;
+		      else
+			GodWord;
 		    }
 		    break;
 		}
@@ -647,7 +676,7 @@ U0 DocNewLine(CDoc *doc=NULL,I64 cnt=1)
     DocPutKey(doc,'\n',0);
 }
 
-Bool AKDDocPutKey(I64 ch,I64 scancode)
+Bool KDDocPutKey(I64 ch,I64 scancode)
 {
   CDoc *doc;
   if (doc=DocPut)
@@ -655,17 +684,20 @@ Bool AKDDocPutKey(I64 ch,I64 scancode)
   return FALSE;
 }
 
-public U0 DocPutSPartial(CDoc *doc,U8 *st)
-{
-  U8 ch,*b,*src,*dst,*ptr=st,*ptr2;
+public U0 DocPrintPartial(CDoc *doc,U8 *fmt,...)
+{//This lets you print half a doc cmd, if you like.
+  U8 *buf,*b,*src,*dst,*ptr,*ptr2;
   Bool unlock;
   CDocEntry *doc_ce,*doc_ne;
-  I64 i,j;
-  if (!st)
+  I64 ch,i,j;
+  if (!fmt)
     return;
-  if (doc->user_put_s)
-    if ((*doc->user_put_s)(doc,doc->user_put_data,st))
-      return;
+  buf=SPrintJoin(NULL,fmt,argc,argv);
+  ptr=buf;
+  if (doc->user_put_s && (*doc->user_put_s)(doc,doc->user_put_data,buf)) {
+    Free(buf);
+    return;
+  }
   unlock=DocLock(doc);
   if (doc->cur_entry->type_u8==DOCT_DATA)
     while (ch=*ptr++)
@@ -705,8 +737,8 @@ public U0 DocPutSPartial(CDoc *doc,U8 *st)
 	  dst=MAlloc(j+1,doc->mem_task);
 	  MemCpy(dst,ptr2,j+1);
 	  doc_ne=DocEntryNew(doc,doc_ce,dst);
-	  doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
-	  doc_ne->flags1=0;
+	  doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
+	  doc_ne->flags1=doc_dft_flags1[DOCT_TEXT];
 	  QueIns(doc_ne,doc_ce->last);
 	  doc->cur_entry=doc_ne;
 	  doc->cur_data_col=StrLen(ptr2);
@@ -719,11 +751,12 @@ public U0 DocPutSPartial(CDoc *doc,U8 *st)
     DocUnlock(doc);
   if (!(doc->flags&DOCF_DONT_SWAP_OUT))
     Yield;
+  Free(buf);
 }
 
 #help_index "Doc"
 Bool DocFileEd(I64 type,U8 *filename,
-	U8 *pattern,I64 *_num,I64 ed_flags)
+	U8 *needle_str,I64 *_num,I64 ed_flags)
 {
   I64 flags=0,i,old_border_src=Fs->border_src;
   CDocEntry *doc_e;
@@ -777,13 +810,13 @@ Bool DocFileEd(I64 type,U8 *filename,
 	  result=DocLineNumGoTo(doc,*_num);
 	  break;
 	case LK_FILE_ANCHOR:
-	  result=DocAnchorFind(doc,pattern);
+	  result=DocAnchorFind(doc,needle_str);
 	  break;
 	case LK_FILE_FIND:
-	  result=DocPatternFind(doc,,pattern,*_num);
+	  result=DocFind(doc,,needle_str,*_num);
 	  break;
 	case LK_BIBLE_FIND:
-	  result=DocPatternFind(doc,*_num,pattern);
+	  result=DocFind(doc,*_num,needle_str);
 	  break;
 	default:
 	  DocCenter(doc);
@@ -809,10 +842,10 @@ Bool DocFileEd(I64 type,U8 *filename,
   return result;
 }
 
-public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_pattern=NULL,
+public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_needle_str=NULL,
   I64 *_num=NULL,I64 ed_flags=0)
-{
-  U8 *st,*ptr,*filename=NULL,*pattern=NULL,*filename2;
+{//Convert an [C:/Adam/Doc/Doc.CPP.Z,37] Editor Link Types to filename, needle_str and line number
+  U8 *st,*ptr,*filename=NULL,*needle_str=NULL,*filename2;
   I64 result,i,num=1;
   CHashSrcSym *temph;
   if (!link_st||!*link_st) {
@@ -828,18 +861,18 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_pattern=NULL,
     switch (result=DefineMatch(st,"ST_LINK_TYPES",LMF_IGNORE_CASE)) {
       case LK_MAN_PAGE:
 	if (temph=HashFind(filename2,Fs->hash_table,HTG_SRC_SYM))
-	  result=EdLinkCvt(temph->src_link,&filename,&pattern,&num,ed_flags);
+	  result=EdLinkCvt(temph->src_link,&filename,&needle_str,&num,ed_flags);
 	else
 	  result=-1;
 	goto lc_done;
       case LK_ADDR:
 	if (ptr=StrLastOcc(filename2,",")) {
 	  *ptr=0;
-	  i=A2I(ptr+1);
+	  i=A2I64(ptr+1);
 	} else
 	  i=DFT_ADDR_LINK_BIN_SIZE;
 	if (ptr=SrcEdLink(ExePrint("%s;",filename2),i)) {
-	  result=EdLinkCvt(ptr,&filename,&pattern,&num,ed_flags);
+	  result=EdLinkCvt(ptr,&filename,&needle_str,&num,ed_flags);
 	  Free(ptr);
 	} else
 	  result=-1;
@@ -847,7 +880,7 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_pattern=NULL,
       case LK_DEF:
 	if (ptr=StrLastOcc(filename2,",")) {
 	  *ptr=0;
-	  i=A2I(ptr+1);
+	  i=A2I64(ptr+1);
 	} else
 	  i=-1;
 	filename=StrNew(filename2);
@@ -859,13 +892,13 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_pattern=NULL,
       case LK_BIBLE_FIND:
 	if (ptr=StrLastOcc(filename2,",")) {
 	  *ptr=0;
-	  pattern=StrNew(ptr+1);
+	  needle_str=StrNew(ptr+1);
 	}
 	i=DefineMatch(filename2,"ST_BIBLE_BOOKS",LMF_IGNORE_CASE);
 	if (i<0)
 	  result=-1;
 	else {
-	  num=A2I(DefineSub(i,"ST_BIBLE_BOOK_LINES"));
+	  num=A2I64(DefineSub(i,"ST_BIBLE_BOOK_LINES"));
 	  filename2=Define("ST_BIBLE_FILE");
 	}
 	break;
@@ -873,23 +906,23 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_pattern=NULL,
       case LK_PLAIN_LINE:
 	if (ptr=StrLastOcc(filename2,",")) {
 	  *ptr=0;
-	  num=A2I(ptr+1);
+	  num=A2I64(ptr+1);
 	}
 	break;
       case LK_FILE_ANCHOR:
 	if (ptr=StrLastOcc(filename2,",")) {
 	  *ptr=0;
-	  pattern=StrNew(ptr+1);
+	  needle_str=StrNew(ptr+1);
 	}
 	break;
       case LK_FILE_FIND:
       case LK_PLAIN_FIND:
 	if (ptr=StrLastOcc(filename2,",")) {
 	  *ptr=0;
-	  pattern=StrNew(ptr+1);
-	  if (ptr=StrLastOcc(pattern,":")) {
+	  needle_str=StrNew(ptr+1);
+	  if (ptr=StrLastOcc(needle_str,":")) {
 	    *ptr=0;
-	    num=A2I(ptr+1);
+	    num=A2I64(ptr+1);
 	  }
 	}
 	break;
@@ -904,10 +937,10 @@ lc_done:
     *_filename=filename;
   else
     Free(filename);
-  if (_pattern)
-    *_pattern=pattern;
+  if (_needle_str)
+    *_needle_str=needle_str;
   else
-    Free(pattern);
+    Free(needle_str);
   if (_num)
     *_num=num;
   return result;

@@ -52,7 +52,7 @@
 
 
 //These are indexed by color #.
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3301] COLORS.
+//See [C:/Kernel/Adam1a.HPP.Z,3166] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -100,7 +100,7 @@ Bool LOSPlot(U8 *,I64 x,I64 y,I64)
 
 Bool LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 { //Line of sight
-  return LOSLine(NULL,x1*LOS_SCALE+LOS_SCALE/2,y1*LOS_SCALE+LOS_SCALE/2,0,
+  return Line(NULL,x1*LOS_SCALE+LOS_SCALE/2,y1*LOS_SCALE+LOS_SCALE/2,0,
 	       x2*LOS_SCALE+LOS_SCALE/2,y2*LOS_SCALE+LOS_SCALE/2,0,&LOSPlot);
 }
 
@@ -119,13 +119,13 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrRotXEqu(dc_t->r,60*2*pi/360);
   GrRotZEqu(dc_t->r,15*2*pi/360);
   GrSetRotMat(dc_t,dc_t->r);
-  dc_t->x=task->win_pixel_width/2;
-  dc_t->y=task->win_pixel_height/2;
+  dc_t->x=task->pix_width/2;
+  dc_t->y=task->pix_height/2;
   dc_t->flags|=DCF_TRANSFORMATION;
 
   //You could make it much more efficient
-  //if you did it like [C:/Demo/Games/BigGuns.CPP,1]
-  //with a [C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC.
+  //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
+  //with a [C:/Kernel/Adam1a.HPP.Z,3220] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -140,7 +140,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      SpritePlot3(dc,x1,y1,z1,_tiles[color]);
+	      Sprite3(dc,x1,y1,z1,_tiles[color]);
 	    } else { //If no tile defined, do solid color.
 	      poly[0].x=x*SCREEN_SCALE;
 	      poly[0].y=y*SCREEN_SCALE;
@@ -180,14 +180,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      SpritePlot3(dc,x1,y1,z1,__BIN_10);
+	      Sprite3(dc,x1,y1,z1,__BIN_10);
 	    }
 	    if (xx+1<map_width && LOS(xx+1,yy,man_x,man_y)) {
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      SpritePlot3(dc,x1,y1,z1,__BIN_11);
+	      Sprite3(dc,x1,y1,z1,__BIN_11);
 	    }
 	  }
 	}
@@ -205,15 +205,15 @@ U0 DrawIt(CTask *task,CDC *dc)
 	GrSetSymmetry(dc,x1,y1,x1,y1+1);
       } else
 	dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-      SpritePlot3(dc,x1,y1,z1,__BIN_9);
+      Sprite3(dc,x1,y1,z1,__BIN_9);
     }
 
   x1=(man_x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
   y1=(man_y-screen_y)*SCREEN_SCALE+SCREEN_SCALE/2;
   z1=0;
-  if (tT-man_attack_t0<0.2) {
-    x1+=Tri(tT-man_attack_t0,0.2)*SCREEN_SCALE*man_dx;
-    y1+=Tri(tT-man_attack_t0,0.2)*SCREEN_SCALE*man_dy;
+  if (tS-man_attack_t0<0.2) {
+    x1+=Tri(tS-man_attack_t0,0.2)*SCREEN_SCALE*man_dx;
+    y1+=Tri(tS-man_attack_t0,0.2)*SCREEN_SCALE*man_dy;
   }
   GrTransform(dc_t,&x1,&y1,&z1);
   if (man_dx<0) {
@@ -222,10 +222,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   } else
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
 
-  if (tT-man_attack_t0<0.2)
-    SpritePlot3(dc,x1,y1,z1,__BIN_3);
+  if (tS-man_attack_t0<0.2)
+    Sprite3(dc,x1,y1,z1,__BIN_3);
   else
-    SpritePlot3(dc,x1,y1,z1,__BIN_2);
+    Sprite3(dc,x1,y1,z1,__BIN_2);
 
   DCDel(dc_t);
 }
@@ -234,7 +234,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 Attack()
 {
   I64 i;
-  man_attack_t0=tT;
+  man_attack_t0=tS;
   Noise(100,300,1000);
   for (i=0;i<NUM_MONSTERS;i++) {
     if (!monsters[i].dead &&
@@ -254,7 +254,7 @@ U0 Init()
   Free(map);
   map=MAlloc(map_width*map_height*sizeof(U8));
   dc=DCNew(map_width*MAP_SCALE,map_height*MAP_SCALE);
-  SpritePlot3(dc,-minx,-miny,0,__BIN_1);
+  Sprite3(dc,-minx,-miny,0,__BIN_1);
   for (y=0;y<map_height;y++)
     for (x=0;x<map_width;x++)
        map[y*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);
@@ -269,7 +269,7 @@ U0 Init()
       monsters[i].y=RandU64%(map_height-2)+1;
     } while (!map[(monsters[i].y)*map_width+monsters[i].x]);
   }
-  man_attack_t0=tT;
+  man_attack_t0=tS;
   man_attack=FALSE;
   man_x=0;
   man_y=4;
@@ -326,7 +326,7 @@ U0 DunGen()
       "}"
       );
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
   Preempt(OFF);
   WinMax;

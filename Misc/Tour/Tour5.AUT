@@ -22,8 +22,8 @@ PopUpOk(
 "After clicking $GREEN$[OKAY]$FG$, look at\n"
 "the $GREEN$MakeOSPrtBootInstall$FG$ entry\n"
 "in the WordStat window.  Notice it\n"
-"is $RED$red$FG$.  This means\n"
-"a source code link is available.\n");
+"is underlined.  This means a source\n"
+"code link is available.\n");
 Sleep(3000);
 
 PopUpOk(
@@ -54,7 +54,7 @@ PopUpOk(
 "to jump to source code.  (I use WordStat.)\n"
 "The $GREEN$Man()$FG$ is good for short symbol names\n"
 "or when inside the debugger.\n");
-AFPrint(,"Man(\"MakeOSPrtBootInstall\");");
+AFPrint(,"Man(\"U\");");
 Sleep(1000);
 "\n";
 

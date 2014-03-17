@@ -12,7 +12,7 @@ U0 MousePktRead()
 
 interrupt U0 MouseIntHandler()
 {
-  Cld;
+  CLD
   OutU8(0xA0,0x20);
   OutU8(0x20,0x20);
   mouse_irqs_working=TRUE;
@@ -25,7 +25,7 @@ interrupt U0 MouseIntHandler()
 
 U0 MouseGetDevType()
 {
-  U8 b;
+  I64 b;
   KbdMouseCmdAck(0xF2);
   b=KbdCmdRead;
   if (b==3)
@@ -62,13 +62,13 @@ Bool MouseRst()
     KbdMouseCmdAck(0xFF); //Rst
 
     timeout=tS+10.0;
-    do {
+    do
       try {
 	KbdCmdRead;
 	timeout=0; //force exit
       } catch
 	Fs->catch_except=TRUE;
-    } while (tS<timeout);
+    while (tS<timeout);
 
     try
       KbdCmdRead;
@@ -148,30 +148,17 @@ U0 MouseUpdatePre(Bool *old_buttons)
 U0 MouseUpdatePost(Bool *old_buttons)
 {
   I64 i;
-  CSnap s;
+  mxx=mxx_prescale*mxx_scale*ip_grid.x_speed;
+  myy=myy_prescale*myy_scale*ip_grid.y_speed;
+  mzz=mzz_prescale*mzz_scale*ip_grid.z_speed;
 
-  GetSnap(&s);
-
-  if (ip_snap_last.dx!=s.dx)
-    mxx_prescale*=ip_snap_last.dx/s.dx;
-  if (ip_snap_last.dy!=s.dy)
-    myy_prescale*=ip_snap_last.dy/s.dy;
-  if (ip_snap_last.dz!=s.dz)
-    mzz_prescale*=ip_snap_last.dz/s.dz;
-
-  mxx=mxx_prescale*mxx_scale*s.dx;
-  myy=myy_prescale*myy_scale*s.dy;
-  mzz=mzz_prescale*mzz_scale*s.dz;
-
-  MemCpy(&ip_snap_last,&s,sizeof(CSnap));
-
-  i=ToI64(ipx_scale*mxx/s.x)*s.x+ipx_offset;
+  i=Trunc(ipx_scale*mxx/ip_grid.x)*ip_grid.x+ipx_offset; //TODO ip_grid.x_offset?
   if (i<0)
     ipx_offset-=i;
   else if (i>=gr_width)
     ipx_offset+=gr_width-1-i;
 
-  i=ToI64(ipy_scale*myy/s.y)*s.y+ipy_offset;
+  i=Trunc(ipy_scale*myy/ip_grid.y)*ip_grid.y+ipy_offset;
   if (i<0)
     ipy_offset-=i;
   else if (i>=gr_height)
@@ -230,13 +217,11 @@ U0 MouseHandler()
 U0 SetMouseIP(I64 x,I64 y,I64 z,I64 l,I64 r,I64 c)
 {
   Bool old_buttons[5];
-  CSnap s;
-  GetSnap(&s);
   mouse_evt_time=GetTSC;
   MouseUpdatePre(old_buttons);
-  mxx_prescale=x/mxx_scale/s.dx;
-  myy_prescale=y/myy_scale/s.dy;
-  mzz_prescale=z/mzz_scale/s.dz;
+  mxx_prescale=x/mxx_scale/ip_grid.x_speed;
+  myy_prescale=y/myy_scale/ip_grid.y_speed;
+  mzz_prescale=z/mzz_scale/ip_grid.z_speed;
   mouse_buttons[0]=l;
   mouse_buttons[1]=r;
   mouse_buttons[2]=c; //unsure which one
@@ -287,11 +272,11 @@ U0 KbdMouseHandler(Bool poll_kbd,Bool poll_mouse)
     if (poll_mouse &&
 	mouse_installed &&
 	!mouse_irqs_working) {
-      PushFD;
-      Cli;
+      PUSHFD
+      CLI
       while (InU8(KBD_CTRL)&1)
 	MousePktRead;
-      PopFD;
+      POPFD
     }
 
     if (poll_kbd)
@@ -347,4 +332,3 @@ U0 KbdMouseVarsInit()
   mouse_has_ext_buttons=FALSE;
   mouse_evt=FALSE;
 }
-

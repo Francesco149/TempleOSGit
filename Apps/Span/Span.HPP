@@ -25,12 +25,9 @@ class MySpring:CSpring
 
 CMathODE *ode=NULL;
 
-CCtrlButtonState snap_button,run_button,mode_button;
+CCtrlButtonState run_button,mode_button;
 
 CColorROPU32 run_colors[2]={RED,GREEN};
-CColorROPU32 snap_colors[2]={RED,GREEN};
-
-#define SNAP_SIZE	4
 
 #define MD_MASS		0
 #define MD_CONCRETE	1

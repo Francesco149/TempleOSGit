@@ -438,11 +438,10 @@ U0 ATAPIReadBlks(CBlkDev *bdev,U8 *buf, I64 blk, I64 cnt)
   Free(cd_buf);
 }
 
-U0 ATARBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
+Bool ATARBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
   I64 n;
   CBlkDev *bdev=p->bdev;
-  BlkDevChk(bdev);
   while (cnt>0) {
     n=cnt;
     if (n>bdev->max_reads)
@@ -455,6 +454,7 @@ U0 ATARBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
     blk+=n;
     cnt-=n;
   }
+  return TRUE;
 }
 
 //This is for low level disk access
@@ -577,12 +577,11 @@ U0 ATAPIWriteBlks(CBlkDev *bdev,U8 *buf, I64 native_blk, I64 cnt)
   ATAWaitNotBUSY(bdev,0);
 }
 
-U0 ATAWBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
+Bool ATAWBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
   I64 n,spc;
   CBlkDev *bdev=p->bdev;
   Bool unlock;
-  BlkDevChk(bdev);
   spc=bdev->blk_size>>BLK_SIZE_BITS;
   if (bdev->type==BDT_ATAPI) {
     unlock=BlkDevLock(bdev);
@@ -606,6 +605,7 @@ U0 ATAWBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 //    ATAPIStartStop(bdev,0,FALSE);
     if (unlock) BlkDevUnlock(bdev);
   }
+  return TRUE;
 }
 
 Bool BootCdProbe(CBlkDev *bdev)
@@ -637,8 +637,7 @@ Bool BootCdProbe(CBlkDev *bdev)
 
 Bool BootCdProbeAll(CBlkDev *bdev)
 {
-  I64 i,j,k;
-  U32 d1,d2;
+  I64 d1,d2,i,j,k;
 
   bdev->base1=0;
   for (k=0;k<256;k++) {
@@ -706,7 +705,7 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,CATARep **_root,I64 
   CATARep *tempha;
   if (type=ATAProbe(base0,base1,unit)) {
     *num_hints+=1;
-    "\n\n$PURPLE$ $BT-LE+LM+X,\"%d\",\"%d\\n\"$$FG$$LM,4$",*num_hints,*num_hints;
+    "\n\n$PURPLE$ $BT+X,\"%d\",LM=\"%d\\n\"$$FG$$LM,4$",*num_hints,*num_hints;
     if (type==BDT_ATA)
       "$RED$ATA   ";
     else
@@ -727,8 +726,9 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,CATARep **_root,I64 
 
 Bool ATARepExitAllApplications()
 {
-  "%S%S%S","ST_GOING_TO_PROBE_HARDWARE",
-	   "ST_EXIT_ALL_APPLICATIONS","ST_PROBE_OR_SKIP";
+	"\nWe're going to probe hardware.\n"
+	"$RED$Exit all other applications.$FG$\n"
+	"Press '$PURPLE$p$FG$' to probe or '$PURPLE$s$FG$' to skip.\n";
   if (ToUpper(GetChar(,FALSE))=='S')
     return TRUE;
   else
@@ -737,9 +737,7 @@ Bool ATARepExitAllApplications()
 
 public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 {
-  U32 d1,d2;
-  U8 d3;
-  I64 i,j,k,cnt=0,unlock_flags=0,num_hints=0;
+  I64 d1,d2,d3,i,j,k,cnt=0,unlock_flags=0,num_hints=0;
 #assert NUM_BLKDEVS<=64
   Bool old_preempt;
 
@@ -772,9 +770,7 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 	  ATARepEntry(d1,d2,0,d3,"Primary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Primary IDE",_root,&num_hints);
 	} else {
-	  d1=0x1F0;
-	  d2=0x3F6;
-	  d3=14;
+	  d1=0x1F0; d2=0x3F6; d3=14;
 	  ATARepEntry(d1,d2,0,d3,"Primary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Primary IDE",_root,&num_hints);
 	}
@@ -784,24 +780,18 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 	  ATARepEntry(d1,d2,0,d3,"Secondary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Secondary IDE",_root,&num_hints);
 	} else {
-	  d1=0x170;
-	  d2=0x376;
-	  d3=15;
+	  d1=0x170; d2=0x376; d3=15;
 	  ATARepEntry(d1,d2,0,d3,"Secondary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Secondary IDE",_root,&num_hints);
 	}
       }
     }
   if (!cnt) {
-    d1=0x1F0;
-    d2=0x3F6;
-    d3=14;
+    d1=0x1F0; d2=0x3F6; d3=14;
     ATARepEntry(d1,d2,0,d3,"Primary IDE",_root,&num_hints);
     ATARepEntry(d1,d2,1,d3,"Primary IDE",_root,&num_hints);
 
-    d1=0x170;
-    d2=0x376;
-    d3=15;
+    d1=0x170; d2=0x376; d3=15;
     ATARepEntry(d1,d2,0,d3,"Secondary IDE",_root,&num_hints);
     ATARepEntry(d1,d2,1,d3,"Secondary IDE",_root,&num_hints);
   }

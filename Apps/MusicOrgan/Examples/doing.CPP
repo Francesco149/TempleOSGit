@@ -32,12 +32,12 @@ U0 DrawIt(CTask *,CDC *dc)
   GrRotYEqu(dc->r,0.230*pi);
   if (dt>16)
     GrRotYEqu(dc->r,0.5*Sin(pi/2*dt));
-  SpritePlot3(dc,0,0,0,__BIN_1);
+  Sprite3(dc,0,0,0,__BIN_1);
 }
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;

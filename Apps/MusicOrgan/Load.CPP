@@ -1,6 +1,4 @@
 #help_index "Snd"
-#include "/Apps/HolySpirit/HolySpirit"
-#include "/Apps/MusicOrgan/MakeSong"
 #include "/Apps/MusicOrgan/JukeBox"
 #include "/Apps/MusicOrgan/JukePuppet"
 #include "/Apps/MusicOrgan/OrganCtrls"

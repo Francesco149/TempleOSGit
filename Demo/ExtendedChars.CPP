@@ -27,10 +27,10 @@ U0 SrcExample()
 }
 
 SrcExample;
-//See [C:/Demo/ScreenCodes.CPP,1]
-//[C:/Demo/Graphics/CharGraphics.CPP,1],
-//and [C:/Demo/Graphics/FontEd.CPP,1].
+//See [C:/Demo/ScreenCodes.CPP.Z,1]
+//[C:/Demo/Graphics/CharGraphics.CPP.Z,1],
+//and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
-//See [MN:chars_bitmap_alpha] chars_bitmap_alpha, and
-//[MN:chars_bitmap_alpha_numeric] chars_bitmap_alpha_numeric.
+//See [C:/Kernel/Str1a.CPP.Z,334] chars_bitmap_alpha, and
+//[C:/Kernel/Str1a.CPP.Z,337] chars_bitmap_alpha_numeric.
 

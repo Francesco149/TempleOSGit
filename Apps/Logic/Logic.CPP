@@ -212,8 +212,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=y1;
 
 	  dc->color=BLUE;
-	  SpritePlot3(dc,xx,yy,0,
-	      imgs[type]);
+	  Sprite3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy,x1,y1);
@@ -232,7 +231,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=(y1+y2)/2;
 
 	  dc->color=BLUE;
-	  SpritePlot3(dc,xx,yy,0,imgs[type]);
+	  Sprite3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy-4,x1,y1);
@@ -252,7 +251,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=(y1+y2+y3)/3;
 
 	  dc->color=BLUE;
-	  SpritePlot3(dc,xx,yy,0,imgs[type]);
+	  Sprite3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy-8,x1,y1);
@@ -277,8 +276,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 U0 FillNot(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j;
-  U8 old_type;
+  I64 i,j,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i)) {
       progress1=i;
@@ -299,8 +297,7 @@ U0 FillNot(Bool *chged,I64 *num_outputs_found)
 
 U0 FillAnd(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -324,8 +321,7 @@ U0 FillAnd(Bool *chged,I64 *num_outputs_found)
 
 U0 FillOr(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -349,8 +345,7 @@ U0 FillOr(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNAnd(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -374,8 +369,7 @@ U0 FillNAnd(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNOr(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -399,8 +393,7 @@ U0 FillNOr(Bool *chged,I64 *num_outputs_found)
 
 U0 FillXor(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -424,8 +417,7 @@ U0 FillXor(Bool *chged,I64 *num_outputs_found)
 
 U0 FillAnd3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -452,8 +444,7 @@ U0 FillAnd3(Bool *chged,I64 *num_outputs_found)
 
 U0 FillOr3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -480,8 +471,7 @@ U0 FillOr3(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNAnd3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -508,8 +498,7 @@ U0 FillNAnd3(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNOr3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -587,7 +576,7 @@ U0 DigitalLogic()
   input2_table	  =NULL;
   input3_table	  =NULL;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   WordStat;
   WinBorder(ON);

@@ -12,14 +12,14 @@ U0 DrawIt(CTask *,CDC *dc)
   if (dt<21.5)
     GrPrint(dc,235,30,"- -");
   else {
-    SpritePlot3(dc,235,30,0,__BIN_1);
+    Sprite3(dc,235,30,0,__BIN_1);
     GrPrint(dc,235,30,"o o");
   }
 }
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;

@@ -5,7 +5,7 @@ HashTablePurge(adam_task->hash_table);
 
 #help_index "Misc"
 
-public F64 os_version=1.10;
+public F64 os_version=2.03;
 
 #include "AdamExt.HPP"
 #include "Math2a"

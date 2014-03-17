@@ -38,8 +38,6 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
     case BDT_RAM:
       p->pt_signature=PRT_SIGNATURE_VAL;
       p->type=PT_REDSEA;
-      p->rblks=&RAMRBlks;
-      p->wblks=&RAMWBlks;
 //This is to force creation of a RAM
 //drive during boot, so it is probably
 //MAlloced to the same addr and can
@@ -62,8 +60,6 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
 	  p->pt_signature=PRT_SIGNATURE_VAL;
 	  result++;
 	  p->type=PT_REDSEA;
-	  p->rblks=&ATARBlks;
-	  p->wblks=&ATAWBlks;
 	  p->size=bdev->max_blk+1;
 	  //The following read is a test read.
 	  //if it hangs, the drive is not supported.
@@ -84,8 +80,6 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
 	      else
 		p=PrtNextFree(bdev->first_drv_let+result);
 	      p->bdev=bdev;
-	      p->rblks=&ATARBlks;
-	      p->wblks=&ATAWBlks;
 	      p->offset=mbr.p[i].offset+offset;
 	      p->size  =mbr.p[i].size;
 	      switch (mbr.p[i].type) {
@@ -144,8 +138,6 @@ I64 BlkDevAdd(CBlkDev *bdev,Bool one_prt,Bool make_free)
       p->pt_signature=PRT_SIGNATURE_VAL;
       result++;
       p->type=PT_ISO9660; //Start with this
-      p->rblks=&ATARBlks;
-      p->wblks=&ATAWBlks;
       p->size =0;
       break;
   }
@@ -170,15 +162,14 @@ Bool DrvEnable(U8 drv_let,Bool val)
   return result;
 }
 
-CATARep *ATARepFind(CATARep *root,I64 num)
+CATARep *ATARepFind(CATARep *haystack_root,I64 needle_num)
 {
-  CATARep *tempha=root;
-  while (tempha) {
-    if (tempha->num==num)
-      return tempha;
-    tempha=tempha->next;
+  while (haystack_root) {
+    if (haystack_root->num==needle_num)
+      return haystack_root;
+    haystack_root=haystack_root->next;
   }
-  return tempha;
+  return NULL;
 }
 
 U0 Mount(Bool repartition=FALSE)
@@ -191,11 +182,18 @@ U0 Mount(Bool repartition=FALSE)
 
   do {
     PrtRep;
-    "%S","ST_MOUNT_FIRST_DRV_LET";
+	"\n****** Mount Drives ******\n"
+	"The first drive letter is the letter\n"
+	"of the first partition.  If adding\n"
+	"a hard drive, you should pick 'C'.\n"
+	"If more than one partition is present\n"
+	"they will be lettered in sequence.\n"
+	"\nFirst Drive Letter ($PURPLE$<ENTER>$FG$ to exit):";
     first_prt_num=ToUpper(GetChar)-'A';
     NewLine;
     if (0<=first_prt_num<NUM_PRTS) {
-      "%S","ST_MOUNT_DRV_TYPE";
+	"\t$PURPLE$1$FG$=RAM\n\t$PURPLE$2$FG$=ATA(Harddisk)\n"
+	"\t$PURPLE$3$FG$=ATAPI(CD-ROM)\nType:";
       type=GetChar-'0';
       NewLine;
 
@@ -204,13 +202,14 @@ U0 Mount(Bool repartition=FALSE)
 	num_hints=ATARep(,,&root);
 	do {
 	  if (num_hints)
-	    "%S","ST_MOUNT_BASE0_HINT";
+		"Enter dev number or\nport with $PURPLE$0x$FG$ prefix.\n"
+		"I/O Port Base0:\n";
 	  else
-	    "%S","ST_MOUNT_BASE0";
+		"Include $PURPLE$0x$FG$ prefix.\nI/O Port Base0:\n";
 	  GetS(base0_buf,128);
-	} while (!A2I(base0_buf));
-	if (1<=A2I(base0_buf)<=num_hints) {
-	  tempha=ATARepFind(root,A2I(base0_buf));
+	} while (!A2I64(base0_buf));
+	if (1<=A2I64(base0_buf)<=num_hints) {
+	  tempha=ATARepFind(root,A2I64(base0_buf));
 	  SPrint(base0_buf,"0x%X",tempha->base0);
 	  SPrint(base1_buf,"0x%X",tempha->base1);
 	  unit=tempha->unit;
@@ -219,11 +218,11 @@ U0 Mount(Bool repartition=FALSE)
 	    StrCpy(base1_buf,"0");
 	  else
 	    do {
-	      "%S","ST_MOUNT_BASE1";
+		"I/O Port Base1:\n";
 	      GetS(base1_buf,128);
-	    } while (!A2I(base1_buf));
+	    } while (!A2I64(base1_buf));
 	  do {
-	    "%S","ST_MOUNT_UNIT";
+		"\t$PURPLE$0$FG$=Master\n\t$PURPLE$1$FG$=Slave\nUnit:";
 	    unit=GetChar-'0';
 	  } while (!(0<=unit<=1));
 	  NewLine;
@@ -231,9 +230,9 @@ U0 Mount(Bool repartition=FALSE)
 	LinkedLstDel(root);
       }
       if (type==BDT_RAM) {
-	"%S","ST_MOUNT_ADDR";
+	"Addr of RAM disk ($PURPLE$<ENTER>$FG$ to MAlloc):";
 	GetS(addr_buf,128);
-	"%S","ST_MOUNT_BLKS";
+	"Blks of 512 bytes:";
 	GetS(blks_buf,128);
       }
 
@@ -242,29 +241,29 @@ U0 Mount(Bool repartition=FALSE)
 	bdev->unit=unit;
 	if (type==BDT_RAM) {
 	  if (!*addr_buf) StrCpy(addr_buf,"0");
-	  bdev->RAM_dsk=A2I(addr_buf);
-	  bdev->max_blk=A2I(blks_buf)-1;
+	  bdev->RAM_dsk=A2I64(addr_buf);
+	  bdev->max_blk=A2I64(blks_buf)-1;
 	}
 	if (type==BDT_ATA ||
 	    type==BDT_ATAPI) {
-	  bdev->base0=A2I(base0_buf);
-	  bdev->base1=A2I(base1_buf);
+	  bdev->base0=A2I64(base0_buf);
+	  bdev->base1=A2I64(base1_buf);
 	}
 	add=TRUE;
 	if (type==BDT_ATA && repartition) {
-	  "%S","ST_MOUNT_FMT_WHOLE_DRV";
+	  "\nReformat WHOLE drive!";
 	  if (YorN) {
 	    if (!BlkDevAdd(bdev,TRUE,TRUE))
-	      "%S","ST_FAILED";
+	      "\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n";
 	    else
 	      CallExtStr("PrtDsk",bdev->first_drv_let);
 	    add=FALSE;
 	  }
 	}
 	if (add && !BlkDevAdd(bdev,FALSE,TRUE))
-	  "%S","ST_FAILED";
+	  "\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n";
       } else
-	"%S","ST_FAILED";
+	"\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n";
     }
   } while (0<=first_prt_num<NUM_PRTS);
 }
@@ -277,7 +276,7 @@ I64 SysPmtI64()
   if (!st[2])
     return 0;
   else
-    return A2I(st);
+    return A2I64(st);
 }
 
 Bool PmtBaseUnit(CBlkDev *bdev)
@@ -292,7 +291,14 @@ Bool PmtBaseUnit(CBlkDev *bdev)
     StreamPrint("probe=TRUE;");
 };
   if (!probe || !BootCdProbeAll(bdev)) {
-    "%S","ST_CDROM_PORTS_PMT1";
+	"\nDon't worry.  This is not a product\n"
+	"registration.	TempleOS just needs the\n"
+	"I/O port numbers for the CD-ROM.\n"
+	"\nRetry the ports above or check Windows\n"
+	"system information under I/O ports for\n"
+	"'IDE', 'ATA' or 'SATA'.\n"
+	"\n\nEnter 4-digit hex I/O Port number.\n"
+	"CD-ROM I/O Port Base0: 0x";
     bdev->base0=SysPmtI64;
     bdev->base1=0;
     bdev->unit =0;

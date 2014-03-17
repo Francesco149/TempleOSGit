@@ -16,7 +16,7 @@ U0 Song()
   music_tempo=2.5;
   try {
   while (!ScanKey) {
-	PutSprite(__BIN_1);
+	Sprite(__BIN_1);
 	NewLine(6);
 	"$GREEN$To God...\n$FG$";
 	Play("3etD2GRsR3GRGqFetEDCCRCRCB2qGsG3A2G3A",

@@ -154,7 +154,7 @@ U0 RedSeaFSFmt(U8 drv_let,Bool quick=TRUE)
 }
 
 Bool RedSeaFSFileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{ //[C:/TempleOS/Kernel/Adam1a.HPP.Z,3595] FUF_JUST_DIRS, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3596] FUF_JUST_FILES
+{ //[C:/Kernel/Adam1a.HPP.Z,3464] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,3465] FUF_JUST_FILES
   CDirEntry *buf,*buf2,*ptr;
   U8 dname[CDIR_FILENAME_LEN];
   I64 ch;
@@ -164,10 +164,10 @@ Bool RedSeaFSFileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I6
   MemSet(_result,0,sizeof(CDirEntry));
   PrtChk(p);
   if (p->type!=PT_REDSEA)
-    PrintErr("%S","ST_NOT_REDSEA");
+    PrintErr("Not RedSea Partition\n");
   else if (!CFileNameTo(dname,name))
-    PrintErr("%S","ST_INVALID_FILENAME");
-  else {
+    PrintErr("Invalid FileName.\n");
+  else
     try {
       unlock=PrtLock(p);
       buf2=MAlloc(BLK_SIZE);
@@ -201,57 +201,37 @@ exit_this:
     } catch
       if (unlock)
 	PrtUnlock(p);
-  }
   return result;
 }
 
 
 
-U8 *RedSeaFSFileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,
-  I64 *_attr,Bool raw,CArcCompress **_ac2)
+U8 *RedSeaFSFileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
 {
   U8 *buf=NULL;
   CDirEntry de;
   I64 c,blk_cnt,cur_dir_cluster;
-  CArcCompress *ac;
- 
   PrtChk(p);
-  if (_size) *_size=0;
-  if (_ac2)  *_ac2=NULL;
-  if (_attr) *_attr=0;
+  *_size=0;
+  *_attr=0;
   if (p->type!=PT_REDSEA)
-    PrintErr("%S","ST_NOT_REDSEA");
-  else {
+    PrintErr("Not RedSea Partition\n");
+  else
     try {
       PrtLock(p);
       cur_dir_cluster=Name2DirCluster(p,cur_dir);
       if (RedSeaFSFileFind(p,cur_dir_cluster,filename,&de,FUF_JUST_FILES)) {
-	if (_attr) *_attr=de.attr;
 	blk_cnt=(de.size+BLK_SIZE-1)>>BLK_SIZE_BITS;
 	buf=MAlloc(blk_cnt<<BLK_SIZE_BITS+1);
 	c=de.cluster;
 	c=RClustersBlks(p,buf,c,blk_cnt);
-	if (FileAttr(de.name) & _ATTR_COMPRESSED && !raw) {
-	  ac=buf;
-	  if (_attr) *_attr=FileAttr(de.name,*_attr);
-	  if (_size) *_size=ac->expanded_size;
-	  if (_ac2) {
-	    *_ac2=ac;
-	    buf=ExpandBuf(ac);
-	  } else {
-	    buf=ExpandBuf(ac);
-	    Free(ac);
-	  }
-	} else {
-	  buf[de.size]=0; //Terminate
-	  if (_size) *_size=de.size;
-	}
-	if (_attr) *_attr=FileAttr(de.name,*_attr);
+	buf[de.size]=0; //Terminate
+	*_size=de.size;
+	*_attr=FileAttr(de.name,de.attr);
       }
       PrtUnlock(p);
     } catch
       PrtUnlock(p);
-  }
   return buf;
 }
 
@@ -259,14 +239,12 @@ Bool RedSeaFSCd(U8 *name,I64 cur_dir_cluster)
 {
   CDirEntry de;
   if (Fs->cur_prt->type!=PT_REDSEA)
-    PrintErr("%S","ST_NOT_REDSEA");
+    PrintErr("Not RedSea Partition\n");
+  else if (RedSeaFSFileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
+    return TRUE;
   else {
-    if (RedSeaFSFileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
-      return TRUE;
-    else {
-      "%s ",name;
-      PrintErr("%S","ST_FILE_NOT_FOUND");
-    }
+    "%s ",name;
+    PrintErr("File not found.\n");
   }
   return FALSE;
 }
@@ -278,8 +256,8 @@ U0 RedSeaFSFreeClusters(CPrt *p,I64 c,I64 cnt)
   PrtChk(p);
   if (!c) return;
   if (p->type!=PT_REDSEA)
-    PrintErr("%S","ST_NOT_REDSEA");
-  else {
+    PrintErr("Not RedSea Partition\n");
+  else
     try {
       unlock_break=BreakLock;
       unlock=PrtLock(p);
@@ -321,7 +299,6 @@ U0 RedSeaFSFreeClusters(CPrt *p,I64 c,I64 cnt)
       if (unlock_break)
 	BreakUnlock;
     }
-  }
 }
 
 I64 RedSeaFSAllocClusters(CPrt *p,I64 cnt)
@@ -510,7 +487,7 @@ I64 RedSeaFSFilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,I64 fuf_flags,
 	  FilesFindMatch(ptr->name,files_find_mask,fuf_flags)) {
 	if (!(ptr->attr & _ATTR_DIR)) result++;
 	if (print_msg)
-	  "%S%s\n","ST_DELETE",ptr->name;
+	  "Del %s\n",ptr->name;
 	ptr->attr|=_ATTR_DELETED;
 	WBlks(p,buf(U8 *)+j<<BLK_SIZE_BITS,p->data+cur_dir_cluster+j,1);
 	RedSeaFSFreeClusters(p,ptr->cluster,(ptr->size+BLK_SIZE-1)>>BLK_SIZE_BITS);
@@ -534,45 +511,29 @@ I64 RedSeaFSFilesDel(CPrt *p,U8 *cur_dir,U8 *files_find_mask,I64 fuf_flags,
 }
 
 I64 RedSeaFSFileWrite(CPrt *p,U8 *cur_dir,U8 *name,U8 *buf,I64 size,
-		CDate cdt,I64 attr,Bool raw,CArcCompress **_ac2)
+	CDate cdt,I64 attr)
 {
   CDirEntry de;
-  I64 c=0,flags=0,blk_cnt;
-  CArcCompress *ac=NULL;
-  Bool contiguous;
+  I64 c=0,blk_cnt;
   MemSet(&de,0,sizeof(CDirEntry));
-  if (_ac2) *_ac2=NULL;
   if (size<0) size=0;
-  if (!cdt) cdt=Now;
-
   if (p->type!=PT_REDSEA)
-    PrintErr("%S","ST_NOT_REDSEA");
+    PrintErr("Not RedSea Partition\n");
   else if (!CFileNameTo(de.name,name))
-    PrintErr("%S","ST_INVALID_FILENAME");
+    PrintErr("Invalid FileName.\n");
   else {
     RedSeaFSFilesDel(p,cur_dir,de.name,0,FALSE,FALSE);
-    attr=FileAttr(name,attr)|_ATTR_CONTIGUOUS;
-    contiguous=TRUE;
-    if (attr&_ATTR_COMPRESSED && !raw) {
-      ac=CompressBuf(buf,size,flags);
-      size=ac->compressed_size;
-      buf=ac;
-    }
     de.size=size;
     if (blk_cnt=(size+BLK_SIZE-1)>>BLK_SIZE_BITS)
-      c=ClustersAlloc(p,0,blk_cnt,contiguous);
+      c=ClustersAlloc(p,0,blk_cnt,TRUE); //Always contiguous
     else
       c=INVALID_CLUSTER;
     de.cluster=c;
-    de.attr=attr;
+    de.attr=attr|_ATTR_CONTIGUOUS;
     de.datetime=cdt;
     if (blk_cnt)
       WClustersBlks(p,buf,c,blk_cnt);
     RedSeaFSDirNew(p,cur_dir,&de,TRUE);
-    if (_ac2)
-      *_ac2=ac;
-    else
-      Free(ac);
   }
   return c;
 }

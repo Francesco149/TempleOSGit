@@ -12,4 +12,4 @@
 
 
 
- <1> (image)[C:/TempleOS/Misc/Bible.TXT.Z,21329] Judges,7:2
+ <1> (image)[C:/Misc/Bible.TXT.Z,21329] Judges,7:2

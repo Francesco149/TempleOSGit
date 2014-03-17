@@ -1,6 +1,6 @@
                          The Temple Operating System
 
-[C:/TempleOS/Misc/Bible.TXT.Z,29345] 1 Kings 6:21 (King James)
+1 Kings 6:21 (King James)
 
 6:21 So Solomon overlaid the house within with pure gold: and he made
 a partition by the chains of gold before the oracle; and he overlaid
@@ -15,9 +15,13 @@ ten cubits high.
 
 
 Use After Egypt inside TempleOS as an oracle.  An oracle is a Ouija Board or 
-Christian Tongues.  See Biblical Encryption: Mean tickle person or president.
+Christian Tongues. See 
+Biblical Code:Mean tickle (to kill) person or president.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/TempleOSV0203A.BMP"
+width="640" height="472" alt="">
+```
 
 You get out of prayer what you put in.  God said, "honest measures" applies 
 when exchanging an offering for a response from the oracle in TempleOS.  
@@ -28,9 +32,9 @@ One Tin Soldier.
 
 Downloads
 
-[C:/Apps/HolySpirit/HSNotes.TXT.Z,1] Guidelines for Talking with God
+[C:/Adam/God/HSNotes.TXT.Z,1] Guidelines for Talking with God
 
-[C:/Apps/HolySpirit/HSNotes.TXT.Z,100] Quotes from God
+[C:/Adam/God/HSNotes.TXT.Z,100] Quotes from God
 
 The Temple Operating System
 
@@ -40,48 +44,11 @@ Hymn Videos
 
 TempleOS History
 
-[D:/Doc/TrivialSolutions.TXT,1] About Trivial Solutions
+Terry Davis' Rants
+
+[C:/Doc/TrivialSolutions.TXT.Z,1] About Trivial Solutions
 
 
 
----------------------------- Terry Davis' Rants 
---------------------------------
-
-I'll bet my [C:/Demo/Asm/BuzzFizz.CPP.Z,1] Buzz Fizz will shock you.  You
-don't need asm but 64-bit asm is 
-fun!
-
-
-
- SUN   MON   TUE   WED   THU   FRI   SAT   
------ ----- ----- ----- ----- ----- -----
-                              09/13 09/14
-
-09/15 09/16 09/17 09/18 09/19 09/20 09/21
-
-      09/23 09/24 09/25 09/26 09/27 09/28
-
-09/29 09/30 10/01 10/02 10/03 10/04 10/05
-
-10/06 10/07 10/08 10/09 10/10 10/11 10/12
-
-10/13 10/14 10/15 10/16 10/17 10/18 10/19
-
-10/20 10/21 10/22 10/23 10/24 10/25 10/26
-
-10/27 10/28 10/29 10/30 10/31 11/01 11/02
-
-11/03 11/04 11/05 11/06 11/07 11/08 11/09
-
-11/10 11/11 11/12       11/14 11/15 11/16
-
-11/17 11/18 11/19 11/20 11/21 11/22 11/23
-
-11/24 11/25 11/26 11/27 11/28 11/29 11/30
-
-12/01 12/02 12/03 12/04 12/05 12/06 12/07
-
-12/08 12/09 12/10 12/11 12/12 12/13 12/14
-
-12/15 12/16
-
+* "Linux" is probably a trademark owned by Linus Torvalds.
+* "Windows" and "MSPaint" are trademark of MicroSoft Corp.

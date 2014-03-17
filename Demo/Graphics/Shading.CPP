@@ -58,9 +58,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   CCtrl *c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES);
   CViewAngles *s=c->state;
-  F64 tt=0.5*(Sin(pi*2*(tT%10.0)/10.0)+2.0),
+  F64 tt=0.5*(Sin(pi*2*(tS%10.0)/10.0)+2.0),
      theta,theta2,phi,phi2,radius,d;
-  I64 i,j,cx=task->win_pixel_width/2,cy=task->win_pixel_height/2;
+  I64 i,j,cx=task->pix_width/2,cy=task->pix_height/2;
   CD3I32 poly[3],ls;
 
   dc->flags|=DCF_TRANSFORMATION;
@@ -73,8 +73,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrScaleEqu(dc->r,tt);
   GrSetRotMat(dc,dc->r);
 
-  ls.x=-(ipx-task->win_pixel_left-task->win_scroll_x-cx);
-  ls.y=-(ipy-task->win_pixel_top-task->win_scroll_y-cy);
+  ls.x=-(ipx-task->pix_left-task->scroll_x-cx);
+  ls.y=-(ipy-task->pix_top-task->scroll_y-cy);
   ls.z=GR_WIDTH/8;
   d=1<<16/D3I32Norm(&ls);
   ls.x*=d;
@@ -148,10 +148,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 }
 
-//See [C:/Demo/Graphics/SpritePlot3D.CPP,1].
+//See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
 //for a CSprite example.
 
-//See [MN:SpriteMesh] SpriteMesh() for a fancy example.
+//See [C:/Adam/Gr/SpriteMesh.CPP.Z,871] SpriteMesh() for a fancy example.
 
 U0 Main()
 {
@@ -161,7 +161,7 @@ U0 Main()
   s->sy=7*VIEWANGLES_SNAP;
   s->sz=6*VIEWANGLES_SNAP;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
   WinMax;
   WinBorder;

@@ -31,14 +31,14 @@ Bool ChkCodePtr(U8 *ptr)
 Bool ChkOnStk(U8 *ptr,CTask *task=NULL)
 {
   Bool result=FALSE;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (task) {
     if (&task->stk->stk_base<=ptr<=(&task->stk->stk_base)(U8 *)+task->stk->stk_size)
       result=TRUE;
   } else if (sys_heap_base<=ptr<=sys_heap_limit)
     result=TRUE;
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -46,13 +46,13 @@ I64 UnusedStk(CTask *task=NULL)
 {
   I64 result;
   if (!task) task=Fs;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (task==Fs)
     result=GetRSP()(U8 *)-(&task->stk->stk_base)(U8 *);
   else
     result=task->rsp(U8 *)-(&task->stk->stk_base)(U8 *);
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -105,14 +105,14 @@ U8 *TaskCaller(CTask *task=NULL,I64 num=0,Bool saved_context=FALSE)
 U0 StkRep(CTask *task=NULL)
 //Reports whats on the stk
 {
-  I64 i,j,add,
+  I64 i,j,addr,
       **rbp,**rsp,*my_rsp[STK_REP_LEN];
   CHashTable *old_hash=Fs->hash_table;
   if (!task) task=Fs;
   if (!TaskValidate(task))
     return;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (task==Fs) {
     rbp=GetRBP;
     rsp=rbp+3;
@@ -122,11 +122,11 @@ U0 StkRep(CTask *task=NULL)
     rbp=task->rbp;
   }
   if (task->rip==_RET)
-    add=*rsp;
+    addr=*rsp;
   else
-    add=task->rip;
+    addr=task->rip;
   MemCpy(my_rsp,rsp,STK_REP_LEN*sizeof(U8 *));
-  PopFD;
+  POPFD
   Fs->hash_table=task->hash_table;
   for (i=0;i<STK_REP_LEN;i++) {
     "%08X [RSP+%04X]: %016X ",rsp+i,
@@ -137,12 +137,12 @@ U0 StkRep(CTask *task=NULL)
       j=rbp-rsp;
       if (j>=i)
 	break;
-      add=my_rsp[j+1];
+      addr=my_rsp[j+1];
       if (rbp>=my_rsp[j])
 	break;
       rbp=my_rsp[j];
     }
-    if (my_rsp[i]==add)
+    if (my_rsp[i]==addr)
       "$RED$";
     "%P$FG$\n",my_rsp[i];
   }
@@ -171,15 +171,15 @@ U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL)
   }
 }
 
-U0 D(U8 *add,I64 cnt=0x80,Bool show_offset=TRUE)
+U0 D(U8 *addr,I64 cnt=0x80,Bool show_offset=TRUE)
 //Dump mem, showing offsets.
-//See [C:/TempleOS/Adam/Doc/DocMain.CPP.Z,651] DocD() for a live dump.
+//See [C:/Adam/Doc/DocMain.CPP.Z,629] DocD() for a live dump.
 {
   I64 i,j,ch;
-  U8 *ptr=add;
+  U8 *ptr=addr;
   while (cnt) {
     if (show_offset)
-      "%08X ",ptr-add;
+      "%08X ",ptr-addr;
     else
       "%010X ",ptr;
     if (cnt>16)
@@ -204,75 +204,75 @@ U0 D(U8 *add,I64 cnt=0x80,Bool show_offset=TRUE)
   }
 }
 
-U0 Dm(U8 *add,I64 cnt=0x80)
+U0 Dm(U8 *addr,I64 cnt=0x80)
 //Show mem addr, not offsets
 {
-  D(add,cnt,FALSE);
+  D(addr,cnt,FALSE);
 }
 
-U0 Da(U8 **add,I64 cnt=0x10)
+U0 Da(U8 **addr,I64 cnt=0x10)
 //Dump mem, showing symbolic addresses
 {
   while (cnt-->0) {
-    "%08X:%08X,%P\n",add,*add,*add;
-    add++;
+    "%08X:%08X,%P\n",addr,*addr,*addr;
+    addr++;
   }
 }
 
 U0 RawPrint(I64 mS=100,U8 *fmt,...)
-//Print using [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw screen
+//Print using [C:/Kernel/Misc1a.CPP.Z,247] Raw screen
 //output for a length of time.
 //**Your heap must be good.**
 {
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
   Bool old_raw,old_input_filter;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
   "%s",buf;
   BusyWait(mS<<10);
-  PopFD;
+  POPFD
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
   Raw(old_raw);
   Free(buf);
 }
 
-U0 RawD(I64 mS=100,U8 *add,I64 cnt=0x80)
-//Dumps a block of mem using [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw
+U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80)
+//Dumps a block of mem using [C:/Kernel/Misc1a.CPP.Z,247] Raw
 //screen output for a fixed length
 //of time.
 {
   Bool old_raw,old_input_filter;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
-  D(add,cnt);
+  D(addr,cnt);
   BusyWait(mS<<10);
-  PopFD;
+  POPFD
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
   Raw(old_raw);
 }
 
-U0 RawDm(I64 mS=100,U8 *add,I64 cnt=0x80)
-//Dumps a block of mem using [C:/TempleOS/Kernel/Misc1a.CPP.Z,282] Raw
+U0 RawDm(I64 mS=100,U8 *addr,I64 cnt=0x80)
+//Dumps a block of mem using [C:/Kernel/Misc1a.CPP.Z,247] Raw
 //screen output for a fixed length
 //of time.
 {
   Bool old_raw,old_input_filter;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   old_raw=Raw(ON);
   old_input_filter=LBtr(&Fs->task_flags,TASKf_INPUT_FILTER_TASK);
-  Dm(add,cnt);
+  Dm(addr,cnt);
   BusyWait(mS<<10);
-  PopFD;
+  POPFD
   LBEqu(&Fs->task_flags,TASKf_INPUT_FILTER_TASK,old_input_filter);
   Raw(old_raw);
 }
 
-I64 *TaskRegAdd(CTask *task,I64 reg_num)
+I64 *TaskRegAddr(CTask *task,I64 reg_num)
 {
   switch (reg_num) {
     case REG_RAX: return &task->rax;
@@ -307,14 +307,14 @@ U0 RawDr(CTask *task=NULL)
 
   for (i=0;i<16;i++) {
     sys_raw_col=i*text_cols+RAWDR_COL;
-    "|%3Z:%016X\n",i,"ST_U64_REGS",*TaskRegAdd(task,i);
+    "|%3Z:%016X\n",i,"ST_U64_REGS",*TaskRegAddr(task,i);
   }
 
   sys_raw_col=i++*text_cols+RAWDR_COL;
   "|RIP:%016X\n",task->rip;
 
   sys_raw_col=i++*text_cols+RAWDR_COL;
-  "|%-*tT\n",text_cols-(RAWDR_COL+1)-1,Fs->rip;
+  "|%-*tp\n",text_cols-(RAWDR_COL+1)-1,Fs->rip;
 
   sys_raw_col=i++*text_cols+RAWDR_COL;
   '|';
@@ -339,12 +339,12 @@ U0 Dr(CTask *task=NULL)
   I64 i;
   if (!task) task=Fs;
   for (i=0;i<16;i++)
-    "%3Z:%016X\n",i,"ST_U64_REGS",*TaskRegAdd(task,i);
+    "%3Z:%016X\n",i,"ST_U64_REGS",*TaskRegAddr(task,i);
   "RIP:%016X\n",task->rip;
 }
 
 U0 OverRideSingleUserSwap()
-{
+{//You never need this, probably.
   Bool old_single=SingleUser(OFF);
   Yield;
   SingleUser(old_single);
@@ -357,17 +357,17 @@ U8 *SysMGetS(I64)
   return StrNew(buf);
 }
 
-CBpt *BptFind(U8 *add,CTask *task=NULL,Bool rem=FALSE)
+CBpt *BptFind(U8 *needle_addr,CTask *haystack_task=NULL,Bool rem=FALSE)
 {
   CBpt *result=NULL,*tempb,*tempb1,*tempb2;
-  if (!task) task=Fs;
-  PushFD;
-  Cli;
-  tempb1=&task->bpt_lst;
-  tempb=task->bpt_lst;
+  if (!haystack_task) haystack_task=Fs;
+  PUSHFD
+  CLI
+  tempb1=&haystack_task->bpt_lst;
+  tempb=haystack_task->bpt_lst;
   while (tempb) {
     tempb2=tempb->next;
-    if (tempb->addr==add) {
+    if (tempb->addr==needle_addr) {
       result=tempb;
       if (rem)
 	tempb1->next=tempb2;
@@ -377,61 +377,61 @@ CBpt *BptFind(U8 *add,CTask *task=NULL,Bool rem=FALSE)
       tempb1=&tempb->next;
     tempb=tempb2;
   }
-  PopFD;
+  POPFD
   return result;
 }
 
-Bool BptS(U8 *add,CTask *task=NULL,Bool live=TRUE)
+Bool BptS(U8 *addr,CTask *task=NULL,Bool live=TRUE)
 {//Set breakpoint
   CBpt *tempb;
   Bool result=TRUE;
   if (!task) task=Fs;
-  PushFD;
-  Cli;
-  if (!(tempb=BptFind(add,task,FALSE))) {
+  PUSHFD
+  CLI
+  if (!(tempb=BptFind(addr,task,FALSE))) {
     tempb=CAlloc(sizeof(CBpt),task);
-    tempb->addr=add;
-    tempb->val=*add;
+    tempb->addr=addr;
+    tempb->val=*addr;
     result=FALSE;
     tempb->next=task->bpt_lst;
     task->bpt_lst=tempb;
     if (task==Fs && live)
-      *add=OC_BPT;
+      *addr=OC_BPT;
   }
-  PopFD;
+  POPFD
   return result;
 }
 
-Bool BptR(U8 *add,CTask *task=NULL,Bool live=TRUE,Bool rem=TRUE)
+Bool BptR(U8 *addr,CTask *task=NULL,Bool live=TRUE,Bool rem=TRUE)
 {//Rem breakpoint
   CBpt *tempb;
   Bool result=FALSE;
   if (!task) task=Fs;
-  PushFD;
-  Cli;
-  if (tempb=BptFind(add,task,rem)) {
+  PUSHFD
+  CLI
+  if (tempb=BptFind(addr,task,rem)) {
     if (task==Fs && live)
       *tempb->addr=tempb->val;
     result=TRUE;
     if (rem)
       Free(tempb);
   }
-  PopFD;
+  POPFD
   return result;
 }
 
-Bool B(U8 *add,CTask *task=NULL,Bool live=TRUE)
+Bool B(U8 *addr,CTask *task=NULL,Bool live=TRUE)
 {//Toggle breakpoint
  //Returns TRUE if removed
   Bool result=FALSE;
-  PushFD;
-  Cli;
-  if (BptFind(add,task,FALSE)) {
-    BptR(add,task,live,TRUE);
+  PUSHFD
+  CLI
+  if (BptFind(addr,task,FALSE)) {
+    BptR(addr,task,live,TRUE);
     result=TRUE;
   } else
-    BptS(add,task,live);
-  PopFD;
+    BptS(addr,task,live);
+  POPFD
   return result;
 }
 
@@ -441,8 +441,8 @@ I64 B2(CTask *task=NULL,Bool live=TRUE)
   I64 result=0;
   CBpt *tempb,*tempb1;
   if (!task) task=Fs;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   tempb=task->bpt_lst;
   task->bpt_lst=NULL;
   while (tempb) {
@@ -453,7 +453,7 @@ I64 B2(CTask *task=NULL,Bool live=TRUE)
     tempb=tempb1;
     result++;
   }
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -497,8 +497,8 @@ U0 G2(U8 *ip=INVALID_PTR,CTask *task=NULL)
 public U0 S(U8 *ip=INVALID_PTR,CTask *task=NULL) //Single-step.
 { //Single step
   if (!task) task=Fs;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (ip!=INVALID_PTR) task->rip=ip;
   LBts(&task->task_flags,TASKf_DISABLE_BPTS);
   LBts(&task->rflags,RFLAGf_TRAP);
@@ -510,7 +510,7 @@ public U0 S(U8 *ip=INVALID_PTR,CTask *task=NULL) //Single-step.
     }
   } else
     Exit;
-  PopFD;
+  POPFD
 }
 
 U0 DbgHelp()
@@ -578,8 +578,8 @@ U0 Fault3(I64 fault_num,I64 fault_err_code)
 {
   nounusedwarn fault_err_code;
   Bool was_in_dbg;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   was_in_dbg=InDbg(ON);
   if (Gs->num && mp_crash) {
     mp_cnt=1;
@@ -604,10 +604,10 @@ U0 Fault3(I64 fault_num,I64 fault_err_code)
   CallerRep;
   Dbg2;
   InDbg(was_in_dbg);
-  PopFD;
+  POPFD
 }
 
-U0 Fault2(I64 fault_num,I64 fault_err_code) //Called from [C:/Kernel/Interrupts.CPP,1] Fault2
+U0 Fault2(I64 fault_num,I64 fault_err_code) //Called from [C:/Kernel/Interrupts.CPP.Z,1] Fault2
 {
 //**Be careful not to swap-out and ruin the saved context**
   Bool was_raw,was_single_user,was_silent;
@@ -633,7 +633,7 @@ U0 Fault2(I64 fault_num,I64 fault_err_code) //Called from [C:/Kernel/Interrupts.
   "RIP:%08X",Fs->rip; //Sometimes crashes on %p, so do this first
   ":%p  RSP:%08X\n",Fs->rip,Fs->rsp;
   if (fault_num==I_PAGE_FAULT) {
-    asm {	MOV_RAX_CR2	 }
+    MOV_RAX_CR2
     i=GetRAX;
     "Fault Addr:%08X:%p\n",i,i;
   }
@@ -650,11 +650,10 @@ U0 Fault2(I64 fault_num,I64 fault_err_code) //Called from [C:/Kernel/Interrupts.
 U0 Dbg(U8 *msg=NULL,I64 msg_num=0)
 //Enters the debugger.	Can be used as a panic.
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   sys_dbg_msg=msg;
   sys_dbg_msg_num=msg_num;
-  asm {INT 0x32};
-  #assert I_DBG==0x32
-  PopFD;
+  INT I_DBG
+  POPFD
 }

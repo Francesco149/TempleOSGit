@@ -15,5 +15,5 @@
 
  <1> (image)
 
-[C:/TempleOS/Misc/Bible.TXT.Z,5068] Exodus,4:6
+[C:/Misc/Bible.TXT.Z,5068] Exodus,4:6
 

@@ -1,4 +1,6 @@
-public Bool GrLimits(CDC *dc,I64 *left,I64 *top,I64 *right,I64 *bottom,I64 width=0,I64 height=0)
+#help_index "Graphics"
+
+public Bool GrClamp(CDC *dc=gr_dc,I64 *left,I64 *top,I64 *right,I64 *bottom,I64 width=0,I64 height=0)
 { //returns screen, not window coordinates
   CTask *win_task;
   *left=0;
@@ -11,14 +13,14 @@ public Bool GrLimits(CDC *dc,I64 *left,I64 *top,I64 *right,I64 *bottom,I64 width
       *right=GR_WIDTH-1;
     if (GR_HEIGHT-1<*bottom)
       *bottom=GR_HEIGHT-1;
-    if (win_task->win_pixel_left>*left)
-      *left=win_task->win_pixel_left;
-    if (win_task->win_pixel_top>*top)
-      *top=win_task->win_pixel_top;
-    if (win_task->win_pixel_right<*right)
-      *right=win_task->win_pixel_right;
-    if (win_task->win_pixel_bottom<*bottom)
-      *bottom=win_task->win_pixel_bottom;
+    if (win_task->pix_left>*left)
+      *left=win_task->pix_left;
+    if (win_task->pix_top>*top)
+      *top=win_task->pix_top;
+    if (win_task->pix_right<*right)
+      *right=win_task->pix_right;
+    if (win_task->pix_bottom<*bottom)
+      *bottom=win_task->pix_bottom;
   }
   *left-=width;
   *right+=width;
@@ -27,24 +29,24 @@ public Bool GrLimits(CDC *dc,I64 *left,I64 *top,I64 *right,I64 *bottom,I64 width
   return *left<=*right && *top<=*bottom;
 }
 
-Bool DCClipLine(CDC *dc,I64 *x1,I64 *y1,I64 *x2,I64 *y2,I64 width=0,I64 height=0)
+Bool DCClipLine(CDC *dc=gr_dc,I64 *x1,I64 *y1,I64 *x2,I64 *y2,I64 width=0,I64 height=0)
 { //also converts window to screen coordinates
   I64 left,top,right,bottom;
   CTask *win_task;
-  if (GrLimits(dc,&left,&top,&right,&bottom,width,height)) {
+  if (GrClamp(dc,&left,&top,&right,&bottom,width,height)) {
     if (dc->flags & DCF_SCREEN_BITMAP) {
       win_task=dc->win_task;
-      *x1+=win_task->win_pixel_left+win_task->win_scroll_x;
-      *y1+=win_task->win_pixel_top+win_task->win_scroll_y;
-      *x2+=win_task->win_pixel_left+win_task->win_scroll_x;
-      *y2+=win_task->win_pixel_top+win_task->win_scroll_y;
+      *x1+=win_task->pix_left+win_task->scroll_x;
+      *y1+=win_task->pix_top+win_task->scroll_y;
+      *x2+=win_task->pix_left+win_task->scroll_x;
+      *y2+=win_task->pix_top+win_task->scroll_y;
     }
     return ClipLine(x1,y1,x2,y2,left,top,right,bottom);
   } else
     return FALSE;
 }
 
-public Bool GrPlot(CDC *dc,I64 x,I64 y)
+public Bool GrPlot(CDC *dc=gr_dc,I64 x,I64 y)
 {  //Clipping but No transformation or pen width
   I32 *db=dc->depth_buf;
   CTask *win_task;
@@ -58,14 +60,14 @@ public Bool GrPlot(CDC *dc,I64 x,I64 y)
     dc->color=old_color;
   } else if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y+=win_task->win_pixel_top+win_task->win_scroll_y;
-    if (win_task->win_pixel_left<=x<=win_task->win_pixel_right &&
-	win_task->win_pixel_top <=y<=win_task->win_pixel_bottom &&
+    x+=win_task->pix_left+win_task->scroll_x;
+    y+=win_task->pix_top+win_task->scroll_y;
+    if (win_task->pix_left<=x<=win_task->pix_right &&
+	win_task->pix_top <=y<=win_task->pix_bottom &&
 	0<=x<dc->width && 0<=y<dc->height &&
 	(win_task->next_task==sys_winmgr_task ||
 	dc->flags&DCF_ON_TOP ||
-	!IsPixelCovered0(win_task,x,y)))
+	!IsPixCovered0(win_task,x,y)))
       GrPlot0(dc,x,y);
   } else
     if (0<=x<dc->width && 0<=y<dc->height)
@@ -74,7 +76,7 @@ public Bool GrPlot(CDC *dc,I64 x,I64 y)
   return TRUE;
 }
 
-Bool GrPlot1(CDC *dc,I64 x,I64 y)
+Bool GrPlot1(CDC *dc=gr_dc,I64 x,I64 y)
 {  //Clipping but No transformation or pen width, called with db_z set
   CTask *win_task;
   CColorROPU32 old_color;
@@ -89,14 +91,14 @@ Bool GrPlot1(CDC *dc,I64 x,I64 y)
     dc->color=old_color;
   } else if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y+=win_task->win_pixel_top+win_task->win_scroll_y;
-    if (win_task->win_pixel_left<=x<=win_task->win_pixel_right &&
-	win_task->win_pixel_top <=y<=win_task->win_pixel_bottom &&
+    x+=win_task->pix_left+win_task->scroll_x;
+    y+=win_task->pix_top+win_task->scroll_y;
+    if (win_task->pix_left<=x<=win_task->pix_right &&
+	win_task->pix_top <=y<=win_task->pix_bottom &&
 	0<=x<dc->width && 0<=y<dc->height &&
 	(win_task->next_task==sys_winmgr_task ||
 	dc->flags&DCF_ON_TOP ||
-	!IsPixelCovered0(win_task,x,y)))
+	!IsPixCovered0(win_task,x,y)))
       GrPlot0(dc,x,y);
   } else
     if (0<=x<dc->width && 0<=y<dc->height)
@@ -104,20 +106,20 @@ Bool GrPlot1(CDC *dc,I64 x,I64 y)
   return TRUE;
 }
 
-public I64 GrPeek(CDC *dc,I64 x,I64 y)
-//Returns pixel color or -1 if off-screen or covered.
+public I64 GrPeek(CDC *dc=gr_dc,I64 x,I64 y)
+//Returns pix color or -1 if off-screen or covered.
 {  //Clipping but No transformation
   CTask *win_task;
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y+=win_task->win_pixel_top+win_task->win_scroll_y;
-    if (!(win_task->win_pixel_left<=x<=win_task->win_pixel_right)  ||
-	!(win_task->win_pixel_top <=y<=win_task->win_pixel_bottom) ||
+    x+=win_task->pix_left+win_task->scroll_x;
+    y+=win_task->pix_top+win_task->scroll_y;
+    if (!(win_task->pix_left<=x<=win_task->pix_right)  ||
+	!(win_task->pix_top <=y<=win_task->pix_bottom) ||
 	!(0<=x<dc->width) || !(0<=y<dc->height) ||
 	win_task->next_task!=sys_winmgr_task &&
 	!(dc->flags&DCF_ON_TOP) &&
-	IsPixelCovered0(win_task,x,y))
+	IsPixCovered0(win_task,x,y))
       return -1;
   } else
     if (!(0<=x<dc->width) || !(0<=y<dc->height))
@@ -134,7 +136,7 @@ I64 GrFloodFillRay(CDC *dc,I64 x,I64 y,I64 z,I32 *db)
   I64 result,j,x1,ray_len,ray_len2;
 
   if (UnusedStk<0x80)
-    StkOverflow(Fs);
+    Dbg("Stk Overflow",Fs);
 
   result=ray_len=GrRayLen(dc,&x,y,z,db);
   y--;
@@ -166,7 +168,7 @@ class CFFRay
 
 I64 GrFloodFillRay(CDC *dc,I64 x,I64 y,I64 z,I32 *db)
 {//See the above commented-out routine for an easier to understand version.
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result=0;
 //We don't dynamically calculate the size to avoid
 //fragmentation of memory.
@@ -233,12 +235,12 @@ I64 GrFloodFillRay(CDC *dc,I64 x,I64 y,I64 z,I32 *db)
 }
 
 
-public I64 GrFloodFill(CDC *dc,I64 x,I64 y,Bool not_color=FALSE,I64 z=0,I32 *db=NULL)
+public I64 GrFloodFill(CDC *dc=gr_dc,I64 x,I64 y,Bool not_color=FALSE,I64 z=0,I32 *db=NULL)
 {
 //Ignore z and db.
 //not_color=TRUE means fill up to everything which is not the current color.
 //not_color=FALSE means fill all parts equal to the color under the point.
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result=0,j,old_flags=dc->flags;
   CColorROPU32 old_color2=dc->color2;
   CDC *old_brush;
@@ -271,7 +273,7 @@ ff_done:
   return result;
 }
 
-public Bool GrPlot3B(CDC *dc,I64 x,I64 y,I64 z)
+public Bool GrPlot3B(CDC *dc=gr_dc,I64 x,I64 y,I64 z)
 {  //Clipping and transformation but no pen_width
   I64 _x,_y,_z;
   Bool was_transform=FALSE,was_symmetry=FALSE;
@@ -300,7 +302,7 @@ gr_done:
   return TRUE;
 }
 
-public Bool GrPlot3(CDC *dc,I64 x,I64 y,I64 z)
+public Bool GrPlot3(CDC *dc=gr_dc,I64 x,I64 y,I64 z)
 {  //clipping and transformation and pen width
  
   I64 _x,_y,_z,i,j,w,dist;
@@ -374,8 +376,8 @@ public Bool GrPlot3(CDC *dc,I64 x,I64 y,I64 z)
     if (record) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	win_task=dc->win_task;
-	x+=win_task->win_pixel_left+win_task->win_scroll_x;
-	y+=win_task->win_pixel_top+win_task->win_scroll_y;
+	x+=win_task->pix_left+win_task->scroll_x;
+	y+=win_task->pix_top+win_task->scroll_y;
       }
       if (dc->flags & DCF_LOCATE_NEAREST) {
 	dist=DistI64(x,y,dc->cur_x,dc->cur_y);
@@ -415,12 +417,12 @@ gr_done:
 }
 
 Bool GrLinePlot0(CDC *dc,I64 x,I64 y,I64 z)
-{
+{//This is a callback.
   CTask *win_task=dc->win_task;
   if (!(dc->flags & DCF_SCREEN_BITMAP) ||
       win_task->next_task==sys_winmgr_task ||
       dc->flags&DCF_ON_TOP ||
-      !IsPixelCovered0(win_task,x,y)) {
+      !IsPixCovered0(win_task,x,y)) {
     dc->db_z=z;
     GrPlot0(dc,x,y);
   }
@@ -428,15 +430,15 @@ Bool GrLinePlot0(CDC *dc,I64 x,I64 y,I64 z)
 }
 
 Bool GrLinePlot(CDC *dc,I64 x,I64 y,I64 z)
-{
+{//This is a callback.
   dc->db_z=z;
   GrPlot1(dc,x,y);
   return TRUE;
 }
 
-public I64 GrLine(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,I64 step=1,I64 start=0)
+public Bool GrLine(CDC *dc=gr_dc,I64 x1,I64 y1,I64 x2,I64 y2,I64 step=1,I64 start=0)
 {
-  I64 result=0;
+  Bool result=FALSE;
   I32 *db=dc->depth_buf;
   dc->depth_buf=NULL;
   if (step==1 && !start && !dc->brush && !dc->depth_buf) {
@@ -448,10 +450,10 @@ public I64 GrLine(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,I64 step=1,I64 start=0)
   return result;
 }
 
-public I64 GrCircle(CDC *dc,I64 cx,I64 cy,I64 radius,
+public Bool GrCircle(CDC *dc=gr_dc,I64 cx,I64 cy,I64 radius,
   I64 step=1,F64 start_radians=0,F64 len_radians=2*pi)
 {
-  I64 result;
+  Bool result;
   I32 *db=dc->depth_buf;
   dc->depth_buf=NULL;
   result=Circle(dc,cx,cy,0,radius,&GrLinePlot,step,start_radians,len_radians);
@@ -459,7 +461,7 @@ public I64 GrCircle(CDC *dc,I64 cx,I64 cy,I64 radius,
   return result;
 }
 
-public I64 GrEllipse(CDC *dc,
+public Bool GrEllipse(CDC *dc=gr_dc,
 		I64 cx,I64 cy,
 		I64 x_radius,I64 y_radius,
 		F64 rot_angle=0,
@@ -467,7 +469,7 @@ public I64 GrEllipse(CDC *dc,
 		F64 start_radians=0,
 		F64 len_radians=2*pi)
 {
-  I64 result;
+  Bool result;
   I32 *db=dc->depth_buf;
   dc->depth_buf=NULL;
   result=Ellipse(dc,cx,cy,0,x_radius,y_radius,&GrLinePlot,rot_angle,step,start_radians,len_radians);
@@ -475,7 +477,7 @@ public I64 GrEllipse(CDC *dc,
   return result;
 }
 
-public I64 GrRegPoly(CDC *dc,
+public Bool GrRegPoly(CDC *dc=gr_dc,
 		I64 cx,I64 cy,
 		I64 x_radius,I64 y_radius,I64 sides,
 		F64 rot_angle=0,
@@ -483,7 +485,7 @@ public I64 GrRegPoly(CDC *dc,
 		F64 start_radians=0,
 		F64 len_radians=2*pi)
 {
-  I64 result;
+  Bool result;
   I32 *db=dc->depth_buf;
   dc->depth_buf=NULL;
   result=RegPoly(dc,cx,cy,0,x_radius,y_radius,sides,
@@ -492,30 +494,30 @@ public I64 GrRegPoly(CDC *dc,
   return result;
 }
 
-public I64 Gr2Bezier(CDC *dc,CD3I32 *ctrl)
+public Bool Gr2Bezier(CDC *dc=gr_dc,CD3I32 *ctrl)
 {
   return Bezier2(dc,ctrl,&GrLinePlot);
 }
 
-public I64 Gr3Bezier(CDC *dc,CD3I32 *ctrl)
+public Bool Gr3Bezier(CDC *dc=gr_dc,CD3I32 *ctrl)
 {
   return Bezier3(dc,ctrl,&GrLinePlot);
 }
 
-public I64 Gr2BSpline(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
+public Bool Gr2BSpline(CDC *dc=gr_dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
 {
   return BSpline2(dc,ctrl,cnt,&GrLinePlot,closed);
 }
 
-public I64 Gr3BSpline(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
+public Bool Gr3BSpline(CDC *dc=gr_dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
 {
   return BSpline3(dc,ctrl,cnt,&GrLinePlot,closed);
 }
 
-public I64 GrLine3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
+public Bool GrLine3(CDC *dc=gr_dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,I64 start=0)
 {
-  I64 _x1,_y1,_z1,_x2,_y2,_z2,result=0;
-  Bool was_transform=FALSE,was_symmetry=FALSE;
+  I64 _x1,_y1,_z1,_x2,_y2,_z2;
+  Bool result=FALSE,was_transform=FALSE,was_symmetry=FALSE;
   if (dc->flags & DCF_TRANSFORMATION) {
     (*dc->transform)(dc,&x1,&y1,&z1);
     (*dc->transform)(dc,&x2,&y2,&z2);
@@ -539,9 +541,9 @@ public I64 GrLine3(CDC *dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 z2,I64 step=1,
   }
   if (step==1 && !start && !dc->brush && dc->pen_width<2 && !dc->depth_buf) { //TODO: clip z for depth buf
     if (DCClipLine(dc,&x1,&y1,&x2,&y2))
-      result+=Line(dc,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
+      result|=Line(dc,x1,y1,0,x2,y2,0,&GrLinePlot0,step,start);
   } else
-    result+=Line(dc,x1,y1,z1,x2,y2,z2,&GrPlot3,step,start);
+    result|=Line(dc,x1,y1,z1,x2,y2,z2,&GrPlot3,step,start);
 gr_done:
   if (was_transform)
     dc->flags|=DCF_TRANSFORMATION;
@@ -552,7 +554,7 @@ gr_done:
 
 #help_index "Graphics/Char;Char/Graphics"
 
-public Bool GrPutChar3(CDC *dc,I64 x,I64 y,I64 z,U8 ch)
+public Bool GrPutChar3(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 ch)
 {  //transformation
 //DCF_SYMMETRY is silly.
   if (dc->flags & DCF_TRANSFORMATION)
@@ -560,7 +562,7 @@ public Bool GrPutChar3(CDC *dc,I64 x,I64 y,I64 z,U8 ch)
   return GrPutChar(dc,x,y,ch);
 }
 
-public I64 GrPrint3(CDC *dc,I64 x,I64 y,I64 z,U8 *fmt,...)
+public I64 GrPrint3(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *fmt,...)
 {  //transformation
 //DCF_SYMMETRY is silly.
   U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
@@ -572,7 +574,7 @@ public I64 GrPrint3(CDC *dc,I64 x,I64 y,I64 z,U8 *fmt,...)
   return result;
 }
 
-public I64 GrVPrint3(CDC *dc,I64 x,I64 y,I64 z,U8 *fmt,...)
+public I64 GrVPrint3(CDC *dc=gr_dc,I64 x,I64 y,I64 z,U8 *fmt,...)
 { //Vertical text
 //transformation
 //DCF_SYMMETRY is silly.
@@ -587,7 +589,7 @@ public I64 GrVPrint3(CDC *dc,I64 x,I64 y,I64 z,U8 *fmt,...)
 
 #help_index "Graphics"
 
-public I64 GrEllipse3(CDC *dc,
+public Bool GrEllipse3(CDC *dc=gr_dc,
 		I64 cx,I64 cy,I64 cz,
 		I64 x_radius,I64 y_radius,
 		F64 rot_angle=0,
@@ -595,7 +597,8 @@ public I64 GrEllipse3(CDC *dc,
 		F64 start_radians=0,
 		F64 len_radians=2*pi)
 {
-  I64 x,y,z,xx,yy,zz,result;
+  Bool result;
+  I64 x,y,z,xx,yy,zz;
   F64 m1,a1,m2,a2,s,c;
   if (dc->flags & DCF_TRANSFORMATION) {
     dc->flags&=~DCF_TRANSFORMATION;
@@ -639,7 +642,7 @@ public I64 GrEllipse3(CDC *dc,
   return result;
 }
 
-public I64 GrCircle3(CDC *dc,I64 cx,I64 cy,I64 cz,I64 radius,
+public Bool GrCircle3(CDC *dc=gr_dc,I64 cx,I64 cy,I64 cz,I64 radius,
   I64 step=1,F64 start_radians=0,F64 len_radians=2*pi)
 { //transformation with pen width
   if (dc->flags & DCF_TRANSFORMATION)
@@ -648,7 +651,7 @@ public I64 GrCircle3(CDC *dc,I64 cx,I64 cy,I64 cz,I64 radius,
     return Circle(dc,cx,cy,cz,radius,&GrPlot3,step,start_radians,len_radians);
 }
 
-public I64 GrRegPoly3(CDC *dc,
+public Bool GrRegPoly3(CDC *dc=gr_dc,
 		I64 cx,I64 cy,I64 cz,
 		I64 x_radius,I64 y_radius,I64 sides,
 		F64 rot_angle=0,
@@ -656,7 +659,8 @@ public I64 GrRegPoly3(CDC *dc,
 		F64 start_radians=0,
 		F64 len_radians=2*pi)
 {
-  I64 x,y,z,xx,yy,zz,result;
+  Bool result;
+  I64 x,y,z,xx,yy,zz;
   F64 m1,a1,m2,a2,s,c;
   if (dc->flags & DCF_TRANSFORMATION) {
     dc->flags&=~DCF_TRANSFORMATION;
@@ -700,11 +704,11 @@ public I64 GrRegPoly3(CDC *dc,
   return result;
 }
 
-public I64 GrFloodFill3(CDC *dc,I64 x1,I64 y1,I64 z1,Bool not_color=FALSE)
+public I64 GrFloodFill3(CDC *dc=gr_dc,I64 x1,I64 y1,I64 z1,Bool not_color=FALSE)
 {  //transformation
 //not_color=TRUE means fill up to everything which is not the current color.
 //not_color=FALSE means fill all parts equal to the color under the point.
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result,old_flags=dc->flags,
       _x,_y,_z;
   if (dc->flags & DCF_TRANSFORMATION) {
@@ -725,11 +729,11 @@ gr_done:
   return result;
 }
 
-#help_index "Graphics;Graphics/DCs"
+#help_index "Graphics;Graphics/Device Contexts"
 
-public I64 GrBlot3(CDC *dc,I64 x1,I64 y1,I64 z1,CDC *img)
+public I64 GrBlot3(CDC *dc=gr_dc,I64 x1,I64 y1,I64 z1,CDC *img)
 {  //Clipping and transformation
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   CColorROPU32 old_color=dc->color;
   I64  color,reg i,j,w=img->width,h=img->height,
       d1,dx1,dy1,dz1,
@@ -944,9 +948,10 @@ gr_done:
 
 #help_index "Graphics"
 
-public I64 Gr2Bezier3(CDC *dc,CD3I32 *ctrl)
+public Bool Gr2Bezier3(CDC *dc=gr_dc,CD3I32 *ctrl)
 {
-  I64 i,x,y,z,result=0,
+  Bool result=FALSE;
+  I64 i,x,y,z,
       old_flags=dc->flags;
   CD3I32 *ctrl2=NULL,*ctrl3=NULL;
   if (dc->flags & DCF_TRANSFORMATION) {
@@ -980,7 +985,7 @@ public I64 Gr2Bezier3(CDC *dc,CD3I32 *ctrl)
       goto gr_done;
   }
 
-  result+=Bezier2(dc,ctrl,&GrPlot3);
+  result|=Bezier2(dc,ctrl,&GrPlot3);
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
@@ -988,9 +993,10 @@ gr_done:
   return result;
 }
 
-public I64 Gr3Bezier3(CDC *dc,CD3I32 *ctrl)
+public Bool Gr3Bezier3(CDC *dc=gr_dc,CD3I32 *ctrl)
 {
-  I64 i,x,y,z,result=0,
+  Bool result=FALSE;
+  I64 i,x,y,z,
       old_flags=dc->flags;
   CD3I32 *ctrl2=NULL,*ctrl3=NULL;
   if (dc->flags & DCF_TRANSFORMATION) {
@@ -1024,7 +1030,7 @@ public I64 Gr3Bezier3(CDC *dc,CD3I32 *ctrl)
       goto gr_done;
   }
 
-  result+=Bezier3(dc,ctrl,&GrPlot3);
+  result|=Bezier3(dc,ctrl,&GrPlot3);
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
@@ -1032,9 +1038,10 @@ gr_done:
   return result;
 }
 
-public I64 Gr2BSpline3(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
+public I64 Gr2BSpline3(CDC *dc=gr_dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
 {
-  I64 i,x,y,z,result=0,
+  Bool result=FALSE;
+  I64 i,x,y,z,
       old_flags=dc->flags;
   CD3I32 *ctrl2=NULL,*ctrl3=NULL;
   if (dc->flags & DCF_TRANSFORMATION) {
@@ -1068,7 +1075,7 @@ public I64 Gr2BSpline3(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
       goto gr_done;
   }
 
-  result+=BSpline2(dc,ctrl,cnt,&GrPlot3,closed);
+  result|=BSpline2(dc,ctrl,cnt,&GrPlot3,closed);
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
@@ -1076,9 +1083,10 @@ gr_done:
   return result;
 }
 
-public I64 Gr3BSpline3(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
+public Bool Gr3BSpline3(CDC *dc=gr_dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
 {
-  I64 i,x,y,z,result=0,
+  Bool result=FALSE;
+  I64 i,x,y,z,
       old_flags=dc->flags;
   CD3I32 *ctrl2=NULL,*ctrl3=NULL;
   if (dc->flags & DCF_TRANSFORMATION) {
@@ -1112,7 +1120,7 @@ public I64 Gr3BSpline3(CDC *dc,CD3I32 *ctrl,I64 cnt,Bool closed=FALSE)
       goto gr_done;
   }
 
-  result+=BSpline3(dc,ctrl,cnt,&GrPlot3,closed);
+  result|=BSpline3(dc,ctrl,cnt,&GrPlot3,closed);
 gr_done:
   Free(ctrl2);
   Free(ctrl3);
@@ -1120,10 +1128,10 @@ gr_done:
   return result;
 }
 
-public I64 GrFillTri0(CDC *dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p4)
+public I64 GrFillTri0(CDC *dc=gr_dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p4)
 {
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
-//Returns cnt of pixels changed
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+//Returns cnt of pixs changed
   I64 x1,x2,y,z1,z2,dx1,dy1,dz1,dx2,dy2,dz2,result=0,i,y_min,y_max;
   CTask *win_task;
   //p1 is min x
@@ -1140,10 +1148,10 @@ public I64 GrFillTri0(CDC *dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p4)
   y_max=dc->height;
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    y_min-=win_task->win_scroll_y+win_task->win_pixel_top;
-    y_max-=win_task->win_scroll_y+win_task->win_pixel_top;
-    if (y_max>win_task->win_pixel_bottom-(win_task->win_scroll_y+win_task->win_pixel_top))
-      y_max=win_task->win_pixel_bottom-(win_task->win_scroll_y+win_task->win_pixel_top);
+    y_min-=win_task->scroll_y+win_task->pix_top;
+    y_max-=win_task->scroll_y+win_task->pix_top;
+    if (y_max>win_task->pix_bottom-(win_task->scroll_y+win_task->pix_top))
+      y_max=win_task->pix_bottom-(win_task->scroll_y+win_task->pix_top);
   }
 
   if ((dy2=p4->y-p1->y)<0) {
@@ -1440,9 +1448,9 @@ ft_done:
   return result;
 }
 
-public I64 GrFillPoly3(CDC *dc,I64 n,CD3I32 *poly)
+public I64 GrFillPoly3(CDC *dc=gr_dc,I64 n,CD3I32 *poly)
 { //Must be convex.
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   CD3I32 tri[3];
   I64 i,j,x,y,z,result=0;
   if (n<3) return 0;
@@ -1508,9 +1516,9 @@ public I64 GrFillPoly3(CDC *dc,I64 n,CD3I32 *poly)
 
 #help_index "Graphics/Mesh"
 
-public I64 Gr3Mesh(CDC *dc,I64 vertex_cnt,CD3I32 *p,I64 tri_cnt,CMeshTri *tri)
+public I64 Gr3Mesh(CDC *dc=gr_dc,I64 vertex_cnt,CD3I32 *p,I64 tri_cnt,CMeshTri *tri)
 {
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   CColorROPU32 old_color=dc->color;
   I64 i,x,y,z,result=0;
   CD3I32 *pt,*pt_sym,*p_sym,*dst;
@@ -1552,5 +1560,3 @@ mesh_done:
   Free(pt);
   return result;
 }
-
-#help_index "Graphics"

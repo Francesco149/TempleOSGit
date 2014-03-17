@@ -1,4 +1,5 @@
 #help_index "Doc/File"
+
 public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 {
   I64 i;
@@ -7,7 +8,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
   CDocBin *tempb;
   doc->find_replace->filter_lines=0;
   if (src2) {
-    DocPutS(doc,src2); //Too big [MN:DocPrint] DocPrint() is wasteful.
+    DocPutS(doc,src2); //Too big [C:/Adam/Doc/DocPlain.CPP.Z,679] DocPrint() is wasteful.
     src=src2+StrLen(src2)+1;
     i=size-(offset(CDocBin.end)-offset(CDocBin.start));
     while (src<=src2+i) {
@@ -54,8 +55,8 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
   CDocEntry *doc_e;
   CDocBin *b;
   Bool unlock=DocLock(doc);
-  I64 i,cnt;
-  U8 *st,*result,*dst,*src,ch;
+  I64 ch,i,cnt;
+  U8 *st,*result,*dst,*src;
 
   if (doc->flags&DOCF_NO_CURSOR || doc->root.next==doc)
     cnt=1; //terminator
@@ -78,8 +79,8 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	  else
 	    cnt++;
 	  break;
-	case DOCT_TEXT://**Update [D:/Compiler/Lex.CPP,1] DOCT_TEXT**
-	  if (!(doc_e->flags1 & ~(DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
+	case DOCT_TEXT://**Update [C:/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
+	  if (!(doc_e->flags1 & ~(DOCEF1_TAG|DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
 	    cnt+=StrLen(doc_e->tag);
 	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS)) ||
 	      doc->flags&DOCF_DBL_DOLLARS)
@@ -92,8 +93,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	  break;
 	default:
 	  if (doc_e->type_u8!=DOCT_SOFT_NEW_LINE &&
-	      doc_e->type_u8!=DOCT_CURSOR &&
-	      doc_e->type_u8!=DOCT_BPT) {
+	      doc_e->type_u8!=DOCT_CURSOR) {
 	    st=Doc2PlainText(doc,doc_e);
 	    cnt+=StrLen(st)+2;
 	    Free(st);
@@ -111,7 +111,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
   for (doc_e=doc->root.next;doc_e!=doc;doc_e=doc_e->next) {
     if (!Bt(doc_type_flags_data,doc_e->type_u8)) {
       if (doc_e->type_u8==DOCT_TEXT &&
-	!(doc_e->flags1 & ~(DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
+	!(doc_e->flags1 & ~(DOCEF1_TAG|DOCG_BL_IV_UL|DOCEF1_WORD_WRAP|DOCEF1_HIGHLIGHT|DOCEF1_LOCK_TO_PAGE|DOCEF1_LOCK_TO_CENTER|DOCEF1_SKIP|DOCEF1_HARD_SKIP|DOCEF1_FILTER_SKIP))) {
 	src=doc_e->tag;
 	i=0;
 	while (ch=*src++) {
@@ -143,8 +143,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	    break;
 	  default:
 	    if (doc_e->type_u8!=DOCT_SOFT_NEW_LINE &&
-		doc_e->type_u8!=DOCT_CURSOR && //(Cursor is set by cur_entry)
-		doc_e->type_u8!=DOCT_BPT) {
+		doc_e->type_u8!=DOCT_CURSOR) { //(Cursor is set by cur_entry)
 	      *dst++='$';
 	      st=Doc2PlainText(doc,doc_e);
 	      StrCpy(dst,st);
@@ -168,7 +167,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
   if (b!=&doc->bin_root) {
     do {
       if (b->use_cnt>b->temp_use_cnt) {
-	MemCpy(dst,&b->type,offset(CDocBin.end)-offset(CDocBin.start));
+	MemCpy(dst,&b->start,offset(CDocBin.end)-offset(CDocBin.start));
 	dst+=offset(CDocBin.end)-offset(CDocBin.start);
 	MemCpy(dst,b->data,b->size);
 	dst+=b->size;
@@ -197,7 +196,7 @@ public U0 DocWrite(CDoc *doc,Bool prompt=FALSE)
 
 #help_index "Doc"
 public U0 DocInsDoc(CDoc *doc,CDoc *doc2)
-{  //TODO: [C:/TempleOS/Adam/Doc/DocNew.CPP.Z,449] DocRst
+{  //TODO: [C:/Adam/Doc/DocNew.CPP.Z,337] DocRst
   U8 *dst;
   Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
@@ -233,7 +232,7 @@ public U0 DocInsDoc(CDoc *doc,CDoc *doc2)
 }
 
 #help_index "Doc/Clipboard"
-public U0 ClipBoardDel()
+public U0 ClipboardDel()
 {
   DocRst(sys_clipboard_doc,TRUE);
 }
@@ -244,7 +243,7 @@ public U0 EdCopyToClipboard(CDoc *doc)
   Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
   CDocEntry *doc_e=doc->root.next,*doc_ne;
-  ClipBoardDel;
+  ClipboardDel;
   while (doc_e!=doc) {
     if (doc_e->type & DOCET_SELECTED) {
       doc_e->type&=~DOCET_SELECTED;
@@ -267,7 +266,7 @@ public U0 EdCutToClipboard(CDoc *doc)
   Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
   CDocEntry *doc_e=doc->root.next,*doc_e1,*doc_ne,*doc_e2=NULL;
-  ClipBoardDel;
+  ClipboardDel;
   while (doc_e!=doc) {
     doc_e1=doc_e->next;
     if (doc_e->type & DOCET_SELECTED) {
@@ -303,8 +302,8 @@ public U0 EdPasteClipboard(CDoc *doc)
   if (doc_ce->type_u8==DOCT_DATA) {
     doc_e=doc2->root.next;
     while (doc_e!=doc2) {
-      if (Bt(doc_type_flags_tag,doc_e->type_u8))
-	DocPutSPartial(doc,doc_e->tag);
+      if (doc_e->flags1&DOCEF1_TAG)
+	DocPrintPartial(doc,"%s",doc_e->tag);
       doc_e=doc_e->next;
     }
   } else
@@ -355,10 +354,10 @@ public CDoc *DocCopy(CDoc *doc,CDocEntry *start,CDocEntry *end)
   return doc2;
 }
 
-#help_index "Doc;Compiler/Directive"
+#help_index "Doc/Compiler;Compiler/Directive"
 
 public U0 StreamDoc(CDoc *doc)
-{  //TODO: [C:/TempleOS/Adam/Doc/DocNew.CPP.Z,449] DocRst
+{  //TODO: [C:/Adam/Doc/DocNew.CPP.Z,337] DocRst
   Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -423,7 +422,7 @@ U0 DocUndoRestore(CDoc *doc)
     DocUnlock(doc);
 }
 
-#help_index "Graphics/Windows BMP Files;Doc/Output"
+#help_index "Graphics/Windows BMP Files;Graphics/GRA Files;Doc/Output"
 
 public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
 {//This is like DOS "type" or Unix "cat".
@@ -439,13 +438,13 @@ public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
     DocDel(doc2);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.BMP.Z")) {
-    DocPutBMPFile(doc,filename,FALSE);
+    DocBMPFile(doc,filename,FALSE);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.BMP;*.bmp")) {
-    DocPutBMPFile(doc,filename,TRUE);
+    DocBMPFile(doc,filename,TRUE);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.GRA*")) {
-    DocPutGRAFile(doc,filename);
+    DocGRAFile(doc,filename);
     result=TRUE;
   }
   if (result)
@@ -453,7 +452,7 @@ public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
   return result;
 }
 
-#help_index "Graphics/Windows BMP Files;File/Cmd Line (Typically);Doc/Cmd Line (Typically);Cmd Line (Typically)"
+#help_index "Graphics/Windows BMP Files;Graphics/GRA Files;File/Cmd Line (Typically);Doc/Cmd Line (Typically);Cmd Line (Typically)"
 
 public Bool Type(U8 *filename,I64 trailing_new_lines=1)
 {//This is like DOS "type" or Unix "cat".
@@ -461,5 +460,3 @@ public Bool Type(U8 *filename,I64 trailing_new_lines=1)
 //Even graphics can be sent.
   return DocType(,filename,trailing_new_lines);
 }
-
-#help_index "Doc"

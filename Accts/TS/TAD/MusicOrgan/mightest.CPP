@@ -3,7 +3,7 @@
 U0 DrawIt(CTask *task,CDC *dc)
 {
   F64 x1,x2,y1,y2,x3,y3,radius,pedals,theta,t=Beat,
-    cx=335,cy=task->win_pixel_height>>1;
+    cx=335,cy=task->pix_height>>1;
   Bool first=TRUE;
 
   radius=cy*(1.0+Sin(2*pi*t));
@@ -28,7 +28,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
 

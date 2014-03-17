@@ -1,5 +1,5 @@
                                    TempleOS
-[C:/Doc/TrivialSolutions.TXT,1] Trivial Solutions
+[C:/Doc/TrivialSolutions.TXT.Z,1] Trivial Solutions
 
 -] Keyboard Ctrls
   Enter		Right-click menu
@@ -31,5 +31,5 @@ Ctrl-Alt-Z	Unzoom screen on Mouse
 
 Remember to terminate cmds with a semicolon.
 
-[C:/Doc/HelpIndex.TXT,1] Help Index  [Cmd Line (Typically),1] Quick
+[C:/Doc/HelpIndex.TXT.Z,1] Help Index  [Cmd Line (Typically),1] Quick
 Start--Command Line

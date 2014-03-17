@@ -1,5 +1,5 @@
 //This just shows how screen memory works.
-//See [C:/Demo/Lectures/MiniGrLib.CPP,1]
+//See [C:/Demo/Lectures/MiniGrLib.CPP.Z,1]
 
 U0 PlotXY(I64 x,I64 y)
 {
@@ -44,12 +44,12 @@ That means no read-modify-writes, too.
 
   Preempt(old_preempt);
 
-//TempleOS has a 4 plane memory duplicate of the screen, [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,2] gr_screen_image,
-//and only writes actual changes.  See [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,719] GrUpdateVGAGraphics().
+//TempleOS has a 4 plane memory duplicate of the screen, [C:/Adam/Gr/GrGlbls.CPP.Z,2] gr_screen_image,
+//and only writes actual changes.  See [C:/Adam/Gr/GrScreen.CPP.Z,390] GrUpdateVGAGraphics().
 //<CTRL-ALT-F> will flush screen VGA cache.
   VGAFlush;
 }
 
 Main;
 
-//See [C:/Demo/Lectures/GraphicsCPULoad.CPP,1].
+//See [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1].

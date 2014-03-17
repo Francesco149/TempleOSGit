@@ -11,13 +11,13 @@ I64 PopUpGrepMenu()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPrint(doc,"$CM+LX,2,4$$BT,\"REPLACE\",GRF_REPLACE$"
-	"$CM+LX,22,0$$BT,\"SKIP\",GRF_SKIP$"
-	"$CM+LX,2,4$$BT,\"ALL\",GRF_ALL$"
-	"$CM+LX,22,0$$BT,\"ABORT ALL\",DOCM_CANCEL$"
-	"$CM+LX,2,4$$BT,\"EDIT\",GRF_ED$"
-	"$CM+LX,22,0$$BT,\"ABORT FILE\",GRF_ABORT_FILE$"
-	"$CM+LX,2,4$$BT,\"SKIP FILE\",GRF_SKIP_FILE$\n");
+  DocPrint(doc,"$CM+LX,2,4$$BT,\"REPLACE\",LE=GRF_REPLACE$"
+	"$CM+LX,22,0$$BT,\"SKIP\",LE=GRF_SKIP$"
+	"$CM+LX,2,4$$BT,\"ALL\",LE=GRF_ALL$"
+	"$CM+LX,22,0$$BT,\"ABORT ALL\",LE=DOCM_CANCEL$"
+	"$CM+LX,2,4$$BT,\"EDIT\",LE=GRF_ED$"
+	"$CM+LX,22,0$$BT,\"ABORT FILE\",LE=GRF_ABORT_FILE$"
+	"$CM+LX,2,4$$BT,\"SKIP FILE\",LE=GRF_SKIP_FILE$\n");
   i=PopUpMenu(doc);
   DocDel(doc);
   return i;
@@ -25,12 +25,12 @@ I64 PopUpGrepMenu()
 
 
 
-I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
+I64 GrepFile(U8 *needle_str,U8 *haystack_filename,I64 *_fuf_flags,U8 *replace_text)
 {
   Bool first_on_line,write_this_file=FALSE,cont=!Bt(_fuf_flags,FUf_CANCEL);
   U8 *src,*dst,*dst2,*name_buf=NULL;
   I64 i,j,plen,rlen,dlen,cnt=0,old_flags,ss_flags;
-  CDoc *cur_l,*doc=DocRead(name,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR);
+  CDoc *cur_l,*doc=DocRead(haystack_filename,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR);
   CDocEntry *doc_e;
 
   if (Bt(_fuf_flags,FUf_IGNORE))
@@ -39,12 +39,12 @@ I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
     ss_flags=0;
   if (Bt(_fuf_flags,FUf_WHOLE_LABELS))
     ss_flags|=SFG_WHOLE_LABELS;
-  if (Bt(_fuf_flags,FUf_WHOLE_LABELS_FRONT))
-    ss_flags|=SFF_WHOLE_LABELS_FRONT;
-  if (Bt(_fuf_flags,FUf_WHOLE_LABELS_BACK))
-    ss_flags|=SFF_WHOLE_LABELS_BACK;
+  if (Bt(_fuf_flags,FUf_WHOLE_LABELS_BEFORE))
+    ss_flags|=SFF_WHOLE_LABELS_BEFORE;
+  if (Bt(_fuf_flags,FUf_WHOLE_LABELS_AFTER))
+    ss_flags|=SFF_WHOLE_LABELS_AFTER;
 
-  plen=StrLen(pattern);
+  plen=StrLen(needle_str);
   if (replace_text)
     rlen=StrLen(replace_text);
   doc_e=doc->root.next;
@@ -53,12 +53,12 @@ I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
       src=doc_e->tag;
       first_on_line=TRUE;
       while (src && cont) {
-	if (src=StrFind(pattern,src,ss_flags)) {
+	if (src=StrFind(needle_str,src,ss_flags)) {
 	  cnt++;
 	  if (first_on_line || Bt(_fuf_flags,FUf_REPLACE)) {
 	    first_on_line=FALSE;
-	    PutFileLink(name,doc_e->y+1,TRUE);
-	    name_buf=MPrint("%s,%d",name,doc_e->y+1);
+	    PutFileLink(haystack_filename,doc_e->y+1,TRUE);
+	    name_buf=MPrint("%s,%d",haystack_filename,doc_e->y+1);
 	    if (cur_l=DocPut) {
 	      old_flags=cur_l->flags&DOCF_PLAIN_TEXT;
 	      cur_l->flags|=DOCF_PLAIN_TEXT;
@@ -102,7 +102,7 @@ I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
 		old_flags=cur_l->flags&DOCF_PLAIN_TEXT;
 		cur_l->flags|=DOCF_PLAIN_TEXT;
 	      }
-	      "%12s,%04d*%s\n",name,doc_e->y+1,dst2;
+	      "%12s,%04d*%s\n",haystack_filename,doc_e->y+1,dst2;
 	      if (cur_l)
 		cur_l->flags= cur_l->flags&~DOCF_PLAIN_TEXT |old_flags;
 	      write_this_file=TRUE;
@@ -142,7 +142,7 @@ I64 GrepFile(U8 *pattern,U8 *name,I64 *_fuf_flags,U8 *replace_text)
   return cnt;
 }
 
-public I64 Grep(U8 *pattern,U8 *files_find_mask="*",U8 *fu_flags=NULL,U8 *replace_text=NULL)
+public I64 Grep(U8 *needle_str,U8 *files_find_mask="*",U8 *fu_flags=NULL,U8 *replace_text=NULL)
 /*
 This does not do regular expressions--my bad.
 Anyway, it's good for searching and replacing.
@@ -156,8 +156,8 @@ Let's say it stands for global replace ;-)
       want to match words like "Add", you
       set this flag and it will see that the characters
       before or after "ll" are label characters.
-"+lf"=only checks for label chars in front
-"+lb"=only checks for label chars behind (after).
+"+lb"=only checks for label chars before.
+"+la"=only checks for label chars after.
 */
 
 {
@@ -165,42 +165,42 @@ Let's say it stands for global replace ;-)
   CDirEntry *tempde,*tempde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+i+f+F+T");
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  if (fuf_flags&~(FUG_FILES_FIND|FUF_IGNORE|FUF_ALL|FUF_WHOLE_LABELS|FUF_WHOLE_LABELS_FRONT|FUF_WHOLE_LABELS_BACK))
+  if (fuf_flags&~(FUG_FILES_FIND|FUF_IGNORE|FUF_ALL|FUF_WHOLE_LABELS|FUF_WHOLE_LABELS_BEFORE|FUF_WHOLE_LABELS_AFTER))
     throw('FUF');
   LBEqu(&fuf_flags,FUf_REPLACE,replace_text);
   tempde=tempde1=FilesFind(files_find_mask,fuf_flags&FUG_FILES_FIND);
-  fuf_flags&=FUF_ALL|FUF_REPLACE|FUF_IGNORE|FUF_WHOLE_LABELS|FUF_WHOLE_LABELS_FRONT|FUF_WHOLE_LABELS_BACK;
+  fuf_flags&=FUF_ALL|FUF_REPLACE|FUF_IGNORE|FUF_WHOLE_LABELS|FUF_WHOLE_LABELS_BEFORE|FUF_WHOLE_LABELS_AFTER;
   while (tempde && !Bt(&fuf_flags,FUf_CANCEL)) {
-    cnt+=GrepFile(pattern,tempde->full_name,&fuf_flags,replace_text);
+    cnt+=GrepFile(needle_str,tempde->full_name,&fuf_flags,replace_text);
     tempde=tempde->next;
   }
   DirLstDel(tempde1);
   return cnt;
 }
 
-public I64 FileOcc(U8 *pattern,U8 *files_find_mask="*",U8 *fu_flags="+r+i+l")
+public I64 FileOcc(U8 *needle_str,U8 *files_find_mask="*",U8 *fu_flags="+r+i+l")
 {/*
 "+r"=recurse
 "+i"=ignore case
 "+l"=whole labels only.
-"+lf"=only checks for label chars in front
-"+lb"=only checks for label chars behind (after).
+"+lb"=only checks for label chars before.
+"+la"=only checks for label chars after.
 */
   I64 cnt=0;
   Bool old_silent=Silent(TRUE);
-  cnt=Grep(pattern,files_find_mask,fu_flags);
+  cnt=Grep(needle_str,files_find_mask,fu_flags);
   Silent(old_silent);
   return cnt;
 }
 
 class CGrep
 {
-  U8	find_text[136]	    fmtstr "$DA-P,135,\"FIND        :%s\"$\n";
-  U8	replace_text[136]   fmtstr "$DA-P,135,\"REPLACE     :%s\"$\n";
+  U8	find_text[136]	    fmtstr "$DA-P,135,A=\"FIND        :%s\"$\n";
+  U8	replace_text[136]   fmtstr "$DA-P,135,A=\"REPLACE     :%s\"$\n";
   Bool	replace	    fmtstr "$CB,\"REPLACE\"$\n";
   Bool	match_case	    fmtstr "$CB,\"MATCH CASE\"$\n";
   Bool	whole_labels	    fmtstr "$CB,\"WHOLE LABELS\"$\n";
-  U8	filemask[136]	    fmtstr "$DA-P,135,\"FILE MASK   :%s\"$\n";
+  U8	filemask[136]	    fmtstr "$DA-P,135,A=\"FILE MASK   :%s\"$\n";
   Bool	recurse	    fmtstr "$CB,\"RECURSE\"$\n";
 };
 
@@ -231,11 +231,11 @@ I64 GrepWiz()
     if (*dir) {
       *buf=0;
       if (g->match_case)
-	StrCat(buf,"-i");
+	CatPrint(buf,"-i");
       if (!g->recurse)
-	StrCat(buf,"-r");
+	CatPrint(buf,"-r");
       if (g->whole_labels)
-	StrCat(buf,"+l");
+	CatPrint(buf,"+l");
       if (g->replace)
 	st=MPrint("\"$$WW+H,1$$\";Cd(\"%s\");Grep(\"%Q\",\"%Q\",\"%Q\",\"%Q\");UserTaskCont;",dir,g->find_text,g->filemask,buf,g->replace_text);
       else

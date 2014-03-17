@@ -1,4 +1,4 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
 //This program can be AOT compiled to a .BIN.Z or JIT.
 //If AOT compiling, override the filename extention warning.
@@ -44,7 +44,7 @@ class Panel
 class Fish
 {
   Fish *next,*last;
-  I64 x,y,z;
+  CD3I64 p;
 } fish_root;
 
 
@@ -255,9 +255,9 @@ U0 MPDoPanels(CTask *task)
 	      tempp->color=BLUE;
 	      if (Rand<0.05) {
 		tempf=MAlloc(sizeof(Fish),task);
-		tempf->x=(i+w/2)*MAP_SCALE;
-		tempf->y=(j+h/2)*MAP_SCALE;
-		tempf->z=l;
+		tempf->p.x=(i+w/2)*MAP_SCALE;
+		tempf->p.y=(j+h/2)*MAP_SCALE;
+		tempf->p.z=l;
 		CriticalSectionStart;
 		QueIns(tempf,fish_root.last);
 		CriticalSectionEnd;
@@ -473,8 +473,8 @@ U0 MPDrawIt(CTask *task,CDC *dc)
   I64 j,strip_width,*s2w,x1,y1,z1, xx,yy,
       xh,yh,zh,yh2,xh2,x1h,y1h,x1wa,y1wa,x1wb,y1wb,
       x3,y3,z3,
-      cx=task->win_pixel_width>>1,
-      cy=task->win_pixel_height>>1;
+      cx=task->pix_width>>1,
+      cy=task->pix_height>>1;
   Panel reg *tempp;
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
@@ -604,8 +604,8 @@ U0 APEagleDiveTask(CTask *master_task)
 U0 DrawHorizon(CDC *dc)
 {
   I64 x1,y1,z1,x2,y2,z2,xh,yh,zh,*s2w=GrIdentNew,
-      cx=Fs->win_pixel_width>>1,
-      cy=Fs->win_pixel_height>>1;
+      cx=Fs->pix_width>>1,
+      cy=Fs->pix_height>>1;
   CD3I32 p[4];
   I32 *old_db=dc->depth_buf;
   dc->depth_buf=NULL;
@@ -697,8 +697,8 @@ U0 BSPEagleDive()
 {
   CDC *dc=DCAlias(main_dc,Fs);
   I64 i,xx,yy,height,bkcolor,
-      cx=Fs->win_pixel_width>>1,
-      cy=Fs->win_pixel_height>>1;
+      cx=Fs->pix_width>>1,
+      cy=Fs->pix_height>>1;
   F64 min_strip_width;
   Fish *tempf;
 
@@ -734,8 +734,8 @@ U0 BSPEagleDive()
     yy=y/COORDINATE_SCALE;
     tempf=fish_root.next;
     while (tempf!=&fish_root) {
-      if (SqrI64(tempf->x-xx)+SqrI64(tempf->y-yy)<MAP_SCALE*MAP_SCALE*20*20)
-	SpritePlot3(dc,tempf->x,tempf->y,tempf->z,__BIN_1);
+      if (SqrI64(tempf->p.x-xx)+SqrI64(tempf->p.y-yy)<MAP_SCALE*MAP_SCALE*20*20)
+	Sprite3(dc,tempf->p.x,tempf->p.y,tempf->p.z,__BIN_1);
       tempf=tempf->next;
     }
 
@@ -745,7 +745,7 @@ U0 BSPEagleDive()
     min_strip_width=MAX_F64;
     for (i=0;i<mp.mp_cnt;i++)
       min_strip_width=Min(min_strip_width,32.0*mp.strip_width[i]/(i+32.0));
-    strip_height=LimitI64(strip_height*Limit(0.25*min_strip_width/strip_height,0.9,1.1),64,1024);
+    strip_height=ClampI64(strip_height*Clamp(0.25*min_strip_width/strip_height,0.9,1.1),64,1024);
   } else {
     dc->color=bkcolor;
     GrRect(dc,0,0,dc->width,dc->height);
@@ -766,12 +766,12 @@ U0 BSPEagleDive()
 
   if (game_over && Blink) {
     dc->color=RED;
-    GrPrint(dc,(Fs->win_pixel_width-9*FONT_WIDTH)/2,
-	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Game Over");
-  } else if (tT-game_t0<5.0 && Blink) {
+    GrPrint(dc,(Fs->pix_width-9*FONT_WIDTH)/2,
+	(Fs->pix_height-FONT_HEIGHT)/2,"Game Over");
+  } else if (tS-game_t0<5.0 && Blink) {
     dc->color=WHITE;
-    GrPrint(dc,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
-	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Catch Fish");
+    GrPrint(dc,(Fs->pix_width-10*FONT_WIDTH)/2,
+	(Fs->pix_height-FONT_HEIGHT)/2,"Catch Fish");
   }
 //We made an alias of this we don't want freed.
   dc->depth_buf=NULL;
@@ -785,11 +785,11 @@ U0 AnimateTask(I64)
 {
   //This just steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1;
-  F64 t0=tT,mS;
+  F64 t0=tS,mS;
   Fish *tempf,*tempf1;
   while (TRUE) {
-    mS=1000*(tT-t0);
-    t0=tT;
+    mS=1000*(tS-t0);
+    t0=tS;
     if (!game_over) {
       //Screen to world coordinates
       s2w=GrIdentNew;
@@ -809,7 +809,7 @@ U0 AnimateTask(I64)
 	tempf=fish_root.next;
 	while (tempf!=&fish_root) {
 	  tempf1=tempf->next;
-	  if (SqrI64(tempf->x-x1)+SqrI64(tempf->y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
+	  if (SqrI64(tempf->p.x-x1)+SqrI64(tempf->p.y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
 	    game_score++;
 	    if (game_score>best_score)
 	      best_score=game_score;
@@ -828,7 +828,7 @@ U0 AnimateTask(I64)
 	  speed+=0.0001;
 	else
 	  speed-=0.0001;
-	speed=Limit(speed+(0.0005-0.0002*Abs(phi)/(pi/4)),0.1,5.0);
+	speed=Clamp(speed+(0.0005-0.0002*Abs(phi)/(pi/4)),0.1,5.0);
       }
     }
     WinMgrSync;
@@ -897,7 +897,7 @@ U0 Init(I64 _mp_cnt)
   for (i=1;i<mp.mp_cnt;i++)
     Spawn(&APEagleDiveTask,Fs,"AP EagleDive",i);
   Fs->task_end_cb=&TaskEndCB;
-  game_t0=tT;
+  game_t0=tS;
 }
 
 U0 CleanUp()
@@ -928,7 +928,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   I64 ch,sc;
   F64 pp,tt1,tt2;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   //We really can't afford to run at 60Hz.	This is how often VGA
   //memory is updated, not related to actual hardware refresh rates.
 

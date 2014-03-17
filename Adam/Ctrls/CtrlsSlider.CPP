@@ -130,15 +130,15 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedSliderCtrl(CCtrl *c)
 {
   CSliderState *s=c->state;
-  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*3+2)/2;
+  c->left=c->win_task->pix_width/2-(SLIDER_SPACING*3+2)/2;
   c->right=c->left+%d*SLIDER_SPACING+%d;
-  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->top=c->win_task->pix_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
   c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
 ",m->num_sliders+1,m->num_sliders);
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    DocPrint(doc,"  s->%s=LimitI64(s->%s,0,SLIDER_RANGE-1);\n",temps->name,temps->name);
+    DocPrint(doc,"  s->%s=ClampI64(s->%s,0,SLIDER_RANGE-1);\n",temps->name,temps->name);
     temps=temps->next;
   }
   DocPrint(doc,

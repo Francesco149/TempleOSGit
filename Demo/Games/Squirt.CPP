@@ -15,23 +15,17 @@ class MySpring:CSpring
 
 
 
-/* <1> <1> (image) */
+	/* <1> <1> (image) */
 
 
 
 
 
-/* <2> <2> (image) */
+	/* <2> <2> (image) */
 
 
 
-/* <3> <3> (image) */
-
-
-
-
-
-
+	/* <3> <3> (image) */
 
 
 
@@ -43,7 +37,13 @@ class MySpring:CSpring
 
 
 
-<4> //Pointer to sprite <6> in Camp.CPP.Z file
+
+
+
+
+
+
+/* <4> <4> (image) */ //Pointer to sprite in Camp.CPP.Z file
 
 #define HOSE_RADIUS	3
 #define LINK_SIZE	6
@@ -69,8 +69,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   MySpring *temps;
   CD3I32 poly[4];
 
-  SpritePlot3(dc,0,GROUND_Y,0,<4>);
-  if (start_up_timeout>tT) {
+  Sprite3(dc,0,GROUND_Y,0,__BIN_4);
+  if (start_up_timeout>tS) {
     ode->drag_v2=0.01; //Let hose settle during start-up
     ode->drag_v3=0.0001;
     dc->color=RED;
@@ -85,7 +85,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempm=faucet;
   dc->color=BLACK;
   GrRect(dc,tempm->x+8,tempm->y,8,GROUND_Y-FAUCET_Y);
-  SpritePlot3(dc,tempm->x,tempm->y,0,__BIN_1);
+  Sprite3(dc,tempm->x,tempm->y,0,__BIN_1);
   dc->color=BLACK;
   GrCircle(dc,tempm->x,tempm->y,tempm->radius);
   dc->color=GREEN;
@@ -96,7 +96,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dx=tempm->x-tempm1->x;
   dy=tempm->y-tempm1->y;
   nozzle_theta=Wrap(Arg(dx,dy));
-  SpritePlotRotZ3B(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
+  SpriteZ3B(dc,tempm->x,tempm->y,0,__BIN_2,nozzle_theta);
   dc->color=BLACK;
   GrCircle(dc,tempm->x,tempm->y,tempm->radius);
   dc->color=GREEN;
@@ -144,7 +144,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       x1b=x2b;
       y1b=y2b;
     } else if (tempm->type==MT_DROPLET)
-      SpritePlot3(dc,tempm->x,tempm->y,0,__BIN_3);
+      Sprite3(dc,tempm->x,tempm->y,0,__BIN_3);
     tempm=tempm->next;
   }
 
@@ -289,7 +289,7 @@ U0 MoveNozzleTaskX(I64 sign)
 {
   I64 i;
   for (i=0;i<NOZZLE_MOVE_STEPS;i++) {
-    nozzle->x=Limit(nozzle->x+
+    nozzle->x=Clamp(nozzle->x+
       sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
       HOSE_RADIUS*3,GR_WIDTH-HOSE_RADIUS*3);
     WinMgrSync;
@@ -300,26 +300,20 @@ U0 MoveNozzleTaskY(I64 sign)
 {
   I64 i;
   for (i=0;i<NOZZLE_MOVE_STEPS;i++) {
-    nozzle->y=Limit(nozzle->y+
+    nozzle->y=Clamp(nozzle->y+
       sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
       HOSE_RADIUS*3,GROUND_Y);
     WinMgrSync;
   }
 }
 
-
-U0 DrawBackGroundTextLayer()
+U0 Init()
 {
   DocClear;
   "$BG,LTCYAN$"; NewLine(GROUND_Y/FONT_HEIGHT);
-}
-
-U0 Init()
-{
-  DrawBackGroundTextLayer;
 
 //Allow hose to settle.
-  start_up_timeout=tT+0.5;
+  start_up_timeout=tS+0.5;
 
   ode=ODENew(0,5e-2,ODEF_HAS_MASSES);
   ode->derivative=&MyDerivative;
@@ -354,7 +348,7 @@ U0 SongTask(I64)
 U0 Squirt()
 {
   I64 sc;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   WinMax;

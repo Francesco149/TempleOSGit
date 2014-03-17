@@ -1,4 +1,4 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
 
 AcctRegSetDftEntry("TempleOS/CastleFrankenstein","F64 best_score=9999;\n");
@@ -137,7 +137,7 @@ Bool LOSPlot(U8 *,I64 x,I64 y,I64)
 
 Bool LOS(I64 x1,I64 y1,I64 x2,I64 y2)
 { //Line of sight
-  return LOSLine(NULL,x1*LOS_SCALE/SCREEN_SCALE,y1*LOS_SCALE/SCREEN_SCALE,0,
+  return Line(NULL,x1*LOS_SCALE/SCREEN_SCALE,y1*LOS_SCALE/SCREEN_SCALE,0,
 	       x2*LOS_SCALE/SCREEN_SCALE,y2*LOS_SCALE/SCREEN_SCALE,0,&LOSPlot);
 }
 
@@ -145,9 +145,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,j,*r1,*r2,*r3,*s2w,xx,yy,zz,x,y,x1,y1,z1,
       c,x1w,y1w,x1h,y1h,xh,yh,zh,
-      cx=task->win_pixel_width/2,
-      cy=task->win_pixel_height/2;
-  U8 *temps;
+      cx=task->pix_width/2,
+      cy=task->pix_height/2;
+  CSprite *temps;
   F64 tt;
   CD3I32 poly[4];
 
@@ -179,7 +179,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->x=cx;
   dc->y=cy;
   r1=GrRotXNew(-pi/2,task);
-  GrRotZEqu(r1,tT);
+  GrRotZEqu(r1,tS);
   GrScaleEqu(r1,MONSTER_SCALE);
 
   r2=GrIdentNew(task);
@@ -225,14 +225,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    z1=0;
 	    GrTransform(dc,&x1,&y1,&z1);
 	    if (z1>0)
-	      SpritePlotRotMat3B(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
+	      SpriteMat3B(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_5,r3);
 	  } else if (c==YELLOW) {
 	    x1=x+SCREEN_SCALE/2;
 	    y1=y+SCREEN_SCALE/2;
 	    z1=0;
 	    GrTransform(dc,&x1,&y1,&z1);
 	    if (z1>0)
-	      SpritePlotRotMat3B(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_6,r3);
+	      SpriteMat3B(dc,x+SCREEN_SCALE/2,y+SCREEN_SCALE/2,0,__BIN_6,r3);
 	  }
 
 	  if (!map[(yy+1)*map_width+xx]) {
@@ -321,11 +321,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       GrTransform(dc,&xx,&yy,&zz);
       if (zz>0) {
 	if (monsters[i].dead)
-	  SpritePlotRotMat3B(dc,x,y,0,__BIN_2,r2);
+	  SpriteMat3B(dc,x,y,0,__BIN_2,r2);
 	else {
-	  tt=Tri(tT,1.0);
+	  tt=Tri(tS,1.0);
 	  temps=SpriteInterpolate(__BIN_3,__BIN_4,tt);
-	  SpritePlotRotMat3B(dc,x,y,0,temps,r1);
+	  SpriteMat3B(dc,x,y,0,temps,r1);
 	  Free(temps);
 	}
       }
@@ -335,11 +335,11 @@ U0 DrawIt(CTask *task,CDC *dc)
   Free(r2);
   Free(r3);
 
-  //Draw Map heads-up display, scaled 2 pixels
+  //Draw Map heads-up display, scaled 2 pixs
   Free(dc->r);
   GrSetRotMat(dc,GrIdentNew(task));
-  dc->x=task->win_pixel_width -2*map_width;
-  dc->y=task->win_pixel_height-2*map_height;
+  dc->x=task->pix_width -2*map_width;
+  dc->y=task->pix_height-2*map_height;
   dc->z=0;
   dc->transform=&GrTransform;
   dc->pen_width=2;
@@ -367,7 +367,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=LTGREEN;
     GrLine(dc,cx-5,cy,cx+5,cy);
     GrLine(dc,cx,cy-5,cx,cy+5);
-    tt=tT;
+    tt=tS;
   }
   GrPrint(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
   Free(s2w);
@@ -391,7 +391,7 @@ U0 Fire()
 	if (dx*xx+dy*yy>0.995) {
 	  monsters[i].dead=TRUE;
 	  if (!--monsters_left) {
-	    tf=tT;
+	    tf=tS;
 	    if (tf-t0<best_score)
 	      best_score=tf-t0;
 	  }
@@ -418,7 +418,7 @@ U0 Init()
   map=CAlloc(map_width*map_height*sizeof(U8));
   panels_processed_bitmap=MAlloc((map_width*map_height+7)>>3);
   dc=DCNew(map_width*MAP_SCALE,map_height*MAP_SCALE);
-  SpritePlot3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
+  Sprite3(dc,-min_map_x+MAP_SCALE,-min_map_y+MAP_SCALE,0,__BIN_1);
   for (y=1;y<map_height-1;y++)
     for (x=1;x<map_width-1;x++)
       map[(map_height-1-y)*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);
@@ -436,14 +436,14 @@ U0 Init()
   }
   monsters_left=NUM_MONSTERS;
   tf=0;
-  t0=tT;
+  t0=tS;
 }
 
 U0 AnimateTask(I64)
 {
   I64 i,x,y,dd;
   while (TRUE) {
-    dd=0.25*SCREEN_SCALE*Sin(tT/2);
+    dd=0.25*SCREEN_SCALE*Sin(tS/2);
     for (i=0;i<NUM_MONSTERS;i++)
       if (!monsters[i].dead) {
 	x=monsters[i].x;
@@ -498,8 +498,8 @@ U0 MoveMan(F64 theta)
   do {
     x=man_xx+step*Cos(theta);
     y=man_yy-step*Sin(theta);
-    x=Limit(x,0,map_width*SCREEN_SCALE);
-    y=Limit(y,0,map_height*SCREEN_SCALE);
+    x=Clamp(x,0,map_width*SCREEN_SCALE);
+    y=Clamp(y,0,map_height*SCREEN_SCALE);
     color=map[y/SCREEN_SCALE*map_width+x/SCREEN_SCALE];
     if (color==RED || color==GREEN) {
       man_xx=x;
@@ -538,7 +538,7 @@ U0 CastleFrankenstein()
       "}"
       );
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=RED<<4+WHITE;
   Preempt(OFF);
   WinBorder;

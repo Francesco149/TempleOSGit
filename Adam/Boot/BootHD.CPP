@@ -11,8 +11,7 @@ BHD_CODE::
 
 	MOV	AX,VGA_TEXT_MEM_BASE/16
 	MOV	FS,AX
-	MOV	U32 FS:[4],0
-	MOV	U32 FS:[0],'B'+0x2000+('3'+0x2000)<<16
+	MOV	U32 FS:[0],'B'+GREEN<<12+('2'+GREEN<<12)<<16
 
 	MOV	AX,BOOT_HIGH_LOC
 	MOV	ES,AX
@@ -45,12 +44,12 @@ BHD_GET_IP:
 
 BHD_BIOS_DRV_NUM: DU8	0;
 
-//Gets patched by [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 BHD_BLK_CNT::	DU16	0;
 
 BHD_DAP:	DU8	16,0,1,0; //One blk at a time
 BHD_DAP_BUF:	DU16	0,0;
-//Gets patched by [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 BHD_DAP_BLK::	//64-bit
 BHD_DAP_BLK_LO:	DU32	0;
 BHD_DAP_BLK_HI:	DU32	0;
@@ -90,7 +89,7 @@ BHD_HISTART:
 //My assembler doesn't support 16-bit very well.
 	DU8	0xEA;	//JMP BOOT_RAM_BASE:0000
 	DU16	0,BOOT_RAM_BASE/16;
-//Continues here [C:/Kernel/KStart.CPP,1] ::/Kernel/KStart.CPP
+//Continues here [C:/Kernel/KStart.CPP.Z,1] ::/Kernel/KStart.CPP
 BHD_END::
 #assert BHD_END-BHD_START<MODULE_SIZE-2
 }

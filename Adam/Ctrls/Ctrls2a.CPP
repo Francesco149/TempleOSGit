@@ -1,10 +1,10 @@
-public CCtrl *CtrlFindUnique(CTask *task,I64 type)
+public CCtrl *CtrlFindUnique(CTask *haystack_task,I64 needle_type)
 {
   CCtrl *c;
   Bool old_preempt=Preempt(OFF);
-  c=task->next_ctrl;
-  while (c!=&task->next_ctrl) {
-    if (c->type==type) {
+  c=haystack_task->next_ctrl;
+  while (c!=&haystack_task->next_ctrl) {
+    if (c->type==needle_type) {
       Preempt(old_preempt);
       return c;
     }
@@ -23,15 +23,15 @@ U0 CtrlsUpdate(CTask *task)
     if (c->update_derived_vals)
       (*c->update_derived_vals)(c);
     if (c->flags&CTRLF_BORDER) {
-      c->screen_left  =gr_pan_text_x+task->win_pixel_left+c->left-FONT_WIDTH;
-      c->screen_right =gr_pan_text_x+task->win_pixel_left+c->right-FONT_WIDTH;
-      c->screen_top   =gr_pan_text_y+task->win_pixel_top+c->top-FONT_HEIGHT;
-      c->screen_bottom=gr_pan_text_y+task->win_pixel_top+c->bottom-FONT_HEIGHT;
+      c->screen_left  =gr_pan_text_x+task->pix_left+c->left-FONT_WIDTH;
+      c->screen_right =gr_pan_text_x+task->pix_left+c->right-FONT_WIDTH;
+      c->screen_top   =gr_pan_text_y+task->pix_top+c->top-FONT_HEIGHT;
+      c->screen_bottom=gr_pan_text_y+task->pix_top+c->bottom-FONT_HEIGHT;
     } else {
-      c->screen_left  =gr_pan_text_x+task->win_pixel_left+c->left;
-      c->screen_right =gr_pan_text_x+task->win_pixel_left+c->right;
-      c->screen_top   =gr_pan_text_y+task->win_pixel_top+c->top;
-      c->screen_bottom=gr_pan_text_y+task->win_pixel_top+c->bottom;
+      c->screen_left  =gr_pan_text_x+task->pix_left+c->left;
+      c->screen_right =gr_pan_text_x+task->pix_left+c->right;
+      c->screen_top   =gr_pan_text_y+task->pix_top+c->top;
+      c->screen_bottom=gr_pan_text_y+task->pix_top+c->bottom;
     }
     c=c->next;
   }
@@ -71,10 +71,10 @@ U0 DrawCtrls(CTask *task)
     if (c->flags&CTRLF_SHOW) {
       if (c->flags&CTRLF_BORDER) {
 	if (!Bt(&task->display_flags,DISPLAYf_NO_BORDER)) {
-	  PushFD;
-	  Cli;
+	  PUSHFD
+	  CLI
 	  while (LBts(&task->locked_flags,TASKLf_TASK_LOCK))
-	    Pause;
+	    PAUSE
 
 	  task->win_left--; //Allow drawing on border
 	  task->win_right++;
@@ -83,15 +83,15 @@ U0 DrawCtrls(CTask *task)
 	  WinDerivedValsUpdate(task);
 
 	  LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
-	  PopFD;
+	  POPFD
 
 	  if (c->draw_it)
 	    (*c->draw_it)(dc,c);
 
-	  PushFD;
-	  Cli;
+	  PUSHFD
+	  CLI
 	  while (LBts(&task->locked_flags,TASKLf_TASK_LOCK))
-	    Pause;
+	    PAUSE
 
 	  task->win_left++;
 	  task->win_right--;
@@ -100,7 +100,7 @@ U0 DrawCtrls(CTask *task)
 	  WinDerivedValsUpdate(task);
 
 	  LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
-	  PopFD;
+	  POPFD
 	}
       } else
 	if (c->draw_it)
@@ -147,15 +147,15 @@ U0 WinDerivedScrollValsUpdate(CCtrl *c)
   if (!range) range=1;
   switch (c->type) {
     case CTRLT_WIN_HSCROLL:
-      c->left  =gr_pan_text_x+FONT_WIDTH-WIN_SCROLL_BORDER_BONUS+(s->pos-s->min)*(c->win_task->win_pixel_width+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE)/range;
+      c->left  =gr_pan_text_x+FONT_WIDTH-WIN_SCROLL_BORDER_BONUS+(s->pos-s->min)*(c->win_task->pix_width+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE)/range;
       c->right =c->left+WIN_SCROLL_SIZE-1;
-      c->top   =gr_pan_text_y+FONT_HEIGHT+(FONT_WIDTH-WIN_SCROLL_SIZE)/2+c->win_task->win_pixel_height;
+      c->top   =gr_pan_text_y+FONT_HEIGHT+(FONT_WIDTH-WIN_SCROLL_SIZE)/2+c->win_task->pix_height;
       c->bottom=c->top+WIN_SCROLL_SIZE-1;
       break;
     case CTRLT_WIN_VSCROLL:
-      c->left  =gr_pan_text_x+FONT_WIDTH+(FONT_WIDTH-WIN_SCROLL_SIZE)/2+c->win_task->win_pixel_width;
+      c->left  =gr_pan_text_x+FONT_WIDTH+(FONT_WIDTH-WIN_SCROLL_SIZE)/2+c->win_task->pix_width;
       c->right =c->left+WIN_SCROLL_SIZE-1;
-      c->top   =gr_pan_text_y+FONT_HEIGHT-WIN_SCROLL_BORDER_BONUS+(s->pos-s->min)*(c->win_task->win_pixel_height+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE)/range;
+      c->top   =gr_pan_text_y+FONT_HEIGHT-WIN_SCROLL_BORDER_BONUS+(s->pos-s->min)*(c->win_task->pix_height+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE)/range;
       c->bottom=c->top+WIN_SCROLL_SIZE-1;
       break;
   }
@@ -165,7 +165,7 @@ U0 LeftClickHWinScroll(CCtrl *c,I64 x,I64,Bool down)
 {
   CTask *task=c->win_task;
   CWinScroll *s=c->state;
-  I64 range=task->win_pixel_width+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE;
+  I64 range=task->pix_width+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE;
   LBts(&s->flags,WSSf_SET_TO_POS);
   s->pos=((x-(FONT_WIDTH-WIN_SCROLL_BORDER_BONUS))*(s->max-s->min+1)+range/2)/range+s->min;
   if (down)
@@ -180,7 +180,7 @@ U0 LeftClickVWinScroll(CCtrl *c,I64,I64 y,Bool down)
 {
   CTask *task=c->win_task;
   CWinScroll *s=c->state;
-  I64 range=task->win_pixel_height+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE;
+  I64 range=task->pix_height+2*WIN_SCROLL_BORDER_BONUS-WIN_SCROLL_SIZE;
   LBts(&s->flags,WSSf_SET_TO_POS);
   s->pos=((y-(FONT_HEIGHT-WIN_SCROLL_BORDER_BONUS))*(s->max-s->min+1)+range/2)/range+s->min;
   if (down)
@@ -318,13 +318,13 @@ U0 DrawViewAnglesCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedViewAnglesCtrl(CCtrl *c)
 {
   CViewAngles *s=c->state;
-  c->left=c->win_task->win_pixel_width-(VIEWANGLES_SPACING*4+3);
+  c->left=c->win_task->pix_width-(VIEWANGLES_SPACING*4+3);
   c->right=c->left+VIEWANGLES_SPACING*4+3;
-  c->top=c->win_task->win_pixel_height-(VIEWANGLES_SPACING*2+VIEWANGLES_RANGE);
+  c->top=c->win_task->pix_height-(VIEWANGLES_SPACING*2+VIEWANGLES_RANGE);
   c->bottom=c->top+VIEWANGLES_SPACING*2+VIEWANGLES_RANGE;
-  s->sx=LimitI64(RoundI64(s->sx,VIEWANGLES_SNAP),0,VIEWANGLES_RANGE-1);
-  s->sy=LimitI64(RoundI64(s->sy,VIEWANGLES_SNAP),0,VIEWANGLES_RANGE-1);
-  s->sz=LimitI64(RoundI64(s->sz,VIEWANGLES_SNAP),0,VIEWANGLES_RANGE-1);
+  s->sx=ClampI64(RoundI64(s->sx,VIEWANGLES_SNAP),0,VIEWANGLES_RANGE-1);
+  s->sy=ClampI64(RoundI64(s->sy,VIEWANGLES_SNAP),0,VIEWANGLES_RANGE-1);
+  s->sz=ClampI64(RoundI64(s->sz,VIEWANGLES_SNAP),0,VIEWANGLES_RANGE-1);
   s->ax=2*pi*s->sx/VIEWANGLES_RANGE;
   s->ay=2*pi*s->sy/VIEWANGLES_RANGE;
   s->az=2*pi*s->sz/VIEWANGLES_RANGE;

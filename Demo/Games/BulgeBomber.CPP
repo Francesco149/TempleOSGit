@@ -69,8 +69,8 @@ F64 v,x,y,
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i;
-  dc->x=task->win_pixel_width>>1;
-  dc->y=task->win_pixel_height>>1;
+  dc->x=task->pix_width>>1;
+  dc->y=task->pix_height>>1;
   dc->flags|=DCF_TRANSFORMATION;
   GrSetTranslation(dc->r,x,y,0);
   GrRotZEqu(dc->r,theta);
@@ -83,32 +83,32 @@ U0 DrawIt(CTask *task,CDC *dc)
 	     tk[i].x+1024*Cos(tk[i].theta),tk[i].y+1024*Sin(tk[i].theta),0);
       }
       if (Blink(15))
-	SpritePlotRotZ3B(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
+	SpriteZ3B(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
       else
-	SpritePlotRotZ3B(dc,tk[i].x,tk[i].y,0,__BIN_5,tk[i].theta);
+	SpriteZ3B(dc,tk[i].x,tk[i].y,0,__BIN_5,tk[i].theta);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     } else
-      SpritePlotRotZ3B(dc,tk[i].x,tk[i].y,0,__BIN_3,tk[i].theta);
+      SpriteZ3B(dc,tk[i].x,tk[i].y,0,__BIN_3,tk[i].theta);
   for (i=0;i<NUM_TREES;i++)
-    SpritePlot3(dc,tr[i].x,tr[i].y,0,__BIN_2);
+    Sprite3(dc,tr[i].x,tr[i].y,0,__BIN_2);
   if (bt) {
-    if (bt+0.5<tT)
+    if (bt+0.5<tS)
       bt=0;
     else {
       if (Blink(10))
-	SpritePlot3(dc,bx,by,0,__BIN_6);
+	Sprite3(dc,bx,by,0,__BIN_6);
       else
-	SpritePlot3(dc,bx,by,0,__BIN_7);
+	Sprite3(dc,bx,by,0,__BIN_7);
     }
   }
   dc->flags&=~DCF_TRANSFORMATION;
-  SpritePlot3(dc,task->win_pixel_width>>1,task->win_pixel_height>>1,0,__BIN_1);
+  Sprite3(dc,task->pix_width>>1,task->pix_height>>1,0,__BIN_1);
   dc->color=RED;
   GrPrint(dc,0,0,
     "Tanks:%02d  KeyStrokes:%04d Best:%04d",tank_cnt,key_cnt,best_score);
   if (!tank_cnt && Blink(4))
-    GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
-		(task->win_pixel_height-FONT_HEIGHT)>>1-32,"Game Over");
+    GrPrint(dc,(task->pix_width-FONT_WIDTH*9)>>1,
+		(task->pix_height-FONT_HEIGHT)>>1-32,"Game Over");
 }
  
 U0 BombDrop()
@@ -116,7 +116,7 @@ U0 BombDrop()
   I64 i;
   bx=-x;
   by=-y;
-  bt=tT;
+  bt=tS;
   Noise(200,500,1000);
   for (i=0;i<NUM_TANKS;i++) {
     if (!tk[i].dead) {
@@ -136,8 +136,8 @@ U0 BombDrop()
  
 I64 AnimateTask(CTask *parent)
 { //Starts with preempt OFF
-  I64 w=parent->win_pixel_width,
-      h=parent->win_pixel_height;
+  I64 w=parent->pix_width,
+      h=parent->pix_height;
   while (TRUE) {
     if (tank_cnt)
       Snd(100+(1.0+Abs(Wrap(thetaf-theta,-pi)))`4.0);
@@ -191,7 +191,7 @@ U0 BulgeBomber()
   "  Bomb(,CH_SPACE);"
       "}"
       );
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WordStat;
   WinMax;
   Preempt(OFF);

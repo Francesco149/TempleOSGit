@@ -304,7 +304,8 @@ I64 WSHitsInc(CWSMatrix *m,I64 col,I64 row)
 
 U0 WSSingleFileAdd(U8 *buf,I64 pass)
 {
-  U8 ch,*ptr=buf,*ptr2,*ptr3;
+  I64 ch;
+  U8 *ptr=buf,*ptr2,*ptr3;
   CHashWS *cur_ptr,*last_ptr=NULL;
   while (TRUE) {
     while (TRUE) {
@@ -502,14 +503,18 @@ pc_done:
   for (i=0;i<ws_num_fillins;i++) {
     st=ws_sorted_words[ws_fillin_matches[i]]->str;
     ch=CH_SPACE;
+    DocPrint(doc,"F%02d ",i+1);
     if (TaskValidate(focus_task) &&
 	(temph=HashFind(st,focus_task->hash_table,HTG_SRC_SYM)) &&
-	temph->src_link)
-      DocPrint(doc,"F%02d $LK+PU,\"%Q\",\"%s\"$\n",i+1,st,temph->src_link);
-    else
-      DocPrint(doc,"F%02d %s\n",i+1,st);
+	temph->src_link) {
+      if (temph->type&HTF_PUBLIC)
+	DocPrint(doc,"$RED$");
+      DocPrint(doc,"$TX+UL+L+PU,\"%Q\",A=\"%s\"$$FG$\n",st,temph->src_link);
+    } else
+      DocPrint(doc,"%s\n",st);
   }
-  WSDDictWordsAdd(doc);
+  if (wsd_has_words)
+    WSDDictWordsAdd(doc);
 
   DocRecalc(doc);
   if (!LBts(&Fs->display_flags,DISPLAYf_SHOW))
@@ -559,7 +564,7 @@ U0 WSTask(I64)
       break;
     doc=DocPut;
     DocLock(doc);
-    if (doc->cur_entry!=doc && doc->cur_entry->type_u8==DOCT_LINK)
+    if (doc->cur_entry!=doc && doc->cur_entry->flags1 & DOCEF1_LINK)
       '' CH_SPACE;
     DocUnlock(doc);
   }
@@ -568,22 +573,20 @@ U0 WSTask(I64)
 
 U0 WSMainFileLstTraverse(U8 *files_find_mask,I64 pass)
 {
-  I64 i,cnt;
-  CDirEntry **flst=NULL;
   U8 *buf;
+  CDirEntry *tempde,*tempde1;
   try {
-    flst=FilesOrder(FilesFind(files_find_mask,
-	FUF_RECURSE|FUF_JUST_TXT|FUF_JUST_FILES),&cnt);
-    for (i=0;i<cnt;i++) {
-      "%s\n",flst[i]->full_name;
-      buf=TextFileRead(flst[i]->full_name);
+    tempde=tempde1=FilesFind(files_find_mask,FUF_RECURSE|FUF_JUST_TXT|FUF_JUST_FILES|FUF_CLUSTER_ORDER);
+    while (tempde) {
+      "%s\n",tempde->full_name;
+      buf=FileRead(tempde->full_name);
       WSSingleFileAdd(buf,pass);
       Free(buf);
-      DirEntryDel(flst[i]);
+      tempde=tempde->next;
     }
   } catch
     Fs->catch_except=TRUE;
-  Free(flst);
+  DirLstDel(tempde1);
 }
 
 U0 WSMatrixDel(CWSMatrix *m)
@@ -606,9 +609,11 @@ U0 WSMatrixDel(CWSMatrix *m)
 
 public Bool WordStat(Bool val=OFF)
 {
-  Bool old_wordstat=FALSE,
-	 old_preempt=Preempt(OFF);
+  Bool	old_wordstat=FALSE,
+	old_preempt=Preempt(OFF);
   if (val) {
+    while (Bt(&ws_flags,WSf_INIT_IN_PROGRESS))
+      Sleep(10);
     if (TaskValidate(ws_task))
       old_wordstat=TRUE;
     else {
@@ -635,7 +640,7 @@ U0 WSProgressTask(Bool *_start_flag)
 {
   I64 start=sys_dsk_writes;
   progress1=0;
-  progress1_max=(FileSizeExpanded(WSD_DEF_FILENAME_Z)+BLK_SIZE-1)>>BLK_SIZE_BITS;
+  progress1_max=(Size(WSD_DEF_FILENAME_Z,"+x+s")+BLK_SIZE-1)>>BLK_SIZE_BITS;
   StrCpy(progress1_desc,"Uncompressing Dictionary");
   start=sys_dsk_writes;
   *_start_flag=TRUE;
@@ -655,7 +660,6 @@ public U0 WSInit(U8 *mask=NULL)
 
   while (LBts(&ws_flags,WSf_INIT_IN_PROGRESS))
     Yield;
-
   WordStat;
 
   if (IsDrvWritable && FileFind(WSD_DEF_FILENAME_Z) && !FileFind(WSD_DEF_FILENAME)) {
@@ -703,8 +707,8 @@ public U0 WSInit(U8 *mask=NULL)
   if (mask) WSMainFileLstTraverse(mask,2);
 
   WSDWordsLoad;
-  WordStat(ON);
   LBtr(&ws_flags,WSf_INIT_IN_PROGRESS);
+  WordStat(ON);
 }
 
 I64 WordStatSize()

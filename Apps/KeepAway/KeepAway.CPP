@@ -1,5 +1,5 @@
 //The ball and men were generated
-//with [C:/Apps/GrModels/Run.CPP,1].
+//with [C:/Apps/GrModels/Run.CPP.Z,1].
 //They were cut-and-pasted here.
 
 
@@ -210,7 +210,7 @@
 
 class Frame
 {
-  U8 *img[2];
+  CSprite *img[2];
   F64 dt;
 };
 
@@ -266,7 +266,7 @@ This is just a video game. Relax.
 #define FIRST_STOPPED_DRIBBLING	(LAST_DRIBBLING+1)
 #define LAST_STOPPED_DRIBBLING	(FIRST_STOPPED_DRIBBLING+NUM_STOPPED_DRIBBLING_IMGS-1)
 
-Frame man_imgs[LAST_STOPPED_DRIBBLING+1]={
+Frame imgs[LAST_STOPPED_DRIBBLING+1]={
 {{__BIN_6,__BIN_7},2*DRIBBLE_T/NUM_RUNNING_IMGS},{{__BIN_2,__BIN_3},2*DRIBBLE_T/NUM_RUNNING_IMGS},
 {{__BIN_6,__BIN_7},2*DRIBBLE_T/NUM_RUNNING_IMGS},{{__BIN_4,__BIN_5},2*DRIBBLE_T/NUM_RUNNING_IMGS},
 {{__BIN_8,__BIN_9},0.1},{{__BIN_10,__BIN_11},0.2},{{__BIN_12,__BIN_13},0.2},{{__BIN_12,__BIN_13},0.1},{{__BIN_14,__BIN_15},0.1},
@@ -305,7 +305,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/TempleOS/Kernel/Adam1a.HPP.Z,336] CMathODE feat,
+I also didn't use the [C:/Kernel/Adam1a.HPP.Z,250] CMathODE feat,
 just to be different.
 */
 
@@ -322,12 +322,12 @@ U0 DrawObj(CDC *dc,Obj *o,F64 tt)
   GrFloodFill(dc,o->x,o->y/2);
 
   if (o==ball)
-    SpritePlot3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
+    Sprite3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
   else {
-    temps=SpriteInterpolate(man_imgs[o->last_img].img[o->team],
-	man_imgs[o->next_img].img[o->team],
+    temps=SpriteInterpolate(imgs[o->last_img].img[o->team],
+	imgs[o->next_img].img[o->team],
 	(tt-o->last_t0)/(o->next_t0-o->last_t0));
-    SpritePlotRotY3B(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,temps,o->ay);
+    SpriteY3B(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,temps,o->ay);
     Free(temps);
   }
 }
@@ -340,7 +340,7 @@ I64 ObjCompare(Obj *o1,Obj *o2)
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  F64 tt=tT,d,d_down,d_up;
+  F64 tt=tS,d,d_down,d_up;
   I64 i;
   Obj *o_sort[NUM_OBJS],*o;
 
@@ -356,8 +356,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->pen_width=2;
   dc->color=RED;
   GrLineRect4(dc,COURT_BORDER,COURT_BORDER,
-      task->win_pixel_width -1-COURT_BORDER,
-      task->win_pixel_height-1-COURT_BORDER);
+      task->pix_width -1-COURT_BORDER,
+      task->pix_height-1-COURT_BORDER);
   for (i=0;i<NUM_OBJS;i++) {
     o=o_sort[i]=&objs[i];
     if (o!=ball) {
@@ -374,7 +374,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       }
       if (tt>o->next_t0) {
 	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET || Abs(ball->DzDt)<30)) {
-	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/TempleOS/Kernel/Adam1b.HPP.Z,247] Exp().
+	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/Kernel/Adam1b.HPP.Z,234] Exp().
 	//However, we should be syncronized to img frames, so we don't have to be perfect.
 	  d_down=1.0;
 	  d_up	=1.0/COLLISION_DAMP; //Up bounce takes higher percentage because speed lost in collision.
@@ -417,9 +417,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  if (!(FIRST_RUNNING<=o->next_img<=LAST_RUNNING))
 	    o->next_img=FIRST_RUNNING;
 	}
-	o->next_t0+=man_imgs[o->last_img].dt;
+	o->next_t0+=imgs[o->last_img].dt;
 	if (o->next_t0<=tt)
-	  o->next_t0=tt+man_imgs[o->last_img].dt;
+	  o->next_t0=tt+imgs[o->last_img].dt;
       }
     }
   }
@@ -427,19 +427,19 @@ U0 DrawIt(CTask *task,CDC *dc)
   QSortI64(o_sort,NUM_OBJS,&ObjCompare);
   for (i=0;i<NUM_OBJS;i++)
     DrawObj(dc,o_sort[i],tt);
-  tt=(game_t_end-tT)/60;
+  tt=(game_t_end-tS)/60;
   if (tt<=0) {
     dc->color=RED;
     tt=0;
     if (Blink)
-      GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*9)>>1,
-		    (task->win_pixel_height-FONT_HEIGHT)>>1,"Game Over");
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*9)>>1,
+		    (task->pix_height-FONT_HEIGHT)>>1,"Game Over");
   } else {
-    if (tT<foul_t_end) {
+    if (tS<foul_t_end) {
       dc->color=LTRED;
       if (Blink)
-	GrPrint(dc,(task->win_pixel_width-FONT_WIDTH*4)>>1,
-		     (task->win_pixel_height-FONT_HEIGHT)>>1,"Foul");
+	GrPrint(dc,(task->pix_width-FONT_WIDTH*4)>>1,
+		     (task->pix_height-FONT_HEIGHT)>>1,"Foul");
     }
     dc->color=BLACK;
   }
@@ -469,13 +469,13 @@ U0 Shoot(Obj *o)
 
 U0 AnimateTask(CTask *parent_task)
 {
-  F64 d,dx,dy,dt,dx2,dy2,t0=tT;
+  F64 d,dx,dy,dt,dx2,dy2,t0=tS;
   I64 i,j,team;
   Bool gets_ball,ball_stolen;
   Obj *o;
   while (TRUE) {
-    dt=tT-t0;
-    t0=tT;
+    dt=tS-t0;
+    t0=tS;
 
     if (game_t_end && game_t_end<t0) {
       game_t_end=0;
@@ -538,8 +538,8 @@ U0 AnimateTask(CTask *parent_task)
 	    Shoot(o);
 	  if (!o->shooting) {
 	    if (o==human) {
-	      dx=(ipx-parent_task->win_pixel_left-parent_task->win_scroll_x)-o->x;
-	      dy=(ipy-parent_task->win_pixel_top-parent_task->win_scroll_y)*2-o->y;
+	      dx=(ipx-parent_task->pix_left-parent_task->scroll_x)-o->x;
+	      dy=(ipy-parent_task->pix_top-parent_task->scroll_y)*2-o->y;
 	    } else {
 	      dx=o->DxDt+=RANDOM_MAN_ACCELERATION/sqrt2*RandI16/MAX_I16*dt;
 	      dy=o->DyDt+=RANDOM_MAN_ACCELERATION/sqrt2*RandI16/MAX_I16*dt;
@@ -585,8 +585,8 @@ U0 AnimateTask(CTask *parent_task)
 	    o->z+=dt*(o->DzDt-0.5*GRAVITY_ACCELERATION*dt);
 	}
 
-	if (o->x+o->radius>=parent_task->win_pixel_width-COURT_BORDER) {
-	  o->x=parent_task->win_pixel_width-COURT_BORDER-1-o->radius;
+	if (o->x+o->radius>=parent_task->pix_width-COURT_BORDER) {
+	  o->x=parent_task->pix_width-COURT_BORDER-1-o->radius;
 	  o->DxDt=-COLLISION_DAMP*o->DxDt;
 	  if (o==ball)
 	    Noise(10,1000,2000);
@@ -598,8 +598,8 @@ U0 AnimateTask(CTask *parent_task)
 	    Noise(10,1000,2000);
 	}
 
-	if (o->y+o->radius*2>=(parent_task->win_pixel_height-COURT_BORDER)*2) {
-	  o->y=(parent_task->win_pixel_height-COURT_BORDER)*2-1-o->radius*2;
+	if (o->y+o->radius*2>=(parent_task->pix_height-COURT_BORDER)*2) {
+	  o->y=(parent_task->pix_height-COURT_BORDER)*2-1-o->radius*2;
 	  o->DyDt=-COLLISION_DAMP*o->DyDt;
 	  if (o==ball)
 	    Noise(10,1000,2000);
@@ -639,19 +639,19 @@ U0 Init()
   MemSet(&objs,0,sizeof(objs));
   for (i=0;i<NUM_PER_SIDE*2;i++) {
     objs[i].team=i&1;
-    objs[i].x=Fs->win_pixel_width/2;
-    objs[i].y=2*Fs->win_pixel_height/2;
+    objs[i].x=Fs->pix_width/2;
+    objs[i].y=2*Fs->pix_height/2;
     objs[i].next_img=objs[i].last_img=FIRST_RUNNING;
   }
   human=&objs[0];
   ball =&objs[i];
   ball->team=-1;
-  ball->x=0.5*Fs->win_pixel_width/2;
-  ball->y=0.5*2*Fs->win_pixel_height/2;
+  ball->x=0.5*Fs->pix_width/2;
+  ball->y=0.5*2*Fs->pix_height/2;
   ball->radius=11;
   ball->z=ball->radius;
   score0=score1=0;
-  game_t_end=tT+3*60;
+  game_t_end=tS+3*60;
   foul_t_end=0;
 }
 
@@ -667,7 +667,7 @@ U0 KeepAway()
     "$RED$Pass or hand-off to score points.$FG$\n\n"
     "Left-Click to pass.\n"
     "Right-Click to jump.\n");
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK+YELLOW<<4;
   WinMax;
   WinBorder;

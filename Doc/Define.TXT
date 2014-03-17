@@ -6,4 +6,4 @@ especially efficient.
 Each task can load it's own Define strings.  If a string is not found, the 
 parent task's table is searched.
 
-See [C:/Demo/Define.CPP,1].
+See [C:/Demo/Define.CPP.Z,1].

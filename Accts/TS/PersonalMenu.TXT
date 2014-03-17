@@ -22,7 +22,7 @@ TSMakeOSPrtBootInstall(TS_MAIN_DRV_LET);
 `
 
 
-[C:/Doc/ChangeLog.TXT,1] ChangeLog [C:/Doc/HelpIndex.TXT,1] Help [C:/Doc/DemoIndex.TXT,1] Demo Key Map
+[C:/Doc/ChangeLog.TXT.Z,1] ChangeLog [C:/Doc/HelpIndex.TXT.Z,1] Help [C:/Doc/DemoIndex.TXT.Z,1] Demo Key Map
 `KeyMap;View;
 `
  Take Tour
@@ -75,6 +75,11 @@ Cd("/Adam/Gr");Dir;
 `Cd("/Adam/Gr");Dir;
 `
 
+Cd("/Adam/God");Dir;
+
+`Cd("/Adam/God");Dir;
+`
+
 Cd("/Adam/Utils");Dir;
 
 `Cd("/Adam/Utils");Dir;
@@ -115,6 +120,11 @@ Cd("/Accts/TS/Wb2");Dir;
 `Cd("/Accts/TS/Wb2");Dir;
 `
 
+Cd("/Accts/TS/Wb2/Rants/TAD");Dir;
+
+`Cd("/Accts/TS/Wb2/Rants/TAD");Dir;
+`
+
 Cd(TS_BLOG_DIR);Dir;
 
 `Cd(TS_BLOG_DIR);Dir;
@@ -135,11 +145,6 @@ Cd("/Apps");Dir;
 `Cd("/Apps");Dir;
 `
 
-Cd("/Apps/HolySpirit");Dir;
-
-`Cd("/Apps/HolySpirit");Dir;
-`
-
 Cd("/Apps/Span");Dir;
 
 `Cd("/Apps/Span");Dir;
@@ -155,9 +160,9 @@ Cd("/Apps/AfterEgypt");Dir;
 `Cd("/Apps/AfterEgypt");Dir;
 `
 
-Cd("/Apps/Strut");Dir;
+Cd("/Apps/ToTheFront");Dir;
 
-`Cd("/Apps/Strut");Dir;
+`Cd("/Apps/ToTheFront");Dir;
 `
 
 Cd("/Misc/Tour");Dir;
@@ -259,14 +264,14 @@ MakeWebSitePartial;
 `MakeWebSitePartial;
 `
 
-M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_BAK_DRV ":/*;~*LineCnt*","+r+d");
+Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_BAK_DRV ":/*;~*LineRep*","+r+d");
 
-`M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_BAK_DRV ":/*;~*LineCnt*","+r+d");
+`Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_BAK_DRV ":/*;~*LineRep*","+r+d");
 `
 
-M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_CDROM_DRV ":/*;~*LineCnt*","+r+d");
+Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_CDROM_DRV ":/*;~*LineRep*","+r+d");
 
-`M(TS_MAIN_DRV ":/*;~*LineCnt*",TS_CDROM_DRV ":/*;~*LineCnt*","+r+d");
+`Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_CDROM_DRV ":/*;~*LineRep*","+r+d");
 `
 
 ChgDsk(TS_CDROM_DRV_LET);
@@ -280,79 +285,125 @@ SoftBootMenu(TS_MAIN_DRV_LET);
 `
 
 Make TS Distro ISO
-`MakeTSDistro;   Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSTS.ISO");
+`MakeTSDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSTS.ISO");
 `
-  Burn TS Distro CD 
-`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+ Burn TS Distro CD 
+`MakeTSDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
-  Burn TS Distro DVD
-`MakeTSDistro;   CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+ Burn TS Distro DVD
+`MakeTSDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+Make Dbg Distro ISO
+`MakeDbgDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSDbg.ISO");
+`
+ Burn Dbg Distro CD 
+`MakeDbgDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+ Burn Dbg Distro DVD
+`MakeDbgDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
 Make Std Distro ISO
-`MakeStdDistro;Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSCD.ISO");
+`MakeStdDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSCD.ISO");
 `
  Burn Std Distro CD 
-`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeStdDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
 `
  Burn Std Distro DVD
-`MakeStdDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeStdDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
 `
 
-  
-  
-  
-  
-  
-  
-  
-  
-  ToTheFront <1> (image) Logic <2> (image) Lines <3> (image) TimeOut <4> (image) 
-  
-  
-  
-  
-  
-  
-  
-  
-  X-Caliber <5> (image) JukeBox <6> (image) Organ <7> (image)  Vocab <8> (image) 
-  
-  
-  
-  
-  
-  KeepAway <9> (image) Models <10> (image) RawHide <11> (image) BugBird <12> (image)
-  
-  
-  
-  
-  
-  
-  
-  
-  EagleDive <13> (image) BigGuns <14> (image)  Span <15> (image)  ZoneOut <16> (image)
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  AfterEgypt <17> (image) Frankenstein <18> (image) Wenceslas <19> (image)
-  
-  
-  
-  
-  
-  
-  FlatTops <20> (image) Bomber <21> (image) Strut <22> (image) TheDead <23> (image) DunGen <24> (image)  
-  
+Make Lite Distro ISO
+`MakeLiteDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSLite.ISO");
+`
+ Burn Lite Distro CD 
+`MakeLiteDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+ Burn Lite Distro DVD
+`MakeLiteDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
 
-[C:/TempleOS/Misc/Bible.TXT.Z,297] Bible
+Make Ultra Distro ISO
+`MakeUltraDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSUltra.ISO");
+`
+ Burn Ultra Distro CD 
+`MakeUltraDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`
+ Burn Ultra Distro DVD
+`MakeUltraDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`
+
+
+
+
+
+
+
+
+
+
+AfterEgypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
+
+
+
+
+
+
+
+
+Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image) BugBird <8> (image)
+
+
+
+
+
+
+
+FlatTops <9> (image) Bomber <10> (image) Strut <11> (image) TheDead <12> (image) DunGen <13> (image)  
+
+
+
+
+
+
+
+
+EagleDive <14> (image)  Span <15> (image)  RawHide <16> (image) KeepAway <17> (image)
+
+
+
+
+
+
+
+
+
+
+X-Caliber <18> (image) ToTheFront <19> (image) Wenceslas <20> (image)
+
+
+
+
+
+
+
+
+
+JukeBox <21> (image) Organ <22> (image)  Logic <23> (image) Models <24> (image) Vocab <25> (image) 
+
+
+
+
+
+
+BigGuns <26> (image) Digits (Memory Game)
+`#include "/Demo/Games/Digits"`
+ MemRep
+`MemRep;View;`
+
+
+[C:/Misc/Bible.TXT.Z,297] Bible
 SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");
 `SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");`
 

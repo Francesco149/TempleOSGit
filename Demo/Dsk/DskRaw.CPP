@@ -37,5 +37,5 @@ U0 RawAccess(I64 drv_let=0)
 
 RawAccess;
 
-//See [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,320] RBlks(), [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,353] WBlks(), [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,15] PrtLock(), [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,47] PrtUnlock()
-//[C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,3] DBlk(), [C:/TempleOS/Adam/Dsk/Dsk2a.CPP.Z,21] DCluster(), [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,1] BlkDevLock() and [C:/TempleOS/Kernel/Dsk/Dsk1a.CPP.Z,28] BlkDevUnlock().
+//See [C:/Kernel/Dsk/Dsk1a.CPP.Z,311] RBlks(), [C:/Kernel/Dsk/Dsk1a.CPP.Z,348] WBlks(), [C:/Kernel/Dsk/Dsk1a.CPP.Z,15] PrtLock(), [C:/Kernel/Dsk/Dsk1a.CPP.Z,44] PrtUnlock()
+//[C:/Adam/Dsk/Dsk2a.CPP.Z,3] DBlk(), [C:/Adam/Dsk/Dsk2a.CPP.Z,21] DCluster(), [C:/Kernel/Dsk/Dsk1a.CPP.Z,1] BlkDevLock() and [C:/Kernel/Dsk/Dsk1a.CPP.Z,28] BlkDevUnlock().

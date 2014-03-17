@@ -246,46 +246,46 @@ U8 *ScanCode2KeyName(I64 sc)
   U8 buf[136],*st;
   *buf=0;
   if (sc&SCF_CTRL)
-    StrCat(buf,"CTRL ");
+    CatPrint(buf,"CTRL ");
   if (sc&SCF_ALT)
-    StrCat(buf,"ALT ");
+    CatPrint(buf,"ALT ");
   if (sc&SCF_SHIFT)
-    StrCat(buf,"SHIFT ");
+    CatPrint(buf,"SHIFT ");
   if (ch=ScanCode2A(sc&255)) {
     st=A2KeyName(ch,FALSE);
     StrCpy(buf+StrLen(buf),st);
     Free(st);
   } else {
     switch (sc&255) {
-      case SC_BACKSPACE:StrCat(buf,"BACK");	break;
-      case SC_CAPS:	StrCat(buf,"CAPS");	break;
-      case SC_NUM:	StrCat(buf,"NUM");	break;
-      case SC_SCROLL:	StrCat(buf,"SCROLL");	break;
-      case SC_CURSOR_UP:StrCat(buf,"UP");	break;
-      case SC_CURSOR_DOWN:StrCat(buf,"DOWN");	break;
-      case SC_CURSOR_LEFT:StrCat(buf,"LEFT");	break;
-      case SC_CURSOR_RIGHT:StrCat(buf,"RIGHT");	break;
-      case SC_PAGE_UP:	StrCat(buf,"PAGE_UP");	break;
-      case SC_PAGE_DOWN:StrCat(buf,"PAGE_DOWN");break;
-      case SC_HOME:	StrCat(buf,"HOME");	break;
-      case SC_END:	StrCat(buf,"END");	break;
-      case SC_INS:	StrCat(buf,"INS");	break;
-      case SC_DELETE:	StrCat(buf,"DELETE");	break;
-      case SC_F1:	StrCat(buf,"F1");	break;
-      case SC_F2:	StrCat(buf,"F2");	break;
-      case SC_F3:	StrCat(buf,"F3");	break;
-      case SC_F4:	StrCat(buf,"F4");	break;
-      case SC_F5:	StrCat(buf,"F5");	break;
-      case SC_F6:	StrCat(buf,"F6");	break;
-      case SC_F7:	StrCat(buf,"F7");	break;
-      case SC_F8:	StrCat(buf,"F8");	break;
-      case SC_F9:	StrCat(buf,"F9");	break;
-      case SC_F10:	StrCat(buf,"F10");	break;
-      case SC_F11:	StrCat(buf,"F11");	break;
-      case SC_F12:	StrCat(buf,"F12");	break;
-      case SC_GUI:	StrCat(buf,"WINDOWS");	break;
-      case SC_PRTSCRN1:	StrCat(buf,"PRTSCRN1");	break;
-      case SC_PRTSCRN2:	StrCat(buf,"PRTSCRN2");	break;
+      case SC_BACKSPACE:CatPrint(buf,"BACK");	break;
+      case SC_CAPS:	CatPrint(buf,"CAPS");	break;
+      case SC_NUM:	CatPrint(buf,"NUM");	break;
+      case SC_SCROLL:	CatPrint(buf,"SCROLL");	break;
+      case SC_CURSOR_UP:CatPrint(buf,"UP");	break;
+      case SC_CURSOR_DOWN:CatPrint(buf,"DOWN");	break;
+      case SC_CURSOR_LEFT:CatPrint(buf,"LEFT");	break;
+      case SC_CURSOR_RIGHT:CatPrint(buf,"RIGHT");	break;
+      case SC_PAGE_UP:	CatPrint(buf,"PAGE_UP");	break;
+      case SC_PAGE_DOWN:CatPrint(buf,"PAGE_DOWN");break;
+      case SC_HOME:	CatPrint(buf,"HOME");	break;
+      case SC_END:	CatPrint(buf,"END");	break;
+      case SC_INS:	CatPrint(buf,"INS");	break;
+      case SC_DELETE:	CatPrint(buf,"DELETE");	break;
+      case SC_F1:	CatPrint(buf,"F1");	break;
+      case SC_F2:	CatPrint(buf,"F2");	break;
+      case SC_F3:	CatPrint(buf,"F3");	break;
+      case SC_F4:	CatPrint(buf,"F4");	break;
+      case SC_F5:	CatPrint(buf,"F5");	break;
+      case SC_F6:	CatPrint(buf,"F6");	break;
+      case SC_F7:	CatPrint(buf,"F7");	break;
+      case SC_F8:	CatPrint(buf,"F8");	break;
+      case SC_F9:	CatPrint(buf,"F9");	break;
+      case SC_F10:	CatPrint(buf,"F10");	break;
+      case SC_F11:	CatPrint(buf,"F11");	break;
+      case SC_F12:	CatPrint(buf,"F12");	break;
+      case SC_GUI:	CatPrint(buf,"WINDOWS");	break;
+      case SC_PRTSCRN1:	CatPrint(buf,"PRTSCRN1");	break;
+      case SC_PRTSCRN2:	CatPrint(buf,"PRTSCRN2");	break;
     }
   }
   return StrNew(buf);
@@ -406,7 +406,7 @@ U0 KbdPktRead()
 
 interrupt U0 KbdIntHandler()
 {
-  Cld;
+  CLD
   OutU8(0x20,0x20);
   kbd_irqs_working=TRUE;
   if (mouse_install_attempt_in_progress) {
@@ -496,11 +496,11 @@ I64 KbdMsgsQue()
     while (FifoI64Rem(scan_code_fifo,&p2)) {
       p1=ScanCode2A(p2);
       if (p2 & SCF_KEY_UP) {
-	TaskMsgQue(task_focus,0,
+	TaskMsg(task_focus,0,
 	  MSG_KEY_UP,p1,p2,0);
 	msg_code=MSG_KEY_UP;
       } else {
-	TaskMsgQue(task_focus,0,
+	TaskMsg(task_focus,0,
 	  MSG_KEY_DOWN,p1,p2,0);
 	msg_code=MSG_KEY_DOWN;
       }

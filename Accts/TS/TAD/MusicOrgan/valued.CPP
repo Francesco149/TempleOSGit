@@ -7,7 +7,7 @@ U0 DrawIt(CTask *,CDC *dc)
   tt+=0.4*(Beat-last_t)*Abs(Sin(Beat));
   last_t=Beat;
   tt%=3.5;
-  SpritePlotRotZ3B(dc,180+tt,tt*30,0,__BIN_1,0.25*Sin(tt)+0.1);
+  SpriteZ3B(dc,180+tt,tt*30,0,__BIN_1,0.25*Sin(tt)+0.1);
 }
 
 
@@ -15,7 +15,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
 

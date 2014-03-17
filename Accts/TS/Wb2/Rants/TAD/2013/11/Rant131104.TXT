@@ -279,7 +279,11 @@ Pharisee.
 
 I will draw a giraffe.
 
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img003.BMP"
+width="640" height="472" alt="">
+```
 
 What an awful giraffe.
 

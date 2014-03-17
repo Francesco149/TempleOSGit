@@ -1,20 +1,20 @@
 #help_index "Doc"
 
-public Bool DocTreeFind(CDoc *doc,U8 *path,
+public Bool DocTreeFind(CDoc *haystack_doc,U8 *needle_path,
   CDocEntry **_tree_entry=NULL,
   CDocEntry **_start_indent=NULL, CDocEntry **_end_indent=NULL)
 {
   I64 i=0,k=0;
-  U8 *st1=StrNew(path),*st2=MAlloc(StrLen(path)+1);
-  Bool result=FALSE,unlock_doc=DocLock(doc);
-  CDocEntry *doc_e=doc->root.next;
-  if (_tree_entry) *_tree_entry=doc;
-  if (_start_indent) *_start_indent=doc;
-  if (_end_indent) *_end_indent=doc;
-  while (*st1 && doc_e!=doc) {
+  U8 *st1=StrNew(needle_path),*st2=MAlloc(StrLen(needle_path)+1);
+  Bool result=FALSE,unlock_doc=DocLock(haystack_doc);
+  CDocEntry *doc_e=haystack_doc->root.next;
+  if (_tree_entry) *_tree_entry=haystack_doc;
+  if (_start_indent) *_start_indent=haystack_doc;
+  if (_end_indent) *_end_indent=haystack_doc;
+  while (*st1 && doc_e!=haystack_doc) {
     StrFirstRem(st1,"/",st2);
     if (*st2) {
-      while (doc_e!=doc) {
+      while (doc_e!=haystack_doc) {
 	if (doc_e->type_u8==DOCT_INDENT)
 	  i+=doc_e->attr;
 	else if (i==k && doc_e->flags1&DOCEF1_TREE && !StrCmp(doc_e->tag+3,st2)) {
@@ -23,13 +23,13 @@ public Bool DocTreeFind(CDoc *doc,U8 *path,
 	   else {
 	     if (_tree_entry) *_tree_entry=doc_e;
 	     i=0;
-	     while (doc_e!=doc && doc_e->type_u8!=DOCT_INDENT)
+	     while (doc_e!=haystack_doc && doc_e->type_u8!=DOCT_INDENT)
 	       doc_e=doc_e->next;
-	     if (doc_e!=doc) {
+	     if (doc_e!=haystack_doc) {
 	       i=doc_e->attr;
 	       if (_start_indent) *_start_indent=doc_e;
 	       doc_e=doc_e->next;
-	       while (doc_e!=doc && i>0) {
+	       while (doc_e!=haystack_doc && i>0) {
 		 if (doc_e->type_u8==DOCT_INDENT) {
 		   i+=doc_e->attr;
 		   if (i<=0) {
@@ -51,7 +51,7 @@ public Bool DocTreeFind(CDoc *doc,U8 *path,
   }
 ft_done:
   if (unlock_doc)
-    DocUnlock(doc);
+    DocUnlock(haystack_doc);
   Free(st1);
   Free(st2);
   return result;
@@ -118,7 +118,7 @@ public I64 ExeDoc(CDoc *doc,Bool just_load=FALSE)
   I64 result;
   Bool okay=TRUE,unlock_doc=DocLock(doc);
   CLex *lx;
-  lx=LexNew("",LF_DONT_FREE_BUF,sys_temp_filename);
+  lx=LexNew(,LF_DONT_FREE_BUF);
   if (just_load)
     lx->flags|=LF_JUST_LOAD;
   if (Fs->last_lex!=&Fs->next_lex)
@@ -168,5 +168,3 @@ public I64 ExeTreeBranch(U8 *registry_file,U8 *path)
   DocDel(doc);
   return result;
 }
-
-#help_index "Doc"

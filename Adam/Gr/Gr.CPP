@@ -11,7 +11,7 @@ U0 GrInit1()
 }
 GrInit1;
 
-#help_index "Graphics/CSprite"
+#help_index "Graphics/Sprite"
 #define GRST_END		0
 #define GRST_COLOR8		1
 #define GRST_DITHER_COLOR8	2
@@ -52,8 +52,8 @@ class CMeshTri
 
 public class CSprite
 {
-//See [Graphics/CSprite,1] Graphics/CSprite
-//See [C:/Adam/Gr/GrSpritePlot.CPP,1] ::/Adam/Gr/GrSpritePlot.CPP for how CSprite are stored.
+//See [Graphics/Sprite,1] Graphics/Sprite
+//See [C:/Adam/Gr/GrSpritePlot.CPP.Z,1] ::/Adam/Gr/GrSpritePlot.CPP for how CSprite are stored.
   CSprite *next,*last;
 
   U0 start;
@@ -90,17 +90,16 @@ public class CSprite
 
 #help_index "Graphics"
 
-extern CDC *DCNew(I64 width,I64 height,CTask *task=NULL,Bool null_bitmap=FALSE);
-extern CDC *DCAlias(CDC *dc=NULL,CTask *task=NULL);
-extern U0 DCDel(CDC *dc);
 extern I64 GrBlot3(CDC *dc,I64 x1,I64 y1,I64 z1,CDC *img);
 extern U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor);
 
-#include "GrCfg"
+#include "GrGlbls"
 #include "GrAsm"
+#include "GrDC"
+#include "GrPalette"
+#include "GrInit"
 #include "MathGr"
 #include "GrScreen"
-#include "GrDC"
 #include "GrBitMap"
 #include "GrPrimatives"
 #include "GrComposites"
@@ -109,12 +108,13 @@ extern U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor);
 #define GE_ABORT	(-1)
 #define GE_EXIT		0
 #define GE_CONT		1
-
 #include "SpriteNew"
 #include "GrSpritePlot"
 #include "SpriteMesh"
 #include "SpriteBitMap"
 #include "SpriteEd"
 #include "SpriteMain"
-#help_index ""
 
+#include "GrEnd"
+
+#help_index ""

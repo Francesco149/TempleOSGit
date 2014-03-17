@@ -1,5 +1,5 @@
 #help_index "Install"
-//See [C:/Doc/Install.TXT,1] Install Documentation or [C:/Doc/Upgrade.TXT,1] Upgrading Documentation.
+//See [C:/Doc/Install.TXT.Z,1] Install Documentation or [C:/Doc/Upgrade.TXT.Z,1] Upgrading Documentation.
 
 //Kernel module: Kernel.BIN.Z
 #define KERNEL_BIN_C	"Kernel.BIN.C"
@@ -77,12 +77,12 @@ public U0 SoftBoot(U8 *filename) //No hardware rst
   hi_image->sys_pci_busses=lo_image->sys_pci_busses;
   hi_image->boot_code=BOOT_CODE_RAM;
 
-  Cli;
+  CLI
   if (mp_cnt>1)
     MPHalt;
 
   HiMemCpy(shutdown,SYS_RESTART_KERNEL,SYS_RESTART_KERNEL_END-SYS_RESTART_KERNEL);
-  HiMemCpy(&hi_image->sys_gdttab,&lo_image->sys_gdttab,GDT_SIZE);
+  HiMemCpy(&hi_image->sys_gdt,&lo_image->sys_gdt,sizeof(CGDT));
   HiMemCpy(lo_image,hi_image,size);
   HiCall(shutdown);
 }
@@ -91,8 +91,8 @@ public U0 SoftBoot(U8 *filename) //No hardware rst
 U8 ChkWritable(U8 drv_let=0)
 {
   Bool cont=TRUE;
-  U8 writable_drv=drv_let,
-     buf_s[136],buf_d[136];
+  I64 writable_drv=drv_let;
+  U8 buf_s[136],buf_d[136];
   CPrt *p;
   CBlkDev *bdev;
   if (!IsDrvWritable(drv_let)) {
@@ -123,7 +123,7 @@ U8 ChkWritable(U8 drv_let=0)
 
 #help_index "Install"
 public U0 MakeAll()
-//Call from [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall()  because loader must be patched with block address.
+//Call from [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall()  because loader must be patched with block address.
 
 //These 2 modules (and bootloaders at top) are the only AOT
 //compiled code in TempleOS.  Everything else is JIT.
@@ -145,11 +145,11 @@ public Bool MakeOSPrtBootInstall(U8 src_drv=0,U8 dst_drv=0)
 //the code on that drive and update the boot sect.
 
 //If you are making a bootable CD-ROM you supply a dst_drv.
-//See [C:/Demo/MakeDistro.CPP,1]
+//See [C:/Misc/MakeDistro.CPP.Z,1]
 
-//See [C:/Doc/Install.TXT,1] Install Documentation
+//See [C:/Doc/Install.TXT.Z,1] Install Documentation
 
-//Study my account examples my technique [C:/Demo/AcctExample/TSAdam.CPP,1] Cfg Strs [C:/Demo/AcctExample/TSDistro.CPP,1] Update Funs
+//Study my account examples my technique [C:/Demo/AcctExample/TSAdam.CPP.Z,1] Cfg Strs [C:/Demo/AcctExample/TSDistro.CPP.Z,1] Update Funs
 
   CBlkDev *bdev;
   CPrt *p;
@@ -215,7 +215,7 @@ public U0 MasterBootOldRead(U8 src_drv,U8 dst_drv)
   Drv(dst_drv);
   p=Fs->cur_prt;
   if (p->type!=PT_REDSEA && p->type!=PT_FAT32)
-    PrintErr("%S","ST_NOT_REDSEA");
+    PrintErr("Not RedSea Partition\n");
   else {
     //Bypass partition bounds-checking
     BlkDevLock(bdev);
@@ -268,23 +268,23 @@ public Bool MasterBootIntall(U8 drv_let,U8 *drv_lst=NULL)
   CMasterBoot mbr;
   CDirEntry de;
   I64 i,j,size,*_q;
-  U8 *menu_ptr,*ptr,ch,buf[128],buf2[128];
+  U8 *menu_ptr,*ptr,ch,buf[128];
   Bool result=FALSE;
 
   try {
     if (drv_lst)
-      StrCpy(buf2,drv_lst);
+      StrCpy(buf,drv_lst);
     else {
       j=0;
       for (i='A';i<='Z';i++)
-	buf2[j++]=i;
-      buf2[j++]=0;
+	buf[j++]=i;
+      buf[j++]=0;
     }
 
     Drv(drv_let);
     p=Fs->cur_prt;
     if (p->type!=PT_REDSEA && p->type!=PT_FAT32)
-      PrintErr("%S","ST_NOT_REDSEA");
+      PrintErr("Not RedSea Partition\n");
     else {
       bdev=Drv2BlkDev(drv_let);
       if (!FileFind(OLDMBR_BIN_C,,FUF_JUST_FILES))
@@ -298,11 +298,11 @@ public Bool MasterBootIntall(U8 drv_let,U8 *drv_lst=NULL)
       if (FileFind(OLDMBR_BIN_C,&de,FUF_JUST_FILES)) {
 	Free(de.full_name);
 	*_q++=p->data+de.cluster*p->spc;
-	StrCat(menu_ptr,"0. Old Boot Record\n\r");
+	CatPrint(menu_ptr,"0. Old Boot Record\n\r");
 	j++;
       }
 
-      ptr=buf2;
+      ptr=buf;
       while (ch=*ptr++) {
 	try {
 	  p1 =Drv2Prt(ch);
@@ -315,12 +315,11 @@ public Bool MasterBootIntall(U8 drv_let,U8 *drv_lst=NULL)
 	if (p1 && bdev1==bdev) {
 	  *_q=p1->offset;
 	  "Drive %C:%16X\n",Prt2Drv(p1),*_q;
-	  SPrint(buf,"%d. Drive %C\n\r",j++,Prt2Drv(p1));
-	  StrCat(menu_ptr,buf);
+	  CatPrint(menu_ptr,"%d. Drive %C\n\r",j++,Prt2Drv(p1));
 	  _q++;
 	}
       }
-      StrCat(menu_ptr,"\n\rSelection:");
+      CatPrint(menu_ptr,"\n\rSelection:");
 
       size=BMHD2_END-BMHD2_START;
       FileWrite(BOOTMHD2_BIN_C,BMHD2_START,size);

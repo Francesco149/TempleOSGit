@@ -10,12 +10,12 @@ I64 PopUpDiffMenu()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPrint(doc,"$CM+LX,2,4$$FG$$BT,\"USE FILE1\",DS_USE_FILE1$"
-	"$CM+LX,24,0$$CYAN$$BT,\"USE FILE2\",DS_USE_FILE2$"
-	"$CM+LX,2,4$$FG$$BT,\"REMAINDER ALL FILE1\",DS_REMAINDER_1$"
-	"$CM+LX,24,0$$CYAN$$BT,\"REMAINDER ALL FILE2\",DS_REMAINDER_2$"
-	"$CM+LX,2,4$$FG$$BT,\"ABORT FILE\",DS_ABORT_FILE$"
-	"$CM+LX,24,0$$FG$$BT,\"ABORT ALL FILES\",DOCM_CANCEL$\n");
+  DocPrint(doc,"$CM+LX,2,4$$FG$$BT,\"USE FILE1\",LE=DS_USE_FILE1$"
+	"$CM+LX,24,0$$CYAN$$BT,\"USE FILE2\",LE=DS_USE_FILE2$"
+	"$CM+LX,2,4$$FG$$BT,\"REMAINDER ALL FILE1\",LE=DS_REMAINDER_1$"
+	"$CM+LX,24,0$$CYAN$$BT,\"REMAINDER ALL FILE2\",LE=DS_REMAINDER_2$"
+	"$CM+LX,2,4$$FG$$BT,\"ABORT FILE\",LE=DS_ABORT_FILE$"
+	"$CM+LX,24,0$$FG$$BT,\"ABORT ALL FILES\",LE=DOCM_CANCEL$\n");
   i=PopUpMenu(doc);
   DocDel(doc);
   return i;
@@ -220,8 +220,7 @@ Bool DiffBins(CDoc *doc1,CDoc *doc2)
   if (tempb1->last->last->num!=tempb2->last->last->num)
     return TRUE;
   while (tempb1!=&doc1->bin_root) {
-    if (tempb1->type!=tempb2->type || tempb1->size!=tempb2->size ||
-	MemCmp(tempb1->data,tempb2->data,tempb1->size))
+    if (tempb1->size!=tempb2->size || MemCmp(tempb1->data,tempb2->data,tempb1->size))
       return TRUE;
     tempb1=tempb1->next;
     tempb2=tempb2->next;
@@ -230,7 +229,7 @@ Bool DiffBins(CDoc *doc1,CDoc *doc2)
 }
 
 public Bool Diff(U8 *dst_file,U8 *src_file,I64 *_df_flags=NULL)
-{ //The _df_flags arg is used when this is called by [C:/TempleOS/Adam/Merge.CPP.Z,41] MergeChk().
+{ //The _df_flags arg is used when this is called by [C:/Adam/Utils/Merge.CPP.Z,39] Merge().
   CDoc *doc1=DocRead(dst_file,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR),
        *doc2=DocRead(src_file,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR);
   CDocEntry *doc_e,**doc_sorted1,**doc_sorted2,**doc_unsorted1,**doc_unsorted2;
@@ -306,6 +305,8 @@ public Bool Diff(U8 *dst_file,U8 *src_file,I64 *_df_flags=NULL)
   return result;
 }
 
+#help_index "Utils;Cmd Line (Typically);Info"
+
 I64 ZRepCompare(CDirEntry *e1,CDirEntry *e2)
 {
   return SignI64(e2->user_data(F64)-e1->user_data(F64));
@@ -322,7 +323,7 @@ public U0 ZipRep(U8 *files_find_mask="/*",U8 *fu_flags=NULL,
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+F+S");
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   tempde=tempde1=FilesFind(files_find_mask,fuf_flags);
-  cnt=LinkedLstCnt(tempde);
+  cnt=FileCnt(tempde);
   sort_buf=MAlloc(sizeof(CDirEntry *)*cnt);
   while (tempde) {
     sort_buf[i++]=tempde;

@@ -50,19 +50,19 @@ U0 SpinningNoInterrupts()
   WinMgrSync;
   WinMgrSync;
   WinMgrSync;
-  Cli;
+  CLI
   for (i=0;i<3000000;i++)
     InU8(0x21);
-  Sti;
+  STI
 }
 
 
 U0 CooperativeMultitaskingPreempt()
 {
-  F64 timeout=tT+3.0;
+  F64 timeout=tS+3.0;
 
   "Cooperative multitasking with preemption...\n";
-  while (tT<timeout) {
+  while (tS<timeout) {
     InU8(0x21);
     Yield;
   }
@@ -70,10 +70,10 @@ U0 CooperativeMultitaskingPreempt()
 
 U0 CooperativeMultitaskingNoPreempt()
 {
-  F64 timeout=tT+3.0;
+  F64 timeout=tS+3.0;
   Bool old_preempt=Preempt(OFF);
   "Cooperative multitasking with no preemption...\n";
-  while (tT<timeout) {
+  while (tS<timeout) {
     InU8(0x21);
     Yield;
   }
@@ -82,15 +82,15 @@ U0 CooperativeMultitaskingNoPreempt()
 
 U0 CooperativeMultitaskingNoInterrupts()
 {
-  F64 timeout=tT+3.0;
+  F64 timeout=tS+3.0;
 
-  Cli;
+  CLI
   "Cooperative multitasking with no interrupts...\n";
-  while (tT<timeout) {
+  while (tS<timeout) {
     InU8(0x21);
     Yield;
   }
-  Sti;
+  STI
 }
 
 U0 SpinningDemo()

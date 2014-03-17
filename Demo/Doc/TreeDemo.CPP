@@ -1,5 +1,5 @@
 /*
-This uses [MN:DocPrint] DocPrint() because updates
+This uses [C:/Adam/Doc/DocPlain.CPP.Z,679] DocPrint() because updates
 to within a tree while a tree is collapsed get
 messed-up if "live" (like using ordinary Print.)
 The insert point is confused by hiding of
@@ -8,7 +8,7 @@ Doc is taken off-line by disabling preemption so there
 are no screen updates until all data has been inserted.
 
 There is a special Doc function which is also
-available to take an Doc off-line.  See [C:/TempleOS/Adam/Doc/DocRecalc.CPP.Z,1645] DocInsSafe.
+available to take an Doc off-line.  See [C:/Adam/Doc/DocRecalc2a.CPP.Z,174] DocPrintWhole.
 For this example, however, I wanted to use DocPrint
 and disabled Preemption myself.
 */
@@ -20,20 +20,19 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
     tempde1=tempde->next;
     if (tempde->attr & _ATTR_DIR) {
       DocPrint(doc,"$TR,\"\"$");
-      DocPrint(doc,"$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\n\"$\n",
+      DocPrint(doc,"$MA,T=\"%s\",LM=\"Cd(\\\"%s\\\");Dir;\n\"$\n",
       tempde->name,tempde->full_name);
       if (tempde->sub) {
 	DocPrint(doc,"$ID,+2$");
 	TreeSub(doc,tempde->sub);
 	DocPrint(doc,"$ID,-2$");
       }
-    } else {
-      DocPrint(doc,"$LK,\"%s\",\"FI:%s\"$\n",
+    } else
+      DocPrint(doc,"$LK,\"%s\",A=\"FI:%s\"$\n",
 	tempde->name,tempde->full_name);
-    }
     //Note there is also a routine
     //to delete an entire CDirEntry tree.
-    //See [MN:DirLstDel] DirLstDel().
+    //See [C:/Kernel/Dsk/DskDir.CPP.Z,34] DirLstDel().
     DirEntryDel(tempde);
     tempde=tempde1;
   }

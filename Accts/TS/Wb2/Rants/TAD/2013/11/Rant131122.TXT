@@ -716,13 +716,12 @@ defender manifestly
 
 The .GRA file format looks final -- just how I want it.
 
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,245] GRARead(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,234] GRAWrite(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,154] DCSave() and
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3356] CDC, [C:/Kernel/Compress.CPP.Z,1],
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3466] CArcCtrl, 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3458] CArcEntry and
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3491] CArcCompress.
+[C:/Adam/Gr/GrDC.CPP.Z,365] GRARead(), [C:/Adam/Gr/GrDC.CPP.Z,354]
+GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,284] DCSave() and
+[C:/Kernel/Adam1a.HPP.Z,3220] CDC, [C:/Kernel/Compress.CPP.Z,1],
+[C:/Kernel/Adam1a.HPP.Z,3332] CArcCtrl, 
+[C:/Kernel/Adam1a.HPP.Z,3324] CArcEntry and [C:/Kernel/Adam1a.HPP.Z,3357]
+CArcCompress.
 
 http://beacon.nist.gov/rest/record/1385125740
 
@@ -796,7 +795,11 @@ Squids are kinda homo?
 What if You made a CPU, God?  Would You like to make a CPU?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img009.BMP"
+width="640" height="472" alt="">
+```
 
 SpongeBob walking up stairs?
 
@@ -892,7 +895,11 @@ against me: for there were many with me.
 Crash crumble and chomp is Hell. LOL.
 
 Draw something, God!
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img010.BMP"
+width="640" height="472" alt="">
+```
 
 ----11/22/13 06:31:53----
 
@@ -988,7 +995,11 @@ part of an ephah of fine flour for a sin offering; he shall put no oil
 :-)
 
 Draw something, God!
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/11/Img011.BMP"
+width="640" height="472" alt="">
+```
 
 That's a horse.
 

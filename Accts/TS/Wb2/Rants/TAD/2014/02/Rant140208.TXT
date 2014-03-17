@@ -1,0 +1,641 @@
+                                   TempleOS
+[C:/Doc/TrivialSolutions.TXT.Z,1] Trivial Solutions
+
+-] Keyboard Ctrls
+  Enter		Right-click menu
+Space Bar	Edit (view)
+Esc		Save and exit
+Shift-Esc	Abort
+Ctrl-m	Personal Menu
+Windows Key	Pull-down Menu
+**F1
+`Msg(MSG_KEY_DOWN,0,SC_F1);`
+**		Help
+Other keys: Key Map
+`KeyMap;View;
+`
+
+
+-] Mouse Ctrls
+  Right-Click	Right-click menu
+Left-Click	Edit (view)
+Double-Left	Save and exit
+Double-Right	Abort
+Top of Screen	Pull-down menu
+
+-] Keyboard-Mouse Ctrls
+  Ctrl-LeftDrag	Grab-Scroll Window
+Ctrl-Right	Null scrolling
+Ctrl-Alt-z	Zoom screen on Mouse
+Ctrl-Alt-Z	Unzoom screen on Mouse
+
+Remember to terminate cmds with a semicolon.
+
+[C:/Doc/HelpIndex.TXT.Z,1] Help Index  [Cmd Line (Typically),1] Quick
+Start--Command Line
+
+Directory
+`PopUpCd;Dir;
+`
+ of D:/Accts/TS/TAD
+DATE_ TIME_ SIZE
+02/08 04:18 0000 .
+`Cd("D:/Accts/TS/TAD");Dir;
+`
+
+02/08 04:18 0000 ..
+`Cd("D:/Accts/TS");Dir;
+`
+
+02/08 04:18 0000 Archive
+`Cd("D:/Accts/TS/TAD/Archive");Dir;
+`
+
+02/08 04:18 0000 MusicOrgan
+`Cd("D:/Accts/TS/TAD/MusicOrgan");Dir;
+`
+
+08/03 08:34 00D2 [C:/Accts/TS/TAD/Adam3.CPP,1] Adam3.CPP.Z
+11/05 02:30 0133 [C:/Accts/TS/TAD/Adam3aLocalize.CPP.Z,1] Adam3aLocalize.CPP.Z
+02/06 11:49 01B3 [C:/Accts/TS/TAD/Registry.CPP.Z,1] Registry.CPP.Z
+02/06 12:53 00FC [C:/Accts/TS/TAD/Test.CPP.Z,1] Test.CPP.Z
+01/28 01:44 1832 [C:/Accts/TS/TAD/PersonalNotes.TXT.Z,1] PersonalNotes.TXT.Z
+DFT:81,539LOC:6 Cores 3.395GHz
+0.000000s ans0=0x00000000=0
+D:/Accts/TS/TAD>
+0.000000s ans0=0x00000000=0
+D:/Accts/TS/TAD>PrtRep;
+
+Defined Partitions:
+
+ B REDSEA   RAM       0000 0000 00
+   0000000000000000-0000000000040000
+:D FAT32    ATA       01F0 03F4 00
+   Model# :VMware Virtual IDE Hard Drive
+   Serial#:00000000000000000001
+   000000000000003F-000000000080344A
+ E FAT32    ATA       01F0 03F4 00
+   Model# :VMware Virtual IDE Hard Drive
+   Serial#:00000000000000000001
+   000000000080348A-0000000000FFEB13
+ T ISO9660  ATAPI     0170 0374 00
+   0000000000000000-FFFFFFFFFFFFFFFF
+ U ISO9660  ATAPI     0170 0374 01
+   0000000000000000-FFFFFFFFFFFFFFFF
+0.000184s ans0=0xFFFFFFFFFFFFFFFF=-1
+D:/Accts/TS/TAD>MemBIOSRep;
+Standard Addresses
+0x000A0000-0x000BFFFF VGA
+0xFEE00000-0xFEE00FFF See [C:/Kernel/Adam1a.HPP.Z,466] APIC
+
+32 Bit Device Mem
+00:0x00000000F0000000-0x00000000FEBFFFFF
+02:0x00000000FEC00000-0x00000000FEC0FFFF
+00:0x00000000FEC10000-0x00000000FEDFFFFF
+02:0x00000000FEE00000-0x00000000FEE00FFF
+00:0x00000000FEE01000-0x00000000FFFDFFFF
+02:0x00000000FFFE0000-0x00000000FFFFFFFF
+
+BIOS Memory Report 15:E801
+01:0x0000000000000000-0x0000000000FFFFFF
+01:0x0000000001000000-0x00000000BFEEFFFF
+
+BIOS Memory Report 15:E820
+01:0x0000000000000000-0x000000000009F7FF
+02:0x000000000009F800-0x000000000009FFFF
+02:0x00000000000DC000-0x00000000000FFFFF
+01:0x0000000000100000-0x00000000BFEEFFFF
+03:0x00000000BFEF0000-0x00000000BFEFEFFF
+04:0x00000000BFEFF000-0x00000000BFEFFFFF
+01:0x00000000BFF00000-0x00000000BFFFFFFF
+02:0x00000000E0000000-0x00000000EFFFFFFF
+02:0x00000000FEC00000-0x00000000FEC0FFFF
+02:0x00000000FEE00000-0x00000000FEE00FFF
+02:0x00000000FFFE0000-0x00000000FFFFFFFF
+01:0x0000000100000000-0x00000001A9FFFFFF
+0.000143s ans0=0x00000090=144
+D:/Accts/TS/TAD>PCIRep;
+PCI Busses:35
+00:00:0 0600 Intel Corporation 82443BX/ZX 440BX/ZX AGPset Host Bridge
+00:01:0 0604 Intel Corporation 82443BX/ZX 440BX/ZX AGPset PCI-to-PCI bridge
+00:07:0 0601 Intel Corporation 82371AB/EB/MB PIIX4/4E/4M ISA Bridge
+00:07:1 0101 Intel Corporation 82371AB/EB/MB PIIX4/4E/4M IDE Controller
+00:07:3 0680 Intel Corporation 82371AB/EB/MB PIIX4/4E/4M Power Management 
+Controller
+00:07:7 0880 VMware Inc. 0X0880 VMWare VMCI Bus Device
+00:0F:0 0300 VMware Inc. 9500MGS VMWare Player 3.1.6 Software Driver
+00:10:0 0100 LSI Logic LSI53C1020/1030 PCI-X to Ultra320 SCSI Controller
+00:11:0 0604 VMware Inc. Unknown
+00:15:0 0604 VMware Inc. Unknown
+00:15:1 0604 VMware Inc. Unknown
+00:15:2 0604 VMware Inc. Unknown
+00:15:3 0604 VMware Inc. Unknown
+00:15:4 0604 VMware Inc. Unknown
+00:15:5 0604 VMware Inc. Unknown
+00:15:6 0604 VMware Inc. Unknown
+00:15:7 0604 VMware Inc. Unknown
+00:16:0 0604 VMware Inc. Unknown
+00:16:1 0604 VMware Inc. Unknown
+00:16:2 0604 VMware Inc. Unknown
+00:16:3 0604 VMware Inc. Unknown
+00:16:4 0604 VMware Inc. Unknown
+00:16:5 0604 VMware Inc. Unknown
+00:16:6 0604 VMware Inc. Unknown
+00:16:7 0604 VMware Inc. Unknown
+00:17:0 0604 VMware Inc. Unknown
+00:17:1 0604 VMware Inc. Unknown
+00:17:2 0604 VMware Inc. Unknown
+00:17:3 0604 VMware Inc. Unknown
+00:17:4 0604 VMware Inc. Unknown
+00:17:5 0604 VMware Inc. Unknown
+00:17:6 0604 VMware Inc. Unknown
+00:17:7 0604 VMware Inc. Unknown
+00:18:0 0604 VMware Inc. Unknown
+00:18:1 0604 VMware Inc. Unknown
+00:18:2 0604 VMware Inc. Unknown
+00:18:3 0604 VMware Inc. Unknown
+00:18:4 0604 VMware Inc. Unknown
+00:18:5 0604 VMware Inc. Unknown
+00:18:6 0604 VMware Inc. Unknown
+00:18:7 0604 VMware Inc. Unknown
+0.220438s ans0=0x0000C310=49936
+D:/Accts/TS/TAD>MemRep;
+Low Memory	:0000100000
+  Kernel	:0000007C00-00000370FF
+VGA		:00000A0000-00000BFFFF
+High Memory	:0000100000-007FFFFFFF
+  Fixed Area for page tables and misc
+		:0000100000-00001847FF
+Code Heap:007FE7B800 Used:00004CD000 Unused:007F9AE800
+Data Heap:00E9FF0000 Used:0013F05800 Unused:00D60E9E00
+CPU0
+  Task:00001832F0 Adam Task CPU#0               
+    Alloced:0013564E00 Used:00130A09E0 Unused:00004C4420
+HashTable	:000076319C
+Stk Size	:00000403E8 Unused:00000403A0
+PutDoc	:0000000B48
+BorderDoc	:0000001378
+TaskStructs	:0000004CC8
+TSSes	:00004911C0
+HeapCtrls	:0000009990
+TaskQues	:0000000000
+RAMDsk B	:0008000200 Unused:0007FFFE00
+BlkDevs	:0000000FF8
+Prts	:0000001C50
+Audio	:0000000000
+DskCache	:0008020810
+WordStat	:00023BB200
+Clipboard	:00000004E0
+  Task:007FD75028 MemRep;;.                     
+    Alloced:000055EA00 Used:000006AF40 Unused:00004F3AC0
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040148
+PutDoc	:000001E3F0
+BorderDoc	:0000001380
+Lex		:0000000E40
+  Task:007FDCBC28 Window Mgr                    
+    Alloced:00003DB800 Used:00003D94F8 Unused:0000002308
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:00000402A8
+gr_dc		:0000080518
+gr_dc2		:0000080518
+gr_dc_cache		:0000080518
+gr_screen_image	:0000080518
+gr_zoomed_dc	:0000080518
+gr_pen_brushes	:0000076100
+gr_1_to_8_bits	:00000009E8
+gr_1_to_8_colors	:00000009E8
+gr_text_base	:0000004BE8
+gr_vga_text_cache	:00000025E8
+gr_win_z_buf	:00000047D0
+gr_screen_zoom_tbles:0000002BB8
+  Task:007FFF6E28 Idle Task                     
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040000
+  CPU1
+  Task:007FFF6828 Seth Task CPU#1               
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040320
+  Task:007FFF6228 Idle Task                     
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040000
+  CPU2
+  Task:007FFF5C28 Seth Task CPU#2               
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040320
+  Task:007FFF5628 Idle Task                     
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040000
+  CPU3
+  Task:007FFF5028 Seth Task CPU#3               
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040320
+  Task:007FFF4A28 Idle Task                     
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040000
+  CPU4
+  Task:007FFF4428 Seth Task CPU#4               
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040320
+  Task:007FFF3E28 Idle Task                     
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040000
+  CPU5
+  Task:007FFF3828 Seth Task CPU#5               
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040320
+  Task:007FFF3228 Idle Task                     
+    Alloced:000004A800 Used:0000048858 Unused:0000001FA8
+HashTable	:0000008228
+Stk Size	:00000403E8 Unused:0000040000
+  Independent Heaps
+  sys_uncached_heap:0000200000 Used:0000000000 Unused:00001FF000
+
+0.034345s ans0=0x00000090=144
+D:/Accts/TS/TAD>Cd("/Doc");Dir;
+Directory
+`PopUpCd;Dir;
+`
+ of D:/Doc
+DATE_ TIME_ SIZE
+01/25 23:12 0000 .
+`Cd("D:/Doc");Dir;
+`
+
+01/25 23:12 0000 ..
+`Cd("D:/");Dir;
+`
+
+11/06 02:46 08D6 [C:/Doc/Acknowledgements.TXT.Z,1] Acknowledgements.TXT.Z
+10/23 20:56 030E [C:/Doc/AutoFile.TXT.Z,1] AutoFile.TXT.Z
+06/05 05:23 01C9 [C:/Doc/Bit.TXT.Z,1] Bit.TXT.Z
+01/07 11:45 096C [C:/Doc/Boot.TXT.Z,1] Boot.TXT.Z
+02/08 04:17 1B13 [C:/Doc/ChangeLog.TXT.Z,1] ChangeLog.TXT.Z
+10/05 03:31 02D9 [C:/Doc/Char.TXT.Z,1] Char.TXT.Z
+12/08 16:08 075C [C:/Doc/Charter.TXT.Z,1] Charter.TXT.Z
+12/19 23:02 03BF [C:/Doc/CmdLine.TXT.Z,1] CmdLine.TXT.Z
+10/23 20:56 0B7D [C:/Doc/Confuse.TXT.Z,1] Confuse.TXT.Z
+10/05 03:31 014C [C:/Doc/Ctrls.TXT.Z,1] Ctrls.TXT.Z
+10/17 17:34 015C [C:/Doc/Customize.TXT.Z,1] Customize.TXT.Z
+01/21 10:18 04A3 [C:/Doc/CutCorners.TXT.Z,1] CutCorners.TXT.Z
+10/05 00:25 0169 [C:/Doc/D3.TXT.Z,1] D3.TXT.Z
+12/12 05:01 095A [C:/Doc/Dbg.TXT.Z,1] Dbg.TXT.Z
+10/05 03:31 0139 [C:/Doc/Define.TXT.Z,1] Define.TXT.Z
+01/07 04:59 05D3 [C:/Doc/Demands.TXT.Z,1] Demands.TXT.Z
+01/23 18:32 0A16 [C:/Doc/DemoIndex.TXT.Z,1] DemoIndex.TXT.Z
+01/05 12:13 06B0 [C:/Doc/Directives.TXT.Z,1] Directives.TXT.Z
+10/05 03:31 0181 [C:/Doc/Doc.TXT.Z,1] Doc.TXT.Z
+01/11 01:40 1666 [C:/Doc/Dollar.TXT.Z,1] Dollar.TXT.Z
+12/09 11:37 0325 [C:/Doc/EdPullDown.TXT.Z,1] EdPullDown.TXT.Z
+01/23 20:15 06C3 [C:/Doc/Features.TXT.Z,1] Features.TXT.Z
+01/07 11:45 04F8 [C:/Doc/FileMgr.TXT.Z,1] FileMgr.TXT.Z
+03/20 13:53 00F8 [C:/Doc/FileMgrPullDown.TXT.Z,1] FileMgrPullDown.TXT.Z
+10/05 03:31 00CB [C:/Doc/Frame.TXT.Z,1] Frame.TXT.Z
+01/27 08:46 1A7A [C:/Doc/Glossary.TXT.Z,1] Glossary.TXT.Z
+01/14 22:20 0E25 [C:/Doc/Graphics.TXT.Z,1] Graphics.TXT.Z
+10/23 20:56 03BD [C:/Doc/Grub.TXT.Z,1] Grub.TXT.Z
+01/21 11:42 10D2 [C:/Doc/GuideLines.TXT.Z,1] GuideLines.TXT.Z
+06/05 05:21 01B0 [C:/Doc/Hash.TXT.Z,1] Hash.TXT.Z
+01/26 00:43 0F45 [C:/Doc/HelpIndex.TXT.Z,1] HelpIndex.TXT.Z
+09/25 13:20 017D [C:/Doc/HelpSystem.TXT.Z,1] HelpSystem.TXT.Z
+01/26 00:43 1C03 [C:/Doc/HolyC.TXT.Z,1] HolyC.TXT.Z
+12/08 16:56 0D9A [C:/Doc/ImportExports.TXT.Z,1] ImportExports.TXT.Z
+10/05 03:31 016F [C:/Doc/InputPointer.TXT.Z,1] InputPointer.TXT.Z
+01/07 04:59 08CA [C:/Doc/Install.TXT.Z,1] Install.TXT.Z
+01/24 06:05 070C [C:/Doc/KeyBoard.TXT.Z,1] KeyBoard.TXT.Z
+10/05 03:31 00E6 [C:/Doc/Lex.TXT.Z,1] Lex.TXT.Z
+01/11 03:52 0E52 [C:/Doc/Mem.TXT.Z,1] Mem.TXT.Z
+10/05 03:31 0291 [C:/Doc/Menus.TXT.Z,1] Menus.TXT.Z
+12/15 11:12 031A [C:/Doc/MultiCore.TXT.Z,1] MultiCore.TXT.Z
+01/05 07:43 05E7 [C:/Doc/MultiTasking.TXT.Z,1] MultiTasking.TXT.Z
+01/07 04:59 11C2 [C:/Doc/Mysteries.TXT.Z,1] Mysteries.TXT.Z
+10/05 03:31 01BD [C:/Doc/ODE.TXT.Z,1] ODE.TXT.Z
+12/08 16:53 03E1 [C:/Doc/Options.TXT.Z,1] Options.TXT.Z
+03/20 13:51 024E [C:/Doc/Profiler.TXT.Z,1] Profiler.TXT.Z
+03/20 13:51 013B [C:/Doc/Que.TXT.Z,1] Que.TXT.Z
+12/15 11:12 0865 [C:/Doc/Quirks.TXT.Z,1] Quirks.TXT.Z
+01/07 04:59 056A [C:/Doc/RedSea.TXT.Z,1] RedSea.TXT.Z
+04/02 02:20 028D [C:/Doc/Requirements.TXT.Z,1] Requirements.TXT.Z
+10/05 03:31 01E8 [C:/Doc/Resource.TXT.Z,1] Resource.TXT.Z
+01/07 10:44 00D4 [C:/Doc/Splash.TXT.Z,1] Splash.TXT.Z
+12/27 22:01 0211 [C:/Doc/Sprite.TXT.Z,1] Sprite.TXT.Z
+06/05 09:51 0099 [C:/Doc/SpriteBitMap.TXT.Z,1] SpriteBitMap.TXT.Z
+09/10 23:31 01BF [C:/Doc/SpriteEd.TXT.Z,1] SpriteEd.TXT.Z
+06/05 09:51 00C3 [C:/Doc/SpriteEdText.TXT.Z,1] SpriteEdText.TXT.Z
+06/05 09:51 02A6 [C:/Doc/SpriteMain.TXT.Z,1] SpriteMain.TXT.Z
+06/05 09:50 011E [C:/Doc/SpriteSideBar.TXT.Z,1] SpriteSideBar.TXT.Z
+10/30 05:22 02C3 [C:/Doc/Start.TXT.Z,1] Start.TXT.Z
+10/05 03:31 07A3 [C:/Doc/Strategy.TXT.Z,1] Strategy.TXT.Z
+08/29 14:56 035B [C:/Doc/TSZ.TXT.Z,1] TSZ.TXT.Z
+12/27 16:25 00EC [C:/Doc/TimeCycles.TXT.Z,1] TimeCycles.TXT.Z
+03/20 13:49 0119 [C:/Doc/TimeDate.TXT.Z,1] TimeDate.TXT.Z
+03/09 13:15 00C2 [C:/Doc/TimeHPET.TXT.Z,1] TimeHPET.TXT.Z
+08/30 07:56 011E [C:/Doc/TimeJiffy.TXT.Z,1] TimeJiffy.TXT.Z
+01/23 20:15 1B22 [C:/Doc/Tips.TXT.Z,1] Tips.TXT.Z
+11/04 21:43 03F6 [C:/Doc/Transform.TXT.Z,1] Transform.TXT.Z
+01/07 04:59 049D [C:/Doc/TrivialSolutions.TXT.Z,1] TrivialSolutions.TXT.Z
+10/23 20:56 01E3 [C:/Doc/Upgrade.TXT.Z,1] Upgrade.TXT.Z
+01/26 00:36 180B [C:/Doc/Welcome.TXT.Z,1] Welcome.TXT.Z
+12/28 03:44 0603 [C:/Doc/Widget.TXT.Z,1] Widget.TXT.Z
+10/05 03:31 024B [C:/Doc/WordStat.TXT.Z,1] WordStat.TXT.Z
+0.003983s ans0=0x0000004B=75
+D:/Doc>Paging is almost not used, but 64-bit mode requires it to be active.  
+Virtual is identity-mapped to physical.  All tasks on all cores use the same 
+page table map, just as though all addresses are physical addresses.  2 Meg 
+page table entries are used, except the first 2 Meg, which uses 4K page
+tables 
+entries.  Nothing swaps to disk, either.
+
+In TempleOS, the lowest 2 Gig of memory is called the "code heap". 
+TempleOS's 
+compiler always uses 32-bit signed relative JMP & CALL instructions because 
+64-bit CALLs take two instructions.  With signed +/- 32-bit values, code can 
+only call a function within 2 Gig distance.  Therefore, TempleOS keeps all 
+code in the lowest 2 Gig memory addresses including what would normally be 
+called "the kernel".  Two Gig is plenty, don't worry.
+
+You can create new, independent heaps by first allocating mem with 
+[C:/Kernel/Mem1a.CPP.Z,408] MemBlksUncachedAlloc() or
+[C:/Kernel/Mem1a.CPP.Z,195] MemBlksIndependentAlloc(), then calling 
+[C:/Kernel/Mem1c.CPP.Z,42] HeapCtrlBPInit() and, then, using
+[C:/Kernel/Mem1b.CPP.Z,376] MAlloc().
+
+Memory allocated by a task will be freed when the task is killed.
+
+Eventually, memory will become fragmented, requiring a reboot.
+
+See [C:/Adam/Utils/MemRep.CPP.Z,198] MemRep().
+
+                          Single System-wide Mem Map
+
+ 0x0000000000- 0x0000006FFF
+  Pages marked not present so NULL ptr dereference causes a fault.
+
+ 0x0000007C00- 0x0000035F9F
+  Kernel module, placed here by the boot-loader,
+  [C:/Kernel/Adam1a.HPP.Z,3618] BOOT_RAM_BASE.
+
+ 0x0000096600- 0x0000096FFF
+  Boot block relocated here before loading the Kernel module,
+  [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.
+
+ 0x0000097000- 0x000009702E
+  Multicore start-up vect code, [C:/Kernel/Adam1a.HPP.Z,494] MPN_VECT.
+
+~0x000009F000- 0x000009FFFF
+  Extended BIOS data area.
+
+ 0x00000A0000- 0x00000BFFFF
+  VGA graphics mem, marked as write-through cache.
+
+ 0x0000100000- 0x00001845FF
+  SYS_FIXED_AREA for page tables and misc.  128 Gig of address space mapped.
+
+ 0x0000184600- 0x007FFDFFFF
+  Code Heap mem.
+
+ 0x00E0000000- 0x00FFFFFFFF
+  32-bit devices could allocate memory at 0xF0000000 going up, but this is 
+wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
+are supported, so [C:/Kernel/Mem1c.CPP.Z,165] Mem32DevAlloc() flaws are not
+  an issue.
+
+ 0x0080000000-~0x00DFFFFFFF
+ 0x0100000000-~0x1FFFFFFFFF
+  Data Heap mem.
+
+             - 0x1FFFFFFFFF
+  64-bit devices are allocated with [C:/Kernel/Mem1c.CPP.Z,213]
+  Mem64DevAlloc() counting backward from 
+128 Gig, but no PCI devices are actually supported.
+  
+
+				      [C:/Kernel/Adam1a.HPP.Z,2594] CBlkPools [C:/Kernel/Adam1a.HPP.Z,2608] CHeapCtrls
+ <1> (image)
+
+
+
+0000,0000,0000,0000 *NULL Protected
+0000,0000,0000,6FFF		      Core 0
+
+0000,0000,0000,7C00 Kernel
+0000,0000,0003,5F9F 
+
+0000,0000,0010,0000 FIXED_AREA			   AdamTask
+
+0000,0000,0018,4600
+
+		    sys_code_bp
+
+						   Task
+
+
+
+
+				      Core 1
+						   SethTask
+
+0000,0000,7FFD,FFFF
+0000,0000,8000,0000
+
+
+
+		    sys_data_bp
+						   Task
+0000,0000,DFFF,FFFF 
+0000,0000,F000,0000 32-bit devices
+
+0000,0001,0000,0000
+
+						   SethTask
+
+
+
+
+		    sys_data_bp       Core n 
+
+
+
+
+				      Independent
+
+
+
+
+		    64-bit devices
+
+0000,001F,FFFF,FFFF
+
+* Note: There is a break in the data-heap block pool.  This has no effect 
+except the obvious effect that fragmentation has on contiguous requests.  I 
+can [C:/Kernel/Mem1b.CPP.Z,376] MAlloc() an 8 Gig chunk on my 12 Gig machine.
+
+* Note: For systems with less than 2 Gig RAM, the code and data heap block 
+pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
+the total.  See [C:/Kernel/Mem1c.CPP.Z,259] HeapsInit().
+
+* See [C:/Kernel/KEnd.CPP.Z,1] Independent Heap Ctrl Example.
+
+0.003983s ans0=0x0000004B=75
+
+----02/08/14 11:01:49----
+
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/_zyQ_OVyhNE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/_zyQ_OVyhNE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1391886180
+
+(Modulo is just remainder.)
+0xBEAC^1-->(48812 mod 100091)+1-->Line:48813
+
+KingJamesBible (Psalms 57:1) God says...
+57:1 Be merciful unto me, O God, be merciful unto me: for my soul
+trusteth in thee: yea, in the shadow of thy wings will I make my
+refuge, until these calamities be overpast.
+
+57:2 I will cry unto God most high; unto God that performeth all
+things for me.
+
+57:3 He shall send from heaven, and save me from the reproach of him
+that would swallow me up. Selah. God shall send forth his mercy and
+his truth.
+
+57:4 My soul is among lions: and I lie even among them that are set on
+fire, even the sons of men, whose teeth are spears and arrows, and
+their tongue a sharp sword.
+
+57:5 Be thou exalted, O God, above the heavens; let thy glory be above
+all the earth.
+
+57:6 They have prepared a net for my steps; my soul is bowed down:
+they have digged a pit before me, into the midst whereof they are
+
+
+----02/08/14 15:57:54----
+
+I'm not worried about nuclear war.  That would be odd for God to allow that.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1391903880
+
+(Modulo is just remainder.)
+0xF28F5C-->(15896412 mod 100091)+1-->Line:82035
+
+KingJamesBible (Luke 1:31) God says...
+son, and shalt call his name JESUS.
+
+1:32 He shall be great, and shall be called the Son of the Highest:
+and the Lord God shall give unto him the throne of his father David:
+1:33 And he shall reign over the house of Jacob for ever; and of his
+kingdom there shall be no end.
+
+1:34 Then said Mary unto the angel, How shall this be, seeing I know
+not a man?  1:35 And the angel answered and said unto her, The Holy
+Ghost shall come upon thee, and the power of the Highest shall
+overshadow thee: therefore also that holy thing which shall be born of
+thee shall be called the Son of God.
+
+1:36 And, behold, thy cousin Elisabeth, she hath also conceived a son
+in her old age: and this is the sixth month with her, who was called
+barren.
+
+1:37 For with God nothing shall be impossible.
+
+1:38 And Mary said, Behold the handmaid of the Lord; be it unto me
+
+----02/08/14 16:03:36----
+
+I know it's not the end of the World because the lion and lamb do not lay
+down 
+together.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1391904180
+
+(Modulo is just remainder.)
+0xCBA66D-->(13346413 mod 100091)+1-->Line:34311
+
+KingJamesBible (2 Kings 19:23) God says...
+19:23 By thy messengers thou hast reproached the LORD, and hast said,
+With the multitude of my chariots I am come up to the height of the
+mountains, to the sides of Lebanon, and will cut down the tall cedar
+trees thereof, and the choice fir trees thereof: and I will enter into
+the lodgings of his borders, and into the forest of his Carmel.
+
+19:24 I have digged and drunk strange waters, and with the sole of my
+feet have I dried up all the rivers of besieged places.
+
+19:25 Hast thou not heard long ago how I have done it, and of ancient
+times that I have formed it? now have I brought it to pass, that thou
+shouldest be to lay waste fenced cities into ruinous heaps.
+
+19:26 Therefore their inhabitants were of small power, they were
+dismayed and confounded; they were as the grass of the field, and as
+the green herb, as the grass on the house tops, and as corn blasted
+before it be grown up.
+
+19:27 But I know thy abode, and thy going out, and thy coming in, and
+
+----02/08/14 16:10:27----
+
+Talk to my lawyer.
+
+Fucken niggers.
+
+National Institute of Standards Public Randomness Beacon
+
+Guidelines for Talking with God
+
+http://beacon.nist.gov/rest/record/1391904780
+
+(Modulo is just remainder.)
+0x56624B-->(5661259 mod 100091)+1-->Line:56164
+
+KingJamesBible (Proverbs 30:29) God says...
+30:29 There be three things which go well, yea, four are comely in
+going: 30:30 A lion which is strongest among beasts, and turneth not
+away for any; 30:31 A greyhound; an he goat also; and a king, against
+whom there is no rising up.
+
+30:32 If thou hast done foolishly in lifting up thyself, or if thou
+hast thought evil, lay thine hand upon thy mouth.
+
+30:33 Surely the churning of milk bringeth forth butter, and the
+wringing of the nose bringeth forth blood: so the forcing of wrath
+bringeth forth strife.
+
+31:1 The words of king Lemuel, the prophecy that his mother taught
+him.
+
+31:2 What, my son? and what, the son of my womb? and what, the son of
+my vows?  31:3 Give not thy strength unto women, nor thy ways to that
+which destroyeth kings.
+
+

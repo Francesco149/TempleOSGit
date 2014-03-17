@@ -66,11 +66,10 @@ okay.
 
 Does he think I lie about making 8x8 text in VGA 640x480 mode.  I think he 
 thinks I lie about making text.  In 1983, I wrote a 6502 assembly routine to 
-plot a high-res pixel.  It's harder than it looks because the commodore
-screen 
+plot a high-res pix.  It's harder than it looks because the commodore screen 
 memory when down 8 bytes for a character and left for the next character and 
 down 8 bytes.  The screen memory was oriented like characters were laid-out.  
-I wrote a 6502 asm when I was 13 to plot a pixel.
+I wrote a 6502 asm when I was 13 to plot a pix.
 
 VGA has 4 bit-planes.  We actually studied this in CSC226.
 

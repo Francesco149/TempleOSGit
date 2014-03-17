@@ -8,9 +8,14 @@ public extern CTask *adam_task;
 public extern I64 sys_num_spawned_tasks;
 extern U0 TaskFinishOffDying();
 public _extern _YIELD U0 Yield();
-public extern U0 TSSBusy(I64 tr,Bool val=OFF);
 _extern _TASK_CONTEXT_RESTORE U0 TaskContextRestore();
 _extern _TASK_END_NOW U0 TaskEndNow();
+#help_index "Task/Misc"
+public extern U0 TSSBusy(I64 tr,Bool val=OFF);
+public extern U0 OverRideSingleUserSwap();
+public extern U0 WinDerivedValsUpdate(CTask *task=NULL);
+public extern U0 TaskDerivedValsUpdate(CTask *task=NULL,Bool update_z_buf=TRUE);
+extern U0 (*fp_update_ctrls)(CTask *task);
 
 #help_index "Time/CPU Cycles"
 #help_file "::/Doc/TimeCycles"
@@ -25,8 +30,6 @@ public extern I64 time_stamp_freq_initial;
 public extern I64 HPET_freq,HPET_initial,HPET_kHz_freq;
 
 #help_index "Time/Seconds"
-public extern F64 tT(); //High freq
-public extern F64 tJ(); //From Jiffies.
 public extern F64 tS(); //From SysTimerFreq.
 public extern Bool Blink(F64 Hz=2.5);
 
@@ -48,11 +51,12 @@ extern CPCIDev sys_pci_dev_root;
 extern CMemRange sys_mem32_dev_root;
 
 #help_index "Task/Delay;Time/CPU Cycles"
-public extern I64 TimeStampFreqCal();
+extern I64 TimeStampFreqCal();
 public extern U0 BusyWait(I64 uS); //Loosely timed
+public extern U0 PortNop(); //On the order of 1uS
+#help_index "Task/Delay;Time/Jiffies"
 public extern U0 SleepUntil(I64 wake_jiffy);
 public extern U0 Sleep(I64 mS);
-public extern U0 PortNop(); //On the order of 1uS
 #help_index "Task"
 public extern Bool IsPreempt();
 
@@ -72,10 +76,10 @@ public extern U8 *TaskCaller(CTask *task=NULL,I64 num=0,Bool saved_context=FALSE
 public extern Bool SingleUser(Bool val);
 public extern Bool IsSingleUser();
 #help_index "Debugging/Dump"
-public extern U0 D(U8 *add,I64 cnt=0x80,Bool show_offset=TRUE);
-public extern U0 Dm(U8 *add,I64 cnt=0x80);
-public extern U0 Da(U8 **add,I64 cnt=0x10);
-extern I64 *TaskRegAdd(CTask *task,I64 reg_num);
+public extern U0 D(U8 *addr,I64 cnt=0x80,Bool show_offset=TRUE);
+public extern U0 Dm(U8 *addr,I64 cnt=0x80);
+public extern U0 Da(U8 **addr,I64 cnt=0x10);
+extern I64 *TaskRegAddr(CTask *task,I64 reg_num);
 public extern U0 Dr(CTask *task=NULL);
 public extern U0 StkRep(CTask *task=NULL);
 public extern U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL);
@@ -87,11 +91,11 @@ public extern Bool IsDbg();
 public extern U0 G(U8 *ip=INVALID_PTR,CTask *task=NULL);
 public extern U0 G2(U8 *ip=INVALID_PTR,CTask *task=NULL);
 public extern U0 S(U8 *ip=INVALID_PTR,CTask *task=NULL);
-public extern U0 E(U8 *add,I64 cnt=512,I64 ed_flags=0);
-extern CBpt *BptFind(U8 *add,CTask *task=NULL,Bool rem=FALSE);
-public extern Bool BptS(U8 *add,CTask *task=NULL,Bool live=TRUE);
-public extern Bool BptR(U8 *add,CTask *task=NULL,Bool live=TRUE,Bool rem=TRUE);
-public extern Bool B(U8 *add,CTask *task=NULL,Bool live=TRUE) //Toggle breakpoint
+public extern U0 E(U8 *addr,I64 cnt=512,I64 ed_flags=0);
+extern CBpt *BptFind(U8 *needle_addr,CTask *haystack_task=NULL,Bool rem=FALSE);
+public extern Bool BptS(U8 *addr,CTask *task=NULL,Bool live=TRUE);
+public extern Bool BptR(U8 *addr,CTask *task=NULL,Bool live=TRUE,Bool rem=TRUE);
+public extern Bool B(U8 *addr,CTask *task=NULL,Bool live=TRUE) //Toggle breakpoint
 public extern I64 B2(CTask *task=NULL,Bool live=TRUE);
 #help_index "Debugging/Raw Output"
 public extern Bool Raw(Bool val);
@@ -100,31 +104,31 @@ extern U0 RawDr(CTask *task=NULL);
 public extern U0 RawPutChar(I64 ch);
 public extern U0 VGAFlush();
 public extern U0 RawPrint(I64 mS=100,U8 *fmt,...);
-public extern U0 RawD(I64 mS=100,U8 *add,I64 cnt=0x80);
-public extern U0 RawDm(I64 mS=100,U8 *add,I64 cnt=0x80);
+public extern U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80);
+public extern U0 RawDm(I64 mS=100,U8 *addr,I64 cnt=0x80);
 
 #help_index "Graphics/Color"
 extern U0 (*fp_set_std_palette)();
 public extern U8 *Color2Text(U8 *buf,CColorROPU32 c);
+#help_index "Graphics/Screen"
+extern I64 gr_width,gr_height;
 
 #help_index "Char"
 #help_file "::/Doc/Char"
+public extern U8 *gr_font;
+
+#help_index "Char/System"
+public extern Bool text_mode;
 extern U0 (**fp_ctrl_alt_let_cbs)(I64 sc);
 extern I64 ctrl_alt_let_in_irq_flags;
 extern U8 **ctrl_alt_let_descs;
-extern I64 **ctrl_alt_let_ret_addr; //addr of ret add on stack in kbd irq
+extern I64 **ctrl_alt_let_ret_addr; //addr of ret addr on stack in kbd irq
 extern CSrvCmd sys_macro_root;
 extern CKeyDev sys_put_key_root;
 extern CTask *sys_macro_util_task;
 extern I64 sys_raw_col,sys_raw_flags;
 extern U8 *sys_raw_screen_image;
-public extern Bool text_mode;
-
-//Consts are defined for these to
-//optimize.  See [C:/Adam/Gr/GrCfg.CPP,1].
-public extern I64 text_rows,text_cols,gr_width,gr_height;
-public extern U8 *gr_font;
-
+extern I64 text_rows,text_cols;
 public extern CKeyDev *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE);
 public extern U0 KeyDevRem(CKeyDev *tempp);
 public extern U0 SetKeyDesc(U8 *fmt,...);
@@ -140,14 +144,14 @@ public extern U0 NewLine(I64 cnt=1);
 public extern U0 Spaces(I64 cnt=1);
 public extern U0 PutKey(I64 ch=0,I64 sc=0);
 public extern U0 PutChars(U64 ch);
-extern U0 PutS(U8 *st); //Use [MN:Print] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,946] Print()
 public extern U8 *Bin2Hex(U8 *dst,I64 n;I64 width);
 public extern U0 PutHex(I64 n,I64 width);
 public extern Bool Silent(Bool val);
 public extern Bool IsSilent();
 public extern U0 GetOutOfDollar();
 #help_index "Char/Conversion"
-public extern I64 A2I(U8 *st,I64 radix=10,U8 **_end_ptr=NULL);
+public extern I64 A2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL);
 #help_index "Input Pointer/Mouse"
 public extern I64 mouse_evt_time;
 extern I64 mouse_pkt_size;
@@ -163,7 +167,7 @@ public extern Bool YorN();
 public extern I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE);
 public extern I64 KbdMouseEvtTime();
 
-//Gets [C:/TempleOS/Kernel/Adam1a.HPP.Z,1567] Flags
+//Gets [C:/Kernel/Adam1a.HPP.Z,1457] Flags
 public extern U8 *MGetS(I64 flags=0);
 extern U8  *(*fp_mgets)(I64 flags=0);
 public extern U8 *ScanJoin(U8 *src,U8 *fmt,I64 argc,I64 *argv);
@@ -171,7 +175,7 @@ public extern U8 *Scan(U8 *src,U8 *fmt,...);
 
 #help_index "Char/Lists"
 public extern U8 *LstSub(I64 sub, U8 *lst);
-public extern I64 LstMatch(U8 *pattern, U8 *lst,I64 flags=0);
+public extern I64 LstMatch(U8 *needle, U8 *haystack_lst,I64 flags=0);
 #help_index "Hash;Char/Lists"
 public extern I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table);
 
@@ -186,10 +190,11 @@ public extern U8 *StrUtil(U8 *_src,I64 flags);
 public extern U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0);
 public extern U8 *StrFirstRem(U8 *src,U8 *marker,U8 *dst=NULL);
 public extern U8 *StrLastRem(U8 *src,U8 *marker,U8 *dst=NULL);
-public extern Bool WildMatch(U8 *pattern,U8 *wild);
-public extern U8 *StrFind(U8 *pattern,U8 *src,I64 flags=0);
+public extern Bool WildMatch(U8 *test_str,U8 *wild_str);
+public extern U8 *StrFind(U8 *needle,U8 *haystack_str,I64 flags=0);
 public extern U8 *SPrintJoin(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *SPrint(U8 *dst,U8 *fmt,...);
+public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 public extern U8 *MPrint(U8 *fmt,...);
 
 #help_index "Char/Define"
@@ -201,7 +206,7 @@ public extern U8 *Define(U8 *name);
 public extern CHashDefineStr *DefineLstLoad(U8 *name,U8 *st);
 public extern U8 *DefineSub(I64 sub,U8 *name);
 public extern I64 DefineCnt(U8 *name);
-public extern I64 DefineMatch(U8 *pattern,U8 *lst_name,I64 flags=0);
+public extern I64 DefineMatch(U8 *needle,U8 *haystack_lst_name,I64 flags=0);
 #help_index "Hash;Char/Define;Char/Lists"
 public extern I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table);
 
@@ -218,7 +223,7 @@ public extern U8 *MemBlksIndependentAlloc(I64 *_pages512,CBlkPool *bp=NULL);
 public extern I64 *MemPageTable(U8 *a);
 public extern U0 MemBlksNonTaskFree(CMemBlk *m,I64 pages512,CBlkPool *bp=NULL);
 public _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL);
-public _extern _FREE U0 Free(U8 *add);
+public _extern _FREE U0 Free(U8 *addr);
 public _extern _MSIZE I64 MSize(U8 *src);	//size of heap object
 public _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
 public _extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src);
@@ -260,22 +265,18 @@ public extern U0 TaskQueIns(CTask *task,CTask *pred=NULL);
 public extern U0 TaskQueRem(CTask *task);
 public extern U0 TaskWait(CTask *task=NULL);
 public extern U0 UserCmdLine();
-public extern U0 WinDerivedValsUpdate(CTask *task=NULL);
-public extern U0 TaskDerivedValsUpdate(CTask *task=NULL,Bool update_z_buf=TRUE);
-extern U0 (*fp_update_ctrls)(CTask *task);
 public extern CTask *SpawnUser(U8 *fmt=NULL,...);
 extern U0 TaskFinishOff(CTask *task);
-public extern U0 OverRideSingleUserSwap();
 #help_index "Task;MultiCore"
-public extern CTask *Spawn(U0 (*fp_add)(U8 *data),U8 *data=NULL,
+public extern CTask *Spawn(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	U8 *task_name=NULL,I64 target_cpu=-1,	//-1 means current CPU
 	CTask *parent=NULL, //NULL means adam
 	I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
 
-#help_index "Task/Requests"
+#help_index "Task/Srv"
 public extern U0 SrvCmdDel(CSrvCmd *tempc);
 public extern U0 TaskRstAwaitingMsg(CTask *task=NULL);
-public extern CSrvCmd *TaskExeStrQue(CTask *srv,CTask *master,U8 *data,I64 flags);
+public extern CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags);
 public extern I64 SrvCmdsHandler(CTask *task=NULL);
 public extern I64 SrvUser(U8 *fmt,...);
 extern U0 SrvUserCmdLine();
@@ -283,12 +284,12 @@ public extern U0 SrvTaskCont();
 public extern I64 Adam(U8 *fmt,...);
 public extern U0 AdamLog(U8 *fmt,...);
 public extern U0 AdamErr(U8 *fmt,...);
-#help_index "Task/Text Input"
-public extern CSrvCmd *TaskTextInputQue(CTask *srv,CTask *master,
+#help_index "Task/Text & Msgs"
+public extern CSrvCmd *TaskText(CTask *srv,CTask *master,
 	U8 *data,I64 flags);
 
-#help_index "Task/Text Input;Messages"
-public extern CSrvCmd *TaskMsgQue(CTask *srv,CTask *master,
+#help_index "Task/Text & Msgs;Messages"
+public extern CSrvCmd *TaskMsg(CTask *srv,CTask *master,
 		     I64 msg_code,I64 p1,I64 p2,I64 flags);
 public extern U0 PostMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,I64 flags=0);
 public extern U0 SendMsg(CTask *task,I64 msg_code,I64 p1,I64 p2,I64 flags=0);
@@ -314,12 +315,10 @@ public extern U0 ArcCtrlDel(CArcCtrl *c);
 #help_index "Compression"
 public extern CArcCompress *CompressBuf(U8 *src,I64 size,I64 flags=0,CTask *mem_task=NULL);
 public extern U8 *ExpandBuf(CArcCompress *r,CTask *mem_task=NULL);
-//This is just an XOR checksum.
-extern I64 ArcXSum(U32 *buf,I64 size);
 
 #help_index "AutoFile"
 #help_file "::/Doc/AutoFile"
-#help_index "Task/Text Input;AutoFile"
+#help_index "Task/Text & Msgs;AutoFile"
 public extern U0 Auto(U8 *fmt,...);
 public extern U0 AutoStr(U8 *fmt,...);
 public extern U0 AutoFile(U8 *filename);
@@ -486,7 +485,7 @@ public extern U8 *sys_dft_iso_name;
 
 #help_index "File/FileNames"
 public extern U8 *sys_acct;
-public extern Bool FilesFindMatch(U8 *pattern,U8 *files_find_mask,I64 fuf_flags=0);
+public extern Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0);
 public extern Bool IsDotZ(U8 *filename);
 public extern Bool IsDotC(U8 *filename);
 public extern U8 *FileExtDot(U8 *src);
@@ -510,7 +509,7 @@ public extern U0 ToFileLine(U8 *_fl_file_line,U8 **_filename,I64 *_linenum);
 public extern U0 ScanFlags(U8 *f,U8 *lst,U8 *st);
 public extern U8 *SPrintFlags(U8 *dst,U8 *lst,I64 flags);
 public extern U0 FileAccessDel(CFileAccess *fa);
-public extern CFileAccess *FileAccessNew(U8 *mask,Bool make_mask=FALSE,Bool make_dirs=FALSE);
+public extern CFileAccess *FileAccessNew(U8 *mask,Bool make_mask=FALSE,Bool make_dirs=FALSE,Bool no_mask=FALSE);
 extern I64 FileAttr(U8 *name,I64 old_attr=0);
 public extern U0 DirEntryDel(CDirEntry *tempde);
 public extern U0 DirEntryDel2(CDirEntry *tempde);
@@ -520,14 +519,10 @@ public extern Bool DirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempde,Bool free_old_ch
 
 #help_index "File/Program Routines"
 public extern CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0);
-public extern I64 FileSize(U8 *filename,I64 fuf_flags=0);
-public extern I64 FileSizeExpanded(U8 *filename,I64 fuf_flags=0);
 public extern Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0);
 public extern U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE);
-public extern U8 *TextFileRead(U8 *filename,I64 *_attr=NULL);
 public extern I64 FileWrite(U8 *filename,U8 *fbuf,
 	I64 size,CDate cdt=0,I64 attr=0,Bool raw=FALSE);
-public extern U0 TextFileWrite(U8 *filename,U8 *st,I64 attr=0);
 
 #help_index "Install;File/Cmd Line (Typically);Cmd Line (Typically);"
 public extern U0 Mount(Bool repartition=FALSE);
@@ -535,7 +530,7 @@ public extern U0 Fmt(U8 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FA
 
 #help_index "Install"
 #help_file "::/Doc/Install"
-extern CATARep *ATARepFind(CATARep *root,I64 num);
+extern CATARep *ATARepFind(CATARep *haystack_root,I64 needle_num);
 public extern Bool DrvEnable(U8 drv_let,Bool val);
 public extern U8 sys_first_hd_drv_let,sys_first_cd_drv_let;
 extern Bool boot_drv_pmt,cdrom_boot_is_good;
@@ -543,15 +538,16 @@ extern Bool boot_drv_pmt,cdrom_boot_is_good;
 #help_index "Hash"
 #help_file "::/Doc/Hash"
 public _extern _HASH_STR I64 HashStr(U8 *st);
-public _extern _HASH_FIND CHash *HashFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
+public _extern _HASH_FIND CHash *HashFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 public _extern _HASH_SINGLE_TABLE_FIND CHash *
-	HashSingleTableFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
+	HashSingleTableFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 public _extern _HASH_BUCKET_FIND CHash **
-	HashBucketFind(U8 *st,CHashTable *table);
+	HashBucketFind(U8 *needle_str,CHashTable *haystack_table);
 public _extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table);
 public _extern _HASH_ADD_AFTER U0 HashAddAfter(CHash *temph,CHash *pred,CHashTable *table);
 public _extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
 					I64 instance=1);//instance must match temph's
+public extern CHashGeneric *HashPublic(U8 *st,I64 mask,Bool val=TRUE);
 public extern CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 val=0,I64 u8=0,I64 u16=0,CTask *task=NULL);
 public extern I64 HashTypeNum(CHash *temph);
 public extern I64 HashVal(CHash *temph);
@@ -560,6 +556,9 @@ public extern U0 HashDel(CHashSrcSym *temph);
 public extern U0 HashTableDel(CHashTable *table);
 public extern I64 HashTablePurge(CHashTable *tempht);
 extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
+
+#help_index "Compiler/Lex"
+public extern U0 SetSrcFileInfo(CLex *lx,CHashSrcSym *h);
 
 #help_index "Hash/Frame"
 #help_file "::/Doc/Frame"
@@ -572,16 +571,12 @@ public extern I64 FramePtrDel(U8 *name,CTask *task=NULL);
 public extern U8 *Load(U8 *filename,I64 ld_flags=0,
 	CBinFile *bfh_addr=INVALID_PTR); //INVALID_PTR means don't care what load addr.
 
-extern I64 sys_num_installed_compilers;
-#help_index "Compiler"
-extern U0 (*fp_prs_stream_blk)(CLex *lx);
-
 #help_index "Boot"
 #help_file "::/Doc/Boot"
 public extern U0 Reboot();
 
-#help_index "MultiCore;Task/Requests"
-public extern CSrvCmd *JobQue(I64 (*fp_add)(U8 *data),U8 *data=NULL,
+#help_index "MultiCore;Task/Srv"
+public extern CSrvCmd *JobQue(I64 (*fp_addr)(U8 *data),U8 *data=NULL,
 	I64 target_cpu=1,I64 flags=1<<SVCf_FREE_ON_COMPLETE,
 	I64 cmd_code=SVCT_CALL,U8 *aux_str=NULL,I64 aux1=0,I64 aux2=0);
 #help_index "MultiCore"
@@ -591,20 +586,20 @@ public extern U0 MPInt(U8 num,I64 cpu_num=1);
 public extern U0 MPIntAll(U8 num);
 public extern U0 MPWake(I64 target_cpu);
 extern U0 MPSethServerTask();
-extern CTask *SpawnQue(U0 (*fp_add)(U8 *data),U8 *data=NULL,
+extern CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	U8 *task_name=NULL,I64 target_cpu,
 	CTask *parent=NULL, //NULL means adam
 	I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
 public extern U0 MPNMInt();
 public extern U0 MPStart();
-#help_index "Task/Requests;MultiCore"
+#help_index "Task/Srv;MultiCore"
 public extern Bool ScanResult(CSrvCmd *rqst=NULL,I64 *_result=NULL);
 public extern I64 GetResult(CSrvCmd *rqst=NULL);
 #help_index "MultiCore;Boot"
 public extern U0 MPHalt();
 
 #help_index "Math"
-public extern F64 Limit(F64 p,F64 lo,F64 hi);
+public extern F64 Clamp(F64 num,F64 lo,F64 hi);
 public extern F64 Min(F64 n1,F64 n2);
 public extern F64 Max(F64 n1,F64 n2);
 public extern F64 Pow10I64(I64 i);
@@ -631,11 +626,11 @@ public _extern C32_ESI U32 c32_esi;
 public _extern C32_EDI U32 c32_edi;
 public _extern C32_EFLAGS U32 c32_eflags;
 //Not reentrant
-public _extern _FAR_CALL32 Bool FarCall32(U0 (*fp_add)());
+public _extern _FAR_CALL32 Bool FarCall32(U0 (*fp_addr)());
 
 #help_index "Call"
-//fp_add can have any fixed number of arguments.
-public argpop extern I64 CallStkGrow(I64 stk_size_threshold,I64 stk_size,/*argpop*/I64 (*fp_add)(...),...);
+//fp_addr can have any fixed number of arguments.
+public argpop extern I64 CallStkGrow(I64 stk_size_threshold,I64 stk_size,/*argpop*/I64 (*fp_addr)(...),...);
 
 #help_index "Data Types/Circular Queue"
 public extern U0 QueDel(CQue *root,Bool querem=FALSE);
@@ -674,10 +669,9 @@ public _extern _STRCMP I64 StrCmp(U8 *st1,U8 *st2);
 public _extern _STRICMP I64 StrICmp(U8 *st1,U8 *st2);
 public _extern _STRNCMP I64 StrNCmp(U8 *st1,U8 *st2,I64 n);
 public _extern _STRNICMP I64 StrNICmp(U8 *st1,U8 *st2,I64 n);
-public _extern _STRMATCH U8 *StrMatch(U8 *pattern,U8 *st);
-public _extern _STRIMATCH U8 *StrIMatch(U8 *pattern,U8 *st);
+public _extern _STRMATCH U8 *StrMatch(U8 *needle,U8 *haystack_str);
+public _extern _STRIMATCH U8 *StrIMatch(U8 *needle,U8 *haystack_str);
 public _extern _STRCPY U0 StrCpy(U8 *dst,U8 *src);
-public _extern _STRCAT U0 StrCat(U8 *dst,U8 *src);
 
 #help_index "Char/Input"
 public extern I64 sys_key_cnt;
@@ -738,7 +732,7 @@ extern Bool mouse_irqs_working;
 
 #help_index "Input Pointer"
 #help_file "::/Doc/InputPointer"
-public extern I64 ipx,ipy,ipz,ip_throttle;
+public extern I64 ipx,ipy,ipz,ip_throttle,ip_throttle_step;
 public extern I64 ipx_offset,ipy_offset,ipz_offset;
 public extern F64 ipx_scale,ipy_scale,ipz_scale;
 public extern F64 ip_speed;
@@ -748,17 +742,14 @@ public extern Bool ip_lb,ip_cb,ip_rb;
 extern Bool ip_lb_last,ip_cb_last,ip_rb_last;
 public extern Bool ip_has_wheel;
 extern F64 ip_last_move_time;
-extern CSnap ip_snap_last;
+public extern CGrid ip_grid;
+public extern U0 GridInit();
 public extern U0 SetIP(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64,I64 c=MAX_I64);
 #help_index "Input Pointer/Displayed Image"
 public extern Bool ip_on;  //Show or hide cursor
 extern U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool c,Bool r);
 extern U0 IPVarsInit();
-#help_index "Input Pointer/Snap"
 public extern I64 ipx_presnap,ipy_presnap,ipz_presnap;
-extern CSnap *SnapCur();
-public extern U0 GetSnap(CSnap *s);
-public extern U0 SetSnap(CSnap *s,I64 i=0,F64 d=0);
 
 #help_index "Messages"
 extern U0 InputFilterTask();
@@ -780,14 +771,14 @@ public extern F64 A2F64(U8 *src,U8 **_end_ptr=NULL);
 public extern CDate A2Date(U8 *src);
 
 #help_index "Debugging/PSect;Hash"
-public extern CHash *PSectFind(U8 *add,I64 *_offset);
+public extern CHash *PSectFind(U8 *addr,I64 *_offset);
 extern CPSectCache *psect_cache;
 extern I64 psect_cache_index;
 #help_index "Debugging/PSect"
-public extern I64 SrcLineNum(U8 *add,I64 cnt=1);
-public extern U8 *SrcFileName(U8 *add,I64 cnt=1,CTask *mem_task=NULL);
-public extern U8 *SrcEdLink(U8 *add,I64 cnt=1,CTask *mem_task=NULL);
-public extern Bool PutSrcLink(U8 *add,I64 cnt=1,U8 *buf=NULL);
+public extern I64 SrcLineNum(U8 *addr,I64 cnt=1);
+public extern U8 *SrcFileName(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
+public extern U8 *SrcEdLink(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
+public extern Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL);
 
 #help_index "Debugging;Debugging/Debugger"
 public extern U0 EdLite(U8 *filename,I64 num=1);
@@ -798,7 +789,7 @@ public extern U0 Fix();
 #help_index "Debugging/Debugger;Doc/Cmd Line (Typically);Cmd Line (Typically);Training"
 public extern U0 Man(U8 *st);
 
-#help_index "Task/Requests;Compiler"
+#help_index "Task/Srv;Compiler"
 public extern U0 UserTaskCont();
 public extern I64 ExeCmdLine(CLex *lx);
 

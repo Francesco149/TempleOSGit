@@ -2,17 +2,17 @@ U0 BlkPoolAdd(CBlkPool *bp,CMemBlk *m,I64 pages512)
 {
   if (sys_mem_init_flag)
     MemSet(m,sys_mem_init_val,pages512*512);
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&bp->locked_flags,BPlf_LOCKED))
-    Pause;
+    PAUSE
   m->next=bp->mem_free_lst;
   m->pages=pages512;
   m->mb_signature=MBS_UNUSED_SIGNATURE_VAL;
   bp->size+=pages512;
   bp->mem_free_lst=m;
   LBtr(&bp->locked_flags,BPlf_LOCKED);
-  PopFD;
+  POPFD
 }
 
 U0 BlkPoolInit(CBlkPool *bp,I64 pages512)
@@ -28,7 +28,7 @@ U0 BlkPoolInit(CBlkPool *bp,I64 pages512)
 
 CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,CTask *task=NULL,CBlkPool *bp)
 {
-//[C:/Kernel/KStart.CPP,1] Adam Task
+//[C:/Kernel/KStart.CPP.Z,1] Adam Task
   if (!hc)
     hc=ACAlloc(sizeof(CHeapCtrl));
   hc->hc_signature=HEAP_CTRL_SIGNATURE_VAL;
@@ -57,10 +57,10 @@ U0 HeapCtrlDel(CHeapCtrl *hc)
 {
   CMemBlk *m,*m1;
   if (hc) {
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     while (LBts(&hc->locked_flags,HClf_LOCKED))
-      Pause;
+      PAUSE
     m=hc->next_mem_blk;
     while (m!=&hc->next_mem_blk) {
       m1=m->next;
@@ -68,7 +68,7 @@ U0 HeapCtrlDel(CHeapCtrl *hc)
       m=m1;
     }
     LBtr(&hc->locked_flags,HClf_LOCKED);
-    PopFD;
+    POPFD
     Free(hc);
   }
 }
@@ -163,7 +163,7 @@ U0 MemPagesNotPresentMark()
 }
 
 U8 *Mem32DevAlloc(I64 size,I64 alignment)
-{
+{//This doesn't work
   U8 *base,*limit;
   CMemRange *tempmr,*tempmr1;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))

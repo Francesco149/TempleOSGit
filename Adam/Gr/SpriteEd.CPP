@@ -1,4 +1,4 @@
-#help_index "Graphics/CSprite"
+#help_index "Graphics/Sprite"
 
 #define CSPRITE_WIF	(WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER-WIF_GRAB_SCROLL)
 
@@ -596,27 +596,27 @@ U0 PickSpriteDocNew(CDoc *doc,CSprite *root,I64 old_num)
   U8 *st;
 
   DocPrint(doc,"$PURPLE$$TX+CX,\"Sprite SideBar\"$\n"
-	"$LK+PU+CX,\"Click for Help\",\"FI:::/Doc/SpriteSideBar.TXT.Z\"$\n\n");
+	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/SpriteSideBar.TXT.Z\"$\n\n");
 
   tempg=root->next;
   while (tempg!=root) {
     st=Sprite2Text(tempg);
     if (cur_num==old_num) {
       DocPrint(doc,"$LTRED$");
-      doc_e=DocPrint(doc,"$MU-UL,\"%Q\",%d$\n",st,cur_num++);
+      doc_e=DocPrint(doc,"$MU-UL,\"%Q\",LE=%d$\n",st,cur_num++);
     } else {
       DocPrint(doc,"$LTBLUE$");
-      DocPrint(doc,"$MU-UL,\"%Q\",%d$\n",st,cur_num++);
+      DocPrint(doc,"$MU-UL,\"%Q\",LE=%d$\n",st,cur_num++);
     }
     Free(st);
     tempg=tempg->next;
   }
   if (cur_num==old_num) {
     DocPrint(doc,"$LTRED$");
-    doc_e=DocPrint(doc,"$MU-UL,\"END\",%d$\n",cur_num);
+    doc_e=DocPrint(doc,"$MU-UL,\"END\",LE=%d$\n",cur_num);
   } else {
     DocPrint(doc,"$LTBLUE$");
-    DocPrint(doc,"$MU-UL,\"END\",%d$\n",cur_num);
+    DocPrint(doc,"$MU-UL,\"END\",LE=%d$\n",cur_num);
   }
   if (doc_e)
     doc->cur_entry=doc_e;
@@ -694,7 +694,7 @@ Bool SpriteTextEd(CSprite **_root,I64 *_cur_num)
   CDocEntry *doc_e;
   doc->flags|=DOCF_FORM;
   DocPrint(doc,"$PURPLE$$TX+CX,\"Sprite Edit as Text\"$$FG$\n"
-	"$LK+PU+CX,\"Click for Help\",\"FI:::/Doc/SpriteEdText.TXT.Z\"$\n\n");
+	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/SpriteEdText.TXT.Z\"$\n\n");
   tempg=root->next;
   while (tempg!=root) {
     st=Sprite2Text(tempg);
@@ -726,39 +726,37 @@ Bool SpriteTextEd(CSprite **_root,I64 *_cur_num)
 #define GED_INS_CLIPBOARD	8
 #define GED_DELETE		9
 #define GED_TEXT_ED		10
-#define GED_SNAP		11
-#define GED_EXIT		12
+#define GED_EXIT		11
 
-U0 GrInit2()
+U0 GrInit3()
 {
   DefineLstLoad("ST_SPRITE_ED_MENU","Pick Graphically\0Set Origin\0"
 	"Shift Origin\0Shift Points\0Shift Rects\0Transform\0Shift SubOrigin\0Main Menu\0"
-	"Insert Clipboard\0Delete Object\0Edit as Text\0Snap\0");
+	"Insert Clipboard\0Delete Object\0Edit as Text\0");
 }
-GrInit2;
+GrInit3;
 
-I64 PopUpSpriteEd(CSprite **_root,I64 snap,F64 ip_scaler,I64 *_cur_num)
+I64 PopUpSpriteEd(CSprite **_root,I64 *_cur_num)
 {
   U8 *st;
   CTask *pu_task;
   I64 i;
   CDoc *doc=DocNew;
   DocPrint(doc,"$PURPLE$$TX+CX,\"Sprite Edit Menu\"$\n"
-	"$LK+PU+CX,\"Click for Help\",\"FI:::/Doc/SpriteEd.TXT.Z\"$\n\n"
-	"$LTBLUE$$MU-UL,\"Shift Points\",GED_SHIFT_PTS$\n"
-	"$MU-UL,\"Shift Points with Rects\",GED_SHIFT_RECTS$\n"
-	"$MU-UL,\"Shift Origin\",GED_SHIFT_ORIGIN$\n"
-	"$MU-UL,\"Set Origin\",GED_SET_ORIGIN$\n"
-	"$MU-UL,\"Insert Shift SubOrigin\",GED_SHIFT_SUB_ORIGIN$\n"
-	"$MU-UL,\"Snap %d %5.3f\",GED_SNAP$\n"
-	"$MU-UL,\"Pick or Delete Objects Graphically\",GED_PICK_GRAPHICALLY$\n"
-	"$MU-UL,\"Transform\",GED_TRANSFORM$\n"
-	"$MU-UL,\"Delete\",GED_DELETE$\n"
-	"$MU-UL,\"Edit as Text\",GED_TEXT_ED$\n"
-	"$MU-UL,\"Insert Clipboard Sprite's\",GED_INS_CLIPBOARD$\n"
-	"\n$PURPLE$$MU-UL,\"+] Sprite Main Menu\",GED_MAIN_MENU$$LTBLUE$\n"
-	"$MU-UL,\"Exit  Sprite\",GED_EXIT$\n"
-	"$MU-UL,\"Abort Sprite\",DOCM_CANCEL$",snap,ip_scaler);
+	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/SpriteEd.TXT.Z\"$\n\n"
+	"$LTBLUE$$MU-UL,\"Shift Points\",LE=GED_SHIFT_PTS$\n"
+	"$MU-UL,\"Shift Points with Rects\",LE=GED_SHIFT_RECTS$\n"
+	"$MU-UL,\"Shift Origin\",LE=GED_SHIFT_ORIGIN$\n"
+	"$MU-UL,\"Set Origin\",LE=GED_SET_ORIGIN$\n"
+	"$MU-UL,\"Insert Shift SubOrigin\",LE=GED_SHIFT_SUB_ORIGIN$\n"
+	"$MU-UL,\"Pick or Delete Objects Graphically\",LE=GED_PICK_GRAPHICALLY$\n"
+	"$MU-UL,\"Transform\",LE=GED_TRANSFORM$\n"
+	"$MU-UL,\"Delete\",LE=GED_DELETE$\n"
+	"$MU-UL,\"Edit as Text\",LE=GED_TEXT_ED$\n"
+	"$MU-UL,\"Insert Clipboard Sprite's\",LE=GED_INS_CLIPBOARD$\n"
+	"\n$PURPLE$$MU-UL,\"+] Sprite Main Menu\",LE=GED_MAIN_MENU$$LTBLUE$\n"
+	"$MU-UL,\"Exit  Sprite\",LE=GED_EXIT$\n"
+	"$MU-UL,\"Abort Sprite\",LE=DOCM_CANCEL$");
   st=MPrint("SpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,_root,_cur_num);
   PopUp(st,NULL,&pu_task);
   Free(st);
@@ -1082,19 +1080,15 @@ gs_done:
   return result;
 }
 
-I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_num,I64 *_ip_snap,F64 *_ip_scaler)
+I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_num)
 {
   CDocEntry *doc_e2;
   CDocBin *tempb;
   Bool unlock,del_down;
-  I64 i,r[16],msg_code,p1,p2,xx,yy,ip_snap=1,
+  I64 i,r[16],msg_code,p1,p2,xx,yy,
 	old_e_flags1;
-  F64 ip_scaler=1.0;
   CSprite *cur_elem,*root2,*next,*last,*tempg,*insert_pt;
 
-  if (_ip_snap) ip_snap=*_ip_snap;
-  if (_ip_scaler) ip_scaler=*_ip_scaler;
-  SetSnap(&Fs->snap,ip_snap,ip_scaler);
   old_e_flags1=doc_e->flags1;
   tempb=doc_e->bin_data;
   DocUnlock(doc);
@@ -1102,7 +1096,7 @@ I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_nu
     if (win_actual_refresh<10)
       doc_e->flags1|=DOCEF1_DONT_DRAW;
     StrCpy(Fs->task_title,"Sprite Edit Menu");
-    i=PopUpSpriteEd(_root,ip_snap,ip_scaler,_cur_num);
+    i=PopUpSpriteEd(_root,_cur_num);
     GrEdUpdate(doc,tempb,*_root);
     if (0<=i<GED_EXIT) {
       StrCpy(Fs->task_title,DefineSub(i,"ST_SPRITE_ED_MENU"));
@@ -1140,11 +1134,6 @@ I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_nu
 	  } while (del_down || msg_code!=MSG_IP_L_UP && msg_code!=MSG_IP_R_UP);
 	  *_cur_num=doc->cur_sprite_elem_num;
 	  doc->cur_sprite=NULL;
-	  break;
-	case GED_SNAP:
-	  PopUpSnap(&Fs->snap);
-	  ip_snap=Fs->snap.x;
-	  ip_scaler=Fs->snap.dx;
 	  break;
 	case GED_SET_ORIGIN:
 	  doc_e->flags1=old_e_flags1;
@@ -1255,13 +1244,9 @@ I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_nu
   } while (i!=DOCM_CANCEL && i!=GED_EXIT && i!=GED_MAIN_MENU);
   doc_e->flags1=old_e_flags1;
 
-  if (_ip_snap)   *_ip_snap=ip_snap;
-  if (_ip_scaler) *_ip_scaler=ip_scaler;
   switch (i) {
     case DOCM_CANCEL:	return GE_ABORT;
     case GED_EXIT:	return GE_EXIT;
     case GED_MAIN_MENU:	return GE_CONT;
   }
 }
-
-#help_index "Graphics"

@@ -372,7 +372,14 @@ shouldest thou destroy thyself ?  7:17 Be not over much wicked,
 neither be thou foolish: why shouldest thou die before thy time?  7:18
 
 This is ghetto:
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/_CzBlSXgzqI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/_CzBlSXgzqI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -509,7 +516,14 @@ and he shall stretch it out upon the land of Egypt.
 
 ----12/11/13 23:01:30----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/st4gaY0IeQg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/st4gaY0IeQg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 You know?  The snuffleofagus voice sounds about right for an elephant.  What 
 would those elephants say?

@@ -33,7 +33,7 @@ Bool BlkDevUnlock(CBlkDev *bdev,Bool rst=FALSE)
   if (Bt(&bdev->locked_flags,BDlf_LOCKED) && bdev->owning_task==Fs) {
     if (rst)
       bdev->flags&=~(BDF_INITIALIZED|BDF_INIT_IN_PROGRESS);
-    bdev->owning_task=0;
+    bdev->owning_task=NULL;
     LBtr(&bdev->locked_flags,BDlf_LOCKED);
     Yield; //Prevent deadlock
     return TRUE;
@@ -46,7 +46,7 @@ Bool PrtUnlock(CPrt *p,Bool rst=FALSE)
   PrtChk(p);
   if (Bt(&p->locked_flags,Plf_LOCKED) && p->owning_task==Fs) {
     BlkDevUnlock(p->bdev,rst);
-    p->owning_task=0;
+    p->owning_task=NULL;
     LBtr(&p->locked_flags,Plf_LOCKED);
     Yield; //Prevent deadlock
     return TRUE;
@@ -108,8 +108,7 @@ U0 BlkDevsRelease()
   CBlkDev *bdev;
   for (i=0;i<NUM_BLKDEVS;i++) {
     bdev=&sys_blkdevs[i];
-    if (bdev->bd_signature==BD_SIGNATURE_VAL &&
-	Bt(&bdev->locked_flags,BDlf_LOCKED) && bdev->owning_task==Fs)
+    if (bdev->owning_task==Fs && bdev->bd_signature==BD_SIGNATURE_VAL)
       BlkDevUnlock(bdev,TRUE);
   }
 }
@@ -120,7 +119,7 @@ U0 PrtsRelease()
   CPrt *p;
   for (i=0;i<NUM_PRTS;i++) {
     p=&sys_prts[i];
-    if (Bt(&p->locked_flags,Plf_LOCKED) && p->owning_task==Fs)
+    if (p->owning_task==Fs && p->pt_signature==PRT_SIGNATURE_VAL)
       PrtUnlock(p,TRUE);
   }
 }
@@ -309,13 +308,12 @@ Bool SetDrvType(U8 drv_let,I64 type=PT_REDSEA)
   }
 }
 
-
 Bool RBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
   Bool result=TRUE,unlock;
   CBlkDev *bdev=p->bdev;
+  if (cnt<=0) return TRUE;
   PrtChk(p);
-  if (cnt<=0) return result;
   try {
     unlock=PrtLock(p);
     BlkDevInit(bdev);
@@ -326,7 +324,15 @@ Bool RBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
     if (bdev->flags & BDF_READ_CACHE)
       RCache(p,&buf,&blk,&cnt);
     if (cnt>0) {
-      result=(*p->rblks)(p,buf,blk,cnt);
+      switch (bdev->type) {
+	case BDT_RAM:
+	  MemCpy(buf,bdev->RAM_dsk+blk<<BLK_SIZE_BITS,cnt<<BLK_SIZE_BITS);
+	  break;
+	case BDT_ATA:
+	case BDT_ATAPI:
+	  result=ATARBlks(p,buf,blk,cnt);
+	  break;
+      }
       bdev->last_time=tS;
       if (bdev->flags & BDF_READ_CACHE)
 	DskCacheAdd(p,buf,blk,cnt);
@@ -343,8 +349,8 @@ Bool WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
   Bool result=TRUE,unlock;
   CBlkDev *bdev=p->bdev;
+  if (cnt<=0) return TRUE;
   PrtChk(p);
-  if (cnt<=0) return result;
   try {
     unlock=PrtLock(p);
     BlkDevInit(bdev);
@@ -355,7 +361,15 @@ Bool WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
       throw('Prt');
     blk+=bdev->offset;
     if (cnt>0) {
-      result=(*p->wblks)(p,buf,blk,cnt);
+      switch (bdev->type) {
+	case BDT_RAM:
+	  MemCpy(bdev->RAM_dsk+blk<<BLK_SIZE_BITS,buf,cnt<<BLK_SIZE_BITS);
+	  break;
+	case BDT_ATA:
+	case BDT_ATAPI:
+	  result=ATAWBlks(p,buf,blk,cnt);
+	  break;
+      }
       bdev->last_time=tS;
       if (bdev->flags & BDF_READ_CACHE)
 	DskCacheAdd(p,buf,blk,cnt);
@@ -439,8 +453,8 @@ U0 PrtRep()
 { //Partition report
   CPrt *p;
   CBlkDev *bdev;
-  I64 i;
-  U8 *st,drv_let;
+  I64 i,drv_let;
+  U8 *st;
   "\nDefined Partitions:\n\n";
   for (i=0,p=sys_prts;i<NUM_PRTS;i++,p++) {
     if (p->pt_signature==PRT_SIGNATURE_VAL) {
@@ -591,7 +605,7 @@ I64 Name2DirCluster(CPrt *p,U8 *dirname)
     }
     if (!cont) {
       "%s ",dirname;
-      PrintErr("%S","ST_FILE_NOT_FOUND");
+      PrintErr("File not found.\n");
       cur_dir_cluster=0;
     }
     if (unlock)
@@ -636,7 +650,7 @@ I64 Name2ParentDirCluster(CPrt *p,U8 *dirname)
     }
     if (!cont) {
       "%s ",dirname;
-      PrintErr("%S","ST_FILE_NOT_FOUND");
+      PrintErr("File not found.\n");
       cur_dir_cluster2=0;
     }
     if (unlock)

@@ -1,5 +1,5 @@
 PopUpOk(
-"$LK,\"F\",\"MN:F\"$() is a handy function.\n"
+"$LK,\"F\",A=\"MN:F\"$() is a handy function.\n"
 "It is a wrapper around $LK,\"Grep\",\"MN:Grep\"$().\n"
 "It searches for a sym.\n"
 );
@@ -10,7 +10,7 @@ PopUpOk("Press $GREEN$<ENTER>$FG$.");
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"F(\"Dir\");";
+"F(\"RED\");";
 AFPmtStr("\n");
 
 
@@ -27,7 +27,7 @@ PopUpOk("Press $GREEN$<ENTER>$FG$.");
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"F(\"Dir\",\"+l\");";
+"F(\"RED\",\"+l\");";
 AFPmtStr("\n");
 
 
@@ -45,7 +45,7 @@ PopUpOk("Press $GREEN$<ENTER>$FG$.");
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"F(\"Dir\",\"+l-i\");";
+"F(\"RED\",\"+l-i\");";
 AFPmtStr("\n");
 
 
@@ -53,7 +53,7 @@ AFPmtStr("\n");
 
 PopUpOk(
 "The wrapper function is in your\n"
-"$RED$HOME/Adam3eWrappers.CPP.Z$FG$ file.\n"
+"$RED$HOME/Adam3dWrappers.CPP.Z$FG$ file.\n"
 "There is a function $LK,\"R\",\"MN:R\"$() for\n"
 "find and replace.  Feel free to customize.\n");
 
@@ -63,7 +63,7 @@ PopUpOk("Press $GREEN$<ENTER>$FG$.");
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"Ed(\"HOME/Adam3eWrappers.CPP.Z\");";
+"Ed(\"HOME/Adam3dWrappers.CPP.Z\");";
 AFPmtStr("\n");
 
 Sleep(2000);
@@ -72,5 +72,5 @@ PopUpOk(
 AFUntilChar(CH_SHIFT_ESC,CH_ESC);
 
 PopUpOk(
-"$GREEN$+lf$FG$ is whole label just front.\n"
-"$GREEN$+lb$FG$ is whole label just back.\n");
+"$GREEN$+lb$FG$ is whole label just before.\n"
+"$GREEN$+la$FG$ is whole label just after.\n");

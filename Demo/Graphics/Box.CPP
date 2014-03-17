@@ -2,7 +2,7 @@ CDC *dc;
 
 U0 DrawIt(CTask *,CDC *)
 {//This technique is weird, but clever.  In Box() we
- //created an alias of the system [C:/TempleOS/Adam/Gr/GrScreen.CPP.Z,8] gr_dc2.
+ //created an alias of the system [C:/Adam/Gr/GrGlbls.CPP.Z,5] gr_dc2.
   dc->pen_width=2;
   dc->color=RED;
   GrLine3(dc,-100,-100,-100, -100, 100,-100);
@@ -24,7 +24,7 @@ U0 Box()
   F64 theta=0,phi=0,omega=0,s=1,s1=1.05;
   dc=DCAlias(gr_dc2,Fs);
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
   Fs->draw_it=&DrawIt;
   Preempt(OFF); //We don't want matrix used while we're changing it.

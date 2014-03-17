@@ -16,8 +16,8 @@ class CFileBMP
   U16 bit_cnt;
   U32 compression;
   U32 image_size;
-  U32 x_pixels_per_meter;
-  U32 y_pixels_per_meter;
+  U32 x_pixs_per_meter;
+  U32 y_pixs_per_meter;
   U32 colors_used;
   U32 important_colors;
 
@@ -265,12 +265,12 @@ public CDC *BMPFileRead(U8 *filename,Bool use_ms_paint_palette=FALSE)
   return result;
 }
 
-#help_index "Graphics/CSprite;Graphics/Windows BMP Files;Doc/Output"
-public U0 DocPutBMPFile(CDoc *doc=NULL,U8 *filename,Bool use_ms_paint_palette=FALSE)
-{
+#help_index "Graphics/Sprite;Graphics/Windows BMP Files;Doc/Output"
+public U0 DocBMPFile(CDoc *doc=NULL,U8 *filename,Bool use_ms_paint_palette=FALSE)
+{//Put a BMP file into a document as a sprite.
   CDC *dc=BMPFileRead(filename,use_ms_paint_palette);
   CSprite *elems=DC2Sprite(dc);
-  DocPutSprite(doc,elems);
+  DocSprite(doc,elems);
   Free(elems);
   DCDel(dc);
 }

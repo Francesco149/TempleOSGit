@@ -1,4 +1,4 @@
-//The CFG defines are [C:/Demo/AcctExample/TSAdam.CPP,1] Here.
+//The CFG defines are [C:/Demo/AcctExample/TSAdam.CPP.Z,1] Here.
 
 U8 TSPmtDrv()
 {
@@ -48,7 +48,7 @@ U0 TSCopyDrv(U8 src,U8 dst)
 
 U0 TSPmtCopyDrv()
 {
-  U8 src,dst;
+  I64 src,dst;
   "$RED$\nCopy Src Drive:\n$FG$";
   src=TSPmtDrv;
   "$RED$\nCopy Dst Drive:\n$FG$";
@@ -66,7 +66,7 @@ public U0 CursorRemFile(U8 *filename)
 public U0 CursorRem(U8 *files_find_mask="*")
 {
   I64 fuf_flags=0;
-  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+T+f+F");
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+T+f+F+O");
   CDirEntry *tempde=FilesFind(files_find_mask,fuf_flags),*tempde1=tempde;
   while (tempde) {
     CursorRemFile(tempde->full_name);
@@ -87,7 +87,7 @@ public U0 CursorTopFile(U8 *filename)
 public U0 CursorTop(U8 *files_find_mask="*")
 {
   I64 fuf_flags=0;
-  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+T+f+F");
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+T+f+F+O");
   CDirEntry *tempde=FilesFind(files_find_mask,fuf_flags),*tempde1=tempde;
   while (tempde) {
     CursorTopFile(tempde->full_name);
@@ -107,7 +107,7 @@ U0 UncollapseFile(U8 *filename,I64 *)
 U0 Uncollapse(U8 *files_find_mask="*",U8 *fu_flags=NULL)
 {
   I64 fuf_flags=0;
-  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+f+F+T");
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+f+F+T+O");
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   CDirEntry *tempde=FilesFind(files_find_mask,fuf_flags),*tempde1=tempde;
   while (tempde && !Bt(&fuf_flags,FUf_CANCEL)) {
@@ -122,7 +122,7 @@ public U0 CopySongs(U8 threshold='7')
 {
   CDoc *s;
   CDocEntry *doc_e;
-  CDirEntry *tempde=FilesFind("/Accts/TS/TAD/MusicOrgan/*.CPP*"),*tempde1=tempde;
+  CDirEntry *tempde=FilesFind("/Accts/TS/TAD/MusicOrgan/*.CPP*",FUF_CLUSTER_ORDER),*tempde1=tempde;
   DelTree("/Apps/MusicOrgan/Examples");
   MkDir("/Apps/MusicOrgan/Examples");
   while (tempde) {
@@ -138,6 +138,7 @@ public U0 CopySongs(U8 threshold='7')
 U0 DistroPrep()
 {
   Del("/Demo/WebLogExample/WebLogRep.TXT*");
+  Del("/Demo/ReverseFileExample/PoemForeward.TXT*");
   Del("/Demo/Games/EagleDive.BIN*");
   DelTree("/Accts/*Temp.TXT.Z");
   CopySongs;
@@ -232,7 +233,7 @@ U0 MakeSymFiles()
   }
 }
 
-I64 MakeLineCntFile()
+I64 MakeLineRepFile()
 {
   U8 *st;
   CDoc *doc;
@@ -252,19 +253,19 @@ I64 MakeLineCntFile()
 
   DocMax;
   DocClear;
-  result=LineCntRep;
+  result=LineRep;
   if (doc=DocPut) {
     st=StrNew(doc->filename.name);
-    StrCpy(doc->filename.name,TS_RAM_DRV ":/TS/Wb2/LineCnt.TXT.Z");
+    StrCpy(doc->filename.name,TS_RAM_DRV ":/TS/Wb2/LineRep.TXT.Z");
     DocWrite(doc);
     StrCpy(doc->filename.name,st);
     Free(st);
   }
   DocClear;
-  official=LineCntRep(TS_MAIN_DRV ":/Accts/*")+
-	   LineCntRep(TS_MAIN_DRV ":/Adam/*")+
-	   LineCntRep(TS_MAIN_DRV ":/Compiler/*","-S+T")+
-	   LineCntRep(TS_MAIN_DRV ":/Kernel/*");
+  official=LineRep(TS_MAIN_DRV ":/Accts/*")+
+	   LineRep(TS_MAIN_DRV ":/Adam/*")+
+	   LineRep(TS_MAIN_DRV ":/Compiler/*","-S+T")+
+	   LineRep(TS_MAIN_DRV ":/Kernel/*");
   DocClear;
   if (ts_has_ram_drv) {
     CopyTree(TS_RAM_DRV ":/TS",TS_MAIN_DRV ":/Accts/TS");
@@ -272,7 +273,7 @@ I64 MakeLineCntFile()
   }
 
   doc=DocRead(TS_MAIN_DRV ":/Adam/DocDefines.CPP.Z");
-  DocTreeFind(doc,"LineCnt",&tree_branch,&start_indent,&end_indent);
+  DocTreeFind(doc,"LineRep",&tree_branch,&start_indent,&end_indent);
   DocCut(doc,start_indent->next,end_indent->last);
   doc->cur_entry=start_indent->next;
   doc->cur_data_col=0;
@@ -303,7 +304,7 @@ U0 TSDistroPrep()
   CopyTree(TS_MAIN_DRV ":/",TS_DISTRO_DIR "/");
 }
 
-U0 TSDistroDbgPrep()
+U0 DbgDistroPrep()
 {
   if (ts_has_boot_drv) {
     Drv(TS_MAIN_DRV_LET);
@@ -330,11 +331,44 @@ U0 StdDistroPrep()
   Del(TS_DISTRO_DIR "/0000Boot/BootMHD2.BIN.C");
 }
 
-U0 MakeStdDistro()
+U0 LiteDistroPrep()
 {
-  StdDistroPrep;
-  CDFileCreate(TS_ISO_NAME,TS_DISTRO_DIR "/*",,TS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   Drv(TS_MAIN_DRV_LET);
+  DistroPrep;
+  Auto(STD_DISTRO_CDROM_CFG);
+  MakeOSPrtBootInstall(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
+  DelTree(TS_DISTRO_DIR);
+  CopyTree(TS_MAIN_DRV ":/",TS_DISTRO_DIR "/");
+  DelTree(TS_DISTRO_DIR "/Accts/TS");
+  DelTree(TS_DISTRO_DIR "/Linux");
+  DelTree(TS_DISTRO_DIR "/Windows");
+  Del(TS_DISTRO_DIR "/0000Boot/OldMBR.BIN.C");
+  Del(TS_DISTRO_DIR "/0000Boot/BootMHD2.BIN.C");
+  Del(TS_DISTRO_DIR "/Adam/WordStat/WSDefs.DAT*");
+  Del(TS_DISTRO_DIR "/Misc/PCIDevices.TXT.Z");
+  Del(TS_DISTRO_DIR "/Misc/Bible.TXT.Z");
+}
+
+U0 UltraDistroPrep()
+{
+  Drv(TS_MAIN_DRV_LET);
+  DistroPrep;
+  Auto(STD_DISTRO_CDROM_CFG);
+  MakeOSPrtBootInstall(TS_MAIN_DRV_LET,TS_CDROM_DRV_LET);
+  DelTree(TS_DISTRO_DIR);
+  CopyTree(TS_MAIN_DRV ":/",TS_DISTRO_DIR "/");
+  DelTree(TS_DISTRO_DIR "/Accts/TS");
+  DelTree(TS_DISTRO_DIR "/Linux");
+  DelTree(TS_DISTRO_DIR "/Windows");
+  DelTree(TS_DISTRO_DIR "/Apps");
+  DelTree(TS_DISTRO_DIR "/Demo");
+  Del(TS_DISTRO_DIR "/0000Boot/OldMBR.BIN.C");
+  Del(TS_DISTRO_DIR "/0000Boot/BootMHD2.BIN.C");
+  Del(TS_DISTRO_DIR "/Adam/WordStat/*.DAT*");
+  DelTree(TS_DISTRO_DIR "/Misc/Tour");
+  Del(TS_DISTRO_DIR "/Misc/PCIDevices.TXT.Z");
+  Del(TS_DISTRO_DIR "/Misc/Bible.TXT.Z");
+  Del(TS_DISTRO_DIR "/Adam/God/Vocab.TXT.Z");
 }
 
 U0 MakeTSDistro()
@@ -344,9 +378,30 @@ U0 MakeTSDistro()
   Drv(TS_MAIN_DRV_LET);
 }
 
-U0 MakeTSDistroDbg()
+U0 MakeDbgDistro()
 {
-  TSDistroDbgPrep;
+  DbgDistroPrep;
+  CDFileCreate(TS_ISO_NAME,TS_DISTRO_DIR "/*",,TS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeStdDistro()
+{
+  StdDistroPrep;
+  CDFileCreate(TS_ISO_NAME,TS_DISTRO_DIR "/*",,TS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeLiteDistro()
+{
+  LiteDistroPrep;
+  CDFileCreate(TS_ISO_NAME,TS_DISTRO_DIR "/*",,TS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  Drv(TS_MAIN_DRV_LET);
+}
+
+U0 MakeUltraDistro()
+{
+  UltraDistroPrep;
   CDFileCreate(TS_ISO_NAME,TS_DISTRO_DIR "/*",,TS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   Drv(TS_MAIN_DRV_LET);
 }
@@ -379,8 +434,9 @@ U0 MakeWebSite()
     DelTree(TS_BAK_DRV ":/Wb/Accts/TS/TAD");
     Del(TS_BAK_DRV ":/Wb/Accts/TS/*");
     Touch(TS_BAK_DRV ":/Wb/Accts/TS/Wb2/index.TXT.Z","",,Now);
+    Touch(TS_BAK_DRV ":/Wb/Accts/TS/Wb2/Downloads.TXT.Z","",,Now);
     Touch(TS_BAK_DRV ":/Wb/Accts/TS/Wb2/TempleOS.TXT.Z","",,Now);
-    tempde=tempde1=FilesFind("*",FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT);
+    tempde=tempde1=FilesFind("*",FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT|FUF_CLUSTER_ORDER);
     while (tempde) {
       TSWebFile(tempde->full_name);
       tempde=tempde->next;
@@ -390,34 +446,44 @@ U0 MakeWebSite()
   }
 }
 
-U0 MakeWebSitePartial()
+U0 FreshenWebDir(U8 *dirname)
 {
   CDirEntry *tempde,*tempde1;
+  U8 *src,*dst;
+
+  src=MPrint(TS_BAK_DRV ":/Wb%s/*",dirname);
+  Del(src);
+  Free(src);
+  src=MPrint(TS_MAIN_DRV ":%s/*",dirname);
+  dst=MPrint(TS_BAK_DRV  ":/Wb%s",dirname);
+  Copy(src,dst);
+  Free(src);
+  Free(dst);
+
+  src=MPrint(TS_BAK_DRV ":/Uncompressed%s/*",dirname);
+  Del(src);
+  Free(src);
+  src=MPrint(TS_MAIN_DRV ":%s/*",dirname);
+  dst=MPrint(TS_BAK_DRV  ":/Uncompressed%s",dirname);
+  Copy(src,dst);
+  Free(src);
+  Free(dst);
+
+  src=MPrint(TS_BAK_DRV ":/Wb%s/*",dirname);
+  tempde=tempde1=FilesFind(src,FUF_JUST_FILES|FUF_JUST_TXT|FUF_CLUSTER_ORDER);
+  while (tempde) {
+    TSWebFile(tempde->full_name);
+    tempde=tempde->next;
+  }
+  DirLstDel(tempde1);
+}
+
+U0 MakeWebSitePartial()
+{
   if (ts_has_bak_drv) {
-    Del (TS_BAK_DRV  ":/Wb/Accts/TS/Wb2/*");
-    Copy(TS_MAIN_DRV ":/Accts/TS/Wb2/*",
-	 TS_BAK_DRV  ":/Wb/Accts/TS/Wb2");
-    Del (TS_BAK_DRV  ":/Uncompressed/Accts/TS/Wb2/*");
-    Copy(TS_MAIN_DRV ":/Accts/TS/Wb2/*",
-	 TS_BAK_DRV  ":/Uncompressed/Accts/TS/Wb2");
-    Del (TS_BAK_DRV  ":/Wb" TS_BLOG_DIR "/*");
-    Copy(TS_MAIN_DRV ":" TS_BLOG_DIR "/*",
-	 TS_BAK_DRV  ":/Wb" TS_BLOG_DIR);
-    Del (TS_BAK_DRV  ":/Uncompressed" TS_BLOG_DIR "/*");
-    Copy(TS_MAIN_DRV ":" TS_BLOG_DIR "/*",
-	 TS_BAK_DRV  ":/Uncompressed" TS_BLOG_DIR);
-    tempde=tempde1=FilesFind(TS_BAK_DRV ":/Wb/Accts/TS/Wb2/*",FUF_JUST_FILES|FUF_JUST_TXT);
-    while (tempde) {
-      TSWebFile(tempde->full_name);
-      tempde=tempde->next;
-    }
-    DirLstDel(tempde1);
-    tempde=tempde1=FilesFind(TS_BAK_DRV ":/Wb" TS_BLOG_DIR "/*",FUF_JUST_FILES|FUF_JUST_TXT);
-    while (tempde) {
-      TSWebFile(tempde->full_name);
-      tempde=tempde->next;
-    }
-    DirLstDel(tempde1);
+    FreshenWebDir("/Accts/TS/Wb2");
+    FreshenWebDir("/Accts/TS/Wb2/Rants/TAD");
+    FreshenWebDir(TS_BLOG_DIR);
     Drv(TS_MAIN_DRV_LET);
   }
 }
@@ -429,7 +495,7 @@ U0 TSUncompress()
   if (ts_has_bak_drv) {
     DelTree(TS_BAK_DRV ":/Uncompressed");
     CopyTree(TS_MAIN_DRV ":/",TS_BAK_DRV ":/Uncompressed");
-    tempde=tempde1=FilesFind(TS_BAK_DRV ":/Uncompressed/*.Z",FUF_RECURSE|FUF_JUST_FILES);
+    tempde=tempde1=FilesFind(TS_BAK_DRV ":/Uncompressed/*.Z",FUF_RECURSE|FUF_JUST_FILES|FUF_CLUSTER_ORDER);
     while (tempde) {
       st=StrNew(tempde->full_name);
       StrLastRem(st,".");
@@ -444,34 +510,40 @@ U0 TSUncompress()
 
 U0 UpdateISODocDefines()
 {
-  I64 size;
-
-  size=10*FileSize(TS_BAK_DRV ":/Wb/TempleOSCD.ISO")/1024/1024;
-  DefinePrint("DD_TEMPLEOSCD_SIZE",
-    "Download  - Std. Distro (%0.1f MB)",0.1*size);
-
-  size=10*FileSize(TS_BAK_DRV ":/Wb/TempleOSTS.ISO")/1024/1024;
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-    "Download  - T.S. Company Internal Distro (%0.1f MB)",0.1*size);
+    "Download TempleOS V2.03 - T.S. Company Internal Distro (%0.1f MB)",
+    0.1*(10*Size(TS_BAK_DRV ":/Wb/TempleOSTS.ISO","+s")/1024/1024));
 
-  size=10*FileSize(TS_BAK_DRV ":/Wb/TempleOSDbg.ISO")/1024/1024;
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-    "Download  - Debug Distro (%0.1f MB)",0.1*size);
+    "Download TempleOS V2.03 - Debug Distro (%0.1f MB)",
+    0.1*(10*Size(TS_BAK_DRV ":/Wb/TempleOSDbg.ISO","+s")/1024/1024));
+
+  DefinePrint("DD_TEMPLEOSCD_SIZE",
+    "Download TempleOS V2.03 - Standard Distro (%0.1f MB)",
+    0.1*(10*Size(TS_BAK_DRV ":/Wb/TempleOSCD.ISO","+s")/1024/1024));
+
+  DefinePrint("DD_TEMPLEOSLITE_SIZE",
+    "Download TempleOS V2.03 - Lite Distro (%0.1f MB)",
+    0.1*(10*Size(TS_BAK_DRV ":/Wb/TempleOSLite.ISO","+s")/1024/1024));
+
+  DefinePrint("DD_TEMPLEOSULTRA_SIZE",
+    "Download TempleOS V2.03 - UltraLite Distro (%0.1f MB)",
+    0.1*(10*Size(TS_BAK_DRV ":/Wb/TempleOSUltra.ISO","+s")/1024/1024));
 }
 
 UpdateISODocDefines;
 
 public U0 MakeDistrosAndBackUp()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   progress4=*progress4_desc=0;
-  progress4_max=15;
+  progress4_max=19;
   WordStat;
   WinMax;
   WinBorder;
   ChkAll; progress4++;
   if (ts_has_bak_drv) {
-    MakeLineCntFile; progress4++;
+    MakeLineRepFile; progress4++;
     TSCopyDrv(TS_MAIN_DRV_LET,TS_BAK_DRV_LET); progress4++;
     DelTree (TS_BAK_DRV  ":/Wb"); progress4++;
     CopyTree(TS_MAIN_DRV ":/",TS_BAK_DRV ":/Wb"); progress4++;
@@ -481,13 +553,21 @@ public U0 MakeDistrosAndBackUp()
     DocClear;
     Copy(TS_ISO_NAME,TS_BAK_DRV ":/Wb/TempleOSTS.ISO"); progress4++;
 
-    MakeTSDistroDbg; progress4++;
+    MakeDbgDistro; progress4++;
     DocClear;
     Copy(TS_ISO_NAME,TS_BAK_DRV ":/Wb/TempleOSDbg.ISO"); progress4++;
 
     MakeStdDistro; progress4++;
     DocClear;
     Copy(TS_ISO_NAME,TS_BAK_DRV ":/Wb/TempleOSCD.ISO"); progress4++;
+
+    MakeLiteDistro; progress4++;
+    DocClear;
+    Copy(TS_ISO_NAME,TS_BAK_DRV ":/Wb/TempleOSLite.ISO"); progress4++;
+
+    MakeUltraDistro; progress4++;
+    DocClear;
+    Copy(TS_ISO_NAME,TS_BAK_DRV ":/Wb/TempleOSUltra.ISO"); progress4++;
 
     UpdateISODocDefines;
 

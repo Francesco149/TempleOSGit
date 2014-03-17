@@ -1,3 +1,5 @@
+#help_index "Doc"
+
 I64 DocCharDist(CDoc *doc,I64 x,I64 y)
 {
 #assert FONT_WIDTH==FONT_HEIGHT
@@ -21,11 +23,8 @@ public U0 DocCenter(CDoc *doc=NULL,I64 recalc=DOC_RECALC_ALL)
 {
   Bool unlock;
   CTask *task;
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return;
-  }
+  if (!doc && !(doc=DocPut))
+    return;
   unlock=DocLock(doc);
   task=doc->win_task;
   DocRecalc(doc,FALSE,recalc);
@@ -100,34 +99,11 @@ U0 DocBorderLstDraw(CDoc *doc)
   Preempt(old_preempt);
 }
 
-public U0 DocInsSafe(CDoc *doc,U8 *st)
-{ //This is necessary when hidden text might screw-up
-//inserts.  It does them all-at-once.
-  Bool unlock;
-  I64 old_flags;
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return;
-  }
-  unlock=DocLock(doc);
-  old_flags=doc->flags;
-  doc->flags|=DOCF_NO_CURSOR;
-  DocPrint(doc,"%s",st);
-  DocRecalc(doc,FALSE,DOC_RECALC_PARTIAL);
-  doc->flags=old_flags;
-  if (unlock)
-    DocUnlock(doc);
-}
-
 public U0 DocBottom(CDoc *doc=NULL)
 {
   Bool unlock;
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return;
-  }
+  if (!doc && !(doc=DocPut))
+    return;
   unlock=DocLock(doc);
   doc->cur_entry=doc;
   doc->cur_data_col=0;
@@ -139,11 +115,8 @@ public U0 DocBottom(CDoc *doc=NULL)
 public U0 DocTop(CDoc *doc=NULL)
 {
   Bool unlock;
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return;
-  }
+  if (!doc && !(doc=DocPut))
+    return;
   unlock=DocLock(doc);
   doc->cur_entry=doc->root.next;
   doc->cur_data_col=0;
@@ -155,11 +128,8 @@ public U0 DocTop(CDoc *doc=NULL)
 public U0 DocClear(CDoc *doc=NULL)
 {
   Bool unlock;
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return;
-  }
+  if (!doc && !(doc=DocPut))
+    return;
   unlock=DocLock(doc);
   DocBottom(doc);
   DocPrint(doc,"$CL$");
@@ -170,21 +140,15 @@ public U0 DocClear(CDoc *doc=NULL)
 
 public Bool DocCursor(Bool show=OFF,CDoc *doc=NULL)
 {
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return FALSE;
-  }
+  if (!doc && !(doc=DocPut))
+    return FALSE;
   return !LBEqu(&doc->flags,DOCf_HIDE_CURSOR,!show);
 }
 
 public Bool DocScroll(Bool val=OFF,CDoc *doc=NULL)
 {
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return FALSE;
-  }
+  if (!doc && !(doc=DocPut))
+    return FALSE;
   return !LBEqu(&doc->flags,DOCf_NO_SCROLL_BARS,!val);
 }
 
@@ -192,11 +156,8 @@ public U0 DocCollapse(Bool collapse=TRUE,CDoc *doc=NULL)
 {
   CDocEntry *doc_e;
   Bool unlock;
-  if (!doc) {
-    doc=DocPut;
-    if (!doc)
-      return;
-  }
+  if (!doc && !(doc=DocPut))
+    return;
   unlock=DocLock(doc);
   doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -207,6 +168,27 @@ public U0 DocCollapse(Bool collapse=TRUE,CDoc *doc=NULL)
   DocRecalc(doc);
   if (unlock)
     DocUnlock(doc);
+}
+
+#help_index "Doc/Output"
+public U0 DocPrintWhole(CDoc *doc,U8 *fmt,...)
+{ //This is necessary when hidden text might screw-up
+//inserts.  It does multiple whole doc cmds all-at-once.
+  U8 *buf;
+  Bool unlock;
+  I64 old_flags;
+  if (!doc && !(doc=DocPut))
+    return;
+  buf=SPrintJoin(NULL,fmt,argc,argv);
+  unlock=DocLock(doc);
+  old_flags=doc->flags;
+  doc->flags|=DOCF_NO_CURSOR;
+  DocPrint(doc,"%s",buf);
+  DocRecalc(doc,FALSE,DOC_RECALC_PARTIAL);
+  doc->flags=old_flags;
+  if (unlock)
+    DocUnlock(doc);
+  Free(buf);
 }
 
 #help_index "Doc/Task"
@@ -225,7 +207,7 @@ U0 DocUpdateTaskDocs(CTask *task)
   if (task->title_src==TTS_TASK_NAME)
     StrCpy(task->task_title,task->task_name);
   if ((doc=DocDisplay(task)) && !(doc->flags&DOCF_DONT_SHOW)) {
-    if (task->border_src==BDS_ED_FILENAME_PRT) {
+    if (task->border_src==BDS_ED_FILENAME_PRT)
       try {
 	if (p=Drv2Prt(*doc->filename.name)) {
 	  border_attr=p->text_attr;
@@ -234,7 +216,6 @@ U0 DocUpdateTaskDocs(CTask *task)
 	}
       } catch
 	Fs->catch_except=TRUE;
-    }
     if (task->title_src==TTS_ED_FILENAME)
       MemCpy(task->task_title,doc->filename.name,TASK_TITLE_LEN);
     Preempt(old_preempt);
@@ -248,5 +229,3 @@ U0 DocUpdateTaskDocs(CTask *task)
   }
   Preempt(old_preempt);
 }
-
-#help_index "Doc"

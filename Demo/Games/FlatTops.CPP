@@ -105,7 +105,7 @@ Obj *ObjFind(F64 x,F64 y,
 U0 ObjDel(Obj *tempo)
 {
   if (tempo) {
-    if (tT<tempo->death_time)
+    if (tS<tempo->death_time)
       tempo->flags&=~OF_ACTIVE;
     else {
       if (tempo->squadron>=0)
@@ -144,11 +144,11 @@ U0 ObjDel(Obj *tempo)
 
 /* <6> <6> (image) */
 
-U8 *imgs[NUM_PLAYERS][OT_NUM_TYPES]={{__BIN_1,__BIN_2,__BIN_3},{__BIN_4,__BIN_5,__BIN_6}};
+CSprite *imgs[NUM_PLAYERS][OT_NUM_TYPES]={{__BIN_1,__BIN_2,__BIN_3},{__BIN_4,__BIN_5,__BIN_6}};
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  F64 d,cur_time=tT;
+  F64 d,cur_time=tS;
   Obj *tempo;
   Torpedo *tempt;
   Bool old_preempt=Preempt(OFF);
@@ -163,7 +163,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempo=obj_root.next;
   while (tempo!=&obj_root) {
     if (tempo->flags&OF_ACTIVE && tempo->flags&OF_SHIP) {
-      SpritePlotRotZ3B(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
+      SpriteZ3B(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
       if (Blink) {
 	dc->color=BLACK;
 	GrLine(dc,tempo->x+5,tempo->y,tempo->x+5+10,tempo->y);
@@ -198,7 +198,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   tempo=obj_root.next;
   while (tempo!=&obj_root) {
     if (tempo->flags&OF_ACTIVE && !(tempo->flags&OF_SHIP))
-      SpritePlotRotZ3B(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
+      SpriteZ3B(dc,tempo->x,tempo->y,0,imgs[tempo->player][tempo->type],tempo->theta+pi/2);
     if (tempo->flags&OF_SHOOTING) {
       dc->color=LTRED;
       GrLine(dc,tempo->x,tempo->y,tempo->target_x,tempo->target_y,3);
@@ -221,21 +221,21 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 
   dc->color=YELLOW;
-  GrPrint(dc,-task->win_scroll_x,-task->win_scroll_y,"Game Speed: %5.2f",game_speed);
+  GrPrint(dc,-task->scroll_x,-task->scroll_y,"Game Speed: %5.2f",game_speed);
   dc->color=LTCYAN;
-  GrPrint(dc,-task->win_scroll_x,-task->win_scroll_y+	FONT_HEIGHT,"Player 1: %d",num_alive[0]);
+  GrPrint(dc,-task->scroll_x,-task->scroll_y+	FONT_HEIGHT,"Player 1: %d",num_alive[0]);
   dc->color=LTPURPLE;
-  GrPrint(dc,-task->win_scroll_x,-task->win_scroll_y+2*FONT_HEIGHT,"Player 2: %d",num_alive[1]);
+  GrPrint(dc,-task->scroll_x,-task->scroll_y+2*FONT_HEIGHT,"Player 2: %d",num_alive[1]);
 
   if ((!num_alive[0]||!num_alive[1]) && Blink) {
     if (!num_alive[1]) {
       dc->color=LTGREEN;
-      GrPrint(dc,task->win_pixel_width>>1 -(FONT_WIDTH*14)/2-task->win_scroll_x,
-	      task->win_pixel_height>>1-FONT_HEIGHT/2-task->win_scroll_y,"Game Completed");
+      GrPrint(dc,task->pix_width>>1 -(FONT_WIDTH*14)/2-task->scroll_x,
+	      task->pix_height>>1-FONT_HEIGHT/2-task->scroll_y,"Game Completed");
     } else {
       dc->color=LTRED;
-      GrPrint(dc,task->win_pixel_width>>1 -(FONT_WIDTH*9)/2-task->win_scroll_x,
-	      task->win_pixel_height>>1-FONT_HEIGHT/2-task->win_scroll_y,"Game Over");
+      GrPrint(dc,task->pix_width>>1 -(FONT_WIDTH*9)/2-task->scroll_x,
+	      task->pix_height>>1-FONT_HEIGHT/2-task->scroll_y,"Game Over");
     }
   }
   Preempt(old_preempt);
@@ -244,14 +244,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 Init()
 {
   I64 i,fighter,ship,player,squadron,
-      w=Fs->win_pixel_width,h=Fs->win_pixel_height;
+      w=Fs->pix_width,h=Fs->pix_height;
   Squadron *temps;
   Obj *tempo,*tempo1;
   QueInit(&obj_root);
   QueInit(&torpedo_root);
 
-  Fs->win_scroll_x=0;
-  Fs->win_scroll_y=0;
+  Fs->scroll_x=0;
+  Fs->scroll_y=0;
   game_speed=1.0;
   launch_t=return_t=set_theta_t=0;
   main_task=Fs;
@@ -348,7 +348,7 @@ U0 CleanUp()
 Obj *ObjLaunch(I64 player,I64 squadron=-1,Obj *host=NULL,F64 x=MAX_F64,F64 y=MAX_F64,F64 theta=MAX_F64)
 {
   Obj *tempo;
-  F64 cur_time=tT;
+  F64 cur_time=tS;
   if (!host)
     host=ObjFind(x,y,,,1<<OT_CARRIER,1<<player);
   if (host && cur_time>host->next_action_time) {
@@ -387,9 +387,9 @@ Squadron *SquadronLaunch(I64 player,F64 x=MAX_F64,F64 y=MAX_F64)
     if (player==0) {
       launch_unit_x1=tempo->x;
       launch_unit_y1=tempo->y;
-      launch_unit_x2=ipx-main_task->win_pixel_left-main_task->win_scroll_x;
-      launch_unit_y2=ipy-main_task->win_pixel_top -main_task->win_scroll_y;
-      launch_t=tT+0.5;
+      launch_unit_x2=ipx-main_task->pix_left-main_task->scroll_x;
+      launch_unit_y2=ipy-main_task->pix_top -main_task->scroll_y;
+      launch_t=tS+0.5;
     }
     if (tempo->squadron>=0) {
       temps=&squadrons[tempo->squadron];
@@ -423,7 +423,7 @@ Squadron *SquadronReturn(I64 player,F64 x,F64 y)
       if (tempo->host) {
 	return_unit_x2=tempo->host->x;
 	return_unit_y2=tempo->host->y;
-	return_t=tT+0.5;
+	return_t=tS+0.5;
       }
     }
     if (tempo->squadron>=0) {
@@ -456,9 +456,9 @@ Squadron *SquadronSettheta(I64 player,F64 x=MAX_F64,F64 y=MAX_F64,F64 theta=MAX_
     if (player==0) {
       set_theta_unit_x1=tempo->x;
       set_theta_unit_y1=tempo->y;
-      set_theta_unit_x2=ipx-main_task->win_pixel_left-main_task->win_scroll_x;
-      set_theta_unit_y2=ipy-main_task->win_pixel_top -main_task->win_scroll_y;
-      set_theta_t=tT+0.5;
+      set_theta_unit_x2=ipx-main_task->pix_left-main_task->scroll_x;
+      set_theta_unit_y2=ipy-main_task->pix_top -main_task->scroll_y;
+      set_theta_t=tS+0.5;
     }
     if (tempo->squadron>=0) {
       temps=&squadrons[tempo->squadron];
@@ -558,7 +558,7 @@ U0 Combat(F64 period)
 	  tempt->y=tempo->y;
 	  tempt->speed=100;
 	  d/=tempt->speed*(GAME_SPEED_SCALE*game_speed);
-	  tempo1->death_time=tempt->timeout=tT+d;
+	  tempo1->death_time=tempt->timeout=tS+d;
 	  tempt->target=tempo1;
 	  tempt->theta=Arg(tempo1->x-tempo->x,tempo1->y-tempo->y);
 	  QueIns(tempt,torpedo_root.last);
@@ -610,6 +610,7 @@ U0 AnimateTask(I64)
   Obj *tempo;
   Torpedo *tempt,*tempt1;
   F64 d,period;
+  I64 cnt=0;
 
   while (TRUE) {
     period=GAME_SPEED_SCALE*game_speed/ANIMATE_FREQ;
@@ -635,7 +636,7 @@ U0 AnimateTask(I64)
     tempt=torpedo_root.next;
     while (tempt!=&torpedo_root) {
       tempt1=tempt->next;
-      if (tT>tempt->timeout) {
+      if (tS>tempt->timeout) {
 	tempo=tempt->target;
 	if (Rand<0.333333) {
 	  tempo->life_percent-=150*Rand*Rand;
@@ -698,7 +699,7 @@ U0 FlatTops()
 {
   I64 p1,p2;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLUE<<4+WHITE;
   PopUpOk("$GREEN${Left-Mouse}$FG$\t\tChange Course\n"
 	  "$GREEN${Right-Mouse}$FG$\t\tLaunch Squadron\n"

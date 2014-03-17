@@ -83,8 +83,8 @@ in thee also.
 
 A nasty nigger person at WWW.OSDEV.ORG is boasting about having more than one 
 window, saying mine is not multitasking.  My games, generally, make a call to 
-[C:/TempleOS/Adam/Window.CPP.Z,914] WinMax() to set themselves full screen. 
-They also call [C:/TempleOS/Adam/Window.CPP.Z,928] WinBorder() to get rid 
+[C:/Adam/Win2a.CPP.Z,497] WinMax() to set themselves full screen.  They also
+call [C:/Adam/Win2a.CPP.Z,511] WinBorder() to get rid 
 of borders.
 
 God says...
@@ -100,8 +100,8 @@ is able to keep that which I have committed unto him against that day.
 
 1:13 Hold fast the form o
 
-I have a [C:/TempleOS/Kernel/Adam1a.HPP.Z,1417] DOCF_MIN_SIZE flag for making
-form windows fit just the text.
+I have a [C:/Kernel/Adam1a.HPP.Z,1312] DOCF_MIN_SIZE flag for making form
+windows fit just the text.
 
 ----09/15/13 04:24:52----
 
@@ -807,8 +807,8 @@ indeed bear with me.
 
 ----09/15/13 12:19:03----
 
-I just discovered something.  The editor
-[C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc()s memory for text when you 
+I just discovered something.  The editor [C:/Kernel/Mem1b.CPP.Z,376]
+MAlloc()s memory for text when you 
 print to the command-line.  It has a limit on number of entries, not quite 
 number of line, but similar.  It doesn't check the count and delete very 
 frequently.  It only checks sometimes -- when the window is drawn at 60Hz.
@@ -1387,7 +1387,7 @@ of the
 
 PCI devices intimidate me.  You have 4 interrupt lines per bus.  I did a demo 
 to prove I could do them.  [C:/Demo/Lectures/PCIInterrupts.CPP.Z,1]
-PCIInterrupts.CPP.Z  What about interrupt sharing?  
+PCIInterrupts.CPP  What about interrupt sharing?  
 The BIOS sets them up, or something?  Once I realized that every class of PCI 
 device would require multiple drivers and that all PCI generation devices
 were 

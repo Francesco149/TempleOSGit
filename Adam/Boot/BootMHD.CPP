@@ -28,7 +28,7 @@ BMHD_CODE::
 
 	MOV	AX,VGA_TEXT_MEM_BASE/16
 	MOV	FS,AX
-	MOV	U32 FS:[0],'B'+0x2000+('1'+0x2000)<<16
+	MOV	U32 FS:[0],'B'+GREEN<<12+('1'+GREEN<<12)<<16
 	CALL	BMHD_GET_IP
 BMHD_GET_IP:
 	POP	BX
@@ -57,12 +57,12 @@ BMHD_GET_IP:
 
 BMHD_BIOS_DRV_NUM:	DU8	0;
 BMHD_OLD_CS_IP:		DU16	0,0;
-//Gets patched by [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 BMHD_BLK_CNT::		DU16	0;
 
 BMHD_DAP:		DU8	16,0,1,0; //One blk at a time
 BMHD_DAP_BUF:		DU16	0,0;
-//Gets patched by [MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
 BMHD_DAP_BLK::	//64-bit
 BMHD_DAP_BLK_LO:	DU32	0;
 BMHD_DAP_BLK_HI:	DU32	0;
@@ -100,7 +100,7 @@ BMHD_HISTART:
 //My assembler doesn't support 16-bit very well.
 	DU8	0xEA;	//JMP BOOT_RAM_BASE:0000
 	DU16	0,BOOT_RAM_BASE/16;
-//Continues here [C:/Adam/Boot/BootMHD2.CPP,1] BMHD2_START
+//Continues here [C:/Adam/Boot/BootMHD2.CPP.Z,1] BMHD2_START
 BMHD_END::
 #assert BMHD_END-BMHD_START<=440
 }

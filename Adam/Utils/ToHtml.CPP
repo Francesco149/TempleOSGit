@@ -1,6 +1,6 @@
-#help_index "Utils;Cmd Line (Typically);Doc/Html"
+#help_index "Doc/Cvt"
 
-//See [C:/Doc/Acknowledgements.TXT,1].
+//See [C:/Doc/Acknowledgements.TXT.Z,1].
 
 U0 HtmlPutS(CDoc *doc,I64 c,I64 *_old_c,U8 *st,I64 *_col,U8 *style_bitmap=NULL)
 {
@@ -72,10 +72,10 @@ U8 *TSLinkCvt1(U8 *link_st)
 {
   static CDoc *bible=NULL;
   static I64 locks=0;
-  U8 *result=NULL,*filename,*pattern;
+  U8 *result=NULL,*filename,*needle;
   I64 i,num;
   if (link_st) {
-    switch (i=EdLinkCvt(link_st,&filename,&pattern,&num)) {
+    switch (i=EdLinkCvt(link_st,&filename,&needle,&num)) {
       case LK_FILE_LINE:
       case LK_PLAIN_LINE:
       case LK_FILE:
@@ -90,16 +90,16 @@ U8 *TSLinkCvt1(U8 *link_st)
 	  Yield;
 	if (!bible)
 	  bible=Adam("DocRead(\"%s\");",filename);
-	if (DocPatternFind(bible,num,pattern))
+	if (DocFind(bible,num,needle))
 	  result=TSLinkCvt2(filename,bible->cur_entry->y+1);
 	LBtr(&locks,0);
 	break;
       default:
-	if (DocFileEd(i,filename,pattern,&num,EDF_UNCOLLAPSE|EDF_BAIL))
+	if (DocFileEd(i,filename,needle,&num,EDF_UNCOLLAPSE|EDF_BAIL))
 	  result=TSLinkCvt2(filename,num);
     }
     Free(filename);
-    Free(pattern);
+    Free(needle);
   }
   return result;
 }
@@ -229,7 +229,7 @@ public CDoc *Doc2Html(CDoc *doc_in,
 	  HtmlPutS(doc_out,DOC_COLOR_COMMENT+old_c&0xF0,&old_c,"/* Graphics Not Rendered in HTML */",&col,style_bitmap);
 	  break;
 	default:
-	  if (Bt(doc_type_flags_tag,doc_e->type_u8))
+	  if (doc_e->flags1&DOCEF1_TAG)
 	    HtmlPutS(doc_out,cur_u8_attr,&old_c,doc_e->tag,&col,style_bitmap);
       }
       if (link_st) {
@@ -269,6 +269,8 @@ public CDoc *Doc2Html(CDoc *doc_in,
   return doc_out;
 }
 
+#help_index "Utils;Cmd Line (Typically);Doc/Cvt;Doc/Cmd Line (Typically)"
+
 public U0 ToHtml(U8 *_in_name,U8 *_out_name=NULL,U8 *html_header=NULL,
   U8 *body_header=NULL,U8 *body_footer=NULL,I64 width=80,
   Bool line_anchors=TRUE,U8 (*link_cvt)(U8 *link_st)=&TSLinkCvt1)
@@ -277,7 +279,7 @@ public U0 ToHtml(U8 *_in_name,U8 *_out_name=NULL,U8 *html_header=NULL,
   U8 *in_name,*out_name;
   CDoc *doc_in,*doc_out;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   SetWinHorz(0,width-1); //This sets doc width for word wrap
 
   in_name=DftExt(_in_name,"CPP.Z"),

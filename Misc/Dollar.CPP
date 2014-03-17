@@ -1,7 +1,7 @@
 public U0 Dollar(U8 *files_find_mask,U8 *fu_flags=NULL)
 //This is for importing non-"TempleOS" text files.
 //**WARNING:**Do not use on files with dollar cmds
-// or on binary files. See [C:/TempleOS/Kernel/Dsk/Dsk1b.CPP.Z,196] FilesFind() for flags.
+// or on binary files. See [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind() for flags.
 {
   CDoc *doc;
   I64 fuf_flags=0;

@@ -1,6 +1,10 @@
                          The Temple Operating System
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/EViG0Q4lTeA" frameborder="0"
+allowfullscreen></iframe>
+```
 (* Has a 64-Bit AOT/JIT compiler, not interpreter.)
 
 
@@ -18,10 +22,9 @@ Normally, "failure is not an option" applies.  Since TempleOS accompanies
 Windows or Linux, however, failure is an option.  There is no reason to 
 duplicate all use cases -- browsing, multimedia, desktop publishing, etc.  
 Instead, it's simple, fun, and beautiful.  I capped the lines of code at 
-100,000, so it will never be an ugly monstrocity.  Currently, it is .  Since 
-God's temple must be perfect and we have 1,000 years in mind, I do not
-promise 
-that anything is future-proof.
+100,000, so it will never be an ugly monstrocity.  Currently, it is 81,488.  
+Since God's temple must be perfect and we have 1,000 years in mind, I do not 
+promise that anything is future-proof.
 
 The main reason TempleOS is simple and beautiful is because it's ring-0-only 
 and identity-mapped.  Linux wants to be a secure, multi-user mainframe.  
@@ -41,7 +44,7 @@ single-address-map."  Actually, they wouldn't because many people would say,
 16-bit with segmentation, though, which is awful.  TempleOS is 64-bit, flat, 
 non-segmented and multi-cored.  It's like a modern, souped-up, multi-tasking, 
 cross between DOS and a Commodore 64.  It has a C64-like shell with
-[C:/Doc/HolyC.TXT,1] HolyC, a 
+[C:/Doc/HolyC.TXT.Z,1] HolyC, a 
 dialect of C/C++, instead of BASIC.  It was written from scratch, and not
 even 
 ASCII was sacred -- it has 8-bit unsigned character source code to support 
@@ -50,8 +53,8 @@ European languages.  Also, the source code has graphics.
 A troll might say, "But, it can crash!"  We all used DOS for years and loved 
 it. Computers even had a reset switch!  Just think of the power of ring-0, 
 muhahaha! Think of the speed and simplicity of ring-0-only and 
-identity-mapping.  It's only [C:/Accts/TS/Wb2/LineCnt.TXT,1] 129,664 lines of
-code, including the compiler and 
+identity-mapping.  It's only [C:/Accts/TS/Wb2/LineRep.TXT.Z,1] 120,796 lines
+of code, including the compiler and 
 can change tasks in half a microsecond because it doesn't mess with page 
 tables or privilege levels.  Inter-process communication is effortless
 because 
@@ -70,7 +73,7 @@ disk blocks, too.  I had a blast using a C64 disk block editor to modify
 directories to un-delete files, when I was a kid.  Maybe, you want to play 
 with a raw-block database, or make your own file system?
 
-I wrote all [C:/Accts/TS/Wb2/LineCnt.TXT,1] 129,664 lines of TempleOS over
+I wrote all [C:/Accts/TS/Wb2/LineRep.TXT.Z,1] 120,796 lines of TempleOS over
 the last 15.5 years, full-time, 
 including the 64-bit compiler.  It was called, at various times, "Hoppy", "
 The J Operating System", "LoseThos" and "SparrowOS".  Here are my 
@@ -86,15 +89,15 @@ Tutorial Videos
 
 Game Videos
 
-[C:/Doc/Welcome.TXT,1] Introduction
+[C:/Doc/Welcome.TXT.Z,1] Introduction
 
 [C:/Doc/Features.TXT.Z,1] Features
 
-[C:/Doc/Mysteries.TXT,1] F.A.Q.
+[C:/Doc/Mysteries.TXT.Z,1] F.A.Q.
 
-[C:/Doc/HelpIndex.TXT,1] TempleOS Help
+[C:/Doc/HelpIndex.TXT.Z,1] TempleOS Help
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
 
 Source Code By Sym
 
@@ -102,9 +105,13 @@ Source Code By Address
 
 Source Code (Raw)
 
-[C:/Doc/ChangeLog.TXT,1] Change Log
+[C:/Doc/ChangeLog.TXT.Z,1] Change Log
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/yyPEDxQKlSY" frameborder="0"
+allowfullscreen></iframe>
+```
                                  Hello World
 
 

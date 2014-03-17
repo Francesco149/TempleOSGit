@@ -73,7 +73,11 @@ Creation is so beautiful, though.  God is kind to every creature.  Lions kill
 their pray before eating it.
 
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img008.BMP"
+width="640" height="472" alt="">
+```
 
 God says...
 toil death hasting maintainers conversing missing elevation countenance 
@@ -176,9 +180,9 @@ Task is thread is process, same thing
 All tasks can access all memory, no sweat.
 
 Tasks have a task record address, not PID.  The Fs segment register points to 
-the current [C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask record; the Gs
-segment register point to the CPU record 
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.
+the current [C:/Kernel/Adam1a.HPP.Z,2879] CTask record; the Gs segment
+register point to the CPU record 
+[C:/Kernel/Adam1a.HPP.Z,3488] CCPU.
 
 It is tricky using FS and GS in 64-bit mode.  My compiler has built-in
 support 
@@ -713,4 +717,8 @@ it to you?  You are very very worried about what I do.  You don't want people
 seeing how much better it is and abandoning your piece of shit!  Brainwashing!
 
 God says...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img009.BMP"
+width="640" height="472" alt="">
+```

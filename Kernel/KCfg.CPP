@@ -38,49 +38,62 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
   CDoc *doc=DocNew;
   Bool make_free;
 
-  "%S","ST_ACCT_DRV";
+	"\n\nIn anticipation of the drives you will\n"
+	"define shortly, enter the drive letter\n"
+	"of the drive with the account directory.\n"
+	"\n($PURPLE$<ENTER>$FG$ for cur drv) Acct Drv:";
   ch=ToUpper(GetChar);
   if ('A'<=ch<='Z')
     c->sys_acct_drv=ch;
   else
     c->sys_acct_drv=Fs->cur_prt->drv_let;
 
-  "%S","ST_MOUNT_INTRO";
+	"\n\n$BK,1$$PURPLE$Mount drives so they will be present when "
+	"you boot.$FG$$BK,0$\n";
   do {
-    "%S","ST_MOUNT_FIRST_DRV_LET";
+	"\n****** Mount Drives ******\n"
+	"The first drive letter is the letter\n"
+	"of the first partition.  If adding\n"
+	"a hard drive, you should pick 'C'.\n"
+	"If more than one partition is present\n"
+	"they will be lettered in sequence.\n"
+	"\nFirst Drive Letter ($PURPLE$<ENTER>$FG$ to exit):";
     first_prt_num=ToUpper(GetChar)-'A';
     NewLine;
     if (0<=first_prt_num<NUM_PRTS) {
-      "%S","ST_MOUNT_DRV_TYPE";
+	"\t$PURPLE$1$FG$=RAM\n\t$PURPLE$2$FG$=ATA(Harddisk)\n"
+	"\t$PURPLE$3$FG$=ATAPI(CD-ROM)\nType:";
       type=GetChar-'0';
       NewLine;
 
       unit=0;
       if (type==BDT_RAM) {
-	"%S","ST_MOUNT_ADDR";
+	"Addr of RAM disk ($PURPLE$<ENTER>$FG$ to MAlloc):";
 	GetS(addr_buf,256);
-	"%S","ST_MOUNT_BLKS";
+	"Blks of 512 bytes:";
 	GetS(blks_buf,256);
       } else if (type==BDT_ATA ||
 	  type==BDT_ATAPI) {
 	num_hints=ATARep(,,&root);
 	if (type==BDT_ATAPI) {
-	  "%S","ST_MOUNT_BOOTED_CDROM";
+	  "<ENTER> to use booted CD-ROM\n";
 	  if (num_hints)
-	    "%S","ST_MOUNT_BASE0_HINT";
+		"Enter dev number or\nport with $PURPLE$0x$FG$ prefix.\n"
+		"I/O Port Base0:\n";
 	  else
-	    "%S","ST_MOUNT_BASE0";
+		"Include $PURPLE$0x$FG$ prefix.\nI/O Port Base0:\n";
 	  GetS(base0_buf,128);
 	} else
 	  do {
 	    if (num_hints)
-	      "%S","ST_MOUNT_BASE0_HINT";
+		"Enter dev number or\nport with $PURPLE$0x$FG$ prefix.\n"
+		"I/O Port Base0:\n";
 	    else
-	      "%S","ST_MOUNT_BASE0";
+		"Include $PURPLE$0x$FG$ prefix.\nI/O Port Base0:\n";
 	    GetS(base0_buf,128);
-	  } while (!A2I(base0_buf));
-	if (1<=A2I(base0_buf)<=num_hints) {
-	  tempha=ATARepFind(root,A2I(base0_buf));
+	  } while (!A2I64(base0_buf));
+	if (1<=A2I64(base0_buf)<=num_hints) {
+	  tempha=ATARepFind(root,A2I64(base0_buf));
 	  SPrint(base0_buf,"0x%X",tempha->base0);
 	  SPrint(base1_buf,"0x%X",tempha->base1);
 	  unit=tempha->unit;
@@ -89,11 +102,11 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	    StrCpy(base1_buf,"0");
 	  else
 	    do {
-	      "%S","ST_MOUNT_BASE1";
+		"I/O Port Base1:\n";
 	      GetS(base1_buf,128);
-	    } while (!A2I(base1_buf));
+	    } while (!A2I64(base1_buf));
 	  do {
-	    "%S","ST_MOUNT_UNIT";
+		"\t$PURPLE$0$FG$=Master\n\t$PURPLE$1$FG$=Slave\nUnit:";
 	    unit=GetChar-'0';
 	  } while (!(0<=unit<=1));
 	  NewLine;
@@ -122,7 +135,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	DocPrint(doc,"BlkDevAdd(bdev,FALSE,%d);",make_free);
 	cnt++;
       } else
-	"%S","ST_FAILED";
+	"\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n";
     }
   } while (!cnt || 0<=first_prt_num<NUM_PRTS);
   return doc;

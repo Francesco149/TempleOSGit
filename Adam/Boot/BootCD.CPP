@@ -149,7 +149,7 @@ BCD_MAIN::
 	POP	CX
 	LOOP	@@20
 
-//See [C:/TempleOS/Kernel/Dsk/DskATA.CPP.Z,658] BootCdProbe().
+//See [C:/Kernel/Dsk/DskATA.CPP.Z,611] BootCdProbe().
 	MOV	EBX,U32 [BCD_BLK_LO-BCD_START] //TODO: oops overflow?
 	SHL	EBX,16
 	MOV	BX,BOOT_CODE_CDROM  //See sys_boot_code
@@ -160,7 +160,7 @@ BCD_MAIN::
 //My assembler doesn't support 16-bit very well.
 	DU8	0xEA;	//JMP BOOT_RAM_BASE:0000
 	DU16	0,BOOT_RAM_BASE/16;
-//Continues here [C:/Kernel/KStart.CPP,1] ::/Kernel/KStart.CPP
+//Continues here [C:/Kernel/KStart.CPP.Z,1] ::/Kernel/KStart.CPP
 BCD_END::
 #assert BCD_END-BCD_START<CD_BOOT_LOADER_SIZE
 }

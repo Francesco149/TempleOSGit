@@ -19,7 +19,7 @@ CursorMovementDemo;
 //The word-wrap Off and On cmds are
 //$WW,0$ and $WW,1$.
 
-//You might need [C:/TempleOS/Adam/Doc/DocNew.CPP.Z,708] DocMax() to adjust
+//You might need [C:/Adam/Doc/DocNew.CPP.Z,569] DocMax() to adjust
 //the cmd line window buf size.
 //It counts cmds, not lines.
 
@@ -27,7 +27,7 @@ CursorMovementDemo;
 //so it doesn't get pushed-out of the document.
 //This is useful for a $WW+H,1$ cmd.
 
-//See [C:/Doc/Dollar.TXT,1] for documentation on
+//See [C:/Doc/Dollar.TXT.Z,1] for documentation on
 //all flags and cmds.
 
 

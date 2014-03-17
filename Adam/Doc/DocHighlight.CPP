@@ -1,9 +1,11 @@
+#help_index "Doc/Misc"
+
 U32 *DocHighlight(CDocEntry *doc_e,U8 *src,I64 len,I64 _temp_u32_attr)
-{ //Be aware of [C:/Adam/Utils/ToHtml.CPP,1].
+{ //Be aware of [C:/Adam/Utils/ToHtml.CPP.Z,1].
   U32 *result=MAlloc((len+1)*sizeof(U32)),*dst=result;
-  U8 *ptr,ch,ch1,last_ch;
+  U8 *ptr;
   CDocSettings *s=&doc_e->settings;
-  I64 temp_u32_attr,mask_temp_u32_attr=_temp_u32_attr&0xFFFFF000,
+  I64 ch,ch1,last_ch,temp_u32_attr,mask_temp_u32_attr=_temp_u32_attr&0xFFFFF000,
 	comment_depth,brace_depth=s->brace_depth,paren_depth=s->paren_depth;
   CHash *temph;
   nobound_switch (s->state) {
@@ -69,7 +71,7 @@ hl_normal:
 	}
 	ch=*src;
 	*src=0;
-	if (temph=HashFind(ptr,doc_highlight_hash,HTT_KEYWORD|HTT_ASM_KEYWORD|HTT_OPCODE|HTT_REG)) {
+	if (temph=HashFind(ptr,asm_hash,HTT_KEYWORD|HTT_ASM_KEYWORD|HTT_OPCODE|HTT_REG)) {
 	  if (temph->type&(HTT_KEYWORD|HTT_ASM_KEYWORD|HTT_OPCODE))
 	    temp_u32_attr=DOC_COLOR_KEYWORD<<8|mask_temp_u32_attr;
 	  else
@@ -144,132 +146,9 @@ hl_cpp_comment:
       s->state=DOCSS_CPP_Z_COMMENT;
       s->comment_depth=0;
       break;
-    case DOCSS_NORMAL+DOCSSF_BPT:
-      temp_u32_attr=_temp_u32_attr & 0xFFFFF000 | RED<<8;
-hl_bpt_normal:
-      while (len) {
-	while (len && !Bt(chars_bitmap_alpha_numeric,*src)) {
-	  ch1=*src++;
-	  switch (ch1) {
-	    case '/':
-	      if (len>=2) {
-		if (*src=='/') {
-		  *dst++=ch1+temp_u32_attr;
-		  *dst++=*src++ +temp_u32_attr;
-		  len-=2;
-		  goto hl_bpt_cpp_comment;
-		} else if (*src=='*') {
-		  *dst++=ch1+temp_u32_attr;
-		  *dst++=*src++ +temp_u32_attr;
-		  len-=2;
-		  comment_depth=1;
-		  goto hl_bpt_comment;
-		}
-	      }
-	      break;
-	    case '\'':
-	      *dst++=ch1+temp_u32_attr;
-	      len--;
-	      goto hl_bpt_single_quote;
-	    case '\"':
-	      *dst++=ch1+temp_u32_attr;
-	      len--;
-	      goto hl_bpt_dbl_quote;
-	    case '(':
-	      paren_depth++;
-	      break;
-	    case ')':
-	      paren_depth--;
-	      break;
-	    case '{':
-	      brace_depth++;
-	      break;
-	    case '}':
-	      brace_depth--;
-	      break;
-	  }
-	  *dst++=ch1+temp_u32_attr;
-	  if (!--len) goto hl_bpt_normal_done;
-	}
-	ptr=src;
-	while (len && Bt(chars_bitmap_alpha_numeric,*src)) {
-	  src++;
-	  len--;
-	}
-	ch=*src;
-	*src=0;
-	while (ch1=*ptr++)
-	  *dst++=ch1+temp_u32_attr;
-	*src=ch;
-      }
-hl_bpt_normal_done:
-      s->state=DOCSS_NORMAL+DOCSSF_BPT;
-      s->comment_depth=0;
-      break;
-    case DOCSS_SINGLE_QUOTE+DOCSSF_BPT:
-      temp_u32_attr=_temp_u32_attr & 0xFFFFF000 | RED<<8;
-hl_bpt_single_quote:
-      last_ch=0;
-      while (len--) {
-	ch1=*src++;
-	*dst++=ch1+temp_u32_attr;
-	if (last_ch!='\\' && ch1=='\'')
-	  goto hl_bpt_normal;
-	if (last_ch=='\\' && ch1=='\\')
-	  last_ch=0;
-	else
-	  last_ch=ch1;
-      }
-      s->state=DOCSS_SINGLE_QUOTE+DOCSSF_BPT;
-      s->comment_depth=0;
-      break;
-    case DOCSS_DBL_QUOTE+DOCSSF_BPT:
-      temp_u32_attr=_temp_u32_attr & 0xFFFFF000 | RED<<8;
-hl_bpt_dbl_quote:
-      last_ch=0;
-      while (len--) {
-	ch1=*src++;
-	*dst++=ch1+temp_u32_attr;
-	if (last_ch!='\\' && ch1=='\"')
-	  goto hl_bpt_normal;
-	if (last_ch=='\\' && ch1=='\\')
-	  last_ch=0;
-	else
-	  last_ch=ch1;
-      }
-      s->state=DOCSS_DBL_QUOTE+DOCSSF_BPT;
-      s->comment_depth=0;
-      break;
-    case DOCSS_COMMENT+DOCSSF_BPT:
-      temp_u32_attr=_temp_u32_attr & 0xFFFFF000 | RED<<8;
-      comment_depth=s->comment_depth;
-hl_bpt_comment:
-      last_ch=0;
-      while (len--) {
-	ch1=*src++;
-	*dst++=ch1+temp_u32_attr;
-	if (last_ch=='*' && ch1=='/') {
-	  if (!--comment_depth)
-	    goto hl_bpt_normal;
-	} else if (last_ch=='/' && ch1=='*')
-	  comment_depth++;
-	last_ch=ch1;
-      }
-      s->state=DOCSS_COMMENT+DOCSSF_BPT;
-      s->comment_depth=comment_depth;
-      break;
-    case DOCSS_CPP_Z_COMMENT+DOCSSF_BPT:
-      temp_u32_attr=_temp_u32_attr & 0xFFFFF000 | RED<<8;
-hl_bpt_cpp_comment:
-      while (len--)
-	*dst++=*src++ +temp_u32_attr;
-      s->state=DOCSS_CPP_Z_COMMENT+DOCSSF_BPT;
-      s->comment_depth=0;
-      break;
   }
   s->paren_depth=paren_depth;
   s->brace_depth=brace_depth;
   *dst=0;
   return result;
 }
-

@@ -1,5 +1,5 @@
-A Queue is a bunch of [C:/TempleOS/Kernel/Memory.CPP.Z,956] MAlloc()ed chunks
-of mem linked together in a circle 
+A Queue is a bunch of [C:/Kernel/Mem1b.CPP.Z,376] MAlloc()ed chunks of mem
+linked together in a circle 
 with one ptr to the next value and another ptr to the last value.  These ptrs 
 must be stored in the first locations in the structure.
 

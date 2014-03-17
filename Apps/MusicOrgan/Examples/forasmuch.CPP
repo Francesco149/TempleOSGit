@@ -17,7 +17,7 @@ U0 Song()
   music_stacatto_factor= 0.900;
   try {
   while (!ScanKey) {
-	PutSprite(__BIN_1);
+	Sprite(__BIN_1);
 	NewLine(6);
 	Play("qR3etD2GGG3CAqDEeFGCEqD",
 		" \0For \0as \0much \0as \0you \0give, \0 \0 \0Go\0d \0giv\0es \0more.\n\0");

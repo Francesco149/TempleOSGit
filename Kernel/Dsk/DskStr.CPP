@@ -1,6 +1,6 @@
 U8 *FileExtDot(U8 *src)
 {
-  U8 ch;
+  I64 ch;
   while (ch=*src++)
     if (ch=='.' && *src!='/' && *src!='.')
       return src-1;
@@ -37,7 +37,7 @@ Bool IsDotC(U8 *filename)
     return FALSE;
 }
 
-Bool FilesFindMatch(U8 *pattern,U8 *files_find_mask,I64 fuf_flags=0)
+Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
 {
   U8 *st1=StrNew(files_find_mask),
      *st2=MAlloc(StrLen(files_find_mask)+1);
@@ -46,25 +46,25 @@ Bool FilesFindMatch(U8 *pattern,U8 *files_find_mask,I64 fuf_flags=0)
     StrFirstRem(st1,";",st2);
     if (*st2) {
       if (*st2=='~') {
-	if (WildMatch(pattern,st2+1)) {
+	if (WildMatch(test_filename,st2+1)) {
 	  result=FALSE;
 	  break;
 	}
       } else {
-	if (WildMatch(pattern,st2)) {
-	  if (Bt(&fuf_flags,FUf_JUST_TXT) && !FilesFindMatch(pattern,FILEMASK_TXT)) {
+	if (WildMatch(test_filename,st2)) {
+	  if (Bt(&fuf_flags,FUf_JUST_TXT) && !FilesFindMatch(test_filename,FILEMASK_TXT)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_SRC) && !FilesFindMatch(pattern,FILEMASK_SRC)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_SRC) && !FilesFindMatch(test_filename,FILEMASK_SRC)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_AOT) && !FilesFindMatch(pattern,FILEMASK_AOT)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_AOT) && !FilesFindMatch(test_filename,FILEMASK_AOT)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_JIT) && !FilesFindMatch(pattern,FILEMASK_JIT)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_JIT) && !FilesFindMatch(test_filename,FILEMASK_JIT)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_GRA) && !FilesFindMatch(pattern,FILEMASK_GRA)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_GRA) && !FilesFindMatch(test_filename,FILEMASK_GRA)) {
 	    result=FALSE;
 	    break;
 	  } else
@@ -150,8 +150,7 @@ U8 *DirNameAbs(U8 *_dirname)
   U8 drv[3],*cur_dir,*buf2,*buf3,*buf,*dirname,*temp_name;
   if (!Fs->cur_dir || !*Fs->cur_dir)
     return StrNew(_dirname);
-  dirname=MStrUtil(_dirname,
-    SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+  dirname=MStrUtil(_dirname,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   temp_name=dirname;
   *drv=Prt2Drv;
   drv[1]=':';
@@ -194,8 +193,8 @@ U8 *DirNameAbs(U8 *_dirname)
 	*drv=*sys_acct;
       } else {
 	if (StrCmp(buf3,"/"))
-	  StrCat(buf3,"/");
-	StrCat(buf3,buf);
+	  CatPrint(buf3,"/");
+	CatPrint(buf3,buf);
       }
     }
   }
@@ -211,11 +210,10 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//[C:/TempleOS/Kernel/Adam1a.HPP.Z,3602] FUF_Z_OR_NOT_Z, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3603] FUF_SCAN_PARENTS
+{//[C:/Kernel/Adam1a.HPP.Z,3471] FUF_Z_OR_NOT_Z, [C:/Kernel/Adam1a.HPP.Z,3473] FUF_SCAN_PARENTS
   U8 *buf,*buf2,*buf3,*filename,*temp_name,*temp_buf;
   CDirEntry de;
-  filename=MStrUtil(_filename,
-    SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+  filename=MStrUtil(_filename,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   temp_name=filename;
   buf=StrNew(filename);
   temp_buf=buf;
@@ -232,8 +230,8 @@ U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
   buf=MAlloc(StrLen(buf3)+1+StrLen(buf2)+1);
   StrCpy(buf,buf3);
   if (buf[StrLen(buf)-1]!='/')
-    StrCat(buf,"/");
-  StrCat(buf,buf2);
+    CatPrint(buf,"/");
+  CatPrint(buf,buf2);
   Free(buf2);
   Free(buf3);
   Free(temp_name);
@@ -250,19 +248,15 @@ U8 *ChgExt(U8 *filename,U8 *extension)
   StrCpy(result,filename);
   if (FileExtDot(filename))
     FileExtRem(result);
-  StrCat(result,".");
-  StrCat(result,extension);
-  return result;
+  return CatPrint(result,".%s",extension);
 }
 
 U8 *DftExt(U8 *filename,U8 *extension)
 {//Give extension if has none.
   U8 *result=MAlloc(StrLen(filename)+1+StrLen(extension)+1);
   StrCpy(result,filename);
-  if (!FileExtDot(filename)) {
-    StrCat(result,".");
-    StrCat(result,extension);
-  }
+  if (!FileExtDot(filename))
+    CatPrint(result,".%s",extension);
   return result;
 }
 

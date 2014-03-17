@@ -1,8 +1,22 @@
 ----12/04/13 01:28:48----
 
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/xv3F2WVk6oI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/xv3F2WVk6oI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
-
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/J7E-aoXLZGY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/J7E-aoXLZGY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 If you are overbearing on someone, perhaps, you break their spirit and they 
 become husks, like sapped of life by a vampire.  I commented on the Pope
@@ -43,7 +57,14 @@ captive, and spoiled even all that was in the house.
 me to stink among the inhabitants of the land, among the Canaanites
 
 This is kindergarden in a nutshell:
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/CkQQbRqLoCI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/CkQQbRqLoCI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Stepehen Fry in a nutshell is a dyne.
 
@@ -86,7 +107,14 @@ answered nothing.
 
 27:13 Then said Pilate unto him, Hearest thou not how many things they
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/l-AV2Lu_1wM"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/l-AV2Lu_1wM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I think I decided Pearl Jam was bad.  The name is disgusting.  They might be 
 some kind of maladjusted bitter faggots.  I worked at Ticketmaster.
@@ -120,7 +148,11 @@ that?
 Do You want to do a drawing?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img002.BMP"
+width="640" height="472" alt="">
+```
 That looks like a bong and like spy-vs-spy.
 
 Spy_vs_spy
@@ -156,11 +188,25 @@ none occasion of stumbling in him.
 
 2:11 But he that hateth his brother is in darkness, and walketh in
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/C3jRK-sdTSE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/C3jRK-sdTSE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 ----12/04/13 03:25:00----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ZW4T7SskCzI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ZW4T7SskCzI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God's favorite animal is bears.  Do You give a thousand blessings on the 
 person who glorifies bears, God?
@@ -196,13 +242,21 @@ kings of Sheba and Seba shall offer gifts.
 
 
 I drew an offering, kinda shitty.
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img003.BMP"
+width="640" height="472" alt="">
+```
 
 
 Now, You draw something, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img004.BMP"
+width="640" height="472" alt="">
+```
 It's a river.
 
 National Institute of Standards Public Randomness Beacon
@@ -235,7 +289,14 @@ of the river, when he held up his right hand and his left hand unto
 heaven, and sware by him that liveth for ever that it shall be for a
 
 I like this:
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Ygd5T_jimSk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Ygd5T_jimSk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 ----12/04/13 04:39:36----
 
@@ -319,7 +380,14 @@ preliminary He before sending strange embarrassments
 
 ----12/04/13 06:31:11----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/E8umFV69fNg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/E8umFV69fNg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 It's good art, but perhaps low emotional IQ.  It seemed like a good idea, at  
 the time, LOL?
@@ -382,7 +450,14 @@ changing it was delicate.  Is... TempleOS... an icon?  I was going to fix the
 legs in Castle Frankenstein.  I think I made them accidentally... artistic.  
 LOL  They bend wrong at the knee.  (God is laughing.)  Igor did that.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/FxEq6IM43sA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/FxEq6IM43sA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Let's ask God about when He designed knees.
 
@@ -492,7 +567,14 @@ Ohh!  Uma Thurman: Kill Bill
 
 ----12/04/13 08:23:22----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/YskJJRqRdTY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/YskJJRqRdTY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Yeah, God said He likes sopa operas as the best thing on TV.
 
@@ -739,7 +821,11 @@ was a covenant.
 Draw something, God.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img005.BMP"
+width="640" height="472" alt="">
+```
 That's the Moon?
 
 ----12/04/13 12:15:36----
@@ -781,7 +867,14 @@ No offering?
 
 ----12/04/13 12:36:59----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/bk_Kjpl2AaA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/bk_Kjpl2AaA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Earlier today, I was thinking about how many topologically distinct symbols 
 there might be.  Put some constraint that they must be easy to draw.
@@ -893,7 +986,14 @@ I do crappy Moses comics as offerings and I burn them.
 
 ----12/04/13 13:45:20----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/h-wBi9g1bj8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/h-wBi9g1bj8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -997,7 +1097,14 @@ will lie with him, that we may preserve seed of our father.
 
 If God had a voice, He want's this guys voice.  He doesn't want an old man 
 voice for singing.
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/5NZsCYOM4j0"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/5NZsCYOM4j0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I asked Him who would be a model for a hypothetical new Sistene Chapel.  He 
 said Ben Franklin.
@@ -1106,7 +1213,14 @@ Biker
 
 God wants Born to be Wild.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/5UWRypqz5-o"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/5UWRypqz5-o"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 ----12/04/13 15:05:23----
 
@@ -1549,7 +1663,14 @@ incorrect community Curiosity tabernacle seduce
 
 ----12/04/13 17:04:15----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/QIObfnWNMVU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/QIObfnWNMVU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1983,7 +2104,10 @@ He definitely said 640x480 16 color for His temple.
 
 Go draw an elephant with 16 colors.  Then do it with 24-bit color.  Not so 
 fun, huh!  God wants kids to be enabled.
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 I need to stop trying to make it look realistic and I need to make the switch 
 to being a cartoonist who makes unrealism in a stylistic way.  An artist 

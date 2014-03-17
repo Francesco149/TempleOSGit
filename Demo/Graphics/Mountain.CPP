@@ -3,17 +3,24 @@
 
 
 
-/* <1> <1> (image) */	/* <2> <2> (image) */
+/* <1> <1> (image) */	 /* <2> <2> (image) */	  /* <3> <3> (image) */
 
 
 
-Bool animate_done;
-CSprite *man_imgs[2]={__BIN_1,__BIN_2};
+
+
+
+/* <4> <4> (image) */	 /* <5> <5> (image) */	  /* <6> <6> (image) */
+
+CSprite *right_imgs[4]={__BIN_1,__BIN_2,__BIN_3,__BIN_2},
+	*left_imgs [4]={__BIN_4,__BIN_5,__BIN_4,__BIN_6};
 I64 x=0,y=0;
 
 U0 DrawMountain(CTask *task,CDC *dc)
 {
-  I64 cx=task->win_pixel_width/2,cy=task->win_pixel_height/2;
+  static I64 last_x;
+  static Bool last_left;
+  I64 cx=task->pix_width/2,cy=task->pix_height/2;
   dc->color=BROWN;
   dc->pen_width=2;
   GrLine3(dc,cx-400,cy,0,    cx-30 ,cy-120,0);
@@ -32,7 +39,7 @@ U0 DrawMountain(CTask *task,CDC *dc)
   GrLine3(dc,cx+30,cy-120,0,cx-15,cy-140,0);
 
   dc->color=LTCYAN;
-  GrRect(dc,0,0,task->win_pixel_width,74);
+  GrRect(dc,0,0,task->pix_width,74);
   GrFloodFill(dc,0,75);
 
   dc->color=BROWN;
@@ -43,7 +50,16 @@ U0 DrawMountain(CTask *task,CDC *dc)
   dc->color=BROWN;
   GrPrint(dc,cx-8*FONT_WIDTH/2,cy-168,"Mt. Horeb");
 
-  SpritePlot3(dc,x+cx,y+cy,0,man_imgs[ToI64(8.0*tT)&1]);
+  if (x<last_x)
+    last_left=TRUE;
+  else if (x>last_x)
+    last_left=FALSE;
+  dc->pen_width=1;
+  if (last_left)
+    Sprite3(dc,x+cx,y+cy,0,left_imgs [ToI64(6.0*tS)&3]);
+  else
+    Sprite3(dc,x+cx,y+cy,0,right_imgs[ToI64(6.0*tS)&3]);
+  last_x=x;
 }
 
 //This is the path of the man.
@@ -55,22 +71,13 @@ CD3I32 mountain[19]={{0,0,0},{100,-20,0},{100,-20,0},{-100,-40,0},{-100,-40,0},
 Bool PlotMan(U8 *,I64 _x,I64 _y,I64)
 {
   x=_x; y=_y;
-  Sleep(4);
-  return TRUE;
-}
-
-U0 MountainTask(I64)
-{
-//Most of the graphic shape routines can be called with
-//a custom routine to plot the points.
-//See [Graphics/Math,1] Graphics/Math.
-  BSpline2(NULL,&mountain,19,&PlotMan);
-  animate_done=TRUE;
+  Sleep(10);
+  return !ToBool(ScanChar);
 }
 
 U0 Mountain()
 {
-  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
     WordStat;
@@ -79,11 +86,7 @@ U0 Mountain()
     DocCursor;
     DocClear;
     Fs->draw_it=&DrawMountain;
-
-    animate_done=FALSE;
-    Spawn(&MountainTask,NULL,"Animate",,Fs);
-    while (!animate_done)
-      Yield;
+    BSpline2(NULL,&mountain,19,&PlotMan);  //See [Graphics/Math,1] Graphics/Math.
   } catch
     PutExcept;
   SettingsPop(Fs,TSF_SAME_SONG);

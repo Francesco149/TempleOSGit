@@ -1,16 +1,16 @@
                        Details of Scoping and Linkages
 
-[C:/Doc/Glossary.TXT,1] JIT Compile Mode makes use of the current task's hash
-sym table and its parent 
+[C:/Doc/Glossary.TXT.Z,1] JIT Compile Mode makes use of the current task's
+hash sym table and its parent 
 tasks' tables.  It fetches syms from parent tasks' tables if not found
 locally 
 in the current task's table and it places new syms in the current task's 
 table.  Conceptually, syms are at the scope of environment vars in other 
 operating systems.
 
-[C:/Doc/Glossary.TXT,1] AOT Compile Mode creates a new, empty, sym table
+[C:/Doc/Glossary.TXT.Z,1] AOT Compile Mode creates a new, empty, sym table
 which you must populate by #i
-ncludeing [C:/Kernel/AOT.HPP,1] or whatever to import syms.
+ncludeing [C:/Kernel/AOT.HPP.Z,1] or whatever to import syms.
 
 When a sym is placed into a table, older syms with identical names will be 
 overshadowed if they exist.  Duplicates are not allowed in many cases, 
@@ -20,35 +20,32 @@ developing it.  Or, so you can repeatedly declare a function with a standard
 name, like "UpdateWin()".  This case might occur when the adam task is 
 starting-up loading-in many little utilities.
 
-extern binds a new [C:/TempleOS/Kernel/Adam1a.HPP.Z,707] HTT_FUN or
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,704] HTT_GLBL_VAR sym to an existing sym of
-the same 
+extern binds a new [C:/Kernel/Adam1a.HPP.Z,622] HTT_FUN or
+[C:/Kernel/Adam1a.HPP.Z,619] HTT_GLBL_VAR sym to an existing sym of the same 
 name if it exists in the sym table (just in just-in-time code).  It also can 
 be used to generate a fwd reference.
 
-import binds a new [C:/TempleOS/Kernel/Adam1a.HPP.Z,707] HTT_FUN or
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,704] HTT_GLBL_VAR sym to a sym of the same
-name 
-imported from the task's sym table at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
-Load() time.  If no sym exists to bind 
-to at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time, the code using this
-sym will be left incomplete until the 
+import binds a new [C:/Kernel/Adam1a.HPP.Z,622] HTT_FUN or
+[C:/Kernel/Adam1a.HPP.Z,619] HTT_GLBL_VAR sym to a sym of the same name 
+imported from the task's sym table at [C:/Kernel/Hash1b.CPP.Z,386] Load()
+time.  If no sym exists to bind 
+to at [C:/Kernel/Hash1b.CPP.Z,386] Load() time, the code using this sym will
+be left incomplete until the 
 sym is defined.
 
 
-_extern binds a new [C:/TempleOS/Kernel/Adam1a.HPP.Z,707] HTT_FUN or
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,704] HTT_GLBL_VAR sym to an existing sym, of
-a **diffe
+_extern binds a new [C:/Kernel/Adam1a.HPP.Z,622] HTT_FUN or
+[C:/Kernel/Adam1a.HPP.Z,619] HTT_GLBL_VAR sym to an existing sym, of a **diffe
 rent** name.  It must exists in the sym table.  Basically, this binds C to
 asm.
 
-_import binds a new [C:/TempleOS/Kernel/Adam1a.HPP.Z,707] HTT_FUN or
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,704] HTT_GLBL_VAR sym to a sym, of a
-**different** name 
-imported from the task's sym table at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733]
-Load() time.  If no sym exists to bind 
-to at [C:/TempleOS/Kernel/Hash1a.CPP.Z,733] Load() time, the code using this
-sym will be left incomplete until the 
+_import binds a new [C:/Kernel/Adam1a.HPP.Z,622] HTT_FUN or
+[C:/Kernel/Adam1a.HPP.Z,619] HTT_GLBL_VAR sym to a sym, of a **different**
+name 
+imported from the task's sym table at [C:/Kernel/Hash1b.CPP.Z,386] Load()
+time.  If no sym exists to bind 
+to at [C:/Kernel/Hash1b.CPP.Z,386] Load() time, the code using this sym will
+be left incomplete until the 
 sym is defined.  Basically, this binds C to asm from elsewhere.
 
 
@@ -150,10 +147,10 @@ oreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/TempleOS/Kernel/Adam1a.HPP.Z,1587] OPTf_GLBLS_ON_DATA_HEAP.  They
-may in the future.
+of the [C:/Kernel/Adam1a.HPP.Z,1474] OPTf_GLBLS_ON_DATA_HEAP.  They may in
+the future.
 
-* [C:/TempleOS/Kernel/Adam1a.HPP.Z,1583] OPTf_EXTERNS_TO_IMPORTS will treat
-_extern as _import and extern as import.  
+* [C:/Kernel/Adam1a.HPP.Z,1471] OPTf_EXTERNS_TO_IMPORTS will treat _extern as
+_import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.

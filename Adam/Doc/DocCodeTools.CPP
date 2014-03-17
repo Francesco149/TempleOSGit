@@ -1,3 +1,5 @@
+#help_index "Doc/Misc"
+
 #define C_INDENT_SPACES		2
 #define ASM_RENUM_SPACING	5
 
@@ -11,12 +13,12 @@ I64 PopUpEdFmt()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPrint(doc,"$LTBLUE$$MU,\"Check Compile\",EF_CHK_COMPILE$\n"
-	"$MU,\"Reindent CPP.Z Fun\",EF_REINDENT$\n"
-	"$MU,\"Renum Asm Local @@ Labels for Fun\",EF_RENUM_ASM$\n"
-	"$MU,\"Insert Mgd Code: Slider Ctrl\",EF_SLIDER_CTRL$\n"
-	"$MU,\"Insert ASCII/Scan Code Hex Codes for key pressed\",EF_CH_SC$\n"
-	"$MU,\"CANCEL\",DOCM_CANCEL$\n\n"
+  DocPrint(doc,"$LTBLUE$$MU,\"Check Compile\",LE=EF_CHK_COMPILE$\n"
+	"$MU,\"Reindent CPP.Z Fun\",LE=EF_REINDENT$\n"
+	"$MU,\"Renum Asm Local @@ Labels for Fun\",LE=EF_RENUM_ASM$\n"
+	"$MU,\"Insert Mgd Code: Slider Ctrl\",LE=EF_SLIDER_CTRL$\n"
+	"$MU,\"Insert ASCII/Scan Code Hex Codes for key pressed\",LE=EF_CH_SC$\n"
+	"$MU,\"CANCEL\",LE=DOCM_CANCEL$\n\n"
 	"$GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\n"
 	"with the results.\n");
   i=PopUpMenu(doc);
@@ -126,6 +128,10 @@ U0 EdRIStmt(CRILex *rx,Bool indent)
 	  EdRIExp(rx);
 	  EdRIStmt(rx,TRUE);
 	  break;
+	case KW_ASM:
+	  EdRILex(rx);
+	  EdRIStmt(rx,TRUE);
+	  break;
 	case KW_DO:
 	  EdRILex(rx);
 	  EdRIStmt(rx,TRUE);
@@ -174,14 +180,24 @@ U0 EdRIStmt(CRILex *rx,Bool indent)
 	  }
 	  break;
 	default:
-	  while (rx->lx1->token && rx->lx1->token!=';' && rx->lx1->token!=':') {
-	    if (rx->lx2->token=='\n' && !rx->is_not_cont)
-	      rx->one_shot=TRUE;
+	  if (rx->lx1->token==TK_IDENT && rx->lx1->hash_entry &&
+	    rx->lx1->hash_entry->type&(HTT_OPCODE|HTT_ASM_KEYWORD)) {
+	    i=rx->depth;
+	    rx->depth=4;
+	    rx->one_shot=FALSE;
+	    do EdRILex(rx);
+	    while (rx->lx2->token && rx->lx2->token!='\n');
+	    rx->depth=i;
+	  } else {
+	    while (rx->lx1->token && rx->lx1->token!=';' && rx->lx1->token!=':') {
+	      if (rx->lx2->token=='\n' && !rx->is_not_cont)
+		rx->one_shot=TRUE;
+	      EdRILex(rx);
+	    }
+	    if (rx->lx1->token==':')
+	      cont=TRUE;
 	    EdRILex(rx);
 	  }
-	  if (rx->lx1->token==':')
-	    cont=TRUE;
-	  EdRILex(rx);
       }
     } while (cont && rx->lx1->token!='}');
     if (indent && --rx->depth<0)
@@ -194,11 +210,11 @@ CQueVectU8 *EdRICode(CDoc *doc)
   CQueVectU8 *result;
   CRILex *rx=CAlloc(sizeof(CRILex));
 
-  rx->lx1=LexNew(NULL,LF_KEEP_NEW_LINES|LF_DONT_FREE_BUF,doc->filename.name);
+  rx->lx1=LexNew(,LF_KEEP_NEW_LINES|LF_DONT_FREE_BUF,doc->filename.name);
   Free(rx->lx1->lfns[0].name);
   LexAttachDoc(rx->lx1,&rx->lx1->lfns[0],doc,,doc->cur_entry,doc->cur_data_col);
 
-  rx->lx2=LexNew(NULL,LF_KEEP_NEW_LINES|LF_DONT_FREE_BUF,doc->filename.name);
+  rx->lx2=LexNew(,LF_KEEP_NEW_LINES|LF_DONT_FREE_BUF,doc->filename.name);
   Free(rx->lx2->lfns[0].name);
   LexAttachDoc(rx->lx2,&rx->lx2->lfns[0],doc,,doc->cur_entry,doc->cur_data_col);
 
@@ -218,8 +234,8 @@ U0 EdRemFunLeadingSpace(CDoc *doc)
 {
   Bool unlock=DocLock(doc),
 	start_of_line=TRUE;
-  U8 ch,*ptr;
-  I64 levels=1;
+  U8 *ptr;
+  I64 ch,levels=1;
   CDocEntry *doc_e,*doc_e2;
 
   EdGoToFun(doc,FALSE,FALSE);
@@ -388,7 +404,7 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
       task=Spawn(&SrvUserCmdLine,NULL,"Srv",,Fs);
       st2=CurDir;
       st=MPrint("Cd(\"%s\");",st2);
-      tempc=TaskExeStrQue(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+      tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
       Free(st2);
       Free(st);
       SetWinHorz(Fs->win_left,Fs->win_right, task);
@@ -401,19 +417,19 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
 	  st2=DirFile(prj_file),
 	  st=MPrint("Cd(\"%s\");",st2);
 	  Free(st2);
-	  tempc=TaskExeStrQue(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER|1<<SVCf_FREE_ON_COMPLETE);
+	  tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER|1<<SVCf_FREE_ON_COMPLETE);
 	  Free(st);
 	  st=MPrint("\"$WW,1$\";Cmp(\"%s\",\"SysTemp\",\"SysTemp\");",prj_file);
-	  tempc=TaskExeStrQue(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+	  tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	  Free(st);
 	  if (ScanResult(tempc,&r))
 	    if (!r) {
-	      tempc=TaskExeStrQue(task,Fs,
+	      tempc=TaskExe(task,Fs,
 		    "Load(\"SysTemp\",LDF_JUST_LOAD);",1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	      if (ScanResult(tempc,&r))
 		okay=TRUE;
 	    }
-	  tempc=TaskExeStrQue(task,Fs,"Del(\"SysTemp.*\");",1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+	  tempc=TaskExe(task,Fs,"Del(\"SysTemp.*\");",1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	  ScanResult(tempc,&r);
 	} else {
 	  Free(prj_file);
@@ -424,7 +440,7 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
 	    st=MPrint("\"$WW,1$\";ExeFile(\"%s\",TRUE);",prj_file);
 	  else
 	    st=MPrint("\"$WW,1$\";ExeFile(\"%s\",TRUE);",doc->filename.name);
-	  tempc=TaskExeStrQue(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+	  tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	  Free(st);
 	  if (ScanResult(tempc,&r) && r)
 	    okay=TRUE;
@@ -466,7 +482,8 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
 		x=doc_e->x+1;
 		while (i>8) {
 		  doc_ne=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-		  doc_ne->type=DOCT_TAB | doc->settings_root.dft_text_attr << 8;
+		  doc_ne->type=DOCT_TAB | doc->settings_root.dft_text_attr<<8;
+		  doc_ne->flags1=doc_dft_flags1[DOCT_TAB];
 		  doc_ne->x=x;
 		  doc_ne->y=doc_e->y;
 		  doc_ne->page_line_num=doc_e->page_line_num;
@@ -480,7 +497,8 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
 		  MemSet(b,CH_SPACE,i);
 		  b[i]=0;
 		  doc_ne=CAlloc(sizeof(CDocEntryBase),doc->mem_task);
-		  doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr << 8;
+		  doc_ne->type=DOCT_TEXT | doc->settings_root.dft_text_attr<<8;
+		  doc_ne->flags1=doc_dft_flags1[DOCT_TEXT];
 		  doc_ne->tag=b;
 		  doc_ne->max_col=1;
 		  doc_ne->x=x;

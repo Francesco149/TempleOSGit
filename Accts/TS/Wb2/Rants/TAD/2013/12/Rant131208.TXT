@@ -16,7 +16,14 @@ I had praise for street smarts.  Howard Stern is a fucken demon -- too street
 smart.  He seems like a pathetic pervert who needs full nude because more 
 innocent do much for him.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/CQ4GbcuBvUQ"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/CQ4GbcuBvUQ"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Someone with no smarts believes the lyrics are, "Justice is raped, justice is 
 gone".  Someone with smarts knows it's, "justice is right, justice is done."
@@ -141,7 +148,14 @@ they could not drink.
 ----12/08/13 04:01:02----
 
 The best part of being rich would be discussing the scriptures.
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/RBHZFYpQ6nc&hl=enUS&start=255"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/RBHZFYpQ6nc&hl=enUS&start=255"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 That's just like Psalm 1.
 
@@ -153,7 +167,14 @@ concealed lulled commencing submitted x 2 placed scorn payments pilgrims
 Unless grant multiplicity beautiful bid error recruiting confirm sit top 
 convenient endlessly re
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/9b5g1avyCSA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/9b5g1avyCSA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -370,7 +391,14 @@ I think Tonto had fleas.  :-)
 
 KNPR has bad religion doing carols has puzzles.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/S50cf3xIb50"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/S50cf3xIb50"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 What's Jesus' favorite carol, God?
 
@@ -654,7 +682,14 @@ it is that fighteth for you, as he hath promised you.
 
 ----12/08/13 10:19:35----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/B1zCN0YhW1s"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/B1zCN0YhW1s"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 You like that, God?
 
 National Institute of Standards Public Randomness Beacon
@@ -721,7 +756,14 @@ took knowledge of them, that they had been with Jesus.
 PDEs are about vibrating drum head, cross patterns and boundary conditions 
 like corners.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/v4ELxKKT5Rw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/v4ELxKKT5Rw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God says...
 exhalation retaineth waiting demonstrated we adulterer Suffer serene suggest 
@@ -767,7 +809,7 @@ Alameth. All these are the sons of Becher.
 generations, heads of the house of their fathers, mighty men of
 valour, was twenty thousand and two hundred.
 
-IsAChar() IsDigit() IsAlpha() I use [MN:chars_bitmap_alpha_numeric]
+IsAChar() IsDigit() IsAlpha() I use [C:/Kernel/Str1a.CPP.Z,337]
 chars_bitmap_alpha_numeric.
 Jedi
 

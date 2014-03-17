@@ -9,14 +9,14 @@ U0 Main()
       dc->color=c++&15;
     }
     GrLine(dc,x1,y1,x2,y2);
-    vx1=LimitI64(vx1+SignI64(RandI16),-5,5);
-    vy1=LimitI64(vy1+SignI64(RandI16),-5,5);
-    vx2=LimitI64(vx2+SignI64(RandI16),-5,5);
-    vy2=LimitI64(vy2+SignI64(RandI16),-5,5);
-    x1=LimitI64(x1+vx1,0,Fs->win_pixel_width-1);
-    y1=LimitI64(y1+vy1,0,Fs->win_pixel_height-1);
-    x2=LimitI64(x2+vx2,0,Fs->win_pixel_width-1);
-    y2=LimitI64(y2+vy2,0,Fs->win_pixel_height-1);
+    vx1=ClampI64(vx1+SignI64(RandI16),-5,5);
+    vy1=ClampI64(vy1+SignI64(RandI16),-5,5);
+    vx2=ClampI64(vx2+SignI64(RandI16),-5,5);
+    vy2=ClampI64(vy2+SignI64(RandI16),-5,5);
+    x1=ClampI64(x1+vx1,0,Fs->pix_width-1);
+    y1=ClampI64(y1+vy1,0,Fs->pix_height-1);
+    x2=ClampI64(x2+vx2,0,Fs->pix_width-1);
+    y2=ClampI64(y2+vy2,0,Fs->pix_height-1);
     Sleep(1); //Take this out and see what happens!
   }
   DCFill(dc);

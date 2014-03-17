@@ -418,9 +418,10 @@ BEGIN_LABEL::
 END_LABEL::
 
 
-1) The BEGIN_LABEL gets defined and has a value equal to $. 
-[C:/Compiler/Assembler.CPP.Z,1] ST_EXPECTING_COLON
+1) The BEGIN_LABEL gets defined and has a value equal to $. ST_EXPECTING_COLON
+
 2) It compiles the expression.
+
 3) END_LABEL is created.  [C:/Compiler/ExpParser.CPP.Z,1] LF_ASM_EXPRESSIONS
 The compiled code for the 
 expression is: 
@@ -428,12 +429,10 @@ expression is:
 	MOV	RAX,[RAX]
 	SUB	RAX,#BEGIN_LABEL
 	RET
-4) The undefined value of END_LABEL is now defined.
-[C:/Compiler/Assembler.CPP.Z,1] ST_EXPECTING_COLON
+4) The undefined value of END_LABEL is now defined. ST_EXPECTING_COLON
 
 5) At the end of the compilation, it evaluate that expression and the 
-dereference looks-up the value for END_LABEL [C:/Compiler/Assembler.CPP.Z,2]
-ST_UNDEFINED_SYM_LINE
+dereference looks-up the value for END_LABEL ST_UNDEFINED_SYM_LINE
 
 6) It patches the location where the expression goes.  It is not an absolute 
 because it has an even number of absolutes.
@@ -441,7 +440,7 @@ because it has an even number of absolutes.
 *) There are only two AOT BIN files, compiler and kernel.  User never should 
 make bin file.  Absolute addresses are patched by kernel on itself here 
 [C:/Kernel/KStart.CPP.Z,1] abs addresses and compiler is patched when loaded
-at start here [C:/TempleOS/Kernel/Hash1a.CPP.Z,652] LoadPass1.
+at start here [C:/Kernel/Hash1b.CPP.Z,305] LoadPass1.
 
 ----10/20/13 03:07:13----
 
@@ -481,8 +480,9 @@ Those are ugly and awful.
 Lossy Graphics
 
 My graphics are 16 color.  They compress well without loss.  
-[C:/Kernel/Compress.CPP.Z,1]  My filesystem has built-in individual file 
-compression on files ending in Z.  I get image compression for free.
+[C:/Kernel/Compress.CPP.Z,1]  My filesystem has built-in individual file
+compression 
+on files ending in Z.  I get image compression for free.
 
 God says...
 deafness enact modification essence soundeth ninth ruleth rates Etext lettest 
@@ -501,7 +501,7 @@ cool!  God's temple must be perfect.
 
 You can see all the file line counts:
 
-[C:/Accts/TS/Wb2/LineCnt.TXT,1] Source Code By File
+[C:/Accts/TS/Wb2/LineRep.TXT.Z,1] Source Code By File
 
 
 We might have 86,000 lines right now, depending on how we count.

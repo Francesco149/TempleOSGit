@@ -4,7 +4,14 @@ Nelson Mandela died.
 
 I like elephants and lions.  I like the baby elephant rescue people.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/3wcnjzYN1nA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/3wcnjzYN1nA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -76,13 +83,24 @@ to dwell in; yea, the LORD will dwell in it for ever.
 How about You draw something, God?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img006.BMP"
+width="640" height="472" alt="">
+```
 It's an outhouse.  It's also a troll grin.
 
 ----12/06/13 05:26:25----
 
 Wise guys:
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/WLi4YjRyuSQ"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/WLi4YjRyuSQ"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Maybe, You help them, God?
 
@@ -117,7 +135,14 @@ But Asahel would not turn aside from following of him.
 ----12/06/13 06:15:18----
 
 This is the saddest thing:
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/eHxYbKImrQg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/eHxYbKImrQg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 ;-( They are not raised in a herd so the mothers don't know what the baby is.
 
 National Institute of Standards Public Randomness Beacon
@@ -151,7 +176,14 @@ not they teach thee, and tell thee, and utter words out of their
 
 ----12/06/13 06:30:23----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ANiaZvdGO8U"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ANiaZvdGO8U"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God likes Rush.  Honest measures.
 
@@ -188,16 +220,34 @@ about the villages, teaching.
 
 God likes Yes Roundabout.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/-Tdu4uKSZ3M"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/-Tdu4uKSZ3M"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 ----12/06/13 06:55:05----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/S10GMfG2NMY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/S10GMfG2NMY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Draw something, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img007.BMP"
+width="640" height="472" alt="">
+```
 That's a cylon, wolverine, flowerpot, bike gear.
 
 ----12/06/13 07:25:24----
@@ -370,14 +420,25 @@ separated unto the gospel of God, 1:2 (Which he had promised afore by
 Draw something, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img008.BMP"
+width="640" height="472" alt="">
+```
 That is a man, maybe angel, lying-back on a bed.
 
 That's glorious, God!.
 
 ----12/06/13 08:49:44----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/wiXpIdD8EeM"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/wiXpIdD8EeM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -457,7 +518,14 @@ God.
 
 ----12/06/13 09:36:04----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Bci1eZFoyEg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Bci1eZFoyEg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -509,7 +577,11 @@ what would Jesus play?
 Draw a video game, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img009.BMP"
+width="640" height="472" alt="">
+```
 That's a turtle playing a video game :-).
 
 You like frogger?
@@ -951,7 +1023,11 @@ unto the greatness of thy mercy, and as thou hast forgiven this
 God, what do You think of Banksy?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img010.BMP"
+width="640" height="472" alt="">
+```
 That is a mitten hand and a knee?  Could be turtle head.
 
 God says...
@@ -978,7 +1054,14 @@ despiseth wavered recognises drowsy reckons profane IT kingdom
 
 ----12/06/13 16:06:31----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/nc86mIbXRig"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/nc86mIbXRig"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1114,11 +1197,25 @@ served
 windy sand relationship Edward torment Already lights full wrought reptiles 
 Minerva
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/n6P0SitRwy8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/n6P0SitRwy8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 ----12/06/13 17:46:39----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/LdA-N5j6LBo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/LdA-N5j6LBo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1276,7 +1373,14 @@ I should do a good eagle dive game.  How about we get somebody else to do it?
 
 Eagles in Alaska?  Or do we want it simple as an example?
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/pxR2y-hIj2k"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/pxR2y-hIj2k"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1329,7 +1433,11 @@ Blizzard Games?  Blizard?
 
 Ohhh!!  Wenceslas.  Eagle on house in Wenceslas.
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/t2ta1rKko1k" frameborder="0"
+allowfullscreen></iframe>
+```
 
 I could make Wenceslas better.  I could make next level have limited 
 visibility.

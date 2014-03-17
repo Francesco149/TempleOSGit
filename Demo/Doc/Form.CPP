@@ -3,14 +3,14 @@ class FDStruct
 //Use <CTRL-L> and select "Data" to generate the fmtstrs
 
 //The number is the field from after the ':' to the end.
-//  See [C:/Adam/Doc/DocPlain.CPP,1] Data Tag Width.
+//  See [C:/Adam/Doc/DocPlain.CPP.Z,1] Data Tag Width.
 
-  F64 num1	fmtstr "$DA-T,32,\"F64   1:%12.8f\"$\n";
-  F64 num2	fmtstr "$DA-T,32,\"F64   2:%12e\"$\n";
-  I64 num3	fmtstr "$DA-T,32,\"I64   1:0x%016X\"$\n";
-  I64 num4	fmtstr "$DA-T,32,\"I64   2:%12d\"$\n";
-  U8  name[32]	fmtstr "$DA-P,31,\"Name  :%s\"$\n";
-  CDate datetime fmtstr "$DA-T,32,\"Date  :%8D\"$\n";
+  F64 num1	fmtstr "$DA-TRM,32,A=\"F64   1:%12.8f\"$\n";
+  F64 num2	fmtstr "$DA-TRM,32,A=\"F64   2:%12e\"$\n";
+  I64 num3	fmtstr "$DA-TRM,32,A=\"I64   1:0x%016X\"$\n";
+  I64 num4	fmtstr "$DA-TRM,32,A=\"I64   2:%12d\"$\n";
+  U8  name[32]	fmtstr "$DA-P,31,A=\"Name  :%s\"$\n";
+  CDate datetime fmtstr "$DA-TRM,32,A=\"Date  :%8D\"$\n";
 };
 
 U0 FormDemo()
@@ -38,7 +38,7 @@ U0 FormDemo()
   "\n\nClassRep Example\n";
   ClassRep(&fds);
 
-//See also [C:/TempleOS/Adam/Dbg2a.CPP.Z,160] ClassRepD().
+//See also [C:/Adam/Dbg2a.CPP.Z,160] ClassRepD().
 }
 
 FormDemo;

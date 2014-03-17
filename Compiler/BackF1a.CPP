@@ -106,14 +106,7 @@ U0 ICCopyTemplate(CLex *lx,CIntermediateCode *tempi,I64 op,
       }
     }
   }
-  if (tempi->ic_cnt+i>=IC_BODY_SIZE) {
-    if (!tempi->ic_ext_body) {
-      tempi->ic_ext_body=MAlloc(256);
-      MemCpy(tempi->ic_ext_body,tempi->ic_body,tempi->ic_cnt);
-    }
-    MemCpy(&tempi->ic_ext_body[tempi->ic_cnt],ptr,i);
-  } else
-    MemCpy(&tempi->ic_body[tempi->ic_cnt],ptr,i);
+  MemCpy(&tempi->ic_body[tempi->ic_cnt],ptr,i);
   if (!off_the_record)
     CmpNoteFloatOp(lx,tempi,dont_pushable,dont_popable,pos);
   tempi->ic_cnt+=i;
@@ -316,7 +309,7 @@ U0 ICFPow(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 	ICU32(tempi,-(ip+tempi->ic_cnt+4));
 	if (buf) {
 	  tempe=CAlloc(sizeof(CExeImportExport));
-	  tempe->type=EIT_REL_U32;
+	  tempe->type=EIT_REL_I32;
 	  tempe->ip=ip+tempi->ic_cnt-4;
 	  tempe->next=tempex->ie_lst;
 	  tempex->ie_lst=tempe;

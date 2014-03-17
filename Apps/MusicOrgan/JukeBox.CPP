@@ -4,11 +4,11 @@ CTask *SingleSong(U8 *msg,U8 *name)
   CTask *task=Spawn(&SrvUserCmdLine,NULL,name,,Fs);
   StrCpy(task->task_title,name);
   task->title_src=TTS_LOCKED_CONST;
-  TaskExeStrQue(task,Fs,";",1<<SVCf_WAKE_MASTER|1<<SVCf_FREE_ON_COMPLETE);
+  TaskExe(task,Fs,";",1<<SVCf_WAKE_MASTER|1<<SVCf_FREE_ON_COMPLETE);
   SetWinHorz(task->win_left,task->win_left+50,task);
   SetWinVert(2,2+8,task);
   Preempt(old_preempt);
-  TaskExeStrQue(task,NULL,msg,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
+  TaskExe(task,NULL,msg,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
   DocPut(task)->max_entries=100;
   return task;
 }
@@ -109,7 +109,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **_filename=NULL)
 	    DocWrite(s);
 	  }
 	}
-	DocPrint(doc,"$MU-UL,\"%c%-8ts\",%d$ ",rating,st,tempde);
+	DocPrint(doc,"$MU-UL,\"%c%-8ts\",LE=%d$ ",rating,st,tempde);
 	tempde->user_data=JB_RUN_LEVEL_NULL;
       }
       DocDel(s);
@@ -117,7 +117,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **_filename=NULL)
     }
     tempde=tempde->next;
   }
-  DocPrint(doc,"\n$CYAN$$MU-UL,\"DONE\",%d$\n",DOCM_CANCEL);
+  DocPrint(doc,"\n$CYAN$$MU-UL,\"DONE\",LE=%d$\n",DOCM_CANCEL);
   while (TRUE) {
     if (_filename)
       tempde=PopUpMenu(doc,DOF_INTERCEPT_TASK_END);

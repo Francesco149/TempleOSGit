@@ -6,7 +6,7 @@ I used more regs in this example.
 */
 asm {
 //Opcodes are slightly different to make writing my x86_64 assembler easier.
-//See [C:/Compiler/OpCodes.TXT,1].
+//See [C:/Compiler/OpCodes.TXT.Z,1].
 
 USE64	//Defaults to 64, but this is a good habit.
 
@@ -27,7 +27,7 @@ MUL_BY_HAND_U8_U8_TO_U16: //This is only for fun.
 _MUL_BY_HAND_U8_U8_TO_U16::	//C callable
 	PUSH	RBP
 	MOV	RBP,RSP
-	MOV	AL,U8 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP,1] SF_ARG1
+	MOV	AL,U8 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP.Z,1] SF_ARG1
 	MOV	BL,U8 SF_ARG2[RBP]
 	CALL	MUL_BY_HAND_U8_U8_TO_U16
 	MOVZX	RAX,AX
@@ -39,7 +39,7 @@ _MUL_U64_U64_TO_U128::
 	PUSH	RBP
 	MOV	RBP,RSP
 	MOV	RBX,U64 SF_ARG3[RBP]
-	MOV	RAX,U64 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP,1] SF_ARG1
+	MOV	RAX,U64 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP.Z,1] SF_ARG1
 	MUL	U64 SF_ARG2[RBP]	//Result RDX:RAX 128bit
 	MOV	U64 [RBX],RAX
 	MOV	U64 8[RBX],RDX

@@ -7,27 +7,27 @@ F64 t0=Beat;
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i;
-  F64 dt=Beat-t0,d=Limit(0.1*dt,0,2),d2;
+  F64 dt=Beat-t0,d=Clamp(0.1*dt,0,2),d2;
 
   dc->color=ROPF_PROBABILITY_DITHER+LTCYAN<<16+CYAN;
   for (i=HORIZON_Y;i>=0;i--) {
     d2=ToF64(HORIZON_Y-i)/HORIZON_Y;
-    dc->dither_probability_u16=1<<16*Limit((4.0-d2)/4.0*d*d-0.15,0,1.0);
-    GrLine(dc,LEFT_EDGE,i,task->win_pixel_width-1,i);
+    dc->dither_probability_u16=1<<16*Clamp((4.0-d2)/4.0*d*d-0.15,0,1.0);
+    GrLine(dc,LEFT_EDGE,i,task->pix_width-1,i);
   }
 
-  d=(task->win_pixel_width-LEFT_EDGE)/2+LEFT_EDGE;
+  d=(task->pix_width-LEFT_EDGE)/2+LEFT_EDGE;
   dc->color=YELLOW;
   GrCircle(dc,d,HORIZON_Y+50-dt,40);
   GrFloodFill(dc,d,HORIZON_Y+15-dt,TRUE);
 
   dc->color=GREEN;
-  GrRect(dc,200,HORIZON_Y,task->win_pixel_width-200,task->win_pixel_height-HORIZON_Y);
+  GrRect(dc,200,HORIZON_Y,task->pix_width-200,task->pix_height-HORIZON_Y);
 }
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
 

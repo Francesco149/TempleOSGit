@@ -15,7 +15,8 @@ class TimeEntry
 
 U0 TimeFileRead(TimeEntry *header)
 {
-  U8 *buf,*ptr,type;
+  U8 *buf,*ptr;
+  I64 type;
   TimeEntry *tempt;
   buf=FileRead(TIME_FILENAME);
   if (!buf)

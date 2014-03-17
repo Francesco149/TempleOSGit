@@ -54,8 +54,8 @@ CMathODE *ode=NULL;
 
 U0 S2W(F64 sx,F64 sy,F64 *_wx,F64 *_wy)
 {
-  sx-=task->win_pixel_left+task->win_scroll_x;
-  sy-=task->win_pixel_top +task->win_scroll_y;
+  sx-=task->pix_left+task->scroll_x;
+  sy-=task->pix_top +task->scroll_y;
   *_wx=sx/zoom;
   *_wy=sy/zoom;
 }
@@ -74,10 +74,10 @@ U0 Zoom(F64 d)
   d=Exp(Ln(d)/ZOOM_STEPS);
   for (i=0;i<ZOOM_STEPS;i++) {
     S2W(x,y,&wx,&wy);
-    zoom=Limit(zoom*d,0.02,50);
+    zoom=Clamp(zoom*d,0.02,50);
     W2S(wx,wy,&sx,&sy);
-    task->win_scroll_x=ipx-sx-task->win_pixel_left;
-    task->win_scroll_y=ipy-sy-task->win_pixel_top;
+    task->scroll_x=ipx-sx-task->pix_left;
+    task->scroll_y=ipy-sy-task->pix_top;
     Sleep(10);
   }
 }
@@ -92,8 +92,8 @@ U0 DrawIt(CTask *,CDC *dc)
 
   tempm=ode->next_mass;
   if (tempm!=&ode->next_mass) {
-    task->win_scroll_x=-tempm->x*zoom+task->win_pixel_width >>1;
-    task->win_scroll_y=-tempm->y*zoom+task->win_pixel_height>>1;
+    task->scroll_x=-tempm->x*zoom+task->pix_width >>1;
+    task->scroll_y=-tempm->y*zoom+task->pix_height>>1;
   }
 
 
@@ -144,7 +144,7 @@ U0 DrawIt(CTask *,CDC *dc)
   dc->color=LTGRAY;
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
-    SpritePlot3(dc,tempm->x,tempm->y,0,tempm->img);
+    Sprite3(dc,tempm->x,tempm->y,0,tempm->img);
     tempm=tempm->next;
   }
 
@@ -174,7 +174,7 @@ U0 DrawIt(CTask *,CDC *dc)
 	}
 	dc->flags&=~DCF_SYMMETRY;
       }
-      SpritePlotRotZ3B(dc,x1,y1,0,__BIN_3,theta);
+      SpriteZ3B(dc,x1,y1,0,__BIN_3,theta);
       if (zoom>0.5) {
 	dc->color=YELLOW;
 	GrPutChar3(dc,(x1*7+x2)/8,(y1*7+y2)/8,0,temps->action_key);
@@ -371,9 +371,9 @@ U0 PlayShip()
 	case MSG_KEY_DOWN:
 	  switch (p1) {
 	    case '0'...'9':
-	      if (tT>last_noise+0.25) {
+	      if (tS>last_noise+0.25) {
 		Noise(250,40,200);
-		last_noise=tT;
+		last_noise=tS;
 	      }
 	      break;
 	    case 'z':
@@ -608,7 +608,7 @@ U0 Strut()
 {
   CCtrl *bt_main_mode=CtrlButtonNew((GR_WIDTH-4*FONT_WIDTH-16)>>1,1*FONT_HEIGHT+4,80,,MMD_NUM_MODES,
 	   Define("ST_MAIN_MODES"),main_mode_colors,&main_mode_button);
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit|=WIF_IP_L|WIF_IP_R|WIG_DBL_CLICK;
   WinMax;
   WinBorder;

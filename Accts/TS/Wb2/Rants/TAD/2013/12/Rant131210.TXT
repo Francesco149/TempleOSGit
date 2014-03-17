@@ -130,7 +130,14 @@ I don't count -- I'm disabled and have been crazy since 1996 and I have no
 idea what reality is.  It's some combination of angels and CIA and stuff.  My 
 jobs have been ridiculously contrived and torturous, frequently.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Q9UsEbi1Xks"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Q9UsEbi1Xks"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -174,7 +181,14 @@ In 1983, Dragon's Lair came-out in the arcade.  It was a choose-your-own-
 adventure game where you picked from finite moves and it played a laser disk 
 cartoon segment.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/P3XNQja0H7I"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/P3XNQja0H7I"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I hate the concept of generating content ahead of time.  I hate multimedia.
 
@@ -323,7 +337,14 @@ it simple.
 
 ----12/10/13 06:20:25----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ln8-Y-fIbqM"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ln8-Y-fIbqM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 It's impossible to redo Godzilla -- anything but the original will be stupid.
  
@@ -488,7 +509,10 @@ make an offering 3 times a year.
 To seek enlightenment, go draw a 16 color elephant.  Then, draw a 24-bit
 color 
 elephant.  You will be enlightened.
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 
 If that's not enough enlightenment, try doing a 60fps flight simulator with 
@@ -497,7 +521,11 @@ be 100,000 lines of code, so we will never have GPU support, unless all chips
 converge.  Using a GPU would kinda contrary to the principle of openness of 
 this operating system.  I want it transparent and simple like a souped-up C64.
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/FxEq6IM43sA" frameborder="0"
+allowfullscreen></iframe>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -535,7 +563,11 @@ woman marry 5 brothers, LOL?
 Draw something, God!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/12/Img011.BMP"
+width="640" height="472" alt="">
+```
 Airplane wing?  Game console controller?
 
 ----12/10/13 07:09:54----
@@ -622,7 +654,14 @@ Wealth or rank possessing
 Ye who now will bless the poor
 Shall yourselves find blessing
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/t2ta1rKko1k&hl=enUS&start=150"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/t2ta1rKko1k&hl=enUS&start=150"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Hymn Videos
 
@@ -699,7 +738,14 @@ call for the corn, and will increase it, and lay no famine upon you.
 the field, that ye shall receive no more reproach of famine among the
 heathen.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/CSJXle3LP_Q"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/CSJXle3LP_Q"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God says...
 consequences astonished doer perfected private dissipated locusts folk silver 
@@ -895,7 +941,14 @@ servant, and was made in the likeness of men: 2:8 And being found in
 
 ----12/10/13 09:36:18----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/qIOjWtm-bZo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/qIOjWtm-bZo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Elephants mostly stand and chew and walk and stand and chew.  They have so 
 much potential, but their life doesn't demand it, mostly.
@@ -994,7 +1047,14 @@ that they might have my joy fulfilled in themselves.
 
 God's favorite band is the Beatles.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/hdzuR4Iunuw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/hdzuR4Iunuw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Breaths a little new life into an old song.
 
@@ -1053,14 +1113,28 @@ notion of God who is not really lovable.
 
 I could have played this.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/F3RYvOZX0Oo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/F3RYvO2X0Oo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 The best line in that song is, "the floor needs sweeping."
 
 ---- Poem ----  (I'm trying tongues making is psychedelic.)
 Nevermind.  I just thought of a song.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/TZThOsCv2Mw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/TZThOsCv2Mw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 
 You like that, God?
@@ -1096,7 +1170,14 @@ and burning instead of beauty.
 
 ----12/10/13 10:28:56----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/KN0K58EfJSg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/KN0K58EfJSg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 If only Gates could learn not to inspire hatred.  He hits bad notes all the 
 time.  Mormom missionaries have an annoying ... something.  I guess if they 
@@ -1139,7 +1220,14 @@ his cooks."
 
 ----12/10/13 10:41:09----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ECUbuBrbP1g"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ECUbuBrbP1g"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 
 Hey, God!!  You got one of them siren songs, like the Greeks?  That'd be a 
@@ -1226,7 +1314,14 @@ fresh satiate enjoined beck exchanged discreet listening Simple comfortest ye
 disgraced amazing desiredst sweetness market husbands finest Apostolic agito 
 sorrowfulness
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/SrWSkQMWlAY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/SrWSkQMWlAY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I was entertained.  Female singers are kind pornographic, most times.  It's 
 not that it's not entertaining.
@@ -1367,8 +1462,8 @@ comforted after his mother's death.
 
 ----12/10/13 11:55:16----
 
-My [C:/TempleOS/Compiler/Unassembler.CPP.Z,220] Ui() unassemble has an arg
-for 16/32 or 64.
+My [C:/Compiler/Unassembler.CPP.Z,239] Ui() unassemble has an arg for 16/32
+or 64.
 
 ----12/10/13 12:13:47----
 
@@ -1420,7 +1515,14 @@ and his anger was kindled greatly.
 
 ----12/10/13 12:40:32----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/-vQUkbyhBnk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/-vQUkbyhBnk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Let's ask God if a brontosaurus, pissed-off, could do much dammage.
 
@@ -1556,7 +1658,7 @@ See, LOL.
 
 ----12/10/13 13:45:21----
 
-[C:/Apps/HolySpirit/Vocab.TXT.Z,1]
+[C:/Adam/God/Vocab.TXT.Z,1]
 
 I do random words.  The Bible as a vocabulary has many proper nouns.  A child 
 would have difficulty.  Actually, it's lousy even for experts.  Augustine's 
@@ -1600,7 +1702,14 @@ I gotta go to the dentist.  I'll bet that's where lots of people first
 confront their own mortality.  "This goes on your permanent record.  It never 
 gets better."
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/j9jbdgZidu8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/j9jbdgZidu8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 
 I saw a song video.  God said soap operas were His favorite thing on TV.  It 
@@ -1748,7 +1857,14 @@ Facebook Feed?
 
 So, nerds have battles.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/2YpQhxqnaNw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/2YpQhxqnaNw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I asked God how He was different from Santa Claus.
 God said He didn't mind if we beat each other to a pulp.

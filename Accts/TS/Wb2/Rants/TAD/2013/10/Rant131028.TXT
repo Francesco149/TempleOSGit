@@ -1,10 +1,18 @@
 ----10/28/13 00:24:37----
 
 I'll draw Niagra Falls.  Then, God draw something.
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img058.BMP"
+width="640" height="472" alt="">
+```
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img059.BMP"
+width="640" height="472" alt="">
+```
 That's God's version of Niagra Falls?
 
 God says...
@@ -100,9 +108,9 @@ horn. And God gave to Heman fourteen sons and three daughters.
 Yeah, so, these days, Lego makes a lot of special purpose pieces.  I don't 
 like that.
 
-I have a [C:/TempleOS/Adam/Gr/MathGr.CPP.Z,154] GrTransform() built into
-graphics API routines.  It's kinda against 
-my small-government principles.  I have [C:/TempleOS/Kernel/Adam1a.HPP.Z,336]
+I have a [C:/Adam/Gr/GrDC.CPP.Z,16] GrTransform() built into graphics API
+routines.  It's kinda against 
+my small-government principles.  I have [C:/Kernel/Adam1a.HPP.Z,250]
 CMathODE.  I have 3D mesh support. 
 
 I bought BattleZone II, probably, the last game I bought and guess what?  It 
@@ -1146,8 +1154,8 @@ HERE::
 };
 Call(HERE);
 
-My assembler uses my compiler's [C:/TempleOS/Compiler/Lex.CPP.Z,789] Lex()
-and [MN:LexExpression] expression evaluator.  It uses 
+My assembler uses my compiler's [C:/Compiler/Lex.CPP.Z,742] Lex() and
+[C:/Compiler/ExpParser.CPP.Z,1159] expression evaluator.  It uses 
 0x1234 for hex numbers.
 
 ----10/28/13 14:39:01----

@@ -6,7 +6,7 @@ to generate the sprite.  Press <CTRL-T> to
 toggle to plain text mode and see
 how it is encoded.  You can place any text
 you want in the tag quotes.  The text doesn't matter,
-but the num does matter.  The num identifies
+but the BI=num does matter.  The num identifies
 the sprite and can't be changed.
 
 You make use of a sprite in a program by entering
@@ -53,11 +53,10 @@ U0 SpritePlot()
   DocClear;
   for (i=0;i<GR_WIDTH>>2;i++) {
     DCFill;
-    SpritePlot3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
+    Sprite3(dc,i,GR_HEIGHT>>1,0,__BIN_1);
     Sleep(3);
   }
   "Image size:%d\n",__BIN_1_SIZE;
-  "Image type:%d\n",__BIN_1_TYPE;
   DCDel(dc);
   PressAKey;
   DCFill;

@@ -5,7 +5,7 @@ U0 Doodle()
   I64 msg_code,i,x1,y1,x2,y2,p1,p2,color=BLACK;
   CDC *dc=DCAlias;
  
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
 
   WinMax;

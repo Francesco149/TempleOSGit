@@ -7,14 +7,14 @@ U0 SymmetryDemo()
   I64 msg_code,x1,y1,x2,y2,p1,p2;
   CDC *dc=DCAlias;
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
 
   WinMax;
   DCFill;
   DocClear;
   dc->flags|=DCF_SYMMETRY;
-  GrSetSymmetry(dc,Fs->win_pixel_width/2,0,Fs->win_pixel_width/2,1);
+  GrSetSymmetry(dc,Fs->pix_width/2,0,Fs->pix_width/2,1);
   do {
     msg_code=GetMsg(&p1,&p2,
       1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+

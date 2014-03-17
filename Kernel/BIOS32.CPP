@@ -42,9 +42,9 @@ SYS_FIND_PCI_SERVICES::
 	RET
 @@05:	MOV	EAX,'$PCI'
 	XOR	EBX,EBX
-	DU8	0x9A;		 //CALL GDT_CS_SEL:BIOS32_SERVICE
+	DU8	0x9A;		 //CALL CGDT.cs32:BIOS32_SERVICE
 SYS_BIOS32_SERVICE_CALL:: DU32	0;
-	DU16	GDT_CS_SEL;
+	DU16	CGDT.cs32;
 	TEST	AL,AL
 	JNZ	@@05
 	LEA	ESI,U32 [EBX+EDX]
@@ -88,10 +88,10 @@ _FAR_CALL32::
 	PUSH	U64 FS:CTask.addr[RAX]
 	PUSH	U64 GS:CCPU.addr[RAX]
 	MOV	U64 [C32_RSP],RSP
-	PUSH	U32 GDT_ZERO_DS_SEL	//STKSEG
+	PUSH	U32 CGDT.ds	//STKSEG
 	PUSH	U32 0x9C000	//STK
 	PUSH	U32 0		//FLAGS--interrupts off
-	PUSH	U32 GDT_CS_SEL
+	PUSH	U32 CGDT.cs32
 	LEA	RAX,[@@15]
 	PUSH	RAX
 	IRET
@@ -108,7 +108,7 @@ USE32
 	XOR	EAX,EAX
 	WRMSR
 
-	MOV	AX,GDT_ZERO_DS_SEL
+	MOV	AX,CGDT.ds
 	MOV	FS,AX
 	MOV	GS,AX
 //SS already set
@@ -121,9 +121,9 @@ USE32
 	MOV	EDI,U32 [C32_EDI]
 	MOV	U32 [C32_EFLAGS],0
 
-	DU8	0x9A;		 //CALL GDT_CS_SEL:[C32_ADD]
+	DU8	0x9A;		 //CALL CGDT.cs32:[C32_ADD]
 C32_ADD:: DU32	0;
-	DU16	GDT_CS_SEL;
+	DU16	CGDT.cs32;
 
 	PUSHFD
 	POP	U32 [C32_EFLAGS]
@@ -137,7 +137,7 @@ C32_ADD:: DU32	0;
 
 	CALL	INIT_EM64T
 USE64
-	MOV	AX,GDT_ZERO_DS_SEL
+	MOV	AX,CGDT.ds
 	MOV	DS,AX
 	MOV	ES,AX
 	MOV	SS,AX
@@ -168,13 +168,13 @@ _extern SYS_PCI_SERVICES U32 sys_pci_services;
 
 //Not reentrant--used to call BIOS32
 //Takes like, 250uS.
-_extern _FAR_CALL32 Bool FarCall32(U0 (*fp_add)());
+_extern _FAR_CALL32 Bool FarCall32(U0 (*fp_addr)());
 
 U8 PCIReadU8(I64 bus,I64 dev,I64 fun,I64 rg)
 {
   I64 result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB108;
@@ -185,15 +185,15 @@ U8 PCIReadU8(I64 bus,I64 dev,I64 fun,I64 rg)
   else
     result=0xFF;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
   return result;
 }
 
 U16 PCIReadU16(I64 bus,I64 dev,I64 fun,I64 rg)
 {
   I64 result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB109;
@@ -204,15 +204,15 @@ U16 PCIReadU16(I64 bus,I64 dev,I64 fun,I64 rg)
   else
     result=0xFFFF;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
   return result;
 }
 
 U32 PCIReadU32(I64 bus,I64 dev,I64 fun,I64 rg)
 {
   I64 result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB10A;
@@ -223,14 +223,14 @@ U32 PCIReadU32(I64 bus,I64 dev,I64 fun,I64 rg)
     else
       result=0xFFFFFFFF;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
   return result;
 }
 
 U0 PCIWriteU8(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB10B;
@@ -239,13 +239,13 @@ U0 PCIWriteU8(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
   c32_ecx=val;
   FarCall32(sys_pci_services);
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
 }
 
 U0 PCIWriteU16(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB10C;
@@ -254,13 +254,13 @@ U0 PCIWriteU16(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
   c32_ecx=val;
   FarCall32(sys_pci_services);
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
 }
 
 U0 PCIWriteU32(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB10D;
@@ -269,7 +269,7 @@ U0 PCIWriteU32(I64 bus,I64 dev,I64 fun,I64 rg,I64 val)
   c32_ecx=val;
   FarCall32(sys_pci_services);
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
 }
 
 I64 PCIClassFind(I64 class_code,I64 n)
@@ -279,8 +279,8 @@ I64 PCIClassFind(I64 class_code,I64 n)
 //Returns: -1 not found
 //	  else bus,dev,fun.
   I64 result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   while (LBts(&sys_semas[SYS_SEMA_FAR_CALL32],0))
     Yield;
   c32_eax=0xB103;
@@ -291,7 +291,7 @@ I64 PCIClassFind(I64 class_code,I64 n)
   else
     result=-1;
   LBtr(&sys_semas[SYS_SEMA_FAR_CALL32],0);
-  PopFD;
+  POPFD
   return result;
 }
 

@@ -1,5 +1,5 @@
-//See [C:/Doc/Acknowledgements.TXT,1].
-//See [C:/TempleOS/Kernel/Adam1a.HPP.Z,3491] CArcCompress, [C:/TempleOS/Kernel/Adam1a.HPP.Z,3458] CArcEntry, and [C:/TempleOS/Kernel/Adam1a.HPP.Z,3466] CArcCtrl
+//See [C:/Doc/Acknowledgements.TXT.Z,1].
+//See [C:/Kernel/Adam1a.HPP.Z,3357] CArcCompress, [C:/Kernel/Adam1a.HPP.Z,3324] CArcEntry, and [C:/Kernel/Adam1a.HPP.Z,3332] CArcCtrl
 
 asm {
 USE64
@@ -100,16 +100,6 @@ _ARC_GET_ENTRY::
 
 _extern _ARC_GET_ENTRY U0 ArcGetEntry(CArcCtrl *c);
 
-
-I64 ArcXSum(U32 *src,I64 size)
-{
-  I64 result=0;
-  size>>=2;
-  while (size--)
-    result^=*src++;
-  return result;
-}
-
 I64 ArcDetermineCompressionType(U8 *src,I64 size)
 {
   while (size--)
@@ -119,12 +109,12 @@ I64 ArcDetermineCompressionType(U8 *src,I64 size)
 }
 
 U0 ArcCompressBuf(CArcCtrl *c)
-//Use [C:/TempleOS/Kernel/Compress.CPP.Z,268] CompressBuf() unless you are doing
+//Use [C:/Kernel/Compress.CPP.Z,253] CompressBuf() unless you are doing
 //more than one buffer.
 {
   CArcEntry *temp,*temp1;
-  I64 basecode;
-  U8 *src_ptr,*src_limit,ch;
+  I64 ch,basecode;
+  U8 *src_ptr,*src_limit;
 
   src_ptr=c->src_buf+c->src_pos;
   src_limit=c->src_buf+c->src_size;
@@ -174,7 +164,7 @@ U0 ArcFinishCompression(CArcCtrl *c)
 }
 
 U0 ArcExpandBuf(CArcCtrl *c)
-//Use [C:/TempleOS/Kernel/Compress.CPP.Z,301] ExpandBuf() unless you know what
+//Use [C:/Kernel/Compress.CPP.Z,288] ExpandBuf() unless you know what
 //you're doing.
 {
   U8 *dst_ptr,*dst_limit;

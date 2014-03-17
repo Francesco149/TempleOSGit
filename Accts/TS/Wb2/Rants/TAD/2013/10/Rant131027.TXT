@@ -64,7 +64,11 @@ New Movie
 How about You do a scene, God?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img053.BMP"
+width="640" height="472" alt="">
+```
 Dud?
 
 You should make a movie, God.  What would You do?  Lion King II?  Highlander 
@@ -182,7 +186,11 @@ Connan O'Brian
 Why don't You draw a picture, God?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img054.BMP"
+width="640" height="472" alt="">
+```
 Dud?
 
 http://virtual-notary.org
@@ -308,7 +316,11 @@ honourable
 Make a picture?
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img055.BMP"
+width="640" height="472" alt="">
+```
 
 That reminds me of the movie with the water snake alien, with a monitor 
 attached.  The Abyss
@@ -368,7 +380,7 @@ compiler/assembler.  To use my compiler, boot my ISO file in VMWare or QEMU.
 
 I have worked ten years.  [C:/Doc/Features.TXT.Z,1] Everything including my
 64-bit kernel compiler is 
-129,664 lines of code.
+120,796 lines of code.
 
 It is 100% open source -- all the source code is on the distribution.
 
@@ -413,9 +425,8 @@ My operating system is 64-bit.  I wrote my own 64-bit compiler.
 
 It runs in long mode.  Long mode requires paging.  I identity-map.  In long 
 mode, segment registers point to zero except FS and GS.  I use FS and GS as 
-general purpose registers.  FS is current
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3008] CTask and GS is current
-[C:/TempleOS/Kernel/Adam1a.HPP.Z,3618] CCPU.  My 
+general purpose registers.  FS is current [C:/Kernel/Adam1a.HPP.Z,2879] CTask
+and GS is current [C:/Kernel/Adam1a.HPP.Z,3488] CCPU.  My 
 compiler can index off of FS or GS.
 
 God says...
@@ -1038,7 +1049,11 @@ extended temporal readable strengtheneth
 Do some art, God.
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img056.BMP"
+width="640" height="472" alt="">
+```
 That's the Hunchback of Notre Dame.  Maybe, a cyclops, too.
 
 What about the Sunflowers_(Van_Gogh_series)?
@@ -1093,8 +1108,8 @@ oratory lashed whispers sport Anon delight
 Bill Clinton
 
 WWW.OSDEV.ORG: Guy is talking about magic break-points.  You can set 
-breakpoints with [C:/TempleOS/Kernel/Dbg1a.CPP.Z,464] B()
-[C:/TempleOS/Kernel/Dbg1a.CPP.Z,425] BptS().
+breakpoints with [C:/Kernel/Dbg1a.CPP.Z,423] B() [C:/Kernel/Dbg1a.CPP.Z,384]
+BptS().
 
 Not sure what you're after.
 
@@ -1118,9 +1133,9 @@ in any thing ye
 WWW.OSDEV.ORG
 
 This will MakeAll and install the partition boot-loader.  
-[MN:MakeOSPrtBootInstall] MakeOSPrtBootInstall()
-It compiles and makes the two BIN files. 
-[C:/TempleOS/Adam/Boot/InsBoot.CPP.Z,112] MakeAll().
+[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall()
+It compiles and makes the two BIN files.  [C:/Adam/Boot/InsBoot.CPP.Z,125]
+MakeAll().
 
 God says...
 forbare invited matter degree bait quicken official quieter attributing Ten 
@@ -1176,7 +1191,11 @@ Reeses peanut butter cups.
 God draw a Halloween drawing!
 
 God draws...
-
+```
+<img
+src="http://www.templeos.org/Wb/Accts/TS/Wb2/Rants/TAD/2013/10/Img057.BMP"
+width="640" height="472" alt="">
+```
 
 ----10/27/13 22:44:35----
 

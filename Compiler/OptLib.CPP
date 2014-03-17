@@ -259,6 +259,9 @@ CIntermediateCode *OptBrZero(CLex *lx,CIntermediateCode *tempi)
       tempii2=OptLag(tempii);
       switch (tempii2->ic_code) {
 	sub_switch_start:
+	  case IC_CARRY:
+	    tempii2->ic_code=IC_BR_NOT_CARRY;
+	    break;
 	  case IC_BT:
 	    tempii2->ic_code=IC_BR_NOT_BT;
 	    break;
@@ -405,6 +408,9 @@ CIntermediateCode *OptBrNotZero(CLex *lx,CIntermediateCode *tempi)
       tempii2=OptLag(tempii);
       switch (tempii2->ic_code) {
 	sub_switch_start:
+	  case IC_CARRY:
+	    tempii2->ic_code=IC_BR_CARRY;
+	    break;
 	  case IC_BT:
 	    tempii2->ic_code=IC_BR_BT;
 	    break;
@@ -501,7 +507,7 @@ CIntermediateCode *OptBrNotZero(CLex *lx,CIntermediateCode *tempi)
   return tempi;
 }
 
-  U0 OptFixSizeOf(CIntermediateCode *tempi1,CIntermediateCode *tempi_push,CHashClass *tempcc)
+U0 OptFixSizeOf(CIntermediateCode *tempi1,CIntermediateCode *tempi_push,CHashClass *tempcc)
 {
   if (tempi1->ic_code==IC_MUL &&
       tempi1->t.a2t->ic_code==IC_SIZEOF) {
@@ -562,13 +568,13 @@ U0 CmpF2PushPop(CIntermediateCode *tempi,CIntermediateCode *tempi1,CIntermediate
     Bts(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0);
 }
 
-class OptMemberVar
+class COptMemberVar
 {
-  I64 score,offset,lea_balance;
+  I64 score,offset_start,offset_end,lea_balance;
   CMemberLst *m;
 };
 
-I64 OptMVCompare(OptMemberVar *mv1,OptMemberVar *mv2)
+I64 OptMVCompare(COptMemberVar *mv1,COptMemberVar *mv2)
 {
   return mv2->score-mv1->score;
 }

@@ -1,18 +1,16 @@
 //This is the fastest you can update the whole screen.
-//See [C:/Demo/Lectures/MiniGrLib.CPP,1] if this interests you.
+//See [C:/Demo/Lectures/MiniGrLib.CPP.Z,1] if this interests you.
 
 F64 VGAPattern(I64 p)
 {//This returns the time to update in seconds.
-  F64 start=tT;
-  I64 i,plane,*ptr;
+  F64 start=tS;
+  I64 plane;
   for (plane=1;plane<0x10;plane<<=1) {
     OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
     OutU8(VGA_SC_DATA,plane);
-    ptr=0xA0000;
-    for (i=0;i<640*480/64;i++)
-      *ptr++=p;
+    MemSetU64(0xA0000,p,640*480/64);
   }
-  return tT-start;
+  return tS-start;
 }
  
  
@@ -36,41 +34,3 @@ U0 GrDemo()
 }
 
 GrDemo;
-
-/*  Program Output (Not VMware)
-
-8 Cores 2.660GHz
-Rate:369.7 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:370.3 FPS	Load@60Hz: 16.2%
-Rate:361.2 FPS	Load@60Hz: 16.6%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:370.2 FPS	Load@60Hz: 16.2%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:360.6 FPS	Load@60Hz: 16.6%
-Rate:370.4 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:353.1 FPS	Load@60Hz: 17.0%
-Rate:370.3 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:357.0 FPS	Load@60Hz: 16.8%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:370.4 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:353.9 FPS	Load@60Hz: 17.0%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:370.2 FPS	Load@60Hz: 16.2%
-Rate:370.4 FPS	Load@60Hz: 16.2%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:369.7 FPS	Load@60Hz: 16.2%
-Rate:369.9 FPS	Load@60Hz: 16.2%
-Rate:369.8 FPS	Load@60Hz: 16.2%
-
-*/

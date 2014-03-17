@@ -1,43 +1,46 @@
+#help_index "Graphics/Sprite"
+
 #define GEBM_EXIT		0
 #define GEBM_MAIN_MENU		1
 #define GEBM_COLOR		2
 #define GEBM_DITHER_COLOR	3
 #define GEBM_WIDTH		4
-#define GEBM_SNAP		5
-#define GEBM_PT			6
-#define GEBM_LINE		7
-#define GEBM_ARROW		8
-#define GEBM_RECT		9
-#define GEBM_CIRCLE		10
-#define GEBM_TEXT		11
-#define GEBM_TEXT_BOX		12
-#define GEBM_TEXT_DIAMOND	13
-#define GEBM_FLOOD_FILL		14
-#define GEBM_FLOOD_FILL_NOT	15
-#define GEBM_POLYLINE		16
-#define GEBM_POLYPT		17
-#define GEBM_COPY		18
-#define GEBM_DELETE		19
-#define GEBM_PASTE		20
-#define GEBM_PASTE_TRANSPARENT	21
-#define GEBM_FIND_AND_REPLACE	22
-#define GEBM_TRIM_TO_EXTENTS	23
-#define GEBM_ADD_OUTLINE	24
-#define GEBM_ETCH		25
-#define GEBM_UNDO		26
+#define GEBM_PT			5
+#define GEBM_LINE		6
+#define GEBM_ARROW		7
+#define GEBM_RECT		8
+#define GEBM_CIRCLE		9
+#define GEBM_TEXT		10
+#define GEBM_TEXT_BOX		11
+#define GEBM_TEXT_DIAMOND	12
+#define GEBM_FLOOD_FILL		13
+#define GEBM_FLOOD_FILL_NOT	14
+#define GEBM_POLYLINE		15
+#define GEBM_POLYPT		16
+#define GEBM_COPY		17
+#define GEBM_DELETE		18
+#define GEBM_PASTE		19
+#define GEBM_PASTE_TRANSPARENT	20
+#define GEBM_FIND_AND_REPLACE	21
+#define GEBM_TRIM_TO_EXTENTS	22
+#define GEBM_ADD_OUTLINE	23
+#define GEBM_ETCH		24
+#define GEBM_UNDO		25
+#define GEBM_SAVE_BMP		26
+#define GEBM_SAVE_GRA		27
 
-U0 GrInit3()
+U0 GrInit4()
 {
   DefineLstLoad("ST_SPRITE_BITMAP_MENU",
-	"Exit\0Main Menu\0Color\0Dither Color\0Width\0Snap\0Point\0Line\0Arrow\0"
+	"Exit\0Main Menu\0Color\0Dither Color\0Width\0Point\0Line\0Arrow\0"
 	"Rect\0Circle\0Text\0Text Box\0Text Diamond\0Flood Fill\0"
 	"Flood Fill Not Color\0PolyLine\0PolyPoint\0Copy\0Delete\0Paste\0"
 	"Paste Transparent\0Find and Replace\0Trim to Extents\0Add Outline\0"
-	"Etch\0Undo\0");
+	"Etch\0Undo\0Save BMP\0Save GRA\0");
 }
-GrInit3;
+GrInit4;
 
-I64 PopUpSpriteBitMap(CColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
+I64 PopUpSpriteBitMap(CColorROPU32 color,I64 width)
 {
   I64 i;
   U8 *st1,*st2,buf[136];
@@ -53,35 +56,36 @@ I64 PopUpSpriteBitMap(CColorROPU32 color,I64 width,I64 snap,F64 ip_scaler)
   }
 
   DocPrint(doc,"$PURPLE$$TX+CX,\"Sprite BitMap Menu\"$\n"
-	"$LK+PU+CX,\"Click for Help\",\"FI:::/Doc/SpriteBitMap.TXT.Z\"$\n"
-	"\n$LTBLUE$$MU-UL,\"Color        %s\",GEBM_COLOR$\n"
-	"$MU-UL,\"Dither Color %s\",GEBM_DITHER_COLOR$\n"
-	"$MU-UL,\"Width        %d\",GEBM_WIDTH$\n"
-	"$MU-UL,\"Snap %d %5.3f\",GEBM_SNAP$\n"
-	"$MU-UL,\"Find & Replace Color\",GEBM_FIND_AND_REPLACE$\n"
-	"$MU-UL,\"Trim to Extents\",GEBM_TRIM_TO_EXTENTS$\n"
-	"$MU-UL,\"Add Outline\",GEBM_ADD_OUTLINE$\n"
-	"$MU-UL,\"Etch\",GEBM_ETCH$\n"
-	"\n$MU-UL,\"Point\",GEBM_PT$\n"
-	"$MU-UL,\"Line\",GEBM_LINE$\n"
-	"$MU-UL,\"Arrow\",GEBM_ARROW$\n"
-	"$MU-UL,\"Rect\",GEBM_RECT$\n"
-	"$MU-UL,\"Circle\",GEBM_CIRCLE$\n"
-	"$MU-UL,\"Text\",GEBM_TEXT$\n"
-	"$MU-UL,\"Text Box\",GEBM_TEXT_BOX$\n"
-	"$MU-UL,\"Text Diamond\",GEBM_TEXT_DIAMOND$\n"
-	"$MU-UL,\"Flood Fill\",GEBM_FLOOD_FILL$\n"
-	"$MU-UL,\"Flood Fill Not Color\",GEBM_FLOOD_FILL_NOT$\n"
-	"$MU-UL,\"PolyLine\",GEBM_POLYLINE$\n"
-	"$MU-UL,\"PolyPoint\",GEBM_POLYPT$\n"
-	"\n$MU-UL,\"Copy to Clipboard\",GEBM_COPY$\n"
-	"$MU-UL,\"Delete to Clipboard\",GEBM_DELETE$\n"
-	"$MU-UL,\"Paste Clipboard\",GEBM_PASTE$\n"
-	"$MU-UL,\"Paste Transparent Clipboard\",GEBM_PASTE_TRANSPARENT$\n"
-	"\n$MU-UL,\"Undo\",GEBM_UNDO$\n"
-	"\n$PURPLE$$MU-UL,\"+] Sprite Main Menu\",GEBM_MAIN_MENU$$LTBLUE$\n"
-	"$MU-UL,\"Exit  Sprite\",GEBM_EXIT$\n"
-	"$MU-UL,\"Abort Sprite\",DOCM_CANCEL$\n",st1,st2,width,snap,ip_scaler);
+	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/SpriteBitMap.TXT.Z\"$\n"
+	"\n$LTBLUE$$MU-UL,\"Color        %s\",LE=GEBM_COLOR$\n"
+	"$MU-UL,\"Dither Color %s\",LE=GEBM_DITHER_COLOR$\n"
+	"$MU-UL,\"Width        %d\",LE=GEBM_WIDTH$\n"
+	"$MU-UL,\"Find & Replace Color\",LE=GEBM_FIND_AND_REPLACE$\n"
+	"$MU-UL,\"Trim to Extents\",LE=GEBM_TRIM_TO_EXTENTS$\n"
+	"$MU-UL,\"Add Outline\",LE=GEBM_ADD_OUTLINE$\n"
+	"$MU-UL,\"Etch\",LE=GEBM_ETCH$\n"
+	"\n$MU-UL,\"Point\",LE=GEBM_PT$\n"
+	"$MU-UL,\"Line\",LE=GEBM_LINE$\n"
+	"$MU-UL,\"Arrow\",LE=GEBM_ARROW$\n"
+	"$MU-UL,\"Rect\",LE=GEBM_RECT$\n"
+	"$MU-UL,\"Circle\",LE=GEBM_CIRCLE$\n"
+	"$MU-UL,\"Text\",LE=GEBM_TEXT$\n"
+	"$MU-UL,\"Text Box\",LE=GEBM_TEXT_BOX$\n"
+	"$MU-UL,\"Text Diamond\",LE=GEBM_TEXT_DIAMOND$\n"
+	"$MU-UL,\"Flood Fill\",LE=GEBM_FLOOD_FILL$\n"
+	"$MU-UL,\"Flood Fill Not Color\",LE=GEBM_FLOOD_FILL_NOT$\n"
+	"$MU-UL,\"PolyLine\",LE=GEBM_POLYLINE$\n"
+	"$MU-UL,\"PolyPoint\",LE=GEBM_POLYPT$\n"
+	"\n$MU-UL,\"Copy to Clipboard\",LE=GEBM_COPY$\n"
+	"$MU-UL,\"Delete to Clipboard\",LE=GEBM_DELETE$\n"
+	"$MU-UL,\"Paste Clipboard\",LE=GEBM_PASTE$\n"
+	"$MU-UL,\"Paste Transparent Clipboard\",LE=GEBM_PASTE_TRANSPARENT$\n"
+	"\n$MU-UL,\"Save BMP File\",LE=GEBM_SAVE_BMP$\n"
+	"$MU-UL,\"Save GRA File\",LE=GEBM_SAVE_GRA$\n"
+	"\n$MU-UL,\"Undo\",LE=GEBM_UNDO$\n"
+	"\n$PURPLE$$MU-UL,\"+] Sprite Main Menu\",LE=GEBM_MAIN_MENU$$LTBLUE$\n"
+	"$MU-UL,\"Exit  Sprite\",LE=GEBM_EXIT$\n"
+	"$MU-UL,\"Abort Sprite\",LE=DOCM_CANCEL$\n",st1,st2,width);
   DocPrint(doc,"\nRight-Click to get back to this menu.");
   i=PopUpMenu(doc);
   DocDel(doc);
@@ -194,21 +198,17 @@ U0 GrBMEEtch(CDC *img,I64 width,CColorROPU32 bkcolor)
   }
 }
 
-I64 SpriteBitMap(CDoc *,CDocEntry *doc_e,CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,CDC **_img,CColorROPU32 bkcolor,I64 *_ip_snap,F64 *_ip_scaler)
+I64 SpriteBitMap(CDoc *,CDocEntry *doc_e,CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I64 *_yy2,CDC **_img,CColorROPU32 bkcolor)
 {
-  I64 i,j,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,ip_snap=1,
+  I64 i,j,mode=GEBM_LINE,color=BLACK,width=1,msg_code,p1,p2,x1,y1,x11,y11,x22,y22,
 	result,xx1=*_xx1,yy1=*_yy1,xx2=*_xx2,yy2=*_yy2,
 	old_e_flags1=doc_e->flags1;
   Bool down=FALSE;
-  F64 ip_scaler=1.0;
   U8 *st=NULL;
+  CEdFileName filename;
   CDC *img=*_img,
 	*clipboard=NULL,*undo=NULL,*dc2;
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
-
-  if (_ip_snap) ip_snap=*_ip_snap;
-  if (_ip_scaler) ip_scaler=*_ip_scaler;
-  SetSnap(&Fs->snap,ip_snap,ip_scaler);
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
 
   doc_e->flags1|=DOCEF1_DONT_DRAW;
   goto bm_menu;
@@ -238,7 +238,7 @@ I64 SpriteBitMap(CDoc *,CDocEntry *doc_e,CDC *dc,I64 *_xx1,I64 *_yy1,I64 *_xx2,I
 bm_menu:
 	  DCFill(dc);
 	  StrCpy(Fs->task_title,"Sprite BitMap Menu");
-	  i=PopUpSpriteBitMap(color,width,ip_snap,ip_scaler);
+	  i=PopUpSpriteBitMap(color,width);
 	  if (i>=0)
 	    StrCpy(Fs->task_title,DefineSub(i,"ST_SPRITE_BITMAP_MENU"));
 	  switch (i) {
@@ -289,6 +289,18 @@ bm_menu:
 	      }
 	      goto bm_menu;
 
+	    case GEBM_SAVE_BMP:
+	      *filename.name=0;
+	      if (DocFormDo(&filename) && *filename.name)
+		BMPFileWrite(filename.name,img);
+	      goto bm_menu;
+
+	    case GEBM_SAVE_GRA:
+	      *filename.name=0;
+	      if (DocFormDo(&filename) && *filename.name)
+		GRAWrite(filename.name,img);
+	      goto bm_menu;
+
 	    case GEBM_DITHER_COLOR:
 	      i=PopUpColorDither;
 	      if (i>=0) color=i;
@@ -297,12 +309,6 @@ bm_menu:
 	    case GEBM_WIDTH:
 	      i=PopUpRangeI64(1,16,1,"Pen Width\n");
 	      if (i>=0) width=i;
-	      goto bm_menu;
-
-	    case GEBM_SNAP:
-	      PopUpSnap(&Fs->snap);
-	      ip_snap=Fs->snap.x;
-	      ip_scaler=Fs->snap.dx;
 	      goto bm_menu;
 
 	    case GEBM_UNDO:
@@ -673,8 +679,6 @@ bm_done:
   DCFill(dc);
   SettingsPop;
   doc_e->flags1=old_e_flags1;
-  if (_ip_snap)   *_ip_snap=ip_snap;
-  if (_ip_scaler) *_ip_scaler=ip_scaler;
   *_img=img;
   *_xx1=xx1,*_yy1=yy1,*_xx2=xx2,*_yy2=yy2;
   return result;

@@ -17,7 +17,7 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i;
   F64 x,y,dt=Beat-t0;
-  SpritePlot3(dc,X,Y,0,__BIN_1);
+  Sprite3(dc,X,Y,0,__BIN_1);
   if (Beat-t0<24) {
     if (Rand<0.7) {
       dc->color=YELLOW;
@@ -53,7 +53,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 U0 Song()
 {
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+LTGRAY;
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;

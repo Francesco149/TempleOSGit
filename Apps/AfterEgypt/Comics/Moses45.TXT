@@ -15,6 +15,6 @@
  <1> (image)
 
 
-[C:/TempleOS/Misc/Bible.TXT.Z,12005] Numbers,21:8
+[C:/Misc/Bible.TXT.Z,12005] Numbers,21:8
 
 

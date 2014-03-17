@@ -1,10 +1,24 @@
 ----12/12/13 00:21:21----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/p7o9ljdH4cI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/p7o9ljdH4cI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Nigger is fucking with me.  1971 is an IRA year.  Radio talked of 
 Pakastan/Banglidesh 1971.  Fucking with me.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Okmkn30D0NU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Okmkn30D0NU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 POW fucking with me.
 
@@ -182,7 +196,14 @@ Then, Joseph had revenge, LOL.
 
 I thought I'd praise God for something.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/H8lF3f4RvGo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/H8lF3f4RvGo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 It's amazing, God, that You managed to work-in geysers along with everything 
 else on Earth.  Ice, too.  Snow.
@@ -220,7 +241,14 @@ LOL
 
 ----12/12/13 02:14:52----
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/IE-YBaYjbqY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/IE-YBaYjbqY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 
 Lots of cameras, LOL.  That's good.
@@ -330,7 +358,14 @@ James, and Joses, and Simon, and Judas?  13:56 And his sisters, are
 
 Burt Reynolds?  Smokey and the Bandit.  Every which way but loose?
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/kwslHICR7K4"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/kwslHICR7K4"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I like that orangutang, God.
 
@@ -383,7 +418,14 @@ guile?
 There's something just wrong with adults still liking monkeys.  Kids like 
 them.  Anyway, I like this.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/IFACrIx5SZ0"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/IFACrIx5SZ0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I saw a fierce video of chimps hunting.  Not angels!
 
@@ -775,15 +817,13 @@ timing for ATA/ATAPI PIO, so the bandwidth isn't as bad.
 operating systems.
 
 * Windows and Linux should support TempleOS .GRA graphics files.  These are 
-just right-side-up .BMP files with 8-bit pixels 4-bits of color and 
+just right-side-up .BMP files with 8-bit pixs 4-bits of color and 
 transparency, with no palette.  Compression comes from the
 [C:/Doc/RedSea.TXT.Z,1] RedSea .Z LZW 
-compression.  (Let me know when you want it.) 
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,154] DCSave(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,234] GRAWrite(),
-[C:/TempleOS/Adam/Gr/GrDC.CPP.Z,197] DCLoad(), 
-and [C:/TempleOS/Adam/Gr/GrDC.CPP.Z,245] GRARead(). 
-[C:/Kernel/Compress.CPP.Z,1]
+compression.  (Let me know when you want it.)  [C:/Adam/Gr/GrDC.CPP.Z,284]
+DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,354] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,323]
+DCLoad(), 
+and [C:/Adam/Gr/GrDC.CPP.Z,365] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
 
 
 
@@ -892,9 +932,9 @@ persecuted fire preserve went Presence bestowedst travail disclose merrily
 irrevocable unexpected
 
 My polygon fill is for a polygon that lies in one plane.  I just fill 
-triangles by drawing from one vertex to each of the others.  [MN:GrFillTri0]
-GrFillTri0() 
-[C:/TempleOS/Adam/Gr/GrPrimatives.CPP.Z,1351] GrFillPoly3()
+triangles by drawing from one vertex to each of the others. 
+[C:/Adam/Gr/GrPrimatives.CPP.Z,1131] GrFillTri0() 
+[C:/Adam/Gr/GrPrimatives.CPP.Z,1451] GrFillPoly3()
 
 ----12/12/13 07:39:07----
 
@@ -910,7 +950,10 @@ said 640x480 was good for kids, like 8 crayolas.
 Do this as an exercise, draw a 16 color elephant and draw a 24-bit color 
 elephant.
 
-
+```
+<img src="http://www.templeos.org/Wb/Accts/TS/Wb2/Elephant02.BMP" width="640"
+height="472" alt="">
+```
 
 Everybody will sing NEW songs to God.
 
@@ -1274,7 +1317,14 @@ God's coming back and will make everything right.
 
 Scheming Jews and the CIA and Brits.  Say hello to God!!
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ln8-Y-fIbqM"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ln8-Y-fIbqM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1309,7 +1359,14 @@ a naughty tongue.
 These guys have diseased minds, but saying things are bullshit is healthy, 
 maybe.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/E8vmaj75xzE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/E8vmaj75xzE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 National Institute of Standards Public Randomness Beacon
 
@@ -1375,7 +1432,14 @@ in heart: and ye shall find rest unto your souls.
 
 Four things.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ON_otYt9MW0"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ON_otYt9MW0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 The Mom elephant taking-over the tub cracks me up.  She has a hurt foot :-(
 One video showed the Mom kicking-out the baby and overturning the tub, LOL.
@@ -1724,7 +1788,14 @@ Ammon, saith the LORD.
 Someone suggested A.I. searched the net and found the site on Magic Gathering 
 and fed it into the Time Phone number.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/t6XldR7pCFI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/t6XldR7pCFI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 The world is perfectly just.  No more, no less.
 
@@ -1893,8 +1964,8 @@ I simply made symbolic debugging.  With a single address map, it's trivial.
 Fuck you.
 
 
-I made [C:/TempleOS/Adam/Profiler.CPP.Z,82] ProfAll()
-[C:/TempleOS/Adam/Profiler.CPP.Z,109] ProfRep().
+I made [C:/Adam/Utils/Profiler.CPP.Z,82] ProfAll()
+[C:/Adam/Utils/Profiler.CPP.Z,109] ProfRep().
 
 Fuck you.
 
@@ -1930,88 +2001,91 @@ I did an eagle diving for fish flight simulator.
 
 
 
-
+```
+<iframe width="640" height="520"
+src="http://www.youtube.com/embed/FxEq6IM43sA" frameborder="0"
+allowfullscreen></iframe>
+```
 
                       Flight Sim / First Person Shooter
-[C:/Demo/Games/EagleDive.CPP,1]
-[C:/Demo/Games/CastleFrankenstein.CPP,1]
+[C:/Demo/Games/EagleDive.CPP.Z,1]
+[C:/Demo/Games/CastleFrankenstein.CPP.Z,1]
 
 ----12/12/13 12:31:33----
 
 
 I just profiled my flight simulator.
 
-  0.50% 0000003B:[D:/Kernel/Adam1b.HPP,114] &MemSet+0x0012
+  0.50% 0000003B:[C:/Kernel/Adam1b.HPP.Z,114] &MemSet+0x0012
   0.50% 0000003B:&MemSet
-  0.61% 00000049:[D:/Kernel/Mem1b.CPP,376] &MAlloc+0x014B
+  0.61% 00000049:[C:/Kernel/Mem1b.CPP.Z,376] &MAlloc+0x014B
   0.70% 00000053:&MAlloc
-  0.79% 0000005E:[D:/Kernel/Scheduler.CPP,251] SYS_IDLE_PT+0x0000
   0.79% 0000005E:SYS_IDLE_PT
-  0.82% 00000061:[D:/Kernel/Misc1a.CPP,129] &tT+0x001D
-  0.82% 00000061:&tT
-  0.64% 0000004C:[D:/Demo/Games/EagleDive.CPP,557] &MPDrawIt+0x03A9
+  0.82% 00000061:[C:/Kernel/Misc1a.CPP.Z,129] &tS+0x001D
+  0.82% 00000061:&tS
+  0.64% 0000004C:[C:/Demo/Games/EagleDive.CPP.Z,557] &MPDrawIt+0x03A9
   0.41% 00000031:&MPDrawIt+0x03C4
-  0.52% 0000003E:[D:/Demo/Games/EagleDive.CPP,558] &MPDrawIt+0x03D6
-  0.57% 00000044:[D:/Demo/Games/EagleDive.CPP,559] &MPDrawIt+0x03E6
+  0.52% 0000003E:[C:/Demo/Games/EagleDive.CPP.Z,558] &MPDrawIt+0x03D6
+  0.57% 00000044:[C:/Demo/Games/EagleDive.CPP.Z,559] &MPDrawIt+0x03E6
   0.39% 0000002F:&MPDrawIt+0x0403
-  0.37% 0000002C:[D:/Demo/Games/EagleDive.CPP,560] &MPDrawIt+0x0420
+  0.37% 0000002C:[C:/Demo/Games/EagleDive.CPP.Z,560] &MPDrawIt+0x0420
   0.51% 0000003D:&MPDrawIt+0x0432
  10.58% 000004DF:&MPDrawIt+0x043C
   0.22% 0000001B:&MPDrawIt+0x043F
  11.09% 0000051A:&MPDrawIt+0x044F
  12.66% 000005D3:&MPDrawIt+0x0454
-  0.26% 0000001F:[D:/Demo/Games/EagleDive.CPP,561] &MPDrawIt+0x045D
+  0.26% 0000001F:[C:/Demo/Games/EagleDive.CPP.Z,561] &MPDrawIt+0x045D
   0.22% 0000001A:&MPDrawIt+0x0467
   1.29% 00000099:&MPDrawIt+0x0474
-  0.56% 00000042:[D:/Demo/Games/EagleDive.CPP,568] &MPDrawIt+0x04AA
-  0.50% 0000003B:[D:/Demo/Games/EagleDive.CPP,570] &MPDrawIt+0x04B6
+  0.56% 00000042:[C:/Demo/Games/EagleDive.CPP.Z,568] &MPDrawIt+0x04AA
+  0.50% 0000003B:[C:/Demo/Games/EagleDive.CPP.Z,570] &MPDrawIt+0x04B6
  42.40% 00001382:&MPDrawIt
   0.84% 00000063:&InitMap
-  0.23% 0000001C:[D:/Demo/Games/EagleDive.CPP,170] &CalcNormals+0x00E3
+  0.23% 0000001C:[C:/Demo/Games/EagleDive.CPP.Z,170] &CalcNormals+0x00E3
   0.36% 0000002B:&CalcNormals
-  0.54% 00000040:[D:/Demo/Games/EagleDive.CPP,121] &FSTransform+0x0052
-  0.42% 00000032:[D:/Demo/Games/EagleDive.CPP,123] &FSTransform+0x0064
+  0.54% 00000040:[C:/Demo/Games/EagleDive.CPP.Z,121] &FSTransform+0x0052
+  0.42% 00000032:[C:/Demo/Games/EagleDive.CPP.Z,123] &FSTransform+0x0064
   1.25% 00000094:&FSTransform
- 13.89% 00000664:[D:/Adam/Win2b.CPP,31] &WinMgrSync+0x00FD
+ 13.89% 00000664:[C:/Adam/Win2b.CPP.Z,31] &WinMgrSync+0x00FD
  13.95% 0000066B:&WinMgrSync
-  0.54% 00000040:[D:/Adam/Gr/GrPrimatives.CPP,1486] &GrFillPoly3+0x0248
+  0.54% 00000040:[C:/Adam/Gr/GrPrimatives.CPP.Z,1486] &GrFillPoly3+0x0248
   0.81% 00000060:&GrFillPoly3
   2.66% 0000013A:&GrFillTri0
-  0.21% 00000019:[D:/Adam/Gr/GrPrimatives.CPP,884] &GrBlot3+0x081F
-  0.24% 0000001D:[D:/Adam/Gr/GrPrimatives.CPP,897] &GrBlot3+0x08BA
+  0.21% 00000019:[C:/Adam/Gr/GrPrimatives.CPP.Z,884] &GrBlot3+0x081F
+  0.24% 0000001D:[C:/Adam/Gr/GrPrimatives.CPP.Z,897] &GrBlot3+0x08BA
   2.34% 00000114:&GrBlot3
   0.45% 00000035:&GrPeek
   0.16% 00000014:&GrPlot1
-  1.31% 0000009B:[D:/Adam/Gr/GrBitMap.CPP,1657] &GrHLine+0x02C9
-  0.22% 0000001A:[D:/Adam/Gr/GrBitMap.CPP,1706] &GrHLine+0x045C
+  1.31% 0000009B:[C:/Adam/Gr/GrBitMap.CPP.Z,1657] &GrHLine+0x02C9
+  0.22% 0000001A:[C:/Adam/Gr/GrBitMap.CPP.Z,1706] &GrHLine+0x045C
   0.24% 0000001D:&GrHLine+0x0460
-  0.23% 0000001C:[D:/Adam/Gr/GrBitMap.CPP,1707] &GrHLine+0x046A
-  0.24% 0000001D:[D:/Adam/Gr/GrBitMap.CPP,1708] &GrHLine+0x0473
-  0.25% 0000001E:[D:/Adam/Gr/GrBitMap.CPP,1710] &GrHLine+0x047C
+  0.23% 0000001C:[C:/Adam/Gr/GrBitMap.CPP.Z,1707] &GrHLine+0x046A
+  0.24% 0000001D:[C:/Adam/Gr/GrBitMap.CPP.Z,1708] &GrHLine+0x0473
+  0.25% 0000001E:[C:/Adam/Gr/GrBitMap.CPP.Z,1710] &GrHLine+0x047C
   0.26% 0000001F:&GrHLine+0x0481
   1.00% 00000076:&GrHLine+0x0487
-  0.23% 0000001C:[D:/Adam/Gr/GrBitMap.CPP,1710] &GrHLine+0x048C
-  0.19% 00000017:[D:/Adam/Gr/GrBitMap.CPP,1711] &GrHLine+0x0493
-  0.28% 00000022:[D:/Adam/Gr/GrBitMap.CPP,1714] &GrHLine+0x0499
-  0.29% 00000023:[D:/Adam/Gr/GrBitMap.CPP,1716] &GrHLine+0x04A2
-  0.28% 00000021:[D:/Adam/Gr/GrBitMap.CPP,1719] &GrHLine+0x04C7
-  0.17% 00000015:[D:/Adam/Gr/GrBitMap.CPP,1719] &GrHLine+0x04D0
+  0.23% 0000001C:[C:/Adam/Gr/GrBitMap.CPP.Z,1710] &GrHLine+0x048C
+  0.19% 00000017:[C:/Adam/Gr/GrBitMap.CPP.Z,1711] &GrHLine+0x0493
+  0.28% 00000022:[C:/Adam/Gr/GrBitMap.CPP.Z,1714] &GrHLine+0x0499
+  0.29% 00000023:[C:/Adam/Gr/GrBitMap.CPP.Z,1716] &GrHLine+0x04A2
+  0.28% 00000021:[C:/Adam/Gr/GrBitMap.CPP.Z,1719] &GrHLine+0x04C7
+  0.17% 00000015:[C:/Adam/Gr/GrBitMap.CPP.Z,1719] &GrHLine+0x04D0
   0.17% 00000015:&GrHLine+0x04D7
-  0.58% 00000045:[D:/Adam/Gr/GrBitMap.CPP,1722] &GrHLine+0x04D9
-  0.25% 0000001E:[D:/Adam/Gr/GrBitMap.CPP,1734] &GrHLine+0x0519
-  0.20% 00000018:[D:/Adam/Gr/GrBitMap.CPP,1743] &GrHLine+0x0564
-  0.45% 00000035:[D:/Adam/Gr/GrBitMap.CPP,1747] &GrHLine+0x056B
-  0.16% 00000014:[D:/Adam/Gr/GrBitMap.CPP,1748] &GrHLine+0x0574
-  0.36% 0000002B:[D:/Adam/Gr/GrBitMap.CPP,1749] &GrHLine+0x057C
+  0.58% 00000045:[C:/Adam/Gr/GrBitMap.CPP.Z,1722] &GrHLine+0x04D9
+  0.25% 0000001E:[C:/Adam/Gr/GrBitMap.CPP.Z,1734] &GrHLine+0x0519
+  0.20% 00000018:[C:/Adam/Gr/GrBitMap.CPP.Z,1743] &GrHLine+0x0564
+  0.45% 00000035:[C:/Adam/Gr/GrBitMap.CPP.Z,1747] &GrHLine+0x056B
+  0.16% 00000014:[C:/Adam/Gr/GrBitMap.CPP.Z,1748] &GrHLine+0x0574
+  0.36% 0000002B:[C:/Adam/Gr/GrBitMap.CPP.Z,1749] &GrHLine+0x057C
   0.31% 00000025:&GrHLine+0x0580
   0.21% 00000019:&GrHLine+0x058C
  12.56% 000005C8:&GrHLine
   0.17% 00000015:&GrPeek0
-  0.81% 00000060:[D:/Adam/Gr/GrAsm.CPP,771] &GrUpdateLine32+0x0027
-  0.17% 00000015:[D:/Adam/Gr/GrAsm.CPP,771] &GrUpdateLine32+0x002E
- 10.08% 000004A4:[D:/Adam/Gr/GrAsm.CPP,771] &GrUpdateLine32+0x0040
+  0.81% 00000060:[C:/Adam/Gr/GrAsm.CPP.Z,771] &GrUpdateLine32+0x0027
+  0.17% 00000015:[C:/Adam/Gr/GrAsm.CPP.Z,771] &GrUpdateLine32+0x002E
+ 10.08% 000004A4:[C:/Adam/Gr/GrAsm.CPP.Z,771] &GrUpdateLine32+0x0040
  11.52% 0000054D:&GrUpdateLine32
-  1.14% 00000087:[D:/Adam/Gr/GrAsm.CPP,773] &GrUpdateLine32FlushCache+0x003C
+  1.14% 00000087:[C:/Adam/Gr/GrAsm.CPP.Z,773] &GrUpdateLine32FlushCache+0x003C
   1.20% 0000008E:&GrUpdateLine32FlushCache
   0.19% 00000017:&DCBlotColor4
   0.47% 00000038:&GrRot
@@ -2059,7 +2133,7 @@ manna and awesome fireworks.
 
 I have food and I have the delightful company of God.
 
-Mom said Hell is the absense of God.  Heaven is just God's company, like a 
+Mom said Hell is the absence of God.  Heaven is just God's company, like a 
 nice old gentleman.
 
 National Institute of Standards Public Randomness Beacon
@@ -2191,7 +2265,7 @@ code limit.  You cannot fuck it up!  You will want some features and that
 will 
 make you cut corners on unimportant shit, just like I want.
 
-[MN:SPrintJoin] SPrintJoin
+[C:/Kernel/StrPrint.CPP.Z,247] SPrintJoin
 
 I am not doing any PCI devices.
 
@@ -2232,7 +2306,14 @@ shall lie down, and none shall make them afraid.
 Damascus, and the remnant of Syria: they shall be as the glory of the
 children of Israel, saith the LORD of hosts.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/f_gBWPs4r3U"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/f_gBWPs4r3U"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 I asked God what makes elephants happy? "Baths"
 
@@ -2422,7 +2503,14 @@ I don't know if this is good gay or liberal or deviant.
 
 I like it.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/3qVPNONdF58"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/3qVPNONdF58"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Brenda in the other room:
 "my wrist hurts"
@@ -2486,7 +2574,14 @@ I prefer this moral compass, "Does this glorify God?
 
 God's favorite saint is Santa.
 
-
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/sVVorvXojhE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/sVVorvXojhE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 God says...
 National Institute of Standards Public Randomness Beacon
@@ -2920,7 +3015,7 @@ FFFFFFF8 Stk Size
             &Main+0x000E 56           PUSH	U64 RSI
             &Main+0x000F 6A01         PUSH	I8 01
             &Main+0x0011 68DA0AD97F   PUSH	I32 7FD90ADA
-            &Main+0x0016 E8D7442880   CALL	I32 [AD:0x14FAA] &Print+0x0000 
+            &Main+0x0016 E8D7442880   CALL	I32 &Print+0x0000
             &Main+0x001B 4883C418     ADD	U64 RSP,I8 18
             &Main+0x001F 5E           POP	U64 RSI
             &Main+0x0020 C9           LEAVE
@@ -2957,7 +3052,7 @@ FFFFFFF8 Stk Size
              &Cnt+0x0018 56           PUSH	U64 RSI
              &Cnt+0x0019 6A01         PUSH	I8 01
              &Cnt+0x001B 682C07D97F   PUSH	I32 7FD9072C
-             &Cnt+0x0020 E88D482880   CALL	I32 [AD:0x14FAA] &Print+0x0000 
+             &Cnt+0x0020 E88D482880   CALL	I32 &Print
              &Cnt+0x0025 4883C418     ADD	U64 RSP,I8 18
              &Cnt+0x0029 48FFC6       INC	U64 RSI
              &Cnt+0x002C EBE5         JMP	I8 &Cnt+0x0013

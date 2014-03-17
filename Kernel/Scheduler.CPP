@@ -1,50 +1,42 @@
 /*
-See [C:/Doc/MultiTasking.TXT,1] TempleOS MultiTasking.
+See [C:/Doc/MultiTasking.TXT.Z,1] TempleOS MultiTasking.
 
-Tasks are ordered in a queue based
-on window front-to-back order with the
-window mgr as the head, which
-paints the wallpaper.  The scheduler
-goes in a circle, checking if a task is
-ready and swapping-it-in if so.
-Swapping just involves storing and
-restoring regs -- no disk I/O for
-virtual memory and no addr map
-changes.  Tasks can be switched in half
-a microsecond.
+Tasks are ordered in a circular queue
+by front-to-back window stack order with
+the window mgr as the head (paints
+the wallpaper).  The scheduler is
+round-robin.  It checking if a task
+is ready and runs it or skips it.
+Swapping tasks just involves storing and
+restoring regs (no disk I/O for virtual
+memory and no addr map changes).  It is
+always fully identity-mapped on all cores.
+Tasks can be switched in half a microsecond.
 
 The scheduler checks if a task is
 waiting for a certain time or waiting
-on a message and skips it if it's not
-ready.  A task runs until it
-voluntarily yields ctrl with a call
-to [C:/TempleOS/Kernel/Scheduler.CPP.Z,369] Yield or gets preempted by the
-timer interrupt.  See [C:/TempleOS/Kernel/Interrupts.CPP.Z,15] SYS_TIMER_HANDLER.
-The timer freqency is [C:/TempleOS/Kernel/Adam1a.HPP.Z,612] JIFFY_FREQ.  Tasks
-can ask not to be preempted with
-[C:/TempleOS/Kernel/Adam1b.HPP.Z,94] Preempt(ON/OFF).  Tasks waiting on I/O
-often loop, checking for a stat and
-swapping-out.  This does not really
-degrade performance, though it pegs the
-CPU Load.
+on a message and skips if not ready.
+A task runs until it voluntarily yields
+ctrl with a call to [C:/Kernel/Scheduler.CPP.Z,345] Yield() or gets
+preempted by the fixed 1kHz [C:/Kernel/Adam1a.HPP.Z,530] JIFFY_FREQ
+timer interrupt. See [C:/Kernel/Interrupts.CPP.Z,15] SYS_TIMER_HANDLER.
+Tasks can ask not to be preempted with
+[C:/Kernel/Adam1b.HPP.Z,94] Preempt(ON/OFF).	Tasks waiting on I/O
+often loop, checking for a status and
+[C:/Kernel/Scheduler.CPP.Z,345] Yielding.  This does not really degrade
+performance, but pegs the CPU Load.
 
 The scheduler checks for a few critical
 key-strokes such as <CTRL-ALT-X>, which
 kills a task; <CTRL-ALT-DEL>, which reboots;
-<CTRL-ALT-T>, which changes focus and <CTRL-ALT-C>,
-which breaks execution of a program.
+<CTRL-ALT-T>, which changes focus and
+<CTRL-ALT-C>, which breaks execution
+of a program.
 
-Each core has it's own circular task
-que.  For AP processors, they have a
-"Seth" task which stays in a loop
-waiting for jobs or requests to spawn
-tasks.  See [C:/TempleOS/Kernel/MultiProc.CPP.Z,276] MPSethServerTask().
-
-All cores have an idle task.  If the
-scheduler determined an IRQ opportunity
-hasn't happened, the scheduler swaps in
-the idle task(enabling IRQs).
-
+Each core has its own circular task queue.
+For AP processors, they have a "Seth" task
+which stays in a loop waiting for jobs or
+requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,220] MPSethServerTask().
 */
 
 asm {
@@ -99,9 +91,7 @@ It's a little faster.
 	MOV	U8 [RDI],AL
 	MOV	RDX,U64 CBpt.next[RDX]
 	JMP	@@05
-@@10:	LOCK
-	BTR	U64 CTask.task_flags[RSI],TASKf_CURRENTLY_RUNNING
-	RET
+@@10:	RET
 // ************************************
 _TASK_CONTEXT_RESTORE::
 	XOR	RAX,RAX
@@ -109,11 +99,8 @@ _TASK_CONTEXT_RESTORE::
 	MOV	RSI,FS:CTask.addr[RAX]
 	BT	U32 CTask.rflags[RSI],RFLAGf_INT
 	JNC	@@05
-	LOCK	//We will be enabling IRQ's
-	BTS	U32 GS:CCPU.cpu_flags[RAX],CPUf_HAD_IRQ_OPPORTUNITY
-@@05:	LOCK
-	BTS	U64 CTask.task_flags[RSI],TASKf_CURRENTLY_RUNNING
-	BT	U64 CTask.task_flags[RSI],TASKf_DISABLE_BPTS
+	BTS	U32 GS:CCPU.cpu_flags[RAX],CPUf_RAN_A_TASK
+@@05:	BT	U64 CTask.task_flags[RSI],TASKf_DISABLE_BPTS
 	JC	@@15
 	MOV	RDX,U64 CTask.bpt_lst[RSI]
 @@10:	TEST	RDX,RDX
@@ -151,10 +138,10 @@ _TASK_CONTEXT_RESTORE::
 	MOV	RSP,RAX
 
 	MOV	RAX,U64 CTask.rax[RSI]
-	PUSH	GDT_ZERO_DS_SEL
+	PUSH	CGDT.ds
 	PUSH	U64 CTask.rsp[RSI]
 	PUSH	U64 CTask.rflags[RSI]
-	PUSH	GDT_CS64_SEL
+	PUSH	CGDT.cs64
 	PUSH	U64 CTask.rip[RSI]
 	MOV	RSI,U64 CTask.rsi[RSI]
 	IRET
@@ -174,10 +161,7 @@ RESTORE_RSI_NO_PREEMPT_TASK:
 	XOR	RAX,RAX
 	CMP	U64 GS:CCPU.idle_task[RAX],RSI	//IDLE TASK HAS PREEMPT-OFF
 	JNE	RESTORE_RSI_TASK_NO_KEY_CHECK
-	JMP	I32 SWAP_IN_SETH_TASK
-
-_RET::
-	RET
+	JMP	I32 SWAP_IN_SETH_TASK_IF_READY
 
 _YIELD::
 	PUSHFD
@@ -229,7 +213,7 @@ RESTORE_RSI_TASK_NO_KEY_CHECK:
 	JG	@@25	//Jmp if not ready, yet.
 
 	CMP	U32 CTask.task_in_que_signature[RSI],TASK_IN_QUE_SIGNATURE_VAL
-	JNE	SWAP_IN_SETH_TASK
+	JNE	SWAP_IN_SETH_TASK_IF_READY
 	MOV	RAX,RSI
 	CALL	SET_FS_BASE
 	JMP	I32 _TASK_CONTEXT_RESTORE
@@ -238,8 +222,7 @@ RESTORE_RSI_TASK_NO_KEY_CHECK:
 	XOR	RAX,RAX
 	CMP	U64 GS:CCPU.seth_task[RAX],RSI
 	JNE	@@20	//Jmp if not Seth
-	LOCK
-	BTR	U32 GS:CCPU.cpu_flags[RAX],CPUf_HAD_IRQ_OPPORTUNITY
+	BTR	U32 GS:CCPU.cpu_flags[RAX],CPUf_RAN_A_TASK
 	JC	@@20	//Jmp if had chance for IRQ already
 	MOV	RAX,U64 GS:CCPU.idle_task[RAX]
 	MOV	RSP,U64 CTask.stk[RAX]
@@ -250,7 +233,7 @@ RESTORE_RSI_TASK_NO_KEY_CHECK:
 SYS_IDLE_PT::
 	CLI
 
-SWAP_IN_SETH_TASK:
+SWAP_IN_SETH_TASK_IF_READY:
 	XOR	RAX,RAX
 	MOV	RSI,GS:CCPU.seth_task[RAX]
 	JMP	I32 RESTORE_RSI_TASK_WITH_KEY_CHECK
@@ -288,7 +271,7 @@ HANDLE_SWAP_KEY_EVENT:
 BREAK_FOCUS_USER:
 	MOV	RSI,U64 [SYS_FOCUS_TASK]
 	TEST	RSI,RSI
-	JZ	SWAP_IN_SETH_TASK
+	JZ	SWAP_IN_SETH_TASK_IF_READY
 	BT	U64 CTask.win_inhibit[RSI],WIf_FOCUS
 	JC	I32 RESTORE_RSI_TASK_NO_KEY_CHECK
 	LOCK
@@ -317,7 +300,7 @@ END_FOCUS_USER:
 	CALL	FOCUS_RSI_NEXT_USER
 	POP	RSI
 	TEST	RSI,RSI
-	JZ	I32 SWAP_IN_SETH_TASK
+	JZ	I32 SWAP_IN_SETH_TASK_IF_READY
 	MOV	RAX,RSI
 	CALL	SET_FS_BASE
 	BT	U64 CTask.win_inhibit[RSI],WIf_FOCUS
@@ -334,7 +317,7 @@ RESTORE_FS_TASK_WITH_KEY_CHECK:
 FOCUS_RSI_NEXT_USER:
 	TEST	RSI,RSI
 	JNZ	@@20
-	MOV	ESI,U32 SYS_ADAM_TASK
+	MOV	ESI,U32 SYS_FIXED_AREA+CSysFixedArea.adam
 @@20:	MOV	RDI,RSI
 	MOV	RSI,U64 CTask.next_task[RSI]
 @@25:	BT	U64 CTask.win_inhibit[RSI],WIf_FOCUS
@@ -363,41 +346,43 @@ _extern _YIELD U0 Yield();
 _extern _TASK_END_NOW U0 TaskEndNow();
 
 U0 TaskQueIns(CTask *task,CTask *pred=NULL)
-{
+{//Insert a task in the scheduler running task queue.
+//You have no business with this, probably.
   CTask *last;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (!pred) pred=Fs;
   last=pred->last_task;
   last->next_task=pred->last_task=task;
   task->last_task=last;
   task->next_task=pred;
   task->task_in_que_signature=TASK_IN_QUE_SIGNATURE_VAL;
-  PopFD;
+  POPFD
 }
 
 U0 TaskQueRem(CTask *task)
-{
+{//Remove a task from the scheduler running task queue.
+//Use [C:/Kernel/Task1a.CPP.Z,54] Suspend().
   CTask *next,*last;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   task->task_in_que_signature=0;
   next=task->next_task;
   last=task->last_task;
   last->next_task=next;
   next->last_task=last;
-  PopFD;
+  POPFD
 }
 
 U0 TaskQueInsChild(CTask *task)
 {
   CTask *last,*pred;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   pred=task->parent_task->last_child_task;
   last=pred->last_sibling_task;
   last->next_sibling_task=pred->last_sibling_task=task;
   task->last_sibling_task=last;
   task->next_sibling_task=pred;
-  PopFD;
+  POPFD
 }

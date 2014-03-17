@@ -7,7 +7,7 @@ Cd("/Adam/Utils");;
 #include "Profiler"
 #include "Diff"
 #include "Grep"
-#include "LineCnt"
+#include "LineRep"
 #include "Merge"
 #include "S2T"
 #include "LinkChk"
@@ -17,7 +17,6 @@ Cd("/Adam/Utils");;
 #include "ToTXT"
 #include "BinRep"
 #include "FileBMP"
-Cd("/Apps");;
 
 MapFileLoad("::/Kernel/Kernel");
 MapFileLoad("::/Compiler/Compiler");

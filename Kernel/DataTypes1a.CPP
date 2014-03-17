@@ -173,67 +173,67 @@ U0 FifoU8Del(CFifoU8 *f)
 Bool FifoU8Ins(CFifoU8 *f,U8 b)
 {
   I64 new_in_ptr;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   new_in_ptr=(f->in_ptr+1)&f->mask;
   if (new_in_ptr==f->out_ptr) {
-    PopFD;
+    POPFD
     return FALSE;
   } else {
     f->buf[f->in_ptr]=b;
     f->in_ptr=new_in_ptr;
-    PopFD;
+    POPFD
     return TRUE;
   }
 }
 
 Bool FifoU8Rem(CFifoU8 *f,U8 *_b)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (f->in_ptr==f->out_ptr) {
-    PopFD;
+    POPFD
     return FALSE;
   } else {
     *_b=f->buf[f->out_ptr];
     f->out_ptr=(f->out_ptr+1)&f->mask;
-    PopFD;
+    POPFD
     return TRUE;
   }
 }
 
 Bool FifoU8Peek(CFifoU8 *f,U8 *_b)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (f->in_ptr==f->out_ptr) {
-    PopFD;
+    POPFD
     return FALSE;
   } else {
     *_b=f->buf[f->out_ptr];
-    PopFD;
+    POPFD
     return TRUE;
   }
 }
 
 U0 FifoU8Flush(CFifoU8 *f)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   f->out_ptr=f->in_ptr;
-  PopFD;
+  POPFD
 }
 
 I64 FifoU8Cnt(CFifoU8 *f)
 {
   I64 result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (f->out_ptr>f->in_ptr)
     result=f->mask+1-(f->out_ptr-f->in_ptr);
   else
     result=f->in_ptr-f->out_ptr;
-  PopFD;
+  POPFD
   return result;
 }
 
@@ -258,66 +258,66 @@ U0 FifoI64Del(CFifoI64 *f)
 Bool FifoI64Ins(CFifoI64 *f,I64 q)
 {
   I64 new_in_ptr;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   new_in_ptr=(f->in_ptr+1)&f->mask;
   if (new_in_ptr==f->out_ptr) {
-    PopFD;
+    POPFD
     return FALSE;
   } else {
     f->buf[f->in_ptr]=q;
     f->in_ptr=new_in_ptr;
-    PopFD;
+    POPFD
     return TRUE;
   }
 }
 
 Bool FifoI64Rem(CFifoI64 *f,I64 *_q)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (f->in_ptr==f->out_ptr) {
-    PopFD;
+    POPFD
     return FALSE;
   } else {
     *_q=f->buf[f->out_ptr];
     f->out_ptr=(f->out_ptr+1)&f->mask;
-    PopFD;
+    POPFD
     return TRUE;
   }
 }
 
 Bool FifoI64Peek(CFifoI64 *f,I64 *_q)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (f->in_ptr==f->out_ptr) {
-    PopFD;
+    POPFD
     return FALSE;
   } else {
     *_q=f->buf[f->out_ptr];
-    PopFD;
+    POPFD
     return TRUE;
   }
 }
 
 U0 FifoI64Flush(CFifoI64 *f)
 {
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   f->out_ptr=f->in_ptr;
-  PopFD;
+  POPFD
 }
 
 I64 FifoI64Cnt(CFifoI64 *f)
 {
   I64 result;
-  PushFD;
-  Cli;
+  PUSHFD
+  CLI
   if (f->out_ptr>f->in_ptr)
     result=f->mask+1-(f->out_ptr-f->in_ptr);
   else
     result=f->in_ptr-f->out_ptr;
-  PopFD;
+  POPFD
   return result;
 }

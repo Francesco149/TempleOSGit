@@ -80,7 +80,7 @@ U0 OutLine()
     dc=DCNew(w,h);
     dc->color=LTGREEN;
     GrRect(dc,0,0,w,h);
-    SpritePlot3(dc,-minx+1,-miny+1,0,in_img[n]);
+    Sprite3(dc,-minx+1,-miny+1,0,in_img[n]);
 
     for (i=0;i<h;i++)
       for (j=0;j<w;j++)
@@ -97,7 +97,7 @@ U0 OutLine()
 
     out_img=DC2Sprite(dc);
     NewLine;
-    PutSprite(out_img);
+    Sprite(out_img);
     NewLine(4);
  
     DCDel(dc);

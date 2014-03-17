@@ -1597,7 +1597,7 @@ gr_font(U64 *)['A']=0xFF8181FF00; //Changes the cap A.
 
 It's a shame there's no reason to do character graphics.
 
-I have a pixel collision Raster-Operation.  Gosh! That's not easy.  The C64 
+I have a pix collision Raster-Operation.  Gosh! That's not easy.  The C64 
 really was genius to have sprite collision bits.  Mine isn't that simple.  
 Maybe, I should think about that.
 

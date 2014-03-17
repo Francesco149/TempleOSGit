@@ -32,13 +32,13 @@ U0 HeapLogMAlloc(U8 *addr)
     temphl->caller3=Caller(4);
     temphl->caller4=Caller(5);
     i=addr>>3 &(HEAPLOG_HASH_SIZE-1);
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     while (LBts(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0))
-      Pause;
+      PAUSE
     QueIns(temphl,heaplog_root[i].last);
     LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
-    PopFD;
+    POPFD
   }
 }
 
@@ -49,23 +49,23 @@ U0 HeapLogFree(U8 *addr)
   if (!addr) return;
   if (MHeapCtrl(addr)==heaplog_hc_watched) {
     i=addr>>3 &(HEAPLOG_HASH_SIZE-1);
-    PushFD;
-    Cli;
+    PUSHFD
+    CLI
     while (LBts(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0))
-      Pause;
+      PAUSE
     temphl=heaplog_root[i].next;
     while (temphl!=&heaplog_root[i]) {
       if (addr==temphl->addr) {
 	QueRem(temphl);
 	LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
-	PopFD;
+	POPFD
 	Free(temphl);
 	return;
       }
       temphl=temphl->next;
     }
     LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
-    PopFD;
+    POPFD
   }
 }
 
@@ -79,7 +79,7 @@ public U0 HeapLogRep()
   }
   "$WW,0$";
   while (LBts(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0))
-    Pause;
+    PAUSE
   for (i=0;i<HEAPLOG_HASH_SIZE;i++) {
     temphl=heaplog_root[i].next;
     while (temphl!=&heaplog_root[i]) {
@@ -108,10 +108,10 @@ public U0 HeapLog(Bool val=TRUE,CTask *task=NULL)
 	heaplog_hc_watched=task->data_heap;
       else
 	heaplog_hc_watched=task;
-      PushFD;
-      Cli;
+      PUSHFD
+      CLI
       while (LBts(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0))
-	Pause;
+	PAUSE
       heaplog_hc=HeapCtrlInit(,,sys_data_bp);
       ext[EXT_HEAPLOG_MALLOC]=&HeapLogMAlloc;
       ext[EXT_HEAPLOG_FREE]=&HeapLogFree;
@@ -119,7 +119,7 @@ public U0 HeapLog(Bool val=TRUE,CTask *task=NULL)
       for (i=0;i<HEAPLOG_HASH_SIZE;i++)
 	QueInit(&heaplog_root[i]);
       LBtr(&sys_semas[SYS_SEMA_HEAPLOG_LOCK],0);
-      PopFD;
+      POPFD
       LBts(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0);
     }
   } else {

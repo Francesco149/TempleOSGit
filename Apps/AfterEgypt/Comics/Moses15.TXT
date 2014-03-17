@@ -17,5 +17,5 @@ right
  <1> (image)
 
 
-[C:/TempleOS/Misc/Bible.TXT.Z,5068] Exodus,17:11
+[C:/Misc/Bible.TXT.Z,5068] Exodus,17:11
 

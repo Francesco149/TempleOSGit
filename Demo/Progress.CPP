@@ -1,7 +1,7 @@
 /*
-  [C:/TempleOS/Kernel/Adam1b.HPP.Z,43] progress1-[C:/TempleOS/Kernel/Adam1b.HPP.Z,52] progress4 are just global vars
+  [C:/Kernel/Adam1b.HPP.Z,43] progress1-[C:/Kernel/Adam1b.HPP.Z,52] progress4 are just global vars
   shown on the wallpaper. I use them in debugging a lot.
-  If you set [C:/TempleOS/Kernel/Adam1b.HPP.Z,44] progress1_max-[C:/TempleOS/Kernel/Adam1b.HPP.Z,53] progress4_max,
+  If you set [C:/Kernel/Adam1b.HPP.Z,44] progress1_max-[C:/Kernel/Adam1b.HPP.Z,53] progress4_max,
   then a bar will display.
 */
 

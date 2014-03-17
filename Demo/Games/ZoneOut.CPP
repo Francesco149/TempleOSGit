@@ -113,15 +113,15 @@ U0 ZOTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 U0 DrawIt(CTask *task,CDC *dc)
 {
   Obj *tempo;
-  I64 i,dd,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w>>1,cy=h>>1;
+  I64 i,dd,y,w=task->pix_width,h=task->pix_height,cx=w>>1,cy=h>>1;
   U8 *img;
   F64 tt,theta;
   Bool old_preempt=Preempt(OFF);
 
   theta=640*Wrap(2*us.theta)/pi;
-  SpritePlot3(dc,theta-1280,90,0,__BIN_4);
-  SpritePlot3(dc,theta     ,90,0,__BIN_4);
-  SpritePlot3(dc,theta+1280,90,0,__BIN_4);
+  Sprite3(dc,theta-1280,90,0,__BIN_4);
+  Sprite3(dc,theta	   ,90,0,__BIN_4);
+  Sprite3(dc,theta+1280,90,0,__BIN_4);
 
   DCAllocDepthBuf(dc);
   dc->transform=&ZOTransform;
@@ -142,7 +142,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	if (!them[i].hit) {
 	  them[i].hit=TRUE;
 	  if (!--num_them) {
-	    tf=tT;
+	    tf=tS;
 	    if (tf-t0<best_score)
 	      best_score=tf-t0;
 	  }
@@ -154,11 +154,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       img=__BIN_2;
     else
       img=__BIN_1;
-    SpritePlotRotY3B(dc,them[i].x,y,them[i].z,img,-them[i].theta);
+    SpriteY3B(dc,them[i].x,y,them[i].z,img,-them[i].theta);
   }
   tempo=shots.next;
   while (tempo!=&shots) {
-    SpritePlotRotY3B(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
+    SpriteY3B(dc,tempo->x,tempo->y,tempo->z,__BIN_3,-tempo->theta);
     tempo=tempo->next;
   }
   dc->flags&=~DCF_TRANSFORMATION;
@@ -176,7 +176,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=LTGREEN;
     GrLine(dc,cx-5,cy,cx+5,cy);
     GrLine(dc,cx,cy-5,cx,cy+5);
-    tt=tT;
+    tt=tS;
   }
   GrPrint(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
 }
@@ -188,7 +188,7 @@ U0 Fire()
   tempo->y=TANK_HEIGHT;
   tempo->z=us.z;
   tempo->theta=us.theta;
-  tempo->t0=tT;
+  tempo->t0=tS;
   QueIns(tempo,shots.last);
 }
 
@@ -211,7 +211,7 @@ U0 AnimateTask(I64)
     tempo=shots.next;
     while (tempo!=&shots) {
       tempo1=tempo->next;
-      if (tT-tempo->t0>1.0) {
+      if (tS-tempo->t0>1.0) {
 	QueRem(tempo);
 	Free(tempo);
       } else {
@@ -240,7 +240,7 @@ U0 Init()
     them[i].hit=FALSE;
   }
   tf=0;
-  t0=tT;
+  t0=tS;
 }
 
 U0 CleanUp()
@@ -286,7 +286,7 @@ U0 ZoneOut()
       "}"
       );
 
-  SettingsPush; //See [C:/TempleOS/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
   WinMax;
   WinBorder;

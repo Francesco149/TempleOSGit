@@ -8,9 +8,9 @@ Supply the raw dictionary filename in
 the call at the bottom of this file
 and #include this file.
 
-I ran [C:/Misc/Dollar.CPP,1] on it, first.
+I ran [C:/Misc/Dollar.CPP.Z,1] on it, first.
 
-See [C:/Doc/Acknowledgements.TXT,1].
+See [C:/Doc/Acknowledgements.TXT.Z,1].
 */
 
 I64 WSDNextCmd(U8 **_ptr)

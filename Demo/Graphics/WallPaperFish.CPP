@@ -50,7 +50,7 @@ mem even if this task is killed.
 #define TYPES_OF_CRITTERS	3
 #define FRAMES_PER_CRITTER	4
 
-U8 *imgs[TYPES_OF_CRITTERS][FRAMES_PER_CRITTER]=
+CSprite *imgs[TYPES_OF_CRITTERS][FRAMES_PER_CRITTER]=
 {{__BIN_1,__BIN_2,__BIN_3,__BIN_2},{__BIN_4,__BIN_5,__BIN_6,__BIN_5},{__BIN_7,__BIN_8,__BIN_9,__BIN_8}};
 
 #define NUM_CRITTERS	16
@@ -71,11 +71,11 @@ U0 WallPaperFish(CTask *task)
   task->text_attr=CYAN<<4+WHITE;
   dc->color=YELLOW;
   for (i=0;i<GR_HEIGHT;i+=20) {
-    j=16*Tri(tT*10,20);
+    j=16*Tri(tS*10,20);
     GrLine(dc,0,GR_HEIGHT-i-j,GR_HEIGHT-i-j,GR_HEIGHT);
   }
   for (i=0;i<NUM_CRITTERS;i++,c++) {
-    j=(tT*4+c->t_offset)%FRAMES_PER_CRITTER;
+    j=(tS*4+c->t_offset)%FRAMES_PER_CRITTER;
     x=c->x>>16%GR_WIDTH;
     if (x<0) x+=GR_WIDTH;
     y=c->y>>16%GR_HEIGHT;
@@ -85,7 +85,7 @@ U0 WallPaperFish(CTask *task)
       GrSetSymmetry(dc,x,y-1,x,y+1);
     } else
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-    SpritePlot3(dc,x,y,0,imgs[c->type][j]);
+    Sprite3(dc,x,y,0,imgs[c->type][j]);
     c->x+=c->dx;  c->y+=c->dy;
   }
   DCDel(dc);
