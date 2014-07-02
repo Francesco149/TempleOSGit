@@ -1,0 +1,55 @@
+                                Psalmody Help
+
+* The keyboard can be used as an organ by typing letter keys or clicking the 
+mouse on the keyboard diagram.  You can "record" notes by pressing the red 
+button and typing letters.  They will appear on the musical staff.  You can 
+edit and save them.
+
+* The clipboard can be used to cut and paste.
+
+* Psalmody uses [C:/Doc/HolyC.TXT.Z,1] HolyC files as it's fmt!  See 
+[C:/Apps/Psalmody/Examples/personal.CPP.Z,1].  It does not fully parse them
+when 
+loading back in, so changes made outside Psalmody can be lost.
+
+* The first line of the [C:/Doc/HolyC.TXT.Z,1] HolyC song files is a comment
+with a category 
+recognized by [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox().  The categories
+are "no nothing", "has words", "has 
+graphics", or "special".  The third character in the song comment is a digit 
+rating number, shown in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox().  You
+can set the song rating in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox() 
+by pressing 0-9.  You can press <DELETE> to delete songs.
+
+* You can take the [C:/Adam/Snd/Music.CPP.Z,98] Play() statements out of a
+song file and place them in your 
+programs.  You can also add a song to a document with <CTRL-l>, but you
+should 
+do it after pressing <CTRL-t> because the clipboard-insert in <CTRL-l> is 
+screwy.  See this <Song>
+2qG3ECB2eGG3qCeFDsBGBG2qG3ECB2eGG3qCeFDsBGBGqEeEFqEB2eG3FetCAGqFCEeEFqEB2eG3Fe
+tCAGqFC after pressing <CTRL-t>, now.
+
+* You can call [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox("HOME/Psalmody");
+to play your songs.
+
+* To create a .SND file which can be exported and played under Windows, set 
+the Bool [C:/Kernel/Adam1a.HPP.Z,3738] snd.record to TRUE, play music, and
+set it to FALSE.  Then, call 
+[C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
+<CTRL-ALT-key> to toggle this 
+system level recording feat.  See [C:/Kernel/Misc1a.CPP.Z,159] Snd().  Add
+this code to your 
+[C:/Accts/TAD/Adam3cKeyPlugIns.CPP,1] file.
+
+U0 CtrlAltR(I64)
+{
+  snd.record=!snd.record;
+}
+SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd.record");
+
+* When calling [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you can set a
+waveform.  The PC speaker is 
+[C:/Adam/Snd/MathAudio.CPP.Z,118] WF_SQUARE.  You can select reverb and
+averaging, also.
+

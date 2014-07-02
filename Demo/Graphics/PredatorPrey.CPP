@@ -1,4 +1,4 @@
-//This is a classic 2nd order nonlinear ordinary differential equation
+//Classic 2nd order nonlinear ordinary differential equation
 
 I64 mp_not_done_flags;
 
@@ -27,7 +27,7 @@ U0 Steps(State *s)
 U0 PlotTrajectory(CTask *parent)
 {
   I64 i;
-  CDC *dc=DCAlias(gr_dc,parent);
+  CDC *dc=DCAlias(,parent);
   State s;
 
   MemSet(&s,0,sizeof(State));

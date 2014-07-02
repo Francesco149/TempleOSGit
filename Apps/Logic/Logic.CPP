@@ -17,25 +17,19 @@ U16 *input1_table=NULL,
       /*  <1> (image) */
       
       
-      
       /*  <2> (image) */
-      
       
       
       /*  <3> (image) */
       
       
-      
       /*  <4> (image) */
-      
       
       
       /*  <5> (image) */
       
       
-      
       /*  <6> (image) */
-      
       
       
       /*  <7> (image) */
@@ -46,7 +40,6 @@ U16 *input1_table=NULL,
       
       
       
-      
       /*  <9> (image) */
       
       
@@ -54,7 +47,6 @@ U16 *input1_table=NULL,
       /*  <10> (image) */
       
       
-
 U8 *gate_type_lst="NULL\0OUTPUT\0INPUT\0"
      "NOT\0AND\0OR\0NAND\0NOR\0XOR\0AND3\0OR3\0NAND3\0NOR3\0";
 
@@ -84,7 +76,7 @@ I64 num_inputs_entered,num_outputs_entered;
 I64 num_selected_gates,
     selected_gates[MAX_SELECTED_GATES];
 
-U0 PmtGates()
+U0 GetGates()
 {
   I64 i;
   U8 *st;
@@ -93,12 +85,12 @@ U0 PmtGates()
   "Your choices are:\n";
   for (i=GT_FIRST_REAL_GATE;i<GT_NUM_ENTRIES;i++)
     "%z ",i,gate_type_lst;
-  NewLine;
+  '\n';
 
   num_selected_gates=0;
   while (num_selected_gates<GT_NUM_ENTRIES) {
     "%d",num_selected_gates;
-    st=PmtStr(" Gate: ");
+    st=GetStr(" Gate: ");
     if (!*st) {
       Free(st);
       return;
@@ -112,13 +104,12 @@ U0 PmtGates()
   }
 }
 
-
 U0 Init()
 {
   I64 i;
 
   do {
-    table_size=PmtI64("\nTable size in hex (3 input=0x100,4=0x10000): ",0);
+    table_size=GetI64("\nTable size in hex (3 input=0x100,4=0x10000): ",0);
     if (table_size>MAX_TABLE_SIZE)
       "Too large\n";
     else if (table_size<1) {
@@ -142,7 +133,7 @@ U0 Init()
   num_inputs_entered=0;
   while (TRUE) {
     "Input %C: ",'A'+num_inputs_entered;
-    i=PmtI64("",-1);
+    i=GetI64("",-1);
     if (i<0) break;
     if (i>table_size)
       "Too large\n";
@@ -164,7 +155,7 @@ U0 Init()
   num_outputs_entered=0;
   while (TRUE) {
     "Output %C: ",'A'+num_outputs_entered;
-    i=PmtI64("",-1);
+    i=GetI64("",-1);
     if (i<0) break;
     if (i>table_size)
       "Too large\n";
@@ -212,8 +203,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=y1;
 
 	  dc->color=BLUE;
-	  SpritePlot3(dc,xx,yy,0,
-	      imgs[type]);
+	  Sprite3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy,x1,y1);
@@ -232,7 +222,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=(y1+y2)/2;
 
 	  dc->color=BLUE;
-	  SpritePlot3(dc,xx,yy,0,imgs[type]);
+	  Sprite3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy-4,x1,y1);
@@ -252,7 +242,7 @@ U0 DrawDesign(CDC *dc,I64 *_y,I64 output,I64 depth,I64 *_x_out,I64 *_y_out)
 	  yy=(y1+y2+y3)/3;
 
 	  dc->color=BLUE;
-	  SpritePlot3(dc,xx,yy,0,imgs[type]);
+	  Sprite3(dc,xx,yy,0,imgs[type]);
 
 	  dc->color=RED;
 	  GrLine(dc,xx-GATE_WIDTH,yy-8,x1,y1);
@@ -277,8 +267,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 U0 FillNot(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j;
-  U8 old_type;
+  I64 i,j,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i)) {
       progress1=i;
@@ -299,8 +288,7 @@ U0 FillNot(Bool *chged,I64 *num_outputs_found)
 
 U0 FillAnd(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -324,8 +312,7 @@ U0 FillAnd(Bool *chged,I64 *num_outputs_found)
 
 U0 FillOr(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -349,8 +336,7 @@ U0 FillOr(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNAnd(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -374,8 +360,7 @@ U0 FillNAnd(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNOr(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -399,8 +384,7 @@ U0 FillNOr(Bool *chged,I64 *num_outputs_found)
 
 U0 FillXor(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k;
-  U8 old_type;
+  I64 i,j,k,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -424,8 +408,7 @@ U0 FillXor(Bool *chged,I64 *num_outputs_found)
 
 U0 FillAnd3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -452,8 +435,7 @@ U0 FillAnd3(Bool *chged,I64 *num_outputs_found)
 
 U0 FillOr3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -480,8 +462,7 @@ U0 FillOr3(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNAnd3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -508,8 +489,7 @@ U0 FillNAnd3(Bool *chged,I64 *num_outputs_found)
 
 U0 FillNOr3(Bool *chged,I64 *num_outputs_found)
 {
-  I64 i,j,k,l;
-  U8 old_type;
+  I64 i,j,k,l,old_type;
   for (i=0;i<table_size;i++)
     if (gate_type_table[i]>GT_OUTPUT && !Bt(added_this_pass,i))
       for (k=0;k<table_size;k++)
@@ -534,7 +514,6 @@ U0 FillNOr3(Bool *chged,I64 *num_outputs_found)
 	    }
 }
 
-
 I64 FillGateTable()
 {
   I64 current_gate,num_outputs_found=0;
@@ -543,7 +522,7 @@ I64 FillGateTable()
   output_found=-1;
   ProgressBarsRst;
   progress1_max=table_size;
-  NewLine;
+  '\n';
   while (num_outputs_found<num_outputs_entered && chged) {
     "Pass : %d\n",passes++;
     chged=FALSE;
@@ -592,7 +571,7 @@ U0 DigitalLogic()
   WordStat;
   WinBorder(ON);
   DocClear;
-  PmtGates;
+  GetGates;
   try {
     Init;
     if (FillGateTable) {

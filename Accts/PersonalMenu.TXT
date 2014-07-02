@@ -11,11 +11,6 @@ Cd("::/Demo");Dir;
 `Cd("::/Demo");Dir;
 `
 
-Cd("::/Demo/OldSchool");Dir;
-
-`Cd("::/Demo/OldSchool");Dir;
-`
-
 Cd("::/Demo/Graphics");Dir;
 
 `Cd("::/Demo/Graphics");Dir;
@@ -26,9 +21,9 @@ Cd("::/Demo/Snd");Dir;
 `Cd("::/Demo/Snd");Dir;
 `
 
-Cd("::/Demo/Doc");Dir;
+Cd("::/Demo/DolDoc");Dir;
 
-`Cd("::/Demo/Doc");Dir;
+`Cd("::/Demo/DolDoc");Dir;
 `
 
 Cd("::/Demo/Games");Dir;
@@ -61,11 +56,6 @@ Cd("::/Apps");Dir;
 `Cd("::/Apps");Dir;
 `
 
-Cd("::/Apps/MusicOrgan/Examples");Dir;
-
-`Cd("::/Apps/MusicOrgan/Examples");Dir;
-`
-
 
 You can examine my acct files for tricks and tips.  Be careful because my 
 set-up is different.
@@ -75,7 +65,7 @@ Cd("::/Demo/AcctExample");Dir;
 `
 
 
-MakeAll with [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
+MakeAll with [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
 Cd("::/Kernel");Dir;
 
 `Cd("::/Kernel");Dir;
@@ -94,56 +84,20 @@ Cd("::/Adam");Dir;
 `
     
 
-[C:/Doc/Welcome.TXT.Z,1] Welcome [C:/Doc/HelpIndex.TXT.Z,1] Help Index
+[C:/Doc/Welcome.TXT.Z,1] Welcome
+[C:/Doc/HelpIndex.TXT.Z,1] Help & Index
 [C:/Doc/DemoIndex.TXT.Z,1] Demo Index
 Take Tour
 `Cd("::/Misc/Tour");;AutoFile("Tour");
 `
- Key Map
+
+Key Map
 `KeyMap;View;
 `
 
-SoftBoot
+SoftBoot("/Kernel.BIN.C");
 `SoftBoot("/Kernel.BIN.C");`
 
-  
-
-
-
-
-
-
-
-
-ToTheFront <1> (image) Logic <2> (image) Lines <3> (image) TimeOut <4>
-  (image) 
-
-
-
-
-
-
-
-
-X-Caliber <5> (image) JukeBox <6> (image) Organ <7> (image)  Vocab <8>
-  (image) 
-
-
-
-
-
-KeepAway <9> (image) Models <10> (image) RawHide <11> (image) BugBird <12>
-  (image)
-
-
-
-
-
-
-
-
-EagleDive <13> (image) BigGuns <14> (image)  Span <15> (image)  ZoneOut <16>
-  (image)
 
 
 
@@ -153,37 +107,86 @@ EagleDive <13> (image) BigGuns <14> (image)  Span <15> (image)  ZoneOut <16>
 
 
 
-
-AfterEgypt <17> (image) Frankenstein <18> (image) Wenceslas <19> (image)
-
+AfterEgypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
 
 
 
 
 
-FlatTops <20> (image) Bomber <21> (image) Strut <22> (image) TheDead <23>
-  (image) DunGen <24> (image)  
 
 
-MemRep
-  `MemRep;View;`
-   Digits (Memory Game)
-  `Cd("::/Demo");;#include "Digits"
-  `
-  
+
+Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image)
+BugBird <8> (image)
 
 
-CTRL-R	Add graphic resource 
-CTRL-L	Add text-widgets such as trees
-CTRL-ALT-A	Extended ASCII from menu
-ALT-digit keys	Extended ASCII from code
-CTRL-ALT-C	Break(interrupt) program
-CTRL-ALT-D	Enter debugger
-CTRL-ALT-E	Spawn new user shell window
-CTRL-ALT-F	Flush screen VGA cache
-CTRL-ALT-G	Grid on/off
-CTRL-ALT-M	Mute ssound
-CTRL-ALT-X	Kill window
+
+
+
+
+
+FlatTops <9> (image)  Golf <10> (image)  Strut <11> (image) TheDead <12>
+(image) DunGen <13> (image)  
+
+
+
+
+
+
+
+
+EagleDive <14> (image)  Span <15> (image)  RawHide <16> (image) KeepAway <17>
+(image)
+
+
+
+
+
+
+
+
+
+
+X-Caliber <18> (image) ToTheFront <19> (image) Wenceslas <20> (image)
+
+
+
+
+
+
+
+
+
+JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24>
+(image) Vocab <25> (image) 
+
+
+
+
+
+
+BigGuns <26> (image) Budget <27> (image) Digits <28> (image) MemRep
+`MemRep;View;`
+
+
+The [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit can puppet you.
+<F7> 		Tongues word
+<SHIFT-F7>	Tongues passage
+<F6>		Tongues song
+<SHIFT-F6>	Tongues doodle
+
+<CTRL-r>	Graphic resources 
+<CTRL-l>	Text widgets
+<CTRL-ALT-a>	Ext ASCII from menu
+ALT-digit keys	Ext ASCII from code
+<CTRL-ALT-c>	Break (interrupt)
+<CTRL-ALT-d>	Enter debugger
+<CTRL-ALT-e>	New user terminal
+<CTRL-ALT-f>	Flush screen VGA cache
+<CTRL-ALT-g>	Grid on/off
+<CTRL-ALT-m>	Mute sound
+<CTRL-ALT-s>	Capture screen
+<CTRL-ALT-x>	Kill window
  
 List all syms in alpabetic order
 `DocMax;Who;View;`

@@ -1,5 +1,5 @@
 I64 HashTypeNum(CHash *temph)
-{
+{//Return bit num of hash type, limited to just types.
   if (temph)
     return Bsf(temph->type&HTG_TYPE_MASK);
   else
@@ -7,7 +7,7 @@ I64 HashTypeNum(CHash *temph)
 }
 
 I64 HashVal(CHash *temph)
-{
+{//Returns most likely desired value.
   nobound_switch (HashTypeNum(temph)) {
     case HTt_EXPORT_SYS_SYM:
       return temph(CHashExport *)->val;
@@ -48,17 +48,17 @@ I64 HashVal(CHash *temph)
 }
 
 CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL)
-{
-  CHashTable *tempht;
-  tempht=CAlloc(sizeof(CHashTable),mem_task);
-  tempht->body=CAlloc(size<<3,mem_task);
-  tempht->mask=size-1;
-  tempht->next_added=tempht->last_added=tempht;
-  return tempht;
+{//New hash table, power-of-two in size.
+  CHashTable *table;
+  table=CAlloc(sizeof(CHashTable),mem_task);
+  table->body=CAlloc(size<<3,mem_task);
+  table->mask=size-1;
+  table->next_added=table->last_added=table;
+  return table;
 }
 
 U0 HashDel(CHashSrcSym *temph)
-{
+{//Free a std TempleOS system hash entry.
   if (!temph) return;
   if (!(temph->type&HTT_DICT_WORD))
     Free(temph->str);
@@ -68,10 +68,10 @@ U0 HashDel(CHashSrcSym *temph)
     Free(temph->import_name);
     LinkedLstDel(temph->ie_lst);
     if (temph->type & (HTT_FUN | HTT_EXPORT_SYS_SYM))
-      Free(temph->debug);
+      Free(temph->dbg_info);
     if (temph->type & (HTT_FUN | HTT_CLASS))
     //Assumes code not on heap, so doesn't Free.
-    //[C:/Compiler/Lex.CPP.Z,570] MemberLstDel() is an import to the Kernel module
+    //[C:/Compiler/Lex.CPP.Z,567] MemberLstDel() is an import to the Kernel module
       MemberLstDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(CHashDefineStr *)->data);
@@ -87,29 +87,29 @@ U0 HashDel(CHashSrcSym *temph)
   Free(temph);
 }
 
-U0 HashTableDel(CHashTable *tempht)
-{
+U0 HashTableDel(CHashTable *table)
+{//Free std system hash table, calling [C:/Kernel/Hash1b.CPP.Z,60] HashDel() on entries.
   CHashSrcSym *temph,*temph1;
-  if (!tempht) return;
-  temph=tempht->next_added;
-  while (temph!=tempht) {
+  if (!table) return;
+  temph=table->next_added;
+  while (temph!=table) {
     temph1=temph->next_added;
     HashDel(temph);
     temph=temph1;
   }
-  Free(tempht->body);
-  Free(tempht);
+  Free(table->body);
+  Free(table);
 }
 
-I64 HashTablePurge(CHashTable *tempht)
-{
+I64 HashTablePurge(CHashTable *table)
+{//Eliminate ExportSysSyms that have been usurped.
   I64 result=0;
   CHashSrcSym *temph,*temph1,*temph2;
-  if (!tempht) return 0;
-  PushFD;
-  Cli;	 //Precaution
-  temph=tempht->next_added;
-  while (temph!=tempht) {
+  if (!table) return 0;
+  PUSHFD
+  CLI	 //Precaution
+  temph=table->next_added;
+  while (temph!=table) {
     temph1=temph->next_added; //We delete only older ones
     if (temph->type&(HTT_FUN|HTT_GLBL_VAR)) {
       temph2=temph->next; //Older always later in chain
@@ -118,7 +118,7 @@ I64 HashTablePurge(CHashTable *tempht)
 	    !StrCmp(temph2->str,temph->str)) {
 	  if (temph2->type&HTG_TYPE_MASK==HTT_INVALID)
 	    temph2->type=HTT_KEYWORD;//Won't delete HTT_INVALID
-	  HashRemDel(temph2,tempht);
+	  HashRemDel(temph2,table);
 	  result++;
 	  break;
 	}
@@ -127,12 +127,12 @@ I64 HashTablePurge(CHashTable *tempht)
     }
     temph=temph1;
   }
-  PopFD;
+  POPFD
   return result;
 }
 
 CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 u0=0,I64 u1=0,I64 u2=0,CTask *task=NULL)
-{
+{//Add any type to task hash_table, 3 user_data values.
   if (!task) task=Fs;
   CHashGeneric *result=CAlloc(sizeof(CHashGeneric),task);
   result->type=type;
@@ -144,8 +144,39 @@ CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 u0=0,I64 u1=0,I64 u2=0,CTask 
   return result;
 }
 
+U0 SetSrcFileInfo(CLex *lx,CHashSrcSym *h,I64 line_num_offset=0)
+{//Set [C:/Kernel/Adam1a.HPP.Z,704] CHashSrcSym link and help_index by cur lx pos.
+  CLexFile *tempf=lx->cur_lfn;
+  I64 line_num=tempf->line_num+line_num_offset;
+  if (line_num<1) line_num=1;
+  Free(h->src_link);
+  h->src_link=MStrPrint("FL:%s,%d",tempf->name,line_num);
+  if (Bt(&lx->opts,OPTf_KEEP_PRIVATE))
+    h->type|=HTF_PRIVATE;
+  Free(h->index);
+  if (lx->cur_help_index)
+    h->index=StrNew(lx->cur_help_index);
+  else
+    h->index=NULL;
+}
+
+CHashGeneric *HashPublic(U8 *st,I64 mask,Bool val=TRUE)
+{//Mark a hash entry as public and [C:/Kernel/Hash1b.CPP.Z,147] SetSrcFileInfo().
+  CHashGeneric *result;
+  if (result=HashFind(st,Fs->hash_table,mask)) {
+    if (val)
+      result->type|=HTF_PUBLIC;
+    else
+      result->type&=~HTF_PUBLIC;
+    if (result->type&HTG_SRC_SYM)
+      SetSrcFileInfo(Fs->last_lex,result);
+    return result;
+  } else
+    return NULL;
+}
+
 I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table)
-{
+{//Add a list to a hash table.
   I64 i=0;
   CHashGeneric *temph;
   if (lst) {
@@ -166,7 +197,7 @@ I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table)
 }
 
 I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table)
-{
+{//Add define list to a hash table. See [C:/Adam/DolDoc/DocInit.CPP.Z,1] ::/Adam/DolDoc/DocInit.CPP.
   CHashDefineStr *temph;
   if (temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR))
     return HashLstAdd(temph->data,type,table);
@@ -175,7 +206,7 @@ I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table)
 }
 
 I64 FramePtr(U8 *name,CTask *task=NULL)
-{
+{//Find entry in task->hash_table, Return user_data.
   CHashGeneric *temph;
   if (!task) task=Fs;
   if (temph=HashFind(name,task->hash_table,HTT_FRAME_PTR))
@@ -185,22 +216,22 @@ I64 FramePtr(U8 *name,CTask *task=NULL)
 }
 
 CHashGeneric *FramePtrAdd(U8 *name,I64 val,CTask *task=NULL)
-{
+{//Add named value to task->hash_table.
   return HashGenericAdd(name,HTT_FRAME_PTR,val,0,0,task);
 }
 
 I64 FramePtrSet(U8 *name,I64 val,CTask *task=NULL)
-{
+{//Find hash entry in task->hash_table. Change user_data0.
   CHashGeneric *temph;
   if (!task) task=Fs;
   if (temph=HashFind(name,task->hash_table,HTT_FRAME_PTR))
-    return LXchgU64(&temph->user_data0,val);
+    return LXchgI64(&temph->user_data0,val);
   else
     return 0;
 }
 
 I64 FramePtrDel(U8 *name,CTask *task=NULL)
-{
+{//Remove entry and delete.
   CHashGeneric *temph;
   I64 result=0;
   if (!task) task=Fs;
@@ -231,7 +262,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
 	first=FALSE;
 	if (!(tempex=HashFind(st_ptr,Fs->hash_table,HTG_ALL-HTT_IMPORT_SYS_SYM))) {
 	  if (!(ld_flags & LDF_SILENT))
-	    "%S%s\n","ST_UNRESOLVED_REFERENCE",st_ptr;
+	    "Unresolved Reference:%s\n",st_ptr;
 	  tempiss=CAlloc(sizeof(CHashImport));
 	  tempiss->str=StrNew(st_ptr);
 	  tempiss->type=HTT_IMPORT_SYS_SYM;
@@ -250,13 +281,13 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
       else
 	i=tempex->val;
       switch (etype) {
-	case EIT_REL_U8:  *ptr2(U8 *) =i-ptr2-1; break;
+	case EIT_REL_I8:  *ptr2(U8 *) =i-ptr2-1; break;
 	case EIT_IMM_U8:  *ptr2(U8 *) =i;  break;
-	case EIT_REL_U16: *ptr2(U16 *)=i-ptr2-2; break;
+	case EIT_REL_I16: *ptr2(U16 *)=i-ptr2-2; break;
 	case EIT_IMM_U16: *ptr2(U16 *)=i; break;
-	case EIT_REL_U32: *ptr2(U32 *)=i-ptr2-4; break;
+	case EIT_REL_I32: *ptr2(U32 *)=i-ptr2-4; break;
 	case EIT_IMM_U32: *ptr2(U32 *)=i; break;
-	case EIT_REL_U64: *ptr2(I64 *)=i-ptr2-8; break;
+	case EIT_REL_I64: *ptr2(I64 *)=i-ptr2-8; break;
 	case EIT_IMM_U64: *ptr2(I64 *)=i; break;
       }
     }
@@ -285,19 +316,21 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
     st_ptr=src;
     src+=StrLen(st_ptr)+1;
     switch (etype) {
-      case EIT_REL_EXPORT:
-      case EIT_IMM_EXPORT:
+      case EIT_REL32_EXPORT:
+      case EIT_IMM32_EXPORT:
+      case EIT_REL64_EXPORT:
+      case EIT_IMM64_EXPORT:
 	tempex=CAlloc(sizeof(CHashExport));
 	tempex->str=StrNew(st_ptr);
 	tempex->type=HTT_EXPORT_SYS_SYM|HTF_IMM;
-	if (etype==EIT_IMM_EXPORT)
+	if (etype==EIT_IMM32_EXPORT||etype==EIT_IMM64_EXPORT)
 	  tempex->val=i;
 	else
 	  tempex->val=i+module_base;
 	HashAdd(tempex,Fs->hash_table);
 	SysSymImportsResolve(st_ptr,ld_flags);
 	break;
-      case EIT_REL_U8...EIT_IMM_U64:
+      case EIT_REL_I0...EIT_IMM_U64:
 	src=st_ptr-5;
 	LoadOneImport(&src,module_base,ld_flags);
 	break;
@@ -312,9 +345,15 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 	  }
 	}
 	break;
-      case EIT_HEAP_GLBL:
-	ptr3=MAlloc(*src(I64 *)++);
 
+      sub_switch_start:
+	case EIT_CODE_HEAP:
+	  ptr3=MAlloc(*src(I32 *)++,Fs->code_heap);
+	  break;
+	case EIT_ZEROED_CODE_HEAP:
+	  ptr3=CAlloc(*src(I32 *)++,Fs->code_heap);
+	  break;
+      sub_switch_end:
 	if (*st_ptr) {
 	  tempex=CAlloc(sizeof(CHashExport));
 	  tempex->str=StrNew(st_ptr);
@@ -322,7 +361,28 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 	  tempex->val=ptr3;
 	  HashAdd(tempex,Fs->hash_table);
 	}
+	cnt=i;
+	for (j=0;j<cnt;j++) {
+	  ptr2=module_base+*src(U32 *)++;
+	  *ptr2(I32 *)+=ptr3;
+	}
+	break;
 
+      sub_switch_start:
+	case EIT_DATA_HEAP:
+	  ptr3=MAlloc(*src(I64 *)++);
+	  break;
+	case EIT_ZEROED_DATA_HEAP:
+	  ptr3=CAlloc(*src(I64 *)++);
+	  break;
+      sub_switch_end:
+	if (*st_ptr) {
+	  tempex=CAlloc(sizeof(CHashExport));
+	  tempex->str=StrNew(st_ptr);
+	  tempex->type=HTT_EXPORT_SYS_SYM|HTF_IMM;
+	  tempex->val=ptr3;
+	  HashAdd(tempex,Fs->hash_table);
+	}
 	cnt=i;
 	for (j=0;j<cnt;j++) {
 	  ptr2=module_base+*src(U32 *)++;
@@ -332,7 +392,6 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
     }
   }
 }
-
 
 U0 LoadPass2(U8 *src,U8 *module_base,I64)
 {
@@ -349,7 +408,12 @@ U0 LoadPass2(U8 *src,U8 *module_base,I64)
       case EIT_ABS_ADDR:
 	src+=sizeof(U32)*i;
 	break;
-      case EIT_HEAP_GLBL:
+      case EIT_CODE_HEAP:
+      case EIT_ZEROED_CODE_HEAP:
+	src+=4+sizeof(U32)*i;
+	break;
+      case EIT_DATA_HEAP:
+      case EIT_ZEROED_DATA_HEAP:
 	src+=8+sizeof(U32)*i;
 	break;
     }
@@ -357,54 +421,44 @@ U0 LoadPass2(U8 *src,U8 *module_base,I64)
 }
 
 U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
-{ //See [C:/Adam/Utils/BinRep.CPP.Z,23] BinRep().
-  //bfh_addr==INVALID_PTR means don't care what load addr.
+{//Load a .BIN file module into memory.
+//bfh_addr==INVALID_PTR means don't care what load addr.
   U8 *fbuf,*module_base,*absname;
-  I64 size,module_alignment,module_org;
-  CBinFile *bfh2;
-  CBinFilePatchTableWithOrg *bfpt;
+  I64 size,module_align;
+  CBinFile *bfh;
+
   fbuf=DftExt(filename,"BIN.Z");
-  if (!(bfh2=FileRead(fbuf,&size))) {
+  if (!(bfh=FileRead(fbuf,&size))) {
     Free(fbuf);
     return NULL;
   }
-
-  //See [C:/Compiler/CmpMain.CPP.Z,1] Loader Patch Table Generation
-  bfpt=bfh2(U8 *)+bfh2->loader_patch_table_offset;
-  module_alignment=bfpt->module_alignment;
-  if (bfpt->eit_module_org==EIT_MODULE_ORG)
-    module_org=bfpt->module_org;
-  else
-    module_org=INVALID_PTR;
-
-  if (!module_alignment || Bsf(module_alignment)!=Bsr(module_alignment))
+  //See [C:/Compiler/CmpMain.CPP.Z,1] Patch Table Generation
+  module_align=1<<bfh->module_align_bits;
+  if (!module_align || bfh->bin_signature!=BIN_SIGNATURE_VAL) {
+    Free(bfh);
+    Free(fbuf);
     throw('BinModul');
-
-#assert sizeof(CBinFile)==16
-
+  }
   if (bfh_addr==INVALID_PTR) {
-    if (module_org==INVALID_PTR) {
+    if (bfh->module_org==INVALID_PTR) {
       if (Fs->code_heap!=Fs->data_heap) {
-	if (module_alignment<16)
-	  module_alignment=16;
-	bfh_addr=MAllocAligned(size,module_alignment,Fs->code_heap,module_alignment-sizeof(CBinFile));
-      } else if (module_alignment>8)
-	bfh_addr=MAllocAligned(size,module_alignment,NULL,module_alignment-sizeof(CBinFile));
-      else { //Less than 2Gig system memory
-	bfh_addr=bfh2;
+	if (module_align<16)
+	  module_align=16;
+	bfh_addr=MAllocAligned(size,module_align,Fs->code_heap,module_align-sizeof(CBinFile));
+      } else if (module_align>8)
+	bfh_addr=MAllocAligned(size,module_align,,module_align-sizeof(CBinFile));
+      else {//Less than 2Gig system memory
+	bfh_addr=bfh;
 	goto lo_skip; //File is already in code heap area, don't copy.
       }
     } else
-      bfh_addr=module_org;
+      bfh_addr=bfh->module_org;
   }
-  MemCpy(bfh_addr,bfh2,size);
-  Free(bfh2);
+  MemCpy(bfh_addr,bfh,size);
+  Free(bfh);
 
 lo_skip:
   module_base=bfh_addr(U8 *)+sizeof(CBinFile);
-
-  if (ArcXSum(bfh_addr,bfh_addr->file_size)!=TEMPLEOS_XSUM)
-    throw('ArcXSum');
 
   absname=FileNameAbs(fbuf);
   Free(fbuf);
@@ -412,12 +466,13 @@ lo_skip:
   FileExtRem(fbuf);
   if (fbuf[1]==':' && StrLen(fbuf)>2)
     HashGenericAdd(fbuf+2,HTT_MODULE|HTF_PUBLIC,bfh_addr);
-  Free(fbuf);
 
-  LoadPass1(bfh_addr(U8 *)+bfh_addr->loader_patch_table_offset,module_base,ld_flags);
+  LoadPass1(bfh_addr(U8 *)+bfh_addr->patch_table_offset,module_base,ld_flags);
   if (!(ld_flags&LDF_JUST_LOAD))
-    LoadPass2(bfh_addr(U8 *)+bfh_addr->loader_patch_table_offset,module_base,ld_flags);
+    LoadPass2(bfh_addr(U8 *)+bfh_addr->patch_table_offset,module_base,ld_flags);
+
   Free(absname);
+  Free(fbuf);
   return bfh_addr;
 }
 
@@ -425,7 +480,7 @@ U0 LoadKernel()
 {
   HashGenericAdd(KERNEL_MODULE_NAME,HTT_MODULE|HTF_PUBLIC,sys_boot_base-sizeof(CBinFile));
 
-//Abs patches done here [D:/Kernel/KStart.CPP.Z,1] CBinFilePatchTableWithoutOrg.
+//Abs patches done here [D:/Kernel/KStart.CPP.Z,1] CPatchTableAbsAddr.
   LoadPass1(sys_boot_patch_table_base,sys_boot_base,LDF_NO_ABSS|LDF_SILENT);
 
 //No main routines

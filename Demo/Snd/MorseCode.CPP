@@ -69,9 +69,9 @@ U0 MorseTable()
       "$RED$%C$FG$ %-7s ",*st,st+1;
     if (st=LstSub(i+39,morse_lst))
       "$RED$%C$FG$ %-7s ",*st,st+1;
-    NewLine;
+    '\n';
   }
-  NewLine;
+  '\n';
 }
 
 F64 m_start,m_end,dt_down,dt_up;
@@ -80,10 +80,9 @@ Bool space_sent;
 U8 *MorseTimes(CDoc *,CDocEntry *,CTask *mem_task)
 {
   U8 *st=MAlloc(64,mem_task);
-  SPrint(st,"Down:%10.6f Up:%10.6f",dt_down,dt_up);
+  StrPrint(st,"Down:%10.6f Up:%10.6f",dt_down,dt_up);
   return st;
 }
-
 
 I64 MorseWaitKey()
 {
@@ -92,7 +91,7 @@ I64 MorseWaitKey()
   while (TRUE) {
     if (m_start) {
       GetMsg(NULL,NULL,1<<MSG_KEY_UP);
-      m_end=tT;
+      m_end=tS;
       Snd(0);
       dt_down=m_end-m_start;
       m_start=0;
@@ -104,7 +103,7 @@ I64 MorseWaitKey()
     } else {
       if (!space_sent) {
 	while (!ScanMsg(&ch,NULL,1<<MSG_KEY_DOWN)) {
-	  dt=tT-m_end;
+	  dt=tS-m_end;
 	  if (dt>=M_SPACE_THRESHOLD) {
 	    space_sent=TRUE;
 	    return CH_SPACE;
@@ -113,10 +112,10 @@ I64 MorseWaitKey()
 	}
       } else
 	ch=GetChar(,FALSE);
-      m_start=tT;
+      m_start=tS;
       Snd(1000);
       if (ch==CH_SHIFT_ESC || ch==CH_ESC) {
-	NewLine;
+	'\n';
 	Snd(0);
 	ThrowBreak; //exit program
       }
@@ -133,11 +132,12 @@ U0 Morse()
 {
   Bool old_preempt;
   CDocEntry *doc_e;
-  U8 buf[8],*dst,ch,*src;
+  I64 ch;
+  U8 buf[8],*dst,*src;
 
   MorseTable;
   m_start=0;
-  m_end=tT;
+  m_end=tS;
   dt_down=0;
   dt_up=0;
   space_sent=TRUE;

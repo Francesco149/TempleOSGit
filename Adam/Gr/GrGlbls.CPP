@@ -1,0 +1,56 @@
+#help_index "Graphics"
+
+public class CGrGlbls
+{
+  I64	*to_8_bits,*to_8_colors;
+  CDC	*screen_image,	//Read only.
+	*dc,		//Persistent
+	*dc1,
+	*dc2,		//Updated every refresh
+	*dc_cache,
+	*zoomed_dc;
+  U32	*text_base;	//See [TextBase Layer,1] TextBase Layer.
+  U16	*win_z_buf;
+
+#define SPHT_ELEM_CODE	1
+  CHashTable *sprite_hash;
+
+  U16	*win_uncovered_bitmap;
+  I64	highest_uncovered;
+  U16	*vga_text_cache;
+  I64	pan_text_x,pan_text_y;	//[-7,7]
+  U0	(*fp_final_screen_update)(CDC *dc);
+  U0	(*fp_wall_paper)(CTask *task);
+  U0	(*fp_draw_input_ptr)(CDC *dc,I64 x,I64 y);
+  U0	(*fp_draw_grab_input_ptr)(CDC *dc,I64 x,I64 y,Bool closed);
+  U8	*empty_sprite; //Gets assigned [C:/Adam/WallPaper.CPP.Z,1] gr.empty_sprite
+
+#define GR_NUM_PEN_BRUSHES 64
+  CDC	*pen_brushes[GR_NUM_PEN_BRUSHES],
+	*collision_pen_brushes[GR_NUM_PEN_BRUSHES],
+	*even_pen_brushes[GR_NUM_PEN_BRUSHES],
+	*odd_pen_brushes[GR_NUM_PEN_BRUSHES];
+
+#define GR_REFRESH_LOG_CNT	16
+  F64	refresh_time_stamps[GR_REFRESH_LOG_CNT];
+  I64	refresh_ts_ptr;
+
+#define GR_MAX_SCREEN_ZOOM	8
+  U8	*screen_zoom_tables[GR_MAX_SCREEN_ZOOM+1];
+  I64	screen_zoom,sx,sy;
+
+  //When zoomed, this keeps the mouse centered.
+  Bool	continuous_scroll;
+} gr;
+
+//See [D:/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
+//See [C:/Kernel/KEnd.CPP.Z,67] SysGrInit()
+//Allows consts to be used instead of vars.
+HashPublic("GR_WIDTH",HTT_DEFINE_STR);;
+HashPublic("GR_HEIGHT",HTT_DEFINE_STR);;
+
+#help_index "Char"
+DefinePrint("TEXT_ROWS","%d",text.rows);;;
+HashPublic("TEXT_ROWS",HTT_DEFINE_STR);;;
+DefinePrint("TEXT_COLS","%d",text.cols);;;
+HashPublic("TEXT_COLS",HTT_DEFINE_STR);;;

@@ -8,7 +8,7 @@ U0 ViewComics()
   while (tempde) {
     st=StrNew(tempde->name);
     FileExtRem(st);
-    tempde->user_data=DocPrint(doc,"$MU-UL,\"%-10ts\",%d$ ",st,tempde);
+    tempde->user_data=DocPrint(doc,"$MU-UL,\"%-10ts\",LE=%d$ ",st,tempde);
     Free(st);
     tempde=tempde->next;
     if ((i++&3)==3)
@@ -21,6 +21,6 @@ U0 ViewComics()
       break;
   }
   DocDel(doc);
-  DirLstDel(tempde1);
+  DirTreeDel(tempde1);
 }
 

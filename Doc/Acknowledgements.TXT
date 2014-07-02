@@ -1,9 +1,11 @@
                                Acknowledgements
 
-1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.
+1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.  It's public 
+domain.
 
-2) [C:/Kernel/Dsk/ATADef.HPP.Z,1] originally
-from Linux.  I later got the spec.
+2) [C:/Kernel/Adam1a.HPP.Z,2157] ATA Reg and Cmd Definitions are originally
+from Linux.  Later, I got the 
+spec.
 
 3) The heap algorithm, [C:/Kernel/Mem1b.CPP.Z,1], is adapted from one I saw
 at 
@@ -19,7 +21,7 @@ adapted from the book, _Numeric Recipies in C_.
 
 6) The random number generator is from the book, _Numeric Recipies in C_.
 
-7) Tne sheep and goats in AfterEgypt are from 
+7) The mountain, palm trees, sheep and goats in AfterEgypt are from 
 http://www.public-domain-photos.com.
 
 8) The FAT32 file system is owned by MicroSoft.
@@ -56,7 +58,15 @@ very obviously.
 18) I got Webster's Dictionary and The King James Bible from 
 Project Gutenberg.
 
-In short, I wrote every one of the 121,584 lines myself, no GPL code, no 
+19) John Carmack inspired me to use "[C:/Kernel/Math1b.CPP.Z,1] Clamp" as a
+name instead of "Limit".  He 
+inspired me to use "needle" and "haystack" as names.  He inspired me to 
+simplify my Frames-Per-Second code.
+
+20) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
+Help & Index.
+
+In short, I wrote every one of the 121,463 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 

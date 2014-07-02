@@ -1,0 +1,395 @@
+                               DolDoc Overview
+
+DolDoc is a propriatary TempleOS document type supported by [DolDoc,1] DolDoc
+Routines.  
+In a document, commands are bracketed with '$'s.  Use <CTRL-l> to experiment 
+inserting a command.  Then, use <CTRL-t> to toggle to plain text to see it.
+
+Here is the grammar:
+
+<DolDocCmd> := $<[C:/Adam/DolDoc/DocInit.CPP.Z,1]
+TwoLetterCmd>[<FlagList>][,<ArgList>]$ | $[C:/Kernel/Define1a.CPP.Z,117]
+ColorName$
+
+<FlagList> := +|- <[C:/Adam/DolDoc/DocInit.CPP.Z,1] FlagCode>[<FlagList>]
+
+<ArgList> := <[C:/Adam/DolDoc/DocInit.CPP.Z,1]
+ArgCode>=<ArgExpression>,<ArgList> | <[C:/Adam/DolDoc/DocInit.CPP.Z,1]
+ArgCode>=<ArgExpression>
+
+
+The format of DolDoc cmds is a two character code, +/-flags, a comma and args 
+separated by commas.  Some commands have mandatory args.  Optional args are 
+indicated with <[C:/Adam/DolDoc/DocInit.CPP.Z,1] ArgCode>=.  A
+[C:/Kernel/Define1a.CPP.Z,117] ColorName bracked by dollars, will change the 
+foreground color.
+
+See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
+
+<[C:/Adam/DolDoc/DocInit.CPP.Z,1] TwoLetterCmd>  See
+[C:/Kernel/Adam1a.HPP.Z,885] Type Defines and
+[C:/Adam/DolDoc/DocPlain.CPP.Z,261] PrsDollarCmd().
++] TX Text
+  Normally, text is not bracketed with '$', but if you wish to specify flag
+  attr, such as centering text, you can bracket them with '$' and enter flags
+  such as "+CX".  You can't edit them normally if they are bracketed by '$'
+  unless you toggle to plain text mode with <CTRL-t>.
++] CR Hard Carriage Return (New Line)
+  New lines are normally not bracketed with '$'.
++] SR Soft Carriage Return (New Line)
+  Word wrap uses temporary soft new lines.  Users never place soft new lines.
++] CU Cursor pos
+  The cursor pos is stored as a ASCII#5 character and is not bracketed with
+  '$'. Users normally do not enter cursor pos.
++] TB Tab
+  Tabs are normally not bracketed with '$', but are ASCII#9.
++] CL Clear
+  Clear all previous entries except ones with hold(+H) flags.  You might want
+  +H on word wrap entries.  Alternatively, you can use
+  [C:/Adam/DolDoc/DocRecalc2a.CPP.Z,103] DocClear().
++] PB Page Break
+  Page break.
++] DA Data
+  Used for forms that prompt for data.  Use <CTRL-l> as a resource editor to
+  help you generate the text you need in your "fmtstr" cmd in a class.  If you
+  add it directly with [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll
+  need to fill-in the data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
+  DocFormDo() and [C:/Demo/DolDoc/Form.CPP.Z,1].
+
+The default data-type for the $DA...$ command is I64.  You can change it to
+  I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
+  [C:/Adam/DolDoc/DocNew.CPP.Z,463] DocDataFmt() and
+  [C:/Adam/DolDoc/DocNew.CPP.Z,516] DocDataScan().
+
+The [C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry.aux_str arg A="" is used for the
+  format string.
+
+If there is a ':', the space after the first ':' in the format string marks
+  the first valid cursor pos.  See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag
+  Width.
++] PL Page Length
+  Page length.
++] LM Left Margin
+  Left margin.
++] RM Right Margin
+  Right margin.
++] HD Header
+  Top margin.
++] FO Footer
+  Bottom margin.
++] ID Indent +/- num
+  Changes the indentation deeper if positive, or shallower if negative. It
+  effects the behavior of trees.
+
+$ID,2$ indents 2 columns.
++] Text Colors
+  You place an expression(usually a color define--see
+  [C:/Kernel/Adam1a.HPP.Z,2847] color defines) to indicate which of the 16
+  colors to use. If you enter no num, color returns to the default.
+
+FD Default Foreground Color
+BD Default Background Color
+FG Foreground Color
+BG Background Color
+
+$FD,BLUE$ will set the default foreground color to BLUE.
+
++] PT User Prompt
+  Start of a user prompt.
++] WW Word Wrap
+  Include a 1 or 0.
+
+$WW,1$ turns word-wrap on.
++] UL Underline
+  Include a 1 or 0.
+
+$UL,1$ turns underline on.
++] IV Invert
+  Include a 1 or 0.
+
+$IV,1$ turns invert on.
++] BK Blink
+  Include a 1 or 0.
+
+$BK,1$ turns blink on.
++] SX Shift X pos
+  Include a num from -7 to 7.  Only foreground is shifted.  Positive right.
+
+$SX,3$ shifts characters 3 pixels right.
++] SY Shift Y pos
+  Include a num from -7 to 7.  Only foreground is shifted.  Positive down.
+
+$SY,3$ shifts characters 3 pixels down.
++] CM Cursor Movement
+  This has two expressions, one for X offset and one for Y.  You can remove
+  one or the other with -LE or -RE.
+
+The expressions are relative to the current cursor location, unless you make
+  them relative to:
+
+  +LX left
+  +CX center
+  +RX right
+  +MRX margin relative
+
+  +TY top
+  +CY center
+  +BY bottom
+  +PRY page relative
+
+See [C:/Demo/DolDoc/CursorMove.CPP.Z,1].
+
++] AN Anchor
+  The [C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry.aux_str arg A="" is used for
+  the anchor.  I don't use these very often, but they're good sometimes. 
++] LK Link
+  The [C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry.aux_str arg A="" is used for
+  the link text.  With no aux the tag becomes the link text, as in example 3.
+
+See [C:/Adam/DolDoc/Doc.CPP.Z,32] Link Types.
+
+Examples: <CTRL-t> to see
+
+1)[C:/Doc/HelpIndex.TXT.Z,1] File link to HelpIndex.TXT
+2)[C:/Doc/HelpIndex.TXT.Z,1] File link to HelpIndex.TXT with link type file
+3)File link with same tag str.  [C:/Doc/HelpIndex.TXT.Z,1]
+4)[C:/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
+5)[C:/Kernel/Adam1a.HPP.Z,5] File find link searching for 5th 'CTRL'
+6)[C:/Kernel/StrPrint.CPP.Z,949] Manual page link
+7)[C:/Kernel/Adam1a.HPP.Z,200] File line num link
+8)[C:/Compiler/CmpInit.CPP.Z,1] File anchor link -- <CTRL-t> to see anchor
+  after you click
+9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
+  a text search.
+10) [Doc,1] Help Index Link.
+11) [C:/Kernel/Compress.CPP.Z,197] Address Link.
+
+12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,642]
+  SpriteEdText().
+
++] BT Button
+  See [C:/Demo/DolDoc/MenuButton.CPP.Z,1].
++] CB Check Box
+  Used for forms.  Use <CTRL-l> as a resource editor to help you generate the
+  text you need in your "fmtstr" cmd in a class.  If you add it directly with
+  [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll need to fill-in the
+  data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo(),
+  [C:/Kernel/Adam1a.HPP.Z,1197] CEdFindText and [C:/Demo/DolDoc/Form.CPP.Z,1].
+
+The default data-type for the $CB...$ command is I8 which is Bool.  You can
+  change it to I8, U8, I16, U16, I32, U32, I64, or U64.  See
+  [C:/Adam/DolDoc/DocNew.CPP.Z,463] DocDataFmt() and
+  [C:/Adam/DolDoc/DocNew.CPP.Z,516] DocDataScan().
++] MA Macro
+  A left macro arg, LM="", will send text when the left mouse is clicked.
+
+A left auto string, +LA, flag will cause text to be sent to
+  [C:/Kernel/SrvCmd.CPP.Z,463] AutoStr() instead of
+  [C:/Kernel/SrvCmd.CPP.Z,480] Auto().  An AutoStr runs code.  Literal text is
+  in quotes and messages are sent with [C:/Kernel/SrvCmd.CPP.Z,265] Msg().  See
+  Dir("::/Demo/AutoFile");View;
+`Dir("::/Demo/AutoFile");View;`
+.
+
+Macro's are usually in your [C:/Accts/TAD/PersonalMenu.TXT,1] and have the
+  '+X' flag set by [C:/Adam/DolDoc/DocInit.CPP.Z,3] default.  Adding '-X'
+  prevents the usual <ESC> from being sent (which exits the PersonalMenu
+  screen).  Note: When you click a macro on the cmd line, it will go to the
+  bottom and execute unless you cancel the <ESC> with a '-X'.
++] MU Menu Value
+  A left expression arg, LE=<Exp>, will return a number when clicked with the
+  left mouse.
+
+See [C:/Adam/DolDoc/DocPopUp.CPP.Z,666] PopUpRangeI64().
++] HX Hex Edit
+  See [C:/Adam/DolDoc/DocMain.CPP.Z,567] DocD().
++] TR Tree Widget
+  A tree widget is a branch in a collapsable tree.  The domain of the branch
+  extends from the first +indent until enough -indents bring it back to where
+  it started.  Tree's begin collapsed unless a -C flag is present.
+
+You might want to use [C:/Adam/DolDoc/DocRecalc2a.CPP.Z,149] DocPrintAtomic().
+
+See [C:/Demo/DolDoc/TreeDemo.CPP.Z,1].
++] LS List Widget
+  Used for forms that prompt for data.  You must specify a define list, D="".
+   Use <CTRL-l> as a resource editor to help you generate the text you need in
+  your "fmtstr" cmd in a class.  If you add it directly with
+  [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll need to fill-in the
+  data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo() and
+  [C:/Demo/DolDoc/Form.CPP.Z,1].
+
+The default data-type for the $LS...$ command is I64.  You can change it to
+  I8, U8, I16, U16, I32, U32, I64, or U64.  See
+  [C:/Adam/DolDoc/DocNew.CPP.Z,463] DocDataFmt() and
+  [C:/Adam/DolDoc/DocNew.CPP.Z,516] DocDataScan().
++] SP Sprite
+  Insert a sprite into text with <CTRL-r>.  The cursor location at the time
+  you press <CTRL-r> is critical because the sprite will be offset from that
+  location.  This is important when adding images to programs.  Numbers for
+  sprites are automatically chosen because copying to and from the clipboard
+  requires this.  You can insert another sprite with the same image by hitting
+  <CTRL-t> and manually adding a $SP...$ entry with the same BI= num.
+
+You can add a text tag to the $SP...$ cmd by manually adding text into the
+  $SP...$ cmd, as in $SP,"pic 2",BI=2$.  If you enter a tag of the form "<1>"
+  then the number in the tag will be updated to match the BI= number.
++] IB Insert Binary
+  Tells the compiler to insert a pointer to some binary data stored after the
+  end of text in the document.  There is just one type of binary data in DOC's
+  at this point -- sprites -- created with <CTRL-r>.  They have a number
+  associated with them.  This number is automatically chosen, because copying
+  to the clip-board and back requires renuming.  To use a $IB...$ cmd, toggle
+  to plain text (<CTRL-t>) after inserting a sprite and check the number in the
+  $SP...$ cmd. Create a $IB...$ cmd with the same BI= number and the sprite
+  will be inserted into the compiled stream like a string const.
+
+You can, optionally, include tag text to be displayed for the $IB...$ cmd. 
+  If you set the tag to "<1>", then the editor will automatically update the
+  tag if the BI= number changes.
+
+The reason for the $IB...$ cmd is to pass a arg to
+  [C:/Adam/Gr/GrSpritePlot.CPP.Z,481] Sprite() and
+  [C:/Adam/Gr/GrSpritePlot.CPP.Z,25] Sprite3().  See
+  [C:/Demo/Graphics/SpritePlot.CPP.Z,1].
+
++] IS Insert Binary Size
+  Inserts a number into the compiled stream describing the size of binary
+  data associated with a bin number.  I never use this.
++] SO Song
+  See [C:/Adam/Snd/Music.CPP.Z,98] Play().  [C:/Kernel/Adam1a.HPP.Z,1154]
+  CDocEntry.aux_str A="" stores the song note text.
++] HL Highlighting
+  Include a 1 or 0.
+
+$HL,1$ will turn syntax highlighting on.
++] HC html
+  The [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml() or
+  [C:/Adam/Utils/ToHtml.CPP.Z,117] Doc2Html() routines will generate a html
+  version of a document.  You can cause html code to be injected with HC.  Use
+  the +HTML flag to inject a html link.
++] ER Error
+  When errors are detected in DolDoc cmds, an ER entry is generated.
+
+<[C:/Adam/DolDoc/DocInit.CPP.Z,1] FlagCode>  See
+[C:/Kernel/Adam1a.HPP.Z,1045] Flag Defines and
+[C:/Adam/DolDoc/DocInit.CPP.Z,3] DocInit().
++] +H Hold
+  Causes not to delete this cmd when cleared with CL or when the
+  doc->max_entries is exceeded.  Word wrap is a good to hold.  There is no way
+  to delete these entries, at this point.
++] +L Link
+  Make a cmd behave as a link.  Perhaps, use this on a $SP...$ cmd.
++] +TR Tree
+  Make a cmd behave as a tree branch.  Usually, this is placed on a TX entry.
+   The tree extends from the start until another tree entry or when indentation
+  has been expanded and reduced back to the starting value.
+
+A +C flag on a tree will start it collapsed.
++] +LS List
+  Make a cmd behave as a list widget.  See above.  Usually, this is placed on
+  a TX entry.
++] +PU PopUp
+  A PopUp flag on a MA will cause the cmds to run in a new task, a pop-up
+  window.
++] +C Collapsed
+  A collapsed flag on a TR entry will cause it to start collapsed.  A -C flag
+  will make it start open.
++] +X <ESC> (Exit)
+  The exit flag will cause a $MA...$ macro to send an <ESC> before running to
+  exit the PersonalMenu screen and return to the cmd prompt.  Actually, the
+  default $MA...$ has an exit flag set so you add a -X to turn-off ESC, for a
+  +PU pop-up macro.  If an entry is already at the cmd prompt, the +X will
+  movement to the bottom of the window.
++] +Q <SHIFT-ESC> (Abort Quit)
+  A quit flag is similar to a +X except a <SHIFT-ESC> instead of an <ESC> to
+  exit.
++] +Z Zero
+  A zero flag on a HX entry will cause the offset from zero.  A -X will show
+  the actual memory addr. By default, HX has the zero flag set.
++] +RD Refresh Data
+  The Refresh Data flag on a DA or a CB makes the value updated continuously.
++] +LC Left CallBack
+  See [C:/Demo/DolDoc/ClickCallBack.CPP.Z,1].
++] +RC Right CallBack
+  See [C:/Demo/DolDoc/ClickCallBack.CPP.Z,1].
+
+<[C:/Adam/DolDoc/DocInit.CPP.Z,1] ArgCode>  See [C:/Kernel/Adam1a.HPP.Z,1028]
+Arg Defines.
++] T="" Tag Str
+  Some cmds have a tag by default.  See [C:/Adam/DolDoc/DocInit.CPP.Z,1]
+  TX+T.  You can code T="tag_text" as just "tag_text" with no T=. 
++] A="" Auxilliary Str
+  Some cmds need auxilliary strings.  A="str" means an
+  [C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry.aux_str is present.  aux_str is used
+  for song note text, link text, anchor text, and $DA...$ format string text.
++] D="" Define Str
+  A D="" means either a [Define,1] define str indirection is present on a
+  text widget, or a define list is present on a list widget.
+
+For indirection, the tag will be regenerated by substituting the value of a
+  system #define or [C:/Kernel/Define1a.CPP.Z,1] DefineLoad() string.  See
+  [C:/Demo/DolDoc/DefineStr.CPP.Z,1], [C:/Adam/DocDefines.CPP.Z,1] and
+  [C:/Doc/MemOverview.TXT.Z,1].
+
+For LS widgets, see [C:/Demo/DolDoc/Form.CPP.Z,1].
++] HTML=""
+  The [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml() or
+  [C:/Adam/Utils/ToHtml.CPP.Z,117] Doc2Html() routines will generate a html
+  version of a document.  You can cause html link on an item with HTML="".
++] LE=<Exp> Left Expression
+  Left expression.  CM has this by default for X offset and you can leave-off
+  the LE=, just putting the <Exp>.
+
+See [C:/Demo/DolDoc/MenuButton.CPP.Z,1].
++] LM="" Left Macro Str
+  Left macro string.
++] RE=<Exp> Right Expression
+  Right expression.  CM has this by default for Y offset and you can
+  leave-off the RE=, just putting the <Exp>.
+
+See [C:/Demo/DolDoc/MenuButton.CPP.Z,1].
++] RM="" Right Macro Str
+  Right macro string.
++] BI=<Exp> Bin Number
+  Binary data item number.
++] BP="" Bin Ptr
+  The BinPtrLink flags lets you specify a filename and bin num to import a
+  bin.
+
+$SP,"<tag>",BI=1,BP="filename,1"$ will import bin num "1" from filename.
+$SP,"<1>",BI=1,BP="::/Demo/Graphics/Mountain.CPP.Z,Mountain"$ will import bin
+  with tag name "Mountain" from "::/Demo/Graphics/Mountain.CPP.Z".
++] RT=<raw_data_type>
+  The default data-type for the $DA...$ command is I64.  The default for the
+  $CB...$ command is I8 which is Bool.
+
+You can change it to I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
+  [C:/Adam/DolDoc/DocNew.CPP.Z,463] DocDataFmt() and
+  [C:/Adam/DolDoc/DocNew.CPP.Z,516] DocDataScan().
++] SX=<Exp> Shift X
+  Shift tag text +/- 7 X pixels off the grid.
++] SY=<Exp> Shift Y
+  Shift tag text +/- 7 Y pixels off the grid.
++] SCX=<Exp> Scroll X
+  Scroll text in a marquee of so many columns.
++] U=<Exp> User Data
+  User Data.
+
+See [C:/Demo/DolDoc/MenuButton.CPP.Z,1].
+
+EXAMPLES:
+
+<CTRL-t> to see how the following were done.
+_Underlined_ Inverted **Blinking** super sub
+This is a big long scrolling msg.
+
+Cursor Movements:
+Cursor moved 3 rows down and to 3rd column from left.
+Note mandatory comma after flags
+
+The following may be changed to modes instead of attr with flags.
+
+                               This is centered
+
+                                                       This is right justified

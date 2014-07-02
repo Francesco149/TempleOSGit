@@ -1,7 +1,7 @@
 F64 SpanTime()
 {
   if (run_button.state)
-    return a.elapsed_t+tT-a.start_wall_t;
+    return a.elapsed_t+tS-a.start_wall_t;
   else
     return a.elapsed_t;
 }
@@ -23,7 +23,6 @@ F64 Cost(CMathODE *ode)
   }
   return result;
 }
-
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
@@ -48,7 +47,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (cursor_mass) {
     dc->color=RED;
     dc->pen_width=2;
-    GrLine3(dc,ipx-task->win_pixel_left-task->win_scroll_x,ipy-task->win_pixel_top-task->win_scroll_y,0,
+    GrLine3(dc,ip.pos.x-task->pix_left-task->scroll_x,ip.pos.y-task->pix_top-task->scroll_y,0,
       cursor_mass->x,cursor_mass->y,0);
   }
 
@@ -66,12 +65,6 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
     tempm=tempm->next;
   }
-
-  dc->color=BLACK;
-  if (snap_button.state)
-    for (j=0;j<GR_HEIGHT;j+=SNAP_SIZE)
-      for (i=0;i<GR_WIDTH;i+=SNAP_SIZE)
-	GrPlot(dc,i,j);
 
   dc->color=BLACK;
   GrPrint(dc,90,0,"Cost:%12.2,f",Cost(ode));
@@ -201,9 +194,9 @@ U0 PlaceSpring(MyMass *tempm1,MyMass *tempm2)
 }
 
 U0 AnimateTask(SpanAnimateStruct *a)
-{ //Preemption is off by default.
+{//Preemption is off by default.
   MySpring *temps,*temps1;
-  U8 old_run=FALSE,old_snap_state=OFF;
+  Bool old_run=FALSE;
   F64 f;
   while (TRUE) {
     temps=ode->next_spring;
@@ -215,7 +208,7 @@ U0 AnimateTask(SpanAnimateStruct *a)
 	temps->flags|=SSF_INACTIVE;
       temps=temps1;
     }
-    AdjustLoads(Fs->parent_task,ode);
+    AdjustLoads(ode);
     WinMgrSync; //CMathODE updated once per refresh.
     if (old_run!=run_button.state) {
       if (run_button.state) {
@@ -223,20 +216,13 @@ U0 AnimateTask(SpanAnimateStruct *a)
 	  Free(a->saved_ode);
 	  a->saved_ode=SpanSave(ode);
 	}
-	a->start_wall_t=tT;
+	a->start_wall_t=tS;
 	ode->flags&=~ODEF_PAUSED;
       } else {
 	ode->flags|=ODEF_PAUSED;
-	a->elapsed_t+=tT-a->start_wall_t;
+	a->elapsed_t+=tS-a->start_wall_t;
       }
       old_run=run_button.state;
-    }
-    if (old_snap_state!=snap_button.state) {
-      if (snap_button.state)
-	SetSnap(&Fs->parent_task->snap,SNAP_SIZE,1.0);
-      else
-	SetSnap(&Fs->parent_task->snap,1,1.0);
-      old_snap_state=snap_button.state;
     }
   }
 }
@@ -258,11 +244,11 @@ U0 Init(SpanAnimateStruct *a)
 }
 
 U0 SongTask(I64)
-{ //Song by Terry A. Davis
+{//Song by Terry A. Davis
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
-  music_tempo= 3.636;
-  music_stacatto_factor= 0.902;
+  music.tempo= 3.636;
+  music.stacatto_factor= 0.902;
   while (TRUE) {
 	Play("3q.EeDqED2G3DhE");
 	Play("q.EeDqED2G3DhE");
@@ -273,10 +259,10 @@ U0 SongTask(I64)
 
 U0 Span()
 {
-  I64 msg_code,p1,p2;
+  I64 msg_code,a1,a2;
   MyMass   *tempm1=NULL,*tempm2=NULL;
   MySpring *temps;
-  CCtrl *bt_run,*bt_mode,*bt_snap;
+  CCtrl *bt_run,*bt_mode;
   U8 *src;
   CDC *dc=DCAlias;
 
@@ -285,12 +271,11 @@ U0 Span()
   WinMax;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
 
-  bt_run =CtrlButtonNew(0,0,		  80,,2,"Stopped\0Running\0",run_colors,&run_button),
-  bt_snap=CtrlButtonNew(0,2.5*FONT_HEIGHT,80,,2,"Snap Off\0Snap On\0",snap_colors,&snap_button),
-  bt_mode=CtrlButtonNew(0,5.0*FONT_HEIGHT,80,,MD_NUM_MODES,Define("ST_SPAN_MODES"),mode_colors,&mode_button);
+  bt_run =CtrlButtonNew(0,0,		  80,,2,"Stopped\0Running\0",run_colors,&run_button);
+  bt_mode=CtrlButtonNew(0,3.0*FONT_HEIGHT,80,,MD_NUM_MODES,Define("ST_SPAN_MODES"),mode_colors,&mode_button);
   a.saved_ode=NULL;
 
-//This Preempt() eliminates a lot of hassles.
+//Preempt(OFF) eliminates a lot of hassles.
 //The concern is about changing
 //que links while the winmgr task
 //is updating the ode or screen.
@@ -302,7 +287,6 @@ U0 Span()
 //There is little downside to Preempt()
 //since we will yield during GetMsg().
   Preempt(OFF);
-
 
   DocCursor;
   WinBorder;
@@ -320,7 +304,6 @@ U0 Span()
 "Play {"
 "  Restart(,'\n');"
 "  RunStop(,CH_SPACE);"
-"  SnapGrid(,'g');"
 "  Mass(,'m');"
 "  Concrete(,'c');"
 "  Steel(,'s');"
@@ -353,29 +336,29 @@ U0 Span()
 
   try {
     while (TRUE) {
-      msg_code=GetMsg(&p1,&p2,1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_IP_L_UP|1<<MSG_KEY_DOWN|1<<MSG_IP_MOVE);
+      msg_code=GetMsg(&a1,&a2,1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_IP_L_UP|1<<MSG_KEY_DOWN|1<<MSG_IP_MOVE);
       DCFill(dc);
       switch (msg_code) {
 	case MSG_IP_L_DOWN:
 	  cursor_mass=tempm1=tempm2=NULL;
 	  switch (mode_button.state) {
 	    case MD_MASS:
-	      PlaceMass(p1,p2);
+	      PlaceMass(a1,a2);
 	      break;
 	    case MD_CONCRETE:
 	    case MD_STEEL:
 	    case MD_WIRE:
-	      tempm1=MassFind(ode,p1,p2);
+	      tempm1=MassFind(ode,a1,a2);
 	      break;
 	    case MD_MOVE:
 	      if (run_button.state)
-		cursor_mass=MassFind(ode,p1,p2);
+		cursor_mass=MassFind(ode,a1,a2);
 	      else
-		if (tempm1=MassFind(ode,p1,p2))
-		  MoveMass(tempm1,p1,p2);
+		if (tempm1=MassFind(ode,a1,a2))
+		  MoveMass(tempm1,a1,a2);
 	      break;
 	    case MD_DELETE:
-	      MassOrSpringFind(ode,&tempm1,&temps,p1,p2);
+	      MassOrSpringFind(ode,&tempm1,&temps,a1,a2);
 	      if (tempm1)
 		DelMass(tempm1);
 	      if (temps)
@@ -388,12 +371,12 @@ U0 Span()
 	    case MD_CONCRETE:
 	    case MD_STEEL:
 	    case MD_WIRE:
-	      if (tempm1 && (tempm2=MassFind(ode,p1,p2)) && tempm1!=tempm2)
+	      if (tempm1 && (tempm2=MassFind(ode,a1,a2)) && tempm1!=tempm2)
 		PlaceSpring(tempm1,tempm2);
 	      break;
 	    case MD_MOVE:
 	      if (!run_button.state && tempm1)
-		MoveMass(tempm1,p1,p2);
+		MoveMass(tempm1,a1,a2);
 	      break;
 	  }
 	  cursor_mass=tempm1=tempm2=NULL;
@@ -402,13 +385,13 @@ U0 Span()
 	  switch (mode_button.state) {
 	    case MD_MOVE:
 	      if (!run_button.state && tempm1)
-		MoveMass(tempm1,p1,p2);
+		MoveMass(tempm1,a1,a2);
 	      break;
 	    case MD_CONCRETE:
 	    case MD_STEEL:
 	    case MD_WIRE:
 	      if (tempm1) {
-		DrawSpring(dc,tempm1,p1,p2);
+		DrawSpring(dc,tempm1,a1,a2);
 	      }
 	      break;
 	  }
@@ -420,7 +403,7 @@ U0 Span()
 	  cursor_mass=tempm1=tempm2=NULL;
 	  break;
 	case MSG_KEY_DOWN:
-	  switch (p1) {
+	  switch (a1) {
 	    case '\n':
 	      if (!SpanTime || !a.saved_ode) {
 		Free(a.saved_ode);
@@ -450,9 +433,6 @@ U0 Span()
 	      break;
 	    case CH_SPACE:
 	      run_button.state=!run_button.state;
-	      break;
-	    case 'g':
-	      snap_button.state=!snap_button.state;
 	      break;
 	    case 'c':
 	      mode_button.state=MD_CONCRETE;
@@ -493,7 +473,6 @@ span_done: //Don't goto out of try
   SettingsPop;
   CtrlButtonDel(bt_run);
   CtrlButtonDel(bt_mode);
-  CtrlButtonDel(bt_snap);
   SpanDel(ode);
   DCFill(dc);
   DCDel(dc);

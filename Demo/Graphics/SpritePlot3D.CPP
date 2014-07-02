@@ -1,8 +1,5 @@
-/*
-This demo uses gr_dc2, so you must add a
-draw_it routine because gr_dc2 is not
-persistent.  (It gets erased each update by
-the system.)
+/*This uses [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc2.  It must be redrawn 60 fps
+by the winmgr task with a Fs->draw_it() callback.
 */
 
 
@@ -24,21 +21,18 @@ CDC *dc;
 
 U0 DrawIt(CTask *,CDC *)
 {
-//We can change the pen width because it was not
-//define in <CTRL-R>.
-  dc->pen_width=2;
   DCDepthBufRst(dc);
-  SpritePlot3(dc,0,0,0,__BIN_1);
+  Sprite3(dc,0,0,0,__BIN_1);
 }
 
 U0 SpritePlot3D()
 {
   F64 theta=0,phi=0;
-  dc=DCAlias(gr_dc2,Fs);
+  dc=DCAlias(gr.dc2,Fs);
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
-  Preempt(OFF); //We don't want update during matrix change
+  Preempt(OFF); //We don't want update during matrix change, mid draw.
   dc->x=200;
   dc->y=200;
   dc->z=GR_Z_ALL;

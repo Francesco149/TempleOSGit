@@ -7,7 +7,7 @@ CLexCodeMisc *OptLabelFwd(CLexCodeMisc *lb)
 }
 
 CHashClass *OptClassFwd(CHashClass *tempc)
-{
+{//Class forwarding for unions and subclasses.
   CHashClass *tempc1;
   while (tempc1=tempc->fwd_class)
     tempc=tempc1;
@@ -31,7 +31,7 @@ U0 OptSetNOP2(CIntermediateCode *tempi,I64 stk_delta=1)
 }
 
 CIntermediateCode *OptFree(CIntermediateCode *tempi)
-{ //We might access freed entries in CICTreeLinks
+{//We might access freed entries in CICTreeLinks
   QueRem(tempi);
   Free(tempi);
   return NULL;
@@ -100,17 +100,17 @@ Bool OptFixupBinaryOp1(CIntermediateCode *tempi,
   CHashClass *tempc=tempi->ic_class,*tempc1,*tempc2;
 
   if (tempi1->ic_flags&ICF_R_TO_INT)
-    tempc1=sys_internal_types[RT_I64];
+    tempc1=cmp.internal_types[RT_I64];
   else if (tempi1->ic_flags&ICF_R_TO_F64)
-    tempc1=sys_internal_types[RT_F64];
+    tempc1=cmp.internal_types[RT_F64];
   else {
     tempc1=OptClassFwd(tempi1->ic_class);
   }
 
   if (tempi2->ic_flags&ICF_R_TO_INT)
-    tempc2=sys_internal_types[RT_I64];
+    tempc2=cmp.internal_types[RT_I64];
   else if (tempi2->ic_flags&ICF_R_TO_F64)
-    tempc2=sys_internal_types[RT_F64];
+    tempc2=cmp.internal_types[RT_F64];
   else {
     tempc2=OptClassFwd(tempi2->ic_class);
   }
@@ -123,7 +123,7 @@ Bool OptFixupBinaryOp1(CIntermediateCode *tempi,
   if (tempc->raw_type==RT_F64) {
     if (tempi1->ic_code==IC_IMM_U64) {
       tempi1->ic_data(F64)=tempi1->ic_data;
-      tempi1->ic_class=sys_internal_types[RT_F64];
+      tempi1->ic_class=cmp.internal_types[RT_F64];
       tempi1->ic_code=IC_IMM_F64;
       tempi1->ic_flags&=~ICF_R_TO_F64;
     } else
@@ -131,7 +131,7 @@ Bool OptFixupBinaryOp1(CIntermediateCode *tempi,
       tempi1->ic_flags|=ICF_R_TO_F64;
     if (tempi2->ic_code==IC_IMM_U64) {
       tempi2->ic_data(F64)=tempi2->ic_data;
-      tempi2->ic_class=sys_internal_types[RT_F64];
+      tempi2->ic_class=cmp.internal_types[RT_F64];
       tempi2->ic_code=IC_IMM_F64;
       tempi2->ic_flags&=~ICF_R_TO_F64;
     } else
@@ -186,7 +186,7 @@ Bool OptFixupUnaryOp(CIntermediateCode *tempi,
   if (tempc->raw_type==RT_F64) {
     if (tempi1->ic_code==IC_IMM_U64) {
       tempi1->ic_data(F64)=tempi1->ic_data;
-      tempi1->ic_class=sys_internal_types[RT_F64];
+      tempi1->ic_class=cmp.internal_types[RT_F64];
       tempi1->ic_code=IC_IMM_F64;
       tempi1->ic_flags&=~ICF_R_TO_F64;
     } else
@@ -259,6 +259,9 @@ CIntermediateCode *OptBrZero(CLex *lx,CIntermediateCode *tempi)
       tempii2=OptLag(tempii);
       switch (tempii2->ic_code) {
 	sub_switch_start:
+	  case IC_CARRY:
+	    tempii2->ic_code=IC_BR_NOT_CARRY;
+	    break;
 	  case IC_BT:
 	    tempii2->ic_code=IC_BR_NOT_BT;
 	    break;
@@ -355,7 +358,6 @@ CIntermediateCode *OptBrZero(CLex *lx,CIntermediateCode *tempi)
   return tempi;
 }
 
-
 CIntermediateCode *OptBrNotZero(CLex *lx,CIntermediateCode *tempi)
 {
   CLexCodeMisc *lb_true,*lb_false;
@@ -405,6 +407,9 @@ CIntermediateCode *OptBrNotZero(CLex *lx,CIntermediateCode *tempi)
       tempii2=OptLag(tempii);
       switch (tempii2->ic_code) {
 	sub_switch_start:
+	  case IC_CARRY:
+	    tempii2->ic_code=IC_BR_CARRY;
+	    break;
 	  case IC_BT:
 	    tempii2->ic_code=IC_BR_BT;
 	    break;
@@ -501,7 +506,7 @@ CIntermediateCode *OptBrNotZero(CLex *lx,CIntermediateCode *tempi)
   return tempi;
 }
 
-  U0 OptFixSizeOf(CIntermediateCode *tempi1,CIntermediateCode *tempi_push,CHashClass *tempcc)
+U0 OptFixSizeOf(CIntermediateCode *tempi1,CIntermediateCode *tempi_push,CHashClass *tempcc)
 {
   if (tempi1->ic_code==IC_MUL &&
       tempi1->t.a2t->ic_code==IC_SIZEOF) {
@@ -547,7 +552,7 @@ I64 CmpRawTypePointed(CHashClass *tempc)
 
 U0 CmpF1PushPop(CIntermediateCode *tempi,CIntermediateCode *tempi2)
 {
-  if (Bt(ic_bitmap_fpop,tempi2->ic_code)|| tempi2->ic_flags&ICF_R_TO_F64)
+  if (Bt(cmp.ic_bitmap_fpop,tempi2->ic_code)|| tempi2->ic_flags&ICF_R_TO_F64)
     Bts(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0);
 }
 
@@ -555,20 +560,20 @@ U0 CmpF2PushPop(CIntermediateCode *tempi,CIntermediateCode *tempi1,CIntermediate
 {
   if ((tempi2->ic_code==IC_MOV || tempi2->ic_code==IC_IMM_F64) &&
        !(tempi2->ic_flags&ICF_R_TO_F64) &&
-      (Bt(ic_bitmap_fpop,tempi1->ic_code) || tempi1->ic_flags&ICF_R_TO_F64))
+      (Bt(cmp.ic_bitmap_fpop,tempi1->ic_code) || tempi1->ic_flags&ICF_R_TO_F64))
     Bts(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0);
-  else if ((Bt(ic_bitmap_fpop,tempi2->ic_code) || tempi2->ic_flags&ICF_R_TO_F64)&&
+  else if ((Bt(cmp.ic_bitmap_fpop,tempi2->ic_code) || tempi2->ic_flags&ICF_R_TO_F64)&&
        !(tempi1->ic_flags&ICF_R_TO_F64))
     Bts(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0);
 }
 
-class OptMemberVar
+class COptMemberVar
 {
-  I64 score,offset,lea_balance;
+  I64 score,offset_start,offset_end,lea_balance;
   CMemberLst *m;
 };
 
-I64 OptMVCompare(OptMemberVar *mv1,OptMemberVar *mv2)
+I64 OptMVCompare(COptMemberVar *mv1,COptMemberVar *mv2)
 {
   return mv2->score-mv1->score;
 }

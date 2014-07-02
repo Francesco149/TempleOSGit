@@ -1,7 +1,4 @@
-/*
-This is a whimsical program which demonstrates some techniques.
-
-*/
+//This is a whimsical program which demonstrates some techniques.
 
 #define BORDER		20
 
@@ -20,44 +17,41 @@ class PPt
 
 class PCircle
 {
-  PObj *p;
-  I64 radius;
+  PObj	*p;
+  I64	radius;
 };
 
 class PLine
 {
-  PObj *p1,*p2;
+  PObj	*p1,*p2;
 };
 
 class PCSprite
 {
-  PObj *p;
-  U8 *img;
-  I64 *r,
-     *dr; //Rounding error might eventually screw this up
+  PObj	*p;
+  U8	*img;
+  I64	*r,
+	*dr; //Rounding error might eventually screw this up
 }
-
 
 class PObj
 {
-  PObj *next,*last;
-  I64 type,color;
+  PObj	*next,*last;
+  I64	type,color;
   union {
-    PPt   p;
-    PCircle  c;
-    PLine    l;
-    PCSprite g;
+    PPt		p;
+    PCircle	c;
+    PLine	l;
+    PCSprite	g;
   };
 };
 
 class PickFrame
 {
-  PObj o_root;
-  I64 o_cnts[PTY_NUM];
-  I64 cx,cy;
+  PObj	o_root;
+  I64	o_cnts[PTY_NUM];
+  I64	cx,cy;
 };
-
-
 
 #define NUM_IMGS	3
 
@@ -67,10 +61,7 @@ class PickFrame
 
 
 
-
-
   /* <2> <2> (image) */
-
 
 
 
@@ -78,9 +69,7 @@ class PickFrame
   /* <3> <3> (image) */
 
 
-
-U8 *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
-
+CSprite *imgs[NUM_IMGS]={__BIN_1,__BIN_2,__BIN_3};
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
@@ -88,15 +77,14 @@ U0 DrawIt(CTask *task,CDC *dc)
   PickFrame *pf=FramePtr("PickFrame",task);
   PObj *tempo=pf->o_root.next;
 
-  pf->cx=task->win_pixel_width>>1;
-  pf->cy=task->win_pixel_height>>1;
+  pf->cx=task->pix_width>>1;
+  pf->cy=task->pix_height>>1;
 
   DCAllocDepthBuf(dc);
 
   dc->color=LTRED;
   dc->pen_width=3;
-  GrLineRect4(dc,BORDER,BORDER,2*pf->cx-BORDER,2*pf->cy-BORDER);
-
+  GrBorder(dc,BORDER,BORDER,2*pf->cx-BORDER,2*pf->cy-BORDER);
 
   while (tempo!=&pf->o_root) {
     dc->color=tempo->color;
@@ -118,7 +106,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	dc->y=pf->cy+tempo->g.p->p.p.y;
 	dc->z=GR_Z_ALL;
 	dc->flags|=DCF_TRANSFORMATION;
-	SpritePlot3(dc,0,0,0,tempo->g.img);
+	Sprite3(dc,0,0,0,tempo->g.img);
 	dc->flags&=~DCF_TRANSFORMATION;
 	dc->r=old_r;
 
@@ -224,8 +212,8 @@ PickFrame *Init()
   PickFrame *pf=CAlloc(sizeof(PickFrame));
   I64 i,*r,*dr;
 
-  pf->cx=Fs->win_pixel_width>>1;
-  pf->cy=Fs->win_pixel_height>>1;
+  pf->cx=Fs->pix_width>>1;
+  pf->cy=Fs->pix_height>>1;
 
   pf->o_root.next=pf->o_root.last=&pf->o_root;
   for (i=0;i<50;i++)
@@ -259,7 +247,7 @@ U0 CleanUp(PickFrame *pf)
 
 U0 Pick3D()
 {
-  I64 msg_code,p1,p2;
+  I64 msg_code,a1,a2;
   PObj *tempo;
   PickFrame *pf=NULL;
 
@@ -283,13 +271,13 @@ U0 Pick3D()
   Preempt(OFF);
   pf=Init;
   tempo=NULL;
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_CTRLS-WIF_MENU;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_CTRLS-WIF_FOCUS_TASK_MENU;
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
-      switch (msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_MOVE)) {
+      switch (msg_code=GetMsg(&a1,&a2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_MOVE)) {
 	case MSG_KEY_DOWN:
-	  switch (p1) {
+	  switch (a1) {
 	    case '\n':
 	      CleanUp(pf);
 	      pf=Init;
@@ -301,19 +289,19 @@ U0 Pick3D()
 	  }
 	  break;
 	case MSG_IP_L_DOWN:
-	  tempo=PPtFind(pf,p1-pf->cx,p2-pf->cy);
+	  tempo=PPtFind(pf,a1-pf->cx,a2-pf->cy);
 	  break;
 	case MSG_IP_L_UP:
 	  if (tempo) {
-	    tempo->p.p.x=p1-pf->cx;
-	    tempo->p.p.y=p2-pf->cy;
+	    tempo->p.p.x=a1-pf->cx;
+	    tempo->p.p.y=a2-pf->cy;
 	    tempo=NULL;
 	  }
 	  break;
 	case MSG_IP_MOVE:
 	  if (tempo) {
-	    tempo->p.p.x=p1-pf->cx;
-	    tempo->p.p.y=p2-pf->cy;
+	    tempo->p.p.x=a1-pf->cx;
+	    tempo->p.p.y=a2-pf->cy;
 	  }
 	  break;
       }

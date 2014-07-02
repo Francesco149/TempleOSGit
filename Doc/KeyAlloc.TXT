@@ -1,0 +1,49 @@
+                               Key Allocations
+
+See [Char,1] Char for definition of scan codes.
+
+See Key Map
+`KeyMap;View;
+`
+ for a detailed list of key commands.
+
+When you are at the cmd line, editing documents, browsing documentation and 
+help, entering items in forms or in menu's, the [C:/Kernel/Adam1a.HPP.Z,1317]
+DolDoc editor handles keys.  
+It allows you to define your own key handlers in a
+[C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
+you choose, you can catch keys, overriding the default handlers.  See 
+[C:/Adam/DolDoc/DocEd2b.CPP.Z,3] DocPutKey().  The following is an overview
+of key allocations.
+
+<ALT-keys> and <ALT-SHIFT-keys>  Free for user configurations in your 
+[C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() handler, except for
+ALT-BACKSPACE (undo).  There are a few examples 
+pre-defined, but you can change them if you wish.
+
+<ALT-digit keys>  Extended ASCII (3 digit decimal number).
+
+<CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
+the [C:/Kernel/Adam1a.HPP.Z,1317] CDoc editor.  I reserve the right to
+allocate these, but in the mean time, 
+you can define your own handlers with [C:/Kernel/KbdMouse/Keyboard.CPP.Z,418]
+SetCtrlAltLetCB().  They operate either 
+in a interrupt environment or in the window mgr when it queues kbd msgs.  You 
+can do [C:/Kernel/Misc1a.CPP.Z,244] Raw() output.  <CTRL-ALT-letter> handlers
+take a scan_code as an arg.
+
+<CTRL-function key>  Auto-completes wordstat words.
+
+<CTRL-digit key>  Auto-completes dictionary words.
+
+<CTRL-SHIFT-function key>  Jumps to src code.
+
+<CTRL-SHIFT-digit key>  Jumps to dictionary definition.
+
+<function keys> and <SHIFT-function keys>  I reserve the right to allocate 
+these, but there are some free now.
+
+<CTRL-key> and <CTRL-SHIFT-key>  I reserve the right to allocate to these.  
+There are not many free.
+
+See [Keyboard Devices/System,1] Keyboard Devices.

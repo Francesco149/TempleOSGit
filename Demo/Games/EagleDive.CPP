@@ -1,15 +1,7 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+//Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
-//This program can be AOT compiled to a .BIN.Z or JIT.
-//If AOT compiling, override the filename extention warning.
-#ifaot
-#include "::/Kernel/AOT.HPP"
-I64 best_score=0; //Doesn't work yet for AOT
-#else
 AcctRegSetDftEntry("TempleOS/EagleDive","I64 best_score=0;\n");
 AcctRegExeBranch("TempleOS/EagleDive");
-#endif
-
 
 //Keep these power of two so shift is used instead of multiply
 //to index arrays.
@@ -44,9 +36,8 @@ class Panel
 class Fish
 {
   Fish *next,*last;
-  I64 x,y,z;
+  CD3I64 p;
 } fish_root;
-
 
 
 
@@ -68,22 +59,17 @@ U0 CriticalSectionEnd()
   LBtr(&critical_section_flag,0);
 }
 
-//These are **NOT** deallocated after the program ends,
-//but I did them this way for your benefit
-//so 2D array indexing is not done by hand.
-//You can type "EagleDive;" at the command line
-//to rerun without new allocations.
-//Normally, just spawn a popup task,
-//run it and kill it using an icon.
-#ifaot
-#exe {OptOn(OPTf_GLBLS_ON_DATA_HEAP);};
-#endif
+/*These are **NOT** deallocated after the program ends,
+but I did them this way for your benefit
+so 2D array indexing is not done by hand.
+You can type "EagleDive;" at the command line
+to rerun without new allocations.
+Normally, just spawn a popup task,
+run it and kill it using an icon.
+*/
 I16 elevations[MAP_HEIGHT][MAP_WIDTH];
 I32 normals[MAP_HEIGHT][MAP_WIDTH*2];
 Panel *panels[MAP_HEIGHT][MAP_WIDTH*2];
-#ifaot
-#exe {OptOff(OPTf_GLBLS_ON_DATA_HEAP);};
-#endif
 
 I64 num_panels;
 Panel *panel_root;
@@ -105,26 +91,15 @@ class MPCtrl {
 U0 FSTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
-//I accidentally made the Z coordinate sign backward
-//from the fill-poly depth buf scheme, so it is negated at the end.
-//Negative Z coordinates are the ones we want plotted.
   GrRot(dc->r,x,y,z);
-
-//We don't want divide by zero or make too monstrous foreground objects.
-//The foreground object boundary is kinda crappy looking when
-//you point toward the ground.
-  *z=-*z;
-  zz=*z+50;
+  *z=zz=-*z;
   if (zz>0) {
-//The divide causes "foreshortening" which makes the distance go to a vanishing point.
-    *x = *x * DISPLAY_SCALE/ zz;
+    *x = *x * DISPLAY_SCALE/ zz; //Foreshortening
     *y = *y * DISPLAY_SCALE/ zz;
   }
   *x+=dc->x;
   *y =dc->y-*y;
 }
-
-
 
 U0 CalcNormals()
 {
@@ -157,7 +132,6 @@ It works pretty well.  It combines
 more than it should, but that's good
 because it would  result in too many
 panels.
-
 */
   I64 i,j,k,dz1,dz2;
   for (j=0;j<MAP_HEIGHT-1;j++) {
@@ -255,9 +229,9 @@ U0 MPDoPanels(CTask *task)
 	      tempp->color=BLUE;
 	      if (Rand<0.05) {
 		tempf=MAlloc(sizeof(Fish),task);
-		tempf->x=(i+w/2)*MAP_SCALE;
-		tempf->y=(j+h/2)*MAP_SCALE;
-		tempf->z=l;
+		tempf->p.x=(i+w/2)*MAP_SCALE;
+		tempf->p.y=(j+h/2)*MAP_SCALE;
+		tempf->p.z=l;
 		CriticalSectionStart;
 		QueIns(tempf,fish_root.last);
 		CriticalSectionEnd;
@@ -331,23 +305,10 @@ U0 MPDoPanels(CTask *task)
   LBtr(&mp.init_not_done_flags,Gs->num);
 }
 
-
-U0 InitMap()
+U0 InitElevations()
 {
-//We make a topographic data structure "elevations[][]"
-//and convert it to panels.  The conversion to panels leaves
-//gaps the way I did it, but it looks good, except for sky leaking through
-//There is no wrong way to pick colors if it looks good, unless
-//you wanted to do lighting.
-
-//"panels[][]" holds the flat and sloped panels for each spot, while
-//"hstep_panels[][]" holds side panels in cases of step-like formations.
-//They require a separate array because a single "elevation[][]" spot can
-//have a panel on top and a panel on the side like stairs.
-
-  I64 i,j,l,k1,k2,x,y,xx,yy;
+  I64 i,j,l,x,y,xx,yy,x1,y1,x2,y2;
   MemSet(elevations,0,sizeof(elevations));
-  MemSet(panels,0,sizeof(panels));
   for (i=0;i<MAP_WIDTH*MAP_HEIGHT/128;i++) {
     x=RandU32%MAP_WIDTH;
     y=RandU32%MAP_HEIGHT;
@@ -357,27 +318,44 @@ U0 InitMap()
       if (!l && RandU16<MAX_U16/4)
 	l=RandU16%(j+1);
       if (l) {
-	for (k1=-j;k1<=j;k1++)
-	  for (k2=-j;k2<=j;k2++) {
-	    xx=x+k2; yy=y+k1;
-	    if (0<=xx<MAP_WIDTH &&
-		0<=yy<MAP_HEIGHT)
-	      elevations[yy][xx]+=MAP_SCALE/2;
-	  }
-	  l--;
+	x1=ClampI64(x-j,0,MAP_WIDTH-1);
+	x2=ClampI64(x+j,0,MAP_WIDTH-1);
+	y1=ClampI64(y-j,0,MAP_HEIGHT-1);
+	y2=ClampI64(y+j,0,MAP_HEIGHT-1);
+	for (yy=y1;yy<y2;yy++)
+	  for (xx=x1;xx<x2;xx++)
+	    elevations[yy][xx]+=MAP_SCALE/2;
+	l--;
       }
     }
   }
-
-  xx=x/(MAP_SCALE*COORDINATE_SCALE);
-  yy=y/(MAP_SCALE*COORDINATE_SCALE);
-  z+=elevations[yy][xx]*COORDINATE_SCALE;
 
   for (j=0;j<MAP_HEIGHT;j++)
     for (i=0;i<MAP_WIDTH;i++)
       if (elevations[j][i]<WATER_ELEVATION*MAP_SCALE)
 	elevations[j][i]=WATER_ELEVATION*MAP_SCALE;
+}
 
+U0 InitMap()
+{/*We make a topographic data structure "elevations[][]"
+and convert it to panels.  The conversion to panels leaves
+gaps the way I did it, but it looks good, except for sky leaking through
+There is no wrong way to pick colors if it looks good, unless
+you wanted to do lighting.
+
+"panels[][]" holds the flat and sloped panels for each spot, while
+"hstep_panels[][]" holds side panels in cases of step-like formations.
+They require a separate array because a single "elevation[][]" spot can
+have a panel on top and a panel on the side like stairs.
+*/
+  I64 i,x,y,xx,yy;
+
+  InitElevations;
+
+  MemSet(panels,0,sizeof(panels));
+  xx=x/(MAP_SCALE*COORDINATE_SCALE);
+  yy=y/(MAP_SCALE*COORDINATE_SCALE);
+  z+=elevations[yy][xx]*COORDINATE_SCALE;
 
   CalcNormals;
 
@@ -392,7 +370,6 @@ U0 InitMap()
   panels_processed_bitmap=MAlloc((num_panels+7)>>3);
 }
 
-
 CDC *main_dc;
 
 U0 DrawIt(CTask *,CDC *dc)
@@ -402,10 +379,7 @@ U0 DrawIt(CTask *,CDC *dc)
 }
 
 /*
-
-
 /* <2> <2> (image) */
-
 
 
 
@@ -462,19 +436,17 @@ and render the panel for each square, marking-it done.
 
 The depth buf is not locked in the graphic routines
 so we get some glitches.
-
 */
 
 I64 update_jiffy_limit;
 
 U0 MPDrawIt(CTask *task,CDC *dc)
 {
-//This is identical to the previous routine but is run by core#1
   I64 j,strip_width,*s2w,x1,y1,z1, xx,yy,
       xh,yh,zh,yh2,xh2,x1h,y1h,x1wa,y1wa,x1wb,y1wb,
       x3,y3,z3,
-      cx=task->win_pixel_width>>1,
-      cy=task->win_pixel_height>>1;
+      cx=task->pix_width>>1,
+      cy=task->pix_height>>1;
   Panel reg *tempp;
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
@@ -530,7 +502,7 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     yy+=y3;
   }
 
-  if (Gs->num&1) { //alternate left-right,right-left
+  if (Gs->num&1) {//alternate left-right,right-left
     yh2=-yh;
     xh2=-xh;
   } else {
@@ -550,10 +522,10 @@ U0 MPDrawIt(CTask *task,CDC *dc)
   //Take half steps to cover whole grid.
   xh>>=1;  yh>>=1;
   xh2>>=1; yh2>>=1;
-  for (strip_width=0;sys_jiffies<update_jiffy_limit;strip_width++) {
+  for (strip_width=0;cnts.jiffies<update_jiffy_limit;strip_width++) {
     x1h=x1wa;
     y1h=y1wa;
-    for (j=0;j<strip_height && sys_jiffies<update_jiffy_limit;j++) {
+    for (j=0;j<strip_height && cnts.jiffies<update_jiffy_limit;j++) {
       x1=x1h>>8; y1=y1h>>8;
       if (0<=x1<MAP_WIDTH && 0<=y1<MAP_HEIGHT) {
 	  if ((tempp=panels[y1][x1*2]) && !LBts(panels_processed_bitmap,tempp->num)) {
@@ -604,8 +576,8 @@ U0 APEagleDiveTask(CTask *master_task)
 U0 DrawHorizon(CDC *dc)
 {
   I64 x1,y1,z1,x2,y2,z2,xh,yh,zh,*s2w=GrIdentNew,
-      cx=Fs->win_pixel_width>>1,
-      cy=Fs->win_pixel_height>>1;
+      cx=Fs->pix_width>>1,
+      cy=Fs->pix_height>>1;
   CD3I32 p[4];
   I32 *old_db=dc->depth_buf;
   dc->depth_buf=NULL;
@@ -637,8 +609,8 @@ U0 DrawHorizon(CDC *dc)
 
   MemSet(p,0,sizeof(p));
   if (x2<x1) {
-    SwapU64(&x1,&x2);
-    SwapU64(&y1,&y2);
+    SwapI64(&x1,&x2);
+    SwapI64(&y1,&y2);
   }
   if (!x1 && x2==dc->width-1) {
     p[0].x=0;
@@ -663,8 +635,8 @@ U0 DrawHorizon(CDC *dc)
     GrFillPoly3(dc,4,p);
   } else {
     if (y2<y1) {
-      SwapU64(&x1,&x2);
-      SwapU64(&y1,&y2);
+      SwapI64(&x1,&x2);
+      SwapI64(&y1,&y2);
     }
     if (!y1 && y2==dc->height-1) {
       p[0].x=0;
@@ -692,17 +664,16 @@ U0 DrawHorizon(CDC *dc)
   dc->depth_buf=old_db;
 }
 
-
 U0 BSPEagleDive()
 {
   CDC *dc=DCAlias(main_dc,Fs);
   I64 i,xx,yy,height,bkcolor,
-      cx=Fs->win_pixel_width>>1,
-      cy=Fs->win_pixel_height>>1;
+      cx=Fs->pix_width>>1,
+      cy=Fs->pix_height>>1;
   F64 min_strip_width;
   Fish *tempf;
 
-  update_jiffy_limit=sys_jiffies+JIFFY_FREQ/40;
+  update_jiffy_limit=cnts.jiffies+JIFFY_FREQ/40;
   MemSet(panels_processed_bitmap,0,(num_panels+7)>>3);
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
@@ -713,10 +684,10 @@ U0 BSPEagleDive()
       dc->color=bkcolor=BLACK;
       if (!game_over) {
 	GrRect(dc,0,0,dc->width,dc->height);
-	music_mute=TRUE;
+	music.mute=TRUE;
 	Beep;
 	game_over=TRUE;
-	music_mute=FALSE;
+	music.mute=FALSE;
       }
     } else
       bkcolor=BLUE;
@@ -734,8 +705,8 @@ U0 BSPEagleDive()
     yy=y/COORDINATE_SCALE;
     tempf=fish_root.next;
     while (tempf!=&fish_root) {
-      if (SqrI64(tempf->x-xx)+SqrI64(tempf->y-yy)<MAP_SCALE*MAP_SCALE*20*20)
-	SpritePlot3(dc,tempf->x,tempf->y,tempf->z,__BIN_1);
+      if (SqrI64(tempf->p.x-xx)+SqrI64(tempf->p.y-yy)<MAP_SCALE*MAP_SCALE*20*20)
+	Sprite3(dc,tempf->p.x,tempf->p.y,tempf->p.z,__BIN_1);
       tempf=tempf->next;
     }
 
@@ -745,7 +716,7 @@ U0 BSPEagleDive()
     min_strip_width=MAX_F64;
     for (i=0;i<mp.mp_cnt;i++)
       min_strip_width=Min(min_strip_width,32.0*mp.strip_width[i]/(i+32.0));
-    strip_height=LimitI64(strip_height*Limit(0.25*min_strip_width/strip_height,0.9,1.1),64,1024);
+    strip_height=ClampI64(strip_height*Clamp(0.25*min_strip_width/strip_height,0.9,1.1),64,1024);
   } else {
     dc->color=bkcolor;
     GrRect(dc,0,0,dc->width,dc->height);
@@ -766,12 +737,12 @@ U0 BSPEagleDive()
 
   if (game_over && Blink) {
     dc->color=RED;
-    GrPrint(dc,(Fs->win_pixel_width-9*FONT_WIDTH)/2,
-	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Game Over");
-  } else if (tT-game_t0<5.0 && Blink) {
+    GrPrint(dc,(Fs->pix_width-9*FONT_WIDTH)/2,
+	(Fs->pix_height-FONT_HEIGHT)/2,"Game Over");
+  } else if (tS-game_t0<5.0 && Blink) {
     dc->color=WHITE;
-    GrPrint(dc,(Fs->win_pixel_width-10*FONT_WIDTH)/2,
-	(Fs->win_pixel_height-FONT_HEIGHT)/2,"Catch Fish");
+    GrPrint(dc,(Fs->pix_width-10*FONT_WIDTH)/2,
+	(Fs->pix_height-FONT_HEIGHT)/2,"Catch Fish");
   }
 //We made an alias of this we don't want freed.
   dc->depth_buf=NULL;
@@ -782,14 +753,13 @@ U0 BSPEagleDive()
 #define ANIMATE_MS	10
 
 U0 AnimateTask(I64)
-{
-  //This just steadily moves the airplane fwd.
+{//Steadily moves the airplane fwd.
   I64 *s2w,x1,y1,z1;
-  F64 t0=tT,mS;
+  F64 t0=tS,mS;
   Fish *tempf,*tempf1;
   while (TRUE) {
-    mS=1000*(tT-t0);
-    t0=tT;
+    mS=1000*(tS-t0);
+    t0=tS;
     if (!game_over) {
       //Screen to world coordinates
       s2w=GrIdentNew;
@@ -809,15 +779,15 @@ U0 AnimateTask(I64)
 	tempf=fish_root.next;
 	while (tempf!=&fish_root) {
 	  tempf1=tempf->next;
-	  if (SqrI64(tempf->x-x1)+SqrI64(tempf->y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
+	  if (SqrI64(tempf->p.x-x1)+SqrI64(tempf->p.y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
 	    game_score++;
 	    if (game_score>best_score)
 	      best_score=game_score;
 	    QueRem(tempf);
 	    Free(tempf);
-	    music_mute=TRUE;
+	    music.mute=TRUE;
 	    Snd(1000); Sleep(200); Snd(0);
-	    music_mute=FALSE;
+	    music.mute=FALSE;
 	  }
 	  tempf=tempf1;
 	}
@@ -828,7 +798,7 @@ U0 AnimateTask(I64)
 	  speed+=0.0001;
 	else
 	  speed-=0.0001;
-	speed=Limit(speed+(0.0005-0.0002*Abs(phi)/(pi/4)),0.1,5.0);
+	speed=Clamp(speed+(0.0005-0.0002*Abs(phi)/(pi/4)),0.1,5.0);
       }
     }
     WinMgrSync;
@@ -852,14 +822,10 @@ U0 TaskEndCB()
 }
 
 U0 SongTask(I64)
-{ //Song by Terry A. Davis
-#ifaot
-  Fs->task_end_cb=HashVal(HashFind("SndTaskEndCB",Fs->hash_table,HTT_FUN));
-#else
+{//Song by Terry A. Davis
   Fs->task_end_cb=&SndTaskEndCB;
-#endif
   MusicSettingsRst;
-  music_stacatto_factor=0.2;
+  music.stacatto_factor=0.2;
   while (TRUE) {
 	Play("3eBDEDBDEDFEEDFEED");
 	Play("BDEDBDEDFEEDFEED");
@@ -882,8 +848,6 @@ U0 Init(I64 _mp_cnt)
   InitMap;
   DCAllocDepthBuf(main_dc);
 
-  Fs->win_max_refresh=30.0;
-
   strip_height=128;
   phi	=-90.0*pi/180.0;
   theta1=  0.0*pi/180.0;
@@ -897,7 +861,7 @@ U0 Init(I64 _mp_cnt)
   for (i=1;i<mp.mp_cnt;i++)
     Spawn(&APEagleDiveTask,Fs,"AP EagleDive",i);
   Fs->task_end_cb=&TaskEndCB;
-  game_t0=tT;
+  game_t0=tS;
 }
 
 U0 CleanUp()
@@ -929,9 +893,6 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   F64 pp,tt1,tt2;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  //We really can't afford to run at 60Hz.	This is how often VGA
-  //memory is updated, not related to actual hardware refresh rates.
-
   WordStat;
   MenuPush(
   "File {"
@@ -955,7 +916,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;
-  try //in case <CTRL-ALT-C> is pressed.
+  try //in case <CTRL-ALT-c> is pressed.
     do {
       if (ScanKey(&ch,&sc)) {
 	pp=phi; tt1=theta1; tt2=theta2;

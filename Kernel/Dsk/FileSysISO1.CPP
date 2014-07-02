@@ -37,7 +37,7 @@ Bool ISOPrtInit(CPrt *p,I64 blk)
 	  }
 	  break;
 	default: //Its normal for ISO13346 to read NULL blk as terminator
-	  PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+	  PrintErr("File System Not Supported\n");
 	  throw('Prt');
       }
       i++;
@@ -121,13 +121,13 @@ Bool ISO1CDirFill(CDirEntry *tempde,CISO1DirEntry *de)
   tempde->size=de->size.little;
   tempde->attr=FileAttr(tempde->name);
   if (de->flags & ISO1_ATTR_DIR)
-    tempde->attr|=_ATTR_DIR;
+    tempde->attr|=RS_ATTR_DIR;
   tempde->datetime=ISO1DateStruct2CDate(&de->date);
   return result;
 }
 
 Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{ //[C:/Kernel/Adam1a.HPP.Z,3448] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,3449] FUF_JUST_FILES
+{//[C:/Kernel/Adam1a.HPP.Z,2502] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,2503] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool result=FALSE,unlock;
@@ -136,13 +136,13 @@ Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fu
     throw('FUF');
   PrtChk(p);
   if (p->type!=PT_ISO9660)
-    PrintErr("%S","ST_NOT_ISO9660");
-  else {
+    PrintErr("Not ISO9660 Partition\n");
+  else
     try {
       unlock=PrtLock(p);
       isoptr=MAlloc(p->spc<<BLK_SIZE_BITS);
       RClusters(Fs->cur_prt,isoptr,cur_dir_cluster,1);
-      if (isoptr->name_len==1 && !isoptr->name) { //curdir
+      if (isoptr->name_len==1 && !isoptr->name) {//curdir
 	i=(isoptr->size.little+p->spc<<BLK_SIZE_BITS-1)/p->spc<<BLK_SIZE_BITS;
 	buf=MAlloc(p->spc<<BLK_SIZE_BITS*i);
 	RClusters(Fs->cur_prt,buf,cur_dir_cluster,i);
@@ -163,8 +163,8 @@ Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fu
 	    if (!StrCmp(name,dname)) {
 	      result=ISO1CDirFill(_result,isoptr);
 	      if (result &&
-	      !(fuf_flags&FUF_JUST_DIRS && !(_result->attr & _ATTR_DIR)) &&
-	      !(fuf_flags&FUF_JUST_FILES && _result->attr & _ATTR_DIR) )
+	      !(fuf_flags&FUF_JUST_DIRS && !(_result->attr & RS_ATTR_DIR)) &&
+	      !(fuf_flags&FUF_JUST_FILES && _result->attr & RS_ATTR_DIR) )
 		goto exit_this;
 	      else
 		result=FALSE;
@@ -181,55 +181,35 @@ exit_this:
     } catch
       if (unlock)
 	PrtUnlock(p);
-  }
   return result;
 }
 
-U8 *ISO1FileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,
-  I64 *_attr,Bool raw,CArcCompress **_ac2)
+U8 *ISO1FileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
 {
   U8 *buf=NULL;
   CDirEntry de;
   I64 c,blk_cnt,cur_dir_cluster;
-  CArcCompress *ac;
- 
   PrtChk(p);
-  if (_size) *_size=0;
-  if (_ac2)  *_ac2=NULL;
-  if (_attr) *_attr=0;
+  *_size=0;
+  *_attr=0;
   if (p->type!=PT_ISO9660)
-    PrintErr("%S","ST_NOT_ISO9660");
-  else {
+    PrintErr("Not ISO9660 Partition\n");
+  else
     try {
       PrtLock(p);
       cur_dir_cluster=Name2DirCluster(p,cur_dir);
       if (ISO1FileFind(p,cur_dir_cluster,filename,&de,FUF_JUST_FILES)) {
-	if (_attr) *_attr=de.attr;
 	blk_cnt=(de.size+BLK_SIZE-1)>>BLK_SIZE_BITS;
 	buf=MAlloc(blk_cnt<<BLK_SIZE_BITS+1);
 	c=de.cluster;
 	c=RClustersBlks(p,buf,c,blk_cnt);
-	if (FileAttr(de.name)&_ATTR_COMPRESSED && !raw) {
-	  ac=buf;
-	  if (_attr) *_attr=FileAttr(de.name,*_attr);
-	  if (_size) *_size=ac->expanded_size;
-	  if (_ac2) {
-	    *_ac2=ac;
-	    buf=ExpandBuf(ac);
-	  } else {
-	    buf=ExpandBuf(ac);
-	    Free(ac);
-	  }
-	} else {
-	  buf[de.size]=0; //Terminate
-	  if (_size) *_size=de.size;
-	}
-	if (_attr) *_attr=FileAttr(de.name,*_attr);
+	buf[de.size]=0; //Terminate
+	*_size=de.size;
+	*_attr=FileAttr(de.name,de.attr);
       }
       PrtUnlock(p);
     } catch
       PrtUnlock(p);
-  }
   return buf;
 }
 
@@ -237,14 +217,12 @@ Bool ISO1Cd(U8 *name,I64 cur_dir_cluster)
 {
   CDirEntry de;
   if (Fs->cur_prt->type!=PT_ISO9660)
-    PrintErr("%S","ST_NOT_ISO9660");
+    PrintErr("Not ISO9660 Partition\n");
+  else if (ISO1FileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
+    return TRUE;
   else {
-    if (ISO1FileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
-      return TRUE;
-    else {
-      "%s ",name;
-      PrintErr("%S","ST_FILE_NOT_FOUND");
-    }
+    "%s ",name;
+    PrintErr("File not found.\n");
   }
   return FALSE;
 }
@@ -259,7 +237,7 @@ CDirEntry *ISO1FilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NUL
     throw('FUF');
   isoptr=MAlloc(p->spc<<BLK_SIZE_BITS);
   RClusters(Fs->cur_prt,isoptr,cur_dir_cluster,1);
-  if (isoptr->name_len==1 && !isoptr->name) { //curdir
+  if (isoptr->name_len==1 && !isoptr->name) {//curdir
     i=(isoptr->size.little+p->spc<<BLK_SIZE_BITS-1)/p->spc<<BLK_SIZE_BITS;
     buf=MAlloc(p->spc<<BLK_SIZE_BITS*i);
     RClusters(Fs->cur_prt,buf,cur_dir_cluster,i);
@@ -278,7 +256,7 @@ CDirEntry *ISO1FilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NUL
       tempde=MAlloc(sizeof(CDirEntry));
       if (ISO1CDirFill(tempde,buf)) {
 	tempde->parent=parent;
-	if (Bt(&fuf_flags,FUf_RECURSE) && tempde->attr&_ATTR_DIR && *tempde->name!='.') {
+	if (Bt(&fuf_flags,FUf_RECURSE) && tempde->attr&RS_ATTR_DIR && *tempde->name!='.') {
 	  tempde->next=result;
 	  result=tempde;
 	  tempde->full_name=DirNameAbs(tempde->name);
@@ -286,8 +264,8 @@ CDirEntry *ISO1FilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NUL
 	    tempde->sub=ISO1FilesFind(files_find_mask,fuf_flags,tempde);
 	    Cd("..");
 	  }
-	} else if ((tempde->attr & _ATTR_DIR || !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
-	!(Bt(&fuf_flags,FUf_RECURSE) && *tempde->name=='.' && tempde->attr&_ATTR_DIR) &&
+	} else if ((tempde->attr & RS_ATTR_DIR || !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
+	!(Bt(&fuf_flags,FUf_RECURSE) && *tempde->name=='.' && tempde->attr&RS_ATTR_DIR) &&
 	   FilesFindMatch(tempde->name,files_find_mask,fuf_flags)) {
 	  tempde->next=result;
 	  result=tempde;

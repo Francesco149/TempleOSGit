@@ -2,12 +2,12 @@
 +] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's
   lexical analyser removes comments and does
-  preprocessing.  [C:/Compiler/Lex.CPP.Z,760]
+  preprocessing.  [C:/Compiler/Lex.CPP.Z,725]
   Lex(),[C:/Compiler/ICLCC.CPP.Z,38] Echo(ON).
 
 The main compiler generates [C:/Compiler/CmpDefs.HPP.Z,1] Intermediate Code
   at the parser stage.  See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression(),
-  [C:/Compiler/StmtParser.CPP.Z,1694] PrsStatement().
+  [C:/Compiler/StmtParser.CPP.Z,1664] PrsStatement().
 
 The main compiler optimizes   See [D:/Compiler/CmpInit.CPP.Z,1] Intermediate
   Code Attributes, [C:/Compiler/OptPass012.CPP.Z,1] Combining Consts,
@@ -15,7 +15,7 @@ The main compiler optimizes   See [D:/Compiler/CmpInit.CPP.Z,1] Intermediate
   [C:/Compiler/ICLCC.CPP.Z,21] OTrace(ON) to see the optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/Kernel/Adam1a.HPP.Z,1561] IC Struct, [C:/Compiler/ICLCC.CPP.Z,377]
+  [C:/Kernel/Adam1a.HPP.Z,1560] IC Struct, [C:/Compiler/ICLCC.CPP.Z,356]
   LCCCompile and [C:/Compiler/OptPass789.CPP.Z,1]
   OptPass789(), [C:/Compiler/Back1a.CPP.Z,1] BackEnd.  Set
   [C:/Compiler/ICLCC.CPP.Z,33] CTrace(ON) to see the output of the backend.
@@ -46,7 +46,7 @@ It is okay in TempleOS to change RAX, RBX, RCX, RDX, R8 and R9 without
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{ //See [C:/Compiler/Lex.CPP.Z,760] Lex().
+{//See [C:/Compiler/Lex.CPP.Z,725] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -106,7 +106,7 @@ I64 Lex(U8 **_src,I64 *num)
 extern I64 Parse(U8 **_src,U8 **_dst);
 
 U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
-{ //See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
+{//See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
   I64 i;
   U8 *src2;
   U8 *dst2;
@@ -127,8 +127,7 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 }
 
 I64 Parse(U8 **_src,U8 **_dst)
-{
-//See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
+{//See [C:/Compiler/ExpParser.CPP.Z,298] PrsExpression().
 //See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm instructions.
   I64 i;
   U8 *dst=*_dst;
@@ -211,7 +210,6 @@ I64 Parse(U8 **_src,U8 **_dst)
   }
 }
 
-
 U0 Main()
 {
   U8 *src,*src2,*code,*dst;
@@ -224,7 +222,7 @@ U0 Main()
     "This will compile an expression\n"
     "consisting of integers, parentheses\n"
     "and the operators +,-,* and /.\n";
-    src=MGetS;
+    src=GetStr;
     if (*src) {
       src2=src;
       dst=code;
@@ -234,8 +232,8 @@ U0 Main()
 	  throw;
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/Kernel/Adam1b.HPP.Z,285] Call() is a function.  See [C:/Kernel/Utils1a.CPP.Z,1] _CALL::
-//See also [C:/Kernel/Adam1b.HPP.Z,288] CallInd().  See [C:/Kernel/Utils1a.CPP.Z,1] _CALLIND::
+//[C:/Kernel/Adam1b.HPP.Z,30] Call() is a function.  See [C:/Kernel/Utils1a.CPP.Z,1] _CALL::
+//See also [C:/Kernel/Adam1b.HPP.Z,33] CallInd().  See [C:/Kernel/Utils1a.CPP.Z,1] _CALLIND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";

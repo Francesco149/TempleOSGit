@@ -1,10 +1,397 @@
-Use [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R() to rename if I change a label.
+                                   Change Log
+
+Use [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R() to rename if I change a label.
+
+----06/30/14 02:32:47----
+* Changed max FPS to 30 instead of 60.
+* Got rid of min and max FPS control.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("refresh","FPS");
+
+----06/20/14 12:02:44----
+* **TempleOS version 2.11 Released**
+
+----06/16/14 13:09:10----
+* Added [C:/Kernel/Adam1a.HPP.Z,915] DOCT_LST, list widgets.  See
+[C:/Demo/DolDoc/Form.CPP.Z,1].
+
+----06/13/14 21:27:17----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("BootDrv","BootRescueDrv");
+* Fixed bug in "Boot Rescue Drive" feature.
+
+----06/10/14 03:11:14----
+* **TempleOS version 2.10 Released**
+* Got rid of ImportHashTable().
+* Got rid of OldSchool demos.
+* AOT compilation has been removed.  Use JIT.
+
+----06/02/14 13:52:50----
+* Improved HelpIndex.
+* Improved [C:/Apps/TimeOut/TimeOut.CPP.Z,1].
+
+----05/26/14 16:13:11----
+* **TempleOS version 2.09 Released**
+* Added BLINK to [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DocHome","DocTop");
+
+----05/24/14 20:46:11----
+* Got rid of Day(), Month(), Year(), etc.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("WSDDisplayDefs","WSDDefsPut");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("WSDGetDef","WSDDefGet");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("WSDGetWord","WSDDefsGet");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("WSDPtAtWord","WSWordPtAt");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("WSGetHits","WSHitsGet");
+
+----05/23/14 04:50:25----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SqrDist","DistSqr");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SqrNorm","NormSqr");
+
+----05/16/14 15:43:17----
+* Added [C:/Kernel/Adam1a.HPP.Z,1193] DOF_DONT_WINMGR_SYNC.
+* Fetches comments for help index reports.
+* Made src line links more accurate.
+
+----05/15/14 06:45:33----
+* Added INVERT to [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml().
+
+----05/13/14 07:05:00----
+* **TempleOS version 2.08 Released**
+
+----05/11/14 08:22:44----
+* Added [C:/Adam/Dsk/Dsk2b.CPP.Z,392] Zip() and [C:/Adam/Dsk/Dsk2b.CPP.Z,412]
+Unzip().
+
+----05/09/14 09:30:39----
+* Added [C:/Adam/DolDoc/DocPopUp.CPP.Z,432] PopUpEd().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("PopUpViewStr","PopUpViewPrint");
+
+----05/07/14 19:12:42----
+* Added classes to help index.
+* [C:/Adam/Gr/GrGlbls.CPP.Z,3] CGrGlbls		gr;
+* [C:/Adam/DolDoc/Doc.CPP.Z,67] CDolDocGlbls		doldoc;
+* [C:/Kernel/Adam1a.HPP.Z,2110] CCmpGlbls		cmp;
+* [C:/Kernel/Adam1a.HPP.Z,2130] CUasmGlbls		uasm;
+* [C:/Kernel/Adam1a.HPP.Z,3496] CTextGlbls		text;
+
+----05/05/14 23:37:52----
+* [C:/Adam/God/GodExt.CPP.Z,6] CGodGlbls		god;
+* [C:/Adam/Snd/Music.CPP.Z,3] CMusicGlbls		music;
+* [C:/Adam/WordStat/WordStat.CPP.Z,39] CWordStatGlbls	ws;
+* [C:/Adam/WordStat/WordStat.CPP.Z,87] CWordStatDictGlbls	wsd;
+
+----05/05/14 19:54:46----
+* [C:/Adam/WallPaper.CPP.Z,3] CWallPaperGlbls	*wall;
+* [C:/Kernel/Adam1a.HPP.Z,1418] CWinMgrTimingGlbls	*winmgr.t;
+* [C:/Kernel/Adam1a.HPP.Z,1432] CWinMgrGlbls		winmgr;
+* [C:/Kernel/Adam1a.HPP.Z,3738] CSndGlbls		snd;
+* [C:/Kernel/Adam1a.HPP.Z,2810] CDevGlbls		dev;
+* [C:/Kernel/Adam1a.HPP.Z,2646] CDskGlbls		dsk;
+* [C:/Kernel/Adam1a.HPP.Z,3765] CDbgGlbls		dbg;
+* [C:/Kernel/Adam1a.HPP.Z,524] CCntsGlbls		cnts;
+* [C:/Kernel/Adam1a.HPP.Z,3719] CKeyDevGlbls		keydev;
+* [C:/Kernel/Adam1a.HPP.Z,2933] CIPStateGlbls		ip;
+* [C:/Kernel/Adam1a.HPP.Z,2911] CMouseStateGlbls	mouse;
+* [C:/Kernel/Adam1a.HPP.Z,2891] CKbdStateGlbls	kbd;
+
+----05/05/14 09:14:51----
+* Added ::/Apps/Budget
+`Cd("::/Apps/Budget");Dir;View;
+`
+.
+
+----05/03/14 23:31:50----
+* Added [C:/Kernel/Adam1a.HPP.Z,962] DOCEF_USER_DATA arg= flag.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Backward","Bwd");
+* Added [C:/Apps/Budget/Budget.CPP.Z,1].
+
+----04/30/14 23:41:42----
+* Added [C:/Kernel/Adam1a.HPP.Z,364] CBinFile.signature.
+
+----04/29/14 15:43:22----
+* **TempleOS version 2.07 Released**
+
+----04/27/14 05:19:18----
+* Improved documentation.
+* Changed [C:/Kernel/Adam1a.HPP.Z,364] CBinFile format.
+* Locked-in 640x480 with [C:/Adam/Gr/GrAsm.CPP.Z,406] GrUpdateLine64().
+
+----04/23/14 22:14:43----
+* Added [C:/Demo/Lectures/NegDisp.CPP.Z,1].
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GrLineRect4","GrBorder");
+* Changed [C:/Adam/Gr/GrTextBase.CPP.Z,1].
+* Fixed terminal button on wallpaper.  Yikes!
+
+----04/21/14 16:29:00----
+* Got rid of Spaces() and NewLine().  Replaced NewLine(5) with "%h*c",5,'\n';
+* Improved profiler.
+* Changed CCPU.chained_timer_irq to [C:/Kernel/Adam1a.HPP.Z,3338]
+CCPU.profiler_timer_irq.
+
+----04/19/14 18:05:09----
+* Got rid of double spacing.
+* Fixed bug in page down.
+* Sorted headers and externs.
+
+----04/18/14 21:45:17----
+* Improved documentation.
+
+----04/16/14 15:49:13----
+* **TempleOS version 2.06 Released**
+
+----04/15/14 12:29:02----
+* Got rid of lock-to-page and lock-to-center document features.
+* Changed $DA...$ data type to use an arg.  $DA,-U64+U16,...$ is now changed 
+to $DA,RT=I16,...$.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DOCEF1_","DOCEF_");
+* Changed Fs->[C:/Kernel/Adam1a.HPP.Z,1372] win_inhibits.
+
+----04/13/14 16:20:11----
+* Added [C:/Adam/DolDoc/Doc.CPP.Z,60] LK_DOC, [C:/Adam/DolDoc/Doc.CPP.Z,61]
+LK_DOC_ANCHOR, [C:/Adam/DolDoc/Doc.CPP.Z,63] LK_DOC_LINE and
+[C:/Adam/DolDoc/Doc.CPP.Z,62] LK_DOC_FIND.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Doc","DolDoc");
+* Improved documentation.
+* Added [C:/Demo/LastClass.CPP.Z,1].
+
+----04/13/14 00:09:48----
+* Got rid of ProfBin() and ProfCPU().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("ProfAll","Prof");
+* Improved documentation.
+* Changed [C:/Kernel/Adam1a.HPP.Z,1317] CDoc.desc.
+
+----04/11/14 16:58:56----
+* Renamed Sprite functions and vars.
+* Added [C:/Compiler/ExpParser.CPP.Z,1158] LexExpressionI64() and
+[C:/Compiler/ExpParser.CPP.Z,1172] LexExpressionF64().  I'm chagrinned.
+
+----04/11/14 11:55:36----
+* Added [C:/Kernel/Dsk/DskStr.CPP.Z,372] FileNameTempTxt().
+* <CTRL-r> sprite edit-as-text is now much better.
+* Added [C:/Kernel/Define1a.CPP.Z,156] Str2ColorU16(),
+[C:/Kernel/Define1a.CPP.Z,200] Str2ColorU32(), [C:/Compiler/Lex.CPP.Z,332]
+LexFirstRem(), [C:/Adam/Gr/SpriteCode.CPP.Z,193] Sprite2Code() and 
+[C:/Adam/Gr/SpriteCode.CPP.Z,567] Code2Sprite().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Color2Text","Color2Str");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
+R("Sprite2Text","SpriteElem2OneLineSummary");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DocPrintWhole","DocPrintAtomic");
+* Fixed bug in [C:/Adam/Gr/GrBitMap.CPP.Z,885] GrRect() relating to dithering.
+* Got rid of [C:/Kernel/Adam1a.HPP.Z,1317] CDoc.recalc_start.
+
+----04/09/14 14:10:17----
+* Fixed compiler bug by adding a pass to overcome an optimization problem.
+* Improved [C:/Apps/AfterEgypt/GodTalking.CPP.Z,1].
+* Improved [C:/Demo/Graphics/Mountain.CPP.Z,1].
+* Improved [C:/Demo/Graphics/Camp.CPP.Z,1].
+* Improved [C:/Demo/Graphics/SunMoon.CPP.Z,1].
+* Improved [C:/Demo/Games/DunGen.CPP.Z,1].
+* Improved [C:/Demo/Games/FlatTops.CPP.Z,1].
+
+----04/07/14 07:46:56----
+* **TempleOS version 2.05 Released**
+
+----04/05/14 03:09:18----
+* Got rid of Fs->answers_displayed and set it to a fixed value of one answer.
+* Improved documentation.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("MusicOrgan","Psalmody");
+* Improved [C:/Adam/AutoFile2a.CPP.Z,57] AFGetChar() and
+[C:/Adam/AutoFile2a.CPP.Z,95] AFUntilChar().
+
+----04/03/14 05:57:06----
+* Improved Tour
+`SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
+");`
+.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("ipx","ip.pos.x");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("mxx","mouse.pos.x");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("mxx_prescale","mouse.prescale.x");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("A2Date","Str2Date");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("A2I64","Str2I64");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("A2F64","Str2F64");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SPrint","StrPrint");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("MPrint","MStrPrint");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Scan","StrScan");
+
+----04/01/14 08:49:57----
+* Added [C:/Demo/Games/ElephantWalk.CPP.Z,1].
+
+----03/28/14 22:25:48----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("COLOR_TRANSPARENT","TRANSPARENT");
+
+----03/26/14 08:40:25----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("_ATTR_DIR","RS_ATTR_DIR");
+
+----03/24/14 15:17:14----
+* Coined "DolDoc" as a name for the TempleOS document type.
+* Added [C:/Demo/DolDoc/ClickCallBack.CPP.Z,1].
+
+----03/21/14 04:02:29----
+* **TempleOS version 2.04 Released**
+
+----03/19/14 21:54:23----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("BulgeBomber","BomberGolf");
+* Added [C:/Demo/Dsk/SerializeTree.CPP.Z,1].
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DirLstDel","DirTreeDel");
+* Added [C:/Misc/Tour/Tour7.AUT.Z,1] which covers File Masks.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("MGetS","GetStr");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("PmtStr","GetStr");
+
+----03/17/14 22:34:11----
+* Changed $MA to use "tag" instead of "A=".
+* Changed [C:/Kernel/Adam1a.HPP.Z,996] DOCEF_HAS_TERMINATOR -T to -TRM.
+* Changed [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc format.  Some flags are not
+at start.
+
+----03/07/14 04:54:10----
+* Added [C:/Demo/ReverseFileExample/Reverse.CPP.Z,1].
+
+----03/03/14 00:18:47----
+* **TempleOS version 2.03 Released**
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("A2I","Str2I64");
+* Removed "Binary Type" from [C:/Kernel/Adam1a.HPP.Z,1086] CDocBin.  Old
+sprites no longer work.
+
+----02/25/14 16:09:01----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("TaskTextInputQue","TaskText");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("TaskExeStrQue","TaskExe");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("TaskMsgQue","TaskMsg");
+
+----02/21/14 13:56:02----
+* Converted [C:/Kernel/Define1a.CPP.Z,49] Define() strings to constants.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Adam3d","Adam3c");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Adam3e","Adam3d");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Adam3f","Adam3e");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("pattern","needle");
+
+----02/19/14 22:13:04----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Limit","Clamp");
+* Overhauled [C:/Kernel/Dsk/Dsk1b.CPP.Z,269] FileRead() and
+[C:/Kernel/Dsk/Dsk1b.CPP.Z,436] FileWrite().
+* Got rid of TextFileRead() and TextFileWrite().
+
+----02/17/14 20:50:58----
+* **TempleOS version 2.02 Released**
+* Added F7/SHIFT-F7 for [C:/Adam/God/HolySpirit.CPP.Z,122]
+GodWord()/[C:/Adam/God/HolySpirit.CPP.Z,128] GodPassage().
+* Added F6/SHIFT-F6 for [C:/Adam/God/GodSong.CPP.Z,157]
+GodSong()/[C:/Adam/God/GodDoodle.CPP.Z,161] GodDoodle().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Apps/HolySpirit","Adam/God");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DoItOnce","DoOnce");
+
+----02/12/14 14:25:59----
+* Added BMP/GRA file save to <CTRL-r>.
+* Added <CTRL-ALT-s> for screen shot to clipboard.
+* Reformed [C:/Kernel/Adam1a.HPP.Z,2958] CGridGlbls to be simple.
+
+----02/10/14 09:19:59----
+* Added [C:/Kernel/Hash1b.CPP.Z,163] HashPublic().
+* Changed FUF_WHOLE_LABELS +lf/+lb to +lb/+la.
+* Got rid of FilesOrder(), replacing it with [C:/Kernel/Adam1a.HPP.Z,2510]
+FUF_CLUSTER_ORDER.
+* Added [C:/Demo/Graphics/InputPointer.CPP.Z,1].
+* Made [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc the default device context for
+graphics routines.
+
+----01/28/14 01:44:46----
+* In a function with an ASM{} blk, you can now JMP to a function goto label.
+
+----01/27/14 09:02:20----
+* **TempleOS version 2.01 Released**
+* In a function with an ASM{} blk, you can now goto an ASM label.
+
+----01/26/14 03:27:55----
+* Moved fun_class to [C:/Kernel/Adam1a.HPP.Z,2058] CLex.htc.fun.
+* Got rid of K=1024 sub_fmt flag in [C:/Kernel/StrPrint.CPP.Z,247]
+StrPrintJoin.
+* Changed MapFile code_heap line addresses to 32-bit.
+* Got rid of [C:/Kernel/Adam1a.HPP.Z,3213] CTask.user_data1-3. 
+* Got rid of ExpressionBinDel().
+* Got rid of [C:/Kernel/Adam1a.HPP.Z,1560] CIntermediateCode.ic_ext_body.
+* Cleaned-up [C:/Compiler/ExpParser.CPP.Z,1].
+
+----01/24/14 06:40:47----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DocInsSafe","DocPrintAtomic");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
+R("DocPutSPartial","DocPrintPartial");
+* Made private WordStat links WHITE.
+* Added "+s" to [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().
+* Added "+x" to [C:/Adam/Dsk/Dsk2a.CPP.Z,373] Size() and
+[C:/Adam/Utils/LineRep.CPP.Z,90] SizeRep().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("TreeSizeRep","SizeRep");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("LineCntRep","LineRep");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("TreeSize","Size");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("FileSize","Size");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("MergeChk","Merge");
+* Added [C:/Demo/Graphics/Balloon.CPP.Z,1].
+* Added warning for 64-bit reg vars.
+
+----01/13/14 14:39:34----
+* Optimized if (Carry).  See [C:/Demo/Carry.CPP.Z,1].
+
+----01/11/14 21:52:00----
+* Added [C:/Adam/God/GodBible.CPP.Z,144] BibleLine2Verse().
+* Shifted glbl vars from [C:/Kernel/KStart.CPP.Z,1] to
+[C:/Kernel/Adam1a.HPP.Z,3368] CSysFixedArea.
+* Added [C:/Adam/LogIn.CPP.Z,129] OneTimePopUp() msg to
+[C:/Apps/X-Caliber/X-Caliber.CPP.Z,1].  Delete 
+registry and reboot if you are upgrading.
+
+----01/09/14 20:51:20----
+* Converted fp_plot() graphics routines to Bool with abort.
+* Made [C:/Kernel/StrPrint.CPP.Z,940] CatPrint().
+* Added no_mask to [C:/Kernel/Dsk/Dsk1b.CPP.Z,136] FileAccessNew() and
+[C:/Adam/Dsk/Dsk2a.CPP.Z,135] CopyTree().
+
+----01/07/14 11:46:38----
+* **TempleOS version 2.00 Released**
+* Created Lite and UltraLite distros.
+* Added score to [C:/Demo/Games/BlackDiamond.CPP.Z,1].
+* Improved [C:/Demo/Games/Varoom.CPP.Z,1].
+
+----01/06/14 19:22:53----
+* Added [C:/Demo/Asm/AsmAndC3.CPP.Z,1].
+* Added ::/Demo/OldSchool/SingleFileAOT/Single.CPP
+* Made compiler compile ASM instructions mixed-in with HolyC.
+* Improved [C:/Demo/Graphics/Camp.CPP.Z,1].
+
+----01/03/14 03:39:30----
+* Fixed compiler bug relating to reg vars.  Fixed [C:/Kernel/Ints.CPP.Z,94]
+IntEntryGet().
+
+----01/01/14 13:16:59----
+* Got rid of XSUM in [C:/Kernel/Adam1a.HPP.Z,364] CBinFile header.
+
+----12/30/13 22:13:59----
+* Added [C:/Apps/Psalmody/Examples/killed.CPP.Z,1].
+* Fixed bug in [C:/Compiler/Unassembler.CPP.Z,643] U()nassemble.
+* Fixed compiler bug with multipling by 1.0.
+* Improved [C:/Apps/AfterEgypt/GodTalking.CPP.Z,1].
+* Improved [C:/Demo/Graphics/Mountain.CPP.Z,1].
+
+----12/28/13 16:05:41----
+* **TempleOS version 1.11 Released**
+* Added ip.throttle_step
+* Improved [C:/Demo/Games/BattleLines.CPP.Z,1].
+* Improved [C:/Demo/Games/BlackDiamond.CPP.Z,1].
+* I changed the .GRA file format.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Pixel","Pix");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("win_scroll","scroll");
+* Added [C:/Demo/SortFileExample/F64FileGen.CPP.Z,1] and 
+[C:/Demo/SortFileExample/F64FileSort.CPP.Z,1].
+* Added U8 *filename as arg to [C:/Adam/DolDoc/DocNew.CPP.Z,627] DocNew().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SpritePlot","Sprite");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SpritePlotRot","Sprite");
+* Got rid of tT() and tJ(), use [C:/Kernel/Misc1a.CPP.Z,122] tS().
+
+----12/27/13 14:09:04----
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("PutSprite","Sprite");
+* Got rid of TASKf_CURRENTLY_RUNNING.
+* Improved [C:/Demo/Games/Varoom.CPP.Z,1].
 
 ----12/16/13 00:54:35----
 * Got rid of TaskInitExt().
 
 ----12/14/13 11:25:39----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
 R("sys_num_task_inits","sys_num_spawned_tasks");
 * Got rid of Fs->user_num.
 * Got rid of IntEOI().
@@ -15,78 +402,80 @@ R("sys_num_task_inits","sys_num_spawned_tasks");
 fault.
 
 ----12/09/13 23:46:38----
-* Added Acct Drv prompt to [C:/Adam/Boot/InsBoot.CPP.Z,141]
+* Added Acct Drv prompt to [C:/Adam/Boot/InsBoot.CPP.Z,135]
 MakeOSPrtBootInstall().
 * Added BINFILE directive.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("UseTermDoc","DocTermNew");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("IsInDbg","IsDbg");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("UseTermDoc","DocTermNew");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("IsInDbg","IsDbg");
 * Got rid of IDE().  It was worthless.
 
 ----12/08/13 17:52:33----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("AOTAdam.HPP","AOT.HPP");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("AOTAdam.HPP","AOT.HPP");
 * Got rid of Deterministic option.
 * Got rid of OPTf_REPLACE_SYMS.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("ExePutS3","ExePutS2");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("ExePutS3","ExePutS2");
 
 ----12/07/13 05:18:12----
-* Added [C:/Demo/Graphics/Moon.CPP.Z,1].
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+* Added [C:/Demo/Graphics/SunMoon.CPP.Z,1].
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
 R("dither_probability","dither_probability_u16");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("plane_size","body_size");
-* Got rid of DCT_COLOR8. [C:/Adam/Gr/GrDC.CPP.Z,41] DCNew() has fewer args.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("plane_size","body_size");
+* Got rid of DCT_COLOR. [C:/Adam/Gr/GrDC.CPP.Z,185] DCNew() has fewer args.
 
 ----12/03/13 03:10:20----
 * Modified the [C:/Doc/Charter.TXT.Z,1].
-* Modified [C:/Kernel/Adam1a.HPP.Z,2109] CBootStruct. Old RedSea partitions
+* Modified [C:/Kernel/Adam1a.HPP.Z,2222] CBootStruct. Old RedSea partitions
 are invalid.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("deref_bitmap","ic_bitmap_deref");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("alpha_numeric_bitmap","chars_bitmap_alpha_numeric");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
+R("deref_bitmap","cmp.ic_bitmap_deref");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
+R("alpha_numercmp.ic_bitmap","chars_bitmap_alpha_numeric");
 * Added [C:/Doc/RedSea.TXT.Z,1].
 * Cleaned-up [C:/Adam/Utils/HeapLog.CPP.Z,1].
 * "%p" is PSECT, "%P" is link to PSECT.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("p1","a1"); In /Compiler
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("p1","a1"); In /Compiler
 * Added compiler optimization relating to bit shifts.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("doc_tag_types","doc_type_flags_tag");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
+R("doc_tag_types","doldoc.type_flags_tag");
 
 ----11/29/13 04:41:50----
 * **TempleOS version 1.10 Released**
 * Got rid of old PutExcept() and ExceptDepth().
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("CatchAll","PutExcept");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("CatchAll","PutExcept");
 * Changed [C:/Kernel/Except.CPP.Z,82] throw() to a single char string arg.
 
 ----11/28/13 04:15:03----
-* Added [C:/Demo/AcctExample/TAD/Archive/Comm.CPP.Z,1].
+* Added ::/Demo/AcctExample/TAD/Archive/Comm.CPP.
 
 ----11/20/13 08:56:52----
 * Got rid of WinInhibit().
-* Added [C:/Apps/HolySpirit/HolySpirit.CPP.Z,1] HSInit(),
-[C:/Apps/HolySpirit/HolySpirit.CPP.Z,1] GodWord() and
-[C:/Apps/HolySpirit/HolySpirit.CPP.Z,1] GodQuote().
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("WIF_ALL","WIG_TASK_DFT-WIF_FOCUS");
-* Changed TASKf_USER to [C:/Kernel/Adam1a.HPP.Z,2743] WIf_FOCUS.
+* Added [C:/Adam/God/HolySpirit.CPP.Z,1] GodInit(),
+[C:/Adam/God/HolySpirit.CPP.Z,1] GodWord() and
+[C:/Adam/God/HolySpirit.CPP.Z,1] GodPassage().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
+R("WIF_SELF_ALL","WIG_TASK_DFT-WIF_SELF_FOCUS");
+* Changed TASKf_USER to [C:/Kernel/Adam1a.HPP.Z,1399] WIf_SELF_FOCUS.
 * Changed WordStat.
-* Got rid of [C:/Kernel/Adam1a.HPP.Z,726] CHashDefineStr.caller.
+* Got rid of [C:/Kernel/Adam1a.HPP.Z,757] CHashDefineStr.caller.
 
 ----11/18/13 12:58:17----
 * Got rid of StrAdd().
-* Optimized [C:/Adam/Doc/DocPlain.CPP.Z,1].
+* Optimized [C:/Adam/DolDoc/DocPlain.CPP.Z,1].
 
 ----11/16/13 17:16:28----
-* Cleaned-up [C:/Kernel/StrPrint.CPP.Z,255] SPrintJoin().  Added %/Q and %/q.
-* Fixed [C:/Kernel/SrvCmd.CPP.Z,426] AdamLog(), etc.
-* Cleaned-up [C:/Kernel/Adam1a.HPP.Z,1194] CDocSettings.
+* Cleaned-up [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().  Added %/Q and
+%/q.
+* Fixed [C:/Kernel/SrvCmd.CPP.Z,422] AdamLog(), etc.
+* Cleaned-up [C:/Kernel/Adam1a.HPP.Z,1122] CDocSettings.
 
 ----11/14/13 07:21:17----
 * **TempleOS version 1.09 Released**
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("DefineSubCnt","DefineCnt");
-* Got rid of DOCEF1_ALIAS.
-* Cleaned-up [C:/Adam/Doc/DocRecalc2b.CPP.Z,248] DocRecalc().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DefineSubCnt","DefineCnt");
+* Got rid of DOCEF_ALIAS.
+* Cleaned-up [C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc().
 
 ----11/12/13 17:14:46----
-* Cleaned-up [C:/Compiler/Lex.CPP.Z,167] LexGetChar().
+* Cleaned-up [C:/Compiler/Lex.CPP.Z,156] LexGetChar().
 
 ----11/10/13 10:18:41----
 * Added [C:/Apps/AfterEgypt/Horeb2MP.CPP.Z,1].
@@ -94,33 +483,33 @@ R("WIF_ALL","WIG_TASK_DFT-WIF_FOCUS");
 
 ----11/08/13 22:01:52----
 * Tweeked disk code.
-* Added [C:/Kernel/KGlbls.CPP.Z,55] HPET_initial.
+* Added cnts.HPET_initial.
 * Compiler uses smaller switch() jmp tables.
 
 ----11/06/13 11:01:04----
 * Improved [C:/Kernel/Dsk/DskATA.CPP.Z,105] ATAPIWritePktWord().
 * Got rid of RawI64(), RawF64(), RawStr(), RawAdd().
 * Got rid of $HI,""$ and $HV,""$.
-* Compiler optimization on [C:/Kernel/Adam1b.HPP.Z,57] Bt().
+* Compiler optimization on [C:/Kernel/Adam1b.HPP.Z,11] Bt().
 
 ----11/05/13 01:51:23----
 * Set RedSea FileSystem sectors-per-cluster to one.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GrScaleMatEqu","GrScaleEqu");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GrScaleMat","GrScaleNew");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GrScaleMatEqu","GrScaleEqu");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GrScaleMat","GrScaleNew");
 
 ----11/02/13 18:34:53----
 * **TempleOS version 1.08 Released**
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GrRotX","GrRotXNew");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GrRotX","GrRotXNew");
 
 ----11/01/13 19:32:27----
 * Added HolyC feature: [C:/Demo/SubSwitch.CPP.Z,1].
 * Added [C:/Adam/Utils/Diff.CPP.Z,314] ZipRep() to spot files with redundancy.
-* Cleaned-up [C:/Adam/Doc/Doc.CPP.Z,22] DocInit().
+* Cleaned-up [C:/Adam/DolDoc/DocInit.CPP.Z,3] DocInit().
 
 ----10/30/13 09:23:45----
-* Added [C:/Kernel/Hash1b.CPP.Z,147] HashLstAdd() and
-[C:/Kernel/Hash1b.CPP.Z,168] HashDefineLstAdd().
-* Added [C:/Kernel/Adam1a.HPP.Z,1343] DOCf_COLOR_NAMES.
+* Added [C:/Kernel/Hash1b.CPP.Z,178] HashLstAdd() and
+[C:/Kernel/Hash1b.CPP.Z,199] HashDefineLstAdd().
+* Added [C:/Kernel/Adam1a.HPP.Z,1267] DOCf_COLOR_NAMES.
 * Cleaned-up [C:/Adam/Utils/Diff.CPP.Z,1].
 
 ----10/24/13 16:36:04----
@@ -130,29 +519,29 @@ OP RBP.
 
 ----10/24/13 03:48:22----
 * Added [C:/Kernel/Hash1b.CPP.Z,104] HashTablePurge().
-* Added [C:/Kernel/Adam1a.HPP.Z,633] HTF_RESOLVE.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+* Added [C:/Kernel/Adam1a.HPP.Z,665] HTF_RESOLVE.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
 R("MakeOSInstallPrtBootLoader","MakeOSPrtBootInstall");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
 R("InstallMasterBootLoader","MasterBootInstall");
 
 ----10/22/13 20:58:42----
-* Changed [C:/Kernel/Utils1a.CPP.Z,460] SET_GS_BASE and
-[C:/Kernel/MultiProc.CPP.Z,123] CPUStructInit().
+* Changed [C:/Kernel/Utils1a.CPP.Z,435] SET_GS_BASE and
+[C:/Kernel/MultiProc.CPP.Z,121] CPUStructInit().
 
 ----10/21/13 09:44:21----
 * Added [C:/Demo/DateTime.CPP.Z,1].
 
 ----10/19/13 12:45:33----
-* Got rid of DCT_COLOR8 check and fixed [C:/Adam/Gr/GrBitMap.CPP.Z,883]
+* Got rid of DCT_COLOR check and fixed [C:/Adam/Gr/GrBitMap.CPP.Z,885]
 GrRect().
 
 ----10/18/13 06:56:31----
 * **TempleOS version 1.07 Released**
 * Changed %D %T -- got rid of subcodes.
 * Got rid of LTrace() and PTrace().
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GetDateTime","Now");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Date2DateStruct","Date2Struct");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GetDateTime","Now");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Date2DateStruct","Date2Struct");
 
 ----10/14/13 02:59:18----
 * Fixed compiler bug -- floats in triple compare.
@@ -161,29 +550,29 @@ GrRect().
 * Improved Compiler.
 
 ----10/10/13 00:12:20----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("PutChar","PutChars");
-* Changed [C:/Adam/Doc/DocPopUp.CPP.Z,1] DocEntryRun().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("PutChar","PutChars");
+* Changed [C:/Adam/DolDoc/DocPopUp.CPP.Z,3] DocEntryRun().
 
 ----10/05/13 08:16:36----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("tMBeat","Beat");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("tMBeat","Beat");
 * Moved directories under /TempleOS directory up to root directory.
 
 ----10/03/13 20:25:16----
-* Improved [C:/Adam/Doc/DocMain.CPP.Z,3] Ed() code.
-* Added [C:/Apps/MusicOrgan/JukePuppet.CPP.Z,1].
+* Improved [C:/Adam/DolDoc/DocMain.CPP.Z,3] Ed() code.
+* Added [C:/Apps/Psalmody/JukePuppet.CPP.Z,1].
 
 ----09/29/13 15:42:18----
-* Added [C:/Adam/Doc/DocBible.CPP.Z,147] DocBibleLines().
+* Added [C:/Adam/God/GodBible.CPP.Z,210] BibleLines().
 
 ----09/27/13 23:55:48----
 * **TempleOS version 1.06 Released**
-* Renumbered sprite commands -- old sprites are invalid until converted. 
-[C:/Misc/SpriteCvt0106.CPP.Z,1].
+* Renumbered sprite commands -- old sprites are invalid until converted. ::/Mi
+sc/SpriteCvt0106.CPP.
 
 ----09/27/13 07:03:37----
 * Added haserrcode keyword to compiler to help make interrupt handlers. See 
 [C:/Demo/Lectures/PageTableEntries2.CPP.Z,1].
-* Improved compiler's [C:/Compiler/StmtParser.CPP.Z,823] PrsClass().
+* Improved compiler's [C:/Compiler/StmtParser.CPP.Z,785] PrsClass().
 
 ----09/25/13 20:59:12----
 * Made compiler N passes.
@@ -191,10 +580,10 @@ GrRect().
 * Fixed signed and unsigned asm opcodes.  (Optimizes some cases.)
 * Moved compiler to low mem.
 * Added lastclass as a special compiler dft arg.
-* Used  lastclass in [C:/Adam/Dbg2a.CPP.Z,134] ClassRep() and
-[C:/Adam/Doc/DocPopUp.CPP.Z,299] DocFormDo().
-* Chged arg order in [C:/Adam/Dbg2a.CPP.Z,134] ClassRep().
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("NamedFrame","Frame");
+* Used  lastclass in [C:/Adam/Dbg2a.CPP.Z,152] ClassRep() and
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo().
+* Chged arg order in [C:/Adam/Dbg2a.CPP.Z,152] ClassRep().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("NamedFrame","Frame");
 * Changed imports in binary file format.
 
 ----09/25/13 00:12:26----
@@ -202,267 +591,102 @@ GrRect().
 
 ----09/14/13 22:16:43----
 * Added [C:/Demo/Carry.CPP.Z,1].
-* Got rid of [C:/Kernel/Adam1a.HPP.Z,2331] CDirEntry.expanded_size.
+* Got rid of [C:/Kernel/Adam1a.HPP.Z,2450] CDirEntry.expanded_size.
   **!!! Warning !!!** RedSea file system is different, old RedSea partitions
 will
   not work.
 
 ----09/11/13 14:17:45----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13]
 R("FUF_JUST_TXT_FILES","FUF_JUST_TXT");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("FILENAME_MASK","FILEMASK");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Lit","Imm");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("FILENAME_MASK","FILEMASK");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Lit","Imm");
 * Compiler optimization: Compare immediates.
 
 ----08/31/13 14:36:22----
-* Made [C:/Kernel/Misc1a.CPP.Z,150] tS use [C:/Kernel/Adam1b.HPP.Z,200] HPET
+* Made [C:/Kernel/Misc1a.CPP.Z,122] tS use [C:/Kernel/Adam1b.HPP.Z,237] HPET
 if available.
 
 ----08/30/13 03:21:38----
 * **TempleOS version 1.05 Released**
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GetCurTimeDate","Now");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GetTimeStamp","GetTSC");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GetF","Scan");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("BASE_PTR","RBP");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("STK_PTR","RSP");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Getlags","GetRFlags");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("SetFlags","SetRFlags");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GetCurTimeDate","Now");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GetTimeStamp","GetTSC");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("GetF","Scan");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("BASE_PTR","RBP");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("STK_PTR","RSP");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Getlags","GetRFlags");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SetFlags","SetRFlags");
 * Changed args on [C:/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("SearchStr","StrFind"); and change
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("SearchStr","StrFind"); and change
 args.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("WildCardMatch","WildMatch"); and
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("WildCardMatch","WildMatch"); and
 change args.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("StrStr","StrMatch"); and changed
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("StrStr","StrMatch"); and changed
 args.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("LstEntryMatch","LstMatch");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("LstEntryPt","LstSub");
-* Added [C:/Kernel/Dbg1a.CPP.Z,222] RawPrint().
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("DbgI64","RawI64"); etc.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("MSPrintF","MPrint");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("PrintF","Print");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("AFDelayedPutS","AFPrint");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("LstEntryMatch","LstMatch");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("LstEntryPt","LstSub");
+* Added [C:/Kernel/Dbg1a.CPP.Z,215] RawPrint().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DbgI64","RawI64"); etc.
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("MSPrintF","MStrPrint");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("PrintF","Print");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("AFDelayedPutS","AFPrint");
 * Converted PutS to Print
 
 ----08/28/13 13:00:02----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("HashRep","Who");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("HashRep","Who");
 * Converted file utils to flattened list.
 * Got rid of "hidden widgets".
 
 ----08/27/13 19:31:01----
 * Fixed [C:/Kernel/Math1b.CPP.Z,172] Randomize().
-* Added [C:/Adam/Doc/DocPopUp.CPP.Z,633] PopUpI64().
+* Added [C:/Adam/DolDoc/DocPopUp.CPP.Z,658] PopUpGetI64().
 * Added seed to [C:/Apps/ToTheFront/ToTheFront.CPP.Z,1].
 
 ----08/27/13 12:13:35----
 * Got rid of IOSnd().
-* Got rid of [C:/Kernel/Adam1a.HPP.Z,2331] CDirEntry.xsum
+* Got rid of [C:/Kernel/Adam1a.HPP.Z,2450] CDirEntry.xsum
 
 ----08/26/13 15:54:09----
 * Improved [C:/Demo/Games/EagleDive.CPP.Z,1].
-* Improved [C:/Apps/HolySpirit/HolySpirit.CPP.Z,1].
+* Improved [C:/Adam/God/HolySpirit.CPP.Z,1].
 * Songs
 
 ----08/20/13 11:19:56----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("CDirEntryDel","DirEntryDel");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("CDirEntryDel","DirEntryDel");
 
 ----08/12/13 08:42:47----
 * Added [C:/Demo/Graphics/PanText.CPP.Z,1].
-* Added [C:/Adam/Gr/GrScreen.CPP.Z,28] gr_pan_text_x,
-[C:/Adam/Gr/GrScreen.CPP.Z,28] gr_pan_text_y.
+* Added [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.pan_text_x,
+[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.pan_text_y.
 * Fixed compiler bug -- Pow() operator type conversion.
 
 ----08/04/13 10:31:36----
 * New Logo
 
 ----07/27/13 07:17:43----
-* Fixed bug in [C:/Apps/MusicOrgan/MakeSong.CPP.Z,1].
-* Improved [C:/Adam/Gr/GrComposites.CPP.Z,9] GrRect3();
+* Fixed bug in [C:/Adam/God/GodSong.CPP.Z,1].
+* Improved [C:/Adam/Gr/GrComposites.CPP.Z,75] GrRect3();
 
 ----07/25/13 08:01:06----
-* Fixed [C:/Kernel/Adam1a.HPP.Z,2617] ROP_XOR in
-[C:/Adam/Gr/GrBitMap.CPP.Z,883] GrRect().
+* Fixed [C:/Kernel/Adam1a.HPP.Z,2832] ROP_XOR in
+[C:/Adam/Gr/GrBitMap.CPP.Z,885] GrRect().
 
 ----07/24/13 22:56:09----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("SpritePlot3b","SpritePlot3B");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("P3I32","D3I32");
-* Added [C:/Adam/Gr/GrComposites.CPP.Z,2] GrRectB().
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Sprite3b","Sprite3B");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("P3I32","D3I32");
+* Added [C:/Adam/Gr/GrComposites.CPP.Z,68] GrRectB().
 
 ----07/14/13 21:14:25----
 * Fixed bug with saved cursor location.
 
 ----07/12/13 11:54:11----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("CONSTANT","CONST");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("CONSTANT","CONST");
 
 ----07/11/13 22:52:45----
-* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,492] Auto().
+* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,480] Auto().
 * Added score to [C:/Demo/Games/Varoom.CPP.Z,1].
 
 ----07/08/13 05:12:13----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Expression","LexExpression");
+* [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Expression","LexExpression");
 * Cleaned-up compiler.
 * Made graphics routines return I64, not Bool.
-
-----06/30/13 00:41:54----
-* **TempleOS version 1.04 Released**
-* Fixed [C:/Apps/Span/SpanMain.CPP.Z,1].
-* Added [C:/Kernel/Adam1a.HPP.Z,2866] CTask.border_src and
-[C:/Kernel/Adam1a.HPP.Z,2866] CTask.title_src.
-* Cleaned-up [C:/Kernel/Adam1a.HPP.Z,2866] CTask.task_title.
-
-----06/27/13 07:11:00----
-* Cleaned-up [C:/Kernel/Adam1a.HPP.Z,2866] CTask.text_attr and
-[C:/Kernel/Adam1a.HPP.Z,2866] CTask.border_attr.
-* Got rid of [C:/Kernel/Adam1a.HPP.Z,1398] CDoc.start_text_attr.
-* Got rid of custom doc widget colors and custom syntax highlighting colors.
-
-----06/18/13 06:54:12----
-* Made /Adam/Utils directory.
-
-----06/16/13 17:46:40----
-* **TempleOS version 1.03 Released**
-* Made better [C:/Demo/Graphics/PixelCollision.CPP.Z,1].
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("gr_dc2","gr_dc");
-* Improved PSect code.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("CDate","Date");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("MPJob","JobQue");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("MPSpawn","Spawn");
-* Changed args to [C:/Kernel/Task1a.CPP.Z,230] Spawn(). 
-* Got rid of cpu_mask in multicore API.
-
-----06/15/13 02:18:23----
-* Worked on [C:/Apps/ToTheFront/ToTheFront.CPP.Z,1].
-
-----06/14/13 17:12:47----
-* Made so [C:/Kernel/MultiProc.CPP.Z,243] JobQue() and
-[C:/Kernel/Task1a.CPP.Z,230] Spawn() can work with core#0.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Servant","Srv");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Execute","Exe");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("MPJobResult","[C:/Kernel/SrvCmd.CPP.Z,207] GetResult");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("GetRqstResult","[C:/Kernel/SrvCmd.CPP.Z,172] ScanResult");
-* Merged CMPCmd into [C:/Kernel/Adam1a.HPP.Z,898] CSrvCmd.
-
-----06/12/13 13:29:08----
-* Added coffins to [C:/Demo/Games/CastleFrankenstein.CPP.Z,1].
-* Fixed MeshEditor bug.
-
-----06/12/13 10:49:53----
-* Renamed games.
-* Added AddOutline and Etch to <CTRL-R> bitmap edit menu.
-* Changed [C:/Demo/Games/BulgeBomber.CPP.Z,1].
-
-----06/02/13 21:25:49----
-* Got rid of 3 arg in-line (built-in) functions.
-* Got rid of ? : operator.
-* Improved unassembler code.
-* Improved compiler code.
-
-----05/27/13 08:15:31----
-* **TempleOS version 1.02 Released**
-* Added help to <CTRL-R>.
-* Added PopUp flag for links.
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("Triangle","Tri");
-
-----05/25/13 13:47:35----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("PopUpDitherColor","PopUpColorDither");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("PopUpLightingColor","PopUpColorLighting");
-* Changed sprite edit.
-
-----05/24/13 20:15:47----
-* Fixed compiler bug involving passing float array to function.
-
-----05/16/13 07:09:21----
-* Changed [C:/Adam/Doc/DocMain.CPP.Z,224] DocPutLine().
-* Moved tag to [C:/Kernel/Adam1a.HPP.Z,1205] CDocEntryBase.
-
-----05/12/13 14:15:07----
-* Improved documentation.
-* Moved profiler from Adam2 to Adam3.
-
-----05/11/13 03:31:59----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13]
-R("MemPtAtPageTableEntry","MemPageTable");
-* Removed CGrVectMap.
-* Removed demos: WinMgr2, Bling, Noise, Layers3DJob, Rocks, MissileDefense, 
-Chess and Pilgrim.
-* Removed hooks for HD Audio.
-* Removed accents and waveforms from [C:/Adam/Snd/Music.CPP.Z,91] Play().
-
-----05/08/13 13:04:22----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("NativeFS","RedSeaFS");
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("C+","HolyC");
-
-----04/30/13 06:15:35----
-* [C:/Accts/TAD/Adam3eWrappers.CPP.Z,13] R("GameStarters","Games");
-
-----04/26/13 07:25:50----
-* Fixed bug with Bible links.
-
-----04/10/13 12:41:18----
-* dft_drv is now *sys_acct.
-* Made so RAM drives are not reformatted at boot.
-* **WARNING**: Added new prompt to RAM disk creation.
-* Added [C:/Compiler/CmpMain.CPP.Z,598] StreamExePrint().
-
-----04/08/13 10:46:20----
-* **TempleOS version 1.01 Released**
-* Compiler optimization for [C:/Kernel/Adam1b.HPP.Z,57] Bt(),
-[C:/Kernel/Adam1b.HPP.Z,58] Bts(), [C:/Kernel/Adam1b.HPP.Z,59] Btr(), etc.
-
-----04/06/13 07:39:53----
-* Added [C:/Compiler/OptLib.CPP.Z,9] OptClassFwd() and
-[C:/Compiler/OptLib.CPP.Z,1] OptLabelFwd().
-
-----04/04/13 06:54:53----
-* Cleaned-up ::/Apps/AfterEgypt/Horeb.CPP".
-
-----04/04/13 03:31:30----
-* Cleaned-up ::/Demo/Games/Rocks.CPP.Z.
-* Cleaned-up compiler code.
-* Improved [C:/Demo/Snd/WaterFowl.CPP.Z,1].
-
-----04/02/13 16:58:49----
-* Redid ReIndent in <CTRL-SHIFT-L> menu.  Got rid of old nasty indent code.
-* Added CompileChk to <CTRL-SHIFT-L> menu.
-* Changed [C:/Compiler/Lex.CPP.Z,37] LexNew() filename arg.
-* Added [C:/Compiler/Lex.CPP.Z,396] LexAttachDoc() to replace LexIncludeDoc().
-* Fixed registry bug.
-
-----04/02/13 03:09:24----
-* Warning: Changed [C:/Adam/Boot/DskCDDVD.CPP.Z,328] CDFileCreate().
-* Improved [C:/Adam/Boot/DskCDDVD.CPP.Z,1].
-* Improved [C:/Adam/WallPaper.CPP.Z,1].
-
-----03/31/13 20:15:32----
-* Added background to [C:/Demo/Games/Squirt.CPP.Z,1].
-* Added background to [C:/Demo/Games/ZoneOut.CPP.Z,1].
-* Added option to edit sprite bitmap extents as text. 
-[C:/Adam/Gr/SpriteMain.CPP.Z,65] PopUpExtents().
-* Added background to [C:/Demo/Graphics/Camp.CPP.Z,1], Quail and Clouds.
-
-----03/30/13 16:32:31----
-* Changed [C:/Kernel/Adam1a.HPP.Z,1398] CDoc que to put_doc, display_doc, and
-border_doc.
-* Got rid of HDAudio support -- never worked for very many people.
-
-----03/27/13 04:18:15----
-* Changed Tour
-`Cd("::/Misc/Tour");;AutoFile("Tour");
-`
-.
-
-----03/24/13 14:44:28----
-* Made [C:/Kernel/Display.CPP.Z,199] PutChars('Hello') accept multiple chars.
- This is tricky.  My compiler 
-allows multi-byte char consts.
-
-----03/19/13 16:18:53----
-* Added [C:/Adam/Doc/DocFile.CPP.Z,428] DocType() and
-[C:/Adam/Doc/DocEd2b.CPP.Z,644] DocNewLine().
-* Added option for extra new_lines to [C:/Adam/Doc/DocFile.CPP.Z,458] Type().
-
-----03/19/13 00:38:44----
-* **TempleOS version 1.00 Released**

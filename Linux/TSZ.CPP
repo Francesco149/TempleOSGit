@@ -12,8 +12,6 @@ typedef unsigned short WORD;
 typedef unsigned int DWORD;
 typedef unsigned char BOOL;
 
-#define NATIVE_XSUM	0xA5CF3796
-
 #define ARC_MAX_BITS 12
 #define ARC_MAX_TABLE_ENTRY ((1<<ARC_MAX_BITS)-1)
 
@@ -306,8 +304,8 @@ int main(int argc, char* argv[])
     convert(name,cvt_ascii);
   else
     puts("TSZ [-ascii] filename\r\n\r\n"
-	 "TSZ expands a single SparrowOS file.\r\n"
-	 "The -ascii flag will convert nonstandard SparrowOS\r\n"
+	 "TSZ expands a single TempleOS file.\r\n"
+	 "The -ascii flag will convert nonstandard TempleOS\r\n"
 	 "ASCII characters to regular ASCII.\r\n"
     );
  

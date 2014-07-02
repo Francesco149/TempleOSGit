@@ -1,65 +1,47 @@
-Bool OptEqu(I64 num,Bool val) {
+Bool OptEqu(I64 num,Bool val)
+{//Set compiler option to value.
   return BEqu(&Fs->last_lex->opts,num,val);
 }
 
-//Turn on compiler option
-Bool OptOn(I64 num) {
+Bool OptOn(I64 num)
+{//Turn on compiler option.
   return OptEqu(num,ON);
 }
 
-//Turn off compiler option
-Bool OptOff(I64 num) {
+Bool OptOff(I64 num)
+{//Turn off compiler option.
   return OptEqu(num,OFF);
 }
 
-//Get state of compiler option
-Bool GetOpt(I64 num) {
+Bool GetOpt(I64 num)
+{//Get state of compiler option.
   return Bt(&Fs->last_lex->opts,num);
 }
 
-//Displays intermediate code after passes through optimization
-Bool OTrace(Bool val) {
+Bool OTrace(Bool val)
+{//Displays intermediate code after passes through optimization.
   return OptEqu(OPTf_OPT_TRACE,val);
 }
 
-//Ctrls which optimizer passes are displayed
-I64 OTraceMask(I64 i=0b1001111101) {
+I64 OTraceMask(I64 i=0b1001111101)
+{//Ctrls which optimizer passes are displayed.
   I64 old=Fs->last_lex->pass_trace_mask;
   Fs->last_lex->pass_trace_mask=i;
   return old;
 }
 
-//Displays assembly code output
-Bool CTrace(Bool val) {
+Bool CTrace(Bool val)
+{//Displays assembly code output from compiler.
   return OptEqu(OPTf_COMPILE_TRACE,val);
 }
 
-//Displays text as it is being compiled
-Bool Echo(Bool val) {
+Bool Echo(Bool val)
+{//Displays text as it is being compiled.
   return OptEqu(OPTf_ECHO,val);
 }
 
-U0 ImportHashTable(CHashTable *src)
-{ //called from #exe {} in AOT modules
-  // See [C:/Kernel/AOT.HPP.Z,1].
-  CLex *lx=Fs->last_lex;
-  if (lx==&Fs->next_lex)
-    PrintErr("Not Compiling\n");
-  else {
-    if (!(lx->flags&LF_EXE_BLK))
-      LexExcept(lx,"ST_IMPORT_HASH_TABLE_NOT_ALLOWED");
-    while (src) {
-      if (lx->htc.next && lx->htc.next->glbl_hash_table)
-	HashTableImport(src,lx->htc.next->glbl_hash_table);
-      else if (lx->htc.glbl_hash_table)
-	HashTableImport(src,lx->htc.glbl_hash_table);
-      src=src->next;
-    }
-  }
-}
-
 I64 IncludeDepth()
-{
+{//Returns how many #includes we are in. See [C:/Demo/Graphics/Camp.CPP.Z,1] IncludeDepth.
   CLex *lx=Fs->last_lex;
   return lx->cur_lfn-&lx->lfns;
 }
@@ -88,44 +70,43 @@ U0 ICClassPut(CHashClass *c)
   '' CH_SPACE;
 }
 
-
-U0 ICArgPut(CICArg *p)
+U0 ICArgPut(CICArg *a)
 {
-  if (p->type_pointed)
+  if (a->type_pointed)
     "%Z %Z %Z ",
-      p->type&RT_MASK,"ST_IT_TYPES",
-      p->type_pointed&RT_MASK,"ST_IT_TYPES",
-      p->type>>4,"ST_TY_TYPES";
+      a->type&RT_MASK,"ST_RAW_TYPES",
+      a->type_pointed&RT_MASK,"ST_RAW_TYPES",
+      a->type>>4,"ST_TY_TYPES";
   else
     "%Z %Z ",
-      p->type&RT_MASK,"ST_IT_TYPES",
-      p->type>>4,"ST_TY_TYPES";
-  switch (p->type>>4) {
+      a->type&RT_MASK,"ST_RAW_TYPES",
+      a->type>>4,"ST_TY_TYPES";
+  switch (a->type>>4) {
     case TY_STK>>4:
       "STK";
       break;
     case TY_IMM>>4:
-      "#%X",p->disp;
+      "#%X",a->disp;
       break;
     case TY_REG>>4:
-      "%Z",p->reg,"ST_U64_REGS";
+      "%Z",a->reg,"ST_U64_REGS";
       break;
     case TY_DISP>>4:
-      "%X[%Z]",p->disp,p->reg,"ST_U64_REGS";
+      "%X[%Z]",a->disp,a->reg,"ST_U64_REGS";
       break;
     case TY_RIP_DISP32>>4:
-      "[%X]",p->disp;
+      "[%X]",a->disp;
       break;
     case TY_SIB>>4:
-      if (p->disp)
-	"%X",p->disp;
-      if (p->reg==REG_RIP)
+      if (a->disp)
+	"%X",a->disp;
+      if (a->reg==REG_RIP)
 	'[';
       else
-	"[%Z+",p->reg&7,"ST_U64_REGS";
-      "%Z",p->reg>>8&7,"ST_U64_REGS";
-      switch (p->reg>>14) {
-	case 0: "]"; break;
+	"[%Z+",a->reg&15,"ST_U64_REGS";
+      "%Z",a->reg>>8&15,"ST_U64_REGS";
+      switch (a->reg>>14) {
+	case 0: "]";   break;
 	case 1: "*2]"; break;
 	case 2: "*4]"; break;
 	case 3: "*8]"; break;
@@ -155,13 +136,13 @@ U0 ICPut(CIntermediateCode *tempi)
     if (tempi->ic_flags & ICF_LOCK)
       "$BROWN$lock$FG$ ";
     if (tempi->ic_flags & ICF_A2_TO_F64)
-      "$LTBLUE$p2d$FG$ ";
+      "$LTBLUE$a2d$FG$ ";
     if (tempi->ic_flags & ICF_A2_TO_INT)
-      "$GREEN$p2i$FG$ ";
+      "$GREEN$a2i$FG$ ";
     if (tempi->ic_flags & ICF_A1_TO_F64)
-      "$LTBLUE$p1d$FG$ ";
+      "$LTBLUE$a1d$FG$ ";
     if (tempi->ic_flags & ICF_A1_TO_INT)
-      "$GREEN$p1i$FG$ ";
+      "$GREEN$a1i$FG$ ";
     if (tempi->ic_flags & ICF_R_TO_F64)
       "$LTBLUE$rd$FG$ ";
     if (tempi->ic_flags & ICF_R_TO_INT)
@@ -186,7 +167,7 @@ U0 ICPut(CIntermediateCode *tempi)
       "POP_CMP ";
     if (tempi->ic_flags & ICF_DEL_PREVIOUS_INS)
       "DELINS ";
-    for (i=0;i<4;i++) {
+    for (i=0;i<3;i++) {
       if (Bt(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0+i))
 	"DONT_PUSH#%d ",i;
       if (Bt(&tempi->ic_flags,ICf_DONT_POP_FLOAT0+i))
@@ -194,7 +175,7 @@ U0 ICPut(CIntermediateCode *tempi)
     }
     if (tempi->ic_flags & ICF_ALTERNATE_TEMPLATE)
       "ALT_TEMP ";
-    NewLine;
+    '\n';
   }
 }
 
@@ -285,10 +266,9 @@ CLexCodeMisc *LCCGoToLabelFind(CLex *lx,U8 *name)
 {
   CLexCodeMisc *mc=lx->lcc.lcc_next_misc;
   while (mc!=&lx->lcc.lcc_next_misc) {
-    if (mc->type==CMT_GOTO_LABEL) {
-      if (!StrCmp(mc->str,name))
-	return mc;
-    }
+    if ((mc->type==CMT_GOTO_LABEL||mc->type==CMT_ASM_LABEL) &&
+	!StrCmp(mc->str,name))
+      return mc;
     mc=mc->next;
   }
   return NULL;
@@ -316,22 +296,23 @@ I64 LCCFloatConstFind(CLex *lx,F64 d)
   return mc->addr;
 }
 
-U0 LCCDel(CLex *lx)
+U0 LCCDel(CLex *lx,CLexCodeCtrl *lcc)
 {
   CLexCodeMisc *mc,*mc1;
   U8 *undef=NULL;
-  QueDel(&lx->lcc.lcc_root.next);
-  mc=lx->lcc.lcc_next_misc;
-  while (mc!=&lx->lcc.lcc_next_misc) {
+  QueDel(&lcc->lcc_root.next);
+  mc=lcc->lcc_next_misc;
+  while (mc!=&lcc->lcc_next_misc) {
     mc1=mc->next;
     switch (mc->type) {
       case CMT_GOTO_LABEL:
+      case CMT_ASM_LABEL:
 	if (!(mc->flags&CMF_DEFINED)) {
 	  undef=mc->str;
 	  mc->str=NULL;
 	} else if (!mc->use_cnt) {
-	  PrintWarn("%S%s\n","ST_UNUSED_LABEL",mc->str);
-	  LexPutWarn(lx,"ST_UNUSED_LABEL_AT");
+	  PrintWarn("Unused label %s\n",mc->str);
+	  LexWarn(lx,"Unused label at ");
 	}
 	break;
       case CMT_JMP_TABLE:
@@ -352,9 +333,9 @@ U0 LCCDel(CLex *lx)
     mc=mc1;
   }
   if (undef) {
-    PrintErr("%S%s\n","ST_UNDEFINED_GOTO_LABEL",undef);
+    PrintErr("Undefined goto label %s\n",undef);
     Free(undef);
-    LexExcept(lx,"ST_UNDEFINED_GOTO_LABEL_AT");
+    LexExcept(lx,"Undefined goto label at ");
   }
 }
 
@@ -366,35 +347,32 @@ U0 LCCHeaderPut(CLex *lx,I64 pass,Bool put)
 	"$IV,1$Pass %d:$IV,0$\n",pass-1;
 	LCCQuePut(lx);
       }
-    } else {
-      if (Bt(&lx->pass_trace_mask,pass))
-	"$IV,1$Pass %d:$IV,0$\n",pass;
-    }
+    } else if (Bt(&lx->pass_trace_mask,pass))
+      "$IV,1$Pass %d:$IV,0$\n",pass;
   }
   lx->pass=pass;
 }
 
-U8 *LCCCompile(CLex *lx,CHashFun *fun_class,
-      I64 *_code_size,CDbgInfo **_dbg,I64 *type=NULL)
+U8 *LCCCompile(CLex *lx,I64 *_code_size,CDbgInfo **_dbg,I64 *_type)
 {
-  U8 *result,code_size,last_code_size;
+  U8 *result;
   CLexCodeMisc *lb;
-  I64 i;
+  I64 i,code_size,last_code_size;
 
   COptReg reg_offsets[NUM_REGS];
   if (_dbg) *_dbg=NULL;
   LCCHeaderPut(lx,1,TRUE);
-  OptPass012(lx,fun_class);
+  OptPass012(lx);
   LCCHeaderPut(lx,2,TRUE);
-  OptPass012(lx,fun_class);
+  OptPass012(lx);
   LCCHeaderPut(lx,3,TRUE);
-  OptPass3(lx,fun_class,reg_offsets);
+  OptPass3(lx,reg_offsets);
   LCCHeaderPut(lx,4,TRUE);
-  OptPass4(lx,reg_offsets,type);
+  OptPass4(lx,reg_offsets,_type);
   LCCHeaderPut(lx,5,TRUE);
   OptPass5(lx);
   LCCHeaderPut(lx,6,TRUE);
-  OptPass6(lx,fun_class);
+  OptPass6(lx);
   LCCHeaderPut(lx,7,TRUE);
 
   lb=lx->lcc.lcc_next_misc;
@@ -408,14 +386,16 @@ U8 *LCCCompile(CLex *lx,CHashFun *fun_class,
   }
 
   LCCHeaderPut(lx,7,FALSE);
-  code_size=OptPass789(lx,fun_class,reg_offsets,NULL,NULL);
+  OptPass789(lx,reg_offsets,NULL,NULL);
+  LCCHeaderPut(lx,8,FALSE);
+  code_size=OptPass789(lx,reg_offsets,NULL,NULL);
   do {
     last_code_size=code_size;
     LCCHeaderPut(lx,8,FALSE);
-    code_size=OptPass789(lx,fun_class,reg_offsets,NULL,NULL);
+    code_size=OptPass789(lx,reg_offsets,NULL,NULL);
     if (code_size>last_code_size) {
       "Pass:8 Code Size\n";
-      LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+      LexExcept(lx,"Compiler Optimization Error at ");
     }
   } while (code_size<last_code_size);
 
@@ -424,10 +404,10 @@ U8 *LCCCompile(CLex *lx,CHashFun *fun_class,
   else
     result=MAlloc(code_size,Fs->code_heap);
   LCCHeaderPut(lx,9,FALSE);
-  code_size=OptPass789(lx,fun_class,reg_offsets,result,_dbg);
+  code_size=OptPass789(lx,reg_offsets,result,_dbg);
 
-  compiled_bytes+=code_size;
-  LCCDel(lx);
+  cmp.compiled_bytes+=code_size;
+  LCCDel(lx,&lx->lcc);
   if (Bt(&lx->opts,OPTf_COMPILE_TRACE)) {
     if (lx->flags&LF_AOT_COMPILE) {
       if (lx->a->seg_size==16)

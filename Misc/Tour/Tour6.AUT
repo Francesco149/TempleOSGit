@@ -1,21 +1,20 @@
 PopUpOk(
-"$LK,\"F\",\"MN:F\"$() is a handy function.\n"
+"$LK,\"F\",A=\"MN:F\"$() is a handy function.\n"
 "It is a wrapper around $LK,\"Grep\",\"MN:Grep\"$().\n"
 "It searches for a sym.\n"
 );
 
 PopUpOk("Press $GREEN$<ENTER>$FG$.");
 
-//This puts the cursor at the bottom
+//Puts the cursor at the bottom.
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"F(\"Dir\");";
-AFPmtStr("\n");
+"F(\"RED\");";
+AFGetStr("\n");
+Sleep(3000);
 
-
-
-
+PopUpOk("Notice the number of matches.\n");
 
 PopUpOk(
 "Try it with the $GREEN$+l$FG$ flag.\n"
@@ -23,16 +22,15 @@ PopUpOk(
 
 PopUpOk("Press $GREEN$<ENTER>$FG$.");
 
-//This puts the cursor at the bottom
+//Puts the cursor at the bottom.
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"F(\"Dir\",\"+l\");";
-AFPmtStr("\n");
+"F(\"RED\",\"+l\");";
+AFGetStr("\n");
+Sleep(3000);
 
-
-
-
+PopUpOk("Notice the number of matches.\n");
 
 PopUpOk(
 "Try it with the $GREEN$+l-i$FG$ flag.\n"
@@ -41,36 +39,36 @@ PopUpOk(
 
 PopUpOk("Press $GREEN$<ENTER>$FG$.");
 
-//This puts the cursor at the bottom
+//Puts the cursor at the bottom.
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"F(\"Dir\",\"+l-i\");";
-AFPmtStr("\n");
+"F(\"RED\",\"+l-i\");";
+AFGetStr("\n");
+Sleep(3000);
 
-
-
+PopUpOk("Notice the number of matches.\n");
 
 PopUpOk(
 "The wrapper function is in your\n"
-"$RED$HOME/Adam3eWrappers.CPP.Z$FG$ file.\n"
+"$RED$HOME/Adam3dWrappers.CPP.Z$FG$ file.\n"
 "There is a function $LK,\"R\",\"MN:R\"$() for\n"
 "find and replace.  Feel free to customize.\n");
 
 PopUpOk("Press $GREEN$<ENTER>$FG$.");
 
-//This puts the cursor at the bottom
+//Puts the cursor at the bottom.
 Msg(MSG_KEY_DOWN,0,SC_CURSOR_DOWN|SCF_CTRL);
 "\n";
 
-"Ed(\"HOME/Adam3eWrappers.CPP.Z\");";
-AFPmtStr("\n");
-
+"Ed(\"HOME/Adam3dWrappers.CPP.Z\");";
+AFGetStr("\n");
 Sleep(2000);
+
 PopUpOk(
 "$GREEN$<SHIFT-ESC>$FG$ to abort the source code.\n");
-AFUntilChar(CH_SHIFT_ESC,CH_ESC);
+AFUntilChar(CH_ESC,CH_SHIFT_ESC);
 
 PopUpOk(
-"$GREEN$+lf$FG$ is whole label just front.\n"
-"$GREEN$+lb$FG$ is whole label just back.\n");
+"$GREEN$+lb$FG$ is whole label just before.\n"
+"$GREEN$+la$FG$ is whole label just after.\n");

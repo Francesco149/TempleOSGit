@@ -1,5 +1,5 @@
 //See [C:/Doc/Acknowledgements.TXT.Z,1].
-//See [C:/Kernel/Adam1a.HPP.Z,3345] CArcCompress, [C:/Kernel/Adam1a.HPP.Z,3312] CArcEntry, and [C:/Kernel/Adam1a.HPP.Z,3320] CArcCtrl
+//See [C:/Kernel/Adam1a.HPP.Z,3673] CArcCompress, [C:/Kernel/Adam1a.HPP.Z,3646] CArcEntry, and [C:/Kernel/Adam1a.HPP.Z,3654] CArcCtrl
 
 asm {
 USE64
@@ -100,16 +100,6 @@ _ARC_GET_ENTRY::
 
 _extern _ARC_GET_ENTRY U0 ArcGetEntry(CArcCtrl *c);
 
-
-I64 ArcXSum(U32 *src,I64 size)
-{
-  I64 result=0;
-  size>>=2;
-  while (size--)
-    result^=*src++;
-  return result;
-}
-
 I64 ArcDetermineCompressionType(U8 *src,I64 size)
 {
   while (size--)
@@ -119,12 +109,10 @@ I64 ArcDetermineCompressionType(U8 *src,I64 size)
 }
 
 U0 ArcCompressBuf(CArcCtrl *c)
-//Use [C:/Kernel/Compress.CPP.Z,263] CompressBuf() unless you are doing
-//more than one buffer.
-{
+{//Use [C:/Kernel/Compress.CPP.Z,249] CompressBuf() unless doing more than one buf.
   CArcEntry *temp,*temp1;
-  I64 basecode;
-  U8 *src_ptr,*src_limit,ch;
+  I64 ch,basecode;
+  U8 *src_ptr,*src_limit;
 
   src_ptr=c->src_buf+c->src_pos;
   src_limit=c->src_buf+c->src_size;
@@ -166,7 +154,7 @@ ac_done:
 }
 
 U0 ArcFinishCompression(CArcCtrl *c)
-{
+{//Do closing touch on archivew ctrl struct.
   if (c->dst_pos+c->cur_bits_in_use<=c->dst_size) {
     BFieldOrU32(c->dst_buf,c->dst_pos,c->saved_basecode);
     c->dst_pos+=c->next_bits_in_use;
@@ -174,9 +162,7 @@ U0 ArcFinishCompression(CArcCtrl *c)
 }
 
 U0 ArcExpandBuf(CArcCtrl *c)
-//Use [C:/Kernel/Compress.CPP.Z,298] ExpandBuf() unless you know what
-//you're doing.
-{
+{//Use [C:/Kernel/Compress.CPP.Z,284] ExpandBuf() unless you know what you're doing.
   U8 *dst_ptr,*dst_limit;
   I64 basecode,lastcode,code;
   CArcEntry *temp,*temp1;
@@ -232,7 +218,7 @@ U0 ArcExpandBuf(CArcCtrl *c)
 }
 
 CArcCtrl *ArcCtrlNew(Bool expand,Bool seven_bit)
-{
+{//MAlloc archive ctrl struct.
   CArcCtrl *c;
   c=CAlloc(sizeof(CArcCtrl));
   if (expand) {
@@ -255,13 +241,13 @@ CArcCtrl *ArcCtrlNew(Bool expand,Bool seven_bit)
 }
 
 U0 ArcCtrlDel(CArcCtrl *c)
-{
+{//Free archive ctrl struct.
   Free(c->stk_base);
   Free(c);
 }
 
 CArcCompress *CompressBuf(U8 *src,I64 size,I64 flags=0,CTask *mem_task=NULL)
-{
+{//See [C:/Demo/Dsk/SerializeTree.CPP.Z,1].
   CArcCompress *result;
   I64 size_out;
   Bool seven_bit=ArcDetermineCompressionType(src,size)==CT_7_BIT;
@@ -296,7 +282,7 @@ CArcCompress *CompressBuf(U8 *src,I64 size,I64 flags=0,CTask *mem_task=NULL)
 }
 
 U8 *ExpandBuf(CArcCompress *r,CTask *mem_task=NULL)
-{
+{//See [C:/Demo/Dsk/SerializeTree.CPP.Z,1].
   CArcCtrl *c;
   Bool seven_bit;
   U8 *result=MAlloc(r->expanded_size+1,mem_task);

@@ -19,7 +19,6 @@ AcctRegExeBranch("TempleOS/Wenceslas");
 
 
 
-
  
 
 
@@ -29,7 +28,6 @@ AcctRegExeBranch("TempleOS/Wenceslas");
 
 
     /* <4> <4> (image) */
-
 
 
 
@@ -55,8 +53,6 @@ AcctRegExeBranch("TempleOS/Wenceslas");
 
 
 
-
-
     /* <6> <6> (image) */
 
 
@@ -64,12 +60,7 @@ AcctRegExeBranch("TempleOS/Wenceslas");
 
 
 
-
-
-
     /* <7> <7> (image) */
-
-
 
 #define NUM_FLAKES	0x8000
 class Flake
@@ -105,7 +96,7 @@ class Step
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 r[16],i,w=task->win_pixel_width,h=task->win_pixel_height;
+  I64 r[16],i,w=task->pix_width,h=task->pix_height;
   U8 *img;
   Step *temps;
   Peasant *tempp;
@@ -114,7 +105,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   dc->pen_width=1;
   for (i=0;i<NUM_TREES;i++) {
-    if (trees[i].y<=h/2) { //Draw trees behind house
+    if (trees[i].y<=h/2) {//Draw trees behind house
       if (trees[i].fire_frame_index) {
 	if (trees[i].fire_frame_index++&1)
 	  img=__BIN_4;
@@ -122,16 +113,16 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  img=__BIN_5;
       } else
 	img=__BIN_3;
-      SpritePlot3(dc,trees[i].x,trees[i].y,0,img);
+      Sprite3(dc,trees[i].x,trees[i].y,0,img);
     }
   }
 
-  SpritePlot3(dc,w/2,h/2,0,__BIN_6);
-  if (tT<door_open_t0+1.0)
-    SpritePlot3(dc,w/2,h/2,0,__BIN_7);
+  Sprite3(dc,w/2,h/2,0,__BIN_6);
+  if (tS<door_open_t0+1.0)
+    Sprite3(dc,w/2,h/2,0,__BIN_7);
 
   for (i=0;i<NUM_TREES;i++) {
-    if (trees[i].y>h/2) { //Draw trees in front of house
+    if (trees[i].y>h/2) {//Draw trees in front of house
       if (trees[i].fire_frame_index) {
 	if (trees[i].fire_frame_index++&1)
 	  img=__BIN_4;
@@ -139,13 +130,13 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  img=__BIN_5;
       } else
 	img=__BIN_3;
-      SpritePlot3(dc,trees[i].x,trees[i].y,0,img);
+      Sprite3(dc,trees[i].x,trees[i].y,0,img);
     }
   }
 
   temps=step_root.next;
   while (temps!=&step_root) {
-    if (tT-temps->t0<2.0)
+    if (tS-temps->t0<2.0)
       dc->color=DKGRAY;
     else
       dc->color=LTGRAY;
@@ -164,7 +155,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       dc->color=LTCYAN;
     else
       dc->color=CYAN;
-    SpritePlotRotMat3B(dc,tempp->x,tempp->y,0,__BIN_2,r);
+    SpriteMat3B(dc,tempp->x,tempp->y,0,__BIN_2,r);
     tempp=tempp->next;
   }
  
@@ -172,13 +163,13 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrIdentEqu(r);
   GrRotYEqu(r,king_theta+pi/2);
   GrRotXEqu(r,pi/6);
-  SpritePlotRotMat3B(dc,king_x,king_y,0,__BIN_1,r);
+  SpriteMat3B(dc,king_x,king_y,0,__BIN_1,r);
 
   dc->pen_width=1;
   dc->color=WHITE;
   for (i=0;i<NUM_FLAKES;i++)
-    GrPlot(dc,(flakes[i].x+snow_x)%task->win_pixel_width,
-		(flakes[i].y+snow_y)%task->win_pixel_height);
+    GrPlot(dc,(flakes[i].x+snow_x)%task->pix_width,
+		(flakes[i].y+snow_y)%task->pix_height);
  
   if (tf) {
     dc->color=LTRED;
@@ -186,7 +177,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       GrPrint(dc,w/2-(FONT_WIDTH*14)/2,h/2+FONT_HEIGHT,"Game Completed");
     tt=tf;
   } else {
-    tt=tT;
+    tt=tS;
   }
   dc->color=LTBLUE;
   GrPrint(dc,0,0,"Freezing Peasants:%d Time:%3.2f Best:%3.2f",
@@ -203,27 +194,27 @@ U0 StepNew(CTask *task,I64 x,I64 y,F64 theta,Bool king)
     temps=MAlloc(sizeof(Step),task);
     temps->x=x;
     temps->y=y;
-    temps->t0=tT;
+    temps->t0=tS;
     QueIns(temps,king_step_root.last);
   }
 
   temps=MAlloc(sizeof(Step),task);
   temps->x=x-3.5*Sin(theta)+1.0*Cos(theta);
   temps->y=y+3.5*Cos(theta)+1.0*Sin(theta);
-  temps->t0=tT;
+  temps->t0=tS;
   QueIns(temps,step_root.last);
 
   temps=MAlloc(sizeof(Step),task);
   temps->x=x+3.5*Sin(theta)-1.0*Cos(theta);
   temps->y=y-3.5*Cos(theta)-1.0*Sin(theta);
-  temps->t0=tT;
+  temps->t0=tS;
   QueIns(temps,step_root.last);
 }
 
 U0 Init()
 {
   I64 i,min_x,max_x,min_y,max_y,
-      w=Fs->win_pixel_width,h=Fs->win_pixel_height;
+      w=Fs->pix_width,h=Fs->pix_height;
   Peasant *tempp;
   snow_x=0;
   snow_y=0;
@@ -258,7 +249,7 @@ U0 Init()
   king_y=h/2;
   king_theta=-pi/2;
   door_open_t0=0;
-  t0=tT;
+  t0=tS;
   tf=0;
 }
 
@@ -276,7 +267,7 @@ U0 Follow(CTask *,Peasant *tempp)
   while (temps!=&king_step_root) {
     if ((d=Sqr(temps->x-tempp->x)+Sqr(temps->y-tempp->y)) &&
 	d<15*15) {
-      d+=1000*Sqr(tT-temps->t0);
+      d+=1000*Sqr(tS-temps->t0);
       if (d<best_d) {
 	best_d=d;
 	tempp->theta=Arg(temps->x-tempp->x,temps->y-tempp->y);
@@ -287,18 +278,18 @@ U0 Follow(CTask *,Peasant *tempp)
 }
 
 U0 AnimateTask(I64)
-{//preempt off by default after Spawned
+{//Preempt off by default after spawned.
   Step *temps,*temps1;
   Peasant *tempp;
   I64 i,animate_cnt=0,w,h;
   while (TRUE) {
-    w=Fs->parent_task->win_pixel_width;
-    h=Fs->parent_task->win_pixel_height;
+    w=Fs->parent_task->pix_width;
+    h=Fs->parent_task->pix_height;
 
     temps=step_root.next;
     while (temps!=&step_root) {
       temps1=temps->next;
-      if (tT-temps->t0>4.0) {
+      if (tS-temps->t0>4.0) {
 	QueRem(temps);
 	Free(temps);
       }
@@ -308,7 +299,7 @@ U0 AnimateTask(I64)
     temps=king_step_root.next;
     while (temps!=&king_step_root) {
       temps1=temps->next;
-      if (tT-temps->t0>4.0) {
+      if (tS-temps->t0>4.0) {
 	QueRem(temps);
 	Free(temps);
       }
@@ -319,14 +310,14 @@ U0 AnimateTask(I64)
     tempp=peasant_root.next;
     while (tempp!=&peasant_root) {
       if (tempp->stopped) {
-	if (tempp->door_opened_t0 && tT>tempp->door_opened_t0+1.0) {
+	if (tempp->door_opened_t0 && tS>tempp->door_opened_t0+1.0) {
 	  tempp->door_opened_t0=0;
 	  tempp->y=tempp->x=-9999;
 	}
       } else {
 	if (Sqr(tempp->x-w/2)+Sqr(tempp->y-h/2)<20*20) {
 	  tempp->stopped=TRUE;
-	  tempp->door_opened_t0=door_open_t0=tT;
+	  tempp->door_opened_t0=door_open_t0=tS;
 	}
 	for (i=0;i<NUM_TREES;i++) //Hang-out by fire
 	  if (trees[i].fire_frame_index && Sqr(tempp->x-trees[i].x)+Sqr(tempp->y-trees[i].y)<20*20) {
@@ -350,14 +341,14 @@ U0 AnimateTask(I64)
       tempp=tempp->next;
     }
     if (!not_stopped_cnt && !tf) {
-      tf=tT;
-      music_mute=TRUE;
+      tf=tS;
+      music.mute=TRUE;
       Snd(2000);Sleep(200);Snd(0);Sleep(100);
       if (tf-t0<best_score) {
 	best_score=tf-t0;
 	Snd(2000);Sleep(200);Snd(0);Sleep(100);
       }
-      music_mute=FALSE;
+      music.mute=FALSE;
     }
 
     snow_x+=RandU16%3-1;
@@ -379,8 +370,8 @@ U0 SongTask(I64)
 {
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
-  music_tempo= 2.480;
-  music_stacatto_factor= 0.902;
+  music.tempo= 2.480;
+  music.stacatto_factor= 0.902;
   while (TRUE) {
 	Play("3eCCCDCC2qG3eA2G3ABqCC");
 	Play("eCCCDCC2qG3eA2G3ABqCC");
@@ -464,7 +455,7 @@ Shall yourselves find blessing
 PopUpOk("
 $PURPLE$$TX+CX,\"Winceslas Game\"$$FG$
 
-Start fires by pressing $GREEN$<SPACE BAR>$FG$
+Start fires by pressing $GREEN$<SPACE>$FG$
 on trees. (Yule logs)
 
 Lead peasants to fires.
@@ -493,7 +484,7 @@ Lead peasants to fires.
 	case 0:
 	  switch (sc.u8[0]) {
 	    case SC_CURSOR_RIGHT:
-	      if (king_x+KING_STEP<Fs->win_pixel_width-BORDER)
+	      if (king_x+KING_STEP<Fs->pix_width-BORDER)
 		king_x+=KING_STEP;
 	      king_theta=0;
 	      StepNew(Fs,king_x,king_y,king_theta,TRUE);
@@ -505,7 +496,7 @@ Lead peasants to fires.
 	      StepNew(Fs,king_x,king_y,king_theta,TRUE);
 	      break;
 	    case SC_CURSOR_DOWN:
-	      if (king_y+KING_STEP<Fs->win_pixel_height-BORDER)
+	      if (king_y+KING_STEP<Fs->pix_height-BORDER)
 		king_y+=KING_STEP;
 	      king_theta=-pi/2;
 	      StepNew(Fs,king_x,king_y,king_theta,TRUE);

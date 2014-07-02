@@ -1,6 +1,5 @@
 Intel/AMD have an instruction that returns the num of CPU cycles since boot.  
-This is not calibrated to an accurate real time value and, the CPU speed is 
-throttled!  TempleOS measures it and you can convert with
-[C:/Kernel/KGlbls.CPP.Z,56] time_stamp_freq, a 
-value continuously calibrated from other timers.  This is the fastest timer 
-available.
+This is not a steady, calibrated real time value.  TempleOS measures it and 
+you can convert with [C:/Kernel/Adam1a.HPP.Z,524] cnts.time_stamp_freq, a
+value continuously calibrated 
+from other cnts.

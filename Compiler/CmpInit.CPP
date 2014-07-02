@@ -1,4 +1,4 @@
-#define NUM_INTERNAL_TYPES	16
+#define NUM_INTERNAL_TYPES	17
 
 class CInternalType
 {
@@ -6,22 +6,13 @@ class CInternalType
 };
 
 CInternalType internal_types_table[NUM_INTERNAL_TYPES]={
-{RT_I0,0,"I0i"},
-{RT_U0,0,"U0i"},
-{RT_I0,0,"I0"},
-{RT_U0,0,"U0"},
-{RT_I8,1,"I8i"},
-{RT_I8,1,"I8"},
-{RT_U8,1,"U8i"},
-{RT_U8,1,"U8"},
-{RT_I16,2,"I16i"},
-{RT_U16,2,"U16i"},
-{RT_I32,4,"I32i"},
-{RT_U32,4,"U32i"},
-{RT_I64,8,"I64i"},
-{RT_U64,8,"U64i"},
-{RT_F64,8,"F64i"},
-{RT_F64,8,"F64"},
+{RT_I0,0,"I0i"},{RT_I0,0,"I0"},{RT_U0,0,"U0i"},{RT_U0,0,"U0"},
+{RT_I8,1,"I8i"},{RT_I8,1,"I8"},{RT_I8,1,"Bool"},
+{RT_U8,1,"U8i"},{RT_U8,1,"U8"},
+{RT_I16,2,"I16i"},{RT_U16,2,"U16i"},
+{RT_I32,4,"I32i"},{RT_U32,4,"U32i"},
+{RT_I64,8,"I64i"},{RT_U64,8,"U64i"},
+{RT_F64,8,"F64i"},{RT_F64,8,"F64"},
 };
 
 U0 AsmPrsInsFlags(CLex *lx,CInstruction *tempi)
@@ -30,15 +21,15 @@ U0 AsmPrsInsFlags(CLex *lx,CInstruction *tempi)
   while (TRUE) {
     switch (lx->token) {
       case TK_IDENT:
-	if ((i=DefineMatch(lx->ident,"ST_OPCODE_MODIFIERS"))>=0) {
+	if ((i=DefineMatch(lx->cur_str,"ST_OPCODE_MODIFIERS"))>=0) {
 	  tempi->opcode_modifier=i;
 	  break;
 	} else
 	  return;
       case TK_INTEGER:
-	if (lx->cur_i==16)
+	if (lx->cur_i64==16)
 	  tempi->flags|=IEF_OP_SIZE16;
-	else if (lx->cur_i==32)
+	else if (lx->cur_i64==32)
 	  tempi->flags|=IEF_OP_SIZE32;
 	else
 	  return;
@@ -46,12 +37,12 @@ U0 AsmPrsInsFlags(CLex *lx,CInstruction *tempi)
       case '+':
 	tempi->flags|=IEF_PLUS_OPCODE;
       case '/':
-	if (Lex(lx)==TK_INTEGER && lx->cur_i<8)
-	  tempi->slash_val=lx->cur_i;
+	if (Lex(lx)==TK_INTEGER && lx->cur_i64<8)
+	  tempi->slash_val=lx->cur_i64;
 	else if (lx->token==TK_IDENT) {
-	  if (!StrCmp(lx->ident,"R"))
+	  if (!StrCmp(lx->cur_str,"R"))
 	    tempi->slash_val=SV_R_REG;
-	  else if (!StrCmp(lx->ident,"I"))
+	  else if (!StrCmp(lx->cur_str,"I"))
 	    tempi->slash_val=SV_I_REG;
 	  else
 	    return;
@@ -74,7 +65,7 @@ U0 AsmPrsInsFlags(CLex *lx,CInstruction *tempi)
   }
 }
 
-U0 AsmHashLoad(Bool first)
+U0 AsmHashLoad()
 {
   I64 i,j,size,size1;
   CInternalType *tempit;
@@ -85,56 +76,56 @@ U0 AsmHashLoad(Bool first)
   CInstruction *tempi;
   CHashClass *tempc;
 
-  asm_hash=HashTableNew(2048);
+  cmp.asm_hash=HashTableNew(2048);
   size1=offset(CHashOpcode.ins)+sizeof(CInstruction)<<5;
   tempo=MAlloc(size1);
 
-  lx=LexNew(TextFileRead("OpCodes.TXT"),0,"OpCodes.TXT.Z");
+  lx=LexNew(FileRead("OpCodes.TXT"),,"OpCodes.TXT.Z");
   lx->htc.hash_table_lst=NULL;
   Lex(lx);
   while (lx->token) {
     if (lx->token!=TK_IDENT)
-      LexExcept(lx,"ST_EXPECTING_IDENTIFIER");
-    i=LstMatch(lx->ident,"R8\0R16\0R32\0R64\0SEG\0FSTK\0MM\0XMM\0OPCODE\0KEYWORD\0ASM_KEYWORD\0");
+      LexExcept(lx,"expecting identifier at ");
+    i=LstMatch(lx->cur_str,"R8\0R16\0R32\0R64\0SEG\0FSTK\0MM\0XMM\0OPCODE\0KEYWORD\0ASM_KEYWORD\0");
     if (i<0)
       LexExcept(lx,"Unknown Statement");
     Lex(lx); //skip keyword
     if (lx->token!=TK_IDENT)
-      LexExcept(lx,"ST_EXPECTING_IDENTIFIER");
+      LexExcept(lx,"expecting identifier at ");
     switch (i) {
       case 8: //OPCODE
 	MemSet(tempo,0,size1);
 	tempo->type=HTT_OPCODE;
 	tempo->instruction_entry_cnt=0;
-	tempo->str=lx->ident;
-	lx->ident=0;
+	tempo->str=lx->cur_str;
+	lx->cur_str=0;
 	Lex(lx);	//Skip OPCODE
 	while (lx->token && lx->token!=';') {
 	  tempi=&tempo->ins[tempo->instruction_entry_cnt];
 	  tempi->ins_entry_num=tempo->instruction_entry_cnt++;
 	  tempi->slash_val=SV_NONE; //Not zero!!
 	  while (lx->token==TK_INTEGER) {
-	    tempi->opcode[tempi->opcode_cnt++]=lx->cur_i;
+	    tempi->opcode[tempi->opcode_cnt++]=lx->cur_i64;
 	    Lex(lx);
 	  }
 	  if (lx->token==',')
 	    Lex(lx);
 	  else if (lx->token!=';')
-	    LexExcept(lx,"ST_EXPECTING_COMMA");
+	    LexExcept(lx,"expecting ',' at ");
 
 	  AsmPrsInsFlags(lx,tempi);
 
 	  tempi->arg1=0;
 	  tempi->arg2=0;
 	  if (lx->token==TK_IDENT) {
-	    j=DefineMatch(lx->ident,"ST_ARG_TYPES");
+	    j=DefineMatch(lx->cur_str,"ST_ARG_TYPES");
 	    tempi->arg1=j;
 	    if (ARGT_REL8<=j<=ARGT_REL32 ||
 		ARGT_MOFFS8<=j<=ARGT_MOFFS64)
 	      tempi|=IEF_NO_REX;
 
 	    if (Lex(lx)==TK_IDENT) {
-	      j=DefineMatch(lx->ident,"ST_ARG_TYPES");
+	      j=DefineMatch(lx->cur_str,"ST_ARG_TYPES");
 	      Lex(lx);
 	      tempi->arg2=j;
 	      if (ARGT_REL8<=j<=ARGT_REL32 ||
@@ -144,34 +135,29 @@ U0 AsmHashLoad(Bool first)
 	  }
 	}
 	size=offset(CHashOpcode.ins)+
-	sizeof(CInstruction)*tempo->instruction_entry_cnt;
+	  sizeof(CInstruction)*tempo->instruction_entry_cnt;
+
 	tempo1=MAlloc(size);
 	MemCpy(tempo1,tempo,size);
 	tempo1->use_cnt=0;
-	if (HashFind(tempo1->str,asm_hash,HTT_OPCODE))
-	  LexExcept(lx,"ST_DUP_OPCODE_ENTRY");
-	HashAdd(tempo1,asm_hash);
+	if (HashFind(tempo1->str,cmp.asm_hash,HTT_OPCODE))
+	  LexExcept(lx,"Duplicate OPCODE entry ");
+	HashAdd(tempo1,cmp.asm_hash);
 	break;
       case 9:  //KEYWORD
       case 10: //ASM_KEYWORD
 	temph=CAlloc(sizeof(CHashGeneric));
-	temph->str=lx->ident;
-	lx->ident=NULL;
+	temph->str=lx->cur_str;
+	lx->cur_str=NULL;
 	Lex(lx); //skip keyword name
 	if (lx->token!=TK_INTEGER)
-	  LexExcept(lx,"ST_EXPECTING_INTEGER");
-	temph->user_data0=lx->cur_i;
-	if (i==9) {//KEYWORD
+	  LexExcept(lx,"expecting integer at ");
+	temph->user_data0=lx->cur_i64;
+	if (i==9)
 	  temph->type=HTT_KEYWORD;
-	  HashAdd(temph,asm_hash);
-	  if (first) {
-	    temph=MAllocIdentical(temph);
-	    HashAdd(temph,adam_task->hash_table);
-	  }
-	} else {
+	else
 	  temph->type=HTT_ASM_KEYWORD;
-	  HashAdd(temph,asm_hash);
-	}
+	HashAdd(temph,cmp.asm_hash);
 	Lex(lx); //Skip INT
 	break;
       case REGT_R8:
@@ -183,20 +169,20 @@ U0 AsmHashLoad(Bool first)
       case REGT_MM:
       case REGT_XMM:
 	tempr=CAlloc(sizeof(CHashReg));
-	tempr->str=lx->ident;
-	lx->ident=NULL;
+	tempr->str=lx->cur_str;
+	lx->cur_str=NULL;
 	Lex(lx); //skip keyword name
 	if (lx->token!=TK_INTEGER)
-	  LexExcept(lx,"ST_EXPECTING_INTEGER");
+	  LexExcept(lx,"expecting integer at ");
 	tempr->type=HTT_REG;
 	tempr->reg_type=i;
-	tempr->reg_num=lx->cur_i;
-	HashAdd(tempr,asm_hash);
+	tempr->reg_num=lx->cur_i64;
+	HashAdd(tempr,cmp.asm_hash);
 	Lex(lx); //Skip INT
 	break;
     }
     if (lx->token!=';')
-      LexExcept(lx,"ST_MISSING_SEMICOLON");
+      LexExcept(lx,"missing ';' at");
     Lex(lx); //Skip ';'
   }
   Free(tempo);
@@ -209,123 +195,17 @@ U0 AsmHashLoad(Bool first)
     Bts(&tempc->flags,Cf_INTERNAL_TYPE);
     tempc->size=tempit->size;
     tempc->str=AStrNew(tempit->name);
-    HashAdd(tempc,asm_hash);
-    sys_internal_types[tempc->raw_type]=tempc;
-    if (first) {
-      tempc=MAllocIdentical(tempc);
-      HashAdd(tempc,adam_task->hash_table);
-    }
+    HashAdd(tempc,cmp.asm_hash);
+    cmp.internal_types[tempc->raw_type]=tempc;
   }
+  adam_task->hash_table->next=cmp.asm_hash;
 }
-
 
 U0 CmpLoadDefines()
 {
-  DefineLoad("ST_ERR",ST_ERR_ST);
-  DefineLoad("ST_WARN",ST_WARN_ST);
-  DefineLoad("ST_MISSING_SEMICOLON","missing ';' at");
-  DefineLoad("ST_MISSING_EXPRESSION","missing expression at ");
-  DefineLoad("ST_MISSING_RIGHT_PAREN","missing ')' at ");
-  DefineLoad("ST_MISSING_RIGHT_BRACKET","missing ']' at ");
-  DefineLoad("ST_MISSING_RIGHT_BRACE","missing '}' at ");
-  DefineLoad("ST_MISSING_SUB_SWITCH_END","missing 'sub_switch_end' at ");
-  DefineLoad("ST_MISSING_WHILE","missing 'while' at");
-  DefineLoad("ST_MISSING_CATCH","missing 'catch' at");
-  DefineLoad("ST_EXPECTING_TYPE","expecting type at ");
-  DefineLoad("ST_EXPECTING_IDENTIFIER","expecting identifier at ");
-  DefineLoad("ST_EXPECTING_RIGHT_PAREN","expecting ')' at ");
-  DefineLoad("ST_EXPECTING_LEFT_BRACE","expecting '{' at ");
-  DefineLoad("ST_EXPECTING_EQUAL","expecting '=' at ");
-  DefineLoad("ST_EXPECTING_SCALE_FACTOR","expecting scale factor at ");
-  DefineLoad("ST_EXPECTING_LEFT_PAREN","expecting '(' at ");
-  DefineLoad("ST_EXPECTING_COMMA","expecting ',' at ");
-  DefineLoad("ST_EXPECTING_SYS_SYM","expecting System sym at ");
-  DefineLoad("ST_EXPECTING_COLON","expecting ':' at ");
-  DefineLoad("ST_EXPECTING_DOT","expecting '.' at ");
-  DefineLoad("ST_EXPECTING_LOCAL_VAR","expecting local var at ");
-  DefineLoad("ST_EXPECTING_INTEGER","expecting integer at ");
-  DefineLoad("ST_EXPECTING_STAR","expecting '*' at ");
-  DefineLoad("ST_EXPECTING_AMPERSAND","expecting '&' at ");
-  DefineLoad("ST_EXPECTING_STR","expecting string at ");
-  DefineLoad("ST_UNDEFINED_SYM","undefined sym at ");
-  DefineLoad("ST_UNDEFINED_SYM_LINE","undefined sym at line:");
-  DefineLoad("ST_UNDEFINED_IDENTIFIER","undefined identifier at ");
-  DefineLoad("ST_UNDEFINED_GOTO_LABEL","Undefined goto label ");
-  DefineLoad("ST_UNDEFINED_GOTO_LABEL_AT","Undefined goto label at ");
-  DefineLoad("ST_INVALID_CLASS","invalid class at ");
-  DefineLoad("ST_INVALID_MEMBER","invalid member at ");
-  DefineLoad("ST_INVALID_LVAL","invalid lval at ");
-  DefineLoad("ST_INVALID_INSTRUCTION","invalid instruction at ");
-  DefineLoad("ST_ALREADY_ONE_IMMEDIATE","already one immediate at ");
-  DefineLoad("ST_SYNTAX_ERROR","syntax error at ");
-  DefineLoad("ST_UNDEFINED_DUP_CNT","undefined DUP cnt at ");
-  DefineLoad("ST_NO_LOCAL_GLBL_EXPORT","no local glbl exports at ");
-  DefineLoad("ST_REDEFINITION","redefinition at ");
-  DefineLoad("ST_ATTEMPT_DEFINE_IMPORT","attempt to define import at ");
-  DefineLoad("ST_BRANCH_OUT_OF_RANGE","branch out of range at ");
-  DefineLoad("ST_BRANCH_OUT_OF_RANGE_LINE","branch out of range at line:");
-  DefineLoad("ST_COULD_USE_I8_DISP","could use I8 displacement at ");
-  DefineLoad("ST_COULD_USE_I8_DISP_LINE","could use I8 displacement at line:");
-  DefineLoad("ST_PTR_TO_U0","use \"U8 *\" instead of \"U0 *\" at ");
-  DefineLoad("ST_NO_SIZE_SPECIFIED","no size specified at ");
-  DefineLoad("ST_USE_POSTFIX_CAST","Use TempleOS postfix typecasting at ");
-  DefineLoad("ST_PRS_INTERNAL_ERROR","Compiler Parse Error at ");
-  DefineLoad("ST_OPT_INTERNAL_ERROR","Compiler Optimization Error at ");
-  DefineLoad("ST_UNRESOLVED_REFERENCE","Unresolved Reference:");
-  DefineLoad("ST_SCANNING_DIR","Scanning Directory:");
-  DefineLoad("ST_UNUSED_VAR","Unused var ");
-  DefineLoad("ST_UNNEEDED_NOUNUSEDWARN","Unneeded nounusedwarn ");
-  DefineLoad("ST_UNUSED_EXTERN","Unused extern ");
-  DefineLoad("ST_UNUSED_IMPORT","Unused import ");
-  DefineLoad("ST_UNUSED_LABEL","Unused label ");
-  DefineLoad("ST_UNUSED_LABEL_AT","Unused label at ");
-  DefineLoad("ST_NOT_ALLOWED_IN_FUN","Not allowed in fun");
-  DefineLoad("ST_DUP_GOTO_LABEL","Duplicate goto label at ");
-  DefineLoad("ST_BREAK_NOT_ALLOWED","'break' not allowed\n");
-  DefineLoad("ST_ERRORS_WARNINGS","Errs:%d Warns:%d Code:%X Size:%X\n");
-  DefineLoad("ST_IMPORT_NOT_NEEDED","import not needed at ");
-  DefineLoad("ST_CASE_RANGE_ERROR","switch range error at ");
-  DefineLoad("ST_LEX_STK_OVERFLOW","Lex Stk overflow");
-  DefineLoad("ST_ASSERT_FAILED","Assert Failed ");
-  DefineLoad("ST_ADDR_EXTERN","Can't take addr of extern fun");
-  DefineLoad("ST_EXTERNS_NOT_ALLOWED","Extern Not Allowed at ");
-  DefineLoad("ST_UNNECESSARY_PARENTHESIS","Unnecessary parenthesis");
-  DefineLoad("ST_STATIC_UNION","Static unions are not implemented");
-  DefineLoad("ST_IMPORT_HASH_TABLE_NOT_ALLOWED","import_hash_table only allowed in AOT compiled #exe{} mode.");
-  DefineLoad("ST_STREAM_EXE_PRINT_NOT_ALLOWED","StreamExePrint only allowed in AOT compiled #exe{} mode.");
-  DefineLoad("ST_CANT_INIT_GLBL_ON_HEAP","Can't init glbl var on data heap in AOT module");
-  DefineLoad("ST_INVALID_ARRAY_SIZE","Invalid array size at ");
-  DefineLoad("ST_NO_FUN_ASM_ALIGN","ALIGN not allowed in fun asm blk ");
-  DefineLoad("ST_NO_FUN_ASM_ORG","ORG not allowed in fun asm blk ");
-  DefineLoad("ST_JUST_ONE_ORG_ALLOWED","Just one org allowed ");
-  DefineLoad("ST_ORG_MUST_BE_AT_BEGINNING","ORG must be at beginning ");
-  DefineLoad("ST_ALIGN_MUST_BE_POWER_OF_TWO","ALIGN must be power of two at ");
-  DefineLoad("ST_ALIGN_TOO_LARGE","In JIT mode, max ALIGN is 8 ");
-  DefineLoad("ST_FUN_SIZE_NOT_DEFINED","Function size not defined at ");
-  DefineLoad("ST_DUP_MEMBER","Duplicate member at ");
-  DefineLoad("ST_DUP_TYPE","Duplicate type at ");
-  DefineLoad("ST_FUN_PTR_FUN_PTR","Duplicate fun pointer at ");
-  DefineLoad("ST_NOT_IMPLEMENTED","Feat not implemented");
-  DefineLoad("ST_DUP_CASE","Duplicate case at ");
-  DefineLoad("ST_DEREF_U0","Dereference U0 ");
-  DefineLoad("ST_ASSIGN_U0","Assign U0 ");
-  DefineLoad("ST_NO_GLBL_LABELS","No global labels at ");
-  DefineLoad("ST_SHOULD_RETURN_VAL","Function should return val ");
-  DefineLoad("ST_CANT_RETURN_VAL","Not in fun.  Can't return a val ");
-  DefineLoad("ST_SHOULD_NOT_RETURN_VAL","Function should NOT return val ");
-  DefineLoad("ST_DUP_OPCODE_ENTRY","Duplicate OPCODE entry ");
-  DefineLoad("ST_IN_FUN","in fun ");
-  DefineLoad("ST_NOT_ARRAY_OR_PTR","not array or ptr ");
-  DefineLoad("ST_16BIT_UNASM","16-bit unassembly is not well supported.\n");
-  DefineLoad("ST_CANT_REG_VAR","Can't reg var ");
-  DefineLoad("ST_ILLEGAL_FWD_REF","Illegal fwd ref at ");
-  DefineLoad("ST_REG_IN_USE","Reg in use ");
-  DefineLoad("ST_ONE_BASE_CLASS","Only one base class allowed at this time at ");
-  DefineLoad("ST_ADD_NOT_VAL","Must be address, not value ");
-  DefineLoad("ST_HEADER_FOR_PRINT","Missing header for Print() and PutChars() at ");
-  DefineLoad("ST_HEADER_FOR_SYSTRY","Missing header for SysTry() and SysUntry() at ");
-
-  DefineLstLoad("ST_IT_TYPES","I0\0U0\0I8\0U8\0I16\0U16\0I32\0U32\0I64\0U64\0F64\0uF64\0");
+  DefineLstLoad("ST_RAW_TYPES",
+	" \0 \0I0\0U0\0I8\0U8\0I16\0U16\0I32\0U32\0I64\0U64\0"
+	"F32\0UF32\0F64\0UF64\0");
   DefineLstLoad("ST_TY_TYPES","NULL\0IMM\0REG\0DISP\0SIB\0RIP\0STK\0");
   DefineLstLoad("ST_U8_REGS","AL\0CL\0DL\0BL\0AH\0CH\0DH\0BH\0"
 			"R8u8\0R9u8\0R10u8\0R11u8\0R12u8\0R13u8\0R14u8\0R15u8\0");
@@ -340,12 +220,10 @@ U0 CmpLoadDefines()
   DefineLstLoad("ST_MM_REGS","MM0\0MM1\0MM2\0MM3\0MM4\0MM5\0MM6\0MM7\0");
   DefineLstLoad("ST_XMM_REGS","XMM0\0XMM1\0XMM2\0XMM3\0XMM4\0XMM5\0XMM6\0XMM7\0");
   DefineLstLoad("ST_OPCODE_MODIFIERS","NO\0CB\0CW\0CD\0CP\0IB\0IW\0ID\0");
-  DefineLstLoad("ST_ARG_TYPES",
-		"NO\0REL8\0REL16\0REL32\0UIMM8\0UIMM16\0UIMM32\0UIMM64\0"
-		"R8\0R16\0R32\0R64\0"
-		"IMM8\0IMM16\0IMM32\0IMM64\0RM8\0RM16\0RM32\0RM64\0"
-		"M8\0M16\0M32\0M64\0"
-		"M1632\0M16N32\0M16N16\0M32N32\0"
+  DefineLstLoad("ST_ARG_TYPES","NO\0REL8\0REL16\0REL32\0"
+		"IMM8\0IMM16\0IMM32\0IMM64\0UIMM8\0UIMM16\0UIMM32\0UIMM64\0"
+		"R8\0R16\0R32\0R64\0RM8\0RM16\0RM32\0RM64\0"
+		"M8\0M16\0M32\0M64\0M1632\0M16N32\0M16N16\0M32N32\0"
 		"MOFFS8\0MOFFS16\0MOFFS32\0MOFFS64\0"
 		"AL\0AX\0EAX\0RAX\0CL\0DX\0 \0SREG\0"
 		"SS\0DS\0ES\0FS\0GS\0CS\0ST0\0STI\0"
@@ -354,7 +232,6 @@ U0 CmpLoadDefines()
   DefineLstLoad("ST_FSTK_REGS","ST0\0ST1\0ST2\0ST3\0ST4\0ST5\0ST6\0ST7\0");
 
   DefineLstLoad("ST_INTERMEDIATE_CODE",
-
 /*
 [arg_cnt][result_cnt][deref/assign/cmp][fpop][nonconst]
 
@@ -466,17 +343,9 @@ U0 CmpLoadDefines()
 "00..NCALL_IMPORT\0"
 "00..NCALL_EXTERN\0"
 "00..NASM\0"
-"00..NCLI\0"
-"00..NSTI\0"
 "10..NPREEMPT\0"
-"00..NCLD\0"
-"00..NSTD\0"
-"00..NHLT\0"
 "10..NPUSH\0"
 "00..NPOP\0"
-"00..NPUSHFD\0"
-"00..NPOPFD\0"
-"00..NPAUSE\0"
 "10..NCLFLUSH\0"
 "10..NINVLPG\0"
 "10..NIN_U8\0"
@@ -513,6 +382,8 @@ U0 CmpLoadDefines()
 "10..NSTRLEN\0"
 "10...BR_ZERO\0"
 "10...BR_NOT_ZERO\0"
+"00...BR_CARRY\0"
+"00...BR_NOT_CARRY\0"
 "20...BR_NOT_EQUAL\0"
 "20...BR_EQUAL_EQUAL\0"
 "20...BR_GREATER_EQUAL\0"
@@ -574,145 +445,163 @@ U0 CmpFillTables()
 {
   U8 *st;
   I64 i,k;
-  U32 *u,*d4;
+  U32 *d;
 
-  ic_bitmap_assign	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  ic_bitmap_deref	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  ic_bitmap_cmp		=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  ic_bitmap_not_const	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  ic_bitmap_fpop	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  cmp_arg_cnt		=CAlloc(IC_NUM_ENTRIES);
-  cmp_result_cnt	=CAlloc(IC_NUM_ENTRIES);
+  cmp.ic_bitmap_assign	=CAlloc((IC_NUM_ENTRIES+7)>>3);
+  cmp.ic_bitmap_deref	=CAlloc((IC_NUM_ENTRIES+7)>>3);
+  cmp.ic_bitmap_cmp	=CAlloc((IC_NUM_ENTRIES+7)>>3);
+  cmp.ic_bitmap_not_const=CAlloc((IC_NUM_ENTRIES+7)>>3);
+  cmp.ic_bitmap_fpop	=CAlloc((IC_NUM_ENTRIES+7)>>3);
+  cmp.arg_cnt		=CAlloc(IC_NUM_ENTRIES);
+  cmp.result_cnt	=CAlloc(IC_NUM_ENTRIES);
   st=Define("ST_INTERMEDIATE_CODE");
   for (i=0;i<IC_NUM_ENTRIES;i++) {
-    cmp_arg_cnt[i]=*st-'0';
-    cmp_result_cnt[i]=st[1]-'0';
+    cmp.arg_cnt[i]=*st-'0';
+    cmp.result_cnt[i]=st[1]-'0';
     if (st[2]=='*')
-      Bts(ic_bitmap_deref,i);
+      Bts(cmp.ic_bitmap_deref,i);
     else if (st[2]=='=')
-      Bts(ic_bitmap_assign,i);
+      Bts(cmp.ic_bitmap_assign,i);
     else if (st[2]=='^')
-      Bts(ic_bitmap_cmp,i);
+      Bts(cmp.ic_bitmap_cmp,i);
     if (st[3]=='P')
-      Bts(ic_bitmap_fpop,i);
+      Bts(cmp.ic_bitmap_fpop,i);
     if (st[4]=='N')
-      Bts(ic_bitmap_not_const,i);
+      Bts(cmp.ic_bitmap_not_const,i);
     st+=StrLen(st)+1;
     //See [C:/Compiler/ICLCC.CPP.Z,1] ICPut.
   }
 
-  to_reg_vars_map=CAlloc(NUM_REGS*sizeof(U8));
-  num_reg_vars=0;
-  reg_vars_mask=REG_VARS_MASK;
+  cmp.to_reg_vars_map=CAlloc(NUM_REGS*sizeof(U8));
+  cmp.num_reg_vars=0;
+  cmp.reg_vars_mask=REG_VARS_MASK;
   for (i=0;i<NUM_REGS;i++)
-    if (Bt(&reg_vars_mask,i))
-      to_reg_vars_map[num_reg_vars++]=i;
+    if (Bt(&cmp.reg_vars_mask,i))
+      cmp.to_reg_vars_map[cmp.num_reg_vars++]=i;
 
-  to_non_ptr_vars_map=CAlloc(NUM_REGS*sizeof(U8));
-  num_non_ptr_vars=0;
-  non_ptr_vars_mask=REG_NON_PTR_MASK;
+  cmp.non_ptr_vars_map=CAlloc(NUM_REGS*sizeof(U8));
+  cmp.num_non_ptr_vars=0;
+  cmp.non_ptr_vars_mask=REG_NON_PTR_MASK;
   for (i=0;i<NUM_REGS;i++)
-    if (Bt(&non_ptr_vars_mask,i))
-      to_non_ptr_vars_map[num_non_ptr_vars++]=i;
- 
-  to_stk_temps_map_odd=CAlloc(NUM_REGS*sizeof(U8));
-  to_stk_temps_map_even=CAlloc(NUM_REGS*sizeof(U8));
-  num_stk_temps=0;
-  stk_temps_mask=REG_STK_TEMPS_MASK;
+    if (Bt(&cmp.non_ptr_vars_mask,i))
+      cmp.non_ptr_vars_map[cmp.num_non_ptr_vars++]=i;
+
+/* STK TEMP ALLOCATION: See [C:/Compiler/OptPass6.CPP.Z,1].
+
+Expressions are evaluated with a stack machine.
+
+1+(2+3)*4
+
+
+STK[2]: 1    1	 1   1	 1   1	 21
+STK[1]:      2	 2   5	 5  20
+STK[0]: 	 3	 4
+
+The top of the stack is stored in RAX.
+
+STK[2]: RAX  1	 1   1	 1   1	 RAX
+STK[1]:     RAX  2  RAX  5  RAX
+STK[0]: 	RAX	RAX
+
+Two regs are allocated for stk temps.
+
+STK[0]:
+   R9 : RAX R9	R9  R9	R9  R9	 RAX
+   R8 :     RAX R8  RAX R8  RAX
+      : 	RAX	RAX
+
+Every other funtion, the regs are reversed.  This is to reduce
+pushes before function calls.  R8 is used in even numbered functions
+while R9 is used in odd, so maybe we can avoid pushes if only one
+stk temp reg is used.
+
+STK[0]:
+   R9 : RAX R8	R8  R8	R8  R8	 RAX
+   R8 :     RAX R9  RAX R9  RAX
+      : 	RAX	RAX
+*/
+  cmp.to_stk_temps_map_odd =CAlloc(NUM_REGS*sizeof(U8));
+  cmp.to_stk_temps_map_even=CAlloc(NUM_REGS*sizeof(U8));
+  cmp.num_stk_temps=0;
+  cmp.stk_temps_mask=REG_STK_TEMPS_MASK;
   for (i=0;i<NUM_REGS;i++)
-    if (Bt(&stk_temps_mask,i))
-      to_stk_temps_map_even[num_stk_temps++]=i;
-  k=num_stk_temps;
+    if (Bt(&cmp.stk_temps_mask,i))
+      cmp.to_stk_temps_map_even[cmp.num_stk_temps++]=i;
+  k=cmp.num_stk_temps;
   for (i=0;i<NUM_REGS;i++)
-    if (Bt(&stk_temps_mask,i))
-      to_stk_temps_map_odd[--k]=i;
+    if (Bt(&cmp.stk_temps_mask,i))
+      cmp.to_stk_temps_map_odd[--k]=i;
 
-  u=CAlloc(sizeof(U32)*TK_NUM_TK);
-  dual_U16_tokens1=u;
-  u['!']=TK_NOT_EQUAL<<16+'=';
-  u['&']=TK_AND_AND<<16+'&';
-  u['*']=TK_MUL_EQUAL<<16+'=';
-  u['+']=TK_PLUS_PLUS<<16+'+';
-  u['-']=TK_DEREFERENCE<<16+'>';
-  u['/']='*';
-  u[':']=TK_DBL_COLON<<16+':';
-  u['<']=TK_LESS_EQUAL<<16+'=';
-  u['=']=TK_EQUAL_EQUAL<<16+'=';
-  u['>']=TK_GREATER_EQUAL<<16+'=';
-  u['^']=TK_XOR_EQUAL<<16+'=';
-  u['|']=TK_OR_OR<<16+'|';
-  u['%']=TK_MOD_EQUAL<<16+'=';
+  cmp.dual_U16_tokens1=d=CAlloc(sizeof(U32)*TK_NUM_TK);
+  d['!']=TK_NOT_EQUAL<<16+'=';
+  d['&']=TK_AND_AND<<16+'&';
+  d['*']=TK_MUL_EQUAL<<16+'=';
+  d['+']=TK_PLUS_PLUS<<16+'+';
+  d['-']=TK_DEREFERENCE<<16+'>';
+  d['/']='*';
+  d[':']=TK_DBL_COLON<<16+':';
+  d['<']=TK_LESS_EQUAL<<16+'=';
+  d['=']=TK_EQUAL_EQUAL<<16+'=';
+  d['>']=TK_GREATER_EQUAL<<16+'=';
+  d['^']=TK_XOR_EQUAL<<16+'=';
+  d['|']=TK_OR_OR<<16+'|';
+  d['%']=TK_MOD_EQUAL<<16+'=';
 
-  u=CAlloc(sizeof(U32)*TK_NUM_TK);
-  dual_U16_tokens2=u;
-  u['&']=TK_AND_EQUAL<<16+'=';
-  u['+']=TK_ADD_EQUAL<<16+'=';
-  u['-']=TK_MINUS_MINUS<<16+'-';
-  u['/']='/';
-  u['<']=TK_SHL<<16+'<';
-  u['>']=TK_SHR<<16+'>';
-  u['^']=TK_XOR_XOR<<16+'^';
-  u['|']=TK_OR_EQUAL<<16+'=';
+  cmp.dual_U16_tokens2=d=CAlloc(sizeof(U32)*TK_NUM_TK);
+  d['&']=TK_AND_EQUAL<<16+'=';
+  d['+']=TK_ADD_EQUAL<<16+'=';
+  d['-']=TK_MINUS_MINUS<<16+'-';
+  d['/']='/';
+  d['<']=TK_SHL<<16+'<';
+  d['>']=TK_SHR<<16+'>';
+  d['^']=TK_XOR_XOR<<16+'^';
+  d['|']=TK_OR_EQUAL<<16+'=';
 
-  u=CAlloc(sizeof(U32)*TK_NUM_TK);
-  dual_U16_tokens3=u;
-  u['-']=TK_SUB_EQUAL<<16+'=';
-  u['/']=TK_DIV_EQUAL<<16+'=';
+  cmp.dual_U16_tokens3=d=CAlloc(sizeof(U32)*TK_NUM_TK);
+  d['-']=TK_SUB_EQUAL<<16+'=';
+  d['/']=TK_DIV_EQUAL<<16+'=';
 
-//Here the operator precedences are
-//defined.
-  d4=CAlloc(sizeof(U32)*TK_NUM_TK);
-  unary_ops_table=d4;
-  d4['~']=PREC_UNARY_PRE<<16+IC_COM;
-  d4['!']=PREC_UNARY_PRE<<16+IC_NOT;
-  d4['-']=PREC_UNARY_PRE<<16+IC_UNARY_MINUS;
-  d4['&']=PREC_UNARY_PRE<<16+IC_ADDR;
-  d4['*']=PREC_UNARY_PRE<<16+IC_DEREF;
+  cmp.binary_ops=d=CAlloc(sizeof(U32)*TK_NUM_TK);
+  d['`']	=(PREC_EXP+ASSOCF_RIGHT)<<16+IC_POWER;
+  d[TK_SHL]	=(PREC_EXP+ASSOCF_LEFT)<<16+IC_SHL;
+  d[TK_SHR]	=(PREC_EXP+ASSOCF_LEFT)<<16+IC_SHR;
 
+  d['*']	=PREC_MUL<<16+IC_MUL;
+  d['/']	=(PREC_MUL+ASSOCF_LEFT)<<16+IC_DIV;
+  d['%']	=(PREC_MUL+ASSOCF_LEFT)<<16+IC_MOD;
 
-  d4=CAlloc(sizeof(U32)*TK_NUM_TK);
-  binary_ops_table=d4;
+  d['&']	=PREC_AND<<16+IC_AND;
 
-  d4['`']	=(PREC_EXP+ASSOCF_RIGHT)<<16+IC_POWER;
-  d4[TK_SHL]	=(PREC_EXP+ASSOCF_LEFT)<<16+IC_SHL;
-  d4[TK_SHR]	=(PREC_EXP+ASSOCF_LEFT)<<16+IC_SHR;
+  d['^']	=PREC_XOR<<16+IC_XOR;
 
-  d4['*']	=PREC_MUL<<16+IC_MUL;
-  d4['/']	=(PREC_MUL+ASSOCF_LEFT)<<16+IC_DIV;
-  d4['%']	=(PREC_MUL+ASSOCF_LEFT)<<16+IC_MOD;
+  d['|']	=PREC_OR<<16+IC_OR;
 
-  d4['&']	=PREC_AND<<16+IC_AND;
+  d['+']	=PREC_ADD<<16+IC_ADD;
+  d['-']	=(PREC_ADD+ASSOCF_LEFT)<<16+IC_SUB;
 
-  d4['^']	=PREC_XOR<<16+IC_XOR;
+  d['<']		=PREC_CMP<<16+IC_LESS;
+  d['>']		=PREC_CMP<<16+IC_GREATER;
+  d[TK_LESS_EQUAL]	=PREC_CMP<<16+IC_LESS_EQUAL;
+  d[TK_GREATER_EQUAL]	=PREC_CMP<<16+IC_GREATER_EQUAL;
 
-  d4['|']	=PREC_OR<<16+IC_OR;
+  d[TK_EQUAL_EQUAL]	=PREC_CMP2<<16+IC_EQUAL_EQUAL;
+  d[TK_NOT_EQUAL]	=PREC_CMP2<<16+IC_NOT_EQUAL;
 
-  d4['+']	=PREC_ADD<<16+IC_ADD;
-  d4['-']	=(PREC_ADD+ASSOCF_LEFT)<<16+IC_SUB;
+  d[TK_AND_AND]	=PREC_AND_AND<<16+IC_AND_AND;
 
-  d4['<']		=PREC_CMP<<16+IC_LESS;
-  d4['>']		=PREC_CMP<<16+IC_GREATER;
-  d4[TK_LESS_EQUAL]	=PREC_CMP<<16+IC_LESS_EQUAL;
-  d4[TK_GREATER_EQUAL]	=PREC_CMP<<16+IC_GREATER_EQUAL;
+  d[TK_XOR_XOR]=PREC_XOR_XOR<<16+IC_XOR_XOR;
 
-  d4[TK_EQUAL_EQUAL]	=PREC_CMP2<<16+IC_EQUAL_EQUAL;
-  d4[TK_NOT_EQUAL]	=PREC_CMP2<<16+IC_NOT_EQUAL;
+  d[TK_OR_OR]	=PREC_OR_OR<<16+IC_OR_OR;
 
-  d4[TK_AND_AND]	=PREC_AND_AND<<16+IC_AND_AND;
-
-  d4[TK_XOR_XOR]=PREC_XOR_XOR<<16+IC_XOR_XOR;
-
-  d4[TK_OR_OR]	=PREC_OR_OR<<16+IC_OR_OR;
-
-  d4['=']	=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_ASSIGN;
-  d4[TK_SHL_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_SHL_EQUAL;
-  d4[TK_SHR_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_SHR_EQUAL;
-  d4[TK_MUL_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_MUL_EQUAL;
-  d4[TK_DIV_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_DIV_EQUAL;
-  d4[TK_MOD_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_MOD_EQUAL;
-  d4[TK_AND_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_AND_EQUAL;
-  d4[TK_OR_EQUAL] =(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_OR_EQUAL;
-  d4[TK_XOR_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_XOR_EQUAL;
-  d4[TK_ADD_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_ADD_EQUAL;
-  d4[TK_SUB_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_SUB_EQUAL;
+  d['=']	=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_ASSIGN;
+  d[TK_SHL_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_SHL_EQUAL;
+  d[TK_SHR_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_SHR_EQUAL;
+  d[TK_MUL_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_MUL_EQUAL;
+  d[TK_DIV_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_DIV_EQUAL;
+  d[TK_MOD_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_MOD_EQUAL;
+  d[TK_AND_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_AND_EQUAL;
+  d[TK_OR_EQUAL] =(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_OR_EQUAL;
+  d[TK_XOR_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_XOR_EQUAL;
+  d[TK_ADD_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_ADD_EQUAL;
+  d[TK_SUB_EQUAL]=(PREC_ASSIGN+ASSOCF_RIGHT)<<16+IC_SUB_EQUAL;
 }

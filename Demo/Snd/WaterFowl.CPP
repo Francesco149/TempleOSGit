@@ -47,10 +47,7 @@ To a Waterfowl;
 #define POEM_COLS	53
 #define POEM_TIME	80.0
 
-
 /* <1> <1> (image) */
-
-
 
 
 /* <2> <2> (image) */
@@ -63,16 +60,16 @@ I64 x0[NUM_GEESE],y0[NUM_GEESE];
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  U8 *temps;
-  I64 i,w=task->win_pixel_width,h=task->win_pixel_height;
+  CSprite *temps;
+  I64 i,w=task->pix_width,h=task->pix_height;
 
   dc->color=DKGRAY;
   GrPrint(dc,w>>1-(POEM_COLS*FONT_WIDTH)>>1,
-	    (Saw(tT-t0,POEM_TIME)-.8)*POEM_LINES*FONT_HEIGHT, poem);
+	    (Saw(tS-t0,POEM_TIME)-.8)*POEM_LINES*FONT_HEIGHT, poem);
 
   for (i=0;i<NUM_GEESE;i++) {
-    temps=SpriteInterpolate(__BIN_1,__BIN_2,1.2*Tri(tT-t0_s[i],0.7));
-    SpritePlot3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,temps);
+    temps=SpriteInterpolate(__BIN_1,__BIN_2,1.2*Tri(tS-t0_s[i],0.7));
+    Sprite3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,temps);
     Free(temps);
   }
 }
@@ -95,16 +92,16 @@ U0 AnimateTask(I64)
   I64 i;
   while (TRUE) {
     for (i=0;i<NUM_GEESE;i++) {
-      x[i]=LimitI64(x[i]+SignI64(RandI16),-5,5);
-      y[i]=LimitI64(y[i]+SignI64(RandI16),-5,5);
+      x[i]=ClampI64(x[i]+SignI64(RandI16),-5,5);
+      y[i]=ClampI64(y[i]+SignI64(RandI16),-5,5);
     }
     Sleep(100);
   }
 }
 
 U0 SongTask(I64)
-{ //Song by Terry A. Davis
-//This specifies a call-back routine
+{//Song by Terry A. Davis
+//This specifies a callback routine
 //to be called when the task dies.
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
@@ -128,8 +125,8 @@ U0 WaterFowl()
   DocClear;
   Fs->draw_it=&DrawIt;
 
-  t0=tT;
-  try //This catches <CTRL-ALT-C> exits
+  t0=tS;
+  try //This catches <CTRL-ALT-c> exits
     GetChar;
   catch
     PutExcept;

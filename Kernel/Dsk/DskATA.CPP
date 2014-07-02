@@ -127,7 +127,6 @@ Bool ATAPISetMaxSpeed(CBlkDev *bdev)
   return ATAWaitNotBUSY(bdev,0);
 }
 
-
 Bool ATAPISeek(CBlkDev *bdev,I64 native_blk)
 {
   if (bdev->flags & BDF_EXT_SIZE)
@@ -185,7 +184,7 @@ I64 ATAGetDevId(CBlkDev *bdev,F64 timeout,U16 **_id_record)
 }
 
 I64 ATAReadNativeMax(CBlkDev *bdev,F64 timeout)
-{ //returns zero on err
+{//Returns zero on err
   I64 result=0;
   Bool okay=TRUE;
 
@@ -251,7 +250,7 @@ I64 ATAReadNativeMax(CBlkDev *bdev,F64 timeout)
 }
 
 I64 ATAPIReadCapacity(CBlkDev *bdev,I64 *_blk_size=NULL)
-{ //Supposedly this can return a result +/- 75 sects.
+{//Supposedly this can return a result +/- 75 sects.
 //Error might just be for music.
   Bool unlock=BlkDevLock(bdev);
   U32 buf[2];
@@ -366,7 +365,7 @@ retry:
       throw('BlkDev');
   }
 
-  sys_dsk_reads+=(cnt*bdev->blk_size)>>BLK_SIZE_BITS;
+  dsk.read_cnt+=(cnt*bdev->blk_size)>>BLK_SIZE_BITS;
   if (unlock) BlkDevUnlock(bdev);
 }
 
@@ -400,7 +399,7 @@ Bool ATAPIReadBlks2(CBlkDev *bdev,F64 timeout,U8 *buf, I64 native_blk, I64 cnt,B
     if (ATAPIWritePktWord(bdev,timeout,0xA800,
 	  native_blk.u16[1],native_blk,cnt.u16[1],cnt,0) &&
 	  ATAGetResult(bdev,timeout,buf,cnt*bdev->blk_size,0,FALSE)) {
-      sys_dsk_reads+=(cnt*bdev->blk_size)>>BLK_SIZE_BITS;
+      dsk.read_cnt+=(cnt*bdev->blk_size)>>BLK_SIZE_BITS;
       result=TRUE;
     }
   }
@@ -438,11 +437,10 @@ U0 ATAPIReadBlks(CBlkDev *bdev,U8 *buf, I64 blk, I64 cnt)
   Free(cd_buf);
 }
 
-U0 ATARBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
+Bool ATARBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
   I64 n;
   CBlkDev *bdev=p->bdev;
-  BlkDevChk(bdev);
   while (cnt>0) {
     n=cnt;
     if (n>bdev->max_reads)
@@ -455,12 +453,12 @@ U0 ATARBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
     blk+=n;
     cnt-=n;
   }
+  return TRUE;
 }
 
-//This is for low level disk access
-//Call WBlks() instead
 U0 ATAWriteBlks(CBlkDev *bdev,U8 *buf, I64 blk, I64 cnt)
-{
+{//For low level disk access.
+//Use WBlks() instead.
   I64 i,U32s_avail,sects_avail,retries=3;
   F64 timeout;
   Bool unlock=BlkDevLock(bdev);
@@ -519,9 +517,8 @@ Bool ATAPISync(CBlkDev *bdev)
 }
 
 U0 ATAPIClose(CBlkDev *bdev,I64 close_field=0x200,I64 track=0)
-{
-//0x200 CD/DVD part 1
-//0x300    DVD part 2
+{//0x200 CD/DVD part 1
+// 0x300    DVD part 2
   if (bdev->flags & BDF_EXT_SIZE)
     OutU8(bdev->base0+ATAR0_SELECT,0xEF|bdev->unit<<4);
   else
@@ -571,18 +568,17 @@ U0 ATAPIWriteBlks(CBlkDev *bdev,U8 *buf, I64 native_blk, I64 cnt)
     if (U32s_avail) {
       RepOutU32(buf,U32s_avail,bdev->base0+ATAR0_DATA);
       buf+=U32s_avail<<2;
-      sys_dsk_writes+=U32s_avail>>(BLK_SIZE_BITS-2);
+      dsk.write_cnt+=U32s_avail>>(BLK_SIZE_BITS-2);
     }
   }
   ATAWaitNotBUSY(bdev,0);
 }
 
-U0 ATAWBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
+Bool ATAWBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
 {
   I64 n,spc;
   CBlkDev *bdev=p->bdev;
   Bool unlock;
-  BlkDevChk(bdev);
   spc=bdev->blk_size>>BLK_SIZE_BITS;
   if (bdev->type==BDT_ATAPI) {
     unlock=BlkDevLock(bdev);
@@ -599,13 +595,14 @@ U0 ATAWBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
     buf+=n<<BLK_SIZE_BITS;
     blk+=n;
     cnt-=n;
-    sys_dsk_writes+=n;
+    dsk.write_cnt+=n;
   }
   if (bdev->type==BDT_ATAPI) {
     ATAPISync(bdev);
 //    ATAPIStartStop(bdev,0,FALSE);
     if (unlock) BlkDevUnlock(bdev);
   }
+  return TRUE;
 }
 
 Bool BootCdProbe(CBlkDev *bdev)
@@ -618,7 +615,7 @@ Bool BootCdProbe(CBlkDev *bdev)
     " ATAPI";
     if (ATAPIStartStop(bdev,tS+5.0,TRUE)) {
       " Started";
-      for (i=0;i<2;i++) { //Retry
+      for (i=0;i<2;i++) {//Retry
 	if (ATAPIReadBlks2(bdev,tS+7.0,img,sys_boot_code.u16[1],1,FALSE)) {
 	  if (img->compile_time==sys_compile_time) {
 	    " Found";
@@ -637,8 +634,7 @@ Bool BootCdProbe(CBlkDev *bdev)
 
 Bool BootCdProbeAll(CBlkDev *bdev)
 {
-  I64 i,j,k;
-  U32 d1,d2;
+  I64 d1,d2,i,j,k;
 
   bdev->base1=0;
   for (k=0;k<256;k++) {
@@ -706,7 +702,7 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,CATARep **_root,I64 
   CATARep *tempha;
   if (type=ATAProbe(base0,base1,unit)) {
     *num_hints+=1;
-    "\n\n$PURPLE$ $BT-LE+LM+X,\"%d\",\"%d\\n\"$$FG$$LM,4$",*num_hints,*num_hints;
+    "\n\n$PURPLE$ $BT+X,\"%d\",LM=\"%d\\n\"$$FG$$LM,4$",*num_hints,*num_hints;
     if (type==BDT_ATA)
       "$RED$ATA   ";
     else
@@ -727,8 +723,9 @@ U0 ATARepEntry(I64 base0,I64 base1,I64 unit,I64 irq,U8 *msg,CATARep **_root,I64 
 
 Bool ATARepExitAllApplications()
 {
-  "%S%S%S","ST_GOING_TO_PROBE_HARDWARE",
-	   "ST_EXIT_ALL_APPLICATIONS","ST_PROBE_OR_SKIP";
+	"\nWe're going to probe hardware.\n"
+	"$RED$Exit all other applications.$FG$\n"
+	"Press '$PURPLE$p$FG$' to probe or '$PURPLE$s$FG$' to skip.\n";
   if (ToUpper(GetChar(,FALSE))=='S')
     return TRUE;
   else
@@ -736,10 +733,8 @@ Bool ATARepExitAllApplications()
 }
 
 public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
-{
-  U32 d1,d2;
-  U8 d3;
-  I64 i,j,k,cnt=0,unlock_flags=0,num_hints=0;
+{//Report possible ATA devices by probing.  Hard disks and CD/DVDs.
+  I64 d1,d2,d3,i,j,k,cnt=0,unlock_flags=0,num_hints=0;
 #assert NUM_BLKDEVS<=64
   Bool old_preempt;
 
@@ -750,9 +745,9 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 
   old_preempt=Preempt(OFF);
   for (i=0;i<NUM_BLKDEVS;i++)
-    if (sys_blkdevs[i].bd_signature==BD_SIGNATURE_VAL)
+    if (dsk.blkdevs[i].bd_signature==BD_SIGNATURE_VAL)
       BEqu(&unlock_flags,i,
-	    BlkDevLock(&sys_blkdevs[i]));
+	    BlkDevLock(&dsk.blkdevs[i]));
 
   if (!just_ide)
     for (k=0;k<256;k++) {
@@ -772,9 +767,7 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 	  ATARepEntry(d1,d2,0,d3,"Primary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Primary IDE",_root,&num_hints);
 	} else {
-	  d1=0x1F0;
-	  d2=0x3F6;
-	  d3=14;
+	  d1=0x1F0; d2=0x3F6; d3=14;
 	  ATARepEntry(d1,d2,0,d3,"Primary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Primary IDE",_root,&num_hints);
 	}
@@ -784,37 +777,32 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 	  ATARepEntry(d1,d2,0,d3,"Secondary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Secondary IDE",_root,&num_hints);
 	} else {
-	  d1=0x170;
-	  d2=0x376;
-	  d3=15;
+	  d1=0x170; d2=0x376; d3=15;
 	  ATARepEntry(d1,d2,0,d3,"Secondary IDE",_root,&num_hints);
 	  ATARepEntry(d1,d2,1,d3,"Secondary IDE",_root,&num_hints);
 	}
       }
     }
   if (!cnt) {
-    d1=0x1F0;
-    d2=0x3F6;
-    d3=14;
+    d1=0x1F0; d2=0x3F6; d3=14;
     ATARepEntry(d1,d2,0,d3,"Primary IDE",_root,&num_hints);
     ATARepEntry(d1,d2,1,d3,"Primary IDE",_root,&num_hints);
 
-    d1=0x170;
-    d2=0x376;
-    d3=15;
+    d1=0x170; d2=0x376; d3=15;
     ATARepEntry(d1,d2,0,d3,"Secondary IDE",_root,&num_hints);
     ATARepEntry(d1,d2,1,d3,"Secondary IDE",_root,&num_hints);
   }
-  NewLine(2);
+  '\n\n';
   for (i=0;i<NUM_BLKDEVS;i++)
     if (Bt(&unlock_flags,i))
-      BlkDevUnlock(&sys_blkdevs[i]);
+      BlkDevUnlock(&dsk.blkdevs[i]);
   Preempt(old_preempt);
   return num_hints;
 }
 
 CATARep *ATAIDDrvs(CATARep *root,U8 _sys_acct_drv,CATARep **_ata_drv,CATARep **_atapi_drv)
-{
+{//When trying to sort-out main hard drives
+//and CD-ROM drives, this is needed.
   CATARep *result=NULL,*tempha=root,*ata_drv=NULL,*atapi_drv=NULL;
   CBlkDev *bdev;
   Bool was_silent=Silent(ON);
@@ -868,30 +856,32 @@ CBlkDev *ATAMount(U8 first_drv_let,I64 type,I64 base0,I64 base1,I64 unit)
 }
 
 I64 AutoMountIDE()
-{
+{//Try to mount hard drive and CD/DVD, automatically. (Kernel.Cfg option).
+//It uses 'C' and 'T' as first drive letters or whatever you set
+//in config when compiling Kernel.BIN.
   I64 result=0;
   CATARep *root=NULL,*ata_drv=NULL,*atapi_drv=NULL,*tempha;
   ATARep(FALSE,TRUE,&root);
   ATAIDDrvs(root,*sys_acct,&ata_drv,&atapi_drv);
-  if (ata_drv && ATAMount(sys_first_hd_drv_let,BDT_ATA,
+  if (ata_drv && ATAMount(dsk.first_hd_drv_let,BDT_ATA,
 	ata_drv->base0,ata_drv->base1,ata_drv->unit))
     result++;
-  if (atapi_drv && ATAMount(sys_first_cd_drv_let,BDT_ATAPI,
+  if (atapi_drv && ATAMount(dsk.first_cd_drv_let,BDT_ATAPI,
       atapi_drv->base0,atapi_drv->base1,atapi_drv->unit))
     result++;
   tempha=root;
   while (tempha) {
     if (tempha!=ata_drv && tempha!=atapi_drv) {
-      if (tempha->type==BDT_ATA && ATAMount(sys_first_hd_drv_let,BDT_ATA,
+      if (tempha->type==BDT_ATA && ATAMount(dsk.first_hd_drv_let,BDT_ATA,
 	  tempha->base0,tempha->base1,tempha->unit))
 	result++;
-      else if (tempha->type==BDT_ATAPI && ATAMount(sys_first_cd_drv_let,BDT_ATAPI,
+      else if (tempha->type==BDT_ATAPI && ATAMount(dsk.first_cd_drv_let,BDT_ATAPI,
 	  tempha->base0,tempha->base1,tempha->unit))
 	result++;
     }
     tempha=tempha->next;
   }
   LinkedLstDel(root);
-  sys_auto_mount_ide_cnt=result;
+  dsk.auto_mount_ide_cnt=result;
   return result;
 }

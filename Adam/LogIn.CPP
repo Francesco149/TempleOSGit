@@ -1,8 +1,8 @@
 #help_index "Misc/Accts"
 
-//This is temporary until defined in [C:/Accts/TAD/Adam3fSys.CPP,1].
 U0 UserStartUp()
-{ //Run each time a user a spawned
+{//Temporary until defined in [C:/Accts/TAD/Adam3eSys.CPP,1].
+//Run each time a user a spawned
   DocTermNew;
   Type("::/Doc/Start.TXT");
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
@@ -11,9 +11,9 @@ U0 UserStartUp()
   Preempt(ON);
 }
 
-//This is temporary until defined in [C:/Accts/TAD/Adam3fSys.CPP,1].
 U0 SrvStartUp()
-{ //Run each time a srv task is spawned.
+{//Temporary until defined in [C:/Accts/TAD/Adam3eSys.CPP,1].
+//Run each time a srv task is spawned.
   DocTermNew;
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
   WinToTop;
@@ -27,15 +27,15 @@ U8 *PopUpSysAcct()
   CDoc *doc=DocNew;
   CDirEntry	*tempde=FilesFind("/Accts/*",FUF_RECURSE|FUF_JUST_DIRS|FUF_FLATTEN_TREE),
 		*tempde1=tempde;
-  DocPrint(doc,"$CM+CX-LE,8$");
-  DocPutSprite(doc,__BIN_1,"$SP+SIF,\"\",%d$");
-  DocPrint(doc,"$CM+LX,0,14$Select Account.\nCursor down and press <SPACE BAR>.\n");
+  DocPrint(doc,"$CM+CX-LE,10$");
+  DocSprite(doc,__BIN_1,"$SP+SIF,\"\",BI=%d$");
+  DocPrint(doc,"$CM+LX,0,12$Select Account.\nCursor down and press <SPACE>.\n");
   while (tempde) {
     if (*tempde->name!='.') {
       st=tempde->full_name;
       if (!StrNCmp(st+2,"/Accts/",7))
 	st+=9;
-      DocPrint(doc,"$CM+LX,2,3$$BT,\"%s\",%d$",st,tempde);
+      DocPrint(doc,"$CM+LX,2,3$$BT,\"%s\",LE=%d$",st,tempde);
     }
     tempde=tempde->next;
   }
@@ -46,7 +46,7 @@ U8 *PopUpSysAcct()
 
   DocDel(doc);
   result=AStrNew(tempde->full_name);
-  DirLstDel(tempde1);
+  DirTreeDel(tempde1);
   return result;
 }
 
@@ -78,7 +78,7 @@ Bool AcctCacheRegistry()
 }
 
 public Bool AcctRegSetDftEntry(U8 *path,U8 *val,Bool is_adam_entry=FALSE)
-{
+{//Add code doc tree branch to registry.
   Bool result,unlock_doc;
   AcctCacheRegistry;
   unlock_doc=DocLock(sys_registry_doc);
@@ -102,16 +102,16 @@ public Bool AcctRegSetDftEntry(U8 *path,U8 *val,Bool is_adam_entry=FALSE)
 }
 
 public I64 AcctRegExeBranch(U8 *path)
-{
+{//Execute doc tree branch in registry.
   AcctCacheRegistry;
   return DocTreeBranchExe(sys_registry_doc,path);
 }
 
 public Bool AcctRegWriteBranch(U8 *path,U8 *fmt,...)
-{
+{//Rewrite doc tree branch in registry.
   Bool result,unlock_doc;
   CDocEntry *tree_branch,*start_indent,*end_indent;
-  U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
+  U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   AcctCacheRegistry;
   unlock_doc=DocLock(sys_registry_doc);
   if (result=DocTreeFind(sys_registry_doc,path,&tree_branch,&start_indent,&end_indent))
@@ -126,22 +126,30 @@ public Bool AcctRegWriteBranch(U8 *path,U8 *fmt,...)
   return result;
 }
  
-U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
-{ //You're not supposed to make system pop-up flags, only me.
+public Bool OneTimePopUp(U8 *_flags,I64 flag_num,U8 *msg)
+{//See [C:/Apps/X-Caliber/X-Caliber.CPP.Z,1].
+  Bool result=FALSE;
   CDoc *doc=DocNew;
   CDocEntry *doc_e;
-  if (!Bt(sys_msg_flags,flag_num)) {
+  if (!Bt(_flags,flag_num)) {
     if (msg) DocPrint(doc,"%s",msg);
-    doc_e=DocPrint(doc,"\n$CB+LE,\"Do not show this msg again.\",1$");
-    DocPrint(doc,"$CM+CX,0,4$$BT,\"OKAY\",1$\n");
-    if (PopUpMenu(doc)==1 && doc_e->flags1&DOCEF1_CHECKED_COLLAPSED) {
-      LBts(sys_msg_flags,flag_num);
-      AcctRegWriteBranch("Adam/SysMsgFlags",
-	"sys_msg_flags[0]=0x%X;\n",
-	sys_msg_flags[0]);
+    doc_e=DocPrint(doc,"\n$CB,\"Do not show this msg again.\",LE=1$");
+    DocPrint(doc,"$CM+CX,0,4$$BT,\"OKAY\",LE=1$\n");
+    if (PopUpMenu(doc)==1 && doc_e->de_flags&DOCEF_CHECKED_COLLAPSED) {
+      LBts(_flags,flag_num);
+      result=TRUE;
     }
     DocDel(doc);
   }
+  return result;
+}
+
+U0 AcctOneTimePopUp(I64 flag_num,U8 *msg)
+{//You're not supposed to make system pop-up flags, only me.
+  if (OneTimePopUp(sys_msg_flags,flag_num,msg))
+    AcctRegWriteBranch("Adam/SysMsgFlags",
+	"sys_msg_flags[0]=0x%X;\n",
+	sys_msg_flags[0]);
 }
 
 U0 RegistryInit()
@@ -149,7 +157,7 @@ U0 RegistryInit()
   U8 buf[136];
   Bool version_present;
   AcctRegSetDftEntry("Adam/SysMsgFlags","sys_msg_flags[0]=0;\n",TRUE);
-  SPrint(buf,"registry_version=%4.3f;\n",os_version);
+  StrPrint(buf,"registry_version=%4.3f;\n",os_version);
   version_present=AcctRegSetDftEntry("Adam/SysRegVer",buf,TRUE);
   AcctRegExeBranch("Adam");
   if (registry_version!=os_version) {
@@ -157,5 +165,3 @@ U0 RegistryInit()
     AcctRegExeBranch("Adam");
   }
 }
-
-#help_index ""

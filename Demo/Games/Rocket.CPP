@@ -1,32 +1,30 @@
 #define THRUST	100
 
-Bool blast_off;
-CMass m1, //Bottom of rocket
-	   m2; //Top of rocket
+Bool	blast_off;
+CMass	m1, //Bottom of rocket
+	m2; //Top of rocket
 CSpring s;
 
 #define PT_SPAN	40
 
 
-
   /* <1> <1> (image) */
 
-CDC *dc2;
-
+CDC	*dc2;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 i,x,y,cx=task->win_pixel_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
+  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
   Bool engine_on;
   F64 nozzle_angle,theta=Arg(m2.x-m1.x,m2.y-m1.y);
 
-  if (Bt(key_down_bitmap,SC_CURSOR_UP)) {
+  if (Bt(kbd.down_bitmap,SC_CURSOR_UP)) {
     nozzle_angle=0;
     engine_on=TRUE;
-  } else if (Bt(key_down_bitmap,SC_CURSOR_LEFT)) {
+  } else if (Bt(kbd.down_bitmap,SC_CURSOR_LEFT)) {
     nozzle_angle=pi/8;
     engine_on=TRUE;
-  } else if (Bt(key_down_bitmap,SC_CURSOR_RIGHT)) {
+  } else if (Bt(kbd.down_bitmap,SC_CURSOR_RIGHT)) {
     nozzle_angle=-pi/8;
     engine_on=TRUE;
   } else
@@ -36,7 +34,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     x=m1.x-10*Cos(theta+nozzle_angle);
     y=m1.y-10*Sin(theta+nozzle_angle);
     for (i=0;i<6;i++) {
-      if ((i^win_updates)&1)
+      if ((i^winmgr.updates)&1)
 	dc->color=YELLOW;
       else
 	dc->color=RED;
@@ -60,7 +58,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     Snd(50);
   } else
     Snd(0);
-  SpritePlotRotZ3B(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
+  SpriteZ3B(dc,cx+(m1.x+m2.x)/2,cy-(m1.y+m2.y)/2,0,__BIN_1,-theta);
 }
 
 U0 MyDerivative(CMathODE *,F64,COrder2D3 *,COrder2D3 *)
@@ -68,13 +66,13 @@ U0 MyDerivative(CMathODE *,F64,COrder2D3 *,COrder2D3 *)
   Bool engine_on;
   F64 nozzle_angle,theta=Arg(m2.state->x-m1.state->x,m2.state->y-m1.state->y);
 
-  if (Bt(key_down_bitmap,SC_CURSOR_UP)) {
+  if (Bt(kbd.down_bitmap,SC_CURSOR_UP)) {
     nozzle_angle=0;
     engine_on=TRUE;
-  } else if (Bt(key_down_bitmap,SC_CURSOR_LEFT)) {
+  } else if (Bt(kbd.down_bitmap,SC_CURSOR_LEFT)) {
     nozzle_angle=pi/8;
     engine_on=TRUE;
-  } else if (Bt(key_down_bitmap,SC_CURSOR_RIGHT)) {
+  } else if (Bt(kbd.down_bitmap,SC_CURSOR_RIGHT)) {
     nozzle_angle=-pi/8;
     engine_on=TRUE;
   } else
@@ -146,8 +144,7 @@ U0 Rocket()
   Fs->task_end_cb=&TaskEndCB;
 
   DocClear;
-  "$BG,LTCYAN$$GREEN$Up, Left, Right$FG$";
-  NewLine(Fs->win_height-4);
+  "$BG,LTCYAN$$GREEN$Up, Left, Right$FG$%h*c",Fs->win_height-4,'\n';
  
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;

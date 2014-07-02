@@ -10,10 +10,10 @@ PUT_DEC_U64::
 //but this function will be nice for ASM callers if it saves all regs.
 	PUSH_C_REGS
 
-	PUSH	RSI		//See [C:/Kernel/Adam1a.HPP.Z,3533] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,3534] REG_NON_PTR_MASK
+	PUSH	RSI		//See [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK
 	LEA	RSI,-1[RBP]	//Load addr of end of buffer.
 				//We picked RSI because of PUT_STR
-				//We'll move backward
+				//We'll move bwd
 	MOV	U8 [RSI],0	//Terminator
 
 	TEST	RAX,RAX		//Special case -- zero
@@ -32,7 +32,7 @@ PUT_DEC_U64::
 	TEST	RAX,RAX
 	JNZ	@@10
 
-@@15:	CALL	&PUT_STR
+@@15:	CALL	PUT_STR
 	POP	RSI
 	POP_C_REGS
 	LEAVE
@@ -41,8 +41,8 @@ PUT_DEC_U64::
 _DO_IT::			//The convention is C-callable routines have underscores.
 	MOV	RAX,122333221
 	CALL	PUT_DEC_U64
-	PUSH	1
-	CALL	&NewLine	//Print one carriage return
+	MOV	RAX,'\n'
+	CALL	PUT_CHARS
 	RET
 }
 

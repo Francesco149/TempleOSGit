@@ -1,14 +1,14 @@
 #help_index "Graphics"
 
-public Bool GrPlot0(CDC *dc,I64 x,I64 y)
-{  //No clipping or transformation or pen width
+public Bool GrPlot0(CDC *dc=gr.dc,I64 x,I64 y)
+{//2D. No clipping or transformation or pen width.
   U8 *dst;
   I32 *db;
   I64 d,dist;
   CColorROPU32 c,color=dc->color,bkcolor=dc->bkcolor;
 
   if (dc->flags & DCF_LOCATE_NEAREST) {
-    dist=DistI64(x,y,dc->cur_x,dc->cur_y);
+    dist=DistSqrI64(x,y,dc->cur_x,dc->cur_y);
     if (dist<=dc->nearest_dist) {
       dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
@@ -51,7 +51,7 @@ public Bool GrPlot0(CDC *dc,I64 x,I64 y)
       break;
     case ROPB_COLLISION:
       c=*dst;
-      if (c!=COLOR_TRANSPARENT&&c!=bkcolor.c0.color)
+      if (c!=TRANSPARENT&&c!=bkcolor.c0.color)
 	dc->collision_cnt++;
       break;
     case ROPB_XOR:
@@ -61,15 +61,15 @@ public Bool GrPlot0(CDC *dc,I64 x,I64 y)
   return TRUE;
 }
 
-public I64 GrPeek0(CDC *dc,I64 x,I64 y)
-{  //No clipping or transformation
+public I64 GrPeek0(CDC *dc=gr.dc,I64 x,I64 y)
+{//2D. No clipping or transformation.
   return dc->body[dc->width_internal*y+x];
 }
 
-#help_index "Graphics;Graphics/DCs"
+#help_index "Graphics;Graphics/Device Contexts"
 
-public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
-{  //Clipping but not transformation
+public I64 GrBlot(CDC *dc=gr.dc,I64 x,I64 y,CDC *img)
+{//2D. Clipping but not transformation..
   I64 i,j,k,k1,kk,kk1,w1,h1,w2,h2,
 	leading_bits,leading_bit_mask,whole_bytes,trailing_bits,trailing_bit_mask,
 	reg bit_shift,dist,win_z_buf_line_inc,win_z_buf_line_dec,win_z_num,
@@ -82,8 +82,8 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
   if (x<0)
     w1=-x;
@@ -96,11 +96,11 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
   w2=img->width;
   h2=img->height;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x+=win_task->win_pixel_left;
-    y+=win_task->win_pixel_top;
+    x+=win_task->pix_left;
+    y+=win_task->pix_top;
   }
-  if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
-    dist=DistI64(x+img->width>>1,y+img->height>>1,dc->cur_x,dc->cur_y);
+  if (dc->flags & DCF_LOCATE_NEAREST) {//TODO:Untested
+    dist=DistSqrI64(x+img->width>>1,y+img->height>>1,dc->cur_x,dc->cur_y);
     if (dist<=dc->nearest_dist) {
       dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
@@ -108,12 +108,12 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
   }
   if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
-    if (x+w2>win_task->win_pixel_right+1)
-      w2=win_task->win_pixel_right+1-x;
+    if (x+w2>win_task->pix_right+1)
+      w2=win_task->pix_right+1-x;
 
     if (y+h1<0) h1=-y;
-    if (y+h2>win_task->win_pixel_bottom+1)
-      h2=win_task->win_pixel_bottom+1-y;
+    if (y+h2>win_task->pix_bottom+1)
+      h2=win_task->pix_bottom+1-y;
   }
   if (x+w2>dc->width)
     w2=dc->width-x;
@@ -134,12 +134,12 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
     dc->color&=~ROPF_DITHER;
     color=dc->color;
     leading_bits=-(w1+x)&7;
-    leading_bit_mask=gr_1_to_8_bits[0xFF>>leading_bits];
+    leading_bit_mask=gr.to_8_bits[0xFF>>leading_bits];
     bit_shift=-x&7;
     whole_bytes=(w2-w1-leading_bits)>>3;
     if (whole_bytes<0) whole_bytes=0;
     trailing_bits=(x+w2)&7;
-    trailing_bit_mask=gr_1_to_8_bits[0xFF<<trailing_bits&0xFF];
+    trailing_bit_mask=gr.to_8_bits[0xFF<<trailing_bits&0xFF];
     if (leading_bits+trailing_bits>w2-w1) {
       leading_bit_mask|=trailing_bit_mask;
       trailing_bits=0;
@@ -152,7 +152,7 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
 	for (j=h2-h1;j;j--) {
 	  for (i=w1;i<w2;i++) {
 	    c=dc->body[k1+i];
-	    if (c!=COLOR_TRANSPARENT&&c!=color&&img->body[k+i]!=COLOR_TRANSPARENT)
+	    if (c!=TRANSPARENT&&c!=color&&img->body[k+i]!=TRANSPARENT)
 	      dc->collision_cnt++;
 	  }
 	  k+=img->width_internal;
@@ -160,13 +160,13 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
 	}
 	break;
       case ROPB_MONO:
-	color_mask=gr_1_to_8_colors[color.c0.color];
+	color_mask=gr.to_8_colors[color.c0.color];
 	if (img->flags&DCF_NO_TRANSPARENTS) {
 	  if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP)
 	    win_z_buf_ptr=NULL;
 	  else {
 	    win_z_num=win_task->win_z_num;
-	    win_z_buf_ptr=gr_win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
+	    win_z_buf_ptr=gr.win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
 	    win_z_buf_line_dec=whole_bytes;
 	    if (leading_bits)
 	      win_z_buf_line_dec++;
@@ -268,7 +268,7 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
 	    }
 	  } else {
 	    win_z_num		=win_task->win_z_num;
-	    win_z_buf_ptr	=gr_win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
+	    win_z_buf_ptr	=gr.win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
 	    win_z_buf_line_dec=whole_bytes;
 	    if (leading_bits)
 	      win_z_buf_line_dec++;
@@ -307,7 +307,7 @@ public I64 GrBlot(CDC *dc,I64 x,I64 y,CDC *img)
 	    win_z_buf_ptr=NULL;
 	  else {
 	    win_z_num=win_task->win_z_num;
-	    win_z_buf_ptr=gr_win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
+	    win_z_buf_ptr=gr.win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
 	    win_z_buf_line_dec=whole_bytes;
 	    if (leading_bits)
 	      win_z_buf_line_dec++;
@@ -405,7 +405,7 @@ here1a:
 	    for (j=h1;j<h2;j++) {
 	      for (i=w1;i<w2;i++) {
 		c=img->body[k+i];
-		if (c!=COLOR_TRANSPARENT) {
+		if (c!=TRANSPARENT) {
 		  dc->color.c0.color=c;
 		  GrPlot0(dc,x+i,y+j);
 		}
@@ -414,7 +414,7 @@ here1a:
 	    }
 	  } else {
 	    win_z_num	      =win_task->win_z_num;
-	    win_z_buf_ptr	=gr_win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
+	    win_z_buf_ptr	=gr.win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
 	    win_z_buf_line_dec=whole_bytes;
 	    if (leading_bits)
 	      win_z_buf_line_dec++;
@@ -430,7 +430,7 @@ here1a:
 	      for (i=w1;i<w2;) {
 		if (color_mask) {
 		  c=img->body[k+i];
-		  if (c!=COLOR_TRANSPARENT) {
+		  if (c!=TRANSPARENT) {
 		    dc->color.c0.color=c;
 		    GrPlot0(dc,x+i,y+j);
 		  }
@@ -458,7 +458,7 @@ here1a:
 	    win_z_buf_ptr=NULL;
 	  else {
 	    win_z_num=win_task->win_z_num;
-	    win_z_buf_ptr=gr_win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
+	    win_z_buf_ptr=gr.win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
 	    win_z_buf_line_dec=whole_bytes;
 	    if (leading_bits)
 	      win_z_buf_line_dec++;
@@ -559,6 +559,8 @@ here1a:
     return 0;
 }
 
+#help_index "Graphics/Device Contexts"
+
 U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor)
 {
   I64 c,k,i=src_size*2,i1=i>>3;
@@ -568,7 +570,7 @@ U8 *GrBitMap4ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor)
     if (Bt(src+i1  ,k)) c|=2;
     if (Bt(src+i1*2,k)) c|=4;
     if (Bt(src+i1*3,k)) c|=8;
-    if (c==bkcolor) c=COLOR_TRANSPARENT;
+    if (c==bkcolor) c=TRANSPARENT;
     *dst++=c;
   }
   return dst;
@@ -580,24 +582,24 @@ U8 *GrBitMap1ToBitMap8(U8 *dst,U8 *src,I64 src_size,I64 bkcolor)
   for (k=0;k<i;k++) {
     c=0;
     if (Bt(src,k))  c=COLOR_MONO;
-    if (c==bkcolor) c=COLOR_TRANSPARENT;
+    if (c==bkcolor) c=TRANSPARENT;
     *dst++=c;
   }
   return dst;
 }
 
-public CDC *DCExtract(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
-{
+public CDC *DCExtract(CDC *dc=gr.dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
+{//Extract new device context rect from device context.
   CDC *result;
   CTask *win_task;
-  if (x1>x2) SwapU64(&x1,&x2);
-  if (y1>y2) SwapU64(&y1,&y2);
+  if (x1>x2) SwapI64(&x1,&x2);
+  if (y1>y2) SwapI64(&y1,&y2);
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x1+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y1+=win_task->win_pixel_top+win_task->win_scroll_y;
-    x2+=win_task->win_pixel_left+win_task->win_scroll_x;
-    y2+=win_task->win_pixel_top+win_task->win_scroll_y;
+    x1+=win_task->pix_left+win_task->scroll_x;
+    y1+=win_task->pix_top+win_task->scroll_y;
+    x2+=win_task->pix_left+win_task->scroll_x;
+    y2+=win_task->pix_top+win_task->scroll_y;
   }
   result=DCNew(x2-x1+1,y2-y1+1,task);
   DCFill(result);
@@ -607,8 +609,8 @@ public CDC *DCExtract(CDC *dc,I64 x1,I64 y1,I64 x2,I64 y2,CTask *task=NULL)
 
 #help_index "Graphics/Char;Char/Graphics"
 
-public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
-{  //Clipping but not transformation
+public I64 GrPutChar(CDC *dc=gr.dc,I64 x,I64 y,U8 ch)
+{//2D. Clipping but not transformation.
   U8 reg *src,reg *dst,*font_ptr;
   I64 i,m,leading_bits,trailing_bits,leading_bit_mask,trailing_bit_mask,
 	j,k1,kk1,w1,h1,w2,h2,reg bit_shift,dist,reg color_mask;
@@ -617,8 +619,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
 
   if (x<0)
@@ -633,11 +635,11 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
   h2=FONT_HEIGHT;
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x+=win_task->win_pixel_left;
-    y+=win_task->win_pixel_top;
+    x+=win_task->pix_left;
+    y+=win_task->pix_top;
   }
-  if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
-    dist=DistI64(x+w2>>1,y+h2>>1,dc->cur_x,dc->cur_y);
+  if (dc->flags & DCF_LOCATE_NEAREST) {//TODO:Untested
+    dist=DistSqrI64(x+w2>>1,y+h2>>1,dc->cur_x,dc->cur_y);
     if (dist<=dc->nearest_dist) {
       dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=dist;
@@ -645,12 +647,12 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
   }
   if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
-    if (x+w2>win_task->win_pixel_right+1)
-      w2=win_task->win_pixel_right+1-x;
+    if (x+w2>win_task->pix_right+1)
+      w2=win_task->pix_right+1-x;
 
     if (y+h1<0) h1=-y;
-    if (y+h2>win_task->win_pixel_bottom+1)
-      h2=win_task->win_pixel_bottom+1-y;
+    if (y+h2>win_task->pix_bottom+1)
+      h2=win_task->pix_bottom+1-y;
   }
   if (x+w2>dc->width)
     w2=dc->width-x;
@@ -668,15 +670,15 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
     color=dc->color;
     leading_bits=-(w1+x)&7;
     if (!leading_bits) leading_bits=8;
-    leading_bit_mask=gr_1_to_8_bits[0xFF>>leading_bits];
+    leading_bit_mask=gr.to_8_bits[0xFF>>leading_bits];
     bit_shift=-x&7;
     trailing_bits=(x+w2)&7;
-    trailing_bit_mask=gr_1_to_8_bits[0xFF<<trailing_bits&0xFF];
+    trailing_bit_mask=gr.to_8_bits[0xFF<<trailing_bits&0xFF];
     if (leading_bits+trailing_bits>w2-w1) {
       leading_bit_mask|=trailing_bit_mask;
       trailing_bits=0;
     }
-    font_ptr=&gr_font[(FONT_WIDTH*(FONT_HEIGHT*ch+h1))>>3];
+    font_ptr=&text.font[(FONT_WIDTH*(FONT_HEIGHT*ch+h1))>>3];
     if (color.c0.rop==ROPB_COLLISION) {
       m=w1&(FONT_WIDTH-1);
 #assert FONT_WIDTH==8
@@ -686,14 +688,14 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	src=font_ptr;
 	for (j=h2-h1;j;j--) {
 	  c=dc->body[k1+i];
-	  if (c!=COLOR_TRANSPARENT && c!=color && Bt(src,m))
+	  if (c!=TRANSPARENT && c!=color && Bt(src,m))
 	    dc->collision_cnt++;
 	  k1+=dc->width_internal;
 	  src++;
 	}
       }
     } else {
-      color_mask=gr_1_to_8_colors[color.c0.color];
+      color_mask=gr.to_8_colors[color.c0.color];
       k1=x+w1;
       kk1=(h1+y)*dc->width_internal+k1;
       if (!(dc->flags & DCF_SCREEN_BITMAP) || dc->flags&DCF_ON_TOP) {
@@ -706,7 +708,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_EQU:
 	    case ROPB_MONO:
 	      for (j=h2-h1;j;j--) {
-		m=gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF];
+		m=gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF];
 		*dst(I64 *)=*dst(I64 *)&leading_bit_mask|(color_mask&m|*dst(I64 *)&~m)&~leading_bit_mask;
 		src++;
 		dst+=dc->width_internal;
@@ -715,7 +717,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_XOR:
 	      if (color_mask) {
 		for (j=h2-h1;j;j--) {
-		  *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(*dst(I64 *)^gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~leading_bit_mask;
+		  *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(*dst(I64 *)^gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~leading_bit_mask;
 		  src++;
 		  dst+=dc->width_internal;
 		}
@@ -733,7 +735,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_EQU:
 	    case ROPB_MONO:
 	      for (j=h2-h1;j;j--) {
-		m=gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF];
+		m=gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF];
 		*dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(color_mask&m|*dst(I64 *)&~m)&~trailing_bit_mask;
 		src++;
 		dst+=dc->width_internal;
@@ -742,7 +744,7 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_XOR:
 	      if (color_mask) {
 		for (j=h2-h1;j;j--) {
-		  *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(*dst(I64 *)^gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~trailing_bit_mask;
+		  *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(*dst(I64 *)^gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~trailing_bit_mask;
 		  src++;
 		  dst+=dc->width_internal;
 		}
@@ -760,8 +762,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_EQU:
 	    case ROPB_MONO:
 	      for (j=h1;j<h2;j++) {
-		if (!IsPixelCovered0(win_task,k1,y+j)) {
-		  m=gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF];
+		if (!IsPixCovered0(win_task,k1,y+j)) {
+		  m=gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF];
 		  *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(color_mask&m|*dst(I64 *)&~m)&~leading_bit_mask;
 		}
 		src++;
@@ -771,8 +773,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_XOR:
 	      if (color_mask) {
 		for (j=h1;j<h2;j++) {
-		  if (!IsPixelCovered0(win_task,k1,y+j))
-		    *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(*dst(I64 *)^gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~leading_bit_mask;
+		  if (!IsPixCovered0(win_task,k1,y+j))
+		    *dst(I64 *)=*dst(I64 *)&leading_bit_mask|(*dst(I64 *)^gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~leading_bit_mask;
 		  src++;
 		  dst+=dc->width_internal;
 		}
@@ -791,8 +793,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_EQU:
 	    case ROPB_MONO:
 	      for (j=h1;j<h2;j++) {
-		if (!IsPixelCovered0(win_task,k1,y+j)) {
-		  m=gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF];
+		if (!IsPixCovered0(win_task,k1,y+j)) {
+		  m=gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF];
 		  *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(color_mask&m|*dst(I64 *)&~m)&~trailing_bit_mask;
 		}
 		src++;
@@ -802,8 +804,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
 	    case ROPB_XOR:
 	      if (color_mask) {
 		for (j=h1;j<h2;j++) {
-		  if (!IsPixelCovered0(win_task,k1,y+j))
-		    *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(*dst(I64 *)^gr_1_to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~trailing_bit_mask;
+		  if (!IsPixCovered0(win_task,k1,y+j))
+		    *dst(I64 *)=*dst(I64 *)&trailing_bit_mask|(*dst(I64 *)^gr.to_8_bits[*src(U16 *)>>bit_shift&0xFF])&~trailing_bit_mask;
 		  src++;
 		  dst+=dc->width_internal;
 		}
@@ -818,8 +820,8 @@ public I64 GrPutChar(CDC *dc,I64 x,I64 y,U8 ch)
     return 0;
 }
 
-I64 GrPutS(CDC *dc,I64 x,I64 y,U8 *_s)
-{ //Use [C:/Adam/Gr/GrBitMap.CPP.Z,864] GrPrint()
+I64 GrPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
+{//Use [C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint()
   I64 x0,ch,result;
   if (!_s) return 0;
   x0=x;
@@ -838,8 +840,8 @@ I64 GrPutS(CDC *dc,I64 x,I64 y,U8 *_s)
   return result;
 }
 
-I64 GrVPutS(CDC *dc,I64 x,I64 y,U8 *_s)
-{ //Vertical Text.  Use [C:/Adam/Gr/GrBitMap.CPP.Z,873] GrVPrint()
+I64 GrVPutS(CDC *dc=gr.dc,I64 x,I64 y,U8 *_s)
+{//Vertical Text.  Use [C:/Adam/Gr/GrBitMap.CPP.Z,875] GrVPrint()
   I64 y0,result;
   U8 buf[2];
   if (!_s) return 0;
@@ -861,30 +863,30 @@ I64 GrVPutS(CDC *dc,I64 x,I64 y,U8 *_s)
   return result;
 }
 
-public I64 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
-{
+public I64 GrPrint(CDC *dc=gr.dc,I64 x,I64 y,U8 *fmt,...)
+{//2D. Clipping but not transformation.
   I64 result;
-  U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
+  U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   result=GrPutS(dc,x,y,buf);
   Free(buf);
   return result;
 }
 
-public I64 GrVPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
-{ //Vertical text
+public I64 GrVPrint(CDC *dc=gr.dc,I64 x,I64 y,U8 *fmt,...)
+{//2D. Vertical text. Clipping but not transformation.
   I64 result;
-  U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
+  U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   result=GrVPutS(dc,x,y,buf);
   Free(buf);
   return result;
 }
 
 #help_index "Graphics"
-public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
-{  //Clipping but not transformation
-//Returns cnt of pixels changed
+public I64 GrRect(CDC *dc=gr.dc,I64 x,I64 y,I64 w,I64 h)
+{//2D. Width Height. Clipping but not transformation.
+//Returns cnt of pixs changed.
   I64 i,result=0,j,k1,kk1,w1,h1,w2,h2,dist,
-	leading_bits,whole_bytes,trailing_bits,leading_bit_mask,trailing_bit_mask,
+	leading_bits,original_leading_bits,whole_bytes,trailing_bits,leading_bit_mask,trailing_bit_mask,
 	win_z_buf_line_inc,win_z_buf_line_dec,win_z_num,color_mask;
   U8 reg *dst;
   U16 reg *win_z_buf_ptr;
@@ -894,8 +896,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
 
   if (x<0)
@@ -910,16 +912,16 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
   h2=h;
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x+=win_task->win_pixel_left;
-    y+=win_task->win_pixel_top;
+    x+=win_task->pix_left;
+    y+=win_task->pix_top;
   }
-  if (dc->flags & DCF_LOCATE_NEAREST) { //TODO:Untested
+  if (dc->flags & DCF_LOCATE_NEAREST) {//TODO:Untested
     if (dc->cur_x>=x && dc->cur_y>=y &&
 	  dc->cur_x<=x+w && dc->cur_y<=y+h) {
       dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
       dc->nearest_dist=0;
     } else {
-      dist=DistI64(x+w>>1,y+h>>1,dc->cur_x,dc->cur_y);
+      dist=DistSqrI64(x+w>>1,y+h>>1,dc->cur_x,dc->cur_y);
       if (dist<=dc->nearest_dist) {
 	dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	dc->nearest_dist=dist;
@@ -928,12 +930,12 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
   }
   if (dc->flags & DCF_SCREEN_BITMAP) {
     if (x+w1<0) w1=-x;
-    if (x+w2>win_task->win_pixel_right+1)
-      w2=win_task->win_pixel_right+1-x;
+    if (x+w2>win_task->pix_right+1)
+      w2=win_task->pix_right+1-x;
 
     if (y+h1<0) h1=-y;
-    if (y+h2>win_task->win_pixel_bottom+1)
-      h2=win_task->win_pixel_bottom+1-y;
+    if (y+h2>win_task->pix_bottom+1)
+      h2=win_task->pix_bottom+1-y;
   }
   if (x+w2>dc->width)
     w2=dc->width-x;
@@ -961,25 +963,25 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
       }
     } else
       dither=FALSE;
-    leading_bits=-(w1+x)&7;
-    leading_bit_mask=gr_1_to_8_bits[0xFF>>leading_bits];
+    original_leading_bits=leading_bits=-(w1+x)&7;
+    leading_bit_mask=gr.to_8_bits[0xFF>>leading_bits];
     whole_bytes=(w2-w1-leading_bits)>>3;
     if (whole_bytes<0) whole_bytes=0;
     trailing_bits=(x+w2)&7;
-    trailing_bit_mask=gr_1_to_8_bits[0xFF<<trailing_bits&0xFF];
+    trailing_bit_mask=gr.to_8_bits[0xFF<<trailing_bits&0xFF];
     if (leading_bits+trailing_bits>w2-w1) {
       leading_bit_mask|=trailing_bit_mask;
       leading_bits=w2-w1; //Correct so it's right for result.
       trailing_bits=0;
     }
-    if (color.c0.rop==ROPB_COLLISION) {  //TODO: Might want to check win_z_buf
+    if (color.c0.rop==ROPB_COLLISION) {//TODO: Might want to check win_z_buf
       color =dc->bkcolor.c0.color;
       k1=(h1+y)*dc->width_internal+x;
       result=-dc->collision_cnt;
       for (j=h2-h1;j;j--) {
 	for (i=w1;i<w2;i++) {
 	  c=dc->body[k1+i];
-	  if (c!=COLOR_TRANSPARENT && c!=color)
+	  if (c!=TRANSPARENT && c!=color)
 	    dc->collision_cnt++;
 	}
 	k1+=dc->width_internal;
@@ -990,7 +992,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	win_z_buf_ptr=NULL;
       else {
 	win_z_num=win_task->win_z_num;
-	win_z_buf_ptr=gr_win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
+	win_z_buf_ptr=gr.win_z_buf(U8 *)+((h1+y)/FONT_HEIGHT*TEXT_COLS+(w1+x)/FONT_WIDTH)*sizeof(U16);
 	win_z_buf_line_dec=whole_bytes;
 	if (leading_bits)
 	  win_z_buf_line_dec++;
@@ -1012,7 +1014,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	      if (win_z_buf_ptr) {
 		result=0;
 		for (j=h1;j<h2;j++) {
-		  color_mask=gr_1_to_8_colors[color.c0.color];
+		  color_mask=gr.to_8_colors[color.c0.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits) {
 		    if (win_z_num>=*win_z_buf_ptr++) {
@@ -1042,7 +1044,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 		}
 	      } else {
 		for (j=h2-h1;j;j--) {
-		  color_mask=gr_1_to_8_colors[color.c0.color];
+		  color_mask=gr.to_8_colors[color.c0.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits)
 		    *dst(I64 *)++=*dst(I64 *)&leading_bit_mask|color_mask&~leading_bit_mask;
@@ -1063,7 +1065,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	      if (win_z_buf_ptr) {
 		result=0;
 		for (j=h1;j<h2;j++) {
-		  color_mask=gr_1_to_8_colors[color.c0.color];
+		  color_mask=gr.to_8_colors[color.c0.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits) {
 		    if (win_z_num>=*win_z_buf_ptr++) {
@@ -1093,7 +1095,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 		}
 	      } else {
 		for (j=h2-h1;j;j--) {
-		  color_mask=gr_1_to_8_colors[color.c0.color];
+		  color_mask=gr.to_8_colors[color.c0.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits)
 		    *dst(I64 *)++=*dst(I64 *)&leading_bit_mask|*dst(I64 *)^color_mask&~leading_bit_mask;
@@ -1112,7 +1114,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	      break;
 	  }
 	} else {
-	  if (((x+w1)^(y+h1))&1)
+	  if (((x+w1-original_leading_bits)^(y+h1))&1)
 	    SwapU16(&color.c0,&color.c1);
 	  nobound_switch (color.c0.rop) {
 	    case ROPB_EQU:
@@ -1120,8 +1122,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	      if (win_z_buf_ptr) {
 		result=0;
 		for (j=h1;j<h2;j++) {
-		  color_mask=gr_1_to_8_bits[0x55]&gr_1_to_8_colors[color.c0.color]|
-			gr_1_to_8_bits[0xAA]&gr_1_to_8_colors[color.c1.color];
+		  color_mask=gr.to_8_bits[0x55]&gr.to_8_colors[color.c0.color]|
+			gr.to_8_bits[0xAA]&gr.to_8_colors[color.c1.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits) {
 		    if (win_z_num>=*win_z_buf_ptr++) {
@@ -1148,8 +1150,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 		}
 	      } else {
 		for (j=h2-h1;j;j--) {
-		  color_mask=gr_1_to_8_bits[0x55]&gr_1_to_8_colors[color.c0.color]|
-			gr_1_to_8_bits[0xAA]&gr_1_to_8_colors[color.c1.color];
+		  color_mask=gr.to_8_bits[0x55]&gr.to_8_colors[color.c0.color]|
+			gr.to_8_bits[0xAA]&gr.to_8_colors[color.c1.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits)
 		    *dst(I64 *)++=*dst(I64 *)&leading_bit_mask|color_mask&~leading_bit_mask;
@@ -1167,8 +1169,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	      if (win_z_buf_ptr) {
 		result=0;
 		for (j=h1;j<h2;j++) {
-		  color_mask=gr_1_to_8_bits[0x55]&gr_1_to_8_colors[color.c0.color]|
-			gr_1_to_8_bits[0xAA]&gr_1_to_8_colors[color.c1.color];
+		  color_mask=gr.to_8_bits[0x55]&gr.to_8_colors[color.c0.color]|
+			gr.to_8_bits[0xAA]&gr.to_8_colors[color.c1.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits) {
 		    if (win_z_num>=*win_z_buf_ptr++) {
@@ -1195,8 +1197,8 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 		}
 	      } else {
 		for (j=h2-h1;j;j--) {
-		  color_mask=gr_1_to_8_bits[0x55]&gr_1_to_8_colors[color.c0.color]|
-			gr_1_to_8_bits[0xAA]&gr_1_to_8_colors[color.c1.color];
+		  color_mask=gr.to_8_bits[0x55]&gr.to_8_colors[color.c0.color]|
+			gr.to_8_bits[0xAA]&gr.to_8_colors[color.c1.color];
 		  dst=dc->body+kk1&~7;
 		  if (leading_bits)
 		    *dst(I64 *)++=*dst(I64 *)&leading_bit_mask|*dst(I64 *)^color_mask&~leading_bit_mask;
@@ -1213,7 +1215,7 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
 	  }
 	}
       } else {
-	color_mask=gr_1_to_8_colors[color.c0.color];
+	color_mask=gr.to_8_colors[color.c0.color];
 	nobound_switch (color.c0.rop) {
 	  case ROPB_EQU:
 	  case ROPB_MONO:
@@ -1305,10 +1307,9 @@ public I64 GrRect(CDC *dc,I64 x,I64 y,I64 w,I64 h)
   return result;
 }
 
-
 I64 GrRayLenMinus(CDC *dc,I64 x,I64 y)
 {
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result=0,c,x3,y3,d;
   U8 *dst,*dst2;
   Bool not_color=ToBool(dc->flags&DCF_FILL_NOT_COLOR);
@@ -1316,21 +1317,21 @@ I64 GrRayLenMinus(CDC *dc,I64 x,I64 y)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
   }
   x3=x;
   y3=y;
   if (x3<0 || y3<0)
     goto gr_done;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x3+=win_task->win_pixel_left;
-    y3+=win_task->win_pixel_top;
+    x3+=win_task->pix_left;
+    y3+=win_task->pix_top;
     if (x3<0 || y3<0 ||
-	  x3>win_task->win_pixel_right ||
-	  y3>win_task->win_pixel_bottom ||
+	  x3>win_task->pix_right ||
+	  y3>win_task->pix_bottom ||
 	  !(dc->flags&DCF_ON_TOP) &&
-	  IsPixelCovered0(win_task,x3,y3))
+	  IsPixCovered0(win_task,x3,y3))
       goto gr_done;
   }
   if (x3>=dc->width || y3>=dc->height)
@@ -1343,17 +1344,17 @@ I64 GrRayLenMinus(CDC *dc,I64 x,I64 y)
     if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	if (x3<0) break;
-	x3+=win_task->win_pixel_left;
-	if (x3<0 || x3>win_task->win_pixel_right ||
+	x3+=win_task->pix_left;
+	if (x3<0 || x3>win_task->pix_right ||
 	      x3>=dc->width ||
 	      !(dc->flags&DCF_ON_TOP) &&
-	      IsPixelCovered0(win_task,x3,y3))
+	      IsPixCovered0(win_task,x3,y3))
 	  break;
       } else
 	if (!(0<=x3<dc->width))
 	  break;
     } else if (dc->flags & DCF_SCREEN_BITMAP)
-      x3+=win_task->win_pixel_left;
+      x3+=win_task->pix_left;
     dst=dst2+x3;
     c=*dst;
     if (not_color) {
@@ -1377,7 +1378,7 @@ gr_done:
 
 I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 {
-//Returns cnt of pixels changed
+//Returns cnt of pixs changed
   I64 result=0,d,x=*x1,x2,x3,y3,dist;
   Bool plot,dither,probability_dither,not_color=ToBool(dc->flags&DCF_FILL_NOT_COLOR);
   U8 *dst,*dst2;
@@ -1387,9 +1388,9 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x+=win_task->win_scroll_x;
-    y+=win_task->win_scroll_y;
-    z+=win_task->win_scroll_z;
+    x+=win_task->scroll_x;
+    y+=win_task->scroll_y;
+    z+=win_task->scroll_z;
   }
   x2=x;
   x3=x;
@@ -1397,13 +1398,13 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
   if (x3<0 || y3<0)
     goto gr_done;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x3+=win_task->win_pixel_left;
-    y3+=win_task->win_pixel_top;
+    x3+=win_task->pix_left;
+    y3+=win_task->pix_top;
     if (x3<0 || y3<0 ||
-	  x3>win_task->win_pixel_right ||
-	  y3>win_task->win_pixel_bottom ||
+	  x3>win_task->pix_right ||
+	  y3>win_task->pix_bottom ||
 	  !(dc->flags&DCF_ON_TOP) &&
-	  IsPixelCovered0(win_task,x3,y3))
+	  IsPixCovered0(win_task,x3,y3))
       goto gr_done;
   }
   if (x3>=dc->width || y3>=dc->height)
@@ -1430,18 +1431,18 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
     if (!(x3&(FONT_WIDTH-1))) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	if (x3<0) break;
-	x3+=win_task->win_pixel_left;
-	if (x3<0 || x3>win_task->win_pixel_right ||
+	x3+=win_task->pix_left;
+	if (x3<0 || x3>win_task->pix_right ||
 	      x3>=dc->width ||
 	      !(dc->flags&DCF_ON_TOP) &&
-	      IsPixelCovered0(win_task,x3,y3))
+	      IsPixCovered0(win_task,x3,y3))
 	  break;
       } else {
 	if (!(0<=x3<dc->width))
 	  break;
       }
     } else if (dc->flags & DCF_SCREEN_BITMAP)
-      x3+=win_task->win_pixel_left;
+      x3+=win_task->pix_left;
 
     dst=dst2+x3;
 
@@ -1459,7 +1460,7 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
     if ((not_color && c!=dc->color2 ||
 	  !not_color && c==dc->color2) && plot) {
       if (dc->flags & DCF_LOCATE_NEAREST) {
-	dist=DistI64(x3,y3,dc->cur_x,dc->cur_y);
+	dist=DistSqrI64(x3,y3,dc->cur_x,dc->cur_y);
 	if (dist<=dc->nearest_dist) {
 	  dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	  dc->nearest_dist=dist;
@@ -1489,7 +1490,7 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 	  break;
 	case ROPB_COLLISION:
 	  c2=*dst;
-	  if (c2!=COLOR_TRANSPARENT && c2!=bkcolor.c0.color)
+	  if (c2!=TRANSPARENT && c2!=bkcolor.c0.color)
 	    dc->collision_cnt++;
 	  break;
 	case ROPB_XOR:
@@ -1502,7 +1503,7 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
       break;
   }
   if (dc->flags & DCF_SCREEN_BITMAP)
-    *x1=x-1-win_task->win_scroll_x;
+    *x1=x-1-win_task->scroll_x;
   else
     *x1=x-1;
   x=x2-1;
@@ -1511,17 +1512,17 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
     if (x3&(FONT_WIDTH-1)==FONT_WIDTH-1) {
       if (dc->flags & DCF_SCREEN_BITMAP) {
 	if (x3<0) break;
-	x3+=win_task->win_pixel_left;
-	if (x3<0 || x3>win_task->win_pixel_right ||
+	x3+=win_task->pix_left;
+	if (x3<0 || x3>win_task->pix_right ||
 	      x3>=dc->width ||
 	      !(dc->flags&DCF_ON_TOP) &&
-	      IsPixelCovered0(win_task,x3,y3))
+	      IsPixCovered0(win_task,x3,y3))
 	  break;
       } else
 	if (!(0<=x3<dc->width))
 	  break;
     } else if (dc->flags & DCF_SCREEN_BITMAP)
-      x3+=win_task->win_pixel_left;
+      x3+=win_task->pix_left;
 
     dst=dst2+x3;
     c=*dst;
@@ -1538,7 +1539,7 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
     if ((not_color && c!=dc->color2 ||
 	  !not_color && c==dc->color2) && plot) {
       if (dc->flags & DCF_LOCATE_NEAREST) {
-	dist=DistI64(x3,y3,dc->cur_x,dc->cur_y);
+	dist=DistSqrI64(x3,y3,dc->cur_x,dc->cur_y);
 	if (dist<=dc->nearest_dist) {
 	  dc->nearest_sprite_elem_num=dc->cur_sprite_elem_num;
 	  dc->nearest_dist=dist;
@@ -1568,7 +1569,7 @@ I64 GrRayLen(CDC *dc,I64 *x1,I64 y,I64 z=0,I32 *db=NULL)
 	  break;
 	case ROPB_COLLISION:
 	  c2=*dst;
-	  if (c2!=COLOR_TRANSPARENT && c2!=bkcolor.c0.color)
+	  if (c2!=TRANSPARENT && c2!=bkcolor.c0.color)
 	    dc->collision_cnt++;
 	  break;
 	case ROPB_XOR:
@@ -1585,10 +1586,10 @@ gr_done:
   return 0;
 }
 
-public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
-{  //No transformation or pen width
-//returns cnt of pixels changed
-  //This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+public I64 GrHLine(CDC *dc=gr.dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
+{//3D. No transformation or pen width.
+//Returns cnt of pixs changed
+//Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
   I64 dx,dz,z,result=0,i,j,d,dist;
   U8 *dst;
   CColorROPU32 c,c2,color=dc->color,bkcolor=dc->bkcolor,dither_colors;
@@ -1597,17 +1598,17 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
   CTask *win_task;
 
   if (!dc->depth_buf) {
-    if (x2<x1) SwapU64(&x1,&x2);
+    if (x2<x1) SwapI64(&x1,&x2);
     return GrRect(dc,x1,y,x2-x1+1,1);
   }
 
   if (dc->flags & DCF_SCREEN_BITMAP) {
     win_task=dc->win_task;
-    x1+=win_task->win_scroll_x;
-    x2+=win_task->win_scroll_x;
-    y +=win_task->win_scroll_y;
-    z1+=win_task->win_scroll_z;
-    z2+=win_task->win_scroll_z;
+    x1+=win_task->scroll_x;
+    x2+=win_task->scroll_x;
+    y +=win_task->scroll_y;
+    z1+=win_task->scroll_z;
+    z2+=win_task->scroll_z;
   }
   if (dc->flags & DCF_RECORD_EXTENTS) {
     if (x1<dc->min_x) dc->min_x=x1;
@@ -1619,8 +1620,8 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
   }
   if (y<0) goto gr_done;
   if (x2<x1) {
-    SwapU64(&x1,&x2);
-    SwapU64(&z1,&z2);
+    SwapI64(&x1,&x2);
+    SwapI64(&z1,&z2);
   }
   if (x2<0)
     goto gr_done;
@@ -1631,16 +1632,16 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
     i=0;
   j=0;
   if (dc->flags & DCF_SCREEN_BITMAP) {
-    x1+=win_task->win_pixel_left;
-    x2+=win_task->win_pixel_left;
-    if (x1>win_task->win_pixel_right)
+    x1+=win_task->pix_left;
+    x2+=win_task->pix_left;
+    if (x1>win_task->pix_right)
       goto gr_done;
-    if (x2>win_task->win_pixel_right) {
-      j=x2-win_task->win_pixel_right;
-      x2=win_task->win_pixel_right;
+    if (x2>win_task->pix_right) {
+      j=x2-win_task->pix_right;
+      x2=win_task->pix_right;
     }
-    y+=win_task->win_pixel_top;
-    if (y>win_task->win_pixel_bottom ||
+    y+=win_task->pix_top;
+    if (y>win_task->pix_bottom ||
 	  y<0 ||
 	  x2<0)
       goto gr_done;
@@ -1681,7 +1682,7 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
   if (!(dc->flags & DCF_SCREEN_BITMAP) ||
 	win_task->next_task==sys_winmgr_task ||
 	dc->flags&DCF_ON_TOP ||
-	!IsPixelCovered0(win_task,x1,y))
+	!IsPixCovered0(win_task,x1,y))
     char_clear=TRUE;
   else
     char_clear=FALSE;
@@ -1722,7 +1723,7 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
 	    break;
 	  case ROPB_COLLISION:
 	    c2=*dst;
-	    if (c2!=COLOR_TRANSPARENT && c2!=bkcolor.c0.color)
+	    if (c2!=TRANSPARENT && c2!=bkcolor.c0.color)
 	      dc->collision_cnt++;
 	    break;
 	  case ROPB_XOR:
@@ -1750,7 +1751,7 @@ public I64 GrHLine(CDC *dc,I64 x1,I64 x2,I64 y,I64 z1=0,I64 z2=0)
       if (!(dc->flags & DCF_SCREEN_BITMAP)||
 	    win_task->next_task==sys_winmgr_task ||
 	    dc->flags&DCF_ON_TOP ||
-	    !IsPixelCovered0(win_task,x1,y))
+	    !IsPixCovered0(win_task,x1,y))
 	char_clear=TRUE;
       else
 	char_clear=FALSE;

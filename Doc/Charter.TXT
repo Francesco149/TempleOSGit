@@ -1,8 +1,7 @@
                                TempleOS Charter
 
 TempleOS is God's official temple.  God said to use 640x480 16 color graphics 
-and God said to have a single audio voice.  That is just like how He
-specified 
+and God said to have a single audio voice.  That is like how He specified 
 cubits in the Bible!  He also said it must be perfect.  God needs a temple as 
 a special beloved place where His people, young and old, can do offerings and 
 consult God in the oracle.  Like Solomon's Temple, this is a focal point for 
@@ -10,21 +9,13 @@ the community.  Adults can write hymns, psalms (poems of praise) and
 meditation essays with good support for links to the Bible.  Like Cain and 
 Abel, do offerings and learn what God likes and doesn't like.
 
-* TempleOS will be limited to 100,000 lines of code, not including 
-applications and demos.  This will ensure it stays out of trouble going a 
-thousand years into the future.  It will not stray much from my vision as
-long 
-as this is kept.  Other, less important, characteristics can be changed but
-as 
-long as the 100,000 line limit is kept, it will stay true. 
+* TempleOS is, forever, limited to 100,000 lines of code, not including 
+applications and demos.  This will ensure it stays out of trouble a thousand 
+years into the future.  It will not stray much from my vision.  Other, less 
+important, characteristics can be changed but if the 100,000 line limit is 
+kept, it will stay true. 
  
-* It must be kept perfect.  **Backward compatibility is NOT guaranteed.** 
-You are 
-safest working with JIT compilation instead of AOT binaries because members
-to 
-classes can be added and reorder, args with defaults can be added to existing 
-functions, changes to #define values can be made, all without breaking 
-compatibility.
+* It must be kept perfect.  **Backward compatibility is NOT guaranteed.**
 
 * TempleOS is ring-0-only, running everything in kernel mode including 
 applications.  You have full access to memory, I/O ports, instructions, etc. 
@@ -41,7 +32,8 @@ used.
 * TempleOS will never have networking, so malware is less of an issue.
 
 * TempleOS will always have one video mode, 640x480 by 16 colors, unless that 
-mode becomes unavailable on computers in the future.
+mode becomes unavailable on computers in the future.  God said this was a 
+covenant, like circumcision.
 
 * TempleOS will always just have PC Speaker sound.
 

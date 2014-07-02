@@ -1,19 +1,5 @@
-/*
-This demonstrates dynamic initialization of
-vars.  It even works for AOT modules
-because code is generated which runs at
-[C:/Kernel/Hash1b.CPP.Z,359] Load() time to initialize them.
-
-This file is dual use -- you can JIT compile
-it or AOT compile it.  If you AOT compile
-then override the filename extension warning.
-
-Static vars are, essentually, global var.
-*/
-
-#ifaot
-#include "::/Kernel/AOT.HPP"
-#endif
+//Demonstrates dynamic initialization of vars.
+//Static vars are, essentually, global vars.
 
 class Test
 {
@@ -23,7 +9,7 @@ class Test
 
 Test g1[]={
   {10,"Name1"},
-  {(tT%10.0)*100,"Name2"}, //Dynamic initialization
+  {(tS%10.0)*100,"Name2"}, //Dynamic initialization
   {30,"Name3"}
 };
 
@@ -34,7 +20,7 @@ U0 Main1()
 {
   static Test s1[]={
     {10,"Static1"},
-    {(tT%10.0)*100,"Static2"}, //Dynamic initialization
+    {(tS%10.0)*100,"Static2"}, //Dynamic initialization
     {30,"Static3"}
   };
   D(s1,sizeof(s1));
@@ -43,12 +29,8 @@ U0 Main1()
 
 Main1;
 
-
-/*
-Now, we'll use the data heap glbl option
+/*Now, we'll use the data heap glbl option
 to force global vars onto the data heap.
-You can't initialize heap glbls in a AOT
-module.
 
 You can turn the data heap flag
 on and off within your programs, leaving
@@ -68,7 +50,7 @@ because they don't take-up room in the .BIN.Z file.
 
 Test g2[]={
   {10,"name1"},
-  {(tT%10.0)*100,"name2"}, //No dynamic initialization--converted to a const
+  {(tS%10.0)*100,"name2"}, //No dynamic initialization--converted to a const
   {30,"name3"}
 };
 
@@ -79,7 +61,7 @@ U0 Main2()
 {
   static Test s2[]={
     {10,"static1"},
-    {(tT%10.0)*100,"static2"}, //No dynamic initialization--converted to a const
+    {(tS%10.0)*100,"static2"}, //No dynamic initialization--converted to a const
     {30,"static3"}
   };
   D(s2,sizeof(s2));
@@ -91,4 +73,4 @@ Main2;
 #exe {OptOn(OPTf_GLBLS_ON_DATA_HEAP);};
 #endif
 
-NewLine;
+'\n';

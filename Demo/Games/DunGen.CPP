@@ -1,3 +1,6 @@
+AcctRegSetDftEntry("TempleOS/DunGen","F64 best_score=9999;\n");
+AcctRegExeBranch("TempleOS/DunGen");
+
 //Set snap to 4 and width to 4
 //if you edit this map.
 
@@ -20,24 +23,17 @@
 
 
 /* <3> <3> (image) */
-
-
 /* <4> <4> (image) */	//This is a template you can copy and use to make a tile.
-
 
 
 
 /* <5> <5> (image) */
 
-
 /* <6> <6> (image) */
-
 
 /* <7> <7> (image) */
 
-
 /* <8> <8> (image) */
-
 
 
  
@@ -48,11 +44,8 @@
 /* <11> <11> (image) */
 
 
-
-
-
 //These are indexed by color #.
-//See [C:/Kernel/Adam1a.HPP.Z,3156] COLORS.
+//See [C:/Kernel/Adam1a.HPP.Z,2851] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
@@ -65,8 +58,6 @@ U8 *tiles2[16]=
  __BIN_6 ,NULL,NULL,NULL,
  NULL,NULL,NULL,NULL,
  NULL,NULL,NULL,NULL};
-
-
 
 #define SCREEN_SCALE	24
 #define SCREEN_WIDTH	24
@@ -81,12 +72,15 @@ I64 man_x,man_y,man_dx,man_dy;
 Bool man_attack;
 F64 man_attack_t0;
 
-#define NUM_MONSTERS	16
+#define NUM_MONSTERS	10
+I64 monsters_left;
 class Monster
 {
   I64 x,y,dx,dy;
   Bool dead,pad[7];
 } monsters[NUM_MONSTERS];
+
+F64 t0,tf;
 
 #define LOS_SCALE	4
 
@@ -99,17 +93,20 @@ Bool LOSPlot(U8 *,I64 x,I64 y,I64)
 }
 
 Bool LOS(I64 x1,I64 y1,I64 x2,I64 y2)
-{ //Line of sight
-  return LOSLine(NULL,x1*LOS_SCALE+LOS_SCALE/2,y1*LOS_SCALE+LOS_SCALE/2,0,
+{//Line of sight
+  return Line(NULL,x1*LOS_SCALE+LOS_SCALE/2,y1*LOS_SCALE+LOS_SCALE/2,0,
 	       x2*LOS_SCALE+LOS_SCALE/2,y2*LOS_SCALE+LOS_SCALE/2,0,&LOSPlot);
 }
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  CDC *dc_t=DCAlias(gr_dc2,task);
-  I64 i,x,y,xx,yy,x1,y1,z1,color;
+  CDC *dc_t=DCAlias(gr.dc2,task);
+  I64 i,x,y,xx,yy,x1,y1,z1,color,
+      cx=task->pix_width/2,
+      cy=task->pix_height/2;
   CD3I32 poly[4];
   U8 **_tiles;
+  F64 tt;
 
   if (Blink(5))
     _tiles=tiles1;
@@ -119,13 +116,13 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrRotXEqu(dc_t->r,60*2*pi/360);
   GrRotZEqu(dc_t->r,15*2*pi/360);
   GrSetRotMat(dc_t,dc_t->r);
-  dc_t->x=task->win_pixel_width/2;
-  dc_t->y=task->win_pixel_height/2;
+  dc_t->x=task->pix_width/2;
+  dc_t->y=task->pix_height/2;
   dc_t->flags|=DCF_TRANSFORMATION;
 
   //You could make it much more efficient
   //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
-  //with a [C:/Kernel/Adam1a.HPP.Z,3210] CDC.
+  //with a [C:/Kernel/Adam1a.HPP.Z,3547] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -140,8 +137,8 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      SpritePlot3(dc,x1,y1,z1,_tiles[color]);
-	    } else { //If no tile defined, do solid color.
+	      Sprite3(dc,x1,y1,z1,_tiles[color]);
+	    } else {//If no tile defined, do solid color.
 	      poly[0].x=x*SCREEN_SCALE;
 	      poly[0].y=y*SCREEN_SCALE;
 	      poly[0].z=0;
@@ -180,14 +177,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      SpritePlot3(dc,x1,y1,z1,__BIN_10);
+	      Sprite3(dc,x1,y1,z1,__BIN_10);
 	    }
 	    if (xx+1<map_width && LOS(xx+1,yy,man_x,man_y)) {
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      SpritePlot3(dc,x1,y1,z1,__BIN_11);
+	      Sprite3(dc,x1,y1,z1,__BIN_11);
 	    }
 	  }
 	}
@@ -205,15 +202,15 @@ U0 DrawIt(CTask *task,CDC *dc)
 	GrSetSymmetry(dc,x1,y1,x1,y1+1);
       } else
 	dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-      SpritePlot3(dc,x1,y1,z1,__BIN_9);
+      Sprite3(dc,x1,y1,z1,__BIN_9);
     }
 
   x1=(man_x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
   y1=(man_y-screen_y)*SCREEN_SCALE+SCREEN_SCALE/2;
   z1=0;
-  if (tT-man_attack_t0<0.2) {
-    x1+=Tri(tT-man_attack_t0,0.2)*SCREEN_SCALE*man_dx;
-    y1+=Tri(tT-man_attack_t0,0.2)*SCREEN_SCALE*man_dy;
+  if (tS-man_attack_t0<0.2) {
+    x1+=Tri(tS-man_attack_t0,0.2)*SCREEN_SCALE*man_dx;
+    y1+=Tri(tS-man_attack_t0,0.2)*SCREEN_SCALE*man_dy;
   }
   GrTransform(dc_t,&x1,&y1,&z1);
   if (man_dx<0) {
@@ -222,27 +219,42 @@ U0 DrawIt(CTask *task,CDC *dc)
   } else
     dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
 
-  if (tT-man_attack_t0<0.2)
-    SpritePlot3(dc,x1,y1,z1,__BIN_3);
+  if (tS-man_attack_t0<0.2)
+    Sprite3(dc,x1,y1,z1,__BIN_3);
   else
-    SpritePlot3(dc,x1,y1,z1,__BIN_2);
+    Sprite3(dc,x1,y1,z1,__BIN_2);
 
   DCDel(dc_t);
-}
 
+  if (tf) {
+    dc->color=LTRED;
+    if (Blink)
+      GrPrint(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
+    tt=tf;
+  } else {
+    dc->color=LTGREEN;
+    tt=tS;
+  }
+  GrPrint(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",monsters_left,tt-t0,best_score);
+}
 
 U0 Attack()
 {
   I64 i;
-  man_attack_t0=tT;
+  man_attack_t0=tS;
   Noise(100,300,1000);
   for (i=0;i<NUM_MONSTERS;i++) {
     if (!monsters[i].dead &&
-	 man_x+man_dx==monsters[i].x && man_y+man_dy==monsters[i].y)
+	  man_x+man_dx==monsters[i].x && man_y+man_dy==monsters[i].y) {
       monsters[i].dead=TRUE;
+      if (!--monsters_left) {
+	tf=tS;
+	if (tf-t0<best_score)
+	  best_score=tf-t0;
+      }
+    }
   }
 }
-
 
 U0 Init()
 {
@@ -254,12 +266,20 @@ U0 Init()
   Free(map);
   map=MAlloc(map_width*map_height*sizeof(U8));
   dc=DCNew(map_width*MAP_SCALE,map_height*MAP_SCALE);
-  SpritePlot3(dc,-minx,-miny,0,__BIN_1);
+  Sprite3(dc,-minx,-miny,0,__BIN_1);
   for (y=0;y<map_height;y++)
     for (x=0;x<map_width;x++)
        map[y*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);
   DCDel(dc);
 
+  man_attack_t0=tS;
+  man_attack=FALSE;
+  man_x=0;
+  man_y=4;
+  man_dx=0;
+  man_dy=0;
+  screen_x=0;
+  screen_y=0;
   for (i=0;i<NUM_MONSTERS;i++) {
     monsters[i].dead=FALSE;
     monsters[i].dx=0;
@@ -269,14 +289,9 @@ U0 Init()
       monsters[i].y=RandU64%(map_height-2)+1;
     } while (!map[(monsters[i].y)*map_width+monsters[i].x]);
   }
-  man_attack_t0=tT;
-  man_attack=FALSE;
-  man_x=0;
-  man_y=4;
-  man_dx=0;
-  man_dy=0;
-  screen_x=0;
-  screen_y=0;
+  monsters_left=NUM_MONSTERS;
+  tf=0;
+  t0=tS;
 }
 
 U0 CleanUp()
@@ -428,6 +443,7 @@ dg_done:
     PutExcept;
   SettingsPop;
   MenuPop;
+  AcctRegWriteBranch("TempleOS/DunGen","F64 best_score=%5.4f;\n",best_score);
   CleanUp;
 }
 

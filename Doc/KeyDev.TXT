@@ -1,0 +1,32 @@
+The editor mostly stays in a [C:/Kernel/KbdMouse/Message.CPP.Z,146]
+GetKey()/[C:/Kernel/KeyDev.CPP.Z,1] PutKey() loop.  The putkey portion is 
+where keys are acted-upon.  TempleOS has a chain of putkey handlers in a 
+[Circular Queue,1] Circular Queue with priorities.  The highest priority
+handlers can choose to 
+terminate handling, otherwise, the keys get sent on down the chain.
+
+[C:/Kernel/KeyDev.CPP.Z,65] KeyDevAdd() defines a putkey device with a
+priority.  "Device" might be a 
+misnomer.  Currently, the following are defined:
+
+Priority    Handler
+---------- ---------
+0x20000000 [C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() user handler
+0x40000000 [C:/Kernel/KeyDev.CPP.Z,110] KDInputFilterPutKey() for
+[C:/Kernel/SrvCmd.CPP.Z,480] Auto(), [C:/Kernel/SrvCmd.CPP.Z,463] AutoStr(),
+and [C:/Kernel/SrvCmd.CPP.Z,473] AutoFile() 
+handling.
+0x60000000 [C:/Kernel/KeyDev.CPP.Z,90] KDRawPutKey() nonwindowed direct to
+video mem debug output. 
+0x80000000 [C:/Adam/DolDoc/DocEd2b.CPP.Z,668] KDDocPutKey() standard document
+cmds
+
+Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
+no puts handler is defined, individual keys are sent.
+
+[C:/Kernel/Adam1a.HPP.Z,1317] CDoc.user_put_key and
+[C:/Kernel/Adam1a.HPP.Z,1317] CDoc.user_put_s are call back routines which
+offer some 
+neat tricks.  See [C:/Apps/Psalmody/JukeBox.CPP.Z,1].  There is a var
+[C:/Kernel/Adam1a.HPP.Z,1317] CDoc.user_put_
+data which gets passed to them.

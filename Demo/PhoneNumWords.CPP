@@ -1,6 +1,5 @@
 U8 char_map[26]="22233344455566677778889999";
 
-
 /*
 Fmt of word lst entry:
   U8 WSD_WORD_CHAR
@@ -9,8 +8,9 @@ Fmt of word lst entry:
 */
 U0 PhoneNumWords(U8 *num)
 {
-  U8 ch,*_num=StrNew(num),*dst=_num,
-      *dict=ws_dict_word_lst,*st,*src;
+  I64 ch;
+  U8 *_num=StrNew(num),*dst=_num,
+      *dict=wsd.word_lst,*st,*src;
   while (*num) {
     if ('0'<=*num<='9')
       *dst++=*num;
@@ -47,13 +47,13 @@ U0 PhoneNumWords(U8 *num)
     dict+=StrLen(dict)+3;
   }
   Free(_num);
-  NewLine;
+  '\n';
 }
 
 U0 PNWDemo()
 {
   U8 *st;
-  while ((st=PmtStr("Phone Num:")) && *st) {
+  while ((st=GetStr("Phone Num:")) && *st) {
     PhoneNumWords(st);
     Free(st);
   }

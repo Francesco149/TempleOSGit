@@ -1,14 +1,15 @@
                                  Cut Corners
 
 There are a few places where I cut corners in the interest of not junking-up 
-code.  This is part of the TempleOS mentality.  I try not to let, often 
-stupid, legacy compatibility issues enter and junk-up TempleOS.
+code.  This is part of the TempleOS mentality.  I try not to let stupid
+legacy 
+compatibility issues enter and junk-up TempleOS.
 
 * I made my type-casting operator post-fix because it makes the compiler way 
 cleaner.
 
 * TempleOS does not figure-out FAT32 short name alias numbers. 
-[C:/Kernel/Dsk/FileSysFAT.CPP.Z,604] FAT32DirNew(). 
+[C:/Kernel/Dsk/FileSysFAT.CPP.Z,575] FAT32DirNew(). 
  It can cause hard drive corruption, so I might have to do it.  It would 
 really take a lot of junky code for this hatefully, detestable, legacy issue.
  
@@ -27,9 +28,6 @@ minimal 16-bit asm support, since 64-bit is what you should be using, unless
 you're doing a [C:/Adam/Boot/BootCD.CPP.Z,1] boot loader.
 
 * There are no file-sharing locks of any kind.  You're on your own.
-
-* The compiler does not support bool; see the definition of
-[C:/Kernel/Adam1a.HPP.Z,104] Bool, LOL.
 
 * A hidden window is never refreshed.  Certain tasks are never done, 
 therefore.  During refresh, the entry count limit of the document buffer is, 

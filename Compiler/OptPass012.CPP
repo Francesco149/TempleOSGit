@@ -1,5 +1,4 @@
-/*
-OptPass012
+/*OptPass012
 
 Pass#0
 When parsing the arg expressions to a function
@@ -11,7 +10,7 @@ Constant expressions are simplified.
 Eliminated opcodes are set to NOP.
 Types are determined by reconstructing an
 expression tree for operators
-[C:/Kernel/Adam1a.HPP.Z,1561] CIntermediateCode.[C:/Kernel/Adam1a.HPP.Z,1546] CICTreeLinks.
+[C:/Kernel/Adam1a.HPP.Z,1560] CIntermediateCode.[C:/Kernel/Adam1a.HPP.Z,1544] CICTreeLinks.
 
 Pointer arithmetic size is set, once
 the type is determined.
@@ -21,10 +20,8 @@ logic. 3-Arg comparisons are established.
 
 */
 
-CIntermediateCode *OptPass012(CLex *lx,CHashFun *fun_class)
-{
-/*
-Simplify CONST arithmetic.
+CIntermediateCode *OptPass012(CLex *lx)
+{/*Simplify CONST arithmetic.
 Sets the class throughout Expression trees.
 Returns the type of an Expression for use
 in int<-->F64 conversions of fun
@@ -47,7 +44,7 @@ args.
     tempi->ic_class2=tempc;
     tempi_push=tempi;
     MemSet(&tempi->a1,0,sizeof(CICArg)*4);
-    nobound_switch (cmp_arg_cnt[code]) {
+    nobound_switch (cmp.arg_cnt[code]) {
       case 9:
 	ps->ptr-=tempi->ic_data>>2;
 	break;
@@ -65,7 +62,7 @@ args.
       case 0: //nobound_switch
 	break;
     }
-    if (Bt(ic_bitmap_not_const,code))
+    if (Bt(cmp.ic_bitmap_not_const,code))
       lx->flags|=LF_NOT_CONST;
     nobound_switch (code) {
       case IC_IMM_F64:
@@ -74,7 +71,7 @@ args.
 	  tempi->ic_data=ToI64(tempi->ic_data(F64));
 	  tempi->ic_flags&=~ICF_R_TO_INT;
 	  tempi->ic_code=IC_IMM_U64;
-	  tempi->ic_class=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
 	}
 	break;
       case IC_IMM_U64:
@@ -83,7 +80,7 @@ args.
 	  tempi->ic_data(F64)=ToF64(tempi->ic_data);
 	  tempi->ic_flags&=~ICF_R_TO_F64;
 	  tempi->ic_code=IC_IMM_F64;
-	  tempi->ic_class=sys_internal_types[RT_F64];
+	  tempi->ic_class=cmp.internal_types[RT_F64];
 	}
 	break;
       case IC_HOLYC_TYPECAST:
@@ -97,12 +94,12 @@ args.
 	  tempi_push=tempi1;
 	  OptSetNOP1(tempi);
 	} else {
-	  if (tempi->ic_data) { //was paren
+	  if (tempi->ic_data) {//was paren
 	    if (!tempi_push->ic_class->ptr_cnt) {
 	      if (tempi_push->ic_class->raw_type==RT_F64)
-		tempi_push->ic_class2=sys_internal_types[RT_F64];
+		tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	      else
-		tempi_push->ic_class2=sys_internal_types[RT_I64];
+		tempi_push->ic_class2=cmp.internal_types[RT_I64];
 	    }
 	  } else {
 	    tempi1->ic_class=tempi->ic_class;
@@ -158,7 +155,7 @@ args.
 	  tempi->ic_flags|=tempi1->ic_flags;
 	  OptSetNOP1(tempi1);
 	}
-	tempi_push->ic_class2=sys_internal_types[RT_I64];
+	tempi_push->ic_class2=cmp.internal_types[RT_I64];
 	break;
       sub_switch_start:
 	case IC_NOT:
@@ -189,7 +186,7 @@ args.
 	    }
 	  }
 	  if (tempc1->type&HTT_INTERNAL_TYPE && tempc1->raw_type& 1)
-	    tempi->ic_class=sys_internal_types[tempc1->raw_type-1];
+	    tempi->ic_class=cmp.internal_types[tempc1->raw_type-1];
 	  break;
 	case IC_SHL_CONST:
 	  if (i=OptFixupUnaryOp(tempi,tempi1,&is_unsigned)) {
@@ -268,15 +265,15 @@ args.
       sub_switch_end:
 	if (!tempi_push->ic_class->ptr_cnt) {
 	  if (tempi_push->ic_class->raw_type==RT_F64)
-	    tempi_push->ic_class2=sys_internal_types[RT_F64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	  else
-	    tempi_push->ic_class2=sys_internal_types[RT_I64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_I64];
 	}
 	break;
       case IC_DEREF:
 	if (lx->pass==2) {
 	  if (!tempc->size)
-	    LexPutWarn(lx,"ST_DEREF_U0",fun_class);
+	    LexWarn(lx,"Dereference U0 ");
 	  if (tempi1->ic_class->raw_type!=RT_F64) {
 	    if (tempi1->ic_code==IC__PP) {
 	      tempi->ic_code=IC_DEREF_PP;
@@ -295,15 +292,15 @@ args.
       case IC_PP_:
       case IC_MM_:
 	if (lx->pass==2 && !tempc->size)
-	  LexPutWarn(lx,"ST_DEREF_U0",fun_class);
+	  LexWarn(lx,"Dereference U0 ");
 	break;
       case IC_POWER:
-	tempc=tempi->ic_class=sys_internal_types[RT_F64];
+	tempc=tempi->ic_class=cmp.internal_types[RT_F64];
 	if (tempc1->raw_type!=RT_F64)
 	  tempi1->ic_flags|=ICF_R_TO_F64;
 	if (tempc2->raw_type!=RT_F64)
 	  tempi2->ic_flags|=ICF_R_TO_F64;
-	tempi_push->ic_class2=sys_internal_types[RT_F64];
+	tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	break;
       sub_switch_start:
 	case IC_MUL:
@@ -315,8 +312,7 @@ args.
 		tempi->ic_data=tempi1->ic_data(I64)*tempi2->ic_data(I64);
 	      tempi->ic_code=IC_IMM_U64;
 	    } else {
-	      tempi->ic_data(F64)=tempi1->ic_data(F64)*
-		    tempi2->ic_data(F64);
+	      tempi->ic_data(F64)=tempi1->ic_data(F64)*tempi2->ic_data(F64);
 	      tempi->ic_code=IC_IMM_F64;
 	    }
 	  } else {
@@ -377,7 +373,7 @@ args.
 	      }
 	    } else if (tempi2->ic_code==IC_IMM_F64 && lx->pass==2) {
 	      if (tempi2->ic_data(F64)==1.0) {
-		tempi1->ic_flags|=tempi2->ic_flags|tempi->ic_flags;
+		tempi1->ic_flags|=tempi->ic_flags|tempi2->ic_flags;
 		tempi1->ic_class2=tempi->ic_class2;
 		tempi_push=tempi1;
 		OptSetNOP1(tempi2);
@@ -449,7 +445,7 @@ args.
 	    }
 	  } else if (lx->pass==2 && tempi2->ic_code==IC_IMM_U64 &&
 		(i=tempi2->ic_data) && Bsf(i)==Bsr(i) && tempi_push->ic_class->raw_type!=RT_F64 &&
-		tempi_push->ic_class->raw_type&1) { //do only unsigned
+		tempi_push->ic_class->raw_type&1) {//do only unsigned
 	    tempi2->ic_data=i-1;
 	    tempi->ic_code=IC_AND;
 	  }
@@ -695,30 +691,30 @@ args.
 	    tempi->ic_data=tempi1->ic_data&&tempi2->ic_data;
 	    tempi->ic_code=IC_IMM_U64;
 	  }
-	  tempi->ic_class=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
 	  break;
 	case IC_OR_OR:
 	  if (OptFixupBinaryOp1(tempi,tempi1,tempi2,&is_unsigned)) {
 	    tempi->ic_data=tempi1->ic_data||tempi2->ic_data;
 	    tempi->ic_code=IC_IMM_U64;
 	  }
-	  tempi->ic_class=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
 	  break;
 	case IC_XOR_XOR:
 	  if (OptFixupBinaryOp1(tempi,tempi1,tempi2,&is_unsigned)) {
 	    tempi->ic_data=tempi1->ic_data^^tempi2->ic_data;
 	    tempi->ic_code=IC_IMM_U64;
 	  }
-	  tempi->ic_class=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
 	  break;
       sub_switch_end:
 	if (!tempi_push->ic_class->ptr_cnt) {
 	  if (tempi_push->ic_class->raw_type==RT_F64)
-	    tempi_push->ic_class2=sys_internal_types[RT_F64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	  else if (is_unsigned)
-	    tempi_push->ic_class2=sys_internal_types[RT_U64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_U64];
 	  else
-	    tempi_push->ic_class2=sys_internal_types[RT_I64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_I64];
 	}
 	break;
       sub_switch_start:
@@ -818,20 +814,20 @@ args.
 	tempi->ic_flags&=~ICF_R_TO_INT;
 	if (!tempi_push->ic_class->ptr_cnt) {
 	  if (tempi_push->ic_class->raw_type==RT_F64)
-	    tempi_push->ic_class2=sys_internal_types[RT_F64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	  else if (is_unsigned)
-	    tempi_push->ic_class2=sys_internal_types[RT_U64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_U64];
 	  else
-	    tempi_push->ic_class2=sys_internal_types[RT_I64];
+	    tempi_push->ic_class2=cmp.internal_types[RT_I64];
 	}
 	if (tempi_push->ic_flags & ICF_PUSH_CMP)
 	  tempi->ic_class=tempi->ic_class2;
 	else
-	  tempi->ic_class=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
 	break;
       sub_switch_start:
 	if (lx->pass==2 && (!tempc->size||!tempc2->size))
-	  LexPutWarn(lx,"ST_ASSIGN_U0",fun_class);
+	  LexWarn(lx,"Assign U0 ");
 	sub_switch_start:
 	  case IC_MUL_EQUAL:
 	    if (tempi2->ic_code==IC_IMM_U64 &&
@@ -908,7 +904,7 @@ args.
 	break;
       case IC_ENTER:
       case IC_LEAVE:
-	tempi->ic_data=-fun_class->size;
+	tempi->ic_data=-lx->htc.fun->size;
 	break;
       case IC_ADD_RSP:
 	if (tempi1=OptLag(tempi)) {
@@ -963,8 +959,8 @@ args.
 
 	  tempi->ic_code=IC_IMM_U64;
 	  tempi->ic_data=ToI64(tempi1->ic_data(F64));
-	  tempi->ic_class=sys_internal_types[RT_I64];
-	  tempi->ic_class2=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
+	  tempi->ic_class2=cmp.internal_types[RT_I64];
 	  OptSetNOP1(tempi1);
 	} else if (tempi1->ic_code==IC_IMM_U64) {
 	  tempi2=tempi1->last;
@@ -981,8 +977,8 @@ args.
 
 	  tempi->ic_code=IC_IMM_U64;
 	  tempi->ic_data=tempi1->ic_data;
-	  tempi->ic_class=sys_internal_types[RT_I64];
-	  tempi->ic_class2=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
+	  tempi->ic_class2=cmp.internal_types[RT_I64];
 	  OptSetNOP1(tempi1);
 	}
 	if (tempi1->ic_flags&ICF_R_TO_F64) {
@@ -1005,8 +1001,8 @@ args.
 	  tempi1->ic_flags=tempi->ic_flags|tempi1->ic_flags&~(ICF_R_TO_F64|ICF_PUSH_RESULT)|tempi2->ic_flags;
 	  OptSetNOP1(tempi2);
 
-	  tempi1->ic_class=sys_internal_types[RT_I64];
-	  tempi1->ic_class2=sys_internal_types[RT_I64];
+	  tempi1->ic_class=cmp.internal_types[RT_I64];
+	  tempi1->ic_class2=cmp.internal_types[RT_I64];
 	  tempi_push=tempi1;
 	  OptSetNOP1(tempi);
 	}
@@ -1027,8 +1023,8 @@ args.
 
 	  tempi->ic_code=IC_IMM_F64;
 	  tempi->ic_data(F64)=ToF64(tempi1->ic_data);
-	  tempi->ic_class=sys_internal_types[RT_F64];
-	  tempi->ic_class2=sys_internal_types[RT_F64];
+	  tempi->ic_class=cmp.internal_types[RT_F64];
+	  tempi->ic_class2=cmp.internal_types[RT_F64];
 	  OptSetNOP1(tempi1);
 	} else if (tempi1->ic_code==IC_IMM_F64) {
 	  tempi2=tempi1->last;
@@ -1045,8 +1041,8 @@ args.
 
 	  tempi->ic_code=IC_IMM_F64;
 	  tempi->ic_data=tempi1->ic_data;
-	  tempi->ic_class=sys_internal_types[RT_F64];
-	  tempi->ic_class2=sys_internal_types[RT_F64];
+	  tempi->ic_class=cmp.internal_types[RT_F64];
+	  tempi->ic_class2=cmp.internal_types[RT_F64];
 	  OptSetNOP1(tempi1);
 	}
 	if (tempi1->ic_flags&ICF_R_TO_INT) {
@@ -1069,8 +1065,8 @@ args.
 	  tempi1->ic_flags=tempi->ic_flags|tempi1->ic_flags&~(ICF_R_TO_INT|ICF_PUSH_RESULT)|tempi2->ic_flags;
 	  OptSetNOP1(tempi2);
 
-	  tempi1->ic_class=sys_internal_types[RT_F64];
-	  tempi1->ic_class2=sys_internal_types[RT_F64];
+	  tempi1->ic_class=cmp.internal_types[RT_F64];
+	  tempi1->ic_class2=cmp.internal_types[RT_F64];
 	  tempi_push=tempi1;
 	  OptSetNOP1(tempi);
 	}
@@ -1091,8 +1087,8 @@ args.
 
 	  tempi->ic_code=IC_IMM_U64;
 	  tempi->ic_data=ToBool(tempi1->ic_data);
-	  tempi->ic_class=sys_internal_types[RT_I64];
-	  tempi->ic_class2=sys_internal_types[RT_I64];
+	  tempi->ic_class=cmp.internal_types[RT_I64];
+	  tempi->ic_class2=cmp.internal_types[RT_I64];
 	  OptSetNOP1(tempi1);
 	}
 	break;
@@ -1179,6 +1175,8 @@ args.
       case IC_COS:
       case IC_TAN:
       case IC_ATAN:
+      case IC_BR_CARRY:
+      case IC_BR_NOT_CARRY:
       case IC_BR_NOT_EQUAL:
       case IC_BR_EQUAL_EQUAL:
       case IC_BR_GREATER_EQUAL:
@@ -1222,18 +1220,10 @@ args.
       case IC_CALL_INDIRECT2:
       case IC_CALL_EXTERN:
       case IC_CALL_IMPORT:
-      case IC_CLI:
-      case IC_STI:
-      case IC_HLT:
-      case IC_PUSHFD:
-      case IC_POPFD:
       case IC_PUSH:
       case IC_POP:
-      case IC_CLD:
-      case IC_STD:
       case IC_INVLPG:
       case IC_CLFLUSH:
-      case IC_PAUSE:
       case IC_GET_RFLAGS:
       case IC_CARRY:
       case IC_GET_RBP:
@@ -1266,7 +1256,7 @@ args.
       case IC_SWAP_U8:
       case IC_SWAP_U16:
       case IC_SWAP_U32:
-      case IC_SWAP_U64:
+      case IC_SWAP_I64:
       case IC_IN_U32:
       case IC_IN_U16:
       case IC_IN_U8:
@@ -1289,9 +1279,9 @@ args.
       default:
 	"Pass:%d Missing IC handler\n",lx->pass;
 	ICPut(tempi);
-	LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+	LexExcept(lx,"Compiler Optimization Error at ");
     }
-    if (cmp_arg_cnt[code]==2) {
+    if (cmp.arg_cnt[code]==2) {
       if (tempi_push->ic_precedence.u8[0]&~ASSOC_MASK==PREC_ASSIGN)
 	OptFixSizeOf(tempi2,tempi_push,tempi1->ic_class-1);
       else {
@@ -1299,7 +1289,7 @@ args.
 	OptFixSizeOf(tempi2,tempi_push,tempi1->ic_class);
       }
     }
-    if (cmp_result_cnt[tempi_push->ic_code]) {
+    if (cmp.result_cnt[tempi_push->ic_code]) {
       PrsPush(ps,tempi->ic_class2);
       PrsPush(ps,tempi_push);
     }
@@ -1315,11 +1305,9 @@ args.
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
-
-  /*
-This is for determining type conversions
+/*This is for determining type conversions
 for passing args to funs.
 */
   return last_with_class;

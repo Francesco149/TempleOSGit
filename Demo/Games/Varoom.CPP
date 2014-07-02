@@ -1,4 +1,3 @@
- 
 
 
 
@@ -8,10 +7,7 @@
 
 
 
-
     /* <2> <2> (image) */
-
-
 
 
 
@@ -43,20 +39,75 @@
     /* <4> <4> (image) */
 
 
+
+
+
+
+
+
+
+		 /* <5> <5> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 /* <6> <6> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
 AcctRegSetDftEntry("TempleOS/Varoom","F64 best_score=9999;\n");
 AcctRegExeBranch("TempleOS/Varoom");
 
-I64 vx,vy,vz;
-F64 theta,speed,distance,t0,tf;
+F64 distance,t0,tf;
+Bool game_over;
 
 #define NUM_BUSHES	512
-
 class Bush
 {
-  I32 x,y,z;
+  CD3I32 p;
   Bool sym,pad[3];
   U8 *img;
 } b[NUM_BUSHES];
+
+#define NUM_CARS	8
+class Car
+{
+  CD3I32 p;
+  F64 theta,speed;
+  CSprite *img;
+} c[NUM_CARS];
 
 #define TRACK_INNER	16000
 #define TRACK_OUTER	18000
@@ -81,7 +132,7 @@ I64 DipY(I64 x,I64 z)
 
 #define CAR_LENGTH	400
 
-F64 Diptheta(I64 x,I64 z)
+F64 Diptheta(I64 x,I64 z,F64 theta)
 {
   F64 y_front,y_back;
   y_front=DipY(x-CAR_LENGTH/2*Cos(theta),z-CAR_LENGTH/2*Sin(theta));
@@ -136,16 +187,18 @@ U0 MPUpdateWin(CDC *dc2)
 {
   CTask *task=dc2->win_task;
   I64 i,j,x,y,z,lo,hi,
-      w=task->win_pixel_width,
-      h=task->win_pixel_height,r[16],
+      w=task->pix_width,
+      h=task->pix_height,r[16],
       cx=w>>1;
-  F64 s,dip_theta=Diptheta(vx,vz);
+  F64 s,dip_theta=Diptheta(c[0].p.x,c[0].p.z,c[0].theta);
+  Car  *tempc;
+  Bool draw;
   CD3I32 poly[4];
   TrackPoly *tempt;
-  CDC *dc=DCAlias(gr_dc2,task);
+  CDC *dc=DCAlias(gr.dc2,task);
 
   GrIdentEqu(r);
-  GrRotYEqu(r,-theta);
+  GrRotYEqu(r,pi-c[0].theta);
   GrRotXEqu(r,75*pi/180-dip_theta);
 
   dc->depth_buf=dc2->depth_buf;
@@ -155,34 +208,52 @@ U0 MPUpdateWin(CDC *dc2)
   hi=(Gs->num+1)*TRACK_POLYS/mp_cnt;
   for (i=lo,tempt=&track[lo];i<hi;i++,tempt++) {
     dc->color=tempt->c;
+    draw=TRUE;
     for (j=0;j<4;j++) {
-      x=tempt->p[j].x+vx; y=tempt->p[j].y+vy; z=tempt->p[j].z+vz;
+      x=tempt->p[j].x-c[0].p.x; y=tempt->p[j].y-c[0].p.y; z=tempt->p[j].z-c[0].p.z;
       GrRot(r,&x,&y,&z);
       s=100.0/(AbsI64(z)+50);
-      poly[j].x=s*x+cx;
       poly[j].y=s*y+h;
-      poly[j].z=z;
+      if (z<-200 || !(-h<poly[j].y<2*h)) {
+	draw=FALSE;
+	break;
+      }
+      poly[j].x=s*x+cx;
+      poly[j].z=z+GR_Z_ALL;
     }
-    if (-h<poly[0].y<h*2 && -h<poly[1].y<h*2 &&
-	-h<poly[2].y<h*2 && -h<poly[3].y<h*2)
+    if (draw)
       GrFillPoly3(dc,4,poly);
   }
 
+  dc->flags|=DCF_TRANSFORMATION;
   for (i=Gs->num;i<NUM_BUSHES;i+=mp_cnt) {
-    x=b[i].x+vx; y=b[i].y+vy; z=b[i].z+vz;
+    x=b[i].p.x-c[0].p.x; y=b[i].p.y-c[0].p.y; z=b[i].p.z-c[0].p.z;
     GrRot(r,&x,&y,&z);
-    s=100.0/(AbsI64(z)+50);
-    if (s*y<0) {
+    if (z>0) {
+      s=100.0/(AbsI64(z)+50);
       GrIdentEqu(dc->r);
       GrScaleEqu(dc->r,s*2);
       GrSetRotMat(dc,dc->r);
-      dc->flags|=DCF_TRANSFORMATION;
       if (b[i].sym) {
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	GrSetSymmetry(dc,s*x+cx,s*y+h,s*x+cx,s*y+h+10);
       }
-      SpritePlot3B(dc,s*x+cx,s*y+h,z,b[i].img);
+      Sprite3B(dc,s*x+cx,s*y+h,z+GR_Z_ALL,b[i].img);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
+    }
+  }
+  for (i=Gs->num+1;i<NUM_CARS;i+=mp_cnt) {
+    tempc=&c[i];
+    x=tempc->p.x-c[0].p.x; y=tempc->p.y-c[0].p.y; z=tempc->p.z-c[0].p.z;
+    GrRot(r,&x,&y,&z);
+    if (z>0) {
+      s=100.0/(AbsI64(z)+50);
+      GrIdentEqu(dc->r);
+      GrScaleEqu(dc->r,s*2);
+      GrRotXEqu(dc->r,Diptheta(tempc->p.x,tempc->p.z,-tempc->theta));
+      GrRotYEqu(dc->r,tempc->theta-c[0].theta);
+      GrSetRotMat(dc,dc->r);
+      Sprite3B(dc,s*x+cx,s*y+h,z+GR_Z_ALL,tempc->img);
     }
   }
   dc->depth_buf=NULL;
@@ -190,25 +261,38 @@ U0 MPUpdateWin(CDC *dc2)
   LBtr(&mp_not_done_flags,Gs->num);
 }
 
+U0 VRTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
+{
+  I64 zz;
+  GrRot(dc->r,x,y,z);
+  zz=400+*z;
+  if (zz<1) zz=1;
+  *x=400* *x/zz;
+  *y=400* *y/zz;
+  *x+=dc->x;
+  *y+=dc->y;
+  *z+=dc->z;
+}
+
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,x,y,z,
-      w=task->win_pixel_width,
-      h=task->win_pixel_height,r[16],
-      cx=w>>1;
-  F64 s,dip_theta=Diptheta(vx,vz);
+	w=task->pix_width,
+	h=task->pix_height,r[16],
+	cx=w>>1;
+  F64 s,phi,dip_theta=Diptheta(c[0].p.x,c[0].p.z,c[0].theta);
 
   dc->color=LTCYAN;
   GrRect(dc,0,0,w,HORIZON_DIP*Sin(dip_theta)+FONT_HEIGHT*4.5);
 
   GrIdentEqu(r);
-  GrRotYEqu(r,-theta);
+  GrRotYEqu(r,pi-c[0].theta);
   GrRotXEqu(r,75*pi/180-dip_theta);
 
   DCAllocDepthBuf(dc);
 
   //Sun
-  x=vx; y=0; z=1000000+vz;
+  x=c[0].p.x; y=0; z=1000000-c[0].p.z;
   GrRot(r,&x,&y,&z);
   s=100.0/(AbsI64(z)+50);
   if (y<0) {
@@ -224,71 +308,139 @@ U0 DrawIt(CTask *task,CDC *dc)
   while (mp_not_done_flags)
     Yield;
 
+  if (Bt(kbd.down_bitmap,SC_CURSOR_LEFT))
+    phi=-0.5;
+  else if (Bt(kbd.down_bitmap,SC_CURSOR_RIGHT))
+    phi=0.5;
+  else
+    phi=0;
+  GrIdentEqu(r);
+  GrRotYEqu(r,phi);
+  GrRotXEqu(r,0.4-8*dip_theta); //Made this up
+  dc->transform=&VRTransform;
+  dc->x=task->pix_width>>1;
+  dc->y=task->pix_height-150;
+  dc->z=GR_Z_ALL;
+  SpriteMat3B(dc,0,0,-100,c[0].img,r);
+
   //Map
   dc->color=LTGRAY;
   GrRect(dc,w-64,h-64,64,64);
   dc->color=LTGREEN;
   for (i=0;i<NUM_BUSHES;i++)
-    GrPlot(dc,w-64+64*(b[i].x+0x5000)/0xA000,h-64*(b[i].z+0x5000)/0xA000);
+    GrPlot(dc,w-64+64*(0x5000-b[i].p.x)/0xA000,h-64*(-b[i].p.z+0x5000)/0xA000);
 
-  dc->color=WHITE;
-  GrPlot(dc,w-64+64*(-vx+0x5000)/0xA000,h-64*(-vz+0x5000)/0xA000);
+  dc->pen_width=2;
+  for (i=0;i<NUM_CARS;i++) {
+    if (i)
+      dc->color=LTPURPLE;
+    else
+      dc->color=LTCYAN;
+    GrPlot3(dc,w-64+64*(0x5000-c[i].p.x)/0xA000,h-64*(-c[i].p.z+0x5000)/0xA000,0);
+  }
 
-  if (tf) {
-    s=tf-t0;
+  if (game_over) {
     dc->color=LTRED;
-    if (Blink)
-      GrPrint(dc,(w-FONT_WIDTH*14)/2,(h-FONT_HEIGHT)/2,"Game Completed");
+    if (tf) {
+      s=tf-t0;
+      if (Blink)
+	GrPrint(dc,(w-FONT_WIDTH*14)/2,(h-FONT_HEIGHT)/2,"Game Completed");
+    } else {
+      s=99.9;
+      if (Blink)
+	GrPrint(dc,(w-FONT_WIDTH*9)/2,(h-FONT_HEIGHT)/2,"Game Over");
+    }
   } else
-    s=tT-t0;
+    s=tS-t0;
   dc->color=BLACK;
-  GrPrint(dc,0,0,"theta:%5.1f Time:%3.2f Best:%3.2f",180+180/pi*Arg(vx,vz),s,best_score);
+  GrPrint(dc,0,0,"theta:%0.1f %0.1f%% Time:%0.2f Best:%0.2f",
+	180+180/pi*Arg(c[0].p.x,c[0].p.z),100.0*distance/(2*pi*TRACK_INNER),s,best_score);
 }
-
 
 U0 AnimateTask(I64)
 {
+  Car  *tempc;
+  I64 i;
   F64 m,a;
   while (TRUE) {
-    Snd(speed*3+10);
-    vx-=speed*Sin(theta);
-    vz-=speed*Cos(theta);
-    vy=DipY(vx,vz);
-    R2P(&m,&a,vx,vz);
-    if (!tf && TRACK_INNER<=m<=TRACK_OUTER) {
-      distance+=speed;
-      if (distance>2*pi*TRACK_INNER && a>0.0) {
-	tf=tT;
-	if (tf-t0<best_score)
-	  best_score=tf-t0;
+    if (!game_over)
+      Snd(c[0].speed*3+10);
+    else
+      Snd(0);
+    for (i=0;i<NUM_CARS;i++) {
+      tempc=&c[i];
+      tempc->p.x-=tempc->speed*Cos(tempc->theta-pi/2);
+      tempc->p.z+=tempc->speed*Sin(tempc->theta-pi/2);
+      if (i) {
+	tempc->theta=Arg(-tempc->p.x,tempc->p.z);
+	tempc->p.x=-(TRACK_INNER+TRACK_OUTER)/2*Cos(tempc->theta);
+	tempc->p.z= (TRACK_INNER+TRACK_OUTER)/2*Sin(tempc->theta);
+      }
+      tempc->p.y=DipY(tempc->p.x,tempc->p.z);
+    }
+    R2P(&m,&a,c[0].p.x,c[0].p.z);
+    if (!game_over && TRACK_INNER<=m<=TRACK_OUTER) {
+      for (i=1;i<NUM_CARS;i++)
+	if (D3I32DistSqr(&c[i].p,&c[0].p)<CAR_LENGTH*CAR_LENGTH>>1) {
+	  game_over=TRUE;
+	  Noise(500,50,100);
+	  Sleep(500);
+	  break;
+	}
+      if (!game_over) {
+	distance+=c[0].speed;
+	if (distance>2*pi*TRACK_INNER && Wrap(a+pi,-pi)>0.0) {
+	  tf=tS;
+	  game_over=TRUE;
+	  Beep;
+	  if (tf-t0<best_score) {
+	    best_score=tf-t0;
+	    Beep;
+	  }
+	}
       }
     }
     Sleep(10);
   }
 }
 
-U8 *imgs[8]={__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4};
+CSprite *imgs[8]={__BIN_1,__BIN_1,__BIN_2,__BIN_2,__BIN_3,__BIN_4,__BIN_4,__BIN_4};
 
 U0 Init()
 {
   Bush *tempb;
+  Car  *tempc;
   I64 i;
   for (i=0;i<NUM_BUSHES;i++) {
     tempb=&b[i];
     do {
-      tempb->x=RandU32&0x7FFF-0x4000;
-      tempb->z=RandU32&0x7FFF-0x4000;
-    } while (TRACK_INNER-SHOULDER<=Sqrt(SqrI64(tempb->x)+SqrI64(tempb->z))<=TRACK_OUTER+SHOULDER);
-    tempb->y=DipY(tempb->x,tempb->z);
+      tempb->p.x=RandU32&0x7FFF-0x4000;
+      tempb->p.z=RandU32&0x7FFF-0x4000;
+    } while (TRACK_INNER-SHOULDER<=
+	Sqrt(SqrI64(tempb->p.x)+SqrI64(tempb->p.z))<=TRACK_OUTER+SHOULDER);
+    tempb->p.y=DipY(tempb->p.x,tempb->p.z);
     tempb->sym=RandU16&1;
     tempb->img=imgs[i&7];
   }
   InitTrack;
-  vx=-(TRACK_INNER+TRACK_OUTER)/2; vz=0; vy=DipY(vx,vz);
-  theta=0; speed=0;
+  for (i=0;i<NUM_CARS;i++) {
+    tempc=&c[i];
+    if (i==0) {
+      tempc->img=__BIN_5;
+      tempc->speed=0;
+    } else {
+      tempc->img=__BIN_6;
+      tempc->speed=50.0;
+    }
+    tempc->theta=i*2*pi/NUM_CARS;
+    tempc->p.x=-(TRACK_INNER+TRACK_OUTER)/2*Cos(tempc->theta);
+    tempc->p.z= (TRACK_INNER+TRACK_OUTER)/2*Sin(tempc->theta);
+    tempc->p.y=DipY(tempc->p.x,tempc->p.z);
+  }
   distance=0;
   tf=0;
-  t0=tT;
+  t0=tS;
+  game_over=FALSE;
 }
 
 U0 Varoom()
@@ -310,7 +462,7 @@ U0 Varoom()
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
-    Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_GRAB_SCROLL-WIF_MENU;
+    Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
     WordStat;
     WinMax;
     WinBorder;
@@ -326,16 +478,16 @@ U0 Varoom()
 	  case 0:
 	    switch (sc.u8[0]) {
 	      case SC_CURSOR_LEFT:
-		theta-=pi/100;
+		c[0].theta-=pi/100;
 		break;
 	      case SC_CURSOR_RIGHT:
-		theta+=pi/100;
+		c[0].theta+=pi/100;
 		break;
 	      case SC_CURSOR_UP:
-		speed+=3;
+		c[0].speed+=3;
 		break;
 	      case SC_CURSOR_DOWN:
-		speed-=3;
+		c[0].speed-=3;
 		break;
 	    }
 	    break;

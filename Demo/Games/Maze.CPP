@@ -1,37 +1,38 @@
-//See [C:/Adam/Gr/GrScreen.CPP.Z,1] ExtScreenCodes
+//See [TextBase Layer,1] TextBase Layer.
 
 #define ATTR (BLACK<<12+WHITE<<8)
 
 U32 text[TEXT_ROWS][TEXT_COLS];
 
-#define STK_SIZE 2048
-//We would put these as local vars
-//In SolveMaze() except the system stk size
-//is limited.  The heap is the normal TempleOS
-//technique, but it's a pain in this case.
-I64 stk_ptr;
-I16 stk_x[STK_SIZE];
-I16 stk_y[STK_SIZE];
-I16 stk_dir[STK_SIZE];
-
 U0 DrawIt(CTask *task,CDC *)
-{
-  MemCpy(gr_text_base+TEXT_COLS,text,(TEXT_ROWS-1)*TEXT_COLS*sizeof(U32));
+{ //[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base gets clear 60fps, so we must use our own permanent text array.
+  MemCpy(gr.text_base+TEXT_COLS,text,(TEXT_ROWS-1)*TEXT_COLS*sizeof(U32));
 
 // You can copy it this way, if you like:
 //  I64 i,j;
 //  for (j=0;j<TEXT_ROWS;j++)
 //    for (i=0;i<TEXT_COLS;i++)
-//     PlotWinU8(task,text[j][i],i,j);
+//     TextChar(task,,i,j,text[j][i]);
 
-  PlotWinStr(task,"Draw a maze with left button.",ATTR>>8,0,0);
-  PlotWinStr(task,"Solve maze starting at right click.",ATTR>>8,0,1);
+  TextPrint(task,0,0,ATTR>>8,"Draw a maze with left button.");
+  TextPrint(task,0,1,ATTR>>8,"Solve maze starting at right click.");
 }
+
+#define STK_SIZE 2048
+//We would put these as local vars
+//in SolveMaze() but the system stk size
+//is limited, so it's a bad habit.  The heap
+//is the normal TempleOS technique, but
+//it's a pain in this case.
+I64	stk_ptr,
+	stk_x  [STK_SIZE],
+	stk_y  [STK_SIZE],
+	stk_dir[STK_SIZE];
 
 //Four directions:
 //  0=Up,1=right,2=down,3=left
-I64 dir_x[4]={ 0,+1, 0,-1},
-    dir_y[4]={+1, 0,-1, 0};
+I64	dir_x[4]={ 0,+1, 0,-1},  // Could use [C:/Adam/Gr/MathGr.CPP.Z,5] gr_x_offsets2,[C:/Adam/Gr/MathGr.CPP.Z,6] gr_y_offsets2
+	dir_y[4]={+1, 0,-1, 0};
 
 U0 SolveMaze(I64 x,I64 y)
 {
@@ -50,7 +51,7 @@ U0 SolveMaze(I64 x,I64 y)
       text[y][x]='.'+ATTR;
     x+=dir_x[dir];
     y+=dir_y[dir];
-//u8.[0] is the ASCII
+	//u8.[0] is the ASCII
     if (text[y][x].u8[0]) {
       x-=dir_x[dir];
       y-=dir_y[dir];
@@ -68,7 +69,7 @@ U0 SolveMaze(I64 x,I64 y)
       if (stk_ptr==STK_SIZE) return;
       Sleep(100);
       if (ScanChar)
-	ThrowBreak;  //CTRL-ALT-C
+	ThrowBreak;  //<CTRL-ALT-c>
     }
   }
 }
@@ -84,18 +85,18 @@ U0 Maze()
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER;
 
   try
     do {
       MemSet(text,0,sizeof(text));
       while (!(ch=ScanChar)) {
-//Input Ptr (mouse) text x,y coordinates.
-	x=iptx-Fs->win_left-Fs->win_scroll_x/FONT_WIDTH;
-	y=ipty-Fs->win_top-Fs->win_scroll_y/FONT_HEIGHT;
-	if (ip_lb&&!win_grab_scroll)
+	//Input Ptr (mouse) text x,y coordinates.
+	x=ip.pos_text.x-Fs->win_left-Fs->scroll_x/FONT_WIDTH;
+	y=ip.pos_text.y-Fs->win_top-Fs->scroll_y/FONT_HEIGHT;
+	if (ip.lb&&!winmgr.grab_scroll)
 	  text[y][x]=CH_SPACE+ATTRF_INVERT+ATTR;
-	if (ip_rb&&!win_grab_scroll) {
+	if (ip.rb&&!winmgr.grab_scroll) {
 	  text[y][x]='*'+ATTR;
 	  SolveMaze(x,y);
 	  ch=GetChar;

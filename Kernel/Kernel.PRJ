@@ -1,6 +1,5 @@
-//You should compile this by calling
-//[C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall(), not doing it directly.
-//See [C:/Adam/Boot/InsBoot.CPP.Z,1] Cmp("Kernel").
+//Compile this by calling [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
+//Don't do it directly.  See [C:/Adam/Boot/InsBoot.CPP.Z,1] Cmp("Kernel").
 
 #exe {
 OptOn(OPTf_WARN_PAREN);
@@ -10,7 +9,6 @@ CKernelCfg *kernel_cfg;
 kernel_cfg=KernelCfgNew;
 };
 
-#include "BootDefs.HPP"
 #include "Adam1a.HPP"
 #include "KStart"
 #include "Utils1a"
@@ -23,12 +21,12 @@ kernel_cfg=KernelCfgNew;
 #include "KGlbls"
 #include "Mem1b"
 #include "Math1b"
-#include "Scheduler"
+#include "Sched"
 #include "Mem1c"
 #include "Font8x8"
 #include "Hash1a"
 #include "Str1b"
-#include "Interrupts"
+#include "Ints"
 #include "DataTypes1a"
 #include "Compress"
 #include "Hash1b"
@@ -36,8 +34,8 @@ kernel_cfg=KernelCfgNew;
 #include "StrPrint"
 #include "StrScan"
 #include "Define1a"
-#include "Define1b"
 #include "Display"
+#include "KeyDev"
 #include "Misc1a"
 #include "Dbg1a"
 #include "Except"
@@ -54,7 +52,6 @@ kernel_cfg=KernelCfgNew;
 #exe {Cd("Dsk");};
 #include "DskStr"
 #include "DskCache"
-#include "ATADef.HPP"
 #include "DskATA"
 #include "Dsk1a"
 #include "DskAddDev"

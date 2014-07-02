@@ -1,0 +1,56 @@
+                            Command Line Overview
+
+The cmd line feeds into the [C:/Doc/HolyC.TXT.Z,1] HolyC compiler as you
+type.  A statement outside a 
+function executes immediately.  Remember to add a semicolon.
+
+Look-up the function headers with WordStat by hitting <CTRL-SHIFT-F1> after 
+typing the first few letters.
+
+[C:/Kernel/Dsk/Dsk1b.CPP.Z,234] Click Here to see the directory cmd header. 
+It accepts default args from C++.
+
+>Dir("*.TXT.Z");
+
+If you don't have args, you don't need parenthesis.
+
+>Dir;
+
+Directories are referenced with / not \.  There is a current directory, but 
+not a path.  To run a program, you typically #include it.  There are several 
+shortcuts for #includeing files.  Right-click or hit <ENTER> on a directory 
+listing or press <F5> while editing.
+
+>Ed("NewFile.CPP.Z");	Invokes the editor. See [C:/Adam/DolDoc/Doc.CPP.Z,32]
+Doc Link Type.
+
+Most filenames end in .Z because they are stored compressed.
+
+Drives are specified with a letter.  The boot drive is specified with a ':'.
+
+>Drv('B');	B drive
+
+The drive can be specified in a [C:/Kernel/Dsk/Dsk1b.CPP.Z,37] Cd() command
+as in:
+
+>Cd("B:/Temp");	B drive
+>Cd("::/Demo");	Boot drive
+
+>Cd("HOME/Psalmody");	HOME is your [C:/Doc/GuideLines.TXT.Z,1] acct dir.
+
+If a file is not found, .Z is added or removed and a search is done, again.  
+If a file is still not found, all parent directories are searched.
+
+You can place macros in your [C:/Accts/TAD/PersonalMenu.TXT,1] PersonalMenu
+for [C:/Kernel/Dsk/Dsk1b.CPP.Z,37] Cd() commands.  <CTRL-m> to 
+access your menu.
+
+>Grep("needle","/Demo/*.CPP.Z;*.TXT.Z;"); See [C:/Doc/FileUtils.TXT.Z,1] File
+Utils.
+
+[Cmd Line (Typically),1] Cmd Line Routines
+
+Take Tour
+`SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
+");`
+

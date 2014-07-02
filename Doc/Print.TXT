@@ -1,0 +1,121 @@
+                                Print Fmt Strs
+
+<fmt_arg> := %[-][0][<width>][.<decimals>][<flags>][h<aux_fmt_num>]<fmt_code>
+
+See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+
+<flags>:
+
+  't' truncate to <width>.
+',' add commas every three digits or four nibbles.
+'$' makes %Q convert '$' to "\044".
+'/' makes %Q and %q convert '%' to "%%".
+
+<aux_fmt_num>:
+
+  For "%n", "%d" or "%u", the <aux_fmt_num> causes thousands mode.  "%h?n" 
+will pick a var exponent multiples of three unit, while "%h-3n" will display 
+milli units or "%h6n" will display mega units.  The 'k' flag is always on 
+for "%n".  See [C:/Demo/Print.CPP.Z,1].
+
+For "%c" or "%C", the <aux_fmt_num> repeats the char that many times.
+
+<fmt_code>:
+
+  "%n" floating point in engineering notation, exponents being multiples of 
+three.  If it has a <aux_fmt> code, it will display scientific units 
+letters.
+
+"%S" [C:/Kernel/Define1a.CPP.Z,49] Define() entry.
+
+"%C" [C:/Kernel/Adam1b.HPP.Z,40] ToUpper() character.
+
+"%h25c",'\n'; 25 new-lines.
+
+"%h*c",25,'\n'; 25 new-lines.
+
+"%F" text file.
+
+"%p" ptr.
+
+"%P" link to ptr.
+
+"%D" date.  Pass a [C:/Kernel/Adam1a.HPP.Z,182] CDate.
+
+"%T" time.  Pass a [C:/Kernel/Adam1a.HPP.Z,182] CDate.
+
+"%z" sub_entry of an enumerated list of text entries.  See
+  [C:/Kernel/Str1a.CPP.Z,388] LstSub().  Pass 
+sub_entry_num first, list second.
+
+"%Z" [C:/Kernel/Define1a.CPP.Z,13] DefineLstLoad() subentry.  Pass
+  sub_entry_num first, define_name 
+second.
+
+"%Q" convert "\" to "\\" and quote to backslash quote. (For use in creating 
+strs in strs.)
+
+"%q" reverse a "%Q".
+
+
+                                 Print Family
+
+[C:/Kernel/StrPrint.CPP.Z,956] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,935] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
+[C:/Kernel/Mem1b.CPP.Z,373] MAllocated str.  It is vary handy because you
+don't have to worry about 
+overflow.
+
+[C:/Kernel/StrPrint.CPP.Z,940] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
+formated string.
+
+[C:/Kernel/SrvCmd.CPP.Z,480] Auto(U8 *fmt,...) sends text to the current
+task's input buffer.
+[C:/Kernel/SrvCmd.CPP.Z,463] AutoStr(U8 *fmt,...) sends text of an
+[C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
+current TASK but can also do mouse cmds.
+
+[C:/Kernel/SrvCmd.CPP.Z,444] XTalk(CTask *task,U8 *fmt,...) and text to
+another task's input buffer.
+[C:/Kernel/SrvCmd.CPP.Z,487] XTalkStr(CTask *task,U8 *fmt,...) sends text of
+an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
+stream of another TASK but can also do mouse cmds.
+
+[C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(CDoc *doc,U8 *fmt,...) sends
+text to a document.  You can buffer to a 
+Doc and save it, providing the functionality of fprintf.  See 
+[C:/Demo/Dsk/FPrintF.CPP.Z,1].
+
+[C:/Kernel/SrvCmd.CPP.Z,403] Adam(U8 *fmt,...) sends text to the adam task to
+be compiled and run.
+[C:/Kernel/SrvCmd.CPP.Z,422] AdamLog(U8 *fmt,...) and
+[C:/Kernel/SrvCmd.CPP.Z,432] AdamErr(U8 *fmt,...) send text to the adam task
+to be 
+displayed.
+
+[C:/Compiler/CmpMain.CPP.Z,1] StreamPrint(U8 *fmt,...) sends text to the
+stream of code being compiled and 
+must reside in a #exe{} blk.
+
+[C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
+[C:/Adam/Gr/GrBitMap.CPP.Z,875] GrVPrint() plots text in graphics 
+mode.
+
+[C:/Adam/Gr/GrTextBase.CPP.Z,315] TextPrint(CTask *task,I64 x,I64 y,I64
+attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
+
+[C:/Compiler/CmpMain.CPP.Z,641] ExePrint(U8 *fmt,...) compiles and execute a
+string.  Note: It returns the 
+result of the last executed expression.
+
+[C:/Adam/AutoFile2a.CPP.Z,25] AFPrint(I64 mS,U8 *fmt,...)
+[C:/Kernel/KeyDev.CPP.Z,20] PutChars()s one at a time with a delay.
+
+[C:/Kernel/Dbg1a.CPP.Z,215] RawPrint(I64 mS,U8 *fmt,...) sends direct to
+screen memory, bypassing window 
+manager.
+
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,456] PopUpViewPrint(U8 *fmt,...) creates a
+pop-up window and views text.
+
+**Note:** Use Print("%s",src) if you need an unmodified string.

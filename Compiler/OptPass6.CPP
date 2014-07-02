@@ -6,7 +6,7 @@ Bool OptIC6(CIntermediateCode *tempi)
   if (tempil1->ic_code==IC_ADD_CONST && tempi->ic_code==IC_DEREF &&
       tempi->ic_flags&ICF_A1_WAS_STK  &&  tempi->a1.type&TY_MASK==TY_REG &&
       tempil1->r.type&TY_MASK==TY_REG && MIN_I32<=tempil1->ic_data<=MAX_I32 &&
-      !Bt(&non_ptr_vars_mask,tempil1->a1.reg)) {
+      !Bt(&cmp.non_ptr_vars_mask,tempil1->a1.reg)) {
     if (tempil1->a1.type&TY_MASK==TY_REG) {
       tempi->ic_flags=tempi->ic_flags&~ICF_A1_WAS_STK | tempil1->ic_flags;
       tempi->ic_code=IC_MOV;
@@ -39,12 +39,13 @@ U0 OptPass6Lag(CLex *lx,
   if (code==IC_CALL_START) {
     k=MinI64(i,num_stk);
     j=0;
+    //See [C:/Compiler/CmpInit.CPP.Z,1] STK TEMP ALLOCATION
     if (fun_num&1)
       for (l=0;l<k;l++)
-	Bts(&j,to_stk_temps_map_odd[l]);
+	Bts(&j,cmp.to_stk_temps_map_odd[l]);
     else
       for (l=0;l<k;l++)
-	Bts(&j,to_stk_temps_map_even[l]);
+	Bts(&j,cmp.to_stk_temps_map_even[l]);
     if (tempf=tempi->ic_data) {
       if (Bt(&tempf->flags,Ff_INTERNAL))
 	j=0;
@@ -63,16 +64,16 @@ U0 OptPass6Lag(CLex *lx,
     ps->ptr--;
     i=PrsPop(ps);
   }
-  if (cmp_arg_cnt[code]==9)
+  if (cmp.arg_cnt[code]==9)
     i-=tempi->ic_data>>3;
   if (tempi->a2.type&TY_MASK==TY_STK) {
     i--;
     if (i<num_stk) {
       tempi->a2.type=TY_REG+tempi->a2.type&RT_MASK;
       if (fun_num&1)
-	tempi->a2.reg=to_stk_temps_map_odd[i];
+	tempi->a2.reg=cmp.to_stk_temps_map_odd[i];
       else
-	tempi->a2.reg=to_stk_temps_map_even[i];
+	tempi->a2.reg=cmp.to_stk_temps_map_even[i];
       tempi->a2.disp=0;
     }
   }
@@ -81,9 +82,9 @@ U0 OptPass6Lag(CLex *lx,
     if (i<num_stk) {
       tempi->a1.type=TY_REG+tempi->a1.type&RT_MASK;
       if (fun_num&1)
-	tempi->a1.reg=to_stk_temps_map_odd[i];
+	tempi->a1.reg=cmp.to_stk_temps_map_odd[i];
       else
-	tempi->a1.reg=to_stk_temps_map_even[i];
+	tempi->a1.reg=cmp.to_stk_temps_map_even[i];
       tempi->a1.disp=0;
     }
   }
@@ -92,11 +93,11 @@ U0 OptPass6Lag(CLex *lx,
     if (i<=num_stk) {
       tempi->r.type=TY_REG+tempi->r.type&RT_MASK;
       if (fun_num&1) {
-	tempi->r.reg=to_stk_temps_map_odd[i-1];
-	Bts(&clobbered_reg_mask,to_stk_temps_map_odd[i-1]);
+	tempi->r.reg=cmp.to_stk_temps_map_odd[i-1];
+	Bts(&clobbered_reg_mask,cmp.to_stk_temps_map_odd[i-1]);
       } else {
-	tempi->r.reg=to_stk_temps_map_even[i-1];
-	Bts(&clobbered_reg_mask,to_stk_temps_map_even[i-1]);
+	tempi->r.reg=cmp.to_stk_temps_map_even[i-1];
+	Bts(&clobbered_reg_mask,cmp.to_stk_temps_map_even[i-1]);
       }
       tempi->r.disp=0;
     }
@@ -108,22 +109,22 @@ U0 OptPass6Lag(CLex *lx,
   *_clobbered_reg_mask=clobbered_reg_mask;
 }
 
-U0 OptPass6(CLex *lx,CHashFun *fun_class)
+U0 OptPass6(CLex *lx)
 {
   CIntermediateCode *tempi,*tempil1,*tempil2,*tempil3,*tempif1,*tempif2,*old_tempil2;
   I64 i=0,code,num_stk,clobbered_reg_mask=REG_ALWAYS_CLOBBERED_MASK,fun_num=0;
   CPrsStk *ps=lx->ps;
   ps->ptr=0;
   ps->ptr2=0;
-  if (fun_class)
-    fun_num=compiled_funs++;
+  if (lx->htc.fun)
+    fun_num=cmp.compiled_funs++;
   if (Bt(&lx->opts,OPTf_NO_REG_VAR) || lx->flags&LF_NO_REG_OPT)
     num_stk=0;
   else
-    num_stk=num_stk_temps;
+    num_stk=cmp.num_stk_temps;
   tempi=lx->lcc.lcc_root.next;
   old_tempil2=NULL;
-  tempil1=tempil2=tempil3=&opt_nop;
+  tempil1=tempil2=tempil3=&cmp.ic_nop;
   while (code=tempi->ic_code) {
     if (		  code>=IC_END_EXP &&		    code!=IC_NOP2) {
       if (  tempil1->ic_code>=IC_END_EXP && tempil1->ic_code!=IC_NOP2) {
@@ -200,15 +201,15 @@ U0 OptPass6(CLex *lx,CHashFun *fun_class)
   }
   if (ps->ptr>2) {
     "Pass:%d Stk:%08X\n",lx->pass,ps->ptr;
-    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+    LexExcept(lx,"Compiler Optimization Error at ");
   }
-  if (fun_class) {
-    fun_class->used_reg_mask&=~REG_STK_TEMPS_MASK;
-    fun_class->used_reg_mask|=clobbered_reg_mask;
-    fun_class->clobbered_reg_mask=clobbered_reg_mask;
+  if (lx->htc.fun) {
+    lx->htc.fun->used_reg_mask&=~REG_STK_TEMPS_MASK;
+    lx->htc.fun->used_reg_mask|=clobbered_reg_mask;
+    lx->htc.fun->clobbered_reg_mask=clobbered_reg_mask;
     if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) &&
 	  Bt(&lx->pass_trace_mask,6)) {
-      "Used      Reg Mask:%04X\n",fun_class->used_reg_mask;
+      "Used      Reg Mask:%04X\n",lx->htc.fun->used_reg_mask;
       "Clobbered Reg Mask:%04X\n",clobbered_reg_mask;
     }
   }

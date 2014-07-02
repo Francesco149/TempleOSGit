@@ -1,13 +1,12 @@
-I64 OptPass789(CLex *lx,CHashFun *fun_class,
-   COptReg *reg_offsets,U8 *buf,CDbgInfo **_dbg)
-{
-/*
-lx->pass==7 is first time
-lx->pass==8 is repeated until size stops shrinking
-lx->pass==9 is final
+I64 OptPass789(CLex *lx,COptReg *reg_offsets,U8 *buf,CDbgInfo **_dbg)
+{/*	lx->pass==7 is first time
+	lx->pass==8 is second time
+	lx->pass==8 is third time and repeated until size stops shrinking
+	size is now known
+	lx->pass==9 is final pass, code is placed into buf.
 */
   CIntermediateCode *tempi,*tempi_next;
-  I64 code,i,cnt,num_lines=lx->max_line-lx->min_line+1,ip=0,ip2;
+  I64 code,i,cnt,num_lines=lx->max_line+1-lx->min_line,ip=0,ip2;
   U8  *ptr;
   CLexCodeMisc *lb;
   CExe *tempx;
@@ -15,8 +14,8 @@ lx->pass==9 is final
   CExeImportExport *tempe;
   CExeHeapGlbl *temphg;
   CExeHeapGlblRef *temphgr;
-  CDbgInfo *dbg;
-  CAsmCtrl *a=lx->a;
+  CDbgInfo *dbg_info;
+  CAOTCtrl *a=lx->a;
   Bool short_jmp;
   CICArg saved_p123[3];
   CHashClass *tempc;
@@ -25,22 +24,20 @@ lx->pass==9 is final
   CExternUsage *tempeu;
 
   if (_dbg) {
-    *_dbg=dbg=CAlloc(offset(CDbgInfo.body)+sizeof(U8 *)*(num_lines+1));
-    dbg->min_line=lx->min_line;
-    dbg->max_line=lx->max_line;
+    *_dbg=dbg_info=CAlloc(offset(CDbgInfo.body)+sizeof(U32)*(num_lines+1));
+    dbg_info->min_line=lx->min_line;
+    dbg_info->max_line=lx->max_line;
     if (lx->flags&LF_AOT_COMPILE)
-      dbg->body[0]=a->ip;
+      dbg_info->body[0]=a->ip;
     else
-      dbg->body[0]=buf;
+      dbg_info->body[0]=buf;
   } else
-    dbg=NULL;
+    dbg_info=NULL;
 
-  if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) &&
-	Bt(&lx->pass_trace_mask,lx->pass))
+  if (Bt(&lx->flags,Lf_OPT_TRACE_PRESENT) && Bt(&lx->pass_trace_mask,lx->pass))
     "$BK,1$$LTRED$$IV,1$This code gets merged together and patched.\n$FG$$IV,0$$BK,0$";
 
   lx->last_float_op_ic=NULL;
-
   tempi=&lx->lcc.lcc_root;
   tempi->ic_cnt=0;
   tempi->ic_last_cnt=-1;
@@ -58,12 +55,10 @@ lx->pass==9 is final
       lx->cur_ic_float_op_num=0;
       if (!(tempi->ic_flags &ICF_CODE_FINAL)) {
 	tempi->ic_flags=tempi->ic_flags&~(ICF_PREVIOUS_DELETED|ICF_DONT_RESTORE)|ICF_CODE_FINAL;
-	if (lx->pass==7) {
-	  tempi->ic_ext_body=NULL;
+	if (lx->pass==7)
 	  lx->dont_push_float=Btr(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0);
-	}
 	MemCpy(saved_p123,&tempi->a1,3*sizeof(CICArg));
-	if (cmp_arg_cnt[code]==2 && tempi->a1.type&TY_MASK==TY_REG &&
+	if (cmp.arg_cnt[code]==2 && tempi->a1.type&TY_MASK==TY_REG &&
 	      tempi->a1.reg==REG_RAX)
 	  tempi->ic_flags|=ICF_A1_FIRST;
 	tempi->ic_cnt=0;
@@ -161,7 +156,7 @@ lx->pass==9 is final
 		ICU64(tempi,0);
 		temphg=tempi->ic_data;
 		if (buf && lx->flags&LF_AOT_COMPILE &&
-		      !(lx->flags&(LF_NO_ABSS|LF_ASM_EXPRESSIONS))) { //is this necessary--flags?
+		      !(lx->flags&(LF_NO_ABSS|LF_ASM_EXPRESSIONS))) {//is this necessary--flags?
 		  temphgr=CAlloc(sizeof(CExeHeapGlblRef));
 		  temphgr->next=temphg->references;
 		  temphg->references=temphgr;
@@ -196,6 +191,12 @@ lx->pass==9 is final
 	      ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 		    TY_REG+RT_I64,REG_RAX,0,ip2);
 	      break;
+	    case IC_BR_CARRY:
+	      ICFlagBranch(tempi,ip,0x72820F,buf);
+	      break;
+	    case IC_BR_NOT_CARRY:
+	      ICFlagBranch(tempi,ip,0x73830F,buf);
+	      break;
 	    case IC_BR_ZERO:
 	      ICTestAndBranch(tempi,ip,0x74840F,buf,ip2);
 	      break;
@@ -204,11 +205,11 @@ lx->pass==9 is final
 	      break;
 	    case IC_BR_MM_ZERO:
 	      ICPreIncDec(tempi,SLASH_OP_DEC,ip2);
-	      ICZFlagBranch(tempi,ip,0x74840F,buf);
+	      ICFlagBranch(tempi,ip,0x74840F,buf);
 	      break;
 	    case IC_BR_MM_NOT_ZERO:
 	      ICPreIncDec(tempi,SLASH_OP_DEC,ip2);
-	      ICZFlagBranch(tempi,ip,0x75850F,buf);
+	      ICFlagBranch(tempi,ip,0x75850F,buf);
 	      break;
 	    case IC_BR_EQUAL_EQUAL:
 	      ICCmpAndBranch(tempi,FALSE,ip,0x74840F,0x74840F,0x74840F,0x74840F,buf,ip2);
@@ -325,6 +326,8 @@ lx->pass==9 is final
 		ICAddRSP(tempi,-8,FALSE);
 		ICAddRSP(tempi,8,FALSE);
 	      }
+	      if (lb->type==CMT_ASM_LABEL)
+		lb->addr+=lb->ip;
 	      break;
 	    case IC_STR_CONST:
 	    case IC_GET_LABEL:
@@ -340,13 +343,15 @@ lx->pass==9 is final
 	      tempx=tempi->ic_data;
 	      tempi->ic_cnt+=tempx->ex_U8s;
 	      if (buf) {
-		MemCpy(buf+ip,tempx->ex,tempx->ex_U8s);
-		ExpressionBinDel(tempx->ex);
-		tempx->ex=buf+ip;
+		MemCpy(buf+ip,tempx->buf,tempx->ex_U8s);
+		Free(tempx->buf);
+		tempx->buf=buf;
+		tempx->ip=ip;
+		tempx->ip2=ip2;
 		if (lx->flags&LF_AOT_COMPILE)
-		  CmpFixUpAOTAsm(lx,tempx,ip2);
+		  CmpFixUpAOTAsm(lx,tempx);
 		else
-		  CmpFixUpJITAsm(lx,tempx,ip2);
+		  CmpFixUpJITAsm(lx,tempx);
 		cnt=tempi->ic_cnt;
 		goto skip_copy;
 	      }
@@ -405,7 +410,7 @@ lx->pass==9 is final
 		if (buf) {
 		  tempf=tempi->ic_data;
 		  tempe=CAlloc(sizeof(CExeImportExport));
-		  tempe->type=EIT_REL_U32;
+		  tempe->type=EIT_REL_I32;
 		  tempe->ip=ip2+tempi->ic_cnt-4;
 		  tempe->next=tempf->ie_lst;
 		  tempf->ie_lst=tempe;
@@ -416,11 +421,11 @@ lx->pass==9 is final
 	    tempi->ic_flags&=~ICF_CODE_FINAL;
 	    break;
 	  case IC_LEAVE:
-	    if (fun_class) {
-	      if (Bt(&fun_class->flags,Ff_INTERRUPT))
-		ICPopRegs(tempi,REG_ALWAYS_CLOBBERED_MASK&~(1<<REG_RBP|1<<REG_RSP)|fun_class->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK|REG_STK_TEMPS_MASK));
+	    if (lx->htc.fun) {
+	      if (Bt(&lx->htc.fun->flags,Ff_INTERRUPT))
+		ICPopRegs(tempi,REG_ALWAYS_CLOBBERED_MASK&~(1<<REG_RBP|1<<REG_RSP)|lx->htc.fun->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK|REG_STK_TEMPS_MASK));
 	      else
-		ICPopRegs(tempi,fun_class->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK));
+		ICPopRegs(tempi,lx->htc.fun->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK));
 	    }
 	    if (tempi->ic_data<=MAX_I16) {
 	      if (tempi->ic_data)
@@ -431,15 +436,15 @@ lx->pass==9 is final
 	      ICAddRSP(tempi,tempi->ic_data);
 	      ICU8(tempi,0x5D); //POP RBP
 	    }
-	    if (fun_class && Bt(&fun_class->flags,Ff_INTERRUPT)) {
-	      if (Bt(&fun_class->flags,Ff_HASERRCODE))
+	    if (lx->htc.fun && Bt(&lx->htc.fun->flags,Ff_INTERRUPT)) {
+	      if (Bt(&lx->htc.fun->flags,Ff_HASERRCODE))
 		ICAddRSP(tempi,8);
 	      ICU16(tempi,0xCF48);
-	    } else if (fun_class && fun_class->arg_cnt &&
-		  (Bt(&fun_class->flags,Ff_RET1) || Bt(&fun_class->flags,Ff_ARGPOP)) &&
-		  !Bt(&fun_class->flags,Ff_NOARGPOP)) {
+	    } else if (lx->htc.fun && lx->htc.fun->arg_cnt &&
+		  (Bt(&lx->htc.fun->flags,Ff_RET1) || Bt(&lx->htc.fun->flags,Ff_ARGPOP)) &&
+		  !Bt(&lx->htc.fun->flags,Ff_NOARGPOP)) {
 	      ICU8(tempi,0xC2);
-	      ICU16(tempi,fun_class->arg_cnt<<3);
+	      ICU16(tempi,lx->htc.fun->arg_cnt<<3);
 	    } else
 	      ICU8(tempi,0xC3);
 	    break;
@@ -715,13 +720,13 @@ lx->pass==9 is final
 	    ICU32(tempi,0xEC8B4855);
 	    if (tempi->ic_data)
 	      ICAddRSP(tempi,-tempi->ic_data,FALSE);
-	    if (fun_class) {
-	      if (Bt(&fun_class->flags,Ff_INTERRUPT))
-		ICPushRegs(tempi,REG_ALWAYS_CLOBBERED_MASK&~(1<<REG_RBP|1<<REG_RSP)|fun_class->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK|REG_STK_TEMPS_MASK));
+	    if (lx->htc.fun) {
+	      if (Bt(&lx->htc.fun->flags,Ff_INTERRUPT))
+		ICPushRegs(tempi,REG_ALWAYS_CLOBBERED_MASK&~(1<<REG_RBP|1<<REG_RSP)|lx->htc.fun->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK|REG_STK_TEMPS_MASK));
 	      else {
 		if (sys_var_init_flag&1 && i)
 		  ICLocalVarInit(tempi);
-		ICPushRegs(tempi,fun_class->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK));
+		ICPushRegs(tempi,lx->htc.fun->used_reg_mask&(REG_VARS_MASK|REG_NON_PTR_MASK));
 	      }
 	      for (i=0;i<NUM_REGS;i++)
 		if (reg_offsets[i]>0 && reg_offsets[i].offset!=MAX_I64) {
@@ -743,32 +748,11 @@ lx->pass==9 is final
 	      ICU32(tempi,tempi->ic_data);
 	    }
 	    break;
-	  case IC_CLI:
-	    ICU8(tempi,0xFA);
-	    break;
-	  case IC_STI:
-	    ICU8(tempi,0xFB);
-	    break;
-	  case IC_PUSHFD:
-	    ICU8(tempi,0x9C);
-	    break;
-	  case IC_POPFD:
-	    ICU8(tempi,0x9D);
-	    break;
 	  case IC_PUSH:
 	    ICPush(tempi,tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip2);
 	    break;
 	  case IC_POP:
 	    ICU8(tempi,0x58);
-	    break;
-	  case IC_CLD:
-	    ICU8(tempi,0xFC);
-	    break;
-	  case IC_STD:
-	    ICU8(tempi,0xFD);
-	    break;
-	  case IC_HLT:
-	    ICU8(tempi,0xF4);
 	    break;
 	  case IC_INVLPG:
 	    ICMov(tempi,TY_REG+RT_I64,REG_RAX,0,
@@ -779,9 +763,6 @@ lx->pass==9 is final
 	    ICMov(tempi,TY_REG+RT_I64,REG_RAX,0,
 		  tempi->a1.type,tempi->a1.reg,tempi->a1.disp,ip2);
 	    ICU24(tempi,0x38AE0F);
-	    break;
-	  case IC_PAUSE:
-	    ICU16(tempi,0x90F3);
 	    break;
 	  case IC_GET_RFLAGS:
 	    ICU8(tempi,0x9C);
@@ -929,7 +910,7 @@ lx->pass==9 is final
 	  case IC_SWAP_U8:
 	  case IC_SWAP_U16:
 	  case IC_SWAP_U32:
-	  case IC_SWAP_U64:
+	  case IC_SWAP_I64:
 	    ICSwap(tempi,ip2);
 	    break;
 	  case IC_QUE_INIT:
@@ -1105,7 +1086,7 @@ lx->pass==9 is final
 	  default:
 	    "Pass:%d Missing IC handler\n",lx->pass;
 	    ICPut(tempi);
-	    LexExcept(lx,"ST_OPT_INTERNAL_ERROR");
+	    LexExcept(lx,"Compiler Optimization Error at ");
 	}
 	if (tempi->r.type&TY_MASK) {
 	  if (tempi->ic_flags & ICF_R_TO_F64) {
@@ -1132,28 +1113,20 @@ lx->pass==9 is final
       } else
 	cnt=tempi->ic_cnt;
 
-      if (cnt && buf) {
-	if (tempi->ic_ext_body) {
-	  MemCpy(buf+ip,tempi->ic_ext_body,cnt);
-	  Free(tempi->ic_ext_body);
-	  tempi->ic_ext_body=NULL;
-	} else
-	  MemCpy(buf+ip,tempi->ic_body,cnt);
-      }
+      if (cnt && buf)
+	MemCpy(buf+ip,tempi->ic_body,cnt);
 
-      skip_copy:
-      if (dbg && lx->min_line<=tempi->ic_line<=lx->max_line) {
+skip_copy:
+      if (dbg_info && lx->min_line<=tempi->ic_line<=lx->max_line) {
 	i=tempi->ic_line-lx->min_line;
-	if (!dbg->body[i])
-	  dbg->body[i]=ip2;
+	if (!dbg_info->body[i])
+	  dbg_info->body[i]=ip2;
       }
 
       if (tempi->ic_flags&ICF_TRACE && Bt(&lx->pass_trace_mask,lx->pass) && cnt) {
 	"$RED$";
 	if (buf)
 	  Un(buf+ip,cnt,64);
-	else if (tempi->ic_ext_body)
-	  Un(tempi->ic_ext_body,cnt,64);
 	else
 	  Un(tempi->ic_body,cnt,64);
 	"$FG$";
@@ -1166,6 +1139,8 @@ lx->pass==9 is final
       tempi->ic_last_cnt=-1;
     }
 op789_next:
+    if (tempi->ic_cnt>=IC_BODY_SIZE && tempi->ic_code!=IC_ASM)
+      throw('Compiler');
     tempi=tempi_next;
   }
 
@@ -1216,11 +1191,11 @@ op789_next:
     }
     lb=lb->next;
   }
-  if (dbg) {
+  if (dbg_info) {
     if (lx->flags&LF_AOT_COMPILE)
-      dbg->body[num_lines]=ip+a->ip;
+      dbg_info->body[num_lines]=ip+a->ip;
     else
-      dbg->body[num_lines]=ip+buf;
+      dbg_info->body[num_lines]=ip+buf;
   }
 
   return ip;

@@ -60,7 +60,6 @@ chars with shifts.
 
 Duplicate entries are allowed--they overshadow old entries.
 
-
 ADDRESS-TO-SYMBOL LOOK-UP  (Slow because not important--could add tree)
 1)PSect Cache is scanned.
 2)"next_added,last_added" que links are traversed.  This speeds look-up
@@ -72,10 +71,10 @@ See [C:/Kernel/PSect.CPP.Z,10] PSectFind().
 
 asm {
 USE64
-// ************************************
+//************************************
+SYS_HASH_STR::
 // IN:	RSI=Addr of string
 // OUT:	RAX
-SYS_HASH_STR::
 	XOR	RAX,RAX
 	TEST	RSI,RSI
 	JZ	@@15
@@ -98,7 +97,8 @@ SYS_HASH_STR::
 	POP	RSI
 
 @@15:	RET
-// ************************************
+//************************************
+SYS_HASH_SINGLE_TABLE_FIND1::
 // IN:	RAX=HASHED_STRING
 //	RSI=STR
 //	RBX=TYPE MASK
@@ -108,7 +108,6 @@ SYS_HASH_STR::
 //	RDX=POINTER TO POINTER TO ENTRY
 //	RCX IF NOT FOUND ENOUGH, DECREMENTED BY NUM MATCHES
 //	ZERO FLAG SET NOT FOUND
-SYS_HASH_SINGLE_TABLE_FIND1::
 	MOV	RCX,1
 SYS_HASH_SINGLE_TABLE_FIND::
 	TEST	RCX,RCX
@@ -149,14 +148,14 @@ SYS_HASH_SINGLE_TABLE_FIND::
 
 @@30:	LEA	RDX,U64 CHash.next[RAX]
 	JMP	@@10
-// ************************************
+//************************************
+SYS_HASH_FIND1::
 // IN:	RSI=STR
 //	RBX=TYPE MASK
 //	RDI=TABLE
 //	RCX=INSTANCE NUM
 // OUT: RAX=ENTRY OR ZERO NOT FOUND
 //	ZERO FLAG SET NOT FOUND
-SYS_HASH_FIND1::
 	MOV	RCX,1
 SYS_HASH_FIND::
 	PUSH	RDI
@@ -177,11 +176,11 @@ SYS_HASH_FIND::
 	POP	RDI
 	TEST	RAX,RAX
 	RET
-// ************************************
+//************************************
+SYS_HASH_BUCKET_FIND::
 // IN:	RSI=STR
 //	RDI=TABLE
 // OUT: RAX=BUCKET
-SYS_HASH_BUCKET_FIND::
 	PUSH	RDX
 	CALL	SYS_HASH_STR
 	AND	RAX,U64 CHashTable.mask[RDI]
@@ -189,7 +188,6 @@ SYS_HASH_BUCKET_FIND::
 	LEA	RAX,U64 [RDX+RAX*8]
 	POP	RDX
 	RET
-// ************************************
 _HASH_STR::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -199,7 +197,6 @@ _HASH_STR::
 	POP	RSI
 	POP	RBP
 	RET1	8
-// ************************************
 _HASH_FIND::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -214,7 +211,6 @@ _HASH_FIND::
 	POP	RSI
 	POP	RBP
 	RET1	32
-// ************************************
 _HASH_SINGLE_TABLE_FIND::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -230,7 +226,6 @@ _HASH_SINGLE_TABLE_FIND::
 	POP	RSI
 	POP	RBP
 	RET1	32
-// ************************************
 _HASH_BUCKET_FIND::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -243,7 +238,6 @@ _HASH_BUCKET_FIND::
 	POP	RSI
 	POP	RBP
 	RET1	16
-// ************************************
 _HASH_ADD::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -260,7 +254,7 @@ _HASH_ADD::
 	MOV	U64 CHash.next[RCX],RBX
 	MOV	U64 [RAX],RCX
 
-//QueIns RCX
+	//QueIns RCX
 	MOV	RBX,U64 CHashTable.last_added[RDI]
 	MOV	U64 CHash.next_added[RCX],RDI
 	MOV	U64 CHash.last_added[RCX],RBX
@@ -272,7 +266,6 @@ _HASH_ADD::
 	POP	RSI
 	POP	RBP
 	RET1	16
-// ************************************
 _HASH_ADD_AFTER::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -286,7 +279,7 @@ _HASH_ADD_AFTER::
 	MOV	U64 CHash.next[RCX],RBX
 	MOV	U64 [RAX],RCX
 
-//QueIns RCX
+	//QueIns RCX
 	MOV	RBX,U64 CHashTable.last_added[RDI]
 	MOV	U64 CHash.next_added[RCX],RDI
 	MOV	U64 CHash.last_added[RCX],RBX
@@ -297,7 +290,6 @@ _HASH_ADD_AFTER::
 	POP	RDI
 	POP	RBP
 	RET1	24
-// ************************************
 _HASH_REM_DEL::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -324,7 +316,7 @@ _HASH_REM_DEL::
 	MOV	RBX,U64 CHash.next[RAX]
 	MOV	U64 [RDX],RBX
 
-//QueRem RAX
+	//QueRem RAX
 	MOV	RBX,U64 CHash.next_added[RAX]
 	MOV	RDX,U64 CHash.last_added[RAX]
 	MOV	U64 CHash.next_added[RDX],RBX
@@ -351,14 +343,13 @@ _HASH_REM_DEL::
 	RET1	24
 }
 
-_extern _HASH_STR I64 HashStr(U8 *st);
+_extern _HASH_STR I64 HashStr(U8 *st); //Hash a string.
 _extern _HASH_FIND CHash *
-  HashFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
+  HashFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);//Find string in hash table.
 _extern _HASH_SINGLE_TABLE_FIND CHash *
-  HashSingleTableFind(U8 *st,CHashTable *table,I64 mask,I64 instance=1);
+  HashSingleTableFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);//Find string in single hash table.
 _extern _HASH_BUCKET_FIND CHash **
-  HashBucketFind(U8 *st,CHashTable *table);
-_extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table);
-_extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
-					I64 instance=1);//instance must match temph's
+  HashBucketFind(U8 *needle_str,CHashTable *haystack_table); //Find hash bucket.
+_extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table); //Add entry to hash table.
+_extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,I64 instance=1);//Remove hash entry and del. Instance must match.
 

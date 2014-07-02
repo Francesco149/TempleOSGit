@@ -4,12 +4,12 @@
 extern, import, _extern, _import, 
 etc.
 
-* See [C:/Doc/Directives.TXT.Z,1].
+* See [C:/Doc/CompilerOverview.TXT.Z,1].
 
 * Built-in types include I0,I8,I16,I32,I64 for signed 0-8 byte ints and U0,U8,
-U16,U32,I64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
+U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 
-	U0	void
+	U0	void, but ZERO size!
 	I8	char
 	U8	unsigned char
 	I16	short
@@ -24,6 +24,10 @@ U16,U32,I64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 * Function with no args, or just default args can be called without 
 parentheses. 
 
+  >Dir("*");
+  >Dir();
+  >Dir;
+
 * Default args don't have to be on the end.  This code is valid:
   U0 Test(I64 i=4,I64 j,I64 k=5)
 {
@@ -32,13 +36,13 @@ parentheses.
 
 Test(,3);
 
-* A char const all alone is sent to [C:/Kernel/Display.CPP.Z,199] PutChars().
- A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,967] Print().  An empty string literal
+* A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
+A string with or without args 
+is sent to [C:/Kernel/StrPrint.CPP.Z,949] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
-  void Demo(char drv,char *fmt,char *name,int age)
+  void DemoC(char drv,char *fmt,char *name,int age)
 {
   printf("Hello World!\n");
   printf("%s age %d\n",name,age);
@@ -47,7 +51,7 @@ follows.
   putchar('*');
 }
 
-U0 Demo(U8 drv,U8 *fmt,U8 *name,I64 age)
+U0 DemoHolyC(U8 drv,U8 *fmt,U8 *name,I64 age)
 {
   "Hello World!\n";
   "%s age %d\n",name,age;
@@ -56,27 +60,68 @@ U0 Demo(U8 drv,U8 *fmt,U8 *name,I64 age)
   '*';
 }
 
-* When dealing with function addresses, precede the name with "&".
+* When dealing with function addresses such as for callbacks, precede the
+name 
+with "&".
 
-* There is no main() function.  Any code outside of functions gets executed
-on 
-start-up, in order.
+* Type casting is postfix.  To typecast int or F64, use
+[C:/Kernel/Adam1b.HPP.Z,93] ToI64(), [C:/Kernel/Adam1b.HPP.Z,91] ToBool() or 
+[C:/Kernel/Adam1b.HPP.Z,92] ToF64(). (TempleOS follows normal C float<-->int
+conversion, but sometimes you 
+want to override.  These functions are better than multiplying by "1.0" to 
+convert to float.) 
 
-* You can access bytes or words within any int.  i.u8[2] returns bits 24-27
-in 
-the variable, i.  See [C:/Kernel/Adam1a.HPP.Z,50] I64 declaration.  The real
-feature is that a class can 
-be accessed as a whole, if you put a type in front of the class declaration.
+* There is no main() function.  Any code outside of functions gets executed 
+upon start-up, in order.
+
+* There are no bit fields, but there are [Bit,1] bit access routines and you
+can 
+access bytes or words within any int.  See [C:/Kernel/Adam1a.HPP.Z,101] I64
+declaration.  A class can be 
+accessed as a whole are subints, if you put a type in front of the class 
+declaration.
+  
+public I64i union I64		//"I64i" is intrinsic.  We are defining "I64".
+{
+  I8i i8[8];
+  U8i u8[8];
+  I16 i16[4];
+  U16 u16[4];
+  I32 i32[2];
+  U32 u32[2];
+};
+
+I64 i=0x123456780000DEF0;
+i.u16[1]=0x9ABC;
 
 * Variable arg count functions (...) can access their args with built-in 
 variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.  
   
-  U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
+  I64 AddNums(...)
   {
-    U8 *buf=SPrintJoin(NULL,fmt,argc,argv);
-    GrPrint(dc,x,y,buf);
+    I64 i,result=0;
+    for (i=0;i<argc;i++)
+      result+=argv[i];
+    return result;
+  }
+  
+  >AddNums(1,2,3);
+  ans=6
+  
+  
+  public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
+  {
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem1b.CPP.Z,373] MAlloc()ed string.
+    [C:/Adam/Gr/GrBitMap.CPP.Z,823] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
+  
+    ...
+  
+    GrPrint(gr.dc,(GR_WIDTH-10*FONT_WIDTH)>>1,(GR_HEIGHT-FONT_HEIGHT)>>1,
+    	"Score:%4d",score);  //Print score in the center of the screen.
+    ...
+  
   
 * Allows "5<i<j+1<20" instead of "5<i && i<j+1 && j+1<20".
   
@@ -113,32 +158,58 @@ porch area.)
         "] ";
         break;
     }
-  NewLine;
+  '\n';
 }
 OutPut:
 >Zero [One] Two [Three] Four [Five]
-
-* noreg or reg can be placed before a function local var name.  You can, 
-optionally, specify a reg after the reg keyword.
-
-* interrupt, haserrcode, public, argpop or noargpop are function flags. See 
-[C:/Demo/Lectures/PageTableEntries2.CPP.Z,1].
 
 * A nounusedwarn statement will suppress an unused var warning.
 
 * You can have multiple member vars of a class named "pad" or "reserved", and 
 it won't issue warnings. 
 
-* Type casting is postfix.  To typecast int or F64, use
-[C:/Kernel/Adam1b.HPP.Z,208] ToI64(), [C:/Kernel/Adam1b.HPP.Z,210] ToBool()
-or 
-[C:/Kernel/Adam1b.HPP.Z,209] ToF64(). (TempleOS follows normal C float<-->int
-conversion, but sometimes you 
-want to override.  These functions are better than multiplying by "1.0" to 
-convert to float.) 
+* noreg or reg can be placed before a function local var name.  You can, 
+optionally, specify a reg after the reg keyword.
+
+  U0 Main()
+{
+  //Only use [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK or
+  [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK for reg vars or else 
+clobbered.
+  I64 reg R15 i=5, noreg j=4;
+  nounusedwarn i;
+  asm {
+	MOV	RAX,R15
+	CALL	&PUT_HEX_U64
+	MOV	RAX,'\n'
+	CALL	&PUT_CHARS
+	MOV	RAX,U64 &j[RBP]
+	CALL	&PUT_HEX_U64
+	MOV	RAX,'\n'
+	CALL	&PUT_CHARS
+  }
+}
+
+* interrupt, haserrcode, public, argpop or noargpop are function flags. See 
+[C:/Demo/Lectures/PageTableEntries2.CPP.Z,1].
 
 * A single quote can encompass multiple characters.  'ABC' is equal to 0x43424
-1.
+1.  [C:/Kernel/KeyDev.CPP.Z,20] PutChars() takes multiple characters.
+
+  asm {
+HELLO_WORLD::
+	PUSH	RBP
+	MOV	RBP,RSP
+	MOV	RAX,'Hello '
+	CALL	&PUT_CHARS
+	MOV	RAX,'World\n'
+	CALL	&PUT_CHARS
+	LEAVE
+	RET
+}
+Call(HELLO_WORLD);
+PutChars('Hello ');
+PutChars('World\n');
 
 * The "`" operator raises a base to a power.
 
@@ -158,10 +229,10 @@ convert to float.)
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1466]
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1457]
 OPTf_WARN_PAREN) to find unnecessary parentheses in code.
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1467]
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1458]
 OPTf_WARN_DUP_TYPES) to find dup local var type 
 statements.
 
@@ -183,13 +254,13 @@ conclusion of the #exe{} blk.
 * Can't use <> with #include, use "".
 
 * "$" is an escape character.  Two dollar signs signify an ordinary $.  See 
-[C:/Doc/Dollar.TXT.Z,1].  In asm or [C:/Doc/HolyC.TXT.Z,1] HolyC code, it
-also refers to the instruction's 
-addr. 
+[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc.  In asm or [C:/Doc/HolyC.TXT.Z,1]
+HolyC code, it also refers to the instruction's address or 
+the offset in a class definition. 
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
-[C:/Kernel/Adam1a.HPP.Z,12] Adam1a.HPP for 1,2,4 
+[C:/Kernel/Adam1a.HPP.Z,63] Adam1a.HPP for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
 that 
 is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP.Z,1]. 
@@ -197,19 +268,22 @@ is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP.Z,1].
 * class member vars can have meta data. fmtstr and fmtdata are two meta data 
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP.Z,1] and  
-[C:/Adam/Doc/DocPopUp.CPP.Z,299] DocFormDo().
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo().
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
-name of the previous arg.  See [C:/Adam/Dbg2a.CPP.Z,134] ClassRep().
+name of the previous arg.  See [C:/Demo/LastClass.CPP.Z,1],
+[C:/Adam/Dbg2a.CPP.Z,152] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
+DocFormDo()  
+and [C:/Demo/Dsk/BlkDevRep.CPP.Z,1].
 
 * See [C:/Demo/Exceptions.CPP.Z,1].  try{} catch{} and throw are different
 from C++. 
-throw is a function with a char arg.  The char string passed in throw() can
-be 
-accessed from within a catch{} using the Fs->except_ch.  Within a catch {} 
-blk, set the var Fs->catch_except to TRUE if you want to terminate the search 
-for a handler.  Use [C:/Kernel/Except.CPP.Z,46] PutExcept() as a handler, if
-you like.
+throw is a function with an 8-byte or less char arg.  The char string passed 
+in throw() can be accessed from within a catch{} using the Fs->except_ch.  
+Within a catch {} blk, set the var Fs->catch_except to TRUE if you want to 
+terminate the search for a handler.  Use [C:/Kernel/Except.CPP.Z,46]
+PutExcept() as a handler, if you 
+like.
 
 * A function is available similar to sizeof which provides the offset of a 
 member of a class.  It's called offset.  You place the class name and member 
@@ -219,156 +293,55 @@ you can't do sizeof(classname.membername.submembername).
 
 * There is no continue statement.  Use goto.
 
-* No bit field support, but there are bit access [Bit,1] library routines.
-
 * lock{} can be used to apply asm LOCK prefixes to code for safe multicore 
 read-modify-write accesses.  The code bracked with have LOCK asm prefix's 
 applied to relevant instructions within.  It's a little shoddy.  See 
 [C:/Demo/MultiCore/Lock.CPP.Z,1].
 
-* There is a function called [C:/Kernel/Mem1b.CPP.Z,371] MSize() which gives
+* There is a function called [C:/Kernel/Mem1b.CPP.Z,370] MSize() which gives
 the size of an object 
 allocated off the heap.  For larger size allocations, the system rounds-up to 
 a power of two, so MSize() lets you know the real size and you can take full 
 advantage of it.
 
-* You can [C:/Kernel/Mem1b.CPP.Z,370] Free() a NULL ptr.  Useful variants of
-[C:/Kernel/Mem1b.CPP.Z,376] MAlloc() can be found [C:/Kernel/Mem1b.CPP.Z,383]
+* You can [C:/Kernel/Mem1b.CPP.Z,369] Free() a NULL ptr.  Useful variants of
+[C:/Kernel/Mem1b.CPP.Z,373] MAlloc() can be found [C:/Kernel/Mem1b.CPP.Z,381]
 Here.  
 Each task has a heap and you can MAlloc and Free off of other task's heaps,
 or 
-make an independent heap with [C:/Kernel/Mem1c.CPP.Z,42] HeapCtrlBPInit().
+make an independent heap with [C:/Kernel/Mem1c.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/Adam1a.HPP.Z,2578] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,230]
+[C:/Kernel/Adam1a.HPP.Z,2775] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,221]
 Spawn().  You can use 
-[C:/Kernel/Task1a.CPP.Z,89] CallStkGrow(), but it's odd.  See
+[C:/Kernel/Task1a.CPP.Z,87] CallStkGrow(), but it's odd.  See
 [C:/Demo/StkGrow.CPP.Z,1]. 
 
 * Only one base class is allowed.
 
+* printf() has new codes.  See [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
+
 * All values are extended to 64-bit when accessed.  Intermediate calculations 
 are done with 64-bit values.
 
-  The follow examples should be inserted in a function, so that reg variables 
-are used.  (Global vars are never reg.)
+  U0 Main()
+{
+  I16 i1;
+  I32 j1;
+  j1=i1=0x12345678;		//Resulting i1 is 0x5678 but j1 is 0x12345678
 
-I16 i;
-I32 j;
-j=i=0x12345678; //Resulting i is 0x5678 but j is 0x12345678
+  I64 i2=0x8000000000000000;
+  Print("%X\n",i2>>1);	//Result is 0xC000000000000000 as expected
 
-I64 i=0x8000000000000000;
-Print("%X\n",i>>1);  //Result is 0xC000000000000000 as expected
+  U64 u3=0x8000000000000000;
+  Print("%X\n",u3>>1);	//Result is 0x4000000000000000 as expected
 
-U64 u=0x8000000000000000;
-Print("%X\n",u>>1);  //Result is 0x4000000000000000 as expected
+  I32 i4=0x80000000;		//const is loaded into a 64-bit reg var.
+  Print("%X\n",i4>>1);	//Result is 0x40000000
 
-I32 i= 0x80000000;   //const is loaded into a 64-bit reg var.
-Print("%X\n",i>>1);  //Result is 0x40000000
+  I32 i5=-0x80000000;
+  Print("%X\n",i5>>1);	//Result is 0xFFFFFFFFC0000000
+}
 
-I32 i=-0x80000000;
-Print("%X\n",i>>1);  //Result is 0xC0000000 as expected
-
-
-                                 Print Family
-
-[C:/Kernel/StrPrint.CPP.Z,975] MPrint() is like
-[C:/Kernel/StrPrint.CPP.Z,962] SPrint() but it returns a
-[C:/Kernel/Mem1b.CPP.Z,376] MAllocated str.  It is vary handy 
-because you don't have to worry about overflow.
-
-[C:/Kernel/SrvCmd.CPP.Z,492] Auto(U8 *fmt,...) sends text to the current
-task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,473] AutoStr(U8 *fmt,...) sends text of an
-[C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
-current TASK but can also do mouse cmds.
-
-[C:/Kernel/SrvCmd.CPP.Z,452] XTalk(CTask *task,U8 *fmt,...) and text to
-another task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,502] XTalkStr(CTask *task,U8 *fmt,...) sends text of
-an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
-stream of another TASK but can also do mouse cmds.
-
-[C:/Adam/Doc/DocPlain.CPP.Z,658] DocPrint(CDoc *doc,U8 *fmt,...) sends text
-to a document.  You can buffer to a 
-Doc and save it, providing the functionality of fprintf.  See 
-[C:/Demo/Dsk/FPrintF.CPP.Z,1].
-
-[C:/Kernel/SrvCmd.CPP.Z,405] Adam(U8 *fmt,...) sends text to the adam task to
-be compiled and run.
-[C:/Kernel/SrvCmd.CPP.Z,426] AdamLog(U8 *fmt,...) and
-[C:/Kernel/SrvCmd.CPP.Z,438] AdamErr(U8 *fmt,...) send text to the adam task
-to be 
-displayed.
-
-[C:/Compiler/CmpMain.CPP.Z,1] StreamPrint(U8 *fmt,...) sends text to the
-stream of code being compiled and 
-must reside in a #exe{} blk.
-
-[C:/Adam/Gr/GrBitMap.CPP.Z,864] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
-[C:/Adam/Gr/GrBitMap.CPP.Z,873] GrVPrint() plots text in graphics 
-mode.
-
-[C:/Compiler/CmpMain.CPP.Z,539] ExePrint(U8 *fmt,...) compiles and execute a
-string.  Note: It returns the 
-result of the last executed expression.
-
-[C:/Adam/AutoFile2a.CPP.Z,28] AFPrint(I64 mS,U8 *fmt)
-[C:/Kernel/Display.CPP.Z,199] PutChars()s one at a time with a delay.
-
-[C:/Kernel/Dbg1a.CPP.Z,222] RawPrint(I64 mS,U8 *fmt) sends direct to screen
-memory, bypassing window 
-manager.
-
-**Note:** Use Print("%s",src) if you need an unmodified string.
-
-
-The [C:/Kernel/StrPrint.CPP.Z,967] Print() family supports extended format
-codes.  See [C:/Kernel/StrPrint.CPP.Z,255] SPrintJoin().
-  %[-][0][width][.decimals][flags][hsub_fmt][main_fmt]
-
-flags:
-    * 't' is a flag which will truncate to field width.
-* ',' is a flag which will add commas every three digits in a %d, %f, %g, 
-%e and %n entries.
-* '$' is a flag which affects the %Q entry, converting '$' to "\044".
-* '/' is a flag which affects the %Q and %q entries, converting '%' to "%%
-".
-* 'k' is a flag which forces 1000 instead of 1024 on integer with sub_fmts
-.
-  
-sub_fmt:
-    For "%n", "%d" or "%u", the sub_fmt causes thousands mode.  "%h?n" will 
-pick a var exponent multiples of three unit, while "%h-3n" will display 
-milli units or "%h6n" will display mega units.  The 'k' flag is always on 
-for "%n".  See [C:/Demo/Print.CPP.Z,1].
-  
-*  "%n" will print a floating point in engineering notation, exponents being 
-multiples of three.  If it has a sub_fmt code, it will display scientific 
-units letters.
-
-* "%S" will print a Define entry.
-
-* "%C" will print a ToUpper character.
-
-* "%F" will print a text file.
-
-* "%p" will display ptr.
-
-* "%P" will display link to ptr.
-
-* "%T" and "%D" will display a date or time if you pass a
-  [C:/Kernel/Adam1a.HPP.Z,202] CDate.
-
-* "%z" will display a subentry of an enumerated list of text entries.  It 
-calls [C:/Kernel/Str1a.CPP.Z,409] LstSub().  Pass subentry first, list second.
-
-* "%Z" will display a Define subentry.  Pass subentry first, lst_define 
-second.
-
-* "%Q" will convert "\" to "\\" and quote to backslash quote. (For use in 
-creating strs in strs.)
-
-* "%q" will reverse a "%Q".

@@ -24,7 +24,7 @@ is
 used instead of USB, also more compatible.
 
 * 640x480 16 colors.  Updates whole screen at 60 fps, optimized for full 
-screen games where "invalid rectangles" are counter-productive.
+screen games where InvalidRectangles are counter-productive.
 
 * One font, 8x8.  Text and graphic layers done in software with text normally 
 on an 8x8 grid.  It can run in Text mode if graphic initialization fails.
@@ -33,13 +33,12 @@ on an 8x8 grid.  It can run in Text mode if graphic initialization fails.
 computations intermediately.  Assembler has minimal 16-bit support, good 
 enough for compiling boot loaders.
 
-* No object files.  Linking can be done at [C:/Kernel/Hash1b.CPP.Z,359]
-Load() time for AOT modules, if you 
-insist on not using JIT.  Modules have imports and exports.
+* No object files.  Use JIT.
 
 * Whole files are processed almost exclusively, allowing compression.
 
-* One language and compiler for command-line, scripts, and code.
+* One language and compiler for command-line, scripts, songs, automations and 
+code.
 
 * One editor/word processor/browser for the command-line window, source code, 
 documentation browser, dialog forms.
@@ -47,9 +46,9 @@ documentation browser, dialog forms.
 * No child windows.  One window per task.  Buttons are widgets, not child 
 windows.  There are child tasks, however.
 
-* No distinction between "thread", "process" or "task".
+* No distinction between thread, process or task.
 
-* The [C:/Kernel/Scheduler.CPP.Z,1] Scheduler is mostly for home systems, not
+* The [C:/Kernel/Sched.CPP.Z,1] Scheduler is mostly for home systems, not
 servers or mainframes.  The 
 focus task is all important.  Disk requests are not broken-up, so sharing is 
 bad, however.
@@ -59,7 +58,7 @@ Core zero explicitly
 assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
 access, though.
 
-* [C:/Adam/Snd/Music.CPP.Z,91] Music is done with an elegant one-voice
+* [C:/Adam/Snd/Music.CPP.Z,98] Music is done with an elegant one-voice
 notation.
 
 * All tasks have a heap and a sym table.  Scope is that of environment vars

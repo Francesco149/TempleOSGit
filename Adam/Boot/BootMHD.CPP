@@ -28,7 +28,7 @@ BMHD_CODE::
 
 	MOV	AX,VGA_TEXT_MEM_BASE/16
 	MOV	FS,AX
-	MOV	U32 FS:[0],'B'+0x2000+('1'+0x2000)<<16
+	MOV	U32 FS:[0],'B'+GREEN<<12+('1'+GREEN<<12)<<16
 	CALL	BMHD_GET_IP
 BMHD_GET_IP:
 	POP	BX
@@ -57,12 +57,12 @@ BMHD_GET_IP:
 
 BMHD_BIOS_DRV_NUM:	DU8	0;
 BMHD_OLD_CS_IP:		DU16	0,0;
-//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
 BMHD_BLK_CNT::		DU16	0;
 
 BMHD_DAP:		DU8	16,0,1,0; //One blk at a time
 BMHD_DAP_BUF:		DU16	0,0;
-//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,141] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
 BMHD_DAP_BLK::	//64-bit
 BMHD_DAP_BLK_LO:	DU32	0;
 BMHD_DAP_BLK_HI:	DU32	0;

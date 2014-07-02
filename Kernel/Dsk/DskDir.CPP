@@ -1,21 +1,22 @@
 Bool DirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
-{
+{//Makes a directory entry in the directory from a [C:/Kernel/Adam1a.HPP.Z,2450] CDirEntry node.
   switch (p->type) {
     case PT_REDSEA:
       return RedSeaFSDirNew(p,cur_dir,tempde,free_old_chain);
     case PT_FAT32:
       return FAT32DirNew(p,cur_dir,tempde,free_old_chain);
     case PT_ISO9660:
-      PrintErr("%S","ST_NOT_WRITABLE");
+      PrintErr("Not Writable\n");
       return FALSE;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
       return FALSE;
   }
 }
 
 U0 DirEntryDel(CDirEntry *tempde)
-{ //Doesn't Free user_data
+{//Free node returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Doesn't Free user_data.
+//Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
     Free(tempde);
@@ -23,7 +24,8 @@ U0 DirEntryDel(CDirEntry *tempde)
 }
 
 U0 DirEntryDel2(CDirEntry *tempde)
-{ //Frees user_data
+{//Free node returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Frees user_data
+//Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
     Free(tempde->user_data);
@@ -31,38 +33,40 @@ U0 DirEntryDel2(CDirEntry *tempde)
   }
 }
 
-U0 DirLstDel(CDirEntry *tempde)
-{ //Doesn't Free user_data
+U0 DirTreeDel(CDirEntry *tempde)
+{//Free tree returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Doesn't Free user_data.
+//Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
     tempde2=tempde->next;
     if (tempde->sub)
-      DirLstDel(tempde->sub);
+      DirTreeDel(tempde->sub);
     DirEntryDel(tempde);
     tempde=tempde2;
   }
 }
 
-U0 DirLstDel2(CDirEntry *tempde)
-{ //Frees user_data
+U0 DirTreeDel2(CDirEntry *tempde)
+{//Free tree returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Frees user_data
+//Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
     tempde2=tempde->next;
     if (tempde->sub)
-      DirLstDel2(tempde->sub);
+      DirTreeDel2(tempde->sub);
     DirEntryDel2(tempde);
     tempde=tempde2;
   }
 }
 
-I64 DirEntryCompare(CDirEntry *e1,CDirEntry *e2)
+I64 DirEntryCompareName(CDirEntry *e1,CDirEntry *e2)
 {
   U8 buf1[CDIR_FILENAME_LEN],buf2[CDIR_FILENAME_LEN],
      buf3[CDIR_FILENAME_LEN],buf4[CDIR_FILENAME_LEN];
   I64 d1=0,d2=0;
-  if (e1->attr & _ATTR_DIR)
+  if (e1->attr & RS_ATTR_DIR)
     d1=1;
-  if (e2->attr & _ATTR_DIR)
+  if (e2->attr & RS_ATTR_DIR)
     d2=1;
   if (d1!=d2)
     return d2-d1;
@@ -77,7 +81,15 @@ I64 DirEntryCompare(CDirEntry *e1,CDirEntry *e2)
   }
 }
 
-U0 DirFilesSort(CDirEntry **_tempde)
+I64 DirEntryCompareCluster(CDirEntry *e1,CDirEntry *e2)
+{
+  return e1->cluster-e2->cluster;
+}
+
+#define SK_NAME		0
+#define SK_CLUSTER	1
+
+U0 DirFilesSort(CDirEntry **_tempde,I64 key)
 {
   I64 i,cnt=0;
   CDirEntry *tempde=*_tempde,*tempde1,**sort_buf;
@@ -95,7 +107,14 @@ U0 DirFilesSort(CDirEntry **_tempde)
 	sort_buf[i++]=tempde1;
 	tempde1=tempde1->next;
       }
-      QSortI64(sort_buf,cnt,&DirEntryCompare);
+      nobound_switch(key) {
+	case SK_NAME:
+	  QSortI64(sort_buf,cnt,&DirEntryCompareName);
+	  break;
+	case SK_CLUSTER:
+	  QSortI64(sort_buf,cnt,&DirEntryCompareCluster);
+	  break;
+      }
       tempde=sort_buf[0];
       *_tempde=tempde;
       for (i=0;i<cnt-1;i++) {
@@ -109,23 +128,23 @@ U0 DirFilesSort(CDirEntry **_tempde)
       tempde1=tempde;
       while (tempde1) {
 	if (tempde1->sub)
-	  DirFilesSort(&tempde1->sub);
+	  DirFilesSort(&tempde1->sub,key);
 	tempde1=tempde1->next;
       }
     } else
       if (tempde->sub)
-	DirFilesSort(&tempde->sub);
+	DirFilesSort(&tempde->sub,key);
   }
 }
 
 CDirEntry *DirFilesFlatten(CDirEntry *tempde,CDirEntry **_result,I64 fuf_flags)
-{ //returns last node
+{//Returns last node
   CDirEntry *tempde1;
   Bool del;
   if (tempde)
     while (TRUE) {
       tempde1=tempde->next;
-      if (!(tempde->attr&_ATTR_DIR)||!(fuf_flags&FUF_JUST_FILES)) {
+      if (!(tempde->attr&RS_ATTR_DIR)||!(fuf_flags&FUF_JUST_FILES)) {
 	_result=*_result=tempde;
 	del=FALSE;
       } else
@@ -161,19 +180,21 @@ CDirEntry *SysFilesFind(U8 *files_find_mask,I64 fuf_flags)
       result=ISO1FilesFind(files_find_mask,fuf_flags);
       break;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
       result=NULL;
   }
   if (result) {
-    DirFilesSort(&result);
+    DirFilesSort(&result,SK_NAME);
     if (fuf_flags&(FUF_FLATTEN_TREE|FUF_JUST_FILES))
       DirFilesFlatten(result,&result,fuf_flags);
+    if (fuf_flags&FUF_CLUSTER_ORDER)
+      DirFilesSort(&result,SK_CLUSTER);
   }
   return result;
 }
 
 U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
-{
+{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file,line link to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,652] DocPut.
   U8 *buf;
   if (!filename) return;
   if (IsRaw) {
@@ -182,31 +203,39 @@ U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
     else
       "%s",filename;
   } else {
-    buf=FileNameAbs(filename);
-    if (plain_text) {
-      if (line)
-	"$LK,\"%s,%04d\",\"PL:%s,%d\"$",filename,line,buf,line;
+    //LK_DOC,LK_DOC_ANCHOR,LK_DOC_FIND,LK_DOC_LINE
+    if (filename[0]=='A'&&filename[2]==':') {
+      if (line) //See [C:/Adam/Gr/SpriteEd.CPP.Z,642] SpriteEdText()
+	"$LK,\"%s,%04d\",A=\"AL:%s,%d\"$",filename+3,line,filename+3,line;
       else
-	"$LK,\"%s\",\"PI:%s\"$",filename,buf;
+	"$LK,\"%s\",A=\"AI:%s\"$",filename+3,filename+3;
     } else {
-      if (line)
-	"$LK,\"%s,%04d\",\"FL:%s,%d\"$",filename,line,buf,line;
-      else
-	"$LK,\"%s\",\"FI:%s\"$",filename,buf;
+      buf=FileNameAbs(filename);
+      if (plain_text) {
+	if (line)
+	  "$LK,\"%s,%04d\",A=\"PL:%s,%d\"$",filename,line,buf,line;
+	else
+	  "$LK,\"%s\",A=\"PI:%s\"$",filename,buf;
+      } else {
+	if (line)
+	  "$LK,\"%s,%04d\",A=\"FL:%s,%d\"$",filename,line,buf,line;
+	else
+	  "$LK,\"%s\",A=\"FI:%s\"$",filename,buf;
+      }
+      Free(buf);
     }
-    Free(buf);
   }
 }
 
 U0 PutDirLink(U8 *dirname)
-{
+{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc dir macro to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,652] DocPut.
   U8 *buf;
   if (!dirname) return;
   if (IsRaw)
     "%s",dirname;
   else {
     buf=DirNameAbs(dirname);
-    "$MA+A,\"%s\",\"Cd(\\\"%s\\\");Dir;\n\"$",dirname,buf;
+    "$MA,T=\"%s\",LM=\"Cd(\\\"%s\\\");Dir;\n\"$",dirname,buf;
     Free(buf);
   }
 }
@@ -215,11 +244,11 @@ I64 Dir2(U8 *files_find_mask,I64 fuf_flags,Bool full)
 {
   CDirEntry *tempde1=NULL,*tempde2;
   U8 *st;
+  CDateStruct ds;
   I64 csize=0xFFFF,c=0xFFFF,result=0;
   tempde1=SysFilesFind(files_find_mask,fuf_flags);
-
   if (!(st=CurDir))
-    "%S","ST_INVALID_DRV";
+    PrintErr("Invalid Drive\n");
   else {
     if (tempde1) {
       //Find max columns
@@ -234,7 +263,7 @@ I64 Dir2(U8 *files_find_mask,I64 fuf_flags,Bool full)
       csize=Bsr(csize)/4+1;
       c=Bsr(c)/4+1;
 
-      "$MA+A,\"Directory\",\"PopUpCd;Dir;\n\"$ of %s\n",st;
+      "$MA,T=\"Directory\",LM=\"PopUpCd;Dir;\n\"$ of %s\n",st;
       if (full)
 	"__DATE__ __TIME__ %*ts %*ts\n",
 	csize,"SIZE",c,"CLUSTER";
@@ -246,21 +275,22 @@ I64 Dir2(U8 *files_find_mask,I64 fuf_flags,Bool full)
 	if (full)
 	  "%D %T %0*tX %0*tX ",tempde1->datetime,tempde1->datetime,
 	    csize,tempde1->size,c,tempde1->cluster;
-	else
-	  "%02d/%02d %02d:%02d %0*tX ",Month(tempde1->datetime),Day(tempde1->datetime),
-	    Hour24(tempde1->datetime),Minute(tempde1->datetime),
+	else {
+	  Date2Struct(&ds,tempde1->datetime+local_time_offset);
+	  "%02d/%02d %02d:%02d %0*tX ",ds.mon,ds.day_of_mon,ds.hour,ds.min,
 	    csize,tempde1->size;
-	if (tempde1->attr & _ATTR_DIR)
+	}
+	if (tempde1->attr & RS_ATTR_DIR)
 	  PutDirLink(tempde1->name);
 	else
 	  PutFileLink(tempde1->name);
 
-	NewLine;
+	'\n';
 	DirEntryDel(tempde1);
 	tempde1=tempde2;
       }
     } else
-      "%S","ST_NO_MATCHING_ENTRIES";
+      "No matching entries\n";
     Free(st);
   }
   return result;

@@ -3,7 +3,7 @@
 //gives a name to it.  Strings like
 //this are known as Define entries.
 
-//See [C:/Adam/Gr/GrScreen.CPP.Z,1] ST_RAINBOW_10
+//See [C:/Adam/Gr/GrPalette.CPP.Z,1] ST_RAINBOW_10
 
 U0 PrintDigit(U8 ch)
 {
@@ -14,10 +14,10 @@ U0 PrintDigit(U8 ch)
 
 U0 PrintPattern(U8 *st)
 {
-  U8 ch;
+  I64 ch;
   while (ch=*st++)
     PrintDigit(ch);
-  NewLine;
+  '\n';
 }
 
 U0 Digits()
@@ -30,7 +30,7 @@ U0 Digits()
   DocClear;
   //Set default background and foreground
   "$WW,1$$BD,DKGRAY$$FD,WHITE$"
-  "\nThis is a mem game.  "
+  "\nThis is a memory game.  "
   "Try to remember the digits and enter them.  "
   "They are colored based on electrical "
   "engineering color codes.\n";

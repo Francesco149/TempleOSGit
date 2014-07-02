@@ -1,7 +1,6 @@
-                              TempleOS' Features
+                                       TempleOS' Features
 
-* Oracle in program, AfterEgypt, for [C:/Apps/HolySpirit/HSNotes.TXT.Z,1]
-tongues.
+* Oracle in program, AfterEgypt, for [C:/Adam/God/HSNotes.TXT.Z,1] tongues.
 
 * x86_64, ring-0-only, single-address-map (identity), multitasking kernel
 with 
@@ -22,25 +21,25 @@ files.
 
 * Keyboard & Mouse support.
 
-* Hard drives, support for FAT32 and [C:/Doc/RedSea.TXT.Z,1] RedSea file
-systems with file 
+* ATA PIO Hard drives, support for FAT32 and [C:/Doc/RedSea.TXT.Z,1] RedSea
+file systems with file 
 compression.
 
-* CD/DVD support with ISO9660 file system.  Can make bootable ISO9660 ISO 
-files so you can roll-your-own distro's.
+* ATAPI PIO CD/DVD support with ISO9660 file system.  Can make bootable ISO966
+0 ISO files so you can roll-your-own distro's.
 
-* [C:/Adam/Dsk/Dsk2b.CPP.Z,85] Partitioning tool, installer, boot loaders for
+* [C:/Adam/Dsk/Dsk2b.CPP.Z,78] Partitioning tool, installer, boot loaders for
 CD-ROM and hard disk.
 
-* Editor/Browser for a new [C:/Doc/Dollar.TXT.Z,1] Document Format.  Source
-files and the command line 
+* Editor/Browser for a new [C:/Doc/DolDocOverview.TXT.Z,1] Document Format. 
+Source files and the command line 
 window can have graphics, links, icons, trees, colors, super/sub scripts, 
 margins.  Everything is seamless through-out the tool chain.  No need for 
 separate resource files.
 
-* 8-bit ASCII, not just 7-bit.  Supported in entire tool chain.  <CTRL-ALT-A>
+* 8-bit ASCII, not just 7-bit.  Supported in entire tool chain.  <CTRL-ALT-a>
 
-* Graphics in source code, no resource files, graphic resource editor. <CTRL-R
+* Graphics in source code, no resource files, graphic resource editor. <CTRL-r
 >
 
 * 64-bit pointers.  All memory, even more than 4 Gig, can be directly
@@ -60,12 +59,12 @@ games.  (Adaptive step-size Runge-Kutta, interpolated for real-time.)
 * Auto-completion, jump-to-source tool called WordStat with Dictionary.
 
 * Window Manager.  Pan screen with <CTRL-LeftDrag>.  Zoom screen on mouse 
-cursor with <CTRL-ALT-Z>/<CTRL-ALT-SHIFT-Z>.
+cursor with <CTRL-ALT-z>/<CTRL-ALT-SHIFT-Z>.
 
-* File Manager, <CTRL-D>.
+* File Manager, <CTRL-d>.
 
-* Code [C:/Adam/Utils/Profiler.CPP.Z,82] profiler,
-[C:/Adam/Utils/Merge.CPP.Z,41] merge, [C:/Adam/Utils/Diff.CPP.Z,232] diff
+* Code [C:/Adam/Utils/Profiler.CPP.Z,27] profiler,
+[C:/Adam/Utils/Merge.CPP.Z,37] merge, [C:/Adam/Utils/Diff.CPP.Z,231] diff
 utils.
 
 * PC Speaker support with many hymns.

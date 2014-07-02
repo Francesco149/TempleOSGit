@@ -1,0 +1,28 @@
+[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base must be updated 60fps in your
+Fs->draw_it() callback.  You 
+probably want [C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint() or just
+[C:/Kernel/StrPrint.CPP.Z,949] Print().  The [C:/Doc/DolDocOverview.TXT.Z,1]
+DolDoc code takes care of 
+plotting text to [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base.
+
+Bits 0-7	8-Bit ASCII Screen Code
+Bits 8-11	Foreground [C:/Kernel/Adam1a.HPP.Z,2847] color
+Bits 12-15	Background [C:/Kernel/Adam1a.HPP.Z,2847] color
+Bits 16-20	Signed X pos shift val
+Bits 21-25	Signed Y pos shift val
+Bit  28		[C:/Kernel/Adam1a.HPP.Z,874] Blink
+Bit  29		[C:/Kernel/Adam1a.HPP.Z,875] Inverted (Swap foreground and
+background)
+Bit  30		[C:/Kernel/Adam1a.HPP.Z,876] Selected (XOR colors with FF)
+Bit  31		[C:/Kernel/Adam1a.HPP.Z,877] Underline
+
+[C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins() calls
+[C:/Adam/DolDoc/DocRecalc2a.CPP.Z,170] DocUpdateTaskDocs() which calls
+[C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc() where the 
+document text is plotted into [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base. 
+Then, [C:/Adam/Gr/GrScreen.CPP.Z,177] GrUpdateTextBG() and 
+[C:/Adam/Gr/GrScreen.CPP.Z,266] GrUpdateTextFG() render the
+[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base onto [C:/Adam/Gr/GrGlbls.CPP.Z,3]
+gr.dc2, a raw graphic bitmap.
+
+See [C:/Demo/Games/Maze.CPP.Z,1].

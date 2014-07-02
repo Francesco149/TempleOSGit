@@ -1,12 +1,11 @@
-/*
-This was done with <CTRL-SHIFT-L> managed code.
+/*This was done with <CTRL-SHIFT-L> template code.
 It's conceptually easy to do a ctrl,
 but tedious.  You have complete freedom.
 
-See [C:/Kernel/Adam1a.HPP.Z,2680] CCtrl.
+See [C:/Kernel/Adam1a.HPP.Z,3002] CCtrl.
 */
 
-// Start of autocreated Code
+//Start of autocreated Code
 #define SLIDER_RANGE   30
 #define SLIDER_SPACING 20
 #define SLIDER_BORDER  2
@@ -48,12 +47,12 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedSliderCtrl(CCtrl *c)
 {
   CSliderState *s=c->state;
-  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*3+2)/2;
+  c->left=c->win_task->pix_width/2-(SLIDER_SPACING*3+2)/2;
   c->right=c->left+3*SLIDER_SPACING+2;
-  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->top=c->win_task->pix_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
   c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
-  s->left_pos=LimitI64(s->left_pos,0,SLIDER_RANGE-1);
-  s->right_pos=LimitI64(s->right_pos,0,SLIDER_RANGE-1);
+  s->left_pos=ClampI64(s->left_pos,0,SLIDER_RANGE-1);
+  s->right_pos=ClampI64(s->right_pos,0,SLIDER_RANGE-1);
 }
 
 U0 LeftClickSlider(CCtrl *c,I64 x,I64 y,Bool)
@@ -94,7 +93,7 @@ U0 SliderDel(CCtrl *c)
   Free(c);
 }
 
-// End of autocreated Code
+//End of autocreated Code
 
 U0 Main()
 {

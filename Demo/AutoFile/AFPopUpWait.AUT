@@ -4,7 +4,7 @@ U0 DoWait()
   for (i=0;i<3;i++) {
     "PopUpNoYes;\n ";
 
-//Necessary after a [C:/Adam/Doc/DocPopUp.CPP.Z,1] DocEntryRun()
+//Necessary after a [C:/Adam/DolDoc/DocPopUp.CPP.Z,3] DocEntryRun()
 //which occurs when PopUp's close.
     TaskWait;
 

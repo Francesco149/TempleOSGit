@@ -1,16 +1,38 @@
-I64 A2I(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
-{ //ASCII to Int
+I64 Str2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
+{//String to I64. Similar to strtoul().
+//Allows radix change with "0x20" "0b1010" "0d123" "0o18".
+//Be careful of Str2I64("0b101",16)-->0xB101.
   Bool neg=FALSE;
-  U8 ch;
-  I64 result=0,k=0;
-  if (!(2<=radix<=36)) return 0;
+  I64 ch,result=0;
+  if (!st || !(2<=radix<=36)) {
+    if (_end_ptr) *_end_ptr=st;
+    return 0;
+  }
   while (Bt(chars_bitmap_white_space,*st))
     st++;
-  if (*st=='-') {
-    st++;
-    neg=TRUE;
-  } else if (*st=='+')
-    st++;
+  while (TRUE)
+    switch (*st) {
+      case '-':
+	st++;
+	neg=!neg;
+	break;
+      case '+':
+	st++;
+	break;
+      case '0':
+	st++;
+	ch=ToUpper(*st);
+	if (ch>='B' && (radix<=10 || ch>'A'+radix-11))
+	  switch (ch) {
+	    case 'B': radix=2;	st++; break;
+	    case 'O': radix=8;	st++; break;
+	    case 'D': radix=10; st++; break;
+	    case 'X': radix=16; st++; break;
+	  }
+      default:
+	goto ai_cont;
+    }
+ai_cont:
   while (ch=ToUpper(*st++)) {
     if (radix>10) {
       if ('0'<=ch<='9')
@@ -19,29 +41,10 @@ I64 A2I(U8 *st,I64 radix=10,U8 **_end_ptr=NULL)
 	result=result*radix+ch-'A'+10;
       else
 	break;
-    } else {
-      if (k==1 && !result) {
-	if (ch=='X') {
-	  radix=16;
-	  goto ai_skip;
-	} else if (ch=='B') {
-	  radix=2;
-	  goto ai_skip;
-	} else if (ch=='O') {
-	  radix=8;
-	  goto ai_skip;
-	} else if (ch=='D') {
-	  radix=10;
-	  goto ai_skip;
-	}
-      }
-      if ('0'<=ch<='0'+radix-1)
-	result=result*radix+ch-'0';
-      else
-	break;
-    }
-ai_skip:
-    k++;
+    } else if ('0'<=ch<='0'+radix-1)
+      result=result*radix+ch-'0';
+    else
+      break;
   }
   if (_end_ptr) *_end_ptr=st-1;
   if (neg)
@@ -50,9 +53,8 @@ ai_skip:
     return result;
 }
 
-F64 A2F64(U8 *src,U8 **_end_ptr=NULL)
-//ASCII string to F64
-/*
+F64 Str2F64(U8 *src,U8 **_end_ptr=NULL)
+{/*String to F64.
 Does not allow more than 18-digits
 before or after the decimal point
 because the numbers before and after
@@ -60,12 +62,11 @@ the decimal point are stored
 in 64-bits.  Use exponentiated forms
 to avoid this.
 */
-{
-  U8 ch=*src++;
-  I64 i,j,k;
+  I64 i,j,k,ch;
   F64 d;
   Bool neg=FALSE,neg_e=FALSE;
 
+  ch=*src++;
   while (Bt(chars_bitmap_white_space,ch))
     ch=*src++;
   if (ch=='-') {
@@ -135,13 +136,8 @@ a2f_end:
     return d;
 }
 
-/*
-A2Date()
-  This routine recognizes the following formats:
-  1) "*+nnnn"  "*-nnnn"
-  2) mm/dd
-  3) mm/dd/yy
-
+CDate Str2Date(U8 *_src)
+{/*"*+nnnn", "*-nnnn", "mm/dd", "mm/dd/yy"
 It also supports some funs
   SM() start of mon
   EM() end of mon
@@ -152,54 +148,51 @@ but you can do stuff like SM(*-7)+3
 and it will return the 3rd day after
 the start of mon for seven days before
 today.
-
 */
-CDate A2Date(U8 *_src)
-//ASCII date to CDate
-{
   CDate result=0;
-  CDateStruct ds;
+  CDateStruct ds,ds_now;
   U8 *src=MStrUtil(_src,SUF_REM_SPACES|SUF_TO_UPPER),
      *v=StrNew(src),
-     *p1=src;
+     *ptr=src;
   Bool start_mon=FALSE,end_mon=FALSE,
        start_year=FALSE,end_year=FALSE;
 
   MemSet(&ds,0,sizeof(CDateStruct));
-  if (!StrNCmp(p1,"SM(",3)) {
-    p1+=3;
+  if (!StrNCmp(ptr,"SM(",3)) {
+    ptr+=3;
     start_mon=TRUE;
-  } else if (!StrNCmp(p1,"EM(",3)) {
-    p1+=3;
+  } else if (!StrNCmp(ptr,"EM(",3)) {
+    ptr+=3;
     end_mon=TRUE;
-  } else if (!StrNCmp(p1,"SY(",3)) {
-    p1+=3;
+  } else if (!StrNCmp(ptr,"SY(",3)) {
+    ptr+=3;
     start_year=TRUE;
-  } else if (!StrNCmp(p1,"EY(",3)) {
-    p1+=3;
+  } else if (!StrNCmp(ptr,"EY(",3)) {
+    ptr+=3;
     end_year=TRUE;
   }
-  if (*p1=='*') {
-    p1++;
-    if (*p1=='+' || *p1=='-')
-      result.date=A2I(p1,10,&p1);
+  if (*ptr=='*') {
+    ptr++;
+    if (*ptr=='+' || *ptr=='-')
+      result.date=Str2I64(ptr,,&ptr);
     result+=Now+local_time_offset;
   } else {
-    StrFirstRem(p1,"/",v); //Put mon into v
-    ds.mon=A2I(v);
-    if (StrOcc(p1,'/')) {
-      StrFirstRem(p1,"/",v); //Put day into v leaving year in p1
-      ds.day_of_mon=A2I(v);
-      ds.year=A2I(p1,10,&p1);
+    StrFirstRem(ptr,"/",v); //Put mon into v
+    ds.mon=Str2I64(v);
+    if (StrOcc(ptr,'/')) {
+      StrFirstRem(ptr,"/",v); //Put day into v leaving year in ptr
+      ds.day_of_mon=Str2I64(v);
+      ds.year=Str2I64(ptr,,&ptr);
       if (ds.year<100) //if not 4 digit year
 	ds.year+=2000;
     } else {
-      ds.day_of_mon=A2I(p1,10,&p1);
-      ds.year=Year;
+      ds.day_of_mon=Str2I64(ptr,,&ptr);
+      Date2Struct(&ds_now,Now+local_time_offset);
+      ds.year=ds_now.year;
     }
     result=Struct2Date(&ds);
   }
-  if (*p1==')') p1++;
+  if (*ptr==')') ptr++;
 
   if (start_mon)
     result.date=FirstDayOfMon(result.date);
@@ -210,21 +203,22 @@ CDate A2Date(U8 *_src)
   else if (end_year)
     result.date=LastDayOfYear(result.date);
 
-  if (*p1=='+' || *p1=='-')
-    result.date+=A2I(p1);
+  if (*ptr=='+' || *ptr=='-')
+    result.date+=Str2I64(ptr);
   Free(src);
   Free(v);
   return result-local_time_offset;
 }
 
-U8 *ScanJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
-//Pass ptr to data,
-//For %s pass ptr to ptr (be careful because addr
-//of array is the same as array--create ptr to array and take addr
-{
-  U8 ch,*buf,*ptr,**pptr;
+U8 *StrScan(U8 *src,U8 *fmt,...)
+{/*Opposite of sprintf().  Pass ptrs to data to be scanned-in.
+For "%s", pass ptr to ptr (be careful because addr
+of array is the same as array--create ptr to array
+and take addr.
+*/
+  U8 *buf,*ptr,**pptr;
   Bool left_justify=FALSE;
-  I64 cur_arg=0,i,len,*i_ptr,dec_len;
+  I64 ch,cur_arg=0,i,len,*i_ptr,dec_len;
   F64 *d_ptr;
   if (!fmt)
     throw('Scan');
@@ -307,19 +301,19 @@ U8 *ScanJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2I(buf);
+	    *i_ptr=Str2I64(buf);
 	    break;
 	  case 'X':
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2I(buf,16);
+	    *i_ptr=Str2I64(buf,16);
 	    break;
 	  case 'b':
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2I(buf,2);
+	    *i_ptr=Str2I64(buf,2);
 	    break;
 	  case 'e':
 	  case 'f':
@@ -328,13 +322,13 @@ U8 *ScanJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    d_ptr=argv[cur_arg++];
-	    *d_ptr=A2F64(buf);
+	    *d_ptr=Str2F64(buf);
 	    break;
 	  case 'D':
 	    if (cur_arg>=argc)
 	      throw('Scan');
 	    i_ptr=argv[cur_arg++];
-	    *i_ptr=A2Date(buf);
+	    *i_ptr=Str2Date(buf);
 	    break;
 	}
 	Free(buf);
@@ -343,12 +337,4 @@ U8 *ScanJoin(U8 *src,U8 *fmt,I64i argc,I64i *argv)
       src++;
   }
   return src;
-}
-
-U8 *Scan(U8 *src,U8 *fmt,...)
-//Pass ptr to data,
-//For %s pass ptr to ptr (be careful because addr
-//of array is the same as array--create ptr to array and take addr
-{
-  return ScanJoin(src,fmt,argc,argv);
 }

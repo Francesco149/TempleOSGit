@@ -1,14 +1,14 @@
-//This highlights the 4th dimension
-//of the transformation matrix which
-//is used for storing translations (shifts)
-//in matricies so they can be combined
-//with a matrix multiplication.
+/*This highlights the 4th dimension
+of the transformation matrix which
+is used for storing translations (shifts)
+in matricies so they can be combined
+with a matrix multiplication.
 
-//Scroll bar works.
+Scroll bar works.
 
-//The multiplication takes place in the
-//[C:/Adam/Gr/GrSpritePlot.CPP.Z,298] SpritePlotRotZ3B routine.
-
+The multiplication takes place in the
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,296] SpriteZ3B routine.
+*/
 
 #define SLIDER_SPACING 20
 #define SLIDER_RANGE   30
@@ -59,13 +59,13 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedSliderCtrl(CCtrl *c)
 {
   CSliderState *s=c->state;
-  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*4+3)/2;
+  c->left=c->win_task->pix_width/2-(SLIDER_SPACING*4+3)/2;
   c->right=c->left+SLIDER_SPACING*4+3;
-  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->top=c->win_task->pix_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
   c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
-  s->s1=LimitI64(s->s1,0,SLIDER_RANGE-1);
-  s->s2=LimitI64(s->s2,0,SLIDER_RANGE-1);
-  s->s3=LimitI64(s->s3,1,SLIDER_RANGE-1);
+  s->s1=ClampI64(s->s1,0,SLIDER_RANGE-1);
+  s->s2=ClampI64(s->s2,0,SLIDER_RANGE-1);
+  s->s3=ClampI64(s->s3,1,SLIDER_RANGE-1);
   s->a1=pi/2.0*s->s1/SLIDER_RANGE;
   s->a2=1.0*(s->s2-SLIDER_RANGE/2)/SLIDER_RANGE;
   s->scale=2.0*s->s3/SLIDER_RANGE;
@@ -117,8 +117,6 @@ U0 SliderDel(CCtrl *c)
 
 /* <1> <1> (image) */
 
-
-
 #define MAP_HEIGHT	2048
 #define MAP_WIDTH	2048
 
@@ -132,17 +130,16 @@ class MPCtrl {
   F64 a;
 } mp;
 
-
 I64 mp_not_done_flags;
 
 U0 MPDrawIt(CTask *task)
 {
-  CDC *dc=DCAlias(gr_dc2,task);
+  CDC *dc=DCAlias(gr.dc2,task);
   I64 i,lo=Gs->num*NUM_TREES/mp.mp_cnt,hi=(Gs->num+1)*NUM_TREES/mp.mp_cnt;
   MemCpy(dc->r,mp.r,sizeof(I64)*16);
   dc->flags|=DCF_TRANSFORMATION;
   for (i=lo;i<hi;i++)
-    SpritePlotRotZ3B(dc,tree_x[i],
+    SpriteZ3B(dc,tree_x[i],
 		     tree_y[i],0,__BIN_1,mp.a);
   DCDel(dc);
   LBtr(&mp_not_done_flags,Gs->num);
@@ -152,9 +149,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,h,v;
   task->horz_scroll.min=-s.scale*MAP_HEIGHT*Sin(s.a1);
-  task->horz_scroll.max=s.scale*MAP_WIDTH*Cos(s.a1)-task->win_pixel_width;
+  task->horz_scroll.max=s.scale*MAP_WIDTH*Cos(s.a1)-task->pix_width;
   task->vert_scroll.min=0;
-  task->vert_scroll.max=s.scale*(MAP_HEIGHT*Cos(s.a1)+MAP_WIDTH*Sin(s.a1))-task->win_pixel_height;
+  task->vert_scroll.max=s.scale*(MAP_HEIGHT*Cos(s.a1)+MAP_WIDTH*Sin(s.a1))-task->pix_height;
   TaskDerivedValsUpdate(task);
 
   h=task->horz_scroll.pos;
@@ -182,7 +179,6 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrLine3(dc,MAP_WIDTH-3,2,0,MAP_WIDTH-3,MAP_HEIGHT-3,0);
 }
 
-
 U0 Init()
 {
   I64 i;
@@ -196,7 +192,7 @@ U0 TransformDemo(I64 _mp_cnt=mp_cnt)
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Init;
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER-WIF_GRAB_SCROLL-WIF_MENU-WIF_CTRLS;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER-WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU-WIF_SELF_CTRLS;
   DocCursor;
   DocClear;
   DocScroll;
@@ -216,9 +212,7 @@ U0 TransformDemo(I64 _mp_cnt=mp_cnt)
   View;
   SliderDel(c);
   SettingsPop;
-  //If you care, you might want to
-  //save the original state of the
-  //scroll bars.
+  //You might want to save the original state of the scroll bars.
 }
 
 TransformDemo;

@@ -1,16 +1,10 @@
 
-
-
 /* <1> <1> (image) */
-
 
 /* <2> <2> (image) */
 
 
 /* <3> <3> (image) */
-
-
-
 
 
 #define NUM_STARS	8192
@@ -49,13 +43,13 @@ CCtrlButtonState edit_mode_button;
 
 CTask *task;
 F64 zoom;
-I64 next_action_key,action_scancodes[10];
+I64 next_action_key,action_scan_codes[10];
 CMathODE *ode=NULL;
 
 U0 S2W(F64 sx,F64 sy,F64 *_wx,F64 *_wy)
 {
-  sx-=task->win_pixel_left+task->win_scroll_x;
-  sy-=task->win_pixel_top +task->win_scroll_y;
+  sx-=task->pix_left+task->scroll_x;
+  sy-=task->pix_top +task->scroll_y;
   *_wx=sx/zoom;
   *_wy=sy/zoom;
 }
@@ -70,14 +64,14 @@ U0 W2S(F64 wx,F64 wy,F64 *_sx,F64 *_sy)
 U0 Zoom(F64 d)
 {
   F64 sx,sy,wx,wy;
-  I64 i,x=ipx,y=ipy;
+  I64 i,x=ip.pos.x,y=ip.pos.y;
   d=Exp(Ln(d)/ZOOM_STEPS);
   for (i=0;i<ZOOM_STEPS;i++) {
     S2W(x,y,&wx,&wy);
-    zoom=Limit(zoom*d,0.02,50);
+    zoom=Clamp(zoom*d,0.02,50);
     W2S(wx,wy,&sx,&sy);
-    task->win_scroll_x=ipx-sx-task->win_pixel_left;
-    task->win_scroll_y=ipy-sy-task->win_pixel_top;
+    task->scroll_x=ip.pos.x-sx-task->pix_left;
+    task->scroll_y=ip.pos.y-sy-task->pix_top;
     Sleep(10);
   }
 }
@@ -92,10 +86,9 @@ U0 DrawIt(CTask *,CDC *dc)
 
   tempm=ode->next_mass;
   if (tempm!=&ode->next_mass) {
-    task->win_scroll_x=-tempm->x*zoom+task->win_pixel_width >>1;
-    task->win_scroll_y=-tempm->y*zoom+task->win_pixel_height>>1;
+    task->scroll_x=-tempm->x*zoom+task->pix_width >>1;
+    task->scroll_y=-tempm->y*zoom+task->pix_height>>1;
   }
-
 
   dc->flags|=DCF_TRANSFORMATION;
   GrScaleEqu(dc->r,zoom);
@@ -144,7 +137,7 @@ U0 DrawIt(CTask *,CDC *dc)
   dc->color=LTGRAY;
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
-    SpritePlot3(dc,tempm->x,tempm->y,0,tempm->img);
+    Sprite3(dc,tempm->x,tempm->y,0,tempm->img);
     tempm=tempm->next;
   }
 
@@ -154,7 +147,7 @@ U0 DrawIt(CTask *,CDC *dc)
     x2=temps->end2->x; y2=temps->end2->y;
     if (temps->type==EMD_THRUSTER) {
       theta=Arg(x2-x1,y2-y1);
-      if (Bt(key_down_bitmap,action_scancodes[temps->action_key-'0'])) {
+      if (Bt(kbd.down_bitmap,action_scan_codes[temps->action_key-'0'])) {
 	dc->flags|=DCF_SYMMETRY;
 	GrSetSymmetry3(dc,x1,y1,256,x1,y1,0,x1-256*Cos(theta),y1-256*Sin(theta),0);
 	for (i=0;i<8;i++) {
@@ -174,7 +167,7 @@ U0 DrawIt(CTask *,CDC *dc)
 	}
 	dc->flags&=~DCF_SYMMETRY;
       }
-      SpritePlotRotZ3B(dc,x1,y1,0,__BIN_3,theta);
+      SpriteZ3B(dc,x1,y1,0,__BIN_3,theta);
       if (zoom>0.5) {
 	dc->color=YELLOW;
 	GrPutChar3(dc,(x1*7+x2)/8,(y1*7+y2)/8,0,temps->action_key);
@@ -207,7 +200,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
     tempm2=tempm1->next;
     while (tempm2!=&ode->next_mass) {
       D3Sub(&tempm2->state->x,&tempm1->state->x,&p);
-      dd=D3SqrNorm(&p);
+      dd=D3NormSqr(&p);
       if (dd<=Sqr(2*RADIUS)) {
 	d=Sqrt(dd)+0.0001;
 	dd=10.0*Sqr(Sqr(Sqr(2*RADIUS)-dd));
@@ -223,7 +216,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
     if (main_mode_button.state==MMD_PLAY && temps->type==EMD_THRUSTER &&
-      Bt(key_down_bitmap,action_scancodes[temps->action_key-'0'])) {
+      Bt(kbd.down_bitmap,action_scan_codes[temps->action_key-'0'])) {
       D3Sub(&temps->end2->state->x,&temps->end1->state->x,&p);
       D3Unit(&p);
       D3MulEqu(&p,2000);
@@ -291,7 +284,7 @@ U0 BreakConnectors()
   while (temps!=&ode->next_spring) {
     temps1=temps->next;
     if (temps->type==EMD_CONNECTOR &&
-      Bt(key_down_bitmap,action_scancodes[temps->action_key-'0'])) {
+      Bt(kbd.down_bitmap,action_scan_codes[temps->action_key-'0'])) {
       QueRem(temps);
       Free(temps);
     }
@@ -304,7 +297,7 @@ U0 Init()
   I64 i;
   task=Fs;
   for (i=0;i<=9;i++)
-    action_scancodes[i]=A2ScanCode('0'+i);
+    action_scan_codes[i]=Char2ScanCode('0'+i);
   for (i=0;i<NUM_STARS;i++) {
     stars_x[i]=RandU32%8192-4096;
     stars_y[i]=RandU32%8192-4096;
@@ -332,7 +325,7 @@ U0 CleanUp()
 
 U0 PlayShip()
 {
-  I64 p1,p2;
+  I64 a1,a2;
   F64 last_noise=0;
   Bool okay;
   ode->flags&=~ODEF_PAUSED;
@@ -367,13 +360,13 @@ U0 PlayShip()
   try {
     while (main_mode_button.state==MMD_PLAY) {
       BreakConnectors;
-      switch (ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
+      switch (ScanMsg(&a1,&a2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
 	case MSG_KEY_DOWN:
-	  switch (p1) {
+	  switch (a1) {
 	    case '0'...'9':
-	      if (tT>last_noise+0.25) {
+	      if (tS>last_noise+0.25) {
 		Noise(250,40,200);
-		last_noise=tT;
+		last_noise=tS;
 	      }
 	      break;
 	    case 'z':
@@ -400,7 +393,7 @@ U0 PlayShip()
 	  }
 	  break;
 	case MSG_KEY_UP:
-	  switch (p1) {
+	  switch (a1) {
 	    case 'd':
 	      ode->drag_v2=0.000002;
 	      ode->drag_v3=0.0000001;
@@ -421,10 +414,9 @@ ps_done: //Don't goto out of try
     throw;
 }
 
-
 U0 EditShip()
 {
-  I64 p1,p2;
+  I64 a1,a2;
   F64 wx,wy;
   Bool okay;
   MyMass *tempm1=NULL,*tempm2=NULL;
@@ -467,11 +459,11 @@ U0 EditShip()
   DocClear;
   try {
     while (main_mode_button.state==MMD_EDIT) {
-      switch (ScanMsg(&p1,&p2,1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
+      switch (ScanMsg(&a1,&a2,1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_R_DOWN|1<<MSG_IP_MOVE|1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
 	case MSG_IP_L_DOWN:
 	  switch (edit_mode_button.state) {
 	    case EMD_MASS:
-	      S2W(ipx,ipy,&wx,&wy);
+	      S2W(ip.pos.x,ip.pos.y,&wx,&wy);
 	      tempm1=PlaceMass(wx,wy);
 	      if (ode->next_mass==tempm1)
 		tempm1->img=__BIN_1;
@@ -483,7 +475,7 @@ U0 EditShip()
 	    case EMD_CONNECTOR:
 	    case EMD_THRUSTER:
 	    case EMD_MOVE:
-	      S2W(ipx,ipy,&wx,&wy);
+	      S2W(ip.pos.x,ip.pos.y,&wx,&wy);
 	      tempm1=MassFind(ode,wx,wy);
 	      tempm2=NULL;
 	      break;
@@ -496,13 +488,13 @@ U0 EditShip()
 	    case EMD_SPRING:
 	    case EMD_CONNECTOR:
 	    case EMD_THRUSTER:
-	      S2W(ipx,ipy,&wx,&wy);
+	      S2W(ip.pos.x,ip.pos.y,&wx,&wy);
 	      if (tempm1 && (tempm2=MassFind(ode,wx,wy)) && tempm1!=tempm2)
 		PlaceSpring(tempm1,tempm2,edit_mode_button.state);
 	      tempm1=tempm2=NULL;
 	      break;
 	    case EMD_MOVE:
-	      S2W(ipx,ipy,&wx,&wy);
+	      S2W(ip.pos.x,ip.pos.y,&wx,&wy);
 	      if (tempm1) {
 		tempm1->x=wx;
 		tempm1->y=wy;
@@ -516,7 +508,7 @@ U0 EditShip()
 	case MSG_IP_MOVE:
 	  switch (edit_mode_button.state) {
 	    case EMD_MOVE:
-	      S2W(ipx,ipy,&wx,&wy);
+	      S2W(ip.pos.x,ip.pos.y,&wx,&wy);
 	      if (tempm1) {
 		tempm1->x=wx;
 		tempm1->y=wy;
@@ -533,13 +525,13 @@ U0 EditShip()
 	case MSG_IP_R_UP:
 	  break;
 	case MSG_KEY_DOWN:
-	  switch (p1) {
+	  switch (a1) {
 	    case '\n':
 	      CleanUp;
 	      Init;
 	      break;
 	    case '0'...'9':
-	      next_action_key=p1;
+	      next_action_key=a1;
 	      break;
 	    case 'c':
 	      CenterMasses;
@@ -581,7 +573,7 @@ U0 EditShip()
 	  }
 	  break;
 	case MSG_KEY_UP:
-	  switch (p1) {
+	  switch (a1) {
 	    case 'd':
 	      ode->flags|=ODEF_PAUSED;
 	      ode->drag_v2=0.000002;
@@ -606,11 +598,23 @@ es_done: //Don't goto out of try
 
 U0 Strut()
 {
-  CCtrl *bt_main_mode=CtrlButtonNew((GR_WIDTH-4*FONT_WIDTH-16)>>1,1*FONT_HEIGHT+4,80,,MMD_NUM_MODES,
-	   Define("ST_MAIN_MODES"),main_mode_colors,&main_mode_button);
+  CCtrl *bt_main_mode;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->win_inhibit|=WIF_IP_L|WIF_IP_R|WIG_DBL_CLICK;
+  Fs->win_inhibit|=WIF_SELF_IP_L|WIF_SELF_IP_R|WIG_DBL_CLICK;
   WinMax;
+  DocClear;
+  "\n$WW,1$$PURPLE$$TX+CX,\"Build a ship.\"$$FG$\n\n"
+  "Select mass mode.\tLeft-click to place masses.\n"
+  "Select spring mode.\tLeft-drag to make members.\n"
+  "Select thruster mode.\tPress a digit, 0-9.  Drag to make thruster.\n"
+  "Select connector mode.\tPress a digit, 0-9.  Drag to make breakable connector.\n\n"
+  "Press $GREEN$<SPACE>$FG$ to run the game.  Press digits to operate "
+  "thrusters and break connectors.\n\n"
+  "Press $GREEN$<z>$FG$ or $GREEN$<SHIFT-Z>$FG$ to zoom in/out.\n\n";
+
+  PressAKey;
+  bt_main_mode=CtrlButtonNew((GR_WIDTH-4*FONT_WIDTH-16)>>1,1*FONT_HEIGHT+4,80,,MMD_NUM_MODES,
+	   Define("ST_MAIN_MODES"),main_mode_colors,&main_mode_button);
   WinBorder;
   Preempt(OFF);
   WordStat;

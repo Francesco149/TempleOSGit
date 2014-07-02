@@ -9,7 +9,7 @@ U0 InputFilterTask()
   LBEqu(&Fs->task_flags,TASKf_FILTER_INPUT,old_filter);
   while (TRUE) {
     SrvCmdsHandler;
-    Cli;
+    CLI
     tempc1=&Fs->srv_ctrl.next_waiting;
     tempc=tempc1->next;
     if (tempc==tempc1)
@@ -36,8 +36,13 @@ U0 InputFilterTask()
   SetRFlags(old_flags);
 }
 
-I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
-{
+I64 ScanMsg(I64 *_a1=NULL,I64 *_a2=NULL,I64 mask=~1,CTask *task=NULL)
+{/*Check for a message of type specified by a one in the mask.
+Throw-out messages not in mask.
+If no message fit mask, return NULL immediately.
+Remove desired message, return [C:/Kernel/Adam1a.HPP.Z,3116] msg_code.
+Note: This delivers messages from parent down to pop-up.
+*/
   I64 result,old_flags;
   CSrvCmd *tempc,*tempc1;
   if (!task) task=Fs;
@@ -46,7 +51,7 @@ I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
   while (TRUE) {
     if (task==Fs)
       SrvCmdsHandler;
-    Cli;
+    CLI
     tempc=tempc1->next;
     if (tempc==tempc1)
       break;
@@ -55,10 +60,10 @@ I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
 	QueRem(tempc);
 	SetRFlags(old_flags);
 	result=tempc->msg_code;
-	if (_p1)
-	  *_p1=tempc->aux1;
-	if (_p2)
-	  *_p2=tempc->aux2;
+	if (_a1)
+	  *_a1=tempc->aux1;
+	if (_a2)
+	  *_a2=tempc->aux2;
 	SrvCmdDel(tempc);
 	if ((result!=MSG_KEY_DOWN || !(tempc->aux2&SCF_KEY_DESC) ||
 	  Bt(&mask,MSGF_ALLOW_KEY_DESC)) && Bt(&mask,result))
@@ -68,13 +73,13 @@ I64 ScanMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
     SetRFlags(old_flags);
   }
   result=MSG_NULL;
-  if (_p1)
-    *_p1=0;
-  if (_p2)
-    *_p2=0;
+  if (_a1)
+    *_a1=0;
+  if (_a2)
+    *_a2=0;
   if (task->parent_task&&task->parent_task->popup_task==task) {
     SetRFlags(old_flags);
-    return ScanMsg(_p1,_p2,mask,task->parent_task);
+    return ScanMsg(_a1,_a2,mask,task->parent_task);
   }
 sm_done:
   SetRFlags(old_flags);
@@ -82,20 +87,22 @@ sm_done:
 }
 
 I64 FlushMsgs(CTask *task=NULL)
-{
-  I64 result=0,p1,p2;
-  while (ScanMsg(&p1,&p2,~1,task))
+{//Throw away all messages.  Return count.
+  I64 result=0,a1,a2;
+  while (ScanMsg(&a1,&a2,~1,task))
     result++;
   return result;
 }
 
-I64 GetMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
-{
+I64 GetMsg(I64 *_a1=NULL,I64 *_a2=NULL,I64 mask=~1,CTask *task=NULL)
+{//Wait for a message of type specified by a one in the mask.
+//Throw-out all messages not in mask.
+//Returns [C:/Kernel/Adam1a.HPP.Z,3116] msg_code. See [C:/Demo/MsgLoop.CPP.Z,1].
   I64 result;
   Bool old_preempt=Preempt(OFF);
   if (!task) task=Fs;
   LBtr(&task->task_flags,TASKf_IDLE);
-  while (!(result=ScanMsg(_p1,_p2,mask,task))) {
+  while (!(result=ScanMsg(_a1,_a2,mask,task))) {
     LBts(&task->task_flags,TASKf_IDLE);
     Yield;
   }
@@ -105,42 +112,49 @@ I64 GetMsg(I64 *_p1=NULL,I64 *_p2=NULL,I64 mask=~1,CTask *task=NULL)
 }
 
 I64 ScanChar()
-{
-  I64 p1a,p2a,p1b,p2b;
-  if (!ScanMsg(&p1a,&p2a,1<<MSG_KEY_DOWN)||!p1a)
+{//Checks for [C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN and returns 0 immediately if no key.
+//Waits for [C:/Kernel/Adam1a.HPP.Z,3118] MSG_KEY_UP of non-zero [C:/Kernel/Adam1a.HPP.Z,3382] ASCII key and returns [C:/Kernel/Adam1a.HPP.Z,3382] ASCII if key.
+//[C:/Kernel/KbdMouse/Message.CPP.Z,39] ScanMsg() throws away other message types.
+  I64 a1a,a2a,a1b,a2b;
+  if (!ScanMsg(&a1a,&a2a,1<<MSG_KEY_DOWN)||!a1a)
     return 0;
   else
-    do GetMsg(&p1b,&p2b,1<<MSG_KEY_UP);
-    while (!p1b);
-  return p1a;
+    do GetMsg(&a1b,&a2b,1<<MSG_KEY_UP);
+    while (!a1b);  //Be careful of [C:/Kernel/Adam1a.HPP.Z,3456] SC_SHIFT and [C:/Kernel/Adam1a.HPP.Z,3457] SC_CTRL, etc.
+  return a1a;
 }
 
-Bool ScanKey(I64 *_ch=NULL,I64 *_scancode=NULL,Bool echo=FALSE)
-{
+Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE)
+{//Checks for [C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN and returns FALSE immediately if no key.
+//Sets [C:/Kernel/Adam1a.HPP.Z,3382] ASCII and [C:/Doc/CharOverview.TXT.Z,1] scan_code.
+//Removes key message and returns TRUE.
+//[C:/Kernel/KbdMouse/Message.CPP.Z,39] ScanMsg() throws away other message types.
   I64 ch=0,sc=0;
   if (ScanMsg(&ch,&sc,1<<MSG_KEY_DOWN)) {
     if (_ch) *_ch=ch;
-    if (_scancode) *_scancode=sc;
+    if (_scan_code) *_scan_code=sc;
     if (echo)
       PutKey(ch,sc);
     return TRUE;
   } else {
     if (_ch) *_ch=0;
-    if (_scancode) *_scancode=0;
+    if (_scan_code) *_scan_code=0;
     return FALSE;
   }
 }
 
-I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
-{
+I64 GetKey(I64 *_scan_code=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
+{//Waits for [C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN message and returns [C:/Kernel/Adam1a.HPP.Z,3382] ASCII.
+//Sets [C:/Doc/CharOverview.TXT.Z,1] scan_code.
+//[C:/Kernel/KbdMouse/Message.CPP.Z,127] ScanKey() throws away other message types.
   I64 ch,sc;
   Bool old_preempt=Preempt(OFF),cursor_on=FALSE;
   while (!ScanKey(&ch,&sc,FALSE)) {
     if (IsRaw && raw_cursor) {
-      if (!cursor_on && ToI64(GetTSC*5/time_stamp_freq)&1) {
+      if (!cursor_on && ToI64(GetTSC*5/cnts.time_stamp_freq)&1) {
 	'_';
 	cursor_on=TRUE;
-      } else if (cursor_on && !(ToI64(GetTSC*5/time_stamp_freq)&1)) {
+      } else if (cursor_on && !(ToI64(GetTSC*5/cnts.time_stamp_freq)&1)) {
 	'' CH_BACKSPACE;
 	cursor_on=FALSE;
       }
@@ -150,11 +164,11 @@ I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
       //We don't want interrupt-driven keyboard when in debugger
       //because that could have side-effects or crash, so we poll
       //keyboard when in debugger with interrupts off.
-      PushFD;
-      Cli;
+      PUSHFD
+      CLI
       KbdMouseHandler(TRUE,FALSE);
       KbdMsgsQue;
-      PopFD;
+      POPFD
       if (old_preempt && GetRFlags&1<<RFLAGf_INT)
 	Yield;
     } else {
@@ -168,34 +182,44 @@ I64 GetKey(I64 *_scancode=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
   Preempt(old_preempt);
   if (echo)
     PutKey(ch,sc);
-  if (_scancode) *_scancode=sc;
+  if (_scan_code) *_scan_code=sc;
   return ch;
 }
 
-I64 GetChar(I64 *_scancode=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
-{
+I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
+{//Waits for non-zero [C:/Kernel/Adam1a.HPP.Z,3382] ASCII key.
+//Sets [C:/Doc/CharOverview.TXT.Z,1] scan_code.
   I64 ch1;
-  do ch1=GetKey(_scancode,FALSE,raw_cursor);
+  do ch1=GetKey(_scan_code,FALSE,raw_cursor);
   while (!ch1);
   if (echo)
     "$PT$%c$FG$",ch1;
   return ch1;
 }
 
-U8 *MGetS(I64 flags=0)
-//[C:/Kernel/Adam1a.HPP.Z,1454] Flags
-{
-//Returns a [C:/Kernel/Mem1b.CPP.Z,376] MAlloc()ed prompted string.
-  return (*fp_mgets)(flags);
+U8 *GetStr(U8 *msg=NULL,U8 *dft=NULL,I64 flags=0)
+{//Returns a [C:/Kernel/Mem1b.CPP.Z,373] MAlloc()ed prompted string.  See [C:/Kernel/Adam1a.HPP.Z,3682] Flags.
+  U8 *st;
+  if (msg)
+    "" msg,dft;
+  st=(*fp_getstr2)(flags);
+  if (!*st) {
+    Free(st);
+    if (dft)
+      return StrNew(dft);
+    else
+      return StrNew("");
+  }
+  return st;
 }
 
 I64 GetS(U8 *buf,I64 size,Bool allow_ext=TRUE)
-{
+{//Prompt into fixed length string. Size must include terminator.
   U8 *st;
   I64 ch,i=0;
   if (!size || !buf) return 0;
   if (allow_ext) {
-    st=MGetS;
+    st=GetStr;
     if (StrLen(st)>size-1) {
       MemCpy(buf,st,size-1);
       buf[size-1]=0;

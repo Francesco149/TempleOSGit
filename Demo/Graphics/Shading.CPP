@@ -1,7 +1,7 @@
 //"ls" is light source.
 
 U0 Lighting(CDC *dc,CD3I32 *ls,CD3I32 *poly,I64 color)
-{ //color is a color from 0-7
+{//color is a color from 0-7
   CD3I32 v1,v2;
   I64 *r=dc->r,i,vn_x,vn_y,vn_z;
   F64 d;
@@ -36,7 +36,6 @@ U0 Lighting(CDC *dc,CD3I32 *ls,CD3I32 *poly,I64 color)
 //vect and the surface normal
 //gives an illumination number.
 
-
 //TempleOS will generate a random U16
 //and compare to dither_probability_u16 and
 //will pick from two colors.
@@ -58,9 +57,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   CCtrl *c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES);
   CViewAngles *s=c->state;
-  F64 tt=0.5*(Sin(pi*2*(tT%10.0)/10.0)+2.0),
+  F64 tt=0.5*(Sin(pi*2*(tS%10.0)/10.0)+2.0),
      theta,theta2,phi,phi2,radius,d;
-  I64 i,j,cx=task->win_pixel_width/2,cy=task->win_pixel_height/2;
+  I64 i,j,cx=task->pix_width/2,cy=task->pix_height/2;
   CD3I32 poly[3],ls;
 
   dc->flags|=DCF_TRANSFORMATION;
@@ -73,20 +72,18 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrScaleEqu(dc->r,tt);
   GrSetRotMat(dc,dc->r);
 
-  ls.x=-(ipx-task->win_pixel_left-task->win_scroll_x-cx);
-  ls.y=-(ipy-task->win_pixel_top-task->win_scroll_y-cy);
+  ls.x=-(ip.pos.x-task->pix_left-task->scroll_x-cx);
+  ls.y=-(ip.pos.y-task->pix_top-task->scroll_y-cy);
   ls.z=GR_WIDTH/8;
   d=1<<16/D3I32Norm(&ls);
   ls.x*=d;
   ls.y*=d;
   ls.z*=d;
 
-
   dc->x=cx;
   dc->y=cy;
   dc->z=MaxI64(cx,cy);
   radius =MinI64(cx,cy)/2;
-
 
   for (i=0;i<RINGS;i++) {
     phi =    i*pi/2/RINGS;
@@ -151,7 +148,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 //See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
 //for a CSprite example.
 
-//See [C:/Adam/Gr/SpriteMesh.CPP.Z,874] SpriteMesh() for a fancy example.
+//See [C:/Adam/Gr/SpriteMesh.CPP.Z,869] SpriteMeshEd() for a fancy example.
 
 U0 Main()
 {

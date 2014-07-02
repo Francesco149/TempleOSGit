@@ -38,7 +38,7 @@ U0 PrimesJob(I64 i)
 I64 Primes(I64 range,I64 _my_mp_cnt)
 {
   I64 i,prime_cnt=0;
-  F64 t0=tT,tf;
+  F64 t0=tS,tf;
   prime_range=range;
   if (_my_mp_cnt<=mp_cnt)
     my_mp_cnt=_my_mp_cnt;
@@ -52,7 +52,7 @@ I64 Primes(I64 range,I64 _my_mp_cnt)
     JobQue(&PrimesJob,i,i);
   while (pending)
     Yield;
-  tf=tT;
+  tf=tS;
 
   for (i=0;i<prime_range;i++)
     if (!Bt(master_bitmap,i))

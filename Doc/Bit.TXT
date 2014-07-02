@@ -6,9 +6,8 @@ Btr:	Bit Test and Rst to zero
 Btc:	Bit Test and Compliment (toggle)
 BEqu:	Set bit to value.
 
-Bit operations are "atomic" meaning they won't be interrupted between the 
-testing of the bit and the alteration.  This is important when multitasking.  
-With multicore processing, you should "Lock" these operations.
+Bit operations are "atomic", no interrupt between the reading and writing the 
+bit, important when multitasking.  For multicore use "locked" forms.
 
 These don't take a pointer, but the actual field.
 Bsf:	Bit Scan Fwd (Pos of first low one bit or -1)

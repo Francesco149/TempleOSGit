@@ -8,9 +8,9 @@ Esc		Save and exit
 Shift-Esc	Abort
 Ctrl-m	Personal Menu
 Windows Key	Pull-down Menu
-**F1
+F1
 `Msg(MSG_KEY_DOWN,0,SC_F1);`
-**		Help
+		Help
 Other keys: Key Map
 `KeyMap;View;
 `
@@ -31,5 +31,5 @@ Ctrl-Alt-Z	Unzoom screen on Mouse
 
 Remember to terminate cmds with a semicolon.
 
-[C:/Doc/HelpIndex.TXT.Z,1] Help Index  [Cmd Line (Typically),1] Quick
-Start--Command Line
+[C:/Doc/HelpIndex.TXT.Z,1] Help & Index, [C:/Doc/CmdLineOverview.TXT.Z,1]
+Quick Start: Cmd line

@@ -1,40 +1,39 @@
-class CMgdSCSlider
+class CTemplateSCSlider
 {
-  CMgdSCSlider *next,*last;
+  CTemplateSCSlider *next,*last;
   U8 *name;
   I64 num;
 };
 
-class CMgdSC
+class CTemplateSC
 {
-  CMgdSCSlider *next_slider,*last_slider;
+  CTemplateSCSlider *next_slider,*last_slider;
   I64 num_sliders,range,spacing,border;
   U8 *glbl_name;
 };
 
-
-CMgdSC *PmtSliderCtrl()
+CTemplateSC *GetSliderCtrl()
 {
-  CMgdSCSlider *temps;
+  CTemplateSCSlider *temps;
   U8 *st,pmt[136];
-  CMgdSC *result=CAlloc(sizeof(CMgdSC));
+  CTemplateSC *result=CAlloc(sizeof(CTemplateSC));
 
   "$PURPLE$Slider Ctrl$FG$\n\n";
 
-  result->glbl_name=PmtStr("Glbl Struct Name (ENTER for No Glbl):");
-  result->range=PmtI64	("Range   (%4d):",30);
-  result->spacing=PmtI64("Spacing (%4d):",20);
-  result->border=PmtI64 ("Border  (%4d):",2);
+  result->glbl_name=GetStr("Glbl Struct Name (ENTER for No Glbl):");
+  result->range=GetI64	("Range   (%4d):",30);
+  result->spacing=GetI64("Spacing (%4d):",20);
+  result->border=GetI64 ("Border  (%4d):",2);
 
   result->next_slider=result->last_slider=&result->next_slider;
   while (TRUE) {
-    SPrint(pmt,"Slider #%d Name:",result->num_sliders+1);
-    st=PmtStr(pmt);
+    StrPrint(pmt,"Slider #%d Name:",result->num_sliders+1);
+    st=GetStr(pmt);
     if (!*st) {
       Free(st);
       break;
     }
-    temps=CAlloc(sizeof(CMgdSCSlider));
+    temps=CAlloc(sizeof(CTemplateSCSlider));
     temps->name=st;
     QueIns(temps,result->last_slider);
     temps->num=result->num_sliders++;
@@ -42,18 +41,18 @@ CMgdSC *PmtSliderCtrl()
   return result;
 }
 
-U0 MgdSliderCtrl(CDoc *doc)
+U0 TemplateSliderCtrl(CDoc *doc)
 {
   CTask *task;
-  CMgdSC *m=NULL;
-  CMgdSCSlider *temps;
+  CTemplateSC *m=NULL;
+  CTemplateSCSlider *temps;
   I64 i;
 
   DocUnlock(doc);
   DocRecalc(doc);
   DocCaptureUndo(doc,TRUE);
 
-  task=SpawnUser("CMgdSC **_m=0x%X;*_m=PmtSliderCtrl;\n",&m);
+  task=SpawnUser("CTemplateSC **_m=0x%X;*_m=GetSliderCtrl;\n",&m);
   while (!m)
     Yield;
 
@@ -66,7 +65,6 @@ class CSliderState
 {
 ",m->range,m->spacing,m->border);
 
-
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
     DocPrint(doc,"  I64 %s;\n",temps->name);
@@ -76,7 +74,6 @@ class CSliderState
     DocPrint(doc,"} %s;\n",m->glbl_name);
   else
     DocPrint(doc,"};\n");
-
 
   DocPrint(doc,
 "
@@ -130,15 +127,15 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
 U0 UpdateDerivedSliderCtrl(CCtrl *c)
 {
   CSliderState *s=c->state;
-  c->left=c->win_task->win_pixel_width/2-(SLIDER_SPACING*3+2)/2;
+  c->left=c->win_task->pix_width/2-(SLIDER_SPACING*3+2)/2;
   c->right=c->left+%d*SLIDER_SPACING+%d;
-  c->top=c->win_task->win_pixel_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
+  c->top=c->win_task->pix_height/2-(SLIDER_SPACING*2+SLIDER_RANGE)/2;
   c->bottom=c->top+SLIDER_SPACING*2+SLIDER_RANGE;
 ",m->num_sliders+1,m->num_sliders);
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    DocPrint(doc,"  s->%s=LimitI64(s->%s,0,SLIDER_RANGE-1);\n",temps->name,temps->name);
+    DocPrint(doc,"  s->%s=ClampI64(s->%s,0,SLIDER_RANGE-1);\n",temps->name,temps->name);
     temps=temps->next;
   }
   DocPrint(doc,

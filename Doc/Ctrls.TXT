@@ -1,8 +1,7 @@
-To create a TempleOS graphic ctrl, you define call-back functions and insert
-a 
-[C:/Kernel/Adam1a.HPP.Z,2680] CCtrl structure in the
-[C:/Kernel/Adam1a.HPP.Z,2866] CTask queue.  See
+To create a TempleOS graphic ctrl, you define callback functions and insert a 
+[C:/Kernel/Adam1a.HPP.Z,3002] CCtrl structure in the
+[C:/Kernel/Adam1a.HPP.Z,3213] CTask queue.  See
 [C:/Demo/Graphics/SliderCtrl.CPP.Z,1], 
 [C:/Demo/Graphics/ScrollBars.CPP.Z,1] and [C:/Adam/WallPaper.CPP.Z,1]
-TermButtonNew.  There is a managed-code 
+TermButtonNew.  There is a template-code 
 ctrl generator, if you press <CTRL-SHIFT-L>.

@@ -11,29 +11,32 @@ CTask *MenuTask()
 
 CMenuEntry *sys_cur_submenu_entry=NULL;
 
-public CMenuEntry *MenuSubEntryFind(CMenuEntry *first,U8 *entry_name)
-{
-  while (first) {
-    if (!StrCmp(first->name,entry_name))
-      return first;
-    first=first->next;
+public CMenuEntry *MenuSubEntryFind(CMenuEntry *haystack_first,U8 *needle_entry_name)
+{//You probably don't need this. Use dir / and [C:/Adam/Menu.CPP.Z,24] MenuEntryFind().
+  while (haystack_first) {
+    if (!StrCmp(haystack_first->name,needle_entry_name))
+      return haystack_first;
+    haystack_first=haystack_first->next;
   }
   return NULL;
 }
 
-public CMenuEntry *MenuEntryFind(CMenu *m,U8 *full_name)
-{
+public CMenuEntry *MenuEntryFind(CMenu *haystack_menu,U8 *needle_full_name)
+{//Find pulldown entry. Fs->cur_menu is probably the menu you want.
+//Just 2 levels -- across top and down are valid, currently.
   U8 *st,*st2;
   CMenuEntry *tempse;
-  if (!m || m->mu_signature!=MENU_SIGNATURE_VAL || !full_name)
+  if (!haystack_menu || haystack_menu->mu_signature!=MENU_SIGNATURE_VAL || !needle_full_name)
     return NULL;
-  st=StrNew(full_name);
-  st2=StrNew(full_name);
-  tempse=(&m->sub)(U8 *)-offset(CMenuEntry.sub);
+  st=StrNew(needle_full_name);
+  st2=StrNew(needle_full_name);
+  tempse=(&haystack_menu->sub)(U8 *)-offset(CMenuEntry.sub);
   while (*st && tempse) {
     StrFirstRem(st,"/",st2);
     tempse=MenuSubEntryFind(tempse->sub,st2);
   }
+  Free(st);
+  Free(st2);
   return tempse;
 }
 
@@ -42,25 +45,25 @@ CMenuEntry *MenuNewSub(CLex *lx,CTask *task)
   CMenuEntry *tempme=NULL,*tempse;
   if (lx->token==TK_IDENT) {
     tempme=CAlloc(sizeof(CMenuEntry),task);
-    if (StrLen(lx->ident)>31)
-      lx->ident[31]=0;
-    StrCpy(tempme->name,lx->ident);
+    if (StrLen(lx->cur_str)>31)
+      lx->cur_str[31]=0;
+    StrCpy(tempme->name,lx->cur_str);
     if (Lex(lx)=='(') {
       tempme->msg_code=MSG_KEY_DOWN_UP;
       if (Lex(lx)!=',' && lx->token!=')')
-	tempme->msg_code=LexExpression(lx);
+	tempme->msg_code=LexExpressionI64(lx);
       if (lx->token==',')
 	Lex(lx);
       if (lx->token!=',' && lx->token!=')')
-	tempme->p1=LexExpression(lx);
+	tempme->a1=LexExpressionI64(lx);
       if (lx->token==',')
 	Lex(lx);
       if (lx->token!=',' && lx->token!=')')
-	tempme->p2=LexExpression(lx);
+	tempme->a2=LexExpressionI64(lx);
       if (lx->token!=')')
-	LexExcept(lx,"ST_MISSING_RIGHT_PAREN");
+	LexExcept(lx,"missing ')' at ");
       if (Lex(lx)!=';')
-	LexExcept(lx,"ST_MISSING_SEMICOLON");
+	LexExcept(lx,"missing ';' at");
       Lex(lx); //Skip ;
     } else if (lx->token=='{') {
       Lex(lx); //Skip {
@@ -69,17 +72,17 @@ CMenuEntry *MenuNewSub(CLex *lx,CTask *task)
       while (tempse && lx->token!='}')
 	tempse=tempse->next=MenuNewSub(lx,task);
       if (lx->token!='}')
-	LexExcept(lx,"ST_MISSING_RIGHT_BRACE");
+	LexExcept(lx,"missing '}' at ");
       else
 	Lex(lx); //Skip }
     } else
-      LexExcept(lx,"ST_EXPECTING_LEFT_BRACE");
+      LexExcept(lx,"expecting '{' at ");
   }
   return tempme;
 }
 
 public CMenu *MenuNew(U8 *st,I64 flags=0,CTask *task=NULL)
-{
+{//Parse a menu. You probably don't need this.
   CMenu *m;
   CMenuEntry *tempse;
   CLex *lx=LexNew(st,LF_DONT_FREE_BUF);
@@ -99,9 +102,9 @@ public CMenu *MenuNew(U8 *st,I64 flags=0,CTask *task=NULL)
 }
 
 public CMenu *MenuFile(U8 *filename,I64 flags=0,CTask *task=NULL)
-{
+{//Parse a pulldown menu file. You probably don't need this.
   CMenu *m;
-  U8 *st=MPrint("#include \"%s\"",filename);
+  U8 *st=MStrPrint("#include \"%s\"",filename);
   m=MenuNew(st,flags,task);
   Free(st);
   return m;
@@ -122,7 +125,7 @@ U0 MenuDelSub(CMenuEntry *tempme)
 }
 
 public U0 MenuDel(CMenu *m)
-{
+{//Delete a manu. You probably don't need this.
   CMenuEntry *tempme,*tempme1;
   if (!m || m->mu_signature!=MENU_SIGNATURE_VAL)
     return;
@@ -148,7 +151,7 @@ I64 MenuEntryWidth(CMenuEntry *tempme)
 }
 
 public CMenu *MenuPush(U8 *st)
-{
+{//Save old pulldown menu and replace with new from str.
   CMenu *m=MenuNew(st);
   m->next=Fs->cur_menu;
   Fs->cur_menu=m;
@@ -156,7 +159,7 @@ public CMenu *MenuPush(U8 *st)
 }
 
 public CMenu *MenuFilePush(U8 *filename)
-{
+{//Save old pulldown menu and replace with new from file.
   CMenu *m=MenuFile(filename);
   m->next=Fs->cur_menu;
   Fs->cur_menu=m;
@@ -164,7 +167,7 @@ public CMenu *MenuFilePush(U8 *filename)
 }
 
 public U0 MenuPop()
-{
+{//Restore old pulldown menu. Delete just-deactivated menu.
   CMenu *m=Fs->cur_menu;
   if (!m) return;
   Fs->cur_menu=m->next;
@@ -177,7 +180,7 @@ U0 DrawMenu(CDC *dc)
   CMenuEntry *tempme,*tempse,*cur_submenu=NULL;
   U8 *st=NULL;
   CTask *task=MenuTask;
-  I64 i,w,x0,y0,x1=ipx,y1=ipy;
+  I64 i,w,x0,y0,x1=ip.pos.x,y1=ip.pos.y;
   if (!TaskValidate(task) || !(m=task->cur_menu) ||
       m->mu_signature!=MENU_SIGNATURE_VAL) {
     sys_cur_submenu_entry=NULL;
@@ -207,9 +210,9 @@ U0 DrawMenu(CDC *dc)
 	  i=m->attr;
 	if (y0<=y1<y0+FONT_HEIGHT) {
 	  if (tempse->msg_code==MSG_KEY_DOWN||tempse->msg_code==MSG_KEY_DOWN_UP) {
-	    if (!tempse->p2)
-	      tempse->p2=A2ScanCode(tempse->p1);
-	    st=ScanCode2KeyName(tempse->p2);
+	    if (!tempse->a2)
+	      tempse->a2=Char2ScanCode(tempse->a1);
+	    st=ScanCode2KeyName(tempse->a2);
 	  }
 	  sys_cur_submenu_entry=cur_submenu=tempse;
 	  dc->color=i&15;
@@ -241,7 +244,3 @@ U0 DrawMenu(CDC *dc)
   }
   sys_cur_submenu_entry=cur_submenu;
 }
-
-
-#help_index ""
-

@@ -1,12 +1,12 @@
-/*
-This does a really crappy job of
+/*This does a really crappy job of
 suggesting spellings.  Write a better
 one for fun.
 */
 
 U8 *SuggestMatchForm(U8 *src)
 {
-  U8 ch,ch1=0,*result=MStrUtil(src,SUF_TO_UPPER),*dst;
+  I64 ch,ch1=0;
+  U8 *result=MStrUtil(src,SUF_TO_UPPER),*dst;
   dst=src=result;
   while (ch=*src++)  {
     if (!StrOcc("AEIOU",ch)) {
@@ -21,17 +21,16 @@ U8 *SuggestMatchForm(U8 *src)
   return result;
 }
 
-/*
-Fmt of word lst entry:
+/*Fmt of word lst entry:
   U8 WSD_WORD_CHAR
   U8 word[] with terminating zero
   I16 block; //definition offset in ::/Adam/WordStat/WSDefs.DAT
 */
 
-U0 SuggestSpelling(U8 *pattern)
+U0 SuggestSpelling(U8 *word)
 {
-  U8 *dict=ws_dict_word_lst,
-     *pf=SuggestMatchForm(pattern),
+  U8 *dict=wsd.word_lst,
+     *pf=SuggestMatchForm(word),
      *wf;
   I64 len=StrLen(pf),
      num_cols=Fs->win_width/16,
@@ -42,22 +41,21 @@ U0 SuggestSpelling(U8 *pattern)
       "%16s",dict+1;
       if (++col==num_cols) {
 	col=0;
-	NewLine;
+	'\n';
       }
     }
     Free(wf);
     dict+=StrLen(dict+1)+4;
   }
   Free(pf);
-  NewLine;
+  '\n';
 }
-
 
 U0 SuggestSpellingDemo()
 {
   U8 *w;
   while (TRUE) {
-    w=PmtStr("Word:");
+    w=GetStr("Word:");
     if (*w) {
       SuggestSpelling(w);
       Free(w);
@@ -66,17 +64,14 @@ U0 SuggestSpellingDemo()
   }
 }
 
-
-/*
-If you "Adam Include" this file, it will
-install this command as a hot-key.
-*/
+//If you "Adam Include" this file, it will
+//install this command as a hot-key.
 
 U0 CtrlAltL(I64)
 {
-//[C:/Adam/WordStat/WordStat.CPP.Z,36] ws_cur_word is only set if WordStat
+//[C:/Adam/WordStat/WordStat.CPP.Z,39] ws.cur_word is only set if WordStat
 //is running.
-  PopUp("SuggestSpelling(ws_cur_word);View;");
+  PopUp("SuggestSpelling(ws.cur_word);View;");
 }
 
 if (Fs!=adam_task)
@@ -84,8 +79,8 @@ if (Fs!=adam_task)
 else {
   SetCtrlAltLetCB('L',&CtrlAltL,"Cmd/Suggest Spelling");
 //Appears in the Adam Task Window
-  "<CTRL-ALT-L> installed\n";
+  "<CTRL-ALT-l> installed\n";
 }
 
 //Note: It would be more appropriate
-//to define a key in [C:/Accts/TAD/Adam3dKeyPlugIns.CPP.Z,11] MyPutKey().
+//to define a key in [C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey().

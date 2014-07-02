@@ -16,9 +16,7 @@ U0 SafePutChar(U8 ch)
 
 
 
-
 	    /* <1> <1> (image) */
-
 
 U0 ASCIIOrgan()
 {
@@ -29,7 +27,7 @@ U0 ASCIIOrgan()
     SafePutChar(i+32);
     SafePutChar(i+64);
     SafePutChar(i+96);
-    NewLine;
+    '\n';
   }
 
   "\nPress keys to make snds\n"
@@ -42,10 +40,9 @@ U0 ASCIIOrgan()
   Snd(0);
 
 //Note the %d in the string for sprite number.
-  NewLine(7);
-  PutSprite(__BIN_1,"$SP+LM+PU,\"Click for better organ\",\"#include \\\"::/Apps/MusicOrgan/Run\\\";\",%d$");
-  NewLine(5);
-
+  '\n\n\n\n\n\n\n';
+  Sprite(__BIN_1,"$SP+PU,\"Click for better organ\",LM=\"#include \\\"::/Apps/Psalmody/Run\\\";\",BI=%d$");
+  '\n\n\n\n\n';
 }
 
 ASCIIOrgan;

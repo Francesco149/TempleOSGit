@@ -1,9 +1,8 @@
-/*
-This is a JIT file, not AOT.
-
-Asm labels can only be defined once
-in a task.  Hit F5 to spawn a new task
-and run it.
+/*Asm labels can only be defined once
+in a task.  <F5> will spawn a new task
+each time, so you don't get redefine
+error, like when repeatedly #including
+it from the cmd line.
 
 These are many useful kernel
 routines [C:/Kernel/Str1a.CPP.Z,1] ::/Kernel/Str1a.CPP
@@ -26,17 +25,15 @@ asm {
 
 USE64	//Defaults to 64, but this is a good habit.
 
-	IMPORT	PUT_HEX_U8,PUT_CHARS;
-
 MY_WORLD_MSG:
 //Define U8 does not put terminating zeros
 //on strings.
 	DU8	"World\n",0;
 
 //My convention is to put an underscore
-//on C callable routines.
+//on C callable asm routines.
 _HELLO_WORLD::
-	PUSH	RSI	//See [C:/Kernel/Adam1a.HPP.Z,3533] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,3534] REG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK
 	MOV	RCX,10
 @@05:	MOV	RAX,RCX
 	CALL	PUT_HEX_U8
@@ -46,9 +43,7 @@ _HELLO_WORLD::
 	CALL	PUT_CHARS
 //We broke it in two pieces to show different ways.
 	MOV	RSI,MY_WORLD_MSG
-//Alternatively, if you use an '&', you don't need
-//to import a SYS_SYM.  This only works for JIT asm.
-	CALL	&PUT_STR
+	CALL	PUT_STR
 	LOOP	@@05
 	POP	RSI
 	RET

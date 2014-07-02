@@ -37,7 +37,7 @@ F64 F(Complex *x)
   CDiv(&num,&denom,&n1);
  
   R2P(&m,&a,n1.x,n1.y);
-  if (ip_rb)
+  if (ip.rb)
     return pi+a;
   else
     return m;
@@ -46,16 +46,16 @@ F64 F(Complex *x)
 F64 MPDraw(CTask *task)
 {
   Complex xx;
-  I64 x,y,w=task->win_pixel_width,h=task->win_pixel_height,cx=w/2,cy=h/2,
+  I64 x,y,w=task->pix_width,h=task->pix_height,cx=w/2,cy=h/2,
      lo=Gs->num*h/mp_cnt,hi=(Gs->num+1)*h/mp_cnt;
   F64 yy,y_total=0;
-  CDC *dc=DCAlias(gr_dc,task);
+  CDC *dc=DCAlias(,task);
   for (y=lo;y<hi;y++) {
     for (x=0;x<w;x++) {
       CEqu(&xx,x-cx,cy-y);
       yy=scale*F(&xx);
-      dc->color=Limit(yy,0,14);
-      y_total+=Limit(yy,-14,14);
+      dc->color=Clamp(yy,0,14);
+      y_total+=Clamp(yy,-14,14);
       GrPlot(dc,x,y);
     }
     }
@@ -67,7 +67,7 @@ U0 Draw()
 {
   CSrvCmd *tempm[MP_MAX_PROCESSORS];
   F64 y_total,old_y_total=MAX_F64;
-  I64 i,w=Fs->win_pixel_width,h=Fs->win_pixel_height,cx=w/2,cy=h/2;
+  I64 i,w=Fs->pix_width,h=Fs->pix_height,cx=w/2,cy=h/2;
   CDC *dc=DCAlias;
   while (TRUE) {
     for (i=0;i<mp_cnt;i++)
@@ -94,7 +94,7 @@ U0 Draw()
 
 U0 PoleZeros()
 {
-  I64 msg_code,p1,p2,p11,p22,cx,cy;
+  I64 msg_code,a1,a2,p11,p22,cx,cy;
   Complex *tempc=NULL;
 
   PopUpOk(
@@ -104,7 +104,7 @@ U0 PoleZeros()
   WinMgrSync;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER;
   SetVGAPalette4(vga_palette4_gray);
   SetVGAPaletteColor(15,0xFF0000); //White is red
 
@@ -119,21 +119,21 @@ U0 PoleZeros()
   try {
     Draw;
     while (TRUE) {
-      msg_code=GetMsg(&p1,&p2,1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+1<<MSG_IP_L_UP+1<<MSG_IP_R_DOWN+1<<MSG_IP_R_UP+1<<MSG_IP_MOVE);
+      msg_code=GetMsg(&a1,&a2,1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+1<<MSG_IP_L_UP+1<<MSG_IP_R_DOWN+1<<MSG_IP_R_UP+1<<MSG_IP_MOVE);
 pz_msg:
-      cx=Fs->win_pixel_width/2;
-      cy=Fs->win_pixel_height/2;
+      cx=Fs->pix_width/2;
+      cy=Fs->pix_height/2;
       switch (msg_code) {
 	case MSG_IP_L_DOWN:
-	  tempc=PoleZeroFind(p1-cx,cy-p2);
+	  tempc=PoleZeroFind(a1-cx,cy-a2);
 	  break;
 	case MSG_IP_MOVE:
 	  if (tempc) {
-	    p11=p1;p22=p2;
+	    p11=a1;p22=a2;
 	    //get to last mouse move
-	    while (msg_code=ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+1<<MSG_IP_L_UP+1<<MSG_IP_R_DOWN+1<<MSG_IP_R_UP+1<<MSG_IP_MOVE))
+	    while (msg_code=ScanMsg(&a1,&a2,1<<MSG_KEY_DOWN+1<<MSG_IP_L_DOWN+1<<MSG_IP_L_UP+1<<MSG_IP_R_DOWN+1<<MSG_IP_R_UP+1<<MSG_IP_MOVE))
 	      if (msg_code==MSG_IP_MOVE) {
-		p11=p1;p22=p2;
+		p11=a1;p22=a2;
 	      } else
 		goto pz_msg;
 
@@ -144,8 +144,8 @@ pz_msg:
 	  break;
 	case MSG_IP_L_UP:
 	  if (tempc) {
-	    tempc->x=p1-cx;
-	    tempc->y=cy-p2;
+	    tempc->x=a1-cx;
+	    tempc->y=cy-a2;
 	    tempc=NULL;
 	    Draw;
 	  }
@@ -155,7 +155,7 @@ pz_msg:
 	  Draw;
 	  break;
 	case MSG_KEY_DOWN:
-	  if (p1==CH_SHIFT_ESC||p1==CH_ESC)
+	  if (a1==CH_SHIFT_ESC||a1==CH_ESC)
 	    goto pz_done;
       }
       WinMgrSync;

@@ -1,5 +1,4 @@
-/*
-"Fixed point" means you use integers
+/*"Fixed point" means you use integers
 that are scaled by a value.  A common
 example would be using number of pennies
 instead of dollars with a float.
@@ -27,17 +26,17 @@ U0 Main()
   I64 i ,i_sum=0,i_val;
 
   i_val= 2.0000002 *0x100000000;
-  t0=tT;
+  t0=tS;
   for (i=1000000000;i;i--)
     i_sum+=i_val;
-  "Integer Sum:%.9f Time:%7.3fs\n",i_sum/ToF64(0x100000000),tT-t0;
+  "Integer Sum:%.9f Time:%7.3fs\n",i_sum/ToF64(0x100000000),tS-t0;
 
   f_val= 2.0000002;
-  t0=tT;
+  t0=tS;
   for (i=1000000000;i;i--)
     f_sum+=f_val;
-  "Float   Sum:%.9f Time:%7.3fs\n",f_sum,tT-t0;
-  NewLine;
+  "Float   Sum:%.9f Time:%7.3fs\n",f_sum,tS-t0;
+  '\n';
 }
 
 U0 DoIt2()
@@ -48,13 +47,12 @@ U0 DoIt2()
   "i&0xFFFFFFFF=%X\n",i&0xFFFFFFFF;
   "i>>32       =%X\n",i>>32;
 
-/*
-  Standard integer types are declared
+/*  Standard integer types are declared
   with a special compiler feature which
   allows a structure to be accessed as a
   whole.  That's why the i variable can
   be accessed normally in addition to
-  structure member access [C:/Kernel/Adam1a.HPP.Z,50] I64.  The actual
+  structure member access [C:/Kernel/Adam1a.HPP.Z,101] I64.  The actual
   intrinsic compiler type is U64i.
 
 public U64i union I64
@@ -74,7 +72,6 @@ public U64i union I64
 
 For a complete lst of nonstandard compiler
 features, see [C:/Doc/HolyC.TXT.Z,1].
-
 */
 
   "i.u32[0]    =%X\n",i.u32[0];
@@ -87,8 +84,7 @@ DoIt2;
 
 //See [C:/Demo/Lectures/FixedPointAdvanced.CPP.Z,1]
 
-
-/*  Program Output
+/*Program Output
 
 8 Cores 2.660GHz
 Integer Sum:2000000199.768689408 Time:	0.787s
@@ -99,5 +95,4 @@ i&0xFFFFFFFF=9ABCDEF0
 i>>32	    =12345678
 i.u32[0]    =9ABCDEF0
 i.u32[1]    =12345678
-
 */

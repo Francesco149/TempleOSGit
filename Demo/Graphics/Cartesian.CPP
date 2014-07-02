@@ -14,10 +14,10 @@ U0 Cartesian()
     "Enter algebraic equation to graph.\n"
     "Example: y=2*x\n"
     "y=";
-    if (st=MGetS) {
+    if (st=GetStr) {
       if (*st) {
-	h=Fs->win_pixel_width/2;
-	v=Fs->win_pixel_height/2;
+	h=Fs->pix_width/2;
+	v=Fs->pix_height/2;
 	dc->color=RED;
 	GrLine(dc,h,0,h,2*v+1);
 	GrLine(dc,0,v,2*h+1,v);
@@ -43,8 +43,6 @@ U0 Cartesian()
 
 Cartesian;
 
-/*
-For better performance, compile the expression entered by the user one time 
-with [C:/Compiler/ExpParser.CPP.Z,1170] LexExpression2Bin() and use
-[C:/Kernel/Adam1b.HPP.Z,285] Call(). See [C:/Demo/CompileDemo.CPP.Z,1].
-*/
+//For better performance, compile the expression entered by the
+//user one time with [C:/Compiler/ExpParser.CPP.Z,1135] LexExpression2Bin() and use [C:/Kernel/Adam1b.HPP.Z,30] Call().
+//See [C:/Demo/CompileDemo.CPP.Z,1].

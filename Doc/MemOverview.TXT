@@ -1,0 +1,138 @@
+                               Memory Overview
+
+Paging is almost not used, but 64-bit mode requires it to be active.  Virtual 
+is identity-mapped to physical.  All tasks on all cores use the same page 
+table map, just as though all addresses are physical addresses.  2 Meg page 
+table entries are used, except the first 2 Meg, which uses 4K page tables 
+entries.  Nothing swaps to disk, either.
+
+In TempleOS, the lowest 2 Gig of memory is called the "code heap". 
+TempleOS's 
+compiler always uses 32-bit signed relative JMP & CALL instructions because 
+64-bit CALLs take two instructions.  With signed +/- 32-bit values, code can 
+only call a function within 2 Gig distance.  Therefore, TempleOS keeps all 
+code in the lowest 2 Gig memory addresses including what would normally be 
+called "the kernel".  Two Gig is plenty, don't worry.
+
+You can create new, independent heaps by first allocating mem with 
+[C:/Kernel/Mem1a.CPP.Z,400] MemBlksUncachedAlloc() or
+[C:/Kernel/Mem1a.CPP.Z,191] MemBlksIndependentAlloc(), then calling 
+[C:/Kernel/Mem1c.CPP.Z,41] HeapCtrlBPInit() and, then, using
+[C:/Kernel/Mem1b.CPP.Z,373] MAlloc().
+
+Memory allocated by a task will be freed when the task is killed.
+
+Eventually, memory will become fragmented, requiring a reboot.
+
+See [C:/Adam/Utils/MemRep.CPP.Z,197] MemRep().
+
+                          Single System-wide Mem Map
+
+ 0x0000000000- 0x0000006FFF
+  Pages marked not present so NULL ptr dereference causes a fault.
+
+ 0x0000007C00- 0x00000357DF
+  Kernel module, placed here by the boot-loader,
+  [C:/Kernel/Adam1a.HPP.Z,3779] BOOT_RAM_BASE.
+
+ 0x0000096600- 0x0000096FFF
+  Boot block relocated here before loading the Kernel module,
+  [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.
+
+ 0x0000097000- 0x000009702E
+  Multicore start-up vect code, [C:/Kernel/Adam1a.HPP.Z,491] MPN_VECT.
+
+~0x000009F000- 0x000009FFFF
+  Extended BIOS data area.
+
+ 0x00000A0000- 0x00000BFFFF
+  VGA graphics mem, marked as write-through cache.
+
+ 0x0000100000- 0x00001845FF
+  [C:/Kernel/Adam1a.HPP.Z,3368] CSysFixedArea for page tables and misc.  128
+  Gig of address space mapped.
+
+ 0x0000184600- 0x007FFDFFFF
+  Code Heap mem.
+
+ 0x00E0000000- 0x00FFFFFFFF
+  32-bit devices could allocate memory at 0xF0000000 going up, but this is 
+wrong, since some PCs already have devices at 0xF0000000.  No PCI devices 
+are supported, so [C:/Kernel/Mem1c.CPP.Z,165] Mem32DevAlloc() flaws are not
+  an issue.
+
+ 0x0080000000-~0x00DFFFFFFF
+ 0x0100000000-~0x1FFFFFFFFF
+  Data Heap mem.
+
+             - 0x1FFFFFFFFF
+  64-bit devices are allocated with [C:/Kernel/Mem1c.CPP.Z,215]
+  Mem64DevAlloc() counting bwd from 128 Gig, 
+but no PCI devices are actually supported.
+  
+
+				      [C:/Kernel/Adam1a.HPP.Z,2784] CBlkPools [C:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrls
+ <1> (image)
+
+
+
+0000,0000,0000,0000 *NULL Protected
+0000,0000,0000,6FFF		      Core 0
+
+0000,0000,0000,7C00 Kernel
+0000,0000,0003,57DF 
+
+0000,0000,0010,0000 FIXED_AREA			   AdamTask
+
+0000,0000,0018,4600
+
+		    sys_code_bp
+
+						   Task
+
+
+
+
+				      Core 1
+						   SethTask
+
+0000,0000,7FFD,FFFF
+0000,0000,8000,0000
+
+
+
+		    sys_data_bp
+						   Task
+0000,0000,DFFF,FFFF 
+0000,0000,F000,0000 32-bit devices
+
+0000,0001,0000,0000
+
+						   SethTask
+
+
+
+
+		    sys_data_bp       Core n 
+
+
+
+
+				      Independent
+
+
+
+
+		    64-bit devices
+
+0000,001F,FFFF,FFFF
+
+* Note: There is a break in the data-heap block pool.  This has no effect 
+except the obvious effect that fragmentation has on contiguous requests.  I 
+can [C:/Kernel/Mem1b.CPP.Z,373] MAlloc() an 8 Gig chunk on my 12 Gig machine.
+
+* Note: For systems with less than 2 Gig RAM, the code and data heap block 
+pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 
+the total.  See [C:/Kernel/Mem1c.CPP.Z,261] HeapsInit().
+
+* See [C:/Kernel/KEnd.CPP.Z,1] Independent Heap Ctrl Example.

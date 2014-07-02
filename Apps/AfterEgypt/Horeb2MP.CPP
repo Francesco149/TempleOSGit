@@ -6,7 +6,7 @@ U0 MPDrawHoreb(CDC *dc2)
   CTask *task=dc2->win_task;
   CDC *dc=DCAlias(dc2,task);
   I64 lo=Gs->num*O_NUM_OBJS/mp_cnt,hi=(Gs->num+1)*O_NUM_OBJS/mp_cnt,
-	i,j,dx,dy,dz,w=task->win_pixel_width,h=task->win_pixel_height,r[16],cx=w>>1;
+	i,j,dx,dy,dz,w=task->pix_width,h=task->pix_height,r[16],cx=w>>1;
   F64 s,m,a,x1,y1,x2,y2;
   Obj *tempo;
 
@@ -35,14 +35,14 @@ U0 MPDrawHoreb(CDC *dc2)
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	GrSetSymmetry(dc,s*tempo->x1+cx,s*tempo->y1+h,s*tempo->x1+cx,s*tempo->y1+h+10);
       }
-      SpritePlot3B(dc,s*tempo->x1+cx,s*tempo->y1+h,tempo->z1,type_imgs[tempo->type]);
+      Sprite3B(dc,s*tempo->x1+cx,s*tempo->y1+h,tempo->z1,imgs[tempo->type]);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-      if (tempo==&objs[O_BURNING_BUSH]) { //draw burning bush
+      if (tempo==&objs[O_BURNING_BUSH]) {//draw burning bush
 	dc->x=s*tempo->x1+cx;
 	dc->y=s*tempo->y1+h;
 	dc->z=tempo->z1;
 	dc->pen_width=1;
-	dc->color=win_updates&15;
+	dc->color=winmgr.updates&15;
 	for (j=0;j<45;j++) {
 	  m=Sqr(Rand); a=2*pi*Rand;
 	  P2R(&x1,&y1,m,a);
@@ -62,7 +62,7 @@ U0 MPDrawHoreb(CDC *dc2)
 
 U0 DrawHoreb(CTask *task,CDC *dc)
 {
-  I64 i,x,y,z,w=task->win_pixel_width,h=task->win_pixel_height,r[16],cx=w>>1,cy=h>>1;
+  I64 i,x,y,z,w=task->pix_width,h=task->pix_height,r[16],cx=w>>1,cy=h>>1;
   F64 s;
   GrIdentEqu(r);
   GrRotYEqu(r,-theta);

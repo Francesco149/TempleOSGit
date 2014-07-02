@@ -1,4 +1,4 @@
-#help_index "Utils;Cmd Line (Typically)"
+#help_index "DolDoc/Conversion"
 
 U0 TXTPutS(CDoc *doc,U8 *st,I64 *_col)
 {
@@ -36,11 +36,11 @@ U0 TXTPutS(CDoc *doc,U8 *st,I64 *_col)
 }
 
 public CDoc *Doc2TXT(CDoc *doc_in)
-{
+{//Cvt [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc doc to plain text.
   CDocEntry *doc_e,*doc_e2;
   I64 y,col;
   CDoc *doc_out=DocNew;
-  Bool unlock_doc_in=DocLock(doc_in),no_backward;
+  Bool unlock_doc_in=DocLock(doc_in),no_bwd;
 
   DocRecalc(doc_in);
 
@@ -50,23 +50,23 @@ public CDoc *Doc2TXT(CDoc *doc_in)
   col=doc_e->x;
   y=doc_e->y;
   while (doc_e!=doc_in) {
-    if (!(doc_e->flags1&(DOCEF1_SKIP|DOCEF1_HARD_SKIP))) {
+    if (!(doc_e->de_flags&(DOCEF_SKIP|DOCEF_HARD_SKIP))) {
       while (y<doc_e->y) {
 	TXTPutS(doc_out,"\n",&col);
 	y++;
 	col=0;
       }
 
-      no_backward=TRUE;
+      no_bwd=TRUE;
       doc_e2=doc_e->next;
       while (doc_e2!=doc_in && doc_e2->y==doc_e->y) {
 	if (doc_e2->x<doc_e->x) {
-	  no_backward=FALSE;
+	  no_bwd=FALSE;
 	  break;
 	}
 	doc_e2=doc_e2->next;
       }
-      if (no_backward)
+      if (no_bwd)
 	while (col<doc_e->x)
 	  TXTPutS(doc_out," ",&col);
 
@@ -82,7 +82,7 @@ public CDoc *Doc2TXT(CDoc *doc_in)
 	case DOCT_SPRITE:
 	  break;
 	default:
-	  if (Bt(doc_type_flags_tag,doc_e->type_u8))
+	  if (doc_e->de_flags&DOCEF_TAG)
 	    TXTPutS(doc_out,doc_e->tag,&col);
       }
     }
@@ -101,13 +101,14 @@ public CDoc *Doc2TXT(CDoc *doc_in)
   return doc_out;
 }
 
+#help_index "Cmd Line (Typically);DolDoc/Conversion;DolDoc/Cmd Line (Typically)"
 public U0 ToTXT(U8 *_in_name,U8 *_out_name=NULL,I64 width=70)
-{
+{//Convert [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file to plain text.
   U8 *in_name,*out_name;
   CDoc *doc_in,*doc_out;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  SetWinHorz(0,width-1); //This sets doc width for word wrap
+  SetWinHorz(0,width-1); //Sets doc width for word wrap.
 
   in_name=DftExt(_in_name,"TXT.Z"),
   if (_out_name)
@@ -127,5 +128,3 @@ public U0 ToTXT(U8 *_in_name,U8 *_out_name=NULL,I64 width=70)
   Free(in_name);
   Free(out_name);
 }
-
-#help_index ""

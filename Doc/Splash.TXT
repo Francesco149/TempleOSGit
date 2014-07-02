@@ -1,5 +1,5 @@
 
-                                TempleOS V1.10
+                                TempleOS V2.11
 
 
 
@@ -9,8 +9,9 @@
 
 
 
-                    <1> (image)
 
+
+ <1> (image)
 
 
 
@@ -22,10 +23,12 @@
 
 
           
-             Divine Intellect,
-              Public Domain,
-                 64-Bit,
-               Kept Perfect,
-             Operating System
+                                 God on Tap!
 
-            [C:/Doc/TrivialSolutions.TXT.Z,1] Trivial Solutions
+      <F7> Word
+<SHIFT-F7> Passage
+      <F6> Song
+<SHIFT-F6> Doodle
+
+[C:/Doc/TrivialSolutions.TXT.Z,1] Trivial Solutions
+

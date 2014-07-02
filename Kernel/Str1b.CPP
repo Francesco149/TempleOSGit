@@ -1,7 +1,7 @@
 U8 *Tabs2Spaces(U8 *src)
-{
-  I64 i,j,l=StrLen(src)<<1+2,col=0;
-  U8 ch,*dst=MAlloc(l),*temp;
+{//MAlloc str with tabs to spaces.
+  I64 ch,i,j,l=StrLen(src)<<1+2,col=0;
+  U8 *dst=MAlloc(l),*temp;
   while (ch=*src++) {
     if (ch=='\t') {
       j=(col+8) & ~7;
@@ -33,9 +33,9 @@ U8 *Tabs2Spaces(U8 *src)
 }
 
 U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
-{
-  I64 i,col=0;
-  U8 ch,*dst,*dst2;
+{//MAlloced str.  8*0.25-->2 or 8*2.0-->16
+  I64 ch,i,col=0;
+  U8 *dst,*dst2;
   while (ch=*src++) {
     if (ch=='\t')
       col=(col+8) & -0x8;
@@ -56,8 +56,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0)
-//Return a [C:/Kernel/Mem1b.CPP.Z,376] MAlloc()ed result from StrUtil
-{
+{//MAlloc [C:/Kernel/Str1a.CPP.Z,510] StrUtil().
   U8 *dst=StrNew(src),*dst2,*temp;
   StrUtil(dst,flags);
   if (flags & SUF_T2S) {
@@ -68,16 +67,16 @@ U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0)
   if (flags & SUF_SCALE_INDENT)
     dst2=ScaleIndent(dst,indent_scale_factor);
   else
-    dst2=StrNew(dst); //Shorten
+    dst2=StrNew(dst); //Shorten to just right size.
   Free(dst);
   return dst2;
 }
 
 U0 GetOutOfDollar()
-{
+{//If a $ has been printed, print another $ to exit mode.
   CDoc *doc;
   if (IsRaw) {
-    if (sys_raw_flags&RWF_IN_DOLLAR)
+    if (text.raw_flags&RWF_IN_DOLLAR)
       '$';
   } else {
     if (fp_doc_put && (doc=(*fp_doc_put)(Fs)) && doc->flags&DOCF_IN_DOLLAR)
@@ -85,20 +84,8 @@ U0 GetOutOfDollar()
   }
 }
 
-U0 NewLine(I64 cnt=1)
-{
-  while (cnt-->0)
-    '\n';
-}
-
-U0 Spaces(I64 cnt=1)
-{
-  while (cnt-->0)
-    '' CH_SPACE;
-}
-
 Bool YorN()
-{
+{//Wait for user to answer Y or N.
   I64 ch;
   "(y or n)? ";
   while (TRUE) {
@@ -114,79 +101,85 @@ Bool YorN()
 }
 
 I64 PressAKey()
-{
-  "%S","ST_PRESS_A_KEY";
+{//Print "Press a key" and wait for non-zero [C:/Kernel/Adam1a.HPP.Z,3382] ASCII key.
+  "$BK,1$PRESS A KEY$BK,0$\n";
   return GetChar(,FALSE);
 }
 
 Bool AreYouSure()
-{
-  "%S","ST_ARE_YOU_SURE";
+{//Print "Are you sure" and waits for Y or N.
+  "ARE YOU SURE ";
   return YorN;
 }
 
 U0 Help()
-{
+{//Dbg help or master help index file.
   if (IsDbg)
     DbgHelp;
   else
-    PopUp("Type(\"::/Doc/HelpIndex.TXT\");DocHome;View;");
+    PopUp("Type(\"::/Doc/HelpIndex.TXT\");DocTop;View;");
 }
 
+U0 ScanFlags(U8 *_dst_flags,U8 *lst,U8 *src)
+{/*More than 64 flags. Flags passed by ref.
 
-U0 ScanFlags(U8 *f,U8 *lst,U8 *st)
-{
+Examples:
+[C:/Adam/Utils/Diff.CPP.Z,2] ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
+
+I64 flags=0;
+ScanFlags(&flags,"R\0L\0Dump\0Scan\0","+Dump-R"); //Sets Bit#2, Clears Bit#0.
+*/
   I64 i;
-  U8 *st2,*ptr;
-  if (st) {
-    st2=MAlloc(StrLen(st)+1);
-    while (*st) {
-      while (*st && *st!='+' && *st!='-')
-	st++;
-      if (*st=='+') {
-	st++;
-	if (*st) {
-	  ptr=st2;
-	  while (*st && *st!='+' && *st!='-' && *st!=CH_SPACE && *st!=CH_SHIFT_SPACE)
-	    *ptr++=*st++;
+  U8 *buf,*ptr;
+  if (src) {
+    buf=MAlloc(StrLen(src)+1);
+    while (*src) {
+      while (*src && *src!='+' && *src!='-')
+	src++;
+      if (*src=='+') {
+	src++;
+	if (*src) {
+	  ptr=buf;
+	  while (*src && *src!='+' && *src!='-' && *src!=CH_SPACE && *src!=CH_SHIFT_SPACE)
+	    *ptr++=*src++;
 	  *ptr=0;
-	  i=LstMatch(st2,lst);
+	  i=LstMatch(buf,lst);
 	  if (i>=0)
-	    LBts(f,i);
+	    LBts(_dst_flags,i);
 	  else {
-	    Free(st2);
+	    Free(buf);
 	    throw('ScanFlag');
 	  }
 	}
-      } else if (*st=='-') {
-	st++;
-	if (*st) {
-	  ptr=st2;
-	  while (*st && *st!='+' && *st!='-' && *st!=CH_SPACE && *st!=CH_SHIFT_SPACE)
-	    *ptr++=*st++;
+      } else if (*src=='-') {
+	src++;
+	if (*src) {
+	  ptr=buf;
+	  while (*src && *src!='+' && *src!='-' && *src!=CH_SPACE && *src!=CH_SHIFT_SPACE)
+	    *ptr++=*src++;
 	  *ptr=0;
-	  i=LstMatch(st2,lst);
+	  i=LstMatch(buf,lst);
 	  if (i>=0)
-	    LBtr(f,i);
+	    LBtr(_dst_flags,i);
 	  else {
-	    Free(st2);
+	    Free(buf);
 	    throw('ScanFlag');
 	  }
 	}
       }
     }
-    Free(st2);
+    Free(buf);
   }
 }
 
-U8 *SPrintFlags(U8 *dst,U8 *lst,I64 flags)
-{
+U8 *StrPrintFlags(U8 *dst,U8 *lst,I64 flags)
+{//Only 64 flags. Flags passed by value.
   I64 i;
   *dst=0;
-  for (i=0;i<=63;i++)
-    if (Bt(&flags,i)) {
-      StrCat(dst,"+");
-      StrCat(dst,LstSub(i,lst));
-    }
+  while (flags) {
+    i=Bsf(flags);
+    Btr(&flags,i);
+    CatPrint(dst,"+%z",i,lst);
+  }
   return dst;
 }

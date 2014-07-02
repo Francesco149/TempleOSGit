@@ -2,7 +2,6 @@
 
 
 
-
 	/* <1> <1> (image) */
 
 
@@ -10,9 +9,7 @@
 
 
 
-
 	/* <2> <2> (image) */
-
 
 
 
@@ -37,9 +34,7 @@
 
 
 
-
 	/* <4> <4> (image) */
-
 
 
 
@@ -87,8 +82,6 @@
 
 
 
-
-
 	/*  <7> (image) */
 
 
@@ -99,10 +92,7 @@
 
 
 
-
-
 	/*  <8> (image) */
-
 #define OT_BUSH1	0
 #define OT_BUSH2	1
 #define OT_LOG		2
@@ -113,7 +103,7 @@
 #define OT_GOAT2	7
 #define OT_NUM_TYPES	8
 
-U8 *type_imgs	[OT_NUM_TYPES]={__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7,__BIN_8};
+CSprite *imgs[OT_NUM_TYPES]={__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7,__BIN_8};
 
 F64 theta,vx,vz;
 Bool horeb_done;

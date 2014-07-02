@@ -1,12 +1,10 @@
-/*
-This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point arithmetic
+/*Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point arithmetic
 because it used to be faster than floating
 point.	See [C:/Demo/Lectures/FixedPoint.CPP.Z,1].
 
 The decimal place is between
 bits 31 and 32.
 */
-
 
 #define NUM_BALLS	64
 #define BALL_RADIUS	5
@@ -22,16 +20,10 @@ U0 DrawIt(CTask *,CDC *dc)
     GrCircle(dc,ball_x[i].i32[1],ball_y[i].i32[1],BALL_RADIUS);
 }
 
-
-
-
 /****
 
 
-
 /*  <1> (image) */
-
-
 
 
 
@@ -41,20 +33,15 @@ with normal and tangential components.
 All masses are identical, so they
 have been dropped from the equations.
 
-
 Conservation of Momentum:
 
 V1it+V2it=V1ft+V2ft
 
 V1in+V2in=V1fn+V2fn
 
-
-
 Conservation of Energy:
 
 |V1i|2+|V2i|2=|V1f|2+|V2f|2
-
-
 ****/
 
 U0 AnimateTask(I64)
@@ -66,8 +53,8 @@ U0 AnimateTask(I64)
     delta_x,delta_y,v_t1,v_n1,v_t2,v_n2;
   F64 dist;
   while (TRUE) {
-    h=task->win_pixel_width;
-    v=task->win_pixel_height;
+    h=task->pix_width;
+    v=task->pix_height;
     for (i=0;i<NUM_BALLS;i++) {
       ball_x[i]+=ball_velocity_x[i];
       ball_y[i]+=ball_velocity_y[i];
@@ -145,8 +132,8 @@ U0 Init()
 {
   I64 i;
   for (i=0;i<NUM_BALLS;i++) {
-    ball_x[i]=(RandU16%(Fs->win_pixel_width-BALL_RADIUS*2)+BALL_RADIUS)<<32;
-    ball_y[i]=(RandU16%(Fs->win_pixel_height-BALL_RADIUS*2)+BALL_RADIUS)<<32;
+    ball_x[i]=(RandU16%(Fs->pix_width-BALL_RADIUS*2)+BALL_RADIUS)<<32;
+    ball_y[i]=(RandU16%(Fs->pix_height-BALL_RADIUS*2)+BALL_RADIUS)<<32;
     ball_velocity_x[i]=RandI32/4;
     ball_velocity_y[i]=RandI32/4;
   }

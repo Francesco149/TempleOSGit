@@ -1,0 +1,107 @@
+                              Debugging Overview
+
+* You can enter the debugger with [C:/Kernel/Dbg1a.CPP.Z,637] Dbg() or
+<CTRL-ALT-d>.  You might enter the 
+debugger through a fault.  Enter [C:/Kernel/Dbg1a.CPP.Z,449] G() or
+[C:/Kernel/Dbg1a.CPP.Z,474] G2() to continue execution.  Place a 
+call to [C:/Kernel/Dbg1a.CPP.Z,637] Dbg() in your code at fatal error points
+to enter the debugger.  If 
+you see a stk dump, record the label+offset and unassemble,
+[C:/Compiler/Unassembler.CPP.Z,643] U(). [C:/Compiler/Unassembler.CPP.Z,643]
+U([C:/Kernel/Adam1a.HPP.Z,3323] _RIP); 
+
+* [C:/Compiler/Unassembler.CPP.Z,643] U(&FunName+offset) to unassemble mem or
+[C:/Adam/Dbg2a.CPP.Z,249] Uf("FunName") to unassemble a 
+function. [C:/Compiler/Unassembler.CPP.Z,643] U([C:/Kernel/Adam1a.HPP.Z,3323]
+_RIP-16);
+
+* While debugging, you specify addresses of assembly routines with just the 
+label, as in _MALLOC+0x20.  You specify [C:/Doc/HolyC.TXT.Z,1] HolyC function
+names with & before 
+functions as in &Print+0x10.
+
+* I use [C:/Kernel/Adam1b.HPP.Z,165] progress1-[C:/Kernel/Adam1b.HPP.Z,174]
+progress4 for debugging because they show on the wallpaper.  
+They're just global integer vars.
+
+* You can use [C:/Kernel/SrvCmd.CPP.Z,422] AdamLog() to send text to the Adam
+task window.  It works like 
+[C:/Kernel/StrPrint.CPP.Z,949] Print().  I never use that.  Instead, I use
+[C:/Kernel/Dbg1a.CPP.Z,215] RawPrint().
+
+* [C:/Kernel/Dbg1a.CPP.Z,170] D(), [C:/Adam/DolDoc/DocMain.CPP.Z,567] DocD(),
+[C:/Kernel/Dbg1a.CPP.Z,232] RawD() to do 16 column hex dump mem with
+numbering from zero.  
+With [C:/Adam/DolDoc/DocMain.CPP.Z,567] DocD the values are updated
+continually and you can alter mem by editing.
+
+* [C:/Kernel/Dbg1a.CPP.Z,202] Dm(), [C:/Adam/DolDoc/DocMain.CPP.Z,554]
+DocDm(), [C:/Kernel/Dbg1a.CPP.Z,248] RawDm() to do 16 column hex dump mem
+with addresses showing.
+
+* [C:/Kernel/Dbg1a.CPP.Z,207] Da() to do one column address dump (for stk,
+etc.) with symbolic addresses.
+
+* [C:/Kernel/Dbg1a.CPP.Z,326] Dr() dumps regs.  You can display and modify
+regs in the debugger with 
+var-like labels, _RAX, _RBX, etc.
+
+* [C:/Adam/Dbg2a.CPP.Z,152] ClassRep() and the dynamic version
+[C:/Adam/Dbg2a.CPP.Z,176] ClassRepD() can be used to dump 
+structures.
+
+* [C:/Adam/Utils/Profiler.CPP.Z,27] Prof() and
+[C:/Adam/Utils/Profiler.CPP.Z,57] ProfRep() provide code profiling.  See 
+[C:/Demo/AutoFile/AFProfile.AUT.Z,1] (This is an [C:/Doc/Glossary.TXT.Z,1]
+AutoFile.)
+
+* Use [C:/Kernel/Dbg1a.CPP.Z,215] RawPrint() to print debug info bypassing
+the window framework.  You pass 
+these routines a count in milliseconds for how long it should be displayed.  
+You can use [C:/Kernel/Misc1a.CPP.Z,244] Raw(TRUE) to make all output bypass
+the window framework.  The 
+WinMgr runs on core0 and will overwrite raw text from other cores when it 
+updates the screen.
+
+* Use [C:/Kernel/Misc1a.CPP.Z,234] SysDbg() to set a flag which you can read
+with [C:/Kernel/Misc1a.CPP.Z,239] IsSysDbg() when you wish 
+to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
+
+* There are flags for various trace options that can help debugging when
+there 
+are compiler bugs.  Often, you place them in #exe{} blocks.
+  
+[C:/Compiler/ICLCC.CPP.Z,38] Echo() turns on or off raw data going into the
+  lexical analyzer.
+
+[C:/Compiler/ICLCC.CPP.Z,33] CTrace() unassembles code generated from the
+  HolyC compiler.
+
+[C:/Compiler/ICLCC.CPP.Z,21] OTrace() shows intermediate code coming-out
+  after optimization.  [C:/Compiler/ICLCC.CPP.Z,26] OTraceMask(
+) ctrls which passes are displayed.
+
+
+* There is a heap check utility which can find leaks.  Use
+[C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog(), and 
+[C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep().  It's a really simple program
+which intercepts [C:/Kernel/Mem1b.CPP.Z,373] MAlloc() and 
+[C:/Kernel/Mem1b.CPP.Z,369] Free().  You can customize the code to find other
+heap issues.
+
+* You can define handler functions for <CTRL-ALT-letter> keys with 
+[C:/Kernel/KbdMouse/Keyboard.CPP.Z,418] SetCtrlAltLetCB().  They operate
+either in a interrupt environment or in the 
+window mgr when it queues kbd msgs.  You can do [C:/Kernel/Misc1a.CPP.Z,244]
+Raw() output.  <CTRL-ALT-lette
+r> handlers take a scan_code as an arg.
+
+* If you recompile Kernel with [C:/Adam/Boot/InsBoot.CPP.Z,135]
+MakeOSPrtBootInstall(), you can set the MemInit
+, option to initialize memory to a value at boot, the HeapInit option to
+cause 
+mem allocated off the heap to be initialized or VarInit option so both global 
+and local vars will be initialized to a value.  Pick a non-zero value to 
+discover uninitialized var bugs.  You can set [C:/Kernel/Adam1b.HPP.Z,149]
+sys_var_init_flag, and 
+[C:/Kernel/Adam1b.HPP.Z,145] sys_heap_init_flag directly after booting.

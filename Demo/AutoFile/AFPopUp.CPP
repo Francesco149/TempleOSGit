@@ -1,7 +1,7 @@
-/*  This is not an AutoFile.  It uses [C:/Kernel/SrvCmd.CPP.Z,473] AutoStr
+/* This is not an AutoFile.  It uses [C:/Kernel/SrvCmd.CPP.Z,463] AutoStr
 to run text as though from an AutoFile.
 
-  This example shows how you can drive pop-up
+This example shows how you can drive pop-up
 windows.
 */
 

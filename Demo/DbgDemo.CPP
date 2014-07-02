@@ -1,19 +1,17 @@
 /*
-Press <CTRL-ALT-C> to break.
+Press <CTRL-ALT-c> to break.
 
 Rerun Program
 
-Press <CTRL-ALT-D> to enter Dbg.
-> [C:/Kernel/Dbg1a.CPP.Z,337] Dr;	//Dump Regs
-> [C:/Kernel/Dbg1a.CPP.Z,486] G2;	//Cont program
+Press <CTRL-ALT-d> to enter Dbg.
+> [C:/Kernel/Dbg1a.CPP.Z,326] Dr;	//Dump Regs
+> [C:/Kernel/Dbg1a.CPP.Z,474] G2;	//Cont program
 
-
-Press <CTRL-ALT-D> to enter Dbg.
-> [C:/Adam/Dbg2a.CPP.Z,236] Uf("DbgDemo");
-> [C:/Compiler/Unassembler.CPP.Z,685] U(_RIP);
+Press <CTRL-ALT-d> to enter Dbg.
+> [C:/Adam/Dbg2a.CPP.Z,249] Uf("DbgDemo");
+> [C:/Compiler/Unassembler.CPP.Z,643] U(_RIP);
 
 See [Debugging,1] Debugging
-
 */
 
 U0 DbgDemo()

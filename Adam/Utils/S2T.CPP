@@ -1,10 +1,10 @@
-#help_index "Utils;Cmd Line (Typically)"
+#help_index "Cmd Line (Typically)"
 
-//[C:/Kernel/Str1a.CPP.Z,530] StrUtil() operations on files
+//[C:/Kernel/Str1a.CPP.Z,510] StrUtil() operations on files
 
 U0 SUFile(U8 *name,I64 suf_flags,F64 indent_scale_factor)
 {//String utility on a single file
-//See [C:/Kernel/Adam1a.HPP.Z,3356] SU Flags
+//See [C:/Kernel/Adam1a.HPP.Z,3691] SU Flags
   U8 *dst;
   Bool chged=FALSE;
   I64 reduced=0;
@@ -25,7 +25,6 @@ U0 SUFile(U8 *name,I64 suf_flags,F64 indent_scale_factor)
   }
   if (chged) {
     "Reduced %s by %d chars\n",name,reduced;
-    StrCpy(doc->filename.name,name);
     DocWrite(doc);
   }
   DocDel(doc);
@@ -34,7 +33,7 @@ public U0 SU(U8 *files_find_mask,I64 suf_flags,U8 *fu_flags=NULL,F64 indent_scal
 {//Apply string utilities to files
 //You can convert spaces to tabs, for example
 //or removing trailing spaces on lines.
-//See [C:/Kernel/Adam1a.HPP.Z,3356] SUF Flags
+//See [C:/Kernel/Adam1a.HPP.Z,3691] SUF Flags
   I64 fuf_flags=0;
   CDirEntry *tempde,*tempde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+f+F+T");
@@ -44,14 +43,11 @@ public U0 SU(U8 *files_find_mask,I64 suf_flags,U8 *fu_flags=NULL,F64 indent_scal
     SUFile(tempde->full_name,suf_flags,indent_scale_factor);
     tempde=tempde->next;
   }
-  DirLstDel(tempde1);
+  DirTreeDel(tempde1);
 }
 public U0 S2T(U8 *files_find_mask,U8 *fu_flags=NULL)
-{
-//Spaces to tabs.
+{//Spaces to tabs.
 //Use "Hard Space" (SHIFT-SPACE) for spaces
 //in string consts in your code.
   SU(files_find_mask,SUF_S2T|SUF_REM_TRAILING,fu_flags);
 }
-
-#help_index ""

@@ -1,12 +1,12 @@
-//This demonstrates class meta data.
-//Basically, we make use of the compiler's
-//data about a class.  We can add to the
-//compilers data arbitrary items, either string or
-//or int or F64 (if you typecast).
+/*Demonstrates class meta data.
+Basically, we make use of the compiler's
+data about a class.  We can add to the
+compilers data arbitrary items, either string or
+or int or F64 (if you typecast).
 
-//This stuff is not high performance.
-//Don't get carried away -- it might be slow.
-
+This stuff is not high performance.
+Don't get carried away -- it might be slow.
+*/
 
 U0 RankOut(I64 i)
 {
@@ -27,9 +27,8 @@ class Test2Struct
   I64 serial_num print_str "%6d" dft_val 123456;
 };
 
-
 U0 DumpStruct(U8 *_d,U8 *class_name=lastclass)
-{//lastclass is keyword
+{//lastclass is keyword.  See [C:/Demo/LastClass.CPP.Z,1].
   CHashClass *tempc=HashFind(class_name,Fs->hash_table,HTT_CLASS);
   U8 *print_str;
   I64 *q,dft_val;
@@ -42,7 +41,7 @@ U0 DumpStruct(U8 *_d,U8 *class_name=lastclass)
     "%s:",ml->str;
 
 //All our items are I64's.  If you want, you can check
-//the data type of the member var.  See [C:/Adam/Dbg2a.CPP.Z,134] ClassRep().
+//the data type of the member var.  See [C:/Adam/Dbg2a.CPP.Z,152] ClassRep().
     q=_d+ml->offset;
 
     if (print_str=MemberMetaData("print_str",ml))
@@ -53,16 +52,16 @@ U0 DumpStruct(U8 *_d,U8 *class_name=lastclass)
       " default:%d",dft_val;
 
 //This corrects for the ambiguity, allowing zero percentile.
-    if (MemberMetaFind("percentile",ml)) { //check if it exists
-//We could use the [C:/Kernel/Adam1a.HPP.Z,749] CMemberLstMeta structure returned by
-//[C:/Compiler/Lex.CPP.Z,476] MemberMetaFind() and save a search.
+    if (MemberMetaFind("percentile",ml)) {//check if it exists
+//We could use the [C:/Kernel/Adam1a.HPP.Z,782] CMemberLstMeta structure returned by
+//[C:/Compiler/Lex.CPP.Z,473] MemberMetaFind() and save a search.
       percentile=MemberMetaData("percentile",ml)(F64);
       " percentile: %5.2f",percentile;
     }
 
     if (fp_output_fun=MemberMetaData("output_fun",ml))
       (*fp_output_fun)(*q);
-    NewLine;
+    '\n';
     ml=ml->next;
   }
 }

@@ -7,12 +7,11 @@ class Drop
   I32 x,y;
 } drops[NUM_DROPS];
 
-
 CDC *cur_dc;
 
 U0 DrawFrame(CTask *task,CDC *dc)
 {
-  I64 w=task->win_pixel_width,h=task->win_pixel_height,
+  I64 w=task->pix_width,h=task->pix_height,
      cx=w>>1,cy=h>>1;
 
   dc->color=LTRED;
@@ -22,7 +21,7 @@ U0 DrawFrame(CTask *task,CDC *dc)
   dc->color=LTRED;
   GrLine(dc,cx-100,cy-100,cx,cy);
   GrLine(dc,cx+100,cy-100,cx,cy);
-  if (Bt(key_down_bitmap,sc_1)) {
+  if (Bt(kbd.down_bitmap,sc_1)) {
     dc->color=WHITE;
     GrRect(dc,cx-2,cy-2,5,5);
   }
@@ -35,7 +34,7 @@ U0 DrawFrame(CTask *task,CDC *dc)
   dc->color=LTRED;
   GrLine(dc,cx-200,cy,cx,cy+100);
   GrLine(dc,cx+200,cy,cx,cy+100);
-  if (Bt(key_down_bitmap,sc_2)) {
+  if (Bt(kbd.down_bitmap,sc_2)) {
     dc->color=WHITE;
     GrRect(dc,cx-2,cy+100-2,5,5);
   }
@@ -60,7 +59,7 @@ U0 UpdateCurBase(CTask *task,CDC *dc)
   Bool old_preempt=Preempt(OFF);
   cur_dc->color=ROP_EQU;
   dc->flags|=DCF_NO_TRANSPARENTS;
-  GrBlot(cur_dc,-task->win_pixel_left-task->win_scroll_x,-task->win_pixel_top-task->win_scroll_y,dc);
+  GrBlot(cur_dc,-task->pix_left-task->scroll_x,-task->pix_top-task->scroll_y,dc);
   dc->flags&=~DCF_NO_TRANSPARENTS;
   Preempt(old_preempt);
 }
@@ -72,13 +71,12 @@ U0 DrawIt(CTask *task,CDC *dc)
   UpdateCurBase(task,dc);
 }
 
-
 U0 AnimateTask(I64)
 {
   I64 i,j,cur_drop=0,c1,c2,x0,y0,x1,y1,w,h;
   while (TRUE) {
-    w=Fs->parent_task->win_pixel_width;
-    h=Fs->parent_task->win_pixel_height;
+    w=Fs->parent_task->pix_width;
+    h=Fs->parent_task->pix_height;
 
     for (i=0;i<2;i++) {
       j=0;
@@ -165,8 +163,8 @@ U0 RainDrops()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   cur_dc=DCNew(GR_WIDTH,GR_HEIGHT);
-  sc_1=A2ScanCode('1');
-  sc_2=A2ScanCode('2');
+  sc_1=Char2ScanCode('1');
+  sc_2=Char2ScanCode('2');
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   DocCursor;

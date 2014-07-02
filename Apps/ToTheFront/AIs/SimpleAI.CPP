@@ -3,7 +3,7 @@ Unit *FindNearestUnit(I64 row,I64 col,I64 player,Bool in_LOS,F64 range=-1)
   I64 i;
   F64 d,best_d=MAX_F64,x1,y1,x2,y2;
   Unit *best=NULL;
-//[C:/Kernel/Adam1b.HPP.Z,228] Sqrt() is slow, so work with squared distances.
+//[C:/Kernel/Adam1b.HPP.Z,85] Sqrt() is slow, so work with squared distances.
   if (range<0)
     range=MAX_F64;
   else
@@ -46,7 +46,7 @@ U0 TanksMove()
     CheckUser;
     tempu=&units[cur_player][i];
     if (tempu->life>0) {
-      //This cheats because it violates Line-of-Sight
+      //Cheats because it violates Line-of-Sight
       if (target=FindNearestUnit(tempu->row,tempu->col,enemy_player,FALSE)) {
 	RowCol2XY(&x,&y,target->row,target->col);
 	if (!MoveUnit(tempu,x,y)) {

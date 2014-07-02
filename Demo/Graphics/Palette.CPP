@@ -6,7 +6,7 @@ U0 PaletteDemo()
     "$BLACK$$BG,%d$__%-8Z__$FG$$BG$\n",i,i,"ST_COLORS";
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-//Alternatively, use [C:/Adam/Gr/GrScreen.CPP.Z,230] SetVGAPalette4(vga_palette4_gray);
+//Alternatively, use [C:/Adam/Gr/GrPalette.CPP.Z,91] SetVGAPalette4(vga_palette4_gray);
   for (i=0;i<16;i++) {
     j=0xFF*i/15;
     bgr.b=j;
@@ -20,7 +20,7 @@ U0 PaletteDemo()
   SetVGAPaletteColor(WHITE,0xFFFF00);
   PressAKey;
 
-//[C:/Adam/TaskSettings.CPP.Z,92] SettingsPop() restores original palette
+//[C:/Adam/TaskSettings.CPP.Z,87] SettingsPop() restores original palette
   SettingsPop;
 }
 

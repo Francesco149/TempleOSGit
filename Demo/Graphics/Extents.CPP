@@ -1,13 +1,7 @@
-
-
-//This is a test image we are going
-//to draw and determine the extents of.
-
+//Test image which we will determine the extents of.
 
 
 /* <1> <1> (image) */
-
-
 
 
 U0 Extents()
@@ -15,8 +9,8 @@ U0 Extents()
   CDC *dc=DCAlias;
   I64 min_x,max_x,min_y,max_y;
 
-//We want screen, not window coordinates.
-  I64 h=Fs->win_pixel_left+Fs->win_scroll_x,v=Fs->win_pixel_top+Fs->win_scroll_y;
+//Screen, not window coordinates.
+  I64 h=Fs->pix_left+Fs->scroll_x,v=Fs->pix_top+Fs->scroll_y;
 
   DocClear;
   DCFill;
@@ -28,10 +22,11 @@ U0 Extents()
   DCExtentsInit(dc);
 
   dc->pen_width=3;
-  SpritePlot3(dc,40,GR_HEIGHT>>1,0,__BIN_1);
+  Sprite3(dc,40,GR_HEIGHT>>1,0,__BIN_1);
 
   dc->color=LTRED;
   dc->pen_width=1;
+
 //This box is the extents.
   GrLine(dc,dc->min_x-h,dc->min_y-v,dc->max_x-h,dc->min_y-v);
   GrLine(dc,dc->min_x-h,dc->min_y-v,dc->min_x-h,dc->max_y-v);

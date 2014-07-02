@@ -149,7 +149,7 @@ BCD_MAIN::
 	POP	CX
 	LOOP	@@20
 
-//See [C:/Kernel/Dsk/DskATA.CPP.Z,611] BootCdProbe().
+//See [C:/Kernel/Dsk/DskATA.CPP.Z,608] BootCdProbe().
 	MOV	EBX,U32 [BCD_BLK_LO-BCD_START] //TODO: oops overflow?
 	SHL	EBX,16
 	MOV	BX,BOOT_CODE_CDROM  //See sys_boot_code

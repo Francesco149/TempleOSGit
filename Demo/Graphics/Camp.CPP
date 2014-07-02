@@ -1,4 +1,4 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+//Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
 #define CO_PERSON	1
 #define CO_TENT	2
@@ -10,7 +10,6 @@ class Obj
   I64 type;
 };
 
-
 #define MAX_PEOPLE	1024
 #define TENT_RATIO	40
 #define MAX_TENTS	(MAX_PEOPLE/TENT_RATIO+1)
@@ -20,50 +19,40 @@ class Obj
 
 
 
-  /* <1> <1> (image) */
+	/* <1> <1> (image) */
 
 
 
 
 
-  /* <2> <2> (image) */
+	/* <2> <2> (image) */
 
 
 
 
 
-
-  /* <3> <3> (image) */
-
-
-
-U8 *people_img[4]={__BIN_2,__BIN_1,__BIN_3,__BIN_1};
+	/* <3> <3> (image) */
 
 
 
 
 
+	/* <4> <4> (image) */
 
 
 
 
 
+	/* <5> <5> (image) */
 
 
 
 
 
-	    /* <4> <4> (image) */
+	/* <6> <6> (image) */
 
-U8 *tent_img=__BIN_4;
-
-
-
-
-
-
-
-/* <5> <5> (image) */
+CSprite *right_imgs[4]={__BIN_2,__BIN_1,__BIN_3,__BIN_1},
+	*left_imgs[4]={__BIN_5,__BIN_4,__BIN_6,__BIN_4};
 
 
 
@@ -78,13 +67,29 @@ U8 *tent_img=__BIN_4;
 
 
 
+	/* <7> <7> (image) */
+
+CSprite *tent_img=__BIN_7;
+
+
+	/* <8> <8> (image) */
 
 
 
 
-/* <6> <6> (image) */ //Used as <6> in quail, clouds, and squirt.
 
 
+
+
+
+
+
+
+
+
+
+
+/* <9> <9> (image) */ //Pointer to sprite in [C:/Demo/Graphics/Mountain.CPP.Z,1] Mountain.CPP file
 
 I64 num_objs;
 Obj objs[MAX_PEOPLE+MAX_TENTS];
@@ -94,20 +99,17 @@ Obj camp_view_pt;
 #define CAMP_SCALE	300
 #define CAMP_Z_CLIP	10
 
-U0 CTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
+U0 CTransform(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
 {
-  *x-=camp_view_pt.x;
-  *y-=camp_view_pt.y;
-  *z-=camp_view_pt.z;
-
-  GrRot(dc->r,x,y,z);
-
-  *x = *x *-CAMP_SCALE/ *z;
-  *y = *y *-CAMP_SCALE/ *z;
-
-  *x=dc->x+*x;
-  *y=dc->y-*y;
-  *z=dc->z-*z;
+  I64 x=*_x-camp_view_pt.x,y=*_y-camp_view_pt.y,z=*_z-camp_view_pt.z;
+  GrRot(dc->r,&x,&y,&z);
+  if (z<0) {
+    x=x*-CAMP_SCALE/z;
+    y=y*-CAMP_SCALE/z;
+  }
+  *_x=dc->x+x;
+  *_y=dc->y-y;
+  *_z=dc->z-z;
 }
 
 I64 mp_not_done_flags;
@@ -116,9 +118,9 @@ F64 frame;
 I32 *depth_buf;
 U0 MPDrawMeeting(CTask *task)
 {
-  CDC *dc=DCAlias(gr_dc2,task);
+  CDC *dc=DCAlias(gr.dc2,task);
   F64 s;
-  U8 *img,*img1,*img2;
+  CSprite *img,*img1,*img2;
   I64 i,x,y,z,*r2,*old_r=dc->r,
      lo= Gs->num   *num_objs/mp_cnt,
      hi=(Gs->num+1)*num_objs/mp_cnt;
@@ -140,15 +142,20 @@ U0 MPDrawMeeting(CTask *task)
     if (z>CAMP_Z_CLIP) {
       s=0.5*ToF64(CAMP_SCALE)/z;
       if (objs[i].type==CO_PERSON) {
-	img1=people_img[(i+ToI64(frame))&3];
-	img2=people_img[(i+ToI64(frame)+1)&3];
+	if (objs[i].dx>=0) {
+	  img1=right_imgs[(i+ToI64(frame))&3];
+	  img2=right_imgs[(i+ToI64(frame)+1)&3];
+	} else {
+	  img1=left_imgs[(i+ToI64(frame))&3];
+	  img2=left_imgs[(i+ToI64(frame)+1)&3];
+	}
 	img=SpriteInterpolate(img1,img2,frame%1.0);
       } else
 	img=tent_img;
 
       r2=GrScaleNew(old_r,s);
       GrSetRotMat(dc,r2);
-      SpritePlot3B(dc,x,y,z,img);
+      Sprite3B(dc,x,y,z,img);
       Free(r2);
       if (objs[i].type==CO_PERSON)
 	Free(img);
@@ -167,20 +174,19 @@ U0 DrawMeeting(CTask *task,CDC *dc)
   I64 i,x,y,z,*r2,*old_r;
   F64 s;
 
-  frame=4.0*Saw(tT,0.5);
-  cx=task->win_pixel_width/2;
-  cy=task->win_pixel_height/2;
+  frame=4.0*Saw(tS,0.5);
+  cx=task->pix_width/2;
+  cy=task->pix_height/2;
 
   camp_view_pt.x=0;
-  camp_view_pt.y=200-100*Sin(tT);
-  camp_view_pt.z=20+100*Cos(tT);
+  camp_view_pt.y=200-100*Sin(tS);
+  camp_view_pt.z=225+100*Cos(tS);
 
   DCAllocDepthBuf(dc);
   depth_buf=dc->depth_buf;
-  r1=GrRotXNew(30.0*pi/180.0,task);
+  r1=GrRotXNew(23.0*pi/180.0,task);
   old_r=dc->r;
 
-  dc->pen_width=2;
   dc->transform=&CTransform;
   dc->x=cx;
   dc->y=cy;
@@ -189,18 +195,18 @@ U0 DrawMeeting(CTask *task,CDC *dc)
 
   x=0;y=0;z=-16*CAMP_WIDTH;
   dc->transform(dc,&x,&y,&z);
-  SpritePlot3(dc,0,y,0,__BIN_6);
+  Sprite3(dc,0,y,0,__BIN_9);
   dc->flags|=DCF_TRANSFORMATION;
 
-  dc->color=BLACK;
-  GrLine3(dc,-CAMP_WIDTH/2,0,0	  ,CAMP_WIDTH/2,0,0);
-  GrLine3(dc,-CAMP_WIDTH/2,0,-CAMP_WIDTH,CAMP_WIDTH/2,0,-CAMP_WIDTH);
-  GrLine3(dc,-CAMP_WIDTH/2,0,0,-CAMP_WIDTH/2,0,-CAMP_WIDTH);
-  GrLine3(dc, CAMP_WIDTH/2,0,0, CAMP_WIDTH/2,0,-CAMP_WIDTH);
+  dc->color=LTGRAY;
+  GrLine3(dc,-CAMP_WIDTH/2,0,0,CAMP_WIDTH/2,0,0,6);
+  GrLine3(dc,-CAMP_WIDTH/2,0,-CAMP_WIDTH,CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
+  GrLine3(dc,-CAMP_WIDTH/2,0,0,-CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
+  GrLine3(dc,CAMP_WIDTH/2,0,0,CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
 
   dc->transform=&GrTransform;
 
-  if (tT%10<5) {
+  if (tS%10<5) {
     calf=FALSE;
     determined=FALSE;
   } else {
@@ -219,7 +225,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
     s=0.5*ToF64(CAMP_SCALE)/z;
     r2=GrScaleNew(old_r,s,task);
     GrSetRotMat(dc,r2);
-    SpritePlot3B(dc,x,y,z,__BIN_5);
+    Sprite3B(dc,x,y,z,__BIN_8);
     Free(r2);
   }
 
@@ -228,14 +234,14 @@ U0 DrawMeeting(CTask *task,CDC *dc)
     JobQue(&MPDrawMeeting,task,i);
 
   GrSetRotMat(dc,old_r);
-  if (calf && Blink(4.0)) {
-    dc->color=YELLOW;
-    GrPrint(dc,cx-(15*FONT_WIDTH)/2,cy-3*FONT_HEIGHT,"!!Golden Calf!!");
-  }
- 
   while (mp_not_done_flags)
     Yield;
   Free(r1);
+
+  if (calf && Blink(4.0)) {
+    dc->color=LTRED;
+    GrPrint(dc,cx-(15*FONT_WIDTH)/2,cy-3*FONT_HEIGHT,"!!Golden Calf!!");
+  }
 }
 
 #define MAX_SPEED	2<<32
@@ -248,10 +254,10 @@ U0 AnimateTask(I64)
     WinMgrSync;
     for (i=0;i<num_objs;i++)
       if (objs[i].type==CO_PERSON) {
-	if (tT%10<5) {
+	if (tS%10<5) {
 	  objs[i].dx+=RandI32;
 	  objs[i].dz+=RandI32;
-	} else { //Form circle
+	} else {//Form circle
 	  x=CAMP_WIDTH/4*Cos((1.0+1.0/TENT_RATIO)*i*pi*2/num_objs);
 	  z=CAMP_WIDTH/4*Sin((1.0+1.0/TENT_RATIO)*i*pi*2/num_objs)-CAMP_WIDTH/2;
 	  dx=x-objs[i].x.i32[1];
@@ -260,9 +266,9 @@ U0 AnimateTask(I64)
 	  objs[i].dx=MAX_SPEED*(dx/d);
 	  objs[i].dz=MAX_SPEED*(dz/d);
 	}
-	objs[i].dx=LimitI64(objs[i].dx,-MAX_SPEED,MAX_SPEED);
-	objs[i].dy=LimitI64(objs[i].dy,-MAX_SPEED,MAX_SPEED);
-	objs[i].dz=LimitI64(objs[i].dz,-MAX_SPEED,MAX_SPEED);
+	objs[i].dx=ClampI64(objs[i].dx,-MAX_SPEED,MAX_SPEED);
+	objs[i].dy=ClampI64(objs[i].dy,-MAX_SPEED,MAX_SPEED);
+	objs[i].dz=ClampI64(objs[i].dz,-MAX_SPEED,MAX_SPEED);
 	objs[i].x+=objs[i].dx;
 	objs[i].y+=objs[i].dy;
 	objs[i].z+=objs[i].dz;
@@ -315,7 +321,7 @@ U0 Camp(I64 num_people=100)
   DocClear;
 
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->text_attr=LTGREEN<<4+WHITE; //bk/fg
+  Fs->text_attr=YELLOW<<4+WHITE; //bk/fg
   try {
     WordStat;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);

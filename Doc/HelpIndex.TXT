@@ -1,23 +1,27 @@
-[C:/Doc/Welcome.TXT.Z,1] Welcome    [C:/Doc/TrivialSolutions.TXT.Z,1] Trivial Solutions
-[Cmd Line (Typically),1] Quick Start--Command Line
-[C:/Doc/DemoIndex.TXT.Z,1] Demo Index Take Tour
+                                     Help
+
+[C:/Doc/Welcome.TXT.Z,1] Welcome		[C:/Doc/TrivialSolutions.TXT.Z,1] Trivial
+Solutions
+[C:/Doc/CmdLineOverview.TXT.Z,1] Command Line	Take Tour
 `SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
 ");`
-   Key Map
+
+[C:/Doc/DemoIndex.TXT.Z,1] Demo Index	Key Map
 `KeyMap;View;
 `
 
-[C:/Doc/Features.TXT.Z,1] Features               [C:/Doc/Requirements.TXT.Z,1] Requirements
-[C:/Doc/Charter.TXT.Z,1] TempleOS Charter [C:/Doc/Strategy.TXT.Z,1] Strategic Decisions
-[C:/Doc/Mysteries.TXT.Z,1] Mysteries Explained    [C:/Doc/Confuse.TXT.Z,1] Clearing Confusions
-[C:/Doc/HolyC.TXT.Z,1] HolyC [C:/Doc/Directives.TXT.Z,1] Compiler Directives
-[C:/Doc/ChangeLog.TXT.Z,1] ChangeLog [C:/Doc/Demands.TXT.Z,1] Demands
+[C:/Doc/Features.TXT.Z,1] Features	[C:/Doc/Requirements.TXT.Z,1] Requirements
+[C:/Doc/Charter.TXT.Z,1] Charter		[C:/Doc/Strategy.TXT.Z,1] Strategic
+Decisions
+[C:/Doc/Mysteries.TXT.Z,1] Mysteries	[C:/Doc/Confuse.TXT.Z,1] Clearing
+Confusions
+[C:/Doc/HolyC.TXT.Z,1] HolyC  		[C:/Doc/CompilerOverview.TXT.Z,1] Compiler
+Directives
+[C:/Doc/ChangeLog.TXT.Z,1] Change Log	[C:/Doc/Demands.TXT.Z,1] Demands
 	
-+] Level 1: USER HELP
-  
-+] Keyboard Ctrls
-    
-Enter	Right-click menu
++] Level 1: User Help
+  +] Keyboard Ctrls
+    Enter	Right-click menu
 Space Bar	Edit (view)
 Esc		Save and exit
 Shift-Esc	Abort
@@ -28,166 +32,141 @@ Other keys: Key Map
 `KeyMap;View;
 `
 
-
   +] Mouse Ctrls
-    
-Right-Click	Right-click menu
+    Right-Click	Right-click menu
 Left-Click	Edit (view)
 Double-Left	Save and exit
 Double-Right Abort
 Top of Screen Pull-down menu
-
-  [C:/Doc/Glossary.TXT.Z,1] Glossary
+  [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
+[C:/Doc/Glossary.TXT.Z,1] Glossary
 [C:/Doc/GuideLines.TXT.Z,1] Acct Files
 [C:/Doc/TSZ.TXT.Z,1] TSZ Window's Utility
-[C:/Doc/Tips.TXT.Z,1] Tips on Using TempleOS
-[C:/Doc/Quirks.TXT.Z,1] TempleOS Quirks
+[C:/Doc/Tips.TXT.Z,1] Tips
+[C:/Doc/Quirks.TXT.Z,1] Quirks
 [C:/Doc/GuideLines.TXT.Z,1] Directory Structure
 
  <1> (image)	This button on the wall paper
 	starts a terminal window.
 
-+] DOLLAR SIGN CMDS
-    
-[C:/Doc/Dollar.TXT.Z,1] Dollar Sign Cmds are rich-text cmds.  The editor,
-    compiler, assembler and operating system are seamlessly equiped to handle
-    TempleOS rich text.  Cmds like [C:/Kernel/Dsk/Dsk1b.CPP.Z,237] Dir() and
-    [C:/Adam/Utils/Grep.CPP.Z,145] Grep() can output links to the cmd line.
++] DolDoc
+    [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the propriatary TempleOS
+    document type.  The editor, compiler, assembler and whole operating system
+    seamlessly handle DolDocs.  Cmds like [C:/Kernel/Dsk/Dsk1b.CPP.Z,234] Dir()
+    and [C:/Adam/Utils/Grep.CPP.Z,143] Grep() can output links to the cmd line.
+  +] Burning CD/DVDs
+    * Prepare a directory with the files you wish to burn.
 
-  +] CMD PMT
-    
-The TempleOS cmd line interface is based on C/C++. Explore the ".CPP.Z"
-    files.  A cmd which takes no args may be executed by typing the name and a
-    semicolon.  Cmds with args require placing the arg in parentheses like a
-    function call.
-
-Dir(\"*\"); will list files in the current directory.
-
-Dir; uses default of "*".
-
-Cd(\"::/Apps\"); will change directories.
-
-Directories are referenced with "/" not "\".  The boot drive is referred to
-    with "::".  Other drives are referred to by a letter and a colon.  Your user
-    acct directory is referred to with "HOME".
-
-If it is not found, ".Z" is added or removed and a search is done, again.  If
-    a file is still not found, all parent directories are searched.
-
-
-Ed("FILENAME.TXT.Z"); Invokes the editor. See [C:/Adam/Doc/Doc.CPP.Z,92] DOC
-    LINK TYPES.
-
-
-Some cmds like [C:/Adam/Utils/Grep.CPP.Z,145] Grep() take a
-    "find_files_mask".  They begin with the name of a dir tree and end with a
-    list of filename masks.  A "~" before a mask will exclude files.  See
-    [C:/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().
-
-Grep("pattern","/Demo/*.CPP.Z;*.TXT.Z;");
-
-Be aware of [C:/Kernel/Adam1a.HPP.Z,2084] FILEMASK_TXT,
-    [C:/Kernel/Adam1a.HPP.Z,2083] FILEMASK_SRC, [C:/Kernel/Adam1a.HPP.Z,2082]
-    FILEMASK_AOT, [C:/Kernel/Adam1a.HPP.Z,2081] FILEMASK_JIT, and
-    [C:/Kernel/Adam1a.HPP.Z,2085] FILEMASK_GRA.
-
-  +] BURNING CD-ROMs/DVDs
-    
-0) Prepare a directory with the files you wish to burn.
-1) Use [C:/Adam/Boot/DskCDDVD.CPP.Z,328] CDFileCreate() to make an ISO image
+* Use [C:/Adam/Boot/DskCDDVD.CPP.Z,326] CDFileCreate() to make an ISO image
     file.
-2) Use [C:/Kernel/Dsk/Dsk1c.CPP.Z,262] CDImageWrite() to burn an ISO file
-    onto a CD or DVD.
 
-Or, see [C:/Demo/MakeDistro.CPP.Z,1] Making a Distro ISO.
+* Use [C:/Kernel/Dsk/Dsk1c.CPP.Z,259] CDImageWrite() to burn an ISO file onto
+    a CD or DVD.
 
-  
-+] Level 2: ADMIN HELP
-  
-Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,184] Mount() to mount disk drives.  
+* See [C:/Misc/MakeDistro.CPP.Z,1] Making a Distro ISO.
+  +] Level 2: Admin Help
+  Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
+  perhaps, if you are booted to a LiveCD.
+
+You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,135]
+  MakeOSPrtBootInstall(), and specify which drives should be mounted at boot. 
+  See [C:/Misc/MakeDistro.CPP.Z,1].
 
 [C:/Doc/Install.TXT.Z,1] Installing
 
-[C:/Kernel/Adam1.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.
-
-+] Level 3: PROGRAMMER HELP
-  
-[C:/Doc/GuideLines.TXT.Z,1] Guidelines
+[C:/Kernel/Adam1.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is
+  run at start-up by the [C:/Kernel/KEnd.CPP.Z,1] Adam Task.
++] Level 3: Programmer help
+  [C:/Doc/GuideLines.TXT.Z,1] Guidelines
 [C:/Doc/HolyC.TXT.Z,1] HolyC
-[C:/Doc/Graphics.TXT.Z,1] Graphics
+[C:/Doc/GraphicsOverview.TXT.Z,1] Graphics
 [C:/Doc/MultiTasking.TXT.Z,1] Multitasking
-[C:/Demo/Doc/FileRead.CPP.Z,1] Doc Documents
+[C:/Demo/DolDoc/FileRead.CPP.Z,1] DolDoc Documents
 [C:/Demo/Lectures/AndNotMod.CPP.Z,1] Lectures/AndNotMod.CPP
 [C:/Demo/Lectures/FixedPoint.CPP.Z,1] Lectures/FixedPoint.CPP
+[C:/Demo/Lectures/NegDisp.CPP.Z,1] Lectures/NegDisp.CPP
 [C:/Demo/Lectures/Uncached.CPP.Z,1] Lectures/Uncached.CPP
 [C:/Demo/Lectures/Optimization.CPP.Z,1] Lectures/Optimization.CPP
 [C:/Demo/Lectures/ScreenMemory.CPP.Z,1] Lectures/ScreenMemory.CPP
 [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1] Lectures/GraphicsCPULoad.CPP
 [C:/Demo/Lectures/InterruptDemo.CPP.Z,1] Lectures/InterruptDemo.CPP
 [C:/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP
-
-+] Level 4: SYSTEM PROGRAMMER HELP
-  
-[C:/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
++] Level 4: System Programmer Help
+  [C:/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
 [C:/Kernel/Hash1a.CPP.Z,1] Hash Tables
-[C:/Doc/KeyBoard.TXT.Z,1] Keyboard Handling
+[Keyboard Devices/System,1] Keyboard Devices
 [C:/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
 [C:/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2
 [C:/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP
 [C:/Adam/Utils/MemRep.CPP.Z,197] MemRep
-[C:/Adam/WallPaper.CPP.Z,1] WallPaper.CPP
-[C:/Kernel/Scheduler.CPP.Z,1] Scheduler.CPP
-[C:/Adam/Doc/Doc.CPP.Z,1] Doc
+[C:/Adam/WallPaper.CPP.Z,1] WallPaper
+[C:/Kernel/Sched.CPP.Z,1] Scheduler
+[C:/Adam/DolDoc/Doc.CPP.Z,1] Doc
 [C:/Demo/Lectures/MiniGrLib.CPP.Z,1] MiniGrLib
 [C:/Demo/Lectures/MiniCompiler.CPP.Z,1] MiniCompiler
 [C:/Compiler/BackLib.CPP.Z,1] Backend
 
-
+                                    Index
 [AutoFile,1] AutoFile
 [Bit,1] Bit
 [Boot,1] Boot
 [Call,1] Call
-[Char,1] Char
+[C:/Doc/CharOverview.TXT.Z,1] Char Overview
+[Char,1] Char Routines
 [Data Types/Circular Queue,1] Circular Queue
-[Cmd Line (Typically),1] Cmd Line (Typically)
-[Compiler,1] Compiler
+[C:/Doc/CmdLineOverview.TXT.Z,1] Cmd Line Overview
+[Cmd Line (Typically),1] Cmd Line Routines
+[C:/Doc/CompilerOverview.TXT.Z,1] Compiler Overview
+[Compiler,1] Compiler Routines
 [Compression,1] Compression
 [Ctrls,1] Ctrls
 [Data Types,1] Data Types
 [Date,1] Date
-[Debugging,1] Debugging
-[Device,1] Device
-[Doc,1] Doc
+[C:/Doc/DbgOverview.TXT.Z,1] Debugging Overview
+[Debugging,1] Debugging Routines
+[Define,1] Define
+[Devices,1] Devices
+[File,1] Disk
+[C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview
+[DolDoc,1] Doc Routines
+[C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link Types
 [Exceptions,1] Exceptions
 [File,1] File
+[C:/Doc/FileUtils.TXT.Z,1] File Utils
 [Hash/Frame,1] Frames
-[C:/Doc/Graphics.TXT.Z,1] Graphics Overview
-[Graphics,1] Graphic Routines
+[God,1] God
+[C:/Doc/GraphicsOverview.TXT.Z,1] Graphics Overview
+[Graphics,1] Graphics Routines
 [Hash,1] Hash
 [Help System,1] Help System
+[C:/Doc/HolyC.TXT.Z,1] HolyC
 [Info,1] Info
 [Input Pointer,1] Input Pointer (Mouse)
 [Install,1] Install
-[International,1] International
 [I/O,1] I/O
-[C:/Doc/TSZ.TXT.Z,1] TSZ
+[C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
+[Keyboard Devices,1] Keyboard Devices
 [Math,1] Math
-[Memory,1] Memory
+[C:/Doc/MemOverview.TXT.Z,1] Memory Overview
+[Memory,1] Memory Routines
 [Menus,1] Menus
 [Messages,1] Messages
 [Misc,1] Misc
 [MultiCore,1] MultiCore
-[CMathODE,1] MathODE
 [C:/Compiler/OpCodes.TXT.Z,1] OpCodes
 [C:/Doc/HolyC.TXT.Z,1] Operator Precedences
-[C:/Doc/HolyC.TXT.Z,1] Print Extended Codes
+[PCI,1] PCI
+[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings
 [Processor,1] Processor
 [Profiler,1] Profiler
-[PCI,1] PCI
+[C:/Doc/RedSea.TXT.Z,1] RedSea
 [Snd,1] Sound
+[Char,1] String
 [Task,1] Task
+[TextBase Layer,1] TextBase Layer
 [Time,1] Time
 [Training,1] Training
+[C:/Doc/TSZ.TXT.Z,1] TSZ
+[Cmd Line (Typically),1] Utils
 [Windows,1] Windows
 [WordStat,1] WordStat
-[Utils,1] Utils

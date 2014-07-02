@@ -1,17 +1,23 @@
-#help_index "Utils;Cmd Line (Typically);Doc/Html"
+#help_index "DolDoc/Conversion"
 
 //See [C:/Doc/Acknowledgements.TXT.Z,1].
 
-U0 HtmlPutS(CDoc *doc,I64 c,I64 *_old_c,U8 *st,I64 *_col,U8 *style_bitmap=NULL)
+U0 HtmlPutS(CDoc *doc,I64 u32_attr,I64 *_old_u32_attr,U8 *st,I64 *_col,U8 *style_bitmap=NULL)
 {
   U8 *ch,*ptr;
-  if (c!=*_old_c) {
-    if (*_old_c!=-1)
+  if (u32_attr&DOCET_INVERT)
+    u32_attr.u8[1]=(u32_attr.u8[1]&15)<<4|u32_attr.u8[1]>>4;
+  if (u32_attr!=*_old_u32_attr) {
+    if (!(u32_attr&DOCET_BLINK) && *_old_u32_attr&DOCET_BLINK)
+      DocPrint(doc,"</blink>");
+    if (*_old_u32_attr!=-1)
       DocPrint(doc,"</span>");
-    DocPrint(doc,"<span class=c%02X>",c);
-    *_old_c=c;
+    DocPrint(doc,"<span class=c%02X>",u32_attr.u8[1]);
+    if (u32_attr&DOCET_BLINK && !(*_old_u32_attr&DOCET_BLINK))
+      DocPrint(doc,"<blink>");
+    *_old_u32_attr=u32_attr;
     if (style_bitmap)
-      LBts(style_bitmap,c);
+      LBts(style_bitmap,u32_attr.u8[1]);
   }
   while (ch=*st++) {
     switch (ch) {
@@ -56,13 +62,13 @@ U0 HtmlPutS(CDoc *doc,I64 c,I64 *_old_c,U8 *st,I64 *_col,U8 *style_bitmap=NULL)
 }
 
 U8 *TSLinkCvt2(U8 *filename,I64 line_num)
-{ // ::/  --> http://www.templeos.org/Wb/
-  // Make your own LinkCvt routine
+{// ::/  --> http://www.templeos.org/Wb/
+//Make your own LinkCvt routine
   U8 *result=NULL,*st;
   if (filename) {
     st=ChgExt(filename,"html");
     if (st && StrLen(st)>3 && !StrNCmp(st+1,":/",2))
-      result=MPrint("http://www.templeos.org/Wb/%s#l%d",st+3,line_num);
+      result=MStrPrint("http://www.templeos.org/Wb/%s#l%d",st+3,line_num);
     Free(st);
   }
   return result;
@@ -72,10 +78,10 @@ U8 *TSLinkCvt1(U8 *link_st)
 {
   static CDoc *bible=NULL;
   static I64 locks=0;
-  U8 *result=NULL,*filename,*pattern;
+  U8 *result=NULL,*filename,*needle;
   I64 i,num;
   if (link_st) {
-    switch (i=EdLinkCvt(link_st,&filename,&pattern,&num)) {
+    switch (i=EdLinkCvt(link_st,&filename,&needle,&num)) {
       case LK_FILE_LINE:
       case LK_PLAIN_LINE:
       case LK_FILE:
@@ -84,22 +90,26 @@ U8 *TSLinkCvt1(U8 *link_st)
       case -1:
       case LK_DEF:
       case LK_HELP_INDEX:
+      case LK_DOC:
+      case LK_DOC_ANCHOR:
+      case LK_DOC_FIND:
+      case LK_DOC_LINE:
 	break;
       case LK_BIBLE_FIND:
 	while (LBts(&locks,0))
 	  Yield;
 	if (!bible)
 	  bible=Adam("DocRead(\"%s\");",filename);
-	if (DocPatternFind(bible,num,pattern))
+	if (DocFind(bible,num,needle))
 	  result=TSLinkCvt2(filename,bible->cur_entry->y+1);
 	LBtr(&locks,0);
 	break;
       default:
-	if (DocFileEd(i,filename,pattern,&num,EDF_UNCOLLAPSE|EDF_BAIL))
+	if (DocFileEd(i,filename,needle,&num,EDF_UNCOLLAPSE|EDF_BAIL))
 	  result=TSLinkCvt2(filename,num);
     }
     Free(filename);
-    Free(pattern);
+    Free(needle);
   }
   return result;
 }
@@ -108,15 +118,15 @@ public CDoc *Doc2Html(CDoc *doc_in,
   U8 *html_header=NULL,
   U8 *body_header=NULL,U8 *body_footer=NULL,Bool line_anchors=TRUE,
   U8 (*link_cvt)(U8 *link_st)=&TSLinkCvt1)
-{
+{//Cvt [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc doc to HTML file.
   CDocEntry *doc_e,*style,*doc_e2;
-  I64 i,y,old_y=MIN_I64,cur_u8_attr,col,old_c=-1,old_attr;
+  I64 i,y,old_y=MIN_I64,col,_old_u32_attr=-1,old_attr;
   U32 *hl,*src;
   U8 *st,st_2[2],*link_st,*style_bitmap=CAlloc(256/8);
   CBGR p[16];
   GetVGAPalette4(p);
   CDoc *doc_out=DocNew;
-  Bool unlock_doc_in=DocLock(doc_in),no_backward;
+  Bool unlock_doc_in=DocLock(doc_in),no_bwd;
 
   old_attr=doc_in->win_task->text_attr;
   doc_in->win_task->text_attr=DOC_ATTR_DFT_TEXT;
@@ -150,38 +160,36 @@ public CDoc *Doc2Html(CDoc *doc_in,
   doc_e=doc_in->root.next;
   col=doc_e->x;
   y=doc_e->y;
-  cur_u8_attr=doc_e->type.u8[1];
   while (doc_e!=doc_in) {
-    if (!(doc_e->flags1&(DOCEF1_SKIP|DOCEF1_HARD_SKIP))) {
+    if (!(doc_e->de_flags&(DOCEF_SKIP|DOCEF_HARD_SKIP))) {
       if (line_anchors && y!=old_y) {
 	DocPrint(doc_out,"<a name=\"l%d\"></a>",y+1);
 	old_y=y;
       }
       while (y<doc_e->y) {
-	HtmlPutS(doc_out,cur_u8_attr,&old_c,"\n",&col,style_bitmap);
-	y++;
-	if (line_anchors && y!=old_y) {
+	HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,"\n",&col,style_bitmap);
+	if (line_anchors && ++y!=old_y) {
 	  DocPrint(doc_out,"<a name=\"l%d\"></a>",y+1);
 	  old_y=y;
 	}
 	col=0;
       }
 
-      no_backward=TRUE;
+      no_bwd=TRUE;
       doc_e2=doc_e->next;
       while (doc_e2!=doc_in && doc_e2->y==doc_e->y) {
 	if (doc_e2->x<doc_e->x) {
-	  no_backward=FALSE;
+	  no_bwd=FALSE;
 	  break;
 	}
 	doc_e2=doc_e2->next;
       }
-      if (no_backward)
+      if (no_bwd)
 	while (col<doc_e->x)
-	  HtmlPutS(doc_out,cur_u8_attr,&old_c," ",&col,style_bitmap);
+	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr," ",&col,style_bitmap);
 
       link_st=NULL;
-      if (doc_e->flags1&DOCEF1_HTML_LINK)
+      if (doc_e->de_flags&DOCEF_HTML_LINK)
 	link_st=StrNew(doc_e->html_link);
       else if (st=DocEntryLink(doc_in,doc_e)) {
 	link_st=link_cvt(st);
@@ -189,53 +197,51 @@ public CDoc *Doc2Html(CDoc *doc_in,
       }
 
       if (link_st) {
-	if (old_c!=-1) {
+	if (_old_u32_attr!=-1) {
 	  DocPrint(doc_out,"</span>");
-	  old_c=-1;
+	  _old_u32_attr=-1;
 	}
 	DocPrint(doc_out,"<a href=\"%s\">",link_st);
       }
 
-      cur_u8_attr=doc_e->type.u8[1];
       switch (doc_e->type_u8) {
 	case DOCT_TEXT:
-	  if (doc_e->flags1&DOCEF1_HIGHLIGHT) {
+	  if (doc_e->de_flags&DOCEF_HIGHLIGHT) {
 	    if (doc_e->last==doc_in)
 	      MemCpy(&doc_e->settings,&doc_in->settings_root,sizeof(CDocSettings));
 	    else
 	      MemCpy(&doc_e->settings,&doc_e->last->settings,sizeof(CDocSettings));
-	    src=hl=DocHighlight(doc_e,doc_e->tag,StrLen(doc_e->tag),cur_u8_attr<<8);
+	    src=hl=DocHighlight(doc_e,doc_e->tag,StrLen(doc_e->tag),doc_e->type&0xFF00);
 	    while (*src) {
 	      st_2[0]=*src&0xFF;
-	      HtmlPutS(doc_out,*src>>8,&old_c,st_2,&col,style_bitmap);
-	      src++;
+	      HtmlPutS(doc_out,*src++,&_old_u32_attr,st_2,&col,style_bitmap);
 	    }
 	    Free(hl);
 	  } else
-	    HtmlPutS(doc_out,cur_u8_attr,&old_c,doc_e->tag,&col,style_bitmap);
+	    HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,doc_e->tag,&col,style_bitmap);
 	  break;
 	case DOCT_TAB:
-	  HtmlPutS(doc_out,cur_u8_attr,&old_c,"\t",&col,style_bitmap);
+	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,"\t",&col,style_bitmap);
 	  break;
 	case DOCT_HTML_CODE:
-	  if (old_c!=-1) {
+	  if (_old_u32_attr!=-1) {
 	    DocPrint(doc_out,"</span>");
-	    old_c=-1;
+	    _old_u32_attr=-1;
 	  }
 	  DocPrint(doc_out,"%s",doc_e->tag);
 	  break;
 	case DOCT_SPRITE:
-	  HtmlPutS(doc_out,cur_u8_attr,&old_c,doc_e->tag,&col,style_bitmap);
-	  HtmlPutS(doc_out,DOC_COLOR_COMMENT+old_c&0xF0,&old_c,"/* Graphics Not Rendered in HTML */",&col,style_bitmap);
+	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,doc_e->tag,&col,style_bitmap);
+	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,"/* Graphics Not Rendered in HTML */",&col,style_bitmap);
 	  break;
 	default:
-	  if (Bt(doc_type_flags_tag,doc_e->type_u8))
-	    HtmlPutS(doc_out,cur_u8_attr,&old_c,doc_e->tag,&col,style_bitmap);
+	  if (doc_e->de_flags&DOCEF_TAG)
+	    HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,doc_e->tag,&col,style_bitmap);
       }
       if (link_st) {
-	if (old_c!=-1) {
+	if (_old_u32_attr!=-1) {
 	  DocPrint(doc_out,"</span>");
-	  old_c=-1;
+	  _old_u32_attr=-1;
 	}
 	DocPrint(doc_out,"</a>");
 	Free(link_st);
@@ -243,14 +249,15 @@ public CDoc *Doc2Html(CDoc *doc_in,
     }
     doc_e=doc_e->next;
   }
-  while (y<doc_e->y) {
-    HtmlPutS(doc_out,cur_u8_attr,&old_c,"\n",&col,style_bitmap);
-    y++;
+  while (y++<doc_e->y) {
+    HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&_old_u32_attr,"\n",&col,style_bitmap);
     col=0;
   }
-  if (old_c!=-1) {
+  if (_old_u32_attr!=-1) {
+    if (_old_u32_attr&DOCET_BLINK)
+      DocPrint(doc_out,"</blink>");
     DocPrint(doc_out,"</span>");
-    old_c=-1;
+    _old_u32_attr=-1;
   }
   DocPrint(doc_out,"%s",body_footer);
   DocPrint(doc_out,"</pre></body>\n</html>\n");
@@ -269,16 +276,17 @@ public CDoc *Doc2Html(CDoc *doc_in,
   return doc_out;
 }
 
+#help_index "Cmd Line (Typically);DolDoc/Conversion;DolDoc/Cmd Line (Typically)"
 public U0 ToHtml(U8 *_in_name,U8 *_out_name=NULL,U8 *html_header=NULL,
   U8 *body_header=NULL,U8 *body_footer=NULL,I64 width=80,
   Bool line_anchors=TRUE,U8 (*link_cvt)(U8 *link_st)=&TSLinkCvt1)
+{//Convert [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file to HTML.
 //Supply your own link_cvt routine.
-{
   U8 *in_name,*out_name;
   CDoc *doc_in,*doc_out;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  SetWinHorz(0,width-1); //This sets doc width for word wrap
+  SetWinHorz(0,width-1); //Sets doc width for word wrap.
 
   in_name=DftExt(_in_name,"CPP.Z"),
   if (_out_name)
@@ -298,5 +306,3 @@ public U0 ToHtml(U8 *_in_name,U8 *_out_name=NULL,U8 *html_header=NULL,
   Free(in_name);
   Free(out_name);
 }
-
-#help_index ""

@@ -1,8 +1,9 @@
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 
 public U8 *DBlk(I64 blk,Bool write=FALSE)
-{//Dump Disk Blk.
-//If you set write to TRUE, it will be written when you press <ESC>.
+{//Dump disk block. Optionally, write.
+//If you set write to TRUE, the block will
+//be written when you press <ESC>.
 //See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
   U8 *buf=MAlloc(BLK_SIZE);
 
@@ -19,10 +20,11 @@ public U8 *DBlk(I64 blk,Bool write=FALSE)
 }
 
 public U8 *DCluster(I64 c,Bool write=FALSE,I64 num=0)
-{//Dump Disk Cluster.
-//If you set write to TRUE, it will be written when you press <ESC>.
+{//Dump disk cluster. Optionally, write.
+//If you set write to TRUE, the cluster will
+//be written when you press <ESC>.
 //See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
-//Do [C:/Kernel/Dsk/Dsk1b.CPP.Z,237] Dir("*",TRUE); to get cluster numbers of files.
+//Do [C:/Kernel/Dsk/Dsk1b.CPP.Z,234] Dir("*",TRUE); to get cluster numbers of files.
   U8 *buf=MAlloc(Fs->cur_prt->spc<<BLK_SIZE_BITS);
   c=ClusterNumNext(Fs->cur_prt,c,num);
   RClusters(Fs->cur_prt,buf,c,1);
@@ -45,7 +47,7 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
   CDirEntry *tempde1;
   while (tempde) {
     tempde1=tempde->next;
-    if (tempde->attr&_ATTR_DIR) {
+    if (tempde->attr&RS_ATTR_DIR) {
       FOFlatten(tempde->sub,a,i);
       DirEntryDel(tempde);
     } else {
@@ -57,10 +59,10 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
 }
 
 public I64 FileCnt(CDirEntry *tempde)
-{
+{//Cnt of files in [C:/Kernel/Adam1a.HPP.Z,2450] CDirEntry tree.
   I64 cnt=0;
   while (tempde) {
-    if (tempde->attr&_ATTR_DIR)
+    if (tempde->attr&RS_ATTR_DIR)
       cnt+=FileCnt(tempde->sub);
     else
       cnt++;
@@ -69,37 +71,24 @@ public I64 FileCnt(CDirEntry *tempde)
   return cnt;
 }
 
-I64 FOCompare(CDirEntry *tempde1,CDirEntry *tempde2)
-{
-  return tempde1->cluster-tempde2->cluster;
-}
-
-public CDirEntry **FilesOrder(CDirEntry *tempde,I64 *_cnt=NULL)
-{ //See [C:/Demo/Dsk/OrderedIO.CPP.Z,1].
-  I64 cnt=FileCnt(tempde),i=0;
-  CDirEntry **flst=MAlloc(sizeof(CDirEntry *)*cnt);
-  FOFlatten(tempde,flst,&i);
-  QSortI64(flst,cnt,&FOCompare);
-  if (_cnt) *_cnt=cnt;
-  return flst;
-}
-
-
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 
 public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
-{
+{//Copy files.
+//If the name ends in ".Z", it will
+//be stored compressed.  If not ".Z"
+//it will be stored uncompressed.
   Bool result=TRUE;
   CFileAccess *fa;
   CDirEntry *tempde,*tempde1;
   U8 *st;
-  if (!(tempde=FilesFind(src_files_find_mask)))
+  if (!(tempde=FilesFind(src_files_find_mask,FUF_CLUSTER_ORDER)))
     return FALSE;
   if (IsDir(dst_files_find_mask)) {
     if (fa=FileAccessNew(dst_files_find_mask,TRUE)) {
       while (tempde) {
 	tempde1=tempde->next;
-	if (!(tempde->attr & _ATTR_DIR)) {
+	if (!(tempde->attr & RS_ATTR_DIR)) {
 	  st=FileNameAbs(tempde->name);
 	  if (!CopySingle(tempde->full_name,st))
 	    result=FALSE;
@@ -116,7 +105,7 @@ public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
 }
 
 public Bool Move(U8 *f1,U8 *f2)
-{
+{//Move files from one location to another or rename.
   if (Copy(f1,f2)) {
     Del(f1);
     return TRUE;
@@ -124,7 +113,7 @@ public Bool Move(U8 *f1,U8 *f2)
   return FALSE;
 }
 
-I64 PutCopyTree(CDirEntry *tempde,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
+I64 CopyTree2(CDirEntry *tempde,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
 {
   U8 *st;
   I64 result=1;
@@ -132,9 +121,9 @@ I64 PutCopyTree(CDirEntry *tempde,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
     st=MAlloc(StrLen(tempde->full_name)+dst_dir_len+2);
     MemCpy(st,dst_dir,dst_dir_len);
     StrCpy(st+dst_dir_len,tempde->full_name+src_dir_len);
-    if (tempde->attr & _ATTR_DIR) {
+    if (tempde->attr & RS_ATTR_DIR) {
       MkDir(st);
-      result+=PutCopyTree(tempde->sub,src_dir_len,dst_dir_len,dst_dir);
+      result+=CopyTree2(tempde->sub,src_dir_len,dst_dir_len,dst_dir);
     } else
       if (CopySingle(tempde->full_name,st))
 	result++;
@@ -143,8 +132,9 @@ I64 PutCopyTree(CDirEntry *tempde,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
   }
   return result;
 }
-public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
-{  //returns count of copied files (not dirs)
+public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask,Bool no_mask=TRUE)
+{//Copy directory tree.
+//Returns the count of copied files (not dirs).
   CFileAccess *fa;
   CDirEntry *tempde=NULL;
   I64 result=0,i1,i2;
@@ -160,7 +150,7 @@ public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
   }
   Free(st1);
   Free(st2);
-  if (fa=FileAccessNew(src_files_find_mask,TRUE)) {
+  if (fa=FileAccessNew(src_files_find_mask,TRUE,,no_mask)) {
     tempde=SysFilesFind(fa->mask,FUF_RECURSE);
     st1=CurDir;
     FileAccessDel(fa);
@@ -170,11 +160,11 @@ public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask)
       st2=CurDir;
       i2=StrLen(st2);
       if (i2==3) i2--;
-      result=PutCopyTree(tempde,i1,i2,st2);
+      result=CopyTree2(tempde,i1,i2,st2);
       FileAccessDel(fa);
       Free(st2);
     }
-    DirLstDel(tempde);
+    DirTreeDel(tempde);
     Free(st1);
   }
   return result;
@@ -186,7 +176,7 @@ I64 DelTreeDirs(CDirEntry *tempde1)
   CDirEntry *tempde2;
   while (tempde1) {
     tempde2=tempde1->next;
-    if (tempde1->attr & _ATTR_DIR) {
+    if (tempde1->attr & RS_ATTR_DIR) {
       if (tempde1->sub)
 	result+=DelTreeDirs(tempde1->sub);
       result+=SysDel(tempde1->full_name,TRUE);
@@ -196,14 +186,13 @@ I64 DelTreeDirs(CDirEntry *tempde1)
   }
   return result;
 }
-
 I64 DelTreeFiles(CDirEntry *tempde1)
 {
   I64 result=0;
   CDirEntry *tempde2;
   while (tempde1) {
     tempde2=tempde1->next;
-    if (tempde1->attr & _ATTR_DIR) {
+    if (tempde1->attr & RS_ATTR_DIR) {
       if (tempde1->sub)
 	result+=DelTreeFiles(tempde1->sub);
     } else
@@ -214,7 +203,7 @@ I64 DelTreeFiles(CDirEntry *tempde1)
   return result;
 }
 public I64 DelTree(U8 *files_find_mask,U8 *fu_flags=NULL)
-{
+{//Delete directory tree.
   I64 result=0,fuf_flags=0;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
@@ -236,7 +225,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
   if (FileFind(filename,&de,FUF_JUST_FILES)) {
     Free(de.full_name);
     if (!StrCmp(attr,"+?"))
-      "%-48ts %s\n",filename,SPrintFlags(buf,Define("ST_FILE_ATTRS"),de.attr);
+      "%-48ts %s\n",filename,StrPrintFlags(buf,Define("ST_FILE_ATTRS"),de.attr);
     else {
       StrFirstRem(cur_dir,":");
       StrLastRem(cur_dir,"/");
@@ -250,14 +239,17 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
       DirNew(p,cur_dir,&de,FALSE);
     }
   } else
-    PrintErr("%S","ST_FILE_NOT_FOUND");
+    PrintErr("File not found.\n");
 }
 public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate cdt=MIN_I64)
-{
-//Attr "+?" =show
-//     "+T" =resident
-//To Set Date
-//  Touch(filename,"",,datetime);
+{/*Touch file attributes and DateTime.
+Default lists attributes.
+attr: "+?" =show current
+	"+T" =resident
+	[C:/Kernel/Adam1a.HPP.Z,2424] RS_ATTR_READ_ONLY  [C:/Kernel/Define1a.CPP.Z,110] ST_FILE_ATTRS
+To Set DateL:
+	Touch(filename,"",,datetime);
+*/
   I64 fuf_flags=0;
   CDirEntry *tempde,*tempde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+f+F");
@@ -267,12 +259,11 @@ public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate cdt=MI
     TouchFile(tempde->full_name,attr,cdt);
     tempde=tempde->next;
   }
-  DirLstDel(tempde1);
+  DirTreeDel(tempde1);
 }
 
 public I64 FF(U8 *files_find_mask,U8 *fu_flags=NULL)
-//Files Find
-{
+{//Files find. List files matching mask.
   I64 cnt=0,fuf_flags=0;
   CDirEntry *tempde,*tempde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+f+F");
@@ -280,16 +271,17 @@ public I64 FF(U8 *files_find_mask,U8 *fu_flags=NULL)
   tempde=tempde1=FilesFind(files_find_mask,fuf_flags);
   while (tempde) {
     PutFileLink(tempde->full_name);
-    NewLine;
+    '\n';
     cnt++;
     tempde=tempde->next;
   }
-  DirLstDel(tempde1);
+  DirTreeDel(tempde1);
   return cnt;
 }
 
 public U0 SetDrvTextAttr(U8 drv_let,U8 attr)
-{ //This is to color the border text according to the current drive
+{//Set color of the window border text
+//for when this drive is the current drive.
   CPrt *p;
   try {
     p=Drv2Prt(drv_let);
@@ -297,7 +289,6 @@ public U0 SetDrvTextAttr(U8 drv_let,U8 attr)
   } catch
     Fs->catch_except=TRUE;
 }
-
 I64 RedSeaFSUnusedDrvSpace(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
@@ -316,7 +307,6 @@ I64 RedSeaFSUnusedDrvSpace(U8 drv_let=0)
     PrtUnlock(p);
   return result*BLK_SIZE*p->spc;
 }
-
 I64 FAT32UnusedDrvSpace(U8 drv_let=0)
 {
   CPrt *p=Drv2Prt(drv_let);
@@ -335,9 +325,8 @@ I64 FAT32UnusedDrvSpace(U8 drv_let=0)
     PrtUnlock(p);
   return result*BLK_SIZE*p->spc;
 }
-
 public I64 UnusedDrvSpace(U8 drv_let=0)
-{ //returns size in bytes
+{//Returns unused size in bytes.
   CPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
   U8 *old_dir=StrNew(Fs->cur_dir);
   I64 result=0;
@@ -350,7 +339,7 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
       result=FAT32UnusedDrvSpace(drv_let);
       break;
     default:
-      PrintErr("%S","ST_UNSUPPORTED_FILE_SYSTEM");
+      PrintErr("File System Not Supported\n");
   }
   Drv(Prt2Drv(p_old));
   Cd(old_dir);
@@ -359,36 +348,40 @@ public I64 UnusedDrvSpace(U8 drv_let=0)
 }
 
 #help_index "File/Program Routines"
-
-I64 TreeSizeFiles(CDirEntry *tempde,I64 round_to)
+I64 Size1(CDirEntry *tempde,I64 *_fuf_flags,I64 round_to)
 {
+  U8 buf[BLK_SIZE];
   I64 result=0,i;
+  CPrt *p;
   while (tempde) {
+    if ((i=tempde->size) && Bt(_fuf_flags,FUf_EXPAND) &&
+       !(tempde->attr&RS_ATTR_DIR) && FileAttr(tempde->name)&RS_ATTR_COMPRESSED) {
+      p=Drv2Prt(*tempde->full_name);
+      RBlks(p,buf,Cluster2Blk(p,tempde->cluster),1);
+      i=(&buf)(CArcCompress *)->expanded_size;
+    }
     if (round_to)
       i=CeilU64(tempde->size,round_to);
-    else
-      i=tempde->size;
-    if (tempde->attr&_ATTR_DIR)
-      i+=TreeSizeFiles(tempde->sub,round_to);
+    if (tempde->attr&RS_ATTR_DIR)
+      i+=Size1(tempde->sub,_fuf_flags,round_to);
     tempde->user_data=i;
     result+=i;
     tempde=tempde->next;
   }
   return result;
 }
-public I64 TreeSize(U8 *files_find_mask="/*",U8 *fu_flags=NULL,I64 round_to=0)
-{
+public I64 Size(U8 *files_find_mask="/*",U8 *fu_flags=NULL,I64 round_to=0)
+{//Total size of files in mask. "+x" for expanded size.
 //Does not include directory size of base directory, but
 //does include size of sub directories.
   I64 fuf_flags=0,result=0;
   CDirEntry *tempde1=NULL;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
-  if (tempde1=FilesFind(files_find_mask,fuf_flags)) {
-    result=TreeSizeFiles(tempde1,round_to);
-    DirLstDel(tempde1);
+  if (tempde1=FilesFind(files_find_mask,fuf_flags&FUG_FILES_FIND)) {
+    fuf_flags&=FUF_EXPAND;
+    result=Size1(tempde1,&fuf_flags,round_to);
+    DirTreeDel(tempde1);
   }
   return result;
 }
-
-#help_index ""

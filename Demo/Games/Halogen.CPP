@@ -10,7 +10,7 @@ Bool crash;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 w=task->win_pixel_width,h=task->win_pixel_height;
+  I64 w=task->pix_width,h=task->pix_height;
   I64 i,x,y,xx;
   Bool old_preempt=Preempt(OFF);
   xx=w>>1-car_x+road_x[road_ptr&(NUM_ROAD-1)];
@@ -45,11 +45,11 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 U0 UpdateRoad()
 {
-  F64 t0=tT;
+  F64 t0=tS;
   distance+=speed*(t0-t_last);
   t_last=t0;
   while (distance>1.0) {
-    road_trend=LimitI64(road_trend+SignI64(RandU16%3-1),-5,5);
+    road_trend=ClampI64(road_trend+SignI64(RandU16%3-1),-5,5);
     road_x[road_ptr&(NUM_ROAD-1)]=
       road_x[(road_ptr-1)&(NUM_ROAD-1)]+=road_trend/3;
     road_ptr++;
@@ -61,7 +61,7 @@ U0 Init()
 {
   I64 i,x=0;
   DocClear;
-  "$BG,DKGRAY$"; NewLine((TEXT_ROWS-1)/2);
+  "$BG,DKGRAY$%h*c",(TEXT_ROWS-1)/2,'\n';
   speed=0;
   distance=0;
   road_trend=0;
@@ -69,17 +69,16 @@ U0 Init()
   car_x=0;
   for (i=0;i<NUM_ROAD;i++) {
     road_x[i]=x;
-    road_trend=LimitI64(road_trend+SignI64(RandU16%3-1),-5,5);
+    road_trend=ClampI64(road_trend+SignI64(RandU16%3-1),-5,5);
     x+=road_trend/3;
   }
-  t_last=tT;
+  t_last=tS;
   crash=FALSE;
 }
 
-
 U0 Halogen()
 {
-  I64 p1,p2,ch=0,sc=0;
+  I64 a1,a2,ch=0,sc=0;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
   MenuPush(
@@ -103,9 +102,9 @@ U0 Halogen()
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
-      switch (ScanMsg(&p1,&p2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
+      switch (ScanMsg(&a1,&a2,1<<MSG_KEY_DOWN|1<<MSG_KEY_UP)) {
 	case MSG_KEY_DOWN:
-	  ch=p1;sc=p2;
+	  ch=a1;sc=a2;
 	  switch (ch) {
 	    case '\n':
 	      Init;
@@ -116,7 +115,7 @@ U0 Halogen()
 	  }
 	  break;
 	case MSG_KEY_UP:
-	  ch=p1;sc=p2;
+	  ch=a1;sc=a2;
 	  if (!ch)
 	    switch (sc.u8[0]) {
 	      case SC_CURSOR_RIGHT:

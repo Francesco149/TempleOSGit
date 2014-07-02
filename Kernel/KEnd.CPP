@@ -6,40 +6,34 @@ U0 SysGlblsInit()
 
   CPUId(0x1,&ee);
   sys_cache_line_width=ee.rbx.u8[1]*8;
-  QueInit(&sys_pci_dev_root);
-  sys_rnd_seed = 93186752^GetTSC;
+
+  sys_rnd_seed	=93186752^GetTSC;
   sys_focus_task=Fs;
   QueInit(&sys_macro_root);
-  sys_dft_iso_name="::/Temp/CDDVD.ISO";
-  MemSet(mp_apic_ids,0,MP_MAX_PROCESSORS*sizeof(U8));
+
+  dsk.dft_iso_filename="::/Temp/CDDVD.ISO";
+  StrCpy(dsk.temp_filename,"HOME/Temp.TXT.Z");
+  dsk.cdrom_boot_is_good=TRUE;
+#exe {
+  if (!kernel_cfg->auto_mount_ide_hd_let) kernel_cfg->auto_mount_ide_hd_let='C';
+  if (!kernel_cfg->auto_mount_ide_cd_let) kernel_cfg->auto_mount_ide_cd_let='T';
+  StreamPrint("dsk.first_hd_drv_let=%d;",kernel_cfg->auto_mount_ide_hd_let);
+  StreamPrint("dsk.first_cd_drv_let=%d;",kernel_cfg->auto_mount_ide_cd_let);
+}
 
   InDbg(ON);
-  reverse_bits_table=CAlloc(256);
+  reverse_bits_table	=CAlloc(256);
+  set_bits_table	=CAlloc(256);
   for (i=0;i<256;i++)
-    for (j=0;j<8;j++)
-      if (Bt(&i,7-j))
-	LBts(reverse_bits_table+i,j);
-  set_bits_table=CAlloc(256);
-  for (i=0;i<256;i++)
-    for (j=0;j<8;j++)
-      if (Bt(&i,j))
-	set_bits_table[i]++;
+    for (j=0;j<8;j++) {
+      if (Bt(&i,7-j))	LBts(reverse_bits_table+i,j);
+      if (Bt(&i,j))	set_bits_table[i]++;
+    }
 
   ext=CAlloc(EXT_NUM_ENTRIES*sizeof(U8 *));
-  fp_mgets=&SysMGetS;
+  fp_getstr2=&SysGetStr2;
+  KeyDevInit;
 
-  fp_ctrl_alt_let_cbs=CAlloc(26*sizeof(U8 *));
-  ctrl_alt_let_descs=CAlloc(26*sizeof(U8 *));
-  ctrl_alt_let_in_irq_flags=0;
-
-  psect_cache=CAlloc(PSECT_CACHE_SIZE*sizeof(CPSectCache));
-  psect_cache_index=0;
-
-  StrCpy(sys_temp_filename,"HOME/Temp.TXT.Z");
-  MemSet(&sys_put_key_root,0,sizeof(CKeyDev));
-  QueInit(&sys_put_key_root);
-  KeyDevAdd(&AKDInputFilterPutKey,&AKDInputFilterPutS,0x40000000,FALSE);
-  KeyDevAdd(&AKDRawDisplayPutKey,&AKDRawDisplayPutS,0x60000000,FALSE);
   #exe {
     if (*kernel_cfg->acct_name)
       StreamPrint("sys_acct=StrNew(\"%C:/Accts/%s\");",kernel_cfg->sys_acct_drv,kernel_cfg->acct_name);
@@ -49,58 +43,43 @@ U0 SysGlblsInit()
     StreamPrint("DskCacheInit(%s);",kernel_cfg->dsk_cache_size_exp);
     StreamPrint("#exe{OptOn(OPTf_WARN_PAREN);}");
   };
+
   pow10_I64=CAlloc(sizeof(F64)*(308+308+1));
   for (i=-308;i<309;i++)
     pow10_I64[i+309]=Pow10(i);
 
-  QueInit(&snd_record_root);
-  snd_record_root.freq=0;
-  snd_record_root.time_stamp=tT;
+  QueInit(&snd.record_root);
+  snd.record_root.time=tS;
+
+  ProgressBarsRst;
 
 //Independent Heap Ctrl Example
   i=1; //Rqst 1 blk, we might get more.
   m=MemBlksUncachedAlloc(&i,sys_code_bp);
-  sys_uncached_heap=HeapCtrlBPInit(m,i*0x200000/0x200);
-  ProgressBarsRst;
-  sys_fault_handlers_code=IntFaultHandlersNew;
+  dev.uncached_heap=HeapCtrlBPInit(m,i*0x200000/0x200);
+  QueInit(&dev.pci_root);
+  dev.mem64_ptr=MEM_MAPPED_SPACE;
+
+  dbg.psect_cache=CAlloc(PSECT_CACHE_SIZE*sizeof(CPSectCache));
+  dbg.fault_handlers_code=IntFaultHandlersNew;
 }
 
 U0 SysGrInit()
-{
-//See [D:/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
-//See [C:/Adam/Gr/GrCfg.CPP.Z,1]
-  gr_font=sys_font_8x8;
-  if (bios_gr_mode==0x12 || bios_gr_mode==0x6A) {
-    text_mode=FALSE;
-
-/*
-Mode must be multiple of 32 wide
-[C:/Adam/Gr/GrAsm.CPP.Z,771] GrUpdateLine32().
-*/
-
-    if (bios_gr_mode==0x6A) {
-      gr_width =800;
-      gr_height=600;
-    } else {
-      gr_width =640;
-      gr_height=480;
-    }
-    text_cols=gr_width/FONT_WIDTH;
-    text_rows=gr_height/FONT_HEIGHT;
+{//See [D:/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
+  text.font=sys_font_8x8;
+  if (sys_bios_gr_mode==0x12) { //if 640x480 16 color
+    text.cols=GR_WIDTH/FONT_WIDTH;
+    text.rows=GR_HEIGHT/FONT_HEIGHT;
     OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
     OutU8(VGA_SC_DATA,0x0F);
-    MemSet(VGA_GRAPHIC_MEM_BASE,0,gr_width*gr_height>>3);
-    sys_raw_screen_image=CAlloc(gr_width*gr_height/8);
+    MemSet(VGA_GRAPHIC_MEM_BASE,0,GR_WIDTH*GR_HEIGHT>>3);
+    text.raw_screen_image=CAlloc(GR_WIDTH*GR_HEIGHT/8);
   } else {
-    text_mode=TRUE;
-    gr_width =640;
-    gr_height=480;
-    text_cols=80;
-    text_rows=25;
-    MemSet(VGA_TEXT_MEM_BASE,0,text_rows*text_cols<<1);
+    text.cols=80;
+    text.rows=25;
+    MemSet(VGA_TEXT_MEM_BASE,0,text.rows*text.cols<<1);
   }
 }
-
 
 U0 TimersInit()
 {
@@ -112,8 +91,7 @@ U0 TimersInit()
   OutU8(0x40,SYS_TIMER0_PERIOD>>8);
 
 // High Precision Event Timer
-
-  if (PCIReadU16(0,31,0,0)==0x8086) { //Intel?
+  if (PCIReadU16(0,31,0,0)==0x8086) {//Intel?
     //D31 F0, cfg 0xF0=RCBA of PCI-LPC Bridge
     _d=PCIReadU32(0,31,0,0xF0)(U8 *)&~0x3FFF+0x3404; //HPET cfg
   //7	enable
@@ -124,22 +102,22 @@ U0 TimersInit()
   _q=HPET_GCAP_ID;
   i=*_q; //i.u32[1]= period in femtoS (10e-15)
   if (100000<i.u32[1]<1000000000) {
-    HPET_freq	 =1000000000000000/i.u32[1];
-    HPET_kHz_freq=1000000000000/i.u32[1];
+    cnts.HPET_freq	 =1000000000000000/i.u32[1];
+    cnts.HPET_kHz_freq=1000000000000/i.u32[1];
     _q=HPET_GEN_CONF;
     *_q|=1; //Enable counting
-    HPET_initial=HPET;
+    cnts.HPET_initial=HPET;
   } else {
-    HPET_freq=0;
-    HPET_kHz_freq=0;
-    HPET_initial=0;
+    cnts.HPET_freq=0;
+    cnts.HPET_kHz_freq=0;
+    cnts.HPET_initial=0;
   }
 }
 
 U0 Reboot()
-{
+{//Hardware reset.
   U16 *_w=0x472;
-  Cli;
+  CLI
   if (mp_cnt>1)
     MPHalt;
   MemPagePresentMark(_w,TRUE);
@@ -152,7 +130,7 @@ U0 Reboot()
 }
 
 U0 KernelMain()
-{ //Continued from [C:/Kernel/KStart.CPP.Z,1] Kernel
+{//Continued from [C:/Kernel/KStart.CPP.Z,1] Kernel
   adam_task=Fs;
   HeapsInit;
   LBts(&sys_run_level,RLf_FULL_HEAP);
@@ -165,7 +143,7 @@ U0 KernelMain()
   StrCpy(Fs->task_name,"Adam Task CPU#0");
   StrCpy(Fs->task_title,Fs->task_name);
   Fs->title_src=TTS_TASK_NAME;
-  Fs->win_right=text_cols-2;
+  Fs->win_right=text.cols-2;
   Fs->win_top++;
   TaskDerivedValsUpdate;
 
@@ -173,8 +151,8 @@ U0 KernelMain()
   MPInit;
   IntInit1;
 
-//Before this point use [C:/Kernel/Misc1a.CPP.Z,194] Snd() and [C:/Kernel/Misc1a.CPP.Z,165] BusyWait()
-//to debug.  After this point, use [C:/Kernel/Dbg1a.CPP.Z,222] RawPrint()
+//Before this point use [C:/Kernel/Misc1a.CPP.Z,159] Snd() and [C:/Kernel/Misc1a.CPP.Z,136] BusyWait()
+//to debug.  After this point, use [C:/Kernel/Dbg1a.CPP.Z,215] RawPrint()
   LBts(&sys_run_level,RLf_RAW);
   if (BIOSTotalMem<250*0x100000)
     Dbg("Requires 256 Meg of RAM Memory");
@@ -185,6 +163,7 @@ U0 KernelMain()
   "Enable IRQ's\n";
   SetRFlags(SYS_NORMAL_RFLAGS);
   BusyWait(2000);
+
   IntInit2;
   LBts(&sys_run_level,RLf_INTERRUPTS);
   TimeStampFreqCal;
@@ -193,14 +172,13 @@ U0 KernelMain()
 #exe {
   if (!kernel_cfg->opts[CFG_NO_MP])
     StreamPrint("\"MultiCore Start\\n\\n\";"
-	"MPStart;");
+	"MPStart;"
+	"LBts(&sys_run_level,RLf_MP);");
 };
-  LBts(&sys_run_level,RLf_MP);
 
   KbdMouseVarsInit;
   IPVarsInit;
   KbdInit;
-
   if (mp_cnt<2)
     Spawn(&MouseDriverInstall);
   else
@@ -211,7 +189,7 @@ U0 KernelMain()
   "BlkDevsInitAll Done\n";
 #exe {
   if (kernel_cfg->cdrom_ports_pmt)
-    StreamPrint("if (boot_drv_pmt) \"%%S\",\"ST_CDROM_PORTS_PMT2\";");
+    StreamPrint("if (dsk.boot_rescue_drv_pmt) \"%%S\",\"ST_CDROM_PORTS_PMT2\";");
 };
   ChgDsk(':');
   LBts(&sys_run_level,RLf_DSK);
@@ -222,7 +200,7 @@ U0 KernelMain()
   LBts(&sys_run_level,RLf_COMPILER);
 
   InDbg(OFF);
-  time_stamp_freq_initial=TimeStampFreqCal;
+  cnts.time_stamp_freq_initial=TimeStampFreqCal;
   Cd("/Kernel");
   try
     ExeFile("Adam1"); //Continues [D:/Kernel/Adam1.CPP.Z,1] /Kernel/Adam1.CPP
@@ -239,9 +217,9 @@ U0 KernelMain()
 asm {	ALIGN	16,OC_NOP
 SYS_KERNEL_END::
 #exe {
-  if (kernel_cfg->opts[CFG_BOOT_DRV]) {
-    StreamPrint("DU8 0x%X-(SYS_KERNEL_END-SYS_KERNEL_START1+0x7C10) DUP (0);"
-		"BINFILE \"%s\";",kernel_cfg->boot_drv_start,kernel_cfg->boot_drv_file);
-  }
+  if (kernel_cfg->opts[CFG_BOOT_RESCUE_DRV])
+    StreamPrint("DU8 0x%X-(SYS_KERNEL_END-SYS_KERNEL_START1+"
+		"BOOT_RAM_BASE+sizeof(CBinFile)) DUP (0);"
+		"BINFILE \"%s\";",kernel_cfg->boot_rescue_drv_start,kernel_cfg->boot_rescue_drv_file);
 };
 }

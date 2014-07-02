@@ -1,10 +1,8 @@
-/*
-  [C:/Kernel/Adam1b.HPP.Z,43] progress1-[C:/Kernel/Adam1b.HPP.Z,52] progress4 are just global vars
-  shown on the wallpaper. I use them in debugging a lot.
-  If you set [C:/Kernel/Adam1b.HPP.Z,44] progress1_max-[C:/Kernel/Adam1b.HPP.Z,53] progress4_max,
-  then a bar will display.
+/*[C:/Kernel/Adam1b.HPP.Z,165] progress1-[C:/Kernel/Adam1b.HPP.Z,174] progress4 are just global vars
+shown on the wallpaper. I use them in debugging a lot.
+If you set [C:/Kernel/Adam1b.HPP.Z,167] progress1_max-[C:/Kernel/Adam1b.HPP.Z,176] progress4_max,
+then a bar will display.
 */
-
 
 U0 Main1()
 {
@@ -17,7 +15,6 @@ U0 Main1()
     Sleep(10);
   progress1_max=0; //hide
 }
-
 
 Main1;
 

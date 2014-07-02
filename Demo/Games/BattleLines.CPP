@@ -1,4 +1,4 @@
-//This uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+//Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
 
 
@@ -18,14 +18,12 @@
 
 
 
-
 /* <5> <5> (image) */
 
 
+#define FRAMES 6
 
-#define NUM_FRAMES 6
-
-U8 *trooper_imgs[NUM_FRAMES]={
+CSprite *imgs[FRAMES]={
 __BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_3,__BIN_2};
 
 F64 fire_end_time;
@@ -44,8 +42,6 @@ Bool time_lapse=FALSE;
 
 #define TAP_MODE_RADIUS	50
 Bool tap_mode;
-I64 cmd_intensity;
-
 
 #define AI_NOTHING 0
 #define AI_TARGET  1
@@ -57,7 +53,7 @@ I64 ai_targets[10];
 
 U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 {
-  U8 *temps;
+  CSprite *temps;
   I64 x,y,gx,gy;
   F64 speed,tt;
 
@@ -66,7 +62,7 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
     y=tempt->dy>>28;
     speed=0.5*Sqrt(x*x+y*y);
 
-    tt=tempt->animate_time_base+tT*speed;
+    tt=tempt->animate_time_base+tS*speed;
     if (time_lapse) {
       x=(tempt->x+500*tempt->dx)>>32;
       y=(tempt->y+500*tempt->dy)>>32;
@@ -90,7 +86,7 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 	gx+=13;
 	gy-=7;
       }
-      SpritePlot3(dc,x,y,0,__BIN_5);
+      Sprite3(dc,x,y,0,__BIN_5);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
       if (!tempt->player)
 	dc->color=WHITE;
@@ -103,8 +99,8 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 	GrSetSymmetry(dc,x,y,x,y+1);
       } else
 	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
-      temps=SpriteInterpolate(trooper_imgs[tt%NUM_FRAMES],trooper_imgs[(tt+1.0)%NUM_FRAMES],tt%1.0);
-      SpritePlot3(dc,x,y,0,temps);
+      temps=SpriteInterpolate(imgs[tt%FRAMES],imgs[(tt+1.0)%FRAMES],tt%1.0);
+      Sprite3(dc,x,y,0,temps);
       Free(temps);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }
@@ -115,11 +111,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   Trooper *tempt=tr;
   I64 i,j,cnt[2],
-      x=ipx-task->win_pixel_left-task->win_scroll_x,y=ipy-task->win_pixel_top-task->win_scroll_y;
-
-  cmd_intensity=(ip_throttle*128)>>32;
-  Bool repulsive=cmd_intensity>0 ^^ ip_rb,
-	 active=!win_grab_scroll && (ip_lb||ip_rb);
+      x=ip.pos.x-task->pix_left-task->scroll_x,y=ip.pos.y-task->pix_top-task->scroll_y;
+  Bool repulsive=ip.throttle>0 ^^ ip.rb,
+	 active=!winmgr.grab_scroll && (ip.lb||ip.rb);
 
   for (j=0;j<2;j++) {
     cnt[j]=0;
@@ -145,7 +139,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       else
 	dc->color=BLUE;
     }
-    GrCircle(dc,x,y,AbsI64(cmd_intensity));
+    GrCircle(dc,x,y,AbsI64(64*ip.throttle/(MAX_I32+1)));
   }
   dc->color=LTCYAN;
   GrPrint(dc,(task->win_right-8)*FONT_WIDTH,0,"%03d",cnt[0]);
@@ -189,7 +183,7 @@ U0 ResolveFiring()
 
   for (j=0;j<2;j++)
     for (i=0;i<NUM_TROOPERS;i++,tempt++) {
-      if (tempt->target && tempt->fire_end_time<tT) {
+      if (tempt->target && tempt->fire_end_time<tS) {
 	tempt->target->def-=tempt->att;
 	tempt->fire_end_time=0;
 	tempt->target=NULL;
@@ -205,12 +199,12 @@ U0 ResolveFiring()
 	dy=(tempt0->y-tempt1->y)>>32;
 	dd=dx*dx+dy*dy;
 	if (dd<tempt0->rng && !tempt0->target) {
-	  fire_end_time=tempt0->fire_end_time=tT+0.125;
+	  fire_end_time=tempt0->fire_end_time=tS+0.125;
 	  Snd(2000);
 	  tempt0->target=tempt1;
 	}
 	if (dd<tempt1->rng && !tempt1->target) {
-	  fire_end_time=tempt1->fire_end_time=tT+0.125;
+	  fire_end_time=tempt1->fire_end_time=tS+0.125;
 	  Snd(2000);
 	  tempt1->target=tempt0;
 	}
@@ -218,15 +212,15 @@ U0 ResolveFiring()
     }
   }
 
-  if (tT>=fire_end_time)
+  if (tS>=fire_end_time)
     Snd(0);
 }
 
 U0 UpdateHumanVelocities()
 {
   F64 intensity;
-  I64 i,j,x=ipx-Fs->win_pixel_left-Fs->win_scroll_x,y=ipy-Fs->win_pixel_top-Fs->win_scroll_y,dx,dy,d;
-  Bool active=!win_grab_scroll&&(ip_lb||ip_rb);
+  I64 i,j,x=ip.pos.x-Fs->pix_left-Fs->scroll_x,y=ip.pos.y-Fs->pix_top-Fs->scroll_y,dx,dy,d;
+  Bool active=!winmgr.grab_scroll&&(ip.lb||ip.rb);
   Trooper *tempt=&tr[0][0];
   if (tap_mode) {
     for (i=0;i<NUM_TROOPERS;i++,tempt++) {
@@ -244,8 +238,8 @@ U0 UpdateHumanVelocities()
       }
     }
   } else if (active) {
-    j=cmd_intensity<<29;
-    if (ip_rb)
+    j=8*ip.throttle;
+    if (ip.rb)
       j=-j;
     for (i=0;i<NUM_TROOPERS;i++,tempt++) {
       dx=x- tempt->x.i32[1];
@@ -264,9 +258,9 @@ U0 Init()
 {
   I64 i,j,dx,dy;
   Trooper *tempt;
-  ip_throttle=-1<<30;
+  ip.throttle=MAX_I32;
+  ip.throttle_step=(MAX_I32+1)>>2;
   tap_mode=FALSE;
-  cmd_intensity=128;
   time_lapse=FALSE;
   fire_end_time=0;
   MemSet(tr,0,sizeof(tr));
@@ -303,7 +297,6 @@ U0 Init()
 
 U0 BattleLines()
 {
-  F64 old_mzz_scale=mzz_scale;
   CMenuEntry *tempse;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
@@ -314,10 +307,6 @@ U0 BattleLines()
   "File {"
   "  Abort(,CH_SHIFT_ESC);"
   "  Exit(,CH_ESC);"
-  "}"
-  "Settings {"
-  "  MoreWheel(,'+');"
-  "  LessWheel(,'-');"
   "}"
   "Play {"
   "  Restart(,'\n');"
@@ -335,21 +324,14 @@ U0 BattleLines()
   DocClear;
   Fs->draw_it=&DrawIt;
   PopUpOk("The mouse wheel controls\n"
-	"command strength.\n"
+	"the command force.\n"
 	"Attract or repel with\n"
-	"left or right button.\n\n"
-	"+/- changes wheel scale.\n");
+	"left or right button.\n\n");
 
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS-WIF_BORDER-WIF_MENU;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER-WIF_FOCUS_TASK_MENU;
   try {
     while (TRUE) {
       switch (ScanChar) {
-	case '+':
-	  mzz_scale*=1.5;
-	  break;
-	case '-':
-	  mzz_scale/=1.5;
-	  break;
 	case '1':
 	  time_lapse=!time_lapse;
 	  tempse=MenuEntryFind(Fs->cur_menu,"Play/TimeLapse");
@@ -379,7 +361,6 @@ wg_done:
     PutExcept;
   SettingsPop;
   MenuPop;
-  mzz_scale=old_mzz_scale;
 }
 
 BattleLines;

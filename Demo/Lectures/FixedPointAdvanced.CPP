@@ -1,5 +1,4 @@
-/*
-"Fixed point" means you use integers
+/*"Fixed point" means you use integers
 that are scaled by a value.  A common
 example would be using number of pennies
 instead of dollars with a float.
@@ -21,8 +20,6 @@ to access upper or lower 32-bits.
 I32 coordinates[65536];
 
 asm {
-	IMPORT coordinates;
-
 _ASM_FIXED_POINT::
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -111,7 +108,6 @@ U0 Main()
   "Float Sum             :%X\n",ToI64(fsum);
   "$RED$Float Cycles          :%10.5f$FG$\n",
     ToF64(test_time)/SAMPLE_SIZE;
-
 
 //Measure fixed point arithmetic
   d2=Sin(1.0)*0x100000000;

@@ -1,6 +1,7 @@
-                               Text-Widget Help
+                              DolDoc Widget Help
 
-See [C:/Doc/Dollar.TXT.Z,1] for details on dollar sign cmds.
+[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is a propriatary TempleOS document
+type.
 
 "Expression" a num or HolyC algebraic term with operators and HolyC syms can 
 be entered.
@@ -29,9 +30,9 @@ Scroll X Length Expression if a value is entered, the text will scroll in an
 area of this width.
 Y Offset Expression if a value is entered, the text will be shifted
 vertically 
-by this many pixels, so you can make superscripts or subscripts.
+by this many pixs, so you can make superscripts or subscripts.
 X Offset Expression if a value is entered, the text will be shifted 
-horizontally by this many pixels.
+horizontally by this many pixs.
 
 Tree The item will behave like a tree widget, with this as the root.
 Collapsed The tree or hidden widget will begin collapsed.
@@ -51,9 +52,9 @@ macro to run a program, so it doesn't tie-up memory.
 Escape For macro's, send an <ESC> char to exit before running the macro.  
 Without this, the macro runs in the wrong window, usually.
 
-Refresh Data  updates $DA$ entry continuously.
+Refresh Data  updates $DA...$ entry continuously.
 
 Html Link  stores a link which will be embedded if you generate a html
 version 
-of a document with [C:/Adam/Utils/ToHtml.CPP.Z,272] ToHtml() or
-[C:/Adam/Utils/ToHtml.CPP.Z,107] Doc2Html().
+of a document with [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml() or
+[C:/Adam/Utils/ToHtml.CPP.Z,117] Doc2Html().

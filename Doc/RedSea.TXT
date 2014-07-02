@@ -1,18 +1,18 @@
                               RedSea File System
 
 The RedSea file system is a simple, 64-bit, file system which is, basically, 
-FAT32 with nice fixed-sized 64-byte directory entries and no FAT table, just 
-an allocation bitmap.  It has no clustered-blocks, just 512 byte sectors.  
-Files are contiguous and cannot grow in size.
+FAT32 with fixed-sized 64-byte directory entries and no FAT table, just an 
+allocation bitmap.  It has no clustered-blocks, just 512 byte sectors.  Files 
+are stored in contiguous blocks and cannot grow in size.
 
 #define CDIR_FILENAME_LEN	38 //Must include terminator zero
 
 public class CDirEntry //64-byte fixed-size
 {
-  U16 attr;	//See [C:/Kernel/Adam1a.HPP.Z,3382] _ATTR_DIR.  I would like to
+  U16 attr;	//See [C:/Kernel/Adam1a.HPP.Z,2428] RS_ATTR_DIR.  I would like to
 change these.
-  U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/Str1a.CPP.Z,370]
-chars_bitmap_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,297] FileNameChk
+  U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/Str1a.CPP.Z,336]
+chars_bitmap_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,294] FileNameChk
   I64 cluster;	//One sector per cluster.  I might change origin, let's talk.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,
