@@ -2,6 +2,14 @@
 
 Use [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----07/14/14 00:11:22----
+
+----07/12/14 02:06:10----
+* Fixed bug clicking on icon.
+
+----07/08/14 04:33:20----
+* I changed [C:/Adam/God/GodDoodle.CPP.Z,75] GodDoodleSprite().
+
 ----06/30/14 02:32:47----
 * Changed max FPS to 30 instead of 60.
 * Got rid of min and max FPS control.
@@ -273,7 +281,7 @@ sprites no longer work.
 * Added F7/SHIFT-F7 for [C:/Adam/God/HolySpirit.CPP.Z,122]
 GodWord()/[C:/Adam/God/HolySpirit.CPP.Z,128] GodPassage().
 * Added F6/SHIFT-F6 for [C:/Adam/God/GodSong.CPP.Z,157]
-GodSong()/[C:/Adam/God/GodDoodle.CPP.Z,161] GodDoodle().
+GodSong()/[C:/Adam/God/GodDoodle.CPP.Z,156] GodDoodle().
 * [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("Apps/HolySpirit","Adam/God");
 * [C:/Accts/TAD/Adam3dWrappers.CPP.Z,13] R("DoItOnce","DoOnce");
 

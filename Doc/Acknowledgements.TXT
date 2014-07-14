@@ -66,7 +66,7 @@ simplify my Frames-Per-Second code.
 20) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
 Help & Index.
 
-In short, I wrote every one of the 121,463 lines myself, no GPL code, no 
+In short, I wrote every one of the 121,460 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 

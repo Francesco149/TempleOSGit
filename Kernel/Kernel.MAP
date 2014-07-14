@@ -270,46 +270,46 @@ BREAK_FOCUS_USER    0000005971    0000            ExportSysSym
 [D:/Kernel/BIOS32.CPP.Z,64] C32_EFLAGS          0000016B1F    0003            ExportSysSym Export 
 [D:/Kernel/BIOS32.CPP.Z,62] C32_ESI             0000016B17    0003            ExportSysSym Export 
 [D:/Kernel/BIOS32.CPP.Z,66] C32_RSP             0000016B23    0002            ExportSysSym Export 
-[D:/Kernel/Adam1a.HPP.Z,1937] CAOTCtrl            003FD41C48    0001 0000000139 Class 
-[D:/Kernel/Adam1a.HPP.Z,2319] CATAPITrack         003FD466D0    0008 0000000030 Class 
-[D:/Kernel/Adam1a.HPP.Z,2150] CATARep             003FD42D88    000E 0000000038 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1707] CAbsCntsI64         003FD3F550    0002 0000000008 Class 
+[D:/Kernel/Adam1a.HPP.Z,1937] CAOTCtrl            003FD40448    0001 0000000139 Class 
+[D:/Kernel/Adam1a.HPP.Z,2319] CATAPITrack         003FD44ED0    0008 0000000030 Class 
+[D:/Kernel/Adam1a.HPP.Z,2150] CATARep             003FD41588    000E 0000000038 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1707] CAbsCntsI64         003FD3DD50    0002 0000000008 Class 
 [D:/Kernel/Mem1b.CPP.Z,381] CAlloc              0000004DCA    0033 0000000033 Funct Export Res 
 [D:/Kernel/Mem1b.CPP.Z,419] CAllocAligned       0000004F02    0000 0000000079 Funct Export Res 
-[D:/Kernel/Adam1a.HPP.Z,3673] CArcCompress        003FD4F1B0    000A 0000000014 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3654] CArcCtrl            003FD4EED0    001C 0000018098 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3646] CArcEntry           003FD4EBF0    000A 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,775] CArrayDim           003FD3B430    0004 0000000018 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1747] CAsmArg             003FD403B0    0001 0000000060 Class 
-[D:/Kernel/Adam1a.HPP.Z,1701] CAsmCodeBlk         003FD3F270    0002 0000010008 Class 
-[D:/Kernel/Adam1a.HPP.Z,1735] CAsmIns             003FD400D0    0000 00000000AA Class 
-[D:/Kernel/Adam1a.HPP.Z,1720] CAsmNum             003FD3FB10    0002 0000000028 Class 
-[D:/Kernel/Adam1a.HPP.Z,1728] CAsmNum2            003FD3FDF0    0001 0000000039 Class 
-[D:/Kernel/Adam1a.HPP.Z,1755] CAsmUnresolvedRef   003FD40690    0002 000000004A Class 
-[D:/Kernel/Adam1a.HPP.Z,2883] CBGR                003FD4AA08    0001 0000000004 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,364] CBinFile            003FD37E90    000E 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,2555] CBlkDev             003FD47A70    0048 0000000064 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2784] CBlkPool            003FD49BA8    0017 00000009E0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2222] CBootStruct         003FD44558    0005 0000000200 Class 
-[D:/Kernel/Adam1a.HPP.Z,3048] CBpt                003FD4CCD0    000D 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,3338] CCPU                003FC78490    001D 00000000F0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2636] CCacheBlk           003FD48310    0010 0000000230 Class 
-[D:/Kernel/Adam1a.HPP.Z,2110] CCmpGlbls           003FD424E8    0001 0000000229 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,524] CCntsGlbls          003FD38C70    0001 0000000041 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2868] CColorROPU16        003FD4A168    0003 0000000002 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2872] CColorROPU32        003FD4A448    0006 0000000004 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3002] CCtrl               003FD4C430    0008 00000000A0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,146] CD2                 003FD33D70    0000 0000000010 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,134] CD2I32              003FD33128    0002 0000000008 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,138] CD2I64              003FD337B0    0000 0000000010 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,152] CD3                 003FD34050    002F 0000000018 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,124] CD3I32              003FD319E0    0007 000000000C Class Public 
-[D:/Kernel/Adam1a.HPP.Z,142] CD3I64              003FD33A90    0002 0000000018 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3673] CArcCompress        003FD4D9B0    000A 0000000014 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3654] CArcCtrl            003FD4D6D0    001C 0000018098 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3646] CArcEntry           003FD4D3F0    000A 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,775] CArrayDim           003FD39C30    0004 0000000018 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1747] CAsmArg             003FD3EBB0    0001 0000000060 Class 
+[D:/Kernel/Adam1a.HPP.Z,1701] CAsmCodeBlk         003FD3DA70    0002 0000010008 Class 
+[D:/Kernel/Adam1a.HPP.Z,1735] CAsmIns             003FD3E8D0    0000 00000000AA Class 
+[D:/Kernel/Adam1a.HPP.Z,1720] CAsmNum             003FD3E310    0002 0000000028 Class 
+[D:/Kernel/Adam1a.HPP.Z,1728] CAsmNum2            003FD3E5F0    0001 0000000039 Class 
+[D:/Kernel/Adam1a.HPP.Z,1755] CAsmUnresolvedRef   003FD3EE90    0002 000000004A Class 
+[D:/Kernel/Adam1a.HPP.Z,2883] CBGR                003FD49208    0001 0000000004 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,364] CBinFile            003FD36690    000E 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,2555] CBlkDev             003FD46270    0048 0000000064 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2784] CBlkPool            003FD483A8    0017 00000009E0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2222] CBootStruct         003FD42D58    0005 0000000200 Class 
+[D:/Kernel/Adam1a.HPP.Z,3048] CBpt                003FD4B4D0    000D 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,3338] CCPU                003FC76C90    001D 00000000F0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2636] CCacheBlk           003FD46B10    0010 0000000230 Class 
+[D:/Kernel/Adam1a.HPP.Z,2110] CCmpGlbls           003FD40CE8    0001 0000000229 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,524] CCntsGlbls          003FD37470    0001 0000000041 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2868] CColorROPU16        003FD48968    0003 0000000002 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2872] CColorROPU32        003FD48C48    0006 0000000004 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3002] CCtrl               003FD4AC30    0008 00000000A0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,146] CD2                 003FD32570    0000 0000000010 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,134] CD2I32              003FD31928    0002 0000000008 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,138] CD2I64              003FD31FB0    0000 0000000010 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,152] CD3                 003FD32850    002F 0000000018 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,124] CD3I32              003FD301E0    0007 000000000C Class Public 
+[D:/Kernel/Adam1a.HPP.Z,142] CD3I64              003FD32290    0002 0000000018 Class Public 
 [D:/Kernel/Adam1a.HPP.Z,181] CDATE_BASE_DAY_OF_WEEK0             0001 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,538] CDATE_FREQ          49710         0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,179] CDATE_YEAR_DAYS     365.24225     0000 0000000010 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,180] CDATE_YEAR_DAYS_INT 36524225      0001 0000000010 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,3547] CDC                 003FD2E2F8    0004 0000000120 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3547] CDC                 003FD2CAF8    0004 0000000120 Class Public 
 [D:/Kernel/Adam1a.HPP.Z,2449] CDIR_FILENAME_LEN   38            000C 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2462] CDIR_SIZE           (sizeof(CD    0011 0000000030 DefineStr 
 [D:/Kernel/Dsk/Dsk1c.CPP.Z,180] CDImageRead         0000025FDE    0000 00000001D6 Funct Export Res 
@@ -317,45 +317,45 @@ BREAK_FOCUS_USER    0000005971    0000            ExportSysSym
 [D:/Kernel/Dsk/Dsk1c.CPP.Z,228] CDImageWriteTask    00000261B6    0001 00000000E2 Funct Export Res 
 [D:/Kernel/Adam1a.HPP.Z,2197] CD_BLK_SIZE         (4*BLK_SIZ    0004 0000000010 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2198] CD_FILE_OFFSET      80            0000 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,182] CDate               003FD36250    0018 0000000008 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,182] CDate               003FD34A50    0018 0000000008 Class Public 
 [D:/Kernel/Dsk/FileSysFAT.CPP.Z,1] CDate2Dos           0000020A69    0001 000000007E Funct Export Res 
-[D:/Kernel/Adam1a.HPP.Z,189] CDateStruct         003FD36530    0014 000000000C Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3765] CDbgGlbls           003FD57A98    0001 0000000040 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,675] CDbgInfo            003FD39510    0004 000000000C Class 
-[D:/Kernel/Adam1a.HPP.Z,2810] CDevGlbls           003FD49E88    0001 00000000F0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2450] CDirEntry           003FD47530    009D 0000000070 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1317] CDoc                003FC781B0    000E 0000000310 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1086] CDocBin             003FD3C290    0003 0000000038 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1154] CDocEntry           003FD3CB30    0009 00000000D0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1134] CDocEntryBase       003FD3C850    0003 0000000058 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1122] CDocSettings        003FD3C570    0002 0000000018 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1300] CDocUndo            003FD3D630    0002 0000000030 Class 
-[D:/Kernel/Adam1a.HPP.Z,2646] CDskGlbls           003FD485F0    0001 00000001DC Class Public 
-[D:/Kernel/Dsk/Dsk1c.CPP.Z,220] CDualBuf            003FD58618    0003 0000000038 Class 
-[D:/Kernel/Adam1a.HPP.Z,1211] CEdFileName         003FD3D350    0001 0000000100 Class 
-[D:/Kernel/Adam1a.HPP.Z,1197] CEdFindText         003FD3D070    0001 0000000120 Class 
-[D:/Kernel/Adam1a.HPP.Z,3055] CExcept             003FD4CFB0    001C 0000000078 Class 
-[D:/Kernel/Adam1a.HPP.Z,1896] CExe                003FD2DD30    0003 0000000068 Class 
-[D:/Kernel/Adam1a.HPP.Z,1875] CExeAbsAddr         003FD40C50    0003 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,1888] CExeHeapGlbl        003FD2DA50    0003 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,1882] CExeHeapGlblRef     003FD40F30    0002 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,1857] CExeImportExport    003FD2D490    0002 0000000040 Class 
-[D:/Kernel/Adam1a.HPP.Z,809] CExternUsage        003FD3BCD0    0002 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,2234] CFAT32Boot          003FD45330    0004 0000000200 Class 
-[D:/Kernel/Adam1a.HPP.Z,2278] CFAT32DirEntry      003FD45B50    002F 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,2294] CFAT32DirEntryLong  003FD45E30    0011 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,2267] CFAT32FileInfoSect  003FD45870    0002 0000000200 Class 
-[D:/Kernel/Adam1a.HPP.Z,3062] CFPU                003FD4D290    0006 0000000200 Class 
-[D:/Kernel/Adam1a.HPP.Z,172] CFifoI64            003FD35F70    000A 0000000020 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,167] CFifoU8             003FD346A0    000B 0000000020 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2676] CFile               003FD48BB0    000C 00000000A8 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2660] CFileAccess         003FD488D0    000F 0000000020 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,189] CDateStruct         003FD34D30    0014 000000000C Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3765] CDbgGlbls           003FD56298    0001 0000000040 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,675] CDbgInfo            003FD37D10    0004 000000000C Class 
+[D:/Kernel/Adam1a.HPP.Z,2810] CDevGlbls           003FD48688    0001 00000000F0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2450] CDirEntry           003FD45D30    009D 0000000070 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1317] CDoc                003FC769B0    000E 0000000310 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1086] CDocBin             003FD3AA90    0003 0000000038 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1154] CDocEntry           003FD3B330    0009 00000000D0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1134] CDocEntryBase       003FD3B050    0003 0000000058 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1122] CDocSettings        003FD3AD70    0002 0000000018 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1300] CDocUndo            003FD3BE30    0002 0000000030 Class 
+[D:/Kernel/Adam1a.HPP.Z,2646] CDskGlbls           003FD46DF0    0001 00000001DC Class Public 
+[D:/Kernel/Dsk/Dsk1c.CPP.Z,220] CDualBuf            003FD56E18    0003 0000000038 Class 
+[D:/Kernel/Adam1a.HPP.Z,1211] CEdFileName         003FD3BB50    0001 0000000100 Class 
+[D:/Kernel/Adam1a.HPP.Z,1197] CEdFindText         003FD3B870    0001 0000000120 Class 
+[D:/Kernel/Adam1a.HPP.Z,3055] CExcept             003FD4B7B0    001C 0000000078 Class 
+[D:/Kernel/Adam1a.HPP.Z,1896] CExe                003FD2C530    0003 0000000068 Class 
+[D:/Kernel/Adam1a.HPP.Z,1875] CExeAbsAddr         003FD3F450    0003 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,1888] CExeHeapGlbl        003FD2C250    0003 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,1882] CExeHeapGlblRef     003FD3F730    0002 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,1857] CExeImportExport    003FD2BC90    0002 0000000040 Class 
+[D:/Kernel/Adam1a.HPP.Z,809] CExternUsage        003FD3A4D0    0002 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,2234] CFAT32Boot          003FD43B30    0004 0000000200 Class 
+[D:/Kernel/Adam1a.HPP.Z,2278] CFAT32DirEntry      003FD44350    002F 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,2294] CFAT32DirEntryLong  003FD44630    0011 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,2267] CFAT32FileInfoSect  003FD44070    0002 0000000200 Class 
+[D:/Kernel/Adam1a.HPP.Z,3062] CFPU                003FD4BA90    0006 0000000200 Class 
+[D:/Kernel/Adam1a.HPP.Z,172] CFifoI64            003FD34770    000A 0000000020 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,167] CFifoU8             003FD32EA0    000B 0000000020 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2676] CFile               003FD473B0    000C 00000000A8 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2660] CFileAccess         003FD470D0    000F 0000000020 Class Public 
 [D:/Kernel/Dsk/Dsk1a.CPP.Z,564] CFileNameTo         000001C0F1    0004 0000000038 Funct Export Res 
-[D:/Kernel/Adam1a.HPP.Z,2598] CFreeLst            003FD47D50    0008 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,333] CGDT                003FD378D0    001A 0000001080 Class 
-[D:/Kernel/Adam1a.HPP.Z,328] CGDTEntry           003FD375F0    000A 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,3540] CGrSym              003FD4E910    0001 0000000028 Class 
-[D:/Kernel/Adam1a.HPP.Z,2958] CGridGlbls          003FD4B930    0001 0000000050 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2598] CFreeLst            003FD46550    0008 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,333] CGDT                003FD360D0    001A 0000001080 Class 
+[D:/Kernel/Adam1a.HPP.Z,328] CGDTEntry           003FD35DF0    000A 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,3540] CGrSym              003FD4D110    0001 0000000028 Class 
+[D:/Kernel/Adam1a.HPP.Z,2958] CGridGlbls          003FD4A130    0001 0000000050 Class Public 
 [D:/Kernel/Adam1a.HPP.Z,3409] CH_BACKSPACE        0x08          000A 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3382] CH_CTRLA            0x01          0001 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3383] CH_CTRLB            0x02          0001 0000000008 DefineStr 
@@ -389,55 +389,55 @@ BREAK_FOCUS_USER    0000005971    0000            ExportSysSym
 [D:/Kernel/Adam1a.HPP.Z,3412] CH_SHIFT_ESC        0x1C          0004 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3413] CH_SHIFT_SPACE      0x1F          0007 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3414] CH_SPACE            0x20          001D 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,681] CHash               003FD397F0    0029 0000000028 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,819] CHashClass          003FC7B188    0010 0000000090 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,757] CHashDefineStr      003FD3B150    000B 0000000068 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,746] CHashExport         003FD3A930    000A 0000000058 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,841] CHashFun            003FC81038    000A 00000000B8 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,713] CHashGeneric        003FD39DB0    0010 0000000040 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,858] CHashGlblVar        003FD3BFB0    000B 0000000098 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,751] CHashImport         003FD3AE70    0004 0000000060 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1848] CHashOpcode         003FD40970    0000 0000000040 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,727] CHashReg            003FD3A090    0002 000000002A Class Public 
-[D:/Kernel/Adam1a.HPP.Z,704] CHashSrcSym         003FD39AD0    000E 0000000050 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,732] CHashTable          003FD3A370    001C 0000000030 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,740] CHashWS             003FD3A650    0000 0000000030 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl           003FD2D770    0024 0000000450 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1537] CICArg              003FD3DED0    0001 000000000C Class 
-[D:/Kernel/Adam1a.HPP.Z,1544] CICTreeLinks        003FD3E1B0    0001 0000000028 Class 
-[D:/Kernel/Adam1a.HPP.Z,2933] CIPStateGlbls       003FD4B650    0003 00000000C0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2351] CISO1Date           003FD469B0    0003 0000000007 Class 
-[D:/Kernel/Adam1a.HPP.Z,2356] CISO1DirEntry       003FD46C90    0005 0000000022 Class 
-[D:/Kernel/Adam1a.HPP.Z,2367] CISO1PathEntry      003FD46F70    0000 000000000A Class 
-[D:/Kernel/Adam1a.HPP.Z,2382] CISO1PriDesc        003FD47250    0001 0000000800 Class 
-[D:/Kernel/Adam1a.HPP.Z,1650] CInstruction        003FD3ED30    0003 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,1560] CIntermediateCode   003FD2E8B8    0002 00000000E0 Class 
-[D:/Kernel/Adam1a.HPP.Z,1551] CIntermediateCodeBase003FD3E490    0002 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,2891] CKbdStateGlbls      003FD4B090    0002 000000007A Class Public 
-[D:/Kernel/Adam1a.HPP.Z,409] CKernel             003FD38450    0002 0000001484 Class 
-[D:/Kernel/Adam1a.HPP.Z,3711] CKeyDevEntry        003FD4F490    0009 0000000030 Class 
-[D:/Kernel/Adam1a.HPP.Z,3719] CKeyDevGlbls        003FD4F770    0001 00000000D8 Class 
+[D:/Kernel/Adam1a.HPP.Z,681] CHash               003FD37FF0    0029 0000000028 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,819] CHashClass          003FC79988    0010 0000000090 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,757] CHashDefineStr      003FD39950    000B 0000000068 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,746] CHashExport         003FD39130    000A 0000000058 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,841] CHashFun            003FC7F838    000A 00000000B8 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,713] CHashGeneric        003FD385B0    0010 0000000040 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,858] CHashGlblVar        003FD3A7B0    000B 0000000098 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,751] CHashImport         003FD39670    0004 0000000060 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1848] CHashOpcode         003FD3F170    0000 0000000040 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,727] CHashReg            003FD38890    0002 000000002A Class Public 
+[D:/Kernel/Adam1a.HPP.Z,704] CHashSrcSym         003FD382D0    000E 0000000050 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,732] CHashTable          003FD38B70    001C 0000000030 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,740] CHashWS             003FD38E50    0000 0000000030 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl           003FD2BF70    0024 0000000450 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1537] CICArg              003FD3C6D0    0001 000000000C Class 
+[D:/Kernel/Adam1a.HPP.Z,1544] CICTreeLinks        003FD3C9B0    0001 0000000028 Class 
+[D:/Kernel/Adam1a.HPP.Z,2933] CIPStateGlbls       003FD49E50    0003 00000000C0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2351] CISO1Date           003FD451B0    0003 0000000007 Class 
+[D:/Kernel/Adam1a.HPP.Z,2356] CISO1DirEntry       003FD45490    0005 0000000022 Class 
+[D:/Kernel/Adam1a.HPP.Z,2367] CISO1PathEntry      003FD45770    0000 000000000A Class 
+[D:/Kernel/Adam1a.HPP.Z,2382] CISO1PriDesc        003FD45A50    0001 0000000800 Class 
+[D:/Kernel/Adam1a.HPP.Z,1650] CInstruction        003FD3D530    0003 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,1560] CIntermediateCode   003FD2D0B8    0002 00000000E0 Class 
+[D:/Kernel/Adam1a.HPP.Z,1551] CIntermediateCodeBase003FD3CC90    0002 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,2891] CKbdStateGlbls      003FD49890    0002 000000007A Class Public 
+[D:/Kernel/Adam1a.HPP.Z,409] CKernel             003FD36C50    0002 0000001484 Class 
+[D:/Kernel/Adam1a.HPP.Z,3711] CKeyDevEntry        003FD4DC90    0009 0000000030 Class 
+[D:/Kernel/Adam1a.HPP.Z,3719] CKeyDevGlbls        003FD4DF70    0001 00000000D8 Class 
 [D:/Kernel/Adam1b.HPP.Z,223] CLFlush             0000000065    0000            Funct Public 
-[D:/Kernel/Adam1a.HPP.Z,2058] CLex                003FD42208    001E 0000000D08 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1915] CLexCodeCtrl        003FD41688    0002 0000000030 Class 
-[D:/Kernel/Adam1a.HPP.Z,1611] CLexCodeMisc        003FD3EA50    0004 0000000058 Class 
-[D:/Kernel/Adam1a.HPP.Z,1925] CLexFile            003FD41968    0006 0000000048 Class 
-[D:/Kernel/Adam1a.HPP.Z,2046] CLexHashTableContext003FD41F28    0003 0000000048 Class 
-[D:/Kernel/Adam1a.HPP.Z,1714] CLexUndef           003FD3F830    0004 0000000010 Class 
-[D:/Kernel/EdLite.CPP.Z,1] CLine               003FD588F8    0008 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,2201] CMBRPrt             003FD43F98    0001 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,2058] CLex                003FD40A08    001E 0000000D08 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1915] CLexCodeCtrl        003FD3FE88    0002 0000000030 Class 
+[D:/Kernel/Adam1a.HPP.Z,1611] CLexCodeMisc        003FD3D250    0004 0000000058 Class 
+[D:/Kernel/Adam1a.HPP.Z,1925] CLexFile            003FD40168    0006 0000000048 Class 
+[D:/Kernel/Adam1a.HPP.Z,2046] CLexHashTableContext003FD40728    0003 0000000048 Class 
+[D:/Kernel/Adam1a.HPP.Z,1714] CLexUndef           003FD3E030    0004 0000000010 Class 
+[D:/Kernel/EdLite.CPP.Z,1] CLine               003FD570F8    0008 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,2201] CMBRPrt             003FD42798    0001 0000000010 Class 
 [D:/Kernel/Adam1a.HPP.Z,1603] CMF_DEFINED         0x02          0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1606] CMF_I16_JMP_TABLE   0x10          0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1604] CMF_I8_JMP_TABLE    0x04          0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1602] CMF_POP_CMP         0x01          0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1607] CMF_U16_JMP_TABLE   0x20          0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1605] CMF_U8_JMP_TABLE    0x08          0000 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,3757] CMPCrash            003FD577B8    0002 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,3757] CMPCrash            003FD55FB8    0002 0000000020 Class 
 [D:/Compiler/CmpDefs.HPP.Z,388] CMPF_ASM_BLK        1             0000 0000000008 DefineStr 
 [D:/Compiler/CmpDefs.HPP.Z,390] CMPF_LEX_FIRST      4             0000 0000000008 DefineStr 
 [D:/Compiler/CmpDefs.HPP.Z,389] CMPF_ONE_ASM_INS    2             0000 0000000008 DefineStr 
 [D:/Compiler/CmpDefs.HPP.Z,391] CMPF_PRS_SEMICOLON  8             0001 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,512] CMPMain             003FD38730    0003 000000000C Class 
+[D:/Kernel/Adam1a.HPP.Z,512] CMPMain             003FD36F30    0003 000000000C Class 
 [D:/Compiler/CmpDefs.HPP.Z,318] CMP_TEMPLATE_ABS    0x0E          0000 0000000008 DefineStr 
 [D:/Compiler/CmpDefs.HPP.Z,323] CMP_TEMPLATE_ATAN   0x13          0000 0000000008 DefineStr 
 [D:/Compiler/CmpDefs.HPP.Z,321] CMP_TEMPLATE_COS    0x11          0000 0000000008 DefineStr 
@@ -467,19 +467,19 @@ BREAK_FOCUS_USER    0000005971    0000            ExportSysSym
 [D:/Kernel/Adam1a.HPP.Z,1593] CMT_LABEL           0             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1596] CMT_STR_CONST       3             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,1609] CM_MAX_CONSTS       16            0000 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,205] CMass               003FD36D50    0003 0000000068 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2213] CMasterBoot         003FD44278    0002 0000000200 Class 
-[D:/Kernel/Adam1a.HPP.Z,241] CMathODE            003FD37310    0003 0000000148 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2748] CMemBlk             003FD49450    001B 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,350] CMemE820            003FD37BB0    0005 0000000014 Class 
-[D:/Kernel/Adam1a.HPP.Z,2758] CMemRange           003FD49730    000B 0000000028 Class 
-[D:/Kernel/Adam1a.HPP.Z,2705] CMemUnusedAllocated 003FD48E90    0018 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,2712] CMemUsedAllocated   003FD49170    0027 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,790] CMemberLst          003FD3B9F0    0008 0000000090 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,782] CMemberLstMeta      003FD3B710    0003 0000000020 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3037] CMenu               003FD4C9F0    0002 0000000028 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3028] CMenuEntry          003FD4C710    0003 0000000050 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2911] CMouseStateGlbls    003FD4B370    0004 0000000083 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,205] CMass               003FD35550    0003 0000000068 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2213] CMasterBoot         003FD42A78    0002 0000000200 Class 
+[D:/Kernel/Adam1a.HPP.Z,241] CMathODE            003FD35B10    0003 0000000148 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2748] CMemBlk             003FD47C50    001B 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,350] CMemE820            003FD363B0    0005 0000000014 Class 
+[D:/Kernel/Adam1a.HPP.Z,2758] CMemRange           003FD47F30    000B 0000000028 Class 
+[D:/Kernel/Adam1a.HPP.Z,2705] CMemUnusedAllocated 003FD47690    0018 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,2712] CMemUsedAllocated   003FD47970    0027 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,790] CMemberLst          003FD3A1F0    0008 0000000090 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,782] CMemberLstMeta      003FD39F10    0003 0000000020 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3037] CMenu               003FD4B1F0    0002 0000000028 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3028] CMenuEntry          003FD4AF10    0003 0000000050 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2911] CMouseStateGlbls    003FD49B70    0004 0000000083 Class Public 
 [D:/Kernel/Adam1a.HPP.Z,2878] COLORROP_BITS       16            0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2876] COLORROP_COLORS_MASK0x00FF00FF    0000 0000000010 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2877] COLORROP_NO_ROP0_MASK0xFFFF00FF    0000 0000000010 DefineStr 
@@ -487,35 +487,35 @@ BREAK_FOCUS_USER    0000005971    0000            ExportSysSym
 [D:/Kernel/Adam1a.HPP.Z,2866] COLOR_MONO          0xFF          0000 0000000008 DefineStr 
 [D:/Kernel/Mem1a.CPP.Z,125] CONSERVATIVE_16MEG_SIZE0xF00000      0001 0000000010 DefineStr 
 [D:/Kernel/Dsk/Dsk1c.CPP.Z,22] COPY_BUF_BLKS       0x80          000C 0000000008 DefineStr 
-[D:/Compiler/CmpDefs.HPP.Z,382] COptReg             003FD58058    0000 0000000010 Class 
-[D:/Kernel/Adam1a.HPP.Z,197] COrder2D3           003FD36A70    0001 0000000030 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,2140] CPCIDev             003FD42AA8    0002 0000000030 Class 
-[D:/Kernel/Adam1a.HPP.Z,3747] CPSectCache         003FD574D8    0006 0000000040 Class 
+[D:/Compiler/CmpDefs.HPP.Z,382] COptReg             003FD56858    0000 0000000010 Class 
+[D:/Kernel/Adam1a.HPP.Z,197] COrder2D3           003FD35270    0001 0000000030 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2140] CPCIDev             003FD412A8    0002 0000000030 Class 
+[D:/Kernel/Adam1a.HPP.Z,3747] CPSectCache         003FD55CD8    0006 0000000040 Class 
 [D:/Kernel/Adam1b.HPP.Z,208] CPUId               00000021A8    0003            Funct Public Res 
 CPUStructInit       0000026930    0001            ExportSysSym 
 [D:/Kernel/MultiProc.CPP.Z,121] CPUStructInit       0000026930    0003 000000008D Funct Export Res 
 [D:/Kernel/Adam1a.HPP.Z,3334] CPU_WALLPAPER_DATA_SIZE128           0001 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3335] CPUf_RAN_A_TASK     0             0002 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3336] CPUf_SETH_SLEEP     1             0005 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,2309] CPalindromeU16      003FD46110    0004 0000000004 Class 
-[D:/Kernel/Adam1a.HPP.Z,2314] CPalindromeU32      003FD463F0    0004 0000000008 Class 
-[D:/Kernel/Adam1a.HPP.Z,375] CPatchTableAbsAddr  003FD38170    0002 000000000A Class 
-[D:/Kernel/Adam1a.HPP.Z,3804] CProgress           003FD57D78    0002 0000000040 Class 
-[D:/Kernel/Adam1a.HPP.Z,1585] CPrsStk             003FD3E770    0001 0000001000 Class 
-[D:/Kernel/Adam1a.HPP.Z,2607] CPrt                003FD48030    0067 00000000A0 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,118] CQue                003FD31358    0010 0000000010 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,128] CQueD3I32           003FD326F8    0001 000000001C Class Public 
-[D:/Kernel/Adam1a.HPP.Z,159] CQueVectU8          003FD34330    000A 0000000228 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,555] CRAXRBCRCXRDX       003FD38F50    0004 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,2879] CRGB                003FD4A728    0000 0000000004 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,573] CSema               003FD39230    0001 0000000040 Class 
-[D:/Kernel/Adam1a.HPP.Z,3731] CSndData            003FD4FA50    0004 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,3738] CSndGlbls           003FD4FD30    0001 0000000029 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,222] CSpring             003FD37030    0002 0000000050 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3086] CSrvCmd             003FD4D570    0022 0000000080 Class 
-[D:/Kernel/Adam1a.HPP.Z,3106] CSrvCtrl            003FD2E5D8    0009 0000000028 Class 
-[D:/Kernel/Adam1a.HPP.Z,1909] CStreamBlk          003FD413A8    0002 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,3368] CSysFixedArea       003FD4E350    001D 0000084600 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,2309] CPalindromeU16      003FD44910    0004 0000000004 Class 
+[D:/Kernel/Adam1a.HPP.Z,2314] CPalindromeU32      003FD44BF0    0004 0000000008 Class 
+[D:/Kernel/Adam1a.HPP.Z,375] CPatchTableAbsAddr  003FD36970    0002 000000000A Class 
+[D:/Kernel/Adam1a.HPP.Z,3804] CProgress           003FD56578    0002 0000000040 Class 
+[D:/Kernel/Adam1a.HPP.Z,1585] CPrsStk             003FD3CF70    0001 0000001000 Class 
+[D:/Kernel/Adam1a.HPP.Z,2607] CPrt                003FD46830    0067 00000000A0 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,118] CQue                003FD2FB58    0010 0000000010 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,128] CQueD3I32           003FD30EF8    0001 000000001C Class Public 
+[D:/Kernel/Adam1a.HPP.Z,159] CQueVectU8          003FD32B30    000A 0000000228 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,555] CRAXRBCRCXRDX       003FD37750    0004 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,2879] CRGB                003FD48F28    0000 0000000004 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,573] CSema               003FD37A30    0001 0000000040 Class 
+[D:/Kernel/Adam1a.HPP.Z,3731] CSndData            003FD4E250    0004 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,3738] CSndGlbls           003FD4E530    0001 0000000029 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,222] CSpring             003FD35830    0002 0000000050 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3086] CSrvCmd             003FD4BD70    0022 0000000080 Class 
+[D:/Kernel/Adam1a.HPP.Z,3106] CSrvCtrl            003FD2CDD8    0009 0000000028 Class 
+[D:/Kernel/Adam1a.HPP.Z,1909] CStreamBlk          003FD3FBA8    0002 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,3368] CSysFixedArea       003FD4CB50    001D 0000084600 Class Public 
 [D:/Kernel/Adam1a.HPP.Z,2981] CTRLF_BORDER        2             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2982] CTRLF_CAPTURE_LEFT_IP4             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2983] CTRLF_CAPTURE_RIGHT_IP8             0000 0000000008 DefineStr 
@@ -526,20 +526,20 @@ CPUStructInit       0000026930    0001            ExportSysSym
 [D:/Kernel/Adam1a.HPP.Z,2976] CTRLT_WIN_HSCROLL   1             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,2977] CTRLT_WIN_VSCROLL   2             0000 0000000008 DefineStr 
 [D:/Kernel/KbdMouse/Keyboard.CPP.Z,15] CTRL_KEY_SCAN_DECODE_TABLE00000114F3    0003            ExportSysSym Export 
-[D:/Kernel/Adam1a.HPP.Z,3301] CTSS                003FD4E070    0005 0000002084 Class 
+[D:/Kernel/Adam1a.HPP.Z,3301] CTSS                003FD4C870    0005 0000002084 Class 
 [D:/Kernel/Adam1a.HPP.Z,3644] CT_7_BIT            1             0004 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3645] CT_8_BIT            2             0002 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3643] CT_NONE             0             0002 0000000008 DefineStr 
-[D:/Kernel/Adam1a.HPP.Z,3213] CTask               003FD58EB8    00D2 00000004A8 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3145] CTaskSettings       003FD4D850    0002 0000000130 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,3206] CTaskStk            003FD4DB30    0009 0000000018 Class 
-[D:/Kernel/Adam1a.HPP.Z,3496] CTextGlbls          003FD4E630    0001 0000000030 Class Public 
-[D:/Kernel/Except.CPP.Z,54] CTryStk             003FD58338    0001 0000000020 Class 
-[D:/Kernel/Adam1a.HPP.Z,2130] CUasmGlbls          003FD427C8    0001 0000000028 Class 
-[D:/Kernel/Adam1a.HPP.Z,2995] CViewAngles         003FD4C150    0000 0000000048 Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1432] CWinMgrGlbls        003FD3DBF0    0000 000000003C Class Public 
-[D:/Kernel/Adam1a.HPP.Z,1418] CWinMgrTimingGlbls  003FD3D910    0001 0000000840 Class 
-[D:/Kernel/Adam1a.HPP.Z,2988] CWinScroll          003FD4BE70    0001 0000000020 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3213] CTask               003FD576B8    00D2 00000004A8 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3145] CTaskSettings       003FD4C050    0002 0000000130 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,3206] CTaskStk            003FD4C330    0009 0000000018 Class 
+[D:/Kernel/Adam1a.HPP.Z,3496] CTextGlbls          003FD4CE30    0001 0000000030 Class Public 
+[D:/Kernel/Except.CPP.Z,54] CTryStk             003FD56B38    0001 0000000020 Class 
+[D:/Kernel/Adam1a.HPP.Z,2130] CUasmGlbls          003FD40FC8    0001 0000000028 Class 
+[D:/Kernel/Adam1a.HPP.Z,2995] CViewAngles         003FD4A950    0000 0000000048 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1432] CWinMgrGlbls        003FD3C3F0    0000 000000003C Class Public 
+[D:/Kernel/Adam1a.HPP.Z,1418] CWinMgrTimingGlbls  003FD3C110    0001 0000000840 Class 
+[D:/Kernel/Adam1a.HPP.Z,2988] CWinScroll          003FD4A670    0001 0000000020 Class Public 
 [D:/Kernel/Adam1a.HPP.Z,2850] CYAN                3             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1b.HPP.Z,30] Call                0000002012    0002            Funct Public Res 
 [D:/Kernel/Adam1b.HPP.Z,37] CallExtNum          0000002206    0001            Funct Public Res 
@@ -572,7 +572,7 @@ CPUStructInit       0000026930    0001            ExportSysSym
 [D:/Kernel/Dsk/Dsk1a.CPP.Z,484] ClusterNumNext      000001BDB9    000B 0000000122 Funct Export Res 
 [D:/Kernel/Dsk/Dsk1a.CPP.Z,704] ClustersAlloc       000001C6C9    000F 000000008F Funct Export Res 
 [D:/Kernel/Define1a.CPP.Z,127] Color2Str           000000D73E    0000 000000019E Funct Export Res 
-[D:/Kernel/Adam1a.HPP.Z,112] Complex             003FD31078    0000 0000000010 Class Public 
+[D:/Kernel/Adam1a.HPP.Z,112] Complex             003FD2F878    0000 0000000010 Class Public 
 [D:/Kernel/Compress.CPP.Z,249] CompressBuf         0000008576    0001 0000000130 Funct Export Res 
 [D:/Kernel/Dsk/Dsk1c.CPP.Z,23] CopySingle          00000259A6    0000 0000000274 Funct Export Res 
 [D:/Kernel/Dsk/Dsk1c.CPP.Z,1] CopySingleZ         000002588E    0001 0000000111 Funct Export Res 
@@ -605,11 +605,11 @@ CPUStructInit       0000026930    0001            ExportSysSym
 [D:/Kernel/Adam1b.HPP.Z,132] D3SubEqu            000000254B    0000            Funct Public Res 
 [D:/Kernel/Adam1b.HPP.Z,133] D3Unit              00000025B9    0000            Funct Public Res 
 [D:/Kernel/Adam1b.HPP.Z,134] D3Zero              00000024C1    0000            Funct Public Res 
-[D:/Kernel/Adam1b.HPP.Z,9] D:/Doc/Bit.TXT.Z    01291B9210    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,117] D:/Doc/D3.TXT.Z     012A761C28    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,184] D:/Doc/MultiCore.TXT.Z01291BAC70    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,47] D:/Doc/Que.TXT.Z    01291BAD30    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,237] D:/Doc/TimeHPET.TXT.Z01291BF360    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,9] D:/Doc/Bit.TXT.Z    012A767C28    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,117] D:/Doc/D3.TXT.Z     012AF1FC28    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,184] D:/Doc/MultiCore.TXT.Z0129FCFC28    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,47] D:/Doc/Que.TXT.Z    01291CB170    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,237] D:/Doc/TimeHPET.TXT.Z0129CA1C28    0000            HelpFile Public 
 [D:/Kernel/Adam1a.HPP.Z,3532] DCF_ALIAS           0x2000        0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3518] DCF_COMPRESSED      1             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3531] DCF_DONT_DRAW       0x1000        0000 0000000008 DefineStr 
@@ -1299,9 +1299,9 @@ HashDel             0000008876    0001            ExportSysSym
 [D:/Kernel/Mem1c.CPP.Z,29] HeapCtrlInit        0000005C31    0004 000000005A Funct Export Res 
 [D:/Kernel/Mem1c.CPP.Z,261] HeapsInit           00000062E9    0001 000000014E Funct Export Res 
 [D:/Kernel/Str1b.CPP.Z,115] Help                00000072A6    0000 000000004F Funct Export Res 
-[D:/Kernel/Adam1a.HPP.Z,69] I16                 003FD2F970    0008 0000000002 Class 
-[D:/Kernel/Adam1a.HPP.Z,83] I32                 003FD2FF30    0036 0000000004 Class 
-[D:/Kernel/Adam1a.HPP.Z,101] I64                 003FD30D98    04B8 0000000008 Class 
+[D:/Kernel/Adam1a.HPP.Z,69] I16                 003FD2E170    0008 0000000002 Class 
+[D:/Kernel/Adam1a.HPP.Z,83] I32                 003FD2E730    0036 0000000004 Class 
+[D:/Kernel/Adam1a.HPP.Z,101] I64                 003FD2F598    04B8 0000000008 Class 
 [D:/Kernel/Adam1a.HPP.Z,505] IA32F_LME           0x100         0001 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,504] IA32F_SCE           0x001         0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,507] IA32_EFER           0xC0000080    0003 0000000010 DefineStr 
@@ -2791,9 +2791,9 @@ TaskRstAwaitingMsg  000001591B    0000            ExportSysSym
 [D:/Kernel/Adam1b.HPP.Z,40] ToUpper             000000001E    0013            Funct Public 
 [D:/Kernel/Dsk/DskStr.CPP.Z,361] ToggleZorNotZ       0000017E81    0002 0000000067 Funct Export Res 
 [D:/Kernel/Adam1b.HPP.Z,113] Trunc               000000269F    0005            Funct Public Res 
-[D:/Kernel/Adam1a.HPP.Z,63] U16                 003FD2EF40    0096 0000000002 Class 
-[D:/Kernel/Adam1a.HPP.Z,75] U32                 003FD2FC50    0118 0000000004 Class 
-[D:/Kernel/Adam1a.HPP.Z,91] U64                 003FD30368    0290 0000000008 Class 
+[D:/Kernel/Adam1a.HPP.Z,63] U16                 003FD2D740    0096 0000000002 Class 
+[D:/Kernel/Adam1a.HPP.Z,75] U32                 003FD2E450    0118 0000000004 Class 
+[D:/Kernel/Adam1a.HPP.Z,91] U64                 003FD2EB68    0290 0000000008 Class 
 [D:/Kernel/Define1a.CPP.Z,43] UndefinedDefine     000000D05E    0003 0000000068 Funct Export Res 
 [D:/Kernel/Dbg1a.CPP.Z,45] UnusedStk           000000F066    0001 0000000067 Funct Export Res 
 [D:/Kernel/Task1a.CPP.Z,367] UserCmdLine         000001540B    0001 000000007D Funct Export Res 

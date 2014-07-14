@@ -12,7 +12,7 @@
 [D:/Compiler/Assembler.CPP.Z,168] AsmStoreCodeU8At    0000007A50    0007 00000000B7 Funct Export Res 
 [D:/Compiler/Assembler.CPP.Z,663] AsmStoreNum         0000008CE0    0004 00000004A6 Funct Export Res 
 [D:/Compiler/Assembler.CPP.Z,1] AsmUnresolvedAdd    0000007460    0004 000000010C Funct Export Res 
-[D:/Compiler/CmpInit.CPP.Z,3] CInternalType       003FD51640    0002 000000000A Class 
+[D:/Compiler/CmpInit.CPP.Z,3] CInternalType       003FD4FE40    0002 000000000A Class 
 [D:/Compiler/CmpAsm.CPP.Z,5] CMP_TEMPLATES       0000000000    0001            ExportSysSym Export 
 [D:/Compiler/CmpAsm.CPP.Z,179] CMP_TEMPLATES_DONT_POP000000018B    0001            ExportSysSym Export 
 [D:/Compiler/CmpAsm.CPP.Z,268] CMP_TEMPLATES_DONT_PUSH0000000257    0001            ExportSysSym Export 
@@ -22,11 +22,11 @@
 [D:/Compiler/BackF1a.CPP.Z,1] CN_A2               0             0005 0000000008 DefineStr 
 [D:/Compiler/BackF1a.CPP.Z,3] CN_MAIN             2             0022 0000000008 DefineStr 
 [D:/Compiler/BackF1a.CPP.Z,4] CN_R                3             0003 0000000008 DefineStr 
-[D:/Compiler/OptLib.CPP.Z,570] COptMemberVar       003FC7B188    0005 0000000028 Class 
-[D:/Compiler/StmtParser.CPP.Z,1342] CSubSwitch          003FC781B0    0004 0000000020 Class 
-[D:/Compiler/StmtParser.CPP.Z,1347] CSwitchCase         003FD58EB8    0004 0000000020 Class 
+[D:/Compiler/OptLib.CPP.Z,570] COptMemberVar       003FC79988    0005 0000000028 Class 
+[D:/Compiler/StmtParser.CPP.Z,1342] CSubSwitch          003FC769B0    0004 0000000020 Class 
+[D:/Compiler/StmtParser.CPP.Z,1347] CSwitchCase         003FD576B8    0004 0000000020 Class 
 [D:/Compiler/ICLCC.CPP.Z,33] CTrace              0000002898    0000 0000000017 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,175] CVI2                003FC78490    0003 0000000010 Class 
+[D:/Compiler/StmtParser.CPP.Z,175] CVI2                003FC76C90    0003 0000000010 Class 
 [D:/Compiler/CmpMain.CPP.Z,455] Cmp                 000002BF32    0000 000000059C Funct Export Res 
 [D:/Compiler/CmpMain.CPP.Z,170] CmpBuf              000002B5FA    0001 00000000B6 Funct Export Res 
 [D:/Compiler/OptLib.CPP.Z,553] CmpF1PushPop        000000BCE6    0002 0000000031 Funct Export Res 

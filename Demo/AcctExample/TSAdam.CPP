@@ -292,7 +292,7 @@ I64 CopyVideo()
     CopyTree("::/Temp/ScreenShots",TS_BAK_DRV ":/Temp/ScreenShots");
     result=Unzip(TS_BAK_DRV ":/Temp/ScreenShots/*.Z");
   }
-  "$BK,1$Files Copied:%d$BK,0$\n",result;
+  "$BK,1$Files Copied:%d$BK,0$ Time:%8.3fm\n",result,result/60.0/VIDEO_FRAME_RATE;
   return result;
 }
 

@@ -284,19 +284,19 @@ SoftBootMenu(TS_MAIN_DRV_LET);
 `SoftBootMenu(TS_MAIN_DRV_LET);
 `
 
-GodInit("/Adam/God/Vocab.TXT*");
+Adam("GodInit(\"/Adam/God/Vocab.TXT*\");");
 
-`GodInit("/Adam/God/Vocab.TXT*");
+`Adam("GodInit(\"/Adam/God/Vocab.TXT*\");");
 `
 
-GodInit("HOME/Archive/HAPPY.TXT*");
+Adam("GodInit(\"HOME/Archive/HAPPY.TXT*\");");
 
-`GodInit("HOME/Archive/HAPPY.TXT*");
+`Adam("GodInit(\"HOME/Archive/HAPPY.TXT*\");");
 `
 
-GodInit("HOME/Archive/INGREDIENTS.TXT*");
+Adam("GodInit(\"HOME/Archive/INGREDIENTS.TXT*\");");
 
-`GodInit("HOME/Archive/INGREDIENTS.TXT*");
+`Adam("GodInit(\"HOME/Archive/INGREDIENTS.TXT*\");");
 `
 
 Make TS Distro ISO

@@ -109,7 +109,7 @@ God said lots of misc stuff, like no child windows.
 
 I said there is a 100,000 line-of-code limit.
 
-We have 81,306 lines of code, currently, and can expand up to 100,000, but 
+We have 81,303 lines of code, currently, and can expand up to 100,000, but 
 code comments count.  I am opening-this-up to letting other people
 contribute. 
  We'll have some kind of organization.

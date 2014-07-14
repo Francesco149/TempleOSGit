@@ -259,7 +259,7 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
   }
 }
 
-#define NIST_TIME_OFFSET	17582
+#define NIST_TIME_OFFSET	17586
 
 public U0 SyncNIST()
 {

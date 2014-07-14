@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-121,463 lines of code including the kernel, the 64-bit compiler, the graphics 
+121,460 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 

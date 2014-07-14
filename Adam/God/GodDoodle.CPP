@@ -121,21 +121,16 @@ public U8 *GodDoodleSprite()
 	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15);
 	    break;
 	}
-      for (j=4;j;) {
+      for (j=0;j<6;j++) {
 	x=(w-1)*GodDoodleBits(5)/31+w/64;
 	y=(h-1)*GodDoodleBits(5)/31+h/64;
-	switch(GrPeek(god.doodle_dc,x,y)) {
-	  case BLACK:
-	    god.doodle_dc->color=WHITE;
-	    GrFloodFill(god.doodle_dc,x,y);
-	    j--;
-	    break;
-	  case WHITE:
-	    god.doodle_dc->color=BLACK;
-	    GrFloodFill(god.doodle_dc,x,y);
-	    j--;
-	    break;
+	switch(GodDoodleBits(2)) {
+	  case 0: god.doodle_dc->color=BLACK;	break;
+	  case 1: god.doodle_dc->color=DKGRAY;	break;
+	  case 2: god.doodle_dc->color=LTGRAY;	break;
+	  case 3: god.doodle_dc->color=WHITE;	break;
 	}
+	GrFloodFill(god.doodle_dc,x,y);
       }
       GodDoodleSmooth(3);
     }

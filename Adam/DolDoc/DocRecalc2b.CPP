@@ -290,6 +290,8 @@ public Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC)
   nobound_switch (recalc) {
     case DOC_RECALC_FIND_CURSOR:
       find_cursor=TRUE;
+      if (win_task)
+	dc=DCAlias(gr.dc2,win_task); //Necessary for sprites
       break;
     case DOC_RECALC_TO_SCREEN:
       if (doc->refresh_cnt++%(ToI64(winmgr.fps/10)+1) &&

@@ -36,8 +36,8 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distro.
   //See [C:/Demo/AcctExample/TSDistro.CPP.Z,1] DD_TEMPLEOS_LOC.
   -] LineRep
-    DefinePrint("DD_TEMPLEOS_LOC","121,463");
-    DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","81,306");
+    DefinePrint("DD_TEMPLEOS_LOC","121,460");
+    DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","81,303");
     
   DefinePrint(
     "DD_FIXED_AREA_BASE","%08X",SYS_FIXED_AREA);
