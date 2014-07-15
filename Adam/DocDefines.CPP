@@ -36,7 +36,7 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distro.
   //See [C:/Demo/AcctExample/TSDistro.CPP.Z,1] DD_TEMPLEOS_LOC.
   -] LineRep
-    DefinePrint("DD_TEMPLEOS_LOC","121,460");
+    DefinePrint("DD_TEMPLEOS_LOC","121,504");
     DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","81,303");
     
   DefinePrint(

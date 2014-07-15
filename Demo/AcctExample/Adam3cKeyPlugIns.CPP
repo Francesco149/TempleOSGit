@@ -81,7 +81,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    "$FG$";
 	}
 	break;
-      case SC_F7:
+      case SC_F6:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
 	    SetKeyDesc("Misc/Insert My URL");
@@ -92,6 +92,18 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    FillInMyURL;
 	  else
 	    FillInTime;
+	}
+	break;
+      case SC_F7:
+	if (sc&SCF_KEY_DESC) {
+	  if (sc & SCF_SHIFT)
+	    SetKeyDesc("God Book Passage");
+	} else {
+	  //[C:/Adam/God/HSNotes.TXT.Z,1]
+	  FifoU8Flush(god.fifo);
+	  GodBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
+	  if (sc & SCF_SHIFT)
+	    GodBooksPassage("HOME/Archive/Text/*");
 	}
 	break;
     }

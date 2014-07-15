@@ -410,3 +410,35 @@ U0 FillInMyURL()
   }
   Free(url);
 }
+
+public U0 GodBooksPassage(U8 *files_find_mask,I64 len=512)
+{//Make God pick a book passage. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
+  CDirEntry *tempm=FilesFind(files_find_mask,FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT),
+	*tempm1=tempm;
+  I64 i=0;
+  U8 *st,*st2=NULL;
+  while (tempm) {
+    st=FileRead(tempm->full_name);
+    tempm->user_data=StrLen(st);
+    if (tempm->user_data>=len)
+      i+=tempm->user_data+1-len;
+    Free(st);
+    tempm=tempm->next;
+  }
+  i=(GodBits(24)*i)>>24;
+  tempm=tempm1;
+  while (tempm) {
+    if (!st2 && tempm->user_data>=len) {
+      i-=tempm->user_data+1-len;
+      if (i<0) {
+	st=FileRead(tempm->full_name);
+	st2=st+(tempm->user_data+1-len)+i;
+	st2[len]=0;
+	"%s\n",st2;
+	Free(st);
+      }
+    }
+    tempm=tempm->next;
+  }
+  DirTreeDel(tempm1);
+}

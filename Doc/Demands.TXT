@@ -24,7 +24,10 @@ bad, just as more than one driver for the same type of device is bad.
 TempleOS is an additional operating system that must be used along-side 
 Windows or Linux, not as a replacement.  It must dual boot.
 
-* PC hardware manufacturers: ATA/ATAPI PIO must work.
+* PC hardware manufacturers: ATA/ATAPI PIO must work.  In fact, put them at 
+standard IDE port addresses.  Hard disk should be primary master.  CDROM/DVD 
+should be secondary master.  See what you can do to make flash memory sticks 
+with ATA/ATAPI.
 
 * PS/2 emulated keyboard and mouse must work.  The BIOS must enable these.
 

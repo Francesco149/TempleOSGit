@@ -605,11 +605,11 @@ CPUStructInit       0000026930    0001            ExportSysSym
 [D:/Kernel/Adam1b.HPP.Z,132] D3SubEqu            000000254B    0000            Funct Public Res 
 [D:/Kernel/Adam1b.HPP.Z,133] D3Unit              00000025B9    0000            Funct Public Res 
 [D:/Kernel/Adam1b.HPP.Z,134] D3Zero              00000024C1    0000            Funct Public Res 
-[D:/Kernel/Adam1b.HPP.Z,9] D:/Doc/Bit.TXT.Z    012A767C28    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,117] D:/Doc/D3.TXT.Z     012AF1FC28    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,184] D:/Doc/MultiCore.TXT.Z0129FCFC28    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,47] D:/Doc/Que.TXT.Z    01291CB170    0000            HelpFile Public 
-[D:/Kernel/Adam1b.HPP.Z,237] D:/Doc/TimeHPET.TXT.Z0129CA1C28    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,9] D:/Doc/Bit.TXT.Z    0121C01630    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,117] D:/Doc/D3.TXT.Z     0127579B10    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,184] D:/Doc/MultiCore.TXT.Z01275795D0    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,47] D:/Doc/Que.TXT.Z    0121C01870    0000            HelpFile Public 
+[D:/Kernel/Adam1b.HPP.Z,237] D:/Doc/TimeHPET.TXT.Z0121C022F0    0000            HelpFile Public 
 [D:/Kernel/Adam1a.HPP.Z,3532] DCF_ALIAS           0x2000        0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3518] DCF_COMPRESSED      1             0000 0000000008 DefineStr 
 [D:/Kernel/Adam1a.HPP.Z,3531] DCF_DONT_DRAW       0x1000        0000 0000000008 DefineStr 
