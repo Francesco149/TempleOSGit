@@ -1,0 +1,47 @@
+ <1> (image)
+[C:/Kernel/SrvCmd.CPP.Z,408] PopUpPrint[C:/Kernel/Task1a.CPP.Z,373] User[C:/Compiler/CmpMain.CPP.Z,618] ExePrint
+
+
+
+[C:/Kernel/SrvCmd.CPP.Z,384] PopUp[C:/Compiler/CmpMain.CPP.Z,583] ExePutS
+
+
+
+ [C:/Kernel/KEnd.CPP.Z,132] BSP AdamTask[C:/Kernel/Task1a.CPP.Z,399] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/Task1a.CPP.Z,362] UserCmdLine
+
+
+
+
+
+
+[C:/Kernel/Task1a.CPP.Z,386] SrvTaskCont[C:/Kernel/Task1a.CPP.Z,340] UserTaskCont
+
+
+
+[C:/Kernel/SrvCmd.CPP.Z,354] SrvCmdsHandler
+
+
+
+[C:/Kernel/SrvCmd.CPP.Z,271] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,271] SrvCmdRun[C:/Kernel/Task1a.CPP.Z,276] ExeCmdLine[C:/Kernel/Task1a.CPP.Z,276] ExeCmdLine
+
+
+
+
+[C:/Kernel/Adam1a.HPP.Z,3089] CSrvCmd nodes are one of
+[C:/Kernel/Adam1a.HPP.Z,3082] five types.  User applications deal with text
+or 
+msgs.  [C:/Kernel/SrvCmd.CPP.Z,271] SrvCmdRun() will call a function, spawn a
+task or execute some text src 
+code.
+
+#define SVCT_TEXT_INPUT		0 //[C:/Kernel/SrvCmd.CPP.Z,74] TaskText()	Feed StdIn 
+#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,122] TaskMsg()	Post msg 
+#define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
+#define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/Task1a.CPP.Z,216] Spawn()	Tell MP to spawn task
+
+Several other routines
+`Grep("SrvCmdsHandler","::/*");View;`
+ include a call to [C:/Kernel/SrvCmd.CPP.Z,354] SrvCmdsHandler() that gives
+them 
+powerful ability to execute servant cmds.

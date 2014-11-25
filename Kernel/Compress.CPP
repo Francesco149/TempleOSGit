@@ -1,5 +1,5 @@
 //See [C:/Doc/Acknowledgements.TXT.Z,1].
-//See [C:/Kernel/Adam1a.HPP.Z,3673] CArcCompress, [C:/Kernel/Adam1a.HPP.Z,3646] CArcEntry, and [C:/Kernel/Adam1a.HPP.Z,3654] CArcCtrl
+//See [C:/Kernel/Adam1a.HPP.Z,3670] CArcCompress, [C:/Kernel/Adam1a.HPP.Z,3643] CArcEntry, and [C:/Kernel/Adam1a.HPP.Z,3651] CArcCtrl
 
 asm {
 USE64
@@ -109,7 +109,7 @@ I64 ArcDetermineCompressionType(U8 *src,I64 size)
 }
 
 U0 ArcCompressBuf(CArcCtrl *c)
-{//Use [C:/Kernel/Compress.CPP.Z,249] CompressBuf() unless doing more than one buf.
+{//Use [C:/Kernel/Compress.CPP.Z,278] CompressBuf() unless doing more than one buf.
   CArcEntry *temp,*temp1;
   I64 ch,basecode;
   U8 *src_ptr,*src_limit;
@@ -153,16 +153,18 @@ ac_done:
   c->src_pos=src_ptr-c->src_buf;
 }
 
-U0 ArcFinishCompression(CArcCtrl *c)
+Bool ArcFinishCompression(CArcCtrl *c)
 {//Do closing touch on archivew ctrl struct.
   if (c->dst_pos+c->cur_bits_in_use<=c->dst_size) {
     BFieldOrU32(c->dst_buf,c->dst_pos,c->saved_basecode);
     c->dst_pos+=c->next_bits_in_use;
-  }
+    return TRUE;
+  } else
+    return FALSE;
 }
 
 U0 ArcExpandBuf(CArcCtrl *c)
-{//Use [C:/Kernel/Compress.CPP.Z,284] ExpandBuf() unless you know what you're doing.
+{//Use [C:/Kernel/Compress.CPP.Z,251] ExpandBuf() unless you know what you're doing.
   U8 *dst_ptr,*dst_limit;
   I64 basecode,lastcode,code;
   CArcEntry *temp,*temp1;
@@ -217,7 +219,7 @@ U0 ArcExpandBuf(CArcCtrl *c)
   c->dst_pos=dst_ptr-c->dst_buf;
 }
 
-CArcCtrl *ArcCtrlNew(Bool expand,Bool seven_bit)
+CArcCtrl *ArcCtrlNew(Bool expand,I64 compression_type=CT_8_BIT)
 {//MAlloc archive ctrl struct.
   CArcCtrl *c;
   c=CAlloc(sizeof(CArcCtrl));
@@ -225,7 +227,7 @@ CArcCtrl *ArcCtrlNew(Bool expand,Bool seven_bit)
     c->stk_base=MAlloc(ARC_MAX_ENTRY+1);
     c->stk_ptr=c->stk_base;
   }
-  if (seven_bit)
+  if (compression_type==CT_7_BIT)
     c->min_bits=7;
   else
     c->min_bits=8;
@@ -246,27 +248,49 @@ U0 ArcCtrlDel(CArcCtrl *c)
   Free(c);
 }
 
-CArcCompress *CompressBuf(U8 *src,I64 size,I64 flags=0,CTask *mem_task=NULL)
-{//See [C:/Demo/Dsk/SerializeTree.CPP.Z,1].
+U8 *ExpandBuf(CArcCompress *r,CTask *mem_task=NULL)
+{//See [C:/Demo/Dsk/SerializeTree.CPP,1].
+  CArcCtrl *c;
+  U8 *result=MAlloc(r->expanded_size+1,mem_task);
+  result[r->expanded_size]=0; //terminate
+  switch (r->compression_type) {
+    case CT_NONE:
+      MemCpy(result,&r->body,r->expanded_size);
+      break;
+    case CT_7_BIT:
+    case CT_8_BIT:
+      c=ArcCtrlNew(TRUE,r->compression_type);
+      c->src_size=r->compressed_size<<3;
+      c->src_pos=sizeof(CArcCompress)<<3;
+      c->src_buf=r;
+      c->dst_size=r->expanded_size;
+      c->dst_buf=result;
+      c->dst_pos=0;
+      ArcExpandBuf(c);
+      ArcCtrlDel(c);
+      break;
+    default:
+      throw('Compress');
+  }
+  return result;
+}
+
+CArcCompress *CompressBuf(U8 *src,I64 size,CTask *mem_task=NULL)
+{//See [C:/Demo/Dsk/SerializeTree.CPP,1].
   CArcCompress *result;
-  I64 size_out;
-  Bool seven_bit=ArcDetermineCompressionType(src,size)==CT_7_BIT;
-  CArcCtrl *c=ArcCtrlNew(FALSE,seven_bit);
+  I64 size_out,compression_type=ArcDetermineCompressionType(src,size);
+  CArcCtrl *c=ArcCtrlNew(FALSE,compression_type);
   c->src_size=size;
   c->src_buf=src;
   c->dst_size=(size+sizeof(CArcCompress))<<3;
   c->dst_buf=CAlloc(c->dst_size>>3);
   c->dst_pos=sizeof(CArcCompress)<<3;
   ArcCompressBuf(c);
-  ArcFinishCompression(c);
-  if (c->src_pos==c->src_size) {
+  if (ArcFinishCompression(c) && c->src_pos==c->src_size) {
     size_out=(c->dst_pos+7)>>3;
     result=MAlloc(size_out,mem_task);
     MemCpy(result,c->dst_buf,size_out);
-    if (seven_bit)
-      result->compression_type=CT_7_BIT;
-    else
-      result->compression_type=CT_8_BIT;
+    result->compression_type=compression_type;
     result->compressed_size=size_out;
   } else {
     result=MAlloc(size+sizeof(CArcCompress),mem_task);
@@ -275,32 +299,7 @@ CArcCompress *CompressBuf(U8 *src,I64 size,I64 flags=0,CTask *mem_task=NULL)
     result->compressed_size=size+sizeof(CArcCompress);
   }
   result->expanded_size=size;
-  result->flags=flags;
   Free(c->dst_buf);
   ArcCtrlDel(c);
   return result;
 }
-
-U8 *ExpandBuf(CArcCompress *r,CTask *mem_task=NULL)
-{//See [C:/Demo/Dsk/SerializeTree.CPP.Z,1].
-  CArcCtrl *c;
-  Bool seven_bit;
-  U8 *result=MAlloc(r->expanded_size+1,mem_task);
-  result[r->expanded_size]=0; //terminate
-  seven_bit= r->compression_type==CT_7_BIT;
-  if (r->compression_type==CT_NONE)
-    MemCpy(result,&r->body,r->expanded_size);
-  else {
-    c=ArcCtrlNew(TRUE,seven_bit);
-    c->src_size=r->compressed_size<<3;
-    c->src_pos=sizeof(CArcCompress)<<3;
-    c->src_buf=r;
-    c->dst_size=r->expanded_size;
-    c->dst_buf=result;
-    c->dst_pos=0;
-    ArcExpandBuf(c);
-    ArcCtrlDel(c);
-  }
-  return result;
-}
-

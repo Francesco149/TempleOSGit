@@ -2,7 +2,7 @@
 
 <fmt_arg> := %[-][0][<width>][.<decimals>][<flags>][h<aux_fmt_num>]<fmt_code>
 
-See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+See [C:/Kernel/StrPrint.CPP.Z,221] StrPrintJoin().
 
 <flags>:
 
@@ -16,7 +16,7 @@ See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
   For "%n", "%d" or "%u", the <aux_fmt_num> causes thousands mode.  "%h?n" 
 will pick a var exponent multiples of three unit, while "%h-3n" will display 
 milli units or "%h6n" will display mega units.  The 'k' flag is always on 
-for "%n".  See [C:/Demo/Print.CPP.Z,1].
+for "%n".  See [C:/Demo/Print.CPP,1].
 
 For "%c" or "%C", the <aux_fmt_num> repeats the char that many times.
 
@@ -36,13 +36,13 @@ letters.
 
 "%F" text file.
 
-"%p" ptr.
+"%dv" ptr.
 
 "%P" link to ptr.
 
-"%D" date.  Pass a [C:/Kernel/Adam1a.HPP.Z,182] CDate.
+"%D" date.  Pass a [C:/Kernel/Adam1a.HPP.Z,183] CDate.
 
-"%T" time.  Pass a [C:/Kernel/Adam1a.HPP.Z,182] CDate.
+"%T" time.  Pass a [C:/Kernel/Adam1a.HPP.Z,183] CDate.
 
 "%z" sub_entry of an enumerated list of text entries.  See
   [C:/Kernel/Str1a.CPP.Z,388] LstSub().  Pass 
@@ -60,36 +60,36 @@ strs in strs.)
 
                                  Print Family
 
-[C:/Kernel/StrPrint.CPP.Z,956] MStrPrint(U8 *fmt,...) is like
-[C:/Kernel/StrPrint.CPP.Z,935] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
+[C:/Kernel/StrPrint.CPP.Z,906] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,885] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
 [C:/Kernel/Mem1b.CPP.Z,373] MAllocated str.  It is vary handy because you
 don't have to worry about 
 overflow.
 
-[C:/Kernel/StrPrint.CPP.Z,940] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
+[C:/Kernel/StrPrint.CPP.Z,890] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
 formated string.
 
-[C:/Kernel/SrvCmd.CPP.Z,480] Auto(U8 *fmt,...) sends text to the current
+[C:/Kernel/SrvCmd.CPP.Z,494] Auto(U8 *fmt,...) sends text to the current
 task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,463] AutoStr(U8 *fmt,...) sends text of an
+[C:/Kernel/SrvCmd.CPP.Z,477] AutoStr(U8 *fmt,...) sends text of an
 [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
 current TASK but can also do mouse cmds.
 
-[C:/Kernel/SrvCmd.CPP.Z,444] XTalk(CTask *task,U8 *fmt,...) and text to
+[C:/Kernel/SrvCmd.CPP.Z,458] XTalk(CTask *task,U8 *fmt,...) and text to
 another task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,487] XTalkStr(CTask *task,U8 *fmt,...) sends text of
+[C:/Kernel/SrvCmd.CPP.Z,501] XTalkStr(CTask *task,U8 *fmt,...) sends text of
 an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
 [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(CDoc *doc,U8 *fmt,...) sends
 text to a document.  You can buffer to a 
 Doc and save it, providing the functionality of fprintf.  See 
-[C:/Demo/Dsk/FPrintF.CPP.Z,1].
+[C:/Demo/Dsk/FPrintF.CPP,1].
 
-[C:/Kernel/SrvCmd.CPP.Z,403] Adam(U8 *fmt,...) sends text to the adam task to
+[C:/Kernel/SrvCmd.CPP.Z,417] Adam(U8 *fmt,...) sends text to the adam task to
 be compiled and run.
-[C:/Kernel/SrvCmd.CPP.Z,422] AdamLog(U8 *fmt,...) and
-[C:/Kernel/SrvCmd.CPP.Z,432] AdamErr(U8 *fmt,...) send text to the adam task
+[C:/Kernel/SrvCmd.CPP.Z,436] AdamLog(U8 *fmt,...) and
+[C:/Kernel/SrvCmd.CPP.Z,446] AdamErr(U8 *fmt,...) send text to the adam task
 to be 
 displayed.
 
@@ -104,7 +104,7 @@ mode.
 [C:/Adam/Gr/GrTextBase.CPP.Z,315] TextPrint(CTask *task,I64 x,I64 y,I64
 attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
 
-[C:/Compiler/CmpMain.CPP.Z,641] ExePrint(U8 *fmt,...) compiles and execute a
+[C:/Compiler/CmpMain.CPP.Z,618] ExePrint(U8 *fmt,...) compiles and execute a
 string.  Note: It returns the 
 result of the last executed expression.
 
@@ -115,7 +115,13 @@ result of the last executed expression.
 screen memory, bypassing window 
 manager.
 
-[C:/Adam/DolDoc/DocPopUp.CPP.Z,456] PopUpViewPrint(U8 *fmt,...) creates a
+[C:/Kernel/Task1a.CPP.Z,373] User(U8 *fmt,...) Spawns a user and execute a
+string on start-up.
+
+[C:/Kernel/SrvCmd.CPP.Z,408] PopUpPrint(U8 *fmt,...) compiles and execute a
+string in a pop-up win.  Note: 
+It returns the result of the last executed expression.
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,431] PopUpViewPrint(U8 *fmt,...) creates a
 pop-up window and views text.
 
 **Note:** Use Print("%s",src) if you need an unmodified string.

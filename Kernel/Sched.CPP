@@ -1,11 +1,14 @@
 /*See [C:/Doc/MultiTasking.TXT.Z,1] TempleOS MultiTasking.
 
-Tasks are ordered in a circular queue
-by front-to-back window stack order with
-the window mgr as the head (paints
-the wallpaper).  The scheduler is
-round-robin.  It checks if a task
-is ready and runs it or skips it.
+On each core, tasks are linked in a
+circular doubly-linked list queue with
+the Seth task as the head.  On core#0,
+the queue order represents the front-to-back
+window stack order with the window mgr
+as the wallpaper.
+
+The scheduler is round-robin.  It checks
+if a task is ready and runs it or skips it.
 Swapping tasks just involves storing and
 restoring regs (no disk I/O for virtual
 memory and no addr map changes).  It is
@@ -16,13 +19,13 @@ The scheduler checks if a task is
 waiting for a certain time or waiting
 on a message and skips if not ready.
 A task runs until it voluntarily yields
-ctrl with a call to [C:/Kernel/Sched.CPP.Z,343] Yield() or gets
-preempted by the fixed 1kHz [C:/Kernel/Adam1a.HPP.Z,537] JIFFY_FREQ
+ctrl with a call to [C:/Kernel/Sched.CPP.Z,346] Yield() or gets
+preempted by the fixed 1kHz [C:/Kernel/Adam1a.HPP.Z,547] JIFFY_FREQ
 timer interrupt.  See [C:/Kernel/Ints.CPP.Z,13] SYS_TIMER_HANDLER.
 Tasks can ask not to be preempted with
-[C:/Kernel/Adam1b.HPP.Z,227] Preempt(ON/OFF).  Tasks waiting on I/O
+[C:/Kernel/Adam1b.HPP.Z,224] Preempt(ON/OFF).  Tasks waiting on I/O
 often loop, checking for a status and
-[C:/Kernel/Sched.CPP.Z,343] Yielding.  This does not really degrade
+[C:/Kernel/Sched.CPP.Z,346] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
 
 The scheduler checks for a few keys:
@@ -35,7 +38,7 @@ The scheduler checks for a few keys:
 Each core has its own circular task queue.
 For AP processors, they have a "Seth" task
 which stays in a loop waiting for jobs or
-requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,216] MPSethServerTask().
+requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,211] APSethTask().
 */
 
 asm {
@@ -360,7 +363,7 @@ U0 TaskQueIns(CTask *task,CTask *pred=NULL)
 
 U0 TaskQueRem(CTask *task)
 {//Remove a task from the scheduler running task queue.
-//Use [C:/Kernel/Task1a.CPP.Z,54] Suspend().
+//Use [C:/Kernel/Task1a.CPP.Z,48] Suspend().
   CTask *next,*last;
   PUSHFD
   CLI

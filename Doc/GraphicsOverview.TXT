@@ -42,24 +42,24 @@ The order that layers are drawn on top of each other is:
 
 
 
-* If you are curious, see [C:/Adam/Gr/GrScreen.CPP.Z,412] GrUpdateScreen()
+* If you are curious, see [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen()
 and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins() called by the 
-WinMgr task 60fps.  Notice the tasks [C:/Adam/Gr/GrScreen.CPP.Z,1] draw_it
+WinMgr task 30fps.  Notice the tasks [C:/Adam/Gr/GrScreen.CPP.Z,1] draw_it
 callback being called.  Only 
 tasks on core0 are allowed to have windows.  There is one window per task, no 
 child windows.  You can have pop-up child tasks.
 
-* [C:/Kernel/Adam1a.HPP.Z,3547] CDCs (device contexts) are a data type for
+* [C:/Kernel/Adam1a.HPP.Z,3550] CDCs (device contexts) are a data type for
 controlling graphics on the 
 screen or graphics in mem.  The device context structure has pen width and 
-color.  You use [C:/Adam/Gr/GrDC.CPP.Z,167] DCAlias() to create your own
+color.  You use [C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() to create your own
 structure, with its own color and 
-pen width.  Free it with [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel() when finished.
+pen width.  Free it with [C:/Adam/Gr/GrDC.CPP.Z,212] DCDel() when finished.
 
 * gr.dc is a device context for persistent data on the screen, not needing to 
 be redrawn.  You create an alias for this by using
-[C:/Adam/Gr/GrDC.CPP.Z,167] DCAlias() and work with 
-that.  See [C:/Demo/Graphics/NetOfDots.CPP.Z,1].
+[C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() and work with 
+that.  See [C:/Demo/Graphics/NetOfDots.CPP,1].
 
 * There are various flavors of line and point plotting routines. 
 [C:/Adam/Gr/GrPrimatives.CPP.Z,436] GrLine() and 
@@ -70,8 +70,8 @@ allow 3D graphics and rotations.
 
 * You change the Fs->draw_it var to point to your DrawIt() function which
 gets 
-called each screen refresh (60 fps).  You draw everything in the window over 
-and over again.  See [C:/Demo/Graphics/Box.CPP.Z,1].
+called each screen refresh (30 fps).  You draw everything in the window over 
+and over again.  See [C:/Demo/Graphics/Box.CPP,1].
 
 * Use the resource editor, <CTRL-r>, to create a sprite that can be plotted 
 with [C:/Adam/Gr/GrSpritePlot.CPP.Z,25] Sprite3() or output to the cmd line
@@ -81,58 +81,58 @@ the numbers work, after creating a sprite with <CTRL-r>, toggle to plain text
 with <CTRL-t> and check its num.  Make an assignment to a ptr var or pass to 
 [C:/Adam/Gr/GrSpritePlot.CPP.Z,25] Sprite3() with $IB,"",BI=n$.  Use
 <CTRL-r>'s "Pointer to Sprite" to make a $IB
-...$ entry.  See [C:/Demo/Graphics/SpritePlot.CPP.Z,1] and 
-[C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].  The origin (zero point) for a
-sprite is 
+...$ entry.  See [C:/Demo/Graphics/SpritePlot.CPP,1] and 
+[C:/Demo/Graphics/SpritePlot3D.CPP,1].  The origin (zero point) for a sprite
+is 
 defined by the cursor location when you pressed <CTRL-r> to make it.  You can 
 edit a sprite by clicking the cursor on it and pressing <CTRL-r> again.
 
-* Set [C:/Kernel/Adam1a.HPP.Z,3524] DCF_SYMMETRY in the
-[C:/Kernel/Adam1a.HPP.Z,3547] CDC.flags and call
+* Set [C:/Kernel/Adam1a.HPP.Z,3527] DCF_SYMMETRY in the
+[C:/Kernel/Adam1a.HPP.Z,3550] CDC.flags and call
 [C:/Adam/Gr/MathGr.CPP.Z,250] GrSetSymmetry() or 
 [C:/Adam/Gr/MathGr.CPP.Z,272] GrSetSymmetry3().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/Kernel/Adam1a.HPP.Z,3528] DCF_JUST_MIRROR to plot just the
+image.  Set [C:/Kernel/Adam1a.HPP.Z,3531] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/Kernel/Adam1a.HPP.Z,3524] DCF_SYMMETRY to be set at the same time.  Note:
+[C:/Kernel/Adam1a.HPP.Z,3527] DCF_SYMMETRY to be set at the same time.  Note:
 You can only have one symmetry 
 active at a time including in [C:/Adam/Gr/Gr.CPP.Z,68] CSprites.
 
-* Use [C:/Adam/Gr/GrDC.CPP.Z,185] DCNew() to create a mem bitmap which can be
+* Use [C:/Adam/Gr/GrDC.CPP.Z,189] DCNew() to create a mem bitmap which can be
 used to work off-screen and 
 which can be [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBloted onto the screen.  If you
 set brush member of CDC to 
 another CDC, all the graphic routines will [C:/Adam/Gr/GrBitMap.CPP.Z,71]
 GrBlot() the brush instead of 
 [C:/Adam/Gr/GrPrimatives.CPP.Z,49] GrPlot().  See
-[C:/Demo/Graphics/Blot.CPP.Z,1].
+[C:/Demo/Graphics/Blot.CPP,1].
 
-* There are a few [C:/Kernel/Adam1a.HPP.Z,2831] raster operations available. 
+* There are a few [C:/Kernel/Adam1a.HPP.Z,2834] raster operations available. 
 They go in bits 8-11 of the dc
-->color member var which is a [C:/Kernel/Adam1a.HPP.Z,2872] CColorROPU32. 
-[C:/Kernel/Adam1a.HPP.Z,2833] ROP_COLLISION is special.  It 
+->color member var which is a [C:/Kernel/Adam1a.HPP.Z,2875] CColorROPU32. 
+[C:/Kernel/Adam1a.HPP.Z,2836] ROP_COLLISION is special.  It 
 counts the num of pixs drawn on non-background locations.  Using 
-[C:/Kernel/Adam1a.HPP.Z,2833] ROP_COLLISION with vector
+[C:/Kernel/Adam1a.HPP.Z,2836] ROP_COLLISION with vector
 [C:/Adam/Gr/Gr.CPP.Z,68] CSprite's is tricky because overlapping pixs from 
 lines in the [C:/Adam/Gr/Gr.CPP.Z,68] CSprite reg as collisions.  You can
 either work with a nonzero 
 count or convert your [C:/Adam/Gr/Gr.CPP.Z,68] CSprite to a bitmap if your
 subelements draw on top of 
 each other.  Be sure to set ->bkcolor before using
-[C:/Kernel/Adam1a.HPP.Z,2833] ROP_COLLISION.  See 
-[C:/Demo/Graphics/Collision.CPP.Z,1] and [C:/Apps/TimeOut/TimeOut.CPP.Z,1]
+[C:/Kernel/Adam1a.HPP.Z,2836] ROP_COLLISION.  See 
+[C:/Demo/Graphics/Collision.CPP,1] and [C:/Apps/TimeOut/TimeOut.CPP,1]
 TimeOut.
  
-* The ->dither_probability_u16 member of [C:/Kernel/Adam1a.HPP.Z,3547] CDC is
+* The ->dither_probability_u16 member of [C:/Kernel/Adam1a.HPP.Z,3550] CDC is
 a U16 used to statistically 
 select between two colors to get something resembling more shades of color.  
-See [C:/Demo/Graphics/SunMoon.CPP.Z,1] and
-[C:/Demo/Graphics/Shading.CPP.Z,1].  It works 
+See [C:/Demo/Graphics/SunMoon.CPP,1] and [C:/Demo/Graphics/Shading.CPP,1]. 
+It works 
 with many graphic routines, but not those with pens.
 
 * There is a mechanism built-in for generating motion based on differential 
 equations, which allows realistic physics.  You create an
-[C:/Kernel/Adam1a.HPP.Z,241] CMathODE struct with 
+[C:/Kernel/Adam1a.HPP.Z,242] CMathODE struct with 
 [C:/Adam/MathODE.CPP.Z,30] ODENew(), passing it the num of vars in the state
 vect.  For realistic 
 physics, you usually have 2 state vars for each dimension (for each mass) 
@@ -141,10 +141,10 @@ states are pos and velocity and to solve these you need to supply the
 derivative of pos and velocity.  The derivative of pos is usually simply the 
 current velocity and the derivative of velocity is the acceleration (the sum 
 of forces on a mass divided by mass).  To help provide meaningful names for 
-values in the state vect, you can create an [C:/Kernel/Adam1a.HPP.Z,197]
+values in the state vect, you can create an [C:/Kernel/Adam1a.HPP.Z,198]
 COrder2D3 ptr and point it to a 
 mass in the state vect.  Six elements in the state vect are required for each 
 mass.
 
 See [Math/CMathODE,1] Math/CMathODE.
-See [C:/Demo/Games/Rocket.CPP.Z,1].
+See [C:/Demo/Games/Rocket.CPP,1].

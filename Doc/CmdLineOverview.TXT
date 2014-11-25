@@ -4,8 +4,8 @@ The cmd line feeds into the [C:/Doc/HolyC.TXT.Z,1] HolyC compiler as you
 type.  A statement outside a 
 function executes immediately.  Remember to add a semicolon.
 
-Look-up the function headers with WordStat by hitting <CTRL-SHIFT-F1> after 
-typing the first few letters.
+Look-up the function headers with AutoComplete by hitting <CTRL-SHIFT-F1> 
+after typing the first few letters.
 
 [C:/Kernel/Dsk/Dsk1b.CPP.Z,234] Click Here to see the directory cmd header. 
 It accepts default args from C++.
@@ -51,6 +51,6 @@ Utils.
 [Cmd Line (Typically),1] Cmd Line Routines
 
 Take Tour
-`SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
+`User("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
 ");`
 

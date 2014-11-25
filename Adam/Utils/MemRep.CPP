@@ -2,21 +2,15 @@
 
 I64 TSSSize(CTSS *tss)
 {
-  return MSize2(tss)+
-      MSize2(tss->st0)+
-      MSize2(tss->st1)+
-      MSize2(tss->st2);
+  return MSize2(tss)+MSize2(tss->st0)+MSize2(tss->st1)+MSize2(tss->st2);
 }
 
 I64 PenBrushesSize()
 {
   I64 result=0,i;
   for (i=0;i<GR_NUM_PEN_BRUSHES;i++)
-    result+=
-      DCSize(gr.pen_brushes[i])+
-      DCSize(gr.collision_pen_brushes[i])+
-      DCSize(gr.even_pen_brushes[i])+
-      DCSize(gr.odd_pen_brushes[i] );
+    result+=DCSize(gr.pen_brushes[i])+DCSize(gr.collision_pen_brushes[i])+
+      DCSize(gr.even_pen_brushes[i])+DCSize(gr.odd_pen_brushes[i]);
   return result;
 }
 
@@ -70,26 +64,26 @@ I64 TaskQueSize(CTask *task)
 I64 BlkDevsSize()
 {
   I64 i,result=MSize2(dsk.blkdevs);
-  CBlkDev *bdev;
+  CBlkDev *bd;
   for (i=0;i<NUM_BLKDEVS;i++) {
-    bdev=&dsk.blkdevs[i];
-    if (bdev->bd_signature==BD_SIGNATURE_VAL) {
-      if (bdev->type==BDT_RAM)
+    bd=&dsk.blkdevs[i];
+    if (bd->bd_signature==BD_SIGNATURE_VAL) {
+      if (bd->type==BDT_RAM)
 	"RAMDsk %C\t:%010X Unused:%010X\n",
-	  bdev->first_drv_let,(bdev->max_blk+1)<<BLK_SIZE_BITS,
-	  UnusedDrvSpace(bdev->first_drv_let);
-      result+=MSize2(bdev->dev_id_record);
+	  bd->first_drv_let,(bd->max_blk+1)<<BLK_SIZE_BITS,
+	  UnusedDrvSpace(bd->first_drv_let);
+      result+=MSize2(bd->dev_id_record);
     }
   }
   return result;
 }
 
-I64 PrtsSize()
+I64 DrvsSize()
 {
-  I64 i,result=MSize2(dsk.prts);
-  for (i=0;i<NUM_PRTS;i++)
-    result+=MSize2(dsk.prts[i].buffered_map_dirty_bits)+
-	    MSize2(dsk.prts[i].fis);
+  I64 i,result=MSize2(dsk.drvs);
+  for (i=0;i<NUM_DRVS;i++)
+    result+=MSize2(dsk.drvs[i].buffered_map_dirty_bits)+
+	    MSize2(dsk.drvs[i].fis);
   return result;
 }
 
@@ -111,9 +105,9 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
   "$GREEN$Task:%010X$CYAN$ %-30ts$FG$\n$ID,2$",task,st;
   Free(st);
   "$PURPLE$Alloced:%010X Used:%010X $RED$Unused:%010X$FG$\n",
-      TaskAllocatedMem(task,override_validate),
-      TaskUsedMem(task,override_validate),
-      TaskUnusedAllocatedMem(task,override_validate);
+      TaskMemAllocated(task,override_validate),
+      TaskMemUsed(task,override_validate),
+      TaskMemUnused(task,override_validate);
   "HashTable\t:%010X\n",HashTableSize2(task->hash_table);
 
   i=UnusedStk(task);
@@ -171,12 +165,12 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
     "HeapCtrls\t:%010X\n",m;
     "TaskQues\t:%010X\n",n;
     "BlkDevs\t:%010X\n",BlkDevsSize;
-    "Prts\t:%010X\n",PrtsSize;
+    "Drvs\t:%010X\n",DrvsSize;
     "Audio\t:%010X\n",CallExtStr("AudioSize");
     if (dsk.cache_base)
       "DskCache\t:%010X\n",
 	  MSize2(dsk.cache_base)+MSize2(dsk.cache_hash_table)+MSize2(dsk.cache_ctrl);
-    "WordStat\t:%010X\n",CallExtStr("WordStatSize");
+    "AutoComplete\t:%010X\n",CallExtStr("AutoCompleteSize");
     "Clipboard\t:%010X\n",DocSize(sys_clipboard_doc);
     "gr.to_8_bits\t:%010X\n",MSize2(gr.to_8_bits);
     "gr.to_8_colors\t:%010X\n",MSize2(gr.to_8_colors);

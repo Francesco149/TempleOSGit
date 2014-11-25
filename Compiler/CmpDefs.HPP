@@ -1,4 +1,21 @@
 //Intermediate compiler codes
+#define IS_0_ARG	0
+#define IS_1_ARG	1
+#define IS_2_ARG	2
+#define IS_V_ARG	3 //Variable Arg Cnt
+
+#define IST_NULL	0
+#define IST_DEREF	1
+#define IST_ASSIGN	2
+#define IST_CMP		3
+	
+class CIntermediateStruct
+{
+  U8 arg_cnt,result_cnt,type;
+  Bool fpop,not_const,pad[3];
+  U8 *name;
+};
+
 #define IC_END			0x00
 #define IC_NOP1			0x01
 #define IC_END_EXP		0x02
@@ -9,7 +26,7 @@
 #define IC_CALL_END2		0x07
 #define IC_RETURN_VAL		0x08
 #define IC_RETURN_VAL2		0x09
-#define IC_IMM_U64		0x0A
+#define IC_IMM_I64		0x0A
 #define IC_IMM_F64		0x0B
 #define IC_STR_CONST		0x0C
 #define IC_ABS_ADDR		0x0D
@@ -222,7 +239,6 @@
 #define IC_TAN			0xBF
 #define IC_ATAN			0xC0
 #define IC_NUM_ENTRIES		0xC1
-//Don't forget [C:/Compiler/CmpInit.CPP.Z,1] IC_INIT_TABLE
 
 #define KW_INCLUDE		0
 #define KW_DEFINE		1

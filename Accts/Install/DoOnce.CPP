@@ -2,7 +2,7 @@ Bool VMPrtDsk(CTask *task,CATARep *ata_drv)
 {
   if (ata_drv) {
     XTalkWait(task,"PrtDsk;\nYC2p%d\nYYY",ata_drv->num);
-    XTalkWait(task,"%d\nY\nY\n",(prt_dsk_dsk_size-PRT_HEADER)/2);
+    XTalkWait(task,"%d\nY\nY\n",(drv_dsk_dsk_size-DRV_HEADER)/2);
     return TRUE;
   } else
     return FALSE;
@@ -25,7 +25,7 @@ U0 VMInstallBoot(CTask *task,U8 cd_drv,U8 drv,U8 *acct_name,
   Free(st1);
 
   XTalkWait(task,
-    "MakeOSPrtBootInstall('%C');\n"
+    "MakeOSDrvBootInstall('%C');\n"
     "\nB1\n0x20000\n",drv);
 
   if (ata_drv)
@@ -57,7 +57,7 @@ U0 VMInstallWizard()
   "\nIt's normal for this to freeze for a moment or two.\n";
   PressAKey;
 
-  task=SpawnUser;
+  task=User;
   TaskWait(task);
   SetWinHorz(Fs->win_left,Fs->win_right,task);
   SetWinVert(Fs->win_top,(Fs->win_top+Fs->win_bottom)>>2-1,task);
@@ -97,7 +97,7 @@ U0 RegularInstallWizard()
   "\nIt's normal for this to freeze for a moment or two.\n";
   PressAKey;
 
-  task=SpawnUser;
+  task=User;
   TaskWait(task);
   SetWinHorz(Fs->win_left,Fs->win_right,task);
   SetWinVert(Fs->win_top,(Fs->win_top+Fs->win_bottom)>>2-1,task);
@@ -136,7 +136,7 @@ U0 RegularInstallWizard()
   }
   LinkedLstDel(root);
   XTalkWait(task,"%s\n%s\n%C\n",base0,base1,'0'+unit);
-  PrtRep;
+  DrvRep;
   while (TRUE) {
     dst=GetStr("\nDestination Partition Letter: ");
     if ('A'<=ToUpper(*dst)<='Z')
@@ -161,9 +161,9 @@ U0 RegularInstallWizard()
 	break;
     }
     if (ch=='1')
-      Fmt(*dst,,FALSE,PT_FAT32);
+      Fmt(*dst,,FALSE,DVT_FAT32);
     else
-      Fmt(*dst,,FALSE,PT_REDSEA);
+      Fmt(*dst,,FALSE,DVT_REDSEA);
   }
   CopyTree(st1,st2);
   st2=MStrPrint("%C:/Temp",*dst);
@@ -174,7 +174,7 @@ U0 RegularInstallWizard()
   MkDir(new_home_str);
   Copy("::/Misc/MakeDistro.CPP.Z",new_home_str);
   XTalkWait(task,
-  "MakeOSPrtBootInstall('%C');\n"
+  "MakeOSDrvBootInstall('%C');\n"
   "\nB1\n0x20000\n"
   "C"
   "2p"
@@ -214,7 +214,7 @@ U0 DoInstall()
     pmt_reboot=TRUE;
   } else {
     "\n\nThis wizard works if you have a partition ready.  "
-    "You can partition the drive or MakeOSPrtBootInstall() "
+    "You can partition the drive or MakeOSDrvBootInstall() "
     "with more options if you do it by hand, not using this wizard.\n\n"
     "Continue Install Wizard ";
     if (pmt_reboot=YorN)

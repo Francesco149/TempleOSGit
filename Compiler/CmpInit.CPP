@@ -50,14 +50,14 @@ U0 AsmPrsInsFlags(CLex *lx,CInstruction *tempi)
 	  return;
 	break;
       case '!': tempi->flags|=IEF_DONT_SWITCH_MODES; break;
-      case '&': tempi->flags|=IEF_DFT; break;
-      case ':': tempi->flags|=IEF_STI; break;
-      case '-': tempi->flags|=IEF_NO_REX; break;
-      case '~': tempi->flags|=IEF_40_REX; break;
-      case '=': tempi->flags|=IEF_48_REX; break;
+      case '&': tempi->flags|=IEF_DFT;		break;
+      case ':': tempi->flags|=IEF_STI;		break;
+      case '-': tempi->flags|=IEF_NO_REX;	break;
+      case '~': tempi->flags|=IEF_40_REX;	break;
+      case '=': tempi->flags|=IEF_48_REX;	break;
       case '`': tempi->flags|=IEF_REX_ONLY_R8_R15; break;
-      case '^': tempi->flags|=IEF_REX_XOR_LIKE; break;
-      case '$': tempi->flags|=IEF_ENDING_ZERO; break;
+      case '^': tempi->flags|=IEF_REX_XOR_LIKE;	break;
+      case '$': tempi->flags|=IEF_ENDING_ZERO;	break;
       default:
 	return;
     }
@@ -230,247 +230,12 @@ U0 CmpLoadDefines()
 		"MM\0MM32\0MM64\0XMM\0XMM32\0XMM64\0XMM128\0XMM0\0");
   DefineLstLoad("ST_SEG_REGS","ES\0CS\0SS\0DS\0FS\0GS\0");
   DefineLstLoad("ST_FSTK_REGS","ST0\0ST1\0ST2\0ST3\0ST4\0ST5\0ST6\0ST7\0");
-
-  DefineLstLoad("ST_INTERMEDIATE_CODE",
-/*
-[arg_cnt][result_cnt][deref/assign/cmp][fpop][nonconst]
-
-'9' arg_cnt means var
-
-'*' means it is a dereference instruction
-'=' means it is an assignment instruction
-'^' means it is a compare instruction
-
-'N' means not const.  Sets LF_NOT_CONST
-    which means an expression contains mem
-    accesses or things which might change.
-*/
-"00...END\0"
-"00...NOP1\0"
-"10...END_EXP\0"
-"00...NOP2\0"
-"00...LABEL\0"
-"00...CALL_START\0"
-"01...CALL_END\0"
-"00...CALL_END2\0"
-"10...RETURN_VAL\0"
-"00...RETURN_VAL2\0"
-"01...IMM_U64\0"
-"01...IMM_F64\0"
-"01..NSTR_CONST\0"
-"01..NABS_ADDR\0"
-"01..NADDR_IMPORT\0"
-"01..NHEAP_GLBL\0"
-"01...SIZEOF\0"
-"01...TYPE\0"
-"01..NGET_LABEL\0"
-"01..NRBP\0"
-"01..NREG\0"
-"00..NFS\0"
-"01..NMOV_FS\0"
-"00..NGS\0"
-"01..NMOV_GS\0"
-"01..NLEA\0"
-"01..NMOV\0"
-"10...TO_I64\0"
-"10...TO_F64\0"
-"10...TO_BOOL\0"
-"10...TOUPPER\0"
-"11...HOLYC_TYPECAST\0"
-"11..NADDR\0"
-"11...COM\0"
-"11...NOT\0"
-"11...UNARY_MINUS\0"
-"11*.NDEREF\0"
-"11*.NDEREF_PP\0"
-"11*.NDEREF_MM\0"
-"11*PN_PP\0"
-"11*PN_MM\0"
-"11*PNPP_\0"
-"11*PNMM_\0"
-"21...SHL\0"
-"21...SHR\0"
-"11=..SHL_CONST\0"
-"11=..SHR_CONST\0"
-"21...POWER\0"
-"21.P.MUL\0"
-"21.P.DIV\0"
-"21...MOD\0"
-"21...AND\0"
-"21...OR\0"
-"21...XOR\0"
-"21.P.ADD\0"
-"21.P.SUB\0"
-"11=..ADD_CONST\0"
-"11=..SUB_CONST\0"
-"21^..EQUAL_EQUAL\0"
-"21^..NOT_EQUAL\0"
-"21^..LESS\0"
-"21^..GREATER\0"
-"21^..LESS_EQUAL\0"
-"21^..GREATER_EQUAL\0"
-"01...PUSH_CMP\0"
-"21...AND_AND\0"
-"21...OR_OR\0"
-"21...XOR_XOR\0"
-"21=.NASSIGN\0"
-"21=.NASSIGN_PP\0"
-"21=.NASSIGN_MM\0"
-"21=.NSHL_EQUAL\0"
-"21=.NSHR_EQUAL\0"
-"21=.NMUL_EQUAL\0"
-"21=.NDIV_EQUAL\0"
-"21=.NMOD_EQUAL\0"
-"21=.NAND_EQUAL\0"
-"21=.NOR_EQUAL\0"
-"21=.NXOR_EQUAL\0"
-"21=.NADD_EQUAL\0"
-"21=.NSUB_EQUAL\0"
-"00...JMP\0"
-"00...SUB_CALL\0"
-"20...SWITCH\0"
-"20...NOBOUND_SWITCH\0"
-"90...ADD_RSP\0"
-"90...ADD_RSP1\0"
-"00...ENTER\0"
-"00=..PUSH_REGS\0"
-"00=..POP_REGS\0"
-"00...LEAVE\0"
-"00...RET\0"
-"00..NCALL\0"
-"00..NCALL_INDIRECT\0"
-"00..NCALL_INDIRECT2\0"
-"00..NCALL_IMPORT\0"
-"00..NCALL_EXTERN\0"
-"00..NASM\0"
-"10..NPREEMPT\0"
-"10..NPUSH\0"
-"00..NPOP\0"
-"10..NCLFLUSH\0"
-"10..NINVLPG\0"
-"10..NIN_U8\0"
-"10..NIN_U16\0"
-"10..NIN_U32\0"
-"20..NOUT_U8\0"
-"20..NOUT_U16\0"
-"20..NOUT_U32\0"
-"00..NGET_RFLAGS\0"
-"00..NCARRY\0"
-"10..NSET_RFLAGS\0"
-"00..NGET_RAX\0"
-"10..NSET_RAX\0"
-"00..NGET_RBP\0"
-"10..NSET_RBP\0"
-"00..NGET_RSP\0"
-"10..NSET_RSP\0"
-"01..NRIP\0"
-"00..NRDTSC\0"
-"00..NHPET\0"
-"20..NBT\0"
-"20..NBTS\0"
-"20..NBTR\0"
-"20..NBTC\0"
-"20..NLBTS\0"
-"20..NLBTR\0"
-"20..NLBTC\0"
-"10..NBSF\0"
-"10..NBSR\0"
-"10..NQUE_INIT\0"
-"20..NQUE_INS\0"
-"20..NQUE_INS_REV\0"
-"10..NQUE_REM\0"
-"10..NSTRLEN\0"
-"10...BR_ZERO\0"
-"10...BR_NOT_ZERO\0"
-"00...BR_CARRY\0"
-"00...BR_NOT_CARRY\0"
-"20...BR_NOT_EQUAL\0"
-"20...BR_EQUAL_EQUAL\0"
-"20...BR_GREATER_EQUAL\0"
-"20...BR_LESS_EQUAL\0"
-"20...BR_GREATER\0"
-"20...BR_LESS\0"
-"21...BR_2NOT_EQUAL\0"
-"21...BR_2EQUAL_EQUAL\0"
-"21...BR_2GREATER_EQUAL\0"
-"21...BR_2LESS_EQUAL\0"
-"21...BR_2GREATER\0"
-"21...BR_2LESS\0"
-"20...BR_AND_ZERO\0"
-"20...BR_AND_NOT_ZERO\0"
-"10..NBR_MM_ZERO\0"
-"10..NBR_MM_NOT_ZERO\0"
-"20...BR_AND_AND_ZERO\0"
-"20...BR_AND_AND_NOT_ZERO\0"
-"20...BR_OR_OR_ZERO\0"
-"20...BR_OR_OR_NOT_ZERO\0"
-"20..NBR_BT\0"
-"20..NBR_BTS\0"
-"20..NBR_BTR\0"
-"20..NBR_BTC\0"
-"20..NBR_LBTS\0"
-"20..NBR_LBTR\0"
-"20..NBR_LBTC\0"
-"20..NBR_NOT_BT\0"
-"20..NBR_NOT_BTS\0"
-"20..NBR_NOT_BTR\0"
-"20..NBR_NOT_BTC\0"
-"20..NBR_NOT_LBTS\0"
-"20..NBR_NOT_LBTR\0"
-"20..NBR_NOT_LBTC\0"
-"20..NSWAP_U8\0"
-"20..NSWAP_U16\0"
-"20..NSWAP_U32\0"
-"20..NSWAP_U64\0"
-"10...ABS_I64\0"
-"10...SIGN_I64\0"
-"20...MIN_I64\0"
-"20...MIN_U64\0"
-"20...MAX_I64\0"
-"20...MAX_U64\0"
-"20...MOD_U64\0"
-"10...SQRI64\0"
-"10...SQRU64\0"
-"11.P.SQR\0"
-"11.P.ABS\0"
-"11.P.SQRT\0"
-"11.P.SIN\0"
-"11.P.COS\0"
-"11.P.TAN\0"
-"11.P.ATAN\0"
-);Anchor for adding intermediate codes
 }
 
 U0 CmpFillTables()
 {
-  U8 *st;
   I64 i,k;
   U32 *d;
-
-  cmp.ic_bitmap_assign	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  cmp.ic_bitmap_deref	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  cmp.ic_bitmap_cmp	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  cmp.ic_bitmap_not_const=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  cmp.ic_bitmap_fpop	=CAlloc((IC_NUM_ENTRIES+7)>>3);
-  cmp.arg_cnt		=CAlloc(IC_NUM_ENTRIES);
-  cmp.result_cnt	=CAlloc(IC_NUM_ENTRIES);
-  st=Define("ST_INTERMEDIATE_CODE");
-  for (i=0;i<IC_NUM_ENTRIES;i++) {
-    cmp.arg_cnt[i]=*st-'0';
-    cmp.result_cnt[i]=st[1]-'0';
-    if (st[2]=='*')
-      Bts(cmp.ic_bitmap_deref,i);
-    else if (st[2]=='=')
-      Bts(cmp.ic_bitmap_assign,i);
-    else if (st[2]=='^')
-      Bts(cmp.ic_bitmap_cmp,i);
-    if (st[3]=='P')
-      Bts(cmp.ic_bitmap_fpop,i);
-    if (st[4]=='N')
-      Bts(cmp.ic_bitmap_not_const,i);
-    st+=StrLen(st)+1;
-    //See [C:/Compiler/ICLCC.CPP.Z,1] ICPut.
-  }
 
   cmp.to_reg_vars_map=CAlloc(NUM_REGS*sizeof(U8));
   cmp.num_reg_vars=0;

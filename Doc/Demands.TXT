@@ -3,31 +3,49 @@
 When God publically claims this operating system as His temple, here's what I 
 want:
 
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/EalSFnq9GsY"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/EalSFnq9GsY"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 * VMware to again support PC Speaker and provide emulation if no PC Speaker
 is 
 present.
 
-* Windows and Linux to support [C:/Doc/RedSea.TXT.Z,1] RedSea file system so
-I can get rid of 2,000 
-lines of redundant, blemished code -- FAT32 and ISO9660.  God's temple must
-be 
-perfect.  Redundant code for multiple file systems is imperfect.  For this 
-operating system, we want low line count.  More than one file system type is 
-bad, just as more than one driver for the same type of device is bad.
+* Windows, Linux and VMware to support [C:/Doc/RedSea.TXT.Z,1] RedSea file
+system so I can get rid of 
+2,000 lines of redundant, blemished code -- FAT32 and ISO9660.  God's temple 
+must be perfect.  Redundant code for multiple file systems is imperfect.  For 
+this operating system, we want low line count.  More than one file system
+type 
+is bad, just as more than one driver for the same type of device is bad.
 
 [C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:965
 [C:/Kernel/Dsk/FileSysISO1.CPP.Z,1]	:284
 [C:/Adam/Boot/DskCDDVD.CPP.Z,1]	:536
+[C:/Kernel/Dsk/Dsk1a.CPP.Z,531] RClustersBlks()
 
 * Microsoft must cancel SecureBoot because it makes dual booting impossible.  
 TempleOS is an additional operating system that must be used along-side 
-Windows or Linux, not as a replacement.  It must dual boot.
+Windows or Linux, not as a replacement.  It must dual boot because it has no 
+networking.  Real hardware as opposed to VMware is like the difference
+between 
+looking in a telescope eye piece and some link to a photo on the Internet.  
+God said the C64 generation owned ancestral lands and VMware is like being 
+moved on a reservation.  It will not stand.
 
 * PC hardware manufacturers: ATA/ATAPI PIO must work.  In fact, put them at 
-standard IDE port addresses.  Hard disk should be primary master.  CDROM/DVD 
-should be secondary master.  See what you can do to make flash memory sticks 
-with ATA/ATAPI.
+standard IDE port addresses.  Hard disk should be primary master 1F0/3F6.  
+CDROM/DVD should be secondary master 170/376.  See what you can do to make 
+flash memory sticks with ATA/ATAPI.
+[C:/Kernel/Dsk/DskATA.CPP.Z,635] /Kernel/Dsk/DskATA.CPP	:280 lines to
+figure-out I/O ports
+[C:/Kernel/BIOS32.CPP.Z,1] /Kernel/BIOS32.CPP		:290
 
 * PS/2 emulated keyboard and mouse must work.  The BIOS must enable these.
 
@@ -35,10 +53,11 @@ with ATA/ATAPI.
 
 * Perhaps, VMware+Intel can enable faster-than-standard x86 IN/OUT
 instruction 
-timing for ATA/ATAPI PIO, so bandwidth isn't bad.
+timing for ATA/ATAPI PIO, so bandwidth isn't bad. 
+[C:/Kernel/Dsk/DskATA.CPP.Z,67] ATAGetResult().
 
 * Computers should have a RESET switch and a fast boot option, skipping 
-diagnostics.
+diagnostics.  What the heck, replace UEFI with TempleOS.  Poetic justice.
 
 * VMware and others should list TempleOS as an official 64-bit operating 
 systems.
@@ -47,25 +66,11 @@ systems.
 just 
 right-side-up .BMP files with 8-bits-per-pixels 4-bits of color and 
 transparency, with no palette.  Compression is an LZW compression. 
-[C:/Adam/Gr/GrDC.CPP.Z,285] DCSave(), 
-[C:/Adam/Gr/GrDC.CPP.Z,355] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,324] DCLoad(),
-and [C:/Adam/Gr/GrDC.CPP.Z,366] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
+[C:/Adam/Gr/GrDC.CPP.Z,289] DCSave(), 
+[C:/Adam/Gr/GrDC.CPP.Z,356] GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,324] DCLoad(),
+and [C:/Adam/Gr/GrDC.CPP.Z,367] GRARead().  [C:/Kernel/Compress.CPP.Z,1]
 
-
-----
-
-In other words, all hardware and BIOSes must support TempleOS, dual booted 
-with Windows or Linux.  Hypervisors must support it fully.
-
-It would be nice if TempleOS were burned into BIOS ROMs in the factory, or 
-Intel CPU chips!  Then, the oracle code would be guaranteed trustworthy.  My 
-hope is that it will be finalized, mostly unchanging for centuries.
-
-I need a good dictionary and need to fix spellcheck.  Maybe, we leave the 
-dictionary out.
-
-I do not intend to ever support UEFI.  That uses elf and various propriatary 
-graphics formats.  It requires additional lines of code and offers nothing!
+* I want a nice dictionary.
 
 
 
@@ -112,7 +117,7 @@ God said lots of misc stuff, like no child windows.
 
 I said there is a 100,000 line-of-code limit.
 
-We have 81,303 lines of code, currently, and can expand up to 100,000, but 
+We have 80,543 lines of code, currently, and can expand up to 100,000, but 
 code comments count.  I am opening-this-up to letting other people
 contribute. 
  We'll have some kind of organization.

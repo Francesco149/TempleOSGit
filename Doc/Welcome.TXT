@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-121,504 lines of code including the kernel, the 64-bit compiler, the graphics 
+121,168 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -122,9 +122,9 @@ found.  This feature is especially useful for default account files.
 It's fun being able to turn-off interrupts with the asm instruction, CLI, and 
 on with STI.  TempleOS runs all programs in kernel mode, ring 0, so no 
 instructions are off-limits.  Turning-off and on preemption with
-[C:/Kernel/Adam1b.HPP.Z,227] Preempt() is 
+[C:/Kernel/Adam1b.HPP.Z,224] Preempt() is 
 a less drastic measure that is usually sufficient.  A newly
-[C:/Kernel/Task1a.CPP.Z,221] Spawn()ed task 
+[C:/Kernel/Task1a.CPP.Z,216] Spawn()ed task 
 begins with preemption off.
 
 The graphic resolution is poor, 640x480 16 color, but God said that and
@@ -149,9 +149,9 @@ so this is possible.  See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/Adam1a.HPP.Z,3213] CTask, pointed to by the FS
+task record, [C:/Kernel/Adam1a.HPP.Z,3216] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/Adam1a.HPP.Z,3338] CCPU for the current
+> while Gs-> points to a [C:/Kernel/Adam1a.HPP.Z,3341] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 
@@ -174,8 +174,8 @@ subdirectories.  Then, use [C:/Adam/Dsk/Dsk2a.CPP.Z,135] CopyTree().  That
 should make upgrading easy, too.  
 To make an account use [C:/Kernel/Dsk/Dsk1c.CPP.Z,82] MkDir() to create a
 directory under /Accts.  It will be 
-HOME if you boot to it.  Recompile with [C:/Adam/Boot/InsBoot.CPP.Z,135]
-MakeOSPrtBootInstall() and make it 
+HOME if you boot to it.  Recompile with [C:/Adam/Boot/InsBoot.CPP.Z,130]
+MakeOSDrvBootInstall() and make it 
 boot your acct.  Customizable start-up scripts go in your HOME directory. 
 The 
 default start-up scripts are in /Accts, the parent of all accounts.  Copy the 
@@ -207,8 +207,8 @@ it very often, believe it or not.
 <CTRL-b> toggles window border.
 
 <ALT-m> maximizes a window.
-<ALT-SHIFT-w> closes WordStat.
-<ALT-w> brings back WordStat.
+<ALT-SHIFT-w> closes AutoComplete.
+<ALT-w> brings back AutoComplete.
 <ALT-v> vertically tiles windows.
 <ALT-h> horizontally tiles windows.
 The ALT keys are defined in [C:/Accts/TAD/Adam3cKeyPlugIns.CPP,1].  You can
@@ -228,10 +228,9 @@ be used to replace strings across multiple files.  You can access
 [C:/Adam/Utils/Grep.CPP.Z,143] Grep() using 
 <CTRL-SHIFT-f>.
 
-As you browse code, use the WordStat window to look-up functions, etc.  <CTRL-
-SHIFT-F1> (or whatever number) to follow a sym to it's source.  You can
-browse 
-deeper and deeper.  You go back with <SHIFT-ESC>.
+As you browse code, use the AutoComplete window to look-up functions, etc.  <C
+TRL-SHIFT-F1> (or whatever number) to follow a sym to it's source.  You can 
+browse deeper and deeper.  You go back with <SHIFT-ESC>.
 
 Use the [C:/Doc/HelpIndex.TXT.Z,1] Help & Index or [C:/Doc/DemoIndex.TXT.Z,1]
 Demo Index to find-out what exists.  Press <F1> for 
@@ -240,7 +239,7 @@ ps directories for inspiration.
 
 
 Take Tour
-`SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
+`User("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
 ");`
 
 

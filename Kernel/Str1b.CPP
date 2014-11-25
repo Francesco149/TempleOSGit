@@ -101,7 +101,7 @@ Bool YorN()
 }
 
 I64 PressAKey()
-{//Print "Press a key" and wait for non-zero [C:/Kernel/Adam1a.HPP.Z,3382] ASCII key.
+{//Print "Press a key" and wait for non-zero [C:/Kernel/Adam1a.HPP.Z,3385] ASCII key.
   "$BK,1$PRESS A KEY$BK,0$\n";
   return GetChar(,FALSE);
 }

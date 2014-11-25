@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 121,504 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 121,168 lines of TempleOS over
 the 
 past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
@@ -32,7 +32,7 @@ than root was!
 * [C:/Kernel/Adam1b.HPP.Z,11] Bt() is bit test, like the x86 instruction, not
 bit torrent.
 
-* [C:/Kernel/Adam1b.HPP.Z,230] Fs is a segment reg, not file system.  (It is
+* [C:/Kernel/Adam1b.HPP.Z,227] Fs is a segment reg, not file system.  (It is
 kept pointing to the current 
 task's record.)  There is no memory segmentation -- FS and GS are used as 
 general purpose regs, more or less.
@@ -44,13 +44,13 @@ the syntax making parenthesis optional on function calls with no paramaters.
 * [C:/Kernel/Misc1a.CPP.Z,151] Sleep() makes a program pause.  It is not
 hybernation for a laptop.
 
-* [C:/Kernel/Sched.CPP.Z,343] Yield() saves the current task's regs (context)
+* [C:/Kernel/Sched.CPP.Z,346] Yield() saves the current task's regs (context)
 and loads in the next task.  
 When waiting, it's better to do this than check a condition in a loop until 
 you get preempted.  Checking a condition until you get preempted wastes CPU.  
-TempleOS does not use virtual memory, so [C:/Kernel/Sched.CPP.Z,343] Yield()
+TempleOS does not use virtual memory, so [C:/Kernel/Sched.CPP.Z,346] Yield()
 involves no disk activity.  A 
-swap takes half a microsecond.  See [C:/Demo/Lectures/Spinning.CPP.Z,1].
+swap takes half a microsecond.  See [C:/Demo/Lectures/Spinning.CPP,1].
 
 * I use the term [C:/Doc/Glossary.TXT.Z,1] JIT Compile Mode.  This means it
 is compiled and executable 
@@ -62,25 +62,20 @@ rename them with [C:/Adam/Dsk/Dsk2a.CPP.Z,107] Move() to store them
 uncompressed.
 
 * TempleOS is open src and every bit of the src code is included in the 
-distro.  Use [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall() to
+distro.  Use [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() to
 compile the kernel and compiler.
 
 * TempleOS does not use object files or a linker. 
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/Kernel/Adam1a.HPP.Z,537] JIFFY_FREQ.
+interrupt.  See [C:/Kernel/Adam1a.HPP.Z,547] JIFFY_FREQ.
 
 * Refresh rate is how often TempleOS updates screen mem.  It is not 
 syncronized to the hardware rate.  It has nothing to do with it.
 
 * No application has a lock on the speaker so apps can interfere with each 
 other and TempleOS makes speaker noise during disk access on purpose.
-
-* During boot, TempleOS reads-in all text files and collects statistic on 
-them.  It makes a sparse matrix containing the frequency each word was 
-followed by each other word.  This makes it able to predict the next word 
-while you type.  This feature is called WordStat.
 
 * There are no mem leaks.  TempleOS allocates mem as more items are displayed 
 on the screen.  TempleOS allocates mem for code as it is compiled at the cmd 

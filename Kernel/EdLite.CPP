@@ -45,7 +45,7 @@ U0 EdLiteUpdate(CLine *root,CLine *cur_line,I64 cur_col,I64 line_start_col)
       templ=templ->next;
     } else {
       if (!done_eof) {
-	"<EOF>";
+	'<EOF>';
 	done_eof=TRUE;
       }
       '\n';

@@ -30,43 +30,32 @@ class CRILex
 {
   CLex *lx1,*lx2;
   CQueVectU8 *indent;
-  I64 depth,exp_depth;
-  Bool was_new_line,is_not_cont,one_shot;
+  I64 depth,exp_depth,one_shot;
+  Bool was_new_line,is_not_cont;
 };
 
 I64 EdRILex(CRILex *rx)
 {
-  Bool is_not_cont=FALSE;
-  I64 i,k;
+  rx->is_not_cont=FALSE;
+  I64 i;
   do {
     Lex(rx->lx1);
     Lex(rx->lx2);
-
-    if (rx->lx1->token=='\n') {
-      if (rx->lx2->token==TK_IDENT)
-	i=PrsKeyWord(rx->lx2);
-      else
-	i=-1;
-      if (rx->lx2->token==';' || rx->lx2->token=='{' || rx->lx2->token=='}' ||
-	   rx->lx2->token==':' || rx->lx2->token==')' && !rx->exp_depth ||
-	   i==KW_ELSE || i==KW_CATCH || i==KW_DO)
-	is_not_cont=TRUE;
-    }
-    k=PrsKeyWord(rx->lx2);
+    i=PrsKeyWord(rx->lx2);
+    if (rx->lx1->token=='\n' && rx->lx2->token==';' || rx->lx2->token=='{' ||
+	rx->lx2->token=='}' || rx->lx2->token==':' || rx->lx2->token==')' &&
+	!rx->exp_depth || i==KW_ELSE || i==KW_CATCH || i==KW_DO)
+	rx->is_not_cont=TRUE;
     if (rx->was_new_line && (rx->lx1->token!=':' ||
-       k==KW_DFT || k==KW_SUB_SWITCH_START || k==KW_SUB_SWITCH_END)) {
-      if (rx->one_shot) {
-	QueVectU8Put(rx->indent,rx->lx2->lfns[0].cur_entry->y,rx->depth+3);
-	rx->one_shot=FALSE;
-      } else
-	QueVectU8Put(rx->indent,rx->lx2->lfns[0].cur_entry->y,rx->depth);
+	i==KW_DFT || i==KW_SUB_SWITCH_START || i==KW_SUB_SWITCH_END)) {
+      QueVectU8Put(rx->indent,rx->lx2->lfns[0].cur_entry->y,rx->depth+rx->one_shot);
+      rx->one_shot=0;
     }
     if (rx->lx2->token=='\n')
       rx->was_new_line=TRUE;
     else
       rx->was_new_line=FALSE;
   } while (rx->lx1->token=='\n');
-  rx->is_not_cont=is_not_cont;
   return rx->lx1->token;
 }
 
@@ -182,16 +171,14 @@ U0 EdRIStmt(CRILex *rx,Bool indent)
 	default:
 	  if (rx->lx1->token==TK_IDENT && rx->lx1->hash_entry &&
 	    rx->lx1->hash_entry->type&(HTT_OPCODE|HTT_ASM_KEYWORD)) {
-	    i=rx->depth;
-	    rx->depth=4;
-	    rx->one_shot=FALSE;
+	    rx->one_shot=4-rx->depth;
 	    do EdRILex(rx);
 	    while (rx->lx2->token && rx->lx2->token!='\n');
-	    rx->depth=i;
+	    rx->is_not_cont=TRUE;
 	  } else {
 	    while (rx->lx1->token && rx->lx1->token!=';' && rx->lx1->token!=':') {
 	      if (rx->lx2->token=='\n' && !rx->is_not_cont)
-		rx->one_shot=TRUE;
+		rx->one_shot=3;
 	      EdRILex(rx);
 	    }
 	    if (rx->lx1->token==':')
@@ -400,7 +387,7 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
       if (doc->flags&DOCF_PLAIN_TEXT)
 	DocFlagsToggle(doc,DOCF_PLAIN_TEXT);
       DocWrite(doc);
-      task=Spawn(&SrvUserCmdLine,NULL,"Srv",,Fs);
+      task=Spawn(&SrvCmdLine,NULL,"Srv",,Fs);
       st2=CurDir;
       st=MStrPrint("Cd(\"%s\");",st2);
       tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);

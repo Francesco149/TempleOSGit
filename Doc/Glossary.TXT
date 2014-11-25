@@ -2,7 +2,9 @@
 
 +] Abbreviations
   Abs	Absolute
+AC	AutoComplete
 Acct	Account
+ACD	AutoComplete Dictionary
 Addr	Address
 AOT	Ahead-of-Time
 AP	Application Processor(CPU#>0)
@@ -128,11 +130,9 @@ Vect	Vector
 Vol	Volume
 Win	Window
 Wiz	Wizard
-WS	WordStat
-WSD	WordStat Dictionary
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/Adam1a.HPP.Z,3213]
+  reg is kept pointing to the current task's [C:/Kernel/Adam1a.HPP.Z,3216]
   CTask.  There is only one window per task, and only core#0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -144,9 +144,9 @@ WSD	WordStat Dictionary
   [C:/Kernel/Adam1.CPP.Z,1]  Normally, Adam1.CPP.Z ends by #include
   [C:/Adam/Adam2.CPP.Z,1] where the remainder of the operating system is
   #included.  When start-up is finished, the adam task enters a server mode
-  where it accepts requests from other tasks.  The [C:/Kernel/SrvCmd.CPP.Z,403]
+  where it accepts requests from other tasks.  The [C:/Kernel/SrvCmd.CPP.Z,417]
   Adam("") routine will make Adam compile and run text src code.  #include
-  statements can be sent to [C:/Kernel/SrvCmd.CPP.Z,403] Adam(""), creating
+  statements can be sent to [C:/Kernel/SrvCmd.CPP.Z,417] Adam(""), creating
   system-wide code and data which don't disappear when any particular task ends.
 +] Seth Task
   Seth is Adam and Eve's child.  Each CPU core has a special task which is
@@ -158,20 +158,20 @@ WSD	WordStat Dictionary
   code within the lowest 2 Gig of memory, addresses 00000000-7FFFFFFF.  The
   compiler and [C:/Kernel/Hash1b.CPP.Z,423] Load()er allocate memory from the
   code heap to store code and glbl vars, unless the compiler option
-  [C:/Kernel/Adam1a.HPP.Z,1462] OPTf_GLBLS_ON_DATA_HEAP is used.  When programs
+  [C:/Kernel/Adam1a.HPP.Z,1469] OPTf_GLBLS_ON_DATA_HEAP is used.  When programs
   call [C:/Kernel/Mem1b.CPP.Z,373] MAlloc() is from the data heap, which in not
   limited in size, except by physical RAM memory.  You can allocate from any
   heap in any task at any time on any core, even making
   [C:/Kernel/Mem1a.CPP.Z,191] independent heaps.
 +] Parent, Child and PopUp Tasks
-  Often a task will [C:/Kernel/Task1a.CPP.Z,221] Spawn() or
-  [C:/Adam/DolDoc/DocPopUp.CPP.Z,407] PopUp() a task as a helper.  The helper
-  is known as a child Task, though you can [C:/Kernel/Task1a.CPP.Z,221] Spawn a
-  task and assign it a different parent... like Adam.  Links are kept as to
-  who's who's child, so when one task is [C:/Kernel/Task1a.CPP.Z,28] Kill()ed
-  the child helper tasks die, too.  You can get a report of current system
-  tasks with [C:/Adam/Utils2a.CPP.Z,404] TaskRep().  There is just one window
-  per task, so child tasks are needed for pop-ups.
+  Often a task will [C:/Kernel/Task1a.CPP.Z,216] Spawn() or
+  [C:/Kernel/SrvCmd.CPP.Z,384] PopUp() a task as a helper.  The helper is known
+  as a child Task, though you can [C:/Kernel/Task1a.CPP.Z,216] Spawn a task and
+  assign it a different parent... like Adam.  Links are kept as to who's who's
+  child, so when one task is [C:/Kernel/Task1a.CPP.Z,28] Kill()ed the child
+  helper tasks die, too.  You can get a report of current system tasks with
+  [C:/Adam/Utils2a.CPP.Z,317] TaskRep().  There is just one window per task, so
+  child tasks are needed for pop-ups.
 +] HolyC
   [C:/Doc/HolyC.TXT.Z,1] HolyC is more than C and less than C++.  It has the
   default args of C++ and uses class in place of struct.  It uses
@@ -189,9 +189,9 @@ In AOT mode, .PRJ files are compiled to .BIN files, skipping .OBJ files.
 There is no main() routine.  Instead, statements outside functions are
   automatically executed upon loading.  There is no way to unload except by
   killing the task.  To invoke AOT Compiled Mode,
-  [C:/Compiler/CmpMain.CPP.Z,455] Cmp() is used.  The Kernel module and
-  compiler are made in AOT compiled mode.  See [C:/Adam/Boot/InsBoot.CPP.Z,135]
-  MakeOSPrtBootInstall()  which calls [C:/Adam/Boot/InsBoot.CPP.Z,122]
+  [C:/Compiler/CmpMain.CPP.Z,432] Cmp() is used.  The Kernel module and
+  compiler are made in AOT compiled mode.  See [C:/Adam/Boot/InsBoot.CPP.Z,130]
+  MakeOSDrvBootInstall()  which calls [C:/Adam/Boot/InsBoot.CPP.Z,117]
   MakeAll() where Kernel.BIN.C and Compiler.BIN.Z are created.
 +] JIT Compile Mode
   In just-in-time mode, the compiler places code and data in memory allocated
@@ -199,8 +199,8 @@ There is no main() routine.  Instead, statements outside functions are
   execution.  This mode is used during cmd line operations.  When you #include
   a file, it is compiled function by function and code ends-up all over in the
   memory, at least in the first 2Gig of memory.  The
-  [C:/Compiler/CmpMain.CPP.Z,650] ExeFile() routine is the same as #include but
-  can be used in programs.  [C:/Compiler/CmpMain.CPP.Z,641] ExePrint() routine
+  [C:/Compiler/CmpMain.CPP.Z,627] ExeFile() routine is the same as #include but
+  can be used in programs.  [C:/Compiler/CmpMain.CPP.Z,618] ExePrint() routine
   will compile and run a string.
 +] Compiler Intermediate Code
   The compiler generates instructions one step before making actual assembly
@@ -209,10 +209,10 @@ There is no main() routine.  Instead, statements outside functions are
   compiler does not interpret code, except in the process of optimization to
   make the final machine code.  Assembly language output can be viewed when
   code is compiled with the [C:/Compiler/ICLCC.CPP.Z,33] CTrace(), or,
-  afterward, with [C:/Compiler/Unassembler.CPP.Z,643] U() or
+  afterward, with [C:/Compiler/Unassembler.CPP.Z,636] U() or
   [C:/Adam/Dbg2a.CPP.Z,249] Uf("").
-+] Partition/Drive
-  There is no distinction between partition or drive.  They are specified
++] Drive/Partition
+  There is no distinction between drive or partition.  They are specified
   with a single letter from A-Z.
 
 ':' is the boot drive.
@@ -251,7 +251,7 @@ POPFD pops the CPU flags.
 *.MAP.Z;*.MAP
   Compiler "map" files
 *.BIN.Z;*.BIN.C;*.BIN
-  Binary executable files, created by [C:/Compiler/CmpMain.CPP.Z,455] Cmp()
+  Binary executable files, created by [C:/Compiler/CmpMain.CPP.Z,432] Cmp()
   and read by [C:/Kernel/Hash1b.CPP.Z,423] Load().
 *.DAT.Z;*.DAT
   Data files
@@ -259,15 +259,15 @@ POPFD pops the CPU flags.
   CD-ROM image file--ISO9660.
 *.AUT.Z;*.AUT
   AutoFile Basically a HolyC program who's stdout goes to the input of a task
-  when [C:/Kernel/SrvCmd.CPP.Z,473] AutoFile() is called.
+  when [C:/Kernel/SrvCmd.CPP.Z,487] AutoFile() is called.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/Adam1a.HPP.Z,2191] FILEMASK_TXT
-[C:/Kernel/Adam1a.HPP.Z,2190] FILEMASK_SRC
-[C:/Kernel/Adam1a.HPP.Z,2189] FILEMASK_AOT
-[C:/Kernel/Adam1a.HPP.Z,2188] FILEMASK_JIT
-[C:/Kernel/Adam1a.HPP.Z,2192] FILEMASK_GRA
+[C:/Kernel/Adam1a.HPP.Z,2194] FILEMASK_TXT
+[C:/Kernel/Adam1a.HPP.Z,2193] FILEMASK_SRC
+[C:/Kernel/Adam1a.HPP.Z,2192] FILEMASK_AOT
+[C:/Kernel/Adam1a.HPP.Z,2191] FILEMASK_JIT
+[C:/Kernel/Adam1a.HPP.Z,2195] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -306,10 +306,10 @@ result is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/Adam1a.HPP.Z,3213] CTask.
+  [C:/Kernel/Adam1a.HPP.Z,3216] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/Adam1a.HPP.Z,3338] CCPU.
+  [C:/Kernel/Adam1a.HPP.Z,3341] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory allocated from a heap
   using [C:/Kernel/Mem1b.CPP.Z,373] MAlloc().  They must
@@ -331,6 +331,6 @@ result is reserved for local variables that hold the function return val.
   processors.  Only the BSP core#0 processor's tasks can have windows.  More or
   less, applications are launched exclusively from the BSP processor.  It is
   the master.  The only way slave cores get used is if the application
-  explicitly [C:/Kernel/Task1a.CPP.Z,221] Spawns() a task on them or
-  [C:/Kernel/MultiProc.CPP.Z,238] JobQue() a job on them.
+  explicitly [C:/Kernel/Task1a.CPP.Z,216] Spawns() a task on them or
+  [C:/Kernel/MultiProc.CPP.Z,232] JobQue() a job on them.
 

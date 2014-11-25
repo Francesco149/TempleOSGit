@@ -7,7 +7,7 @@ Bool ChkPtr(U8 *ptr)
       return FALSE;
   } else if (ptr<sys_boot_base)
     return FALSE;
-  else if (ptr<VGA_GRAPHIC_MEM_BASE)
+  else if (ptr<VGAM_GRAPHICS)
     return TRUE;
   else
     return FALSE;
@@ -22,7 +22,7 @@ Bool ChkCodePtr(U8 *ptr)
       return FALSE;
   } else if (ptr<sys_boot_base)
     return FALSE;
-  else if (ptr<VGA_GRAPHIC_MEM_BASE)
+  else if (ptr<VGAM_GRAPHICS)
     return TRUE;
   else
     return FALSE;

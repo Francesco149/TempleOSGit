@@ -13,7 +13,7 @@ public Bool Ed(U8 *link_st,I64 edf_dof_flags=0)
     case LK_DEF:
       doc=DocNew;
       doc->desc='DictDef';
-      WSDDefsPut(doc,filename,num);
+      ACDDefsPut(doc,filename,num);
       goto ej_doc;
     case LK_HELP_INDEX:
       doc=DocNew;
@@ -97,7 +97,7 @@ public U8 *DocLinkFile(U8 *link_st,CTask *mem_task=NULL)
 	Free(st);
 	break;
       case LK_BIBLE_FIND:
-	result=StrNew(Define("ST_BIBLE_FILE"),mem_task);
+	result=StrNew(BIBLE_FILENAME,mem_task);
 	break;
     }
     Free(filename);
@@ -148,7 +148,7 @@ public U0 DocTermNew()
   CDoc *pdoc=DocNew;
   pdoc->right_click_link=&TermRightClickLink;
   pdoc->max_entries=4096;
-  Fs->border_src=BDS_CUR_PRT;
+  Fs->border_src=BDS_CUR_DRV;
   pdoc->desc='Term';
   Fs->put_doc=Fs->display_doc=pdoc;
   Fs->border_doc=DocBorderNew(pdoc);
@@ -260,7 +260,7 @@ public CDocEntry *DocPutLine(CDoc *doc=NULL,CDocEntry *doc_e)
 
 #help_index "DolDoc/Input"
 U8 *DocGetStr2(I64 flags=0)
-{//[C:/Kernel/Adam1a.HPP.Z,3682] Flags
+{//[C:/Kernel/Adam1a.HPP.Z,3679] Flags
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
   Bool old_preempt=IsPreempt;

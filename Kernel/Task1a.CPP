@@ -25,30 +25,24 @@ Bool TaskValidate(CTask *task)
     return TRUE;
 }
 
-U0 Kill(CTask *task,Bool wait=TRUE)
+Bool Kill(CTask *task,Bool wait=TRUE)
 {//Terminate other task.
   I64 i;
-  CCPU *c;
-  Bool found,old_preempt=Preempt(OFF);
-  if (TaskValidate(task)) {
-    if (task==sys_winmgr_task)
-      found=TRUE;
-    else
-      found=FALSE;
-    for (i=0;i<mp_cnt;i++) {
-      c=&cpu_structs[i];
-      if (task==c->seth_task)
-	found=TRUE;
+  Bool old_preempt=Preempt(OFF);
+  if (TaskValidate(task) && task!=sys_winmgr_task) {
+    for (i=0;i<mp_cnt;i++)
+      if (task==cpu_structs[i].seth_task)
+	goto kl_fail;
+    LBts(&task->task_flags,TASKf_KILL_TASK);
+    if (wait) {
+      do Yield;
+      while (TaskValidate(task) && Bt(&task->task_flags,TASKf_KILL_TASK));
     }
-    if (!found) {
-      LBts(&task->task_flags,TASKf_KILL_TASK);
-      if (wait) {
-	do Yield;
-	while (TaskValidate(task) && Bt(&task->task_flags,TASKf_KILL_TASK));
-      }
-    }
+    return TRUE;
   }
+kl_fail:
   Preempt(old_preempt);
+  return FALSE;
 }
 
 Bool Suspend(CTask *task=NULL,Bool state=TRUE)
@@ -86,6 +80,7 @@ CTaskStk *TaskStkNew(I64 stk_size,CTask *task)
 #exe {OptOn(OPTf_NO_REG_VAR);};
 argpop I64 CallStkGrow(I64 stk_size_threshold,I64 stk_size,/*argpop*/I64 (*fp_addr)(...),...)
 {//Grow stk in call with any fixed num of args.
+//See [C:/Demo/StkGrow.CPP,1].
   CTaskStk *temps,*temps2,**_stk;
   I64 result,*rsp,*rsp2,*old_stk;
 
@@ -212,7 +207,7 @@ I64 TaskInit(CTask *task,I64 stk_size)
   task->win_bottom	=text.rows-2;
 
   //Beware Adam [C:/Kernel/KStart.CPP.Z,1] TaskInit gets NULL.  Okay, I guess, until [C:/Kernel/KEnd.CPP.Z,1] ChgDsk().
-  task->cur_prt=dsk.drv_to_prt[ToUpper(*sys_acct)-'A'];
+  task->cur_dv=dsk.let_to_drv[ToUpper(*sys_acct)-'A'];
   task->cur_dir=StrNew(sys_acct+2,task);
 
   return task;
@@ -220,12 +215,12 @@ I64 TaskInit(CTask *task,I64 stk_size)
 
 CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,
 		U8 *task_name=NULL,
-		I64 target_cpu=-1,	//-1 means current CPU. See [C:/Demo/MultiCore/LoadTest.CPP.Z,1] multi-core.
+		I64 target_cpu=-1,	//-1 means current CPU. See [C:/Demo/MultiCore/LoadTest.CPP,1] multi-core.
 		CTask *parent=NULL,	//NULL means adam
 		I64 stk_size=0,		//0=default
 		I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/Adam1a.HPP.Z,3213] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/Adam1a.HPP.Z,3216] CTask structure from code heap so addr will be short.
 //Could be allocated off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -375,7 +370,7 @@ U0 UserCmdLine(I64 dummy=0)
   UserTaskCont;
 }
 
-CTask *SpawnUser(U8 *fmt=NULL,...)
+CTask *User(U8 *fmt=NULL,...)
 {//Create user term task.
   U8 *st;
   CTask *task=Spawn(&UserCmdLine);
@@ -401,7 +396,7 @@ U0 SrvTaskCont()
   }
 }
 
-U0 SrvUserCmdLine(I64 dummy=0)
+U0 SrvCmdLine(I64 dummy=0)
 {
   nounusedwarn dummy;
   Fs->win_inhibit=WIG_USER_TASK_DFT;
@@ -440,7 +435,7 @@ I64 TaskEnd()
     return task->parent_task;
   }
 
-  PrtsRelease;
+  DrvsRelease;
   BlkDevsRelease;
   tempt1=(&task->next_child_task)(U8 *)-offset(CTask.next_sibling_task);
   tempt=tempt1->next_sibling_task;

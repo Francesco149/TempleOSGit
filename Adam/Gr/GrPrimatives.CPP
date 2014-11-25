@@ -235,7 +235,7 @@ I64 GrFloodFillRay(CDC *dc,I64 x,I64 y,I64 z,I32 *db)
 }
 
 public I64 GrFloodFill(CDC *dc=gr.dc,I64 x,I64 y,Bool not_color=FALSE,I64 z=0,I32 *db=NULL)
-{//3D. Ignore z and db.
+{//2D. Ignore z and db.
 //not_color=TRUE means fill up to everything which is not the current color.
 //not_color=FALSE means fill all parts equal to the color under the point.
 //Returns cnt of pixs changed
@@ -725,7 +725,7 @@ gr_done:
 #help_index "Graphics;Graphics/Device Contexts"
 
 public I64 GrBlot3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,CDC *img)
-{//3D. Clipping and transformation. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//3D. Clipping and transformation. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   CColorROPU32 old_color=dc->color;
   I64  color,reg i,j,w=img->width,h=img->height,
       d1,dx1,dy1,dz1,
@@ -1121,7 +1121,7 @@ gr_done:
 }
 
 public I64 GrFillTri0(CDC *dc=gr.dc,CD3I32 *p1,CD3I32 *p2,CD3I32 *p4)
-{//3D. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//3D. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
 //Returns cnt of pixs changed
   I64 x1,x2,y,z1,z2,dx1,dy1,dz1,dx2,dy2,dz2,result=0,i,y_min,y_max;
   CTask *win_task;

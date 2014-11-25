@@ -298,7 +298,7 @@ U0 ICFPow(CLex *lx,CIntermediateCode *tempi,U8 *buf,I64 ip)
 	ICU64(tempi,0);
 	if (buf) {
 	  tempe=CAlloc(sizeof(CExeImportExport));
-	  tempe->type=EIT_IMM_U64;
+	  tempe->type=EIT_IMM_I64;
 	  tempe->ip=ip+tempi->ic_cnt-8;
 	  tempe->next=tempex->ie_lst;
 	  tempex->ie_lst=tempe;

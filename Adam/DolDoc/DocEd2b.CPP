@@ -231,7 +231,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  if (sc&SCF_KEY_DESC)
 	    SetKeyDesc("Edit/Find Misspelled");
 	  else
-	    WSFindMisspelled(doc);
+	    ACFindMisspelled(doc);
 	} else {
 	  if (sc&SCF_KEY_DESC)
 	    SetKeyDesc("Edit/Save");
@@ -304,12 +304,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	      else
 		SetKeyDesc("Edit/Autocomplete Word");
 	    } else {
-	      if (WordStat(ON)) {
+	      if (AutoComplete(ON)) {
 		DocUnlock(doc);
 		if (sc&SCF_SHIFT)
-		  WSDDef(ch-'0',Fs);
+		  ACDDef(ch-'0',Fs);
 		else
-		  WSDFillin(ch-'0');
+		  ACDFillin(ch-'0');
 		DocLock(doc);
 	      }
 	    }
@@ -371,11 +371,11 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		    SetKeyDesc("Edit/Autocomplete Sym");
 		} else {
 		  DocUnlock(doc);
-		  if (WordStat(ON)) {
+		  if (AutoComplete(ON)) {
 		    if (sc&SCF_SHIFT)
-		      WSMan(sc2-SC_F1+1,Fs);
+		      ACMan(sc2-SC_F1+1,Fs);
 		    else
-		      WSFillIn(sc2-SC_F1+1);
+		      ACFillIn(sc2-SC_F1+1);
 		  }
 		  DocLock(doc);
 		}
@@ -780,7 +780,7 @@ Bool DocFileEd(I64 _type,U8 *filename,
     flags|=DOCF_ALLOW_UNDO;
 
     if (LK_DOC<=_type<=LK_DOC_LINE) {
-      doc=Str2I64(filename);//See [C:/Adam/Gr/SpriteEd.CPP.Z,642] SpriteEdText()
+      doc=Str2I64(filename);//See [C:/Adam/Gr/SpriteEd.CPP.Z,638] SpriteEdText()
       result=TRUE;
     } else {
 
@@ -802,7 +802,7 @@ Bool DocFileEd(I64 _type,U8 *filename,
 	doc=DocRead(filename,flags);
 	doc->desc='Edit';
 	Silent(old_silent);
-	Fs->border_src=BDS_ED_FILENAME_PRT;
+	Fs->border_src=BDS_ED_FILENAME_DRV;
       }
 
       Free(st1);
@@ -912,7 +912,7 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_needle_str=NULL,
 	  result=-1;
 	else {
 	  num=Str2I64(DefineSub(i,"ST_BIBLE_BOOK_LINES"));
-	  filename2=Define("ST_BIBLE_FILE");
+	  filename2=BIBLE_FILENAME;
 	}
 	break;
       case LK_FILE_LINE:

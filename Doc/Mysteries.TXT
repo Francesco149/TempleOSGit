@@ -3,7 +3,7 @@
 * TempleOS runs in VGA 640x480 16 color graphics mode, not text mode.  It 
 changes to this mode with a [C:/Kernel/KStart.CPP.Z,1] BIOS call while in
 real-mode before it switches to 
-64-bit mode.  The text is [C:/Adam/Gr/GrScreen.CPP.Z,266] drawn manually.  If
+64-bit mode.  The text is [C:/Adam/Gr/GrScreen.CPP.Z,260] drawn manually.  If
 graphics mode fails, it 
 falls-back on text mode.  You can force text mode with an
 [C:/Kernel/KCfg.CPP.Z,1] Kernel config 
@@ -18,7 +18,7 @@ never gets freed.  That's as close to kernel memory as it gets.
 * TempleOS puts all code in the lowest 2 Gig, so that REL32 addressing can be 
 used.  TempleOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
-[C:/Kernel/Adam1a.HPP.Z,1462] OPTf_GLBLS_ON_DATA_HEAP. 
+[C:/Kernel/Adam1a.HPP.Z,1469] OPTf_GLBLS_ON_DATA_HEAP. 
 [C:/Kernel/Mem1b.CPP.Z,373] MAlloc() can allocate any memory, of course.
 
 * TempleOS doesn't use software interrupts or SYSCALL instructions because it 
@@ -40,8 +40,8 @@ boot-loader.  [C:/Adam/Boot/BootMHD.CPP.Z,1] Master-Boot-Loader-Stage1,
 [C:/Adam/Boot/BootCD.CPP.Z,1] CD-DVD-Boot-Loader.
 
 * The boot-loaders must be patched by you running
-[C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall() or 
-[C:/Adam/Boot/InsBoot.CPP.Z,256] MasterBootIntall().  Those will write the
+[C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() or 
+[C:/Adam/Boot/InsBoot.CPP.Z,253] MasterBootIntall().  Those will write the
 block address into the boot-loader 
 because the boot-loaders do not navigate file systems to find the
 [C:/Kernel/KStart.CPP.Z,1] Stage2 if 
@@ -61,8 +61,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/Kernel/Adam1a.HPP.Z,3213] CTask, GS for 
-[C:/Kernel/Adam1a.HPP.Z,3338] CCPU.
+[C:/Kernel/Adam1a.HPP.Z,3216] CTask, GS for 
+[C:/Kernel/Adam1a.HPP.Z,3341] CCPU.
 
 * TempleOS uses JIT file compression on a file-by-file basis.  Files are 
 [C:/Kernel/Compress.CPP.Z,1] compressed, not encrypted.
@@ -76,8 +76,8 @@ scratch and it is self-contained.
 
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
-recompile with [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall(). 
-TempleOS is 121,504 lines.  Roughly 
+recompile with [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall(). 
+TempleOS is 121,168 lines.  Roughly 
 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -100,8 +100,8 @@ virtue of the fact that abs addresses get patched.
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system Kernel has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/Kernel/PSect.CPP.Z,283] Man()/WORDSTAT feature
-can find src lines.
+links.  This is how the [C:/Kernel/PSect.CPP.Z,283] Man()/AUTOCOMPLETE
+feature can find src lines.
 
 * #assert might print a message at COMPILE time, not run time.
 
@@ -120,7 +120,7 @@ around.  Data on classes can be accessed by code.  See
 
 * Filenames ending in .Z are automatically compressed and uncompressed when 
 writing to disk.  File size in directory listing is the compressed size.  See 
-[C:/Doc/TSZ.TXT.Z,1] for uncompressing from WINDOWS.
+[C:/Doc/TSZ.TXT.Z,1] for uncompressing from Linux.
 
 * Some memory objects are allocated when needed and will decrease the 
 available memory displayed.  A task keeps mem objects smaller than a couple 
@@ -133,7 +133,7 @@ will be allocated.  This is because it is reusing the small chunks.  See
 [C:/Doc/MemOverview.TXT.Z,1] Memory Overview and [Memory,1] Memory Routines. 
 Click Here
 `MemRep;View;`
- for a [C:/Adam/Utils/MemRep.CPP.Z,197] MemRep.
+ for a [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is SHIFT-SPA
 CE, a character which does not get converted to tabs by space-to-tabs,
@@ -168,9 +168,10 @@ a bootloader when I tricked it to use it's recovery partition feature.
 swapping-out.  You can do other, non-disk activity during disk operations 
 because it swaps-out a lot and task swaps take only half a microsecond, 
 probably a hundred times faster than a typical OS.  See 
-[C:/Demo/Lectures/Spinning.CPP.Z,1] Cooperative Multitasking.  It does not
+[C:/Demo/Lectures/Spinning.CPP,1] Cooperative Multitasking.  It does not
 break-up disk operations into small 
 pieces for sharing, however, so the disk is lock onto that one task.
 
 
 * "Windows" is a trademark of MicroSoft Corp.
+* "Linux" is probably a trademark owned by Linus Torvalds.

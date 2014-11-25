@@ -8,11 +8,11 @@ examples of using trivial solutions.
 * Everything runs in kernel, ring 0, mode.
 
 * One memory map for all tasks on all cores with virtual addresses set equal 
-to physical.
+to physical, just as though paging is not used.
 
 * One platform -- x86_64 PC's, no 32-bit support.
 
-* No security.
+* No security or cryptography.
 
 * No networking.
 
@@ -23,7 +23,7 @@ does not use interrupts, avoiding compatibility risks.  PS/2 keyboard/mouse
 is 
 used instead of USB, also more compatible.
 
-* 640x480 16 colors.  Updates whole screen at 60 fps, optimized for full 
+* 640x480 16 colors.  Updates whole screen at 30 fps, optimized for full 
 screen games where InvalidRectangles are counter-productive.
 
 * One font, 8x8.  Text and graphic layers done in software with text normally 
@@ -37,7 +37,8 @@ enough for compiling boot loaders.
 
 * Whole files are processed almost exclusively, allowing compression.
 
-* One language and compiler for command-line, scripts, songs, automations and 
+* [C:/Doc/HolyC.TXT.Z,1] One language and compiler for command-line, scripts,
+songs, automations and 
 code.
 
 * One editor/word processor/browser for the command-line window, source code, 

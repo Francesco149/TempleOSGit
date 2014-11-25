@@ -26,13 +26,13 @@ Help
 }
 
 The first arg is the msg code and it is optional with the default being 
-[C:/Kernel/Adam1a.HPP.Z,3132] MSG_KEY_DOWN_UP.  The second arg is the msg a1
-value which is [C:/Kernel/Adam1a.HPP.Z,3382] ASCII of the key 
-in the case of [C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN.  The third arg is
+[C:/Kernel/Adam1a.HPP.Z,3135] MSG_KEY_DOWN_UP.  The second arg is the msg a1
+value which is [C:/Kernel/Adam1a.HPP.Z,3385] ASCII of the key 
+in the case of [C:/Kernel/Adam1a.HPP.Z,3120] MSG_KEY_DOWN.  The third arg is
 the msg a2 value which is the 
 [C:/Doc/CharOverview.TXT.Z,1] scan_code of the key in the case of
-[C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN.
+[C:/Kernel/Adam1a.HPP.Z,3120] MSG_KEY_DOWN.
 
 Press <CTRL-SHIFT-l> and "Insert ASCII/ScanCode".
 
-See [C:/Demo/PullDownMenu.CPP.Z,1].
+See [C:/Demo/PullDownMenu.CPP,1].

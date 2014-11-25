@@ -189,16 +189,14 @@ I64 WinQueIPMsgs(Bool que)
   return msg_code;
 }
 
-I64 WinCalcRefreshTimeOut(Bool was_forced)
+U0 WinCalcIdles()
 {
-  F64 d,d1;
-  I64 i,k,total,
-      total_jiffies,idle_pt_hits[MP_MAX_PROCESSORS];
+  F64 calc_idle_time;
+  I64 i,k,total_jiffies,total_jiffies_delta,idle_pt_hits[MP_MAX_PROCESSORS];
   CCPU *c;
   CWinMgrTimingGlbls *t=winmgr.t;
 
-  t->refresh_skips++;
-  if ((t->refresh_time=tS)-t->last_refresh_time>.25) {
+  if ((t->calc_idle_delta_time=(calc_idle_time=tS)-t->last_calc_idle_time)>.25) {
     PUSHFD
     CLI
     total_jiffies=cpu_structs[0].total_jiffies;
@@ -206,67 +204,35 @@ I64 WinCalcRefreshTimeOut(Bool was_forced)
       idle_pt_hits[i]=cpu_structs[i].idle_pt_hits;
     POPFD
 
-    t->refresh_delta_time=t->refresh_time-t->last_refresh_time;
-    total=total_jiffies-t->last_total_jiffies;
+    total_jiffies_delta=total_jiffies-t->last_total_jiffies;
     for (i=0;i<mp_cnt;i++) {
       c=&cpu_structs[i];
-      d1=0.01;
-      if (t->refresh_delta_time>0) {
-	if (total) {
-	  if ((k=idle_pt_hits[i]-t->last_idle_pt_hits[i])>=0) {
-	    d1=ToF64(k)/total;
-	    d=ToF64(k*cnts.time_stamp_freq)
-	      /(JIFFY_FREQ*t->refresh_delta_time);
-	    if (d<d1) d1=d;
-	  }
-	} else {
-	  if ((k=idle_pt_hits[i]-t->last_idle_pt_hits[i])>=0)
-	    d1=ToF64(k*cnts.time_stamp_freq)
-	    /(JIFFY_FREQ*t->refresh_delta_time);
-	}
-      }
+      if (total_jiffies_delta && (k=idle_pt_hits[i]-t->last_idle_pt_hits[i])>=0)
+	c->idle_factor=Clamp(ToF64(k)/total_jiffies_delta,0.01,0.99);
+      else
+	c->idle_factor=0.01;
       t->last_idle_pt_hits[i]=idle_pt_hits[i];
-      c->idle_factor=Clamp(d1,0.01,0.99);
     }
     t->last_total_jiffies=total_jiffies;
-    t->last_refresh_time=t->refresh_time;
-    if (!was_forced) {
-      if (winmgr.first) {
-	d=Gs->idle_factor;
-	d1=(t->last_refresh_end_time-t->last_refresh_start_time)/
-	    (t->refresh_delta_time/t->refresh_skips);
-	if (d1<0.2)
-	  winmgr.desired_fps*=1.25;
-	else if (d<=0.0)
-	  winmgr.desired_fps=15.0;
-	else if (d<0.02) {
-	  d=15.0/winmgr.fps;
-	  winmgr.desired_fps=d*15.0+0.5*(1.0-d)*winmgr.desired_fps;
-	} else if (d<0.99) {
-	  if (d=(1.0-d)`0.25)
-	    winmgr.desired_fps*= 0.8`0.25/d;
-	} else
-	  winmgr.desired_fps=30.0;
-	t->refresh_cnt++;
-	t->refresh_skips=0;
-      } else {
-	winmgr.desired_fps=30.0;
-	winmgr.first=TRUE;
-      }
-    }
+    t->last_calc_idle_time=calc_idle_time;
+    t->calc_idle_cnt++;
   }
-  winmgr.desired_fps=Clamp(winmgr.desired_fps,15.0,30.0);
-  return cnts.jiffies+JIFFY_FREQ/winmgr.desired_fps;
 }
 
 I64 WinMgrSleep(Bool flush_msgs=FALSE)
 {
-  static Bool was_forced=FALSE;
   I64 timeout_val,msg_code=0;
   CCtrl *c;
   Bool que;
+  F64 t,t_delta;
 
   TimeStampFreqCal;
+  if ((t_delta=(t=tS)-winmgr.last_refresh_tS)>0.01)
+    winmgr.fps=Max(1.0/t_delta,1);
+  else
+    winmgr.fps=99;
+  winmgr.last_refresh_tS=t;
+  WinCalcIdles;
 
   if (!flush_msgs && winmgr.old_focus_task!=sys_focus_task) {
     TaskMsg(winmgr.old_focus_task,0,MSG_FOCUS,FALSE,0,0);
@@ -297,16 +263,13 @@ I64 WinMgrSleep(Bool flush_msgs=FALSE)
     if (!TaskValidate(sys_focus_task))
       FifoI64Flush(kbd.scan_code_fifo);
   }
-
   if (sys_focus_task)
     LBtr(&sys_focus_task->task_flags,TASKf_HAS_SONG);
-
-  timeout_val=WinCalcRefreshTimeOut(was_forced);
   WinIPUpdate;
+
+  timeout_val=cnts.jiffies+JIFFY_FREQ/WMG_FPS;
   LBts(&sys_semas[SYS_SEMA_REFRESH_IN_PROGRESS],0);
-  winmgr.t->last_refresh_start_time=tS;
   GrUpdateScreen;
-  winmgr.t->last_refresh_end_time=tS;
   LBtr(&sys_semas[SYS_SEMA_REFRESH_IN_PROGRESS],0);
 
   if (sys_focus_task && !Bt(&sys_focus_task->task_flags,TASKf_HAS_SONG)) {
@@ -322,13 +285,13 @@ I64 WinMgrSleep(Bool flush_msgs=FALSE)
   }
   winmgr.updates++;
   if (!mouse.install_attempts)
-    SleepUntil(timeout_val);
+    SleepUntil(timeout_val); //Just for before mouse install attempt at boot.
   else
     do {
       KbdMouseHandler(FALSE,TRUE);
       SleepUntil(MinI64(timeout_val,cnts.jiffies+JIFFY_FREQ/500));
-    } while (!Bt(&sys_semas[SYS_SEMA_FORCE_WINMGR],0)&&cnts.jiffies<timeout_val);
-  was_forced=LBtr(&sys_semas[SYS_SEMA_FORCE_WINMGR],0);
+    } while (cnts.jiffies<timeout_val && !Bt(&sys_semas[SYS_SEMA_FORCE_WINMGR],0));
+  LBtr(&sys_semas[SYS_SEMA_FORCE_WINMGR],0);
   return msg_code;
 }
 

@@ -19,3 +19,6 @@ If you have a 3D icon, you might want to place a background-colored rectangle
 under the 3D icon, so it hovers above.  Use TRANSFORM-OFF and TRANSFORM-ON.  
 You will also need to set the Z offset of the icon.  Go to the Edit menu and 
 select EDIT-AS-TEXT and change the third INT to Z offset.  Good luck.
+
+While inserting vector elements, you can usually press 'c' to eyedropper the 
+color under the mouse.

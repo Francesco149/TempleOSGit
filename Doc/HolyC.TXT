@@ -38,7 +38,7 @@ Test(,3);
 
 * A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
 A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,949] Print().  An empty string literal
+is sent to [C:/Kernel/StrPrint.CPP.Z,899] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
@@ -65,8 +65,8 @@ name
 with "&".
 
 * Type casting is postfix.  To typecast int or F64, use
-[C:/Kernel/Adam1b.HPP.Z,93] ToI64(), [C:/Kernel/Adam1b.HPP.Z,91] ToBool() or 
-[C:/Kernel/Adam1b.HPP.Z,92] ToF64(). (TempleOS follows normal C float<-->int
+[C:/Kernel/Adam1b.HPP.Z,90] ToI64(), [C:/Kernel/Adam1b.HPP.Z,88] ToBool() or 
+[C:/Kernel/Adam1b.HPP.Z,89] ToF64(). (TempleOS follows normal C float<-->int
 conversion, but sometimes you 
 want to override.  These functions are better than multiplying by "1.0" to 
 convert to float.) 
@@ -76,7 +76,7 @@ upon start-up, in order.
 
 * There are no bit fields, but there are [Bit,1] bit access routines and you
 can 
-access bytes or words within any int.  See [C:/Kernel/Adam1a.HPP.Z,101] I64
+access bytes or words within any int.  See [C:/Kernel/Adam1a.HPP.Z,102] I64
 declaration.  A class can be 
 accessed as a whole are subints, if you put a type in front of the class 
 declaration.
@@ -111,7 +111,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem1b.CPP.Z,373] MAlloc()ed string.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,221] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem1b.CPP.Z,373] MAlloc()ed string.
     [C:/Adam/Gr/GrBitMap.CPP.Z,823] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
@@ -173,8 +173,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK or
-  [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK for reg vars or else 
+  //Only use [C:/Kernel/Adam1a.HPP.Z,1702] REG_VARS_MASK or
+  [C:/Kernel/Adam1a.HPP.Z,1703] REG_NON_PTR_MASK for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -191,7 +191,7 @@ clobbered.
 }
 
 * interrupt, haserrcode, public, argpop or noargpop are function flags. See 
-[C:/Demo/Lectures/PageTableEntries2.CPP.Z,1].
+[C:/Demo/Lectures/PageTableEntries2.CPP,1].
 
 * A single quote can encompass multiple characters.  'ABC' is equal to 0x43424
 1.  [C:/Kernel/KeyDev.CPP.Z,20] PutChars() takes multiple characters.
@@ -229,10 +229,10 @@ PutChars('World\n');
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1457]
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1464]
 OPTf_WARN_PAREN) to find unnecessary parentheses in code.
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1458]
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1465]
 OPTf_WARN_DUP_TYPES) to find dup local var type 
 statements.
 
@@ -260,24 +260,24 @@ the offset in a class definition.
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
-[C:/Kernel/Adam1a.HPP.Z,63] Adam1a.HPP for 1,2,4 
+[C:/Kernel/Adam1a.HPP.Z,64] Adam1a.HPP for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
 that 
-is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP.Z,1]. 
+is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1]. 
 
 * class member vars can have meta data. fmtstr and fmtdata are two meta data 
 types now used.  All compiler structures are saved and you can access the 
-compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP.Z,1] and  
+compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP,1] and  
 [C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo().
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
-name of the previous arg.  See [C:/Demo/LastClass.CPP.Z,1],
+name of the previous arg.  See [C:/Demo/LastClass.CPP,1],
 [C:/Adam/Dbg2a.CPP.Z,152] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
 DocFormDo()  
-and [C:/Demo/Dsk/BlkDevRep.CPP.Z,1].
+and [C:/Demo/Dsk/BlkDevRep.CPP,1].
 
-* See [C:/Demo/Exceptions.CPP.Z,1].  try{} catch{} and throw are different
-from C++. 
+* See [C:/Demo/Exceptions.CPP,1].  try{} catch{} and throw are different from
+C++. 
 throw is a function with an 8-byte or less char arg.  The char string passed 
 in throw() can be accessed from within a catch{} using the Fs->except_ch.  
 Within a catch {} blk, set the var Fs->catch_except to TRUE if you want to 
@@ -296,7 +296,7 @@ you can't do sizeof(classname.membername.submembername).
 * lock{} can be used to apply asm LOCK prefixes to code for safe multicore 
 read-modify-write accesses.  The code bracked with have LOCK asm prefix's 
 applied to relevant instructions within.  It's a little shoddy.  See 
-[C:/Demo/MultiCore/Lock.CPP.Z,1].
+[C:/Demo/MultiCore/Lock.CPP,1].
 
 * There is a function called [C:/Kernel/Mem1b.CPP.Z,370] MSize() which gives
 the size of an object 
@@ -313,11 +313,11 @@ make an independent heap with [C:/Kernel/Mem1c.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/Adam1a.HPP.Z,2775] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,221]
+[C:/Kernel/Adam1a.HPP.Z,2778] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,216]
 Spawn().  You can use 
-[C:/Kernel/Task1a.CPP.Z,87] CallStkGrow(), but it's odd.  See
-[C:/Demo/StkGrow.CPP.Z,1]. 
+[C:/Kernel/Task1a.CPP.Z,81] CallStkGrow(), but it's odd.  See
+[C:/Demo/StkGrow.CPP,1]. 
 
 * Only one base class is allowed.
 

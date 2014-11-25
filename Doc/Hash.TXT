@@ -6,4 +6,4 @@ generated from a string by [C:/Kernel/Hash1a.CPP.Z,346] HashStr() to index
 into the array of linked-lists.  
 Multiple strings can generate the same num, so linked-lists are built.  Newer 
 entries overshadow older ones.  There are various types of entries.  See 
-[C:/Kernel/Adam1a.HPP.Z,640] Hash Entry Types.
+[C:/Kernel/Adam1a.HPP.Z,650] Hash Entry Types.

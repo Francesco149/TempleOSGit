@@ -5,7 +5,7 @@ fp_compare() passes by value instead of ref.
 For assending strings: return StrCmp(e1,e2);
 For assending ints   : return e1-e2;
 
-Maybe, look at [C:/Demo/MultiCore/RadixSort.CPP.Z,1].
+Maybe, look at [C:/Demo/MultiCore/RadixSort.CPP,1].
 */
   I64 i,*less,*greater,pivot;
   if (num>1) {
@@ -141,7 +141,7 @@ For assending strings: return StrCmp(*e1,*e2);
 For assending ints   : return *e1-*e2;
   Don't return e1-e2 if numbers can overflow, return -1,0 or 1.
 
-Maybe, look at [C:/Demo/MultiCore/RadixSort.CPP.Z,1].
+Maybe, look at [C:/Demo/MultiCore/RadixSort.CPP,1].
 */
   I64 i;
   U8 *less,*greater,*temp,*pivot;

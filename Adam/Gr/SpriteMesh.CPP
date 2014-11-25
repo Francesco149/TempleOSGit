@@ -384,7 +384,7 @@ U0 MPDrawIt(CMeshFrame *e)
   CMeshEdTri *tempt=e->tri_root.next;
   I64 i,*old_r=dc->r;
 
-//[C:/Adam/Gr/GrDC.CPP.Z,167] DCAlias() allocates a new identity rotation matrix.
+//[C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() allocates a new identity rotation matrix.
 //We want e->dc's rotation matrix.
   dc->r=e->dc->r;
 
@@ -440,7 +440,7 @@ U0 MPDrawIt(CMeshFrame *e)
   }
   dc->r=old_r;
 
-//e->dc's depth buf was copied but we don't want it freed during [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel().
+//e->dc's depth buf was copied but we don't want it freed during [C:/Adam/Gr/GrDC.CPP.Z,212] DCDel().
   dc->depth_buf=NULL;
 
   DCDel(dc);
@@ -483,7 +483,7 @@ I64 *MeshSetW2S(CMeshFrame *e,CTask *task)
   e->w2s=MeshW2S(e,task);
   Free(e->s2w);
   e->s2w=MeshS2W(e,task);
-  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel().
+  return MAllocIdentical(e->w2s,task); //returned matrix is assigned to dc->r and will be freed by [C:/Adam/Gr/GrDC.CPP.Z,212] DCDel().
 }
 
 U0 MeshCursorW(CMeshFrame *e,CTask *task,I64 *_x,I64 *_y,I64 *_z)
@@ -879,7 +879,7 @@ If root points to a mesh, it will load it.
 
 Returns a newly malloced mesh or NULL.
 
-See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
+See [C:/Demo/Graphics/SpritePlot3D.CPP,1].
 */
   CCtrl *c=CtrlFindUnique(Fs,CTRLT_VIEWING_ANGLES);
   CViewAngles *s,*old_s;
@@ -955,7 +955,7 @@ See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
   "}");
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WordStat;
+  AutoComplete;
   Preempt(OFF); //We don't really want window update while modifying links
   AcctOneTimePopUp(ARf_MESH_ED,
 	"$GREEN$Right Mouse$FG$: Hold and move to shift cursor z\n"

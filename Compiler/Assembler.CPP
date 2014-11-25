@@ -224,7 +224,7 @@ U0 AsmResolve(CLex *lx,CAsmUnresolvedRef *tempu,U8 *label,Bool undefined)
       }
       templu=templu->next; //Technically, more than one won't work.
     }
-  } else if (!(tempu->type & 1))  {//Rel?
+  } else if (!(tempu->type&1))	{//Rel?
     r-=tempu->rel_ip;
     if (tempu->type==EIT_REL_I8 && !(MIN_I8<=r<=MAX_I8) ||
 	  tempu->type==EIT_REL_I16 && !(MIN_I16<=r<=MAX_I16)) {
@@ -425,7 +425,7 @@ Bool PrsAsmImm(CLex *lx,CAsmArg *arg)
   return TRUE;
 }
 
-U0 PrsAsmArg(CLex *lx,CAsmArg *arg)
+U0 PrsAsmArg(CLex *lx,CAsmArg *arg,Bool rel)
 {
   CHashGeneric *temph,*temph1;
   CHashReg *tempr;
@@ -499,16 +499,19 @@ U0 PrsAsmArg(CLex *lx,CAsmArg *arg)
 		LexExcept(lx,"syntax error at ");
 	    }
 	    Lex(lx); //skip keyword
-	  } else {
-	    PrsAsmImm(lx,arg);
-	    arg->num.abs_cnts=lx->abs_cnts;
-	    if (lx->token!='[')
-	      return;
-	  }
+	  } else
+	    goto pa_asm_direct_imm;
 	}
       } else {
+pa_asm_direct_imm:
 	PrsAsmImm(lx,arg);
 	arg->num.abs_cnts=lx->abs_cnts;
+	if (arg->size<=1 && !rel && arg->num.abs_cnts&1) {
+	  if (lx->a->seg_size==16)
+	    arg->size=2;
+	  else
+	    arg->size=4;
+	}
 	if (lx->token!='[')
 	  return;
       }
@@ -530,14 +533,10 @@ U0 PrsAsmArg(CLex *lx,CAsmArg *arg)
 	      } else
 		arg->reg2=tempr->reg_num;
 	      Lex(lx);
-	    } else {
-	      PrsAsmImm(lx,arg);
-	      arg->num.abs_cnts=lx->abs_cnts;
-	    }
-	  } else {
-	    PrsAsmImm(lx,arg);
-	    arg->num.abs_cnts=lx->abs_cnts;
-	  }
+	    } else
+	      goto pa_asm_indirect_imm;
+	  } else
+	    goto pa_asm_indirect_imm;
 	} else if (lx->token=='*') {
 	  Lex(lx);
 	  if (lx->token!=TK_INTEGER)
@@ -549,6 +548,7 @@ U0 PrsAsmArg(CLex *lx,CAsmArg *arg)
 	} else if (lx->token=='+') {
 	  Lex(lx); //skip '+'
 	} else {
+pa_asm_indirect_imm:
 	  PrsAsmImm(lx,arg);
 	  arg->num.abs_cnts=lx->abs_cnts;
 	}
@@ -557,12 +557,8 @@ U0 PrsAsmArg(CLex *lx,CAsmArg *arg)
 	LexExcept(lx,"missing ']' at ");
       Lex(lx); //skip ]
       return;
-    } else {
-      PrsAsmImm(lx,arg);
-      arg->num.abs_cnts=lx->abs_cnts;
-      if (lx->token!='[')
-	return;
-    }
+    } else
+      goto pa_asm_direct_imm;
   }
 }
 
@@ -676,7 +672,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
       else if (!num2->imm_flag && !(MIN_I8<=num2->num.i<=MAX_I8))
 	LexExcept(lx,"branch out of range at ");
       if (num2->imm_flag) {
-	if (num2->num.abs_cnts.abs_addres & 1) {
+	if (num2->num.abs_cnts.abs_addres&1) {
 	  tempa=CAlloc(sizeof(CExeAbsAddr));
 	  tempa->next=a->abss;
 	  a->abss=tempa;
@@ -684,7 +680,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	  tempa->type=EAT_ADD_U8;
 	}
       } else {
-	if (num2->num.abs_cnts.c_addres & 1) {
+	if (num2->num.abs_cnts.c_addres&1) {
 	  tempa=CAlloc(sizeof(CExeAbsAddr));
 	  tempa->next=a->abss;
 	  a->abss=tempa;
@@ -701,7 +697,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	else if (!num2->imm_flag && !(MIN_I16<=num2->num.i<=MAX_I16))
 	  LexExcept(lx,"branch out of range at ");
 	if (num2->imm_flag) {
-	  if (num2->num.abs_cnts.abs_addres & 1) {
+	  if (num2->num.abs_cnts.abs_addres&1) {
 	    tempa=CAlloc(sizeof(CExeAbsAddr));
 	    tempa->next=a->abss;
 	    a->abss=tempa;
@@ -709,7 +705,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	    tempa->type=EAT_ADD_U16;
 	  }
 	} else {
-	  if (num2->num.abs_cnts.c_addres & 1) {
+	  if (num2->num.abs_cnts.c_addres&1) {
 	    tempa=CAlloc(sizeof(CExeAbsAddr));
 	    tempa->next=a->abss;
 	    a->abss=tempa;
@@ -726,7 +722,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	else if (!num2->imm_flag && !(MIN_I32<=num2->num.i<=MAX_I32))
 	  LexExcept(lx,"branch out of range at ");
 	if (num2->imm_flag) {
-	  if (num2->num.abs_cnts.abs_addres & 1) {
+	  if (num2->num.abs_cnts.abs_addres&1) {
 	    tempa=CAlloc(sizeof(CExeAbsAddr));
 	    tempa->next=a->abss;
 	    a->abss=tempa;
@@ -734,7 +730,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	    tempa->type=EAT_ADD_U32;
 	  }
 	} else {
-	  if (num2->num.abs_cnts.c_addres & 1) {
+	  if (num2->num.abs_cnts.c_addres&1) {
 	    tempa=CAlloc(sizeof(CExeAbsAddr));
 	    tempa->next=a->abss;
 	    a->abss=tempa;
@@ -748,7 +744,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	  AsmUnresolvedAdd(lx,num2->num.ex,EIT_REL_I64+num2->imm_flag,a->ip,num2->rel,
 		num2->num.undef_local,num2->num.undef_glbl,lx->cur_lfn->line_num,U8_avail);
 	if (num2->imm_flag) {
-	  if (num2->num.abs_cnts.abs_addres & 1) {
+	  if (num2->num.abs_cnts.abs_addres&1) {
 	    tempa=CAlloc(sizeof(CExeAbsAddr));
 	    tempa->next=a->abss;
 	    a->abss=tempa;
@@ -756,7 +752,7 @@ Bool AsmStoreNum(CLex *lx,CAsmNum2 *num2,I64 cnt,Bool U8_avail)
 	    tempa->type=EAT_ADD_U64;
 	  }
 	} else {
-	  if (num2->num.abs_cnts.c_addres & 1) {
+	  if (num2->num.abs_cnts.c_addres&1) {
 	    tempa=CAlloc(sizeof(CExeAbsAddr));
 	    tempa->next=a->abss;
 	    a->abss=tempa;
@@ -1119,8 +1115,11 @@ Bool PrsAsmInstruction(CLex *lx,CHashOpcode *tempo,I64 argcnt)
 	  MemCpy(&cur.imm.num,&tempa2->num,sizeof(CAsmNum));
 	  if (a2==ARGT_IMM8 || a2==ARGT_UIMM8) cur.imm.U8_cnt=1;
 	  else if (a2==ARGT_IMM16 || a2==ARGT_UIMM16) cur.imm.U8_cnt=2;
-	  else if (a2==ARGT_IMM32 || a2==ARGT_UIMM32) cur.imm.U8_cnt=4;
-	  else {
+	  else if (a2==ARGT_IMM32 || a2==ARGT_UIMM32) {
+	    cur.imm.U8_cnt=4;
+	    if (tempi->flags&IEF_REX_ONLY_R8_R15 && a2==ARGT_UIMM32)
+	      cur.REX&=~8;
+	  } else {
 	    cur.imm.U8_cnt=8;
 	    cur.REX|=8;
 	  }
@@ -1384,14 +1383,20 @@ U0 PrsAsmBlk(CLex *lx,I64 cmp_flags)
 	argcnt=0;
 	if (tempo->ins[0].arg1) {
 	  argcnt++;
-	  PrsAsmArg(lx,&a->arg1);
+	  if (ARGT_REL8<=tempo->ins[0].arg1<=ARGT_REL32)
+	    PrsAsmArg(lx,&a->arg1,TRUE);
+	  else
+	    PrsAsmArg(lx,&a->arg1,FALSE);
 	  if (tempo->ins[0].arg2) {
 	    argcnt++;
 	    if (lx->token!=',')
 	      LexExcept(lx,"expecting ',' at ");
 	    else {
 	      Lex(lx); //skip ','
-	      PrsAsmArg(lx,&a->arg2);
+	      if (ARGT_REL8<=tempo->ins[0].arg2<=ARGT_REL32)
+		PrsAsmArg(lx,&a->arg2,TRUE);
+	      else
+		PrsAsmArg(lx,&a->arg2,FALSE);
 	    }
 	  }
 	}

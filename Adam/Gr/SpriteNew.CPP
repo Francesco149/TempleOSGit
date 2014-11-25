@@ -115,7 +115,7 @@ public U8 *DC2Sprite(CDC *tempb)
 }
 
 public U8 *SpriteElem2OneLineSummary(CSprite *tempg)
-{//Study [C:/Demo/Graphics/SpriteText.CPP.Z,1].
+{//Study [C:/Demo/Graphics/SpriteText.CPP,1].
   U8 buf[256],buf2[136];
   I32 *ptr;
   StrPrint(buf,"%Z",tempg->type,"ST_SPRITE_ELEM_TYPES");

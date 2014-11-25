@@ -246,7 +246,7 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
   CInstruction *tempi,*tempi2;
   CHashOpcode *tempo;
   U8 *ip=*_ip,*ptr,*reloced_a1_st,*reloced_a2_st,*bin_data_area1,*bin_data_area2,
-	line1[512],line2[512],a1_st[512],a2_st[512],seg_overrides[32];
+	line1[512],line2[512],buf2[512],a1_st[512],a2_st[512],seg_overrides[32];
 
   if (_jmp_dst) *_jmp_dst=-1;
   if (seg_size==16) {
@@ -530,29 +530,22 @@ U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,I64 *_jmp_dst=NULL,Bool just_ins=FALSE)
     case ARGT_UIMM64:
       CatPrint(a1_st,"%016X",*ip(I64 *)++);
       break;
-    case ARGT_REL8:
-      disp=*ip(I8 *)++;
+    sub_switch_start:
+      case ARGT_REL8:
+	disp=*ip(I8 *)++;
+	break;
+      case ARGT_REL16:
+	disp=*ip(I16 *)++;
+	break;
+      case ARGT_REL32:
+	disp=*ip(I32 *)++;
+	break;
+    sub_switch_end:
       disp+=ip;
       if (IsDbg)
 	CatPrint(a1_st,"%p ",disp);
-      else
-	CatPrint(a1_st,"%P ",disp);
-      if (_jmp_dst) *_jmp_dst=disp;
-      break;
-    case ARGT_REL16:
-      disp=*ip(I16 *)++;
-      disp+=ip;
-      if (IsDbg)
-	CatPrint(a1_st,"%p ",disp);
-      else
-	CatPrint(a1_st,"%P ",disp);
-      if (_jmp_dst) *_jmp_dst=disp;
-      break;
-    case ARGT_REL32:
-      disp=*ip(I32 *)++;
-      disp+=ip;
-      if (IsDbg)
-	CatPrint(a1_st,"%p ",disp);
+      else if (PutSrcLink(disp,512,buf2))
+	CatPrint(a1_st,"%s ",buf2);
       else
 	CatPrint(a1_st,"%P ",disp);
       if (_jmp_dst) *_jmp_dst=disp;

@@ -46,8 +46,8 @@ I64 PopUpSpriteMain(CSprite **_root,I64 *_cur_elem_num)
 	"\n"
 	"$PURPLE$$MU-UL,\"+] Sprite Edit Menu\",LE=SPT_ED_MENU$$LTBLUE$\n"
 	"$MU-UL,\"Exit  Sprite\",LE=SPT_EXIT$\n"
-	"$MU-UL,\"Abort Sprite\",LE=DOCM_CANCEL$\n");
-  DocPrint(doc,"\nRight-Click to get back to this menu.");
+	"$MU-UL,\"Abort Sprite\",LE=DOCM_CANCEL$\n"
+	"\nRight-Click to get back to this menu.");
   st=MStrPrint("SpriteSideBarTask(0x%X,0x%X,0x%X);",Fs,_root,_cur_elem_num);
   PopUp(st,NULL,&pu_task);
   Free(st);
@@ -121,7 +121,7 @@ U0 SpriteSetSettings(CDC *dc,CSprite *root,I64 cur_elem_num,CColorROPU32 *_color
 
 U0 SpriteScreenInit(CDC *dc,I64,I64)
 {
-//Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+//Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   I64 xx,yy,old_pen_width=dc->pen_width;
   CColorROPU32 old_color=dc->color;
   WinMgrSync;
@@ -166,7 +166,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
   U8 *st,*old_task_title=StrNew(Fs->task_title);
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WordStat;
+  AutoComplete;
   WinMgrSync(2,TRUE);
   dc2->flags|=DCF_ON_TOP;
   root=Sprite2SpriteQue(tempb->data);
@@ -502,14 +502,26 @@ ei_restart:
 	  eletype=SPT_MENU;
       }
       if (msg_code==MSG_KEY_DOWN) {
-	if (a1==CH_ESC) {
-	  result=GE_EXIT;
-	  goto ei_done;
-	} else if (a1==CH_SHIFT_ESC) {
-	  result=GE_ABORT;
-	  goto ei_done;
-	} else
-	  goto ei_restart;
+	switch (a1) {
+	  case CH_ESC:
+	    result=GE_EXIT;
+	    goto ei_done;
+	  case CH_SHIFT_ESC:
+	    result=GE_ABORT;
+	    goto ei_done;
+	  case 'c': //EyeDropper
+	    dc3=DCCaptureScreen(FALSE);
+	    color=GrPeek(dc3,ip.pos.x,ip.pos.y)^15;//Mouse cursor is XORed.
+	    DCDel(dc3);
+	    tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
+	    tempg->type=SPT_COLOR;
+	    tempg->color=color;
+	    QueIns(tempg,insert_pt->last);
+	    SpriteEdUpdate(doc,tempb,root);
+	    cur_elem_num++;
+	    break;
+	}
+	goto ei_restart;
       } else {
 	x1=a1; y1=a2;
 	x2=a1; y2=a2;
@@ -926,7 +938,7 @@ ei_bitmap:
 	    xx2++; yy2++;
 	    tempg=CAlloc(SpriteElemQuedBaseSize(SPT_BITMAP)+
 		  ((xx2-xx1+7)&~7)*(yy2-yy1));
-	    tempg->type=eletype;
+	    tempg->type=SPT_BITMAP;
 	    tempg->width=xx2-xx1;
 	    tempg->height=yy2-yy1;
 	    tempg->x2=xx1-x;
@@ -1077,7 +1089,7 @@ U0 EdSpriteIns(CDoc *doc,I64 x,I64 y)
   CDocEntry *doc_e;
   CDocBin *tempb;
   if (Fs!=doc->mem_task)
-    Dbg;
+    throw('Graphics');
   if (st=EdSprite(doc->cur_bin_num)) {
     unlock=DocLock(doc);
     tempb=CAlloc(sizeof(CDocBin),doc->mem_task);

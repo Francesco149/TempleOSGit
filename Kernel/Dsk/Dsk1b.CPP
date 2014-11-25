@@ -1,9 +1,9 @@
-Bool MapDrv(U8 drv_let,CPrt *p)
+Bool MapDrv(U8 drv_let,CDrv *dv)
 {//Make drive letter map to another.
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='Z') {
-    dsk.drv_to_prt[drv_let-'A']=p;
-    p->drv_let=drv_let;
+    dsk.let_to_drv[drv_let-'A']=dv;
+    dv->drv_let=drv_let;
     return TRUE;
   } else
     return FALSE;
@@ -11,22 +11,22 @@ Bool MapDrv(U8 drv_let,CPrt *p)
 
 Bool Drv(U8 drv_let)
 {//Set drive.  You can set drive with [C:/Kernel/Dsk/Dsk1b.CPP.Z,37] Cd() as well.
-  CPrt *p=Drv2Prt(drv_let);
-  CBlkDev *bdev=p->bdev;
-  BlkDevChk(bdev);
-  if (p!=Fs->cur_prt) {
-    if (bdev->flags & BDF_REMOVABLE && !(bdev->flags & BDF_INITIALIZED))
-      ChgDsk(Prt2Drv(p));
-    if (bdev->type==BDT_RAM)
-      BlkDevInit(bdev);
+  CDrv *dv=Let2Drv(drv_let);
+  CBlkDev *bd=dv->bd;
+  BlkDevChk(bd);
+  if (dv!=Fs->cur_dv) {
+    if (bd->flags & BDF_REMOVABLE && !(bd->flags & BDF_INITIALIZED))
+      ChgDsk(Drv2Let(dv));
+    if (bd->type==BDT_RAM)
+      BlkDevInit(bd);
   }
-  Fs->cur_prt=p;
+  Fs->cur_dv=dv;
   Free(Fs->cur_dir);
   Fs->cur_dir=StrNew("/");
-  switch (p->type) {
-    case PT_REDSEA:
-    case PT_FAT32:
-    case PT_ISO9660:
+  switch (dv->type) {
+    case DVT_REDSEA:
+    case DVT_FAT32:
+    case DVT_ISO9660:
       return TRUE;
     default:
       PrintErr("File System Not Supported\n");
@@ -38,15 +38,15 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 {//Change directory. Optionally, make directories, too.
   I64 maxlen,cur_dir_cluster=0;
   U8 *chg_to_buf,*new_cur_dir,*buf;
-  CPrt *p;
+  CDrv *dv;
   Bool result=TRUE;
   if (!*dirname)
     return TRUE;
   if (dirname[1]==':') {
     if (*dirname==':') {
-      if (Fs->cur_prt->drv_let!=*sys_acct && !Drv(*dirname))
+      if (Fs->cur_dv->drv_let!=*sys_acct && !Drv(*dirname))
 	return FALSE;
-    } else if (Fs->cur_prt!=Drv2Prt(*dirname) && !Drv(*dirname))
+    } else if (Fs->cur_dv!=Let2Drv(*dirname) && !Drv(*dirname))
       return FALSE;
     dirname+=2;
   }
@@ -76,16 +76,16 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 	new_cur_dir=MAlloc(maxlen+StrLen(sys_acct));
 	StrCpy(new_cur_dir,sys_acct+2);
       } else {
-	p=Fs->cur_prt;
-	cur_dir_cluster=Name2DirCluster(p,new_cur_dir);
-	switch (p->type) {
-	  case PT_REDSEA:
-	    result=RedSeaFSCd(buf,cur_dir_cluster);
+	dv=Fs->cur_dv;
+	cur_dir_cluster=Name2DirCluster(dv,new_cur_dir);
+	switch (dv->type) {
+	  case DVT_REDSEA:
+	    result=RedSeaCd(buf,cur_dir_cluster);
 	    break;
-	  case PT_FAT32:
+	  case DVT_FAT32:
 	    result=FAT32Cd(buf,cur_dir_cluster);
 	    break;
-	  case PT_ISO9660:
+	  case DVT_ISO9660:
 	    result=ISO1Cd(buf,cur_dir_cluster);
 	    break;
 	  default:
@@ -114,17 +114,17 @@ Bool Cd(U8 *dirname,Bool make_dirs=FALSE)
 }
 
 U0 FileAccessDel(CFileAccess *fa)
-{//Change back to old cur_dir and prt.
-  CBlkDev *bdev;
+{//Change back to old cur_dir and drv.
+  CBlkDev *bd;
   if (!fa) return;
-  bdev=fa->old_prt->bdev;
-  if (!(bdev->flags & BDF_INIT_IN_PROGRESS)) {
+  bd=fa->old_dv->bd;
+  if (!(bd->flags & BDF_INIT_IN_PROGRESS)) {
     if (fa->old_dir) {
-      Drv(Prt2Drv(fa->old_prt));
+      Drv(Drv2Let(fa->old_dv));
       Cd(fa->old_dir);
     }
   } else {
-    Fs->cur_prt=fa->old_prt;
+    Fs->cur_dv=fa->old_dv;
     Free(Fs->cur_dir);
     Fs->cur_dir=StrNew("/");
   }
@@ -134,23 +134,23 @@ U0 FileAccessDel(CFileAccess *fa)
 }
 
 CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE,Bool no_mask=FALSE)
-{//Save cur_dir and prt. Change to new dir.
+{//Save cur_dir and drv. Change to new dir.
   Bool valid=TRUE,old_silent;
   U8 *buf,*mask,*temp_mask;
   CFileAccess *fa=CAlloc(sizeof(CFileAccess));
   mask=MStrUtil(_mask,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   temp_mask=mask;
   fa->old_dir=StrNew(Fs->cur_dir);
-  fa->old_prt=Fs->cur_prt;
+  fa->old_dv=Fs->cur_dv;
   if (*mask && mask[1]==':') {
-    if (Fs->cur_prt!=Drv2Prt(*mask) && !Drv(*mask))
+    if (Fs->cur_dv!=Let2Drv(*mask) && !Drv(*mask))
       valid=FALSE;
     mask+=2;
   }
-  if (StrMatch("HOME",mask) && Fs->cur_prt!=Drv2Prt(*sys_acct))
+  if (StrMatch("HOME",mask) && Fs->cur_dv!=Let2Drv(*sys_acct))
     Drv(*sys_acct);
-  fa->p=Fs->cur_prt;
-  PrtChk(fa->p);
+  fa->dv=Fs->cur_dv;
+  DrvChk(fa->dv);
   buf=MAlloc(StrLen(mask)+2);
   StrCpy(buf,mask);
   fa->mask=MAlloc(StrLen(mask)+2);
@@ -248,14 +248,14 @@ I64 Del(U8 *files_find_mask,Bool print_msg=TRUE)
   I64 result=0;
   CFileAccess *fa;
   if (fa=FileAccessNew(files_find_mask)) {
-    switch (fa->p->type) {
-      case PT_REDSEA:
-	result=RedSeaFSFilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
+    switch (fa->dv->type) {
+      case DVT_REDSEA:
+	result=RedSeaFilesDel(fa->dv,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
 	break;
-      case PT_FAT32:
-	result=FAT32FilesDel(fa->p,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
+      case DVT_FAT32:
+	result=FAT32FilesDel(fa->dv,Fs->cur_dir,fa->mask,0,FALSE,print_msg);
 	break;
-      case PT_ISO9660:
+      case DVT_ISO9660:
 	PrintErr("Not Writable\n");
 	break;
       default:
@@ -266,7 +266,7 @@ I64 Del(U8 *files_find_mask,Bool print_msg=TRUE)
   return result;
 }
 
-U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
+U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
 {//Read whole file from disk.
   CHashGeneric *temph;
   U8 *absname,*altname,*curname,*result=NULL;
@@ -275,8 +275,8 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
   CArcCompress *ac;
   absname=FileNameAbs(filename);
   altname=ToggleZorNotZ(absname);
-  if (!raw && ((temph=HashFind(absname,adam_task->hash_table,HTT_FILE))||
-	       (temph=HashFind(altname,adam_task->hash_table,HTT_FILE)))) {
+  if ((temph=HashFind(absname,adam_task->hash_table,HTT_FILE))||
+       (temph=HashFind(altname,adam_task->hash_table,HTT_FILE))) {
     size=temph->user_data1;
     result=MAlloc(size+1);
     MemCpy(result,temph->user_data0,size);
@@ -289,15 +289,15 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
       else
 	curname=altname;
       if (fa=FileAccessNew(curname)) {
-	switch (fa->p->type) {
-	  case PT_REDSEA:
-	    result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
+	switch (fa->dv->type) {
+	  case DVT_REDSEA:
+	    result=RedSeaFileRead(fa->dv,Fs->cur_dir,fa->mask,&size,&attr);
 	    break;
-	  case PT_FAT32:
-	    result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
+	  case DVT_FAT32:
+	    result=FAT32FileRead(fa->dv,Fs->cur_dir,fa->mask,&size,&attr);
 	    break;
-	  case PT_ISO9660:
-	    result=ISO1FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
+	  case DVT_ISO9660:
+	    result=ISO1FileRead(fa->dv,Fs->cur_dir,fa->mask,&size,&attr);
 	    break;
 	  default:
 	    PrintErr("File System Not Supported\n");
@@ -315,15 +315,15 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
       if (fa=FileAccessNew(curname)) {
 	while (!result && StrCmp(Fs->cur_dir,"/")) {
 	  Cd("..");
-	  switch (Fs->cur_prt->type) {
-	    case PT_REDSEA:
-	      result=RedSeaFSFileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
+	  switch (Fs->cur_dv->type) {
+	    case DVT_REDSEA:
+	      result=RedSeaFileRead(fa->dv,Fs->cur_dir,fa->mask,&size,&attr);
 	      break;
-	    case PT_FAT32:
-	      result=FAT32FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
+	    case DVT_FAT32:
+	      result=FAT32FileRead(fa->dv,Fs->cur_dir,fa->mask,&size,&attr);
 	      break;
-	    case PT_ISO9660:
-	      result=ISO1FileRead(fa->p,Fs->cur_dir,fa->mask,&size,&attr);
+	    case DVT_ISO9660:
+	      result=ISO1FileRead(fa->dv,Fs->cur_dir,fa->mask,&size,&attr);
 	      break;
 	    default:
 	      PrintErr("File System Not Supported\n");
@@ -336,10 +336,10 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
       "%s ",filename;
       PrintErr("File not found.\n");
     }
-    if (result && !raw && attr & RS_ATTR_RESIDENT)
+    if (result && attr & RS_ATTR_RESIDENT)
       HashGenericAdd(curname,HTT_FILE,AMAllocIdentical(result),size,0,adam_task);
   }
-  if (result && !raw && attr & RS_ATTR_COMPRESSED) {
+  if (result && attr & RS_ATTR_COMPRESSED) {
     ac=result;
     size=ac->expanded_size;
     result=ExpandBuf(ac);
@@ -353,7 +353,7 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL,Bool raw=FALSE)
 }
 
 Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
-{//[C:/Kernel/Adam1a.HPP.Z,2502] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,2503] FUF_JUST_FILES, [C:/Kernel/Adam1a.HPP.Z,2509] FUF_Z_OR_NOT_Z, [C:/Kernel/Adam1a.HPP.Z,2511] FUF_SCAN_PARENTS
+{//[C:/Kernel/Adam1a.HPP.Z,2506] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,2507] FUF_JUST_FILES, [C:/Kernel/Adam1a.HPP.Z,2513] FUF_Z_OR_NOT_Z, [C:/Kernel/Adam1a.HPP.Z,2515] FUF_SCAN_PARENTS
 //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;
@@ -374,22 +374,22 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
     else
       curname=altname;
     if (fa=FileAccessNew(curname)) {
-      cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
-      switch (fa->p->type) {
-	case PT_REDSEA:
-	  result=RedSeaFSFileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+      cur_dir_cluster=Name2DirCluster(fa->dv,Fs->cur_dir);
+      switch (fa->dv->type) {
+	case DVT_REDSEA:
+	  result=RedSeaFileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	  break;
-	case PT_FAT32:
-	  result=FAT32FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	case DVT_FAT32:
+	  result=FAT32FileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	  break;
-	case PT_ISO9660:
-	  result=ISO1FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	case DVT_ISO9660:
+	  result=ISO1FileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	  break;
 	default:
 	  PrintErr("File System Not Supported\n");
       }
       if (result && _de)
-	full_name=MStrPrint("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
+	full_name=MStrPrint("%C:%s/%s",Fs->cur_dv->drv_let,Fs->cur_dir,de.name);
       FileAccessDel(fa);
     }
   }
@@ -399,26 +399,26 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
     else
       curname=altname;
     if (fa=FileAccessNew(curname)) {
-      cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
+      cur_dir_cluster=Name2DirCluster(fa->dv,Fs->cur_dir);
       while (!result && StrCmp(Fs->cur_dir,"/")) {
 	Cd("..");
-	cur_dir_cluster=Name2DirCluster(fa->p,Fs->cur_dir);
-	switch (fa->p->type) {
-	   case PT_REDSEA:
-	     result=RedSeaFSFileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	cur_dir_cluster=Name2DirCluster(fa->dv,Fs->cur_dir);
+	switch (fa->dv->type) {
+	   case DVT_REDSEA:
+	     result=RedSeaFileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	     break;
-	   case PT_FAT32:
-	     result=FAT32FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	   case DVT_FAT32:
+	     result=FAT32FileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	     break;
-	   case PT_ISO9660:
-	     result=ISO1FileFind(fa->p,cur_dir_cluster,fa->mask,&de,fuf_flags);
+	   case DVT_ISO9660:
+	     result=ISO1FileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
 	     break;
 	   default:
 	     PrintErr("File System Not Supported\n");
 	}
       }
       if (result && _de)
-	full_name=MStrPrint("%C:%s/%s",Fs->cur_prt->drv_let,Fs->cur_dir,de.name);
+	full_name=MStrPrint("%C:%s/%s",Fs->cur_dv->drv_let,Fs->cur_dir,de.name);
       FileAccessDel(fa);
     }
   }
@@ -434,7 +434,7 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 }
 
 I64 FileWrite(U8 *filename,U8 *fbuf,
-   I64 size,CDate cdt=0,I64 attr=0,Bool raw=FALSE)
+   I64 size,CDate cdt=0,I64 attr=0)
 {//Write whole file to disk.
   I64 c=0;
   CHashGeneric *temph;
@@ -442,34 +442,34 @@ I64 FileWrite(U8 *filename,U8 *fbuf,
   U8 *fbuf2,*absname=FileNameAbs(filename);
   if (fa=FileAccessNew(filename,FALSE,TRUE)) {
     attr=FileAttr(fa->mask,attr);
-    if (attr&RS_ATTR_COMPRESSED && !raw) {
+    if (attr&RS_ATTR_COMPRESSED) {
       fbuf=CompressBuf(fbuf,size);
       size=fbuf(CArcCompress *)->compressed_size;
       fbuf2=fbuf;
     } else
       fbuf2=NULL;
     if (!cdt) cdt=Now;
-    switch (fa->p->type) {
-      case PT_REDSEA:
-	c=RedSeaFSFileWrite(fa->p,Fs->cur_dir,fa->mask,fbuf,size,cdt,attr);
+    switch (fa->dv->type) {
+      case DVT_REDSEA:
+	c=RedSeaFileWrite(fa->dv,Fs->cur_dir,fa->mask,fbuf,size,cdt,attr);
 	break;
-      case PT_FAT32:
-	c=FAT32FileWrite(fa->p,Fs->cur_dir,fa->mask,fbuf,size,cdt,attr);
+      case DVT_FAT32:
+	c=FAT32FileWrite(fa->dv,Fs->cur_dir,fa->mask,fbuf,size,cdt,attr);
 	break;
-      case PT_ISO9660:
+      case DVT_ISO9660:
 	PrintErr("Not Writable\n");
 	break;
       default:
 	PrintErr("File System Not Supported\n");
     }
     if (temph=HashFind(absname,adam_task->hash_table,HTT_FILE)) {
-      if (!raw && attr & RS_ATTR_RESIDENT) {
+      if (attr & RS_ATTR_RESIDENT) {
 	Free(temph->user_data0);
 	temph->user_data0=AMAllocIdentical(fbuf);
 	temph->user_data1=size;
       } else
 	HashRemDel(temph,adam_task->hash_table);
-    } else if (!raw && attr & RS_ATTR_RESIDENT)
+    } else if (attr & RS_ATTR_RESIDENT)
       HashGenericAdd(absname,HTT_FILE,AMAllocIdentical(fbuf),size,0,adam_task);
     Free(fbuf2);
     FileAccessDel(fa);

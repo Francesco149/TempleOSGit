@@ -19,7 +19,7 @@ U0 GrInit1()
 GrInit1;
 
 #help_index "Graphics/Sprite"
-#define SPT_END		0
+#define SPT_END			0
 #define SPT_COLOR		1
 #define SPT_DITHER_COLOR	2
 #define SPT_WIDTH		3

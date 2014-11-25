@@ -59,11 +59,11 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
       } else
 	tempil1=tempil2=&cmp.ic_nop;
       tempc=tempi->ic_class;
-      nobound_switch (cmp.arg_cnt[code]) {
-	case 9:
+      nobound_switch (intermediate_code_table[code].arg_cnt) {
+	case IS_V_ARG:
 	  ps->ptr-=tempi->ic_data>>3;
 	  break;
-	case 2:
+	case IS_2_ARG:
 	  tempi2=PrsPop(ps);
 	  if (tempi2->ic_flags&ICF_R_TO_F64)
 	    tempc2=cmp.internal_types[RT_F64];
@@ -74,7 +74,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	  tempi->a2.type=TY_STK+CmpRawType(tempc2);
 	  tempi->a2.type_pointed=CmpRawTypePointed(tempc2);
 	  tempi->ic_flags|=ICF_A2_WAS_STK;
-	case 1:
+	case IS_1_ARG:
 	  tempi1=PrsPop(ps);
 	  if (tempi1->ic_flags&ICF_R_TO_F64)
 	    tempc1=cmp.internal_types[RT_F64];
@@ -86,10 +86,10 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	  tempi->a1.type_pointed=CmpRawTypePointed(tempc1);
 	  tempi->ic_flags|=ICF_A1_WAS_STK;
 	  break;
-	case 0: //nobound_switch
+	case IS_0_ARG: //nobound_switch
 	  break;
       }
-      if (cmp.result_cnt[code]) {
+      if (intermediate_code_table[code].result_cnt) {
 	tempi->r.type=TY_STK+CmpRawType(tempc);
 	tempi->r.type_pointed=CmpRawTypePointed(tempc);
 	tempi->ic_flags|=ICF_R_WAS_STK;
@@ -101,10 +101,10 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	  if (tempi->ic_flags&ICF_R_TO_INT) {
 	    tempi->ic_data=ToI64(tempi->ic_data(F64));
 	    tempi->ic_flags&=~ICF_R_TO_INT;
-	    tempi->ic_code=IC_IMM_U64;
+	    tempi->ic_code=IC_IMM_I64;
 	  }
 	  break;
-	case IC_IMM_U64:
+	case IC_IMM_I64:
 	  tempi->ic_flags&=~ICF_R_TO_INT;
 	  if (tempi->ic_flags&ICF_R_TO_F64) {
 	    tempi->ic_data(F64)=ToF64(tempi->ic_data);
@@ -207,7 +207,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	    CmpF2PushPop(tempi,tempi1,tempi2);
 	    break;
 	  }
-	  if (tempi2->ic_code==IC_IMM_U64) {
+	  if (tempi2->ic_code==IC_IMM_I64) {
 	    tempi->ic_flags|=tempi2->ic_flags;
 	    tempi->ic_data=tempi2->ic_data;
 	    tempi->ic_code=IC_SUB_CONST;
@@ -275,7 +275,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	  break;
 	case IC_BR_NOT_EQUAL:
 	case IC_BR_EQUAL_EQUAL:
-	  if ((tempi1->ic_code==IC_IMM_U64 || tempi1->ic_code==IC_IMM_F64) && !tempi1->ic_data) {
+	  if ((tempi1->ic_code==IC_IMM_I64 || tempi1->ic_code==IC_IMM_F64) && !tempi1->ic_data) {
 	    OptFree(tempi1);
 	    MemCpy(&tempi->a1,&tempi->a2,sizeof(CICArg));
 	    tempi->a2.type=TY_NULL;
@@ -285,7 +285,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	      code=tempi->ic_code=IC_BR_NOT_ZERO;
 	    tempi1=tempi2;
 	    tempc1=tempc2;
-	  } else if ((tempi2->ic_code==IC_IMM_U64 || tempi2->ic_code==IC_IMM_F64) && !tempi2->ic_data) {
+	  } else if ((tempi2->ic_code==IC_IMM_I64 || tempi2->ic_code==IC_IMM_F64) && !tempi2->ic_data) {
 	    OptFree(tempi2);
 	    tempi->a2.type=TY_NULL;
 	    if (code==IC_BR_EQUAL_EQUAL)
@@ -296,7 +296,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	    goto here1;
 	case IC_BR_ZERO:
 	case IC_BR_NOT_ZERO:
-	  if (tempi1->ic_code==IC_IMM_U64 || tempi1->ic_code==IC_IMM_F64) {
+	  if (tempi1->ic_code==IC_IMM_I64 || tempi1->ic_code==IC_IMM_F64) {
 	    if (code==IC_BR_ZERO ^^ tempi1->ic_data) {
 	      OptFree(tempi1);
 	      tempi->a1.type=TY_NULL;
@@ -309,7 +309,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	  }
 	  goto here1;
 	case IC_BR_AND_ZERO:
-	  if (tempi1->ic_code==IC_IMM_U64) {
+	  if (tempi1->ic_code==IC_IMM_I64) {
 	    i=Bsr(tempi1->ic_data);
 	    if (0<=i==Bsf(tempi1->ic_data)) {
 	      tempi1->ic_data=i;
@@ -318,7 +318,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	      goto here1;
 	    }
 	  }
-	  if (tempi2->ic_code==IC_IMM_U64) {
+	  if (tempi2->ic_code==IC_IMM_I64) {
 	    i=Bsr(tempi2->ic_data);
 	    if (0<=i==Bsf(tempi2->ic_data)) {
 	      tempi2->ic_data=i;
@@ -328,7 +328,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	  }
 	  goto here1;
 	case IC_BR_AND_NOT_ZERO:
-	  if (tempi1->ic_code==IC_IMM_U64) {
+	  if (tempi1->ic_code==IC_IMM_I64) {
 	    i=Bsr(tempi1->ic_data);
 	    if (0<=i==Bsf(tempi1->ic_data)) {
 	      tempi1->ic_data=i;
@@ -337,7 +337,7 @@ U0 OptPass3(CLex *lx,COptReg *reg_offsets)
 	      goto here1;
 	    }
 	  }
-	  if (tempi2->ic_code==IC_IMM_U64) {
+	  if (tempi2->ic_code==IC_IMM_I64) {
 	    i=Bsr(tempi2->ic_data);
 	    if (0<=i==Bsf(tempi2->ic_data)) {
 	      tempi2->ic_data=i;
@@ -509,7 +509,7 @@ here1:
 	  break;
 	default:
 	  "Pass:%d Missing IC handler\n",lx->pass;
-	  ICPut(tempi);
+	  ICPut(lx,tempi);
 	  LexExcept(lx,"Compiler Optimization Error at ");
       }
     }

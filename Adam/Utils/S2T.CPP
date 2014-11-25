@@ -4,7 +4,7 @@
 
 U0 SUFile(U8 *name,I64 suf_flags,F64 indent_scale_factor)
 {//String utility on a single file
-//See [C:/Kernel/Adam1a.HPP.Z,3691] SU Flags
+//See [C:/Kernel/Adam1a.HPP.Z,3688] SU Flags
   U8 *dst;
   Bool chged=FALSE;
   I64 reduced=0;
@@ -33,7 +33,7 @@ public U0 SU(U8 *files_find_mask,I64 suf_flags,U8 *fu_flags=NULL,F64 indent_scal
 {//Apply string utilities to files
 //You can convert spaces to tabs, for example
 //or removing trailing spaces on lines.
-//See [C:/Kernel/Adam1a.HPP.Z,3691] SUF Flags
+//See [C:/Kernel/Adam1a.HPP.Z,3688] SUF Flags
   I64 fuf_flags=0;
   CDirEntry *tempde,*tempde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+f+F+T");

@@ -1,5 +1,5 @@
 Intel/AMD have an instruction that returns the num of CPU cycles since boot.  
 This is not a steady, calibrated real time value.  TempleOS measures it and 
-you can convert with [C:/Kernel/Adam1a.HPP.Z,524] cnts.time_stamp_freq, a
+you can convert with [C:/Kernel/Adam1a.HPP.Z,534] cnts.time_stamp_freq, a
 value continuously calibrated 
 from other cnts.

@@ -29,7 +29,7 @@ class CKernelCfg
 
 CDoc *KernelCfgAddDev(CKernelCfg *c)
 {
-  I64 ch,num_hints,first_prt_num,type,unit,cnt=0;
+  I64 ch,num_hints,first_drv_num,type,unit,cnt=0;
   U8 blks_buf[256],addr_buf[256],base0_buf[128],base1_buf[128];
   CATARep *root=NULL,*tempha;
   CDoc *doc=DocNew;
@@ -43,7 +43,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
   if ('A'<=ch<='Z')
     c->sys_acct_drv=ch;
   else
-    c->sys_acct_drv=Fs->cur_prt->drv_let;
+    c->sys_acct_drv=Fs->cur_dv->drv_let;
 
 	"\n\n$BK,1$$PURPLE$Mount drives so they will be present when "
 	"you boot.$FG$$BK,0$\n";
@@ -55,9 +55,9 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	"If more than one partition is present\n"
 	"they will be lettered in sequence.\n"
 	"\nFirst Drive Letter ($PURPLE$<ENTER>$FG$ to exit):";
-    first_prt_num=ToUpper(GetChar)-'A';
+    first_drv_num=ToUpper(GetChar)-'A';
     '\n';
-    if (0<=first_prt_num<NUM_PRTS) {
+    if (0<=first_drv_num<NUM_DRVS) {
 	"\t$PURPLE$1$FG$=RAM\n\t$PURPLE$2$FG$=ATA(Harddisk)\n"
 	"\t$PURPLE$3$FG$=ATAPI(CD-ROM)\nType:";
       type=GetChar-'0';
@@ -111,30 +111,30 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	LinkedLstDel(root);
       }
       if (BDT_NULL<type<BDT_NUM_TYPES && 0<=unit<=1) {
-	DocPrint(doc,"bdev=BlkDevNextFree(%d,%d);"
-		      "bdev->unit=%d;",first_prt_num+'A',type,unit);
+	DocPrint(doc,"bd=BlkDevNextFree(%d,%d);"
+		      "bd->unit=%d;",first_drv_num+'A',type,unit);
 	if (type==BDT_RAM) {
 	  if (!*addr_buf) StrCpy(addr_buf,"0");
-	  DocPrint(doc,"bdev->RAM_dsk=%s;",addr_buf);
-	  DocPrint(doc,"bdev->max_blk=(%s)-1;",blks_buf);
+	  DocPrint(doc,"bd->RAM_dsk=%s;",addr_buf);
+	  DocPrint(doc,"bd->max_blk=(%s)-1;",blks_buf);
 	}
 	make_free=FALSE;
 	if (type==BDT_ATA || type==BDT_ATAPI) {
 	  if (type==BDT_ATAPI && !*base0_buf) {
 	    c->cdrom_ports_pmt=TRUE;
-	    DocPrint(doc,"dsk.boot_rescue_drv_pmt=GetBaseUnit(bdev);");
-	    if (first_prt_num+'A'==c->sys_acct_drv)
+	    DocPrint(doc,"dsk.boot_rescue_drv_pmt=GetBaseUnit(bd);");
+	    if (first_drv_num+'A'==c->sys_acct_drv)
 	      make_free=TRUE;
 	  } else
-	    DocPrint(doc,"bdev->base0=%s;bdev->base1=%s;",
+	    DocPrint(doc,"bd->base0=%s;bd->base1=%s;",
 		base0_buf,base1_buf);
 	}
-	DocPrint(doc,"BlkDevAdd(bdev,FALSE,%d);",make_free);
+	DocPrint(doc,"BlkDevAdd(bd,FALSE,%d);",make_free);
 	cnt++;
       } else
 	"\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n";
     }
-  } while (!cnt || 0<=first_prt_num<NUM_PRTS);
+  } while (!cnt || 0<=first_drv_num<NUM_DRVS);
   return doc;
 }
 

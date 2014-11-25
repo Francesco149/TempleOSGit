@@ -15,8 +15,8 @@ Windows and TempleOS.  "hd0" is 1st hard drive, zero-based numbering.
 is partition #1, traditional msdos partitioning.  I keep 'D', 'E', and 'I' 
 identical by frequently copying all files and I use 'I' to transfer files.  
 They only need to be a couple Gig in size.  Every time I copy files, use 
-[C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall() to
-[C:/Adam/Boot/InsBoot.CPP.Z,122] MakeAll and prepare the partition
+[C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() to
+[C:/Adam/Boot/InsBoot.CPP.Z,117] MakeAll and prepare the partition
 [C:/Adam/Boot/BootHD.CPP.Z,1] boot sector for 
 chainloading by patching the new block address and size of Kernel.BIN.C.
 

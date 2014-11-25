@@ -358,11 +358,7 @@ U0 SpriteTransform(I64 r[4][4],CSprite *root)
   while (tempg!=root) {
     switch (tempg->type) {
       case SPT_WIDTH:
-	// (1.0/Sqrt(3))*65536=37837.22
-	x=37838;y=37838;z=37838;
-	GrRot(r,&x,&y,&z);
-	//scaled 32 bits
-	tempg->width*=Sqrt(x*x+y*y+z*z)/65536;
+	tempg->width*=Sqrt(GrRotNormSqr65536(r))/65536;
 	if (tempg->width<0) tempg->width=0;
 	break;
       case SPT_PT:
@@ -651,7 +647,7 @@ Bool SpriteEdText(CSprite **_root,I64 *_cur_elem_num)
   Sprite2Code(doc,elems);
   Free(elems);
   while (TRUE) {
-    if (result=SrvUser("DocDo(0x%X,0x%X);",doc,0)) {
+    if (result=PopUpPrint("DocDo(0x%X,0x%X);",doc,0)) {
       Fs->put_doc=doc2=DocNew;
       "$WW,1$";
       if (elems=Code2Sprite(doc)) {
@@ -664,7 +660,7 @@ Bool SpriteEdText(CSprite **_root,I64 *_cur_elem_num)
 	*_cur_elem_num=QueCnt(root); //TODO: Might want to improve this.
 	break;
       } else {
-	SrvUser("DocDo(0x%X,0x%X);",doc2,0);
+	PopUpPrint("DocDo(0x%X,0x%X);",doc2,0);
 	DocDel(doc2);
 	Fs->put_doc=old_put;
       }

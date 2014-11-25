@@ -1,18 +1,18 @@
-[D:/Compiler/Assembler.CPP.Z,284] AsmGlblsResolve     0000007F30    0001 0000000404 Funct Export Res 
-[D:/Compiler/CmpInit.CPP.Z,68] AsmHashLoad         000002939A    0001 00000005BF Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,189] AsmLexExpression    0000007B08    0004 00000000B7 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,31] AsmLineLst          0000007570    0001 0000000148 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,250] AsmLocalsResolve    0000007E08    0003 0000000127 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,569] AsmMakeArgMask      0000008898    0002 0000000444 Funct Export Res 
-[D:/Compiler/CmpInit.CPP.Z,18] AsmPrsInsFlags      000002915A    0001 000000023B Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,209] AsmResolve          0000007BC0    0002 0000000245 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,90] AsmStoreCodeU32     00000077C0    0001 0000000145 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,129] AsmStoreCodeU64     0000007908    0005 0000000146 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,61] AsmStoreCodeU8      00000076B8    001D 0000000103 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,168] AsmStoreCodeU8At    0000007A50    0007 00000000B7 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,663] AsmStoreNum         0000008CE0    0004 00000004A6 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,1] AsmUnresolvedAdd    0000007460    0004 000000010C Funct Export Res 
-[D:/Compiler/CmpInit.CPP.Z,3] CInternalType       003FD4FE40    0002 000000000A Class 
+[D:/Compiler/Assembler.CPP.Z,284] AsmGlblsResolve     0000008EF0    0001 0000000404 Funct Export Res 
+[D:/Compiler/CmpInit.CPP.Z,68] AsmHashLoad         000002A542    0001 00000005BD Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,189] AsmLexExpression    0000008AC8    0004 00000000B7 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,31] AsmLineLst          0000008530    0001 0000000148 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,250] AsmLocalsResolve    0000008DC8    0003 0000000127 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,565] AsmMakeArgMask      0000009830    0002 0000000444 Funct Export Res 
+[D:/Compiler/CmpInit.CPP.Z,18] AsmPrsInsFlags      000002A302    0001 000000023B Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,209] AsmResolve          0000008B80    0002 0000000245 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,90] AsmStoreCodeU32     0000008780    0001 0000000145 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,129] AsmStoreCodeU64     00000088C8    0005 0000000146 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,61] AsmStoreCodeU8      0000008678    001D 0000000103 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,168] AsmStoreCodeU8At    0000008A10    0007 00000000B7 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,659] AsmStoreNum         0000009C78    0004 00000004A6 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,1] AsmUnresolvedAdd    0000008420    0004 000000010C Funct Export Res 
+[D:/Compiler/CmpInit.CPP.Z,3] CInternalType       003FC561D8    0002 000000000A Class 
 [D:/Compiler/CmpAsm.CPP.Z,5] CMP_TEMPLATES       0000000000    0001            ExportSysSym Export 
 [D:/Compiler/CmpAsm.CPP.Z,179] CMP_TEMPLATES_DONT_POP000000018B    0001            ExportSysSym Export 
 [D:/Compiler/CmpAsm.CPP.Z,268] CMP_TEMPLATES_DONT_PUSH0000000257    0001            ExportSysSym Export 
@@ -22,175 +22,175 @@
 [D:/Compiler/BackF1a.CPP.Z,1] CN_A2               0             0005 0000000008 DefineStr 
 [D:/Compiler/BackF1a.CPP.Z,3] CN_MAIN             2             0022 0000000008 DefineStr 
 [D:/Compiler/BackF1a.CPP.Z,4] CN_R                3             0003 0000000008 DefineStr 
-[D:/Compiler/OptLib.CPP.Z,570] COptMemberVar       003FC79988    0005 0000000028 Class 
-[D:/Compiler/StmtParser.CPP.Z,1342] CSubSwitch          003FC769B0    0004 0000000020 Class 
-[D:/Compiler/StmtParser.CPP.Z,1347] CSwitchCase         003FD576B8    0004 0000000020 Class 
-[D:/Compiler/ICLCC.CPP.Z,33] CTrace              0000002898    0000 0000000017 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,175] CVI2                003FC76C90    0003 0000000010 Class 
-[D:/Compiler/CmpMain.CPP.Z,455] Cmp                 000002BF32    0000 000000059C Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,170] CmpBuf              000002B5FA    0001 00000000B6 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,553] CmpF1PushPop        000000BCE6    0002 0000000031 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,559] CmpF2PushPop        000000BD1E    0005 0000000074 Funct Export Res 
-[D:/Compiler/CmpInit.CPP.Z,444] CmpFillTables       000002A872    0001 000000051A Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,314] CmpFixUpAOTAsm      000002BB42    0000 00000003EA Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,187] CmpFixUpJITAsm      000002B6B2    0000 000000048F Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,718] CmpInit             000002C9DA    0001 0000000081 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,48] CmpJoin             000002AF72    0001 0000000682 Funct Export Res 
-[D:/Compiler/CmpInit.CPP.Z,204] CmpLoadDefines      000002995A    0001 0000000F18 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,6] CmpNoteFloatOp      000001B3EE    000E 000000020D Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,83] CmpOffset2Reg       000000B09E    0005 0000000046 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,1] CmpPrompt           00000038D8    0001 00000001B5 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,533] CmpRawType          000000BC86    0006 0000000025 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,542] CmpRawTypePointed   000000BCAE    0005 0000000033 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,57] CmpSetFloatOpPushPop000001B5FE    000C 0000000075 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,38] Echo                00000028B0    0000 0000000017 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,650] ExeFile             000002C6D2    0000 000000007B Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,689] ExeFile2            000002C86A    0000 0000000079 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,641] ExePrint            000002C682    0000 0000000049 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,680] ExePrint2           000002C822    0000 0000000047 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,606] ExePutS             000002C4D2    0003 00000001A9 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,661] ExePutS2            000002C752    0002 00000000CC Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,589] COptMemberVar       003FC74930    0005 0000000028 Class 
+[D:/Compiler/StmtParser.CPP.Z,1344] CSubSwitch          003FD566B8    0004 0000000020 Class 
+[D:/Compiler/StmtParser.CPP.Z,1349] CSwitchCase         003FD563D8    0004 0000000020 Class 
+[D:/Compiler/ICLCC.CPP.Z,33] CTrace              00000027D0    0000 0000000017 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,177] CVI2                003FC74650    0003 0000000010 Class 
+[D:/Compiler/CmpMain.CPP.Z,432] Cmp                 000002C56A    0000 000000059A Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,171] CmpBuf              000002BC32    0001 00000000B6 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,572] CmpF1PushPop        000000CDC6    0002 0000000042 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,578] CmpF2PushPop        000000CE0E    0005 0000000096 Funct Export Res 
+[D:/Compiler/CmpInit.CPP.Z,235] CmpFillTables       000002AFFA    0001 00000003C3 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,315] CmpFixUpAOTAsm      000002C17A    0000 00000003EA Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,188] CmpFixUpJITAsm      000002BCEA    0000 000000048F Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,695] CmpInit             000002D012    0001 000000006B Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,49] CmpJoin             000002B5AA    0001 0000000682 Funct Export Res 
+[D:/Compiler/CmpInit.CPP.Z,204] CmpLoadDefines      000002AB02    0001 00000004F1 Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,6] CmpNoteFloatOp      000001C4E6    000E 000000020D Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,83] CmpOffset2Reg       000000C09E    0005 0000000046 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,1] CmpPrompt           0000004AA5    0001 00000001B5 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,552] CmpRawType          000000CD66    0006 0000000025 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,561] CmpRawTypePointed   000000CD8E    0005 0000000033 Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,57] CmpSetFloatOpPushPop000001C6F6    000C 0000000075 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,38] Echo                00000027E8    0000 0000000017 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,627] ExeFile             000002CD0A    0000 000000007B Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,666] ExeFile2            000002CEA2    0000 0000000079 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,618] ExePrint            000002CCBA    0000 0000000049 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,657] ExePrint2           000002CE5A    0000 0000000047 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,583] ExePutS             000002CB0A    0003 00000001A9 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,638] ExePutS2            000002CD8A    0002 00000000CC Funct Export Res 
 [D:/Compiler/OptLib.CPP.Z,94] FBO1_F64            2             0002 0000000008 DefineStr 
 [D:/Compiler/OptLib.CPP.Z,93] FBO1_INT            1             0013 0000000008 DefineStr 
-[D:/Compiler/OptLib.CPP.Z,92] FBO1_NOT_CONST      0             0004 0000000008 DefineStr 
-[D:/Compiler/ICLCC.CPP.Z,16] GetOpt              0000002810    0004 000000002C Funct Export Res 
-[D:/Compiler/Hash1b.CPP.Z,1] HashEntrySize       0000007158    0000 0000000103 Funct Export Res 
-[D:/Compiler/Hash1b.CPP.Z,32] HashEntrySize2      0000007260    0002 00000001A4 Funct Export Res 
-[D:/Compiler/Hash1b.CPP.Z,69] HashTableSize2      0000007408    0000 0000000054 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,1] ICAddEct            000001F056    0005 00000002F3 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,69] ICAddRSP            0000019D86    0017 00000002A7 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,505] ICAddSubEctEqual    000002095E    0005 0000000673 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,57] ICAddSubEctImm      000001F34E    000D 0000000685 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,30] ICAndAnd            00000215FE    0001 000000014B Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,1] ICAndBranch         0000023896    0002 00000006E6 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,675] ICAndEqual          0000025776    0001 000000010D Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,73] ICArgPut            00000029D0    0003 00000002D6 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,159] ICAssign            0000023F7E    0001 0000000301 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,534] ICAssignPostIncDec  0000022C56    0002 0000000210 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,244] ICBitOps            0000021EF6    0007 00000004F1 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,207] ICBrBitOps          0000024286    0008 00000009FB Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,420] ICBuiltInFloatConst 000001A8C6    000F 00000000BD Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,49] ICClassPut          00000028F8    0001 00000000D3 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,124] ICCmp               0000021A0E    0006 00000004E6 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,575] ICCmpAndBranch      0000022E66    000C 0000000737 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,69] ICCopyTemplate      000001B676    0013 000000021D Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,656] ICDeref             000001B32E    0001 00000000B9 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,491] ICDerefPostIncDec   0000022A5E    0002 00000001F1 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,413] ICDiv               000002048E    0001 00000000F1 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,432] ICDivEqual          0000020586    0002 00000002DE Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,633] ICFAdd              000001EA16    0001 00000001FF Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,549] ICFCmp              000001C9EE    0004 000000018B Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,325] ICFCmpAndBranch     000001DE4E    0004 00000009F7 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,115] ICFCvt              000001B896    000C 000000017F Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,163] ICFCvt2             000001BA16    0010 0000000116 Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,621] ICFDiv              000001E966    0001 00000000A9 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,241] ICFMod              000001BD0E    0001 0000000145 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,589] ICFModEqual         000001CB7E    0001 00000003D7 Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,603] ICFMul              000001E846    0001 000000011B Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,350] ICFOp               000001C14E    0004 000000089D Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,1] ICFOpEqual          000001CF56    0004 0000000EF7 Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,716] ICFPostIncDec       000001EE4E    0002 0000000151 Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,271] ICFPow              000001BE56    0001 00000002F7 Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,694] ICFPreIncDec        000001ED3E    0002 000000010A Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,671] ICFSub              000001EC16    0001 0000000124 Funct Export Res 
-[D:/Compiler/BackF1b.CPP.Z,744] ICFTemplateFun      000001EFA6    0007 00000000AA Funct Export Res 
-[D:/Compiler/BackF1a.CPP.Z,190] ICFUnaryMinus       000001BB2E    0001 00000001E0 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,803] ICFlagBranch        000002378E    0004 0000000106 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,59] ICLastIns           0000019D46    0002 0000000040 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,622] ICLea               000001B17E    0004 00000001AA Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,908] ICLocalVarInit      0000026196    0001 0000000078 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,496] ICMinMax            000002504E    0004 00000002AB Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,486] ICMod               0000020866    0001 00000000F1 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,575] ICModU64            000002534E    0001 00000001B7 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,140] ICModr1             000001A02E    0017 00000002FE Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,230] ICModr2             000001A32E    0016 00000000A6 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,442] ICMov               000001A986    019A 00000007F4 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,289] ICMul               000001FDCE    0001 00000002B8 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,346] ICMulEqual          0000020086    0001 0000000406 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,10] ICNot               00000214FE    0001 00000000FF Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,28] ICOpSizeRex         0000019C5E    0006 0000000040 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,698] ICOrEqual           0000025886    0001 000000010D Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,59] ICOrOr              000002174E    0001 0000000162 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,361] ICPop               000001A6CE    0009 00000000EA Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,388] ICPopRegs           000001A7BE    000C 0000000057 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,451] ICPostIncDec        000002285E    0002 00000001FF Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,415] ICPreIncDec         000002267E    0004 00000001DB Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,348] ICPreempt           00000223EE    0001 0000000122 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,310] ICPush              000001A51E    001F 0000000152 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,348] ICPushRegs          000001A676    0006 0000000054 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,118] ICPut               0000002CA8    0008 00000003B2 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,384] ICQueInit           0000024C86    0001 0000000070 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,398] ICQueIns            0000024CF6    0001 0000000162 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,439] ICQueInsRev         0000024E5E    0001 0000000162 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,480] ICQueRem            0000024FC6    0001 0000000088 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,22] ICRex               0000019C2E    0016 000000002D Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,643] ICShift             0000020FD6    0004 00000001A3 Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,676] ICShiftEqual        000002117E    0002 000000030E Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,282] ICSlashOp           000001A3D6    0027 0000000145 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,568] ICSqr               00000252FE    0002 000000004A Funct Export Res 
-[D:/Compiler/Back1a.CPP.Z,211] ICSub               000001F9D6    0001 00000003F5 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,617] ICSwap              0000025506    0001 000000026E Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,744] ICSwitch            0000025A9E    0002 00000006F2 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,410] ICTest              000001A876    000C 000000004E Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,755] ICTestAndBranch     000002359E    0002 00000001EC Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,400] ICToBool            0000022606    0001 0000000075 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,395] ICToF64             00000225C6    0001 000000003D Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,390] ICToI64             0000022586    0001 000000003D Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,379] ICToUpper           0000022516    0001 000000006B Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,35] ICU16               0000019C9E    0092 0000000029 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,41] ICU24               0000019CCE    0063 0000000026 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,47] ICU32               0000019CF6    0054 0000000026 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,53] ICU64               0000019D1E    0009 0000000028 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,17] ICU8                0000019C06    0063 0000000028 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,1] ICUnaries           000002148E    0002 0000000069 Funct Export Res 
-[D:/Compiler/Back1c.CPP.Z,721] ICXorEqual          0000025996    0001 0000000107 Funct Export Res 
-[D:/Compiler/Back1b.CPP.Z,91] ICXorXor            00000218B6    0001 0000000155 Funct Export Res 
-[D:/Compiler/BackLib.CPP.Z,401] ICZero              000001A816    0017 000000005E Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,43] IncludeDepth        00000028C8    0000 0000000030 Funct Export Res 
-[D:/Compiler/Unassembler.CPP.Z,1] InstEntriesCompare  0000000738    0001 00000002A9 Funct Export Res 
-[D:/Compiler/Unassembler.CPP.Z,72] InstEntryFind       00000009E8    0002 00000003C9 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1153] IsLexExpression2Bin 000000ECAE    0000 0000000029 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,200] LCCAdd              00000030D8    00A9 000000009F Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,239] LCCAppend           0000003200    0003 00000000A6 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,356] LCCCompile          0000003630    0006 00000002A7 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,299] LCCDel              0000003420    0001 0000000164 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,277] LCCFloatConstFind   0000003358    000F 00000000C6 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,265] LCCGoToLabelFind    0000003300    0005 0000000057 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,342] LCCHeaderPut        0000003588    000B 00000000A2 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,192] LCCInit             0000003098    000A 000000003A Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,256] LCCMiscNew          00000032A8    0021 0000000055 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,234] LCCPop              00000031E0    0008 000000001A Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,227] LCCPopNoFree        00000031B0    0003 000000002E Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,220] LCCPush             0000003178    000E 0000000037 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,182] LCCQuePut           0000003060    0001 0000000037 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,725] Lex                 00000054C8    00ED 0000001881 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,393] LexAttachDoc        0000004A70    0001 0000000163 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,131] LexBackupLastChar   0000003E4C    0003 0000000041 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1198] LexD2I32            000000EDCE    0000 00000000A6 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1214] LexD3I32            000000EE76    0000 00000000D9 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,66] LexDel              0000003BD0    0004 00000000A5 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,372] LexDocRead          00000049DC    0001 0000000087 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,142] LexDollar           0000003E94    0003 0000000070 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,1601] LexExcept           0000007068    00B8 00000000ED Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1186] LexExpression       000000ED8E    0002 000000003F Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1135] LexExpression2Bin   000000EC16    0006 0000000094 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1172] LexExpressionF64    000000ED36    0000 0000000054 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,1158] LexExpressionI64    000000ECDE    000A 0000000054 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,1518] LexExtStr           0000006D50    0004 00000000C5 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,332] LexFirstRem         0000004884    0000 00000000BC Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,156] LexGetChar          0000003F04    0031 000000094F Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,628] LexInStr            0000005198    0001 000000032A Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,354] LexIncludeStr       0000004944    0003 0000000098 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,35] LexNew              0000003A90    0004 000000013D Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,450] LexPop              0000004C60    0004 0000000074 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,438] LexPush             0000004BD8    000F 0000000081 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,1543] LexPutLine          0000006E18    0003 000000009B Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,1571] LexPutPos           0000006EB8    0003 00000000CA Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,108] LexPutToken         0000003D18    0001 000000012B Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,88] LexSize             0000003C78    0000 000000009B Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,325] LexSkipEol          0000004854    0004 000000002B Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,15] LexStatement2Bin    000002AE3A    0001 0000000131 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,1585] LexWarn             0000006F88    0009 00000000D9 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,92] FBO1_NOT_CONST      0             0005 0000000008 DefineStr 
+[D:/Compiler/ICLCC.CPP.Z,16] GetOpt              0000002748    0004 000000002C Funct Export Res 
+[D:/Compiler/Hash1b.CPP.Z,1] HashEntrySize       0000008118    0000 0000000103 Funct Export Res 
+[D:/Compiler/Hash1b.CPP.Z,32] HashEntrySize2      0000008220    0002 00000001A4 Funct Export Res 
+[D:/Compiler/Hash1b.CPP.Z,69] HashTableSize2      00000083C8    0000 0000000054 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,1] ICAddEct            000002014E    0005 00000002F3 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,69] ICAddRSP            000001AE7E    0017 00000002A7 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,501] ICAddSubEctEqual    0000021A56    0005 0000000673 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,57] ICAddSubEctImm      0000020446    000D 0000000685 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,30] ICAndAnd            00000226F6    0001 000000014B Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,1] ICAndBranch         0000024A76    0002 00000006E6 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,675] ICAndEqual          0000026956    0001 000000010D Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,270] ICArgPut            0000003B55    0003 00000002D6 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,159] ICAssign            000002515E    0001 0000000301 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,534] ICAssignPostIncDec  0000023D4E    0002 0000000210 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,244] ICBitOps            0000022FEE    0007 00000004F1 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,207] ICBrBitOps          0000025466    0008 00000009FB Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,420] ICBuiltInFloatConst 000001B9BE    000F 00000000BD Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,246] ICClassPut          0000003A7D    0001 00000000D3 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,124] ICCmp               0000022B06    0006 00000004E6 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,575] ICCmpAndBranch      0000023F5E    000C 000000081A Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,69] ICCopyTemplate      000001C76E    0013 000000021D Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,656] ICDeref             000001C426    0001 00000000B9 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,491] ICDerefPostIncDec   0000023B56    0002 00000001F1 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,409] ICDiv               0000021586    0001 00000000F1 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,428] ICDivEqual          000002167E    0002 00000002DE Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,633] ICFAdd              000001FB0E    0001 00000001FF Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,549] ICFCmp              000001DAE6    0004 000000018B Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,325] ICFCmpAndBranch     000001EF46    0004 00000009F7 Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,115] ICFCvt              000001C98E    000C 000000017F Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,163] ICFCvt2             000001CB0E    0010 0000000116 Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,621] ICFDiv              000001FA5E    0001 00000000A9 Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,241] ICFMod              000001CE06    0001 0000000145 Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,589] ICFModEqual         000001DC76    0001 00000003D7 Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,603] ICFMul              000001F93E    0001 000000011B Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,350] ICFOp               000001D246    0004 000000089D Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,1] ICFOpEqual          000001E04E    0004 0000000EF7 Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,716] ICFPostIncDec       000001FF46    0002 0000000151 Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,271] ICFPow              000001CF4E    0001 00000002F7 Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,694] ICFPreIncDec        000001FE36    0002 000000010A Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,671] ICFSub              000001FD0E    0001 0000000124 Funct Export Res 
+[D:/Compiler/BackF1b.CPP.Z,744] ICFTemplateFun      000002009E    0007 00000000AA Funct Export Res 
+[D:/Compiler/BackF1a.CPP.Z,190] ICFUnaryMinus       000001CC26    0001 00000001E0 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,804] ICFlagBranch        000002496E    0004 0000000106 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,59] ICLastIns           000001AE3E    0002 0000000040 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,622] ICLea               000001C276    0004 00000001AA Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,908] ICLocalVarInit      0000027376    0001 0000000078 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,496] ICMinMax            000002622E    0004 00000002AB Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,482] ICMod               000002195E    0001 00000000F1 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,575] ICModU64            000002652E    0001 00000001B7 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,140] ICModr1             000001B126    0017 00000002FE Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,230] ICModr2             000001B426    0016 00000000A6 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,442] ICMov               000001BA7E    019A 00000007F4 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,285] ICMul               0000020EC6    0001 00000002B8 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,342] ICMulEqual          000002117E    0001 0000000406 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,10] ICNot               00000225F6    0001 00000000FF Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,28] ICOpSizeRex         000001AD56    0006 0000000040 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,698] ICOrEqual           0000026A66    0001 000000010D Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,59] ICOrOr              0000022846    0001 0000000162 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,361] ICPop               000001B7C6    0009 00000000EA Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,388] ICPopRegs           000001B8B6    000C 0000000057 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,451] ICPostIncDec        0000023956    0002 00000001FF Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,415] ICPreIncDec         0000023776    0004 00000001DB Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,348] ICPreempt           00000234E6    0001 0000000122 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,310] ICPush              000001B616    001F 0000000152 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,348] ICPushRegs          000001B76E    0006 0000000054 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,315] ICPut               0000003E2D    0008 00000003DD Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,384] ICQueInit           0000025E66    0001 0000000070 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,398] ICQueIns            0000025ED6    0001 0000000162 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,439] ICQueInsRev         000002603E    0001 0000000162 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,480] ICQueRem            00000261A6    0001 0000000088 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,22] ICRex               000001AD26    0016 000000002D Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,639] ICShift             00000220CE    0004 00000001A3 Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,672] ICShiftEqual        0000022276    0002 000000030E Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,282] ICSlashOp           000001B4CE    0027 0000000145 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,568] ICSqr               00000264DE    0002 000000004A Funct Export Res 
+[D:/Compiler/Back1a.CPP.Z,207] ICSub               0000020ACE    0001 00000003F5 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,617] ICSwap              00000266E6    0001 000000026E Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,744] ICSwitch            0000026C7E    0002 00000006F2 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,410] ICTest              000001B96E    000C 000000004E Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,756] ICTestAndBranch     000002477E    0002 00000001EC Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,400] ICToBool            00000236FE    0001 0000000075 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,395] ICToF64             00000236BE    0001 000000003D Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,390] ICToI64             000002367E    0001 000000003D Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,379] ICToUpper           000002360E    0001 000000006B Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,35] ICU16               000001AD96    0092 0000000029 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,41] ICU24               000001ADC6    0063 0000000026 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,47] ICU32               000001ADEE    0054 0000000026 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,53] ICU64               000001AE16    0009 0000000028 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,17] ICU8                000001ACFE    0063 0000000028 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,1] ICUnaries           0000022586    0002 0000000069 Funct Export Res 
+[D:/Compiler/Back1c.CPP.Z,721] ICXorEqual          0000026B76    0001 0000000107 Funct Export Res 
+[D:/Compiler/Back1b.CPP.Z,91] ICXorXor            00000229AE    0001 0000000155 Funct Export Res 
+[D:/Compiler/BackLib.CPP.Z,401] ICZero              000001B90E    0017 000000005E Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,43] IncludeDepth        0000002800    0000 0000000030 Funct Export Res 
+[D:/Compiler/Unassembler.CPP.Z,1] InstEntriesCompare  00000006F0    0001 00000002A9 Funct Export Res 
+[D:/Compiler/Unassembler.CPP.Z,72] InstEntryFind       00000009A0    0002 00000003C9 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1153] IsLexExpression2Bin 000000FDD6    0000 0000000029 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,399] LCCAdd              0000004285    00A9 000000009F Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,438] LCCAppend           00000043AD    0003 00000000A6 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,555] LCCCompile          00000047DD    0006 00000002C7 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,498] LCCDel              00000045CD    0001 0000000164 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,476] LCCFloatConstFind   0000004505    000F 00000000C6 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,464] LCCGoToLabelFind    00000044AD    0005 0000000057 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,541] LCCHeaderPut        0000004735    000C 00000000A2 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,391] LCCInit             0000004245    000A 000000003A Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,455] LCCMiscNew          0000004455    0021 0000000055 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,433] LCCPop              000000438D    0008 000000001A Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,426] LCCPopNoFree        000000435D    0003 000000002E Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,419] LCCPush             0000004325    000E 0000000037 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,381] LCCQuePut           000000420D    0001 0000000038 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,698] Lex                 00000065C8    00ED 0000001746 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,393] LexAttachDoc        0000005C40    0001 0000000163 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,131] LexBackupLastChar   000000501C    0003 0000000041 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1198] LexD2I32            000000FEF6    0000 00000000A6 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1214] LexD3I32            000000FF9E    0000 00000000D9 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,66] LexDel              0000004D9D    0004 00000000A5 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,372] LexDocRead          0000005BAC    0001 0000000085 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,142] LexDollar           0000005064    0003 0000000070 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,1535] LexExcept           0000008028    00B8 00000000ED Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1186] LexExpression       000000FEB6    0002 000000003F Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1135] LexExpression2Bin   000000FD3E    0006 0000000094 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1172] LexExpressionF64    000000FE5E    0000 0000000054 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1158] LexExpressionI64    000000FE06    000A 0000000054 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,1452] LexExtStr           0000007D10    0004 00000000C5 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,332] LexFirstRem         0000005A54    0000 00000000BC Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,156] LexGetChar          00000050D4    002C 000000094F Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,628] LexInStr            0000006368    0001 000000025B Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,354] LexIncludeStr       0000005B14    0003 0000000098 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,35] LexNew              0000004C5D    0004 000000013D Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,450] LexPop              0000005E30    0004 0000000074 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,438] LexPush             0000005DA8    000F 0000000081 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,1477] LexPutLine          0000007DD8    0003 000000009B Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,1505] LexPutPos           0000007E78    0003 00000000CA Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,108] LexPutToken         0000004EE5    0001 000000012B Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,88] LexSize             0000004E45    0000 000000009B Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,325] LexSkipEol          0000005A24    0004 000000002B Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,15] LexStatement2Bin    000002B46A    0001 0000000140 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,1519] LexWarn             0000007F48    0009 00000000D9 Funct Export Res 
 [D:/Compiler/BackLib.CPP.Z,134] MDR_D32_INDIRECT_REG3             0002 0000000008 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,133] MDR_D8_INDIRECT_REG 2             0002 0000000008 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,132] MDR_INDIRECT_REG    1             0002 0000000008 DefineStr 
@@ -199,45 +199,45 @@
 [D:/Compiler/BackLib.CPP.Z,137] MDR_SIB_D32_INDIRECT_REG6             0003 0000000008 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,136] MDR_SIB_D8_INDIRECT_REG5             0002 0000000008 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,135] MDR_SIB_INDIRECT_REG4             0002 0000000008 DefineStr 
-[D:/Compiler/Lex.CPP.Z,519] MemberAdd           0000004E10    0004 00000001BA Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,484] MemberFind          0000004D60    0005 0000000067 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,504] MemberFind2         0000004DC8    0001 0000000044 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,567] MemberLstDel        0000004FD0    0001 00000000F3 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,38] MemberLstNew        000000F026    0003 000000002A Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,601] MemberLstSize       00000050C8    0002 00000000CF Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,462] MemberMetaData      0000004CD8    0000 0000000041 Funct Export Res 
-[D:/Compiler/Lex.CPP.Z,473] MemberMetaFind      0000004D20    0000 0000000040 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,519] MemberAdd           0000005FE0    0004 00000001BA Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,484] MemberFind          0000005F30    0005 0000000067 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,504] MemberFind2         0000005F98    0001 0000000044 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,567] MemberLstDel        00000061A0    0001 00000000F3 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,38] MemberLstNew        000001014E    0003 000000002A Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,601] MemberLstSize       0000006298    0002 00000000CF Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,462] MemberMetaData      0000005EA8    0000 0000000041 Funct Export Res 
+[D:/Compiler/Lex.CPP.Z,473] MemberMetaFind      0000005EF0    0000 0000000040 Funct Export Res 
 [D:/Compiler/CmpInit.CPP.Z,1] NUM_INTERNAL_TYPES  17            0002 0000000008 DefineStr 
-[D:/Compiler/ICLCC.CPP.Z,21] OTrace              0000002840    0000 0000000017 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,26] OTraceMask          0000002858    0000 0000000039 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,361] OptBrNotZero        000000B7DE    0004 0000000403 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,213] OptBrZero           000000B3D6    0006 0000000403 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,9] OptClassFwd         000000AEFE    0013 000000002B Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,1] OptEqu              00000027B0    0005 000000002E Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,509] OptFixSizeOf        000000BBE6    0003 000000009B Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,96] OptFixupBinaryOp1   000000B0E6    0013 00000001CB Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,162] OptFixupBinaryOp2   000000B2B6    0001 0000000054 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,178] OptFixupUnaryOp     000000B30E    0003 00000000C8 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,33] OptFree             000000AFAE    0023 0000000024 Funct Export Res 
-[D:/Compiler/OptPass4.CPP.Z,1] OptIC4              00000179AE    0001 00000005CD Funct Export Res 
-[D:/Compiler/OptPass6.CPP.Z,1] OptIC6              00000192C6    0001 0000000128 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,1] OptLabelFwd         000000AED6    0010 0000000028 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,40] OptLag              000000AFD6    000E 000000002A Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,51] OptLag1             000000B006    0006 0000000031 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,62] OptLag2             000000B03E    0003 000000002A Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,73] OptLead1            000000B06E    0004 0000000030 Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,576] OptMVCompare        000000BD96    0001 000000001A Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,11] OptOff              00000027F8    0000 0000000016 Funct Export Res 
-[D:/Compiler/ICLCC.CPP.Z,6] OptOn               00000027E0    0000 0000000016 Funct Export Res 
-[D:/Compiler/OptPass012.CPP.Z,23] OptPass012          0000013B76    0000 00000027CC Funct Export Res 
-[D:/Compiler/OptPass3.CPP.Z,1] OptPass3            0000016346    0000 0000001663 Funct Export Res 
-[D:/Compiler/OptPass4.CPP.Z,171] OptPass4            0000017F7E    0000 0000000F05 Funct Export Res 
-[D:/Compiler/OptPass5.CPP.Z,1] OptPass5            0000018E86    0000 000000043F Funct Export Res 
-[D:/Compiler/OptPass6.CPP.Z,112] OptPass6            0000019716    0000 00000004EA Funct Export Res 
-[D:/Compiler/OptPass6.CPP.Z,28] OptPass6Lag         00000193EE    0001 0000000327 Funct Export Res 
-[D:/Compiler/OptPass789.CPP.Z,1] OptPass789          000002620E    0000 0000002E9E Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,17] OptSetNOP1          000000AF2E    0079 000000003A Funct Export Res 
-[D:/Compiler/OptLib.CPP.Z,25] OptSetNOP2          000000AF6E    000D 000000003C Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,21] OTrace              0000002778    0000 0000000017 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,26] OTraceMask          0000002790    0000 0000000039 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,380] OptBrNotZero        000000C8BE    0004 0000000403 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,232] OptBrZero           000000C4B6    0006 0000000403 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,9] OptClassFwd         000000BEFE    0013 000000002B Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,1] OptEqu              00000026E8    0005 000000002E Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,528] OptFixSizeOf        000000CCC6    0003 000000009B Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,96] OptFixupBinaryOp1   000000C0E6    0013 00000002B0 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,181] OptFixupBinaryOp2   000000C396    0001 0000000054 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,197] OptFixupUnaryOp     000000C3EE    0003 00000000C8 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,33] OptFree             000000BFAE    0024 0000000024 Funct Export Res 
+[D:/Compiler/OptPass4.CPP.Z,1] OptIC4              0000018B46    0001 00000005CD Funct Export Res 
+[D:/Compiler/OptPass6.CPP.Z,1] OptIC6              000001A496    0001 0000000128 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,1] OptLabelFwd         000000BED6    0010 0000000028 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,40] OptLag              000000BFD6    000E 000000002A Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,51] OptLag1             000000C006    0006 0000000031 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,62] OptLag2             000000C03E    0003 000000002A Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,73] OptLead1            000000C06E    0003 0000000030 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,595] OptMVCompare        000000CEA6    0001 000000001A Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,11] OptOff              0000002730    0000 0000000016 Funct Export Res 
+[D:/Compiler/ICLCC.CPP.Z,6] OptOn               0000002718    0000 0000000016 Funct Export Res 
+[D:/Compiler/OptPass012.CPP.Z,23] OptPass012          0000014CBE    0000 0000002801 Funct Export Res 
+[D:/Compiler/OptPass3.CPP.Z,1] OptPass3            00000174C6    0000 000000167A Funct Export Res 
+[D:/Compiler/OptPass4.CPP.Z,171] OptPass4            0000019116    0000 0000000F22 Funct Export Res 
+[D:/Compiler/OptPass5.CPP.Z,1] OptPass5            000001A03E    0000 0000000457 Funct Export Res 
+[D:/Compiler/OptPass6.CPP.Z,111] OptPass6            000001A8F6    0000 0000000402 Funct Export Res 
+[D:/Compiler/OptPass6.CPP.Z,28] OptPass6Lag         000001A5BE    0001 0000000338 Funct Export Res 
+[D:/Compiler/OptPass789A.CPP.Z,1] OptPass789A         00000273EE    0000 0000002E64 Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,17] OptSetNOP1          000000BF2E    0079 000000003A Funct Export Res 
+[D:/Compiler/OptLib.CPP.Z,25] OptSetNOP2          000000BF6E    000D 000000003C Funct Export Res 
 [D:/Compiler/ExpParser.CPP.Z,43] PE_CHECK_BINARY_OPS15             0001 0000000008 DefineStr 
 [D:/Compiler/ExpParser.CPP.Z,44] PE_CHECK_BINARY_OPS26             0001 0000000008 DefineStr 
 [D:/Compiler/ExpParser.CPP.Z,42] PE_DEREFERENCE      4             0003 0000000008 DefineStr 
@@ -251,50 +251,50 @@
 [D:/Compiler/ExpParser.CPP.Z,41] PE_UNARY_MODIFIERS  3             0009 0000000008 DefineStr 
 [D:/Compiler/ExpParser.CPP.Z,38] PE_UNARY_TERM1      0             0001 0000000008 DefineStr 
 [D:/Compiler/ExpParser.CPP.Z,39] PE_UNARY_TERM2      1             0003 0000000008 DefineStr 
-[D:/Compiler/ExpParser.CPP.Z,1] ParenWarning        000000BDB6    0004 000000004C Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,52] PrsAddOp            000000BEFE    0002 00000001EE Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,303] PrsArrayDims        000000FAAE    0001 000000012D Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,428] PrsAsmArg           0000008470    0002 0000000424 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,1277] PrsAsmBlk           000000A5E6    0002 00000008ED Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,1188] PrsAsmDefine        000000A286    0004 000000029D Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,394] PrsAsmImm           0000008338    0006 0000000131 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,781] PrsAsmInstruction   000000918E    0001 00000010F3 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,1261] PrsBinFile          000000A526    0001 00000000BB Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,785] PrsClass            0000010B76    0002 0000000264 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1] PrsClassNew         000000EF56    0003 0000000068 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1281] PrsDoWhile          0000011F36    0001 0000000137 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,340] PrsDotDotDot        000000FBDE    0001 0000000111 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,298] PrsExpression       000000C756    0010 0000000149 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,102] PrsExpression2      000000C0EE    0001 0000000667 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1305] PrsFor              000001206E    0001 0000000162 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,914] PrsFun              0000010FC6    0001 00000003B7 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,409] PrsFunCall          000000CBF6    0003 000000082D Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,851] PrsFunJoin          0000010DDE    0005 00000001E8 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,22] PrsFunNew           000000EFBE    0001 0000000068 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,263] PrsGlblInit         000000F8EE    0002 000000007C Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,976] PrsGlblVarLst       000001137E    0007 0000000991 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1231] PrsIf               0000011D16    0001 000000012C Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,45] PrsKeyWord          000000F056    000C 0000000040 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1553] PrsNoUnusedWarn     0000012A66    0001 000000008F Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,379] PrsOffsetOf         000000CAAE    0002 0000000148 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,13] PrsPop              000000BE2E    0017 0000000022 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,23] PrsPop2             000000BE8E    0001 000000002D Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,28] PrsPopDeref         000000BEBE    0004 000000003F Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,8] PrsPush             000000BE06    0017 0000000028 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,18] PrsPush2            000000BE56    0004 0000000033 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,331] PrsSizeOf           000000C8A6    0001 0000000207 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1664] PrsStatement        0000012F66    0004 0000000C09 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,272] PrsStaticInit       000000F96E    0002 000000013E Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1567] PrsStreamBlk        0000012AF6    0000 00000001B2 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1354] PrsSwitch           00000121D6    0002 000000088F Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1603] PrsTryBlk           0000012CAE    0001 00000002B7 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,375] PrsType             000000FCF6    0002 000000039A Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,980] PrsUnaryModifier    000000E3B6    0000 0000000859 Funct Export Res 
-[D:/Compiler/ExpParser.CPP.Z,617] PrsUnaryTerm        000000D426    0000 0000000F8E Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,66] PrsVarInit          000000F126    0001 00000004C8 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,181] PrsVarInit2         000000F5EE    0004 00000002FE Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,469] PrsVarLst           0000010096    0006 0000000ADC Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,1259] PrsWhile            0000011E46    0001 00000000EF Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,1] ParenWarning        000000CEC6    0004 000000004C Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,52] PrsAddOp            000000D00E    0002 00000001EE Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,305] PrsArrayDims        0000010BEE    0001 000000012D Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,428] PrsAsmArg           0000009430    0004 00000003FE Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,1276] PrsAsmBlk           000000B596    0002 000000093F Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,1187] PrsAsmDefine        000000B236    0004 000000029D Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,394] PrsAsmImm           00000092F8    0002 0000000131 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,777] PrsAsmInstruction   000000A126    0001 0000001110 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,1260] PrsBinFile          000000B4D6    0001 00000000B9 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,787] PrsClass            0000011CB6    0002 0000000264 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1] PrsClassNew         000001007E    0003 0000000068 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1283] PrsDoWhile          0000013076    0001 0000000137 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,342] PrsDotDotDot        0000010D1E    0001 0000000111 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,298] PrsExpression       000000D8C6    0010 000000014C Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,102] PrsExpression2      000000D1FE    0001 00000006C1 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1307] PrsFor              00000131AE    0001 0000000162 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,916] PrsFun              0000012106    0001 00000003B7 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,409] PrsFunCall          000000DD66    0003 0000000830 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,853] PrsFunJoin          0000011F1E    0005 00000001E8 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,22] PrsFunNew           00000100E6    0001 0000000068 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,265] PrsGlblInit         0000010A2E    0002 000000007C Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,978] PrsGlblVarLst       00000124BE    0007 0000000991 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1233] PrsIf               0000012E56    0001 000000012C Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,45] PrsKeyWord          000001017E    000C 0000000040 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1555] PrsNoUnusedWarn     0000013BA6    0001 000000008F Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,379] PrsOffsetOf         000000DC1E    0002 0000000148 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,13] PrsPop              000000CF3E    0016 0000000022 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,23] PrsPop2             000000CF9E    0001 000000002D Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,28] PrsPopDeref         000000CFCE    0004 000000003F Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,8] PrsPush             000000CF16    0017 0000000028 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,18] PrsPush2            000000CF66    0004 0000000033 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,331] PrsSizeOf           000000DA16    0001 0000000207 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1666] PrsStatement        00000140AE    0004 0000000C09 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,274] PrsStaticInit       0000010AAE    0002 000000013E Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1569] PrsStreamBlk        0000013C36    0000 00000001B2 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1356] PrsSwitch           0000013316    0002 000000088F Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1605] PrsTryBlk           0000013DEE    0001 00000002BD Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,377] PrsType             0000010E36    0002 000000039A Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,980] PrsUnaryModifier    000000F4DE    0000 0000000859 Funct Export Res 
+[D:/Compiler/ExpParser.CPP.Z,617] PrsUnaryTerm        000000E596    0000 0000000F41 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,66] PrsVarInit          000001024E    0001 00000004DA Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,183] PrsVarInit2         000001072E    0004 00000002FE Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,471] PrsVarLst           00000111D6    0006 0000000AD9 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,1261] PrsWhile            0000012F86    0001 00000000EF Funct Export Res 
 [D:/Compiler/BackLib.CPP.Z,262] SLASH_OP_DEC        0x052B0000    0006 0000000018 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,267] SLASH_OP_DIV        0x00000000    0001 0000000018 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,271] SLASH_OP_FADD       0x0000C1DE    0002 0000000018 DefineStr 
@@ -315,23 +315,24 @@
 [D:/Compiler/BackLib.CPP.Z,263] SLASH_OP_NOT        0x00000000    0001 0000000018 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,270] SLASH_OP_POP        0x00000000    0001 0000000018 DefineStr 
 [D:/Compiler/BackLib.CPP.Z,269] SLASH_OP_PUSH       0x00000000    0001 0000000018 DefineStr 
-[D:/Compiler/Unassembler.CPP.Z,225] StrMatchBits        0000000EC8    0002 0000000073 Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,700] StreamExePrint      000002C8EA    0000 00000000EC Funct Export Res 
-[D:/Compiler/CmpMain.CPP.Z,1] StreamPrint         000002AD92    0000 00000000A8 Funct Export Res 
-[D:/Compiler/Unassembler.CPP.Z,643] U                   0000002600    0000 00000000CF Funct Export Res 
-[D:/Compiler/Unassembler.CPP.Z,187] UasmHashLoad        0000000DB8    0001 0000000110 Funct Export Res 
-[D:/Compiler/Unassembler.CPP.Z,238] Ui                  0000000F40    0002 00000016C0 Funct Export Res 
-[D:/Compiler/Unassembler.CPP.Z,658] Un                  00000026D0    0008 00000000DA Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,54] UndefinedExtern     000000F096    0001 0000000048 Funct Export Res 
-[D:/Compiler/StmtParser.CPP.Z,60] UnusedExternWarning 000000F0DE    0004 0000000043 Funct Export Res 
-[D:/Compiler/Assembler.CPP.Z,779] asm_seg_prefixes    0000009188    0001 0000000006 GlbVar Export 
-[D:/Compiler/Compiler.PRJ.Z,13] cmp                 00000004E0    00E2 0000000229 GlbVar Export 
+[D:/Compiler/Unassembler.CPP.Z,225] StrMatchBits        0000000E80    0002 0000000073 Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,677] StreamExePrint      000002CF22    0000 00000000EC Funct Export Res 
+[D:/Compiler/CmpMain.CPP.Z,1] StreamPrint         000002B3C2    0000 00000000A8 Funct Export Res 
+[D:/Compiler/Unassembler.CPP.Z,636] U                   0000002538    0000 00000000CF Funct Export Res 
+[D:/Compiler/Unassembler.CPP.Z,187] UasmHashLoad        0000000D70    0001 0000000110 Funct Export Res 
+[D:/Compiler/Unassembler.CPP.Z,238] Ui                  0000000EF8    0002 000000163B Funct Export Res 
+[D:/Compiler/Unassembler.CPP.Z,651] Un                  0000002608    0008 00000000DA Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,54] UndefinedExtern     00000101BE    0001 0000000048 Funct Export Res 
+[D:/Compiler/StmtParser.CPP.Z,60] UnusedExternWarning 0000010206    0004 0000000043 Funct Export Res 
+[D:/Compiler/Assembler.CPP.Z,775] asm_seg_prefixes    000000A120    0001 0000000006 GlbVar Export 
+[D:/Compiler/Compiler.PRJ.Z,13] cmp                 00000004E0    00C0 00000001E1 GlbVar Export 
 [D:/Compiler/CmpExts.CPP.Z,37] cmp_templates       0000000000    0002 0000000004 GlbVar Export 
 [D:/Compiler/CmpExts.CPP.Z,38] cmp_templates_dont_pop000000018B    0002 0000000004 GlbVar Export 
 [D:/Compiler/CmpExts.CPP.Z,40] cmp_templates_dont_push0000000257    0002 0000000004 GlbVar Export 
 [D:/Compiler/CmpExts.CPP.Z,39] cmp_templates_dont_push20000000421    0002 0000000004 GlbVar Export 
 [D:/Compiler/CmpExts.CPP.Z,41] cmp_templates_dont_push_pop0000000391    0002 0000000004 GlbVar Export 
-[D:/Compiler/Lex.CPP.Z,390] cmp_type_flags_src_code0000004A68    0001 0000000008 GlbVar Export 
-[D:/Compiler/CmpInit.CPP.Z,8] internal_types_table00000290B0    0001 00000000AA GlbVar Export 
-[D:/Compiler/Lex.CPP.Z,129] lex_zeros           0000003E48    000A 0000000004 GlbVar Export 
-[D:/Compiler/Compiler.PRJ.Z,14] uasm                0000000710    001C 0000000028 GlbVar Export 
+[D:/Compiler/Lex.CPP.Z,390] cmp_type_flags_src_code0000005C38    0001 0000000008 GlbVar Export 
+[D:/Compiler/ICLCC.CPP.Z,49] intermediate_code_table0000002830    0014 0000000C10 GlbVar Export 
+[D:/Compiler/CmpInit.CPP.Z,8] internal_types_table000002A258    0001 00000000AA GlbVar Export 
+[D:/Compiler/Lex.CPP.Z,129] lex_zeros           0000005018    000A 0000000004 GlbVar Export 
+[D:/Compiler/Compiler.PRJ.Z,14] uasm                00000006C8    001C 0000000028 GlbVar Export 

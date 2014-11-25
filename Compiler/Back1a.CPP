@@ -75,8 +75,7 @@ U0 ICAddSubEctImm(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
       else
 	i=0x48;
       if (!d &&
-	(op.u8[0]==0x03||op.u8[0]==0x2B||
-	 op.u8[0]==0x33||op.u8[0]==0x0B))
+	(op.u8[0]==0x03||op.u8[0]==0x2B||op.u8[0]==0x33||op.u8[0]==0x0B))
 	return;
       else if (d==1 && op.u8[0]==0x03) {
 	ICU24(tempi,0xC0FF00+op.u8[1]<<19+i+(r1&7)<<16);
@@ -116,8 +115,7 @@ U0 ICAddSubEctImm(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
       }
 
       if (!d &&
-	(op.u8[0]==0x03||op.u8[0]==0x2B||
-	 op.u8[0]==0x33||op.u8[0]==0x0B))
+	(op.u8[0]==0x03||op.u8[0]==0x2B||op.u8[0]==0x33||op.u8[0]==0x0B))
 	return;
       r=op.u8[1]; //not a reg but a slash val
       if (op.u8[0]==0x03 && d==-1) //add -1
@@ -145,8 +143,7 @@ U0 ICAddSubEctImm(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
 	ICModr2(tempi,i,d1,ip+4);
 	return;
       }
-      if (MIN_I8<=d<=MAX_I8 ||
-	  t1&(RT_MASK-1)==RT_I8) {
+      if (MIN_I8<=d<=MAX_I8 || t1&(RT_MASK-1)==RT_I8) {
 	i=ICModr1(r,t1,r1,d1);
 	if (tempi->ic_flags&ICF_LOCK)
 	  ICU8(tempi,OC_LOCK_PREFIX);
@@ -169,8 +166,7 @@ U0 ICAddSubEctImm(CIntermediateCode *tempi,I64 t1,I64 r1,I64 d1,
 	ICU8(tempi,d);
 	return;
       }
-      if (MIN_I32<=d<=MAX_I32 ||
-	  t1&RT_MASK<RT_I64) {
+      if (MIN_I32<=d<=MAX_I32 || t1&RT_MASK<RT_I64) {
 	i=ICModr1(r,t1,r1,d1);
 	if (tempi->ic_flags&ICF_LOCK)
 	  ICU8(tempi,OC_LOCK_PREFIX);

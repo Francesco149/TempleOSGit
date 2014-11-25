@@ -1,101 +1,101 @@
-Bool BlkDevLock(CBlkDev *bdev)
+Bool BlkDevLock(CBlkDev *bd)
 {//Make this task have exclusive access to BlkDev.
-  BlkDevChk(bdev);
-  while (bdev->lock_fwding)
-    bdev=bdev->lock_fwding;
-  if (!Bt(&bdev->locked_flags,BDlf_LOCKED) || bdev->owning_task!=Fs) {
-    while (LBts(&bdev->locked_flags,BDlf_LOCKED))
+  BlkDevChk(bd);
+  while (bd->lock_fwding)
+    bd=bd->lock_fwding; //If two blkdevs on same controller, use just one lock
+  if (!Bt(&bd->locked_flags,BDlf_LOCKED) || bd->owning_task!=Fs) {
+    while (LBts(&bd->locked_flags,BDlf_LOCKED))
       Yield;
-    bdev->owning_task=Fs;
+    bd->owning_task=Fs;
     return TRUE;
   } else
     return FALSE;
 }
 
-Bool PrtLock(CPrt *p)
-{//Make this task have exclusive access to Prt & BlkDev.
-  PrtChk(p);
-  BlkDevLock(p->bdev);
-  if (!Bt(&p->locked_flags,Plf_LOCKED) || p->owning_task!=Fs) {
-    while (LBts(&p->locked_flags,Plf_LOCKED))
+Bool DrvLock(CDrv *dv)
+{//Make this task have exclusive access to drv & BlkDev.
+  DrvChk(dv);
+  BlkDevLock(dv->bd);
+  if (!Bt(&dv->locked_flags,DVlf_LOCKED) || dv->owning_task!=Fs) {
+    while (LBts(&dv->locked_flags,DVlf_LOCKED))
       Yield;
-    p->owning_task=Fs;
+    dv->owning_task=Fs;
     return TRUE;
   } else
     return FALSE;
 }
 
-Bool BlkDevUnlock(CBlkDev *bdev,Bool rst=FALSE)
+Bool BlkDevUnlock(CBlkDev *bd,Bool rst=FALSE)
 {//Release exclusive lock on access to BlkDev.
-  BlkDevChk(bdev);
-  while (bdev->lock_fwding)
-    bdev=bdev->lock_fwding;
-  if (Bt(&bdev->locked_flags,BDlf_LOCKED) && bdev->owning_task==Fs) {
+  BlkDevChk(bd);
+  while (bd->lock_fwding)
+    bd=bd->lock_fwding; //If two blkdevs on same controller, use just one lock
+  if (Bt(&bd->locked_flags,BDlf_LOCKED) && bd->owning_task==Fs) {
     if (rst)
-      bdev->flags&=~(BDF_INITIALIZED|BDF_INIT_IN_PROGRESS);
-    bdev->owning_task=NULL;
-    LBtr(&bdev->locked_flags,BDlf_LOCKED);
+      bd->flags&=~(BDF_INITIALIZED|BDF_INIT_IN_PROGRESS);
+    bd->owning_task=NULL;
+    LBtr(&bd->locked_flags,BDlf_LOCKED);
     Yield; //Prevent deadlock
     return TRUE;
   } else
     return FALSE;
 }
 
-Bool PrtUnlock(CPrt *p,Bool rst=FALSE)
-{//Release exclusive lock on access to Prt & BlkDev.
-  PrtChk(p);
-  if (Bt(&p->locked_flags,Plf_LOCKED) && p->owning_task==Fs) {
-    BlkDevUnlock(p->bdev,rst);
-    p->owning_task=NULL;
-    LBtr(&p->locked_flags,Plf_LOCKED);
+Bool DrvUnlock(CDrv *dv,Bool rst=FALSE)
+{//Release exclusive lock on access to drv & BlkDev.
+  DrvChk(dv);
+  if (Bt(&dv->locked_flags,DVlf_LOCKED) && dv->owning_task==Fs) {
+    BlkDevUnlock(dv->bd,rst);
+    dv->owning_task=NULL;
+    LBtr(&dv->locked_flags,DVlf_LOCKED);
     Yield; //Prevent deadlock
     return TRUE;
   } else
     return FALSE;
 }
 
-Bool BlkDevInit(CBlkDev *bdev)
+Bool BlkDevInit(CBlkDev *bd)
 {
-  CPrt *p=Drv2Prt(bdev->first_drv_let);
+  CDrv *dv=Let2Drv(bd->first_drv_let);
   Bool old_preempt=Preempt(OFF),result=FALSE;
 
-  if (!LBts(&bdev->flags,BDf_INITIALIZED)) {
-    bdev->flags|=BDF_INIT_IN_PROGRESS;
-    switch(bdev->type) {
+  if (!LBts(&bd->flags,BDf_INITIALIZED)) {
+    bd->flags|=BDF_INIT_IN_PROGRESS;
+    switch(bd->type) {
       case BDT_RAM:
-	if (!bdev->RAM_dsk) {
-	  bdev->RAM_dsk=AMAlloc((bdev->max_blk+1)<<BLK_SIZE_BITS);
-	  bdev->max_blk=MSize(bdev->RAM_dsk)>>BLK_SIZE_BITS-1;
+	if (!bd->RAM_dsk) {
+	  bd->RAM_dsk=AMAlloc((bd->max_blk+1)<<BLK_SIZE_BITS);
+	  bd->max_blk=MSize(bd->RAM_dsk)>>BLK_SIZE_BITS-1;
 	}
-	p->type=PT_REDSEA;
-	p->size=bdev->max_blk+1;
-	if (RedSeaFSDrvValidate(bdev->first_drv_let))
-	  RedSeaFSPrtInit(p);
+	dv->type=DVT_REDSEA;
+	dv->size=bd->max_blk+1;
+	if (RedSeaDrvValidate(bd->first_drv_let))
+	  RedSeaDrvInit(dv);
 	else
-	  RedSeaFSFmt(bdev->first_drv_let);
+	  RedSeaFmt(bd->first_drv_let);
 	result=TRUE;
 	break;
       case BDT_ATA:
-	bdev->max_reads=128;
-	bdev->max_writes=1;
-	result=ATAInit(bdev);
+	bd->max_reads=128;
+	bd->max_writes=1;
+	result=ATAInit(bd);
 	break;
       case BDT_ATAPI:
 	//0xFFFF*4 is too big for my taste
-	bdev->max_reads=0x800*4;
+	bd->max_reads=0x800*4;
 	//max of maybe a quarter of disk cache
-	if (bdev->max_reads>dsk.cache_size/BLK_SIZE/4)
-	  bdev->max_reads=dsk.cache_size/BLK_SIZE/4 & ~3;
-	if (bdev->max_reads<128)
-	  bdev->max_reads=128;
-	bdev->max_writes=0xFFFF*4;
-	if (result=ATAInit(bdev))
-	  p->size=bdev->max_blk+1;
+	if (bd->max_reads>dsk.cache_size/BLK_SIZE/4)
+	  bd->max_reads=dsk.cache_size/BLK_SIZE/4 & ~3;
+	if (bd->max_reads<128)
+	  bd->max_reads=128;
+	bd->max_writes=0xFFFF*4;
+	if (result=ATAInit(bd))
+	  dv->size=bd->max_blk+1;
 	break;
     }
-    if (result && bdev->flags & BDF_READ_CACHE)
-      DskCacheInvalidate(p);
-    bdev->flags&=~BDF_INIT_IN_PROGRESS;
+    if (result && bd->flags & BDF_READ_CACHE)
+      DskCacheInvalidate(dv);
+    bd->flags&=~BDF_INIT_IN_PROGRESS;
   } else
     result=TRUE;
   Preempt(old_preempt);
@@ -105,49 +105,49 @@ Bool BlkDevInit(CBlkDev *bdev)
 U0 BlkDevsRelease()
 {//When task dies, release all owned BlkDevs.
   I64 i;
-  CBlkDev *bdev;
+  CBlkDev *bd;
   for (i=0;i<NUM_BLKDEVS;i++) {
-    bdev=&dsk.blkdevs[i];
-    if (bdev->owning_task==Fs && bdev->bd_signature==BD_SIGNATURE_VAL)
-      BlkDevUnlock(bdev,TRUE);
+    bd=&dsk.blkdevs[i];
+    if (bd->owning_task==Fs && bd->bd_signature==BD_SIGNATURE_VAL)
+      BlkDevUnlock(bd,TRUE);
   }
 }
 
-U0 PrtsRelease()
-{//When task dies, release all owned Prts.
+U0 DrvsRelease()
+{//When task dies, release all owned drvs.
   I64 i;
-  CPrt *p;
-  for (i=0;i<NUM_PRTS;i++) {
-    p=&dsk.prts[i];
-    if (p->owning_task==Fs && p->pt_signature==PRT_SIGNATURE_VAL)
-      PrtUnlock(p,TRUE);
+  CDrv *dv;
+  for (i=0;i<NUM_DRVS;i++) {
+    dv=&dsk.drvs[i];
+    if (dv->owning_task==Fs && dv->dv_signature==DRV_SIGNATURE_VAL)
+      DrvUnlock(dv,TRUE);
   }
 }
 
-CPrt *PrtMakeFree(U8 drv_let)
-{//Make a slot free for a new partition, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
-//!!! drv_let is not a [C:/Kernel/Dsk/Dsk1b.CPP.Z,1] remapped prt.
+CDrv *DrvMakeFree(U8 drv_let)
+{//Make a slot free for a new drv, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
+//!!! drv_let is not a [C:/Kernel/Dsk/Dsk1b.CPP.Z,1] remapped drv.
   I64 i=ToUpper(drv_let)-'A';
-  CPrt *result;
-  if (!(0<=i<NUM_PRTS))
-    throw('Prt');
-  result=&dsk.prts[i];
-  MemSet(result,0,sizeof(CPrt));
+  CDrv *result;
+  if (!(0<=i<NUM_DRVS))
+    throw('Drv');
+  result=&dsk.drvs[i];
+  MemSet(result,0,sizeof(CDrv));
   result->drv_let='A'+i;
   return result;
 }
 
-CPrt *PrtNextFree(U8 first_drv_let='C')
-{//Locate free slot for new partition, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
-//!!! first_drv_let is not a [C:/Kernel/Dsk/Dsk1b.CPP.Z,1] remapped prt.
+CDrv *DrvNextFree(U8 first_drv_let='C')
+{//Locate free slot for new drv, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
+//!!! first_drv_let is not a [C:/Kernel/Dsk/Dsk1b.CPP.Z,1] remapped drv.
   I64 i=ToUpper(first_drv_let)-'A';
-  if (!(0<=i<NUM_PRTS))
-    throw('Prt');
+  if (!(0<=i<NUM_DRVS))
+    throw('Drv');
   do
-    if (dsk.prts[i].pt_signature!=PRT_SIGNATURE_VAL)
-      return PrtMakeFree(i+'A');
-  while (++i<NUM_PRTS);
-  throw('Prt');
+    if (dsk.drvs[i].dv_signature!=DRV_SIGNATURE_VAL)
+      return DrvMakeFree(i+'A');
+  while (++i<NUM_DRVS);
+  throw('Drv');
   return NULL; //never gets here
 }
 
@@ -182,57 +182,63 @@ CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type)
   return NULL; //never gets here
 }
 
-U0 MapBufAlloc(CPrt *p,I64 num_blks)
+U0 MapBufAlloc(CDrv *dv,I64 num_blks)
 {
-  PrtChk(p);
-  Free(p->cur_map_blk);
-  Free(p->buffered_map_dirty_bits);
-  p->num_buffered_map_blks=num_blks;
-  p->cur_map_blk=AMAlloc(num_blks<<BLK_SIZE_BITS);
-  p->buffered_map_dirty_bits=ACAlloc((num_blks+7)>>3);
-  p->cur_map_blk_num=0;
-  RBlks(p,p->cur_map_blk,p->map1,p->num_buffered_map_blks);
+  DrvChk(dv);
+  Free(dv->cur_map_blk);
+  Free(dv->buffered_map_dirty_bits);
+  dv->num_buffered_map_blks=num_blks;
+  dv->cur_map_blk=AMAlloc(num_blks<<BLK_SIZE_BITS);
+  dv->buffered_map_dirty_bits=ACAlloc((num_blks+7)>>3);
+  dv->cur_map_blk_num=0;
+  RBlks(dv,dv->cur_map_blk,dv->map1,dv->num_buffered_map_blks);
 }
 
-U0 CleanMAPBuf(CPrt *p,I64 MAP_select=-1)
+U0 CleanMAPBuf(CDrv *dv,I64 MAP_select=-1)
 {
   I64 i;
-  if ((MAP_select==-1 || !MAP_select) && p->map1!=p->map2)
-    for (i=0;i<p->num_buffered_map_blks;i++)
-      if (Bt(p->buffered_map_dirty_bits,i))
-	WBlks(p,p->cur_map_blk(I64)+i<<BLK_SIZE_BITS,p->map1+i+p->cur_map_blk_num,1);
-  if (MAP_select==-1 || MAP_select==1 || p->map1==p->map2)
-    for (i=0;i<p->num_buffered_map_blks;i++)
-      if (LBtr(p->buffered_map_dirty_bits,i))
-	WBlks(p,p->cur_map_blk(I64)+i<<BLK_SIZE_BITS,p->map2+i+p->cur_map_blk_num,1);
+  if ((MAP_select==-1 || !MAP_select) && dv->map1!=dv->map2)
+    for (i=0;i<dv->num_buffered_map_blks;i++)
+      if (Bt(dv->buffered_map_dirty_bits,i))
+	WBlks(dv,dv->cur_map_blk(I64)+i<<BLK_SIZE_BITS,dv->map1+i+dv->cur_map_blk_num,1);
+  if (MAP_select==-1 || MAP_select==1 || dv->map1==dv->map2)
+    for (i=0;i<dv->num_buffered_map_blks;i++)
+      if (LBtr(dv->buffered_map_dirty_bits,i))
+	WBlks(dv,dv->cur_map_blk(I64)+i<<BLK_SIZE_BITS,dv->map2+i+dv->cur_map_blk_num,1);
 }
 
-U0 SetFSBuf(CPrt *p,I64 c,I64 map_select=-1)
+U0 SetFSBuf(CDrv *dv,I64 c,I64 map_select=-1)
 {
   I64 MAP_blk_num;
   if (c==INVALID_CLUSTER)
-    throw('Prt');
-  if (p->type==PT_FAT32)
-    MAP_blk_num=c>>(BLK_SIZE_BITS-2);
-  else
-    MAP_blk_num=c>>(BLK_SIZE_BITS+3);
-  if (MAP_blk_num!=p->cur_map_blk_num) {
-    CleanMAPBuf(p,map_select);
-    p->cur_map_blk_num=MAP_blk_num;
+    throw('Drv');
+  switch (dv->type) {
+    case DVT_FAT32:
+      MAP_blk_num=c>>(BLK_SIZE_BITS-2);
+      break;
+    case DVT_REDSEA:
+      MAP_blk_num=(c-dv->data_area)>>(BLK_SIZE_BITS+3);
+      break;
+    default:
+      throw('Drv');
+  }
+  if (MAP_blk_num!=dv->cur_map_blk_num) {
+    CleanMAPBuf(dv,map_select);
+    dv->cur_map_blk_num=MAP_blk_num;
     if (map_select==-1 || !map_select)
-      RBlks(p,p->cur_map_blk,p->map1+p->cur_map_blk_num,1);
+      RBlks(dv,dv->cur_map_blk,dv->map1+dv->cur_map_blk_num,1);
     else
-      RBlks(p,p->cur_map_blk,p->map2+p->cur_map_blk_num,1);
+      RBlks(dv,dv->cur_map_blk,dv->map2+dv->cur_map_blk_num,1);
   }
 }
 
 #define ZERO_BUF_SIZE	2048
-U0 WZeroBlks(CPrt *p,I64 blk,I64 cnt)
-{//Fill blk cnt with zeros in Prt.
+U0 WZeroBlks(CDrv *dv,I64 blk,I64 cnt)
+{//Fill blk cnt with zeros in Drv.
   I64 n;
   U8 *z=CAlloc(ZERO_BUF_SIZE<<BLK_SIZE_BITS);
   Bool show_progress;
-  if (cnt>ZERO_BUF_SIZE && p->bdev->type!=BDT_RAM) {
+  if (cnt>ZERO_BUF_SIZE && dv->bd->type!=BDT_RAM) {
     progress1=0; progress1_max=cnt;
     StrCpy(progress1_desc,"Zeroing");
     show_progress=TRUE;
@@ -242,7 +248,7 @@ U0 WZeroBlks(CPrt *p,I64 blk,I64 cnt)
     n=cnt;
     if (n>ZERO_BUF_SIZE)
       n=ZERO_BUF_SIZE;
-    WBlks(p,z,blk,n);
+    WBlks(dv,z,blk,n);
     blk+=n;
     cnt-=n;
     if (show_progress)
@@ -256,18 +262,18 @@ U0 WZeroBlks(CPrt *p,I64 blk,I64 cnt)
   }
 }
 
-Bool SetDrvType(U8 drv_let,I64 type=PT_REDSEA)
+Bool SetDrvType(U8 drv_let,I64 type=DVT_REDSEA)
 {//Very dangerous
-  I64 i,j,ext_base,prt_num,offset,cur_type;
+  I64 i,j,ext_base,drv_num,offset,cur_type;
   CMasterBoot mbr;
-  CBlkDev *bdev=Drv2BlkDev(drv_let);
-  prt_num=bdev->first_drv_let-'A';
-  switch (bdev->type) {
+  CBlkDev *bd=Let2BlkDev(drv_let);
+  drv_num=bd->first_drv_let-'A';
+  switch (bd->type) {
     case BDT_ATA:
       offset=0;
       ext_base=INVALID_CLUSTER;
       while (TRUE) {
-	ATAReadBlks(bdev,&mbr,offset,1);
+	ATAReadBlks(bd,&mbr,offset,1);
 	j=-1;
 	for (i=0;i<4;i++) {
 	  cur_type=mbr.p[i].type;
@@ -275,22 +281,22 @@ Bool SetDrvType(U8 drv_let,I64 type=PT_REDSEA)
 	    if (cur_type==5 || cur_type==15)
 	      j=i;
 	    else {
-	      if (prt_num+'A'==ToUpper(drv_let)) {
+	      if (drv_num+'A'==ToUpper(drv_let)) {
 		switch (type) {
-		  case PT_REDSEA:
+		  case DVT_REDSEA:
 		    mbr.p[i].type=MBR_PT_REDSEA;
 		    break;
-		  case PT_FAT32:
+		  case DVT_FAT32:
 		    mbr.p[i].type=MBR_PT_FAT32a;
 		    break;
 		  default:
-		    Dbg;
+		    throw('Drv');
 		}
 		mbr.p[i].active=0x80;
-		ATAWriteBlks(bdev,&mbr,offset,1);
+		ATAWriteBlks(bd,&mbr,offset,1);
 		return TRUE;
 	      }
-	      prt_num++;
+	      drv_num++;
 	    }
 	  }
 	}
@@ -308,123 +314,119 @@ Bool SetDrvType(U8 drv_let,I64 type=PT_REDSEA)
   }
 }
 
-Bool RBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
-{//Read blk cnt from Prt to buf.
+Bool RBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
+{//Read blk cnt from Drv to buf.
   Bool result=TRUE,unlock;
-  CBlkDev *bdev=p->bdev;
+  CBlkDev *bd=dv->bd;
   if (cnt<=0) return TRUE;
-  PrtChk(p);
+  DrvChk(dv);
   try {
-    unlock=PrtLock(p);
-    BlkDevInit(bdev);
-    if (p->offset && blk<p->offset || blk+cnt>p->offset+p->size)
-      throw('Prt');
+    unlock=DrvLock(dv);
+    BlkDevInit(bd);
+    if (dv->base_offset && blk<dv->base_offset || blk+cnt>dv->base_offset+dv->size)
+      throw('Drv');
  
-    if (bdev->flags & BDF_READ_CACHE)
-      RCache(p,&buf,&blk,&cnt);
+    if (bd->flags & BDF_READ_CACHE)
+      RCache(dv,&buf,&blk,&cnt);
     if (cnt>0) {
-      switch (bdev->type) {
+      switch (bd->type) {
 	case BDT_RAM:
-	  MemCpy(buf,bdev->RAM_dsk+blk<<BLK_SIZE_BITS,cnt<<BLK_SIZE_BITS);
+	  MemCpy(buf,bd->RAM_dsk+blk<<BLK_SIZE_BITS,cnt<<BLK_SIZE_BITS);
 	  break;
 	case BDT_ATA:
 	case BDT_ATAPI:
-	  result=ATARBlks(p,buf,blk,cnt);
+	  result=ATARBlks(dv,buf,blk,cnt);
 	  break;
       }
-      bdev->last_time=tS;
-      if (bdev->flags & BDF_READ_CACHE)
-	DskCacheAdd(p,buf,blk,cnt);
+      bd->last_time=tS;
+      if (bd->flags & BDF_READ_CACHE)
+	DskCacheAdd(dv,buf,blk,cnt);
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   return result;
 }
 
-Bool WBlks(CPrt *p,U8 *buf, I64 blk, I64 cnt)
-{//Write blk cnt from buf to Prt.
+Bool WBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
+{//Write blk cnt from buf to Drv.
   Bool result=TRUE,unlock;
-  CBlkDev *bdev=p->bdev;
+  CBlkDev *bd=dv->bd;
   if (cnt<=0) return TRUE;
-  PrtChk(p);
+  DrvChk(dv);
   try {
-    unlock=PrtLock(p);
-    BlkDevInit(bdev);
-    if (bdev->flags&BDF_READ_ONLY &&
-    !(bdev->flags & BDF_READ_ONLY_OVERRIDE))
+    unlock=DrvLock(dv);
+    BlkDevInit(bd);
+    if (bd->flags&BDF_READ_ONLY && !(bd->flags & BDF_READ_ONLY_OVERRIDE))
       throw('BlkDev');
-    if (p->offset && blk<p->offset || blk+cnt>p->offset+p->size)
-      throw('Prt');
+    if (dv->base_offset && blk<dv->base_offset || blk+cnt>dv->base_offset+dv->size)
+      throw('Drv');
     if (cnt>0) {
-      switch (bdev->type) {
+      switch (bd->type) {
 	case BDT_RAM:
-	  MemCpy(bdev->RAM_dsk+blk<<BLK_SIZE_BITS,buf,cnt<<BLK_SIZE_BITS);
+	  MemCpy(bd->RAM_dsk+blk<<BLK_SIZE_BITS,buf,cnt<<BLK_SIZE_BITS);
 	  break;
 	case BDT_ATA:
 	case BDT_ATAPI:
-	  result=ATAWBlks(p,buf,blk,cnt);
+	  result=ATAWBlks(dv,buf,blk,cnt);
 	  break;
       }
-      bdev->last_time=tS;
-      if (bdev->flags & BDF_READ_CACHE)
-	DskCacheAdd(p,buf,blk,cnt);
+      bd->last_time=tS;
+      if (bd->flags & BDF_READ_CACHE)
+	DskCacheAdd(dv,buf,blk,cnt);
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   return result;
 }
 
-U0 DskCacheInvalidate(CPrt *p)
-{//Needed for removable media. Called by [C:/Kernel/Dsk/Dsk1a.CPP.Z,405] ChgDsk().
+U0 DskCacheInvalidate(CDrv *dv)
+{//Needed for removable media. Called by [C:/Kernel/Dsk/Dsk1a.CPP.Z,407] ChgDsk().
   Bool unlock;
-  CBlkDev *bdev=p->bdev;
-  PrtChk(p);
+  CBlkDev *bd=dv->bd;
+  DrvChk(dv);
   try {
-    unlock=PrtLock(p);
-    BlkDevInit(bdev);
-    if (bdev->flags & BDF_READ_CACHE)
-      DskCacheInvalidate2(p);
-    if (p->type==PT_ISO9660) {
-      if (!(bdev->flags & BDF_READ_ONLY_OVERRIDE))
-	ISOPrtInit(p,(32767/bdev->blk_size+1)*
-	  bdev->blk_size>>BLK_SIZE_BITS);
-    }
+    unlock=DrvLock(dv);
+    BlkDevInit(bd);
+    if (bd->flags & BDF_READ_CACHE)
+      DskCacheInvalidate2(dv);
+    if (dv->type==DVT_ISO9660 && !(bd->flags & BDF_READ_ONLY_OVERRIDE))
+      ISODrvInit(dv,(32767/bd->blk_size+1)*bd->blk_size>>BLK_SIZE_BITS);
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
 }
 
 U0 ChgDsk(U8 drv_let=0)
 {//Change disk. (Needed for removable media.)
-  CPrt *p=Drv2Prt(drv_let);
-  CBlkDev *bdev=p->bdev;
+  CDrv *dv=Let2Drv(drv_let);
+  CBlkDev *bd=dv->bd;
   Bool old_preempt=Preempt(OFF);
-  if (!(bdev->flags&BDF_INITIALIZED))
-    BlkDevInit(bdev);
-  else if (bdev->flags&BDF_REMOVABLE)
-    DskCacheInvalidate(p);
+  if (!(bd->flags&BDF_INITIALIZED))
+    BlkDevInit(bd);
+  else if (bd->flags&BDF_REMOVABLE)
+    DskCacheInvalidate(dv);
   Drv(drv_let);
-  RedSeaFSFreeFreeLst(p);
+  RedSeaFreeFreeLst(dv);
   Preempt(old_preempt);
 }
 
 U8 *DrvSerialNum(U8 drv_let=0)
 {//20 bytes max.
-  CBlkDev *bdev=Drv2BlkDev(drv_let);
+  CBlkDev *bd=Let2BlkDev(drv_let);
   U16 *st,*result=NULL;
   I64 i;
-  if (bdev->dev_id_record) {
+  if (bd->dev_id_record) {
     st=CAlloc(20+1);
     for (i=0;i<10;i++)
-      st[i]=EndianU16(bdev->dev_id_record[10+i]);
+      st[i]=EndianU16(bd->dev_id_record[10+i]);
     result=MStrUtil(st,SUF_REM_LEADING|SUF_REM_TRAILING);
     Free(st);
   }
@@ -433,39 +435,39 @@ U8 *DrvSerialNum(U8 drv_let=0)
 
 U8 *DrvModelNum(U8 drv_let=0)
 {//40 bytes max.
-  CBlkDev *bdev=Drv2BlkDev(drv_let);
+  CBlkDev *bd=Let2BlkDev(drv_let);
   U16 *st,*result=NULL;
   I64 i;
-  if (bdev->dev_id_record) {
+  if (bd->dev_id_record) {
     st=CAlloc(40+1);
     for (i=0;i<20;i++)
-      st[i]=EndianU16(bdev->dev_id_record[27+i]);
+      st[i]=EndianU16(bd->dev_id_record[27+i]);
     result=MStrUtil(st,SUF_REM_LEADING|SUF_REM_TRAILING);
     Free(st);
   }
   return result;
 }
 
-U0 PrtRep()
-{//Partition report.
-  CPrt *p;
-  CBlkDev *bdev;
+U0 DrvRep()
+{//Drive report.
+  CDrv *dv;
+  CBlkDev *bd;
   I64 i,drv_let;
   U8 *st;
-  "\nDefined Partitions:\n\n";
-  for (i=0,p=dsk.prts;i<NUM_PRTS;i++,p++) {
-    if (p->pt_signature==PRT_SIGNATURE_VAL) {
-      bdev=p->bdev;
-      drv_let=Prt2Drv(p);
-      if (Bt(&p->type,PTf_DISABLE))
+  "\nDefined Drives:\n\n";
+  for (i=0,dv=dsk.drvs;i<NUM_DRVS;i++,dv++) {
+    if (dv->dv_signature==DRV_SIGNATURE_VAL) {
+      bd=dv->bd;
+      drv_let=Drv2Let(dv);
+      if (Bt(&dv->type,DVTf_DISABLE))
 	"$RED$X";
       else if (drv_let==*sys_acct)
 	"$GREEN$:";
       else
 	'' CH_SPACE;
       "$PURPLE$%C %-8Z %-9Z %04X %04X %02X$FG$\n",
-	drv_let,p->type.u16[0],"ST_PRT_TYPES",
-	bdev->type,"ST_BLKDEV_TYPES",bdev->base0,bdev->base1,bdev->unit;
+	drv_let,dv->type.u16[0],"ST_DRV_TYPES",
+	bd->type,"ST_BLKDEV_TYPES",bd->base0,bd->base1,bd->unit;
       if (st=DrvModelNum(drv_let)) {
 	"   $CYAN$Model# :%s$FG$\n",st;
 	Free(st);
@@ -475,90 +477,101 @@ U0 PrtRep()
 	Free(st);
       }
       "   %016X-%016X\n",
-	p->offset,p->offset+p->size-1;
-	p->offset,p->offset+p->size-1;
+	dv->base_offset,dv->base_offset+dv->size-1;
+	dv->base_offset,dv->base_offset+dv->size-1;
     }
   }
 }
 
-I64 ClusterNumNext(CPrt *p,I64 c,I64 cnt=1)
+I64 ClusterNumNext(CDrv *dv,I64 c,I64 cnt=1)
 {//Return next cnt'th cluster in chain.
   Bool unlock;
-  PrtChk(p);
+  DrvChk(dv);
   if (cnt<=0) return c;
   try {
-    unlock=PrtLock(p);
-    switch (p->type) {
-      case PT_ISO9660:
-      case PT_REDSEA:
+    unlock=DrvLock(dv);
+    switch (dv->type) {
+      case DVT_ISO9660:
+      case DVT_REDSEA:
 	c+=cnt;
 	break;
-      case PT_FAT32:
+      case DVT_FAT32:
 	while (cnt-->0 && 0<c<0x0FFFFFF8) {
-	  SetFSBuf(p,c);
-	  c=p->cur_map_blk[c & (BLK_SIZE/4-1)];
+	  SetFSBuf(dv,c);
+	  c=dv->cur_map_blk[c & (BLK_SIZE/4-1)];
 	}
 	if (!(0<c<0x0FFFFFF8))
 	  c=INVALID_CLUSTER;
 	break;
       default:
-	Dbg;
+	throw('Drv');
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   return c;
 }
 
-I64 Cluster2Blk(CPrt *p,I64 c)
-{//Prt cluster num to blk num.
-  PrtChk(p);
-  return p->data+c*p->spc;
+I64 Cluster2Blk(CDrv *dv,I64 c)
+{//Drv cluster num to blk num.
+  DrvChk(dv);
+  switch (dv->type) {
+    case DVT_REDSEA:
+      return c;
+    case DVT_ISO9660:
+    case DVT_FAT32:
+      return dv->data_area+c*dv->spc;
+    default:
+      throw('Drv');
+  }
 }
 
-I64 RClustersBlks(CPrt *p,U8 *buf,I64 c,I64 blks)
+I64 RClustersBlks(CDrv *dv,U8 *buf,I64 c,I64 blks)
 {//Accepts blk count, so padding on last cluster is not read.
   I64 i;
   Bool unlock;
-  PrtChk(p);
+  DrvChk(dv);
   if (blks<=0) return c;
   try {
-    unlock=PrtLock(p);
-    switch (p->type) {
-      case PT_ISO9660:
-      case PT_REDSEA:
-	RBlks(p,buf,p->data+c*p->spc,blks);
-	c+=(blks+p->spc-1)/p->spc;
+    unlock=DrvLock(dv);
+    switch (dv->type) {
+      case DVT_ISO9660:
+	RBlks(dv,buf,dv->data_area+c*dv->spc,blks);
+	c+=(blks+dv->spc-1)/dv->spc;
 	break;
-      case PT_FAT32:
+      case DVT_REDSEA:
+	RBlks(dv,buf,c,blks);
+	c+=blks;
+	break;
+      case DVT_FAT32:
 	while (blks && 0<c<0x0FFFFFF8) {
 	  i=blks;
-	  if (i>p->spc)
-	    i=p->spc;
-	  RBlks(p,buf,p->data+c*p->spc,i);
+	  if (i>dv->spc)
+	    i=dv->spc;
+	  RBlks(dv,buf,dv->data_area+c*dv->spc,i);
 	  buf+=i<<BLK_SIZE_BITS;
-	  c=ClusterNumNext(p,c,1);
+	  c=ClusterNumNext(dv,c,1);
 	  blks-=i;
 	}
 	if (blks)
-	  Dbg;
+	  throw('Drv');
 	break;
       default:
-	Dbg;
+	throw('Drv');
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   return c;
 }
 
-I64 RClusters(CPrt *p,U8 *buf,I64 c,I64 cnt)
-{//Read cluster cnt from Prt to buf.
-  return RClustersBlks(p,buf,c,cnt*p->spc);
+I64 RClusters(CDrv *dv,U8 *buf,I64 c,I64 cnt)
+{//Read cluster cnt from drv to buf.
+  return RClustersBlks(dv,buf,c,cnt*dv->spc);
 }
 
 Bool CFileNameTo(U8 *dst,U8 *src)
@@ -570,31 +583,31 @@ Bool CFileNameTo(U8 *dst,U8 *src)
   return TRUE;
 }
 
-I64 Name2DirCluster(CPrt *p,U8 *dirname)
+I64 Name2DirCluster(CDrv *dv,U8 *dirname)
 {
   Bool cont=TRUE,unlock;
   I64 cur_dir_cluster;
   CDirEntry de;
   U8 *buf=StrNew(dirname),*buf2=StrNew(dirname);
-  PrtChk(p);
+  DrvChk(dv);
   try {
-    unlock=PrtLock(p);
-    cur_dir_cluster=p->root_cluster;
+    unlock=DrvLock(dv);
+    cur_dir_cluster=dv->root_cluster;
     while (*buf && cont) {
       StrFirstRem(buf,"/",buf2);
       if (*buf2) {
-	switch (p->type) {
-	  case PT_REDSEA:
-	    cont=RedSeaFSFileFind(p,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
+	switch (dv->type) {
+	  case DVT_REDSEA:
+	    cont=RedSeaFileFind(dv,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
 	    break;
-	  case PT_FAT32:
-	    cont=FAT32FileFind(p,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
+	  case DVT_FAT32:
+	    cont=FAT32FileFind(dv,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
 	    break;
-	  case PT_ISO9660:
-	    cont=ISO1FileFind(p,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
+	  case DVT_ISO9660:
+	    cont=ISO1FileFind(dv,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
 	    break;
 	  default:
-	    Dbg;
+	    throw('Drv');
 	}
 	cur_dir_cluster=de.cluster;
       }
@@ -605,41 +618,41 @@ I64 Name2DirCluster(CPrt *p,U8 *dirname)
       cur_dir_cluster=0;
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   Free(buf);
   Free(buf2);
   return cur_dir_cluster;
 }
 
-I64 Name2ParentDirCluster(CPrt *p,U8 *dirname)
+I64 Name2ParentDirCluster(CDrv *dv,U8 *dirname)
 {
   Bool cont=TRUE,unlock;
   I64 cur_dir_cluster,cur_dir_cluster2;
   CDirEntry de;
   U8 *buf=StrNew(dirname),*buf2=StrNew(dirname);
-  PrtChk(p);
+  DrvChk(dv);
   try {
-    unlock=PrtLock(p);
-    cur_dir_cluster=cur_dir_cluster2=p->root_cluster;
+    unlock=DrvLock(dv);
+    cur_dir_cluster=cur_dir_cluster2=dv->root_cluster;
     while (*buf && cont) {
       cur_dir_cluster2=cur_dir_cluster;
       StrFirstRem(buf,"/",buf2);
       if (*buf2) {
-	switch (p->type) {
-	  case PT_REDSEA:
-	    cont=RedSeaFSFileFind(p,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
+	switch (dv->type) {
+	  case DVT_REDSEA:
+	    cont=RedSeaFileFind(dv,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
 	    break;
-	  case PT_FAT32:
-	    cont=FAT32FileFind(p,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
+	  case DVT_FAT32:
+	    cont=FAT32FileFind(dv,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
 	    break;
-	  case PT_ISO9660:
-	    cont=ISO1FileFind(p,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
+	  case DVT_ISO9660:
+	    cont=ISO1FileFind(dv,cur_dir_cluster,buf2,&de,FUF_JUST_DIRS);
 	    break;
 	  default:
-	    Dbg;
+	    throw('Drv');
 	}
 	cur_dir_cluster=de.cluster;
       }
@@ -650,72 +663,72 @@ I64 Name2ParentDirCluster(CPrt *p,U8 *dirname)
       cur_dir_cluster2=0;
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   Free(buf);
   Free(buf2);
   return cur_dir_cluster2;
 }
 
-I64 WClustersBlks(CPrt *p,U8 *buf,I64 c,I64 blks)
+I64 WClustersBlks(CDrv *dv,U8 *buf,I64 c,I64 blks)
 {//Accepts blk count, so padding on last cluster is not written.
   I64 i;
   Bool unlock;
-  PrtChk(p);
+  DrvChk(dv);
   if (blks<=0) return c;
   try {
-    unlock=PrtLock(p);
-    switch (p->type) {
-      case PT_REDSEA:
-	WBlks(p,buf,p->data+c*p->spc,blks);
+    unlock=DrvLock(dv);
+    switch (dv->type) {
+      case DVT_REDSEA:
+	WBlks(dv,buf,c,blks);
 	c=0;
 	break;
-      case PT_FAT32:
+      case DVT_FAT32:
 	while (blks) {
 	  if (!(0<c<0x0FFFFFF8))
-	    Dbg;
+	    throw('Drv');
 	  i=blks;
-	  if (i>p->spc)
-	    i=p->spc;
-	  WBlks(p,buf,p->data+c*p->spc,i);
+	  if (i>dv->spc)
+	    i=dv->spc;
+	  WBlks(dv,buf,dv->data_area+c*dv->spc,i);
 	  buf+=i<<BLK_SIZE_BITS;
-	  c=ClusterNumNext(p,c);
+	  c=ClusterNumNext(dv,c);
 	  blks-=i;
 	}
 	break;
       default:
-	Dbg;
+	throw('Drv');
     }
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   return c;
 }
 
-I64 WClusters(CPrt *p,U8 *buf,I64 c,I64 cnt)
-{//Write cluster cnt from buf to Prt.
-  return WClustersBlks(p,buf,c,cnt*p->spc);
+I64 WClusters(CDrv *dv,U8 *buf,I64 c,I64 cnt)
+{//Write cluster cnt from buf to drv.
+  return WClustersBlks(dv,buf,c,cnt*dv->spc);
 }
 
-I64 ClustersAlloc(CPrt *p,I64 c=0,I64 cnt=1,Bool contiguous=FALSE)
+I64 ClustersAlloc(CDrv *dv,I64 c=0,I64 cnt=1,Bool contiguous=FALSE)
 {//Alloc cluster cnt into chain.
 //c=0 means first cluster in chain
-  PrtChk(p);
+  DrvChk(dv);
   if (cnt<=0) return c;
-  switch (p->type) {
-    case PT_REDSEA:
-      return RedSeaFSAllocClusters(p,cnt);
-    case PT_FAT32:
+  switch (dv->type) {
+    case DVT_REDSEA:
+      return RedSeaAllocClusters(dv,cnt);
+    case DVT_FAT32:
       if (contiguous) {
 	if (c) throw('File');
-	return FAT32AllocContiguousClusters(p,cnt);
+	return FAT32AllocContiguousClusters(dv,cnt);
       } else
-	return FAT32AllocClusters(p,c,cnt);
+	return FAT32AllocClusters(dv,c,cnt);
     default:
-      Dbg;
+      throw('Drv');
   }
 }

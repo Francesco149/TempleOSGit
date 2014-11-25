@@ -127,7 +127,7 @@ public Bool AcctRegWriteBranch(U8 *path,U8 *fmt,...)
 }
  
 public Bool OneTimePopUp(U8 *_flags,I64 flag_num,U8 *msg)
-{//See [C:/Apps/X-Caliber/X-Caliber.CPP.Z,1].
+{//See [C:/Apps/X-Caliber/X-Caliber.CPP,1].
   Bool result=FALSE;
   CDoc *doc=DocNew;
   CDocEntry *doc_e;

@@ -7,12 +7,12 @@ debugger through a fault.  Enter [C:/Kernel/Dbg1a.CPP.Z,449] G() or
 call to [C:/Kernel/Dbg1a.CPP.Z,637] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
-[C:/Compiler/Unassembler.CPP.Z,643] U(). [C:/Compiler/Unassembler.CPP.Z,643]
-U([C:/Kernel/Adam1a.HPP.Z,3323] _RIP); 
+[C:/Compiler/Unassembler.CPP.Z,636] U(). [C:/Compiler/Unassembler.CPP.Z,636]
+U([C:/Kernel/Adam1a.HPP.Z,3326] _RIP); 
 
-* [C:/Compiler/Unassembler.CPP.Z,643] U(&FunName+offset) to unassemble mem or
+* [C:/Compiler/Unassembler.CPP.Z,636] U(&FunName+offset) to unassemble mem or
 [C:/Adam/Dbg2a.CPP.Z,249] Uf("FunName") to unassemble a 
-function. [C:/Compiler/Unassembler.CPP.Z,643] U([C:/Kernel/Adam1a.HPP.Z,3323]
+function. [C:/Compiler/Unassembler.CPP.Z,636] U([C:/Kernel/Adam1a.HPP.Z,3326]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -20,13 +20,13 @@ label, as in _MALLOC+0x20.  You specify [C:/Doc/HolyC.TXT.Z,1] HolyC function
 names with & before 
 functions as in &Print+0x10.
 
-* I use [C:/Kernel/Adam1b.HPP.Z,165] progress1-[C:/Kernel/Adam1b.HPP.Z,174]
+* I use [C:/Kernel/Adam1b.HPP.Z,162] progress1-[C:/Kernel/Adam1b.HPP.Z,171]
 progress4 for debugging because they show on the wallpaper.  
 They're just global integer vars.
 
-* You can use [C:/Kernel/SrvCmd.CPP.Z,422] AdamLog() to send text to the Adam
+* You can use [C:/Kernel/SrvCmd.CPP.Z,436] AdamLog() to send text to the Adam
 task window.  It works like 
-[C:/Kernel/StrPrint.CPP.Z,949] Print().  I never use that.  Instead, I use
+[C:/Kernel/StrPrint.CPP.Z,899] Print().  I never use that.  Instead, I use
 [C:/Kernel/Dbg1a.CPP.Z,215] RawPrint().
 
 * [C:/Kernel/Dbg1a.CPP.Z,170] D(), [C:/Adam/DolDoc/DocMain.CPP.Z,567] DocD(),
@@ -52,7 +52,7 @@ structures.
 
 * [C:/Adam/Utils/Profiler.CPP.Z,27] Prof() and
 [C:/Adam/Utils/Profiler.CPP.Z,57] ProfRep() provide code profiling.  See 
-[C:/Demo/AutoFile/AFProfile.AUT.Z,1] (This is an [C:/Doc/Glossary.TXT.Z,1]
+[C:/Demo/AutoFile/AFProfile.AUT,1] (This is an [C:/Doc/Glossary.TXT.Z,1]
 AutoFile.)
 
 * Use [C:/Kernel/Dbg1a.CPP.Z,215] RawPrint() to print debug info bypassing
@@ -90,18 +90,18 @@ which intercepts [C:/Kernel/Mem1b.CPP.Z,373] MAlloc() and
 heap issues.
 
 * You can define handler functions for <CTRL-ALT-letter> keys with 
-[C:/Kernel/KbdMouse/Keyboard.CPP.Z,418] SetCtrlAltLetCB().  They operate
+[C:/Kernel/KbdMouse/Keyboard.CPP.Z,401] SetCtrlAltLetCB().  They operate
 either in a interrupt environment or in the 
 window mgr when it queues kbd msgs.  You can do [C:/Kernel/Misc1a.CPP.Z,244]
 Raw() output.  <CTRL-ALT-lette
 r> handlers take a scan_code as an arg.
 
-* If you recompile Kernel with [C:/Adam/Boot/InsBoot.CPP.Z,135]
-MakeOSPrtBootInstall(), you can set the MemInit
+* If you recompile Kernel with [C:/Adam/Boot/InsBoot.CPP.Z,130]
+MakeOSDrvBootInstall(), you can set the MemInit
 , option to initialize memory to a value at boot, the HeapInit option to
 cause 
 mem allocated off the heap to be initialized or VarInit option so both global 
 and local vars will be initialized to a value.  Pick a non-zero value to 
-discover uninitialized var bugs.  You can set [C:/Kernel/Adam1b.HPP.Z,149]
+discover uninitialized var bugs.  You can set [C:/Kernel/Adam1b.HPP.Z,146]
 sys_var_init_flag, and 
-[C:/Kernel/Adam1b.HPP.Z,145] sys_heap_init_flag directly after booting.
+[C:/Kernel/Adam1b.HPP.Z,142] sys_heap_init_flag directly after booting.

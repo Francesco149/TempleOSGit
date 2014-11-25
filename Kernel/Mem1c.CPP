@@ -34,7 +34,7 @@ CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,CTask *task=NULL,CBlkPool *bp)
   hc->mem_task=task;
   hc->bp=bp;
   QueInit(&hc->next_mem_blk);
-  hc->next_um=hc->last_um=(&hc->next_um)(U8 *)-offset(CMemUsedAllocated.next);
+  hc->next_um=hc->last_um=(&hc->next_um)(U8 *)-offset(CMemUsed.next);
   return hc;
 }
 
@@ -305,7 +305,7 @@ U0 HeapsInit()
 
 I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024)
 {//Helps pick DiskCache and RAMDisk sizes.
-//Can be used in [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall() config scripts.
+//Can be used in [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() config scripts.
 //Scale-back allocations if less than 2048 Meg.
   I64 i=sys_code_bp->size<<PAGE_BITS;
   if (i>=limit)

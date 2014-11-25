@@ -177,7 +177,7 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
     doc=NULL;
 
   if (index) {
-    task=SpawnUser;
+    task=User;
     TaskWait(task);
     LBtr(&task->display_flags,DISPLAYf_SHOW);
   } else

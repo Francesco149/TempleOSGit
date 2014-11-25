@@ -145,7 +145,7 @@ CHashGeneric *HashGenericAdd(U8 *name,I64 type,I64 u0=0,I64 u1=0,I64 u2=0,CTask 
 }
 
 U0 SetSrcFileInfo(CLex *lx,CHashSrcSym *h,I64 line_num_offset=0)
-{//Set [C:/Kernel/Adam1a.HPP.Z,704] CHashSrcSym link and help_index by cur lx pos.
+{//Set [C:/Kernel/Adam1a.HPP.Z,714] CHashSrcSym link and help_index by cur lx pos.
   CLexFile *tempf=lx->cur_lfn;
   I64 line_num=tempf->line_num+line_num_offset;
   if (line_num<1) line_num=1;
@@ -215,7 +215,7 @@ I64 FramePtr(U8 *name,CTask *task=NULL)
     return 0;
 }
 
-CHashGeneric *FramePtrAdd(U8 *name,I64 val,CTask *task=NULL)
+CHashGeneric *FramePtrAdd(U8 *name,I64 val=0,CTask *task=NULL)
 {//Add named value to task->hash_table.
   return HashGenericAdd(name,HTT_FRAME_PTR,val,0,0,task);
 }
@@ -288,7 +288,7 @@ U0 LoadOneImport(U8 **_src,U8 *module_base,I64 ld_flags)
 	case EIT_REL_I32: *ptr2(U32 *)=i-ptr2-4; break;
 	case EIT_IMM_U32: *ptr2(U32 *)=i; break;
 	case EIT_REL_I64: *ptr2(I64 *)=i-ptr2-8; break;
-	case EIT_IMM_U64: *ptr2(I64 *)=i; break;
+	case EIT_IMM_I64: *ptr2(I64 *)=i; break;
       }
     }
   }
@@ -330,7 +330,7 @@ U0 LoadPass1(U8 *src,U8 *module_base,I64 ld_flags)
 	HashAdd(tempex,Fs->hash_table);
 	SysSymImportsResolve(st_ptr,ld_flags);
 	break;
-      case EIT_REL_I0...EIT_IMM_U64:
+      case EIT_REL_I0...EIT_IMM_I64:
 	src=st_ptr-5;
 	LoadOneImport(&src,module_base,ld_flags);
 	break;
@@ -420,11 +420,11 @@ U0 LoadPass2(U8 *src,U8 *module_base,I64)
   }
 }
 
-U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
+CBinFile *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
 {//Load a .BIN file module into memory.
 //bfh_addr==INVALID_PTR means don't care what load addr.
   U8 *fbuf,*module_base,*absname;
-  I64 size,module_align;
+  I64 size,module_align,misalignment;
   CBinFile *bfh;
 
   fbuf=DftExt(filename,"BIN.Z");
@@ -432,6 +432,7 @@ U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
     Free(fbuf);
     return NULL;
   }
+
   //See [C:/Compiler/CmpMain.CPP.Z,1] Patch Table Generation
   module_align=1<<bfh->module_align_bits;
   if (!module_align || bfh->bin_signature!=BIN_SIGNATURE_VAL) {
@@ -439,14 +440,18 @@ U8 *Load(U8 *filename,I64 ld_flags=0,CBinFile *bfh_addr=INVALID_PTR)
     Free(fbuf);
     throw('BinModul');
   }
+
   if (bfh_addr==INVALID_PTR) {
     if (bfh->module_org==INVALID_PTR) {
+      misalignment=module_align-sizeof(CBinFile);
+      if (misalignment<0)
+	misalignment&=module_align-1;
       if (Fs->code_heap!=Fs->data_heap) {
 	if (module_align<16)
 	  module_align=16;
-	bfh_addr=MAllocAligned(size,module_align,Fs->code_heap,module_align-sizeof(CBinFile));
+	bfh_addr=MAllocAligned(size,module_align,Fs->code_heap,misalignment);
       } else if (module_align>8)
-	bfh_addr=MAllocAligned(size,module_align,,module_align-sizeof(CBinFile));
+	bfh_addr=MAllocAligned(size,module_align,,misalignment);
       else {//Less than 2Gig system memory
 	bfh_addr=bfh;
 	goto lo_skip; //File is already in code heap area, don't copy.
@@ -466,11 +471,9 @@ lo_skip:
   FileExtRem(fbuf);
   if (fbuf[1]==':' && StrLen(fbuf)>2)
     HashGenericAdd(fbuf+2,HTT_MODULE|HTF_PUBLIC,bfh_addr);
-
   LoadPass1(bfh_addr(U8 *)+bfh_addr->patch_table_offset,module_base,ld_flags);
   if (!(ld_flags&LDF_JUST_LOAD))
     LoadPass2(bfh_addr(U8 *)+bfh_addr->patch_table_offset,module_base,ld_flags);
-
   Free(absname);
   Free(fbuf);
   return bfh_addr;

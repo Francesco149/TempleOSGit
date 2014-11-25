@@ -4,16 +4,16 @@ public U8 *DBlk(I64 blk,Bool write=FALSE)
 {//Dump disk block. Optionally, write.
 //If you set write to TRUE, the block will
 //be written when you press <ESC>.
-//See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
+//See [C:/Demo/Dsk/DskRaw.CPP,1].
   U8 *buf=MAlloc(BLK_SIZE);
 
-  RBlks(Fs->cur_prt,buf,blk,1);
+  RBlks(Fs->cur_dv,buf,blk,1);
   DocD(buf,BLK_SIZE);
   if (write) {
     "Edit and press <ESC> to write or <SHIFT-ESC>\n";
     if (View) {
       "Write\n";
-      WBlks(Fs->cur_prt,buf,blk,1);
+      WBlks(Fs->cur_dv,buf,blk,1);
     }
   }
   return buf;
@@ -23,18 +23,18 @@ public U8 *DCluster(I64 c,Bool write=FALSE,I64 num=0)
 {//Dump disk cluster. Optionally, write.
 //If you set write to TRUE, the cluster will
 //be written when you press <ESC>.
-//See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
+//See [C:/Demo/Dsk/DskRaw.CPP,1].
 //Do [C:/Kernel/Dsk/Dsk1b.CPP.Z,234] Dir("*",TRUE); to get cluster numbers of files.
-  U8 *buf=MAlloc(Fs->cur_prt->spc<<BLK_SIZE_BITS);
-  c=ClusterNumNext(Fs->cur_prt,c,num);
-  RClusters(Fs->cur_prt,buf,c,1);
+  U8 *buf=MAlloc(Fs->cur_dv->spc<<BLK_SIZE_BITS);
+  c=ClusterNumNext(Fs->cur_dv,c,num);
+  RClusters(Fs->cur_dv,buf,c,1);
   "Cluster:%X\n",c;
-  DocD(buf,Fs->cur_prt->spc<<BLK_SIZE_BITS);
+  DocD(buf,Fs->cur_dv->spc<<BLK_SIZE_BITS);
   if (write) {
     "Edit and press <ESC> to write or <SHIFT-ESC>\n";
     if (View) {
       "Write\n";
-      WClusters(Fs->cur_prt,buf,c,1);
+      WClusters(Fs->cur_dv,buf,c,1);
     }
   }
   return buf;
@@ -59,7 +59,7 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
 }
 
 public I64 FileCnt(CDirEntry *tempde)
-{//Cnt of files in [C:/Kernel/Adam1a.HPP.Z,2450] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/Adam1a.HPP.Z,2454] CDirEntry tree.
   I64 cnt=0;
   while (tempde) {
     if (tempde->attr&RS_ATTR_DIR)
@@ -218,7 +218,7 @@ public I64 DelTree(U8 *files_find_mask,U8 *fu_flags=NULL)
 
 U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
 {
-  CPrt *p=Drv2Prt(*filename);
+  CDrv *dv=Let2Drv(*filename);
   CDirEntry de;
   U8 *cur_dir=StrNew(filename),
      buf[136];
@@ -236,7 +236,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
 	de.datetime=Now;
       else
 	de.datetime=cdt;
-      DirNew(p,cur_dir,&de,FALSE);
+      DirNew(dv,cur_dir,&de,FALSE);
     }
   } else
     PrintErr("File not found.\n");
@@ -246,7 +246,7 @@ public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate cdt=MI
 Default lists attributes.
 attr: "+?" =show current
 	"+T" =resident
-	[C:/Kernel/Adam1a.HPP.Z,2424] RS_ATTR_READ_ONLY  [C:/Kernel/Define1a.CPP.Z,110] ST_FILE_ATTRS
+	[C:/Kernel/Adam1a.HPP.Z,2428] RS_ATTR_READ_ONLY  [C:/Kernel/Define1a.CPP.Z,110] ST_FILE_ATTRS
 To Set DateL:
 	Touch(filename,"",,datetime);
 */
@@ -282,66 +282,66 @@ public I64 FF(U8 *files_find_mask,U8 *fu_flags=NULL)
 public U0 SetDrvTextAttr(U8 drv_let,U8 attr)
 {//Set color of the window border text
 //for when this drive is the current drive.
-  CPrt *p;
+  CDrv *dv;
   try {
-    p=Drv2Prt(drv_let);
-    p->text_attr=attr;
+    dv=Let2Drv(drv_let);
+    dv->text_attr=attr;
   } catch
     Fs->catch_except=TRUE;
 }
-I64 RedSeaFSUnusedDrvSpace(U8 drv_let=0)
+I64 RedSeaUnusedDrvSpace(U8 drv_let=0)
 {
-  CPrt *p=Drv2Prt(drv_let);
+  CDrv *dv=Let2Drv(drv_let);
   I64 result=0,i,l;
   U8 *bitmap;
   try {
-    l=(p->size+p->spc-1)/p->spc;
+    l=(dv->size+dv->spc-1)/dv->spc;
     i=((l+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(p,bitmap,p->map1,i);
+    RBlks(dv,bitmap,dv->map1,i);
     for (i=0;i<l;i++)
       if (!Bt(bitmap,i))
 	result++;
     Free(bitmap);
   } catch
-    PrtUnlock(p);
-  return result*BLK_SIZE*p->spc;
+    DrvUnlock(dv);
+  return result*BLK_SIZE*dv->spc;
 }
 I64 FAT32UnusedDrvSpace(U8 drv_let=0)
 {
-  CPrt *p=Drv2Prt(drv_let);
+  CDrv *dv=Let2Drv(drv_let);
   I64 result=0,i,l;
   U32 *bitmap;
   try {
-    l=(p->size+p->spc-1)/p->spc;
+    l=(dv->size+dv->spc-1)/dv->spc;
     i=(l*4+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(p,bitmap,p->map1,i);
+    RBlks(dv,bitmap,dv->map1,i);
     for (i=0;i<l;i++)
       if (!bitmap[i])
 	result++;
     Free(bitmap);
   } catch
-    PrtUnlock(p);
-  return result*BLK_SIZE*p->spc;
+    DrvUnlock(dv);
+  return result*BLK_SIZE*dv->spc;
 }
 public I64 UnusedDrvSpace(U8 drv_let=0)
 {//Returns unused size in bytes.
-  CPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
+  CDrv *dv=Let2Drv(drv_let),*old_dv=Fs->cur_dv;
   U8 *old_dir=StrNew(Fs->cur_dir);
   I64 result=0;
   Drv(drv_let);
-  switch (p->type) {
-    case PT_REDSEA:
-      result=RedSeaFSUnusedDrvSpace(drv_let);
+  switch (dv->type) {
+    case DVT_REDSEA:
+      result=RedSeaUnusedDrvSpace(drv_let);
       break;
-    case PT_FAT32:
+    case DVT_FAT32:
       result=FAT32UnusedDrvSpace(drv_let);
       break;
     default:
       PrintErr("File System Not Supported\n");
   }
-  Drv(Prt2Drv(p_old));
+  Drv(Drv2Let(old_dv));
   Cd(old_dir);
   Free(old_dir);
   return result;
@@ -352,12 +352,12 @@ I64 Size1(CDirEntry *tempde,I64 *_fuf_flags,I64 round_to)
 {
   U8 buf[BLK_SIZE];
   I64 result=0,i;
-  CPrt *p;
+  CDrv *dv;
   while (tempde) {
     if ((i=tempde->size) && Bt(_fuf_flags,FUf_EXPAND) &&
        !(tempde->attr&RS_ATTR_DIR) && FileAttr(tempde->name)&RS_ATTR_COMPRESSED) {
-      p=Drv2Prt(*tempde->full_name);
-      RBlks(p,buf,Cluster2Blk(p,tempde->cluster),1);
+      dv=Let2Drv(*tempde->full_name);
+      RBlks(dv,buf,Cluster2Blk(dv,tempde->cluster),1);
       i=(&buf)(CArcCompress *)->expanded_size;
     }
     if (round_to)

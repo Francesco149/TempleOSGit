@@ -5,9 +5,9 @@ CIPStateGlbls old_ip={IP_NULL,{-1000,-1000,0},{-1000,-1000,0},{-1000,-1000,0},
 	0,(MAX_I32+1)>>3,0.0,GetTSC,0.350,0,0,
 	FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE};
 
-public CWinMgrGlbls winmgr={0,0,0,15,15,NULL,NULL,FALSE,FALSE,FALSE,FALSE};
+public CWinMgrGlbls winmgr={0,0,0,WMG_FPS,tS,NULL,NULL,FALSE,FALSE,FALSE};
 winmgr.t=CAlloc(sizeof(CWinMgrTimingGlbls));
-winmgr.t->last_refresh_time=tS;
+winmgr.t->last_calc_idle_time=tS;
 
 #define PROGRESS_BAR_HEIGHT	20
 #define PROGRESS_BAR_WIDTH	(3*GR_WIDTH/4)
@@ -152,7 +152,7 @@ U0 DrawInputPtr(CDC *dc)
   y=ip.pos.y;
   POPFD
   if (ip.show && ip.dev!=IP_NULL) {
-    if (!sys_bios_gr_mode) //if text mode
+    if (!Bt(&sys_run_level,RLf_VGA)) //if text mode
       gr.text_base[ip.pos_text.x+ip.pos_text.y*TEXT_COLS]^=0x7F00;
     else {
       if (gr.fp_draw_input_ptr) {

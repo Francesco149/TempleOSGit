@@ -40,7 +40,7 @@ U0 LeftClickCtrlButton(CCtrl *c,I64,I64,Bool down)
 
 public CCtrl *CtrlButtonNew(I64 x,I64 y,I64 width=-1,I64 height=-1,
 	  I64 num_states=1,U8 *state_texts,I32 state_colors[],CCtrlButtonState *_s=NULL)
-{//Create button ctrl. See [C:/Apps/Strut/Strut.CPP.Z,1].
+{//Create button ctrl. See [C:/Apps/Strut/Strut.CPP,1].
   Bool old_preempt;
   CCtrl *result;
   CCtrlButtonState *s;

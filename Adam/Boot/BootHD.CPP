@@ -1,5 +1,8 @@
 #define MODULE_SIZE		1*BLK_SIZE
-#define BOOT_HIGH_LOC	((BOOT_RAM_LIMIT-(BOOT_STK_SIZE+MODULE_SIZE))>>4)
+#define BOOT_HIGH_LOC_HD	((BOOT_RAM_LIMIT-(BOOT_STK_SIZE+MODULE_SIZE))>>4)
+
+DefinePrint(
+  "DD_BOOT_HIGH_LOC_HD","%08X",BOOT_HIGH_LOC_HD<<4);
 
 asm {
 USE16
@@ -9,11 +12,11 @@ BHD_CODE::
 
 	CLD
 
-	MOV	AX,VGA_TEXT_MEM_BASE/16
+	MOV	AX,VGAM_TEXT/16
 	MOV	FS,AX
 	MOV	U32 FS:[0],'B'+GREEN<<12+('2'+GREEN<<12)<<16
 
-	MOV	AX,BOOT_HIGH_LOC
+	MOV	AX,BOOT_HIGH_LOC_HD
 	MOV	ES,AX
 
 	CLI
@@ -26,7 +29,7 @@ BHD_GET_IP:
 	POP	BX
 	SUB	BX,BHD_GET_IP-BHD_START
 	SHR	BX,4
-//Copy this bootloader code to just under 0x80000
+//This copies this bootloader's code to 0x00096C00
 	MOV	AX,CS
 	ADD	AX,BX
 	MOV	DS,AX
@@ -35,21 +38,21 @@ BHD_GET_IP:
 	XOR	DI,DI
 	REP_MOVSB
 
-	MOV	AX,BOOT_HIGH_LOC
+	MOV	AX,BOOT_HIGH_LOC_HD
 	MOV	DS,AX
 
 //My assembler doesn't support 16-bit very well.
-	DU8	0xEA;	//JMP BOOT_HIGH_LOC:BHD_HISTART
-	DU16	BHD_HISTART-BHD_START,BOOT_HIGH_LOC;
+	DU8	0xEA;	//JMP BOOT_HIGH_LOC_HD:BHD_HISTART
+	DU16	BHD_HISTART-BHD_START,BOOT_HIGH_LOC_HD;
 
 BHD_BIOS_DRV_NUM: DU8	0;
 
-//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().
 BHD_BLK_CNT::	DU16	0;
 
 BHD_DAP:	DU8	16,0,1,0; //One blk at a time
 BHD_DAP_BUF:	DU16	0,0;
-//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
+//Gets patched by [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().
 BHD_DAP_BLK::	//64-bit
 BHD_DAP_BLK_LO:	DU32	0;
 BHD_DAP_BLK_HI:	DU32	0;
@@ -82,8 +85,8 @@ BHD_HISTART:
 @@10:	POP	CX
 	LOOP	@@05
 
-	MOV	EBX,BOOT_CODE_HARDDRV //See sys_boot_code
-`Grep("sys_boot_code","/*");View;
+	MOV	EBX,BOOT_SRC_HARDDRV //See sys_boot_src
+`Grep("sys_boot_src","/*");View;
 `
 
 //My assembler doesn't support 16-bit very well.

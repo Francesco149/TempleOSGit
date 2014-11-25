@@ -1,7 +1,7 @@
 #help_index "DolDoc"
 
 U0 DocInit()
-{//[C:/Kernel/Adam1a.HPP.Z,885] CMD Defines
+{//[C:/Kernel/Adam1a.HPP.Z,896] CMD Defines
   CLex *lx;
   I64 i;
   CHashGeneric *temph;

@@ -3,7 +3,7 @@
 [C:/Doc/Welcome.TXT.Z,1] Welcome		[C:/Doc/TrivialSolutions.TXT.Z,1] Trivial
 Solutions
 [C:/Doc/CmdLineOverview.TXT.Z,1] Command Line	Take Tour
-`SpawnUser("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
+`User("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
 ");`
 
 [C:/Doc/DemoIndex.TXT.Z,1] Demo Index	Key Map
@@ -41,7 +41,7 @@ Top of Screen Pull-down menu
   [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
 [C:/Doc/Glossary.TXT.Z,1] Glossary
 [C:/Doc/GuideLines.TXT.Z,1] Acct Files
-[C:/Doc/TSZ.TXT.Z,1] TSZ Window's Utility
+[C:/Doc/TSZ.TXT.Z,1] TSZ Linux Utility
 [C:/Doc/Tips.TXT.Z,1] Tips
 [C:/Doc/Quirks.TXT.Z,1] Quirks
 [C:/Doc/GuideLines.TXT.Z,1] Directory Structure
@@ -68,8 +68,8 @@ Top of Screen Pull-down menu
   Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
-You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,135]
-  MakeOSPrtBootInstall(), and specify which drives should be mounted at boot. 
+You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,130]
+  MakeOSDrvBootInstall(), and specify which drives should be mounted at boot. 
   See [C:/Misc/MakeDistro.CPP.Z,1].
 
 [C:/Doc/Install.TXT.Z,1] Installing
@@ -81,32 +81,33 @@ You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,135]
 [C:/Doc/HolyC.TXT.Z,1] HolyC
 [C:/Doc/GraphicsOverview.TXT.Z,1] Graphics
 [C:/Doc/MultiTasking.TXT.Z,1] Multitasking
-[C:/Demo/DolDoc/FileRead.CPP.Z,1] DolDoc Documents
-[C:/Demo/Lectures/AndNotMod.CPP.Z,1] Lectures/AndNotMod.CPP
-[C:/Demo/Lectures/FixedPoint.CPP.Z,1] Lectures/FixedPoint.CPP
-[C:/Demo/Lectures/NegDisp.CPP.Z,1] Lectures/NegDisp.CPP
-[C:/Demo/Lectures/Uncached.CPP.Z,1] Lectures/Uncached.CPP
-[C:/Demo/Lectures/Optimization.CPP.Z,1] Lectures/Optimization.CPP
-[C:/Demo/Lectures/ScreenMemory.CPP.Z,1] Lectures/ScreenMemory.CPP
-[C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1] Lectures/GraphicsCPULoad.CPP
-[C:/Demo/Lectures/InterruptDemo.CPP.Z,1] Lectures/InterruptDemo.CPP
-[C:/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP
+[C:/Demo/DolDoc/FileRead.CPP,1] DolDoc Documents
+[C:/Demo/Lectures/AndNotMod.CPP,1] Lectures/AndNotMod.CPP
+[C:/Demo/Lectures/FixedPoint.CPP,1] Lectures/FixedPoint.CPP
+[C:/Demo/Lectures/NegDisp.CPP,1] Lectures/NegDisp.CPP
+[C:/Demo/Lectures/Uncached.CPP,1] Lectures/Uncached.CPP
+[C:/Demo/Lectures/Optimization.CPP,1] Lectures/Optimization.CPP
+[C:/Demo/Lectures/ScreenMemory.CPP,1] Lectures/ScreenMemory.CPP
+[C:/Demo/Lectures/GraphicsCPULoad.CPP,1] Lectures/GraphicsCPULoad.CPP
+[C:/Demo/Lectures/InterruptDemo.CPP,1] Lectures/InterruptDemo.CPP
+[C:/Demo/Lectures/Spinning.CPP,1] Lectures/Spinning.CPP
 +] Level 4: System Programmer Help
-  [C:/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
+  [C:/Demo/Lectures/64BitAsmQuiz.TXT,1] 64BitAsmQuiz
 [C:/Kernel/Hash1a.CPP.Z,1] Hash Tables
 [Keyboard Devices/System,1] Keyboard Devices
-[C:/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
-[C:/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2
-[C:/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP
-[C:/Adam/Utils/MemRep.CPP.Z,197] MemRep
+[C:/Demo/Lectures/PageTableEntries1.CPP,1] Page Table Entries 1
+[C:/Demo/Lectures/PageTableEntries2.CPP,1] Page Table Entries 2
+[C:/Demo/Lectures/PCIInterrupts.CPP,1] PCIInterrupts.CPP
+[C:/Adam/Utils/MemRep.CPP.Z,191] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper
 [C:/Kernel/Sched.CPP.Z,1] Scheduler
 [C:/Adam/DolDoc/Doc.CPP.Z,1] Doc
-[C:/Demo/Lectures/MiniGrLib.CPP.Z,1] MiniGrLib
-[C:/Demo/Lectures/MiniCompiler.CPP.Z,1] MiniCompiler
+[C:/Demo/Lectures/MiniGrLib.CPP,1] MiniGrLib
+[C:/Demo/Lectures/MiniCompiler.CPP,1] MiniCompiler
 [C:/Compiler/BackLib.CPP.Z,1] Backend
 
                                     Index
+[AutoComplete,1] AutoComplete
 [AutoFile,1] AutoFile
 [Bit,1] Bit
 [Boot,1] Boot
@@ -169,4 +170,3 @@ You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,135]
 [C:/Doc/TSZ.TXT.Z,1] TSZ
 [Cmd Line (Typically),1] Utils
 [Windows,1] Windows
-[WordStat,1] WordStat

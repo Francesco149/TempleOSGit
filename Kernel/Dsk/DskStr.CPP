@@ -79,83 +79,83 @@ Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
   return result;
 }
 
-U0 PrtChk(CPrt *p)
-{//Check for valid partition. Throw exception.
-  if (!p || p->pt_signature!=PRT_SIGNATURE_VAL)
-    throw('Prt');
+U0 DrvChk(CDrv *dv)
+{//Check for valid drv. Throw exception.
+  if (!dv || dv->dv_signature!=DRV_SIGNATURE_VAL)
+    throw('Drv');
 }
 
-U8 Prt2Drv(CPrt *p=NULL)
-{//Prt ptr to Drv letter.
-  if (!p)
-    p=Fs->cur_prt;
-  PrtChk(p);
-  return p->drv_let;
+U8 Drv2Let(CDrv *dv=NULL)
+{//Drv ptr to Drv letter.
+  if (!dv)
+    dv=Fs->cur_dv;
+  DrvChk(dv);
+  return dv->drv_let;
 }
 
-CPrt *Drv2Prt(U8 drv_let=0)
-{//Drv letter to Prt ptr.
-  CPrt *p;
+CDrv *Let2Drv(U8 drv_let=0)
+{//Drv letter to Drv ptr.
+  CDrv *dv;
   if (!drv_let)
-    p=Fs->cur_prt;
+    dv=Fs->cur_dv;
   else {
     if (drv_let==':')
       drv_let=*sys_acct;
     drv_let=ToUpper(drv_let);
     if (!('A'<=drv_let<='Z'))
-      throw('Prt');
-    p=dsk.drv_to_prt[drv_let-'A'];
+      throw('Drv');
+    dv=dsk.let_to_drv[drv_let-'A'];
   }
-  PrtChk(p);
-  return p;
+  DrvChk(dv);
+  return dv;
 }
 
-U0 BlkDevChk(CBlkDev *bdev)
+U0 BlkDevChk(CBlkDev *bd)
 {//Check for valid BlkDev. Throw exception.
-  if (!bdev || bdev->bd_signature!=BD_SIGNATURE_VAL ||
-      !(BDT_NULL<bdev->type<BDT_NUM_TYPES))
+  if (!bd || bd->bd_signature!=BD_SIGNATURE_VAL ||
+      !(BDT_NULL<bd->type<BDT_NUM_TYPES))
     throw('BlkDev');
 }
 
-CBlkDev *Drv2BlkDev(U8 drv_let=0)
+CBlkDev *Let2BlkDev(U8 drv_let=0)
 {//Drv letter to BlkDev ptr.
-  CPrt *p=Drv2Prt(drv_let);
-  CBlkDev *bdev=p->bdev;
-  BlkDevChk(bdev);
-  return bdev;
+  CDrv *dv=Let2Drv(drv_let);
+  CBlkDev *bd=dv->bd;
+  BlkDevChk(bd);
+  return bd;
 }
 
 Bool IsDrvWritable(U8 drv_let=0)
 {//Is drive writable?
-  CBlkDev *bdev=Drv2BlkDev(drv_let);
-  if (bdev->flags & BDF_READ_ONLY)
+  CBlkDev *bd=Let2BlkDev(drv_let);
+  if (bd->flags & BDF_READ_ONLY)
     return FALSE;
   else
     return TRUE;
 }
 
 U8 *CurDir(CTask *task=NULL,CTask *mem_task=NULL)
-{//MAlloc copy of cur dir with partition letter.
+{//MAlloc copy of cur dir with drv letter.
   U8 *st;
   if (!task) task=Fs;
   if (!task->cur_dir)
     return NULL;
   st=MAlloc(StrLen(task->cur_dir)+3,mem_task);
-  *st=Prt2Drv;
+  *st=Drv2Let;
   st[1]=':';
   StrCpy(st+2,task->cur_dir);
   return st;
 }
 
 U8 *DirNameAbs(U8 *_dirname)
-{//MAlloc absolute dir string with partition letter.
+{//MAlloc absolute dir string with drv letter.
   I64 maxlen;
   U8 drv[3],*cur_dir,*buf2,*buf3,*buf,*dirname,*temp_name;
   if (!Fs->cur_dir || !*Fs->cur_dir)
     return StrNew(_dirname);
   dirname=MStrUtil(_dirname,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   temp_name=dirname;
-  *drv=Prt2Drv;
+  *drv=Drv2Let;
   drv[1]=':';
   drv[2]=0;
   if (*dirname && dirname[1]==':') {
@@ -213,7 +213,7 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//Absolute filename. Accepts [C:/Kernel/Adam1a.HPP.Z,2509] FUF_Z_OR_NOT_Z, [C:/Kernel/Adam1a.HPP.Z,2511] FUF_SCAN_PARENTS.
+{//Absolute filename. Accepts [C:/Kernel/Adam1a.HPP.Z,2513] FUF_Z_OR_NOT_Z, [C:/Kernel/Adam1a.HPP.Z,2515] FUF_SCAN_PARENTS.
   U8 *buf,*buf2,*buf3,*filename,*temp_name,*temp_buf;
   CDirEntry de;
   filename=MStrUtil(_filename,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);

@@ -22,8 +22,8 @@ public _extern _LBEQU Bool LBEqu(U8 *bit_field,I64 bit,Bool val); //Locked Set b
 
 #help_index "Boot"
 _extern SYS_BOOT_BASE U32 sys_boot_base;
-_extern SYS_BOOT_CODE U32 sys_boot_code;
 _extern SYS_BOOT_PATCH_TABLE_BASE U32 sys_boot_patch_table_base;
+_extern SYS_BOOT_SRC U32 sys_boot_src;
 _extern SYS_RUN_LEVEL U32 sys_run_level;
 
 #help_index "Call"
@@ -33,7 +33,7 @@ public _extern _CALLEXTSTR I64 CallExtStr(/*argpop*/ U8 *name,...); //Search sym
 public _extern _CALLIND I64 CallInd(/*argpop*/I64 (*fp_addr)(...),...); //Call with any fixed number of arguments.
 
 #help_index "Call/System Extern Num"
-public _extern SYS_EXTERN_TABLE /*argpop*/ I64 (**ext)(...); //Array of fun ptrs.  See [C:/Kernel/Adam1a.HPP.Z,566] Extern Num Definitions
+public _extern SYS_EXTERN_TABLE /*argpop*/ I64 (**ext)(...); //Array of fun ptrs.  See [C:/Kernel/Adam1a.HPP.Z,576] Extern Num Definitions
 public _extern _CALLEXTNUM I64 CallExtNum(I64 num,...); //Call ext num with any fixed number of args.
 
 #help_index "Char/Conversion"
@@ -49,9 +49,6 @@ public _intern IC_QUE_INS U0 QueIns(CQue *entry,CQue *pred);//Ins item into que 
 public _intern IC_QUE_INS_REV U0 QueInsRev(CQue *entry,CQue *succ);//Reversed insert into que.
 //Ins item into que before successor.
 public _intern IC_QUE_REM U0 QueRem(CQue *entry); //Remove Item from queue.
-
-#help_index "Graphics/Screen"
-public _extern SYS_BIOS_GR_MODE U16 sys_bios_gr_mode; //INT 0x10 mode number.
 
 #help_index "I/O;Processor/IO Port"
 public _intern IC_IN_U16 I64 InU16(I64 port); //Read U16 from I/O port.
@@ -93,8 +90,8 @@ public _intern IC_TO_F64 F64 ToF64(I64 i); //Convert to F64.
 public _intern IC_TO_I64 I64 ToI64(F64 d);  //Convert to I64. Truncates.
 public _extern _ARG F64 Arg(F64 x,F64 y); //Polar coordinate angle.
 public _extern _CEIL F64 Ceil(F64 d); //Ceiling of F64.
-public _extern _CLAMP_I64 I64 ClampI64(I64 p,I64 lo,I64 hi); //Clamp to I64 [] range.
-public _extern _CLAMP_U64 U64 ClampU64(U64 p,U64 lo,U64 hi); //Clamp to U64 [] range.
+public _extern _CLAMP_I64 I64 ClampI64(I64 dv,I64 lo,I64 hi); //Clamp to I64 [] range.
+public _extern _CLAMP_U64 U64 ClampU64(U64 dv,U64 lo,U64 hi); //Clamp to U64 [] range.
 public _extern _EXP F64 Exp(F64 d); //Exponential function.
 _extern _FCLEX U0 Fclex();
 _extern _FLDCW U0 Fldcw(U16 w);
@@ -181,20 +178,20 @@ public _extern SYS_FOCUS_TASK CTask *sys_focus_task; //Current focus task.
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS	 CCPU *cpu_structs;//[C:/Kernel/Adam1b.HPP.Z,191] Gs points to cur [C:/Kernel/Adam1a.HPP.Z,3338] CCPU.
+public _extern SYS_CPU_STRUCTS	 CCPU *cpu_structs;//[C:/Kernel/Adam1b.HPP.Z,188] Gs points to cur [C:/Kernel/Adam1a.HPP.Z,3341] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
-_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,308] MPStart
+_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,302] BSPStartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/Adam1a.HPP.Z,3338] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/Adam1a.HPP.Z,3341] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSSES U16 sys_pci_busses; //Number of PCI busses.
 
 #help_index "Processor"
-public _intern IC_CARRY I64 Carry(); //See [C:/Demo/Carry.CPP.Z,1]
+public _intern IC_CARRY I64 Carry(); //See [C:/Demo/Carry.CPP,1]
 public _intern IC_GET_RAX I64 GetRAX(); //Get RAX register value.
 public _intern IC_GET_RBP U8 *GetRBP(); //Get RBP register value.
 public _intern IC_GET_RFLAGS I64 GetRFlags(); //Get RFlags register value.
@@ -210,7 +207,7 @@ public _extern _LXCHG_I64 I64 LXchgI64(I64 *dst,I64 d); //Locked eXchange I64s.
 public _extern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d); //Locked eXchange U16s.
 public _extern _LXCHG_U32 U64 LXchgU32(U32 *dst,U32 d); //Locked eXchange U32s.
 public _extern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d); //Locked eXchange U8s.
-public _extern _SET_MSR U0 SetMSR(I64 model_specific_reg,I64 val); //Model Specific Reg See [C:/Kernel/Adam1a.HPP.Z,507] MSRs.
+public _extern _SET_MSR U0 SetMSR(I64 model_specific_reg,I64 val); //Model Specific Reg See [C:/Kernel/Adam1a.HPP.Z,518] MSRs.
 public _extern _SYS_HLT U0 SysHlt(); //Loops doing HLT instruction.
 public _extern _XCHG_I64 I64 XchgI64(I64 *dst,I64 d); //eXchange I64s.
 public _extern _XCHG_U16 U64 XchgU16(U16 *dst,U16 d); //eXchange U16s.
@@ -227,7 +224,7 @@ public _intern IC_INVLPG U0 InvlPg(U8 *a); //Invalidate page at addr.
 public _intern IC_PREEMPT Bool Preempt(Bool val); //Turn mutli-tasking preemption OFF/ON.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/Adam1a.HPP.Z,3213] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/Adam1a.HPP.Z,3216] CTask.
 
 #help_index "Time/CPU Cycles"
 public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.

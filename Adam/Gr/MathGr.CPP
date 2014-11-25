@@ -11,7 +11,7 @@ public Bool Line(U8 *aux_data,
 		 Bool (*fp_plot)(U8 *aux,I64 x,I64 y,I64 z),
 		 I64 step=1,I64 start=0)
 {//Step through line segment calling callback.
-//Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+//Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   I64 i,j,d,dx=x2-x1,dy=y2-y1,dz=z2-z1,_x,_y,_z,
       adx=AbsI64(dx),ady=AbsI64(dy),adz=AbsI64(dz);
   Bool first=TRUE;
@@ -81,7 +81,7 @@ public Bool Line(U8 *aux_data,
 
 #help_index "Graphics/Math/3D Transformation"
 public I64 *GrRotXNew(F64 phi,CTask *mem_task=NULL)
-{//MAlloc 4x4 matrix to rot about X axis. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//MAlloc 4x4 matrix to rot about X axis. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   F64 my_cos=Cos(phi)*GR_SCALE,
      my_sin=Sin(phi)*GR_SCALE;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
@@ -96,7 +96,7 @@ public I64 *GrRotXNew(F64 phi,CTask *mem_task=NULL)
 }
 
 public I64 *GrRotYNew(F64 omega,CTask *mem_task=NULL)
-{//MAlloc 4x4 matrix to rot about Y axis. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//MAlloc 4x4 matrix to rot about Y axis. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   F64 my_cos=Cos(omega)*GR_SCALE,
      my_sin=Sin(omega)*GR_SCALE;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
@@ -111,7 +111,7 @@ public I64 *GrRotYNew(F64 omega,CTask *mem_task=NULL)
 }
 
 public I64 *GrRotZNew(F64 theta,CTask *mem_task=NULL)
-{//MAlloc 4x4 matrix to rot about Z axis. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//MAlloc 4x4 matrix to rot about Z axis. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   F64 my_cos=Cos(theta)*GR_SCALE,
      my_sin=Sin(theta)*GR_SCALE;
   I64 *r=CAlloc(sizeof(I64)*16,mem_task);
@@ -126,7 +126,7 @@ public I64 *GrRotZNew(F64 theta,CTask *mem_task=NULL)
 }
 
 public I64 *GrScaleNew(I64 *m1,F64 s,CTask *mem_task=NULL)
-{//MAlloc matrix that is scaled version of a 4x4 matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//MAlloc matrix that is scaled version of a 4x4 matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   I64 i,*r=CAlloc(sizeof(I64)*16,mem_task);
   for (i=0;i<16;i++)
     r[i]=m1[i]*s;
@@ -134,7 +134,7 @@ public I64 *GrScaleNew(I64 *m1,F64 s,CTask *mem_task=NULL)
 }
 
 public I64 *GrMulMat(I64 *m1,I64 *m2,CTask *mem_task=NULL)
-{//Multiply 4x4 matrices, return MAlloced matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Multiply 4x4 matrices, return MAlloced matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
 //Conceptually, the transform m1 is applied after m2
   I64 i,j,k,*r=CAlloc(sizeof(I64)*16,mem_task);
   F64 d;
@@ -152,7 +152,7 @@ public I64 *GrMulMat(I64 *m1,I64 *m2,CTask *mem_task=NULL)
 }
 
 public I64 *GrRotXEqu(I64 *m1,F64 phi)
-{//Rot matrix about X axis. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Rot matrix about X axis. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   F64 my_cos=Cos(phi)*GR_SCALE,
      my_sin=Sin(phi)*GR_SCALE;
   I64 r[16],*r2;
@@ -171,7 +171,7 @@ public I64 *GrRotXEqu(I64 *m1,F64 phi)
 }
 
 public I64 *GrRotYEqu(I64 *m1,F64 omega)
-{//Rot matrix about Y axis. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Rot matrix about Y axis. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   F64 my_cos=Cos(omega)*GR_SCALE,
      my_sin=Sin(omega)*GR_SCALE;
   I64 r[16],*r2;
@@ -190,7 +190,7 @@ public I64 *GrRotYEqu(I64 *m1,F64 omega)
 }
 
 public I64 *GrRotZEqu(I64 *m1,F64 theta)
-{//Rot matrix about Z axis. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Rot matrix about Z axis. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   F64 my_cos=Cos(theta)*GR_SCALE,
      my_sin=Sin(theta)*GR_SCALE;
   I64 r[16],*r2;
@@ -230,7 +230,7 @@ public U0 GrScalePenWidth(CDC *dc=gr.dc)
 }
 
 public I64 *GrSetTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
-{//Set translation values in 4x4 matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Set translation values in 4x4 matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   r[0][3]=x<<32;
   r[1][3]=y<<32;
   r[2][3]=z<<32;
@@ -239,7 +239,7 @@ public I64 *GrSetTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
 }
 
 public I64 *GrAddTranslation(I64 r[4][4],I64 x,I64 y,I64 z)
-{//Add translation to 4x4 matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Add translation to 4x4 matrix. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   r[0][3]+=x<<32;
   r[1][3]+=y<<32;
   r[2][3]+=z<<32;
@@ -305,7 +305,7 @@ public Bool GrSetSymmetry3(CDC *dc=gr.dc,I64 x1,I64 y1,I64 z1,I64 x2,I64 y2,I64 
 }
 
 public U0 GrReflect(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
-{//Reflect 3D point about device context's symmetry. Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
+{//Reflect 3D point about device context's symmetry. Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
   I64 x=*_x<<32,y=*_y<<32,z=*_z<<32,
     xx=*_x-dc->sym.sx,yy=*_y-dc->sym.sy,zz=*_z-dc->sym.sz,
     d=(xx*dc->sym.snx+yy*dc->sym.sny+zz*dc->sym.snz)>>16,

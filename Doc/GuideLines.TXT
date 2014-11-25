@@ -22,12 +22,12 @@ invoke the Run.CPP.Z file.
 
 /Kernel The core of the operating system is found here.  Since priviledge 
 levels are not used, calling it a kernel is deceptive.  It is AOT compiled by 
-[C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().  It is loaded by the
+[C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().  It is loaded by the
 boot loader and must fit in 640K.
 
 /Compiler The compiler module src code is found here.  The compiler is AOT 
 compiled to produce a binary file which is loaded at boot.  It, too, is AOT 
-compiled by [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
+compiled by [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().
 
 /Adam The non-kernel part of the operating system is found here.  It is JIT 
 compiled during boot.
@@ -40,7 +40,7 @@ You can add and remove accts by making or removing directories in the
 ::/Accts 
 directory.  An empty account directory should be valid because it will get 
 default files from the parent directory.  Compile the
-[C:/Adam/Boot/InsBoot.CPP.Z,135] Kernel to set the active 
+[C:/Adam/Boot/InsBoot.CPP.Z,130] Kernel to set the active 
 acct or cause it to prompt an account at boot. 
 
 [C:/Accts/TAD/PersonalMenu.TXT,1] a menu viewed with the <CTRL-m> key or by
@@ -75,7 +75,7 @@ Takes affect next boot.
 
 * Place user data in a subdirectory of HOME, preferably naming the 
 subdirectory the same as the /Apps subdirectory.  Or, place data in the Regist
-ry.CPP.Z file.  See [C:/Demo/RegistryDemo.CPP.Z,1].
+ry.CPP.Z file.  See [C:/Demo/RegistryDemo.CPP,1].
 
 * If the app needs files in the HOME directory, make an /Apps file called Inst
 all.CPP.Z or Install.AUT.Z to create the HOME subdirectory and do similar 
@@ -88,7 +88,7 @@ stuff.
 * Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
 The 
 stk does not grow, so allocate enough when the task (process) is
-[C:/Kernel/Task1a.CPP.Z,221] Spawned and 
+[C:/Kernel/Task1a.CPP.Z,216] Spawned and 
 use the heap for most things.  (The heap refers to
 [C:/Kernel/Mem1b.CPP.Z,373] MAlloc() and [C:/Kernel/Mem1b.CPP.Z,369] Free().)
 
@@ -112,11 +112,11 @@ of signed keeps it simple so you don't have to agonize over choices.
 * Avoid boolean expression assignments.  Boolean assignments don't have short 
 circuit logic and are not compiled efficiently.  The Bool type is just an 
 alias for a 1 byte signed int -- nothing forces it to 1 or 0.  There is a 
-[C:/Kernel/Adam1b.HPP.Z,91] ToBool() function that will for to 1 ot 0,
+[C:/Kernel/Adam1b.HPP.Z,88] ToBool() function that will for to 1 ot 0,
 however.
 
 * If you use floats in your interrupt routine, save and restore the fpu state 
-with [C:/Kernel/Adam1b.HPP.Z,105] Fxsave() and [C:/Kernel/Adam1b.HPP.Z,104]
+with [C:/Kernel/Adam1b.HPP.Z,102] Fxsave() and [C:/Kernel/Adam1b.HPP.Z,101]
 Fxrstor().  The timer interrupt does this.  The keyboard and 
 mouse don't use floats.
 
@@ -132,7 +132,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/Adam1a.HPP.Z,3413] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/Adam1a.HPP.Z,3416] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Utils/S2T.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -157,8 +157,8 @@ they
 are still there.  Periodically, kill the TASK and start fresh when mem is
 low. 
  If you wish your applications to free themselves instead of staying in mem, 
-spawn or [C:/Adam/DolDoc/DocPopUp.CPP.Z,407] PopUp() a task to run the
-application and kill it when it's done.
+spawn or [C:/Kernel/SrvCmd.CPP.Z,384] PopUp() a task to run the application
+and kill it when it's done.
 
 * To display the contents of a hash table, use the [C:/Adam/Hash2a.CPP.Z,143]
 Who() routine or the 
@@ -170,9 +170,9 @@ case you wish to make hash table sizes bigger.
 
                               Assembly Language
 
-* FS must always point to the cur [C:/Kernel/Adam1a.HPP.Z,3213] CTask.
+* FS must always point to the cur [C:/Kernel/Adam1a.HPP.Z,3216] CTask.
 
-* GS must always point to the cur [C:/Kernel/Adam1a.HPP.Z,3338] CCPU.
+* GS must always point to the cur [C:/Kernel/Adam1a.HPP.Z,3341] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/Utils1a.CPP.Z,447] SET_FS_BASE and
@@ -181,9 +181,9 @@ anyway.  [C:/Kernel/Utils1a.CPP.Z,447] SET_FS_BASE and
 * When interacting with [C:/Doc/HolyC.TXT.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 
 because the compiler uses these for reg vars.  You are free to clobber RAX, 
-RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/Adam1a.HPP.Z,1695] Compiler Reg
-Masks, [C:/Kernel/Adam1a.HPP.Z,1671] PUSH_C_REGS and
-[C:/Kernel/Adam1a.HPP.Z,1672] POP_C_REGS
+RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/Adam1a.HPP.Z,1702] Compiler Reg
+Masks, [C:/Kernel/Adam1a.HPP.Z,1678] PUSH_C_REGS and
+[C:/Kernel/Adam1a.HPP.Z,1679] POP_C_REGS
 
 * I recommend using the standard stk frame for functions because
 [C:/Kernel/Dbg1a.CPP.Z,59] Caller() is 

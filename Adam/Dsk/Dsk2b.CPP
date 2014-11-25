@@ -62,25 +62,25 @@ public CDirEntry *DirTreeUnserialize(U8 *src)
 
 #help_index "Install;File/Cmd Line (Typically);Cmd Line (Typically)"
 
-#define ROUND_PRT_TO	(63*255)
-#define PRT_HEADER	63
+#define ROUND_DRV_TO	(63*255)
+#define DRV_HEADER	63
 
-class CPlannedPrt
+class CPlannedDrv
 {
-  CPlannedPrt *next,*last;
+  CPlannedDrv *next,*last;
   I64 size;
   Bool pri;
 };
 
 //Available to assist in writing scripts.
-I64 prt_dsk_dsk_size;
+I64 drv_dsk_dsk_size;
 
 public U0 PrtDsk(U8 drv_let=0)
 {//Partition the disk containing partition drv_let.
 //drv_let=0 means add new drive that
 //is not already mounted.
-  CBlkDev *bdev;
-  CPlannedPrt root,*temppp;
+  CBlkDev *bd;
+  CPlannedDrv root,*temppp;
   CMasterBoot mbr;
   Bool pri=TRUE;
   I64 ext_base,drv_let2,pri_cnt=0,
@@ -99,7 +99,7 @@ public U0 PrtDsk(U8 drv_let=0)
 
   if (drv_let)
     try
-      Drv2BlkDev(drv_let);
+      Let2BlkDev(drv_let);
     catch {
       drv_let=0;
       Fs->catch_except=TRUE;
@@ -110,18 +110,18 @@ public U0 PrtDsk(U8 drv_let=0)
     return;
   }
 
-  bdev=Drv2BlkDev(drv_let);
-  if (!bdev || bdev->type!=BDT_ATA)
+  bd=Let2BlkDev(drv_let);
+  if (!bd || bd->type!=BDT_ATA)
     return;
 
-  prt_dsk_dsk_size=bdev->max_blk+1;
+  drv_dsk_dsk_size=bd->max_blk+1;
 
   QueInit(&root);
 
-  drv_let2=bdev->first_drv_let;
-  remaining=FloorU64(bdev->max_blk+1,ROUND_PRT_TO);
-  while (FloorU64(remaining,ROUND_PRT_TO)>=ROUND_PRT_TO) {
-    temppp=MAlloc(sizeof(CPlannedPrt));
+  drv_let2=bd->first_drv_let;
+  remaining=FloorU64(bd->max_blk+1,ROUND_DRV_TO);
+  while (FloorU64(remaining,ROUND_DRV_TO)>=ROUND_DRV_TO) {
+    temppp=MAlloc(sizeof(CPlannedDrv));
     do {
       "$RED$Partition %C$FG$\n",drv_let2;
       temppp->pri=FALSE;
@@ -136,10 +136,10 @@ public U0 PrtDsk(U8 drv_let=0)
 	  pri=FALSE;
       }
       "Blocks Remaining:%d (0x%X)\n",
-	remaining-PRT_HEADER,remaining-PRT_HEADER;
+	remaining-DRV_HEADER,remaining-DRV_HEADER;
       temppp->size=CeilU64(GetI64("Size in Blocks  :",
-	remaining-PRT_HEADER)+PRT_HEADER,ROUND_PRT_TO);
-    } while (!(ROUND_PRT_TO<=temppp->size<=FloorU64(remaining,ROUND_PRT_TO)));
+	remaining-DRV_HEADER)+DRV_HEADER,ROUND_DRV_TO);
+    } while (!(ROUND_DRV_TO<=temppp->size<=FloorU64(remaining,ROUND_DRV_TO)));
     QueIns(temppp,root.last);
     remaining-=temppp->size;
     drv_let2++;
@@ -147,7 +147,7 @@ public U0 PrtDsk(U8 drv_let=0)
 
   "\n\n!!! Repartition Drive !!!\n\n";
   temppp=root.next;
-  drv_let2=bdev->first_drv_let;
+  drv_let2=bd->first_drv_let;
   while (temppp!=&root) {
     "Drive %C:%08X ",drv_let2,temppp->size;
     if (temppp->pri)
@@ -160,7 +160,7 @@ public U0 PrtDsk(U8 drv_let=0)
   if (!AreYouSure)
     goto pd_done;
 
-  remaining=FloorU64(bdev->max_blk+1,ROUND_PRT_TO)-ROUND_PRT_TO;
+  remaining=FloorU64(bd->max_blk+1,ROUND_DRV_TO)-ROUND_DRV_TO;
   temppp=root.next;
   MemSet(&mbr,0,BLK_SIZE);
   mbr.signature=0xAA55;
@@ -172,8 +172,8 @@ public U0 PrtDsk(U8 drv_let=0)
     mbr.p[i].type=1; //Will get set different.
     mbr.p[i].end_head=0xFE;
     mbr.p[i].end_cyl=0xFFFF;
-    mbr.p[i].offset=PRT_HEADER+offset;
-    mbr.p[i].size=temppp->size-PRT_HEADER;
+    mbr.p[i].offset=DRV_HEADER+offset;
+    mbr.p[i].size=temppp->size-DRV_HEADER;
     offset+=temppp->size;
     remaining-=temppp->size;
     temppp=temppp->next;
@@ -190,7 +190,7 @@ public U0 PrtDsk(U8 drv_let=0)
     mbr.p[i].size=remaining;
     ext_base=offset;
   }
-  ATAWriteBlks(bdev,&mbr,0,1);
+  ATAWriteBlks(bd,&mbr,0,1);
 
   while (temppp!=&root) {
     start_offset=offset;
@@ -203,8 +203,8 @@ public U0 PrtDsk(U8 drv_let=0)
     mbr.p[0].type=1; //Will get set different.
     mbr.p[0].end_head=0xFE;
     mbr.p[0].end_cyl=0xFFFF;
-    mbr.p[0].offset=PRT_HEADER;
-    mbr.p[0].size=temppp->size-PRT_HEADER;
+    mbr.p[0].offset=DRV_HEADER;
+    mbr.p[0].size=temppp->size-DRV_HEADER;
     offset+=temppp->size;
     temppp=temppp->next;
     if (temppp!=&root) {
@@ -217,12 +217,12 @@ public U0 PrtDsk(U8 drv_let=0)
       mbr.p[1].offset=offset-ext_base;
       mbr.p[1].size=temppp->size;
     }
-    ATAWriteBlks(bdev,&mbr,start_offset,1);
+    ATAWriteBlks(bd,&mbr,start_offset,1);
   }
 
-  bdev->flags&=~(BDF_INITIALIZED | BDF_INIT_IN_PROGRESS);
-  BlkDevAdd(bdev,FALSE,TRUE);
-  for (i=bdev->first_drv_let;i<drv_let2;i++)
+  bd->flags&=~(BDF_INITIALIZED | BDF_INIT_IN_PROGRESS);
+  BlkDevAdd(bd,FALSE,TRUE);
+  for (i=bd->first_drv_let;i<drv_let2;i++)
     Fmt(i,,FALSE);
 
 pd_done:
@@ -235,15 +235,15 @@ pd_done:
 
 #help_index "Info;File/Cmd Line (Typically);Cmd Line (Typically)"
 
-U0 RedSeaFSDrvView(U8 drv_let=0)
+U0 RedSeaDrvView(U8 drv_let=0)
 {
-  CPrt *p=Drv2Prt(drv_let);
+  CDrv *dv=Let2Drv(drv_let);
   I64 lohi,c1,i,x,y,l,s;
   U8 *bitmap;
   CDC *dc=DCAlias;
 
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
-  s=(p->size+p->spc-1)/p->spc;
+  s=(dv->size+dv->spc-1)/dv->spc;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
@@ -253,7 +253,7 @@ U0 RedSeaFSDrvView(U8 drv_let=0)
   try {
     i=((s+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(p,bitmap,p->map1,i);
+    RBlks(dv,bitmap,dv->map1,i);
     i=0;
     for (y=0;y<GR_HEIGHT-3*FONT_HEIGHT;y++) {
       if (ScanKey)
@@ -271,7 +271,7 @@ U0 RedSeaFSDrvView(U8 drv_let=0)
     }
     Free(bitmap);
   } catch
-    PrtUnlock(p);
+    DrvUnlock(dv);
   GetChar;
  
   SettingsPop;
@@ -280,12 +280,12 @@ U0 RedSeaFSDrvView(U8 drv_let=0)
 }
 U0 FAT32DrvView(U8 drv_let=0)
 {
-  CPrt *p=Drv2Prt(drv_let);
+  CDrv *dv=Let2Drv(drv_let);
   I64 lohi,c1,i,x,y,l,s;
   U32 *bitmap;
   CDC *dc=DCAlias;
   l=(GR_HEIGHT-3*FONT_HEIGHT)*(GR_WIDTH-FONT_WIDTH<<1),
-  s=(p->size+p->spc-1)/p->spc;
+  s=(dv->size+dv->spc-1)/dv->spc;
  
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
@@ -295,7 +295,7 @@ U0 FAT32DrvView(U8 drv_let=0)
   try {
     i=(s*4+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(p,bitmap,p->map1,i);
+    RBlks(dv,bitmap,dv->map1,i);
     i=0;
     for (y=0;y<GR_HEIGHT-3*FONT_HEIGHT;y++) {
       if (ScanKey)
@@ -313,7 +313,7 @@ U0 FAT32DrvView(U8 drv_let=0)
     }
     Free(bitmap);
   } catch
-    PrtUnlock(p);
+    DrvUnlock(dv);
   GetChar;
  
   SettingsPop;
@@ -322,19 +322,19 @@ U0 FAT32DrvView(U8 drv_let=0)
 }
 public U0 DrvView(U8 drv_let=0)
 {//Drive view. Graph the allocation map's fragmentation.
-  CPrt *p=Drv2Prt(drv_let),*p_old=Fs->cur_prt;
+  CDrv *dv=Let2Drv(drv_let),*old_dv=Fs->cur_dv;
   Drv(drv_let);
-  switch (p->type) {
-    case PT_REDSEA:
-      RedSeaFSDrvView(drv_let);
+  switch (dv->type) {
+    case DVT_REDSEA:
+      RedSeaDrvView(drv_let);
       break;
-    case PT_FAT32:
+    case DVT_FAT32:
       FAT32DrvView(drv_let);
       break;
     default:
       PrintErr("File System Not Supported\n");
   }
-  Drv(Prt2Drv(p_old));
+  Drv(Drv2Let(old_dv));
 }
 
 public U0 DskView(U8 drv_let=0)
@@ -343,8 +343,8 @@ public U0 DskView(U8 drv_let=0)
     h=Fs->pix_width,
     v=Fs->pix_height,
     radius;
-  CPrt *p;
-  CBlkDev *bdev=Drv2BlkDev(drv_let);
+  CDrv *dv;
+  CBlkDev *bd=Let2BlkDev(drv_let);
   CDC *dc=DCAlias;
   F64 sect_start,sect_end;
 
@@ -360,11 +360,11 @@ public U0 DskView(U8 drv_let=0)
   GrCircle(dc,h>>1,v>>1,radius);
 
   j=1;
-  for (i=0;i<NUM_PRTS;i++) {
-    p=&dsk.prts[i];
-    if (bdev==p->bdev && p->type) {
-      sect_start=-(p->offset*2*pi/(bdev->max_blk+1));
-      sect_end	=-((p->offset+p->size)*2*pi/(bdev->max_blk+1));
+  for (i=0;i<NUM_DRVS;i++) {
+    dv=&dsk.drvs[i];
+    if (bd==dv->bd && dv->type) {
+      sect_start=-(dv->base_offset*2*pi/(bd->max_blk+1));
+      sect_end	=-((dv->base_offset+dv->size)*2*pi/(bd->max_blk+1));
       dc->color=BLACK;
       GrLine(dc,h>>1,v>>1,
 	h>>1+radius*Cos(sect_start),
@@ -374,8 +374,8 @@ public U0 DskView(U8 drv_let=0)
 	v>>1+radius*Sin(sect_end));
 
       dc->color=j;
-      GrPrint(dc,0,v-FONT_HEIGHT*j,"%C %-8Z",Prt2Drv(p),
-	p->type.u16[0],"ST_PRT_TYPES");
+      GrPrint(dc,0,v-FONT_HEIGHT*j,"%C %-8Z",Drv2Let(dv),
+	dv->type.u16[0],"ST_DRV_TYPES");
       GrFloodFill(dc,
 	h>>1+(radius-4)*Cos((sect_start+sect_end)/2),
 	v>>1+(radius-4)*Sin((sect_start+sect_end)/2),FALSE);

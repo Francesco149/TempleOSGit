@@ -160,6 +160,9 @@ U8 *MPrintq(U8 *ptr,I64 flags)
 	      case 't':
 		SPutChar(_dst,'\t',_buf);
 		break;
+	      case '0':
+		SPutChar(_dst,0,_buf);
+		break;
 	    sub_switch_end:
 	      ptr++;
 	      break;
@@ -177,35 +180,6 @@ U8 *MPrintq(U8 *ptr,I64 flags)
 		    else
 		      i=i<<4+ch1-'A'+10;
 		  } else
-		    break;
-		}
-		break;
-	      case 'b':
-	      case 'B':
-		i=0;
-		ptr++;
-		while (TRUE) {
-		  ch1=*ptr++;
-		  if ('0'<=ch1<='1')
-		    i=i<<1+ch1-'0';
-		  else
-		    break;
-		}
-		break;
-	      case 'o':
-	      case 'O':
-		i=0;
-		ptr++;
-		goto sq_octal;
-	      case '0'...'7':
-		i=ch1-'0';
-		ptr++;
-sq_octal:
-		while (TRUE) {
-		  ch1=*ptr++;
-		  if ('0'<=ch1<='7')
-		    i=i<<3+ch1-'0';
-		  else
 		    break;
 		}
 		break;
@@ -897,30 +871,6 @@ sp_out_eng: //Engineering notation
 	    } while (m && k<TEMP_BUF_LEN-SLOP);
 	    goto sp_out_num;
 	  }
-	case 'o':
-	case 'O':
-	  if (cur_arg>=argc)
-	    throw('StrPrint');
-	  m=argv[cur_arg++];
-	  if (flags&SPF_COMMA) {
-	    comma_fmt_cnt=comma_cnt=3;
-	    do {
-	      temp_buf[k++]= m&7 +'0';
-	      m>>=3;
-	      if (!m) break;
-	      if (!--comma_cnt) {
-		temp_buf[k++]=',';
-		comma_cnt=3;
-	      }
-	    } while (k<TEMP_BUF_LEN-SLOP);
-	    goto sp_out_comma_num;
-	  } else {
-	    do {
-	      temp_buf[k++]= m&7 +'0';
-	      m>>=3;
-	    } while (m && k<TEMP_BUF_LEN-SLOP);
-	    goto sp_out_num;
-	  }
 	case '%':
 	  SPutChar(_dst,'%',_buf);
 	  break;
@@ -933,12 +883,12 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *StrPrint(U8 *dst,U8 *fmt,...)
-{//See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//See [C:/Kernel/StrPrint.CPP.Z,221] StrPrintJoin().
   return StrPrintJoin(dst,fmt,argc,argv);
 }
 
 U8 *CatPrint(U8 *_dst,U8 *fmt,...)
-{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,221] StrPrintJoin().
   U8 *dst=_dst;
   while (*dst)
     dst++;
@@ -947,14 +897,14 @@ U8 *CatPrint(U8 *_dst,U8 *fmt,...)
 }
 
 U0 Print(U8 *fmt,...)
-{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,221] StrPrintJoin().
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   PutS(buf);
   Free(buf);
 }
 
 U8 *MStrPrint(U8 *fmt,...)
-{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,221] StrPrintJoin().
   U8 *result,*buf=StrPrintJoin(NULL,fmt,argc,argv);
   result=StrNew(buf);
   Free(buf);

@@ -1,7 +1,7 @@
 #help_index "DolDoc/Editor"
 
 public I64 EdCurU8(CDoc *doc)
-{//Return cur U8. See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,348] EdRenumAsm for an example.
+{//Return cur U8. See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,335] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry;
   I64 result=-1;
@@ -18,7 +18,7 @@ public I64 EdCurU8(CDoc *doc)
 
 public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor left. Might need a call to [C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,348] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,335] EdRenumAsm for an example.
   U8 *dst;
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry,*original_ce=doc_ce,*doc_ne;
@@ -89,7 +89,7 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor right. Might need a call to [C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,348] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,335] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   CDocEntry *doc_ce=doc->cur_entry,*original_ce=doc_ce,*doc_ne;
@@ -164,7 +164,7 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor up. Might need a call to [C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,348] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,335] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x;
@@ -277,7 +277,7 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor down. Might need a call to [C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,348] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,335] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x,old_de_flags=0,old_color;
@@ -652,12 +652,16 @@ U0 DocEntryToggle(CDoc *doc)
   U8 ch,*st,*st2;
   I64 i,j,k;
   if (doc_ce!=doc && !(doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_WITH_TABS))) {
-    if (doc_ce->type_u8==DOCT_TEXT && !(doc_ce->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP))) {
+    if (doc_ce->type_u8==DOCT_TEXT &&
+	!(doc_ce->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP)) &&
+	!(doc_ce->type&DOCG_BL_IV_UL)) {
       doc_ce2=doc_ce->last;
       for (k=0;k<20;k++) {
 	if (doc_ce2!=doc) {
 	  cl1=doc_ce2->last;
-	  if (doc_ce2->type_u8==DOCT_TEXT && doc_ce->de_flags==doc_ce2->de_flags && doc_ce->type==doc_ce2->type) {
+	  if (doc_ce2->type_u8==DOCT_TEXT &&
+		doc_ce->de_flags==doc_ce2->de_flags &&
+		doc_ce->type==doc_ce2->type) {
 	    i=StrLen(doc_ce2->tag);
 	    j=StrLen(doc_ce->tag);
 	    st=MAlloc(i+j+1,doc->mem_task);
@@ -680,7 +684,9 @@ U0 DocEntryToggle(CDoc *doc)
       for (k=0;k<20;k++) {
 	if (doc_ce2!=doc) {
 	  cl1=doc_ce2->next;
-	  if (doc_ce2->type_u8==DOCT_TEXT && doc_ce->de_flags==doc_ce2->de_flags && doc_ce->type==doc_ce2->type) {
+	  if (doc_ce2->type_u8==DOCT_TEXT &&
+		doc_ce->de_flags==doc_ce2->de_flags &&
+		doc_ce->type==doc_ce2->type) {
 	    i=StrLen(doc_ce->tag);
 	    j=StrLen(doc_ce2->tag);
 	    st=MAlloc(i+j+1,doc->mem_task);
@@ -704,7 +710,8 @@ U0 DocEntryToggle(CDoc *doc)
       j=doc->cur_data_col+1;
       while (j<doc_ce->max_col && doc_ce->tag[j]!='$')
 	j++;
-      if (i<j-1 && doc_ce->min_col<=i<j<doc_ce->max_col && doc_ce->tag[i]=='$' && doc_ce->tag[j]=='$') {
+      if (i<j-1 && doc_ce->min_col<=i<j<doc_ce->max_col &&
+		doc_ce->tag[i]=='$' && doc_ce->tag[j]=='$') {
 	ch=doc_ce->tag[j+1];
 	doc_ce->tag[j+1]=0;
 	st=StrNew(doc_ce->tag+i);

@@ -8,7 +8,7 @@ See Key Map
  for a detailed list of key commands.
 
 When you are at the cmd line, editing documents, browsing documentation and 
-help, entering items in forms or in menu's, the [C:/Kernel/Adam1a.HPP.Z,1317]
+help, entering items in forms or in menu's, the [C:/Kernel/Adam1a.HPP.Z,1328]
 DolDoc editor handles keys.  
 It allows you to define your own key handlers in a
 [C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
@@ -24,15 +24,15 @@ pre-defined, but you can change them if you wish.
 <ALT-digit keys>  Extended ASCII (3 digit decimal number).
 
 <CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
-the [C:/Kernel/Adam1a.HPP.Z,1317] CDoc editor.  I reserve the right to
+the [C:/Kernel/Adam1a.HPP.Z,1328] CDoc editor.  I reserve the right to
 allocate these, but in the mean time, 
-you can define your own handlers with [C:/Kernel/KbdMouse/Keyboard.CPP.Z,418]
+you can define your own handlers with [C:/Kernel/KbdMouse/Keyboard.CPP.Z,401]
 SetCtrlAltLetCB().  They operate either 
 in a interrupt environment or in the window mgr when it queues kbd msgs.  You 
 can do [C:/Kernel/Misc1a.CPP.Z,244] Raw() output.  <CTRL-ALT-letter> handlers
 take a scan_code as an arg.
 
-<CTRL-function key>  Auto-completes wordstat words.
+<CTRL-function key>  Auto-completes local words.
 
 <CTRL-digit key>  Auto-completes dictionary words.
 

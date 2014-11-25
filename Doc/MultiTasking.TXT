@@ -2,18 +2,19 @@
 
 TempleOS is a preemptive multitasking operating system.  However, you can 
 turn-off preemption on a task by task basis and the task will not yield ctrl 
-unless it volunteers with [C:/Kernel/Sched.CPP.Z,343] Yield(),
-[C:/Kernel/Misc1a.CPP.Z,151] Sleep() or a call to I/O which yields ctrl. 
- Use the [C:/Kernel/Adam1b.HPP.Z,227] Preempt() cmd to turn on or off
+unless it volunteers with [C:/Kernel/Sched.CPP.Z,346] Yield(),
+[C:/Kernel/Misc1a.CPP.Z,151] Sleep() or a call to I/O which yields ctrl.
+
+Use the [C:/Kernel/Adam1b.HPP.Z,224] Preempt() cmd to turn on or off
 preemption.  This is useful when you 
 have multiple tasks modifying data structures, simultaneously.  Interrupts 
 still occur when preemption is off.  Turning-off preemption does not protect 
-against multicore simultaneous access.   
+against multicore simultaneous access.
 
 **Preemption is turned-off by default when a task is
-[C:/Kernel/Task1a.CPP.Z,221] Spawn()ed.**
+[C:/Kernel/Task1a.CPP.Z,216] Spawn()ed.**
 
-The time-slice rate is set by [C:/Kernel/Adam1a.HPP.Z,537] JIFFY_FREQ.
+The time-slice rate is set by [C:/Kernel/Adam1a.HPP.Z,547] JIFFY_FREQ.
 
 TempleOS does not remove tasks from the queue when they are waiting.  They 
 swap-in, check whatever condition they are waiting for and swap-out.  This 
@@ -33,7 +34,7 @@ During that time, other tasks can do CPU-only operations, however.
 You can turn on and off interrupts in your user programs.  This is part of
 the 
 mission statement, giving complete freedom to programmers.  Use CLI or STI.  
-TempleOS currently doesn't use interrupt besides the timer and keyboard and 
+TempleOS currently doesn't use interrupt besides the timer, keyboard and 
 sometimes mouse interrupt.  Since the interrupt flag is part of your task 
 context and since you are voluntarily swapped-out if you call
 [C:/Kernel/KbdMouse/Message.CPP.Z,189] GetChar() or 
@@ -50,4 +51,4 @@ tasks asking for service.  It is much simpler, though, the way it is.
 The disk code does not break-up large requests in pieces, if you are curious 
 why one task must wait until another finishes an operation.
 
-See [C:/Demo/Lectures/Spinning.CPP.Z,1].
+See [C:/Demo/Lectures/Spinning.CPP,1].

@@ -294,7 +294,7 @@ public Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC)
 	dc=DCAlias(gr.dc2,win_task); //Necessary for sprites
       break;
     case DOC_RECALC_TO_SCREEN:
-      if (doc->refresh_cnt++%(ToI64(winmgr.fps/10)+1) &&
+      if (doc->updates_cnt++%(ToI64(winmgr.fps/10)+1) &&
 	    !Bt(&doc->flags,DOCf_DO_FULL_REFRESH) &&
 	    !(doc->flags&DOCF_BWD_MOVEMENT))
 	full_refresh=FALSE;

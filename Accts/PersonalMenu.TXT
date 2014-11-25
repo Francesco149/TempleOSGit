@@ -65,7 +65,7 @@ Cd("::/Demo/AcctExample");Dir;
 `
 
 
-MakeAll with [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
+MakeAll with [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().
 Cd("::/Kernel");Dir;
 
 `Cd("::/Kernel");Dir;
@@ -95,8 +95,8 @@ Key Map
 `KeyMap;View;
 `
 
-SoftBoot("/Kernel.BIN.C");
-`SoftBoot("/Kernel.BIN.C");`
+RAMReboot("/Kernel.BIN.C");
+`RAMReboot("/Kernel.BIN.C");`
 
 
 
@@ -124,10 +124,8 @@ BugBird <8> (image)
 
 
 
-
 FlatTops <9> (image)  Golf <10> (image)  Strut <11> (image) TheDead <12>
 (image) DunGen <13> (image)  
-
 
 
 
@@ -165,7 +163,8 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24>
 
 
 
-BigGuns <26> (image) Budget <27> (image) Digits <28> (image) MemRep
+BigGuns <26> (image) Budget <27> (image) Digits <28> (image) ChessNet <29>
+(image) MemRep
 `MemRep;View;`
 
 

@@ -170,7 +170,7 @@ F64 Rand2()
 }
 
 U0 Randomize(I64 seed=0)
-{//Randomizes [C:/Kernel/Adam1a.HPP.Z,3213] CTask seed.
+{//Randomizes [C:/Kernel/Adam1a.HPP.Z,3216] CTask seed.
   if (seed)
     Fs->rnd_seed=seed;
   else

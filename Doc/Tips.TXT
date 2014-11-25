@@ -13,11 +13,10 @@ Writes are not cached.
 [C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey(). 
  See [Keyboard Devices/System,1] Keyboard Devices.
 
-* <ALT-m> maximizes a window.  <ALT-SHIFT-w> closes WordStat.  <ALT-w> brings 
-back WordStat.  <ALT-v> vertically tiles windows.  <ALT-h> horizontally tiles 
-windows.  The ALT keys are defined in [C:/Accts/Adam3cKeyPlugIns.CPP.Z,1]. 
-You can 
-customize them.
+* <ALT-m> maximizes a window.  <ALT-SHIFT-w> closes AutoComplete.  <ALT-w> 
+brings back AutoComplete.  <ALT-v> vertically tiles windows.  <ALT-h> 
+horizontally tiles windows.  The ALT keys are defined in 
+[C:/Accts/Adam3cKeyPlugIns.CPP.Z,1].  You can customize them.
 
 * If you make changes to TempleOS files in your HOME directory, generally you 
 reboot to make them take effect.  (You don't compile anything.)  You should 
@@ -35,7 +34,7 @@ Merge(\"D:/*\",\"E:/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-m> at the cmd line to access your PersonalMenu.  Place macros there 
 with <CTRL-l>, or icon-like sprites with <CTRL-r>.  Use the Pop-Up option on 
-macros to [C:/Kernel/Task1a.CPP.Z,221] Spawn() a task to run a file.  It dies
+macros to [C:/Kernel/Task1a.CPP.Z,216] Spawn() a task to run a file.  It dies
 when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-s> to save your macro/menu 
 area after making changes.
@@ -52,7 +51,7 @@ start-up file.  See [C:/Accts/TAD/Adam3aLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the [C:/Kernel/KGlbls.CPP.Z,15]
 local_time_offset global var 
-in a start-up file.  It's units are [C:/Kernel/Adam1a.HPP.Z,538] CDATE_FREQ. 
+in a start-up file.  It's units are [C:/Kernel/Adam1a.HPP.Z,548] CDATE_FREQ. 
 See [C:/Accts/TAD/Adam3aLocalize.CPP,1] local time.
 
 * <CTRL-SHIFT-L> in the editor to reindent a [C:/Doc/HolyC.TXT.Z,1] HolyC
@@ -66,52 +65,52 @@ find to a different string and achieve a AND search.  When finished, press <ES
 C>.
  
 * You can recompile and reinstall the kernel with
-[C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().  
+[C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().  
 You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,480] Auto() 
+[C:/Kernel/SrvCmd.CPP.Z,494] Auto() 
 function to answer the cfg questions.  See my technique
-[C:/Demo/AcctExample/TSAdam.CPP.Z,1] Cfg Strs
-[C:/Demo/AcctExample/TSDistro.CPP.Z,1] Update Funs.
+[C:/Demo/AcctExample/TSAdam.CPP,1] Cfg Strs
+[C:/Demo/AcctExample/TSDistro.CPP,1] Update Funs.
 
 * [C:/Kernel/Mem1c.CPP.Z,306] Scale2Mem(min,max,limit=2*1024*1024*1024) can
 be used for cfg questions when 
-recompiling.  The [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall() cfg
+recompiling.  The [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() cfg
 prompts accept expressions, not 
 just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 
-* You can permanently disable WordStat commenting-out
-[C:/Accts/TAD/Adam3eSys.CPP,1] WSInit() in 
+* You can permanently disable AutoComplete commenting-out
+[C:/Accts/TAD/Adam3eSys.CPP,1] ACInit() in 
 [C:/Accts/TAD/Adam3eSys.CPP,1] HOME/Adam3eSys.CPP.
 
 * Boolean expressions **not** in if statements don't have short circuit logic
 and 
 are compiled inefficiently.
 
-* You can use [C:/Kernel/Adam1b.HPP.Z,165]
-progress1-[C:/Kernel/Adam1b.HPP.Z,174] progress4 in your programs for
+* You can use [C:/Kernel/Adam1b.HPP.Z,162]
+progress1-[C:/Kernel/Adam1b.HPP.Z,171] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
 was to indicate how far along operations were.  There's no coordination, so 
 different apps might interfere.  I use them most for debugging--just values 
-easily viewed.  See [C:/Demo/Progress.CPP.Z,1].
+easily viewed.  See [C:/Demo/Progress.CPP,1].
 
 * Use [C:/Adam/DolDoc/DocNew.CPP.Z,610] DocMax() to adjust the size of the
-cmd line buf.  It counts [C:/Kernel/Adam1a.HPP.Z,1317] CDoc 
+cmd line buf.  It counts [C:/Kernel/Adam1a.HPP.Z,1328] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/Adam1a.HPP.Z,3213] CTask,
-[C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry and [C:/Kernel/Adam1a.HPP.Z,2450]
+to store a data item, for convenience.  [C:/Kernel/Adam1a.HPP.Z,3216] CTask,
+[C:/Kernel/Adam1a.HPP.Z,1165] CDocEntry and [C:/Kernel/Adam1a.HPP.Z,2454]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
-disk cache when you recompile the kernel; disabling WordStat; Specify smaller 
-stk sizes when doing [C:/Kernel/Task1a.CPP.Z,221] Spawn(), chang
-[C:/Kernel/Adam1a.HPP.Z,2775] DFT_STK, and using
-[C:/Adam/DolDoc/DocNew.CPP.Z,610] DocMax() to reduce the 
-cmd line buffer size.
+disk cache when you recompile the kernel; disabling AutoComplete; Specify 
+smaller stk sizes when doing [C:/Kernel/Task1a.CPP.Z,216] Spawn(), chang
+[C:/Kernel/Adam1a.HPP.Z,2778] DFT_STK, and using
+[C:/Adam/DolDoc/DocNew.CPP.Z,610] DocMax() to 
+reduce the cmd line buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
 when read or written.  The compression method is not supported by other 
@@ -119,7 +118,7 @@ operating systems.  You can store files uncompressed by
 [C:/Adam/Dsk/Dsk2a.CPP.Z,107] Move()ing them to a 
 filename not ending in ".Z".  See [C:/Doc/TSZ.TXT.Z,1] if you want to
 uncompress 
-while in WINDOWS.
+while in Linux.
 
 * [C:/Adam/Utils/Merge.CPP.Z,37] Merge() can be used to see what's changed. 
 The +d flag will show 
@@ -130,14 +129,14 @@ flag will recurse.)
 check for broken links in 
 documentation.
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1457]
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1464]
 OPTf_WARN_PAREN) to find unnecessary parentheses in code.
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1458]
+* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1465]
 OPTf_WARN_DUP_TYPES) to find unnecessary local var type 
 statements.
 
-* [C:/Compiler/ICLCC.CPP.Z,1] OptEqu([C:/Kernel/Adam1a.HPP.Z,1453]
+* [C:/Compiler/ICLCC.CPP.Z,1] OptEqu([C:/Kernel/Adam1a.HPP.Z,1460]
 OPTf_ECHO,ON) can be placed in [C:/Kernel/Adam1.CPP.Z,1] Adam1.CPP to echo
 start-up scripts.
 
@@ -164,6 +163,8 @@ if you want.
 can save the cmd line doc as text with <CTRL-a>.
 
 * You can save a sprite as a .BMP file in <CTRL-r> on the Sprite BitMap Menu.
+
+* You can EyeDropper colors in the <CTRL-r> sprite editor by pressing 'c'.
 
 * There are handy functions--F(),R(),FD() and RD() which are defined in 
 [C:/Accts/TAD/Adam3dWrappers.CPP,1].  You're encouraged to change them, since
@@ -201,23 +202,17 @@ until the user presses <ESC> or <SHIFT
 -ESC>.
 
 * You can access the word under the cursor at
-[C:/Adam/WordStat/WordStat.CPP.Z,39] ws.cur_word, but you should 
+[C:/Adam/AutoComplete/AutoComplete.CPP.Z,11] ac.cur_word, but you should 
 probably turn-off preemption or interrupts momentarily to copy it.
 
-* You can reactivate WordStat after closing it by pressing <CTRL-Fun Key> or <
-ALT-w> if you have it defined.
+* You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
+or <ALT-w> if you have it defined.
 
-* If you use consistent var names for items of different classes, you'll 
-usually be able to use WordStat's autocomplete for member vars.  I always use 
-lx for [C:/Kernel/Adam1a.HPP.Z,2058] CLex ptrs; doc for
-[C:/Kernel/Adam1a.HPP.Z,1317] CDoc ptrs; doc_e or doc_ce for
-[C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry ptrs, etc.
-
-* [C:/Kernel/Adam1b.HPP.Z,227] Preempt() is used to keep a task from being
+* [C:/Kernel/Adam1b.HPP.Z,224] Preempt() is used to keep a task from being
 interrupted and swapped-out.  It 
 has a similar effect to turning-off interrupts.  Each task has it's own 
 preemption ctrl.  A task with preemption turned-off can voluntarily
-[C:/Kernel/Sched.CPP.Z,343] Yield() 
+[C:/Kernel/Sched.CPP.Z,346] Yield() 
 with preemption off.
 
 * You can set a color for different drives with [C:/Adam/Dsk/Dsk2a.CPP.Z,282]
@@ -225,8 +220,8 @@ SetDrvTextAttr().  Place calls
 to this in [C:/Accts/TAD/Adam3aLocalize.CPP,1].
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/Adam1a.HPP.Z,1317] CDoc cmd under the 
-cursor.  See [C:/Demo/DolDoc/TextDemo.CPP.Z,1].
+[C:/Kernel/Adam1a.HPP.Z,1328] CDoc cmd under the 
+cursor.  See [C:/Demo/DolDoc/TextDemo.CPP,1].
  
 * If you toggle to plain text when you are working with graphics in a 
 document, you can add duplicate entries for sprites by entering a $SP...$ cmd 
@@ -257,7 +252,7 @@ fills work well.  If you are doing interpolation, however, they must be vect.
 [C:/Adam/Gr/GrBitMap.CPP.Z,885] GrRect() is fast.
 
 * You can customize the wallpaper.  See
-[C:/Demo/Graphics/WallPaperFish.CPP.Z,1].
+[C:/Demo/Graphics/WallPaperFish.CPP,1].
 
 * Your RAM disks will not be reformated when you reboot if the memory
 location 
@@ -280,24 +275,24 @@ resources are put together.
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
-* [C:/Kernel/Adam1a.HPP.Z,524] cnts.time_stamp_freq is continuously
+* [C:/Kernel/Adam1a.HPP.Z,534] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
-timeout=[C:/Kernel/Adam1b.HPP.Z,233] GetTSC+
-[C:/Kernel/Adam1a.HPP.Z,524] cnts.time_stamp_freq x seconds; and compare
-against [C:/Kernel/Adam1b.HPP.Z,233] GetTSC().  I recommend 
-just using [C:/Kernel/Misc1a.CPP.Z,122] tS or [C:/Kernel/Adam1a.HPP.Z,524]
+timeout=[C:/Kernel/Adam1b.HPP.Z,230] GetTSC+
+[C:/Kernel/Adam1a.HPP.Z,534] cnts.time_stamp_freq x seconds; and compare
+against [C:/Kernel/Adam1b.HPP.Z,230] GetTSC().  I recommend 
+just using [C:/Kernel/Misc1a.CPP.Z,122] tS or [C:/Kernel/Adam1a.HPP.Z,534]
 cnts.jiffies.
 
 * Use [C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog() and
 [C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep() to find leaks.  Don't be
-confused by [C:/Kernel/Adam1a.HPP.Z,1317] CDoc 
+confused by [C:/Kernel/Adam1a.HPP.Z,1328] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/Adam1a.HPP.Z,2686]
+* For advanced heap debugging, play with [C:/Kernel/Adam1a.HPP.Z,2689]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,459] Type() to display .BMP or
+* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,460] Type() to display .BMP or
 .GRA files.
 
 * Use [C:/Kernel/PSect.CPP.Z,283] Man() to jump to short sym name src code.
@@ -320,9 +315,12 @@ leading code is slow.
 `#include "::/Apps/Psalmody/Run"
 `
  [C:/Doc/HolyC.TXT.Z,1] HolyC song files is a comment with a category 
-recognized by [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox().  The categories
-are "no nothing", "has words", "has 
+recognized by [C:/Apps/Psalmody/JukeBox.CPP,1] JukeBox().  The categories are
+"no nothing", "has words", "has 
 graphics", or "special".  The third character in the song comment is a digit 
-rating number, shown in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox().  You
-can set the song rating in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox() 
+rating number, shown in [C:/Apps/Psalmody/JukeBox.CPP,1] JukeBox().  You can
+set the song rating in [C:/Apps/Psalmody/JukeBox.CPP,1] JukeBox() 
 by pressing 0-9.  You can press <DELETE> to delete songs.
+
+
+* "Linux" is probably a trademark owned by Linus Torvalds.

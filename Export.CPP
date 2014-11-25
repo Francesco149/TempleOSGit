@@ -632,7 +632,7 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
 //to start the export.
 
 U0 ExportTree() {
-  CTask *task=SpawnUser("#include \"D:/Export.CPP\"
+  CTask *task=User("#include \"D:/Export.CPP\"
 ExportTreeImpl;
 ExportSingle(\"D:/Export.CPP\",\"D:/Git/Export.CPP\");
 ");

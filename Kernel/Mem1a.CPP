@@ -481,7 +481,7 @@ Return: NULL if out of memory.
 */
   CMemBlk *result;
   I64 threshold,cnt,size;
-  CMemUnusedAllocated *uum,**_uum,**_ptr;
+  CMemUnused *uum,**_uum,**_ptr;
   if (result=MemBlksIndependentAlloc(_pages512,hc->bp)) {
     QueIns(result,hc->last_mem_blk);
     result->mb_signature=MBS_USED_SIGNATURE_VAL;
@@ -494,7 +494,7 @@ Return: NULL if out of memory.
       cnt=0;
       _uum=&hc->malloc_free_lst;
       while (uum=*_uum) {
-#assert !offset(CMemUnusedAllocated.next)
+#assert !offset(CMemUnused.next)
 	size=uum->size;
 	if (size<threshold) {
 	  *_uum=uum->next;

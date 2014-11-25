@@ -1,7 +1,7 @@
 //Change anything you want in this
 //acct file or others.
 
-U0 FillInTime()
+U0 InsTime()
 {
   CDate cdt;
   cdt=Now;
@@ -72,21 +72,21 @@ Bool MyPutKey(I64 ch,I64 sc)
       case SC_F4:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
-	    SetKeyDesc("Dollar/LTBLUE");
-	  else
 	    SetKeyDesc("Dollar/Default Color");
+	  else
+	    SetKeyDesc("Dollar/BLUE");
 	} else {
 	  if (sc & SCF_SHIFT)
-	    "$LTBLUE$";
-	  else
 	    "$FG$";
+	  else
+	    "$BLUE$";
 	}
 	break;
       case SC_F7:
 	if (sc&SCF_KEY_DESC)
-	  SetKeyDesc("Misc/Insert Datetime");
+	  SetKeyDesc("Misc/Ins Datetime");
 	else
-	  FillInTime;
+	  InsTime;
 	break;
     }
     return TRUE;
@@ -94,6 +94,19 @@ Bool MyPutKey(I64 ch,I64 sc)
     if (!(sc & SCF_CTRL)) {
       if (sc & SCF_ALT) {
 	switch (ch) {
+	  case 'a':
+	    if (sc&SCF_KEY_DESC)
+	      SetKeyDesc("Win/AutoComplete(ON);");
+	    else
+	      AutoComplete(ON);
+	    return TRUE;
+	  case 'A':
+	    if (sc&SCF_KEY_DESC)
+	      SetKeyDesc("Win/AutoComplete;");
+	    else
+	      AutoComplete;
+	    return TRUE;
+
 	  case 'h':
 	    if (sc&SCF_KEY_DESC)
 	      SetKeyDesc("Win/Tile Horizontally");
@@ -120,7 +133,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	      SetKeyDesc("Edit/Put Link to Cur Pos on Clipboard");
 	    else {
 	      ClipboardDel;
-	      st1=FileNameAbs(Define("ST_BIBLE_FILE"));
+	      st1=FileNameAbs(BIBLE_FILENAME);
 	      st2=FileNameAbs(DocPut->filename.name);
 	      if (!StrCmp(st1,st2)) {
 		Free(st1);
@@ -143,19 +156,6 @@ Bool MyPutKey(I64 ch,I64 sc)
 		DocPut->filename.name,i);
 	      "$AN,\"<TODO>\",A=\"ANC%d\"$",i;
 	    }
-	    return TRUE;
-
-	  case 'w':
-	    if (sc&SCF_KEY_DESC)
-	      SetKeyDesc("Win/WordStat(ON);");
-	    else
-	      WordStat(ON);
-	    return TRUE;
-	  case 'W':
-	    if (sc&SCF_KEY_DESC)
-	      SetKeyDesc("Win/WordStat;");
-	    else
-	      WordStat;
 	    return TRUE;
 
 	}

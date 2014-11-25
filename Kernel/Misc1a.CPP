@@ -158,17 +158,17 @@ U0 Sleep(I64 mS)
 
 U0 Snd(F64 freq)
 {//Play freq.  Zero means off.
-  I64 p;
+  I64 period;
   CSndData *d;
   if (!Bt(&sys_semas[SYS_SEMA_MUTE],0) &&
 	!LBts(&sys_semas[SYS_SEMA_SND],0)) {
     if (freq!=snd.freq) {
       snd.freq=freq;
       if (0<freq<=20000) {
-	p=SYS_TIMER_FREQ/freq;
+	period=SYS_TIMER_FREQ/freq;
 	OutU8(0x43,0xB6);
-	OutU8(0x42,p);
-	OutU8(0x42,p.u8[1]);
+	OutU8(0x42,period);
+	OutU8(0x42,period.u8[1]);
 	OutU8(0x61,3|InU8(0x61));
       } else
 	OutU8(0x61,InU8(0x61)&~3);
@@ -300,7 +300,7 @@ U0 CtrlAltD(I64)
 
 U0 CtrlAltE(I64)
 {
-  SpawnUser;
+  User;
 }
 
 U0 CtrlAltF(I64)

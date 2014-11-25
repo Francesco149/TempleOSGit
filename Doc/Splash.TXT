@@ -1,6 +1,7 @@
 
-                                TempleOS V2.11
+                                TempleOS V2.18
 
+                        Public Domain Operating System
 
 
 

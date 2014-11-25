@@ -11,8 +11,9 @@ multicore support.
 * Free, public domain, 100% open source.
 
 * 64-bit compiler/assembler for [C:/Doc/HolyC.TXT.Z,1] HolyC.  Truly
-compiles, not interprets.  Just-
-in-Time and Ahead-of-Time compilation.  With JIT, no need for object or exe 
+compiles, doesn't interpret.  Ju
+st-in-Time and Ahead-of-Time compilation.  With JIT, no need for object or
+exe 
 files.
 
 * No 32-bit krufty code.
@@ -56,7 +57,7 @@ half a microsecond.
 * Real-time fancy differential-equation solver for physics engines, to use in 
 games.  (Adaptive step-size Runge-Kutta, interpolated for real-time.)
 
-* Auto-completion, jump-to-source tool called WordStat with Dictionary.
+* Auto-completion, jump-to-source tool called AutoComplete with Dictionary.
 
 * Window Manager.  Pan screen with <CTRL-LeftDrag>.  Zoom screen on mouse 
 cursor with <CTRL-ALT-z>/<CTRL-ALT-SHIFT-Z>.

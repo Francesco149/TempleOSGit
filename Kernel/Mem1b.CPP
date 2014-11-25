@@ -27,12 +27,12 @@ _MALLOC::
 
 @@15:	MOV	RAX,U64 SF_ARG1[RBP]
 	PUSHFD
-	ADD	RAX,CMemUsedAllocated.start+7	//round-up to I64
+	ADD	RAX,CMemUsed.start+7	//round-up to I64
 	AND	AL,0xF8
-#assert CMemUsedAllocated.start>=sizeof(CMemUnusedAllocated)
-	CMP	RAX,CMemUsedAllocated.start
+#assert CMemUsed.start>=sizeof(CMemUnused)
+	CMP	RAX,CMemUsed.start
 	JAE	@@20
-	MOV	RAX,CMemUsedAllocated.start
+	MOV	RAX,CMemUsed.start
 @@20:
 
 	CLI
@@ -46,7 +46,7 @@ _MALLOC::
 	MOV	RSI,U64 CHeapCtrl.heap_hash[RAX+RDX]
 	TEST	RSI,RSI
 	JZ	@@35
-	MOV	RCX,U64 CMemUnusedAllocated.next[RSI]
+	MOV	RCX,U64 CMemUnused.next[RSI]
 	MOV	U64 CHeapCtrl.heap_hash[RAX+RDX],RCX
 	JMP	I32 MALLOC_ALMOST_DONE
 
@@ -72,10 +72,10 @@ _MALLOC::
 	JMP	I32 MALLOC_ALMOST_DONE
 
 //Little allocation, chunk-off piece from free lst chunks
-@@35:	LEA	RSI,U64 CHeapCtrl.malloc_free_lst-CMemUnusedAllocated.next[RDX]
+@@35:	LEA	RSI,U64 CHeapCtrl.malloc_free_lst-CMemUnused.next[RDX]
 
 @@40:	MOV	RBX,RSI
-	MOV	RSI,U64 CMemUnusedAllocated.next[RBX]
+	MOV	RSI,U64 CMemUnused.next[RBX]
 	TEST	RSI,RSI
 	JNZ	@@55
 	PUSH	RAX		//-**** save byte size
@@ -107,43 +107,43 @@ _MALLOC::
 @@50:	LEA	RSI,U64 sizeof(CMemBlk)[RSI]
 	SHL	RAX,PAGE_BITS
 	SUB	RAX,sizeof(CMemBlk)
-	LEA	RBX,U64 CHeapCtrl.malloc_free_lst-CMemUnusedAllocated.next[RDX]
-	MOV	RDI,U64 CMemUnusedAllocated.next[RBX]
-	MOV	U64 CMemUnusedAllocated.next[RSI],RDI
-	MOV	U64 CMemUnusedAllocated.size[RSI],RAX
-	MOV	U64 CMemUnusedAllocated.next[RBX],RSI
+	LEA	RBX,U64 CHeapCtrl.malloc_free_lst-CMemUnused.next[RDX]
+	MOV	RDI,U64 CMemUnused.next[RBX]
+	MOV	U64 CMemUnused.next[RSI],RDI
+	MOV	U64 CMemUnused.size[RSI],RAX
+	MOV	U64 CMemUnused.next[RBX],RSI
 	POP	RAX		//+****
 	JMP	@@65
-@@55:	CMP	U64 CMemUnusedAllocated.size[RSI],RAX
+@@55:	CMP	U64 CMemUnused.size[RSI],RAX
 	JB	@@40
 	JNE	@@65
 
-@@60:	MOV	RDI,U64 CMemUnusedAllocated.next[RSI]
-	MOV	U64 CMemUnusedAllocated.next[RBX],RDI
+@@60:	MOV	RDI,U64 CMemUnused.next[RSI]
+	MOV	U64 CMemUnused.next[RBX],RDI
 	JMP	MALLOC_ALMOST_DONE
 
-@@65:	SUB	U64 CMemUnusedAllocated.size[RSI],RAX	//UPDATE FREE ENTRY
-	CMP	U64 CMemUnusedAllocated.size[RSI],sizeof(CMemUnusedAllocated)
+@@65:	SUB	U64 CMemUnused.size[RSI],RAX	//UPDATE FREE ENTRY
+	CMP	U64 CMemUnused.size[RSI],sizeof(CMemUnused)
 	JAE	@@70			//take from top of block
-	ADD	U64 CMemUnusedAllocated.size[RSI],RAX	//doesn't fit, undo
+	ADD	U64 CMemUnused.size[RSI],RAX	//doesn't fit, undo
 	JMP	I32 @@40
 
-@@70:	ADD	RSI,U64 CMemUnusedAllocated.size[RSI]
+@@70:	ADD	RSI,U64 CMemUnused.size[RSI]
 
 MALLOC_ALMOST_DONE:
-//RSI=result-CMemUsedAllocated.size
-//RAX=size+CMemUsedAllocated.size
+//RSI=result-CMemUsed.size
+//RAX=size+CMemUsed.size
 //RDX=heap ctrl
 	ADD	U64 CHeapCtrl.used_u8s[RDX],RAX
 
 #if _CFG_HEAP_DBG
 //QueIns
 	MOV	RDI,U64 CHeapCtrl.last_um[RDX]
-	MOV	U64 CMemUsedAllocated.next[RDI],RSI
+	MOV	U64 CMemUsed.next[RDI],RSI
 	MOV	U64 CHeapCtrl.last_um[RDX],RSI
-	MOV	U64 CMemUsedAllocated.last[RSI],RDI
-	LEA	RDI,U64 CHeapCtrl.next_um-CMemUsedAllocated.next[RDX]
-	MOV	U64 CMemUsedAllocated.next[RSI],RDI
+	MOV	U64 CMemUsed.last[RSI],RDI
+	LEA	RDI,U64 CHeapCtrl.next_um-CMemUsed.next[RDX]
+	MOV	U64 CMemUsed.next[RSI],RDI
 
 //Caller1/Caller2
 	PUSH	RDX
@@ -152,9 +152,9 @@ MALLOC_ALMOST_DONE:
 	CMP	RDI,RDX
 	JB	@@75
 	XOR	RDI,RDI
-	MOV	U64 CMemUsedAllocated.caller1[RSI],RDI
+	MOV	U64 CMemUsed.caller1[RSI],RDI
 	JMP	@@85
-@@75:	MOV	U64 CMemUsedAllocated.caller1[RSI],RDI
+@@75:	MOV	U64 CMemUsed.caller1[RSI],RDI
 	MOV	RDI,U64 SF_RBP[RBP]
 	CMP	RDI,RDX
 	JB	@@80
@@ -164,7 +164,7 @@ MALLOC_ALMOST_DONE:
 	CMP	RDI,RDX
 	JB	@@85
 	XOR	RDI,RDI
-@@85:	MOV	U64 CMemUsedAllocated.caller2[RSI],RDI
+@@85:	MOV	U64 CMemUsed.caller2[RSI],RDI
 	POP	RDX
 
 #endif
@@ -172,9 +172,9 @@ MALLOC_ALMOST_DONE:
 	BTR	U32 CHeapCtrl.locked_flags[RDX],HClf_LOCKED
 	POPFD
 
-	MOV	U64 CMemUsedAllocated.size[RSI],RAX
-	MOV	U64 CMemUsedAllocated.hc[RSI],RDX
-	LEA	RAX,U64 CMemUsedAllocated.start[RSI]
+	MOV	U64 CMemUsed.size[RSI],RAX
+	MOV	U64 CMemUsed.hc[RSI],RDX
+	LEA	RAX,U64 CMemUsed.start[RSI]
 
 	TEST	U8 [SYS_SEMAS+SYS_SEMA_HEAPLOG_ACTIVE*SEMA_STRUCT_SIZE],1
 	JZ	@@100
@@ -193,8 +193,8 @@ MALLOC_ALMOST_DONE:
 	JZ	MALLOC_FINAL_EXIT
 
 	PUSH	RAX
-	MOV	RCX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RAX]
-	SUB	RCX,CMemUsedAllocated.start
+	MOV	RCX,U64 CMemUsed.size-CMemUsed.start[RAX]
+	SUB	RCX,CMemUsed.start
 	MOV	RDI,RAX
 	MOV	AL,U8 [SYS_HEAP_INIT_VAL]
 	REP_STOSB
@@ -218,7 +218,7 @@ _FREE::
 	MOV	RBX,U64 SF_ARG1[RBP]
 	TEST	RBX,RBX
 	JZ	@@05
-	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RBX]
+	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RBX]
 	TEST	RAX,RAX
 	JGE	@@05	//Aligned alloced chunks have neg size
 	ADD	RBX,RAX
@@ -240,23 +240,23 @@ _FREE::
 	JZ	FREE_DONE
 #endif
 
-	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RSI]
+	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RSI]
 	TEST	RAX,RAX
 	JGE	@@20	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/Kernel/Adam1a.HPP.Z,2712] CMemUsedAllocated struct.
+			//The neg size is offset to start of [C:/Kernel/Adam1a.HPP.Z,2715] CMemUsed struct.
 	ADD	RSI,RAX
 
 @@20:	PUSHFD
-	SUB	RSI,CMemUsedAllocated.start
-	MOV	RDX,U64 CMemUsedAllocated.hc[RSI]
+	SUB	RSI,CMemUsed.start
+	MOV	RDX,U64 CMemUsed.hc[RSI]
 	CMP	U32 CHeapCtrl.hc_signature[RDX],HEAP_CTRL_SIGNATURE_VAL
 	JE	@@25
-	ADD	RSI,CMemUsedAllocated.start
+	ADD	RSI,CMemUsed.start
 	PUSH	RSI
 	CALL	&SysBadFree
 	JMP	I32 _SYS_HLT
 
-@@25:	MOV	RAX,U64 CMemUsedAllocated.size[RSI]
+@@25:	MOV	RAX,U64 CMemUsed.size[RSI]
 	SUB	U64 CHeapCtrl.used_u8s[RDX],RAX
 	CLI
 @@30:	LOCK
@@ -265,10 +265,10 @@ _FREE::
 	JC	@@30
 #if _CFG_HEAP_DBG
 //QueRem
-	MOV	RDX,U64 CMemUsedAllocated.next[RSI]
-	MOV	RDI,U64 CMemUsedAllocated.last[RSI]
-	MOV	U64 CMemUsedAllocated.last[RDX],RDI
-	MOV	U64 CMemUsedAllocated.next[RDI],RDX
+	MOV	RDX,U64 CMemUsed.next[RSI]
+	MOV	RDI,U64 CMemUsed.last[RSI]
+	MOV	U64 CMemUsed.last[RDX],RDI
+	MOV	U64 CMemUsed.next[RDI],RDX
 
 //Caller1/Caller2
 	MOV	RDX,U64 [SYS_HEAP_LIMIT]
@@ -276,9 +276,9 @@ _FREE::
 	CMP	RDI,RDX
 	JB	@@35
 	XOR	RDI,RDI
-	MOV	U64 CMemUnusedAllocated.caller1[RSI],RDI
+	MOV	U64 CMemUnused.caller1[RSI],RDI
 	JMP	@@45
-@@35:	MOV	U64 CMemUnusedAllocated.caller1[RSI],RDI
+@@35:	MOV	U64 CMemUnused.caller1[RSI],RDI
 	MOV	RDI,U64 SF_RBP[RBP]
 	CMP	RDI,RDX
 	JB	@@40
@@ -288,18 +288,18 @@ _FREE::
 	CMP	RDI,RDX
 	JB	@@45
 	XOR	RDI,RDI
-@@45:	MOV	U64 CMemUnusedAllocated.caller2[RSI],RDI
+@@45:	MOV	U64 CMemUnused.caller2[RSI],RDI
 
-	MOV	RDX,U64 CMemUsedAllocated.hc[RSI]
+	MOV	RDX,U64 CMemUsed.hc[RSI]
 #endif
 	CMP	RAX,HEAP_HASH_SIZE
 	JAE	@@50
 
-#assert CMemUnusedAllocated.size==CMemUsedAllocated.size
-//	MOV	U64 CMemUnusedAllocated.size[RSI],RAX
+#assert CMemUnused.size==CMemUsed.size
+//	MOV	U64 CMemUnused.size[RSI],RAX
 
 	MOV	RBX,U64 CHeapCtrl.heap_hash[RAX+RDX]
-	MOV	U64 CMemUnusedAllocated.next[RSI],RBX
+	MOV	U64 CMemUnused.next[RSI],RBX
 	MOV	U64 CHeapCtrl.heap_hash[RAX+RDX],RSI
 	JMP	@@55
 
@@ -326,12 +326,12 @@ _MSIZE::
 	XOR	RAX,RAX
 	TEST	RBX,RBX
 	JZ	@@10
-	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RBX]
+	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RBX]
 	TEST	RAX,RAX
 	JGE	@@05	//Aligned alloced chunks have neg size
 	ADD	RBX,RAX
-	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RBX]
-@@05:	SUB	RAX,CMemUsedAllocated.start
+	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RBX]
+@@05:	SUB	RAX,CMemUsed.start
 @@10:	POP	RBP
 	RET1	8
 //************************************
@@ -342,11 +342,11 @@ _MSIZE2::
 	XOR	RAX,RAX
 	TEST	RBX,RBX
 	JZ	@@10
-	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RBX]
+	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RBX]
 	TEST	RAX,RAX
 	JGE	@@05	//Aligned alloced chunks have neg size
 	ADD	RBX,RAX
-@@05:	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RBX]
+@@05:	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RBX]
 @@10:	POP	RBP
 	RET1	8
 //************************************
@@ -357,11 +357,11 @@ _MHEAP_CTRL::
 	XOR	RAX,RAX
 	TEST	RBX,RBX
 	JZ	@@10
-	MOV	RAX,U64 CMemUsedAllocated.size-CMemUsedAllocated.start[RBX]
+	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RBX]
 	TEST	RAX,RAX
 	JGE	@@05	//Aligned alloced chunks have neg size
 	ADD	RBX,RAX
-@@05:	MOV	RAX,U64 CMemUsedAllocated.hc-CMemUsedAllocated.start[RBX]
+@@05:	MOV	RAX,U64 CMemUsed.hc-CMemUsed.start[RBX]
 @@10:	POP	RBP
 	RET1	8
 }
@@ -369,9 +369,9 @@ _MHEAP_CTRL::
 _extern _FREE U0 Free(U8 *addr); //Free [C:/Kernel/Mem1b.CPP.Z,373] MAlloc()ed memory chunk.
 _extern _MSIZE I64 MSize(U8 *src); //Size of heap object.
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size of heap object.
-_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl of object.
+_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/Adam1a.HPP.Z,2800] CHeapCtrl of object.
 _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL); //Allocate memory chunk.
-//Accepts a [C:/Kernel/Adam1a.HPP.Z,3213] CTask or [C:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl. NULL allocs off current task's heap.
+//Accepts a [C:/Kernel/Adam1a.HPP.Z,3216] CTask or [C:/Kernel/Adam1a.HPP.Z,2800] CHeapCtrl. NULL allocs off current task's heap.
 
 U8 *AMAlloc(I64 size)
 {//Allocate memory in Adam's heap.
@@ -379,7 +379,7 @@ U8 *AMAlloc(I64 size)
 }
 
 U8 *CAlloc(I64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/Adam1a.HPP.Z,3213] CTask or [C:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/Adam1a.HPP.Z,3216] CTask or [C:/Kernel/Adam1a.HPP.Z,2800] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -391,7 +391,7 @@ U8 *ACAlloc(I64 size)
 }
 
 U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/Adam1a.HPP.Z,3213] CTask or [C:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/Adam1a.HPP.Z,3216] CTask or [C:/Kernel/Adam1a.HPP.Z,2800] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (!src) return NULL;
@@ -412,7 +412,7 @@ U8 *MAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0
   U8 *ptr=MAlloc(size+mask+sizeof(I64)+misalignment,mem_task),
      *result=(ptr+sizeof(I64)+mask)&~mask+misalignment;
   result(I64 *)[-1]=ptr-result;
-#assert offset(CMemUsedAllocated.size)==offset(CMemUsedAllocated.start)-sizeof(I64)
+#assert offset(CMemUsed.size)==offset(CMemUsed.start)-sizeof(I64)
   return result;
 }
 
@@ -422,13 +422,13 @@ U8 *CAllocAligned(I64 size,I64 alignment,CTask *mem_task=NULL,I64 misalignment=0
   U8 *ptr=MAlloc(size+mask+sizeof(I64)+misalignment,mem_task),
      *result=(ptr+sizeof(I64)+mask)&~mask+misalignment;
   result(I64 *)[-1]=ptr-result;
-#assert offset(CMemUsedAllocated.size)==offset(CMemUsedAllocated.start)-sizeof(I64)
+#assert offset(CMemUsed.size)==offset(CMemUsed.start)-sizeof(I64)
   MemSet(result,0,size);
   return result;
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/Adam1a.HPP.Z,3213] CTask or [C:/Kernel/Adam1a.HPP.Z,2797] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/Adam1a.HPP.Z,3216] CTask or [C:/Kernel/Adam1a.HPP.Z,2800] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (buf) {

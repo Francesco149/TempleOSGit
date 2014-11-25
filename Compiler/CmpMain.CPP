@@ -23,7 +23,8 @@ U8 *LexStatement2Bin(CLex *lx,I64 *_type,I64 cmp_flags=0)
   LCCInit(lx);
   if (!PrsStatement(lx,,,cmp_flags)) {
     if (lx->lcc.lcc_root.next!=&lx->lcc.lcc_root) {
-      LCCAdd(lx,IC_RETURN_VAL2,0,NULL);
+      lx->lcc.lcc_root.last->ic_flags&=~ICF_NO_DEPEND_RESULT;
+      LCCAdd(lx,IC_RETURN_VAL2,0,0);
       LCCAdd(lx,IC_RET,0,0);
       if (result=LCCCompile(lx,&size,NULL,_type)) {
 	if (lx->flags&LF_AOT_COMPILE) {
@@ -235,7 +236,7 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx)
 	HashAdd(tempex,Fs->hash_table);
 	SysSymImportsResolve(tempex->str);
 	break;
-      case EIT_REL_I0...EIT_IMM_U64:
+      case EIT_REL_I0...EIT_IMM_I64:
 	if (tempe->str) {
 	  if (tempe->flags&EIF_GOTO_LABEL) {
 	    if(!(g_lb=LCCGoToLabelFind(lx,str)))
@@ -293,7 +294,7 @@ U0 CmpFixUpJITAsm(CLex *lx,CExe *tempx)
 	    case EIT_REL_I64:
 	      *ptr(I64 *)=i-ptr-8;
 	      break;
-	    case EIT_IMM_U64:
+	    case EIT_IMM_I64:
 	      *ptr(I64 *)=i;
 	      break;
 	  }
@@ -326,30 +327,14 @@ U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx)
     tempa->next=a->abss;
     ptr=tempx->buf+tempx->ip+tempa->ip;
     nobound_switch (tempa->type) {
-      case EAT_ADD_U8:
-	*ptr(U8 *)+=ip2;
-	break;
-      case EAT_SUB_U8:
-	*ptr(U8 *)-=ip2;
-	break;
-      case EAT_ADD_U16:
-	*ptr(U16 *)+=ip2;
-	break;
-      case EAT_SUB_U16:
-	*ptr(U16 *)-=ip2;
-	break;
-      case EAT_ADD_U32:
-	*ptr(U32 *)+=ip2;
-	break;
-      case EAT_SUB_U32:
-	*ptr(U32 *)-=ip2;
-	break;
-      case EAT_ADD_U64:
-	*ptr(I64 *)+=ip2;
-	break;
-      case EAT_SUB_U64:
-	*ptr(I64 *)-=ip2;
-	break;
+      case EAT_ADD_U8:	*ptr(U8 *)+=ip2;	break;
+      case EAT_SUB_U8:	*ptr(U8 *)-=ip2;	break;
+      case EAT_ADD_U16:	*ptr(U16 *)+=ip2;	break;
+      case EAT_SUB_U16:	*ptr(U16 *)-=ip2;	break;
+      case EAT_ADD_U32:	*ptr(U32 *)+=ip2;	break;
+      case EAT_SUB_U32:	*ptr(U32 *)-=ip2;	break;
+      case EAT_ADD_U64:	*ptr(I64 *)+=ip2;	break;
+      case EAT_SUB_U64:	*ptr(I64 *)-=ip2;	break;
     }
     a->abss=tempa;
     tempa->ip+=ip2;
@@ -360,7 +345,7 @@ U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx)
   while (tempe!=&tempx->next_ie) {
     tempe1=tempe->next;
     QueRem(tempe);
-    if (EIT_REL_I0<=tempe->type<=EIT_IMM_U64) {
+    if (EIT_REL_I0<=tempe->type<=EIT_IMM_I64) {
       if (tempe->str) {
 	if (tempe->flags&EIF_GOTO_LABEL) {
 	  if(!(g_lb=LCCGoToLabelFind(lx,tempe->str)))
@@ -409,7 +394,7 @@ U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx)
 	case EIT_REL_I64:
 	  *ptr(I64 *)=i-ptr-8;
 	  break;
-	case EIT_IMM_U64:
+	case EIT_IMM_I64:
 	  *ptr(I64 *)=i;
 	  break;
       }
@@ -426,21 +411,13 @@ U0 CmpFixUpAOTAsm(CLex *lx,CExe *tempx)
 	  case EIT_IMM_U8:
 	  case EIT_IMM_U16:
 	  case EIT_IMM_U32:
-	  case EIT_IMM_U64:
+	  case EIT_IMM_I64:
 	  case EIT_REL_I0:
 	    break;
-	  case EIT_REL_I8:
-	    *ptr(U8 *) -=ip2;
-	    break;
-	  case EIT_REL_I16:
-	    *ptr(U16 *)-=ip2;
-	    break;
-	  case EIT_REL_I32:
-	    *ptr(U32 *)-=ip2;
-	    break;
-	  case EIT_REL_I64:
-	    *ptr(I64 *)-=ip2;
-	    break;
+	  case EIT_REL_I8:	    *ptr(U8 *) -=ip2;	    break;
+	  case EIT_REL_I16:	    *ptr(U16 *)-=ip2;	    break;
+	  case EIT_REL_I32:	    *ptr(U32 *)-=ip2;	    break;
+	  case EIT_REL_I64:	    *ptr(I64 *)-=ip2;	    break;
 	sub_switch_end:
 	  tempe->ip+=ip2;
 	  break;
@@ -718,8 +695,6 @@ I64 StreamExePrint(U8 *fmt,...)
 U0 CmpInit()
 {
   cmp.compiled_lines=0;
-  cmp.compiled_funs=0;
-  cmp.compiled_bytes=0;
   cmp.dont_write_to_dsk=FALSE;
   CmpLoadDefines;
   CmpFillTables;

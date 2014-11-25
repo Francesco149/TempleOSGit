@@ -104,15 +104,15 @@ U8 *IntEntryGet(I64 irq)
 }
 
 U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
-{//Set interrupt vector. See [C:/Kernel/Adam1a.HPP.Z,279] IDTET_IRQ.
-//See [C:/Demo/Lectures/InterruptDemo.CPP.Z,1].
-//See [C:/Demo/MultiCore/Interrupts.CPP.Z,1].
+{//Set interrupt vector. See [C:/Kernel/Adam1a.HPP.Z,280] IDTET_IRQ.
+//See [C:/Demo/Lectures/InterruptDemo.CPP,1].
+//See [C:/Demo/MultiCore/Interrupts.CPP,1].
   I64 fp=fp_new_handler;
   U8 *result,*dst;
-  result=IntEntryGet(irq);
-  dst=dev.idt(U8 *)+irq*16;
   PUSHFD
   CLI
+  result=IntEntryGet(irq);
+  dst=dev.idt(U8 *)+irq*16;
   *dst(U16 *)++=fp.u16[0];
   *dst(U16 *)++=offset(CGDT.cs64);
   *dst(U16 *)++=0x8000+type<<8+dpl<<13;
@@ -160,18 +160,16 @@ U8 *IntFaultHandlersNew()
 
 U0 IntInit1()
 {//Interrupt descriptor table part1.
-  I64 i,temp_ptr[2];
-  U32 *ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/Adam1a.HPP.Z,3338] CCPU struct
+  I64 i;
+  CSysLimitBase temp_ptr;
+  if (!Gs->num) {//Gs cur [C:/Kernel/Adam1a.HPP.Z,3341] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);
   }
-  ptr=temp_ptr;
-  *ptr(U16 *)++=256*16-1; //Typecasting is postfix
-  *ptr(I64 *)++=dev.idt;
-  *ptr(U16 *)=0;
-  SetRAX(temp_ptr);
+  temp_ptr.limit=256*16-1;
+  temp_ptr.base =dev.idt;
+  SetRAX(&temp_ptr);
 	LIDT U64 [RAX]
 }
 

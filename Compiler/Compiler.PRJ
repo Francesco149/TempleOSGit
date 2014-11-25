@@ -31,6 +31,6 @@ CUasmGlbls	uasm;
 #include "Back1a"
 #include "Back1b"
 #include "Back1c"
-#include "OptPass789"
+#include "OptPass789A"
 #include "CmpInit"
 #include "CmpMain"

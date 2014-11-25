@@ -1,6 +1,6 @@
 #help_index "Debugging/Dump"
 Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,I64 depth,I64 max_depth,Bool dynamic,I64 types=HTT_CLASS,I64 offset=0)
-{//See [C:/Demo/LastClass.CPP.Z,1].
+{//See [C:/Demo/LastClass.CPP,1].
   I64 i,j,*ptr;
   CMemberLst *ml;
   CDocEntry *doc_e;

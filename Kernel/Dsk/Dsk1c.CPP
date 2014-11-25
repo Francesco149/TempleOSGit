@@ -93,14 +93,14 @@ Bool MkDir(U8 *filename)
       else {
 	"Make Directory:%s\n",filename;
 	name=MStrUtil(fa->mask,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
-	switch (fa->p->type) {
-	  case PT_REDSEA:
-	    result=RedSeaFSMkDir(fa->p,Fs->cur_dir,name);
+	switch (fa->dv->type) {
+	  case DVT_REDSEA:
+	    result=RedSeaMkDir(fa->dv,Fs->cur_dir,name);
 	    break;
-	  case PT_FAT32:
-	    result=FAT32MkDir(fa->p,Fs->cur_dir,name);
+	  case DVT_FAT32:
+	    result=FAT32MkDir(fa->dv,Fs->cur_dir,name);
 	    break;
-	  case PT_ISO9660:
+	  case DVT_ISO9660:
 	    PrintErr("Not Writable\n");
 	    break;
 	  default:
@@ -119,14 +119,14 @@ I64 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
   I64 result=0;
   CFileAccess *fa;
   if (fa=FileAccessNew(wild,make_mask)) {
-    switch (fa->p->type) {
-      case PT_REDSEA:
-	result=RedSeaFSFilesDel(fa->p,Fs->cur_dir,fa->mask,0,TRUE,TRUE);
+    switch (fa->dv->type) {
+      case DVT_REDSEA:
+	result=RedSeaFilesDel(fa->dv,Fs->cur_dir,fa->mask,0,TRUE,TRUE);
 	break;
-      case PT_FAT32:
-	result=FAT32FilesDel(fa->p,Fs->cur_dir,fa->mask,0,TRUE,TRUE);
+      case DVT_FAT32:
+	result=FAT32FilesDel(fa->dv,Fs->cur_dir,fa->mask,0,TRUE,TRUE);
 	break;
-      case PT_ISO9660:
+      case DVT_ISO9660:
 	PrintErr("Not Writable\n");
 	break;
       default:
@@ -137,39 +137,39 @@ I64 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
   return result;
 }
 
-U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FAT32)
+U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=DVT_FAT32)
 {//Format hard drive or RAM drive.
 //**Warning:** Destroys all previous info.
 //quick=FALSE means fill entire drive
 //with zeros.
-//Choose [C:/Kernel/Adam1a.HPP.Z,2578] PT_FAT32 or [C:/Kernel/Adam1a.HPP.Z,2577] PT_REDSEA.
+//Choose [C:/Kernel/Adam1a.HPP.Z,2582] DVT_FAT32 or [C:/Kernel/Adam1a.HPP.Z,2581] DVT_REDSEA.
 //You don't format a CD-ROM with this.
-  CPrt *p=Drv2Prt(drv_let);
+  CDrv *dv=Let2Drv(drv_let);
   Bool old_silent=IsSilent;
   if (confirm && !AreYouSure)
     return;
-  if (!p)  {
+  if (!dv)  {
     PrintErr("Invalid Drive\n");
     return;
   }
   switch (type) {
-    case PT_REDSEA:
+    case DVT_REDSEA:
       Silent(ON);
       Drv(drv_let);
       Silent(old_silent);
-      RedSeaFSFmt(drv_let,quick);
-      DskCacheInvalidate(Drv2Prt(drv_let));
+      RedSeaFmt(drv_let,quick);
+      DskCacheInvalidate(Let2Drv(drv_let));
       Drv(drv_let);
       break;
-    case PT_FAT32:
+    case DVT_FAT32:
       Silent(ON);
       Drv(drv_let);
       Silent(old_silent);
       FAT32Fmt(drv_let,quick);
-      DskCacheInvalidate(Drv2Prt(drv_let));
+      DskCacheInvalidate(Let2Drv(drv_let));
       Drv(drv_let);
       break;
-    case PT_ISO9660:
+    case DVT_ISO9660:
       PrintErr("Not Writable\n");
       break;
     default:
@@ -179,34 +179,34 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=PT_FAT32)
 
 U0 CDImageRead(U8 cd_drv_let,U8 *out_name)
 {//Read entire CD/DVD image into ISO file.
-  CBlkDev *bdev=Drv2BlkDev(cd_drv_let);
-  CPrt *p=Drv2Prt(cd_drv_let);
+  CBlkDev *bd=Let2BlkDev(cd_drv_let);
+  CDrv *dv=Let2Drv(cd_drv_let);
   U8 *buf=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS),
      *out_name2=DftExt(out_name,"ISO");
   CFile *f=FOpen(out_name2,"w");
-  I64 n,spc=bdev->blk_size>>BLK_SIZE_BITS,blk=0,cnt,retry;
-  BlkDevInit(bdev);
-  if (bdev->type!=BDT_ATAPI)
+  I64 n,spc=bd->blk_size>>BLK_SIZE_BITS,blk=0,cnt,retry;
+  BlkDevInit(bd);
+  if (bd->type!=BDT_ATAPI)
     throw('BlkDev');
   if (!out_name)
     out_name=dsk.dft_iso_filename;
-  cnt=CeilU64(p->size,spc);
+  cnt=CeilU64(dv->size,spc);
   while (cnt>0) {
     if (cnt>COPY_BUF_BLKS)
       n=COPY_BUF_BLKS;
     else
       n=cnt;
-    if (n>bdev->max_reads)
-      n=bdev->max_reads;
+    if (n>bd->max_reads)
+      n=bd->max_reads;
 
     retry=4;
     while (--retry)
-      if (ATAPIReadBlks2(bdev,tS+7.0+0.004*n/spc,buf,blk/spc,n/spc,TRUE))
+      if (ATAPIReadBlks2(bd,tS+7.0+0.004*n/spc,buf,blk/spc,n/spc,TRUE))
 	//n is 0x800 if max_reads.  Up to 8 additional seconds
 	break;
 
     if (!retry)
-      ATAPIReadBlks2(bdev,0,buf,blk/spc,n/spc,TRUE);
+      ATAPIReadBlks2(bd,0,buf,blk/spc,n/spc,TRUE);
 
     FWBlks(f,buf,blk,n);
     cnt-=n;
@@ -222,7 +222,7 @@ class CDualBuf
   U8 *buf0,*buf1;
   I64 in_buf,out_buf,cnt;
   U8 *filename;
-  CBlkDev *CD_bdev;
+  CBlkDev *cd_bd;
 };
 
 U0 CDImageWriteTask(CDualBuf *d)
@@ -240,8 +240,8 @@ U0 CDImageWriteTask(CDualBuf *d)
       n=COPY_BUF_BLKS;
     else
       n=cnt;
-    if (n>d->CD_bdev->max_writes)
-      n=d->CD_bdev->max_writes;
+    if (n>d->cd_bd->max_writes)
+      n=d->cd_bd->max_writes;
     if (d->in_buf&1)
       buf=d->buf1;
     else
@@ -261,8 +261,8 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
   CDualBuf *d=CAlloc(sizeof(CDualBuf));
   U8 *buf,*in_name2,*in_name3;
   I64 i,n,spc,blk=0,cnt;
-  CPrt *p=Drv2Prt(cd_drv_let);
-  CBlkDev *bdev=p->bdev,*bdev2;
+  CDrv *dv=Let2Drv(cd_drv_let);
+  CBlkDev *bd=dv->bd,*bd2;
   CTask *task;
   Bool old_preempt;
   CFile *f;
@@ -278,25 +278,25 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
   }
   cnt=(FSize(f)+BLK_SIZE-1)>>BLK_SIZE_BITS;
   FClose(f);
-  if (bdev->type!=BDT_ATAPI)
+  if (bd->type!=BDT_ATAPI)
     throw('BlkDev');
-  bdev2=Drv2BlkDev(*in_name2);
-  while (bdev2->lock_fwding)
-    bdev2=bdev2->lock_fwding;
-  if ((bdev2->type==BDT_ATA || bdev2->type==BDT_ATAPI) &&
-       bdev2->base0==bdev->base0) {
+  bd2=Let2BlkDev(*in_name2);
+  while (bd2->lock_fwding)
+    bd2=bd2->lock_fwding;  //If two blkdevs on same controller, use just one lock
+  if ((bd2->type==BDT_ATA || bd2->type==BDT_ATAPI) &&
+       bd2->base0==bd->base0) {
     "Can't Burn CD on same ATA ctrller as File.\n\n";
     throw('BlkDev');
   }
 
-  bdev->flags|=BDF_READ_ONLY_OVERRIDE;
-  BlkDevInit(bdev);
-  spc=bdev->blk_size>>BLK_SIZE_BITS;
-  if (p->size<cnt)
-    p->size=cnt;
+  bd->flags|=BDF_READ_ONLY_OVERRIDE;
+  BlkDevInit(bd);
+  spc=bd->blk_size>>BLK_SIZE_BITS;
+  if (dv->size<cnt)
+    dv->size=cnt;
 
   d->filename=in_name2;
-  d->CD_bdev=bdev;
+  d->cd_bd=bd;
   d->buf0=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
   d->buf1=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
   d->cnt=cnt;
@@ -307,8 +307,8 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
   while (d->in_buf<=d->out_buf)
     Yield;
 
-  BlkDevLock(bdev);
-  ATAPIWaitReady(bdev,0);
+  BlkDevLock(bd);
+  ATAPIWaitReady(bd,0);
 
   progress1=0; progress1_max=cnt;
   StrCpy(progress1_desc,"Writing");
@@ -317,43 +317,43 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
       n=COPY_BUF_BLKS;
     else
       n=cnt;
-    if (n>bdev->max_writes)
-      n=bdev->max_writes;
+    if (n>bd->max_writes)
+      n=bd->max_writes;
     if (d->out_buf&1)
       buf=d->buf1;
     else
       buf=d->buf0;
     while (d->in_buf<=d->out_buf)
       Yield;
-    ATAPIWriteBlks(bdev,buf,blk/spc,(n+spc-1)/spc);
+    ATAPIWriteBlks(bd,buf,blk/spc,(n+spc-1)/spc);
     d->out_buf++;
     cnt-=n;
     blk+=n;
     progress1+=n;
   }
-  ATAPISync(bdev);
+  ATAPISync(bd);
 
   progress1=0; progress1_max=2;
   StrCpy(progress1_desc,"Closing");
   for (i=0;i<2;i++) {
-    ATAPIClose(bdev,0x100,i); //Close tracks
+    ATAPIClose(bd,0x100,i); //Close tracks
     progress1++;
   }
 
-  ATAPISync(bdev);
+  ATAPISync(bd);
 
-  ATAPIClose(bdev,0x200); //close disk
-  ATAPISync(bdev);
+  ATAPIClose(bd,0x200); //close disk
+  ATAPISync(bd);
   if (media_type==MT_DVD) {
-    ATAPIClose(bdev,0x300);
-    ATAPISync(bdev);
+    ATAPIClose(bd,0x300);
+    ATAPISync(bd);
   }
 
   *progress1_desc=0;
   progress1=progress1_max=0;
 
-  bdev->flags&=~BDF_READ_ONLY_OVERRIDE;
-  BlkDevUnlock(bdev);
+  bd->flags&=~BDF_READ_ONLY_OVERRIDE;
+  BlkDevUnlock(bd);
   Free(d->buf0);
   Free(d->buf1);
   Free(in_name2);

@@ -140,7 +140,7 @@ CDirEntry *FMRebuildDocDrv(U8 drv_let,CDoc *doc,CDirEntry **_root,Bool init)
 
 U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
 {
-  CPrt *p;
+  CDrv *dv;
   I64 i;
   CDoc *doc=*_doc,*doc2=sys_clipboard_doc,*parent_doc;
   CFMUncollapsedLst *tempc=NULL;
@@ -211,15 +211,15 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
       break;
   }
   DocPrint(doc,"$LTBLUE$");
-  for (i=0;i<NUM_PRTS;i++) {
-    p=&dsk.prts[i];
-    if (p->type==PT_REDSEA||p->type==PT_FAT32)
-      FMRebuildDocDrv(Prt2Drv(p),doc,_root,TRUE);
-    else if (p->type==PT_ISO9660) {
-      if (p->bdev->flags&BDF_INITIALIZED)
-	tempde=FMRebuildDocDrv(Prt2Drv(p),doc,_root,TRUE);
+  for (i=0;i<NUM_DRVS;i++) {
+    dv=&dsk.drvs[i];
+    if (dv->type==DVT_REDSEA||dv->type==DVT_FAT32)
+      FMRebuildDocDrv(Drv2Let(dv),doc,_root,TRUE);
+    else if (dv->type==DVT_ISO9660) {
+      if (dv->bd->flags&BDF_INITIALIZED)
+	tempde=FMRebuildDocDrv(Drv2Let(dv),doc,_root,TRUE);
       else {
-	tempde=FMRebuildDocDrv(Prt2Drv(p),doc,_root,FALSE);
+	tempde=FMRebuildDocDrv(Drv2Let(dv),doc,_root,FALSE);
 	tempde->flags|=DEF_NOT_INITIALIZED;
       }
       tempde->flags|=DEF_REMOVABLE;

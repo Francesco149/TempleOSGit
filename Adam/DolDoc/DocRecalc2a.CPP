@@ -169,23 +169,23 @@ public U0 DocPrintAtomic(CDoc *doc,U8 *fmt,...)
 #help_index "DolDoc/Task"
 U0 DocUpdateTaskDocs(CTask *task)
 {//This is called from [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins() by the winmgr at 30fps.
-  CPrt *p;
+  CDrv *dv;
   CDoc *doc;
   CD3I64 saved_scroll;
   Bool old_preempt=Preempt(OFF);
   I64 border_attr;
-  if (task->border_src==BDS_CUR_PRT && task->cur_prt) {
-    border_attr=task->cur_prt->text_attr;
+  if (task->border_src==BDS_CUR_DRV && task->cur_dv) {
+    border_attr=task->cur_dv->text_attr;
     if (border_attr&15!=border_attr>>4)
       task->border_attr=border_attr;
   }
   if (task->title_src==TTS_TASK_NAME)
     StrCpy(task->task_title,task->task_name);
   if ((doc=DocDisplay(task)) && !(doc->flags&DOCF_DONT_SHOW)) {
-    if (task->border_src==BDS_ED_FILENAME_PRT)
+    if (task->border_src==BDS_ED_FILENAME_DRV)
       try {
-	if (p=Drv2Prt(*doc->filename.name)) {
-	  border_attr=p->text_attr;
+	if (dv=Let2Drv(*doc->filename.name)) {
+	  border_attr=dv->text_attr;
 	  if (border_attr&15!=border_attr>>4)
 	    task->border_attr=border_attr;
 	}

@@ -1,4 +1,4 @@
-//Compile this by calling [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall().
+//Compile this by calling [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall().
 //Don't do it directly.  See [C:/Adam/Boot/InsBoot.CPP.Z,1] Cmp("Kernel").
 
 #exe {

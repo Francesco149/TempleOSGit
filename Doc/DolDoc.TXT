@@ -1,15 +1,15 @@
 A [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc in memory is a [Data Types/Circular
 Queue,1] Circular Queue of cmds and graphics.  See
-[C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry 
+[C:/Kernel/Adam1a.HPP.Z,1165] CDocEntry 
 for the entry structure.  See [C:/Adam/Training.CPP.Z,200] TipOfDay() for a
 nice example.
 
 [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc's are used for the editor, viewer,
 browser, and cmd line.
 
-There is one [C:/Kernel/Adam1a.HPP.Z,1317] CDoc for the task's border:
+There is one [C:/Kernel/Adam1a.HPP.Z,1328] CDoc for the task's border:
 Fs->border_doc.  There is a pair for 
 the task's client area: Fs->put_doc and Fs->display_doc.  You can,
 optionally, 
 do double buffering, otherwise Fs->put_doc is the same as Fs->display_doc.  
-See [C:/Demo/Spy.CPP.Z,1].
+See [C:/Demo/Spy.CPP,1].

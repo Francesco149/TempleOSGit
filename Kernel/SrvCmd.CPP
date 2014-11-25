@@ -37,10 +37,9 @@ U0 TaskRstAwaitingMsg(CTask *task=NULL)
 }
 
 CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags)
-{//Queues a request to compile and execute text.
+{//Queues a request to compile and execute src code text.
   CSrvCmd *result;
-  if (!data || !TaskValidate(srv) ||
-      master && !TaskValidate(master) ||
+  if (!data || !TaskValidate(srv) || master && !TaskValidate(master) ||
       srv->popup_task && !Bt(&srv->task_flags,TASKf_FILTER_INPUT))
     return NULL;
   result=ACAlloc(sizeof(CSrvCmd));
@@ -73,12 +72,11 @@ CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags)
 }
 
 CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
-{//Post text to servant task. Tell who the master task is.
+{//Post StdIn text to servant task. Tell who the master task is.
   CSrvCmd *result;
   Bool old_preempt=Preempt(OFF);
   CTask *task;
-  if (!data || !TaskValidate(srv) ||
-      master && !TaskValidate(master) ||
+  if (!data || !TaskValidate(srv) || master && !TaskValidate(master) ||
       srv->popup_task && !Bt(&srv->task_flags,TASKf_FILTER_INPUT)) {
     Preempt(old_preempt);
     return NULL;
@@ -123,11 +121,10 @@ CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 
 CSrvCmd *TaskMsg(CTask *_srv,CTask *master,I64 msg_code,I64 a1,I64 a2,I64 flags)
 {//Post message to servant task.  Tell who the master task is.
-//See [C:/Kernel/Adam1a.HPP.Z,3068] flags and [C:/Kernel/Adam1a.HPP.Z,3116] msg_code.
+//See [C:/Kernel/Adam1a.HPP.Z,3071] flags and [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
   CSrvCmd *tempc1,*tempc;
   CTask *srv=_srv;
-  if (!TaskValidate(srv) ||
-      master && !TaskValidate(master)||
+  if (!TaskValidate(srv) || master && !TaskValidate(master)||
       srv->popup_task && !Bt(&srv->task_flags,TASKf_FILTER_INPUT))
     return NULL;
   tempc=ACAlloc(sizeof(CSrvCmd));
@@ -139,8 +136,7 @@ CSrvCmd *TaskMsg(CTask *_srv,CTask *master,I64 msg_code,I64 a1,I64 a2,I64 flags)
   tempc->flags=flags;
   PUSHFD
   if (Bt(&sys_semas[SYS_SEMA_RECORD_MACRO],0) &&
-      srv!=sys_macro_util_task &&
-      msg_code==MSG_KEY_DOWN) {
+      srv!=sys_macro_util_task && msg_code==MSG_KEY_DOWN) {
     tempc1=AMAllocIdentical(tempc);
     CLI
     QueIns(tempc1,sys_macro_root.last);
@@ -203,7 +199,7 @@ Bool ScanResult(CSrvCmd *rqst=NULL,I64 *_result=NULL)
 }
 
 I64 GetResult(CSrvCmd *rqst=NULL)
-{//See [C:/Demo/MultiCore/Lock.CPP.Z,1]
+{//See [C:/Demo/MultiCore/Lock.CPP,1]
   I64 result;
   CSrvCmd *tempc1;
   if (!rqst) {
@@ -245,7 +241,7 @@ U0 TaskWait(CTask *task=NULL)
 }
 
 U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
-{//Post a message and return immediately.  See [C:/Kernel/Adam1a.HPP.Z,3116] msg_code.
+{//Post a message and return immediately.  See [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
       TaskMsg(task->last_input_filter_task,NULL,msg_code,a1,a2,
@@ -257,14 +253,14 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 
 U0 SendMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 {//Post a message to a task and wait until it is delivered
-//and the task becomes idle.  See [C:/Kernel/Adam1a.HPP.Z,3116] msg_code.
+//and the task becomes idle.  See [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
   PostMsg(task,msg_code,a1,a2,flags);
   TaskWait(task);
 }
 
 U0 Msg(I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 {//Post a message to the current task and return immediately.
-//See [C:/Kernel/Adam1a.HPP.Z,3116] msg_code.
+//See [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
   PostMsg(Fs,msg_code,a1,a2,flags);
 }
 
@@ -385,17 +381,35 @@ sch_done:
   return cnt;
 }
 
-I64 SrvUser(U8 *fmt,...)
-{//Spawns a visible task and sends text which gets compiled and run.
-  U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
-  I64 result=0;
+I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL)
+{//Execute code text in PopUp win task.
+  I64 result;
   CSrvCmd *tempc;
-  CTask *task=Spawn(&SrvUserCmdLine,NULL,"Servant",,Fs);
-  Fs->popup_task=task;
-  tempc=TaskExe(task,Fs,buf,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
-  ScanResult(tempc,&result);
-  Fs->popup_task=NULL;
-  Kill(task,FALSE);
+  Bool old_preempt=Preempt(OFF);
+  CTask *task=Spawn(&SrvCmdLine,NULL,"Servant",,parent);
+  if (!parent) {
+    TaskExe(task,parent,buf,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
+    if (_pu_task) *_pu_task=task;
+    Preempt(old_preempt);
+    return 0;
+  } else {
+    Fs->popup_task=task;
+    tempc=TaskExe(task,parent,buf,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+    if (_pu_task) *_pu_task=task;
+    ScanResult(tempc,&result);
+    Fs->popup_task=NULL;
+    Kill(task);
+    if (_pu_task) *_pu_task=NULL;
+    Preempt(old_preempt);
+    return result;
+  }
+}
+
+I64 PopUpPrint(U8 *fmt,...)
+{//Execute code text in PopUp win task.
+  U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
+  I64 result;
+  result=PopUp(buf,Fs);
   Free(buf);
   return result;
 }
@@ -478,7 +492,7 @@ U0 AutoFile(U8 *filename)
 }
 
 U0 Auto(U8 *fmt,...)
-{//Send text to own input buffer. See [C:/Demo/AcctExample/TSDistro.CPP.Z,1].
+{//Send text to own input buffer. See [C:/Demo/AcctExample/TSDistro.CPP,1].
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv),*st=AStrNew(buf);
   AutoStr("\"%%s\",%d;Free(%d);",st,st);
   Free(buf);

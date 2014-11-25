@@ -65,19 +65,19 @@ U0 SysGlblsInit()
 }
 
 U0 SysGrInit()
-{//See [D:/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
+{
   text.font=sys_font_8x8;
-  if (sys_bios_gr_mode==0x12) { //if 640x480 16 color
-    text.cols=GR_WIDTH/FONT_WIDTH;
-    text.rows=GR_HEIGHT/FONT_HEIGHT;
-    OutU8(VGA_SC_INDEX,VGA_MAP_MASK);
-    OutU8(VGA_SC_DATA,0x0F);
-    MemSet(VGA_GRAPHIC_MEM_BASE,0,GR_WIDTH*GR_HEIGHT>>3);
-    text.raw_screen_image=CAlloc(GR_WIDTH*GR_HEIGHT/8);
-  } else {
+  if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
     text.cols=80;
     text.rows=25;
-    MemSet(VGA_TEXT_MEM_BASE,0,text.rows*text.cols<<1);
+    MemSet(VGAM_TEXT,0,text.rows*text.cols<<1);
+  } else { //if 640x480 16 color
+    text.cols=GR_WIDTH/FONT_WIDTH;
+    text.rows=GR_HEIGHT/FONT_HEIGHT;
+    OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+    OutU8(VGAP_DATA,0x0F);
+    MemSet(VGAM_GRAPHICS,0,GR_WIDTH*GR_HEIGHT>>3);
+    text.raw_screen_image=CAlloc(GR_WIDTH*GR_HEIGHT/8);
   }
 }
 
@@ -148,7 +148,7 @@ U0 KernelMain()
   TaskDerivedValsUpdate;
 
   SysDefinesLoad;
-  MPInit;
+  BSPInit;
   IntInit1;
 
 //Before this point use [C:/Kernel/Misc1a.CPP.Z,159] Snd() and [C:/Kernel/Misc1a.CPP.Z,136] BusyWait()
@@ -172,7 +172,7 @@ U0 KernelMain()
 #exe {
   if (!kernel_cfg->opts[CFG_NO_MP])
     StreamPrint("\"MultiCore Start\\n\\n\";"
-	"MPStart;"
+	"BSPStartMP;"
 	"LBts(&sys_run_level,RLf_MP);");
 };
 
@@ -218,7 +218,7 @@ asm {	ALIGN	16,OC_NOP
 SYS_KERNEL_END::
 #exe {
   if (kernel_cfg->opts[CFG_BOOT_RESCUE_DRV])
-    StreamPrint("DU8 0x%X-(SYS_KERNEL_END-SYS_KERNEL_START1+"
+    StreamPrint("DU8 0x%X-(SYS_KERNEL_END-SYS_KERNEL+"
 		"BOOT_RAM_BASE+sizeof(CBinFile)) DUP (0);"
 		"BINFILE \"%s\";",kernel_cfg->boot_rescue_drv_start,kernel_cfg->boot_rescue_drv_file);
 };

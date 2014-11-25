@@ -48,10 +48,10 @@ public CTaskSettings *SettingsPush(CTask *task=NULL,I64 flags=0)
   tempse->border_src =task->border_src;
   tempse->border=!Bt(&task->display_flags,DISPLAYf_NO_BORDER);
   tempse->preempt=Bt(&task->task_flags,TASKf_PREEMPT);
-  if (TaskValidate(ws.task))
-    tempse->wordstat=TRUE;
+  if (TaskValidate(ac.task))
+    tempse->autocomplete=TRUE;
   else
-    tempse->wordstat=FALSE;
+    tempse->autocomplete=FALSE;
 
   tempse->next=task->next_settings;
   task->next_settings=tempse;
@@ -79,7 +79,7 @@ U0 SettingsPop2(CTask *task,CTaskSettings *tempse)
   task->border_src =tempse->border_src;
   task->title_src  =tempse->title_src;
   StrCpy(task->task_title,tempse->task_title);
-  WordStat(tempse->wordstat);
+  AutoComplete(tempse->autocomplete);
   SetVGAPalette4(tempse->palette4);
   Snd(0);
 }

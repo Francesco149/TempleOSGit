@@ -2,57 +2,57 @@
 //ISO2 is ISO13490
 //ISO3 is ISO13346
 
-Bool ISOPrtInit(CPrt *p,I64 blk)
+Bool ISODrvInit(CDrv *dv,I64 blk)
 {
-  CBlkDev *bdev=p->bdev;
-  I64 spc=bdev->blk_size>>BLK_SIZE_BITS,i=blk/spc;
-  CISO1PriDesc *iso=MAlloc(bdev->blk_size);
+  CBlkDev *bd=dv->bd;
+  I64 spc=bd->blk_size>>BLK_SIZE_BITS,i=blk/spc;
+  CISO1PriDesc *iso=MAlloc(bd->blk_size);
   CISO1DirEntry *de;
   Bool unlock,result=FALSE;
   U8 buf[8];
 
   try {
-    unlock=PrtLock(p);
-    p->type=PT_ISO9660; //default
-    p->spc=spc;
-    p->offset=p->data=p->root_cluster=p->size=0;
+    unlock=DrvLock(dv);
+    dv->type=DVT_ISO9660; //default
+    dv->spc=spc;
+    dv->base_offset=dv->data_area=dv->root_cluster=dv->size=0;
     while (TRUE) {
-      p->size=MaxI64(p->size,(i+1)*spc);
-      RBlks(p,iso,i*spc,spc);
+      dv->size=MaxI64(dv->size,(i+1)*spc);
+      RBlks(dv,iso,i*spc,spc);
       buf[0](U32)=iso->id[0](U32);
       buf[4](U16)=iso->id[4](U8);
       switch (LstMatch(buf,"CD001\0CDW02\0BEA01\0BOOT2\0NSR02\0NSR03\0TEA01\0",LMF_EXACT)) {
 	case 0:
-	  p->type=PT_ISO9660;
+	  dv->type=DVT_ISO9660;
 	  switch (iso->type) {
 	    case ISO1T_SUPPLEMENTARY_DESC:
-	      p->data=0;
+	      dv->data_area=0;
 	      de=&iso->root_dir_record;
-	      p->root_cluster=de->loc.little;
-	      p->size=iso->vol_space_size.little*bdev->blk_size>>BLK_SIZE_BITS;
+	      dv->root_cluster=de->loc.little;
+	      dv->size=iso->vol_space_size.little*bd->blk_size>>BLK_SIZE_BITS;
 	      result=TRUE;
 	      goto ipi_done;
 	    case ISO1T_TERMINATOR:
-	      throw('Prt');
+	      throw('Drv');
 	  }
 	  break;
 	default: //Its normal for ISO13346 to read NULL blk as terminator
 	  PrintErr("File System Not Supported\n");
-	  throw('Prt');
+	  throw('Drv');
       }
       i++;
     }
 ipi_done:
     Free(iso);
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   } catch {
-    p->type=PT_ISO9660;
-    p->spc=spc;
-    p->offset=p->data=p->root_cluster=0;
+    dv->type=DVT_ISO9660;
+    dv->spc=spc;
+    dv->base_offset=dv->data_area=dv->root_cluster=0;
     Free(iso);
     if (unlock)
-      PrtUnlock(p);
+      DrvUnlock(dv);
   }
   return result;
 }
@@ -126,32 +126,32 @@ Bool ISO1CDirFill(CDirEntry *tempde,CISO1DirEntry *de)
   return result;
 }
 
-Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{//[C:/Kernel/Adam1a.HPP.Z,2502] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,2503] FUF_JUST_FILES
+Bool ISO1FileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
+{//[C:/Kernel/Adam1a.HPP.Z,2506] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,2507] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool result=FALSE,unlock;
   I64 i;
   if (fuf_flags&~FUG_FILE_FIND)
     throw('FUF');
-  PrtChk(p);
-  if (p->type!=PT_ISO9660)
-    PrintErr("Not ISO9660 Partition\n");
+  DrvChk(dv);
+  if (dv->type!=DVT_ISO9660)
+    PrintErr("Not ISO9660 Drv\n");
   else
     try {
-      unlock=PrtLock(p);
-      isoptr=MAlloc(p->spc<<BLK_SIZE_BITS);
-      RClusters(Fs->cur_prt,isoptr,cur_dir_cluster,1);
+      unlock=DrvLock(dv);
+      isoptr=MAlloc(dv->spc<<BLK_SIZE_BITS);
+      RClusters(Fs->cur_dv,isoptr,cur_dir_cluster,1);
       if (isoptr->name_len==1 && !isoptr->name) {//curdir
-	i=(isoptr->size.little+p->spc<<BLK_SIZE_BITS-1)/p->spc<<BLK_SIZE_BITS;
-	buf=MAlloc(p->spc<<BLK_SIZE_BITS*i);
-	RClusters(Fs->cur_prt,buf,cur_dir_cluster,i);
+	i=(isoptr->size.little+dv->spc<<BLK_SIZE_BITS-1)/dv->spc<<BLK_SIZE_BITS;
+	buf=MAlloc(dv->spc<<BLK_SIZE_BITS*i);
+	RClusters(Fs->cur_dv,buf,cur_dir_cluster,i);
 	Free(isoptr);
       } else {
 	buf=isoptr;
 	i=1;
       }
-      i*=p->spc<<BLK_SIZE_BITS;
+      i*=dv->spc<<BLK_SIZE_BITS;
       isoptr=buf;
       while (i>0) {
 	if (!isoptr->len) {
@@ -177,48 +177,48 @@ Bool ISO1FileFind(CPrt *p,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fu
 exit_this:
       Free(buf);
       if (unlock)
-	PrtUnlock(p);
+	DrvUnlock(dv);
     } catch
       if (unlock)
-	PrtUnlock(p);
+	DrvUnlock(dv);
   return result;
 }
 
-U8 *ISO1FileRead(CPrt *p,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
+U8 *ISO1FileRead(CDrv *dv,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
 {
   U8 *buf=NULL;
   CDirEntry de;
   I64 c,blk_cnt,cur_dir_cluster;
-  PrtChk(p);
+  DrvChk(dv);
   *_size=0;
   *_attr=0;
-  if (p->type!=PT_ISO9660)
-    PrintErr("Not ISO9660 Partition\n");
+  if (dv->type!=DVT_ISO9660)
+    PrintErr("Not ISO9660 Drv\n");
   else
     try {
-      PrtLock(p);
-      cur_dir_cluster=Name2DirCluster(p,cur_dir);
-      if (ISO1FileFind(p,cur_dir_cluster,filename,&de,FUF_JUST_FILES)) {
+      DrvLock(dv);
+      cur_dir_cluster=Name2DirCluster(dv,cur_dir);
+      if (ISO1FileFind(dv,cur_dir_cluster,filename,&de,FUF_JUST_FILES)) {
 	blk_cnt=(de.size+BLK_SIZE-1)>>BLK_SIZE_BITS;
 	buf=MAlloc(blk_cnt<<BLK_SIZE_BITS+1);
 	c=de.cluster;
-	c=RClustersBlks(p,buf,c,blk_cnt);
+	c=RClustersBlks(dv,buf,c,blk_cnt);
 	buf[de.size]=0; //Terminate
 	*_size=de.size;
 	*_attr=FileAttr(de.name,de.attr);
       }
-      PrtUnlock(p);
+      DrvUnlock(dv);
     } catch
-      PrtUnlock(p);
+      DrvUnlock(dv);
   return buf;
 }
 
 Bool ISO1Cd(U8 *name,I64 cur_dir_cluster)
 {
   CDirEntry de;
-  if (Fs->cur_prt->type!=PT_ISO9660)
-    PrintErr("Not ISO9660 Partition\n");
-  else if (ISO1FileFind(Fs->cur_prt,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
+  if (Fs->cur_dv->type!=DVT_ISO9660)
+    PrintErr("Not ISO9660 Drv\n");
+  else if (ISO1FileFind(Fs->cur_dv,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
     return TRUE;
   else {
     "%s ",name;
@@ -229,25 +229,25 @@ Bool ISO1Cd(U8 *name,I64 cur_dir_cluster)
 
 CDirEntry *ISO1FilesFind(U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NULL)
 {
-  CPrt *p=Fs->cur_prt;
+  CDrv *dv=Fs->cur_dv;
   CISO1DirEntry *buf,*buf2,*isoptr;
-  I64 i,cur_dir_cluster=Name2DirCluster(p,Fs->cur_dir);
+  I64 i,cur_dir_cluster=Name2DirCluster(dv,Fs->cur_dir);
   CDirEntry *result=NULL,*tempde;
   if (fuf_flags&~FUG_FILES_FIND)
     throw('FUF');
-  isoptr=MAlloc(p->spc<<BLK_SIZE_BITS);
-  RClusters(Fs->cur_prt,isoptr,cur_dir_cluster,1);
+  isoptr=MAlloc(dv->spc<<BLK_SIZE_BITS);
+  RClusters(Fs->cur_dv,isoptr,cur_dir_cluster,1);
   if (isoptr->name_len==1 && !isoptr->name) {//curdir
-    i=(isoptr->size.little+p->spc<<BLK_SIZE_BITS-1)/p->spc<<BLK_SIZE_BITS;
-    buf=MAlloc(p->spc<<BLK_SIZE_BITS*i);
-    RClusters(Fs->cur_prt,buf,cur_dir_cluster,i);
+    i=(isoptr->size.little+dv->spc<<BLK_SIZE_BITS-1)/dv->spc<<BLK_SIZE_BITS;
+    buf=MAlloc(dv->spc<<BLK_SIZE_BITS*i);
+    RClusters(Fs->cur_dv,buf,cur_dir_cluster,i);
     Free(isoptr);
   } else {
     buf=isoptr;
     i=1;
   }
   buf2=buf;
-  i*=p->spc<<BLK_SIZE_BITS;
+  i*=dv->spc<<BLK_SIZE_BITS;
   while (i>0) {
     if (!buf->len) {
       buf(U8 *)++;

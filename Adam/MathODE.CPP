@@ -28,7 +28,7 @@ U0 ODERstPtrs(CMathODE *ode)
 }
 
 public CMathODE *ODENew(I64 n,F64 max_tolerance=1e-6,I64 flags=0)
-{//Make differential equation ctrl struct. See [C:/Kernel/Adam1a.HPP.Z,236] flags.
+{//Make differential equation ctrl struct. See [C:/Kernel/Adam1a.HPP.Z,237] flags.
 
 //The tolerance is not precise.
 //You can min_tolerance and it will
@@ -158,13 +158,13 @@ public U0 ODERenum(CMathODE *ode)
 public CMass *MassFind(CMathODE *ode,F64 x,F64 y,F64 z=0)
 {//Search for mass nearest to x,y,z.
   CMass *tempm,*best_mass=NULL;
-  F64 d,best_d=MAX_F64;
+  F64 dd,best_dd=MAX_F64;
 
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
-    d=Sqr(tempm->x-x)+Sqr(tempm->y-y)+Sqr(tempm->z-z);
-    if (d<best_d) {
-      best_d=d;
+    dd=Sqr(tempm->x-x)+Sqr(tempm->y-y)+Sqr(tempm->z-z);
+    if (dd<best_dd) {
+      best_dd=dd;
       best_mass=tempm;
     }
     tempm=tempm->next;
@@ -175,15 +175,15 @@ public CMass *MassFind(CMathODE *ode,F64 x,F64 y,F64 z=0)
 public CSpring *SpringFind(CMathODE *ode,F64 x,F64 y,F64 z=0)
 {//Find spring midpoint nearest x,y,z.
   CSpring *temps,*best_spring=NULL;
-  F64 d,best_d=MAX_F64;
+  F64 dd,best_dd=MAX_F64;
 
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
-    d=Sqr((temps->end1->x+temps->end2->x)/2-x)+
+    dd=Sqr((temps->end1->x+temps->end2->x)/2-x)+
       Sqr((temps->end1->y+temps->end2->y)/2-y)+
       Sqr((temps->end1->z+temps->end2->z)/2-z);
-    if (d<best_d) {
-      best_d=d;
+    if (dd<best_dd) {
+      best_dd=dd;
       best_spring=temps;
     }
     temps=temps->next;
@@ -196,13 +196,13 @@ public U0 MassOrSpringFind(CMathODE *ode,CMass **result_mass,CSpring **result_sp
 {//Find spring or mass nearest x,y,z.
   CMass   *tempm,*best_mass=NULL;
   CSpring *temps,*best_spring=NULL;
-  F64 d,best_d=MAX_F64;
+  F64 dd,best_dd=MAX_F64;
 
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
-    d=Sqr(tempm->x-x)+Sqr(tempm->y-y)+Sqr(tempm->z-z);
-    if (d<best_d) {
-      best_d=d;
+    dd=Sqr(tempm->x-x)+Sqr(tempm->y-y)+Sqr(tempm->z-z);
+    if (dd<best_dd) {
+      best_dd=dd;
       best_mass=tempm;
     }
     tempm=tempm->next;
@@ -210,11 +210,11 @@ public U0 MassOrSpringFind(CMathODE *ode,CMass **result_mass,CSpring **result_sp
 
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
-    d=Sqr((temps->end1->x+temps->end2->x)/2-x)+
+    dd=Sqr((temps->end1->x+temps->end2->x)/2-x)+
       Sqr((temps->end1->y+temps->end2->y)/2-y)+
       Sqr((temps->end1->z+temps->end2->z)/2-z);
-    if (d<best_d) {
-      best_d=d;
+    if (dd<best_dd) {
+      best_dd=dd;
       best_spring=temps;
       best_mass=NULL;
     }

@@ -577,25 +577,26 @@ U0 ICCmpAndBranch(CIntermediateCode *tempi,Bool has_result,I64 ip,
    U8 *buf,I64 ip2)
 {
   I64 r1,r2,i=0x48,j,t1,t2,result_reg;
-  Bool short_jmp,done;
+  Bool short_jmp,swap,done;
   CLexCodeMisc *lb;
-  CICArg *a1=&tempi->a1,*a2=&tempi->a2,*swap;
+  CICArg *a1=&tempi->a1,*a2=&tempi->a2;
 
   j=a1->disp;
   if (a1->type&TY_MASK==TY_IMM && MIN_I32<=j<=MAX_I32) {
-    swap=a1; a1=a2; a2=swap;
+    SwapI64(&a1,&a2);
+    swap=TRUE;
     us=not_us;
     is=not_is;
-  }
+  } else
+    swap=FALSE;
   if (tempi->ic_class->raw_type&1 || tempi->ic_flags & ICF_USE_UNSIGNED)
     is=us;
 
   j=a2->disp;
   if (a2->type&TY_MASK==TY_IMM && MIN_I32<=j<=MAX_I32) {
     if (!has_result && TY_REG<=a1->type&TY_MASK<=TY_RIP_DISP32)
-      ICAddSubEctImm(tempi,tempi->a1.type,tempi->a1.reg,tempi->a1.disp,
-			   tempi->a1.type,tempi->a1.reg,tempi->a1.disp,
-		     j,0x073B,ip2);
+      ICAddSubEctImm(tempi,a1->type,a1->reg,a1->disp,
+			   a1->type,a1->reg,a1->disp,j,0x073B,ip2);
     else {
       if (a1->type&TY_MASK==TY_REG)
 	r1=a1->reg;

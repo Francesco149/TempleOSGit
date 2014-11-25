@@ -44,14 +44,14 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/Adam/Boot/InsBoot.CPP.Z,239] MasterBootZero() to
+You'll need to do a [C:/Adam/Boot/InsBoot.CPP.Z,236] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/Kernel/Dsk/Dsk1c.CPP.Z,140] Fmt('D',TRUE,FALSE,PT_FAT32)
-  This command formats a partition with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
-  RedSea file system type.  
-Use the drive letter of the partition in place of 'D'.
+2) [C:/Kernel/Dsk/Dsk1c.CPP.Z,140] Fmt('D',TRUE,FALSE,DVT_FAT32)
+  This command formats a drive with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
+  RedSea file system type.  Use 
+the drive letter of the partition in place of 'D'.
 
 **WARNING:**  If you are upgrading, be sure not to lose the file,
   /0000Boot/OldM
@@ -61,23 +61,22 @@ BR.BIN.C.
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/Adam/Boot/InsBoot.CPP.Z,135] MakeOSPrtBootInstall('D')
-  This command recompiles the source code on a partition and writes to the
-  _par
-tition's_ boot record.  You'll need to reenter the
-  [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount information so it 
-can be stored in the kernel.
+4) [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall('D')
+  This command recompiles the source code on a drive and writes to the
+  _drive's_ 
+boot record.  You'll need to reenter the [C:/Kernel/Dsk/DskAddDev.CPP.Z,173]
+  Mount information so it can be 
+stored in the kernel.
 
 5) Use Linux's [C:/Doc/Grub.TXT.Z,1] Grub or TempleOS'
-[C:/Adam/Boot/InsBoot.CPP.Z,256] MasterBootIntall('D')
+[C:/Adam/Boot/InsBoot.CPP.Z,253] MasterBootIntall('D')
   
-The [C:/Adam/Boot/InsBoot.CPP.Z,256] MasterBootIntall() command places a boot
-  loader on a drive to boot 
-partitions.  It saves the old master boot record to /0000Boot/OldMBR.BIN.C 
-and replaces it.  When you boot, you will have the option of booting the old 
-master boot record.  This command can be skipped if you already have a boot 
-loader.  Be sure not to lose the copy of the old boot record, like if you 
-reformat the partition.
+The [C:/Adam/Boot/InsBoot.CPP.Z,253] MasterBootIntall() command places a boot
+  loader on a drive.  It saves 
+the old master boot record to /0000Boot/OldMBR.BIN.C and replaces it.  When 
+you boot, you will have the option of booting the old master boot record.  
+This command can be skipped if you already have a boot loader.  Be sure not 
+to lose the copy of the old boot record, like if you reformat the drive.
 
 Delete /0000Boot/OldMBR.BIN.C if you want to get a fresh copy of a mbr, like 
 if installing from your own custom CD containing it's own /0000Boot/OldMBR.B

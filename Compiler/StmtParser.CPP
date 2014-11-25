@@ -127,15 +127,17 @@ U0 PrsVarInit(CLex *lx,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,U8 *data_ad
 	  LCCPush(lx);
 	  LCCInit(lx);
 	  LCCAdd(lx,IC_ABS_ADDR,data_addr_ip,tempc+1);
-	  LCCAdd(lx,IC_IMM_U64,dst-*_base,tempc+1);
+	  LCCAdd(lx,IC_IMM_I64,dst-*_base,tempc+1);
 	  LCCAdd(lx,IC_ADD,0,tempc+1);
 	  if (!PrsExpression(lx,NULL,TRUE))
 	    throw('Compiler');
 	  tempi=lx->lcc.lcc_root.last;
-	  if (tempi->ic_code==IC_END_EXP)
+	  if (tempi->ic_code==IC_END_EXP) {
 	    tempi->ic_code=IC_NOP1;
+	    tempi->ic_flags=0;
+	  }
 	  LCCAdd(lx,IC_ASSIGN,0,tempc);
-	  LCCAdd(lx,IC_END_EXP,0,tempc);
+	  LCCAdd(lx,IC_END_EXP,0,tempc,ICF_NO_DEPEND_RESULT);
 	  LCCAdd(lx,IC_RET,0,0);
 	  if (ex=LCCCompile(lx,&size,NULL,NULL)) {
 	    tempe=CAlloc(sizeof(CExeImportExport));
@@ -1374,9 +1376,9 @@ U0 PrsSwitch(CLex *lx,Bool nobound,I64 try_cnt)
   mc_jt->begin->use_cnt++;
   if (!PrsExpression(lx,NULL,FALSE))
     throw('Compiler');
-  tempi_sub=LCCAdd(lx,IC_IMM_U64,0,cmp.internal_types[RT_I64]);
+  tempi_sub=LCCAdd(lx,IC_IMM_I64,0,cmp.internal_types[RT_I64]);
   LCCAdd(lx,IC_SUB,0,cmp.internal_types[RT_I64]);
-  tempi_cmp=LCCAdd(lx,IC_IMM_U64,0,cmp.internal_types[RT_I64]);
+  tempi_cmp=LCCAdd(lx,IC_IMM_I64,0,cmp.internal_types[RT_I64]);
   if (nobound)
     LCCAdd(lx,IC_NOBOUND_SWITCH,mc_jt,0);
   else
@@ -1632,7 +1634,7 @@ U0 PrsTryBlk(CLex *lx,I64 try_cnt)
   else
     LCCAdd(lx,IC_ADD_RSP,16,tempc);
   LCCAdd(lx,IC_CALL_END,0,tempc);
-  LCCAdd(lx,IC_END_EXP,0,0);
+  LCCAdd(lx,IC_END_EXP,0,0,ICF_NO_DEPEND_RESULT);
 
   PrsStatement(lx,try_cnt+1);
 
@@ -1647,7 +1649,7 @@ U0 PrsTryBlk(CLex *lx,I64 try_cnt)
   } else
     LCCAdd(lx,IC_CALL,temp_untry->executable_addr,tempc);
   LCCAdd(lx,IC_CALL_END,0,tempc);
-  LCCAdd(lx,IC_END_EXP,0,0);
+  LCCAdd(lx,IC_END_EXP,0,0,ICF_NO_DEPEND_RESULT);
 
   LCCAdd(lx,IC_JMP,lb_done,0);
 

@@ -1,8 +1,8 @@
-TempleOS uses a 64-bit value, [C:/Kernel/Adam1a.HPP.Z,182] CDate, for
+TempleOS uses a 64-bit value, [C:/Kernel/Adam1a.HPP.Z,183] CDate, for
 date/time.  The upper 32-bits are the 
 days since Christ.  The lower 32-bits store time of day divided by 4 billion 
 which works out to 49710ths of a second.  You can subtract two
-[C:/Kernel/Adam1a.HPP.Z,182] CDate's to get 
+[C:/Kernel/Adam1a.HPP.Z,183] CDate's to get 
 a time span.
 
-Use [C:/Kernel/Adam1a.HPP.Z,538] CDATE_FREQ to convert.
+Use [C:/Kernel/Adam1a.HPP.Z,548] CDATE_FREQ to convert.

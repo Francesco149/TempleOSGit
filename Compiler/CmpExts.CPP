@@ -20,7 +20,7 @@ extern U0 OptPass3(CLex *lx,COptReg *reg_offsets);
 extern U0 OptPass4(CLex *lx,COptReg *reg_offsets,I64 *_type);
 extern U0 OptPass5(CLex *lx);
 extern U0 OptPass6(CLex *lx);
-extern I64 OptPass789(CLex *lx,COptReg *reg_offsets,U8 *buf,CDbgInfo **_dbg);
+extern I64 OptPass789A(CLex *lx,COptReg *reg_offsets,U8 *buf,CDbgInfo **_dbg);
 extern CHashClass *PrsClass(CLex *lx,I64 keyword,I64 fsp_flags,Bool is_extern);
 extern CHashFun *PrsFunJoin(CLex *lx,CHashClass *temp_return,U8 *name,I64 fsp_flags);
 extern I64 PrsKeyWord(CLex *lx);

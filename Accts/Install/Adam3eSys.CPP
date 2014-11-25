@@ -23,15 +23,15 @@ U0 SrvStartUp()
 U0 StartUpTasks()
 {
   CTask *user1,*user2;
-  user1=SpawnUser;
-  user2=SpawnUser("Ed(\"::/Doc/Install.TXT.Z\");\n");
+  user1=User;
+  user2=User("Ed(\"::/Doc/Install.TXT.Z\");\n");
   WinToTop(user1);
   WinTileVert;
   "Boot Time:%7.3fs\n",tS;
   XTalk(user1,"Cd(\"HOME\");#include \"DoOnce\";\n");
   Silent(ON);	//no output to screen
-  WSInit;
-  WordStat;
+  ACInit;
+  AutoComplete;
   Silent(OFF); //no output to screen
 }
 

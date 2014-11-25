@@ -82,7 +82,7 @@ public U8 *GodDoodleSprite()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   WinBorder;
-  WordStat;
+  AutoComplete;
 
   PopUpOk("The [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit can puppet you.\n\n"
 	"Press $GREEN$<SPACE>$FG$ until it finishes.");
@@ -98,16 +98,16 @@ public U8 *GodDoodleSprite()
   try {
     for (i=0;i<3;i++) {
       god.doodle_dc->color=RED;
-      for (j=0;j<24;j++)
+      for (j=0;j<29;j++)
 	nobound_switch (GodDoodleBits(3)) {
 	  case 0:
-	    GrEllipse(god.doodle_dc,
-	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,
+	    GrEllipse3(god.doodle_dc,
+	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,0,
 	      (w-1)*GodDoodleBits(5)/15.5,(h-1)*GodDoodleBits(5)/15.5);
 	    break;
 	  case 1:
-	    GrCircle(god.doodle_dc,
-	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,
+	    GrCircle3(god.doodle_dc,
+	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,0,
 	      (w-1)*GodDoodleBits(5)/15.5);
 	    break;
 	  case 2:
@@ -116,9 +116,9 @@ public U8 *GodDoodleSprite()
 	      (w-1)*GodDoodleBits(5)/15.5,(h-1)*GodDoodleBits(5)/15.5);
 	    break;
 	  case 3...7:
-	    GrLine(god.doodle_dc,
-	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,
-	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15);
+	    GrLine3(god.doodle_dc,
+	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,0,
+	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,0);
 	    break;
 	}
       for (j=0;j<6;j++) {
@@ -130,7 +130,7 @@ public U8 *GodDoodleSprite()
 	  case 2: god.doodle_dc->color=LTGRAY;	break;
 	  case 3: god.doodle_dc->color=WHITE;	break;
 	}
-	GrFloodFill(god.doodle_dc,x,y);
+	GrFloodFill3(god.doodle_dc,x,y,0);
       }
       GodDoodleSmooth(3);
     }

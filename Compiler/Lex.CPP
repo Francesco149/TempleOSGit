@@ -34,16 +34,16 @@ U8 *CmpPrompt(Bool dbl_semicolon=FALSE)
 
 CLex *LexNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc new lex ctrl node.
-//Frees buf in [C:/Compiler/Lex.CPP.Z,66] LexDel unless [C:/Kernel/Adam1a.HPP.Z,2003] LF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.CPP.Z,66] LexDel unless [C:/Kernel/Adam1a.HPP.Z,2010] LF_DONT_FREE_BUF flag is set.
 //FileName is for error reporting.  If files are #included, new names are used.
-//See [C:/Apps/Psalmody/Psalmody.CPP.Z,1] Psalmody LexNew.
+//See [C:/Apps/Psalmody/Psalmody.CPP,1] Psalmody LexNew.
   CLex *lx=MAlloc(sizeof(CLex));
   CLexFile *tempf=&lx->lfns[0];
-  MemSet(lx,0,offset(CLex.end_of_zeroed_members)+sizeof(CLexFile));
+  MemSet(lx,0,offset(CLex.end_zeroed)+sizeof(CLexFile));
   QueInit(lx);
   lx->flags=flags;
   lx->opts=1<<OPTf_WARN_UNUSED_VAR;
-  lx->pass_trace_mask=0b1001111101;
+  lx->otrace_mask=0b10001111101;
   lx->htc.hash_mask=HTG_TYPE_MASK-HTT_IMPORT_SYS_SYM;
   lx->htc.define_hash_table=lx->htc.hash_table_lst=lx->htc.glbl_hash_table=lx->htc.local_hash_table=Fs->hash_table;
   if (flags&LF_KEEP_AT_SIGN)
@@ -81,7 +81,7 @@ U0 LexDel(CLex *lx)
   Free(lx->ps);
   Free(lx->cur_str);
   Free(lx->cur_help_index);
-  Free(lx->dollar);
+  Free(lx->dollar_buf);
   Free(lx);
 }
 
@@ -143,9 +143,9 @@ Bool LexDollar(CLex *lx,CDoc *doc,CDocEntry *doc_e)
 {
   U8 *st;
   if (lx->flags&LF_IN_QUOTES) {
-    Free(lx->dollar);
+    Free(lx->dollar_buf);
     st=Doc2PlainText(doc,doc_e);
-    lx->dollar=MStrPrint("$%Q$",st);
+    lx->dollar_buf=MStrPrint("$%Q$",st);
     lx->dollar_cnt=2;
     Free(st);
     return TRUE;
@@ -181,7 +181,7 @@ lgc_start2:
 		if (doc_e->de_flags & ~(DOCEF_TAG|DOCEF_DEFINE|DOCEF_TAG_CB|
 			DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|
 			DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP) &&
-		      LexDollar(lx,doc,doc_e) && *(src=lx->dollar)) {
+		      LexDollar(lx,doc,doc_e) && *(src=lx->dollar_buf)) {
 		  tempf->line_num=doc_e->y+1;
 		  tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=src;
 		} else if (*(src=doc_e->tag))
@@ -235,7 +235,7 @@ lgc_start2:
 		lx->last_U16=TK_INS_BINARY_SIZE;
 		goto lgc_done;
 	      case DOCT_SHIFTED_Y:
-		if (LexDollar(lx,doc,doc_e) && *(src=lx->dollar)) {
+		if (LexDollar(lx,doc,doc_e) && *(src=lx->dollar_buf)) {
 		  tempf->line_num=doc_e->y+1;
 		  tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=src;
 		} else {
@@ -255,7 +255,7 @@ lgc_start2:
 		goto lgc_start2;
 	      case 0xFF: //nobound_switch
 	      default:
-		if (LexDollar(lx,doc,doc_e) && *(src=lx->dollar)) {
+		if (LexDollar(lx,doc,doc_e) && *(src=lx->dollar_buf)) {
 		  tempf->line_num=doc_e->y+1;
 		  tempf->buf=tempf->buf_ptr=lx->cur_buf_ptr=src;
 		} else {
@@ -460,7 +460,7 @@ U0 LexPop(CLex *lx)
 }
 
 I64 MemberMetaData(U8 *needle_str,CMemberLst *haystack_member_lst)
-{//Find meta data name, return meta data val. See [C:/Demo/ClassMeta.CPP.Z,1].
+{//Find meta data name, return meta data val. See [C:/Demo/ClassMeta.CPP,1].
   CMemberLstMeta *meta=haystack_member_lst->meta;
   while (meta) {
     if (!StrCmp(meta->str,needle_str))
@@ -471,7 +471,7 @@ I64 MemberMetaData(U8 *needle_str,CMemberLst *haystack_member_lst)
 }
 
 CMemberLstMeta *MemberMetaFind(U8 *needle_str,CMemberLst *haystack_member_lst)
-{//Find meta data name, return meta data struct. See [C:/Demo/ClassMeta.CPP.Z,1].
+{//Find meta data name, return meta data struct. See [C:/Demo/ClassMeta.CPP,1].
   CMemberLstMeta *meta=haystack_member_lst->meta;
   while (meta) {
     if (!StrCmp(meta->str,needle_str))
@@ -657,6 +657,9 @@ I64 LexInStr(CLex *lx,U8 *buf,I64 size,Bool *done)
 	case 't':
 	  buf[i++]='\t';
 	  break;
+	case '0':
+	  buf[i++]=0;
+	  break;
 	case 'x':
 	case 'X':
 	  j=0;
@@ -668,36 +671,6 @@ I64 LexInStr(CLex *lx,U8 *buf,I64 size,Bool *done)
 	      else
 		j=j<<4+ch-'A'+10;
 	    } else
-	      break;
-	  }
-	  buf[i++]=j;
-	  lx->flags|=LF_USE_LAST_U16;
-	  break;
-	case 'b':
-	case 'B':
-	  j=0;
-	  while (TRUE) {
-	    ch=LexGetChar(lx);
-	    if ('0'<=ch<='1')
-	      j=j<<1+ch-'0';
-	    else
-	      break;
-	  }
-	  buf[i++]=j;
-	  lx->flags|=LF_USE_LAST_U16;
-	  break;
-	case 'o':
-	case 'O':
-	  j=0;
-	  goto lis_octal;
-	case '0'...'7':
-	  j=ch-'0';
-lis_octal:
-	  while (TRUE) {
-	    ch=LexGetChar(lx);
-	    if ('0'<=ch<='7')
-	      j=j<<3+ch-'0';
-	    else
 	      break;
 	  }
 	  buf[i++]=j;
@@ -831,18 +804,6 @@ lex_ident:
 	      goto lex_end;
 	    }
 	  }
-	} else if (ch=='O') {
-	  while (TRUE) {
-	    ch=LexGetChar(lx);
-	    if ('0'<=ch<='7')
-	      i=i<<3+ch-'0';
-	    else {
-	      lx->cur_i64=i;
-	      lx->flags|=LF_USE_LAST_U16;
-	      lx->token=TK_INTEGER;
-	      goto lex_end;
-	    }
-	  }
 	}
 	while (TRUE) {
 	  if (Bt(chars_bitmap_dec_numeric,ch))
@@ -958,6 +919,9 @@ lex_float_start:
 		  case 't':
 		    k.u8[j]='\t';
 		    break;
+		  case '0':
+		    k.u8[j]=0;
+		    break;
 		  case 'x':
 		  case 'X':
 		    i=0;
@@ -969,36 +933,6 @@ lex_float_start:
 			else
 			  i=i<<4+ch-'A'+10;
 		      } else
-			break;
-		    }
-		    k.u8[j]=i;
-		    lx->flags|=LF_USE_LAST_U16;
-		    break;
-		  case 'b':
-		  case 'B':
-		    i=0;
-		    while (TRUE) {
-		      ch=LexGetChar(lx);
-		      if ('0'<=ch<='1')
-			i=i<<1+ch-'0';
-		      else
-			break;
-		    }
-		    k.u8[j]=i;
-		    lx->flags|=LF_USE_LAST_U16;
-		    break;
-		  case 'o':
-		  case 'O':
-		    i=0;
-		    goto lex_octal;
-		  case '0'...'7':
-		    i=ch-'0';
-lex_octal:
-		    while (TRUE) {
-		      ch=LexGetChar(lx);
-		      if ('0'<=ch<='7')
-			i=i<<3+ch-'0';
-		      else
 			break;
 		    }
 		    k.u8[j]=i;
@@ -1516,7 +1450,7 @@ lex_end:
 }
 
 U8 *LexExtStr(CLex *lx,I64 *_size=NULL)
-{//Lex [C:/Kernel/Adam1a.HPP.Z,1960] TK_STR's to one combined str. _size includes terminator.
+{//Lex [C:/Kernel/Adam1a.HPP.Z,1967] TK_STR's to one combined str. _size includes terminator.
   I64 len=lx->cur_str_len,len1,len2;
   U8 *st=lx->cur_str,*st1,*st2;
   lx->cur_str=NULL;
@@ -1569,7 +1503,7 @@ U8 *LexPutLine(CLex *lx,U8 *start)
 }
 
 U0 LexPutPos(CLex *lx)
-{//Print token, line link and, then, [C:/Compiler/Lex.CPP.Z,1543] LexPutLine().
+{//Print token, line link and, then, [C:/Compiler/Lex.CPP.Z,1477] LexPutLine().
   LexPutToken(lx);
   SetFix(lx->cur_lfn->name,lx->cur_lfn->line_num);
   if (IsRaw)
@@ -1583,7 +1517,7 @@ U0 LexPutPos(CLex *lx)
 }
 
 U0 LexWarn(CLex *lx,U8 *str=NULL)
-{//Print warn msg, then, [C:/Compiler/Lex.CPP.Z,1571] LexPutPos().
+{//Print warn msg, then, [C:/Compiler/Lex.CPP.Z,1505] LexPutPos().
   if (str) PrintWarn(str);
   if (lx->htc.fun) {
     "in fun '%s'.\n",lx->htc.fun->str;
@@ -1599,7 +1533,7 @@ U0 LexWarn(CLex *lx,U8 *str=NULL)
 }
 
 U0 LexExcept(CLex *lx,U8 *str=NULL)
-{//Print err msg, [C:/Compiler/Lex.CPP.Z,1571] LexPutPos() and throw exception.
+{//Print err msg, [C:/Compiler/Lex.CPP.Z,1505] LexPutPos() and throw exception.
   if (!Bt(&sys_run_level,RLf_ADAM_SERVER)) {
     Preempt(OFF);
     Raw(ON);

@@ -52,14 +52,14 @@ U0 TemplateSliderCtrl(CDoc *doc)
   DocRecalc(doc);
   DocCaptureUndo(doc,TRUE);
 
-  task=SpawnUser("CTemplateSC **_m=0x%X;*_m=GetSliderCtrl;\n",&m);
+  task=User("CTemplateSC **_m=0x%X;*_m=GetSliderCtrl;\n",&m);
   while (!m)
     Yield;
 
   DocPrint(doc,
-"#define SLIDER_RANGE	%d
-#define SLIDER_SPACING %d
-#define SLIDER_BORDER  %d
+"#define SLIDER_RANGE\t%d
+#define SLIDER_SPACING\t%d
+#define SLIDER_BORDER\t%d
 
 class CSliderState
 {

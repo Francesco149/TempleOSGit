@@ -9,7 +9,7 @@ public class CGrGlbls
 	*dc2,		//Updated every refresh
 	*dc_cache,
 	*zoomed_dc;
-  U32	*text_base;	//See [TextBase Layer,1] TextBase Layer.
+  U32	*text_base;	//See [TextBase Layer,1] TextBase Layer. (Similar to 0xB8000 but 32 bits)
   U16	*win_z_buf;
 
 #define SPHT_ELEM_CODE	1
@@ -31,10 +31,6 @@ public class CGrGlbls
 	*even_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*odd_pen_brushes[GR_NUM_PEN_BRUSHES];
 
-#define GR_REFRESH_LOG_CNT	16
-  F64	refresh_time_stamps[GR_REFRESH_LOG_CNT];
-  I64	refresh_ts_ptr;
-
 #define GR_MAX_SCREEN_ZOOM	8
   U8	*screen_zoom_tables[GR_MAX_SCREEN_ZOOM+1];
   I64	screen_zoom,sx,sy;
@@ -43,7 +39,7 @@ public class CGrGlbls
   Bool	continuous_scroll;
 } gr;
 
-//See [D:/Kernel/KStart.CPP.Z,2] SYS_BIOS_GR_MODE
+//See [C:/Kernel/KStart.CPP.Z,1] RLf_VGA
 //See [C:/Kernel/KEnd.CPP.Z,67] SysGrInit()
 //Allows consts to be used instead of vars.
 HashPublic("GR_WIDTH",HTT_DEFINE_STR);;

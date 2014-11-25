@@ -22,7 +22,7 @@ U0 MakeMyISO(U8 *out_iso_filename)
   }
   DelTree("/Distro");
   Auto(STD_DISTRO_CDROM_CFG);
-  MakeOSPrtBootInstall(,'T');
+  MakeOSDrvBootInstall(,'T');
   CopyTree("/0000Boot",	"/Distro/0000Boot");
   CopyTree("/Accts",	"/Distro/Accts");
   CopyTree("/Adam",	"/Distro/Adam");
@@ -33,8 +33,7 @@ U0 MakeMyISO(U8 *out_iso_filename)
   CopyTree("/Kernel",	"/Distro/Kernel");
   CopyTree("/Misc",	"/Distro/Misc");
   //To save space, optionally delete dictionary.
-  //Del("/Distro/Adam/WordStat/WSDefs.DAT");
-  CopyTree("/Windows","/Distro/Windows"); //You can leave this out
+  //Del("/Distro/Adam/AutoComplete/ACDefs.DAT");
   CopyTree("/Linux","/Distro/Linux");	  //You can leave this out.
   MkDir("/Distro/Temp");
   MkDir("/Distro/Temp/ScreenShots");
@@ -45,7 +44,7 @@ U0 MakeMyISO(U8 *out_iso_filename)
 
 MakeMyISO("/MyDistro.ISO");
 
-// Study my account examples [C:/Demo/AcctExample/TSAdam.CPP.Z,1] Cfg Strs [C:/Demo/AcctExample/TSDistro.CPP.Z,1] Update Funs.
+// Study my account examples [C:/Demo/AcctExample/TSAdam.CPP,1] Cfg Strs [C:/Demo/AcctExample/TSDistro.CPP,1] Update Funs.
 
 
 

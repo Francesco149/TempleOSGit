@@ -3,7 +3,7 @@
 Use [C:/Compiler/ICLCC.CPP.Z,6] OptOn() [C:/Compiler/ICLCC.CPP.Z,11]
 OptOff().  You might need to do #exe {OptOn();}.
 
-[C:/Kernel/Adam1a.HPP.Z,1462] OPTf_GLBLS_ON_DATA_HEAP without this option,
+[C:/Kernel/Adam1a.HPP.Z,1469] OPTf_GLBLS_ON_DATA_HEAP without this option,
 global vars are placed in the 
 code heap which is limited to 2 Gig.  In AOT modules, global vars take-up
 room 
@@ -11,24 +11,24 @@ in the .BIN file, so you might want to use this option, instead.  You might
 wish to turn it on and off around specific vars.  A disadvantage of data heap 
 global vars in AOT modules is they can't be initialized.
 
-[C:/Kernel/Adam1a.HPP.Z,1459] OPTf_EXTERNS_TO_IMPORTS and
-[C:/Kernel/Adam1a.HPP.Z,1460] OPTf_KEEP_PRIVATE are strange options, you'll 
+[C:/Kernel/Adam1a.HPP.Z,1466] OPTf_EXTERNS_TO_IMPORTS and
+[C:/Kernel/Adam1a.HPP.Z,1467] OPTf_KEEP_PRIVATE are strange options, you'll 
 never need.  They're to allow the same header file for Kernel to act as extern
 s when compiling itself and imports when compiled by AOT modules.
 
-[C:/Kernel/Adam1a.HPP.Z,1456] OPTf_WARN_UNUSED_VAR	warning if unused var.  It
+[C:/Kernel/Adam1a.HPP.Z,1463] OPTf_WARN_UNUSED_VAR	warning if unused var.  It
 is applied to functions.
 
-[C:/Kernel/Adam1a.HPP.Z,1457] OPTf_WARN_PAREN		warning if parenthesis are not
+[C:/Kernel/Adam1a.HPP.Z,1464] OPTf_WARN_PAREN		warning if parenthesis are not
 needed.
 
-[C:/Kernel/Adam1a.HPP.Z,1458] OPTf_WARN_DUP_TYPES	warning if dup local var
+[C:/Kernel/Adam1a.HPP.Z,1465] OPTf_WARN_DUP_TYPES	warning if dup local var
 type statements.
 
-[C:/Kernel/Adam1a.HPP.Z,1461] OPTf_NO_REG_VAR forces all function local vars
+[C:/Kernel/Adam1a.HPP.Z,1468] OPTf_NO_REG_VAR forces all function local vars
 to the stk not regs.  Applied 
 to functions.
 
-[C:/Kernel/Adam1a.HPP.Z,1464] OPTf_NO_BUILTIN_CONST Disable 10-byte float
+[C:/Kernel/Adam1a.HPP.Z,1471] OPTf_NO_BUILTIN_CONST Disable 10-byte float
 consts for pi, log2_10, log10_2, 
 loge_2.  Applied to functions.

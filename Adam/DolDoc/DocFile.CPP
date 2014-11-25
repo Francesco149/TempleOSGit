@@ -34,7 +34,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/Adam1a.HPP.Z,1227] flags.
+{//Fetch doc from disk. See [C:/Kernel/Adam1a.HPP.Z,1238] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;
@@ -81,7 +81,8 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	    cnt++;
 	  break;
 	case DOCT_TEXT://**Update [D:/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
-	  if (!(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP))) {
+	  if (!(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP)) &&
+	      !(doc_e->type&DOCG_BL_IV_UL)) {
 	    cnt+=StrLen(doc_e->tag);
 	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS)) ||
 	      doc->flags&DOCF_DBL_DOLLARS)
@@ -112,7 +113,8 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
   for (doc_e=doc->root.next;doc_e!=doc;doc_e=doc_e->next) {
     if (!Bt(doldoc.type_flags_data,doc_e->type_u8)) {
       if (doc_e->type_u8==DOCT_TEXT &&
-	!(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP))) {
+	!(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP)) &&
+	!(doc_e->type&DOCG_BL_IV_UL)) {
 	src=doc_e->tag;
 	i=0;
 	while (ch=*src++) {
@@ -187,10 +189,9 @@ public Bool DocWrite(CDoc *doc,Bool prompt=FALSE)
 {//Store doc to disk.
   I64 size;
   U8 *buf;
-  if (prompt && !DocFormDo(&doc->filename))
-    return FALSE;
-  if (doc->filename.name[0]=='A'&&doc->filename.name[2]==':')
-    return FALSE; //LK_DOC,LK_DOC_ANCHOR,LK_DOC_FIND,LK_DOC_LINE
+  if (prompt && !DocFormDo(&doc->filename) ||
+	doc->filename.name[0]=='A' && doc->filename.name[2]==':')
+    return FALSE;  //CANCEL || LK_DOC,LK_DOC_ANCHOR,LK_DOC_FIND,LK_DOC_LINE?
   buf=DocSave(doc,&size);
   FileWrite(doc->filename.name,buf,size,0,doc->file_attr);
   Free(buf);
@@ -243,7 +244,7 @@ public U0 ClipboardDel()
 }
 
 public U0 EdCopyToClipboard(CDoc *doc)
-{//Copy [C:/Kernel/Adam1a.HPP.Z,933] DOCET_SELECTED flagged entries to clipboard.
+{//Copy [C:/Kernel/Adam1a.HPP.Z,944] DOCET_SELECTED flagged entries to clipboard.
   CDoc *doc2=sys_clipboard_doc;
   Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
@@ -440,10 +441,10 @@ public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
     DocDel(doc2);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.BMP.Z")) {
-    DocBMPFile(doc,filename,FALSE);
+    DocBMP(doc,filename,,FALSE);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.BMP;*.bmp")) {
-    DocBMPFile(doc,filename,TRUE);
+    DocBMP(doc,filename,,TRUE);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.GRA*")) {
     DocGRAFile(doc,filename);

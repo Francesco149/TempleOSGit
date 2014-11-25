@@ -2,4 +2,4 @@ The compiler's lexical analyzer can be used in your programs to simplify
 parsing.  See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Doc Parsing or
 [C:/Compiler/CmpInit.CPP.Z,1] Parse Opcode File.
 
-See [C:/Kernel/Adam1a.HPP.Z,1959] Tokens.
+See [C:/Kernel/Adam1a.HPP.Z,1966] Tokens.

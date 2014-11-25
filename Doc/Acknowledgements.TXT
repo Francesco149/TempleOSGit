@@ -3,7 +3,7 @@
 1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.  It's public 
 domain.
 
-2) [C:/Kernel/Adam1a.HPP.Z,2157] ATA Reg and Cmd Definitions are originally
+2) [C:/Kernel/Adam1a.HPP.Z,2160] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 
@@ -30,7 +30,7 @@ http://www.public-domain-photos.com.
 command-line.  There is a lot of MSDOS , Windows, VAXTMOS (VAX Ticketmaster 
 O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 
-10) I included [C:/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
+10) I included [C:/Misc/PCIDevices.TXT,1] PCIDevice Lst File.
 
 11) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
 and 
@@ -66,7 +66,7 @@ simplify my Frames-Per-Second code.
 20) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
 Help & Index.
 
-In short, I wrote every one of the 121,504 lines myself, no GPL code, no 
+In short, I wrote every one of the 121,168 lines myself, no GPL code, no 
 linkage or dependence on other code.  Anyone who says otherwise is being an 
 ass.
 
