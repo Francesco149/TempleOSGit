@@ -88,7 +88,7 @@ U0 UpTheMountain()
   Fs->draw_it=&DrawGodTalking;
   "$BG,LTCYAN$%h10c",'\n';
   "$BG,YELLOW$$WW,1$$CM,0,22$God Says...$RED$\n";
-  if (!FileFind(Define("ST_BIBLE_FILE")) || GodBits(1))
+  if (!FileFind(BIBLE_FILENAME) || GodBits(1))
     for (i=0;i<16;i++) {
       FifoU8Flush(god.fifo);
       GodWord;

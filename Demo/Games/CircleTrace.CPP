@@ -40,7 +40,7 @@ U0 CircleTrace()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  WordStat;
+  AutoComplete;
 
   cx=Fs->pix_width/2;
   cy=Fs->pix_height/2;
@@ -90,7 +90,7 @@ U0 CircleTrace()
 	  avg_error=total_error/total_distance;
 	  score=elapsed_time*avg_error;
 
-	  //[C:/Kernel/Misc1a.CPP.Z,151] Sleep()s until the next time the
+	  //[C:/Kernel/KMisc.CPP.Z,155] Sleep()s until the next time the
 	  //window mgr task runs.  The
 	  //window mgr calls the UpdateWin() routine
 	  //and places msgs in the que, so there's

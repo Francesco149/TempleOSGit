@@ -90,8 +90,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrPrint(dc,0,0,
     "Tanks:%02d  KeyStrokes:%04d Best:%04d",tank_cnt,key_cnt,best_score);
   if (!tank_cnt && Blink(4))
-    GrPrint(dc,(task->pix_width-FONT_WIDTH*9)>>1,
-		(task->pix_height-FONT_HEIGHT)>>1-32,"Game Over");
+    GrPrint(dc,(task->pix_width-FONT_WIDTH*14)>>1,
+		(task->pix_height-FONT_HEIGHT)>>1-32,"Game Completed");
 }
  
 U0 BombDrop()
@@ -159,7 +159,7 @@ U0 Init()
 
 U0 BomberGolf()
 {
-  I64 ch,sc;
+  I64 sc;
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -175,7 +175,7 @@ U0 BomberGolf()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WordStat;
+  AutoComplete;
   WinMax;
   Preempt(OFF);
   Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
@@ -184,9 +184,8 @@ U0 BomberGolf()
   Fs->draw_it=&DrawIt;
   Init;
   try {
-    while (TRUE) {
-      ch=GetKey(&sc);
-      switch (ch) {
+    while (TRUE)
+      switch (GetKey(&sc)) {
 	case 0:
 	  switch (sc.u8[0]) {
 	    case SC_CURSOR_UP:
@@ -219,7 +218,6 @@ U0 BomberGolf()
 	case CH_SHIFT_ESC:
 	  goto bm_done;
       }
-    }
 bm_done:
   } catch
     PutExcept;

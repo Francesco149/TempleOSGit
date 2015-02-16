@@ -17,10 +17,10 @@ _BEEPS::
 //You can always clobber RAX,RBX,RCX,RDX,R8,R9.  The compiler expects that.
 	PUSH	RBP
 	MOV	RBP,RSP
-	MOV	RCX,U64 SF_ARG1[RBP]  //[C:/Kernel/Adam1a.HPP.Z,1] SF_ARG1
+	MOV	RCX,U64 SF_ARG1[RBP]  //[C:/Kernel/KernelA.HPP.Z,1] SF_ARG1
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/Misc1a.CPP.Z,186] Beep(I64 freq=500,Bool busy=FALSE)
+//U0 [C:/Kernel/KMisc.CPP.Z,190] Beep(I64 freq=500,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	500	//Hz
 	CALL	Beep
@@ -41,7 +41,7 @@ _extern _BEEPS U0 Beeps(I64 cnt);
 I64 AsmAndC1()
 {
   I64 noreg i;	//Normally this would be stored in a reg
-		//Check by unassembling with [C:/Adam/Dbg2a.CPP.Z,249] Uf("AsmAndC1").
+		//Check by unassembling with [C:/Adam/ADbg.CPP.Z,249] Uf("AsmAndC1").
 
   i=GetI64("Num of beeps 1-5 (%d):",3,1,5);
   Beeps(i);
@@ -56,7 +56,7 @@ USE64	//Defaults to 64, but this is a good habit.
 			    //You better preserve the rest.
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/Misc1a.CPP.Z,159] Snd(F64 freq);
+//U0 [C:/Kernel/KMisc.CPP.Z,163] Snd(F64 freq);
 
 	MOV	RAX,RCX	//freq=loop*100.0+100.0
 	IMUL2	RAX,100 //TempleOS uses nonstandard opcodes

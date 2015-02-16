@@ -166,13 +166,13 @@ PObj *PPtNum(PickFrame *pf,I64 num)
 
 PObj *PPtFind(PickFrame *pf,I64 x,I64 y)
 {
-  I64 d,best_d=MAX_I64;
+  I64 dd,best_dd=MAX_I64;
   PObj *tempo=pf->o_root.next,*result=NULL;
   while (tempo!=&pf->o_root) {
     if (tempo->type==PTY_PT) {
-      d=SqrI64(tempo->p.p.x-x)+SqrI64(tempo->p.p.y-y);
-      if (d<best_d) {
-	best_d=d;
+      dd=SqrI64(tempo->p.p.x-x)+SqrI64(tempo->p.p.y-y);
+      if (dd<best_dd) {
+	best_dd=dd;
 	result=tempo;
       }
     }
@@ -251,7 +251,7 @@ U0 Pick3D()
   PObj *tempo;
   PickFrame *pf=NULL;
 
-  FramePtrAdd("PickFrame",pf);
+  FramePtrAdd("PickFrame");
 
   MenuPush(
 "File {"
@@ -267,7 +267,7 @@ U0 Pick3D()
   WinBorder;
   DocClear;
   "$BK,1$Move things around.$BK,0$\n";
-  WordStat;
+  AutoComplete;
   Preempt(OFF);
   pf=Init;
   tempo=NULL;

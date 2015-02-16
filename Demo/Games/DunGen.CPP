@@ -23,9 +23,9 @@ AcctRegExeBranch("TempleOS/DunGen");
 
 
 /* <3> <3> (image) */
-/* <4> <4> (image) */	//This is a template you can copy and use to make a tile.
 
-
+ 
+/* <4> <4> (image) */
 
 /* <5> <5> (image) */
 
@@ -35,28 +35,24 @@ AcctRegExeBranch("TempleOS/DunGen");
 
 /* <8> <8> (image) */
 
-
- 
 /* <9> <9> (image) */
 
 /* <10> <10> (image) */
 
-/* <11> <11> (image) */
-
 
 //These are indexed by color #.
-//See [C:/Kernel/Adam1a.HPP.Z,2851] COLORS.
+//See [C:/Kernel/KernelA.HPP.Z,2850] COLORS.
 
 U8 *tiles1[16]=
 {NULL,__BIN_7 ,__BIN_5 ,NULL,
- __BIN_6 ,NULL,NULL,NULL,
  NULL,NULL,NULL,NULL,
+ __BIN_6 ,NULL,NULL,NULL,
  NULL,NULL,NULL,NULL};
 
 U8 *tiles2[16]=
 {NULL,__BIN_8 ,__BIN_5 ,NULL,
- __BIN_6 ,NULL,NULL,NULL,
  NULL,NULL,NULL,NULL,
+ __BIN_6 ,NULL,NULL,NULL,
  NULL,NULL,NULL,NULL};
 
 #define SCREEN_SCALE	24
@@ -102,11 +98,12 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   CDC *dc_t=DCAlias(gr.dc2,task);
   I64 i,x,y,xx,yy,x1,y1,z1,color,
-      cx=task->pix_width/2,
-      cy=task->pix_height/2;
+	cx=task->pix_width/2,
+	cy=task->pix_height/2;
   CD3I32 poly[4];
   U8 **_tiles;
   F64 tt;
+  Monster *tempm;
 
   if (Blink(5))
     _tiles=tiles1;
@@ -122,7 +119,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
-  //with a [C:/Kernel/Adam1a.HPP.Z,3547] CDC.
+  //with a [C:/Kernel/KernelA.HPP.Z,3547] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -131,7 +128,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	xx=x+screen_x;
 	if (0<=xx<map_width) {
 	  if ((color=map[yy*map_width+xx]) &&
-	      LOS(xx,yy,man_x,man_y)) {
+		LOS(xx,yy,man_x,man_y)) {
 	    if (_tiles[color]) {
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
@@ -157,13 +154,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  }
 	}
       }
-      }
-
-  dc_t->color=LTGRAY;
-  for (x=-SCREEN_WIDTH/2;x<=SCREEN_WIDTH/2;x++)
-    GrLine3(dc_t,x*SCREEN_SCALE,-SCREEN_HEIGHT/2*SCREEN_SCALE,0,x*SCREEN_SCALE,SCREEN_HEIGHT/2*SCREEN_SCALE-1,0);
-  for (y=-SCREEN_HEIGHT/2;y<=SCREEN_HEIGHT/2;y++)
-    GrLine3(dc_t,-SCREEN_WIDTH/2*SCREEN_SCALE,y*SCREEN_SCALE,0,SCREEN_WIDTH/2*SCREEN_SCALE,y*SCREEN_SCALE-1,0);
+  }
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -177,32 +168,32 @@ U0 DrawIt(CTask *task,CDC *dc)
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      Sprite3(dc,x1,y1,z1,__BIN_10);
+	      Sprite3(dc,x1,y1,z1,__BIN_9);
 	    }
 	    if (xx+1<map_width && LOS(xx+1,yy,man_x,man_y)) {
 	      x1=x*SCREEN_SCALE;
 	      y1=y*SCREEN_SCALE;
 	      z1=0;
 	      GrTransform(dc_t,&x1,&y1,&z1);
-	      Sprite3(dc,x1,y1,z1,__BIN_11);
+	      Sprite3(dc,x1,y1,z1,__BIN_10);
 	    }
 	  }
 	}
       }
-      }
+  }
 
-  for (i=0;i<NUM_MONSTERS;i++)
-    if (!monsters[i].dead && LOS(monsters[i].x,monsters[i].y,man_x,man_y)) {
-      x1=(monsters[i].x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
-      y1=(monsters[i].y-screen_y)*SCREEN_SCALE+SCREEN_SCALE/2;
+  for (i=0,tempm=monsters;i<NUM_MONSTERS;i++,tempm++)
+    if (!tempm->dead && LOS(tempm->x,tempm->y,man_x,man_y)) {
+      x1=(tempm->x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
+      y1=(tempm->y-screen_y)*SCREEN_SCALE+SCREEN_SCALE/2;
       z1=0;
       GrTransform(dc_t,&x1,&y1,&z1);
-      if (monsters[i].dx<0) {
+      if (tempm->dx<0) {
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	GrSetSymmetry(dc,x1,y1,x1,y1+1);
       } else
 	dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
-      Sprite3(dc,x1,y1,z1,__BIN_9);
+      Sprite3(dc,x1,y1,z1,__BIN_4);
     }
 
   x1=(man_x-screen_x)*SCREEN_SCALE+SCREEN_SCALE/2;
@@ -211,6 +202,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (tS-man_attack_t0<0.2) {
     x1+=Tri(tS-man_attack_t0,0.2)*SCREEN_SCALE*man_dx;
     y1+=Tri(tS-man_attack_t0,0.2)*SCREEN_SCALE*man_dy;
+    if (man_dy!=1)
+      y1-=Saw(tS-man_attack_t0,0.2)*SCREEN_SCALE;
   }
   GrTransform(dc_t,&x1,&y1,&z1);
   if (man_dx<0) {
@@ -241,12 +234,14 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 Attack()
 {
   I64 i;
+  Monster *tempm;
+
   man_attack_t0=tS;
   Noise(100,300,1000);
-  for (i=0;i<NUM_MONSTERS;i++) {
-    if (!monsters[i].dead &&
-	  man_x+man_dx==monsters[i].x && man_y+man_dy==monsters[i].y) {
-      monsters[i].dead=TRUE;
+  for (i=0,tempm=monsters;i<NUM_MONSTERS;i++,tempm++) {
+    if (!tempm->dead &&
+	  man_x+man_dx==tempm->x && man_y+man_dy==tempm->y) {
+      tempm->dead=TRUE;
       if (!--monsters_left) {
 	tf=tS;
 	if (tf-t0<best_score)
@@ -258,21 +253,21 @@ U0 Attack()
 
 U0 Init()
 {
-  I64 i,x,y,minx,maxx,miny,maxy;
+  I64 i,x,y;
   CDC *dc;
-  SpriteExtents(__BIN_1,&minx,&maxx,&miny,&maxy);
-  map_width =(maxx-minx+1)/MAP_SCALE;
-  map_height=(maxy-miny+1)/MAP_SCALE;
+  Monster *tempm;
+
+  dc=Sprite2DC(__BIN_1);
+  map_width =dc->width/MAP_SCALE;
+  map_height=dc->height/MAP_SCALE;
   Free(map);
   map=MAlloc(map_width*map_height*sizeof(U8));
-  dc=DCNew(map_width*MAP_SCALE,map_height*MAP_SCALE);
-  Sprite3(dc,-minx,-miny,0,__BIN_1);
   for (y=0;y<map_height;y++)
     for (x=0;x<map_width;x++)
        map[y*map_width+x]=GrPeek(dc,x*MAP_SCALE,y*MAP_SCALE);
   DCDel(dc);
 
-  man_attack_t0=tS;
+  man_attack_t0=0;
   man_attack=FALSE;
   man_x=0;
   man_y=4;
@@ -280,14 +275,14 @@ U0 Init()
   man_dy=0;
   screen_x=0;
   screen_y=0;
-  for (i=0;i<NUM_MONSTERS;i++) {
-    monsters[i].dead=FALSE;
-    monsters[i].dx=0;
-    monsters[i].dy=0;
+  for (i=0,tempm=monsters;i<NUM_MONSTERS;i++,tempm++) {
+    tempm->dead=FALSE;
+    tempm->dx=0;
+    tempm->dy=0;
     do {
-      monsters[i].x=RandU64%(map_width-2)+1;
-      monsters[i].y=RandU64%(map_height-2)+1;
-    } while (!map[(monsters[i].y)*map_width+monsters[i].x]);
+      tempm->x=RandU64%(map_width-2)+1;
+      tempm->y=RandU64%(map_height-2)+1;
+    } while (!map[(tempm->y)*map_width+tempm->x]);
   }
   monsters_left=NUM_MONSTERS;
   tf=0;
@@ -303,19 +298,20 @@ U0 CleanUp()
 U0 AnimateTask(I64)
 {
   I64 i,x,y,dx,dy;
+  Monster *tempm;
+
   while (TRUE) {
-    for (i=0;i<NUM_MONSTERS;i++)
-      if (!monsters[i].dead) {
+    for (i=0,tempm=monsters;i<NUM_MONSTERS;i++,tempm++)
+      if (!tempm->dead) {
 	dx=RandU16%3-1;
 	dy=RandU16%3-1;
-	x=monsters[i].x+dx;
-	y=monsters[i].y+dy;
-	if (0<=x<=map_width && 0<=y<=map_height &&
-	    map[y*map_width+x]) {
-	  monsters[i].x=x;
-	  monsters[i].y=y;
-	  monsters[i].dx=dx;
-	  monsters[i].dy=dy;
+	x=tempm->x+dx;
+	y=tempm->y+dy;
+	if (0<=x<map_width && 0<=y<map_height && map[y*map_width+x]) {
+	  tempm->x=x;
+	  tempm->y=y;
+	  tempm->dx=dx;
+	  tempm->dy=dy;
 	}
       }
     Sleep(1000);
@@ -345,7 +341,7 @@ U0 DunGen()
   Fs->text_attr=BLACK<<4+WHITE;
   Preempt(OFF);
   WinMax;
-  WordStat;
+  AutoComplete;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   DocCursor;
@@ -374,7 +370,7 @@ U0 DunGen()
 		    man_dy=0;
 		    Attack;
 		  } else
-		    if (man_x+1<map_width && map[man_y*map_width+(man_x+1)]==RED) {
+		    if (man_x+1<map_width && map[man_y*map_width+(man_x+1)]==DKGRAY) {
 		    man_x++;
 		    if (man_x-screen_x>SCREEN_WIDTH/2-3) {
 		      screen_x+=SCREEN_WIDTH/2;
@@ -389,7 +385,7 @@ U0 DunGen()
 		    man_dy=0;
 		    Attack;
 		  } else
-		    if (man_x-1>=0 && map[man_y*map_width+(man_x-1)]==RED) {
+		    if (man_x-1>=0 && map[man_y*map_width+(man_x-1)]==DKGRAY) {
 		    man_x--;
 		    if (man_x-screen_x<-SCREEN_WIDTH/2+3) {
 		      screen_x-=SCREEN_WIDTH/2;
@@ -404,7 +400,7 @@ U0 DunGen()
 		    man_dy=-1;
 		    Attack;
 		  } else
-		    if (man_y-1>=0 && map[(man_y-1)*map_width+man_x]==RED) {
+		    if (man_y-1>=0 && map[(man_y-1)*map_width+man_x]==DKGRAY) {
 		    man_y--;
 		    if (man_y-screen_y<-SCREEN_HEIGHT/2+3) {
 		      screen_y-=SCREEN_HEIGHT/2;
@@ -419,7 +415,7 @@ U0 DunGen()
 		    man_dy=1;
 		    Attack;
 		  } else
-		    if (man_y+1<map_height && map[(man_y+1)*map_width+man_x]==RED) {
+		    if (man_y+1<map_height && map[(man_y+1)*map_width+man_x]==DKGRAY) {
 		    man_y++;
 		    if (man_y-screen_y>SCREEN_HEIGHT/2-3) {
 		      screen_y+=SCREEN_HEIGHT/2;

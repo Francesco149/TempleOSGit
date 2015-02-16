@@ -4,7 +4,7 @@ prefixes on code.  Only use it on
 read-modify-write statements.
 It will generate invalid instructions
 if you misuse it and it will crash.
-[C:/Compiler/Unassembler.CPP.Z,643] U() to see what code was generated.
+[C:/Compiler/UAsm.CPP.Z,640] U() to see what code was generated.
 */
 
 #define CNT	0x1000000

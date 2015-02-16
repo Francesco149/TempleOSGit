@@ -5,7 +5,7 @@
 U32 text[TEXT_ROWS][TEXT_COLS];
 
 U0 DrawIt(CTask *task,CDC *)
-{ //[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base gets clear 60fps, so we must use our own permanent text array.
+{ //[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base gets clear 30fps, so we must use our own permanent text array.
   MemCpy(gr.text_base+TEXT_COLS,text,(TEXT_ROWS-1)*TEXT_COLS*sizeof(U32));
 
 // You can copy it this way, if you like:
@@ -31,7 +31,7 @@ I64	stk_ptr,
 
 //Four directions:
 //  0=Up,1=right,2=down,3=left
-I64	dir_x[4]={ 0,+1, 0,-1},  // Could use [C:/Adam/Gr/MathGr.CPP.Z,5] gr_x_offsets2,[C:/Adam/Gr/MathGr.CPP.Z,6] gr_y_offsets2
+I64	dir_x[4]={ 0,+1, 0,-1},  // Could use [C:/Adam/Gr/GrMath.CPP.Z,5] gr_x_offsets2,[C:/Adam/Gr/GrMath.CPP.Z,6] gr_y_offsets2
 	dir_y[4]={+1, 0,-1, 0};
 
 U0 SolveMaze(I64 x,I64 y)
@@ -81,7 +81,7 @@ U0 Maze()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   WinBorder;
-  WordStat;
+  AutoComplete;
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;

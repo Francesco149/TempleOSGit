@@ -9,6 +9,7 @@ U0 Song()
 {
   CTask *task;
   Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
   music.tempo=2.5;
   try {
     task=PopUpViewPrint(
@@ -17,8 +18,8 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,93323] 2 Corinthians,6:7\n"
 	  );
     TaskWait(task);
-    SetWinHorz(Fs->win_left,Fs->win_right,task);
-    SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
+    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("3qDCDeEGBDetBBFqDeDB",
 	    "God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0shame.\n\0 \0 \0 \0");

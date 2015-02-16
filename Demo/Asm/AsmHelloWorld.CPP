@@ -5,7 +5,7 @@ error, like when repeatedly #including
 it from the cmd line.
 
 These are many useful kernel
-routines [C:/Kernel/Str1a.CPP.Z,1] ::/Kernel/Str1a.CPP
+routines [C:/Kernel/StrA.CPP.Z,1] ::/Kernel/StrA.CPP
 intended to be called from
 asm.  Generally, they preserve
 regs.
@@ -33,7 +33,7 @@ MY_WORLD_MSG:
 //My convention is to put an underscore
 //on C callable asm routines.
 _HELLO_WORLD::
-	PUSH	RSI	//See [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK
 	MOV	RCX,10
 @@05:	MOV	RAX,RCX
 	CALL	PUT_HEX_U8

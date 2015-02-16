@@ -19,7 +19,7 @@ U0 ClickCallBack()
 
 //Flags are explained here:
 //[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
-//[C:/Kernel/Adam1a.HPP.Z,1028] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
+//[C:/Kernel/KernelA.HPP.Z,1030] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
   "(Not preserved when <CTRL-t> and back.)\n\n";
   doc_e->left_cb=&MyLeftCB1;
   DocUnlock(DocPut);

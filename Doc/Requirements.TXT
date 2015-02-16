@@ -4,14 +4,14 @@ User Skills Required
 * Knowledge of the C programming language.
 
 Supported Hardware
-*  x86_64 PC compatible computer.  (Obviously, you need 64-bit hardware for a 
+* x86_64 PC compatible computer.  (Obviously, you need 64-bit hardware for a 
 64-bit operating system.)
 
 * 640x480 16 color VGA graphics.
 
 * Most keyboards and mice.
 
-* Minimum 256 Meg RAM; Maximum 128 Gig RAM (easily increased).
+* Minimum 512 Meg RAM; Maximum 128 Gig RAM (easily increased).
 
 * Internal PC Speakers.
 

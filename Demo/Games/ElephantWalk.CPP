@@ -34,10 +34,10 @@
 U0 ElephantWalk()
 {
   I64 sc,
-      x=Fs->pix_width>>1,y=Fs->pix_height>>1, //Fs is current [C:/Kernel/Adam1a.HPP.Z,3213] CTask struct.
+      x=Fs->pix_width>>1,y=Fs->pix_height>>1, //Fs is current [C:/Kernel/KernelA.HPP.Z,3212] CTask struct.
       x_last=x;
   DocClear;
-  WordStat;
+  AutoComplete;
   WinMax;
   WinBorder;
   while (TRUE) {

@@ -1,11 +1,11 @@
-Bool DirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
-{//Makes a directory entry in the directory from a [C:/Kernel/Adam1a.HPP.Z,2450] CDirEntry node.
-  switch (p->type) {
-    case PT_REDSEA:
-      return RedSeaFSDirNew(p,cur_dir,tempde,free_old_chain);
-    case PT_FAT32:
-      return FAT32DirNew(p,cur_dir,tempde,free_old_chain);
-    case PT_ISO9660:
+Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
+{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2454] CDirEntry node.
+  switch (dv->type) {
+    case DVT_REDSEA:
+      return RedSeaDirNew(dv,cur_dir,tempde,free_old_chain);
+    case DVT_FAT32:
+      return FAT32DirNew(dv,cur_dir,tempde,free_old_chain);
+    case DVT_ISO9660:
       PrintErr("Not Writable\n");
       return FALSE;
     default:
@@ -15,7 +15,7 @@ Bool DirNew(CPrt *p,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
 }
 
 U0 DirEntryDel(CDirEntry *tempde)
-{//Free node returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Doesn't Free user_data.
+{//Free node returned from [C:/Kernel/Dsk/DskB.CPP.Z,184] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
@@ -24,7 +24,7 @@ U0 DirEntryDel(CDirEntry *tempde)
 }
 
 U0 DirEntryDel2(CDirEntry *tempde)
-{//Free node returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Frees user_data
+{//Free node returned from [C:/Kernel/Dsk/DskB.CPP.Z,184] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
@@ -34,7 +34,7 @@ U0 DirEntryDel2(CDirEntry *tempde)
 }
 
 U0 DirTreeDel(CDirEntry *tempde)
-{//Free tree returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Doesn't Free user_data.
+{//Free tree returned from [C:/Kernel/Dsk/DskB.CPP.Z,184] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
@@ -47,7 +47,7 @@ U0 DirTreeDel(CDirEntry *tempde)
 }
 
 U0 DirTreeDel2(CDirEntry *tempde)
-{//Free tree returned from [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind().  Frees user_data
+{//Free tree returned from [C:/Kernel/Dsk/DskB.CPP.Z,184] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
@@ -166,17 +166,17 @@ CDirEntry *DirFilesFlatten(CDirEntry *tempde,CDirEntry **_result,I64 fuf_flags)
 
 CDirEntry *SysFilesFind(U8 *files_find_mask,I64 fuf_flags)
 {
-  CPrt *p=Fs->cur_prt;
+  CDrv *dv=Fs->cur_dv;
   CDirEntry *result=NULL;
-  PrtChk(p);
-  switch (p->type) {
-    case PT_REDSEA:
-      result=RedSeaFSFilesFind(files_find_mask,fuf_flags);
+  DrvChk(dv);
+  switch (dv->type) {
+    case DVT_REDSEA:
+      result=RedSeaFilesFind(files_find_mask,fuf_flags);
       break;
-    case PT_FAT32:
+    case DVT_FAT32:
       result=FAT32FilesFind(files_find_mask,fuf_flags);
       break;
-    case PT_ISO9660:
+    case DVT_ISO9660:
       result=ISO1FilesFind(files_find_mask,fuf_flags);
       break;
     default:
@@ -194,7 +194,7 @@ CDirEntry *SysFilesFind(U8 *files_find_mask,I64 fuf_flags)
 }
 
 U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
-{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file,line link to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,652] DocPut.
+{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file,line link to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,654] DocPut.
   U8 *buf;
   if (!filename) return;
   if (IsRaw) {
@@ -205,7 +205,7 @@ U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
   } else {
     //LK_DOC,LK_DOC_ANCHOR,LK_DOC_FIND,LK_DOC_LINE
     if (filename[0]=='A'&&filename[2]==':') {
-      if (line) //See [C:/Adam/Gr/SpriteEd.CPP.Z,642] SpriteEdText()
+      if (line) //See [C:/Adam/Gr/SpriteEd.CPP.Z,611] SpriteEdText()
 	"$LK,\"%s,%04d\",A=\"AL:%s,%d\"$",filename+3,line,filename+3,line;
       else
 	"$LK,\"%s\",A=\"AI:%s\"$",filename+3,filename+3;
@@ -228,7 +228,7 @@ U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
 }
 
 U0 PutDirLink(U8 *dirname)
-{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc dir macro to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,652] DocPut.
+{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc dir macro to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,654] DocPut.
   U8 *buf;
   if (!dirname) return;
   if (IsRaw)
@@ -284,7 +284,6 @@ I64 Dir2(U8 *files_find_mask,I64 fuf_flags,Bool full)
 	  PutDirLink(tempde1->name);
 	else
 	  PutFileLink(tempde1->name);
-
 	'\n';
 	DirEntryDel(tempde1);
 	tempde1=tempde2;

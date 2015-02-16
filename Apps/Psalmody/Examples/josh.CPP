@@ -21,8 +21,8 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,29345] 1 Kings,22:1 Read the whole chapter.\n"
 	  );
     TaskWait(task);
-    SetWinHorz(Fs->win_left,Fs->win_right,task);
-    SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
+    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("3sCACAeABqAeFAetDF2GeG3FqG2G",
 	    "$CL$Oh, \0 \0my \0 \0 \0 \0Gosh!\n\0 \0 \0 \0 \0You \0 \0 \0lied!\n\0$GREEN$God talking...\n$FG$\0");

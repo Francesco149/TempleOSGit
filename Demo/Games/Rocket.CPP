@@ -5,7 +5,7 @@ CMass	m1, //Bottom of rocket
 	m2; //Top of rocket
 CSpring s;
 
-#define PT_SPAN	40
+#define DVT_SPAN	40
 
 
   /* <1> <1> (image) */
@@ -14,7 +14,7 @@ CDC	*dc2;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
+  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-DVT_SPAN/2;
   Bool engine_on;
   F64 nozzle_angle,theta=Arg(m2.x-m1.x,m2.y-m1.y);
 
@@ -93,16 +93,16 @@ U0 Init()
   blast_off=FALSE;
 
 //We don't clear que links.
-  MemSet(&m1.start_saved_area,0,offset(CMass.end_saved_area)-offset(CMass.start_saved_area));
-  m1.y=-PT_SPAN/2;
+  MemSet(&m1.start,0,offset(CMass.end)-offset(CMass.start));
+  m1.y=-DVT_SPAN/2;
 
-  MemSet(&m2.start_saved_area,0,offset(CMass.end_saved_area)-offset(CMass.start_saved_area));
-  m2.y=PT_SPAN/2;
+  MemSet(&m2.start,0,offset(CMass.end)-offset(CMass.start));
+  m2.y=DVT_SPAN/2;
 
-  MemSet(&s.start_saved_area,0,offset(CSpring.end_saved_area)-offset(CSpring.start_saved_area));
+  MemSet(&s.start,0,offset(CSpring.end)-offset(CSpring.start));
   s.end1=&m1;
   s.end2=&m2;
-  s.rest_len=PT_SPAN;
+  s.rest_len=DVT_SPAN;
   s.const=10000;
 
   DCFill;
@@ -121,7 +121,7 @@ U0 Rocket()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
   DocCursor;
-  WordStat;
+  AutoComplete;
 
 //The ode nodes are traversed by win mgr.
   Preempt(OFF);

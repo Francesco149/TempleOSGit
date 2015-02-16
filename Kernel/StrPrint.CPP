@@ -67,7 +67,7 @@ U8 *MPrintDate(CDate cdt)
 
 U8 *MPrintQ(U8 *ptr,I64 flags)
 {
-  U8 **_buf,*buf,**_dst,*dst;
+  U8 **_buf,*buf,**_dst,*dst,buf2[8],*ptr2;
   I64 ch;
   buf=MAlloc(128);
   _buf=&buf;
@@ -79,9 +79,9 @@ U8 *MPrintQ(U8 *ptr,I64 flags)
 	case '$':
 	  if (flags&SPF_DOLLAR) {
 	    SPutChar(_dst,'\\',_buf);
-	    SPutChar(_dst,'$'>>6&7+'0',_buf);
-	    SPutChar(_dst,'$'>>3&7+'0',_buf);
-	    SPutChar(_dst,'$'&7+'0',_buf);
+	    SPutChar(_dst,'x',_buf);
+	    SPutChar(_dst,'2',_buf);
+	    SPutChar(_dst,'4',_buf);
 	  } else {
 	    SPutChar(_dst,ch,_buf);
 	    SPutChar(_dst,ch,_buf);
@@ -110,13 +110,13 @@ U8 *MPrintQ(U8 *ptr,I64 flags)
 	  SPutChar(_dst,ch,_buf);
 	  break;
 	default:
-	  if (CH_SHIFT_SPACE<=ch<=0x7F) {
+	  if (ch>=CH_SHIFT_SPACE && ch!=0x7F)
 	    SPutChar(_dst,ch,_buf);
-	  } else {
-	    SPutChar(_dst,'\\',_buf);
-	    SPutChar(_dst,ch>>6&7+'0',_buf);
-	    SPutChar(_dst,ch>>3&7+'0',_buf);
-	    SPutChar(_dst,ch&7+'0',_buf);
+	  else {
+	    StrPrint(buf2,"\\x%02X",ch);
+	    ptr2=buf2;
+	    while (*ptr2)
+	      SPutChar(_dst,*ptr2++,_buf);
 	  }
       }
     }
@@ -160,56 +160,27 @@ U8 *MPrintq(U8 *ptr,I64 flags)
 	      case 't':
 		SPutChar(_dst,'\t',_buf);
 		break;
+	      case '0':
+		SPutChar(_dst,0,_buf);
+		break;
 	    sub_switch_end:
 	      ptr++;
 	      break;
 
-	    sub_switch_start:
-	      case 'x':
-	      case 'X':
-		i=0;
-		ptr++;
-		while (TRUE) {
-		  ch1=ToUpper(*ptr++);
-		  if (Bt(chars_bitmap_hex_numeric,ch1)) {
-		    if (ch1<='9')
-		      i=i<<4+ch1-'0';
-		    else
-		      i=i<<4+ch1-'A'+10;
-		  } else
-		    break;
-		}
-		break;
-	      case 'b':
-	      case 'B':
-		i=0;
-		ptr++;
-		while (TRUE) {
-		  ch1=*ptr++;
-		  if ('0'<=ch1<='1')
-		    i=i<<1+ch1-'0';
+	    case 'x':
+	    case 'X':
+	      i=0;
+	      ptr++;
+	      while (TRUE) {
+		ch1=ToUpper(*ptr++);
+		if (Bt(chars_bitmap_hex_numeric,ch1)) {
+		  if (ch1<='9')
+		    i=i<<4+ch1-'0';
 		  else
-		    break;
-		}
-		break;
-	      case 'o':
-	      case 'O':
-		i=0;
-		ptr++;
-		goto sq_octal;
-	      case '0'...'7':
-		i=ch1-'0';
-		ptr++;
-sq_octal:
-		while (TRUE) {
-		  ch1=*ptr++;
-		  if ('0'<=ch1<='7')
-		    i=i<<3+ch1-'0';
-		  else
-		    break;
-		}
-		break;
-	    sub_switch_end:
+		    i=i<<4+ch1-'A'+10;
+		} else
+		  break;
+	      }
 	      SPutChar(_dst,i,_buf);
 	      ptr--;
 	      break;
@@ -897,30 +868,6 @@ sp_out_eng: //Engineering notation
 	    } while (m && k<TEMP_BUF_LEN-SLOP);
 	    goto sp_out_num;
 	  }
-	case 'o':
-	case 'O':
-	  if (cur_arg>=argc)
-	    throw('StrPrint');
-	  m=argv[cur_arg++];
-	  if (flags&SPF_COMMA) {
-	    comma_fmt_cnt=comma_cnt=3;
-	    do {
-	      temp_buf[k++]= m&7 +'0';
-	      m>>=3;
-	      if (!m) break;
-	      if (!--comma_cnt) {
-		temp_buf[k++]=',';
-		comma_cnt=3;
-	      }
-	    } while (k<TEMP_BUF_LEN-SLOP);
-	    goto sp_out_comma_num;
-	  } else {
-	    do {
-	      temp_buf[k++]= m&7 +'0';
-	      m>>=3;
-	    } while (m && k<TEMP_BUF_LEN-SLOP);
-	    goto sp_out_num;
-	  }
 	case '%':
 	  SPutChar(_dst,'%',_buf);
 	  break;
@@ -933,12 +880,12 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *StrPrint(U8 *dst,U8 *fmt,...)
-{//See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
   return StrPrintJoin(dst,fmt,argc,argv);
 }
 
 U8 *CatPrint(U8 *_dst,U8 *fmt,...)
-{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
   U8 *dst=_dst;
   while (*dst)
     dst++;
@@ -947,14 +894,14 @@ U8 *CatPrint(U8 *_dst,U8 *fmt,...)
 }
 
 U0 Print(U8 *fmt,...)
-{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   PutS(buf);
   Free(buf);
 }
 
 U8 *MStrPrint(U8 *fmt,...)
-{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin().
+{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
   U8 *result,*buf=StrPrintJoin(NULL,fmt,argc,argv);
   result=StrNew(buf);
   Free(buf);

@@ -1,0 +1,436 @@
+* Clean-up [C:/Kernel/Dsk/DskStr.CPP.Z,207] FileNameAbs().
+
+* Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
+think so.  (Probably not.)
+
+* God said this is bad.  [C:/Adam/DolDoc/DocFind.CPP.Z,41]
+
+* [C:/Adam/Dsk/ChkDsk.CPP.Z,204] ChkDsk alloc unalloced.
+
+* Entering a '$' in text entry
+
+* Clean-up ASCII-127 delete.
+* [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(st); With st="\n\\";
+
+* 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
+
+* 1/?/2015 Macro select in Menu did not go to shell.
+
+* Real World User Issues:
+  QEMU runs maximized, but slow.
+  If you move cursor off of bottom, macros don't work.
+  Stutters in QEMU doing sound.
+
+* [C:/Adam/Utils/FileBMP.CPP.Z,55] BMPRLE4To() has files_size too big by 108.
+
+* Why is nontimer [C:/Kernel/KMathB.CPP.Z,128] Rand() so bad?
+
+* [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
+
+* More [C:/Kernel/KernelA.HPP.Z,3001] CCtrl.
+
+* Add change-triangle-color to mesh editor.
+
+* Add AVL binary tree support or red/black whatever that is.  We have 
+fixed-size stack.  Auto-balancing binary tree is very needed.  Where could we 
+use?
+
+* Maybe let committee decide if we want intern to make binary tree look-up 
+using PSECT symbol addresses, so we can eliminate psect cache and wall-paper 
+kludge.  All HolyC functions and glbl vars would have left-right for address 
+search.
+
+* QEMU [C:/Kernel/KMisc.CPP.Z,122] tS real-time-clock, slow Wenceslas.
+
+* Is "GrSetSymmetry" or "GrSymmetry" better?
+
+* DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
+once.
+
+* DiskCache during FileRead. CTRL-ALT-C, [C:/Kernel/Task.CPP.Z,28] Kill().  
+
+* Help Index no mention of Symmetry in [C:/Adam/Gr/GrPrimatives.CPP.Z,436]
+GrLine() [C:/Adam/Gr/GrPrimatives.CPP.Z,514] GrLine3().
+
+* Get rid of BYTE WORD DWORD in opcode and replace with U8 U16 U32.
+
+* 5/7/14:Something like AFSetIP.CPP caused hang, then reboot in TestSuite.
+* 5/7/14:#63 Maybe, [C:/Demo/Graphics/Pick3D.CPP.Z,1] crashed in TestSuite.
+* 6/8/14:After or in PageEntries2 in TestSuite crash.
+
+* $LK,L="FL:D:/Kernel/File.CPP"$ instead of A=
+* $SP,B=1$ instead of $SP,BI=1$
+* $CM+LE+RE is nasty
+
+* FlatTop is torpedo, not bombs.
+* BomberGolf is weird concept?
+
+* Make a game, S.E.T.I., with radio telescope array.  Put God on air. 
+
+* [C:/Adam/Utils/Diff.CPP.Z,231] Diff() flags.
+
+* Backward SHIFT-F3 is broken
+
+* MOV U8 [RSP+RCX],DL
+
+* Might want HeapLog x Cnt
+
+* Find-and-replace text on $PT$ line before it.
+
+* Compiler: Warn recurse class define?
+
+* <CTRL-r> Text "$" has no extents and deletes
+
+* Exception msgs in Adam look bad
+
+3sGCGCqCCe2G3EE2G3qDetDEFsDBDB
+
+* [C:/Kernel/MemC.CPP.Z,165] Mem32DevAlloc() is broken. Devices should be in
+free spot of E820 report.
+
+* SPRITES in CMD Line code.
+
+* Might want to move kernel code out of low 2Meg.  Might be faster.
+
+* F2 Macro on TestSuite
+
+* 4/13/14 Strut or RawHide crashed when sys_var_init_flag etc
+was set during testsuite.
+
+* PSect search all tables if not found very well.
+* asm LIST NOLIST bug
+* Bible ranges. 
+* No way to clear +Hold entries
+
+---------------------
+$=-CTASK_NEG_OFFSET
+offset(CTask.addr)==0
+Spawn(): CAlloc()
+TaskFinishOff(): Free()
+CSysFixedArea.adam
+Looks like task_flags,locked_flags cause problems with neg offset.
+---------------------
+
+* 3/19/14: RESET during RawHide
+* 2013? Wenceslas in TestSuite crashes, long time ago
+
+* 12/26/13: Mountain in TestSuite didn't run right.  Turned yellow, did 
+nothing.
+
+* FAQ frontloaded
+
+COMPILER
+  * Postpone LocalVar Init until last possible moment. (in case RETURN)
+  * PtrArith MUL SIZE -->QueIns(MUL)? 
+  * QueRem(IC_NOP)?
+
+* Fix return result for GrBlot, ect.
+
+* CTRL-r transform individual elements
+
+* Size zero files don't copy out from VMware.
+
+* FileMgr header (scrolled out of window?)
+
+* ATA/ATAPI ID in VMware, when not booted to CD?  I forgot.
+
+* I use fixed-point in [C:/Adam/Gr/GrMath.CPP.Z,337] Circle(),
+[C:/Adam/Gr/GrMath.CPP.Z,380] Ellipse(), [C:/Adam/Gr/GrDC.CPP.Z,6] GrRot(),
+[C:/Adam/Gr/GrMath.CPP.Z,136] GrMulMat() and others.
+God says I might want to change to float. 
+[C:/Demo/Lectures/FixedPoint.CPP.Z,1].
+[C:/Demo/Lectures/FixedPointAdvanced.CPP.Z,1].
+
+* DOCF_DBL_DOLLARS in reindention
+* # in reindention
+
+* HexEdit with odd size, ASCII cannot be edited.
+
+* clean-up addDev pmt
+
+* Might want to convert some Preempt() to Cli
+
+* [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
+[C:/Kernel/KernelA.HPP.Z,3408] CH_CURSOR.
+
+* TRANSPARENT might not work with line ROPF_DITHER
+
+* It would be nice if [C:/Compiler/UAsm.CPP.Z,640] U() NOP were better.
+
+* unhandled exception on MP message gets overwritten by WinMgr
+
+* Cmd to enable/disable compiler warnings
+
+* What if we had a type for either F64 or I64, like Print -- no conversion.
+* What if we had a ... that did do conversion, if we have one that doesn't.
+
+* fix documentation problem -- remembering 0 terminator in str or not for $DA
+* GetS, crazy putkey code
+* editor page formatting is FUBAR
+
+* [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image
+  >Might want to do ZOOM in U8 graphics and convert screen capture to U8
+  >Might want to reverse bit order
+
+* return vals for grrect, grblot, grputchar?
+* collisions for grrect, grblot, grputchar?
+
+* Race condition in FlatTops.CPP.Z torpedo
+
+* {Lock|Rep}{Seg|2E=NotBr|3E=Br}{OP}{ADD}{REX}
+* Virtual Box MP reboot
+* Std local var names
+
+//After Egypt possible future ideas
+//[C:/Misc/Bible.TXT.Z,12005] Numbers,13:33 scouts
+//[C:/Misc/Bible.TXT.Z,12005] Numbers,21:8 snakes
+
+* GrEdit: Move sidebar selected elems.
+	- Be careful of multipt elems.
+* GrEdit: Strip origin shift cmds.
+
+* GrEditBitMap, grabscroll? 
+
+* extern of fun with dft arg of str?
+
+* We kinda need a routine to return how much free memory,
+so that applications can plan a big alloc.
+
+* FileMgr bad with lots of files.  
+
+* This [C:/Kernel/SrvCmd.CPP.Z,1] Fs->catch_except=TRUE causes problems
+because it
+catches divide and out-of-mem.  Not sure what to do, yet.
+
+* Make [C:/Kernel/MultiProc.CPP.Z,302] BSPStartMP() start work after boot to
+reset multicores.  Bonus for
+freeing old task memory. (Prolly never gonna do anything about this.)
+
+* [C:/Kernel/KernelB.HPP.Z,147] sys_var_init_flag local vars.
+* sprite shift pts, ctrl pt for ellipse/polygon w,h is off when rotated.
+
+* Window mgr needs to do DOC operations on posted messages from mouse.
+Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
+
+* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,637] Dbg()?  (maybe)
+
+* [C:/Adam/DolDoc/DocRecalcB.CPP.Z,1] Bible sized nodes
+* Mouseinstall throws exceptions, doesn't work, investigate Mouse
+[C:/Kernel/KbdMouse/Mouse.CPP.Z,1] 0x9FC30
+* get kbd lights working.
+* Might have issue with compiler exceptions and restoring lex.hash tables.
+* Generates two compiler error messages for expressions in statements.
+* release semaphores or break lock sema,usb_td
+* Fix Mom's secondary CD-ROM, dad's primary
+* pmtstr in install didn't like focus change
+
+*U0 Main()
+{
+  U0 (*fp_old_draw_input_ptr)(CDC *dc,I64 x,I64 y)=gr.fp_draw_input_ptr;
+}
+
+* What about local variable array/struct initialization.
+
+* Demo [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml().
+
+* Del short name in FAT32--currently I do not check to see if I have generated
+a unique short name and one can delete multiple files accidentally.
+Generating unique short names is a pain in the ass because you have to scan
+the whole directory.  I think I just truncate the name instead of
+"Program~1" or whatever.  S081130-0001.BMP crashed windows--two identical
+short names.
+
+* OVERSTRIKE at cmd line with menu macro.
+
+* lock{} warning on invalid modes.
+* Local array vars-->reg.
+* [C:/Kernel/KernelA.HPP.Z,3524] DCF_SYMMETRY, before transformation?
+(Currently it's after) 
+* all graphics clipping -- screen y+top<0 for top<0
+* Maybe convert graphics to float
+* Warn unnecessary typecast
+* compiler F32
+* preempt(OFF) during graphic clipping?
+* compiler optimization heap_glbls with added offset
+* Might make FAT32 read in contiguous chunks.
+* make Clamp(),Min(),Max() asm routines.
+* Might make CSprite flood fill operate on a separate bitmap
+and blotted at the end.
+* autofile popup of popup
+* <CTRL-r> delete subsprite in menu near others
+* consider changing domenu so a real <ESC> on menu item doesn't select
+(<SPACE> sends <ESC> followed by <SPACE> or something)
+* puts3 with depth buf?  might not do this
+* make task queins and querem safe for multicore cycling through tasks (fwd).
+* make better heapwalk, do something with _CFG_HEAP_DBG.
+* log to file--would be inefficient--load-in whole file, modify and write out.
+Useful, but not very efficient  (TempleOS file system has no grow-file 
+ability.
+Created when FAT patent was an issue and wanted absly nothing people could sue
+me for.)
+* APIC2
+* import intel datasheets, somehow?
+* Get better dictionary, good spell checker.
+* AutoComplete/Man Jmp for user code.
+* Might make DskView show drive colors.
+* Might do utility to set drive colors, making a tree entry in Adam 3 using
+registry-like routines... or registry I guess.
+
+* New Editor widgets
+
+* Make use of flag potential in SysFilesFind and possibly CFileAccess
+* implement fixed pos files
+
+* new HolyC language features
+* better debugging
+
+* Too much preemption turned off?
+* Look for mem leaks.
+* Move stuff out of Kernel module.
+
+* [C:/Kernel/KernelA.HPP.Z,2831] ROP_XOR with pen_width>1 is broken.
+* RGB wrong in BMP files.
+
+* use width and height in line clipping for pen_width>1 or blot.
+* SIMD transformation
+* test removable media id  (critical for resident files)
+
+* add field overflow U8 "t='*'"
+* Implement fmt codes into Get
+* Date Input
+* Default date fmt
+
+* 16 bit Unassembly is bad--very low priority
+* more signed int disassembly
+* support r4u8 by adding 0x40 byte
+* static var off of data heap.
+* Might want to use U32*U32 multiplication.
+* could add "const" to not set LF_NOT_CONST flag for trig, etc.
+* do r,rm ICCmp like ICBrCmp
+* could make glblvar imports use TY_RIP_DISP32.
+* PUSH_CMP allocs reg R9 or whatever
+* Might be problem with NOP in OPT pass1 for NO_PUSH in expressions besides
+assignments.  Is ShiftNoPush fully implemented?
+* NOP1 might need to have diff ic_data's
+* in divequal, it assumes about ebx
+* error/warning line nums
+* ASM branch out warning of range off by 1 line--use lx->last_line_num
+
+* Switch statement with sparse cases (low priority)
+* maybe inline functions?
+* Use of more floating-point stk?
+
+* More aggressive in this routine [C:/Compiler/OptLib.CPP.Z,533]
+CmpF2PushPop() with types besides MOV and 
+F64. 
+* !dbl ~dbl
+* &=, |= can overflow with Bts Btr on small data types
+
+* num lock comes on with break key
+* sort options for findfiles
+* Maybe, get rid of [C:/Compiler/CMain.CPP.Z,1] 0x20000 in compiler.
+
+
+[C:/Misc/Bible.TXT.Z,73189] Hosea,6:6
+
+[C:/Misc/Bible.TXT.Z,96500] Hebrews,13:15
+
+[C:/Misc/Bible.TXT.Z,46190] Psalms,50:14
+
+
+
+>lspci -v
+
+
+
+/*****************************************************************************
+/
+This is the transcript of a radio conversation of a US naval ship with 
+Canadian authorities off the coast of Newfoundland in October, 1995. Radio 
+conversation released by the Chief of Naval Operations 10-10-95.
+
+                Americans: Please divert your course 15 degrees to the North 
+to avoid a Collision.
+
+                Canadians: Recommend you divert YOUR course 15 degrees to the 
+South to avoid a collision.
+
+                Americans: This is the Captain of a US Navy ship. I say
+again, 
+divert YOUR course.
+
+                Canadians: No. I say again, you divert YOUR course.
+
+                Americans: This is the aircraft carrier USS Lincoln, the 
+second largest ship in the United States' Atlantic fleet. We are accompanied 
+by three destroyers, three cruisers and numerous support vessels. I demand 
+that YOU change your course 15 degrees north, that's one five degrees north, 
+or countermeasures will be undertaken to ensure the safety of this ship.
+
+                Canadians: This is a lighthouse. Your call.[2]
+/*****************************************************************************/
+
+
+
+/*****************************************************************************/
+char *words[10000]; //Single word list.  No statistical weights allowed.
+int i=0;
+
+while (true) {  
+  while (!keyboard_hit())
+    i++;
+  printf("%s ",words[i%10000]);
+}
+/*****************************************************************************/
+
+
+Size:
+
+/************************** Perfect Coin Toss ********************************/
+NIST Randomness Beacon is a government certified random number.  You can call
+the caretaker on that page, Rene Peralta 301-975-8702, rene.peralta@nist.gov.
+Once every minute, they have a random lottery and post the results to their
+site.  You can go back and check old lottery numbers, by entering link+time.
+https:/beacon.nist.gov/rest/record/1415440980
+https:/beacon.nist.gov/rest/record/1415445300	To check old numbers, enter
+https:/beacon.nist.gov/rest/record/1415529600	Unix timestamp in the the URL.
+https:/beacon.nist.gov/rest/record/1415531580	(Seconds since 1-JAN-1970)
+https:/beacon.nist.gov/rest/record/1415563680	Unix Timestamp Tool
+https:/beacon.nist.gov/rest/record/1415565600
+https:/beacon.nist.gov/rest/record/1415566560	They chain the numbers so they
+https:/beacon.nist.gov/rest/record/1415568120	cannot be tampered with.
+/*****************************************************************************/
+
+Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, LOL.)
+```
+<img src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambridge-county-pd.jpg" width="480" height="376" alt="">
+```
+
+WWW.OSDEV.ORG
+Perfect Coin Toss
+Top 100 Movies
+Dr. David Pheanis
+KeyPeele#1
+KeyPeele#2
+ThePrisoner
+WestWorld
+Picard:FourLights
+Dwight:NerdTorture
+AliG:Homosapiens
+Dumb Guards
+Mapping the Commodore 64
+Holy Grail: Lmq5PxHpLNw  1:28:27
+ATA/ATAPI Spec
+BBC
+BBC_Five_Live
+KNPR
+C64 Users Guide
+C64 Programmers Reference Guide
+
+
+1) Strings, Opcode in Compiler
+2) FizzBuzz
+3) Negative displacements
+4) Multicore
+5) Preempt
+6) Graphics

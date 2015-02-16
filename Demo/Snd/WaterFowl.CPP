@@ -1,3 +1,63 @@
+/*  <1> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 U8 *poem=
 "Will lead my steps aright.
 In the long way that I must tread alone,
@@ -47,56 +107,19 @@ To a Waterfowl;
 #define POEM_COLS	53
 #define POEM_TIME	80.0
 
-/* <1> <1> (image) */
-
-
-/* <2> <2> (image) */
-
-
-#define NUM_GEESE	11
-F64 t0,t0_s[NUM_GEESE];
-I64 x[NUM_GEESE],y[NUM_GEESE];
-I64 x0[NUM_GEESE],y0[NUM_GEESE];
+F64 t0;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  CSprite *temps;
-  I64 i,w=task->pix_width,h=task->pix_height;
-
-  dc->color=DKGRAY;
+  I64	w=task->pix_width,h=task->pix_height;
+  F64	t=1.04-(0.35+0.65*Caw(tS-t0,20))`3,s=1.0-0.5*t,
+	x=w*t,y=h*(0.35-.1*t);
+  dc->color=WHITE;
   GrPrint(dc,w>>1-(POEM_COLS*FONT_WIDTH)>>1,
 	    (Saw(tS-t0,POEM_TIME)-.8)*POEM_LINES*FONT_HEIGHT, poem);
-
-  for (i=0;i<NUM_GEESE;i++) {
-    temps=SpriteInterpolate(__BIN_1,__BIN_2,1.2*Tri(tS-t0_s[i],0.7));
-    Sprite3(dc,w>>1+x0[i]+x[i],h>>1+y0[i]+y[i],0,temps);
-    Free(temps);
-  }
-}
-
-U0 Init()
-{
-  I64 i,j;
-  for (i=0;i<NUM_GEESE;i++) {
-    j=i-NUM_GEESE>>1;
-    t0_s[i]=ToF64(RandU16)/MAX_U16;
-    x0[i]=j*20;
-    y0[i]=AbsI64(j)*20;
-    x[i]=5*RandI16/MAX_I16;
-    y[i]=5*RandI16/MAX_I16;
-  }
-}
-
-U0 AnimateTask(I64)
-{
-  I64 i;
-  while (TRUE) {
-    for (i=0;i<NUM_GEESE;i++) {
-      x[i]=ClampI64(x[i]+SignI64(RandI16),-5,5);
-      y[i]=ClampI64(y[i]+SignI64(RandI16),-5,5);
-    }
-    Sleep(100);
-  }
+  dc->color=BLACK;
+  GrLine(dc,x,y,x-8*s,y+6*s*FullTri(tS,0.4));
+  GrLine(dc,x,y,x+8*s,y+6*s*FullTri(tS,0.4));
 }
 
 U0 SongTask(I64)
@@ -115,21 +138,17 @@ U0 SongTask(I64)
 U0 WaterFowl()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->text_attr=LTGRAY<<4+BLACK;
-  WinMax;
-  Init;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
-  WordStat;
-  DocCursor;
+  WinMax;
+  WinBorder;
+  AutoComplete;
   DocClear;
-  Fs->draw_it=&DrawIt;
-
   t0=tS;
-  try //This catches <CTRL-ALT-c> exits
-    GetChar;
-  catch
-    PutExcept;
+  Fs->draw_it=&DrawIt;
+  Sprite(__BIN_1);
+  "%h*c",TEXT_ROWS-2,'\n';
+  GetChar;
+  DocClear;
   SettingsPop;
 }
 

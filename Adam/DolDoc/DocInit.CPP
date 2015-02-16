@@ -1,7 +1,7 @@
 #help_index "DolDoc"
 
 U0 DocInit()
-{//[C:/Kernel/Adam1a.HPP.Z,885] CMD Defines
+{//[C:/Kernel/KernelA.HPP.Z,887] CMD Defines
   CLex *lx;
   I64 i;
   CHashGeneric *temph;
@@ -14,8 +14,8 @@ U0 DocInit()
 	"T\0A\0D\0HTML\0LE\0LM\0RE\0RM\0BI\0BP\0RT\0SX\0SY\0SCX\0U\0"
 	"LC\0LA\0RC\0RA\0TC\0LX\0CX\0RX\0TY\0CY\0BY\0"
 	"HL\0WW\0BK\0IV\0SEL\0UL\0"
-	"PRY\0MRX\0WR\0L\0X\0Q\0FST\0B\0S\0BD\0C\0CA\0RD\0P\0TRM\0Z\0H\0"
-	"TR\0LS\0SK\0PU\0SIF\0HS\0FS\0NC\0DD\0UD\0");
+	"PRY\0MRX\0WR\0L\0X\0Q\0FST\0B\0S\0BD\0C\0CA\0RD\0UD\0P\0TRM\0Z\0H\0"
+	"TR\0LS\0SK\0PU\0SIF\0HS\0FS\0NC\0DD\0");
   DefineLstLoad("ST_LINK_TYPES",
 	"FI\0FA\0FF\0FL\0MN\0PI\0PF\0PL\0BF\0DF\0HI\0AD\0AI\0AA\0AF\0AL\0");
 
@@ -50,7 +50,7 @@ U0 DocInit()
     if (Bt(&doldoc.dft_de_flags[i],DOCEf_TAG) && i!=DOCT_TEXT || i==DOCT_HEX_ED)
       Bts(doldoc.type_flags_form,i);
 
-  //Don't forget [C:/Compiler/Lex.CPP.Z,390] cmp_type_flags_src_code.
+  //Don't forget [C:/Compiler/Lex.CPP.Z,386] cmp_type_flags_src_code.
   doldoc.type_flags_nontag_invisible[0]=
 	1<<DOCT_PAGE_LEN|
 	1<<DOCT_LEFT_MARGIN|

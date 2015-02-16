@@ -1,18 +1,6 @@
-/*
-                             Roll Your Own Distro
+//Make Your own Distro by #include-ing this file.
 
-It's unlikely you will get it running on bare hardware, so you'll probably
-run it in a virtual machine such as VMware.  Download the free 64-bit
-VMware Player for Linux or Windows and point the CDROM at the TempleOSCD.ISO.
-(The VMware web page takes a whole minute to load.  They hide the free version.)
-
-Purchase VMware WorkStation or download WinImage if you wish to transfer files
-in and out.  The VMware Workstation will stretch to full-screen and make drives
-accessible from Windows.
-
-*/
-
-#define STD_DISTRO_CDROM_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n\n"
+#define STD_DISTRO_CDROM_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
 
 U0 MakeMyISO(U8 *out_iso_filename)
 {//Does everything with current drive.
@@ -21,10 +9,15 @@ U0 MakeMyISO(U8 *out_iso_filename)
     return;
   }
   DelTree("/Distro");
+  MkDir("/Distro");
   Auto(STD_DISTRO_CDROM_CFG);
-  MakeOSPrtBootInstall(,'T');
+  MakeOSDrvBootInstall(,'T');
+
+  Copy("/*","/Distro");
+  Del("/Distro/Kernel.BIN.C");
+
   CopyTree("/0000Boot",	"/Distro/0000Boot");
-  CopyTree("/Accts",	"/Distro/Accts");
+  CopyTree("/Home",	"/Distro/Home");
   CopyTree("/Adam",	"/Distro/Adam");
   CopyTree("/Apps",	"/Distro/Apps");
   CopyTree("/Compiler",	"/Distro/Compiler");
@@ -32,9 +25,9 @@ U0 MakeMyISO(U8 *out_iso_filename)
   CopyTree("/Doc",	"/Distro/Doc");
   CopyTree("/Kernel",	"/Distro/Kernel");
   CopyTree("/Misc",	"/Distro/Misc");
+
   //To save space, optionally delete dictionary.
-  //Del("/Distro/Adam/WordStat/WSDefs.DAT");
-  CopyTree("/Windows","/Distro/Windows"); //You can leave this out
+  //Del("/Distro/Adam/AutoComplete/ACDefs.DAT");
   CopyTree("/Linux","/Distro/Linux");	  //You can leave this out.
   MkDir("/Distro/Temp");
   MkDir("/Distro/Temp/ScreenShots");
@@ -45,17 +38,4 @@ U0 MakeMyISO(U8 *out_iso_filename)
 
 MakeMyISO("/MyDistro.ISO");
 
-// Study my account examples [C:/Demo/AcctExample/TSAdam.CPP.Z,1] Cfg Strs [C:/Demo/AcctExample/TSDistro.CPP.Z,1] Update Funs.
-
-
-
-
-
-/*
-
-* "Linux" is probably a trademark owned by Linus Torvalds.
-* "VMware Player" and "VMware WorkStation" are trademarks of VMware, Inc.
-* "Windows" is a trademark of MicroSoft Corp.
-* "WinImage" is a trademark of Gilles Vollant.
-
-*/
+// Study my account examples [C:/Demo/AcctExample/TOSCfg.CPP.Z,1] Cfg Strs, [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] Update Funs.

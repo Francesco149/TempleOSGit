@@ -6,7 +6,7 @@ semicolon after the directive if it's not taking affect right away.
 
 #include "" 	There is no angle bracket <> form of this directive.
 #exe {}		Will execute code at compile-time and can be used to insert 
-code into the stream being compiled using [C:/Compiler/CmpMain.CPP.Z,1]
+code into the stream being compiled using [C:/Compiler/CMain.CPP.Z,1]
 StreamPrint().
 #define		Define string const
 #assert		Print a warning during compilation if an expression is not 
@@ -19,9 +19,16 @@ true.
 defined()	Is a function that can be used in expressions.
 #help_index, #help_file See [C:/Doc/HelpSystem.TXT.Z,1] Help System.
 
-See [C:/Doc/ImportExports.TXT.Z,1] Scoping and Linkages,
-[C:/Compiler/Lex.CPP.Z,1] preprocessor and [C:/Doc/Options.TXT.Z,1] Compiler
-Options.
+#define __DATE__ #exe{StreamPrint("\"%D\"",Now);}
+#define __TIME__ #exe{StreamPrint("\"%T\"",Now);}
+#define __LINE__ #exe{StreamPrint("%d",Fs->last_lex->cur_lfn->line_num);}
+#define __DEPTH__ #exe{StreamPrint("%d",Fs->last_lex->cur_lfn-&Fs->last_lex->lfns-1);}
+#define __FILE__ #exe{StreamPrint("\"%s\"",Fs->last_lex->cur_lfn->full_name);}
+#define __DIR__  #exe{StreamDir;}
+
+See [C:/Demo/Directives.CPP.Z,1], [C:/Doc/ImportExports.TXT.Z,1] Scoping and
+Linkages, [C:/Compiler/Lex.CPP.Z,1] preprocessor and 
+[C:/Doc/Options.TXT.Z,1] Compiler Options.
 
 
                              Assembler Directives
@@ -73,8 +80,8 @@ ALIGN num, fill_byte
   Align to num boundary and fill with fill_byte.
 
 MODULE_ORG num
-  Set code addr for JIT or set module [C:/Kernel/Hash1b.CPP.Z,423] Load()
-addr -- has 16-byte [C:/Kernel/Adam1a.HPP.Z,364] CBinFile 
+  Set code addr for JIT or set module [C:/Kernel/KLoad.CPP.Z,179] Load() addr
+-- has 16-byte [C:/Kernel/KernelA.HPP.Z,369] CBinFile 
 header and patch table trailing.
 
 BINFILE "FileName.BIN";

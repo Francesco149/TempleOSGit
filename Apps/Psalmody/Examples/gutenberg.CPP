@@ -29,8 +29,8 @@ U0 Song()
   try {
     task=PopUpViewPrint("[C:/Misc/Bible.TXT.Z,98684] Revelation,22:18\n");
     TaskWait(task);
-    SetWinHorz(Fs->win_left,Fs->win_right,task);
-    SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
+    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     "$WW+H,1$";
     while (!ScanKey) {
       t0=Beat;

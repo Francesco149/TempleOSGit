@@ -1,12 +1,19 @@
+//Place this file in /Home and change
+//anything you want.
+
 //This file is executed by the
 //first terminal window upon start-up.
-//See [C:/Accts/TAD/Adam3eSys.CPP,1] DoOnce and [C:/Doc/GuideLines.TXT.Z,1] Acct Files.
+//See [D:/Home/AdamSys.CPP,1] DoOnce and [C:/Doc/GuideLines.TXT.Z,1] Home Files.
 
-//It goes in your HOME directory and
-//you can customize it.
+//  Type("::/Doc/Customize.TXT");
 
-//Delete this to get rid of
-//default start-up msg.
+U0 DoOnce()
+{
+  if (FileFind("D:/Temp/Logs/access.log")) {
+    Auto("\n\n%C",CH_ESC);
+    WebLogRep("D:/Temp/Logs/*.log","D:/Temp/LogRep.TXT");
+    Del("D:/Temp/Logs/*.log");
+  }
+}
 
-//Type("::/Doc/Customize.TXT");
-
+DoOnce;

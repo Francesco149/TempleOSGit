@@ -17,7 +17,7 @@ U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
 	I32	int
 	U32	unsigned int
 	I64	long (64-bit)
-	I64	unsigned long (64-bit)
+	U64	unsigned long (64-bit)
 	F64	double
 	no F32 float.
 
@@ -38,7 +38,7 @@ Test(,3);
 
 * A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
 A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,949] Print().  An empty string literal
+is sent to [C:/Kernel/StrPrint.CPP.Z,896] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
@@ -65,8 +65,9 @@ name
 with "&".
 
 * Type casting is postfix.  To typecast int or F64, use
-[C:/Kernel/Adam1b.HPP.Z,93] ToI64(), [C:/Kernel/Adam1b.HPP.Z,91] ToBool() or 
-[C:/Kernel/Adam1b.HPP.Z,92] ToF64(). (TempleOS follows normal C float<-->int
+[C:/Kernel/KernelB.HPP.Z,90] ToI64(), [C:/Kernel/KernelB.HPP.Z,88] ToBool()
+or 
+[C:/Kernel/KernelB.HPP.Z,89] ToF64(). (TempleOS follows normal C float<-->int
 conversion, but sometimes you 
 want to override.  These functions are better than multiplying by "1.0" to 
 convert to float.) 
@@ -76,7 +77,7 @@ upon start-up, in order.
 
 * There are no bit fields, but there are [Bit,1] bit access routines and you
 can 
-access bytes or words within any int.  See [C:/Kernel/Adam1a.HPP.Z,101] I64
+access bytes or words within any int.  See [C:/Kernel/KernelA.HPP.Z,102] I64
 declaration.  A class can be 
 accessed as a whole are subints, if you put a type in front of the class 
 declaration.
@@ -111,7 +112,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,247] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem1b.CPP.Z,373] MAlloc()ed string.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed string.
     [C:/Adam/Gr/GrBitMap.CPP.Z,823] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
@@ -173,8 +174,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK or
-  [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK for reg vars or else 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK or
+  [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -215,7 +216,7 @@ PutChars('World\n');
 
 * There is no question-colon operator.
 
-* TempleOS [C:/Compiler/CmpInit.CPP.Z,1] operator precedence
+* TempleOS [C:/Compiler/CInit.CPP.Z,1] operator precedence
   `,>>,<<
   *,/,%
   &
@@ -229,11 +230,13 @@ PutChars('World\n');
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1457]
-OPTf_WARN_PAREN) to find unnecessary parentheses in code.
+* You can use [C:/Compiler/CMisc.CPP.Z,6]
+OptOn([C:/Kernel/KernelA.HPP.Z,1457] OPTf_WARN_PAREN) to find unnecessary
+parentheses in code.
 
-* You can use [C:/Compiler/ICLCC.CPP.Z,6] OptOn([C:/Kernel/Adam1a.HPP.Z,1458]
-OPTf_WARN_DUP_TYPES) to find dup local var type 
+* You can use [C:/Compiler/CMisc.CPP.Z,6]
+OptOn([C:/Kernel/KernelA.HPP.Z,1458] OPTf_WARN_DUP_TYPES) to find dup local
+var type 
 statements.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -241,7 +244,7 @@ insert
 text into the stream of code being compiled.  See [C:/Kernel/KEnd.CPP.Z,1]
 #exe {} for an example where 
 the date/time and compile-time prompting for cfguration data is placed into a 
-program.  [C:/Compiler/CmpMain.CPP.Z,1] StreamPrint() places text into a src
+program.  [C:/Compiler/CMain.CPP.Z,1] StreamPrint() places text into a src
 program stream following the 
 conclusion of the #exe{} blk.
 
@@ -260,7 +263,7 @@ the offset in a class definition.
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
-[C:/Kernel/Adam1a.HPP.Z,63] Adam1a.HPP for 1,2,4 
+[C:/Kernel/KernelA.HPP.Z,64] KernelA.HPP for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
 that 
 is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP.Z,1]. 
@@ -272,7 +275,7 @@ compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP.Z,1] and
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
 name of the previous arg.  See [C:/Demo/LastClass.CPP.Z,1],
-[C:/Adam/Dbg2a.CPP.Z,152] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
+[C:/Adam/ADbg.CPP.Z,152] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
 DocFormDo()  
 and [C:/Demo/Dsk/BlkDevRep.CPP.Z,1].
 
@@ -298,25 +301,27 @@ read-modify-write accesses.  The code bracked with have LOCK asm prefix's
 applied to relevant instructions within.  It's a little shoddy.  See 
 [C:/Demo/MultiCore/Lock.CPP.Z,1].
 
-* There is a function called [C:/Kernel/Mem1b.CPP.Z,370] MSize() which gives
-the size of an object 
-allocated off the heap.  For larger size allocations, the system rounds-up to 
-a power of two, so MSize() lets you know the real size and you can take full 
-advantage of it.
+* There is a function called [C:/Kernel/MemB.CPP.Z,370] MSize() which gives
+the size of an object alloced 
+off the heap.  For larger size allocations, the system rounds-up to a power
+of 
+two, so MSize() lets you know the real size and you can take full advantage
+of 
+it.
 
-* You can [C:/Kernel/Mem1b.CPP.Z,369] Free() a NULL ptr.  Useful variants of
-[C:/Kernel/Mem1b.CPP.Z,373] MAlloc() can be found [C:/Kernel/Mem1b.CPP.Z,381]
+* You can [C:/Kernel/MemB.CPP.Z,369] Free() a NULL ptr.  Useful variants of
+[C:/Kernel/MemB.CPP.Z,373] MAlloc() can be found [C:/Kernel/MemB.CPP.Z,381]
 Here.  
 Each task has a heap and you can MAlloc and Free off of other task's heaps,
 or 
-make an independent heap with [C:/Kernel/Mem1c.CPP.Z,41] HeapCtrlBPInit().
+make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/Adam1a.HPP.Z,2775] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task1a.CPP.Z,221]
+[C:/Kernel/KernelA.HPP.Z,2777] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,207]
 Spawn().  You can use 
-[C:/Kernel/Task1a.CPP.Z,87] CallStkGrow(), but it's odd.  See
+[C:/Kernel/Task.CPP.Z,82] CallStkGrow(), but it's odd.  See
 [C:/Demo/StkGrow.CPP.Z,1]. 
 
 * Only one base class is allowed.

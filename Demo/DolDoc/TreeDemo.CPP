@@ -7,7 +7,7 @@ Doc is taken off-line by disabling preemption so there
 are no screen updates until all data has been inserted.
 
 There is a special Doc function which is also
-available to take an Doc off-line.  See [C:/Adam/DolDoc/DocRecalc2a.CPP.Z,149] DocPrintAtomic.
+available to take an Doc off-line.  See [C:/Adam/DolDoc/DocRecalcA.CPP.Z,149] DocPrintAtomic.
 For this example, however, I wanted to use DocPrint
 and disabled Preemption myself.
 */

@@ -7,7 +7,7 @@ with a matrix multiplication.
 Scroll bar works.
 
 The multiplication takes place in the
-[C:/Adam/Gr/GrSpritePlot.CPP.Z,296] SpriteZ3B routine.
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,297] SpriteZ3B routine.
 */
 
 #define SLIDER_SPACING 20
@@ -20,7 +20,7 @@ class CSliderState
   F64 a1,a2,scale;
 } s;
 
-U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
+U0 DrawCtrlSlider(CDC *dc,CCtrl *c)
 {
   CSliderState *s=c->state;
 
@@ -56,7 +56,7 @@ U0 DrawSliderCtrl(CDC *dc,CCtrl *c)
   GrRect(dc,c->left+3*SLIDER_SPACING+2-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->s3-1,5,3);
 }
 
-U0 UpdateDerivedSliderCtrl(CCtrl *c)
+U0 UpdateDerivedCtrlSlider(CCtrl *c)
 {
   CSliderState *s=c->state;
   c->left=c->win_task->pix_width/2-(SLIDER_SPACING*4+3)/2;
@@ -93,9 +93,9 @@ CCtrl *SliderNew()
   c->type=CTRLT_GENERIC;
   c->state=&s;
   MemSet(&s,0,sizeof(s));
-  c->draw_it=&DrawSliderCtrl;
+  c->draw_it=&DrawCtrlSlider;
   c->left_click=&LeftClickSlider;
-  c->update_derived_vals=&UpdateDerivedSliderCtrl;
+  c->update_derived_vals=&UpdateDerivedCtrlSlider;
   old_preempt=Preempt(OFF);
   QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;

@@ -2,16 +2,16 @@
 
 class CWallPaperGlbls
 {
-  I64	last_refresh_cnt,last_swap_cnter[MP_MAX_PROCESSORS];
-  F64	last_refresh_delta_time;
+  I64	last_calc_idle_cnt,last_swap_cnter[MP_MAX_PROCESSORS];
+  F64	last_calc_idle_delta_time;
   U8	top_line[128];
   Bool	record;
 } *wall=CAlloc(sizeof(CWallPaperGlbls));
-wall->last_refresh_delta_time=1.0;
+wall->last_calc_idle_delta_time=1.0;
 
 class CTaskWallPaperData
 {
-  I64	allocated_u8s,used_u8s;
+  I64	alloced_u8s,used_u8s;
   U8	caller_stk[TASK_WALLPAPER_DATA_SIZE-16];
 };
 
@@ -24,13 +24,10 @@ U0 WallPaper(CTask *_task)
   CCPU *c;
   Bool old_preempt=Preempt(OFF);
   CDateStruct ds;
-  CDate cdt;
   U8 *st;
-  static I64 code_heap_unused=0,code_heap_used=0,
-	     data_heap_unused=0,data_heap_used=0;
   _task->text_attr=BLUE<<4+WHITE;
-  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Reads:%d Writes:%d lines=%d funs=%d bytes=%010X",
-    dsk.read_cnt,dsk.write_cnt,cmp.compiled_lines,cmp.compiled_funs,cmp.compiled_bytes);
+  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Reads:%d Writes:%d lines=%d",
+    dsk.read_cnt,dsk.write_cnt,cmp.compiled_lines);
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress1=%016X progress2=%016X",progress1,progress2);
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress3=%016X progress4=%016X",progress3,progress4);
   l--;
@@ -55,11 +52,11 @@ U0 WallPaper(CTask *_task)
       if (j<0)
 	Dbg("Stk Overflow",task);
       if (!(winmgr.updates&31)) {
-	wpd->allocated_u8s=TaskAllocatedMem(task);
-	wpd->used_u8s	  =TaskUsedMem(task);
+	wpd->alloced_u8s=TaskMemAlloced(task);
+	wpd->used_u8s	=TaskMemUsed(task);
       }
       TextPrint(Fs,0,l--,BLUE<<4+WHITE,"%08X %010X %010X %010X %-16ts %05X:%02tX %6.2fm",task,j,
-	wpd->allocated_u8s,wpd->used_u8s,task->task_title,
+	wpd->alloced_u8s,wpd->used_u8s,task->task_title,
 	task->task_flags,task->display_flags,
 	task->total_time/60.0/cnts.time_stamp_freq_initial);
       if (!TaskValidate(task)) break;
@@ -68,28 +65,23 @@ U0 WallPaper(CTask *_task)
   }
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"__Task__ UnusedStk_ _AllocMem_ _UsedMem__ __Description___ _Flags__ _Time__");
   l--;
-  if (!(winmgr.updates&31)) {
-    code_heap_unused=UnusedBPMem(sys_code_bp);
-    code_heap_used  =sys_code_bp->allocated_u8s;
-    if (sys_data_bp) {
-      data_heap_unused=UnusedBPMem(sys_data_bp);
-      data_heap_used  =sys_data_bp->allocated_u8s;
-    }
-  }
 
   if (sys_data_bp) {
-    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Data Heap Unused:%010X Data Heap Used:%010X",data_heap_unused,data_heap_used);
-    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Code Heap Unused:%010X Code Heap Used:%010X",code_heap_unused,code_heap_used);
+    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Data Heap Alloced:%010X Data Heap Used:%010X",
+	sys_data_bp->alloced_u8s,sys_data_bp->used_u8s);
+    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Code Heap Alloced:%010X Code Heap Used:%010X",
+	sys_code_bp->alloced_u8s,sys_code_bp->used_u8s);
   } else
-    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Code/Data Heap Unused:%010X Used:%010X",code_heap_unused,code_heap_used);
+    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Code/Data Heap Alloced:%010X Used:%010X",
+	sys_code_bp->alloced_u8s,sys_code_bp->used_u8s);
 
   l--;
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
     TextPrint(Fs,0,l--,BLUE<<4+WHITE,"%03d %9,d",i,
-      ToI64((winmgr.t->last_swap_cnter[i]-wall->last_swap_cnter[i])/wall->last_refresh_delta_time));
-    if (winmgr.t->refresh_cnt!=wall->last_refresh_cnt) {
-      wall->last_refresh_delta_time=winmgr.t->refresh_delta_time;
+      ToI64((winmgr.t->last_swap_cnter[i]-wall->last_swap_cnter[i])/wall->last_calc_idle_delta_time));
+    if (winmgr.t->calc_idle_cnt!=wall->last_calc_idle_cnt) {
+      wall->last_calc_idle_delta_time=winmgr.t->calc_idle_delta_time;
       wall->last_swap_cnter[i]=winmgr.t->last_swap_cnter[i];
       winmgr.t->last_swap_cnter[i]=c->swap_cnter;
     }
@@ -99,11 +91,13 @@ U0 WallPaper(CTask *_task)
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"      Context");
 
   if (!(winmgr.updates&31) || !*wall->top_line) {
-    cdt=Now;
-    Date2Struct(&ds,cdt+local_time_offset);
+    Date2Struct(&ds,Now+local_time_offset);
+    i=sys_code_bp->alloced_u8s-sys_code_bp->used_u8s;
+    if (sys_data_bp)
+      i+=sys_data_bp->alloced_u8s-sys_data_bp->used_u8s;
     StrPrint(wall->top_line,"%3tZ %02d/%02d %02d:%02d:%02d FPS:%2tf Mem:%010X CPU",
       ds.day_of_week,"ST_DAYS_OF_WEEK",ds.mon,ds.day_of_mon,
-      ds.hour,ds.min,ds.sec,winmgr.fps,code_heap_unused+data_heap_unused);
+      ds.hour,ds.min,ds.sec,winmgr.fps,i);
   }
   TextPrint(Fs,0,0,BLUE<<4+WHITE,wall->top_line);
  
@@ -122,7 +116,7 @@ U0 WallPaper(CTask *_task)
   Free(st);
 
   Fs->hash_table=old_hash;
-  wall->last_refresh_cnt=winmgr.t->refresh_cnt;
+  wall->last_calc_idle_cnt=winmgr.t->calc_idle_cnt;
   Preempt(old_preempt);
 }
 
@@ -141,7 +135,7 @@ U0 DrawTermButton(CDC *dc,CCtrl *c)
 U0 LeftClickTermButton(CCtrl *,I64,I64,Bool down)
 {
   if (down)
-    SpawnUser;
+    User;
 }
 
 CCtrl *TermButtonNew()

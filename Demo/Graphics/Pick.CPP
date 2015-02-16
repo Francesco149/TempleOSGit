@@ -23,11 +23,11 @@ U0 DrawIt(CTask *,CDC *dc)
     Sprite3(dc,x[i],y[i],0,__BIN_1);
     if (dc->nearest_dist<=best_dist) {
 	//Distance to nearest pix, squared
-	//[C:/Kernel/Adam1b.HPP.Z,85] Sqrt() is expensive so we work with distance squared.
+	//[C:/Kernel/KernelB.HPP.Z,82] Sqrt() is expensive so we work with distance squared.
       best_dist=dc->nearest_dist;
       best_apple=i;
 
-      //Elements are the individual lines or whatever of the CSprite.
+      //Elements are the individual lines or whatever of the CSprite.u.
       best_sprite_elem_num=dc->nearest_sprite_elem_num;
     }
   }
@@ -51,7 +51,7 @@ U0 Pick()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
-  WordStat;
+  AutoComplete;
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;
@@ -63,7 +63,7 @@ U0 Pick()
 	goto pi_done;
 
       //Use screen coordinates, not window (a1,a2)
-      //[C:/Kernel/KGlbls.CPP.Z,20] ip.pos.x and [C:/Kernel/KGlbls.CPP.Z,20] ip.pos.y are global vars updated
+      //[C:/Kernel/KGlbls.CPP.Z,18] ip.pos.x and [C:/Kernel/KGlbls.CPP.Z,18] ip.pos.y are global vars updated
       //updated by the window mgr to hold the
       //screen coordinates of the input ptr (mouse).
       cur_x=ip.pos.x; cur_y=ip.pos.y;

@@ -36,7 +36,7 @@ horizontally by this many pixs.
 
 Tree The item will behave like a tree widget, with this as the root.
 Collapsed The tree or hidden widget will begin collapsed.
-Define Str will substitute a #define or [C:/Kernel/Define1a.CPP.Z,1]
+Define Str will substitute a #define or [C:/Kernel/KDefine.CPP.Z,1]
 DefineLoad() string for the tag.
 
 Quote Make the result suitable for including in a program, in quotes, 

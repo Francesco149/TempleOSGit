@@ -26,7 +26,7 @@ U0 PutChars(U64 ch)
 }
 
 U0 PutS(U8 *st)
-{//Use [C:/Kernel/StrPrint.CPP.Z,949] Print().  See [Keyboard Devices/System,1] Keyboard Devices.
+{//Use [C:/Kernel/StrPrint.CPP.Z,896] Print().  See [Keyboard Devices/System,1] Keyboard Devices.
   I64 ch;
   U8 *ptr;
   Bool cont=TRUE;
@@ -51,7 +51,7 @@ U0 PutS(U8 *st)
   }
 }
 
-U0 SetKeyDesc(U8 *fmt,...)
+U0 KeyDescSet(U8 *fmt,...)
 {//Call this from key handler to report desc in [C:/Adam/Training.CPP.Z,183] KeyMap().
   I64 i;
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);

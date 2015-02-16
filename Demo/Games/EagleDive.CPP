@@ -59,7 +59,7 @@ U0 CriticalSectionEnd()
   LBtr(&critical_section_flag,0);
 }
 
-/*These are **NOT** deallocated after the program ends,
+/*These are **NOT** dealloced after the program ends,
 but I did them this way for your benefit
 so 2D array indexing is not done by hand.
 You can type "EagleDive;" at the command line
@@ -88,7 +88,7 @@ class MPCtrl {
   Bool app_done;
 } mp;
 
-U0 FSTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
+U0 EDTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
   GrRot(dc->r,x,y,z);
@@ -479,7 +479,7 @@ U0 MPDrawIt(CTask *task,CDC *dc)
 //cycle initiated by core#0 to prevent flicker.
 
   dc->flags|=DCF_TRANSFORMATION;
-  dc->transform=&FSTransform;
+  dc->transform=&EDTransform;
   dc->x=cx;
   dc->y=cy;
 
@@ -588,7 +588,7 @@ U0 DrawHorizon(CDC *dc)
   GrRotZEqu(dc->r,theta1);
   GrSetRotMat(dc,dc->r);
   dc->flags&=~DCF_TRANSFORMATION;
-  dc->transform=&FSTransform;
+  dc->transform=&EDTransform;
   dc->x=cx;
   dc->y=cy;
 
@@ -893,7 +893,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   F64 pp,tt1,tt2;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WordStat;
+  AutoComplete;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"

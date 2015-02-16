@@ -1,26 +1,25 @@
-Cd("HOME");Dir;
+Cd("::/Home");Dir;
 
-`Cd("HOME");Dir;
+`Cd("::/Home");Dir;
 `
 
-Drv(TS_MAIN_DRV_LET);
+Drv('C');
 
-`Drv(TS_MAIN_DRV_LET);
+`Drv('C');
 `
 
-Drv(TS_BAK_DRV_LET);
+Drv('D');
 
-`Drv(TS_BAK_DRV_LET);
+`Drv('D');
 `
 
-SoftBoot(TS_MAIN_DRV ":/Kernel.BIN.C");
-`SoftBoot(TS_MAIN_DRV ":/Kernel.BIN.C");`
+RAMReboot("C:/Kernel.BIN.C");
+`RAMReboot("C:/Kernel.BIN.C");`
 
-TSMakeOSPrtBootInstall(TS_MAIN_DRV_LET);
+TOSMakeOSDrvBootInstall('C');
 
-`TSMakeOSPrtBootInstall(TS_MAIN_DRV_LET);
+`TOSMakeOSDrvBootInstall('C');
 `
-
 
 [C:/Doc/ChangeLog.TXT.Z,1] Change Log [C:/Doc/HelpIndex.TXT.Z,1] Help & Index [C:/Doc/DemoIndex.TXT.Z,1] Demo Index Key Map
 `KeyMap;View;
@@ -28,7 +27,6 @@ TSMakeOSPrtBootInstall(TS_MAIN_DRV_LET);
  Take Tour
 `Cd("::/Misc/Tour");;AutoFile("Tour");
 `
-
 
 Cd("/Kernel");Dir;
 
@@ -43,6 +41,11 @@ Cd("/Kernel/Dsk");Dir;
 Cd("/Compiler");Dir;
 
 `Cd("/Compiler");Dir;
+`
+
+Cd("/");Dir;
+
+`Cd("/");Dir;
 `
 
 Cd("/Adam");Dir;
@@ -90,54 +93,46 @@ Cd("/Adam/Snd");Dir;
 `Cd("/Adam/Snd");Dir;
 `
 
-Cd("/Adam/WordStat");Dir;
+Cd("/Adam/AutoComplete");Dir;
 
-`Cd("/Adam/WordStat");Dir;
+`Cd("/Adam/AutoComplete");Dir;
 `
 
-Cd("/Accts");Dir;
+Cd("/Home");Dir;
 
-`Cd("/Accts");Dir;
+`Cd("/Home");Dir;
 `
 
-Cd("/Accts/TS");Dir;
+Cd("/Home/Psalmody");Dir;
 
-`Cd("/Accts/TS");Dir;
+`Cd("/Home/Psalmody");Dir;
 `
 
-Cd("/Accts/TS/TAD");Dir;
+Cd("/Home/Wb2");Dir;
 
-`Cd("/Accts/TS/TAD");Dir;
+`Cd("/Home/Wb2");Dir;
 `
 
-Cd("/Accts/TS/TAD/Psalmody");Dir;
+Cd("/Home/Wb2/Files");Dir;
 
-`Cd("/Accts/TS/TAD/Psalmody");Dir;
+`Cd("/Home/Wb2/Files");Dir;
 `
 
-Cd("/Accts/TS/Wb2");Dir;
+TADRant
+`if (Ed("::/Home/Wb2/TADRant.TXT",EDF_WAS_WRITE)) MakeWebSitePartial;
+`
+ CodeWalkThru;
 
-`Cd("/Accts/TS/Wb2");Dir;
+`CodeWalkThru;
+`
+ AfterEgyptInAction;
+
+`AfterEgyptInAction;
 `
 
-Cd("/Accts/TS/Wb2/Rants/TAD");Dir;
+Ed("D:/Home/God.TXT");
 
-`Cd("/Accts/TS/Wb2/Rants/TAD");Dir;
-`
-
-Cd(TS_BLOG_DIR);Dir;
-
-`Cd(TS_BLOG_DIR);Dir;
-`
-
-Cd("/Accts/User");Dir;
-
-`Cd("/Accts/User");Dir;
-`
-
-Cd("/Accts/Install");Dir;
-
-`Cd("/Accts/Install");Dir;
+`Ed("D:/Home/God.TXT");
 `
 
 Cd("/Apps");Dir;
@@ -168,11 +163,6 @@ Cd("/Apps/AfterEgypt");Dir;
 Cd("/Apps/ToTheFront");Dir;
 
 `Cd("/Apps/ToTheFront");Dir;
-`
-
-Cd("/Misc/Tour");Dir;
-
-`Cd("/Misc/Tour");Dir;
 `
 
 Cd("/Demo");Dir;
@@ -230,6 +220,11 @@ Cd("/Misc");Dir;
 `Cd("/Misc");Dir;
 `
 
+Cd("/Misc/Tour");Dir;
+
+`Cd("/Misc/Tour");Dir;
+`
+
 Cd("/Temp");Dir;
 
 `Cd("/Temp");Dir;
@@ -240,18 +235,14 @@ Cd("/0000Boot");Dir;
 `Cd("/0000Boot");Dir;
 `
 
-Copy Screen Shots
-`Del(TS_BAK_DRV ":/Temp/ScreenShots/*");Copy("::/Temp/ScreenShots/*",TS_BAK_DRV ":/Temp/ScreenShots");
+Del("D:/Temp/*.SND");DelTree("D:/Temp/ScreenShots");MkDir("D:/Temp/ScreenShots");Del("C:/Temp/*.SND");DelTree("C:/Temp/ScreenShots");MkDir("C:/Temp/ScreenShots");
+
+`Del("D:/Temp/*.SND");DelTree("D:/Temp/ScreenShots");MkDir("D:/Temp/ScreenShots");Del("C:/Temp/*.SND");DelTree("C:/Temp/ScreenShots");MkDir("C:/Temp/ScreenShots");
 `
 
-Del(TS_BAK_DRV ":/Temp/*.SND");DelTree(TS_BAK_DRV ":/Temp/ScreenShots");MkDir(TS_BAK_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
+TOSPromptAndCopyDrv;
 
-`Del(TS_BAK_DRV ":/Temp/*.SND");DelTree(TS_BAK_DRV ":/Temp/ScreenShots");MkDir(TS_BAK_DRV ":/Temp/ScreenShots");Del(TS_MAIN_DRV ":/Temp/*.SND");DelTree(TS_MAIN_DRV ":/Temp/ScreenShots");MkDir(TS_MAIN_DRV ":/Temp/ScreenShots");
-`
-
-TSPromptAndCopyDrv;
-
-`TSPromptAndCopyDrv;
+`TOSPromptAndCopyDrv;
 `
 
 MakeDistrosAndBackUp;
@@ -259,94 +250,91 @@ MakeDistrosAndBackUp;
 `MakeDistrosAndBackUp;
 `
 
-MakeWebSitePartial;
+Merge("C:/*;~*LineRep*","D:/*;~*LineRep*","+r+d");
 
-`MakeWebSitePartial;
+`Merge("C:/*;~*LineRep*","D:/*;~*LineRep*","+r+d");
 `
 
-Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_BAK_DRV ":/*;~*LineRep*","+r+d");
+Merge("C:/*;~*LineRep*","T:/*;~*LineRep*","+r+d");
 
-`Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_BAK_DRV ":/*;~*LineRep*","+r+d");
+`Merge("C:/*;~*LineRep*","T:/*;~*LineRep*","+r+d");
 `
 
-Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_CDROM_DRV ":/*;~*LineRep*","+r+d");
+ChgDsk('T');
 
-`Merge(TS_MAIN_DRV ":/*;~*LineRep*",TS_CDROM_DRV ":/*;~*LineRep*","+r+d");
+`ChgDsk('T');
 `
 
-ChgDsk(TS_CDROM_DRV_LET);
-
-`ChgDsk(TS_CDROM_DRV_LET);
-`
-
-SoftBootMenu(TS_MAIN_DRV_LET);
-
-`SoftBootMenu(TS_MAIN_DRV_LET);
-`
-
-Adam("GodInit(\"/Adam/God/Vocab.TXT*\");");
-
+August
 `Adam("GodInit(\"/Adam/God/Vocab.TXT*\");");
 `
-
-Adam("GodInit(\"HOME/Archive/HAPPY.TXT*\");");
-
-`Adam("GodInit(\"HOME/Archive/HAPPY.TXT*\");");
+ Happy
+`Adam("GodInit(\"C:/Home/Wb2/Files/Words/Happy.TXT*\");");
+`
+ Ingredients
+`Adam("GodInit(\"C:/Home/Wb2/Files/Words/Ingredients.TXT*\");");
+`
+ Chess
+`Adam("GodInit(\"C:/Home/Wb2/Files/Words/Chess.TXT*\");");
 `
 
-Adam("GodInit(\"HOME/Archive/INGREDIENTS.TXT*\");");
-
-`Adam("GodInit(\"HOME/Archive/INGREDIENTS.TXT*\");");
+SortHeaders
+`#include "::/Home/Wb2/Files/SortHeaders.CPP.Z";
 `
 
-Make TS Distro ISO
-`MakeTSDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSTS.ISO");
+Copy("D:/Home/Archive/Bookmarks.html","C:/Home/Archive/Bookmarks.html");
+
+`Copy("D:/Home/Archive/Bookmarks.html","C:/Home/Archive/Bookmarks.html");
 `
- Burn TS Distro CD 
-`MakeTSDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+
+Make TOS Distro ISO
+`MakeTOSDistro; Copy(TOS_ISO_NAME,"D:TempleOSTOS.ISO");
 `
- Burn TS Distro DVD
-`MakeTSDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+ Burn TOS Distro CD 
+`MakeTOSDistro; CDImageWrite('T',TOS_ISO_NAME);
+`
+ Burn TOS Distro DVD
+`MakeTOSDistro; CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
 `
 
 Make Dbg Distro ISO
-`MakeDbgDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSDbg.ISO");
+`MakeDbgDistro; Copy(TOS_ISO_NAME,"D:TempleOSDbg.ISO");
 `
  Burn Dbg Distro CD 
-`MakeDbgDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeDbgDistro; CDImageWrite('T',TOS_ISO_NAME);
 `
  Burn Dbg Distro DVD
-`MakeDbgDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeDbgDistro; CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
 `
 
 Make Std Distro ISO
-`MakeStdDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSCD.ISO");
+`MakeStdDistro; Copy(TOS_ISO_NAME,"D:TempleOSCD.ISO");
 `
  Burn Std Distro CD 
-`MakeStdDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeStdDistro; CDImageWrite('T',TOS_ISO_NAME);
 `
  Burn Std Distro DVD
-`MakeStdDistro; CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeStdDistro; CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
 `
 
 Make Lite Distro ISO
-`MakeLiteDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSLite.ISO");
+`MakeLiteDistro; Copy(TOS_ISO_NAME,"D:TempleOSLite.ISO");
 `
  Burn Lite Distro CD 
-`MakeLiteDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeLiteDistro;CDImageWrite('T',TOS_ISO_NAME);
 `
  Burn Lite Distro DVD
-`MakeLiteDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeLiteDistro;CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
 `
 
 Make Ultra Distro ISO
-`MakeUltraDistro; Copy(TS_ISO_NAME,TS_BAK_DRV ":TempleOSUltra.ISO");
+`MakeUltraDistro; Copy(TOS_ISO_NAME,"D:TempleOSUltra.ISO");
 `
  Burn Ultra Distro CD 
-`MakeUltraDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME);
+`MakeUltraDistro;CDImageWrite('T',TOS_ISO_NAME);
 `
  Burn Ultra Distro DVD
-`MakeUltraDistro;CDImageWrite(TS_CDROM_DRV_LET,TS_ISO_NAME,MT_DVD);
+`MakeUltraDistro;CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
 `
 
 
@@ -374,9 +362,7 @@ Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image) Bug
 
 
 
-
 FlatTops <9> (image)  Golf <10> (image)  Strut <11> (image) TheDead <12> (image) DunGen <13> (image)  
-
 
 
 
@@ -412,16 +398,16 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24> (image
 
 
 
-BigGuns <26> (image) Budget <27> (image) Digits <28> (image) MemRep
+BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image) MemRep
 `MemRep;View;`
 
 
-SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");
-`SoftBoot(TS_BAK_DRV ":/Kernel.BIN.C");`
+RAMReboot("D:/Kernel.BIN.C");
+`RAMReboot("D:/Kernel.BIN.C");`
 
-TSMakeOSPrtBootInstall(TS_BAK_DRV_LET);
+TOSMakeOSDrvBootInstall('D');
 
-`TSMakeOSPrtBootInstall(TS_BAK_DRV_LET);
+`TOSMakeOSDrvBootInstall('D');
 `
 
 List all syms in alpabetic order
@@ -431,14 +417,11 @@ List all syms in numeric order
 `DocMax;Who("+m");View;`
 
 [C:/Misc/Bible.TXT.Z,297] Bible
-WebLogRep
-`#include "HOME/Archive/WebLogRep.CPP.Z";WebLogRep(TS_BAK_DRV ":/Temp/Logs/*.log",TS_BAK_DRV ":/Temp/Rep.TXT.Z");Ed(TS_BAK_DRV ":/Temp/Rep.TXT.Z");Del(TS_BAK_DRV ":/Temp/Logs/*.log");`
-
 Test Suite
 `#include "::/Misc/OSTestSuite";
 `
 
-Psalmody HOME
-`#include "::/Apps/Psalmody/Load";Psalmody("::/Accts/TS/TAD/Psalmody");
+Psalmody /Home
+`#include "::/Apps/Psalmody/Load";Psalmody("::/Home/Psalmody");
 `
-
+ 

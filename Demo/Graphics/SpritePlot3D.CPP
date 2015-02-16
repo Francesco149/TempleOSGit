@@ -1,4 +1,4 @@
-/*This uses [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc2.  It must be redrawn 60 fps
+/*This uses [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc2.  It must be redrawn 30 fps
 by the winmgr task with a Fs->draw_it() callback.
 */
 

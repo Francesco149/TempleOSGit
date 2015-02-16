@@ -122,7 +122,7 @@ U0 TeeBall()
   WinMax;
   WinBorder;
   Preempt(OFF);
-  WordStat;
+  AutoComplete;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
 
   MenuPush(

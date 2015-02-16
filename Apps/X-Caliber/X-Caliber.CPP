@@ -1008,7 +1008,7 @@ U0 XCaliber()
       "}"
       );
   WinMax;
-  WordStat;
+  AutoComplete;
   WinBorder(ON);
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER-WIF_FOCUS_TASK_MENU-WIF_SELF_CTRLS;
   DocCursor;

@@ -270,7 +270,7 @@ U0 ZoneOut()
   Fs->text_attr=BLACK<<4+WHITE;
   WinMax;
   WinBorder;
-  WordStat;
+  AutoComplete;
   Preempt(OFF);
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);

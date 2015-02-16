@@ -48,6 +48,12 @@ are assigned by the editor.
 
 	/* <5> <5> (image) */
 
+
+
+
+	/* <6> <6> (image) */
+//See [C:/Doc/Credits.TXT.Z,1].
+
 AcctRegSetDftEntry("TempleOS/BlackDiamond","I64 best_score=9999;\n");
 AcctRegExeBranch("TempleOS/BlackDiamond");
 
@@ -55,18 +61,33 @@ AcctRegExeBranch("TempleOS/BlackDiamond");
 #define NUM_OBJS	128
 
 I64 x,y,screen_top_y,penalty;
-I64 obj_x[NUM_OBJS],obj_y[NUM_OBJS],obj_types[NUM_OBJS];
-CSprite *imgs[3]={__BIN_3,__BIN_4,__BIN_5};
+I64 obj_x[NUM_OBJS],obj_y[NUM_OBJS],obj_types[NUM_OBJS],
+    obj_saved_x[NUM_OBJS],obj_saved_y[NUM_OBJS];
 Bool game_over;
 
-U0 DrawIt(CTask *task,CDC *dc)
+#define T_TREE		0
+#define T_LITTLE_ROCK	1
+#define T_BIG_ROCK	2
+#define T_WOLF		3
+CSprite *imgs[4]={__BIN_3,__BIN_4,__BIN_5,__BIN_6};
+
+U0 DrawIt(CTask *,CDC *dc)
 {
-  U8 buf[128];
   I64 i;
   //<CTLR-t> to see the syntax of the
   //"Insert Binary" statement in the following.
   for (i=0;i<NUM_OBJS;i++)
-    Sprite3(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]]);
+    if (obj_types[i]==T_WOLF && AbsI64(x-obj_x[i])>3) {
+      if (x<obj_x[i]) {
+	dc->flags|=DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR;
+	GrSetSymmetry(dc,obj_x[i],0,obj_x[i],1);
+      }
+      SpriteZ3B(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]],0.4*Sin(7*tS));
+      if (0<=(obj_y[i]-screen_top_y)<GR_HEIGHT)
+	obj_x[i]+=3*SignI64(x-obj_x[i]);
+      dc->flags&=~(DCF_SYMMETRY|DCF_TRANSFORMATION);
+    } else
+      Sprite3(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]]);
 
   dc->collision_cnt=0;
   dc->color=ROP_COLLISION;
@@ -75,7 +96,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (!game_over) {
     if(dc->collision_cnt) {
       Snd(400);
-      penalty++; //Timing is irregular. Scoring is imperfect. 60fps more or less.
+      penalty++; //Timing is irregular. Scoring is imperfect. 30fps more or less.
     } else
       Snd(0);
   }
@@ -102,18 +123,27 @@ I64 Compare(I64 e1,I64 e2)
 
 U0 Init()
 {
-  I64 i;
+  I64 i,j;
   for (i=0;i<NUM_OBJS;i++) {
-    obj_types[i]=!(i&31)+!(i&7);
-    obj_x[i]=RandU32%GR_WIDTH;
-    obj_y[i]=RandU32%MAP_HEIGHT;
+    obj_saved_y[i]=RandU32%MAP_HEIGHT;
+    obj_saved_x[i]=RandU32%GR_WIDTH;
+
+    j=RandU16;
+    if (j&7)
+      obj_types[i]=T_TREE;
+    else if (j&31)
+      obj_types[i]=T_LITTLE_ROCK;
+    else if (j&63)
+      obj_types[i]=T_BIG_ROCK;
+    else
+      obj_types[i]=T_WOLF;
   }
   QSortI64(obj_y,NUM_OBJS,&Compare); //We break associations.  Doesn't matter.
 }
 
 U0 BlackDiamond()
 {
-  I64 ch,sc;
+  I64 i,ch,sc;
 
   MenuPush(
 	"File {"
@@ -135,12 +165,16 @@ U0 BlackDiamond()
   DocClear;
   Fs->draw_it=&DrawIt;
   WinBorder;
-  WordStat;
+  AutoComplete;
 
   Init;
   try {
     while (TRUE) {
 bd_restart:
+      for (i=0;i<NUM_OBJS;i++) { //Wolves move.
+	obj_x[i]=obj_saved_x[i];
+	obj_y[i]=obj_saved_y[i];
+      }
       game_over=FALSE;
       screen_top_y=0;
       x=Fs->pix_width>>1; y=0;

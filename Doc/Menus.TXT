@@ -1,8 +1,8 @@
-A menu appears when you move the mouse to the top of the screen.  Menus are 
-created with [C:/Adam/Menu.CPP.Z,153] MenuPush(), [C:/Adam/Menu.CPP.Z,161]
-MenuFilePush(), [C:/Adam/Menu.CPP.Z,84] MenuNew() or [C:/Adam/Menu.CPP.Z,104]
-MenuFile() and assigned 
-to Fs->cur_menu.  The format is:
+A pull-down menu appears when you move the mouse to the top of the screen.  
+Menus are created with [C:/Adam/Menu.CPP.Z,149] MenuPush(),
+[C:/Adam/Menu.CPP.Z,157] MenuFilePush(), [C:/Adam/Menu.CPP.Z,84] MenuNew() or
+[C:/Adam/Menu.CPP.Z,102] MenuFile() and 
+assigned to Fs->cur_menu.  The format is:
 
 
 File 
@@ -26,12 +26,12 @@ Help
 }
 
 The first arg is the msg code and it is optional with the default being 
-[C:/Kernel/Adam1a.HPP.Z,3132] MSG_KEY_DOWN_UP.  The second arg is the msg a1
-value which is [C:/Kernel/Adam1a.HPP.Z,3382] ASCII of the key 
-in the case of [C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN.  The third arg is
+[C:/Kernel/KernelA.HPP.Z,3129] MSG_KEY_DOWN_UP.  The second arg is the msg a1
+value which is [C:/Kernel/KernelA.HPP.Z,3382] ASCII of the key 
+in the case of [C:/Kernel/KernelA.HPP.Z,3114] MSG_KEY_DOWN.  The third arg is
 the msg a2 value which is the 
 [C:/Doc/CharOverview.TXT.Z,1] scan_code of the key in the case of
-[C:/Kernel/Adam1a.HPP.Z,3117] MSG_KEY_DOWN.
+[C:/Kernel/KernelA.HPP.Z,3114] MSG_KEY_DOWN.
 
 Press <CTRL-SHIFT-l> and "Insert ASCII/ScanCode".
 

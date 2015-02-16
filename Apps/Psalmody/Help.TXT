@@ -21,7 +21,7 @@ rating number, shown in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox().  You
 can set the song rating in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox() 
 by pressing 0-9.  You can press <DELETE> to delete songs.
 
-* You can take the [C:/Adam/Snd/Music.CPP.Z,98] Play() statements out of a
+* You can take the [C:/Adam/Snd/SndMusic.CPP.Z,98] Play() statements out of a
 song file and place them in your 
 programs.  You can also add a song to a document with <CTRL-l>, but you
 should 
@@ -30,26 +30,26 @@ screwy.  See this <Song>
 2qG3ECB2eGG3qCeFDsBGBG2qG3ECB2eGG3qCeFDsBGBGqEeEFqEB2eG3FetCAGqFCEeEFqEB2eG3Fe
 tCAGqFC after pressing <CTRL-t>, now.
 
-* You can call [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox("HOME/Psalmody");
-to play your songs.
+* You can call [C:/Apps/Psalmody/JukeBox.CPP.Z,1]
+JukeBox("::/Home/Psalmody"); to play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/Adam1a.HPP.Z,3738] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HPP.Z,3732] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 
-system level recording feat.  See [C:/Kernel/Misc1a.CPP.Z,159] Snd().  Add
+system level recording feat.  See [C:/Kernel/KMisc.CPP.Z,163] Snd().  Add
 this code to your 
-[C:/Accts/TAD/Adam3cKeyPlugIns.CPP,1] file.
+[C:/Home/AdamKeyPlugIns.CPP,1] file.
 
 U0 CtrlAltR(I64)
 {
   snd.record=!snd.record;
 }
-SetCtrlAltLetCB('R',&CtrlAltR,"Toggle snd.record");
+CtrlAltLetCBSet('R',&CtrlAltR,"Toggle snd.record");
 
 * When calling [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate() you can set a
 waveform.  The PC speaker is 
-[C:/Adam/Snd/MathAudio.CPP.Z,118] WF_SQUARE.  You can select reverb and
+[C:/Adam/Snd/SndMath.CPP.Z,118] WF_SQUARE.  You can select reverb and
 averaging, also.
 

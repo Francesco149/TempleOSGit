@@ -1,4 +1,4 @@
-//See [C:/Doc/Acknowledgements.TXT.Z,1].
+//See [C:/Doc/Credits.TXT.Z,1].
 
 U8 sys_font_8x8[256*8]= {
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,

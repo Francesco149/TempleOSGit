@@ -24,7 +24,7 @@ F64 t0,tf,snd_bullet_timeout,snd_death_timeout;
 #define HACK_DIST	5
 class Man
 {
-  I64 x,y,closest_d;
+  I64 x,y,best_dd;
   F64 theta,hack_phase,corpse_timeout;
   Bool friendly,dead,pad[6];
 } m[MAX_MAN];
@@ -157,7 +157,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  _temps=friendly_imgs;
 	else
 	  _temps=enemy_imgs;
-	if (tempm->closest_d<HACK_DIST*HACK_DIST)
+	if (tempm->best_dd<HACK_DIST*HACK_DIST)
 	  temps=_temps[4*Wrap(tempm->hack_phase+20*tS,0)/(2*pi)];
 	else
 	  temps=_temps[0];
@@ -276,7 +276,7 @@ U0 Init()
     tempm->y=yy+64*RandU32/MAX_I32-64+100;
     tempm->corpse_timeout=0;
     tempm->hack_phase=2*pi*Rand;
-    tempm->closest_d=MAX_I64;
+    tempm->best_dd=MAX_I64;
   }
   for (i=0;i<MAX_BULLETS;i++)
     b[i].dead=TRUE;
@@ -320,46 +320,46 @@ U0 FireBullet()
 
 U0 MenMove(I64 phase_group)
 {
-  I64 i,j,d,closest,closest_d;
+  I64 i,j,dd,best,best_dd;
   for (i=phase_group;i<MAX_FRIENDLY;i+=PHASES_GROUPS) {
     if (!m[i].dead) {
-      closest=MAX_FRIENDLY;
-      closest_d=MAX_I64;
+      best=MAX_FRIENDLY;
+      best_dd=MAX_I64;
       for (j=MAX_FRIENDLY;j<MAX_MAN;j++) {
 	if (!m[j].dead) {
-	  d=AbsI64(m[i].x-m[j].x)+AbsI64(m[i].y-m[j].y);
-	  if (d<closest_d) {
-	    closest_d=d;
-	    closest=j;
+	  dd=SqrI64(m[i].x-m[j].x)+SqrI64(m[i].y-m[j].y);
+	  if (dd<best_dd) {
+	    best_dd=dd;
+	    best=j;
 	  }
 	}
       }
-      m[i].closest_d=closest_d;
-      if (closest_d!=MAX_I64) {
-	m[i].x+=4*SignI64(m[closest].x-m[i].x);
-	m[i].y+=4*SignI64(m[closest].y-m[i].y);
-	m[i].theta=Arg(m[closest].x-m[i].x,m[closest].y-m[i].y);
+      m[i].best_dd=best_dd;
+      if (best_dd!=MAX_I64) {
+	m[i].x+=4*SignI64(m[best].x-m[i].x);
+	m[i].y+=4*SignI64(m[best].y-m[i].y);
+	m[i].theta=Arg(m[best].x-m[i].x,m[best].y-m[i].y);
       }
     }
   }
   for (i=MAX_FRIENDLY+phase_group;i<MAX_MAN;i+=PHASES_GROUPS) {
     if (!m[i].dead) {
-      closest=0;
-      closest_d=MAX_I64;
+      best=0;
+      best_dd=MAX_I64;
       for (j=0;j<MAX_FRIENDLY;j++) {
 	if (!m[j].dead) {
-	  d=AbsI64(m[i].x-m[j].x)+AbsI64(m[i].y-m[j].y);
-	  if (d<closest_d) {
-	    closest_d=d;
-	    closest=j;
+	  dd=SqrI64(m[i].x-m[j].x)+SqrI64(m[i].y-m[j].y);
+	  if (dd<best_dd) {
+	    best_dd=dd;
+	    best=j;
 	  }
 	}
       }
-      m[i].closest_d=closest_d;
-      if (closest_d!=MAX_I64) {
-	m[i].x+=4*SignI64(m[closest].x-m[i].x);
-	m[i].y+=4*SignI64(m[closest].y-m[i].y);
-	m[i].theta=Arg(m[closest].x-m[i].x,m[closest].y-m[i].y);
+      m[i].best_dd=best_dd;
+      if (best_dd!=MAX_I64) {
+	m[i].x+=4*SignI64(m[best].x-m[i].x);
+	m[i].y+=4*SignI64(m[best].y-m[i].y);
+	m[i].theta=Arg(m[best].x-m[i].x,m[best].y-m[i].y);
       }
     }
   }
@@ -367,49 +367,49 @@ U0 MenMove(I64 phase_group)
 
 U0 MenFight(I64 phase_group)
 {
-  I64 i,j,d,closest,closest_d;
+  I64 i,j,dd,best,best_dd;
   for (i=phase_group;i<MAX_FRIENDLY;i+=PHASES_GROUPS) {
     if (!m[i].dead) {
-      closest=MAX_FRIENDLY;
-      closest_d=MAX_I64;
+      best=MAX_FRIENDLY;
+      best_dd=MAX_I64;
       for (j=MAX_FRIENDLY;j<MAX_MAN;j++) {
 	if (!m[j].dead && m[i].y-m[j].y<8) {
-	  d=Sqr(m[i].x-m[j].x)+Sqr(m[i].y-m[j].y);
-	  if (d<closest_d) {
-	    closest_d=d;
-	    closest=j;
+	  dd=SqrI64(m[i].x-m[j].x)+SqrI64(m[i].y-m[j].y);
+	  if (dd<best_dd) {
+	    best_dd=dd;
+	    best=j;
 	  }
 	}
       }
-      m[i].closest_d=closest_d;
-      if (closest_d<HACK_DIST*HACK_DIST)
+      m[i].best_dd=best_dd;
+      if (best_dd<HACK_DIST*HACK_DIST)
 	if (!(RandU16&1)) {
 	  enemy_left--;
 	  enemy_by_friendly++;
-	  m[closest].dead=TRUE;
-	  m[closest].corpse_timeout=tS+30.0;
+	  m[best].dead=TRUE;
+	  m[best].corpse_timeout=tS+30.0;
 	}
     }
   }
   for (i=MAX_FRIENDLY+phase_group;i<MAX_MAN;i+=PHASES_GROUPS) {
     if (!m[i].dead) {
-      closest=0;
-      closest_d=MAX_I64;
+      best=0;
+      best_dd=MAX_I64;
       for (j=0;j<MAX_FRIENDLY;j++) {
 	if (!m[j].dead&& m[i].y-m[j].y<8) {
-	  d=Sqr(m[i].x-m[j].x)+Sqr(m[i].y-m[j].y);
-	  if (d<closest_d) {
-	    closest_d=d;
-	    closest=j;
+	  dd=SqrI64(m[i].x-m[j].x)+SqrI64(m[i].y-m[j].y);
+	  if (dd<best_dd) {
+	    best_dd=dd;
+	    best=j;
 	  }
 	}
       }
-      m[i].closest_d=closest_d;
-      if (closest_d<HACK_DIST*HACK_DIST)
+      m[i].best_dd=best_dd;
+      if (best_dd<HACK_DIST*HACK_DIST)
 	if (!(RandU16&1)) {
 	  friendly_left--;
-	  m[closest].dead=TRUE;
-	  m[closest].corpse_timeout=tS+30.0;
+	  m[best].dead=TRUE;
+	  m[best].corpse_timeout=tS+30.0;
 	}
     }
   }
@@ -424,7 +424,7 @@ U0 TimeOut()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt(OFF);
   WinBorder;
-  WordStat;
+  AutoComplete;
 
   MenuPush(
   "File {"
@@ -448,7 +448,8 @@ U0 TimeOut()
   "  Friendly Fire\t\t-200\n"
   "  Bullets Fired\t\t-1\n"
   "  Game Time\t\t-10 per second\n"
-  "  Surviving Friendlies\t+500\n\n";
+  "  Surviving Friendlies\t+500\n\n"
+  "Sweep side-to-side while shooting.\n\n";
 
   PressAKey;
   Fs->text_attr=YELLOW<<4+CYAN;

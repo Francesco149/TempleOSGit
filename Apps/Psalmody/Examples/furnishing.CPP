@@ -47,7 +47,7 @@ U0 Song()
 {
   I64 i;
   for (i=0;i<BLADES;i++)
-    blades_theta[i]=2*Rand*pi;
+    blades_theta[i]=2*pi*Rand;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;

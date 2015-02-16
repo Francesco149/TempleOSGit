@@ -4,8 +4,8 @@ public U0 DocProfile(U8 *filename,I64 flags)
        *flags_stats=CAlloc(sizeof(I64)*64),
        *type_flags_stats=CAlloc(sizeof(I64)*64);
 //Note: word wrap is determined by
-//doc->win_task when a [C:/Kernel/Adam1a.HPP.Z,1317] CDoc is recalculated
-//use [C:/Adam/DolDoc/DocRecalc2b.CPP.Z,249] DocRecalc().
+//doc->win_task when a [C:/Kernel/KernelA.HPP.Z,1321] CDoc is recalculated
+//use [C:/Adam/DolDoc/DocRecalcB.CPP.Z,249] DocRecalc().
   CDoc *doc=DocRead(filename,flags);
 
 //doc->root which is equal to doc is the
@@ -53,11 +53,11 @@ public U0 DocProfile(U8 *filename,I64 flags)
 
 /*See [C:/Adam/Training.CPP.Z,200] TipOfDay.
 
-Note: Not all [C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry's are full-sized nodes.
-Some are [C:/Kernel/Mem1b.CPP.Z,373] MAlloced with a smaller size to save
-mem.	They all have at least the size [C:/Kernel/Adam1a.HPP.Z,1134] CDocEntryBase.
+Note: Not all [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry's are full-sized nodes.
+Some are [C:/Kernel/MemB.CPP.Z,373] MAlloced with a smaller size to save
+mem.	They all have at least the size [C:/Kernel/KernelA.HPP.Z,1136] CDocEntryBase.
 
-Note: [C:/Kernel/Adam1a.HPP.Z,1154] CDocEntry's should be allocated from the
+Note: [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry's should be alloced from the
 heap of the owning task, doc->mem_task.
 
 The flag arrays [C:/Adam/DolDoc/Doc.CPP.Z,67] doldoc.type_flags_form, etc

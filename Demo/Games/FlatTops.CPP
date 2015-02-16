@@ -767,7 +767,7 @@ U0 FlatTops()
   Fs->text_attr=BLUE<<4+WHITE;
   WinMax;
   WinBorder;
-  WordStat;
+  AutoComplete;
   DocCursor;
   DocClear;
   PopUpOk("$GREEN${Left-Mouse}$FG$\t\tChange Course\n"
@@ -846,7 +846,9 @@ FlatTops;
 
 
 
+
 //Maybe use this in the future	/* <7> <7> (image) */
+
 
 
 

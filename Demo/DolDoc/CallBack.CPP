@@ -32,7 +32,7 @@ U0 DoIt()
 
 //Flags are explained here:
 //[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
-//[C:/Kernel/Adam1a.HPP.Z,1028] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
+//[C:/Kernel/KernelA.HPP.Z,1030] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
   doc_e->tag_cb=&tSCB;
   DocPrint(bdoc,"$FG$");
   DocUnlock(bdoc);

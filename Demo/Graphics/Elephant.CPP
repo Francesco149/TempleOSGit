@@ -190,7 +190,7 @@ U0 Main()
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   WinMax;
   WinBorder;
-  WordStat;
+  AutoComplete;
   DocClear;
   Fs->text_attr=YELLOW<<4+BLACK;
   "$BG,LTCYAN$%h31c",'\n';

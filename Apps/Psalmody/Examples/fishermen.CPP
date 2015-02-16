@@ -22,6 +22,7 @@ U0 Song()
   Fs->text_attr=LTCYAN<<4+BLACK;
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
   music.tempo=2.5;
   try {
     task=PopUpViewPrint(
@@ -29,8 +30,8 @@ U0 Song()
 	  "[C:/Misc/Bible.TXT.Z,81941]\n"
 	  );
     TaskWait(task);
-    SetWinHorz(Fs->win_left,Fs->win_right,task);
-    SetWinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
+    WinHorz(Fs->win_left,Fs->win_right,task);
+    WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       "$CL$$BG,LTCYAN$";
       Play("3qEsGEGEeF2G3BCqCeDEqBsERER",

@@ -73,20 +73,17 @@ ANSWERS:
 2) The upper 32-bits are set to zero.
 
 3) To set FS or GS, you use WRMSR to write a model specific reg.  See 
-[C:/Kernel/Adam1a.HPP.Z,508] IA32_FS_BASE and [C:/Kernel/Utils1a.CPP.Z,447]
+[C:/Kernel/KernelA.HPP.Z,515] IA32_FS_BASE and [C:/Kernel/KUtils.CPP.Z,447]
 SET_FS_BASE.
 
 4) Displacement addressing is now RIP relative, so RIP would be added to 
 TSS_SOME_MEMBER.  (Useless)
 
 5) The R13 instruction takes one more byte because it is like
-[C:/Kernel/Adam1a.HPP.Z,1684] REG_RBP in the 
+[C:/Kernel/KernelA.HPP.Z,1684] REG_RBP in the 
 ModR.
 
-6) The RAX instruction has a REX byte prefix to specify 64-bit size.  So does 
-the R8 instruction, but in the REX is also a flag to specify upper-8 reg. 
-For 
-EAX, there is no need of REX.
+6) The R8 instruction needs a REX byte prefix to specify upper-8 reg.
 
 7) You can access the lowest byte of any reg.  You can access AH but not the 
 second-to-lowest byte of ESI.

@@ -57,7 +57,7 @@ extern U8 *PopUpPickLst(U8 *lst);
 //  "AF:haystack_doc_address,needle_str"
 //  "AF:haystack_doc_address,needle_str:occurnum"
 //  "AL:doc_address,linenum"
-#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.CPP.Z,642] SpriteEdText()
+#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.CPP.Z,611] SpriteEdText()
 #define LK_DOC_ANCHOR	13
 #define LK_DOC_FIND	14
 #define LK_DOC_LINE	15
@@ -76,12 +76,15 @@ public class CDolDocGlbls
 } doldoc;
 MemSet(&doldoc,0,sizeof(CDolDocGlbls));
 
+#help_index "God"
+#define BIBLE_FILENAME	"::/Misc/Bible.TXT.Z"
+
 #include "DocNew"
 #include "DocPlain"
 #include "DocInit"
 #include "DocHighlight"
-#include "DocRecalc2a"
-#include "DocRecalc2b"
+#include "DocRecalcA"
+#include "DocRecalcB"
 sys_clipboard_doc=DocNew;
 #include "DocFile"
 #include "DocOpt"
@@ -89,8 +92,8 @@ sys_clipboard_doc=DocNew;
 #include "DocCtrlL"
 #include "DocMacro"
 #include "DocFind"
-#include "DocEd2a"
-#include "DocEd2b"
+#include "DocEdA"
+#include "DocEdB"
 #include "DocCodeTools"
 #include "DocTree"
 #include "DocMain"

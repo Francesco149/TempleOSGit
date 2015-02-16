@@ -109,7 +109,7 @@ U0 Whap()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
-  WordStat;
+  AutoComplete;
   Preempt(OFF);
 
   MenuPush(

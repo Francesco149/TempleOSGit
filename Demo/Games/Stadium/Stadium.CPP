@@ -89,6 +89,7 @@ U0 Stadium()
   I64 msg_code,a1,a2,ch=0;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Cd(__DIR__);
   Fs->win_inhibit|=WIG_DBL_CLICK;
 
   MenuPush(
@@ -102,11 +103,11 @@ U0 Stadium()
 );
   WinMax;
   WinBorder;
-  WordStat;
+  AutoComplete;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
 
-  background=GRARead("::/Demo/Games/Stadium/Stadium");
+  background=GRARead("StadiumBG");
 
   DocCursor;
   DocClear;

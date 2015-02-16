@@ -10,7 +10,7 @@ class MyMass:CMass
 
 I64 gun_x,gun_y,active_map=0,gun_recoil;
 F64 gun_theta;
-CDC *maps[2]={NULL,NULL};
+CDC *map_dcs[2]={NULL,NULL};
 I16 elevs[MAP_WIDTH];
 
 F64 wind_x;
@@ -26,7 +26,7 @@ CMathODE *ode=NULL;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  CDC *map=maps[active_map&1];
+  CDC *map=map_dcs[active_map&1];
   MyMass *tempm;
   F64 theta=gun_theta;
   I64 i,x,y,w,
@@ -90,7 +90,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
 
 U0 DrawMap()
 {
-  CDC *map=maps[(active_map+1)&1];
+  CDC *map=map_dcs[(active_map+1)&1];
   I64 x;
 
   map->color=LTCYAN;
@@ -179,11 +179,11 @@ U0 Init()
   CDC *map;
   I64 i,x,y,dy;
   Bool old_preempt;
-  if (!maps[0])
-    maps[0]=DCNew(MAP_WIDTH,MAP_HEIGHT);
-  if (!maps[1])
-    maps[1]=DCNew(MAP_WIDTH,MAP_HEIGHT);
-  map=maps[active_map&1];
+  if (!map_dcs[0])
+    map_dcs[0]=DCNew(MAP_WIDTH,MAP_HEIGHT);
+  if (!map_dcs[1])
+    map_dcs[1]=DCNew(MAP_WIDTH,MAP_HEIGHT);
+  map=map_dcs[active_map&1];
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;
 
@@ -266,7 +266,7 @@ U0 BigGuns()
 
   WinMax;
   WinBorder(ON);
-  WordStat;
+  AutoComplete;
   Init;
   DocCursor;
   DocClear;
@@ -312,8 +312,8 @@ bg_done:
   } catch
     PutExcept;
   SettingsPop;
-  DCDel(maps[0]); maps[0]=NULL;
-  DCDel(maps[1]); maps[1]=NULL;
+  DCDel(map_dcs[0]); map_dcs[0]=NULL;
+  DCDel(map_dcs[1]); map_dcs[1]=NULL;
   CleanUp(ode);
   MenuPop;
 }

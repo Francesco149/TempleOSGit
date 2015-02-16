@@ -617,7 +617,7 @@ U0 Strut()
 	   Define("ST_MAIN_MODES"),main_mode_colors,&main_mode_button);
   WinBorder;
   Preempt(OFF);
-  WordStat;
+  AutoComplete;
   DocCursor;
   DocClear;
   Init;

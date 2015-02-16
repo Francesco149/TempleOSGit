@@ -11,7 +11,7 @@
 	See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
 
    ,RT=I16 means the val is 2 bytes.
-	See [C:/Adam/DolDoc/DocNew.CPP.Z,463] DocDataFmt() and [C:/Adam/DolDoc/DocNew.CPP.Z,516] DocDataScan().
+	See [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and [C:/Adam/DolDoc/DocNew.CPP.Z,518] DocDataScan().
 */
 
 I16 i=0;
@@ -36,7 +36,7 @@ U0 DataDemo()
 //doc_e->data before it is set.
   Bool unlock=DocLock(doc);
 
-//You might set the [C:/Kernel/Adam1a.HPP.Z,1235] DOCF_FORM flag.
+//You might set the [C:/Kernel/KernelA.HPP.Z,1239] DOCF_FORM flag.
 //  doc->flags|=DOCF_FORM
 //if you wish.
 

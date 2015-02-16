@@ -88,7 +88,7 @@ U0 AnimateTask(I64)
     y=ClampI64(ip.pos.y-Fs->parent_task->pix_top-Fs->parent_task->scroll_y,
        box_y_min,box_y_max)+Fs->parent_task->pix_top+Fs->parent_task->scroll_y;
     if (ip.pos.x!=x || ip.pos.y!=y)
-      SetIP(x,y);
+      IPSet(x,y);
 
     tempa=root.next;
     while (tempa!=&root) {
@@ -119,7 +119,7 @@ U0 Init()
   bow_theta=-pi/2;
   bow_x=(box_x_min+box_x_max)/2;
   bow_y=(box_y_min+box_y_max)/2;
-  SetIP(bow_x+Fs->pix_left+Fs->scroll_x,
+  IPSet(bow_x+Fs->pix_left+Fs->scroll_x,
 	bow_y+Fs->pix_top+Fs->scroll_y);
 }
 
@@ -145,7 +145,7 @@ U0 Zing()
   Preempt(OFF);
   WinBorder;
   WinMax;
-  WordStat;
+  AutoComplete;
 
   DocClear;
 

@@ -52,7 +52,7 @@ U0 DoIt2()
   allows a structure to be accessed as a
   whole.  That's why the i variable can
   be accessed normally in addition to
-  structure member access [C:/Kernel/Adam1a.HPP.Z,101] I64.  The actual
+  structure member access [C:/Kernel/KernelA.HPP.Z,102] I64.  The actual
   intrinsic compiler type is U64i.
 
 public U64i union I64

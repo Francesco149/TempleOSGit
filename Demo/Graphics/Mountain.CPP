@@ -89,7 +89,7 @@ U0 Mountain()
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
-    WordStat;
+    AutoComplete;
     WinMax;
     WinBorder;
     DocCursor;
@@ -103,6 +103,6 @@ U0 Mountain()
 
 //This is so I can use this file stand alone
 //or as a component of a program.
-#if IncludeDepth<2
+#if __DEPTH__<2
 Mountain;
 #endif

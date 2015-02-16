@@ -21,7 +21,7 @@ CMass	m1, //Bottom of rocket
 	m3; //Plane
 CSpring s;
 
-#define PT_SPAN	40
+#define DVT_SPAN	40
 
 
    /* <1> <1> (image) */
@@ -46,7 +46,7 @@ F64	my_dbg,antispin_coefficient;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-PT_SPAN/2;
+  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-DVT_SPAN/2;
   F64 theta=Arg(m2.x-m1.x,m2.y-m1.y),
      nozzle_angle=ode->state[STATE_NOZZLE_ANGLE];
   if (blast_off) {
@@ -123,7 +123,7 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
   //DthetaDt lets us prevent too spin.
   DthetaDt=antispin_coefficient*
     (m2.state->DyDt*p_body.x-m2.state->DxDt*p_body.y-
-     m1.state->DyDt*p_body.x+m1.state->DxDt*p_body.y)/PT_SPAN;
+     m1.state->DyDt*p_body.x+m1.state->DxDt*p_body.y)/DVT_SPAN;
 
   //p_target is vect from top of rocket to plane.
   D3Sub(&m3.state->x,&m2.state->x,&p_target);
@@ -175,7 +175,7 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
   //You might also factor-in fuel slosh in the tank.
 
   //To do this, you would have to set-up state vars for mass and
-  //do A=F/m manually instead of relyin on [C:/Adam/MathODE.CPP.Z,323] ODECallDerivative() to divide
+  //do A=F/m manually instead of relyin on [C:/Adam/AMathODE.CPP.Z,321] ODECallDerivative() to divide
   //by mass.
 }
 
@@ -189,24 +189,24 @@ U0 Init()
   while (!(0.1<=antispin_coefficient<10.001));
 
 //We don't clear que links.
-  MemSet(&m1.start_saved_area,0,offset(CMass.end_saved_area)-offset(CMass.start_saved_area));
-  m1.y=-PT_SPAN/2;
+  MemSet(&m1.start,0,offset(CMass.end)-offset(CMass.start));
+  m1.y=-DVT_SPAN/2;
   m1.mass=1.0;
 
-  MemSet(&m2.start_saved_area,0,offset(CMass.end_saved_area)-offset(CMass.start_saved_area));
-  m2.y=PT_SPAN/2;
+  MemSet(&m2.start,0,offset(CMass.end)-offset(CMass.start));
+  m2.y=DVT_SPAN/2;
   m2.mass=1.0;
 
-  MemSet(&m3.start_saved_area,0,offset(CMass.end_saved_area)-offset(CMass.start_saved_area));
+  MemSet(&m3.start,0,offset(CMass.end)-offset(CMass.start));
   m3.y=380;
   m3.x=-300;
   m3.DxDt=50;
   m3.mass=1.0;
 
-  MemSet(&s.start_saved_area,0,offset(CSpring.end_saved_area)-offset(CSpring.start_saved_area));
+  MemSet(&s.start,0,offset(CSpring.end)-offset(CSpring.start));
   s.end1=&m1;
   s.end2=&m2;
-  s.rest_len=PT_SPAN;
+  s.rest_len=DVT_SPAN;
   s.const=10000;
 
   ode->state[STATE_NOZZLE_ANGLE]=0;
@@ -226,7 +226,7 @@ U0 RocketScience()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
   DocCursor;
-  WordStat;
+  AutoComplete;
 
 //The ode nodes are traversed by win mgr.
   Preempt(OFF);

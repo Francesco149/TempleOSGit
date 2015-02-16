@@ -568,7 +568,7 @@ U0 DigitalLogic()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
-  WordStat;
+  AutoComplete;
   WinBorder(ON);
   DocClear;
   GetGates;

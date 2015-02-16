@@ -2,7 +2,7 @@
 access to bytes and words of larger
 integers.
 
-See [C:/Kernel/Adam1a.HPP.Z,1] U64i union.
+See [C:/Kernel/KernelA.HPP.Z,1] U64i union.
  
 The versions with "i" are internal data types.
 Use "I64" instead of "U64i" and you

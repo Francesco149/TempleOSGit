@@ -17,25 +17,25 @@ USE64	//Defaults to 64, but this is a good habit.
 
 JIFFIES_MSG:	DU8 "Jiffies:",0;
 
-//See [C:/Kernel/Str1a.CPP.Z,1] ::/Kernel/Str1a.CPP and [C:/Kernel/Utils1a.CPP.Z,1].
+//See [C:/Kernel/StrA.CPP.Z,1] ::/Kernel/StrA.CPP and [C:/Kernel/KUtils.CPP.Z,1].
 
 _BEEPS2::
 //You can clobber RAX,RBX,RCX,RDX,R8,R9.  The compiler expects that.
 	PUSH	RBP
 	MOV	RBP,RSP
-	MOV	RCX,U64 SF_ARG1[RBP] //[C:/Kernel/Adam1a.HPP.Z,1] SF_ARG1
+	MOV	RCX,U64 SF_ARG1[RBP] //[C:/Kernel/KernelA.HPP.Z,1] SF_ARG1
 
 	PUSH	U64 [&cnts.jiffies]
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/Misc1a.CPP.Z,186] Beep(I64 freq=500,Bool busy=FALSE)
+//U0 [C:/Kernel/KMisc.CPP.Z,190] Beep(I64 freq=500,Bool busy=FALSE)
 	PUSH	FALSE	//Do not busy (spin) wait
 	PUSH	U64 [&glbl_hz]	//evaluated at run time
 	CALL	&Beep
 	POP	RCX
 	LOOP	@@05
 
-	PUSH	RSI	//See [C:/Kernel/Adam1a.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/Adam1a.HPP.Z,1696] REG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK
 	MOV	RSI,JIFFIES_MSG
 	CALL	PUT_STR
 	POP	RSI
@@ -71,7 +71,7 @@ USE64	//Defaults to 64, but this is a good habit.
 	MOV	RCX,R15 //You can clobber RAX,RBX,RCX,RDX. Preserve the rest.
 
 @@05:	PUSH	RCX
-//U0 [C:/Kernel/Misc1a.CPP.Z,159] Snd(F64 freq);
+//U0 [C:/Kernel/KMisc.CPP.Z,163] Snd(F64 freq);
 
 	MOV	RAX,RCX	//freq=loop*100.0+100.0
 	IMUL2	RAX,glbl_hz_step	//evaluated at compile ttime

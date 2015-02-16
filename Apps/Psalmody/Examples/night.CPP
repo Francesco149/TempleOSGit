@@ -43,7 +43,7 @@ U0 DrawIt(CTask *,CDC *dc)
 	  dc->color=LTBLUE;
       } else
 	dc->color=YELLOW;
-      if (RandI64<0)
+      if (RandI16<0)
 	x=-x;
       x+=150.0*Sin(pi*dt)/(35-y)`1.5;
       GrPlot(dc,X+x,Y-y);
@@ -57,6 +57,7 @@ U0 Song()
   Fs->text_attr=BLACK<<4+LTGRAY;
   Fs->draw_it=&DrawIt;
   Fs->task_end_cb=&SndTaskEndCB;
+  MusicSettingsRst;
   music.tempo=2.0;
   try {
     "$BG+H,BLACK$$FD+H,LTGRAY$";

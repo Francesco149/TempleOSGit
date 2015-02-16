@@ -39,7 +39,7 @@ is controled by the editor.
 
 
 
-//Called by the window mgr bystem task 60fps.
+//Called by the window mgr bystem task 30fps.
 //The task arg is the task owning the window.
 U0 DrawIt(CTask *task,CDC *dc)
 {
@@ -98,7 +98,7 @@ U0 TheDead()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  WordStat;
+  AutoComplete;
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;

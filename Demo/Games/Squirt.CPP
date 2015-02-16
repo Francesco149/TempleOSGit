@@ -242,22 +242,17 @@ U0 AnimateTask(I64)
       dx=Cos(nozzle_theta),
       dy=Sin(nozzle_theta),
       PlaceMass(MT_DROPLET,
-		nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,
-		HOSE_RADIUS,
-		500*dx,500*dy,
-		100.0,Fs->parent_task);
+		nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,HOSE_RADIUS,
+		500*dx,500*dy,100.0,Fs->parent_task);
       if (Rand<0.05) //faucet drip
 	PlaceMass(MT_DROPLET,
-		faucet->x,faucet->y,
-		HOSE_RADIUS,
-		0,0,
-		100.0,Fs->parent_task);
+		faucet->x,faucet->y,HOSE_RADIUS,
+		0,0,100.0,Fs->parent_task);
 
       tempm=ode->next_mass;
       while (tempm!=&ode->next_mass) {
 	tempm1=tempm->next;
-	if (tempm->type==MT_DROPLET &&
-	    tempm->y+tempm->radius>GROUND_Y) {
+	if (tempm->type==MT_DROPLET && tempm->y+tempm->radius>GROUND_Y) {
 	  QueRem(tempm);
 	  Free(tempm);
 	}
@@ -274,8 +269,7 @@ U0 MoveNozzleTaskX(I64 sign)
 {
   I64 i;
   for (i=0;i<NOZZLE_MOVE_STEPS;i++) {
-    nozzle->x=Clamp(nozzle->x+
-      sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
+    nozzle->x=Clamp(nozzle->x+sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
       HOSE_RADIUS*3,GR_WIDTH-HOSE_RADIUS*3);
     WinMgrSync;
   }
@@ -285,8 +279,7 @@ U0 MoveNozzleTaskY(I64 sign)
 {
   I64 i;
   for (i=0;i<NOZZLE_MOVE_STEPS;i++) {
-    nozzle->y=Clamp(nozzle->y+
-      sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
+    nozzle->y=Clamp(nozzle->y+sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
       HOSE_RADIUS*3,GROUND_Y);
     WinMgrSync;
   }
@@ -340,7 +333,7 @@ U0 Squirt()
   WinBorder;
   Preempt(OFF);
   DocCursor;
-  WordStat;
+  AutoComplete;
 
   MenuPush(
   "File {"

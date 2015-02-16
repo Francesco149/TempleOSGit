@@ -1,16 +1,19 @@
-U0 Install()
-{
-  text.font[8*255+0]=0b00111100;
-  text.font[8*255+1]=0b01000010;
-  text.font[8*255+2]=0b10100101;
-  text.font[8*255+3]=0b10000001;
-  text.font[8*255+4]=0b11000011;
-  text.font[8*255+5]=0b10111101;
-  text.font[8*255+6]=0b01000010;
-  text.font[8*255+7]=0b00111100;
-}
 
-Install;
+U8 face[8]={
+
+0b00111100,
+0b01000010,
+0b10100101,
+0b10000001,
+0b11000011,
+0b10111101,
+0b01000010,
+0b00111100,
+
+};
+
+
+text.font[255]=face[0](U64);
 
 "Face:\xFF\n";
 
@@ -30,4 +33,4 @@ SrcExample;
 //See [C:/Demo/ScreenCodes.CPP.Z,1], [C:/Demo/Graphics/CharGraphics.CPP.Z,1],
 //and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
-//See [C:/Kernel/Str1a.CPP.Z,320] chars_bitmap_alpha and [C:/Kernel/Str1a.CPP.Z,324] chars_bitmap_alpha_numeric.
+//See [C:/Kernel/StrA.CPP.Z,319] chars_bitmap_alpha and [C:/Kernel/StrA.CPP.Z,323] chars_bitmap_alpha_numeric.
