@@ -38,7 +38,7 @@ U0 OptPass6Lag(CLex *lx,CPrsStk *ps,CIntermediateCode *tempi,
   if (code==IC_CALL_START) {
     k=MinI64(i,num_stk);
     j=0;
-    //See [C:/Compiler/CmpInit.CPP.Z,1] STK TEMP ALLOCATION
+    //See [C:/Compiler/CInit.CPP.Z,1] STK TEMP ALLOCATION
     if (fun_num&1)
       for (l=0;l<k;l++)
 	Bts(&j,cmp.to_stk_temps_map_odd[l]);

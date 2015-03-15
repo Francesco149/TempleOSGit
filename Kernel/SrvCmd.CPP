@@ -74,7 +74,7 @@ CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags)
 CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 {//Post StdIn text to servant task. Tell who the master task is.
   CSrvCmd *result;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CTask *task;
   if (!data || !TaskValidate(srv) || master && !TaskValidate(master) ||
       srv->popup_task && !Bt(&srv->task_flags,TASKf_FILTER_INPUT)) {
@@ -121,7 +121,7 @@ CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 
 CSrvCmd *TaskMsg(CTask *_srv,CTask *master,I64 msg_code,I64 a1,I64 a2,I64 flags)
 {//Post message to servant task.  Tell who the master task is.
-//See [C:/Kernel/Adam1a.HPP.Z,3071] flags and [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
+//See [C:/Kernel/KernelA.HPP.Z,3065] flags and [C:/Kernel/KernelA.HPP.Z,3113] msg_code.
   CSrvCmd *tempc1,*tempc;
   CTask *srv=_srv;
   if (!TaskValidate(srv) || master && !TaskValidate(master)||
@@ -241,7 +241,7 @@ U0 TaskWait(CTask *task=NULL)
 }
 
 U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
-{//Post a message and return immediately.  See [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
+{//Post a message and return immediately.  See [C:/Kernel/KernelA.HPP.Z,3113] msg_code.
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
       TaskMsg(task->last_input_filter_task,NULL,msg_code,a1,a2,
@@ -253,14 +253,14 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 
 U0 SendMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 {//Post a message to a task and wait until it is delivered
-//and the task becomes idle.  See [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
+//and the task becomes idle.  See [C:/Kernel/KernelA.HPP.Z,3113] msg_code.
   PostMsg(task,msg_code,a1,a2,flags);
   TaskWait(task);
 }
 
 U0 Msg(I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 {//Post a message to the current task and return immediately.
-//See [C:/Kernel/Adam1a.HPP.Z,3119] msg_code.
+//See [C:/Kernel/KernelA.HPP.Z,3113] msg_code.
   PostMsg(Fs,msg_code,a1,a2,flags);
 }
 
@@ -385,7 +385,7 @@ I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL)
 {//Execute code text in PopUp win task.
   I64 result;
   CSrvCmd *tempc;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CTask *task=Spawn(&SrvCmdLine,NULL,"Servant",,parent);
   if (!parent) {
     TaskExe(task,parent,buf,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
@@ -418,7 +418,7 @@ I64 Adam(U8 *fmt,...)
 {//Sends text to the adam task which gets compiled and run.
   I64 result;
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CSrvCmd *tempc;
   if (Fs==adam_task) {
     tempc=TaskExe(adam_task,Fs,buf,0);
@@ -456,10 +456,10 @@ U0 AdamErr(U8 *fmt,...)
 }
 
 U0 XTalk(CTask *task,U8 *fmt,...)
-{//Sends text to other task. See [C:/Misc/OSTestSuite.CPP.Z,1].
+{//Sends text to other task. See [C:/Misc/OSTestSuite.CPP,1].
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv),*st=AStrNew(buf),
      *st2=MStrPrint("\"%%s\",%d;Free(%d);",st,st);
-  TaskText(task,0,st2,0);
+  TaskText(task,NULL,st2,0);
   Free(st2);
   Free(buf);
 }
@@ -468,7 +468,7 @@ U0 XTalkWait(CTask *task,U8 *fmt,...)
 {//Send text to other task and wait for it to idle.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv),*st=AStrNew(buf),
      *st2=MStrPrint("\"%%s\",%d;Free(%d);",st,st);
-  TaskText(task,0,st2,0);
+  TaskText(task,NULL,st2,0);
   Free(st2);
   Free(buf);
   TaskWait(task);
@@ -480,19 +480,20 @@ U0 AutoStr(U8 *fmt,...)
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK))
     ExePrint("%s",buf);
   else
-    TaskText(Fs,0,buf,1<<SVCf_HIGHEST_PRIORITY);
+    TaskText(Fs,NULL,buf,1<<SVCf_HIGHEST_PRIORITY);
   Free(buf);
 }
 
 U0 AutoFile(U8 *filename)
 {//Send AutoFile code file to self.
   U8 *name=DftExt(filename,"AUT.Z");
-  AutoStr("%F",name);
+  AutoStr("Cd(\"%C:%s\");;#include \"%s\"",
+    Drv2Let(Fs->cur_dv),Fs->cur_dir,name);
   Free(name);
 }
 
 U0 Auto(U8 *fmt,...)
-{//Send text to own input buffer. See [C:/Demo/AcctExample/TSDistro.CPP,1].
+{//Send text to own input buffer. See [C:/Demo/AcctExample/TOSDistro.CPP,1].
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv),*st=AStrNew(buf);
   AutoStr("\"%%s\",%d;Free(%d);",st,st);
   Free(buf);
@@ -501,14 +502,14 @@ U0 Auto(U8 *fmt,...)
 U0 XTalkStr(CTask *task,U8 *fmt,...)
 {//Send AutoFile code to other task.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
-  TaskText(task,0,buf,0);
+  TaskText(task,NULL,buf,0);
   Free(buf);
 }
 
 U0 XTalkStrWait(CTask *task,U8 *fmt,...)
 {//Send AutoFile code to other task and wait for it to idle.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
-  TaskText(task,0,buf,0);
+  TaskText(task,NULL,buf,0);
   Free(buf);
   TaskWait(task);
 }

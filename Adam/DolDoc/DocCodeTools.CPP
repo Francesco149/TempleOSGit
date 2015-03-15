@@ -6,7 +6,7 @@
 #define EF_REINDENT	0
 #define EF_CHK_COMPILE	1
 #define EF_RENUM_ASM	2
-#define EF_SLIDER_CTRL	3
+#define EF_CTRL_SLIDER	3
 #define EF_CH_SC	4
 
 I64 PopUpEdFmt()
@@ -16,7 +16,7 @@ I64 PopUpEdFmt()
   DocPrint(doc,"$LTBLUE$$MU,\"Check Compile\",LE=EF_CHK_COMPILE$\n"
 	"$MU,\"Reindent CPP.Z Fun\",LE=EF_REINDENT$\n"
 	"$MU,\"Renum Asm Local @@ Labels for Fun\",LE=EF_RENUM_ASM$\n"
-	"$MU,\"Insert Template Code: Slider Ctrl\",LE=EF_SLIDER_CTRL$\n"
+	"$MU,\"Insert Template Code: Ctrl Slider\",LE=EF_CTRL_SLIDER$\n"
 	"$MU,\"Insert ASCII/Scan Code Hex Codes for key pressed\",LE=EF_CH_SC$\n\n"
 	"$MU,\"CANCEL\",LE=DOCM_CANCEL$\n\n"
 	"$GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\n"
@@ -198,11 +198,11 @@ CQueVectU8 *EdRICode(CDoc *doc)
   CRILex *rx=CAlloc(sizeof(CRILex));
 
   rx->lx1=LexNew(,LF_KEEP_NEW_LINES|LF_DONT_FREE_BUF,doc->filename.name);
-  Free(rx->lx1->lfns[0].name);
+  Free(rx->lx1->lfns[0].full_name);
   LexAttachDoc(rx->lx1,&rx->lx1->lfns[0],doc,,doc->cur_entry,doc->cur_data_col);
 
   rx->lx2=LexNew(,LF_KEEP_NEW_LINES|LF_DONT_FREE_BUF,doc->filename.name);
-  Free(rx->lx2->lfns[0].name);
+  Free(rx->lx2->lfns[0].full_name);
   LexAttachDoc(rx->lx2,&rx->lx2->lfns[0],doc,,doc->cur_entry,doc->cur_data_col);
 
   rx->indent=QueVectU8New(doc->cur_entry->y);
@@ -393,11 +393,11 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action)
       tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
       Free(st2);
       Free(st);
-      SetWinHorz(Fs->win_left,Fs->win_right, task);
-      SetWinVert(Fs->win_top, Fs->win_bottom,task);
+      WinHorz(Fs->win_left,Fs->win_right, task);
+      WinVert(Fs->win_top, Fs->win_bottom,task);
       if (ScanResult(tempc,&r)) {
-	st=DirFile(doc->filename.name,,"PRJ.Z"),
-	      prj_file=FileNameAbs(st,FUF_Z_OR_NOT_Z);
+	st=DirFile(doc->filename.name,,"PRJ.Z");
+	prj_file=FileNameAbs(st,FUF_Z_OR_NOT_Z);
 	Free(st);
 	if (FileFind(prj_file)) {
 	  st2=DirFile(prj_file),
@@ -584,8 +584,8 @@ U0 EdCodeTools(CDoc *doc)
     case EF_RENUM_ASM:
       EdCodeTools2(doc,tool_action);
       break;
-    case EF_SLIDER_CTRL:
-      TemplateSliderCtrl(doc);
+    case EF_CTRL_SLIDER:
+      TemplateCtrlSlider(doc);
       break;
     case EF_CH_SC:
       EdChSC(doc);

@@ -27,6 +27,7 @@ extern I64 DefineMatch(U8 *needle,U8 *haystack_lst_name,I64 flags=0);
 extern U8 *DefineSub(I64 sub,U8 *name);
 extern U8 *DftExt(U8 *name,U8 *extension);
 extern Bool Drv(U8 drv_let);
+extern U8 Drv2Let(CDrv *dv=NULL);
 extern U0 DrvsRelease();
 extern U0 DskCacheInvalidate(CDrv *dv);
 extern U0 Exit();
@@ -53,11 +54,12 @@ extern Bool IsRaw();
 extern U0 MPInt(I64 num,I64 cpu_num=1);
 extern U8 *MStrPrint(U8 *fmt,...);
 extern Bool MkDir(U8 *filename);
+extern U0 MouseIPSet(I64 x,I64 y,I64 z,I64 l,I64 r);
 extern U0 Msg(I64 code,I64 a1,I64 a2,I64 flags=0);
 extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
 extern U0 Print(U8 *fmt,...);
 extern U0 PutChars(U64 ch);
-extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,899] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,896] Print()
 extern Bool RBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 extern I64 RedSeaAllocClusters(CDrv *dv,I64 cnt);
 extern Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempdee,Bool free_old_chain);
@@ -67,7 +69,6 @@ extern Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,CDirEntry *_res
 extern CDirEntry *RedSeaFilesFind (U8 *files_find_mask,I64 fuf_flags,CDirEntry *parent=NULL);
 extern U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE);
 extern U0 RedSeaFreeFreeLst(CDrv *dv);
-extern U0 SetMouseIP(I64 x,I64 y,I64 z,I64 l,I64 r);
 extern CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
     U8 *task_name=NULL,I64 target_cpu,CTask *parent=NULL, //NULL means adam
     I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
@@ -91,7 +92,7 @@ extern U0 throw(I64 ch=0,Bool no_log=FALSE);
   OptOn(OPTf_KEEP_PRIVATE);
   OptOn(OPTf_EXTERNS_TO_IMPORTS);
 };
-#include "/Compiler/Cmp.HPP"
+#include "/Compiler/CompilerB.HPP"
 #exe {
   OptOff(OPTf_EXTERNS_TO_IMPORTS);
   OptOff(OPTf_KEEP_PRIVATE);

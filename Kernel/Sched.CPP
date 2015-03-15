@@ -20,10 +20,10 @@ waiting for a certain time or waiting
 on a message and skips if not ready.
 A task runs until it voluntarily yields
 ctrl with a call to [C:/Kernel/Sched.CPP.Z,346] Yield() or gets
-preempted by the fixed 1kHz [C:/Kernel/Adam1a.HPP.Z,547] JIFFY_FREQ
+preempted by the fixed 1kHz [C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ
 timer interrupt.  See [C:/Kernel/Ints.CPP.Z,13] SYS_TIMER_HANDLER.
 Tasks can ask not to be preempted with
-[C:/Kernel/Adam1b.HPP.Z,224] Preempt(ON/OFF).  Tasks waiting on I/O
+[C:/Kernel/KernelB.HPP.Z,226] Preempt(ON/OFF).  Tasks waiting on I/O
 often loop, checking for a status and
 [C:/Kernel/Sched.CPP.Z,346] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
@@ -363,7 +363,7 @@ U0 TaskQueIns(CTask *task,CTask *pred=NULL)
 
 U0 TaskQueRem(CTask *task)
 {//Remove a task from the scheduler running task queue.
-//Use [C:/Kernel/Task1a.CPP.Z,48] Suspend().
+//Use [C:/Kernel/Task.CPP.Z,49] Suspend().
   CTask *next,*last;
   PUSHFD
   CLI

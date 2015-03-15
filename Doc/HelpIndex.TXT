@@ -1,7 +1,31 @@
                                      Help
 
-[C:/Doc/Welcome.TXT.Z,1] Welcome		[C:/Doc/TrivialSolutions.TXT.Z,1] Trivial
-Solutions
++] Keyboard Ctrls
+  <SPACE>	Left-Click
+<ENTER>	Right-Click
+<F1>		Help
+<CTRL-m>	Personal Menu
+<ESC>		Save  & Exit
+<SHIFT-ESC>	Abort & Exit
+<WINDOWS KEY>	Pull-down Menu
+Other keys: Key Map
+`KeyMap;View;
+`
+
++] Mouse Ctrls
+  Right-Click	Right-click menu
+Left-Click	Edit (view)
+Double-Left	Save  & Exit
+Double-Right	Abort & Exit
+Top of Screen	Pull-down menu
++] Keyboard-Mouse Ctrls
+  Ctrl-LeftDrag	Grab-Scroll Window
+Ctrl-Right	Null scrolling
+<CTRL-ALT-z>	Zoom screen on Mouse
+<CTRL-ALT-Z>	Unzoom screen on Mouse
+
+[C:/Doc/Welcome.TXT.Z,1] Welcome		[C:/Doc/AboutTempleOS.TXT.Z,1] About
+TempleOS
 [C:/Doc/CmdLineOverview.TXT.Z,1] Command Line	Take Tour
 `User("Cd(\"::/Misc/Tour\");;AutoFile(\"Tour\");
 ");`
@@ -19,29 +43,12 @@ Confusions
 Directives
 [C:/Doc/ChangeLog.TXT.Z,1] Change Log	[C:/Doc/Demands.TXT.Z,1] Demands
 	
-+] Level 1: User Help
-  +] Keyboard Ctrls
-    Enter	Right-click menu
-Space Bar	Edit (view)
-Esc		Save and exit
-Shift-Esc	Abort
-Ctrl-m	Personal Menu
-Windows Key Pull-down Menu
-
-Other keys: Key Map
-`KeyMap;View;
-`
-
-  +] Mouse Ctrls
-    Right-Click	Right-click menu
-Left-Click	Edit (view)
-Double-Left	Save and exit
-Double-Right Abort
-Top of Screen Pull-down menu
-  [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
++] User Help
+  
+[C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
 [C:/Doc/Glossary.TXT.Z,1] Glossary
-[C:/Doc/GuideLines.TXT.Z,1] Acct Files
-[C:/Doc/TSZ.TXT.Z,1] TSZ Linux Utility
+[C:/Doc/GuideLines.TXT.Z,1] /Home Files
+[C:/Doc/TOSZ.TXT.Z,1] TOSZ Linux Utility
 [C:/Doc/Tips.TXT.Z,1] Tips
 [C:/Doc/Quirks.TXT.Z,1] Quirks
 [C:/Doc/GuideLines.TXT.Z,1] Directory Structure
@@ -50,33 +57,33 @@ Top of Screen Pull-down menu
 	starts a terminal window.
 
 +] DolDoc
-    [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the propriatary TempleOS
-    document type.  The editor, compiler, assembler and whole operating system
-    seamlessly handle DolDocs.  Cmds like [C:/Kernel/Dsk/Dsk1b.CPP.Z,234] Dir()
-    and [C:/Adam/Utils/Grep.CPP.Z,143] Grep() can output links to the cmd line.
+    [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the TempleOS document type. 
+    The editor, compiler, assembler and whole operating system seamlessly handle
+    DolDocs.  Cmds like [C:/Kernel/Dsk/DskB.CPP.Z,226] Dir() and
+    [C:/Adam/Utils/Find.CPP.Z,143] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
 
 * Use [C:/Adam/Boot/DskCDDVD.CPP.Z,326] CDFileCreate() to make an ISO image
     file.
 
-* Use [C:/Kernel/Dsk/Dsk1c.CPP.Z,259] CDImageWrite() to burn an ISO file onto
+* Use [C:/Kernel/Dsk/DskC.CPP.Z,258] CDImageWrite() to burn an ISO file onto
     a CD or DVD.
 
 * See [C:/Misc/MakeDistro.CPP.Z,1] Making a Distro ISO.
-  +] Level 2: Admin Help
+  +] Admin Help
   Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
-You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,130]
+You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
   MakeOSDrvBootInstall(), and specify which drives should be mounted at boot. 
   See [C:/Misc/MakeDistro.CPP.Z,1].
 
 [C:/Doc/Install.TXT.Z,1] Installing
 
-[C:/Kernel/Adam1.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is
-  run at start-up by the [C:/Kernel/KEnd.CPP.Z,1] Adam Task.
-+] Level 3: Programmer help
+[C:/Adam.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is run at
+  start-up by the [C:/Kernel/KEnd.CPP.Z,2] Adam Task.
++] Programmer help
   [C:/Doc/GuideLines.TXT.Z,1] Guidelines
 [C:/Doc/HolyC.TXT.Z,1] HolyC
 [C:/Doc/GraphicsOverview.TXT.Z,1] Graphics
@@ -91,14 +98,14 @@ You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,130]
 [C:/Demo/Lectures/GraphicsCPULoad.CPP,1] Lectures/GraphicsCPULoad.CPP
 [C:/Demo/Lectures/InterruptDemo.CPP,1] Lectures/InterruptDemo.CPP
 [C:/Demo/Lectures/Spinning.CPP,1] Lectures/Spinning.CPP
-+] Level 4: System Programmer Help
++] System Programmer Help
   [C:/Demo/Lectures/64BitAsmQuiz.TXT,1] 64BitAsmQuiz
-[C:/Kernel/Hash1a.CPP.Z,1] Hash Tables
+[C:/Kernel/KHashA.CPP.Z,1] Hash Tables
 [Keyboard Devices/System,1] Keyboard Devices
 [C:/Demo/Lectures/PageTableEntries1.CPP,1] Page Table Entries 1
 [C:/Demo/Lectures/PageTableEntries2.CPP,1] Page Table Entries 2
 [C:/Demo/Lectures/PCIInterrupts.CPP,1] PCIInterrupts.CPP
-[C:/Adam/Utils/MemRep.CPP.Z,191] MemRep
+[C:/Adam/Utils/MemRep.CPP.Z,189] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper
 [C:/Kernel/Sched.CPP.Z,1] Scheduler
 [C:/Adam/DolDoc/Doc.CPP.Z,1] Doc
@@ -130,7 +137,7 @@ You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,130]
 [File,1] Disk
 [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview
 [DolDoc,1] Doc Routines
-[C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link Types
+[C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link Types
 [Exceptions,1] Exceptions
 [File,1] File
 [C:/Doc/FileUtils.TXT.Z,1] File Utils
@@ -162,11 +169,14 @@ You recompile the kernel with [C:/Adam/Boot/InsBoot.CPP.Z,130]
 [Profiler,1] Profiler
 [C:/Doc/RedSea.TXT.Z,1] RedSea
 [Snd,1] Sound
+[Sprites,1] Sprites
+[StdIn,1] StdIn
+[StdOut,1] StdOut
 [Char,1] String
 [Task,1] Task
 [TextBase Layer,1] TextBase Layer
 [Time,1] Time
 [Training,1] Training
-[C:/Doc/TSZ.TXT.Z,1] TSZ
+[C:/Doc/TOSZ.TXT.Z,1] TOSZ
 [Cmd Line (Typically),1] Utils
 [Windows,1] Windows

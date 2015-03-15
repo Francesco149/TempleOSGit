@@ -1,12 +1,12 @@
-A CSprite, is an ordered list of [C:/Adam/Gr/Gr.CPP.Z,22] these elements,
-created with <CTRL-r>.  
+A [C:/Adam/Gr/Gr.CPP.Z,169] CSprite is an ordered list of
+[C:/Adam/Gr/Gr.CPP.Z,136] these elements, created with <CTRL-r>.  
 Normally, they are packed together in a list and the address of the first is 
 passed to routines.
 
 See [C:/Demo/Graphics/SpritePlot.CPP,1],
 [C:/Demo/Graphics/SpritePlot3D.CPP,1], 
-[C:/Demo/Graphics/SpritePut.CPP,1] and [C:/Adam/Gr/SpriteMesh.CPP.Z,869]
-SpriteMeshEd().
+[C:/Demo/Graphics/SpritePut.CPP,1], [C:/Demo/Graphics/SpriteRaw.CPP,1] and 
+[C:/Adam/Gr/SpriteMesh.CPP.Z,869] SpriteMeshEd().
 
 Be aware that copying SP, IB, or IS entries with the clipboard results in 
 duplicate entries with different nums.  You can manually remove dups by 

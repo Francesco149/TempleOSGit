@@ -34,7 +34,7 @@ U0 RedSeaFreeLstBuild(CDrv *dv)
     while (first<max_blk) {
       i=0;  //count free clusters
       while (first+i<max_blk) {
-	SetFSBuf(dv,first+i);
+	DrvMapBlkSet(dv,first+i);
 	if (Bt(dv->cur_map_blk,(first+i-dv->data_area)&(BLK_SIZE<<3-1)))
 	  break;
 	else
@@ -71,7 +71,7 @@ U0 RedSeaDrvInit(CDrv *dv)
     dv->data_area=dv->base_offset+br.bitmap_sects;
     dv->root_cluster=br.root_cluster;
     dv->map1=dv->map2=dv->base_offset+1;
-    MapBufAlloc(dv,1);
+    DrvMapBlkAlloc(dv);
     if (unlock)
       DrvUnlock(dv);
   } catch
@@ -104,8 +104,8 @@ U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE)
   I64 i,n;
   try {
     DrvLock(dv);
-    //	SetDrvType(drv_let,DVT_REDSEA);
-    SetDrvType(drv_let,DVT_FAT32);
+    //	DrvTypeSet(drv_let,DVT_REDSEA);
+    DrvTypeSet(drv_let,DVT_FAT32);
     dv->type=DVT_REDSEA;
     br->signature=MBR_PT_REDSEA;
     br->signature2=0xAA55;
@@ -155,7 +155,7 @@ U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE)
 }
 
 Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{//[C:/Kernel/Adam1a.HPP.Z,2506] FUF_JUST_DIRS, [C:/Kernel/Adam1a.HPP.Z,2507] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HPP.Z,2506] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2507] FUF_JUST_FILES
   CDirEntry *buf,*buf2,*ptr;
   U8 dname[CDIR_FILENAME_LEN];
   I64 ch;
@@ -173,12 +173,12 @@ Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64
       unlock=DrvLock(dv);
       buf2=MAlloc(BLK_SIZE);
       RBlks(dv,buf2,cur_dir_cluster,1);
- 
+
       ptr=buf2(U8 *)-offset(CDirEntry.start);
       buf=MAlloc(ptr->size);
       RBlks(dv,buf,cur_dir_cluster,ptr->size>>BLK_SIZE_BITS);
       Free(buf2);
- 
+
       ptr=buf(U8 *)-offset(CDirEntry.start);
       *ptr->name='.';
       ptr->name[1]=0;
@@ -186,16 +186,16 @@ Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,CDirEntry *_result,I64
 	if (!(ch=*ptr->name))
 	  break;
 	else if (!(ptr->attr & RS_ATTR_DELETED) &&
-	!(fuf_flags&FUF_JUST_DIRS && !(ptr->attr & RS_ATTR_DIR)) &&
-	!(fuf_flags&FUF_JUST_FILES && ptr->attr & RS_ATTR_DIR) &&
-	!StrCmp(dname,ptr->name)) {
+	      !(fuf_flags&FUF_JUST_DIRS && !(ptr->attr & RS_ATTR_DIR)) &&
+	      !(fuf_flags&FUF_JUST_FILES && ptr->attr & RS_ATTR_DIR) &&
+	      !StrCmp(dname,ptr->name)) {
 	  MemCpy(&_result->attr,&ptr->attr,CDIR_SIZE);
 	  result=TRUE;
-		goto exit_this;
+	  goto rsff_done;
 	}
 	ptr(U8 *)+=CDIR_SIZE;
       }
-exit_this:
+rsff_done:
       Free(buf);
       if (unlock)
 	DrvUnlock(dv);
@@ -281,12 +281,12 @@ U0 RedSeaFreeClusters(CDrv *dv,I64 c,I64 cnt)
 	QueIns(tempf,dv->last_free);
       }
       while (cnt-->0) {
-	SetFSBuf(dv,c);
+	DrvMapBlkSet(dv,c);
 	LBtr(dv->cur_map_blk,(c-dv->data_area)&(BLK_SIZE<<3-1));
-	LBts(dv->buffered_map_dirty_bits,0);
+	LBts(&dv->map_blk_dirty,0);
 	c++;
       }
-      CleanMAPBuf(dv);
+      DrvMapBlkClean(dv);
  
       if (unlock)
 	DrvUnlock(dv);
@@ -326,11 +326,11 @@ I64 RedSeaAllocClusters(CDrv *dv,I64 cnt)
       throw('Drv');
     first=best_free->start;
     for (i=0;i<cnt;i++) {
-      SetFSBuf(dv,first+i);
+      DrvMapBlkSet(dv,first+i);
       LBts(dv->cur_map_blk,(first+i-dv->data_area)&(BLK_SIZE<<3-1));
-      LBts(dv->buffered_map_dirty_bits,0);
+      LBts(&dv->map_blk_dirty,0);
     }
-    CleanMAPBuf(dv);
+    DrvMapBlkClean(dv);
     if (best_free->size-=cnt)
       best_free->start+=cnt;
     else {

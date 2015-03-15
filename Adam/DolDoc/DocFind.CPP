@@ -166,7 +166,7 @@ fn_skip:
 }
 
 public U0 EdSelectAll(CDoc *doc,Bool select)
-{//Set state of [C:/Kernel/Adam1a.HPP.Z,944] DOCET_SELECTED on all entries.
+{//Set state of [C:/Kernel/KernelA.HPP.Z,935] DOCET_SELECTED on all entries.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -315,7 +315,7 @@ public Bool EdGoToFun(CDoc *doc,Bool fwd,Bool abort_on_dbl_colon)
 }
 
 public U0 EdSelectFun(CDoc *doc,Bool abort_on_dbl_colon=FALSE)
-{//Set [C:/Kernel/Adam1a.HPP.Z,944] DOCET_SELECTED on all entries in cur fun.
+{//Set [C:/Kernel/KernelA.HPP.Z,935] DOCET_SELECTED on all entries in cur fun.
   Bool unlock=DocLock(doc);
   U8 *ptr;
   I64 ch,levels=0,colons=0;

@@ -3,8 +3,7 @@
 
 //See [C:/Doc/AutoComplete.TXT.Z,1]
 
-#define ACf_ENABLE		0
-#define ACf_INIT_IN_PROGRESS	1
+#define ACf_INIT_IN_PROGRESS	0
 
 #define AC_MAX_FILLINS 10
 
@@ -62,7 +61,7 @@ acd.has_words=FileFind(ACD_WORD_FILENAME);
 acd.has_defs =FileFind(ACD_DEF_FILENAME)||FileFind(ACD_DEF_FILENAME_Z);
 
 extern U0 ACDWordsLoad();
-extern U0 ACDDictWordsAdd(CDoc *doc,U8 *st=NULL);
+extern U0 ACDDictWordsAdd(CDoc *doc,U8 *st);
 
 #include "ACMain"
 #include "ACDict"

@@ -3,7 +3,7 @@
 public U0 PressKeyHelp(CTask *task=NULL)
 {//Jump to key handlers src for key presses.
   I64 a1=0,a2=0;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CTask *old_hash=Fs->hash_table;
   if (!task) task=Fs;
 

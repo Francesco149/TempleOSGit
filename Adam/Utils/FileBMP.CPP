@@ -28,19 +28,17 @@ public CFileBMP *BMP4To(CDC *dc)
 {//To Windows 4-bit BMP.
   U8 *src,*ptr;
   I64 x,y,w=dc->width>>1,
-    size=offset(CFileBMP.end)+dc->width*dc->height>>1+16*sizeof(CBGR);
-  CFileBMP *r=CAlloc(size);
-  r->type='BM';
-  r->planes=1;
-  r->file_size=size;
-  r->data_offset=offset(CFileBMP.end);
-  r->header_size=offset(CFileBMP.end)-
-		 offset(CFileBMP.header_size);
-  r->width=dc->width;
-  r->height=dc->height;
-  r->bit_cnt=4;
-  r->image_size=dc->width*dc->height>>1;
-  r->data_offset+=16*sizeof(CBGR);
+    size=sizeof(CFileBMP)+dc->width*dc->height>>1;
+  CFileBMP *r	=CAlloc(size);
+  r->type	='BM';
+  r->planes	=1;
+  r->file_size	=size;
+  r->data_offset=sizeof(CFileBMP);
+  r->header_size=offset(CFileBMP.end)-offset(CFileBMP.header_size);
+  r->width	=dc->width;
+  r->height	=dc->height;
+  r->bit_cnt	=4;
+  r->image_size	=dc->width*dc->height>>1;
   GetVGAPalette4(r->palette);
   ptr=r(U8 *)+r->data_offset;
   for (y=dc->height-1;y>=0;y--) {
@@ -56,21 +54,19 @@ public CFileBMP *BMP4To(CDC *dc)
 
 public CFileBMP *BMPRLE4To(CDC *dc)
 {//To Windows RLE4 bit BMP.
-  U8 *src,*ptr;
+  U8 *src,*ptr,*start;
   I64 x,y,w=dc->width,cnt,pattern;
-  CFileBMP *r=CAlloc(offset(CFileBMP.end)+2*(dc->width+1)*dc->height+16*sizeof(CBGR));
-  r->type='BM';
-  r->planes=1;
-  r->data_offset=offset(CFileBMP.end);
-  r->header_size=offset(CFileBMP.end)-
-		 offset(CFileBMP.header_size);
-  r->width=dc->width;
-  r->height=dc->height;
-  r->bit_cnt=4;
+  CFileBMP *r	=CAlloc(sizeof(CFileBMP)+2*(dc->width+1)*dc->height);
+  r->type	='BM';
+  r->planes	=1;
+  r->data_offset=sizeof(CFileBMP);
+  r->header_size=offset(CFileBMP.end)-offset(CFileBMP.header_size);
+  r->width	=dc->width;
+  r->height	=dc->height;
+  r->bit_cnt	=4;
   r->compression=2; //RLE4
-  r->data_offset+=16*sizeof(CBGR);
   GetVGAPalette4(r->palette);
-  ptr=r(U8 *)+r->data_offset;
+  start=ptr=r(U8 *)+r->data_offset;
   for (y=dc->height-1;y>=0;y--) {
     src=y*dc->width_internal+dc->body;
     x=0;
@@ -101,8 +97,8 @@ public CFileBMP *BMPRLE4To(CDC *dc)
     }
     *ptr(U16 *)++=0;
   }
-  r->image_size=ptr-(&r->data_offset)(U8 *);
-  r->file_size=offset(CFileBMP.end)+r->image_size+16*sizeof(CBGR);
+  r->image_size=ptr-start;
+  r->file_size=sizeof(CFileBMP)+r->image_size;
   return r;
 }
 
@@ -111,17 +107,16 @@ public CFileBMP *BMP24To(CDC *dc)
   U8 *src;
   I64 i,x,y,size=offset(CFileBMP.end)+dc->width*dc->height*sizeof(CRGB);
   CBGR *bgr;
-  CFileBMP *r=CAlloc(size);
-  r->type='BM';
-  r->planes=1;
-  r->file_size=size;
+  CFileBMP *r	=CAlloc(size);
+  r->type	='BM';
+  r->planes	=1;
+  r->file_size	=size;
   r->data_offset=offset(CFileBMP.end);
-  r->header_size=offset(CFileBMP.end)-
-		 offset(CFileBMP.header_size);
-  r->width=dc->width;
-  r->height=dc->height;
-  r->bit_cnt=32;
-  r->image_size=dc->width*dc->height<<2;
+  r->header_size=offset(CFileBMP.end)-offset(CFileBMP.header_size);
+  r->width	=dc->width;
+  r->height	=dc->height;
+  r->bit_cnt	=32;
+  r->image_size	=dc->width*dc->height<<2;
 
   bgr=r(U8 *)+r->data_offset;
   for (y=dc->height-1;y>=0;y--) {
@@ -151,7 +146,7 @@ public I64 BMPWrite(U8 *filename,CDC *dc,I64 bits=4)
       r=BMP4To(dc);
     else {
       r=BMPRLE4To(dc);
-      if (r->file_size>offset(CFileBMP.end)+dc->width*dc->height>>1+16*sizeof(CBGR)) {
+      if (r->file_size>sizeof(CFileBMP)+dc->width*dc->height>>1) {
 	Free(r);
 	r=BMP4To(dc);
       }
@@ -282,7 +277,7 @@ public CDC *BMPRead(U8 *filename,Bool dither_probability=FALSE,Bool use_ms_paint
 	    result->color=BMP24Color(ptr,dither_probability);
 	    GrPlot(result,j,i);
 	  }
-	  if (r->width&1) ptr++;
+	  ptr+=r->width&3;
 	}
 	if (!use_ms_paint_palette)
 	  Free(palette_map);
@@ -306,7 +301,7 @@ public CDC *BMPRead(U8 *filename,Bool dither_probability=FALSE,Bool use_ms_paint
   return result;
 }
 
-#help_index "Graphics/Sprite;Graphics/Windows BMP Files;DolDoc/Output"
+#help_index "Graphics/Sprite;Graphics/Windows BMP Files;DolDoc/Output;StdOut/DolDoc"
 public U0 DocBMP(CDoc *doc=NULL,U8 *filename,Bool dither_probability=FALSE,Bool use_ms_paint_palette=FALSE)
 {//Put a BMP file into a document as a sprite.
   CDC *dc=BMPRead(filename,dither_probability,use_ms_paint_palette);

@@ -87,7 +87,7 @@ U8 *Wrap(U8 *base,U8 *s,I64 *line_len,I64 indent=0)
   //Also adds indent spaces to every soft and hard newline.
   //Returns new value for base.
   //This is supposed to also take tabs into account but fuck that shit
-  //NOTE: at this point I could use [C:/Adam/Win2a.CPP.Z,327] SetWinHorz and append to a CDoc
+  //NOTE: at this point I could use [MN:SetWinHorz] SetWinHorz and append to a CDoc
   I64 len;
   U8 *p,*buf;
   U8 *end;
@@ -577,7 +577,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/Adam/Dsk/Dsk2a.CPP.Z,116] CopyTree2 which is internally used by [C:/Adam/Dsk/Dsk2a.CPP.Z,135] CopyTree
+//Adapted from [C:/Adam/Dsk/ADskA.CPP.Z,135] CopyTree2 which is internally used by [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree
 U0 PutExportTree(CDirEntry *ent,I64 src_dir_len,I64 dst_dir_len,
   U8 *dst_dir,Bool debug=FALSE)
 {
@@ -599,7 +599,7 @@ U0 PutExportTree(CDirEntry *ent,I64 src_dir_len,I64 dst_dir_len,
   }
 }
 
-//Adapted from [C:/Adam/Dsk/Dsk2a.CPP.Z,135] CopyTree
+//Adapted from [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree
 U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
   Bool debug=FALSE)
 {

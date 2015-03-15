@@ -1,7 +1,6 @@
                               DolDoc Widget Help
 
-[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is a propriatary TempleOS document
-type.
+[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is a TempleOS document type.
 
 "Expression" a num or HolyC algebraic term with operators and HolyC syms can 
 be entered.
@@ -36,7 +35,7 @@ horizontally by this many pixs.
 
 Tree The item will behave like a tree widget, with this as the root.
 Collapsed The tree or hidden widget will begin collapsed.
-Define Str will substitute a #define or [C:/Kernel/Define1a.CPP.Z,1]
+Define Str will substitute a #define or [C:/Kernel/KDefine.CPP.Z,1]
 DefineLoad() string for the tag.
 
 Quote Make the result suitable for including in a program, in quotes, 
@@ -45,8 +44,7 @@ especially fmtstr entries in class definitions.
 X Expression For cursor movements, the horizontal value.
 Y Expression For cursor movements, the vertical value.
 
-**PopUp** For macro's, run the macro in a PopUp window.  Do this when making
-a 
+PopUp For macro's, run the macro in a PopUp window.  Do this when making a 
 macro to run a program, so it doesn't tie-up memory.
 
 Escape For macro's, send an <ESC> char to exit before running the macro.  

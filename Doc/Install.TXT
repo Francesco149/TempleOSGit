@@ -12,8 +12,9 @@ often comes with a restore disk that does not allow repartitioning.  I
 recommend connecting a spare additional hard drive and using the BIOS to 
 select which drive to boot.
 
-If you boot the CD/DVD-ROM and log-in as the "Install" account it will 
-automate much of this.
+The [C:/Misc/OSInstall.CPP.Z,1] script will automate much of this.  It runs
+if you 
+boot the CD/DVD-ROM.
 
 See [C:/Doc/Boot.TXT.Z,1] Boot.TXT for an overview of booting.  See
 [C:/Doc/Requirements.TXT.Z,1] Requirements for supported 
@@ -32,7 +33,7 @@ drive -- base0, base1, and unit.  When you enter a hexadecimal number, do
 it like in C with a 0x prefix.  If the probe was successful, you can just 
 enter the number in the probe box instead of base0.
   
-[C:/Adam/Dsk/Dsk2b.CPP.Z,78] PrtDsk('C') use if drive is not partitioned
+[C:/Adam/Dsk/ADskB.CPP.Z,78] PrtDsk('C') use if drive is not partitioned
 
     This will perform a special [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount()
     automatically.
@@ -44,11 +45,11 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/Adam/Boot/InsBoot.CPP.Z,236] MasterBootZero() to
+You'll need to do a [C:/Adam/Boot/BootIns.CPP.Z,125] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/Kernel/Dsk/Dsk1c.CPP.Z,140] Fmt('D',TRUE,FALSE,DVT_FAT32)
+2) [C:/Kernel/Dsk/DskC.CPP.Z,140] Fmt('D',TRUE,FALSE,DVT_FAT32)
   This command formats a drive with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
   RedSea file system type.  Use 
 the drive letter of the partition in place of 'D'.
@@ -57,11 +58,11 @@ the drive letter of the partition in place of 'D'.
   /0000Boot/OldM
 BR.BIN.C.
 
-3) [C:/Adam/Dsk/Dsk2a.CPP.Z,135] CopyTree("T:/","D:/")
+3) [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree("T:/","D:/")
   This command is used to copy files onto a hard drive partition from the 
 CD-ROM.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall('D')
+4) [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall('D')
   This command recompiles the source code on a drive and writes to the
   _drive's_ 
 boot record.  You'll need to reenter the [C:/Kernel/Dsk/DskAddDev.CPP.Z,173]
@@ -69,9 +70,9 @@ boot record.  You'll need to reenter the [C:/Kernel/Dsk/DskAddDev.CPP.Z,173]
 stored in the kernel.
 
 5) Use Linux's [C:/Doc/Grub.TXT.Z,1] Grub or TempleOS'
-[C:/Adam/Boot/InsBoot.CPP.Z,253] MasterBootIntall('D')
+[C:/Adam/Boot/BootIns.CPP.Z,142] MasterBootIntall('D')
   
-The [C:/Adam/Boot/InsBoot.CPP.Z,253] MasterBootIntall() command places a boot
+The [C:/Adam/Boot/BootIns.CPP.Z,142] MasterBootIntall() command places a boot
   loader on a drive.  It saves 
 the old master boot record to /0000Boot/OldMBR.BIN.C and replaces it.  When 
 you boot, you will have the option of booting the old master boot record.  

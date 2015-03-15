@@ -92,7 +92,7 @@ U0 ACMan(I64 n,CTask *parent_task=NULL)
 {
   CHashAC *tempw;
   CHashSrcSym *temph;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (0<=--n<ac.num_fillins && (tempw=ac.fillin_matches[n]) &&
 	(temph=HashFind(tempw->str,Fs->hash_table,HTG_SRC_SYM)) &&
 	temph->src_link) {
@@ -146,40 +146,46 @@ U0 ACPutChoices(CDoc *focus_l,CDocEntry *doc_e,CTask *focus_task)
     st=ac.cur_word;
     ac.cur_word=AStrNew(buf);
     Free(st);
-    Preempt(ON);
     ac.num_fillins=0;
-    tempw=ac.hash_table->next_added;
-    while (tempw!=ac.hash_table && tS<timeout_time) {
-      if (!MemCmp(ac.cur_word,tempw->str,StrLen(ac.cur_word)))
-	ACFillInAdd(tempw);
-      tempw=tempw->next_added;
+    if (*ac.cur_word) {
+      Preempt(ON);
+      for (i=0;i<=ac.hash_table->mask;i++) {
+	tempw=ac.hash_table->body[i];
+	while (tempw && tS<timeout_time) {
+	  if (!MemCmp(ac.cur_word,tempw->str,StrLen(ac.cur_word)))
+	    ACFillInAdd(tempw);
+	  tempw=tempw->next;
+	}
+      }
+      Preempt;
     }
-    Preempt(OFF);
+    DocRst(doc,TRUE);
+    doc->flags|=DOCF_MIN_SIZE;
+    DocCursor;
+    Fs->border_src=BDS_CONST;
+    Fs->text_attr =Fs->border_attr=LTGRAY<<4+BLUE;
+    if (ac.cur_word && *ac.cur_word) {
+      DocPrint(doc,"$PURPLE$Word:%s$FG$\n",ac.cur_word);
+      for (i=0;i<ac.num_fillins;i++) {
+	st=ac.fillin_matches[i]->str;
+	DocPrint(doc,"$GREEN$F%02d$FG$ ",i+1);
+	if (TaskValidate(focus_task) &&
+	      (temph=HashFind(st,focus_task->hash_table,HTG_SRC_SYM)) &&
+	      temph->src_link) {
+	  if (temph->type&HTF_PUBLIC)
+	    DocPrint(doc,"$RED$");
+	  DocPrint(doc,"$TX+UL+L+PU,\"%Q\",A=\"%s\"$$FG$\n",st,temph->src_link);
+	} else
+	  DocPrint(doc,"%s\n",st);
+      }
+      if (acd.has_words)
+	ACDDictWordsAdd(doc,ac.cur_word);
+    } else if (FileFind("::/Doc/StandBy.TXT.Z"))
+      DocType(doc,"::/Doc/StandBy.TXT.Z",0);
+
+    DocRecalc(doc);
   }
 
-  DocRst(doc,TRUE);
-  doc->flags|=DOCF_MIN_SIZE;
-  DocCursor;
-  Fs->text_attr=LTBLUE<<4+WHITE;
-  Fs->border_src =BDS_CONST;
-  Fs->border_attr=LTBLUE<<4+BLACK;
-  DocPrint(doc,"Word:%s\n",ac.cur_word);
-  for (i=0;i<ac.num_fillins;i++) {
-    st=ac.fillin_matches[i]->str;
-    DocPrint(doc,"F%02d ",i+1);
-    if (TaskValidate(focus_task) &&
-	  (temph=HashFind(st,focus_task->hash_table,HTG_SRC_SYM)) &&
-	  temph->src_link) {
-      if (temph->type&HTF_PUBLIC)
-	DocPrint(doc,"$RED$");
-      DocPrint(doc,"$TX+UL+L+PU,\"%Q\",A=\"%s\"$$FG$\n",st,temph->src_link);
-    } else
-      DocPrint(doc,"%s\n",st);
-  }
-  if (acd.has_words)
-    ACDDictWordsAdd(doc);
-
-  DocRecalc(doc);
   if (!LBts(&Fs->display_flags,DISPLAYf_SHOW))
     WinZBufUpdate;
 
@@ -195,40 +201,39 @@ U0 ACTask(I64)
   CDocEntry *doc_e;
   I64 ch;
   DocTermNew;
-  SetWinHorz(51,Fs->win_right);
+  WinHorz(51,Fs->win_right);
   LBts(&Fs->display_flags,DISPLAYf_WIN_ON_TOP);
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_BORDER-WIF_SELF_IP_L-WIF_SELF_IP_R-WIG_DBL_CLICK;
+  Free(ac.cur_word);
+  ac.cur_word=NULL;
   while (TRUE) {
-    if (Bt(&ac.flags,ACf_ENABLE)) {
-      original_focus_task=focus_task=sys_focus_task;
-      while (TaskValidate(focus_task) && Bt(&focus_task->task_flags,TASKf_INPUT_FILTER_TASK))
-	focus_task=focus_task->parent_task;
-      if (TaskValidate(focus_task) && (doc=DocPut(focus_task)) &&
+    original_focus_task=focus_task=sys_focus_task;
+    while (TaskValidate(focus_task) && Bt(&focus_task->task_flags,TASKf_INPUT_FILTER_TASK))
+      focus_task=focus_task->parent_task;
+    if (TaskValidate(focus_task) && (doc=DocPut(focus_task)) &&
 	  focus_task!=Fs && Bt(&focus_task->display_flags,DISPLAYf_SHOW)) {
-	DocLock(doc);
-	if (TaskValidate(focus_task) && original_focus_task==sys_focus_task &&
-	     doc && doc==DocPut(focus_task) && (doc_e=doc->cur_entry)) {
-	  if (doc_e==doc) doc_e=doc_e->last;
-	  while (doc_e->last!=doc && (doc_e->type_u8==DOCT_NEW_LINE ||
+      DocLock(doc);
+      if (TaskValidate(focus_task) && original_focus_task==sys_focus_task &&
+	    doc && doc==DocPut(focus_task) && (doc_e=doc->cur_entry)) {
+	if (doc_e==doc) doc_e=doc_e->last;
+	while (doc_e->last!=doc && (doc_e->type_u8==DOCT_NEW_LINE ||
 	      doc_e->type_u8==DOCT_SOFT_NEW_LINE))
-	    doc_e=doc_e->last;
-	  while (doc_e->last->type_u8 !=DOCT_NEW_LINE && doc_e->last!=doc)
-	    doc_e=doc_e->last;
-	  if (Bt(&ac.flags,ACf_ENABLE))
-	    ACPutChoices(doc,doc_e,focus_task);
-	  else
-	    DocUnlock(doc);
-	} else
-	  DocUnlock(doc);
-      }
+	  doc_e=doc_e->last;
+	while (doc_e->last->type_u8!=DOCT_NEW_LINE && doc_e->last!=doc)
+	  doc_e=doc_e->last;
+	ACPutChoices(doc,doc_e,focus_task);
+      } else
+	DocUnlock(doc);
     }
     Sleep(333);
     if (ScanMsg(&ch,,1<<MSG_KEY_DOWN) && (ch==CH_ESC||ch==CH_SHIFT_ESC))
       break;
     doc=DocPut;
     DocLock(doc);
-    if (doc->cur_entry!=doc && doc->cur_entry->de_flags & DOCEF_LINK)
+    if (doc->cur_entry->de_flags & DOCEF_LINK) {
       '' CH_SPACE;
+      doc->cur_entry=doc;
+    }
     DocUnlock(doc);
   }
   ac.task=NULL;
@@ -255,7 +260,7 @@ U0 ACMainFileLstTraverse(U8 *files_find_mask)
 public Bool AutoComplete(Bool val=OFF)
 {//Turn AutoComplete OFF (or ON).
   Bool	old_autocomplete=FALSE,
-	old_preempt=Preempt(OFF);
+	old_preempt=Preempt;
   if (val) {
     while (Bt(&ac.flags,ACf_INIT_IN_PROGRESS))
       Sleep(10);
@@ -265,10 +270,8 @@ public Bool AutoComplete(Bool val=OFF)
       ac.task=Spawn(&ACTask,NULL,"AutoComplete");
       TaskWait(ac.task);
     }
-    if (!LBts(&ac.flags,ACf_ENABLE))
-      WinToTop(ac.task);
+    WinToTop(ac.task);
   } else {
-    LBtr(&ac.flags,ACf_ENABLE);
     if (TaskValidate(ac.task)) {
       old_autocomplete=TRUE;
       Kill(ac.task);
@@ -316,7 +319,7 @@ public U0 ACInit(U8 *mask=NULL)
   }
 
   HashTableDel(ac.hash_table);
-  ac.hash_table=HashTableNew(0x4000,adam_task);
+  ac.hash_table=HashTableNew(2048,adam_task);
 
   ac.num_words=0;
   Free(ac.cur_word);

@@ -172,20 +172,18 @@ public U8 *ACDWordPtAt(U8 *st)
     return acd.word_lst;
 }
 
-U0 ACDDictWordsAdd(CDoc *doc,U8 *st=NULL)
+U0 ACDDictWordsAdd(CDoc *doc,U8 *st)
 {
   I64 i;
   U8 *ptr;
-  if (!st)
-    st=ac.cur_word;
-  if (st && (ptr=ACDWordPtAt(st))) {
+  if (st && *st && (ptr=ACDWordPtAt(st))) {
     for (i=0;i<ACD_MAX_FILLINS;i++) {
       if (*ptr++!=ACD_WORD_CHAR)
 	break;
       if (i)
 	DocPrint(doc,"\n");
       acd.fillins[i]=ptr-1;
-      DocPrint(doc,"'%d' %-23ts",i,ptr);
+      DocPrint(doc,"$GREEN$'%d'$FG$ %-23ts",i,ptr);
       ptr+=StrLen(ptr)+3;
     }
     acd.num_fillins=i;

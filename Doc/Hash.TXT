@@ -2,8 +2,8 @@ There is a symbol (hash) tables for each task.  When a sym is not found, the
 parent task's sym table is checked.  All tasks chain back to the Adam task.
 
 TempleOS sym tables are implemented with an array of linked-lists.  A num is 
-generated from a string by [C:/Kernel/Hash1a.CPP.Z,346] HashStr() to index
+generated from a string by [C:/Kernel/KHashA.CPP.Z,300] HashStr() to index
 into the array of linked-lists.  
 Multiple strings can generate the same num, so linked-lists are built.  Newer 
 entries overshadow older ones.  There are various types of entries.  See 
-[C:/Kernel/Adam1a.HPP.Z,650] Hash Entry Types.
+[C:/Kernel/KernelA.HPP.Z,646] Hash Entry Types.

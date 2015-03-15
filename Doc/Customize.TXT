@@ -1,10 +1,10 @@
 
 * You can adjust the mouse movement rate by setting global vars in your 
-start-up file.  See [C:/Accts/TAD/Adam3aLocalize.CPP,1] mouse scale.
+start-up file.  See [D:/Home/AdamLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the local_time_offset global
 var 
-in a start-up file.  It's units are [C:/Kernel/Adam1a.HPP.Z,548] CDATE_FREQ. 
-See [C:/Accts/TAD/Adam3aLocalize.CPP,1] local time.
+in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,544] CDATE_FREQ.
+ See [D:/Home/AdamLocalize.CPP,1] local time.
 
-* Get rid of this msg [C:/Accts/TAD/DoOnce.CPP,1] here.
+* Get rid of this msg [D:/Home/DoOnce.CPP,1] here.

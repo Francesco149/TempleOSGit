@@ -1,16 +1,16 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 121,168 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 120,922 lines of TempleOS over
 the 
 past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
 call 
 home.  Every line of TempleOS src code is including in all distro's, from the 
-kernel to the compiler to the boot loaders.
+kernel to the compiler to the boot loaders.  See [C:/Doc/Credits.TXT.Z,1].
 
 * TempleOS does not execute code not written by me and any time except for a 
-few BIOS calls for configuration.
+few BIOS calls for configuration.  See [C:/Doc/Credits.TXT.Z,1].
 
 * TempleOS is 100% independent -- it does not access the files of your
 primary 
@@ -18,7 +18,7 @@ operating system.  It will work as the only operating system on your computer.
 
 * TempleOS is 100% written from scratch.  There is no Linux or GNU or any 
 other code in TempleOS.  Yes, I wrote the compiler from scratch.  (I probably 
-need to repeat that a few times.)
+need to repeat that a few times.)  See [C:/Doc/Credits.TXT.Z,1].
 
 * TempleOS is an operating system, not a browser.  The cmd line has active 
 links.  They link to local files.
@@ -29,10 +29,10 @@ the word script sometimes for stuff, but it's actually compiled.
 * I am an evolutionist.  Adam is a better term for the father of all tasks 
 than root was!
 
-* [C:/Kernel/Adam1b.HPP.Z,11] Bt() is bit test, like the x86 instruction, not
-bit torrent.
+* [C:/Kernel/KernelB.HPP.Z,11] Bt() is bit test, like the x86 instruction,
+not bit torrent.
 
-* [C:/Kernel/Adam1b.HPP.Z,227] Fs is a segment reg, not file system.  (It is
+* [C:/Kernel/KernelB.HPP.Z,229] Fs is a segment reg, not file system.  (It is
 kept pointing to the current 
 task's record.)  There is no memory segmentation -- FS and GS are used as 
 general purpose regs, more or less.
@@ -41,7 +41,7 @@ general purpose regs, more or less.
 is not PASCAL.  I altered 
 the syntax making parenthesis optional on function calls with no paramaters.
 
-* [C:/Kernel/Misc1a.CPP.Z,151] Sleep() makes a program pause.  It is not
+* [C:/Kernel/KMisc.CPP.Z,155] Sleep() makes a program pause.  It is not
 hybernation for a laptop.
 
 * [C:/Kernel/Sched.CPP.Z,346] Yield() saves the current task's regs (context)
@@ -57,19 +57,19 @@ is compiled and executable
 code placed into mem, ready to be called.
 
 * Files with names ending in .Z are compressed, not encrypted. 
-[C:/Adam/Dsk/Dsk2a.CPP.Z,76] Copy() or 
-rename them with [C:/Adam/Dsk/Dsk2a.CPP.Z,107] Move() to store them
+[C:/Adam/Dsk/ADskA.CPP.Z,95] Copy() or 
+rename them with [C:/Adam/Dsk/ADskA.CPP.Z,126] Move() to store them
 uncompressed.
 
 * TempleOS is open src and every bit of the src code is included in the 
-distro.  Use [C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() to
+distro.  Use [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() to
 compile the kernel and compiler.
 
 * TempleOS does not use object files or a linker. 
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/Kernel/Adam1a.HPP.Z,547] JIFFY_FREQ.
+interrupt.  See [C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ.
 
 * Refresh rate is how often TempleOS updates screen mem.  It is not 
 syncronized to the hardware rate.  It has nothing to do with it.
@@ -77,23 +77,25 @@ syncronized to the hardware rate.  It has nothing to do with it.
 * No application has a lock on the speaker so apps can interfere with each 
 other and TempleOS makes speaker noise during disk access on purpose.
 
-* There are no mem leaks.  TempleOS allocates mem as more items are displayed 
-on the screen.  TempleOS allocates mem for code as it is compiled at the cmd 
-line.  If you #include a file twice, it allocates more mem for it.  If you 
-have a 50,000 line program with each line taking twenty bytes on a machine 
-with 1 Gig, you could #include it a thousand times if it had no data or 
-graphics and no other use of mem.  Code entered at the cmd line gets
-allocated 
-and persists.  I don't want to hear any bullshit about leaks unless you 
-actually run-out.  If it bothers you, hit <CTRL-ALT-x> and <CTRL-ALT-e>, perio
-dically.  Use the pop-up flag on macros in your menu to spawn new tasks, run 
-applications and free the applications when they are finished and everything 
-will be fine.  Small mem chunks stick to the task when they are freed until
-it 
-is killed.  The only way to get in trouble involves allocating multiple Meg 
-chunks and freeing them.  These can only be reused if the same size gets 
-allocated again.  Use [C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog() and
-[C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep() to see who allocated mem and 
+* There are no mem leaks.  TempleOS alllocs mem as more items are displayed
+on 
+the screen.  TempleOS alllocs mem for code as it is compiled at the cmd line.
+ 
+If you #include a file twice, it alllocs more mem for it.  If you have a 
+50,000 line program with each line taking twenty bytes on a machine with 1 
+Gig, you could #include it a thousand times if it had no data or graphics and 
+no other use of mem.  Code entered at the cmd line gets alloced and persists.
+ 
+I don't want to hear any bullshit about leaks unless you actually run-out. 
+If 
+it bothers you, hit <CTRL-ALT-x> and <CTRL-ALT-e>, periodically.  Use the 
+pop-up flag on macros in your menu to spawn new tasks, run applications and 
+free the applications when they are finished and everything will be fine.  
+Small mem chunks stick to the task when they are freed until it is killed.  
+The only way to get in trouble involves allocating multiple Meg chunks and 
+freeing them.  These can only be reused if the same size gets alloced again.  
+Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
+[C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to see who alloced mem and
 didn't free it.
 
 * The editor periodically takes a snap-shot for UNDO and this looks like a 

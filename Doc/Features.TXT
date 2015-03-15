@@ -29,7 +29,7 @@ compression.
 * ATAPI PIO CD/DVD support with ISO9660 file system.  Can make bootable ISO966
 0 ISO files so you can roll-your-own distro's.
 
-* [C:/Adam/Dsk/Dsk2b.CPP.Z,78] Partitioning tool, installer, boot loaders for
+* [C:/Adam/Dsk/ADskB.CPP.Z,78] Partitioning tool, installer, boot loaders for
 CD-ROM and hard disk.
 
 * Editor/Browser for a new [C:/Doc/DolDocOverview.TXT.Z,1] Document Format. 

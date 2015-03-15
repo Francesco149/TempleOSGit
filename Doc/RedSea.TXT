@@ -8,12 +8,18 @@ and cannot grow in size.
 
 #define CDIR_FILENAME_LEN	38 //Must include terminator zero
 
+The following bit field shows valid 8-Bit ASCII filename characters.
+
+U32 chars_bitmap_filename[8]=
+{0x0000000, 0x03FF73FB, 0xEFFFFFFF, 0x2FFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
+0xFFFFFFFF, 0xFFFFFFFF};
+
 public class CDirEntry //64-byte fixed-size
 {
-  U16 attr;	//See [C:/Kernel/Adam1a.HPP.Z,2432] RS_ATTR_DIR.  I would like to
-change these.
-  U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/Str1a.CPP.Z,336]
-chars_bitmap_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,294] FileNameChk
+  U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2432] RS_ATTR_DIR.  I would like
+to change these.
+  U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,335]
+chars_bitmap_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,285] FileNameChk
   I64 cluster;	//One sector per cluster.  I might change origin, let's talk.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,

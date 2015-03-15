@@ -223,6 +223,15 @@ lx->pass==10 is final pass, code is placed into buf.
 	  case IC_BR_NOT_EQUAL2:
 	    ICCmpAndBranch(tempi,TRUE,ip,0x75850F,0x75850F,0x75850F,0x75850F,buf,ip2);
 	    break;
+	  case IC_BR_LESS:
+	    if (tempi->ic_flags&ICF_USE_F64)
+	      ICFCmpAndBranch(lx,tempi,  ip,0x72820F,0x77870F,buf,ip2);
+	    else
+	      ICCmpAndBranch(tempi,FALSE,ip,0x72820F,0x7C8C0F,0x77870F,0x7F8F0F,buf,ip2);
+	    break;
+	  case IC_BR_LESS2:
+	    ICCmpAndBranch(tempi,TRUE,ip,0x72820F,0x7C8C0F,0x77870F,0x7F8F0F,buf,ip2);
+	    break;
 	  case IC_BR_GREATER_EQUAL:
 	    if (tempi->ic_flags&ICF_USE_F64)
 	      ICFCmpAndBranch(lx,tempi,  ip,0x73830F,0x76860F,buf,ip2);
@@ -231,15 +240,6 @@ lx->pass==10 is final pass, code is placed into buf.
 	    break;
 	  case IC_BR_GREATER_EQUAL2:
 	    ICCmpAndBranch(tempi,TRUE,ip,0x73830F,0x7D8D0F,0x76860F,0x7E8E0F,buf,ip2);
-	    break;
-	  case IC_BR_LESS_EQUAL:
-	    if (tempi->ic_flags&ICF_USE_F64)
-	      ICFCmpAndBranch(lx,tempi,  ip,0x76860F,0x73830F,buf,ip2);
-	    else
-	      ICCmpAndBranch(tempi,FALSE,ip,0x76860F,0x7E8E0F,0x73830F,0x7D8D0F,buf,ip2);
-	    break;
-	  case IC_BR_LESS_EQUAL2:
-	    ICCmpAndBranch(tempi,TRUE,ip,0x76860F,0x7E8E0F,0x73830F,0x7D8D0F,buf,ip2);
 	    break;
 	  case IC_BR_GREATER:
 	    if (tempi->ic_flags&ICF_USE_F64)
@@ -250,43 +250,37 @@ lx->pass==10 is final pass, code is placed into buf.
 	  case IC_BR_GREATER2:
 	    ICCmpAndBranch(tempi,TRUE,ip,0x77870F,0x7F8F0F,0x72820F,0x7C8C0F,buf,ip2);
 	    break;
-	  case IC_BR_LESS:
+	  case IC_BR_LESS_EQUAL:
 	    if (tempi->ic_flags&ICF_USE_F64)
-	      ICFCmpAndBranch(lx,tempi,  ip,0x72820F,0x77870F,buf,ip2);
+	      ICFCmpAndBranch(lx,tempi,  ip,0x76860F,0x73830F,buf,ip2);
 	    else
-	      ICCmpAndBranch(tempi,FALSE,ip,0x72820F,0x7C8C0F,0x77870F,0x7F8F0F,buf,ip2);
+	      ICCmpAndBranch(tempi,FALSE,ip,0x76860F,0x7E8E0F,0x73830F,0x7D8D0F,buf,ip2);
 	    break;
-	  case IC_BR_LESS2:
-	    ICCmpAndBranch(tempi,TRUE,ip,0x72820F,0x7C8C0F,0x77870F,0x7F8F0F,buf,ip2);
+	  case IC_BR_LESS_EQUAL2:
+	    ICCmpAndBranch(tempi,TRUE,ip,0x76860F,0x7E8E0F,0x73830F,0x7D8D0F,buf,ip2);
 	    break;
 	  case IC_BR_BT:
 	    ICBrBitOps(tempi,ip,0xA30F,0x20BA0F,0x72820F,buf,ip2);
 	    break;
 	  case IC_BR_BTS:
-	  case IC_BR_LBTS:
 	    ICBrBitOps(tempi,ip,0xAB0F,0x28BA0F,0x72820F,buf,ip2);
 	    break;
 	  case IC_BR_BTR:
-	  case IC_BR_LBTR:
 	    ICBrBitOps(tempi,ip,0xB30F,0x30BA0F,0x72820F,buf,ip2);
 	    break;
 	  case IC_BR_BTC:
-	  case IC_BR_LBTC:
 	    ICBrBitOps(tempi,ip,0xBB0F,0x38BA0F,0x72820F,buf,ip2);
 	    break;
 	  case IC_BR_NOT_BT:
 	    ICBrBitOps(tempi,ip,0xA30F,0x20BA0F,0x73830F,buf,ip2);
 	    break;
 	  case IC_BR_NOT_BTS:
-	  case IC_BR_NOT_LBTS:
 	    ICBrBitOps(tempi,ip,0xAB0F,0x28BA0F,0x73830F,buf,ip2);
 	    break;
 	  case IC_BR_NOT_BTR:
-	  case IC_BR_NOT_LBTR:
 	    ICBrBitOps(tempi,ip,0xB30F,0x30BA0F,0x73830F,buf,ip2);
 	    break;
 	  case IC_BR_NOT_BTC:
-	  case IC_BR_NOT_LBTC:
 	    ICBrBitOps(tempi,ip,0xBB0F,0x38BA0F,0x73830F,buf,ip2);
 	    break;
 	  case IC_BR_AND_ZERO:
@@ -605,6 +599,12 @@ lx->pass==10 is final pass, code is placed into buf.
 	  else
 	    ICFCmp(lx,tempi,CMP_TEMPLATE_LESS,ip2);
 	  break;
+	case IC_GREATER_EQUAL:
+	  if (tempi->ic_flags&ICF_USE_INT)
+	    ICCmp(tempi,0x72,0x7C,ip2);
+	  else
+	    ICFCmp(lx,tempi,CMP_TEMPLATE_GREATER_EQUAL,ip2);
+	  break;
 	case IC_GREATER:
 	  if (tempi->ic_flags&ICF_USE_INT)
 	    ICCmp(tempi,0x76,0x7E,ip2);
@@ -616,12 +616,6 @@ lx->pass==10 is final pass, code is placed into buf.
 	    ICCmp(tempi,0x77,0x7F,ip2);
 	  else
 	    ICFCmp(lx,tempi,CMP_TEMPLATE_LESS_EQUAL,ip2);
-	  break;
-	case IC_GREATER_EQUAL:
-	  if (tempi->ic_flags&ICF_USE_INT)
-	    ICCmp(tempi,0x72,0x7C,ip2);
-	  else
-	    ICFCmp(lx,tempi,CMP_TEMPLATE_GREATER_EQUAL,ip2);
 	  break;
 	case IC_AND_AND:
 	  ICAndAnd(tempi,ip2);

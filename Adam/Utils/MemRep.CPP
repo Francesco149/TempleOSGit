@@ -82,8 +82,7 @@ I64 DrvsSize()
 {
   I64 i,result=MSize2(dsk.drvs);
   for (i=0;i<NUM_DRVS;i++)
-    result+=MSize2(dsk.drvs[i].buffered_map_dirty_bits)+
-	    MSize2(dsk.drvs[i].fis);
+    result+=MSize2(dsk.drvs[i].cur_map_blk)+MSize2(dsk.drvs[i].fis);
   return result;
 }
 
@@ -104,10 +103,9 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
   st=MStrUtil(task->task_title,SUF_REM_CTRL_CHARS|SUF_SAFE_DOLLAR);
   "$GREEN$Task:%010X$CYAN$ %-30ts$FG$\n$ID,2$",task,st;
   Free(st);
-  "$PURPLE$Alloced:%010X Used:%010X $RED$Unused:%010X$FG$\n",
-      TaskMemAllocated(task,override_validate),
-      TaskMemUsed(task,override_validate),
-      TaskMemUnused(task,override_validate);
+  "$PURPLE$Alloced:%010X Used:%010X$FG$\n",
+      TaskMemAlloced(task,override_validate),
+      TaskMemUsed(task,override_validate);
   "HashTable\t:%010X\n",HashTableSize2(task->hash_table);
 
   i=UnusedStk(task);
@@ -163,15 +161,15 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
     "TaskStructs\t:%010X\n",j;
     "TSSes\t:%010X\n",k;
     "HeapCtrls\t:%010X\n",m;
-    "TaskQues\t:%010X\n",n;
+    if (n)
+      "TaskQues\t:%010X\n",n;
     "BlkDevs\t:%010X\n",BlkDevsSize;
     "Drvs\t:%010X\n",DrvsSize;
-    "Audio\t:%010X\n",CallExtStr("AudioSize");
     if (dsk.cache_base)
       "DskCache\t:%010X\n",
 	  MSize2(dsk.cache_base)+MSize2(dsk.cache_hash_table)+MSize2(dsk.cache_ctrl);
-    "AutoComplete\t:%010X\n",CallExtStr("AutoCompleteSize");
     "Clipboard\t:%010X\n",DocSize(sys_clipboard_doc);
+    "AutoComplete:%010X\n",CallExtStr("AutoCompleteSize");
     "gr.to_8_bits\t:%010X\n",MSize2(gr.to_8_bits);
     "gr.to_8_colors\t:%010X\n",MSize2(gr.to_8_colors);
     "gr.text_base\t:%010X\n",MSize2(gr.text_base);
@@ -193,7 +191,7 @@ public U0 MemRep()
   I64 i;
   CTask *task;
   CCPU *c;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CBinFile *bfh=sys_boot_base-sizeof(CBinFile);
   bfh(I64)+=bfh->file_size-1;
 
@@ -208,13 +206,13 @@ public U0 MemRep()
   "$ID,-2$";
 
   if (sys_data_bp) {
-    "$BLACK$Code Heap:%010X Used:%010X $RED$Unused:%010X$FG$\n",
-    sys_code_bp->size*PAGE_SIZE,sys_code_bp->allocated_u8s,UnusedBPMem(sys_code_bp);
-    "$BLACK$Data Heap:%010X Used:%010X $RED$Unused:%010X$FG$\n",
-    sys_data_bp->size*PAGE_SIZE,sys_data_bp->allocated_u8s,UnusedBPMem(sys_data_bp);
+    "$BLACK$Code Heap:%010X Used:%010X$FG$\n",
+    sys_code_bp->alloced_u8s,sys_code_bp->used_u8s;
+    "$BLACK$Data Heap:%010X Used:%010X$FG$\n",
+    sys_data_bp->alloced_u8s,sys_data_bp->used_u8s;
   } else
-    "$BLACK$Code/Data Heap:%010X Used:%010X $RED$Unused:%010X$FG$\n",
-    sys_code_bp->size*PAGE_SIZE,sys_code_bp->allocated_u8s,UnusedBPMem(sys_code_bp);
+    "$BLACK$Code/Data Heap:%010X Used:%010X$FG$\n",
+    sys_code_bp->alloced_u8s,sys_code_bp->used_u8s;
 
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
@@ -230,8 +228,8 @@ public U0 MemRep()
   }
 
   "$GREEN$Independent Heaps$FG$\n$ID,2$";
-  "$BLACK$dev.uncached_heap:%010X Used:%010X $RED$Unused:%010X$FG$\n",
-  dev.uncached_heap->bp->size*PAGE_SIZE,dev.uncached_heap->used_u8s,UnusedBPMem(dev.uncached_heap->bp);
+  "$BLACK$dev.uncached_heap:%010X Used:%010X$FG$\n",
+  dev.uncached_heap->bp->alloced_u8s,dev.uncached_heap->used_u8s;
   "$ID,-2$\n";
   Preempt(old_preempt);
 }

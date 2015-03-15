@@ -1,6 +1,6 @@
                                   File Utils
 
-File util [C:/Kernel/Dsk/Dsk1b.CPP.Z,192] FilesFind() wildcard mask consists
+File util [C:/Kernel/Dsk/DskB.CPP.Z,184] FilesFind() wildcard mask consists
 of a single base dir with 
 multiple file masks separated by ';'.  The '*' and '?' wildcard chars are 
 accepted.  A '~' indicates an exclusion mask.
@@ -14,25 +14,25 @@ See [C:/Kernel/Dsk/DskStr.CPP.Z,40] FilesFindMatch().
 
 Flags are either text or integer values.
 
-  [C:/Kernel/Adam1a.HPP.Z,2496] FUF_RECURSE		+r Recurse
-  [C:/Kernel/Adam1a.HPP.Z,2505] FUF_SINGLE		+s Single File (Optimization for
+  [C:/Kernel/KernelA.HPP.Z,2496] FUF_RECURSE		+r Recurse
+  [C:/Kernel/KernelA.HPP.Z,2505] FUF_SINGLE		+s Single File (Optimization for
 one file in mask.)
-  [C:/Kernel/Adam1a.HPP.Z,2516] FUF_FLATTEN_TREE	+f use with '+F'.  Just use
+  [C:/Kernel/KernelA.HPP.Z,2516] FUF_FLATTEN_TREE	+f use with '+F'.  Just use
 +F, probably.
-  [C:/Kernel/Adam1a.HPP.Z,2506] FUF_JUST_DIRS		+D just directories
-  [C:/Kernel/Adam1a.HPP.Z,2507] FUF_JUST_FILES	+F just files (Flattens trees)
-  [C:/Kernel/Adam1a.HPP.Z,2514] FUF_CLUSTER_ORDER	+O sort by cluster (move
+  [C:/Kernel/KernelA.HPP.Z,2506] FUF_JUST_DIRS		+D just directories
+  [C:/Kernel/KernelA.HPP.Z,2507] FUF_JUST_FILES	+F just files (Flattens trees)
+  [C:/Kernel/KernelA.HPP.Z,2514] FUF_CLUSTER_ORDER	+O sort by cluster (move
 head one direction)
-  [C:/Kernel/Adam1a.HPP.Z,2508] FUF_JUST_TXT		+T just text files	:
-[C:/Kernel/Adam1a.HPP.Z,2194] FILEMASK_TXT
-  [C:/Kernel/Adam1a.HPP.Z,2509] FUF_JUST_SRC		+S just src files	:
-[C:/Kernel/Adam1a.HPP.Z,2193] FILEMASK_SRC
-  [C:/Kernel/Adam1a.HPP.Z,2510] FUF_JUST_AOT		+A just aot files	:
-[C:/Kernel/Adam1a.HPP.Z,2192] FILEMASK_AOT
-  [C:/Kernel/Adam1a.HPP.Z,2511] FUF_JUST_JIT		+J just jit files	:
-[C:/Kernel/Adam1a.HPP.Z,2191] FILEMASK_JIT
-  [C:/Kernel/Adam1a.HPP.Z,2512] FUF_JUST_GRA		+G just graphic files	:
-[C:/Kernel/Adam1a.HPP.Z,2195] FILEMASK_GRA
+  [C:/Kernel/KernelA.HPP.Z,2508] FUF_JUST_TXT		+T just text files	:
+[C:/Kernel/KernelA.HPP.Z,2194] FILEMASK_TXT
+  [C:/Kernel/KernelA.HPP.Z,2509] FUF_JUST_SRC		+S just src files	:
+[C:/Kernel/KernelA.HPP.Z,2193] FILEMASK_SRC
+  [C:/Kernel/KernelA.HPP.Z,2510] FUF_JUST_AOT		+A just aot files	:
+[C:/Kernel/KernelA.HPP.Z,2192] FILEMASK_AOT
+  [C:/Kernel/KernelA.HPP.Z,2511] FUF_JUST_JIT		+J just jit files	:
+[C:/Kernel/KernelA.HPP.Z,2191] FILEMASK_JIT
+  [C:/Kernel/KernelA.HPP.Z,2512] FUF_JUST_GRA		+G just graphic files	:
+[C:/Kernel/KernelA.HPP.Z,2195] FILEMASK_GRA
 
-See [C:/Kernel/Define1a.CPP.Z,112] ST_FILE_UTIL_FLAGS when used in calling
+See [C:/Kernel/KDefine.CPP.Z,112] ST_FILE_UTIL_FLAGS when used in calling
 program taking text flags.

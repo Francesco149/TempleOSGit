@@ -388,7 +388,7 @@ p4_sib:
 	case IC_ASSIGN_PP:
 	case IC_ASSIGN_MM:
 //this val was stashed during pass012 for pointer arithmetic
-	  tempi->ic_class2=tempi->t.class2; //See [C:/Compiler/Back1b.CPP.Z,1] ic_class2
+	  tempi->ic_class2=tempi->t.class2; //See [C:/Compiler/BackB.CPP.Z,1] ic_class2
 	case IC_ASSIGN:
 	case IC_SHL_EQUAL:
 	case IC_SHR_EQUAL:
@@ -473,12 +473,6 @@ p4_sib:
 	case IC_BR_NOT_BTS:
 	case IC_BR_NOT_BTR:
 	case IC_BR_NOT_BTC:
-	case IC_BR_LBTS:
-	case IC_BR_LBTR:
-	case IC_BR_LBTC:
-	case IC_BR_NOT_LBTS:
-	case IC_BR_NOT_LBTR:
-	case IC_BR_NOT_LBTC:
 	case IC_BT:
 	case IC_BTS:
 	case IC_BTR:
@@ -550,22 +544,12 @@ p4_sib:
 	    }
 	  }
 	  break;
-	case IC_BR_NOT_EQUAL2:
-	case IC_BR_EQUAL_EQUAL2:
-	case IC_BR_GREATER_EQUAL2:
-	case IC_BR_LESS_EQUAL2:
-	case IC_BR_GREATER2:
-	case IC_BR_LESS2:
-	case IC_BR_ZERO:
-	case IC_BR_NOT_ZERO:
+	case IC_BR_EQUAL_EQUAL ...IC_BR_LESS_EQUAL:
+	case IC_BR_EQUAL_EQUAL2...IC_BR_LESS_EQUAL2:
 	case IC_BR_CARRY:
 	case IC_BR_NOT_CARRY:
-	case IC_BR_NOT_EQUAL:
-	case IC_BR_EQUAL_EQUAL:
-	case IC_BR_GREATER_EQUAL:
-	case IC_BR_LESS_EQUAL:
-	case IC_BR_GREATER:
-	case IC_BR_LESS:
+	case IC_BR_ZERO:
+	case IC_BR_NOT_ZERO:
 	  lb=tempi->ic_data;
 	  if (tempi->ic_flags&ICF_PUSH_CMP) {
 	    lb->flags|=CMF_POP_CMP;
@@ -652,12 +636,7 @@ p4_sib:
 	case IC_OR:
 	case IC_XOR:
 	case IC_SUB:
-	case IC_EQUAL_EQUAL:
-	case IC_NOT_EQUAL:
-	case IC_LESS:
-	case IC_GREATER:
-	case IC_LESS_EQUAL:
-	case IC_GREATER_EQUAL:
+	case IC_EQUAL_EQUAL...IC_LESS_EQUAL:
 	case IC_AND_AND:
 	case IC_OR_OR:
 	case IC_XOR_XOR:

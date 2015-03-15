@@ -1,0 +1,199 @@
+Place this file in your /Home directory and modify it.  This version is the 
+default. 
+
+Cd("::/Home");Dir;
+
+`Cd("::/Home");Dir;
+`
+
+Cd("::/Demo");Dir;
+
+`Cd("::/Demo");Dir;
+`
+
+Cd("::/Demo/Graphics");Dir;
+
+`Cd("::/Demo/Graphics");Dir;
+`
+
+Cd("::/Demo/Snd");Dir;
+
+`Cd("::/Demo/Snd");Dir;
+`
+
+Cd("::/Demo/DolDoc");Dir;
+
+`Cd("::/Demo/DolDoc");Dir;
+`
+
+Cd("::/Demo/Games");Dir;
+
+`Cd("::/Demo/Games");Dir;
+`
+
+Cd("::/Demo/MultiCore");Dir;
+
+`Cd("::/Demo/MultiCore");Dir;
+`
+
+Cd("::/Demo/Asm");Dir;
+
+`Cd("::/Demo/Asm");Dir;
+`
+
+Cd("::/Doc");Dir;
+
+`Cd("::/Doc");Dir;
+`
+
+Cd("::/Demo/Lectures");Dir;
+
+`Cd("::/Demo/Lectures");Dir;
+`
+
+Cd("::/Apps");Dir;
+
+`Cd("::/Apps");Dir;
+`
+
+
+If you run in a virtual machine, you can use my files by copying to /Home.  
+Otherwise, learn tricks and tips, but be careful because my set-up is 
+different.
+Cd("::/Demo/AcctExample");Dir;
+
+`Cd("::/Demo/AcctExample");Dir;
+`
+
+
+MakeAll with [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+Cd("::/Kernel");Dir;
+
+`Cd("::/Kernel");Dir;
+`
+
+Cd("::/Compiler");Dir;
+
+`Cd("::/Compiler");Dir;
+`
+
+
+The [C:/Adam.CPP.Z,1] file is compiled during every boot.
+Cd("::/Adam");Dir;
+
+`Cd("::/Adam");Dir;
+`
+    
+
+[C:/Doc/Welcome.TXT.Z,1] Welcome   [C:/Doc/HelpIndex.TXT.Z,1] Help &
+Index	[C:/Doc/DemoIndex.TXT.Z,1] Demo Index
+Take Tour
+`Cd("::/Misc/Tour");;AutoFile("Tour");
+`
+ Key Map
+`KeyMap;View;
+`
+
+RAMReboot("/Kernel.BIN.C");
+`RAMReboot("/Kernel.BIN.C");`
+
+
+
+
+
+
+
+
+
+
+AfterEgypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
+
+
+
+
+
+
+
+
+Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image)
+BugBird <8> (image)
+
+
+
+
+
+
+FlatTops <9> (image)  Golf <10> (image)  Strut <11> (image) TheDead <12>
+(image) DunGen <13> (image)  
+
+
+
+
+
+
+
+EagleDive <14> (image)  Span <15> (image)  RawHide <16> (image) KeepAway <17>
+(image)
+
+
+
+
+
+
+
+
+
+
+X-Caliber <18> (image) ToTheFront <19> (image) Wenceslas <20> (image)
+
+
+
+
+
+
+
+
+
+JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24>
+(image) Vocab <25> (image) 
+
+
+
+
+
+
+BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29>
+(image) MemRep
+`MemRep;View;`
+
+
+The [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit can puppet you.
+<F7> 		Tongues word
+<SHIFT-F7>	Tongues passage
+<F6>		Tongues song
+<SHIFT-F6>	Tongues doodle
+
+<CTRL-r>	Graphic resources 
+<CTRL-l>	Text widgets
+<CTRL-ALT-a>	Ext ASCII from menu
+ALT-digit keys	Ext ASCII from code
+<CTRL-ALT-c>	Break (interrupt)
+<CTRL-ALT-d>	Enter debugger
+<CTRL-ALT-e>	New user terminal
+<CTRL-ALT-f>	Flush screen VGA cache
+<CTRL-ALT-g>	Grid on/off
+<CTRL-ALT-m>	Mute sound
+<CTRL-ALT-s>	Capture screen
+<CTRL-ALT-x>	Kill window
+
+<CTRL-ALT-z>		Zoom on mouse
+<CTRL-ALT-SHIFT-Z>	Unzoom on mouse
+{CTRL-Mouse Left Drag}	Pan window 
+{CTRL-Mouse Right}	Null pan 
+ 
+List all syms in alpabetic order
+`DocMax;Who;View;`
+
+List all syms in numeric order
+`DocMax;Who("+m");View;`
+

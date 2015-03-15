@@ -84,7 +84,7 @@ SYS_IRQ_FAULT::
 	PUSH	U64 CTask.fault_err_code[RSI]
 	PUSH	U64 CTask.fault_num[RSI]
 	MOV	RSI,CTask.rsi[RSI]
-	CALL	&Fault2 	//See [C:/Kernel/Dbg1a.CPP.Z,1] Fault2
+	CALL	&Fault2 	//See [C:/Kernel/KDbg.CPP.Z,1] Fault2
 	JMP	I32 RESTORE_FS_TASK_WITH_KEY_CHECK
 
 SYS_FAULT_ERR_CODE_BITMAP::
@@ -104,7 +104,7 @@ U8 *IntEntryGet(I64 irq)
 }
 
 U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
-{//Set interrupt vector. See [C:/Kernel/Adam1a.HPP.Z,280] IDTET_IRQ.
+{//Set interrupt vector. See [C:/Kernel/KernelA.HPP.Z,278] IDTET_IRQ.
 //See [C:/Demo/Lectures/InterruptDemo.CPP,1].
 //See [C:/Demo/MultiCore/Interrupts.CPP,1].
   I64 fp=fp_new_handler;
@@ -162,7 +162,7 @@ U0 IntInit1()
 {//Interrupt descriptor table part1.
   I64 i;
   CSysLimitBase temp_ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/Adam1a.HPP.Z,3341] CCPU struct
+  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3338] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);

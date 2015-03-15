@@ -1,4 +1,4 @@
-U0 SetBlkDevLockFwding(CBlkDev *bd)
+U0 BlkDevLockFwdingSet(CBlkDev *bd)
 {  //If two blkdevs on same controller, use just one lock
   CBlkDev *bd1;
   I64 i;
@@ -43,7 +43,7 @@ I64 BlkDevAdd(CBlkDev *bd,Bool one_drv,Bool make_free)
 //MAlloced to the same addr and can
 //be assumed to be already formatted.
 //If this line is removed, RAM Drives
-//will be allocated on a just-in-time
+//will be alloced on a just-in-time
 //basis.
       if (BlkDevInit(bd))
 	result++;
@@ -142,7 +142,7 @@ I64 BlkDevAdd(CBlkDev *bd,Bool one_drv,Bool make_free)
       break;
   }
   if (result)
-    SetBlkDevLockFwding(bd);
+    BlkDevLockFwdingSet(bd);
   else
     MemSet(bd,0,sizeof(CBlkDev));
   return result;
@@ -291,6 +291,7 @@ Bool GetBaseUnit(CBlkDev *bd)
 	"\nRetry the ports above or check Windows\n"
 	"system information under I/O ports for\n"
 	"'IDE', 'ATA' or 'SATA'.\n"
+	"In Linux, use 'lspci -v' for ports.\n"
 	"\n\nEnter 4-digit hex I/O Port number.\n"
 	"CD-ROM I/O Port Base0: 0x";
     bd->base0=SysGetI64;

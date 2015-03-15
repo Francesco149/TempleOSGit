@@ -45,15 +45,15 @@ RIGHT-CLICK or <ENTER>
 'M'
   Make CD/DVD ISO file.  This creates a file image of the directory the
   cursor 
-is on.  The name of the ISO file is [C:/Kernel/Adam1a.HPP.Z,2649]
+is on.  The name of the ISO file is [C:/Kernel/KernelA.HPP.Z,2648]
   dsk.dft_iso_filename and can be 
 redefined in your start-up scripts.  You may wish to place it on a different 
 drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/Kernel/Adam1a.HPP.Z,2649] dsk.dft_iso_filename to the drive the cursor is
-  on.
+[C:/Kernel/KernelA.HPP.Z,2648] dsk.dft_iso_filename to the drive the cursor
+  is on.
 
 
 Instructions on Using CD/DVD's
@@ -61,7 +61,7 @@ Instructions on Using CD/DVD's
 file mgr and use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount to define your
   CD/DVD drive.  Place a CD/DVD in the 
 drive and press 'm' when on top of the CD/DVD drive letter to mount the 
-drive.  It will call [C:/Kernel/Dsk/Dsk1a.CPP.Z,407] ChgDsk(), the TempleOS
+drive.  It will call [C:/Kernel/Dsk/DskA.CPP.Z,404] ChgDsk(), the TempleOS
   cmd to mount removable media.
 
 

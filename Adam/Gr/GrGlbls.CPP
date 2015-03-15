@@ -19,7 +19,7 @@ public class CGrGlbls
   I64	highest_uncovered;
   U16	*vga_text_cache;
   I64	pan_text_x,pan_text_y;	//[-7,7]
-  U0	(*fp_final_screen_update)(CDC *dc);
+  U0	(*fp_final_screen_update)(CDC *dc);//Mouse cursor is handled here.
   U0	(*fp_wall_paper)(CTask *task);
   U0	(*fp_draw_input_ptr)(CDC *dc,I64 x,I64 y);
   U0	(*fp_draw_grab_input_ptr)(CDC *dc,I64 x,I64 y,Bool closed);
@@ -40,7 +40,7 @@ public class CGrGlbls
 } gr;
 
 //See [C:/Kernel/KStart.CPP.Z,1] RLf_VGA
-//See [C:/Kernel/KEnd.CPP.Z,67] SysGrInit()
+//See [C:/Kernel/KEnd.CPP.Z,63] SysGrInit()
 //Allows consts to be used instead of vars.
 HashPublic("GR_WIDTH",HTT_DEFINE_STR);;
 HashPublic("GR_HEIGHT",HTT_DEFINE_STR);;

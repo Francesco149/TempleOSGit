@@ -1,4 +1,4 @@
-#help_index "God;Graphics/Sprite"
+#help_index "God;Graphics/Sprite;Sprites"
 
 U0 GodDoodleDraw(CTask *task,CDC *dc)
 {
@@ -6,8 +6,10 @@ U0 GodDoodleDraw(CTask *task,CDC *dc)
   if (Blink) {
     if (god.doodle_done) {
       dc->color=RED;
-      GrPrint(dc,(task->pix_width-FONT_WIDTH*27)>>1,(task->pix_height-FONT_HEIGHT)>>1,
-	"Press <ESC> or <SHIFT-ESC>.");
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*29)>>1,(task->pix_height-3*FONT_HEIGHT)>>1,
+	"Press <ESC> to insert sprite.");
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*39)>>1,(task->pix_height-3*FONT_HEIGHT)>>1+2*FONT_HEIGHT,
+	"Press <SHIFT-ESC> to throw-away sprite.");
     } else {
       dc->color=GREEN;
       GrPrint(dc,(task->pix_width-FONT_WIDTH*25)>>1,(task->pix_height-FONT_HEIGHT)>>1,
@@ -124,7 +126,7 @@ public U8 *GodDoodleSprite()
       for (j=0;j<6;j++) {
 	x=(w-1)*GodDoodleBits(5)/31+w/64;
 	y=(h-1)*GodDoodleBits(5)/31+h/64;
-	switch(GodDoodleBits(2)) {
+	nobound_switch(GodDoodleBits(2)) {
 	  case 0: god.doodle_dc->color=BLACK;	break;
 	  case 1: god.doodle_dc->color=DKGRAY;	break;
 	  case 2: god.doodle_dc->color=LTGRAY;	break;

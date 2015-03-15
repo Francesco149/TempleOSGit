@@ -77,7 +77,7 @@ public CCtrl *CtrlButtonNew(I64 x,I64 y,I64 width=-1,I64 height=-1,
   result->top=y;
   result->right=result->left+width-1;
   result->bottom=result->top+height-1;
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   QueIns(result,Fs->last_ctrl);
   Preempt(old_preempt);
   return result;
@@ -85,7 +85,7 @@ public CCtrl *CtrlButtonNew(I64 x,I64 y,I64 width=-1,I64 height=-1,
 
 public U0 CtrlButtonDel(CCtrl *c)
 {//Free button ctrl.
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   QueRem(c);
   Preempt(old_preempt);
   if (!(c->flags&BTF_DONT_FREE))

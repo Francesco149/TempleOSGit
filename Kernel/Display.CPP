@@ -1,12 +1,12 @@
 U0 RawPutChar(I64 ch)
 {/*For RAW output during boot and in debugger.
 
-See [C:/Adam/Gr/GrScreen.CPP.Z,260] GrUpdateTextFG for
+See [C:/Adam/Gr/GrScreen.CPP.Z,263] GrUpdateTextFG for
 the normal screen text output routine.
 
-See also [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
+See also [C:/Adam/Gr/GrScreen.CPP.Z,409] GrUpdateScreen().
 */
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   I64 i,row,col;
   U8 *ptr,*ptr1,*ptr2;
 
@@ -76,7 +76,7 @@ See also [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
       ptr=ptr1=col+row*GR_WIDTH*FONT_HEIGHT>>3;
       ptr+=VGAM_GRAPHICS;
       ptr1+=text.raw_screen_image; //Write to cached image as well
-      ptr2=&text.font[(ch&255)*FONT_HEIGHT];
+      ptr2=&text.font[ch&255];
       for (i=0;i<FONT_HEIGHT;i++) {
 	*ptr=*ptr1=reverse_bits_table[*ptr2++];
 	ptr+=GR_WIDTH>>3;

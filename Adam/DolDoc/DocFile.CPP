@@ -34,7 +34,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/Adam1a.HPP.Z,1238] flags.
+{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1231] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;
@@ -201,7 +201,7 @@ public Bool DocWrite(CDoc *doc,Bool prompt=FALSE)
 #help_index "DolDoc"
 public U0 DocInsDoc(CDoc *doc=NULL,CDoc *doc2)
 {//Insert copy of doc2 into doc at insert pt, cur_entry.
-//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,336] DocRst
+//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,338] DocRst
   U8 *dst;
   Bool unlock_doc,unlock_doc2=DocLock(doc2);
   CDocEntry *doc_ne,*doc_e=doc2->root.next,*doc_ce;
@@ -244,7 +244,7 @@ public U0 ClipboardDel()
 }
 
 public U0 EdCopyToClipboard(CDoc *doc)
-{//Copy [C:/Kernel/Adam1a.HPP.Z,944] DOCET_SELECTED flagged entries to clipboard.
+{//Copy [C:/Kernel/KernelA.HPP.Z,935] DOCET_SELECTED flagged entries to clipboard.
   CDoc *doc2=sys_clipboard_doc;
   Bool unlock_doc=DocLock(doc),
 	 unlock_doc2=DocLock(doc2);
@@ -362,7 +362,7 @@ public CDoc *DocCopy(CDoc *doc,CDocEntry *start,CDocEntry *end)
 
 public U0 StreamDoc(CDoc *doc)
 {//Inject doc into compile stream. Use inside #exe{}.
-//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,336] DocRst
+//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,338] DocRst
   Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -427,7 +427,7 @@ U0 DocUndoRestore(CDoc *doc)
     DocUnlock(doc);
 }
 
-#help_index "Graphics/Windows BMP Files;Graphics/GRA Files;DolDoc/Output"
+#help_index "Graphics/Windows BMP Files;Graphics/GRA Files;DolDoc/Output;StdOut/DolDoc"
 
 public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
 {//Output txt or graphic file to document.
@@ -447,7 +447,7 @@ public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
     DocBMP(doc,filename,,TRUE);
     result=TRUE;
   } else if (FilesFindMatch(filename,"*.GRA*")) {
-    DocGRAFile(doc,filename);
+    DocGRA(doc,filename);
     result=TRUE;
   }
   if (result)

@@ -16,31 +16,32 @@ developing it.  Or, so you can repeatedly declare a function with a standard
 name, like DrawIt().  This case might occur when the adam task is starting-up 
 loading-in many little utilities.
 
-extern binds a new [C:/Kernel/Adam1a.HPP.Z,656] HTT_FUN or
-[C:/Kernel/Adam1a.HPP.Z,653] HTT_GLBL_VAR sym to an existing sym of the same 
+extern binds a new [C:/Kernel/KernelA.HPP.Z,652] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,649] HTT_GLBL_VAR sym to an existing sym of the same 
 name if it exists in the sym table (just in just-in-time code).  It also can 
 be used to generate a fwd reference.
 
-import binds a new [C:/Kernel/Adam1a.HPP.Z,656] HTT_FUN or
-[C:/Kernel/Adam1a.HPP.Z,653] HTT_GLBL_VAR sym to a sym of the same name 
-imported from the task's sym table at [C:/Kernel/Hash1b.CPP.Z,423] Load()
+import binds a new [C:/Kernel/KernelA.HPP.Z,652] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,649] HTT_GLBL_VAR sym to a sym of the same name 
+imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,179] Load()
 time.  If no sym exists to bind 
-to at [C:/Kernel/Hash1b.CPP.Z,423] Load() time, the code using this sym will
+to at [C:/Kernel/KLoad.CPP.Z,179] Load() time, the code using this sym will
 be left incomplete until the 
 sym is defined.
 
 
-_extern binds a new [C:/Kernel/Adam1a.HPP.Z,656] HTT_FUN or
-[C:/Kernel/Adam1a.HPP.Z,653] HTT_GLBL_VAR sym to an existing sym, of a **diffe
+_extern binds a new [C:/Kernel/KernelA.HPP.Z,652] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,649] HTT_GLBL_VAR sym to an existing sym, of a
+**diffe
 rent** name.  It must exists in the sym table.  Basically, this binds C to
 asm.
 
-_import binds a new [C:/Kernel/Adam1a.HPP.Z,656] HTT_FUN or
-[C:/Kernel/Adam1a.HPP.Z,653] HTT_GLBL_VAR sym to a sym, of a **different**
+_import binds a new [C:/Kernel/KernelA.HPP.Z,652] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,649] HTT_GLBL_VAR sym to a sym, of a **different**
 name 
-imported from the task's sym table at [C:/Kernel/Hash1b.CPP.Z,423] Load()
+imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,179] Load()
 time.  If no sym exists to bind 
-to at [C:/Kernel/Hash1b.CPP.Z,423] Load() time, the code using this sym will
+to at [C:/Kernel/KLoad.CPP.Z,179] Load() time, the code using this sym will
 be left incomplete until the 
 sym is defined.  Basically, this binds C to asm from elsewhere.
 
@@ -157,10 +158,10 @@ force it to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/Kernel/Adam1a.HPP.Z,1469] OPTf_GLBLS_ON_DATA_HEAP.  They may in
+of the [C:/Kernel/KernelA.HPP.Z,1462] OPTf_GLBLS_ON_DATA_HEAP.  They may in
 the future.
 
-* [C:/Kernel/Adam1a.HPP.Z,1466] OPTf_EXTERNS_TO_IMPORTS will treat _extern as
-_import and extern as import.  
+* [C:/Kernel/KernelA.HPP.Z,1459] OPTf_EXTERNS_TO_IMPORTS will treat _extern
+as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.

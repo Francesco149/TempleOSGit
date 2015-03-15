@@ -17,13 +17,12 @@ U8 *kernel_cfg_options="MemInit\0HeapInit\0VarInit\0"
 
 class CKernelCfg
 {
-  U8 *acct_name;
   U8 *dsk_cache_size_exp;
   CDoc *add_dev;
   U8 *boot_rescue_drv_file,*boot_rescue_drv_start;
   Bool opts[CFG_NUM_OPTIONS];
   U8 mem_init_val,heap_init_val,var_init_val,
-     sys_acct_drv,auto_mount_ide_hd_let,auto_mount_ide_cd_let;
+     boot_drv_let,auto_mount_ide_hd_let,auto_mount_ide_cd_let;
   Bool cdrom_ports_pmt;
 };
 
@@ -38,12 +37,12 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	"\n\nIn anticipation of the drives you will\n"
 	"define shortly, enter the drive letter\n"
 	"of the drive with the account directory.\n"
-	"\n($PURPLE$<ENTER>$FG$ for cur drv) Acct Drv:";
+	"\n($PURPLE$<ENTER>$FG$ for cur drv) Home Drv:";
   ch=ToUpper(GetChar);
   if ('A'<=ch<='Z')
-    c->sys_acct_drv=ch;
+    c->boot_drv_let=ch;
   else
-    c->sys_acct_drv=Fs->cur_dv->drv_let;
+    c->boot_drv_let=Drv2Let(Fs->cur_dv);
 
 	"\n\n$BK,1$$PURPLE$Mount drives so they will be present when "
 	"you boot.$FG$$BK,0$\n";
@@ -123,7 +122,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	  if (type==BDT_ATAPI && !*base0_buf) {
 	    c->cdrom_ports_pmt=TRUE;
 	    DocPrint(doc,"dsk.boot_rescue_drv_pmt=GetBaseUnit(bd);");
-	    if (first_drv_num+'A'==c->sys_acct_drv)
+	    if (first_drv_num+'A'==c->boot_drv_let)
 	      make_free=TRUE;
 	  } else
 	    DocPrint(doc,"bd->base0=%s;bd->base1=%s;",
@@ -223,7 +222,6 @@ CKernelCfg *KernelCfgNew()
   CKernelCfg *c=CAlloc(sizeof(CKernelCfg));
 
   c->add_dev=KernelCfgAddDev(c);
-  c->acct_name=GetStr("Start-up Acct ($PURPLE$<ENTER>$FG$ will prompt):");
   c->dsk_cache_size_exp=GetStr(
 "Disk Cache Size in Bytes,\n"
 "gets rounded-up funny,\n"
@@ -237,7 +235,6 @@ U0 KernelCfgDel(CKernelCfg *c)
 {
   DocDel(c->add_dev);
   Free(c->boot_rescue_drv_file);
-  Free(c->acct_name);
   Free(c->dsk_cache_size_exp);
   Free(c);
 }

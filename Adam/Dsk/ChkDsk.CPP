@@ -133,11 +133,11 @@ I64 FAT32ChkDskLst(CDrv *dv,CDirEntry *tempde1,U8 *bits,U32 *bits2,I64 size,I64 
     if (!(tempde1->attr & RS_ATTR_DIR)) {
       i*=bpc;
       if (tempde1->size>i) {
-	PrintErr("Allocated File Too Short:%s\n",tempde1->full_name);
+	PrintErr("Alloced File Too Short:%s\n",tempde1->full_name);
 	errs++;
       }
       if (i>tempde1->size+bpc-1) {
-	PrintWarn("Allocated File Too Long:%s\n",tempde1->full_name);
+	PrintWarn("Alloced File Too Long:%s\n",tempde1->full_name);
 	errs++;
       }
     }

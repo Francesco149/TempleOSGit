@@ -29,7 +29,7 @@ to more memory.  It loads in the rest of TempleOS.
 
 All the boot related stuff for TempleOS is in the /Adam/Boot directory.
 
-[C:/Adam/Boot/InsBoot.CPP.Z,1] InsBoot.CPP	Installs and patches boot sectors
+[C:/Adam/Boot/BootIns.CPP.Z,1] Boot.CPP	Installs and patches boot sectors
 [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD.CPP	CD-ROM Boot sector
 [C:/Adam/Boot/BootMHD.CPP.Z,1] BootMHD.CPP	Master HD boot record
 [C:/Adam/Boot/BootMHD2.CPP.Z,1] BootMHD2.CPP	Stage 2 master boot loader
@@ -58,35 +58,21 @@ they get patched with the LBA, logical block addresses, to load other stuff.
 To update with a new TempleOS kernel, you must create a binary file and patch 
 the boot loader so it knows the LBA blocks to load.  Therefore, you usually 
 recompile the kernel and update the boot sector at the same time.  
-[C:/Adam/Boot/InsBoot.CPP.Z,130] MakeOSDrvBootInstall() does this. 
-[C:/Adam/Boot/InsBoot.CPP.Z,253] MasterBootIntall() will install a master 
+[C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() does this. 
+[C:/Adam/Boot/BootIns.CPP.Z,142] MasterBootIntall() will install a master 
 boot loader.
 
 With TempleOS , the Kernel module loads the Compiler module so it can process 
-start-up scripts and works with srource code from then on.  
-[C:/Kernel/Adam1.CPP.Z,1] is the starting start-up script.  It processes
-(compiles 
-into memory) the stuff in the /Adam directory and ends by #includeing the 
-[C:/Accts/TAD/Adam3.CPP,1] file.
+start-up scripts and works with source code from then on.  [C:/Adam.CPP.Z,1]
+is the 
+starting start-up script.  It processes (compiles into memory) the stuff in 
+the /Adam and /Home directories.
 
 It is possible to reboot without doing a hardware rst.  This is faster.  You 
 might do this when working on Kernel or your start-up scripts when you want 
-them to take effect.  See [C:/Adam/Boot/InsBoot.CPP.Z,58] RAMReboot().
+them to take effect.  See [C:/Adam/Boot/Boot.CPP.Z,41] RAMReboot().
 
  <1> (image)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

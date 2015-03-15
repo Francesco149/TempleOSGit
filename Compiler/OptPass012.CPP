@@ -3,14 +3,14 @@
 Pass#0
 When parsing the arg expressions to a function
 call, there is a call to OptPass012 to determine
-the type of the expression. [C:/Compiler/ExpParser.CPP.Z,1] OptPass012
+the type of the expression. [C:/Compiler/PrsExp.CPP.Z,1] OptPass012
 
 Pass#1&2
 Constant expressions are simplified.
 Eliminated opcodes are set to NOP.
 Types are determined by reconstructing an
 expression tree for operators
-[C:/Kernel/Adam1a.HPP.Z,1567] CIntermediateCode.[C:/Kernel/Adam1a.HPP.Z,1551] CICTreeLinks.
+[C:/Kernel/KernelA.HPP.Z,1560] CIntermediateCode.[C:/Kernel/KernelA.HPP.Z,1544] CICTreeLinks.
 
 Pointer arithmetic size is set, once
 the type is determined.
@@ -95,7 +95,7 @@ args.
 	  OptSetNOP1(tempi);
 	} else {
 	  if (tempi->ic_data) {//was paren
-	    if (!tempi_push->ic_class->ptr_cnt) {
+	    if (!tempi_push->ic_class->ptr_stars_cnt) {
 	      if (tempi_push->ic_class->raw_type==RT_F64)
 		tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	      else
@@ -263,7 +263,7 @@ args.
 	  }
 	  break;
       sub_switch_end:
-	if (!tempi_push->ic_class->ptr_cnt) {
+	if (!tempi_push->ic_class->ptr_stars_cnt) {
 	  if (tempi_push->ic_class->raw_type==RT_F64)
 	    tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	  else
@@ -708,7 +708,7 @@ args.
 	  tempi->ic_class=cmp.internal_types[RT_I64];
 	  break;
       sub_switch_end:
-	if (!tempi_push->ic_class->ptr_cnt) {
+	if (!tempi_push->ic_class->ptr_stars_cnt) {
 	  if (tempi_push->ic_class->raw_type==RT_F64)
 	    tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	  else if (is_unsigned)
@@ -741,48 +741,8 @@ args.
 		tempi->ic_data=tempi1->ic_data(U64)<tempi2->ic_data(U64);
 	      else
 		tempi->ic_data=tempi1->ic_data(I64)<tempi2->ic_data(I64);
-	    } else {
-	      tempi->ic_data=tempi1->ic_data(F64)<
-		    tempi2->ic_data(F64);
-	    }
-	    tempi->ic_code=IC_IMM_I64;
-	  } else {
-	    if (is_unsigned)
-	      tempi->ic_flags|=ICF_USE_UNSIGNED;
-	    if (tempi->ic_class->raw_type==RT_F64)
-	      tempi->ic_flags|=ICF_USE_F64;
-	  }
-	  break;
-	case IC_GREATER:
-	  if (i=OptFixupBinaryOp1(tempi,tempi1,tempi2,&is_unsigned)) {
-	    if (i==FBO1_INT) {
-	      if (is_unsigned)
-		tempi->ic_data=tempi1->ic_data(U64)>tempi2->ic_data(U64);
-	      else
-		tempi->ic_data=tempi1->ic_data(I64)>tempi2->ic_data(I64);
-	    } else {
-	      tempi->ic_data=tempi1->ic_data(F64)>
-		    tempi2->ic_data(F64);
-	    }
-	    tempi->ic_code=IC_IMM_I64;
-	  } else {
-	    if (is_unsigned)
-	      tempi->ic_flags|=ICF_USE_UNSIGNED;
-	    if (tempi->ic_class->raw_type==RT_F64)
-	      tempi->ic_flags|=ICF_USE_F64;
-	  }
-	  break;
-	case IC_LESS_EQUAL:
-	  if (i=OptFixupBinaryOp1(tempi,tempi1,tempi2,&is_unsigned)) {
-	    if (i==FBO1_INT) {
-	      if (is_unsigned)
-		tempi->ic_data=tempi1->ic_data(U64)<=tempi2->ic_data(U64);
-	      else
-		tempi->ic_data=tempi1->ic_data(I64)<=tempi2->ic_data(I64);
-	    } else {
-	      tempi->ic_data=tempi1->ic_data(F64)<=
-		    tempi2->ic_data(F64);
-	    }
+	    } else
+	      tempi->ic_data=tempi1->ic_data(F64)<tempi2->ic_data(F64);
 	    tempi->ic_code=IC_IMM_I64;
 	  } else {
 	    if (is_unsigned)
@@ -798,10 +758,42 @@ args.
 		tempi->ic_data=tempi1->ic_data(U64)>=tempi2->ic_data(U64);
 	      else
 		tempi->ic_data=tempi1->ic_data(I64)>=tempi2->ic_data(I64);
-	    } else {
-	      tempi->ic_data=tempi1->ic_data(F64)>=
-		    tempi2->ic_data(F64);
-	    }
+	    } else
+	      tempi->ic_data=tempi1->ic_data(F64)>=tempi2->ic_data(F64);
+	    tempi->ic_code=IC_IMM_I64;
+	  } else {
+	    if (is_unsigned)
+	      tempi->ic_flags|=ICF_USE_UNSIGNED;
+	    if (tempi->ic_class->raw_type==RT_F64)
+	      tempi->ic_flags|=ICF_USE_F64;
+	  }
+	  break;
+	case IC_GREATER:
+	  if (i=OptFixupBinaryOp1(tempi,tempi1,tempi2,&is_unsigned)) {
+	    if (i==FBO1_INT) {
+	      if (is_unsigned)
+		tempi->ic_data=tempi1->ic_data(U64)>tempi2->ic_data(U64);
+	      else
+		tempi->ic_data=tempi1->ic_data(I64)>tempi2->ic_data(I64);
+	    } else
+	      tempi->ic_data=tempi1->ic_data(F64)>tempi2->ic_data(F64);
+	    tempi->ic_code=IC_IMM_I64;
+	  } else {
+	    if (is_unsigned)
+	      tempi->ic_flags|=ICF_USE_UNSIGNED;
+	    if (tempi->ic_class->raw_type==RT_F64)
+	      tempi->ic_flags|=ICF_USE_F64;
+	  }
+	  break;
+	case IC_LESS_EQUAL:
+	  if (i=OptFixupBinaryOp1(tempi,tempi1,tempi2,&is_unsigned)) {
+	    if (i==FBO1_INT) {
+	      if (is_unsigned)
+		tempi->ic_data=tempi1->ic_data(U64)<=tempi2->ic_data(U64);
+	      else
+		tempi->ic_data=tempi1->ic_data(I64)<=tempi2->ic_data(I64);
+	    } else
+	      tempi->ic_data=tempi1->ic_data(F64)<=tempi2->ic_data(F64);
 	    tempi->ic_code=IC_IMM_I64;
 	  } else {
 	    if (is_unsigned)
@@ -812,7 +804,7 @@ args.
 	  break;
       sub_switch_end:
 	tempi->ic_flags&=~ICF_R_TO_INT;
-	if (!tempi_push->ic_class->ptr_cnt) {
+	if (!tempi_push->ic_class->ptr_stars_cnt) {
 	  if (tempi_push->ic_class->raw_type==RT_F64)
 	    tempi_push->ic_class2=cmp.internal_types[RT_F64];
 	  else if (is_unsigned)
@@ -1098,14 +1090,6 @@ args.
       case IC_BR_NOT_ZERO:
 	tempi_push=OptBrNotZero(lx,tempi);
 	break;
-      case IC_BR_LBTS:
-      case IC_BR_LBTR:
-      case IC_BR_LBTC:
-      case IC_BR_NOT_LBTS:
-      case IC_BR_NOT_LBTR:
-      case IC_BR_NOT_LBTC:
-	tempi->ic_flags|=ICF_LOCK;
-	break;
       case IC_NOP1:
 	if (tempi->ic_flags&ICF_PUSH_RESULT) {
 	  tempi1=tempi;
@@ -1177,18 +1161,8 @@ args.
       case IC_ATAN:
       case IC_BR_CARRY:
       case IC_BR_NOT_CARRY:
-      case IC_BR_NOT_EQUAL:
-      case IC_BR_EQUAL_EQUAL:
-      case IC_BR_GREATER_EQUAL:
-      case IC_BR_LESS_EQUAL:
-      case IC_BR_GREATER:
-      case IC_BR_LESS:
-      case IC_BR_NOT_EQUAL2:
-      case IC_BR_EQUAL_EQUAL2:
-      case IC_BR_GREATER_EQUAL2:
-      case IC_BR_LESS_EQUAL2:
-      case IC_BR_GREATER2:
-      case IC_BR_LESS2:
+      case IC_BR_EQUAL_EQUAL ...IC_BR_LESS_EQUAL:
+      case IC_BR_EQUAL_EQUAL2...IC_BR_LESS_EQUAL2:
       case IC_BR_OR_OR_NOT_ZERO:
       case IC_BR_OR_OR_ZERO:
       case IC_BR_AND_AND_NOT_ZERO:

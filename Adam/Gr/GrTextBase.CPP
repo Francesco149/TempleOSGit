@@ -314,7 +314,7 @@ public _extern _TEXT_LEN_ATTR Bool TextLenAttr(CTask *task,I64 x,I64 y,I64 len,I
 
 public U0 TextPrint(CTask *task,I64 x,I64 y,I64 attr,U8 *fmt,...)
 {//Plot chars. Must be called 30fps in Fs->draw_it() callback.
-//You probably want [C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint() or just [C:/Kernel/StrPrint.CPP.Z,899] Print().
+//You probably want [C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint() or just [C:/Kernel/StrPrint.CPP.Z,896] Print().
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   TextLenStr(task,x,y,StrLen(buf),attr<<8,buf);
   Free(buf);
@@ -368,3 +368,4 @@ public U0 TextRect(I64 l,I64 r,I64 t,I64 b,I64 d)
     for (y=t;y<=b;y++)
       MemSetU32(gr.text_base(U8 *)+(y*TEXT_COLS+l)*sizeof(U32),d,w);
 }
+

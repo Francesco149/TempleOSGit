@@ -1,13 +1,12 @@
-AutoComplete is the BLUE window on the right of the screen. 
-[C:/Adam/AutoComplete/ACMain.CPP.Z,299] ACInit() collects 
-words from all text files in subdirectories.  Normally, the call to
-[C:/Adam/AutoComplete/ACMain.CPP.Z,299] ACInit() 
-is in [C:/Accts/TAD/Adam3eSys.CPP,1] Adam3eSys.CPP.  It provides
-auto-complete for typing, jump-to-code and 
-jump-to-dictionary functionality.
+AutoComplete is the LTGRAY window on the right of the screen. 
+[C:/Adam/AutoComplete/ACMain.CPP.Z,302] ACInit() 
+collects words from all text files in subdirectories.  Normally, the call to 
+[C:/Adam/AutoComplete/ACMain.CPP.Z,302] ACInit() is in
+[D:/Home/AdamSys.CPP,1] AdamSys.CPP.  It provides auto-complete for typing, 
+jump-to-code and jump-to-dictionary functionality.
 
-<ALT-SHIFT-A>	Closes the blue AutoComplete window.
-<ALT-a>		Opens the blue AutoComplete window.
+<ALT-SHIFT-A>	Closes the LTGRAY AutoComplete window.
+<ALT-a>		Opens the LTGRAY AutoComplete window.
 
 <CTRL-SHIFT-F1>	Jumps to the source code for 1st symbol in the window.
 <CTRL-SHIFT-F2>	Jumps to the source code for 2nd symbol in the window.

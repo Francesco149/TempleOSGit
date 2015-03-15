@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 
 #define SPT_MENU	-2
 #define SPT_INS_SCREEN_BITMAP			-3
@@ -97,18 +97,18 @@ U0 SpriteSetSettings(CDC *dc,CSprite *root,I64 cur_elem_num,CColorROPU32 *_color
   while (cur_elem_num>0 && tempg!=root) {
     switch (tempg->type) {
       case SPT_COLOR:
-	dc->color=*_color=tempg->color;
+	dc->color=*_color=tempg->c.color;
 	break;
       case SPT_DITHER_COLOR:
 	dc->color=*_color=
-	       tempg->dither_color.u8[0]|
-	       tempg->dither_color.u8[1]<<COLORROP_BITS|ROPF_DITHER;
+	       tempg->d.dither_color.u8[0]|
+	       tempg->d.dither_color.u8[1]<<COLORROP_BITS|ROPF_DITHER;
 	break;
       case SPT_WIDTH:
-	dc->pen_width=*_width=tempg->width;
+	dc->pen_width=*_width=tempg->w.width;
 	break;
       case SPT_PLANAR_SYMMETRY:
-	if (GrSetSymmetry3(dc,tempg->x1+x,tempg->y1+y,0,tempg->x2+x,tempg->y2+y,0,tempg->x2+x,tempg->y2+y,1))
+	if (GrSetSymmetry3(dc,tempg->pp.x1+x,tempg->pp.y1+y,0,tempg->pp.x2+x,tempg->pp.y2+y,0,tempg->pp.x2+x,tempg->pp.y2+y,1))
 	  dc->flags|=DCF_SYMMETRY;
 	else
 	  dc->flags&=~DCF_SYMMETRY;
@@ -191,7 +191,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
       switch (eletype) {
 	case SPT_FLOOD_FILL:
 	case SPT_FLOOD_FILL_NOT:
-	  AcctOneTimePopUp(ARf_FLOODFILL,
+	  RegOneTimePopUp(ARf_FLOODFILL,
 		ST_WARN_ST "This is affected by what's underneath\n"
 		"when it is drawn.  You will probably want to\n"
 		"convert it to a bitmap.\n\n"
@@ -200,7 +200,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 		"brush strokes look cool.\n");
 	  break;
 	case SPT_PLANAR_SYMMETRY:
-	  AcctOneTimePopUp(ARf_PLANAR_SYMMETRY,
+	  RegOneTimePopUp(ARf_PLANAR_SYMMETRY,
 		"Right-click to turn-off symmetry.\n");
 	  break;
       }
@@ -229,7 +229,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  color=i;
 	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
 	  tempg->type=SPT_COLOR;
-	  tempg->color=color;
+	  tempg->c.color=color;
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
 	  cur_elem_num++;
@@ -244,7 +244,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  color=i;
 	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_DITHER_COLOR));
 	  tempg->type=SPT_DITHER_COLOR;
-	  tempg->dither_color=color.c0.color|color.c1.color<<8;
+	  tempg->d.dither_color=color.c0.color|color.c1.color<<8;
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
 	  cur_elem_num++;
@@ -270,24 +270,24 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 
 	tempg1=insert_pt;
 	if (tempg1!=root && tempg1->type==SPT_MESH)
-	  old_mesh=&tempg1->vertex_cnt;
+	  old_mesh=&tempg1->mu.vertex_cnt;
 	else if (tempg1!=root && tempg1->type==SPT_SHIFTABLE_MESH) {
-	  x1=tempg1->x1;
-	  y1=tempg1->y1;
-	  z1=tempg1->z1;
-	  p=(&tempg1->shiftable_tri_cnt)(U8 *)+sizeof(I32);
-	  for (i=0;i<tempg1->shiftable_vertex_cnt;i++,p++) {
+	  x1=tempg1->pmu.x;
+	  y1=tempg1->pmu.y;
+	  z1=tempg1->pmu.z;
+	  p=&tempg1->pmu.u;
+	  for (i=0;i<tempg1->pmu.vertex_cnt;i++,p++) {
 	    p->x+=x1;
 	    p->y+=y1;
 	    p->z+=z1;
 	  }
-	  old_mesh=&tempg1->shiftable_vertex_cnt;
+	  old_mesh=&tempg1->pmu.vertex_cnt;
 	} else
 	  old_mesh=NULL;
 	if (mesh=SpriteMeshEd(old_mesh,&size,TRUE)) {
 	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_MESH)-sizeof(I32)*2+size);
 	  tempg->type=SPT_MESH;
-	  MemCpy(&tempg->vertex_cnt,mesh,size);
+	  MemCpy(&tempg->mu.vertex_cnt,mesh,size);
 	  Free(mesh);
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
@@ -299,11 +299,11 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  } else
 	    cur_elem_num++;
 	} else if (old_mesh && tempg1->type==SPT_SHIFTABLE_MESH) {
-	  x1=tempg1->x1;
-	  y1=tempg1->y1;
-	  z1=tempg1->z1;
-	  p=(&tempg1->shiftable_tri_cnt)(U8 *)+sizeof(I32);
-	  for (i=0;i<tempg1->shiftable_vertex_cnt;i++,p++) {
+	  x1=tempg1->pmu.x;
+	  y1=tempg1->pmu.y;
+	  z1=tempg1->pmu.z;
+	  p=&tempg1->pmu.u;
+	  for (i=0;i<tempg1->pmu.vertex_cnt;i++,p++) {
 	    p->x-=x1;
 	    p->y-=y1;
 	    p->z-=z1;
@@ -328,7 +328,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	      "bitmap.\n");
 	doc_e->de_flags=old_de_flags;
 	Fs->win_inhibit=WIG_TASK_DFT|WIF_FOCUS_TASK_IP_L|WIF_FOCUS_TASK_IP_R|
-	  WIF_FOCUS_TASK_BORDER-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL;
+	      WIF_FOCUS_TASK_BORDER-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL;
 	break;
       case SPT_BITMAP:
 	doc_e->de_flags|=DOCEF_DONT_DRAW;
@@ -363,7 +363,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	}
 	doc_e->de_flags=old_de_flags;
 	Fs->win_inhibit=WIG_TASK_DFT|WIF_FOCUS_TASK_IP_L|WIF_FOCUS_TASK_IP_R|
-	  WIF_FOCUS_TASK_BORDER-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL;
+	      WIF_FOCUS_TASK_BORDER-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL;
 	break;
       case SPT_WIDTH:
 	doc_e->de_flags|=DOCEF_DONT_DRAW;
@@ -372,7 +372,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  width=i;
 	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_WIDTH));
 	  tempg->type=SPT_WIDTH;
-	  tempg->width=width;
+	  tempg->w.width=width;
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
 	  cur_elem_num++;
@@ -415,9 +415,9 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  } while (msg_code!=MSG_IP_L_UP);
 	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_TEXT)+StrLen(st)+1);
 	  tempg->type=SPT_TEXT;
-	  tempg->x1=x1-x;
-	  tempg->y1=y1-y;
-	  StrCpy(tempg->st,st);
+	  tempg->ps.x1=x1-x;
+	  tempg->ps.y1=y1-y;
+	  StrCpy(tempg->ps.st,st);
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
 	  cur_elem_num++;
@@ -441,9 +441,9 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  } while (msg_code!=MSG_IP_L_UP);
 	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_TEXT_BOX)+StrLen(st)+1);
 	  tempg->type=SPT_TEXT_BOX;
-	  tempg->x1=x1-x;
-	  tempg->y1=y1-y;
-	  StrCpy(tempg->st,st);
+	  tempg->ps.x1=x1-x;
+	  tempg->ps.y1=y1-y;
+	  StrCpy(tempg->ps.st,st);
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
 	  cur_elem_num++;
@@ -467,9 +467,9 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	  } while (msg_code!=MSG_IP_L_UP);
 	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_TEXT_DIAMOND)+StrLen(st)+1);
 	  tempg->type=SPT_TEXT_DIAMOND;
-	  tempg->x1=x1-x;
-	  tempg->y1=y1-y;
-	  StrCpy(tempg->st,st);
+	  tempg->ps.x1=x1-x;
+	  tempg->ps.y1=y1-y;
+	  StrCpy(tempg->ps.st,st);
 	  QueIns(tempg,insert_pt->last);
 	  SpriteEdUpdate(doc,tempb,root);
 	  cur_elem_num++;
@@ -509,13 +509,21 @@ ei_restart:
 	  case CH_SHIFT_ESC:
 	    result=GE_ABORT;
 	    goto ei_done;
-	  case 'c': //EyeDropper
+	  case 'c': //eye-dropper
 	    dc3=DCCaptureScreen(FALSE);
 	    color=GrPeek(dc3,ip.pos.x,ip.pos.y)^15;//Mouse cursor is XORed.
 	    DCDel(dc3);
 	    tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
 	    tempg->type=SPT_COLOR;
-	    tempg->color=color;
+	    tempg->c.color=color;
+	    QueIns(tempg,insert_pt->last);
+	    SpriteEdUpdate(doc,tempb,root);
+	    cur_elem_num++;
+	    break;
+	  case 't': //Set to transparent color
+	    tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
+	    tempg->type=SPT_COLOR;
+	    tempg->c.color=TRANSPARENT;
 	    QueIns(tempg,insert_pt->last);
 	    SpriteEdUpdate(doc,tempb,root);
 	    cur_elem_num++;
@@ -576,10 +584,10 @@ ei_restart:
 		tempg->type=SPT_PLANAR_SYMMETRY;
 		break;
 	    sub_switch_end:
-	      tempg->x1=x1-x;
-	      tempg->y1=y1-y;
-	      tempg->x2=x2-x;
-	      tempg->y2=y2-y;
+	      tempg->pp.x1=x1-x;
+	      tempg->pp.y1=y1-y;
+	      tempg->pp.x2=x2-x;
+	      tempg->pp.y2=y2-y;
 	      break;
 	    case SPT_RECT:
 	      xx1=a1; yy1=a2;
@@ -606,10 +614,10 @@ ei_restart:
 	      GrRect3(dc,xx1,yy1,0,xx2-xx1,yy2-yy1);
 	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_RECT));
 	      tempg->type=SPT_RECT;
-	      tempg->x1=xx1-x;
-	      tempg->y1=yy1-y;
-	      tempg->x2=xx2-x;
-	      tempg->y2=yy2-y;
+	      tempg->pp.x1=xx1-x;
+	      tempg->pp.y1=yy1-y;
+	      tempg->pp.x2=xx2-x;
+	      tempg->pp.y2=yy2-y;
 	      break;
 	    case SPT_INS_SCREEN_BITMAP:
 	    case SPT_INS_TRANSPARENT_SCREEN_BITMAP:
@@ -640,10 +648,10 @@ ei_restart:
 	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_BITMAP)+
 		    ((xx2-xx1+7)&~7)*(yy2-yy1));
 	      tempg->type=SPT_BITMAP;
-	      tempg->width=xx2-xx1;
-	      tempg->height=yy2-yy1;
-	      tempg->x2=0;
-	      tempg->y2=0;
+	      tempg->pwhu.width=xx2-xx1;
+	      tempg->pwhu.height=yy2-yy1;
+	      tempg->pwhu.x1=0;
+	      tempg->pwhu.y1=0;
 	      SpriteScreenInit(dc,x,y);
 	      i=gr.screen_zoom;
 	      GrScaleZoom(1.0/i);
@@ -656,7 +664,7 @@ ei_restart:
 	      if (eletype==SPT_INS_TRANSPARENT_SCREEN_BITMAP)
 		DCColorChg(img,bm_bkcolor);
 	      GrScaleZoom(i);
-	      MemCpy(tempg(U8 *)+offset(CSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
+	      MemCpy(&tempg->pwhu.u,img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 	      DCDel(img);
 	      DCDel(dc3);
 	      dc2->pen_width=old_width;
@@ -676,9 +684,9 @@ ei_restart:
 	      GrCircle3(dc,x1,y1,0,Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2)));
 	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_CIRCLE));
 	      tempg->type=SPT_CIRCLE;
-	      tempg->x1=x1-x;
-	      tempg->y1=y1-y;
-	      tempg->x2=Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2));
+	      tempg->pr.x1=x1-x;
+	      tempg->pr.y1=y1-y;
+	      tempg->pr.radius=Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2));
 	      break;
 	    case SPT_ELLIPSE:
 	      do {
@@ -692,37 +700,37 @@ ei_restart:
 	      } while (msg_code!=MSG_IP_L_UP);
 	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_ELLIPSE));
 	      tempg->type=SPT_ELLIPSE;
-	      tempg->x2=(x1+x2)>>1-x;
-	      tempg->y2=(y1+y2)>>1-y;
-	      tempg->width =AbsI64(x1-x2)>>1;
-	      tempg->height=AbsI64(y1-y2)>>1;
-	      angle2=Arg(x2-(tempg->x2+x),y2-(tempg->y2+y));
-	      if (tempg->width<tempg->height)
+	      tempg->pwha.x1=(x1+x2)>>1-x;
+	      tempg->pwha.y1=(y1+y2)>>1-y;
+	      tempg->pwha.width =AbsI64(x1-x2)>>1;
+	      tempg->pwha.height=AbsI64(y1-y2)>>1;
+	      angle2=Arg(x2-(tempg->pwha.x1+x),y2-(tempg->pwha.y1+y));
+	      if (tempg->pwha.width<tempg->pwha.height)
 		angle2-=pi/2.0;
 	      do {
-		angle1=Arg(x2-(tempg->x2+x),y2-(tempg->y2+y));
-		if (tempg->width>=tempg->height)
-		  tempg->rot_angle=-(angle1-angle2);
+		angle1=Arg(x2-(tempg->pwha.x1+x),y2-(tempg->pwha.y1+y));
+		if (tempg->pwha.width>=tempg->pwha.height)
+		  tempg->pwha.angle=-(angle1-angle2);
 		else
-		  tempg->rot_angle=-(angle1-angle2)+pi/2.0;
+		  tempg->pwha.angle=-(angle1-angle2)+pi/2.0;
 		dc->color=color&COLORROP_NO_ROP0_MASK;
-		GrEllipse3(dc,tempg->x2+x,tempg->y2+y,0,
-		      tempg->width,tempg->height,tempg->rot_angle);
+		GrEllipse3(dc,tempg->pwha.x1+x,tempg->pwha.y1+y,0,
+		      tempg->pwha.width,tempg->pwha.height,tempg->pwha.angle);
 		msg_code=GetMsg(&a1,&a2,
 		      1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 		SpriteScreenInit(dc,x,y);
 		x2=a1; y2=a2;
 	      } while (msg_code!=MSG_IP_L_UP);
 
-	      angle1=Arg(x2-(tempg->x2+x),y2-(tempg->y2+y));
-	      if (tempg->width>=tempg->height)
-		tempg->rot_angle=-(angle1-angle2);
+	      angle1=Arg(x2-(tempg->pwha.x1+x),y2-(tempg->pwha.y1+y));
+	      if (tempg->pwha.width>=tempg->pwha.height)
+		tempg->pwha.angle=-(angle1-angle2);
 	      else
-		tempg->rot_angle=-(angle1-angle2)+pi/2.0;
+		tempg->pwha.angle=-(angle1-angle2)+pi/2.0;
 
 	      dc->color=color&COLORROP_NO_ROP0_MASK;
-	      GrEllipse3(dc,tempg->x2+x,tempg->y2+y,0,
-		    tempg->width,tempg->height,tempg->rot_angle);
+	      GrEllipse3(dc,tempg->pwha.x1+x,tempg->pwha.y1+y,0,
+		    tempg->pwha.width,tempg->pwha.height,tempg->pwha.angle);
 	      break;
 	    case SPT_POLYGON:
 	      eletype=SPT_MENU;
@@ -741,115 +749,128 @@ ei_restart:
 	      } while (msg_code!=MSG_IP_L_UP);
 	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_POLYGON));
 	      tempg->type=SPT_POLYGON;
-	      tempg->x2=(x1+x2)>>1-x;
-	      tempg->y2=(y1+y2)>>1-y;
-	      tempg->width =AbsI64(x1-x2)>>1;
-	      tempg->height=AbsI64(y1-y2)>>1;
-	      tempg->sides=i;
-	      angle2=Arg(x2-(tempg->x2+x),y2-(tempg->y2+y));
-	      if (tempg->width<tempg->height)
+	      tempg->pwhas.x1=(x1+x2)>>1-x;
+	      tempg->pwhas.y1=(y1+y2)>>1-y;
+	      tempg->pwhas.width =AbsI64(x1-x2)>>1;
+	      tempg->pwhas.height=AbsI64(y1-y2)>>1;
+	      tempg->pwhas.sides=i;
+	      angle2=Arg(x2-(tempg->pwhas.x1+x),y2-(tempg->pwhas.y1+y));
+	      if (tempg->pwhas.width<tempg->pwhas.height)
 		angle2-=pi/2.0;
 	      do {
-		angle1=Arg(x2-(tempg->x2+x),y2-(tempg->y2+y));
-		if (tempg->width>=tempg->height)
-		  tempg->rot_angle=-(angle1-angle2);
+		angle1=Arg(x2-(tempg->pwhas.x1+x),y2-(tempg->pwhas.y1+y));
+		if (tempg->pwhas.width>=tempg->pwhas.height)
+		  tempg->pwhas.angle=-(angle1-angle2);
 		else
-		  tempg->rot_angle=-(angle1-angle2)+pi/2.0;
+		  tempg->pwhas.angle=-(angle1-angle2)+pi/2.0;
 		dc->color=color&COLORROP_NO_ROP0_MASK;
-		GrRegPoly3(dc,tempg->x2+x,tempg->y2+y,0,
-		      tempg->width,tempg->height,tempg->sides,tempg->rot_angle);
+		GrRegPoly3(dc,tempg->pwhas.x1+x,tempg->pwhas.y1+y,0,
+		      tempg->pwhas.width,tempg->pwhas.height,
+		      tempg->pwhas.sides,tempg->pwhas.angle);
 		msg_code=GetMsg(&a1,&a2,
 		      1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 		SpriteScreenInit(dc,x,y);
 		x2=a1; y2=a2;
 	      } while (msg_code!=MSG_IP_L_UP);
 
-	      angle1=Arg(x2-(tempg->x2+x),y2-(tempg->y2+y));
-	      if (tempg->width>=tempg->height)
-		tempg->rot_angle=-(angle1-angle2);
+	      angle1=Arg(x2-(tempg->pwhas.x1+x),y2-(tempg->pwhas.y1+y));
+	      if (tempg->pwhas.width>=tempg->pwhas.height)
+		tempg->pwhas.angle=-(angle1-angle2);
 	      else
-		tempg->rot_angle=-(angle1-angle2)+pi/2.0;
+		tempg->pwhas.angle=-(angle1-angle2)+pi/2.0;
 
 	      dc->color=color&COLORROP_NO_ROP0_MASK;
-	      GrRegPoly3(dc,tempg->x2+x,tempg->y2+y,0,
-		    tempg->width,tempg->height,tempg->sides,tempg->rot_angle);
+	      GrRegPoly3(dc,tempg->pwhas.x1+x,tempg->pwhas.y1+y,0,
+		    tempg->pwhas.width,tempg->pwhas.height,tempg->pwhas.sides,
+		    tempg->pwhas.angle);
 	      break;
 	    case SPT_PT:
 	    case SPT_FLOOD_FILL:
 	    case SPT_FLOOD_FILL_NOT:
 	      tempg=MAlloc(SpriteElemQuedBaseSize(eletype));
 	      tempg->type=eletype;
-	      tempg->x1=x1-x;
-	      tempg->y1=y1-y;
+	      tempg->p.x1=x1-x;
+	      tempg->p.y1=y1-y;
 	      break;
 	    sub_switch_start:
 	      QueInit(&root2);
 	      num=0;
-	      x3=a1-x; y3=a2-y;
 	      do {
 		do {
 		  dc->color=color&COLORROP_NO_ROP0_MASK;
-		  GrLine3(dc,x1,y1,0,x2,y2,0);
+		  if (num)
+		    GrLine3(dc,x1,y1,0,x2,y2,0);
 		  msg_code=GetMsg(&a1,&a2,
 			1<<MSG_IP_L_UP+1<<MSG_IP_MOVE+
 			1<<MSG_IP_R_UP);
 		  dc->color=TRANSPARENT;
-		  GrLine3(dc,x1,y1,0,x2,y2,0);
+		  if (num)
+		    GrLine3(dc,x1,y1,0,x2,y2,0);
 		  x2=a1; y2=a2;
 		} while (msg_code!=MSG_IP_L_UP && msg_code!=MSG_IP_R_UP);
 		dc->color=color&COLORROP_NO_ROP0_MASK;
 		if (msg_code==MSG_IP_L_UP) {
-		  GrLine3(dc,x1,y1,0,x2,y2,0);
+		  if (num)
+		    GrLine3(dc,x1,y1,0,x2,y2,0);
 		  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_PT));
 		  tempg->type=SPT_PT;
-		  tempg->x1=x2-x;
-		  tempg->y1=y2-y;
+		  tempg->p.x1=x2-x;
+		  tempg->p.y1=y2-y;
 		  QueIns(tempg,root2.last);
 		  x1=x2;y1=y2;
 		  num++;
 		}
 	      } while (msg_code!=MSG_IP_R_UP);
-	      if (!num) {
-		tempg=NULL;
-		break;
-	      }
 	      case SPT_POLYLINE:
-		tempg=CAlloc(SpriteElemQuedBaseSize(SPT_POLYLINE)+
-		      (num+1)<<1*sizeof(I32));
-		ptr=&tempg->y1;
-		tempg2=root2.next;
-		ptr[0]=x3;
-		ptr[1]=y3;
-		ptr+=2;
-		for (i=0;i<num;i++) {
-		  tempg1=tempg2->next;
-		  ptr[i<<1]=tempg2->x1;
-		  ptr[i<<1+1]=tempg2->y1;
-		  Free(tempg2);
-		  tempg2=tempg1;
+		if (num>1) {
+		  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_POLYLINE)+num*sizeof(CD2I32));
+		  ptr=&tempg->nu.u;
+		  tempg2=root2.next;
+		  for (i=0;i<num;i++) {
+		    tempg1=tempg2->next;
+		    ptr[i<<1]=tempg2->p.x1;
+		    ptr[i<<1+1]=tempg2->p.y1;
+		    Free(tempg2);
+		    tempg2=tempg1;
+		  }
+		  tempg->type=SPT_POLYLINE;
+		  tempg->nu.num=num;
+		} else {
+		  tempg2=root2.next;
+		  for (i=0;i<num;i++) {
+		    tempg1=tempg2->next;
+		    Free(tempg2);
+		    tempg2=tempg1;
+		  }
+		  tempg=NULL;
 		}
-		tempg->type=SPT_POLYLINE;
-		tempg->num=num+1;
 		break;
 	      case SPT_BSPLINE2:
 	      case SPT_BSPLINE3:
 	      case SPT_BSPLINE2_CLOSED:
 	      case SPT_BSPLINE3_CLOSED:
-		tempg=CAlloc(SpriteElemQuedBaseSize(SPT_POLYLINE)+
-		      (num+1)*sizeof(CD3I32));
-		p=&tempg->y1;
-		tempg2=root2.next;
-		p[0].x=x3;
-		p[0].y=y3;
-		for (i=1;i<=num;i++) {
-		  tempg1=tempg2->next;
-		  p[i].x=tempg2->x1;
-		  p[i].y=tempg2->y1;
-		  Free(tempg2);
-		  tempg2=tempg1;
+		if (num>2) {
+		  tempg=CAlloc(SpriteElemQuedBaseSize(eletype)+num*sizeof(CD3I32));
+		  p=&tempg->nu.u;
+		  tempg2=root2.next;
+		  for (i=0;i<num;i++) {
+		    tempg1=tempg2->next;
+		    p[i].x=tempg2->p.x1;
+		    p[i].y=tempg2->p.y1;
+		    Free(tempg2);
+		    tempg2=tempg1;
+		  }
+		  tempg->type=eletype;
+		  tempg->nu.num=num;
+		} else {
+		  tempg2=root2.next;
+		  for (i=0;i<num;i++) {
+		    tempg1=tempg2->next;
+		    Free(tempg2);
+		    tempg2=tempg1;
+		  }
+		  tempg=NULL;
 		}
-		tempg->type=eletype;
-		tempg->num=num+1;
 		break;
 	    sub_switch_end:
 	      break;
@@ -858,8 +879,7 @@ ei_restart:
 	      x3=a1-x; y3=a2-y;
 	      dc->color=color&COLORROP_NO_ROP0_MASK;
 	      do {
-		msg_code=GetMsg(&a1,&a2,
-		      1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
+		msg_code=GetMsg(&a1,&a2,1<<MSG_IP_L_UP+1<<MSG_IP_MOVE);
 		x2=a1; y2=a2;
 		GrLine3(dc,x1,y1,0,x2,y2,0);
 		Line(&root2,x1-x,y1-y,0,x2-x,y2-y,0,&SpritePolyPtPlot);
@@ -871,38 +891,37 @@ ei_restart:
 	      x1=x3;y1=y3;
 	      while (tempg!=&root2) {
 		tempg1=tempg->next;
-		if (tempg->x1==x1 && tempg->y1==y1) {
+		if (tempg->p.x1==x1 && tempg->p.y1==y1) {
 		  QueRem(tempg);
 		  Free(tempg);
 		} else {
 		  num++;
-		  x1=tempg->x1;
-		  y1=tempg->y1;
+		  x1=tempg->p.x1;
+		  y1=tempg->p.y1;
 		}
 		tempg=tempg1;
 	      }
 
 	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_POLYPT)+(num*3+7)>>3);
-	      ptr=&tempg->y1;
-	      ptr[0]=x3;
-	      ptr[1]=y3;
-	      ptr+=2;
+	      tempg->npu.x=x3;
+	      tempg->npu.y=y3;
+	      ptr=&tempg->npu.u;
 	      x1=x3;y1=y3;
 	      i=0;
 	      tempg2=root2.next;
 	      while (tempg2!=&root2) {
 		tempg1=tempg2->next;
 		BFieldOrU32(ptr,i,
-		      polypt_map[SignI64(tempg2->x1-x1)+1+
-		      3*(SignI64(tempg2->y1-y1)+1)]);
+		      polypt_map[SignI64(tempg2->p.x1-x1)+1+
+		      3*(SignI64(tempg2->p.y1-y1)+1)]);
 		i+=3;
-		x1=tempg2->x1;y1=tempg2->y1;
+		x1=tempg2->p.x1;y1=tempg2->p.y1;
 		QueRem(tempg2);
 		Free(tempg2);
 		tempg2=tempg1;
 	      }
 	      tempg->type=SPT_POLYPT;
-	      tempg->num=num;
+	      tempg->npu.num=num;
 	      break;
 	  sub_switch_end:
 	    if (tempg) {
@@ -939,13 +958,13 @@ ei_bitmap:
 	    tempg=CAlloc(SpriteElemQuedBaseSize(SPT_BITMAP)+
 		  ((xx2-xx1+7)&~7)*(yy2-yy1));
 	    tempg->type=SPT_BITMAP;
-	    tempg->width=xx2-xx1;
-	    tempg->height=yy2-yy1;
-	    tempg->x2=xx1-x;
-	    tempg->y2=yy1-y;
-	    img=DCNew(tempg->width,tempg->height,Fs);
+	    tempg->pwhu.width=xx2-xx1;
+	    tempg->pwhu.height=yy2-yy1;
+	    tempg->pwhu.x1=xx1-x;
+	    tempg->pwhu.y1=yy1-y;
+	    img=DCNew(tempg->pwhu.width,tempg->pwhu.height,Fs);
 	    img->color=bm_bkcolor;
-	    GrRect(img,0,0,tempg->width,tempg->height);
+	    GrRect(img,0,0,tempg->pwhu.width,tempg->pwhu.height);
 	    tempg1=insert_pt;
 	    if (tempg1==root || tempg1->type!=SPT_BITMAP) {
 	      SpriteSetSettings(img,root,0,&color,&width,-(xx1-x),-(yy1-y));
@@ -955,12 +974,12 @@ ei_bitmap:
 	      cur_elem_num=1;
 	    } else {
 	      SpriteSetSettings(img,root,cur_elem_num,&color,&width,-(xx1-x),-(yy1-y));
-	      Sprite3(img,-(xx1-x),-(yy1-y),0,tempg1(U8 *)+offset(CSprite.start),TRUE);
+	      Sprite3(img,-(xx1-x),-(yy1-y),0,&tempg1->start,TRUE);
 	      insert_pt=tempg1->next;
 	      QueRem(tempg1);
 	      Free(tempg1);
 	    }
-	    MemCpy(tempg(U8 *)+offset(CSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
+	    MemCpy(&tempg->pwhu.u,img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 
 	    switch (i=SpriteBitMapEd(doc,doc_e,dc,&xx1,&yy1,&xx2,&yy2,&img,bm_bkcolor)) {
 	      case GE_EXIT:
@@ -969,11 +988,11 @@ ei_bitmap:
 		tempg=CAlloc(SpriteElemQuedBaseSize(SPT_BITMAP)+
 		      ((xx2-xx1+7)&~7)*(yy2-yy1));
 		tempg->type=eletype;
-		tempg->width=xx2-xx1;
-		tempg->height=yy2-yy1;
-		tempg->x2=xx1-x;
-		tempg->y2=yy1-y;
-		MemCpy(tempg(U8 *)+offset(CSprite.linespeed),img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
+		tempg->pwhu.width=xx2-xx1;
+		tempg->pwhu.height=yy2-yy1;
+		tempg->pwhu.x1=xx1-x;
+		tempg->pwhu.y1=yy1-y;
+		MemCpy(&tempg->pwhu.u,img->body,((xx2-xx1+7)&~7)*(yy2-yy1));
 		break;
 	    }
 	    doc_e->de_flags=old_de_flags;
@@ -999,25 +1018,25 @@ ei_shiftable_mesh:
 	      x1=-(a1-x);
 	      y1=-(a2-y);
 	      z1=z;
-	      p=&tempg1->x2;
-	      for (i=0;i<tempg1->vertex_cnt;i++,p++) {
+	      p=&tempg1->mu.u;
+	      for (i=0;i<tempg1->mu.vertex_cnt;i++,p++) {
 		p->x+=x1;
 		p->y+=y1;
 		p->z+=z1;
 	      }
-	      old_mesh=&tempg1->vertex_cnt;
+	      old_mesh=&tempg1->mu.vertex_cnt;
 	    } else if (tempg1!=root && tempg1->type==SPT_SHIFTABLE_MESH) {
-	      z=-tempg1->z1;
-	      x1=tempg1->x1-(a1-x);
-	      y1=tempg1->y1-(a2-y);
-	      z1=tempg1->z1+z;
-	      p=(&tempg1->shiftable_tri_cnt)(U8 *)+sizeof(I32);
-	      for (i=0;i<tempg1->shiftable_vertex_cnt;i++,p++) {
+	      z=-tempg1->pmu.z;
+	      x1=tempg1->pmu.x-(a1-x);
+	      y1=tempg1->pmu.y-(a2-y);
+	      z1=tempg1->pmu.z+z;
+	      p=&tempg1->pmu.u;
+	      for (i=0;i<tempg1->pmu.vertex_cnt;i++,p++) {
 		p->x+=x1;
 		p->y+=y1;
 		p->z+=z1;
 	      }
-	      old_mesh=&tempg1->shiftable_vertex_cnt;
+	      old_mesh=&tempg1->pmu.vertex_cnt;
 	    } else {
 	      z=0;
 	      old_mesh=NULL;
@@ -1025,11 +1044,11 @@ ei_shiftable_mesh:
 	    if (mesh=SpriteMeshEd(old_mesh,&size,TRUE)) {
 	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_SHIFTABLE_MESH)-sizeof(I32)*2+size);
 	      tempg->type=SPT_SHIFTABLE_MESH;
-	      MemCpy(&tempg->shiftable_vertex_cnt,mesh,size);
+	      MemCpy(&tempg->pmu.vertex_cnt,mesh,size);
 	      Free(mesh);
-	      tempg->x1=a1-x;
-	      tempg->y1=a2-y;
-	      tempg->z1=-z;
+	      tempg->pmu.x=a1-x;
+	      tempg->pmu.y=a2-y;
+	      tempg->pmu.z=-z;
 	      QueIns(tempg,insert_pt->last);
 	      SpriteEdUpdate(doc,tempb,root);
 	      if (old_mesh) {
@@ -1040,11 +1059,11 @@ ei_shiftable_mesh:
 	      } else
 		cur_elem_num++;
 	    } else if (old_mesh && tempg1->type==SPT_SHIFTABLE_MESH) {
-	      x1=tempg1->x1-(a1-x);
-	      y1=tempg1->y1-(a2-y);
-	      z1=tempg1->z1+z;
-	      p=(&tempg1->shiftable_tri_cnt)(U8 *)+sizeof(I32);
-	      for (i=0;i<tempg1->shiftable_vertex_cnt;i++,p++) {
+	      x1=tempg1->pmu.x-(a1-x);
+	      y1=tempg1->pmu.y-(a2-y);
+	      z1=tempg1->pmu.z+z;
+	      p=&tempg1->pmu.u;
+	      for (i=0;i<tempg1->pmu.vertex_cnt;i++,p++) {
 		p->x-=x1;
 		p->y-=y1;
 		p->z-=z1;
@@ -1053,8 +1072,8 @@ ei_shiftable_mesh:
 	      x1=-(a1-x);
 	      y1=-(a2-y);
 	      z1= z;
-	      p=&tempg1->x2;
-	      for (i=0;i<tempg1->vertex_cnt;i++,p++) {
+	      p=&tempg1->mu.u;
+	      for (i=0;i<tempg1->mu.vertex_cnt;i++,p++) {
 		p->x-=x1;
 		p->y-=y1;
 		p->z-=z1;

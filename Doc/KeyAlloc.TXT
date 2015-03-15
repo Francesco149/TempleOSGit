@@ -8,28 +8,28 @@ See Key Map
  for a detailed list of key commands.
 
 When you are at the cmd line, editing documents, browsing documentation and 
-help, entering items in forms or in menu's, the [C:/Kernel/Adam1a.HPP.Z,1328]
-DolDoc editor handles keys.  
+help, entering items in forms or in menu's, the
+[C:/Kernel/KernelA.HPP.Z,1321] DolDoc editor handles keys.  
 It allows you to define your own key handlers in a
-[C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
+[C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
 you choose, you can catch keys, overriding the default handlers.  See 
-[C:/Adam/DolDoc/DocEd2b.CPP.Z,3] DocPutKey().  The following is an overview
-of key allocations.
+[C:/Adam/DolDoc/DocEdB.CPP.Z,3] DocPutKey().  The following is an overview of
+key allocations.
 
 <ALT-keys> and <ALT-SHIFT-keys>  Free for user configurations in your 
-[C:/Accts/TAD/Adam3cKeyPlugIns.CPP.Z,11] MyPutKey() handler, except for
+[C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() handler, except for
 ALT-BACKSPACE (undo).  There are a few examples 
 pre-defined, but you can change them if you wish.
 
 <ALT-digit keys>  Extended ASCII (3 digit decimal number).
 
 <CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
-the [C:/Kernel/Adam1a.HPP.Z,1328] CDoc editor.  I reserve the right to
-allocate these, but in the mean time, 
+the [C:/Kernel/KernelA.HPP.Z,1321] CDoc editor.  I reserve the right to alloc
+these, but in the mean time, 
 you can define your own handlers with [C:/Kernel/KbdMouse/Keyboard.CPP.Z,401]
-SetCtrlAltLetCB().  They operate either 
+CtrlAltLetCBSet().  They operate either 
 in a interrupt environment or in the window mgr when it queues kbd msgs.  You 
-can do [C:/Kernel/Misc1a.CPP.Z,244] Raw() output.  <CTRL-ALT-letter> handlers
+can do [C:/Kernel/KMisc.CPP.Z,248] Raw() output.  <CTRL-ALT-letter> handlers
 take a scan_code as an arg.
 
 <CTRL-function key>  Auto-completes local words.
@@ -40,10 +40,12 @@ take a scan_code as an arg.
 
 <CTRL-SHIFT-digit key>  Jumps to dictionary definition.
 
-<function keys> and <SHIFT-function keys>  I reserve the right to allocate 
-these, but there are some free now.
+<function keys> and <SHIFT-function keys>  I reserve the right to alloc
+these, 
+but there are some free now.
 
-<CTRL-key> and <CTRL-SHIFT-key>  I reserve the right to allocate to these.  
-There are not many free.
+<CTRL-key> and <CTRL-SHIFT-key>  I reserve the right to alloc to these. 
+There 
+are not many free.
 
 See [Keyboard Devices/System,1] Keyboard Devices.
