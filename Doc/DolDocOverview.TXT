@@ -1,8 +1,8 @@
                                DolDoc Overview
 
-DolDoc is a propriatary TempleOS document type supported by [DolDoc,1] DolDoc
-Routines.  
-In a document, commands are bracketed with '$'s.  Use <CTRL-l> to experiment 
+DolDoc is a TempleOS document type supported by [DolDoc,1] DolDoc Routines. 
+In a 
+document, commands are bracketed with '$'s.  Use <CTRL-l> to experiment 
 inserting a command.  Then, use <CTRL-t> to toggle to plain text to see it.
 
 Here is the grammar:
@@ -34,9 +34,9 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
   attr, such as centering text, you can bracket them with '$' and enter flags
   such as "+CX".  You can't edit them normally if they are bracketed by '$'
   unless you toggle to plain text mode with <CTRL-t>.
-+] CR Hard Carriage Return (New Line)
++] CR Hard New Line
   New lines are normally not bracketed with '$'.
-+] SR Soft Carriage Return (New Line)
++] SR Soft New Line
   Word wrap uses temporary soft new lines.  Users never place soft new lines.
 +] CU Cursor pos
   The cursor pos is stored as a ASCII#5 character and is not bracketed with
@@ -49,24 +49,6 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
   [C:/Adam/DolDoc/DocRecalcA.CPP.Z,103] DocClear().
 +] PB Page Break
   Page break.
-+] DA Data
-  Used for forms that prompt for data.  Use <CTRL-l> as a resource editor to
-  help you generate the text you need in your "fmtstr" cmd in a class.  If you
-  add it directly with [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll
-  need to fill-in the data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
-  DocFormDo() and [C:/Demo/DolDoc/Form.CPP.Z,1].
-
-The default data-type for the $DA...$ command is I64.  You can change it to
-  I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
-  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
-  [C:/Adam/DolDoc/DocNew.CPP.Z,518] DocDataScan().
-
-The [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry.aux_str arg A="" is used for the
-  format string.
-
-If there is a ':', the space after the first ':' in the format string marks
-  the first valid cursor pos.  See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag
-  Width.
 +] PL Page Length
   Page length.
 +] LM Left Margin
@@ -146,7 +128,7 @@ See [C:/Demo/DolDoc/CursorMove.CPP.Z,1].
   The [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry.aux_str arg A="" is used for
   the link text.  With no aux the tag becomes the link text, as in example 3.
 
-See [C:/Adam/DolDoc/Doc.CPP.Z,32] Link Types.
+See [C:/Adam/DolDoc/Doc.CPP.Z,52] Link Types.
 
 Examples: <CTRL-t> to see
 
@@ -169,6 +151,24 @@ Examples: <CTRL-t> to see
 
 +] BT Button
   See [C:/Demo/DolDoc/MenuButton.CPP.Z,1].
++] DA Data
+  Used for forms that prompt for data.  Use <CTRL-l> as a resource editor to
+  help you generate the text you need in your "fmtstr" cmd in a class.  If you
+  add it directly with [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll
+  need to fill-in the data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
+  DocFormDo() and [C:/Demo/DolDoc/Form.CPP.Z,1].
+
+The default data-type for the $DA...$ command is I64.  You can change it to
+  I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
+  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
+  [C:/Adam/DolDoc/DocNew.CPP.Z,518] DocDataScan().
+
+The [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry.aux_str arg A="" is used for the
+  format string.
+
+If there is a ':', the space after the first ':' in the format string marks
+  the first valid cursor pos.  See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag
+  Width.
 +] CB Check Box
   Used for forms.  Use <CTRL-l> as a resource editor to help you generate the
   text you need in your "fmtstr" cmd in a class.  If you add it directly with
@@ -178,6 +178,18 @@ Examples: <CTRL-t> to see
 
 The default data-type for the $CB...$ command is I8 which is Bool.  You can
   change it to I8, U8, I16, U16, I32, U32, I64, or U64.  See
+  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
+  [C:/Adam/DolDoc/DocNew.CPP.Z,518] DocDataScan().
++] LS List Widget
+  Used for forms that prompt for data.  You must specify a define list, D="".
+   Use <CTRL-l> as a resource editor to help you generate the text you need in
+  your "fmtstr" cmd in a class.  If you add it directly with
+  [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll need to fill-in the
+  data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo() and
+  [C:/Demo/DolDoc/Form.CPP.Z,1].
+
+The default data-type for the $LS...$ command is I64.  You can change it to
+  I8, U8, I16, U16, I32, U32, I64, or U64.  See
   [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
   [C:/Adam/DolDoc/DocNew.CPP.Z,518] DocDataScan().
 +] MA Macro
@@ -200,7 +212,7 @@ Macro's are usually in your [C:/Home/PersonalMenu.TXT,1] and have the '+X'
   A left expression arg, LE=<Exp>, will return a number when clicked with the
   left mouse.
 
-See [C:/Adam/DolDoc/DocPopUp.CPP.Z,641] PopUpRangeI64().
+See [C:/Adam/DolDoc/DocPopUp.CPP.Z,649] PopUpRangeI64().
 +] HX Hex Edit
   See [C:/Adam/DolDoc/DocMain.CPP.Z,568] DocD().
 +] TR Tree Widget
@@ -211,18 +223,6 @@ See [C:/Adam/DolDoc/DocPopUp.CPP.Z,641] PopUpRangeI64().
 You might want to use [C:/Adam/DolDoc/DocRecalcA.CPP.Z,149] DocPrintAtomic().
 
 See [C:/Demo/DolDoc/TreeDemo.CPP.Z,1].
-+] LS List Widget
-  Used for forms that prompt for data.  You must specify a define list, D="".
-   Use <CTRL-l> as a resource editor to help you generate the text you need in
-  your "fmtstr" cmd in a class.  If you add it directly with
-  [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(), you'll need to fill-in the
-  data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo() and
-  [C:/Demo/DolDoc/Form.CPP.Z,1].
-
-The default data-type for the $LS...$ command is I64.  You can change it to
-  I8, U8, I16, U16, I32, U32, I64, or U64.  See
-  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
-  [C:/Adam/DolDoc/DocNew.CPP.Z,518] DocDataScan().
 +] SP Sprite
   Insert a sprite into text with <CTRL-r>.  The cursor location at the time
   you press <CTRL-r> is critical because the sprite will be offset from that
@@ -272,8 +272,8 @@ $HL,1$ will turn syntax highlighting on.
   When errors are detected in DolDoc cmds, an ER entry is generated.
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] FlagCode>  See
-[C:/Kernel/KernelA.HPP.Z,1047] Flag Defines and
-[C:/Adam/DolDoc/DocInit.CPP.Z,3] DocInit().
+[C:/Kernel/KernelA.HPP.Z,1047] Flag Defines and [C:/Doc/Widget.TXT.Z,1]
+Simple Flags.
 +] +H Hold
   Causes not to delete this cmd when cleared with CL or when the
   doc->max_entries is exceeded.  Word wrap is a good to hold.  There is no way
@@ -313,6 +313,8 @@ A +C flag on a tree will start it collapsed.
 +] +UD Update Data
   The Update Data flag on a DA or a CB makes the value in the
   [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry updated when keys are typed on it.
++] +TC Tag CallBack
+  See [C:/Demo/DolDoc/CallBack.CPP.Z,1].
 +] +LC Left CallBack
   See [C:/Demo/DolDoc/ClickCallBack.CPP.Z,1].
 +] +RC Right CallBack

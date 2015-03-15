@@ -314,7 +314,7 @@ _extern _STRMATCH U8 *StrMatch(U8 *needle,U8 *haystack_str); //Scan for string i
 _extern _STRIMATCH U8 *StrIMatch(U8 *needle,U8 *haystack_str); //Scan for string in string, ignoring case.
 _extern _STRCPY U0 StrCpy(U8 *dst,U8 *src); //Copy string.
 
-//These bitmaps go to 0-511 so that [C:/Compiler/Lex.CPP.Z,694] Lex() can use them with [C:/Kernel/KernelA.HPP.Z,1962] Token Codes.
+//These bitmaps go to 0-511 so that [C:/Compiler/Lex.CPP.Z,697] Lex() can use them with [C:/Kernel/KernelA.HPP.Z,1962] Token Codes.
 
 U32 chars_bitmap_alpha[16]=
 {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
@@ -333,7 +333,7 @@ chars_bitmap_word[16]=
 0,0,0,0,0,0,0,0},
 
 chars_bitmap_filename[16]=
-{0x0000000,0x03FF73FB,0xEFFFFFFF,0x2FFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
+{0x0000000,0x03FF73FB,0xEFFFFFFF,0x6FFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,
 0,0,0,0,0,0,0,0},
 
 chars_bitmap_dec_numeric[16]=
@@ -500,7 +500,7 @@ I64 Spaces2Tabs(U8 *dst,U8 *src)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/Kernel/KernelA.HPP.Z,3684] flags for all the options.
+{//See [C:/Kernel/KernelA.HPP.Z,3685] flags for all the options.
   U8 *src=_src,*dst=_src;
   I64 ch;
 

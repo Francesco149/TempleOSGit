@@ -20,4 +20,4 @@ U0 MsgLoop()
 
 MsgLoop;
 
-// Press <CTRL-SHIFT-L> and "Insert [C:/Kernel/KernelA.HPP.Z,3382] ASCII/[C:/Doc/CharOverview.TXT.Z,1] ScanCode".
+// Press <CTRL-SHIFT-L> and "Insert [C:/Kernel/KernelA.HPP.Z,3383] ASCII/[C:/Doc/CharOverview.TXT.Z,1] ScanCode".

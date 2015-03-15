@@ -15,7 +15,7 @@ U0 UserStartUp()
       "$PURPLE$DFT$FG$:";
       break;
   }
-  "79,959LOC:";
+  "80,036LOC:";
   CPURep;
 }
 

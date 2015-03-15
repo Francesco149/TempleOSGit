@@ -110,7 +110,7 @@ U0 Whap()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   AutoComplete;
-  Preempt(OFF);
+  Preempt;
 
   MenuPush(
 "File {"

@@ -30,11 +30,11 @@ public isn't interested in realism.
 */
 
 #define  XMSGF_ANTISPIN	0
-AcctRegSetDftEntry("TempleOS/XCaliber",
+RegSetDftEntry("TempleOS/XCaliber",
 	"I64 best_score=0;\n"
 	"I64 msg_flags=0;\n"
 	);
-AcctRegExeBranch("TempleOS/XCaliber");
+RegExeBranch("TempleOS/XCaliber");
 
 class MyMass:CMass
 {
@@ -987,7 +987,7 @@ U0 XCaliber()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
-  Preempt(OFF);
+  Preempt;
   MenuPush(
   "File {"
   "  Abort(,CH_SHIFT_ESC);"
@@ -1123,7 +1123,7 @@ U0 XCaliber()
   SettingsPop;
   CtrlPanelDel(cp);
   MenuPop;
-  AcctRegWriteBranch("TempleOS/XCaliber",
+  RegWriteBranch("TempleOS/XCaliber",
 	"I64 best_score=%d;\n"
 	"I64 msg_flags=%d;\n",best_score,msg_flags);
 }

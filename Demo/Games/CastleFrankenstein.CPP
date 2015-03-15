@@ -1,7 +1,7 @@
 //Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
-AcctRegSetDftEntry("TempleOS/CastleFrankenstein","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/CastleFrankenstein");
+RegSetDftEntry("TempleOS/CastleFrankenstein","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/CastleFrankenstein");
 
 //Set snap to 4 and width to 4
 //if you edit this map.
@@ -536,7 +536,7 @@ U0 CastleFrankenstein()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=DKGRAY<<4+WHITE;
-  Preempt(OFF);
+  Preempt;
   WinBorder;
   WinMax;
   AutoComplete;
@@ -583,7 +583,7 @@ fs_done:
   SettingsPop;
   CleanUp;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/CastleFrankenstein","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/CastleFrankenstein","F64 best_score=%5.4f;\n",best_score);
 }
 
 CastleFrankenstein;

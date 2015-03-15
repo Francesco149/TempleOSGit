@@ -3,7 +3,7 @@
 
 U0 SpyStkRep(CTask *task)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CDoc *doc=DocDblBufStart;
   while (!ScanChar && TaskValidate(task)) {
     StkRep(task);
@@ -19,7 +19,7 @@ U0 SpyStkRep(CTask *task)
 
 U0 SpyCallerRep(CTask *task)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CDoc *doc=DocDblBufStart;
   while (!ScanChar && TaskValidate(task)) {
     CallerRep(task->rbp,task);

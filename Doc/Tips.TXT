@@ -4,7 +4,7 @@
  
 Writes are not cached. 
 
-* Use [C:/Kernel/KMathB.CPP.Z,134] Seed() and the cmd-line to switch
+* Use [C:/Kernel/KMathB.CPP.Z,134] Seed() and the cmd line to switch
 [C:/Kernel/KMathB.CPP.Z,128] Rand() to non-timer mode and replay 
 games you like.
 
@@ -91,8 +91,8 @@ just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 and 
 are compiled inefficiently.
 
-* You can use [C:/Kernel/KernelB.HPP.Z,162]
-progress1-[C:/Kernel/KernelB.HPP.Z,171] progress4 in your programs for
+* You can use [C:/Kernel/KernelB.HPP.Z,165]
+progress1-[C:/Kernel/KernelB.HPP.Z,174] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
@@ -290,8 +290,8 @@ against [C:/Kernel/KernelB.HPP.Z,232] GetTSC().  I recommend
 just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,530]
 cnts.jiffies.
 
-* Use [C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog() and
-[C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep() to find leaks.  Don't be
+* Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
+[C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to find leaks.  Don't be
 confused by [C:/Kernel/KernelA.HPP.Z,1321] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 

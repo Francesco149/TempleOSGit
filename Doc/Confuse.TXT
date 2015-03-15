@@ -1,16 +1,16 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 120,789 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 120,922 lines of TempleOS over
 the 
 past 15.5 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
 call 
 home.  Every line of TempleOS src code is including in all distro's, from the 
-kernel to the compiler to the boot loaders.
+kernel to the compiler to the boot loaders.  See [C:/Doc/Credits.TXT.Z,1].
 
 * TempleOS does not execute code not written by me and any time except for a 
-few BIOS calls for configuration.
+few BIOS calls for configuration.  See [C:/Doc/Credits.TXT.Z,1].
 
 * TempleOS is 100% independent -- it does not access the files of your
 primary 
@@ -18,7 +18,7 @@ operating system.  It will work as the only operating system on your computer.
 
 * TempleOS is 100% written from scratch.  There is no Linux or GNU or any 
 other code in TempleOS.  Yes, I wrote the compiler from scratch.  (I probably 
-need to repeat that a few times.)
+need to repeat that a few times.)  See [C:/Doc/Credits.TXT.Z,1].
 
 * TempleOS is an operating system, not a browser.  The cmd line has active 
 links.  They link to local files.
@@ -94,8 +94,8 @@ free the applications when they are finished and everything will be fine.
 Small mem chunks stick to the task when they are freed until it is killed.  
 The only way to get in trouble involves allocating multiple Meg chunks and 
 freeing them.  These can only be reused if the same size gets alloced again.  
-Use [C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog() and
-[C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep() to see who alloced mem and
+Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
+[C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to see who alloced mem and
 didn't free it.
 
 * The editor periodically takes a snap-shot for UNDO and this looks like a 

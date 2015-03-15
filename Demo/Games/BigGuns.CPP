@@ -207,7 +207,7 @@ U0 Init()
     dust_y[i]=RandU16%MAP_HEIGHT;
   }
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   ode=ODENew(0,1e-4,ODEF_HAS_MASSES);
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;
@@ -249,7 +249,7 @@ U0 BigGuns()
   PopUpOk("The map scrolls.\n");
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
 
   MenuPush(
 "File {"

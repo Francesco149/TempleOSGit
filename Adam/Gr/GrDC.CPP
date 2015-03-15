@@ -136,7 +136,7 @@ public U0 DCClear(CDC *dc=NULL)
 }
 
 public U0 DCRst(CDC *dc)
-{//Reset [C:/Kernel/KernelA.HPP.Z,3547] CDC structure members but not image body, itself.
+{//Reset [C:/Kernel/KernelA.HPP.Z,3548] CDC structure members but not image body, itself.
   dc->color=BLACK;
   dc->color2=BLACK;
   dc->bkcolor=BLACK;
@@ -305,7 +305,7 @@ public U8 *DCSave(CDC *dc,I64 *_size=NULL,Bool compressed=TRUE)
 
   ptr=result=MAlloc(offset(CDC.end)-offset(CDC.start)+i);
 
-  old_preempt=Preempt(OFF); //in case it is a screen bitmap
+  old_preempt=Preempt; //in case it is a screen bitmap
   if (compressed) dc->flags|=DCF_COMPRESSED;
   dc->flags&=DCF_COMPRESSED;
   MemCpy(result,&dc->start,offset(CDC.end)-offset(CDC.start));
@@ -379,7 +379,7 @@ public CDC *GRARead(U8 *filename,CTask *task=NULL)
   return dc;
 }
 
-#help_index "Graphics/Sprite;Graphics/GRA Files;DolDoc/Output"
+#help_index "Graphics/Sprite;Graphics/GRA Files;DolDoc/Output;StdOut/DolDoc"
 public U0 DocGRA(CDoc *doc=NULL,U8 *filename)
 {//Put a GRA file into a document as a	sprite.
   CDC *dc=GRARead(filename);

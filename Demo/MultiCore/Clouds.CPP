@@ -191,7 +191,7 @@ U0 CloudScene()
     "$BG,YELLOW$%h5c",'\n';
     BibleVerse(,"Exodus,14:19",7);
 
-    Preempt(OFF);
+    Preempt;
     Fs->draw_it=&DrawIt;
     GetChar;
     WinMgrSync;

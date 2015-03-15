@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 /*
 [C:/Adam/Gr/Gr.CPP.Z,169] CSprites are stored as a sequence of var
 length operations with a 1-byte type leading
@@ -446,7 +446,7 @@ public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
   return result;
 }
 
-#help_index "Graphics/Sprite;DolDoc/Output"
+#help_index "Graphics/Sprite;DolDoc/Output;StdOut/DolDoc"
 public CDocEntry *DocSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
 {//Put a sprite into a document.  You can, optionally, supply a fmt string
  //for [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc cmd with a %d for the bin_num.

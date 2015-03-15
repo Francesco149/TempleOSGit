@@ -25,6 +25,7 @@ public I64 TaskMemUsed(CTask *task=NULL,Bool override_validate=FALSE)
     return 0;
 }
 
+#help_index "Memory/Task;Debugging/Heap"
 public Bool HeapRep(CTask *task)
 {//Report status of task's heap.
   I64 i,cnt;

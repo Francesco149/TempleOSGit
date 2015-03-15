@@ -21,7 +21,6 @@ public extern Bool OptOn(I64 num);
 extern U0 StreamDir();
 public extern I64 StreamExePrint(U8 *fmt,...);
 public extern U0 StreamPrint(U8 *fmt,...);
-
 #help_index "Compiler/Lex"
 #help_file "::/Doc/Lex"
 public extern I64 IsLexExpression2Bin(CLex *lx,U8 **ex); //FALSE=no err

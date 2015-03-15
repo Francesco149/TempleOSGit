@@ -1,4 +1,4 @@
-#help_index "AutoFile"
+#help_index "AutoFile;StdIn/AutoFile"
 #help_file "::/Doc/AutoFile"
 
 #help_index "Bit"
@@ -86,7 +86,7 @@ public extern U8 *AStrNew(U8 *buf);
 #help_index "Char/Operations;Memory/Heap"
 public extern U8 *StrNew(U8 *buf,CTask *mem_task=NULL);
 
-#help_index "Char/Output"
+#help_index "Char/Output;StdOut"
 public extern U0 GetOutOfDollar();
 public extern Bool IsSilent();
 public extern U0 Print(U8 *fmt,...);
@@ -240,7 +240,8 @@ public extern CDevGlbls dev;
 #help_index "DolDoc/Clipboard"
 public extern CDoc *sys_clipboard_doc;
 
-#help_index "DolDoc/Task"
+#help_index "DolDoc/Task;StdOut/Task"
+#help_file "::/Doc/StdOutTask"
 extern CDoc *(*fp_doc_put)(CTask *task=NULL);
 
 #help_index "Exceptions"
@@ -269,8 +270,10 @@ public extern U0 ChgDsk(U8 drv_let=0);
 public extern I64 Del(U8 *wild,Bool print_msg=TRUE);
 public extern I64 Dir(U8 *wild="*",Bool full=FALSE);
 public extern Bool Drv(U8 drv_let);
-public extern Bool MapDrv(U8 drv_let,CDrv *dv);
 public extern Bool MkDir(U8 *filename);
+
+#help_index "File/Cmd Line (Typically);Cmd Line (Typically);Install"
+public extern Bool MapDrv(U8 drv_let,CDrv *dv);
 
 #help_index "File/FileNames"
 extern CDirEntry *Cd2DirEntry(CDirEntry *tempde,U8 *abs_name);
@@ -367,7 +370,6 @@ extern U0 (*fp_set_std_palette)();
 public extern U8 *Color2Str(U8 *buf,CColorROPU32 c);
 public extern CColorROPU16 Str2ColorU16(U8 *st);
 public extern CColorROPU32 Str2ColorU32(U8 *st);
-
 #help_index "Hash"
 #help_file "::/Doc/Hash"
 public _extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table);
@@ -388,8 +390,8 @@ public extern U0 HashTableDel(CHashTable *table);
 public extern CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL);
 public extern I64 HashTablePurge(CHashTable *table);
 public extern I64 HashTypeNum(CHash *temph);
-public extern I64 HashVal(CHash *temph);
 extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
+public extern I64 HashVal(CHash *temph);
 
 #help_index "Hash/Frame"
 #help_file "::/Doc/Frame"
@@ -445,8 +447,8 @@ extern CKeyDevGlbls keydev;
 extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
-#help_index "Keyboard Devices;Char/Input"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3676] Flags
+#help_index "Keyboard Devices;Char/Input;StdIn"
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3677] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE);
 public extern I64 GetKey(I64 *_scan_code=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE);
@@ -461,9 +463,9 @@ public extern U0 KbdTypeMatic(U8 delay);
 extern Bool	MouseDriverInstall();
 public extern I64 PressAKey();
 public extern I64 ScanChar();
+public extern Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE);
 public extern Bool YorN();
 public extern CKbdStateGlbls	kbd;
-public extern Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE);
 
 #help_index "Math"
 public extern I64 CeilI64(I64 num,I64 to);
@@ -583,6 +585,12 @@ public extern Bool Mute(Bool val);
 public extern U0 Snd(F64 freq);
 public extern CSndGlbls snd;
 
+#help_index "StdIn"
+#help_file "::/Doc/Streams"
+
+#help_index "StdOut"
+#help_file "::/Doc/Streams"
+
 #help_index "Task"
 public extern U0 Exit();
 public extern Bool IsPreempt();
@@ -647,7 +655,7 @@ public extern Bool ScanResult(CSrvCmd *rqst=NULL,I64 *_result=NULL);
 #help_index "Task/Srv/Text & Msgs"
 public extern CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags);
 
-#help_index "Task/Srv/Text & Msgs;AutoFile"
+#help_index "Task/Srv/Text & Msgs;AutoFile;StdIn/AutoFile"
 public extern U0 Auto(U8 *fmt,...);
 public extern U0 AutoFile(U8 *filename);
 public extern U0 AutoStr(U8 *fmt,...);

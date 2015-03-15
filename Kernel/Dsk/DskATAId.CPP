@@ -136,7 +136,7 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
   if (pmt && ATARepExitAllApplications)
     return 0;
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   for (i=0;i<NUM_BLKDEVS;i++)
     if (dsk.blkdevs[i].bd_signature==BD_SIGNATURE_VAL)
       BEqu(&unlock_flags,i,

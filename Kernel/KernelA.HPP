@@ -122,35 +122,35 @@ public class CQue
 };
 
 #help_index "Math/Data Types;Graphics/Data Types"
-public class CD3I32	//Three dimensional pt
+public class CD3I32 //Three dimensional I32 pt
 {
   I32	x,y,z;
 };
-public class CQueD3I32
+public class CQueD3I32 //Que of three dimensional I32 pts
 {
   CQueD3I32	*next,*last;
   CD3I32	p;
 };
 #help_index "Math/Data Types"
-public class CD2I32	//two dimensional pt
+public class CD2I32 //Two dimensional I32 pt
 {
   I32	x,y;
 };
-public class CD2I64	//two dimensional pt
+public class CD2I64 //Two dimensional I64 pt
 {
   I64	x,y;
 };
-public class CD3I64	//three dimensional pt
+public class CD3I64 //Three dimensional I64 pt
 {
   I64	x,y,z;
 };
-public class CD2	//two dimensional pt
+public class CD2 //Two dimensional F64 pt
 {
   F64	x,y;
 };
 
 #help_index "Math/Data Types;Math/CD3"
-public class CD3	//three dimensional pt
+public class CD3 //Three dimensional F64 pt
 {
   F64	x,y,z;
 };
@@ -755,12 +755,6 @@ public class CHashImport:CHashSrcSym
 	*module_header_entry;
 };
 
-public class CHashDefineStr:CHashSrcSym
-{
-  U8	*data,**sub_lst;
-  I64	cnt;
-};
-
 #help_index "Compiler/Internal"
 #define MAX_PTR_STARS	4
 
@@ -815,6 +809,12 @@ class CExternUsage
 };
 
 #help_index "Hash/System;Compiler/Internal"
+public class CHashDefineStr:CHashSrcSym
+{
+  U8	*data,**sub_lst;
+  I64	cnt;
+};
+
 #define Cf_EXTERN		0
 #define Cf_INTERNAL_TYPE	1
 
@@ -891,28 +891,28 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCT_TAB		4
 #define DOCT_CLEAR		5
 #define DOCT_PAGE_BREAK		6
-#define DOCT_DATA		7
-#define DOCT_PAGE_LEN		8
-#define DOCT_LEFT_MARGIN	9
-#define DOCT_RIGHT_MARGIN	10
-#define DOCT_HEADER		11
-#define DOCT_FOOTER		12
-#define DOCT_INDENT		13
-#define DOCT_FOREGROUND		14
-#define DOCT_BACKGROUND		15
-#define DOCT_DFT_FOREGROUND	16
-#define DOCT_DFT_BACKGROUND	17
-#define DOCT_PMT		18
-#define DOCT_WORD_WRAP		19
-#define DOCT_UNDERLINE		20
-#define DOCT_INVERT		21
-#define DOCT_BLINK		22
-#define DOCT_SHIFTED_X		23
-#define DOCT_SHIFTED_Y		24
-#define DOCT_CURSOR_MOVEMENT	25
-#define DOCT_ANCHOR		26
-#define DOCT_LINK		27
-#define DOCT_BUTTON		28
+#define DOCT_PAGE_LEN		7
+#define DOCT_LEFT_MARGIN	8
+#define DOCT_RIGHT_MARGIN	9
+#define DOCT_HEADER		10
+#define DOCT_FOOTER		11
+#define DOCT_INDENT		12
+#define DOCT_FOREGROUND		13
+#define DOCT_BACKGROUND		14
+#define DOCT_DFT_FOREGROUND	15
+#define DOCT_DFT_BACKGROUND	16
+#define DOCT_PMT		17
+#define DOCT_WORD_WRAP		18
+#define DOCT_UNDERLINE		19
+#define DOCT_INVERT		20
+#define DOCT_BLINK		21
+#define DOCT_SHIFTED_X		22
+#define DOCT_SHIFTED_Y		23
+#define DOCT_CURSOR_MOVEMENT	24
+#define DOCT_ANCHOR		25
+#define DOCT_LINK		26
+#define DOCT_BUTTON		27
+#define DOCT_DATA		28
 #define DOCT_CHECK_BOX		29
 #define DOCT_LST		30
 #define DOCT_MACRO		31
@@ -2440,7 +2440,7 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/Dsk/DskC.CPP.Z,259] CDImageWrite()
+//Media types for [C:/Kernel/Dsk/DskC.CPP.Z,258] CDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 
@@ -2675,7 +2675,7 @@ public class CFileAccess
 #define FF_CONTIGUOUS		16
 #define FF_USE_OLD_DATETIME	32
 
-public class CFile
+public class CFile //See [C:/Demo/Dsk/DataBase.CPP.Z,1].
 {
   I64	flags;
   CDirEntry de;
@@ -2884,7 +2884,7 @@ public U32i class CBGR
   U8	b,g,r,reserved;
 };
 
-#help_index "Keyboard Devices;Char/Input"
+#help_index "Keyboard Devices;Char/Input;StdIn"
 #define KBD_PORT	0x60
 #define KBD_CTRL	0x64
 public class CKbdStateGlbls
@@ -3111,8 +3111,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3382] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3382] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3383] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3383] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3269,7 +3269,8 @@ public class CTask //The Fs segment reg points to current CTask.
   U8	*except_caller1,*except_caller2;
 
   Bool	catch_except;
-  U8	answer_type,pad[6];
+  Bool	new_answer;
+  U8	answer_type,pad[5];
   I64	answer;
   F64	answer_time;
   CBpt	*bpt_lst;
@@ -3593,7 +3594,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3535] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3536] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3671,7 +3672,7 @@ public class CArcCompress
   U0	body;
 };
 
-#define "Char/Input"
+#define "Char/Input;StdIn"
 //GetStr flags
 #define GSF_SHIFT_ESC_EXIT	1 //This kills task on <SHIFT-ESC>
 #define GSF_WITH_NEW_LINE	2
@@ -3782,8 +3783,8 @@ public class CDbgGlbls
 // [C:/Kernel/SrvCmd.CPP.Z,495] Auto("") StdIn for call to [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 #define STD_DISTRO_CDROM_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
 
-#help_index "Misc/Accts"
-//Acct Registry sys_msg_flags. [C:/Adam/Acct.CPP.Z,86] AcctOneTimePopUp()
+#help_index "Misc/Registry"
+//Registry sys_msg_flags. [C:/Adam/ARegistry.CPP.Z,86] RegOneTimePopUp()
 #define ARf_FLOODFILL			0
 #define ARf_CSPRITE_INS_CLIPBOARD	1
 #define ARf_CSPRITE_PICK_GRAPHICALLY	2

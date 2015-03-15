@@ -20,7 +20,7 @@ public class CMusicGlbls
 
 #help_index "Snd/Music;Time/Seconds"
 public F64 tM()
-{//Time in seconds synchronized to music subsystem.
+{//Time in seconds synced to music subsystem.
   return (cnts.jiffies+music.tM_correction)/JIFFY_FREQ;
 }
 
@@ -128,7 +128,7 @@ public U0 Play(U8 *st,U8 *words=NULL)
 */
   U8 *word,*last_st;
   I64 note,i=0,timeout_val,timeout_val2;
-  Bool tie,old_preempt=Preempt(OFF);
+  Bool tie,old_preempt=Preempt;
   F64 f,d,on_jiffies,off_jiffies;
   music.play_note_num=0;
   while (*st) {

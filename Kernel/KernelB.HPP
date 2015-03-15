@@ -45,10 +45,10 @@ public _intern IC_STRLEN I64 StrLen(U8 *st); //String length.
 #help_index "Data Types/Circular Queue"
 #help_file "::/Doc/Que"
 public _intern IC_QUE_INIT U0 QueInit(CQue *root); //Init queue root links.
-public _intern IC_QUE_INS U0 QueIns(CQue *entry,CQue *pred);//Ins item into que after predecessor.
+public _intern IC_QUE_INS U0 QueIns(CQue *entry,CQue *pred);//Insert item into que after predecessor.
 public _intern IC_QUE_INS_REV U0 QueInsRev(CQue *entry,CQue *succ);//Reversed insert into que.
 //Ins item into que before successor.
-public _intern IC_QUE_REM U0 QueRem(CQue *entry); //Remove Item from queue.
+public _intern IC_QUE_REM U0 QueRem(CQue *entry); //Remove item from queue.
 
 #help_index "I/O;Processor/IO Port"
 public _intern IC_IN_U16 I64 InU16(I64 port); //Read U16 from I/O port.
@@ -126,8 +126,8 @@ public _extern _D3_MUL_EQU CD3 *D3MulEqu(CD3 *prod,F64 s); //prod *= s
 public _extern _D3_NORM F64 D3Norm(CD3 *d); //Norm d
 public _extern _D3_NORM_SQR F64 D3NormSqr(CD3 *d); //Norm Squared d
 public _extern _D3_SUB CD3 *D3Sub(CD3 *d1,CD3 *d2,CD3 *diff); //d1-d2 -->diff
-public _extern _D3_UNIT CD3 *D3Unit(CD3 *d); //Convert to unit vect
 public _extern _D3_SUB_EQU CD3 *D3SubEqu(CD3 *diff,CD3 *d); //diff-=d
+public _extern _D3_UNIT CD3 *D3Unit(CD3 *d); //Convert to unit vect
 public _extern _D3_ZERO CD3 *D3Zero(CD3 *dst); //Convert to zero
 
 #help_index "Memory"
@@ -143,8 +143,8 @@ _extern SYS_HEAP_INIT_FLAG	U8 sys_heap_init_flag;
 _extern SYS_HEAP_INIT_VAL	U8 sys_heap_init_val;
 _extern SYS_MEM_INIT_FLAG	U8 sys_mem_init_flag;
 _extern SYS_MEM_INIT_VAL	U8 sys_mem_init_val;
-_extern SYS_VAR_INIT_VAL	U8 sys_var_init_val;
 _extern SYS_VAR_INIT_FLAG	U8 sys_var_init_flag;
+_extern SYS_VAR_INIT_VAL	U8 sys_var_init_val;
 
 #help_index "Memory/BlkPool"
 public _extern SYS_CODE_BP CBlkPool *sys_code_bp; //System's BlkPool for code.
@@ -153,6 +153,9 @@ public _extern SYS_DATA_BP CBlkPool *sys_data_bp; //System's BlkPool for data.
 #help_index "Memory/Info"
 _extern SYS_HEAP_BASE	U8 *sys_heap_base;
 _extern SYS_HEAP_LIMIT	U8 *sys_heap_limit;
+
+#help_index "Messages;Windows"
+public _extern SYS_FOCUS_TASK CTask *sys_focus_task; //Current focus task.
 
 #help_index "Misc"
 public _extern SYS_COMPILE_TIME CDate sys_compile_time; //Date and time kernel was compiled.
@@ -173,19 +176,16 @@ public _extern SYS_PROGRESS4_DESC U8  progress4_desc[PROGRESS_DESC_LEN+1]; //Pro
 public _extern SYS_PROGRESS4_MAX I64 progress4_max; //Max progress 4.
 public _extern SYS_PROGRESSES CProgress sys_progresses[NUM_PROGRESS_BARS]; //All progress bars.
 
-#help_index "Misc;Messages"
-public _extern SYS_FOCUS_TASK CTask *sys_focus_task; //Current focus task.
-
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,188] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3337] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,188] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3338] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,302] BSPStartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3337] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3338] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSSES U16 sys_pci_busses; //Number of PCI busses.
@@ -223,7 +223,7 @@ public _intern IC_CLFLUSH U0 CLFlush(U8 *a); //Flush cache line instruction.
 public _intern IC_INVLPG U0 InvlPg(U8 *a); //Invalidate page at addr instruction.
 
 #help_index "Task"
-public _intern IC_PREEMPT Bool Preempt(Bool val); //Turn mutli-tasking preemption OFF/ON.
+public _intern IC_PREEMPT Bool Preempt(Bool val=OFF); //Turn mutli-tasking preemption OFF/ON.
 
 #help_index "Task;Processor"
 public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3212] CTask.

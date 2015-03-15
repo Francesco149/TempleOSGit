@@ -301,7 +301,7 @@ public CDC *BMPRead(U8 *filename,Bool dither_probability=FALSE,Bool use_ms_paint
   return result;
 }
 
-#help_index "Graphics/Sprite;Graphics/Windows BMP Files;DolDoc/Output"
+#help_index "Graphics/Sprite;Graphics/Windows BMP Files;DolDoc/Output;StdOut/DolDoc"
 public U0 DocBMP(CDoc *doc=NULL,U8 *filename,Bool dither_probability=FALSE,Bool use_ms_paint_palette=FALSE)
 {//Put a BMP file into a document as a sprite.
   CDC *dc=BMPRead(filename,dither_probability,use_ms_paint_palette);

@@ -62,7 +62,7 @@ U0 DocBorderLstDraw(CDoc *doc)
   U64 ch;
   CDoc *templ=doc;
   CD3I64 saved_scroll;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   while (templ && templ->doc_signature==DOC_SIGNATURE_VAL) {
     y+=(Bsr(templ->desc)+7)>>3+1; //StrLen+1
     templ=templ->parent_doc;
@@ -145,7 +145,7 @@ public U0 DocCollapse(Bool collapse=TRUE,CDoc *doc=NULL)
     DocUnlock(doc);
 }
 
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 public U0 DocPrintAtomic(CDoc *doc,U8 *fmt,...)
 {//Necessary when hidden text might screw-up
 //inserts.  It does multiple whole doc cmds all-at-once.
@@ -166,13 +166,13 @@ public U0 DocPrintAtomic(CDoc *doc,U8 *fmt,...)
   Free(buf);
 }
 
-#help_index "DolDoc/Task"
+#help_index "DolDoc/Task;StdOut/Task"
 U0 DocUpdateTaskDocs(CTask *task)
-{//This is called from [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins() by the winmgr at 30fps.
+{//This is called from [C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin() by the winmgr at 30fps.
   CDrv *dv;
   CDoc *doc;
   CD3I64 saved_scroll;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   I64 border_attr;
   if (task->border_src==BDS_CUR_DRV && task->cur_dv) {
     border_attr=task->cur_dv->text_attr;
@@ -195,7 +195,7 @@ U0 DocUpdateTaskDocs(CTask *task)
       MemCpy(task->task_title,doc->filename.name,TASK_TITLE_LEN);
     Preempt(old_preempt);
     DocRecalc(doc,TRUE,DOC_RECALC_TO_SCREEN);
-    Preempt(OFF);
+    Preempt;
   }
   if ((doc=DocBorder(task)) && !(doc->flags&DOCF_DONT_SHOW)) {
     WinScrollNull(task,&saved_scroll);

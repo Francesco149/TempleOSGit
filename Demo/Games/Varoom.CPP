@@ -87,8 +87,8 @@
 
 
 
-AcctRegSetDftEntry("TempleOS/Varoom","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/Varoom");
+RegSetDftEntry("TempleOS/Varoom","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/Varoom");
 
 F64 distance,t0,tf;
 Bool game_over;
@@ -466,7 +466,7 @@ U0 Varoom()
     AutoComplete;
     WinMax;
     WinBorder;
-    Preempt(OFF);
+    Preempt;
     Init;
     DocCursor;
     DocClear;
@@ -502,7 +502,7 @@ vr_done: //Don't goto out of try
     Fs->catch_except=TRUE;
   SettingsPop(,TSF_SAME_SONG);
   MenuPop;
-  AcctRegWriteBranch("TempleOS/Varoom","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/Varoom","F64 best_score=%5.4f;\n",best_score);
 }
 
 Varoom;

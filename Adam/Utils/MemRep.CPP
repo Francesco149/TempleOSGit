@@ -191,7 +191,7 @@ public U0 MemRep()
   I64 i;
   CTask *task;
   CCPU *c;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CBinFile *bfh=sys_boot_base-sizeof(CBinFile);
   bfh(I64)+=bfh->file_size-1;
 

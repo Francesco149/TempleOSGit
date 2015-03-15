@@ -57,7 +57,7 @@ Bool DrvUnlock(CDrv *dv,Bool rst=FALSE)
 Bool BlkDevInit(CBlkDev *bd)
 {
   CDrv *dv=Let2Drv(bd->first_drv_let);
-  Bool old_preempt=Preempt(OFF),result=FALSE;
+  Bool old_preempt=Preempt,result=FALSE;
 
   if (!LBts(&bd->flags,BDf_INITIALIZED)) {
     bd->flags|=BDF_INIT_IN_PROGRESS;
@@ -405,7 +405,7 @@ U0 ChgDsk(U8 drv_let=0)
 {//Change disk. (Needed for removable media.)
   CDrv *dv=Let2Drv(drv_let);
   CBlkDev *bd=dv->bd;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (!(bd->flags&BDF_INITIALIZED))
     BlkDevInit(bd);
   else if (bd->flags&BDF_REMOVABLE)

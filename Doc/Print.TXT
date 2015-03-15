@@ -36,7 +36,7 @@ letters.
 
 "%F" text file.
 
-"%dv" ptr.
+"%p" ptr.
 
 "%P" link to ptr.
 
@@ -60,7 +60,7 @@ strs in strs.)
 
                                  Print Family
 
-[C:/Kernel/StrPrint.CPP.Z,903] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,904] MStrPrint(U8 *fmt,...) is like
 [C:/Kernel/StrPrint.CPP.Z,882] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
 [C:/Kernel/MemB.CPP.Z,373] MAllocated str.  It is vary handy because you
 don't have to worry about 
@@ -115,7 +115,7 @@ result of the last executed expression.
 screen memory, bypassing window 
 manager.
 
-[C:/Kernel/Task.CPP.Z,364] User(U8 *fmt,...) Spawns a user and execute a
+[C:/Kernel/Task.CPP.Z,365] User(U8 *fmt,...) Spawns a user and execute a
 string on start-up.
 
 [C:/Kernel/SrvCmd.CPP.Z,408] PopUpPrint(U8 *fmt,...) compiles and execute a

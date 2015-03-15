@@ -34,7 +34,7 @@ tCAGqFC after pressing <CTRL-t>, now.
 JukeBox("::/Home/Psalmody"); to play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HPP.Z,3732] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HPP.Z,3733] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 

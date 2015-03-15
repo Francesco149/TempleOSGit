@@ -9,7 +9,7 @@ U0 TimeIns()
 {
   I64 i,start,end,overhead_time,test_time;
   F64 d=5.0;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   //Measure Loop Overhead
   start=GetTSC;

@@ -1,7 +1,7 @@
 public CCtrl *CtrlFindUnique(CTask *haystack_task,I64 needle_type)
-{//Find task ctrl givin [C:/Kernel/KernelA.HPP.Z,2977] ctrl_type.
+{//Find task ctrl given [C:/Kernel/KernelA.HPP.Z,2977] ctrl_type.
   CCtrl *c;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   c=haystack_task->next_ctrl;
   while (c!=&haystack_task->next_ctrl) {
     if (c->type==needle_type) {
@@ -17,7 +17,7 @@ public CCtrl *CtrlFindUnique(CTask *haystack_task,I64 needle_type)
 U0 CtrlsUpdate(CTask *task)
 {
   CCtrl *c;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   c=task->next_ctrl;
   while (c!=&task->next_ctrl) {
     if (c->update_derived_vals)
@@ -64,7 +64,7 @@ U0 DrawCtrls(CTask *task)
 {
   CCtrl *c;
   CDC *dc=DCAlias(gr.dc2,task);
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   c=task->next_ctrl;
   while (c!=&task->next_ctrl) {
     if (c->flags&CTRLF_SHOW) {
@@ -116,7 +116,7 @@ U0 DrawCtrls(CTask *task)
 U0 DrawWinScroll(CDC *dc,CCtrl *c)
 {
   CWinScroll *s=c->state;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   if (c->flags&CTRLF_CLICKED)
     dc->color=s->color>>4;
@@ -200,7 +200,7 @@ U0 WheelChangeWinScroll(CCtrl *c,I64 delta)
 
 U0 WinScrollsInit(CTask *task)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CCtrl *c;
 
   if (!CtrlFindUnique(task,CTRLT_WIN_HSCROLL)) {
@@ -367,7 +367,7 @@ public CCtrl *ViewAnglesNew(CTask *task=NULL)
     c->draw_it=&DrawViewAnglesCtrl;
     c->left_click=&LeftClickViewAngles;
     c->update_derived_vals=&UpdateDerivedViewAnglesCtrl;
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     QueIns(c,task->last_ctrl);
     TaskDerivedValsUpdate(task);
     Preempt(old_preempt);
@@ -378,7 +378,7 @@ public CCtrl *ViewAnglesNew(CTask *task=NULL)
 public U0 ViewAnglesDel(CTask *task=NULL)
 {//Free view angle ctrl.
   CCtrl *c;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (!task) task=Fs;
   if (c=CtrlFindUnique(task,CTRLT_VIEWING_ANGLES)) {
     QueRem(c);

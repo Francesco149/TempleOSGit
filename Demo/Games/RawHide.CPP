@@ -1,7 +1,7 @@
 //Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
-AcctRegSetDftEntry("TempleOS/RawHide","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/RawHide");
+RegSetDftEntry("TempleOS/RawHide","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/RawHide");
 
 F64 t0,tf;
 I64 outside_cnt;
@@ -487,7 +487,7 @@ U0 RawHide()
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER-WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
   WinMax;
   AutoComplete;
-  Preempt(OFF);
+  Preempt;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
   DocCursor;
@@ -520,7 +520,7 @@ rh_done:
   MenuPop;
   SettingsPop;
   CleanUp;
-  AcctRegWriteBranch("TempleOS/RawHide","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/RawHide","F64 best_score=%5.4f;\n",best_score);
 }
 
 RawHide;

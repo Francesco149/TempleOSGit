@@ -157,7 +157,7 @@ public U0 ClassRep(U8 *_d,U8 *class_name=lastclass,I64 max_depth=2,Bool fun=FALS
     doc=DocNew;
   } else {
     DocMax;
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     doc=DocPut;
   }
   if (fun)
@@ -181,7 +181,7 @@ public U0 ClassRepD(U8 *_d,U8 *class_name=lastclass,I64 max_depth=2,Bool fun=FAL
     doc=DocNew;
   } else {
     DocMax;
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     doc=DocPut;
   }
   if (fun)

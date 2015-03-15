@@ -1,4 +1,5 @@
 #help_index "Debugging/Heap"
+#help_file "::/Doc/HeapDbg"
 
 #define HL_CALLER_DEPTH	4
 #define HL_HASH_SIZE	0x1000
@@ -66,7 +67,7 @@ U0 HeapLogFree(U8 *addr)
 }
 
 public Bool HeapLog(Bool val=ON,CTask *task=NULL)
-{//Turn on.  Collect data.  Call [C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep().
+{//Turn on.  Collect data.  Call [C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep().
   I64 i;
   if (val) {
     if (Bt(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0)) {
@@ -108,7 +109,7 @@ public Bool HeapLog(Bool val=ON,CTask *task=NULL)
 }
 
 public U0 HeapLogRep(Bool leave_it=OFF)
-{//Call [C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog() first and collect data.
+{//Call [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() first and collect data.
   I64 i,j,total=0;
   CHeapLog *temphl,hl;
   if (!LBtr(&sys_semas[SYS_SEMA_HEAPLOG_ACTIVE],0)) {

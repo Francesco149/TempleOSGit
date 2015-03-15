@@ -140,8 +140,7 @@ I64 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=DVT_FAT32)
 {//Format hard drive or RAM drive.
 //**Warning:** Destroys all previous info.
-//quick=FALSE means fill entire drive
-//with zeros.
+//quick=FALSE means fill entire drive with zeros.
 //Choose [C:/Kernel/KernelA.HPP.Z,2582] DVT_FAT32 or [C:/Kernel/KernelA.HPP.Z,2581] DVT_REDSEA.
 //You don't format a CD-ROM with this.
   CDrv *dv=Let2Drv(drv_let);
@@ -301,7 +300,7 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
   d->buf1=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
   d->cnt=cnt;
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   task=Spawn(&CDImageWriteTask,d,"Write CD");
 
   while (d->in_buf<=d->out_buf)

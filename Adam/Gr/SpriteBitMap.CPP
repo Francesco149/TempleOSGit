@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 
 #define GBM_EXIT		0
 #define GBM_MAIN_MENU		1

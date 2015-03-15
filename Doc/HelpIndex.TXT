@@ -43,7 +43,7 @@ Confusions
 Directives
 [C:/Doc/ChangeLog.TXT.Z,1] Change Log	[C:/Doc/Demands.TXT.Z,1] Demands
 	
-+] Level 1: User Help
++] User Help
   
 [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
 [C:/Doc/Glossary.TXT.Z,1] Glossary
@@ -57,21 +57,21 @@ Directives
 	starts a terminal window.
 
 +] DolDoc
-    [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the propriatary TempleOS
-    document type.  The editor, compiler, assembler and whole operating system
-    seamlessly handle DolDocs.  Cmds like [C:/Kernel/Dsk/DskB.CPP.Z,226] Dir()
-    and [C:/Adam/Utils/Find.CPP.Z,143] Find() can output links to the cmd line.
+    [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the TempleOS document type. 
+    The editor, compiler, assembler and whole operating system seamlessly handle
+    DolDocs.  Cmds like [C:/Kernel/Dsk/DskB.CPP.Z,226] Dir() and
+    [C:/Adam/Utils/Find.CPP.Z,143] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
 
 * Use [C:/Adam/Boot/DskCDDVD.CPP.Z,326] CDFileCreate() to make an ISO image
     file.
 
-* Use [C:/Kernel/Dsk/DskC.CPP.Z,259] CDImageWrite() to burn an ISO file onto
+* Use [C:/Kernel/Dsk/DskC.CPP.Z,258] CDImageWrite() to burn an ISO file onto
     a CD or DVD.
 
 * See [C:/Misc/MakeDistro.CPP.Z,1] Making a Distro ISO.
-  +] Level 2: Admin Help
+  +] Admin Help
   Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
@@ -83,7 +83,7 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 
 [C:/Adam.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is run at
   start-up by the [C:/Kernel/KEnd.CPP.Z,2] Adam Task.
-+] Level 3: Programmer help
++] Programmer help
   [C:/Doc/GuideLines.TXT.Z,1] Guidelines
 [C:/Doc/HolyC.TXT.Z,1] HolyC
 [C:/Doc/GraphicsOverview.TXT.Z,1] Graphics
@@ -98,7 +98,7 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1] Lectures/GraphicsCPULoad.CPP
 [C:/Demo/Lectures/InterruptDemo.CPP.Z,1] Lectures/InterruptDemo.CPP
 [C:/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP
-+] Level 4: System Programmer Help
++] System Programmer Help
   [C:/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
 [C:/Kernel/KHashA.CPP.Z,1] Hash Tables
 [Keyboard Devices/System,1] Keyboard Devices
@@ -137,7 +137,7 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [File,1] Disk
 [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview
 [DolDoc,1] Doc Routines
-[C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link Types
+[C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link Types
 [Exceptions,1] Exceptions
 [File,1] File
 [C:/Doc/FileUtils.TXT.Z,1] File Utils
@@ -169,6 +169,9 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [Profiler,1] Profiler
 [C:/Doc/RedSea.TXT.Z,1] RedSea
 [Snd,1] Sound
+[Sprites,1] Sprites
+[StdIn,1] StdIn
+[StdOut,1] StdOut
 [Char,1] String
 [Task,1] Task
 [TextBase Layer,1] TextBase Layer

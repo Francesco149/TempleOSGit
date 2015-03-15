@@ -3,7 +3,7 @@
 #define FG_JUST_AUDIO	0
 #define FG_BOOT_DRV	1
 #define FG_RAM_DRV	2
-I64	fg_mode=FG_JUST_AUDIO;
+I64	fg_mode=FG_RAM_DRV;
 Bool	fg_on =FALSE;
 
 U0 FrameGrabberTask(I64)
@@ -227,9 +227,9 @@ public U0 DblSpaceScan(U8 *files_find_mask="*",U8 *fu_flags=NULL)
   DblSpaceScanLst(FilesFind(files_find_mask,f));
 }
 
-AcctRegSetDftEntry("TempleOS/TOS",
+RegSetDftEntry("TempleOS/TOS",
 	"I64 tos_code_walk_thru=1,tos_after_egypt_in_action=1;\n");
-AcctRegExeBranch("TempleOS/TOS");
+RegExeBranch("TempleOS/TOS");
 
 U0 TOSRegInit()
 {
@@ -239,7 +239,7 @@ U0 TOSRegInit()
 
 U0 TOSRegWrite()
 {
-  AcctRegWriteBranch("TempleOS/TOS",
+  RegWriteBranch("TempleOS/TOS",
 	"I64 tos_code_walk_thru=%d,tos_after_egypt_in_action=%d;\n",
 	tos_code_walk_thru,tos_after_egypt_in_action);
   TOSRegInit;

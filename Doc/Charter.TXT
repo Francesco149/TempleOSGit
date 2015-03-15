@@ -64,7 +64,7 @@ example, is better than many file systems.
 applications and demos.  Code comments count, however.  3rd party libraries 
 are banned because they circumvent the intent of this limit.  The vision is a 
 Commodore 64 ROM -- a fixed core API that is the only dependency of 
-applications.  Currently, there are 79,959 lines of code.
+applications.  Currently, there are 80,036 lines of code.
  
 * Minimal abstraction is a goal.  Sheep are fools.  They always respect a 
 design that is more complicated than another.  Any genius can make it 

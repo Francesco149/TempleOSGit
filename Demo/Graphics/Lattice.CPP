@@ -169,7 +169,7 @@ U0 Lattice()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
   WinMax;
   AutoComplete;
   WinBorder;

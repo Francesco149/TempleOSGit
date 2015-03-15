@@ -32,7 +32,7 @@ U0 SpritePlot3D()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
-  Preempt(OFF); //We don't want update during matrix change, mid draw.
+  Preempt; //We don't want update during matrix change, mid draw.
   dc->x=200;
   dc->y=200;
   dc->z=GR_Z_ALL;

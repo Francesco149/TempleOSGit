@@ -21,7 +21,7 @@ not a path.  To run a program, you typically #include it.  There are several
 shortcuts for #includeing files.  Right-click or hit <ENTER> on a directory 
 listing or press <F5> while editing.
 
->Ed("NewFile.CPP.Z");	Invokes the editor. See [C:/Adam/DolDoc/Doc.CPP.Z,32]
+>Ed("NewFile.CPP.Z");	Invokes the editor. See [C:/Adam/DolDoc/Doc.CPP.Z,52]
 Doc Link Type.
 
 Most filenames end in .Z because they are stored compressed.

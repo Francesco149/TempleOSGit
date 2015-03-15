@@ -78,7 +78,7 @@ U0 Main()
   I64 start,end,overhead_time,test_time;
   F64 d1,fsum;
   I64 reg i,temp,reg d2,reg sum;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   CPURep;
 

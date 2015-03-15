@@ -11,7 +11,7 @@ U0 MenuSprite()
     '\n';
 
 //Sprite with flags for left-expression and an exit.
-//See [C:/Adam/DolDoc/Doc.CPP.Z,67] doldoc.dft_de_flags.	Note the %d in the string for the sprite number.
+//See [C:/Adam/DolDoc/Doc.CPP.Z,71] doldoc.dft_de_flags.	Note the %d in the string for the sprite number.
     Sprite(__BIN_1,"$LTBLUE$$SP+X,\"50 Hz\",LE=50,BI=%d$");
 
     "\n\n\n"

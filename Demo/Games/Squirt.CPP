@@ -331,7 +331,7 @@ U0 Squirt()
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   WinMax;
   WinBorder;
-  Preempt(OFF);
+  Preempt;
   DocCursor;
   AutoComplete;
 

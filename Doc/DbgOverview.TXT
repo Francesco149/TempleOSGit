@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,637] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,640] U(). [C:/Compiler/UAsm.CPP.Z,640]
-U([C:/Kernel/KernelA.HPP.Z,3322] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3323] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,640] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,249] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,640] U([C:/Kernel/KernelA.HPP.Z,3322]
+function. [C:/Compiler/UAsm.CPP.Z,640] U([C:/Kernel/KernelA.HPP.Z,3323]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -20,7 +20,7 @@ label, as in _MALLOC+0x20.  You specify [C:/Doc/HolyC.TXT.Z,1] HolyC function
 names with & before 
 functions as in &Print+0x10.
 
-* I use [C:/Kernel/KernelB.HPP.Z,162] progress1-[C:/Kernel/KernelB.HPP.Z,171]
+* I use [C:/Kernel/KernelB.HPP.Z,165] progress1-[C:/Kernel/KernelB.HPP.Z,174]
 progress4 for debugging because they show on the wallpaper.  
 They're just global integer vars.
 
@@ -83,8 +83,8 @@ are compiler bugs.  Often, you place them in #exe{} blocks.
 
 
 * There is a heap check utility which can find leaks.  Use
-[C:/Adam/Utils/HeapLog.CPP.Z,68] HeapLog(), and 
-[C:/Adam/Utils/HeapLog.CPP.Z,110] HeapLogRep().  It's a really simple program
+[C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog(), and 
+[C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep().  It's a really simple program
 which intercepts [C:/Kernel/MemB.CPP.Z,373] MAlloc() and 
 [C:/Kernel/MemB.CPP.Z,369] Free().  You can customize the code to find other
 heap issues.
@@ -102,6 +102,6 @@ MakeOSDrvBootInstall(), you can set the MemInit
 cause 
 mem alloced off the heap to be initialized or VarInit option so both global 
 and local vars will be initialized to a value.  Pick a non-zero value to 
-discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,147]
+discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,146]
 sys_var_init_flag, and 
 [C:/Kernel/KernelB.HPP.Z,142] sys_heap_init_flag directly after booting.

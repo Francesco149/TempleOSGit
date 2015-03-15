@@ -1,12 +1,12 @@
 U0 RawPutChar(I64 ch)
 {/*For RAW output during boot and in debugger.
 
-See [C:/Adam/Gr/GrScreen.CPP.Z,260] GrUpdateTextFG for
+See [C:/Adam/Gr/GrScreen.CPP.Z,263] GrUpdateTextFG for
 the normal screen text output routine.
 
-See also [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
+See also [C:/Adam/Gr/GrScreen.CPP.Z,409] GrUpdateScreen().
 */
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   I64 i,row,col;
   U8 *ptr,*ptr1,*ptr2;
 

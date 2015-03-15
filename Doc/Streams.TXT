@@ -1,0 +1,22 @@
+There are no streams in the traditional sense.  The cmd line output gets sent 
+to the cursor location of a document being edited and by using cursor keys, 
+text can be injected all over the document.  [Sprites,1] Sprites can be
+injected and are 
+not serialized!  Furthermore, the input can come from triggering macro 
+widgets.  See [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview and [DolDoc,1] Doc
+Routines.
+
+If you had a remote term and sent key [C:/Kernel/KernelA.HPP.Z,3471] Scan
+Codes, the user would press <CTRL-m
+> to access his Personal Menu to trigger his macros.  However, the local 
+[C:/Home/PersonalMenu.TXT,1] might differ from the remote, causing loss of
+sync 
+between local and remote sessions.  Also, the window size of local and remote 
+might differ, so word-wrapped text would be different.  Injecting output text 
+with different windows sizes would cause remote and local documents to not be 
+in sync.
+
+See [C:/Doc/CharOverview.TXT.Z,1] Char Overview and [Char,1] Char Routines.
+
+You can send characters into StdIn.  See [C:/Kernel/SrvCmd.CPP.Z,495] Auto(),
+[C:/Kernel/SrvCmd.CPP.Z,458] XTalk() and [AutoFile,1] AutoFile.

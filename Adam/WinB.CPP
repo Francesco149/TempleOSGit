@@ -6,7 +6,7 @@ public U0 WinMgrSync(I64 cnt=1,Bool force=FALSE)
 //1 Cnt Wait and Pump Msgs.
 //2 Cnt Make Sure to do a Full Refresh
 //	and Set Cur Pos.
-  Bool old_preempt=Preempt(OFF),
+  Bool old_preempt=Preempt,
     old_full_refresh,
     old_idle=LBts(&Fs->task_flags,TASKf_IDLE);
   CDoc *old_doc=DocPut;

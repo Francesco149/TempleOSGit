@@ -616,7 +616,7 @@ U0 Strut()
   bt_main_mode=CtrlButtonNew((GR_WIDTH-4*FONT_WIDTH-16)>>1,1*FONT_HEIGHT+4,80,,MMD_NUM_MODES,
 	   Define("ST_MAIN_MODES"),main_mode_colors,&main_mode_button);
   WinBorder;
-  Preempt(OFF);
+  Preempt;
   AutoComplete;
   DocCursor;
   DocClear;

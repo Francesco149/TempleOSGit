@@ -1,7 +1,7 @@
 //Uses [C:/Demo/Lectures/FixedPoint.CPP.Z,1] fixed-point.
 
-AcctRegSetDftEntry("TempleOS/EagleDive","I64 best_score=0;\n");
-AcctRegExeBranch("TempleOS/EagleDive");
+RegSetDftEntry("TempleOS/EagleDive","I64 best_score=0;\n");
+RegExeBranch("TempleOS/EagleDive");
 
 //Keep these power of two so shift is used instead of multiply
 //to index arrays.
@@ -958,7 +958,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   SettingsPop;
   CleanUp;
 #ifjit
-  AcctRegWriteBranch("TempleOS/EagleDive","I64 best_score=%d;\n",best_score);
+  RegWriteBranch("TempleOS/EagleDive","I64 best_score=%d;\n",best_score);
 #endif
   MenuPop;
 }

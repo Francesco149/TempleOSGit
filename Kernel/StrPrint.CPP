@@ -895,8 +895,9 @@ U8 *CatPrint(U8 *_dst,U8 *fmt,...)
 
 U0 Print(U8 *fmt,...)
 {//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
+//Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
-  PutS(buf);
+  PutS(buf);//Don't use PutS().  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   Free(buf);
 }
 

@@ -60,7 +60,7 @@ mem.	They all have at least the size [C:/Kernel/KernelA.HPP.Z,1136] CDocEntryBas
 Note: [C:/Kernel/KernelA.HPP.Z,1156] CDocEntry's should be alloced from the
 heap of the owning task, doc->mem_task.
 
-The flag arrays [C:/Adam/DolDoc/Doc.CPP.Z,67] doldoc.type_flags_form, etc
+The flag arrays [C:/Adam/DolDoc/Doc.CPP.Z,71] doldoc.type_flags_form, etc
 are useful.
 */
 

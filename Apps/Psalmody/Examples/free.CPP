@@ -133,7 +133,7 @@ U0 Song()
 {
   CTask *task;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   Fs->draw_it=&DrawIt;

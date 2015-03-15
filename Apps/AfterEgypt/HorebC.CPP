@@ -101,7 +101,7 @@ U0 Horeb()
     AutoComplete;
     WinMax;
     WinBorder;
-    Preempt(OFF);
+    Preempt;
 
     DocClear;
     "$BG,LTCYAN$%h6c",'\n';

@@ -203,6 +203,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Prompt.CPP.Z,1]
   [C:/Demo/ClassMeta.CPP.Z,1]
   [C:/Demo/LastClass.CPP.Z,1]
+  [C:/Demo/DolDoc/NumBible.CPP.Z,1]
   [C:/Demo/DolDoc/Form.CPP.Z,1]
   [C:/Demo/DolDoc/MenuButton.CPP.Z,1]
   [C:/Demo/DolDoc/MenuSprite.CPP.Z,1]

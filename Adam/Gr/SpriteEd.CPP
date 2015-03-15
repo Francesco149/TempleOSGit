@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 
 Bool SpritePolyPtPlot(CSprite *root,I64 x,I64 y,I64)
 {
@@ -888,7 +888,7 @@ Bool SpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_elem_num,I64 mode)
   SpritePtQueNew(elems,x,y,&root);
   cur_elem_num=0;
   if (root.next!=&root) {
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     while (TRUE) {
       SpriteCtrlPtsDraw(dc,&root); //has WinMgrSync
       switch (msg_code=ScanMsg(&a1,&a2,1<<MSG_IP_R_UP|1<<MSG_IP_L_DOWN|1<<MSG_KEY_DOWN)) {
@@ -1023,7 +1023,7 @@ I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_el
       StrCpy(Fs->task_title,DefineSub(i,"ST_SPRITE_ED_MENU"));
       switch (i) {
 	case GED_PICK_GRAPHICALLY:
-	  AcctOneTimePopUp(ARf_CSPRITE_PICK_GRAPHICALLY,
+	  RegOneTimePopUp(ARf_CSPRITE_PICK_GRAPHICALLY,
 		"You can delete elements by\n"
 		"holding $GREEN$Delete$FG$ and clicking.\n");
 	  doc_e->de_flags=old_de_flags;
@@ -1076,7 +1076,7 @@ I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_el
 	  break;
 	case GED_SHIFT_PTS:
 	case GED_SHIFT_RECTS:
-	  AcctOneTimePopUp(ARf_CSPRITE_PTS_RECTANGLES,
+	  RegOneTimePopUp(ARf_CSPRITE_PTS_RECTANGLES,
 		"You can switch between points\n"
 		"and rectangles with '$GREEN$p$FG$' and '$GREEN$r$FG$'.\n"
 		"Press '$GREEN$r$FG$' after one rectangle\n"
@@ -1115,7 +1115,7 @@ I64 SpriteEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y,CSprite **_root,I64 *_cur_el
 	  *_cur_elem_num+=1;
 	  break;
 	case GED_INS_CLIPBOARD:
-	  AcctOneTimePopUp(ARf_CSPRITE_INS_CLIPBOARD,
+	  RegOneTimePopUp(ARf_CSPRITE_INS_CLIPBOARD,
 		"You will probably want to shift around\n"
 		"the location of element groups.  Use\n"
 		"'Insert shift sub-origin' after picking the\n"

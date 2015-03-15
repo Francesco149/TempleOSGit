@@ -18,7 +18,7 @@ U0 GrDemo()
 {
   I64 i;
   F64 t;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CPURep;
   for (i=0;i<16;i++) {
     t=VGAPattern(0x5555555555555555);

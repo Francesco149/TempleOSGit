@@ -301,7 +301,7 @@ U0 BattleLines()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=GREEN<<4+WHITE;
-  Preempt(OFF);
+  Preempt;
 
   MenuPush(
   "File {"
@@ -317,7 +317,7 @@ U0 BattleLines()
   AutoComplete;
   WinMax;
   WinBorder;
-  Preempt(OFF);
+  Preempt;
 
   Init;
   DocCursor;

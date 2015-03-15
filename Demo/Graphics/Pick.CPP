@@ -50,7 +50,7 @@ U0 Pick()
   *buf=0;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
   AutoComplete;
   DocCursor;
   DocClear;

@@ -6,10 +6,3 @@ nice example.
 
 [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc's are used for the editor, viewer,
 browser, and cmd line.
-
-There is one [C:/Kernel/KernelA.HPP.Z,1321] CDoc for the task's border:
-Fs->border_doc.  There is a pair for 
-the task's client area: Fs->put_doc and Fs->display_doc.  You can,
-optionally, 
-do double buffering, otherwise Fs->put_doc is the same as Fs->display_doc.  
-See [C:/Demo/Spy.CPP.Z,1].

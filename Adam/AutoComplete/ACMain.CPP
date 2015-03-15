@@ -92,7 +92,7 @@ U0 ACMan(I64 n,CTask *parent_task=NULL)
 {
   CHashAC *tempw;
   CHashSrcSym *temph;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (0<=--n<ac.num_fillins && (tempw=ac.fillin_matches[n]) &&
 	(temph=HashFind(tempw->str,Fs->hash_table,HTG_SRC_SYM)) &&
 	temph->src_link) {
@@ -157,7 +157,7 @@ U0 ACPutChoices(CDoc *focus_l,CDocEntry *doc_e,CTask *focus_task)
 	  tempw=tempw->next;
 	}
       }
-      Preempt(OFF);
+      Preempt;
     }
     DocRst(doc,TRUE);
     doc->flags|=DOCF_MIN_SIZE;
@@ -260,7 +260,7 @@ U0 ACMainFileLstTraverse(U8 *files_find_mask)
 public Bool AutoComplete(Bool val=OFF)
 {//Turn AutoComplete OFF (or ON).
   Bool	old_autocomplete=FALSE,
-	old_preempt=Preempt(OFF);
+	old_preempt=Preempt;
   if (val) {
     while (Bt(&ac.flags,ACf_INIT_IN_PROGRESS))
       Sleep(10);

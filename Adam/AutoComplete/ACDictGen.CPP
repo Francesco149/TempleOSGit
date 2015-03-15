@@ -4,19 +4,59 @@ which will regenerate processed dictionary
 files from a raw Project Gutenberg
 dictionary file.
 
-Supply the raw dictionary filename in
-the call at the bottom of this file
-and #include this file.
-
-I ran [C:/Misc/ToDolDoc.CPP.Z,1] on it, first.
+http://www.templeos.org/files/DICTIONARY.TXT
 
 See [C:/Doc/Credits.TXT.Z,1].
 */
 
+U0 ACDPreprocess(U8 *in_name,U8 *out_name)
+{/*
+<cr><nl>--> <nl>
+$	--> $$
+\'89	--> e
+*/
+  I64 ch,i;
+  U8 *src,*dst;
+  CDoc *doc;
+  CDocEntry *doc_e;
+  if (doc=DocRead(in_name,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_DBL_DOLLARS)) {
+    doc_e=doc->root.next;
+    while (doc_e!=doc) {
+      if (doc_e->type_u8==DOCT_TEXT) {
+	src=dst=doc_e->tag;
+	while (ch=*src++) {
+	  if (ch=='\\' && *src=='\'') {
+	    src++;
+	    i=0;
+	    ch=ToUpper(*src++);
+	    if ('0'<=ch<='9')
+	      i+=ch-'0';
+	    else if ('A'<=ch<='F')
+	      i+=ch-'A'+10;
+	    i<<=4;
+	    ch=ToUpper(*src++);
+	    if ('0'<=ch<='9')
+	      i+=ch-'0';
+	    else if ('A'<=ch<='F')
+	      i+=ch-'A'+10;
+	    *dst++=i;
+	  } else
+	    *dst++=ch;
+	}
+	*dst=0;
+      }
+      doc_e=doc_e->next;
+    }
+    StrCpy(doc->filename.name,out_name);
+    DocWrite(doc);
+    DocDel(doc);
+  }
+}
+
 I64 ACDNextCmd(U8 **_ptr)
 {
-  U8 ch,*ptr=*_ptr,*ptr2;
-  I64 result=-1;
+  U8 *ptr=*_ptr,*ptr2;
+  I64 ch,result=-1;
   do {
     do {
       if (!(ch=*ptr++)) goto ncmd_done;
@@ -41,8 +81,8 @@ ncmd_done:
 
 U8 *ACDNextEntry(U8 **_ptr)
 {
-  U8 *result,*ignore,ch,*ptr=*_ptr,buf[ACD_BLK_SIZE],*out_ptr=buf;
-  I64 l;
+  U8 *result,*ignore,*ptr=*_ptr,buf[ACD_BLK_SIZE],*out_ptr=buf;
+  I64 ch,l;
   while (TRUE) {
     while (TRUE) {
       if (!(ch=*ptr++)) goto nentry_done;
@@ -107,10 +147,10 @@ U8 *ACDSortWords(U8 *start,I64 size,I64 word_cnt)
   return out_start;
 }
 
-U0 ACDGen(U8 *raw_dict_filename)
+U0 ACDGen(U8 *in_file)
 {
   I64 cmd,size,word_cnt=0,largest_entry=0;
-  U8 *st,*in_ptr=FileRead(raw_dict_filename,&size),*in_start=in_ptr,
+  U8 *st,*in_ptr=FileRead(in_file,&size),*in_start=in_ptr,
      *out_ptr=MAlloc(size),*out_start=out_ptr,
      *word_ptr=MAlloc(size),*word_start=word_ptr,
      *last_word="",*def_word_start=out_ptr,
@@ -215,4 +255,6 @@ next_word:
   Free(sorted_word_start);
 }
 
-ACDGen("DICTIONARY.TXT");
+Cd(__DIR__);
+ACDPreprocess("DICTIONARY.TXT","DICTIONARY2.TXT");
+ACDGen("DICTIONARY2.TXT");

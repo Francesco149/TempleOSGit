@@ -28,7 +28,7 @@ Bool TaskValidate(CTask *task)
 Bool Kill(CTask *task,Bool wait=TRUE)
 {//Terminate other task.
   I64 i;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (TaskValidate(task) && task!=sys_winmgr_task) {
     for (i=0;i<mp_cnt;i++)
       if (task==cpu_structs[i].seth_task)
@@ -309,6 +309,7 @@ I64 ExeCmdLine(CLex *lx)
 	Fs->answer=result;
 	Fs->answer_type=type;
 	Fs->answer_time=tS-t0;
+	Fs->new_answer=TRUE;
       }
       if (!(lx->flags&LF_HAS_MISC_DATA))
 	Free(ex);

@@ -427,7 +427,7 @@ U0 DocUndoRestore(CDoc *doc)
     DocUnlock(doc);
 }
 
-#help_index "Graphics/Windows BMP Files;Graphics/GRA Files;DolDoc/Output"
+#help_index "Graphics/Windows BMP Files;Graphics/GRA Files;DolDoc/Output;StdOut/DolDoc"
 
 public Bool DocType(CDoc *doc=NULL,U8 *filename,I64 trailing_new_lines=1)
 {//Output txt or graphic file to document.

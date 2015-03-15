@@ -23,7 +23,7 @@ U0 InputFilterTask()
 	  ExePrint("%s",tempc->aux_str);
 	catch
 	  Fs->catch_except=TRUE;
-	Preempt(OFF);
+	Preempt;
 	SrvCmdDel(tempc);
       } else
 	break;
@@ -99,7 +99,7 @@ I64 GetMsg(I64 *_a1=NULL,I64 *_a2=NULL,I64 mask=~1,CTask *task=NULL)
 //Throw-out all messages not in mask.
 //Returns [C:/Kernel/KernelA.HPP.Z,3113] msg_code. See [C:/Demo/MsgLoop.CPP.Z,1].
   I64 result;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (!task) task=Fs;
   LBtr(&task->task_flags,TASKf_IDLE);
   while (!(result=ScanMsg(_a1,_a2,mask,task))) {
@@ -113,20 +113,20 @@ I64 GetMsg(I64 *_a1=NULL,I64 *_a2=NULL,I64 mask=~1,CTask *task=NULL)
 
 I64 ScanChar()
 {//Checks for [C:/Kernel/KernelA.HPP.Z,3114] MSG_KEY_DOWN and returns 0 immediately if no key.
-//Waits for [C:/Kernel/KernelA.HPP.Z,3115] MSG_KEY_UP of non-zero [C:/Kernel/KernelA.HPP.Z,3382] ASCII key and returns [C:/Kernel/KernelA.HPP.Z,3382] ASCII if key.
+//Waits for [C:/Kernel/KernelA.HPP.Z,3115] MSG_KEY_UP of non-zero [C:/Kernel/KernelA.HPP.Z,3383] ASCII key and returns [C:/Kernel/KernelA.HPP.Z,3383] ASCII if key.
 //[C:/Kernel/KbdMouse/Message.CPP.Z,39] ScanMsg() throws away other message types.
   I64 a1a,a2a,a1b,a2b;
   if (!ScanMsg(&a1a,&a2a,1<<MSG_KEY_DOWN)||!a1a)
     return 0;
   else
     do GetMsg(&a1b,&a2b,1<<MSG_KEY_UP);
-    while (!a1b);  //Be careful of [C:/Kernel/KernelA.HPP.Z,3456] SC_SHIFT and [C:/Kernel/KernelA.HPP.Z,3457] SC_CTRL, etc.
+    while (!a1b);  //Be careful of [C:/Kernel/KernelA.HPP.Z,3457] SC_SHIFT and [C:/Kernel/KernelA.HPP.Z,3458] SC_CTRL, etc.
   return a1a;
 }
 
 Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE)
 {//Checks for [C:/Kernel/KernelA.HPP.Z,3114] MSG_KEY_DOWN and returns FALSE immediately if no key.
-//Sets [C:/Kernel/KernelA.HPP.Z,3382] ASCII and [C:/Doc/CharOverview.TXT.Z,1] scan_code.
+//Sets [C:/Kernel/KernelA.HPP.Z,3383] ASCII and [C:/Doc/CharOverview.TXT.Z,1] scan_code.
 //Removes key message and returns TRUE.
 //[C:/Kernel/KbdMouse/Message.CPP.Z,39] ScanMsg() throws away other message types.
   I64 ch=0,sc=0;
@@ -144,11 +144,11 @@ Bool ScanKey(I64 *_ch=NULL,I64 *_scan_code=NULL,Bool echo=FALSE)
 }
 
 I64 GetKey(I64 *_scan_code=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
-{//Waits for [C:/Kernel/KernelA.HPP.Z,3114] MSG_KEY_DOWN message and returns [C:/Kernel/KernelA.HPP.Z,3382] ASCII.
+{//Waits for [C:/Kernel/KernelA.HPP.Z,3114] MSG_KEY_DOWN message and returns [C:/Kernel/KernelA.HPP.Z,3383] ASCII.
 //Sets [C:/Doc/CharOverview.TXT.Z,1] scan_code.
 //[C:/Kernel/KbdMouse/Message.CPP.Z,127] ScanKey() throws away other message types.
   I64 ch,sc;
-  Bool old_preempt=Preempt(OFF),cursor_on=FALSE;
+  Bool old_preempt=Preempt,cursor_on=FALSE;
   while (!ScanKey(&ch,&sc,FALSE)) {
     if (IsRaw && raw_cursor) {
       if (!cursor_on && ToI64(GetTSC*5/cnts.time_stamp_freq)&1) {
@@ -187,7 +187,7 @@ I64 GetKey(I64 *_scan_code=NULL,Bool echo=FALSE,Bool raw_cursor=FALSE)
 }
 
 I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
-{//Waits for non-zero [C:/Kernel/KernelA.HPP.Z,3382] ASCII key.
+{//Waits for non-zero [C:/Kernel/KernelA.HPP.Z,3383] ASCII key.
 //Sets [C:/Doc/CharOverview.TXT.Z,1] scan_code.
   I64 ch1;
   do ch1=GetKey(_scan_code,FALSE,raw_cursor);
@@ -198,7 +198,7 @@ I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
 }
 
 U8 *GetStr(U8 *msg=NULL,U8 *dft=NULL,I64 flags=0)
-{//Returns a [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed prompted string.  See [C:/Kernel/KernelA.HPP.Z,3676] Flags.
+{//Returns a [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed prompted string.  See [C:/Kernel/KernelA.HPP.Z,3677] Flags.
   U8 *st;
   if (msg)
     "" msg,dft;

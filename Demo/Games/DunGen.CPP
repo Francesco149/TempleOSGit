@@ -1,5 +1,5 @@
-AcctRegSetDftEntry("TempleOS/DunGen","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/DunGen");
+RegSetDftEntry("TempleOS/DunGen","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/DunGen");
 
 //Set snap to 4 and width to 4
 //if you edit this map.
@@ -119,7 +119,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
-  //with a [C:/Kernel/KernelA.HPP.Z,3547] CDC.
+  //with a [C:/Kernel/KernelA.HPP.Z,3548] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -339,7 +339,7 @@ U0 DunGen()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
-  Preempt(OFF);
+  Preempt;
   WinMax;
   AutoComplete;
   Init;
@@ -439,7 +439,7 @@ dg_done:
     PutExcept;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/DunGen","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/DunGen","F64 best_score=%5.4f;\n",best_score);
   CleanUp;
 }
 

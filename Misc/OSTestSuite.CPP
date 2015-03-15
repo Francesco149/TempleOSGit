@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=159;
+  progress4_max=160;
   *progress4_desc=0;
 }
 U0 TSEnd()
@@ -1879,6 +1879,14 @@ U0 DoClassMeta()
   XTalk(task,"Exit;\n");
 }
 
+U0 DoNumBible()
+{
+  CTask *task=User;
+  XTalkWait(task,"#include \"::/Demo/DolDoc/NumBible\";\n");
+  Del("::/Home/NumBible.TXT.Z");
+  XTalk(task,"Exit;\n");
+}
+
 U0 DoForm()
 {
   CTask *task=User;
@@ -2301,6 +2309,7 @@ U0 OSTestSuite()
   TS; DoData;
   TS; DoCallBack;
   TS; DoClassMeta;
+  TS; DoNumBible;
   TS; DoForm;
   TS; DoClickCallBack;
   TS; DoMenuButton;

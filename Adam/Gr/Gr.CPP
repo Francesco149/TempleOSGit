@@ -18,7 +18,7 @@ U0 GrInit1()
 }
 GrInit1;
 
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 
 class CMeshTri
 {
@@ -170,7 +170,7 @@ public class CSpritePtMeshU8s : CSpriteBase
 #define SPT_TEXT_BOX		28	//[C:/Adam/Gr/Gr.CPP.Z,114] CSpritePtStr
 #define SPT_TEXT_DIAMOND	29	//[C:/Adam/Gr/Gr.CPP.Z,114] CSpritePtStr
 #define SPT_NUM_TYPES		30
-//See [Graphics/Sprite,1] Graphics/Sprite.  See [C:/Adam/Gr/GrSpritePlot.CPP.Z,1] ::/Adam/Gr/GrSpritePlot.CPP and
+//See [Sprites,1] Sprites.  See [C:/Adam/Gr/GrSpritePlot.CPP.Z,1] ::/Adam/Gr/GrSpritePlot.CPP and
 //[C:/Demo/Graphics/SpriteRaw.CPP.Z,1] for how CSprite are stored.
 public class CSprite
 {

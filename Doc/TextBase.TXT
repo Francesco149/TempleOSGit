@@ -16,12 +16,12 @@ background)
 Bit  30		[C:/Kernel/KernelA.HPP.Z,878] Selected (XOR colors with FF)
 Bit  31		[C:/Kernel/KernelA.HPP.Z,879] Underline
 
-[C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins() calls
+[C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin() calls
 [C:/Adam/DolDoc/DocRecalcA.CPP.Z,170] DocUpdateTaskDocs() which calls
 [C:/Adam/DolDoc/DocRecalcB.CPP.Z,249] DocRecalc() where the 
 document text is plotted into [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base. 
-Then, [C:/Adam/Gr/GrScreen.CPP.Z,171] GrUpdateTextBG() and 
-[C:/Adam/Gr/GrScreen.CPP.Z,260] GrUpdateTextFG() render the
+Then, [C:/Adam/Gr/GrScreen.CPP.Z,174] GrUpdateTextBG() and 
+[C:/Adam/Gr/GrScreen.CPP.Z,263] GrUpdateTextFG() render the
 [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base onto [C:/Adam/Gr/GrGlbls.CPP.Z,3]
 gr.dc2, a raw graphic bitmap.
 

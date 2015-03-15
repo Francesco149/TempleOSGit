@@ -107,6 +107,7 @@ U0 DistroPrep()
 {
   Del("/Demo/WebLogExample/WebLogRep.TXT*");
   Del("/Demo/ReverseFileExample/PoemForeward.TXT*");
+  Del("/Home/NumBible.TXT.Z");
   DelTree("/Home/*Temp.TXT.Z");
   CopySongs;
 
@@ -276,7 +277,7 @@ U0 MakeTOSDistro()
   TOSDistroPrep;
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-    "Download TempleOS V3.03 - T.S. Company Internal Distro (%0.1f MB)",
+    "Download TempleOS V3.04 - T.S. Company Internal Distro (%0.1f MB)",
     0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -310,7 +311,7 @@ U0 MakeDbgDistro()
   DbgDistroPrep;
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-    "Download TempleOS V3.03 - Debug Distro (%0.1f MB)",
+    "Download TempleOS V3.04 - Debug Distro (%0.1f MB)",
     0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -354,7 +355,7 @@ U0 MakeLiteDistro()
   LiteDistroPrep;
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-    "Download TempleOS V3.03 - Lite Distro (%0.1f MB)",
+    "Download TempleOS V3.04 - Lite Distro (%0.1f MB)",
     0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -379,7 +380,7 @@ U0 MakeUltraDistro()
   UltraDistroPrep;
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-    "Download TempleOS V3.03 - UltraLite Distro (%0.1f MB)",
+    "Download TempleOS V3.04 - UltraLite Distro (%0.1f MB)",
     0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -420,6 +421,10 @@ U0 MakeWebSite()
     TOSWebFile(tempde->full_name);
     tempde=tempde->next;
   }
+  Copy("D:/Wb/Home/Wb2/Files/Bin/TempleBot","D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
+  ToDolDoc("D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
+  ToHtml("D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
+  Del("D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
   DirTreeDel(tempde1);
   Drv('C');
 }
@@ -456,12 +461,12 @@ U0 MakeWebSitePartial()
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-    "Download TempleOS V3.03 - Standard Distro (%0.1f MB)",
+    "Download TempleOS V3.04 - Standard Distro (%0.1f MB)",
     0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
     "%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-    "Download TempleOS V3.03 - UltraSmall Distro (%0.1f MB)",
+    "Download TempleOS V3.04 - UltraSmall Distro (%0.1f MB)",
     0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
     "%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);
@@ -506,4 +511,13 @@ public U0 MakeDistrosAndBackUp()
   ChkAll; progress4++;
   progress4=progress4_max=0;
   SettingsPop;
+}
+
+public U0 PreBackUp()
+{
+  Copy("D:/Home/Wb2/Files/Bookmarks.html","C:/Home/Wb2/Files");
+  Del("C:/Home/Wb2/Files/Bin/*");
+  Copy("D:/Home/Wb2/Files/Bin/*","C:/Home/Wb2/Files/Bin");
+  Copy("D:/Home/Wb2/Files/Bin/TempleBot","C:/Linux");
+  Copy("D:/Home/Wb2/Files/Bin/God*","C:/Linux");
 }

@@ -121,7 +121,7 @@ U0 TeeBall()
   Fs->text_attr=GREEN<<4+WHITE;
   WinMax;
   WinBorder;
-  Preempt(OFF);
+  Preempt;
   AutoComplete;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
 

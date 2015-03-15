@@ -1,5 +1,5 @@
-AcctRegSetDftEntry("TempleOS/TimeOut","I64 best_score=0;\n");
-AcctRegExeBranch("TempleOS/TimeOut");
+RegSetDftEntry("TempleOS/TimeOut","I64 best_score=0;\n");
+RegExeBranch("TempleOS/TimeOut");
 
 #define MAP_HEIGHT	4096
 #define BULLET_LEN	10
@@ -422,7 +422,7 @@ U0 TimeOut()
 
   I64 next_update_jiffy;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
   WinBorder;
   AutoComplete;
 
@@ -592,5 +592,5 @@ to_done:
       PutExcept;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/TimeOut","I64 best_score=%d;\n",best_score);
+  RegWriteBranch("TempleOS/TimeOut","I64 best_score=%d;\n",best_score);
 }

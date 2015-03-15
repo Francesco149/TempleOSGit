@@ -282,9 +282,9 @@ SortHeaders
 `#include "::/Home/Wb2/Files/SortHeaders.CPP.Z";
 `
 
-Copy("D:/Home/Archive/Bookmarks.html","C:/Home/Archive/Bookmarks.html");
+PreBackUp;
 
-`Copy("D:/Home/Archive/Bookmarks.html","C:/Home/Archive/Bookmarks.html");
+`PreBackUp;
 `
 
 Make TOS Distro ISO

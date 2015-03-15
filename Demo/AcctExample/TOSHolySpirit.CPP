@@ -62,7 +62,7 @@ U0 BlogScreenShot()
   DocCursor(old_cursor);
 }
 
-U8 *WebBookMarks(U8 *filename="::/Home/Archive/Bookmarks.html")
+U8 *WebBookMarks(U8 *filename="::/Home/Wb2/Files/Bookmarks.html")
 {
   U8 *st;
   CDocEntry *doc_e;
@@ -308,9 +308,9 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
   }
 }
 
-#define NIST_TIME_OFFSET	21082
+#define NIST_TIME_OFFSET	(-7729-local_time_offset/CDATE_FREQ)
 
-public U0 SyncNIST()
+public U0 NISTSync()
 {
   I64 i,j;
   CDate d;

@@ -56,7 +56,7 @@ U0 DrawDrops(CTask *,CDC *dc)
 
 U0 UpdateCurBase(CTask *task,CDC *dc)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   cur_dc->color=ROP_EQU;
   dc->flags|=DCF_NO_TRANSPARENTS;
   GrBlot(cur_dc,-task->pix_left-task->scroll_x,-task->pix_top-task->scroll_y,dc);

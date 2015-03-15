@@ -1,4 +1,4 @@
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 
 public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 {//[C:/Kernel/KeyDev.CPP.Z,1] PutKey(ch,sc) at doc insert pt, cur_entry.
@@ -480,9 +480,11 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 			KeyDescSet("God Song");
 		    } else {
 		      //[C:/Adam/God/HSNotes.TXT.Z,1]
-		      if (sc & SCF_SHIFT)
+		      if (sc & SCF_SHIFT) {
+			DocUnlock(doc);
 			GodDoodle;
-		      else
+			DocLock(doc);
+		      } else
 			GodSong;
 		    }
 		    break;
@@ -862,7 +864,7 @@ Bool DocFileEd(I64 _type,U8 *filename,
 
 public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_needle_str=NULL,
   I64 *_num=NULL,I64 edf_dof_flags=0)
-{//[C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link --> filename, needle_str and line number.
+{//[C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link --> filename, needle_str and line number.
   U8 *st,*ptr,*filename=NULL,*needle_str=NULL,*filename2;
   I64 result,i,num=1;
   CHashSrcSym *temph;

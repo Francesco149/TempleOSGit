@@ -268,7 +268,7 @@ U0 Pick3D()
   DocClear;
   "$BK,1$Move things around.$BK,0$\n";
   AutoComplete;
-  Preempt(OFF);
+  Preempt;
   pf=Init;
   tempo=NULL;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_CTRLS-WIF_FOCUS_TASK_MENU;

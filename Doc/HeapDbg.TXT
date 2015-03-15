@@ -1,0 +1,3 @@
+Recompile the kernel with [C:/Kernel/KernelA.HPP.Z,2688] _CFG_HEAP_DBG=TRUE
+if you want more heap debugging.  
+You are on your own.

@@ -86,7 +86,7 @@ U0 Shadow()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   Fs->draw_it=&DrawIt;
-  Preempt(OFF);
+  Preempt;
 
   while (!ScanChar) {
     Sleep(20);

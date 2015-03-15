@@ -2,7 +2,7 @@
 -] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's 
 lexical analyser removes comments and does
-  preprocessing.  [C:/Compiler/Lex.CPP.Z,694]
+  preprocessing.  [C:/Compiler/Lex.CPP.Z,697]
   Lex(),[C:/Compiler/CMisc.CPP.Z,38] Echo(ON).
 
 The main compiler generates [C:/Compiler/CompilerA.HPP.Z,1] Intermediate Code
@@ -50,7 +50,7 @@ It is okay in TempleOS to change RAX, RBX, RCX, RDX, R8 and R9 without
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{//See [C:/Compiler/Lex.CPP.Z,694] Lex().
+{//See [C:/Compiler/Lex.CPP.Z,697] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {

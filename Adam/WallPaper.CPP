@@ -22,7 +22,7 @@ U0 WallPaper(CTask *_task)
   CTaskWallPaperData *wpd;
   CHashTable *old_hash=Fs->hash_table;
   CCPU *c;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CDateStruct ds;
   U8 *st;
   _task->text_attr=BLUE<<4+WHITE;
@@ -157,7 +157,7 @@ CCtrl *TermButtonNew()
   c->top=sys_winmgr_task->pix_height-(max_y-min_y+1);
   c->bottom=c->top+(max_y-min_y+1)-1;
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   QueIns(c,sys_winmgr_task->last_ctrl);
   TaskDerivedValsUpdate(sys_winmgr_task);
   Preempt(old_preempt);

@@ -35,7 +35,7 @@ U0 SpinningNoPreempt()
   WinMgrSync;
   WinMgrSync;
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   for (i=0;i<3000000;i++)
     InU8(0x21);
   Preempt(old_preempt);
@@ -69,7 +69,7 @@ U0 CooperativeMultitaskingPreempt()
 U0 CooperativeMultitaskingNoPreempt()
 {
   F64 timeout=tS+3.0;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   "Cooperative multitasking with no preemption...\n";
   while (tS<timeout) {
     InU8(0x21);

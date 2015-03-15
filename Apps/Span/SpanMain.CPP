@@ -275,7 +275,7 @@ U0 Span()
   bt_mode=CtrlButtonNew(0,3.0*FONT_HEIGHT,80,,MD_NUM_MODES,Define("ST_SPAN_MODES"),mode_colors,&mode_button);
   a.saved_ode=NULL;
 
-//Preempt(OFF) eliminates a lot of hassles.
+//Preempt eliminates a lot of hassles.
 //The concern is about changing
 //que links while the winmgr task
 //is updating the ode or screen.
@@ -286,7 +286,7 @@ U0 Span()
 //preempt, we will not be interrupted.
 //There is little downside to Preempt()
 //since we will yield during GetMsg().
-  Preempt(OFF);
+  Preempt;
 
   DocCursor;
   WinBorder;

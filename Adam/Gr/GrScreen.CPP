@@ -1,87 +1,90 @@
 #help_index "Graphics/Screen"
 
-U0 GrUpdateWins()
+U0 GrUpdateTaskODEs(CTask *task)
+{
+  sys_task_being_screen_updated=task;
+  try {
+    Preempt(ON);
+    ODEsUpdate(task);
+    Preempt;
+  } catch {
+    LBts(&task->win_inhibit,WIf_SELF_ODE);
+    "Exception in WinMgr: Update Task ODEs\n";
+    PutExcept;
+    Sleep(3000);
+    VGAFlush;
+  }
+  sys_task_being_screen_updated=NULL;
+}
+
+U0 GrUpdateTaskWin(CTask *task)
+{ //Draw core#0 task win.
+  CDC *dc;
+  CD3I64 saved_scroll;
+  sys_task_being_screen_updated=task;
+  try {
+    if (!Bt(&task->display_flags,DISPLAYf_NO_BORDER))
+      TextBorder(Fs,task->win_left,task->win_right,task->win_top,
+	    task->win_bottom,task->border_attr,task==sys_focus_task);
+    TextRect(task->win_left,task->win_right,
+	  task->win_top,task->win_bottom,task->text_attr<<8);
+    Preempt(ON);
+    if (task==sys_winmgr_task) {
+      if (gr.fp_wall_paper)
+	(*gr.fp_wall_paper)(task);
+    } else if (!(task->win_inhibit&WIF_SELF_DOC))
+      DocUpdateTaskDocs(task);
+    if (TaskValidate(task)) {
+      if (task->draw_it) {
+	dc=DCAlias(gr.dc2,task);
+	(*task->draw_it)(task,dc);
+	DCDel(dc);
+      }
+      if (TaskValidate(task)) {
+	Preempt;
+	WinScrollNull(task,&saved_scroll);
+	DrawCtrls(task);
+	WinScrollRestore(task,&saved_scroll);
+      }
+    }
+    Preempt;
+  } catch {
+    if (task!=Fs && TaskValidate(task)) {
+      LBtr(&task->display_flags,DISPLAYf_SHOW);
+      "Exception in WinMgr: Update Task Win\n";
+      PutExcept;
+      Sleep(3000);
+      VGAFlush;
+    }
+  }
+  sys_task_being_screen_updated=NULL;
+}
+
+U0 GrUpdateTasks()
 {//Only called by WinMgr
   I64 i;
   CTask *task,*task1;
-  CD3I64 saved_scroll;
-  CDC *dc;
-  Preempt(OFF);
+  Preempt;
   try {
     winmgr.ode_time=0;
     if (Bt(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0))
       WinZBufUpdate;
     task1=task=sys_winmgr_task;
-    do {
-      if (!TaskValidate(task))
-	break;
-      sys_task_being_screen_updated=task;
-      Preempt(ON);
-      ODEsUpdate(task);
-      Preempt(OFF);
-      if (!TaskValidate(task))
-	break;
+    do { //Loop through core#0 tasks.
+      if (!TaskValidate(task)) break;
       if (Bt(&task->display_flags,DISPLAYf_SHOW) &&
 	  Bt(gr.win_uncovered_bitmap,task->win_z_num))
-	try {
-	  if (!Bt(&task->display_flags,DISPLAYf_NO_BORDER))
-	    TextBorder(Fs,task->win_left,task->win_right,task->win_top,
-		task->win_bottom,task->border_attr,task==sys_focus_task);
-	  TextRect(task->win_left,task->win_right,
-		task->win_top,task->win_bottom,task->text_attr<<8);
-	  Preempt(ON);
-	  if (task==sys_winmgr_task) {
-	    if (gr.fp_wall_paper)
-	      (*gr.fp_wall_paper)(task);
-	  } else if (!(task->win_inhibit&WIF_SELF_DOC))
-	    DocUpdateTaskDocs(task);
-	  if (TaskValidate(task)) {
-	    if (task->draw_it) {
-	      dc=DCAlias(gr.dc2,task);
-	      (*task->draw_it)(task,dc);
-	      DCDel(dc);
-	    }
-	    if (TaskValidate(task)) {
-	      Preempt(OFF);
-	      WinScrollNull(task,&saved_scroll);
-	      DrawCtrls(task);
-	      WinScrollRestore(task,&saved_scroll);
-	    }
-	  }
-	  Preempt(OFF);
-	} catch {
-	  if (task!=Fs && TaskValidate(task)) {
-	    LBtr(&task->display_flags,DISPLAYf_SHOW);
-	    "Exception in WinMgr: DrawIt\n";
-	    PutExcept;
-	    Sleep(3000);
-	    VGAFlush;
-	  }
-	}
-      if (!TaskValidate(task))
-	break;
+	GrUpdateTaskWin(task);
+      if (!TaskValidate(task)) break;
       task=task->next_task;
     } while (task!=task1);
 
-    for (i=1;i<mp_cnt;i++) {
+    for (i=0;i<mp_cnt;i++) { //Loop through all cores.
       task1=task=cpu_structs[i].seth_task;
       do {
-	if (!TaskValidate(task))
-	  break;
-	try {
-	  sys_task_being_screen_updated=task;
-	  Preempt(ON);
-	  ODEsUpdate(task);
-	  Preempt(OFF);
-	} catch {
-	  LBts(&task->win_inhibit,WIf_SELF_ODE);
-	  "Exception in WinMgr: ODE\n";
-	  PutExcept;
-	  Sleep(3000);
-	  VGAFlush;
-	}
-	if (!TaskValidate(task))
-	  break;
+	if (!TaskValidate(task)) break;
+	GrUpdateTaskODEs(task);
+	if (!TaskValidate(task)) break;
 	task=task->next_task;
       } while (task!=task1);
     }
@@ -109,7 +112,7 @@ U0 GrFixZoomScale()
 
 public U0 GrScaleZoom(F64 scale)
 {//Multiply zoom factor larger or smaller.
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   F64 s=gr.screen_zoom;
   gr.screen_zoom=gr.screen_zoom*scale;
   GrFixZoomScale;
@@ -408,14 +411,14 @@ U0 GrUpdateScreen()
   CDC *dc;
   Preempt(ON);
   if (!Bt(&sys_run_level,RLf_VGA)) //if text mode
-    GrUpdateWins;
+    GrUpdateTasks;
   else {
     GrUpdateTextBG;
     GrUpdateTextFG;
-    GrUpdateWins;
+    GrUpdateTasks;
     DCBlotColor8(gr.dc2,gr.dc);
   }
-  Preempt(OFF);
+  Preempt;
 
   dc=DCAlias(gr.dc2,Fs);
   dc->flags|=DCF_ON_TOP;

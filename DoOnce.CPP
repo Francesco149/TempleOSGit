@@ -19,10 +19,12 @@ U0 DoOnce()
     }
   }
   Type("::/Doc/Customize.TXT");
-  "\nTake Tour";
-  if (YorN) {
-    Cd("::/Misc/Tour");
-    AutoFile("Tour");
+  if (FileFind("::/Misc/Tour")) {
+    "\nTake Tour";
+    if (YorN) {
+      Cd("::/Misc/Tour");
+      AutoFile("Tour");
+    }
   }
 }
 

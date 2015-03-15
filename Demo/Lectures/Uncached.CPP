@@ -18,7 +18,7 @@ U0 TimeIns()
   hc=HeapCtrlBPInit(bp,shared_blks<<12);
   uncached_I64=MAlloc(sizeof(I64),hc);
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
 
 //Measure cached time
   start=GetTSC;

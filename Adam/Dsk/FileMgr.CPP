@@ -1,4 +1,4 @@
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 U0 DirFileDoc(CDoc *doc,CDirEntry *tempde)
 {
   while (tempde) {

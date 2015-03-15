@@ -65,7 +65,7 @@ U0 PSectCacheAdd(CHash *temps,U8 *addr)
   CPSectCache *temppc;
   if (temps && temps->type&HTT_FUN &&
       (dbg_info=temps(CHashFun *)->dbg_info)) {
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     lock {i=dbg.psect_cache_index++;}
     temppc=&dbg.psect_cache[i&(PSECT_CACHE_SIZE-1)];
     temppc->base=dbg_info->body[0];

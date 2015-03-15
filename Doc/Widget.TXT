@@ -1,7 +1,6 @@
                               DolDoc Widget Help
 
-[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is a propriatary TempleOS document
-type.
+[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is a TempleOS document type.
 
 "Expression" a num or HolyC algebraic term with operators and HolyC syms can 
 be entered.
@@ -45,8 +44,7 @@ especially fmtstr entries in class definitions.
 X Expression For cursor movements, the horizontal value.
 Y Expression For cursor movements, the vertical value.
 
-**PopUp** For macro's, run the macro in a PopUp window.  Do this when making
-a 
+PopUp For macro's, run the macro in a PopUp window.  Do this when making a 
 macro to run a program, so it doesn't tie-up memory.
 
 Escape For macro's, send an <ESC> char to exit before running the macro.  

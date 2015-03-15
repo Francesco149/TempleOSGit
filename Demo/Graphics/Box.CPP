@@ -27,7 +27,7 @@ U0 Box()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   DocClear;
   Fs->draw_it=&DrawIt;
-  Preempt(OFF); //We don't want matrix used while we're changing it.
+  Preempt; //We don't want matrix used while we're changing it.
 
   dc->x=200;
   dc->y=200;

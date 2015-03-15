@@ -3,7 +3,7 @@
 //about the same as buttons, but don't have a border.
 
 I64 PopUpFreq()
-{//See also [C:/Adam/DolDoc/DocPopUp.CPP.Z,641] PopUpRangeI64()
+{//See also [C:/Adam/DolDoc/DocPopUp.CPP.Z,649] PopUpRangeI64()
   I64 i;
   CDoc *doc=DocNew;
   DocPrint(doc,"$TX+CX,\"Set Freq\"$\n" //Centered text

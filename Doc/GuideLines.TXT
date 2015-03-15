@@ -124,7 +124,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3413] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3414] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Utils/S2T.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -164,7 +164,7 @@ case you wish to make hash table sizes bigger.
 
 * FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3212] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3337] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3338] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,447] SET_FS_BASE and

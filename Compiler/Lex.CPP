@@ -2,10 +2,13 @@ U8 *CmpPrompt(Bool dbl_semicolon=FALSE)
 {
   I64 i;
   U8 *result,*st;
-  if (Fs->answer_type==RT_F64)
-    "%8.6fs ansf=%15.7g\n",Fs->answer_time,Fs->answer;
-  else
-    "%8.6fs ans=0x%08X=%d\n",Fs->answer_time,Fs->answer,Fs->answer;
+  if (Fs->new_answer) {
+    if (Fs->answer_type==RT_F64)
+      "%8.6fs ansf=%15.7g\n",Fs->answer_time,Fs->answer;
+    else
+      "%8.6fs ans=0x%08X=%d\n",Fs->answer_time,Fs->answer,Fs->answer;
+    Fs->new_answer=FALSE;
+  }
   if (st=CurDir) {
     "%s",st;
     Free(st);
@@ -34,7 +37,7 @@ U8 *CmpPrompt(Bool dbl_semicolon=FALSE)
 
 CLex *LexNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc new lex ctrl node.
-//Frees buf in [C:/Compiler/Lex.CPP.Z,66] LexDel unless [C:/Kernel/KernelA.HPP.Z,2010] LF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.CPP.Z,69] LexDel unless [C:/Kernel/KernelA.HPP.Z,2010] LF_DONT_FREE_BUF flag is set.
 //FileName is for error reporting.  If files are #included, new names are used.
 //See [C:/Apps/Psalmody/PsalmodyFile.CPP.Z,1] Psalmody LexNew.
   CLex *lx=MAlloc(sizeof(CLex));
@@ -319,14 +322,14 @@ lgc_done:
 }
 
 U0 LexSkipEol(CLex *lx)
-{//[C:/Compiler/Lex.CPP.Z,156] LexGetChar to NULL until end-of-line.
+{//[C:/Compiler/Lex.CPP.Z,159] LexGetChar to NULL until end-of-line.
   I64 ch;
   do ch=LexGetChar(lx);
   while (Bt(chars_bitmap_non_eol,ch));
 }
 
 U8 *LexFirstRem(CLex *lx,U8 *marker,I64 _len=NULL)
-{//[C:/Compiler/Lex.CPP.Z,156] LexGetChar() chars making str until marker.
+{//[C:/Compiler/Lex.CPP.Z,159] LexGetChar() chars making str until marker.
   U8 *result,*ptr;
   CQueVectU8 *tempv=QueVectU8New;
   I64 i,len=0;
@@ -1500,7 +1503,7 @@ U8 *LexPutLine(CLex *lx,U8 *start)
 }
 
 U0 LexPutPos(CLex *lx)
-{//Print token, line link and, then, [C:/Compiler/Lex.CPP.Z,1474] LexPutLine().
+{//Print token, line link and, then, [C:/Compiler/Lex.CPP.Z,1477] LexPutLine().
   LexPutToken(lx);
   FixSet(lx->cur_lfn->full_name,lx->cur_lfn->line_num);
   if (IsRaw)
@@ -1514,7 +1517,7 @@ U0 LexPutPos(CLex *lx)
 }
 
 U0 LexWarn(CLex *lx,U8 *str=NULL)
-{//Print warn msg, then, [C:/Compiler/Lex.CPP.Z,1502] LexPutPos().
+{//Print warn msg, then, [C:/Compiler/Lex.CPP.Z,1505] LexPutPos().
   if (str) PrintWarn(str);
   if (lx->htc.fun) {
     "in fun '%s'.\n",lx->htc.fun->str;
@@ -1530,9 +1533,9 @@ U0 LexWarn(CLex *lx,U8 *str=NULL)
 }
 
 U0 LexExcept(CLex *lx,U8 *str=NULL)
-{//Print err msg, [C:/Compiler/Lex.CPP.Z,1502] LexPutPos() and throw exception.
+{//Print err msg, [C:/Compiler/Lex.CPP.Z,1505] LexPutPos() and throw exception.
   if (!Bt(&sys_run_level,RLf_ADAM_SERVER)) {
-    Preempt(OFF);
+    Preempt;
     Raw(ON);
     "Note: Still in boot phase.\n";
   }

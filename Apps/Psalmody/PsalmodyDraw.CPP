@@ -198,7 +198,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,x,y,
      w=task->pix_width;
   F64 measure_len=4,measure_left=measure_len;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   dc->color=BLACK;
   for (i=1;i<6;i++)

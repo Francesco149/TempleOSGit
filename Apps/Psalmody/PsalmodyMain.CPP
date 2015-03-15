@@ -413,7 +413,7 @@ U0 Psalmody(U8 *dirname=NULL)
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinBorder;
   AutoComplete;
-  Preempt(OFF);
+  Preempt;
 
   MkDir("::/Home/Psalmody");
   MusicSettingsRst;
@@ -640,7 +640,7 @@ mo_got_msg:
 		break;
 	      case CH_CTRLO:
 		PsmPopMode;
-		AcctOneTimePopUp(ARf_PSALMODY_JUKEBOX,
+		RegOneTimePopUp(ARf_PSALMODY_JUKEBOX,
 		      "Select a song and preview it.\n"
 		      "$GREEN$<SHIFT-ESC>$FG$ to load it into Psalmody.\n\n"
 		      ST_WARN_ST " Graphics and other embelishments\n"

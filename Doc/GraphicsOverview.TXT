@@ -2,7 +2,7 @@
 
 Dive into [C:/Doc/DemoIndex.TXT.Z,1] Demo Index to learn.
 
-The order that layers are drawn on top of each other is:
+The order layers are drawn on top of each other is:
 
 
 
@@ -42,14 +42,15 @@ The order that layers are drawn on top of each other is:
 
 
 
-* If you are curious, see [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen()
-and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins() called by the 
-WinMgr task 30fps.  Notice the tasks [C:/Adam/Gr/GrScreen.CPP.Z,1] draw_it
+* See [C:/Adam/Gr/GrScreen.CPP.Z,409] GrUpdateScreen(),
+[C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and
+[C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin() called by the 
+WinMgr task 30fps.  Notice the task's [C:/Adam/Gr/GrScreen.CPP.Z,1] draw_it()
 callback being called.  Only 
 tasks on core0 are allowed to have windows.  There is one window per task, no 
 child windows.  You can have pop-up child tasks.
 
-* [C:/Kernel/KernelA.HPP.Z,3547] CDCs (device contexts) are a data type for
+* [C:/Kernel/KernelA.HPP.Z,3548] CDCs (device contexts) are a data type for
 controlling graphics on the 
 screen or graphics in mem.  The device context structure has pen width and 
 color.  You use [C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() to create your own
@@ -87,14 +88,14 @@ sprite is
 defined by the cursor location when you pressed <CTRL-r> to make it.  You can 
 edit a sprite by clicking the cursor on it and pressing <CTRL-r> again.
 
-* Set [C:/Kernel/KernelA.HPP.Z,3524] DCF_SYMMETRY in the
-[C:/Kernel/KernelA.HPP.Z,3547] CDC.flags and call
+* Set [C:/Kernel/KernelA.HPP.Z,3525] DCF_SYMMETRY in the
+[C:/Kernel/KernelA.HPP.Z,3548] CDC.flags and call
 [C:/Adam/Gr/GrMath.CPP.Z,250] GrSetSymmetry() or 
 [C:/Adam/Gr/GrMath.CPP.Z,272] GrSetSymmetry3().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/Kernel/KernelA.HPP.Z,3528] DCF_JUST_MIRROR to plot just the
+image.  Set [C:/Kernel/KernelA.HPP.Z,3529] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/Kernel/KernelA.HPP.Z,3524] DCF_SYMMETRY to be set at the same time. 
+[C:/Kernel/KernelA.HPP.Z,3525] DCF_SYMMETRY to be set at the same time. 
 Note: You can only have one symmetry 
 active at a time including in [C:/Adam/Gr/Gr.CPP.Z,169] CSprites.
 
@@ -123,7 +124,7 @@ each other.  Be sure to set ->bkcolor before using
 [C:/Demo/Graphics/Collision.CPP.Z,1] and [C:/Apps/TimeOut/TimeOut.CPP.Z,1]
 TimeOut.
  
-* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3547] CDC
+* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3548] CDC
 is a U16 used to statistically 
 select between two colors to get something resembling more shades of color.  
 See [C:/Demo/Graphics/SunMoon.CPP.Z,1] and

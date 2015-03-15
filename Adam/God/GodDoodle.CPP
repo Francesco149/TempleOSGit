@@ -1,4 +1,4 @@
-#help_index "God;Graphics/Sprite"
+#help_index "God;Graphics/Sprite;Sprites"
 
 U0 GodDoodleDraw(CTask *task,CDC *dc)
 {
@@ -126,7 +126,7 @@ public U8 *GodDoodleSprite()
       for (j=0;j<6;j++) {
 	x=(w-1)*GodDoodleBits(5)/31+w/64;
 	y=(h-1)*GodDoodleBits(5)/31+h/64;
-	switch(GodDoodleBits(2)) {
+	nobound_switch(GodDoodleBits(2)) {
 	  case 0: god.doodle_dc->color=BLACK;	break;
 	  case 1: god.doodle_dc->color=DKGRAY;	break;
 	  case 2: god.doodle_dc->color=LTGRAY;	break;

@@ -39,7 +39,7 @@ I64 LinkedLstSize(U8 **_lst)
 }
 
 U0 QueDel(CQue *root,Bool querem=FALSE)
-{//Free entrie queue, not root.
+{//Free entries in queue, not root.
   CQue *tempq=root->next,*tempq1;
   while (tempq!=root) {
     tempq1=tempq->next;

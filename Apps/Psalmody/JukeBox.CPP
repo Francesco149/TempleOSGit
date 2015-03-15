@@ -1,6 +1,6 @@
 CTask *SingleSong(U8 *msg,U8 *name)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CTask *task=Spawn(&SrvCmdLine,NULL,name,,Fs);
   StrCpy(task->task_title,name);
   task->title_src=TTS_LOCKED_CONST;

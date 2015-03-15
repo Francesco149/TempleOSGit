@@ -1,9 +1,11 @@
-/*After making a font, you can save it as a binary
-file with:
+/*After making a font...
+
+You can save it as a binary file with:
 	FileWrite("filename.BIN.Z",text.font,256*FONT_HEIGHT);
+
 You can load it with:
-	U8 *myfont=FileRead("filename.BIN");
-	text.font=myfont; //preserve text.font if you want to go back.
+	U64 *my_font=FileRead("filename.BIN.Z");
+	text.font=my_font; //preserve text.font if you want to go back.
 
 If you want to change the system font permanently,
 save to a file with this font editor program
@@ -42,7 +44,7 @@ U0 DrawIt(CTask *task,CDC *dc)
       else
 	dc->color=BLUE;
       GrRect(dc,BLOW_UP_CHAR_X+j*FONT_WIDTH,
-		  BLOW_UP_CHAR_Y+i*FONT_HEIGHT,
+		BLOW_UP_CHAR_Y+i*FONT_HEIGHT,
 	     FONT_WIDTH,FONT_HEIGHT);
     }
 }
@@ -51,10 +53,9 @@ U0 FESave(Bool pmt)
 {
   U8 old_draw_it=Fs->draw_it;
   CDoc *doc=DocNew;
-  I64 i,j,k=0;
+  I64 i;
   for (i=0;i<256;i++) {
-    for (j=0;j<FONT_HEIGHT;j++)
-      DocPrint(doc,"0x%02X,",text.font(U8 *)[k++]);
+    DocPrint(doc,"0x%016X,",text.font[i]);
     if (Bt(chars_bitmap_safe_dollar,i))
       DocPrint(doc,"//%c",i);
     else if (i=='$')

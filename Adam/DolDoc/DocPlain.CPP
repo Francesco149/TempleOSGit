@@ -259,7 +259,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 }
 
 CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
-{//Uses [C:/Compiler/Lex.CPP.Z,694] Lex() to parse a string and make Doc entries.
+{//Uses [C:/Compiler/Lex.CPP.Z,697] Lex() to parse a string and make Doc entries.
   I64 i,j,de_flags,processed_flags,attr=DOC_DFT;
   U8 *ptr,*st2;
   CDocEntry *doc_e=NULL;
@@ -564,7 +564,7 @@ public U0 DocInsEntry(CDoc *doc,CDocEntry *doc_e)
     DocUnlock(doc);
 }
 
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 CDocEntry *DocPutS(CDoc *doc,U8 *st)
 {//Don't use this.  Use [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint().
   //Does not handle partial Doc entries

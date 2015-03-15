@@ -112,7 +112,7 @@ U0 MassSpringDemo()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
 
-/*Preempt(OFF) eliminates a lot of hassles.
+/*Preempt eliminates a lot of hassles.
 The concern is about changing
 que links while the winmgr task
 is updating the ode or screen.
@@ -124,7 +124,7 @@ preempt, we will not be interrupted.
 There is little downside to Preempt()
 since we will yield during GetMsg().
 */
-  Preempt(OFF);
+  Preempt;
 
   Fs->win_inhibit|=WIG_DBL_CLICK;
   AutoComplete;

@@ -55,7 +55,7 @@ U0 TimeIns()
 {
   I64 start,end;
   I64 i,old_irq;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   CPURep;
   old_irq=IntEntrySet(I_F_UNARY_MINUS,F_UNARY_MINUS_INT,IDTET_TRAP);

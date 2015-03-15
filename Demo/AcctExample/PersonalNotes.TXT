@@ -151,7 +151,7 @@ God says I might want to change to float.
 * Might want to convert some Preempt() to Cli
 
 * [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3408] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3409] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -206,7 +206,7 @@ catches divide and out-of-mem.  Not sure what to do, yet.
 reset multicores.  Bonus for
 freeing old task memory. (Prolly never gonna do anything about this.)
 
-* [C:/Kernel/KernelB.HPP.Z,147] sys_var_init_flag local vars.
+* [C:/Kernel/KernelB.HPP.Z,146] sys_var_init_flag local vars.
 * sprite shift pts, ctrl pt for ellipse/polygon w,h is off when rotated.
 
 * Window mgr needs to do DOC operations on posted messages from mouse.
@@ -244,7 +244,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3524] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3525] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float

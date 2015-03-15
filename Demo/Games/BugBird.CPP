@@ -1,5 +1,5 @@
-AcctRegSetDftEntry("TempleOS/BugBird","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/BugBird");
+RegSetDftEntry("TempleOS/BugBird","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/BugBird");
 
   /* <1> <1> (image) */
 
@@ -226,7 +226,7 @@ bl_done:
     PutExcept;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/BugBird","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/BugBird","F64 best_score=%5.4f;\n",best_score);
 }
 
 BugBird;

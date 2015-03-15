@@ -2,7 +2,7 @@
 
 This changes a page table entry for VGA graphics memory.
 TempleOS keeps a cached copy of VGA memory in
-[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image.  See [C:/Adam/Gr/GrScreen.CPP.Z,374] GrUpdateVGAGraphics.
+[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image.  See [C:/Adam/Gr/GrScreen.CPP.Z,377] GrUpdateVGAGraphics.
 
 TempleOS used 4096 size pages for memory below addr 2 Meg
 and 2 Meg pages above two Meg.  See [C:/Kernel/MemA.CPP.Z,164] MemPageSize() and [C:/Kernel/MemA.CPP.Z,1] INIT_MEMORY.

@@ -123,7 +123,7 @@ CCtrl *CtrlPanelNew()
   c->draw_it=&DrawCtrlPanelCtrl;
   c->left_click=&LeftClickCtrlPanel;
   c->update_derived_vals=&UpdateDerivedCtrlPanelCtrl;
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
@@ -132,7 +132,7 @@ CCtrl *CtrlPanelNew()
 
 U0 CtrlPanelDel(CCtrl *c)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

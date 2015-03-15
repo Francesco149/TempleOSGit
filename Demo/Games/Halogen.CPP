@@ -12,7 +12,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 w=task->pix_width,h=task->pix_height;
   I64 i,x,y,xx;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   xx=w>>1-car_x+road_x[road_ptr&(NUM_ROAD-1)];
 
   dc->color=LTGRAY;
@@ -94,7 +94,7 @@ U0 Halogen()
   "  Right(,,SC_CURSOR_RIGHT);"
       "}"
       );
-  Preempt(OFF);
+  Preempt;
   AutoComplete;
   WinMax;
   Init;

@@ -54,8 +54,8 @@ are assigned by the editor.
 	/* <6> <6> (image) */
 //See [C:/Doc/Credits.TXT.Z,1].
 
-AcctRegSetDftEntry("TempleOS/BlackDiamond","I64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/BlackDiamond");
+RegSetDftEntry("TempleOS/BlackDiamond","I64 best_score=9999;\n");
+RegExeBranch("TempleOS/BlackDiamond");
 
 #define MAP_HEIGHT	3000
 #define NUM_OBJS	128
@@ -250,7 +250,7 @@ bd_done:
     PutExcept;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/BlackDiamond","I64 best_score=%d;\n",best_score);
+  RegWriteBranch("TempleOS/BlackDiamond","I64 best_score=%d;\n",best_score);
 }
 
 BlackDiamond; //Start game when #included.

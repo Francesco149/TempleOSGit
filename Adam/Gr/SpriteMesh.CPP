@@ -956,8 +956,8 @@ See [C:/Demo/Graphics/SpritePlot3D.CPP.Z,1].
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   AutoComplete;
-  Preempt(OFF); //We don't really want window update while modifying links
-  AcctOneTimePopUp(ARf_MESH_ED,
+  Preempt; //We don't really want window update while modifying links
+  RegOneTimePopUp(ARf_MESH_ED,
 	"$GREEN$Right Mouse$FG$: Hold and move to shift cursor z\n"
 	"$GREEN$'j'$FG$: Jump cursor Z to nearest vertex's Z\n"
 	"$GREEN$'v'$FG$: Place Vertex Mode\n"

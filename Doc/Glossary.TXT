@@ -123,6 +123,7 @@ Std	Standard
 Stk	Stack
 Str	String
 Sym	Symbol
+Sync	Synchronization
 Sys	System
 Term	Terminal
 Tri	Triangle
@@ -173,7 +174,7 @@ Wiz	Wizard
   assign it a different parent... like Adam.  Links are kept as to who's whose
   child, so when one task is [C:/Kernel/Task.CPP.Z,28] Kill()ed the child
   helper tasks die, too.  You can get a report of current system tasks with
-  [C:/Adam/AUtils.CPP.Z,199] TaskRep().  There is just one window per task, so
+  [C:/Adam/AUtils.CPP.Z,200] TaskRep().  There is just one window per task, so
   child tasks are needed for pop-ups.
 +] HolyC
   [C:/Doc/HolyC.TXT.Z,1] HolyC is more than C and less than C++.  It has the
@@ -226,7 +227,7 @@ For commands taking a drive letter as an argument, char 0 is the current
 [Bit,1] Bt, Bts, Btr, Btc, BEqu
 [Define,1] Define
 [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc
-[C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link Types
+[C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link Types
 [C:/Doc/FileUtils.TXT.Z,1] files_find_mask
 [Hash,1] Hash Table
 [C:/Doc/RedSea.TXT.Z,1] RedSea File System
@@ -312,7 +313,7 @@ result is reserved for local variables that hold the function return val.
   [C:/Kernel/KernelA.HPP.Z,3212] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3337] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3338] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/MemB.CPP.Z,373] MAlloc().  They must [C:/Kernel/MemB.CPP.Z,369]

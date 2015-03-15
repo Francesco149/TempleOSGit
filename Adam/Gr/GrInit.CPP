@@ -138,7 +138,7 @@ public U0 WinZBufUpdate()
   I64 i,z=1;
   U16 *ptr;
   CTask *task,*task1;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (gr.win_z_buf) {
     LBtr(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0);
     task1=task=sys_winmgr_task;

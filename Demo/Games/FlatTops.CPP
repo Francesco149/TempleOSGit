@@ -162,7 +162,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   F64 d,cur_time=tS;
   Obj *tempo;
   Torpedo *tempt;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   tempt=torpedo_root.next;
   while (tempt!=&torpedo_root) {
@@ -774,7 +774,7 @@ U0 FlatTops()
 	  "$GREEN${Right-Mouse}$FG$\t\tLaunch Squadron\n"
 	  "$GREEN${Right-Double-Mouse}$FG$\tReturn Squadron\n"
 	  "$GREEN${Ctrl-Left Grab}$FG$\tScroll Screen\n");
-  Preempt(OFF),
+  Preempt,
   MenuPush(
 "File {"
 "  Abort(,CH_SHIFT_ESC);"

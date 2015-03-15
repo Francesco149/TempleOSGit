@@ -96,7 +96,7 @@ CCtrl *SliderNew()
   c->draw_it=&DrawCtrlSlider;
   c->left_click=&LeftClickSlider;
   c->update_derived_vals=&UpdateDerivedCtrlSlider;
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
@@ -105,7 +105,7 @@ CCtrl *SliderNew()
 
 U0 SliderDel(CCtrl *c)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

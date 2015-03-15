@@ -509,7 +509,7 @@ it has a timeout.
   if (task->next_ode==&task->next_ode)
     task->last_ode_time=0;
   else if (!Bt(&task->win_inhibit,WIf_SELF_ODE)) {
-    //See [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins()
+    //See [C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateTaskODEs().
     //TODO: Being preempted here woulds be bad
     if (task!=Fs)
       old_suspend=Suspend(task);
@@ -600,7 +600,7 @@ ode_done:
       ode=ode->next;
     }
     winmgr.ode_time+=task->last_ode_time=tS-start_time;
-    //See [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateWins()
+    //See [C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateTaskODEs().
     if (task!=Fs)
       Suspend(task,old_suspend);
   }

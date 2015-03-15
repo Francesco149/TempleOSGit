@@ -108,7 +108,7 @@ U0 MiniGrLibDemo()
   Bool old_preempt;
   MGInit;
 
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   for (i=0;i<100;i++)
     MGHLine(200+i,400+i,300+i);
   for (i=0;i<500;i+=10)

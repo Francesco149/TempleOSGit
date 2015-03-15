@@ -88,7 +88,7 @@ U0 SettingsPop2(CTask *task,CTaskSettings *tempse)
 public U0 SettingsPop(CTask *task=NULL,I64 flags=0)
 {//Typically, called at end of an application.
   CTaskSettings *tempse;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   if (!task) task=Fs;
   if (!TaskValidate(task)) {
     Preempt(old_preempt);

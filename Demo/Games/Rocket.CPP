@@ -124,7 +124,7 @@ U0 Rocket()
   AutoComplete;
 
 //The ode nodes are traversed by win mgr.
-  Preempt(OFF);
+  Preempt;
 
   MenuPush(
 "File {"

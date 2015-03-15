@@ -268,7 +268,7 @@ U0 TreeCheckers()
   Unit *tempu;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -281,7 +281,7 @@ U0 TreeCheckers()
   WinMax;
   WinBorder;
   AutoComplete;
-  Preempt(OFF);
+  Preempt;
   DocCursor;
   DocClear;
   PopUpOk("Step on the link mid points.\n"

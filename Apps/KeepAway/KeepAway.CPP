@@ -224,8 +224,8 @@ Frame imgs[LAST_STOPPED_DRIBBLING+1]={
 {{__BIN_20,__BIN_21},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},{{__BIN_22,__BIN_23},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},
 };
 
-AcctRegSetDftEntry("TempleOS/KeepAway","I64 best_score0=0,best_score1=9999;\n");
-AcctRegExeBranch("TempleOS/KeepAway");
+RegSetDftEntry("TempleOS/KeepAway","I64 best_score0=0,best_score1=9999;\n");
+RegExeBranch("TempleOS/KeepAway");
 
 F64 game_t_end,foul_t_end;
 I64 score0,score1;
@@ -615,7 +615,7 @@ U0 KeepAway()
   Fs->text_attr=BLACK+YELLOW<<4;
   WinMax;
   WinBorder;
-  Preempt(OFF);
+  Preempt;
 
   Fs->win_inhibit|=WIG_DBL_CLICK;
   AutoComplete;
@@ -672,7 +672,7 @@ ka_done: //Don't goto out of try
   } catch
     PutExcept;
   SettingsPop;
-  AcctRegWriteBranch("TempleOS/KeepAway","I64 best_score0=%d,best_score1=%d;\n",
+  RegWriteBranch("TempleOS/KeepAway","I64 best_score0=%d,best_score1=%d;\n",
     best_score0,best_score1);
   CleanUp;
   MenuPop;

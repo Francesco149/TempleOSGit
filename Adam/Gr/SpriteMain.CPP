@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 
 #define SPT_MENU	-2
 #define SPT_INS_SCREEN_BITMAP			-3
@@ -191,7 +191,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
       switch (eletype) {
 	case SPT_FLOOD_FILL:
 	case SPT_FLOOD_FILL_NOT:
-	  AcctOneTimePopUp(ARf_FLOODFILL,
+	  RegOneTimePopUp(ARf_FLOODFILL,
 		ST_WARN_ST "This is affected by what's underneath\n"
 		"when it is drawn.  You will probably want to\n"
 		"convert it to a bitmap.\n\n"
@@ -200,7 +200,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 		"brush strokes look cool.\n");
 	  break;
 	case SPT_PLANAR_SYMMETRY:
-	  AcctOneTimePopUp(ARf_PLANAR_SYMMETRY,
+	  RegOneTimePopUp(ARf_PLANAR_SYMMETRY,
 		"Right-click to turn-off symmetry.\n");
 	  break;
       }

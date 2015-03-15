@@ -1445,7 +1445,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 h,v,i,j,r,c;
   U8 buf[128];
   IndirectOrders *tempi;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   task->horz_scroll.min=0;
   task->horz_scroll.max=map_width-task->pix_width;
@@ -1656,7 +1656,7 @@ U0 ToTheFront()
   WinMax;
   AutoComplete;
   WinBorder(ON);
-  Preempt(OFF);
+  Preempt;
   Init;
   PickAI("AIs",0);
   PickAI("AIs",1);

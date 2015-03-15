@@ -3,7 +3,7 @@
 * TempleOS runs in VGA 640x480 16 color graphics mode, not text mode.  It 
 changes to this mode with a [C:/Kernel/KStart.CPP.Z,1] BIOS call while in
 real-mode before it switches to 
-64-bit mode.  The text is [C:/Adam/Gr/GrScreen.CPP.Z,260] drawn manually.  If
+64-bit mode.  The text is [C:/Adam/Gr/GrScreen.CPP.Z,263] drawn manually.  If
 graphics mode fails, it 
 falls-back on text mode.  You can force text mode with an
 [C:/Kernel/KCfg.CPP.Z,1] Kernel config 
@@ -62,7 +62,7 @@ mode for that and stop multi-tasking.
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
 [C:/Kernel/KernelA.HPP.Z,3212] CTask, GS for 
-[C:/Kernel/KernelA.HPP.Z,3337] CCPU.
+[C:/Kernel/KernelA.HPP.Z,3338] CCPU.
 
 * TempleOS uses JIT file compression on a file-by-file basis.  Files are 
 [C:/Kernel/Compress.CPP.Z,1] compressed, not encrypted.
@@ -77,7 +77,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall(). 
-TempleOS is 120,789 lines.  Roughly 
+TempleOS is 120,922 lines.  Roughly 
 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 

@@ -142,7 +142,7 @@ U0 Zing()
     "}"
   );
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt(OFF);
+  Preempt;
   WinBorder;
   WinMax;
   AutoComplete;

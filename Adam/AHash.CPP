@@ -153,7 +153,7 @@ public U0 Who(U8 *fu_flags=NULL,CHashTable *h=NULL,
   I64 cnt,i,j,k,size,f=0,dbg_bin_num;
   U8 buf[512],*st,*src_link,*last_index=StrNew(""),*cur_index,*comment;
   CDoc *doc;
-  Bool recurse,publics,map,old_preempt=Preempt(OFF);
+  Bool recurse,publics,map,old_preempt=Preempt;
   CDocBin *tempb;
   CDbgInfo *dbg_info;
   CTask *task;

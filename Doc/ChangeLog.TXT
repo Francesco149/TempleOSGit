@@ -2,7 +2,36 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----02/16/15 09:42:32----
+----03/14/15 11:50:00----
+
+----03/14/15 07:08:05----
+* **TempleOS version 3.04 Released**
+* Reformatted [C:/Kernel/Font8x8.CPP.Z,1].
+* Added [C:/Adam/DolDoc/DocPopUp.CPP.Z,641] PopUpGetF64().
+
+----03/14/15 04:48:50----
+* [C:/Home/AdamWrappers.CPP.Z,13] R("AcctReg...","Reg...");
+* Overhauled [C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks().
+* Overhauled [C:/Doc/GraphicsOverview.TXT.Z,1].
+
+----03/09/15 06:07:25----
+* Dict now has extended ASCII chars.
+
+----03/02/15 04:40:55----
+* Added help on [StdIn,1] StdIn and [StdOut,1] StdOut.
+
+----02/25/15 02:51:45----
+* Added IRC ChatBot [C:/Linux/TempleBot,1].
+
+----02/21/15 19:07:32----
+* Added [C:/Demo/DolDoc/NumBible.CPP.Z,1].
+
+----02/19/15 18:39:53----
+* Fixed bug in <SHIFT-F6> [C:/Adam/God/GodDoodle.CPP.Z,158] GodDoodle().
+* Made default arg for [C:/Kernel/KernelB.HPP.Z,226] Preempt() into "OFF".
+
+----02/17/15 21:32:26----
+* Made so cmd line doesn't print answer line unless a new answer occurs.
 
 ----02/14/15 05:12:45----
 * Added [C:/Adam/Dsk/ADskA.CPP.Z,43] Dump().
@@ -175,7 +204,7 @@ turned-off.
 ----11/19/14 22:25:28----
 * Fixed reindent bug.
 * [C:/Home/AdamWrappers.CPP.Z,13]
-R("ST_BIBLE_FILE","[C:/Adam/DolDoc/Doc.CPP.Z,80] BIBLE_FILENAME");
+R("ST_BIBLE_FILE","[C:/Adam/DolDoc/Doc.CPP.Z,84] BIBLE_FILENAME");
 * Fixed bug with [C:/Kernel/KernelA.HPP.Z,937] DOCG_BL_IV_UL.
 
 ----11/17/14 23:34:09----

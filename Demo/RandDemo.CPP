@@ -21,7 +21,7 @@ U0 RandDemo()
 
   "\nSeed(num) will do non-timer starting at specific seed.  "
   "Non-timer rand is awful.  You can run a specific video game by "
-  "typing Seed(num) at the cmd-line before the game.\n";
+  "typing Seed(num) at the cmd line before the game.\n";
   PressAKey;
   Seed(1);
   RandPts;

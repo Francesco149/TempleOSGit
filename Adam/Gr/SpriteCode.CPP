@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 
 U0 SpriteElem2Code(CDoc *doc,CSprite *tempg)
 {

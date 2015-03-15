@@ -1,4 +1,4 @@
-#help_index "Graphics/Sprite"
+#help_index "Graphics/Sprite;Sprites"
 #help_file "::/Doc/Sprite"
 
 U8 polypt_map[9]={0,1,2,3,0,4,5,6,7};

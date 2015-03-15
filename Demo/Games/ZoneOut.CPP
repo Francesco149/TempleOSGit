@@ -1,5 +1,5 @@
-AcctRegSetDftEntry("TempleOS/ZoneOut","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/ZoneOut");
+RegSetDftEntry("TempleOS/ZoneOut","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/ZoneOut");
 
 
 
@@ -96,7 +96,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,dd,y,w=task->pix_width,h=task->pix_height,cx=w>>1,cy=h>>1;
   U8 *img;
   F64 tt,theta;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   theta=640*Wrap(2*us.theta)/pi;
   Sprite3(dc,theta-1280,90,0,__BIN_4);
@@ -271,7 +271,7 @@ U0 ZoneOut()
   WinMax;
   WinBorder;
   AutoComplete;
-  Preempt(OFF);
+  Preempt;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
@@ -315,7 +315,7 @@ zo_done:
   DocClear;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/ZoneOut","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/ZoneOut","F64 best_score=%5.4f;\n",best_score);
 }
 
 ZoneOut;

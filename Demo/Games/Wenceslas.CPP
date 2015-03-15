@@ -1,5 +1,5 @@
-AcctRegSetDftEntry("TempleOS/Wenceslas","F64 best_score=9999;\n");
-AcctRegExeBranch("TempleOS/Wenceslas");
+RegSetDftEntry("TempleOS/Wenceslas","F64 best_score=9999;\n");
+RegExeBranch("TempleOS/Wenceslas");
 
 #define BORDER		5
 #define KING_STEP	6
@@ -127,7 +127,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   Step *tempst;
   Peasant *tempp;
   F64 tt;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
 
   dc->pen_width=1;
   for (i=0;i<NUM_TREES;i++) {
@@ -469,7 +469,7 @@ U0 Wenceslas()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
-  Preempt(OFF);
+  Preempt;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
 
   PopUpOk("
@@ -588,7 +588,7 @@ ws_done:
   SettingsPop;
   MenuPop;
   CleanUp;
-  AcctRegWriteBranch("TempleOS/Wenceslas","F64 best_score=%5.4f;\n",best_score);
+  RegWriteBranch("TempleOS/Wenceslas","F64 best_score=%5.4f;\n",best_score);
 }
 
 Wenceslas;

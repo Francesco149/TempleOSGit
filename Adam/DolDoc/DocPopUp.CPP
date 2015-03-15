@@ -168,7 +168,7 @@ public I64 DocGetKey(I64 *_sc=NULL)
     DocRecalc(DocPut);
     cont=FALSE;
     if (ch==CH_ESC || ch==CH_SHIFT_ESC) {//Check for exit filter mode
-      Preempt(OFF);
+      Preempt;
       if (DocPut && DocPut->find_replace->filter_lines) {
 	EdUndoFilter(DocPut);
 	cont=TRUE;
@@ -180,7 +180,7 @@ public I64 DocGetKey(I64 *_sc=NULL)
   return ch;
 }
 
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 public Bool View()
 {//Go live for user interaction until <ESC> or <SHIFT-ESC>.
   I64 ch;
@@ -256,7 +256,7 @@ public Bool DocDo(CDoc *doc,I64 dof_flags=0)
   DocRecalc(doc);
   if (!(dof_flags&DOF_DONT_HOME))
     DocTop(doc);
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   Fs->border_doc=bdoc;
   if (doc!=old_display_doc)
     doc->parent_doc=old_display_doc;
@@ -279,7 +279,7 @@ public Bool DocDo(CDoc *doc,I64 dof_flags=0)
   }
   result=View;
 
-  Preempt(OFF);
+  Preempt;
   DocLock(doc);
   if (result) {
     doc_e=doc->root.next;
@@ -309,7 +309,7 @@ public Bool DocDo(CDoc *doc,I64 dof_flags=0)
   return result;
 }
 
-#help_index "DolDoc/Input"
+#help_index "DolDoc/Input;StdIn/DolDoc"
 public Bool DocFormDo(U8 *_d,U8 *class_name=lastclass,
     I64 dof_flags=0,U8 *header=NULL,U8 *footer=NULL)
 {//Supply a class name that has fmtstr definitions.
@@ -412,7 +412,7 @@ public I64 PopUpEd(U8 *filename,CTask *parent=NULL,CTask **_pu_task=NULL)
   return result;
 }
 
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 public CTask *PopUpViewDoc(CDoc *doc,I64 dof_flags=0)
 {//Pass doc to PopUp win task for viewing.
   U8 *buf=MStrPrint("Preempt(ON);DocDo(0x%X,0x%X);",doc,dof_flags);
@@ -441,7 +441,7 @@ public CTask *PopUpViewPrint(U8 *fmt,...)
   return task;
 }
 
-#help_index "DolDoc/Input"
+#help_index "DolDoc/Input;StdIn/DolDoc"
 public I64 PopUpMenu(CDoc *doc,I64 dof_flags=0)
 {//Do (Run) menu chooser doc in PopUp win task.
   doc->flags|=DOCF_MIN_SIZE | DOCF_FORM;
@@ -455,7 +455,7 @@ public Bool PopUpForm(U8 *_d,U8 *class_name=lastclass,I64 dof_flags=DOF_MIN_SIZE
     dof_flags,header,footer);
 }
 
-#help_index "DolDoc/Input;File/FileNames"
+#help_index "DolDoc/Input;File/FileNames;StdIn/DolDoc"
 public U8 *PopUpPickFile(U8 *dir=NULL)
 {//Filename chooser.  Uses [C:/Adam/Dsk/FileMgr.CPP.Z,543] FileMgr().
   U8 *result,*st,*st2;
@@ -520,7 +520,7 @@ Bool PopUpCd()
   return result;
 }
 
-#help_index "DolDoc/Input;Char/Lists"
+#help_index "DolDoc/Input;Char/Lists;StdIn/DolDoc"
 public U8 *PopUpPickLst(U8 *lst)
 {//Prompt for lst entry in PopUp win task.
   I64 i=0;
@@ -545,7 +545,7 @@ public U8 *PopUpPickDefineSub(U8 *st)
   return PopUpPickLst(Define(st));
 }
 
-#help_index "DolDoc/Input"
+#help_index "DolDoc/Input;StdIn/DolDoc"
 public I64 PopUp1(U8 *b1,I64 n1,U8 *header=NULL,U8 *footer=NULL)
 {//Make PopUp win task with one button.
   I64 i,l1=StrLen(b1);
@@ -634,6 +634,14 @@ public I64 PopUpGetI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64)
 {//Prompt for I64 text expression in PopUp win task.
   U8 *st=MStrPrint("GetI64(0x%X,0x%X,0x%X,0x%X);",msg,dft,lo,hi);
   I64 result=PopUp(st,Fs);
+  Free(st);
+  return result;
+}
+
+public F64 PopUpGetF64(U8 *msg,F64 dft,F64 lo=MIN_F64,F64 hi=MAX_F64)
+{//Prompt for F64 text expression in PopUp win task.
+  U8 *st=MStrPrint("GetF64(0x%X,0x%X(F64),0x%X(F64),0x%X(F64));",msg,dft,lo,hi);
+  F64 result=PopUp(st,Fs)(F64);
   Free(st);
   return result;
 }

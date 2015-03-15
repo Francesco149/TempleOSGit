@@ -71,7 +71,7 @@ CCtrl *TempoNew()
   c->update_derived_vals=&UpdateDerivedTempoCtrl;
   c->left=396;
   c->top=96;
-  old_preempt=Preempt(OFF);
+  old_preempt=Preempt;
   QueIns(c,Fs->last_ctrl);
   TaskDerivedValsUpdate;
   Preempt(old_preempt);
@@ -80,7 +80,7 @@ CCtrl *TempoNew()
 
 U0 TempoDel(CCtrl *c)
 {
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   QueRem(c);
   Preempt(old_preempt);
   Free(c);

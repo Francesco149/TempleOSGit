@@ -650,7 +650,7 @@ public CDoc *DocNew(U8 *filename=NULL,CTask *task=NULL)
   return doc;
 }
 
-#help_index "DolDoc/Task"
+#help_index "DolDoc/Task;StdOut/Task"
 public CDoc *DocPut(CTask *task=NULL)
 {//Current document that StdOut Put() goes to.
  //Basically, StdOut unless double buffering.
@@ -684,7 +684,7 @@ public CDoc *DocBorder(CTask *task=NULL)
 
 public CDoc *DocDblBufStart(CTask *task=NULL)
 {//See [C:/Demo/Spy.CPP.Z,1]
-  Bool unlock_ddoc,old_preempt=Preempt(OFF);
+  Bool unlock_ddoc,old_preempt=Preempt;
   CDoc *pdoc=DocPut(task),*ddoc=DocDisplay(task),*result;
   if (!pdoc || !ddoc || pdoc!=ddoc)
     result=NULL; //Already Double buffering
@@ -715,7 +715,7 @@ public CDoc *DocDblBufStart(CTask *task=NULL)
 
 public Bool DocDblBufEnd(CTask *task=NULL)
 {//See [C:/Demo/Spy.CPP.Z,1]
-  Bool result=FALSE,old_preempt=Preempt(OFF);
+  Bool result=FALSE,old_preempt=Preempt;
   CDoc *pdoc=DocPut(task),*ddoc=DocDisplay(task);
   if (pdoc && ddoc && pdoc!=ddoc) {//Double buffering?
     if (!task) task=Fs;
@@ -733,7 +733,7 @@ public Bool DocDblBufEnd(CTask *task=NULL)
 
 public Bool DocDblBufSwap(CTask *task=NULL)
 {//See [C:/Demo/Spy.CPP.Z,1]
-  Bool result=FALSE,old_preempt=Preempt(OFF);
+  Bool result=FALSE,old_preempt=Preempt;
   CDoc *pdoc=DocPut(task),*ddoc=DocDisplay(task);
   if (pdoc && ddoc && pdoc!=ddoc) {//Double buffering?
     if (!task) task=Fs;

@@ -56,7 +56,7 @@ public Bool Plain(U8 *filename,I64 edf_dof_flags=0)
 
 #help_index "DolDoc"
 public Bool DocLinkChk(U8 *link_st)
-{//Check for bad [C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link.
+{//Check for bad [C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link.
   U8 *filename;
   Bool result=FALSE;
   if (link_st) {
@@ -82,7 +82,7 @@ public Bool DocLinkChk(U8 *link_st)
 }
 
 public U8 *DocLinkFile(U8 *link_st,CTask *mem_task=NULL)
-{//Return the file for an [C:/Adam/DolDoc/Doc.CPP.Z,32] Editor Link Types.
+{//Return the file for an [C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link Types.
   U8 *filename=NULL,*st,*result=NULL;
   if (link_st) {
     switch (EdLinkCvt(link_st,&filename)) {
@@ -106,7 +106,7 @@ public U8 *DocLinkFile(U8 *link_st,CTask *mem_task=NULL)
   return result;
 }
 
-#help_index "DolDoc/Task"
+#help_index "DolDoc/Task;StdOut/Task"
 public CDoc *DocBorderNew(CDoc *pdoc)
 {//Make new std border doc.
   CDocEntry *doc_e;
@@ -145,7 +145,7 @@ public CDoc *DocBorderNew(CDoc *pdoc)
 
 public U0 DocTermNew()
 {//Make into term win task with Put/Display/Border docs.
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CDoc *pdoc=DocNew;
   pdoc->right_click_link=&TermRightClickLink;
   pdoc->max_entries=4096;
@@ -159,7 +159,7 @@ public U0 DocTermNew()
   Raw(OFF);
 }
 
-#help_index "DolDoc/Input"
+#help_index "DolDoc/Input;StdIn/DolDoc"
 public U8 *DocScanLine(CDoc *doc,CDocEntry *doc_e,I64 *cur_col=NULL,CDocEntry **_do_e_end=NULL)
 {//Start at entry in doc,make and return one line as str.
   CDocEntry *doc_e2=doc_e;
@@ -199,7 +199,7 @@ public U8 *DocScanLine(CDoc *doc,CDocEntry *doc_e,I64 *cur_col=NULL,CDocEntry **
   return result;
 }
 
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 U0 DocDump(CDoc *doc,I64 uS_delay=0)
 {
   U8 *st;
@@ -259,9 +259,9 @@ public CDocEntry *DocPutLine(CDoc *doc=NULL,CDocEntry *doc_e)
   return doc_e;
 }
 
-#help_index "DolDoc/Input"
+#help_index "DolDoc/Input;StdIn/DolDoc"
 U8 *DocGetStr2(I64 flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,3676] Flags
+{//[C:/Kernel/KernelA.HPP.Z,3677] Flags
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
   Bool old_preempt=IsPreempt;
@@ -294,7 +294,7 @@ U8 *DocGetStr2(I64 flags=0)
     //<CTRL-SHIFT-ENTER> is a blank line without entry
   } while (flags&GSF_WITH_NEW_LINE || ch!='\n' || sc & SCF_CTRL && sc & SCF_SHIFT);
 
-  Preempt(OFF);
+  Preempt;
   doc=DocPut;
   DocLock(doc);
   if (flags&GSF_WITH_NEW_LINE) {
@@ -335,7 +335,7 @@ gs_done:
   return result;
 }
 
-#help_index "Keyboard Devices;Char/Input"
+#help_index "Keyboard Devices;Char/Input;StdIn"
 
 public I64 GetI64(U8 *msg=NULL,I64 dft=0,I64 lo=MIN_I64,I64 hi=MAX_I64)
 {//Prompt user for I64 expression.
@@ -551,7 +551,7 @@ I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e)
   return result;
 }
 
-#help_index "Debugging/Dump;DolDoc/Cmd Line (Typically);Cmd Line (Typically);DolDoc/Output"
+#help_index "Debugging/Dump;DolDoc/Cmd Line (Typically);Cmd Line (Typically);DolDoc/Output;StdOut/DolDoc"
 public U0 DocDm(U8 *buf,I64 cnt=0x80)
 {//Dump live chunk of mem showing addresses. Can be edited.
   CDocEntry *doc_e;
@@ -578,7 +578,7 @@ public U0 DocD(U8 *buf,I64 cnt=0x80)
     DocUnlock(doc);
 }
 
-#help_index "DolDoc/Output"
+#help_index "DolDoc/Output;StdOut/DolDoc"
 Bool KDDocPutS(U8 *st)
 {
   CDoc *doc;

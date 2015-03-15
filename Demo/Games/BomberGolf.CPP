@@ -1,5 +1,5 @@
-AcctRegSetDftEntry("TempleOS/BomberGolf","I64 best_score=99999;\n");
-AcctRegExeBranch("TempleOS/BomberGolf");
+RegSetDftEntry("TempleOS/BomberGolf","I64 best_score=99999;\n");
+RegExeBranch("TempleOS/BomberGolf");
 
 
 
@@ -177,7 +177,7 @@ U0 BomberGolf()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   AutoComplete;
   WinMax;
-  Preempt(OFF);
+  Preempt;
   Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
   DocCursor;
   DocClear;
@@ -223,7 +223,7 @@ bm_done:
     PutExcept;
   SettingsPop;
   MenuPop;
-  AcctRegWriteBranch("TempleOS/BomberGolf","I64 best_score=%d;\n",best_score);
+  RegWriteBranch("TempleOS/BomberGolf","I64 best_score=%d;\n",best_score);
 }
  
 BomberGolf;

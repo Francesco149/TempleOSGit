@@ -7,9 +7,9 @@ U0 DocInit()
   CHashGeneric *temph;
 
   DefineLstLoad("ST_DOC_CMDS",
-	"TX\0CR\0SR\0CU\0TB\0CL\0PB\0DA\0PL\0LM\0RM\0HD\0FO\0ID\0"
-	"FG\0BG\0FD\0BD\0PT\0WW\0UL\0IV\0BK\0SX\0SY\0CM\0AN\0LK\0BT\0"
-	"CB\0LS\0MA\0MU\0HX\0TR\0SP\0IB\0IS\0SO\0HL\0HC\0ER\0");
+	"TX\0CR\0SR\0CU\0TB\0CL\0PB\0PL\0LM\0RM\0HD\0FO\0ID\0FG\0"
+	"BG\0FD\0BD\0PT\0WW\0UL\0IV\0BK\0SX\0SY\0CM\0AN\0LK\0BT\0"
+	"DA\0CB\0LS\0MA\0MU\0HX\0TR\0SP\0IB\0IS\0SO\0HL\0HC\0ER\0");
   DefineLstLoad("ST_DOC_FLAGS",
 	"T\0A\0D\0HTML\0LE\0LM\0RE\0RM\0BI\0BP\0RT\0SX\0SY\0SCX\0U\0"
 	"LC\0LA\0RC\0RA\0TC\0LX\0CX\0RX\0TY\0CY\0BY\0"
@@ -50,7 +50,7 @@ U0 DocInit()
     if (Bt(&doldoc.dft_de_flags[i],DOCEf_TAG) && i!=DOCT_TEXT || i==DOCT_HEX_ED)
       Bts(doldoc.type_flags_form,i);
 
-  //Don't forget [C:/Compiler/Lex.CPP.Z,386] cmp_type_flags_src_code.
+  //Don't forget [C:/Compiler/Lex.CPP.Z,389] cmp_type_flags_src_code.
   doldoc.type_flags_nontag_invisible[0]=
 	1<<DOCT_PAGE_LEN|
 	1<<DOCT_LEFT_MARGIN|

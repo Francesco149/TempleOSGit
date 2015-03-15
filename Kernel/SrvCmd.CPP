@@ -74,7 +74,7 @@ CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags)
 CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 {//Post StdIn text to servant task. Tell who the master task is.
   CSrvCmd *result;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CTask *task;
   if (!data || !TaskValidate(srv) || master && !TaskValidate(master) ||
       srv->popup_task && !Bt(&srv->task_flags,TASKf_FILTER_INPUT)) {
@@ -385,7 +385,7 @@ I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL)
 {//Execute code text in PopUp win task.
   I64 result;
   CSrvCmd *tempc;
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CTask *task=Spawn(&SrvCmdLine,NULL,"Servant",,parent);
   if (!parent) {
     TaskExe(task,parent,buf,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
@@ -418,7 +418,7 @@ I64 Adam(U8 *fmt,...)
 {//Sends text to the adam task which gets compiled and run.
   I64 result;
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CSrvCmd *tempc;
   if (Fs==adam_task) {
     tempc=TaskExe(adam_task,Fs,buf,0);

@@ -18,7 +18,8 @@ U0 PutKey(I64 ch=0,I64 sc=0)
 }
 
 U0 PutChars(U64 ch)
-{//Output chars. Can pack multiple chars into a single U64.
+{//Output chars. Up to 8 chars in a single U64.
+//Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   while (ch) {
     PutKey(ch&255,0);
     ch>>=8;
@@ -26,7 +27,8 @@ U0 PutChars(U64 ch)
 }
 
 U0 PutS(U8 *st)
-{//Use [C:/Kernel/StrPrint.CPP.Z,896] Print().  See [Keyboard Devices/System,1] Keyboard Devices.
+{//Use [C:/Kernel/StrPrint.CPP.Z,896] Print(). See [Keyboard Devices/System,1] Keyboard Devices.
+//Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   I64 ch;
   U8 *ptr;
   Bool cont=TRUE;
@@ -64,7 +66,7 @@ U0 KeyDescSet(U8 *fmt,...)
 
 CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE)
 {//Places hook in StdOut chain. See [Keyboard Devices/System,1] Keyboard Devices.
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   CKeyDevEntry *tempp,*tempp1=keydev.put_key_root.last;
   tempp=ACAlloc(sizeof(CKeyDevEntry));
   tempp->put_key=fp_put_key;
@@ -81,7 +83,7 @@ CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),Bool (*fp_puts)(U8 *st
 
 U0 KeyDevRem(CKeyDevEntry *tempp)
 {//Remove StdOut hook and free.
-  Bool old_preempt=Preempt(OFF);
+  Bool old_preempt=Preempt;
   QueRem(tempp);
   Preempt(old_preempt);
   Free(tempp);
@@ -111,7 +113,7 @@ Bool KDInputFilterPutKey(I64 ch,I64 scan_code)
 {
   Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     Msg(MSG_KEY_DOWN,ch,scan_code);
     Preempt(old_preempt);
     return TRUE;
@@ -124,7 +126,7 @@ Bool KDInputFilterPutS(U8 *st)
   I64 ch;
   Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
-    old_preempt=Preempt(OFF);
+    old_preempt=Preempt;
     while (ch=*st++)
       Msg(MSG_KEY_DOWN,ch,0);
     Preempt(old_preempt);
