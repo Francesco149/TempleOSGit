@@ -27,9 +27,11 @@ U0 WallPaper(CTask *_task)
   U8 *st;
   _task->text_attr=BLUE<<4+WHITE;
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Reads:%d Writes:%d lines=%d",
-    dsk.read_cnt,dsk.write_cnt,cmp.compiled_lines);
-  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress1=%016X progress2=%016X",progress1,progress2);
-  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress3=%016X progress4=%016X",progress3,progress4);
+	dsk.read_cnt,dsk.write_cnt,cmp.compiled_lines);
+  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress1=%016X progress2=%016X",
+	progress1,progress2);
+  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress3=%016X progress4=%016X",
+	progress3,progress4);
   l--;
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
@@ -43,8 +45,8 @@ U0 WallPaper(CTask *_task)
 	else //precaution
 	  Fs->hash_table=old_hash;
 	StrPrint(wpd->caller_stk,"%19tp %19tp %19tp %19tp",
-	  TaskCaller(task,0),TaskCaller(task,1),
-	  TaskCaller(task,2),TaskCaller(task,3));
+	      TaskCaller(task,0),TaskCaller(task,1),
+	      TaskCaller(task,2),TaskCaller(task,3));
       }
       TextPrint(Fs,0,l--,BLUE<<4+YELLOW,wpd->caller_stk);
 
@@ -55,31 +57,38 @@ U0 WallPaper(CTask *_task)
 	wpd->alloced_u8s=TaskMemAlloced(task);
 	wpd->used_u8s	=TaskMemUsed(task);
       }
-      TextPrint(Fs,0,l--,BLUE<<4+WHITE,"%08X %010X %010X %010X %-16ts %05X:%02tX %6.2fm",task,j,
-	wpd->alloced_u8s,wpd->used_u8s,task->task_title,
-	task->task_flags,task->display_flags,
-	task->total_time/60.0/cnts.time_stamp_freq_initial);
+      TextPrint(Fs,0,l--,BLUE<<4+WHITE,
+	    "%08X %010X %010X %010X %-16ts %05X:%02tX %6.2fm",task,j,
+	    wpd->alloced_u8s,wpd->used_u8s,task->task_title,
+	    task->task_flags,task->display_flags,
+	    task->total_time/60.0/cnts.time_stamp_freq_initial);
       if (!TaskValidate(task)) break;
       task=task->next_task;
     } while (task!=c->seth_task);
   }
-  TextPrint(Fs,0,l--,BLUE<<4+WHITE,"__Task__ UnusedStk_ _AllocMem_ _UsedMem__ __Description___ _Flags__ _Time__");
+  TextPrint(Fs,0,l--,BLUE<<4+WHITE,
+	"__Task__ UnusedStk_ _AllocMem_ _UsedMem__ __Description___ "
+	"_Flags__ _Time__");
   l--;
 
   if (sys_data_bp) {
-    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Data Heap Alloced:%010X Data Heap Used:%010X",
-	sys_data_bp->alloced_u8s,sys_data_bp->used_u8s);
-    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Code Heap Alloced:%010X Code Heap Used:%010X",
-	sys_code_bp->alloced_u8s,sys_code_bp->used_u8s);
+    TextPrint(Fs,0,l--,BLUE<<4+WHITE,
+	  "Data Heap Alloced:%010X Data Heap Used:%010X",
+	  sys_data_bp->alloced_u8s,sys_data_bp->used_u8s);
+    TextPrint(Fs,0,l--,BLUE<<4+WHITE,
+	  "Code Heap Alloced:%010X Code Heap Used:%010X",
+	  sys_code_bp->alloced_u8s,sys_code_bp->used_u8s);
   } else
-    TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Code/Data Heap Alloced:%010X Used:%010X",
-	sys_code_bp->alloced_u8s,sys_code_bp->used_u8s);
+    TextPrint(Fs,0,l--,BLUE<<4+WHITE,
+	  "Code/Data Heap Alloced:%010X Used:%010X",
+	  sys_code_bp->alloced_u8s,sys_code_bp->used_u8s);
 
   l--;
   for (i=0;i<mp_cnt;i++) {
     c=&cpu_structs[i];
     TextPrint(Fs,0,l--,BLUE<<4+WHITE,"%03d %9,d",i,
-      ToI64((winmgr.t->last_swap_cnter[i]-wall->last_swap_cnter[i])/wall->last_calc_idle_delta_time));
+	  ToI64((winmgr.t->last_swap_cnter[i]
+	  -wall->last_swap_cnter[i])/wall->last_calc_idle_delta_time));
     if (winmgr.t->calc_idle_cnt!=wall->last_calc_idle_cnt) {
       wall->last_calc_idle_delta_time=winmgr.t->calc_idle_delta_time;
       wall->last_swap_cnter[i]=winmgr.t->last_swap_cnter[i];
@@ -95,12 +104,13 @@ U0 WallPaper(CTask *_task)
     i=sys_code_bp->alloced_u8s-sys_code_bp->used_u8s;
     if (sys_data_bp)
       i+=sys_data_bp->alloced_u8s-sys_data_bp->used_u8s;
-    StrPrint(wall->top_line,"%3tZ %02d/%02d %02d:%02d:%02d FPS:%2tf Mem:%010X CPU",
-      ds.day_of_week,"ST_DAYS_OF_WEEK",ds.mon,ds.day_of_mon,
-      ds.hour,ds.min,ds.sec,winmgr.fps,i);
+    StrPrint(wall->top_line,
+	  "%3tZ %02d/%02d %02d:%02d:%02d FPS:%2tf Mem:%010X CPU",
+	  ds.day_of_week,"ST_DAYS_OF_WEEK",ds.mon,ds.day_of_mon,
+	  ds.hour,ds.min,ds.sec,winmgr.fps,i);
   }
   TextPrint(Fs,0,0,BLUE<<4+WHITE,wall->top_line);
- 
+
   if (wall->record)
     TextPrint(Fs,44-4,0,BLUE<<4+RED,"*");
   for (i=0;i<mp_cnt;i++) {
@@ -151,7 +161,7 @@ CCtrl *TermButtonNew()
   c->left_click=&LeftClickTermButton;
 
   SpriteExtents(__BIN_1,&min_x,&max_x,&min_y,&max_y);
-  //min must be zero
+//min must be zero
   c->left=sys_winmgr_task->pix_width-(max_x-min_x+1);
   c->right=c->left+(max_x-min_x+1)-1;
   c->top=sys_winmgr_task->pix_height-(max_y-min_y+1);
@@ -177,7 +187,7 @@ gr.empty_sprite=__BIN_2;
 
 #help_index "Graphics/Misc;Input Pointer/Displayed Image"
 public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,Bool closed)
-{//This is a callback.
+{//This is a callback. See [C:/Demo/Graphics/Grid.CPP.Z,1].
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   dc->color=ROP_EQU;
   if (closed)

@@ -44,7 +44,6 @@ ADDRESS-TO-SYMBOL LOOK-UP  (Slow because not important--could add tree)
 */
 
 asm {
-USE64
 //************************************
 SYS_HASH_STR::
 // IN:	RSI=Addr of string
@@ -298,12 +297,14 @@ _HASH_REM_DEL::
 }
 
 _extern _HASH_STR I64 HashStr(U8 *st); //Hash a string.
-_extern _HASH_FIND CHash *
-  HashFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);//Find string in hash table.
-_extern _HASH_SINGLE_TABLE_FIND CHash *
-  HashSingleTableFind(U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);//Find string in single hash table.
-_extern _HASH_BUCKET_FIND CHash **
-  HashBucketFind(U8 *needle_str,CHashTable *haystack_table); //Find hash bucket.
-_extern _HASH_ADD U0 HashAdd(CHash *temph,CHashTable *table); //Add entry to hash table.
-_extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,I64 instance=1);//Remove hash entry and del. Instance must match.
-
+_extern _HASH_FIND CHash *HashFind(U8 *needle_str,CHashTable *haystack_table,
+	I64 mask,I64 instance=1);//Find string in hash table.
+_extern _HASH_SINGLE_TABLE_FIND CHash *HashSingleTableFind(U8 *needle_str,
+	CHashTable *haystack_table,
+	I64 mask,I64 instance=1);//Find string in single hash table.
+_extern _HASH_BUCKET_FIND CHash **HashBucketFind(U8 *needle_str,
+	CHashTable *haystack_table); //Find hash bucket.
+_extern _HASH_ADD U0 HashAdd(CHash *temph,
+	CHashTable *table); //Add entry to hash table.
+_extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
+	I64 instance=1);//Remove hash entry and del. Instance must match.

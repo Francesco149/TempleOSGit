@@ -21,7 +21,7 @@ U0 Merge2(CDirEntry *tempde1,CDirEntry *tempde2,I64 *_fuf_flags,I64 *_df_flags)
       if (tempde1->attr & RS_ATTR_DIR)
 	Merge2(tempde1->sub,tempde->sub,_fuf_flags,_df_flags);
       else {
-	if (AbsI64(tempde1->datetime-tempde->datetime)>CDATE_FREQ*2) {//Filedates can shift due to conversion
+	if (AbsI64(tempde1->datetime-tempde->datetime)>CDATE_FREQ*2) {//slop
 	  "%s",tempde1->full_name;
 	  '\n';
 	  if (Bt(_fuf_flags,FUf_DIFF)) {
@@ -39,7 +39,7 @@ public U0 Merge(U8 *dst_files_find_mask="/*",U8 *src_files_find_mask="/*",
 {/*Merge text files from one list into another.
 Report files whos date/time is different.
 
-"+d" will do [C:/Adam/Utils/Diff.CPP.Z,231] Diff() on files and prompt to
+"+d" will do [C:/Adam/Utils/Diff.CPP.Z,237] Diff() on files and prompt to
 merge changes from source files into
 destination files.
 */

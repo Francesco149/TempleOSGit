@@ -73,7 +73,7 @@ U0 GrUpdateTasks()
     do { //Loop through core#0 tasks.
       if (!TaskValidate(task)) break;
       if (Bt(&task->display_flags,DISPLAYf_SHOW) &&
-	  Bt(gr.win_uncovered_bitmap,task->win_z_num))
+	    Bt(gr.win_uncovered_bitmap,task->win_z_num))
 	GrUpdateTaskWin(task);
       if (!TaskValidate(task)) break;
       task=task->next_task;
@@ -94,7 +94,7 @@ U0 GrUpdateTasks()
   }
   winmgr.last_ode_time=winmgr.ode_time;
   ode_alloced_factor=LowPass1(0.1,ode_alloced_factor,
-      Clamp(Gs->idle_factor-0.1,0.2,0.8),1/winmgr.fps);
+	Clamp(Gs->idle_factor-0.1,0.2,0.8),1/winmgr.fps);
   sys_task_being_screen_updated=NULL;
 }
 
@@ -133,12 +133,12 @@ U0 GrZoomInScreen()
 {
   GrFixZoomScale;
   I64 plane,row,col,k,l,
-    d2=gr.zoomed_dc->width>>3/gr.screen_zoom,
-    d4=gr.zoomed_dc->width_internal>>3,
-    d5=d4-d2*gr.screen_zoom,
-    d3=gr.zoomed_dc->height/gr.screen_zoom,
-    d6=(gr.zoomed_dc->height-d3)*gr.dc1->width_internal>>3,
-    d7=gr.zoomed_dc->height%gr.screen_zoom*d4;
+	d2=gr.zoomed_dc->width>>3/gr.screen_zoom,
+	d4=gr.zoomed_dc->width_internal>>3,
+	d5=d4-d2*gr.screen_zoom,
+	d3=gr.zoomed_dc->height/gr.screen_zoom,
+	d6=(gr.zoomed_dc->height-d3)*gr.dc1->width_internal>>3,
+	d7=gr.zoomed_dc->height%gr.screen_zoom*d4;
   U8 *src,*src2,*dst,*src3,*map=gr.screen_zoom_tables[gr.screen_zoom];
 
   src=gr.dc1->body+gr.sx>>3+gr.sy*gr.dc1->width_internal>>3;
@@ -174,8 +174,8 @@ U0 GrZoomInScreen()
 U0 GrUpdateTextBG()
 {
   I64 reg RSI *dst=gr.dc2->body,reg R13 c,row,col,
-      num_rows=TEXT_ROWS,num_cols=TEXT_COLS,i,j,cur_ch,
-      reg R12 w1=gr.dc2->width_internal,w2=-7*w1+8,w3=7*w1,w4=0;
+	num_rows=TEXT_ROWS,num_cols=TEXT_COLS,i,j,cur_ch,
+	reg R12 w1=gr.dc2->width_internal,w2=-7*w1+8,w3=7*w1,w4=0;
   U32 *src=gr.text_base;
   Bool blink_flag=Blink;
   U8 *dst2=dst;
@@ -238,21 +238,21 @@ U0 GrUpdateTextBG()
 	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
       }
       c=gr.to_8_colors[cur_ch.u8[1]>>4];
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
-	ADD	RSI,R12
-	MOV	U64 [RSI],R13
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
+      ADD	RSI,R12
+      MOV	U64 [RSI],R13
       dst(U8 *)+=w2;
     }
     src+=w4;
@@ -264,8 +264,8 @@ U0 GrUpdateTextFG()
 {//See [TextBase Layer,1] TextBase Layer.
   U32 *src=gr.text_base;
   I64 i,j,cur_ch,*dst=gr.dc2->body,
-      w1=gr.dc2->width_internal,w2=7*w1,w4=0,
-      num_rows=TEXT_ROWS,num_cols=TEXT_COLS,row,col;
+	w1=gr.dc2->width_internal,w2=7*w1,w4=0,
+	num_rows=TEXT_ROWS,num_cols=TEXT_COLS,row,col;
   U8 *dst_start=gr.dc2->body,*dst_end=dst_start+w1*gr.dc2->height-7*w1-8;
   Bool blink_flag=Blink;
 
@@ -430,7 +430,7 @@ U0 GrUpdateScreen()
     GrUpdateTextModeText;
   else {
     DCBlotColor4(gr.dc1->body,gr.dc2->body,gr.dc_cache->body,
-      gr.dc2->height*gr.dc2->width_internal>>3);
+	  gr.dc2->height*gr.dc2->width_internal>>3);
     GrUpdateVGAGraphics;
   }
 }

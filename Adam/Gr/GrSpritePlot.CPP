@@ -1,28 +1,21 @@
 #help_index "Graphics/Sprite;Sprites"
 /*
-[C:/Adam/Gr/Gr.CPP.Z,169] CSprites are stored as a sequence of var
-length operations with a 1-byte type leading
-each operation.  The types available are lsted
-here, [C:/Adam/Gr/Gr.CPP.Z,144] SPT_PT.  They are stored, one after another,
-in a chunk of memory terminated by a type [C:/Adam/Gr/Gr.CPP.Z,136] SPT_END.
+[C:/Adam/Gr/Gr.CPP.Z,174] CSprites are stored as a sequence of var
+length operations with a 1-byte [C:/Adam/Gr/Gr.CPP.Z,146] type leading
+each operation.  They are stored, one after another,
+in a chunk of memory terminated by a [C:/Adam/Gr/Gr.CPP.Z,138] zero.
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() shows how the [C:/Adam/Gr/Gr.CPP.Z,174] CSprite unions are used.
 
-[C:/Adam/Gr/GrSpritePlot.CPP.Z,25] Sprite3() shows how the [C:/Adam/Gr/Gr.CPP.Z,169] CSprite unions are used.
-It's kind-of a mess using a union.
-
-[C:/Adam/Gr/SpriteNew.CPP.Z,45] SpriteElemSize() will return the size of a single
-element, while [C:/Adam/Gr/SpriteNew.CPP.Z,79] SpriteSize() will return the size
-of an entire lst.  Look at [C:/Adam/Gr/SpriteNew.CPP.Z,6] sprite_elem_base_sizes.
-
-See [C:/Adam/Gr/SpriteCode.CPP.Z,3] SpriteElem2Code() to infer the raw storage
-format.  They are stored as raw binary values
-when saved to files, not text code.
+[C:/Adam/Gr/SpriteNew.CPP.Z,44] SpriteElemSize() will return the size of a single
+element, while [C:/Adam/Gr/SpriteNew.CPP.Z,80] SpriteSize() will return the size
+of an entire list.  Look at [C:/Adam/Gr/SpriteNew.CPP.Z,6] sprite_elem_base_sizes.
 
 See ::/Apps/GrModels
 `Cd("::/Apps/GrModels");Dir;View;
 `
  for an example of
-making CSprite by hand.  Those are type
-[C:/Adam/Gr/Gr.CPP.Z,160] SPT_MESH, one of the most complicated.
+making CSprite by hand.  It uses [C:/Adam/Gr/Gr.CPP.Z,162] SPT_MESH,
+one of the most complicated.
 */
 
 public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
@@ -38,8 +31,11 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
   CD3I32 *p;
   CGrSym old_sym;
   MemCpy(&old_sym,&dc->sym,sizeof(CGrSym));
+  if (dc->flags & DCF_LOCATE_NEAREST) {
+    dc->nearest_sprite_elem_num=0;
+    dc->dist=dc->nearest_dist=MAX_I64;
+  }
   while (tempg->type) {
-    dc->cur_sprite_elem_num=cur_sprite_elem_num++;
     switch (tempg->type) {
       case SPT_COLOR:
 	dc->color=dc->color&~(COLORROP_COLORS_MASK|ROPF_DITHER)|tempg->c.color;
@@ -51,7 +47,7 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	break;
       case SPT_WIDTH:
 	dc->pen_width=tempg->w.width;
-	GrScalePenWidth(dc);
+	DCPenWidthScale(dc);
 	break;
       case SPT_TRANSFORM_ON:
 	if (!(dc->flags&DCF_TRANSFORMATION)) {
@@ -95,13 +91,17 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	y+=tempg->p.y1;
 	break;
       case SPT_LINE:
-	GrLine3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,tempg->pp.x2+x,tempg->pp.y2+y,z);
+	GrLine3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,
+	      tempg->pp.x2+x,tempg->pp.y2+y,z);
 	break;
       case SPT_ARROW:
-	GrArrow3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,tempg->pp.x2+x,tempg->pp.y2+y,z);
+	GrArrow3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,
+	      tempg->pp.x2+x,tempg->pp.y2+y,z);
 	break;
       case SPT_PLANAR_SYMMETRY:
-	if (GrSetSymmetry3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,tempg->pp.x2+x,tempg->pp.y2+y,z,tempg->pp.x2+x,tempg->pp.y2+y,z+1))
+	if (DCSymmetry3Set(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,
+	      tempg->pp.x2+x,tempg->pp.y2+y,z,
+	      tempg->pp.x2+x,tempg->pp.y2+y,z+1))
 	  dc->flags|=DCF_SYMMETRY;
 	else
 	  dc->flags&=~DCF_SYMMETRY;
@@ -117,22 +117,25 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	Free(img);
 	break;
       case SPT_RECT:
-	GrRect3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,tempg->pp.x2-tempg->pp.x1,tempg->pp.y2-tempg->pp.y1);
+	GrRect3(dc,tempg->pp.x1+x,tempg->pp.y1+y,z,
+	      tempg->pp.x2-tempg->pp.x1,tempg->pp.y2-tempg->pp.y1);
 	break;
       case SPT_ROTATED_RECT:
 	x1=tempg->ppa.x1+x;
 	y1=tempg->ppa.y1+y;
 	z1=z;
-	GrRot(dc->r,&x1,&y1,&z1);
+	Mat4x4MulXYZ(dc->r,&x1,&y1,&z1);
 	old_r=dc->r;
 	dc->flags|=DCF_TRANSFORMATION;
-	r2=GrRotZNew(-tempg->ppa.angle);
-	GrSetTranslation(r2,x1,y1,z1);
-	GrSetRotMat(dc,GrMulMat(old_r,r2));
-	GrRect3(dc,0,0,0,tempg->ppa.x2-tempg->ppa.x1,tempg->ppa.y2-tempg->ppa.y1);
+	r2=Mat4x4IdentNew;
+	Mat4x4RotZ(r2,-tempg->ppa.angle);
+	Mat4x4TranslationEqu(r2,x1,y1,z1);
+	DCMat4x4Set(dc,Mat4x4MulMat4x4New(old_r,r2));
+	GrRect3(dc,0,0,0,
+	      tempg->ppa.x2-tempg->ppa.x1,tempg->ppa.y2-tempg->ppa.y1);
 	Free(dc->r);
 	Free(r2);
-	GrSetRotMat(dc,old_r);
+	DCMat4x4Set(dc,old_r);
 	dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
 	break;
       case SPT_CIRCLE:
@@ -140,11 +143,11 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	break;
       case SPT_ELLIPSE:
 	GrEllipse3(dc,tempg->pwha.x1+x,tempg->pwha.y1+y,z,tempg->pwha.width,
-		tempg->pwha.height,tempg->pwha.angle);
+	      tempg->pwha.height,tempg->pwha.angle);
 	break;
       case SPT_POLYGON:
 	GrRegPoly3(dc,tempg->pwhas.x1+x,tempg->pwhas.y1+y,z,tempg->pwhas.width,
-		tempg->pwhas.height,tempg->pwhas.sides,tempg->pwhas.angle);
+	      tempg->pwhas.height,tempg->pwhas.sides,tempg->pwhas.angle);
 	break;
       case SPT_POLYLINE:
 	ptr=&tempg->nu.u;
@@ -205,7 +208,7 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	  p->z+=z;
 	}
 	Gr3Mesh(dc,tempg->mu.vertex_cnt,&tempg->mu.u,tempg->mu.tri_cnt,
-	  (&tempg->mu.u)(U8 *)+sizeof(CD3I32)*tempg->mu.vertex_cnt);
+	      (&tempg->mu.u)(U8 *)+sizeof(CD3I32)*tempg->mu.vertex_cnt);
 	p=&tempg->mu.u;
 	for (i=0;i<tempg->mu.vertex_cnt;i++,p++) {
 	  p->x-=x;
@@ -233,7 +236,7 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	  p->z+=z1;
 	}
 	Gr3Mesh(dc,tempg->pmu.vertex_cnt,&tempg->pmu.u,tempg->pmu.tri_cnt,
-	  (&tempg->pmu.u)(U8 *)+sizeof(CD3I32)*tempg->pmu.vertex_cnt);
+	      (&tempg->pmu.u)(U8 *)+sizeof(CD3I32)*tempg->pmu.vertex_cnt);
 	p=&tempg->pmu.u;
 	for (i=0;i<tempg->pmu.vertex_cnt;i++,p++) {
 	  p->x-=x1;
@@ -247,6 +250,11 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 	}
 	break;
     }
+    if (dc->flags & DCF_LOCATE_NEAREST && dc->dist<dc->nearest_dist) {
+      dc->nearest_dist=dc->dist;
+      dc->nearest_sprite_elem_num=cur_sprite_elem_num;
+    }
+    cur_sprite_elem_num++;
     if (just_one) break;
     tempg(U8 *)+=SpriteElemSize(tempg);
   }
@@ -260,7 +268,7 @@ public U0 Sprite3(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,Bool just_one=FALSE)
 public U0 Sprite3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems)
 {//Plot a sprite into a CDC, post transform xyz translation.
   I64 old_x=dc->x,old_y=dc->y,old_z=dc->z,
-      old_flags=dc->flags&DCF_TRANSFORMATION;
+	old_flags=dc->flags&DCF_TRANSFORMATION;
   dc->x=x; dc->y=y; dc->z=z;
   dc->flags|=DCF_TRANSFORMATION;
   Sprite3(dc,0,0,0,elems);
@@ -270,14 +278,13 @@ public U0 Sprite3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems)
 
 public U0 SpriteMat3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
 {//Plot rotated by matrix.
-  I64 *old_r=dc->r,old_m[16],
-      old_flags=dc->flags&DCF_TRANSFORMATION;
+  I64 r[16],*old_r=dc->r,old_m[16],
+	old_flags=dc->flags&DCF_TRANSFORMATION;
   MemCpy(old_m,m,16*sizeof(I64));
   dc->flags|=DCF_TRANSFORMATION;
-  GrAddTranslation(m,x,y,z);
-  dc->r=GrMulMat(old_r,m);
+  Mat4x4TranslationAdd(m,x,y,z);
+  dc->r=Mat4x4MulMat4x4Equ(r,old_r,m);
   Sprite3(dc,0,0,0,elems);
-  Free(dc->r);
   dc->r=old_r;
   MemCpy(m,old_m,16*sizeof(I64));
   dc->flags=dc->flags&~DCF_TRANSFORMATION|old_flags;
@@ -285,23 +292,26 @@ public U0 SpriteMat3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,I64 *m)
 
 public U0 SpriteX3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,F64 phi=0)
 {//Plot rotated around X axis.
-  I64 *r=GrRotXNew(phi);
+  I64 r[16];
+  Mat4x4IdentEqu(r);
+  Mat4x4RotX(r,phi);
   SpriteMat3B(dc,x,y,z,elems,r);
-  Free(r);
 }
 
 public U0 SpriteY3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,F64 omega=0)
 {//Plot rotated around Y axis.
-  I64 *r=GrRotYNew(omega);
+  I64 r[16];
+  Mat4x4IdentEqu(r);
+  Mat4x4RotY(r,omega);
   SpriteMat3B(dc,x,y,z,elems,r);
-  Free(r);
 }
 
 public U0 SpriteZ3B(CDC *dc=gr.dc,I64 x,I64 y,I64 z,U8 *elems,F64 theta=0)
 {//Plot rotated around Z axis.
-  I64 *r=GrRotZNew(theta);
+  I64 r[16];
+  Mat4x4IdentEqu(r);
+  Mat4x4RotZ(r,theta);
   SpriteMat3B(dc,x,y,z,elems,r);
-  Free(r);
 }
 
 public U0 SpriteExtents(U8 *elems,I64 *min_x=NULL,I64 *max_x=NULL,
@@ -343,14 +353,14 @@ public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
   CD3I32 *p0,*p1,*pr;
   U8 *result;
   CSprite *tempg0=elems0-offset(CSprite.start),
-	  *tempg1=elems1-offset(CSprite.start),*tempgr;
+	*tempg1=elems1-offset(CSprite.start),*tempgr;
   if (t<0.5) {
     i=SpriteSize(elems0),
-    result=MAlloc(i);
+	  result=MAlloc(i);
     MemCpy(result,elems0,i);
   } else {
     i=SpriteSize(elems1),
-    result=MAlloc(i);
+	  result=MAlloc(i);
     MemCpy(result,elems1,i);
   }
   tempgr=result-offset(CSprite.start);
@@ -449,7 +459,7 @@ public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
 #help_index "Graphics/Sprite;DolDoc/Output;StdOut/DolDoc"
 public CDocEntry *DocSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
 {//Put a sprite into a document.  You can, optionally, supply a fmt string
- //for [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc cmd with a %d for the bin_num.
+//for [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc cmd with a %d for the bin_num.
   I64 size;
   U8 *st;
   Bool unlock;

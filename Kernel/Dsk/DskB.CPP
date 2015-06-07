@@ -58,7 +58,8 @@ Bool Cd(U8 *dirname=NULL,Bool make_dirs=FALSE)
     if (*dirname=='/')
       dirname++;
   }
-  chg_to_buf=MStrUtil(dirname,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+  chg_to_buf=MStrUtil(dirname,
+	SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
   maxlen=StrLen(Fs->cur_dir)+1+StrLen(chg_to_buf)+1;
   new_cur_dir=MAlloc(maxlen);
   buf=MAlloc(maxlen);
@@ -128,7 +129,8 @@ U0 FileAccessDel(CFileAccess *fa)
   Free(fa);
 }
 
-CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE,Bool no_mask=FALSE)
+CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,
+	Bool make_dirs=FALSE,Bool no_mask=FALSE)
 {//Save cur_dir and drv. Change to new dir.
   Bool valid=TRUE,old_silent;
   U8 *buf,*mask,*temp_mask;
@@ -153,7 +155,7 @@ CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE,B
     StrLastRem(buf,"/",fa->mask);
   if (*mask=='/' && !*buf)
     StrCpy(buf,"/");
-  //If began with Dir, change to Dir.
+//If began with Dir, change to Dir.
   if (*buf && !Cd(buf,make_dirs))
     valid=FALSE;
   if (valid && make_mask) {
@@ -163,7 +165,7 @@ CFileAccess *FileAccessNew(U8 *_mask,Bool make_mask=FALSE,Bool make_dirs=FALSE,B
     } else {
       if (!make_dirs || FileNameChk(fa->mask)) {
 	old_silent=Silent;
-	//Try mask to see if Dir. If Dir, change to dir and set to "*".
+//Try mask to see if Dir. If Dir, change to dir and set to "*".
 	if (Cd(fa->mask,make_dirs)) {
 	  Free(fa->mask);
 	  fa->mask=StrNew("*");
@@ -264,11 +266,11 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
   U8 *absname,*altname,*curname,*result=NULL;
   I64 i,size=0,attr=0;
   CFileAccess *fa;
-  CArcCompress *ac;
+  CArcCompress *arc;
   absname=FileNameAbs(filename);
   altname=ToggleZorNotZ(absname);
   if ((temph=HashFind(absname,adam_task->hash_table,HTT_FILE))||
-       (temph=HashFind(altname,adam_task->hash_table,HTT_FILE))) {
+	(temph=HashFind(altname,adam_task->hash_table,HTT_FILE))) {
     size=temph->user_data1;
     result=MAlloc(size+1);
     MemCpy(result,temph->user_data0,size);
@@ -329,13 +331,14 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
       PrintErr("File not found.\n");
     }
     if (result && attr & RS_ATTR_RESIDENT)
-      HashGenericAdd(curname,HTT_FILE,AMAllocIdentical(result),size,0,adam_task);
+      HashGenericAdd(curname,HTT_FILE,
+	    AMAllocIdentical(result),size,0,adam_task);
   }
   if (result && attr & RS_ATTR_COMPRESSED) {
-    ac=result;
-    size=ac->expanded_size;
-    result=ExpandBuf(ac);
-    Free(ac);
+    arc=result;
+    size=arc->expanded_size;
+    result=ExpandBuf(arc);
+    Free(arc);
   }
   if (_attr) *_attr=attr;
   if (_size) *_size=size;
@@ -345,7 +348,7 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
 }
 
 Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2506] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2507] FUF_JUST_FILES, [C:/Kernel/KernelA.HPP.Z,2513] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2515] FUF_SCAN_PARENTS
+{//[C:/Kernel/KernelA.HPP.Z,2513] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2514] FUF_JUST_FILES, [C:/Kernel/KernelA.HPP.Z,2520] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2522] FUF_SCAN_PARENTS
 //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;
@@ -386,7 +389,8 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
       }
       if (result && _de) {
 	if (StrCmp(Fs->cur_dir,"/"))
-	  full_name=MStrPrint("%C:%s/%s",Drv2Let(Fs->cur_dv),Fs->cur_dir,de.name);
+	  full_name=MStrPrint("%C:%s/%s",
+		Drv2Let(Fs->cur_dv),Fs->cur_dir,de.name);
 	else
 	  full_name=MStrPrint("%C:/%s",Drv2Let(Fs->cur_dv),de.name);
       }
@@ -408,24 +412,29 @@ Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
 	Cd("..");
 	cur_dir_cluster=Name2DirCluster(fa->dv,Fs->cur_dir);
 	switch (fa->dv->type) {
-	   case DVT_REDSEA:
-	     result=RedSeaFileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
-	     break;
-	   case DVT_FAT32:
-	     result=FAT32FileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
-	     break;
-	   case DVT_ISO9660:
-	     result=ISO1FileFind(fa->dv,cur_dir_cluster,fa->mask,&de,fuf_flags);
-	     break;
-	   default:
-	     PrintErr("File System Not Supported\n");
+	  case DVT_REDSEA:
+	    result=RedSeaFileFind(fa->dv,cur_dir_cluster,
+		  fa->mask,&de,fuf_flags);
+	    break;
+	  case DVT_FAT32:
+	    result=FAT32FileFind(fa->dv,cur_dir_cluster,
+		  fa->mask,&de,fuf_flags);
+	    break;
+	  case DVT_ISO9660:
+	    result=ISO1FileFind(fa->dv,cur_dir_cluster,
+		  fa->mask,&de,fuf_flags);
+	    break;
+	  default:
+	    PrintErr("File System Not Supported\n");
 	}
       }
       if (result && _de) {
 	if (StrCmp(Fs->cur_dir,"/"))
-	  full_name=MStrPrint("%C:%s/%s",Drv2Let(Fs->cur_dv),Fs->cur_dir,de.name);
+	  full_name=MStrPrint("%C:%s/%s",
+		Drv2Let(Fs->cur_dv),Fs->cur_dir,de.name);
 	else
-	  full_name=MStrPrint("%C:/%s",Drv2Let(Fs->cur_dv),de.name);
+	  full_name=MStrPrint("%C:/%s",
+		Drv2Let(Fs->cur_dv),de.name);
       }
       FileAccessDel(fa);
     }

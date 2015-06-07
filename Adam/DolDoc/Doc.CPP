@@ -41,7 +41,7 @@ extern U8 *PopUpPickLst(U8 *lst);
 "HI:index"
 "AD:code_address_number"
 
-		To edit a doc structure already in memory. See [C:/Adam/Gr/SpriteEd.CPP.Z,611] SpriteEdText().
+		To edit a doc structure already in memory. See [C:/Adam/Gr/SpriteEd.CPP.Z,613] SpriteEdText().
 "AI:doc_address"
 "AA:haystack_doc_address,needle_anchor_str"
 "AF:haystack_doc_address,needle_str"
@@ -61,7 +61,7 @@ extern U8 *PopUpPickLst(U8 *lst);
 #define LK_DEF		9
 #define LK_HELP_INDEX	10
 #define LK_ADDR		11
-#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.CPP.Z,611] SpriteEdText()
+#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.CPP.Z,613] SpriteEdText()
 #define LK_DOC_ANCHOR	13
 #define LK_DOC_FIND	14
 #define LK_DOC_LINE	15

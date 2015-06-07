@@ -6,7 +6,7 @@ not serialized!  Furthermore, the input can come from triggering macro
 widgets.  See [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview and [DolDoc,1] Doc
 Routines.
 
-If you had a remote term and sent key [C:/Kernel/KernelA.HPP.Z,3471] Scan
+If you had a remote term and sent key [C:/Kernel/KernelA.HPP.Z,3477] Scan
 Codes, the user would press <CTRL-m
 > to access his Personal Menu to trigger his macros.  However, the local 
 [C:/Home/PersonalMenu.TXT,1] might differ from the remote, causing loss of
@@ -18,5 +18,5 @@ in sync.
 
 See [C:/Doc/CharOverview.TXT.Z,1] Char Overview and [Char,1] Char Routines.
 
-You can send characters into StdIn.  See [C:/Kernel/SrvCmd.CPP.Z,495] Auto(),
-[C:/Kernel/SrvCmd.CPP.Z,458] XTalk() and [AutoFile,1] AutoFile.
+You can send characters into StdIn.  See [C:/Kernel/SrvCmd.CPP.Z,496] Auto(),
+[C:/Kernel/SrvCmd.CPP.Z,459] XTalk() and [AutoFile,1] AutoFile.

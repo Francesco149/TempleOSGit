@@ -8,7 +8,7 @@ I64 FSize(CFile *f)
 
 CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
 {//Allows flags "r","w","w+". "c" for contiguous.
-//(It uses [C:/Kernel/StrA.CPP.Z,445] StrOcc() for 'w', 'r', '+', 'c')
+//(It uses [C:/Kernel/StrA.CPP.Z,462] StrOcc() for 'w', 'r', '+', 'c')
   CFile *f=CAlloc(sizeof(CFile));
   CFileAccess *fa;
   U8 *full_name;
@@ -48,7 +48,7 @@ CFile *FOpen(U8 *filename,U8 *flags,I64 cnt=0)
       StrCpy(f->de.name,fa->mask);
       if (cnt>0) {//We pre-alloc the whole thing.
 	f->de.cluster=ClustersAlloc(f->dv,0,
-	  (cnt+f->dv->spc-1)/f->dv->spc,contiguous);
+	      (cnt+f->dv->spc-1)/f->dv->spc,contiguous);
 	f->de.size=cnt<<BLK_SIZE_BITS;
 	DirNew(fa->dv,Fs->cur_dir,&f->de,TRUE);
 	f->flags&=~FF_NEW_FILE;

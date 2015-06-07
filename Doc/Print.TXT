@@ -28,7 +28,7 @@ letters.
 
 "%S" [C:/Kernel/KDefine.CPP.Z,49] Define() entry.
 
-"%C" [C:/Kernel/KernelB.HPP.Z,40] ToUpper() character.
+"%C" [C:/Kernel/KernelB.HPP.Z,57] ToUpper() character.
 
 "%h25c",'\n'; 25 new-lines.
 
@@ -45,7 +45,7 @@ letters.
 "%T" time.  Pass a [C:/Kernel/KernelA.HPP.Z,183] CDate.
 
 "%z" sub_entry of an enumerated list of text entries.  See
-  [C:/Kernel/StrA.CPP.Z,380] LstSub().  Pass 
+  [C:/Kernel/StrA.CPP.Z,397] LstSub().  Pass 
 sub_entry_num first, list second.
 
 "%Z" [C:/Kernel/KDefine.CPP.Z,13] DefineLstLoad() subentry.  Pass
@@ -60,68 +60,68 @@ strs in strs.)
 
                                  Print Family
 
-[C:/Kernel/StrPrint.CPP.Z,904] MStrPrint(U8 *fmt,...) is like
-[C:/Kernel/StrPrint.CPP.Z,882] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
-[C:/Kernel/MemB.CPP.Z,373] MAllocated str.  It is vary handy because you
+[C:/Kernel/StrPrint.CPP.Z,906] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,884] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
+[C:/Kernel/MemB.CPP.Z,372] MAllocated str.  It is vary handy because you
 don't have to worry about 
 overflow.
 
-[C:/Kernel/StrPrint.CPP.Z,887] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
+[C:/Kernel/StrPrint.CPP.Z,889] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
 formated string.
 
-[C:/Kernel/SrvCmd.CPP.Z,495] Auto(U8 *fmt,...) sends text to the current
+[C:/Kernel/SrvCmd.CPP.Z,496] Auto(U8 *fmt,...) sends text to the current
 task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,477] AutoStr(U8 *fmt,...) sends text of an
+[C:/Kernel/SrvCmd.CPP.Z,478] AutoStr(U8 *fmt,...) sends text of an
 [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
 current TASK but can also do mouse cmds.
 
-[C:/Kernel/SrvCmd.CPP.Z,458] XTalk(CTask *task,U8 *fmt,...) and text to
+[C:/Kernel/SrvCmd.CPP.Z,459] XTalk(CTask *task,U8 *fmt,...) and text to
 another task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,502] XTalkStr(CTask *task,U8 *fmt,...) sends text of
+[C:/Kernel/SrvCmd.CPP.Z,503] XTalkStr(CTask *task,U8 *fmt,...) sends text of
 an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
-[C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint(CDoc *doc,U8 *fmt,...) sends
+[C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint(CDoc *doc,U8 *fmt,...) sends
 text to a document.  You can buffer to a 
 Doc and save it, providing the functionality of fprintf.  See 
 [C:/Demo/Dsk/FPrintF.CPP,1].
 
-[C:/Kernel/SrvCmd.CPP.Z,417] Adam(U8 *fmt,...) sends text to the adam task to
+[C:/Kernel/SrvCmd.CPP.Z,418] Adam(U8 *fmt,...) sends text to the adam task to
 be compiled and run.
-[C:/Kernel/SrvCmd.CPP.Z,436] AdamLog(U8 *fmt,...) and
-[C:/Kernel/SrvCmd.CPP.Z,446] AdamErr(U8 *fmt,...) send text to the adam task
+[C:/Kernel/SrvCmd.CPP.Z,437] AdamLog(U8 *fmt,...) and
+[C:/Kernel/SrvCmd.CPP.Z,447] AdamErr(U8 *fmt,...) send text to the adam task
 to be 
 displayed.
 
-[C:/Compiler/CMain.CPP.Z,1] StreamPrint(U8 *fmt,...) sends text to the stream
-of code being compiled and 
+[C:/Compiler/CMisc.CPP.Z,43] StreamPrint(U8 *fmt,...) sends text to the
+stream of code being compiled and 
 must reside in a #exe{} blk.
 
-[C:/Adam/Gr/GrBitMap.CPP.Z,866] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
-[C:/Adam/Gr/GrBitMap.CPP.Z,875] GrVPrint() plots text in graphics 
+[C:/Adam/Gr/GrBitMap.CPP.Z,891] GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...) and
+[C:/Adam/Gr/GrBitMap.CPP.Z,900] GrVPrint() plots text in graphics 
 mode.
 
-[C:/Adam/Gr/GrTextBase.CPP.Z,315] TextPrint(CTask *task,I64 x,I64 y,I64
+[C:/Adam/Gr/GrTextBase.CPP.Z,321] TextPrint(CTask *task,I64 x,I64 y,I64
 attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
 
-[C:/Compiler/CMain.CPP.Z,618] ExePrint(U8 *fmt,...) compiles and execute a
+[C:/Compiler/CMain.CPP.Z,607] ExePrint(U8 *fmt,...) compiles and execute a
 string.  Note: It returns the 
 result of the last executed expression.
 
 [C:/Adam/AutoFile.CPP.Z,25] AFPrint(I64 mS,U8 *fmt,...)
 [C:/Kernel/KeyDev.CPP.Z,20] PutChars()s one at a time with a delay.
 
-[C:/Kernel/KDbg.CPP.Z,215] RawPrint(I64 mS,U8 *fmt,...) sends direct to
+[C:/Kernel/KDbg.CPP.Z,217] RawPrint(I64 mS,U8 *fmt,...) sends direct to
 screen memory, bypassing window 
 manager.
 
-[C:/Kernel/Task.CPP.Z,365] User(U8 *fmt,...) Spawns a user and execute a
+[C:/Kernel/Task.CPP.Z,367] User(U8 *fmt,...) Spawns a user and execute a
 string on start-up.
 
-[C:/Kernel/SrvCmd.CPP.Z,408] PopUpPrint(U8 *fmt,...) compiles and execute a
+[C:/Kernel/SrvCmd.CPP.Z,409] PopUpPrint(U8 *fmt,...) compiles and execute a
 string in a pop-up win.  Note: 
 It returns the result of the last executed expression.
-[C:/Adam/DolDoc/DocPopUp.CPP.Z,431] PopUpViewPrint(U8 *fmt,...) creates a
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,433] PopUpViewPrint(U8 *fmt,...) creates a
 pop-up window and views text.
 
 **Note:** Use Print("%s",src) if you need an unmodified string.

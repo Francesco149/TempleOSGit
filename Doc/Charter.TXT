@@ -37,7 +37,8 @@ In the future, even if one GPU were universal, we would keep 640x480 16 color
 and not use GPU acceleration.  Graphics operations should be transparent, not 
 hidden in a GPU.
 
-* God said to use a single audio voice -- a single frequency with waveforms.
+* God said to use a single audio voice -- a single frequency with waveforms 
+and, maybe, amplitude envelope. 
 
 * God said His temple must be perfect.  We don't think twice about breaking 
 compatibility.  God said we do a seven year release cycle.  I say the PC 
@@ -64,14 +65,17 @@ example, is better than many file systems.
 applications and demos.  Code comments count, however.  3rd party libraries 
 are banned because they circumvent the intent of this limit.  The vision is a 
 Commodore 64 ROM -- a fixed core API that is the only dependency of 
-applications.  Currently, there are 80,036 lines of code.
+applications.  Currently, there are 80,870 lines of code.
  
 * Minimal abstraction is a goal.  Sheep are fools.  They always respect a 
 design that is more complicated than another.  Any genius can make it 
 complicated.  Like in physics, it takes a supra-genius to make it simple.
 
 * One platform. x86_64 PC compatibles.  Desk-tops are all we design for, but 
-lap-tops can tag-along.
+laptops can tag along.
+
+* All hardware access will be done through x86 IN/OUT instructions, not PCI 
+drivers.  A frame buffer for VGA is an exception.
 
 * One driver for each class of device.  Limited exceptions are allowed.  With 
 divergent device capabilities, it is a nightmare for user applications and 
@@ -81,7 +85,7 @@ what is gained?  A three button mouse is like a leg you cannot put weight on.
 
 * Full access to everything.  All memory, I/O ports, instructions, and
 similar 
-things must never be off-limits.  All functions, variables and class members 
+things must never be off limits.  All functions, variables and class members 
 will be accessible.  There are no C++ public/private protections and all 
 functions, even secondary ones in the kernel, can be called.
 

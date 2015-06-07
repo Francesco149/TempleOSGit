@@ -16,7 +16,7 @@ public U0 DocCenter(CDoc *doc=NULL,I64 recalc=DOC_RECALC)
   task=doc->win_task;
   DocRecalc(doc,FALSE,recalc);
   if (!(doc->flags&DOCF_BORDER_DOC))
-    doc->cur_top_line_num=doc->y-(task->win_height+1)>>1;
+    doc->top_line_num=doc->y-(task->win_height+1)>>1;
   if (unlock)
     DocUnlock(doc);
 }
@@ -29,7 +29,7 @@ U0 DocDelToNum(CDoc *doc,I64 num)
     if (!(doc_e->de_flags & (DOCEF_HOLD|DOCEF_FILTER_SKIP))) {
       if (doc_e==doc->cur_entry) {
 	doc->cur_entry=doc_e2;
-	doc->cur_data_col=doc_e2->min_col;
+	doc->cur_col=doc_e2->min_col;
       }
       DocEntryDel(doc,doc_e);
     }
@@ -45,7 +45,7 @@ U0 DocDelToEntry(CDoc *doc,CDocEntry *clear_entry)
     if (!(doc_e->de_flags & (DOCEF_HOLD|DOCEF_FILTER_SKIP))) {
       if (doc_e==doc->cur_entry) {
 	doc->cur_entry=doc_e2;
-	doc->cur_data_col=doc_e2->min_col;
+	doc->cur_col=doc_e2->min_col;
       }
       DocEntryDel(doc,doc_e);
     }
@@ -94,7 +94,7 @@ public U0 DocBottom(CDoc *doc=NULL)
     return;
   unlock=DocLock(doc);
   doc->cur_entry=doc;
-  doc->cur_data_col=0;
+  doc->cur_col=0;
   DocRecalc(doc);
   if (unlock)
     DocUnlock(doc);

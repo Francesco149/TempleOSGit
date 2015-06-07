@@ -6,21 +6,25 @@ U0 GodDoodleDraw(CTask *task,CDC *dc)
   if (Blink) {
     if (god.doodle_done) {
       dc->color=RED;
-      GrPrint(dc,(task->pix_width-FONT_WIDTH*29)>>1,(task->pix_height-3*FONT_HEIGHT)>>1,
-	"Press <ESC> to insert sprite.");
-      GrPrint(dc,(task->pix_width-FONT_WIDTH*39)>>1,(task->pix_height-3*FONT_HEIGHT)>>1+2*FONT_HEIGHT,
-	"Press <SHIFT-ESC> to throw-away sprite.");
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*29)>>1,
+	    (task->pix_height-3*FONT_HEIGHT)>>1,
+	    "Press <ESC> to insert sprite.");
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*39)>>1,
+	    (task->pix_height-3*FONT_HEIGHT)>>1+2*FONT_HEIGHT,
+	    "Press <SHIFT-ESC> to throw-away sprite.");
     } else {
       dc->color=GREEN;
-      GrPrint(dc,(task->pix_width-FONT_WIDTH*25)>>1,(task->pix_height-FONT_HEIGHT)>>1,
-	"Press <SPACE> repeatedly.");
+      GrPrint(dc,(task->pix_width-FONT_WIDTH*25)>>1,
+	    (task->pix_height-FONT_HEIGHT)>>1,
+	    "Press <SPACE> repeatedly.");
     }
   }
 }
 
 U0 GodDoodleSmooth(I64 num)
 {
-  CDC *dc=DCExtract(god.doodle_dc,0,0,god.doodle_dc->width-1,god.doodle_dc->height-1);
+  CDC *dc=DCExtract(god.doodle_dc,0,0,
+	god.doodle_dc->width-1,god.doodle_dc->height-1);
   I64 i,x,y,x1,y1,c,histogram[16],best,best_cnt,c_old=god.doodle_dc->color;
   for (y=0;y<god.doodle_dc->height;y++)
     for (x=0;x<god.doodle_dc->width;x++) {
@@ -104,23 +108,26 @@ public U8 *GodDoodleSprite()
 	nobound_switch (GodDoodleBits(3)) {
 	  case 0:
 	    GrEllipse3(god.doodle_dc,
-	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,0,
-	      (w-1)*GodDoodleBits(5)/15.5,(h-1)*GodDoodleBits(5)/15.5);
+		  (w-1)*GodDoodleBits(5)/15.5-w/2,
+		  (h-1)*GodDoodleBits(5)/15.5-h/2,0,
+		  (w-1)*GodDoodleBits(5)/15.5,(h-1)*GodDoodleBits(5)/15.5);
 	    break;
 	  case 1:
 	    GrCircle3(god.doodle_dc,
-	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,0,
-	      (w-1)*GodDoodleBits(5)/15.5);
+		  (w-1)*GodDoodleBits(5)/15.5-w/2,
+		  (h-1)*GodDoodleBits(5)/15.5-h/2,0,
+		  (w-1)*GodDoodleBits(5)/15.5);
 	    break;
 	  case 2:
 	    GrBorder(god.doodle_dc,
-	      (w-1)*GodDoodleBits(5)/15.5-w/2,(h-1)*GodDoodleBits(5)/15.5-h/2,
-	      (w-1)*GodDoodleBits(5)/15.5,(h-1)*GodDoodleBits(5)/15.5);
+		  (w-1)*GodDoodleBits(5)/15.5-w/2,
+		  (h-1)*GodDoodleBits(5)/15.5-h/2,
+		  (w-1)*GodDoodleBits(5)/15.5,(h-1)*GodDoodleBits(5)/15.5);
 	    break;
 	  case 3...7:
 	    GrLine3(god.doodle_dc,
-	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,0,
-	      (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,0);
+		  (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,0,
+		  (w-1)*GodDoodleBits(4)/15,(h-1)*GodDoodleBits(4)/15,0);
 	    break;
 	}
       for (j=0;j<6;j++) {

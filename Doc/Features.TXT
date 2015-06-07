@@ -65,7 +65,7 @@ cursor with <CTRL-ALT-z>/<CTRL-ALT-SHIFT-Z>.
 * File Manager, <CTRL-d>.
 
 * Code [C:/Adam/Utils/Profiler.CPP.Z,27] profiler,
-[C:/Adam/Utils/Merge.CPP.Z,37] merge, [C:/Adam/Utils/Diff.CPP.Z,231] diff
+[C:/Adam/Utils/Merge.CPP.Z,37] merge, [C:/Adam/Utils/Diff.CPP.Z,237] diff
 utils.
 
 * PC Speaker support with many hymns.

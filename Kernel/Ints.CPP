@@ -1,5 +1,4 @@
 asm {
-USE64
 SYS_MP_CRASH_HANDLER_ADDR:: //Forward reference to work around compiler
 	DU32	&MPCrash;
 
@@ -58,7 +57,7 @@ SYS_TIMER_HANDLER::  //I_TIMER
 SYS_IRQ_FAULT::
 	PUSH	RBX
 	PUSH	RAX
-	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/Ints.CPP.Z,147] IntFaultHandlersNew().
+	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/Ints.CPP.Z,146] IntFaultHandlersNew().
 	XOR	RAX,RAX
 	MOV	FS:U8 CTask.fault_num[RAX],BL
 	POP	RAX
@@ -106,7 +105,7 @@ U8 *IntEntryGet(I64 irq)
 U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
 {//Set interrupt vector. See [C:/Kernel/KernelA.HPP.Z,278] IDTET_IRQ.
 //See [C:/Demo/Lectures/InterruptDemo.CPP,1].
-//See [C:/Demo/MultiCore/Interrupts.CPP,1].
+  //See [C:/Demo/MultiCore/Interrupts.CPP,1].
   I64 fp=fp_new_handler;
   U8 *result,*dst;
   PUSHFD
@@ -162,7 +161,7 @@ U0 IntInit1()
 {//Interrupt descriptor table part1.
   I64 i;
   CSysLimitBase temp_ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3338] CCPU struct
+  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3344] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);
@@ -170,7 +169,7 @@ U0 IntInit1()
   temp_ptr.limit=256*16-1;
   temp_ptr.base =dev.idt;
   SetRAX(&temp_ptr);
-	LIDT U64 [RAX]
+  LIDT U64 [RAX]
 }
 
 U0 IntInit2()
@@ -183,7 +182,7 @@ U0 IntInit2()
 /*In theory, we use the PIC mask reg to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
-I go ahead and ACK PIC in [C:/Kernel/Ints.CPP.Z,140] IntNop().
+I go ahead and ACK PIC in [C:/Kernel/Ints.CPP.Z,139] IntNop().
 I have no idea why I got a IRQ 0x27.
 */
   IntEntrySet(I_NMI,_SYS_HLT);

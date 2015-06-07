@@ -10,16 +10,16 @@ and cannot grow in size.
 
 The following bit field shows valid 8-Bit ASCII filename characters.
 
-U32 chars_bitmap_filename[8]=
+U32 chars_bmp_filename[8]=
 {0x0000000, 0x03FF73FB, 0xEFFFFFFF, 0x2FFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
 0xFFFFFFFF, 0xFFFFFFFF};
 
 public class CDirEntry //64-byte fixed-size
 {
-  U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2432] RS_ATTR_DIR.  I would like
+  U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2438] RS_ATTR_DIR.  I would like
 to change these.
-  U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,335]
-chars_bitmap_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,285] FileNameChk
+  U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,345]
+chars_bmp_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,290] FileNameChk
   I64 cluster;	//One sector per cluster.  I might change origin, let's talk.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,
@@ -46,10 +46,9 @@ system.
 File with names ending in .Z are stored compressed.
 See [C:/Kernel/Compress.CPP.Z,1] implementation of LZW compression.
 
-I hope to do a ISO9660 replacement that consists of a hard-drive partition 
-image copied onto a CD/DVD starting at about sector 20 with EL TORITO
-booting. 
- 512-byte sectors will be placed on top of 2048-byte CD/DCD sectors, so there 
+To replace ISO9660, make hard-drive partition image of a measured size and 
+copy onto a CD/DVD starting at about sector 20, with EL TORITO booting.  
+512-byte sectors will be placed on top of 2048-byte CD/DCD sectors, so there 
 will be four blocks per CD/DVD sector.
 
-There is no bad block table and no redundant allocation table.
+RedSea file system has no bad block table and no redundant allocation table.

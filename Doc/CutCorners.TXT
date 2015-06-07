@@ -9,7 +9,7 @@ compatibility issues enter and junk-up TempleOS.
 cleaner.
 
 * TempleOS does not figure-out FAT32 short name alias numbers. 
-[C:/Kernel/Dsk/FileSysFAT.CPP.Z,575] FAT32DirNew(). 
+[C:/Kernel/Dsk/FileSysFAT.CPP.Z,581] FAT32DirNew(). 
  It can cause hard drive corruption, so I might have to do it.  It would 
 really take a lot of junky code for this hatefully, detestable, legacy issue.
  

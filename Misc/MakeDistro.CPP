@@ -14,9 +14,9 @@ U0 MakeMyISO(U8 *out_iso_filename)
   MakeOSDrvBootInstall(,'T');
 
   Copy("/*","/Distro");
-  Del("/Distro/Kernel.BIN.C");
+  Del("/Distro/" KERNEL_BIN_C);
 
-  CopyTree("/0000Boot",	"/Distro/0000Boot");
+  CopyTree(BOOT_DIR,	"/Distro" BOOT_DIR);
   CopyTree("/Home",	"/Distro/Home");
   CopyTree("/Adam",	"/Distro/Adam");
   CopyTree("/Apps",	"/Distro/Apps");
@@ -32,7 +32,7 @@ U0 MakeMyISO(U8 *out_iso_filename)
   MkDir("/Distro/Temp");
   MkDir("/Distro/Temp/ScreenShots");
   CDFileCreate(out_iso_filename,"/Distro/*",,"/Distro" BOOT_DIR_KERNEL_BIN_C);
-  //CDImageWrite('T',out_iso_filename,MT_CD); //Uncomment to burn a CD-ROM or (MT_DVD)
+//CDImageWrite('T',out_iso_filename,MT_CD); //Uncmt to burn CD-ROM or (MT_DVD)
   //DelTree("/Distro");
 }
 

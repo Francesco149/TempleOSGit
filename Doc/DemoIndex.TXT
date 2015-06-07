@@ -5,6 +5,8 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 
 <SPACE> to edit a file and F5 to run it.
 
+[C:/Doc/HelloWorld.TXT.Z,1]
+
 +] Games: Beginner
   [C:/Demo/Graphics/NetOfDots.CPP,1]
   [C:/Demo/Graphics/InputPointer.CPP,1]
@@ -33,7 +35,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Progress.CPP,1] //has some ASM, just ignore
   [C:/Demo/Graphics/Symmetry.CPP,1]
   [C:/Demo/Graphics/Blot.CPP,1]
-  [C:/Demo/Graphics/CaptureScreen.CPP,1]
+  [C:/Demo/Graphics/ScreenCapture.CPP,1]
   [C:/Demo/Graphics/EdSprite.CPP,1]
   [C:/Demo/PullDownMenu.CPP,1]
   ::/Demo/Games/Stadium
@@ -49,7 +51,6 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Graphics/Lattice.CPP,1]
   [C:/Demo/Graphics/Collision.CPP,1]
   [C:/Demo/Games/BlackDiamond.CPP,1]
-  [C:/Demo/Games/Wenceslas.CPP,1]
   +] Games: Intermediate
   [C:/Demo/Graphics/Box.CPP,1]
   [C:/Demo/Graphics/Pick.CPP,1]
@@ -59,6 +60,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Graphics/SpritePlot3D.CPP,1]
   [C:/Demo/Graphics/Balloon.CPP,1]
   [C:/Demo/Graphics/RotateTank.CPP,1]
+  [C:/Demo/Games/Wenceslas.CPP,1]
   [C:/Demo/ScreenCodes.CPP,1]
   [C:/Demo/Graphics/PanText.CPP,1]
   [C:/Demo/Graphics/CharGraphics.CPP,1]
@@ -77,6 +79,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Graphics/Hanoi.CPP,1]
   [C:/Demo/Graphics/Life.CPP,1]
   [C:/Demo/Games/Zing.CPP,1]
+  [C:/Demo/Graphics/Grid.CPP.Z,1]
   [C:/Demo/Games/TreeCheckers.CPP,1]
   [C:/Demo/MultiCore/Palindrome.CPP,1]
   [C:/Demo/MultiCore/MPAdd.CPP,1]
@@ -221,7 +224,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/DolDoc/DefineStr.CPP,1]
   [C:/Demo/DolDoc/CallBack.CPP,1]
   [C:/Demo/Define.CPP,1]
-  [C:/Adam/DolDoc/DocCodeTools.CPP.Z,335] EdRenumAsm
+  [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm
   [C:/Demo/DolDoc/UnusedDefine.CPP,1]
   [C:/Demo/Asm/AsmHelloWorld.CPP,1]
   [C:/Demo/Asm/BuzzFizz.CPP,1]

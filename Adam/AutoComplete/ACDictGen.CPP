@@ -68,13 +68,14 @@ I64 ACDNextCmd(U8 **_ptr)
     } while (ch!='>');
     *--ptr2=0;
     result=LstMatch(ptr,"h1\0/h1\0def\0/def\0hw\0/hw\0tt\0/tt\0"
-"ety\0@fld\0@cd\0@blockquote\0@wordforms\0@note\0@altname\0@chform\0@cref\0@syn\0"
-"/ety\0@/fld\0@/cd\0@/blockquote\0@/wordforms\0@/note\0@/altname\0@/chform\0@/cref\0@/syn\0");
+	  "ety\0@fld\0@cd\0@blockquote\0@wordforms\0@note\0@altname\0@chform\0"
+	  "@cref\0@syn\0/ety\0@/fld\0@/cd\0@/blockquote\0@/wordforms\0@/note\0"
+	  "@/altname\0@/chform\0@/cref\0@/syn\0");
     *ptr2++='>';
     ptr=ptr2;
   } while (result<0);
 
-ncmd_done:
+  ncmd_done:
   *_ptr=ptr;
   return result;
 }
@@ -94,9 +95,9 @@ U8 *ACDNextEntry(U8 **_ptr)
 	break;
     }
     ignore="b>\0i>\0ppp>\0/b>\0/i>\0/p>\0"
-       "ets>\0col>\0spn>\0/ets>\0/col>\0/spn>\0er>\0as>\0cs>\0cd>\0ex>\0"
-       "/er>\0/as>\0/cs>\0/cd>\0/ex>\0"
-       "note>\0/note>\0blockquote>\0/blockquote>\0";
+	  "ets>\0col>\0spn>\0/ets>\0/col>\0/spn>\0er>\0as>\0cs>\0cd>\0ex>\0"
+	  "/er>\0/as>\0/cs>\0/cd>\0/ex>\0"
+	  "note>\0/note>\0blockquote>\0/blockquote>\0";
     while (*ignore) {
       l=StrLen(ignore);
       if (!StrNCmp(ptr,ignore,l)) {
@@ -123,8 +124,8 @@ I64 ACDCompareWords(U8 *e1,U8 *e2)
 U8 *ACDSortWords(U8 *start,I64 size,I64 word_cnt)
 {
   U8 **ptr_array=MAlloc(sizeof(U8 *)*word_cnt),
-      *out_start=MAlloc(size),
-      *ptr=start,*ptr2;
+	*out_start=MAlloc(size),
+	*ptr=start,*ptr2;
   I64 i=0;
   while (*ptr) {
     ptr_array[i++]=ptr;
@@ -151,10 +152,10 @@ U0 ACDGen(U8 *in_file)
 {
   I64 cmd,size,word_cnt=0,largest_entry=0;
   U8 *st,*in_ptr=FileRead(in_file,&size),*in_start=in_ptr,
-     *out_ptr=MAlloc(size),*out_start=out_ptr,
-     *word_ptr=MAlloc(size),*word_start=word_ptr,
-     *last_word="",*def_word_start=out_ptr,
-     *sorted_word_start;
+	*out_ptr=MAlloc(size),*out_start=out_ptr,
+	*word_ptr=MAlloc(size),*word_start=word_ptr,
+	*last_word="",*def_word_start=out_ptr,
+	*sorted_word_start;
   U16 *d;
   if (!in_ptr) return;
   do {
@@ -177,7 +178,7 @@ next_word:
 	    d=word_ptr;
 	    *d=(out_ptr-out_start)/ACD_BLK_SIZE;
 	    word_ptr+=2;
- 
+
 	    *out_ptr++=ACD_WORD_CHAR;
 	    StrCpy(out_ptr,st);
 	    out_ptr+=StrLen(st)+1;
@@ -189,7 +190,8 @@ next_word:
 	      cmd=ACDNextCmd(&in_ptr);
 	      if (cmd==ACD_H1)
 		goto next_word;
-	    } while (cmd>=0 && !(cmd==ACD_DEF||cmd==ACD_PRONUNCIATION||cmd==ACD_POS||cmd==ACD_EXTRA));
+	    } while (cmd>=0 && !(cmd==ACD_DEF||cmd==ACD_PRONUNCIATION||
+		  cmd==ACD_POS||cmd==ACD_EXTRA));
 	    if (cmd==ACD_DEF) {
 	      if(st=ACDNextEntry(&in_ptr)) {
 		if (*st) {
@@ -227,7 +229,8 @@ next_word:
 		Free(st);
 	      }
 	    }
-	  } while (cmd==ACD_DEF||cmd==ACD_PRONUNCIATION||cmd==ACD_POS||cmd==ACD_EXTRA);
+	  } while (cmd==ACD_DEF||cmd==ACD_PRONUNCIATION||
+		cmd==ACD_POS||cmd==ACD_EXTRA);
 	} else
 	  Free(st);
       }

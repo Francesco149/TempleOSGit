@@ -39,7 +39,7 @@ Merge(\"C:/*\",\"D:/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-m> at the cmd line to access your PersonalMenu.  Place macros there 
 with <CTRL-l>, or icon-like sprites with <CTRL-r>.  Use the Pop-Up option on 
-macros to [C:/Kernel/Task.CPP.Z,207] Spawn() a task to run a file.  It dies
+macros to [C:/Kernel/Task.CPP.Z,209] Spawn() a task to run a file.  It dies
 when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-s> to save your macro/menu 
 area after making changes.
@@ -72,7 +72,7 @@ C>.
 * You can recompile and reinstall the kernel with
 [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  
 You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,495] Auto() 
+[C:/Kernel/SrvCmd.CPP.Z,496] Auto() 
 function to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP,1] Update Funs.
@@ -91,8 +91,8 @@ just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 and 
 are compiled inefficiently.
 
-* You can use [C:/Kernel/KernelB.HPP.Z,165]
-progress1-[C:/Kernel/KernelB.HPP.Z,174] progress4 in your programs for
+* You can use [C:/Kernel/KernelB.HPP.Z,212]
+progress1-[C:/Kernel/KernelB.HPP.Z,224] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
@@ -101,19 +101,19 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP,1].
 
 * Use [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to adjust the size of the
-cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1321] CDoc 
+cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1323] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3212] CTask,
-[C:/Kernel/KernelA.HPP.Z,1156] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2454]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3218] CTask,
+[C:/Kernel/KernelA.HPP.Z,1158] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2461]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
-smaller stk sizes when doing [C:/Kernel/Task.CPP.Z,207] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2777] DFT_STK, and using
+smaller stk sizes when doing [C:/Kernel/Task.CPP.Z,209] Spawn(), chang
+[C:/Kernel/KernelA.HPP.Z,2786] DFT_STK, and using
 [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -135,15 +135,15 @@ check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1457] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1462] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1458] OPTf_WARN_DUP_TYPES) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_DUP_TYPES) to find unnecessary
 local var type 
 statements.
 
-* [C:/Compiler/CMisc.CPP.Z,1] OptEqu([C:/Kernel/KernelA.HPP.Z,1453]
+* [C:/Compiler/CMisc.CPP.Z,1] OptEqu([C:/Kernel/KernelA.HPP.Z,1458]
 OPTf_ECHO,ON) can be placed in [C:/Adam.CPP.Z,1] Adam.CPP to echo start-up
 scripts.
 
@@ -182,7 +182,7 @@ flag is particularly useful since it limits to whole labels.  The +lb and +la
 flags limit to whole labels just before or after.  You are encouraged to add 
 or modify handy wrapper functions to make cmd line operations easier.
 
-* When using [C:/Adam/Utils/Find.CPP.Z,143] Find() while modifying code, work
+* When using [C:/Adam/Utils/Find.CPP.Z,145] Find() while modifying code, work
 from the bottom-up so that line 
 numbers are correct.  If you work top-down, then inserting or deleting lines 
 causes the lower file links will be incorrect.
@@ -202,9 +202,9 @@ middle of compilation and data inserted into the compilation stream.  Click
 here for an example: [C:/Kernel/KEnd.CPP.Z,1] #exe {.
 
 * If you output to the cmd line and wish to allow users to scroll around and 
-view data, you can use [C:/Adam/DolDoc/DocPopUp.CPP.Z,184] View().
+view data, you can use [C:/Adam/DolDoc/DocPopUp.CPP.Z,187] View().
 
-* Use [C:/Adam/DolDoc/DocPopUp.CPP.Z,184] View() in Pop-up macros to linger
+* Use [C:/Adam/DolDoc/DocPopUp.CPP.Z,187] View() in Pop-up macros to linger
 until the user presses <ESC> or <SHIFT
 -ESC>.
 
@@ -215,19 +215,19 @@ probably turn-off preemption or interrupts momentarily to copy it.
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
-* [C:/Kernel/KernelB.HPP.Z,226] Preempt() is used to keep a task from being
+* [C:/Kernel/KernelB.HPP.Z,283] Preempt() is used to keep a task from being
 interrupted and swapped-out.  It 
 has a similar effect to turning-off interrupts.  Each task has it's own 
 preemption ctrl.  A task with preemption turned-off can voluntarily
-[C:/Kernel/Sched.CPP.Z,346] Yield() 
+[C:/Kernel/Sched.CPP.Z,344] Yield() 
 with preemption off.
 
-* You can set a color for different drives with [C:/Adam/Dsk/ADskA.CPP.Z,301]
+* You can set a color for different drives with [C:/Adam/Dsk/ADskA.CPP.Z,303]
 DrvTextAttrSet().  Place calls 
 to this in [C:/Home/AdamLocalize.CPP,1].
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1321] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1323] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -241,8 +241,8 @@ sprite num.
 
 * I use spaces-to-tab operations on all my src files to keep them small.  You 
 have to be careful, though, because spaces in strings will be converted.  I 
-use <SHIFT-SPACE> ' ' in such cases.  See [C:/Adam/Utils/S2T.CPP.Z,48] S2T()
-for spaces-to-tabs.
+use <SHIFT-SPACE> ' ' in such cases.  See [C:/Adam/Utils/StrUtils.CPP.Z,111]
+S2T() for spaces-to-tabs.
 
 * You can edit an existing sprite by putting the cursor on it and pressing <CT
 RL-r>.
@@ -255,8 +255,8 @@ them,
 so you can edit the ctrl points.  Then, convert them to bitmaps, so the flood 
 fills work well.  If you are doing interpolation, however, they must be vect.
 
-* [C:/Adam/Gr/GrPrimatives.CPP.Z,237] GrFloodFill() is slow. 
-[C:/Adam/Gr/GrBitMap.CPP.Z,885] GrRect() is fast.
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill() is slow. 
+[C:/Adam/Gr/GrBitMap.CPP.Z,910] GrRect() is fast.
 
 * You can customize the wallpaper.  See
 [C:/Demo/Graphics/WallPaperFish.CPP,1].
@@ -284,21 +284,21 @@ text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/Kernel/KernelA.HPP.Z,530] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
-timeout=[C:/Kernel/KernelB.HPP.Z,232] GetTSC+
+timeout=[C:/Kernel/KernelB.HPP.Z,289] GetTSC+
 [C:/Kernel/KernelA.HPP.Z,530] cnts.time_stamp_freq x seconds; and compare
-against [C:/Kernel/KernelB.HPP.Z,232] GetTSC().  I recommend 
+against [C:/Kernel/KernelB.HPP.Z,289] GetTSC().  I recommend 
 just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,530]
 cnts.jiffies.
 
 * Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
 [C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to find leaks.  Don't be
-confused by [C:/Kernel/KernelA.HPP.Z,1321] CDoc 
+confused by [C:/Kernel/KernelA.HPP.Z,1323] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2688]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2697]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,460] Type() to display .BMP or
+* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,467] Type() to display .BMP or
 .GRA files.
 
 * Use [C:/Kernel/PSect.CPP.Z,287] Man() to jump to short sym name src code.
@@ -308,10 +308,10 @@ err.
 
 * You can use <CTRL-SHIFT-L> to do a check for compile errors.
 
-* You can use [C:/Adam/DolDoc/DocOpt.CPP.Z,98] DocOpt() to optimize links.
+* You can use [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt() to optimize links.
 (Mostly just removes .Z)
 
-* [C:/Adam/Utils/Diff.CPP.Z,314] ZipRep() can highlight src files with lots
+* [C:/Adam/Utils/Diff.CPP.Z,320] ZipRep() can highlight src files with lots
 of redundancy.
 
 * With sub_switch_start/sub_switch_end, common trailing code is fast.  Common 

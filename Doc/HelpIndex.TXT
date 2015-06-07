@@ -59,15 +59,15 @@ Directives
 +] DolDoc
     [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the TempleOS document type. 
     The editor, compiler, assembler and whole operating system seamlessly handle
-    DolDocs.  Cmds like [C:/Kernel/Dsk/DskB.CPP.Z,226] Dir() and
-    [C:/Adam/Utils/Find.CPP.Z,143] Find() can output links to the cmd line.
+    DolDocs.  Cmds like [C:/Kernel/Dsk/DskB.CPP.Z,228] Dir() and
+    [C:/Adam/Utils/Find.CPP.Z,145] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
 
-* Use [C:/Adam/Boot/DskCDDVD.CPP.Z,326] CDFileCreate() to make an ISO image
+* Use [C:/Adam/Boot/DskCDDVD.CPP.Z,331] CDFileCreate() to make an ISO image
     file.
 
-* Use [C:/Kernel/Dsk/DskC.CPP.Z,258] CDImageWrite() to burn an ISO file onto
+* Use [C:/Kernel/Dsk/DskC.CPP.Z,259] CDImageWrite() to burn an ISO file onto
     a CD or DVD.
 
 * See [C:/Misc/MakeDistro.CPP.Z,1] Making a Distro ISO.
@@ -105,7 +105,7 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [C:/Demo/Lectures/PageTableEntries1.CPP,1] Page Table Entries 1
 [C:/Demo/Lectures/PageTableEntries2.CPP,1] Page Table Entries 2
 [C:/Demo/Lectures/PCIInterrupts.CPP,1] PCIInterrupts.CPP
-[C:/Adam/Utils/MemRep.CPP.Z,189] MemRep
+[C:/Adam/Utils/MemRep.CPP.Z,191] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper
 [C:/Kernel/Sched.CPP.Z,1] Scheduler
 [C:/Adam/DolDoc/Doc.CPP.Z,1] Doc
@@ -176,7 +176,7 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [Task,1] Task
 [TextBase Layer,1] TextBase Layer
 [Time,1] Time
-[Training,1] Training
+[Help System/Training,1] Training
 [C:/Doc/TOSZ.TXT.Z,1] TOSZ
 [Cmd Line (Typically),1] Utils
 [Windows,1] Windows

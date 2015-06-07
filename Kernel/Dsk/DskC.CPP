@@ -92,7 +92,8 @@ Bool MkDir(U8 *filename)
 	PrintErr("Invalid FileName.\n");
       else {
 	"Make Directory:%s\n",filename;
-	name=MStrUtil(fa->mask,SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
+	name=MStrUtil(fa->mask,
+	      SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
 	switch (fa->dv->type) {
 	  case DVT_REDSEA:
 	    result=RedSeaMkDir(fa->dv,Fs->cur_dir,name);
@@ -140,9 +141,9 @@ I64 SysDel(U8 *wild,Bool make_mask)	//this is dangerous
 U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=DVT_FAT32)
 {//Format hard drive or RAM drive.
 //**Warning:** Destroys all previous info.
-//quick=FALSE means fill entire drive with zeros.
-//Choose [C:/Kernel/KernelA.HPP.Z,2582] DVT_FAT32 or [C:/Kernel/KernelA.HPP.Z,2581] DVT_REDSEA.
-//You don't format a CD-ROM with this.
+  //quick=FALSE means fill entire drive with zeros.
+  //Choose [C:/Kernel/KernelA.HPP.Z,2590] DVT_FAT32 or [C:/Kernel/KernelA.HPP.Z,2589] DVT_REDSEA.
+  //You don't format a CD-ROM with this.
   CDrv *dv=Let2Drv(drv_let);
   Bool old_silent=IsSilent;
   if (confirm && !AreYouSure)
@@ -181,7 +182,7 @@ U0 CDImageRead(U8 cd_drv_let,U8 *out_name)
   CBlkDev *bd=Let2BlkDev(cd_drv_let);
   CDrv *dv=Let2Drv(cd_drv_let);
   U8 *buf=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS),
-     *out_name2=DftExt(out_name,"ISO");
+	*out_name2=DftExt(out_name,"ISO");
   CFile *f=FOpen(out_name2,"w");
   I64 n,spc=bd->blk_size>>BLK_SIZE_BITS,blk=0,cnt,retry;
   BlkDevInit(bd);
@@ -201,7 +202,7 @@ U0 CDImageRead(U8 cd_drv_let,U8 *out_name)
     retry=4;
     while (--retry)
       if (ATAPIReadBlks2(bd,tS+7.0+0.004*n/spc,buf,blk/spc,n/spc,TRUE))
-	//n is 0x800 if max_reads.  Up to 8 additional seconds
+//n is 0x800 if max_reads.  Up to 8 additional seconds
 	break;
 
     if (!retry)
@@ -281,9 +282,9 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
     throw('BlkDev');
   bd2=Let2BlkDev(*in_name2);
   while (bd2->lock_fwding)
-    bd2=bd2->lock_fwding;  //If two blkdevs on same controller, use just one lock
+    bd2=bd2->lock_fwding;  //If two blkdevs on same controller, use one lock
   if ((bd2->type==BDT_ATA || bd2->type==BDT_ATAPI) &&
-       bd2->base0==bd->base0) {
+	bd2->base0==bd->base0) {
     "Can't Burn CD on same ATA ctrller as File.\n\n";
     throw('BlkDev');
   }

@@ -15,37 +15,37 @@ involves a long and short name for each file.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2777] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,207]
+[C:/Kernel/KernelA.HPP.Z,2786] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
 Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
-* Call [C:/Kernel/Dsk/DskA.CPP.Z,404] ChgDsk() when you insert a new
+* Call [C:/Kernel/Dsk/DskA.CPP.Z,411] ChgDsk() when you insert a new
 removable media.
 
 * Accessing CD-ROM's is flacky.  Try [C:/Kernel/Dsk/DskB.CPP.Z,12] Drv() or
-[C:/Kernel/Dsk/DskA.CPP.Z,404] ChgDsk() twice.
+[C:/Kernel/Dsk/DskA.CPP.Z,411] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
 binds a HolyC definition to a asm sym.  This, too, can only be done once.
 
-* A terminal task has a [C:/Kernel/KernelA.HPP.Z,1321] CDoc document
+* A terminal task has a [C:/Kernel/KernelA.HPP.Z,1323] CDoc document
 structure that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/Kernel/KernelA.HPP.Z,1321] CDoc from being activated 
+[C:/Kernel/KernelA.HPP.Z,1323] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
 A) [C:/Adam/DolDoc/DocRecalcA.CPP.Z,90] DocBottom() followed by
   [C:/Adam/DolDoc/DocRecalcA.CPP.Z,103] DocClear() to clear the
-  [C:/Kernel/KernelA.HPP.Z,1321] CDoc so it has no active 
+  [C:/Kernel/KernelA.HPP.Z,1323] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/Kernel/KernelA.HPP.Z,1379] WIF_SELF_IP_L|[C:/Kernel/KernelA.HPP.Z,1392]
-  WIF_FOCUS_TASK_IP_L_D|[C:/Kernel/KernelA.HPP.Z,1381]
-  WIF_SELF_IP_R|[C:/Kernel/KernelA.HPP.Z,1394] WIF_FOCUS_TASK_IP_R_D.  
+[C:/Kernel/KernelA.HPP.Z,1382] WIF_SELF_IP_L|[C:/Kernel/KernelA.HPP.Z,1395]
+  WIF_FOCUS_TASK_IP_L_D|[C:/Kernel/KernelA.HPP.Z,1384]
+  WIF_SELF_IP_R|[C:/Kernel/KernelA.HPP.Z,1397] WIF_FOCUS_TASK_IP_R_D.  
 This inhibits window mgr operations but still generates messages from button 
 clicks.
 
@@ -57,7 +57,7 @@ sparse ranges of case values.
 * A goto label name must not match a global scope object's name.  (It's not 
 worth slowing-down the compiler to handle this case.)
 
-* [C:/Kernel/KernelB.HPP.Z,135] MemCpy() only goes fwd.
+* [C:/Kernel/KernelB.HPP.Z,175] MemCpy() only goes fwd.
 
 * A [C:/Kernel/Dsk/DskB.CPP.Z,37] Cd() cmd must be followed by two semicolons
 if a #include is after it.  

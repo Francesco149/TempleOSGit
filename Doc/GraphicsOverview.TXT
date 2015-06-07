@@ -50,21 +50,21 @@ callback being called.  Only
 tasks on core0 are allowed to have windows.  There is one window per task, no 
 child windows.  You can have pop-up child tasks.
 
-* [C:/Kernel/KernelA.HPP.Z,3548] CDCs (device contexts) are a data type for
+* [C:/Kernel/KernelA.HPP.Z,3559] CDCs (device contexts) are a data type for
 controlling graphics on the 
 screen or graphics in mem.  The device context structure has pen width and 
-color.  You use [C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() to create your own
+color.  You use [C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() to create your own
 structure, with its own color and 
-pen width.  Free it with [C:/Adam/Gr/GrDC.CPP.Z,211] DCDel() when finished.
+pen width.  Free it with [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel() when finished.
 
 * gr.dc is a device context for persistent data on the screen, not needing to 
 be redrawn.  You create an alias for this by using
-[C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() and work with 
+[C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() and work with 
 that.  See [C:/Demo/Graphics/NetOfDots.CPP,1].
 
 * There are various flavors of line and point plotting routines. 
-[C:/Adam/Gr/GrPrimatives.CPP.Z,436] GrLine() and 
-[C:/Adam/Gr/GrPrimatives.CPP.Z,49] GrPlot() are the simplest.  The others
+[C:/Adam/Gr/GrPrimatives.CPP.Z,437] GrLine() and 
+[C:/Adam/Gr/GrPrimatives.CPP.Z,51] GrPlot() are the simplest.  The others
 allow 3D graphics and rotations.
 
 * See [C:/Doc/Transform.TXT.Z,1] for adding a transformation.
@@ -75,12 +75,12 @@ called each screen refresh (30 fps).  You draw everything in the window over
 and over again.  See [C:/Demo/Graphics/Box.CPP,1].
 
 * Use the resource editor, <CTRL-r>, to create a sprite that can be plotted 
-with [C:/Adam/Gr/GrSpritePlot.CPP.Z,25] Sprite3() or output to the cmd line
-with [C:/Adam/Gr/GrSpritePlot.CPP.Z,479] Sprite().  Use $IB,"",BI=1$ in a 
+with [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() or output to the cmd line
+with [C:/Adam/Gr/GrSpritePlot.CPP.Z,489] Sprite().  Use $IB,"",BI=1$ in a 
 src program to insert the addr of sprite binary data item #1.  To learn how 
 the numbers work, after creating a sprite with <CTRL-r>, toggle to plain text 
 with <CTRL-t> and check its num.  Make an assignment to a ptr var or pass to 
-[C:/Adam/Gr/GrSpritePlot.CPP.Z,25] Sprite3() with $IB,"",BI=n$.  Use
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() with $IB,"",BI=n$.  Use
 <CTRL-r>'s "Pointer to Sprite" to make a $IB
 ...$ entry.  See [C:/Demo/Graphics/SpritePlot.CPP,1] and 
 [C:/Demo/Graphics/SpritePlot3D.CPP,1].  The origin (zero point) for a sprite
@@ -88,43 +88,43 @@ is
 defined by the cursor location when you pressed <CTRL-r> to make it.  You can 
 edit a sprite by clicking the cursor on it and pressing <CTRL-r> again.
 
-* Set [C:/Kernel/KernelA.HPP.Z,3525] DCF_SYMMETRY in the
-[C:/Kernel/KernelA.HPP.Z,3548] CDC.flags and call
-[C:/Adam/Gr/GrMath.CPP.Z,250] GrSetSymmetry() or 
-[C:/Adam/Gr/GrMath.CPP.Z,272] GrSetSymmetry3().  This will plot a mirror
+* Set [C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY in the
+[C:/Kernel/KernelA.HPP.Z,3559] CDC.flags and call
+[C:/Adam/Gr/GrMath.CPP.Z,200] DCSymmetrySet() or 
+[C:/Adam/Gr/GrMath.CPP.Z,222] DCSymmetry3Set().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/Kernel/KernelA.HPP.Z,3529] DCF_JUST_MIRROR to plot just the
+image.  Set [C:/Kernel/KernelA.HPP.Z,3536] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/Kernel/KernelA.HPP.Z,3525] DCF_SYMMETRY to be set at the same time. 
+[C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY to be set at the same time. 
 Note: You can only have one symmetry 
-active at a time including in [C:/Adam/Gr/Gr.CPP.Z,169] CSprites.
+active at a time including in [C:/Adam/Gr/Gr.CPP.Z,174] CSprites.
 
-* Use [C:/Adam/Gr/GrDC.CPP.Z,189] DCNew() to create a mem bitmap which can be
+* Use [C:/Adam/Gr/GrDC.CPP.Z,186] DCNew() to create a mem bitmap which can be
 used to work off-screen and 
-which can be [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBloted onto the screen.  If you
+which can be [C:/Adam/Gr/GrBitMap.CPP.Z,66] GrBloted onto the screen.  If you
 set brush member of CDC to 
-another CDC, all the graphic routines will [C:/Adam/Gr/GrBitMap.CPP.Z,71]
+another CDC, all the graphic routines will [C:/Adam/Gr/GrBitMap.CPP.Z,66]
 GrBlot() the brush instead of 
-[C:/Adam/Gr/GrPrimatives.CPP.Z,49] GrPlot().  See
+[C:/Adam/Gr/GrPrimatives.CPP.Z,51] GrPlot().  See
 [C:/Demo/Graphics/Blot.CPP,1].
 
-* There are a few [C:/Kernel/KernelA.HPP.Z,2830] raster operations available.
+* There are a few [C:/Kernel/KernelA.HPP.Z,2839] raster operations available.
  They go in bits 8-11 of the dc
-->color member var which is a [C:/Kernel/KernelA.HPP.Z,2871] CColorROPU32. 
-[C:/Kernel/KernelA.HPP.Z,2832] ROP_COLLISION is special.  It 
+->color member var which is a [C:/Kernel/KernelA.HPP.Z,2880] CColorROPU32. 
+[C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION is special.  It 
 counts the num of pixs drawn on non-background locations.  Using 
-[C:/Kernel/KernelA.HPP.Z,2832] ROP_COLLISION with vector
-[C:/Adam/Gr/Gr.CPP.Z,169] CSprite's is tricky because overlapping pixs from 
-lines in the [C:/Adam/Gr/Gr.CPP.Z,169] CSprite reg as collisions.  You can
+[C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION with vector
+[C:/Adam/Gr/Gr.CPP.Z,174] CSprite's is tricky because overlapping pixs from 
+lines in the [C:/Adam/Gr/Gr.CPP.Z,174] CSprite reg as collisions.  You can
 either work with a nonzero 
-count or convert your [C:/Adam/Gr/Gr.CPP.Z,169] CSprite to a bitmap if your
+count or convert your [C:/Adam/Gr/Gr.CPP.Z,174] CSprite to a bitmap if your
 subelements draw on top of 
 each other.  Be sure to set ->bkcolor before using
-[C:/Kernel/KernelA.HPP.Z,2832] ROP_COLLISION.  See 
+[C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION.  See 
 [C:/Demo/Graphics/Collision.CPP,1] and [C:/Apps/TimeOut/TimeOut.CPP,1]
 TimeOut.
  
-* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3548] CDC
+* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3559] CDC
 is a U16 used to statistically 
 select between two colors to get something resembling more shades of color.  
 See [C:/Demo/Graphics/SunMoon.CPP,1] and [C:/Demo/Graphics/Shading.CPP,1]. 

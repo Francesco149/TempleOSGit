@@ -38,7 +38,7 @@ Test(,3);
 
 * A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
 A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,896] Print().  An empty string literal
+is sent to [C:/Kernel/StrPrint.CPP.Z,898] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
@@ -65,10 +65,10 @@ name
 with "&".
 
 * Type casting is postfix.  To typecast int or F64, use
-[C:/Kernel/KernelB.HPP.Z,90] ToI64(), [C:/Kernel/KernelB.HPP.Z,88] ToBool()
+[C:/Kernel/KernelB.HPP.Z,120] ToI64(), [C:/Kernel/KernelB.HPP.Z,118] ToBool()
 or 
-[C:/Kernel/KernelB.HPP.Z,89] ToF64(). (TempleOS follows normal C float<-->int
-conversion, but sometimes you 
+[C:/Kernel/KernelB.HPP.Z,119] ToF64(). (TempleOS follows normal C
+float<-->int conversion, but sometimes you 
 want to override.  These functions are better than multiplying by "1.0" to 
 convert to float.) 
 
@@ -112,8 +112,8 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed string.
-    [C:/Adam/Gr/GrBitMap.CPP.Z,823] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/MemB.CPP.Z,372] MAlloc()ed string.
+    [C:/Adam/Gr/GrBitMap.CPP.Z,848] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
   
@@ -174,8 +174,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK or
-  [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK for reg vars or else 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1703] REG_VARS_MASK or
+  [C:/Kernel/KernelA.HPP.Z,1704] REG_NON_PTR_MASK for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -231,11 +231,11 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1457] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1462] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1458] OPTf_WARN_DUP_TYPES) to find dup local
+OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_DUP_TYPES) to find dup local
 var type 
 statements.
 
@@ -244,7 +244,7 @@ insert
 text into the stream of code being compiled.  See [C:/Kernel/KEnd.CPP.Z,1]
 #exe {} for an example where 
 the date/time and compile-time prompting for cfguration data is placed into a 
-program.  [C:/Compiler/CMain.CPP.Z,1] StreamPrint() places text into a src
+program.  [C:/Compiler/CMisc.CPP.Z,43] StreamPrint() places text into a src
 program stream following the 
 conclusion of the #exe{} blk.
 
@@ -271,12 +271,12 @@ is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1].
 * class member vars can have meta data. fmtstr and fmtdata are two meta data 
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP,1] and  
-[C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo().
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,316] DocForm().
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
 name of the previous arg.  See [C:/Demo/LastClass.CPP,1],
-[C:/Adam/ADbg.CPP.Z,152] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,313]
-DocFormDo()  
+[C:/Adam/ADbg.CPP.Z,154] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,316]
+DocForm()  
 and [C:/Demo/Dsk/BlkDevRep.CPP,1].
 
 * See [C:/Demo/Exceptions.CPP,1].  try{} catch{} and throw are different from
@@ -284,7 +284,7 @@ C++.
 throw is a function with an 8-byte or less char arg.  The char string passed 
 in throw() can be accessed from within a catch{} using the Fs->except_ch.  
 Within a catch {} blk, set the var Fs->catch_except to TRUE if you want to 
-terminate the search for a handler.  Use [C:/Kernel/Except.CPP.Z,46]
+terminate the search for a handler.  Use [C:/Kernel/KExcept.CPP.Z,45]
 PutExcept() as a handler, if you 
 like.
 
@@ -301,7 +301,7 @@ read-modify-write accesses.  The code bracked with have LOCK asm prefix's
 applied to relevant instructions within.  It's a little shoddy.  See 
 [C:/Demo/MultiCore/Lock.CPP,1].
 
-* There is a function called [C:/Kernel/MemB.CPP.Z,370] MSize() which gives
+* There is a function called [C:/Kernel/MemB.CPP.Z,369] MSize() which gives
 the size of an object alloced 
 off the heap.  For larger size allocations, the system rounds-up to a power
 of 
@@ -309,8 +309,8 @@ two, so MSize() lets you know the real size and you can take full advantage
 of 
 it.
 
-* You can [C:/Kernel/MemB.CPP.Z,369] Free() a NULL ptr.  Useful variants of
-[C:/Kernel/MemB.CPP.Z,373] MAlloc() can be found [C:/Kernel/MemB.CPP.Z,381]
+* You can [C:/Kernel/MemB.CPP.Z,368] Free() a NULL ptr.  Useful variants of
+[C:/Kernel/MemB.CPP.Z,372] MAlloc() can be found [C:/Kernel/MemB.CPP.Z,380]
 Here.  
 Each task has a heap and you can MAlloc and Free off of other task's heaps,
 or 
@@ -318,8 +318,8 @@ make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2777] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,207]
+[C:/Kernel/KernelA.HPP.Z,2786] DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
 Spawn().  You can use 
 [C:/Kernel/Task.CPP.Z,82] CallStkGrow(), but it's odd.  See
 [C:/Demo/StkGrow.CPP,1]. 
