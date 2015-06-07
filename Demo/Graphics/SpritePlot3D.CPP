@@ -37,12 +37,12 @@ U0 SpritePlot3D()
   dc->y=200;
   dc->z=GR_Z_ALL;
   dc->flags|=DCF_TRANSFORMATION;
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   while (!ScanChar) {
-    GrIdentEqu(dc->r);
-    GrRotXEqu(dc->r,phi);
-    GrRotZEqu(dc->r,theta);
-    GrSetRotMat(dc,dc->r);
+    Mat4x4IdentEqu(dc->r);
+    Mat4x4RotX(dc->r,phi);
+    Mat4x4RotZ(dc->r,theta);
+    DCMat4x4Set(dc,dc->r);
 
     Sleep(40);
 

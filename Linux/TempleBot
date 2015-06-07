@@ -33,7 +33,7 @@ tail -f -n 0 $outfile | \
     while read -r chan char date time nick cmd msg; do
 	case $cmd in
 	    !bible|!Bible)
-		sleep 10s	# Be polite and give God time to think
+		sleep 0.5s
 		LINE=$(shuf -en 1 {1..100000} --random-source=/dev/urandom)
 		echo "Line $LINE:" >> $infile
 		tail -n $LINE Bible.TXT | head -n 16 >> $infile
@@ -41,7 +41,7 @@ tail -f -n 0 $outfile | \
 		echo >> $infile
 		;;
 	    !god*|!God*)
-		sleep 10s
+		sleep 0.5s
 		echo "$nick: $(shuf -n 10 /usr/share/dict/words --random-source=/dev/urandom | tr '\n' ' ')" >> $infile
 		;;
 	    !help|!Help)

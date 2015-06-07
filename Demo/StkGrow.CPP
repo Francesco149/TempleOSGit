@@ -44,7 +44,7 @@ U0 StkGrowDemo()
   //[C:/Kernel/Task.CPP.Z,82] CallStkGrow() works with multiple args.
   t0=tS;
   "%X:%X\n",DEPTH,CallStkGrow(DEPTH*32+0x800,DEPTH*32+0x800,
-    &Recurse3,DEPTH,1000,2000);
+	&Recurse3,DEPTH,1000,2000);
   "Time:%7.5fs\n",tS-t0;
 }
 

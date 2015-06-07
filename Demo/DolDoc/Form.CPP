@@ -1,8 +1,8 @@
 class FDStruct
 {//Use <CTRL-l> and select "Data" to generate the fmtstrs
 
-//The number is the field from after the ':' to the end.
-//See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
+  //The number is the field from after the ':' to the end.
+  //See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
 
   F64 num1	fmtstr "$DA-TRM,32,RT=F64,A=\"F64   1:%12.8f\"$\n";
   F64 num2	fmtstr "$DA-TRM,32,RT=F64,A=\"F64   2:%12e\"$\n";
@@ -26,7 +26,7 @@ U0 FormDemo()
   StrCpy(&fds.name,"John");
   fds.datetime=Now;
   fds.check=TRUE;
-  if (DocFormDo(&fds)) {
+  if (DocForm(&fds)) {
     "#1\t=%e\n",fds.num1;
     "#2\t=%e\n",fds.num2;
     "#3\t=%d\n",fds.num3;
@@ -41,7 +41,7 @@ U0 FormDemo()
   "\n\nClassRep Example\n";
   ClassRep(&fds);
 
-//See also [C:/Adam/ADbg.CPP.Z,176] ClassRepD().
+  //See also [C:/Adam/ADbg.CPP.Z,179] ClassRepD().
 }
 
 FormDemo;

@@ -70,7 +70,7 @@ the /Adam and /Home directories.
 
 It is possible to reboot without doing a hardware rst.  This is faster.  You 
 might do this when working on Kernel or your start-up scripts when you want 
-them to take effect.  See [C:/Adam/Boot/Boot.CPP.Z,41] RAMReboot().
+them to take effect.  See [C:/Adam/Boot/Boot.CPP.Z,40] RAMReboot().
 
  <1> (image)
 

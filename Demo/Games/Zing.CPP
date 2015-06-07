@@ -14,7 +14,7 @@ F64 bow_x,bow_y,bow_theta;
 U0 DrawIt(CTask *task,CDC *dc)
 {
   F64 theta,x,y,dx,dy,
-	   str_w,str_h,draw_len;
+	str_w,str_h,draw_len;
   Arrow *tempa;
   CD3I32 ctrl[5];
   dc->color=RED;
@@ -38,21 +38,25 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   dc->color=BLACK;
   GrLine(dc,x-str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta),
-	      y-str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta),
-	      x,y);
+	y-str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta),
+	x,y);
   GrLine(dc,x+str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta),
-	      y+str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta),
-	      x,y);
+	y+str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta),
+	x,y);
 
   MemSet(ctrl,0,sizeof(ctrl));
   ctrl[0].x=x-str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta);
   ctrl[0].y=y-str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta);
-  ctrl[1].x=x-0.75*str_h/2*Cos(bow_theta+pi/2)+draw_len/2*Cos(bow_theta)+str_w*Cos(bow_theta);
-  ctrl[1].y=y-0.75*str_h/2*Sin(bow_theta+pi/2)+draw_len/2*Sin(bow_theta)+str_w*Sin(bow_theta);
+  ctrl[1].x=x-0.75*str_h/2*Cos(bow_theta+pi/2)+draw_len/2*Cos(bow_theta)+
+	str_w*Cos(bow_theta);
+  ctrl[1].y=y-0.75*str_h/2*Sin(bow_theta+pi/2)+draw_len/2*Sin(bow_theta)+
+	str_w*Sin(bow_theta);
   ctrl[2].x=x+draw_len/2*Cos(bow_theta)+str_w*Cos(bow_theta);
   ctrl[2].y=y+draw_len/2*Sin(bow_theta)+str_w*Sin(bow_theta);
-  ctrl[3].x=x+0.75*str_h/2*Cos(bow_theta+pi/2)+draw_len/2*Cos(bow_theta)+str_w*Cos(bow_theta);
-  ctrl[3].y=y+0.75*str_h/2*Sin(bow_theta+pi/2)+draw_len/2*Sin(bow_theta)+str_w*Sin(bow_theta);
+  ctrl[3].x=x+0.75*str_h/2*Cos(bow_theta+pi/2)+draw_len/2*Cos(bow_theta)+
+	str_w*Cos(bow_theta);
+  ctrl[3].y=y+0.75*str_h/2*Sin(bow_theta+pi/2)+draw_len/2*Sin(bow_theta)+
+	str_w*Sin(bow_theta);
   ctrl[4].x=x+str_h/2*Cos(bow_theta+pi/2)+str_w*Cos(bow_theta);
   ctrl[4].y=y+str_h/2*Sin(bow_theta+pi/2)+str_w*Sin(bow_theta);
 
@@ -82,11 +86,13 @@ U0 AnimateTask(I64)
   while (TRUE) {
     dt=tS-t0;
     t0=tS;
- 
+
     x=ClampI64(ip.pos.x-Fs->parent_task->pix_left-Fs->parent_task->scroll_x,
-       box_x_min,box_x_max)+Fs->parent_task->pix_left+Fs->parent_task->scroll_x;
+	  box_x_min,box_x_max)+Fs->parent_task->pix_left+
+	  Fs->parent_task->scroll_x;
     y=ClampI64(ip.pos.y-Fs->parent_task->pix_top-Fs->parent_task->scroll_y,
-       box_y_min,box_y_max)+Fs->parent_task->pix_top+Fs->parent_task->scroll_y;
+	  box_y_min,box_y_max)+Fs->parent_task->pix_top+
+	  Fs->parent_task->scroll_y;
     if (ip.pos.x!=x || ip.pos.y!=y)
       IPSet(x,y);
 
@@ -95,8 +101,10 @@ U0 AnimateTask(I64)
       tempa1=tempa->next;
       tempa->x+=tempa->dx*dt;
       tempa->y+=tempa->dy*dt;
-      if (!(-Fs->parent_task->scroll_x<=tempa->x<Fs->parent_task->pix_width-Fs->parent_task->scroll_x) ||
-	  !(-Fs->parent_task->scroll_y<=tempa->y<Fs->parent_task->pix_height-Fs->parent_task->scroll_y)) {
+      if (!(-Fs->parent_task->scroll_x<=
+	    tempa->x<Fs->parent_task->pix_width-Fs->parent_task->scroll_x) ||
+	    !(-Fs->parent_task->scroll_y<=
+	    tempa->y<Fs->parent_task->pix_height-Fs->parent_task->scroll_y)) {
 	QueRem(tempa);
 	Free(tempa);
       }
@@ -109,7 +117,7 @@ U0 AnimateTask(I64)
 U0 Init()
 {
   I64 w=Fs->pix_width,
-      h=Fs->pix_height;
+	h=Fs->pix_height;
   QueInit(&root);
   bow_drawn=FALSE;
   box_x_min=7*w/16;
@@ -133,14 +141,14 @@ U0 Zing()
   I64 a1,a2;
   Arrow *tempa;
   MenuPush(
-    "File {"
-    "  Abort(,CH_SHIFT_ESC);"
-    "  Exit(,CH_ESC);"
-    "}"
-    "Play {"
-    "  Restart(,'\n');"
-    "}"
-  );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"}"
+	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Preempt;
   WinBorder;

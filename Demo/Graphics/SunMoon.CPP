@@ -1,6 +1,6 @@
 /*[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.dc is the persistent layer.  You can access
 it directly but two tasks accessing it simultaneously
-with no [C:/Adam/Gr/GrDC.CPP.Z,171] DCAlias() will screw-up color and stuff.
+with no [C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() will screw-up color and stuff.
 */
 
 U0 SunMoon()
@@ -11,10 +11,10 @@ U0 SunMoon()
   DocClear;	//Clear command-line text
   WinBorder;	//No Border
   AutoComplete;	//AutoComplete Off
-  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HPP.Z,3212] CTask is Fs segment register.
+  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HPP.Z,3218] CTask is Fs segment register.
 
   for (i=0;i<0x8000;i+=0x200) {
-    //Sun
+//Sun
     x=0.2*GR_WIDTH; y=0.5*GR_HEIGHT; radius=120;
     gr.dc->color=DKGRAY;
     GrCircle(gr.dc,x,y,radius);
@@ -25,7 +25,7 @@ U0 SunMoon()
     x=0.8*GR_WIDTH-i/0x200; y=0.5*GR_HEIGHT; radius=75;
     gr.dc->color=DKGRAY;
     GrCircle(gr.dc,x,y,radius);
-    //<CTRL-ALT-a> for the "pi" character.
+//<CTRL-ALT-a> for the "pi" character.
     GrCircle(gr.dc,x+0.5*radius,y,1.2*radius,,pi-.31*pi,0.62*pi);
     gr.dc->color=ROPF_PROBABILITY_DITHER+LTGRAY<<16+BLACK;
     gr.dc->dither_probability_u16=i;	//U16 can be [0,65535]

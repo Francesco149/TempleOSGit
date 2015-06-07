@@ -33,4 +33,4 @@ SrcExample;
 //See [C:/Demo/ScreenCodes.CPP.Z,1], [C:/Demo/Graphics/CharGraphics.CPP.Z,1],
 //and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
-//See [C:/Kernel/StrA.CPP.Z,319] chars_bitmap_alpha and [C:/Kernel/StrA.CPP.Z,323] chars_bitmap_alpha_numeric.
+//See [C:/Kernel/StrA.CPP.Z,325] chars_bmp_alpha and [C:/Kernel/StrA.CPP.Z,330] chars_bmp_alpha_numeric.

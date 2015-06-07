@@ -51,7 +51,7 @@ U0 DrawIt(CTask *,CDC *dc)
     Sprite3(dc,BASE_X-23,BASE_Y,0,batter_imgs[0]);
   else if (i<NUM_BATTER_IMGS-1) {
     temps=SpriteInterpolate(batter_imgs[i],batter_imgs[i+1],
-      ((NUM_BATTER_IMGS-1)/BATTER_T)*(tt%(BATTER_T/(NUM_BATTER_IMGS-1))));
+	  ((NUM_BATTER_IMGS-1)/BATTER_T)*(tt%(BATTER_T/(NUM_BATTER_IMGS-1))));
     Sprite3(dc,BASE_X-23,BASE_Y,0,temps);
     Free(temps);
     if (!hit_t0 && tt>BATTER_T/2)
@@ -61,15 +61,18 @@ U0 DrawIt(CTask *,CDC *dc)
     i=(NUM_RUNNER1_IMGS-1)*tt/RUNNER1_T;
     if (i<NUM_RUNNER1_IMGS-1 ) {
       temps=SpriteInterpolate(runner1_imgs[i],runner1_imgs[i+1],
-	((NUM_RUNNER1_IMGS-1)/RUNNER1_T)*(tt%(RUNNER1_T/(NUM_RUNNER1_IMGS-1))));
+	    ((NUM_RUNNER1_IMGS-1)/RUNNER1_T)
+      *(tt%(RUNNER1_T/(NUM_RUNNER1_IMGS-1))));
       Sprite3(dc,BASE_X-23,BASE_Y,0,temps);
       Free(temps);
     } else {
       tt-=RUNNER1_T;
       i=NUM_RUNNER2_IMGS*tt/RUNNER2_T;
       if (i<30) {
-	temps=SpriteInterpolate(runner2_imgs[i%NUM_RUNNER2_IMGS],runner2_imgs[(i+1)%NUM_RUNNER2_IMGS],
-	  (NUM_RUNNER2_IMGS/RUNNER2_T)*(tt%(RUNNER2_T/NUM_RUNNER2_IMGS)));
+	temps=SpriteInterpolate(
+	      runner2_imgs[i%NUM_RUNNER2_IMGS],
+	      runner2_imgs[(i+1)%NUM_RUNNER2_IMGS],
+	      (NUM_RUNNER2_IMGS/RUNNER2_T)*(tt%(RUNNER2_T/NUM_RUNNER2_IMGS)));
 	Sprite3(dc,BASE_X-23-50*tt,BASE_Y-50*tt,0,temps);
 	Free(temps);
       } else {
@@ -156,10 +159,10 @@ U0 TeeBall()
       }
     }
 tb_done:
-    } catch
+  } catch
     PutExcept;
-    SettingsPop;
-    MenuPop;
-  }
+  SettingsPop;
+  MenuPop;
+}
 
 TeeBall;

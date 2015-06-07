@@ -73,14 +73,14 @@ ANSWERS:
 2) The upper 32-bits are set to zero.
 
 3) To set FS or GS, you use WRMSR to write a model specific reg.  See 
-[C:/Kernel/KernelA.HPP.Z,515] IA32_FS_BASE and [C:/Kernel/KUtils.CPP.Z,447]
+[C:/Kernel/KernelA.HPP.Z,515] IA32_FS_BASE and [C:/Kernel/KUtils.CPP.Z,446]
 SET_FS_BASE.
 
 4) Displacement addressing is now RIP relative, so RIP would be added to 
 TSS_SOME_MEMBER.  (Useless)
 
 5) The R13 instruction takes one more byte because it is like
-[C:/Kernel/KernelA.HPP.Z,1684] REG_RBP in the 
+[C:/Kernel/KernelA.HPP.Z,1692] REG_RBP in the 
 ModR.
 
 6) The R8 instruction needs a REX byte prefix to specify upper-8 reg.

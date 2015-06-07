@@ -17,7 +17,7 @@ U0 FrameGrabberTask(I64)
     while (fg_on) {
       StrPrint(buf,"B:/Temp/ScreenShots/VID%05d.BMP",frame_num++);
       StrCpy(buf2,buf);
-      BMPCaptureScreen(buf);
+      BMPScreenCapture(buf);
       while (TRUE) {
 	end_time+=1.0/VIDEO_FRAME_RATE;
 	if (end_time<tS) {
@@ -33,7 +33,7 @@ U0 FrameGrabberTask(I64)
     while (fg_on) {
       StrPrint(buf,"::/Temp/ScreenShots/VID%05d.BMP.Z",frame_num++);
       StrCpy(buf2,buf);
-      BMPCaptureScreen(buf);
+      BMPScreenCapture(buf);
       while (TRUE) {
 	end_time+=1.0/VIDEO_FRAME_RATE;
 	if (end_time<tS) {
@@ -63,7 +63,8 @@ I64 CopyVideo()
       result=CopyTree("::/Temp/ScreenShots","D:/Temp/ScreenShots");
       Unzip("D:/Temp/ScreenShots/*.Z");
     }
-    "$BK,1$Files Copied:%d$BK,0$ Time:%8.3fm\n",result,result/60.0/VIDEO_FRAME_RATE;
+    "$BK,1$Files Copied:%d$BK,0$ Time:%8.3fm\n",
+	  result,result/60.0/VIDEO_FRAME_RATE;
   }
   return result;
 }
@@ -109,7 +110,8 @@ public U0 ChkAll()
 public CDoc *DC2Doc(CDC *dc,I64 dx=0,I64 dy=0,I64 *_total_score=NULL)
 {
   U8 byte_bit_cnts[256];
-  I64 i,j,*ptr,row,col,ch,best_ch,score,best_score,cur_char_image,diff_image,total_score=0;
+  I64 i,j,*ptr,row,col,ch,best_ch,score,best_score,
+	cur_char_image,diff_image,total_score=0;
   CDoc *doc=DocNew;
 
   MemSet(byte_bit_cnts,0,sizeof(byte_bit_cnts));
@@ -159,10 +161,10 @@ public U0 BMP2TXT(U8 *_in_name,U8 *_out_name=NULL)
   CDC *dc;
   CDoc *doc;
   in_name=DftExt(_in_name,"BMP"),
-  if (_out_name)
-    out_name=DftExt(_out_name,"TXT.Z");
+	if (_out_name)
+  out_name=DftExt(_out_name,"TXT.Z");
   else
-    out_name=ChgExt(_in_name,"TXT.Z");
+  out_name=ChgExt(_in_name,"TXT.Z");
   if (dc=BMPRead(in_name)) {
     for (dy=-3;dy<=4;dy++)
       for (dx=-3;dx<=4;dx++) {
@@ -186,8 +188,8 @@ U0 DblSpaceScanFile(U8 *filename)
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_NEW_LINE &&
-	doc_e->next->type_u8==DOCT_NEW_LINE &&
-	doc_e->next->next->type_u8==DOCT_NEW_LINE) {
+	  doc_e->next->type_u8==DOCT_NEW_LINE &&
+	  doc_e->next->next->type_u8==DOCT_NEW_LINE) {
       i=0;
       while (doc_e->type_u8==DOCT_NEW_LINE) {
 	i++;
@@ -234,7 +236,8 @@ RegExeBranch("TempleOS/TOS");
 U0 TOSRegInit()
 {
   DefinePrint("DD_CODE_WALK_THRU","Episode #%d",tos_code_walk_thru);
-  DefinePrint("DD_AFTER_EGYPT_IN_ACTION","Episode #%d",tos_after_egypt_in_action);
+  DefinePrint("DD_AFTER_EGYPT_IN_ACTION","Episode #%d",
+	tos_after_egypt_in_action);
 } TOSRegInit;
 
 U0 TOSRegWrite()
@@ -254,14 +257,16 @@ U8 *TOSYouTube()
 {
   U8 *result;
   CYouTubeForm2 *url=CAlloc(sizeof(CYouTubeForm2));
-  if (DocFormDo(url(CYouTubeForm2 *)) && *url->special)
-    result=MStrPrint("$HC,\"<object width=\\\"640\\\" height=\\\"520\\\"><param name=\\\"movie\\\" "
-	"value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
-	"name=\\\"allowscriptaccess\\\" value=\\\"always\\\"></param><embed "
-	"src=\\\"http://www.youtube.com/v/%s\\\" "
-	"type=\\\"application/x-shockwave-flash\\\" allowscriptaccess=\\\"always\\\" "
-	"width=\\\"640\\\" height=\\\"520\\\"></embed></object>\"$",
-	url->special,url->special);
+  if (DocForm(url(CYouTubeForm2 *)) && *url->special)
+    result=MStrPrint("$HC,\"<object width=\\\"640\\\" height=\\\"520\\\">"
+	  "<param name=\\\"movie\\\" "
+	  "value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
+	  "name=\\\"allowscriptaccess\\\" value=\\\"always\\\"></param><embed "
+	  "src=\\\"http://www.youtube.com/v/%s\\\" "
+	  "type=\\\"application/x-shockwave-flash\\\" "
+	  "allowscriptaccess=\\\"always\\\" "
+	  "width=\\\"640\\\" height=\\\"520\\\"></embed></object>\"$",
+	  url->special,url->special);
   else
     result=NULL;
   Free(url);
@@ -298,4 +303,14 @@ U0 CodeWalkThru()
   Msg(MSG_KEY_DOWN_UP,'b',0x83000000830); //<ALT-b>
   tos_code_walk_thru++;
   TOSRegWrite;
+}
+
+U0 TOSJukeVideo(I64 start=0,I64 end=10)
+{
+  U8 *buf=FileRead("::/Misc/Bible.TXT.Z"); //Put in cache
+  Free(buf);
+  AutoComplete;
+  FrameGrabberToggle;
+  JukeSongsPuppet("::/Apps/Psalmody/Examples",,start,end);
+  FrameGrabberToggle;
 }

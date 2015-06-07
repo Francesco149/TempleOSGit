@@ -85,14 +85,15 @@ U0 DrawCtrlSlider(CDC *dc,CCtrl *c)
   GrRect(dc, c->left,c->top,%d*SLIDER_SPACING+%d,SLIDER_SPACING*2+SLIDER_RANGE);
   dc->color=BLUE;
   GrRect(dc, c->left+SLIDER_BORDER,c->top+SLIDER_BORDER,
-    %d*SLIDER_SPACING+%d-2*SLIDER_BORDER,SLIDER_SPACING*2+SLIDER_RANGE-2*SLIDER_BORDER);
+    %d*SLIDER_SPACING+%d-2*SLIDER_BORDER,SLIDER_SPACING*2
+    +SLIDER_RANGE-2*SLIDER_BORDER);
   dc->color=BLACK;
 ",m->num_sliders+1,m->num_sliders,m->num_sliders+1,m->num_sliders);
 
   for (i=0;i<m->num_sliders;i++)
     DocPrint(doc,
 "  GrLine(dc,c->left+%d*SLIDER_SPACING+%d,c->top+SLIDER_SPACING,
-	      c->left+%d*SLIDER_SPACING+%d,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
+             c->left+%d*SLIDER_SPACING+%d,c->top+SLIDER_SPACING+SLIDER_RANGE-1);
 ",i+1,i,i+1,i);
 
   DocPrint(doc,"  dc->color=LTRED;\n");
@@ -109,7 +110,9 @@ U0 DrawCtrlSlider(CDC *dc,CCtrl *c)
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    DocPrint(doc,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-3,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-2,7,5);\n",
+    DocPrint(doc,
+	"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-3,"
+	"c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-2,7,5);\n",
       temps->num+1,temps->num,temps->name);
     temps=temps->next;
   }
@@ -117,7 +120,8 @@ U0 DrawCtrlSlider(CDC *dc,CCtrl *c)
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    DocPrint(doc,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-2,c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-1,5,3);\n",
+    DocPrint(doc,"  GrRect(dc,c->left+%d*SLIDER_SPACING+%d-2,"
+	"c->top+SLIDER_SPACING+SLIDER_RANGE-1-s->%s-1,5,3);\n",
       temps->num+1,temps->num,temps->name);
     temps=temps->next;
   }
@@ -135,7 +139,8 @@ U0 UpdateDerivedCtrlSlider(CCtrl *c)
 
   temps=m->next_slider;
   while (temps!=&m->next_slider) {
-    DocPrint(doc,"  s->%s=ClampI64(s->%s,0,SLIDER_RANGE-1);\n",temps->name,temps->name);
+    DocPrint(doc,"  s->%s=ClampI64(s->%s,0,SLIDER_RANGE-1);\n",
+	temps->name,temps->name);
     temps=temps->next;
   }
   DocPrint(doc,
@@ -177,7 +182,7 @@ CCtrl *SliderNew()
 ");
   if (*m->glbl_name)
     DocPrint(doc,"  c->state=&%s;\n"
-		"  MemSet(&%s,0,sizeof(CSliderState));\n",m->glbl_name,m->glbl_name);
+	"  MemSet(&%s,0,sizeof(CSliderState));\n",m->glbl_name,m->glbl_name);
   else
     DocPrint(doc,	"  c->state=CAlloc(sizeof(CSliderState));\n");
   DocPrint(doc,

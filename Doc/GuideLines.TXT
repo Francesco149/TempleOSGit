@@ -29,6 +29,11 @@ compiled by [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 /Adam The non-kernel part of the operating system is found here.  It is JIT 
 compiled during boot.
 
+/0000Boot Misc boot files go here.  Stage 2 of the TempleOS hard drive master 
+boot loader, the old hard drive master boot record which is just blk#0, and 
+the CD/DVD 0000Kernel.BIN.C file go here.  ASCII 0000 is near the top, 
+alphabetically, in case you use MagicISO.
+
 
 
                                 ::/Home Files
@@ -80,9 +85,11 @@ tall.CPP.Z or Install.AUT.Z to create the /Home subdirectory.
 * Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
 The 
 stk does not grow, so alloc enough when the task (process) is
-[C:/Kernel/Task.CPP.Z,207] Spawned and use 
-the heap for most things.  (The heap refers to [C:/Kernel/MemB.CPP.Z,373]
-MAlloc() and [C:/Kernel/MemB.CPP.Z,369] Free().)
+[C:/Kernel/Task.CPP.Z,209] Spawned and use 
+the heap for most things.  (The heap refers to [C:/Kernel/MemB.CPP.Z,372]
+MAlloc() and [C:/Kernel/MemB.CPP.Z,368] Free().)
+
+* You can [C:/Kernel/MemB.CPP.Z,368] Free(NULL).
 
 * See [C:/Doc/Glossary.TXT.Z,1] Naming Convention and
 [C:/Doc/Glossary.TXT.Z,1] Abbreviations.
@@ -99,16 +106,19 @@ everything to 64-bit.  Don't use unsigned unless it actually breaks.  A
 policy 
 of signed keeps it simple so you don't have to agonize over choices.
 
-* In-order, short circuit logic is used, in fact required.
+* In-order, short circuit logic is assumed.
 
 * Avoid boolean expression assignments.  Boolean assignments don't have short 
 circuit logic and are not compiled efficiently.  The Bool type is just an 
 alias for a 1 byte signed int -- nothing forces it to 1 or 0.  There is a 
-[C:/Kernel/KernelB.HPP.Z,88] ToBool() function that will for to 1 ot 0,
+[C:/Kernel/KernelB.HPP.Z,118] ToBool() function that will for to 1 ot 0,
 however.
 
+* Glbl vars in AOT BIN modules are initialized to zero.  They occupy space in 
+BIN files.
+
 * If you use floats in your interrupt routine, save and restore the fpu state 
-with [C:/Kernel/KernelB.HPP.Z,102] Fxsave() and [C:/Kernel/KernelB.HPP.Z,101]
+with [C:/Kernel/KernelB.HPP.Z,134] Fxsave() and [C:/Kernel/KernelB.HPP.Z,133]
 Fxrstor().  The timer interrupt does this.  The keyboard and 
 mouse don't use floats.
 
@@ -124,9 +134,9 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3414] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3420] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
-[C:/Adam/Utils/S2T.CPP.Z,1] Spaces-to-Tabs on source code.
+[C:/Adam/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
 
 
@@ -149,12 +159,12 @@ they
 are still there.  Periodically, kill the TASK and start fresh when mem is
 low. 
  If you wish your applications to free themselves instead of staying in mem, 
-spawn or [C:/Kernel/SrvCmd.CPP.Z,384] PopUp() a task to run the application
+spawn or [C:/Kernel/SrvCmd.CPP.Z,385] PopUp() a task to run the application
 and kill it when it's done.
 
-* To display the contents of a hash table, use the [C:/Adam/AHash.CPP.Z,143]
+* To display the contents of a hash table, use the [C:/Adam/AHash.CPP.Z,149]
 Who() routine or the 
-varients.  [C:/Adam/AHash.CPP.Z,373] HashDepthRep() gives a histogram  of how
+varients.  [C:/Adam/AHash.CPP.Z,330] HashDepthRep() gives a histogram  of how
 long the chains are, in 
 case you wish to make hash table sizes bigger.
 
@@ -162,23 +172,23 @@ case you wish to make hash table sizes bigger.
 
                               Assembly Language
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3212] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3218] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3338] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3344] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
-anyway.  [C:/Kernel/KUtils.CPP.Z,447] SET_FS_BASE and
-[C:/Kernel/KUtils.CPP.Z,435] SET_GS_BASE.
+anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
+[C:/Kernel/KUtils.CPP.Z,434] SET_GS_BASE.
 
 * When interacting with [C:/Doc/HolyC.TXT.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 
 because the compiler uses these for reg vars.  You are free to clobber RAX, 
-RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1695] Compiler Reg
-Masks, [C:/Kernel/KernelA.HPP.Z,1671] PUSH_C_REGS and
-[C:/Kernel/KernelA.HPP.Z,1672] POP_C_REGS
+RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1703] Compiler Reg
+Masks, [C:/Kernel/KernelA.HPP.Z,1677] PUSH_C_REGS and
+[C:/Kernel/KernelA.HPP.Z,1678] POP_C_REGS
 
 * I recommend using the standard stk frame for functions because
-[C:/Kernel/KDbg.CPP.Z,59] Caller() is 
+[C:/Kernel/KDbg.CPP.Z,60] Caller() is 
 used to display the call stk, such as for the wallpaper.
 	PUSH	RBP
 	MOV	RBP,RSP
@@ -194,3 +204,5 @@ used to display the call stk, such as for the wallpaper.
 * No args are passed in regs.
 
 * RAX holds function return values, of course.
+
+* "MagicISO" is a trademark of MagicISO Corp.

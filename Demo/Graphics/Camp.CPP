@@ -102,7 +102,7 @@ Obj camp_view_pt;
 U0 CTransform(CDC *dc,I64 *_x,I64 *_y,I64 *_z)
 {
   I64 x=*_x-camp_view_pt.x,y=*_y-camp_view_pt.y,z=*_z-camp_view_pt.z;
-  GrRot(dc->r,&x,&y,&z);
+  Mat4x4MulXYZ(dc->r,&x,&y,&z);
   if (z<0) {
     x=x*-CAMP_SCALE/z;
     y=y*-CAMP_SCALE/z;
@@ -122,16 +122,16 @@ U0 MPDrawMeeting(CTask *task)
   F64 s;
   CSprite *img,*img1,*img2;
   I64 i,x,y,z,*r2,*old_r=dc->r,
-     lo= Gs->num   *num_objs/mp_cnt,
-     hi=(Gs->num+1)*num_objs/mp_cnt;
+	lo= Gs->num   *num_objs/mp_cnt,
+	hi=(Gs->num+1)*num_objs/mp_cnt;
   dc->flags|=DCF_TRANSFORMATION;
   dc->depth_buf=depth_buf;
   dc->x=cx;
   dc->y=cy;
   dc->z=0;
-  dc->transform=&GrTransform;
+  dc->transform=&DCTransform;
   for (i=lo;i<hi;i++) {
-    GrSetRotMat(dc,r1);
+    DCMat4x4Set(dc,r1);
     dc->x=cx;
     dc->y=cy;
     dc->z=0;
@@ -153,8 +153,9 @@ U0 MPDrawMeeting(CTask *task)
       } else
 	img=tent_img;
 
-      r2=GrScaleNew(old_r,s);
-      GrSetRotMat(dc,r2);
+      r2=Mat4x4New(old_r);
+      Mat4x4Scale(r2,s);
+      DCMat4x4Set(dc,r2);
       Sprite3B(dc,x,y,z,img);
       Free(r2);
       if (objs[i].type==CO_PERSON)
@@ -182,16 +183,17 @@ U0 DrawMeeting(CTask *task,CDC *dc)
   camp_view_pt.y=200-100*Sin(tS);
   camp_view_pt.z=225+100*Cos(tS);
 
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   depth_buf=dc->depth_buf;
-  r1=GrRotXNew(23.0*pi/180.0,task);
+  r1=Mat4x4IdentNew(task);
+  Mat4x4RotX(r1,23.0*pi/180.0);
   old_r=dc->r;
 
   dc->transform=&CTransform;
   dc->x=cx;
   dc->y=cy;
   dc->z=0;
-  GrSetRotMat(dc,r1);
+  DCMat4x4Set(dc,r1);
 
   x=0;y=0;z=-16*CAMP_WIDTH;
   dc->transform(dc,&x,&y,&z);
@@ -204,7 +206,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
   GrLine3(dc,-CAMP_WIDTH/2,0,0,-CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
   GrLine3(dc,CAMP_WIDTH/2,0,0,CAMP_WIDTH/2,0,-CAMP_WIDTH,6);
 
-  dc->transform=&GrTransform;
+  dc->transform=&DCTransform;
 
   if (tS%10<5) {
     calf=FALSE;
@@ -216,15 +218,16 @@ U0 DrawMeeting(CTask *task,CDC *dc)
 	calf=TRUE;
     }
   }
- 
+
   if (calf) {
     x=0;
     y=0;
     z=-CAMP_WIDTH/2;
     CTransform(dc,&x,&y,&z);
     s=0.5*ToF64(CAMP_SCALE)/z;
-    r2=GrScaleNew(old_r,s,task);
-    GrSetRotMat(dc,r2);
+    r2=Mat4x4New(old_r,task);
+    Mat4x4Scale(r2,s);
+    DCMat4x4Set(dc,r2);
     Sprite3B(dc,x,y,z,__BIN_8);
     Free(r2);
   }
@@ -233,7 +236,7 @@ U0 DrawMeeting(CTask *task,CDC *dc)
   for (i=0;i<mp_cnt;i++)
     JobQue(&MPDrawMeeting,task,i);
 
-  GrSetRotMat(dc,old_r);
+  DCMat4x4Set(dc,old_r);
   while (mp_not_done_flags)
     Yield;
   Free(r1);

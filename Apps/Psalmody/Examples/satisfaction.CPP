@@ -74,7 +74,8 @@ U0 Song()
       Play("M5/43qEAeDDCCqBEAeDD",
 	    "Up \0a\0bove \0He \0gen\0tly \0smiles\n\0as \0we \0meet \0and \0");
       Play("CCqBFBeEEDDqCF",
-	    "con\0quer \0trials.\n\0$RED$You \0can \0do \0it \0lit\0tle \0one.\n\0With\0");
+	    "con\0quer \0trials.\n\0$RED$You \0can \0"
+	    "do \0it \0lit\0tle \0one.\n\0With\0");
       Play("BeEEDDqC",
 	    "out \0work \0there \0is \0no \0fun.\n\0");
     }

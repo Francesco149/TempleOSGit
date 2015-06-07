@@ -23,9 +23,9 @@ be used to generate a fwd reference.
 
 import binds a new [C:/Kernel/KernelA.HPP.Z,652] HTT_FUN or
 [C:/Kernel/KernelA.HPP.Z,649] HTT_GLBL_VAR sym to a sym of the same name 
-imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,179] Load()
+imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,181] Load()
 time.  If no sym exists to bind 
-to at [C:/Kernel/KLoad.CPP.Z,179] Load() time, the code using this sym will
+to at [C:/Kernel/KLoad.CPP.Z,181] Load() time, the code using this sym will
 be left incomplete until the 
 sym is defined.
 
@@ -39,9 +39,9 @@ asm.
 _import binds a new [C:/Kernel/KernelA.HPP.Z,652] HTT_FUN or
 [C:/Kernel/KernelA.HPP.Z,649] HTT_GLBL_VAR sym to a sym, of a **different**
 name 
-imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,179] Load()
+imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,181] Load()
 time.  If no sym exists to bind 
-to at [C:/Kernel/KLoad.CPP.Z,179] Load() time, the code using this sym will
+to at [C:/Kernel/KLoad.CPP.Z,181] Load() time, the code using this sym will
 be left incomplete until the 
 sym is defined.  Basically, this binds C to asm from elsewhere.
 
@@ -158,10 +158,10 @@ force it to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/Kernel/KernelA.HPP.Z,1462] OPTf_GLBLS_ON_DATA_HEAP.  They may in
+of the [C:/Kernel/KernelA.HPP.Z,1467] OPTf_GLBLS_ON_DATA_HEAP.  They may in
 the future.
 
-* [C:/Kernel/KernelA.HPP.Z,1459] OPTf_EXTERNS_TO_IMPORTS will treat _extern
+* [C:/Kernel/KernelA.HPP.Z,1464] OPTf_EXTERNS_TO_IMPORTS will treat _extern
 as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.

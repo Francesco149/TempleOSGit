@@ -19,17 +19,17 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i,j,k;
   F64 x,y,x2,y2,dt=Beat-t0;
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   dc->x=300;
   dc->y=30;
   dc->z=GR_Z_ALL;
   dc->flags|=DCF_TRANSFORMATION;
   if (dt<16)
-    GrRotZEqu(dc->r,(dt+5)*pi/4);
+    Mat4x4RotZ(dc->r,(dt+5)*pi/4);
   else
-    GrRotZEqu(dc->r,5*pi/4);
-  GrRotXEqu(dc->r,-5*pi/4);
-  GrScaleEqu(dc->r,0.75);
+    Mat4x4RotZ(dc->r,5*pi/4);
+  Mat4x4RotX(dc->r,-5*pi/4);
+  Mat4x4Scale(dc->r,0.75);
   Sprite3(dc,0,0,0,__BIN_1);
   if (dt>=16) {
     dc->color=GREEN;
@@ -56,15 +56,17 @@ U0 Song()
   music.tempo= 2.480;
   music.stacatto_factor= 0.902;
   try {
-  while (!ScanKey) {
-	t0=Beat;
-	Play("3etAAA2eGF3A2GqF3etAAA2eGF3A2GqF",
-		"Je\0 \0sus \0 \0made \0fur\0ni\0ture.\n\0Je\0 \0sus \0 \0made \0fur\0ni\0ture.\n\0");
-	Play("etGGG3eAB2G3A2qGetGGG3eAB2G3A2qG",
-		"God \0 \0 \0made \0 \0all \0Na\0ture.\n\0God \0 \0 \0made \0 \0all \0Na\0ture.\n\0");
-	Play("G3etGDC2qG3eCDetDACCA2G3sBABA2eG3F");
-	Play("2qG3etGDC2qG3eCDetDACCA2G3sBABA2eG3F");
-  }
+    while (!ScanKey) {
+      t0=Beat;
+      Play("3etAAA2eGF3A2GqF3etAAA2eGF3A2GqF",
+	    "Je\0 \0sus \0 \0made \0fur\0ni\0ture.\n\0"
+	    "Je\0 \0sus \0 \0made \0fur\0ni\0ture.\n\0");
+      Play("etGGG3eAB2G3A2qGetGGG3eAB2G3A2qG",
+	    "God \0 \0 \0made \0 \0all \0Na\0ture.\n\0"
+	    "God \0 \0 \0made \0 \0all \0Na\0ture.\n\0");
+      Play("G3etGDC2qG3eCDetDACCA2G3sBABA2eG3F");
+      Play("2qG3etGDC2qG3eCDetDACCA2G3sBABA2eG3F");
+    }
   } catch
     PutExcept;
   SettingsPop;

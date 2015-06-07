@@ -12,7 +12,7 @@ public class CGrGlbls
   U32	*text_base;	//See [TextBase Layer,1] TextBase Layer. (Similar to 0xB8000 but 32 bits)
   U16	*win_z_buf;
 
-#define SPHT_ELEM_CODE	1
+  #define SPHT_ELEM_CODE	1
   CHashTable *sprite_hash;
 
   U16	*win_uncovered_bitmap;
@@ -25,13 +25,13 @@ public class CGrGlbls
   U0	(*fp_draw_grab_input_ptr)(CDC *dc,I64 x,I64 y,Bool closed);
   U8	*empty_sprite; //Gets assigned [C:/Adam/WallPaper.CPP.Z,1] gr.empty_sprite
 
-#define GR_NUM_PEN_BRUSHES 64
+  #define GR_NUM_PEN_BRUSHES 64
   CDC	*pen_brushes[GR_NUM_PEN_BRUSHES],
 	*collision_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*even_pen_brushes[GR_NUM_PEN_BRUSHES],
 	*odd_pen_brushes[GR_NUM_PEN_BRUSHES];
 
-#define GR_MAX_SCREEN_ZOOM	8
+  #define GR_MAX_SCREEN_ZOOM	8
   U8	*screen_zoom_tables[GR_MAX_SCREEN_ZOOM+1];
   I64	screen_zoom,sx,sy;
 
@@ -40,7 +40,7 @@ public class CGrGlbls
 } gr;
 
 //See [C:/Kernel/KStart.CPP.Z,1] RLf_VGA
-//See [C:/Kernel/KEnd.CPP.Z,63] SysGrInit()
+//See [C:/Kernel/KEnd.CPP.Z,65] SysGrInit()
 //Allows consts to be used instead of vars.
 HashPublic("GR_WIDTH",HTT_DEFINE_STR);;
 HashPublic("GR_HEIGHT",HTT_DEFINE_STR);;

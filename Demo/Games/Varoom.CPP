@@ -164,17 +164,17 @@ U0 InitTrack()
   I64 i;
   for (i=0;i<SLICES;i++) {
     InitTrackPoly(tempt++,DKGRAY,TRACK_INNER,TRACK_OUTER,
-      i*2*pi/SLICES,(i+1)*2*pi/SLICES);
+	  i*2*pi/SLICES,(i+1)*2*pi/SLICES);
     if (i&1) {
       InitTrackPoly(tempt++,RED,TRACK_INNER-SHOULDER,TRACK_INNER,
-	i*2*pi/SLICES,(i+1)*2*pi/SLICES);
+	    i*2*pi/SLICES,(i+1)*2*pi/SLICES);
       InitTrackPoly(tempt++,WHITE,TRACK_OUTER,TRACK_OUTER+SHOULDER,
-	i*2*pi/SLICES,(i+1)*2*pi/SLICES);
+	    i*2*pi/SLICES,(i+1)*2*pi/SLICES);
     } else {
       InitTrackPoly(tempt++,WHITE,TRACK_INNER-SHOULDER,TRACK_INNER,
-	i*2*pi/SLICES,(i+1)*2*pi/SLICES);
+	    i*2*pi/SLICES,(i+1)*2*pi/SLICES);
       InitTrackPoly(tempt++,RED,TRACK_OUTER,TRACK_OUTER+SHOULDER,
-	i*2*pi/SLICES,(i+1)*2*pi/SLICES);
+	    i*2*pi/SLICES,(i+1)*2*pi/SLICES);
     }
   }
 }
@@ -187,9 +187,9 @@ U0 MPUpdateWin(CDC *dc2)
 {
   CTask *task=dc2->win_task;
   I64 i,j,x,y,z,lo,hi,
-      w=task->pix_width,
-      h=task->pix_height,r[16],
-      cx=w>>1;
+	w=task->pix_width,
+	h=task->pix_height,r[16],
+	cx=w>>1;
   F64 s,dip_theta=Diptheta(c[0].p.x,c[0].p.z,c[0].theta);
   Car  *tempc;
   Bool draw;
@@ -197,9 +197,9 @@ U0 MPUpdateWin(CDC *dc2)
   TrackPoly *tempt;
   CDC *dc=DCAlias(gr.dc2,task);
 
-  GrIdentEqu(r);
-  GrRotYEqu(r,pi-c[0].theta);
-  GrRotXEqu(r,75*pi/180-dip_theta);
+  Mat4x4IdentEqu(r);
+  Mat4x4RotY(r,pi-c[0].theta);
+  Mat4x4RotX(r,75*pi/180-dip_theta);
 
   dc->depth_buf=dc2->depth_buf;
 
@@ -210,8 +210,10 @@ U0 MPUpdateWin(CDC *dc2)
     dc->color=tempt->c;
     draw=TRUE;
     for (j=0;j<4;j++) {
-      x=tempt->p[j].x-c[0].p.x; y=tempt->p[j].y-c[0].p.y; z=tempt->p[j].z-c[0].p.z;
-      GrRot(r,&x,&y,&z);
+      x=tempt->p[j].x-c[0].p.x;
+      y=tempt->p[j].y-c[0].p.y;
+      z=tempt->p[j].z-c[0].p.z;
+      Mat4x4MulXYZ(r,&x,&y,&z);
       s=100.0/(AbsI64(z)+50);
       poly[j].y=s*y+h;
       if (z<-200 || !(-h<poly[j].y<2*h)) {
@@ -228,15 +230,15 @@ U0 MPUpdateWin(CDC *dc2)
   dc->flags|=DCF_TRANSFORMATION;
   for (i=Gs->num;i<NUM_BUSHES;i+=mp_cnt) {
     x=b[i].p.x-c[0].p.x; y=b[i].p.y-c[0].p.y; z=b[i].p.z-c[0].p.z;
-    GrRot(r,&x,&y,&z);
+    Mat4x4MulXYZ(r,&x,&y,&z);
     if (z>0) {
       s=100.0/(AbsI64(z)+50);
-      GrIdentEqu(dc->r);
-      GrScaleEqu(dc->r,s*2);
-      GrSetRotMat(dc,dc->r);
+      Mat4x4IdentEqu(dc->r);
+      Mat4x4Scale(dc->r,s*2);
+      DCMat4x4Set(dc,dc->r);
       if (b[i].sym) {
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-	GrSetSymmetry(dc,s*x+cx,s*y+h,s*x+cx,s*y+h+10);
+	DCSymmetrySet(dc,s*x+cx,s*y+h,s*x+cx,s*y+h+10);
       }
       Sprite3B(dc,s*x+cx,s*y+h,z+GR_Z_ALL,b[i].img);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
@@ -245,14 +247,14 @@ U0 MPUpdateWin(CDC *dc2)
   for (i=Gs->num+1;i<NUM_CARS;i+=mp_cnt) {
     tempc=&c[i];
     x=tempc->p.x-c[0].p.x; y=tempc->p.y-c[0].p.y; z=tempc->p.z-c[0].p.z;
-    GrRot(r,&x,&y,&z);
+    Mat4x4MulXYZ(r,&x,&y,&z);
     if (z>0) {
       s=100.0/(AbsI64(z)+50);
-      GrIdentEqu(dc->r);
-      GrScaleEqu(dc->r,s*2);
-      GrRotXEqu(dc->r,Diptheta(tempc->p.x,tempc->p.z,-tempc->theta));
-      GrRotYEqu(dc->r,tempc->theta-c[0].theta);
-      GrSetRotMat(dc,dc->r);
+      Mat4x4IdentEqu(dc->r);
+      Mat4x4Scale(dc->r,s*2);
+      Mat4x4RotX(dc->r,Diptheta(tempc->p.x,tempc->p.z,-tempc->theta));
+      Mat4x4RotY(dc->r,tempc->theta-c[0].theta);
+      DCMat4x4Set(dc,dc->r);
       Sprite3B(dc,s*x+cx,s*y+h,z+GR_Z_ALL,tempc->img);
     }
   }
@@ -264,7 +266,7 @@ U0 MPUpdateWin(CDC *dc2)
 U0 VRTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
-  GrRot(dc->r,x,y,z);
+  Mat4x4MulXYZ(dc->r,x,y,z);
   zz=400+*z;
   if (zz<1) zz=1;
   *x=400* *x/zz;
@@ -285,15 +287,15 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=LTCYAN;
   GrRect(dc,0,0,w,HORIZON_DIP*Sin(dip_theta)+FONT_HEIGHT*4.5);
 
-  GrIdentEqu(r);
-  GrRotYEqu(r,pi-c[0].theta);
-  GrRotXEqu(r,75*pi/180-dip_theta);
+  Mat4x4IdentEqu(r);
+  Mat4x4RotY(r,pi-c[0].theta);
+  Mat4x4RotX(r,75*pi/180-dip_theta);
 
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
 
   //Sun
   x=c[0].p.x; y=0; z=1000000-c[0].p.z;
-  GrRot(r,&x,&y,&z);
+  Mat4x4MulXYZ(r,&x,&y,&z);
   s=100.0/(AbsI64(z)+50);
   if (y<0) {
     dc->color=BROWN;
@@ -314,9 +316,9 @@ U0 DrawIt(CTask *task,CDC *dc)
     phi=0.5;
   else
     phi=0;
-  GrIdentEqu(r);
-  GrRotYEqu(r,phi);
-  GrRotXEqu(r,0.4-8*dip_theta); //Made this up
+  Mat4x4IdentEqu(r);
+  Mat4x4RotY(r,phi);
+  Mat4x4RotX(r,0.4-8*dip_theta); //Made this up
   dc->transform=&VRTransform;
   dc->x=task->pix_width>>1;
   dc->y=task->pix_height-150;
@@ -328,7 +330,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrRect(dc,w-64,h-64,64,64);
   dc->color=LTGREEN;
   for (i=0;i<NUM_BUSHES;i++)
-    GrPlot(dc,w-64+64*(0x5000-b[i].p.x)/0xA000,h-64*(-b[i].p.z+0x5000)/0xA000);
+    GrPlot(dc,w-64+64*(0x5000-b[i].p.x)/0xA000,
+	  h-64*(-b[i].p.z+0x5000)/0xA000);
 
   dc->pen_width=2;
   for (i=0;i<NUM_CARS;i++) {
@@ -336,7 +339,8 @@ U0 DrawIt(CTask *task,CDC *dc)
       dc->color=LTPURPLE;
     else
       dc->color=LTCYAN;
-    GrPlot3(dc,w-64+64*(0x5000-c[i].p.x)/0xA000,h-64*(-c[i].p.z+0x5000)/0xA000,0);
+    GrPlot3(dc,w-64+64*(0x5000-c[i].p.x)/0xA000,
+	  h-64*(-c[i].p.z+0x5000)/0xA000,0);
   }
 
   if (game_over) {
@@ -354,7 +358,8 @@ U0 DrawIt(CTask *task,CDC *dc)
     s=tS-t0;
   dc->color=BLACK;
   GrPrint(dc,0,0,"theta:%0.1f %0.1f%% Time:%0.2f Best:%0.2f",
-	180+180/pi*Arg(c[0].p.x,c[0].p.z),100.0*distance/(2*pi*TRACK_INNER),s,best_score);
+	180+180/pi*Arg(c[0].p.x,c[0].p.z),
+	100.0*distance/(2*pi*TRACK_INNER),s,best_score);
 }
 
 U0 AnimateTask(I64)
@@ -417,7 +422,7 @@ U0 Init()
       tempb->p.x=RandU32&0x7FFF-0x4000;
       tempb->p.z=RandU32&0x7FFF-0x4000;
     } while (TRACK_INNER-SHOULDER<=
-	Sqrt(SqrI64(tempb->p.x)+SqrI64(tempb->p.z))<=TRACK_OUTER+SHOULDER);
+	  Sqrt(SqrI64(tempb->p.x)+SqrI64(tempb->p.z))<=TRACK_OUTER+SHOULDER);
     tempb->p.y=DipY(tempb->p.x,tempb->p.z);
     tempb->sym=RandU16&1;
     tempb->img=imgs[i&7];
@@ -462,7 +467,8 @@ U0 Varoom()
   SettingsPush(,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
-    Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
+    Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
+	  -WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
     AutoComplete;
     WinMax;
     WinBorder;

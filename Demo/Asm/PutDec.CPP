@@ -10,7 +10,7 @@ PUT_DEC_U64::
 //but this function will be nice for ASM callers if it saves all regs.
 	PUSH_C_REGS
 
-	PUSH	RSI		//See [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK
+	PUSH	RSI		//See [C:/Kernel/KernelA.HPP.Z,1703] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1704] REG_NON_PTR_MASK
 	LEA	RSI,-1[RBP]	//Load addr of end of buffer.
 				//We picked RSI because of PUT_STR
 				//We'll move bwd
@@ -38,7 +38,7 @@ PUT_DEC_U64::
 	LEAVE
 	RET
 
-_DO_IT::			//The convention is C-callable routines have underscores.
+_DO_IT::	//The convention is C-callable routines have underscores.
 	MOV	RAX,122333221
 	CALL	PUT_DEC_U64
 	MOV	RAX,'\n'

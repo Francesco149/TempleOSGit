@@ -1,4 +1,4 @@
-/*Uses [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint() because updates
+/*Uses [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint() because updates
 to within a tree while a tree is collapsed get
 messed-up if "live" (like using ordinary Print.)
 The insert point is confused by hiding of
@@ -20,7 +20,7 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
     if (tempde->attr & RS_ATTR_DIR) {
       DocPrint(doc,"$TR,\"\"$");
       DocPrint(doc,"$MA,T=\"%s\",LM=\"Cd(\\\"%s\\\");Dir;\n\"$\n",
-      tempde->name,tempde->full_name);
+	    tempde->name,tempde->full_name);
       if (tempde->sub) {
 	DocPrint(doc,"$ID,+2$");
 	TreeSub(doc,tempde->sub);
@@ -28,10 +28,10 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
       }
     } else
       DocPrint(doc,"$LK,\"%s\",A=\"FI:%s\"$\n",
-	tempde->name,tempde->full_name);
-    //Note there is also a routine
-    //to delete an entire CDirEntry tree.
-    //See [C:/Kernel/Dsk/DskDir.CPP.Z,36] DirTreeDel().
+	    tempde->name,tempde->full_name);
+//Note there is also a routine
+      //to delete an entire CDirEntry tree.
+      //See [C:/Kernel/Dsk/DskDir.CPP.Z,36] DirTreeDel().
     DirEntryDel(tempde);
     tempde=tempde1;
   }

@@ -80,7 +80,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   pf->cx=task->pix_width>>1;
   pf->cy=task->pix_height>>1;
 
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
 
   dc->color=LTRED;
   dc->pen_width=3;
@@ -90,14 +90,18 @@ U0 DrawIt(CTask *task,CDC *dc)
     dc->color=tempo->color;
     switch (tempo->type) {
       case PTY_PT:
-	GrLine(dc,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y-2);
-	GrLine(dc,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y-2);
+	GrLine(dc,pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y+2,
+	      pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y-2);
+	GrLine(dc,pf->cx+tempo->p.p.x-2,pf->cy+tempo->p.p.y+2,
+	      pf->cx+tempo->p.p.x+2,pf->cy+tempo->p.p.y-2);
 	break;
       case PTY_CIRCLE:
-	GrCircle(dc,pf->cx+tempo->c.p->p.p.x,pf->cy+tempo->c.p->p.p.y,tempo->c.radius);
+	GrCircle(dc,pf->cx+tempo->c.p->p.p.x,pf->cy+tempo->c.p->p.p.y,
+	      tempo->c.radius);
 	break;
       case PTY_LINE:
-	GrLine(dc,pf->cx+tempo->l.p1->p.p.x,pf->cy+tempo->l.p1->p.p.y,pf->cx+tempo->l.p2->p.p.x,pf->cy+tempo->l.p2->p.p.y);
+	GrLine(dc,pf->cx+tempo->l.p1->p.p.x,pf->cy+tempo->l.p1->p.p.y,
+	      pf->cx+tempo->l.p2->p.p.x,pf->cy+tempo->l.p2->p.p.y);
 	break;
       case PTY_SPRITE:
 	old_r=dc->r;
@@ -112,7 +116,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 	//Updated each refresh, not guarenteed to be uniform.
 	//Rounding error might corrupt, as well.
-	r=GrMulMat(tempo->g.dr,tempo->g.r,task);
+	r=Mat4x4MulMat4x4New(tempo->g.dr,tempo->g.r,task);
 	Free(tempo->g.r);
 	tempo->g.r=r;
 
@@ -221,14 +225,16 @@ PickFrame *Init()
   for (i=0;i<20;i++)
     PCircleNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,6);
   for (i=0;i<20;i++)
-    PLineNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,pf->o_cnts[PTY_PT]*RandU16/MAX_U16);
+    PLineNew(pf,pf->o_cnts[PTY_PT]*RandU16/MAX_U16,
+	  pf->o_cnts[PTY_PT]*RandU16/MAX_U16);
   for (i=0;i<10;i++) {
-    r=GrIdentNew;
-    dr=GrIdentNew;
-    GrRotZEqu(dr,0.05*2*(Rand-0.5));
-    GrRotYEqu(dr,0.05*2*(Rand-0.5));
-    GrRotXEqu(dr,0.05*2*(Rand-0.5));
-    PCSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],pf->o_cnts[PTY_PT]*RandU16/MAX_U16,r,dr);
+    r=Mat4x4IdentNew;
+    dr=Mat4x4IdentNew;
+    Mat4x4RotZ(dr,0.05*2*(Rand-0.5));
+    Mat4x4RotY(dr,0.05*2*(Rand-0.5));
+    Mat4x4RotX(dr,0.05*2*(Rand-0.5));
+    PCSpriteNew(pf,imgs[NUM_IMGS*RandU16/MAX_U16],
+	  pf->o_cnts[PTY_PT]*RandU16/MAX_U16,r,dr);
   }
   FramePtrSet("PickFrame",pf);
   return pf;
@@ -254,14 +260,14 @@ U0 Pick3D()
   FramePtrAdd("PickFrame");
 
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,'\n');"
-"}"
-);
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"}"
+	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   WinBorder;
@@ -271,11 +277,13 @@ U0 Pick3D()
   Preempt;
   pf=Init;
   tempo=NULL;
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_CTRLS-WIF_FOCUS_TASK_MENU;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
+	-WIF_SELF_CTRLS-WIF_FOCUS_TASK_MENU;
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {
-      switch (msg_code=GetMsg(&a1,&a2,1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_MOVE)) {
+      switch (msg_code=GetMsg(&a1,&a2,
+	    1<<MSG_KEY_DOWN|1<<MSG_IP_L_DOWN|1<<MSG_IP_L_UP|1<<MSG_IP_MOVE)) {
 	case MSG_KEY_DOWN:
 	  switch (a1) {
 	    case '\n':

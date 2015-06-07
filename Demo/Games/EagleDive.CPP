@@ -28,7 +28,7 @@ class Panel
 {
   Panel *next;
   I32 n,   //num polygon sides
-     num; //panel number
+	num; //panel number
   CD3I32 *pts;
   I64 color,cnt;
 };
@@ -91,7 +91,7 @@ class MPCtrl {
 U0 EDTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
-  GrRot(dc->r,x,y,z);
+  Mat4x4MulXYZ(dc->r,x,y,z);
   *z=zz=-*z;
   if (zz>0) {
     *x = *x * DISPLAY_SCALE/ zz; //Foreshortening
@@ -107,21 +107,21 @@ U0 CalcNormals()
 forming every grid square and we find the normal
 vect with a curl.
 
- i  j  k
- 0  1  dz2
- 1  0  dz1
+i  j  k
+0  1  dz2
+1  0  dz1
 
 Normal:
 dz1*i + dz2*j - k
 
-  i   j   k
- -1   0  -dz3
-  0  -1  -dz4
+i   j	k
+-1   0	-dz3
+0  -1  -dz4
 
 Normal:
 -dz3*i - dz4*j + k
 
- 
+
 Basically, we want to combine grid
 locations with the same normals.  These
 are not unit vects for one thing.
@@ -178,7 +178,7 @@ Bool TestSameSlope(I64 x,I64 y,I64 w,I64 h)
   I64 k1,k2,xx,yy,s;
   if (!(0<=x && x+w<MAP_WIDTH && 0<=y && y+h<MAP_HEIGHT))
     return FALSE;
-    //Works well averaging the two slopes of two tris.
+//Works well averaging the two slopes of two tris.
     //If it is too picky, we get too many panels.
   s=normals[y][x*2]+normals[y][x*2+1];
   for (k2=0;k2<h;k2++)
@@ -186,7 +186,7 @@ Bool TestSameSlope(I64 x,I64 y,I64 w,I64 h)
       xx=(x+k1)*2;
       yy=y+k2;
       if (normals[yy][xx]+normals[yy][xx+1]!=s)
-       return FALSE;
+	return FALSE;
     }
   return TRUE;
 }
@@ -221,88 +221,88 @@ U0 MPDoPanels(CTask *task)
 	  if (w>=threshold || h>=threshold) {
 	    tempp=CAlloc(sizeof(Panel),task);
 	    lock {tempp->num=num_panels++;}
-	    l=elevations[j][i];
-	    if (l<=WATER_ELEVATION*MAP_SCALE &&
+	  l=elevations[j][i];
+	  if (l<=WATER_ELEVATION*MAP_SCALE &&
 		elevations[j][i+w-1]<=WATER_ELEVATION*MAP_SCALE &&
 		elevations[j+h-1][i]<=WATER_ELEVATION*MAP_SCALE &&
 		elevations[j+h-1][i+w-1]<=WATER_ELEVATION*MAP_SCALE) {
-	      tempp->color=BLUE;
-	      if (Rand<0.05) {
-		tempf=MAlloc(sizeof(Fish),task);
-		tempf->p.x=(i+w/2)*MAP_SCALE;
-		tempf->p.y=(j+h/2)*MAP_SCALE;
-		tempf->p.z=l;
-		CriticalSectionStart;
-		QueIns(tempf,fish_root.last);
-		CriticalSectionEnd;
+	    tempp->color=BLUE;
+	    if (Rand<0.05) {
+	      tempf=MAlloc(sizeof(Fish),task);
+	      tempf->p.x=(i+w/2)*MAP_SCALE;
+	      tempf->p.y=(j+h/2)*MAP_SCALE;
+	      tempf->p.z=l;
+	      CriticalSectionStart;
+	      QueIns(tempf,fish_root.last);
+	      CriticalSectionEnd;
+	    }
+	  } else {
+	    if (RandI16&1) {
+	      if (l<ROCK_ELEVATION*MAP_SCALE)
+		tempp->color=LTGREEN;
+	      else if (l<SNOW_ELEVATION*MAP_SCALE) {
+		if (!(RandU16&3))
+		  tempp->color=LTGRAY;
+		else
+		  tempp->color=LTGREEN;
+	      } else {
+		if (!(RandU16&3))
+		  tempp->color=WHITE;
+		else
+		  tempp->color=LTGRAY;
 	      }
 	    } else {
-	      if (RandI16&1) {
-		if (l<ROCK_ELEVATION*MAP_SCALE)
-		  tempp->color=LTGREEN;
-		else if (l<SNOW_ELEVATION*MAP_SCALE) {
-		  if (!(RandU16&3))
-		    tempp->color=LTGRAY;
-		  else
-		    tempp->color=LTGREEN;
-		} else {
-		  if (!(RandU16&3))
-		    tempp->color=WHITE;
-		  else
-		    tempp->color=LTGRAY;
-		}
-	      } else {
-		if (l<ROCK_ELEVATION*MAP_SCALE)
+	      if (l<ROCK_ELEVATION*MAP_SCALE)
+		tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
+	      else if (l<SNOW_ELEVATION*MAP_SCALE) {
+		if (!(RandU16&3))
+		  tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
+		else
 		  tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
-		else if (l<SNOW_ELEVATION*MAP_SCALE) {
-		  if (!(RandU16&3))
-		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
-		  else
-		    tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
-		} else {
-		  if (!(RandU16&3))
-		    tempp->color=LTGRAY+WHITE<<16+ROPF_DITHER;
-		  else
-		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
-		}
+	      } else {
+		if (!(RandU16&3))
+		  tempp->color=LTGRAY+WHITE<<16+ROPF_DITHER;
+		else
+		  tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
 	      }
 	    }
-	    tempp->n=4;
-	    poly=tempp->pts=MAlloc(sizeof(CD3I32)*tempp->n,task);
-	    poly[0].x=MAP_SCALE*i;
-	    poly[0].y=MAP_SCALE*j;
-	    poly[0].z=elevations[j][i];
-	    poly[1].x=MAP_SCALE*(i+w);
-	    poly[1].y=MAP_SCALE*j;
-	    poly[1].z=elevations[j][i+w];
-	    poly[2].x=MAP_SCALE*(i+w);
-	    poly[2].y=MAP_SCALE*(j+h);
-	    poly[2].z=elevations[j+h][i+w];
-	    poly[3].x=MAP_SCALE*i;
-	    poly[3].y=MAP_SCALE*(j+h);
-	    poly[3].z=elevations[j+h][i];
-	    tempp->next=start_ptr;
-	    start_ptr=tempp;
-	    if (!end_ptr)
-	      end_ptr=tempp;
-	    for (k2=0;k2<h;k2++)
-	      for (k1=0;k1<w;k1++) {
-		panels[j+k2][(i+k1)*2]=tempp;
-		panels[j+k2][(i+k1)*2+1]=tempp;
-	      }
 	  }
+	  tempp->n=4;
+	  poly=tempp->pts=MAlloc(sizeof(CD3I32)*tempp->n,task);
+	  poly[0].x=MAP_SCALE*i;
+	  poly[0].y=MAP_SCALE*j;
+	  poly[0].z=elevations[j][i];
+	  poly[1].x=MAP_SCALE*(i+w);
+	  poly[1].y=MAP_SCALE*j;
+	  poly[1].z=elevations[j][i+w];
+	  poly[2].x=MAP_SCALE*(i+w);
+	  poly[2].y=MAP_SCALE*(j+h);
+	  poly[2].z=elevations[j+h][i+w];
+	  poly[3].x=MAP_SCALE*i;
+	  poly[3].y=MAP_SCALE*(j+h);
+	  poly[3].z=elevations[j+h][i];
+	  tempp->next=start_ptr;
+	  start_ptr=tempp;
+	  if (!end_ptr)
+	    end_ptr=tempp;
+	  for (k2=0;k2<h;k2++)
+	    for (k1=0;k1<w;k1++) {
+	      panels[j+k2][(i+k1)*2]=tempp;
+	      panels[j+k2][(i+k1)*2+1]=tempp;
+	    }
 	}
-	k+=2;
       }
+      k+=2;
     }
-  if (end_ptr) {
-    CriticalSectionStart;
-    if (end_ptr)
-      end_ptr->next=panel_root;
-    panel_root=start_ptr;
-    CriticalSectionEnd;
-  }
-  LBtr(&mp.init_not_done_flags,Gs->num);
+}
+if (end_ptr) {
+CriticalSectionStart;
+if (end_ptr)
+end_ptr->next=panel_root;
+panel_root=start_ptr;
+CriticalSectionEnd;
+}
+LBtr(&mp.init_not_done_flags,Gs->num);
 }
 
 U0 InitElevations()
@@ -443,61 +443,63 @@ I64 update_jiffy_limit;
 U0 MPDrawIt(CTask *task,CDC *dc)
 {
   I64 j,strip_width,*s2w,x1,y1,z1, xx,yy,
-      xh,yh,zh,yh2,xh2,x1h,y1h,x1wa,y1wa,x1wb,y1wb,
-      x3,y3,z3,
-      cx=task->pix_width>>1,
-      cy=task->pix_height>>1;
+	xh,yh,zh,yh2,xh2,x1h,y1h,x1wa,y1wa,x1wb,y1wb,
+	x3,y3,z3,
+	cx=task->pix_width>>1,
+	cy=task->pix_height>>1;
   Panel reg *tempp;
 
   xx=x/(MAP_SCALE*COORDINATE_SCALE);
   yy=y/(MAP_SCALE*COORDINATE_SCALE);
 
   //World to screen coordinates
-  GrIdentEqu(dc->r);
-  GrRotZEqu(dc->r,theta2);
-  GrRotXEqu(dc->r,phi);
-  GrRotZEqu(dc->r,theta1);
-  GrSetRotMat(dc,dc->r);
+  Mat4x4IdentEqu(dc->r);
+  Mat4x4RotZ(dc->r,theta2);
+  Mat4x4RotX(dc->r,phi);
+  Mat4x4RotZ(dc->r,theta1);
+  DCMat4x4Set(dc,dc->r);
 
   //Screen to world coordinates
 
-//This gives us the vects for stepping through the grid in
-//the direction the plane is facing. we step horizontally and vertically
-//and use the reciprocal slope principle	y=mx+b and y=(-1/m)x+b are perpendicular.
+  //This gives us the vects for stepping through the grid in
+  //the direction the plane is facing. we step horizontally and vertically
+  //and use the reciprocal slope principle
+  //y=mx+b and y=(-1/m)x+b are perpendicular.
 
-  s2w=GrIdentNew;
-  GrRotZEqu(s2w,-theta1);
-  GrRotXEqu(s2w,-phi);
-  GrRotZEqu(s2w,-theta2);
+  s2w=Mat4x4IdentNew;
+  Mat4x4RotZ(s2w,-theta1);
+  Mat4x4RotX(s2w,-phi);
+  Mat4x4RotZ(s2w,-theta2);
   xh=0;
   yh=0;
   zh=-256;
-  GrRot(s2w,&xh,&yh,&zh);
+  Mat4x4MulXYZ(s2w,&xh,&yh,&zh);
 
-//The layer for core#1 is not cleared automatically
-//it is persistent.  I have carefully syncronized to the update
-//cycle initiated by core#0 to prevent flicker.
+  //The layer for core#1 is not cleared automatically
+  //it is persistent.  I have carefully syncronized to the update
+  //cycle initiated by core#0 to prevent flicker.
 
   dc->flags|=DCF_TRANSFORMATION;
   dc->transform=&EDTransform;
   dc->x=cx;
   dc->y=cy;
 
-//dc->x and the translation part of dc->r are identical in effect,
-//but we use both to show-off.	We could add offsets together and use one or the other.
+  //dc->x and the translation part of dc->r are identical in effect,
+  //but we use both to show-off.	We could add offsets together and
+  //use one or the other.
 
   x1=-x>>COORDINATE_BITS;
   y1=-y>>COORDINATE_BITS;
   z1=-z>>COORDINATE_BITS;
-  GrRot(dc->r,&x1,&y1,&z1);
-  GrSetTranslation(dc->r,x1,y1,z1);
+  Mat4x4MulXYZ(dc->r,&x1,&y1,&z1);
+  Mat4x4TranslationEqu(dc->r,x1,y1,z1);
 
   //This is a refinement.
   if (Abs(phi*180/pi)>90) {
     x3=0;
     y3=-cy;
     z3=0;
-    GrRot(s2w,&x3,&y3,&z3);
+    Mat4x4MulXYZ(s2w,&x3,&y3,&z3);
     xx+=x3;
     yy+=y3;
   }
@@ -528,13 +530,14 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     for (j=0;j<strip_height && cnts.jiffies<update_jiffy_limit;j++) {
       x1=x1h>>8; y1=y1h>>8;
       if (0<=x1<MAP_WIDTH && 0<=y1<MAP_HEIGHT) {
-	  if ((tempp=panels[y1][x1*2]) && !LBts(panels_processed_bitmap,tempp->num)) {
-	    if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
-	      dc->color=tempp->color;
-	      tempp->cnt=GrFillPoly3(dc,tempp->n,tempp->pts);
-	    } else
-	      tempp->cnt++;
-	  }
+	if ((tempp=panels[y1][x1*2]) &&
+	      !LBts(panels_processed_bitmap,tempp->num)) {
+	  if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
+	    dc->color=tempp->color;
+	    tempp->cnt=GrFillPoly3(dc,tempp->n,tempp->pts);
+	  } else
+	    tempp->cnt++;
+	}
       }
       x1h+=xh;
       y1h+=yh;
@@ -566,7 +569,7 @@ U0 APEagleDiveTask(CTask *master_task)
       MPDrawIt(master_task,dc);
   }
 
-//We made an alias of this we don't want freed.
+  //We made an alias of this we don't want freed.
   dc->depth_buf=NULL;
 
   DCDel(dc);
@@ -575,30 +578,30 @@ U0 APEagleDiveTask(CTask *master_task)
 
 U0 DrawHorizon(CDC *dc)
 {
-  I64 x1,y1,z1,x2,y2,z2,xh,yh,zh,*s2w=GrIdentNew,
-      cx=Fs->pix_width>>1,
-      cy=Fs->pix_height>>1;
+  I64 x1,y1,z1,x2,y2,z2,xh,yh,zh,*s2w=Mat4x4IdentNew,
+	cx=Fs->pix_width>>1,
+	cy=Fs->pix_height>>1;
   CD3I32 p[4];
   I32 *old_db=dc->depth_buf;
   dc->depth_buf=NULL;
 
-  GrIdentEqu(dc->r);
-  GrRotZEqu(dc->r,theta2);
-  GrRotXEqu(dc->r,phi);
-  GrRotZEqu(dc->r,theta1);
-  GrSetRotMat(dc,dc->r);
+  Mat4x4IdentEqu(dc->r);
+  Mat4x4RotZ(dc->r,theta2);
+  Mat4x4RotX(dc->r,phi);
+  Mat4x4RotZ(dc->r,theta1);
+  DCMat4x4Set(dc,dc->r);
   dc->flags&=~DCF_TRANSFORMATION;
   dc->transform=&EDTransform;
   dc->x=cx;
   dc->y=cy;
 
-  GrRotZEqu(s2w,-theta1);
-  GrRotXEqu(s2w,-phi);
-  GrRotZEqu(s2w,-theta2);
+  Mat4x4RotZ(s2w,-theta1);
+  Mat4x4RotX(s2w,-phi);
+  Mat4x4RotZ(s2w,-theta2);
   xh=0;
   yh=0;
   zh=-256;
-  GrRot(s2w,&xh,&yh,&zh);
+  Mat4x4MulXYZ(s2w,&xh,&yh,&zh);
   Free(s2w);
 
   x1=xh+yh*32; y1=yh-xh*32; z1=0;
@@ -668,8 +671,8 @@ U0 BSPEagleDive()
 {
   CDC *dc=DCAlias(main_dc,Fs);
   I64 i,xx,yy,height,bkcolor,
-      cx=Fs->pix_width>>1,
-      cy=Fs->pix_height>>1;
+	cx=Fs->pix_width>>1,
+	cy=Fs->pix_height>>1;
   F64 min_strip_width;
   Fish *tempf;
 
@@ -716,7 +719,9 @@ U0 BSPEagleDive()
     min_strip_width=MAX_F64;
     for (i=0;i<mp.mp_cnt;i++)
       min_strip_width=Min(min_strip_width,32.0*mp.strip_width[i]/(i+32.0));
-    strip_height=ClampI64(strip_height*Clamp(0.25*min_strip_width/strip_height,0.9,1.1),64,1024);
+    strip_height=ClampI64(
+	  strip_height*Clamp(0.25*min_strip_width/strip_height,0.9,1.1),
+	  64,1024);
   } else {
     dc->color=bkcolor;
     GrRect(dc,0,0,dc->width,dc->height);
@@ -730,19 +735,21 @@ U0 BSPEagleDive()
   GrLine3(dc,cx+5,cy,0,cx-5,cy,0);
   GrLine3(dc,cx,cy+5,0,cx,cy-5,0);
   GrPrint(dc,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Strip:%5d",
-      theta1*180/pi,phi*180/pi,theta2*180/pi,strip_height);
-  GrPrint(dc,0,FONT_HEIGHT,"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
-      ToF64(x)/COORDINATE_SCALE,ToF64(y)/COORDINATE_SCALE,ToF64(z)/COORDINATE_SCALE,
-      height,game_score,best_score);
+	theta1*180/pi,phi*180/pi,theta2*180/pi,strip_height);
+  GrPrint(dc,0,FONT_HEIGHT,
+	"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
+	ToF64(x)/COORDINATE_SCALE,
+	ToF64(y)/COORDINATE_SCALE,ToF64(z)/COORDINATE_SCALE,
+	height,game_score,best_score);
 
   if (game_over && Blink) {
     dc->color=RED;
     GrPrint(dc,(Fs->pix_width-9*FONT_WIDTH)/2,
-	(Fs->pix_height-FONT_HEIGHT)/2,"Game Over");
+	  (Fs->pix_height-FONT_HEIGHT)/2,"Game Over");
   } else if (tS-game_t0<5.0 && Blink) {
     dc->color=WHITE;
     GrPrint(dc,(Fs->pix_width-10*FONT_WIDTH)/2,
-	(Fs->pix_height-FONT_HEIGHT)/2,"Catch Fish");
+	  (Fs->pix_height-FONT_HEIGHT)/2,"Catch Fish");
   }
 //We made an alias of this we don't want freed.
   dc->depth_buf=NULL;
@@ -761,13 +768,13 @@ U0 AnimateTask(I64)
     mS=1000*(tS-t0);
     t0=tS;
     if (!game_over) {
-      //Screen to world coordinates
-      s2w=GrIdentNew;
-      GrRotZEqu(s2w,-theta1);
-      GrRotXEqu(s2w,-phi);
-      GrRotZEqu(s2w,-theta2);
+//Screen to world coordinates
+      s2w=Mat4x4IdentNew;
+      Mat4x4RotZ(s2w,-theta1);
+      Mat4x4RotX(s2w,-phi);
+      Mat4x4RotZ(s2w,-theta2);
       x1=0;y1=0;z1=-speed*mS*COORDINATE_SCALE;
-      GrRot(s2w,&x1,&y1,&z1);
+      Mat4x4MulXYZ(s2w,&x1,&y1,&z1);
       x+=x1;
       y+=y1;
       z+=z1;
@@ -779,7 +786,8 @@ U0 AnimateTask(I64)
 	tempf=fish_root.next;
 	while (tempf!=&fish_root) {
 	  tempf1=tempf->next;
-	  if (SqrI64(tempf->p.x-x1)+SqrI64(tempf->p.y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
+	  if (SqrI64(tempf->p.x-x1)+
+		SqrI64(tempf->p.y-y1)<MAP_SCALE*MAP_SCALE*5*5) {
 	    game_score++;
 	    if (game_score>best_score)
 	      best_score=game_score;
@@ -810,7 +818,7 @@ U0 MPEnd()
   update_jiffy_limit=0;
   mp.app_not_done_flags=1<<mp.mp_cnt-1-1;
   mp.app_done=TRUE;
-  //Wait for all cores to exit
+//Wait for all cores to exit
   while (mp.app_not_done_flags)
     Sleep(1);
 }
@@ -827,8 +835,8 @@ U0 SongTask(I64)
   MusicSettingsRst;
   music.stacatto_factor=0.2;
   while (TRUE) {
-	Play("3eBDEDBDEDFEEDFEED");
-	Play("BDEDBDEDFEEDFEED");
+    Play("3eBDEDBDEDFEEDFEED");
+    Play("BDEDBDEDFEEDFEED");
   }
 }
 
@@ -846,7 +854,7 @@ U0 Init(I64 _mp_cnt)
     mp.mp_cnt=mp_cnt;
   QueInit(&fish_root);
   InitMap;
-  DCAllocDepthBuf(main_dc);
+  DCDepthBufAlloc(main_dc);
 
   strip_height=128;
   phi	=-90.0*pi/180.0;
@@ -895,18 +903,18 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   AutoComplete;
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Restart(,'\n');"
-  "  Down(,,SC_CURSOR_UP);"
-  "  Up(,,SC_CURSOR_DOWN);"
-  "  Left(,,SC_CURSOR_LEFT);"
-  "  Right(,,SC_CURSOR_RIGHT);"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Down(,,SC_CURSOR_UP);"
+	"  Up(,,SC_CURSOR_DOWN);"
+	"  Left(,,SC_CURSOR_LEFT);"
+	"  Right(,,SC_CURSOR_RIGHT);"
+	"}"
+	);
   WinMax;
   WinBorder;
   "Initializing...\n";
@@ -946,7 +954,7 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
 	    Init(_mp_cnt);
 	    Fs->draw_it=&DrawIt;
 	    break;
-	  }
+	}
 	theta1=Wrap(theta1);
 	phi =Wrap(phi);
 	theta2=Wrap(theta2);

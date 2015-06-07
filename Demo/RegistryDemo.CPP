@@ -19,7 +19,7 @@ U0 Game()
   i++;
   best_score=tS;
 //You could combine these into one write by making
-//the $TR...$ and $ID,2$, $ID,-2$, cmds yourself.
+  //the $TR...$ and $ID,2$, $ID,-2$, cmds yourself.
   RegWriteBranch("DemoCompany/Game1","F64 best_score=%9.5f;\n",best_score);
   RegWriteBranch("DemoCompany/Game1/SimpleVal","%d;\n",i);
 }

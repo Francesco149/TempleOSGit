@@ -1,6 +1,6 @@
 /*There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/Kernel/KernelA.HPP.Z,1321] CDoc
+hold the file until you are done.  The [C:/Kernel/KernelA.HPP.Z,1323] CDoc
 framework is convenient for this.
 */
 
@@ -12,7 +12,7 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
     if (tempde->attr & RS_ATTR_DIR) {
       DocPrint(doc,"$TR,\"\"$");
       DocPrint(doc,"$MA,T=\"%s\",LM=\"Cd(\\\"%s\\\");Dir;\n\"$\n",
-      tempde->name,tempde->full_name);
+	    tempde->name,tempde->full_name);
       if (tempde->sub) {
 	DocPrint(doc,"$ID,+2$");
 	TreeSub(doc,tempde->sub);
@@ -20,10 +20,10 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
       }
     } else
       DocPrint(doc,"$LK,\"%s\",A=\"FI:%s\"$\n",
-	tempde->name,tempde->full_name);
-    //Note there is also a routine
-    //to delete an entire CDirEntry tree.
-    //See [C:/Kernel/Dsk/DskDir.CPP.Z,36] DirTreeDel().
+	    tempde->name,tempde->full_name);
+//Note there is also a routine
+      //to delete an entire CDirEntry tree.
+      //See [C:/Kernel/Dsk/DskDir.CPP.Z,36] DirTreeDel().
     DirEntryDel(tempde);
     tempde=tempde1;
   }

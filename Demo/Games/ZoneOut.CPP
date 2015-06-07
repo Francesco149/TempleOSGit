@@ -80,7 +80,7 @@ F64 t0,tf;
 U0 ZOTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 {
   I64 zz;
-  GrRot(dc->r,x,y,z);
+  Mat4x4MulXYZ(dc->r,x,y,z);
   zz=*z;
   if (zz<1) zz=1;
   *x=SCREEN_SCALE/2* *x/zz;
@@ -103,13 +103,13 @@ U0 DrawIt(CTask *task,CDC *dc)
   Sprite3(dc,theta	   ,90,0,__BIN_4);
   Sprite3(dc,theta+1280,90,0,__BIN_4);
 
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   dc->transform=&ZOTransform;
   dc->x=cx;
   dc->y=cy;
-  GrSetTranslation(dc->r,-us.x,-us.y,-us.z);
-  GrRotYEqu(dc->r,us.theta-pi/2);
-  GrRotXEqu(dc->r,pi/16);
+  Mat4x4TranslationEqu(dc->r,-us.x,-us.y,-us.z);
+  Mat4x4RotY(dc->r,us.theta-pi/2);
+  Mat4x4RotX(dc->r,pi/16);
 
   dc->flags|=DCF_TRANSFORMATION;
   for (i=0;i<NUM_THEM;i++) {
@@ -233,10 +233,10 @@ U0 SongTask(I64)
   Fs->task_end_cb=&SndTaskEndCB;
   MusicSettingsRst;
   while (TRUE) {
-	Play("3sDBDBqEsGBGBeD2G3sBFBFeDAqFG");
-	Play("sDBDBqEsGBGBeD2G3sBFBFeDAqFG");
-	Play("eGDsFGFGqDEeBE2sG3D2G3DqF2sG3A2G3A");
-	Play("eGDsFGFGqDEeBE2sG3D2G3DqF2sG3A2G3A");
+    Play("3sDBDBqEsGBGBeD2G3sBFBFeDAqFG");
+    Play("sDBDBqEsGBGBeD2G3sBFBFeDAqFG");
+    Play("eGDsFGFGqDEeBE2sG3D2G3DqF2sG3A2G3A");
+    Play("eGDsFGFGqDEeBE2sG3D2G3DqF2sG3A2G3A");
   }
 }
 
@@ -252,19 +252,19 @@ U0 ZoneOut()
 	"Write games, don't play them.\n");
 
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Restart(,'\n');"
-  "  Fwd(,,SC_CURSOR_UP);"
-  "  Bwd(,,SC_CURSOR_DOWN);"
-  "  Left(,,SC_CURSOR_LEFT);"
-  "  Right(,,SC_CURSOR_RIGHT);"
-  "  Fire(,CH_SPACE);"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Fwd(,,SC_CURSOR_UP);"
+	"  Bwd(,,SC_CURSOR_DOWN);"
+	"  Left(,,SC_CURSOR_LEFT);"
+	"  Right(,,SC_CURSOR_RIGHT);"
+	"  Fire(,CH_SPACE);"
+	"}"
+	);
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;

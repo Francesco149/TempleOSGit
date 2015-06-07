@@ -34,8 +34,8 @@
 U0 ElephantWalk()
 {
   I64 sc,
-      x=Fs->pix_width>>1,y=Fs->pix_height>>1, //Fs is current [C:/Kernel/KernelA.HPP.Z,3212] CTask struct.
-      x_last=x;
+	x=Fs->pix_width>>1,y=Fs->pix_height>>1, //Fs is current [C:/Kernel/KernelA.HPP.Z,3218] CTask struct.
+	x_last=x;
   DocClear;
   AutoComplete;
   WinMax;
@@ -43,10 +43,10 @@ U0 ElephantWalk()
   while (TRUE) {
     DCFill;
     if (x>x_last) {
-       GrSetSymmetry(,x,y,x,y-1);
-       gr.dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
+      DCSymmetrySet(,x,y,x,y-1);
+      gr.dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
     } else
-       gr.dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
+      gr.dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     x_last=x;
     SpriteZ3B(gr.dc,x,y,0,__BIN_1,Sin(8*tS)/4);//Use <CTRL-r> "pointer to sprite"
     switch (GetKey(&sc)) {

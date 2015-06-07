@@ -40,7 +40,7 @@ Bool IsDotC(U8 *filename)
 Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
 {//Does filename meet [C:/Doc/FileUtils.TXT.Z,1] Files Find mask?
   U8 *st1=StrNew(files_find_mask),
-     *st2=MAlloc(StrLen(files_find_mask)+1);
+	*st2=MAlloc(StrLen(files_find_mask)+1);
   Bool result=FALSE;
   while (TRUE) {
     StrFirstRem(st1,";",st2);
@@ -52,19 +52,24 @@ Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
 	}
       } else {
 	if (WildMatch(test_filename,st2)) {
-	  if (Bt(&fuf_flags,FUf_JUST_TXT) && !FilesFindMatch(test_filename,FILEMASK_TXT)) {
+	  if (Bt(&fuf_flags,FUf_JUST_TXT) &&
+		!FilesFindMatch(test_filename,FILEMASK_TXT)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_SRC) && !FilesFindMatch(test_filename,FILEMASK_SRC)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_SRC) &&
+		!FilesFindMatch(test_filename,FILEMASK_SRC)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_AOT) && !FilesFindMatch(test_filename,FILEMASK_AOT)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_AOT) &&
+		!FilesFindMatch(test_filename,FILEMASK_AOT)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_JIT) && !FilesFindMatch(test_filename,FILEMASK_JIT)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_JIT) &&
+		!FilesFindMatch(test_filename,FILEMASK_JIT)) {
 	    result=FALSE;
 	    break;
-	  } else if (Bt(&fuf_flags,FUf_JUST_GRA) && !FilesFindMatch(test_filename,FILEMASK_GRA)) {
+	  } else if (Bt(&fuf_flags,FUf_JUST_GRA) &&
+		!FilesFindMatch(test_filename,FILEMASK_GRA)) {
 	    result=FALSE;
 	    break;
 	  } else
@@ -113,7 +118,7 @@ CDrv *Let2Drv(U8 drv_let=0)
 U0 BlkDevChk(CBlkDev *bd)
 {//Check for valid BlkDev. Throw exception.
   if (!bd || bd->bd_signature!=BD_SIGNATURE_VAL ||
-      !(BDT_NULL<bd->type<BDT_NUM_TYPES))
+	!(BDT_NULL<bd->type<BDT_NUM_TYPES))
     throw('BlkDev');
 }
 
@@ -205,7 +210,7 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2513] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2515] FUF_SCAN_PARENTS.
+{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2520] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2522] FUF_SCAN_PARENTS.
   U8 *result,*filename,*buf,*buf_file,*buf_dir,*free_filename,*free_buf;
   CDirEntry de;
   free_filename=filename=MStrUtil(_filename,
@@ -260,7 +265,7 @@ CDirEntry *Cd2DirEntry(CDirEntry *tempde,U8 *abs_name)
   while (tempde) {
     i=StrLen(tempde->full_name);
     if (StrNCmp(tempde->full_name,abs_name,i)||
-      i && tempde->full_name[i-1]!='/' && abs_name[i] && abs_name[i]!='/')
+	  i && tempde->full_name[i-1]!='/' && abs_name[i] && abs_name[i]!='/')
       tempde=tempde->next;
     else
       if (StrLen(abs_name)==i)
@@ -293,7 +298,7 @@ Bool FileNameChk(U8 *filename)
   }
   if (StrLen(filename)>=CDIR_FILENAME_LEN) return FALSE;
   while (*ptr)
-    if (!Bt(chars_bitmap_filename,*ptr++))
+    if (!Bt(chars_bmp_filename,*ptr++))
       return FALSE;
   return TRUE;
 }
@@ -321,7 +326,7 @@ returns default.
     st2=StrNew(st);
     st3=StrNew(st);
     StrLastRem(st2,"/",st3);
- 
+
     if (name)
       result=MStrPrint("%s/%s%s",st,name,ext);
     else {

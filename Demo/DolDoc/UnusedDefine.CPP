@@ -5,9 +5,9 @@ it only occurs once in files.
 It's a brute force solution, but
 gets the job done... slowly.
 
-[C:/Adam/Utils/Find.CPP.Z,143] Find() returns a count of matches.
+[C:/Adam/Utils/Find.CPP.Z,145] Find() returns a count of matches.
 
-[C:/Adam/Utils/Find.CPP.Z,177] FileOcc() is [C:/Adam/Utils/Find.CPP.Z,143] Find() with
+[C:/Adam/Utils/Find.CPP.Z,182] FileOcc() is [C:/Adam/Utils/Find.CPP.Z,145] Find() with
 output [C:/Kernel/KMisc.CPP.Z,223] Silent().
 */
 

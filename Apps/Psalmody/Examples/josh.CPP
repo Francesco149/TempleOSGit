@@ -25,9 +25,11 @@ U0 Song()
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("3sCACAeABqAeFAetDF2GeG3FqG2G",
-	    "$CL$Oh, \0 \0my \0 \0 \0 \0Gosh!\n\0 \0 \0 \0 \0You \0 \0 \0lied!\n\0$GREEN$God talking...\n$FG$\0");
+	    "$CL$Oh, \0 \0my \0 \0 \0 \0Gosh!\n\0 \0 \0 \0 \0"
+	    "You \0 \0 \0lied!\n\0$GREEN$God talking...\n$FG$\0");
       Play("3sCACAeABqAeFAetDF2GeG3FqG2G",
-	    "$RED$Just \0 \0 \0 \0 \0 \0joshed.\n\0 \0 \0Shhh. \0 \0 \0 \0Con\0fide.\n\0 \0");
+	    "$RED$Just \0 \0 \0 \0 \0 \0joshed.\n\0 \0 \0"
+	    "Shhh. \0 \0 \0 \0Con\0fide.\n\0 \0");
       "%17c",CH_SPACE;
       Sprite(__BIN_1);
       Play("3eDCqD2G3etE2G3GqDDeGAqD",

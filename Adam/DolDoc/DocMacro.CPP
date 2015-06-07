@@ -12,11 +12,11 @@ U0 SysMacroStripKey(CSrvCmd *macro_root,I64 a1,I64 a2)
   while (tempc!=macro_root) {
     tempc1=tempc->next;
     if (tempc->cmd_code==SVCT_MSG &&
-	(tempc->msg_code==MSG_KEY_DOWN ||
-	 tempc->msg_code==MSG_KEY_UP ||
-	 tempc->msg_code==MSG_KEY_DOWN_UP) &&
-	 a1 && tempc->aux1==a1 ||
-	!a1 && tempc->aux2==a2) {
+	  (tempc->msg_code==MSG_KEY_DOWN ||
+	  tempc->msg_code==MSG_KEY_UP ||
+	  tempc->msg_code==MSG_KEY_DOWN_UP) &&
+	  a1 && tempc->aux1==a1 ||
+	  !a1 && tempc->aux2==a2) {
       QueRem(tempc);
       SrvCmdDel(tempc);
     }
@@ -39,7 +39,7 @@ CMacroTemp *Cmd2MT(CSrvCmd *tempc)
 {
   U8 buf[8];
   CMacroTemp *tempmt=CAlloc(sizeof(CMacroTemp));
-  if (Bt(chars_bitmap_getkey,tempc->aux1) && tempc->msg_code==MSG_KEY_DOWN) {
+  if (Bt(chars_bmp_getkey,tempc->aux1) && tempc->msg_code==MSG_KEY_DOWN) {
     tempmt->type=MT_CHAR;
     buf[0]=tempc->aux1;
     buf[1]=0;
@@ -47,7 +47,7 @@ CMacroTemp *Cmd2MT(CSrvCmd *tempc)
   } else {
     tempmt->type=MT_MSG;
     StrPrint(tempmt->buf,"Msg(0x%X,0x%X,0x%X);",
-      tempc->msg_code,tempc->aux1,tempc->aux2);
+	  tempc->msg_code,tempc->aux1,tempc->aux2);
   }
   return tempmt;
 }
@@ -132,7 +132,7 @@ U0 EdInsCapturedMacro()
   U8 *st=SysMacro2Str(&sys_macro_root);
   if (sys_focus_task) {
     XTalk(sys_focus_task,"$MA+LA,T=\"%s\",LM=\"%Q\"$",
-	captured_macro_name,st);
+	  captured_macro_name,st);
     Free(st);
   }
   Preempt(old_preempt);
@@ -167,13 +167,13 @@ I64 PopUpMacroMenu()
 	"$CM+LX,17,0$$BT,\"CANCEL\",LE=DOCM_CANCEL$"
 	"\n\n\n$GREEN$SHIFT-F2$FG$ will play macro.\n");
   doc->flags|=DOCF_MIN_SIZE | DOCF_FORM;
-  StrPrint(buf,"DocMenuDo(%d);",doc);
+  StrPrint(buf,"DocMenu(%d);",doc);
   sys_macro_util_task=Spawn(&SrvCmdLine,NULL,"Macro Popup",,Fs);
   Fs->popup_task=sys_macro_util_task;
   LBts(&sys_macro_util_task->display_flags,DISPLAYf_WIN_ON_TOP);
   tempc=TaskExe(sys_macro_util_task,Fs,buf,
-      1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
-  ScanResult(tempc,&result);
+	1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
+  JobResultScan(tempc,&result);
   Fs->popup_task=NULL;
   Kill(sys_macro_util_task);
   sys_macro_util_task=NULL;

@@ -27,14 +27,14 @@ U0 DrawShadow(CTask *task)
 {
   I64 r[4][4],*r2;
 
-  GrIdentEqu(dc1->r);
-  GrRotZEqu(dc1->r,theta);
-  GrRotXEqu(dc1->r,phi);
-  GrRotZEqu(dc1->r,omega);
-  GrScaleEqu(dc1->r,s);
-  GrSetTranslation(dc1->r,200,200,5000);
+  Mat4x4IdentEqu(dc1->r);
+  Mat4x4RotZ(dc1->r,theta);
+  Mat4x4RotX(dc1->r,phi);
+  Mat4x4RotZ(dc1->r,omega);
+  Mat4x4Scale(dc1->r,s);
+  Mat4x4TranslationEqu(dc1->r,200,200,5000);
   dc1->flags|=DCF_TRANSFORMATION;
-  GrSetRotMat(dc1,dc1->r);
+  DCMat4x4Set(dc1,dc1->r);
 
   MemSet(r,0,sizeof(r));
 
@@ -44,10 +44,10 @@ U0 DrawShadow(CTask *task)
   r[2][2]=GR_SCALE;
   r[3][3]=GR_SCALE;
 
-  GrSetTranslation(r,0,-2200,1000);
-  r2=GrMulMat(r,dc1->r,task);
+  Mat4x4TranslationEqu(r,0,-2200,1000);
+  r2=Mat4x4MulMat4x4New(r,dc1->r,task);
   Free(dc1->r);
-  GrSetRotMat(dc1,r2);
+  DCMat4x4Set(dc1,r2);
 
   dc1->lighting=&GrBlackLighting;
   Sprite3(dc1,0,0,0,__BIN_1);
@@ -56,14 +56,14 @@ U0 DrawShadow(CTask *task)
 U0 DrawIt(CTask *task,CDC *)
 {
   DCDepthBufRst(dc0);
-  GrIdentEqu(dc0->r);
-  GrRotZEqu(dc0->r,theta);
-  GrRotXEqu(dc0->r,phi);
-  GrRotZEqu(dc0->r,omega);
-  GrScaleEqu(dc0->r,s);
-  GrSetTranslation(dc0->r,200,200,5000);
+  Mat4x4IdentEqu(dc0->r);
+  Mat4x4RotZ(dc0->r,theta);
+  Mat4x4RotX(dc0->r,phi);
+  Mat4x4RotZ(dc0->r,omega);
+  Mat4x4Scale(dc0->r,s);
+  Mat4x4TranslationEqu(dc0->r,200,200,5000);
   dc0->flags|=DCF_TRANSFORMATION;
-  GrSetRotMat(dc0,dc0->r);
+  DCMat4x4Set(dc0,dc0->r);
   if (mp_cnt>1)
     JobQue(&DrawShadow,task,1);
   else
@@ -75,7 +75,7 @@ U0 Shadow()
 {//I bull-shitted the shadow image.  Any is plausible.
   dc0=DCAlias(gr.dc2,Fs);
   dc1=DCAlias(gr.dc2,Fs);
-  DCAllocDepthBuf(dc0);
+  DCDepthBufAlloc(dc0);
   dc1->depth_buf=dc0->depth_buf;
 
   theta=0;

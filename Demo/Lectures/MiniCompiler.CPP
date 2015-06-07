@@ -2,15 +2,15 @@
 -] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's 
 lexical analyser removes comments and does
-  preprocessing.  [C:/Compiler/Lex.CPP.Z,697]
+  preprocessing.  [C:/Compiler/Lex.CPP.Z,439]
   Lex(),[C:/Compiler/CMisc.CPP.Z,38] Echo(ON).
 
 The main compiler generates [C:/Compiler/CompilerA.HPP.Z,1] Intermediate Code
   at the parser stage.  See 
-[C:/Compiler/PrsExp.CPP.Z,298] PrsExpression(),
-  [C:/Compiler/PrsStmt.CPP.Z,1665] PrsStatement().
+[C:/Compiler/PrsExp.CPP.Z,264] PrsExpression(),
+  [C:/Compiler/PrsStmt.CPP.Z,887] PrsStatement().
 
-The main compiler optimizes   See [C:/Compiler/CMisc.CPP.Z,52] Intermediate
+The main compiler optimizes   See [C:/Compiler/CInit.CPP.Z,16] Intermediate
   Code Attributes, 
 [C:/Compiler/OptPass012.CPP.Z,1] Combining Consts,
   [C:/Compiler/OptPass3.CPP.Z,1] Choosing Reg Vars.  Set
@@ -18,8 +18,8 @@ The main compiler optimizes   See [C:/Compiler/CMisc.CPP.Z,52] Intermediate
 stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/Kernel/KernelA.HPP.Z,1560] IC Struct, 
-[C:/Compiler/CMisc.CPP.Z,552] LCCCompile and
+  [C:/Kernel/KernelA.HPP.Z,1566] IC Struct, 
+[C:/Compiler/PrsLib.CPP.Z,249] COCCompile and
   [C:/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [C:/Compiler/BackA.CPP.Z,1]
   BackEnd.  Set [C:/Compiler/CMisc.CPP.Z,33] CTrace(ON) to see the output of 
 the backend.
@@ -50,7 +50,7 @@ It is okay in TempleOS to change RAX, RBX, RCX, RDX, R8 and R9 without
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{//See [C:/Compiler/Lex.CPP.Z,697] Lex().
+{//See [C:/Compiler/Lex.CPP.Z,439] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -110,7 +110,7 @@ I64 Lex(U8 **_src,I64 *num)
 extern I64 Parse(U8 **_src,U8 **_dst);
 
 U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
-{//See [C:/Compiler/PrsExp.CPP.Z,298] PrsExpression().
+{//See [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression().
   I64 i;
   U8 *src2;
   U8 *dst2;
@@ -131,7 +131,7 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 }
 
 I64 Parse(U8 **_src,U8 **_dst)
-{//See [C:/Compiler/PrsExp.CPP.Z,298] PrsExpression().
+{//See [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression().
 //See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm instructions.
   I64 i;
   U8 *dst=*_dst;
@@ -218,14 +218,14 @@ U0 Main()
 {
   U8 *src,*src2,*code,*dst;
 
-//Fixed size, no buffer overrun check.
-//You can make it fancier if you like.
+  //Fixed size, no buffer overrun check.
+  //You can make it fancier if you like.
   code=MAlloc(512,Fs->code_heap);
 
   while (TRUE) {
     "This will compile an expression\n"
-    "consisting of integers, parentheses\n"
-    "and the operators +,-,* and /.\n";
+	  "consisting of integers, parentheses\n"
+	  "and the operators +,-,* and /.\n";
     src=GetStr;
     if (*src) {
       src2=src;
@@ -236,8 +236,8 @@ U0 Main()
 	  throw;
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/Kernel/KernelB.HPP.Z,30] Call() is a function.  See [C:/Kernel/KUtils.CPP.Z,1] _CALL::
-//See also [C:/Kernel/KernelB.HPP.Z,33] CallInd().  See [C:/Kernel/KUtils.CPP.Z,1] _CALLIND::
+//[C:/Kernel/KernelB.HPP.Z,43] Call() is a function.  See [C:/Kernel/KUtils.CPP.Z,1] _CALL::
+	//See also [C:/Kernel/KernelB.HPP.Z,48] CallInd().  See [C:/Kernel/KUtils.CPP.Z,1] _CALLIND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";

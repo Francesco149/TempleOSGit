@@ -1,5 +1,4 @@
 asm {
-USE64
 #assert !((REG_NON_PTR_MASK|REG_VARS_MASK)&~0xFCC0)
 _TEST_EXCEPT::
 	XOR	RAX,RAX
@@ -126,7 +125,7 @@ U0 ThrowBreak(CTask *task=NULL)
 {//Can be used to exit an app, but not a task.
   if (task && task!=Fs) {
     if (!TaskValidate(task)) return;
-    //TODO: Might want lock
+//TODO: Might want lock
     sys_focus_task=task;
     LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_C);
   } else

@@ -65,13 +65,13 @@ U0 Song()
       t0=Beat;
       "$WHITE$God said this was a dirge.\n$FG$";
       Play("FqDqDeACqEqEqDqDq",
-      "Gone \0to \0sleep \0for \0the \0fi\0nal \0time.\n\0");
+	    "Gone \0to \0sleep \0for \0the \0fi\0nal \0time.\n\0");
       Play("FqDqDeACqEqEqDqDq",
-      "Gone \0to \0sleep \0for \0the \0fi\0nal \0time.\n\0");
+	    "Gone \0to \0sleep \0for \0the \0fi\0nal \0time.\n\0");
       Play("DqGqFeGFqFqEqEqBq",
-      " \0Ash \0to... \0and \0 \0dust \0to \0dust.\n\0");
+	    " \0Ash \0to... \0and \0 \0dust \0to \0dust.\n\0");
       Play("DqGqFeGFqFqEqEqBq",
-      " \0Ash \0to... \0and \0 \0dust \0to \0dust.\n\0");
+	    " \0Ash \0to... \0and \0 \0dust \0to \0dust.\n\0");
     }
   } catch
     PutExcept;

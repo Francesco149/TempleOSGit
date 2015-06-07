@@ -1,7 +1,7 @@
 //**WARNING:** Don't return out of a catch{}.  This
 //might get fixed.
 
-//You can use [C:/Kernel/Except.CPP.Z,46] PutExcept() in a catch statement
+//You can use [C:/Kernel/KExcept.CPP.Z,45] PutExcept() in a catch statement
 //and it will report args.
 Bool Prompt(I64 i)
 {
@@ -24,7 +24,7 @@ U0 D2()
     if (Prompt(4)) throw('Point4');
   } catch {
     "D2 handler\n"
-    "Ch:%c:%P\n",Fs->except_ch,Fs->except_caller1;
+	  "Ch:%c:%P\n",Fs->except_ch,Fs->except_caller1;
     if (Fs->except_ch=='Point1') {
       "Caught in D2\n";
       Fs->catch_except=TRUE;
@@ -39,7 +39,7 @@ U0 Demo()
     if (Prompt(3)) throw('Point3');
   } catch {
     "Demo handler\n"
-    "Ch:%c:%P\n",Fs->except_ch,Fs->except_caller1;
+	  "Ch:%c:%P\n",Fs->except_ch,Fs->except_caller1;
     Fs->catch_except=TRUE;
   }
 }

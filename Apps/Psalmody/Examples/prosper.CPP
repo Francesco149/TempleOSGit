@@ -17,9 +17,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   F64 dt=Beat-t0;
   dc->flags|=DCF_TRANSFORMATION;
-  GrRotZEqu(dc->r,0.25*Sin(2*dt));
-  GrScaleEqu(dc->r,1.5+0.5*Sin(dt/3));
-  GrSetRotMat(dc,dc->r);
+  Mat4x4RotZ(dc->r,0.25*Sin(2*dt));
+  Mat4x4Scale(dc->r,1.5+0.5*Sin(dt/3));
+  DCMat4x4Set(dc,dc->r);
   if (ToI64(dt)&1)
     Sprite3B(dc,12.0*dt%task->pix_width,20,0,__BIN_1);
   else
@@ -39,13 +39,14 @@ U0 Song()
     while (!ScanKey) {
       t0=Beat;
       Play("3qG2G3DBsDCDCqRCG",
-	  "$CL$$BG,9$\n\n$BG,2$$CM-LE,3$$FG,14$Baa, \0the \0grass \0is \0green.\n\0 \0 \0 \0 \0 \0 \0");
+	    "$CL$$BG,9$\n\n$BG,2$$CM-LE,3$$FG,14$Baa, \0"
+	    "the \0grass \0is \0green.\n\0 \0 \0 \0 \0 \0 \0");
       Play("G2G3DBsDCDCqRCG",
-	  "This \0must \0be \0a \0dream.\n\0 \0 \0 \0 \0 \0 \0");
+	    "This \0must \0be \0a \0dream.\n\0 \0 \0 \0 \0 \0 \0");
       Play("EeGFqBBDA2eGGqR",
-	  "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\n\0 \0 \0");
+	    "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\n\0 \0 \0");
       Play("3EeGFqBBDA2eGGqR",
-	  "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\n\0 \0 \0");
+	    "Thanks, \0my \0 \0shep\0herd.  \0You \0are \0good.\n\0 \0 \0");
     }
   } catch
     PutExcept;

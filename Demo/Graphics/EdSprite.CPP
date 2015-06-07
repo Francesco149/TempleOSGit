@@ -50,9 +50,7 @@ can be cut/pasted from there.
 
 #define NUM	12
 
-U8 *in_img[NUM]=
-{__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,
- __BIN_7,__BIN_8,__BIN_9,__BIN_10,__BIN_11,__BIN_12};
+U8 *in_img[NUM]={__BIN_1,__BIN_2,__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_7,__BIN_8,__BIN_9,__BIN_10,__BIN_11,__BIN_12};
 
 U0 OutLine()
 {
@@ -79,13 +77,13 @@ U0 OutLine()
 	      break;
 	    }
 	  }
-	  }
+	}
 
     out_img=DC2Sprite(dc);
     '\n';
     Sprite(out_img);
     '\n\n\n\n';
- 
+
     DCDel(dc);
     Free(out_img);
   }

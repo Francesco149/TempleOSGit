@@ -50,13 +50,16 @@ U0 Song()
     while (!ScanKey) {
       t0=Beat;
       DocClear;
-      "$WHITE$$BG,CYAN$\n";
+      "$FD,WHITE$$BG,CYAN$\n";
       Play("3qEsGEGEqDsCCCCqBsDEDEqFG",
-	    "Lord, \0there's \0 \0a \0 \0storm \0u\0 \0 \0 \0pon \0the \0 \0 \0 \0sea.\n\0 \0");
+	    "Lord, \0there's \0 \0a \0 \0storm \0u\0 \0 \0 \0"
+	    "pon \0the \0 \0 \0 \0sea.\n\0 \0");
       Play("EsGEGEqDsCCCCqBsDEDEqFG",
-	    "Lord, \0there's \0 \0a \0 \0storm \0u\0 \0 \0 \0pon \0the \0 \0 \0 \0sea.\n\0 \0");
+	    "Lord, \0there's \0 \0a \0 \0storm \0u\0 \0 \0 \0"
+	    "pon \0the \0 \0 \0 \0sea.\n\0 \0");
       Play("GEC2G3etB2G3FGGEDBBeBE",
-	    "Re\0lax \0fel\0las.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	    "$RED$Re\0lax \0fel\0las.$FG$\n\0"
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qGEC2G3etB2G3FGGEDBBeBE",
 	    "(Sea \0be\0came \0glass.)\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
     }

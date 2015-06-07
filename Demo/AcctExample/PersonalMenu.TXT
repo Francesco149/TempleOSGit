@@ -421,7 +421,3 @@ Test Suite
 `#include "::/Misc/OSTestSuite";
 `
 
-Psalmody /Home
-`#include "::/Apps/Psalmody/Load";Psalmody("::/Home/Psalmody");
-`
- 

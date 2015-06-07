@@ -3,8 +3,8 @@
 public U8 *DBlk(I64 blk,Bool write=FALSE)
 {//Dump disk block. Optionally, write.
 //If you set write to TRUE, the block will
-//be written when you press <ESC>.
-//See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
+  //be written when you press <ESC>.
+  //See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
   U8 *buf=MAlloc(BLK_SIZE);
 
   RBlks(Fs->cur_dv,buf,blk,1);
@@ -22,9 +22,9 @@ public U8 *DBlk(I64 blk,Bool write=FALSE)
 public U8 *DCluster(I64 c,Bool write=FALSE,I64 num=0)
 {//Dump disk cluster. Optionally, write.
 //If you set write to TRUE, the cluster will
-//be written when you press <ESC>.
-//See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
-//Do [C:/Kernel/Dsk/DskB.CPP.Z,226] Dir("*",TRUE); to get cluster numbers of files.
+  //be written when you press <ESC>.
+  //See [C:/Demo/Dsk/DskRaw.CPP.Z,1].
+  //Do [C:/Kernel/Dsk/DskB.CPP.Z,228] Dir("*",TRUE); to get cluster numbers of files.
   U8 *buf=MAlloc(Fs->cur_dv->spc<<BLK_SIZE_BITS);
   c=ClusterNumNext(Fs->cur_dv,c,num);
   RClusters(Fs->cur_dv,buf,c,1);
@@ -43,7 +43,7 @@ public U8 *DCluster(I64 c,Bool write=FALSE,I64 num=0)
 public U8 *Dump(U8 *filename,Bool write=FALSE)
 {//Dump file. Optionally, write.
 //If you set write to TRUE, the file will
-//be written when you press <ESC>.
+  //be written when you press <ESC>.
   U8 *buf;
   I64 size;
   if (buf=FileRead(filename,&size)) {
@@ -78,7 +78,7 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
 }
 
 public I64 FileCnt(CDirEntry *tempde)
-{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2454] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2461] CDirEntry tree.
   I64 cnt=0;
   while (tempde) {
     if (tempde->attr&RS_ATTR_DIR)
@@ -95,8 +95,8 @@ public I64 FileCnt(CDirEntry *tempde)
 public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
 {//Copy files.
 //If the name ends in ".Z", it will
-//be stored compressed.  If not ".Z"
-//it will be stored uncompressed.
+  //be stored compressed.  If not ".Z"
+  //it will be stored uncompressed.
   Bool result=TRUE;
   CFileAccess *fa;
   CDirEntry *tempde,*tempde1;
@@ -151,7 +151,8 @@ I64 CopyTree2(CDirEntry *tempde,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
   }
   return result;
 }
-public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask,Bool no_mask=TRUE)
+public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask,
+	Bool no_mask=TRUE)
 {//Copy directory tree.
 //Returns the count of copied files (not dirs).
   CFileAccess *fa;
@@ -240,7 +241,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
   CDrv *dv=Let2Drv(*filename);
   CDirEntry de;
   U8 *cur_dir=StrNew(filename),
-     buf[136];
+	buf[136];
   if (FileFind(filename,&de,FUF_JUST_FILES)) {
     Free(de.full_name);
     if (!StrCmp(attr,"+?"))
@@ -260,14 +261,15 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
   } else
     PrintErr("File not found.\n");
 }
-public U0 Touch(U8 *files_find_mask,U8 *attr="+?",U8 *fu_flags=NULL,CDate cdt=MIN_I64)
+public U0 Touch(U8 *files_find_mask,U8 *attr="+?",
+	U8 *fu_flags=NULL,CDate cdt=MIN_I64)
 {/*Touch file attributes and DateTime.
 Default lists attributes.
 attr: "+?" =show current
-	"+T" =resident
-	[C:/Kernel/KernelA.HPP.Z,2428] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,110] ST_FILE_ATTRS
+"+T" =resident
+[C:/Kernel/KernelA.HPP.Z,2434] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
 To Set DateL:
-	Touch(filename,"",,datetime);
+Touch(filename,"",,datetime);
 */
   I64 fuf_flags=0;
   CDirEntry *tempde,*tempde1;
@@ -374,7 +376,8 @@ I64 Size1(CDirEntry *tempde,I64 *_fuf_flags,I64 round_to)
   CDrv *dv;
   while (tempde) {
     if ((i=tempde->size) && Bt(_fuf_flags,FUf_EXPAND) &&
-       !(tempde->attr&RS_ATTR_DIR) && FileAttr(tempde->name)&RS_ATTR_COMPRESSED) {
+	  !(tempde->attr&RS_ATTR_DIR) &&
+	  FileAttr(tempde->name)&RS_ATTR_COMPRESSED) {
       dv=Let2Drv(*tempde->full_name);
       RBlks(dv,buf,Cluster2Blk(dv,tempde->cluster),1);
       i=(&buf)(CArcCompress *)->expanded_size;
@@ -392,7 +395,7 @@ I64 Size1(CDirEntry *tempde,I64 *_fuf_flags,I64 round_to)
 public I64 Size(U8 *files_find_mask="/*",U8 *fu_flags=NULL,I64 round_to=0)
 {//Total size of files in mask. "+x" for expanded size.
 //Does not include directory size of base directory, but
-//does include size of sub directories.
+  //does include size of sub directories.
   I64 fuf_flags=0,result=0;
   CDirEntry *tempde1=NULL;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r");

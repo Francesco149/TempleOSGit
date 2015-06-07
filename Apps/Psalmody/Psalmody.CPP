@@ -3,17 +3,17 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/Kernel/KernelA.HPP.Z,3001] CCtrl type for the tempo/stacatto
+  2) The [C:/Kernel/KernelA.HPP.Z,3010] CCtrl type for the tempo/stacatto
 sliders.
 
-  3) The active [C:/Kernel/KernelA.HPP.Z,1321] CDoc sprite buttons with
+  3) The active [C:/Kernel/KernelA.HPP.Z,1323] CDoc sprite buttons with
 macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
 This uses four types of output
 
-  1) The [C:/Kernel/KernelA.HPP.Z,1321] CDoc for the text and buttons and
+  1) The [C:/Kernel/KernelA.HPP.Z,1323] CDoc for the text and buttons and
 kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.
@@ -48,12 +48,12 @@ class PsmNote
   U8 *word;
   I64 type,flags;
   union {
-     I64 note;
-     I64 meter_top;
+    I64 note;
+    I64 meter_top;
   };
   union {
-     I64 octave;
-     I64 meter_bottom;
+    I64 octave;
+    I64 meter_bottom;
   }
   I64 duration,width;
   U8 ascii[32];
@@ -69,7 +69,7 @@ class PsmCtrl
   PsmNote clipboard;
   CMenuEntry *incomplete_entry,*record_entry;
   I64 screen_x,
-     tool;
+	tool;
   PsmNote *cur_note;
   CDC *dc2;
   Bool playing;

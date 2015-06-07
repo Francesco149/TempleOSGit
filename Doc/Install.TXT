@@ -49,7 +49,7 @@ You'll need to do a [C:/Adam/Boot/BootIns.CPP.Z,125] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/Kernel/Dsk/DskC.CPP.Z,140] Fmt('D',TRUE,FALSE,DVT_FAT32)
+2) [C:/Kernel/Dsk/DskC.CPP.Z,141] Fmt('D',TRUE,FALSE,DVT_FAT32)
   This command formats a drive with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
   RedSea file system type.  Use 
 the drive letter of the partition in place of 'D'.

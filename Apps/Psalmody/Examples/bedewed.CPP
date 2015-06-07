@@ -19,9 +19,11 @@ U0 Song()
     "$WW+H,1$";
     while (!ScanKey) {
       Play("3eEGqACetCFGeEFqGetGFEqA",
-	    "Look \0at \0that!  \0 \0 \0 \0Dew \0 \0 \0on \0flow\0 \0 \0ers.\n\0");
+	    "Look \0at \0that!  \0 \0 \0 \0Dew \0 \0 \0"
+	    "on \0flow\0 \0 \0ers.\n\0");
       Play("eEGqACetCFGeEFqGetGFEqA",
-	    "Look \0at \0that!  \0 \0 \0 \0Dew \0 \0 \0on \0flow\0 \0 \0ers.\n\0");
+	    "Look \0at \0that!  \0 \0 \0 \0Dew \0 \0 \0"
+	    "on \0flow\0 \0 \0ers.\n\0");
       Sprite(__BIN_1);
       "$CM,0,7$";
       Play("eDEqEAEFCCetCAD",

@@ -56,7 +56,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0)
-{//MAlloc [C:/Kernel/StrA.CPP.Z,502] StrUtil().
+{//MAlloc [C:/Kernel/StrA.CPP.Z,519] StrUtil().
   U8 *dst=StrNew(src),*dst2,*temp;
   StrUtil(dst,flags);
   if (flags & SUF_T2S) {
@@ -101,7 +101,7 @@ Bool YorN()
 }
 
 I64 PressAKey()
-{//Print "Press a key" and wait for non-zero [C:/Kernel/KernelA.HPP.Z,3383] ASCII key.
+{//Print "Press a key" and wait for non-zero [C:/Kernel/KernelA.HPP.Z,3389] ASCII key.
   "$BK,1$PRESS A KEY$BK,0$\n";
   return GetChar(,FALSE);
 }
@@ -140,7 +140,8 @@ ScanFlags(&flags,"R\0L\0Dump\0Scan\0","+Dump-R"); //Sets Bit#2, Clears Bit#0.
 	src++;
 	if (*src) {
 	  ptr=buf;
-	  while (*src && *src!='+' && *src!='-' && *src!=CH_SPACE && *src!=CH_SHIFT_SPACE)
+	  while (*src && *src!='+' && *src!='-' &&
+		*src!=CH_SPACE && *src!=CH_SHIFT_SPACE)
 	    *ptr++=*src++;
 	  *ptr=0;
 	  i=LstMatch(buf,lst);
@@ -155,7 +156,8 @@ ScanFlags(&flags,"R\0L\0Dump\0Scan\0","+Dump-R"); //Sets Bit#2, Clears Bit#0.
 	src++;
 	if (*src) {
 	  ptr=buf;
-	  while (*src && *src!='+' && *src!='-' && *src!=CH_SPACE && *src!=CH_SHIFT_SPACE)
+	  while (*src && *src!='+' && *src!='-' &&
+		*src!=CH_SPACE && *src!=CH_SHIFT_SPACE)
 	    *ptr++=*src++;
 	  *ptr=0;
 	  i=LstMatch(buf,lst);

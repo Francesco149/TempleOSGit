@@ -22,19 +22,23 @@ U0 Song()
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("3qDCDeEGBDetBBFqDeDB",
-	    "God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0shame.\n\0 \0 \0 \0");
+	    "God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0"
+	    "shame.\n\0 \0 \0 \0");
       '\n';
       Sprite(__BIN_1);
       '\n\n\n\n\n';
       Play("qDCDeEGBDetBBFqDeDB",
-	    "God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0shame.\n\0 \0 \0 \0");
+	    "God, \0my \0breast \0plate, \0 \0won't \0be \0put \0to \0"
+	    "shame.\n\0 \0 \0 \0");
       '\n\n\n\n\n';
       Sprite(__BIN_1);
       '\n\n\n\n\n';
       Play("FAetAFDeDFqAetDFBeDFetFDEqD",
-	    "Mocked \0 \0 \0a \0lit\0tle, \0 \0 \0badge \0 \0of \0 \0 \0cour\0 \0 \0age.\n\0");
+	    "Mocked \0 \0 \0a \0lit\0tle, \0 \0 \0badge \0"
+	    " \0of \0 \0 \0cour\0 \0 \0age.\n\0");
       Play("eFAetAFDeDFqAetDFBeDFetFDEqD",
-	    "Mocked \0 \0 \0a \0lit\0tle, \0 \0 \0badge \0 \0of \0 \0 \0cour\0 \0 \0age.\n\0");
+	    "Mocked \0 \0 \0a \0lit\0tle, \0 \0 \0badge \0"
+	    " \0of \0 \0 \0cour\0 \0 \0age.\n\0");
     }
   } catch
     PutExcept;

@@ -78,7 +78,7 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
       gx=x;gy=y;
       if (tempt->dx<0) {
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-	GrSetSymmetry(dc,x,y,x,y+1);
+	DCSymmetrySet(dc,x,y,x,y+1);
 	gx-=13;
 	gy-=7;
       } else {
@@ -96,7 +96,7 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
     } else {
       if (tempt->dx<0) {
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-	GrSetSymmetry(dc,x,y,x,y+1);
+	DCSymmetrySet(dc,x,y,x,y+1);
       } else
 	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
       temps=SpriteInterpolate(imgs[tt%FRAMES],imgs[(tt+1.0)%FRAMES],tt%1.0);
@@ -111,9 +111,10 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   Trooper *tempt=tr;
   I64 i,j,cnt[2],
-      x=ip.pos.x-task->pix_left-task->scroll_x,y=ip.pos.y-task->pix_top-task->scroll_y;
+	x=ip.pos.x-task->pix_left-task->scroll_x,
+	y=ip.pos.y-task->pix_top-task->scroll_y;
   Bool repulsive=ip.throttle>0 ^^ ip.rb,
-	 active=!winmgr.grab_scroll && (ip.lb||ip.rb);
+	active=!winmgr.grab_scroll && (ip.lb||ip.rb);
 
   for (j=0;j<2;j++) {
     cnt[j]=0;
@@ -219,7 +220,9 @@ U0 ResolveFiring()
 U0 UpdateHumanVelocities()
 {
   F64 intensity;
-  I64 i,j,x=ip.pos.x-Fs->pix_left-Fs->scroll_x,y=ip.pos.y-Fs->pix_top-Fs->scroll_y,dx,dy,d;
+  I64 i,j,dx,dy,d,
+	x=ip.pos.x-Fs->pix_left-Fs->scroll_x,
+	y=ip.pos.y-Fs->pix_top-Fs->scroll_y;
   Bool active=!winmgr.grab_scroll&&(ip.lb||ip.rb);
   Trooper *tempt=&tr[0][0];
   if (tap_mode) {
@@ -304,16 +307,16 @@ U0 BattleLines()
   Preempt;
 
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Restart(,'\n');"
-  "  TimeLapse(,'1');"
-  "  TapMode(,'2');"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  TimeLapse(,'1');"
+	"  TapMode(,'2');"
+	"}"
+	);
   AutoComplete;
   WinMax;
   WinBorder;
@@ -328,7 +331,8 @@ U0 BattleLines()
 	"Attract or repel with\n"
 	"left or right button.\n\n");
 
-  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER-WIF_FOCUS_TASK_MENU;
+  Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
+	-WIF_SELF_BORDER-WIF_FOCUS_TASK_MENU;
   try {
     while (TRUE) {
       switch (ScanChar) {

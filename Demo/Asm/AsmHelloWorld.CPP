@@ -23,8 +23,6 @@ asm {
 //Opcodes are slightly different to make writing my x86_64 assembler easier.
 //See [C:/Compiler/OpCodes.TXT.Z,1].
 
-USE64	//Defaults to 64, but this is a good habit.
-
 MY_WORLD_MSG:
 //Define U8 does not put terminating zeros
 //on strings.
@@ -33,7 +31,7 @@ MY_WORLD_MSG:
 //My convention is to put an underscore
 //on C callable asm routines.
 _HELLO_WORLD::
-	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1703] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1704] REG_NON_PTR_MASK
 	MOV	RCX,10
 @@05:	MOV	RAX,RCX
 	CALL	PUT_HEX_U8

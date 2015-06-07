@@ -33,7 +33,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   GrLine3(dc,2-h,2-v,0,2-h,MAP_HEIGHT-3-v,0);
   GrLine3(dc,MAP_WIDTH-3-h,2-v,0,MAP_WIDTH-3-h,MAP_HEIGHT-3-v,0);
 
-//Check bounds if you wish better performance.
+  //Check bounds if you wish better performance.
   for (i=0;i<NUM_TREES;i++)
     Sprite3(dc,tree_x[i]-h,tree_y[i]-v,0,__BIN_1);
 }
@@ -61,7 +61,7 @@ U0 ScrollBars()
   Fs->vert_scroll.pos=0;
   GetChar(,FALSE);
   SettingsPop;
-  //If you care, you might want to
+//If you care, you might want to
   //save the original state of the
   //scroll bars.
 }

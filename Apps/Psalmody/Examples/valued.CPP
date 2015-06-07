@@ -21,15 +21,15 @@ U0 Song()
   music.tempo=2.5;
   try {
     while (!ScanKey) {
-	"$GREEN$God talking...\n$FG$";
-	Play("3qGDFAFAAF",
-	  "Pre\0ci\0ous \0 \0one,\n\0 \0 \0My \0");
-	Play("GDFAFAAF",
-	  "pre\0ci\0ous \0 \0one,\n\0 \0 \0He\0");
-	Play("DEAF2GG3EB",
-	  "ar \0my \0 \0word,\n\0 \0 \0For \0your \0");
-	Play("DEAF2GG3EB",
-	  "own \0 \0 \0good.\n\0 \0 \0 \0 \0");
+      "$GREEN$God talking...\n$FG$";
+      Play("3qGDFAFAAF",
+	    "Pre\0ci\0ous \0 \0one,\n\0 \0 \0My \0");
+      Play("GDFAFAAF",
+	    "pre\0ci\0ous \0 \0one,\n\0 \0 \0He\0");
+      Play("DEAF2GG3EB",
+	    "ar \0my \0 \0word,\n\0 \0 \0For \0your \0");
+      Play("DEAF2GG3EB",
+	    "own \0 \0 \0good.\n\0 \0 \0 \0 \0");
     }
   } catch
     PutExcept;

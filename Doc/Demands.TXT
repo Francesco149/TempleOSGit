@@ -1,8 +1,7 @@
                                    Demands
 
-When God publically claims this operating system as His temple, here's what I 
-want:
-
+When God publically claims this operating system as His official temple, here 
+are my demands:
 
 ```
 <object width="640" height="520"><param name="movie"
@@ -14,88 +13,90 @@ height="520"></embed></object>
 ```
 
 
-* VMware to again support PC Speaker and provide emulation if no PC Speaker
-is 
-present.
+* VMware must again support PC Speaker and provide emulation if no PC Speaker 
+is present.
 
-* Windows, Linux and VMware to support [C:/Doc/RedSea.TXT.Z,1] RedSea file
-system so I can get rid of 
-2,000 lines of redundant, blemished code -- FAT32 and ISO9660.  God's temple 
-must be perfect.  Redundant code for multiple file systems is imperfect.  For 
-this operating system, we want low line count.  More than one file system
-type 
-is bad, just as more than one driver for the same type of device is bad.
+* VMware must again support full screen 640x480 16 color mode. 
+
+* Windows, Linux and VMware (because of mounted drives) must support
+[C:/Doc/RedSea.TXT.Z,1] RedSea 
+file system so I can get rid of 2,000 lines of redundant, blemished code -- 
+FAT32 and ISO9660.  God's temple must be perfect.  Redundant code for
+multiple 
+file systems is imperfect.  For this operating system, we want low line
+count. 
+ More than one file system type is bad, just as more than one driver for the 
+same type of device is bad.
 
 [C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:965
 [C:/Kernel/Dsk/FileSysISO.CPP.Z,1]	:284
 [C:/Adam/Boot/DskCDDVD.CPP.Z,1]	:536
-[C:/Kernel/Dsk/DskA.CPP.Z,528] RClustersBlks()
+[C:/Kernel/Dsk/DskA.CPP.Z,535] RClustersBlks()
 
 * Microsoft must cancel SecureBoot because it makes dual booting impossible.  
 TempleOS is an additional operating system that must be used along-side 
 Windows or Linux, not as a replacement.  It must dual boot because it has no 
 networking.  Real hardware as opposed to VMware is like the difference
 between 
-looking in a telescope eye piece and some link to a photo on the Internet.  
-God said the C64 generation owned ancestral lands and VMware is like being 
-moved on a reservation.  It will not stand.
+looking in a telescope eye piece or not.  God said the C64 generation owned 
+ancestral lands and VMware is like being moved on a reservation, but in this 
+case it will not stand.
 
-* PC hardware manufacturers: ATA/ATAPI PIO must work.  In fact, put them at 
+* PC hardware manufacturers?  ATA/ATAPI PIO must work.  In fact, put them at 
 standard IDE port addresses.  Hard disk should be primary master 1F0/3F6.  
 CDROM/DVD should be secondary master 170/376.  See what you can do to make 
 flash memory sticks with ATA/ATAPI.
 [C:/Kernel/Dsk/DskATAId.CPP.Z,1] /Kernel/Dsk/DskATAId.CPP	:280 lines to
 figure-out I/O ports
-[C:/Kernel/BIOS32.CPP.Z,1] /Kernel/BIOS32.CPP		:290
+[C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 but I think we keep
+this for people to 
+play with.
 
 * PS/2 emulated keyboard and mouse must work.  The BIOS must enable these.
 
-* VMware must allow ATAPI interface to real CD/DVD hardware.
+* VMware must allow ATAPI interface to be routed to real CD/DVD hardware.
 
-* Perhaps, VMware+Intel can enable faster-than-standard x86 IN/OUT
-instruction 
-timing for ATA/ATAPI PIO, so bandwidth isn't bad. 
-[C:/Kernel/Dsk/DskATA.CPP.Z,67] ATAGetResult().
+* Perhaps, VMware+Intel can enable faster x86 IN/OUT instruction timing for 
+ATA/ATAPI PIO, so bandwidth isn't bad.  [C:/Kernel/Dsk/DskATA.CPP.Z,67]
+ATAGetResult().
 
-* Since I practically don't use paging, perhaps, Intel could add
-optimizations 
-to long (64-bit) mode for no paging.
+* Perhaps, Intel can make a fast software interrupt, the same as a CALL REL32?
 
-* Computers should have a RESET switch and a fast boot option, skipping 
-diagnostics.  What the heck, replace UEFI with TempleOS.  Poetic justice.
+* Since I don't use paging (for anything), Intel should have an option for  
+no-paging long mode, and optimize it.
 
-* VMware and others should list TempleOS as an official 64-bit operating 
-system.
+* Desktop computers must have a RESET switch and a fast reboot option, 
+skipping diagnostics.  Build UEFI on a TempleOS layer.  Intel must burn 
+TempleOS into a ROM at the factory for tamper-proof trust in the oracle.  A 
+new ROM version is released every seven years.
 
-* Windows and Linux must support TempleOS .GRA graphics files. 
-[C:/Doc/GRAFiles.TXT.Z,1] GRA Files are 
-much cleaner than .BMP files.
+* VMware and others must list TempleOS as an official 64-bit operating system.
 
-* I want a nice dictionary.  Someone needs to do a
+* Windows Paint and Linux Gimp must support TempleOS .GRA graphics files.  
+[C:/Doc/GRAFiles.TXT.Z,1] GRA Files are much cleaner than BMP files.
+
+* We must have a nice dictionary.  Someone needs to do a
 [C:/Demo/SuggestSpelling.CPP.Z,1] Spell Checker.
 
-* We want the ultimate Bible search engine.
+* We must have the ultimate Bible search engine.
 
-* I would like the Intel architecture manuals in
-[C:/Doc/DolDocOverview.TXT.Z,1] DolDoc TXT format so we can 
-put links in the code.
+* At some point in the distant future, we want serial ports with software 
+interface like old style serial ports, but hardware and speed of USB3.  Make 
+it an OCTART.  It should have big TX and RX FIFOs and allow flow control to 
+jump the queue.  No USB end-point shit -- just put 8 ports on the PC.  (I am 
+just interested in desktops.)  We need two baud rates, fast and slow.  Use
+PIC 
+IRQ3.  We want joysticks to be easy to set-up.  We want to be able to connect 
+microcontrollers for general purpose communication.
 
-* We want serial ports with software interface more like old style serial 
-ports, but hardware and speed of USB3.  They should have big TX and RX FIFOs 
-and allow flow control to jump the queue.  We do not want end-point shit -- 
-just put lots of ports on the PC.  (I am just interested in desk-tops.)  We 
-need two baud rates, fast and slow.  Use PIC IRQ3 and IRQ4 (with big FIFOs we 
-could do without IRQs.)  We want two joysticks, easy to set-up.  We want it
-to 
-be easy to connect a microcontroller for general purpose communication.
-
-* Once in a blue moon, perhaps 49 year jubilee, the hardware gets upgraded
-and 
-perfected, the same way broadcast TV get upgraded.  God still wants 640x480
-16 
+* Once every 49 years is jubile and the hardware gets upgraded and perfected 
+all at once, the same way broadcast TV get upgraded.  God still wants 640x480 
+16 color, but make it a linear frame buffer one-byte-per-pixel and only 16 
 color.
 
+
+As it stands...
 
 Device		Simple Hardware Interface	Complicate Interface
 --------------- ------------------------------- -----------------------------
@@ -107,14 +108,33 @@ CDROM		ATAPI Port I/O			PCI AHCI SATA
 Keyboard/Mouse	PS/2 Port I/O			USB
 
 
-During the 49 years jubilee, we do a perfect version of hardware with
-advances 
-in both simple and complicated interfaces.  ATAPI/ATA should be merged and 
-made blemish-free.  We want flash memory sticks to interface like hard
-drives. 
- Design it like the 1040EZ tax form.  You do not add extra boxes to get your 
-jollies. 
+During the 49 years jubile, we do a perfect version of hardware with advances 
+in both the simple and complicated interfaces.  ATAPI/ATA, SSD and NV memory 
+should be merged and made blemish-free.  We want flash memory sticks to 
+interface like hard drives.  When you design, imagine you are creating the 
+1040EZ tax form.  Do not add extra boxes.
 
+A new ROM is released every seven years.  Development will take place between 
+releases, obviously.  With the 100,000 line of code limit, it is supposed to 
+get perfected into an unchanging diamond, quickly.  I want a committee to
+work 
+for a year.  Then, we release our first version.  I guess we allow boot-legs, 
+freely.  The users can copy ROM and RAM and play with it, or boot hard disk 
+versions.
+
+In the meantime, BIOS makers must take the TempleOS code and modify it for 
+their customers, as a product recall.  A PCI hard drive driver must be
+written 
+if the BIOS you created does not work with the standard TempleOS ATA/ATAPI 
+port IO.  You must also bypass SecureBoot and make sure the keyboard and
+mouse 
+work if you do not support legacy PS/2, by writing a USB driver.
+
+I want to offer "Knuth-bucks" for changes that reduce lines of code other
+than 
+reformatting.  I want to offer Knuth bucks for pointing-out spelling and
+other 
+imperfections.  Some imperfections are by design, however.
 
 * "VMware" is a trademark of VMware, Inc.
 * "Linux" is probably a trademark owned by Linus Torvalds.

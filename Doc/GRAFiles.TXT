@@ -3,6 +3,7 @@ transparency and no palette.  Compression is the standard TempleOS LZW
 compression.
 
 #define DCF_COMPRESSED		1 //This is the only saved flag.
+#define DCF_PALETTE		2
 
 #define TRANSPARENT		0xFF
 #define BLACK			0
@@ -22,15 +23,27 @@ compression.
 #define YELLOW			14
 #define WHITE			15
 
+class CBGR48
+{
+  U16	r,g,b,pad;
+};
+
+CBGR48 gr_palette_std[16]={
+0x000000000000,0x00000000AAAA,0x0000AAAA0000,0x0000AAAAAAAA,
+0xAAAA00000000,0xAAAA0000AAAA,0xAAAA55550000,0xAAAAAAAAAAAA,
+0x555555555555,0x55555555FFFF,0x5555FFFF5555,0x5555FFFFFFFF,
+0xFFFF55555555,0xFFFF5555FFFF,0xFFFFFFFF5555,0xFFFFFFFFFFFF};
+
 class GRAFile
 {
   I32	width;
   I32   width_internal; //Rounded-up to multiple of 8.
   I32   height;
   I32	flags;		//DCF_COMPRESSED? See [C:/Kernel/Compress.CPP.Z,1].
+  CBGR48 palette[16];	//Included if DCF_PALETTE.
   U8	body[];
 };
 
-See [C:/Adam/Gr/GrDC.CPP.Z,288] DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,357]
-GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,322] DCLoad(), and
-[C:/Adam/Gr/GrDC.CPP.Z,368] GRARead().
+See [C:/Adam/Gr/GrDC.CPP.Z,285] DCSave(), [C:/Adam/Gr/GrDC.CPP.Z,378]
+GRAWrite(), [C:/Adam/Gr/GrDC.CPP.Z,337] DCLoad(), and
+[C:/Adam/Gr/GrDC.CPP.Z,389] GRARead().

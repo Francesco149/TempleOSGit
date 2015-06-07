@@ -22,7 +22,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   Sprite3(dc,x,y,0,__BIN_1);
 
   dc->color=ROP_EQU;
-  GrPrint(dc,0,(task->pix_height-FONT_HEIGHT)>>1,"Collisions:%d",dc->collision_cnt);
+  GrPrint(dc,0,(task->pix_height-FONT_HEIGHT)>>1,
+	"Collisions:%d",dc->collision_cnt);
 
   if (!dc->collision_cnt)
     Sprite3(dc,x,y,0,__BIN_1);

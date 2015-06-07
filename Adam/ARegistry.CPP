@@ -53,7 +53,8 @@ public Bool RegWriteBranch(U8 *path,U8 *fmt,...)
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   RegCache;
   unlock_doc=DocLock(sys_registry_doc);
-  if (result=DocTreeFind(sys_registry_doc,path,&tree_branch,&start_indent,&end_indent))
+  if (result=DocTreeFind(sys_registry_doc,path,
+	&tree_branch,&start_indent,&end_indent))
     DocCut(sys_registry_doc,tree_branch,end_indent);
   DocTreeMake(sys_registry_doc,path);
   DocPrint(sys_registry_doc,"%s",buf);
@@ -87,7 +88,7 @@ U0 RegOneTimePopUp(I64 flag_num,U8 *msg)
 {//You're not supposed to make system pop-up flags, only me.
   if (OneTimePopUp(sys_msg_flags,flag_num,msg))
     RegWriteBranch("Adam/SysMsgFlags","sys_msg_flags[0]=0x%X;\n",
-	sys_msg_flags[0]);
+	  sys_msg_flags[0]);
 }
 
 U0 RegInit()

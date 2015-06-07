@@ -1,36 +1,36 @@
  <1> (image)
-[C:/Kernel/SrvCmd.CPP.Z,408] PopUpPrint[C:/Kernel/Task.CPP.Z,365] User[C:/Compiler/CMain.CPP.Z,618] ExePrint
+[C:/Kernel/SrvCmd.CPP.Z,409] PopUpPrint[C:/Kernel/Task.CPP.Z,367] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
 
 
 
-[C:/Kernel/SrvCmd.CPP.Z,384] PopUp[C:/Compiler/CMain.CPP.Z,583] ExePutS
+[C:/Kernel/SrvCmd.CPP.Z,385] PopUp[C:/Compiler/CMain.CPP.Z,571] ExePutS
 
 
 
- [C:/Kernel/KEnd.CPP.Z,128] BSP AdamTask[C:/Kernel/Task.CPP.Z,391] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/Task.CPP.Z,354] UserCmdLine
-
-
-
-
-
-
-[C:/Kernel/Task.CPP.Z,378] SrvTaskCont[C:/Kernel/Task.CPP.Z,332] UserTaskCont
-
-
-
-[C:/Kernel/SrvCmd.CPP.Z,354] SrvCmdsHandler
-
-
-
-[C:/Kernel/SrvCmd.CPP.Z,271] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,271] SrvCmdRun[C:/Kernel/Task.CPP.Z,267] ExeCmdLine[C:/Kernel/Task.CPP.Z,267] ExeCmdLine
+ [C:/Kernel/KEnd.CPP.Z,130] BSP AdamTask[C:/Kernel/Task.CPP.Z,393] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/Task.CPP.Z,356] UserCmdLine
 
 
 
 
-[C:/Kernel/KernelA.HPP.Z,3083] CSrvCmd nodes are one of
-[C:/Kernel/KernelA.HPP.Z,3076] five types.  User applications deal with text
+
+
+[C:/Kernel/Task.CPP.Z,380] SrvTaskCont[C:/Kernel/Task.CPP.Z,334] UserTaskCont
+
+
+
+[C:/Kernel/SrvCmd.CPP.Z,355] SrvCmdsHandler
+
+
+
+[C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun[C:/Kernel/Task.CPP.Z,269] ExeCmdLine[C:/Kernel/Task.CPP.Z,269] ExeCmdLine
+
+
+
+
+[C:/Kernel/KernelA.HPP.Z,3092] CSrvCmd nodes are one of
+[C:/Kernel/KernelA.HPP.Z,3085] five types.  User applications deal with text
 or 
-msgs.  [C:/Kernel/SrvCmd.CPP.Z,271] SrvCmdRun() will call a function, spawn a
+msgs.  [C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun() will call a function, spawn a
 task or execute some text src 
 code.
 
@@ -38,10 +38,10 @@ code.
 #define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,122] TaskMsg()	Post msg 
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/Task.CPP.Z,207] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/Task.CPP.Z,209] Spawn()	Tell MP to spawn task
 
 Several other routines
 `Find("SrvCmdsHandler","::/*");View;`
- include a call to [C:/Kernel/SrvCmd.CPP.Z,354] SrvCmdsHandler() that gives
+ include a call to [C:/Kernel/SrvCmd.CPP.Z,355] SrvCmdsHandler() that gives
 them 
 powerful ability to execute servant cmds.

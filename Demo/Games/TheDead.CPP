@@ -44,7 +44,7 @@ is controled by the editor.
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,j;
-  //<CTRL-t> now to see the [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc place holder
+//<CTRL-t> now to see the [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc place holder
   //where the sprite num is encoded. $IB...$ stands
   //for "insert ptr to binary object".
   Sprite3(dc,x,y,0,__BIN_1);
@@ -75,7 +75,7 @@ U0 SongTask(I64)
   MusicSettingsRst;
   while (TRUE) {
     Play("qDqDsDCDCetBCBqCqCqCqCqDqDsDCDCetBCBqCqCqCqCqCq"
-	 "CsCCCCetCCBeBBeBBqBqBqCqCsCCCCetCCBeBBeBBqBqB");
+	  "CsCCCCetCCBeBBeBBqBqBqCqCsCCCCetCCBeBBeBBqBqB");
   }
 }
 
@@ -85,16 +85,16 @@ U0 TheDead()
   Bool gun_on=FALSE;
 
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Fire(,CH_SPACE);"
-  "  Up(,,SC_CURSOR_UP);"
-  "  Down(,,SC_CURSOR_DOWN);"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Fire(,CH_SPACE);"
+	"  Up(,,SC_CURSOR_UP);"
+	"  Down(,,SC_CURSOR_DOWN);"
+	"}"
+	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   WinMax;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
@@ -107,12 +107,12 @@ U0 TheDead()
   try {
     do {
       if (msg_code=ScanMsg(&a1,&a2,1<<MSG_KEY_DOWN | 1<<MSG_KEY_UP)) {
-      //With [C:/Doc/CharOverview.TXT.Z,1] keyboard msgs, the two msg args
-      //are the scan code and ascii val for the key.
+//With [C:/Doc/CharOverview.TXT.Z,1] keyboard msgs, the two msg args
+	//are the scan code and ascii val for the key.
 	sc=a2; ch=a1;
 
 	if (msg_code==MSG_KEY_DOWN) {
-	//The low byte of the scan code identifies the key.
+//The low byte of the scan code identifies the key.
 	  if (sc.u8[0]==SC_CURSOR_DOWN) {
 	    y+=10;
 	    if (y>GR_HEIGHT-30)
@@ -122,11 +122,11 @@ U0 TheDead()
 	    if (y<0)
 	      y=0;
 	  } else if (sc.u8[0]==SC_CURSOR_RIGHT ||
-	      ch==CH_SPACE)
+		ch==CH_SPACE)
 	    gun_on=TRUE;
 	} else if (msg_code==MSG_KEY_UP) {
 	  if (sc.u8[0]==SC_CURSOR_RIGHT ||
-	      ch==CH_SPACE)
+		ch==CH_SPACE)
 	    gun_on=FALSE;
 	}
       }
@@ -142,7 +142,7 @@ U0 TheDead()
 	  while (i1!=dead_in) {
 	    j1=i1++ &(MAX_DEAD-1);
 	    if (gy[j1]<=by[j]<=gy[j1]+38 &&
-		gx[j1]<=bx[j]<=gx[j1]+40)
+		  gx[j1]<=bx[j]<=gx[j1]+40)
 	      g_dead[j1]=TRUE;
 	  }
 	}

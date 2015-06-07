@@ -3,7 +3,7 @@
 //about the same as buttons, but don't have a border.
 
 I64 PopUpFreq()
-{//See also [C:/Adam/DolDoc/DocPopUp.CPP.Z,649] PopUpRangeI64()
+{//See also [C:/Adam/DolDoc/DocPopUp.CPP.Z,651] PopUpRangeI64()
   I64 i;
   CDoc *doc=DocNew;
   DocPrint(doc,"$TX+CX,\"Set Freq\"$\n" //Centered text
@@ -40,9 +40,9 @@ U0 MenuButton()
     else
       "\n$BT,\"Snd Off\",LE=MU_SND_OFF$\n\n\n";
     "\n$BT,\"Set Freq\",LE=MU_SET_FREQ$\n\n\n"
-    "\n$BT,\"Nothing\",LE=MU_NOTHING$\n\n\n"
-    "\n$BT,\"Done\",LE=DOCM_CANCEL$\n\n\n";
-    i=DocMenuDo(DocPut);
+	  "\n$BT,\"Nothing\",LE=MU_NOTHING$\n\n\n"
+	  "\n$BT,\"Done\",LE=DOCM_CANCEL$\n\n\n";
+    i=DocMenu(DocPut);
     DocBottom;
     switch (i) {
       case MU_NOTHING:
@@ -67,7 +67,7 @@ U0 MenuButton()
     }
   } while (!done);
   DocPut->flags=DocPut->flags&~DOCF_FORM |
-		     old_flags & DOCF_FORM;
+	old_flags & DOCF_FORM;
   DocClear;
   Snd(0);
 }

@@ -13,7 +13,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 U0 KeyDownBitMapDemo()
 {
-  //This conversion routine is slow.
+//This conversion routine is slow.
   I64 i_sc=Char2ScanCode('i');
 
   "Press and hold $GREEN$'i'$FG$.\n";
@@ -23,11 +23,11 @@ U0 KeyDownBitMapDemo()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
 
-//[C:/Kernel/KernelA.HPP.Z,2890] kbd.down_bitmap is indexed with the
-//merged scan code.  (left shift and
-//right shift combined for example.)
-//[C:/Kernel/KernelA.HPP.Z,2890] kbd.down_bitmap2 is indexed with the
-//distinct scan code.  See [Char,1] Char and [C:/Kernel/KernelA.HPP.Z,3471] Scan Codes.
+  //[C:/Kernel/KernelA.HPP.Z,2899] kbd.down_bitmap is indexed with the
+  //merged scan code.  (left shift and
+  //right shift combined for example.)
+  //[C:/Kernel/KernelA.HPP.Z,2899] kbd.down_bitmap2 is indexed with the
+  //distinct scan code.  See [Char,1] Char and [C:/Kernel/KernelA.HPP.Z,3477] Scan Codes.
 
   while (Bt(kbd.down_bitmap,i_sc)) {
     x++;

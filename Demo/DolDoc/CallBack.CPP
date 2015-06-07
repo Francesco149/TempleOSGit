@@ -1,8 +1,8 @@
 U8 *tSCB(CDoc *,CDocEntry *,CTask *mem_task)
 {//This is called by the window mgr.
 //Things would get corrupted
-//if the window mgr used it's own
-//heap, so we use the owning task's heap.
+  //if the window mgr used it's own
+  //heap, so we use the owning task's heap.
   U8 *st=MAlloc(64,mem_task);
   CDate cdt=tS*CDATE_FREQ;
 //Doesn't have to be fixed width!!
@@ -26,22 +26,22 @@ U0 DoIt()
   DocLock(bdoc);
   DocBottom(bdoc);  //Ins at the bottom
   DocPrint(bdoc,"$RED$$CM+BY+LX,5,-3$");
-//The [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint() routine returns the addr of the last entry.
+//The [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint() routine returns the addr of the last entry.
   doc_e=DocPrint(bdoc,"$TX+TC,\" \"$");
 //The TC flag is "has tag callback".
 
-//Flags are explained here:
-//[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
-//[C:/Kernel/KernelA.HPP.Z,1030] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
+  //Flags are explained here:
+  //[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
+  //[C:/Kernel/KernelA.HPP.Z,1032] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
   doc_e->tag_cb=&tSCB;
   DocPrint(bdoc,"$FG$");
   DocUnlock(bdoc);
 
-//**WARNING:** If you use the put_doc you
-//run the risk of the user pressing
-//<CTRL-t> or using the clipboard, both
-//of which will crash.	So, you might want
-//to use the border_doc.
+  //**WARNING:** If you use the put_doc you
+  //run the risk of the user pressing
+  //<CTRL-t> or using the clipboard, both
+  //of which will crash.	So, you might want
+  //to use the border_doc.
 
   DocLock(pdoc);
   DocPrint(pdoc,"$LTRED$");
@@ -50,9 +50,9 @@ U0 DoIt()
   DocPrint(pdoc,"$FG$");
   DocUnlock(pdoc);
 
-//Send carriage return, new line, so
-//that the timer string is not part
-//of the next cmd on the cmd line.
+  //Send carriage return, new line, so
+  //that the timer string is not part
+  //of the next cmd on the cmd line.
   '\n';
 }
 

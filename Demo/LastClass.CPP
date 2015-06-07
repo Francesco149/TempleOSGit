@@ -24,10 +24,10 @@ StructName(&s);
 StructName(&i);
 PressAKey;
 
-//lastclass is used in [C:/Adam/ADbg.CPP.Z,152] ClassRep() and [C:/Adam/ADbg.CPP.Z,176] ClassRepD().
+//lastclass is used in [C:/Adam/ADbg.CPP.Z,154] ClassRep() and [C:/Adam/ADbg.CPP.Z,179] ClassRepD().
 ClassRepD(Gs);
 PressAKey;
 
 ClassRep(Fs);
 
-//See also [C:/Adam/DolDoc/DocPopUp.CPP.Z,313] DocFormDo(), [C:/Demo/Dsk/BlkDevRep.CPP.Z,1] and [C:/Demo/ClassMeta.CPP.Z,1].
+//See also [C:/Adam/DolDoc/DocPopUp.CPP.Z,316] DocForm(), [C:/Demo/Dsk/BlkDevRep.CPP.Z,1] and [C:/Demo/ClassMeta.CPP.Z,1].

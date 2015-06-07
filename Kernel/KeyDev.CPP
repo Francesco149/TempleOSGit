@@ -27,7 +27,7 @@ U0 PutChars(U64 ch)
 }
 
 U0 PutS(U8 *st)
-{//Use [C:/Kernel/StrPrint.CPP.Z,896] Print(). See [Keyboard Devices/System,1] Keyboard Devices.
+{//Use [C:/Kernel/StrPrint.CPP.Z,898] Print(). See [Keyboard Devices/System,1] Keyboard Devices.
 //Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   I64 ch;
   U8 *ptr;
@@ -64,7 +64,8 @@ U0 KeyDescSet(U8 *fmt,...)
     Yield;  //Makes KeyMap work better.
 }
 
-CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE)
+CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
+	Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE)
 {//Places hook in StdOut chain. See [Keyboard Devices/System,1] Keyboard Devices.
   Bool old_preempt=Preempt;
   CKeyDevEntry *tempp,*tempp1=keydev.put_key_root.last;
@@ -135,6 +136,62 @@ Bool KDInputFilterPutS(U8 *st)
     return FALSE;
 }
 
+U0 CtrlAltDel(I64)
+{
+  LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_DEL);
+}
+
+U0 CtrlAltC(I64)
+{
+  LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_C);
+}
+
+U0 CtrlAltD(I64)
+{
+  if (!IsDbg) {
+    if (Fs==Gs->idle_task)
+      BptS(sys_winmgr_task->rip,sys_winmgr_task);
+    else
+      BptS(*keydev.ctrl_alt_let_ret_addr);
+  }
+}
+
+U0 CtrlAltE(I64)
+{
+  User;
+}
+
+U0 CtrlAltF(I64)
+{
+  VGAFlush;
+}
+
+U0 CtrlAltM(I64)
+{
+  Mute(!IsMute);
+}
+
+U0 CtrlAltT(I64)
+{
+  LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_TAB);
+}
+
+U0 CtrlAltX(I64)
+{
+  LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_X);
+}
+
+U0 CtrlAltLetCBSet(U8 ch,U0 (*fp_handler)(I64 sc),U8 *desc,Bool in_irq=FALSE)
+{//Set callback for <CTRL-ALT-letter>.
+  ch=ToUpper(ch)-'A';
+  if (ch<26) {
+    keydev.fp_ctrl_alt_let_cbs[ch]=fp_handler;
+    Free(keydev.ctrl_alt_let_descs[ch]);
+    keydev.ctrl_alt_let_descs[ch]=AStrNew(desc);
+    BEqu(&keydev.ctrl_alt_let_in_irq_flags,ch,in_irq);
+  }
+}
+
 U0 KeyDevInit()
 {
   keydev.fp_ctrl_alt_let_cbs	=CAlloc(26*sizeof(U8 *));
@@ -144,4 +201,11 @@ U0 KeyDevInit()
   QueInit(&keydev.put_key_root);
   KeyDevAdd(&KDInputFilterPutKey,&KDInputFilterPutS,0x40000000,FALSE);
   KeyDevAdd(&KDRawPutKey,&KDRawPutS,0x60000000,FALSE);
+  CtrlAltLetCBSet('C',&CtrlAltC,"Sys/Break Execution",TRUE);
+  CtrlAltLetCBSet('D',&CtrlAltD,"Sys/Enter Debugger",TRUE);
+  CtrlAltLetCBSet('E',&CtrlAltE,"Sys/Spawn New User Task");
+  CtrlAltLetCBSet('F',&CtrlAltF,"Sys/VGA Flush",TRUE);
+  CtrlAltLetCBSet('M',&CtrlAltM,"Sys/Toggle Mute");
+  CtrlAltLetCBSet('T',&CtrlAltT,"Sys/Switch Focus to Next Task",TRUE);
+  CtrlAltLetCBSet('X',&CtrlAltX,"Sys/Kill Focused Task",TRUE);
 }

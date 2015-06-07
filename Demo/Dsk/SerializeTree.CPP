@@ -9,26 +9,26 @@ U0 SerializeTree()
   CDirEntry *tempde=FilesFind("/Demo/*.TXT*",FUF_RECURSE);
   I64 size;
   U8 *ptr;
-  CArcCompress *ac;
+  CArcCompress *arc;
 
-  LineRep1(tempde); //We have [C:/Kernel/KernelA.HPP.Z,2454] CDirEntry.fullname
+  LineRep1(tempde); //We have [C:/Kernel/KernelA.HPP.Z,2461] CDirEntry.fullname
   LineRep2(DocPut,tempde);
   "$GREEN$***************$FG$\n";
   ptr=DirTreeSerialize(tempde,&size);
   DirTreeDel(tempde);
   D(ptr,size);
   "$GREEN$***************:%7d$FG$\n",size;
-  ac=CompressBuf(ptr,size);
+  arc=CompressBuf(ptr,size);
   Free(ptr);
-  D(ac,ac->compressed_size);
+  D(arc,arc->compressed_size);
   "$GREEN$***************:%7d$FG$\n",size;
-  ptr=ExpandBuf(ac);
-  size=ac->expanded_size;
-  Free(ac);
+  ptr=ExpandBuf(arc);
+  size=arc->expanded_size;
+  Free(arc);
   D(ptr,size);
   "$GREEN$***************:%7d$FG$\n",size;
   tempde=DirTreeUnserialize(ptr);
-  LineRep2(DocPut,tempde); //We don't have [C:/Kernel/KernelA.HPP.Z,2454] CDirEntry.fullname
+  LineRep2(DocPut,tempde); //We don't have [C:/Kernel/KernelA.HPP.Z,2461] CDirEntry.fullname
   DirTreeDel(tempde);
 }
 

@@ -3,29 +3,29 @@ U0 Main()
   F64 theta=0,phi=0,omega=0;
   CD3I32 poly[4];
   CDC *dc=DCAlias;
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   dc->flags|=DCF_TRANSFORMATION|DCF_SYMMETRY;
   try {
     while (!ScanChar) {
       DCDepthBufRst(dc);
-      GrSetSymmetry(dc,Fs->pix_width/2,Fs->pix_height/2,
-	ip.pos.x-Fs->pix_left-Fs->scroll_x,
-	ip.pos.y-Fs->pix_top-Fs->scroll_y);
+      DCSymmetrySet(dc,Fs->pix_width/2,Fs->pix_height/2,
+	    ip.pos.x-Fs->pix_left-Fs->scroll_x,
+	    ip.pos.y-Fs->pix_top-Fs->scroll_y);
       dc->color=LTBLUE;
       GrLine(dc,Fs->pix_width/2,Fs->pix_height/2,
-	ip.pos.x-Fs->pix_left-Fs->scroll_x,
-	ip.pos.y-Fs->pix_top-Fs->scroll_y);
- 
-      GrIdentEqu(dc->r);
-      GrRotXEqu(dc->r,omega);
-      GrRotYEqu(dc->r,phi);
-      GrRotZEqu(dc->r,theta);
-      GrSetRotMat(dc,dc->r);
+	    ip.pos.x-Fs->pix_left-Fs->scroll_x,
+	    ip.pos.y-Fs->pix_top-Fs->scroll_y);
+
+      Mat4x4IdentEqu(dc->r);
+      Mat4x4RotX(dc->r,omega);
+      Mat4x4RotY(dc->r,phi);
+      Mat4x4RotZ(dc->r,theta);
+      DCMat4x4Set(dc,dc->r);
 
       dc->x=Fs->pix_width/2;
       dc->y=Fs->pix_height/2;
       dc->z=500;
- 
+
       dc->color=GREEN;
       poly[0].x=50;
       poly[0].y=150;

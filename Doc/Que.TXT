@@ -1,4 +1,4 @@
-A Queue is a bunch of [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed chunks of mem
+A Queue is a bunch of [C:/Kernel/MemB.CPP.Z,372] MAlloc()ed chunks of mem
 linked together in a circle 
 with one ptr to the next value and another ptr to the last value.  These ptrs 
 must be stored in the first locations in the structure.

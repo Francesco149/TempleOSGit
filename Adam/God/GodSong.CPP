@@ -155,7 +155,7 @@ public U8 *GodSongStr()
 }
 
 public U0 GodSong()
-{//Make God generate 2measures x 2 + 2measures x 2 song. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
+{//Make God generate 2measuresx2+2measuresx2. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
   U8 *st1=GodSongStr,*st2=GodSongStr;
   if (st1 && st2)
     DocPrint(DocPut,"$SO,\"<Song>\",A=\"%s%s%s%s\"$",st1,st1,st2,st2);

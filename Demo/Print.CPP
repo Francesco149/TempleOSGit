@@ -1,4 +1,4 @@
-//TempleOS supports standard [C:/Kernel/StrPrint.CPP.Z,896] Print()
+//TempleOS supports standard [C:/Kernel/StrPrint.CPP.Z,898] Print()
 //codes and extended ones.
 //See [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
 

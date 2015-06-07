@@ -30,8 +30,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   MyMass *tempm;
   F64 theta=gun_theta;
   I64 i,x,y,w,
-      h=-task->horz_scroll.pos,
-      v=-task->vert_scroll.pos;
+	h=-task->horz_scroll.pos,
+	v=-task->vert_scroll.pos;
   Bool old_suspend=Suspend(task);
   task->horz_scroll.min=0;
   task->horz_scroll.max=MAP_WIDTH-task->pix_width;
@@ -44,12 +44,12 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   if (theta<-pi/2) {
     dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-    GrSetSymmetry(dc,gun_x+h,0,gun_x+h,1);
+    DCSymmetrySet(dc,gun_x+h,0,gun_x+h,1);
     theta=-pi-theta;
   }
   SpriteZ3B(dc,
-      gun_x+h-gun_recoil*Cos(theta),
-      gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
+	gun_x+h-gun_recoil*Cos(theta),
+	gun_y+v-gun_recoil*Sin(theta)-10,0,__BIN_1,theta);
   dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
 
   tempm=ode->next_mass;
@@ -145,7 +145,7 @@ U0 ManageShots()
   while (tempm!=&ode->next_mass) {
     tempm1=tempm->next;
     if (!(0<=tempm->x<MAP_WIDTH) ||
-	 tempm->collision) {
+	  tempm->collision) {
       QueRem(tempm);
       for (i=tempm->x-4;i<=tempm->x+4;i++)
 	if (0<=i<MAP_WIDTH)
@@ -252,17 +252,17 @@ U0 BigGuns()
   Preempt;
 
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,'\n');"
-"  Fire(,CH_SPACE);"
-"  Left(,,SC_CURSOR_LEFT);"
-"  Right(,,SC_CURSOR_RIGHT);"
-"}"
-);
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Fire(,CH_SPACE);"
+	"  Left(,,SC_CURSOR_LEFT);"
+	"  Right(,,SC_CURSOR_RIGHT);"
+	"}"
+	);
 
   WinMax;
   WinBorder(ON);

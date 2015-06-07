@@ -43,8 +43,11 @@ routine to stay in mem even if this task is killed.
 #define TYPES_OF_CRITTERS	3
 #define FRAMES_PER_CRITTER	4
 
-CSprite *imgs[TYPES_OF_CRITTERS][FRAMES_PER_CRITTER]=
-{{__BIN_1,__BIN_2,__BIN_3,__BIN_2},{__BIN_4,__BIN_5,__BIN_6,__BIN_5},{__BIN_7,__BIN_8,__BIN_9,__BIN_8}};
+CSprite *imgs[TYPES_OF_CRITTERS][FRAMES_PER_CRITTER]={
+  {__BIN_1,__BIN_2,__BIN_3,__BIN_2},
+  {__BIN_4,__BIN_5,__BIN_6,__BIN_5},
+  {__BIN_7,__BIN_8,__BIN_9,__BIN_8}
+};
 
 #define NUM_CRITTERS	16
 class Critter
@@ -60,7 +63,7 @@ U0 WallPaperFish(CTask *task)
   I64 i,j,x,y;
   CDC *dc=DCAlias(gr.dc2,task);
   Critter *c=wall_crits;
- 
+
   task->text_attr=CYAN<<4+WHITE;
   dc->color=BROWN;
   for (i=0;i<GR_HEIGHT;i+=20) {
@@ -75,7 +78,7 @@ U0 WallPaperFish(CTask *task)
     if (y<0) y+=GR_HEIGHT;
     if (c->dx<0) {
       dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-      GrSetSymmetry(dc,x,y-1,x,y+1);
+      DCSymmetrySet(dc,x,y-1,x,y+1);
     } else
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     Sprite3(dc,x,y,0,imgs[c->type][j]);
@@ -83,8 +86,8 @@ U0 WallPaperFish(CTask *task)
   }
   DCDel(dc);
 
-//Uncomment the following if you wish.
-//old_wall_paper(task);
+  //Uncomment the following if you wish.
+  //old_wall_paper(task);
 }
 
 U0 WallInit()
@@ -93,7 +96,7 @@ U0 WallInit()
   Critter *c;
   if (Fs!=adam_task) {
     "Must be Adam Included with SHIFT-F5.\n"
-    "(Would crash when code mem was freed.)\n";
+	  "(Would crash when code mem was freed.)\n";
     return;
   }
   old_wall_paper=gr.fp_wall_paper;

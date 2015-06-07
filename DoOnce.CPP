@@ -11,12 +11,15 @@ U0 DoOnce()
 {
   if (sys_boot_src.u16[0]==BOOT_SRC_CDROM) {
     "\nIf you answer 'No' you can play with\n"
-    "the live CD without installing.\n\n"
-    "Install onto hard drive ";
+	  "the live CD without installing.\n\n"
+	  "Install onto hard drive ";
     if (YorN) {
       DocBottom;
       ExeFile("::/Misc/OSInstall");
     }
+  } else {
+    "$PURPLE$$TX+CX,\"Tip of the Day\"$$FG$\n";
+    TipOfDay;
   }
   Type("::/Doc/Customize.TXT");
   if (FileFind("::/Misc/Tour")) {

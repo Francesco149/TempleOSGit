@@ -9,7 +9,7 @@ See Key Map
 
 When you are at the cmd line, editing documents, browsing documentation and 
 help, entering items in forms or in menu's, the
-[C:/Kernel/KernelA.HPP.Z,1321] DolDoc editor handles keys.  
+[C:/Kernel/KernelA.HPP.Z,1323] DolDoc editor handles keys.  
 It allows you to define your own key handlers in a
 [C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
 you choose, you can catch keys, overriding the default handlers.  See 
@@ -24,9 +24,9 @@ pre-defined, but you can change them if you wish.
 <ALT-digit keys>  Extended ASCII (3 digit decimal number).
 
 <CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
-the [C:/Kernel/KernelA.HPP.Z,1321] CDoc editor.  I reserve the right to alloc
+the [C:/Kernel/KernelA.HPP.Z,1323] CDoc editor.  I reserve the right to alloc
 these, but in the mean time, 
-you can define your own handlers with [C:/Kernel/KbdMouse/Keyboard.CPP.Z,401]
+you can define your own handlers with [C:/Kernel/KeyDev.CPP.Z,184]
 CtrlAltLetCBSet().  They operate either 
 in a interrupt environment or in the window mgr when it queues kbd msgs.  You 
 can do [C:/Kernel/KMisc.CPP.Z,248] Raw() output.  <CTRL-ALT-letter> handlers

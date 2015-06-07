@@ -1,11 +1,11 @@
-* Clean-up [C:/Kernel/Dsk/DskStr.CPP.Z,207] FileNameAbs().
+* Clean-up [C:/Kernel/Dsk/DskStr.CPP.Z,212] FileNameAbs().
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
 
 * God said this is bad.  [C:/Adam/DolDoc/DocFind.CPP.Z,41]
 
-* [C:/Adam/Dsk/ChkDsk.CPP.Z,204] ChkDsk alloc unalloced.
+* [C:/Adam/Dsk/ChkDsk.CPP.Z,208] ChkDsk alloc unalloced.
 
 * Entering a '$' in text entry
 
@@ -16,18 +16,22 @@ think so.  (Probably not.)
 
 * 1/?/2015 Macro select in Menu did not go to shell.
 
-* Real World User Issues:
-  QEMU runs maximized, but slow.
-  If you move cursor off of bottom, macros don't work.
-  Stutters in QEMU doing sound.
-
-* [C:/Adam/Utils/FileBMP.CPP.Z,55] BMPRLE4To() has files_size too big by 108.
+* [C:/Adam/Utils/FileBMP.CPP.Z,65] BMPRLE4To() has files_size too big by 108.
+ Did I fix it?
 
 * Why is nontimer [C:/Kernel/KMathB.CPP.Z,128] Rand() so bad?
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3001] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3010] CCtrl.
+
+* Add Redo to editor.
+
+* No Compiler Warning:  dc->palette48.r   =palette24[i].r<<8;
+
+* I think subswitch_start with a break in the preface fails.
+
+* Add editor select just visible text for with filter.
 
 * Add change-triangle-color to mesh editor.
 
@@ -40,17 +44,10 @@ using PSECT symbol addresses, so we can eliminate psect cache and wall-paper
 kludge.  All HolyC functions and glbl vars would have left-right for address 
 search.
 
-* QEMU [C:/Kernel/KMisc.CPP.Z,122] tS real-time-clock, slow Wenceslas.
-
-* Is "GrSetSymmetry" or "GrSymmetry" better?
-
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
 * DiskCache during FileRead. CTRL-ALT-C, [C:/Kernel/Task.CPP.Z,28] Kill().  
-
-* Help Index no mention of Symmetry in [C:/Adam/Gr/GrPrimatives.CPP.Z,436]
-GrLine() [C:/Adam/Gr/GrPrimatives.CPP.Z,514] GrLine3().
 
 * Get rid of BYTE WORD DWORD in opcode and replace with U8 U16 U32.
 
@@ -65,13 +62,19 @@ GrLine() [C:/Adam/Gr/GrPrimatives.CPP.Z,514] GrLine3().
 * FlatTop is torpedo, not bombs.
 * BomberGolf is weird concept?
 
+* Maybe, 3x3 instead of 4x4 matrices. <sigh>
+
+* Get rid of text background color.
+
 * Make a game, S.E.T.I., with radio telescope array.  Put God on air. 
 
-* [C:/Adam/Utils/Diff.CPP.Z,231] Diff() flags.
+* [C:/Adam/Utils/Diff.CPP.Z,237] Diff() flags.
 
 * Backward SHIFT-F3 is broken
 
 * MOV U8 [RSP+RCX],DL
+
+* UAsm negative byte displacement, neg 32-bit disp.
 
 * Might want HeapLog x Cnt
 
@@ -92,7 +95,7 @@ free spot of E820 report.
 
 * Might want to move kernel code out of low 2Meg.  Might be faster.
 
-* F2 Macro on TestSuite
+* Add F2 Macro on TestSuite
 
 * 4/13/14 Strut or RawHide crashed when sys_var_init_flag etc
 was set during testsuite.
@@ -112,10 +115,6 @@ Looks like task_flags,locked_flags cause problems with neg offset.
 ---------------------
 
 * 3/19/14: RESET during RawHide
-* 2013? Wenceslas in TestSuite crashes, long time ago
-
-* 12/26/13: Mountain in TestSuite didn't run right.  Turned yellow, did 
-nothing.
 
 * FAQ frontloaded
 
@@ -134,15 +133,15 @@ COMPILER
 
 * ATA/ATAPI ID in VMware, when not booted to CD?  I forgot.
 
-* I use fixed-point in [C:/Adam/Gr/GrMath.CPP.Z,337] Circle(),
-[C:/Adam/Gr/GrMath.CPP.Z,380] Ellipse(), [C:/Adam/Gr/GrDC.CPP.Z,6] GrRot(),
-[C:/Adam/Gr/GrMath.CPP.Z,136] GrMulMat() and others.
+* I use fixed-point in [C:/Adam/Gr/GrMath.CPP.Z,288] Circle(),
+[C:/Adam/Gr/GrMath.CPP.Z,331] Ellipse(), [C:/Adam/Gr/GrDC.CPP.Z,6]
+Mat4x4MulXYZ(), 
+[C:/Adam/Gr/GrMath.CPP.Z,99] Mat4x4MulMat4x4New() and others.
 God says I might want to change to float. 
 [C:/Demo/Lectures/FixedPoint.CPP.Z,1].
 [C:/Demo/Lectures/FixedPointAdvanced.CPP.Z,1].
 
 * DOCF_DBL_DOLLARS in reindention
-* # in reindention
 
 * HexEdit with odd size, ASCII cannot be edited.
 
@@ -151,11 +150,11 @@ God says I might want to change to float.
 * Might want to convert some Preempt() to Cli
 
 * [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3409] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3415] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
-* It would be nice if [C:/Compiler/UAsm.CPP.Z,640] U() NOP were better.
+* It would be nice if [C:/Compiler/UAsm.CPP.Z,664] U() NOP were better.
 
 * unhandled exception on MP message gets overwritten by WinMgr
 
@@ -202,17 +201,17 @@ so that applications can plan a big alloc.
 because it
 catches divide and out-of-mem.  Not sure what to do, yet.
 
-* Make [C:/Kernel/MultiProc.CPP.Z,302] BSPStartMP() start work after boot to
+* Make [C:/Kernel/MultiProc.CPP.Z,301] BSPStartMP() start work after boot to
 reset multicores.  Bonus for
 freeing old task memory. (Prolly never gonna do anything about this.)
 
-* [C:/Kernel/KernelB.HPP.Z,146] sys_var_init_flag local vars.
+* [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag local vars.
 * sprite shift pts, ctrl pt for ellipse/polygon w,h is off when rotated.
 
 * Window mgr needs to do DOC operations on posted messages from mouse.
 Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
 
-* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,637] Dbg()?  (maybe)
+* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,640] Dbg()?  (maybe)
 
 * [C:/Adam/DolDoc/DocRecalcB.CPP.Z,1] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
@@ -231,7 +230,7 @@ Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
 
 * What about local variable array/struct initialization.
 
-* Demo [C:/Adam/Utils/ToHtml.CPP.Z,280] ToHtml().
+* Demo [C:/Adam/Utils/ToHtml.CPP.Z,300] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have generated
 a unique short name and one can delete multiple files accidentally.
@@ -244,7 +243,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3525] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -288,8 +287,8 @@ registry-like routines... or registry I guess.
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2831] ROP_XOR with pen_width>1 is broken.
-* RGB wrong in BMP files.
+* [C:/Kernel/KernelA.HPP.Z,2840] ROP_XOR with pen_width>1 is broken.
+* BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
 * SIMD transformation
@@ -305,7 +304,7 @@ registry-like routines... or registry I guess.
 * support r4u8 by adding 0x40 byte
 * static var off of data heap.
 * Might want to use U32*U32 multiplication.
-* could add "const" to not set LF_NOT_CONST flag for trig, etc.
+* could add "const" to not set CCF_NOT_CONST flag for trig, etc.
 * do r,rm ICCmp like ICBrCmp
 * could make glblvar imports use TY_RIP_DISP32.
 * PUSH_CMP allocs reg R9 or whatever
@@ -314,13 +313,13 @@ assignments.  Is ShiftNoPush fully implemented?
 * NOP1 might need to have diff ic_data's
 * in divequal, it assumes about ebx
 * error/warning line nums
-* ASM branch out warning of range off by 1 line--use lx->last_line_num
+* ASM branch out warning of range off by 1 line--use cc->last_line_num
 
 * Switch statement with sparse cases (low priority)
 * maybe inline functions?
 * Use of more floating-point stk?
 
-* More aggressive in this routine [C:/Compiler/OptLib.CPP.Z,533]
+* More aggressive in this routine [C:/Compiler/OptLib.CPP.Z,536]
 CmpF2PushPop() with types besides MOV and 
 F64. 
 * !dbl ~dbl
@@ -330,14 +329,15 @@ F64.
 * sort options for findfiles
 * Maybe, get rid of [C:/Compiler/CMain.CPP.Z,1] 0x20000 in compiler.
 
+It is love I desire: [C:/Misc/Bible.TXT.Z,73189] Hosea,6:6 Hosea 6:6
 
-[C:/Misc/Bible.TXT.Z,73189] Hosea,6:6
+Offer a sacrifice of praise: [C:/Misc/Bible.TXT.Z,96500] Hebrews,13:15
+Hebrews 13:15
 
-[C:/Misc/Bible.TXT.Z,96500] Hebrews,13:15
+Do I drink blood of goats? Offer praise: [C:/Misc/Bible.TXT.Z,46190]
+Psalms,50:14 Psalms 50:14
 
-[C:/Misc/Bible.TXT.Z,46190] Psalms,50:14
-
-
+Runner's Stride: [C:/Misc/Bible.TXT.Z,46190] Psalms,147:10 Psalms 147:10
 
 >lspci -v
 
@@ -401,6 +401,16 @@ https:/beacon.nist.gov/rest/record/1415566560	They chain the numbers so they
 https:/beacon.nist.gov/rest/record/1415568120	cannot be tampered with.
 /*****************************************************************************/
 
+Commodore 64 Basic/Assembly
+```
+<object width="640" height="520"><param name="movie" value="http://www.youtube.com/v/d8bZ92gIVms"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/d8bZ92gIVms" type="application/x-shockwave-flash" allowscriptaccess="always" width="640" height="520"></embed></object>
+```
+Bill Gates Predictions
+```
+<object width="640" height="520"><param name="movie" value="http://www.youtube.com/v/4r9u_R0cCew"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/4r9u_R0cCew" type="application/x-shockwave-flash" allowscriptaccess="always" width="640" height="520"></embed></object>
+```
+
+
 Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, LOL.)
 ```
 <img src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambridge-county-pd.jpg" width="480" height="376" alt="">
@@ -409,7 +419,9 @@ Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, LOL.)
 WWW.OSDEV.ORG
 Perfect Coin Toss
 Top 100 Movies
-Dr. David Pheanis
+ASU_Transcripts      ASU Course Catalog (See page 261)      Dr. David Pheanis 
+Peter Gadwa
+Tom Foley
 KeyPeele#1
 KeyPeele#2
 ThePrisoner
@@ -422,15 +434,10 @@ Mapping the Commodore 64
 Holy Grail: Lmq5PxHpLNw  1:28:27
 ATA/ATAPI Spec
 BBC
+BBC_News_24
 BBC_Five_Live
 KNPR
 C64 Users Guide
 C64 Programmers Reference Guide
 
 
-1) Strings, Opcode in Compiler
-2) FizzBuzz
-3) Negative displacements
-4) Multicore
-5) Preempt
-6) Graphics

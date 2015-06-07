@@ -194,7 +194,8 @@ This is just a video game. Relax.
 #define HEAD_Z_OFFSET	200
 #define HAND_X_OFFSET	30
 #define HAND_Y_OFFSET	20
-#define HAND_SQR_OFFSET	(HAND_X_OFFSET*HAND_X_OFFSET+HAND_Y_OFFSET*HAND_Y_OFFSET)
+#define HAND_SQR_OFFSET	\
+	(HAND_X_OFFSET*HAND_X_OFFSET+HAND_Y_OFFSET*HAND_Y_OFFSET)
 #define HAND_Z_OFFSET	110
 
 #define FIRST_STANDING		0
@@ -213,15 +214,22 @@ This is just a video game. Relax.
 
 #define NUM_STOPPED_DRIBBLING_IMGS	2
 #define FIRST_STOPPED_DRIBBLING	(LAST_DRIBBLING+1)
-#define LAST_STOPPED_DRIBBLING	(FIRST_STOPPED_DRIBBLING+NUM_STOPPED_DRIBBLING_IMGS-1)
+#define LAST_STOPPED_DRIBBLING	\
+	(FIRST_STOPPED_DRIBBLING+NUM_STOPPED_DRIBBLING_IMGS-1)
 
 Frame imgs[LAST_STOPPED_DRIBBLING+1]={
-{{__BIN_6,__BIN_7},2*DRIBBLE_T/NUM_RUNNING_IMGS},{{__BIN_2,__BIN_3},2*DRIBBLE_T/NUM_RUNNING_IMGS},
-{{__BIN_6,__BIN_7},2*DRIBBLE_T/NUM_RUNNING_IMGS},{{__BIN_4,__BIN_5},2*DRIBBLE_T/NUM_RUNNING_IMGS},
-{{__BIN_8,__BIN_9},0.1},{{__BIN_10,__BIN_11},0.2},{{__BIN_12,__BIN_13},0.2},{{__BIN_12,__BIN_13},0.1},{{__BIN_14,__BIN_15},0.1},
-{{__BIN_20,__BIN_21},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},{{__BIN_16,__BIN_17},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},
-{{__BIN_20,__BIN_21},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},{{__BIN_18,__BIN_19},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},
-{{__BIN_20,__BIN_21},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},{{__BIN_22,__BIN_23},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},
+  {{__BIN_6,__BIN_7},2*DRIBBLE_T/NUM_RUNNING_IMGS},
+  {{__BIN_2,__BIN_3},2*DRIBBLE_T/NUM_RUNNING_IMGS},
+  {{__BIN_6,__BIN_7},2*DRIBBLE_T/NUM_RUNNING_IMGS},
+  {{__BIN_4,__BIN_5},2*DRIBBLE_T/NUM_RUNNING_IMGS},
+  {{__BIN_8,__BIN_9},0.1},{{__BIN_10,__BIN_11},0.2},
+  {{__BIN_12,__BIN_13},0.2},{{__BIN_12,__BIN_13},0.1},{{__BIN_14,__BIN_15},0.1},
+  {{__BIN_20,__BIN_21},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},
+  {{__BIN_16,__BIN_17},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},
+  {{__BIN_20,__BIN_21},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},
+  {{__BIN_18,__BIN_19},2*DRIBBLE_T/NUM_DRIBBLING_IMGS},
+  {{__BIN_20,__BIN_21},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},
+  {{__BIN_22,__BIN_23},DRIBBLE_T/NUM_STOPPED_DRIBBLING_IMGS},
 };
 
 RegSetDftEntry("TempleOS/KeepAway","I64 best_score0=0,best_score1=9999;\n");
@@ -272,8 +280,8 @@ U0 DrawObj(CDC *dc,Obj *o,F64 tt)
     Sprite3(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,__BIN_1);
   else {
     temps=SpriteInterpolate(imgs[o->last_img].img[o->team],
-	imgs[o->next_img].img[o->team],
-	(tt-o->last_t0)/(o->next_t0-o->last_t0));
+	  imgs[o->next_img].img[o->team],
+	  (tt-o->last_t0)/(o->next_t0-o->last_t0));
     SpriteY3B(dc,o->x,(o->y-o->z)/2,GR_Z_ALL-o->y,temps,o->ay);
     Free(temps);
   }
@@ -290,7 +298,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i;
   Obj *o_sort[NUM_OBJS],*o;
 
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   dc->ls.x=10000;
   dc->ls.y=60000;
   dc->ls.z=10000;
@@ -302,14 +310,14 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->pen_width=2;
   dc->color=RED;
   GrBorder(dc,COURT_BORDER,COURT_BORDER,
-      task->pix_width -1-COURT_BORDER,
-      task->pix_height-1-COURT_BORDER);
+	task->pix_width -1-COURT_BORDER,
+	task->pix_height-1-COURT_BORDER);
   for (i=0;i<NUM_OBJS;i++) {
     o=o_sort[i]=&objs[i];
     if (o!=ball) {
       if (o->has_ball) {
 	ball->x=o->x+HAND_X_OFFSET*Cos(o->ay-pi/2)+HAND_Y_OFFSET*Cos(o->ay);
-	//The factor 2 is because the man is not transformed.
+//The factor 2 is because the man is not transformed.
 	ball->y=o->y+HAND_X_OFFSET*Sin(o->ay-pi/2)/2+HAND_Y_OFFSET*Sin(o->ay)/2;
 	if (ball->z+ball->radius*2>o->z+HAND_Z_OFFSET)
 	  ball->z=o->z+HAND_Z_OFFSET-ball->radius*2;
@@ -319,15 +327,19 @@ U0 DrawIt(CTask *task,CDC *dc)
 	ball->z=o->z+HEAD_Z_OFFSET;
       }
       if (tt>o->next_t0) {
-	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET || Abs(ball->DzDt)<30)) {
-	//This is an approximation.  My instinct tells me the viscosity term needs an [C:/Kernel/KernelB.HPP.Z,95] Exp().
-	//However, we should be syncronized to img frames, so we don't have to be perfect.
+	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET ||
+	      Abs(ball->DzDt)<30)) {
+//This is an approximation.  My instinct tells me the viscosity term
+	  //needs an [C:/Kernel/KernelB.HPP.Z,127] Exp().  However, we should be syncronized to img frames,
+	  //so we don't have to be perfect.
 	  d_down=1.0;
-	  d_up	=1.0/COLLISION_DAMP; //Up bounce takes higher percentage because speed lost in collision.
-	  ball->DzDt=-((d_down+d_up)*(o->z+HAND_Z_OFFSET-ball->radius*4)/(1.0-AIR_VISCOSITY)+
-	    0.5*GRAVITY_ACCELERATION*(
-	      Sqr(DRIBBLE_T*d_up/(d_down+d_up))-
-	      Sqr(DRIBBLE_T*d_down/(d_down+d_up)) ))/DRIBBLE_T;
+	  d_up	=1.0/COLLISION_DAMP;
+//Up bounce takes higher % because speed lost in collision.
+	  ball->DzDt=-((d_down+d_up)*
+		(o->z+HAND_Z_OFFSET-ball->radius*4)/(1.0-AIR_VISCOSITY)+
+		0.5*GRAVITY_ACCELERATION*(
+		Sqr(DRIBBLE_T*d_up/(d_down+d_up))-
+		Sqr(DRIBBLE_T*d_down/(d_down+d_up)) ))/DRIBBLE_T;
 	}
 	o->last_t0=tt;
 	o->last_img=o->next_img++;
@@ -379,13 +391,13 @@ U0 DrawIt(CTask *task,CDC *dc)
     tt=0;
     if (Blink)
       GrPrint(dc,(task->pix_width-FONT_WIDTH*9)>>1,
-		    (task->pix_height-FONT_HEIGHT)>>1,"Game Over");
+	    (task->pix_height-FONT_HEIGHT)>>1,"Game Over");
   } else {
     if (tS<foul_t_end) {
       dc->color=LTRED;
       if (Blink)
 	GrPrint(dc,(task->pix_width-FONT_WIDTH*4)>>1,
-		     (task->pix_height-FONT_HEIGHT)>>1,"Foul");
+	      (task->pix_height-FONT_HEIGHT)>>1,"Foul");
     }
     dc->color=BLACK;
   }
@@ -506,7 +518,8 @@ U0 AnimateTask(CTask *parent_task)
 		    if (t0>o->foul_t0+0.15) {
 		      d=(dx-objs[j].DxDt)*dx2+(dy-objs[j].DyDt)*dy2;
 		      if (o==human && t0>o->foul_t0+1.0 &&
-			  dt && d/dt>FOUL_VELOCITY_THRESHOLD && objs[j].team) {
+			    dt && d/dt>FOUL_VELOCITY_THRESHOLD &&
+			    objs[j].team) {
 			Noise(250,500,500);
 			score1+=1;
 			foul_t_end=t0+1.0;
@@ -572,7 +585,7 @@ U0 AnimateTask(CTask *parent_task)
 	}
       }
 
-      WinMgrSync;
+    WinMgrSync;
   }
 }
 
@@ -608,9 +621,9 @@ U0 KeepAway()
   I64 msg_code,a1,a2;
 
   PopUpOk(
-    "$RED$Pass or hand-off to score points.$FG$\n\n"
-    "Left-Click to pass.\n"
-    "Right-Click to jump.\n");
+	"$RED$Pass or hand-off to score points.$FG$\n\n"
+	"Left-Click to pass.\n"
+	"Right-Click to jump.\n");
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK+YELLOW<<4;
   WinMax;
@@ -621,16 +634,16 @@ U0 KeepAway()
   AutoComplete;
 
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,'\n');"
-"  Shoot(,CH_SPACE);"
-"  Jump(,'j');"
-"}"
-  );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Shoot(,CH_SPACE);"
+	"  Jump(,'j');"
+	"}"
+	);
 
   Init;
   DocCursor;
@@ -640,7 +653,8 @@ U0 KeepAway()
 
   try {
     while (TRUE) {
-      msg_code=GetMsg(&a1,&a2,1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_KEY_DOWN);
+      msg_code=GetMsg(&a1,&a2,
+	    1<<MSG_IP_L_DOWN|1<<MSG_IP_R_DOWN|1<<MSG_KEY_DOWN);
       switch (msg_code) {
 	case MSG_IP_L_DOWN:
 ka_shoot:
@@ -673,7 +687,7 @@ ka_done: //Don't goto out of try
     PutExcept;
   SettingsPop;
   RegWriteBranch("TempleOS/KeepAway","I64 best_score0=%d,best_score1=%d;\n",
-    best_score0,best_score1);
+	best_score0,best_score1);
   CleanUp;
   MenuPop;
 }

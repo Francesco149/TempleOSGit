@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-120,922 lines of code including the kernel, the 64-bit compiler, the graphics 
+122,806 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -33,7 +33,7 @@ operating systems.  Since this OS is used in addition to Windows or Linux,
 however, failure is an option -- just use Windows if you can't do something.
 
 Two things to know about TempleOS are that _tasks_ have
-[C:/Kernel/MemB.CPP.Z,373] MAlloc/[C:/Kernel/MemB.CPP.Z,369] Free heap
+[C:/Kernel/MemB.CPP.Z,372] MAlloc/[C:/Kernel/MemB.CPP.Z,368] Free heap
 memory, 
 not applications, and tasks have compiler symbol tables that persist at a 
 scope like environment variables in other operating systems, and the symbols 
@@ -43,16 +43,20 @@ In other operating systems, I hated learning one language for command line
 scripts and another for programming.  With TempleOS, the command line feeds 
 right into the [C:/Doc/HolyC.TXT.Z,1] HolyC compiler, line by line, and it
 places code into memory it 
-[C:/Kernel/MemB.CPP.Z,373] MAlloc()s.  The compiler is paused at the command
+[C:/Kernel/MemB.CPP.Z,372] MAlloc()s.  The compiler is paused at the command
 line, waiting for input.  
 Naturally, you #include a program to load it into memory and, usually, start 
-it.  During the boot process, many files get [C:/Adam.CPP.Z,1] compiled
-before you have access 
-to the command line.  (Don't worry, booting takes only a couple of seconds.)  
-All the header declarations for the operating system are compiled and are 
-available for use in your programs without needing to #include them.  
-Everything is truly compiled to native x86_64 machine code, nothing is interpr
-eted and there is no byte code.
+it. See [C:/Doc/HelloWorld.TXT.Z,1].
+
+During the boot process, many files get [C:/Adam.CPP.Z,1] compiled before you
+have access to the 
+command line.  (Don't worry, booting takes only a couple of seconds.)  All
+the 
+header declarations for the operating system are compiled and are available 
+for use in your programs without needing to #include them.  Everything is 
+truly compiled to native x86_64 machine code, nothing is interpreted and
+there 
+is no byte code.
 
 Statements at the global scope -- outside the scope of functions -- execute 
 immediately.  There is no main() function.  Instead, you give meaningful
@@ -122,9 +126,9 @@ found.  This feature is especially useful for default account files.
 It's fun being able to turn-off interrupts with the asm instruction, CLI, and 
 on with STI.  TempleOS runs all programs in kernel mode, ring 0, so no 
 instructions are off-limits.  Turning-off and on preemption with
-[C:/Kernel/KernelB.HPP.Z,226] Preempt() is 
+[C:/Kernel/KernelB.HPP.Z,283] Preempt() is 
 a less drastic measure that is usually sufficient.  A newly
-[C:/Kernel/Task.CPP.Z,207] Spawn()ed task 
+[C:/Kernel/Task.CPP.Z,209] Spawn()ed task 
 begins with preemption off.
 
 The graphic resolution is poor, 640x480 16 color, but God said that and
@@ -149,9 +153,9 @@ so this is possible.  See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3212] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3218] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3338] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3344] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 
@@ -179,13 +183,13 @@ own distro that includes everything and is a bootable live CD with
 
 Typically, your usage pattern through the day will be repeatedly left or
 right 
-clicking on filenames in a cmd line [C:/Kernel/Dsk/DskB.CPP.Z,226] Dir()
+clicking on filenames in a cmd line [C:/Kernel/Dsk/DskB.CPP.Z,228] Dir()
 listing.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
 [C:/Adam/DolDoc/DocMain.CPP.Z,3] Ed("file
 name");, supplying a filename.  You can also run programs with <F5> when in 
 the editor.  <ESC> to save and exit the file.  You'll need to do a new
-[C:/Kernel/Dsk/DskB.CPP.Z,226] Dir() 
+[C:/Kernel/Dsk/DskB.CPP.Z,228] Dir() 
 cmd, periodically, so make a macro on your PersonalMenu.  Access your 
 PersonalMenu by pressing <CTRL-m>, cursoring until you are on top of it and 
 pressing <SPACE>.
@@ -211,15 +215,15 @@ them.
 <CTRL-ALT-e> creates a new terminal window.  <CTRL-ALT-x> kills a window.  
 You'll do these periodically.
 
-[C:/Adam/Utils/Find.CPP.Z,143] Find() is your best friend.  There's a wrapper
+[C:/Adam/Utils/Find.CPP.Z,145] Find() is your best friend.  There's a wrapper
 function called [C:/Home/AdamWrappers.CPP.Z,8] F() in your /Ho
 me/AdamWrappers.CPP.Z file.  Feel free to make wrapper functions for
 functions 
 you use often and customize the args.  By the way,
-[C:/Adam/Utils/Find.CPP.Z,143] Find() or [C:/Home/AdamWrappers.CPP.Z,13] R()
+[C:/Adam/Utils/Find.CPP.Z,145] Find() or [C:/Home/AdamWrappers.CPP.Z,13] R()
 can be used 
 to replace strings across multiple files.  You can access
-[C:/Adam/Utils/Find.CPP.Z,143] Find() using <CTRL-S
+[C:/Adam/Utils/Find.CPP.Z,145] Find() using <CTRL-S
 HIFT-f>.
 
 As you browse code, use the AutoComplete window to look-up functions, etc.  <C

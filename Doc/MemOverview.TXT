@@ -14,25 +14,25 @@ code in the lowest 2 Gig memory addresses including what would normally be
 called "the kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps by first allocating mem with 
-[C:/Kernel/MemA.CPP.Z,401] Mem2MegUncachedAlloc() or
-[C:/Kernel/MemA.CPP.Z,192] Mem512Alloc(), then calling
+[C:/Kernel/MemA.CPP.Z,402] Mem2MegUncachedAlloc() or
+[C:/Kernel/MemA.CPP.Z,193] Mem512Alloc(), then calling
 [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit() and, 
-then, using [C:/Kernel/MemB.CPP.Z,373] MAlloc().
+then, using [C:/Kernel/MemB.CPP.Z,372] MAlloc().
 
 Memory alloced by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/Adam/Utils/MemRep.CPP.Z,189] MemRep().
+See [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep().
 
                           Single System-wide Mem Map
 
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x000003526F
+ 0x0000007C00- 0x0000034FAF
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3774] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3783] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -48,7 +48,7 @@ See [C:/Adam/Utils/MemRep.CPP.Z,189] MemRep().
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3369] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3375] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF
@@ -74,7 +74,7 @@ but no PCI devices are actually supported.
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/Kernel/MemB.CPP.Z,373] MAlloc() an 8 Gig chunk on my 12 Gig machine.
+can [C:/Kernel/MemB.CPP.Z,372] MAlloc() an 8 Gig chunk on my 12 Gig machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 

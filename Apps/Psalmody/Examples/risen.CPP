@@ -27,7 +27,7 @@ U0 Bird(CDC *dc,F64 wing_theta)
   p[1].x=0; p[1].y=0; p[1].z=BODY;
   p[2].x=WING*Cos(wing_theta); p[2].y=-WING*Sin(wing_theta); p[2].z=0;
   GrFillPoly3(dc,3,p);
- 
+
   dc->color=ROPF_DITHER+WHITE<<16+LTGRAY;
   GrLine3(dc,0,0,-BODY,0,0,BODY);
 }
@@ -41,7 +41,7 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i;
   F64 theta,dt=Beat-t0;
-  DCAllocDepthBuf(dc);
+  DCDepthBufAlloc(dc);
   dc->x=325;
   dc->y=95;
   dc->z=GR_Z_ALL;
@@ -50,11 +50,12 @@ U0 DrawIt(CTask *,CDC *dc)
     bx[i]=Clamp(bx[i]+0.25*SignI64(RandI16),-RANGE,RANGE);
     by[i]=Clamp(by[i]+0.25*SignI64(RandI16),-RANGE,RANGE);
     theta=pi/2*i/NUM_BIRDS+0.2*pi*dt+pi/2;
-    GrIdentEqu(dc->r);
-    GrRotXEqu(dc->r,pi/2);
-    GrRotZEqu(dc->r,theta);
-    GrSetTranslation(dc->r,50*Cos(theta)+bx[i],50*Sin(theta)+by[i],30*i/NUM_BIRDS+4*dt);
-    GrRotXEqu(dc->r,0.35*pi);
+    Mat4x4IdentEqu(dc->r);
+    Mat4x4RotX(dc->r,pi/2);
+    Mat4x4RotZ(dc->r,theta);
+    Mat4x4TranslationEqu(dc->r,50*Cos(theta)+bx[i],50*Sin(theta)+by[i],
+	  30*i/NUM_BIRDS+4*dt);
+    Mat4x4RotX(dc->r,0.35*pi);
     Bird(dc,Sin(2*pi*dt+i*2*pi/NUM_BIRDS));
   }
 }
@@ -76,11 +77,11 @@ U0 Song()
   try {
     "$BG+H,LTCYAN$";
     while (!ScanKey) {
-	t0=Beat;
-	Play("3eDEqFFetEEFqDeCDDEetCGF");
-	Play("eDEqFFetEEFqDeCDDEetCGF");
-	Play("eDCqDEeAAetEEFEDGBDCqF");
-	Play("eDCqDEeAAetEEFEDGBDCqF");
+      t0=Beat;
+      Play("3eDEqFFetEEFqDeCDDEetCGF");
+      Play("eDEqFFetEEFqDeCDDEetCGF");
+      Play("eDCqDEeAAetEEFEDGBDCqF");
+      Play("eDCqDEeAAetEEFEDGBDCqF");
     }
   } catch
     PutExcept;

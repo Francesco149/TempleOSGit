@@ -6,7 +6,7 @@
 .
 
 class MySprite
-{ // See [C:/Adam/Gr/Gr.CPP.Z,146] Sprite Elem Types
+{ // See [C:/Adam/Gr/Gr.CPP.Z,148] Sprite Elem Types
   CSpriteColor	color;
   CSpritePtPt	line1;
   CSpritePtPt	line2;

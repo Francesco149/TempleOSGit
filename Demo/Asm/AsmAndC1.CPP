@@ -9,8 +9,6 @@ asm {
 //Opcodes are slightly different to make writing my x86_64 assembler easier.
 //See [C:/Compiler/OpCodes.TXT.Z,1].
 
-USE64	//Defaults to 64, but this is a good habit.
-
 	IMPORT	Beep;
 
 _BEEPS::
@@ -41,7 +39,7 @@ _extern _BEEPS U0 Beeps(I64 cnt);
 I64 AsmAndC1()
 {
   I64 noreg i;	//Normally this would be stored in a reg
-		//Check by unassembling with [C:/Adam/ADbg.CPP.Z,249] Uf("AsmAndC1").
+//Check by unassembling with [C:/Adam/ADbg.CPP.Z,253] Uf("AsmAndC1").
 
   i=GetI64("Num of beeps 1-5 (%d):",3,1,5);
   Beeps(i);
@@ -49,31 +47,29 @@ I64 AsmAndC1()
   asm {
 //You can clobber RAX,RBX,RCX,RDX.  The compiler expects that.
 
-USE64	//Defaults to 64, but this is a good habit.
+    IMPORT	Snd; //Import an not use & or don't import and use &Snd.
+    MOV	RCX,&i[RBP] //You can clobber RAX,RBX,RCX,RDX.
+//You better preserve the rest.
 
-	IMPORT	Snd; //Import an not use & or don't import and use &Snd.
-	MOV	RCX,&i[RBP] //You can clobber RAX,RBX,RCX,RDX.
-			    //You better preserve the rest.
-
-@@05:	PUSH	RCX
+    @@05:	PUSH	RCX
 //U0 [C:/Kernel/KMisc.CPP.Z,163] Snd(F64 freq);
 
-	MOV	RAX,RCX	//freq=loop*100.0+100.0
-	IMUL2	RAX,100 //TempleOS uses nonstandard opcodes
-			//to avoid multiple form of the same one.
-			//See [C:/Compiler/OpCodes.TXT.Z,1].
-	ADD	RAX,100
-	PUSH	RAX
-	FILD	U64 [RSP]	//Convert from int to floating
-	FSTP	U64 [RSP]
+    MOV	RAX,RCX	//freq=loop*100.0+100.0
+    IMUL2	RAX,100 //TempleOS uses nonstandard opcodes
+//to avoid multiple form of the same one.
+    //See [C:/Compiler/OpCodes.TXT.Z,1].
+    ADD	RAX,100
+    PUSH	RAX
+    FILD	U64 [RSP]	//Convert from int to floating
+    FSTP	U64 [RSP]
 
-	CALL	Snd
+    CALL	Snd
 
-	MOV	RCX,cnts.time_stamp_freq>>3	//JIT Const.  Simple delay loop
+    MOV	RCX,cnts.time_stamp_freq>>3	//JIT Const.  Simple delay loop
 @@10:	LOOP	@@10
 
-	POP	RCX
-	LOOP	@@05
+    POP	RCX
+    LOOP	@@05
   }
   Snd(0);
   return i;

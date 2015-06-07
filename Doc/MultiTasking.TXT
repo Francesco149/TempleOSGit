@@ -2,17 +2,17 @@
 
 TempleOS is a preemptive multitasking operating system.  However, you can 
 turn-off preemption on a task by task basis and the task will not yield ctrl 
-unless it volunteers with [C:/Kernel/Sched.CPP.Z,346] Yield(),
+unless it volunteers with [C:/Kernel/Sched.CPP.Z,344] Yield(),
 [C:/Kernel/KMisc.CPP.Z,155] Sleep() or a call to I/O which yields ctrl.
 
-Use the [C:/Kernel/KernelB.HPP.Z,226] Preempt() cmd to turn on or off
+Use the [C:/Kernel/KernelB.HPP.Z,283] Preempt() cmd to turn on or off
 preemption.  This is useful when you 
 have multiple tasks modifying data structures, simultaneously.  Interrupts 
 still occur when preemption is off.  Turning-off preemption does not protect 
 against multicore simultaneous access.
 
 **Preemption is turned-off by default when a task is
-[C:/Kernel/Task.CPP.Z,207] Spawn()ed.**
+[C:/Kernel/Task.CPP.Z,209] Spawn()ed.**
 
 The time-slice rate is set by [C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ.
 

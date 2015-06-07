@@ -2,11 +2,11 @@ AutoFiles are used to generate user input to automate operations.  The
 TempleOS tour is done with an AutoFile.  It reminds me of a Unix pipe because 
 StdOut of one gets chained into StdIn of another.
 
-When an AutoFile runs, a child task is [C:/Kernel/Task.CPP.Z,207] Spawn()ed
+When an AutoFile runs, a child task is [C:/Kernel/Task.CPP.Z,209] Spawn()ed
 which intercepts real user 
 input and generates fake input.  AutoFiles are [C:/Doc/HolyC.TXT.Z,1] HolyC
 programs run by the child 
-whose stdout goes to the parent's input buffer.  [C:/Kernel/SrvCmd.CPP.Z,261]
+whose stdout goes to the parent's input buffer.  [C:/Kernel/SrvCmd.CPP.Z,260]
 Msg() can be included in an A
 utoFile to send special keys or mouse cmds to the parent.  While an AutoFile 
 is running, the normal input gets diverted to the AutoFile task and can be 
@@ -16,12 +16,12 @@ toFile.
 
 See [C:/Demo/AutoFile/AFDir.AUT.Z,1].
 
-Note: [C:/Kernel/SrvCmd.CPP.Z,495] Auto("") can be used if all you need is to
+Note: [C:/Kernel/SrvCmd.CPP.Z,496] Auto("") can be used if all you need is to
 send ASCII characters.  It 
-differs from [C:/Kernel/SrvCmd.CPP.Z,477] AutoStr().  You'll probably use
-[C:/Kernel/SrvCmd.CPP.Z,495] Auto() a lot and not
-[C:/Kernel/SrvCmd.CPP.Z,477] AutoStr().  
-With [C:/Kernel/SrvCmd.CPP.Z,495] Auto(), for example, you can place answers
+differs from [C:/Kernel/SrvCmd.CPP.Z,478] AutoStr().  You'll probably use
+[C:/Kernel/SrvCmd.CPP.Z,496] Auto() a lot and not
+[C:/Kernel/SrvCmd.CPP.Z,478] AutoStr().  
+With [C:/Kernel/SrvCmd.CPP.Z,496] Auto(), for example, you can place answers
 to the prompts for recompiling 
 the Kernel module during [C:/Adam/Boot/BootIns.CPP.Z,24]
 MakeOSDrvBootInstall().

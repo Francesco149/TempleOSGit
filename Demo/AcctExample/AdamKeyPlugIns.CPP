@@ -22,7 +22,7 @@ U0 InsDirLinks()
   U8 *st=PopUpPickDir,*st2;
   st[0]=':';  //This is my personal code, not production. LOL
   st2=MStrPrint("%s/*",st);
-  tempde=tempde1=FilesFind(st2,FUF_JUST_FILES|FUF_JUST_TXT);
+  tempde=tempde1=FilesFind(st2,FUF_JUST_FILES);
   while (tempde) {
     tempde->full_name[0]=':';
     "$LK,\"%s\",A=\"FI:%s\"$\n",tempde->full_name+2,tempde->full_name;
@@ -36,23 +36,23 @@ U0 InsDirLinks()
 Bool MyPutKey(I64 ch,I64 sc)
 {//ch=ASCII; sc=scan_code
 
-//See [Char,1] Char for definition of scan codes.
-//See [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations.
-//See [Keyboard Devices/System,1] Keyboard Devices.
+  //See [Char,1] Char for definition of scan codes.
+  //See [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations.
+  //See [Keyboard Devices/System,1] Keyboard Devices.
 
-//You can customize keys.  This routine
-//is called before the main editor
-//key handler [C:/Adam/DolDoc/DocEdB.CPP.Z,3] DocPutKey().
-//You can intercept any key.
+  //You can customize keys.  This routine
+  //is called before the main editor
+  //key handler [C:/Adam/DolDoc/DocEdB.CPP.Z,3] DocPutKey().
+  //You can intercept any key.
 
-//Return TRUE if you completely
-//handled the key.
+  //Return TRUE if you completely
+  //handled the key.
   I64 i,sc2=sc.u8[0];
   U8 *st1,*st2;
 
   if (SC_F1<=sc2<=SC_F10 &&
-      sc&SCF_ALT &&
-      !(sc & SCF_CTRL)) {
+	sc&SCF_ALT &&
+	!(sc & SCF_CTRL)) {
     switch (sc2) {
       case SC_F1:
 	if (sc&SCF_KEY_DESC) {
@@ -124,7 +124,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	  if (sc & SCF_SHIFT)
 	    KeyDescSet("God Book Passage");
 	} else {
-	  //[C:/Adam/God/HSNotes.TXT.Z,1]
+//[C:/Adam/God/HSNotes.TXT.Z,1]
 	  FifoU8Flush(god.fifo);
 	  GodBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
 	  if (sc & SCF_SHIFT)
@@ -203,7 +203,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 		DocPrint(sys_clipboard_doc,"$LK,\"BF:%s\"$",st1);
 	      } else
 		DocPrint(sys_clipboard_doc,"$LK,\"FL:%s,%d\"$",
-		  st2,DocPut->cur_entry->y+1);
+		      st2,DocPut->cur_entry->y+1);
 	      Free(st1);
 	      Free(st2);
 	    }
@@ -215,12 +215,12 @@ Bool MyPutKey(I64 ch,I64 sc)
 	      i=RandU32;
 	      ClipboardDel;
 	      DocPrint(sys_clipboard_doc,"$LK,\"<TODO>\",A=\"FA:%s,ANC%d\"$",
-		DocPut->filename.name,i);
+		    DocPut->filename.name,i);
 	      "$AN,\"<TODO>\",A=\"ANC%d\"$",i;
 	    }
 	    return TRUE;
 
-//Ins your own ALT-key plug-ins
+	    //Ins your own ALT-key plug-ins
 	  case 'b':
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Cmd/Jump to Bad Code");

@@ -24,7 +24,7 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrPlot(dc,x-ROAD_WIDTH_BY_2+0.4*i,y);
   }
   dc->color=WHITE;
- 
+
   x=w>>1-CAR_WIDTH_BY_2;
   if (x<xx-ROAD_WIDTH_BY_2)
     crash=TRUE;
@@ -51,7 +51,7 @@ U0 UpdateRoad()
   while (distance>1.0) {
     road_trend=ClampI64(road_trend+SignI64(RandU16%3-1),-5,5);
     road_x[road_ptr&(NUM_ROAD-1)]=
-      road_x[(road_ptr-1)&(NUM_ROAD-1)]+=road_trend/3;
+	  road_x[(road_ptr-1)&(NUM_ROAD-1)]+=road_trend/3;
     road_ptr++;
     distance-=1.0;
   }
@@ -82,18 +82,18 @@ U0 Halogen()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Restart(,'\n');"
-  "  Accelerate(,,SC_CURSOR_UP);"
-  "  Deccellerate(,,SC_CURSOR_DOWN);"
-  "  Left(,,SC_CURSOR_LEFT);"
-  "  Right(,,SC_CURSOR_RIGHT);"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Accelerate(,,SC_CURSOR_UP);"
+	"  Deccellerate(,,SC_CURSOR_DOWN);"
+	"  Left(,,SC_CURSOR_LEFT);"
+	"  Right(,,SC_CURSOR_RIGHT);"
+	"}"
+	);
   Preempt;
   AutoComplete;
   WinMax;

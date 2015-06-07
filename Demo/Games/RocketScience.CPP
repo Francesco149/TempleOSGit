@@ -21,7 +21,7 @@ CMass	m1, //Bottom of rocket
 	m3; //Plane
 CSpring s;
 
-#define DVT_SPAN	40
+#define ROCKET_HEIGHT	40
 
 
    /* <1> <1> (image) */
@@ -46,9 +46,11 @@ F64	my_dbg,antispin_coefficient;
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 i,x,y,cx=task->pix_width/2,cy=(task->win_height-4)*FONT_HEIGHT-DVT_SPAN/2;
+  I64 i,x,y,
+	cx=task->pix_width/2,
+	cy=(task->win_height-4)*FONT_HEIGHT-ROCKET_HEIGHT/2;
   F64 theta=Arg(m2.x-m1.x,m2.y-m1.y),
-     nozzle_angle=ode->state[STATE_NOZZLE_ANGLE];
+	nozzle_angle=ode->state[STATE_NOZZLE_ANGLE];
   if (blast_off) {
     x=m1.x-10*Cos(theta+nozzle_angle);
     y=m1.y-10*Sin(theta+nozzle_angle);
@@ -58,11 +60,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       else
 	dc->color=RED;
       GrLine(dc,cx+(m1.x+i*Cos(theta-pi/2)),
-		  cy-(m1.y+i*Sin(theta-pi/2)),
-		  cx+x,cy-y);
+	    cy-(m1.y+i*Sin(theta-pi/2)),
+	    cx+x,cy-y);
       GrLine(dc,cx+(m1.x+i*Cos(theta+pi/2)),
-		  cy-(m1.y+i*Sin(theta+pi/2)),
-		  cx+x,cy-y);
+	    cy-(m1.y+i*Sin(theta+pi/2)),
+	    cx+x,cy-y);
     }
 
     for (i=0;i<10;i++) {
@@ -110,31 +112,29 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
 {
   F64 d,discriminant,v,a,theta=Arg(m2.state->x-m1.state->x,m2.state->y-m1.state->y),
-     DthetaDt,
-     collision_estimate_t,
-     target_heading,target_angle_error,
-     desired_nozzle_angle;
+	DthetaDt,collision_estimate_t,target_heading,target_angle_error,
+	desired_nozzle_angle;
   CD3 p,p_target,p_body;
 
   //Unit vect pointing to top of rocket from bottom.
   D3Sub(&m2.state->x,&m1.state->x,&p_body);
   D3Unit(&p_body);
 
-  //DthetaDt lets us prevent too spin.
+  //DthetaDt lets us prevent too much spin.
   DthetaDt=antispin_coefficient*
-    (m2.state->DyDt*p_body.x-m2.state->DxDt*p_body.y-
-     m1.state->DyDt*p_body.x+m1.state->DxDt*p_body.y)/DVT_SPAN;
+	(m2.state->DyDt*p_body.x-m2.state->DxDt*p_body.y-
+	m1.state->DyDt*p_body.x+m1.state->DxDt*p_body.y)/ROCKET_HEIGHT;
 
   //p_target is vect from top of rocket to plane.
   D3Sub(&m3.state->x,&m2.state->x,&p_target);
 
   //d=0.5at^2+vt
   d=D3Norm(&p_target);
- 
+
   D3Copy(&p,&p_target);
   D3Unit(&p);
   v=(m2.state->DxDt*p.x+m2.state->DyDt*p.y)-
-    (m3.state->DxDt*p.x+m3.state->DyDt*p.y);
+	(m3.state->DxDt*p.x+m3.state->DyDt*p.y);
 
   a=THRUST/(m1.mass+m2.mass);
 
@@ -160,8 +160,8 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
   //For realism we limit the speed the nozzle angle can change.
   DstateDt[STATE_NOZZLE_ANGLE]=state[STATE_NOZZLE_ANGLE_VELOCITY];
   DstateDt[STATE_NOZZLE_ANGLE_VELOCITY]=
-    Clamp(10000*(desired_nozzle_angle-state[STATE_NOZZLE_ANGLE]),-1000,1000)+
-    -10.0*state[STATE_NOZZLE_ANGLE_VELOCITY]; //Damping
+	Clamp(10000*(desired_nozzle_angle-state[STATE_NOZZLE_ANGLE]),
+	-1000,1000)-10.0*state[STATE_NOZZLE_ANGLE_VELOCITY]; //Damping
 
   if (blast_off) {
     m1.DstateDt->DxDt+=THRUST*Cos(theta+state[STATE_NOZZLE_ANGLE]);
@@ -175,7 +175,7 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
   //You might also factor-in fuel slosh in the tank.
 
   //To do this, you would have to set-up state vars for mass and
-  //do A=F/m manually instead of relyin on [C:/Adam/AMathODE.CPP.Z,321] ODECallDerivative() to divide
+  //do A=F/m manually instead of relyin on [C:/Adam/AMathODE.CPP.Z,322] ODECallDerivative() to divide
   //by mass.
 }
 
@@ -185,16 +185,16 @@ U0 Init()
   plane_hit=FALSE;
 
   do antispin_coefficient=PopUpRangeF64Exp(0.1,10.001,Sqrt(10),
-    "%9.4f","Anti-spin Coefficient\n\n");
+	  "%9.4f","Anti-spin Coefficient\n\n");
   while (!(0.1<=antispin_coefficient<10.001));
 
-//We don't clear que links.
+  //We don't clear que links.
   MemSet(&m1.start,0,offset(CMass.end)-offset(CMass.start));
-  m1.y=-DVT_SPAN/2;
+  m1.y=-ROCKET_HEIGHT/2;
   m1.mass=1.0;
 
   MemSet(&m2.start,0,offset(CMass.end)-offset(CMass.start));
-  m2.y=DVT_SPAN/2;
+  m2.y=ROCKET_HEIGHT/2;
   m2.mass=1.0;
 
   MemSet(&m3.start,0,offset(CMass.end)-offset(CMass.start));
@@ -206,7 +206,7 @@ U0 Init()
   MemSet(&s.start,0,offset(CSpring.end)-offset(CSpring.start));
   s.end1=&m1;
   s.end2=&m2;
-  s.rest_len=DVT_SPAN;
+  s.rest_len=ROCKET_HEIGHT;
   s.const=10000;
 
   ode->state[STATE_NOZZLE_ANGLE]=0;
@@ -228,19 +228,19 @@ U0 RocketScience()
   DocCursor;
   AutoComplete;
 
-//The ode nodes are traversed by win mgr.
+  //The ode nodes are traversed by win mgr.
   Preempt;
 
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,'\n');"
-"  Launch(,CH_SPACE);"
-"}"
-);
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Launch(,CH_SPACE);"
+	"}"
+	);
 
   WinMax;
   dc2=DCAlias;
@@ -248,14 +248,14 @@ U0 RocketScience()
 
   DocClear;
   "$BG,LTCYAN$%h*c",Fs->win_height-4,'\n';
- 
+
   ode=ODENew(STATE_NUM,1e-6,ODEF_HAS_MASSES);
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;
   ode->drag_v3=0.00001;
   ode->acceleration_limit=5e3;
 
-//  ode->t_scale=0.1; //Uncomment this to go in slow motion.
+  //  ode->t_scale=0.1; //Uncomment this to go in slow motion.
 
   Init;
   QueIns(&m1,ode->last_mass);

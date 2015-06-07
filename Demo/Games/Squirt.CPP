@@ -54,7 +54,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   Bool old_suspend,first;
   F64 dx,dy,d;
   I64  x1b,y1b,x2b,y2b,
-      x1a,y1a,x2a,y2a;
+	x1a,y1a,x2a,y2a;
   MyMass   *tempm,*tempm1;
   MySpring *temps;
   CD3I32 poly[4];
@@ -148,9 +148,9 @@ U0 DrawIt(CTask *task,CDC *dc)
       dy*=d;
       dc->color=BLACK;
       GrLine(dc,temps->end1->x-dy,temps->end1->y+dx,
-	  temps->end2->x-dy,temps->end2->y+dx);
+	    temps->end2->x-dy,temps->end2->y+dx);
       GrLine(dc,temps->end1->x+dy,temps->end1->y-dx,
-	  temps->end2->x+dy,temps->end2->y-dx);
+	    temps->end2->x+dy,temps->end2->y-dx);
     }
     temps=temps->next;
   }
@@ -160,17 +160,15 @@ U0 DrawIt(CTask *task,CDC *dc)
 U0 MyDerivative(CMathODE *ode,F64 t,COrder2D3 *state,COrder2D3 *DstateDt)
 {//The forces due to springs and drag are
 //automatically handled by the
-//ode code.  We can add new forces
-//here.
+  //ode code.  We can add new forces
+  //here.
   nounusedwarn t,state,DstateDt;
-  MyMass *tempm1,*tempm2;
-  nounusedwarn tempm2;
-
-  tempm1=ode->next_mass;
+  MyMass *tempm1=ode->next_mass;
   while (tempm1!=&ode->next_mass) {
     if (tempm1->type==MT_HOSE) {
       if (tempm1->state->y+tempm1->radius>GROUND_Y)
-	tempm1->DstateDt->DyDt-=Sqr(Sqr(tempm1->state->y+tempm1->radius-GROUND_Y))*tempm1->mass;
+	tempm1->DstateDt->DyDt-=Sqr(Sqr(tempm1->state->y+
+	      tempm1->radius-GROUND_Y))*tempm1->mass;
       else
 	tempm1->DstateDt->DyDt+=500*tempm1->mass;
       if (tempm1==nozzle || tempm1==faucet) {
@@ -183,7 +181,8 @@ U0 MyDerivative(CMathODE *ode,F64 t,COrder2D3 *state,COrder2D3 *DstateDt)
   }
 }
 
-MyMass *PlaceMass(I64 type,I64 x, I64 y,F64 r,F64 dx,F64 dy,F64 mass,CTask *mem_task)
+MyMass *PlaceMass(I64 type,I64 x, I64 y,F64 r,
+	F64 dx,F64 dy,F64 mass,CTask *mem_task)
 {
   MyMass *tempm=CAlloc(sizeof(MyMass),mem_task);
   tempm->type=type;
@@ -235,19 +234,19 @@ U0 AnimateTask(I64)
   F64 dx,dy;
   while (TRUE) {
 
-//The WinMgr task suspends our parent when it
-//updates the ODE's.  We use this to know when
-//the ODE's are being updated.
+    //The WinMgr task suspends our parent when it
+    //updates the ODE's.  We use this to know when
+    //the ODE's are being updated.
     if (!IsSuspended(Fs->parent_task)) {
       dx=Cos(nozzle_theta),
-      dy=Sin(nozzle_theta),
-      PlaceMass(MT_DROPLET,
-		nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,HOSE_RADIUS,
-		500*dx,500*dy,100.0,Fs->parent_task);
+	    dy=Sin(nozzle_theta),
+	    PlaceMass(MT_DROPLET,
+	    nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,HOSE_RADIUS,
+	    500*dx,500*dy,100.0,Fs->parent_task);
       if (Rand<0.05) //faucet drip
 	PlaceMass(MT_DROPLET,
-		faucet->x,faucet->y,HOSE_RADIUS,
-		0,0,100.0,Fs->parent_task);
+	      faucet->x,faucet->y,HOSE_RADIUS,
+	      0,0,100.0,Fs->parent_task);
 
       tempm=ode->next_mass;
       while (tempm!=&ode->next_mass) {
@@ -270,7 +269,7 @@ U0 MoveNozzleTaskX(I64 sign)
   I64 i;
   for (i=0;i<NOZZLE_MOVE_STEPS;i++) {
     nozzle->x=Clamp(nozzle->x+sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
-      HOSE_RADIUS*3,GR_WIDTH-HOSE_RADIUS*3);
+	  HOSE_RADIUS*3,GR_WIDTH-HOSE_RADIUS*3);
     WinMgrSync;
   }
 }
@@ -280,7 +279,7 @@ U0 MoveNozzleTaskY(I64 sign)
   I64 i;
   for (i=0;i<NOZZLE_MOVE_STEPS;i++) {
     nozzle->y=Clamp(nozzle->y+sign*NOZZLE_MOVE/NOZZLE_MOVE_STEPS,
-      HOSE_RADIUS*3,GROUND_Y);
+	  HOSE_RADIUS*3,GROUND_Y);
     WinMgrSync;
   }
 }
@@ -290,7 +289,7 @@ U0 Init()
   DocClear;
   "$BG,LTCYAN$%h*c",ToI64(GROUND_Y/FONT_HEIGHT),'\n';
 
-//Allow hose to settle.
+  //Allow hose to settle.
   start_up_timeout=tS+0.5;
 
   ode=ODENew(0,5e-2,ODEF_HAS_MASSES);
@@ -336,18 +335,18 @@ U0 Squirt()
   AutoComplete;
 
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Restart(,'\n');"
-  "  Left(,,SC_CURSOR_LEFT);"
-  "  Right(,,SC_CURSOR_RIGHT);"
-  "  Up(,,SC_CURSOR_UP);"
-  "  Down(,,SC_CURSOR_DOWN);"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Left(,,SC_CURSOR_LEFT);"
+	"  Right(,,SC_CURSOR_RIGHT);"
+	"  Up(,,SC_CURSOR_UP);"
+	"  Down(,,SC_CURSOR_DOWN);"
+	"}"
+	);
 
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);

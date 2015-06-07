@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #This prints a random Bible passage.
 
 if [ ! -f Bible.TXT ]; then

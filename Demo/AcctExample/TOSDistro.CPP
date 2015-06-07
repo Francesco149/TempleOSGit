@@ -90,7 +90,8 @@ public U0 CopySongs(U8 threshold='7')
 {
   CDoc *s;
   CDocEntry *doc_e;
-  CDirEntry *tempde=FilesFind("::/Home/Psalmody/*.CPP*",FUF_CLUSTER_ORDER),*tempde1=tempde;
+  CDirEntry *tempde=FilesFind("::/Home/Psalmody/*.CPP*",FUF_CLUSTER_ORDER),
+	*tempde1=tempde;
   DelTree("/Apps/Psalmody/Examples");
   MkDir("/Apps/Psalmody/Examples");
   while (tempde) {
@@ -109,7 +110,8 @@ U0 DistroPrep()
   Del("/Demo/ReverseFileExample/PoemForeward.TXT*");
   Del("/Home/NumBible.TXT.Z");
   DelTree("/Home/*Temp.TXT.Z");
-  CopySongs;
+  if (FileFind("::/Home/Psalmody"))
+    CopySongs;
 
   DelTree("/Temp");
   MkDir("/Temp");
@@ -126,10 +128,10 @@ U0 DistroPrep()
   DelTree("/Demo/AcctExample/Wb2");
   Del("/Demo/AcctExample/Test*");
 
-//Once in a while, do these:
-//  SortHeaders;
-//  DocOpt("/*");
-//  DblSpaceScan("/*");
+  //Once in a while, do these:
+  //  SortHeaders;
+  //  DocOpt("/*");
+  //  DblSpaceScan("/*");
 
   CursorRem("/*");
   DelTree("/Demo/*.BI*");
@@ -141,7 +143,7 @@ U0 DistroPrep()
 U0 MakeBootRescueDrvFile()
 {
   try
-    Let2Drv('A');
+	  Let2Drv('A');
   catch {
     Fs->catch_except=TRUE;
     Auto(CFG_BOOT_RESCUE_DRV "\n");
@@ -169,7 +171,8 @@ U0 MakeBootRescueDrvFile()
   Copy("C:/Adam/AUtils.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/AMathODE.CPP.Z","A:/Adam");
 
-  FileWrite("C:" CFG_BOOT_RESCUE_DRV_FILE,bd->RAM_dsk,(bd->max_blk+1)<<BLK_SIZE_BITS);
+  FileWrite("C:" CFG_BOOT_RESCUE_DRV_FILE,
+	bd->RAM_dsk,(bd->max_blk+1)<<BLK_SIZE_BITS);
 }
 
 U0 MakeSymFiles()
@@ -229,9 +232,9 @@ I64 MakeLineRepFile()
   }
   DocClear;
   official=LineRep("C:/*","-r")+
-	   LineRep("C:/Adam/*")+
-	   LineRep("C:/Compiler/*","-S+T")+
-	   LineRep("C:/Kernel/*");
+	LineRep("C:/Adam/*")+
+	LineRep("C:/Compiler/*","-S+T")+
+	LineRep("C:/Kernel/*");
   DocClear;
   CopyTree("B:/TOS","C:/Home");
   DelTree("B:/TOS");
@@ -240,7 +243,7 @@ I64 MakeLineRepFile()
   DocTreeFind(doc,"LineRep",&tree_branch,&start_indent,&end_indent);
   DocCut(doc,start_indent->next,end_indent->last);
   doc->cur_entry=start_indent->next;
-  doc->cur_data_col=0;
+  doc->cur_col=0;
 
   DocPrint(doc,"DefinePrint(\"DD_TEMPLEOS_LOC\",\"%,d\");\n",result);
   DocPrint(doc,"DefinePrint(\"DD_TEMPLEOS_LOC_OFFICIAL\",\"%,d\");\n",official);
@@ -271,14 +274,16 @@ website, too.
   MakeOSDrvBootInstall('C','T');
   DelTree(TOS_DISTRO_DIR);
   CopyTree("C:/",TOS_DISTRO_DIR "/");
+  Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
 }
 U0 MakeTOSDistro()
 {
   TOSDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-    "Download TempleOS V3.04 - T.S. Company Internal Distro (%0.1f MB)",
-    0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
+	"Download TempleOS V3.06 - T.S. Company Internal Distro (%0.1f MB)",
+	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
 
@@ -289,7 +294,7 @@ load Kernel.BIN.C which has been modified to also hold a small RAM drive
 (Drive A) that fits in the low 640k.  The bootloader starts in real mode
 and the kernel changes to long, 64-bit mode.  It loads the 64-bit compiler
 and assembler, compiles some, but not all, of the normal start-up scripts
-and drops you off at the [C:/Kernel/KDbg.CPP.Z,637] Dbg command-line where you can JIT compile,
+and drops you off at the [C:/Kernel/KDbg.CPP.Z,640] Dbg command-line where you can JIT compile,
 use [C:/Kernel/EdLite.CPP.Z,58] EdLite on RAM files, and use many of the other normal Kernel commands.
 I could not fit all the normal start-up scripts into the small RAM drive,
 so you do not have the window manager or normal document framework.  You
@@ -304,15 +309,17 @@ I call [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] MakeBootDrvFile.
   MakeOSDrvBootInstall('C','T');
   DelTree(TOS_DISTRO_DIR);
   CopyTree("C:/",TOS_DISTRO_DIR "/");
+  Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
   Del("C:" CFG_BOOT_RESCUE_DRV_FILE);
 }
 U0 MakeDbgDistro()
 {
   DbgDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-    "Download TempleOS V3.04 - Debug Distro (%0.1f MB)",
-    0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
+	"Download TempleOS V3.06 - Debug Distro (%0.1f MB)",
+	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
 
@@ -326,18 +333,20 @@ U0 StdDistroPrep()
   CopyTree("C:/",TOS_DISTRO_DIR "/");
   DelTree(TOS_DISTRO_DIR "/Home");
   MkDir(TOS_DISTRO_DIR "/Home");
-  Del(TOS_DISTRO_DIR "/0000Boot/OldMBR.BIN.C");
-  Del(TOS_DISTRO_DIR "/0000Boot/BootMHD2.BIN.C");
+  Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
+  Del(TOS_DISTRO_DIR BOOT_DIR "/OldMBR.BIN.C");
+  Del(TOS_DISTRO_DIR BOOT_DIR "/BootMHD2.BIN.C");
 }
 U0 MakeStdDistro()
 {
   StdDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   Drv('C');
 }
 
 U0 LiteDistroPrep()
-{/*Missing: Dictionary, Bible and TOSZ Utility.	Still 100% OpenSource.
+{/*Missing: Dictionary, Bible and TOSZ Utility.Still 100% OpenSource.
 Includes: x86_64 64BitMultiCoredKernel, 64BitCompiler, Assembler,
 Unassembler, Debugger, Editor, VGAGraphics, Tools, BootLoaders,
 Keyboard&Mouse, HardDrives, FAT32, Partitioner, CD/DVD, ISO9660FileCreator,
@@ -346,6 +355,7 @@ Demos, Documentation.
 */
   StdDistroPrep;
   DelTree(TOS_DISTRO_DIR "/Linux");
+  Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
   Del(TOS_DISTRO_DIR "/Adam/AutoComplete/ACDefs.DAT*");
   Del(TOS_DISTRO_DIR "/Misc/PCIDevices.TXT.Z");
   Del(TOS_DISTRO_DIR "/Misc/Bible.TXT.Z");
@@ -353,15 +363,17 @@ Demos, Documentation.
 U0 MakeLiteDistro()
 {
   LiteDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-    "Download TempleOS V3.04 - Lite Distro (%0.1f MB)",
-    0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
+	"Download TempleOS V3.06 - Lite Distro (%0.1f MB)",
+	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
 
 U0 UltraDistroPrep()
-{/*Missing: Apps, Demos, Dictionary, Bible and TOSZ Utility.  Still 100% OpenSource.
+{/*
+Missing: Apps, Demos, Dictionary, Bible and TOSZ Utility.  Still 100%OpenSource.
 Includes: x86_64 64BitMultiCoredKernel, 64BitCompiler, Assembler,
 Unassembler, Debugger, Editor, VGAGraphics, Tools, BootLoaders,
 Keyboard&Mouse, HardDrives,  FAT32, Partitioner, CD/DVD, ISO9660FileCreator,
@@ -369,8 +381,10 @@ FileManager, WindowManager, PCSpeaker, Documentation.
 */
   LiteDistroPrep;
   DelTree(TOS_DISTRO_DIR "/Apps");
+  MkDir(TOS_DISTRO_DIR "/Apps");
   DelTree(TOS_DISTRO_DIR "/Demo");
   DelTree(TOS_DISTRO_DIR "/Misc/Tour");
+  Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
   Del(TOS_DISTRO_DIR "/Adam/AutoComplete/ACWords.DAT*");
   Del(TOS_DISTRO_DIR "/Adam/God/Vocab.TXT.Z");
   Del(TOS_DISTRO_DIR "/Misc/OSTestSuite.CPP.Z");
@@ -378,10 +392,11 @@ FileManager, WindowManager, PCSpeaker, Documentation.
 U0 MakeUltraDistro()
 {
   UltraDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
+  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-    "Download TempleOS V3.04 - UltraLite Distro (%0.1f MB)",
-    0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
+	"Download TempleOS V3.06 - UltraLite Distro (%0.1f MB)",
+	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
 
@@ -396,9 +411,10 @@ U0 TOSWebFile(U8 *name)
     Touch(name,"",,de.datetime);
     name2=ChgExt(name,"html");
     ToHtml(name,name2,
-	"<title>The Temple Operating System</title>\n"
-	"<meta name=\"keywords\" content=\"Operating System,64-Bit,64 Bit,Temple,OS,TempleOS,Free,Open Source,Public Domain,x86_64\">\n"
-	);
+	  "<title>The Temple Operating System</title>\n"
+	  "<meta name=\"keywords\" "
+	  "content=\"Operating System,64-Bit,64 Bit,"
+	  "Temple,OS,TempleOS,Free,Open Source,Public Domain,x86_64\">\n");
     Touch(name2,"",,de.datetime);
     Free(name2);
   }
@@ -416,12 +432,14 @@ U0 MakeWebSite()
   Touch("D:/Wb/Home/Wb2/index.TXT.Z","",,Now);
   Touch("D:/Wb/Home/Wb2/Downloads.TXT.Z","",,Now);
   Touch("D:/Wb/Home/Wb2/TempleOS.TXT.Z","",,Now);
-  tempde=tempde1=FilesFind("*",FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT|FUF_CLUSTER_ORDER);
+  tempde=tempde1=FilesFind("*",
+	FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT|FUF_CLUSTER_ORDER);
   while (tempde) {
     TOSWebFile(tempde->full_name);
     tempde=tempde->next;
   }
-  Copy("D:/Wb/Home/Wb2/Files/Bin/TempleBot","D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
+  Copy(	"D:/Wb/Home/Wb2/Files/Bin/TempleBot",
+	"D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
   ToDolDoc("D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
   ToHtml("D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
   Del("D:/Wb/Home/Wb2/Files/Bin/TempleBot.TXT");
@@ -461,15 +479,15 @@ U0 MakeWebSitePartial()
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-    "Download TempleOS V3.04 - Standard Distro (%0.1f MB)",
-    0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
+	"Download TempleOS V3.06 - Standard Distro (%0.1f MB)",
+	0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
-    "%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
+	"%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-    "Download TempleOS V3.04 - UltraSmall Distro (%0.1f MB)",
-    0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
+	"Download TempleOS V3.06 - UltraSmall Distro (%0.1f MB)",
+	0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
-    "%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);
+	"%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);
 }
 
 UpdateISODocDefines;

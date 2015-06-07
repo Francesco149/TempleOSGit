@@ -1,8 +1,8 @@
 #help_index "DolDoc"
 
 U0 DocInit()
-{//[C:/Kernel/KernelA.HPP.Z,887] CMD Defines
-  CLex *lx;
+{//[C:/Kernel/KernelA.HPP.Z,888] CMD Defines
+  CCmpCtrl *cc;
   I64 i;
   CHashGeneric *temph;
 
@@ -26,21 +26,21 @@ U0 DocInit()
 
   MemSet(doldoc.dft_de_flags,	0,sizeof(doldoc.dft_de_flags));
   MemSet(doldoc.dft_type_flags,	0,sizeof(doldoc.dft_type_flags));
-  lx=LexNew("TX+T;DA+P+TRM+T;CM+LE+RE;AN+T;LK+L+UL+T;MA+X+UL+T;MU+X+UL+T;"
+  cc=CmpCtrlNew("TX+T;DA+P+TRM+T;CM+LE+RE;AN+T;LK+L+UL+T;MA+X+UL+T;MU+X+UL+T;"
 	"BT+X+B+T;CB+CA+P+T;LS+LS+P+T;HX+P+Z;TR+TR+C+CA+UL+T;SP+T;IB+T;IS+T;"
-	"SO+T;HC+T;",LF_DONT_FREE_BUF);
-  lx->htc.hash_table_lst=NULL;
-  Lex(lx);
-  while (lx->token==TK_IDENT) {
-    if (temph=HashFind(lx->cur_str,doldoc.hash,DHT_DOC_CMD)) {
+	"SO+T;HC+T;",CCF_DONT_FREE_BUF);
+  cc->htc.hash_table_lst=NULL;
+  Lex(cc);
+  while (cc->token==TK_IDENT) {
+    if (temph=HashFind(cc->cur_str,doldoc.hash,DHT_DOC_CMD)) {
       i=temph->user_data0;
-      Lex(lx);
-      PrsDocFlags(lx,&doldoc.dft_de_flags[i],&doldoc.dft_type_flags[i]);
+      Lex(cc);
+      PrsDocFlags(cc,&doldoc.dft_de_flags[i],&doldoc.dft_type_flags[i]);
     }
-    if (lx->token==';')
-      Lex(lx);
+    if (cc->token==';')
+      Lex(cc);
   }
-  LexDel(lx);
+  CmpCtrlDel(cc);
 
   for (i=0;i<DOCT_NUM_TYPES;i++)
     doldoc.dft_de_flags[i]&=~DOCG_BL_IV_UL;
@@ -50,7 +50,7 @@ U0 DocInit()
     if (Bt(&doldoc.dft_de_flags[i],DOCEf_TAG) && i!=DOCT_TEXT || i==DOCT_HEX_ED)
       Bts(doldoc.type_flags_form,i);
 
-  //Don't forget [C:/Compiler/Lex.CPP.Z,389] cmp_type_flags_src_code.
+      //Don't forget [C:/Compiler/Lex.CPP.Z,324] cmp_type_flags_src_code.
   doldoc.type_flags_nontag_invisible[0]=
 	1<<DOCT_PAGE_LEN|
 	1<<DOCT_LEFT_MARGIN|

@@ -35,14 +35,18 @@ U0 Song()
     while (!ScanKey) {
       "$CL$$BG,LTCYAN$";
       Play("3qEsGEGEeF2G3BCqCeDEqBsERER",
-	    "$FG$Lord, \0I \0 \0am \0 \0feel\0ing \0just \0a \0bit \0un\0in\0spired.\n\0With \0 \0 \0 \0");
+	    "$FG$Lord, \0I \0 \0am \0 \0feel\0ing \0"
+	    "just \0a \0bit \0un\0in\0spired.\n\0With \0 \0 \0 \0");
       Play("qEsGEGEeF2G3BCqCeDEqBsERER",
-	    "net \0or \0 \0with \0 \0reel\0ing \0 \0I \0keep \0get\0ting \0mired.\n\0 \0 \0 \0 \0");
+	    "net \0or \0 \0with \0 \0reel\0ing \0 \0"
+	    "I \0keep \0get\0ting \0mired.\n\0 \0 \0 \0 \0");
       Play("qDetRAFqDGetFC2G3sBCBCqDF",
-	    "$RED$Throw \0 \0out \0your \0net.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	    "$RED$Throw \0 \0out \0your \0net.\n\0 \0 \0"
+	    " \0 \0 \0 \0 \0 \0 \0 \0");
       Sprite(__BIN_1);
       Play("DetRAFqDGetFC2G3sBCBCqDF",
-	    "Make \0 \0you \0a \0bet.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	    "Make \0 \0you \0a \0bet.\n\0 \0 \0 \0 \0 \0"
+	    " \0 \0 \0 \0 \0");
       '\n\n\n\n\n';
     }
   } catch

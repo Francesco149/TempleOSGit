@@ -76,11 +76,11 @@ public I64 GodInit(U8 *files_find_mask="/Adam/God/Vocab.TXT*",U8 *fu_flags=NULL)
   while (tempde) {
     if (buf=ptr=FileRead(tempde->full_name)) {
       while (*ptr) {
-	while (*ptr && !Bt(chars_bitmap_word,*ptr))
+	while (*ptr && !Bt(chars_bmp_word,*ptr))
 	  ptr++;
 	if (*ptr) {
 	  ptr2=ptr;
-	  while (*ptr && Bt(chars_bitmap_word,*ptr))
+	  while (*ptr && Bt(chars_bmp_word,*ptr))
 	    ptr++;
 	  i++;
 	}
@@ -99,11 +99,11 @@ public I64 GodInit(U8 *files_find_mask="/Adam/God/Vocab.TXT*",U8 *fu_flags=NULL)
   while (tempde) {
     if (buf=ptr=FileRead(tempde->full_name)) {
       while (*ptr) {
-	while (*ptr && !Bt(chars_bitmap_word,*ptr))
+	while (*ptr && !Bt(chars_bmp_word,*ptr))
 	  ptr++;
 	if (*ptr) {
 	  ptr2=ptr;
-	  while (*ptr && Bt(chars_bitmap_word,*ptr))
+	  while (*ptr && Bt(chars_bmp_word,*ptr))
 	    ptr++;
 	  ch=*ptr;
 	  *ptr=0;

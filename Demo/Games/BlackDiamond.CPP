@@ -74,15 +74,16 @@ CSprite *imgs[4]={__BIN_3,__BIN_4,__BIN_5,__BIN_6};
 U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i;
-  //<CTLR-t> to see the syntax of the
+//<CTLR-t> to see the syntax of the
   //"Insert Binary" statement in the following.
   for (i=0;i<NUM_OBJS;i++)
     if (obj_types[i]==T_WOLF && AbsI64(x-obj_x[i])>3) {
       if (x<obj_x[i]) {
 	dc->flags|=DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR;
-	GrSetSymmetry(dc,obj_x[i],0,obj_x[i],1);
+	DCSymmetrySet(dc,obj_x[i],0,obj_x[i],1);
       }
-      SpriteZ3B(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]],0.4*Sin(7*tS));
+      SpriteZ3B(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]],
+	    0.4*Sin(7*tS));
       if (0<=(obj_y[i]-screen_top_y)<GR_HEIGHT)
 	obj_x[i]+=3*SignI64(x-obj_x[i]);
       dc->flags&=~(DCF_SYMMETRY|DCF_TRANSFORMATION);
@@ -96,7 +97,7 @@ U0 DrawIt(CTask *,CDC *dc)
   if (!game_over) {
     if(dc->collision_cnt) {
       Snd(400);
-      penalty++; //Timing is irregular. Scoring is imperfect. 30fps more or less.
+      penalty++; //Time is irregular. Scoring is imperfect. 30fps more or less.
     } else
       Snd(0);
   }
@@ -112,7 +113,7 @@ U0 DrawIt(CTask *,CDC *dc)
   if (game_over && Blink) {
     dc->color=RED;
     GrPrint(dc,(Fs->pix_width-9*FONT_WIDTH)/2,
-	       (Fs->pix_height-FONT_HEIGHT)/2,"Game Over");
+	  (Fs->pix_height-FONT_HEIGHT)/2,"Game Over");
   }
 }
 
@@ -221,7 +222,7 @@ bd_restart:
 	      Snd(0);
 	      goto bd_restart;
 	  }
-	  //Don't want keystrokes building-up in the buf.
+//Don't want keystrokes building-up in the buf.
 	  FlushMsgs;
 	}
 	if (!game_over) {

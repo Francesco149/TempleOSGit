@@ -35,8 +35,8 @@ U0 SpriteText(U8 *elems)
   CSprite *tempg=elems-offset(CSprite.start);
   U8 *st;
   while (tempg->type) {
-    //Study this routine [C:/Adam/Gr/SpriteNew.CPP.Z,116] SpriteElem2OneLineSummary().
-    st=SpriteElem2OneLineSummary(tempg);
+//Study this routine [C:/Adam/Gr/SpriteNew.CPP.Z,117] SpriteElem2Summary().
+    st=SpriteElem2Summary(tempg);
     "%s\n",st;
     Free(st);
     tempg(U8 *)+=SpriteElemSize(tempg);

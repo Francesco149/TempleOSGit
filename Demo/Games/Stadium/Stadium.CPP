@@ -33,9 +33,10 @@ U0 DrawIt(CTask *,CDC *dc)
       yy=t0*target_y+(1.0-t0)*pitcher_y;
       xx/=1.5-t0;
       yy/=1.5-t0;
-      r=GrScaleNew(dc->r,1.5-t0,dc->mem_task);
+      r=Mat4x4New(dc->r,dc->mem_task);
+      Mat4x4Scale(r,1.5-t0);
       Free(dc->r);
-      GrSetRotMat(dc,r);
+      DCMat4x4Set(dc,r);
       dc->flags|=DCF_TRANSFORMATION;
       SpriteZ3B(dc,xx,yy,0,__BIN_2,t0);
     }
@@ -93,14 +94,14 @@ U0 Stadium()
   Fs->win_inhibit|=WIG_DBL_CLICK;
 
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,'\n');"
-"}"
-);
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"}"
+	);
   WinMax;
   WinBorder;
   AutoComplete;

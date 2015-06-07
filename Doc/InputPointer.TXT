@@ -7,13 +7,13 @@ if
 you don't want to use msg passing.  [C:/Kernel/KGlbls.CPP.Z,18] ip.pos.z is
 the wheel.
 
-[C:/Kernel/KernelA.HPP.Z,2932] ip.pos_text.x and
-[C:/Kernel/KernelA.HPP.Z,2932] ip.pos_text.y are the text column and row of
+[C:/Kernel/KernelA.HPP.Z,2941] ip.pos_text.x and
+[C:/Kernel/KernelA.HPP.Z,2941] ip.pos_text.y are the text column and row of
 the input ptr.  
 See [C:/Demo/Games/Maze.CPP.Z,1].
 
-See [C:/Kernel/KernelA.HPP.Z,2932] CIPStateGlbls and
-[C:/Kernel/KernelA.HPP.Z,2910] CMouseStateGlbls.
+See [C:/Kernel/KernelA.HPP.Z,2941] CIPStateGlbls and
+[C:/Kernel/KernelA.HPP.Z,2919] CMouseStateGlbls.
 
 //****
 mouse.pos.x=mouse.prescale.x*mouse.scale.x*ip_grid.x_speed;

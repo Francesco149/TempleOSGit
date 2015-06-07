@@ -39,11 +39,11 @@ U0 DrawIt(CTask *task,CDC *dc)
       else
 	dc->color=RED;
       GrLine(dc,cx+(m1.x+i*Cos(theta-pi/2)),
-		  cy-(m1.y+i*Sin(theta-pi/2)),
-		  cx+x,cy-y);
+	    cy-(m1.y+i*Sin(theta-pi/2)),
+	    cx+x,cy-y);
       GrLine(dc,cx+(m1.x+i*Cos(theta+pi/2)),
-		  cy-(m1.y+i*Sin(theta+pi/2)),
-		  cx+x,cy-y);
+	    cy-(m1.y+i*Sin(theta+pi/2)),
+	    cx+x,cy-y);
     }
 
     for (i=0;i<10;i++) {
@@ -92,7 +92,7 @@ U0 Init()
 {
   blast_off=FALSE;
 
-//We don't clear que links.
+  //We don't clear que links.
   MemSet(&m1.start,0,offset(CMass.end)-offset(CMass.start));
   m1.y=-DVT_SPAN/2;
 
@@ -123,21 +123,21 @@ U0 Rocket()
   DocCursor;
   AutoComplete;
 
-//The ode nodes are traversed by win mgr.
+  //The ode nodes are traversed by win mgr.
   Preempt;
 
   MenuPush(
-"File {"
-"  Abort(,CH_SHIFT_ESC);"
-"  Exit(,CH_ESC);"
-"}"
-"Play {"
-"  Restart(,'\n');"
-"  Up(,,SC_CURSOR_UP);"
-"  UpLeft(,,SC_CURSOR_LEFT);"
-"  UpRight(,,SC_CURSOR_RIGHT);"
-"}"
-);
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Up(,,SC_CURSOR_UP);"
+	"  UpLeft(,,SC_CURSOR_LEFT);"
+	"  UpRight(,,SC_CURSOR_RIGHT);"
+	"}"
+	);
 
   WinMax;
   dc2=DCAlias;
@@ -145,7 +145,7 @@ U0 Rocket()
 
   DocClear;
   "$BG,LTCYAN$$GREEN$Up, Left, Right$FG$%h*c",Fs->win_height-4,'\n';
- 
+
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;
   ode->drag_v3=0.00001;

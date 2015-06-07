@@ -55,15 +55,15 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->x=task->pix_width>>1;
   dc->y=task->pix_height>>1;
   dc->flags|=DCF_TRANSFORMATION;
-  GrSetTranslation(dc->r,x,y,0);
-  GrRotZEqu(dc->r,theta);
+  Mat4x4TranslationEqu(dc->r,x,y,0);
+  Mat4x4RotZ(dc->r,theta);
   GrBorder(dc,-MAP_WIDTH>>1,-MAP_HEIGHT>>1,MAP_WIDTH>>1,MAP_HEIGHT>>1);
   for (i=0;i<NUM_TANKS;i++)
     if (tk[i].dead) {
       if (i&1) {
 	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-	GrSetSymmetry3(dc,tk[i].x,tk[i].y,0,tk[i].x,tk[i].y,1,
-	     tk[i].x+1024*Cos(tk[i].theta),tk[i].y+1024*Sin(tk[i].theta),0);
+	DCSymmetry3Set(dc,tk[i].x,tk[i].y,0,tk[i].x,tk[i].y,1,
+	      tk[i].x+1024*Cos(tk[i].theta),tk[i].y+1024*Sin(tk[i].theta),0);
       }
       if (Blink(15))
 	SpriteZ3B(dc,tk[i].x,tk[i].y,0,__BIN_4,tk[i].theta);
@@ -88,10 +88,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   Sprite3(dc,task->pix_width>>1,task->pix_height>>1,0,__BIN_1);
   dc->color=RED;
   GrPrint(dc,0,0,
-    "Tanks:%02d  KeyStrokes:%04d Best:%04d",tank_cnt,key_cnt,best_score);
+	"Tanks:%02d  KeyStrokes:%04d Best:%04d",tank_cnt,key_cnt,best_score);
   if (!tank_cnt && Blink(4))
     GrPrint(dc,(task->pix_width-FONT_WIDTH*14)>>1,
-		(task->pix_height-FONT_HEIGHT)>>1-32,"Game Completed");
+	  (task->pix_height-FONT_HEIGHT)>>1-32,"Game Completed");
 }
  
 U0 BombDrop()
@@ -106,11 +106,11 @@ U0 BombDrop()
       if (SqrI64(bx-tk[i].x)+SqrI64(by-tk[i].y)<20*20) {
 	tk[i].dead=TRUE;
 	if (!--tank_cnt && key_cnt<best_score) {
-	   best_score=key_cnt;
-	   Sleep(300); //Wait for end of Noise() above
-	   Snd(1000);Sleep(150);Snd(0);
-	   Sleep(150);
-	   Snd(1000);Sleep(150);Snd(0);
+	  best_score=key_cnt;
+	  Sleep(300); //Wait for end of Noise() above
+	  Snd(1000);Sleep(150);Snd(0);
+	  Sleep(150);
+	  Snd(1000);Sleep(150);Snd(0);
 	}
       }
     }
@@ -120,7 +120,7 @@ U0 BombDrop()
 I64 AnimateTask(CTask *parent)
 {//Starts with preempt OFF
   I64 w=parent->pix_width,
-      h=parent->pix_height;
+	h=parent->pix_height;
   while (TRUE) {
     if (tank_cnt)
       Snd(100+(1.0+Abs(Wrap(thetaf-theta,-pi)))`4.0);

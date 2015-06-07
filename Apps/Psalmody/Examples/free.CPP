@@ -24,10 +24,10 @@ U0 DrawIt(CTask *,CDC *dc)
     return;
 
   dc->flags|=DCF_TRANSFORMATION;
-  GrRotXEqu(dc->r,pi/4);
+  Mat4x4RotX(dc->r,pi/4);
 
   theta=Wrap(pi-Windtheta);
-  GrRotZEqu(dc->r,-pi/2+theta/10);
+  Mat4x4RotZ(dc->r,-pi/2+theta/10);
 
   dc->color=BLUE;
   dc->x=x;
@@ -42,10 +42,10 @@ U0 DrawIt(CTask *,CDC *dc)
     r=tempb->radius*Min(1.0,0.25+2*(Beat-tempb->t0));
     for (theta=0;theta<2*pi;theta+=pi/2) {
       x1=10*Cos(theta);y1=10*Sin(theta);z1=0;
-      GrTransform(dc,&x1,&y1,&z1);
+      DCTransform(dc,&x1,&y1,&z1);
 
       x2=r*Cos(theta);y2=r*Sin(theta);z2=0;
-      GrTransform(dc,&x2,&y2,&z2);
+      DCTransform(dc,&x2,&y2,&z2);
 
       GrLine(dc,x1,y1,tempb->x-x+x2,tempb->y-y+y2);
     }
@@ -57,7 +57,7 @@ U0 DrawIt(CTask *,CDC *dc)
     GrCircle(dc,tempb->x,tempb->y,tempb->radius);
     dc->color=LTGRAY;
     GrCircle(dc,tempb->x+0.65*tempb->radius*Cos(5*pi/8),
-		tempb->y-0.65*tempb->radius*Sin(5*pi/8),1.0+0.2*tempb->radius);
+	  tempb->y-0.65*tempb->radius*Sin(5*pi/8),1.0+0.2*tempb->radius);
     tempb=tempb->last;
   }
   LBtr(&flags,0);
@@ -103,7 +103,7 @@ U0 AnimateTask(I64)
       tempb->y +=-dt*(20*Sin(theta)+tempb->dy);
 
       if (!(0<=tempb->x<task->pix_width) ||
-	  !(0<=tempb->y<task->pix_height) ) {
+	    !(0<=tempb->y<task->pix_height) ) {
 	QueRem(tempb);
 	Free(tempb);
       }
@@ -148,11 +148,14 @@ U0 Song()
     WinVert(Fs->win_bottom+3,Fs->win_bottom+15,task);
     while (!ScanKey) {
       Play("3qEEBeBDsBBBBqDsBFBFD2G3D2G",
-	    "Free \0will... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0fail.\n\0 \0 \0 \0");
+	    "Free \0will... \0 \0 \0 \0 \0 \0 \0 \0 \0"
+	    "I \0 \0 \0 \0fail.\n\0 \0 \0 \0");
       Play("3qEEBeBDsBBBBqDsBFBFD2G3D2G",
-	    "God \0still... \0 \0 \0 \0 \0 \0 \0 \0 \0I \0 \0 \0 \0hail.\n\0 \0 \0 \0");
+	    "God \0still... \0 \0 \0 \0 \0 \0 \0 \0 \0"
+	    "I \0 \0 \0 \0hail.\n\0 \0 \0 \0");
       Play("3qD2G3eA2G3qCetECAqBsACACqA",
-	    "All \0things \0work \0for \0good... \0to \0the \0Lord.\n\0 \0 \0 \0 \0 \0 \0");
+	    "All \0things \0work \0for \0good... \0"
+	    "to \0the \0Lord.\n\0 \0 \0 \0 \0 \0 \0");
       Play("D2G3eA2G3qCetECAqBsACACqA",
 	    "It's \0all \0good... \0 \0 \0as\0 \0sured.\n\0 \0 \0 \0 \0 \0 \0");
     }

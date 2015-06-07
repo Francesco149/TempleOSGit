@@ -13,8 +13,6 @@ asm {
 //Opcodes are slightly different to make writing my x86_64 assembler easier.
 //See [C:/Compiler/OpCodes.TXT.Z,1].
 
-USE64	//Defaults to 64, but this is a good habit.
-
 JIFFIES_MSG:	DU8 "Jiffies:",0;
 
 //See [C:/Kernel/StrA.CPP.Z,1] ::/Kernel/StrA.CPP and [C:/Kernel/KUtils.CPP.Z,1].
@@ -35,7 +33,7 @@ _BEEPS2::
 	POP	RCX
 	LOOP	@@05
 
-	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1695] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1696] REG_NON_PTR_MASK
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1703] REG_VARS_MASK & [C:/Kernel/KernelA.HPP.Z,1704] REG_NON_PTR_MASK
 	MOV	RSI,JIFFIES_MSG
 	CALL	PUT_STR
 	POP	RSI
@@ -63,30 +61,28 @@ U0 AsmAndC2()
   Beeps2(i);
 
   asm {
-LIST
+    LIST
 //You can clobber RAX,RBX,RCX,RDX, but preserve the rest.
 
-USE64	//Defaults to 64, but this is a good habit.
+    MOV	RCX,R15 //You can clobber RAX,RBX,RCX,RDX. Preserve the rest.
 
-	MOV	RCX,R15 //You can clobber RAX,RBX,RCX,RDX. Preserve the rest.
-
-@@05:	PUSH	RCX
+    @@05:	PUSH	RCX
 //U0 [C:/Kernel/KMisc.CPP.Z,163] Snd(F64 freq);
 
-	MOV	RAX,RCX	//freq=loop*100.0+100.0
-	IMUL2	RAX,glbl_hz_step	//evaluated at compile ttime
-	ADD	RAX,U64 [&glbl_hz_base] //evaluated at run time
-	PUSH	RAX
-	FILD	U64 [RSP]	//Convert from int to floating
-	FSTP	U64 [RSP]
+    MOV	RAX,RCX	//freq=loop*100.0+100.0
+    IMUL2	RAX,glbl_hz_step	//evaluated at compile ttime
+    ADD	RAX,U64 [&glbl_hz_base] //evaluated at run time
+    PUSH	RAX
+    FILD	U64 [RSP]	//Convert from int to floating
+    FSTP	U64 [RSP]
 
-	CALL	&Snd	//We can skip IMPORT with & if JIT compiling.
+    CALL	&Snd	//We can skip IMPORT with & if JIT compiling.
 
-	MOV	RCX,cnts.time_stamp_freq>>3	//JIT Const.  Simple delay loop.
+    MOV	RCX,cnts.time_stamp_freq>>3	//JIT Const.  Simple delay loop.
 @@10:	LOOP	@@10
 
-	POP	RCX
-	LOOP	@@05
+    POP	RCX
+    LOOP	@@05
   }
   Snd(0);
 }

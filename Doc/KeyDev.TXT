@@ -12,21 +12,21 @@ misnomer.  Currently, the following are defined:
 Priority    Handler
 ---------- ---------
 0x20000000 [C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() user handler
-0x40000000 [C:/Kernel/KeyDev.CPP.Z,112] KDInputFilterPutKey() for
-[C:/Kernel/SrvCmd.CPP.Z,495] Auto(), [C:/Kernel/SrvCmd.CPP.Z,477] AutoStr(),
-and [C:/Kernel/SrvCmd.CPP.Z,487] AutoFile() 
+0x40000000 [C:/Kernel/KeyDev.CPP.Z,113] KDInputFilterPutKey() for
+[C:/Kernel/SrvCmd.CPP.Z,496] Auto(), [C:/Kernel/SrvCmd.CPP.Z,478] AutoStr(),
+and [C:/Kernel/SrvCmd.CPP.Z,488] AutoFile() 
 handling.
-0x60000000 [C:/Kernel/KeyDev.CPP.Z,92] KDRawPutKey() nonwindowed direct to
+0x60000000 [C:/Kernel/KeyDev.CPP.Z,93] KDRawPutKey() nonwindowed direct to
 video mem debug output. 
-0x80000000 [C:/Adam/DolDoc/DocEdB.CPP.Z,670] KDDocPutKey() standard document
+0x80000000 [C:/Adam/DolDoc/DocEdB.CPP.Z,675] KDDocPutKey() standard document
 cmds
 
 Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
-[C:/Kernel/KernelA.HPP.Z,1321] CDoc.user_put_key and
-[C:/Kernel/KernelA.HPP.Z,1321] CDoc.user_put_s are call back routines which
+[C:/Kernel/KernelA.HPP.Z,1323] CDoc.user_put_key and
+[C:/Kernel/KernelA.HPP.Z,1323] CDoc.user_put_s are call back routines which
 offer some 
 neat tricks.  See [C:/Apps/Psalmody/JukeBox.CPP.Z,1].  There is a var
-[C:/Kernel/KernelA.HPP.Z,1321] CDoc.user_put_
+[C:/Kernel/KernelA.HPP.Z,1323] CDoc.user_put_
 data which gets passed to them.

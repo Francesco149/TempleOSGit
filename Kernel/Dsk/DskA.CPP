@@ -81,9 +81,9 @@ Bool BlkDevInit(CBlkDev *bd)
 	result=ATAInit(bd);
 	break;
       case BDT_ATAPI:
-	//0xFFFF*4 is too big for my taste
+//0xFFFF*4 is too big for my taste
 	bd->max_reads=0x800*4;
-	//max of maybe a quarter of disk cache
+//max of maybe a quarter of disk cache
 	if (bd->max_reads>dsk.cache_size/BLK_SIZE/4)
 	  bd->max_reads=dsk.cache_size/BLK_SIZE/4 & ~3;
 	if (bd->max_reads<128)
@@ -194,13 +194,18 @@ U0 DrvMapBlkAlloc(CDrv *dv)
 
 U0 DrvMapBlkClean(CDrv *dv,I64 map_select=3)
 {
-  if (dv->type==DVT_FAT32 || dv->type==DVT_REDSEA) {
-    if ((map_select==3 || !map_select) && dv->map1!=dv->map2 &&
-	Bt(&dv->map_blk_dirty,0))
-      WBlks(dv,dv->cur_map_blk(I64),dv->map1+dv->cur_map_blk_num,1);
-    if (map_select==3 || map_select==1 || dv->map1==dv->map2 &&
-	LBtr(&dv->map_blk_dirty,0))
-      WBlks(dv,dv->cur_map_blk(I64),dv->map2+dv->cur_map_blk_num,1);
+  if ((dv->type==DVT_FAT32 || dv->type==DVT_REDSEA)&&Bt(&dv->map_blk_dirty,0)) {
+    if (dv->map1==dv->map2) {
+      WBlks(dv,dv->cur_map_blk,dv->map1+dv->cur_map_blk_num,1);
+      LBtr(&dv->map_blk_dirty,0);
+    } else {
+      if (map_select==3 || !map_select)
+	WBlks(dv,dv->cur_map_blk,dv->map1+dv->cur_map_blk_num,1);
+      if (map_select==3 || map_select==1) {
+	WBlks(dv,dv->cur_map_blk,dv->map2+dv->cur_map_blk_num,1);
+	LBtr(&dv->map_blk_dirty,0);
+      }
+    }
   }
 }
 
@@ -320,9 +325,10 @@ Bool RBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
   try {
     unlock=DrvLock(dv);
     BlkDevInit(bd);
-    if (dv->base_offset && blk<dv->base_offset || blk+cnt>dv->base_offset+dv->size)
+    if (dv->base_offset && blk<dv->base_offset ||
+	  blk+cnt>dv->base_offset+dv->size)
       throw('Drv');
- 
+
     if (bd->flags & BDF_READ_CACHE)
       RCache(dv,&buf,&blk,&cnt);
     if (cnt>0) {
@@ -358,7 +364,8 @@ Bool WBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
     BlkDevInit(bd);
     if (bd->flags&BDF_READ_ONLY && !(bd->flags & BDF_READ_ONLY_OVERRIDE))
       throw('BlkDev');
-    if (dv->base_offset && blk<dv->base_offset || blk+cnt>dv->base_offset+dv->size)
+    if (dv->base_offset && blk<dv->base_offset ||
+	  blk+cnt>dv->base_offset+dv->size)
       throw('Drv');
     if (cnt>0) {
       switch (bd->type) {
@@ -383,7 +390,7 @@ Bool WBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
 }
 
 U0 DskCacheInvalidate(CDrv *dv)
-{//Needed for removable media. Called by [C:/Kernel/Dsk/DskA.CPP.Z,404] ChgDsk().
+{//Needed for removable media. Called by [C:/Kernel/Dsk/DskA.CPP.Z,411] ChgDsk().
   Bool unlock;
   CBlkDev *bd=dv->bd;
   DrvChk(dv);
@@ -463,8 +470,8 @@ U0 DrvRep()
       else
 	'' CH_SPACE;
       "$PURPLE$%C %-8Z %-9Z %04X %04X %02X$FG$\n",
-	drv_let,dv->type.u16[0],"ST_DRV_TYPES",
-	bd->type,"ST_BLKDEV_TYPES",bd->base0,bd->base1,bd->unit;
+	    drv_let,dv->type.u16[0],"ST_DRV_TYPES",
+	    bd->type,"ST_BLKDEV_TYPES",bd->base0,bd->base1,bd->unit;
       if (st=DrvModelNum(drv_let)) {
 	"   $CYAN$Model# :%s$FG$\n",st;
 	Free(st);
@@ -474,8 +481,8 @@ U0 DrvRep()
 	Free(st);
       }
       "   %016X-%016X\n",
-	dv->base_offset,dv->base_offset+dv->size-1;
-	dv->base_offset,dv->base_offset+dv->size-1;
+	    dv->base_offset,dv->base_offset+dv->size-1;
+      dv->base_offset,dv->base_offset+dv->size-1;
     }
   }
 }

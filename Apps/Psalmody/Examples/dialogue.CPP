@@ -25,8 +25,8 @@ U0 DrawIt(CTask *,CDC *dc)
     if (pi/2<=a_y<=3*pi/2) a_y=-a_y;
   }
   dc->flags|=DCF_TRANSFORMATION;
-  GrRotXEqu(dc->r,a_x);
-  GrRotYEqu(dc->r,a_y);
+  Mat4x4RotX(dc->r,a_x);
+  Mat4x4RotY(dc->r,a_y);
   dc->x=325;
   dc->y=35;
   Sprite3(dc,0,0,0,__BIN_1);
@@ -41,21 +41,23 @@ U0 Song()
   music.tempo= 2.480;
   music.stacatto_factor= 0.902;
   try {
-  while (!ScanKey) {
-	t0=Beat;
-	Play("2qG3eAAqBA2G3BhA",
-		"The \0Cre\0 \0a\0tor \0on \0His \0thone,\n\0");
-	Play("2qG3eAAqBA2G3BhA",
-		"Believe \0or \0 \0not, \0we're \0not \0a\0lone.\n\0");
-	Play("qCeBA2qG3A2GFhE",
-		"God \0wat\0ches \0al\0ways \0o\0ver \0us.\n\0");
-	Play("3qCeBA2qG3A2GF3hA",
-		"Is \0there \0 \0some\0thing \0to \0dis\0cuss?\n\0");
-	Play("qEeB2G3qAsE2G3E2G3qEetBFEqDF",
-		"God, \0 \0 \0 \0won't \0 \0You \0 \0talk \0 \0to \0me?\n\0 \0 \0");
-	Play("EeB2G3qAsE2G3E2G3qEetBFEqDF",
-		"God, \0 \0 \0 \0won't \0 \0You \0 \0talk \0 \0to \0me?\n\0 \0 \0");
-  }
+    while (!ScanKey) {
+      t0=Beat;
+      Play("2qG3eAAqBA2G3BhA",
+	    "The \0Cre\0 \0a\0tor \0on \0His \0thone,\n\0");
+      Play("2qG3eAAqBA2G3BhA",
+	    "Believe \0or \0 \0not, \0we're \0not \0a\0lone.\n\0");
+      Play("qCeBA2qG3A2GFhE",
+	    "God \0wat\0ches \0al\0ways \0o\0ver \0us.\n\0");
+      Play("3qCeBA2qG3A2GF3hA",
+	    "Is \0there \0 \0some\0thing \0to \0dis\0cuss?\n\0");
+      Play("qEeB2G3qAsE2G3E2G3qEetBFEqDF",
+	    "God, \0 \0 \0 \0won't \0 \0You \0 \0"
+	    "talk \0 \0to \0me?\n\0 \0 \0");
+      Play("EeB2G3qAsE2G3E2G3qEetBFEqDF",
+	    "God, \0 \0 \0 \0won't \0 \0You \0 \0"
+	    "talk \0 \0to \0me?\n\0 \0 \0");
+    }
   } catch
     PutExcept;
   SettingsPop;

@@ -25,27 +25,28 @@ U0 Song()
   music.tempo= 2.500;
   music.stacatto_factor= 0.900;
   try {
-  while (!ScanKey) {
-	t0=Beat;
-	Play("3qBDAGFFeBAsD2G3D2G",
-		"Do \0not \0push \0your \0luck.\n\0 \0 \0 \0 \0 \0 \0 \0");
-	Play("3qBDAGFFeBAsD2G3D2G",
-		"Do \0not \0push \0your \0luck.\n\0 \0 \0 \0 \0 \0 \0 \0");
-	Play("3qGFCeCGqFetAAFqEF",
-		"God \0is \0not \0 \0a \0schmuck.\n\0 \0 \0 \0 \0 \0");
-	Play("GFCeCGqFetAAFqEF",
-		"God \0is \0not \0 \0a \0schmuck.  \0 \0 \0 \0No!\n\0 \0");
-	t0=Beat;
-	Play("BDAGFFeBAsD2G3D2G",
-		"\nDo \0not \0tell \0the \0Lord\n\0 \0 \0 \0 \0 \0 \0 \0");
-	Play("3qBDAGFFeBAsD2G3D2G",
-		"that \0you're \0feel\0ing \0bored.\n\0 \0 \0 \0 \0 \0 \0 \0");
-	Play("3qGFCeCGqFetAAFqEF",
-		"He \0will \0send \0 \0the \0sword.\n\0 \0 \0 \0 \0 \0");
-	Play("GFCeCGqFetAAFqEF",
-		"He \0will \0send \0 \0the \0sword.  \0 \0 \0 \0Yep!\n\n\0 \0");
-	"$GREEN$(Boredom is an insult to the Creator.\nWe are like guest at a banquet.)\n$FG$";
-  }
+    while (!ScanKey) {
+      t0=Beat;
+      Play("3qBDAGFFeBAsD2G3D2G",
+	    "Do \0not \0push \0your \0luck.\n\0 \0 \0 \0 \0 \0 \0 \0");
+      Play("3qBDAGFFeBAsD2G3D2G",
+	    "Do \0not \0push \0your \0luck.\n\0 \0 \0 \0 \0 \0 \0 \0");
+      Play("3qGFCeCGqFetAAFqEF",
+	    "God \0is \0not \0 \0a \0schmuck.\n\0 \0 \0 \0 \0 \0");
+      Play("GFCeCGqFetAAFqEF",
+	    "God \0is \0not \0 \0a \0schmuck.  \0 \0 \0 \0No!\n\0 \0");
+      t0=Beat;
+      Play("BDAGFFeBAsD2G3D2G",
+	    "\nDo \0not \0tell \0the \0Lord\n\0 \0 \0 \0 \0 \0 \0 \0");
+      Play("3qBDAGFFeBAsD2G3D2G",
+	    "that \0you're \0feel\0ing \0bored.\n\0 \0 \0 \0 \0 \0 \0 \0");
+      Play("3qGFCeCGqFetAAFqEF",
+	    "He \0will \0send \0 \0the \0sword.\n\0 \0 \0 \0 \0 \0");
+      Play("GFCeCGqFetAAFqEF",
+	    "He \0will \0send \0 \0the \0sword.  \0 \0 \0 \0Yep!\n\n\0 \0");
+      "$GREEN$(Boredom is an insult to the Creator.\n"
+	    "We are like guest at a banquet.)\n$FG$";
+    }
   } catch
     PutExcept;
   SettingsPop;

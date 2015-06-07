@@ -19,13 +19,13 @@ The scheduler checks if a task is
 waiting for a certain time or waiting
 on a message and skips if not ready.
 A task runs until it voluntarily yields
-ctrl with a call to [C:/Kernel/Sched.CPP.Z,346] Yield() or gets
+ctrl with a call to [C:/Kernel/Sched.CPP.Z,344] Yield() or gets
 preempted by the fixed 1kHz [C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ
-timer interrupt.  See [C:/Kernel/Ints.CPP.Z,13] SYS_TIMER_HANDLER.
+timer interrupt.  See [C:/Kernel/Ints.CPP.Z,12] SYS_TIMER_HANDLER.
 Tasks can ask not to be preempted with
-[C:/Kernel/KernelB.HPP.Z,226] Preempt(ON/OFF).  Tasks waiting on I/O
+[C:/Kernel/KernelB.HPP.Z,283] Preempt(ON/OFF).  Tasks waiting on I/O
 often loop, checking for a status and
-[C:/Kernel/Sched.CPP.Z,346] Yielding.  This does not really degrade
+[C:/Kernel/Sched.CPP.Z,344] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
 
 The scheduler checks for a few keys:
@@ -42,7 +42,6 @@ requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,211] APSethTask().
 */
 
 asm {
-USE64
 //************************************
 TASK_CONTEXT_SAVE::
 //OUT:	RSI=FS
@@ -206,15 +205,14 @@ RESTORE_RSI_TASK_WITH_KEY_CHECK:
 RESTORE_RSI_TASK_NO_KEY_CHECK:
 @@20:	BT	U64 CTask.task_flags[RSI],TASKf_KILL_TASK
 	JC	I32 END_RSI_TASK
-	TEST	U64 CTask.task_flags[RSI],1<<TASKf_AWAITING_MSG|1<<TASKf_SUSPENDED
+	TEST	U64 CTask.task_flags[RSI],
+		1<<TASKf_AWAITING_MSG|1<<TASKf_SUSPENDED
 	JNZ	@@25
 
 	MOV	RAX,U64 [&cnts.jiffies]
 	CMP	U64 CTask.wake_jiffy[RSI],RAX
 	JG	@@25	//Jmp if not ready, yet.
 
-	CMP	U32 CTask.task_in_que_signature[RSI],TASK_IN_QUE_SIGNATURE_VAL
-	JNE	SWAP_IN_SETH_TASK_IF_READY
 	MOV	RAX,RSI
 	CALL	SET_FS_BASE
 	JMP	I32 _TASK_CONTEXT_RESTORE
@@ -237,7 +235,7 @@ SYS_IDLE_PT::
 SWAP_IN_SETH_TASK_IF_READY:
 	XOR	RAX,RAX
 	MOV	RSI,GS:CCPU.seth_task[RAX]
-	JMP	I32 RESTORE_RSI_TASK_WITH_KEY_CHECK
+	JMP	RESTORE_RSI_TASK_WITH_KEY_CHECK
 
 HANDLE_SWAP_KEY_EVENT:
 	MOV	RAX,RSI
@@ -357,7 +355,6 @@ U0 TaskQueIns(CTask *task,CTask *pred=NULL)
   last->next_task=pred->last_task=task;
   task->last_task=last;
   task->next_task=pred;
-  task->task_in_que_signature=TASK_IN_QUE_SIGNATURE_VAL;
   POPFD
 }
 
@@ -367,7 +364,6 @@ U0 TaskQueRem(CTask *task)
   CTask *next,*last;
   PUSHFD
   CLI
-  task->task_in_que_signature=0;
   next=task->next_task;
   last=task->last_task;
   last->next_task=next;

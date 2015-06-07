@@ -13,13 +13,13 @@ U0 ClickCallBack()
 {
   CDocEntry *doc_e;
   DocLock(DocPut);
-//The [C:/Adam/DolDoc/DocPlain.CPP.Z,733] DocPrint() routine returns the addr of the last entry.
+//The [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint() routine returns the addr of the last entry.
   doc_e=DocPrint(DocPut,"\n$MA+LC,\"Click Me\"$ ");
 //The LC flag is "has left callback".
 
-//Flags are explained here:
-//[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
-//[C:/Kernel/KernelA.HPP.Z,1030] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
+  //Flags are explained here:
+  //[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
+  //[C:/Kernel/KernelA.HPP.Z,1032] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
   "(Not preserved when <CTRL-t> and back.)\n\n";
   doc_e->left_cb=&MyLeftCB1;
   DocUnlock(DocPut);

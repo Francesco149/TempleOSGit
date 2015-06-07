@@ -1,6 +1,7 @@
 U0 BadCodeJump()
 {//[C:/Adam/God/HSNotes.TXT.Z,1]
-  CDirEntry *tempde1=FilesFind("/*",FUF_JUST_FILES|FUF_RECURSE|FUF_JUST_SRC|FUF_CLUSTER_ORDER),
+  CDirEntry *tempde1=FilesFind("/*",
+	FUF_JUST_FILES|FUF_RECURSE|FUF_JUST_SRC|FUF_CLUSTER_ORDER),
 	*tempde=tempde1;
   I64 cnt=0,num;
   CDoc *doc;
@@ -38,11 +39,12 @@ public U8 *FileNameNumNext(U8 *files_find_mask,U8 *fmt)
 U0 DCImgWrite(CDC *dc)
 {
   U8 *st1=FileNameNumNext("::/Home/Wb2/Imgs/Img*",
-			  "::/Home/Wb2/Imgs/Img%03d.BMP"),
-     *st2=MStrPrint("http://www.templeos.org/Wb%s",st1+2);
+	"::/Home/Wb2/Imgs/Img%03d.BMP"),
+	*st2=MStrPrint("http://www.templeos.org/Wb%s",st1+2);
   BMPWrite(st1,dc);
   Free(st1);
-  "$HC,\"<img src=\\\"%s\\\" width=\\\"%d\\\" height=\\\"%d\\\" alt=\\\"\\\">\"$\n",st2,dc->width,dc->height;
+  "$HC,\"<img src=\\\"%s\\\" width=\\\"%d\\\" "
+	"height=\\\"%d\\\" alt=\\\"\\\">\"$\n",st2,dc->width,dc->height;
   Free(st2);
 }
 
@@ -53,7 +55,7 @@ U0 BlogScreenShot()
   U8 *old_fp_draw_input_ptr=gr.fp_draw_input_ptr;
   gr.fp_draw_input_ptr=NULL;
   WinMgrSync(2);
-  dc1=DCCaptureScreen;
+  dc1=DCScreenCapture;
   dc2=DCExtract(dc1,0,FONT_HEIGHT,GR_WIDTH-1,GR_HEIGHT-1);
   DCImgWrite(dc2);
   gr.fp_draw_input_ptr=old_fp_draw_input_ptr;
@@ -67,13 +69,13 @@ U8 *WebBookMarks(U8 *filename="::/Home/Wb2/Files/Bookmarks.html")
   U8 *st;
   CDocEntry *doc_e;
   CDoc *doc=DocNew;
-  CLex *lx=LexNew(MStrPrint("#include \"%s\"",filename));
-  while (Lex(lx))
-    if (lx->token==TK_STR && *lx->cur_str(U32 *)=='http') {
-      DocPrint(doc,"$MU-UL,\"%Q\",LE=0x%X$\n",lx->cur_str,lx->cur_str);
-      lx->cur_str=NULL;
+  CCmpCtrl *cc=CmpCtrlNew(MStrPrint("#include \"%s\"",filename));
+  while (Lex(cc))
+    if (cc->token==TK_STR && *cc->cur_str(U32 *)=='http') {
+      DocPrint(doc,"$MU-UL,\"%Q\",LE=0x%X$\n",cc->cur_str,cc->cur_str);
+      cc->cur_str=NULL;
     }
-  LexDel(lx);
+  CmpCtrlDel(cc);
 
   if ((st=PopUpMenu(doc))!=DOCM_CANCEL)
     st=StrNew(st);
@@ -260,7 +262,8 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
     if (modulo) {
       if (radix==16)
 	DocPrint(doc_out,"0x%s-->",st);
-      DocPrint(doc_out,"(%d remainder when divided by %d)",i,ST_BIBLE_LINES-(num_lines-1));
+      DocPrint(doc_out,"(%d remainder when divided by %d)",
+	    i,ST_BIBLE_LINES-(num_lines-1));
       start=i%(ST_BIBLE_LINES-(num_lines-1));
     } else {
       if (radix==16)
@@ -308,7 +311,8 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
   }
 }
 
-#define NIST_TIME_OFFSET	(-7729-local_time_offset/CDATE_FREQ)
+#define NIST_TIME_OFFSET	(-7782-local_time_offset/CDATE_FREQ)
+#define NIST_TIME_TO_SWITCH	3
 
 public U0 NISTSync()
 {
@@ -330,14 +334,16 @@ U0 InsMyURL()
   U8 *tag,*st,*st2;
   CWebBibleForm *url=CAlloc(sizeof(CWebBibleForm));
   url->timestamp=
-	FloorI64((Now-Str2Date("1/1/1970"))/CDATE_FREQ+NIST_TIME_OFFSET,60);
-  switch (PopUpPickLst("NISTBeacon\0WebBible\0YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0"
-	"Random.org\0VirtualNotary\0Nist\0HotBits\0GenerateData\0WebBookMark\0"
+	FloorI64((Now-Str2Date("1/1/1970"))/CDATE_FREQ+NIST_TIME_OFFSET-
+	NIST_TIME_TO_SWITCH,60);
+  switch (PopUpPickLst("NISTBeacon\0BibleGatewaySearch\0BibleGatewayVerse\0"
+	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0Random.org\0"
+	"VirtualNotary\0Nist\0HotBits\0GenerateData\0WebBookMark\0"
 	"Roulette\0Movie\0")) {
     case 0:
-      if (DocFormDo(url(CRandHexBeaconForm *))) {
+      if (DocForm(url(CRandHexBeaconForm *))) {
 	"$TX,\"Guidelines for Talking with God.\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	Free(tag);
@@ -345,10 +351,11 @@ U0 InsMyURL()
       }
       break;
     case 1:
-      if (DocFormDo(url(CWebBibleForm *))) {
+      if (DocForm(url(CWebBibleForm *))) {
 	tag=url->special;
 	st2=URLPercentSpaces(url->special);
-	st=MStrPrint("http://www.biblegateway.com/passage/?search=%s&version=NIV",st2);
+	st=MStrPrint(
+	      "http://www.biblegateway.com/passage/?search=%s&version=NIV",st2);
 	Free(st2);
 	if (*url->tag)
 	  tag=url->tag;
@@ -357,29 +364,46 @@ U0 InsMyURL()
       }
       break;
     case 2:
-      if (DocFormDo(url(CYouTubeForm *))) {
-	if (url->min || url->sec)
-	  st=MStrPrint("%s&hl=enUS&start=%d",url->special,url->min*60+url->sec);
-	else
-	  st=StrNew(url->special);
-	"$HC,\"<object width=\\\"640\\\" height=\\\"520\\\"><param name=\\\"movie\\\" "
-	"value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
-	"name=\\\"allowscriptaccess\\\" value=\\\"always\\\"></param><embed "
-	"src=\\\"http://www.youtube.com/v/%s\\\" "
-	"type=\\\"application/x-shockwave-flash\\\" allowscriptaccess=\\\"always\\\" "
-	"width=\\\"640\\\" height=\\\"520\\\"></embed></object>\"$\n",st,st;
+      if (DocForm(url(CWebBibleForm *))) {
+	tag=url->special;
+	st2=URLPercentSpaces(url->special);
+	st=MStrPrint(
+	      "http://www.biblegateway.com/verse/en/%s",st2);
+	Free(st2);
+	if (*url->tag)
+	  tag=url->tag;
+	"$TX,\"%Q\",HTML=\"%Q\"$",tag,st;
 	Free(st);
       }
       break;
     case 3:
-      if (DocFormDo(url(CImgurForm *))) {
-	"$HC,\"<img src=\\\"http://i.imgur.com/%s\\\" "
-	"width=\\\"%d\\\" height=\\\"%d\\\" alt=\\\"\\\">\"$\n",
-	  url->special,url->min,url->sec;
+      if (DocForm(url(CYouTubeForm *))) {
+	if (url->min || url->sec)
+	  st=MStrPrint("%s&hl=enUS&start=%d",url->special,url->min*60+url->sec);
+	else
+	  st=StrNew(url->special);
+	"$HC,\"<object width=\\\"640\\\" "
+	      "height=\\\"520\\\"><param name=\\\"movie\\\" "
+	      "value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
+	      "name=\\\"allowscriptaccess\\\" "
+	      "value=\\\"always\\\"></param><embed "
+	      "src=\\\"http://www.youtube.com/v/%s\\\" "
+	      "type=\\\"application/x-shockwave-flash\\\" "
+	      "allowscriptaccess=\\\"always\\\" "
+	      "width=\\\"640\\\" height=\\\"520\\\">"
+	      "</embed></object>\"$\n",st,st;
+	Free(st);
       }
       break;
     case 4:
-      if (DocFormDo(url(CWikipediaForm *))) {
+      if (DocForm(url(CImgurForm *))) {
+	"$HC,\"<img src=\\\"http://i.imgur.com/%s\\\" "
+	      "width=\\\"%d\\\" height=\\\"%d\\\" alt=\\\"\\\">\"$\n",
+	      url->special,url->min,url->sec;
+      }
+      break;
+    case 5:
+      if (DocForm(url(CWikipediaForm *))) {
 	tag=url->special;
 	st=MStrPrint("http://en.wikipedia.org/wiki/%s",url->special);
 	if (*url->tag)
@@ -388,66 +412,67 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 5:
-      if (DocFormDo(url(CRandDecForm *))) {
+    case 6:
+      if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://www.randomnumbers.info";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,TRUE);
       }
       break;
-    case 6:
-      if (DocFormDo(url(CRandDecForm *))) {
+    case 7:
+      if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://www.random.org";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 7:
-      if (DocFormDo(url(CRandCertForm *))) {
+    case 8:
+      if (DocForm(url(CRandCertForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://virtual-notary.org";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	tag="Here is the certificate";
-	st=MStrPrint("http://www.templeos.org/Certs/virtual-notary-cert-randomnum-%d.p12",url->cert);
+	st=MStrPrint("http://www.templeos.org/Certs/virtual-notary-cert"
+	      "-randomnum-%d.p12",url->cert);
 	"\n$TX,\"%Q: %d\",HTML=\"%Q\"$.\n",tag,url->cert,st;
 	Free(st);
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 8:
-      if (DocFormDo(url(CRandHexForm *))) {
+    case 9:
+      if (DocForm(url(CRandHexForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://qrng.anu.edu.au/NIST.php";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 9:
-      if (DocFormDo(url(CRandHexForm *))) {
+    case 10:
+      if (DocForm(url(CRandHexForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="https://www.fourmilab.ch/hotbits/secure_generate.html";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 10:
-      if (DocFormDo(url(CRandDecForm *))) {
+    case 11:
+      if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://www.generatedata.com";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 11:
-      if (DocFormDo(url(CWebBookMarkForm *))) {
+    case 12:
+      if (DocForm(url(CWebBookMarkForm *))) {
 	tag=st=WebBookMarks;
 	if (*url->tag)
 	  tag=url->tag;
@@ -455,24 +480,26 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 12:
-      if (DocFormDo(url(CRandDecForm *))) {
+    case 13:
+      if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
-	"HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
-	tag="https://www.dublinbet.com/casino_game.html?mode=demo&game=136#gameId=136";
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	tag="https://www.dublinbet.com/casino_game.html"
+	      "?mode=demo&game=136#gameId=136";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 13:
-      if (DocFormDo(url(CTopMoviesForm *)) && (st=TopMoviesRead(,url->cert*2))) {
+    case 14:
+      if (DocForm(url(CTopMoviesForm *)) && (st=TopMoviesRead(,url->cert*2))) {
 	StrCpy(url->tag,st);
 	Free(st);
 	if (!(st=TopMoviesRead(,url->cert*2+1))||!*st) {
 	  Free(st);
-	  if (DocFormDo(url(CTopMoviesYouTubeForm *)) && *url->special) {
+	  if (DocForm(url(CTopMoviesYouTubeForm *)) && *url->special) {
 	    if (url->min || url->sec)
-	      st=MStrPrint("%s&hl=enUS&start=%d",url->special,url->min*60+url->sec);
+	      st=MStrPrint("%s&hl=enUS&start=%d",
+		    url->special,url->min*60+url->sec);
 	    else
 	      st=StrNew(url->special);
 	    TopMoviesWrite(,url->cert*2+1,st);
@@ -480,15 +507,20 @@ U0 InsMyURL()
 	    st=NULL;
 	}
 	"God's response:\n"
-	"$TX,\"Top 100 Movies\",HTML=\"http://www.afi.com/100years/movies10.aspx\"$\n"
-	"#%s\n",url->tag;
+	      "$TX,\"Top 100 Movies\","
+	      "HTML=\"http://www.afi.com/100years/movies10.aspx\"$\n"
+	      "#%s\n",url->tag;
 	if (st) {
-	  "$HC,\"<object width=\\\"640\\\" height=\\\"520\\\"><param name=\\\"movie\\\" "
-	  "value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
-	  "name=\\\"allowscriptaccess\\\" value=\\\"always\\\"></param><embed "
-	  "src=\\\"http://www.youtube.com/v/%s\\\" "
-	  "type=\\\"application/x-shockwave-flash\\\" allowscriptaccess=\\\"always\\\" "
-	  "width=\\\"640\\\" height=\\\"520\\\"></embed></object>\"$\n",st,st;
+	  "$HC,\"<object width=\\\"640\\\" height=\\\"520\\\">"
+		"<param name=\\\"movie\\\" "
+		"value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
+		"name=\\\"allowscriptaccess\\\" "
+		"value=\\\"always\\\"></param><embed "
+		"src=\\\"http://www.youtube.com/v/%s\\\" "
+		"type=\\\"application/x-shockwave-flash\\\" "
+		"allowscriptaccess=\\\"always\\\" "
+		"width=\\\"640\\\" height=\\\"520\\\">"
+		"</embed></object>\"$\n",st,st;
 	  Free(st);
 	}
       }
@@ -499,7 +531,8 @@ U0 InsMyURL()
 
 public U0 GodBooksPassage(U8 *files_find_mask,I64 len=512)
 {//Make God pick a book passage. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
-  CDirEntry *tempm=FilesFind(files_find_mask,FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT),
+  CDirEntry *tempm=FilesFind(files_find_mask,
+	FUF_RECURSE|FUF_JUST_FILES|FUF_JUST_TXT),
 	*tempm1=tempm;
   I64 i=0;
   U8 *st,*st2=NULL;
@@ -529,5 +562,5 @@ public U0 GodBooksPassage(U8 *files_find_mask,I64 len=512)
   DirTreeDel(tempm1);
 }
 
-
-//GodInit("C:/Home/Wb2/Files/Words/Happy.TXT*");
+if (FileFind("C:/Home/Wb2/Files/Words/Happy.TXT"))
+  GodInit("C:/Home/Wb2/Files/Words/Happy.TXT");

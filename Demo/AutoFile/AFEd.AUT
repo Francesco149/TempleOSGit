@@ -1,6 +1,6 @@
 /* To run this, do a directory, right click on
 this file's name and select "AutoFile".
-Or, type [C:/Kernel/SrvCmd.CPP.Z,487] AutoFile(filename);
+Or, type [C:/Kernel/SrvCmd.CPP.Z,488] AutoFile(filename);
 See [C:/Doc/Glossary.TXT.Z,1] AutoFile in the glossary for more info.
 
 This autofile will renum the defines in

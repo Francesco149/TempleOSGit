@@ -15,7 +15,7 @@ RegExeBranch("TempleOS/BugBird");
   /* <4> <4> (image) */
 
 #define BORDER		5
-#define EAT_TIME	0.5
+#define AAT_TIME	0.5
 #define FLAP_TIME	0.5
 #define BIRD_BOX	10
 
@@ -37,7 +37,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
   if (eat_timeout && tS<eat_timeout) {
     temps2=SpriteInterpolate(__BIN_3,__BIN_4,tt);
-    temps3=SpriteInterpolate(temps2,temps,1.0-(eat_timeout-tS)/EAT_TIME);
+    temps3=SpriteInterpolate(temps2,temps,1.0-(eat_timeout-tS)/AAT_TIME);
     Free(temps);
     Free(temps2);
     temps=temps3;
@@ -57,14 +57,14 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (game_tf) {
     dc->color=RED;
     GrPrint(dc,(task->pix_width-FONT_WIDTH*14)/2,
-		(task->pix_height-FONT_HEIGHT)/2,"Game Completed");
+	  (task->pix_height-FONT_HEIGHT)/2,"Game Completed");
     tt=game_tf;
   } else {
     dc->color=GREEN;
     tt=tS;
   }
   GrPrint(dc,0,0,"Bugs:%3.1f%% Time:%3.2f Best:%3.2f",
-    100.0*(MAX_BUGS-bug_cnt)/MAX_BUGS,tt-game_t0,best_score);
+	100.0*(MAX_BUGS-bug_cnt)/MAX_BUGS,tt-game_t0,best_score);
 }
 
 U0 CheckBugs(CTask *task,CTask *song_task)
@@ -72,7 +72,7 @@ U0 CheckBugs(CTask *task,CTask *song_task)
   I64 i,x,y,
 	h=MaxI64(1,task->pix_width-2*BORDER),
 	v=MaxI64(1,task->pix_height-2*BORDER);
-  if (eat_timeout && eat_timeout-tS<0.75*EAT_TIME) {
+  if (eat_timeout && eat_timeout-tS<0.75*AAT_TIME) {
     Suspend(song_task,FALSE);
     if (tS>=eat_timeout)
       eat_timeout=0;
@@ -83,7 +83,7 @@ U0 CheckBugs(CTask *task,CTask *song_task)
       y=bugs_y[i]%v+BORDER;
       if (AbsI64(x-bird_x)<BIRD_BOX && AbsI64(y-bird_y)<BIRD_BOX) {
 	bugs_dead[i]=TRUE;
-	eat_timeout=tS+EAT_TIME;
+	eat_timeout=tS+AAT_TIME;
 	Snd(1000);
 	Suspend(song_task);
 	bug_cnt--;
@@ -167,15 +167,15 @@ U0 BugBird()
   I64 a1,a2;
 
   MenuPush(
-  "File {"
-  "  Abort(,CH_SHIFT_ESC);"
-  "  Exit(,CH_ESC);"
-  "}"
-  "Play {"
-  "  Restart(,'\n');"
-  "  Flap(,CH_SPACE);"
-      "}"
-      );
+	"File {"
+	"  Abort(,CH_SHIFT_ESC);"
+	"  Exit(,CH_ESC);"
+	"}"
+	"Play {"
+	"  Restart(,'\n');"
+	"  Flap(,CH_SPACE);"
+	"}"
+	);
 
   PopUpOk("Use $GREEN$<SPACE>$FG$ to flap.\nHold down to glide.");
 

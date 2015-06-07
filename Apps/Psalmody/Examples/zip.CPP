@@ -46,13 +46,17 @@ U0 Song()
     while (!ScanKey) {
       t0=Beat;
       Play("3qGE2eG3BqGetDBDeDE2qGetG3BF",
-	    "$RED$Wise \0men \0use \0few \0words.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	    "$RED$Wise \0men \0use \0few \0words.\n\0"
+	    " \0 \0 \0 \0 \0 \0 \0 \0 \0");
       Play("qGE2eG3BqGetDBDeDE2qGetG3BF",
-	    "Not \0the \0king \0of \0nerds.\n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0");
+	    "Not \0the \0king \0of \0nerds.\n\0 \0 \0"
+	    " \0 \0 \0 \0 \0 \0 \0");
       Play("eEAsFEFEqFAetDBEAA2G3qCA",
-	    "Fools \0 \0kinda \0 \0 \0 \0 \0 \0talk \0 \0 \0all \0day \0long.$FG$\n\0 \0 \0");
+	    "Fools \0 \0kinda \0 \0 \0 \0 \0 \0talk \0"
+	    " \0 \0all \0day \0long.$FG$\n\0 \0 \0");
       Play("eEAsFEFEqFAetDBEAA2G3qCA",
-	    "What? \0 \0Tell \0 \0me! \0 \0 \0 \0Is \0 \0 \0some\0thing \0wrong?\n\0 \0 \0");
+	    "What? \0 \0Tell \0 \0me! \0 \0 \0 \0Is \0"
+	    " \0 \0some\0thing \0wrong?\n\0 \0 \0");
     }
   } catch
     PutExcept;

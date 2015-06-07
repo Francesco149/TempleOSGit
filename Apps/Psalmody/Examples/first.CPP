@@ -25,17 +25,21 @@ U0 Song()
     DocRecalc(DocPut(task)); //Reformat word-wrap with new window size.
     while (!ScanKey) {
       Play("3qFeA2G3qBeGBqEetDCBqEeFF",
-	    "First, \0lo\0ve \0God \0with \0 \0ALL \0$RED$heart$FG$, \0mind \0and \0soul.\n\0 \0 \0");
+	    "First, \0lo\0ve \0God \0with \0 \0ALL \0$RED$heart$FG$, \0"
+	    "mind \0and \0soul.\n\0 \0 \0");
       Sprite(__BIN_1);
       "$CM,0,6$";
       Play("qFeA2G3qBeGBqEetDCBqEeFF",
-	    "First, \0lo\0ve \0God \0with \0 \0ALL \0$RED$heart$FG$, \0mind \0and \0soul.\n\0 \0 \0");
+	    "First, \0lo\0ve \0God \0with \0 \0ALL \0$RED$heart$FG$, \0"
+	    "mind \0and \0soul.\n\0 \0 \0");
       Sprite(__BIN_1);
       "$CM,0,6$";
       Play("GBsADADqE2G3eCDqG2sG3B2G3BetBDB",
-	    "What's \0 \0 \0 \0 \0 \0left?  \0 \0I \0don't \0know.\n\0 \0 \0 \0 \0 \0 \0 \0");
+	    "What's \0 \0 \0 \0 \0 \0left?  \0 \0I \0don't \0know.\n\0"
+	    " \0 \0 \0 \0 \0 \0 \0");
       Play("eGBsADADqE2G3eCDqG2sG3B2G3BetBDB",
-	    "What's \0 \0 \0 \0 \0 \0left?  \0 \0I \0don't \0know.\n\0 \0 \0 \0 \0 \0 \0 \0");
+	    "What's \0 \0 \0 \0 \0 \0left?  \0 \0I \0don't \0know.\n\0"
+	    " \0 \0 \0 \0 \0 \0 \0");
     }
   } catch
     PutExcept;

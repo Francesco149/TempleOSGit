@@ -20,9 +20,9 @@ U0 DrawIt(CTask *,CDC *dc)
   F64 dt=Beat-t0-6.0;
   if (t0 && 0<=dt<1.0) {
     dc->flags|=DCF_TRANSFORMATION;
-    GrRotZEqu(dc->r,5.0*(dt-0.5));
-    GrRotXEqu(dc->r,1.5-2.0*dt);
-    GrSetRotMat(dc,dc->r);
+    Mat4x4RotZ(dc->r,5.0*(dt-0.5));
+    Mat4x4RotX(dc->r,1.5-2.0*dt);
+    DCMat4x4Set(dc,dc->r);
     Sprite3B(dc,200,55,0,__BIN_1);
   }
 }
