@@ -9,7 +9,7 @@ Bool	fg_on =FALSE;
 U0 FrameGrabberTask(I64)
 {//ffmpeg -r 8 -i VID%05d.BMP -y Movie.avi
   I64 frame_num=0;
-  U8  buf[136],buf2[136];
+  U8  buf[STR_LEN],buf2[STR_LEN];
   F64 end_time=tS;
   Silent;	//no output to screen
   if (fg_mode==FG_RAM_DRV) {
@@ -250,7 +250,7 @@ U0 TOSRegWrite()
 
 class CYouTubeForm2
 {
-  U8 special[136] fmtstr "$DA-P,135,A=\"SerialNum:%s\"$\n";
+  U8 special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"SerialNum:%s\"$\n";
 };
 
 U8 *TOSYouTube()

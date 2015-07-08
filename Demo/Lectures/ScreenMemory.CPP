@@ -50,3 +50,4 @@ That means no read-modify-writes, too.
 Main;
 
 //See [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1].
+

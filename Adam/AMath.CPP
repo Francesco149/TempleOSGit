@@ -64,7 +64,7 @@ public F64 Cosh(F64 x)
   return 0.5*(Exp(x)+Exp(-x));
 }
 
-#help_index "Math/Complex"
+#help_index "Math/Complex;Data Types/Complex"
 public Complex *CAdd(Complex *n1,Complex *n2,Complex *sum)
 {//n1 + n2 -->sum
   sum->x=n1->x+n2->x;

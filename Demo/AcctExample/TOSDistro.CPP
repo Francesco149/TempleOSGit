@@ -20,7 +20,7 @@ U0 TOSMakeOSDrvBootInstall(U8 drv_let)
 
 U0 TOSCopyDrv(U8 src,U8 dst)
 {
-  U8 buf_s[128],buf_d[128];
+  U8 buf_s[STR_LEN],buf_d[STR_LEN];
   src=ToUpper(src);
   dst=ToUpper(dst);
 
@@ -282,7 +282,7 @@ U0 MakeTOSDistro()
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-	"Download TempleOS V3.06 - T.S. Company Internal Distro (%0.1f MB)",
+	"Download TempleOS V3.07 - T.S. Company Internal Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -318,7 +318,7 @@ U0 MakeDbgDistro()
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-	"Download TempleOS V3.06 - Debug Distro (%0.1f MB)",
+	"Download TempleOS V3.07 - Debug Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -366,7 +366,7 @@ U0 MakeLiteDistro()
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-	"Download TempleOS V3.06 - Lite Distro (%0.1f MB)",
+	"Download TempleOS V3.07 - Lite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -395,7 +395,7 @@ U0 MakeUltraDistro()
   CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.06 - UltraLite Distro (%0.1f MB)",
+	"Download TempleOS V3.07 - UltraLite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -479,12 +479,12 @@ U0 MakeWebSitePartial()
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-	"Download TempleOS V3.06 - Standard Distro (%0.1f MB)",
+	"Download TempleOS V3.07 - Standard Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.06 - UltraSmall Distro (%0.1f MB)",
+	"Download TempleOS V3.07 - UltraSmall Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);
@@ -496,7 +496,7 @@ public U0 MakeDistrosAndBackUp()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   progress4=*progress4_desc=0;
-  progress4_max=13;
+  progress4_max=14;
   AutoComplete;
   WinMax;
   WinBorder;
@@ -519,9 +519,15 @@ public U0 MakeDistrosAndBackUp()
   UpdateISODocDefines;
 
   Cd("C:/");
+
+  if (LongLines)
+    throw;
+  progress4++;
+
   if (LinkChk)
     throw;
   progress4++;
+
   MakeSymFiles; progress4++;
   MakeWebSite; progress4++;
 

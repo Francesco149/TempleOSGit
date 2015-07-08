@@ -175,6 +175,8 @@ U0 BlockIPNums(LogStruct *root)
   LogStruct *templg=root->next,*templg1;
 
   QueInit(&blocked_root);
+
+  BlockedStructAdd(&blocked_root,70<<24+173<<16+110<<8+214);
   BlockedStructAdd(&blocked_root,68<<24+224<<16+130<<8+96);
   BlockedStructAdd(&blocked_root,68<<24+96<<16+100<<8+126);
   BlockedStructAdd(&blocked_root,68<<24+96<<16+110<<8+213);

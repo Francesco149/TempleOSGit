@@ -50,7 +50,7 @@ callback being called.  Only
 tasks on core0 are allowed to have windows.  There is one window per task, no 
 child windows.  You can have pop-up child tasks.
 
-* [C:/Kernel/KernelA.HPP.Z,3559] CDCs (device contexts) are a data type for
+* [C:/Kernel/KernelA.HPP.Z,3556] CDCs (device contexts) are a data type for
 controlling graphics on the 
 screen or graphics in mem.  The device context structure has pen width and 
 color.  You use [C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() to create your own
@@ -88,14 +88,14 @@ sprite is
 defined by the cursor location when you pressed <CTRL-r> to make it.  You can 
 edit a sprite by clicking the cursor on it and pressing <CTRL-r> again.
 
-* Set [C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY in the
-[C:/Kernel/KernelA.HPP.Z,3559] CDC.flags and call
+* Set [C:/Kernel/KernelA.HPP.Z,3529] DCF_SYMMETRY in the
+[C:/Kernel/KernelA.HPP.Z,3556] CDC.flags and call
 [C:/Adam/Gr/GrMath.CPP.Z,200] DCSymmetrySet() or 
 [C:/Adam/Gr/GrMath.CPP.Z,222] DCSymmetry3Set().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/Kernel/KernelA.HPP.Z,3536] DCF_JUST_MIRROR to plot just the
+image.  Set [C:/Kernel/KernelA.HPP.Z,3533] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY to be set at the same time. 
+[C:/Kernel/KernelA.HPP.Z,3529] DCF_SYMMETRY to be set at the same time. 
 Note: You can only have one symmetry 
 active at a time including in [C:/Adam/Gr/Gr.CPP.Z,174] CSprites.
 
@@ -108,23 +108,23 @@ GrBlot() the brush instead of
 [C:/Adam/Gr/GrPrimatives.CPP.Z,51] GrPlot().  See
 [C:/Demo/Graphics/Blot.CPP.Z,1].
 
-* There are a few [C:/Kernel/KernelA.HPP.Z,2839] raster operations available.
+* There are a few [C:/Kernel/KernelA.HPP.Z,2841] raster operations available.
  They go in bits 8-11 of the dc
-->color member var which is a [C:/Kernel/KernelA.HPP.Z,2880] CColorROPU32. 
-[C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION is special.  It 
+->color member var which is a [C:/Kernel/KernelA.HPP.Z,2882] CColorROPU32. 
+[C:/Kernel/KernelA.HPP.Z,2843] ROP_COLLISION is special.  It 
 counts the num of pixs drawn on non-background locations.  Using 
-[C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION with vector
+[C:/Kernel/KernelA.HPP.Z,2843] ROP_COLLISION with vector
 [C:/Adam/Gr/Gr.CPP.Z,174] CSprite's is tricky because overlapping pixs from 
 lines in the [C:/Adam/Gr/Gr.CPP.Z,174] CSprite reg as collisions.  You can
 either work with a nonzero 
 count or convert your [C:/Adam/Gr/Gr.CPP.Z,174] CSprite to a bitmap if your
 subelements draw on top of 
 each other.  Be sure to set ->bkcolor before using
-[C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION.  See 
+[C:/Kernel/KernelA.HPP.Z,2843] ROP_COLLISION.  See 
 [C:/Demo/Graphics/Collision.CPP.Z,1] and [C:/Apps/TimeOut/TimeOut.CPP.Z,1]
 TimeOut.
  
-* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3559] CDC
+* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3556] CDC
 is a U16 used to statistically 
 select between two colors to get something resembling more shades of color.  
 See [C:/Demo/Graphics/SunMoon.CPP.Z,1] and
@@ -133,7 +133,7 @@ with many graphic routines, but not those with pens.
 
 * There is a mechanism built-in for generating motion based on differential 
 equations, which allows realistic physics.  You create an
-[C:/Kernel/KernelA.HPP.Z,241] CMathODE struct with 
+[C:/Kernel/KernelA.HPP.Z,242] CMathODE struct with 
 [C:/Adam/AMathODE.CPP.Z,30] ODENew(), passing it the num of vars in the state
 vect.  For realistic 
 physics, you usually have 2 state vars for each dimension (for each mass) 
@@ -142,7 +142,7 @@ states are pos and velocity and to solve these you need to supply the
 derivative of pos and velocity.  The derivative of pos is usually simply the 
 current velocity and the derivative of velocity is the acceleration (the sum 
 of forces on a mass divided by mass).  To help provide meaningful names for 
-values in the state vect, you can create an [C:/Kernel/KernelA.HPP.Z,198]
+values in the state vect, you can create an [C:/Kernel/KernelA.HPP.Z,199]
 COrder2D3 ptr and point it to a 
 mass in the state vect.  Six elements in the state vect are required for each 
 mass.

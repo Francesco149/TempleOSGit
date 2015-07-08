@@ -103,7 +103,7 @@ U8 *IntEntryGet(I64 irq)
 }
 
 U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
-{//Set interrupt vector. See [C:/Kernel/KernelA.HPP.Z,278] IDTET_IRQ.
+{//Set interrupt vector. See [C:/Kernel/KernelA.HPP.Z,279] IDTET_IRQ.
 //See [C:/Demo/Lectures/InterruptDemo.CPP.Z,1].
   //See [C:/Demo/MultiCore/Interrupts.CPP.Z,1].
   I64 fp=fp_new_handler;

@@ -62,7 +62,7 @@ I64 Primes(I64 range,I64 _my_mp_cnt)
     if (!Bt(master_bitmap,i))
       "%d ",i;
 
-  "\n$RED$CPUs:%d PrimeRange:%,d PrimeCnt:%,d Time:%9.6,f$FG$\n",
+  "\n$RED$CPUs:%d PrimeRange:%,d PrimeCnt:%,d Time:%9.7,f$FG$\n",
 	my_mp_cnt,prime_range,prime_cnt,tf-t0;
 
   Free(master_bitmap);

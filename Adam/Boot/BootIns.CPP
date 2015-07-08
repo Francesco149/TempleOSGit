@@ -147,7 +147,7 @@ public Bool MasterBootIntall(U8 drv_let,U8 *drv_lst=NULL)
   CMasterBoot mbr;
   CDirEntry de;
   I64 i,j,size,*_q;
-  U8 *menu_ptr,*ptr,ch,buf[128];
+  U8 *menu_ptr,*ptr,ch,buf[STR_LEN];
   Bool result=FALSE;
 
   try {

@@ -2,7 +2,7 @@
   +] SysMsgFlags
       sys_msg_flags[0]=0xFF;
       +] SysRegVer
-      registry_version=3.060;
+      registry_version=3.070;
       -] TempleOS
   +] CircleTrace
       F64 best_score=4.9425;
@@ -10,10 +10,10 @@
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
       +] DiningStars
       F64 best_score=9999.0000;
-      +] BlackDiamond
-      I64 best_score=1;
       +] DunGen
       F64 best_score=20.5295;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
       +] ZoneOut
       F64 best_score=50.3318;
       +] Varoom
@@ -35,11 +35,11 @@
       I64 best_score=32;
       +] EagleDive
       I64 best_score=4;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
+      +] BlackDiamond
+      I64 best_score=1;
       +] DemoCompany
   +] Game1
-      F64 best_score=167.58340;
+      F64 best_score=209.14842;
     +] SimpleVal
-          1245;
+          1248;
             

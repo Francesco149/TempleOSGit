@@ -14,7 +14,7 @@ against multicore simultaneous access.
 **Preemption is turned-off by default when a task is
 [C:/Kernel/Task.CPP.Z,209] Spawn()ed.**
 
-The time-slice rate is set by [C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ.
+The time-slice rate is set by [C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ.
 
 TempleOS does not remove tasks from the queue when they are waiting.  They 
 swap-in, check whatever condition they are waiting for and swap-out.  This 

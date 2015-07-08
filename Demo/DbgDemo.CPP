@@ -9,7 +9,7 @@ Press <CTRL-ALT-d> to enter Dbg.
 
 Press <CTRL-ALT-d> to enter Dbg.
 > [C:/Adam/ADbg.CPP.Z,253] Uf("DbgDemo");
-> [C:/Compiler/UAsm.CPP.Z,664] U(_RIP);
+> [C:/Compiler/UAsm.CPP.Z,666] U(_RIP);
 
 See [Debugging,1] Debugging
 */

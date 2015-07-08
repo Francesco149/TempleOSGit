@@ -13,11 +13,11 @@ public I64 Sort(U8 *_in_name,U8 *_out_name=NULL,Bool unique=FALSE)
   I64 i,cnt=0,result;
 
   if (!_in_name) return 0;
-  in_name=DftExt(_in_name,"TXT.Z"),
-	if (_out_name)
-  out_name=DftExt(_out_name,"TXT.Z");
+  in_name=DftExt(_in_name,"TXT.Z");
+  if (_out_name)
+    out_name=DftExt(_out_name,"TXT.Z");
   else
-  out_name=StrNew(in_name);
+    out_name=StrNew(in_name);
 
   doc=DocRead(in_name,DOCF_PLAIN_TEXT_WITH_TABS|DOCF_NO_CURSOR);
   doc_e=doc->root.next;
@@ -63,9 +63,93 @@ public I64 Sort(U8 *_in_name,U8 *_out_name=NULL,Bool unique=FALSE)
   return result; //Num Lines
 }
 
+I64 DocWordsFile(CDoc *doc_out=NULL,U8 *filename,U32 *chars_bmp)
+{
+  U8 *ptr,*ptr2;
+  I64 result=0,ch;
+  CDoc *doc_in=DocRead(filename);
+  CDocEntry *doc_e=doc_in->root.next;
+  while (doc_e!=doc_in) {
+    if (doc_e->de_flags & DOCEF_TAG) {
+      ptr=doc_e->tag;
+      while (*ptr) {
+	while (*ptr && !Bt(chars_bmp,*ptr))
+	  ptr++;
+
+	ptr2=ptr;
+	while (*ptr && Bt(chars_bmp,*ptr))
+	  ptr++;
+
+	ch=*ptr;
+	*ptr=0;
+	if (*ptr2) {
+	  DocPrint(doc_out,"%s\n",ptr2);
+	  result++;
+	}
+	*ptr=ch;
+      }
+    }
+    doc_e=doc_e->next;
+  }
+  DocDel(doc_in);
+  return result;
+}
+public I64 Words(U8 *files_find_mask="*",U32 *chars_bmp=chars_bmp_alpha,
+	U8 *fu_flags=NULL)
+{//Break file into list of not-unique words.
+  I64 fuf_flags=0,result=0;
+  CDoc *doc_out=DocNew;
+  CDirEntry *tempde,*tempde1;
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+f+F+T");
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
+  tempde=tempde1=FilesFind(files_find_mask,fuf_flags);
+  while (tempde) {
+    result+=DocWordsFile(doc_out,tempde->full_name,chars_bmp);
+    tempde=tempde->next;
+  }
+  DirTreeDel(tempde1);
+  DocInsDoc(NULL,doc_out);
+  DocDel(doc_out);
+  return result;
+}
+
+I64 LongLinesFile(U8 *filename,I64 cols)
+{
+  I64 result=0;
+  CDoc *doc=DocRead(filename);
+  CDocEntry *doc_e=doc->root.next;
+  while (doc_e!=doc) {
+    if (doc_e->type_u8==DOCT_NEW_LINE && doc_e->x>=cols+1)
+      result++;
+    doc_e=doc_e->next;
+  }
+  DocDel(doc);
+  if (result) {
+    "%04d ",result;
+    PutFileLink(filename);
+    '\n';
+  }
+  return result;
+}
+public I64 LongLines(U8 *files_find_mask="*",I64 cols=80,U8 *fu_flags=NULL)
+{//Report files with lines of too many cols.
+  I64 result=0,fuf_flags=0;
+  CDirEntry *tempde,*tempde1;
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+r+f+F+S");
+  ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
+  tempde=tempde1=FilesFind(files_find_mask,fuf_flags);
+  while (tempde) {
+    if (LongLinesFile(tempde->full_name,cols))
+      result++;
+    tempde=tempde->next;
+  }
+  DirTreeDel(tempde1);
+  return result;
+}
+
 U0 SUFile(U8 *filename,I64 suf_flags,F64 indent_scale_factor)
 {//String utility on a single file
-//See [C:/Kernel/KernelA.HPP.Z,3695] SU Flags
+//See [C:/Kernel/KernelA.HPP.Z,3692] SU Flags
   U8 *dst;
   Bool chged=FALSE;
   I64 reduced=0;
@@ -92,10 +176,10 @@ U0 SUFile(U8 *filename,I64 suf_flags,F64 indent_scale_factor)
 }
 public U0 SU(U8 *files_find_mask,I64 suf_flags,U8 *fu_flags=NULL,
 	F64 indent_scale_factor=0)
-{//Apply [C:/Kernel/StrA.CPP.Z,519] StrUtil() on files
+{//Apply [C:/Kernel/StrA.CPP.Z,524] StrUtil() on files
 //You can convert spaces to tabs, for example,
   //or removing trailing spaces on lines.
-  //See [C:/Kernel/KernelA.HPP.Z,3695] SUF Flags.
+  //See [C:/Kernel/KernelA.HPP.Z,3692] SUF Flags.
   I64 fuf_flags=0;
   CDirEntry *tempde,*tempde1;
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),"+f+F+T");

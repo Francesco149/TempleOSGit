@@ -6,7 +6,7 @@
 [C:/Compiler/OptLib.CPP.Z,96] OptFixupBinaryOp1
 [C:/Compiler/OptLib.CPP.Z,182] OptFixupBinaryOp2
 [C:/Compiler/PrsLib.CPP.Z,99] COCInit
-[C:/Compiler/PrsExp.CPP.Z,1131] IsLexExpression2Bin
+[C:/Compiler/PrsExp.CPP.Z,1130] IsLexExpression2Bin
 [C:/Compiler/PrsStmt.CPP.Z,563] CSubSwitch
 [C:/Compiler/Lex.CPP.Z,11] LexFilePop
 [C:/Compiler/CMain.CPP.Z,571] ExePutS
@@ -24,7 +24,7 @@
 [C:/Compiler/BackC.CPP.Z,411] ICQueIns
 [C:/Compiler/BackC.CPP.Z,1] ICAndBranch
 [C:/Compiler/BackLib.CPP.Z,134] MDR_D8_INDIRECT_REG
-[C:/Compiler/UAsm.CPP.Z,664] U
+[C:/Compiler/UAsm.CPP.Z,666] U
 [C:/Compiler/BackC.CPP.Z,493] ICQueRem
 [C:/Compiler/BackC.CPP.Z,694] ICAndEqual
 [C:/Compiler/BackFA.CPP.Z,4] CN_R
@@ -60,7 +60,7 @@
 [C:/Compiler/PrsLib.CPP.Z,126] COCAppend
 [C:/Compiler/Lex.CPP.Z,1] LexFilePush
 [C:/Compiler/BackFA.CPP.Z,3] CN_MAIN
-[C:/Compiler/PrsExp.CPP.Z,957] PrsUnaryModifier
+[C:/Compiler/PrsExp.CPP.Z,956] PrsUnaryModifier
 [C:/Compiler/OptLib.CPP.Z,196] OptFixupUnaryOp
 [C:/Compiler/LexLib.CPP.Z,12] LexPush
 [C:/Compiler/BackLib.CPP.Z,261] SLASH_OP_MOV
@@ -72,12 +72,12 @@
 [C:/Compiler/BackFA.CPP.Z,360] ICFOp
 [C:/Compiler/BackFA.CPP.Z,2] CN_A1
 [C:/Compiler/BackFA.CPP.Z,1] CN_A2
-[C:/Compiler/PrsExp.CPP.Z,1150] LexExpressionF64
+[C:/Compiler/PrsExp.CPP.Z,1149] LexExpressionF64
 [C:/Compiler/PrsLib.CPP.Z,79] ICAdd
 [C:/Compiler/OptLib.CPP.Z,509] CmpRawType
-[C:/Compiler/PrsExp.CPP.Z,1136] LexExpressionI64
+[C:/Compiler/PrsExp.CPP.Z,1135] LexExpressionI64
 [C:/Compiler/BackC.CPP.Z,452] ICQueInsRev
-[C:/Compiler/PrsExp.CPP.Z,1164] LexExpression
+[C:/Compiler/PrsExp.CPP.Z,1163] LexExpression
 [C:/Compiler/BackA.CPP.Z,545] ICAddSubEctEqual
 [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression
 [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew
@@ -102,10 +102,10 @@
 [C:/Compiler/Asm.CPP.Z,885] PrsBinFile
 [C:/Compiler/CHash.CPP.Z,72] HashTableSize2
 [C:/Compiler/CHash.CPP.Z,33] HashEntrySize2
-[C:/Compiler/UAsm.CPP.Z,253] Ui
+[C:/Compiler/UAsm.CPP.Z,255] Ui
 [C:/Compiler/BackLib.CPP.Z,275] ICSlashOp
 [C:/Compiler/OptLib.CPP.Z,231] OptBrZero
-[C:/Compiler/UAsm.CPP.Z,679] Un
+[C:/Compiler/UAsm.CPP.Z,681] Un
 [C:/Compiler/PrsExp.CPP.Z,298] PrsSizeOf
 [C:/Compiler/BackA.CPP.Z,344] ICMulEqual
 [C:/Compiler/BackB.CPP.Z,398] ICToI64
@@ -141,7 +141,7 @@
 [C:/Compiler/CMisc.CPP.Z,16] GetOpt
 [C:/Compiler/BackLib.CPP.Z,268] SLASH_OP_FDIV
 [C:/Compiler/AsmInit.CPP.Z,50] AsmHashLoad
-[C:/Compiler/UAsm.CPP.Z,203] UAsmHashLoad
+[C:/Compiler/UAsm.CPP.Z,205] UAsmHashLoad
 [C:/Compiler/CExcept.CPP.Z,105] UnusedExternWarning
 [C:/Compiler/BackLib.CPP.Z,273] SLASH_OP_FILD
 [C:/Compiler/BackB.CPP.Z,98] ICXorXor
@@ -157,7 +157,7 @@
 [C:/Compiler/BackLib.CPP.Z,267] SLASH_OP_FMUL
 [C:/Compiler/BackB.CPP.Z,425] ICPreIncDec
 [C:/Compiler/Asm.CPP.Z,390] PrsAsmInstruction
-[C:/Compiler/PrsExp.CPP.Z,589] PrsUnaryTerm
+[C:/Compiler/PrsExp.CPP.Z,588] PrsUnaryTerm
 [C:/Compiler/BackFA.CPP.Z,585] ICFModEqual
 [C:/Compiler/LexLib.CPP.Z,158] MemberLstDel
 [C:/Compiler/BackLib.CPP.Z,265] SLASH_OP_FSUB
@@ -203,7 +203,7 @@
 [C:/Compiler/LexLib.CPP.Z,23] LexPopRestore
 [C:/Compiler/BackB.CPP.Z,1] ICUnaries
 [C:/Compiler/BackFB.CPP.Z,569] ICFMul
-[C:/Compiler/PrsExp.CPP.Z,1113] LexExpression2Bin
+[C:/Compiler/PrsExp.CPP.Z,1112] LexExpression2Bin
 [C:/Compiler/BackFA.CPP.Z,280] ICFPow
 [C:/Compiler/CHash.CPP.Z,90] MapFileWrite
 [C:/Compiler/BackFB.CPP.Z,635] ICFSub
@@ -335,6 +335,6 @@
 [C:/Compiler/Lex.CPP.Z,327] LexAttachDoc
 [C:/Compiler/PrsStmt.CPP.Z,788] PrsStreamBlk
 [C:/Compiler/CExts.CPP.Z,48] cmp_templates_dont_push2
-[C:/Compiler/UAsm.CPP.Z,78] InstEntryFind
+[C:/Compiler/UAsm.CPP.Z,80] InstEntryFind
 [C:/Compiler/PrsVar.CPP.Z,378] PrsDotDotDot
 [C:/Compiler/AsmInit.CPP.Z,1] AsmPrsInsFlags

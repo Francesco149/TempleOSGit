@@ -3,7 +3,7 @@ asm {
 USE16
 //See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
-//This code gets copied to [C:/Kernel/KernelA.HPP.Z,499] MP_VECT_ADDR.
+//This code gets copied to [C:/Kernel/KernelA.HPP.Z,500] MP_VECT_ADDR.
 //See [C:/Kernel/MultiProc.CPP.Z,2] MemCpy(MP_VECT_ADDR.
 AP_16BIT_INIT::
 	JMP	@@05
@@ -51,7 +51,7 @@ AP_32BIT_INIT:
 	ADD	ESI,U32 [SYS_CPU_STRUCTS]
 
 	LEA	ESP,U32 CCPU.start_stk+sizeof(CCPU.start_stk)[ESI]
-	PUSH	U32 SYS_START_RFLAGS
+	PUSH	U32 RFLAGG_START
 	POPFD
 	PUSH	U32 0	//Return from next call will be 64-bit
 	CALL	SYS_EM64T
@@ -202,7 +202,7 @@ U0 MPAPICInit()
   LTR	AX
   if (Gs->num) {
     IntInit1;
-    SetRFlags(SYS_NORMAL_RFLAGS);
+    SetRFlags(RFLAGG_NORMAL);
   }
 }
 
@@ -301,7 +301,7 @@ U0 APSethInit()
 U0 BSPStartMP()
 {//Called by adam during [C:/Kernel/KEnd.CPP.Z,1] start-up.
   CTask *task;
-  U8 buf[128];
+  U8 buf[STR_LEN];
   CAP16BitInit *mp=MP_VECT_ADDR;
   CCPU *c;
   I64 i,my_mp_cnt;
@@ -325,8 +325,8 @@ U0 BSPStartMP()
   MemSet(&cpu_structs[1],0,sizeof(CCPU)*(MP_MAX_PROCESSORS-1));
 
   //When you start-up other cores, they jump to an addr
-  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,498] MPN_VECT which corresponds
-  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,499] MP_VECT_ADDR.
+  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,499] MPN_VECT which corresponds
+  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,500] MP_VECT_ADDR.
   MemCpy(mp,AP_16BIT_INIT,AP_16BIT_INIT_END-AP_16BIT_INIT);
   MemCpy(&mp->ap_gdt_ptr,SYS_GDT_PTR,sizeof(CSysLimitBase));
   mp_cnt_initial=mp_cnt=1;
@@ -353,8 +353,8 @@ U0 BSPStartMP()
   for (i=1;i<my_mp_cnt;i++) {
     StrPrint(buf,"Seth Task CPU#%d",i);
     task=Spawn(&APSethInit,NULL,buf,,,SETH_STK,0);
-    task->rflags=SYS_START_RFLAGS;
-//[C:/Kernel/KernelA.HPP.Z,3218] CTask alloced off this core's seth_task's heap (Which is Adam)
+    task->rflags=RFLAGG_START;
+//[C:/Kernel/KernelA.HPP.Z,3219] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }

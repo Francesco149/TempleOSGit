@@ -1,6 +1,6 @@
 #help_index "DolDoc/Misc"
 
-U8 captured_macro_name[136];
+U8 captured_macro_name[STR_LEN];
 StrCpy(captured_macro_name,"Test");
 
 I64 sys_macro_repeat_n=1;
@@ -32,14 +32,14 @@ class CMacroTemp
 {
   CMacroTemp *next,*last;
   I64 type;
-  U8 buf[136];
+  U8 buf[STR_LEN];
 };
 
 CMacroTemp *Cmd2MT(CSrvCmd *tempc)
 {
   U8 buf[8];
   CMacroTemp *tempmt=CAlloc(sizeof(CMacroTemp));
-  if (Bt(chars_bmp_getkey,tempc->aux1) && tempc->msg_code==MSG_KEY_DOWN) {
+  if (Bt(chars_bmp_macro,tempc->aux1) && tempc->msg_code==MSG_KEY_DOWN) {
     tempmt->type=MT_CHAR;
     buf[0]=tempc->aux1;
     buf[1]=0;
@@ -147,10 +147,10 @@ U0 EdInsCapturedMacro()
 I64 PopUpMacroMenu()
 {
   I64 result=0;
-  U8 buf[136];
+  U8 buf[STR_LEN];
   CSrvCmd *tempc;
   CDoc *doc=DocNew;
-  CDocEntry *doc_e=DocPrint(doc,"$DA-P,135,A=\"Name:%%s\"$");
+  CDocEntry *doc_e=DocPrint(doc,"$DA-P,STR_LEN-1,A=\"Name:%%s\"$");
   doc_e->data=captured_macro_name;
   DocDataFmt(doc,doc_e);
 

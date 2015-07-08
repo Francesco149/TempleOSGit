@@ -1,7 +1,7 @@
 #help_index "DolDoc/Editor"
 
 public I64 EdCurU8(CDoc *doc)
-{//Return cur U8. See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm for an example.
+{//Return cur U8. See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,378] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry;
   I64 result=-1;
@@ -20,7 +20,7 @@ public I64 EdCurU8(CDoc *doc)
 
 public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor left. Might need a call to [C:/Adam/DolDoc/DocRecalcB.CPP.Z,254] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,378] EdRenumAsm for an example.
   U8 *dst;
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry,*original_ce=doc_ce,*doc_ne;
@@ -93,7 +93,7 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor right. Might need a call to [C:/Adam/DolDoc/DocRecalcB.CPP.Z,254] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,378] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   CDocEntry *doc_ce=doc->cur_entry,*original_ce=doc_ce,*doc_ne;
@@ -170,7 +170,7 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor up. Might need a call to [C:/Adam/DolDoc/DocRecalcB.CPP.Z,254] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,378] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x;
@@ -195,12 +195,10 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
       doc_ne->x=doc_ce->x+doc->cur_col;
       doc_ce->max_col=doc->cur_col;
       QueIns(doc_ne,doc_ce);
-    } else
-      if (doc->cur_col==doc_ce->min_col && doc_ce->last!=doc)
-	doc_ce=doc_ce->last;
-  } else
-    if (doc_ce->last!=doc)
+    } else if (doc->cur_col==doc_ce->min_col && doc_ce->last!=doc)
       doc_ce=doc_ce->last;
+  } else if (doc_ce->last!=doc)
+    doc_ce=doc_ce->last;
   if (sc>=0)
     BEqu(&doc_ce->type,DOCEt_SELECTED,sc&SCF_SHIFT);
   doc->cur_entry=doc_ce;
@@ -230,13 +228,12 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
     } else {
       if (doc_ce->next->x==x) {
 	doc_ce=doc_ce->next;
-	if (doc->flags & DOCF_FORM) {
+	if (doc->flags & DOCF_FORM)
 	  while (doc_ce->next->x==x &&
 		(!Bt(doldoc.type_flags_form,doc_ce->type_u8) &&
 		!(doc_ce->de_flags&DOCEF_LINK)||
 		doc_ce->de_flags&DOCEF_SKIP_IN_FORM))
 	    doc_ce=doc_ce->next;
-	}
       }
     }
   }
@@ -245,10 +242,8 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
     if (IsEditableText(doc_ce)) {
       if (doc->cur_col>doc_ce->max_col)
 	doc->cur_col=doc_ce->max_col;
-    } else {
-      if (doc->cur_col>=doc_ce->max_col)
-	doc->cur_col=doc_ce->max_col-1;
-    }
+    } else if (doc->cur_col>=doc_ce->max_col)
+      doc->cur_col=doc_ce->max_col-1;
     if (doc->cur_col<doc_ce->min_col)
       doc->cur_col=doc_ce->min_col;
   } else {
@@ -286,7 +281,7 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 
 public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
 {//Move cursor down. Might need a call to [C:/Adam/DolDoc/DocRecalcB.CPP.Z,254] DocRecalc().
-//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm for an example.
+//See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,378] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
   I64 y,x,old_de_flags=0,old_color;
@@ -348,13 +343,11 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
     doc_ce=doc->cur_entry;
   }
   while (doc_ce2!=doc && (doc_ce2!=doc_ce || IsEditableText(doc_ce))) {
-    if (doc_ce2->y<y || doc_ce2->x<x ||
+    if ((doc_ce2->y<y || doc_ce2->x<x ||
 	  doc_ce2->de_flags & (DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP) ||
 	  doc_ce2->x==x && !doc_ce2->max_col &&
-	  Bt(doldoc.type_flags_nontag_invisible,doc_ce2->type_u8)) {
-      if (sc>=0)
-	BEqu(&doc_ce2->type,DOCEt_SELECTED,sc&SCF_SHIFT);
-    }
+	  Bt(doldoc.type_flags_nontag_invisible,doc_ce2->type_u8)) && sc>=0)
+      BEqu(&doc_ce2->type,DOCEt_SELECTED,sc&SCF_SHIFT);
     if (doc_ce2==doc_ce) break;
     doc_ce2=doc_ce2->next;
   }
@@ -363,27 +356,23 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
     if (IsEditableText(doc_ce)) {
       if (doc->cur_col>doc_ce->max_col)
 	doc->cur_col=doc_ce->max_col;
-    } else {
-      if (doc->cur_col>=doc_ce->max_col)
-	doc->cur_col=doc_ce->max_col-1;
-    }
+    } else if (doc->cur_col>=doc_ce->max_col)
+      doc->cur_col=doc_ce->max_col-1;
     if (doc->cur_col<doc_ce->min_col)
       doc->cur_col=doc_ce->min_col;
   } else
     doc->cur_col=doc_ce->min_col;
-  if (IsEditableText(doc_ce)) {
-    if (doc_ce->min_col<doc->cur_col<doc_ce->max_col-1) {
-      dst=doc_ce->tag+doc->cur_col;
-      doc_ne=DocEntryNew(doc,doc_ce,StrNew(dst,doc->mem_task));
-      *dst=0;
-      doc_ne->type=DOCT_TEXT | old_color & -0x100;
-      doc_ne->de_flags=old_de_flags|doldoc.dft_de_flags[DOCT_TEXT];
-      doc_ce->max_col=doc->cur_col;
-      doc_ne->x=doc_ce->x+doc->cur_col;
-      QueIns(doc_ne,doc_ce);
-      doc_ce=doc_ne;
-      doc->cur_col=doc_ce->min_col;
-    }
+  if (IsEditableText(doc_ce)&&doc_ce->min_col<doc->cur_col<doc_ce->max_col-1) {
+    dst=doc_ce->tag+doc->cur_col;
+    doc_ne=DocEntryNew(doc,doc_ce,StrNew(dst,doc->mem_task));
+    *dst=0;
+    doc_ne->type=DOCT_TEXT | old_color & -0x100;
+    doc_ne->de_flags=old_de_flags|doldoc.dft_de_flags[DOCT_TEXT];
+    doc_ce->max_col=doc->cur_col;
+    doc_ne->x=doc_ce->x+doc->cur_col;
+    QueIns(doc_ne,doc_ce);
+    doc_ce=doc_ne;
+    doc->cur_col=doc_ce->min_col;
   }
   doc->cur_entry=doc_ce;
   DocFormFwd(doc);
@@ -410,13 +399,11 @@ U0 EdDelChar(CDoc *doc)
   }
   if (doc_ce->max_col!=0 &&
 	(IsEditableText(doc_ce)||doc_ce->type_u8==DOCT_DATA)) {
-    if (doc_ce->type_u8==DOCT_DATA) {
-      if (doc_ce->de_flags & DOCEF_HAS_TERMINATOR &&
-	    doc->cur_col==doc_ce->max_col-1) {
-	if (unlock)
-	  DocUnlock(doc);
-	return;
-      }
+    if (doc_ce->type_u8==DOCT_DATA && doc_ce->de_flags & DOCEF_HAS_TERMINATOR &&
+	  doc->cur_col==doc_ce->max_col-1) {
+      if (unlock)
+	DocUnlock(doc);
+      return;
     }
     if (doc->cur_col<doc_ce->max_col)
       StrCpy(doc_ce->tag+doc->cur_col,doc_ce->tag+doc->cur_col+1);
@@ -477,17 +464,15 @@ U0 EdInsChar(I64 ch,I64 sc,CDoc *doc)
     } else
       goto ic_done;
   }
-  if (ch=='$') {
-    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS))) {
-      doc->flags|=DOCF_IN_DOLLAR;
-      doc->dollar_buf_ptr=0;
-      doc->dollar_buf[doc->dollar_buf_ptr++]=ch;
-      goto ic_done;
-    }
+  if (ch=='$' && !(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_WITH_TABS))) {
+    doc->flags|=DOCF_IN_DOLLAR;
+    doc->dollar_buf_ptr=0;
+    doc->dollar_buf[doc->dollar_buf_ptr++]=ch;
+    goto ic_done;
   }
   if (ch=='\r') goto ic_done;
 
-    ic_cont:
+ic_cont:
   if ((ch==CH_SPACE || ch=='\n') &&
 	!(sc & (SCF_CTRL|SCF_SHIFT)) &&
 	doc_ce->de_flags &
@@ -550,10 +535,8 @@ ic_overstrike_char:
 	      doc_ce->tag[doc->cur_col+1]=0;
 	    }
 	  }
-	} else {
-	  if (doc_ce->tag[doc->cur_col])
-	    doc_ce->tag[doc->cur_col++]=ch;
-	}
+	} else if (doc_ce->tag[doc->cur_col])
+	  doc_ce->tag[doc->cur_col++]=ch;
 	goto ic_done;
       }
       b=MAlloc(2,doc->mem_task);
@@ -638,11 +621,10 @@ ic_form_tab:
   }
 ic_done:
   DocRemSoftNewLines(doc,doc->cur_entry);
-  if (doc->cur_entry->de_flags & DOCEF_UPDATE_DATA) {
-    if (doc->cur_entry->type_u8==DOCT_DATA ||
-	  doc->cur_entry->type_u8==DOCT_CHECK_BOX)
-      DocDataScan(doc,doc->cur_entry);
-  }
+  if (doc->cur_entry->de_flags & DOCEF_UPDATE_DATA &&
+	(doc->cur_entry->type_u8==DOCT_DATA ||
+	doc->cur_entry->type_u8==DOCT_CHECK_BOX))
+    DocDataScan(doc,doc->cur_entry);
   if (unlock)
     DocUnlock(doc);
 }

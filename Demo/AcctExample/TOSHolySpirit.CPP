@@ -124,8 +124,8 @@ U8 *TopMoviesWrite(U8 *filename="C:/Home/Wb2/Files/Movies.TXT.Z",
 
 class CTopMoviesForm
 {
-  U8	tag[136];
-  U8	special[136];
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN];
   I64	timestamp;
   I64	cert		fmtstr "$DA,32,A=\"Movie #1-100 :%d\"$\n";
   I64	min;
@@ -134,8 +134,8 @@ class CTopMoviesForm
 
 class CWebBookMarkForm
 {
-  U8	tag[136]	fmtstr "$DA-P,135,A=\"Tag Text     :%s\"$\n";
-  U8	special[136];
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text     :%s\"$\n";
+  U8	special[STR_LEN];
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -144,8 +144,8 @@ class CWebBookMarkForm
 
 class CWebBibleForm
 {
-  U8	tag[136]	fmtstr "$DA-P,135,A=\"Tag Text     :%s\"$\n";
-  U8	special[136]	fmtstr "$DA-P,135,A=\"Bible Passage:%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text     :%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Bible Passage:%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -154,8 +154,8 @@ class CWebBibleForm
 
 class CYouTubeForm
 {
-  U8	tag[136];
-  U8	special[136]	fmtstr "$DA-P,135,A=\"SerialNum:%s\"$\n";
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"SerialNum:%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min		fmtstr "$DA,32,A=\"Minutes  :%d\"$\n";
@@ -164,8 +164,8 @@ class CYouTubeForm
 
 class CTopMoviesYouTubeForm
 {
-  U8	tag[136]	fmtstr "$DA-P,135,A=\"Movie    :%s\"$\n";
-  U8	special[136]	fmtstr "$DA-P,135,A=\"SerialNum:%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Movie    :%s\"$\n";
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"SerialNum:%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min		fmtstr "$DA,32,A=\"Minutes  :%d\"$\n";
@@ -174,8 +174,8 @@ class CTopMoviesYouTubeForm
 
 class CImgurForm
 {
-  U8	tag[136];
-  U8	special[136]	fmtstr "$DA-P,135,A=\"SerialNum:%s\"$\n";
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"SerialNum:%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min		fmtstr "$DA,32,A=\"Width    :%d\"$\n";
@@ -184,8 +184,8 @@ class CImgurForm
 
 class CWikipediaForm
 {
-  U8	tag[136]	fmtstr "$DA-P,135,A=\"Tag Text:%s\"$\n";
-  U8	special[136]	fmtstr "$DA-P,135,A=\"Index   :%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text:%s\"$\n";
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Index   :%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -194,8 +194,8 @@ class CWikipediaForm
 
 class CRandDecForm
 {
-  U8	tag[136];
-  U8	special[136]	fmtstr "$DA-P,135,A=\"Line (Dec):%s\"$\n";
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Line (Dec):%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -204,8 +204,8 @@ class CRandDecForm
 
 class CRandHexForm
 {
-  U8	tag[136];
-  U8	special[136]	fmtstr "$DA-P,135,A=\"Line (Hex):%s\"$\n";
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Line (Hex):%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -214,8 +214,8 @@ class CRandHexForm
 
 class CRandCertForm
 {
-  U8	tag[136];
-  U8	special[136]	fmtstr "$DA-P,135,A=\"Line (Dec) :%s\"$\n";
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Line (Dec) :%s\"$\n";
   I64	timestamp;
   I64	cert		fmtstr "$DA,32,A=\"Certificate:%d\"$\n";
   I64	min;
@@ -224,8 +224,8 @@ class CRandCertForm
 
 class CRandHexBeaconForm
 {
-  U8	tag[136];
-  U8	special[136]	fmtstr "$DA-P,135,A=\"Line (Hex):%s\"$\n";
+  U8	tag[STR_LEN];
+  U8	special[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Line (Hex):%s\"$\n";
   I64	timestamp	fmtstr "$DA,32,A=\"TimeStamp :%d\"$\n";
   I64	cert;
   I64	min;
@@ -311,7 +311,7 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
   }
 }
 
-#define NIST_TIME_OFFSET	(-7782-local_time_offset/CDATE_FREQ)
+#define NIST_TIME_OFFSET	(-7788-local_time_offset/CDATE_FREQ)
 #define NIST_TIME_TO_SWITCH	3
 
 public U0 NISTSync()
@@ -337,7 +337,7 @@ U0 InsMyURL()
 	FloorI64((Now-Str2Date("1/1/1970"))/CDATE_FREQ+NIST_TIME_OFFSET-
 	NIST_TIME_TO_SWITCH,60);
   switch (PopUpPickLst("NISTBeacon\0BibleGatewaySearch\0BibleGatewayVerse\0"
-	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0Random.org\0"
+	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0Random.org\0PassWord\0"
 	"VirtualNotary\0Nist\0HotBits\0GenerateData\0WebBookMark\0"
 	"Roulette\0Movie\0")) {
     case 0:
@@ -431,6 +431,15 @@ U0 InsMyURL()
       }
       break;
     case 8:
+      if (DocForm(url(CRandDecForm *))) {
+	"$TX,\"Guidelines for Talking with God\","
+	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
+	tag="https://passed.pw";
+	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
+	MyBibleLines(url->special,20,10,FALSE,FALSE);
+      }
+      break;
+    case 9:
       if (DocForm(url(CRandCertForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -444,7 +453,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 9:
+    case 10:
       if (DocForm(url(CRandHexForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -453,7 +462,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 10:
+    case 11:
       if (DocForm(url(CRandHexForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -462,7 +471,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 11:
+    case 12:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -471,7 +480,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 12:
+    case 13:
       if (DocForm(url(CWebBookMarkForm *))) {
 	tag=st=WebBookMarks;
 	if (*url->tag)
@@ -480,7 +489,7 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 13:
+    case 14:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -490,7 +499,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 14:
+    case 15:
       if (DocForm(url(CTopMoviesForm *)) && (st=TopMoviesRead(,url->cert*2))) {
 	StrCpy(url->tag,st);
 	Free(st);
@@ -562,5 +571,5 @@ public U0 GodBooksPassage(U8 *files_find_mask,I64 len=512)
   DirTreeDel(tempm1);
 }
 
-if (FileFind("C:/Home/Wb2/Files/Words/Happy.TXT"))
-  GodInit("C:/Home/Wb2/Files/Words/Happy.TXT");
+if (FileFind("::/Home/Wb2/Files/Words/HappyWords.TXT"))
+  GodInit("::/Home/Wb2/Files/Words/HappyWords.TXT");

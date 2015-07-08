@@ -115,7 +115,7 @@ U0 PsmSetWidth(PsmNote *tempo)
 U0 PsmSetOctave(I64 octave)
 {
   I64 i;
-  U8 buf[136];
+  U8 buf[STR_LEN];
   CMenuEntry *tempse;
   for (i=0;i<=6;i++) {
     StrPrint(buf,"Snd/Octave%d",i);

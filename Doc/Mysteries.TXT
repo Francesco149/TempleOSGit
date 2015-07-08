@@ -18,7 +18,7 @@ never gets freed.  That's as close to kernel memory as it gets.
 * TempleOS puts all code in the lowest 2 Gig, so that REL32 addressing can be 
 used.  TempleOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
-[C:/Kernel/KernelA.HPP.Z,1467] OPTf_GLBLS_ON_DATA_HEAP. 
+[C:/Kernel/KernelA.HPP.Z,1468] OPTf_GLBLS_ON_DATA_HEAP. 
 [C:/Kernel/MemB.CPP.Z,372] MAlloc() can alloc any memory, of course.
 
 * TempleOS doesn't use software interrupts or SYSCALL instructions because it 
@@ -61,7 +61,7 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/Kernel/KernelA.HPP.Z,3218] CTask, GS for 
+[C:/Kernel/KernelA.HPP.Z,3219] CTask, GS for 
 [C:/Kernel/KernelA.HPP.Z,3344] CCPU.
 
 * TempleOS uses JIT file compression on a file-by-file basis.  Files are 
@@ -77,7 +77,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall(). 
-TempleOS is 122,806 lines.  Roughly 
+TempleOS is 122,970 lines.  Roughly 
 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -137,7 +137,7 @@ Click Here
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is SHIFT-SPA
 CE, a character which does not get converted to tabs by space-to-tabs,
-[C:/Adam/Utils/StrUtils.CPP.Z,111] S2T().  
+[C:/Adam/Utils/StrUtils.CPP.Z,195] S2T().  
 The ASCII 28 is SHIFT-ESC. 
 
 * Binary data is stored beyond the terminating NULL in text files.  Map files 

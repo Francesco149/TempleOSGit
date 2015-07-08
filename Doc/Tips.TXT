@@ -56,7 +56,7 @@ start-up file.  See [D:/Home/AdamLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the [C:/Kernel/KGlbls.CPP.Z,13]
 local_time_offset global var 
-in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,544] CDATE_FREQ.
+in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,545] CDATE_FREQ.
  See [D:/Home/AdamLocalize.CPP,1] local time.
 
 * <CTRL-SHIFT-L> in the editor to reindent a [C:/Doc/HolyC.TXT.Z,1] HolyC
@@ -101,19 +101,19 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP.Z,1].
 
 * Use [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to adjust the size of the
-cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1323] CDoc 
+cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1324] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3218] CTask,
-[C:/Kernel/KernelA.HPP.Z,1158] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2461]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3219] CTask,
+[C:/Kernel/KernelA.HPP.Z,1159] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2463]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/Task.CPP.Z,209] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2786] DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2788] DFT_STK, and using
 [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -135,15 +135,15 @@ check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1462] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_DUP_TYPES) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1464] OPTf_WARN_DUP_TYPES) to find unnecessary
 local var type 
 statements.
 
-* [C:/Compiler/CMisc.CPP.Z,1] OptEqu([C:/Kernel/KernelA.HPP.Z,1458]
+* [C:/Compiler/CMisc.CPP.Z,1] OptEqu([C:/Kernel/KernelA.HPP.Z,1459]
 OPTf_ECHO,ON) can be placed in [C:/Adam.CPP.Z,1] Adam.CPP to echo start-up
 scripts.
 
@@ -227,7 +227,7 @@ DrvTextAttrSet().  Place calls
 to this in [C:/Home/AdamLocalize.CPP,1].
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1323] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1324] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP.Z,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -241,7 +241,7 @@ sprite num.
 
 * I use spaces-to-tab operations on all my src files to keep them small.  You 
 have to be careful, though, because spaces in strings will be converted.  I 
-use <SHIFT-SPACE> ' ' in such cases.  See [C:/Adam/Utils/StrUtils.CPP.Z,111]
+use <SHIFT-SPACE> ' ' in such cases.  See [C:/Adam/Utils/StrUtils.CPP.Z,195]
 S2T() for spaces-to-tabs.
 
 * You can edit an existing sprite by putting the cursor on it and pressing <CT
@@ -281,21 +281,21 @@ resources are put together.
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
-* [C:/Kernel/KernelA.HPP.Z,530] cnts.time_stamp_freq is continuously
+* [C:/Kernel/KernelA.HPP.Z,531] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
 timeout=[C:/Kernel/KernelB.HPP.Z,289] GetTSC+
-[C:/Kernel/KernelA.HPP.Z,530] cnts.time_stamp_freq x seconds; and compare
+[C:/Kernel/KernelA.HPP.Z,531] cnts.time_stamp_freq x seconds; and compare
 against [C:/Kernel/KernelB.HPP.Z,289] GetTSC().  I recommend 
-just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,530]
+just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,531]
 cnts.jiffies.
 
 * Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
 [C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to find leaks.  Don't be
-confused by [C:/Kernel/KernelA.HPP.Z,1323] CDoc 
+confused by [C:/Kernel/KernelA.HPP.Z,1324] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2697]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2699]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,467] Type() to display .BMP or

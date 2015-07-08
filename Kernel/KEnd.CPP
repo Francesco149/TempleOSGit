@@ -157,7 +157,7 @@ U0 KernelMain()
 
   IntsInit;
   "Enable IRQ's\n";
-  SetRFlags(SYS_NORMAL_RFLAGS);
+  SetRFlags(RFLAGG_NORMAL);
   BusyWait(2000);
   IntInit2;
   LBts(&sys_run_level,RLf_INTERRUPTS);

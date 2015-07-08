@@ -23,7 +23,7 @@ think so.  (Probably not.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3010] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3012] CCtrl.
 
 * Add Redo to editor.
 
@@ -150,11 +150,11 @@ God says I might want to change to float.
 * Might want to convert some Preempt() to Cli
 
 * [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3415] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3412] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
-* It would be nice if [C:/Compiler/UAsm.CPP.Z,664] U() NOP were better.
+* It would be nice if [C:/Compiler/UAsm.CPP.Z,666] U() NOP were better.
 
 * unhandled exception on MP message gets overwritten by WinMgr
 
@@ -243,7 +243,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3529] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -287,7 +287,7 @@ registry-like routines... or registry I guess.
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2840] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2842] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -338,6 +338,8 @@ Do I drink blood of goats? Offer praise: [C:/Misc/Bible.TXT.Z,46190]
 Psalms,50:14 Psalms 50:14
 
 Runner's Stride: [C:/Misc/Bible.TXT.Z,46190] Psalms,147:10 Psalms 147:10
+
+Buckling Armor: [C:/Misc/Bible.TXT.Z,29345] 1 Kings,20:11 1 Kings 20:11
 
 >lspci -v
 
@@ -401,30 +403,91 @@ https:/beacon.nist.gov/rest/record/1415566560	They chain the numbers so they
 https:/beacon.nist.gov/rest/record/1415568120	cannot be tampered with.
 /*****************************************************************************/
 
+
+
+/************************** Perfect Coin Toss 
+********************************/
+To a white scientist, the National Institute of Standards random numbers are, 
+literally, the gold standard.  A nigger doesn't know the difference between 
+the National Institute of Standards and a tabloid.
+
+Here's how I explain to a nigger:
+Lottery every week:		Arizona Lottery
+Lottery once every 60 seconds: 	NIST Randomness Beacon 
+
+To check a random Bible passage that I quote,
+
+1) Enter the time of the lottery into Unix Timestamp Tool.
+
+2) Form a URL by adding "https:/beacon.nist.gov/rest/record/"+timestamp 
+number.
+For example: https:/beacon.nist.gov/rest/record/1415440980
+
+3) Take the first 5 hex digits from "Output".
+
+4) Convert to decimal.
+
+5) Divide by 100091 and take remainder. 
+
+6) Add one.
+
+7) Go to that line in the KingJamesBible.
+/*****************************************************************************
+/
+
+Let me Google NIST Random Beacon
+
+
+Happy Happy Joy Joy
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/jfNajFYPljQ"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/jfNajFYPljQ"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 Commodore 64 Basic/Assembly
 ```
-<object width="640" height="520"><param name="movie" value="http://www.youtube.com/v/d8bZ92gIVms"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/d8bZ92gIVms" type="application/x-shockwave-flash" allowscriptaccess="always" width="640" height="520"></embed></object>
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/d8bZ92gIVms"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/d8bZ92gIVms"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
 ```
 Bill Gates Predictions
 ```
-<object width="640" height="520"><param name="movie" value="http://www.youtube.com/v/4r9u_R0cCew"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/4r9u_R0cCew" type="application/x-shockwave-flash" allowscriptaccess="always" width="640" height="520"></embed></object>
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/4r9u_R0cCew"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/4r9u_R0cCew"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
 ```
 
 
-Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, LOL.)
+Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, 
+LOL.)
 ```
-<img src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambridge-county-pd.jpg" width="480" height="376" alt="">
+<img
+src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambri
+dge-county-pd.jpg" width="480" height="376" alt="">
 ```
 
 WWW.OSDEV.ORG
+My Bookmarks
 Perfect Coin Toss
 Top 100 Movies
-ASU_Transcripts      ASU Course Catalog (See page 261)      Dr. David Pheanis 
+ASU_Transcripts      ASU Course Catalog (See page 261)
+Dr. David Pheanis	Dr. Konstantinos S. Tsakalis	Dr. Walter Higgins
 Peter Gadwa
 Tom Foley
 KeyPeele#1
 KeyPeele#2
 ThePrisoner
+Bible with LineNums
 WestWorld
 Picard:FourLights
 Dwight:NerdTorture
@@ -439,5 +502,3 @@ BBC_Five_Live
 KNPR
 C64 Users Guide
 C64 Programmers Reference Guide
-
-

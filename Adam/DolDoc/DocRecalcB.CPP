@@ -264,7 +264,7 @@ public Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC)
 	find_cursor=FALSE,blink_flag,full_refresh=TRUE,unlock;
   CTask *win_task,*mem_task;
   CDC *dc;
-  U8 *bptr,*ptr,buf[136],ch;
+  U8 *bptr,*ptr,buf[STR_LEN],ch;
   U32 *u32_ptr,*hl;
   I32 *depth_buf=NULL;
   F64 cur_time=tS;

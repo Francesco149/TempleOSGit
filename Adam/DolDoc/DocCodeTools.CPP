@@ -3,7 +3,7 @@
 U0 EdReplaceTroubleOne(CDoc *doc,U8 *st_original,U8 *st_safe,I64 num,
 	Bool to_safe,Bool select)
 {
-  U8 buf[64];
+  U8 buf[STR_LEN];
   StrPrint(buf,st_safe,num);
   if (to_safe)
     EdReplace(doc,st_original,buf,select);
@@ -142,6 +142,10 @@ U0 EdRIStmt(CRILex *rx,Bool indent)
 	    EdRILex(rx);
 	    EdRIStmt(rx,TRUE);
 	  }
+	  break;
+	case KW_LOCK:
+	  EdRILex(rx);
+	  EdRIStmt(rx,TRUE);
 	  break;
 	case KW_FOR:
 	case KW_WHILE:
@@ -602,7 +606,7 @@ U0 EdPopUpChSC(I64 *_ch,I64 *_sc)
 U0 EdChSC(CDoc *doc)
 {
   I64 ch,sc;
-  U8 buf[136];
+  U8 buf[STR_LEN];
   StrPrint(buf,"EdPopUpChSC(%d,%d);",&ch,&sc);
   PopUp(buf,Fs);
   if (ch==CH_BACKSPACE)

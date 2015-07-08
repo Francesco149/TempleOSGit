@@ -43,7 +43,7 @@ GrInit4;
 I64 PopUpSpriteBitMap(CColorROPU32 color,I64 width)
 {
   I64 i;
-  U8 *st1,*st2,buf[136];
+  U8 *st1,*st2,buf[STR_LEN];
   CDoc *doc=DocNew;
 
   Color2Str(buf,color);

@@ -123,12 +123,21 @@ Bool MyPutKey(I64 ch,I64 sc)
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
 	    KeyDescSet("God Book Passage");
+	  else
+	    KeyDescSet("God Doodle File");
 	} else {
 //[C:/Adam/God/HSNotes.TXT.Z,1]
-	  FifoU8Flush(god.fifo);
-	  GodBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
-	  if (sc & SCF_SHIFT)
+	  if (sc & SCF_SHIFT) {
+	    FifoU8Flush(god.fifo);
+	    GodBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
 	    GodBooksPassage("C:/Home/Wb2/Files/Text/*");
+	  } else {
+	    st1=PopUpPickFile;
+	    st2=FileRead(st1);
+	    GodDoodle(st2);
+	    Free(st2);
+	    Free(st1);
+	  }
 	}
 	break;
       case SC_F8:

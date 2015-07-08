@@ -378,7 +378,7 @@ U0 PrsOffsetOf(CCmpCtrl *cc)
 I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 {
   I64 i,argc_cnt,dft_val;
-  Bool is_first_arg=TRUE,needs_right_paren,is_str_out,is_putchars,
+  Bool is_first_arg=TRUE,needs_right_paren,is_print,is_putchars,
 	is_template_fun;
   CHashClass *tempc2,*last_class=NULL;
   CMemberLst *tempm;
@@ -392,7 +392,7 @@ I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 	LexExcept(cc,"Missing header for Print() and PutChars() at ");
       if (!cc->cur_i64) //empty char signals PutChars with variable
 	Lex(cc);
-      is_str_out=FALSE;
+      is_print=FALSE;
       is_putchars=TRUE;
     } else {
       if (!(tempf=HashFind("Print",cc->htc.hash_table_lst,HTT_FUN)))
@@ -400,10 +400,10 @@ I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
       if (!*cc->cur_str) //empty string signals Print with variable fmt_str
 	Lex(cc);
       is_putchars=FALSE;
-      is_str_out=TRUE;
+      is_print=TRUE;
     }
   } else {
-    is_str_out=FALSE;
+    is_print=FALSE;
     is_putchars=FALSE;
   }
 
@@ -433,7 +433,7 @@ I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
   while (i--) {
     COCInit(cc);
     if (!is_first_arg) {
-      if (is_str_out) {
+      if (is_print) {
 	if (cc->token==',')
 	  Lex(cc);
 	else if (cc->token!=';')
@@ -475,8 +475,7 @@ I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
 	      last_class->raw_type!=RT_F64)
 	  tempi->ic_flags|=ICF_R_TO_F64;
 	else
-	  if (tempc2->raw_type!=RT_F64 &&
-		last_class->raw_type==RT_F64)
+	  if (tempc2->raw_type!=RT_F64 && last_class->raw_type==RT_F64)
 	    tempi->ic_flags|=ICF_R_TO_INT;
       }
     }
@@ -488,7 +487,7 @@ I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
     COCInit(cc);
     tempi=ICAdd(cc,IC_IMM_I64,0,tempm->member_class);
     COCPush(cc);
-    if (is_str_out) {
+    if (is_print) {
       if (cc->token!=';') {
 	do {
 	  if (!is_first_arg) {
@@ -580,7 +579,7 @@ I64 PrsFunCall(CCmpCtrl *cc,CPrsStk *ps,Bool indirect,CHashFun *tempf)
   }
   if (!is_template_fun)
     ICAdd(cc,IC_CALL_END,tempf,tempf->return_class);
-  if (is_str_out||is_putchars)
+  if (is_print||is_putchars)
     ICAdd(cc,IC_END_EXP,0,0,ICF_NO_DEPEND_RESULT);
   cc->flags=(cc->flags|CCF_RAX) & ~(CCF_ARRAY|CCF_FUN_EXP);
   return PE_UNARY_MODIFIERS;

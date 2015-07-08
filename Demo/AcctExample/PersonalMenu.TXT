@@ -265,17 +265,23 @@ ChgDsk('T');
 `ChgDsk('T');
 `
 
-August
-`Adam("GodInit(\"/Adam/God/Vocab.TXT*\");");
+AugustWords
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/AugustWords.TXT**\");");
 `
- Happy
-`Adam("GodInit(\"C:/Home/Wb2/Files/Words/Happy.TXT*\");");
+ HappyWords
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/HappyWords.TXT*\");");
+`
+ BibleWords
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/BibleWords.TXT*\");");
+`
+ HuckWords
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/HuckWords.TXT*\");");
 `
  Ingredients
-`Adam("GodInit(\"C:/Home/Wb2/Files/Words/Ingredients.TXT*\");");
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/Ingredients.TXT*\");");
 `
  Chess
-`Adam("GodInit(\"C:/Home/Wb2/Files/Words/Chess.TXT*\");");
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/Chess.TXT*\");");
 `
 
 SortHeaders

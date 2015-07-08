@@ -69,7 +69,7 @@ U8 *MPrintQ(U8 *ptr,I64 flags)
 {
   U8 **_buf,*buf,**_dst,*dst,buf2[8],*ptr2;
   I64 ch;
-  buf=MAlloc(128);
+  buf=MAlloc(STR_LEN);
   _buf=&buf;
   dst=buf;
   _dst=&dst;
@@ -128,7 +128,7 @@ U8 *MPrintq(U8 *ptr,I64 flags)
 {
   U8 **_buf,*buf,**_dst,*dst;
   I64 i,ch,ch1;
-  buf=MAlloc(128);
+  buf=MAlloc(STR_LEN);
   _buf=&buf;
   dst=buf;
   _dst=&dst;
@@ -236,7 +236,7 @@ to avoid this.
     _buf=NULL;
     buf=dst;
   } else {
-    buf=MAlloc(128);
+    buf=MAlloc(STR_LEN);
     _buf=&buf;
     dst=buf;
   }

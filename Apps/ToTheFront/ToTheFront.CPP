@@ -106,7 +106,7 @@ movement_costs[MOUNTAINS]=10;
 F64 fire_radius,fire_radius_x,fire_radius_y;
 
 //These display "phase", "turn" and "game over".
-U8 msg_buf[136];
+U8 msg_buf[STR_LEN];
 I64 msg_off_timeout; //Jiffies. Goes away after a time.
 
 /*I got tricky by not defining a color
@@ -1465,7 +1465,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 {
   F64 x,y;
   I64 h,v,i,j,r,c;
-  U8 buf[128];
+  U8 buf[STR_LEN];
   IndirectOrders *tempi;
   Bool old_preempt=Preempt;
 

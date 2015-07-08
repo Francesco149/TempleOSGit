@@ -23,7 +23,7 @@ U0 PsmSongDel(PsmNote *root)
     PsmNoteDel(tempo);
     tempo=tempo1;
   }
-  root->next=root->last=root;
+  QueInit(root);
 }
 
 U0 PsmCutToClipboard()

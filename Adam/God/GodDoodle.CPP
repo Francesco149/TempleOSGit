@@ -49,10 +49,30 @@ U0 GodDoodleSmooth(I64 num)
   DCDel(dc);
 }
 
+U0 GodDoodleBitsIns(I64 num_bits,I64 n)
+{//Insert bits into God doodle bit fifo.
+  I64 i;
+  for (i=0;i<num_bits;i++) {
+    FifoU8Ins(god.doodle_fifo,n&1);
+    n>>=1;
+  }
+}
+
+U0 GodDoodleHexIns(U8 *st)
+{//Insert hex record into God doodle bit fifo.
+  U8 buf[2];
+  if (st) {
+    buf[1]=0;
+    while (*buf=*st++)
+      if (Bt(chars_bmp_hex_numeric,*buf))
+	GodDoodleBitsIns(4,Str2I64(buf,16));
+  }
+}
+
 I64 GodDoodleBits(I64 num_bits)
 {
   U8 b;
-  I64 i,k,result=0;
+  I64 result=0;
   while (num_bits) {
     if (FifoU8Rem(god.doodle_fifo,&b)) {
       result=result<<1+b;
@@ -66,19 +86,14 @@ I64 GodDoodleBits(I64 num_bits)
 	FifoU8Flush(god.doodle_fifo);
       } else if ('0'<=god.doodle_ch<='9')
 	GodDoodleSmooth(god.doodle_ch-'0');
-      else {
-	k=KbdMouseEvtTime>>GOD_BAD_BITS;
-	for (i=0;i<GOD_GOOD_BITS;i++) {
-	  FifoU8Ins(god.doodle_fifo,k&1);
-	  k>>=1;
-	}
-      }
+      else
+	GodDoodleBitsIns(GOD_GOOD_BITS,KbdMouseEvtTime>>GOD_BAD_BITS);
     }
   }
   return result;
 }
 
-public U8 *GodDoodleSprite()
+public U8 *GodDoodleSprite(U8 *hex=NULL)
 {//Make God draw sprite. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
   I64 i,j,w,h,x,y,ch;
   U8 *elems;
@@ -101,6 +116,7 @@ public U8 *GodDoodleSprite()
 
   Fs->draw_it=&GodDoodleDraw;
   FifoU8Flush(god.doodle_fifo);
+  GodDoodleHexIns(hex);
   try {
     for (i=0;i<3;i++) {
       god.doodle_dc->color=RED;
@@ -162,10 +178,10 @@ public U8 *GodDoodleSprite()
 }
 
 #help_index "God"
-public U0 GodDoodle()
+public U0 GodDoodle(U8 *hex=NULL)
 {//Make God draw sprite, insert in doc. [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit Instructions
   U8 *elems;
-  if (elems=GodDoodleSprite) {
+  if (elems=GodDoodleSprite(hex)) {
     Sprite(elems);
     Free(elems);
   }

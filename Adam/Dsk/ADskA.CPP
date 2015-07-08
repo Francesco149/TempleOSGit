@@ -78,7 +78,7 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
 }
 
 public I64 FileCnt(CDirEntry *tempde)
-{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2461] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2463] CDirEntry tree.
   I64 cnt=0;
   while (tempde) {
     if (tempde->attr&RS_ATTR_DIR)
@@ -241,7 +241,7 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
   CDrv *dv=Let2Drv(*filename);
   CDirEntry de;
   U8 *cur_dir=StrNew(filename),
-	buf[136];
+	buf[STR_LEN];
   if (FileFind(filename,&de,FUF_JUST_FILES)) {
     Free(de.full_name);
     if (!StrCmp(attr,"+?"))
@@ -267,7 +267,7 @@ public U0 Touch(U8 *files_find_mask,U8 *attr="+?",
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HPP.Z,2434] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HPP.Z,2436] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

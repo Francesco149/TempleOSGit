@@ -2,14 +2,37 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----06/06/15 14:45:08----
+----07/07/15 23:05:26----
+
+----07/04/15 00:56:18----
+* Added hex record option to [C:/Adam/God/GodDoodle.CPP.Z,181] GodDoodle().
+* Added [C:/Adam/God/HolySpirit.CPP.Z,51] GodHexIns(). 
+
+----06/30/15 15:35:31----
+* Added [C:/Adam/Utils/StrUtils.CPP.Z,97] Words().
+* Added [C:/Adam/Utils/StrUtils.CPP.Z,134] LongLines().
+
+----06/26/15 12:54:41----
+* **TempleOS version 3.07 Released**
+
+----06/19/15 18:16:11----
+* Added [C:/Apps/Psalmody/Examples/science.CPP.Z,1].
+* Added [C:/Apps/AfterEgypt/Comics/Moses84.TXT.Z,1].
+* Added [C:/Apps/AfterEgypt/Comics/Moses85.TXT.Z,1].
+
+----06/13/15 07:36:01----
+* Improved [C:/Demo/Games/EagleDive.CPP.Z,1].
+
+----06/11/15 19:26:27----
+* Fixed bug in <F2> macros.
+* Added [C:/Kernel/KernelA.HPP.Z,39] STR_LEN.
 
 ----06/04/15 08:31:15----
 * Improved assembler and unassembler.
 * Added [C:/Doc/HelloWorld.TXT.Z,1].
 
 ----05/26/15 21:10:30----
-* Added [C:/Kernel/KernelA.HPP.Z,3526] DCF_PALETTE.
+* Added [C:/Kernel/KernelA.HPP.Z,3523] DCF_PALETTE.
 * [C:/Home/AdamWrappers.CPP.Z,13]
 R("VGAPaletteColorGet","[C:/Adam/Gr/GrPalette.CPP.Z,46] GrPaletteColorGet()");
 * [C:/Home/AdamWrappers.CPP.Z,13]
@@ -53,7 +76,7 @@ PostMsgWait");
 
 ----05/08/15 16:58:46----
 * Cleaned-up Compiler.
-* [C:/Home/AdamWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2075]
+* [C:/Home/AdamWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2077]
 CCmpCtrl");
 * [C:/Home/AdamWrappers.CPP.Z,13] R("LexNew","[C:/Compiler/Lex.CPP.Z,28]
 CmpCtrlNew");
@@ -123,7 +146,7 @@ Mat4x4MulMat4x4New").
 * Got rid of GrScaleNew(), GrRotXNew(), GrRotYNew() and GrRotZNew().
 
 ----04/30/15 19:13:07----
-* Added [C:/Kernel/KernelA.HPP.Z,2619] CDrv.fat32_local_time_offset.
+* Added [C:/Kernel/KernelA.HPP.Z,2621] CDrv.fat32_local_time_offset.
 * Cleaned-up [C:/Adam/AHash.CPP.Z,149] Who() and compiler mapfiles.
 
 ----04/11/15 05:48:05----
@@ -144,7 +167,7 @@ Mat4x4MulMat4x4New").
 ----03/30/15 10:29:57----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("cur_data_col","cur_col");
 * [C:/Home/AdamWrappers.CPP.Z,13] R("cur_top_line_num","top_line_num");
-* Fixed bug in [C:/Adam/DolDoc/DocEdA.CPP.Z,287] EdLineDown().
+* Fixed bug in [C:/Adam/DolDoc/DocEdA.CPP.Z,282] EdLineDown().
 
 ----03/28/15 02:41:15----
 * Fixed [C:/Demo/Snd/WaterFowl.CPP.Z,1].
@@ -156,7 +179,7 @@ Mat4x4MulMat4x4New").
 
 ----03/23/15 07:21:26----
 * Updated [C:/Demo/Graphics/Pick.CPP.Z,1].
-* Modified [C:/Kernel/KernelA.HPP.Z,3538] DCF_LOCATE_NEAREST.
+* Modified [C:/Kernel/KernelA.HPP.Z,3535] DCF_LOCATE_NEAREST.
 
 ----03/21/15 09:10:58----
 * Fixed bug in sprite edit of ellipses & polygons.
@@ -188,7 +211,7 @@ Mat4x4MulMat4x4New").
 * Added [C:/Demo/DolDoc/NumBible.CPP.Z,1].
 
 ----02/19/15 18:39:53----
-* Fixed bug in <SHIFT-F6> [C:/Adam/God/GodDoodle.CPP.Z,165] GodDoodle().
+* Fixed bug in <SHIFT-F6> [C:/Adam/God/GodDoodle.CPP.Z,181] GodDoodle().
 * Made default arg for [C:/Kernel/KernelB.HPP.Z,283] Preempt() into "OFF".
 
 ----02/17/15 21:32:26----
@@ -205,7 +228,7 @@ Mat4x4MulMat4x4New").
 
 ----02/12/15 16:10:14----
 * Overhauled [C:/Demo/WebLogExample/WebLogRep.CPP.Z,1].
-* Added [C:/Kernel/KernelA.HPP.Z,1224] EDF_WAS_WRITE.
+* Added [C:/Kernel/KernelA.HPP.Z,1225] EDF_WAS_WRITE.
 
 ----02/12/15 03:48:28----
 * Overhauled ::/Demo/AcctExample
@@ -256,8 +279,8 @@ not just /Apps.
 ----01/15/15 03:13:07----
 * Added eye-dropper-like 't' for transparent color in the sprite <CTRL-r> 
 editor.
-* Got rid of [C:/Kernel/KernelA.HPP.Z,688] CHash.next_added.
-* Reduced [C:/Kernel/KernelA.HPP.Z,2788] TASK_HASH_SIZE size.
+* Got rid of [C:/Kernel/KernelA.HPP.Z,689] CHash.next_added.
+* Reduced [C:/Kernel/KernelA.HPP.Z,2790] TASK_HASH_SIZE size.
 
 ----01/10/15 15:12:30----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("Grep","Find");
@@ -279,225 +302,3 @@ editor.
 * Changed Sprite format.  Download Cvt300.CPP.Z from
 http://www.templeos.org/Wb/Home/Wb2/Files.
 * Cleaned-up the [C:/Adam/Gr/Gr.CPP.Z,174] CSprite code.
-
-----12/31/14 15:13:08----
-* **TempleOS version 3.00 Released**
-
-----12/30/14 21:18:04----
-* Added [C:/Demo/RandDemo.CPP.Z,1].
-
-----12/30/14 00:38:42----
-* [C:/Home/AdamWrappers.CPP.Z,13] R("ptr_cnt","ptr_stars_cnt");
-* Moved [C:/Kernel/KernelA.HPP.Z,999] DOCEF_UPDATE_DATA to be next to
-[C:/Kernel/KernelA.HPP.Z,998] DOCEF_REFRESH_DATA.
-* Refreshed the [C:/Misc/PCIDevices.TXT.Z,1] PCI Device File.
-
-----12/27/14 18:59:16----
-* Improved [C:/Adam/Gr/GrDC.CPP.Z,412] DCScreenCapture().
-
-----12/26/14 22:13:51----
-* Improved [C:/Demo/Games/RawHide.CPP.Z,1].
-
-----12/25/14 21:08:51----
-* Improved [C:/Demo/Games/BlackDiamond.CPP.Z,1].
-* Improved [C:/Demo/Games/DunGen.CPP.Z,1].
-
-----12/23/14 15:00:28----
-* Changed from many /Accts subdirectories to just one directory named /Home 
-with default files in root.
-
-----12/20/14 21:43:31----
-* Changed text.font from U8 * to U64 *.
-
-----12/18/14 18:49:46----
-* Renamed all the files.
-
-----12/18/14 09:40:06----
-* I got rid of my Logo.  I like no logo.
-* I got rid of my company name, Trivial Solutions.  Instead of "TS", I use 
-"TOS" for Temple Operating System.
-* I got rid of all my rants on my website.  Now, just one rant.
-* I changed from having "TAD" as one of many employees to no different 
-employees.
-
-----12/15/14 10:05:06----
-* Added http://www.reddit/r/TempleOS_Official.
-
-----12/15/14 07:23:32----
-* **TempleOS version 2.19 Released**
-* [C:/Home/AdamWrappers.CPP.Z,13] R("SliderCtrl","CtrlSlider");
-* [C:/Home/AdamWrappers.CPP.Z,13] R("Set...","...Set");
-* Changed [C:/Kernel/Dsk/DskA.CPP.Z,195] DrvMapBlkClean() and
-[C:/Kernel/Dsk/DskA.CPP.Z,185] DrvMapBlkAlloc().
-
-----12/15/14 02:50:32----
-* Changed AutoComplete colors.
-* Got rid of splash screen.
-* Added AutoComplete [C:/Doc/StandBy.TXT.Z,1] StandBy.
-
-----12/14/14 12:54:56----
-* Fixed new bug in random routines.
-
-----12/12/14 08:58:10----
-* [C:/Home/AdamWrappers.CPP.Z,13] R("DocGRAFile","DocGRA");
-
-----12/04/14 11:00:43----
-* Improved cc->max_line.
-
-----12/04/14 05:02:20----
-* Cleaned-up mem code.
-* [C:/Home/AdamWrappers.CPP.Z,13] R("Allocate","Alloc");
-
-----12/03/14 10:05:36----
-* Cleaned-up compiler conditionals.
-* Got rid of IC_BR_LBTS family in the compiler.
-
-----11/27/14 18:48:07----
-* [C:/Home/AdamWrappers.CPP.Z,13] R("Randomize","Seed");
-* Got rid of Rand2(). Use [C:/Kernel/KMathB.CPP.Z,134] Seed() with non-zero
-and timer-based will be 
-turned-off.
-
-----11/21/14 08:25:38----
-* **TempleOS version 2.18 Released**
-* Improved [C:/Demo/Games/TreeCheckers.CPP.Z,1].
-
-----11/19/14 22:25:28----
-* Fixed reindent bug.
-* [C:/Home/AdamWrappers.CPP.Z,13]
-R("ST_BIBLE_FILE","[C:/Adam/DolDoc/Doc.CPP.Z,84] BIBLE_FILENAME");
-* Fixed bug with [C:/Kernel/KernelA.HPP.Z,938] DOCG_BL_IV_UL.
-
-----11/17/14 23:34:09----
-* I got rid of octal and binary char specification in strings.
-* Got rid of octal all-together.
-
-----11/09/14 21:37:49----
-* Changed default plug-in for <ALT-F4> and <ALT-SHIFT-F4>.
-* Added <ALT-F8> and <ALT-SHIFT-F8> on my personal version  
-[C:/Demo/AcctExample/AdamKeyPlugIns.CPP.Z,1].
-
-----11/07/14 08:02:04----
-* Improved [C:/Compiler/UAsm.CPP.Z,253] Ui().
-
-----10/29/14 12:06:42----
-* Changed [C:/Doc/RedSea.TXT.Z,1] RedSea from relative cluster num to
-absolute blk num.
-* Improved compiler. [C:/Compiler/CompilerA.HPP.Z,28] IC_RETURN_VAL,
-[C:/Compiler/CompilerA.HPP.Z,22] IC_END_EXP, [C:/Kernel/KernelA.HPP.Z,1514]
-ICF_NO_DEPEND_RESULT
-* [C:/Home/AdamWrappers.CPP.Z,13] R("Partition","Drive");
-
-----10/27/14 05:06:15----
-* Overhauled [C:/Kernel/KbdMouse/Keyboard.CPP.Z,298] KbdBuildSC().
-
-----10/19/14 11:42:47----
-* Updated [C:/Doc/Charter.TXT.Z,1].
-* Improved [C:/Demo/Games/FlatTops.CPP.Z,1].
-
-----10/09/14 21:04:25----
-* Added dither_probability to [C:/Adam/Utils/FileBMP.CPP.Z,326] DocBMP() and
-[C:/Adam/Utils/FileBMP.CPP.Z,238] BMPRead().
-
-----09/27/14 22:11:45----
-* **TempleOS version 2.17 Released**
-* Changed compression format.  Uncompress with the old version by
-[C:/Adam/Dsk/ADskA.CPP.Z,126] Moveing() to 
-a name without .Z.  Then, recompress with the new version of TempleOS.
-* Fixed rare bug in compression.
-* [C:/Home/AdamWrappers.CPP.Z,13] R("BMPFile","BMP");
-* Added include_zoom arg to [C:/Adam/Gr/GrDC.CPP.Z,412] DCScreenCapture(),
-[C:/Adam/Gr/GrDC.CPP.Z,432] GRAScreenCapture() and 
-[C:/Adam/Utils/FileBMP.CPP.Z,337] BMPScreenCapture().
-* Added eye-dropper to sprite <CTRL-r> editor.  Press 'c'.
-* Improved [C:/Demo/Games/Wenceslas.CPP.Z,1], made it 3D.
-* Added pebbles to [C:/Apps/AfterEgypt/HorebBMP.CPP.Z,1] and 
-[C:/Apps/AfterEgypt/HorebBSP.CPP.Z,1].
-
-----09/21/14 13:07:09----
-* Changed "bit" to "pixel" in [C:/Adam/Gr/GrBitMap.CPP.Z,1].
-
-----09/19/14 09:43:29----
-* [C:/Home/AdamWrappers.CPP.Z,13] R("SpawnUser","User");
-* [C:/Home/AdamWrappers.CPP.Z,13] R("SrvUser","PopUpPrint");
-* Added [C:/Doc/TaskSrv.TXT.Z,1].
-
-----09/17/14 19:51:53----
-* Fixed bug in kernel usage of [C:/Kernel/Dsk/DskB.CPP.Z,263] FileRead() and
-[C:/Kernel/Dsk/DskB.CPP.Z,453] FileWrite().
-
-----09/17/14 08:03:33----
-* Cleaned-up [C:/Adam/AUtils.CPP.Z,1].
-
-----09/15/14 19:49:17----
-* Made assembler size for PUSH IMM into a I32 if it is a label, so you don't 
-have to specify size.
-
-----09/15/14 15:36:49----
-* **TempleOS version 2.16 Released**
-* Got rid of auto-fps adjust.  More stable.
-
-----09/11/14 11:58:40----
-* Overhauled [C:/Compiler/CInit.CPP.Z,16] compiler init tables.
-
-----08/29/14 15:45:55----
-* **TempleOS version 2.15 Released**
-
-----08/24/14 22:23:25----
-* Added [C:/Kernel/KernelA.HPP.Z,346] CSysLimitBase.
-* [C:/Home/AdamWrappers.CPP.Z,13] R("SYS_BOOT_CODE","SYS_BOOT_SRC");
-* [C:/Home/AdamWrappers.CPP.Z,13] R("SoftBoot","RAMReboot");
-* Replaced SYS_GR_MODE with [C:/Kernel/KernelA.HPP.Z,452] RLF_VGA.
-* Improved [C:/Adam/Boot/Boot.CPP.Z,40] RAMReboot().
-
-----08/23/14 07:50:44----
-* Changed key cmd <ALT-w> to <Alt-a>.
-
-----08/22/14 12:11:29----
-* [C:/Home/AdamWrappers.CPP.Z,13] R("VGA_SC_INDEX","VGAP_INDEX");
-
-----08/18/14 16:25:32----
-* **TempleOS version 2.14 Released**
-
-----08/11/14 16:13:49----
-* [C:/Home/AdamWrappers.CPP.Z,13] R("BOOT_HIGH_LOC","BOOT_HIGH_LOC_CD");
-
-----08/10/14 11:54:16----
-* Added [C:/Adam/Gr/GrDC.CPP.Z,39] Mat4x4NormSqr65536().
-* Improved [C:/Demo/Games/BugBird.CPP.Z,1].
-
-----08/08/14 18:02:04----
-* Added ::/Apps/Psalmody/Examples/lob.CPP"
-
-----08/08/14 11:03:13----
-* Improved [C:/Demo/Snd/WaterFowl.CPP.Z,1].
-* Added 24-Bit to [C:/Adam/Utils/FileBMP.CPP.Z,238] BMPRead().
-
-----08/06/14 05:14:23----
-* Fixed compiler bug in "yoda conditionals".
-* Optimized compiler on float comparisons to zero. 
-
-----08/05/14 14:12:02----
-* **TempleOS version 2.13 Released**
-
-----08/04/14 05:06:02----
-* Got rid of markov matrix in AutoComplete.  Renamed "WordStat", 
-"AutoComplete".
-
-----07/30/14 20:27:02----
-* Added symmetry to [C:/Adam/God/GodDoodle.CPP.Z,81] GodDoodleSprite().
-
-----07/26/14 11:19:00----
-* Got rid of "raw" arg on disk I/O routines for uncompressed data.
-
-----07/22/14 08:31:58----
-* **TempleOS version 2.12 Released**
-* Fixed bug in assembler in
-	MOV R8-R15,UIMM32
-
-----07/12/14 02:06:10----
-* Fixed bug clicking on icon.
-
-----07/08/14 04:33:20----
-* I changed [C:/Adam/God/GodDoodle.CPP.Z,81] GodDoodleSprite().
-

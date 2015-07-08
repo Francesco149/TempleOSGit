@@ -2,7 +2,7 @@
 
 U0 SpriteElem2Code(CDoc *doc,CSprite *tempg)
 {
-  U8 buf1[256],buf2[136];
+  U8 buf1[STR_LEN],buf2[STR_LEN];
   I32 *ptr;
   I64 i,j,k,col,width_internal;
   CD3I32 *p;

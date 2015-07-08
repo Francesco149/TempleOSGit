@@ -29,7 +29,7 @@ class CKernelCfg
 CDoc *KernelCfgAddDev(CKernelCfg *c)
 {
   I64 ch,num_hints,first_drv_num,type,unit,cnt=0;
-  U8 blks_buf[256],addr_buf[256],base0_buf[128],base1_buf[128];
+  U8 blks_buf[STR_LEN],addr_buf[STR_LEN],base0_buf[STR_LEN],base1_buf[STR_LEN];
   CATARep *root=NULL,*tempha;
   CDoc *doc=DocNew;
   Bool make_free;
@@ -65,9 +65,9 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
       unit=0;
       if (type==BDT_RAM) {
 	"Addr of RAM disk ($PURPLE$<ENTER>$FG$ to MAlloc):";
-	GetS(addr_buf,256);
+	GetS(addr_buf,STR_LEN);
 	"Blks of 512 bytes:";
-	GetS(blks_buf,256);
+	GetS(blks_buf,STR_LEN);
       } else if (type==BDT_ATA ||
 	    type==BDT_ATAPI) {
 	num_hints=ATARep(,,&root);
@@ -78,7 +78,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 		  "I/O Port Base0:\n";
 	  else
 	    "Include $PURPLE$0x$FG$ prefix.\nI/O Port Base0:\n";
-	  GetS(base0_buf,128);
+	  GetS(base0_buf,STR_LEN);
 	} else
 	  do {
 	    if (num_hints)
@@ -86,7 +86,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 		    "I/O Port Base0:\n";
 	    else
 	      "Include $PURPLE$0x$FG$ prefix.\nI/O Port Base0:\n";
-	    GetS(base0_buf,128);
+	    GetS(base0_buf,STR_LEN);
 	  } while (!Str2I64(base0_buf));
 	if (1<=Str2I64(base0_buf)<=num_hints) {
 	  tempha=ATARepFind(root,Str2I64(base0_buf));
@@ -99,7 +99,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	  else
 	    do {
 	      "I/O Port Base1:\n";
-	      GetS(base1_buf,128);
+	      GetS(base1_buf,STR_LEN);
 	    } while (!Str2I64(base1_buf));
 	  do {
 	    "\t$PURPLE$0$FG$=Master\n\t$PURPLE$1$FG$=Slave\nUnit:";

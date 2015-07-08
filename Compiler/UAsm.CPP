@@ -40,8 +40,10 @@ I64 InstEntriesCompare(CInstruction *tempi1,CInstruction *tempi2)
       i2=tempi2->flags & IEF_OP_SIZE32;
       if (result=i1-i2) return result;
 
-      i1=Bt(&uasm.ins64_arg_mask,tempi1->arg1) || Bt(&uasm.ins64_arg_mask,tempi1->arg2);
-      i2=Bt(&uasm.ins64_arg_mask,tempi2->arg1) || Bt(&uasm.ins64_arg_mask,tempi2->arg2);
+      i1=Bt(&uasm.ins64_arg_mask,tempi1->arg1) ||
+	    Bt(&uasm.ins64_arg_mask,tempi1->arg2);
+      i2=Bt(&uasm.ins64_arg_mask,tempi2->arg1) ||
+	    Bt(&uasm.ins64_arg_mask,tempi2->arg2);
       if (result=i1-i2) return result;
 
       i1=tempi1->flags & IEF_48_REX;
@@ -138,7 +140,7 @@ CInstruction *InstEntryFind(U8 *ip,I64 opsize,I64 seg_size)
 	      }
 	    }
 	    if (opsize==64||a1==ARGT_M64||a2==ARGT_M64) {
-	      if (!Bt(&uasm.ins64_arg_mask,a1) && !Bt(&uasm.ins64_arg_mask,a2) &&
+	      if (!Bt(&uasm.ins64_arg_mask,a1)&& !Bt(&uasm.ins64_arg_mask,a2) &&
 		    !(tempi->flags&IEF_48_REX))
 		m=1;
 	    } else {

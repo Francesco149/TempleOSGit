@@ -1,6 +1,6 @@
 /*There is no FPrintF type function and no
 way to grow files. Therefore, use mem to
-hold the file until you are done.  The [C:/Kernel/KernelA.HPP.Z,1323] CDoc
+hold the file until you are done.  The [C:/Kernel/KernelA.HPP.Z,1324] CDoc
 framework is convenient for this.
 */
 

@@ -348,7 +348,7 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
 }
 
 Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2513] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2514] FUF_JUST_FILES, [C:/Kernel/KernelA.HPP.Z,2520] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2522] FUF_SCAN_PARENTS
+{//[C:/Kernel/KernelA.HPP.Z,2515] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2516] FUF_JUST_FILES, [C:/Kernel/KernelA.HPP.Z,2522] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2524] FUF_SCAN_PARENTS
 //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;

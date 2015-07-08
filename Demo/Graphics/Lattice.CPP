@@ -113,7 +113,7 @@ U0 DrawIt(CTask *,CDC *dc)
 U0 SetMenu()
 {
   I64 i;
-  U8 buf[64];
+  U8 buf[STR_LEN];
   CMenuEntry *tempse;
   for (i=0;i<=9;i++) {
     StrPrint(buf,"Settings/Layer%d",i);

@@ -94,7 +94,7 @@ public I64 PopUpTourPart()
 
 U0 TourMenu()
 {
-  U8 buf[128];
+  U8 buf[STR_LEN];
   I64 i;
   tour_task=Fs;
   tour_okay_pressed=TRUE;

@@ -68,8 +68,8 @@ Normally, just spawn a popup task,
 run it and kill it using an icon.
 */
 I16 elevations[MAP_HEIGHT][MAP_WIDTH];
-I32 normals[MAP_HEIGHT][MAP_WIDTH*2];
-Panel *panels[MAP_HEIGHT][MAP_WIDTH*2];
+CD3 normals[MAP_HEIGHT][MAP_WIDTH];
+Panel *panels[MAP_HEIGHT][MAP_WIDTH];
 
 I64 num_panels;
 Panel *panel_root;
@@ -102,98 +102,48 @@ U0 EDTransform(CDC *dc,I64 *x,I64 *y,I64 *z)
 }
 
 U0 CalcNormals()
-{
-/*The idea is that there are two tris
-forming every grid square and we find the normal
-vect with a curl.
+{/*Find the normal vect with a curl.
+
+i,j and k are the axis unit vectors,
+not to be confused with my local index variables.
 
 i  j  k
 0  1  dz2
 1  0  dz1
 
-Normal:
-dz1*i + dz2*j - k
-
-i   j	k
--1   0	-dz3
-0  -1  -dz4
-
-Normal:
--dz3*i - dz4*j + k
-
-
-Basically, we want to combine grid
-locations with the same normals.  These
-are not unit vects for one thing.
-
-What I came-up with is dz1/dz2 and dz3/dz4.
-
-It works pretty well.  It combines
-more than it should, but that's good
-because it would  result in too many
-panels.
+Normal:  dz1*i + dz2*j - k
 */
-  I64 i,j,k,dz1,dz2;
+  I64 i,j;
   for (j=0;j<MAP_HEIGHT-1;j++) {
-    k=0;
     for (i=0;i<MAP_WIDTH-1;i++) {
-      dz1=elevations[j][i+1]-elevations[j][i];
-      dz2=elevations[j+1][i]-elevations[j][i];
-      if (dz2)
-	normals[j][k++]=dz1<<16/dz2;
-      else {
-	if (!dz1)
-	  normals[j][k++]=0;
-	else if (dz1>0)
-	  normals[j][k++]=MAX_I32;
-	else
-	  normals[j][k++]=MIN_I32;
-      }
-
-      dz1=elevations[j+1][i+1]-elevations[j][i+1];
-      dz2=elevations[j+1][i+1]-elevations[j+1][i];
-      if (dz2)
-	normals[j][k++]=dz1<<16/dz2;
-      else {
-	if (!dz1)
-	  normals[j][k++]=0;
-	else if (dz1>0)
-	  normals[j][k++]=MAX_I32;
-	else
-	  normals[j][k++]=MIN_I32;
-      }
+      normals[j][i].x=elevations[j][i+1]-elevations[j][i];
+      normals[j][i].y=elevations[j+1][i]-elevations[j][i];
+      normals[j][i].z=-1;
+      D3Unit(&normals[j][i]);
     }
-    normals[j][k++]=0;
-    normals[j][k++]=0;
+    MemSet(&normals[j][i],0,sizeof(CD3));
   }
-  k=0;
-  for (i=0;i<MAP_WIDTH-1;i++) {
-    normals[j][k++]=0;
-    normals[j][k++]=0;
-  }
+  for (i=0;i<MAP_WIDTH-1;i++)
+    MemSet(&normals[j][i],0,sizeof(CD3));
 }
 
 Bool TestSameSlope(I64 x,I64 y,I64 w,I64 h)
 {
-  I64 k1,k2,xx,yy,s;
+  CD3 p,*s;
+  I64 k1,k2;
   if (!(0<=x && x+w<MAP_WIDTH && 0<=y && y+h<MAP_HEIGHT))
     return FALSE;
-//Works well averaging the two slopes of two tris.
-    //If it is too picky, we get too many panels.
-  s=normals[y][x*2]+normals[y][x*2+1];
+  s=&normals[y][x];
   for (k2=0;k2<h;k2++)
-    for (k1=0;k1<w;k1++) {
-      xx=(x+k1)*2;
-      yy=y+k2;
-      if (normals[yy][xx]+normals[yy][xx+1]!=s)
+    for (k1=0;k1<w;k1++)
+      if (D3NormSqr(D3Sub(&normals[y+k2][x+k1],s,&p))>.10)
 	return FALSE;
-    }
   return TRUE;
 }
 
 U0 MPDoPanels(CTask *task)
 {
-  I64 i,j,k,l,k1,k2,w,h,threshold,lo,hi;
+  I64 i,j,l,k1,k2,w,h,threshold,lo,hi;
   Bool cont;
   Panel *tempp,*start_ptr=NULL,*end_ptr=NULL;
   CD3I32 *poly;
@@ -202,9 +152,8 @@ U0 MPDoPanels(CTask *task)
   hi=(Gs->num+1)*(MAP_HEIGHT-1)/mp.mp_cnt;
   for (threshold=8;threshold>=1;threshold--)
     for (j=lo;j<hi;j++) {
-      k=0;
       for (i=0;i<MAP_WIDTH-1;i++) {
-	if (!panels[j][k]) {
+	if (!panels[j][i]) {
 	  w=1;
 	  h=1;
 	  do {
@@ -221,88 +170,85 @@ U0 MPDoPanels(CTask *task)
 	  if (w>=threshold || h>=threshold) {
 	    tempp=CAlloc(sizeof(Panel),task);
 	    lock {tempp->num=num_panels++;}
-	  l=elevations[j][i];
-	  if (l<=WATER_ELEVATION*MAP_SCALE &&
-		elevations[j][i+w-1]<=WATER_ELEVATION*MAP_SCALE &&
-		elevations[j+h-1][i]<=WATER_ELEVATION*MAP_SCALE &&
-		elevations[j+h-1][i+w-1]<=WATER_ELEVATION*MAP_SCALE) {
-	    tempp->color=BLUE;
-	    if (Rand<0.05) {
-	      tempf=MAlloc(sizeof(Fish),task);
-	      tempf->p.x=(i+w/2)*MAP_SCALE;
-	      tempf->p.y=(j+h/2)*MAP_SCALE;
-	      tempf->p.z=l;
-	      CriticalSectionStart;
-	      QueIns(tempf,fish_root.last);
-	      CriticalSectionEnd;
-	    }
-	  } else {
-	    if (RandI16&1) {
-	      if (l<ROCK_ELEVATION*MAP_SCALE)
-		tempp->color=LTGREEN;
-	      else if (l<SNOW_ELEVATION*MAP_SCALE) {
-		if (!(RandU16&3))
-		  tempp->color=LTGRAY;
-		else
-		  tempp->color=LTGREEN;
-	      } else {
-		if (!(RandU16&3))
-		  tempp->color=WHITE;
-		else
-		  tempp->color=LTGRAY;
+	    l=elevations[j][i];
+	    if (l<=WATER_ELEVATION*MAP_SCALE &&
+		  elevations[j][i+w-1]<=WATER_ELEVATION*MAP_SCALE &&
+		  elevations[j+h-1][i]<=WATER_ELEVATION*MAP_SCALE &&
+		  elevations[j+h-1][i+w-1]<=WATER_ELEVATION*MAP_SCALE) {
+	      tempp->color=BLUE;
+	      if (Rand<0.05) {
+		tempf=MAlloc(sizeof(Fish),task);
+		tempf->p.x=(i+w/2)*MAP_SCALE;
+		tempf->p.y=(j+h/2)*MAP_SCALE;
+		tempf->p.z=l;
+		CriticalSectionStart;
+		QueIns(tempf,fish_root.last);
+		CriticalSectionEnd;
 	      }
 	    } else {
-	      if (l<ROCK_ELEVATION*MAP_SCALE)
-		tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
-	      else if (l<SNOW_ELEVATION*MAP_SCALE) {
-		if (!(RandU16&3))
-		  tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
-		else
-		  tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
+	      if (RandI16&1) {
+		if (l<ROCK_ELEVATION*MAP_SCALE)
+		  tempp->color=LTGREEN;
+		else if (l<SNOW_ELEVATION*MAP_SCALE) {
+		  if (!(RandU16&3))
+		    tempp->color=LTGRAY;
+		  else
+		    tempp->color=LTGREEN;
+		} else {
+		  if (!(RandU16&3))
+		    tempp->color=WHITE;
+		  else
+		    tempp->color=LTGRAY;
+		}
 	      } else {
-		if (!(RandU16&3))
-		  tempp->color=LTGRAY+WHITE<<16+ROPF_DITHER;
-		else
-		  tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
+		if (l<ROCK_ELEVATION*MAP_SCALE)
+		  tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
+		else if (l<SNOW_ELEVATION*MAP_SCALE) {
+		  if (!(RandU16&3))
+		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
+		  else
+		    tempp->color=GREEN+LTGREEN<<16+ROPF_DITHER;
+		} else {
+		  if (!(RandU16&3))
+		    tempp->color=LTGRAY+WHITE<<16+ROPF_DITHER;
+		  else
+		    tempp->color=DKGRAY+LTGRAY<<16+ROPF_DITHER;
+		}
 	      }
 	    }
+	    tempp->n=4;
+	    poly=tempp->pts=MAlloc(sizeof(CD3I32)*tempp->n,task);
+	    poly[0].x=MAP_SCALE*i;
+	    poly[0].y=MAP_SCALE*j;
+	    poly[0].z=elevations[j][i];
+	    poly[1].x=MAP_SCALE*(i+w);
+	    poly[1].y=MAP_SCALE*j;
+	    poly[1].z=elevations[j][i+w];
+	    poly[2].x=MAP_SCALE*(i+w);
+	    poly[2].y=MAP_SCALE*(j+h);
+	    poly[2].z=elevations[j+h][i+w];
+	    poly[3].x=MAP_SCALE*i;
+	    poly[3].y=MAP_SCALE*(j+h);
+	    poly[3].z=elevations[j+h][i];
+	    tempp->next=start_ptr;
+	    start_ptr=tempp;
+	    if (!end_ptr)
+	      end_ptr=tempp;
+	    for (k2=0;k2<h;k2++)
+	      for (k1=0;k1<w;k1++)
+		panels[j+k2][i+k1]=tempp;
 	  }
-	  tempp->n=4;
-	  poly=tempp->pts=MAlloc(sizeof(CD3I32)*tempp->n,task);
-	  poly[0].x=MAP_SCALE*i;
-	  poly[0].y=MAP_SCALE*j;
-	  poly[0].z=elevations[j][i];
-	  poly[1].x=MAP_SCALE*(i+w);
-	  poly[1].y=MAP_SCALE*j;
-	  poly[1].z=elevations[j][i+w];
-	  poly[2].x=MAP_SCALE*(i+w);
-	  poly[2].y=MAP_SCALE*(j+h);
-	  poly[2].z=elevations[j+h][i+w];
-	  poly[3].x=MAP_SCALE*i;
-	  poly[3].y=MAP_SCALE*(j+h);
-	  poly[3].z=elevations[j+h][i];
-	  tempp->next=start_ptr;
-	  start_ptr=tempp;
-	  if (!end_ptr)
-	    end_ptr=tempp;
-	  for (k2=0;k2<h;k2++)
-	    for (k1=0;k1<w;k1++) {
-	      panels[j+k2][(i+k1)*2]=tempp;
-	      panels[j+k2][(i+k1)*2+1]=tempp;
-	    }
 	}
       }
-      k+=2;
     }
-}
-if (end_ptr) {
-CriticalSectionStart;
-if (end_ptr)
-end_ptr->next=panel_root;
-panel_root=start_ptr;
-CriticalSectionEnd;
-}
-LBtr(&mp.init_not_done_flags,Gs->num);
+  if (end_ptr) {
+    CriticalSectionStart;
+    if (end_ptr)
+      end_ptr->next=panel_root;
+    panel_root=start_ptr;
+    CriticalSectionEnd;
+  }
+  LBtr(&mp.init_not_done_flags,Gs->num);
 }
 
 U0 InitElevations()
@@ -338,15 +284,8 @@ U0 InitElevations()
 
 U0 InitMap()
 {/*We make a topographic data structure "elevations[][]"
-and convert it to panels.  The conversion to panels leaves
-gaps the way I did it, but it looks good, except for sky leaking through
-There is no wrong way to pick colors if it looks good, unless
-you wanted to do lighting.
-
-"panels[][]" holds the flat and sloped panels for each spot, while
-"hstep_panels[][]" holds side panels in cases of step-like formations.
-They require a separate array because a single "elevation[][]" spot can
-have a panel on top and a panel on the side like stairs.
+and convert it to panels. "panels[][]" holds the panels
+for each spot.
 */
   I64 i,x,y,xx,yy;
 
@@ -530,7 +469,7 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     for (j=0;j<strip_height && cnts.jiffies<update_jiffy_limit;j++) {
       x1=x1h>>8; y1=y1h>>8;
       if (0<=x1<MAP_WIDTH && 0<=y1<MAP_HEIGHT) {
-	if ((tempp=panels[y1][x1*2]) &&
+	if ((tempp=panels[y1][x1]) &&
 	      !LBts(panels_processed_bitmap,tempp->num)) {
 	  if (tempp->cnt>8*(1.1-Gs->idle_factor)) {
 	    dc->color=tempp->color;

@@ -200,7 +200,7 @@ U8 num_lock_map[0x100]={
 U8 *Char2KeyName(I64 ch,Bool include_ctrl=TRUE)
 {//ASCII val to key name.
   I64 i;
-  U8 buf[136];
+  U8 buf[STR_LEN];
   if (ch<=CH_SPACE) {
     nobound_switch (ch) {
       case '\n':
@@ -247,7 +247,7 @@ U8 *Char2KeyName(I64 ch,Bool include_ctrl=TRUE)
 U8 *ScanCode2KeyName(I64 sc)
 {//Scan code to key name.
   I64 ch;
-  U8 buf[136],*st;
+  U8 buf[STR_LEN],*st;
   *buf=0;
   if (sc&SCF_CTRL)
     CatPrint(buf,"CTRL ");
