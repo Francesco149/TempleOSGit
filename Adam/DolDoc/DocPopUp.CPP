@@ -670,7 +670,7 @@ public F64 PopUpRangeF64(F64 lo,F64 hi,F64 step,
 {//Evenly-spaced F64 range chooser in PopUp win task.
   F64 d;
   I64 i;
-  U8 buf[136];
+  U8 buf[STR_LEN];
   CDoc *doc=DocNew;
   if (header)
     DocPrint(doc,"%s",header);
@@ -691,7 +691,7 @@ public F64 PopUpRangeF64Exp(F64 lo,F64 hi,F64 factor,
 {//Exp-spaced F64 range chooser in PopUp win task.
   F64 d;
   I64 i;
-  U8 buf[136];
+  U8 buf[STR_LEN];
   CDoc *doc=DocNew;
   if (header)
     DocPrint(doc,"%s",header);
@@ -910,7 +910,7 @@ dc_done:
 
 public I64 PopUpColorDither(U8 *header=NULL)
 {//Chooser for 2 x 16 colors or transparent.
-  U8 buf[136];
+  U8 buf[STR_LEN];
   StrPrint(buf,"DitherColor2(0x%X);",header);
   return PopUp(buf,Fs);
 }

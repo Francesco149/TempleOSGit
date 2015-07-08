@@ -1,6 +1,6 @@
 A [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc in memory is a [Data Types/Circular
 Queue,1] Circular Queue of cmds and graphics.  See
-[C:/Kernel/KernelA.HPP.Z,1158] CDocEntry 
+[C:/Kernel/KernelA.HPP.Z,1159] CDocEntry 
 for the entry structure.  See [C:/Adam/Training.CPP.Z,202] TipOfDay() for a
 nice example.
 

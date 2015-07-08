@@ -36,9 +36,10 @@ extern class CIntermediateCode;
 #define MIN_U64 0
 #define MAX_U64 0xFFFFFFFFFFFFFFFF
 #define INVALID_PTR	MAX_I64
+#define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1469] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1470] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -109,7 +110,7 @@ I64i union I64
   U32	u32[2];
 };
 
-#help_index "Math/Complex"
+#help_index "Math/Complex;Data Types/Complex"
 public class Complex
 {
   F64	x,y;
@@ -121,7 +122,7 @@ public class CQue
   CQue	*next,*last;
 };
 
-#help_index "Math/Data Types;Graphics/Data Types"
+#help_index "Graphics/Data Types/D3I32;Math/Data Types/D3I32;Data Types/D3I32"
 public class CD3I32 //Three dimensional I32 pt
 {
   I32	x,y,z;
@@ -131,7 +132,7 @@ public class CQueD3I32 //Que of three dimensional I32 pts
   CQueD3I32	*next,*last;
   CD3I32	p;
 };
-#help_index "Math/Data Types"
+#help_index "Math/Data Types;Data Types"
 public class CD2I32 //Two dimensional I32 pt
 {
   I32	x,y;
@@ -149,7 +150,7 @@ public class CD2 //Two dimensional F64 pt
   F64	x,y;
 };
 
-#help_index "Math/Data Types;Math/CD3"
+#help_index "Math/CD3;Data Types/CD3"
 public class CD3 //Three dimensional F64 pt
 {
   F64	x,y,z;
@@ -320,8 +321,8 @@ public class CMathODE
 #define RFLAGf_VINT_PENDING	20
 #define RFLAGf_ID		21
 
-#define SYS_START_RFLAGS	0x0000
-#define SYS_NORMAL_RFLAGS	(1<<RFLAGf_INT)
+#define RFLAGG_START		0x0000
+#define RFLAGG_NORMAL		(1<<RFLAGf_INT)
 
 //Global Descriptor Table
 class CGDTEntry
@@ -379,13 +380,13 @@ class CBinFile
 
 class CPatchTableAbsAddr
 {
-  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,406] IET_ABS_ADDR
+  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,407] IET_ABS_ADDR
   U32	abs_addres_cnt;
   U8	zero;
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1866] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1868] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -529,8 +530,8 @@ class CAP16BitInit
 
 public class CCntsGlbls
 {
-  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ
-	timer,		//[C:/Kernel/KernelA.HPP.Z,545] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
+  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ
+	timer,		//[C:/Kernel/KernelA.HPP.Z,546] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
 	time_stamp_freq,
 	time_stamp_kHz_freq,
 	time_stamp_freq_initial, //Initial freq, sampled once at boot time.
@@ -820,7 +821,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,844] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,845] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -1196,12 +1197,12 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1221] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1222] Editor Flags
 
 class CEdFindText
 {
-  U8	find_text[136]		fmtstr "$DA-P,135,A=\"Find        :%s\"$\n",
-	replace_text[136]	fmtstr "$DA-P,135,A=\"Replace     :%s\"$\n";
+  U8	find_text[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Find        :%s\"$\n",
+	replace_text[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Replace     :%s\"$\n";
   Bool	replace			fmtstr "$CB,\"Replace\"$\n",
 	scan_fwd		fmtstr "$CB,\"Fwd\"$\n",
 	scan_selected_text	fmtstr "$CB,\"Selection\"$\n",
@@ -1222,7 +1223,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1192] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1193] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1482,7 +1483,7 @@ public class CWinMgrGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1314] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1315] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -1698,10 +1699,11 @@ POP R8 POP RDI POP RSI POP RBP POP RBX POP RDX POP RCX POP RAX
 #define REG_ALLOC	33	//reg flag sets it to this
 #define REG_UNDEF	MIN_I8
 
-#define REG_ALWAYS_CLOBBERED_MASK	0x003F //RAX,RCX,RDX,RBX,RBP,RSP
-#define REG_STK_TEMPS_MASK		0x0300 //R8,R9
-#define REG_VARS_MASK			0xCCC0 //RSI,RDI,R10,R11,R14,R15
-#define REG_NON_PTR_MASK		0x3000 //R12,R13
+#define REGG_C_CLOBBERED		0x003F //RAX,RCX,RDX,RBX
+#define REGG_SAVED			0x0030 //RBP,RSP
+#define REGG_C_TEMP_CLOBBERED		0x0300 //R8,R9
+#define REGG_C_LOCAL_VARS		0xCCC0 //RSI,RDI,R10,R11,R14,R15
+#define REGG_C_LOCAL_NON_PTR_VARS	0x3000 //R12,R13
 
 #define AOT_BIN_BLK_BITS 16
 #define AOT_BIN_BLK_SIZE (1<<AOT_BIN_BLK_BITS)
@@ -2662,7 +2664,7 @@ public class CDskGlbls
   CBlkDev *blkdevs;
   CDrv	*drvs,*let_to_drv[32];
   I64	auto_mount_ide_cnt;
-  U8	temp_filename[136],boot_drv_let,
+  U8	temp_filename[STR_LEN],boot_drv_let,
 	first_hd_drv_let,first_cd_drv_let;
   Bool	boot_rescue_drv_pmt,cdrom_boot_is_good;
 };
@@ -2733,8 +2735,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/MemA.CPP.Z,8] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2778] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2778] PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2780] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2780] PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2841,7 +2843,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2851] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2853] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2940,7 +2942,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2939] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2940] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2941] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2942] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3120,8 +3122,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3389] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3389] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3386] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3386] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3207,7 +3209,6 @@ public class CTaskSettings
 
 #define TASK_SIGNATURE_VAL		'TskS'
 #define TASK_NAME_LEN			31
-#define TASK_WALLPAPER_DATA_SIZE	128
 class CTaskStk
 {
   CTaskStk *next_stk;
@@ -3261,7 +3262,7 @@ public class CTask //The Fs segment reg points to current CTask.
 
   U8	task_title[TASK_TITLE_LEN+1],
 	task_name[TASK_NAME_LEN+1],
-	wallpaper_data[TASK_WALLPAPER_DATA_SIZE],
+	wallpaper_data[STR_LEN],
 
 	title_src,border_src,
 	text_attr,border_attr;
@@ -3337,7 +3338,6 @@ class CTSS
 #define _R15 Fs->r15
 
 #help_index "MultiCore"
-#define CPU_WALLPAPER_DATA_SIZE		128
 #define CPUf_RAN_A_TASK			0
 #define CPUf_SETH_SLEEP			1
 
@@ -3355,10 +3355,7 @@ public class CCPU //The Gs segment reg points to current CCPU.
   U0	(*profiler_timer_irq)(CTask *task);
   CTask *dying_task_lst;
   CTSS	*tss;
-  union {
-    U8	wallpaper_data[CPU_WALLPAPER_DATA_SIZE];
-    I64 start_stk[16];
-  }
+  I64	start_stk[16];
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
@@ -3567,12 +3564,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2841] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2843] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2851] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2853] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3604,7 +3601,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3543] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3540] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3727,7 +3724,7 @@ class CKeyDevGlbls
   I64	ctrl_alt_let_in_irq_flags,
 	**ctrl_alt_let_ret_addr; //addr of ret addr on stack in kbd irq
   U8	**ctrl_alt_let_descs,
-	desc[128],
+	desc[STR_LEN],
 	*handler;
 };
 

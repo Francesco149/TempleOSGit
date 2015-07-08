@@ -56,7 +56,7 @@ U8 *ScaleIndent(U8 *src,F64 indent_scale_factor)
 }
 
 U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0)
-{//MAlloc [C:/Kernel/StrA.CPP.Z,519] StrUtil().
+{//MAlloc [C:/Kernel/StrA.CPP.Z,524] StrUtil().
   U8 *dst=StrNew(src),*dst2,*temp;
   StrUtil(dst,flags);
   if (flags & SUF_T2S) {
@@ -101,7 +101,7 @@ Bool YorN()
 }
 
 I64 PressAKey()
-{//Print "Press a key" and wait for non-zero [C:/Kernel/KernelA.HPP.Z,3389] ASCII key.
+{//Print "Press a key" and wait for non-zero [C:/Kernel/KernelA.HPP.Z,3386] ASCII key.
   "$BK,1$PRESS A KEY$BK,0$\n";
   return GetChar(,FALSE);
 }

@@ -2,7 +2,7 @@
 
 public U0 WinMgrSync(I64 cnt=1,Bool force=FALSE)
 {//Wait for win manager to start and finish updating screen.
-//0 Cnt Sync to WinMgr. (not used)
+  //0 Cnt Sync to WinMgr. (not used)
   //1 Cnt Wait and Pump Msgs.
   //2 Cnt Make Sure to do a Full Refresh
   //	and Set Cur Pos.

@@ -4,7 +4,7 @@ class CWallPaperGlbls
 {
   I64	last_calc_idle_cnt,last_swap_cnter[MP_MAX_PROCESSORS];
   F64	last_calc_idle_delta_time;
-  U8	top_line[128];
+  U8	top_line[STR_LEN];
   Bool	record;
 } *wall=CAlloc(sizeof(CWallPaperGlbls));
 wall->last_calc_idle_delta_time=1.0;
@@ -12,7 +12,7 @@ wall->last_calc_idle_delta_time=1.0;
 class CTaskWallPaperData
 {
   I64	alloced_u8s,used_u8s;
-  U8	caller_stk[TASK_WALLPAPER_DATA_SIZE-16];
+  U8	caller_stk[STR_LEN-$];
 };
 
 U0 WallPaper(CTask *_task)

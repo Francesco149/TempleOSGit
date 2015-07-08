@@ -49,7 +49,7 @@ public _extern _CALLIND I64 CallInd(
 
 #help_index "Call/System Extern Num"
 public _extern SYS_EXTERN_TABLE /*argpop*/
-	I64 (**ext)(...); //Array of fun ptrs.	See [C:/Kernel/KernelA.HPP.Z,572] Extern Num Definitions
+	I64 (**ext)(...); //Array of fun ptrs.	See [C:/Kernel/KernelA.HPP.Z,573] Extern Num Definitions
 public _extern _CALLEXTNUM
 	I64 CallExtNum(I64 num,...); //Call ext num with fixed number of args.
 
@@ -141,7 +141,7 @@ public _extern _ROUND F64 Round(F64 d); //Round F64 to whole number.
 public _extern _SIGN F64 Sign(F64 d); //Sign of F64: -1,0,1
 public _extern _TRUNC F64 Trunc(F64 d); //Truncate F64.
 
-#help_index "Math/CD3"
+#help_index "Math/CD3;Data Types/CD3"
 #help_file "::/Doc/D3"
 public _extern _D3_ADD CD3 *D3Add(
 	CD3 *d1,CD3 *d2,CD3 *sum); //d1+d2 -->sum
@@ -261,7 +261,7 @@ public _extern _LXCHG_U16 U64 LXchgU16(U16 *dst,U16 d); //Locked eXchange U16s.
 public _extern _LXCHG_U32 U64 LXchgU32(U32 *dst,U32 d); //Locked eXchange U32s.
 public _extern _LXCHG_U8  U64 LXchgU8(U8 *dst,U8 d); //Locked eXchange U8s.
 public _extern _SET_MSR U0 SetMSR(
-	I64 model_specific_reg,I64 val); //Model Specific Reg See [C:/Kernel/KernelA.HPP.Z,514] MSRs.
+	I64 model_specific_reg,I64 val); //Model Specific Reg See [C:/Kernel/KernelA.HPP.Z,515] MSRs.
 public _extern _SYS_HLT U0 SysHlt(); //Loops doing HLT instruction.
 public _extern _XCHG_I64 I64 XchgI64(I64 *dst,I64 d); //eXchange I64s.
 public _extern _XCHG_U16 U64 XchgU16(U16 *dst,U16 d); //eXchange U16s.
@@ -283,7 +283,7 @@ public _intern IC_PREEMPT
 	Bool Preempt(Bool val=OFF); //Turn mutli-tasking preemption OFF/ON.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3218] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3219] CTask.
 
 #help_index "Time/CPU Cycles"
 public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.

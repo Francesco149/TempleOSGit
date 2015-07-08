@@ -93,7 +93,7 @@ U0 RegOneTimePopUp(I64 flag_num,U8 *msg)
 
 U0 RegInit()
 {
-  U8 buf[136];
+  U8 buf[STR_LEN];
   Bool version_present;
   RegSetDftEntry("Adam/SysMsgFlags","sys_msg_flags[0]=0;\n",TRUE);
   StrPrint(buf,"registry_version=%4.3f;\n",os_version);

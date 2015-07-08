@@ -9,7 +9,7 @@ cathedrals were decorated with astounding, awe-striking intricate art and
 gargoyles, incredible devotion to God with hours of effort, toiling and 
 slaving-away for the glory of God, for families with children to see 
 stained-glass windows and tomes with ridiculously elaborate calligraphy to 
-show love of God from a people who did little else but show love toward God, 
+show love of God, from a people who did little else but show love toward God, 
 lived in dire conditions by today's standards, yet with so much difficulty 
 scraping-by, found the time to devote even all free-time to God!
 
@@ -65,7 +65,7 @@ example, is better than many file systems.
 applications and demos.  Code comments count, however.  3rd party libraries 
 are banned because they circumvent the intent of this limit.  The vision is a 
 Commodore 64 ROM -- a fixed core API that is the only dependency of 
-applications.  Currently, there are 80,870 lines of code.
+applications.  Currently, there are 80,971 lines of code.
  
 * Minimal abstraction is a goal.  Sheep are fools.  They always respect a 
 design that is more complicated than another.  Any genius can make it 

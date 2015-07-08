@@ -542,7 +542,7 @@ R12 and R13 as non-pointer register variables, such as index variables i,j,k.
 */
   if (cc->htc.fun) {
     cc->htc.fun->used_reg_mask=cc->htc.fun->used_reg_mask&
-	  ~(REG_VARS_MASK|REG_NON_PTR_MASK)|used_reg_mask;
+	  ~(REGG_C_LOCAL_VARS|REGG_C_LOCAL_NON_PTR_VARS)|used_reg_mask;
     if (!Bt(&cc->opts,OPTf_NO_REG_VAR) &&
 	  !(cc->flags & CCF_NO_REG_OPT)) {
       QSort(mv,member_cnt,sizeof(COptMemberVar),&OptMVCompare);

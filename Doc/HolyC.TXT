@@ -77,7 +77,7 @@ upon start-up, in order.
 
 * There are no bit fields, but there are [Bit,1] bit access routines and you
 can 
-access bytes or words within any int.  See [C:/Kernel/KernelA.HPP.Z,102] I64
+access bytes or words within any int.  See [C:/Kernel/KernelA.HPP.Z,103] I64
 declaration.  A class can be 
 accessed as a whole are subints, if you put a type in front of the class 
 declaration.
@@ -174,9 +174,9 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1703] REG_VARS_MASK or
-  [C:/Kernel/KernelA.HPP.Z,1704] REG_NON_PTR_MASK for reg vars or else 
-clobbered.
+  //Only use [C:/Kernel/KernelA.HPP.Z,1705] REGG_C_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1706] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
+else clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
   asm {
@@ -231,11 +231,11 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1462] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_DUP_TYPES) to find dup local
+OptOn([C:/Kernel/KernelA.HPP.Z,1464] OPTf_WARN_DUP_TYPES) to find dup local
 var type 
 statements.
 
@@ -263,7 +263,7 @@ the offset in a class definition.
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
-[C:/Kernel/KernelA.HPP.Z,64] KernelA.HPP for 1,2,4 
+[C:/Kernel/KernelA.HPP.Z,65] KernelA.HPP for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
 that 
 is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1]. 
@@ -318,7 +318,7 @@ make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2786] DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2788] DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
 Spawn().  You can use 
 [C:/Kernel/Task.CPP.Z,82] CallStkGrow(), but it's odd.  See

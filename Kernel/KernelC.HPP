@@ -31,9 +31,9 @@ chars_bmp_dec_numeric[16],		chars_bmp_hex_numeric[16],
 chars_bmp_white_space[16],		chars_bmp_non_eol_white_space[16],
 chars_bmp_zero_cr_nl_cursor[16],	chars_bmp_zero_tab_ff_cr_nl_cursor[16],
 chars_bmp_zero_tab_ff_cr_nl_cursor_dollar[16],chars_bmp_getkey[16],
-chars_bmp_printable[16],		chars_bmp_displayable[16],
-chars_bmp_safe_dollar[16],		chars_bmp_filename[16],
-chars_bmp_non_eol[16];
+chars_bmp_macro[16],			chars_bmp_printable[16],
+chars_bmp_displayable[16],		chars_bmp_safe_dollar[16],
+chars_bmp_filename[16],			chars_bmp_non_eol[16];
 
 #help_index "Char/Conversion"
 public extern U8 *Char2KeyName(I64 ch,Bool include_ctrl=TRUE);
@@ -43,6 +43,7 @@ public extern U8 *ScanCode2KeyName(I64 sc);
 public extern F64 Str2F64(U8 *src,U8 **_end_ptr=NULL);
 public extern I64 Str2I64(U8 *st,I64 radix=10,U8 **_end_ptr=NULL);
 public extern U8 *StrScan(U8 *src,U8 *fmt,...);
+
 #help_index "Char/Conversion;Time/Date/CDate;Date/CDate"
 public extern CDate Str2Date(U8 *src);
 
@@ -469,7 +470,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3686] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3683] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);

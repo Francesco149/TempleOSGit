@@ -15,7 +15,7 @@ class CTemplateCS
 CTemplateCS *CtrlSliderGet()
 {
   CTemplateCSSlider *temps;
-  U8 *st,pmt[136];
+  U8 *st,pmt[STR_LEN];
   CTemplateCS *result=CAlloc(sizeof(CTemplateCS));
 
   "$PURPLE$Ctrl Slider$FG$\n\n";

@@ -91,7 +91,7 @@ CHashFun *PrsFunJoin(CCmpCtrl *cc,
   } else
     tempf=NULL;
   if (tempf) {
-    tempf->used_reg_mask=REG_ALWAYS_CLOBBERED_MASK+REG_STK_TEMPS_MASK;
+    tempf->used_reg_mask=REGG_C_CLOBBERED+REGG_SAVED+REGG_C_TEMP_CLOBBERED;
     Free(tempf->src_link);
     tempf->src_link=NULL;
     Free(tempf->index);
@@ -100,8 +100,8 @@ CHashFun *PrsFunJoin(CCmpCtrl *cc,
     MemberLstDel(tempf);
   } else {
     tempf=PrsFunNew;
-    tempf->used_reg_mask=REG_ALWAYS_CLOBBERED_MASK+REG_STK_TEMPS_MASK;
-    tempf->clobbered_reg_mask=REG_ALWAYS_CLOBBERED_MASK+REG_STK_TEMPS_MASK;
+    tempf->used_reg_mask=REGG_C_CLOBBERED+REGG_SAVED+REGG_C_TEMP_CLOBBERED;
+    tempf->clobbered_reg_mask=REGG_C_CLOBBERED+REGG_C_TEMP_CLOBBERED;
     tempf->str=name;
     if (cc->flags&CCF_AOT_COMPILE)
       tempf->executable_addr=aotc->ip;

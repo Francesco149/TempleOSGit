@@ -81,7 +81,7 @@ ALIGN num, fill_byte
 
 MODULE_ORG num
   Set code addr for JIT or set module [C:/Kernel/KLoad.CPP.Z,181] Load() addr
--- has 16-byte [C:/Kernel/KernelA.HPP.Z,369] CBinFile 
+-- has 16-byte [C:/Kernel/KernelA.HPP.Z,370] CBinFile 
 header and patch table trailing.
 
 BINFILE "FileName.BIN";

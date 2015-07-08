@@ -6,15 +6,15 @@ DolDoc code takes care of
 plotting text to [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base.
 
 Bits 0-7	8-Bit ASCII Screen Code
-Bits 8-11	Foreground [C:/Kernel/KernelA.HPP.Z,2855] color
-Bits 12-15	Background [C:/Kernel/KernelA.HPP.Z,2855] color
+Bits 8-11	Foreground [C:/Kernel/KernelA.HPP.Z,2857] color
+Bits 12-15	Background [C:/Kernel/KernelA.HPP.Z,2857] color
 Bits 16-20	Signed X pos shift val
 Bits 21-25	Signed Y pos shift val
-Bit  28		[C:/Kernel/KernelA.HPP.Z,877] Blink
-Bit  29		[C:/Kernel/KernelA.HPP.Z,878] Inverted (Swap foreground and
+Bit  28		[C:/Kernel/KernelA.HPP.Z,878] Blink
+Bit  29		[C:/Kernel/KernelA.HPP.Z,879] Inverted (Swap foreground and
 background)
-Bit  30		[C:/Kernel/KernelA.HPP.Z,879] Selected (XOR colors with FF)
-Bit  31		[C:/Kernel/KernelA.HPP.Z,880] Underline
+Bit  30		[C:/Kernel/KernelA.HPP.Z,880] Selected (XOR colors with FF)
+Bit  31		[C:/Kernel/KernelA.HPP.Z,881] Underline
 
 [C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin() calls
 [C:/Adam/DolDoc/DocRecalcA.CPP.Z,170] DocUpdateTaskDocs() which calls

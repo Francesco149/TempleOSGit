@@ -242,14 +242,14 @@ U0 CmpFillTables()
 
   cmp.to_reg_vars_map=CAlloc(NUM_REGS*sizeof(U8));
   cmp.num_reg_vars=0;
-  cmp.reg_vars_mask=REG_VARS_MASK;
+  cmp.reg_vars_mask=REGG_C_LOCAL_VARS;
   for (i=0;i<NUM_REGS;i++)
     if (Bt(&cmp.reg_vars_mask,i))
       cmp.to_reg_vars_map[cmp.num_reg_vars++]=i;
 
   cmp.non_ptr_vars_map=CAlloc(NUM_REGS*sizeof(U8));
   cmp.num_non_ptr_vars=0;
-  cmp.non_ptr_vars_mask=REG_NON_PTR_MASK;
+  cmp.non_ptr_vars_mask=REGG_C_LOCAL_NON_PTR_VARS;
   for (i=0;i<NUM_REGS;i++)
     if (Bt(&cmp.non_ptr_vars_mask,i))
       cmp.non_ptr_vars_map[cmp.num_non_ptr_vars++]=i;
@@ -291,7 +291,7 @@ R8 :	 RAX R9  RAX R9  RAX
   cmp.to_stk_temps_map_odd =CAlloc(NUM_REGS*sizeof(U8));
   cmp.to_stk_temps_map_even=CAlloc(NUM_REGS*sizeof(U8));
   cmp.num_stk_temps=0;
-  cmp.stk_temps_mask=REG_STK_TEMPS_MASK;
+  cmp.stk_temps_mask=REGG_C_TEMP_CLOBBERED;
   for (i=0;i<NUM_REGS;i++)
     if (Bt(&cmp.stk_temps_mask,i))
       cmp.to_stk_temps_map_even[cmp.num_stk_temps++]=i;

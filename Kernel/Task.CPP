@@ -165,7 +165,7 @@ I64 TaskInit(CTask *task,I64 stk_size)
 
   task->task_num=sys_num_spawned_tasks++;
 
-  task->rflags=SYS_NORMAL_RFLAGS;
+  task->rflags=RFLAGG_NORMAL;
   task->win_inhibit=WIG_TASK_DFT;
 
   task->next_child_task=task->last_child_task=
@@ -212,7 +212,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3218] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3219] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)

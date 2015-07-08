@@ -1,7 +1,11 @@
                                    Demands
 
-When God publically claims this operating system as His official temple, here 
-are my demands:
+I, Terry Davis, am High Priest of God's official temple, TempleOS.  TempleOS 
+is an operating system for PC desktops that dual boots along-side Windows or 
+Linux. I am in charge of the core 100,000 lines of TempleOS code and I do 
+continual offerings to keep God entertained.  I have divine authority to 
+command companies in the computer industry to do anything I feel necessary to 
+make God's temple more beautiful or perfect.
 
 ```
 <object width="640" height="520"><param name="movie"

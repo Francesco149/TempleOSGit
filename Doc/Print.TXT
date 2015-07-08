@@ -40,12 +40,12 @@ letters.
 
 "%P" link to ptr.
 
-"%D" date.  Pass a [C:/Kernel/KernelA.HPP.Z,183] CDate.
+"%D" date.  Pass a [C:/Kernel/KernelA.HPP.Z,184] CDate.
 
-"%T" time.  Pass a [C:/Kernel/KernelA.HPP.Z,183] CDate.
+"%T" time.  Pass a [C:/Kernel/KernelA.HPP.Z,184] CDate.
 
 "%z" sub_entry of an enumerated list of text entries.  See
-  [C:/Kernel/StrA.CPP.Z,397] LstSub().  Pass 
+  [C:/Kernel/StrA.CPP.Z,402] LstSub().  Pass 
 sub_entry_num first, list second.
 
 "%Z" [C:/Kernel/KDefine.CPP.Z,13] DefineLstLoad() subentry.  Pass

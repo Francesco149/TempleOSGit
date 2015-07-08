@@ -36,7 +36,7 @@ public U0 AFPrint(I64 mS=100,U8 *fmt,...)
 public U0 AFGetKey(I64 scan_code,I64 sc_mask=0xFF|SCF_SHIFT|SCF_CTRL|SCF_ALT)
 {//Wait for user to press certain key.
   I64 sc,ch;
-  U8 buf[128],*st;
+  U8 buf[STR_LEN],*st;
   do {
     ch=GetKey(&sc);
     if (sc.u8[0]!=SC_PRTSCRN1 &&

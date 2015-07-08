@@ -28,7 +28,7 @@ U0 ODERstPtrs(CMathODE *ode)
 }
 
 public CMathODE *ODENew(I64 n,F64 max_tolerance=1e-6,I64 flags=0)
-{//Make differential equation ctrl struct. See [C:/Kernel/KernelA.HPP.Z,237] flags.
+{//Make differential equation ctrl struct. See [C:/Kernel/KernelA.HPP.Z,238] flags.
 
   //The tolerance is not precise.
   //You can min_tolerance and it will

@@ -441,12 +441,12 @@ cc->pass==10 is final pass, code is placed into buf.
 	case IC_LEAVE:
 	  if (cc->htc.fun) {
 	    if (Bt(&cc->htc.fun->flags,Ff_INTERRUPT))
-	      ICPopRegs(tempi,REG_ALWAYS_CLOBBERED_MASK&
-		    ~(1<<REG_RBP|1<<REG_RSP)|cc->htc.fun->used_reg_mask&
-		    (REG_VARS_MASK|REG_NON_PTR_MASK|REG_STK_TEMPS_MASK));
+	      ICPopRegs(tempi,REGG_C_CLOBBERED|cc->htc.fun->used_reg_mask&
+		    (REGG_C_LOCAL_VARS|REGG_C_LOCAL_NON_PTR_VARS|
+		    REGG_C_TEMP_CLOBBERED));
 	    else
 	      ICPopRegs(tempi,cc->htc.fun->used_reg_mask&
-		    (REG_VARS_MASK|REG_NON_PTR_MASK));
+		    (REGG_C_LOCAL_VARS|REGG_C_LOCAL_NON_PTR_VARS));
 	  }
 	  if (tempi->ic_data<=MAX_I16) {
 	    if (tempi->ic_data)
@@ -754,14 +754,14 @@ cc->pass==10 is final pass, code is placed into buf.
 	    ICAddRSP(tempi,-tempi->ic_data,FALSE);
 	  if (cc->htc.fun) {
 	    if (Bt(&cc->htc.fun->flags,Ff_INTERRUPT))
-	      ICPushRegs(tempi,REG_ALWAYS_CLOBBERED_MASK&
-		    ~(1<<REG_RBP|1<<REG_RSP)|cc->htc.fun->used_reg_mask&
-		    (REG_VARS_MASK|REG_NON_PTR_MASK|REG_STK_TEMPS_MASK));
+	      ICPushRegs(tempi,REGG_C_CLOBBERED|cc->htc.fun->used_reg_mask&
+		    (REGG_C_LOCAL_VARS|REGG_C_LOCAL_NON_PTR_VARS|
+		    REGG_C_TEMP_CLOBBERED));
 	    else {
 	      if (sys_var_init_flag&1 && i)
 		ICLocalVarInit(tempi);
 	      ICPushRegs(tempi,cc->htc.fun->used_reg_mask
-		    &(REG_VARS_MASK|REG_NON_PTR_MASK));
+		    &(REGG_C_LOCAL_VARS|REGG_C_LOCAL_NON_PTR_VARS));
 	    }
 	    for (i=0;i<NUM_REGS;i++)
 	      if (reg_offsets[i]>0 && reg_offsets[i].offset!=MAX_I64) {

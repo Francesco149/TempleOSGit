@@ -1,4 +1,4 @@
-                                TempleOS V3.06
+                                TempleOS V3.07
 
                         Public Domain Operating System
 

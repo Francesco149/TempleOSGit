@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-122,806 lines of code including the kernel, the 64-bit compiler, the graphics 
+122,970 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -153,7 +153,7 @@ so this is possible.  See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3218] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3219] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
 > while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3344] CCPU for the current
 CPU core.  Each task can have 

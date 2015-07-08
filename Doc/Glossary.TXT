@@ -140,7 +140,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3218]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3219]
   CTask.  There is only one window per task, and only core#0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -165,7 +165,7 @@ Wiz	Wizard
   code within the lowest 2 Gig of memory, addresses 00000000-7FFFFFFF.  The
   compiler and [C:/Kernel/KLoad.CPP.Z,181] Load()er alloc memory from the code
   heap to store code and glbl vars, unless the compiler option
-  [C:/Kernel/KernelA.HPP.Z,1467] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  [C:/Kernel/KernelA.HPP.Z,1468] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/Kernel/MemB.CPP.Z,372] MAlloc() is from the data heap,
   which in not limited in size, except by physical RAM memory.  You can alloc
   from any heap in any task at any time on any core, even making
@@ -216,7 +216,7 @@ There is no main() routine.  Instead, statements outside functions are
   compiler does not interpret code, except in the process of optimization to
   make the final machine code.  Assembly language output can be viewed when
   code is compiled with the [C:/Compiler/CMisc.CPP.Z,33] CTrace(), or,
-  afterward, with [C:/Compiler/UAsm.CPP.Z,664] U() or [C:/Adam/ADbg.CPP.Z,253]
+  afterward, with [C:/Compiler/UAsm.CPP.Z,666] U() or [C:/Adam/ADbg.CPP.Z,253]
   Uf("").
 +] Drive/Partition
   There is no distinction between drive or partition.  They are specified
@@ -270,11 +270,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2200] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2199] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2198] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2197] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2201] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2202] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2201] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2200] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2199] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2203] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -313,7 +313,7 @@ result is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3218] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3219] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
   [C:/Kernel/KernelA.HPP.Z,3344] CCPU.

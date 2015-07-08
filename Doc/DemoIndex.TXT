@@ -224,7 +224,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/DolDoc/DefineStr.CPP,1]
   [C:/Demo/DolDoc/CallBack.CPP,1]
   [C:/Demo/Define.CPP,1]
-  [C:/Adam/DolDoc/DocCodeTools.CPP.Z,374] EdRenumAsm
+  [C:/Adam/DolDoc/DocCodeTools.CPP.Z,378] EdRenumAsm
   [C:/Demo/DolDoc/UnusedDefine.CPP,1]
   [C:/Demo/Asm/AsmHelloWorld.CPP,1]
   [C:/Demo/Asm/BuzzFizz.CPP,1]

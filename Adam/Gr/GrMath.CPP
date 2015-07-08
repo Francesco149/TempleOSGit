@@ -463,7 +463,7 @@ public Bool RegPoly(U8 *aux_data,
   return TRUE;
 }
 
-#help_index "Graphics/Data Types;Math/Data Types"
+#help_index "Graphics/Data Types/D3I32;Math/Data Types/D3I32;Data Types/D3I32"
 public F64 D3I32Dist(CD3I32 *p1,CD3I32 *p2)
 {//Dist between p1 and p2.
   return Sqrt(SqrI64(p1->x-p2->x)+SqrI64(p1->y-p2->y)+SqrI64(p1->z-p2->z));

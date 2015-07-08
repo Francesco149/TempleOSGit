@@ -1,8 +1,8 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 122,806 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 122,970 lines of TempleOS over
 the 
-past 15.5 years (full-time).  It runs on bare hardware with no layering, 
+past 17.3 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
 independent and stands alone.  It has no networking and certainly doesn't
 call 
@@ -69,7 +69,7 @@ compile the kernel and compiler.
 
 * The swap rate is high because tasks stay in the queue and poll conditions 
 and swap-out voluntarily.  Swaps also occur at 1000 Hz due to the timer 
-interrupt.  See [C:/Kernel/KernelA.HPP.Z,543] JIFFY_FREQ.
+interrupt.  See [C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ.
 
 * Refresh rate is how often TempleOS updates screen mem.  It is not 
 syncronized to the hardware rate.  It has nothing to do with it.

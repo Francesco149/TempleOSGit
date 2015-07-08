@@ -111,7 +111,7 @@ U0 OptPass6Lag(CCmpCtrl *cc,CPrsStk *ps,CIntermediateCode *tempi,
 U0 OptPass6(CCmpCtrl *cc)
 {
   CIntermediateCode *tempi,*tempi_next,*tempil1,*tempil2,*old_tempil2;
-  I64 i=0,num_stk,clobbered_reg_mask=REG_ALWAYS_CLOBBERED_MASK,fun_num=0;
+  I64 i=0,num_stk,clobbered_reg_mask=REGG_C_CLOBBERED,fun_num=0;
   CPrsStk *ps=cc->ps;
   ps->ptr=0;
   ps->ptr2=0;
@@ -184,7 +184,7 @@ U0 OptPass6(CCmpCtrl *cc)
     LexExcept(cc,"Compiler Optimization Error at ");
   }
   if (cc->htc.fun) {
-    cc->htc.fun->used_reg_mask&=~REG_STK_TEMPS_MASK;
+    cc->htc.fun->used_reg_mask&=~REGG_C_TEMP_CLOBBERED;
     cc->htc.fun->used_reg_mask|=clobbered_reg_mask;
     cc->htc.fun->clobbered_reg_mask=clobbered_reg_mask;
     if (Bt(&cc->flags,CCf_OPT_TRACE_PRESENT) &&

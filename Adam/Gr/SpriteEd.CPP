@@ -32,7 +32,7 @@ CSprite *Sprite2SpriteQue(U8 *elems)
   I64 s;
   CSprite *result=CAlloc(sizeof(CSprite)),
 	*tempg=elems-offset(CSprite.start),*tempg1;
-  result->next=result->last=result;
+  QueInit(result);
   while (tempg->type) {
     tempg1=MAlloc(SpriteElemSize(tempg)+offset(CSprite.start));
     s=SpriteElemSize(tempg);
@@ -519,7 +519,7 @@ CSprite *SpriteSideBar2SpriteQue(CDoc *doc,CSprite *root,I64 *_cur_elem_num)
   CDocEntry *doc_e=doc->root.next;
   Bool found=FALSE;
   I64 num=0;
-  result->next=result->last=result;
+  QueInit(result);
   while (doc_e!=doc) {
     if (doc_e->type_u8==DOCT_MENU_VAL && doc_e->left_exp>=0) {
       tempg=SpriteElemNum2QueEntry(root,doc_e->left_exp);

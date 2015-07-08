@@ -174,7 +174,7 @@ U0 Mount(Bool repartition=FALSE)
 {//Mount a drive.
   CBlkDev *bd;
   I64 first_drv_num,type,unit,num_hints;
-  U8 blks_buf[128],addr_buf[128],base0_buf[128],base1_buf[128];
+  U8 blks_buf[STR_LEN],addr_buf[STR_LEN],base0_buf[STR_LEN],base1_buf[STR_LEN];
   Bool add;
   CATARep *root,*tempha;
 
@@ -204,7 +204,7 @@ U0 Mount(Bool repartition=FALSE)
 		  "I/O Port Base0:\n";
 	  else
 	    "Include $PURPLE$0x$FG$ prefix.\nI/O Port Base0:\n";
-	  GetS(base0_buf,128);
+	  GetS(base0_buf,STR_LEN);
 	} while (!Str2I64(base0_buf));
 	if (1<=Str2I64(base0_buf)<=num_hints) {
 	  tempha=ATARepFind(root,Str2I64(base0_buf));
@@ -217,7 +217,7 @@ U0 Mount(Bool repartition=FALSE)
 	  else
 	    do {
 	      "I/O Port Base1:\n";
-	      GetS(base1_buf,128);
+	      GetS(base1_buf,STR_LEN);
 	    } while (!Str2I64(base1_buf));
 	  do {
 	    "\t$PURPLE$0$FG$=Master\n\t$PURPLE$1$FG$=Slave\nUnit:";
@@ -229,9 +229,9 @@ U0 Mount(Bool repartition=FALSE)
       }
       if (type==BDT_RAM) {
 	"Addr of RAM disk ($PURPLE$<ENTER>$FG$ to MAlloc):";
-	GetS(addr_buf,128);
+	GetS(addr_buf,STR_LEN);
 	"Blks of 512 bytes:";
-	GetS(blks_buf,128);
+	GetS(blks_buf,STR_LEN);
       }
 
       if (BDT_NULL<type<BDT_NUM_TYPES && 0<=unit<=1) {
@@ -268,8 +268,8 @@ U0 Mount(Bool repartition=FALSE)
 
 I64 SysGetI64()
 {
-  U8 st[136];
-  GetS(st,136,FALSE);
+  U8 st[STR_LEN];
+  GetS(st,STR_LEN,FALSE);
   return Str2I64(st,16);
 }
 
