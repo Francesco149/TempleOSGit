@@ -26,13 +26,9 @@ F64 Cost(CMathODE *ode)
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  Bool old_suspend1,old_suspend2;
-  I64 i,j;
   MyMass   *tempm;
   MySpring *temps;
 
-  old_suspend1=Suspend(task);
-  old_suspend2=Suspend(task->animate_task);
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
     if (!(temps->flags&SSF_INACTIVE)) {
@@ -70,8 +66,6 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=BLACK;
   GrPrint(dc,90,0,"Cost:%12.2,f",Cost(ode));
   GrPrint(dc,90,FONT_HEIGHT,"Time:%12.2f",SpanTime);
-  Suspend(task,old_suspend1);
-  Suspend(task->animate_task,old_suspend2);
 }
 
 MyMass PlaceMass(I64 x, I64 y)
@@ -285,13 +279,6 @@ U0 Span()
   //The concern is about changing
   //que links while the winmgr task
   //is updating the ode or screen.
-
-  //The Window mgr suspends this
-  //task while updating the ode.  It
-  //will not be interrupted and with this
-  //preempt, we will not be interrupted.
-  //There is little downside to Preempt()
-  //since we will yield during GetMsg().
   Preempt;
 
   DocCursor;

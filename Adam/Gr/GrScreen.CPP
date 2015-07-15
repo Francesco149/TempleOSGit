@@ -3,11 +3,9 @@
 U0 GrUpdateTaskODEs(CTask *task)
 {
   sys_task_being_screen_updated=task;
-  try {
-    Preempt(ON);
+  try
     ODEsUpdate(task);
-    Preempt;
-  } catch {
+  catch {
     LBts(&task->win_inhibit,WIf_SELF_ODE);
     "Exception in WinMgr: Update Task ODEs\n";
     PutExcept;
@@ -28,7 +26,6 @@ U0 GrUpdateTaskWin(CTask *task)
 	    task->win_bottom,task->border_attr,task==sys_focus_task);
     TextRect(task->win_left,task->win_right,
 	  task->win_top,task->win_bottom,task->text_attr<<8);
-    Preempt(ON);
     if (task==sys_winmgr_task) {
       if (gr.fp_wall_paper)
 	(*gr.fp_wall_paper)(task);
@@ -41,13 +38,11 @@ U0 GrUpdateTaskWin(CTask *task)
 	DCDel(dc);
       }
       if (TaskValidate(task)) {
-	Preempt;
 	WinScrollNull(task,&saved_scroll);
 	DrawCtrls(task);
 	WinScrollRestore(task,&saved_scroll);
       }
     }
-    Preempt;
   } catch {
     if (task!=Fs && TaskValidate(task)) {
       LBtr(&task->display_flags,DISPLAYf_SHOW);
@@ -64,7 +59,6 @@ U0 GrUpdateTasks()
 {//Only called by WinMgr
   I64 i;
   CTask *task,*task1;
-  Preempt;
   try {
     winmgr.ode_time=0;
     if (Bt(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0))

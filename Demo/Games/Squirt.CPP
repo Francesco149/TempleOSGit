@@ -49,9 +49,9 @@ F64 nozzle_theta;
 CMathODE *ode=NULL;
 F64 start_up_timeout;
 
-U0 DrawIt(CTask *task,CDC *dc)
+U0 DrawIt(CTask *,CDC *dc)
 {
-  Bool old_suspend,first;
+  Bool first;
   F64 dx,dy,d;
   I64  x1b,y1b,x2b,y2b,
 	x1a,y1a,x2a,y2a;
@@ -71,7 +71,6 @@ U0 DrawIt(CTask *task,CDC *dc)
     ode->drag_v3=0.0000025;
   }
 
-  old_suspend=Suspend(task);
   tempm=faucet;
   dc->color=BLACK;
   GrRect(dc,tempm->x+8,tempm->y,8,GROUND_Y-FAUCET_Y);
@@ -154,7 +153,6 @@ U0 DrawIt(CTask *task,CDC *dc)
     }
     temps=temps->next;
   }
-  Suspend(task,old_suspend);
 }
 
 U0 MyDerivative(CMathODE *ode,F64 t,COrder2D3 *state,COrder2D3 *DstateDt)
@@ -233,30 +231,24 @@ U0 AnimateTask(I64)
   MyMass   *tempm,*tempm1;
   F64 dx,dy;
   while (TRUE) {
+    dx=Cos(nozzle_theta),
+	  dy=Sin(nozzle_theta),
+	  PlaceMass(MT_DROPLET,
+	  nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,HOSE_RADIUS,
+	  500*dx,500*dy,100.0,Fs->parent_task);
+    if (Rand<0.05) //faucet drip
+      PlaceMass(MT_DROPLET,
+	    faucet->x,faucet->y,HOSE_RADIUS,
+	    0,0,100.0,Fs->parent_task);
 
-    //The WinMgr task suspends our parent when it
-    //updates the ODE's.  We use this to know when
-    //the ODE's are being updated.
-    if (!IsSuspended(Fs->parent_task)) {
-      dx=Cos(nozzle_theta),
-	    dy=Sin(nozzle_theta),
-	    PlaceMass(MT_DROPLET,
-	    nozzle->x+NOZZLE_LEN*dx,nozzle->y+NOZZLE_LEN*dy,HOSE_RADIUS,
-	    500*dx,500*dy,100.0,Fs->parent_task);
-      if (Rand<0.05) //faucet drip
-	PlaceMass(MT_DROPLET,
-	      faucet->x,faucet->y,HOSE_RADIUS,
-	      0,0,100.0,Fs->parent_task);
-
-      tempm=ode->next_mass;
-      while (tempm!=&ode->next_mass) {
-	tempm1=tempm->next;
-	if (tempm->type==MT_DROPLET && tempm->y+tempm->radius>GROUND_Y) {
-	  QueRem(tempm);
-	  Free(tempm);
-	}
-	tempm=tempm1;
+    tempm=ode->next_mass;
+    while (tempm!=&ode->next_mass) {
+      tempm1=tempm->next;
+      if (tempm->type==MT_DROPLET && tempm->y+tempm->radius>GROUND_Y) {
+	QueRem(tempm);
+	Free(tempm);
       }
+      tempm=tempm1;
     }
     WinMgrSync;
   }

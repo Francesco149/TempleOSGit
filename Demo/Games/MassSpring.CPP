@@ -9,13 +9,11 @@ class MySpring:CSpring
 
 CMathODE *ode=NULL;
 
-U0 DrawIt(CTask *task,CDC *dc)
+U0 DrawIt(CTask *,CDC *dc)
 {
-  Bool old_suspend;
   MyMass   *tempm;
   MySpring *temps;
 
-  old_suspend=Suspend(task);
   dc->color=RED;
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
@@ -30,7 +28,6 @@ U0 DrawIt(CTask *task,CDC *dc)
     GrCircle(dc,tempm->x,tempm->y,tempm->radius);
     tempm=tempm->next;
   }
-  Suspend(task,old_suspend);
 }
 
 U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)

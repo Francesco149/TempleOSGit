@@ -80,7 +80,6 @@ U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i;
   F64 theta,d,x1,y1,x2,y2;
-  Bool old_suspend;
   MyMass   *tempm;
   MySpring *temps;
 
@@ -117,8 +116,6 @@ U0 DrawIt(CTask *,CDC *dc)
       GrPutChar3(dc,x1,y1,0,next_action_key);
     }
   }
-
-  old_suspend=Suspend(task);
 
   temps=ode->next_spring;
   while (temps!=&ode->next_spring) {
@@ -180,8 +177,6 @@ U0 DrawIt(CTask *,CDC *dc)
     }
     temps=temps->next;
   }
-
-  Suspend(task,old_suspend);
 }
 
 U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)

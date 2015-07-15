@@ -23,9 +23,9 @@ persistent layer is used during drag-and-drop.
 
   4) The Fs->next_ctrl for the tempo/stacatto sliders.
 
-See [C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin(),
-[C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and
-[C:/Adam/Gr/GrScreen.CPP.Z,409] GrUpdateScreen().
+See [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin(),
+[C:/Adam/Gr/GrScreen.CPP.Z,58] GrUpdateTasks() and
+[C:/Adam/Gr/GrScreen.CPP.Z,403] GrUpdateScreen().
 */
 
 #define NOTE_REST	MIN_I64

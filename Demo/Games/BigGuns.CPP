@@ -32,7 +32,6 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,x,y,w,
 	h=-task->horz_scroll.pos,
 	v=-task->vert_scroll.pos;
-  Bool old_suspend=Suspend(task);
   task->horz_scroll.min=0;
   task->horz_scroll.max=MAP_WIDTH-task->pix_width;
   task->vert_scroll.min=0;
@@ -75,7 +74,6 @@ U0 DrawIt(CTask *task,CDC *dc)
     if (y<elevs[x])
       GrPlot(dc,x+h,y+v);
   }
-  Suspend(task,old_suspend);
 }
 
 U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)

@@ -10,6 +10,10 @@
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
       +] DiningStars
       F64 best_score=9999.0000;
+      +] BlackDiamond
+      I64 best_score=1;
+      +] EagleDive
+      I64 best_score=4;
       +] DunGen
       F64 best_score=20.5295;
       +] CastleFrankenstein
@@ -33,13 +37,9 @@
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=32;
-      +] EagleDive
-      I64 best_score=4;
-      +] BlackDiamond
-      I64 best_score=1;
       +] DemoCompany
   +] Game1
-      F64 best_score=209.14842;
+      F64 best_score=201.68086;
     +] SimpleVal
-          1248;
+          1249;
             

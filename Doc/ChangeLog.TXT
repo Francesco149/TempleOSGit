@@ -2,7 +2,10 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----07/07/15 23:05:26----
+----07/13/15 20:33:35----
+
+----07/10/15 05:05:41----
+* Turned-off preemption in [C:/Adam/WinB.CPP.Z,421] WinMgrTask().
 
 ----07/04/15 00:56:18----
 * Added hex record option to [C:/Adam/God/GodDoodle.CPP.Z,181] GodDoodle().
@@ -195,7 +198,7 @@ Mat4x4MulMat4x4New").
 
 ----03/14/15 04:48:50----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("AcctReg...","Reg...");
-* Overhauled [C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks().
+* Overhauled [C:/Adam/Gr/GrScreen.CPP.Z,58] GrUpdateTasks().
 * Overhauled [C:/Doc/GraphicsOverview.TXT.Z,1].
 
 ----03/09/15 06:07:25----

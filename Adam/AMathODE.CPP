@@ -511,19 +511,15 @@ it has a timeout.
   I64 i;
   F64 d,start_time,timeout_time,t_desired,t_initial,interpolation;
   CMathODE *ode;
-  Bool old_suspend;
 
   if (task->next_ode==&task->next_ode)
     task->last_ode_time=0;
   else if (!Bt(&task->win_inhibit,WIf_SELF_ODE)) {
-//See [C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateTaskODEs().
-    //TODO: Being preempted here would be bad
-    if (task!=Fs)
-      old_suspend=Suspend(task);
-//We will not pick a time limit based on
-      //how busy the CPU is, what percent of the
-      //last refresh cycle was spent on ODE's
-      //and what the refresh cycle rate was.
+//See [C:/Adam/Gr/GrScreen.CPP.Z,58] GrUpdateTasks() and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateTaskODEs().
+    //We will not pick a time limit based on
+    //how busy the CPU is, what percent of the
+    //last refresh cycle was spent on ODE's
+    //and what the refresh cycle rate was.
     start_time=tS;
     d=1.0/winmgr.fps;
     timeout_time=start_time+
@@ -609,8 +605,5 @@ ode_done:
       ode=ode->next;
     }
     winmgr.ode_time+=task->last_ode_time=tS-start_time;
-//See [C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and [C:/Adam/Gr/GrScreen.CPP.Z,3] GrUpdateTaskODEs().
-    if (task!=Fs)
-      Suspend(task,old_suspend);
   }
 }
