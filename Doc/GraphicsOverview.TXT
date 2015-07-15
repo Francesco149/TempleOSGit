@@ -42,9 +42,9 @@ The order layers are drawn on top of each other is:
 
 
 
-* See [C:/Adam/Gr/GrScreen.CPP.Z,409] GrUpdateScreen(),
-[C:/Adam/Gr/GrScreen.CPP.Z,63] GrUpdateTasks() and
-[C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin() called by the 
+* See [C:/Adam/Gr/GrScreen.CPP.Z,403] GrUpdateScreen(),
+[C:/Adam/Gr/GrScreen.CPP.Z,58] GrUpdateTasks() and
+[C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin() called by the 
 WinMgr task 30fps.  Notice the task's [C:/Adam/Gr/GrScreen.CPP.Z,1] draw_it()
 callback being called.  Only 
 tasks on core0 are allowed to have windows.  There is one window per task, no 

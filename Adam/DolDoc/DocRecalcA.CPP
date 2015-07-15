@@ -168,7 +168,7 @@ public U0 DocPrintAtomic(CDoc *doc,U8 *fmt,...)
 
 #help_index "DolDoc/Task;StdOut/Task"
 U0 DocUpdateTaskDocs(CTask *task)
-{//This is called from [C:/Adam/Gr/GrScreen.CPP.Z,20] GrUpdateTaskWin() by the winmgr at 30fps.
+{//This is called from [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin() by the winmgr at 30fps.
   CDrv *dv;
   CDoc *doc;
   CD3I64 saved_scroll;

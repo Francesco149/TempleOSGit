@@ -20,7 +20,7 @@ public class CDirEntry //64-byte fixed-size
 to change these.
   U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,345]
 chars_bmp_filename, [C:/Kernel/Dsk/DskStr.CPP.Z,290] FileNameChk
-  I64 cluster;	//One sector per cluster.  I might change origin, let's talk.
+  I64 cluster; (blk) //One sector per cluster.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,
 [C:/Kernel/Date.CPP.Z,1] Implementation of DateTime
@@ -33,7 +33,7 @@ BIOS.
   U8 signature,reserved[4]; //MBR_PT_REDSEA=0x88. Distinguish from real FAT32.
   I64 base_offset;	//For CD/DVD image copy.
   I64 sects;
-  I64 root_cluster;
+  I64 root_cluster; (root_blk)
   I64 bitmap_sects;
   I64 unique_id;
   U8 code[462];
