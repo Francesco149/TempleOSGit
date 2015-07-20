@@ -27,8 +27,8 @@
 
 
 
-[C:/Kernel/KernelA.HPP.Z,3094] CSrvCmd nodes are one of
-[C:/Kernel/KernelA.HPP.Z,3087] five types.  User applications deal with text
+[C:/Kernel/KernelA.HPP.Z,3095] CSrvCmd nodes are one of
+[C:/Kernel/KernelA.HPP.Z,3088] five types.  User applications deal with text
 or 
 msgs.  [C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun() will call a function, spawn a
 task or execute some text src 

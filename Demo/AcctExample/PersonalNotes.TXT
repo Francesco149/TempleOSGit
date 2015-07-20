@@ -1,4 +1,4 @@
-* Clean-up [C:/Kernel/Dsk/DskStr.CPP.Z,212] FileNameAbs().
+* Clean-up [C:/Kernel/Dsk/DskStrA.CPP.Z,144] FileNameAbs().
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
@@ -23,9 +23,11 @@ think so.  (Probably not.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3012] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3013] CCtrl.
 
 * Add Redo to editor.
+
+* PSect does not scan all task tables.
 
 * No Compiler Warning:  dc->palette48.r   =palette24[i].r<<8;
 
@@ -150,7 +152,7 @@ God says I might want to change to float.
 * Might want to convert some Preempt() to Cli
 
 * [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3412] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3413] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -243,7 +245,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3529] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3530] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -277,7 +279,8 @@ registry-like routines... or registry I guess.
 
 * New Editor widgets
 
-* Make use of flag potential in SysFilesFind and possibly CFileAccess
+* Make use of flag potential in [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind()
+and possibly [C:/Kernel/Dsk/DskDirContext.CPP.Z,21] DirContextNew()
 * implement fixed pos files
 
 * new HolyC language features
@@ -287,7 +290,7 @@ registry-like routines... or registry I guess.
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2842] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2843] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -343,110 +346,9 @@ Buckling Armor: [C:/Misc/Bible.TXT.Z,29345] 1 Kings,20:11 1 Kings 20:11
 
 >lspci -v
 
-
-
-/*****************************************************************************
-/
-This is the transcript of a radio conversation of a US naval ship with 
-Canadian authorities off the coast of Newfoundland in October, 1995. Radio 
-conversation released by the Chief of Naval Operations 10-10-95.
-
-                Americans: Please divert your course 15 degrees to the North 
-to avoid a Collision.
-
-                Canadians: Recommend you divert YOUR course 15 degrees to the 
-South to avoid a collision.
-
-                Americans: This is the Captain of a US Navy ship. I say
-again, 
-divert YOUR course.
-
-                Canadians: No. I say again, you divert YOUR course.
-
-                Americans: This is the aircraft carrier USS Lincoln, the 
-second largest ship in the United States' Atlantic fleet. We are accompanied 
-by three destroyers, three cruisers and numerous support vessels. I demand 
-that YOU change your course 15 degrees north, that's one five degrees north, 
-or countermeasures will be undertaken to ensure the safety of this ship.
-
-                Canadians: This is a lighthouse. Your call.[2]
-/*****************************************************************************/
-
-
-
-/*****************************************************************************/
-char *words[10000]; //Single word list.  No statistical weights allowed.
-int i=0;
-
-while (true) {  
-  while (!keyboard_hit())
-    i++;
-  printf("%s ",words[i%10000]);
-}
-/*****************************************************************************/
-
-
 Size:
 
-/************************** Perfect Coin Toss ********************************/
-NIST Randomness Beacon is a government certified random number.  You can call
-the caretaker on that page, Rene Peralta 301-975-8702, rene.peralta@nist.gov.
-Once every minute, they have a random lottery and post the results to their
-site.  You can go back and check old lottery numbers, by entering link+time.
-https:/beacon.nist.gov/rest/record/1415440980
-https:/beacon.nist.gov/rest/record/1415445300	To check old numbers, enter
-https:/beacon.nist.gov/rest/record/1415529600	Unix timestamp in the the URL.
-https:/beacon.nist.gov/rest/record/1415531580	(Seconds since 1-JAN-1970)
-https:/beacon.nist.gov/rest/record/1415563680	Unix Timestamp Tool
-https:/beacon.nist.gov/rest/record/1415565600
-https:/beacon.nist.gov/rest/record/1415566560	They chain the numbers so they
-https:/beacon.nist.gov/rest/record/1415568120	cannot be tampered with.
-/*****************************************************************************/
-
-
-
-/************************** Perfect Coin Toss 
-********************************/
-To a white scientist, the National Institute of Standards random numbers are, 
-literally, the gold standard.  A nigger doesn't know the difference between 
-the National Institute of Standards and a tabloid.
-
-Here's how I explain to a nigger:
-Lottery every week:		Arizona Lottery
-Lottery once every 60 seconds: 	NIST Randomness Beacon 
-
-To check a random Bible passage that I quote,
-
-1) Enter the time of the lottery into Unix Timestamp Tool.
-
-2) Form a URL by adding "https:/beacon.nist.gov/rest/record/"+timestamp 
-number.
-For example: https:/beacon.nist.gov/rest/record/1415440980
-
-3) Take the first 5 hex digits from "Output".
-
-4) Convert to decimal.
-
-5) Divide by 100091 and take remainder. 
-
-6) Add one.
-
-7) Go to that line in the KingJamesBible.
-/*****************************************************************************
-/
-
 Let me Google NIST Random Beacon
-
-
-Happy Happy Joy Joy
-```
-<object width="640" height="520"><param name="movie"
-value="http://www.youtube.com/v/jfNajFYPljQ"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/jfNajFYPljQ"
-type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
-height="520"></embed></object>
-```
 
 Commodore 64 Basic/Assembly
 ```
@@ -457,6 +359,7 @@ src="http://www.youtube.com/v/d8bZ92gIVms"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
+
 Bill Gates Predictions
 ```
 <object width="640" height="520"><param name="movie"
@@ -466,7 +369,6 @@ src="http://www.youtube.com/v/4r9u_R0cCew"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 
 Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, 
 LOL.)

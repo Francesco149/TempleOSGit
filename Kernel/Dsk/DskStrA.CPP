@@ -84,74 +84,6 @@ Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
   return result;
 }
 
-U0 DrvChk(CDrv *dv)
-{//Check for valid drv. Throw exception.
-  if (!dv || dv->dv_signature!=DRV_SIGNATURE_VAL)
-    throw('Drv');
-}
-
-U8 Drv2Let(CDrv *dv=NULL)
-{//Drv ptr to Drv letter.
-  if (!dv)
-    dv=Fs->cur_dv;
-  DrvChk(dv);
-  return dv->drv_let;
-}
-
-CDrv *Let2Drv(U8 drv_let=0)
-{//Drv letter to Drv ptr.
-  CDrv *dv;
-  if (!drv_let)
-    dv=Fs->cur_dv;
-  else {
-    if (drv_let==':')
-      drv_let=dsk.boot_drv_let;
-    drv_let=ToUpper(drv_let);
-    if (!('A'<=drv_let<='Z'))
-      throw('Drv');
-    dv=dsk.let_to_drv[drv_let-'A'];
-  }
-  DrvChk(dv);
-  return dv;
-}
-
-U0 BlkDevChk(CBlkDev *bd)
-{//Check for valid BlkDev. Throw exception.
-  if (!bd || bd->bd_signature!=BD_SIGNATURE_VAL ||
-	!(BDT_NULL<bd->type<BDT_NUM_TYPES))
-    throw('BlkDev');
-}
-
-CBlkDev *Let2BlkDev(U8 drv_let=0)
-{//Drv letter to BlkDev ptr.
-  CDrv *dv=Let2Drv(drv_let);
-  CBlkDev *bd=dv->bd;
-  BlkDevChk(bd);
-  return bd;
-}
-
-Bool IsDrvWritable(U8 drv_let=0)
-{//Is drive writable?
-  CBlkDev *bd=Let2BlkDev(drv_let);
-  if (bd->flags & BDF_READ_ONLY)
-    return FALSE;
-  else
-    return TRUE;
-}
-
-U8 *CurDir(CTask *task=NULL,CTask *mem_task=NULL)
-{//MAlloc copy of cur dir with drv letter.
-  U8 *st;
-  if (!task) task=Fs;
-  if (!task->cur_dir)
-    return NULL;
-  st=MAlloc(StrLen(task->cur_dir)+3,mem_task);
-  *st=Drv2Let(task->cur_dv);
-  st[1]=':';
-  StrCpy(st+2,task->cur_dir);
-  return st;
-}
-
 U8 *DirNameAbs(U8 *_dirname)
 {//MAlloc absolute dir string with drv letter.
   I64 maxlen;
@@ -210,7 +142,7 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2522] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2524] FUF_SCAN_PARENTS.
+{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2523] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2525] FUF_SCAN_PARENTS.
   U8 *result,*filename,*buf,*buf_file,*buf_dir,*free_filename,*free_buf;
   CDirEntry de;
   free_filename=filename=MStrUtil(_filename,
@@ -234,7 +166,7 @@ U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
   Free(buf_file);
   Free(buf_dir);
   Free(free_filename);
-  if (fuf_flags&&FileFind(result,&de,fuf_flags|FUF_JUST_FILES)) {
+  if (fuf_flags && FileFind(result,&de,fuf_flags|FUF_JUST_FILES)) {
     Free(result);
     result=de.full_name;
   }
@@ -303,6 +235,35 @@ Bool FileNameChk(U8 *filename)
   return TRUE;
 }
 
+U8 *ToggleZorNotZ(U8 *name)
+{//MAlloc name with Z if not Z or vice versa.
+  U8 *result;
+  if (IsDotZ(name)) {
+    result=StrNew(name);
+    result[StrLen(name)-2]=0;
+  } else
+    result=MStrPrint("%s.Z",name);
+  return result;
+}
+
+U8 *FileNameTempTxt()
+{//Make pretty-safe temp filename in home dir.
+  return MStrPrint("::/Home/SysTemp%X.TXT.Z",GetTSC>>8&0xFFFFFFFF);
+}
+
+U8 *CurDir(CTask *task=NULL,CTask *mem_task=NULL)
+{//MAlloc copy of cur dir with drv letter.
+  U8 *st;
+  if (!task) task=Fs;
+  if (!task->cur_dir)
+    return NULL;
+  st=MAlloc(StrLen(task->cur_dir)+3,mem_task);
+  *st=Drv2Let(task->cur_dv);
+  st[1]=':';
+  StrCpy(st+2,task->cur_dir);
+  return st;
+}
+
 U8 *DirFile(U8 *dirname,U8 *name=NULL,U8 *_extension=NULL)
 {/*Strips file from dirname, scans for file upward until found or
 returns default.
@@ -337,7 +298,7 @@ returns default.
     }
     if (!dft)
       dft=StrNew(result);
-    if (!*ext&&(!name||!*name)||FileFind(result)) {
+    if (!*ext && (!name||!*name) || FileFind(result)) {
       Free(st3);
       Free(st2);
       Free(st);
@@ -352,20 +313,4 @@ returns default.
   Free(st);
   Free(ext);
   return dft;
-}
-
-U8 *ToggleZorNotZ(U8 *name)
-{//MAlloc name with Z if not Z or vice versa.
-  U8 *result;
-  if (IsDotZ(name)) {
-    result=StrNew(name);
-    result[StrLen(name)-2]=0;
-  } else
-    result=MStrPrint("%s.Z",name);
-  return result;
-}
-
-U8 *FileNameTempTxt()
-{//Make pretty-safe temp filename in home dir.
-  return MStrPrint("::/Home/SysTemp%X.TXT.Z",GetTSC>>8&0xFFFFFFFF);
 }

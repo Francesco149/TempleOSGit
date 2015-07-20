@@ -31,7 +31,7 @@ U0 TreeSub(CDoc *doc,CDirEntry *tempde)
 	    tempde->name,tempde->full_name);
 //Note there is also a routine
       //to delete an entire CDirEntry tree.
-      //See [C:/Kernel/Dsk/DskDir.CPP.Z,36] DirTreeDel().
+      //See [C:/Kernel/Dsk/DskDirA.CPP.Z,36] DirTreeDel().
     DirEntryDel(tempde);
     tempde=tempde1;
   }

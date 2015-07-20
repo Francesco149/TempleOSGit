@@ -106,6 +106,16 @@ everything to 64-bit.  Don't use unsigned unless it actually breaks.  A
 policy 
 of signed keeps it simple so you don't have to agonize over choices.
 
+U32 DistDist(U16 x1, U16 y1, U16 x2, U16 y2)
+{//This requires zero-extend when fetching args.
+  return SqrI64(x1-x2)+SqrI64(y1-y2);
+}
+
+I64 DistDist(I64 x1, I64 y1, I64 x2, I64 y2)
+{
+  return SqrI64(x1-x2)+SqrI64(y1-y2);
+}
+
 * In-order, short circuit logic is assumed.
 
 * Avoid boolean expression assignments.  Boolean assignments don't have short 
@@ -134,7 +144,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3417] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3418] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -164,7 +174,7 @@ and kill it when it's done.
 
 * To display the contents of a hash table, use the [C:/Adam/AHash.CPP.Z,149]
 Who() routine or the 
-varients.  [C:/Adam/AHash.CPP.Z,330] HashDepthRep() gives a histogram  of how
+varients.  [C:/Adam/AHash.CPP.Z,332] HashDepthRep() gives a histogram  of how
 long the chains are, in 
 case you wish to make hash table sizes bigger.
 
@@ -172,9 +182,9 @@ case you wish to make hash table sizes bigger.
 
                               Assembly Language
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3219] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3220] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3344] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3345] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
@@ -183,9 +193,9 @@ anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
 * When interacting with [C:/Doc/HolyC.TXT.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 
 because the compiler uses these for reg vars.  You are free to clobber RAX, 
-RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1705] Compiler Reg
-Masks, [C:/Kernel/KernelA.HPP.Z,1678] PUSH_C_REGS and
-[C:/Kernel/KernelA.HPP.Z,1679] POP_C_REGS
+RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1706] Compiler Reg
+Masks, [C:/Kernel/KernelA.HPP.Z,1679] PUSH_C_REGS and
+[C:/Kernel/KernelA.HPP.Z,1680] POP_C_REGS
 
 * I recommend using the standard stk frame for functions because
 [C:/Kernel/KDbg.CPP.Z,60] Caller() is 

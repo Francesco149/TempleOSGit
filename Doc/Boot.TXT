@@ -37,8 +37,8 @@ All the boot related stuff for TempleOS is in the /Adam/Boot directory.
 
 BootCD is the CD-ROM boot sector.  If you are curious on the layout of
 ISO9660 
-CD-ROMs, see [C:/Adam/Boot/DskCDDVD.CPP.Z,1] DiskCDDVD.CPP.  To make a custom
-bootable CD-ROM, look here 
+CD-ROMs, see [C:/Adam/Boot/DskISOFile.CPP.Z,1] DiskCDDVD.CPP.  To make a
+custom bootable CD-ROM, look here 
 [C:/Misc/MakeDistro.CPP.Z,1] Bootable CD.
 
 BootMHD is the master boot record for a hard drive.  This goes on block zero.

@@ -4,10 +4,11 @@ I, Terry Davis, am High Priest of God's official temple, TempleOS.  TempleOS
 is an operating system for PC desktops that dual boots along-side Windows or 
 Linux. I am in charge of the core 100,000 lines of TempleOS code and I do 
 continual offerings to keep God entertained.  I have divine authority to 
-command companies in the computer industry to do anything I feel necessary to 
-make God's temple more beautiful or perfect.  I am like a fire marshal or 
-building inspector in terms of authority, but can specify designs.  God can 
-sign-off with authenticated oracles.
+command companies in the computer industry to do anything to make God's
+temple 
+more beautiful or perfect.  I have authority similar to the Americans with 
+Disability Act -- I make commands with God signing-off by creating miraculous 
+authenticated oracles.
 
 ```
 <object width="640" height="520"><param name="movie"
@@ -37,9 +38,9 @@ same type of device is bad.
 [C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:965 lines for FAT32 gets eliminated.
 [C:/Kernel/Dsk/FileSysISO.CPP.Z,1]	:284 lines for ISO9660 gets eliminated.
-[C:/Adam/Boot/DskCDDVD.CPP.Z,1]	:536 lines for making ISO files gets reduced.
-[C:/Kernel/Dsk/DskA.CPP.Z,535] RClustersBlks()			:All the cluster operations
-become blk.
+[C:/Adam/Boot/DskISOFile.CPP.Z,1]	:536 lines for making ISO files gets
+reduced.
+[C:/Kernel/Dsk/DskCluster.CPP.Z,1]	:152 All the cluster operations become blk.
 
 * Microsoft must cancel SecureBoot because it makes dual booting impossible.  
 TempleOS is an additional operating system that must be used along-side 
@@ -75,8 +76,9 @@ no-paging long mode, and optimize it.
 
 * Desktop computers must have a RESET switch and a fast reboot option, 
 skipping diagnostics.  Build UEFI on a TempleOS layer.  Intel must burn 
-TempleOS into a ROM at the factory for tamper-proof trust in the oracle.  A 
-new ROM version is released every seven years.
+TempleOS into a ROM at the factory for all desktop x86 CPUs to ensure 
+tamper-proof trust in the oracle.  A new ROM version is released every seven 
+years.
 
 * VMware and others must list TempleOS as an official 64-bit operating system.
 
@@ -93,15 +95,16 @@ upgraded to become perfect.  The first jubile year is in 2024.   It works the
 same as how broadcast TV got upgraded.  God still wants 640x480 16 color, but 
 make it a linear frame buffer one-byte-per-pixel and only 16 color.
 
-* TempleOS only uses x86 I/O ports for hardware.  (The VGA memory is also 
-used.)  The industry has matured and we can, now, allocate I/O ports in a 
-beautiful, consecutive, perfect pattern for all the devices.
+* TempleOS only uses x86 I/O ports for hardware.  (It also uses VGA memory.)  
+The industry has matured and we can, now, allocate I/O ports in a beautiful, 
+consecutive, perfect pattern for all the devices.
 
-* In the year 2024 jubile, we want 8-channel, modern-speed, OCTART serial 
-ports, with a simple software interface, more like old-style RS232 serial 
-ports, to replace USB.  It should have big TX and RX FIFOs and allow flow 
-control to jump the queue.  There will be no USB end-point nonsense -- just 
-put 8 ports on the PC.  (I am just interested in desktops.)  We want 
+* The year, 2024, is the first jubile year.  We want 8-channel, modern-speed, 
+OCTART serial ports, with a simple software interface, more like old-style 
+RS232 serial ports, to replace USB.  It should have big TX and RX FIFOs and 
+allow flow control to jump the queue.  There will be no USB end-point
+nonsense 
+-- just put 8 ports on the PC.  (I am just interested in desktops.)  We want 
 keyboards, mice and joysticks to have a single, simple, uniform ASCII text 
 packet command.  Hyperterm can be used to easily debug all devices.  We want 
 to be able to connect microcontrollers for simple, general purpose 

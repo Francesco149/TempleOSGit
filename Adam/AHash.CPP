@@ -1,4 +1,4 @@
-#help_index "Info;Hash;Cmd Line (Typically)"
+#help_index "Info;Hash/System;Cmd Line (Typically)"
 class CWho
 {
   CHashGeneric *h;
@@ -326,6 +326,8 @@ U8 *index=NULL,CDoc *doc=NULL)
   Kill(task);
 }
 
+#help_index "Info;Hash;Cmd Line (Typically)"
+
 #define HDR_MAX	16
 public I64 HashDepthRep(CHashTable *table=NULL)
 {//Hash table linked-list chain depth report.
@@ -370,7 +372,7 @@ public U0 PopUpHelpIndex(U8 *index,CTask *parent=NULL)
   Free(buf);
 }
 
-#help_index "Hash"
+#help_index "Hash/System"
 public U0 MapFileLoad(U8 *filename)
 {//Load map file so we have src line info.
   U8 *st,*ptr,*name=DftExt(filename,"MAP.Z"),

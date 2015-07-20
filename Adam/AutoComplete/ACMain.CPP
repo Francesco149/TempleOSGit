@@ -312,7 +312,7 @@ public U0 ACInit(U8 *mask=NULL)
     Yield;
   AutoComplete;
 
-  if (IsDrvWritable && FileFind(ACD_DEF_FILENAME_Z) &&
+  if (DrvIsWritable && FileFind(ACD_DEF_FILENAME_Z) &&
 	!FileFind(ACD_DEF_FILENAME)) {
     if (bd->type!=BDT_RAM) {
       start_flag=FALSE;

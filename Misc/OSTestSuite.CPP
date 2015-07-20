@@ -2209,7 +2209,7 @@ U0 OSTestSuite()
 {
   TSStart;
   TS; DoBlackDiamond;
-  TS; if (IsDrvWritable(':')) DoEagleDive;
+  TS; if (DrvIsWritable(':')) DoEagleDive;
   TS; DoFlatTops;
   TS; DoDunGen;
   TS; DoFPS;
@@ -2272,7 +2272,7 @@ U0 OSTestSuite()
   TS; DoBSpline;
   TS; DoGrModels;
   TS; DoBlot;
-  TS; if (IsDrvWritable(':')) DoScreenCapture;
+  TS; if (DrvIsWritable(':')) DoScreenCapture;
   TS; DoGrid;
   TS; DoPick;
   TS; DoPick3D;
@@ -2307,7 +2307,7 @@ U0 OSTestSuite()
   TS; DoUnusedSpaceRep;
   TS; DoBlkDevRep;
   TS; DoLastClass;
-  TS; if (IsDrvWritable(':')) DoFPrintF;
+  TS; if (DrvIsWritable(':')) DoFPrintF;
   TS; DoSerializeTree;
   TS; DoExceptions;
   TS; DoScreenCodes;
@@ -2326,10 +2326,10 @@ U0 OSTestSuite()
   TS; DoLogic;
   TS; DoCompileDemo;
   TS; DoPrompt;
-  TS; if (IsDrvWritable(':')) DoWebLog;
-  TS; if (IsDrvWritable(':')) DoReverseFile;
-  TS; if (IsDrvWritable(':')) DoSortFile;
-  TS; if (IsDrvWritable(':')) DoRegistryDemo;
+  TS; if (DrvIsWritable(':')) DoWebLog;
+  TS; if (DrvIsWritable(':')) DoReverseFile;
+  TS; if (DrvIsWritable(':')) DoSortFile;
+  TS; if (DrvIsWritable(':')) DoRegistryDemo;
   TS; DoDefine;
   TS; DoGlblVars;
   TS; DoFileRead;

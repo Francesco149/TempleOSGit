@@ -256,7 +256,7 @@ U0 Init()
       for (j=0;j<NUM_UNITS/2;j++) {
 	if (i!=j) {
 	  dd=SqrI64(u[i].x-u[j].x)+SqrI64(u[i].y-u[j].y);
-	  if (u[j].x<u[i].x && dd<best_dd) {
+	  if (u[j].x<=u[i].x && dd<best_dd) {
 	    best_dd=dd;
 	    best=j;
 	  }

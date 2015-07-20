@@ -268,7 +268,7 @@ public CDocEntry *DocPutLine(CDoc *doc=NULL,CDocEntry *doc_e)
 
 #help_index "DolDoc/Input;StdIn/DolDoc"
 U8 *DocGetStr2(I64 flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,3683] Flags
+{//[C:/Kernel/KernelA.HPP.Z,3684] Flags
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
   Bool old_preempt=IsPreempt;

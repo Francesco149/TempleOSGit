@@ -25,7 +25,7 @@ I64 PopUpFindMenu()
 
 I64 FindFile(U8 *needle_str,U8 *haystack_filename,
 	I64 *_fuf_flags,U8 *replace_text)
-{//Have you confused with [C:/Kernel/Dsk/DskB.CPP.Z,350] FileFind()?
+{//Have you confused with [C:/Kernel/Dsk/DskFind.CPP.Z,57] FileFind()?
   Bool first_on_line,write_this_file=FALSE,cont=!Bt(_fuf_flags,FUf_CANCEL);
   U8 *src,*dst,*dst2,*name_buf=NULL;
   I64 i,j,plen,rlen,dlen,cnt=0,old_flags,ss_flags;

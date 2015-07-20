@@ -34,7 +34,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1234] flags.
+{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1235] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;
@@ -249,7 +249,7 @@ public U0 ClipboardDel()
 }
 
 public U0 EdCopyToClipboard(CDoc *doc)
-{//Copy [C:/Kernel/KernelA.HPP.Z,937] DOCET_SELECTED flagged entries to clipboard.
+{//Copy [C:/Kernel/KernelA.HPP.Z,938] DOCET_SELECTED flagged entries to clipboard.
   CDoc *doc2=sys_clipboard_doc;
   Bool unlock_doc=DocLock(doc),
 	unlock_doc2=DocLock(doc2);

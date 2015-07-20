@@ -50,30 +50,14 @@
 #include "KbdMouse/Keyboard"
 #include "KbdMouse/Mouse"
 #include "KbdMouse/Message"
-
 #include "QSort"
 #include "Task"
 #include "SrvCmd"
 #include "PCIBIOS"
-
 #exe {Cd("Dsk");};
-#include "DskStr"
-#include "DskCache"
-#include "DskATA"
-#include "DskATAId"
-#include "DskA"
-#include "DskAddDev"
-#include "DskDir"
-#include "FileSysISO"
-#include "FileSysRedSea"
-#include "FileSysFAT"
-#include "DskB"
-#include "DskCFile"
-#include "DskC"
-
+#include "Dsk"
 #exe {Cd("..");};
 #include "MultiProc"
-
 #include "EdLite"
 #include "PSect"
 #include "KEnd"

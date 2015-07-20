@@ -328,7 +328,7 @@ class CElTorito
   U8 zero2[20];
 };
 
-public I64 CDFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,
+public I64 ISOFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,
 	U8 *fu_flags=NULL,U8 *_stage2_filename=NULL)
 {//See [C:/Misc/MakeDistro.CPP.Z,1]
 //Use "C:/Distro/*" if you want all files in the C:/Distro directory.

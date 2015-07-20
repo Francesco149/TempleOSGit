@@ -174,8 +174,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1705] REGG_C_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1706] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1706] REGG_C_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1707] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
 else clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -231,11 +231,11 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1463] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1464] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1464] OPTf_WARN_DUP_TYPES) to find dup local
+OptOn([C:/Kernel/KernelA.HPP.Z,1465] OPTf_WARN_DUP_TYPES) to find dup local
 var type 
 statements.
 
@@ -318,7 +318,7 @@ make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2788] DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2789] DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
 Spawn().  You can use 
 [C:/Kernel/Task.CPP.Z,82] CallStkGrow(), but it's odd.  See

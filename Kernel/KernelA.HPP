@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1470] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1471] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1868] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1869] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -611,6 +611,33 @@ class CSema
 #define SYSf_CTRL_ALT_X 		2
 #define SYSf_CTRL_ALT_TAB		3
 
+#help_index "Hash"
+public class CHash
+{
+//Hash entries are not removed.  New entries eclipse old by being
+  //in front for searches.  Old function code is not freed
+  //because a reference might use it.
+  CHash	*next;
+  U8	*str;
+  U32	type,use_cnt;
+//use_cnt is never decremented.  It is incremented
+  //each time a node is found in a hash search.
+  //One place it is used is to tell if a externed function was unused
+  //before being defined.  It is also used for popularity measures
+  //in autocomplete.	You can do a [C:/Adam/AHash.CPP.Z,149] Who() to see
+  //roughly how many times a symbol has been
+  //referenced.	Beware of instances where
+  //a hash entry is continuously searched for and
+  //racks-up huge use_cnt numbers.
+};
+
+public class CHashTable
+{
+  CHashTable *next;
+  I64	mask,locked_flags;
+  CHash	**body;
+};
+
 #help_index "Hash/System"
 //Hash table types
 //[C:/Kernel/KDefine.CPP.Z,1] ST_HTT_TYPES
@@ -686,25 +713,6 @@ class CDbgInfo
   U32	body[1]; //Code heap is 32-bit value
 };
 
-public class CHash
-{
-//Hash entries are not removed.  New entries eclipse old by being
-  //in front for searches.  Old function code is not freed
-  //because a reference might use it.
-  CHash	*next;
-  U8	*str;
-  U32	type,use_cnt;
-//use_cnt is never decremented.  It is incremented
-  //each time a node is found in a hash search.
-  //One place it is used is to tell if a externed function was unused
-  //before being defined.  It is also used for popularity measures
-  //in autocomplete.	You can do a [C:/Adam/AHash.CPP.Z,149] Who() to see
-  //roughly how many times a symbol has been
-  //referenced.	Beware of instances where
-  //a hash entry is continuously searched for and
-  //racks-up huge use_cnt numbers.
-};
-
 public class CHashSrcSym:CHash
 {
   U8	*src_link,
@@ -731,13 +739,6 @@ public class CHashGeneric:CHash
 public class CHashReg:CHash
 {
   U8	reg_num,reg_type;
-};
-
-public class CHashTable
-{
-  CHashTable *next;
-  I64	mask,locked_flags;
-  CHash	**body;
 };
 
 public class CHashAC:CHash
@@ -821,7 +822,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,845] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,846] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -1197,7 +1198,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1222] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1223] Editor Flags
 
 class CEdFindText
 {
@@ -1223,7 +1224,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1193] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1194] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1483,7 +1484,7 @@ public class CWinMgrGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1315] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1316] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2449,7 +2450,7 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/Dsk/DskC.CPP.Z,259] CDImageWrite()
+//Media types for [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] CDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 
@@ -2621,7 +2622,7 @@ class CFreeLst
 public class CDrv
 {
 //Don't access ->drv_let directly in case a drive has been remapped.
-  //Use [C:/Kernel/Dsk/DskStr.CPP.Z,93] Drv2Let().
+  //Use [C:/Kernel/Dsk/DskDrv.CPP.Z,123] Drv2Let().
   I64	locked_flags;
   U32	type,  //Bit31 is used as a disable, since it will be unknown
 	dv_signature;
@@ -2670,7 +2671,7 @@ public class CDskGlbls
 };
 
 #help_index "File/Internal"
-public class CFileAccess
+public class CDirContext
 {
   CDrv	*old_dv,*dv;
   U8	*old_dir,*mask;
@@ -2735,8 +2736,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/MemA.CPP.Z,8] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2780] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2780] PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2781] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2781] PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2843,7 +2844,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2853] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2854] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2942,7 +2943,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2941] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2942] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2942] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2943] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3122,8 +3123,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3386] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3386] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3387] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3387] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3564,12 +3565,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2843] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2844] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2853] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2854] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3601,7 +3602,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3540] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3541] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

@@ -279,7 +279,7 @@ website, too.
 U0 MakeTOSDistro()
 {
   TOSDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+  ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
 	"Download TempleOS V3.07 - T.S. Company Internal Distro (%0.1f MB)",
@@ -315,7 +315,7 @@ I call [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] MakeBootDrvFile.
 U0 MakeDbgDistro()
 {
   DbgDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+  ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
 	"Download TempleOS V3.07 - Debug Distro (%0.1f MB)",
@@ -340,7 +340,7 @@ U0 StdDistroPrep()
 U0 MakeStdDistro()
 {
   StdDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+  ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   Drv('C');
 }
@@ -363,7 +363,7 @@ Demos, Documentation.
 U0 MakeLiteDistro()
 {
   LiteDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+  ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
 	"Download TempleOS V3.07 - Lite Distro (%0.1f MB)",
@@ -392,7 +392,7 @@ FileManager, WindowManager, PCSpeaker, Documentation.
 U0 MakeUltraDistro()
 {
   UltraDistroPrep;
-  CDFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
+  ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
 	"Download TempleOS V3.07 - UltraLite Distro (%0.1f MB)",

@@ -7,8 +7,6 @@ extern U0 ACMan(I64 n,CTask *parent=NULL);
 extern I64 AdamFile(U8 *filename,Bool warn_ext=TRUE);
 extern Bool AutoComplete(Bool val=OFF);
 extern I64 BMPWrite(U8 *filename,CDC *dc,I64 bits=4);
-extern I64 CDFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,
-	U8 *fu_flags=NULL,U8 *_stage2_filename=NULL);
 extern U0 ClipboardDel();
 extern CCtrl *CtrlFindUnique(CTask *haystack_task,I64 needle_type);
 extern Bool CtrlInside(CCtrl *c,I64 x,I64 y);
@@ -55,6 +53,8 @@ extern U8 *EdSprite(I64 bin_num);
 extern I64 FindWiz();
 extern I64 GetI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64);
 extern U0 GrPlot0(CDC *dc,I64 x,I64 y);
+extern I64 ISOFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,
+	U8 *fu_flags=NULL,U8 *_stage2_filename=NULL);
 extern CMenuEntry *MenuEntryFind(CMenu *m,U8 *full_name);
 extern CMenu *MenuFilePush(U8 *filename);
 extern U0 MenuPop();
