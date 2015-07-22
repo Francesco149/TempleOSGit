@@ -152,7 +152,7 @@ CHashGeneric *HashGenericAdd(U8 *name,I64 type,
 }
 
 U0 HashSrcFileSet(CCmpCtrl *cc,CHashSrcSym *h,I64 line_num_offset=0)
-{//Set [C:/Kernel/KernelA.HPP.Z,708] CHashSrcSym link and help_index by cur cc pos.
+{//Set [C:/Kernel/KernelA.HPP.Z,717] CHashSrcSym link and help_index by cur cc pos.
   CLexFile *tempf=cc->lex_include_stk;
   I64 line_num=tempf->line_num+line_num_offset;
   if (line_num<1) line_num=1;

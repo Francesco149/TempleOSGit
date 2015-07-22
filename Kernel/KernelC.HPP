@@ -206,7 +206,7 @@ public extern U8 *SrcEdLink(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern U8 *SrcFileName(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern I64 SrcLineNum(U8 *addr,I64 cnt=1);
 
-#help_index "Debugging/PSect;Hash"
+#help_index "Debugging/PSect;Hash/System"
 public extern CHash *PSectFind(U8 *addr,I64 *_offset);
 
 #help_index "Debugging/Raw Output"
@@ -272,8 +272,9 @@ public extern Bool FWBlks(CFile *f,U8 *buf,I64 blk=FFB_NEXT_BLK,I64 cnt=1);
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
 public extern Bool Cd(U8 *dirname=NULL,Bool make_dirs=FALSE);
 public extern U0 ChgDsk(U8 drv_let=0);
-public extern I64 Del(U8 *wild,Bool print_msg=TRUE);
-public extern I64 Dir(U8 *wild="*",Bool full=FALSE);
+public extern I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
+	Bool del_dir=FALSE,Bool print_msg=TRUE);
+public extern I64 Dir(U8 *files_find_mask="*",Bool full=FALSE);
 public extern Bool Drv(U8 drv_let);
 public extern Bool MkDir(U8 *filename);
 
@@ -287,6 +288,7 @@ public extern U8 *CurDir(CTask *task=NULL,CTask *mem_task=NULL);
 public extern U8 *DftExt(U8 *filename,U8 *extension);
 public extern U8 *DirFile(U8 *dirname,U8 *name=NULL,U8 *_extension=NULL);
 public extern U8 *DirNameAbs(U8 *dirname);
+public extern Bool DrvIsWritable(U8 drv_let=0);
 public extern U8 *FileExtDot(U8 *src);
 public extern U8 *FileExtRem(U8 *src,U8 *dst=NULL);
 public extern U8 *FileNameAbs(U8 *filename,I64 fuf_flags=0);
@@ -296,7 +298,6 @@ public extern Bool FilesFindMatch(U8 *test_filename,
 public extern Bool IsDir(U8 *dir_name);
 public extern Bool IsDotC(U8 *filename);
 public extern Bool IsDotZ(U8 *filename);
-public extern Bool IsDrvWritable(U8 drv_let=0);
 public extern U0 PutDirLink(U8 *dirname);
 public extern U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE);
 public extern U0 ToFileLine(U8 *_fl_file_line,U8 **_filename,I64 *_linenum);
@@ -306,11 +307,11 @@ public extern U8 *ToggleZorNotZ(U8 *name);
 public extern U8 *FileNameTempTxt();
 
 #help_index "File/Internal"
+public extern U0 DirContextDel(CDirContext *dirc);
+public extern CDirContext *DirContextNew(U8 *mask,
+	Bool make_mask=FALSE,Bool make_dirs=FALSE,Bool no_mask=FALSE);
 public extern Bool DirNew(CDrv *dv,U8 *cur_dir,
 	CDirEntry *tempde,Bool free_old_chain=TRUE);
-public extern U0 FileAccessDel(CFileAccess *fa);
-public extern CFileAccess *FileAccessNew(U8 *mask,
-	Bool make_mask=FALSE,Bool make_dirs=FALSE,Bool no_mask=FALSE);
 extern I64 FileAttr(U8 *name,I64 old_attr=0);
 
 #help_index "File/Low Level"
@@ -342,8 +343,6 @@ public extern Bool RBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 public extern I64 RClusters(CDrv *dv,U8 *buf,I64 c,I64 cnt);
 public extern I64 RClustersBlks(CDrv *dv,U8 *buf,I64 c,I64 blks);
 extern U0 RedSeaFreeClusters(CDrv *dv,I64 c,I64 cnt);
-extern I64 SysDel(U8 *wild,Bool make_mask);	//this is dangerous
-extern CDirEntry *SysFilesFind(U8 *files_find_mask,I64 fuf_flags);
 public extern Bool WBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 public extern I64 WClusters(CDrv *dv,U8 *buf,I64 c,I64 cnt);
 public extern I64 WClustersBlks(CDrv *dv,U8 *buf,I64 c,I64 blks);
@@ -390,23 +389,12 @@ public _extern _HASH_ADD_AFTER U0 HashAddAfter(CHash *temph,
 	CHash *pred,CHashTable *table); //Add hash entry after entry.
 public _extern _HASH_BUCKET_FIND CHash **HashBucketFind(
 	U8 *needle_str,CHashTable *haystack_table);
-public extern U0 HashDel(CHashSrcSym *temph);
 public _extern _HASH_FIND CHash *HashFind(U8 *needle_str,
 	CHashTable *haystack_table,I64 mask,I64 instance=1);
-public extern CHashGeneric *HashGenericAdd(U8 *name,
-	I64 type,I64 val=0,I64 u8=0,I64 u16=0,CTask *task=NULL);
-public extern CHashGeneric *HashPublic(U8 *st,I64 mask,Bool val=TRUE);
-public _extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
-	I64 instance=1);//instance must match temph's
 public _extern _HASH_SINGLE_TABLE_FIND CHash *HashSingleTableFind(
 	U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 public _extern _HASH_STR I64 HashStr(U8 *st);
-public extern U0 HashTableDel(CHashTable *table);
 public extern CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL);
-public extern I64 HashTablePurge(CHashTable *table);
-public extern I64 HashTypeNum(CHash *temph);
-public extern I64 HashVal(CHash *temph);
-extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
 
 #help_index "Hash/Frame"
 #help_file "::/Doc/Frame"
@@ -415,10 +403,23 @@ public extern CHashGeneric *FramePtrAdd(U8 *name,I64 val=0,CTask *task=NULL);
 public extern I64 FramePtrDel(U8 *name,CTask *task=NULL);
 public extern I64 FramePtrSet(U8 *name,I64 val,CTask *task=NULL);
 
-#help_index "Hash;Char/Lists"
+#help_index "Hash/System"
+public extern U0 HashDel(CHashSrcSym *temph);
+public extern CHashGeneric *HashGenericAdd(U8 *name,
+	I64 type,I64 val=0,I64 u8=0,I64 u16=0,CTask *task=NULL);
+public extern CHashGeneric *HashPublic(U8 *st,I64 mask,Bool val=TRUE);
+public _extern _HASH_REM_DEL Bool HashRemDel(CHash *temph,CHashTable *table,
+	I64 instance=1);//instance must match temph's
+public extern U0 HashTableDel(CHashTable *table);
+public extern I64 HashTablePurge(CHashTable *table);
+public extern I64 HashTypeNum(CHash *temph);
+public extern I64 HashVal(CHash *temph);
+extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
+
+#help_index "Hash/System;Char/Lists"
 public extern I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table);
 
-#help_index "Hash;Define;Char/Define;Char/Lists"
+#help_index "Hash/System;Define;Char/Define;Char/Lists"
 public extern I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table);
 
 #help_index "Help System;Debugging/Debugger"
@@ -470,7 +471,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3683] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3686] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);

@@ -85,7 +85,7 @@ LBts(&sys_run_level,RLf_REGISTRY);
 Cd("::/Adam");;
 #include "WallPaper"
 
-if (IsDrvWritable)
+if (DrvIsWritable)
   MkDir("/Temp"); //Good to have a Temp
 
 #exe {OptOff(OPTf_WARN_PAREN);};

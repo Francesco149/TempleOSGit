@@ -599,31 +599,29 @@ U0 PutExportTree(CDirEntry *ent,I64 src_dir_len,I64 dst_dir_len,
   }
 }
 
+extern CDirEntry *FilesFind2(U8 *files_find_mask,I64 fuf_flags);
 //Adapted from [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree
 U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
   Bool debug=FALSE)
 {
-  CFileAccess *fa;
+  CDirContext *dirc;
   CDirEntry *ent;
   I64 dst_dir_len,src_dir_len;
   U8 *dst_dir,*src_dir;
 
-  fa=FileAccessNew(src_mask,TRUE);
-  if (fa) {
-    ent=SysFilesFind(fa->mask,1<<FUf_RECURSE);
+  if (dirc=DirContextNew(src_mask,TRUE)) {
+    ent=FilesFind2(dirc->mask,1<<FUf_RECURSE);
     src_dir=CurDir;
     src_dir_len=StrLen(src_dir);
     Free(src_dir);
-    FileAccessDel(fa);
-    fa=FileAccessNew(dst_mask,TRUE,TRUE);
-    if (fa) {
+    DirContextDel(dirc);
+    if (dirc=DirContextNew(dst_mask,TRUE,TRUE)) {
       dst_dir=CurDir;
       dst_dir_len=StrLen(dst_dir);
       PutExportTree(ent,src_dir_len,dst_dir_len,dst_dir,debug);
-      FileAccessDel(fa);
+      DirContextDel(dirc);
       Free(dst_dir);
     }
-    DirTreeDel(ent);
   }
 }
 

@@ -382,7 +382,7 @@ U0 FMMakeISO(CDoc *doc)
 	st=MStrPrint("%s*",tempde->full_name);
       else
 	st=MStrPrint("%s/*",tempde->full_name);
-      CDFileCreate(,st);
+      ISOFileCreate(,st);
       Free(st);
       Silent(OFF);
     }

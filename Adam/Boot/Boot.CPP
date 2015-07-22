@@ -2,7 +2,7 @@
 #include "BootHD"
 #include "BootMHD"
 #include "BootMHD2"
-#include "DskCDDVD"
+#include "DskISOFile"
 #include "BootIns"
 
 #help_index "Call"

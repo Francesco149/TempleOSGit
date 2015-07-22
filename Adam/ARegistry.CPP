@@ -30,7 +30,7 @@ public Bool RegSetDftEntry(U8 *path,U8 *val,Bool is_adam_entry=FALSE)
       else
 	Adam("%s",val);
     }
-    if (IsDrvWritable(':'))
+    if (DrvIsWritable(':'))
       DocWrite(sys_registry_doc);
     result=FALSE;
   } else
@@ -58,7 +58,7 @@ public Bool RegWriteBranch(U8 *path,U8 *fmt,...)
     DocCut(sys_registry_doc,tree_branch,end_indent);
   DocTreeMake(sys_registry_doc,path);
   DocPrint(sys_registry_doc,"%s",buf);
-  if (IsDrvWritable(':'))
+  if (DrvIsWritable(':'))
     DocWrite(sys_registry_doc);
   if (unlock_doc)
     DocUnlock(sys_registry_doc);

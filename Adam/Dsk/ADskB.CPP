@@ -30,7 +30,7 @@ I64 DirTreeSerializeFill(CDirEntry *tempde,U8 *dst)
   return result+1;
 }
 public U8 *DirTreeSerialize(CDirEntry *tempde,I64 *_size=NULL)
-{//Serialize tree returned from [C:/Kernel/Dsk/DskB.CPP.Z,186] FilesFind() into a one contiguous U8 array.
+{//Serialize tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind() into a one contiguous U8 array.
   I64 size=DirTreeSerializeSize(tempde);
   U8 *buf=MAlloc(size);
   DirTreeSerializeFill(tempde,buf);
@@ -54,7 +54,7 @@ U8 *DirTreeUnserialize2(U8 *src,CDirEntry **tempde)
   return src;
 }
 public CDirEntry *DirTreeUnserialize(U8 *src)
-{//Unserialize tree to make it like a tree returned from [C:/Kernel/Dsk/DskB.CPP.Z,186] FilesFind().
+{//Unserialize tree to make it like a tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().
   CDirEntry *tempde=NULL;
   DirTreeUnserialize2(src,&tempde);
   return tempde;

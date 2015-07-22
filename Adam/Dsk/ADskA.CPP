@@ -24,7 +24,7 @@ public U8 *DCluster(I64 c,Bool write=FALSE,I64 num=0)
 //If you set write to TRUE, the cluster will
   //be written when you press <ESC>.
   //See [C:/Demo/Dsk/DskRaw.CPP,1].
-  //Do [C:/Kernel/Dsk/DskB.CPP.Z,228] Dir("*",TRUE); to get cluster numbers of files.
+  //Do [C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir("*",TRUE); to get cluster numbers of files.
   U8 *buf=MAlloc(Fs->cur_dv->spc<<BLK_SIZE_BITS);
   c=ClusterNumNext(Fs->cur_dv,c,num);
   RClusters(Fs->cur_dv,buf,c,1);
@@ -78,7 +78,7 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
 }
 
 public I64 FileCnt(CDirEntry *tempde)
-{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2463] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2465] CDirEntry tree.
   I64 cnt=0;
   while (tempde) {
     if (tempde->attr&RS_ATTR_DIR)
@@ -98,13 +98,13 @@ public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
   //be stored compressed.  If not ".Z"
   //it will be stored uncompressed.
   Bool result=TRUE;
-  CFileAccess *fa;
+  CDirContext *dirc;
   CDirEntry *tempde,*tempde1;
   U8 *st;
   if (!(tempde=FilesFind(src_files_find_mask,FUF_CLUSTER_ORDER)))
     return FALSE;
   if (IsDir(dst_files_find_mask)) {
-    if (fa=FileAccessNew(dst_files_find_mask,TRUE)) {
+    if (dirc=DirContextNew(dst_files_find_mask,TRUE)) {
       while (tempde) {
 	tempde1=tempde->next;
 	if (!(tempde->attr & RS_ATTR_DIR)) {
@@ -116,7 +116,7 @@ public Bool Copy(U8 *src_files_find_mask,U8 *dst_files_find_mask=".")
 	DirEntryDel(tempde);
 	tempde=tempde1;
       }
-      FileAccessDel(fa);
+      DirContextDel(dirc);
     }
     return result;
   } else
@@ -155,7 +155,7 @@ public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask,
 	Bool no_mask=TRUE)
 {//Copy directory tree.
 //Returns the count of copied files (not dirs).
-  CFileAccess *fa;
+  CDirContext *dirc;
   CDirEntry *tempde=NULL;
   I64 result=0,i1,i2;
   U8 *st1,*st2;
@@ -170,18 +170,18 @@ public I64 CopyTree(U8 *src_files_find_mask,U8 *dst_files_find_mask,
   }
   Free(st1);
   Free(st2);
-  if (fa=FileAccessNew(src_files_find_mask,TRUE,,no_mask)) {
-    tempde=SysFilesFind(fa->mask,FUF_RECURSE);
+  if (dirc=DirContextNew(src_files_find_mask,TRUE,,no_mask)) {
+    tempde=FilesFind(dirc->mask,FUF_RECURSE);
     st1=CurDir;
-    FileAccessDel(fa);
+    DirContextDel(dirc);
     i1=StrLen(st1);
     if (i1==3) i1--;
-    if (fa=FileAccessNew(dst_files_find_mask,TRUE,TRUE)) {
+    if (dirc=DirContextNew(dst_files_find_mask,TRUE,TRUE)) {
       st2=CurDir;
       i2=StrLen(st2);
       if (i2==3) i2--;
       result=CopyTree2(tempde,i1,i2,st2);
-      FileAccessDel(fa);
+      DirContextDel(dirc);
       Free(st2);
     }
     DirTreeDel(tempde);
@@ -199,7 +199,7 @@ I64 DelTreeDirs(CDirEntry *tempde1)
     if (tempde1->attr & RS_ATTR_DIR) {
       if (tempde1->sub)
 	result+=DelTreeDirs(tempde1->sub);
-      result+=SysDel(tempde1->full_name,TRUE);
+      result+=Del(tempde1->full_name,TRUE,TRUE);
     }
     DirEntryDel(tempde1);
     tempde1=tempde2;
@@ -216,7 +216,7 @@ I64 DelTreeFiles(CDirEntry *tempde1)
       if (tempde1->sub)
 	result+=DelTreeFiles(tempde1->sub);
     } else
-      result+=SysDel(tempde1->full_name,FALSE);
+      result+=Del(tempde1->full_name,FALSE,TRUE);
     DirEntryDel(tempde1);
     tempde1=tempde2;
   }
@@ -229,8 +229,8 @@ public I64 DelTree(U8 *files_find_mask,U8 *fu_flags=NULL)
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
   if (IsDir(files_find_mask)) {
     result=DelTreeDirs(FilesFind(files_find_mask,fuf_flags));
-    result+=SysDel(files_find_mask,TRUE);
-    result+=SysDel(files_find_mask,FALSE);
+    result+=Del(files_find_mask,TRUE,TRUE);
+    result+=Del(files_find_mask,FALSE,TRUE);
   } else
     result=DelTreeFiles(FilesFind(files_find_mask,fuf_flags));
   return result;
@@ -267,7 +267,7 @@ public U0 Touch(U8 *files_find_mask,U8 *attr="+?",
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HPP.Z,2436] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HPP.Z,2438] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

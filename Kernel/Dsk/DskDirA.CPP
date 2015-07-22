@@ -1,5 +1,5 @@
 Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
-{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2463] CDirEntry node.
+{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2465] CDirEntry node.
   switch (dv->type) {
     case DVT_REDSEA:
       return RedSeaDirNew(dv,cur_dir,tempde,free_old_chain);
@@ -15,7 +15,7 @@ Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
 }
 
 U0 DirEntryDel(CDirEntry *tempde)
-{//Free node returned from [C:/Kernel/Dsk/DskB.CPP.Z,186] FilesFind().  Doesn't Free user_data.
+{//Free node returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
@@ -24,7 +24,7 @@ U0 DirEntryDel(CDirEntry *tempde)
 }
 
 U0 DirEntryDel2(CDirEntry *tempde)
-{//Free node returned from [C:/Kernel/Dsk/DskB.CPP.Z,186] FilesFind().  Frees user_data
+{//Free node returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
@@ -34,7 +34,7 @@ U0 DirEntryDel2(CDirEntry *tempde)
 }
 
 U0 DirTreeDel(CDirEntry *tempde)
-{//Free tree returned from [C:/Kernel/Dsk/DskB.CPP.Z,186] FilesFind().  Doesn't Free user_data.
+{//Free tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
@@ -47,7 +47,7 @@ U0 DirTreeDel(CDirEntry *tempde)
 }
 
 U0 DirTreeDel2(CDirEntry *tempde)
-{//Free tree returned from [C:/Kernel/Dsk/DskB.CPP.Z,186] FilesFind().  Frees user_data
+{//Free tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
@@ -164,35 +164,6 @@ CDirEntry *DirFilesFlatten(CDirEntry *tempde,CDirEntry **_result,I64 fuf_flags)
   return _result;
 }
 
-CDirEntry *SysFilesFind(U8 *files_find_mask,I64 fuf_flags)
-{
-  CDrv *dv=Fs->cur_dv;
-  CDirEntry *result=NULL;
-  DrvChk(dv);
-  switch (dv->type) {
-    case DVT_REDSEA:
-      result=RedSeaFilesFind(files_find_mask,fuf_flags);
-      break;
-    case DVT_FAT32:
-      result=FAT32FilesFind(files_find_mask,fuf_flags);
-      break;
-    case DVT_ISO9660:
-      result=ISO1FilesFind(files_find_mask,fuf_flags);
-      break;
-    default:
-      PrintErr("File System Not Supported\n");
-      result=NULL;
-  }
-  if (result) {
-    DirFilesSort(&result,SK_NAME);
-    if (fuf_flags&(FUF_FLATTEN_TREE|FUF_JUST_FILES))
-      DirFilesFlatten(result,&result,fuf_flags);
-    if (fuf_flags&FUF_CLUSTER_ORDER)
-      DirFilesSort(&result,SK_CLUSTER);
-  }
-  return result;
-}
-
 U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
 {//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file,line link to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,654] DocPut.
   U8 *buf;
@@ -238,59 +209,4 @@ U0 PutDirLink(U8 *dirname)
     "$MA,T=\"%s\",LM=\"Cd(\\\"%s\\\");Dir;\n\"$",dirname,buf;
     Free(buf);
   }
-}
-
-I64 Dir2(U8 *files_find_mask,I64 fuf_flags,Bool full)
-{
-  CDirEntry *tempde1=NULL,*tempde2;
-  U8 *st;
-  CDateStruct ds;
-  I64 csize=0xFFFF,c=0xFFFF,result=0;
-  tempde1=SysFilesFind(files_find_mask,fuf_flags);
-  if (!(st=CurDir))
-    PrintErr("Invalid Drive\n");
-  else {
-    if (tempde1) {
-//Find max columns
-      tempde2=tempde1;
-      while (tempde2) {
-	if (tempde2->size>csize)
-	  csize=tempde2->size;
-	if (tempde2->cluster>c)
-	  c=tempde2->cluster;
-	tempde2=tempde2->next;
-      }
-      csize=Bsr(csize)/4+1;
-      c=Bsr(c)/4+1;
-
-      "$MA,T=\"Directory\",LM=\"PopUpCd;Dir;\n\"$ of %s\n",st;
-      if (full)
-	"__DATE__ __TIME__ %*ts %*ts\n",
-	      csize,"SIZE",c,"CLUSTER";
-      else
-	"DATE_ TIME_ %*ts\n",csize,"SIZE";
-      while (tempde1) {
-	tempde2=tempde1->next;
-	result++;
-	if (full)
-	  "%D %T %0*tX %0*tX ",tempde1->datetime,tempde1->datetime,
-		csize,tempde1->size,c,tempde1->cluster;
-	else {
-	  Date2Struct(&ds,tempde1->datetime+local_time_offset);
-	  "%02d/%02d %02d:%02d %0*tX ",ds.mon,ds.day_of_mon,ds.hour,ds.min,
-		csize,tempde1->size;
-	}
-	if (tempde1->attr & RS_ATTR_DIR)
-	  PutDirLink(tempde1->name);
-	else
-	  PutFileLink(tempde1->name);
-	'\n';
-	DirEntryDel(tempde1);
-	tempde1=tempde2;
-      }
-    } else
-      "No matching entries\n";
-    Free(st);
-  }
-  return result;
 }

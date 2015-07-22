@@ -2,7 +2,17 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----07/13/15 20:33:35----
+----07/22/15 09:59:18----
+
+----07/20/15 19:48:53----
+* Added args to [C:/Kernel/Dsk/DskCopy.CPP.Z,82] Del().
+* Rearranged disk code.
+* [C:/Home/AdamWrappers.CPP.Z,13]
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2675] CDirContext");
+* [C:/Home/AdamWrappers.CPP.Z,13]
+R("IsDrvWritable","[C:/Kernel/Dsk/DskDrv.CPP.Z,148] DrvIsWritable");
+* [C:/Home/AdamWrappers.CPP.Z,13]
+R("CDFileCreate","[C:/Adam/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 
 ----07/10/15 05:05:41----
 * Turned-off preemption in [C:/Adam/WinB.CPP.Z,421] WinMgrTask().
@@ -35,11 +45,11 @@ Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 * Added [C:/Doc/HelloWorld.TXT.Z,1].
 
 ----05/26/15 21:10:30----
-* Added [C:/Kernel/KernelA.HPP.Z,3523] DCF_PALETTE.
+* Added [C:/Kernel/KernelA.HPP.Z,3526] DCF_PALETTE.
 * [C:/Home/AdamWrappers.CPP.Z,13]
-R("VGAPaletteColorGet","[C:/Adam/Gr/GrPalette.CPP.Z,46] GrPaletteColorGet()");
+R("VGAPaletteColorGet","[C:/Adam/Gr/GrPalette.CPP.Z,46] GrPaletteColorGet");
 * [C:/Home/AdamWrappers.CPP.Z,13]
-R("VGAPaletteColorSet","[C:/Adam/Gr/GrPalette.CPP.Z,30] GrPaletteColorSet()");
+R("VGAPaletteColorSet","[C:/Adam/Gr/GrPalette.CPP.Z,30] GrPaletteColorSet");
 
 ----05/23/15 09:46:51----
 * Cleaned-up [C:/Linux/TOSZ.CPP,1].
@@ -79,7 +89,7 @@ PostMsgWait");
 
 ----05/08/15 16:58:46----
 * Cleaned-up Compiler.
-* [C:/Home/AdamWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2077]
+* [C:/Home/AdamWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2079]
 CCmpCtrl");
 * [C:/Home/AdamWrappers.CPP.Z,13] R("LexNew","[C:/Compiler/Lex.CPP.Z,28]
 CmpCtrlNew");
@@ -149,11 +159,11 @@ Mat4x4MulMat4x4New").
 * Got rid of GrScaleNew(), GrRotXNew(), GrRotYNew() and GrRotZNew().
 
 ----04/30/15 19:13:07----
-* Added [C:/Kernel/KernelA.HPP.Z,2621] CDrv.fat32_local_time_offset.
+* Added [C:/Kernel/KernelA.HPP.Z,2623] CDrv.fat32_local_time_offset.
 * Cleaned-up [C:/Adam/AHash.CPP.Z,149] Who() and compiler mapfiles.
 
 ----04/11/15 05:48:05----
-* Fixed bug in [C:/Kernel/Dsk/DskA.CPP.Z,195] DrvMapBlkClean().
+* Fixed bug in [C:/Kernel/Dsk/DskDrv.CPP.Z,75] DrvMapBlkClean().
 
 ----04/09/15 04:42:31----
 * Improved [C:/Demo/Games/TreeCheckers.CPP.Z,1].
@@ -182,7 +192,7 @@ Mat4x4MulMat4x4New").
 
 ----03/23/15 07:21:26----
 * Updated [C:/Demo/Graphics/Pick.CPP.Z,1].
-* Modified [C:/Kernel/KernelA.HPP.Z,3535] DCF_LOCATE_NEAREST.
+* Modified [C:/Kernel/KernelA.HPP.Z,3538] DCF_LOCATE_NEAREST.
 
 ----03/21/15 09:10:58----
 * Fixed bug in sprite edit of ellipses & polygons.
@@ -231,7 +241,7 @@ Mat4x4MulMat4x4New").
 
 ----02/12/15 16:10:14----
 * Overhauled [C:/Demo/WebLogExample/WebLogRep.CPP,1].
-* Added [C:/Kernel/KernelA.HPP.Z,1225] EDF_WAS_WRITE.
+* Added [C:/Kernel/KernelA.HPP.Z,1227] EDF_WAS_WRITE.
 
 ----02/12/15 03:48:28----
 * Overhauled ::/Demo/AcctExample
@@ -282,8 +292,8 @@ not just /Apps.
 ----01/15/15 03:13:07----
 * Added eye-dropper-like 't' for transparent color in the sprite <CTRL-r> 
 editor.
-* Got rid of [C:/Kernel/KernelA.HPP.Z,689] CHash.next_added.
-* Reduced [C:/Kernel/KernelA.HPP.Z,2790] TASK_HASH_SIZE size.
+* Got rid of [C:/Kernel/KernelA.HPP.Z,616] CHash.next_added.
+* Reduced [C:/Kernel/KernelA.HPP.Z,2792] TASK_HASH_SIZE size.
 
 ----01/10/15 15:12:30----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("Grep","Find");

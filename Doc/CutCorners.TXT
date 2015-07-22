@@ -42,3 +42,7 @@ compiler does calculations with 64-bit.
 * [C:/Doc/Print.TXT.Z,1] Print() uses [C:/Kernel/StrPrint.CPP.Z,218]
 StrPrintJoin().  You cannot use vastly over-sized fields for 
 %f.
+
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,591] GrEllipse3() is broken on
+transformations.
+ 
