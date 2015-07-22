@@ -217,7 +217,7 @@ I64 MemberLstSize(CHashClass *tempc)
 }
 
 U8 *LexExtStr(CCmpCtrl *cc,I64 *_size=NULL,Bool lex_next=TRUE)
-{//Lex [C:/Kernel/KernelA.HPP.Z,1984] TK_STR's to one combined str. _size includes terminator.
+{//Lex [C:/Kernel/KernelA.HPP.Z,1985] TK_STR's to one combined str. _size includes terminator.
   I64 len=cc->cur_str_len,len1,len2;
   U8 *st=cc->cur_str,*st1,*st2;
   cc->cur_str=NULL;

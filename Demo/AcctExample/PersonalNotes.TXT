@@ -23,7 +23,7 @@ think so.  (Probably not.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3013] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3014] CCtrl.
 
 * Add Redo to editor.
 
@@ -152,7 +152,7 @@ God says I might want to change to float.
 * Might want to convert some Preempt() to Cli
 
 * [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3413] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3415] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -213,7 +213,7 @@ freeing old task memory. (Prolly never gonna do anything about this.)
 * Window mgr needs to do DOC operations on posted messages from mouse.
 Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
 
-* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,640] Dbg()?  (maybe)
+* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,644] Dbg()?  (maybe)
 
 * [C:/Adam/DolDoc/DocRecalcB.CPP.Z,1] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
@@ -245,7 +245,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3530] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -290,7 +290,7 @@ and possibly [C:/Kernel/Dsk/DskDirContext.CPP.Z,21] DirContextNew()
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2843] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2844] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.

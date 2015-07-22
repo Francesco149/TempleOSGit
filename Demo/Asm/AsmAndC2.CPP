@@ -19,7 +19,7 @@ JIFFIES_MSG:	DU8 "Jiffies:",0;
 
 _BEEPS2::
 //You can clobber RAX,RBX,RCX,RDX,R8,R9.  The compiler expects that.
-//See [C:/Kernel/KernelA.HPP.Z,1703] REGG_C_CLOBBERED and [C:/Kernel/KernelA.HPP.Z,1705] REGG_C_TEMP_CLOBBERED.
+//See [C:/Kernel/KernelA.HPP.Z,1704] REGG_C_CLOBBERED and [C:/Kernel/KernelA.HPP.Z,1706] REGG_C_TEMP_CLOBBERED.
 	PUSH	RBP
 	MOV	RBP,RSP
 	MOV	RCX,U64 SF_ARG1[RBP] //[C:/Kernel/KernelA.HPP.Z,1] SF_ARG1
@@ -34,7 +34,7 @@ _BEEPS2::
 	POP	RCX
 	LOOP	@@05
 
-	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1706] REGG_C_LOCAL_VARS & [C:/Kernel/KernelA.HPP.Z,1707] REGG_C_LOCAL_NON_PTR_VARS
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1707] REGG_C_LOCAL_VARS & [C:/Kernel/KernelA.HPP.Z,1708] REGG_C_LOCAL_NON_PTR_VARS
 	MOV	RSI,JIFFIES_MSG
 	CALL	PUT_STR
 	POP	RSI

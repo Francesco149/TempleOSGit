@@ -101,19 +101,19 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP.Z,1].
 
 * Use [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to adjust the size of the
-cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1325] CDoc 
+cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1326] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3220] CTask,
-[C:/Kernel/KernelA.HPP.Z,1160] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2464]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3221] CTask,
+[C:/Kernel/KernelA.HPP.Z,1161] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2465]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/Task.CPP.Z,209] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2789] DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2790] DFT_STK, and using
 [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -135,15 +135,15 @@ check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1464] OPTf_WARN_PAREN) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1465] OPTf_WARN_PAREN) to find unnecessary
 parentheses in code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1465] OPTf_WARN_DUP_TYPES) to find unnecessary
+OptOn([C:/Kernel/KernelA.HPP.Z,1466] OPTf_WARN_DUP_TYPES) to find unnecessary
 local var type 
 statements.
 
-* [C:/Compiler/CMisc.CPP.Z,1] OptEqu([C:/Kernel/KernelA.HPP.Z,1460]
+* [C:/Compiler/CMisc.CPP.Z,1] OptEqu([C:/Kernel/KernelA.HPP.Z,1461]
 OPTf_ECHO,ON) can be placed in [C:/Adam.CPP.Z,1] Adam.CPP to echo start-up
 scripts.
 
@@ -227,7 +227,7 @@ DrvTextAttrSet().  Place calls
 to this in [C:/Home/AdamLocalize.CPP,1].
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1325] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1326] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP.Z,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -292,10 +292,10 @@ cnts.jiffies.
 
 * Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
 [C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to find leaks.  Don't be
-confused by [C:/Kernel/KernelA.HPP.Z,1325] CDoc 
+confused by [C:/Kernel/KernelA.HPP.Z,1326] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2700]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2701]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,467] Type() to display .BMP or

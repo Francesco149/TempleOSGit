@@ -354,7 +354,7 @@ U0 BSPStartMP()
     StrPrint(buf,"Seth Task CPU#%d",i);
     task=Spawn(&APSethInit,NULL,buf,,,SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HPP.Z,3220] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HPP.Z,3221] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }

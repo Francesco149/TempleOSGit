@@ -91,8 +91,7 @@ U8 *FileRead(U8 *filename,I64 *_size=NULL,I64 *_attr=NULL)
   return result;
 }
 
-I64 FileWrite(U8 *filename,U8 *fbuf,
-   I64 size,CDate cdt=0,I64 attr=0)
+I64 FileWrite(U8 *filename,U8 *fbuf,I64 size,CDate cdt=0,I64 attr=0)
 {//Write whole file to disk.
   I64 c=0;
   CHashGeneric *temph;
