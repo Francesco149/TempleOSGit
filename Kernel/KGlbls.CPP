@@ -13,17 +13,19 @@ U8 *reverse_bits_table, //Table with U8 bits reversed
 CDate local_time_offset;
 F64 *pow10_I64;
 
-CSndGlbls	snd;
+CAutoCompleteDictGlbls acd;
+CAutoCompleteGlbls ac;
 CCntsGlbls	cnts={1,0,2676302000,2676302,2676302000,0,0,0,FALSE};
-CIPStateGlbls	ip,ip_last;
+CDbgGlbls	dbg;
+CDevGlbls	dev;
+CDskGlbls	dsk;
 CGridGlbls	ip_grid; //See [C:/Demo/Graphics/Grid.CPP.Z,1].
-CMouseStateGlbls mouse,mouse_last;
+CIPStateGlbls	ip,ip_last;
 CKbdStateGlbls	kbd;
 CKeyDevGlbls	keydev;
-CDevGlbls	dev;
+CMouseStateGlbls mouse,mouse_last;
+CSndGlbls	snd;
 CTextGlbls	text;
-CDbgGlbls	dbg;
-CDskGlbls	dsk;
 
 U8  *(*fp_getstr2)(I64 flags=0);
 U0 (*fp_update_ctrls)(CTask *task);

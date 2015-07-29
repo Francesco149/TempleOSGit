@@ -70,7 +70,7 @@ U0 HashDel(CHashSrcSym *temph)
       Free(temph->dbg_info);
     if (temph->type & (HTT_FUN | HTT_CLASS))
 //Assumes code not on heap, so doesn't Free.
-    //[C:/Compiler/LexLib.CPP.Z,158] MemberLstDel() is an import to the Kernel module
+    //[C:/Compiler/LexLib.CPP.Z,157] MemberLstDel() is an import to the Kernel module
       MemberLstDel(temph);
     else if (temph->type&HTT_DEFINE_STR)
       Free(temph(CHashDefineStr *)->data);
@@ -152,7 +152,7 @@ CHashGeneric *HashGenericAdd(U8 *name,I64 type,
 }
 
 U0 HashSrcFileSet(CCmpCtrl *cc,CHashSrcSym *h,I64 line_num_offset=0)
-{//Set [C:/Kernel/KernelA.HPP.Z,717] CHashSrcSym link and help_index by cur cc pos.
+{//Set [C:/Kernel/KernelA.HPP.Z,718] CHashSrcSym link and help_index by cur cc pos.
   CLexFile *tempf=cc->lex_include_stk;
   I64 line_num=tempf->line_num+line_num_offset;
   if (line_num<1) line_num=1;

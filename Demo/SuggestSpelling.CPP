@@ -12,7 +12,7 @@ U8 *SuggestMatchForm(U8 *src)
     if (!StrOcc("AEIOU",ch)) {
       if (ch=='C') ch='K';
       if (ch=='Z') ch='S';
-      if (ch!=ch1) //F64 chars to single
+      if (ch!=ch1) //double chars to single
 	*dst++=ch;
     }
     ch1=ch;
@@ -27,7 +27,7 @@ U8 *SuggestMatchForm(U8 *src)
   I16 block; //definition offset in ::/Adam/AutoComplete/ACDefs.DAT
 */
 
-U0 SuggestSpelling(U8 *word)
+Bool SuggestSpelling(U8 *word)
 {
   U8 *dict=acd.word_lst,
 	*pf=SuggestMatchForm(word),
@@ -35,20 +35,22 @@ U0 SuggestSpelling(U8 *word)
   I64 len=StrLen(pf),
 	num_cols=Fs->win_width/16,
 	col=0;
-  while (*dict) {
-    wf=SuggestMatchForm(dict+1);
-    if (!StrNCmp(pf,wf,len)) {
-      "%16s",dict+1;
-      if (++col==num_cols) {
-	col=0;
-	'\n';
+  if (len)
+    while (*dict) {
+      wf=SuggestMatchForm(dict+1);
+      if (!StrNCmp(pf,wf,len)) {
+	"%16s",dict+1;
+	if (++col>=num_cols) {
+	  col=0;
+	  '\n';
+	}
       }
+      Free(wf);
+      dict+=StrLen(dict+1)+4;
     }
-    Free(wf);
-    dict+=StrLen(dict+1)+4;
-  }
   Free(pf);
   '\n';
+  return ToBool(len);
 }
 
 U0 SuggestSpellingDemo()
@@ -69,15 +71,20 @@ U0 SuggestSpellingDemo()
 
 U0 CtrlAltL(I64)
 {
-//[C:/Adam/AutoComplete/AutoComplete.CPP.Z,10] ac.cur_word is only set if AutoComplete
+//[C:/Kernel/KernelA.HPP.Z,1461] ac.cur_word is only set if AutoComplete
   //is running.
-  PopUp("SuggestSpelling(ac.cur_word);View;");
+  if (!TaskValidate(ac.task)) {
+    AutoComplete(ON);
+    Sleep(500);
+  }
+  PopUp("if (SuggestSpelling(ac.cur_word)) View;");
 }
 
 if (Fs!=adam_task)
   SuggestSpellingDemo;
 else {
-  CtrlAltLetCBSet('L',&CtrlAltL,"Cmd/Suggest Spelling");
+  CtrlAltLetCBSet('L',&CtrlAltL,"Cmd   /Suggest Spelling",
+	"Cmd   /Suggest Spelling");
 //Appears in the Adam Task Window
   "<CTRL-ALT-l> installed\n";
 }

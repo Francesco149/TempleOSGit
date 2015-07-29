@@ -100,7 +100,8 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [C:/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP
 +] System Programmer Help
   [C:/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
-[C:/Kernel/KHashA.CPP.Z,1] Hash Tables
+[Hash,1] Hash Tables
+[C:/Doc/FileLowLevel.TXT.Z,1] Dsk Stk
 [Keyboard Devices/System,1] Keyboard Devices
 [C:/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
 [C:/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2

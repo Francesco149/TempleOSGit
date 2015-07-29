@@ -1,8 +1,8 @@
 //Place this file in /Home and change
 //anything you want.
 
-OptOn(OPTf_WARN_PAREN);
-OptOn(OPTf_WARN_DUP_TYPES);
+Option(OPTf_WARN_PAREN,ON);
+Option(OPTf_WARN_DUP_TYPES,ON);
 
 KbdTypeMatic(0);
 

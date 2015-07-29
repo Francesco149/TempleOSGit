@@ -128,3 +128,18 @@ U0 WinDerivedValsUpdate(CTask *task=NULL)
   }
   POPFD
 }
+
+Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE)
+{//Is pixel (x,y) inside task's win?
+  if (!task) task=Fs;
+  if (TaskValidate(task) && Bt(&task->display_flags,DISPLAYf_SHOW)) {
+    if (border) {
+      if (task->border_pix_left<=x<=task->border_pix_right &&
+	    task->border_pix_top<=y<=task->border_pix_bottom)
+	return TRUE;
+    } else if (task->pix_left<=x<=task->pix_right &&
+	  task->pix_top<=y<=task->pix_bottom)
+      return TRUE;
+  }
+  return FALSE;
+}

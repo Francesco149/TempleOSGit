@@ -109,9 +109,9 @@ Bool MyPutKey(I64 ch,I64 sc)
       case SC_F6:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
-	    KeyDescSet("Misc/Ins My URL");
+	    KeyDescSet("Misc  /Ins My URL");
 	  else
-	    KeyDescSet("Misc/Ins Datetime");
+	    KeyDescSet("Misc  /Ins Datetime");
 	} else {
 	  if (sc & SCF_SHIFT)
 	    InsMyURL;
@@ -122,9 +122,9 @@ Bool MyPutKey(I64 ch,I64 sc)
       case SC_F7:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
-	    KeyDescSet("God Book Passage");
+	    KeyDescSet("God   /Book Passage");
 	  else
-	    KeyDescSet("God Doodle File");
+	    KeyDescSet("God   /Doodle File");
 	} else {
 //[C:/Adam/God/HSNotes.TXT.Z,1]
 	  if (sc & SCF_SHIFT) {
@@ -143,9 +143,9 @@ Bool MyPutKey(I64 ch,I64 sc)
       case SC_F8:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc & SCF_SHIFT)
-	    KeyDescSet("Misc/Ins Dir Links");
+	    KeyDescSet("Misc  /Ins Dir Links");
 	  else
-	    KeyDescSet("Misc/Ins File Link");
+	    KeyDescSet("Misc  /Ins File Link");
 	} else {
 	  if (sc & SCF_SHIFT)
 	    InsDirLinks;
@@ -161,26 +161,26 @@ Bool MyPutKey(I64 ch,I64 sc)
 	switch (ch) {
 	  case 'a':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/AutoComplete(ON);");
+	      KeyDescSet("Win   /AutoComplete On");
 	    else
 	      AutoComplete(ON);
 	    return TRUE;
 	  case 'A':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/AutoComplete;");
+	      KeyDescSet("Win   /AutoComplete Off");
 	    else
 	      AutoComplete;
 	    return TRUE;
 
 	  case 'h':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/Tile Horizontally");
+	      KeyDescSet("Win   /Tile Horizontally");
 	    else
 	      WinTileHorz;
 	    return TRUE;
 	  case 'm':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/Maximize");
+	      KeyDescSet("Win   /Maximize");
 	    else {
 	      WinMax;
 	      WinBorder;
@@ -188,20 +188,20 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    return TRUE;
 	  case 'v':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/Tile Vertically");
+	      KeyDescSet("Win   /Tile Vertically");
 	    else
 	      WinTileVert;
 	    return TRUE;
 	  case 'V':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Sys/Frame Grabber Toggle");
+	      KeyDescSet("Sys   /Frame Grabber Toggle");
 	    else
 	      FrameGrabberToggle;
 	    return TRUE;
 
 	  case 'l':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/Put Link to Cur Pos on Clipboard");
+	      KeyDescSet("Edit  /Put Link to Cur Pos on Clipboard");
 	    else {
 	      ClipboardDel;
 	      st1=FileNameAbs(BIBLE_FILENAME);
@@ -219,7 +219,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    return TRUE;
 	  case 'L':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/Place Anchor, Put Link to Clipboard");
+	      KeyDescSet("Edit  /Place Anchor, Put Link to Clipboard");
 	    else {
 	      i=RandU32;
 	      ClipboardDel;
@@ -232,27 +232,27 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    //Ins your own ALT-key plug-ins
 	  case 'b':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Cmd/Jump to Bad Code");
+	      KeyDescSet("Cmd   /Jump to Bad Code");
 	    else //[C:/Adam/God/HSNotes.TXT.Z,1]
 	      BadCodeJump;
 	    return TRUE;
 
 	  case 'g':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("BlogScreenShot");
+	      KeyDescSet("Edit  /BlogScreenShot");
 	    else
 	      BlogScreenShot;
 	    return TRUE;
 
 	  case 'p':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("JukeBox(TAD)");
+	      KeyDescSet("App   /JukeBox(TAD)");
 	    else
 	      JukeBox("::/Home/Psalmody");
 	    return TRUE;
 	  case 'P':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("JukeBox(Examples)");
+	      KeyDescSet("App   /JukeBox(Examples)");
 	    else
 	      JukeBox("::/Apps/Psalmody/Examples");
 	    return TRUE;

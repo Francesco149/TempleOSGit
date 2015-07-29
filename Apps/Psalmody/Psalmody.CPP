@@ -3,17 +3,17 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/Kernel/KernelA.HPP.Z,3014] CCtrl type for the tempo/stacatto
+  2) The [C:/Kernel/KernelA.HPP.Z,3065] CCtrl type for the tempo/stacatto
 sliders.
 
-  3) The active [C:/Kernel/KernelA.HPP.Z,1326] CDoc sprite buttons with
+  3) The active [C:/Kernel/KernelA.HPP.Z,1328] CDoc sprite buttons with
 macros for left/record/play/right.
 
   4) Hand-made ctrls for the kbdgraphic, notes and staff.
 
 This uses four types of output
 
-  1) The [C:/Kernel/KernelA.HPP.Z,1326] CDoc for the text and buttons and
+  1) The [C:/Kernel/KernelA.HPP.Z,1328] CDoc for the text and buttons and
 kbdgraphic.
 
   2) The Fs->draw_it() for the staff region, drawn every refresh.

@@ -30,9 +30,9 @@ See [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep().
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x0000034EDF
+ 0x0000007C00- 0x000003530F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3783] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3834] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -48,11 +48,14 @@ See [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep().
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3375] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3424] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF
   Code Heap mem.
+
+             - 0x007FFFFFFF
+  Data Heap mem.  (This exists if there is less than 2 Gig of code heap.)
 
  0x00E0000000- 0x00FFFFFFFF
   32-bit devices could alloc memory at 0xF0000000 going up, but this is
@@ -63,7 +66,8 @@ supported, so [C:/Kernel/MemC.CPP.Z,165] Mem32DevAlloc() flaws are not an
 
  0x0080000000-~0x00DFFFFFFF
  0x0100000000-~0x1FFFFFFFFF
-  Data Heap mem.
+  Data Heap mem.  (The physical memory that exists in this range is data 
+heap.)
 
              - 0x1FFFFFFFFF
   64-bit devices are alloced with [C:/Kernel/MemC.CPP.Z,215] Mem64DevAlloc()

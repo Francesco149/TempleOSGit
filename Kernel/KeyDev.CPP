@@ -54,14 +54,11 @@ U0 PutS(U8 *st)
 }
 
 U0 KeyDescSet(U8 *fmt,...)
-{//Call this from key handler to report desc in [C:/Adam/Training.CPP.Z,183] KeyMap().
-  I64 i;
+{//Call this from key handler to report desc in [C:/Adam/Training.CPP.Z,180] KeyMap().
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   StrCpy(keydev.desc,buf);
   keydev.handler=Caller;
   Free(buf);
-  for (i=0;i<5;i++)
-    Yield;  //Makes KeyMap work better.
 }
 
 CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
@@ -181,31 +178,42 @@ U0 CtrlAltX(I64)
   LBts(sys_ctrl_alt_flags,SYSf_CTRL_ALT_X);
 }
 
-U0 CtrlAltLetCBSet(U8 ch,U0 (*fp_handler)(I64 sc),U8 *desc,Bool in_irq=FALSE)
+U0 CtrlAltLetCBSet(U8 ch,U0 (*fp_handler)(I64 sc),
+	U8 *no_shift_desc,U8 *shift_desc,Bool in_irq=FALSE)
 {//Set callback for <CTRL-ALT-letter>.
   ch=ToUpper(ch)-'A';
   if (ch<26) {
     keydev.fp_ctrl_alt_let_cbs[ch]=fp_handler;
-    Free(keydev.ctrl_alt_let_descs[ch]);
-    keydev.ctrl_alt_let_descs[ch]=AStrNew(desc);
+    Free(keydev.ctrl_alt_let_no_shift_descs[ch]);
+    keydev.ctrl_alt_let_no_shift_descs[ch]=AStrNew(no_shift_desc);
+    Free(keydev.ctrl_alt_let_shift_descs[ch]);
+    keydev.ctrl_alt_let_shift_descs[ch]=AStrNew(shift_desc);
     BEqu(&keydev.ctrl_alt_let_in_irq_flags,ch,in_irq);
   }
 }
 
 U0 KeyDevInit()
 {
-  keydev.fp_ctrl_alt_let_cbs	=CAlloc(26*sizeof(U8 *));
-  keydev.ctrl_alt_let_descs	=CAlloc(26*sizeof(U8 *));
-  keydev.ctrl_alt_let_in_irq_flags=0;
+  keydev.fp_ctrl_alt_let_cbs	    =CAlloc(26*sizeof(U8 *));
+  keydev.ctrl_alt_let_no_shift_descs=CAlloc(26*sizeof(U8 *));
+  keydev.ctrl_alt_let_shift_descs   =CAlloc(26*sizeof(U8 *));
+  keydev.ctrl_alt_let_in_irq_flags  =0;
   MemSet(&keydev.put_key_root,0,sizeof(CKeyDevEntry));
   QueInit(&keydev.put_key_root);
   KeyDevAdd(&KDInputFilterPutKey,&KDInputFilterPutS,0x40000000,FALSE);
   KeyDevAdd(&KDRawPutKey,&KDRawPutS,0x60000000,FALSE);
-  CtrlAltLetCBSet('C',&CtrlAltC,"Sys/Break Execution",TRUE);
-  CtrlAltLetCBSet('D',&CtrlAltD,"Sys/Enter Debugger",TRUE);
-  CtrlAltLetCBSet('E',&CtrlAltE,"Sys/Spawn New User Task");
-  CtrlAltLetCBSet('F',&CtrlAltF,"Sys/VGA Flush",TRUE);
-  CtrlAltLetCBSet('M',&CtrlAltM,"Sys/Toggle Mute");
-  CtrlAltLetCBSet('T',&CtrlAltT,"Sys/Switch Focus to Next Task",TRUE);
-  CtrlAltLetCBSet('X',&CtrlAltX,"Sys/Kill Focused Task",TRUE);
+  CtrlAltLetCBSet('C',&CtrlAltC,"Sys   /Break Execution",
+	"Sys   /Break Execution",TRUE);
+  CtrlAltLetCBSet('D',&CtrlAltD,"Sys   /Enter Debugger",
+	"Sys   /Enter Debugger",TRUE);
+  CtrlAltLetCBSet('E',&CtrlAltE,"Sys   /Spawn New User Task",
+	"Sys   /Spawn New User Task");
+  CtrlAltLetCBSet('F',&CtrlAltF,"Sys   /VGA Flush",
+	"Sys   /VGA Flush",TRUE);
+  CtrlAltLetCBSet('M',&CtrlAltM,"Sys   /Toggle Mute",
+	"Sys   /Toggle Mute");
+  CtrlAltLetCBSet('T',&CtrlAltT,"Sys   /Switch Focus to Next Task",
+	"Sys   /Switch Focus to Next Task",TRUE);
+  CtrlAltLetCBSet('X',&CtrlAltX,"Sys   /Kill Focused Task",
+	"Sys   /Kill Focused Task",TRUE);
 }

@@ -27,7 +27,7 @@ CLexFile *LexFilePop(CCmpCtrl *cc)
 
 CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc and Init CCmpCtrl.
-//Frees buf in [C:/Compiler/Lex.CPP.Z,59] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2042] CCF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2092] CCF_DONT_FREE_BUF flag is set.
   //FileName is for error reporting.  If files are #included,
   //new names are used.  See [C:/Apps/Psalmody/PsalmodyFile.CPP.Z,1] Psalmody CmpCtrlNew.
   CCmpCtrl *cc=CAlloc(sizeof(CCmpCtrl));
@@ -35,7 +35,6 @@ CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
   QueInit(cc);
   cc->flags=flags;
   cc->opts=1<<OPTf_WARN_UNUSED_VAR;
-  cc->otrace_mask=0b10001111101;
   cc->htc.hash_mask=HTG_TYPE_MASK-HTT_IMPORT_SYS_SYM;
   cc->htc.define_hash_table=cc->htc.hash_table_lst=
 	cc->htc.glbl_hash_table=cc->htc.local_hash_table=Fs->hash_table;
@@ -263,14 +262,14 @@ lgc_done:
 }
 
 U0 LexSkipEol(CCmpCtrl *cc)
-{//[C:/Compiler/Lex.CPP.Z,108] LexGetChar to NULL until end-of-line.
+{//[C:/Compiler/Lex.CPP.Z,107] LexGetChar to NULL until end-of-line.
   I64 ch;
   do ch=LexGetChar(cc);
   while (Bt(chars_bmp_non_eol,ch));
 }
 
 U8 *LexFirstRem(CCmpCtrl *cc,U8 *marker,I64 _len=NULL)
-{//[C:/Compiler/Lex.CPP.Z,108] LexGetChar() chars making str until marker.
+{//[C:/Compiler/Lex.CPP.Z,107] LexGetChar() chars making str until marker.
   U8 *result,*ptr;
   CQueVectU8 *tempv=QueVectU8New;
   I64 i,len=0;

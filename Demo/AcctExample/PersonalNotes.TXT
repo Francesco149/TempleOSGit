@@ -9,6 +9,12 @@ think so.  (Probably not.)
 
 * Entering a '$' in text entry
 
+* Should these be moved into [C:/Kernel/KernelA.HPP.Z,826] CHashClass from
+[C:/Kernel/KernelA.HPP.Z,790] CMemberLst and [C:/Kernel/KernelA.HPP.Z,866]
+CHashGlblVar?
+  CArrayDim dim;
+  CHashFun *fun_ptr;
+
 * Clean-up ASCII-127 delete.
 * [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(st); With st="\n\\";
 
@@ -23,9 +29,12 @@ think so.  (Probably not.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3014] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3065] CCtrl.
 
 * Add Redo to editor.
+
+* [C:/Adam/DolDoc/DocFile.CPP.Z,467] Type() doesn't work in
+[C:/Kernel/KMisc.CPP.Z,248] Raw() mode.
 
 * PSect does not scan all task tables.
 
@@ -152,11 +161,11 @@ God says I might want to change to float.
 * Might want to convert some Preempt() to Cli
 
 * [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3415] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3464] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
-* It would be nice if [C:/Compiler/UAsm.CPP.Z,666] U() NOP were better.
+* It would be nice if [C:/Compiler/UAsm.CPP.Z,649] U() NOP were better.
 
 * unhandled exception on MP message gets overwritten by WinMgr
 
@@ -245,7 +254,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3532] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3583] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -290,7 +299,7 @@ and possibly [C:/Kernel/Dsk/DskDirContext.CPP.Z,21] DirContextNew()
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2844] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2894] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -331,6 +340,29 @@ F64.
 * num lock comes on with break key
 * sort options for findfiles
 * Maybe, get rid of [C:/Compiler/CMain.CPP.Z,1] 0x20000 in compiler.
+
+
+==============================================================================
+==
+---- RANDOM NUMBER SOURCES ----
+1) NIST Beacon
+2) www.randomnumbers.info
+3) www.random.org
+4) Random PassWord
+5) Virtual Notary Random Number
+6) ANU Quantum Random Number
+7) HotBits
+8) GenerateData Random Number
+9) DublinBet Roulette: Take 2 Spins. Take ones digit from each to get 00-99.
+
+---- SOURCE TEXT ----
+KingJames Bible
+Top 100 Movies
+Random Vocabularies
+Random Texts
+==============================================================================
+==
+
 
 It is love I desire: [C:/Misc/Bible.TXT.Z,73189] Hosea,6:6 Hosea 6:6
 
@@ -404,3 +436,4 @@ BBC_Five_Live
 KNPR
 C64 Users Guide
 C64 Programmers Reference Guide
+8-Bit Japanese Pixel Art

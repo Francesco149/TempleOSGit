@@ -493,8 +493,7 @@ U0 InsMyURL()
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
-	tag="https://www.dublinbet.com/casino_game.html"
-	      "?mode=demo&game=136#gameId=136";
+	tag="https://www.dublinbet.com";
 	"$TX,\"%Q\",HTML=\"%Q\"$\n",tag,tag;
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }

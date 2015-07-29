@@ -7,43 +7,31 @@ I64	fg_mode=FG_RAM_DRV;
 Bool	fg_on =FALSE;
 
 U0 FrameGrabberTask(I64)
-{//ffmpeg -r 8 -i VID%05d.BMP -y Movie.avi
+{//#!/bin/bash
+//for f in ./ScreenShots/*.Z; do ./Bin/TOSZ $f; done
+  //ffmpeg -r 8 -i VID%05d.BMP -y Movie.avi
   I64 frame_num=0;
-  U8  buf[STR_LEN],buf2[STR_LEN];
+  U8  buf[STR_LEN],buf2[STR_LEN],*st_dir;
   F64 end_time=tS;
   Silent;	//no output to screen
-  if (fg_mode==FG_RAM_DRV) {
-    MkDir("B:/Temp/ScreenShots");
-    while (fg_on) {
-      StrPrint(buf,"B:/Temp/ScreenShots/VID%05d.BMP",frame_num++);
-      StrCpy(buf2,buf);
-      BMPScreenCapture(buf);
-      while (TRUE) {
-	end_time+=1.0/VIDEO_FRAME_RATE;
-	if (end_time<tS) {
-	  StrPrint(buf,"B:/Temp/ScreenShots/VID%05d.BMP",frame_num++);
-	  Copy(buf2,buf);
-	} else
-	  break;
-      }
-      SleepUntil(cnts.jiffies+(end_time-tS)*JIFFY_FREQ);
+  if (fg_mode==FG_RAM_DRV)
+    st_dir="B:/Temp/ScreenShots";
+  else
+    st_dir="::/Temp/ScreenShots";
+  MkDir(st_dir);
+  while (fg_on) {
+    StrPrint(buf,"%s/VID%05d.BMP.Z",st_dir,frame_num++);
+    StrCpy(buf2,buf);
+    BMPScreenCapture(buf);
+    while (TRUE) {
+      end_time+=1.0/VIDEO_FRAME_RATE;
+      if (end_time<tS) {
+	StrPrint(buf,"%s/VID%05d.BMP.Z",st_dir,frame_num++);
+	Copy(buf2,buf);
+      } else
+	break;
     }
-  } else {
-    MkDir("::/Temp/ScreenShots");
-    while (fg_on) {
-      StrPrint(buf,"::/Temp/ScreenShots/VID%05d.BMP.Z",frame_num++);
-      StrCpy(buf2,buf);
-      BMPScreenCapture(buf);
-      while (TRUE) {
-	end_time+=1.0/VIDEO_FRAME_RATE;
-	if (end_time<tS) {
-	  StrPrint(buf,"::/Temp/ScreenShots/VID%05d.BMP.Z",frame_num++);
-	  Copy(buf2,buf);
-	} else
-	  break;
-      }
-      SleepUntil(cnts.jiffies+(end_time-tS)*JIFFY_FREQ);
-    }
+    SleepUntil(cnts.jiffies+(end_time-tS)*JIFFY_FREQ);
   }
 }
 
@@ -59,10 +47,8 @@ I64 CopyVideo()
     if (fg_mode==FG_RAM_DRV) {
       result=CopyTree("B:/Temp/ScreenShots","D:/Temp/ScreenShots");
       "Unused Space: %12.6fMeg\n",UnusedDrvSpace('B')/1024.0/1024.0;
-    } else {
+    } else
       result=CopyTree("::/Temp/ScreenShots","D:/Temp/ScreenShots");
-      Unzip("D:/Temp/ScreenShots/*.Z");
-    }
     "$BK,1$Files Copied:%d$BK,0$ Time:%8.3fm\n",
 	  result,result/60.0/VIDEO_FRAME_RATE;
   }
@@ -79,7 +65,7 @@ public U0 FrameGrabberToggle()
       Snd(0);
       wall->record=snd.record=FALSE;
       Sleep(1000);
-      CopyVideo;
+      User("CopyVideo;Exit;\n");
     } else {
       fg_on=TRUE;
       if (fg_mode!=FG_JUST_AUDIO)
@@ -160,11 +146,11 @@ public U0 BMP2TXT(U8 *_in_name,U8 *_out_name=NULL)
   I64 dx,dy,score,best_score=MAX_I64;
   CDC *dc;
   CDoc *doc;
-  in_name=DftExt(_in_name,"BMP"),
-	if (_out_name)
-  out_name=DftExt(_out_name,"TXT.Z");
+  in_name=DftExt(_in_name,"BMP");
+  if (_out_name)
+    out_name=DftExt(_out_name,"TXT.Z");
   else
-  out_name=ChgExt(_in_name,"TXT.Z");
+    out_name=ChgExt(_in_name,"TXT.Z");
   if (dc=BMPRead(in_name)) {
     for (dy=-3;dy<=4;dy++)
       for (dx=-3;dx<=4;dx++) {

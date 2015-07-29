@@ -255,6 +255,8 @@ U8 *ScanCode2KeyName(I64 sc)
     CatPrint(buf,"ALT ");
   if (sc&SCF_SHIFT)
     CatPrint(buf,"SHIFT ");
+  if (sc&SCF_NO_SHIFT)
+    CatPrint(buf,"      ");
   if (ch=ScanCode2Char(sc&255)) {
     st=Char2KeyName(ch,FALSE);
     StrCpy(buf+StrLen(buf),st);
@@ -297,7 +299,7 @@ U8 *ScanCode2KeyName(I64 sc)
 
 U0 KbdBuildSC(U8 raw_byte,Bool in_irq,U8 *_last_raw_byte,I64 *_last_sc)
 {
-  I64 ch,sc_flags,sc,sc2,sc_raw;
+  I64 ch,sc_flags,sc,sc2,sc_raw,new_key_f;
   Bool set_LEDs=FALSE;
   if (raw_byte==0xE0) {
     *_last_raw_byte=raw_byte;
@@ -319,6 +321,7 @@ U0 KbdBuildSC(U8 raw_byte,Bool in_irq,U8 *_last_raw_byte,I64 *_last_sc)
       sc.u8[0]=sc2;
   }
 
+  new_key_f=SCF_NEW_KEY;
   if (sc&SCF_KEY_UP)
     switch (sc&~SCF_KEY_UP) {
       case SC_SHIFT:	sc_flags&=~SCF_SHIFT;	break;
@@ -332,14 +335,24 @@ U0 KbdBuildSC(U8 raw_byte,Bool in_irq,U8 *_last_raw_byte,I64 *_last_sc)
     }
   else
     switch (sc) {
-      case SC_SHIFT:	sc_flags|=SCF_SHIFT;	break;
-      case SC_CTRL:	sc_flags|=SCF_CTRL;	break;
-      case SC_ALT:	sc_flags|=SCF_ALT;	break;
-      case SC_DELETE:	sc_flags|=SCF_DELETE;	break;
-      case SC_INS:	sc_flags|=SCF_INS;	break;
+      case SC_SHIFT:
+	if (Bts(&sc_flags,SCf_SHIFT)) new_key_f=0;
+	break;
+      case SC_CTRL:
+	if (Bts(&sc_flags,SCf_CTRL)) new_key_f=0;
+	break;
+      case SC_ALT:
+	if (Bts(&sc_flags,SCf_ALT)) new_key_f=0;
+	break;
+      case SC_DELETE:
+	sc_flags|=SCF_DELETE;
+	break;
+      case SC_INS:
+	sc_flags|=SCF_INS;
+	break;
     }
 
-  sc_flags|=SCF_NEW_KEY;
+  sc_flags|=new_key_f;
   sc=sc_flags|sc|(sc_flags|sc_raw)<<32;
   if (sc_flags & SCF_CTRL && sc_flags & SCF_ALT) {
     if (!(sc & SCF_KEY_UP)) {
@@ -432,6 +445,7 @@ U0 KbdHandler()
     KbdBuildSC(raw_byte,FALSE,&last_raw_byte,&kbd.scan_code);
   }
   if (Btr(&kbd.scan_code,SCf_NEW_KEY)) {
+    kbd.new_key_timestamp=kbd.timestamp;
     Btr(&kbd.scan_code,32+SCf_NEW_KEY);
     FifoI64Ins(kbd.scan_code_fifo,kbd.scan_code);
     kbd.cnt++;
@@ -470,5 +484,5 @@ I64 KbdMouseEvtTime()
   if (mouse.timestamp>kbd.timestamp)
     return mouse.timestamp;
   else
-    return kbd.timestamp;
+    return kbd.new_key_timestamp;
 }

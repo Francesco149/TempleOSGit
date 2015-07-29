@@ -36,7 +36,7 @@ U0 DataDemo()
   //doc_e->data before it is set.
   Bool unlock=DocLock(doc);
 
-  //You might set the [C:/Kernel/KernelA.HPP.Z,1244] DOCF_FORM flag.
+  //You might set the [C:/Kernel/KernelA.HPP.Z,1246] DOCF_FORM flag.
   //  doc->flags|=DOCF_FORM
   //if you wish.
 

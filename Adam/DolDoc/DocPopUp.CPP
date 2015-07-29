@@ -163,11 +163,16 @@ U8 *EdDollarTypeCB(CDoc *,CDocEntry *doc_e,CTask *mem_task)
 }
 
 public I64 DocGetKey(I64 *_sc=NULL)
-{//Called by [C:/Adam/DolDoc/DocPopUp.CPP.Z,187] View. You probably don't need this.
-  I64 ch,sc;
+{//Called by [C:/Adam/DolDoc/DocPopUp.CPP.Z,192] View. You probably don't need this.
+  I64 ch,sc,old_win_inhibit;
   Bool cont,old_preempt=IsPreempt;
   do {
-    ch=GetKey(&sc,TRUE);
+    old_win_inhibit=Fs->win_inhibit;
+    Fs->win_inhibit&=~WIF_SELF_KEY_DESC;
+    do ch=GetKey(&sc,TRUE);
+    while (sc&SCF_KEY_DESC);
+    Fs->win_inhibit=old_win_inhibit;
+
     DocRecalc(DocPut);
     cont=FALSE;
     if (ch==CH_ESC || ch==CH_SHIFT_ESC) {//Check for exit filter mode
@@ -332,7 +337,7 @@ public Bool DocForm(U8 *_d,U8 *class_name=lastclass,
   doc->flags|=DOCF_OVERSTRIKE|DOCF_FORM;
   if (dof_flags&DOF_MIN_SIZE)
     doc->flags|=DOCF_MIN_SIZE;
-  ml=tempc->member_lst;
+  ml=tempc->member_lst_and_root;
   while (ml) {
     if (fmtstr=MemberMetaData("fmtstr",ml)) {
       doc_e=DocPrint(doc,"%s",fmtstr);

@@ -21,7 +21,7 @@ Bool ClassRep2(CDoc *doc,U8 *_d,U8 *class_name=lastclass,
     return FALSE;
   unlock=DocLock(doc);
   DocPrint(doc,"Class:\"%s\"\n",class_name);
-  ml=tempc->member_lst;
+  ml=tempc->member_lst_and_root;
   while (ml) {
     tempc2=ml->member_class;
     ptr=_d(U8 *)+ml->offset;
@@ -205,7 +205,7 @@ U0 UpdateRegVarImg(CHashFun *tempf,U8 *_b,CTask *task)
 {
   CMemberLst *ml;
   CHashClass *tempc;
-  ml=tempf->member_lst;
+  ml=tempf->member_lst_and_root;
   while (ml) {
     if (ml->reg!=REG_NONE) {
       tempc=OptClassFwd(ml->member_class);
@@ -236,7 +236,7 @@ public U0 FunRep(U8 *st,U8 *rbp=NULL,I64 max_depth=2,CTask *task=NULL)
       } else
 	ClassRep(rbp,st,max_depth,TRUE);
     } else {
-      tempm=tempf->member_lst;
+      tempm=tempf->member_lst_and_root;
       while (tempm) {
 	if (0<=tempm->reg<NUM_REGS)
 	  "%08Z %s\n",tempm->reg,"ST_U64_REGS",tempm->str;

@@ -1,3 +1,10 @@
+#help_index "AutoComplete"
+#help_file "::/Doc/AutoComplete"
+public extern CAutoCompleteGlbls ac;
+
+#help_index "AutoComplete/Dictionary"
+public extern CAutoCompleteDictGlbls acd;
+
 #help_index "AutoFile;StdIn/AutoFile"
 #help_file "::/Doc/AutoFile"
 
@@ -315,6 +322,7 @@ public extern Bool DirNew(CDrv *dv,U8 *cur_dir,
 extern I64 FileAttr(U8 *name,I64 old_attr=0);
 
 #help_index "File/Low Level"
+#help_file "::/Doc/FileLowLevel"
 public extern U0 BlkDevChk(CBlkDev *bd);
 public extern Bool BlkDevLock(CBlkDev *bd);
 public extern CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type);
@@ -460,8 +468,8 @@ public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
 
 #help_index "Keyboard Devices/System;Char/System"
 #help_file "::/Doc/KeyDev"
-public extern U0 CtrlAltLetCBSet(U8 ch,U0 (*fp_handler)(I64 sc),U8 *desc,
-	Bool in_irq=FALSE);
+public extern U0 CtrlAltLetCBSet(U8 ch,U0 (*fp_handler)(I64 sc),
+	U8 *no_shift_desc,U8 *shift_desc,Bool in_irq=FALSE);
 public extern U0 KeyDescSet(U8 *fmt,...);
 public extern CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
 	Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE);
@@ -471,7 +479,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3686] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3737] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -749,5 +757,8 @@ public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
 #help_index "Time/Seconds"
 public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
+
+#help_index "Windows"
+public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
 
 #help_index ""

@@ -20,10 +20,10 @@ U0 TimeIns()
 
   start=GetTSC;
   for (i=0;i<SAMPLE_SIZE;i++) {
-    #exe {OTraceMask(0b10000000000);OTrace(ON);};
+    #exe {PassTrace(0b10000000000);};
 //Time these instructions
     d*=1.00001;
-    #exe {OTrace(OFF);};
+    #exe {PassTrace(0);};
   }
   end=GetTSC;
   test_time=end-start;

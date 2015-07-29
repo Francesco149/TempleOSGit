@@ -1,7 +1,7 @@
 #help_index "DolDoc"
 
 U0 DocInit()
-{//[C:/Kernel/KernelA.HPP.Z,891] CMD Defines
+{//[C:/Kernel/KernelA.HPP.Z,893] CMD Defines
   CCmpCtrl *cc;
   I64 i;
   CHashGeneric *temph;
@@ -50,7 +50,7 @@ U0 DocInit()
     if (Bt(&doldoc.dft_de_flags[i],DOCEf_TAG) && i!=DOCT_TEXT || i==DOCT_HEX_ED)
       Bts(doldoc.type_flags_form,i);
 
-      //Don't forget [C:/Compiler/Lex.CPP.Z,324] cmp_type_flags_src_code.
+      //Don't forget [C:/Compiler/Lex.CPP.Z,323] cmp_type_flags_src_code.
   doldoc.type_flags_nontag_invisible[0]=
 	1<<DOCT_PAGE_LEN|
 	1<<DOCT_LEFT_MARGIN|

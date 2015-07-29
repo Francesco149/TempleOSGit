@@ -1,5 +1,5 @@
 /*Scans the sym table and checks
-each [C:/Kernel/KernelA.HPP.Z,677] HTT_DEFINE_STR entry to see if
+each [C:/Kernel/KernelA.HPP.Z,678] HTT_DEFINE_STR entry to see if
 it only occurs once in files.
 
 It's a brute force solution, but
