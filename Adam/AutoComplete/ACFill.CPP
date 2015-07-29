@@ -1,43 +1,4 @@
 #help_index "AutoComplete/Dictionary"
-
-public U0 ACDWordsLoad()
-{//Put words from word list into hash table.
-  I64 size;
-  CHashGeneric *temph;
-  U8 *in_ptr,*in_start,*st2;
-  U16 *d;
-  acd.num_words=0;
-  if (in_ptr=FileRead(ACD_WORD_FILENAME,&size)) {
-    in_start=in_ptr;
-    Free(acd.word_lst);
-    acd.word_lst=AMAlloc(size);
-    MemCpy(acd.word_lst,in_start,size);
-    acd.word_lst_size=size;
-
-    while (in_ptr<in_start+size) {
-      if (*in_ptr==ACD_WORD_CHAR)
-	in_ptr++;
-      if (*in_ptr) {
-	st2=MStrUtil(in_ptr,SUF_TO_UPPER);
-	temph=ACAlloc(sizeof(CHashGeneric)+StrLen(st2)+1);
-	StrCpy(temph+1,st2);
-	Free(st2);
-	in_ptr+=StrLen(in_ptr)+1;
-	temph->str=temph+1;
-	temph->use_cnt=1;
-	temph->type=HTT_DICT_WORD;
-	d=in_ptr;
-	temph->user_data0=*d;
-	in_ptr+=2;
-	HashAdd(temph,ac.hash_table);
-	acd.num_words++;
-      } else
-	in_ptr+=3;
-    }
-    Free(in_start);
-  }
-}
-
 public U8 *ACDDefGet(U8 *st,I64 def_num=1)
 {//MAlloc str holding single dict definition of word.
   CFile *f;
@@ -174,24 +135,6 @@ public U8 *ACDWordPtAt(U8 *st)
     return acd.word_lst;
 }
 
-U0 ACDDictWordsAdd(CDoc *doc,U8 *st)
-{
-  I64 i;
-  U8 *ptr;
-  if (st && *st && (ptr=ACDWordPtAt(st))) {
-    for (i=0;i<ACD_MAX_FILLINS;i++) {
-      if (*ptr++!=ACD_WORD_CHAR)
-	break;
-      if (i)
-	DocPrint(doc,"\n");
-      acd.fillins[i]=ptr-1;
-      DocPrint(doc,"$GREEN$'%d'$FG$ %-23ts",i,ptr);
-      ptr+=StrLen(ptr)+3;
-    }
-    acd.num_fillins=i;
-  }
-}
-
 U0 ACDFillin(I64 n)
 {
   U8 *s;
@@ -294,4 +237,29 @@ U0 ACFindMisspelled(CDoc *doc)
 fm_done:
   if (unlock)
     DocUnlock(doc);
+}
+
+#help_index "AutoComplete"
+U0 ACFillIn(I64 n)
+{
+  U8 *s;
+  if (0<=--n<ac.num_fillins) {
+    s=ac.fillin_matches[n]->str;
+    if (StrLen(s)>ac.partial_len)
+      Auto(s+ac.partial_len);
+  }
+}
+
+U0 ACMan(I64 n,CTask *parent_task=NULL)
+{
+  CHashAC *tempw;
+  CHashSrcSym *temph;
+  Bool old_preempt=Preempt;
+  if (0<=--n<ac.num_fillins && (tempw=ac.fillin_matches[n]) &&
+	(temph=HashFind(tempw->str,Fs->hash_table,HTG_SRC_SYM)) &&
+	temph->src_link) {
+    Preempt(old_preempt);
+    PopUpEd(temph->src_link,parent_task);
+  }
+  Preempt(old_preempt);
 }

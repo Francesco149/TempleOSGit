@@ -325,9 +325,9 @@ U0 BlkDevsInitAll()
   #exe {
     if (kernel_cfg->opts[CFG_AUTO_MOUNT_IDE])
       StreamPrint("AutoMountIDE;");
-    StreamPrint("#exe {OptOff(OPTf_WARN_PAREN);}");
+    StreamPrint("#exe {Option(OPTf_WARN_PAREN,OFF);}");
     StreamDoc(kernel_cfg->add_dev);
-    StreamPrint("#exe {OptOn(OPTf_WARN_PAREN);}");
+    StreamPrint("#exe {Option(OPTf_WARN_PAREN,ON);}");
   };
   DrvRep;
 }

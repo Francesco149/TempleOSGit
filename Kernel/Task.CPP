@@ -78,7 +78,7 @@ CTaskStk *TaskStkNew(I64 stk_size,CTask *task)
   return temps;
 }
 
-#exe {OptOn(OPTf_NO_REG_VAR);};
+#exe {Option(OPTf_NO_REG_VAR,ON);};
 argpop I64 CallStkGrow(I64 stk_size_threshold,I64 stk_size,
 			/*argpop*/I64 (*fp_addr)(...),...)
 {//Grow stk in call with any fixed num of args.
@@ -149,7 +149,7 @@ argpop I64 CallStkGrow(I64 stk_size_threshold,I64 stk_size,
   return 0; //dummy to get rid of warning
 }
 ;
-#exe {OptOff(OPTf_NO_REG_VAR);};
+#exe {Option(OPTf_NO_REG_VAR,OFF);};
 
 I64 TaskInit(CTask *task,I64 stk_size)
 {//Returns Fs of task
@@ -212,7 +212,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3221] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3270] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)

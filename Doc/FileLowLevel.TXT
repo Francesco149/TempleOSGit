@@ -1,0 +1,21 @@
+ <1> (image)
+
+		       [File/CFile,1] CFile
+
+
+
+
+
+
+
+    [C:/Kernel/Dsk/DskBlk.CPP.Z,31] RBlks()	      [C:/Kernel/Dsk/DskBlk.CPP.Z,68] WBlks()
+
+
+
+
+
+
+
+
+
+

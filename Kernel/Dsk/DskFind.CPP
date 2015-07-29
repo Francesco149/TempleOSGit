@@ -55,7 +55,7 @@ When done, you free with [C:/Kernel/Dsk/DskDirA.CPP.Z,17] DirEntryDel(),[C:/Kern
 }
 
 Bool FileFind(U8 *filename,CDirEntry *_de=NULL,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2517] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2518] FUF_JUST_FILES, [C:/Kernel/KernelA.HPP.Z,2524] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2526] FUF_SCAN_PARENTS
+{//[C:/Kernel/KernelA.HPP.Z,2567] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2568] FUF_JUST_FILES, [C:/Kernel/KernelA.HPP.Z,2574] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2576] FUF_SCAN_PARENTS
 //If you pass _de, you must Free(_de->full_name);
   I64 i,j,cur_dir_cluster;
   U8 *altname,*curname,*full_name=NULL;

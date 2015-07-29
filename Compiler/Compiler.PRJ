@@ -1,16 +1,16 @@
 #exe {
   Cd(__DIR__);;
-  OptOn(OPTf_WARN_PAREN);
-  OptOn(OPTf_WARN_DUP_TYPES);
-  OptOn(OPTf_KEEP_PRIVATE);
+  Option(OPTf_WARN_PAREN,ON);
+  Option(OPTf_WARN_DUP_TYPES,ON);
+  Option(OPTf_KEEP_PRIVATE,ON);
 }
 #include "/Kernel/KernelA.HPP"
 #include "/Compiler/CompilerA.HPP"
-#exe {OptOn(OPTf_EXTERNS_TO_IMPORTS);};
+#exe {Option(OPTf_EXTERNS_TO_IMPORTS,ON);};
 #include "/Kernel/KernelB.HPP"
 #include "/Kernel/KernelC.HPP"
-#exe {OptOff(OPTf_EXTERNS_TO_IMPORTS);};
-#exe {OptOff(OPTf_KEEP_PRIVATE);};
+#exe {Option(OPTf_EXTERNS_TO_IMPORTS,OFF);};
+#exe {Option(OPTf_KEEP_PRIVATE,OFF);};
 #include "Templates"
 #include "CExts"
 CCmpGlbls	cmp;

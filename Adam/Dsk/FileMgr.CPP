@@ -585,9 +585,8 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
       case MSG_IP_L_UP:
 	if (doc_ce) {
 	  gr.fp_final_screen_update=fp_old_final_screen_update;
-	  if (WinCursorPosSet(Fs,
-		a1/FONT_WIDTH+Fs->win_left+Fs->scroll_x/FONT_WIDTH,
-		a2/FONT_HEIGHT+Fs->win_top+Fs->scroll_y/FONT_HEIGHT,TRUE)) {
+	  if (WinCursorPosSet(Fs,a1+Fs->win_left+Fs->scroll_x,
+		a2+Fs->win_top+Fs->scroll_y,TRUE)) {
 	    doc_e=doc->cur_entry;
 	    if (doc_e!=doc_ce) {
 	      st2=NULL;

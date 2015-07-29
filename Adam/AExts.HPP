@@ -85,8 +85,7 @@ extern Bool View();
 extern U0 ViewAnglesDel(CTask *task=NULL);
 extern CCtrl *ViewAnglesNew(CTask *task=NULL);
 extern Bool WinBorder(Bool val,CTask *task=NULL);
-extern CDoc *WinCursorPosSet(
-	CTask *task,I64 ip_text_x,I64 ip_text_y,Bool set_cursor=TRUE);
+extern CDoc *WinCursorPosSet(CTask *task,I64 ipx,I64 ipy,Bool set_cursor=TRUE);
 extern Bool WinHorz(I64 left,I64 right,CTask *task=NULL);
 extern U0 WinMax(CTask *task=NULL);
 extern U0 WinMgrSync(I64 cnt=1,Bool force=FALSE);

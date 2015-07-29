@@ -5,7 +5,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/Kernel/KernelA.HPP.Z,1546] CICArg.  RAX is the most common reg
+[C:/Kernel/KernelA.HPP.Z,1595] CICArg.  RAX is the most common reg
 for coupling intermediate codes.
 
 Internal calculations take place on
@@ -416,7 +416,7 @@ I64 ICBuiltInFloatConst(F64 d)
     return 0xEED9;
   else if (d==1.0)
     return 0xE8D9;
-  else if (GetOpt(OPTf_NO_BUILTIN_CONST))
+  else if (GetOption(OPTf_NO_BUILTIN_CONST))
     return 0;
   else if (d==pi)
     return 0xEBD9;

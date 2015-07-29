@@ -169,7 +169,7 @@ fn_skip:
 }
 
 public U0 EdSelectAll(CDoc *doc,Bool select)
-{//Set state of [C:/Kernel/KernelA.HPP.Z,939] DOCET_SELECTED on all entries.
+{//Set state of [C:/Kernel/KernelA.HPP.Z,941] DOCET_SELECTED on all entries.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -321,7 +321,7 @@ public Bool EdGoToFun(CDoc *doc,Bool fwd,Bool abort_on_dbl_colon)
 }
 
 public U0 EdSelectFun(CDoc *doc,Bool abort_on_dbl_colon=FALSE)
-{//Set [C:/Kernel/KernelA.HPP.Z,939] DOCET_SELECTED on all entries in cur fun.
+{//Set [C:/Kernel/KernelA.HPP.Z,941] DOCET_SELECTED on all entries in cur fun.
   Bool unlock=DocLock(doc);
   U8 *ptr;
   I64 ch,levels=0,colons=0;
@@ -481,8 +481,6 @@ I64 EdFindReplace(CDoc *doc)
 	      doc->cur_entry=doc_e;
 	      if (cmd!=RSAC_ALL)
 		DocCenter(doc);
-	      doc_e=doc->cur_entry;
-	      src=doc->cur_col+doc_e->tag;
 	      if (cmd!=RSAC_ALL) {
 		DocUnlock(doc);
 		cmd=PopUpReplaceSkipAllCancel("");
@@ -490,6 +488,8 @@ I64 EdFindReplace(CDoc *doc)
 		if (cmd<0)
 		  goto fr_unlock_done;
 	      }
+	      doc_e=doc->cur_entry;
+	      src=doc->cur_col+doc_e->tag;
 	      if (cmd==RSAC_REPLACE || cmd==RSAC_ALL) {
 		dlen=StrLen(doc_e->tag);
 		doc_e->max_col=dlen+rlen-plen;

@@ -5,8 +5,10 @@
 //but look at the bottom of this file to see
 //files you do customize.
 
-extern I8i OptEqu(I64i num,I8i val);
-OptEqu(0,0); //(0,0)=EchoOff   (0,1)=EchoOn
+#help_index "Compiler/Directive"
+public extern I8i Option(I64i num,I8i val);
+Option(0,0); //(0,0)=EchoOff   (0,1)=EchoOn
+
 #include "/Kernel/KernelA.HPP"
 #include "/Compiler/CompilerA.HPP"
 #include "/Kernel/KernelB.HPP"
@@ -14,8 +16,8 @@ OptEqu(0,0); //(0,0)=EchoOff   (0,1)=EchoOn
 #include "/Compiler/CompilerB.HPP"
 
 Cd("/Adam");;
-#exe {OptOn(OPTf_WARN_PAREN);};
-#exe {OptOn(OPTf_WARN_DUP_TYPES);};
+Option(OPTf_WARN_PAREN,ON);
+Option(OPTf_WARN_DUP_TYPES,ON);
 
 HashTablePurge(adam_task->hash_table);
 
@@ -23,7 +25,7 @@ HashTablePurge(adam_task->hash_table);
 
 //Use Dbg("Type 'G;'"); to debug before window mgr is running.
 
-public F64 os_version=3.07;//Operating system version.
+public F64 os_version=3.08;//Operating system version.
 
 #include "AExts.HPP"
 #include "AMath"
@@ -88,8 +90,8 @@ Cd("::/Adam");;
 if (DrvIsWritable)
   MkDir("/Temp"); //Good to have a Temp
 
-#exe {OptOff(OPTf_WARN_PAREN);};
-#exe {OptOff(OPTf_WARN_DUP_TYPES);};
+Option(OPTf_WARN_PAREN,OFF);
+Option(OPTf_WARN_DUP_TYPES,OFF);
 LBts(&sys_run_level,RLf_HOME);
 
 #help_index ""

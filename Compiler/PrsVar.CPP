@@ -11,7 +11,7 @@ U0 PrsVarInit(CCmpCtrl *cc,U8 **_dst,CHashClass *tempc,CArrayDim *tempad,
   Bool is_str;
 
   tempc=OptClassFwd(tempc);
-  if (tempm=tempc->member_lst) {
+  if (tempm=tempc->member_lst_and_root) {
     if (cc->token!='{')
       LexExcept(cc,"expecting '{' at ");
     LexPopNoRestore(cc);

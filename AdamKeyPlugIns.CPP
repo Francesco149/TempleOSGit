@@ -84,7 +84,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	break;
       case SC_F7:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Misc/Ins Datetime");
+	  KeyDescSet("Misc  /Ins Datetime");
 	else
 	  InsTime;
 	break;
@@ -96,26 +96,26 @@ Bool MyPutKey(I64 ch,I64 sc)
 	switch (ch) {
 	  case 'a':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/AutoComplete(ON);");
+	      KeyDescSet("Win   /AutoComplete On");
 	    else
 	      AutoComplete(ON);
 	    return TRUE;
 	  case 'A':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/AutoComplete;");
+	      KeyDescSet("Win   /AutoComplete Off");
 	    else
 	      AutoComplete;
 	    return TRUE;
 
 	  case 'h':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/Tile Horizontally");
+	      KeyDescSet("Win   /Tile Horizontally");
 	    else
 	      WinTileHorz;
 	    return TRUE;
 	  case 'm':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/Maximize");
+	      KeyDescSet("Win   /Maximize");
 	    else {
 	      WinMax;
 	      WinBorder;
@@ -123,14 +123,14 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    return TRUE;
 	  case 'v':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Win/Tile Vertically");
+	      KeyDescSet("Win   /Tile Vertically");
 	    else
 	      WinTileVert;
 	    return TRUE;
 
 	  case 'l':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/Put Link to Cur Pos on Clipboard");
+	      KeyDescSet("Edit  /Put Link to Cur Pos on Clipboard");
 	    else {
 	      ClipboardDel;
 	      st1=FileNameAbs(BIBLE_FILENAME);
@@ -148,7 +148,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	    return TRUE;
 	  case 'L':
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/Place Anchor, Put Link to Clipboard");
+	      KeyDescSet("Edit  /Place Anchor, Put Link to Clipboard");
 	    else {
 	      i=RandU32;
 	      ClipboardDel;

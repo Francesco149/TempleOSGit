@@ -3,8 +3,8 @@
 
 #exe {
   Cd(__DIR__);;
-  OptOn(OPTf_WARN_PAREN);
-  OptOn(OPTf_WARN_DUP_TYPES);
+  Option(OPTf_WARN_PAREN,ON);
+  Option(OPTf_WARN_DUP_TYPES,ON);
   #include "KCfg"
   CKernelCfg *kernel_cfg;
   kernel_cfg=KernelCfgNew;
@@ -14,12 +14,12 @@
 #include "KStart"
 #include "KUtils"
 #include "KMathA"
-#exe {OptOn(OPTf_KEEP_PRIVATE);};
+#exe {Option(OPTf_KEEP_PRIVATE,ON);};
 #include "/Compiler/CompilerA.HPP"
-#exe {OptOn(OPTf_EXTERNS_TO_IMPORTS);};
+#exe {Option(OPTf_EXTERNS_TO_IMPORTS,ON);};
 #include "/Compiler/CompilerB.HPP"
-#exe {OptOff(OPTf_EXTERNS_TO_IMPORTS);};
-#exe {OptOff(OPTf_KEEP_PRIVATE);};
+#exe {Option(OPTf_EXTERNS_TO_IMPORTS,OFF);};
+#exe {Option(OPTf_KEEP_PRIVATE,OFF);};
 #include "KernelB.HPP"
 #include "KExts"
 #include "StrA"

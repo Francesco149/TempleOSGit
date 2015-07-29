@@ -174,8 +174,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1707] REGG_C_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1708] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1757] REGG_C_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1758] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
 else clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -230,13 +230,14 @@ PutChars('World\n');
   ||
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
-* You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1465] OPTf_WARN_PAREN) to find unnecessary
-parentheses in code.
+* You can use [C:/Compiler/CMisc.CPP.Z,1]
+Option([C:/Kernel/KernelA.HPP.Z,1514] OPTf_WARN_PAREN,ON) to find unnecessary
+parentheses in 
+code.
 
-* You can use [C:/Compiler/CMisc.CPP.Z,6]
-OptOn([C:/Kernel/KernelA.HPP.Z,1466] OPTf_WARN_DUP_TYPES) to find dup local
-var type 
+* You can use [C:/Compiler/CMisc.CPP.Z,1]
+Option([C:/Kernel/KernelA.HPP.Z,1515] OPTf_WARN_DUP_TYPES,ON) to find dup
+local var type 
 statements.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -244,7 +245,7 @@ insert
 text into the stream of code being compiled.  See [C:/Kernel/KEnd.CPP.Z,1]
 #exe {} for an example where 
 the date/time and compile-time prompting for cfguration data is placed into a 
-program.  [C:/Compiler/CMisc.CPP.Z,43] StreamPrint() places text into a src
+program.  [C:/Compiler/CMisc.CPP.Z,29] StreamPrint() places text into a src
 program stream following the 
 conclusion of the #exe{} blk.
 
@@ -271,11 +272,11 @@ is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1].
 * class member vars can have meta data. fmtstr and fmtdata are two meta data 
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP,1] and  
-[C:/Adam/DolDoc/DocPopUp.CPP.Z,316] DocForm().
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,321] DocForm().
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
 name of the previous arg.  See [C:/Demo/LastClass.CPP,1],
-[C:/Adam/ADbg.CPP.Z,154] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,316]
+[C:/Adam/ADbg.CPP.Z,154] ClassRep(), [C:/Adam/DolDoc/DocPopUp.CPP.Z,321]
 DocForm()  
 and [C:/Demo/Dsk/BlkDevRep.CPP,1].
 
@@ -318,7 +319,7 @@ make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2790] DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2840] DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
 Spawn().  You can use 
 [C:/Kernel/Task.CPP.Z,82] CallStkGrow(), but it's odd.  See

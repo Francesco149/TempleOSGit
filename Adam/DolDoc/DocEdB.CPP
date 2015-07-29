@@ -20,7 +20,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	!(sc&(SCF_CTRL|SCF_ALT))) {
     if (sc&SCF_KEY_DESC) {
       st=Char2KeyName(ch,FALSE);
-      KeyDescSet("Char/'%s'",st);
+      KeyDescSet("Char  /'%s'",st);
       Free(st);
     } else
       EdInsChar(ch,sc,doc);
@@ -31,26 +31,26 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
     switch (ch) {
       case CH_CTRLA:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Edit/Save As");
+	  KeyDescSet("Edit  /Save As");
 	else
 	  DocWrite(doc,TRUE);
 	break;
       case CH_CTRLB:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Win/Toggle Border");
+	  KeyDescSet("Win   /Toggle Border");
 	else
 	  WinBorder(Bt(&doc->win_task->display_flags,
 		DISPLAYf_NO_BORDER),doc->win_task);
 	break;
       case CH_CTRLC:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Edit/Copy to Clipboard");
+	  KeyDescSet("Edit  /Copy to Clipboard");
 	else
 	  EdCopyToClipboard(doc);
 	break;
       case CH_CTRLD:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Cmd/Jump to File Manager");
+	  KeyDescSet("Cmd   /Jump to File Manager");
 	else {
 	  DocUnlock(doc);
 	  FileMgr;
@@ -60,31 +60,31 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case CH_CTRLF:
 	if (sc&SCF_SHIFT) {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Cmd/Find Wizard");
+	    KeyDescSet("Cmd   /Find Wizard");
 	  else
 	    FindWiz;
 	} else {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Find & Replace");
+	    KeyDescSet("Edit  /Find & Replace");
 	  else
 	    EdFindReplace(doc);
 	}
 	break;
       case CH_CTRLG:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Edit/GoTo Line Num");
+	  KeyDescSet("Edit  /GoTo Line Num");
 	else
 	  EdGoToLine(doc);
 	break;
       case CH_BACKSPACE: //<CTRL-H>
 	if (sc&SCF_ALT && !(sc&SCF_CTRL)) {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Undo");
+	    KeyDescSet("Edit  /Undo");
 	  else
 	    DocUndoRestore(doc);
 	} else {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Char/Back Space");
+	    KeyDescSet("Char  /Back Space");
 	  else {
 	    DocCaptureUndo(doc);
 	    doc_ce=doc->cur_entry;
@@ -124,9 +124,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case '\n':
 	if (sc&SCF_KEY_DESC) {
 	  if (sc&SCF_SHIFT)
-	    KeyDescSet("Char/Return");
+	    KeyDescSet("Char  /Return");
 	  else
-	    KeyDescSet("Char/Page Break");
+	    KeyDescSet("Char  /Page Break");
 	} else
 	  EdInsChar(ch,sc,doc);
 	break;
@@ -141,7 +141,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case CH_CTRLL:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc&SCF_SHIFT)
-	    KeyDescSet("Edit/Code Tools");
+	    KeyDescSet("Edit  /Code Tools");
 	  else
 	    KeyDescSet("Dollar/Wizard");
 	} else {
@@ -157,9 +157,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case CH_CTRLM:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc&SCF_SHIFT)
-	    KeyDescSet("Cmd/Jump to Notes File");
+	    KeyDescSet("Cmd   /Jump to Notes File");
 	  else
-	    KeyDescSet("Cmd/Jump to Menu");
+	    KeyDescSet("Cmd   /Jump to Menu");
 	} else {
 	  if (sc&SCF_SHIFT)
 	    Ed("::/Home/PersonalNotes.TXT.Z");
@@ -173,9 +173,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case CH_CTRLO:
 	if (sc&SCF_KEY_DESC) {
 	  if (sc&SCF_SHIFT)
-	    KeyDescSet("Edit/Collapse");
+	    KeyDescSet("Edit  /Collapse");
 	  else
-	    KeyDescSet("Edit/Uncolapse");
+	    KeyDescSet("Edit  /Uncolapse");
 	} else {
 	  if (sc&SCF_SHIFT)
 	    DocCollapse(TRUE,doc);
@@ -230,12 +230,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case CH_CTRLS:
 	if (sc&SCF_SHIFT) {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Find Misspelled");
+	    KeyDescSet("Edit  /Find Misspelled");
 	  else
 	    ACFindMisspelled(doc);
 	} else {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Save");
+	    KeyDescSet("Edit  /Save");
 	  else
 	    DocWrite(doc);
 	}
@@ -243,12 +243,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       case CH_CTRLT:
 	if (sc&SCF_SHIFT) {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Single Entry Toggle Plain Text");
+	    KeyDescSet("Edit  /Single Entry Toggle Plain Text");
 	  else
 	    DocEntryToggle(doc);
 	} else {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Toggle Plain Text Display");
+	    KeyDescSet("Edit  /Toggle Plain Text Display");
 	  else
 	    if (!(doc->flags&DOCF_FORM) ||
 		  doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_WITH_TABS))
@@ -265,7 +265,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	break;
       case CH_CTRLV:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Edit/Paste Clipboard");
+	  KeyDescSet("Edit  /Paste Clipboard");
 	else
 	  EdPasteClipboard(doc);
 	break;
@@ -279,13 +279,13 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	break;
       case CH_CTRLX:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Edit/Cut To Clipboard");
+	  KeyDescSet("Edit  /Cut To Clipboard");
 	else
 	  EdCutToClipboard(doc);
 	break;
       case CH_CTRLY:
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Edit/Delete Line");
+	  KeyDescSet("Edit  /Delete Line");
 	else
 	  EdDelLine(doc);
 	break;
@@ -302,9 +302,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  if (sc&SCF_CTRL) {
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Jump to Word Definition");
+		KeyDescSet("Edit  /Jump to Word Definition");
 	      else
-		KeyDescSet("Edit/Autocomplete Word");
+		KeyDescSet("Edit  /Autocomplete Word");
 	    } else {
 	      if (AutoComplete(ON)) {
 		DocUnlock(doc);
@@ -318,7 +318,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  }
 	} else {
 	  if (sc&SCF_KEY_DESC)
-	    KeyDescSet("Edit/Enter extended-ASCII");
+	    KeyDescSet("Edit  /Enter extended-ASCII");
 	  else {
 	    if (++doc->ext_ascii_cnt==1)
 	      doc->ext_ascii_val=ch-'0';
@@ -335,12 +335,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	if (!(sc&SCF_ALT) && sc&SCF_CTRL) {
 	  if (sc&SCF_SHIFT) {
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/GoTo matching brace");
+	      KeyDescSet("Edit  /GoTo matching brace");
 	    else
 	      EdFindPaired(doc,'}','{',FALSE);
 	  } else {
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/GoTo matching bracket");
+	      KeyDescSet("Edit  /GoTo matching bracket");
 	    else
 	      EdFindPaired(doc,']','[',FALSE);
 	  }
@@ -350,12 +350,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	if (!(sc&SCF_ALT) && sc&SCF_CTRL) {
 	  if (sc&SCF_SHIFT) {
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/GoTo matching brace");
+	      KeyDescSet("Edit  /GoTo matching brace");
 	    else
 	      EdFindPaired(doc,'{','}',TRUE);
 	  } else {
 	    if (sc&SCF_KEY_DESC)
-	      KeyDescSet("Edit/GoTo matching bracket");
+	      KeyDescSet("Edit  /GoTo matching bracket");
 	    else
 	      EdFindPaired(doc,'[',']',TRUE);
 	  }
@@ -368,9 +368,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	      if (sc&SCF_CTRL) {
 		if (sc&SCF_KEY_DESC) {
 		  if (sc&SCF_SHIFT)
-		    KeyDescSet("Edit/Jump to Src of Sym");
+		    KeyDescSet("Edit  /Jump to Src of Sym");
 		  else
-		    KeyDescSet("Edit/Autocomplete Sym");
+		    KeyDescSet("Edit  /Autocomplete Sym");
 		} else {
 		  DocUnlock(doc);
 		  if (AutoComplete(ON)) {
@@ -386,9 +386,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F1:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc&SCF_SHIFT)
-			KeyDescSet("About");
+			KeyDescSet("Help  /About");
 		      else
-			KeyDescSet("Help");
+			KeyDescSet("Help  /Help");
 		    } else {
 		      if (sc&SCF_SHIFT)
 			Ed("::/Doc/AboutTempleOS.TXT.Z");
@@ -399,9 +399,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F2:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc&SCF_SHIFT)
-			KeyDescSet("Edit/Play Macro");
+			KeyDescSet("Edit  /Play Macro");
 		      else
-			KeyDescSet("Edit/Macro");
+			KeyDescSet("Edit  /Macro");
 		    } else {
 		      DocUnlock(doc);
 		      if (sc&SCF_SHIFT) {
@@ -418,9 +418,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F3:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc&SCF_SHIFT)
-			KeyDescSet("Edit/Find Last");
+			KeyDescSet("Edit  /Find Last");
 		      else
-			KeyDescSet("Edit/Find Next");
+			KeyDescSet("Edit  /Find Next");
 		    }else {
 		      doc->find_replace->scan_fwd=!(sc&SCF_SHIFT);
 		      EdFindNext(doc);
@@ -429,9 +429,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F4:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc&SCF_SHIFT)
-			KeyDescSet("Misc/Insert Directory Name");
+			KeyDescSet("Misc  /Insert Directory Name");
 		      else
-			KeyDescSet("Misc/Insert FileName");
+			KeyDescSet("Misc  /Insert FileName");
 		    } else {
 		      DocUnlock(doc);
 		      if (sc&SCF_SHIFT)
@@ -448,9 +448,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F5:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc&SCF_SHIFT)
-			KeyDescSet("Cmd/Adam Include");
+			KeyDescSet("Cmd   /Adam Include");
 		      else
-			KeyDescSet("Cmd/Run (Execute);Dbg/Go");
+			KeyDescSet("Cmd   /Run (Execute);Dbg/Go");
 		    } else {
 		      if (st2=DocEntryLink(doc,doc_ce)) {
 			st=DocLinkFile(st2);
@@ -478,9 +478,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F6:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc & SCF_SHIFT)
-			KeyDescSet("God Doodle");
+			KeyDescSet("God   /Doodle");
 		      else
-			KeyDescSet("God Song");
+			KeyDescSet("God   /Song");
 		    } else {
 //[C:/Adam/God/HSNotes.TXT.Z,1]
 		      if (sc & SCF_SHIFT) {
@@ -494,9 +494,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  case SC_F7:
 		    if (sc&SCF_KEY_DESC) {
 		      if (sc & SCF_SHIFT)
-			KeyDescSet("God Passage");
+			KeyDescSet("God   /Passage");
 		      else
-			KeyDescSet("God Word");
+			KeyDescSet("God   /Word");
 		    } else {
 //[C:/Adam/God/HSNotes.TXT.Z,1]
 		      FifoU8Flush(god.fifo);
@@ -516,9 +516,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	    if (sc2==SC_END || sc&SCF_CTRL) {
 	      if (sc&SCF_KEY_DESC) {
 		if (sc&SCF_SHIFT)
-		  KeyDescSet("Edit/GoTo Doc End, Select");
+		  KeyDescSet("Edit  /GoTo Doc End, Select");
 		else
-		  KeyDescSet("Edit/GoTo Doc End");
+		  KeyDescSet("Edit  /GoTo Doc End");
 	      } else {
 		while (doc_ce!=doc) {
 		  BEqu(&doc_ce->type,DOCEt_SELECTED,sc&SCF_SHIFT);
@@ -529,9 +529,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	      }
 	    } else if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Cursor Down, Select");
+		KeyDescSet("Edit  /Cursor Down, Select");
 	      else
-		KeyDescSet("Edit/Cursor Down");
+		KeyDescSet("Edit  /Cursor Down");
 	    } else
 	      EdLineDown(doc,sc);
 	    break;
@@ -540,9 +540,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	    if (sc2==SC_HOME || sc&SCF_CTRL) {
 	      if (sc&SCF_KEY_DESC) {
 		if (sc&SCF_SHIFT)
-		  KeyDescSet("Edit/GoTo Top of Doc, Select");
+		  KeyDescSet("Edit  /GoTo Top of Doc, Select");
 		else
-		  KeyDescSet("Edit/GoTo Top of Doc");
+		  KeyDescSet("Edit  /GoTo Top of Doc");
 	      } else {
 		if (doc_ce==doc) doc_ce=doc_ce->last;
 		while (doc_ce!=doc) {
@@ -555,18 +555,18 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	      }
 	    } else if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Cursor Up, Select");
+		KeyDescSet("Edit  /Cursor Up, Select");
 	      else
-		KeyDescSet("Edit/Cursor Up");
+		KeyDescSet("Edit  /Cursor Up");
 	    } else
 	      EdLineUp(doc,sc);
 	    break;
 	  case SC_PAGE_DOWN:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Page Down, Select");
+		KeyDescSet("Edit  /Page Down, Select");
 	      else
-		KeyDescSet("Edit/Page Down");
+		KeyDescSet("Edit  /Page Down");
 	    } else {
 	      i=doc_ce->y+doc->win_task->win_height-1;
 	      if (doc_ce->type_u8==DOCT_HEX_ED)
@@ -586,9 +586,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  case SC_PAGE_UP:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Page Up, Select");
+		KeyDescSet("Edit  /Page Up, Select");
 	      else
-		KeyDescSet("Edit/Page Up");
+		KeyDescSet("Edit  /Page Up");
 	    }else {
 	      i=doc_ce->y-(doc->win_task->win_height-1);
 	      if (doc_ce->type_u8==DOCT_HEX_ED)
@@ -609,12 +609,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  case SC_CURSOR_LEFT:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_CTRL)
-		KeyDescSet("Edit/GoTo Start of Line");
+		KeyDescSet("Edit  /GoTo Start of Line");
 	      else {
 		if (sc&SCF_SHIFT)
-		  KeyDescSet("Edit/Cursor Left, Select");
+		  KeyDescSet("Edit  /Cursor Left, Select");
 		else
-		  KeyDescSet("Edit/Cursor Left");
+		  KeyDescSet("Edit  /Cursor Left");
 	      }
 	    } else
 	      EdCursorLeft(doc,sc);
@@ -622,12 +622,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  case SC_CURSOR_RIGHT:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_CTRL)
-		KeyDescSet("Edit/GoTo End of Line");
+		KeyDescSet("Edit  /GoTo End of Line");
 	      else {
 		if (sc&SCF_SHIFT)
-		  KeyDescSet("Edit/Cursor Right, Select");
+		  KeyDescSet("Edit  /Cursor Right, Select");
 		else
-		  KeyDescSet("Edit/Cursor Right");
+		  KeyDescSet("Edit  /Cursor Right");
 	      }
 	    } else
 	      EdCursorRight(doc,sc);
@@ -635,9 +635,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  case SC_DELETE:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Cut To Clipboard");
+		KeyDescSet("Edit  /Cut To Clipboard");
 	      else
-		KeyDescSet("Char/Delete");
+		KeyDescSet("Char  /Delete");
 	    } else {
 	      if (sc&SCF_SHIFT)
 		EdCutToClipboard(doc);
@@ -648,11 +648,11 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  case SC_INS:
 	    if (sc&SCF_KEY_DESC) {
 	      if (sc&SCF_SHIFT)
-		KeyDescSet("Edit/Paste Clipboard");
+		KeyDescSet("Edit  /Paste Clipboard");
 	      else if (sc&SCF_CTRL)
-		KeyDescSet("Edit/Copy to Clipboard");
+		KeyDescSet("Edit  /Copy to Clipboard");
 	      else
-		KeyDescSet("Edit/Toggle Overstrike");
+		KeyDescSet("Edit  /Toggle Overstrike");
 	    } else {
 	      if (sc&SCF_SHIFT)
 		EdPasteClipboard(doc);

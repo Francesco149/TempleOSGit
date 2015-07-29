@@ -93,7 +93,7 @@ be compiled and run.
 to be 
 displayed.
 
-[C:/Compiler/CMisc.CPP.Z,43] StreamPrint(U8 *fmt,...) sends text to the
+[C:/Compiler/CMisc.CPP.Z,29] StreamPrint(U8 *fmt,...) sends text to the
 stream of code being compiled and 
 must reside in a #exe{} blk.
 
@@ -121,7 +121,7 @@ string on start-up.
 [C:/Kernel/SrvCmd.CPP.Z,409] PopUpPrint(U8 *fmt,...) compiles and execute a
 string in a pop-up win.  Note: 
 It returns the result of the last executed expression.
-[C:/Adam/DolDoc/DocPopUp.CPP.Z,433] PopUpViewPrint(U8 *fmt,...) creates a
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,438] PopUpViewPrint(U8 *fmt,...) creates a
 pop-up window and views text.
 
 **Note:** Use Print("%s",src) if you need an unmodified string.

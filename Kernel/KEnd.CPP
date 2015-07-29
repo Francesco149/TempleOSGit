@@ -37,9 +37,9 @@ U0 SysGlblsInit()
 
   #exe {
     StreamPrint("dsk.boot_drv_let='%C';",kernel_cfg->boot_drv_let);
-    StreamPrint("#exe{OptOff(OPTf_WARN_PAREN);}");
+    StreamPrint("#exe{Option(OPTf_WARN_PAREN,OFF);}");
     StreamPrint("DskCacheInit(%s);",kernel_cfg->dsk_cache_size_exp);
-    StreamPrint("#exe{OptOn(OPTf_WARN_PAREN);}");
+    StreamPrint("#exe{Option(OPTf_WARN_PAREN,ON);}");
   };
 
   pow10_I64=CAlloc(sizeof(F64)*(308+308+1));

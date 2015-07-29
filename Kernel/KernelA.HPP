@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1472] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1521] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1870] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1920] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -603,9 +603,10 @@ class CSema
 #define SYS_SEMA_TT			16
 #define SYS_SEMA_MUTE			17
 #define SYS_SEMA_FORCE_WINMGR		18
-#define SYS_SEMA_TMBEAT			19
-#define SYS_SEMA_FIX			20
-#define NUM_SYS_SEMAS			21
+#define SYS_SEMA_JUST_PUMP_MSGS		19
+#define SYS_SEMA_TMBEAT			20
+#define SYS_SEMA_FIX			21
+#define NUM_SYS_SEMAS			22
 
 #define SYSf_CTRL_ALT_DEL		0
 #define SYSf_CTRL_ALT_C			1
@@ -789,9 +790,9 @@ public class CMemberLstMeta
 public class CMemberLst
 {
   CMemberLst *next,*left,*right,
-	*left2,*right2; //For finding dup class local vars, not names.
+	*left_class_base,*right_class_base; //For finding dup class local vars.
   U8	*str;
-  CHashClass *member_class,*member_class2;
+  CHashClass *member_class,*member_class_base;
   CMemberLstMeta *meta;
   U32	use_cnt;
   U16	flags;
@@ -823,12 +824,13 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,847] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,849] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
   U16	flags;
-  CMemberLst *member_lst,*member_lst2,
+  CMemberLst *member_lst_and_root, //Head of linked list and root of tree.
+	*member_class_base_root, //For finding dup class local vars.
 	*last_in_member_lst;
   CHashClass	*base_class,
 	*fwd_class;
@@ -1191,7 +1193,7 @@ public class CDocEntry:CDocEntryBase
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
-//[C:/Adam/DolDoc/DocPopUp.CPP.Z,316] DocForm() [C:/Adam/DolDoc/DocPopUp.CPP.Z,370] DocMenu() [C:/Adam/DolDoc/DocPopUp.CPP.Z,196] DocEd() [C:/Adam/DolDoc/DocPopUp.CPP.Z,447] PopUpMenu()
+//[C:/Adam/DolDoc/DocPopUp.CPP.Z,321] DocForm() [C:/Adam/DolDoc/DocPopUp.CPP.Z,375] DocMenu() [C:/Adam/DolDoc/DocPopUp.CPP.Z,201] DocEd() [C:/Adam/DolDoc/DocPopUp.CPP.Z,452] PopUpMenu()
 #define	DOF_MIN_SIZE		0x01
 #define	DOF_INTERCEPT_TASK_END	0x02
 #define DOF_DONT_HOME		0x04
@@ -1199,7 +1201,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1224] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1226] Editor Flags
 
 class CEdFindText
 {
@@ -1225,7 +1227,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1195] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1197] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1313,7 +1315,7 @@ class CDocUndo
   U8	*body;
 };
 
-//See [C:/Adam/DolDoc/DocPopUp.CPP.Z,370] DocMenu()
+//See [C:/Adam/DolDoc/DocPopUp.CPP.Z,375] DocMenu()
 #define DOCM_CANCEL		(-1)
 
 #define DOC_SIGNATURE_VAL	'DocS'
@@ -1391,6 +1393,7 @@ tries to do something.
 #define WIF_SELF_GRAB_SCROLL	0x0200
 #define WIF_SELF_DOC		0x0400
 #define WIF_SELF_ODE		0x0800
+#define WIF_SELF_KEY_DESC	0x1000
 		//FOCUS		0x00010000
 #define WIF_FOCUS_TASK_MENU	0x00020000
 #define WIF_FOCUS_TASK_CTRLS	0x00040000
@@ -1405,7 +1408,7 @@ tries to do something.
 #define WIG_DBL_CLICK		(WIF_FOCUS_TASK_IP_L_D|WIF_FOCUS_TASK_IP_R_D)
 #define WIG_TASK_DFT	(WIF_FOCUS_TASK_MENU|WIG_DBL_CLICK|\
 			0xFFFF-WIF_SELF_DOC-WIF_SELF_ODE)
-#define WIG_USER_TASK_DFT	0
+#define WIG_USER_TASK_DFT	WIF_SELF_KEY_DESC
 
 #define WIf_SELF_FOCUS		0
 #define WIf_SELF_CTRLS		2
@@ -1416,6 +1419,7 @@ tries to do something.
 #define WIf_SELF_GRAB_SCROLL	9
 #define WIf_SELF_DOC		10
 #define WIf_SELF_ODE		11
+#define WIf_SELF_KEY_DESC	12
 #define WIf_FOCUS_TASK_MENU	17
 #define WIf_FOCUS_TASK_CTRLS	18
 #define WIf_FOCUS_TASK_IP_L	19
@@ -1451,16 +1455,61 @@ public class CWinMgrGlbls
 	grab_scroll_closed;
 };
 
-#help_index "Compiler/Directive"
-//Compiler Options
-//  Use [C:/Compiler/CMisc.CPP.Z,6] OptOn() [C:/Compiler/CMisc.CPP.Z,11] OptOff()
+#help_index "AutoComplete"
+#define ACf_INIT_IN_PROGRESS	0
+#define AC_MAX_FILLINS 10
+public class CAutoCompleteGlbls
+{
+  I64	num_words;
+  CHashTable *hash_table;
+  U8	*cur_word;
+  I64	flags;
+  CTask	*task;
+  I64	partial_len,num_fillins,
+	fillin_hits	[AC_MAX_FILLINS+1];
+  CHashAC *fillin_matches[AC_MAX_FILLINS+1];
+};
 
-//You might need to do #exe {OptOn();}
+#help_index "AutoComplete/Dictionary"
+#define ACD_WORD_FILENAME	"/Adam/AutoComplete/ACWords.DAT.Z"
+#define ACD_DEF_FILENAME	"/Adam/AutoComplete/ACDefs.DAT"
+#define ACD_DEF_FILENAME_Z	"/Adam/AutoComplete/ACDefs.DAT.Z"
+
+#define ACD_H1			0
+#define ACD_H1_END		1
+#define ACD_DEF			2
+#define ACD_DEF_END		3
+#define ACD_PRONUNCIATION	4
+#define ACD_PRONUNCIATION_END	5
+#define ACD_POS			6
+#define ACD_POS_END		7
+#define ACD_EXTRA		8
+#define ACD_EXTRA_END		9
+#define ACD_BLK_SIZE		0x4000
+
+#define ACD_END_CHAR		0x00
+#define ACD_WORD_CHAR		0x01
+#define ACD_DEF_CHAR		0x02
+#define ACD_PRONUNCIATION_CHAR	0x03
+#define ACD_POS_CHAR		0x04
+#define ACD_EXTRA_CHAR		0x05
+
+#define ACD_MAX_FILLINS 10
+public class CAutoCompleteDictGlbls
+{
+  U8	*word_lst;
+  I64	word_lst_size,num_words,num_fillins;
+  U8	*fillins[ACD_MAX_FILLINS];
+  Bool	has_words,has_defs;
+};
+
+#help_index "Compiler/Directive"
+//Compiler [C:/Compiler/CMisc.CPP.Z,1] Option()s
+//You might need to do #exe {Option();}
 //Note: The #exe statement is lexed-ahead,
 //so it takes effect earlier than you might expect.
 #define OPTf_ECHO		0x00
-#define OPTf_OPT_TRACE		0x01
-#define OPTf_COMPILE_TRACE	0x02
+#define OPTf_TRACE		0x01
 #define OPTf_WARN_UNUSED_VAR	0x10 //Applied to funs, not statements
 #define OPTf_WARN_PAREN		0x11 //Warn unnecessary parens
 #define OPTf_WARN_DUP_TYPES	0x12 //Warn dup local var type statements
@@ -1485,7 +1534,7 @@ public class CWinMgrGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1317] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1319] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -1520,7 +1569,7 @@ public class CWinMgrGlbls
 #define ICF_SHORT_JMP			0x000001000
 #define ICF_A1_FIRST			0x000002000
 #define ICF_PUSH_RESULT			0x000004000
-#define ICF_TRACE			0x000008000
+#define ICF_PASS_TRACE			0x000008000
 #define ICF_R_WAS_STK			0x000010000
 #define ICF_A1_WAS_STK			0x000020000
 #define ICF_A2_WAS_STK			0x000040000
@@ -1648,23 +1697,24 @@ class CCodeMisc
 #define IEF_48_REX		0x040
 #define IEF_REX_ONLY_R8_R15	0x080
 #define IEF_REX_XOR_LIKE	0x100
-#define IEF_STI			0x200
+#define IEF_STI_LIKE		0x200
 #define IEF_ENDING_ZERO		0x400
 
 //Slash value
 #define SV_R_REG	8
 #define SV_I_REG	9
-#define SV_NONE		10
+#define SV_STI_LIKE	10 //[C:/Compiler/AsmInit.CPP.Z,1] uasm_slash_val only.
+#define SV_NONE		11
 class CInstruction
 {
   U8	ins_entry_num, //This entry num in opcode hash entry
 	opcode_cnt,
 	opcode[4];
   U16	flags;
-  U8	slash_val,opcode_modifier,
+  U8	slash_val,uasm_slash_val,opcode_modifier,
 	arg1,arg2,
 	size1,size2,//Size in bits
-	pad[2];
+	pad;
 };
 
 //x86 opcodes
@@ -2047,7 +2097,7 @@ class CLexHashTableContext
 #define CCF_KEEP_DOT		64
 #define CCF_KEEP_NUM_SIGN	128
 #define CCF_KEEP_AT_SIGN	256
-#define CCf_OPT_TRACE_PRESENT	9
+#define CCf_PASS_TRACE_PRESENT	9
 #define CCF_NOT_CONST		0x0000010000
 #define CCF_NO_REG_OPT		0x0000020000
 #define CCF_IN_QUOTES		0x0000040000
@@ -2106,7 +2156,7 @@ public class CCmpCtrl
   CStreamBlk *next_stream_blk,*last_stream_blk;
   CAOT	*aot;
 
-  I64	pass,opts,otrace_mask,
+  I64	pass,opts,pass_trace,saved_pass_trace,
 	error_cnt,warning_cnt;
 
   //For intermediate codes with multiple float ops (int<->float conversions)
@@ -2737,8 +2787,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/MemA.CPP.Z,8] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2782] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2782] PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2832] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2832] PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2845,7 +2895,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2855] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2905,7 +2955,8 @@ public class CKbdStateGlbls
   I64	scan_code,	//See [C:/Doc/CharOverview.TXT.Z,1] scan codes
 	last_down_scan_code,
 	cnt,		//Count of keys pressed since boot.
-	timestamp;	//Output: GetTSC when event.
+	timestamp,	//Output: GetTSC when event.
+	new_key_timestamp; //Output: GetTSC when new key event.
   CFifoU8 *fifo,*fifo2; //Private
   CFifoI64 *scan_code_fifo;
 
@@ -2944,7 +2995,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2943] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2944] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2994] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2995] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3124,8 +3175,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3389] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3389] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3438] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3438] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3144,8 +3195,6 @@ class CSrvCtrl
 #define MSG_IP_L_D_DOWN_UP	-7  //Down & Up
 #define MSG_IP_R_DOWN_UP	-9  //Down & Up
 #define MSG_IP_R_D_DOWN_UP	-11 //Down & Up
-
-#define MSGF_ALLOW_KEY_DESC	63
 
 #help_index "Task"
 #define TASK_TITLE_LEN	127
@@ -3437,6 +3486,7 @@ public class CSysFixedArea
 #define SCf_IP_R_DOWN	17
 #define SCf_DELETE	18
 #define SCf_INS		19
+#define SCf_NO_SHIFT	30
 #define SCf_KEY_DESC	31
 #define SCF_E0_PREFIX	(1<<SCf_E0_PREFIX)
 #define SCF_KEY_UP	(1<<SCf_KEY_UP)
@@ -3451,11 +3501,12 @@ public class CSysFixedArea
 #define SCF_IP_R_DOWN	(1<<SCf_IP_R_DOWN)
 #define SCF_DELETE	(1<<SCf_DELETE)
 #define SCF_INS 	(1<<SCf_INS)
+#define SCF_NO_SHIFT	(1<<SCf_NO_SHIFT)
 #define SCF_KEY_DESC	(1<<SCf_KEY_DESC)
 
 //TempleOS places a 1 in bit 7 for
 //keys with an E0 prefix.
-//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/KbdMouse/Keyboard.CPP.Z,424] KbdHandler().
+//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/KbdMouse/Keyboard.CPP.Z,437] KbdHandler().
 #define SC_ESC		0x01
 #define SC_BACKSPACE	0x0E
 #define SC_TAB		0x0F
@@ -3567,12 +3618,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2845] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2895] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2855] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3604,7 +3655,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3543] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3594] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3726,7 +3777,7 @@ class CKeyDevGlbls
   U0	(**fp_ctrl_alt_let_cbs)(I64 sc);
   I64	ctrl_alt_let_in_irq_flags,
 	**ctrl_alt_let_ret_addr; //addr of ret addr on stack in kbd irq
-  U8	**ctrl_alt_let_descs,
+  U8	**ctrl_alt_let_no_shift_descs,**ctrl_alt_let_shift_descs,
 	desc[STR_LEN],
 	*handler;
 };
