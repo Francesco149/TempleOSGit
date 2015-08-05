@@ -297,8 +297,8 @@ mesh_done:
 #help_index "Graphics/Misc;Input Pointer/Displayed Image"
 public U0 DrawStdInputPtr(CDC *dc,I64 x,I64 y)
 {//This is a callback. See [C:/Demo/Graphics/Grid.CPP.Z,1].
-//Called by [C:/Adam/WinA.CPP.Z,153] DrawInputPtr() which is
-  //called by [C:/Adam/WinA.CPP.Z,181] WinFinalUpdate().
+//Called by [C:/Adam/WinA.CPP.Z,152] DrawInputPtr() which is
+  //called by [C:/Adam/WinA.CPP.Z,180] WinFinalUpdate().
   dc->pen_width=1;
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   GrArrow3(dc,x+8,y+8,0,x,y,0);

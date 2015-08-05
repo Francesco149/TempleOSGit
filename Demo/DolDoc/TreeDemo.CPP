@@ -1,4 +1,4 @@
-/*Uses [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint() because updates
+/*Uses [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint() because updates
 to within a tree while a tree is collapsed get
 messed-up if "live" (like using ordinary Print.)
 The insert point is confused by hiding of
@@ -7,7 +7,7 @@ Doc is taken off-line by disabling preemption so there
 are no screen updates until all data has been inserted.
 
 There is a special Doc function which is also
-available to take an Doc off-line.  See [C:/Adam/DolDoc/DocRecalcA.CPP.Z,149] DocPrintAtomic.
+available to take an Doc off-line.  See [C:/Adam/DolDoc/DocPutS.CPP.Z,254] DocPrintAtomic.
 For this example, however, I wanted to use DocPrint
 and disabled Preemption myself.
 */

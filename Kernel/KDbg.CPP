@@ -171,7 +171,7 @@ U0 CallerRep(U8 **rbp=NULL,CTask *task=NULL)
 
 U0 D(U8 *addr,I64 cnt=0x80,Bool show_offset=TRUE)
 {//Dump mem, showing offsets.
-//See [C:/Adam/DolDoc/DocMain.CPP.Z,578] DocD() for a live dump.
+//See [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD() for a live dump.
   I64 i,j,ch;
   U8 *ptr=addr;
   while (cnt) {

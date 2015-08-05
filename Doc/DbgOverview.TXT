@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,644] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,649] U(). [C:/Compiler/UAsm.CPP.Z,649]
-U([C:/Kernel/KernelA.HPP.Z,3382] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3381] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,649] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,253] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3382]
+function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3381]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -29,13 +29,13 @@ task window.  It works like
 [C:/Kernel/StrPrint.CPP.Z,898] Print().  I never use that.  Instead, I use
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint().
 
-* [C:/Kernel/KDbg.CPP.Z,172] D(), [C:/Adam/DolDoc/DocMain.CPP.Z,578] DocD(),
+* [C:/Kernel/KDbg.CPP.Z,172] D(), [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD(),
 [C:/Kernel/KDbg.CPP.Z,234] RawD() to do 16 column hex dump mem with numbering
 from zero.  
-With [C:/Adam/DolDoc/DocMain.CPP.Z,578] DocD the values are updated
+With [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD the values are updated
 continually and you can alter mem by editing.
 
-* [C:/Kernel/KDbg.CPP.Z,204] Dm(), [C:/Adam/DolDoc/DocMain.CPP.Z,565]
+* [C:/Kernel/KDbg.CPP.Z,204] Dm(), [C:/Adam/DolDoc/DocPutS.CPP.Z,334]
 DocDm(), [C:/Kernel/KDbg.CPP.Z,250] RawDm() to do 16 column hex dump mem with
 addresses showing.
 
@@ -90,7 +90,7 @@ which intercepts [C:/Kernel/MemB.CPP.Z,372] MAlloc() and
 heap issues.
 
 * You can define handler functions for <CTRL-ALT-letter> keys with 
-[C:/Kernel/KeyDev.CPP.Z,181] CtrlAltLetCBSet().  They operate either in a
+[C:/Kernel/KeyDev.CPP.Z,181] CtrlAltCBSet().  They operate either in a
 interrupt environment or in the 
 window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,248]
 Raw() output.  <CTRL-ALT-lette

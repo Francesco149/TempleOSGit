@@ -67,8 +67,10 @@ U0 GrUpdateTasks()
     do { //Loop through core#0 tasks.
       if (!TaskValidate(task)) break;
       if (Bt(&task->display_flags,DISPLAYf_SHOW) &&
-	    Bt(gr.win_uncovered_bitmap,task->win_z_num))
+	    Bt(gr.win_uncovered_bitmap,task->win_z_num)) {
 	GrUpdateTaskWin(task);
+	Preempt;
+      }
       if (!TaskValidate(task)) break;
       task=task->next_task;
     } while (task!=task1);
@@ -78,6 +80,7 @@ U0 GrUpdateTasks()
       do {
 	if (!TaskValidate(task)) break;
 	GrUpdateTaskODEs(task);
+	Preempt;
 	if (!TaskValidate(task)) break;
 	task=task->next_task;
       } while (task!=task1);
@@ -403,7 +406,6 @@ U0 GrUpdateVGAGraphics()
 U0 GrUpdateScreen()
 {//Called by the Window Manager [C:/Adam/WinB.CPP.Z,1] HERE, 60 times a second.
   CDC *dc;
-  Preempt(ON);
   if (!Bt(&sys_run_level,RLf_VGA)) //if text mode
     GrUpdateTasks;
   else {
@@ -412,7 +414,6 @@ U0 GrUpdateScreen()
     GrUpdateTasks;
     DCBlotColor8(gr.dc2,gr.dc);
   }
-  Preempt;
 
   dc=DCAlias(gr.dc2,Fs);
   dc->flags|=DCF_ON_TOP;

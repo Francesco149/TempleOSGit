@@ -490,7 +490,7 @@ public CDocEntry *DocSprite(CDoc *doc=NULL,U8 *elems,U8 *fmt=NULL)
 }
 
 public CDocEntry *Sprite(U8 *elems,U8 *fmt=NULL)
-{//Put sprite to the command-line, [C:/Adam/DolDoc/DocNew.CPP.Z,654] DocPut.
+{//Put sprite to the command-line, [C:/Adam/DolDoc/DocDblBuf.CPP.Z,2] DocPut.
 //If you set fmt, then include dollars ("$SP ...$") and leave %d for num.
   CDoc *doc;
   if (doc=DocPut)

@@ -15,7 +15,7 @@ involves a long and short name for each file.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2840] DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2839] DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
 Spawn().
 
@@ -37,15 +37,15 @@ you change Fs->draw_it.  To prevent links in the
 [C:/Kernel/KernelA.HPP.Z,1328] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
-A) [C:/Adam/DolDoc/DocRecalcA.CPP.Z,90] DocBottom() followed by
-  [C:/Adam/DolDoc/DocRecalcA.CPP.Z,103] DocClear() to clear the
+A) [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,109] DocBottom() followed by
+  [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,122] DocClear() to clear the
   [C:/Kernel/KernelA.HPP.Z,1328] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/Kernel/KernelA.HPP.Z,1387] WIF_SELF_IP_L|[C:/Kernel/KernelA.HPP.Z,1401]
-  WIF_FOCUS_TASK_IP_L_D|[C:/Kernel/KernelA.HPP.Z,1389]
-  WIF_SELF_IP_R|[C:/Kernel/KernelA.HPP.Z,1403] WIF_FOCUS_TASK_IP_R_D.  
+[C:/Kernel/KernelA.HPP.Z,1386] WIF_SELF_IP_L|[C:/Kernel/KernelA.HPP.Z,1400]
+  WIF_FOCUS_TASK_IP_L_D|[C:/Kernel/KernelA.HPP.Z,1388]
+  WIF_SELF_IP_R|[C:/Kernel/KernelA.HPP.Z,1402] WIF_FOCUS_TASK_IP_R_D.  
 This inhibits window mgr operations but still generates messages from button 
 clicks.
 

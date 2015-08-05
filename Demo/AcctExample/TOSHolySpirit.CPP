@@ -311,7 +311,7 @@ U0 MyBibleLines(U8 *st,I64 num_lines,I64 radix,Bool modulo,Bool plus_one)
   }
 }
 
-#define NIST_TIME_OFFSET	(-7788-local_time_offset/CDATE_FREQ)
+#define NIST_TIME_OFFSET	(-7788-21-local_time_offset/CDATE_FREQ)
 #define NIST_TIME_TO_SWITCH	3
 
 public U0 NISTSync()

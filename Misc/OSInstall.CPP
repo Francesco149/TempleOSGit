@@ -39,7 +39,7 @@ U0 VMInstallBoot(CTask *task,U8 cd_drv,U8 drv,
 	"\n"); //Options
 }
 
-U0 VMInstallWizard()
+U0 VMInstallWiz()
 {
   CATARep *root=NULL,*ata_drv=NULL,*atapi_drv=NULL;
   CTask *task;
@@ -66,7 +66,7 @@ U0 VMInstallWizard()
   Kill(task);
 }
 
-U0 RegularInstallWizard()
+U0 RegularInstallWiz()
 {
   I64 unit;
   U8 *base0,*base1,*ms,*dst,*st1,*st2,*new_home_str;
@@ -203,7 +203,7 @@ U0 DoInstall()
   DocBottom;
 
   if (vm_install) {
-    VMInstallWizard();
+    VMInstallWiz();
     pmt_reboot=TRUE;
   } else {
     "\n\nThis wizard works if you have a partition ready.  "
@@ -211,7 +211,7 @@ U0 DoInstall()
 	  "with more options if you do it by hand, not using this wizard.\n\n"
 	  "Continue Install Wizard ";
     if (pmt_reboot=YorN)
-      RegularInstallWizard();
+      RegularInstallWiz();
   }
   if (pmt_reboot) {
     "Reboot Now ";

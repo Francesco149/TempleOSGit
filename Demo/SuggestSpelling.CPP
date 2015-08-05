@@ -71,7 +71,7 @@ U0 SuggestSpellingDemo()
 
 U0 CtrlAltL(I64)
 {
-//[C:/Kernel/KernelA.HPP.Z,1461] ac.cur_word is only set if AutoComplete
+//[C:/Kernel/KernelA.HPP.Z,1460] ac.cur_word is only set if AutoComplete
   //is running.
   if (!TaskValidate(ac.task)) {
     AutoComplete(ON);
@@ -83,8 +83,7 @@ U0 CtrlAltL(I64)
 if (Fs!=adam_task)
   SuggestSpellingDemo;
 else {
-  CtrlAltLetCBSet('L',&CtrlAltL,"Cmd   /Suggest Spelling",
-	"Cmd   /Suggest Spelling");
+  CtrlAltCBSet('L',&CtrlAltL,"Cmd /Suggest Spelling");
 //Appears in the Adam Task Window
   "<CTRL-ALT-l> installed\n";
 }

@@ -468,8 +468,8 @@ public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
 
 #help_index "Keyboard Devices/System;Char/System"
 #help_file "::/Doc/KeyDev"
-public extern U0 CtrlAltLetCBSet(U8 ch,U0 (*fp_handler)(I64 sc),
-	U8 *no_shift_desc,U8 *shift_desc,Bool in_irq=FALSE);
+public extern U0 CtrlAltCBSet(U8 ch,U0 (*fp_handler)(I64 sc),
+	U8 *no_shift_desc=NULL,U8 *shift_desc=NULL,Bool in_irq=FALSE);
 public extern U0 KeyDescSet(U8 *fmt,...);
 public extern CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
 	Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE);
@@ -479,7 +479,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3737] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3736] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);

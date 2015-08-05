@@ -27,7 +27,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] TwoLetterCmd>  See
 [C:/Kernel/KernelA.HPP.Z,893] Type Defines and
-[C:/Adam/DolDoc/DocPlain.CPP.Z,268] PrsDollarCmd().
+[C:/Adam/DolDoc/DocPlain.CPP.Z,221] PrsDollarCmd().
 +] TX Text
   Normally, text is not bracketed with '$', but if you wish to specify flag
   attr, such as centering text, you can bracket them with '$' and enter flags
@@ -45,7 +45,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 +] CL Clear
   Clear all previous entries except ones with hold(+H) flags.  You might want
   +H on word wrap entries.  Alternatively, you can use
-  [C:/Adam/DolDoc/DocRecalcA.CPP.Z,103] DocClear().
+  [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,122] DocClear().
 +] PB Page Break
   Page break.
 +] PL Page Length
@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2909] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2908] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -127,7 +127,7 @@ See [C:/Demo/DolDoc/CursorMove.CPP.Z,1].
   The [C:/Kernel/KernelA.HPP.Z,1163] CDocEntry.aux_str arg A="" is used for
   the link text.  With no aux the tag becomes the link text, as in example 3.
 
-See [C:/Adam/DolDoc/Doc.CPP.Z,52] Link Types.
+See [C:/Adam/DolDoc/DocLink.CPP.Z,29] Link Types.
 
 Examples: <CTRL-t> to see
 
@@ -151,16 +151,16 @@ Examples: <CTRL-t> to see
 +] BT Button
   See [C:/Demo/DolDoc/MenuButton.CPP.Z,1].
 +] DA Data
-  Used for forms that prompt for data.  Use <CTRL-l> as a resource editor to
-  help you generate the text you need in your "fmtstr" cmd in a class.  If you
-  add it directly with [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint(), you'll
-  need to fill-in the data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,321]
+  Used for forms that prompt for data.  Use <CTRL-l> as a text widgets editor
+  to help you generate the text you need in your "fmtstr" cmd in a class.  If
+  you add it directly with [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(),
+  you'll need to fill-in the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181]
   DocForm() and [C:/Demo/DolDoc/Form.CPP.Z,1].
 
 The default data-type for the $DA...$ command is I64.  You can change it to
   I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
-  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
-  [C:/Adam/DolDoc/DocNew.CPP.Z,517] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
+  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 
 The [C:/Kernel/KernelA.HPP.Z,1163] CDocEntry.aux_str arg A="" is used for the
   format string.
@@ -169,28 +169,28 @@ If there is a ':', the space after the first ':' in the format string marks
   the first valid cursor pos.  See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag
   Width.
 +] CB Check Box
-  Used for forms.  Use <CTRL-l> as a resource editor to help you generate the
-  text you need in your "fmtstr" cmd in a class.  If you add it directly with
-  [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint(), you'll need to fill-in the
-  data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,321] DocForm(),
+  Used for forms.  Use <CTRL-l> as a text widgets editor to help you generate
+  the text you need in your "fmtstr" cmd in a class.  If you add it directly
+  with [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(), you'll need to fill-in
+  the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm(),
   [C:/Kernel/KernelA.HPP.Z,1206] CEdFindText and [C:/Demo/DolDoc/Form.CPP.Z,1].
 
 The default data-type for the $CB...$ command is I8 which is Bool.  You can
   change it to I8, U8, I16, U16, I32, U32, I64, or U64.  See
-  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
-  [C:/Adam/DolDoc/DocNew.CPP.Z,517] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
+  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 +] LS List Widget
   Used for forms that prompt for data.  You must specify a define list, D="".
-   Use <CTRL-l> as a resource editor to help you generate the text you need in
-  your "fmtstr" cmd in a class.  If you add it directly with
-  [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint(), you'll need to fill-in the
-  data addr.  See [C:/Adam/DolDoc/DocPopUp.CPP.Z,321] DocForm() and
+   Use <CTRL-l> as a text widgets editor to help you generate the text you need
+  in your "fmtstr" cmd in a class.  If you add it directly with
+  [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(), you'll need to fill-in the
+  data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm() and
   [C:/Demo/DolDoc/Form.CPP.Z,1].
 
 The default data-type for the $LS...$ command is I64.  You can change it to
   I8, U8, I16, U16, I32, U32, I64, or U64.  See
-  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
-  [C:/Adam/DolDoc/DocNew.CPP.Z,517] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
+  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 +] MA Macro
   A left macro arg, LM="", will send text when the left mouse is clicked.
 
@@ -211,15 +211,15 @@ Macro's are usually in your [C:/Home/PersonalMenu.TXT,1] and have the '+X'
   A left expression arg, LE=<Exp>, will return a number when clicked with the
   left mouse.
 
-See [C:/Adam/DolDoc/DocPopUp.CPP.Z,656] PopUpRangeI64().
+See [C:/Adam/DolDoc/DocPopUp.CPP.Z,202] PopUpRangeI64().
 +] HX Hex Edit
-  See [C:/Adam/DolDoc/DocMain.CPP.Z,578] DocD().
+  See [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD().
 +] TR Tree Widget
   A tree widget is a branch in a collapsable tree.  The domain of the branch
   extends from the first +indent until enough -indents bring it back to where
   it started.  Tree's begin collapsed unless a -C flag is present.
 
-You might want to use [C:/Adam/DolDoc/DocRecalcA.CPP.Z,149] DocPrintAtomic().
+You might want to use [C:/Adam/DolDoc/DocPutS.CPP.Z,254] DocPrintAtomic().
 
 See [C:/Demo/DolDoc/TreeDemo.CPP.Z,1].
 +] SP Sprite
@@ -370,8 +370,8 @@ $SP,"<1>",BI=1,BP="::/Demo/Graphics/Mountain.CPP.Z,Mountain"$ will import bin
   $CB...$ command is I8 which is Bool.
 
 You can change it to I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
-  [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and
-  [C:/Adam/DolDoc/DocNew.CPP.Z,517] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
+  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 +] SX=<Exp> Shift X
   Shift tag text +/- 7 X pixels off the grid.
 +] SY=<Exp> Shift Y

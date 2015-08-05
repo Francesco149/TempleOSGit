@@ -2,7 +2,7 @@
 
 This changes a page table entry for VGA graphics memory.
 TempleOS keeps a cached copy of VGA memory in
-[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image.  See [C:/Adam/Gr/GrScreen.CPP.Z,371] GrUpdateVGAGraphics.
+[C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image.  See [C:/Adam/Gr/GrScreen.CPP.Z,374] GrUpdateVGAGraphics.
 
 TempleOS used 4096 size pages for memory below addr 2 Meg
 and 2 Meg pages above two Meg.  See [C:/Kernel/MemA.CPP.Z,165] MemPageSize() and [C:/Kernel/MemA.CPP.Z,1] INIT_MEMORY.
@@ -44,5 +44,5 @@ U0 PageTableDemo1()
 PageTableDemo1;
 
 //See [C:/Kernel/MemA.CPP.Z,297] Mem2MegAlloc(), [C:/Kernel/MemA.CPP.Z,450] Mem2MegFree() for page aligned allocations.
-//See [C:/Kernel/KernelA.HPP.Z,2846] CBlkPool, [C:/Kernel/KernelA.HPP.Z,2859] CHeapCtrl, [C:/Kernel/KernelB.HPP.Z,195] sys_code_bp and [C:/Kernel/KernelB.HPP.Z,196] sys_data_bp.
+//See [C:/Kernel/KernelA.HPP.Z,2845] CBlkPool, [C:/Kernel/KernelA.HPP.Z,2858] CHeapCtrl, [C:/Kernel/KernelB.HPP.Z,195] sys_code_bp and [C:/Kernel/KernelB.HPP.Z,196] sys_data_bp.
 //See [C:/Doc/MemOverview.TXT.Z,1] Memory Overview and [Memory,1] Memory Routines.

@@ -18,7 +18,7 @@ The main compiler optimizes   See [C:/Compiler/CInit.CPP.Z,16] Intermediate
 optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/Kernel/KernelA.HPP.Z,1618] IC Struct, 
+  [C:/Kernel/KernelA.HPP.Z,1617] IC Struct, 
 [C:/Compiler/PrsLib.CPP.Z,249] COCCompile and
   [C:/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [C:/Compiler/BackA.CPP.Z,1]
   BackEnd.  Set [C:/Compiler/CMisc.CPP.Z,19] Trace(ON) to see the output of 

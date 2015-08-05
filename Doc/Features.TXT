@@ -40,8 +40,7 @@ separate resource files.
 
 * 8-bit ASCII, not just 7-bit.  Supported in entire tool chain.  <CTRL-ALT-a>
 
-* Graphics in source code, no resource files, graphic resource editor. <CTRL-r
->
+* Graphics in source code, no resource files, graphic sprite editor. <CTRL-r>
 
 * 64-bit pointers.  All memory, even more than 4 Gig, can be directly
 accessed 

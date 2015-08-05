@@ -1063,7 +1063,7 @@ U0 DoBugFlapper()
 {
   I64 i;
   CTask *task=User;
-  XTalk(task,"#include \"::/Demo/Games/BugBird\";\n");
+  XTalk(task,"#include \"::/Demo/Games/FlapBat\";\n");
   while (!TaskValidate(task->popup_task))
     Yield;
   TaskWait(task->popup_task);

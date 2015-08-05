@@ -18,6 +18,10 @@ CHashGlblVar?
 * Clean-up ASCII-127 delete.
 * [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(st); With st="\n\\";
 
+* 8/2/2015 Bug [C:/Demo/MultiCore/MPAdd.CPP.Z,1] hung once on other computer.
+
+* 8/2/2015 VMware start-up. Probably multicore.
+
 * 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
 
 * 1/?/2015 Macro select in Menu did not go to shell.
@@ -29,11 +33,17 @@ CHashGlblVar?
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3065] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3064] CCtrl.
 
 * Add Redo to editor.
 
-* [C:/Adam/DolDoc/DocFile.CPP.Z,467] Type() doesn't work in
+* Perhaps, links to self document if empty file name?
+[C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
+
+* Cannot include ':' in [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
+search string.
+
+* [C:/Adam/DolDoc/DocFile.CPP.Z,344] Type() doesn't work in
 [C:/Kernel/KMisc.CPP.Z,248] Raw() mode.
 
 * PSect does not scan all task tables.
@@ -160,8 +170,8 @@ God says I might want to change to float.
 
 * Might want to convert some Preempt() to Cli
 
-* [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3464] CH_CURSOR.
+* [C:/Adam/DolDoc/DocEd.CPP.Z,237] Plain() might be better not saving
+[C:/Kernel/KernelA.HPP.Z,3463] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -224,7 +234,7 @@ Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
 
 * Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,644] Dbg()?  (maybe)
 
-* [C:/Adam/DolDoc/DocRecalcB.CPP.Z,1] Bible sized nodes
+* [C:/Adam/DolDoc/DocRecalc.CPP.Z,1] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
 [C:/Kernel/KbdMouse/Mouse.CPP.Z,1] 0x9FC30
 * get kbd lights working.
@@ -254,7 +264,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3583] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3582] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -299,7 +309,7 @@ and possibly [C:/Kernel/Dsk/DskDirContext.CPP.Z,21] DirContextNew()
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2894] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2893] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -376,6 +386,9 @@ Runner's Stride: [C:/Misc/Bible.TXT.Z,46190] Psalms,147:10 Psalms 147:10
 
 Buckling Armor: [C:/Misc/Bible.TXT.Z,29345] 1 Kings,20:11 1 Kings 20:11
 
+Lot cast in the lap.  [C:/Misc/Bible.TXT.Z,53793] Proverbs,16:33 Proverbs
+16:33
+
 >lspci -v
 
 Size:
@@ -422,6 +435,7 @@ KeyPeele#1
 KeyPeele#2
 ThePrisoner
 Bible with LineNums
+Security at NIST
 WestWorld
 Picard:FourLights
 Dwight:NerdTorture

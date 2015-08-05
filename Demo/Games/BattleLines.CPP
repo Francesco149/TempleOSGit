@@ -302,10 +302,6 @@ U0 BattleLines()
 {
   CMenuEntry *tempse;
 
-  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->text_attr=GREEN<<4+WHITE;
-  Preempt;
-
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -317,11 +313,13 @@ U0 BattleLines()
 	"  TapMode(,'2');"
 	"}"
 	);
-  AutoComplete;
+
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  Fs->text_attr=GREEN<<4+WHITE;
   WinMax;
   WinBorder;
+  AutoComplete;
   Preempt;
-
   Init;
   DocCursor;
   DocClear;

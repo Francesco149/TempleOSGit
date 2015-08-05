@@ -2,13 +2,36 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----08/05/15 06:52:54----
+
+----08/03/15 18:09:33----
+* Improved [C:/Demo/Games/FlapBat.CPP.Z,1].
+
+----08/02/15 07:19:59----
+* [C:/Home/AdamWrappers.CPP.Z,13] R("BugBird","FlapBat");
+
+----08/02/15 02:51:04----
+* Rearranged [C:/Adam/DolDoc/Doc.CPP.Z,1].
+* Got rid of ext ascii with alt-digits keys.  Just use <CTRL-ALT-a>.
+* Rearranged [C:/Adam/DolDoc/DocPutKey.CPP.Z,3] DocPutKey().
+* Got rid of PressKeyHelp().
+* [C:/Home/AdamWrappers.CPP.Z,13] R("CtrlAltLet","CtrlAlt");
+
+----07/30/15 22:26:22----
+* Fixed bug.  Now, turned-off preemption in [C:/Adam/WinB.CPP.Z,423]
+WinMgrTask().
+* Added [C:/Misc/Tour/Tour1.AUT.Z,1].
+
+----07/30/15 03:38:10----
+* Added [C:/Apps/Psalmody/Examples/caesar.CPP.Z,1].
+
 ----07/29/15 10:17:29----
 * Improved [C:/Linux/TOSZ.CPP,1].
-* Rearranged AutoComplete code.
+* Rearranged AutoComplete and [C:/Adam/Training.CPP.Z,146] KeyMap() code.
 * Added [C:/Kernel/Display.CPP.Z,132] WinInside().
 * Added [C:/Kernel/KernelA.HPP.Z,606] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1422] WIf_SELF_KEY_DESC.
+* Added [C:/Kernel/KernelA.HPP.Z,1421] WIf_SELF_KEY_DESC.
 
 ----07/26/15 06:57:29----
 * Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
@@ -35,13 +58,13 @@ Option(,OFF)");
 * Added [C:/Doc/FileLowLevel.TXT.Z,1] Dsk Stk Diagram.
 
 ----07/22/15 22:45:16----
-* Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,378] EdFindReplace().
+* Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,384] EdFindReplace().
 
 ----07/20/15 19:48:53----
 * Added args to [C:/Kernel/Dsk/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/AdamWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2725] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2724] CDirContext");
 * [C:/Home/AdamWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/Dsk/DskDrv.CPP.Z,148] DrvIsWritable");
 * [C:/Home/AdamWrappers.CPP.Z,13]
@@ -78,7 +101,7 @@ R("CDFileCreate","[C:/Adam/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 * Added [C:/Doc/HelloWorld.TXT.Z,1].
 
 ----05/26/15 21:10:30----
-* Added [C:/Kernel/KernelA.HPP.Z,3577] DCF_PALETTE.
+* Added [C:/Kernel/KernelA.HPP.Z,3576] DCF_PALETTE.
 * [C:/Home/AdamWrappers.CPP.Z,13]
 R("VGAPaletteColorGet","[C:/Adam/Gr/GrPalette.CPP.Z,46] GrPaletteColorGet");
 * [C:/Home/AdamWrappers.CPP.Z,13]
@@ -122,7 +145,7 @@ PostMsgWait");
 
 ----05/08/15 16:58:46----
 * Cleaned-up Compiler.
-* [C:/Home/AdamWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2129]
+* [C:/Home/AdamWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2128]
 CCmpCtrl");
 * [C:/Home/AdamWrappers.CPP.Z,13] R("LexNew","[C:/Compiler/Lex.CPP.Z,28]
 CmpCtrlNew");
@@ -192,7 +215,7 @@ Mat4x4MulMat4x4New").
 * Got rid of GrScaleNew(), GrRotXNew(), GrRotYNew() and GrRotZNew().
 
 ----04/30/15 19:13:07----
-* Added [C:/Kernel/KernelA.HPP.Z,2673] CDrv.fat32_local_time_offset.
+* Added [C:/Kernel/KernelA.HPP.Z,2672] CDrv.fat32_local_time_offset.
 * Cleaned-up [C:/Adam/AHash.CPP.Z,149] Who() and compiler mapfiles.
 
 ----04/11/15 05:48:05----
@@ -213,7 +236,7 @@ Mat4x4MulMat4x4New").
 ----03/30/15 10:29:57----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("cur_data_col","cur_col");
 * [C:/Home/AdamWrappers.CPP.Z,13] R("cur_top_line_num","top_line_num");
-* Fixed bug in [C:/Adam/DolDoc/DocEdA.CPP.Z,282] EdLineDown().
+* Fixed bug in [C:/Adam/DolDoc/DocChar.CPP.Z,282] EdLineDown().
 
 ----03/28/15 02:41:15----
 * Fixed [C:/Demo/Snd/WaterFowl.CPP.Z,1].
@@ -225,7 +248,7 @@ Mat4x4MulMat4x4New").
 
 ----03/23/15 07:21:26----
 * Updated [C:/Demo/Graphics/Pick.CPP.Z,1].
-* Modified [C:/Kernel/KernelA.HPP.Z,3589] DCF_LOCATE_NEAREST.
+* Modified [C:/Kernel/KernelA.HPP.Z,3588] DCF_LOCATE_NEAREST.
 
 ----03/21/15 09:10:58----
 * Fixed bug in sprite edit of ellipses & polygons.
@@ -237,7 +260,7 @@ Mat4x4MulMat4x4New").
 ----03/14/15 07:08:05----
 * **TempleOS version 3.04 Released**
 * Reformatted [C:/Kernel/Font8x8.CPP.Z,1].
-* Added [C:/Adam/DolDoc/DocPopUp.CPP.Z,648] PopUpGetF64().
+* Added [C:/Adam/DolDoc/DocPopUp.CPP.Z,194] PopUpGetF64().
 
 ----03/14/15 04:48:50----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("AcctReg...","Reg...");
@@ -326,7 +349,7 @@ not just /Apps.
 * Added eye-dropper-like 't' for transparent color in the sprite <CTRL-r> 
 editor.
 * Got rid of [C:/Kernel/KernelA.HPP.Z,617] CHash.next_added.
-* Reduced [C:/Kernel/KernelA.HPP.Z,2842] TASK_HASH_SIZE size.
+* Reduced [C:/Kernel/KernelA.HPP.Z,2841] TASK_HASH_SIZE size.
 
 ----01/10/15 15:12:30----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("Grep","Find");

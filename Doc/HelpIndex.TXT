@@ -138,7 +138,7 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [File,1] Disk
 [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview
 [DolDoc,1] Doc Routines
-[C:/Adam/DolDoc/Doc.CPP.Z,52] Editor Link Types
+[C:/Adam/DolDoc/DocLink.CPP.Z,29] Editor Link Types
 [Exceptions,1] Exceptions
 [File,1] File
 [C:/Doc/FileUtils.TXT.Z,1] File Utils

@@ -6,8 +6,8 @@ DolDoc code takes care of
 plotting text to [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base.
 
 Bits 0-7	8-Bit ASCII Screen Code
-Bits 8-11	Foreground [C:/Kernel/KernelA.HPP.Z,2909] color
-Bits 12-15	Background [C:/Kernel/KernelA.HPP.Z,2909] color
+Bits 8-11	Foreground [C:/Kernel/KernelA.HPP.Z,2908] color
+Bits 12-15	Background [C:/Kernel/KernelA.HPP.Z,2908] color
 Bits 16-20	Signed X pos shift val
 Bits 21-25	Signed Y pos shift val
 Bit  28		[C:/Kernel/KernelA.HPP.Z,882] Blink
@@ -17,11 +17,11 @@ Bit  30		[C:/Kernel/KernelA.HPP.Z,884] Selected (XOR colors with FF)
 Bit  31		[C:/Kernel/KernelA.HPP.Z,885] Underline
 
 [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin() calls
-[C:/Adam/DolDoc/DocRecalcA.CPP.Z,170] DocUpdateTaskDocs() which calls
-[C:/Adam/DolDoc/DocRecalcB.CPP.Z,254] DocRecalc() where the 
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,185] DocUpdateTaskDocs() which calls
+[C:/Adam/DolDoc/DocRecalc.CPP.Z,254] DocRecalc() where the 
 document text is plotted into [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base. 
-Then, [C:/Adam/Gr/GrScreen.CPP.Z,168] GrUpdateTextBG() and 
-[C:/Adam/Gr/GrScreen.CPP.Z,257] GrUpdateTextFG() render the
+Then, [C:/Adam/Gr/GrScreen.CPP.Z,171] GrUpdateTextBG() and 
+[C:/Adam/Gr/GrScreen.CPP.Z,260] GrUpdateTextFG() render the
 [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base onto [C:/Adam/Gr/GrGlbls.CPP.Z,3]
 gr.dc2, a raw graphic bitmap.
 

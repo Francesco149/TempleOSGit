@@ -81,8 +81,8 @@ another task's input buffer.
 an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
-[C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint(CDoc *doc,U8 *fmt,...) sends
-text to a document.  You can buffer to a 
+[C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(CDoc *doc,U8 *fmt,...) sends text
+to a document.  You can buffer to a 
 Doc and save it, providing the functionality of fprintf.  See 
 [C:/Demo/Dsk/FPrintF.CPP.Z,1].
 
@@ -121,7 +121,7 @@ string on start-up.
 [C:/Kernel/SrvCmd.CPP.Z,409] PopUpPrint(U8 *fmt,...) compiles and execute a
 string in a pop-up win.  Note: 
 It returns the result of the last executed expression.
-[C:/Adam/DolDoc/DocPopUp.CPP.Z,438] PopUpViewPrint(U8 *fmt,...) creates a
+[C:/Adam/DolDoc/DocPopUp.CPP.Z,17] PopUpViewPrint(U8 *fmt,...) creates a
 pop-up window and views text.
 
 **Note:** Use Print("%s",src) if you need an unmodified string.

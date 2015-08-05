@@ -11,7 +11,7 @@
 	See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
 
    ,RT=I16 means the val is 2 bytes.
-	See [C:/Adam/DolDoc/DocNew.CPP.Z,465] DocDataFmt() and [C:/Adam/DolDoc/DocNew.CPP.Z,517] DocDataScan().
+	See [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 */
 
 I16 i=0;

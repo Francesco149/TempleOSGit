@@ -123,7 +123,7 @@ I64 AnimateTask(CTask *parent)
 	h=parent->pix_height;
   while (TRUE) {
     if (tank_cnt)
-      Snd(100+(1.0+Abs(Wrap(thetaf-theta,-pi)))`4.0);
+      Snd(100+60*Sin(0.04*(1.0+Abs(Wrap(thetaf-theta,-pi)))`4.0));
     theta+=.01*(thetaf-theta);
     x+=v*Sin(theta);
     y+=v*Cos(theta);

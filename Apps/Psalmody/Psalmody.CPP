@@ -3,7 +3,7 @@ This uses four types of ctrls
 
   1) The pull-down menu.
 
-  2) The [C:/Kernel/KernelA.HPP.Z,3065] CCtrl type for the tempo/stacatto
+  2) The [C:/Kernel/KernelA.HPP.Z,3064] CCtrl type for the tempo/stacatto
 sliders.
 
   3) The active [C:/Kernel/KernelA.HPP.Z,1328] CDoc sprite buttons with
@@ -25,7 +25,7 @@ persistent layer is used during drag-and-drop.
 
 See [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin(),
 [C:/Adam/Gr/GrScreen.CPP.Z,58] GrUpdateTasks() and
-[C:/Adam/Gr/GrScreen.CPP.Z,403] GrUpdateScreen().
+[C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
 */
 
 #define NOTE_REST	MIN_I64

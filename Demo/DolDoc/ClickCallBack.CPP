@@ -13,7 +13,7 @@ U0 ClickCallBack()
 {
   CDocEntry *doc_e;
   DocLock(DocPut);
-//The [C:/Adam/DolDoc/DocPlain.CPP.Z,744] DocPrint() routine returns the addr of the last entry.
+//The [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint() routine returns the addr of the last entry.
   doc_e=DocPrint(DocPut,"\n$MA+LC,\"Click Me\"$ ");
 //The LC flag is "has left callback".
 

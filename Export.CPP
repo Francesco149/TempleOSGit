@@ -8,7 +8,7 @@
 //As an added bonus, I try to match each iteration's coding style.
 //This code is public domain.
 
-Option(OPTf_WARN_PAREN,TRUE);
+Option(OPTf_WARN_PAREN,ON);
 
 //Just in case the filesystem gets corrupted while I develop it
 U0 BackupExport()
@@ -43,7 +43,7 @@ U0 ExportBinary(U8 *src_file,CDocBin *b)
 }
 
 U8 *ResolveLink(U8 *link_st)
-{ //Adapted from [C:/Adam/DolDoc/DocMain.CPP.Z,3] Ed. Resolves stuff like MN:Func to the file
+{ //Adapted from [C:/Adam/DolDoc/DocEd.CPP.Z,192] Ed. Resolves stuff like MN:Func to the file
   U8 *res,*filename=NULL,*pattern=NULL;
   I64 num;
   if (EdLinkCvt(link_st,&filename,&pattern,&num,0)==-1)

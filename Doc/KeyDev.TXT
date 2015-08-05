@@ -18,8 +18,8 @@ and [C:/Kernel/SrvCmd.CPP.Z,488] AutoFile()
 handling.
 0x60000000 [C:/Kernel/KeyDev.CPP.Z,90] KDRawPutKey() nonwindowed direct to
 video mem debug output. 
-0x80000000 [C:/Adam/DolDoc/DocEdB.CPP.Z,675] KDDocPutKey() standard document
-cmds
+0x80000000 [C:/Adam/DolDoc/DocPutKey.CPP.Z,723] KDDocPutKey() standard
+document cmds
 
 Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
 no puts handler is defined, individual keys are sent.

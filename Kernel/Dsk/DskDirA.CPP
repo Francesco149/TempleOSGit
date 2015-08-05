@@ -1,5 +1,5 @@
 Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
-{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2515] CDirEntry node.
+{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2514] CDirEntry node.
   switch (dv->type) {
     case DVT_REDSEA:
       return RedSeaDirNew(dv,cur_dir,tempde,free_old_chain);
@@ -165,7 +165,7 @@ CDirEntry *DirFilesFlatten(CDirEntry *tempde,CDirEntry **_result,I64 fuf_flags)
 }
 
 U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
-{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file,line link to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,654] DocPut.
+{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file,line link to StdOut, [C:/Adam/DolDoc/DocDblBuf.CPP.Z,2] DocPut.
   U8 *buf;
   if (!filename) return;
   if (IsRaw) {
@@ -199,7 +199,7 @@ U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
 }
 
 U0 PutDirLink(U8 *dirname)
-{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc dir macro to StdOut, [C:/Adam/DolDoc/DocNew.CPP.Z,654] DocPut.
+{//Put [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc dir macro to StdOut, [C:/Adam/DolDoc/DocDblBuf.CPP.Z,2] DocPut.
   U8 *buf;
   if (!dirname) return;
   if (IsRaw)

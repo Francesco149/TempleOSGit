@@ -135,15 +135,15 @@ I64 Char2ScanCode(I64 ch,I64 sc_flags=0)
 U8 ScanCode2Char(I64 sc)
 {//Scan code to ASCII val.
   U8 *table=NORMAL_KEY_SCAN_DECODE_TABLE;
-  if (sc & SCF_E0_PREFIX)
+  if (sc&SCF_E0_PREFIX)
     return 0;
-  if (sc & SCF_CTRL)
+  if (sc&SCF_CTRL)
     table=CTRL_KEY_SCAN_DECODE_TABLE;
-  else if (sc & SCF_SHIFT) {
-    if (!(sc & SCF_CAPS))
+  else if (sc&SCF_SHIFT) {
+    if (!(sc&SCF_CAPS))
       table=SHIFT_KEY_SCAN_DECODE_TABLE;
   } else {
-    if (sc & SCF_CAPS)
+    if (sc&SCF_CAPS)
       table=SHIFT_KEY_SCAN_DECODE_TABLE;
   }
   sc&=0x7F;
@@ -355,8 +355,8 @@ U0 KbdBuildSC(U8 raw_byte,Bool in_irq,U8 *_last_raw_byte,I64 *_last_sc)
   sc_flags|=new_key_f;
   sc=sc_flags|sc|(sc_flags|sc_raw)<<32;
   if (sc_flags & SCF_CTRL && sc_flags & SCF_ALT) {
-    if (!(sc & SCF_KEY_UP)) {
-      if (sc&255==SC_DELETE)
+    if (!(sc&SCF_KEY_UP)) {
+      if (sc&255==SC_DELETE && !(sc_flags & SCF_SHIFT))
 	CtrlAltDel(sc);
       else {
 	if (sc&255==SC_ESC)
@@ -367,11 +367,13 @@ U0 KbdBuildSC(U8 raw_byte,Bool in_irq,U8 *_last_raw_byte,I64 *_last_sc)
 	  ch=ScanCode2Char(sc&255);
 	if ('a'<=ch<='z') {
 	  sc&=~(SCF_NEW_KEY|SCF_NEW_KEY<<32);
+	  ch-='a';
 	  kbd.last_down_scan_code=sc;
-	  if (keydev.fp_ctrl_alt_let_cbs[ch-'a'] &&
-		Bt(&keydev.ctrl_alt_let_in_irq_flags,ch-'a')==in_irq) {
-	    (*keydev.fp_ctrl_alt_let_cbs[ch-'a'])(sc);
-	  }
+	  if (keydev.fp_ctrl_alt_cbs[ch] &&
+		Bt(&keydev.ctrl_alt_in_irq_flags,ch)==in_irq &&
+		(!(sc_flags & SCF_SHIFT)&&keydev.ctrl_alt_no_shift_descs[ch]) ||
+		sc_flags & SCF_SHIFT && keydev.ctrl_alt_shift_descs[ch])
+	    (*keydev.fp_ctrl_alt_cbs[ch])(sc);
 	}
       }
     }
@@ -413,7 +415,7 @@ interrupt U0 KbdIntHandler()
     kbd.rst=TRUE;
     return;
   }
-  keydev.ctrl_alt_let_ret_addr=GetRBP()(I64)+8;
+  keydev.ctrl_alt_ret_addr=GetRBP()(I64)+8;
   KbdPktRead;
 }
 

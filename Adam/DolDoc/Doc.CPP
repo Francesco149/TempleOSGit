@@ -11,62 +11,23 @@ intensive on big documents.
 See [C:/Doc/DolDocOverview.TXT.Z,1]
 */
 
-extern I64 EdLeftClickLink(CDoc *doc,CDocEntry *doc_e);
-extern I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e);
-extern U0 DocPrintPartial(CDoc *doc,U8 *fmt,...);
+extern Bool DocEd(CDoc *doc,I64 dof_flags=0);
+extern I64 DocEntryRun(CDoc *doc,CDocEntry *doc_e,
+	Bool exited,I64 *_has_action=NULL);
 extern U0 DocFormBwd(CDoc *doc,Bool giveup=FALSE);
-extern U0 EdUndoFilter(CDoc *doc);
+extern U0 DocLoad(CDoc *doc,U8 *src2,I64 size);
+extern U0 DocPrintAtomic(CDoc *doc,U8 *fmt,...);
+extern U0 DocPrintPartial(CDoc *doc,U8 *fmt,...);
+extern CDocEntry *DocPutS(CDoc *doc,U8 *st);
+extern U8 *DocSave(CDoc *doc,I64 *_size=NULL);
+extern I64 EdLeftClickLink(CDoc *doc,CDocEntry *doc_e);
 extern U8 *PopUpPickLst(U8 *lst);
+extern I64 TermRightClickLink(CDoc *doc,CDocEntry *doc_e);
 
+//Hash Types
 #define DHT_DOC_CMD	1
 #define DHT_DOC_FLAG	2
 #define DHT_COLOR	4
-
-/* See [C:/Adam/DolDoc/DocInit.CPP.Z,22] TempleOS Link Types.
-
-"filename"
-"FI:filename"
-"FA:haystack_filename,needle_anchor_str"
-"FF:haystack_filename,needle_str"
-"FF:haystack_filename,needle_str:occurnum"
-"FL:filename,linenum"
-"MN:SymName"
-"PI:filename"
-"PF:haystack_filename,needle_str"
-"PF:haystack_filename,needle_str:occurnum"
-"PL:filename,linenum"
-"BF:haystack_bible_book,needle_str"
-"DF:word"
-"DF:word,defnum"
-"HI:index"
-"AD:code_address_number"
-
-		To edit a doc structure already in memory. See [C:/Adam/Gr/SpriteEd.CPP.Z,613] SpriteEdText().
-"AI:doc_address"
-"AA:haystack_doc_address,needle_anchor_str"
-"AF:haystack_doc_address,needle_str"
-"AF:haystack_doc_address,needle_str:occurnum"
-"AL:doc_address,linenum"
-
-*/
-#define LK_FILE 	0
-#define LK_FILE_ANCHOR	1
-#define LK_FILE_FIND	2
-#define LK_FILE_LINE	3
-#define LK_MAN_PAGE	4
-#define LK_PLAIN	5
-#define LK_PLAIN_FIND	6
-#define LK_PLAIN_LINE	7
-#define LK_BIBLE_FIND	8
-#define LK_DEF		9
-#define LK_HELP_INDEX	10
-#define LK_ADDR		11
-#define LK_DOC		12 //See [C:/Adam/Gr/SpriteEd.CPP.Z,613] SpriteEdText()
-#define LK_DOC_ANCHOR	13
-#define LK_DOC_FIND	14
-#define LK_DOC_LINE	15
-
-#define LK_PLACE_ANCHOR	16
 
 public class CDolDocGlbls
 {
@@ -83,21 +44,34 @@ MemSet(&doldoc,0,sizeof(CDolDocGlbls));
 #help_index "God"
 #define BIBLE_FILENAME	"::/Misc/Bible.TXT.Z"
 
+#include "DocBin"
 #include "DocNew"
+#include "DocForm"
+#include "DocDblBuf"
 #include "DocPlain"
 #include "DocInit"
 #include "DocHighlight"
-#include "DocRecalcA"
-#include "DocRecalcB"
-sys_clipboard_doc=DocNew;
+#include "DocRecalcLib"
+#include "DocRecalc"
 #include "DocFile"
-#include "DocOpt"
-#include "DocPopUp"
-#include "DocCtrlL"
-#include "DocMacro"
+#include "DocClipBoard"
+#include "DocRun"
+#include "DocGet"
+#include "DocChar"
 #include "DocFind"
-#include "DocEdA"
-#include "DocEdB"
+#include "DocLink"
+#include "DocEd"
+#include "DocPopUp"
+#include "DocGr"
+#include "DocMacro"
+#include "DocWidgetWiz"
+#include "DocPutKey"
+#include "DocPutS"
+#include "DocOpt"
 #include "DocCodeTools"
 #include "DocTree"
-#include "DocMain"
+#include "DocTerm"
+
+KeyDevAdd(&KDDocPutKey,&KDDocPutS,0x80000000,TRUE);
+fp_getstr2=&DocGetStr2;
+fp_doc_put=&DocPut;

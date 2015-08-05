@@ -129,6 +129,7 @@ U0 Reboot()
 
 U0 KernelMain()
 {//Continued from [C:/Kernel/KStart.CPP.Z,1] Kernel
+  OutU8(0x61,InU8(0x61)&~3); //Snd(0);
   adam_task=Fs;
   HeapsInit;
   LBts(&sys_run_level,RLf_FULL_HEAP);

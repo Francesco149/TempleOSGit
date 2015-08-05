@@ -116,7 +116,7 @@ AfterEgypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
 
 
 Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image)
-BugBird <8> (image)
+FlapBat <8> (image)
 
 
 
@@ -173,7 +173,7 @@ The [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit can puppet you.
 <F6>		Tongues song
 <SHIFT-F6>	Tongues doodle
 
-<CTRL-r>	Graphic resources 
+<CTRL-r>	Graphic Sprite Resource 
 <CTRL-l>	Text widgets
 <CTRL-ALT-a>	Ext ASCII from menu
 ALT-digit keys	Ext ASCII from code
