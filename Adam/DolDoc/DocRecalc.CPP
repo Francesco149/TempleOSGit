@@ -606,7 +606,7 @@ public Bool DocRecalc(CDoc *doc,Bool has_cursor=FALSE,I64 recalc=DOC_RECALC)
       case DOCT_TEXT:
 	if (!col2 && !(doc_e->de_flags
 	      &(DOCEF_TREE|DOCEF_LST|DOCEF_TAG_CB|DOCEF_DEFINE|
-	      DOCEF_HTML_LINK|DOCEF_BIN_PTR_LINK)))
+	      DOCEF_AUX_STR|DOCEF_HTML_LINK|DOCEF_BIN_PTR_LINK)))
 	  del_cl=TRUE;
 	break;
       case DOCT_HEX_ED:

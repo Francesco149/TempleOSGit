@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1521] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1520] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1920] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1919] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -1017,7 +1017,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_DONT_DRAW		0x400000000000000 //only works on sprites
 
 #define DOCEG1_DONT_EDIT	(DOCEF_DEFINE|DOCEF_HTML_LINK|\
-  DOCEF_BIN_PTR_LINK|DOCEF_SCROLLING_X|DOCEF_TAG_CB)
+  DOCEF_AUX_STR|DOCEF_BIN_PTR_LINK|DOCEF_SCROLLING_X|DOCEF_TAG_CB)
 
 //These are identical to Doc flags
 #define DOCEF_HIGHLIGHT		0x4000000
@@ -1193,7 +1193,7 @@ public class CDocEntry:CDocEntryBase
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
-//[C:/Adam/DolDoc/DocPopUp.CPP.Z,321] DocForm() [C:/Adam/DolDoc/DocPopUp.CPP.Z,375] DocMenu() [C:/Adam/DolDoc/DocPopUp.CPP.Z,201] DocEd() [C:/Adam/DolDoc/DocPopUp.CPP.Z,452] PopUpMenu()
+//[C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,235] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,273] PopUpMenu()
 #define	DOF_MIN_SIZE		0x01
 #define	DOF_INTERCEPT_TASK_END	0x02
 #define DOF_DONT_HOME		0x04
@@ -1222,7 +1222,7 @@ class CEdFileName
   U8	name[256] fmtstr "$DA-P,255,A=\"FileName:%s\"$";
 };
 
-//[C:/Adam/DolDoc/DocMain.CPP.Z,3] Ed()
+//[C:/Adam/DolDoc/DocEd.CPP.Z,192] Ed()
 #define EDF_BAIL		0x100
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
@@ -1245,8 +1245,8 @@ class CEdFileName
 #define DOCF_BORDER_DOC		0x100
 #define DOCF_FORM		0x200
 #define DOCF_MIN_SIZE		0x400
-#define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcA.CPP.Z,116] DocCursor
-#define DOCF_NO_SCROLL_BARS	0x1000 //use [C:/Adam/DolDoc/DocRecalcA.CPP.Z,123] DocScroll
+#define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,135] DocCursor
+#define DOCF_NO_SCROLL_BARS	0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,142] DocScroll
 #define DOCF_ALLOW_UNDO		0x2000
 #define DOCF_DONT_SHOW		0x4000
 #define DOCF_HAS_SONG		0x8000
@@ -1280,8 +1280,8 @@ class CEdFileName
 #define DOCf_BORDER_DOC		8
 #define DOCf_FORM		9
 #define DOCf_MIN_SIZE		10
-#define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcA.CPP.Z,116] DocCursor
-#define DOCf_NO_SCROLL_BARS	12  //use [C:/Adam/DolDoc/DocRecalcA.CPP.Z,123] DocScroll
+#define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,135] DocCursor
+#define DOCf_NO_SCROLL_BARS	12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,142] DocScroll
 #define DOCf_ALLOW_UNDO		13
 #define DOCf_DONT_SHOW		14
 #define DOCf_HAS_SONG		15
@@ -1315,7 +1315,7 @@ class CDocUndo
   U8	*body;
 };
 
-//See [C:/Adam/DolDoc/DocPopUp.CPP.Z,375] DocMenu()
+//See [C:/Adam/DolDoc/DocForm.CPP.Z,235] DocMenu()
 #define DOCM_CANCEL		(-1)
 
 #define DOC_SIGNATURE_VAL	'DocS'
@@ -1332,7 +1332,6 @@ public class CDoc //Linked Text File header
   CDocEntry *cur_entry,*old_cur_entry;
   I32	cur_col,old_cur_col,
 	line_start_col,top_line_num,
-	ext_ascii_val,ext_ascii_cnt, //Like <CTRL-ALT-a>, <ALT-#><ALT-#><ALT-#>
 	dollar_buf_size,dollar_buf_ptr;
   U8	*dollar_buf; //When entering $ cmds, it buffers them until the end $.
 
@@ -1349,7 +1348,7 @@ public class CDoc //Linked Text File header
   CEdFindText *find_replace;
 
   U8	*cur_sprite;//Set cur_sprite use (ip.pos.x,ip.pos.y) as input.
-//Output is nearest. See [C:/Adam/Gr/SpriteEd.CPP.Z,1] *_cur_elem_num= and [C:/Demo/Graphics/Pick.CPP.Z,1].
+//Output is nearest. See [C:/Adam/Gr/SpriteEd.CPP.Z,1] *_cur_elem_num= and [C:/Demo/Graphics/Pick.CPP,1].
   I64	nearest_sprite_elem_num;
 
   CEdFileName filename;
@@ -1363,7 +1362,7 @@ public class CDoc //Linked Text File header
   Bool	(*user_put_s)(CDoc *doc,U8 *data,U8 *st);
 
   CDoc	*parent_doc; //(When browsing deeper, opening deeper docs.)
-  U64	desc; //8 characters. See [C:/Adam/DolDoc/DocRecalcA.CPP.Z,58] DocBorderLstDraw().
+  U64	desc; //8 characters. See [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,43] DocBorderLstDraw().
 
   CDocBin bin_root;
   CDocSettings settings_root;
@@ -2738,7 +2737,7 @@ public class CDirContext
 #define FF_CONTIGUOUS		16
 #define FF_USE_OLD_DATETIME	32
 
-public class CFile //See [C:/Demo/Dsk/DataBase.CPP.Z,1].
+public class CFile //See [C:/Demo/Dsk/DataBase.CPP,1].
 {
   I64	flags;
   CDirEntry de;
@@ -2787,8 +2786,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/MemA.CPP.Z,8] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2832] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2832] PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2831] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2831] PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2895,7 +2894,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2904] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2995,7 +2994,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2994] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2995] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2993] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2994] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3175,8 +3174,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3438] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3438] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3437] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3437] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3506,7 +3505,7 @@ public class CSysFixedArea
 
 //TempleOS places a 1 in bit 7 for
 //keys with an E0 prefix.
-//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/KbdMouse/Keyboard.CPP.Z,437] KbdHandler().
+//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/KbdMouse/Keyboard.CPP.Z,439] KbdHandler().
 #define SC_ESC		0x01
 #define SC_BACKSPACE	0x0E
 #define SC_TAB		0x0F
@@ -3618,12 +3617,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2895] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2894] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2904] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3655,7 +3654,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3594] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3593] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3774,10 +3773,10 @@ class CKeyDevEntry
 class CKeyDevGlbls
 {
   CKeyDevEntry put_key_root;
-  U0	(**fp_ctrl_alt_let_cbs)(I64 sc);
-  I64	ctrl_alt_let_in_irq_flags,
-	**ctrl_alt_let_ret_addr; //addr of ret addr on stack in kbd irq
-  U8	**ctrl_alt_let_no_shift_descs,**ctrl_alt_let_shift_descs,
+  U0	(**fp_ctrl_alt_cbs)(I64 sc);
+  I64	ctrl_alt_in_irq_flags,
+	**ctrl_alt_ret_addr; //addr of ret addr on stack in kbd irq
+  U8	**ctrl_alt_no_shift_descs,**ctrl_alt_shift_descs,
 	desc[STR_LEN],
 	*handler;
 };

@@ -100,21 +100,21 @@ was to indicate how far along operations were.  There's no coordination, so
 different apps might interfere.  I use them most for debugging--just values 
 easily viewed.  See [C:/Demo/Progress.CPP,1].
 
-* Use [C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to adjust the size of the
-cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1328] CDoc 
+* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,168] DocMax() to adjust the size of
+the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1328] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3270] CTask,
-[C:/Kernel/KernelA.HPP.Z,1163] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2515]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3269] CTask,
+[C:/Kernel/KernelA.HPP.Z,1163] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2514]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/Task.CPP.Z,209] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2840] DFT_STK, and using
-[C:/Adam/DolDoc/DocNew.CPP.Z,612] DocMax() to 
+[C:/Kernel/KernelA.HPP.Z,2839] DFT_STK, and using
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,168] DocMax() to 
 reduce the cmd line buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
@@ -135,20 +135,20 @@ check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1514] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1513] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1515] OPTf_WARN_DUP_TYPES,ON) to find
+Option([C:/Kernel/KernelA.HPP.Z,1514] OPTf_WARN_DUP_TYPES,ON) to find
 unnecessary local var 
 type statements.
 
-* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1511]
+* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1510]
 OPTf_ECHO,ON) can be placed in [C:/Adam.CPP.Z,1] Adam.CPP to echo start-up
 scripts.
 
-* Use [C:/Adam/DolDoc/DocMain.CPP.Z,48] Plain() to edit a plain text file. 
+* Use [C:/Adam/DolDoc/DocEd.CPP.Z,237] Plain() to edit a plain text file. 
 You'll need this if your file has $'
 s.  Use the [C:/Misc/ToDolDoc.CPP.Z,1] utility to convert plain text to
 DolDoc's.
@@ -203,13 +203,13 @@ middle of compilation and data inserted into the compilation stream.  Click
 here for an example: [C:/Kernel/KEnd.CPP.Z,1] #exe {.
 
 * If you output to the cmd line and wish to allow users to scroll around and 
-view data, you can use [C:/Adam/DolDoc/DocPopUp.CPP.Z,192] View().
+view data, you can use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View().
 
-* Use [C:/Adam/DolDoc/DocPopUp.CPP.Z,192] View() in Pop-up macros to linger
-until the user presses <ESC> or <SHIFT
+* Use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View() in Pop-up macros to linger until
+the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1461]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1460]
 ac.cur_word, but you should 
 probably turn-off preemption or interrupts momentarily to copy it.
 
@@ -296,10 +296,10 @@ cnts.jiffies.
 confused by [C:/Kernel/KernelA.HPP.Z,1328] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2751]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2750]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,467] Type() to display .BMP or
+* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,344] Type() to display .BMP or
 .GRA files.
 
 * Use [C:/Kernel/PSect.CPP.Z,287] Man() to jump to short sym name src code.

@@ -1,10 +1,10 @@
 Bool Option(I64 num,Bool val)
-{//Set compiler [C:/Kernel/KernelA.HPP.Z,1511] option to value.
+{//Set compiler [C:/Kernel/KernelA.HPP.Z,1510] option to value.
   return BEqu(&Fs->last_lex->opts,num,val);
 }
 
 Bool GetOption(I64 num)
-{//Get state of compiler [C:/Kernel/KernelA.HPP.Z,1511] option.
+{//Get state of compiler [C:/Kernel/KernelA.HPP.Z,1510] option.
   return Bt(&Fs->last_lex->opts,num);
 }
 

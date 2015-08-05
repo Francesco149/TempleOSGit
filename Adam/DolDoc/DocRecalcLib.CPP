@@ -6,21 +6,6 @@ I64 DocCharDist(CDoc *doc,I64 x,I64 y)
   return (SqrI64(doc->x-x)+SqrI64(doc->y-y))*FONT_WIDTH*FONT_WIDTH;
 }
 
-public U0 DocCenter(CDoc *doc=NULL,I64 recalc=DOC_RECALC)
-{//Center win on doc cursor, cur_entry.
-  Bool unlock;
-  CTask *task;
-  if (!doc && !(doc=DocPut))
-    return;
-  unlock=DocLock(doc);
-  task=doc->win_task;
-  DocRecalc(doc,FALSE,recalc);
-  if (!(doc->flags&DOCF_BORDER_DOC))
-    doc->top_line_num=doc->y-(task->win_height+1)>>1;
-  if (unlock)
-    DocUnlock(doc);
-}
-
 U0 DocDelToNum(CDoc *doc,I64 num)
 {
   CDocEntry *doc_e=doc->root.next,*doc_e2;
@@ -87,6 +72,40 @@ U0 DocBorderLstDraw(CDoc *doc)
   Preempt(old_preempt);
 }
 
+public U0 DocTop(CDoc *doc=NULL)
+{//Move cursor, cur_entry, to top.
+  Bool unlock;
+  if (!doc && !(doc=DocPut))
+    return;
+  unlock=DocLock(doc);
+  doc->cur_entry=doc->root.next;
+  doc->cur_col=doc->cur_entry->min_col;
+  doc->x=0;
+  doc->y=0;
+  doc->line_start_col=0;
+  doc->top_line_num=0;
+
+  DocFormFwd(doc);
+  DocRecalc(doc);
+  if (unlock)
+    DocUnlock(doc);
+}
+
+public U0 DocCenter(CDoc *doc=NULL,I64 recalc=DOC_RECALC)
+{//Center win on doc cursor, cur_entry.
+  Bool unlock;
+  CTask *task;
+  if (!doc && !(doc=DocPut))
+    return;
+  unlock=DocLock(doc);
+  task=doc->win_task;
+  DocRecalc(doc,FALSE,recalc);
+  if (!(doc->flags&DOCF_BORDER_DOC))
+    doc->top_line_num=doc->y-(task->win_height+1)>>1;
+  if (unlock)
+    DocUnlock(doc);
+}
+
 public U0 DocBottom(CDoc *doc=NULL)
 {//Move cursor, cur_entry, to bottom.
   Bool unlock;
@@ -145,25 +164,21 @@ public U0 DocCollapse(Bool collapse=TRUE,CDoc *doc=NULL)
     DocUnlock(doc);
 }
 
-#help_index "DolDoc/Output;StdOut/DolDoc"
-public U0 DocPrintAtomic(CDoc *doc,U8 *fmt,...)
-{//Necessary when hidden text might screw-up
-//inserts.  It does multiple whole doc cmds all-at-once.
-  U8 *buf;
-  Bool unlock;
-  I64 old_flags;
-  if (!doc && !(doc=DocPut))
-    return;
-  buf=StrPrintJoin(NULL,fmt,argc,argv);
-  unlock=DocLock(doc);
-  old_flags=doc->flags;
-  doc->flags|=DOCF_NO_CURSOR;
-  DocPrint(doc,"%s",buf);
-  DocRecalc(doc);
-  doc->flags=old_flags;
-  if (unlock)
-    DocUnlock(doc);
-  Free(buf);
+#help_index "DolDoc/Cmd Line (Typically);Cmd Line (Typically)"
+public I64 DocMax(I64 i=MAX_I64)
+{//Set max document entries. (Cmd line buffer.)
+//Adjusts the size of the cmd line buf.
+  //Normally, the cmd line deletes entries
+  //when more are added and the old scroll up.
+  //See [C:/Adam/DolDoc/DocTerm.CPP.Z,1] max_entries.
+  I64 result;
+  CDoc *doc;
+  if (doc=DocPut) {
+    result=doc->max_entries;
+    doc->max_entries=i;
+    return result;
+  } else
+    return 0;
 }
 
 #help_index "DolDoc/Task;StdOut/Task"

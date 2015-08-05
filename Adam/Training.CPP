@@ -1,43 +1,9 @@
 #help_index "Help System"
 
-public U0 PressKeyHelp(CTask *task=NULL)
-{//Jump to key handlers src for key presses.
-  I64 a1=0,a2=0;
-  Bool old_preempt=Preempt;
-  CTask *old_hash=Fs->hash_table;
-  if (!task) task=Fs;
-
-    /*
-This feature is a burden in code.  It would be nice to lst key
-cmds for all applications, but it makes the code too ugly.
-*/
-  task=Fs;
-
-  Fs->hash_table=task->hash_table;
-  "Press keys to show handler code.\n"
-	"<SHIFT-ESC> to exit.\n"
-	"Do not press <CTRL-ALT-keys>.\n";
-  while (a1!=CH_ESC && a1!=CH_SHIFT_ESC) {
-    GetMsg(&a1,&a2,1<<MSG_KEY_DOWN);
-    *keydev.desc=0;
-    keydev.handler=NULL;
-    if (task==Fs)
-      PutKey(a1,a2|SCF_KEY_DESC);
-    else if (TaskValidate(task))
-      PostMsg(task,MSG_KEY_DOWN,a1,a2|SCF_KEY_DESC);
-    WinMgrSync(0,TRUE);
-    Yield;
-    if (*keydev.desc)
-      E(keydev.handler,512);
-  }
-  Fs->hash_table=old_hash;
-  Preempt(old_preempt);
-}
-
 U8 *KeyMapKeyMStrPrint(I64 sc,U0 (*fp_handler)(I64 sc),
 	U8 *desc,CTask *task=NULL)
 {
-  I64 i=9;
+  I64 i=9,k,c;
   U8 *st,*st2,*result,*ptr;
   CHashTable *old_hash=Fs->hash_table;
   st=ScanCode2KeyName(sc);
@@ -48,7 +14,15 @@ U8 *KeyMapKeyMStrPrint(I64 sc,U0 (*fp_handler)(I64 sc),
     Fs->hash_table=task->hash_table;
   st2=SrcEdLink(fp_handler,256);
   Fs->hash_table=old_hash;
-  result=MStrPrint("%-*s $LK+PU,\"%Q\",A=\"%s\"$\n",i,st,desc,st2);
+
+  k=*desc(U32 *);
+  if (k=='Edit')	c=BLUE;
+  else if (k=='Dol ')	c=GREEN;
+  else if (k=='Cmd ')	c=RED;
+  else			c=BLACK;
+
+  result=MStrPrint("%-*s $FG,%d$$TX+UL+L+PU,\"%Q\",A=\"%s\"$$FG$\n",
+	i,st,c,desc,st2);
   Free(st);
   Free(st2);
 
@@ -77,28 +51,20 @@ U0 KeyMapCtrlAltFamily(Bool no_shift,Bool shift)
   else
     no_shift_f=0;
   if (no_shift) KeyMapKeyPrint(SC_DELETE+SCF_CTRL+SCF_ALT+no_shift_f,
-	  &Reboot,"Sys   /Reboot");
-  if (shift) KeyMapKeyPrint(SC_DELETE+SCF_CTRL+SCF_ALT+SCF_SHIFT,
-	  &Reboot,"Sys   /Reboot");
+	  &Reboot,"Cmd /Reboot");
   if (no_shift) KeyMapKeyPrint(SC_ESC+SCF_CTRL+SCF_ALT+no_shift_f,
-	  &User,"Sys   /Spawn New User Task");
-  if (shift) KeyMapKeyPrint(SC_ESC+SCF_CTRL+SCF_ALT+SCF_SHIFT,
-	  &User,"Sys   /Spawn New User Task");
+	  &User,"Cmd /Spawn New User Task");
   if (no_shift) KeyMapKeyPrint(SC_TAB+SCF_CTRL+SCF_ALT+no_shift_f,
-	  &WinToTop,"Sys   /Switch Focus to Next Task");
-  if (shift) KeyMapKeyPrint(SC_TAB+SCF_CTRL+SCF_ALT+SCF_SHIFT,
-	  &WinToTop,"Sys   /Switch Focus to Next Task");
+	  &WinToTop,"Cmd /Switch Focus to Next Task");
 
   for (i=0;i<26;i++)
-    if (keydev.fp_ctrl_alt_let_cbs[i]) {
-      if (no_shift && keydev.ctrl_alt_let_no_shift_descs[i])
+    if (keydev.fp_ctrl_alt_cbs[i]) {
+      if (no_shift && keydev.ctrl_alt_no_shift_descs[i])
 	KeyMapKeyPrint(Char2ScanCode(i+'a')+SCF_CTRL+SCF_ALT+no_shift_f,
-	      keydev.fp_ctrl_alt_let_cbs[i],
-	      keydev.ctrl_alt_let_no_shift_descs[i]);
-      if (shift && keydev.ctrl_alt_let_shift_descs[i])
+	      keydev.fp_ctrl_alt_cbs[i],keydev.ctrl_alt_no_shift_descs[i]);
+      if (shift && keydev.ctrl_alt_shift_descs[i])
 	KeyMapKeyPrint(Char2ScanCode(i+'a')+SCF_CTRL+SCF_ALT+SCF_SHIFT,
-	      keydev.fp_ctrl_alt_let_cbs[i],
-	      keydev.ctrl_alt_let_shift_descs[i]);
+	      keydev.fp_ctrl_alt_cbs[i],keydev.ctrl_alt_shift_descs[i]);
     }
 }
 
@@ -144,7 +110,7 @@ U0 KeyMapFamily2(U8 **entries,CTask *task,I64 scf)
       else
 	PostMsg(task,MSG_KEY_DOWN,a1,a2);
       WinMgrSync(0,TRUE);
-      Yield;
+      Sleep(1);
     }
     if (*keydev.desc && StrNCmp(keydev.desc,"Char  /",7))
       entries[i]=KeyMapKeyMStrPrint(a2,keydev.handler,keydev.desc,task);
@@ -179,18 +145,16 @@ U0 KeyMapFamily(CTask *task,I64 scf,Bool no_shift,Bool shift)
 
 public U0 KeyMap(CTask *task=NULL)
 {//Report desc of all keys.
-  I64 old_win_inhibit;
+  Bool old_key_desc;
   if (!task) task=Fs;
-  old_win_inhibit=task->win_inhibit;
-  task->win_inhibit&=~WIF_SELF_KEY_DESC;
+  old_key_desc=LBtr(&task->win_inhibit,WIf_SELF_KEY_DESC);
   DocMax;
   KeyMapFamily(task,0,TRUE,TRUE);
   KeyMapFamily(task,SCF_CTRL,TRUE,TRUE);
   KeyMapFamily(task,SCF_ALT,TRUE,TRUE);
   KeyMapCtrlAltFamily(TRUE,TRUE);
-  "\n$MA-X+PU,\"Click for help on key pressed\","
-	"LM=\"PressKeyHelp(0x%X);\"$\n",task;
-  task->win_inhibit=old_win_inhibit;
+  LBEqu(&task->win_inhibit,WIf_SELF_KEY_DESC,old_key_desc);
+  "\nKeyMap Completed.\n";
 }
 
 #help_index "Help System/Training"

@@ -187,7 +187,7 @@ gr.empty_sprite=__BIN_2;
 
 #help_index "Graphics/Misc;Input Pointer/Displayed Image"
 public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,Bool closed)
-{//This is a callback. See [C:/Demo/Graphics/Grid.CPP.Z,1].
+{//This is a callback. See [C:/Demo/Graphics/Grid.CPP,1].
   dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
   dc->color=ROP_EQU;
   if (closed)

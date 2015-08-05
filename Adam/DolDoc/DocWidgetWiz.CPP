@@ -4,8 +4,6 @@ U8 *ctrl_L_footer=
 	"\n$MU-X+Q,\"Abort\",LE=DOCM_CANCEL$\n"
 	"\n\n$LK+PU,\"Click for Help\",A=\"FI:::/Doc/Widget.TXT\"$\n";
 
-#define DFT_ADDR_LINK_BIN_SIZE	64
-
 I64 PopUpLinkType(Bool include_anchor)
 {
   I64 i;
@@ -469,11 +467,11 @@ U0 EdInsPageSetting()
   Free(e);
 }
 
-I64 PopUpDollarType()
+I64 PopUpWidgetType()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPrint(doc,"$PURPLE$$TX+CX,\"Text Widget Menu\"$\n"
+  DocPrint(doc,"$PURPLE$$TX+CX,\"Text Widgets Menu\"$\n"
 	"\n$LTBLUE$$MU,\"Link\",LE=DOCT_LINK$\n"
 	"$MU,\"Text\",LE=DOCT_TEXT$\n"
 	"$MU,\"Tree Branch\",LE=DOCT_TREE$\n"
@@ -496,7 +494,7 @@ I64 PopUpDollarType()
   return i;
 }
 
-class CEdDollarText
+class CEdText
 {
   U8	tag[512]	  fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n";
   Bool	left_x	  fmtstr "$CB,\"Left X\"$\n",
@@ -520,10 +518,10 @@ class CEdDollarText
 	fmtstr "$DA-P,511,A=\"Html Link                 :%s\"$\n";
 };
 
-U0 EdInsDollarText()
+U0 EdInsText()
 {
   U8 *st,buf[512];
-  CEdDollarText *e=CAlloc(sizeof(CEdDollarText));
+  CEdText *e=CAlloc(sizeof(CEdText));
   if (DocForm(e,,,,ctrl_L_footer)) {
     *buf=0;
     if (e->left_x  )  CatPrint(buf,"+LX");
@@ -964,9 +962,9 @@ U0 EdInsTree()
   Free(e);
 }
 
-U0 EdInsDollarCmd()
+U0 EdInsWidgetWiz()
 {
-  I64 type=PopUpDollarType;
+  I64 type=PopUpWidgetType;
   switch (type) {
     case DOCT_FOREGROUND:
       EdInsColor;
@@ -978,7 +976,7 @@ U0 EdInsDollarCmd()
       EdInsLink;
       break;
     case DOCT_TEXT:
-      EdInsDollarText;
+      EdInsText;
       break;
     case DOCT_TREE:
       EdInsTree;
@@ -1030,7 +1028,7 @@ I64 PopUpSpriteType()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPrint(doc,"$PURPLE$$TX+CX,\"Graphic Resource Menu\"$\n"
+  DocPrint(doc,"$PURPLE$$TX+CX,\"Graphic Sprite Resource Menu\"$\n"
 	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/Resource.TXT.Z\"$\n"
 	"\n$LTBLUE$$MU,\"Make Sprite\",LE=EST_SPRITE$\n"
 	"$MU,\"Pointer to Sprite\",LE=EST_SPRITE_PTR$\n"

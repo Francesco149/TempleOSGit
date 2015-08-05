@@ -30,7 +30,6 @@ extern Bool DocForm(U8 *_d,U8 *class_name=lastclass,
 extern U0 DocHelpIndex(CDoc *doc,U8 *index);
 extern U0 DocInsDoc(CDoc *doc,CDoc *doc2);
 extern U0 DocInsEntry(CDoc *doc,CDocEntry *doc_e);
-extern U8 *DocLinkFile(U8 *link_st,CTask *mem_task=NULL);
 extern Bool DocLock(CDoc *doc);
 extern U0 DocMax(I64 i=MAX_I32);
 extern CDoc *DocNew(U8 *filename=NULL,CTask *task=NULL);
@@ -46,9 +45,6 @@ extern U0 DocUpdateTaskDocs(CTask *task);
 extern U0 DrawCtrls(CTask *task);
 extern Bool Ed(U8 *link_st,I64 edf_dof_flags=0);
 extern U0 EdCodeTools(CDoc *doc);
-extern I64 EdCurU8(CDoc *doc);
-extern U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64);
-extern U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64);
 extern U8 *EdSprite(I64 bin_num);
 extern I64 FindWiz();
 extern I64 GetI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64);

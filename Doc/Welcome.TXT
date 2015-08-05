@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-122,977 lines of code including the kernel, the 64-bit compiler, the graphics 
+123,113 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -153,9 +153,9 @@ so this is possible.  See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3270] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3269] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3396] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3395] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 
@@ -186,7 +186,7 @@ right
 clicking on filenames in a cmd line [C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir()
 listing.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
-[C:/Adam/DolDoc/DocMain.CPP.Z,3] Ed("file
+[C:/Adam/DolDoc/DocEd.CPP.Z,192] Ed("file
 name");, supplying a filename.  You can also run programs with <F5> when in 
 the editor.  <ESC> to save and exit the file.  You'll need to do a new
 [C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir() 
@@ -196,8 +196,8 @@ pressing <SPACE>.
 
 <CTRL-t> toggles plain text mode, showing format commands, a little like 
 viewing html code.
-<CTRL-l> inserts a nongraphic widget.
-<CTRL-r> inserts a graphic resource or edits the graphic under the cursor.
+<CTRL-l> inserts a text widgets.
+<CTRL-r> inserts or edit a graphic sprite resource at cursor location.
 <CTRL-d> brings-up the file manager.  It's pretty crappy.  I find I don't
 need 
 it very often, believe it or not.

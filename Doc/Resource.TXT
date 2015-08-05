@@ -1,4 +1,4 @@
-                            Graphic Resource Help
+                         Graphic Sprite Resource Help
 
 A sprite is an ordered list of elements such as lines, rectangles, bitmaps
 and 

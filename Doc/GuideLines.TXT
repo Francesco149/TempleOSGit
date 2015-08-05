@@ -6,12 +6,13 @@ Home directory for storage.
 
 /Apps Applications are placed in subdirectories of /Apps.  Applications
 should 
-have a file called Install.CPP.Z which will install the app for the current 
-user acct.  The file, Load.CPP.Z will load the application into mem.  The 
-file, Run.CPP.Z, will usually load and execute the app.  To add an app to
-your 
-PersonalMenu, use <CTRL-l>, insert a macro with the PopUp option checked and 
-invoke the Run.CPP.Z file.
+have a file called Install.CPP.Z which will install the app, possibly making 
+files or directories in /Home.  The file, Load.CPP.Z will load the
+application 
+into mem.  The file, Run.CPP.Z, will usually load and execute the app.  To
+add 
+an app to your PersonalMenu, use <CTRL-l>, insert a macro with the PopUp 
+option checked and invoke the Run.CPP.Z file.
 
 /Demo Here you can find lots of sample code to do various things.
 
@@ -27,11 +28,11 @@ compiled to produce a binary file which is loaded at boot.  It, too, is AOT
 compiled by [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 
 /Adam The non-kernel part of the operating system is found here.  It is JIT 
-compiled during boot.
+compiled during boot.  Adam is the father of all tasks, like Adam and Eve.
 
-/0000Boot Misc boot files go here.  Stage 2 of the TempleOS hard drive master 
-boot loader, the old hard drive master boot record which is just blk#0, and 
-the CD/DVD 0000Kernel.BIN.C file go here.  ASCII 0000 is near the top, 
+/0000Boot Boot files go here.  Stage 2 of the TempleOS hard drive master boot 
+loader, the old hard drive master boot record which is just blk#0, and the 
+CD/DVD 0000Kernel.BIN.C file go here.  ASCII 0000 is near the top, 
 alphabetically, in case you use MagicISO.
 
 
@@ -144,7 +145,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3469] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3468] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -182,9 +183,9 @@ case you wish to make hash table sizes bigger.
 
                               Assembly Language
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3270] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3269] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3396] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3395] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
@@ -193,9 +194,9 @@ anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
 * When interacting with [C:/Doc/HolyC.TXT.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 
 because the compiler uses these for reg vars.  You are free to clobber RAX, 
-RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1757] Compiler Reg
-Masks, [C:/Kernel/KernelA.HPP.Z,1730] PUSH_C_REGS and
-[C:/Kernel/KernelA.HPP.Z,1731] POP_C_REGS
+RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1756] Compiler Reg
+Masks, [C:/Kernel/KernelA.HPP.Z,1729] PUSH_C_REGS and
+[C:/Kernel/KernelA.HPP.Z,1730] POP_C_REGS
 
 * I recommend using the standard stk frame for functions because
 [C:/Kernel/KDbg.CPP.Z,60] Caller() is 

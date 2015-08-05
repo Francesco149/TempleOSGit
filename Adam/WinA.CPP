@@ -95,8 +95,8 @@ U0 CtrlAltG(I64 sc)
   else
     PopUp("WinGrid(ON);");
 }
-CtrlAltLetCBSet('G',&CtrlAltG,"Sys   /Grid On",
-	"Sys   /Grid Off");
+CtrlAltCBSet('G',&CtrlAltG,"Cmd /Grid On",
+	"Cmd /Grid Off");
 
 CTask *ext_ASCII_task;
 U0 ExtendedASCII()
@@ -130,8 +130,7 @@ U0 CtrlAltA(I64)
   if (ext_ASCII_task=sys_focus_task)
     Spawn(&ExtendedASCII);
 }
-CtrlAltLetCBSet('A',&CtrlAltA,"Sys   /Extended ASCII",
-	"Sys   /Extended ASCII");
+CtrlAltCBSet('A',&CtrlAltA,"Cmd /Extended ASCII");
 
 public U0 WinScrollNull(CTask *task,CD3I64 *s)
 {//If panning a window has been done, restore to zero.
