@@ -83,7 +83,7 @@
 [C:/Kernel/StrPrint.CPP.Z,10] SPF_NEG
 [C:/Kernel/KernelA.HPP.Z,3050] CWinScroll
 [C:/Kernel/KernelA.HPP.Z,1091] DOCEf_NO_CLICK_ON
-[C:/Kernel/Task.CPP.Z,496] TaskFinishOffDying
+[C:/Kernel/Task.CPP.Z,499] TaskFinishOffDying
 [C:/Kernel/KernelA.HPP.Z,3847] ARf_FLOODFILL
 [C:/Kernel/KernelA.HPP.Z,1562] ICF_USE_F64
 [C:/Kernel/MemC.CPP.Z,144] MemPagesNotPresentMark
@@ -626,7 +626,7 @@
 [C:/Kernel/KDefine.CPP.Z,49] Define
 [C:/Kernel/KernelA.HPP.Z,1707] CInstruction
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,65] FAT32Fmt
-[C:/Kernel/Task.CPP.Z,393] SrvCmdLine
+[C:/Kernel/Task.CPP.Z,396] SrvCmdLine
 [C:/Kernel/KHashB.CPP.Z,50] HashTableNew
 [C:/Kernel/KernelA.HPP.Z,905] DOCT_INDENT
 [C:/Kernel/KMathA.CPP.Z,366] _ARG
@@ -1400,7 +1400,7 @@
 [C:/Kernel/KMathA.CPP.Z,658] _FXRSTOR
 [C:/Kernel/KMathA.CPP.Z,441] _CEIL
 [C:/Kernel/KernelA.HPP.Z,2261] INVALID_CLUSTER
-[C:/Kernel/Task.CPP.Z,410] TaskEnd
+[C:/Kernel/Task.CPP.Z,413] TaskEnd
 [C:/Kernel/KernelA.HPP.Z,34] MIN_I64
 [C:/Kernel/KDbg.CPP.Z,75] TaskCaller
 [C:/Kernel/KernelA.HPP.Z,1706] SV_NONE
@@ -1429,7 +1429,7 @@
 [C:/Kernel/KUtils.CPP.Z,286] _REP_OUT_U32
 [C:/Kernel/KernelA.HPP.Z,3674] VGAM_TEXT
 [C:/Kernel/KernelA.HPP.Z,1483] ACD_POS
-[C:/Kernel/Task.CPP.Z,402] TaskFinishOff
+[C:/Kernel/Task.CPP.Z,405] TaskFinishOff
 [C:/Kernel/Date.CPP.Z,71] FirstDayOfMon
 [C:/Kernel/KeyDev.CPP.Z,20] PutChars
 [C:/Kernel/KUtils.CPP.Z,89] _BEQU

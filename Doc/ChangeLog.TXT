@@ -2,10 +2,31 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----08/05/15 06:52:54----
+----08/11/15 23:34:14----
+
+----08/11/15 22:15:20----
+* Improved [C:/Demo/Games/BomberGolf.CPP,1].
+* Improved [C:/Demo/Games/FlapBat.CPP,1].
+
+----08/09/15 09:47:10----
+* Cleaned-up Ultra distro.
+
+----08/08/15 06:14:09----
+* **TempleOS version 3.09 Released**
+
+----08/06/15 09:28:49----
+* Removed most Moses comics so you can make your own.
+* Removed most hymns so that you can make your own.
+
+----08/05/15 21:39:59----
+* Fixed bug parsing "$GREEN FG$".  It is an error.
+
+----08/05/15 13:49:10----
+* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,355] SrvCmdsHandler() &&
+[C:/Kernel/Task.CPP.Z,380] SrvTaskCont().
 
 ----08/03/15 18:09:33----
-* Improved [C:/Demo/Games/FlapBat.CPP.Z,1].
+* Improved [C:/Demo/Games/FlapBat.CPP,1].
 
 ----08/02/15 07:19:59----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("BugBird","FlapBat");
@@ -23,7 +44,7 @@ WinMgrTask().
 * Added [C:/Misc/Tour/Tour1.AUT,1].
 
 ----07/30/15 03:38:10----
-* Added [C:/Apps/Psalmody/Examples/caesar.CPP,1].
+* Added ::/Apps/Psalmody/Examples/caesar.CPP
 
 ----07/29/15 10:17:29----
 * Improved [C:/Linux/TOSZ.CPP,1].
@@ -85,9 +106,9 @@ R("CDFileCreate","[C:/Adam/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 * **TempleOS version 3.07 Released**
 
 ----06/19/15 18:16:11----
-* Added [C:/Apps/Psalmody/Examples/science.CPP,1].
-* Added [C:/Apps/AfterEgypt/Comics/Moses84.TXT,1].
-* Added [C:/Apps/AfterEgypt/Comics/Moses85.TXT,1].
+* Added ::/Apps/Psalmody/Examples/science.CPP
+* Added ::/Apps/AfterEgypt/Comics/Moses84.TXT
+* Added ::/Apps/AfterEgypt/Comics/Moses85.TXT
 
 ----06/13/15 07:36:01----
 * Improved [C:/Demo/Games/EagleDive.CPP,1].
@@ -127,7 +148,7 @@ R("VGAPalette4Set","[C:/Adam/Gr/GrPalette.CPP.Z,83] GrPaletteSet");
 * [C:/Home/AdamWrappers.CPP.Z,13] R("BIOS32","PCIBIOS");
 
 ----05/14/15 15:39:41----
-* Enhanced [C:/Apps/Psalmody/Examples/abyss.CPP,1].
+* Enhanced ::/Apps/Psalmody/Examples/abyss.CPP
 
 ----05/13/15 07:51:00----
 * Fixed bug in [C:/Adam/Utils/ToHtml.CPP.Z,300] ToHtml().
@@ -228,10 +249,10 @@ Mat4x4MulMat4x4New").
 * [C:/Home/AdamWrappers.CPP.Z,13] R("DocDo","DocEd");
 
 ----04/07/15 05:27:38----
-* Added [C:/Apps/Psalmody/Examples/whos.CPP,1].
+* Added ::/Apps/Psalmody/Examples/whos.CPP
 
 ----04/04/15 14:27:07----
-* Enhanced [C:/Apps/Psalmody/Examples/proponent.CPP,1].
+* Enhanced ::/Apps/Psalmody/Examples/proponent.CPP
 
 ----03/30/15 10:29:57----
 * [C:/Home/AdamWrappers.CPP.Z,13] R("cur_data_col","cur_col");
@@ -241,10 +262,10 @@ Mat4x4MulMat4x4New").
 ----03/28/15 02:41:15----
 * Fixed [C:/Demo/Snd/WaterFowl.CPP,1].
 * Added [C:/Demo/Graphics/Grid.CPP,1].
-* Enhanced [C:/Apps/Psalmody/Examples/image.CPP,1].
-* Enhanced [C:/Apps/Psalmody/Examples/dream.CPP,1].
-* Enhanced [C:/Apps/Psalmody/Examples/killed.CPP,1].
-* Enhanced [C:/Apps/Psalmody/Examples/worship.CPP,1].
+* Enhanced ::/Apps/Psalmody/Examples/image.CPP
+* Enhanced ::/Apps/Psalmody/Examples/dream.CPP
+* Enhanced ::/Apps/Psalmody/Examples/killed.CPP
+* Enhanced ::/Apps/Psalmody/Examples/worship.CPP
 
 ----03/23/15 07:21:26----
 * Updated [C:/Demo/Graphics/Pick.CPP,1].
