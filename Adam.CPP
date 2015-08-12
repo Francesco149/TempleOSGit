@@ -25,7 +25,7 @@ HashTablePurge(adam_task->hash_table);
 
 //Use Dbg("Type 'G;'"); to debug before window mgr is running.
 
-public F64 os_version=3.08;//Operating system version.
+public F64 os_version=3.09;//Operating system version.
 
 #include "AExts.HPP"
 #include "AMath"

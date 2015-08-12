@@ -25,7 +25,7 @@ U0 TOSInit()
   switch (tos_cid) {
     case CID_DFT:
       DefinePrint("CFG_RAM_DRVS",
-	    "\"b1\nScale2Mem(2048,0x280000,4*1024*1024*1024)\n\"");
+	    "\"b1\nScale2Mem(2048,0x100000,4*1024*1024*1024)\n\"");
       if (dsk.auto_mount_ide_cnt) {
 //If AutoMount was successful, No need to manually mount in next compile
 	DefinePrint("CFG_HARD_DRVS","\"\"");

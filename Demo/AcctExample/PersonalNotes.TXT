@@ -1,3 +1,5 @@
+* FileMgr DragDrop.
+
 * Clean-up [C:/Kernel/Dsk/DskStrA.CPP.Z,144] FileNameAbs().
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
@@ -15,16 +17,15 @@ CHashGlblVar?
   CArrayDim dim;
   CHashFun *fun_ptr;
 
-* Clean-up ASCII-127 delete.
+* Clean-up ASCII-127 delete char.
 * [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(st); With st="\n\\";
-
-* 8/2/2015 Bug [C:/Demo/MultiCore/MPAdd.CPP.Z,1] hung once on other computer.
 
 * 8/2/2015 VMware start-up. Probably multicore.
 
 * 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
 
-* 1/?/2015 Macro select in Menu did not go to shell.
+* 1/?/2015,8/10/2015 Macro select in Menu did not go to shell.  No: I think 
+CTRL-M twice.
 
 * [C:/Adam/Utils/FileBMP.CPP.Z,65] BMPRLE4To() has files_size too big by 108.
  Did I fix it?
@@ -81,7 +82,6 @@ once.
 * $CM+LE+RE is nasty
 
 * FlatTop is torpedo, not bombs.
-* BomberGolf is weird concept?
 
 * Maybe, 3x3 instead of 4x4 matrices. <sigh>
 
@@ -351,49 +351,27 @@ F64.
 * sort options for findfiles
 * Maybe, get rid of [C:/Compiler/CMain.CPP.Z,1] 0x20000 in compiler.
 
-
 ==============================================================================
 ==
----- RANDOM NUMBER SOURCES ----
-1) NIST Beacon
-2) www.randomnumbers.info
-3) www.random.org
-4) Random PassWord
-5) Virtual Notary Random Number
-6) ANU Quantum Random Number
-7) HotBits
-8) GenerateData Random Number
-9) DublinBet Roulette: Take 2 Spins. Take ones digit from each to get 00-99.
-
----- SOURCE TEXT ----
-KingJames Bible
-Top 100 Movies
-Random Vocabularies
-Random Texts
-==============================================================================
-==
-
-
-It is love I desire: [C:/Misc/Bible.TXT.Z,73189] Hosea,6:6 Hosea 6:6
-
-Offer a sacrifice of praise: [C:/Misc/Bible.TXT.Z,96500] Hebrews,13:15
-Hebrews 13:15
-
-Do I drink blood of goats? Offer praise: [C:/Misc/Bible.TXT.Z,46190]
-Psalms,50:14 Psalms 50:14
-
-Runner's Stride: [C:/Misc/Bible.TXT.Z,46190] Psalms,147:10 Psalms 147:10
-
-Buckling Armor: [C:/Misc/Bible.TXT.Z,29345] 1 Kings,20:11 1 Kings 20:11
-
-Lot cast in the lap.  [C:/Misc/Bible.TXT.Z,53793] Proverbs,16:33 Proverbs
-16:33
+It is love I desire: Hosea 6:6
+Offer a sacrifice of praise: Hebrews 13:15
+Do I drink blood of goats? Offer praise: Psalms 50:14
+Runner's Stride: Psalms 147:10
+Buckling Armor: 1 Kings 20:11
+Lot cast in the lap. Proverbs 16:33
 
 >lspci -v
-
 Size:
 
-Let me Google NIST Random Beacon
+Black Knight
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/dhRUe-gz690"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/dhRUe-gz690"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Commodore 64 Basic/Assembly
 ```
@@ -421,6 +399,16 @@ LOL.)
 <img
 src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambri
 dge-county-pd.jpg" width="480" height="376" alt="">
+```
+
+Key and Peel Substitute
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Dd7FixvoKBw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Dd7FixvoKBw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
 ```
 
 WWW.OSDEV.ORG

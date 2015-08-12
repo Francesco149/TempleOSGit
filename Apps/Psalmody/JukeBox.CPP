@@ -51,7 +51,7 @@ Bool JBPutKey(CDoc *doc,U8 *,I64 ch,I64 sc)
   return FALSE;
 }
 
-public U0 JukeBox(U8 *dirname=NULL,U8 **_filename=NULL)
+public U0 JukeBox(U8 *dirname="::/Home/Psalmody",U8 **_filename=NULL)
 {//_filename is for using this as a song-chooser program.
   I64 i=0,rating;
   U8 *st,*st2;
@@ -61,10 +61,7 @@ public U0 JukeBox(U8 *dirname=NULL,U8 **_filename=NULL)
   CTask *task=NULL;
   if (_filename)
     *_filename=NULL;
-  if (!dirname)
-    dirname=StrNew("::/Home/Psalmody");
-  else
-    dirname=StrNew(dirname);
+  dirname=StrNew(dirname);
   st=MStrPrint("%s/*.CPP.Z",dirname);
   tempde=tempde1=FilesFind(st);
   Free(st);

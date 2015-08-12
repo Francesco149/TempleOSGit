@@ -37,13 +37,16 @@ F64 frame_x,game_t0,game_tf;
 I32 bug_cnt,bugs_x[MAX_BUGS],bugs_y[MAX_BUGS];
 Bool bugs_dead[MAX_BUGS];
 
+#define GLOW_PERIOD	3.0
+F64 bugs_glow_phase[MAX_BUGS];
+
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,y,x,
 	h=MaxI64(1,task->pix_width-2*BORDER),
 	v=MaxI64(1,task->pix_height-2*BORDER);
   CSprite *temps,*temps2,*temps3;
-  F64 tt=flap_phase*flap_phase*flap_phase;
+  F64 tt=flap_phase*flap_phase*flap_phase,ts=tS;
 
   bird_x=task->pix_width>>3;
   Sprite3(dc,(7*task->pix_width)>>3,20,0,__BIN_5);
@@ -65,13 +68,16 @@ U0 DrawIt(CTask *task,CDC *dc)
     if (!bugs_dead[i]) {
       x=(bugs_x[i]+frame_x)%h+BORDER;
       y=bugs_y[i]%v+BORDER;
-      if (RandU16<4000)
-	dc->color=YELLOW;
-      else
+      if (Saw(ts+bugs_glow_phase[i],GLOW_PERIOD)<0.2) {
+	if (i&1)
+	  dc->color=YELLOW;
+	else
+	  dc->color=LTGREEN;
+      } else
 	dc->color=BLACK;
       GrPlot(dc,x,y);
       GrPlot(dc,x+1,y);
-      dc->color=LTPURPLE;
+      dc->color=BLACK;
       GrPlot(dc,x,y-1);
     }
   if (game_tf) {
@@ -134,6 +140,7 @@ U0 Init()
     bugs_dead[i]=FALSE;
     bugs_x[i]=RandU16;
     bugs_y[i]=RandU16;
+    bugs_glow_phase[i]=GLOW_PERIOD*Rand;
   }
   Suspend(Fs->song_task,FALSE);
   flap_time=eat_timeout=0;

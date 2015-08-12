@@ -30,7 +30,7 @@ See [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep().
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x000003529F
+ 0x0000007C00- 0x00000352CF
   Kernel module, placed here by the boot-loader,
   [C:/Kernel/KernelA.HPP.Z,3833] BOOT_RAM_BASE.
 

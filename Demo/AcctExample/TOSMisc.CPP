@@ -268,7 +268,7 @@ U0 AfterEgyptInAction()
   WinBorder;
   if (!fg_on)
     PopUp("Sleep(50);FrameGrabberToggle;");
-  Ed("::/Home/Archive/AfterEgypt.TXT.Z");
+  Ed("::/Home/Videos/AfterEgypt.TXT.Z");
   Msg(MSG_KEY_DOWN_UP,CH_SPACE,0x3900000039); //<SPACE>
   ExeFile("::/Apps/AfterEgypt/Run");
   SettingsPop;
@@ -284,7 +284,7 @@ U0 CodeWalkThru()
   WinBorder;
   if (!fg_on)
     PopUp("Sleep(50);FrameGrabberToggle;");
-  Ed("::/Home/Archive/RandomCode.TXT.Z");
+  Ed("::/Home/Videos/RandomCode.TXT.Z");
   SettingsPop;
   Msg(MSG_KEY_DOWN_UP,'b',0x83000000830); //<ALT-b>
   tos_code_walk_thru++;

@@ -8,8 +8,8 @@ U0 InputFilterTask()
   old_filter=LBts(&Fs->last_input_filter_task->task_flags,TASKf_FILTER_INPUT);
   LBEqu(&Fs->task_flags,TASKf_FILTER_INPUT,old_filter);
   while (TRUE) {
-    SrvCmdsHandler;
     CLI
+    SrvCmdsHandler(old_flags);
     tempc1=&Fs->srv_ctrl.next_waiting;
     tempc=tempc1->next;
     if (tempc==tempc1)
@@ -49,9 +49,9 @@ Note: This delivers messages from parent down to pop-up.
   old_flags=GetRFlags;
   tempc1=&task->srv_ctrl.next_waiting;
   while (TRUE) {
-    if (task==Fs)
-      SrvCmdsHandler;
     CLI
+    if (task==Fs)
+      SrvCmdsHandler(old_flags);
     tempc=tempc1->next;
     if (tempc==tempc1)
       break;

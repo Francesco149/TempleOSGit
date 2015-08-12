@@ -43,11 +43,6 @@ Cd("/Compiler");Dir;
 `Cd("/Compiler");Dir;
 `
 
-Cd("/");Dir;
-
-`Cd("/");Dir;
-`
-
 Cd("/Adam");Dir;
 
 `Cd("/Adam");Dir;
@@ -98,14 +93,19 @@ Cd("/Adam/AutoComplete");Dir;
 `Cd("/Adam/AutoComplete");Dir;
 `
 
+Cd("/");Dir;
+
+`Cd("/");Dir;
+`
+
 Cd("/Home");Dir;
 
 `Cd("/Home");Dir;
 `
 
-Cd("/Home/Psalmody");Dir;
+Cd("/Home/Wb2/Files/Psalmody");Dir;
 
-`Cd("/Home/Psalmody");Dir;
+`Cd("/Home/Wb2/Files/Psalmody");Dir;
 `
 
 Cd("/Home/Wb2");Dir;
@@ -116,6 +116,11 @@ Cd("/Home/Wb2");Dir;
 Cd("/Home/Wb2/Files");Dir;
 
 `Cd("/Home/Wb2/Files");Dir;
+`
+
+Cd("/Home/Blog");Dir;
+
+`Cd("/Home/Blog");Dir;
 `
 
 TADRant
@@ -404,9 +409,10 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24> (image
 
 
 
-BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image) MemRep
-`MemRep;View;`
+BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image)
 
+Psalmody Wb2/Files
+`#include "::/Apps/Psalmody/Load";Psalmody("::/Home/Wb2/Files/Psalmody");`
 
 RAMReboot("D:/Kernel.BIN.C");
 `RAMReboot("D:/Kernel.BIN.C");`
@@ -415,6 +421,9 @@ TOSMakeOSDrvBootInstall('D');
 
 `TOSMakeOSDrvBootInstall('D');
 `
+
+MemRep
+`MemRep;View;`
 
 List all syms in alpabetic order
 `DocMax;Who;View;`

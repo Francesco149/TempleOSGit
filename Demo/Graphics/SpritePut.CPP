@@ -11,7 +11,6 @@
 
 
 
-//Used by [C:/Apps/Psalmody/Examples/battlehymnsolo.CPP.Z,1].
 /*  <2> (image) */
 
 

@@ -90,7 +90,8 @@ public U0 CopySongs(U8 threshold='7')
 {
   CDoc *s;
   CDocEntry *doc_e;
-  CDirEntry *tempde=FilesFind("::/Home/Psalmody/*.CPP*",FUF_CLUSTER_ORDER),
+  CDirEntry *tempde=FilesFind("::/Home/Wb2/Files/Psalmody/*.CPP*",
+	FUF_CLUSTER_ORDER),
 	*tempde1=tempde;
   DelTree("/Apps/Psalmody/Examples");
   MkDir("/Apps/Psalmody/Examples");
@@ -110,7 +111,7 @@ U0 DistroPrep()
   Del("/Demo/ReverseFileExample/PoemForeward.TXT*");
   Del("/Home/NumBible.TXT.Z");
   DelTree("/Home/*Temp.TXT.Z");
-  if (FileFind("::/Home/Psalmody"))
+  if (FileFind("::/Home/Wb2/Files/Psalmody"))
     CopySongs;
 
   DelTree("/Temp");
@@ -123,8 +124,12 @@ U0 DistroPrep()
   DelTree("/Demo/AcctExample");
   CopyTree("/Home","/Demo/AcctExample");
   DelTree("/Demo/AcctExample/Archive");
+  DelTree("/Demo/AcctExample/Blog");
   DelTree("/Demo/AcctExample/Budget");
+  DelTree("/Demo/AcctExample/Code");
+  DelTree("/Demo/AcctExample/Misc");
   DelTree("/Demo/AcctExample/Psalmody");
+  DelTree("/Demo/AcctExample/Videos");
   DelTree("/Demo/AcctExample/Wb2");
   Del("/Demo/AcctExample/Test*");
 
@@ -282,7 +287,7 @@ U0 MakeTOSDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-	"Download TempleOS V3.08 - T.S. Company Internal Distro (%0.1f MB)",
+	"Download TempleOS V3.09 - T.S. Company Internal Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -318,7 +323,7 @@ U0 MakeDbgDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-	"Download TempleOS V3.08 - Debug Distro (%0.1f MB)",
+	"Download TempleOS V3.09 - Debug Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -366,7 +371,7 @@ U0 MakeLiteDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-	"Download TempleOS V3.08 - Lite Distro (%0.1f MB)",
+	"Download TempleOS V3.09 - Lite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -388,6 +393,8 @@ FileManager, WindowManager, PCSpeaker, Documentation.
   Del(TOS_DISTRO_DIR "/Adam/AutoComplete/ACWords.DAT*");
   Del(TOS_DISTRO_DIR "/Adam/God/Vocab.TXT.Z");
   Del(TOS_DISTRO_DIR "/Misc/OSTestSuite.CPP.Z");
+  Copy("C:/Home/Wb2/Files/UltraMenu.TXT.Z",
+	TOS_DISTRO_DIR "/PersonalMenu.TXT.Z");
 }
 U0 MakeUltraDistro()
 {
@@ -395,7 +402,7 @@ U0 MakeUltraDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.08 - UltraLite Distro (%0.1f MB)",
+	"Download TempleOS V3.09 - UltraLite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -479,12 +486,12 @@ U0 MakeWebSitePartial()
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-	"Download TempleOS V3.08 - Standard Distro (%0.1f MB)",
+	"Download TempleOS V3.09 - Standard Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.08 - UltraSmall Distro (%0.1f MB)",
+	"Download TempleOS V3.09 - UltraSmall Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);

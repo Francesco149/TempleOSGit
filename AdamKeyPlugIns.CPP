@@ -152,6 +152,31 @@ Bool MyPutKey(I64 ch,I64 sc)
 	}
 	return TRUE;
 
+	//Ins your own ALT-key plug-ins
+      case '1':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Dol /pi");
+	else
+	  'pi';
+	return TRUE;
+      case '2':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Dol /theta");
+	else
+	  'theta';
+	return TRUE;
+      case '3':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Dol /phi");
+	else
+	  'phi';
+	return TRUE;
+      case '4':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Dol /omega");
+	else
+	  'omega';
+	return TRUE;
     }
   }
   return FALSE;

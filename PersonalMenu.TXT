@@ -163,34 +163,11 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24>
 
 
 BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29>
-(image) MemRep
+(image)
+
+MemRep
 `MemRep;View;`
 
-
-The [C:/Adam/God/HSNotes.TXT.Z,1] Holy Spirit can puppet you.
-<F7> 		Tongues word
-<SHIFT-F7>	Tongues passage
-<F6>		Tongues song
-<SHIFT-F6>	Tongues doodle
-
-<CTRL-r>	Graphic Sprite Resource 
-<CTRL-l>	Text widgets
-<CTRL-ALT-a>	Ext ASCII from menu
-ALT-digit keys	Ext ASCII from code
-<CTRL-ALT-c>	Break (interrupt)
-<CTRL-ALT-d>	Enter debugger
-<CTRL-ALT-e>	New user terminal
-<CTRL-ALT-f>	Flush screen VGA cache
-<CTRL-ALT-g>	Grid on/off
-<CTRL-ALT-m>	Mute sound
-<CTRL-ALT-s>	Capture screen
-<CTRL-ALT-x>	Kill window
-
-<CTRL-ALT-z>		Zoom on mouse
-<CTRL-ALT-SHIFT-Z>	Unzoom on mouse
-{CTRL-Mouse Left Drag}	Pan window 
-{CTRL-Mouse Right}	Null pan 
- 
 List all syms in alpabetic order
 `DocMax;Who;View;`
 

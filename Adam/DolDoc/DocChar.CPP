@@ -456,8 +456,8 @@ U0 EdInsChar(I64 ch,I64 sc,CDoc *doc)
 	goto ic_cont;
       } else {
 	doc->dollar_buf[doc->dollar_buf_ptr]=0;
-	DocPrint(doc,doc->dollar_buf);
 	doc->flags&=~DOCF_IN_DOLLAR;
+	DocPrint(doc,doc->dollar_buf);
 	doc->dollar_buf_ptr=0;
 	goto ic_done;
       }

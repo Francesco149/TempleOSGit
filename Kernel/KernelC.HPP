@@ -683,7 +683,7 @@ public extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
 public extern I64 PopUpPrint(U8 *fmt,...);
 public extern U0 SrvCmdDel(CSrvCmd *tempc);
 extern U0 SrvCmdLine();
-public extern I64 SrvCmdsHandler(CTask *task=NULL);
+public extern I64 SrvCmdsHandler(I64 run_flags,CTask *task=NULL);
 public extern U0 SrvTaskCont();
 public extern CSrvCmd *TaskExe(CTask *srv,CTask *master,U8 *data,I64 flags);
 public extern U0 TaskRstAwaitingMsg(CTask *task=NULL);

@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-123,113 lines of code including the kernel, the 64-bit compiler, the graphics 
+118,573 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a "hello world" application in one line of code 
@@ -131,15 +131,14 @@ a less drastic measure that is usually sufficient.  A newly
 [C:/Kernel/Task.CPP.Z,209] Spawn()ed task 
 begins with preemption off.
 
-The graphic resolution is poor, 640x480 16 color, but God said that and
-that's 
-all I feel comfortable with without GPU acceleration supported.  A 1600x1200x2
-4 bit screen takes 37 times more memory, implying 37 times the CPU power.  
-Also, a fixed size keeps it simple with everybody machine having the same 
-appearance.  Look on the bright-side -- you won't spend as much time
-twiddling 
-pixels for your game art and you'll have tons of CPU power available, 
-especially with multicore systems.
+The graphic resolution is poor, 640x480 16 color, but God said it was a 
+covenant like circumcision.  Also, that's all I feel comfortable with without 
+GPU acceleration supported.  A 1600x1200x24 bit screen takes 37 times more 
+memory, implying 37 times the CPU power.  Also, a fixed size keeps it simple 
+with everybody machine having the same appearance.  Look on the bright-side
+-- 
+you won't spend as much time twiddling pixels for your game art and you'll 
+have tons of CPU power available, especially with multicore systems.
 
 TempleOS is for hobbyist programmers on single user (at a time) home 
 computers, not mainframes or servers, but it is preemptive multitasking.  The 
