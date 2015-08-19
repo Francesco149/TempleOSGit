@@ -2,11 +2,18 @@
 
 Use [C:/Home/AdamWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----08/11/15 23:34:14----
+----08/18/15 07:28:03----
+* Improved [C:/PersonalMenu.TXT.Z,1].
+* Improved [C:/Demo/Games/BattleLines.CPP.Z,1].
 
-----08/11/15 22:15:20----
-* Improved [C:/Demo/Games/BomberGolf.CPP,1].
+----08/16/15 14:42:01----
+* Improved [C:/Demo/Games/BlackDiamond.CPP.Z,1].
+* Improved [C:/Demo/Games/EagleDive.CPP.Z,1].
+* Improved [C:/Demo/Games/RawHide.CPP.Z,1].
+* Improved [C:/Apps/TimeOut/TimeOut.CPP.Z,1].
 * Improved [C:/Demo/Games/FlapBat.CPP,1].
+* Improved [C:/Demo/Games/Varoom.CPP.Z,1].
+* Improved [C:/Demo/Games/BomberGolf.CPP,1].
 
 ----08/09/15 09:47:10----
 * Cleaned-up Ultra distro.
