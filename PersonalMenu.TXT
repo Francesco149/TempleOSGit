@@ -106,7 +106,7 @@ RAMReboot("/Kernel.BIN.C");
 
 
 
-AfterEgypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
+ Egypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
 
 
 
@@ -115,15 +115,15 @@ AfterEgypt <1> (image) Frankenstein <2> (image) ZoneOut <3> (image)
 
 
 
-Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image)
-FlapBat <8> (image)
+Varoom <4> (image) Diamond <5> (image) Lines <6> (image) TimeOut <7> (image) 
+Bat <8> (image)
 
 
 
 
 
 
-FlatTops <9> (image)  Golf <10> (image)  Strut <11> (image) TheDead <12>
+FlatTops <9> (image)  Golf  <10> (image) Strut <11> (image) TheDead <12>
 (image) DunGen <13> (image)  
 
 
@@ -132,7 +132,7 @@ FlatTops <9> (image)  Golf <10> (image)  Strut <11> (image) TheDead <12>
 
 
 
-EagleDive <14> (image)  Span <15> (image)  RawHide <16> (image) KeepAway <17>
+EagleDive <14> (image)  Span  <15> (image) RawHide <16> (image) KeepAway <17>
 (image)
 
 

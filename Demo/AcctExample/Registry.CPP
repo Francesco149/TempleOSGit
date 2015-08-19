@@ -10,36 +10,36 @@
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
       +] DiningStars
       F64 best_score=9999.0000;
-      +] DunGen
-      F64 best_score=20.5295;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
       +] ZoneOut
       F64 best_score=50.3318;
-      +] Varoom
-      F64 best_score=11.8623;
-      +] RawHide
-      F64 best_score=81.1088;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
+      +] Wenceslas
+      F64 best_score=49.8074;
+      +] RawHide
+      F64 best_score=97.0710;
+      +] FlapBat
+      F64 best_score=16.4090;
+      +] BlackDiamond
+      I64 best_score=9;
+      +] TimeOut
+      I64 best_score=22202;
       +] XCaliber
       I64 best_score=248;
     I64 msg_flags=1;
-      +] Wenceslas
-      F64 best_score=49.8074;
+      +] DunGen
+      F64 best_score=20.5295;
       +] EagleDive
       I64 best_score=4;
-      +] TimeOut
-      I64 best_score=21532;
-      +] BlackDiamond
-      I64 best_score=1;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
-      +] FlapBat
-      F64 best_score=15.4120;
       +] BomberGolf
       I64 best_score=175;
+      +] Varoom
+      F64 best_score=46.2643;
       +] DemoCompany
   +] Game1
-      F64 best_score=168.61598;
+      F64 best_score=952.69284;
     +] SimpleVal
-          1260;
+          1261;
             

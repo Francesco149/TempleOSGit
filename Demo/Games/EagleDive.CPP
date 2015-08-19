@@ -609,10 +609,8 @@ U0 DrawHorizon(CDC *dc)
 U0 BSPEagleDive()
 {
   CDC *dc=DCAlias(main_dc,Fs);
-  I64 i,xx,yy,height,bkcolor,
-	cx=Fs->pix_width>>1,
-	cy=Fs->pix_height>>1;
-  F64 min_strip_width;
+  I64 i,xx,yy,height,bkcolor,cx=Fs->pix_width>>1,cy=Fs->pix_height>>1;
+  F64 min_strip_width,roll,pitch,heading;
   Fish *tempf;
 
   update_jiffy_limit=cnts.jiffies+JIFFY_FREQ/40;
@@ -673,13 +671,18 @@ U0 BSPEagleDive()
   dc->flags&=~DCF_TRANSFORMATION;
   GrLine3(dc,cx+5,cy,0,cx-5,cy,0);
   GrLine3(dc,cx,cy+5,0,cx,cy-5,0);
-  GrPrint(dc,0,0,"theta1:%5.1f phi:%5.1f theta2:%5.1f Strip:%5d",
-	theta1*180/pi,phi*180/pi,theta2*180/pi,strip_height);
-  GrPrint(dc,0,FONT_HEIGHT,
-	"x:%5.1f y:%5.1f z:%5.1f height:%3d score:%d high:%d",
-	ToF64(x)/COORDINATE_SCALE,
-	ToF64(y)/COORDINATE_SCALE,ToF64(z)/COORDINATE_SCALE,
-	height,game_score,best_score);
+  heading=Wrap(theta2,0);
+  roll=theta1;
+  pitch=Wrap(-phi-pi/2,-pi);
+  if (Abs(pitch)>pi/2) {
+    pitch=Wrap(pi-pitch,-pi);
+    roll=Wrap(roll+pi,-pi);
+    heading=Wrap(heading+pi,0);
+  }
+  GrPrint(dc,0,0,"Roll:%5.1f Pitch:%5.1f Heading:%5.1f",
+	roll*180/pi,pitch*180/pi,heading*180/pi);
+  GrPrint(dc,0,FONT_HEIGHT,"Height:%5d Score:%d High:%d  [Core Strip:%3d]",
+	height,game_score,best_score,strip_height);
 
   if (game_over && Blink) {
     dc->color=RED;

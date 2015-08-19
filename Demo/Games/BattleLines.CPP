@@ -70,10 +70,6 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
       x=tempt->x.i32[1];
       y=tempt->y.i32[1];
     }
-    if (!tempt->player)
-      dc->color=LTCYAN;
-    else
-      dc->color=LTPURPLE;
     if (tempt->target) {
       gx=x;gy=y;
       if (tempt->dx<0) {
@@ -86,7 +82,16 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
 	gx+=13;
 	gy-=7;
       }
+
+      dc->color=BLACK;
+      Sprite3(dc,x+1,y,0,__BIN_5);
+
+      if (!tempt->player)
+	dc->color=LTCYAN;
+      else
+	dc->color=LTPURPLE;
       Sprite3(dc,x,y,0,__BIN_5);
+
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
       if (!tempt->player)
 	dc->color=WHITE;
@@ -100,7 +105,16 @@ U0 DrawTrooper(CTask *,CDC *dc,Trooper *tempt)
       } else
 	dc->flags&=~DCF_SYMMETRY|DCF_JUST_MIRROR;
       temps=SpriteInterpolate(imgs[tt%FRAMES],imgs[(tt+1.0)%FRAMES],tt%1.0);
+
+      dc->color=BLACK;
+      Sprite3(dc,x+1,y,0,temps);
+
+      if (!tempt->player)
+	dc->color=LTCYAN;
+      else
+	dc->color=LTPURPLE;
       Sprite3(dc,x,y,0,temps);
+
       Free(temps);
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
     }

@@ -4,27 +4,29 @@ RegExeBranch("TempleOS/FlapBat");
 
 
 
+
+
 	/* <1> <1> (image) */
-
-
 
 
 	/* <2> <2> (image) */
 
 
+
+
+
 	/* <3> <3> (image) */
 
 
-
-
 	/* <4> <4> (image) */
+
 
 	/* <5> <5> (image) */
 
 
 
 
-#define BORDER		5
+#define BORDER		6
 #define AAT_TIME	0.5
 #define FLAP_TIME	0.5
 #define BIRD_BOX	10
@@ -40,6 +42,8 @@ Bool bugs_dead[MAX_BUGS];
 #define GLOW_PERIOD	3.0
 F64 bugs_glow_phase[MAX_BUGS];
 
+CDC *limit_flood_fill_dc; //Prevent uncontrolled flood-fill flicker.
+
 U0 DrawIt(CTask *task,CDC *dc)
 {
   I64 i,y,x,
@@ -52,7 +56,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   Sprite3(dc,(7*task->pix_width)>>3,20,0,__BIN_5);
 
   dc->color=DKGRAY;
-  GrCircle(dc,bird_x+10+20*Saw(15*tS,2),bird_y,10+20*Saw(15*tS,2),5,-pi/4,pi/2);
+  GrCircle(dc,bird_x+5+20*Saw(15*tS,2),bird_y,10+20*Saw(15*tS,2),5,-pi/4,pi/2);
 
   temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
   if (eat_timeout && tS<eat_timeout) {
@@ -62,7 +66,15 @@ U0 DrawIt(CTask *task,CDC *dc)
     Free(temps2);
     temps=temps3;
   }
-  Sprite3(dc,bird_x,bird_y,0,temps);
+
+  DCFill(limit_flood_fill_dc);
+  Sprite3(limit_flood_fill_dc,16,32,0,temps);
+  if (GrPeek(limit_flood_fill_dc,0,0)!=TRANSPARENT) {//Did FloodFill go crazy?
+    limit_flood_fill_dc->color=TRANSPARENT;
+    GrFloodFill(limit_flood_fill_dc,0,0);
+  }
+  GrBlot(dc,bird_x-16,bird_y-32,limit_flood_fill_dc);
+
   Free(temps);
   for (i=0;i<MAX_BUGS;i++)
     if (!bugs_dead[i]) {
@@ -130,6 +142,7 @@ U0 CheckBugs(CTask *task)
 U0 Init()
 {
   I64 i;
+  limit_flood_fill_dc=DCNew(32,40);
   flap_down=flap_up=FALSE;
   flap_phase=0;
   bird_x=Fs->pix_width>>3;
@@ -182,6 +195,11 @@ U0 AnimateTask(I64)
   }
 }
 
+U0 CleanUp()
+{
+  DCDel(limit_flood_fill_dc);
+}
+
 U0 FlapBat()
 {
   Bool rst_space=TRUE;
@@ -224,6 +242,7 @@ U0 FlapBat()
 	      }
 	      break;
 	    case '\n':
+	      CleanUp;
 	      Init;
 	      break;
 	    case CH_SHIFT_ESC:
@@ -245,6 +264,7 @@ bl_done:
     GetMsg(,,1<<MSG_KEY_UP);
   } catch
     PutExcept;
+  CleanUp;
   SettingsPop;
   MenuPop;
   RegWriteBranch("TempleOS/FlapBat","F64 best_score=%5.4f;\n",best_score);

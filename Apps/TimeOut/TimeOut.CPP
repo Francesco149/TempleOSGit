@@ -13,19 +13,19 @@ class Bullet
 } b[MAX_BULLETS];
 I64 bullets_fired;
 
-I64 x,y,dx,dy,scroll_y,finish_line;
+I64 x,y,dx,dy,finish_line;
 F64 theta;
-F64 t0,tf,snd_bullet_timeout,snd_death_timeout;
+F64 t0,tf,snd_timeout;
 
-#define PHASES_GROUPS		10
-#define MAX_ENEMY	(PHASES_GROUPS*100)
-#define MAX_FRIENDLY	(PHASES_GROUPS*20)
+#define PHASES_GROUPS		8
+#define MAX_ENEMY	(PHASES_GROUPS*64)
+#define MAX_FRIENDLY	(PHASES_GROUPS*16)
 #define MAX_MAN		(MAX_FRIENDLY+MAX_ENEMY)
 #define HACK_DIST	5
 class Man
 {
   I64 x,y,best_dd;
-  F64 theta,hack_phase,corpse_timeout;
+  F64 theta,phase,corpse_timeout;
   Bool friendly,dead,pad[6];
 } m[MAX_MAN];
 
@@ -43,28 +43,45 @@ Bool game_over;
 
 	/* <2> <2> (image) */
 
+
+
 	/* <3> <3> (image) */
+
+
 
 	/* <4> <4> (image) */
 
+
+
 	/* <5> <5> (image) */
 
-CSprite *friendly_imgs[4]={__BIN_3,__BIN_2,__BIN_3,__BIN_4};
+
+
+CSprite *friendly_imgs[4]={__BIN_4,__BIN_3,__BIN_4,__BIN_5};
+
+
+
 
 	/* <6> <6> (image) */
 
+
+
+
 	/* <7> <7> (image) */
+
+
+
 
 	/* <8> <8> (image) */
 
+
+
+
+CSprite *friendly_hacking_imgs[4]={__BIN_7,__BIN_6,__BIN_7,__BIN_8};
+
+
+
 	/* <9> <9> (image) */
-
-CSprite *enemy_imgs[4]={__BIN_7,__BIN_6,__BIN_7,__BIN_8};
-
-#define LANDSCAPE_TYPES	4
-
-
-
 
 
 
@@ -76,22 +93,11 @@ CSprite *enemy_imgs[4]={__BIN_7,__BIN_6,__BIN_7,__BIN_8};
 
 
 
-
-
-
-
 	/* <12> <12> (image) */
 
 
 
-
-
-
-
-
-
-
-
+CSprite *enemy_imgs[4]={__BIN_11,__BIN_10,__BIN_11,__BIN_12};
 
 
 
@@ -100,8 +106,62 @@ CSprite *enemy_imgs[4]={__BIN_7,__BIN_6,__BIN_7,__BIN_8};
 
 
 
+
+	/* <14> <14> (image) */
+
+
+
+
+	/* <15> <15> (image) */
+
+
+
+
+CSprite *enemy_hacking_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
+
+
+
+#define LANDSCAPE_TYPES	4
+
+
+
+
+
+
+	/* <16> <16> (image) */
+
+
+
+	/* <17> <17> (image) */
+
+
+
+
+
+
+
+	/* <18> <18> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/* <19> <19> (image) */
+
+
+
 CSprite *landscape_imgs[LANDSCAPE_TYPES]=
-  {__BIN_10,__BIN_11,__BIN_12,__BIN_13};
+  {__BIN_16,__BIN_17,__BIN_18,__BIN_19};
 
 #define MAX_LANDSCAPE 64
 class LandScapeItem
@@ -110,17 +170,61 @@ class LandScapeItem
   U8 *img;
 } ls[MAX_LANDSCAPE];
 
+I64 mp_not_done_flags;
+U0 MPDrawMen(CDC *dc2)
+{
+  CTask *task=dc2->win_task;
+  CDC *dc=DCAlias(dc2,task);
+  I64 i,r[16],lo=Gs->num*MAX_MAN/mp_cnt,hi=(Gs->num+1)*MAX_MAN/mp_cnt,
+	yy,phase,scroll_y=MAP_HEIGHT-100-100*(tS-t0);
+  Man *tempm;
+  CSprite *temps,**_temps;
+  F64 tt,ts=tS;
+
+  for (i=lo;i<hi;i++) {
+    tempm=&m[i];
+    yy=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
+    if (-32<=yy<=task->pix_bottom+32 && !tempm->dead) {
+      Mat4x4IdentEqu(r);
+      Mat4x4RotY(r,tempm->theta+pi/2);
+      Mat4x4RotX(r,pi/6);
+      Mat4x4Scale(r,0.3);
+      if (tempm->best_dd<(2*HACK_DIST)*(2*HACK_DIST)) {//It's neat so times 2.
+	if (tempm->friendly)
+	  _temps=friendly_hacking_imgs;
+	else
+	  _temps=enemy_hacking_imgs;
+	tt=4*Wrap(tempm->phase+20*ts,0)/(2*pi);
+      } else {
+	if (tempm->friendly)
+	  _temps=friendly_imgs;
+	else
+	  _temps=enemy_imgs;
+	tt=4*Wrap(tempm->phase+5*ts,0)/(2*pi);
+      }
+      phase=tt; tt%=1.0;
+      temps=SpriteInterpolate(_temps[phase&3],_temps[(phase+1)&3],tt);
+      SpriteMat3B(dc,tempm->x,yy,GR_Z_ALL,temps,r);
+      Free(temps);
+    }
+  }
+
+  dc->depth_buf=NULL;
+  DCDel(dc);
+  LBtr(&mp_not_done_flags,Gs->num);
+}
+
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 i,yy;
-  F64 t1;
+  I64 i,yy,scroll_y=MAP_HEIGHT-100-100*(tS-t0);
+  F64 tt,ts=tS;
   Man *tempm;
   Bullet *tempb;
-  CSprite *temps,**_temps;
+  CSprite *temps;
 
   for (i=0;i<MAX_LANDSCAPE;i++) {
     yy=(ls[i].y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=Fs->pix_bottom+32)
+    if (-32<=yy<=task->pix_bottom+32)
       Sprite3(dc,ls[i].x,yy,0,ls[i].img);
   }
 
@@ -135,59 +239,54 @@ U0 DrawIt(CTask *task,CDC *dc)
       GrLine(dc,tempb->x>>32,tempb->y>>32,
 	    (tempb->x+tempb->dx*BULLET_LEN)>>32,
 	    (tempb->y+tempb->dy*BULLET_LEN)>>32);
+
+
   for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
     yy=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=Fs->pix_bottom+32) {
-      if (tempm->dead &&
-	    tS<tempm->corpse_timeout)
+    if (-32<=yy<=task->pix_bottom+32) {
+      if (tempm->dead && ts<tempm->corpse_timeout)
 	if (!(RandU16&15)) {
 	  if (tempm->friendly)
-	    temps=__BIN_5;
+	    temps=__BIN_2;
 	  else
 	    temps=__BIN_9;
-	  SpriteZ3B(dc,tempm->x,yy,0,temps,tempm->theta);
+	  Sprite3B(dc,tempm->x,yy,0,temps);
 	}
     }
   }
-  for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
-    yy=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=Fs->pix_bottom+32) {
-      if (!tempm->dead) {
-	if (tempm->friendly)
-	  _temps=friendly_imgs;
-	else
-	  _temps=enemy_imgs;
-	if (tempm->best_dd<HACK_DIST*HACK_DIST)
-	  temps=_temps[4*Wrap(tempm->hack_phase+20*tS,0)/(2*pi)];
-	else
-	  temps=_temps[0];
-	SpriteZ3B(dc,tempm->x,yy,0,temps,tempm->theta);
-      }
-    }
-  }
+
+  DCDepthBufAlloc(dc);
+  mp_not_done_flags=1<<mp_cnt-1;
+  for (i=0;i<mp_cnt;i++)
+    JobQue(&MPDrawMen,dc,i);
+  while (mp_not_done_flags)
+    Yield;
+  Free(dc->depth_buf);
+  dc->depth_buf=NULL;
+
   SpriteZ3B(dc,x,y,0,__BIN_1,theta);
 
   if (tf) {
-    t1=tf;
+    tt=tf;
     dc->color=RED;
     if (game_over && Blink)
       GrPrint(dc,task->pix_width/2-9*FONT_WIDTH/2,task->pix_height/2,
 	    "Game Over");
   } else {
-    t1=tS;
+    tt=ts;
     if (!enemy_left || !friendly_left)
       game_over=TRUE;
   }
   dc->color=BROWN;
   GrPrint(dc,0,0,"Enemy:%d Friends:%d Friendly Fire:%d Time:%6.2f Bullets:%d",
-	enemy_left,friendly_left,friendly_fire,t1-t0,bullets_fired);
+	enemy_left,friendly_left,friendly_fire,tt-t0,bullets_fired);
   GrPrint(dc,0,8,"Total Score:%,d High Score:%,d",
 	total_score,best_score);
 }
 
 U0 CheckCollisions()
 {
-  I64 i,x,y;
+  I64 i,x,y,scroll_y=MAP_HEIGHT-100-100*(tS-t0);
   Man *tempm;
   Bullet *tempb;
   CDC	*dc2=DCNew(GR_WIDTH,GR_HEIGHT);
@@ -206,22 +305,22 @@ U0 CheckCollisions()
       y=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
       if (0<=x<GR_WIDTH && 0<=y<GR_HEIGHT) {
 	dc2->collision_cnt=0;
-	if (tempm->friendly)
-	  Sprite3(dc2,x,y,0,__BIN_2);
-	else
-	  Sprite3(dc2,x,y,0,__BIN_6);
+	GrRect(dc2,x-3,y-9,6,8);
 	if (dc2->collision_cnt) {
 	  tempm->dead=TRUE;
 	  tempm->corpse_timeout=tS+30.0;
 	  if (tempm->friendly) {
 	    friendly_fire++;
 	    friendly_left--;
-	    Snd(200);
-	  } else {
+	  } else
 	    enemy_left--;
-	    Snd(50);
+	  if (!snd_timeout) {
+	    snd_timeout=tS+0.01;
+	    if (tempm->friendly)
+	      Snd(200);
+	    else
+	      Snd(50);
 	  }
-	  snd_death_timeout=tS+0.01;
 	}
       }
     }
@@ -231,17 +330,16 @@ U0 CheckCollisions()
 
 U0 Init()
 {
-  I64 i,xx,yy;
+  I64 i,xx,yy,scroll_y=MAP_HEIGHT-100;
   Man *tempm;
 
-  snd_bullet_timeout=snd_death_timeout=0;
+  snd_timeout=0;
   Snd(0);
 
   total_score=0;
   game_over=FALSE;
   main_loop_pass=0;
 
-  scroll_y=MAP_HEIGHT-100;
   x=Fs->pix_width>>1;
   y=0.9*Fs->pix_height;
   finish_line=scroll_y+y;
@@ -276,7 +374,7 @@ U0 Init()
     tempm->x=xx+64*RandI32/MAX_I32+100;
     tempm->y=yy+64*RandU32/MAX_I32-64+100;
     tempm->corpse_timeout=0;
-    tempm->hack_phase=2*pi*Rand;
+    tempm->phase=2*pi*Rand;
     tempm->best_dd=MAX_I64;
   }
   for (i=0;i<MAX_BULLETS;i++)
@@ -313,9 +411,9 @@ U0 FireBullet()
   tempb->dy=Sin(a)*0x100000000;
   bullets_fired++;
   tempb->dead=FALSE;
-  if (!snd_death_timeout) {
+  if (!snd_timeout) {
+    snd_timeout=tS+0.0005;
     Snd(1000);
-    snd_bullet_timeout=tS+0.0005;
   }
 }
 
@@ -441,8 +539,9 @@ U0 TimeOut()
 	);
   WinMax;
   DocClear;
-  "\n\nYou're sent back through time "
-	"to help fight some bad guys.  ($LTPURPLE$Purple$FG$)\n\n"
+  "\n\nYou're sent back through time to help fight some bad guys.  "
+	"($LTPURPLE$Purple$FG$)\n"
+	"Perhaps, you are an angel helping the Jews in the Bible?\n\n"
 	"Scoring:\n"
 	"  Enemy Killed\t\t+5\n"
 	"  Enemy by Friendly\t+10\n"
@@ -450,7 +549,8 @@ U0 TimeOut()
 	"  Bullets Fired\t\t-1\n"
 	"  Game Time\t\t-10 per second\n"
 	"  Surviving Friendlies\t+500\n\n"
-	"Sweep side-to-side while shooting.\n\n";
+	"Sweep side-to-side while shooting, "
+	"holding down $GREEN$<SPACE>$FG$.\n\n";
 
   PressAKey;
   Fs->text_attr=YELLOW<<4+CYAN;
@@ -487,15 +587,6 @@ U0 TimeOut()
 	      theta=0.0;
 	    break;
 	}
-      }
-      if (snd_death_timeout) {
-	if (tS>snd_death_timeout) {
-	  snd_death_timeout=0;
-	  Snd(0);
-	}
-      } else if (snd_bullet_timeout && tS>snd_bullet_timeout) {
-	snd_bullet_timeout=0;
-	Snd(0);
       }
 
       for (i=0;i<MAX_BULLETS;i++) {
@@ -558,7 +649,10 @@ U0 TimeOut()
       }
       main_loop_pass++;
 
-      scroll_y--;
+      if (snd_timeout && tS>snd_timeout) {
+	snd_timeout=0;
+	Snd(0);
+      }
       SleepUntil(next_update_jiffy);
 
       total_score=5*(MAX_ENEMY-enemy_left)

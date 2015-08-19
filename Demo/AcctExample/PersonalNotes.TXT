@@ -1,3 +1,5 @@
+* I'm going to redo all my videos and make them more professional.
+
 * FileMgr DragDrop.
 
 * Clean-up [C:/Kernel/Dsk/DskStrA.CPP.Z,144] FileNameAbs().
@@ -358,10 +360,21 @@ Offer a sacrifice of praise: Hebrews 13:15
 Do I drink blood of goats? Offer praise: Psalms 50:14
 Runner's Stride: Psalms 147:10
 Buckling Armor: 1 Kings 20:11
-Lot cast in the lap. Proverbs 16:33
+Lot cast in the lap: Proverbs 16:33
+Lord does not repeat: Job 33:14
 
 >lspci -v
 Size:
+
+Contact
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/SRoj3jK37Vc"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/SRoj3jK37Vc"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 Black Knight
 ```
@@ -439,3 +452,4 @@ KNPR
 C64 Users Guide
 C64 Programmers Reference Guide
 8-Bit Japanese Pixel Art
+Resperdal Shortens Life

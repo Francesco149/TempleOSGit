@@ -50,9 +50,93 @@ are assigned by the editor.
 
 
 
-
 	/* <6> <6> (image) */
+
 //See [C:/Doc/Credits.TXT.Z,1].
+
+
+
+	/* <7> <7> (image) */
+
+
+
+
+
+
+		/* <8> <8> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		/* <9> <9> (image) */
 
 RegSetDftEntry("TempleOS/BlackDiamond","I64 best_score=9999;\n");
 RegExeBranch("TempleOS/BlackDiamond");
@@ -60,7 +144,7 @@ RegExeBranch("TempleOS/BlackDiamond");
 #define MAP_HEIGHT	3000
 #define NUM_OBJS	128
 
-I64 x,y,screen_top_y,penalty;
+I64 x,y,screen_top_y,penalty,chair_lift_num;
 I64 obj_x[NUM_OBJS],obj_y[NUM_OBJS],obj_types[NUM_OBJS],
     obj_saved_x[NUM_OBJS],obj_saved_y[NUM_OBJS];
 Bool game_over;
@@ -69,26 +153,74 @@ Bool game_over;
 #define T_LITTLE_ROCK	1
 #define T_BIG_ROCK	2
 #define T_WOLF		3
-CSprite *imgs[4]={__BIN_3,__BIN_4,__BIN_5,__BIN_6};
+#define T_CHAIR_LIFT	4
+CSprite *imgs[5]={__BIN_3,__BIN_4,__BIN_5,__BIN_6,__BIN_9};
+
+#define DC_WOLF_WIDTH	48
+#define DC_WOLF_HEIGHT	38
+U0 DrawRunningWolf(CDC *dc,I64 i)
+{//Draw wolf on small DC so bottom gets clipped looking like sunk into snow.
+//Then, copy onto main DC.
+  CSprite *temps;
+  CDC *dc_wolf=DCNew(DC_WOLF_WIDTH,DC_WOLF_HEIGHT);
+  DCFill(dc_wolf);
+  if (x<obj_x[i]) {
+    dc_wolf->flags|=DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR;
+    DCSymmetrySet(dc_wolf,DC_WOLF_WIDTH/2,0,DC_WOLF_WIDTH/2,1);
+  }
+  if (tS%1.0<0.5)
+    temps=__BIN_6;
+  else
+    temps=__BIN_7;
+  SpriteZ3B(dc_wolf,DC_WOLF_WIDTH/2,0.85*DC_WOLF_HEIGHT,
+	0,temps,0.4*Sin(7*tS));
+  GrBlot(dc,obj_x[i]-DC_WOLF_WIDTH/2,
+	obj_y[i]-screen_top_y-0.85*DC_WOLF_HEIGHT,dc_wolf);
+  DCDel(dc_wolf);
+  if (0<=(obj_y[i]-screen_top_y)<GR_HEIGHT)
+    obj_x[i]+=3*SignI64(x-obj_x[i]);
+}
+
+U0 DrawMan(CDC *dc)
+{
+  if(dc->collision_cnt)
+    Sprite3(dc,x,y-screen_top_y,0,__BIN_2); //Red man
+  else
+    Sprite3(dc,x,y-screen_top_y,0,__BIN_1); //Normal man
+}
+
+#define WIRE_HEIGHT	595
+#define WIRE_WIDTH	121
+#define WIRE_DIP	800
+#define PULLY_WIDTH	13
+U0 DrawUpperChairLift(CDC *dc)
+{
+  I64 i=chair_lift_num,x,x1,y=obj_y[i]-screen_top_y-WIRE_HEIGHT,y1;
+  Sprite3(dc,obj_x[i],y+13,0,__BIN_8);
+  dc->pen_width=2;
+  for (x=-WIRE_WIDTH/2;x<GR_WIDTH+WIRE_WIDTH/2;x+=2) { //Pen width is 2, step 2.
+    x1=x-obj_x[i];
+    y1=y-WIRE_DIP/2+Cosh(Ln(WIRE_DIP)+(Abs(x1)-PULLY_WIDTH)/10000.0)+0.1*x1;
+    if (!(-PULLY_WIDTH<x1<PULLY_WIDTH)) {
+      GrPlot3(dc,x-WIRE_WIDTH/2,y1,0);
+      GrPlot3(dc,x+WIRE_WIDTH/2,y1,0);
+    }
+  }
+  dc->pen_width=1;
+}
 
 U0 DrawIt(CTask *,CDC *dc)
 {
   I64 i;
-//<CTLR-t> to see the syntax of the
-  //"Insert Binary" statement in the following.
+  Bool man_drawn=FALSE;
+
   for (i=0;i<NUM_OBJS;i++)
-    if (obj_types[i]==T_WOLF && AbsI64(x-obj_x[i])>3) {
-      if (x<obj_x[i]) {
-	dc->flags|=DCF_SYMMETRY|DCF_TRANSFORMATION|DCF_JUST_MIRROR;
-	DCSymmetrySet(dc,obj_x[i],0,obj_x[i],1);
-      }
-      SpriteZ3B(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]],
-	    0.4*Sin(7*tS));
-      if (0<=(obj_y[i]-screen_top_y)<GR_HEIGHT)
-	obj_x[i]+=3*SignI64(x-obj_x[i]);
-      dc->flags&=~(DCF_SYMMETRY|DCF_TRANSFORMATION);
-    } else
-      Sprite3(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]]);
+    if (obj_y[i]-32<=y<=obj_y[i]) {
+      if (obj_types[i]==T_WOLF && AbsI64(x-obj_x[i])>3)
+	DrawRunningWolf(dc,i);
+      else
+	Sprite3(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]]);
+    }
 
   dc->collision_cnt=0;
   dc->color=ROP_COLLISION;
@@ -103,10 +235,19 @@ U0 DrawIt(CTask *,CDC *dc)
   }
 
   dc->color=ROP_EQU;
-  if(dc->collision_cnt)
-    Sprite3(dc,x,y-screen_top_y,0,__BIN_2); //Red man
-  else
-    Sprite3(dc,x,y-screen_top_y,0,__BIN_1); //Normal man
+  for (i=0;i<NUM_OBJS;i++) {
+    if (!man_drawn && obj_y[i]>=y) {
+      DrawMan(dc);
+      man_drawn=TRUE;
+    }
+    if (obj_types[i]==T_WOLF && AbsI64(x-obj_x[i])>3)
+      DrawRunningWolf(dc,i);
+    else
+      Sprite3(dc,obj_x[i],obj_y[i]-screen_top_y,0,imgs[obj_types[i]]);
+  }
+  if (!man_drawn)
+    DrawMan(dc);
+  DrawUpperChairLift(dc);
 
   dc->color=BLACK;
   GrPrint(dc,0,0,"Penalty:%d Best:%d",penalty,best_score);
@@ -128,7 +269,6 @@ U0 Init()
   for (i=0;i<NUM_OBJS;i++) {
     obj_saved_y[i]=RandU32%MAP_HEIGHT;
     obj_saved_x[i]=RandU32%GR_WIDTH;
-
     j=RandU16;
     if (j&7)
       obj_types[i]=T_TREE;
@@ -139,7 +279,10 @@ U0 Init()
     else
       obj_types[i]=T_WOLF;
   }
-  QSortI64(obj_y,NUM_OBJS,&Compare); //We break associations.  Doesn't matter.
+  QSortI64(obj_saved_y,NUM_OBJS,&Compare); //Break associations. Doesn't matter.
+
+  chair_lift_num=RandU16%NUM_OBJS;
+  obj_types[chair_lift_num]=T_CHAIR_LIFT;
 }
 
 U0 BlackDiamond()
@@ -172,10 +315,9 @@ U0 BlackDiamond()
   try {
     while (TRUE) {
 bd_restart:
-      for (i=0;i<NUM_OBJS;i++) { //Wolves move.
-	obj_x[i]=obj_saved_x[i];
-	obj_y[i]=obj_saved_y[i];
-      }
+      MemCpy(obj_x,obj_saved_x,sizeof(obj_x)); //Wolves move. We must reset the
+      MemCpy(obj_y,obj_saved_y,sizeof(obj_y)); //wolves if running same game.
+
       game_over=FALSE;
       screen_top_y=0;
       x=Fs->pix_width>>1; y=0;
