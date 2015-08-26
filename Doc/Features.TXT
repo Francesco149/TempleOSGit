@@ -30,7 +30,7 @@ compression.
 0 ISO files so you can roll-your-own distro's.
 
 * [C:/Adam/Dsk/ADskB.CPP.Z,78] Partitioning tool, installer, boot loaders for
-CD-ROM and hard disk.
+CD/DVD and hard disk.
 
 * Editor/Browser for a new [C:/Doc/DolDocOverview.TXT.Z,1] Document Format. 
 Source files and the command line 
@@ -63,9 +63,9 @@ cursor with <CTRL-ALT-z>/<CTRL-ALT-SHIFT-Z>.
 
 * File Manager, <CTRL-d>.
 
-* Code [C:/Adam/Utils/Profiler.CPP.Z,27] profiler,
-[C:/Adam/Utils/Merge.CPP.Z,37] merge, [C:/Adam/Utils/Diff.CPP.Z,237] diff
-utils.
+* Code [C:/Adam/Opt/Utils/Profiler.CPP.Z,27] profiler,
+[C:/Adam/Opt/Utils/Merge.CPP.Z,37] merge, [C:/Adam/Opt/Utils/Diff.CPP.Z,237]
+diff utils.
 
 * PC Speaker support with many hymns.
 

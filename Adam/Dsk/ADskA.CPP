@@ -319,7 +319,7 @@ I64 RedSeaUnusedDrvSpace(U8 drv_let=0)
     l=(dv->size+dv->spc-1)/dv->spc;
     i=((l+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(dv,bitmap,dv->map1,i);
+    RBlks(dv,bitmap,dv->fat1,i);
     for (i=0;i<l;i++)
       if (!Bt(bitmap,i))
 	result++;
@@ -337,7 +337,7 @@ I64 FAT32UnusedDrvSpace(U8 drv_let=0)
     l=(dv->size+dv->spc-1)/dv->spc;
     i=(l*4+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(dv,bitmap,dv->map1,i);
+    RBlks(dv,bitmap,dv->fat1,i);
     for (i=0;i<l;i++)
       if (!bitmap[i])
 	result++;

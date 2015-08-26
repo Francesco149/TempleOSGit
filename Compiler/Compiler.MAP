@@ -190,8 +190,8 @@
 [C:/Compiler/PrsExp.CPP.Z,348] PrsOffsetOf
 [C:/Compiler/BackLib.CPP.Z,132] MDR_REG
 [C:/Compiler/CMisc.CPP.Z,6] GetOption
-[C:/Compiler/CMain.CPP.Z,1] LexStatement2Bin
 [C:/Compiler/PrsStmt.CPP.Z,503] PrsDoWhile
+[C:/Compiler/CMain.CPP.Z,1] LexStatement2Bin
 [C:/Compiler/BackA.CPP.Z,693] ICShift
 [C:/Compiler/BackFA.CPP.Z,249] ICFMod
 [C:/Compiler/PrsLib.CPP.Z,121] COCPop
@@ -230,7 +230,7 @@
 [C:/Compiler/BackFB.CPP.Z,306] ICFCmpAndBranch
 [C:/Compiler/Lex.CPP.Z,438] Lex
 [C:/Compiler/BackB.CPP.Z,768] ICTestAndBranch
-[C:/Compiler/Compiler.PRJ.Z,17] uasm
+[C:/Compiler/Compiler.PRJ.Z,21] uasm
 [C:/Compiler/BackLib.CPP.Z,138] MDR_SIB_D32_INDIRECT_REG
 [C:/Compiler/PrsExp.CPP.Z,3] PE_MAYBE_MODIFIERS
 [C:/Compiler/PrsExp.CPP.Z,4] PE_UNARY_MODIFIERS
@@ -240,7 +240,7 @@
 [C:/Compiler/OptLib.CPP.Z,1] OptLabelFwd
 [C:/Compiler/BackB.CPP.Z,63] ICOrOr
 [C:/Compiler/CExcept.CPP.Z,81] LexExcept
-[C:/Compiler/CExts.CPP.Z,46] cmp_templates
+[C:/Compiler/CExts.CPP.Z,42] cmp_templates
 [C:/Compiler/OptLib.CPP.Z,536] CmpF2PushPop
 [C:/Compiler/BackLib.CPP.Z,135] MDR_D32_INDIRECT_REG
 [C:/Compiler/CMain.CPP.Z,35] CmpJoin
@@ -297,8 +297,8 @@
 [C:/Compiler/BackFA.CPP.Z,198] ICFUnaryMinus
 [C:/Compiler/BackC.CPP.Z,715] ICOrEqual
 [C:/Compiler/Lex.CPP.Z,305] LexDocRead
-[C:/Compiler/PrsLib.CPP.Z,114] COCPopNoFree
 [C:/Compiler/CMain.CPP.Z,174] CmpFixUpJITAsm
+[C:/Compiler/PrsLib.CPP.Z,114] COCPopNoFree
 [C:/Compiler/CExcept.CPP.Z,111] ParenWarning
 [C:/Compiler/PrsExp.CPP.Z,378] PrsFunCall
 [C:/Compiler/BackB.CPP.Z,505] ICDerefPostIncDec
@@ -317,7 +317,7 @@
 [C:/Compiler/BackFB.CPP.Z,657] ICFPreIncDec
 [C:/Compiler/CMain.CPP.Z,616] ExeFile
 [C:/Compiler/PrsLib.CPP.Z,143] COCMiscNew
-[C:/Compiler/CExts.CPP.Z,47] cmp_templates_dont_pop
+[C:/Compiler/CExts.CPP.Z,43] cmp_templates_dont_pop
 [C:/Compiler/OptLib.CPP.Z,83] CmpOffset2Reg
 [C:/Compiler/PrsLib.CPP.Z,62] PrsFunNew
 [C:/Compiler/CMain.CPP.Z,666] StreamExePrint
@@ -327,11 +327,11 @@
 [C:/Compiler/PrsStmt.CPP.Z,68] PrsFunJoin
 [C:/Compiler/PrsStmt.CPP.Z,774] PrsNoUnusedWarn
 [C:/Compiler/OptLib.CPP.Z,485] OptFixSizeOf
-[C:/Compiler/CExts.CPP.Z,49] cmp_templates_dont_push
-[C:/Compiler/CExts.CPP.Z,50] cmp_templates_dont_push_pop
+[C:/Compiler/CExts.CPP.Z,45] cmp_templates_dont_push
+[C:/Compiler/CExts.CPP.Z,46] cmp_templates_dont_push_pop
 [C:/Compiler/Lex.CPP.Z,326] LexAttachDoc
 [C:/Compiler/PrsStmt.CPP.Z,788] PrsStreamBlk
-[C:/Compiler/CExts.CPP.Z,48] cmp_templates_dont_push2
+[C:/Compiler/CExts.CPP.Z,44] cmp_templates_dont_push2
 [C:/Compiler/UAsm.CPP.Z,66] InstEntryFind
 [C:/Compiler/PrsVar.CPP.Z,378] PrsDotDotDot
 [C:/Compiler/AsmInit.CPP.Z,1] AsmPrsInsFlags

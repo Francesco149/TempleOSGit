@@ -12,14 +12,14 @@ U0 SysGlblsInit()
 
   dsk.dft_iso_filename="::/Temp/CDDVD.ISO";
   StrCpy(dsk.temp_filename,"::/Home/Temp.TXT.Z");
-  dsk.cdrom_boot_is_good=TRUE;
+  dsk.dvd_boot_is_good=TRUE;
   #exe {
     if (!kernel_cfg->auto_mount_ide_hd_let)
       kernel_cfg->auto_mount_ide_hd_let='C';
     if (!kernel_cfg->auto_mount_ide_cd_let)
       kernel_cfg->auto_mount_ide_cd_let='T';
     StreamPrint("dsk.first_hd_drv_let=%d;",kernel_cfg->auto_mount_ide_hd_let);
-    StreamPrint("dsk.first_cd_drv_let=%d;",kernel_cfg->auto_mount_ide_cd_let);
+    StreamPrint("dsk.first_dvd_drv_let=%d;",kernel_cfg->auto_mount_ide_cd_let);
   }
 
   InDbg(ON);
@@ -186,9 +186,9 @@ U0 KernelMain()
   "BlkDevsInitAll Done\n";
 
   #exe {
-    if (kernel_cfg->cdrom_ports_pmt)
+    if (kernel_cfg->dvd_ports_pmt)
       StreamPrint(
-	    "if (dsk.boot_rescue_drv_pmt) \"%%S\",\"ST_CDROM_PORTS_PMT2\";");
+	    "if (dsk.boot_rescue_drv_pmt) \"%%S\",\"ST_DVD_PORTS_PMT2\";");
   };
 
   ChgDsk(':');
@@ -202,8 +202,7 @@ U0 KernelMain()
   InDbg(OFF);
   cnts.time_stamp_freq_initial=TimeStampFreqCal;
   Cd("/");
-  try
-	  ExeFile("Adam"); //Continues [D:/Adam.CPP.Z,1] /Adam.CPP
+  try ExeFile("StartOS"); //Continues [D:/StartOS.CPP.Z,1] /StartOS.CPP
   catch {
     Raw(ON);
     PutExcept;

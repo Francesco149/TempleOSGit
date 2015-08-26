@@ -11,13 +11,13 @@ When you are at the cmd line, editing documents, browsing documentation and
 help, entering items in forms or in menu's, the
 [C:/Kernel/KernelA.HPP.Z,1328] DolDoc editor handles keys.  
 It allows you to define your own key handlers in a
-[C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
+[C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
 you choose, you can catch keys, overriding the default handlers.  See 
 [C:/Adam/DolDoc/DocPutKey.CPP.Z,3] DocPutKey().  The following is an overview
 of key allocations.
 
 <ALT-keys> and <ALT-SHIFT-keys>  Free for user configurations in your 
-[C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() handler, except for
+[C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey() handler, except for
 ALT-BACKSPACE (undo).  There are a few examples 
 pre-defined, but you can change them if you wish.
 

@@ -17,7 +17,7 @@ Cd("::/Apps");Dir;
 `
 
 
-MakeAll with [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+MakeAll with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 Cd("::/Kernel");Dir;
 
 `Cd("::/Kernel");Dir;
@@ -29,7 +29,7 @@ Cd("::/Compiler");Dir;
 `
 
 
-The [C:/Adam.CPP.Z,1] file is compiled during every boot.
+The [C:/StartOS.CPP.Z,1] file is compiled during every boot.
 Cd("::/Adam");Dir;
 
 `Cd("::/Adam");Dir;

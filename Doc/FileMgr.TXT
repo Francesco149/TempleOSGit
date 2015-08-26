@@ -72,4 +72,4 @@ of the holding drive.  Press 'B' when on top of the CD/DVD ROM drive to burn
 the ISO to disk.  If you have not recompiled Kernel and defined your CD/DVD 
 drive, exit the file mgr and use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount.
 
-[C:/Misc/MakeDistro.CPP.Z,1] Making Your Own Distro
+[C:/Misc/DoDistro.CPP.Z,1] Making Your Own Distro

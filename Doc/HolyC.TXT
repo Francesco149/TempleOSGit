@@ -320,9 +320,9 @@ make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
 [C:/Kernel/KernelA.HPP.Z,2839] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
+recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,209]
 Spawn().  You can use 
-[C:/Kernel/Task.CPP.Z,82] CallStkGrow(), but it's odd.  See
+[C:/Kernel/KTask.CPP.Z,82] CallStkGrow(), but it's odd.  See
 [C:/Demo/StkGrow.CPP,1]. 
 
 * Only one base class is allowed.

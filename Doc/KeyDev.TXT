@@ -1,4 +1,4 @@
-The editor mostly stays in a [C:/Kernel/KbdMouse/Message.CPP.Z,146]
+The editor mostly stays in a [C:/Kernel/Serial/Message.CPP.Z,146]
 GetKey()/[C:/Kernel/KeyDev.CPP.Z,1] PutKey() loop.  The putkey portion is 
 where keys are acted-upon.  TempleOS has a chain of putkey handlers in a 
 [Circular Queue,1] Circular Queue with priorities.  The highest priority
@@ -11,7 +11,7 @@ misnomer.  Currently, the following are defined:
 
 Priority    Handler
 ---------- ---------
-0x20000000 [C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey() user handler
+0x20000000 [C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey() user handler
 0x40000000 [C:/Kernel/KeyDev.CPP.Z,110] KDInputFilterPutKey() for
 [C:/Kernel/SrvCmd.CPP.Z,496] Auto(), [C:/Kernel/SrvCmd.CPP.Z,478] AutoStr(),
 and [C:/Kernel/SrvCmd.CPP.Z,488] AutoFile() 

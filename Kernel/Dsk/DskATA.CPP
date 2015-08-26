@@ -378,7 +378,7 @@ I64 ATAProbe(I64 base0,I64 base1,I64 unit)
   bd.base0=base0;
   bd.base1=base1;
   bd.unit=unit;
-  bd.blk_size=CD_BLK_SIZE;
+  bd.blk_size=DVD_BLK_SIZE;
   return ATAGetDevId(&bd,tS+0.1,NULL);
 }
 
@@ -415,7 +415,7 @@ U0 ATAPIReadBlks(CBlkDev *bd,U8 *buf, I64 blk, I64 cnt)
   CDrv *dv=Let2Drv(bd->first_drv_let);
   I64 retry,spc=bd->blk_size>>BLK_SIZE_BITS,n,blk2,
 	l2=bd->max_reads<<1+spc<<1;
-  U8 *cd_buf=MAlloc(l2<<BLK_SIZE_BITS);
+  U8 *dvd_buf=MAlloc(l2<<BLK_SIZE_BITS);
   if (cnt>0) {
     if (blk<=bd->max_reads)
       blk2=0;
@@ -427,16 +427,16 @@ U0 ATAPIReadBlks(CBlkDev *bd,U8 *buf, I64 blk, I64 cnt)
 
     retry=4;
     while (--retry)
-      if (ATAPIReadBlks2(bd,tS+7.0+0.004*n,cd_buf,blk2/spc,n,TRUE))
+      if (ATAPIReadBlks2(bd,tS+7.0+0.004*n,dvd_buf,blk2/spc,n,TRUE))
 //n is 0x800 if max_reads.  Up to 8 additional seconds
 	break;
     if (!retry)
-      ATAPIReadBlks2(bd,0,cd_buf,blk2/spc,n,TRUE);
+      ATAPIReadBlks2(bd,0,dvd_buf,blk2/spc,n,TRUE);
     if (bd->flags & BDF_READ_CACHE)
-      DskCacheAdd(dv,cd_buf,blk2,n*spc);
-    MemCpy(buf,cd_buf+(blk-blk2)<<BLK_SIZE_BITS,cnt<<BLK_SIZE_BITS);
+      DskCacheAdd(dv,dvd_buf,blk2,n*spc);
+    MemCpy(buf,dvd_buf+(blk-blk2)<<BLK_SIZE_BITS,cnt<<BLK_SIZE_BITS);
   }
-  Free(cd_buf);
+  Free(dvd_buf);
 }
 
 Bool ATARBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)

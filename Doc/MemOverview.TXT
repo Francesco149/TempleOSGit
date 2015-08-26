@@ -23,20 +23,21 @@ Memory alloced by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep().
+See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep().
 
                           Single System-wide Mem Map
 
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x00000352CF
+ 0x0000007C00- 0x00000352DF
   Kernel module, placed here by the boot-loader,
   [C:/Kernel/KernelA.HPP.Z,3833] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
-  [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD.
+  [C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] BootDVD & 
+[C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x0000097030
   Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,499] MPN_VECT.

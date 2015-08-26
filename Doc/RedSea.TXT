@@ -23,7 +23,7 @@ chars_bmp_filename, [C:/Kernel/Dsk/DskStrA.CPP.Z,222] FileNameChk
   I64 cluster; (blk) //One sector per cluster.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,
-[C:/Kernel/Date.CPP.Z,1] Implementation of DateTime
+[C:/Kernel/KDate.CPP.Z,1] Implementation of DateTime
 };
 
 public class CRedSeaBoot //RedSea is type FAT32 in partition table to fool 

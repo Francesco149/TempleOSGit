@@ -45,7 +45,7 @@ I64 BCnt(I64 d)
 }
 
 U0 IntCore0TimerHandler(CTask *)
-{//Called from [C:/Kernel/Ints.CPP.Z,1] IntCore0TimerHandler
+{//Called from [C:/Kernel/KInts.CPP.Z,1] IntCore0TimerHandler
   I64 i;
   if (mp_cnt>1)
     while (LBts(&sys_semas[SYS_SEMA_SYS_TIMER],0))

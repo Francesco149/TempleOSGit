@@ -34,8 +34,8 @@ U0 RedSeaFreeLstBuild(CDrv *dv)
     while (first<max_blk) {
       i=0;  //count free clusters
       while (first+i<max_blk) {
-	DrvMapBlkSet(dv,first+i);
-	if (Bt(dv->cur_map_blk,(first+i-dv->data_area)&(BLK_SIZE<<3-1)))
+	DrvFATBlkSet(dv,first+i);
+	if (Bt(dv->cur_fat_blk,(first+i-dv->data_area)&(BLK_SIZE<<3-1)))
 	  break;
 	else
 	  i++;
@@ -70,8 +70,8 @@ U0 RedSeaDrvInit(CDrv *dv)
     dv->size=br.sects;
     dv->data_area=dv->base_offset+br.bitmap_sects;
     dv->root_cluster=br.root_cluster;
-    dv->map1=dv->map2=dv->base_offset+1;
-    DrvMapBlkAlloc(dv);
+    dv->fat1=dv->fat2=dv->base_offset+1;
+    DrvFATBlkAlloc(dv);
     if (unlock)
       DrvUnlock(dv);
   } catch
@@ -282,12 +282,12 @@ U0 RedSeaFreeClusters(CDrv *dv,I64 c,I64 cnt)
 	QueIns(tempf,dv->last_free);
       }
       while (cnt-->0) {
-	DrvMapBlkSet(dv,c);
-	LBtr(dv->cur_map_blk,(c-dv->data_area)&(BLK_SIZE<<3-1));
-	LBts(&dv->map_blk_dirty,0);
+	DrvFATBlkSet(dv,c);
+	LBtr(dv->cur_fat_blk,(c-dv->data_area)&(BLK_SIZE<<3-1));
+	LBts(&dv->fat_blk_dirty,0);
 	c++;
       }
-      DrvMapBlkClean(dv);
+      DrvFATBlkClean(dv);
 
       if (unlock)
 	DrvUnlock(dv);
@@ -327,11 +327,11 @@ I64 RedSeaAllocClusters(CDrv *dv,I64 cnt)
       throw('Drv');
     first=best_free->start;
     for (i=0;i<cnt;i++) {
-      DrvMapBlkSet(dv,first+i);
-      LBts(dv->cur_map_blk,(first+i-dv->data_area)&(BLK_SIZE<<3-1));
-      LBts(&dv->map_blk_dirty,0);
+      DrvFATBlkSet(dv,first+i);
+      LBts(dv->cur_fat_blk,(first+i-dv->data_area)&(BLK_SIZE<<3-1));
+      LBts(&dv->fat_blk_dirty,0);
     }
-    DrvMapBlkClean(dv);
+    DrvFATBlkClean(dv);
     if (best_free->size-=cnt)
       best_free->start+=cnt;
     else {

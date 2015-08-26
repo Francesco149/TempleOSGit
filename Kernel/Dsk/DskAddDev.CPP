@@ -191,7 +191,7 @@ U0 Mount(Bool repartition=FALSE)
     '\n';
     if (0<=first_drv_num<NUM_DRVS) {
       "\t$PURPLE$1$FG$=RAM\n\t$PURPLE$2$FG$=ATA(Harddisk)\n"
-	    "\t$PURPLE$3$FG$=ATAPI(CD-ROM)\nType:";
+	    "\t$PURPLE$3$FG$=ATAPI(CD/DVD)\nType:";
       type=GetChar-'0';
       '\n';
 
@@ -284,16 +284,16 @@ Bool GetBaseUnit(CBlkDev *bd)
     else
       StreamPrint("probe=TRUE;");
   };
-  if (!probe || !BootCdProbeAll(bd)) {
+  if (!probe || !BootDVDProbeAll(bd)) {
     "\nDon't worry.  This is not a product\n"
 	  "registration.	TempleOS just needs the\n"
-	  "I/O port numbers for the CD-ROM.\n"
+	  "I/O port numbers for the CD/DVD.\n"
 	  "\nRetry the ports above or check Windows\n"
 	  "system information under I/O ports for\n"
 	  "'IDE', 'ATA' or 'SATA'.\n"
 	  "In Linux, use 'lspci -v' for ports.\n"
 	  "\n\nEnter 4-digit hex I/O Port number.\n"
-	  "CD-ROM I/O Port Base0: 0x";
+	  "CD/DVD I/O Port Base0: 0x";
     bd->base0=SysGetI64;
     bd->base1=0;
     bd->unit =0;
@@ -303,10 +303,10 @@ Bool GetBaseUnit(CBlkDev *bd)
       while (!('0'<=ch<='1'));
       '' ch;
       bd->unit=ch-'0';
-      dsk.cdrom_boot_is_good=BootCdProbe(bd);
+      dsk.dvd_boot_is_good=BootDVDProve(bd);
       return TRUE;
     } else {
-      dsk.cdrom_boot_is_good=FALSE;
+      dsk.dvd_boot_is_good=FALSE;
       return FALSE;
     }
   }

@@ -14,13 +14,13 @@
 #include "Templates"
 #include "CExts"
 CCmpGlbls	cmp;
-CUAsmGlbls	uasm;
 #include "CInit"
 #include "CExcept"
 #include "LexLib"
 #include "Lex"
-#include "UAsm"
+CUAsmGlbls	uasm;
 #include "CHash"
+#include "UAsm"
 #include "PrsLib"
 #include "AsmInit"
 #include "AsmLib"
@@ -30,6 +30,7 @@ CUAsmGlbls	uasm;
 #include "PrsExp"
 #include "PrsVar"
 #include "CMisc"
+#include "CMain"
 #include "PrsStmt"
 #include "OptPass012"
 #include "OptPass3"
@@ -43,4 +44,3 @@ CUAsmGlbls	uasm;
 #include "BackB"
 #include "BackC"
 #include "OptPass789A"
-#include "CMain"

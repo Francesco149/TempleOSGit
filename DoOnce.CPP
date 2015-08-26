@@ -3,13 +3,13 @@
 
 //This file is executed by the
 //first terminal window upon start-up.
-//See [D:/Home/AdamSys.CPP,1] DoOnce and [C:/Doc/GuideLines.TXT.Z,1] Home Files.
+//See [D:/Home/HomeSys.CPP,1] DoOnce and [C:/Doc/GuideLines.TXT.Z,1] Home Files.
 
 //Delete the rest from this file.
 
 U0 DoOnce()
 {
-  if (sys_boot_src.u16[0]==BOOT_SRC_CDROM) {
+  if (sys_boot_src.u16[0]==BOOT_SRC_DVD) {
     "\nIf you answer 'No' you can play with\n"
 	  "the live CD without installing.\n\n"
 	  "Install onto hard drive ";

@@ -12,8 +12,8 @@ I64 ClusterNumNext(CDrv *dv,I64 c,I64 cnt=1)
 	break;
       case DVT_FAT32:
 	while (cnt-->0 && 0<c<0x0FFFFFF8) {
-	  DrvMapBlkSet(dv,c);
-	  c=dv->cur_map_blk[c & (BLK_SIZE/4-1)];
+	  DrvFATBlkSet(dv,c);
+	  c=dv->cur_fat_blk[c & (BLK_SIZE/4-1)];
 	}
 	if (!(0<c<0x0FFFFFF8))
 	  c=INVALID_CLUSTER;

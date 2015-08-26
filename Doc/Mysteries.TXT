@@ -34,15 +34,15 @@ Started Here.
 
 * If you use [C:/Doc/Grub.TXT.Z,1] Grub, you chain-load like Windows.  You
 can use the TempleOS 
-boot-loader.  [C:/Adam/Boot/BootMHD.CPP.Z,1] Master-Boot-Loader-Stage1,
-[C:/Adam/Boot/BootMHD2.CPP.Z,1] Master-Boot-Loader-Stage2, 
-[C:/Adam/Boot/BootHD.CPP.Z,1] Partition-Boot-Loader,
-[C:/Adam/Boot/BootCD.CPP.Z,1] CD-DVD-Boot-Loader.
+boot-loader.  [C:/Adam/Opt/Boot/BootMHD.CPP.Z,1] Master-Boot-Loader-Stage1,
+[C:/Adam/Opt/Boot/BootMHD2.CPP.Z,1] Master-Boot-Loader-Stage2, 
+[C:/Adam/Opt/Boot/BootHD.CPP.Z,1] Partition-Boot-Loader,
+[C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] CD-DVD-Boot-Loader.
 
 * The boot-loaders must be patched by you running
-[C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() or 
-[C:/Adam/Boot/BootIns.CPP.Z,142] MasterBootIntall().  Those will write the
-block address into the boot-loader 
+[C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() or 
+[C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootIntall().  Those will write
+the block address into the boot-loader 
 because the boot-loaders do not navigate file systems to find the
 [C:/Kernel/KStart.CPP.Z,1] Stage2 if 
 you relocate it.
@@ -76,8 +76,8 @@ scratch and it is self-contained.
 
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
-recompile with [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall(). 
-TempleOS is 119,089 lines.  Roughly 
+recompile with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall(). 
+TempleOS is 119,135 lines.  Roughly 
 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -133,11 +133,11 @@ alloced.  This is because it is reusing the small chunks.  See
 [C:/Doc/MemOverview.TXT.Z,1] Memory Overview and [Memory,1] Memory Routines. 
 Click Here
 `MemRep;View;`
- for a [C:/Adam/Utils/MemRep.CPP.Z,191] MemRep.
+ for a [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep.
 
 * The cursor location is stored as an ASCII 5 in files.  ASCII 31 is SHIFT-SPA
 CE, a character which does not get converted to tabs by space-to-tabs,
-[C:/Adam/Utils/StrUtils.CPP.Z,195] S2T().  
+[C:/Adam/Opt/Utils/StrUtils.CPP.Z,195] S2T().  
 The ASCII 28 is SHIFT-ESC. 
 
 * Binary data is stored beyond the terminating NULL in text files.  Map files 

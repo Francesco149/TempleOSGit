@@ -45,7 +45,7 @@ if you already have your hard drive partitioned.
 
 
 **WARNING:**  This command doesn't play well with other operating systems.  
-You'll need to do a [C:/Adam/Boot/BootIns.CPP.Z,125] MasterBootZero() to
+You'll need to do a [C:/Adam/Opt/Boot/BootIns.CPP.Z,132] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
@@ -55,14 +55,14 @@ where other operating systems can partition it.
 the drive letter of the partition in place of 'D'.
 
 **WARNING:**  If you are upgrading, be sure not to lose the file,
-  /0000Boot/OldM
-BR.BIN.C.
+  /0000Adam/Opt/
+Boot/OldMBR.BIN.C.
 
 3) [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree("T:/","D:/")
   This command is used to copy files onto a hard drive partition from the 
-CD-ROM.  Use the drive letter of the partition in place of 'D'.
+CD/DVD.  Use the drive letter of the partition in place of 'D'.
 
-4) [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall('D')
+4) [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall('D')
   This command recompiles the source code on a drive and writes to the
   _drive's_ 
 boot record.  You'll need to reenter the [C:/Kernel/Dsk/DskAddDev.CPP.Z,173]
@@ -70,18 +70,19 @@ boot record.  You'll need to reenter the [C:/Kernel/Dsk/DskAddDev.CPP.Z,173]
 stored in the kernel.
 
 5) Use Linux's [C:/Doc/Grub.TXT.Z,1] Grub or TempleOS'
-[C:/Adam/Boot/BootIns.CPP.Z,142] MasterBootIntall('D')
+[C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootIntall('D')
   
-The [C:/Adam/Boot/BootIns.CPP.Z,142] MasterBootIntall() command places a boot
-  loader on a drive.  It saves 
-the old master boot record to /0000Boot/OldMBR.BIN.C and replaces it.  When 
-you boot, you will have the option of booting the old master boot record.  
-This command can be skipped if you already have a boot loader.  Be sure not 
-to lose the copy of the old boot record, like if you reformat the drive.
+The [C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootIntall() command places a
+  boot loader on a drive.  It saves 
+the old master boot record to /0000Adam/Opt/Boot/OldMBR.BIN.C and replaces 
+it.  When you boot, you will have the option of booting the old master boot 
+record.  This command can be skipped if you already have a boot loader.  Be 
+sure not to lose the copy of the old boot record, like if you reformat the 
+drive.
 
-Delete /0000Boot/OldMBR.BIN.C if you want to get a fresh copy of a mbr, like 
-if installing from your own custom CD containing it's own /0000Boot/OldMBR.B
-IN.C onto a system with a non-TempleOS boot loader.
+Delete /0000Adam/Opt/Boot/OldMBR.BIN.C if you want to get a fresh copy of a 
+mbr, like if installing from your own custom CD containing it's own /0000Ada
+m/Opt/Boot/OldMBR.BIN.C onto a system with a non-TempleOS boot loader.
 
 If you have anti-virus software, it might object to having a different 
 master boot record.

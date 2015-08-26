@@ -21,7 +21,7 @@ on a message and skips if not ready.
 A task runs until it voluntarily yields
 ctrl with a call to [C:/Kernel/Sched.CPP.Z,344] Yield() or gets
 preempted by the fixed 1kHz [C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ
-timer interrupt.  See [C:/Kernel/Ints.CPP.Z,12] SYS_TIMER_HANDLER.
+timer interrupt.  See [C:/Kernel/KInts.CPP.Z,12] SYS_TIMER_HANDLER.
 Tasks can ask not to be preempted with
 [C:/Kernel/KernelB.HPP.Z,283] Preempt(ON/OFF).  Tasks waiting on I/O
 often loop, checking for a status and
@@ -360,7 +360,7 @@ U0 TaskQueIns(CTask *task,CTask *pred=NULL)
 
 U0 TaskQueRem(CTask *task)
 {//Remove a task from the scheduler running task queue.
-//Use [C:/Kernel/Task.CPP.Z,49] Suspend().
+//Use [C:/Kernel/KTask.CPP.Z,49] Suspend().
   CTask *next,*last;
   PUSHFD
   CLI

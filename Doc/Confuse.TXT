@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 119,089 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 119,135 lines of TempleOS over
 the 
 past 17.3 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
@@ -62,7 +62,7 @@ rename them with [C:/Adam/Dsk/ADskA.CPP.Z,126] Move() to store them
 uncompressed.
 
 * TempleOS is open src and every bit of the src code is included in the 
-distro.  Use [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() to
+distro.  Use [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() to
 compile the kernel and compiler.
 
 * TempleOS does not use object files or a linker. 
@@ -94,8 +94,8 @@ free the applications when they are finished and everything will be fine.
 Small mem chunks stick to the task when they are freed until it is killed.  
 The only way to get in trouble involves allocating multiple Meg chunks and 
 freeing them.  These can only be reused if the same size gets alloced again.  
-Use [C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog() and
-[C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep() to see who alloced mem and
+Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog() and
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,111] HeapLogRep() to see who alloced mem and
 didn't free it.
 
 * The editor periodically takes a snap-shot for UNDO and this looks like a 

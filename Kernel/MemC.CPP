@@ -305,7 +305,7 @@ U0 HeapsInit()
 
 I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024)
 {//Helps pick DiskCache and RAMDisk sizes.
-//Can be used in [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() config scripts.
+//Can be used in [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() config scripts.
   I64 i;
   if (sys_data_bp)
     i=sys_data_bp->alloced_u8s;

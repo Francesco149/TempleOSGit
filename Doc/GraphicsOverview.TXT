@@ -98,7 +98,7 @@ image.  Set [C:/Kernel/KernelA.HPP.Z,3586] DCF_JUST_MIRROR to plot just the
 image, but this required 
 [C:/Kernel/KernelA.HPP.Z,3582] DCF_SYMMETRY to be set at the same time. 
 Note: You can only have one symmetry 
-active at a time including in [C:/Adam/Gr/Gr.CPP.Z,174] CSprites.
+active at a time including in [C:/Adam/Gr/Gr.HPP.Z,153] CSprites.
 
 * Use [C:/Adam/Gr/GrDC.CPP.Z,186] DCNew() to create a mem bitmap which can be
 used to work off-screen and 
@@ -115,10 +115,10 @@ GrBlot() the brush instead of
 [C:/Kernel/KernelA.HPP.Z,2894] ROP_COLLISION is special.  It 
 counts the num of pixs drawn on non-background locations.  Using 
 [C:/Kernel/KernelA.HPP.Z,2894] ROP_COLLISION with vector
-[C:/Adam/Gr/Gr.CPP.Z,174] CSprite's is tricky because overlapping pixs from 
-lines in the [C:/Adam/Gr/Gr.CPP.Z,174] CSprite reg as collisions.  You can
+[C:/Adam/Gr/Gr.HPP.Z,153] CSprite's is tricky because overlapping pixs from 
+lines in the [C:/Adam/Gr/Gr.HPP.Z,153] CSprite reg as collisions.  You can
 either work with a nonzero 
-count or convert your [C:/Adam/Gr/Gr.CPP.Z,174] CSprite to a bitmap if your
+count or convert your [C:/Adam/Gr/Gr.HPP.Z,153] CSprite to a bitmap if your
 subelements draw on top of 
 each other.  Be sure to set ->bkcolor before using
 [C:/Kernel/KernelA.HPP.Z,2894] ROP_COLLISION.  See 

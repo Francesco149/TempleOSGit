@@ -1,5 +1,5 @@
-A [C:/Adam/Gr/Gr.CPP.Z,174] CSprite is an ordered list of
-[C:/Adam/Gr/Gr.CPP.Z,138] these elements, created with <CTRL-r>.  
+A [C:/Adam/Gr/Gr.HPP.Z,153] CSprite is an ordered list of
+[C:/Adam/Gr/Gr.HPP.Z,117] these elements, created with <CTRL-r>.  
 Normally, they are packed together in a list and the address of the first is 
 passed to routines.
 
