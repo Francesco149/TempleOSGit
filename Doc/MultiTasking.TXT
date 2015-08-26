@@ -12,7 +12,7 @@ still occur when preemption is off.  Turning-off preemption does not protect
 against multicore simultaneous access.
 
 **Preemption is turned-off by default when a task is
-[C:/Kernel/Task.CPP.Z,209] Spawn()ed.**
+[C:/Kernel/KTask.CPP.Z,209] Spawn()ed.**
 
 The time-slice rate is set by [C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ.
 
@@ -37,12 +37,12 @@ mission statement, giving complete freedom to programmers.  Use CLI or STI.
 TempleOS currently doesn't use interrupt besides the timer, keyboard and 
 sometimes mouse interrupt.  Since the interrupt flag is part of your task 
 context and since you are voluntarily swapped-out if you call
-[C:/Kernel/KbdMouse/Message.CPP.Z,189] GetChar() or 
+[C:/Kernel/Serial/Message.CPP.Z,189] GetChar() or 
 whatever, you won't even notice if you turn-off interrupts at the cmd prompt 
 because you are being swapped-out and interrupts are being turned-on by the 
 next task.  
 
-I saw no reason to make the hard drive or CD-ROM code interrupt driven -- it 
+I saw no reason to make the hard drive or CD/DVD code interrupt driven -- it 
 just creates potential compatibility issues.  On a home system, you do one 
 thing at a time, mostly.  TempleOS can do multiple things at once, but not as 
 efficiently as a server operating system.  It would bogg down with a hundred 

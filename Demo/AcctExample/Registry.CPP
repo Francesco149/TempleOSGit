@@ -2,7 +2,7 @@
   +] SysMsgFlags
       sys_msg_flags[0]=0xFF;
       +] SysRegVer
-      registry_version=3.090;
+      registry_version=3.100;
       +] TempleOS
   +] CircleTrace
       F64 best_score=4.9425;
@@ -10,36 +10,36 @@
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
       +] DiningStars
       F64 best_score=9999.0000;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
+      +] DunGen
+      F64 best_score=20.5295;
       +] ZoneOut
       F64 best_score=50.3318;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
       +] Wenceslas
       F64 best_score=49.8074;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
+      +] XCaliber
+      I64 best_score=248;
+    I64 msg_flags=1;
+      +] BlackDiamond
+      I64 best_score=9;
       +] RawHide
       F64 best_score=97.0710;
       +] FlapBat
       F64 best_score=16.4090;
-      +] BlackDiamond
-      I64 best_score=9;
       +] TimeOut
       I64 best_score=22202;
-      +] XCaliber
-      I64 best_score=248;
-    I64 msg_flags=1;
-      +] DunGen
-      F64 best_score=20.5295;
+      +] Varoom
+      F64 best_score=46.2643;
       +] EagleDive
       I64 best_score=4;
       +] BomberGolf
       I64 best_score=175;
-      +] Varoom
-      F64 best_score=46.2643;
       +] DemoCompany
   +] Game1
-      F64 best_score=952.69284;
+      F64 best_score=166.34088;
     +] SimpleVal
-          1261;
+          1262;
             

@@ -10,21 +10,6 @@ more beautiful or perfect.  I have authority similar to the Americans with
 Disability Act -- I make commands with God signing-off by creating miraculous 
 authenticated oracles.
 
-```
-<object width="640" height="520"><param name="movie"
-value="http://www.youtube.com/v/EalSFnq9GsY"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/EalSFnq9GsY"
-type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
-height="520"></embed></object>
-```
-
-
-* VMware must again support PC Speaker and provide emulation if no PC Speaker 
-is present.
-
-* VMware must again support full screen 640x480 16 color mode. 
-
 * Windows, Linux and VMware (because of mounted drives) must support
 [C:/Doc/RedSea.TXT.Z,1] RedSea 
 file system so I can get rid of 2,000 lines of redundant, blemished code -- 
@@ -38,7 +23,7 @@ same type of device is bad.
 [C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:965 lines for FAT32 gets eliminated.
 [C:/Kernel/Dsk/FileSysISO.CPP.Z,1]	:284 lines for ISO9660 gets eliminated.
-[C:/Adam/Boot/DskISOFile.CPP.Z,1]	:536 lines for making ISO files gets
+[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,1]	:536 lines for making ISO files gets
 reduced.
 [C:/Kernel/Dsk/DskCluster.CPP.Z,1]	:152 All the cluster operations become blk.
 
@@ -53,8 +38,8 @@ case it will not stand.
 
 * PC hardware manufacturers?  ATA/ATAPI PIO must work.  In fact, put them at 
 standard IDE port addresses.  Hard disk should be primary master 1F0/3F6.  
-CDROM/DVD should be secondary master 170/376.  See what you can do to make 
-flash memory sticks with ATA/ATAPI.
+CD/DVD should be secondary master 170/376.  See what you can do to make flash 
+memory sticks with ATA/ATAPI.
 [C:/Kernel/Dsk/DskATAId.CPP.Z,1] /Kernel/Dsk/DskATAId.CPP	:280 lines to
 figure-out I/O ports is gone.
 [C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 could eliminate,but
@@ -120,7 +105,7 @@ Device		Simple Hardware Interface	Deluxe Interface
 Video		VGA 640x480 16 Color		20 Differnet GPUs
 Sound		PC Speaker			HD Audio, AC97, Sound Blaster
 HardDrive	ATA Port I/O, Sync No Interrupt	PCI AHCI SATA
-CDROM		ATAPI Port I/O			PCI AHCI SATA
+CD/DVD		ATAPI Port I/O			PCI AHCI SATA
 Keyboard/Mouse	PS/2 Port I/O			USB
 
 

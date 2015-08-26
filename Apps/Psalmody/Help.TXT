@@ -41,7 +41,7 @@ set it to FALSE.  Then, call
 <CTRL-ALT-key> to toggle this 
 system level recording feat.  See [C:/Kernel/KMisc.CPP.Z,163] Snd().  Add
 this code to your 
-[C:/Home/AdamKeyPlugIns.CPP,1] file.
+[C:/Home/HomeKeyPlugIns.CPP,1] file.
 
 U0 CtrlAltR(I64)
 {

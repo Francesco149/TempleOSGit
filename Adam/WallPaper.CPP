@@ -130,8 +130,6 @@ U0 WallPaper(CTask *_task)
   Preempt(old_preempt);
 }
 
-gr.fp_wall_paper=&WallPaper;
-
 /* <1> <1> (image) */
 
 
@@ -175,24 +173,8 @@ CCtrl *TermButtonNew()
   return c;
 }
 
-TermButtonNew;
-
-/* <2> <2> (image) */
-
-gr.empty_sprite=__BIN_2;
-
-/* <3> <3> (image) */
-
-/* <4> <4> (image) */
-
-#help_index "Graphics/Misc;Input Pointer/Displayed Image"
-public U0 DrawGrabInputPtr(CDC *dc,I64 x,I64 y,Bool closed)
-{//This is a callback. See [C:/Demo/Graphics/Grid.CPP.Z,1].
-  dc->flags&=~(DCF_TRANSFORMATION|DCF_SYMMETRY);
-  dc->color=ROP_EQU;
-  if (closed)
-    Sprite3(dc,x,y,0,__BIN_3);
-  else
-    Sprite3(dc,x,y,0,__BIN_4);
+U0 WallPaperInit()
+{
+  TermButtonNew;
+  gr.fp_wall_paper=&WallPaper;
 }
-gr.fp_draw_grab_input_ptr=&DrawGrabInputPtr;

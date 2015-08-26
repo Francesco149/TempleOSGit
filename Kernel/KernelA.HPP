@@ -2256,8 +2256,8 @@ public class CATARep
 #help_index "File/Low Level"
 #define BLK_SIZE_BITS	9
 #define BLK_SIZE	(1<<BLK_SIZE_BITS)
-#define CD_BLK_SIZE	(4*BLK_SIZE)
-#define CD_FILE_OFFSET	80
+#define DVD_BLK_SIZE	(4*BLK_SIZE)
+#define DVD_FILE_OFFSET	80
 #define INVALID_CLUSTER (-1)
 
 class CMBRPrt
@@ -2500,7 +2500,7 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] CDImageWrite()
+//Media types for [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] DVDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 
@@ -2641,9 +2641,9 @@ public class CBlkDev
 #define DVT_NULL	0
 #define DVT_REDSEA	1 //Supported
 #define DVT_FAT32	2 //Supported except for short names, to some degree
-#define DVT_ISO9660	3 //Supported (CD-ROM)
-#define DVT_ISO13490	4 //Not Supported (CD-ROM)
-#define DVT_ISO13346	5 //Not Supported (CD-ROM)
+#define DVT_ISO9660	3 //Supported (CD/DVD)
+#define DVT_ISO13490	4 //Not Supported (CD/DVD)
+#define DVT_ISO13346	5 //Not Supported (CD/DVD)
 #define DVT_NTFS	6 //Not Supported
 #define DVT_UNKNOWN	7
 #define DVT_NUM_TYPES	8
@@ -2680,7 +2680,7 @@ public class CDrv
   I64	base_offset,
 	size,
 	file_system_info_sect,
-	map1,map2,
+	fat1,fat2,
 	root_cluster,
 	data_area,
 	spc; //sectors per cluster
@@ -2689,9 +2689,9 @@ public class CDrv
   CBlkDev *bd;
 
   CFAT32FileInfoSect *fis;
-  I64	map_blk_dirty,
-	cur_map_blk_num;
-  U32	*cur_map_blk;
+  I64	fat_blk_dirty,
+	cur_fat_blk_num;
+  U32	*cur_fat_blk;
   CFreeLst *next_free,*last_free;
 };
 
@@ -2716,8 +2716,8 @@ public class CDskGlbls
   CDrv	*drvs,*let_to_drv[32];
   I64	auto_mount_ide_cnt;
   U8	temp_filename[STR_LEN],boot_drv_let,
-	first_hd_drv_let,first_cd_drv_let;
-  Bool	boot_rescue_drv_pmt,cdrom_boot_is_good;
+	first_hd_drv_let,first_dvd_drv_let;
+  Bool	boot_rescue_drv_pmt,dvd_boot_is_good;
 };
 
 #help_index "File/Internal"
@@ -3141,7 +3141,7 @@ class CFPU
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/Task.CPP.Z,209] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,209] Spawn()	Tell MP to spawn task
 
 class CSrvCmd
 {
@@ -3505,7 +3505,7 @@ public class CSysFixedArea
 
 //TempleOS places a 1 in bit 7 for
 //keys with an E0 prefix.
-//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/KbdMouse/Keyboard.CPP.Z,439] KbdHandler().
+//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/Serial/Keyboard.CPP.Z,439] KbdHandler().
 #define SC_ESC		0x01
 #define SC_BACKSPACE	0x0E
 #define SC_TAB		0x0F
@@ -3837,10 +3837,10 @@ public class CDbgGlbls
 #define BOOT_SRC_NULL		0
 #define BOOT_SRC_RAM		1
 #define BOOT_SRC_HARDDRV	2
-#define BOOT_SRC_CDROM		3
+#define BOOT_SRC_DVD		3
 
-// [C:/Kernel/SrvCmd.CPP.Z,496] Auto("") StdIn for call to [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
-#define STD_DISTRO_CDROM_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
+// [C:/Kernel/SrvCmd.CPP.Z,496] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+#define STD_DISTRO_DVD_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
 
 #help_index "Misc/Registry"
 //Registry sys_msg_flags. [C:/Adam/ARegistry.CPP.Z,87] RegOneTimePopUp()

@@ -3,7 +3,7 @@
 
 //This file is executed by the
 //first terminal window upon start-up.
-//See [D:/Home/AdamSys.CPP,1] DoOnce and [C:/Doc/GuideLines.TXT.Z,1] Home Files.
+//See [D:/Home/HomeSys.CPP,1] DoOnce and [C:/Doc/GuideLines.TXT.Z,1] Home Files.
 
 //  Type("::/Doc/Customize.TXT");
 

@@ -48,9 +48,9 @@ Cd("/Adam");Dir;
 `Cd("/Adam");Dir;
 `
 
-Cd("/Adam/Boot");Dir;
+Cd("/Adam/AutoComplete");Dir;
 
-`Cd("/Adam/Boot");Dir;
+`Cd("/Adam/AutoComplete");Dir;
 `
 
 Cd("/Adam/Ctrls");Dir;
@@ -78,53 +78,17 @@ Cd("/Adam/God");Dir;
 `Cd("/Adam/God");Dir;
 `
 
-Cd("/Adam/Utils");Dir;
-
-`Cd("/Adam/Utils");Dir;
-`
-
 Cd("/Adam/Snd");Dir;
 
 `Cd("/Adam/Snd");Dir;
 `
 
-Cd("/Adam/AutoComplete");Dir;
-
-`Cd("/Adam/AutoComplete");Dir;
-`
-
-Cd("/");Dir;
-
-`Cd("/");Dir;
-`
-
-Cd("/Home");Dir;
-
-`Cd("/Home");Dir;
-`
-
-Cd("/Home/Wb2/Files/Psalmody");Dir;
-
-`Cd("/Home/Wb2/Files/Psalmody");Dir;
-`
-
-Cd("/Home/Wb2");Dir;
-
-`Cd("/Home/Wb2");Dir;
-`
-
-Cd("/Home/Wb2/Files");Dir;
-
-`Cd("/Home/Wb2/Files");Dir;
-`
-
-Cd("/Home/Blog");Dir;
-
-`Cd("/Home/Blog");Dir;
-`
-
 TADRant
 `if (Ed("::/Home/Wb2/TADRant.TXT",EDF_WAS_WRITE)) MakeWebSitePartial;
+`
+ TempleOSTheme;
+
+`TempleOSTheme;
 `
  CodeWalkThru;
 
@@ -140,9 +104,54 @@ Ed("D:/Home/God.TXT");
 `Ed("D:/Home/God.TXT");
 `
 
+Cd("/");Dir;
+
+`Cd("/");Dir;
+`
+
+Cd("/Adam/Opt/Boot");Dir;
+
+`Cd("/Adam/Opt/Boot");Dir;
+`
+
+Cd("/Adam/Opt/Utils");Dir;
+
+`Cd("/Adam/Opt/Utils");Dir;
+`
+
+Cd("/Home");Dir;
+
+`Cd("/Home");Dir;
+`
+
+Cd("/Home/Blog");Dir;
+
+`Cd("/Home/Blog");Dir;
+`
+
+Cd("/Home/Wb2");Dir;
+
+`Cd("/Home/Wb2");Dir;
+`
+
+Cd("/Home/Wb2/Files");Dir;
+
+`Cd("/Home/Wb2/Files");Dir;
+`
+
+Cd("/Home/Wb2/Files/Psalmody");Dir;
+
+`Cd("/Home/Wb2/Files/Psalmody");Dir;
+`
+
 Cd("/Apps");Dir;
 
 `Cd("/Apps");Dir;
+`
+
+Cd("/Apps/AfterEgypt");Dir;
+
+`Cd("/Apps/AfterEgypt");Dir;
 `
 
 Cd("/Apps/Budget");Dir;
@@ -150,19 +159,14 @@ Cd("/Apps/Budget");Dir;
 `Cd("/Apps/Budget");Dir;
 `
 
-Cd("/Apps/Span");Dir;
-
-`Cd("/Apps/Span");Dir;
-`
-
 Cd("/Apps/Psalmody");Dir;
 
 `Cd("/Apps/Psalmody");Dir;
 `
 
-Cd("/Apps/AfterEgypt");Dir;
+Cd("/Apps/Span");Dir;
 
-`Cd("/Apps/AfterEgypt");Dir;
+`Cd("/Apps/Span");Dir;
 `
 
 Cd("/Apps/ToTheFront");Dir;
@@ -175,19 +179,14 @@ Cd("/Demo");Dir;
 `Cd("/Demo");Dir;
 `
 
-Cd("/Demo/DolDoc");Dir;
-
-`Cd("/Demo/DolDoc");Dir;
-`
-
 Cd("/Demo/Asm");Dir;
 
 `Cd("/Demo/Asm");Dir;
 `
 
-Cd("/Demo/Snd");Dir;
+Cd("/Demo/DolDoc");Dir;
 
-`Cd("/Demo/Snd");Dir;
+`Cd("/Demo/DolDoc");Dir;
 `
 
 Cd("/Demo/Dsk");Dir;
@@ -195,9 +194,19 @@ Cd("/Demo/Dsk");Dir;
 `Cd("/Demo/Dsk");Dir;
 `
 
+Cd("/Demo/Games");Dir;
+
+`Cd("/Demo/Games");Dir;
+`
+
 Cd("/Demo/Graphics");Dir;
 
 `Cd("/Demo/Graphics");Dir;
+`
+
+Cd("/Demo/Lectures");Dir;
+
+`Cd("/Demo/Lectures");Dir;
 `
 
 Cd("/Demo/MultiCore");Dir;
@@ -205,14 +214,9 @@ Cd("/Demo/MultiCore");Dir;
 `Cd("/Demo/MultiCore");Dir;
 `
 
-Cd("/Demo/Games");Dir;
+Cd("/Demo/Snd");Dir;
 
-`Cd("/Demo/Games");Dir;
-`
-
-Cd("/Demo/Lectures");Dir;
-
-`Cd("/Demo/Lectures");Dir;
+`Cd("/Demo/Snd");Dir;
 `
 
 Cd("/Doc");Dir;
@@ -301,51 +305,36 @@ PreBackUp;
 Make TOS Distro ISO
 `MakeTOSDistro; Copy(TOS_ISO_NAME,"D:TempleOSTOS.ISO");
 `
- Burn TOS Distro CD 
-`MakeTOSDistro; CDImageWrite('T',TOS_ISO_NAME);
-`
  Burn TOS Distro DVD
-`MakeTOSDistro; CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
+`MakeTOSDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Dbg Distro ISO
 `MakeDbgDistro; Copy(TOS_ISO_NAME,"D:TempleOSDbg.ISO");
 `
- Burn Dbg Distro CD 
-`MakeDbgDistro; CDImageWrite('T',TOS_ISO_NAME);
-`
  Burn Dbg Distro DVD
-`MakeDbgDistro; CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
+`MakeDbgDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Std Distro ISO
 `MakeStdDistro; Copy(TOS_ISO_NAME,"D:TempleOSCD.ISO");
 `
- Burn Std Distro CD 
-`MakeStdDistro; CDImageWrite('T',TOS_ISO_NAME);
-`
  Burn Std Distro DVD
-`MakeStdDistro; CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
+`MakeStdDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Lite Distro ISO
 `MakeLiteDistro; Copy(TOS_ISO_NAME,"D:TempleOSLite.ISO");
 `
- Burn Lite Distro CD 
-`MakeLiteDistro;CDImageWrite('T',TOS_ISO_NAME);
-`
  Burn Lite Distro DVD
-`MakeLiteDistro;CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
+`MakeLiteDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Ultra Distro ISO
 `MakeUltraDistro; Copy(TOS_ISO_NAME,"D:TempleOSUltra.ISO");
 `
- Burn Ultra Distro CD 
-`MakeUltraDistro;CDImageWrite('T',TOS_ISO_NAME);
-`
  Burn Ultra Distro DVD
-`MakeUltraDistro;CDImageWrite('T',TOS_ISO_NAME,MT_DVD);
+`MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 

@@ -8,12 +8,12 @@ Bool VMPrtDsk(CTask *task,CATARep *ata_drv)
     return FALSE;
 }
 
-U0 VMInstallBoot(CTask *task,U8 cd_drv,U8 drv,
+U0 VMInstallBoot(CTask *task,U8 dvd_drv,U8 drv,
 	CATARep *ata_drv,CATARep *atapi_drv)
 {
   U8 *st1,*st2;
 
-  st1=MStrPrint("%C:/",cd_drv);
+  st1=MStrPrint("%C:/",dvd_drv);
   st2=MStrPrint("%C:/",drv);
   CopyTree(st1,st2);
   Free(st1);
@@ -21,7 +21,8 @@ U0 VMInstallBoot(CTask *task,U8 cd_drv,U8 drv,
 
   st1=MStrPrint("%C:/Home",drv);
   MkDir(st1);
-  Copy("::/Misc/MakeDistro.CPP.Z",st1);
+  Copy("::/Misc/DoDistro.CPP.Z",st1);
+  Copy("::/MakeHome.CPP.Z",st1);
   Free(st1);
 
   XTalkWait(task,
@@ -152,7 +153,8 @@ U0 RegularInstallWiz()
 
   new_home_str=MStrPrint("%C:/Home",*dst);
   MkDir(new_home_str);
-  Copy("::/Misc/MakeDistro.CPP.Z",new_home_str);
+  Copy("::/Misc/DoDistro.CPP.Z",new_home_str);
+  Copy("::/MakeHome.CPP.Z",new_home_str);
   XTalkWait(task,
 	"MakeOSDrvBootInstall('%C');\n"
 	"\nB1\n0x20000\n"

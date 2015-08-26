@@ -1,11 +1,11 @@
 The profiler records where the CPU was executing when the 1000 Hz timer 
 interrupt occured, so you can learn where time is spent.
 
-Use the [C:/Adam/Utils/Profiler.CPP.Z,27] Prof() depth argument to record a
-hit in the N routines which called 
+Use the [C:/Adam/Opt/Utils/Profiler.CPP.Z,27] Prof() depth argument to record
+a hit in the N routines which called 
 the current routine, as well.
 
-When done collecting statistics, use [C:/Adam/Utils/Profiler.CPP.Z,57]
+When done collecting statistics, use [C:/Adam/Opt/Utils/Profiler.CPP.Z,57]
 ProfRep() for a report.  You might need a 
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,168] DocMax() to expand the command line
 window buffer to fit it all.

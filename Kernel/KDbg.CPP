@@ -597,7 +597,7 @@ U0 Fault3(I64 fault_num,I64 fault_err_code)
 }
 
 U0 Fault2(I64 fault_num,I64 fault_err_code)
-{//Called from [C:/Kernel/Ints.CPP.Z,1] Fault2.
+{//Called from [C:/Kernel/KInts.CPP.Z,1] Fault2.
 //**Be careful not to swap-out and ruin the saved context**
   Bool was_raw,was_single_user,was_silent;
   I64  i,old_raw_flags=text.raw_flags;

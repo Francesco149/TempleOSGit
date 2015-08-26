@@ -253,7 +253,7 @@ U0 RedSeaDrvView(U8 drv_let=0)
   try {
     i=((s+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(dv,bitmap,dv->map1,i);
+    RBlks(dv,bitmap,dv->fat1,i);
     i=0;
     for (y=0;y<GR_HEIGHT-3*FONT_HEIGHT;y++) {
       if (ScanKey)
@@ -295,7 +295,7 @@ U0 FAT32DrvView(U8 drv_let=0)
   try {
     i=(s*4+BLK_SIZE-1)>>BLK_SIZE_BITS;
     bitmap=MAlloc(i<<BLK_SIZE_BITS);
-    RBlks(dv,bitmap,dv->map1,i);
+    RBlks(dv,bitmap,dv->fat1,i);
     i=0;
     for (y=0;y<GR_HEIGHT-3*FONT_HEIGHT;y++) {
       if (ScanKey)

@@ -89,4 +89,4 @@ else {
 }
 
 //Note: It would be more appropriate
-//to define a key in [C:/Home/AdamKeyPlugIns.CPP.Z,11] MyPutKey().
+//to define a key in [C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey().

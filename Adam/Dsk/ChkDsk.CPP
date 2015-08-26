@@ -60,7 +60,7 @@ I64 RedSeaChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
   bpc=dv->spc<<BLK_SIZE_BITS;
   bits=CAlloc((size+7)>>3);
   bits2=CAlloc((size+7)>>3+BLK_SIZE);
-  RBlks(dv,bits2,dv->map1,((size+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS);
+  RBlks(dv,bits2,dv->fat1,((size+7)>>3+BLK_SIZE-1)>>BLK_SIZE_BITS);
 
   //Get Root Dir size
   ptr2=MAlloc(bpc);
@@ -164,7 +164,7 @@ I64 FAT32ChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
   bpc=dv->spc<<BLK_SIZE_BITS;
   bits=CAlloc((size+7)>>3);
   bits2=CAlloc(size*4+BLK_SIZE);
-  RBlks(dv,bits2,dv->map1,(size*4+BLK_SIZE-1)>>BLK_SIZE_BITS);
+  RBlks(dv,bits2,dv->fat1,(size*4+BLK_SIZE-1)>>BLK_SIZE_BITS);
 
   c=dv->root_cluster;
   while (0<c<0x0FFFFFF8) {
@@ -223,7 +223,7 @@ public I64 ChkDsk(U8 drv_let=0,Bool fix=FALSE,Bool confirm=TRUE)
   if (errs) {
     if (fix)
       "It might be a little better.  ";
-    "Copy files to another partition or CD-ROM, "
+    "Copy files to another partition or CD/DVD, "
 	  "reformat, and copy back.  "
 	  "Or, copy from a back-up.\n";
   }

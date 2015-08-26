@@ -62,55 +62,55 @@ CDrv *DrvNextFree(U8 first_drv_let='C')
   return NULL; //never gets here
 }
 
-U0 DrvMapBlkAlloc(CDrv *dv)
+U0 DrvFATBlkAlloc(CDrv *dv)
 {
   DrvChk(dv);
-  Free(dv->cur_map_blk);
-  dv->cur_map_blk=AMAlloc(BLK_SIZE);
-  dv->cur_map_blk_num=0;
-  dv->map_blk_dirty=0;
-  RBlks(dv,dv->cur_map_blk,dv->map1,1);
+  Free(dv->cur_fat_blk);
+  dv->cur_fat_blk=AMAlloc(BLK_SIZE);
+  dv->cur_fat_blk_num=0;
+  dv->fat_blk_dirty=0;
+  RBlks(dv,dv->cur_fat_blk,dv->fat1,1);
 }
 
-U0 DrvMapBlkClean(CDrv *dv,I64 map_select=3)
+U0 DrvFATBlkClean(CDrv *dv,I64 fat_select=3)
 {
-  if ((dv->type==DVT_FAT32 || dv->type==DVT_REDSEA)&&Bt(&dv->map_blk_dirty,0)) {
-    if (dv->map1==dv->map2) {
-      WBlks(dv,dv->cur_map_blk,dv->map1+dv->cur_map_blk_num,1);
-      LBtr(&dv->map_blk_dirty,0);
+  if ((dv->type==DVT_FAT32 || dv->type==DVT_REDSEA)&&Bt(&dv->fat_blk_dirty,0)) {
+    if (dv->fat1==dv->fat2) {
+      WBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
+      LBtr(&dv->fat_blk_dirty,0);
     } else {
-      if (map_select==3 || !map_select)
-	WBlks(dv,dv->cur_map_blk,dv->map1+dv->cur_map_blk_num,1);
-      if (map_select==3 || map_select==1) {
-	WBlks(dv,dv->cur_map_blk,dv->map2+dv->cur_map_blk_num,1);
-	LBtr(&dv->map_blk_dirty,0);
+      if (fat_select==3 || !fat_select)
+	WBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
+      if (fat_select==3 || fat_select==1) {
+	WBlks(dv,dv->cur_fat_blk,dv->fat2+dv->cur_fat_blk_num,1);
+	LBtr(&dv->fat_blk_dirty,0);
       }
     }
   }
 }
 
-U0 DrvMapBlkSet(CDrv *dv,I64 c,I64 map_select=3)
+U0 DrvFATBlkSet(CDrv *dv,I64 c,I64 fat_select=3)
 {
-  I64 map_blk_num;
+  I64 fat_blk_num;
   if (c==INVALID_CLUSTER)
     throw('Drv');
   switch (dv->type) {
     case DVT_FAT32:
-      map_blk_num=c>>(BLK_SIZE_BITS-2);
+      fat_blk_num=c>>(BLK_SIZE_BITS-2);
       break;
     case DVT_REDSEA:
-      map_blk_num=(c-dv->data_area)>>(BLK_SIZE_BITS+3);
+      fat_blk_num=(c-dv->data_area)>>(BLK_SIZE_BITS+3);
       break;
     default:
       throw('Drv');
   }
-  if (map_blk_num!=dv->cur_map_blk_num) {
-    DrvMapBlkClean(dv,map_select);
-    dv->cur_map_blk_num=map_blk_num;
-    if (map_select==3 || !map_select)
-      RBlks(dv,dv->cur_map_blk,dv->map1+dv->cur_map_blk_num,1);
+  if (fat_blk_num!=dv->cur_fat_blk_num) {
+    DrvFATBlkClean(dv,fat_select);
+    dv->cur_fat_blk_num=fat_blk_num;
+    if (fat_select==3 || !fat_select)
+      RBlks(dv,dv->cur_fat_blk,dv->fat1+dv->cur_fat_blk_num,1);
     else
-      RBlks(dv,dv->cur_map_blk,dv->map2+dv->cur_map_blk_num,1);
+      RBlks(dv,dv->cur_fat_blk,dv->fat2+dv->cur_fat_blk_num,1);
   }
 }
 

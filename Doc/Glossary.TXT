@@ -65,7 +65,7 @@ IDT	Interrupt Descriptor Table
 Init	Initialize
 Ins	Insert
 Int	Interrupt
-ip_	Input Pointer.  See [C:/Kernel/KbdMouse/InputPointer.CPP.Z,1]
+ip_	Input Pointer.  See [C:/Kernel/Serial/InputPointer.CPP.Z,1]
   InputPointer.CPP.
 Irq	Interrupt (Request)
 JIT	Just-in-Time
@@ -150,8 +150,8 @@ Wiz	Wizard
   This task is created at start-up and appears in the small window at the top
   beneath the user windows.  On it's heap are all memory objects which you
   don't want destroyed by a task's death.  When created, Adam runs the file
-  [C:/Adam.CPP.Z,1].  When start-up is finished, the adam task enters a server
-  mode where it accepts requests from other tasks.  The
+  [C:/StartOS.CPP.Z,1].  When start-up is finished, the adam task enters a
+  server mode where it accepts requests from other tasks.  The
   [C:/Kernel/SrvCmd.CPP.Z,418] Adam("") routine will make Adam compile and run
   text src code.  #include statements can be sent to
   [C:/Kernel/SrvCmd.CPP.Z,418] Adam(""), creating system-wide code and data
@@ -172,13 +172,13 @@ Wiz	Wizard
   from any heap in any task at any time on any core, even making
   [C:/Kernel/MemA.CPP.Z,193] independent heaps.
 +] Parent, Child and PopUp Tasks
-  Often a task will [C:/Kernel/Task.CPP.Z,209] Spawn() or
+  Often a task will [C:/Kernel/KTask.CPP.Z,209] Spawn() or
   [C:/Kernel/SrvCmd.CPP.Z,385] PopUp() a task as a helper.  The helper is known
-  as a child Task, though you can [C:/Kernel/Task.CPP.Z,209] Spawn a task and
+  as a child Task, though you can [C:/Kernel/KTask.CPP.Z,209] Spawn a task and
   assign it a different parent... like Adam.  Links are kept as to who's whose
-  child, so when one task is [C:/Kernel/Task.CPP.Z,28] Kill()ed the child
+  child, so when one task is [C:/Kernel/KTask.CPP.Z,28] Kill()ed the child
   helper tasks die, too.  You can get a report of current system tasks with
-  [C:/Adam/AUtils.CPP.Z,202] TaskRep().  There is just one window per task, so
+  [C:/Adam/TaskRep.CPP.Z,22] TaskRep().  There is just one window per task, so
   child tasks are needed for pop-ups.
 +] HolyC
   [C:/Doc/HolyC.TXT.Z,1] HolyC is more than C and less than C++.  It has the
@@ -198,8 +198,8 @@ There is no main() routine.  Instead, statements outside functions are
   automatically executed upon loading.  There is no way to unload except by
   killing the task.  To invoke AOT Compiled Mode, [C:/Compiler/CMain.CPP.Z,419]
   Cmp() is used.  The Kernel module and compiler are made in AOT compiled mode.
-   See [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()  which calls
-  [C:/Adam/Boot/BootIns.CPP.Z,13] MakeAll() where Kernel.BIN.C and
+   See [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()  which calls
+  [C:/Adam/Opt/Boot/BootIns.CPP.Z,13] MakeAll() where Kernel.BIN.C and
   Compiler.BIN.Z are created.
 +] JIT Compile Mode
   In just-in-time mode, the compiler places code and data in memory alloced
@@ -264,7 +264,7 @@ POPFD pops the CPU flags.
 *.DAT.Z;*.DAT
   Data files
 *.ISO
-  CD-ROM image file--ISO9660.
+  CD/DVD image file--ISO9660.
 *.AUT.Z;*.AUT
   AutoFile Basically a HolyC program whose stdout goes to the input of a task
   when [C:/Kernel/SrvCmd.CPP.Z,488] AutoFile() is called.
@@ -339,6 +339,6 @@ result is reserved for local variables that hold the function return val.
   processors.  Only the BSP core#0 processor's tasks can have windows.  More or
   less, applications are launched exclusively from the BSP processor.  It is
   the master.  The only way slave cores get used is if the application
-  explicitly [C:/Kernel/Task.CPP.Z,209] Spawns() a task on them or
+  explicitly [C:/Kernel/KTask.CPP.Z,209] Spawns() a task on them or
   [C:/Kernel/MultiProc.CPP.Z,232] JobQue() a job on them.
 

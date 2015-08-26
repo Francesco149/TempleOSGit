@@ -50,8 +50,8 @@ var-like labels, _RAX, _RBX, etc.
 [C:/Adam/ADbg.CPP.Z,179] ClassRepD() can be used to dump 
 structures.
 
-* [C:/Adam/Utils/Profiler.CPP.Z,27] Prof() and
-[C:/Adam/Utils/Profiler.CPP.Z,57] ProfRep() provide code profiling.  See 
+* [C:/Adam/Opt/Utils/Profiler.CPP.Z,27] Prof() and
+[C:/Adam/Opt/Utils/Profiler.CPP.Z,57] ProfRep() provide code profiling.  See 
 [C:/Demo/AutoFile/AFProfile.AUT.Z,1] (This is an [C:/Doc/Glossary.TXT.Z,1]
 AutoFile.)
 
@@ -83,9 +83,9 @@ ctrl which passes are displayed.
 
 
 * There is a heap check utility which can find leaks.  Use
-[C:/Adam/Utils/HeapLog.CPP.Z,69] HeapLog(), and 
-[C:/Adam/Utils/HeapLog.CPP.Z,111] HeapLogRep().  It's a really simple program
-which intercepts [C:/Kernel/MemB.CPP.Z,372] MAlloc() and 
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog(), and 
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,111] HeapLogRep().  It's a really simple
+program which intercepts [C:/Kernel/MemB.CPP.Z,372] MAlloc() and 
 [C:/Kernel/MemB.CPP.Z,368] Free().  You can customize the code to find other
 heap issues.
 
@@ -96,7 +96,7 @@ window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,248]
 Raw() output.  <CTRL-ALT-lette
 r> handlers take a scan_code as an arg.
 
-* If you recompile Kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
+* If you recompile Kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 MakeOSDrvBootInstall(), you can set the MemInit
 , option to initialize memory to a value at boot, the HeapInit option to
 cause 

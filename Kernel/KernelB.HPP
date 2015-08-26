@@ -1,7 +1,7 @@
 /*  Kernel ASM symbols.
 [C:/Kernel/Kernel.PRJ.Z,1] KernelB Kernel.PRJ
 [C:/Compiler/Compiler.PRJ.Z,1] KernelB Compiler.PRJ
-[C:/Adam.CPP.Z,1] KernelB Adam.CPP
+[C:/StartOS.CPP.Z,1] KernelB StartOS.CPP
 */
 
 #help_index "Bit"

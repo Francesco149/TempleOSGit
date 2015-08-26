@@ -55,7 +55,7 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=DVT_FAT32)
 //**Warning:** Destroys all previous info.
   //quick=FALSE means fill entire drive with zeros.
   //Choose [C:/Kernel/KernelA.HPP.Z,2643] DVT_FAT32 or [C:/Kernel/KernelA.HPP.Z,2642] DVT_REDSEA.
-  //You don't format a CD-ROM with this.
+  //You don't format a CD/DVD with this.
   CDrv *dv=Let2Drv(drv_let);
   Bool old_silent=IsSilent;
   if (confirm && !AreYouSure)

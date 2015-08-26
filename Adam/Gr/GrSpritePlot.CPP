@@ -1,10 +1,10 @@
 #help_index "Graphics/Sprite;Sprites"
 /*
-[C:/Adam/Gr/Gr.CPP.Z,174] CSprites are stored as a sequence of var
-length operations with a 1-byte [C:/Adam/Gr/Gr.CPP.Z,146] type leading
+[C:/Adam/Gr/Gr.HPP.Z,153] CSprites are stored as a sequence of var
+length operations with a 1-byte [C:/Adam/Gr/Gr.HPP.Z,125] type leading
 each operation.  They are stored, one after another,
-in a chunk of memory terminated by a [C:/Adam/Gr/Gr.CPP.Z,138] zero.
-[C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() shows how the [C:/Adam/Gr/Gr.CPP.Z,174] CSprite unions are used.
+in a chunk of memory terminated by a [C:/Adam/Gr/Gr.HPP.Z,117] zero.
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() shows how the [C:/Adam/Gr/Gr.HPP.Z,153] CSprite unions are used.
 
 [C:/Adam/Gr/SpriteNew.CPP.Z,44] SpriteElemSize() will return the size of a single
 element, while [C:/Adam/Gr/SpriteNew.CPP.Z,80] SpriteSize() will return the size
@@ -14,7 +14,7 @@ See ::/Apps/GrModels
 `Cd("::/Apps/GrModels");Dir;View;
 `
  for an example of
-making CSprite by hand.  It uses [C:/Adam/Gr/Gr.CPP.Z,162] SPT_MESH,
+making CSprite by hand.  It uses [C:/Adam/Gr/Gr.HPP.Z,141] SPT_MESH,
 one of the most complicated.
 */
 

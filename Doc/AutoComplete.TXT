@@ -2,7 +2,7 @@ AutoComplete is the LTGRAY window on the right of the screen.
 [C:/Adam/AutoComplete/ACInit.CPP.Z,127] ACInit() 
 collects words from all text files in subdirectories.  Normally, the call to 
 [C:/Adam/AutoComplete/ACInit.CPP.Z,127] ACInit() is in
-[D:/Home/AdamSys.CPP,1] AdamSys.CPP.  It provides auto-complete for typing, 
+[D:/Home/HomeSys.CPP,1] HomeSys.CPP.  It provides auto-complete for typing, 
 jump-to-code and jump-to-dictionary functionality.
 
 <ALT-SHIFT-A>	Closes the LTGRAY AutoComplete window.

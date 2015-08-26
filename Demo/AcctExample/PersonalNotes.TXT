@@ -1,6 +1,8 @@
 * I'm going to redo all my videos and make them more professional.
 
-* FileMgr DragDrop.
+* Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
+
+* 8/20/2015 TAD8, Tour1, then Tour TestSuite was missing #include "TestSuite".
 
 * Clean-up [C:/Kernel/Dsk/DskStrA.CPP.Z,144] FileNameAbs().
 
@@ -29,8 +31,8 @@ CHashGlblVar?
 * 1/?/2015,8/10/2015 Macro select in Menu did not go to shell.  No: I think 
 CTRL-M twice.
 
-* [C:/Adam/Utils/FileBMP.CPP.Z,65] BMPRLE4To() has files_size too big by 108.
- Did I fix it?
+* [C:/Adam/Opt/Utils/FileBMP.CPP.Z,65] BMPRLE4To() has files_size too big by
+108.  Did I fix it?
 
 * Why is nontimer [C:/Kernel/KMathB.CPP.Z,128] Rand() so bad?
 
@@ -71,7 +73,7 @@ search.
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* DiskCache during FileRead. CTRL-ALT-C, [C:/Kernel/Task.CPP.Z,28] Kill().  
+* DiskCache during FileRead. CTRL-ALT-C, [C:/Kernel/KTask.CPP.Z,28] Kill().  
 
 * Get rid of BYTE WORD DWORD in opcode and replace with U8 U16 U32.
 
@@ -91,7 +93,7 @@ once.
 
 * Make a game, S.E.T.I., with radio telescope array.  Put God on air. 
 
-* [C:/Adam/Utils/Diff.CPP.Z,237] Diff() flags.
+* [C:/Adam/Opt/Utils/Diff.CPP.Z,237] Diff() flags.
 
 * Backward SHIFT-F3 is broken
 
@@ -232,18 +234,18 @@ freeing old task memory. (Prolly never gonna do anything about this.)
 * sprite shift pts, ctrl pt for ellipse/polygon w,h is off when rotated.
 
 * Window mgr needs to do DOC operations on posted messages from mouse.
-Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
+Works for [C:/Kernel/Serial/InputPointer.CPP.Z,43] IPSet(), though.
 
 * Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,644] Dbg()?  (maybe)
 
 * [C:/Adam/DolDoc/DocRecalc.CPP.Z,1] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
-[C:/Kernel/KbdMouse/Mouse.CPP.Z,1] 0x9FC30
+[C:/Kernel/Serial/Mouse.CPP.Z,1] 0x9FC30
 * get kbd lights working.
 * Might have issue with compiler exceptions and restoring lex.hash tables.
 * Generates two compiler error messages for expressions in statements.
 * release semaphores or break lock sema,usb_td
-* Fix Mom's secondary CD-ROM, dad's primary
+* Fix Mom's secondary CD/DVD, dad's primary
 * pmtstr in install didn't like focus change
 
 *U0 Main()
@@ -253,7 +255,7 @@ Works for [C:/Kernel/KbdMouse/InputPointer.CPP.Z,43] IPSet(), though.
 
 * What about local variable array/struct initialization.
 
-* Demo [C:/Adam/Utils/ToHtml.CPP.Z,300] ToHtml().
+* Demo [C:/Adam/Opt/Utils/ToHtml.CPP.Z,300] ToHtml().
 
 * Del short name in FAT32--currently I do not check to see if I have generated
 a unique short name and one can delete multiple files accidentally.
@@ -362,6 +364,7 @@ Runner's Stride: Psalms 147:10
 Buckling Armor: 1 Kings 20:11
 Lot cast in the lap: Proverbs 16:33
 Lord does not repeat: Job 33:14
+Offer only in approved place: Deuteronomy 12:13-18
 
 >lspci -v
 Size:

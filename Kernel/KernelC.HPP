@@ -265,9 +265,9 @@ public extern U0 ThrowBreak(CTask *task=NULL);
 public extern U0 throw(I64 ch=0,Bool no_log=FALSE);
 
 #help_index "File/CD DVD"
-public extern U0 CDImageRead(U8 cd_drv_let,U8 *out_name);
-public extern U0 CDImageWrite(U8 cd_drv_let,
-	U8 *in_name=NULL,I64 media_type=MT_CD);
+public extern U0 DVDImageRead(U8 dvd_drv_let,U8 *out_name);
+public extern U0 DVDImageWrite(U8 dvd_drv_let,
+	U8 *in_name=NULL,I64 media_type=MT_DVD);
 
 #help_index "File/CFile"
 public extern U0 FClose(CFile *f);

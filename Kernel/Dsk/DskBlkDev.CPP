@@ -105,7 +105,7 @@ CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type)
 	result->flags|=BDF_READ_CACHE;
 
       if (type==BDT_ATAPI) {
-	result->blk_size=CD_BLK_SIZE;
+	result->blk_size=DVD_BLK_SIZE;
 	result->flags|=BDF_READ_ONLY;
       } else
 	result->blk_size=BLK_SIZE;

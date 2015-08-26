@@ -13,7 +13,7 @@ U0 RandDemo()
   I64 i;
 
   "Seed(0) will do timer randomized random numbers.  A task starts with "
-	"[C:/Kernel/Task.CPP.Z,1] Seed(0) by dft.\n";
+	"[C:/Kernel/KTask.CPP.Z,1] Seed(0) by dft.\n";
   PressAKey;
   Seed;
   RandPts;

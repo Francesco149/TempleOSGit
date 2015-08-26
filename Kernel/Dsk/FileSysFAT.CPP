@@ -28,13 +28,13 @@ U0 FAT32DrvInit(CDrv *dv)
     dv->type=DVT_FAT32;
     RBlks(dv,&br32,dv->base_offset,1);
     dv->file_system_info_sect=dv->base_offset+br32.file_system_info_sect;
-    dv->map1=dv->base_offset+br32.reserved_sects;
-    dv->map2=dv->map1+br32.sects_per_fat;
-    dv->data_area=dv->map2+br32.sects_per_fat
+    dv->fat1=dv->base_offset+br32.reserved_sects;
+    dv->fat2=dv->fat1+br32.sects_per_fat;
+    dv->data_area=dv->fat2+br32.sects_per_fat
 	  -2*br32.sects_per_cluster; //Starts at Cluster 2
     dv->spc=br32.sects_per_cluster;
     dv->root_cluster=br32.root_cluster;
-    DrvMapBlkAlloc(dv);
+    DrvFATBlkAlloc(dv);
     Free(dv->fis);
     dv->fis=AMAlloc(BLK_SIZE);
     RBlks(dv,dv->fis,dv->file_system_info_sect,1);
@@ -427,25 +427,25 @@ U0 FAT32FreeClusters(CDrv *dv,I64 c)
     try {
       unlock_break=BreakLock;
       unlock=DrvLock(dv);
-      DrvMapBlkClean(dv);
+      DrvFATBlkClean(dv);
       do {
-	DrvMapBlkSet(dv,c,0);
-	next=dv->cur_map_blk[c&(BLK_SIZE/4-1)];
-	dv->cur_map_blk[c&(BLK_SIZE/4-1)]=0;
-	LBts(&dv->map_blk_dirty,0);
+	DrvFATBlkSet(dv,c,0);
+	next=dv->cur_fat_blk[c&(BLK_SIZE/4-1)];
+	dv->cur_fat_blk[c&(BLK_SIZE/4-1)]=0;
+	LBts(&dv->fat_blk_dirty,0);
 	c=next;
       } while (0<c<0x0FFFFFF8);
-      DrvMapBlkClean(dv,0);
+      DrvFATBlkClean(dv,0);
 
       c=saved_c;
       do {
-	DrvMapBlkSet(dv,c,1);
-	next=dv->cur_map_blk[c&(BLK_SIZE/4-1)];
-	dv->cur_map_blk[c&(BLK_SIZE/4-1)]=0;
-	LBts(&dv->map_blk_dirty,0);
+	DrvFATBlkSet(dv,c,1);
+	next=dv->cur_fat_blk[c&(BLK_SIZE/4-1)];
+	dv->cur_fat_blk[c&(BLK_SIZE/4-1)]=0;
+	LBts(&dv->fat_blk_dirty,0);
 	c=next;
       } while (0<c<0x0FFFFFF8);
-      DrvMapBlkClean(dv,1);
+      DrvFATBlkClean(dv,1);
       if (unlock)
 	DrvUnlock(dv);
       if (unlock_break)
@@ -479,26 +479,26 @@ I64 FAT32AllocClusters(CDrv *dv,I64 c,I64 cnt)
 	  j=1;
 	  wrap_around=TRUE;
 	}
-	DrvMapBlkSet(dv,j);
-	if (!dv->cur_map_blk[j&(BLK_SIZE/4-1)])
+	DrvFATBlkSet(dv,j);
+	if (!dv->cur_fat_blk[j&(BLK_SIZE/4-1)])
 	  break;
       }
       if (!(0<first<0x0FFFFFF8))
 	first=j;
       if (0<c<l) {
-	DrvMapBlkSet(dv,c);
-	dv->cur_map_blk[c&(BLK_SIZE/4-1)]=j;
-	LBts(&dv->map_blk_dirty,0);
+	DrvFATBlkSet(dv,c);
+	dv->cur_fat_blk[c&(BLK_SIZE/4-1)]=j;
+	LBts(&dv->fat_blk_dirty,0);
       }
       c=j;
     }
 
     if (0<c<l) {
-      DrvMapBlkSet(dv,c);
-      dv->cur_map_blk[c&(BLK_SIZE/4-1)]=0x0FFFFFFF;
-      LBts(&dv->map_blk_dirty,0);
+      DrvFATBlkSet(dv,c);
+      dv->cur_fat_blk[c&(BLK_SIZE/4-1)]=0x0FFFFFFF;
+      LBts(&dv->fat_blk_dirty,0);
     }
-    DrvMapBlkClean(dv);
+    DrvFATBlkClean(dv);
 
     dv->fis->most_recently_alloced=j;
     dv->fis->free_clusters=-1;
@@ -532,8 +532,8 @@ I64 FAT32AllocContiguousClusters(CDrv *dv,I64 cnt)
       while (cont && i<cnt) {
 	if ((first+i+1)*dv->spc+dv->data_area>dv->size+dv->base_offset)
 	  throw('Drv');
-	DrvMapBlkSet(dv,first+i);
-	if (dv->cur_map_blk[(first+i)&(BLK_SIZE/4-1)])
+	DrvFATBlkSet(dv,first+i);
+	if (dv->cur_fat_blk[(first+i)&(BLK_SIZE/4-1)])
 	  cont=FALSE;
 	else
 	  i++;
@@ -541,27 +541,27 @@ I64 FAT32AllocContiguousClusters(CDrv *dv,I64 cnt)
       if (!cont)
 	first=first+i;
       else {
-	DrvMapBlkClean(dv);
+	DrvFATBlkClean(dv);
 
 	for (i=0;i<cnt;i++) {
-	  DrvMapBlkSet(dv,first+i,0);
+	  DrvFATBlkSet(dv,first+i,0);
 	  if (i+1==cnt)
-	    dv->cur_map_blk[(first+i)&(BLK_SIZE/4-1)]=0x0FFFFFFF;
+	    dv->cur_fat_blk[(first+i)&(BLK_SIZE/4-1)]=0x0FFFFFFF;
 	  else
-	    dv->cur_map_blk[(first+i)&(BLK_SIZE/4-1)]=first+i+1;
-	  LBts(&dv->map_blk_dirty,0);
+	    dv->cur_fat_blk[(first+i)&(BLK_SIZE/4-1)]=first+i+1;
+	  LBts(&dv->fat_blk_dirty,0);
 	}
-	DrvMapBlkClean(dv,0);
+	DrvFATBlkClean(dv,0);
 
 	for (i=0;i<cnt;i++) {
-	  DrvMapBlkSet(dv,first+i,1);
+	  DrvFATBlkSet(dv,first+i,1);
 	  if (i+1==cnt)
-	    dv->cur_map_blk[(first+i)&(BLK_SIZE/4-1)]=0x0FFFFFFF;
+	    dv->cur_fat_blk[(first+i)&(BLK_SIZE/4-1)]=0x0FFFFFFF;
 	  else
-	    dv->cur_map_blk[(first+i)&(BLK_SIZE/4-1)]=first+i+1;
-	  LBts(&dv->map_blk_dirty,0);
+	    dv->cur_fat_blk[(first+i)&(BLK_SIZE/4-1)]=first+i+1;
+	  LBts(&dv->fat_blk_dirty,0);
 	}
-	DrvMapBlkClean(dv,1);
+	DrvFATBlkClean(dv,1);
 	break;
       }
     }

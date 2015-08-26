@@ -167,13 +167,15 @@ U0 MakeBootRescueDrvFile()
   Copy("C:/Kernel/*.HPP*",		"A:/Kernel");
   CopyTree("C:/Kernel/Dsk",		"A:/Kernel/Dsk");
 
-  Copy("C:/Home/Wb2/Files/DbgAdam.CPP.Z","A:/Adam.CPP.Z");
+  Copy("C:/Home/Wb2/Files/DbgStartOS.CPP.Z","A:/StartOS.CPP.Z");
 
   MkDir("A:/Adam");
+  Copy("C:/Home/Wb2/Files/DbgMakeAdam.CPP.Z","A:/Adam/MakeAdam.CPP.Z");
   Copy("C:/Adam/AExts.HPP.Z",	"A:/Adam");
   Copy("C:/Adam/AMath.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/Training.CPP.Z","A:/Adam");
-  Copy("C:/Adam/AUtils.CPP.Z",	"A:/Adam");
+  Copy("C:/Adam/AMem.CPP.Z",	"A:/Adam");
+  Copy("C:/Adam/TaskRep.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/AMathODE.CPP.Z","A:/Adam");
 
   FileWrite("C:" CFG_BOOT_RESCUE_DRV_FILE,
@@ -275,7 +277,7 @@ website, too.
 */
   Drv('C');
   DistroPrep;
-  Auto(TOS_CDROM_CFG);
+  Auto(TOS_DVD_CFG);
   MakeOSDrvBootInstall('C','T');
   DelTree(TOS_DISTRO_DIR);
   CopyTree("C:/",TOS_DISTRO_DIR "/");
@@ -287,14 +289,14 @@ U0 MakeTOSDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-	"Download TempleOS V3.09 - T.S. Company Internal Distro (%0.1f MB)",
+	"Download TempleOS V3.10 - T.S. Company Internal Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
 
 
 U0 DbgDistroPrep()
-{/*This is a debug distro.  The CDROM bootloader uses BIOS INT 0x13 0x42 to
+{/*This is a debug distro.  The CD/DVD bootloader uses BIOS INT 0x13 0x42 to
 load Kernel.BIN.C which has been modified to also hold a small RAM drive
 (Drive A) that fits in the low 640k.  The bootloader starts in real mode
 and the kernel changes to long, 64-bit mode.  It loads the 64-bit compiler
@@ -310,7 +312,7 @@ I call [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] MakeBootDrvFile.
   Drv('C');
   DistroPrep;
   MakeBootRescueDrvFile;
-  Auto(TOS_CDROM_DBG_CFG);
+  Auto(TOS_DVD_DBG_CFG);
   MakeOSDrvBootInstall('C','T');
   DelTree(TOS_DISTRO_DIR);
   CopyTree("C:/",TOS_DISTRO_DIR "/");
@@ -323,7 +325,7 @@ U0 MakeDbgDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-	"Download TempleOS V3.09 - Debug Distro (%0.1f MB)",
+	"Download TempleOS V3.10 - Debug Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -332,7 +334,7 @@ U0 StdDistroPrep()
 {
   Drv('C');
   DistroPrep;
-  Auto(STD_DISTRO_CDROM_CFG);
+  Auto(STD_DISTRO_DVD_CFG);
   MakeOSDrvBootInstall('C','T');
   DelTree(TOS_DISTRO_DIR);
   CopyTree("C:/",TOS_DISTRO_DIR "/");
@@ -371,7 +373,7 @@ U0 MakeLiteDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-	"Download TempleOS V3.09 - Lite Distro (%0.1f MB)",
+	"Download TempleOS V3.10 - Lite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -402,7 +404,7 @@ U0 MakeUltraDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.09 - UltraLite Distro (%0.1f MB)",
+	"Download TempleOS V3.10 - UltraLite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -486,12 +488,12 @@ U0 MakeWebSitePartial()
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-	"Download TempleOS V3.09 - Standard Distro (%0.1f MB)",
+	"Download TempleOS V3.10 - Standard Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.09 - UltraSmall Distro (%0.1f MB)",
+	"Download TempleOS V3.10 - UltraSmall Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);

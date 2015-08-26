@@ -23,7 +23,7 @@ public class CGrGlbls
   U0	(*fp_wall_paper)(CTask *task);
   U0	(*fp_draw_input_ptr)(CDC *dc,I64 x,I64 y);
   U0	(*fp_draw_grab_input_ptr)(CDC *dc,I64 x,I64 y,Bool closed);
-  U8	*empty_sprite; //Gets assigned [C:/Adam/WallPaper.CPP.Z,1] gr.empty_sprite
+  U8	*empty_sprite; //Gets assigned [C:/Adam/AInputPointer.CPP.Z,1] gr.empty_sprite
 
   #define GR_NUM_PEN_BRUSHES 64
   CDC	*pen_brushes[GR_NUM_PEN_BRUSHES],

@@ -401,7 +401,7 @@ U0 FMBurnISO(CDoc *doc)
     while (tempde->parent)
       tempde=tempde->parent;
     Silent;
-    CDImageWrite(*tempde->full_name);
+    DVDImageWrite(*tempde->full_name);
     Silent(OFF);
   }
 }
@@ -480,8 +480,8 @@ I64 PopUpFMRight(U8 *header=NULL,U8 *footer=NULL)
 	"$CM+LX,1,3 $$BT,\"PASTE CLIPBOARD FILES \",LE=FMR_PASTE$"
 	"$CM+LX,27,0$$BT,\"CHANGE DISK(MOUNT IT) \",LE=FMR_CHG_DSK$"
 	"$CM+LX,1,3 $$BT,\"FORMAT                \",LE=FMR_FORMAT$"
-	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD-ROM) FILE\",LE=FMR_MAKE_ISO$"
-	"$CM+LX,27,0$$BT,\"BURN ISO (CD-ROM) FILE\",LE=FMR_BURN_ISO$"
+	"$CM+LX,1,3 $$BT,\"MAKE ISO (CD/DVD) FILE\",LE=FMR_MAKE_ISO$"
+	"$CM+LX,27,0$$BT,\"BURN ISO (CD/DVD) FILE\",LE=FMR_BURN_ISO$"
 	"$CM+LX,1,3 $$BT,\"HELP                  \",LE=FMR_HELP$"
 	"$CM+LX,27,0$$BT,\"CANCEL                \",LE=DOCM_CANCEL$\n");
   if (footer) DocPrint(doc,"%s",footer);
@@ -585,8 +585,8 @@ public U8 *FileMgr(I64 mode=FM_NORMAL,CTask *mem_task=NULL)
       case MSG_IP_L_UP:
 	if (doc_ce) {
 	  gr.fp_final_screen_update=fp_old_final_screen_update;
-	  if (WinCursorPosSet(Fs,a1+Fs->win_left+Fs->scroll_x,
-		a2+Fs->win_top+Fs->scroll_y,TRUE)) {
+	  if (WinCursorPosSet(Fs,a1+Fs->pix_left+Fs->scroll_x,
+		a2+Fs->pix_top+Fs->scroll_y,TRUE)) {
 	    doc_e=doc->cur_entry;
 	    if (doc_e!=doc_ce) {
 	      st2=NULL;

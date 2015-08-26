@@ -1,6 +1,6 @@
-Bool BootCdProbe(CBlkDev *bd)
+Bool BootDVDProve(CBlkDev *bd)
 {
-  CKernel *img=CAlloc(CD_BLK_SIZE);
+  CKernel *img=CAlloc(DVD_BLK_SIZE);
   I64 i;
   Bool result=FALSE;
   "Port: %04X,%04X Unit: %02X  ",bd->base0,bd->base1,bd->unit;
@@ -25,7 +25,7 @@ Bool BootCdProbe(CBlkDev *bd)
   return result;
 }
 
-Bool BootCdProbeAll(CBlkDev *bd)
+Bool BootDVDProbeAll(CBlkDev *bd)
 {
   I64 d1,d2,i,j,k;
 
@@ -42,10 +42,10 @@ Bool BootCdProbeAll(CBlkDev *bd)
       if (d1&1 && d2&1) {
 	if (bd->base0=d1&~7) {
 	  bd->unit=0;
-	  if (BootCdProbe(bd))
+	  if (BootDVDProve(bd))
 	    return TRUE;
 	  bd->unit=1;
-	  if (BootCdProbe(bd))
+	  if (BootDVDProve(bd))
 	    return TRUE;
 	}
       }
@@ -54,10 +54,10 @@ Bool BootCdProbeAll(CBlkDev *bd)
       if (d1&1 && d2&1) {
 	if (bd->base0=d1&~7) {
 	  bd->unit=0;
-	  if (BootCdProbe(bd))
+	  if (BootDVDProve(bd))
 	    return TRUE;
 	  bd->unit=1;
-	  if (BootCdProbe(bd))
+	  if (BootDVDProve(bd))
 	    return TRUE;
 	}
       }
@@ -68,10 +68,10 @@ Bool BootCdProbeAll(CBlkDev *bd)
   d2=0x3F6;
   if (bd->base0=d1&~7) {
     bd->unit=0;
-    if (BootCdProbe(bd))
+    if (BootDVDProve(bd))
       return TRUE;
     bd->unit=1;
-    if (BootCdProbe(bd))
+    if (BootDVDProve(bd))
       return TRUE;
   }
 
@@ -79,10 +79,10 @@ Bool BootCdProbeAll(CBlkDev *bd)
   d2=0x376;
   if (bd->base0=d1&~7) {
     bd->unit=0;
-    if (BootCdProbe(bd))
+    if (BootDVDProve(bd))
       return TRUE;
     bd->unit=1;
-    if (BootCdProbe(bd))
+    if (BootDVDProve(bd))
       return TRUE;
   }
 }
@@ -197,7 +197,7 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 
 CATARep *ATAIDDrvs(CATARep *root,I64 _sys_boot_drv,
 		CATARep **_ata_drv,CATARep **_atapi_drv)
-{//This is for when trying to sort-out main hard drives and CD-ROM drives.
+{//This is for when trying to sort-out main hard drives and CD/DVD drives.
   CATARep *result=NULL,*tempha=root,*ata_drv=NULL,*atapi_drv=NULL;
   CBlkDev *bd;
   Bool was_silent=Silent;
@@ -261,7 +261,7 @@ I64 AutoMountIDE()
   if (ata_drv && ATAMount(dsk.first_hd_drv_let,BDT_ATA,
 	ata_drv->base0,ata_drv->base1,ata_drv->unit))
     result++;
-  if (atapi_drv && ATAMount(dsk.first_cd_drv_let,BDT_ATAPI,
+  if (atapi_drv && ATAMount(dsk.first_dvd_drv_let,BDT_ATAPI,
 	atapi_drv->base0,atapi_drv->base1,atapi_drv->unit))
     result++;
   tempha=root;
@@ -271,7 +271,7 @@ I64 AutoMountIDE()
 	    tempha->base0,tempha->base1,tempha->unit))
 	result++;
       else if (tempha->type==BDT_ATAPI &&
-	    ATAMount(dsk.first_cd_drv_let,BDT_ATAPI,
+	    ATAMount(dsk.first_dvd_drv_let,BDT_ATAPI,
 	    tempha->base0,tempha->base1,tempha->unit))
 	result++;
     }

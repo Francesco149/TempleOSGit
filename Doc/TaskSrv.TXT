@@ -1,5 +1,5 @@
  <1> (image)
-[C:/Kernel/SrvCmd.CPP.Z,409] PopUpPrint[C:/Kernel/Task.CPP.Z,367] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
+[C:/Kernel/SrvCmd.CPP.Z,409] PopUpPrint[C:/Kernel/KTask.CPP.Z,367] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
 
 
 
@@ -7,14 +7,14 @@
 
 
 
- [C:/Kernel/KEnd.CPP.Z,130] BSP AdamTask[C:/Kernel/Task.CPP.Z,396] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/Task.CPP.Z,356] UserCmdLine
+ [C:/Kernel/KEnd.CPP.Z,130] BSP AdamTask[C:/Kernel/KTask.CPP.Z,396] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/KTask.CPP.Z,356] UserCmdLine
 
 
 
 
 
 
-[C:/Kernel/Task.CPP.Z,380] SrvTaskCont[C:/Kernel/Task.CPP.Z,334] UserTaskCont
+[C:/Kernel/KTask.CPP.Z,380] SrvTaskCont[C:/Kernel/KTask.CPP.Z,334] UserTaskCont
 
 
 
@@ -22,7 +22,7 @@
 
 
 
-[C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun[C:/Kernel/Task.CPP.Z,269] ExeCmdLine[C:/Kernel/Task.CPP.Z,269] ExeCmdLine
+[C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,270] SrvCmdRun[C:/Kernel/KTask.CPP.Z,269] ExeCmdLine[C:/Kernel/KTask.CPP.Z,269] ExeCmdLine
 
 
 
@@ -38,7 +38,7 @@ code.
 #define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,122] TaskMsg()	Post msg 
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/Task.CPP.Z,209] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,209] Spawn()	Tell MP to spawn task
 
 Several other routines
 `Find("SrvCmdsHandler","::/*");View;`

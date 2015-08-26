@@ -25,8 +25,8 @@ SYS_BOOT_SRC::			DU32	BOOT_SRC_NULL;
 SYS_BOOT_PATCH_TABLE_BASE::	DU32	0;
 SYS_RUN_LEVEL::			DU32	0;
 #exe {StreamPrint("SYS_COMPILE_TIME:: DU64 0x%X;",Now);}
-//See [C:/Kernel/Dsk/DskATAId.CPP.Z,1] BootCdProbe
-#assert SYS_COMPILE_TIME+sizeof(CDate)+sizeof(CBinFile)<CD_BLK_SIZE
+//See [C:/Kernel/Dsk/DskATAId.CPP.Z,1] BootDVDProve
+#assert SYS_COMPILE_TIME+sizeof(CDate)+sizeof(CBinFile)<DVD_BLK_SIZE
 
 SYS_BOOT_BASE::	DU32	0;	//Offset from start used by reboot
 SYS_MEM_E801::	DU16	0,0;
@@ -53,11 +53,11 @@ SYS_PCI_BUSSES::	DU16	0;
 
 //************************************
 BSP_16BIT_INIT::
-//EBX is [C:/Kernel/KStart.CPP.Z,1] SYS_BOOT_SRC. (Val passed from boot blk, [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD, [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD, & [C:/Adam/Boot/Boot.CPP.Z,1] BootRAM.)
+//EBX is [C:/Kernel/KStart.CPP.Z,1] SYS_BOOT_SRC. (Val passed from boot blk, [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD, [C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] BootDVD, & [C:/Adam/Opt/Boot/Reboot.CPP.Z,1] BootRAM.)
 	MOV	AX,(BOOT_RAM_LIMIT-BOOT_STK_SIZE)/16
 	MOV	SS,AX
 	MOV	SP,BOOT_STK_SIZE
-	PUSH	EBX	//Will be [C:/Kernel/KStart.CPP.Z,1] SYS_BOOT_SRC. See [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD, [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD & [C:/Adam/Boot/Boot.CPP.Z,1] BootRAM.
+	PUSH	EBX	//Will be [C:/Kernel/KStart.CPP.Z,1] SYS_BOOT_SRC. See [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD, [C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] BootDVD & [C:/Adam/Opt/Boot/Reboot.CPP.Z,1] BootRAM.
 	MOV	AX,VGAM_TEXT/16
 	MOV	ES,AX
 	MOV	U32 ES:[0],'O'+BLUE<<12+('S'+GREEN<<12)<<16
@@ -134,7 +134,7 @@ GET_IP:	POP	BX
 	OR	AL,2
 	OUT	0x92,AL
 
-	POP	U32 [SYS_BOOT_SRC]	//See [C:/Adam/Boot/BootHD.CPP.Z,1] BootHD, [C:/Adam/Boot/BootCD.CPP.Z,1] BootCD, & [C:/Adam/Boot/Boot.CPP.Z,1] BootRAM.
+	POP	U32 [SYS_BOOT_SRC]	//See [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD, [C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] BootDVD, & [C:/Adam/Opt/Boot/Reboot.CPP.Z,1] BootRAM.
 
 	CLD
 	XOR	EAX,EAX
@@ -231,7 +231,7 @@ SYS_CACHE_LINE_WIDTH::	DU64	DFT_CACHE_LINE_WIDTH;
 SYS_SEMAS::		DU8	NUM_SYS_SEMAS*SEMA_STRUCT_SIZE DUP(0);
 //************************************
 	ALIGN	16,OC_NOP
-BSP_32BIT_INIT:: //Entry point for [C:/Adam/Boot/Boot.CPP.Z,40] RAMReboot.
+BSP_32BIT_INIT:: //Entry point for [C:/Adam/Opt/Boot/Reboot.CPP.Z,33] RAMReboot.
 	PUSH	U32 RFLAGG_START
 	POPFD
 	MOV	EAX,SYS_START_CR0
@@ -345,7 +345,7 @@ USE64
 	RET
 
 //************************************
-SYS_RAM_REBOOT:: //This gets copied high.  [C:/Adam/Boot/Boot.CPP.Z,2] SYS_RAM_REBOOT
+SYS_RAM_REBOOT:: //This gets copied high.  [C:/Adam/Opt/Boot/Reboot.CPP.Z,2] SYS_RAM_REBOOT
 	PUSH	U32 CGDT.ds		//stk seg
 	PUSH	U32 BOOT_RAM_LIMIT	//stk
 	PUSH	U32 0			//flags

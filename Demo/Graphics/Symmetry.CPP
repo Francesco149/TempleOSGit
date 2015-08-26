@@ -50,10 +50,8 @@ U0 SymmetryDemo()
 	}
 	GrLine3(dc,x1,y1,0,x2,y2,0);
 	break;
-      case MSG_KEY_DOWN:
-	break;
     }
-  } while (msg_code!=MSG_KEY_DOWN || !a1);
+  } while (msg_code!=MSG_KEY_DOWN || (a1!=CH_ESC && a1!=CH_SHIFT_ESC));
   GetMsg(,,1<<MSG_KEY_UP);
   DCFill;
   DCDel(dc);

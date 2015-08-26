@@ -1,5 +1,5 @@
-//Compile this by calling [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
-//Don't do it directly.  See [C:/Adam/Boot/BootIns.CPP.Z,1] Cmp("/Kernel/Kernel").
+//Compile this by calling [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+//Don't do it directly.  See [C:/Adam/Opt/Boot/BootIns.CPP.Z,1] Cmp("/Kernel/Kernel").
 
 #exe {
   Cd(__DIR__);;
@@ -12,8 +12,8 @@
 
 #include "KernelA.HPP"
 #include "KStart"
-#include "KUtils"
 #include "KMathA"
+#include "KUtils"
 #exe {Option(OPTf_KEEP_PRIVATE,ON);};
 #include "/Compiler/CompilerA.HPP"
 #exe {Option(OPTf_EXTERNS_TO_IMPORTS,ON);};
@@ -30,14 +30,14 @@
 #include "Sched"
 #include "MemC"
 #include "Font8x8"
-#include "KHashA"
 #include "StrB"
-#include "Ints"
+#include "KHashA"
+#include "KInts"
 #include "KDataTypes"
 #include "Compress"
 #include "KHashB"
 #include "KLoad"
-#include "Date"
+#include "KDate"
 #include "StrPrint"
 #include "StrScan"
 #include "KDefine"
@@ -46,19 +46,14 @@
 #include "KDbg"
 #include "KeyDev"
 #include "KExcept"
-#include "KbdMouse/InputPointer"
-#include "KbdMouse/Keyboard"
-#include "KbdMouse/Mouse"
-#include "KbdMouse/Message"
+#include "Serial/MakeSerial"
 #include "QSort"
-#include "Task"
+#include "KTask"
 #include "SrvCmd"
 #include "PCIBIOS"
-#exe {Cd("Dsk");};
-#include "Dsk"
-#exe {Cd("..");};
 #include "MultiProc"
 #include "EdLite"
+#include "Dsk/MakeDsk"
 #include "PSect"
 #include "KEnd"
 

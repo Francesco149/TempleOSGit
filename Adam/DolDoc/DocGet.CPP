@@ -210,7 +210,7 @@ public F64 GetF64(U8 *msg=NULL,F64 dft=0,F64 lo=MIN_F64,F64 hi=MAX_F64)
 
 public CDate GetDate(U8 *msg=NULL,CDate dft=MIN_I64,
 	CDate lo=MIN_I64,CDate hi=MAX_I64)
-{//Prompt user for date expression. (Use [C:/Kernel/Date.CPP.Z,191] Now() if you want current time.)
+{//Prompt user for date expression. (Use [C:/Kernel/KDate.CPP.Z,191] Now() if you want current time.)
   U8 *st;
   CDate result;
   if (dft==MIN_I64) dft=Now;

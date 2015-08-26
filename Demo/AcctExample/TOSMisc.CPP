@@ -40,9 +40,9 @@ I64 CopyVideo()
   I64 result=0;
   Del("D:/Temp/*.SND");
   if (fg_mode==FG_JUST_AUDIO)
-    SndFileCreate("D:/Temp/Audio",0.015,0.0,WF_SQUARE,0.45,0.35,2.5);
+    SndFileCreate("D:/Temp/Audio",0.115,0.0,WF_SQUARE,0.45,0.35,2.5);
   else {
-    SndFileCreate("D:/Temp/Audio",0.23,0.0,WF_SQUARE,0.45,0.35);
+    SndFileCreate("D:/Temp/Audio",0.115,0.0,WF_SQUARE,0.45,0.35);
     DelTree("D:/Temp/ScreenShots");
     if (fg_mode==FG_RAM_DRV) {
       result=CopyTree("B:/Temp/ScreenShots","D:/Temp/ScreenShots");
@@ -289,6 +289,14 @@ U0 CodeWalkThru()
   Msg(MSG_KEY_DOWN_UP,'b',0x83000000830); //<ALT-b>
   tos_code_walk_thru++;
   TOSRegWrite;
+}
+
+U0 TempleOSTheme()
+{
+  if (!fg_on)
+    PopUp("Sleep(50);FrameGrabberToggle;");
+  ExeFile("::/Home/Wb2/Files/TempleOSTheme.CPP");
+  DocClear;
 }
 
 U0 TOSJukeVideo(I64 start=0,I64 end=10)

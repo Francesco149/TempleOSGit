@@ -1,7 +1,7 @@
-U0 CDImageRead(U8 cd_drv_let,U8 *out_name)
+U0 DVDImageRead(U8 dvd_drv_let,U8 *out_name)
 {//Read entire CD/DVD image into ISO file.
-  CBlkDev *bd=Let2BlkDev(cd_drv_let);
-  CDrv *dv=Let2Drv(cd_drv_let);
+  CBlkDev *bd=Let2BlkDev(dvd_drv_let);
+  CDrv *dv=Let2Drv(dvd_drv_let);
   U8 *buf=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS),
 	*out_name2=DftExt(out_name,"ISO");
   CFile *f=FOpen(out_name2,"w");
@@ -43,10 +43,10 @@ class CDualBuf
   U8 *buf0,*buf1;
   I64 in_buf,out_buf,cnt;
   U8 *filename;
-  CBlkDev *cd_bd;
+  CBlkDev *dvd_bd;
 };
 
-U0 CDImageWriteTask(CDualBuf *d)
+U0 DVDImageWriteTask(CDualBuf *d)
 {
   U8 *buf;
   I64 n,blk=0,cnt=d->cnt;
@@ -61,8 +61,8 @@ U0 CDImageWriteTask(CDualBuf *d)
       n=COPY_BUF_BLKS;
     else
       n=cnt;
-    if (n>d->cd_bd->max_writes)
-      n=d->cd_bd->max_writes;
+    if (n>d->dvd_bd->max_writes)
+      n=d->dvd_bd->max_writes;
     if (d->in_buf&1)
       buf=d->buf1;
     else
@@ -77,12 +77,12 @@ U0 CDImageWriteTask(CDualBuf *d)
   FClose(f);
 }
 
-U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
+U0 DVDImageWrite(U8 dvd_drv_let,U8 *in_name=NULL,I64 media_type=MT_DVD)
 {//Write CD/DVD ISO file to disk.
   CDualBuf *d=CAlloc(sizeof(CDualBuf));
   U8 *buf,*in_name2,*in_name3;
   I64 i,n,spc,blk=0,cnt;
-  CDrv *dv=Let2Drv(cd_drv_let);
+  CDrv *dv=Let2Drv(dvd_drv_let);
   CBlkDev *bd=dv->bd,*bd2;
   CTask *task;
   Bool old_preempt;
@@ -106,7 +106,7 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
     bd2=bd2->lock_fwding;  //If two blkdevs on same controller, use one lock
   if ((bd2->type==BDT_ATA || bd2->type==BDT_ATAPI) &&
 	bd2->base0==bd->base0) {
-    "Can't Burn CD on same ATA ctrller as File.\n\n";
+    PrintErr("Can't burn CD/DVD on same ATA controller as file.\n\n");
     throw('BlkDev');
   }
 
@@ -117,13 +117,13 @@ U0 CDImageWrite(U8 cd_drv_let,U8 *in_name=NULL,I64 media_type=MT_CD)
     dv->size=cnt;
 
   d->filename=in_name2;
-  d->cd_bd=bd;
+  d->dvd_bd=bd;
   d->buf0=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
   d->buf1=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
   d->cnt=cnt;
 
   old_preempt=Preempt;
-  task=Spawn(&CDImageWriteTask,d,"Write CD");
+  task=Spawn(&DVDImageWriteTask,d,"Write CD/DVD");
 
   while (d->in_buf<=d->out_buf)
     Yield;

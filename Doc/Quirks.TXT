@@ -16,7 +16,7 @@ involves a long and short name for each file.
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
 [C:/Kernel/KernelA.HPP.Z,2839] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/Task.CPP.Z,209]
+recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,209]
 Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
@@ -24,7 +24,7 @@ Spawn().
 * Call [C:/Kernel/Dsk/DskDrv.CPP.Z,176] ChgDsk() when you insert a new
 removable media.
 
-* Accessing CD-ROM's is flacky.  Try [C:/Kernel/Dsk/DskDrv.CPP.Z,201] Drv()
+* Accessing CD/DVD's is flacky.  Try [C:/Kernel/Dsk/DskDrv.CPP.Z,201] Drv()
 or [C:/Kernel/Dsk/DskDrv.CPP.Z,176] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern

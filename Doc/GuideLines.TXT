@@ -20,15 +20,17 @@ option checked and invoke the Run.CPP.Z file.
 
 /Kernel The core of the operating system is found here.  Since priviledge 
 levels are not used, calling it a kernel is deceptive.  It is AOT compiled by 
-[C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  It is loaded by the
-boot loader and must fit in 640K.
+[C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  It is loaded by
+the boot loader and must fit in 640K.
 
 /Compiler The compiler module src code is found here.  The compiler is AOT 
 compiled to produce a binary file which is loaded at boot.  It, too, is AOT 
-compiled by [C:/Adam/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+compiled by [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 
 /Adam The non-kernel part of the operating system is found here.  It is JIT 
-compiled during boot.  Adam is the father of all tasks, like Adam and Eve.
+compiled during boot.  The [C:/Doc/Glossary.TXT.Z,1] Adam Task is the father
+of all tasks, like Adam and 
+Eve.
 
 /0000Boot Boot files go here.  Stage 2 of the TempleOS hard drive master boot 
 loader, the old hard drive master boot record which is just blk#0, and the 
@@ -50,7 +52,10 @@ ENU" in the upper left border area of a window.
 <CTRL-SHIFT-M> 
 key.
 
-::/Home/Adam* Copy Adam* files from the root into ::/Home and customize them.
+[C:/Home/MakeHome.CPP.Z,1] a file compiled by the [C:/Doc/Glossary.TXT.Z,1]
+Adam Task during [C:/StartOS.CPP.Z,1] StartOS.
+
+::/Home/Home* Copy Home* files from the root into ::/Home and customize them.
  
 These files are invoked when the adam task starts-up.
 
@@ -86,7 +91,7 @@ tall.CPP.Z or Install.AUT.Z to create the /Home subdirectory.
 * Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
 The 
 stk does not grow, so alloc enough when the task (process) is
-[C:/Kernel/Task.CPP.Z,209] Spawned and use 
+[C:/Kernel/KTask.CPP.Z,209] Spawned and use 
 the heap for most things.  (The heap refers to [C:/Kernel/MemB.CPP.Z,372]
 MAlloc() and [C:/Kernel/MemB.CPP.Z,368] Free().)
 
@@ -147,7 +152,7 @@ kernel.  It's just a bit you can set and test.
 
 * Use [C:/Kernel/KernelA.HPP.Z,3468] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
-[C:/Adam/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
+[C:/Adam/Opt/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
 
 

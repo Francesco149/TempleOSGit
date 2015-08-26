@@ -60,29 +60,29 @@ Directives
     [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the TempleOS document type. 
     The editor, compiler, assembler and whole operating system seamlessly handle
     DolDocs.  Cmds like [C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir() and
-    [C:/Adam/Utils/Find.CPP.Z,145] Find() can output links to the cmd line.
+    [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
 
-* Use [C:/Adam/Boot/DskISOFile.CPP.Z,331] ISOFileCreate() to make an ISO
+* Use [C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate() to make an ISO
     image file.
 
-* Use [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] CDImageWrite() to burn an ISO file
+* Use [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] DVDImageWrite() to burn an ISO file
     onto a CD or DVD.
 
-* See [C:/Misc/MakeDistro.CPP.Z,1] Making a Distro ISO.
+* See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
   Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
-You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
+You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
   MakeOSDrvBootInstall(), and specify which drives should be mounted at boot. 
-  See [C:/Misc/MakeDistro.CPP.Z,1].
+  See [C:/Misc/DoDistro.CPP.Z,1].
 
 [C:/Doc/Install.TXT.Z,1] Installing
 
-[C:/Adam.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is run at
-  start-up by the [C:/Kernel/KEnd.CPP.Z,2] Adam Task.
+[C:/StartOS.CPP.Z,1] the TempleOS equivalent of the AUTOEXEC.BAT.  It is run
+  at start-up by the [C:/Kernel/KEnd.CPP.Z,1] Adam Task.
 +] Programmer help
   [C:/Doc/GuideLines.TXT.Z,1] Guidelines
 [C:/Doc/HolyC.TXT.Z,1] HolyC
@@ -106,10 +106,10 @@ You recompile the kernel with [C:/Adam/Boot/BootIns.CPP.Z,24]
 [C:/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
 [C:/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2
 [C:/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP
-[C:/Adam/Utils/MemRep.CPP.Z,191] MemRep
+[C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper
 [C:/Kernel/Sched.CPP.Z,1] Scheduler
-[C:/Adam/DolDoc/Doc.CPP.Z,1] Doc
+[C:/Adam/DolDoc/MakeDoc.CPP.Z,1] Doc
 [C:/Demo/Lectures/MiniGrLib.CPP.Z,1] MiniGrLib
 [C:/Demo/Lectures/MiniCompiler.CPP.Z,1] MiniCompiler
 [C:/Compiler/BackLib.CPP.Z,1] Backend

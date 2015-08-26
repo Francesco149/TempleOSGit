@@ -110,7 +110,7 @@ U8 msg_buf[STR_LEN];
 I64 msg_off_timeout; //Jiffies. Goes away after a time.
 
 /*I got tricky by not defining a color
-right away in these [C:/Adam/Gr/Gr.CPP.Z,174] CSprites so they can
+right away in these [C:/Adam/Gr/Gr.HPP.Z,153] CSprites so they can
 work for both players by setting dc->color
 before drawing them.  I actually made these
 graphics by defining a color in the <CTRL-r>
