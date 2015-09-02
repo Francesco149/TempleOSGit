@@ -301,7 +301,7 @@
 [C:/Kernel/KernelA.HPP.Z,1900] ARGT_MM32
 [C:/Kernel/KernelA.HPP.Z,1112] DOCSS_COMMENT
 [C:/Kernel/KeyDev.CPP.Z,161] CtrlAltF
-[C:/Kernel/KGlbls.CPP.Z,22] ip_grid
+[C:/Kernel/KGlbls.CPP.Z,23] ip_grid
 [C:/Kernel/KernelA.HPP.Z,3458] CH_CTRLV
 [C:/Kernel/KernelA.HPP.Z,1668] CCodeMisc
 [C:/Kernel/KernelA.HPP.Z,1201] DOF_DONT_TEXT_ATTR
@@ -345,7 +345,7 @@
 [C:/Kernel/KernelA.HPP.Z,312] RFLAGf_DIR
 [C:/Kernel/Dsk/DskCluster.CPP.Z,1] ClusterNumNext
 [C:/Kernel/Serial/Keyboard.CPP.Z,484] KbdMouseEvtTime
-[C:/Kernel/KGlbls.CPP.Z,23] ip_last
+[C:/Kernel/KGlbls.CPP.Z,24] ip_last
 [C:/Kernel/KernelA.HPP.Z,2514] CDirEntry
 [C:/Kernel/KernelA.HPP.Z,2034] TK_STR
 [C:/Kernel/KernelA.HPP.Z,1480] ACD_DEF_END
@@ -428,7 +428,7 @@
 [C:/Kernel/KernelA.HPP.Z,1569] ICF_A1_FIRST
 [C:/Kernel/Dsk/DskStrA.CPP.Z,176] ChgExt
 [C:/Kernel/KDefine.CPP.Z,155] str2color_lst
-[C:/Kernel/KGlbls.CPP.Z,13] local_time_offset
+[C:/Kernel/KGlbls.CPP.Z,14] local_time_offset
 [C:/Kernel/Dsk/FileSysRedSea.CPP.Z,541] RedSeaFilesFind
 [C:/Kernel/KMathA.CPP.Z,167] _D3_MUL
 [C:/Kernel/KernelA.HPP.Z,2482] ISO1_BASE_YEAR
@@ -514,7 +514,7 @@
 [C:/Kernel/StrA.CPP.Z,223] _STRMATCH
 [C:/Kernel/KernelA.HPP.Z,206] MSF_FIXED
 [C:/Kernel/PSect.CPP.Z,85] PSectCacheFind
-[C:/Kernel/KGlbls.CPP.Z,4] sys_macro_util_task
+[C:/Kernel/KGlbls.CPP.Z,5] sys_macro_util_task
 [C:/Kernel/KUtils.CPP.Z,319] _CPUID
 [C:/Kernel/KStart.CPP.Z,184] SYS_HEAP_BASE
 [C:/Kernel/KUtils.CPP.Z,104] _LBEQU
@@ -545,7 +545,7 @@
 [C:/Kernel/SrvCmd.CPP.Z,418] Adam
 [C:/Kernel/KExcept.CPP.Z,53] CTryStk
 [C:/Kernel/KernelA.HPP.Z,3576] DCF_PALETTE
-[C:/Kernel/KGlbls.CPP.Z,12] set_bits_table
+[C:/Kernel/KGlbls.CPP.Z,13] set_bits_table
 [C:/Kernel/KernelA.HPP.Z,2951] KBD_CTRL
 [C:/Kernel/KernelA.HPP.Z,652] HTt_FUN
 [C:/Kernel/KernelA.HPP.Z,2493] RS_ATTR_LONG_NAME
@@ -650,7 +650,7 @@
 [C:/Kernel/KUtils.CPP.Z,217] _LXCHG_I64
 [C:/Kernel/KernelA.HPP.Z,945] DOCEt_BLINK
 [C:/Kernel/KernelA.HPP.Z,939] DOCET_BLINK
-[C:/Kernel/KGlbls.CPP.Z,5] sys_clipboard_doc
+[C:/Kernel/KGlbls.CPP.Z,6] sys_clipboard_doc
 [C:/Kernel/KernelA.HPP.Z,2092] CCF_NO_DEFINES
 [C:/Kernel/KernelA.HPP.Z,1088] DOCEf_SKIP_IN_FORM
 [C:/Kernel/KernelA.HPP.Z,328] CGDTEntry
@@ -733,7 +733,7 @@
 [C:/Kernel/KMathA.CPP.Z,39] _D3_DIST
 [C:/Kernel/Serial/Message.CPP.Z,127] ScanKey
 [C:/Kernel/Serial/Mouse.CPP.Z,238] MouseDriverInstall
-[C:/Kernel/KGlbls.CPP.Z,26] mouse_last
+[C:/Kernel/KGlbls.CPP.Z,27] mouse_last
 [C:/Kernel/KernelB.HPP.Z,157] D3DistSqr
 [C:/Kernel/KernelA.HPP.Z,3378] _RDI
 [C:/Kernel/KernelA.HPP.Z,1703] SV_R_REG
@@ -788,7 +788,7 @@
 [C:/Kernel/KernelA.HPP.Z,1110] DOCSS_SINGLE_QUOTE
 [C:/Kernel/KernelA.HPP.Z,2950] KBD_PORT
 [C:/Kernel/KernelA.HPP.Z,2925] NUM_COLORS
-[C:/Kernel/KGlbls.CPP.Z,17] ac
+[C:/Kernel/KGlbls.CPP.Z,18] ac
 [C:/Kernel/KMathA.CPP.Z,641] _FSTSW
 [C:/Kernel/KernelA.HPP.Z,1847] ARGT_IMM32
 [C:/Kernel/KernelA.HPP.Z,1846] ARGT_IMM16
@@ -839,7 +839,7 @@
 [C:/Kernel/Dsk/DskCFile.CPP.Z,99] FSetCluster
 [C:/Kernel/Display.CPP.Z,99] WinDerivedValsUpdate
 [C:/Kernel/MemC.CPP.Z,261] HeapsInit
-[C:/Kernel/KGlbls.CPP.Z,31] fp_update_ctrls
+[C:/Kernel/KGlbls.CPP.Z,32] fp_update_ctrls
 [C:/Kernel/KernelA.HPP.Z,2698] DSK_CACHE_HASH_SIZE
 [C:/Kernel/KernelA.HPP.Z,2490] RS_ATTR_VOL_ID
 [C:/Kernel/KernelA.HPP.Z,1301] DOCf_UNDERLINE
@@ -874,7 +874,7 @@
 [C:/Kernel/KernelA.HPP.Z,2740] CFile
 [C:/Kernel/KDbg.CPP.Z,599] Fault2
 [C:/Kernel/KLoad.CPP.Z,181] Load
-[C:/Kernel/KGlbls.CPP.Z,23] ip
+[C:/Kernel/KGlbls.CPP.Z,24] ip
 [C:/Kernel/KernelA.HPP.Z,2663] CFreeLst
 [C:/Kernel/KernelA.HPP.Z,1001] DOCEF_CHECKED_COLLAPSED
 [C:/Kernel/KernelA.HPP.Z,617] CHash
@@ -894,7 +894,7 @@
 [C:/Kernel/KDbg.CPP.Z,337] OverRideSingleUserSwap
 [C:/Kernel/KDbg.CPP.Z,234] RawD
 [C:/Kernel/KMisc.CPP.Z,265] IsSingleUser
-[C:/Kernel/KGlbls.CPP.Z,7] adam_task
+[C:/Kernel/KGlbls.CPP.Z,8] adam_task
 [C:/Kernel/KMathA.CPP.Z,524] _POW10
 [C:/Kernel/KernelA.HPP.Z,3165] SVCRf_LOCKED
 [C:/Kernel/KernelA.HPP.Z,2599] BDF_LAST_WAS_WRITE
@@ -993,7 +993,7 @@
 [C:/Kernel/KernelA.HPP.Z,2618] NUM_BLKDEVS
 [C:/Kernel/KernelA.HPP.Z,1692] IEF_PLUS_OPCODE
 [C:/Kernel/KernelA.HPP.Z,489] LAPIC_ICR_LOW
-[C:/Kernel/KGlbls.CPP.Z,26] mouse
+[C:/Kernel/KGlbls.CPP.Z,27] mouse
 [C:/Kernel/KernelB.HPP.Z,169] D3Zero
 [C:/Kernel/KernelA.HPP.Z,3472] ST_WARN_ST
 [C:/Kernel/KernelA.HPP.Z,2575] FUF_SCAN_PARENTS
@@ -1519,7 +1519,7 @@
 [C:/Kernel/KernelA.HPP.Z,672] HTf_UNRESOLVED
 [C:/Kernel/KernelA.HPP.Z,519] CAP16BitInit
 [C:/Kernel/Dsk/DskATA.CPP.Z,535] ATAPIWriteBlks
-[C:/Kernel/KGlbls.CPP.Z,18] cnts
+[C:/Kernel/KGlbls.CPP.Z,19] cnts
 [C:/Kernel/StrA.CPP.Z,386] chars_bmp_displayable
 [C:/Home/Temp.TXT.Z,1] SYS_HEAP_INIT_FLAG
 [C:/Kernel/KernelA.HPP.Z,2577] FUF_WHOLE_LABELS
@@ -1578,8 +1578,8 @@
 [C:/Kernel/KernelA.HPP.Z,278] IDTET_TASK
 [C:/Kernel/KTask.CPP.Z,19] TaskValidate
 [C:/Kernel/KernelA.HPP.Z,476] LAPIC_ARIBITRATION_PRIORITY
-[C:/Kernel/KGlbls.CPP.Z,33] fp_set_std_palette
-[C:/Kernel/KGlbls.CPP.Z,25] keydev
+[C:/Kernel/KGlbls.CPP.Z,34] fp_set_std_palette
+[C:/Kernel/KGlbls.CPP.Z,26] keydev
 [C:/Kernel/KHashA.CPP.Z,260] HashBucketFind
 [C:/Kernel/KernelA.HPP.Z,1590] IC_BODY_SIZE
 [C:/Kernel/KernelA.HPP.Z,1548] TY_DISP
@@ -1654,7 +1654,7 @@
 [C:/Kernel/KernelA.HPP.Z,3423] CSysFixedArea
 [C:/Kernel/Dsk/DskFmt.CPP.Z,53] Fmt
 [C:/Kernel/KTask.CPP.Z,269] ExeCmdLine
-[C:/Kernel/KGlbls.CPP.Z,11] reverse_bits_table
+[C:/Kernel/KGlbls.CPP.Z,12] reverse_bits_table
 [C:/Kernel/KernelB.HPP.Z,136] Log10
 [C:/Kernel/KDataTypes.CPP.Z,304] FifoI64Flush
 [C:/Kernel/KernelB.HPP.Z,279] InvlPg
@@ -1801,7 +1801,7 @@
 [C:/Kernel/KernelA.HPP.Z,1307] DOCf_UNDO_DIRTY
 [C:/Kernel/KStart.CPP.Z,185] SYS_HEAP_LIMIT
 [C:/Kernel/KernelA.HPP.Z,1417] WIf_SELF_BORDER
-[C:/Kernel/KGlbls.CPP.Z,28] text
+[C:/Kernel/KGlbls.CPP.Z,29] text
 [C:/Kernel/KernelA.HPP.Z,2223] ATA_READ_NATIVE_MAX_EXT
 [C:/Kernel/StrPrint.CPP.Z,68] MPrintQ
 [C:/Kernel/MemB.CPP.Z,371] MHeapCtrl
@@ -1840,7 +1840,7 @@
 [C:/Kernel/Dsk/DskCache.CPP.Z,40] DskCacheHash
 [C:/Kernel/KernelA.HPP.Z,3496] SCF_NUM
 [C:/Kernel/KernelA.HPP.Z,1474] ACD_DEF_FILENAME
-[C:/Kernel/KGlbls.CPP.Z,32] fp_doc_put
+[C:/Kernel/KGlbls.CPP.Z,33] fp_doc_put
 [C:/Kernel/Dsk/DskCache.CPP.Z,64] DskCacheFind
 [C:/Kernel/KMisc.CPP.Z,255] IsRaw
 [C:/Kernel/KernelA.HPP.Z,2041] TK_DBL_COLON
@@ -1856,7 +1856,7 @@
 [C:/Kernel/KernelB.HPP.Z,134] Fxsave
 [C:/Kernel/KernelA.HPP.Z,1494] ACD_EXTRA_CHAR
 [C:/Kernel/KEnd.CPP.Z,115] Reboot
-[C:/Kernel/KGlbls.CPP.Z,16] acd
+[C:/Kernel/KGlbls.CPP.Z,17] acd
 [C:/Kernel/KernelA.HPP.Z,2069] TK_DOT_DOT_DOT
 [C:/Kernel/KernelA.HPP.Z,1740] REG_RCX
 [C:/Kernel/KernelA.HPP.Z,846] Ff_DOT_DOT_DOT
@@ -1892,7 +1892,7 @@
 [C:/Kernel/KernelA.HPP.Z,1233] EDf_COLLAPSE
 [C:/Kernel/StrPrint.CPP.Z,127] MPrintq
 [C:/Kernel/KStart.CPP.Z,222] SYS_FOCUS_TASK
-[C:/Kernel/KGlbls.CPP.Z,19] dbg
+[C:/Kernel/KGlbls.CPP.Z,20] dbg
 [C:/Kernel/KernelA.HPP.Z,3801] CPSectCache
 [C:/Kernel/QSort.CPP.Z,85] QSort
 [C:/Kernel/KernelB.HPP.Z,78] OutU32
@@ -1956,7 +1956,7 @@
 [C:/Kernel/KernelB.HPP.Z,224] progress4
 [C:/Kernel/KeyDev.CPP.Z,181] CtrlAltCBSet
 [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead
-[C:/Kernel/KGlbls.CPP.Z,20] dev
+[C:/Kernel/KGlbls.CPP.Z,21] dev
 [C:/Kernel/KernelA.HPP.Z,3183] MSG_IP_L_D_UP
 [C:/Kernel/KernelA.HPP.Z,688] HTT_REG
 [C:/Kernel/StrA.CPP.Z,582] StrFirstRem
@@ -1966,7 +1966,7 @@
 [C:/Kernel/KernelA.HPP.Z,3370] ans
 [C:/Kernel/KernelA.HPP.Z,481] LAPIC_LDR
 [C:/Kernel/KDbg.CPP.Z,351] BptFind
-[C:/Kernel/KGlbls.CPP.Z,24] kbd
+[C:/Kernel/KGlbls.CPP.Z,25] kbd
 [C:/Kernel/KernelB.HPP.Z,227] progress4_max
 [C:/Kernel/Serial/Mouse.CPP.Z,147] MouseUpdatePost
 [C:/Kernel/KHashB.CPP.Z,59] HashDel
@@ -1995,7 +1995,7 @@
 [C:/Kernel/KernelA.HPP.Z,405] IET_REL64_EXPORT
 [C:/Kernel/KernelA.HPP.Z,403] IET_REL32_EXPORT
 [C:/Kernel/KernelA.HPP.Z,3115] CExcept
-[C:/Kernel/KGlbls.CPP.Z,21] dsk
+[C:/Kernel/KGlbls.CPP.Z,22] dsk
 [C:/Kernel/KernelB.HPP.Z,69] QueInsRev
 [C:/Kernel/KernelA.HPP.Z,613] SYSf_CTRL_ALT_X
 [C:/Kernel/KStart.CPP.Z,202] SYS_EXTERN_TABLE
@@ -2124,7 +2124,7 @@
 [C:/Kernel/KernelA.HPP.Z,2239] ATAR0_FEAT
 [C:/Kernel/KernelA.HPP.Z,467] RLF_HOME
 [C:/Kernel/KernelA.HPP.Z,449] RLf_HOME
-[C:/Kernel/KGlbls.CPP.Z,27] snd
+[C:/Kernel/KGlbls.CPP.Z,28] snd
 [C:/Kernel/KernelA.HPP.Z,3512] SC_ENTER
 [C:/Kernel/KernelA.HPP.Z,2919] LTCYAN
 [C:/Kernel/KernelA.HPP.Z,2579] FUF_WHOLE_LABELS_AFTER
@@ -2170,13 +2170,13 @@
 [C:/Kernel/KernelA.HPP.Z,647] HTt_IMPORT_SYS_SYM
 [C:/Kernel/KernelA.HPP.Z,646] HTt_EXPORT_SYS_SYM
 [C:/Kernel/PCIBIOS.CPP.Z,63] C32_EDI
-[C:/Kernel/KGlbls.CPP.Z,14] pow10_I64
-[C:/Kernel/KGlbls.CPP.Z,8] sys_num_spawned_tasks
+[C:/Kernel/KGlbls.CPP.Z,15] pow10_I64
+[C:/Kernel/KGlbls.CPP.Z,9] sys_num_spawned_tasks
 [C:/Kernel/KernelA.HPP.Z,495] LAPIC_LVT_LINT0
 [C:/Kernel/Dsk/DskCluster.CPP.Z,32] Cluster2Blk
 [C:/Kernel/Compress.CPP.Z,155] ArcFinishCompression
 [C:/Kernel/KernelA.HPP.Z,496] LAPIC_LVT_LINT1
-[C:/Kernel/KGlbls.CPP.Z,10] sys_winmgr_task
+[C:/Kernel/KGlbls.CPP.Z,11] sys_winmgr_task
 [C:/Kernel/KernelA.HPP.Z,3516] SC_CAPS
 [C:/Kernel/KStart.CPP.Z,373] SYS_RAM_REBOOT_END
 [C:/Kernel/KernelA.HPP.Z,1656] CMT_ARRAY_DIM
@@ -2447,7 +2447,7 @@
 [C:/Kernel/KernelA.HPP.Z,2202] CPCIDev
 [C:/Kernel/KernelB.HPP.Z,91] RepOutU8
 [C:/Kernel/KernelA.HPP.Z,982] DOCEF_RIGHT_AUTO
-[C:/Kernel/KGlbls.CPP.Z,3] sys_macro_root
+[C:/Kernel/KGlbls.CPP.Z,4] sys_macro_root
 [C:/Kernel/KernelA.HPP.Z,3683] VGAP_PALETTE_MASK
 [C:/Kernel/KernelA.HPP.Z,1057] DOCEf_RIGHT_AUTO
 [C:/Kernel/KernelA.HPP.Z,609] NUM_SYS_SEMAS
@@ -2501,7 +2501,7 @@
 [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag
 [C:/Kernel/KernelA.HPP.Z,504] IOAPIC_DATA
 [C:/Kernel/KDbg.CPP.Z,344] SysGetStr2
-[C:/Kernel/KGlbls.CPP.Z,30] fp_getstr2
+[C:/Kernel/KGlbls.CPP.Z,31] fp_getstr2
 [C:/Kernel/KeyDev.CPP.Z,90] KDRawPutKey
 [C:/Kernel/KernelA.HPP.Z,1270] DOCF_SUBSCRIPT_MODE
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,9] Dos2CDate
@@ -2672,7 +2672,7 @@
 [C:/Kernel/KernelA.HPP.Z,299] I_USER
 [C:/Kernel/Dsk/FileSysFAT.CPP.Z,231] FAT32CDirFill
 [C:/Kernel/MemC.CPP.Z,1] BlkPoolAdd
-[C:/Kernel/KGlbls.CPP.Z,10] sys_task_being_screen_updated
+[C:/Kernel/KGlbls.CPP.Z,11] sys_task_being_screen_updated
 [C:/Kernel/KernelA.HPP.Z,2035] TK_INTEGER
 [C:/Kernel/KernelA.HPP.Z,2032] TK_NORMALSCRIPT
 [C:/Kernel/KernelA.HPP.Z,552] SF_RIP

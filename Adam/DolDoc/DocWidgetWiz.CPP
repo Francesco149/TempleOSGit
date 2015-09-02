@@ -32,8 +32,9 @@ I64 PopUpLinkType(Bool include_anchor)
 class CEdFileLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n",
-	aux[512];
+	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n";
+  I64	book;
+  U8	aux[512];
   I64	num;
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -44,8 +45,9 @@ class CEdFileLink
 class CEdFileAnchorLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n",
-	aux[512]	fmtstr "$DA-P,511,A=\"Anchor Label  :%s\"$\n";
+	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n";
+  I64	book;
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Anchor Label  :%s\"$\n";
   I64	num;
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -56,8 +58,9 @@ class CEdFileAnchorLink
 class CEdFileFindLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n",
-	aux[512]	fmtstr "$DA-P,511,A=\"Str        :%s\"$\n";
+	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n";
+  I64	book;
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Str        :%s\"$\n";
   I64	num		fmtstr "$DA-TRM,511,A=\"Occurrence Num:%04d\"$\n";
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -68,8 +71,9 @@ class CEdFileFindLink
 class CEdFileLineLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n",
-	aux[512];
+	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n";
+  I64	book;
+  U8	aux[512];
   I64	num		fmtstr "$DA-TRM,511,A=\"Line Num      :%04d\"$\n";
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -80,8 +84,9 @@ class CEdFileLineLink
 class CEdManPageLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512],
-	aux[512]	fmtstr "$DA-P,511,A=\"Label         :%s\"$\n";
+	file[512];
+  I64	book;
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Label         :%s\"$\n";
   I64	num;
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -92,8 +97,9 @@ class CEdManPageLink
 class CEdAddrLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512],
-	aux[512]	fmtstr "$DA-P,511,A=\"Addr Exp   :%s\"$\n";
+	file[512];
+  I64	book;
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Addr Exp   :%s\"$\n";
   I64	num		fmtstr "$DA-TRM,511,A=\"Bin Size      :%04d\"$\n";
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -104,8 +110,9 @@ class CEdAddrLink
 class CEdPlaceAnchor
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512],
-	aux[512]	fmtstr "$DA-P,511,A=\"Anchor Label  :%s\"$\n";
+	file[512];
+  I64	book;
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Anchor Label  :%s\"$\n";
   I64	num;
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up,
@@ -116,9 +123,11 @@ class CEdPlaceAnchor
 class CEdBibleLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512],
-	aux[512]	fmtstr "$DA-P,511,A=\"Chapter Verse :%s\"$\n";
+	file[512];
+  I64	book		fmtstr "$LS,D=\"ST_BIBLE_BOOKS\"$\n";
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Chapter Verse :%s\"$\n";
   I64	num;
+
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
 	quote		fmtstr "$CB,\"Quote\"$\n",
@@ -128,8 +137,9 @@ class CEdBibleLink
 class CEdDefLink
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512],
-	aux[512]	fmtstr "$DA-P,511,A=\"Word          :%s\"$\n";
+	file[512];
+  I64	book;
+  U8	aux[512]	fmtstr "$DA-P,511,A=\"Word          :%s\"$\n";
   I64	num		fmtstr "$DA-TRM,511,A=\"Def Num       :%4d\"$\n";
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -140,8 +150,9 @@ class CEdDefLink
 class CEdProject
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text      :%s\"$\n",
-	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n",
-	aux[512];
+	file[512]	fmtstr "$DA-P,511,A=\"File          :%s\"$\n";
+  I64	book;
+  U8	aux[512];
   I64	num;
   U8	html_link[512]	fmtstr "$DA-P,511,A=\"Html Link     :%s\"$\n";
   Bool	pop_up		fmtstr "$CB,\"PopUp\"$\n",
@@ -152,7 +163,6 @@ class CEdProject
 Bool GetLink(I64 type,U8 **_tag,U8 **_link,Bool *_pop_up,
 	Bool *_quote,U8 **_html_link)
 {
-  I64 i;
   CEdFileLink *e=CAlloc(sizeof(CEdFileLink));
   Bool result=FALSE;
   if (type>=0) {
@@ -267,17 +277,14 @@ Bool GetLink(I64 type,U8 **_tag,U8 **_link,Bool *_pop_up,
 	  *_link=StrNew(e->aux);
 	}
 	break;
-      case LK_BIBLE_FIND: //TODO
-	i=PopUpPickDefineSub("ST_BIBLE_BOOKS");
-	if (i>=0) {
-	  if (DocForm(e,"CEdBibleLink",,,ctrl_L_footer)) {
-	    result=TRUE;
-	    if (!*e->tag)
-	      *_tag=MStrPrint("%Z,%s",i,"ST_BIBLE_BOOKS",e->aux);
-	    else
-	      *_tag=StrNew(e->tag);
-	    *_link=MStrPrint("BF:%Z,%s",i,"ST_BIBLE_BOOKS",e->aux);
-	  }
+      case LK_BIBLE_FIND:
+	if (DocForm(e,"CEdBibleLink",,,ctrl_L_footer)) {
+	  result=TRUE;
+	  if (!*e->tag)
+	    *_tag=MStrPrint("%Z,%s",e->book,"ST_BIBLE_BOOKS",e->aux);
+	  else
+	    *_tag=StrNew(e->tag);
+	  *_link=MStrPrint("BF:%Z,%s",e->book,"ST_BIBLE_BOOKS",e->aux);
 	}
 	break;
       case LK_DEF:
