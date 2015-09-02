@@ -2,7 +2,10 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----08/26/15 05:20:14----
+----09/01/15 06:53:39----
+
+----08/28/15 01:50:15----
+*  Added [C:/Adam/God/GodBible.CPP.Z,273] BibleView() and <CTRL-ALT-b>.
 
 ----08/25/15 23:29:48----
 * Moved [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() to /Adam/Opt/Utils.

@@ -420,7 +420,6 @@ List all syms in alpabetic order
 List all syms in numeric order
 `DocMax;Who("+m");View;`
 
-[C:/Misc/Bible.TXT.Z,297] Bible
 Test Suite
 `#include "::/Misc/OSTestSuite";
 `

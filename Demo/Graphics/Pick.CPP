@@ -66,7 +66,7 @@ U0 Pick()
       while (trigger);
 
       //Use screen coordinates, not window (a1,a2)
-      //[C:/Kernel/KGlbls.CPP.Z,23] ip.pos.x and [C:/Kernel/KGlbls.CPP.Z,23] ip.pos.y are global vars updated
+      //[C:/Kernel/KGlbls.CPP.Z,24] ip.pos.x and [C:/Kernel/KGlbls.CPP.Z,24] ip.pos.y are global vars updated
       //updated by the window mgr to hold the
       //screen coordinates of the input ptr (mouse).
       delta_x=x[cur_apple]-ip.pos.x;

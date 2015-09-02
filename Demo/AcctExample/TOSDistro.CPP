@@ -397,6 +397,8 @@ FileManager, WindowManager, PCSpeaker, Documentation.
   Del(TOS_DISTRO_DIR "/Misc/OSTestSuite.CPP.Z");
   Copy("C:/Home/Wb2/Files/UltraMenu.TXT.Z",
 	TOS_DISTRO_DIR "/PersonalMenu.TXT.Z");
+  Copy("C:/Demo/Games/EagleDive.CPP.Z",
+	TOS_DISTRO_DIR "/Misc");
 }
 U0 MakeUltraDistro()
 {
