@@ -13,7 +13,6 @@ typedef unsigned int DWORD;
 typedef unsigned char BOOL;
 
 #define ARC_MAX_BITS 12
-#define ARC_MAX_TABLE_ENTRY ((1<<ARC_MAX_BITS)-1)
 
 #define CT_NONE 	1
 #define CT_7_BIT	2
@@ -39,8 +38,8 @@ class CArcCtrl //control structure
 	saved_basecode,
 	entry_used,
 	last_ch;
-  CArcEntry compress[ARC_MAX_TABLE_ENTRY+1],
-	*hash[ARC_MAX_TABLE_ENTRY+1];
+  CArcEntry compress[1<<ARC_MAX_BITS],
+	*hash[1<<ARC_MAX_BITS];
 };
 
 class CArcCompress
@@ -171,7 +170,7 @@ CArcCtrl *ArcCtrlNew(DWORD expand,DWORD compression_type)
   c=(CArcCtrl *)malloc(sizeof(CArcCtrl));
   memset(c,0,sizeof(CArcCtrl));
   if (expand) {
-    c->stk_base=(BYTE *)malloc(ARC_MAX_TABLE_ENTRY+1);
+    c->stk_base=(BYTE *)malloc(1<<ARC_MAX_BITS);
     c->stk_ptr=c->stk_base;
   }
   if (compression_type==CT_7_BIT)

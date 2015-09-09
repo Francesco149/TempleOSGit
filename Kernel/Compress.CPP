@@ -1,5 +1,5 @@
 //See [C:/Doc/Credits.TXT.Z,1].
-//See [C:/Kernel/KernelA.HPP.Z,3727] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3701] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3709] CArcCtrl
+//See [C:/Kernel/KernelA.HPP.Z,3726] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3700] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3708] CArcCtrl
 
 asm {
 /****
@@ -223,7 +223,7 @@ CArcCtrl *ArcCtrlNew(Bool expand,I64 compression_type=CT_8_BIT)
   CArcCtrl *c;
   c=CAlloc(sizeof(CArcCtrl));
   if (expand) {
-    c->stk_base=MAlloc(ARC_MAX_ENTRY+1);
+    c->stk_base=MAlloc(1<<ARC_MAX_BITS);
     c->stk_ptr=c->stk_base;
   }
   if (compression_type==CT_7_BIT)

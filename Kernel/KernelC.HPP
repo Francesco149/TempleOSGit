@@ -106,7 +106,7 @@ extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,898] Print()
 public extern Bool Silent(Bool val=ON);
 extern U8 *StrPrintHex(U8 *dst,I64 num;I64 width);
 
-#help_index "Char;Debugging/Raw Output"
+#help_index "Char;Debugging/Raw Output;TextBase Layer/Char"
 public extern CTextGlbls text;
 
 #help_index "Compiler/Lex"
@@ -479,7 +479,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3736] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3735] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);

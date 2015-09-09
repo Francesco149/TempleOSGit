@@ -168,18 +168,18 @@ so we can generously list [C:/Doc/Credits.TXT.Z,1] credits.
 
 If the whole World loved God's temple, we could put only one full-featured
 CPU 
-core on each x86_64 chip for Windows and make the other cores souped-up for 
-TempleOS.  Windows could use them, but it would have to adapt by being
-careful 
-about privilege.  We still need to dual boot and run Windows... forever.  On 
-the other cores, we could make them ring-0-only, no paging, no SSE or MXX, 
-perhaps no IO or DMA or interrupts.  We pretty-much need interrupts.  Tell me 
-what would shrink the cores and make them higher performance.  It's almost 
-like making a GPU, but we don't want that weirdness for teenagers and 
-amateurs.  I am more interested in boosting performance in terms of clock 
-speed because a whole bunch more than 8 cores gets too glitchy for updating 
-the 640x480 memory buffer simultaneously because we certainly don't want 
-locked read-modify-write.
+core on each x86_64 chip for Windows/Linux and make the other cores souped-up 
+for TempleOS.  Windows/Linux could use them, but it would have to adapt by 
+being careful about privilege.  We still need to dual boot and run 
+Windows/Linux... forever.  On the other cores, we could make them
+ring-0-only, 
+no paging, no SSE or MXX, perhaps no IO or DMA or interrupts.  We pretty-much 
+need interrupts.  Tell me what would shrink the cores and make them higher 
+performance.  It's almost like making a GPU, but we don't want that weirdness 
+for teenagers and amateurs.  I am more interested in boosting performance in 
+terms of clock speed because a whole bunch more than 8 cores gets too glitchy 
+for updating the 640x480 memory buffer simultaneously because we certainly 
+don't want locked read-modify-write.
 
 
 * "VMware" is a trademark of VMware, Inc.

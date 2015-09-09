@@ -33,10 +33,10 @@
       I64 best_score=9;
       +] EagleDive
       I64 best_score=4;
-      +] BomberGolf
-      I64 best_score=175;
       +] Wenceslas
       F64 best_score=49.8074;
+      +] BomberGolf
+      I64 best_score=175;
       +] DemoCompany
   +] Game1
       F64 best_score=166.34088;
