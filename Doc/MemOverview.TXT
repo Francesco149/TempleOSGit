@@ -32,7 +32,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep().
 
  0x0000007C00- 0x000003536F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3834] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3833] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,

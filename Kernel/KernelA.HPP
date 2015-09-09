@@ -3543,7 +3543,7 @@ public class CSysFixedArea
 #define SC_PRTSCRN1	0xAA
 #define SC_PRTSCRN2	0xB7
 
-#help_index "Char;Debugging/Raw Output"
+#help_index "Char;Debugging/Raw Output;TextBase Layer/Char"
 //text.raw_flags
 #define RWF_IN_DOLLAR	1
 #define RWF_LAST_DOLLAR	2
@@ -3693,7 +3693,6 @@ public class CDC
 
 #help_index "Compression/Piece by Piece"
 #define ARC_MAX_BITS	12
-#define ARC_MAX_ENTRY	(1<<ARC_MAX_BITS-1)
 
 #define CT_NONE 	1
 #define CT_7_BIT	2
@@ -3719,8 +3718,8 @@ public class CArcCtrl
 	saved_basecode,
 	entry_used,
 	last_ch;
-  CArcEntry compress[ARC_MAX_ENTRY+1],
-	*hash[ARC_MAX_ENTRY+1];
+  CArcEntry compress[1<<ARC_MAX_BITS],
+	*hash[1<<ARC_MAX_BITS];
 };
 
 #help_index "Compression"
