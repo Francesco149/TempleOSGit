@@ -150,7 +150,7 @@ BDVD_MAIN::
 	POP	CX
 	LOOP	@@20
 
-//See [C:/Kernel/Dsk/DskATAId.CPP.Z,1] BootDVDProve().
+//See [C:/Kernel/BlkDev/DskATAId.CPP.Z,1] BootDVDProve().
 	MOV	EBX,U32 [BDVD_BLK_LO-BDVD_START] //TODO: oops overflow?
 	SHL	EBX,16
 	MOV	BX,BOOT_SRC_DVD  //See sys_boot_src

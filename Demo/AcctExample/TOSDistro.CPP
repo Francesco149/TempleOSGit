@@ -165,7 +165,7 @@ U0 MakeBootRescueDrvFile()
 
   MkDir("A:/Kernel");
   Copy("C:/Kernel/*.HPP*",		"A:/Kernel");
-  CopyTree("C:/Kernel/Dsk",		"A:/Kernel/Dsk");
+  CopyTree("C:/Kernel/BlkDev",		"A:/Kernel/BlkDev");
 
   Copy("C:/Home/Wb2/Files/DbgStartOS.CPP.Z","A:/StartOS.CPP.Z");
 
@@ -289,7 +289,7 @@ U0 MakeTOSDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-	"Download TempleOS V3.10 - T.S. Company Internal Distro (%0.1f MB)",
+	"Download TempleOS V3.11 - T.S. Company Internal Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -301,7 +301,7 @@ load Kernel.BIN.C which has been modified to also hold a small RAM drive
 (Drive A) that fits in the low 640k.  The bootloader starts in real mode
 and the kernel changes to long, 64-bit mode.  It loads the 64-bit compiler
 and assembler, compiles some, but not all, of the normal start-up scripts
-and drops you off at the [C:/Kernel/KDbg.CPP.Z,644] Dbg command-line where you can JIT compile,
+and drops you off at the [C:/Kernel/KDbg.CPP.Z,641] Dbg command-line where you can JIT compile,
 use [C:/Kernel/EdLite.CPP.Z,58] EdLite on RAM files, and use many of the other normal Kernel commands.
 I could not fit all the normal start-up scripts into the small RAM drive,
 so you do not have the window manager or normal document framework.  You
@@ -325,7 +325,7 @@ U0 MakeDbgDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-	"Download TempleOS V3.10 - Debug Distro (%0.1f MB)",
+	"Download TempleOS V3.11 - Debug Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -373,7 +373,7 @@ U0 MakeLiteDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-	"Download TempleOS V3.10 - Lite Distro (%0.1f MB)",
+	"Download TempleOS V3.11 - Lite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -406,7 +406,7 @@ U0 MakeUltraDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.10 - UltraLite Distro (%0.1f MB)",
+	"Download TempleOS V3.11 - UltraLite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -484,18 +484,19 @@ U0 FreshenWebDir(U8 *dirname)
 U0 MakeWebSitePartial()
 {
   FreshenWebDir("/Home/Wb2");
+  FreshenWebDir("/Home/Wb2/Imgs");
   Drv('C');
 }
 
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-	"Download TempleOS V3.10 - Standard Distro (%0.1f MB)",
+	"Download TempleOS V3.11 - Standard Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.10 - UltraSmall Distro (%0.1f MB)",
+	"Download TempleOS V3.11 - UltraSmall Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);

@@ -7,7 +7,7 @@ Cd(__DIR__);;
 #include "AMathODE"
 #include "Gr/MakeGr"
 #include "Snd/MakeSnd"
-#include "Dsk/MakeADsk"
+#include "ABlkDev/MakeABlkDev"
 #include "Menu"
 #include "WinA"
 #include "WinB"

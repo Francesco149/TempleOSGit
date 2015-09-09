@@ -32,8 +32,8 @@ CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0)
 
 Find files and make a directory tree in memory.
 
-When done, you free with [C:/Kernel/Dsk/DskDirA.CPP.Z,17] DirEntryDel(),[C:/Kernel/Dsk/DskDirA.CPP.Z,26] DirEntryDel2(),
-[C:/Kernel/Dsk/DskDirA.CPP.Z,36] DirTreeDel() or [C:/Kernel/Dsk/DskDirA.CPP.Z,49] DirTreeDel2().
+When done, you free with [C:/Kernel/BlkDev/DskDirA.CPP.Z,17] DirEntryDel(),[C:/Kernel/BlkDev/DskDirA.CPP.Z,26] DirEntryDel2(),
+[C:/Kernel/BlkDev/DskDirA.CPP.Z,36] DirTreeDel() or [C:/Kernel/BlkDev/DskDirA.CPP.Z,49] DirTreeDel2().
 
 */
   CDirEntry *result;

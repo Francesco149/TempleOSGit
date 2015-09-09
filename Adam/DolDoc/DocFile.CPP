@@ -38,7 +38,7 @@ public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;
-  if (!name) name=dsk.temp_filename;
+  if (!name) name=blkdev.temp_filename;
   doc->flags|=flags;
   name2=FileNameAbs(name);
   StrCpy(doc->filename.name,name2);

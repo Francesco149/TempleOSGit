@@ -127,7 +127,7 @@ class CTopMoviesForm
   U8	tag[STR_LEN];
   U8	special[STR_LEN];
   I64	timestamp;
-  I64	cert		fmtstr "$DA,32,A=\"Movie #1-100 :%d\"$\n";
+  I64	cert		fmtstr "$DA-TRM,2,A=\"Movie #1-100 :%02d\"$\n";
   I64	min;
   I64	sec;
 };
@@ -155,7 +155,7 @@ class CWebBibleForm
 class CYouTubeForm
 {
   U8	tag[STR_LEN];
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"SerialNum:%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P-TRM,11,A=\"SerialNum:%11s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min		fmtstr "$DA,32,A=\"Minutes  :%d\"$\n";
@@ -226,7 +226,7 @@ class CRandHexBeacon5Form
 {
   U8	tag[STR_LEN];
   U8	special[STR_LEN]
-			fmtstr "$DA-P,STR_LEN-1,A=\"Line (5-Digit Hex):%s\"$\n";
+			fmtstr "$DA-P-TRM,5,A=\"Line (5-Digit Hex):%5s\"$\n";
   I64	timestamp	fmtstr "$DA,32,A=\"TimeStamp :%d\"$\n";
   I64	cert;
   I64	min;
@@ -237,7 +237,7 @@ class CRandHexBeacon8Form
 {
   U8	tag[STR_LEN];
   U8	special[STR_LEN]
-			fmtstr "$DA-P,STR_LEN-1,A=\"Line (8-Digit Hex):%s\"$\n";
+			fmtstr "$DA-P-TRM,8,A=\"Line (8-Digit Hex):%8s\"$\n";
   I64	timestamp	fmtstr "$DA,32,A=\"TimeStamp :%d\"$\n";
   I64	cert;
   I64	min;

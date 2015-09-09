@@ -574,6 +574,7 @@ U0 Fault3(I64 fault_num,I64 fault_err_code)
     mp_cnt=1;
     dbg.mp_crash->cpu_num=Gs->num;
     dbg.mp_crash->task=Fs;
+    dbg.mp_crash->rip=Fs->rip;
     dbg.mp_crash->msg=dbg.msg;
     dbg.mp_crash->msg_num=dbg.msg_num;
     MPInt(I_MP_CRASH,0);
@@ -601,10 +602,6 @@ U0 Fault2(I64 fault_num,I64 fault_err_code)
 //**Be careful not to swap-out and ruin the saved context**
   Bool was_raw,was_single_user,was_silent;
   I64  i,old_raw_flags=text.raw_flags;
-  if (fault_num==I_DIVIDE_BY_ZERO) {
-    "RIP:%P\n",Fs->rip;
-    throw('DivZero');
-  }
   was_single_user=SingleUser(ON);
   if (!IsDbg)
     dbg.focus_task=sys_focus_task;

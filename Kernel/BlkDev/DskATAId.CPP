@@ -140,9 +140,9 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 
   old_preempt=Preempt;
   for (i=0;i<NUM_BLKDEVS;i++)
-    if (dsk.blkdevs[i].bd_signature==BD_SIGNATURE_VAL)
+    if (blkdev.blkdevs[i].bd_signature==BD_SIGNATURE_VAL)
       BEqu(&unlock_flags,i,
-	    BlkDevLock(&dsk.blkdevs[i]));
+	    BlkDevLock(&blkdev.blkdevs[i]));
 
   if (!just_ide)
     for (k=0;k<256;k++) {
@@ -190,7 +190,7 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
   '\n\n';
   for (i=0;i<NUM_BLKDEVS;i++)
     if (Bt(&unlock_flags,i))
-      BlkDevUnlock(&dsk.blkdevs[i]);
+      BlkDevUnlock(&blkdev.blkdevs[i]);
   Preempt(old_preempt);
   return num_hints;
 }
@@ -257,27 +257,27 @@ I64 AutoMountIDE()
   I64 result=0;
   CATARep *root=NULL,*ata_drv=NULL,*atapi_drv=NULL,*tempha;
   ATARep(FALSE,TRUE,&root);
-  ATAIDDrvs(root,dsk.boot_drv_let,&ata_drv,&atapi_drv);
-  if (ata_drv && ATAMount(dsk.first_hd_drv_let,BDT_ATA,
+  ATAIDDrvs(root,blkdev.boot_drv_let,&ata_drv,&atapi_drv);
+  if (ata_drv && ATAMount(blkdev.first_hd_drv_let,BDT_ATA,
 	ata_drv->base0,ata_drv->base1,ata_drv->unit))
     result++;
-  if (atapi_drv && ATAMount(dsk.first_dvd_drv_let,BDT_ATAPI,
+  if (atapi_drv && ATAMount(blkdev.first_dvd_drv_let,BDT_ATAPI,
 	atapi_drv->base0,atapi_drv->base1,atapi_drv->unit))
     result++;
   tempha=root;
   while (tempha) {
     if (tempha!=ata_drv && tempha!=atapi_drv) {
-      if (tempha->type==BDT_ATA && ATAMount(dsk.first_hd_drv_let,BDT_ATA,
+      if (tempha->type==BDT_ATA && ATAMount(blkdev.first_hd_drv_let,BDT_ATA,
 	    tempha->base0,tempha->base1,tempha->unit))
 	result++;
       else if (tempha->type==BDT_ATAPI &&
-	    ATAMount(dsk.first_dvd_drv_let,BDT_ATAPI,
+	    ATAMount(blkdev.first_dvd_drv_let,BDT_ATAPI,
 	    tempha->base0,tempha->base1,tempha->unit))
 	result++;
     }
     tempha=tempha->next;
   }
   LinkedLstDel(root);
-  dsk.auto_mount_ide_cnt=result;
+  blkdev.auto_mount_ide_cnt=result;
   return result;
 }

@@ -1,7 +1,7 @@
                                   File Utils
 
-File util [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind() wildcard mask consists
-of a single base dir with 
+File util [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind() wildcard mask
+consists of a single base dir with 
 multiple file masks separated by ';'.  The '*' and '?' wildcard chars are 
 accepted.  A '~' indicates an exclusion mask.
 
@@ -10,7 +10,7 @@ accepted.  A '~' indicates an exclusion mask.
 "/Demo/*.BMP*;*.GRA*"	BaseDir: /Demo		Mask: *.BMP* | *.GRA*
 "/*.TXT*;~*Bible*"	BaseDir: Root		Mask: *.TXT* but not *Bible*
 
-See [C:/Kernel/Dsk/DskStrA.CPP.Z,40] FilesFindMatch().
+See [C:/Kernel/BlkDev/DskStrA.CPP.Z,40] FilesFindMatch().
 
 Flags are either text or integer values.
 

@@ -63,10 +63,10 @@ I64 TaskQueSize(CTask *task)
 
 I64 BlkDevsSize()
 {
-  I64 i,result=MSize2(dsk.blkdevs);
+  I64 i,result=MSize2(blkdev.blkdevs);
   CBlkDev *bd;
   for (i=0;i<NUM_BLKDEVS;i++) {
-    bd=&dsk.blkdevs[i];
+    bd=&blkdev.blkdevs[i];
     if (bd->bd_signature==BD_SIGNATURE_VAL) {
       if (bd->type==BDT_RAM)
 	"RAMDsk %C\t:%010X Unused:%010X\n",
@@ -80,9 +80,9 @@ I64 BlkDevsSize()
 
 I64 DrvsSize()
 {
-  I64 i,result=MSize2(dsk.drvs);
+  I64 i,result=MSize2(blkdev.drvs);
   for (i=0;i<NUM_DRVS;i++)
-    result+=MSize2(dsk.drvs[i].cur_fat_blk)+MSize2(dsk.drvs[i].fis);
+    result+=MSize2(blkdev.drvs[i].cur_fat_blk)+MSize2(blkdev.drvs[i].fis);
   return result;
 }
 
@@ -165,10 +165,10 @@ Bool MemRepTask(CTask *task,Bool override_validate=FALSE)
       "TaskQues\t:%010X\n",n;
     "BlkDevs\t:%010X\n",BlkDevsSize;
     "Drvs\t:%010X\n",DrvsSize;
-    if (dsk.cache_base)
+    if (blkdev.cache_base)
       "DskCache\t:%010X\n",
-	    MSize2(dsk.cache_base)+MSize2(dsk.cache_hash_table)+
-	    MSize2(dsk.cache_ctrl);
+	    MSize2(blkdev.cache_base)+MSize2(blkdev.cache_hash_table)+
+	    MSize2(blkdev.cache_ctrl);
     "Clipboard\t:%010X\n",DocSize(sys_clipboard_doc);
     "AutoComplete:%010X\n",CallExtStr("AutoCompleteSize");
     "gr.to_8_bits\t:%010X\n",MSize2(gr.to_8_bits);

@@ -29,33 +29,33 @@ U0 DrvsRelease()
   I64 i;
   CDrv *dv;
   for (i=0;i<NUM_DRVS;i++) {
-    dv=&dsk.drvs[i];
+    dv=&blkdev.drvs[i];
     if (dv->owning_task==Fs && dv->dv_signature==DRV_SIGNATURE_VAL)
       DrvUnlock(dv,TRUE);
   }
 }
 
 CDrv *DrvMakeFree(U8 drv_let)
-{//Make a slot free for a new drv, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
-//!!! drv_let is not a [C:/Kernel/Dsk/DskDrv.CPP.Z,190] remapped drv.
+{//Make a slot free for a new drv, like during [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount().
+//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,190] remapped drv.
   I64 i=ToUpper(drv_let)-'A';
   CDrv *result;
   if (!(0<=i<NUM_DRVS))
     throw('Drv');
-  result=&dsk.drvs[i];
+  result=&blkdev.drvs[i];
   MemSet(result,0,sizeof(CDrv));
   result->drv_let='A'+i;
   return result;
 }
 
 CDrv *DrvNextFree(U8 first_drv_let='C')
-{//Locate free slot for new drv, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
-//!!! first_drv_let is not a [C:/Kernel/Dsk/DskDrv.CPP.Z,190] remapped drv.
+{//Locate free slot for new drv, like during [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount().
+//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,190] remapped drv.
   I64 i=ToUpper(first_drv_let)-'A';
   if (!(0<=i<NUM_DRVS))
     throw('Drv');
   do
-    if (dsk.drvs[i].dv_signature!=DRV_SIGNATURE_VAL)
+    if (blkdev.drvs[i].dv_signature!=DRV_SIGNATURE_VAL)
       return DrvMakeFree(i+'A');
   while (++i<NUM_DRVS);
   throw('Drv');
@@ -135,11 +135,11 @@ CDrv *Let2Drv(U8 drv_let=0)
     dv=Fs->cur_dv;
   else {
     if (drv_let==':')
-      drv_let=dsk.boot_drv_let;
+      drv_let=blkdev.boot_drv_let;
     drv_let=ToUpper(drv_let);
     if (!('A'<=drv_let<='Z'))
       throw('Drv');
-    dv=dsk.let_to_drv[drv_let-'A'];
+    dv=blkdev.let_to_drv[drv_let-'A'];
   }
   DrvChk(dv);
   return dv;
@@ -155,7 +155,7 @@ Bool DrvIsWritable(U8 drv_let=0)
 }
 
 U0 DskCacheInvalidate(CDrv *dv)
-{//Needed for removable media. Called by [C:/Kernel/Dsk/DskDrv.CPP.Z,176] ChgDsk().
+{//Needed for removable media. Called by [C:/Kernel/BlkDev/DskDrv.CPP.Z,176] ChgDsk().
   Bool unlock;
   CBlkDev *bd=dv->bd;
   DrvChk(dv);
@@ -191,7 +191,7 @@ Bool MapDrv(U8 drv_let,CDrv *dv)
 {//Make drive letter map to another.
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='Z') {
-    dsk.let_to_drv[drv_let-'A']=dv;
+    blkdev.let_to_drv[drv_let-'A']=dv;
     dv->drv_let=drv_let;
     return TRUE;
   } else
@@ -199,7 +199,7 @@ Bool MapDrv(U8 drv_let,CDrv *dv)
 }
 
 Bool Drv(U8 drv_let)
-{//Set drive.  You can set drive with [C:/Kernel/Dsk/DskDirB.CPP.Z,1] Cd() as well.
+{//Set drive.  You can set drive with [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() as well.
   CDrv *dv=Let2Drv(drv_let);
   CBlkDev *bd=dv->bd;
   BlkDevChk(bd);
@@ -260,13 +260,13 @@ U0 DrvRep()
   I64 i,drv_let;
   U8 *st;
   "\nDefined Drives:\n\n";
-  for (i=0,dv=dsk.drvs;i<NUM_DRVS;i++,dv++) {
+  for (i=0,dv=blkdev.drvs;i<NUM_DRVS;i++,dv++) {
     if (dv->dv_signature==DRV_SIGNATURE_VAL) {
       bd=dv->bd;
       drv_let=Drv2Let(dv);
       if (Bt(&dv->type,DVTf_DISABLE))
 	"$RED$X";
-      else if (drv_let==dsk.boot_drv_let)
+      else if (drv_let==blkdev.boot_drv_let)
 	"$GREEN$:";
       else
 	'' CH_SPACE;

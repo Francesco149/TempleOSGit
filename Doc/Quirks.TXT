@@ -9,7 +9,7 @@ the last write wins.
 ones with the ~s.  Not all FAT32 filenames are valid TempleOS names and it 
 will complain.  Do not access FAT32 drives not dedicated to TempleOS. 
 Disable 
-them with [C:/Kernel/Dsk/DskAddDev.CPP.Z,151] DrvEnable(OFF), or they will
+them with [C:/Kernel/BlkDev/DskAddDev.CPP.Z,151] DrvEnable(OFF), or they will
 generate error messages.  FAT32 
 involves a long and short name for each file.
 
@@ -21,11 +21,11 @@ Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
 
-* Call [C:/Kernel/Dsk/DskDrv.CPP.Z,176] ChgDsk() when you insert a new
+* Call [C:/Kernel/BlkDev/DskDrv.CPP.Z,176] ChgDsk() when you insert a new
 removable media.
 
-* Accessing CD/DVD's is flacky.  Try [C:/Kernel/Dsk/DskDrv.CPP.Z,201] Drv()
-or [C:/Kernel/Dsk/DskDrv.CPP.Z,176] ChgDsk() twice.
+* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,201]
+Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,176] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
 which 
@@ -59,7 +59,7 @@ worth slowing-down the compiler to handle this case.)
 
 * [C:/Kernel/KernelB.HPP.Z,175] MemCpy() only goes fwd.
 
-* A [C:/Kernel/Dsk/DskDirB.CPP.Z,1] Cd() cmd must be followed by two
+* A [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() cmd must be followed by two
 semicolons if a #include is after it.  
 This is because the preprocessor processes the next token ahead.
 

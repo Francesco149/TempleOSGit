@@ -351,7 +351,7 @@ public CDoc *DocNew(U8 *filename=NULL,CTask *task=NULL)
   if (filename)
     StrCpy(doc->filename.name,filename);
   else
-    StrCpy(doc->filename.name,dsk.temp_filename);
+    StrCpy(doc->filename.name,blkdev.temp_filename);
   doc->find_replace=CAlloc(sizeof(CEdFindText),task);
   doc->find_replace->scan_fwd=TRUE;
   doc->find_replace->match_case=TRUE;

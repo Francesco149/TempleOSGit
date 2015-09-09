@@ -111,14 +111,14 @@ U0 ACMainFileLstTraverse(U8 *files_find_mask)
 
 U0 ACProgressTask(Bool *_start_flag)
 {
-  I64 start=dsk.write_cnt;
+  I64 start=blkdev.write_cnt;
   progress1=0;
   progress1_max=(Size(ACD_DEF_FILENAME_Z,"+x+s")+BLK_SIZE-1)>>BLK_SIZE_BITS;
   StrCpy(progress1_desc,"Uncompressing Dictionary");
-  start=dsk.write_cnt;
+  start=blkdev.write_cnt;
   *_start_flag=TRUE;
   while (progress1<progress1_max) {
-    progress1=dsk.write_cnt-start;
+    progress1=blkdev.write_cnt-start;
     Sleep(10);
   }
   *progress1_desc=progress1=progress1_max=0;

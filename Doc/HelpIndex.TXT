@@ -59,7 +59,7 @@ Directives
 +] DolDoc
     [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc is the TempleOS document type. 
     The editor, compiler, assembler and whole operating system seamlessly handle
-    DolDocs.  Cmds like [C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir() and
+    DolDocs.  Cmds like [C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Dir() and
     [C:/Adam/Opt/Utils/Find.CPP.Z,145] Find() can output links to the cmd line.
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
@@ -67,12 +67,12 @@ Directives
 * Use [C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate() to make an ISO
     image file.
 
-* Use [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] DVDImageWrite() to burn an ISO file
-    onto a CD or DVD.
+* Use [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite() to burn an ISO
+    file onto a CD or DVD.
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
-  Use [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
+  Use [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
 You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]

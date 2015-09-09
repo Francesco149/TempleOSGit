@@ -15,7 +15,7 @@ Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
 }
 
 U0 DirEntryDel(CDirEntry *tempde)
-{//Free node returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Doesn't Free user_data.
+{//Free node returned from [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
@@ -24,7 +24,7 @@ U0 DirEntryDel(CDirEntry *tempde)
 }
 
 U0 DirEntryDel2(CDirEntry *tempde)
-{//Free node returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Frees user_data
+{//Free node returned from [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   if (tempde) {
     Free(tempde->full_name);
@@ -34,7 +34,7 @@ U0 DirEntryDel2(CDirEntry *tempde)
 }
 
 U0 DirTreeDel(CDirEntry *tempde)
-{//Free tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Doesn't Free user_data.
+{//Free tree returned from [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind().  Doesn't Free user_data.
 //Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {
@@ -47,7 +47,7 @@ U0 DirTreeDel(CDirEntry *tempde)
 }
 
 U0 DirTreeDel2(CDirEntry *tempde)
-{//Free tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().  Frees user_data
+{//Free tree returned from [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind().  Frees user_data
 //Does not change the directory on disk.
   CDirEntry *tempde2;
   while (tempde) {

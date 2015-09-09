@@ -19,7 +19,7 @@ public class CDirEntry //64-byte fixed-size
   U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2491] RS_ATTR_DIR.  I would like
 to change these.
   U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,345]
-chars_bmp_filename, [C:/Kernel/Dsk/DskStrA.CPP.Z,222] FileNameChk
+chars_bmp_filename, [C:/Kernel/BlkDev/DskStrA.CPP.Z,222] FileNameChk
   I64 cluster; (blk) //One sector per cluster.
   I64 size;	//In bytes
   CDate datetime; //See  [C:/Doc/TimeDate.TXT.Z,1] DateTime,
@@ -40,7 +40,7 @@ BIOS.
   U16 signature2;	//0xAA55
 };
 
-See [C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1] implementation of RedSea file
+See [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1] implementation of RedSea file
 system.
 
 File with names ending in .Z are stored compressed.

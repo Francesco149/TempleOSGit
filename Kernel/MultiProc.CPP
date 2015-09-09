@@ -396,13 +396,14 @@ U0 BSPInit()
   }
 }
 
-U0 MPCrash()
+interrupt U0 IntMPCrash()
 {//Entering the debugger from another core causes an interrupt on core#0
 //Which calls this routine.
   *LAPIC_EOI(U32 *)=0;
   mp_cnt=1;
   Raw(ON);
   text.raw_flags|=RWF_SHOW_DOLLAR;
-  "MP Crash CPU#%02X Task:%08X\n",dbg.mp_crash->cpu_num,dbg.mp_crash->task;
+  "MP Crash CPU#%02X Task:%08X\n"
+  "RIP:%P\n",dbg.mp_crash->cpu_num,dbg.mp_crash->task,dbg.mp_crash->rip;
   Dbg(dbg.mp_crash->msg,dbg.mp_crash->msg_num);
 }

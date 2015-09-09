@@ -26,7 +26,7 @@ U0 TOSInit()
     case CID_DFT:
       DefinePrint("CFG_RAM_DRVS",
 	    "\"b1\nScale2Mem(2048,0x100000,4*1024*1024*1024)\n\"");
-      if (dsk.auto_mount_ide_cnt) {
+      if (blkdev.auto_mount_ide_cnt) {
 //If AutoMount was successful, No need to manually mount in next compile
 	DefinePrint("CFG_HARD_DRVS","\"\"");
 	DefinePrint("CFG_DVD_DRVS","\"\"");
@@ -39,7 +39,7 @@ U0 TOSInit()
 	bd=Let2BlkDev(':');
 	if (bd->type==BDT_ATAPI) {
 	  ATARep(FALSE,,&root);
-	  ATAIDDrvs(root,dsk.boot_drv_let,&ata_drv,&atapi_drv);
+	  ATAIDDrvs(root,blkdev.boot_drv_let,&ata_drv,&atapi_drv);
 	  if (ata_drv)
 	    DefinePrint("CFG_HARD_DRVS","\"c2p%d\n\"",ata_drv->num);
 	  if (atapi_drv)

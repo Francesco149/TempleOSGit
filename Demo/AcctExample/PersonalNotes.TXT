@@ -4,7 +4,7 @@
 
 * 8/20/2015 TAD8, Tour1, then Tour TestSuite was missing #include "TestSuite".
 
-* Clean-up [C:/Kernel/Dsk/DskStrA.CPP.Z,144] FileNameAbs().
+* Clean-up [C:/Kernel/BlkDev/DskStrA.CPP.Z,144] FileNameAbs().
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
@@ -13,7 +13,7 @@ think so.  (Probably not.)
 
 * God said this is bad.  [C:/Adam/DolDoc/DocFind.CPP.Z,41]
 
-* [C:/Adam/Dsk/ChkDsk.CPP.Z,208] ChkDsk alloc unalloced.
+* [C:/Adam/ABlkDev/ChkDsk.CPP.Z,208] ChkDsk alloc unalloced.
 
 * Entering a '$' in text entry
 
@@ -236,13 +236,13 @@ freeing old task memory. (Prolly never gonna do anything about this.)
 * sprite shift pts, ctrl pt for ellipse/polygon w,h is off when rotated.
 
 * Window mgr needs to do DOC operations on posted messages from mouse.
-Works for [C:/Kernel/Serial/InputPointer.CPP.Z,43] IPSet(), though.
+Works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet(), though.
 
-* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,644] Dbg()?  (maybe)
+* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,641] Dbg()?  (maybe)
 
 * [C:/Adam/DolDoc/DocRecalc.CPP.Z,1] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
-[C:/Kernel/Serial/Mouse.CPP.Z,1] 0x9FC30
+[C:/Kernel/SerialDev/Mouse.CPP.Z,1] 0x9FC30
 * get kbd lights working.
 * Might have issue with compiler exceptions and restoring lex.hash tables.
 * Generates two compiler error messages for expressions in statements.
@@ -304,8 +304,9 @@ registry-like routines... or registry I guess.
 
 * New Editor widgets
 
-* Make use of flag potential in [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind()
-and possibly [C:/Kernel/Dsk/DskDirContext.CPP.Z,21] DirContextNew()
+* Make use of flag potential in [C:/Kernel/BlkDev/DskFind.CPP.Z,30]
+FilesFind() and possibly [C:/Kernel/BlkDev/DskDirContext.CPP.Z,21]
+DirContextNew()
 * implement fixed pos files
 
 * new HolyC language features

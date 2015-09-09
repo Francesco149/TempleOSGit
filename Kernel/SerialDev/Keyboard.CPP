@@ -406,7 +406,7 @@ U0 KbdPktRead()
   }
 }
 
-interrupt U0 KbdIntHandler()
+interrupt U0 IRQKbd()
 {
   CLD
   OutU8(0x20,0x20);
@@ -432,7 +432,7 @@ U0 KbdInit()
     KbdCmdFlush;
     Fs->catch_except=TRUE;
   }
-  IntEntrySet(0x21,&KbdIntHandler);
+  IntEntrySet(0x21,&IRQKbd);
   OutU8(0x21,InU8(0x21)&~2);
 }
 

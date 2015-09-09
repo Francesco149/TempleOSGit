@@ -63,7 +63,7 @@ example, is better than many file systems.
 
 * There is a limit of 100,000 lines of code for all time, not including 
 applications and demos.  Code comments count, however.  Currently, there are 
-81,109 lines of code.  3rd party libraries are banned because they circumvent 
+81,128 lines of code.  3rd party libraries are banned because they circumvent 
 the intent of this limit.  The vision is a Commodore 64 ROM -- a fixed core 
 API that is the only dependency of applications.  Dependency on components
 and 

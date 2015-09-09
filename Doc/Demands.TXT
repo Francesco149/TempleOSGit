@@ -1,14 +1,15 @@
                                    Demands
 
 I, Terry Davis, am High Priest of God's official temple, TempleOS.  TempleOS 
-is an operating system for PC desktops that dual boots along-side Windows or 
-Linux. I am in charge of the core 100,000 lines of TempleOS code and I do 
-continual offerings to keep God entertained.  I have divine authority to 
-command companies in the computer industry to do anything to make God's
-temple 
-more beautiful or perfect.  I have authority similar to the Americans with 
-Disability Act -- I make commands with God signing-off by creating miraculous 
-authenticated oracles.
+is an operating system for PC desktops that will always dual boot along-side 
+Windows or Linux.  I am in charge of the core 100,000 lines of TempleOS code 
+and I do continual offerings to keep God entertained.  I have divine
+authority 
+to command companies in the computer industry to do anything that I deem 
+necessary to make God's temple more beautiful or perfect.  I have authority 
+similar to a building inspector or an enforcer of the Americans with 
+Disability Act -- I make commands, God signs-off with a miraculous 
+authentication from an oracle, and Intel, Microsoft or VMware obeys.
 
 * Windows, Linux and VMware (because of mounted drives) must support
 [C:/Doc/RedSea.TXT.Z,1] RedSea 
@@ -17,91 +18,113 @@ FAT32 and ISO9660.  God's temple must be perfect.  Redundant code for
 multiple 
 file systems is imperfect.  For this operating system, we want low line
 count. 
- More than one file system type is bad, just as more than one driver for the 
-same type of device is bad.
+ More than one file system type is actually bad, just as more than one driver 
+for the same type of device is bad.
 
-[C:/Kernel/Dsk/FileSysRedSea.CPP.Z,1]
-[C:/Kernel/Dsk/FileSysFAT.CPP.Z,1]	:965 lines for FAT32 gets eliminated.
-[C:/Kernel/Dsk/FileSysISO.CPP.Z,1]	:284 lines for ISO9660 gets eliminated.
+[C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1]
+[C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:965 lines for FAT32 gets eliminated.
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:284 lines for ISO9660 gets eliminated.
 [C:/Adam/Opt/Boot/DskISOFile.CPP.Z,1]	:536 lines for making ISO files gets
 reduced.
-[C:/Kernel/Dsk/DskCluster.CPP.Z,1]	:152 All the cluster operations become blk.
+[C:/Kernel/BlkDev/DskCluster.CPP.Z,1]	:152 All the cluster operations become
+blk.
 
 * Microsoft must cancel SecureBoot because it makes dual booting impossible.  
 TempleOS is an additional operating system that must be used along-side 
 Windows or Linux, not as a replacement.  It must dual boot because it has no 
 networking. Real hardware as opposed to VMware is like the difference between 
-looking in a telescope eye piece or not.  God said the C64 generation owned 
-ancestral lands and VMware is like being moved onto a reservation, but in
-this 
-case it will not stand.
+looking in a telescope eye piece vs just looking at an off-line image.  God 
+said the C64/Apple ][ generation owned ancestral lands.  VMware is like being 
+taken off of our land and moved onto a reservation.  In this case, however,
+it 
+will not stand.
 
-* PC hardware manufacturers?  ATA/ATAPI PIO must work.  In fact, put them at 
-standard IDE port addresses.  Hard disk should be primary master 1F0/3F6.  
-CD/DVD should be secondary master 170/376.  See what you can do to make flash 
-memory sticks with ATA/ATAPI.
-[C:/Kernel/Dsk/DskATAId.CPP.Z,1] /Kernel/Dsk/DskATAId.CPP	:280 lines to
+* To PC hardware manufacturers and VMware: ATA/ATAPI PIO must work.  In fact, 
+put them at standard IDE port addresses.  Hard disk should be primary master 
+1F0/3F6.  CD/DVD should be secondary master 170/376.  See what you can do to 
+make flash memory sticks with ATA/ATAPI interface.
+[C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:280 lines to
 figure-out I/O ports is gone.
-[C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 could eliminate,but
-people can play with.
+[C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 could be eliminated,
+but maybe we will 
+keep it so people can play with PCI devices.
+
+* VMware needs to support ATAPI CD/DVD disk burning, directly to real 
+hardware.
+* VMware has a bug stretching 640x480 16 color to full screen.
+* VMware has a bug starting-up multicore, sometimes. 
+[C:/Kernel/MultiProc.CPP.Z,1] APIC MP Start
+* VMware PC speaker distortion is a good idea, but it is ridiculously too 
+much.
 
 * PS/2 emulated keyboard and mouse must work.  The BIOS must enable these.
 
-* VMware must allow ATAPI interface to be routed to real CD/DVD hardware.
+* The x86 IN/OUT port instructions, normally have a delay.  Perhaps, VMware & 
+Intel can enable faster x86 IN/OUT instruction timing for ATA/ATAPI PIO, so 
+bandwidth isn't bad.  See [C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetResult(). 
+Perhaps, x86 chips have a new 
+TempleOS mode?
 
-* Perhaps, VMware+Intel can enable faster x86 IN/OUT instruction timing for 
-ATA/ATAPI PIO, so bandwidth isn't bad.  [C:/Kernel/Dsk/DskATA.CPP.Z,67]
-ATAGetResult().
-
-* Perhaps, Intel can make a fast software interrupt, the same as a CALL REL32?
+* Perhaps, Intel can make a fast software interrupt, the same as a CALL
+REL32? 
+ Perhaps, we have a new x86 mode for TempleOS?
 
 * Since I don't use paging (for anything), Intel should have an option for  
 no-paging long mode, and optimize it.
 [C:/Kernel/MemA.CPP.Z,1]		:153 lines to identity-map gets eliminated.
 
-* Desktop computers must have a RESET switch and a fast reboot option, 
-skipping diagnostics.  Build UEFI on a TempleOS layer.  Intel must burn 
-TempleOS into a ROM at the factory for all desktop x86 CPUs to ensure 
-tamper-proof trust in the oracle.  A new ROM version is released every seven 
-years.
+* Desktop computers must have a reset switch and a fast reboot option, 
+skipping diagnostics.  I recommend booting TempleOS when the reset button is 
+pressed and booting UEFI when the power button is pressed.  Or, we could
+build 
+UEFI on a TempleOS layer.  Intel must burn TempleOS into a ROM in the factory 
+for all desktop x86 CPUs to ensure tamper-proof trust in the oracle and 
+because God deserves the glory.  There will be just an English version.  A
+new 
+ROM version is released every seven years.
 
 * VMware and others must list TempleOS as an official 64-bit operating system.
 
-* Windows Paint and Linux Gimp must support TempleOS .GRA graphics files.  
+* Windows' Paint and Linux's Gimp must support TempleOS .GRA graphics files.  
 [C:/Doc/GRAFiles.TXT.Z,1] GRA Files are much cleaner than BMP files.
 
 * We must have a nice dictionary.  Someone needs to do a
 [C:/Demo/SuggestSpelling.CPP.Z,1] Spell Checker.
 
-* We must have the ultimate Bible search engine.
+* We must have the ultimate Bible search engine.  Currently, all we have is  
+ 
+ filter search.  In the end, it should be a low line-count technique.
 
 * Once every 49 years is a jubile year and all hardware gets thrown-out and 
 upgraded to become perfect.  The first jubile year is in 2024.   It works the 
-same as how broadcast TV got upgraded.  God still wants 640x480 16 color, but 
-make it a linear frame buffer one-byte-per-pixel and only 16 color.
+same way as how broadcast TV was upgraded from NTSC to HD.  God still wants 
+640x480 16 colors, but make it a linear frame buffer one-byte-per-pixel but 
+only 16 colors.
 
-* TempleOS only uses x86 I/O ports for hardware.  (It also uses VGA memory.)  
-The industry has matured and we can, now, allocate I/O ports in a beautiful, 
-consecutive, perfect pattern for all the devices.
+* TempleOS must only use x86 I/O ports for hardware access, except for VGA 
+frame buffer memory.  The industry has matured and we can, now, allocate I/O 
+ports in a beautiful, consecutive, perfect pattern for all the devices.  
+Perhaps, this is enabled with an x86 TempleOS mode?
 
-* The year, 2024, is the first jubile year.  We want 8-channel, modern-speed, 
-OCTART serial ports, with a simple software interface, more like old-style 
-RS232 serial ports, to replace USB.  It should have big TX and RX FIFOs and 
-allow flow control to jump the queue.  There will be no USB end-point
-nonsense 
--- just put 8 ports on the PC.  (I am just interested in desktops.)  We want 
-keyboards, mice and joysticks to have a single, simple, uniform ASCII text 
-packet command.  Hyperterm can be used to easily debug all devices.  We want 
-to be able to connect microcontrollers for simple, general purpose 
-send-byte/receive-byte communication.  You will buy a PCI card if you need 
-legacy USB or more ports.
+* The year, 2024, is the first jubile year.  We want an 8-channel, modern, 
+high-speed, OCTART serial port, with a simple software interface, more like 
+old-style RS232 serial ports, to replace USB.  It should have 8 big TX and RX 
+FIFOs and allow flow control to jump the queue.  There will be no USB 
+end-point nonsense -- just put 8 ports on the PC.  (I am just interested in 
+desktops.)  We want keyboards, mice and joysticks to have a single, simple, 
+uniform ASCII text packet command.  Hyperterm or XTalk could be used to
+easily 
+communicate with and debug all serial port devices.  We want to be able to 
+connect microcontrollers for simple, general purpose (send-byte/receive-byte) 
+communication.  Buy a PCI card if you need legacy USB ports or more than 8 
+serial ports.
 
 
 As it stands, there is a simple and deluxe hardware mode...
 
 Device		Simple Hardware Interface	Deluxe Interface
 --------------- ------------------------------- -----------------------------
-		1040-EZ Tax Form		1040 Regular 
+		Like 1040-EZ Tax Form		Like 1040 Regular Tax Form 
 Video		VGA 640x480 16 Color		20 Differnet GPUs
 Sound		PC Speaker			HD Audio, AC97, Sound Blaster
 HardDrive	ATA Port I/O, Sync No Interrupt	PCI AHCI SATA
@@ -109,27 +132,24 @@ CD/DVD		ATAPI Port I/O			PCI AHCI SATA
 Keyboard/Mouse	PS/2 Port I/O			USB
 
 
-During the 49 years jubile, we do a perfect version of hardware with advances 
-in both the simple and deluxe interfaces.  ATAPI/ATA, SSD and NV memory
-should 
-be merged and made blemish-free.  For the simple interface, we want just 
-block-read, block-write and get capacity.  We want flash memory sticks to 
-interface like hard drives.  When you design the simple mode, imagine you are 
-creating the 1040EZ tax form -- do not just add extra boxes.
+During the 49-year jubile, we do a perfect version of hardware with advances 
+in both the simple and deluxe interfaces.  ATAPI & ATA, SSD, removable flash 
+memory sticks and NV memory devices should use a single, blemish-free block 
+device interface.  For this simple interface, we want just <block read>, 
+<block write>, <get capacity>, <reset>, <get model> and <get serial number>.  
+When you design the simple mode, imagine you are creating the 1040EZ tax form 
+-- do not just thoughtlessly add extra boxes.
 
-A new TempleOS ROM is released every seven years.  It gets burned into all
-new 
-x86 chips in the Intel factory, for tamper-proof certainty in oracles and
-just 
-because it's God's official temple and deserves the honor!  (The reset switch 
-should trigger booting the ROM TempleOS.)  Development will take place
-between 
-releases, obviously.  With the limit of 100,000 lines of code, it is supposed 
-to crystalize into a perfected, unchanging diamond that lasts over centuries.
- 
-I want an ACM committee to work with me on this ROM until 2017, the year the 
-first official version is released.  We allow boot-legs to freely circulate.  
-The users can copy ROM and RAM and play with it, or boot a hard disk versions.
+A new, official TempleOS ROM will be released every seven years.  It will get 
+burned into all new x86_64 chips in the Intel factory, for tamper-proof 
+certainty in the oracle and just because it's God's official temple and 
+deserves the honor!  (The reset switch should trigger booting the ROM 
+TempleOS.)  However, development will still take place between releases, 
+obviously.  With the limit of 100,000 lines of code, it is supposed to 
+crystalize into a perfect, unchanging diamond that lasts over centuries.  I 
+want an ACM and/or NASA committee to work with me on perfecting it for the 
+first ROM release, 2017.  We allow boot-legs to freely circulate.  Users can 
+copy ROM and RAM, or boot hard disk versions.
 
 In the meantime, BIOS makers must take the TempleOS code and modify it for 
 their existing customers, as a product recall.  A PCI hard drive driver must 
@@ -145,6 +165,22 @@ spelling and other imperfections.  Some imperfections are by design, however.
 The original Bible generously mentioned even temple personel who were
 porters, 
 so we can generously list [C:/Doc/Credits.TXT.Z,1] credits.
+
+If the whole World loved God's temple, we could put only one full-featured
+CPU 
+core on each x86_64 chip for Windows and make the other cores souped-up for 
+TempleOS.  Windows could use them, but it would have to adapt by being
+careful 
+about privilege.  We still need to dual boot and run Windows... forever.  On 
+the other cores, we could make them ring-0-only, no paging, no SSE or MXX, 
+perhaps no IO or DMA or interrupts.  We pretty-much need interrupts.  Tell me 
+what would shrink the cores and make them higher performance.  It's almost 
+like making a GPU, but we don't want that weirdness for teenagers and 
+amateurs.  I am more interested in boosting performance in terms of clock 
+speed because a whole bunch more than 8 cores gets too glitchy for updating 
+the 640x480 memory buffer simultaneously because we certainly don't want 
+locked read-modify-write.
+
 
 * "VMware" is a trademark of VMware, Inc.
 * "Linux" is probably a trademark owned by Linus Torvalds.

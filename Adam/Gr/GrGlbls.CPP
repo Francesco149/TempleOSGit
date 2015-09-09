@@ -40,7 +40,7 @@ public class CGrGlbls
 } gr;
 
 //See [C:/Kernel/KStart.CPP.Z,1] RLf_VGA
-//See [C:/Kernel/KEnd.CPP.Z,65] SysGrInit()
+//See [C:/Kernel/KEnd.CPP.Z,67] SysGrInit()
 //Allows consts to be used instead of vars.
 HashPublic("GR_WIDTH",HTT_DEFINE_STR);;
 HashPublic("GR_HEIGHT",HTT_DEFINE_STR);;

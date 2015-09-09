@@ -8,7 +8,7 @@ U0 BlkDevLockFwdingSet(CBlkDev *bd)
     case BDT_ATA:
     case BDT_ATAPI:
       for (i=0;i<NUM_BLKDEVS;i++) {
-	bd1=&dsk.blkdevs[i];
+	bd1=&blkdev.blkdevs[i];
 	if (bd1->bd_signature==BD_SIGNATURE_VAL && bd!=bd1 &&
 	      (bd1->type==BDT_ATAPI || bd1->type==BDT_ATA) &&
 	      bd1->base0==bd->base0) {
@@ -303,10 +303,10 @@ Bool GetBaseUnit(CBlkDev *bd)
       while (!('0'<=ch<='1'));
       '' ch;
       bd->unit=ch-'0';
-      dsk.dvd_boot_is_good=BootDVDProve(bd);
+      blkdev.dvd_boot_is_good=BootDVDProve(bd);
       return TRUE;
     } else {
-      dsk.dvd_boot_is_good=FALSE;
+      blkdev.dvd_boot_is_good=FALSE;
       return FALSE;
     }
   }
@@ -317,10 +317,10 @@ U0 BlkDevsInitAll()
 {
   CBlkDev *bd;
   I64 i;
-  dsk.blkdevs=CAlloc(sizeof(CBlkDev)*NUM_BLKDEVS);
-  dsk.drvs=CAlloc(sizeof(CDrv)*NUM_DRVS);
+  blkdev.blkdevs=CAlloc(sizeof(CBlkDev)*NUM_BLKDEVS);
+  blkdev.drvs=CAlloc(sizeof(CDrv)*NUM_DRVS);
   for (i=0;i<NUM_DRVS;i++)
-    dsk.let_to_drv[i]=&dsk.drvs[i];
+    blkdev.let_to_drv[i]=&blkdev.drvs[i];
   text.raw_col=0;
   #exe {
     if (kernel_cfg->opts[CFG_AUTO_MOUNT_IDE])

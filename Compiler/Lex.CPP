@@ -47,7 +47,7 @@ CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
   if (filename)
     tempf->full_name=FileNameAbs(filename);
   else
-    tempf->full_name=StrNew(dsk.temp_filename);
+    tempf->full_name=StrNew(blkdev.temp_filename);
   if (flags & CCF_PMT)
     buf=CAlloc(8);
   tempf->buf=tempf->buf_ptr=tempf->line_start=cc->cur_buf_ptr=buf;
@@ -297,7 +297,7 @@ U0 LexIncludeStr(CCmpCtrl *cc,U8 *abs_filename,U8 *src,Bool actual_file)
   if (actual_file)
     tempf->full_name=StrNew(abs_filename);
   else
-    tempf->full_name=StrNew(dsk.temp_filename);
+    tempf->full_name=StrNew(blkdev.temp_filename);
   tempf->line_num=1;
   tempf->buf=tempf->buf_ptr=tempf->line_start=cc->cur_buf_ptr=src;
 }

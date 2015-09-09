@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-119,197 lines of code including the kernel, the 64-bit compiler, the graphics 
+119,218 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -118,8 +118,8 @@ TempleOS is geared toward reading and writing whole files.  Since whole files
 are processed, compression is possible.  Filenames ending in ".Z" are 
 automatically compressed or uncompressed when stored and fetched.  TempleOS 
 does support direct block random access into files, however --
-[C:/Kernel/Dsk/DskCFile.CPP.Z,129] FRBlks() and 
-[C:/Kernel/Dsk/DskCFile.CPP.Z,181] FWBlks().
+[C:/Kernel/BlkDev/DskCFile.CPP.Z,129] FRBlks() and 
+[C:/Kernel/BlkDev/DskCFile.CPP.Z,181] FWBlks().
 
 If a file is not found, ".Z" is added or removed and a search is done, again.
  
@@ -178,8 +178,8 @@ story is that originally I called it the root task and even had a /Root
 directory :-)  Adam executes [C:/StartOS.CPP.Z,1] at boot time.
 
 For easy back-ups, place everything you author in your /Home directory and 
-subdirectories.  Then, use [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree().  That
-should make upgrading easy, too.  
+subdirectories.  Then, use [C:/Adam/ABlkDev/ADskA.CPP.Z,154] CopyTree(). 
+That should make upgrading easy, too.  
 Customizable start-up scripts go in your /Home directory.  The default 
 start-up scripts are in the root directory.  Copy the start-up files you wish 
 to customize into /Home and modify them.  See [C:/Doc/GuideLines.TXT.Z,1]
@@ -189,13 +189,13 @@ own distro that includes everything and is a bootable live CD with
 
 Typically, your usage pattern through the day will be repeatedly left or
 right 
-clicking on filenames in a cmd line [C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir()
+clicking on filenames in a cmd line [C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Dir()
 listing.  You left-click files to 
 edit them and right-click to #include them.  To begin a project, type
 [C:/Adam/DolDoc/DocEd.CPP.Z,192] Ed("file
 name");, supplying a filename.  You can also run programs with <F5> when in 
 the editor.  <ESC> to save and exit the file.  You'll need to do a new
-[C:/Kernel/Dsk/DskDirB.CPP.Z,91] Dir() 
+[C:/Kernel/BlkDev/DskDirB.CPP.Z,91] Dir() 
 cmd, periodically, so make a macro on your PersonalMenu.  Access your 
 PersonalMenu by pressing <CTRL-m>, cursoring until you are on top of it and 
 pressing <SPACE>.

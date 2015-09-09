@@ -33,9 +33,9 @@ Cd("/Kernel");Dir;
 `Cd("/Kernel");Dir;
 `
 
-Cd("/Kernel/Dsk");Dir;
+Cd("/Kernel/BlkDev");Dir;
 
-`Cd("/Kernel/Dsk");Dir;
+`Cd("/Kernel/BlkDev");Dir;
 `
 
 Cd("/Compiler");Dir;
@@ -58,9 +58,9 @@ Cd("/Adam/Ctrls");Dir;
 `Cd("/Adam/Ctrls");Dir;
 `
 
-Cd("/Adam/Dsk");Dir;
+Cd("/Adam/ABlkDev");Dir;
 
-`Cd("/Adam/Dsk");Dir;
+`Cd("/Adam/ABlkDev");Dir;
 `
 
 Cd("/Adam/DolDoc");Dir;

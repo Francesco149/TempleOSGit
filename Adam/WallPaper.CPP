@@ -27,7 +27,7 @@ U0 WallPaper(CTask *_task)
   U8 *st;
   _task->text_attr=BLUE<<4+WHITE;
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"Reads:%d Writes:%d lines=%d",
-	dsk.read_cnt,dsk.write_cnt,cmp.compiled_lines);
+	blkdev.read_cnt,blkdev.write_cnt,cmp.compiled_lines);
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress1=%016X progress2=%016X",
 	progress1,progress2);
   TextPrint(Fs,0,l--,BLUE<<4+WHITE,"progress3=%016X progress4=%016X",

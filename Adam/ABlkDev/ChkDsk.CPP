@@ -188,7 +188,7 @@ I64 FAT32ChkDsk(U8 drv_let,Bool *_fix,Bool *_confirm)
   errs+=FAT32ChkDskLst(dv,FilesFind(files_find_mask,FUF_RECURSE),
 	bits,bits2,size,bpc);
 
-  bits2[1]=0; //See [C:/Kernel/Dsk/FileSysFAT.CPP.Z,65] FAT32Fmt()
+  bits2[1]=0; //See [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,65] FAT32Fmt()
   for (i=1;i<size;i++)
     if (bits2[i]) {
       PrintWarn("Shouldn't Alloc Cluster:%0X\n",i);

@@ -55,10 +55,10 @@ U0 VMInstallWiz()
   WinToTop(Fs);
 
   ATARep(FALSE,TRUE,&root);
-  ATAIDDrvs(root,dsk.boot_drv_let,&ata_drv,&atapi_drv);
+  ATAIDDrvs(root,blkdev.boot_drv_let,&ata_drv,&atapi_drv);
   if (VMPrtDsk(task,ata_drv)) {
-    VMInstallBoot(task,dsk.boot_drv_let,'C',ata_drv,atapi_drv);
-    VMInstallBoot(task,dsk.boot_drv_let,'D',ata_drv,atapi_drv);
+    VMInstallBoot(task,blkdev.boot_drv_let,'C',ata_drv,atapi_drv);
+    VMInstallBoot(task,blkdev.boot_drv_let,'D',ata_drv,atapi_drv);
     MasterBootIntall('C');
   }
   LinkedLstDel(root);
@@ -126,7 +126,7 @@ U0 RegularInstallWiz()
   }
 
   '\n';
-  st1=MStrPrint("%C:/",dsk.boot_drv_let);
+  st1=MStrPrint("%C:/",blkdev.boot_drv_let);
   st2=MStrPrint("%C:/",*dst);
 
   "$RED$Format %C Partition?$FG$\n",*dst;
