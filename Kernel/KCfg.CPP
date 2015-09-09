@@ -121,7 +121,7 @@ CDoc *KernelCfgAddDev(CKernelCfg *c)
 	if (type==BDT_ATA || type==BDT_ATAPI) {
 	  if (type==BDT_ATAPI && !*base0_buf) {
 	    c->dvd_ports_pmt=TRUE;
-	    DocPrint(doc,"dsk.boot_rescue_drv_pmt=GetBaseUnit(bd);");
+	    DocPrint(doc,"blkdev.boot_rescue_drv_pmt=GetBaseUnit(bd);");
 	    if (first_drv_num+'A'==c->boot_drv_let)
 	      make_free=TRUE;
 	  } else

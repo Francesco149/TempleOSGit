@@ -197,8 +197,8 @@ I64 TaskInit(CTask *task,I64 stk_size)
   task->win_top		=13;
   task->win_bottom	=text.rows-2;
 
-  if (dsk.boot_drv_let) //Beware Adam [C:/Kernel/KStart.CPP.Z,1] TaskInit. I guess ok until [C:/Kernel/KEnd.CPP.Z,1] ChgDsk().
-    task->cur_dv=dsk.let_to_drv[ToUpper(dsk.boot_drv_let)-'A'];
+  if (blkdev.boot_drv_let) //Beware Adam [C:/Kernel/KStart.CPP.Z,1] TaskInit. I guess ok until [C:/Kernel/KEnd.CPP.Z,1] ChgDsk().
+    task->cur_dv=blkdev.let_to_drv[ToUpper(blkdev.boot_drv_let)-'A'];
   task->cur_dir=StrNew("/Home",task);
 
   Seed(,task);

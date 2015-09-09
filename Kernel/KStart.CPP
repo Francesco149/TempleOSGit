@@ -25,7 +25,7 @@ SYS_BOOT_SRC::			DU32	BOOT_SRC_NULL;
 SYS_BOOT_PATCH_TABLE_BASE::	DU32	0;
 SYS_RUN_LEVEL::			DU32	0;
 #exe {StreamPrint("SYS_COMPILE_TIME:: DU64 0x%X;",Now);}
-//See [C:/Kernel/Dsk/DskATAId.CPP.Z,1] BootDVDProve
+//See [C:/Kernel/BlkDev/DskATAId.CPP.Z,1] BootDVDProve
 #assert SYS_COMPILE_TIME+sizeof(CDate)+sizeof(CBinFile)<DVD_BLK_SIZE
 
 SYS_BOOT_BASE::	DU32	0;	//Offset from start used by reboot

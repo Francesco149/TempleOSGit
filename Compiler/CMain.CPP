@@ -575,7 +575,7 @@ I64 ExePutS(U8 *buf,U8 *filename=NULL,
   Bool okay=TRUE;
   CCmpCtrl *cc;
   if (!filename)
-    filename=dsk.temp_filename;
+    filename=blkdev.temp_filename;
   cc=CmpCtrlNew(buf,CCF_DONT_FREE_BUF,filename);
   if (just_load)
     cc->flags|=CCF_JUST_LOAD;
@@ -629,7 +629,7 @@ I64 ExePutS2(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE)
   I64 result;
   CCmpCtrl *cc;
   if (!filename)
-    filename=dsk.temp_filename;
+    filename=blkdev.temp_filename;
   cc=CmpCtrlNew(buf,CCF_DONT_FREE_BUF,filename);
   if (just_load)
     cc->flags|=CCF_JUST_LOAD;

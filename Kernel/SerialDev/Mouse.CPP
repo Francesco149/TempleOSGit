@@ -10,7 +10,7 @@ U0 MousePktRead()
       FifoU8Ins(mouse.fifo2,j);
 }
 
-interrupt U0 MouseIntHandler()
+interrupt U0 IRQMouse()
 {
   CLD
   OutU8(0xA0,0x20);
@@ -244,7 +244,7 @@ Bool MouseDriverInstall(I64 dummy=0) //can be spawned
   mouse.install_in_progress=TRUE;
   OutU8(0xA1,InU8(0xA1)|0x10);
   mouse.installed=mouse.irqs_working=FALSE;
-  IntEntrySet(0x2C,&MouseIntHandler);
+  IntEntrySet(0x2C,&IRQMouse);
   for(i=0;i<5;i++)
     mouse.buttons[i]=0;
   if (i=MouseRst)

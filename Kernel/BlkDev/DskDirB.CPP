@@ -144,7 +144,7 @@ I64 Dir(U8 *files_find_mask,Bool full)
 }
 
 Bool MkDir(U8 *filename)
-{//Make directory. [C:/Kernel/Dsk/DskDirB.CPP.Z,1] Cd() can also make directories.
+{//Make directory. [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() can also make directories.
   U8 *name;
   CDirContext *dirc;
   Bool result=FALSE;

@@ -8,7 +8,7 @@
 
 
 
-    [C:/Kernel/Dsk/DskBlk.CPP.Z,31] RBlks()	      [C:/Kernel/Dsk/DskBlk.CPP.Z,68] WBlks()
+    [C:/Kernel/BlkDev/DskBlk.CPP.Z,31] RBlks()	      [C:/Kernel/BlkDev/DskBlk.CPP.Z,68] WBlks()
 
 
 

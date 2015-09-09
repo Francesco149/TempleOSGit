@@ -5,31 +5,31 @@ U0 DskCacheInit(I64 size_in_U8s)
 
   while (LBts(&sys_semas[SYS_SEMA_DSK_CACHE],0))
     Yield;
-  Free(dsk.cache_ctrl);
-  Free(dsk.cache_base);
-  Free(dsk.cache_hash_table);
+  Free(blkdev.cache_ctrl);
+  Free(blkdev.cache_base);
+  Free(blkdev.cache_hash_table);
   if (size_in_U8s<0x2000) {
-    dsk.cache_ctrl=NULL;
-    dsk.cache_base=NULL;
-    dsk.cache_hash_table=NULL;
+    blkdev.cache_ctrl=NULL;
+    blkdev.cache_base=NULL;
+    blkdev.cache_hash_table=NULL;
   } else {
-    dsk.cache_ctrl=ACAlloc(offset(CCacheBlk.body));
-    dsk.cache_base=AMAlloc(size_in_U8s);
-    QueInit(dsk.cache_ctrl);
+    blkdev.cache_ctrl=ACAlloc(offset(CCacheBlk.body));
+    blkdev.cache_base=AMAlloc(size_in_U8s);
+    QueInit(blkdev.cache_ctrl);
 
-    cnt=MSize(dsk.cache_base)/sizeof(CCacheBlk);
-    dsk.cache_size=cnt*BLK_SIZE;
+    cnt=MSize(blkdev.cache_base)/sizeof(CCacheBlk);
+    blkdev.cache_size=cnt*BLK_SIZE;
     for (i=0;i<cnt;i++) {
-      tempc=dsk.cache_base+i;
-      QueIns(tempc,dsk.cache_ctrl->last_lru);
+      tempc=blkdev.cache_base+i;
+      QueIns(tempc,blkdev.cache_ctrl->last_lru);
       tempc->next_hash=tempc->last_hash=tempc;
       tempc->dv=NULL;
       tempc->blk=0;
     }
 
-    dsk.cache_hash_table=AMAlloc(DSK_CACHE_HASH_SIZE*sizeof(U8 *)*2);
+    blkdev.cache_hash_table=AMAlloc(DSK_CACHE_HASH_SIZE*sizeof(U8 *)*2);
     for (i=0;i<DSK_CACHE_HASH_SIZE;i++) {
-      tempc=dsk.cache_hash_table(U8 *)+i*sizeof(U8 *)*2
+      tempc=blkdev.cache_hash_table(U8 *)+i*sizeof(U8 *)*2
 	    -offset(CCacheBlk.next_hash);
       tempc->next_hash=tempc->last_hash=tempc;
     }
@@ -40,7 +40,7 @@ U0 DskCacheInit(I64 size_in_U8s)
 I64 DskCacheHash(I64 blk)
 {
   I64 i=blk & (DSK_CACHE_HASH_SIZE-1);
-  return dsk.cache_hash_table(U8 *)+i<<4-offset(CCacheBlk.next_hash);
+  return blkdev.cache_hash_table(U8 *)+i<<4-offset(CCacheBlk.next_hash);
 }
 
 U0 DskCacheQueRem(CCacheBlk *tempc)
@@ -53,7 +53,7 @@ U0 DskCacheQueRem(CCacheBlk *tempc)
 U0 DskCacheQueIns(CCacheBlk *tempc)
 {
   CCacheBlk *temp_n,*temp_l;
-  QueIns(tempc,dsk.cache_ctrl->last_lru);
+  QueIns(tempc,blkdev.cache_ctrl->last_lru);
   temp_l=DskCacheHash(tempc->blk);
   temp_n=temp_l->next_hash;
   tempc->last_hash=temp_l;
@@ -76,12 +76,12 @@ CCacheBlk *DskCacheFind(CDrv *dv,I64 blk)
 U0 DskCacheAdd(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
 {
   CCacheBlk *tempc;
-  if (dsk.cache_base) {
+  if (blkdev.cache_base) {
     while (LBts(&sys_semas[SYS_SEMA_DSK_CACHE],0))
       Yield;
     while (cnt-->0) {
       if (!(tempc=DskCacheFind(dv,blk)))
-	tempc=dsk.cache_ctrl->next_lru;
+	tempc=blkdev.cache_ctrl->next_lru;
       DskCacheQueRem(tempc);
       MemCpy(&tempc->body,buf,BLK_SIZE);
       tempc->dv=dv;
@@ -97,18 +97,18 @@ U0 DskCacheAdd(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
 U0 DskCacheInvalidate2(CDrv *dv)
 {
   CCacheBlk *tempc,*tempc1;
-  if (dsk.cache_base) {
+  if (blkdev.cache_base) {
     while (LBts(&sys_semas[SYS_SEMA_DSK_CACHE],0))
       Yield;
-    tempc=dsk.cache_ctrl->last_lru;
-    while (tempc!=dsk.cache_ctrl) {
+    tempc=blkdev.cache_ctrl->last_lru;
+    while (tempc!=blkdev.cache_ctrl) {
       tempc1=tempc->last_lru;
       if (tempc->dv==dv) {
 	DskCacheQueRem(tempc);
 	tempc->dv=NULL;
 	tempc->blk=0;
 	tempc->next_hash=tempc->last_hash=tempc;
-	QueIns(tempc,dsk.cache_ctrl->last_lru);
+	QueIns(tempc,blkdev.cache_ctrl->last_lru);
       }
       tempc=tempc1;
     }
@@ -119,7 +119,7 @@ U0 DskCacheInvalidate2(CDrv *dv)
 U0 RCache(CDrv *dv,U8 **_buf, I64 *_blk, I64 *_cnt)
 {
   CCacheBlk *tempc;
-  if (dsk.cache_base) {
+  if (blkdev.cache_base) {
     while (LBts(&sys_semas[SYS_SEMA_DSK_CACHE],0))
       Yield;
 //fetch leading blks from cache

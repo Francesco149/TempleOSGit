@@ -2,7 +2,15 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----09/01/15 06:53:39----
+----09/07/15 10:55:07----
+
+----09/05/15 11:26:12----
+* Gave [C:/Kernel/KernelA.HPP.Z,284] I_DIV_ZERO its own vector instead of
+common fault vector.
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Dsk","BlkDev");
+
+----09/04/15 17:04:39----
+* **TempleOS version 3.11 Released**
 
 ----08/28/15 01:50:15----
 *  Added [C:/Adam/God/GodBible.CPP.Z,273] BibleView() and <CTRL-ALT-b>.
@@ -13,7 +21,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
 ----08/22/15 20:38:15----
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CDImageWrite","[C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] DVDImageWrite");
+R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("MakeDistro","DoDistro");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("::/Home/Adam*.CPP","::/Home/Home*.CPP");
 * Created Make*.CPP make dir files.
@@ -23,7 +31,7 @@ R("CDImageWrite","[C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] DVDImageWrite");
 * **TempleOS version 3.10 Released**
 
 ----08/20/15 20:05:08----
-* Fixed bug in [C:/Adam/Dsk/FileMgr.CPP.Z,1].
+* Fixed bug in [C:/Adam/ABlkDev/FileMgr.CPP.Z,1].
 * Fixed bug in [C:/Demo/Games/TreeCheckers.CPP,1].
 
 ----08/18/15 07:28:03----
@@ -113,12 +121,12 @@ Option(,OFF)");
 * Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,384] EdFindReplace().
 
 ----07/20/15 19:48:53----
-* Added args to [C:/Kernel/Dsk/DskCopy.CPP.Z,82] Del().
+* Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2724] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("IsDrvWritable","[C:/Kernel/Dsk/DskDrv.CPP.Z,148] DrvIsWritable");
+R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,148] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("CDFileCreate","[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 
@@ -271,7 +279,7 @@ Mat4x4MulMat4x4New").
 * Cleaned-up [C:/Adam/AHash.CPP.Z,149] Who() and compiler mapfiles.
 
 ----04/11/15 05:48:05----
-* Fixed bug in [C:/Kernel/Dsk/DskDrv.CPP.Z,75] DrvFATBlkClean().
+* Fixed bug in [C:/Kernel/BlkDev/DskDrv.CPP.Z,75] DrvFATBlkClean().
 
 ----04/09/15 04:42:31----
 * Improved [C:/Demo/Games/TreeCheckers.CPP,1].
@@ -339,7 +347,7 @@ Mat4x4MulMat4x4New").
 * Made so cmd line doesn't print answer line unless a new answer occurs.
 
 ----02/14/15 05:12:45----
-* Added [C:/Adam/Dsk/ADskA.CPP.Z,43] Dump().
+* Added [C:/Adam/ABlkDev/ADskA.CPP.Z,43] Dump().
 
 ----02/13/15 13:46:14----
 * Got rid of "body_size" in [C:/Doc/GRAFiles.TXT.Z,1] GRA Files.

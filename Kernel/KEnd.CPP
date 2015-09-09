@@ -10,16 +10,18 @@ U0 SysGlblsInit()
   sys_focus_task=Fs;
   QueInit(&sys_macro_root);
 
-  dsk.dft_iso_filename="::/Temp/CDDVD.ISO";
-  StrCpy(dsk.temp_filename,"::/Home/Temp.TXT.Z");
-  dsk.dvd_boot_is_good=TRUE;
+  blkdev.dft_iso_filename="::/Temp/CDDVD.ISO";
+  blkdev.temp_filename="::/Home/Temp.TXT.Z";
+  blkdev.dvd_boot_is_good=TRUE;
   #exe {
     if (!kernel_cfg->auto_mount_ide_hd_let)
       kernel_cfg->auto_mount_ide_hd_let='C';
     if (!kernel_cfg->auto_mount_ide_cd_let)
       kernel_cfg->auto_mount_ide_cd_let='T';
-    StreamPrint("dsk.first_hd_drv_let=%d;",kernel_cfg->auto_mount_ide_hd_let);
-    StreamPrint("dsk.first_dvd_drv_let=%d;",kernel_cfg->auto_mount_ide_cd_let);
+    StreamPrint("blkdev.first_hd_drv_let=%d;",
+	  kernel_cfg->auto_mount_ide_hd_let);
+    StreamPrint("blkdev.first_dvd_drv_let=%d;",
+	  kernel_cfg->auto_mount_ide_cd_let);
   }
 
   InDbg(ON);
@@ -36,7 +38,7 @@ U0 SysGlblsInit()
   KeyDevInit;
 
   #exe {
-    StreamPrint("dsk.boot_drv_let='%C';",kernel_cfg->boot_drv_let);
+    StreamPrint("blkdev.boot_drv_let='%C';",kernel_cfg->boot_drv_let);
     StreamPrint("#exe{Option(OPTf_WARN_PAREN,OFF);}");
     StreamPrint("DskCacheInit(%s);",kernel_cfg->dsk_cache_size_exp);
     StreamPrint("#exe{Option(OPTf_WARN_PAREN,ON);}");
@@ -59,7 +61,7 @@ U0 SysGlblsInit()
   dev.mem64_ptr=MEM_MAPPED_SPACE;
 
   dbg.psect_cache=CAlloc(PSECT_CACHE_SIZE*sizeof(CPSectCache));
-  dbg.fault_handlers_code=IntFaultHandlersNew;
+  dbg.int_fault_code=IntFaultHandlersNew;
 }
 
 U0 SysGrInit()
@@ -166,6 +168,20 @@ U0 KernelMain()
   TimeStampFreqCal;
   Preempt(ON);
 
+  "Before BlkDevsInitAll\n";
+  BlkDevsInitAll;
+  "After  BlkDevsInitAll\n";
+
+  #exe {
+    if (kernel_cfg->dvd_ports_pmt)
+      StreamPrint(
+	    "if (blkdev.boot_rescue_drv_pmt) \"%%S\",\"ST_DVD_PORTS_PMT2\";");
+  };
+
+  ChgDsk(':');
+  Gs->idle_task->cur_dv=blkdev.let_to_drv[ToUpper(blkdev.boot_drv_let)-'A'];
+  LBts(&sys_run_level,RLf_BLKDEV);
+
   #exe {
     if (!kernel_cfg->opts[CFG_NO_MP])
       StreamPrint("\"MultiCore Start\\n\\n\";"
@@ -180,19 +196,6 @@ U0 KernelMain()
     Spawn(&MouseDriverInstall);
   else
     Spawn(&MouseDriverInstall,,,1);
-
-  "BlkDevsInitAll\n";
-  BlkDevsInitAll;
-  "BlkDevsInitAll Done\n";
-
-  #exe {
-    if (kernel_cfg->dvd_ports_pmt)
-      StreamPrint(
-	    "if (dsk.boot_rescue_drv_pmt) \"%%S\",\"ST_DVD_PORTS_PMT2\";");
-  };
-
-  ChgDsk(':');
-  LBts(&sys_run_level,RLf_DSK);
 
   "Loading Compiler\n";
   Cd("/Compiler");

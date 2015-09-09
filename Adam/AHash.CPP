@@ -403,7 +403,7 @@ public U0 MapFileLoad(U8 *filename)
 
 	  ptr=temph->src_link;
 	  if (ptr[0] && ptr[1] && ptr[2]==':' && ptr[3]==':')
-	    ptr[3]=dsk.boot_drv_let;
+	    ptr[3]=blkdev.boot_drv_let;
 
 	  doc_e->aux_str=NULL;
 	}

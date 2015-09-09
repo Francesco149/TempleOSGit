@@ -58,8 +58,8 @@ Bool BlkDevInit(CBlkDev *bd)
 //0xFFFF*4 is too big for my taste
 	bd->max_reads=0x800*4;
 //max of maybe a quarter of disk cache
-	if (bd->max_reads>dsk.cache_size/BLK_SIZE/4)
-	  bd->max_reads=dsk.cache_size/BLK_SIZE/4 & ~3;
+	if (bd->max_reads>blkdev.cache_size/BLK_SIZE/4)
+	  bd->max_reads=blkdev.cache_size/BLK_SIZE/4 & ~3;
 	if (bd->max_reads<128)
 	  bd->max_reads=128;
 	bd->max_writes=0xFFFF*4;
@@ -81,18 +81,18 @@ U0 BlkDevsRelease()
   I64 i;
   CBlkDev *bd;
   for (i=0;i<NUM_BLKDEVS;i++) {
-    bd=&dsk.blkdevs[i];
+    bd=&blkdev.blkdevs[i];
     if (bd->owning_task==Fs && bd->bd_signature==BD_SIGNATURE_VAL)
       BlkDevUnlock(bd,TRUE);
   }
 }
 
 CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type)
-{//Locate free slot for new BlkDev, like during [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount().
+{//Locate free slot for new BlkDev, like during [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount().
   I64 i=0;
   CBlkDev *result;
   do {
-    result=&dsk.blkdevs[i];
+    result=&blkdev.blkdevs[i];
     if (result->bd_signature!=BD_SIGNATURE_VAL) {
       MemSet(result,0,sizeof(CBlkDev));
       result->first_drv_let=first_drv_let;

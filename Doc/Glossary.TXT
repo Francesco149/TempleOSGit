@@ -39,6 +39,7 @@ Desc	Descriptor, Description
 Dev	Device
 Dft	Default
 Dir	Directory, Direction
+Div	Divide
 Doc	Document
 Drv	Drive
 Dsk	Disk
@@ -65,7 +66,7 @@ IDT	Interrupt Descriptor Table
 Init	Initialize
 Ins	Insert
 Int	Interrupt
-ip_	Input Pointer.  See [C:/Kernel/Serial/InputPointer.CPP.Z,1]
+ip_	Input Pointer.  See [C:/Kernel/SerialDev/InputPointer.CPP.Z,1]
   InputPointer.CPP.
 Irq	Interrupt (Request)
 JIT	Just-in-Time

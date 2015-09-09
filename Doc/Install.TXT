@@ -25,7 +25,8 @@ and fix the primary when you work on it.  Odds are, you only need a couple
 gigabytes for your TempleOS partitions.
 
 1)
-  [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount() use if the drive is partitioned.
+  [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount() use if the drive is
+  partitioned.
     This command mounts a drive making it accessible.  For simplicity, select 
 'C' as the first drive letter for your hard drive.  The first partition 
 will be 'C', second, 'D', etc.  TempleOS needs 3 numbers to utilize a hard 
@@ -33,10 +34,10 @@ drive -- base0, base1, and unit.  When you enter a hexadecimal number, do
 it like in C with a 0x prefix.  If the probe was successful, you can just 
 enter the number in the probe box instead of base0.
   
-[C:/Adam/Dsk/ADskB.CPP.Z,78] PrtDsk('C') use if drive is not partitioned
+[C:/Adam/ABlkDev/ADskB.CPP.Z,78] PrtDsk('C') use if drive is not partitioned
 
-    This will perform a special [C:/Kernel/Dsk/DskAddDev.CPP.Z,173] Mount()
-    automatically.
+    This will perform a special [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173]
+    Mount() automatically.
 
 **WARNING:**  This command erases everything on a hard drive.  It
     repartitions 
@@ -49,7 +50,7 @@ You'll need to do a [C:/Adam/Opt/Boot/BootIns.CPP.Z,132] MasterBootZero() to
     restore your drive to a state 
 where other operating systems can partition it.
   
-2) [C:/Kernel/Dsk/DskFmt.CPP.Z,53] Fmt('D',TRUE,FALSE,DVT_FAT32)
+2) [C:/Kernel/BlkDev/DskFmt.CPP.Z,53] Fmt('D',TRUE,FALSE,DVT_FAT32)
   This command formats a drive with FAT32 or the [C:/Doc/RedSea.TXT.Z,1]
   RedSea file system type.  Use 
 the drive letter of the partition in place of 'D'.
@@ -58,15 +59,15 @@ the drive letter of the partition in place of 'D'.
   /0000Adam/Opt/
 Boot/OldMBR.BIN.C.
 
-3) [C:/Adam/Dsk/ADskA.CPP.Z,154] CopyTree("T:/","D:/")
+3) [C:/Adam/ABlkDev/ADskA.CPP.Z,154] CopyTree("T:/","D:/")
   This command is used to copy files onto a hard drive partition from the 
 CD/DVD.  Use the drive letter of the partition in place of 'D'.
 
 4) [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall('D')
   This command recompiles the source code on a drive and writes to the
   _drive's_ 
-boot record.  You'll need to reenter the [C:/Kernel/Dsk/DskAddDev.CPP.Z,173]
-  Mount information so it can be 
+boot record.  You'll need to reenter the
+  [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount information so it can be 
 stored in the kernel.
 
 5) Use Linux's [C:/Doc/Grub.TXT.Z,1] Grub or TempleOS'

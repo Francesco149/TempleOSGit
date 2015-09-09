@@ -10,7 +10,7 @@ U0 DVDImageRead(U8 dvd_drv_let,U8 *out_name)
   if (bd->type!=BDT_ATAPI)
     throw('BlkDev');
   if (!out_name)
-    out_name=dsk.dft_iso_filename;
+    out_name=blkdev.dft_iso_filename;
   cnt=CeilU64(dv->size,spc);
   while (cnt>0) {
     if (cnt>COPY_BUF_BLKS)
@@ -89,7 +89,7 @@ U0 DVDImageWrite(U8 dvd_drv_let,U8 *in_name=NULL,I64 media_type=MT_DVD)
   CFile *f;
 
   if (!in_name)
-    in_name=dsk.dft_iso_filename;
+    in_name=blkdev.dft_iso_filename;
   in_name3=DftExt(in_name,"ISO");
   in_name2=FileNameAbs(in_name3);
   f=FOpen(in_name2,"r");

@@ -97,7 +97,7 @@ U8 *DirNameAbs(U8 *_dirname)
   drv[2]=0;
   if (*dirname && dirname[1]==':') {
     if (*dirname==':')
-      *drv=dsk.boot_drv_let;
+      *drv=blkdev.boot_drv_let;
     else
       *drv=*dirname;
     dirname=dirname+2;
@@ -270,7 +270,7 @@ returns default.
 
 ("/Kernel/KHashA.CPP.Z",NULL,NULL)	returns "D:/Kernel"
 ("/Kernel",NULL,"PRJ.Z")		returns "D:/Kernel/Kernel.PRJ.Z"
-("/Kernel/Dsk",NULL,"PRJ.Z")		returns "D:/Kernel/Kernel.PRJ.Z"
+("/Kernel/BlkDev",NULL,"PRJ.Z")		returns "D:/Kernel/Kernel.PRJ.Z"
 ("/Apps/Psalmody","Load","CPP.Z")	returns "D:/Apps/Psalmody/Load.CPP.Z"
 */
   U8 *st=DirNameAbs(dirname),*st2,*st3,*result,*dft=NULL,*ext;

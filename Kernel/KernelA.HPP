@@ -281,7 +281,7 @@ public class CMathODE
 
 //Interrupts
 //0x00-0x1F are reserved by Intel
-#define I_DIVIDE_BY_ZERO	0x00
+#define I_DIV_ZERO		0x00
 #define I_SINGLE_STEP		0x01
 #define I_NMI			0x02
 #define I_BPT			0x03
@@ -440,8 +440,8 @@ class CKernel
 #define RLf_FULL_HEAP		6
 #define RLf_RAW			7
 #define RLf_INTERRUPTS		8
-#define RLf_MP			9
-#define RLf_DSK			10
+#define RLf_BLKDEV		9
+#define RLf_MP			10
 #define RLf_COMPILER		11
 #define RLf_DOC			12
 #define RLf_WINMGR		13
@@ -458,8 +458,8 @@ class CKernel
 #define RLF_FULL_HEAP		0x00040
 #define RLF_RAW			0x00080
 #define RLF_INTERRUPTS		0x00100
-#define RLF_MP			0x00200
-#define RLF_DSK			0x00400
+#define RLF_BLKDEV		0x00200
+#define RLF_MP			0x00400
 #define RLF_COMPILER		0x00800
 #define RLF_DOC			0x01000
 #define RLF_WINMGR		0x02000
@@ -2500,12 +2500,12 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/Dsk/DskCDDVD.CPP.Z,80] DVDImageWrite()
+//Media types for [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 
 #help_index "File/Low Level;File/Program Routines"
-//CDirEntry flags (Used by [C:/Adam/Dsk/FileMgr.CPP.Z,547] FileMgr())
+//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr())
 #define DEF_PROCESSED		1
 #define DEF_REMOVABLE		2
 #define DEF_NOT_INITIALIZED	4
@@ -2672,7 +2672,7 @@ class CFreeLst
 public class CDrv
 {
 //Don't access ->drv_let directly in case a drive has been remapped.
-  //Use [C:/Kernel/Dsk/DskDrv.CPP.Z,123] Drv2Let().
+  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,123] Drv2Let().
   I64	locked_flags;
   U32	type,  //Bit31 is used as a disable, since it will be unknown
 	dv_signature;
@@ -2707,17 +2707,17 @@ class CCacheBlk
 };
 
 #help_index "File/System"
-public class CDskGlbls
+public class CBlkDevGlbls
 {
-  U8	*dft_iso_filename;  //See [C:/Kernel/KEnd.CPP.Z,1] dsk.dft_iso_filename
+  CBlkDev *blkdevs;
+  U8	*dft_iso_filename;  //See [C:/Kernel/KEnd.CPP.Z,1] blkdev.dft_iso_filename
+  U8	*temp_filename;
   CCacheBlk *cache_base,*cache_ctrl,**cache_hash_table;
   I64	cache_size,read_cnt,write_cnt;
-  CBlkDev *blkdevs;
   CDrv	*drvs,*let_to_drv[32];
   I64	auto_mount_ide_cnt;
-  U8	temp_filename[STR_LEN],boot_drv_let,
-	first_hd_drv_let,first_dvd_drv_let;
-  Bool	boot_rescue_drv_pmt,dvd_boot_is_good;
+  U8	boot_drv_let,first_hd_drv_let,first_dvd_drv_let;
+  Bool	boot_rescue_drv_pmt,dvd_boot_is_good,pad[3];
 };
 
 #help_index "File/Internal"
@@ -3505,7 +3505,7 @@ public class CSysFixedArea
 
 //TempleOS places a 1 in bit 7 for
 //keys with an E0 prefix.
-//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/Serial/Keyboard.CPP.Z,439] KbdHandler().
+//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/SerialDev/Keyboard.CPP.Z,439] KbdHandler().
 #define SC_ESC		0x01
 #define SC_BACKSPACE	0x0E
 #define SC_TAB		0x0F
@@ -3810,8 +3810,9 @@ $=64;
 #help_index "Debugging"
 class CMPCrash
 {
-  CTask *task;
   I64	cpu_num;
+  CTask *task;
+  I64	rip;
   U8	*msg;
   I64	msg_num;
 };
@@ -3822,7 +3823,7 @@ public class CDbgGlbls
   U8	*msg;
   I64	msg_num;
   CMPCrash *mp_crash;
-  U8	*fault_handlers_code,
+  U8	*int_fault_code,
 	*fix_file_line;
   CPSectCache *psect_cache;
   I64	psect_cache_index;

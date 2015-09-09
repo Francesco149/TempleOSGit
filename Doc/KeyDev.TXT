@@ -1,4 +1,4 @@
-The editor mostly stays in a [C:/Kernel/Serial/Message.CPP.Z,146]
+The editor mostly stays in a [C:/Kernel/SerialDev/Message.CPP.Z,146]
 GetKey()/[C:/Kernel/KeyDev.CPP.Z,1] PutKey() loop.  The putkey portion is 
 where keys are acted-upon.  TempleOS has a chain of putkey handlers in a 
 [Circular Queue,1] Circular Queue with priorities.  The highest priority

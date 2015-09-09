@@ -183,7 +183,7 @@ public I64 EdLinkCvt(U8 *link_st,U8 **_filename=NULL,U8 **_needle_str=NULL,
   if (!link_st||!*link_st) {
     if (edf_dof_flags&EDF_BAIL)
       return -1;
-    link_st=dsk.temp_filename;
+    link_st=blkdev.temp_filename;
   }
   st=StrNew(link_st);
   result=LK_FILE;

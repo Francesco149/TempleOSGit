@@ -30,7 +30,7 @@ I64 DirTreeSerializeFill(CDirEntry *tempde,U8 *dst)
   return result+1;
 }
 public U8 *DirTreeSerialize(CDirEntry *tempde,I64 *_size=NULL)
-{//Serialize tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind() into a one contiguous U8 array.
+{//Serialize tree returned from [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind() into a one contiguous U8 array.
   I64 size=DirTreeSerializeSize(tempde);
   U8 *buf=MAlloc(size);
   DirTreeSerializeFill(tempde,buf);
@@ -54,7 +54,7 @@ U8 *DirTreeUnserialize2(U8 *src,CDirEntry **tempde)
   return src;
 }
 public CDirEntry *DirTreeUnserialize(U8 *src)
-{//Unserialize tree to make it like a tree returned from [C:/Kernel/Dsk/DskFind.CPP.Z,30] FilesFind().
+{//Unserialize tree to make it like a tree returned from [C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind().
   CDirEntry *tempde=NULL;
   DirTreeUnserialize2(src,&tempde);
   return tempde;
@@ -361,7 +361,7 @@ public U0 DskView(U8 drv_let=0)
 
   j=1;
   for (i=0;i<NUM_DRVS;i++) {
-    dv=&dsk.drvs[i];
+    dv=&blkdev.drvs[i];
     if (bd==dv->bd && dv->type) {
       sect_start=-(dv->base_offset*2*pi/(bd->max_blk+1));
       sect_end	=-((dv->base_offset+dv->size)*2*pi/(bd->max_blk+1));

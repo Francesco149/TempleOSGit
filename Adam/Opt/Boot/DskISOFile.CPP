@@ -354,7 +354,7 @@ public I64 ISOFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,
   ScanFlags(&fuf_flags,Define("ST_FILE_UTIL_FLAGS"),fu_flags);
 
   if (!_filename)
-    _filename=dsk.dft_iso_filename;
+    _filename=blkdev.dft_iso_filename;
   filename=DftExt(_filename,"ISO");
 
   if (_stage2_filename)

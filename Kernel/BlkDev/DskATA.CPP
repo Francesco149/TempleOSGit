@@ -366,7 +366,7 @@ U0 ATAReadBlks(CBlkDev *bd,U8 *buf, I64 blk, I64 cnt)
       throw('BlkDev');
   }
 
-  dsk.read_cnt+=(cnt*bd->blk_size)>>BLK_SIZE_BITS;
+  blkdev.read_cnt+=(cnt*bd->blk_size)>>BLK_SIZE_BITS;
   if (unlock) BlkDevUnlock(bd);
 }
 
@@ -401,7 +401,7 @@ Bool ATAPIReadBlks2(CBlkDev *bd,F64 timeout,U8 *buf,
     if (ATAPIWritePktWord(bd,timeout,0xA800,
 	  native_blk.u16[1],native_blk,cnt.u16[1],cnt,0) &&
 	  ATAGetResult(bd,timeout,buf,cnt*bd->blk_size,0,FALSE)) {
-      dsk.read_cnt+=(cnt*bd->blk_size)>>BLK_SIZE_BITS;
+      blkdev.read_cnt+=(cnt*bd->blk_size)>>BLK_SIZE_BITS;
       result=TRUE;
     }
   }
@@ -570,7 +570,7 @@ U0 ATAPIWriteBlks(CBlkDev *bd,U8 *buf, I64 native_blk, I64 cnt)
     if (U32s_avail) {
       RepOutU32(buf,U32s_avail,bd->base0+ATAR0_DATA);
       buf+=U32s_avail<<2;
-      dsk.write_cnt+=U32s_avail>>(BLK_SIZE_BITS-2);
+      blkdev.write_cnt+=U32s_avail>>(BLK_SIZE_BITS-2);
     }
   }
   ATAWaitNotBUSY(bd,0);
@@ -597,7 +597,7 @@ Bool ATAWBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt)
     buf+=n<<BLK_SIZE_BITS;
     blk+=n;
     cnt-=n;
-    dsk.write_cnt+=n;
+    blkdev.write_cnt+=n;
   }
   if (bd->type==BDT_ATAPI) {
     ATAPISync(bd);

@@ -1,15 +1,15 @@
 asm {
-SYS_MP_CRASH_HANDLER_ADDR:: //Forward reference to work around compiler
-	DU32	&MPCrash;
+INT_MP_CRASH_ADDR:: //Forward reference to work around compiler
+	DU32	&IntMPCrash;
 
-SYS_WAKE_HANDLER::
+INT_WAKE::
 	PUSH	RAX
 	MOV	EAX,U32 LAPIC_EOI
 	MOV	U32 [RAX],0
 	POP	RAX
 	IRET
 
-SYS_TIMER_HANDLER::  //I_TIMER
+IRQ_TIMER::  //I_TIMER
 	CALL	TASK_CONTEXT_SAVE	//PREEMPTIVE
 	CLD
 
@@ -54,10 +54,10 @@ SYS_TIMER_HANDLER::  //I_TIMER
 	JC	I32 RESTORE_NEXT_RSI_TASK
 @@30:	JMP	I32 RESTORE_RSI_NO_PREEMPT_TASK
 //************************************
-SYS_IRQ_FAULT::
+INT_FAULT::
 	PUSH	RBX
 	PUSH	RAX
-	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,146] IntFaultHandlersNew().
+	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,162] IntFaultHandlersNew().
 	XOR	RAX,RAX
 	MOV	FS:U8 CTask.fault_num[RAX],BL
 	POP	RAX
@@ -69,7 +69,7 @@ SYS_IRQ_FAULT::
 	XOR	RDX,RDX
 	MOV	U64 CTask.fault_err_code[RSI],RDX
 	MOV	EDX,U32 CTask.fault_num[RSI]
-	BT	U64 [SYS_FAULT_ERR_CODE_BITMAP],RDX
+	BT	U64 [INT_FAULT_ERR_CODE_BITMAP],RDX
 	JNC	@@1
 	POP	U64 CTask.fault_err_code[RSI]
 
@@ -86,7 +86,7 @@ SYS_IRQ_FAULT::
 	CALL	&Fault2 	//See [C:/Kernel/KDbg.CPP.Z,1] Fault2
 	JMP	I32 RESTORE_FS_TASK_WITH_KEY_CHECK
 
-SYS_FAULT_ERR_CODE_BITMAP::
+INT_FAULT_ERR_CODE_BITMAP::
 	DU32	0x00027D00,0,0,0,0,0,0,0;
 }
 
@@ -143,6 +143,22 @@ interrupt U0 IntNop()
   *LAPIC_EOI(U32 *)=0;
 }
 
+interrupt U0 IntDivZero()
+{
+  if (Gs->num) {
+    mp_cnt=1;
+    dbg.mp_crash->cpu_num=Gs->num;
+    dbg.mp_crash->task=Fs;
+    MOV	RAX,U64 8[RBP] //Get RIP off of stk.
+    dbg.mp_crash->rip=GetRAX;
+    dbg.mp_crash->msg="Div Zero";
+    dbg.mp_crash->msg_num=0;
+    MPInt(I_MP_CRASH,0);
+    SysHlt;
+  }
+  throw('DivZero');
+}
+
 U8 *IntFaultHandlersNew()
 {
   I64 i;
@@ -151,7 +167,7 @@ U8 *IntFaultHandlersNew()
     *dst++=0x6A; //PUSH I8 xx
     *dst(I8 *)++=i;
     *dst++=0xE9; //JMP	I32 xxxxxxxx
-    *dst(I32 *)=SYS_IRQ_FAULT-dst-4;
+    *dst(I32 *)=INT_FAULT-dst-4;
     dst+=4;
   }
   return result;
@@ -177,8 +193,9 @@ U0 IntInit2()
   I64 i;
   PUSHFD
   CLI
-  for (i=0;i<0x20;i++)
-    IntEntrySet(i,&dbg.fault_handlers_code[7*i]);
+  IntEntrySet(I_DIV_ZERO,&IntDivZero);
+  for (i=1;i<0x20;i++)
+    IntEntrySet(i,&dbg.int_fault_code[7*i]);
 /*In theory, we use the PIC mask reg to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
@@ -186,9 +203,9 @@ I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,139] IntNop().
 I have no idea why I got a IRQ 0x27.
 */
   IntEntrySet(I_NMI,_SYS_HLT);
-  IntEntrySet(I_TIMER,SYS_TIMER_HANDLER);
-  IntEntrySet(I_MP_CRASH,*SYS_MP_CRASH_HANDLER_ADDR(U32 *));
-  IntEntrySet(I_WAKE,SYS_WAKE_HANDLER);
-  IntEntrySet(I_DBG,&dbg.fault_handlers_code[7*I_DBG]);
+  IntEntrySet(I_TIMER,IRQ_TIMER);
+  IntEntrySet(I_MP_CRASH,*INT_MP_CRASH_ADDR(U32 *));
+  IntEntrySet(I_WAKE,INT_WAKE);
+  IntEntrySet(I_DBG,&dbg.int_fault_code[7*I_DBG]);
   POPFD
 }

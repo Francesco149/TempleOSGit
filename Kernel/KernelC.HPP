@@ -382,7 +382,7 @@ public extern I64 AutoMountIDE();
 extern I64 BlkDevAdd(CBlkDev *bd,Bool one_drv,Bool make_free);
 extern U0 DskCacheInit(I64 size_in_U8s);
 public extern U0 DskCacheInvalidate(CDrv *dv);
-public extern CDskGlbls dsk;
+public extern CBlkDevGlbls blkdev;
 
 #help_index "Graphics/Color"
 extern U0 (*fp_set_std_palette)();
