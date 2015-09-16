@@ -25,18 +25,18 @@
     I64 msg_flags=1;
       +] Varoom
       F64 best_score=46.2643;
-      +] TimeOut
-      I64 best_score=22202;
       +] ZoneOut
       F64 best_score=50.3318;
       +] BlackDiamond
       I64 best_score=9;
-      +] EagleDive
-      I64 best_score=4;
       +] Wenceslas
       F64 best_score=49.8074;
+      +] EagleDive
+      I64 best_score=4;
       +] BomberGolf
       I64 best_score=175;
+      +] TimeOut
+      I64 best_score=22202;
       +] DemoCompany
   +] Game1
       F64 best_score=166.34088;
