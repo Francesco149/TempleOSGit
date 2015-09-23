@@ -364,6 +364,14 @@ It is love I desire: Hosea 6:6
 Offer a sacrifice of praise: Hebrews 13:15
 Do I drink blood of goats? Offer praise: Psalms 50:14
 Runner's Stride: Psalms 147:10
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/aKchwAWMpDA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/aKchwAWMpDA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Buckling Armor: 1 Kings 20:11
 Lot cast in the lap: Proverbs 16:33
 Lord does not repeat: Job 33:14
@@ -372,6 +380,12 @@ Jesus' zeal for the Temple: John 2:14-19
 
 >lspci -v
 Size:
+
+TempleOS Logo
+```
+<img src="http://www.templeos.org/images/Logo128x152.jpg" width="640"
+height="760" alt="">
+```
 
 Contact
 ```
@@ -399,6 +413,15 @@ Neil Degrasse Tyson: Get of of their Way
 value="http://www.youtube.com/v/AIEJjpVlZu0"></param><param
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/AIEJjpVlZu0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Neil Degrasse Tyson: Girl
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/rVwQ9jBuoFA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/rVwQ9jBuoFA"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
@@ -440,6 +463,15 @@ src="http://www.youtube.com/v/Dd7FixvoKBw"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/PxeTPBYIDEM"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/PxeTPBYIDEM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 
 WWW.OSDEV.ORG
 PCI Interrupt Routing
