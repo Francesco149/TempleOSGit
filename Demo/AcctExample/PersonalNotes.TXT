@@ -1,5 +1,7 @@
 * I'm going to redo all my videos and make them more professional.
 
+* Kruskal-Wallis_one-way_analysis_of_variance disk sector allocation?
+
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
 * 8/20/2015 TAD8, Tour1, then Tour TestSuite was missing #include "TestSuite".
@@ -407,6 +409,16 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
+Metallica: Creeping Death
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/z5lXEFdZAmU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/z5lXEFdZAmU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 Neil Degrasse Tyson: Get of of their Way
 ```
 <object width="640" height="520"><param name="movie"
@@ -436,6 +448,16 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
+Red Fang: Prehistoric Dog
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/VufilzHKTqk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/VufilzHKTqk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 Bill Gates Predictions
 ```
 <object width="640" height="520"><param name="movie"
@@ -454,6 +476,24 @@ src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambri
 dge-county-pd.jpg" width="480" height="376" alt="">
 ```
 
+Frontier Psychiatrist
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/qLrnkK2YEcE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/qLrnkK2YEcE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/DfIcZtjAch8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/DfIcZtjAch8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 Key and Peel Substitute
 ```
 <object width="640" height="520"><param name="movie"
@@ -468,6 +508,34 @@ height="520"></embed></object>
 value="http://www.youtube.com/v/PxeTPBYIDEM"></param><param
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/PxeTPBYIDEM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+Morning has Broken
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/kKoRp05L95c"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/kKoRp05L95c"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+Zombie Game
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/F27r_9oyqBI"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/F27r_9oyqBI"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/ORXqOEGFQfE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/ORXqOEGFQfE"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```

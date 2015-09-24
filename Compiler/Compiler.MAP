@@ -51,7 +51,7 @@
 [C:/Compiler/LexLib.CPP.Z,38] LexPopNoRestore
 [C:/Compiler/CMain.CPP.Z,607] ExePrint
 [C:/Compiler/BackLib.CPP.Z,257] SLASH_OP_NEG
-[C:/Compiler/PrsVar.CPP.Z,413] PrsVarLst
+[C:/Compiler/PrsVar.CPP.Z,416] PrsVarLst
 [C:/Compiler/Asm.CPP.Z,811] PrsAsmDefine
 [C:/Compiler/PrsExp.CPP.Z,15] PrsAddOp
 [C:/Compiler/CExcept.CPP.Z,65] LexWarn
@@ -284,7 +284,7 @@
 [C:/Compiler/BackFA.CPP.Z,75] ICCopyTemplate
 [C:/Compiler/PrsStmt.CPP.Z,132] PrsFun
 [C:/Compiler/Lex.CPP.Z,293] LexIncludeStr
-[C:/Compiler/PrsVar.CPP.Z,284] PrsType
+[C:/Compiler/PrsVar.CPP.Z,287] PrsType
 [C:/Compiler/Lex.CPP.Z,28] CmpCtrlNew
 [C:/Compiler/Lex.CPP.Z,323] cmp_type_flags_src_code
 [C:/Compiler/PrsVar.CPP.Z,123] PrsVarInit2
@@ -333,5 +333,5 @@
 [C:/Compiler/PrsStmt.CPP.Z,788] PrsStreamBlk
 [C:/Compiler/CExts.CPP.Z,44] cmp_templates_dont_push2
 [C:/Compiler/UAsm.CPP.Z,66] InstEntryFind
-[C:/Compiler/PrsVar.CPP.Z,378] PrsDotDotDot
+[C:/Compiler/PrsVar.CPP.Z,381] PrsDotDotDot
 [C:/Compiler/AsmInit.CPP.Z,1] AsmPrsInsFlags

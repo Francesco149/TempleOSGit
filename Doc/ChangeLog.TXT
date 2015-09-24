@@ -2,7 +2,9 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----09/19/15 15:48:51----
+----09/23/15 14:17:35----
+* No arrays in fun args.
+* Got rid of 4x4 array dimensions in function args.
 
 ----09/05/15 11:26:12----
 * Gave [C:/Kernel/KernelA.HPP.Z,284] I_DIV_ZERO its own vector instead of
