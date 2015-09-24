@@ -144,7 +144,7 @@ U0 SpriteSetOrigin(CSprite *root,I64 dx,I64 dy,I64 dz)
   }
 }
 
-CSprite *SpriteTransformCircle(I64 r[4][4],CSprite *tempg)
+CSprite *SpriteTransformCircle(I64 *r,CSprite *tempg)
 {
   I64 x,y,z;
   F64 m1,a1,m2,radius=tempg->pr.radius<<16;
@@ -171,7 +171,7 @@ CSprite *SpriteTransformCircle(I64 r[4][4],CSprite *tempg)
   return tempg1;
 }
 
-CSprite *SpriteTransformEllipse(I64 r[4][4],CSprite *tempg)
+CSprite *SpriteTransformEllipse(I64 *r,CSprite *tempg)
 {
   I64 x,y,z;
   F64 m1,a1,m2,a2,s,c,x_radius=tempg->pwha.width<<16,
@@ -211,7 +211,7 @@ CSprite *SpriteTransformEllipse(I64 r[4][4],CSprite *tempg)
   return tempg1;
 }
 
-CSprite *SpriteTransformRect(I64 r[4][4],CSprite *tempg,F64 theta)
+CSprite *SpriteTransformRect(I64 *r,CSprite *tempg,F64 theta)
 {
   I64 x,y,z,w,h;
   F64 m1,a1,m2,a2,s,c,
@@ -252,7 +252,7 @@ CSprite *SpriteTransformRect(I64 r[4][4],CSprite *tempg,F64 theta)
   return tempg1;
 }
 
-CSprite *SpriteTransformBitmap(I64 r[4][4],CSprite *tempg)
+CSprite *SpriteTransformBitmap(I64 *r,CSprite *tempg)
 {
   CDC *img,*tempb;
   U8 *elems;
@@ -334,7 +334,7 @@ CSprite *SpriteTransformBitmap(I64 r[4][4],CSprite *tempg)
   return tempg1;
 }
 
-U0 SpriteTransform(I64 r[4][4],CSprite *root)
+U0 SpriteTransform(I64 *r,CSprite *root)
 {
   I64 i,j,k,num,
 	x,y,z,x1,y1,z1,x2,y2,z2,x3,y3,z3;
