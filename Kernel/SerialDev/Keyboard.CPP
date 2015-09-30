@@ -51,7 +51,6 @@ U0 KbdCmdFlush()
 
 U0 KbdSetLEDs(I64 sc)
 {
-  Bool old_preempt=Preempt;
   U8 v=0;
   BEqu(&v,0,Bt(&sc,SCf_SCROLL));
   BEqu(&v,1,Bt(&sc,SCf_NUM));
@@ -61,7 +60,6 @@ U0 KbdSetLEDs(I64 sc)
     KbdCmdSend(KBD_PORT,v);
   } catch
     Fs->catch_except=TRUE;
-  Preempt(old_preempt);
 }
 
 U0 KbdMouseCmdAck(U8 val)

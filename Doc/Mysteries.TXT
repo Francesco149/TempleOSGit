@@ -3,7 +3,7 @@
 * TempleOS runs in VGA 640x480 16 color graphics mode, not text mode.  It 
 changes to this mode with a [C:/Kernel/KStart.CPP.Z,1] BIOS call while in
 real-mode before it switches to 
-64-bit mode.  The text is [C:/Adam/Gr/GrScreen.CPP.Z,260] drawn manually.  If
+64-bit mode.  The text is [C:/Adam/Gr/GrScreen.CPP.Z,255] drawn manually.  If
 graphics mode fails, it 
 falls-back on text mode.  You can force text mode with an
 [C:/Kernel/KCfg.CPP.Z,1] Kernel config 
@@ -61,8 +61,8 @@ mode for that and stop multi-tasking.
 
 * MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP 
 relative, so it's tricky to use.  FS is used for the current
-[C:/Kernel/KernelA.HPP.Z,3269] CTask, GS for 
-[C:/Kernel/KernelA.HPP.Z,3395] CCPU.
+[C:/Kernel/KernelA.HPP.Z,3268] CTask, GS for 
+[C:/Kernel/KernelA.HPP.Z,3394] CCPU.
 
 * TempleOS uses JIT file compression on a file-by-file basis.  Files are 
 [C:/Kernel/Compress.CPP.Z,1] compressed, not encrypted.
@@ -77,7 +77,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall(). 
-TempleOS is 119,216 lines.  Roughly 
+TempleOS is 118,728 lines.  Roughly 
 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
@@ -100,7 +100,7 @@ virtue of the fact that abs addresses get patched.
 * Binary executable files have export syms which are loaded into the sym 
 tables.  The operating system Kernel has such an export table.  In addition, 
 some map files are processed to provide more information on syms -- src file 
-links.  This is how the [C:/Kernel/PSect.CPP.Z,287] Man()/AUTOCOMPLETE
+links.  This is how the [C:/Kernel/PSect.CPP.Z,284] Man()/AUTOCOMPLETE
 feature can find src lines.
 
 * #assert might print a message at COMPILE time, not run time.
@@ -166,10 +166,9 @@ a bootloader when I tricked it to use it's recovery partition feature.
 * The CPU usage during disk operation expands to 99%.  It polls while 
 swapping-out.  You can do other, non-disk activity during disk operations 
 because it swaps-out a lot and task swaps take only half a microsecond, 
-probably a hundred times faster than a typical OS.  See 
-[C:/Demo/Lectures/Spinning.CPP,1] Cooperative Multitasking.  It does not
-break-up disk operations into small 
-pieces for sharing, however, so the disk is lock onto that one task.
+probably a hundred times faster than a typical OS.  It does not break-up disk 
+operations into small pieces for sharing, however, so the disk is lock onto 
+that one task.
 
 
 * "Windows" is a trademark of MicroSoft Corp.

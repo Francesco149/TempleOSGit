@@ -81,7 +81,6 @@ U0 LexWarn(CCmpCtrl *cc,U8 *str=NULL)
 U0 LexExcept(CCmpCtrl *cc,U8 *str=NULL)
 {//Print err msg, [C:/Compiler/CExcept.CPP.Z,50] LexPutPos() and throw exception.
   if (!Bt(&sys_run_level,RLf_ADAM_SERVER)) {
-    Preempt;
     Raw(ON);
     "Note: Still in boot phase.\n";
   }

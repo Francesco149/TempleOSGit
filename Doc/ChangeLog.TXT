@@ -2,6 +2,11 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----09/27/15 21:18:10----
+
+----09/27/15 11:46:44----
+* Got rid of preemption.
+
 ----09/23/15 14:17:35----
 * No arrays in fun args.
 * Got rid of 4x4 array dimensions in function args.
@@ -23,7 +28,7 @@ common fault vector.
 
 ----08/22/15 20:38:15----
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite");
+R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("MakeDistro","DoDistro");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("::/Home/Adam*.CPP","::/Home/Home*.CPP");
 * Created Make*.CPP make dir files.
@@ -63,8 +68,8 @@ R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite");
 * Fixed bug parsing "$GREEN FG$".  It is an error.
 
 ----08/05/15 13:49:10----
-* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,355] SrvCmdsHandler() &&
-[C:/Kernel/KTask.CPP.Z,380] SrvTaskCont().
+* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,349] SrvCmdsHandler() &&
+[C:/Kernel/KTask.CPP.Z,376] SrvTaskCont().
 
 ----08/03/15 18:09:33----
 * Improved [C:/Demo/Games/FlapBat.CPP,1].
@@ -80,7 +85,7 @@ R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("CtrlAltLet","CtrlAlt");
 
 ----07/30/15 22:26:22----
-* Fixed bug.  Now, turned-off preemption in [C:/Adam/WinB.CPP.Z,423]
+* Fixed bug.  Now, turned-off preemption in [C:/Adam/WinB.CPP.Z,421]
 WinMgrTask().
 * Added [C:/Misc/Tour/Tour1.AUT,1].
 
@@ -90,7 +95,7 @@ WinMgrTask().
 ----07/29/15 10:17:29----
 * Improved [C:/Linux/TOSZ.CPP,1].
 * Rearranged AutoComplete and [C:/Adam/Training.CPP.Z,146] KeyMap() code.
-* Added [C:/Kernel/Display.CPP.Z,132] WinInside().
+* Added [C:/Kernel/Display.CPP.Z,126] WinInside().
 * Added [C:/Kernel/KernelA.HPP.Z,606] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
 * Added [C:/Kernel/KernelA.HPP.Z,1421] WIf_SELF_KEY_DESC.
@@ -133,7 +138,7 @@ R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,148] DrvIsWritable");
 R("CDFileCreate","[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 
 ----07/10/15 05:05:41----
-* Turned-off preemption in [C:/Adam/WinB.CPP.Z,423] WinMgrTask().
+* Turned-off preemption in [C:/Adam/WinB.CPP.Z,421] WinMgrTask().
 
 ----07/04/15 00:56:18----
 * Added hex record option to [C:/Adam/God/GodDoodle.CPP.Z,181] GodDoodle().
@@ -163,7 +168,7 @@ R("CDFileCreate","[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 * Added [C:/Doc/HelloWorld.TXT.Z,1].
 
 ----05/26/15 21:10:30----
-* Added [C:/Kernel/KernelA.HPP.Z,3576] DCF_PALETTE.
+* Added [C:/Kernel/KernelA.HPP.Z,3575] DCF_PALETTE.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("VGAPaletteColorGet","[C:/Adam/Gr/GrPalette.CPP.Z,46] GrPaletteColorGet");
 * [C:/Home/HomeWrappers.CPP.Z,13]
@@ -198,7 +203,7 @@ R("VGAPalette4Set","[C:/Adam/Gr/GrPalette.CPP.Z,83] GrPaletteSet");
 * Reindented everything.
 
 ----05/10/15 18:31:46----
-* [C:/Home/HomeWrappers.CPP.Z,13] R("SendMsg","[C:/Kernel/SrvCmd.CPP.Z,254]
+* [C:/Home/HomeWrappers.CPP.Z,13] R("SendMsg","[C:/Kernel/SrvCmd.CPP.Z,250]
 PostMsgWait");
 
 ----05/09/15 08:32:05----
@@ -222,10 +227,10 @@ CmpCtrlSize");
 * Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,8] Sort().
 
 ----05/06/15 11:19:25----
-* [C:/Home/HomeWrappers.CPP.Z,13] R("GetResult","[C:/Kernel/SrvCmd.CPP.Z,201]
+* [C:/Home/HomeWrappers.CPP.Z,13] R("GetResult","[C:/Kernel/SrvCmd.CPP.Z,197]
 JobResultGet");
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("ScanResult","[C:/Kernel/SrvCmd.CPP.Z,166] JobResultScan");
+R("ScanResult","[C:/Kernel/SrvCmd.CPP.Z,162] JobResultScan");
 
 ----05/06/15 10:13:27----
 * [C:/Home/HomeWrappers.CPP.Z,13]
@@ -310,7 +315,7 @@ Mat4x4MulMat4x4New").
 
 ----03/23/15 07:21:26----
 * Updated [C:/Demo/Graphics/Pick.CPP,1].
-* Modified [C:/Kernel/KernelA.HPP.Z,3588] DCF_LOCATE_NEAREST.
+* Modified [C:/Kernel/KernelA.HPP.Z,3587] DCF_LOCATE_NEAREST.
 
 ----03/21/15 09:10:58----
 * Fixed bug in sprite edit of ellipses & polygons.
@@ -343,7 +348,7 @@ Mat4x4MulMat4x4New").
 
 ----02/19/15 18:39:53----
 * Fixed bug in <SHIFT-F6> [C:/Adam/God/GodDoodle.CPP.Z,181] GodDoodle().
-* Made default arg for [C:/Kernel/KernelB.HPP.Z,283] Preempt() into "OFF".
+* Made default arg for Preempt() into "OFF".
 
 ----02/17/15 21:32:26----
 * Made so cmd line doesn't print answer line unless a new answer occurs.
@@ -395,7 +400,7 @@ directory.
 
 ----01/18/15 19:42:50----
 * [C:/Kernel/KMisc.CPP.Z,136] BusyWait() now uses
-[C:/Kernel/KernelB.HPP.Z,293] HPET().
+[C:/Kernel/KernelB.HPP.Z,289] HPET().
 * Min RAM requirement is now 512 Meg.
 * [C:/Home/HomeWrappers.CPP.Z,13] R("TSZ","TOSZ");
 * Added CdLexDir() and CdSrcDir().  Now, you can run apps from any directory, 

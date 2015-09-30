@@ -1,12 +1,11 @@
 U0 RawPutChar(I64 ch)
 {/*For RAW output during boot and in debugger.
 
-See [C:/Adam/Gr/GrScreen.CPP.Z,260] GrUpdateTextFG for
+See [C:/Adam/Gr/GrScreen.CPP.Z,255] GrUpdateTextFG for
 the normal screen text output routine.
 
-See also [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
+See also [C:/Adam/Gr/GrScreen.CPP.Z,401] GrUpdateScreen().
 */
-  Bool old_preempt=Preempt;
   I64 i,row,col;
   U8 *ptr,*ptr1,*ptr2;
 
@@ -16,20 +15,16 @@ See also [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
 	text.raw_flags&=~RWF_IN_DOLLAR;
 	if (!(text.raw_flags & RWF_LAST_DOLLAR)) {
 	  text.raw_flags&=~RWF_LAST_DOLLAR;
-	  Preempt(old_preempt);
 	  return;
 	}
       } else {
 	text.raw_flags|=RWF_IN_DOLLAR|RWF_LAST_DOLLAR;
-	Preempt(old_preempt);
 	return;
       }
     }
     text.raw_flags&=~RWF_LAST_DOLLAR;
-    if (text.raw_flags&RWF_IN_DOLLAR) {
-      Preempt(old_preempt);
+    if (text.raw_flags&RWF_IN_DOLLAR)
       return;
-    }
   }
   if (ch=='\t') {
     RawPutChar(CH_SPACE);
@@ -88,7 +83,6 @@ See also [C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
     }
     text.raw_col++;
   }
-  Preempt(old_preempt);
 }
 
 U0 VGAFlush()

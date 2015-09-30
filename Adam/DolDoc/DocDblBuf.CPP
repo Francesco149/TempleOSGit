@@ -32,7 +32,7 @@ public CDoc *DocBorder(CTask *task=NULL)
 
 public CDoc *DocDblBufStart(CTask *task=NULL)
 {//See [C:/Demo/Spy.CPP,1]
-  Bool unlock_ddoc,old_preempt=Preempt;
+  Bool unlock_ddoc;
   CDoc *pdoc=DocPut(task),*ddoc=DocDisplay(task),*result;
   if (!pdoc || !ddoc || pdoc!=ddoc)
     result=NULL; //Already Double buffering
@@ -57,13 +57,12 @@ public CDoc *DocDblBufStart(CTask *task=NULL)
     if (unlock_ddoc)
       DocUnlock(ddoc);
   }
-  Preempt(old_preempt);
   return result;
 }
 
 public Bool DocDblBufEnd(CTask *task=NULL)
 {//See [C:/Demo/Spy.CPP,1]
-  Bool result=FALSE,old_preempt=Preempt;
+  Bool result=FALSE;
   CDoc *pdoc=DocPut(task),*ddoc=DocDisplay(task);
   if (pdoc && ddoc && pdoc!=ddoc) {//Double buffering?
     if (!task) task=Fs;
@@ -75,13 +74,12 @@ public Bool DocDblBufEnd(CTask *task=NULL)
     DocDel(ddoc);
     result=TRUE;
   }
-  Preempt(old_preempt);
   return result;
 }
 
 public Bool DocDblBufSwap(CTask *task=NULL)
 {//See [C:/Demo/Spy.CPP,1]
-  Bool result=FALSE,old_preempt=Preempt;
+  Bool result=FALSE;
   CDoc *pdoc=DocPut(task),*ddoc=DocDisplay(task);
   if (pdoc && ddoc && pdoc!=ddoc) {//Double buffering?
     if (!task) task=Fs;
@@ -106,6 +104,5 @@ public Bool DocDblBufSwap(CTask *task=NULL)
     task->put_doc=ddoc;
     result=TRUE;
   }
-  Preempt(old_preempt);
   return result;
 }

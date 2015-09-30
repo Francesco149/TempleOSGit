@@ -1222,7 +1222,7 @@ class CEdFileName
   U8	name[256] fmtstr "$DA-P,255,A=\"FileName:%s\"$";
 };
 
-//[C:/Adam/DolDoc/DocEd.CPP.Z,192] Ed()
+//[C:/Adam/DolDoc/DocEd.CPP.Z,188] Ed()
 #define EDF_BAIL		0x100
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
@@ -1245,8 +1245,8 @@ class CEdFileName
 #define DOCF_BORDER_DOC		0x100
 #define DOCF_FORM		0x200
 #define DOCF_MIN_SIZE		0x400
-#define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,135] DocCursor
-#define DOCF_NO_SCROLL_BARS	0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,142] DocScroll
+#define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,133] DocCursor
+#define DOCF_NO_SCROLL_BARS	0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocScroll
 #define DOCF_ALLOW_UNDO		0x2000
 #define DOCF_DONT_SHOW		0x4000
 #define DOCF_HAS_SONG		0x8000
@@ -1280,8 +1280,8 @@ class CEdFileName
 #define DOCf_BORDER_DOC		8
 #define DOCf_FORM		9
 #define DOCf_MIN_SIZE		10
-#define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,135] DocCursor
-#define DOCf_NO_SCROLL_BARS	12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,142] DocScroll
+#define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,133] DocCursor
+#define DOCf_NO_SCROLL_BARS	12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocScroll
 #define DOCf_ALLOW_UNDO		13
 #define DOCf_DONT_SHOW		14
 #define DOCf_HAS_SONG		15
@@ -1523,7 +1523,7 @@ public class CAutoCompleteDictGlbls
 #define OPTF_ECHO		(1<<OPTf_ECHO)
 
 #help_index "Compiler/Intermediate Code"
-//See [C:/Compiler/CInit.CPP.Z,211] ST_RAW_TYPES
+//See [C:/Compiler/CInit.CPP.Z,210] ST_RAW_TYPES
 #define RT_I0		2
 #define RT_U0		3
 #define RT_I8		4
@@ -2500,7 +2500,7 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite()
+//Media types for [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 
@@ -3137,11 +3137,11 @@ class CFPU
 #define SVCf_ADD_TO_QUE		8
 
 #define SVCT_TEXT_INPUT		0 //[C:/Kernel/SrvCmd.CPP.Z,74] TaskText()	Feed StdIn
-#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,122] TaskMsg()	Post msg
+#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,118] TaskMsg()	Post msg
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,209] Spawn()	Tell MP to spawn task
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,205] Spawn()	Tell MP to spawn task
 
 class CSrvCmd
 {
@@ -3174,8 +3174,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3437] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3437] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3436] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3436] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3214,7 +3214,7 @@ public class CTaskSettings
   U8	text_attr,title_src,
 	border_attr,border_src,
 	task_title[TASK_TITLE_LEN+1];
-  Bool	border,preempt,cursor,scroll,autocomplete,pad[3];
+  Bool	border,cursor,scroll,autocomplete,pad[4];
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
@@ -3234,19 +3234,18 @@ public class CTaskSettings
 // TASK task flags
 #define TASKf_KILL_TASK		0
 #define TASKf_SUSPENDED		1
-#define TASKf_PREEMPT		2
-#define TASKf_IDLE		3
-#define TASKf_INPUT_FILTER_TASK	4
-#define TASKf_FILTER_INPUT	5
-#define TASKf_HAS_SONG		6
-#define TASKf_NOT_RAW		7
-#define TASKf_DISABLE_BPTS	8
-#define TASKf_AWAITING_MSG	9
-#define TASKf_BREAK_LOCKED	10
-#define TASKf_PENDING_BREAK	11
-#define TASKf_BREAK_TO_SHIFT_ESC 12
-#define TASKf_KILL_AFTER_DBG	13
-#define TASKf_NONTIMER_RAND	14
+#define TASKf_IDLE		2
+#define TASKf_INPUT_FILTER_TASK	3
+#define TASKf_FILTER_INPUT	4
+#define TASKf_HAS_SONG		5
+#define TASKf_NOT_RAW		6
+#define TASKf_DISABLE_BPTS	7
+#define TASKf_AWAITING_MSG	8
+#define TASKf_BREAK_LOCKED	9
+#define TASKf_PENDING_BREAK	10
+#define TASKf_BREAK_TO_SHIFT_ESC 11
+#define TASKf_KILL_AFTER_DBG	12
+#define TASKf_NONTIMER_RAND	13
 
 //locked flags
 #define TASKLf_TASK_LOCK		0
@@ -3505,7 +3504,7 @@ public class CSysFixedArea
 
 //TempleOS places a 1 in bit 7 for
 //keys with an E0 prefix.
-//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/SerialDev/Keyboard.CPP.Z,439] KbdHandler().
+//See [C:/Doc/CharOverview.TXT.Z,1] and [C:/Kernel/SerialDev/Keyboard.CPP.Z,437] KbdHandler().
 #define SC_ESC		0x01
 #define SC_BACKSPACE	0x0E
 #define SC_TAB		0x0F
@@ -3654,7 +3653,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3593] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3592] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3839,7 +3838,7 @@ public class CDbgGlbls
 #define BOOT_SRC_HARDDRV	2
 #define BOOT_SRC_DVD		3
 
-// [C:/Kernel/SrvCmd.CPP.Z,496] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+// [C:/Kernel/SrvCmd.CPP.Z,485] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 #define STD_DISTRO_DVD_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
 
 #help_index "Misc/Registry"

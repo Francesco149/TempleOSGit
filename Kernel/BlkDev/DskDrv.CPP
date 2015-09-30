@@ -37,7 +37,7 @@ U0 DrvsRelease()
 
 CDrv *DrvMakeFree(U8 drv_let)
 {//Make a slot free for a new drv, like during [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount().
-//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,190] remapped drv.
+//!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,188] remapped drv.
   I64 i=ToUpper(drv_let)-'A';
   CDrv *result;
   if (!(0<=i<NUM_DRVS))
@@ -50,7 +50,7 @@ CDrv *DrvMakeFree(U8 drv_let)
 
 CDrv *DrvNextFree(U8 first_drv_let='C')
 {//Locate free slot for new drv, like during [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount().
-//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,190] remapped drv.
+//!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,188] remapped drv.
   I64 i=ToUpper(first_drv_let)-'A';
   if (!(0<=i<NUM_DRVS))
     throw('Drv');
@@ -177,14 +177,12 @@ U0 ChgDsk(U8 drv_let=0)
 {//Change disk. (Needed for removable media.)
   CDrv *dv=Let2Drv(drv_let);
   CBlkDev *bd=dv->bd;
-  Bool old_preempt=Preempt;
   if (!(bd->flags&BDF_INITIALIZED))
     BlkDevInit(bd);
   else if (bd->flags&BDF_REMOVABLE)
     DskCacheInvalidate(dv);
   Drv(drv_let);
   RedSeaFreeFreeLst(dv);
-  Preempt(old_preempt);
 }
 
 Bool MapDrv(U8 drv_let,CDrv *dv)

@@ -16,7 +16,7 @@ involves a long and short name for each file.
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
 [C:/Kernel/KernelA.HPP.Z,2839] DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,209]
+recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,205]
 Spawn().
 
 * The syntax highlighting occassionally glitches.  The compiler doesn't.
@@ -24,7 +24,7 @@ Spawn().
 * Call [C:/Kernel/BlkDev/DskDrv.CPP.Z,176] ChgDsk() when you insert a new
 removable media.
 
-* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,201]
+* Accessing CD/DVD's is flacky.  Try [C:/Kernel/BlkDev/DskDrv.CPP.Z,199]
 Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,176] ChgDsk() twice.
 
 * You can only extern something once.  There is a varient called _extern
@@ -37,8 +37,8 @@ you change Fs->draw_it.  To prevent links in the
 [C:/Kernel/KernelA.HPP.Z,1328] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
-A) [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,109] DocBottom() followed by
-  [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,122] DocClear() to clear the
+A) [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,107] DocBottom() followed by
+  [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,120] DocClear() to clear the
   [C:/Kernel/KernelA.HPP.Z,1328] CDoc so it has no active 
 widgets.
 

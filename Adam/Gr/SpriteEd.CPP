@@ -886,14 +886,13 @@ U0 SpriteCtrlPtsMove(CEdSprite *root,I64 dx,I64 dy)
 Bool SpriteShiftPts(U8 *elems,I64 x,I64 y,I64 *_cur_elem_num,I64 mode)
 {
   I64 msg_code,a1,a2,xx,yy,xx2,yy2,dd,best_dd,cur_elem_num;
-  Bool old_preempt,result=TRUE;
+  Bool result=TRUE;
   CDC *dc=DCAlias;
   CEdSprite root,*temppe,*best_pe;
 
   SpritePtQueNew(elems,x,y,&root);
   cur_elem_num=0;
   if (root.next!=&root) {
-    old_preempt=Preempt;
     while (TRUE) {
       SpriteCtrlPtsDraw(dc,&root); //has WinMgrSync
       switch (msg_code=ScanMsg(&a1,&a2,
@@ -999,7 +998,6 @@ gs_key:
       }
     }
 gs_done:
-    Preempt(old_preempt);
     QueDel(&root,TRUE);
   }
   DCFill(dc);

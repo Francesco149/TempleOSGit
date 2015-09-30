@@ -166,7 +166,6 @@ U0 KernelMain()
   LBts(&sys_run_level,RLf_INTERRUPTS);
 
   TimeStampFreqCal;
-  Preempt(ON);
 
   "Before BlkDevsInitAll\n";
   BlkDevsInitAll;

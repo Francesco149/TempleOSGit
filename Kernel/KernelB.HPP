@@ -230,14 +230,14 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,240] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3395] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,240] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3394] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,301] BSPStartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3395] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3394] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSSES U16 sys_pci_busses; //Number of PCI busses.
@@ -278,12 +278,8 @@ public _intern IC_CLFLUSH U0 CLFlush(U8 *a); //Flush cache line instruction.
 public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr instruction.
 
-#help_index "Task"
-public _intern IC_PREEMPT
-	Bool Preempt(Bool val=OFF); //Turn mutli-tasking preemption OFF/ON.
-
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3269] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3268] CTask.
 
 #help_index "Time/CPU Cycles"
 public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.

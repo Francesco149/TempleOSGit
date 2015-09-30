@@ -254,12 +254,8 @@ U0 ACMan(I64 n,CTask *parent_task=NULL)
 {
   CHashAC *tempw;
   CHashSrcSym *temph;
-  Bool old_preempt=Preempt;
   if (0<=--n<ac.num_fillins && (tempw=ac.fillin_matches[n]) &&
 	(temph=HashFind(tempw->str,Fs->hash_table,HTG_SRC_SYM)) &&
-	temph->src_link) {
-    Preempt(old_preempt);
+	temph->src_link)
     PopUpEd(temph->src_link,parent_task);
-  }
-  Preempt(old_preempt);
 }

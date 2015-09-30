@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 119,216 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 118,728 lines of TempleOS over
 the 
 past 17.3 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
@@ -32,7 +32,7 @@ than root was!
 * [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 instruction,
 not bit torrent.
 
-* [C:/Kernel/KernelB.HPP.Z,286] Fs is a segment reg, not file system.  (It is
+* [C:/Kernel/KernelB.HPP.Z,282] Fs is a segment reg, not file system.  (It is
 kept pointing to the current 
 task's record.)  There is no memory segmentation -- FS and GS are used as 
 general purpose regs, more or less.
@@ -44,13 +44,8 @@ the syntax making parenthesis optional on function calls with no paramaters.
 * [C:/Kernel/KMisc.CPP.Z,155] Sleep() makes a program pause.  It is not
 hybernation for a laptop.
 
-* [C:/Kernel/Sched.CPP.Z,344] Yield() saves the current task's regs (context)
-and loads in the next task.  
-When waiting, it's better to do this than check a condition in a loop until 
-you get preempted.  Checking a condition until you get preempted wastes CPU.  
-TempleOS does not use virtual memory, so [C:/Kernel/Sched.CPP.Z,344] Yield()
-involves no disk activity.  A 
-swap takes half a microsecond.  See [C:/Demo/Lectures/Spinning.CPP,1].
+* [C:/Kernel/Sched.CPP.Z,336] Yield() saves the current task's regs (context)
+and loads in the next task.
 
 * I use the term [C:/Doc/Glossary.TXT.Z,1] JIT Compile Mode.  This means it
 is compiled and executable 

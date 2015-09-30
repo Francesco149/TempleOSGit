@@ -67,10 +67,8 @@ U0 GrUpdateTasks()
     do { //Loop through core#0 tasks.
       if (!TaskValidate(task)) break;
       if (Bt(&task->display_flags,DISPLAYf_SHOW) &&
-	    Bt(gr.win_uncovered_bitmap,task->win_z_num)) {
+	    Bt(gr.win_uncovered_bitmap,task->win_z_num))
 	GrUpdateTaskWin(task);
-	Preempt;
-      }
       if (!TaskValidate(task)) break;
       task=task->next_task;
     } while (task!=task1);
@@ -80,7 +78,6 @@ U0 GrUpdateTasks()
       do {
 	if (!TaskValidate(task)) break;
 	GrUpdateTaskODEs(task);
-	Preempt;
 	if (!TaskValidate(task)) break;
 	task=task->next_task;
       } while (task!=task1);
@@ -109,7 +106,6 @@ U0 GrFixZoomScale()
 
 public U0 GrScaleZoom(F64 scale)
 {//Multiply zoom factor larger or smaller.
-  Bool old_preempt=Preempt;
   F64 s=gr.screen_zoom;
   gr.screen_zoom=gr.screen_zoom*scale;
   GrFixZoomScale;
@@ -123,7 +119,6 @@ public U0 GrScaleZoom(F64 scale)
   gr.sx=ip.pos.x-gr.zoomed_dc->width >>1/gr.screen_zoom;
   gr.sy=ip.pos.y-gr.zoomed_dc->height>>1/gr.screen_zoom;
   GrFixZoomScale;
-  Preempt(old_preempt);
 }
 
 U0 GrZoomInScreen()

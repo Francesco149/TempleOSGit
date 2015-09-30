@@ -479,7 +479,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3735] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3734] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -637,7 +637,6 @@ public extern CSndGlbls snd;
 
 #help_index "Task"
 public extern U0 Exit();
-public extern Bool IsPreempt();
 public extern Bool IsSuspended(CTask *task=NULL);
 public extern Bool Kill(CTask *task,Bool wait=TRUE);
 public extern Bool Suspend(CTask *task=NULL,Bool state=TRUE);

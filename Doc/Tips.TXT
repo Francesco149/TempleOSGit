@@ -39,7 +39,7 @@ Merge(\"C:/*\",\"D:/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-m> at the cmd line to access your PersonalMenu.  Place macros there 
 with <CTRL-l>, or icon-like sprites with <CTRL-r>.  Use the Pop-Up option on 
-macros to [C:/Kernel/KTask.CPP.Z,209] Spawn() a task to run a file.  It dies
+macros to [C:/Kernel/KTask.CPP.Z,205] Spawn() a task to run a file.  It dies
 when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-s> to save your macro/menu 
 area after making changes.
@@ -72,7 +72,7 @@ C>.
 * You can recompile and reinstall the kernel with
 [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  
 You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,496] Auto() 
+[C:/Kernel/SrvCmd.CPP.Z,485] Auto() 
 function to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP,1] Update Funs.
@@ -100,21 +100,21 @@ was to indicate how far along operations were.  There's no coordination, so
 different apps might interfere.  I use them most for debugging--just values 
 easily viewed.  See [C:/Demo/Progress.CPP,1].
 
-* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,168] DocMax() to adjust the size of
+* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to adjust the size of
 the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1328] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3269] CTask,
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3268] CTask,
 [C:/Kernel/KernelA.HPP.Z,1163] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2514]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
-smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,209] Spawn(), chang
+smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,205] Spawn(), chang
 [C:/Kernel/KernelA.HPP.Z,2839] DFT_STK, and using
-[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,168] DocMax() to 
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to 
 reduce the cmd line buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
@@ -148,7 +148,7 @@ type statements.
 OPTf_ECHO,ON) can be placed in [C:/StartOS.CPP.Z,1] StartOS.CPP to echo
 start-up scripts.
 
-* Use [C:/Adam/DolDoc/DocEd.CPP.Z,237] Plain() to edit a plain text file. 
+* Use [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() to edit a plain text file. 
 You'll need this if your file has $'
 s.  Use the [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() utility to
 convert plain text to DolDoc's by doubling $
@@ -211,18 +211,10 @@ the user presses <ESC> or <SHIFT
 -ESC>.
 
 * You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1460]
-ac.cur_word, but you should 
-probably turn-off preemption or interrupts momentarily to copy it.
+ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
-
-* [C:/Kernel/KernelB.HPP.Z,283] Preempt() is used to keep a task from being
-interrupted and swapped-out.  It 
-has a similar effect to turning-off interrupts.  Each task has it's own 
-preemption ctrl.  A task with preemption turned-off can voluntarily
-[C:/Kernel/Sched.CPP.Z,344] Yield() 
-with preemption off.
 
 * You can set a color for different drives with
 [C:/Adam/ABlkDev/ADskA.CPP.Z,303] DrvTextAttrSet().  Place calls 
@@ -286,9 +278,9 @@ text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 * [C:/Kernel/KernelA.HPP.Z,531] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
-timeout=[C:/Kernel/KernelB.HPP.Z,289] GetTSC+
+timeout=[C:/Kernel/KernelB.HPP.Z,285] GetTSC+
 [C:/Kernel/KernelA.HPP.Z,531] cnts.time_stamp_freq x seconds; and compare
-against [C:/Kernel/KernelB.HPP.Z,289] GetTSC().  I recommend 
+against [C:/Kernel/KernelB.HPP.Z,285] GetTSC().  I recommend 
 just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,531]
 cnts.jiffies.
 
@@ -303,7 +295,7 @@ _CFG_HEAP_DBG.  You're on your own.
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,344] Type() to display .BMP or
 .GRA files.
 
-* Use [C:/Kernel/PSect.CPP.Z,287] Man() to jump to short sym name src code.
+* Use [C:/Kernel/PSect.CPP.Z,284] Man() to jump to short sym name src code.
 
 * Use [C:/Kernel/EdLite.CPP.Z,337] Fix() to edit and fix the last compiler
 err.

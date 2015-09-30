@@ -230,11 +230,6 @@ Bool IsSilent()
   return Bt(&Fs->display_flags,DISPLAYf_SILENT);
 }
 
-Bool IsPreempt()
-{
-  return Bt(&Fs->task_flags,TASKf_PREEMPT);
-}
-
 Bool SysDbg(Bool val)
 {//Sets or resets sysdbg bit you can use while debugging.
   return LBEqu(&sys_semas[SYS_SEMA_DEBUG],0,val);

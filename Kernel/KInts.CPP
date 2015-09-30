@@ -10,7 +10,7 @@ INT_WAKE::
 	IRET
 
 IRQ_TIMER::  //I_TIMER
-	CALL	TASK_CONTEXT_SAVE	//PREEMPTIVE
+	CALL	TASK_CONTEXT_SAVE
 	CLD
 
 	MOV	RAX,U64 [RSP]
@@ -48,16 +48,12 @@ IRQ_TIMER::  //I_TIMER
 
 @@20:	CALL	&IntCore0TimerHandler	//Only Core 0 calls this.
 
-@@25:	TEST	U8 [SYS_SEMAS+SYS_SEMA_SINGLE_USER*SEMA_STRUCT_SIZE],1
-	JNZ	@@30
-	BT	U64 CTask.task_flags[RSI],TASKf_PREEMPT
-	JC	I32 RESTORE_NEXT_RSI_TASK
-@@30:	JMP	I32 RESTORE_RSI_NO_PREEMPT_TASK
+@@25:	JMP	I32 RESTORE_RSI_TASK
 //************************************
 INT_FAULT::
 	PUSH	RBX
 	PUSH	RAX
-	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,162] IntFaultHandlersNew().
+	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,158] IntFaultHandlersNew().
 	XOR	RAX,RAX
 	MOV	FS:U8 CTask.fault_num[RAX],BL
 	POP	RAX
@@ -177,7 +173,7 @@ U0 IntInit1()
 {//Interrupt descriptor table part1.
   I64 i;
   CSysLimitBase temp_ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3395] CCPU struct
+  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3394] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);
@@ -199,7 +195,7 @@ U0 IntInit2()
 /*In theory, we use the PIC mask reg to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
-I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,139] IntNop().
+I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,135] IntNop().
 I have no idea why I got a IRQ 0x27.
 */
   IntEntrySet(I_NMI,_SYS_HLT);

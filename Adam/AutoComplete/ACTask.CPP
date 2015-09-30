@@ -22,12 +22,12 @@ U0 ACDocRst(I64 left,I64 top)
   CDoc *doc=DocPut;
   DocRst(doc,TRUE);
   doc->flags|=DOCF_MIN_SIZE;
-  DocCursor;
   Fs->border_src=BDS_CONST;
   Fs->text_attr =Fs->border_attr=LTGRAY<<4+BLUE;
   LBtr(&Fs->display_flags,DISPLAYf_SHOW);
   WinHorz(left,Fs->win_right);
   WinVert(top,Fs->win_bottom);
+  DocCursor;
 }
 
 I64 ACSkipCrap(U8 *src,I64 len)
@@ -105,8 +105,7 @@ U0 ACPutChoices(CDoc *focus_l,CDocEntry *doc_e,CTask *focus_task,
     ac.cur_word=AStrNew(buf);
     Free(st);
     ac.num_fillins=0;
-    if (*ac.cur_word) {
-      Preempt(ON);
+    if (*ac.cur_word)
       for (i=0;i<=ac.hash_table->mask && tS<timeout_time;i++) {
 	tempw=ac.hash_table->body[i];
 	while (tempw) {
@@ -115,8 +114,6 @@ U0 ACPutChoices(CDoc *focus_l,CDocEntry *doc_e,CTask *focus_task,
 	  tempw=tempw->next;
 	}
       }
-      Preempt;
-    }
     ACDocRst(51,13);
     if (ac.cur_word && *ac.cur_word) {
       "$PURPLE$Word:%s$FG$\n",ac.cur_word;
@@ -261,8 +258,7 @@ U0 ACTask(I64)
 
 public Bool AutoComplete(Bool val=OFF)
 {//Turn AutoComplete OFF or ON.
-  Bool	old_autocomplete=FALSE,
-	old_preempt=Preempt;
+  Bool	old_autocomplete=FALSE;
   if (val) {
     while (Bt(&ac.flags,ACf_INIT_IN_PROGRESS))
       Sleep(10);
@@ -281,7 +277,6 @@ public Bool AutoComplete(Bool val=OFF)
 	Yield;
     }
   }
-  Preempt(old_preempt);
   return old_autocomplete;
 }
 

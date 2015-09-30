@@ -47,7 +47,6 @@ U0 DocBorderLstDraw(CDoc *doc)
   U64 ch;
   CDoc *templ=doc;
   CD3I64 saved_scroll;
-  Bool old_preempt=Preempt;
   while (templ && templ->doc_signature==DOC_SIGNATURE_VAL) {
     y+=(Bsr(templ->desc)+7)>>3+1; //StrLen+1
     templ=templ->parent_doc;
@@ -69,7 +68,6 @@ U0 DocBorderLstDraw(CDoc *doc)
     templ=templ->parent_doc;
   }
   WinScrollRestore(win_task,&saved_scroll);
-  Preempt(old_preempt);
 }
 
 public U0 DocTop(CDoc *doc=NULL)
@@ -187,7 +185,6 @@ U0 DocUpdateTaskDocs(CTask *task)
   CDrv *dv;
   CDoc *doc;
   CD3I64 saved_scroll;
-  Bool old_preempt=Preempt;
   I64 border_attr;
   if (task->border_src==BDS_CUR_DRV && task->cur_dv) {
     border_attr=task->cur_dv->text_attr;
@@ -208,14 +205,11 @@ U0 DocUpdateTaskDocs(CTask *task)
 	Fs->catch_except=TRUE;
     if (task->title_src==TTS_ED_FILENAME)
       MemCpy(task->task_title,doc->filename.name,TASK_TITLE_LEN);
-    Preempt(old_preempt);
     DocRecalc(doc,TRUE,DOC_RECALC_TO_SCREEN);
-    Preempt;
   }
   if ((doc=DocBorder(task)) && !(doc->flags&DOCF_DONT_SHOW)) {
     WinScrollNull(task,&saved_scroll);
     DocRecalc(doc,FALSE,DOC_RECALC_TO_SCREEN);
     WinScrollRestore(task,&saved_scroll);
   }
-  Preempt(old_preempt);
 }

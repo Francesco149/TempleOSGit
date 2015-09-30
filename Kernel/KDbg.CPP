@@ -215,7 +215,7 @@ U0 Da(U8 **addr,I64 cnt=0x10)
 }
 
 U0 RawPrint(I64 mS=100,U8 *fmt,...)
-{//Print using [C:/Kernel/KMisc.CPP.Z,248] Raw screen output for a length of time.
+{//Print using [C:/Kernel/KMisc.CPP.Z,243] Raw screen output for a length of time.
 //**Your heap must be good.**
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   Bool old_raw,old_input_filter;
@@ -232,7 +232,7 @@ U0 RawPrint(I64 mS=100,U8 *fmt,...)
 }
 
 U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80)
-{//Dumps a block of mem using [C:/Kernel/KMisc.CPP.Z,248] Raw
+{//Dumps a block of mem using [C:/Kernel/KMisc.CPP.Z,243] Raw
 //screen output for a fixed length
   //of time.
   Bool old_raw,old_input_filter;
@@ -248,7 +248,7 @@ U0 RawD(I64 mS=100,U8 *addr,I64 cnt=0x80)
 }
 
 U0 RawDm(I64 mS=100,U8 *addr,I64 cnt=0x80)
-{//Dumps a block of mem using [C:/Kernel/KMisc.CPP.Z,248] Raw
+{//Dumps a block of mem using [C:/Kernel/KMisc.CPP.Z,243] Raw
 //screen output for a fixed length
   //of time.
   Bool old_raw,old_input_filter;

@@ -42,7 +42,6 @@ U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool r)
 
 U0 IPSet(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64)
 {//Note: Generates a message. See [C:/Demo/Games/Zing.CPP,1] IPSet().
-  Bool old_preempt=Preempt;
   if (!(0<=x<GR_WIDTH))
     x=ip.pos.x;
   if (!(0<=y<GR_HEIGHT))
@@ -64,7 +63,6 @@ U0 IPSet(I64 x=MAX_I64,I64 y=MAX_I64,I64 z=MAX_I64,I64 l=MAX_I64,I64 r=MAX_I64)
       MouseIPSet(x,y,z,l,r);
       break;
   }
-  Preempt(old_preempt);
 }
 
 U0 IPVarsInit()

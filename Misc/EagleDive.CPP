@@ -500,7 +500,6 @@ U0 MPDrawIt(CTask *task,CDC *dc)
 U0 APEagleDiveTask(CTask *master_task)
 {
   CDC *dc=DCAlias(main_dc,master_task);
-  Preempt(ON);
   while (!mp.app_done) {
     while (!Bt(&mp.update_not_done_flags,Gs->num) && !mp.app_done)
       Sleep(1);
@@ -843,7 +842,6 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
   F64 pp,tt1,tt2;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  AutoComplete;
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -857,14 +855,15 @@ U0 EagleDive(I64 _mp_cnt=MP_MAX_PROCESSORS)
 	"  Right(,,SC_CURSOR_RIGHT);"
 	"}"
 	);
-  WinMax;
+  AutoComplete;
   WinBorder;
+  WinMax;
+  DocCursor;
+  DocClear;
   "Initializing...\n";
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   Init(_mp_cnt);
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
-  DocCursor;
-  DocClear;
   Fs->draw_it=&DrawIt;
   try //in case <CTRL-ALT-c> is pressed.
     do {

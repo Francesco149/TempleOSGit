@@ -239,8 +239,6 @@ Bool MouseDriverInstall(I64 dummy=0) //can be spawned
 {
   nounusedwarn dummy;
   I64 i;
-  Bool old_preempt=IsPreempt;
-  Preempt(ON);
   mouse.install_in_progress=TRUE;
   OutU8(0xA1,InU8(0xA1)|0x10);
   mouse.installed=mouse.irqs_working=FALSE;
@@ -253,7 +251,6 @@ Bool MouseDriverInstall(I64 dummy=0) //can be spawned
   mouse.install_attempts++;
   mouse.installed=mouse.evt=i;
   mouse.install_in_progress=FALSE;
-  Preempt(old_preempt);
   return mouse.installed;
 }
 
