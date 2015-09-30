@@ -131,14 +131,11 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
 {//Report possible ATA devices by probing.  Hard disks and CD/DVDs.
   I64 d1,d2,d3,i,j,k,cnt=0,unlock_flags=0,num_hints=0;
 #assert NUM_BLKDEVS<=64
-  Bool old_preempt;
-
   if (_root) *_root=NULL;
 
   if (pmt && ATARepExitAllApplications)
     return 0;
 
-  old_preempt=Preempt;
   for (i=0;i<NUM_BLKDEVS;i++)
     if (blkdev.blkdevs[i].bd_signature==BD_SIGNATURE_VAL)
       BEqu(&unlock_flags,i,
@@ -191,7 +188,6 @@ public I64 ATARep(Bool pmt=TRUE,Bool just_ide=FALSE,CATARep **_root=NULL)
   for (i=0;i<NUM_BLKDEVS;i++)
     if (Bt(&unlock_flags,i))
       BlkDevUnlock(&blkdev.blkdevs[i]);
-  Preempt(old_preempt);
   return num_hints;
 }
 

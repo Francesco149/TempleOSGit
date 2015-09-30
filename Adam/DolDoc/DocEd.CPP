@@ -79,7 +79,7 @@ public Bool DocEd(CDoc *doc,I64 dof_flags=0)
 	old_top =Fs->win_top, old_bottom=Fs->win_bottom,
 	old_left=Fs->win_left,old_right =Fs->win_right,
 	old_title_src=Fs->title_src;
-  Bool result,unlock,old_preempt;
+  Bool result,unlock;
   U8 *old_task_title;
   if (dof_flags&DOF_WIN_MAX)
     WinMax;
@@ -135,7 +135,6 @@ public Bool DocEd(CDoc *doc,I64 dof_flags=0)
   DocRecalc(doc);
   if (!(dof_flags&DOF_DONT_HOME))
     DocTop(doc);
-  old_preempt=Preempt;
   Fs->border_doc=bdoc;
   if (doc!=old_display_doc)
     doc->parent_doc=old_display_doc;
@@ -149,7 +148,6 @@ public Bool DocEd(CDoc *doc,I64 dof_flags=0)
   if (dof_flags&DOF_MIN_SIZE)
     doc->flags|=DOCF_MIN_SIZE;
 
-  Preempt(old_preempt);
   DocUnlock(doc);
   if (!(dof_flags&DOF_DONT_WINMGR_SYNC)) {
     WinMgrSync(2,TRUE);
@@ -158,7 +156,6 @@ public Bool DocEd(CDoc *doc,I64 dof_flags=0)
   }
   result=View;
 
-  Preempt;
   DocLock(doc);
   if (result) {
     doc_e=doc->root.next;
@@ -184,7 +181,6 @@ public Bool DocEd(CDoc *doc,I64 dof_flags=0)
     WinHorz(old_left,old_right);
     WinVert(old_top,old_bottom);
   }
-  Preempt(old_preempt);
   return result;
 }
 

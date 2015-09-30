@@ -51,11 +51,11 @@ U0 ScrollBars()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Init;
+  Fs->draw_it=&DrawIt;
+  WinBorder(ON);
   DocCursor;
   DocClear;
   DocScroll;
-  Fs->draw_it=&DrawIt;
-  WinBorder(ON);
 
   Fs->horz_scroll.pos=0;
   Fs->vert_scroll.pos=0;

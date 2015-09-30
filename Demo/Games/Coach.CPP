@@ -122,10 +122,11 @@ U0 TeeBall()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=GREEN<<4+WHITE;
-  WinMax;
-  WinBorder;
-  Preempt;
   AutoComplete;
+  WinBorder;
+  WinMax;
+  DocCursor;
+  DocClear;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
 
   MenuPush(
@@ -140,8 +141,6 @@ U0 TeeBall()
 	);
 
   Init;
-  DocCursor;
-  DocClear;
   Fs->draw_it=&DrawIt;
 
   try {

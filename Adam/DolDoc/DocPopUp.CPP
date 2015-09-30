@@ -1,7 +1,7 @@
 #help_index "DolDoc/Output;StdOut/DolDoc"
 public CTask *PopUpViewDoc(CDoc *doc,I64 dof_flags=0)
 {//Pass doc to PopUp win task for viewing.
-  U8 *buf=MStrPrint("Preempt(ON);DocEd(0x%X,0x%X);",doc,dof_flags);
+  U8 *buf=MStrPrint("DocEd(0x%X,0x%X);",doc,dof_flags);
   CTask *task=Spawn(&SrvCmdLine,NULL,"View",,Fs);
   TaskExe(task,NULL,buf,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
   Free(buf);

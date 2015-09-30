@@ -330,13 +330,12 @@ U0 BattleLines()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=GREEN<<4+WHITE;
-  WinMax;
-  WinBorder;
   AutoComplete;
-  Preempt;
-  Init;
+  WinBorder;
+  WinMax;
   DocCursor;
   DocClear;
+  Init;
   Fs->draw_it=&DrawIt;
   PopUpOk("The mouse wheel controls\n"
 	"the command force.\n"

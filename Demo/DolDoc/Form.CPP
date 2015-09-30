@@ -41,7 +41,7 @@ U0 FormDemo()
   "\n\nClassRep Example\n";
   ClassRep(&fds);
 
-  //See also [C:/Adam/ADbg.CPP.Z,179] ClassRepD().
+  //See also [C:/Adam/ADbg.CPP.Z,176] ClassRepD().
 }
 
 FormDemo;

@@ -177,8 +177,8 @@ Bool MyPutKey(I64 ch,I64 sc)
 	if (sc&SCF_KEY_DESC)
 	  KeyDescSet("Cmd /Maximize");
 	else {
-	  WinMax;
 	  WinBorder;
+	  WinMax;
 	}
 	return TRUE;
       case 'v':

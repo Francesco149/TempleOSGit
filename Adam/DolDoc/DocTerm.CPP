@@ -37,7 +37,6 @@ public CDoc *DocBorderNew(CDoc *pdoc)
 
 public U0 DocTermNew()
 {//Make into term win task with Put/Display/Border docs.
-  Bool old_preempt=Preempt;
   CDoc *pdoc=DocNew;
   pdoc->right_click_link=&TermRightClickLink;
   pdoc->max_entries=4096;
@@ -47,7 +46,6 @@ public U0 DocTermNew()
   Fs->border_doc=DocBorderNew(pdoc);
   Fs->cur_menu=MenuFile("::/Doc/EdPullDown.TXT");
   WinScrollsInit(Fs);
-  Preempt(old_preempt);
   Raw(OFF);
 }
 

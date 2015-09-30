@@ -269,12 +269,11 @@ U0 Pick3D()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WinMax;
+  AutoComplete;
   WinBorder;
+  WinMax;
   DocClear;
   "$BK,1$Move things around.$BK,0$\n";
-  AutoComplete;
-  Preempt;
   pf=Init;
   tempo=NULL;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS

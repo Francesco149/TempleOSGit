@@ -304,12 +304,12 @@ U0 BlackDiamond()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  AutoComplete;
+  WinBorder;
   WinMax;
   DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;
-  WinBorder;
-  AutoComplete;
 
   Init;
   try {

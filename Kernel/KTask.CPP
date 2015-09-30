@@ -28,21 +28,17 @@ Bool TaskValidate(CTask *task)
 Bool Kill(CTask *task,Bool wait=TRUE)
 {//Terminate other task.
   I64 i;
-  Bool old_preempt=Preempt;
   if (TaskValidate(task) && task!=sys_winmgr_task) {
     for (i=0;i<mp_cnt;i++)
       if (task==cpu_structs[i].seth_task)
-	goto kl_fail;
+	return FALSE;
     LBts(&task->task_flags,TASKf_KILL_TASK);
     if (wait) {
       do Yield;
       while (TaskValidate(task) && Bt(&task->task_flags,TASKf_KILL_TASK));
     }
-    Preempt(old_preempt);
     return TRUE;
   }
-kl_fail:
-  Preempt(old_preempt);
   return FALSE;
 }
 
@@ -212,7 +208,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3269] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3268] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)

@@ -510,8 +510,8 @@ public U0 MakeDistrosAndBackUp()
   progress4=*progress4_desc=0;
   progress4_max=14;
   AutoComplete;
-  WinMax;
   WinBorder;
+  WinMax;
   ChkAll; progress4++;
 
   MakeLineRepFile; progress4++;

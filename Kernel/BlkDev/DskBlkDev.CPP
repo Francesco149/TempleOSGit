@@ -31,8 +31,7 @@ Bool BlkDevUnlock(CBlkDev *bd,Bool rst=FALSE)
 Bool BlkDevInit(CBlkDev *bd)
 {
   CDrv *dv=Let2Drv(bd->first_drv_let);
-  Bool old_preempt=Preempt,result=FALSE;
-
+  Bool result=FALSE;
   if (!LBts(&bd->flags,BDf_INITIALIZED)) {
     bd->flags|=BDF_INIT_IN_PROGRESS;
     switch(bd->type) {
@@ -72,7 +71,6 @@ Bool BlkDevInit(CBlkDev *bd)
     bd->flags&=~BDF_INIT_IN_PROGRESS;
   } else
     result=TRUE;
-  Preempt(old_preempt);
   return result;
 }
 

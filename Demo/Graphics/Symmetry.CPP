@@ -11,9 +11,10 @@ U0 SymmetryDemo()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER;
 
+  WinBorder;
   WinMax;
-  DCFill;
   DocClear;
+  DCFill;
   dc->flags|=DCF_SYMMETRY;
   DCSymmetrySet(dc,Fs->pix_width/2,0,Fs->pix_width/2,1);
   do {

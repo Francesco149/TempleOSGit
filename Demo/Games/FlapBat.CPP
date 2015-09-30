@@ -223,12 +223,11 @@ U0 FlapBat()
   WinBorder(ON);
   WinHorz(1,TEXT_COLS/2);
   WinVert(2,TEXT_ROWS/2);
-  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  Preempt;
-  Init;
-  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   DocCursor;
   DocClear;
+  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
+  Init;
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {

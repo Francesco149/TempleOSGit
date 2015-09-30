@@ -193,7 +193,6 @@ public U0 MemRep()
   I64 i;
   CTask *task;
   CCPU *c;
-  Bool old_preempt=Preempt;
   CBinFile *bfh=sys_boot_base-sizeof(CBinFile);
   bfh(I64)+=bfh->file_size-1;
 
@@ -233,5 +232,4 @@ public U0 MemRep()
   "$BLACK$dev.uncached_heap:%010X Used:%010X$FG$\n",
 	dev.uncached_heap->bp->alloced_u8s,dev.uncached_heap->used_u8s;
   "$ID,-2$\n";
-  Preempt(old_preempt);
 }

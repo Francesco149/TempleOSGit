@@ -657,12 +657,11 @@ U0 Varoom()
     Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
 	  -WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
     AutoComplete;
-    WinMax;
     WinBorder;
-    Preempt;
-    Init;
+    WinMax;
     DocCursor;
     DocClear;
+    Init;
     Fs->draw_it=&DrawIt;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
     while (TRUE)

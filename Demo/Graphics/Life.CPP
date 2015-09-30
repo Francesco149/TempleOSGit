@@ -56,12 +56,13 @@ public U0 Life()
   restart=FALSE;
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  AutoComplete;
+  WinBorder;
   WinMax;
-  DCFill;
   DocClear;
+  DCFill;
 
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
-  AutoComplete;
   Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_BORDER;
   do {

@@ -9,7 +9,6 @@ U0 TimeIns()
 {
   I64 i,start,end,overhead_time,test_time;
   F64 d=5.0;
-  Bool old_preempt=Preempt;
 
   //Measure Loop Overhead
   start=GetTSC;
@@ -29,7 +28,6 @@ U0 TimeIns()
   test_time=end-start;
 
   "Measured Cycles:%10.5f\n",ToF64(test_time-overhead_time)/SAMPLE_SIZE;
-  Preempt(old_preempt);
 }
 
 TimeIns;

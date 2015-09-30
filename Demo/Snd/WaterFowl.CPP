@@ -138,9 +138,9 @@ U0 WaterFowl()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  WinMax;
-  WinBorder;
   AutoComplete;
+  WinBorder;
+  WinMax;
   DocClear;
   t0=tS;
   Fs->draw_it=&DrawIt;

@@ -186,7 +186,7 @@ U0 BombDrop(F64 x,F64 y)
 }
  
 I64 AnimateTask(CTask *parent)
-{//Starts with preempt OFF
+{
   I64 i,w=parent->pix_width,h=parent->pix_height;
   Bomb *tempb,*tempb1;
   Target *tempt;
@@ -300,11 +300,11 @@ U0 BomberGolf()
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   AutoComplete;
+  WinBorder;
   WinMax;
-  Preempt;
-  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
   DocCursor;
   DocClear;
+  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
   Fs->draw_it=&DrawIt;
   Init;
   try {

@@ -53,7 +53,7 @@ CTRL-M twice.
 search string.
 
 * [C:/Adam/DolDoc/DocFile.CPP.Z,344] Type() doesn't work in
-[C:/Kernel/KMisc.CPP.Z,248] Raw() mode.
+[C:/Kernel/KMisc.CPP.Z,243] Raw() mode.
 
 * PSect does not scan all task tables.
 
@@ -176,10 +176,8 @@ God says I might want to change to float.
 
 * clean-up addDev pmt
 
-* Might want to convert some Preempt() to Cli
-
-* [C:/Adam/DolDoc/DocEd.CPP.Z,237] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3463] CH_CURSOR.
+* [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() might be better not saving
+[C:/Kernel/KernelA.HPP.Z,3462] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -272,13 +270,12 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3582] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3581] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
 * Warn unnecessary typecast
 * compiler F32
-* preempt(OFF) during graphic clipping?
 * compiler optimization heap_glbls with added offset
 * Might make FAT32 read in contiguous chunks.
 * make Clamp(),Min(),Max() asm routines.
@@ -314,7 +311,6 @@ DirContextNew()
 * new HolyC language features
 * better debugging
 
-* Too much preemption turned off?
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
@@ -366,6 +362,7 @@ It is love I desire: Hosea 6:6
 Offer a sacrifice of praise: Hebrews 13:15
 Do I drink blood of goats? Offer praise: Psalms 50:14
 Runner's Stride: Psalms 147:10
+
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/aKchwAWMpDA"></param><param
@@ -382,6 +379,20 @@ Jesus' zeal for the Temple: John 2:14-19
 
 >lspci -v
 Size:
+
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/E6K9zK9ZWSg"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/E6K9zK9ZWSg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+8:11 Behold, the days come, saith the Lord GOD, that I will send a
+famine in the land, not a famine of bread, nor a thirst for water, but
+of hearing the words of the LORD: 8:12 And they shall wander from sea
+to sea, and from the north even to the east, they shall run to and fro
+to seek the word of the LORD, and shall not find it.
 
 TempleOS Logo
 ```
@@ -494,30 +505,22 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
-Key and Peel Substitute
-```
-<object width="640" height="520"><param name="movie"
-value="http://www.youtube.com/v/Dd7FixvoKBw"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/Dd7FixvoKBw"
-type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
-height="520"></embed></object>
-```
-```
-<object width="640" height="520"><param name="movie"
-value="http://www.youtube.com/v/PxeTPBYIDEM"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/PxeTPBYIDEM"
-type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
-height="520"></embed></object>
-```
-
 Morning has Broken
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/kKoRp05L95c"></param><param
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/kKoRp05L95c"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
+Icarus
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/0Pmgtyw2n8w"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/0Pmgtyw2n8w"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
@@ -531,6 +534,7 @@ src="http://www.youtube.com/v/F27r_9oyqBI"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
+Sports Game
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/ORXqOEGFQfE"></param><param
@@ -543,6 +547,7 @@ height="520"></embed></object>
 
 WWW.OSDEV.ORG
 PCI Interrupt Routing
+Lamp Shades
 My Bookmarks
 Perfect Coin Toss
 Top 100 Movies

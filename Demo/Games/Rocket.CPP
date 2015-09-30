@@ -120,12 +120,6 @@ U0 Rocket()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
-  DocCursor;
-  AutoComplete;
-
-  //The ode nodes are traversed by win mgr.
-  Preempt;
-
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -139,11 +133,14 @@ U0 Rocket()
 	"}"
 	);
 
+  AutoComplete;
+  WinBorder;
   WinMax;
+  DocCursor;
+  DocClear;
   dc2=DCAlias;
   Fs->task_end_cb=&TaskEndCB;
 
-  DocClear;
   "$BG,LTCYAN$$GREEN$Up, Left, Right$FG$%h*c",Fs->win_height-4,'\n';
 
   ode->derivative=&MyDerivative;

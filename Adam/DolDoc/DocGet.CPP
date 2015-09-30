@@ -16,7 +16,7 @@ U0 EdUndoFilter(CDoc *doc)
 public I64 DocGetKey(I64 *_sc=NULL)
 {//Called by [C:/Adam/DolDoc/DocEd.CPP.Z,3] View. You probably don't need this.
   I64 ch,sc;
-  Bool cont,old_preempt=IsPreempt,old_key_desc;
+  Bool cont,old_key_desc;
   do {
     old_key_desc=LBtr(&Fs->win_inhibit,WIf_SELF_KEY_DESC);
     do ch=GetKey(&sc,TRUE);
@@ -25,13 +25,10 @@ public I64 DocGetKey(I64 *_sc=NULL)
 
     DocRecalc(DocPut);
     cont=FALSE;
-    if (ch==CH_ESC || ch==CH_SHIFT_ESC) {//Check for exit filter mode
-      Preempt;
-      if (DocPut && DocPut->find_replace->filter_lines) {
-	EdUndoFilter(DocPut);
-	cont=TRUE;
-      }
-      Preempt(old_preempt);
+    if ((ch==CH_ESC || ch==CH_SHIFT_ESC) && //Check for exit filter mode
+	  DocPut && DocPut->find_replace->filter_lines) {
+      EdUndoFilter(DocPut);
+      cont=TRUE;
     }
   } while (cont);
   if (_sc) *_sc=sc;
@@ -80,10 +77,9 @@ public U8 *DocScanLine(CDoc *doc,CDocEntry *doc_e,
 }
 
 U8 *DocGetStr2(I64 flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,3735] Flags
+{//[C:/Kernel/KernelA.HPP.Z,3734] Flags
   CDoc *doc;
   CDocEntry *doc_e,*doc_e_end;
-  Bool old_preempt=IsPreempt;
   U8 *st,*st2,*result;
   I64 ch,sc;
   "$PT$";
@@ -114,7 +110,6 @@ U8 *DocGetStr2(I64 flags=0)
   } while (flags&GSF_WITH_NEW_LINE || ch!='\n' ||
 	sc&SCF_CTRL && sc&SCF_SHIFT);
 
-  Preempt;
   doc=DocPut;
   DocLock(doc);
   if (flags&GSF_WITH_NEW_LINE) {
@@ -151,7 +146,6 @@ U8 *DocGetStr2(I64 flags=0)
   DocUnlock(doc);
 gs_done:
   "$PT$$FG$$BG$";
-  Preempt(old_preempt);
   return result;
 }
 

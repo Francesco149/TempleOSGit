@@ -25,7 +25,7 @@ persistent layer is used during drag-and-drop.
 
 See [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin(),
 [C:/Adam/Gr/GrScreen.CPP.Z,58] GrUpdateTasks() and
-[C:/Adam/Gr/GrScreen.CPP.Z,406] GrUpdateScreen().
+[C:/Adam/Gr/GrScreen.CPP.Z,401] GrUpdateScreen().
 */
 
 #define NOTE_REST	MIN_I64

@@ -1,4 +1,4 @@
-The editor mostly stays in a [C:/Kernel/SerialDev/Message.CPP.Z,146]
+The editor mostly stays in a [C:/Kernel/SerialDev/Message.CPP.Z,142]
 GetKey()/[C:/Kernel/KeyDev.CPP.Z,1] PutKey() loop.  The putkey portion is 
 where keys are acted-upon.  TempleOS has a chain of putkey handlers in a 
 [Circular Queue,1] Circular Queue with priorities.  The highest priority
@@ -12,11 +12,11 @@ misnomer.  Currently, the following are defined:
 Priority    Handler
 ---------- ---------
 0x20000000 [C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey() user handler
-0x40000000 [C:/Kernel/KeyDev.CPP.Z,110] KDInputFilterPutKey() for
-[C:/Kernel/SrvCmd.CPP.Z,496] Auto(), [C:/Kernel/SrvCmd.CPP.Z,478] AutoStr(),
-and [C:/Kernel/SrvCmd.CPP.Z,488] AutoFile() 
+0x40000000 [C:/Kernel/KeyDev.CPP.Z,106] KDInputFilterPutKey() for
+[C:/Kernel/SrvCmd.CPP.Z,485] Auto(), [C:/Kernel/SrvCmd.CPP.Z,467] AutoStr(),
+and [C:/Kernel/SrvCmd.CPP.Z,477] AutoFile() 
 handling.
-0x60000000 [C:/Kernel/KeyDev.CPP.Z,90] KDRawPutKey() nonwindowed direct to
+0x60000000 [C:/Kernel/KeyDev.CPP.Z,86] KDRawPutKey() nonwindowed direct to
 video mem debug output. 
 0x80000000 [C:/Adam/DolDoc/DocPutKey.CPP.Z,723] KDDocPutKey() standard
 document cmds

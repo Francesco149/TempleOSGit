@@ -882,9 +882,6 @@ cc->pass==10 is final pass, code is placed into buf.
 	  ICCopyTemplate(cc,tempi,CMP_TEMPLATE_SIGN_I64,
 		TRUE,FALSE,FALSE,CN_MAIN);
 	  break;
-	case IC_PREEMPT:
-	  ICPreempt(tempi,ip2);
-	  break;
 	case IC_TOUPPER:
 	  ICToUpper(tempi,ip2);
 	  break;

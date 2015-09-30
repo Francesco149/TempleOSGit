@@ -227,7 +227,7 @@ U0 HoseNew()
 }
 
 U0 AnimateTask(I64)
-{//Preempt is off by default for new task
+{
   MyMass   *tempm,*tempm1;
   F64 dx,dy;
   while (TRUE) {
@@ -320,11 +320,10 @@ U0 Squirt()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  WinMax;
-  WinBorder;
-  Preempt;
-  DocCursor;
   AutoComplete;
+  WinBorder;
+  WinMax;
+  DocCursor;
 
   MenuPush(
 	"File {"

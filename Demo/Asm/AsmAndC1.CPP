@@ -40,7 +40,7 @@ _extern _BEEPS U0 Beeps(I64 cnt);
 I64 AsmAndC1()
 {
   I64 noreg i;	//Normally this would be stored in a reg
-//Check by unassembling with [C:/Adam/ADbg.CPP.Z,253] Uf("AsmAndC1").
+//Check by unassembling with [C:/Adam/ADbg.CPP.Z,247] Uf("AsmAndC1").
 
   i=GetI64("Num of beeps 1-5 (%d):",3,1,5);
   Beeps(i);

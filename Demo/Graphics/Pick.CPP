@@ -44,7 +44,6 @@ U0 Pick()
     y[i]=RandU16%(GR_HEIGHT-FONT_HEIGHT*3)+FONT_HEIGHT*3;
   }
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt;
   AutoComplete;
   DocCursor;
   DocClear;

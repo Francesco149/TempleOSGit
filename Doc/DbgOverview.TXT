@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,641] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,649] U(). [C:/Compiler/UAsm.CPP.Z,649]
-U([C:/Kernel/KernelA.HPP.Z,3381] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3380] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,649] U(&FunName+offset) to unassemble mem or
-[C:/Adam/ADbg.CPP.Z,253] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3381]
+[C:/Adam/ADbg.CPP.Z,247] Uf("FunName") to unassemble a 
+function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3380]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -24,7 +24,7 @@ functions as in &Print+0x10.
 progress4 for debugging because they show on the wallpaper.  
 They're just global integer vars.
 
-* You can use [C:/Kernel/SrvCmd.CPP.Z,437] AdamLog() to send text to the Adam
+* You can use [C:/Kernel/SrvCmd.CPP.Z,426] AdamLog() to send text to the Adam
 task window.  It works like 
 [C:/Kernel/StrPrint.CPP.Z,898] Print().  I never use that.  Instead, I use
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint().
@@ -47,7 +47,7 @@ regs in the debugger with
 var-like labels, _RAX, _RBX, etc.
 
 * [C:/Adam/ADbg.CPP.Z,154] ClassRep() and the dynamic version
-[C:/Adam/ADbg.CPP.Z,179] ClassRepD() can be used to dump 
+[C:/Adam/ADbg.CPP.Z,176] ClassRepD() can be used to dump 
 structures.
 
 * [C:/Adam/Opt/Utils/Profiler.CPP.Z,27] Prof() and
@@ -58,13 +58,13 @@ AutoFile.)
 * Use [C:/Kernel/KDbg.CPP.Z,217] RawPrint() to print debug info bypassing the
 window framework.  You pass 
 these routines a count in milliseconds for how long it should be displayed.  
-You can use [C:/Kernel/KMisc.CPP.Z,248] Raw(TRUE) to make all output bypass
+You can use [C:/Kernel/KMisc.CPP.Z,243] Raw(TRUE) to make all output bypass
 the window framework.  The 
 WinMgr runs on core0 and will overwrite raw text from other cores when it 
 updates the screen.
 
-* Use [C:/Kernel/KMisc.CPP.Z,238] SysDbg() to set a flag which you can read
-with [C:/Kernel/KMisc.CPP.Z,243] IsSysDbg() when you wish 
+* Use [C:/Kernel/KMisc.CPP.Z,233] SysDbg() to set a flag which you can read
+with [C:/Kernel/KMisc.CPP.Z,238] IsSysDbg() when you wish 
 to trigger some debug activity.  It's just a handy simple flag, nothing fancy.
 
 * There are flags for various trace options that can help debugging when
@@ -90,9 +90,9 @@ program which intercepts [C:/Kernel/MemB.CPP.Z,372] MAlloc() and
 heap issues.
 
 * You can define handler functions for <CTRL-ALT-letter> keys with 
-[C:/Kernel/KeyDev.CPP.Z,181] CtrlAltCBSet().  They operate either in a
+[C:/Kernel/KeyDev.CPP.Z,171] CtrlAltCBSet().  They operate either in a
 interrupt environment or in the 
-window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,248]
+window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,243]
 Raw() output.  <CTRL-ALT-lette
 r> handlers take a scan_code as an arg.
 

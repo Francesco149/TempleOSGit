@@ -1,13 +1,11 @@
 CTask *SingleSong(U8 *msg,U8 *name)
 {
-  Bool old_preempt=Preempt;
   CTask *task=Spawn(&SrvCmdLine,NULL,name,,Fs);
   StrCpy(task->task_title,name);
   task->title_src=TTS_LOCKED_CONST;
   TaskExe(task,Fs,";",1<<SVCf_WAKE_MASTER|1<<SVCf_FREE_ON_COMPLETE);
   WinHorz(task->win_left,task->win_left+50,task);
   WinVert(2,2+8,task);
-  Preempt(old_preempt);
   TaskExe(task,NULL,msg,1<<SVCf_EXIT_ON_COMPLETE|1<<SVCf_FREE_ON_COMPLETE);
   DocPut(task)->max_entries=100;
   return task;

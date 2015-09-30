@@ -8,7 +8,6 @@ U0 UserStartUp()
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
   WinToTop;
   WinZBufUpdate;
-  Preempt(ON);
   Dir;
 }
 
@@ -18,7 +17,6 @@ U0 SrvStartUp()
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
   WinToTop;
   WinZBufUpdate;
-  Preempt(ON);
 }
 
 U0 StartUpTasks()

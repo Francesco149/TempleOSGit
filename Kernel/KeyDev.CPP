@@ -64,7 +64,6 @@ U0 KeyDescSet(U8 *fmt,...)
 CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
 	Bool (*fp_puts)(U8 *st),I64 priority,Bool key_descs=FALSE)
 {//Places hook in StdOut chain. See [Keyboard Devices/System,1] Keyboard Devices.
-  Bool old_preempt=Preempt;
   CKeyDevEntry *tempp,*tempp1=keydev.put_key_root.last;
   tempp=ACAlloc(sizeof(CKeyDevEntry));
   tempp->put_key=fp_put_key;
@@ -75,15 +74,12 @@ CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
   while (tempp1->priority>priority)
     tempp1=tempp1->last;
   QueIns(tempp,tempp1);
-  Preempt(old_preempt);
   return tempp;
 }
 
 U0 KeyDevRem(CKeyDevEntry *tempp)
 {//Remove StdOut hook and free.
-  Bool old_preempt=Preempt;
   QueRem(tempp);
-  Preempt(old_preempt);
   Free(tempp);
 }
 
@@ -109,11 +105,8 @@ Bool KDRawPutS(U8 *st)
 
 Bool KDInputFilterPutKey(I64 ch,I64 scan_code)
 {
-  Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
-    old_preempt=Preempt;
     Msg(MSG_KEY_DOWN,ch,scan_code);
-    Preempt(old_preempt);
     return TRUE;
   } else
     return FALSE;
@@ -122,12 +115,9 @@ Bool KDInputFilterPutKey(I64 ch,I64 scan_code)
 Bool KDInputFilterPutS(U8 *st)
 {
   I64 ch;
-  Bool old_preempt;
   if (Bt(&Fs->task_flags,TASKf_INPUT_FILTER_TASK)) {
-    old_preempt=Preempt;
     while (ch=*st++)
       Msg(MSG_KEY_DOWN,ch,0);
-    Preempt(old_preempt);
     return TRUE;
   } else
     return FALSE;

@@ -113,7 +113,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
-  //with a [C:/Kernel/KernelA.HPP.Z,3609] CDC.
+  //with a [C:/Kernel/KernelA.HPP.Z,3608] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;
@@ -334,13 +334,13 @@ U0 DunGen()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
-  Preempt;
-  WinMax;
   AutoComplete;
-  Init;
-  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
+  WinBorder;
+  WinMax;
   DocCursor;
   DocClear;
+  Init;
+  Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   Fs->draw_it=&DrawIt;
 
   try {

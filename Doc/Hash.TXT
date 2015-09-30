@@ -49,5 +49,5 @@ searched.
 Duplicate entries are allowed -- they overshadow old entries.
 
 Address-to-Symbol Look-up (Slow because not important. We could use trees.)
-1) PSect Cache is [C:/Kernel/PSect.CPP.Z,85] scanned.
+1) PSect Cache is [C:/Kernel/PSect.CPP.Z,82] scanned.
 2) Hash Tables are [C:/Kernel/PSect.CPP.Z,10] scanned.

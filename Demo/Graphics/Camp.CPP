@@ -321,15 +321,13 @@ U0 Camp(I64 num_people=100)
   }
   num_objs=j;
 
-  DocClear;
-
   SettingsPush(Fs,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+WHITE; //bk/fg
+  AutoComplete;
+  DocCursor;
+  DocClear;
   try {
-    AutoComplete;
     Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
-    DocCursor;
-    DocClear;
     Fs->draw_it=&DrawMeeting;
 
     GetChar;
@@ -341,7 +339,7 @@ U0 Camp(I64 num_people=100)
 //This is so I can use this file stand alone
 //or as a component of a program.
 #if __DEPTH__<2
-WinMax;
 WinBorder;
+WinMax;
 Camp;
 #endif

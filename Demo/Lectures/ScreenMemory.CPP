@@ -10,8 +10,6 @@ U0 PlotXY(I64 x,I64 y)
 U0 Main()
 {
   I64 i;
-  Bool old_preempt=Preempt;
-
   //This makes all 4 color planes active.
   OutU8(VGAP_INDEX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,WHITE);
@@ -39,10 +37,8 @@ That means no read-modify-writes, too.
 */
   BusyWait(4000000);
 
-  Preempt(old_preempt);
-
   //TempleOS has a 4 plane memory duplicate of the screen, [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image,
-  //and only writes actual changes.  See [C:/Adam/Gr/GrScreen.CPP.Z,374] GrUpdateVGAGraphics().
+  //and only writes actual changes.  See [C:/Adam/Gr/GrScreen.CPP.Z,369] GrUpdateVGAGraphics().
   //<CTRL-ALT-f> will flush screen VGA cache.
   VGAFlush;
 }

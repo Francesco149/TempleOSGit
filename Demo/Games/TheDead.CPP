@@ -96,13 +96,13 @@ U0 TheDead()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WinMax;
-  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   AutoComplete;
+  WinBorder;
+  WinMax;
   DocCursor;
   DocClear;
+  Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   Fs->draw_it=&DrawIt;
-  WinBorder;
 
   try {
     do {

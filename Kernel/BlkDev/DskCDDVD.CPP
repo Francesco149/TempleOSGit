@@ -51,7 +51,6 @@ U0 DVDImageWriteTask(CDualBuf *d)
   U8 *buf;
   I64 n,blk=0,cnt=d->cnt;
   CFile *f;
-  Preempt(ON);
   if (FileAttr(d->filename)&RS_ATTR_CONTIGUOUS)
     f=FOpen(d->filename,"rc");
   else
@@ -85,7 +84,6 @@ U0 DVDImageWrite(U8 dvd_drv_let,U8 *in_name=NULL,I64 media_type=MT_DVD)
   CDrv *dv=Let2Drv(dvd_drv_let);
   CBlkDev *bd=dv->bd,*bd2;
   CTask *task;
-  Bool old_preempt;
   CFile *f;
 
   if (!in_name)
@@ -122,9 +120,7 @@ U0 DVDImageWrite(U8 dvd_drv_let,U8 *in_name=NULL,I64 media_type=MT_DVD)
   d->buf1=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS);
   d->cnt=cnt;
 
-  old_preempt=Preempt;
   task=Spawn(&DVDImageWriteTask,d,"Write CD/DVD");
-
   while (d->in_buf<=d->out_buf)
     Yield;
 
@@ -179,6 +175,5 @@ U0 DVDImageWrite(U8 dvd_drv_let,U8 *in_name=NULL,I64 media_type=MT_DVD)
   Free(d->buf1);
   Free(in_name2);
   Free(in_name3);
-  Preempt(old_preempt);
   Free(d);
 }

@@ -155,12 +155,10 @@ public U0 ClassRep(U8 *_d,U8 *class_name=lastclass,
 	I64 max_depth=2,Bool fun=FALSE,I64 offset=0)
 {//Displays members of a record by using the compiler's info.
   CDoc *doc;
-  Bool old_preempt;
-  if (IsRaw) {
+  if (IsRaw)
     doc=DocNew;
-  } else {
+  else {
     DocMax;
-    old_preempt=Preempt;
     doc=DocPut;
   }
   if (fun)
@@ -172,20 +170,17 @@ public U0 ClassRep(U8 *_d,U8 *class_name=lastclass,
   if (IsRaw) {
     DocDump(doc,100000);
     DocDel(doc);
-  } else
-    Preempt(old_preempt);
+  }
 }
 
 public U0 ClassRepD(U8 *_d,U8 *class_name=lastclass,
 	I64 max_depth=2,Bool fun=FALSE,I64 offset=0)
 {//Dynamic ClassRep. Uses hex_ed widgit for live changes.
   CDoc *doc;
-  Bool old_preempt;
-  if (IsRaw) {
+  if (IsRaw)
     doc=DocNew;
-  } else {
+  else {
     DocMax;
-    old_preempt=Preempt;
     doc=DocPut;
   }
   if (fun)
@@ -197,8 +192,7 @@ public U0 ClassRepD(U8 *_d,U8 *class_name=lastclass,
   if (IsRaw) {
     DocDump(doc,100000);
     DocDel(doc);
-  } else
-    Preempt(old_preempt);
+  }
 }
 
 U0 UpdateRegVarImg(CHashFun *tempf,U8 *_b,CTask *task)

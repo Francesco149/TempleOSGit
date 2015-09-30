@@ -22,7 +22,6 @@ U0 WallPaper(CTask *_task)
   CTaskWallPaperData *wpd;
   CHashTable *old_hash=Fs->hash_table;
   CCPU *c;
-  Bool old_preempt=Preempt;
   CDateStruct ds;
   U8 *st;
   _task->text_attr=BLUE<<4+WHITE;
@@ -127,7 +126,6 @@ U0 WallPaper(CTask *_task)
 
   Fs->hash_table=old_hash;
   wall->last_calc_idle_cnt=winmgr.t->calc_idle_cnt;
-  Preempt(old_preempt);
 }
 
 /* <1> <1> (image) */
@@ -148,7 +146,6 @@ U0 LeftClickTermButton(CCtrl *,I64,I64,Bool down)
 
 CCtrl *TermButtonNew()
 {
-  Bool old_preempt;
   I64 min_x,max_x,min_y,max_y;
   CCtrl *c=ACAlloc(sizeof(CCtrl));
 
@@ -165,10 +162,8 @@ CCtrl *TermButtonNew()
   c->top=sys_winmgr_task->pix_height-(max_y-min_y+1);
   c->bottom=c->top+(max_y-min_y+1)-1;
 
-  old_preempt=Preempt;
   QueIns(c,sys_winmgr_task->last_ctrl);
   TaskDerivedValsUpdate(sys_winmgr_task);
-  Preempt(old_preempt);
 
   return c;
 }

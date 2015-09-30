@@ -264,8 +264,8 @@ U0 AfterEgyptInAction()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Adam("GodInit(\"/Adam/God/Vocab.TXT*\");");
   AutoComplete;
-  WinMax;
   WinBorder;
+  WinMax;
   if (!fg_on)
     PopUp("Sleep(50);FrameGrabberToggle;");
   Ed("::/Home/Videos/AfterEgypt.TXT.Z");
@@ -280,8 +280,8 @@ U0 CodeWalkThru()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   AutoComplete;
-  WinMax;
   WinBorder;
+  WinMax;
   if (!fg_on)
     PopUp("Sleep(50);FrameGrabberToggle;");
   Ed("::/Home/Videos/RandomCode.TXT.Z");

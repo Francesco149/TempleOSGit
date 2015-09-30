@@ -188,9 +188,9 @@ U0 Main()
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->draw_it=&DrawIt;
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  WinMax;
-  WinBorder;
   AutoComplete;
+  WinBorder;
+  WinMax;
   DocClear;
   Fs->text_attr=YELLOW<<4+BLACK;
   "$BG,LTCYAN$%h31c",'\n';

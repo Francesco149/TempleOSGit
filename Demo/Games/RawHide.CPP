@@ -550,13 +550,13 @@ U0 RawHide()
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
 	-WIF_SELF_BORDER-WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
-  WinMax;
   AutoComplete;
-  Preempt;
-  Init;
-  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
+  WinBorder;
+  WinMax;
   DocCursor;
   DocClear;
+  Init;
+  Fs->animate_task=Spawn(&AnimateTask,Fs,"Animate",,Fs);
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {

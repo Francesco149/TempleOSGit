@@ -8,14 +8,13 @@ U0 UserStartUp()
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
   WinToTop;
   WinZBufUpdate;
-  Preempt(ON);
   Dir;
   switch (tos_cid) {
     case CID_DFT:
       "$PURPLE$DFT$FG$:";
       break;
   }
-  "81,127LOC:";
+  "80,899LOC:";
   CPURep;
 }
 
@@ -25,7 +24,6 @@ U0 SrvStartUp()
   LBts(&Fs->display_flags,DISPLAYf_SHOW);
   WinToTop;
   WinZBufUpdate;
-  Preempt(ON);
 }
 
 CTask *user1,*user2;

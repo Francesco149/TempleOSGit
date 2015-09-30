@@ -169,12 +169,11 @@ U0 Lattice()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt;
-  WinMax;
   AutoComplete;
   WinBorder;
-  DocClear;
+  WinMax;
   DocCursor;
+  DocClear;
   TurtleInit(&tt);
   SetMenu;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_FOCUS_TASK_MENU

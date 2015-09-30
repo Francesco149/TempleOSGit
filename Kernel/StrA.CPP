@@ -522,7 +522,7 @@ I64 Spaces2Tabs(U8 *dst,U8 *src)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//See [C:/Kernel/KernelA.HPP.Z,3743] flags for all the options.
+{//See [C:/Kernel/KernelA.HPP.Z,3742] flags for all the options.
   U8 *src=_src,*dst=_src;
   I64 ch;
 

@@ -96,7 +96,6 @@ U0 DrawIt(CTask *task,CDC *dc)
   I64 i,dd,y,w=task->pix_width,h=task->pix_height,cx=w>>1,cy=h>>1;
   U8 *img;
   F64 tt,theta;
-  Bool old_preempt=Preempt;
 
   theta=640*Wrap(2*us.theta)/pi;
   Sprite3(dc,theta-1280,90,0,__BIN_4);
@@ -145,7 +144,6 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=LTGREEN;
   GrLine(dc,cx-5,cy,cx+5,cy);
   GrLine(dc,cx,cy-5,cx,cy+5);
-  Preempt(old_preempt);
   dc->color=LTPURPLE;
   if (tf) {
     dc->color=LTRED;
@@ -179,7 +177,7 @@ U0 MoveUs(F64 theta)
 }
 
 U0 AnimateTask(I64)
-{//Preemption is off after Spawn
+{
   I64 i;
   Obj *tempo,*tempo1;
   while (TRUE) {
@@ -268,14 +266,13 @@ U0 ZoneOut()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=BLACK<<4+WHITE;
-  WinMax;
-  WinBorder;
   AutoComplete;
-  Preempt;
+  WinBorder;
+  WinMax;
+  DocCursor;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  DocCursor;
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {

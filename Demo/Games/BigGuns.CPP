@@ -105,7 +105,7 @@ U0 DrawMap()
 }
 
 U0 FireTask(I64)
-{//by default preempt is off on new tasks
+{
   MyMass *tempm;
   I64 i;
   if (gun_recoil) return;
@@ -176,7 +176,6 @@ U0 Init()
 {
   CDC *map;
   I64 i,x,y,dy;
-  Bool old_preempt;
   if (!map_dcs[0])
     map_dcs[0]=DCNew(MAP_WIDTH,MAP_HEIGHT);
   if (!map_dcs[1])
@@ -205,7 +204,6 @@ U0 Init()
     dust_y[i]=RandU16%MAP_HEIGHT;
   }
 
-  old_preempt=Preempt;
   ode=ODENew(0,1e-4,ODEF_HAS_MASSES);
   ode->derivative=&MyDerivative;
   ode->drag_v2=0.002;
@@ -219,7 +217,6 @@ U0 Init()
   Fs->vert_scroll.max=MAP_HEIGHT-Fs->pix_height;
   Fs->vert_scroll.pos=0;
   TaskDerivedValsUpdate;
-  Preempt(old_preempt);
 
   DrawMap;
 }
@@ -247,7 +244,6 @@ U0 BigGuns()
   PopUpOk("The map scrolls.\n");
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt;
 
   MenuPush(
 	"File {"
@@ -262,13 +258,13 @@ U0 BigGuns()
 	"}"
 	);
 
-  WinMax;
-  WinBorder(ON);
   AutoComplete;
-  Init;
+  WinBorder(ON);
+  WinMax;
   DocCursor;
   DocClear;
   DocScroll;
+  Init;
   Fs->draw_it=&DrawIt;
   try {
     while (TRUE) {

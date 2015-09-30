@@ -55,11 +55,11 @@ U0 PredatorPrey()
 	"with different, random, initial populations.\n");
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
-    DocClear;
-    WinMax;
-    WinBorder;
-    WinMgrSync;
     AutoComplete;
+    WinBorder;
+    WinMax;
+    DocClear;
+    WinMgrSync;
 
     dc->color=BLACK;
     GrLine(dc,OX,0,OX,GR_HEIGHT-FONT_HEIGHT-1);

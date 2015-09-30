@@ -45,7 +45,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 +] CL Clear
   Clear all previous entries except ones with hold(+H) flags.  You might want
   +H on word wrap entries.  Alternatively, you can use
-  [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,122] DocClear().
+  [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,120] DocClear().
 +] PB Page Break
   Page break.
 +] PL Page Length
@@ -143,7 +143,7 @@ Examples: <CTRL-t> to see
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/KLoad.CPP.Z,163] Address Link.
+11) [C:/Kernel/KLoad.CPP.Z,165] Address Link.
 
 12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,613]
   SpriteEdText().
@@ -195,9 +195,9 @@ The default data-type for the $LS...$ command is I64.  You can change it to
   A left macro arg, LM="", will send text when the left mouse is clicked.
 
 A left auto string, +LA, flag will cause text to be sent to
-  [C:/Kernel/SrvCmd.CPP.Z,478] AutoStr() instead of
-  [C:/Kernel/SrvCmd.CPP.Z,496] Auto().  An AutoStr runs code.  Literal text is
-  in quotes and messages are sent with [C:/Kernel/SrvCmd.CPP.Z,260] Msg().  See
+  [C:/Kernel/SrvCmd.CPP.Z,467] AutoStr() instead of
+  [C:/Kernel/SrvCmd.CPP.Z,485] Auto().  An AutoStr runs code.  Literal text is
+  in quotes and messages are sent with [C:/Kernel/SrvCmd.CPP.Z,256] Msg().  See
   Dir("::/Demo/AutoFile");View;
 `Dir("::/Demo/AutoFile");View;`
 .

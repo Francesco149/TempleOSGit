@@ -150,17 +150,14 @@ U0 Zing()
 	"}"
 	);
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt;
+  AutoComplete;
   WinBorder;
   WinMax;
-  AutoComplete;
-
+  DocCursor;
   DocClear;
 
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
-  DocCursor;
-  DocClear;
   Fs->draw_it=&DrawIt;
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS-WIF_SELF_GRAB_SCROLL;
   try {

@@ -67,7 +67,7 @@ Directives
 * Use [C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate() to make an ISO
     image file.
 
-* Use [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,80] DVDImageWrite() to burn an ISO
+* Use [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite() to burn an ISO
     file onto a CD or DVD.
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
@@ -87,7 +87,6 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
   [C:/Doc/GuideLines.TXT.Z,1] Guidelines
 [C:/Doc/HolyC.TXT.Z,1] HolyC
 [C:/Doc/GraphicsOverview.TXT.Z,1] Graphics
-[C:/Doc/MultiTasking.TXT.Z,1] Multitasking
 [C:/Demo/DolDoc/FileRead.CPP.Z,1] DolDoc Documents
 [C:/Demo/Lectures/AndNotMod.CPP.Z,1] Lectures/AndNotMod.CPP
 [C:/Demo/Lectures/FixedPoint.CPP.Z,1] Lectures/FixedPoint.CPP
@@ -97,7 +96,6 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [C:/Demo/Lectures/ScreenMemory.CPP.Z,1] Lectures/ScreenMemory.CPP
 [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1] Lectures/GraphicsCPULoad.CPP
 [C:/Demo/Lectures/InterruptDemo.CPP.Z,1] Lectures/InterruptDemo.CPP
-[C:/Demo/Lectures/Spinning.CPP.Z,1] Lectures/Spinning.CPP
 +] System Programmer Help
   [C:/Demo/Lectures/64BitAsmQuiz.TXT.Z,1] 64BitAsmQuiz
 [Hash,1] Hash Tables

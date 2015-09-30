@@ -411,9 +411,6 @@ U0 Psalmody(U8 *dirname="::/Home/Psalmody")
 
   if (DocPut) old_doc_flags=DocPut->flags;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WinBorder;
-  AutoComplete;
-  Preempt;
 
   MusicSettingsRst;
   tempo_state.tempo=Round(TEMPO_RANGE*(music.tempo-0.5)/4.4);
@@ -473,6 +470,8 @@ U0 Psalmody(U8 *dirname="::/Home/Psalmody")
   oc.incomplete_entry=MenuEntryFind(Fs->cur_menu,"Song/MarkIncomplete");
   oc.record_entry=MenuEntryFind(Fs->cur_menu,"Song/Record");
 
+  AutoComplete;
+  WinBorder;
   WinMax;
 
   dirname=StrNew(dirname);

@@ -543,14 +543,13 @@ U0 CastleFrankenstein()
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=DKGRAY<<4+WHITE;
-  Preempt;
+  AutoComplete;
   WinBorder;
   WinMax;
-  AutoComplete;
+  DocCursor;
   Init;
   Fs->animate_task=Spawn(&AnimateTask,NULL,"Animate",,Fs);
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
-  DocCursor;
   Fs->draw_it=&DrawIt;
 
   try {

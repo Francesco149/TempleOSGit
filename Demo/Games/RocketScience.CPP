@@ -225,12 +225,6 @@ U0 RocketScience()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   Fs->text_attr=YELLOW<<4+BLUE;
-  DocCursor;
-  AutoComplete;
-
-  //The ode nodes are traversed by win mgr.
-  Preempt;
-
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -242,11 +236,14 @@ U0 RocketScience()
 	"}"
 	);
 
+  AutoComplete;
+  WinBorder;
   WinMax;
+  DocCursor;
+  DocClear;
   dc2=DCAlias;
   Fs->task_end_cb=&TaskEndCB;
 
-  DocClear;
   "$BG,LTCYAN$%h*c",Fs->win_height-4,'\n';
 
   ode=ODENew(STATE_NUM,1e-6,ODEF_HAS_MASSES);

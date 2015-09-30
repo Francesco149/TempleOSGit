@@ -1,6 +1,4 @@
-/*See [C:/Doc/MultiTasking.TXT.Z,1] TempleOS MultiTasking.
-
-On each core, tasks are linked in a
+/*On each core, tasks are linked in a
 circular doubly-linked list queue with
 the Seth task as the head.  On core#0,
 the queue order represents the front-to-back
@@ -18,14 +16,10 @@ Tasks can be switched in half a microsecond.
 The scheduler checks if a task is
 waiting for a certain time or waiting
 on a message and skips if not ready.
-A task runs until it voluntarily yields
-ctrl with a call to [C:/Kernel/Sched.CPP.Z,344] Yield() or gets
-preempted by the fixed 1kHz [C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ
-timer interrupt.  See [C:/Kernel/KInts.CPP.Z,12] IRQ_TIMER.
-Tasks can ask not to be preempted with
-[C:/Kernel/KernelB.HPP.Z,283] Preempt(ON/OFF).  Tasks waiting on I/O
+A task runs until it voluntarily yields ctrl
+with a call to [C:/Kernel/Sched.CPP.Z,336] Yield().  Tasks waiting on I/O
 often loop, checking for a status and
-[C:/Kernel/Sched.CPP.Z,344] Yielding.  This does not really degrade
+[C:/Kernel/Sched.CPP.Z,336] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
 
 The scheduler checks for a few keys:
@@ -155,11 +149,11 @@ _TASK_END_NOW::
 	CALL	SET_FS_BASE
 	JMP	I8 RESTORE_RSI_TASK_WITH_KEY_CHECK
 
-RESTORE_RSI_NO_PREEMPT_TASK:
+RESTORE_RSI_TASK:
 	BT	U32 [SYS_CTRL_ALT_FLAGS],SYSf_CTRL_ALT_DEL
 	JC	I32 HANDLE_SWAP_KEY_EVENT
 	XOR	RAX,RAX
-	CMP	U64 GS:CCPU.idle_task[RAX],RSI	//IDLE TASK HAS PREEMPT-OFF
+	CMP	U64 GS:CCPU.idle_task[RAX],RSI
 	JNE	RESTORE_RSI_TASK_NO_KEY_CHECK
 	JMP	I32 SWAP_IN_SETH_TASK_IF_READY
 
@@ -193,8 +187,6 @@ _YIELD::
 	MOV	U64 CTask.rip[RSI],RBX
 	POP	U64 CTask.rflags[RSI]
 	MOV	U64 CTask.rsp[RSI],RSP
-
-RESTORE_NEXT_RSI_TASK:
 	MOV	RSI,U64 CTask.next_task[RSI]
 
 RESTORE_RSI_TASK_WITH_KEY_CHECK:
@@ -360,7 +352,7 @@ U0 TaskQueIns(CTask *task,CTask *pred=NULL)
 
 U0 TaskQueRem(CTask *task)
 {//Remove a task from the scheduler running task queue.
-//Use [C:/Kernel/KTask.CPP.Z,49] Suspend().
+//Use [C:/Kernel/KTask.CPP.Z,45] Suspend().
   CTask *next,*last;
   PUSHFD
   CLI

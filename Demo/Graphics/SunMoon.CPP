@@ -7,11 +7,11 @@ U0 SunMoon()
 {
   I64 i,x,y,radius;
 
+  AutoComplete;	//AutoComplete Off
+  WinBorder;	//No Border
   WinMax;	//Maximize window
   DocClear;	//Clear command-line text
-  WinBorder;	//No Border
-  AutoComplete;	//AutoComplete Off
-  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HPP.Z,3269] CTask is Fs segment register.
+  Fs->text_attr=BLACK<<4+WHITE;	//Current [C:/Kernel/KernelA.HPP.Z,3268] CTask is Fs segment register.
 
   for (i=0;i<0x8000;i+=0x200) {
 //Sun

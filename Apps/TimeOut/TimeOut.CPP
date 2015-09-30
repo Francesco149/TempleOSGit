@@ -521,9 +521,6 @@ U0 TimeOut()
 
   I64 next_update_jiffy;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Preempt;
-  WinBorder;
-  AutoComplete;
 
   MenuPush(
 	"File {"
@@ -537,7 +534,10 @@ U0 TimeOut()
 	"  Right(,,SC_CURSOR_RIGHT);"
 	"}"
 	);
+  AutoComplete;
+  WinBorder;
   WinMax;
+  DocCursor;
   DocClear;
   "\n\nYou're sent back through time to help fight some bad guys.  "
 	"($LTPURPLE$Purple$FG$)\n"
@@ -555,7 +555,6 @@ U0 TimeOut()
   PressAKey;
   Fs->text_attr=YELLOW<<4+CYAN;
   Init;
-  DocCursor;
   DocClear;
   Fs->draw_it=&DrawIt;
 

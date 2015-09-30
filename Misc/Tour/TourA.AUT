@@ -8,7 +8,7 @@ TourPut(
 "We will now use $RED$$TX+L+PU+UL,\"Uf\",A=\"MN:Uf\"$$FG$() to "
 "unassemble a function.  It takes the function name as a string arg.\n\n"
 "Press $GREEN$<ENTER>$FG$.\n");
-"WinMax;WinBorder;\nUf(\"CAlloc\");";
+"WinBorder;WinMax;\nUf(\"CAlloc\");";
 AFGetStr("\n");
 
 TourPut("Press $GREEN$<CURSOR-UP>$FG$ eight times..");

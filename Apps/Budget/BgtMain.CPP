@@ -165,9 +165,9 @@ U0 Budget()
   BgtDataRead;
   CBgtTemplatesExpand;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  WinMax;
-  WinBorder;
   AutoComplete;
+  WinBorder;
+  WinMax;
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
