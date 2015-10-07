@@ -2,7 +2,8 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----09/27/15 21:18:10----
+----10/06/15 06:30:49----
+* Added [C:/Kernel/Sched.CPP.Z,38] TaskFocusNext().
 
 ----09/27/15 11:46:44----
 * Got rid of preemption.
@@ -131,7 +132,7 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2724] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2722] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,148] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]
@@ -168,7 +169,7 @@ R("CDFileCreate","[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 * Added [C:/Doc/HelloWorld.TXT.Z,1].
 
 ----05/26/15 21:10:30----
-* Added [C:/Kernel/KernelA.HPP.Z,3575] DCF_PALETTE.
+* Added [C:/Kernel/KernelA.HPP.Z,3571] DCF_PALETTE.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("VGAPaletteColorGet","[C:/Adam/Gr/GrPalette.CPP.Z,46] GrPaletteColorGet");
 * [C:/Home/HomeWrappers.CPP.Z,13]
@@ -212,7 +213,7 @@ PostMsgWait");
 
 ----05/08/15 16:58:46----
 * Cleaned-up Compiler.
-* [C:/Home/HomeWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2128]
+* [C:/Home/HomeWrappers.CPP.Z,13] R("CLex","[C:/Kernel/KernelA.HPP.Z,2126]
 CCmpCtrl");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("LexNew","[C:/Compiler/Lex.CPP.Z,28]
 CmpCtrlNew");
@@ -282,7 +283,7 @@ Mat4x4MulMat4x4New").
 * Got rid of GrScaleNew(), GrRotXNew(), GrRotYNew() and GrRotZNew().
 
 ----04/30/15 19:13:07----
-* Added [C:/Kernel/KernelA.HPP.Z,2672] CDrv.fat32_local_time_offset.
+* Added [C:/Kernel/KernelA.HPP.Z,2670] CDrv.fat32_local_time_offset.
 * Cleaned-up [C:/Adam/AHash.CPP.Z,149] Who() and compiler mapfiles.
 
 ----04/11/15 05:48:05----
@@ -315,7 +316,7 @@ Mat4x4MulMat4x4New").
 
 ----03/23/15 07:21:26----
 * Updated [C:/Demo/Graphics/Pick.CPP,1].
-* Modified [C:/Kernel/KernelA.HPP.Z,3587] DCF_LOCATE_NEAREST.
+* Modified [C:/Kernel/KernelA.HPP.Z,3583] DCF_LOCATE_NEAREST.
 
 ----03/21/15 09:10:58----
 * Fixed bug in sprite edit of ellipses & polygons.
@@ -416,7 +417,7 @@ not just /Apps.
 * Added eye-dropper-like 't' for transparent color in the sprite <CTRL-r> 
 editor.
 * Got rid of [C:/Kernel/KernelA.HPP.Z,617] CHash.next_added.
-* Reduced [C:/Kernel/KernelA.HPP.Z,2841] TASK_HASH_SIZE size.
+* Reduced [C:/Kernel/KernelA.HPP.Z,2839] TASK_HASH_SIZE size.
 
 ----01/10/15 15:12:30----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("Grep","Find");

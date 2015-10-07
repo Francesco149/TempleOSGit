@@ -142,7 +142,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3268]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3265]
   CTask.  There is only one window per task, and only core#0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -272,11 +272,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2253] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2252] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2251] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2250] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2254] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2251] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2250] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2249] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2248] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2252] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -315,10 +315,10 @@ result is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3268] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3265] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3394] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3390] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/MemB.CPP.Z,372] MAlloc().  They must [C:/Kernel/MemB.CPP.Z,368]

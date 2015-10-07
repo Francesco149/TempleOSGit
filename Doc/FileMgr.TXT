@@ -45,14 +45,14 @@ RIGHT-CLICK or <ENTER>
 'M'
   Make CD/DVD ISO file.  This creates a file image of the directory the
   cursor 
-is on.  The name of the ISO file is [C:/Kernel/KernelA.HPP.Z,2710]
+is on.  The name of the ISO file is [C:/Kernel/KernelA.HPP.Z,2708]
   blkdev.dft_iso_filename and can be 
 redefined in your start-up scripts.  You may wish to place it on a different 
 drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/Kernel/KernelA.HPP.Z,2710] blkdev.dft_iso_filename to the drive the
+[C:/Kernel/KernelA.HPP.Z,2708] blkdev.dft_iso_filename to the drive the
   cursor is on.
 
 

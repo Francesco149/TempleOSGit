@@ -319,7 +319,7 @@ make an independent heap with [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2839] DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2837] DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,205]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See

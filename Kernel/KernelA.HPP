@@ -2071,8 +2071,6 @@ class CAOTCtrl
 #define TK_INS_BINARY_SIZE	0x126
 #define TK_NUM_TK		0x127
 
-#define LEX_MAX_IDENT	134 //Max is 132
-
 class CLexHashTableContext
 {
   CLexHashTableContext *next;
@@ -2786,8 +2784,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/MemA.CPP.Z,8] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2831] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2831] PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2829] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2829] PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2894,7 +2892,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2904] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2902] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2994,7 +2992,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2993] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2994] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2991] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2992] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3174,8 +3172,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3436] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3436] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3432] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3432] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3219,26 +3217,26 @@ public class CTaskSettings
 };
 
 #help_index "Task"
-//Border ATTR src
+//CTask.border_src
 #define BDS_CONST		0
 #define BDS_CUR_DRV		1
 #define BDS_ED_FILENAME_DRV	2
 
-//Task title src
+//CTask.title_src
 #define TTS_CONST		0
 #define TTS_LOCKED_CONST	1 //This is not strictly enforced
 #define TTS_TASK_NAME		2
 #define TTS_ED_FILENAME		3
 #define TTS_CUR_LEX		4
 
-// TASK task flags
-#define TASKf_KILL_TASK		0
-#define TASKf_SUSPENDED		1
-#define TASKf_IDLE		2
-#define TASKf_INPUT_FILTER_TASK	3
-#define TASKf_FILTER_INPUT	4
-#define TASKf_HAS_SONG		5
-#define TASKf_NOT_RAW		6
+//CTask.task_flags
+#define TASKf_TASK_LOCK		0
+#define TASKf_KILL_TASK		1
+#define TASKf_SUSPENDED		2
+#define TASKf_IDLE		3
+#define TASKf_INPUT_FILTER_TASK	4
+#define TASKf_FILTER_INPUT	5
+#define TASKf_HAS_SONG		6
 #define TASKf_DISABLE_BPTS	7
 #define TASKf_AWAITING_MSG	8
 #define TASKf_BREAK_LOCKED	9
@@ -3247,14 +3245,13 @@ public class CTaskSettings
 #define TASKf_KILL_AFTER_DBG	12
 #define TASKf_NONTIMER_RAND	13
 
-//locked flags
-#define TASKLf_TASK_LOCK		0
-
+//CTask.display_flags
 #define DISPLAYf_SHOW			0
-#define DISPLAYf_SILENT			1
-#define DISPLAYf_NO_BORDER		2
-#define DISPLAYf_WIN_ON_TOP		3
-#define DISPLAYf_CHILDREN_NOT_ON_TOP	4
+#define DISPLAYf_NOT_RAW		1
+#define DISPLAYf_SILENT			2
+#define DISPLAYf_NO_BORDER		3
+#define DISPLAYf_WIN_ON_TOP		4
+#define DISPLAYf_CHILDREN_NOT_ON_TOP	5
 
 #define TASK_SIGNATURE_VAL		'TskS'
 #define TASK_NAME_LEN			31
@@ -3268,9 +3265,8 @@ class CTaskStk
 public class CTask //The Fs segment reg points to current CTask.
 {
   CTask *addr; //Self-addressed ptr
-  U32	task_signature,pad;
-  I64	task_flags,locked_flags;
-  U32	display_flags,win_inhibit;
+  U32	task_signature;
+  U32	task_flags,display_flags,win_inhibit;
   I64	wake_jiffy;
 
   CHeapCtrl *code_heap,*data_heap;
@@ -3616,12 +3612,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2894] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2892] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2904] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2902] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3653,7 +3649,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3592] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3588] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

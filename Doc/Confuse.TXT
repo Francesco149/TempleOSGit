@@ -1,6 +1,6 @@
                             Clearing-up Confusions
 
-* I, Terry A. Davis, wrote every one of the 118,728 lines of TempleOS over
+* I, Terry A. Davis, wrote every one of the 118,706 lines of TempleOS over
 the 
 past 17.3 years (full-time).  It runs on bare hardware with no layering, 
 libraries, tools, modules or anything from other sources.  It's 100% 
@@ -44,7 +44,7 @@ the syntax making parenthesis optional on function calls with no paramaters.
 * [C:/Kernel/KMisc.CPP.Z,155] Sleep() makes a program pause.  It is not
 hybernation for a laptop.
 
-* [C:/Kernel/Sched.CPP.Z,336] Yield() saves the current task's regs (context)
+* [C:/Kernel/Sched.CPP.Z,318] Yield() saves the current task's regs (context)
 and loads in the next task.
 
 * I use the term [C:/Doc/Glossary.TXT.Z,1] JIT Compile Mode.  This means it
