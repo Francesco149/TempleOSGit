@@ -121,7 +121,7 @@ CCPU *CPUStructInit(I64 num,CCPU *c,CTask *seth_task)
   c->idle_factor=0.01;
   if (Bt(&sys_run_level,RLf_BOOT_HEAP)) {
     c->idle_task=Spawn(0,NULL,"Idle Task",,Fs,,0);
-    Bts(&c->idle_task->task_flags,TASKf_IDLE);
+    LBts(&c->idle_task->task_flags,TASKf_IDLE);
     c->tss=TSSNew(num);
   }
   c->seth_task=seth_task;// It waits for this to be filled-in: [C:/Kernel/MultiProc.CPP.Z,1] seth_task
@@ -354,7 +354,7 @@ U0 BSPStartMP()
     StrPrint(buf,"Seth Task CPU#%d",i);
     task=Spawn(&APSethInit,NULL,buf,,,SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HPP.Z,3268] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HPP.Z,3265] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }

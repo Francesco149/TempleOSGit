@@ -208,7 +208,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3268] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3265] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -251,14 +251,14 @@ U0 TaskDerivedValsUpdate(CTask *task=NULL,Bool update_z_buf=TRUE)
   if (!task) task=Fs;
   PUSHFD
   CLI
-  while (LBts(&task->locked_flags,TASKLf_TASK_LOCK))
+  while (LBts(&task->task_flags,TASKf_TASK_LOCK))
     PAUSE
   WinDerivedValsUpdate(task);
   if (fp_update_ctrls)
     (*fp_update_ctrls)(task);
   if (update_z_buf && Bt(&task->display_flags,DISPLAYf_SHOW))
     LBts(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0);
-  LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
+  LBtr(&task->task_flags,TASKf_TASK_LOCK);
   POPFD
 }
 
@@ -442,7 +442,7 @@ I64 TaskEnd()
   if (LBtr(&task->display_flags,DISPLAYf_SHOW))
     LBts(&sys_semas[SYS_SEMA_UPDATE_WIN_Z_BUF],0);
 
-  while (LBts(&task->locked_flags,TASKLf_TASK_LOCK))
+  while (LBts(&task->task_flags,TASKf_TASK_LOCK))
     PAUSE
   while (LBts(&task->srv_ctrl.flags,SVCRf_LOCKED))
     PAUSE
@@ -478,7 +478,7 @@ I64 TaskEnd()
   TaskQueRem(task);
 
   LBtr(&task->srv_ctrl.flags,SVCRf_LOCKED);
-  LBtr(&task->locked_flags,TASKLf_TASK_LOCK);
+  LBtr(&task->task_flags,TASKf_TASK_LOCK);
 
   if (sys_winmgr_task) {
     task->next_task=Gs->dying_task_lst;

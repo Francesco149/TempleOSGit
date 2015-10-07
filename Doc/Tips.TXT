@@ -105,15 +105,15 @@ the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1328] CDoc
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3268] CTask,
-[C:/Kernel/KernelA.HPP.Z,1163] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2514]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3265] CTask,
+[C:/Kernel/KernelA.HPP.Z,1163] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2512]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,205] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2839] DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2837] DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -289,7 +289,7 @@ cnts.jiffies.
 confused by [C:/Kernel/KernelA.HPP.Z,1328] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2750]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2748]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,344] Type() to display .BMP or

@@ -17,9 +17,9 @@ The scheduler checks if a task is
 waiting for a certain time or waiting
 on a message and skips if not ready.
 A task runs until it voluntarily yields ctrl
-with a call to [C:/Kernel/Sched.CPP.Z,336] Yield().  Tasks waiting on I/O
+with a call to [C:/Kernel/Sched.CPP.Z,318] Yield().  Tasks waiting on I/O
 often loop, checking for a status and
-[C:/Kernel/Sched.CPP.Z,336] Yielding.  This does not really degrade
+[C:/Kernel/Sched.CPP.Z,318] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
 
 The scheduler checks for a few keys:
@@ -35,8 +35,23 @@ which stays in a loop waiting for jobs or
 requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,211] APSethTask().
 */
 
+U0 TaskFocusNext()
+{
+  CTask *task,*_task=sys_focus_task;
+  sys_focus_task=NULL;
+  if (!_task) _task=adam_task;
+  task=_task->next_task;
+  do {
+    if (!Bt(&task->win_inhibit,WIf_SELF_FOCUS)) {
+      sys_focus_task=task;
+      CallExtNum(EXT_WIN_TO_TOP,task,TRUE);
+      return;
+    }
+    task=task->next_task;
+  } while (task!=_task);
+}
+
 asm {
-//************************************
 TASK_CONTEXT_SAVE::
 //OUT:	RSI=FS
 	PUSH	RSI
@@ -245,11 +260,7 @@ HANDLE_SWAP_KEY_EVENT:
 	LOCK
 	BTR	U32 [RAX],SYSf_CTRL_ALT_TAB
 	JNC	@@05
-	PUSH	RSI
-	MOV	RSI,U64 [SYS_FOCUS_TASK]
-	MOV	U64 [SYS_FOCUS_TASK],0
-	CALL	FOCUS_RSI_NEXT_USER
-	POP	RSI
+	CALL	&TaskFocusNext
 	JMP	I32 RESTORE_FS_TASK_WITH_KEY_CHECK
 
 @@05:	LOCK
@@ -286,10 +297,7 @@ BREAK_FOCUS_USER:
 
 END_FOCUS_USER:
 	MOV	RSI,U64 [SYS_FOCUS_TASK]
-	MOV	U64 [SYS_FOCUS_TASK],0
-	PUSH	RSI
-	CALL	FOCUS_RSI_NEXT_USER
-	POP	RSI
+	CALL	&TaskFocusNext
 	TEST	RSI,RSI
 	JZ	I32 SWAP_IN_SETH_TASK_IF_READY
 	MOV	RAX,RSI
@@ -304,32 +312,6 @@ RESTORE_FS_TASK_WITH_KEY_CHECK:
 	XOR	RSI,RSI
 	MOV	RSI,FS:CTask.addr[RSI]
 	JMP	I32 RESTORE_RSI_TASK_WITH_KEY_CHECK
-
-FOCUS_RSI_NEXT_USER:
-	TEST	RSI,RSI
-	JNZ	@@20
-	MOV	ESI,U32 SYS_FIXED_AREA+CSysFixedArea.adam
-@@20:	MOV	RDI,RSI
-	MOV	RSI,U64 CTask.next_task[RSI]
-@@25:	BT	U64 CTask.win_inhibit[RSI],WIf_SELF_FOCUS
-	JC	@@30
-	CMP	U64 [SYS_FOCUS_TASK],RSI
-	JE	@@30
-	MOV	U64 [SYS_FOCUS_TASK],RSI
-	MOV	RAX,U64 [SYS_EXTERN_TABLE]
-	MOV	RAX,U64 EXT_WIN_TO_TOP*8[RAX]
-	TEST	RAX,RAX
-	JZ	@@35
-	PUSH	TRUE
-	PUSH	RSI
-	CALL	RAX
-	JMP	@@35
-@@30:	MOV	RSI,U64 CTask.next_task[RSI]
-	CMP	RSI,RDI
-	JNE	@@25
-	MOV	U64 [SYS_FOCUS_TASK],0
-@@35:	RET
-
 }
 
 _extern _TASK_CONTEXT_RESTORE U0 TaskContextRestore(); //Restore a task context.
