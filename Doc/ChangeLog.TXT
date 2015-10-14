@@ -2,6 +2,11 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----10/12/15 17:02:07----
+
+----10/08/15 10:17:55----
+* [C:/Home/HomeWrappers.CPP.Z,13] R("BSP","Core0");
+
 ----10/06/15 06:30:49----
 * Added [C:/Kernel/Sched.CPP.Z,38] TaskFocusNext().
 

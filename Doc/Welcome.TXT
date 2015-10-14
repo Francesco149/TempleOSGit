@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-118,706 lines of code including the kernel, the 64-bit compiler, the graphics 
+118,705 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -35,7 +35,7 @@ however, failure is an option -- just use Windows if you can't do something.
 I cherry-pick what it will and won't do to make it maximally beautiful.
 
 Two things to know about TempleOS are that _tasks_ have
-[C:/Kernel/MemB.CPP.Z,372] MAlloc/[C:/Kernel/MemB.CPP.Z,368] Free heap
+[C:/Kernel/MemB.CPP.Z,373] MAlloc/[C:/Kernel/MemB.CPP.Z,369] Free heap
 memory, 
 not applications, and tasks have compiler symbol tables that persist at a 
 scope like environment variables in other operating systems, and the symbols 
@@ -45,7 +45,7 @@ In other operating systems, I hated learning one language for command line
 scripts and another for programming.  With TempleOS, the command line feeds 
 right into the [C:/Doc/HolyC.TXT.Z,1] HolyC compiler, line by line, and it
 places code into memory it 
-[C:/Kernel/MemB.CPP.Z,372] MAlloc()s.  The compiler is paused at the command
+[C:/Kernel/MemB.CPP.Z,373] MAlloc()s.  The compiler is paused at the command
 line, waiting for input.  
 Naturally, you #include a program to load it into memory and, usually, start 
 it. See [C:/Doc/HelloWorld.TXT.Z,1].

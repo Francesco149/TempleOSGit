@@ -14,10 +14,10 @@ code in the lowest 2 Gig memory addresses including what would normally be
 called "the kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps by first allocating mem with 
-[C:/Kernel/MemA.CPP.Z,402] Mem2MegUncachedAlloc() or
-[C:/Kernel/MemA.CPP.Z,193] Mem512Alloc(), then calling
+[C:/Kernel/MemA.CPP.Z,400] Mem2MegUncachedAlloc() or
+[C:/Kernel/MemA.CPP.Z,191] Mem512Alloc(), then calling
 [C:/Kernel/MemC.CPP.Z,41] HeapCtrlBPInit() and, 
-then, using [C:/Kernel/MemB.CPP.Z,372] MAlloc().
+then, using [C:/Kernel/MemB.CPP.Z,373] MAlloc().
 
 Memory alloced by a task will be freed when the task is killed.
 
@@ -30,7 +30,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep().
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x0000034D8F
+ 0x0000007C00- 0x0000034DAF
   Kernel module, placed here by the boot-loader,
   [C:/Kernel/KernelA.HPP.Z,3828] BOOT_RAM_BASE.
 
@@ -79,7 +79,7 @@ but no PCI devices are actually supported.
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/Kernel/MemB.CPP.Z,372] MAlloc() an 8 Gig chunk on my 12 Gig machine.
+can [C:/Kernel/MemB.CPP.Z,373] MAlloc() an 8 Gig chunk on my 12 Gig machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 
 pools are the same.  For systems with 2-4 Gig of RAM, the code heap is 1/4 of 

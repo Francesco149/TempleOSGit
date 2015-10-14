@@ -148,7 +148,7 @@ U0 KernelMain()
   TaskDerivedValsUpdate;
 
   SysDefinesLoad;
-  BSPInit;
+  Core0Init;
   IntInit1;
 
   //Before this point use [C:/Kernel/KMisc.CPP.Z,163] Snd() and [C:/Kernel/KMisc.CPP.Z,136] BusyWait()
@@ -184,7 +184,7 @@ U0 KernelMain()
   #exe {
     if (!kernel_cfg->opts[CFG_NO_MP])
       StreamPrint("\"MultiCore Start\\n\\n\";"
-	    "BSPStartMP;"
+	    "Core0StartMP;"
 	    "LBts(&sys_run_level,RLf_MP);");
   };
 

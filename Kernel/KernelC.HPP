@@ -581,8 +581,8 @@ public extern U0 QSortI64(I64 *base,I64 num,
 public extern U0 ProgressBarsRst();
 
 #help_index "MultiCore"
-extern U0 APSethTask();
-extern U0 BSPStartMP();
+extern U0 CoreAPSethTask();
+extern U0 Core0StartMP();
 public extern U0 MPInt(U8 num,I64 cpu_num=1);
 public extern U0 MPIntAll(U8 num);
 public extern U0 MPNMInt();
