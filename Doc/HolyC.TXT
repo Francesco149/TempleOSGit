@@ -112,7 +112,7 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/MemB.CPP.Z,372] MAlloc()ed string.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed string.
     [C:/Adam/Gr/GrBitMap.CPP.Z,848] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
@@ -302,7 +302,7 @@ read-modify-write accesses.  The code bracked with have LOCK asm prefix's
 applied to relevant instructions within.  It's a little shoddy.  See 
 [C:/Demo/MultiCore/Lock.CPP.Z,1].
 
-* There is a function called [C:/Kernel/MemB.CPP.Z,369] MSize() which gives
+* There is a function called [C:/Kernel/MemB.CPP.Z,370] MSize() which gives
 the size of an object alloced 
 off the heap.  For larger size allocations, the system rounds-up to a power
 of 
@@ -310,8 +310,8 @@ two, so MSize() lets you know the real size and you can take full advantage
 of 
 it.
 
-* You can [C:/Kernel/MemB.CPP.Z,368] Free() a NULL ptr.  Useful variants of
-[C:/Kernel/MemB.CPP.Z,372] MAlloc() can be found [C:/Kernel/MemB.CPP.Z,380]
+* You can [C:/Kernel/MemB.CPP.Z,369] Free() a NULL ptr.  Useful variants of
+[C:/Kernel/MemB.CPP.Z,373] MAlloc() can be found [C:/Kernel/MemB.CPP.Z,381]
 Here.  
 Each task has a heap and you can MAlloc and Free off of other task's heaps,
 or 

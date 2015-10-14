@@ -231,8 +231,8 @@ so that applications can plan a big alloc.
 because it
 catches divide and out-of-mem.  Not sure what to do, yet.
 
-* Make [C:/Kernel/MultiProc.CPP.Z,301] BSPStartMP() start work after boot to
-reset multicores.  Bonus for
+* Make [C:/Kernel/MultiProc.CPP.Z,301] Core0StartMP() start work after boot
+to reset multicores.  Bonus for
 freeing old task memory. (Prolly never gonna do anything about this.)
 
 * [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag local vars.
@@ -546,6 +546,16 @@ src="http://www.youtube.com/v/ORXqOEGFQfE"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
+MachineGun
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/wv_Q0E5PSC0"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/wv_Q0E5PSC0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 
 
 WWW.OSDEV.ORG

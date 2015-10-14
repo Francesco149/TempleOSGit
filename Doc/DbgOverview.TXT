@@ -85,8 +85,8 @@ ctrl which passes are displayed.
 * There is a heap check utility which can find leaks.  Use
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog(), and 
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,111] HeapLogRep().  It's a really simple
-program which intercepts [C:/Kernel/MemB.CPP.Z,372] MAlloc() and 
-[C:/Kernel/MemB.CPP.Z,368] Free().  You can customize the code to find other
+program which intercepts [C:/Kernel/MemB.CPP.Z,373] MAlloc() and 
+[C:/Kernel/MemB.CPP.Z,369] Free().  You can customize the code to find other
 heap issues.
 
 * You can define handler functions for <CTRL-ALT-letter> keys with 

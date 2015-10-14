@@ -32,7 +32,7 @@ The scheduler checks for a few keys:
 Each core has its own circular task queue.
 For AP processors, they have a "Seth" task
 which stays in a loop waiting for jobs or
-requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,211] APSethTask().
+requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,211] CoreAPSethTask().
 */
 
 U0 TaskFocusNext()

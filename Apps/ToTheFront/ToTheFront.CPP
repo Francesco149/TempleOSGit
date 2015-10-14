@@ -429,7 +429,7 @@ just compiles with the val at compile
 time, an advantage of just-in-time over
 AOT binaries.  TempleOS has a limited
 stk size, so don't get in the habit.
-[C:/Kernel/MemB.CPP.Z,372] MAlloc() would probably be the better choice.
+[C:/Kernel/MemB.CPP.Z,373] MAlloc() would probably be the better choice.
 */
   MPCtrl1 job[mp_cnt];
   CSrvCmd *cmd[mp_cnt];

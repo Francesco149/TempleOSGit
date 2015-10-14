@@ -1,7 +1,5 @@
 asm {
-/*See [C:/Doc/Credits.TXT.Z,1].
-See [C:/Doc/MemOverview.TXT.Z,1]
-*/
+// [C:/Doc/MemOverview.TXT.Z,1]
 
 USE32
 SYS_INIT_MEM::
@@ -477,7 +475,7 @@ U0 Mem2MegFree(CMemBlk *m,I64 pages2Meg,CBlkPool *bp=NULL)
 
 CMemBlk *Mem512TaskAlloc(I64 *_pages512,CHeapCtrl *hc)
 {/*hc must be locked.  Interrupts should probably be off
-Currently, this is only called from [C:/Kernel/MemB.CPP.Z,372] MAlloc().
+Currently, this is only called from [C:/Kernel/MemB.CPP.Z,373] MAlloc().
 
 Return: NULL if out of memory.
 */

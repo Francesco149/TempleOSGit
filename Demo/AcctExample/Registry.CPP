@@ -39,7 +39,7 @@
       I64 best_score=175;
       +] DemoCompany
   +] Game1
-      F64 best_score=168.08545;
+      F64 best_score=258.59407;
     +] SimpleVal
-          1268;
+          1269;
             

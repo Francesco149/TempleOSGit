@@ -19,7 +19,7 @@ never gets freed.  That's as close to kernel memory as it gets.
 used.  TempleOS is 64-bit, but I just thought 2 Gig was enough for code.  It 
 actually puts global variables there, too, but you can turn that off with 
 [C:/Kernel/KernelA.HPP.Z,1518] OPTf_GLBLS_ON_DATA_HEAP. 
-[C:/Kernel/MemB.CPP.Z,372] MAlloc() can alloc any memory, of course.
+[C:/Kernel/MemB.CPP.Z,373] MAlloc() can alloc any memory, of course.
 
 * TempleOS doesn't use software interrupts or SYSCALL instructions because it 
 never needs to change out of ring-0, even running user programs.  Calls are 
@@ -77,7 +77,7 @@ scratch and it is self-contained.
 * There are no OBJ or EXE files.  There are only two files compiled 
 ahead-of-time -- Kernel.BIN.C and Compiler.BIN.Z.  You can delete them and 
 recompile with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall(). 
-TempleOS is 118,706 lines.  Roughly 
+TempleOS is 118,705 lines.  Roughly 
 50,000 is compiled AOT and 50,000 during boot JIT.  The rest is JIT demos and 
 applications.
 
