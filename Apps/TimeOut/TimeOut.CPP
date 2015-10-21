@@ -41,6 +41,8 @@ Bool game_over;
 
 
 
+
+
 	/* <2> <2> (image) */
 
 
@@ -53,11 +55,12 @@ Bool game_over;
 
 
 
+CSprite *friendly_imgs[4]={__BIN_3,__BIN_2,__BIN_3,__BIN_4};
+
+
+
+
 	/* <5> <5> (image) */
-
-
-
-CSprite *friendly_imgs[4]={__BIN_4,__BIN_3,__BIN_4,__BIN_5};
 
 
 
@@ -72,12 +75,12 @@ CSprite *friendly_imgs[4]={__BIN_4,__BIN_3,__BIN_4,__BIN_5};
 
 
 
+CSprite *friendly_hacking_imgs[4]={__BIN_6,__BIN_5,__BIN_6,__BIN_7};
+
+
+
+
 	/* <8> <8> (image) */
-
-
-
-
-CSprite *friendly_hacking_imgs[4]={__BIN_7,__BIN_6,__BIN_7,__BIN_8};
 
 
 
@@ -89,15 +92,17 @@ CSprite *friendly_hacking_imgs[4]={__BIN_7,__BIN_6,__BIN_7,__BIN_8};
 
 
 
+CSprite *enemy_imgs[4]={__BIN_9,__BIN_8,__BIN_9,__BIN_10};
+
+
+
+
 	/* <11> <11> (image) */
 
 
 
+
 	/* <12> <12> (image) */
-
-
-
-CSprite *enemy_imgs[4]={__BIN_11,__BIN_10,__BIN_11,__BIN_12};
 
 
 
@@ -107,17 +112,7 @@ CSprite *enemy_imgs[4]={__BIN_11,__BIN_10,__BIN_11,__BIN_12};
 
 
 
-	/* <14> <14> (image) */
-
-
-
-
-	/* <15> <15> (image) */
-
-
-
-
-CSprite *enemy_hacking_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
+CSprite *enemy_hacking_imgs[4]={__BIN_12,__BIN_11,__BIN_12,__BIN_13};
 
 
 
@@ -128,7 +123,31 @@ CSprite *enemy_hacking_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
 
 
 
+	/* <14> <14> (image) */
+
+
+
+	/* <15> <15> (image) */
+
+
+
+
+
+
+
 	/* <16> <16> (image) */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -136,32 +155,8 @@ CSprite *enemy_hacking_imgs[4]={__BIN_14,__BIN_13,__BIN_14,__BIN_15};
 
 
 
-
-
-
-
-	/* <18> <18> (image) */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/* <19> <19> (image) */
-
-
-
 CSprite *landscape_imgs[LANDSCAPE_TYPES]=
-  {__BIN_16,__BIN_17,__BIN_18,__BIN_19};
+  {__BIN_14,__BIN_15,__BIN_16,__BIN_17};
 
 #define MAX_LANDSCAPE 64
 class LandScapeItem
@@ -239,21 +234,6 @@ U0 DrawIt(CTask *task,CDC *dc)
       GrLine(dc,tempb->x>>32,tempb->y>>32,
 	    (tempb->x+tempb->dx*BULLET_LEN)>>32,
 	    (tempb->y+tempb->dy*BULLET_LEN)>>32);
-
-
-  for (i=0,tempm=m;i<MAX_MAN;i++,tempm++) {
-    yy=(tempm->y-scroll_y)&(MAP_HEIGHT-1);
-    if (-32<=yy<=task->pix_bottom+32) {
-      if (tempm->dead && ts<tempm->corpse_timeout)
-	if (!(RandU16&15)) {
-	  if (tempm->friendly)
-	    temps=__BIN_2;
-	  else
-	    temps=__BIN_9;
-	  Sprite3B(dc,tempm->x,yy,0,temps);
-	}
-    }
-  }
 
   DCDepthBufAlloc(dc);
   mp_not_done_flags=1<<mp_cnt-1;

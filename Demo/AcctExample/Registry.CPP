@@ -10,22 +10,12 @@
       F64 best_score=9999.0000;
       +] CircleTrace
       F64 best_score=4.9425;
-      +] BlackDiamond
-      I64 best_score=9;
-      +] EagleDive
-      I64 best_score=4;
       +] DunGen
       F64 best_score=20.5295;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
       +] ZoneOut
       F64 best_score=50.3318;
-      +] Varoom
-      F64 best_score=46.2643;
       +] FlapBat
       F64 best_score=16.4090;
-      +] TimeOut
-      I64 best_score=22202;
       +] RawHide
       F64 best_score=96.1279;
       +] KeepAway
@@ -37,6 +27,16 @@
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=175;
+      +] BlackDiamond
+      I64 best_score=9;
+      +] Varoom
+      F64 best_score=46.2643;
+      +] TimeOut
+      I64 best_score=22202;
+      +] EagleDive
+      I64 best_score=4;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
       +] DemoCompany
   +] Game1
       F64 best_score=258.59407;

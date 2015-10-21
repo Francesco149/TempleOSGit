@@ -556,6 +556,15 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
+DumbGuards
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/OdKa9bXVinE"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/OdKa9bXVinE"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 
 WWW.OSDEV.ORG
