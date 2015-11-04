@@ -73,7 +73,8 @@ REL32?
 
 * Since I don't use paging (for anything), Intel should have an option for  
 no-paging long mode, and optimize it.
-[C:/Kernel/MemA.CPP.Z,1]		:153 lines to identity-map gets eliminated.
+[C:/Kernel/Mem/PageTables.CPP.Z,1]		:153 lines to identity-map gets 
+eliminated.
 
 * Desktop computers must have a reset switch and a fast reboot option, 
 skipping diagnostics.  I recommend booting TempleOS when the reset button is 

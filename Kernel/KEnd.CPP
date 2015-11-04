@@ -133,7 +133,7 @@ U0 KernelMain()
 {//Continued from [C:/Kernel/KStart.CPP.Z,1] Kernel
   OutU8(0x61,InU8(0x61)&~3); //Snd(0);
   adam_task=Fs;
-  HeapsInit;
+  BlkPoolsInit;
   LBts(&sys_run_level,RLf_FULL_HEAP);
   SysGlblsInit;
   Mem32DevInit;

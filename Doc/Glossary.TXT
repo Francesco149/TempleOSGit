@@ -168,10 +168,10 @@ Wiz	Wizard
   compiler and [C:/Kernel/KLoad.CPP.Z,181] Load()er alloc memory from the code
   heap to store code and glbl vars, unless the compiler option
   [C:/Kernel/KernelA.HPP.Z,1518] OPTf_GLBLS_ON_DATA_HEAP is used.  When
-  programs call [C:/Kernel/MemB.CPP.Z,373] MAlloc() is from the data heap,
-  which in not limited in size, except by physical RAM memory.  You can alloc
-  from any heap in any task at any time on any core, even making
-  [C:/Kernel/MemA.CPP.Z,191] independent heaps.
+  programs call [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() is from the data
+  heap, which in not limited in size, except by physical RAM memory.  You can
+  alloc from any heap in any task at any time on any core, even making
+  [C:/Kernel/Mem/Mem512.CPP.Z,11] independent heaps.
 +] Parent, Child and PopUp Tasks
   Often a task will [C:/Kernel/KTask.CPP.Z,205] Spawn() or
   [C:/Kernel/SrvCmd.CPP.Z,379] PopUp() a task as a helper.  The helper is known
@@ -321,9 +321,9 @@ result is reserved for local variables that hold the function return val.
   [C:/Kernel/KernelA.HPP.Z,3390] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
-  [C:/Kernel/MemB.CPP.Z,373] MAlloc().  They must [C:/Kernel/MemB.CPP.Z,369]
-  Free() it when finished.  Ptrs are used to refer to the chunk.  The heap is
-  dynamically alloced mem.
+  [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc().  They must
+  [C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free() it when finished.  Ptrs are used
+  to refer to the chunk.  The heap is dynamically alloced mem.
 +] Root
   The base of a binary tree or the head of a queue is the root.  (I don't
   like the word head.)

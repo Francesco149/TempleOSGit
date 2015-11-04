@@ -2783,7 +2783,7 @@ class CMemUsed
 
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
-identity-maps them during boot -- [C:/Kernel/MemA.CPP.Z,6] SYS_INIT_MEM.
+identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
 [C:/Kernel/KernelA.HPP.Z,2829] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
 I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2829] PAGE_SIZE".
 
@@ -3626,7 +3626,7 @@ public class CDC
 
   CDC *brush;
 
-  //Set with [C:/Adam/Gr/GrDC.CPP.Z,47] DCMat4x4Set().  [C:/Kernel/MemB.CPP.Z,369] Free() before setting.
+  //Set with [C:/Adam/Gr/GrDC.CPP.Z,47] DCMat4x4Set().  [C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free() before setting.
   I64	*r, //rotation matrix of quads decimal in lo
 	r_norm; //shifted 32 bits.  Used for scaling pen width
 

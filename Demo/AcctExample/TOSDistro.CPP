@@ -289,7 +289,7 @@ U0 MakeTOSDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-	"Download TempleOS V3.11 - T.S. Company Internal Distro (%0.1f MB)",
+	"Download TempleOS V3.12 - T.S. Company Internal Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -325,7 +325,7 @@ U0 MakeDbgDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-	"Download TempleOS V3.11 - Debug Distro (%0.1f MB)",
+	"Download TempleOS V3.12 - Debug Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -373,7 +373,7 @@ U0 MakeLiteDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-	"Download TempleOS V3.11 - Lite Distro (%0.1f MB)",
+	"Download TempleOS V3.12 - Lite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -406,7 +406,7 @@ U0 MakeUltraDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.11 - UltraLite Distro (%0.1f MB)",
+	"Download TempleOS V3.12 - UltraLite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -491,12 +491,12 @@ U0 MakeWebSitePartial()
 U0 UpdateISODocDefines()
 {
   DefinePrint("DD_TEMPLEOSCD_SIZE",
-	"Download TempleOS V3.11 - Standard Distro (%0.1f MB)",
+	"Download TempleOS V3.12 - Standard Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSCD_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V3.11 - UltraSmall Distro (%0.1f MB)",
+	"Download TempleOS V3.12 - UltraSmall Distro (%0.1f MB)",
 	0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
   DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
 	"%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);

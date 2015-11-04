@@ -120,8 +120,8 @@ once.
 
 3sGCGCqCCe2G3EE2G3qDetDEFsDBDB
 
-* [C:/Kernel/MemC.CPP.Z,165] Mem32DevAlloc() is broken. Devices should be in
-free spot of E820 report.
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() is broken. Devices
+should be in free spot of E820 report.
 
 * SPRITES in CMD Line code.
 

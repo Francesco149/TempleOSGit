@@ -2,7 +2,7 @@
   +] SysMsgFlags
       sys_msg_flags[0]=0xFF;
       +] SysRegVer
-      registry_version=3.110;
+      registry_version=3.120;
       +] TempleOS
   +] TOS
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
@@ -20,23 +20,23 @@
       F64 best_score=96.1279;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
-      +] XCaliber
-      I64 best_score=248;
-    I64 msg_flags=1;
-      +] Wenceslas
-      F64 best_score=49.8074;
-      +] BomberGolf
-      I64 best_score=175;
       +] BlackDiamond
       I64 best_score=9;
       +] Varoom
       F64 best_score=46.2643;
-      +] TimeOut
-      I64 best_score=22202;
-      +] EagleDive
-      I64 best_score=4;
       +] CastleFrankenstein
       F64 best_score=33.8405;
+      +] TimeOut
+      I64 best_score=22202;
+      +] BomberGolf
+      I64 best_score=175;
+      +] Wenceslas
+      F64 best_score=49.8074;
+      +] XCaliber
+      I64 best_score=248;
+    I64 msg_flags=1;
+      +] EagleDive
+      I64 best_score=4;
       +] DemoCompany
   +] Game1
       F64 best_score=258.59407;

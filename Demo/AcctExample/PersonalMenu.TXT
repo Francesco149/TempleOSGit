@@ -38,6 +38,11 @@ Cd("/Kernel/BlkDev");Dir;
 `Cd("/Kernel/BlkDev");Dir;
 `
 
+Cd("/Kernel/Mem");Dir;
+
+`Cd("/Kernel/Mem");Dir;
+`
+
 Cd("/Compiler");Dir;
 
 `Cd("/Compiler");Dir;

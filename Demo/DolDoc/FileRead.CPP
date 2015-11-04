@@ -66,7 +66,7 @@ public U0 DocProfile(U8 *filename,I64 flags)
 /*See [C:/Adam/Training.CPP.Z,161] TipOfDay.
 
 Note: Not all [C:/Kernel/KernelA.HPP.Z,1163] CDocEntry's are full-sized nodes.
-Some are [C:/Kernel/MemB.CPP.Z,373] MAlloced with a smaller size to save
+Some are [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloced with a smaller size to save
 mem.	They all have at least the size [C:/Kernel/KernelA.HPP.Z,1143] CDocEntryBase.
 
 Note: [C:/Kernel/KernelA.HPP.Z,1163] CDocEntry's should be alloced from the
