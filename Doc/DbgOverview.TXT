@@ -1,10 +1,10 @@
                               Debugging Overview
 
-* You can enter the debugger with [C:/Kernel/KDbg.CPP.Z,641] Dbg() or
+* You can enter the debugger with [C:/Kernel/KDbg.CPP.Z,636] Dbg() or
 <CTRL-ALT-d>.  You might enter the 
-debugger through a fault.  Enter [C:/Kernel/KDbg.CPP.Z,451] G() or
-[C:/Kernel/KDbg.CPP.Z,476] G2() to continue execution.  Place a 
-call to [C:/Kernel/KDbg.CPP.Z,641] Dbg() in your code at fatal error points
+debugger through a fault.  Enter [C:/Kernel/KDbg.CPP.Z,444] G() or
+[C:/Kernel/KDbg.CPP.Z,469] G2() to continue execution.  Place a 
+call to [C:/Kernel/KDbg.CPP.Z,636] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,649] U(). [C:/Compiler/UAsm.CPP.Z,649]
@@ -90,7 +90,7 @@ program which intercepts [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() and
 find other heap issues.
 
 * You can define handler functions for <CTRL-ALT-letter> keys with 
-[C:/Kernel/KeyDev.CPP.Z,171] CtrlAltCBSet().  They operate either in a
+[C:/Kernel/KeyDev.CPP.Z,176] CtrlAltCBSet().  They operate either in a
 interrupt environment or in the 
 window mgr when it queues kbd msgs.  You can do [C:/Kernel/KMisc.CPP.Z,243]
 Raw() output.  <CTRL-ALT-lette

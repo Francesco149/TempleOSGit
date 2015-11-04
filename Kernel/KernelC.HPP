@@ -666,7 +666,6 @@ public extern U0 SleepUntil(I64 wake_jiffy);
 
 #help_index "Task/Misc"
 extern U0 (*fp_update_ctrls)(CTask *task);
-public extern U0 OverRideSingleUserSwap();
 public extern U0 TSSBusy(I64 tr,Bool val=OFF);
 public extern U0 TaskDerivedValsUpdate(CTask *task=NULL,Bool update_z_buf=TRUE);
 public extern U0 WinDerivedValsUpdate(CTask *task=NULL);

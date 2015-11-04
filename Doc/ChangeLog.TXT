@@ -2,7 +2,12 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----11/03/15 06:55:06----
+----11/03/15 22:40:18----
+* Added CTRL-ALT-f to toggle an aux font.
+* CTRL-ALT-v is now flush VGA cache.
+* Added [C:/Adam/God/GodBible.CPP.Z,273] BibleDoc to present Bible with tree
+widgets.
+* Fixed CTRL-ALT-C bug.
 
 ----11/01/15 21:44:46----
 * **TempleOS version 3.12 Released**
@@ -30,7 +35,7 @@ common fault vector.
 * **TempleOS version 3.11 Released**
 
 ----08/28/15 01:50:15----
-*  Added [C:/Adam/God/GodBible.CPP.Z,273] BibleView() and <CTRL-ALT-b>.
+*  Added [C:/Adam/God/GodBible.CPP.Z,329] BibleView() and <CTRL-ALT-b>.
 
 ----08/25/15 23:29:48----
 * Moved [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() to /Adam/Opt/Utils.

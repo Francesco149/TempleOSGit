@@ -344,7 +344,7 @@ public U0 TextBorder(CTask *task=NULL,
       TextChar(task,,i,b+1,'-'+attr);
     }
     for (i=t;i<=b;i++) {
-      TextChar(task,,l-1,i,'|'+attr);
+      TextChar(task,,l-1,i,'|'+attr); //Note: [C:/Kernel/KDbg.CPP.Z,291] RawDr() uses this char.
       TextChar(task,,r+1,i,'|'+attr);
     }
   } else {

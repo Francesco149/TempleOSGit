@@ -67,6 +67,8 @@ U0 SysGlblsInit()
 U0 SysGrInit()
 {
   text.font=sys_font_8x8;
+  text.aux_font=MAlloc(256*FONT_HEIGHT);
+  MemCpy(text.aux_font,text.font,256*FONT_HEIGHT);
   if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
     text.cols=80;
     text.rows=25;
