@@ -7,8 +7,9 @@ domain.
 from Linux.  Later, I got the 
 spec.
 
-3) The heap algorithm, [C:/Kernel/MemB.CPP.Z,1], is adapted from one I saw at 
-Ticketmaster when I worked on their VAX operating system.
+3) The heap algorithm, [C:/Kernel/Mem/MAllocFree.CPP.Z,1], is adapted from
+one I saw 
+at Ticketmaster when I worked on their VAX operating system.
 
 4) The LZW compression algorithm, [C:/Kernel/Compress.CPP.Z,1], came from a
 magazine 

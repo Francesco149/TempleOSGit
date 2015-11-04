@@ -2,7 +2,11 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----10/24/15 07:40:25----
+----11/03/15 06:55:06----
+
+----11/01/15 21:44:46----
+* **TempleOS version 3.12 Released**
+* Created /Kernel/Mem directory.
 
 ----10/08/15 10:17:55----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("BSP","Core0");
@@ -413,7 +417,7 @@ directory.
 not just /Apps. 
 
 ----01/16/15 15:08:58----
-* Changed [C:/Kernel/MemC.CPP.Z,306] Scale2Mem().
+* Changed [C:/Kernel/Mem/MemPhysical.CPP.Z,187] Scale2Mem().
 
 ----01/15/15 05:11:31----
 * **TempleOS version 3.01 Released**

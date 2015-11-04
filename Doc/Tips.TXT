@@ -77,8 +77,8 @@ function to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP,1] Update Funs.
 
-* [C:/Kernel/MemC.CPP.Z,306] Scale2Mem(min,max,limit=2*1024*1024*1024) can be
-used for cfg questions when 
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,187]
+Scale2Mem(min,max,limit=2*1024*1024*1024) can be used for cfg questions when 
 recompiling.  The [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()
 cfg prompts accept expressions, not 
 just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).

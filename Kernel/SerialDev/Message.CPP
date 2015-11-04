@@ -191,7 +191,7 @@ I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,Bool raw_cursor=FALSE)
 }
 
 U8 *GetStr(U8 *msg=NULL,U8 *dft=NULL,I64 flags=0)
-{//Returns a [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed prompted string.  See [C:/Kernel/KernelA.HPP.Z,3730] Flags.
+{//Returns a [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc()ed prompted string.  See [C:/Kernel/KernelA.HPP.Z,3730] Flags.
   U8 *st;
   if (msg)
     "" msg,dft;

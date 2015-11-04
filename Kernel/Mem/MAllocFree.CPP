@@ -207,7 +207,7 @@ MALLOC_FINAL_EXIT:
 	RET1	16
 //************************************
 _FREE::
-//Be aware of [C:/Kernel/MemB.CPP.Z,1] heap_hash in [C:/Kernel/MemA.CPP.Z,476] Mem512TaskAlloc().
+//Be aware of [C:/Kernel/Mem/MAllocFree.CPP.Z,1] heap_hash in [C:/Kernel/Mem/Mem512.CPP.Z,115] Mem512TaskAlloc().
 	PUSH	RBP
 	MOV	RBP,RSP
 	PUSH	RSI
@@ -366,7 +366,7 @@ _MHEAP_CTRL::
 	RET1	8
 }
 
-_extern _FREE U0 Free(U8 *addr); //Free [C:/Kernel/MemB.CPP.Z,373] MAlloc()ed memory chunk.
+_extern _FREE U0 Free(U8 *addr); //Free [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc()ed memory chunk.
 _extern _MSIZE I64 MSize(U8 *src); //Size of heap object.
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size of heap object.
 _extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/KernelA.HPP.Z,2856] CHeapCtrl of object.

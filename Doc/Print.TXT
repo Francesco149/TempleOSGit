@@ -62,8 +62,8 @@ strs in strs.)
 
 [C:/Kernel/StrPrint.CPP.Z,906] MStrPrint(U8 *fmt,...) is like
 [C:/Kernel/StrPrint.CPP.Z,884] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
-[C:/Kernel/MemB.CPP.Z,373] MAllocated str.  It is vary handy because you
-don't have to worry about 
+[C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAllocated str.  It is vary handy
+because you don't have to worry about 
 overflow.
 
 [C:/Kernel/StrPrint.CPP.Z,889] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a

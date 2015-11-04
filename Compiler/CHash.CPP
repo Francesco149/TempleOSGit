@@ -48,7 +48,7 @@ I64 HashEntrySize2(CHashSrcSym *temph)
     else if (temph->type & HTT_FUN) {
       result+=MemberLstSize(temph);
       if (dbg_info=temph->dbg_info)
-//This should be [C:/Kernel/MemB.CPP.Z,370] MSize() but it would crash on AOT .BIN.Z file funs.
+//This should be [C:/Kernel/Mem/MAllocFree.CPP.Z,370] MSize() but it would crash on AOT .BIN.Z file funs.
 	result+=dbg_info->body[dbg_info->max_line+1-dbg_info->min_line]
 	      -dbg_info->body[0];
     } else if (temph->type&HTT_DEFINE_STR)
