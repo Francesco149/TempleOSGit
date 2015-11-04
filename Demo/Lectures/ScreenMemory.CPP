@@ -39,7 +39,7 @@ That means no read-modify-writes, too.
 
   //TempleOS has a 4 plane memory duplicate of the screen, [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image,
   //and only writes actual changes.  See [C:/Adam/Gr/GrScreen.CPP.Z,369] GrUpdateVGAGraphics().
-  //<CTRL-ALT-f> will flush screen VGA cache.
+  //<CTRL-ALT-v> will flush screen VGA cache.
   VGAFlush;
 }
 

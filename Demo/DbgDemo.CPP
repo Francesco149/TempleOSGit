@@ -5,7 +5,7 @@ Rerun Program
 
 Press <CTRL-ALT-d> to enter Dbg.
 > [C:/Kernel/KDbg.CPP.Z,328] Dr;	//Dump Regs
-> [C:/Kernel/KDbg.CPP.Z,476] G2;	//Cont program
+> [C:/Kernel/KDbg.CPP.Z,469] G2;	//Cont program
 
 Press <CTRL-ALT-d> to enter Dbg.
 > [C:/Adam/ADbg.CPP.Z,247] Uf("DbgDemo");

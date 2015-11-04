@@ -301,7 +301,7 @@ load Kernel.BIN.C which has been modified to also hold a small RAM drive
 (Drive A) that fits in the low 640k.  The bootloader starts in real mode
 and the kernel changes to long, 64-bit mode.  It loads the 64-bit compiler
 and assembler, compiles some, but not all, of the normal start-up scripts
-and drops you off at the [C:/Kernel/KDbg.CPP.Z,641] Dbg command-line where you can JIT compile,
+and drops you off at the [C:/Kernel/KDbg.CPP.Z,636] Dbg command-line where you can JIT compile,
 use [C:/Kernel/EdLite.CPP.Z,58] EdLite on RAM files, and use many of the other normal Kernel commands.
 I could not fit all the normal start-up scripts into the small RAM drive,
 so you do not have the window manager or normal document framework.  You

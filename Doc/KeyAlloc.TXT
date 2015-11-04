@@ -24,7 +24,7 @@ pre-defined, but you can change them if you wish.
 <CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
 the [C:/Kernel/KernelA.HPP.Z,1328] CDoc editor.  I reserve the right to alloc
 these, but in the mean time, 
-you can define your own handlers with [C:/Kernel/KeyDev.CPP.Z,171]
+you can define your own handlers with [C:/Kernel/KeyDev.CPP.Z,176]
 CtrlAltCBSet().  They operate either in 
 a interrupt environment or in the window mgr when it queues kbd msgs.  You
 can 

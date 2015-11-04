@@ -28,8 +28,6 @@
       F64 best_score=33.8405;
       +] TimeOut
       I64 best_score=22202;
-      +] BomberGolf
-      I64 best_score=175;
       +] Wenceslas
       F64 best_score=49.8074;
       +] XCaliber
@@ -37,6 +35,8 @@
     I64 msg_flags=1;
       +] EagleDive
       I64 best_score=4;
+      +] BomberGolf
+      I64 best_score=175;
       +] DemoCompany
   +] Game1
       F64 best_score=258.59407;

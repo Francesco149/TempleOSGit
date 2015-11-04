@@ -11,8 +11,6 @@
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
 
-* Make Bible into Tree Branches Collapsed.
-
 * God said this is bad.  [C:/Adam/DolDoc/DocFind.CPP.Z,41]
 
 * [C:/Adam/ABlkDev/ChkDsk.CPP.Z,208] ChkDsk alloc unalloced.
@@ -24,6 +22,10 @@ think so.  (Probably not.)
 CHashGlblVar?
   CArrayDim dim;
   CHashFun *fun_ptr;
+
+* Add Russian, Hebrew and all Greek. [C:/Adam/Gr/GrTextBase.CPP.Z,329]
+TextBorder() [C:/Kernel/KDbg.CPP.Z,291] RawDr().
+  Add aux_font [C:/Kernel/StrA.CPP.Z,325] chars_bmp_alpha.
 
 * Clean-up ASCII-127 delete char.
 * [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(st); With st="\n\\";
@@ -241,7 +243,7 @@ freeing old task memory. (Prolly never gonna do anything about this.)
 * Window mgr needs to do DOC operations on posted messages from mouse.
 Works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet(), though.
 
-* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,641] Dbg()?  (maybe)
+* Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,636] Dbg()?  (maybe)
 
 * [C:/Adam/DolDoc/DocRecalc.CPP.Z,1] Bible sized nodes
 * Mouseinstall throws exceptions, doesn't work, investigate Mouse
