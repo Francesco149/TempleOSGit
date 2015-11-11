@@ -1,7 +1,5 @@
 * I'm going to redo all my videos and make them more professional.
 
-* Kruskal-Wallis_one-way_analysis_of_variance disk sector allocation?
-
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
 * 8/20/2015 TAD8, Tour1, then Tour TestSuite was missing #include "TestSuite".
@@ -23,9 +21,12 @@ CHashGlblVar?
   CArrayDim dim;
   CHashFun *fun_ptr;
 
-* Add Russian, Hebrew and all Greek. [C:/Adam/Gr/GrTextBase.CPP.Z,329]
-TextBorder() [C:/Kernel/KDbg.CPP.Z,291] RawDr().
-  Add aux_font [C:/Kernel/StrA.CPP.Z,325] chars_bmp_alpha.
+* Add cyrillic 8-bit Russian font on aux_font? <CTRL-ALT-f> will toggle fonts.
+  Move 12 border chars to screen font codes 0-26? 
+[C:/Adam/Gr/GrTextBase.CPP.Z,329] TextBorder() [C:/Kernel/KDbg.CPP.Z,291]
+RawDr().
+  Add aux_font option with [C:/Kernel/StrA.CPP.Z,325] chars_bmp_alpha
+configured for any aux_font?
 
 * Clean-up ASCII-127 delete char.
 * [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(st); With st="\n\\";
@@ -363,28 +364,26 @@ F64.
 
 ==============================================================================
 ==
+>lspci -v
+Size:
+
 It is love I desire: Hosea 6:6
 Offer a sacrifice of praise: Hebrews 13:15
 Do I drink blood of goats? Offer praise: Psalms 50:14
 Runner's Stride: Psalms 147:10
-
-```
-<object width="640" height="520"><param name="movie"
-value="http://www.youtube.com/v/aKchwAWMpDA"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/aKchwAWMpDA"
-type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
-height="520"></embed></object>
-```
 Buckling Armor: 1 Kings 20:11
 Lot cast in the lap: Proverbs 16:33
 Lord does not repeat: Job 33:14
 Offer only in approved place: Deuteronomy 12:13-18
 Jesus' zeal for the Temple: John 2:14-19
+Famine not for bread: Amos 8:11-12
 
->lspci -v
-Size:
-
+TempleOS Logo
+```
+<img src="http://www.templeos.org/images/Logo128x152.jpg" width="640"
+height="760" alt="">
+```
+Return of Living Dead: Brains!!!
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/E6K9zK9ZWSg"></param><param
@@ -393,18 +392,24 @@ src="http://www.youtube.com/v/E6K9zK9ZWSg"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-8:11 Behold, the days come, saith the Lord GOD, that I will send a
-famine in the land, not a famine of bread, nor a thirst for water, but
-of hearing the words of the LORD: 8:12 And they shall wander from sea
-to sea, and from the north even to the east, they shall run to and fro
-to seek the word of the LORD, and shall not find it.
-
-TempleOS Logo
+Iron Maiden: The Trooper
 ```
-<img src="http://www.templeos.org/images/Logo128x152.jpg" width="640"
-height="760" alt="">
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/aKchwAWMpDA"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/aKchwAWMpDA"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
 ```
-
+Iron Maiden: Icarus
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/0Pmgtyw2n8w"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/0Pmgtyw2n8w"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Contact
 ```
 <object width="640" height="520"><param name="movie"
@@ -414,7 +419,6 @@ src="http://www.youtube.com/v/SRoj3jK37Vc"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Black Knight
 ```
 <object width="640" height="520"><param name="movie"
@@ -424,7 +428,6 @@ src="http://www.youtube.com/v/dhRUe-gz690"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Metallica: Creeping Death
 ```
 <object width="640" height="520"><param name="movie"
@@ -434,7 +437,51 @@ src="http://www.youtube.com/v/z5lXEFdZAmU"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
+Russian Monks
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/C7vvPXz-Qes"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/C7vvPXz-Qes"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Russian Feeding Baby Bears
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/5mD4Os11l1s"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/5mD4Os11l1s"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Fat Bears Attenborough
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/RB9uzMjiYSQ"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/RB9uzMjiYSQ"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Baby elephants Fighting
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/2YpQhxqnaNw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/2YpQhxqnaNw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Elephants Chasing Lions
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/EVyofM2dm_8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/EVyofM2dm_8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Neil Degrasse Tyson: Get of of their Way
 ```
 <object width="640" height="520"><param name="movie"
@@ -453,7 +500,6 @@ src="http://www.youtube.com/v/rVwQ9jBuoFA"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Commodore 64 Basic/Assembly
 ```
 <object width="640" height="520"><param name="movie"
@@ -463,7 +509,6 @@ src="http://www.youtube.com/v/d8bZ92gIVms"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Red Fang: Prehistoric Dog
 ```
 <object width="640" height="520"><param name="movie"
@@ -473,7 +518,6 @@ src="http://www.youtube.com/v/VufilzHKTqk"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Bill Gates Predictions
 ```
 <object width="640" height="520"><param name="movie"
@@ -483,7 +527,15 @@ src="http://www.youtube.com/v/4r9u_R0cCew"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
+Failure to Communicate
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/SnO9Jyz82Ps"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/SnO9Jyz82Ps"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Cop tying shoe:  (After drive-by shooting, God said kid was not innocent, 
 LOL.)
 ```
@@ -491,7 +543,6 @@ LOL.)
 src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambri
 dge-county-pd.jpg" width="480" height="376" alt="">
 ```
-
 Frontier Psychiatrist
 ```
 <object width="640" height="520"><param name="movie"
@@ -501,6 +552,7 @@ src="http://www.youtube.com/v/qLrnkK2YEcE"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
+Simple Minds
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/DfIcZtjAch8"></param><param
@@ -509,7 +561,6 @@ src="http://www.youtube.com/v/DfIcZtjAch8"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Morning has Broken
 ```
 <object width="640" height="520"><param name="movie"
@@ -519,17 +570,6 @@ src="http://www.youtube.com/v/kKoRp05L95c"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
-Icarus
-```
-<object width="640" height="520"><param name="movie"
-value="http://www.youtube.com/v/0Pmgtyw2n8w"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/0Pmgtyw2n8w"
-type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
-height="520"></embed></object>
-```
-
 Zombie Game
 ```
 <object width="640" height="520"><param name="movie"
@@ -548,7 +588,7 @@ src="http://www.youtube.com/v/ORXqOEGFQfE"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-MachineGun
+MachineGun Shooting Game
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/wv_Q0E5PSC0"></param><param
@@ -557,7 +597,6 @@ src="http://www.youtube.com/v/wv_Q0E5PSC0"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 Van Gogh
 ```
 <object width="640" height="520"><param name="movie"
@@ -567,7 +606,6 @@ src="http://www.youtube.com/v/YBMGVu6GTDw"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
 DumbGuards
 ```
 <object width="640" height="520"><param name="movie"
@@ -577,7 +615,60 @@ src="http://www.youtube.com/v/OdKa9bXVinE"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
-
+Cathedral
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/t8g1e-JLrhM"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/t8g1e-JLrhM"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Calligraphy
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Oa8gMb0YC68"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Oa8gMb0YC68"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+National Cathedral
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/tZw5V4XuUIo"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/tZw5V4XuUIo"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Key and Peel: Substitue Teacher #1
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Dd7FixvoKBw"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Dd7FixvoKBw"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+WestWorld
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/LcL3eP0Hfy4"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/LcL3eP0Hfy4"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Picard: Four Lights
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/o_eSwq1ewsU"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/o_eSwq1ewsU"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 
 WWW.OSDEV.ORG
 PCI Interrupt Routing
@@ -589,23 +680,17 @@ ASU_Transcripts      ASU Course Catalog (See page 261)
 Dr. David Pheanis	Dr. Konstantinos S. Tsakalis	Dr. Walter Higgins
 Peter Gadwa
 Tom Foley
-KeyPeele#1
-KeyPeele#2
-ThePrisoner
 Bible with LineNums
 Security at NIST
-WestWorld
-Picard:FourLights
 Dwight:NerdTorture
 AliG:Homosapiens
-Dumb Guards
-Mapping the Commodore 64
-Holy Grail: Lmq5PxHpLNw  1:28:27
 ATA/ATAPI Spec
 BBC
 BBC_News_24
 BBC_Five_Live
 KNPR
+CBS News
+Mapping the Commodore 64
 C64 Users Guide
 C64 Programmers Reference Guide
 8-Bit Japanese Pixel Art

@@ -397,7 +397,7 @@ U0 InsMyURL()
   switch (PopUpPickLst("NISTBeacon5Bible\0NISTBeacon8Passage\0"
 	"BibleGatewaySearch\0BibleGatewayVerse\0"
 	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0Random.org\0PassWord\0"
-	"VirtualNotary\0Nist\0HotBits\0GenerateData\0WebBookMark\0"
+	"VirtualNotary\0ANU_NIST\0HotBits\0GenerateData\0WebBookMark\0"
 	"Roulette\0Movie\0")) {
     case 0:
       if (DocForm(url(CRandHexBeacon5Form *))) {
