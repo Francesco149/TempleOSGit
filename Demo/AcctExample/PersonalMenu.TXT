@@ -279,7 +279,10 @@ ChgDsk('T');
 `ChgDsk('T');
 `
 
-AugustWords
+LinuxDict
+`Adam("GodInit(\"::/Home/Wb2/Files/Words/LinuxDict.TXT**\");");
+`
+ AugustWords
 `Adam("GodInit(\"::/Home/Wb2/Files/Words/AugustWords.TXT**\");");
 `
  HappyWords

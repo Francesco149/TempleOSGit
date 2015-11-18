@@ -607,5 +607,5 @@ U0 InsMyURL()
   Free(url);
 }
 
-if (FileFind("::/Home/Wb2/Files/Words/HappyWords.TXT"))
-  GodInit("::/Home/Wb2/Files/Words/HappyWords.TXT");
+if (FileFind("::/Home/Wb2/Files/Words/LinuxDict.TXT"))
+  GodInit("::/Home/Wb2/Files/Words/LinuxDict.TXT");

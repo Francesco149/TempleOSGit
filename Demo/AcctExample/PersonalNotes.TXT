@@ -383,12 +383,48 @@ TempleOS Logo
 <img src="http://www.templeos.org/images/Logo128x152.jpg" width="640"
 height="760" alt="">
 ```
+The Prisoner
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/tra3Zi5ZWa0"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/tra3Zi5ZWa0"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Hotel California
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/iqODbP1T3nk"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/iqODbP1T3nk"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Ozymandias
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/sPlSH6n37ts"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/sPlSH6n37ts"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Return of Living Dead: Brains!!!
 ```
 <object width="640" height="520"><param name="movie"
 value="http://www.youtube.com/v/E6K9zK9ZWSg"></param><param
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/E6K9zK9ZWSg"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Independence Day
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/vjFG-4Ge668"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/vjFG-4Ge668"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
