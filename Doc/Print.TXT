@@ -69,15 +69,15 @@ overflow.
 [C:/Kernel/StrPrint.CPP.Z,889] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
 formated string.
 
-[C:/Kernel/SrvCmd.CPP.Z,485] Auto(U8 *fmt,...) sends text to the current
+[C:/Kernel/SrvCmd.CPP.Z,486] Auto(U8 *fmt,...) sends text to the current
 task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,467] AutoStr(U8 *fmt,...) sends text of an
+[C:/Kernel/SrvCmd.CPP.Z,468] AutoStr(U8 *fmt,...) sends text of an
 [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard stream of the 
 current TASK but can also do mouse cmds.
 
-[C:/Kernel/SrvCmd.CPP.Z,448] XTalk(CTask *task,U8 *fmt,...) and text to
+[C:/Kernel/SrvCmd.CPP.Z,449] XTalk(CTask *task,U8 *fmt,...) and text to
 another task's input buffer.
-[C:/Kernel/SrvCmd.CPP.Z,492] XTalkStr(CTask *task,U8 *fmt,...) sends text of
+[C:/Kernel/SrvCmd.CPP.Z,493] XTalkStr(CTask *task,U8 *fmt,...) sends text of
 an [C:/Doc/Glossary.TXT.Z,1] AutoFile to the keyboard 
 stream of another TASK but can also do mouse cmds.
 
@@ -86,10 +86,10 @@ to a document.  You can buffer to a
 Doc and save it, providing the functionality of fprintf.  See 
 [C:/Demo/Dsk/FPrintF.CPP,1].
 
-[C:/Kernel/SrvCmd.CPP.Z,409] Adam(U8 *fmt,...) sends text to the adam task to
+[C:/Kernel/SrvCmd.CPP.Z,410] Adam(U8 *fmt,...) sends text to the adam task to
 be compiled and run.
-[C:/Kernel/SrvCmd.CPP.Z,426] AdamLog(U8 *fmt,...) and
-[C:/Kernel/SrvCmd.CPP.Z,436] AdamErr(U8 *fmt,...) send text to the adam task
+[C:/Kernel/SrvCmd.CPP.Z,427] AdamLog(U8 *fmt,...) and
+[C:/Kernel/SrvCmd.CPP.Z,437] AdamErr(U8 *fmt,...) send text to the adam task
 to be 
 displayed.
 
@@ -118,7 +118,7 @@ manager.
 [C:/Kernel/KTask.CPP.Z,363] User(U8 *fmt,...) Spawns a user and execute a
 string on start-up.
 
-[C:/Kernel/SrvCmd.CPP.Z,400] PopUpPrint(U8 *fmt,...) compiles and execute a
+[C:/Kernel/SrvCmd.CPP.Z,401] PopUpPrint(U8 *fmt,...) compiles and execute a
 string in a pop-up win.  Note: 
 It returns the result of the last executed expression.
 [C:/Adam/DolDoc/DocPopUp.CPP.Z,17] PopUpViewPrint(U8 *fmt,...) creates a

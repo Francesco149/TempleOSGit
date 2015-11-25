@@ -176,7 +176,7 @@ they
 are still there.  Periodically, kill the TASK and start fresh when mem is
 low. 
  If you wish your applications to free themselves instead of staying in mem, 
-spawn or [C:/Kernel/SrvCmd.CPP.Z,379] PopUp() a task to run the application
+spawn or [C:/Kernel/SrvCmd.CPP.Z,380] PopUp() a task to run the application
 and kill it when it's done.
 
 * To display the contents of a hash table, use the [C:/Adam/AHash.CPP.Z,149]

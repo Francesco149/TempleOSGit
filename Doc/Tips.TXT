@@ -72,7 +72,7 @@ C>.
 * You can recompile and reinstall the kernel with
 [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  
 You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,485] Auto() 
+[C:/Kernel/SrvCmd.CPP.Z,486] Auto() 
 function to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP,1] Update Funs.

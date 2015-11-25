@@ -153,9 +153,9 @@ Wiz	Wizard
   don't want destroyed by a task's death.  When created, Adam runs the file
   [C:/StartOS.CPP.Z,1].  When start-up is finished, the adam task enters a
   server mode where it accepts requests from other tasks.  The
-  [C:/Kernel/SrvCmd.CPP.Z,409] Adam("") routine will make Adam compile and run
+  [C:/Kernel/SrvCmd.CPP.Z,410] Adam("") routine will make Adam compile and run
   text src code.  #include statements can be sent to
-  [C:/Kernel/SrvCmd.CPP.Z,409] Adam(""), creating system-wide code and data
+  [C:/Kernel/SrvCmd.CPP.Z,410] Adam(""), creating system-wide code and data
   which don't disappear when any particular task ends.
 +] Seth Task
   Seth is Adam and Eve's child.  Each CPU core has a special task which is
@@ -174,7 +174,7 @@ Wiz	Wizard
   [C:/Kernel/Mem/Mem512.CPP.Z,11] independent heaps.
 +] Parent, Child and PopUp Tasks
   Often a task will [C:/Kernel/KTask.CPP.Z,205] Spawn() or
-  [C:/Kernel/SrvCmd.CPP.Z,379] PopUp() a task as a helper.  The helper is known
+  [C:/Kernel/SrvCmd.CPP.Z,380] PopUp() a task as a helper.  The helper is known
   as a child Task, though you can [C:/Kernel/KTask.CPP.Z,205] Spawn a task and
   assign it a different parent... like Adam.  Links are kept as to who's whose
   child, so when one task is [C:/Kernel/KTask.CPP.Z,28] Kill()ed the child
@@ -268,7 +268,7 @@ POPFD pops the CPU flags.
   CD/DVD image file--ISO9660.
 *.AUT.Z;*.AUT
   AutoFile Basically a HolyC program whose stdout goes to the input of a task
-  when [C:/Kernel/SrvCmd.CPP.Z,477] AutoFile() is called.
+  when [C:/Kernel/SrvCmd.CPP.Z,478] AutoFile() is called.
 *.GRA.Z;*.GRA
   Graphics file
 

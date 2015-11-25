@@ -24,7 +24,7 @@ functions as in &Print+0x10.
 progress4 for debugging because they show on the wallpaper.  
 They're just global integer vars.
 
-* You can use [C:/Kernel/SrvCmd.CPP.Z,426] AdamLog() to send text to the Adam
+* You can use [C:/Kernel/SrvCmd.CPP.Z,427] AdamLog() to send text to the Adam
 task window.  It works like 
 [C:/Kernel/StrPrint.CPP.Z,898] Print().  I never use that.  Instead, I use
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint().

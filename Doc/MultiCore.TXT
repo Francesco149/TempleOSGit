@@ -14,7 +14,7 @@ is the seth task on core 0.
 
 You give a job to a seth task with [C:/Kernel/MultiProc.CPP.Z,232] JobQue()
 and get the result with 
-[C:/Kernel/SrvCmd.CPP.Z,197] JobResultGet().  You spawn a task on another
+[C:/Kernel/SrvCmd.CPP.Z,198] JobResultGet().  You spawn a task on another
 core with [C:/Kernel/KTask.CPP.Z,205] Spawn().
 
 Note: You must use the LOCK asm prefix when changing shared structures in a 

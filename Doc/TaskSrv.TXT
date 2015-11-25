@@ -1,9 +1,9 @@
  <1> (image)
-[C:/Kernel/SrvCmd.CPP.Z,400] PopUpPrint[C:/Kernel/KTask.CPP.Z,363] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
+[C:/Kernel/SrvCmd.CPP.Z,401] PopUpPrint[C:/Kernel/KTask.CPP.Z,363] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
 
 
 
-[C:/Kernel/SrvCmd.CPP.Z,379] PopUp[C:/Compiler/CMain.CPP.Z,571] ExePutS
+[C:/Kernel/SrvCmd.CPP.Z,380] PopUp[C:/Compiler/CMain.CPP.Z,571] ExePutS
 
 
 
@@ -18,11 +18,11 @@
 
 
 
-[C:/Kernel/SrvCmd.CPP.Z,349] SrvCmdsHandler
+[C:/Kernel/SrvCmd.CPP.Z,350] SrvCmdsHandler
 
 
 
-[C:/Kernel/SrvCmd.CPP.Z,266] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,266] SrvCmdRun[C:/Kernel/KTask.CPP.Z,265] ExeCmdLine[C:/Kernel/KTask.CPP.Z,265] ExeCmdLine
+[C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRun[C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRun[C:/Kernel/KTask.CPP.Z,265] ExeCmdLine[C:/Kernel/KTask.CPP.Z,265] ExeCmdLine
 
 
 
@@ -30,18 +30,18 @@
 [C:/Kernel/KernelA.HPP.Z,3144] CSrvCmd nodes are one of
 [C:/Kernel/KernelA.HPP.Z,3137] five types.  User applications deal with text
 or 
-msgs.  [C:/Kernel/SrvCmd.CPP.Z,266] SrvCmdRun() will call a function, spawn a
+msgs.  [C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRun() will call a function, spawn a
 task or execute some text src 
 code.
 
-#define SVCT_TEXT_INPUT		0 //[C:/Kernel/SrvCmd.CPP.Z,74] TaskText()	Feed StdIn 
-#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,118] TaskMsg()	Post msg 
+#define SVCT_TEXT_INPUT		0 //[C:/Kernel/SrvCmd.CPP.Z,75] TaskText()	Feed StdIn 
+#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,119] TaskMsg()	Post msg 
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
 #define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,205] Spawn()	Tell MP to spawn task
 
 Several other routines
 `Find("SrvCmdsHandler","::/*");View;`
- include a call to [C:/Kernel/SrvCmd.CPP.Z,349] SrvCmdsHandler() that gives
+ include a call to [C:/Kernel/SrvCmd.CPP.Z,350] SrvCmdsHandler() that gives
 them 
 powerful ability to execute servant cmds.
