@@ -446,6 +446,33 @@ src="http://www.youtube.com/v/0Pmgtyw2n8w"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
+Blue Oyster Cult: Godzilla
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/o7gFlSGXt_k"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/o7gFlSGXt_k"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Blue Oyster Cult: Veteran of the Psychic Wars
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/jGKNaIXtBZQ"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/jGKNaIXtBZQ"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+The GodFather 2
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/i96VS_z8y7g"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/i96VS_z8y7g"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
 Contact
 ```
 <object width="640" height="520"><param name="movie"
@@ -515,6 +542,24 @@ Elephants Chasing Lions
 value="http://www.youtube.com/v/EVyofM2dm_8"></param><param
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/EVyofM2dm_8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Polar Bear: Anori
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/h-wBi9g1bj8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/h-wBi9g1bj8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Monkey Harem
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/Bm1q-V2b1Sc"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/Bm1q-V2b1Sc"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
@@ -594,6 +639,24 @@ Simple Minds
 value="http://www.youtube.com/v/DfIcZtjAch8"></param><param
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/DfIcZtjAch8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Little Drummer Boy: Seger
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/S50cf3xIb50"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/S50cf3xIb50"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+Little Drummer Boy: Pentatonix
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/qJ_MGWio-vc"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/qJ_MGWio-vc"
 type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
@@ -707,7 +770,6 @@ height="520"></embed></object>
 ```
 
 WWW.OSDEV.ORG
-PCI Interrupt Routing
 Lamp Shades
 My Bookmarks
 Perfect Coin Toss

@@ -18,5 +18,5 @@ in sync.
 
 See [C:/Doc/CharOverview.TXT.Z,1] Char Overview and [Char,1] Char Routines.
 
-You can send characters into StdIn.  See [C:/Kernel/SrvCmd.CPP.Z,485] Auto(),
-[C:/Kernel/SrvCmd.CPP.Z,448] XTalk() and [AutoFile,1] AutoFile.
+You can send characters into StdIn.  See [C:/Kernel/SrvCmd.CPP.Z,486] Auto(),
+[C:/Kernel/SrvCmd.CPP.Z,449] XTalk() and [AutoFile,1] AutoFile.

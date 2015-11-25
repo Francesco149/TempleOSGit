@@ -195,9 +195,9 @@ The default data-type for the $LS...$ command is I64.  You can change it to
   A left macro arg, LM="", will send text when the left mouse is clicked.
 
 A left auto string, +LA, flag will cause text to be sent to
-  [C:/Kernel/SrvCmd.CPP.Z,467] AutoStr() instead of
-  [C:/Kernel/SrvCmd.CPP.Z,485] Auto().  An AutoStr runs code.  Literal text is
-  in quotes and messages are sent with [C:/Kernel/SrvCmd.CPP.Z,256] Msg().  See
+  [C:/Kernel/SrvCmd.CPP.Z,468] AutoStr() instead of
+  [C:/Kernel/SrvCmd.CPP.Z,486] Auto().  An AutoStr runs code.  Literal text is
+  in quotes and messages are sent with [C:/Kernel/SrvCmd.CPP.Z,257] Msg().  See
   Dir("::/Demo/AutoFile");View;
 `Dir("::/Demo/AutoFile");View;`
 .

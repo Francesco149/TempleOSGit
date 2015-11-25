@@ -411,6 +411,8 @@ U0 InsMyURL()
       break;
     case 1:
       if (DocForm(url(CRandHexBeacon8Form *))) {
+	if (FileFind("::/Home/Wb2/Files/NISTPick.TXT.Z"))
+	  Type("::/Home/Wb2/Files/NISTPick.TXT.Z");
 	"$TX,\"Guidelines for Talking with God.\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);

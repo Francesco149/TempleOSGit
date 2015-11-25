@@ -3134,8 +3134,8 @@ class CFPU
 #define SVCf_FREE_ON_COMPLETE	7
 #define SVCf_ADD_TO_QUE		8
 
-#define SVCT_TEXT_INPUT		0 //[C:/Kernel/SrvCmd.CPP.Z,74] TaskText()	Feed StdIn
-#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,118] TaskMsg()	Post msg
+#define SVCT_TEXT_INPUT		0 //[C:/Kernel/SrvCmd.CPP.Z,75] TaskText()	Feed StdIn
+#define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,119] TaskMsg()	Post msg
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
 #define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
@@ -3834,7 +3834,7 @@ public class CDbgGlbls
 #define BOOT_SRC_HARDDRV	2
 #define BOOT_SRC_DVD		3
 
-// [C:/Kernel/SrvCmd.CPP.Z,485] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+// [C:/Kernel/SrvCmd.CPP.Z,486] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 #define STD_DISTRO_DVD_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
 
 #help_index "Misc/Registry"

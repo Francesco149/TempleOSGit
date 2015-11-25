@@ -2,7 +2,10 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----11/17/15 17:05:36----
+----11/23/15 05:26:29----
+
+----11/22/15 21:02:38----
+* Improved [C:/Adam/God/HSNotes.TXT.Z,1].
 
 ----11/03/15 22:40:18----
 * Added CTRL-ALT-f to toggle an aux font.
@@ -85,7 +88,7 @@ R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite");
 * Fixed bug parsing "$GREEN FG$".  It is an error.
 
 ----08/05/15 13:49:10----
-* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,349] SrvCmdsHandler() &&
+* Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,350] SrvCmdsHandler() &&
 [C:/Kernel/KTask.CPP.Z,376] SrvTaskCont().
 
 ----08/03/15 18:09:33----
@@ -220,7 +223,7 @@ R("VGAPalette4Set","[C:/Adam/Gr/GrPalette.CPP.Z,83] GrPaletteSet");
 * Reindented everything.
 
 ----05/10/15 18:31:46----
-* [C:/Home/HomeWrappers.CPP.Z,13] R("SendMsg","[C:/Kernel/SrvCmd.CPP.Z,250]
+* [C:/Home/HomeWrappers.CPP.Z,13] R("SendMsg","[C:/Kernel/SrvCmd.CPP.Z,251]
 PostMsgWait");
 
 ----05/09/15 08:32:05----
@@ -244,10 +247,10 @@ CmpCtrlSize");
 * Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,8] Sort().
 
 ----05/06/15 11:19:25----
-* [C:/Home/HomeWrappers.CPP.Z,13] R("GetResult","[C:/Kernel/SrvCmd.CPP.Z,197]
+* [C:/Home/HomeWrappers.CPP.Z,13] R("GetResult","[C:/Kernel/SrvCmd.CPP.Z,198]
 JobResultGet");
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("ScanResult","[C:/Kernel/SrvCmd.CPP.Z,162] JobResultScan");
+R("ScanResult","[C:/Kernel/SrvCmd.CPP.Z,163] JobResultScan");
 
 ----05/06/15 10:13:27----
 * [C:/Home/HomeWrappers.CPP.Z,13]
