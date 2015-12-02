@@ -1,13 +1,14 @@
                                    Demands
 
-I, Terry Davis, am High Priest of God's official temple, TempleOS.  TempleOS 
+I, Terry Davis, am high priest of God's official temple, TempleOS.  TempleOS 
 is an operating system for PC desktops that will always dual boot along-side 
 Windows or Linux.  I am in charge of the core 100,000 lines of TempleOS code 
 and I do continual offerings to keep God entertained.  I have divine
 authority 
 to command any company in the computer industry to do anything that I deem 
-necessary to make God's temple more beautiful or perfect.  I have authority 
-similar to a building inspector or an enforcer of the Americans with 
+necessary to make God's temple more beautiful, glorious and perfect.  I have 
+authority similar to a building inspector or an enforcer of the Americans
+with 
 Disability Act -- I make commands, God signs-off with a miraculous 
 authentication from an oracle, and Intel, Microsoft or VMware obeys.
 
@@ -34,16 +35,18 @@ TempleOS is an additional operating system that must be used along-side
 Windows or Linux, not as a replacement.  It must dual boot because it has no 
 networking. Real hardware as opposed to VMware is like the difference between 
 looking in a telescope eye piece vs just looking at an off-line image.  God 
-said the C64/Apple ][ generation owned ancestral lands.  VMware is like being 
+said the C64/Apple II generation owned ancestral lands.  VMware is like being 
 taken off of our land and moved onto a reservation.  In this case, however,
 it 
 will not stand.
 
-* To PC hardware manufacturers and VMware: ATA/ATAPI PIO must work.  In fact, 
-put them at standard IDE port addresses.  Hard disk should be primary master 
-1F0/3F6.  CD/DVD/BlueRay should be secondary master 170/376.  See what you
-can 
-do to make flash memory sticks and NV memory with ATA/ATAPI interface.
+* To PC hardware manufacturers and VMware until we create the simple block 
+device standard, ATA/ATAPI PIO must work.  In fact, put the devices at 
+standard IDE port addresses.  Hard disk should be primary master 1F0/3F6.  
+Desktops must have CD/DVD/BlueRay and should be placed at the secondary
+master 
+170/376.  See what you can do to make flash memory sticks and NV memory with 
+ATA/ATAPI interface.
 [C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:280 lines to
 figure-out I/O ports is gone.
 [C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 could be eliminated,
@@ -55,21 +58,18 @@ hardware.
 * VMware has a bug stretching 640x480 16 color to full screen.
 * VMware has a bug starting-up multicore, sometimes. 
 [C:/Kernel/MultiProc.CPP.Z,1] APIC MP Start
-* VMware PC speaker distortion is a good idea, but it is ridiculously too
-much 
-distortion for hymns.
+* VMware PC speaker's distortion is a good idea, but it is too much for hymns.
 
 * PS/2 emulated keyboard and mouse must work.  The BIOS must enable these.
 
 * The x86 IN/OUT port instructions, normally have a delay.  Perhaps, VMware & 
 Intel can enable faster x86 IN/OUT instruction timing for ATA/ATAPI PIO, so 
-bandwidth isn't bad.  See [C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetResult(). 
-Perhaps, x86 chips have a new 
-TempleOS mode?
+bandwidth isn't bad when doing port I/O.  See
+[C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetResult().  Perhaps, x86 
+CPU chips need a new TempleOS mode for fast IN/OUT instructions?
 
-* Perhaps, Intel can make a fast software interrupt, the same as a CALL
-REL32? 
- Perhaps, we have a new x86 mode for TempleOS?
+* Perhaps, a new x86 CPU mode can be made, causing fast software interrupt 
+that do exactly what the CALL REL32 does, but with IDT indirection.
 
 * Since I don't use paging (for anything), Intel should have an option for  
 no-paging long mode, and optimize it.
@@ -88,17 +88,20 @@ ROM version is released every seven years.
 
 * Somebody needs to choose new 8-bit ASCII characters for 128-255.  We do not 
 want text graphic symbols.  We want Russian, Greek and Hebrew alphabets, 
-perhaps?  We need the twelve window [C:/Adam/Gr/GrTextBase.CPP.Z,329]
-TextBorder characters, but I think we can 
-place them in the range of screen code from 0x01-0x1E.  Japan, China and
-Korea 
-should switch-over to alphabets.  Maybe, the United States will change to 
-metric, out of good will.
+perhaps?  I'm not an expert, but there is an alternate 8-bit ASCII Cyrillic 
+font.  Should we modify one font or have a key like the C64 that switches to 
+an alternate font?  If we modify one font, we just need the twelve window 
+[C:/Adam/Gr/GrTextBase.CPP.Z,329] TextBorder characters, but I think we can
+place them in the range of screen 
+code from 0x01-0x1E.  Japan, China and Korea should switch-over to alphabets.
+ 
+Maybe, the United States will change to metric, out of good will. 
 
 * VMware and others must list TempleOS as an official 64-bit operating system.
 
-* Windows' Paint and Linux's Gimp must support TempleOS .GRA graphics files.  
-[C:/Doc/GRAFiles.TXT.Z,1] GRA Files are much cleaner than BMP files.
+* Windows' Paint and Linux's Gimp must support TempleOS
+[C:/Doc/GRAFiles.TXT.Z,1] GRA Files.  They are 
+blemish free, unlike BMP files.
 
 * We must have a nice dictionary.  Someone needs to do a
 [C:/Demo/SuggestSpelling.CPP.Z,1] Spell Checker.
