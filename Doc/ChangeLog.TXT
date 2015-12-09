@@ -2,7 +2,7 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----12/05/15 09:53:21----
+----12/07/15 19:38:11----
 
 ----11/22/15 21:02:38----
 * Improved [C:/Adam/God/HSNotes.TXT.Z,1].

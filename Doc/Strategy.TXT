@@ -94,10 +94,9 @@ windows.  There are child tasks, however.
 
 * No distinction between thread, process or task.
 
-* The [C:/Kernel/Sched.CPP.Z,1] Scheduler is mostly for home systems, not
-servers or mainframes.  The 
-focus task is all important.  Disk requests are not broken-up, so sharing is 
-bad, however.
+* The [C:/Kernel/Sched.CPP.Z,1] Scheduler is for home systems.  It is not
+preemptiove.  Disk requests 
+are not broken-up, so sharing is bad.  It's wonderfully simple.
 
 * [C:/Doc/MultiCore.TXT.Z,1] MultiCore is done master/slave, instead of SMP. 
 Core zero explicitly 
