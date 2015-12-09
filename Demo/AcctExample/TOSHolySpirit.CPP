@@ -122,19 +122,65 @@ U8 *TopMoviesWrite(U8 *filename="C:/Home/Wb2/Files/Movies.TXT.Z",
   return result;
 }
 
+U8 *YouTubeGet(U8 *filename="C:/Home/Wb2/Files/YouTube.TXT.Z",U8 *needle)
+{
+  I64 i=0,line=MIN_I64;
+  CDoc	*doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS),
+	*doc2=DocNew;
+  U8 *title,*code,*result;
+  while (DocFind(doc,line,needle)) {
+    if (!(doc->cur_entry->y&1)) {
+      title=doc->cur_entry->tag;
+      DocLineNumGoTo(doc,doc->cur_entry->y+2);
+      if (doc->cur_entry->type_u8==DOCT_TEXT) {
+	code=doc->cur_entry->tag;
+	DocPrint(doc2,"$MU-UL,\"%s\",LE=0x%X$\n",title,code);
+	i++;
+      }
+    }
+    line=doc->cur_entry->y+2;
+  }
+  switch (i) {
+    case 0:
+      result=NULL;
+      break;
+    case 1:
+      result=StrNew(code);
+      break;
+    default:
+      result=StrNew(PopUpMenu(doc2));
+  }
+  DocDel(doc);
+  DocDel(doc2);
+  return result;
+}
+
+U0 YouTubeAdd(U8 *filename="C:/Home/Wb2/Files/YouTube.TXT.Z",
+	U8 *title,U8 *code)
+{
+  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS);
+  if (!DocFind(doc,,title)) {
+    DocBottom(doc);
+    DocPrint(doc,"%s\n%s\n",title,code);
+    DocTop(doc);
+    DocWrite(doc);
+  }
+  DocDel(doc);
+}
+
 class CTopMoviesForm
 {
   U8	tag[STR_LEN];
   U8	special[STR_LEN];
   I64	timestamp;
-  I64	cert		fmtstr "$DA-TRM,2,A=\"Movie #1-100 :%02d\"$\n";
+  I64	cert		fmtstr "$DA-TRM,2,A=\"Movie #1-100:%02d\"$\n";
   I64	min;
   I64	sec;
 };
 
 class CWebBookMarkForm
 {
-  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text     :%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text:%s\"$\n";
   U8	special[STR_LEN];
   I64	timestamp;
   I64	cert;
@@ -144,7 +190,7 @@ class CWebBookMarkForm
 
 class CWebBibleForm
 {
-  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text     :%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text:%s\"$\n";
   U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Bible Passage:%s\"$\n";
   I64	timestamp;
   I64	cert;
@@ -154,7 +200,7 @@ class CWebBibleForm
 
 class CYouTubeForm
 {
-  U8	tag[STR_LEN];
+  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Title:%s\"$\n";
   U8	special[STR_LEN] fmtstr "$DA-P-TRM,11,A=\"SerialNum:%11s\"$\n";
   I64	timestamp;
   I64	cert;
@@ -450,21 +496,30 @@ U0 InsMyURL()
       break;
     case 4:
       if (DocForm(url(CYouTubeForm *))) {
-	if (url->min || url->sec)
-	  st=MStrPrint("%s&hl=enUS&start=%d",url->special,url->min*60+url->sec);
+	if (*url->special==CH_SPACE)
+	  st2=YouTubeGet(,url->tag);
 	else
-	  st=StrNew(url->special);
-	"$HC,\"<object width=\\\"640\\\" "
-	      "height=\\\"520\\\"><param name=\\\"movie\\\" "
-	      "value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
-	      "name=\\\"allowscriptaccess\\\" "
-	      "value=\\\"always\\\"></param><embed "
-	      "src=\\\"http://www.youtube.com/v/%s\\\" "
-	      "type=\\\"application/x-shockwave-flash\\\" "
-	      "allowscriptaccess=\\\"always\\\" "
-	      "width=\\\"640\\\" height=\\\"520\\\">"
-	      "</embed></object>\"$\n",st,st;
-	Free(st);
+	  st2=StrNew(url->special);
+	if (st2 && *st2!=CH_SPACE) {
+	  if (url->min || url->sec)
+	    st=MStrPrint("%s&hl=enUS&start=%d",st2,url->min*60+url->sec);
+	  else
+	    st=StrNew(st2);
+	  if (*url->special!=CH_SPACE && *url->tag)
+	    YouTubeAdd(,url->tag,st);
+	  "$HC,\"<object width=\\\"640\\\" "
+		"height=\\\"520\\\"><param name=\\\"movie\\\" "
+		"value=\\\"http://www.youtube.com/v/%s\\\"></param><param "
+		"name=\\\"allowscriptaccess\\\" "
+		"value=\\\"always\\\"></param><embed "
+		"src=\\\"http://www.youtube.com/v/%s\\\" "
+		"type=\\\"application/x-shockwave-flash\\\" "
+		"allowscriptaccess=\\\"always\\\" "
+		"width=\\\"640\\\" height=\\\"520\\\">"
+		"</embed></object>\"$\n",st,st;
+	  Free(st);
+	  Free(st2);
+	}
       }
       break;
     case 5:
