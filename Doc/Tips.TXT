@@ -4,8 +4,8 @@
  
 Writes are not cached. 
 
-* Use [C:/Kernel/KMathB.CPP.Z,134] Seed() and the cmd line to switch
-[C:/Kernel/KMathB.CPP.Z,128] Rand() to non-timer mode and replay 
+* Use [C:/Kernel/KMathB.CPP.Z,128] Seed() and the cmd line to switch
+[C:/Kernel/KMathB.CPP.Z,122] Rand() to non-timer mode and replay 
 games you like.
 
 * 64-bit values are most efficient for the compiler.
@@ -292,7 +292,7 @@ allocations.  Those are generated when text is written to the cmd line buffer.
 * For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2748]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,344] Type() to display .BMP or
+* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,346] Type() to display .BMP or
 .GRA files.
 
 * Use [C:/Kernel/PSect.CPP.Z,284] Man() to jump to short sym name src code.

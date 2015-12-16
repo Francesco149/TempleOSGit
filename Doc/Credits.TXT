@@ -19,57 +19,59 @@ and I implemented it when I worked for Ticketmaster.
 is 
 adapted from the book, _Numeric Recipies in C_.
 
-6) The random number generator is from the book, _Numeric Recipies in C_.
-
-7) The mountain, palm trees, sheep and goats in AfterEgypt are from 
+6) The mountain, palm trees, sheep and goats in AfterEgypt are from 
 http://www.public-domain-photos.com.  The wolf in BlackDiamond is also from 
 there.  I took watermarked photos and converted to 16 color.
 
-8) The FAT32 file system is owned by MicroSoft.
+7) The FAT32 file system is owned by MicroSoft.
 
-9) A few features were inspired by MATLAB, such as ans in expressions at the 
+8) A few features were inspired by MATLAB, such as ans in expressions at the 
 command-line.  There is a lot of MSDOS , Windows, VAXTMOS (VAX Ticketmaster 
 O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 
-10) I included [C:/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
+9) I included [C:/Misc/PCIDevices.TXT.Z,1] PCIDevice Lst File.
 
-11) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
+10) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
 and 
 you helped me with html.  See [C:/Adam/Opt/Utils/ToHtml.CPP.Z,1] ToHtml.
 
-12) I used MagicISO to burn test CD's to help me understand the ISO9660 file 
+11) I used MagicISO to burn test CD's to help me understand the ISO9660 file 
 system format.  I mostly used the ISO9660 spec.
 
-13) I looked at bootable CD boot sects, but didn't learn anything, finding it 
+12) I looked at bootable CD boot sects, but didn't learn anything, finding it 
 easier to make my own.
 
-14) I think I got my original PC speaker code from Borland C.
+13) I think I got my original PC speaker code from Borland C.
 
-15) I found PS/2 keyboard and mouse code on the net and documentation.  My 
+14) I found PS/2 keyboard and mouse code on the net and documentation.  My 
 code is very different.  I found VGA reg info on the net.
 
-16) Thanks to http://www.osdev.org for a couple tips.
+15) Thanks to http://www.osdev.org for a couple tips.
 
-17) God told me to stick with 640x480 16 color,  a single audio voice and
+16) God told me to stick with 640x480 16 color,  a single audio voice and
 kept 
 me from zombie-walking into making child windows like Windows.  Instead, I 
 made one window per task with no child windows.  He also guided my progress, 
 very obviously.
 
-18) I got Webster's Dictionary and The King James Bible from 
+17) I got Webster's Dictionary and The King James Bible from 
 Project Gutenberg.
 
-19) John Carmack inspired me to use "[C:/Kernel/KMathB.CPP.Z,1] Clamp" as a
+18) John Carmack inspired me to use "[C:/Kernel/KMathB.CPP.Z,1] Clamp" as a
 name instead of "Limit".  He 
 inspired me to use "needle" and "haystack" as names.  He inspired me to 
 simplify my Frames-Per-Second code.
 
-20) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
+19) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
 Help & Index.
 
-21) I hired and artist, Cody Rigby, for $3,000 worth of pixel art.
+20) I hired and artist, Cody Rigby, for $3,000 worth of pixel art.
 
-22) Erik van der Karbargenbok made [C:/Linux/TempleBot,1] TempleBot.
+21) Erik van der Karbargenbok made [C:/Linux/TempleBot,1] TempleBot.
+
+22) The random number generator is from Donald Knuth in the wikipedia entry 
+for Linear_congruential_generator.
+
 
 * "MSDOS", "Windows", "MovieMaker" "MS Paint" and "FAT32" are trademarks of 
 MicroSoft Corp.

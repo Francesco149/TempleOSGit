@@ -158,7 +158,7 @@
 [C:/Kernel/KernelA.HPP.Z,1235] EDf_WAS_WRITE
 [C:/Kernel/KernelA.HPP.Z,1229] EDF_WAS_WRITE
 [C:/Kernel/KernelA.HPP.Z,1249] DOCF_NO_SCROLL_BARS
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,463] KbdMsgsQue
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,464] KbdMsgsQue
 [C:/Kernel/KernelA.HPP.Z,1896] ARGT_ST0
 [C:/Kernel/KernelA.HPP.Z,1535] RT_I64
 [C:/Kernel/KDataTypes.CPP.Z,312] FifoI64Cnt
@@ -254,7 +254,7 @@
 [C:/Kernel/KernelA.HPP.Z,3514] SC_CURSOR_UP
 [C:/Kernel/KernelA.HPP.Z,3442] CH_CTRLK
 [C:/Kernel/KernelA.HPP.Z,3239] TASKf_HAS_SONG
-[C:/Kernel/KMathB.CPP.Z,92] RandI32
+[C:/Kernel/KMathB.CPP.Z,90] RandI32
 [C:/Kernel/KMathB.CPP.Z,74] RandI16
 [C:/Kernel/KernelA.HPP.Z,3443] CH_CTRLL
 [C:/Kernel/KernelA.HPP.Z,3444] CH_CTRLM
@@ -289,7 +289,7 @@
 [C:/Kernel/KernelA.HPP.Z,2890] ROP_EQU
 [C:/Kernel/KernelA.HPP.Z,1085] DOCEf_LST
 [C:/Kernel/KeyDev.CPP.Z,136] CtrlAltD
-[C:/Kernel/KMathB.CPP.Z,110] RandI64
+[C:/Kernel/KMathB.CPP.Z,106] RandI64
 [C:/Kernel/KernelA.HPP.Z,3451] CH_CTRLT
 [C:/Kernel/KernelA.HPP.Z,2809] MBS_UNUSED_SIGNATURE_VAL
 [C:/Kernel/KernelA.HPP.Z,2173] CCmpGlbls
@@ -345,7 +345,7 @@
 [C:/Kernel/KernelA.HPP.Z,979] DOCEF_LEFT_CB
 [C:/Kernel/KernelA.HPP.Z,312] RFLAGf_DIR
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,1] ClusterNumNext
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,482] KbdMouseEvtTime
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,483] KbdMouseEvtTime
 [C:/Kernel/KGlbls.CPP.Z,24] ip_last
 [C:/Kernel/KernelA.HPP.Z,2512] CDirEntry
 [C:/Kernel/KernelA.HPP.Z,2034] TK_STR
@@ -416,8 +416,8 @@
 [C:/Kernel/KernelA.HPP.Z,497] LAPIC_LVT_ERR
 [C:/Kernel/Mem/MemPhysical.CPP.Z,187] Scale2Mem
 [C:/Kernel/Mem/Mem512.CPP.Z,155] Mem512TaskFree
-[C:/Kernel/KMathB.CPP.Z,101] RandU32
-[C:/Kernel/KMathB.CPP.Z,83] RandU16
+[C:/Kernel/KMathB.CPP.Z,98] RandU32
+[C:/Kernel/KMathB.CPP.Z,82] RandU16
 [C:/Kernel/KMathA.CPP.Z,625] _FLDCW
 [C:/Kernel/KernelA.HPP.Z,1993] __DIR__
 [C:/Kernel/KernelA.HPP.Z,1862] ARGT_RM32
@@ -435,7 +435,7 @@
 [C:/Kernel/KMathA.CPP.Z,167] _D3_MUL
 [C:/Kernel/KernelA.HPP.Z,2480] ISO1_BASE_YEAR
 [C:/Kernel/KernelA.HPP.Z,2066] TK_ELSE
-[C:/Kernel/KMathB.CPP.Z,119] RandU64
+[C:/Kernel/KMathB.CPP.Z,114] RandU64
 [C:/Kernel/SrvCmd.CPP.Z,251] PostMsgWait
 [C:/Kernel/KDefine.CPP.Z,43] UndefinedDefine
 [C:/Kernel/KernelA.HPP.Z,1863] ARGT_RM64
@@ -730,7 +730,7 @@
 [C:/Kernel/KMathA.CPP.Z,558] _EXP
 [C:/Kernel/KernelA.HPP.Z,589] SYS_SEMA_SYS_TIMER
 [C:/Kernel/KernelA.HPP.Z,390] IET_END
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,437] KbdHandler
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,438] KbdHandler
 [C:/Kernel/KernelA.HPP.Z,3731] GSF_WITH_NEW_LINE
 [C:/Kernel/StrPrint.CPP.Z,3] SPF_TRUNCATE
 [C:/Kernel/KHashA.CPP.Z,81] SYS_HASH_FIND1
@@ -935,7 +935,7 @@
 [C:/Kernel/KernelA.HPP.Z,3412] MEM_NUM_PML2
 [C:/Kernel/KernelA.HPP.Z,1568] ICF_SHORT_JMP
 [C:/Kernel/KernelA.HPP.Z,516] IA32_FS_BASE
-[C:/Kernel/KMathB.CPP.Z,128] Rand
+[C:/Kernel/KMathB.CPP.Z,122] Rand
 [C:/Kernel/KernelA.HPP.Z,3413] MEM_NUM_PML3
 [C:/Kernel/KernelA.HPP.Z,2368] FAT32_ENTRIES_BITS
 [C:/Kernel/KernelA.HPP.Z,2033] TK_IDENT
@@ -955,7 +955,7 @@
 [C:/Kernel/KernelA.HPP.Z,3561] GR_HEIGHT
 [C:/Kernel/KernelA.HPP.Z,1063] DOCEf_CENTER_Y
 [C:/Kernel/KernelA.HPP.Z,988] DOCEF_CENTER_Y
-[C:/Kernel/KMathB.CPP.Z,134] Seed
+[C:/Kernel/KMathB.CPP.Z,128] Seed
 [C:/Kernel/BlkDev/DskDrv.CPP.Z,27] DrvsRelease
 [C:/Kernel/KernelA.HPP.Z,3238] TASKf_FILTER_INPUT
 [C:/Kernel/KernelA.HPP.Z,1003] DOCEF_REFRESH_DATA
@@ -1732,7 +1732,7 @@
 [C:/Kernel/Mem/Mem2Meg.CPP.Z,106] Mem2MegUncachedAlloc
 [C:/Kernel/SrvCmd.CPP.Z,257] Msg
 [C:/Kernel/KernelA.HPP.Z,1518] OPTf_GLBLS_ON_DATA_HEAP
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,420] KbdInit
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,421] KbdInit
 [C:/Kernel/StrA.CPP.Z,368] chars_bmp_zero_tab_ff_cr_nl_cursor_dollar
 [C:/Kernel/KernelB.HPP.Z,118] ToBool
 [C:/Kernel/KernelA.HPP.Z,3245] TASKf_KILL_AFTER_DBG
@@ -2155,7 +2155,7 @@
 [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,49] DVDImageWriteTask
 [C:/Kernel/KernelA.HPP.Z,2913] LTGRAY
 [C:/Kernel/MultiProc.CPP.Z,292] CoreAPSethInit
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,407] IRQKbd
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,408] IRQKbd
 [C:/Kernel/KDataTypes.CPP.Z,132] QueVectU8Del
 [C:/Kernel/KernelB.HPP.Z,114] SwapU32
 [C:/Kernel/KernelB.HPP.Z,112] SwapU16
@@ -2698,7 +2698,7 @@
 [C:/Kernel/KernelA.HPP.Z,824] Cf_INTERNAL_TYPE
 [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,22] FAT32DrvInit
 [C:/Kernel/KernelA.HPP.Z,918] DOCT_ANCHOR
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,384] KbdPktRead
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,385] KbdPktRead
 [C:/Kernel/SerialDev/Keyboard.CPP.Z,36] KbdCmdRead
 [C:/Kernel/KernelB.HPP.Z,159] D3DivEqu
 [C:/Kernel/KernelA.HPP.Z,1892] ARGT_FS
