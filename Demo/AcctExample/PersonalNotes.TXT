@@ -77,29 +77,31 @@ search string.
 
 * PSect does not scan all task tables.
 * [C:/Home/HomeWrappers.CPP.Z,13] R("PSect","Fun-something"); ?
+* Maybe let committee decide if we want intern to make binary tree look-up 
+using PSECT symbol addresses, so we can eliminate psect cache and wall-paper 
+kludge.  All HolyC functions and glbl vars would have left-right for address 
+search.
+
 
 * I think subswitch_start with a break in the preface fails.
 
 * Do [C:/Kernel/KernelA.HPP.Z,3265] CTask->task_flags need to be in separate
 cache lines?
 
-* Add editor select just visible text for with filter.
+* Add DeleteHidden checkbox to <CTRL-F> Filter.
 
 * Add change-triangle-color to mesh editor.
+* Add 3D-Mesh Editor make-prism.
 
 * Add AVL binary tree support or red/black whatever that is.  We have 
 fixed-size stack.  Auto-balancing binary tree is very needed.  Where could we 
 use?
 
-* Maybe let committee decide if we want intern to make binary tree look-up 
-using PSECT symbol addresses, so we can eliminate psect cache and wall-paper 
-kludge.  All HolyC functions and glbl vars would have left-right for address 
-search.
-
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* DiskCache during FileRead. CTRL-ALT-C, [C:/Kernel/KTask.CPP.Z,28] Kill().  
+* DiskCache during FileRead. <CTRL-ALT-C>, [C:/Kernel/KTask.CPP.Z,28] Kill().
+ 
 
 * Get rid of BYTE WORD DWORD in opcode and replace with U8 U16 U32.
 

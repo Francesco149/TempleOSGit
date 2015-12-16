@@ -148,7 +148,11 @@ U8 *YouTubeGet(U8 *filename="C:/Home/Wb2/Files/YouTube.TXT.Z",U8 *needle)
       result=StrNew(code);
       break;
     default:
-      result=StrNew(PopUpMenu(doc2));
+      result=PopUpMenu(doc2);
+      if (result==DOCM_CANCEL)
+	result=NULL;
+      else
+	result=StrNew(result);
   }
   DocDel(doc);
   DocDel(doc2);
