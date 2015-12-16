@@ -2,7 +2,10 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----12/07/15 19:38:11----
+----12/14/15 14:51:57----
+* Fixed missing compiler warning with dereferencing zero star array classes.
+* Changed Linear congruential generator, [C:/Kernel/KMathB.CPP.Z,122] Rand()
+from 32-bit to 64-bit.
 
 ----11/22/15 21:02:38----
 * Improved [C:/Adam/God/HSNotes.TXT.Z,1].
