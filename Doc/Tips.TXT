@@ -236,7 +236,7 @@ sprite num.
 * I use spaces-to-tab operations on all my src files to keep them small.  You 
 have to be careful, though, because spaces in strings will be converted.  I 
 use <SHIFT-SPACE> ' ' in such cases.  See
-[C:/Adam/Opt/Utils/StrUtils.CPP.Z,195] S2T() for spaces-to-tabs.
+[C:/Adam/Opt/Utils/StrUtils.CPP.Z,201] S2T() for spaces-to-tabs.
 
 * You can edit an existing sprite by putting the cursor on it and pressing <CT
 RL-r>.
