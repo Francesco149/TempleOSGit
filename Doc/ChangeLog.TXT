@@ -2,7 +2,8 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----12/15/15 17:27:48----
+----12/26/15 19:39:31----
+* Added entry_lines to [C:/Adam/Opt/Utils/StrUtils.CPP.Z,8] Sort().
 
 ----12/14/15 14:51:57----
 * Fixed missing compiler warning with dereferencing zero star array classes.
@@ -170,8 +171,8 @@ R("CDFileCreate","[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 * Added [C:/Adam/God/HolySpirit.CPP.Z,51] GodHexIns(). 
 
 ----06/30/15 15:35:31----
-* Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,97] Words().
-* Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,134] LongLines().
+* Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,103] Words().
+* Added [C:/Adam/Opt/Utils/StrUtils.CPP.Z,140] LongLines().
 
 ----06/26/15 12:54:41----
 * **TempleOS version 3.07 Released**

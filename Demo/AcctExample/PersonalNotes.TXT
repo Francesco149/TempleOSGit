@@ -1,3 +1,10 @@
+seven nation
+cage the elephant
+spoonman
+joline
+Sound garden
+black hole
+
 * I'm going to redo all my videos and make them more professional.
 
 * What if you had a [C:/Adam/ADbg.CPP.Z,154] ClassRep() that converted to
@@ -12,6 +19,8 @@ plain text?
 * Clean-up [C:/Kernel/BlkDev/DskStrA.CPP.Z,144] FileNameAbs().
 
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens
+
+* Bug 12/25/15 Copy-Paste index.html glitch if source window 40 columns.
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
@@ -145,6 +154,10 @@ once.
 * Exception msgs in Adam look bad
 
 * Nice song "3sGCGCqCCe2G3EE2G3qDetDEFsDBDB"
+* Nice song? 
+"3qDe2G3AetGD2G3sBDBDqCeDFetABDeFB3qDe2G3AetGD2G3sBDBDqCeDFetABDeFB3e2G3GDGqDe
+EADDqACB3e2G3GDGqDeEADDqACB"
+
 
 * [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() is broken. Devices
 should be in free spot of E820 report.
@@ -389,10 +402,12 @@ F64.
 
 ============================ Possible Things to Eliminate 
 =====================
-* [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]
-* [C:/Adam/AMathODE.CPP.Z,1]
-* [C:/Kernel/KernelA.HPP.Z,114] Complex
-
+* [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
+* [C:/Adam/AMathODE.CPP.Z,1]?
+* [C:/Kernel/KernelA.HPP.Z,114] Complex?
+* [C:/Kernel/KernelA.HPP.Z,3604] CDC.brush?
+* [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
+* [C:/Kernel/KernelA.HPP.Z,2891] ROP_XOR?
 ==============================================================================
 ==
 
