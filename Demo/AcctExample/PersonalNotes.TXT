@@ -39,6 +39,8 @@ CHashGlblVar?
   CArrayDim dim;
   CHashFun *fun_ptr;
 
+* Might want to warn switch() dup case numbers
+
 * Add cyrillic 8-bit Russian font on aux_font? <CTRL-ALT-f> will toggle fonts.
   Move 12 border chars to screen font codes 0-26? 
 [C:/Adam/Gr/GrTextBase.CPP.Z,329] TextBorder() [C:/Kernel/KDbg.CPP.Z,291]
@@ -417,6 +419,7 @@ Size:
 It is love I desire: Hosea 6:6
 Offer a sacrifice of praise: Hebrews 13:15
 Do I drink blood of goats? Offer praise: Psalms 50:14
+When a servant becomes king. Proverb 30:22
 Runner's Stride: Psalms 147:10
 Buckling Armor: 1 Kings 20:11
 Lot cast in the lap: Proverbs 16:33
@@ -451,6 +454,7 @@ Peter Gadwa
 Tom Foley
 Bible with LineNums
 Security at NIST
+Higgs 5-Sigma Proof
 Dwight:NerdTorture
 ATA/ATAPI Spec
 BBC
@@ -462,4 +466,4 @@ Mapping the Commodore 64
 C64 Users Guide
 C64 Programmers Reference Guide
 8-Bit Japanese Pixel Art
-Resperdal Shortens Life
+Risperdal Shortens Life

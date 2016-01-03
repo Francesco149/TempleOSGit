@@ -6,14 +6,10 @@
       +] TempleOS
   +] TOS
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
-      +] DiningStars
-      F64 best_score=9999.0000;
       +] CircleTrace
       F64 best_score=4.9425;
       +] BlackDiamond
       I64 best_score=9;
-      +] EagleDive
-      I64 best_score=4;
       +] DunGen
       F64 best_score=20.5295;
       +] CastleFrankenstein
@@ -35,6 +31,10 @@
     I64 msg_flags=1;
       +] Wenceslas
       F64 best_score=49.8074;
+      +] DiningStars
+      F64 best_score=9999.0000;
+      +] EagleDive
+      I64 best_score=4;
       +] BomberGolf
       I64 best_score=175;
       +] DemoCompany

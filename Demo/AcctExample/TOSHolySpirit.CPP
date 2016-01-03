@@ -485,7 +485,7 @@ U0 InsMyURL()
 	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0Random.org\0PassWord\0"
 	"VirtualNotary\0ANU_NIST\0HotBits\0GenerateData\0WebBookMark\0"
 	"Roulette\0Movie\0Metallica\0")) {
-    case 0:
+    case:
       if (DocForm(url(CRandHexBeacon5Form *))) {
 	"$TX,\"Guidelines for Talking with God.\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -495,7 +495,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 1:
+    case:
       if (DocForm(url(CRandHexBeacon8Form *))) {
 	if (FileFind("::/Home/Wb2/Files/NISTPick.TXT.Z"))
 	  Type("::/Home/Wb2/Files/NISTPick.TXT.Z");
@@ -508,7 +508,7 @@ U0 InsMyURL()
 	      Str2I64(url->special,16),TRUE);
       }
       break;
-    case 2:
+    case:
       if (DocForm(url(CWebBibleForm *))) {
 	tag=url->special;
 	st2=URLPercentSpaces(url->special);
@@ -521,7 +521,7 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 3:
+    case:
       if (DocForm(url(CWebBibleForm *))) {
 	tag=url->special;
 	st2=URLPercentSpaces(url->special);
@@ -534,7 +534,7 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 4:
+    case:
       if (DocForm(url(CYouTubeForm *))) {
 	if (*url->special==CH_SPACE)
 	  st2=YouTubeGet(,url->tag);
@@ -562,14 +562,14 @@ U0 InsMyURL()
 	}
       }
       break;
-    case 5:
+    case:
       if (DocForm(url(CImgurForm *))) {
 	"$HC,\"<img src=\\\"http://i.imgur.com/%s\\\" "
 	      "width=\\\"%d\\\" height=\\\"%d\\\" alt=\\\"\\\">\"$\n",
 	      url->special,url->min,url->sec;
       }
       break;
-    case 6:
+    case:
       if (DocForm(url(CWikipediaForm *))) {
 	tag=url->special;
 	st=MStrPrint("http://en.wikipedia.org/wiki/%s",url->special);
@@ -579,7 +579,7 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 7:
+    case:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -588,7 +588,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,TRUE);
       }
       break;
-    case 8:
+    case:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -597,7 +597,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 9:
+    case:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -606,7 +606,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 10:
+    case:
       if (DocForm(url(CRandCertForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -620,7 +620,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 11:
+    case:
       if (DocForm(url(CRandHexForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -629,7 +629,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 12:
+    case:
       if (DocForm(url(CRandHexForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -638,7 +638,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,16,TRUE,TRUE);
       }
       break;
-    case 13:
+    case:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -647,7 +647,7 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 14:
+    case:
       if (DocForm(url(CWebBookMarkForm *))) {
 	tag=st=WebBookMarks;
 	if (*url->tag)
@@ -656,7 +656,7 @@ U0 InsMyURL()
 	Free(st);
       }
       break;
-    case 15:
+    case:
       if (DocForm(url(CRandDecForm *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
@@ -665,12 +665,12 @@ U0 InsMyURL()
 	MyBibleLines(url->special,20,10,FALSE,FALSE);
       }
       break;
-    case 16:
+    case:
       if (DocForm(url(CTopMoviesForm *)))
 	RandVideo("Top 100 Movies","http://www.afi.com/100years/movies10.aspx",
 	      url,"C:/Home/Wb2/Files/Movies.TXT.Z");
       break;
-    case 17:
+    case:
       if (DocForm(url(CMetallicaForm *)))
 	RandVideo("Metallica Song",
 	"http://home.hccnet.nl/a.r.adams/lyrics/metallica/songindex.html",

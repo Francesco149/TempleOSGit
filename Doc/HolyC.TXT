@@ -132,7 +132,21 @@ if (13<=age<20)
 * switch statements always use a jump table.  Don't use them with cases with 
 really big, sparse ranges.
 
-* Allows ranges like "case 4...7:" in switch statements. 
+* Allows ranges like "case 4...7:" in switch statements.
+
+* A no case number causes next higher integer case in switch statements.  See 
+[C:/Demo/NullCase.CPP.Z,1].
+
+  I64 i;
+for (i=0;i<20;i++) 
+  switch (i) {
+    case: "Zero\n";	break; //Starts at zero
+    case: "One\n";	break; //One plus previous case.
+    case: "Two\n";	break;
+    case: "Three\n";	break;
+    case 10: "Ten\n";	break;
+    case: "Eleven\n";	break; //One plus previous case.
+  }
 
 * nobound_switch can be used if you know a switch statement will not exceed 
 the lowest or highest case values.  It's a little faster because it doesn't 
@@ -140,27 +154,23 @@ check.
 
 * sub_switch_start/sub_switch_end allow a new type of nested-switch control 
 flow.  (Don't goto, throw exception or return out of sub_switch_start front 
-porch area.)
+porch area.)  See [C:/Demo/SubSwitch.CPP.Z,1].
 
-  U0 SubSwitch()
-{
   I64 i;
-  for (i=0;i<10;i++)
-    switch (i) {
-      case 0: "Zero ";	break;
-      case 2: "Two ";		break;
-      case 4: "Four ";	break;
-      sub_switch_start:
-        "[";
-        case 1: "One";	break;
-        case 3: "Three";	break;
-        case 5: "Five";	break;
-      sub_switch_end:
-        "] ";
-        break;
-    }
-  '\n';
-}
+for (i=0;i<10;i++)
+  switch (i) {
+    case 0: "Zero ";	break;
+    case 2: "Two ";		break;
+    case 4: "Four ";	break;
+    sub_switch_start:
+      "[";
+      case 1: "One";	break;
+      case 3: "Three";	break;
+      case 5: "Five";	break;
+    sub_switch_end:
+      "] ";
+      break;
+  }
 OutPut:
 >Zero [One] Two [Three] Four [Five]
 
