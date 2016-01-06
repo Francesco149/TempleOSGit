@@ -142,7 +142,7 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2571] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2573] FUF_SCAN_PARENTS.
+{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2569] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2571] FUF_SCAN_PARENTS.
   U8 *result,*filename,*buf,*buf_file,*buf_dir,*free_filename,*free_buf;
   CDirEntry de;
   free_filename=filename=MStrUtil(_filename,

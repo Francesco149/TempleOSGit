@@ -399,7 +399,7 @@ U0 GrUpdateVGAGraphics()
 }
 
 U0 GrUpdateScreen()
-{//Called by the Window Manager [C:/Adam/WinB.CPP.Z,1] HERE, 60 times a second.
+{//Called by the Window Manager [C:/Adam/WinB.CPP.Z,1] HERE, 30 times a second.
   CDC *dc;
   if (!Bt(&sys_run_level,RLf_VGA)) //if text mode
     GrUpdateTasks;

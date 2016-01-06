@@ -27,7 +27,7 @@ CLexFile *LexFilePop(CCmpCtrl *cc)
 
 CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc and Init CCmpCtrl.
-//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2089] CCF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2087] CCF_DONT_FREE_BUF flag is set.
   //FileName is for error reporting.  If files are #included,
   //new names are used.  See [C:/Apps/Psalmody/PsalmodyFile.CPP,1] Psalmody CmpCtrlNew.
   CCmpCtrl *cc=CAlloc(sizeof(CCmpCtrl));
@@ -131,7 +131,7 @@ lgc_start2:
 	      case DOCT_TEXT:
 		if (doc_e->de_flags & ~(DOCEF_TAG|DOCEF_DEFINE|DOCEF_TAG_CB|
 		      DOCG_BL_IV_UL|DOCEF_WORD_WRAP|DOCEF_HIGHLIGHT|
-		      DOCEF_SKIP|DOCEF_HARD_SKIP|DOCEF_FILTER_SKIP) &&
+		      DOCEF_SKIP|DOCEF_FILTER_SKIP) &&
 		      LexDollar(cc,doc,doc_e) && *(src=cc->dollar_buf)) {
 		  tempf->line_num=doc_e->y+1;
 		  tempf->buf_ptr=cc->cur_buf_ptr=src;
