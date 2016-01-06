@@ -142,7 +142,7 @@
 [C:/Compiler/CExcept.CPP.Z,104] UnusedExternWarning
 [C:/Compiler/BackLib.CPP.Z,273] SLASH_OP_FILD
 [C:/Compiler/BackB.CPP.Z,98] ICXorXor
-[C:/Compiler/PrsStmt.CPP.Z,825] PrsTryBlk
+[C:/Compiler/PrsStmt.CPP.Z,831] PrsTryBlk
 [C:/Compiler/CMain.CPP.Z,684] CInit
 [C:/Compiler/LexLib.CPP.Z,56] MemberMetaFind
 [C:/Compiler/CMain.CPP.Z,646] ExePrint2
@@ -224,7 +224,7 @@
 [C:/Compiler/OptPass4.CPP.Z,1] OptIC4
 [C:/Compiler/OptPass6.CPP.Z,1] OptIC6
 [C:/Compiler/BackB.CPP.Z,556] ICCmpAndBranch
-[C:/Compiler/PrsStmt.CPP.Z,887] PrsStatement
+[C:/Compiler/PrsStmt.CPP.Z,893] PrsStatement
 [C:/Compiler/PrsStmt.CPP.Z,483] PrsWhile
 [C:/Compiler/BackFB.CPP.Z,306] ICFCmpAndBranch
 [C:/Compiler/Lex.CPP.Z,438] Lex
@@ -324,12 +324,12 @@
 [C:/Compiler/OptLib.CPP.Z,556] OptMVCompare
 [C:/Compiler/BackB.CPP.Z,378] ICToBool
 [C:/Compiler/PrsStmt.CPP.Z,68] PrsFunJoin
-[C:/Compiler/PrsStmt.CPP.Z,774] PrsNoUnusedWarn
+[C:/Compiler/PrsStmt.CPP.Z,780] PrsNoUnusedWarn
 [C:/Compiler/OptLib.CPP.Z,485] OptFixSizeOf
 [C:/Compiler/CExts.CPP.Z,45] cmp_templates_dont_push
 [C:/Compiler/CExts.CPP.Z,46] cmp_templates_dont_push_pop
 [C:/Compiler/Lex.CPP.Z,326] LexAttachDoc
-[C:/Compiler/PrsStmt.CPP.Z,788] PrsStreamBlk
+[C:/Compiler/PrsStmt.CPP.Z,794] PrsStreamBlk
 [C:/Compiler/CExts.CPP.Z,44] cmp_templates_dont_push2
 [C:/Compiler/UAsm.CPP.Z,66] InstEntryFind
 [C:/Compiler/PrsVar.CPP.Z,381] PrsDotDotDot
