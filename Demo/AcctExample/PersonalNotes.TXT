@@ -18,7 +18,9 @@ sometimes.
 
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens
 
-* 12/25/15 Copy-Paste index.html glitch if source window 40 columns.
+* 12/25/2015 Copy-Paste index.html glitch if source window 40 columns.
+
+* 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
@@ -71,7 +73,7 @@ CTRL-M twice.  (Probably, fixed or not a bug.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3062] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3060] CCtrl.
 
 * Add Redo to editor.
 
@@ -94,7 +96,7 @@ search.
 
 * I think subswitch_start with a break in the preface fails.
 
-* Do [C:/Kernel/KernelA.HPP.Z,3265] CTask->task_flags need to be in separate
+* Do [C:/Kernel/KernelA.HPP.Z,3263] CTask->task_flags need to be in separate
 cache lines?
 
 * Add DeleteHidden checkbox to <CTRL-F> Filter.
@@ -219,7 +221,7 @@ God says I might want to change to float.
 * clean-up addDev pmt
 
 * [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3458] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3456] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -312,7 +314,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3577] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3575] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -356,7 +358,7 @@ DirContextNew()
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2891] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2889] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -405,9 +407,9 @@ F64.
 * [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * [C:/Adam/AMathODE.CPP.Z,1]?
 * [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* [C:/Kernel/KernelA.HPP.Z,3604] CDC.brush?
+* [C:/Kernel/KernelA.HPP.Z,3602] CDC.brush?
 * [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* [C:/Kernel/KernelA.HPP.Z,2891] ROP_XOR?
+* [C:/Kernel/KernelA.HPP.Z,2889] ROP_XOR?
 ==============================================================================
 ==
 
@@ -415,6 +417,7 @@ F64.
 Size:
 
 It is love I desire: Hosea 6:6
+Males Appear Three Times: Deuteronomy 16:16
 Offer a sacrifice of praise: Hebrews 13:15
 Do I drink blood of goats? Offer praise: Psalms 50:14
 When a servant becomes king. Proverb 30:22

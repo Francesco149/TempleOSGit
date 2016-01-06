@@ -30,13 +30,13 @@
       F64 best_score=96.1279;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
-      +] XCaliber
-      I64 best_score=248;
-    I64 msg_flags=1;
       +] Wenceslas
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=175;
+      +] XCaliber
+      I64 best_score=248;
+    I64 msg_flags=1;
       +] DemoCompany
   +] Game1
       F64 best_score=781.21253;

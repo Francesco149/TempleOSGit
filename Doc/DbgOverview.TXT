@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,636] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,649] U(). [C:/Compiler/UAsm.CPP.Z,649]
-U([C:/Kernel/KernelA.HPP.Z,3376] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3374] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,649] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,247] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3376]
+function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3374]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 

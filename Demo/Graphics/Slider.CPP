@@ -2,7 +2,7 @@
 It's conceptually easy to do a ctrl,
 but tedious.  You have complete freedom.
 
-See [C:/Kernel/KernelA.HPP.Z,3062] CCtrl.
+See [C:/Kernel/KernelA.HPP.Z,3060] CCtrl.
 */
 
 //Start of autocreated Code

@@ -2,6 +2,9 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----01/06/16 11:01:57----
+* Got rid of DOCEF_HARD_SKIP.
+
 ----01/03/16 17:15:41----
 * Updated [C:/Misc/PCIDevices.TXT.Z,1].
 * Added null case option.  Next higher integer with "case:" in switch 
@@ -133,7 +136,7 @@ WinMgrTask().
 * Added [C:/Kernel/Display.CPP.Z,126] WinInside().
 * Added [C:/Kernel/KernelA.HPP.Z,606] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1421] WIf_SELF_KEY_DESC.
+* Added [C:/Kernel/KernelA.HPP.Z,1419] WIf_SELF_KEY_DESC.
 
 ----07/26/15 06:57:29----
 * Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
@@ -160,13 +163,13 @@ Option(,OFF)");
 * Added [C:/Doc/FileLowLevel.TXT.Z,1] Dsk Stk Diagram.
 
 ----07/22/15 22:45:16----
-* Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,384] EdFindReplace().
+* Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,383] EdFindReplace().
 
 ----07/20/15 19:48:53----
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2722] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2720] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,148] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]

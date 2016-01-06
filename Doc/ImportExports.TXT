@@ -158,10 +158,10 @@ force it to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/Kernel/KernelA.HPP.Z,1518] OPTf_GLBLS_ON_DATA_HEAP.  They may in
+of the [C:/Kernel/KernelA.HPP.Z,1516] OPTf_GLBLS_ON_DATA_HEAP.  They may in
 the future.
 
-* [C:/Kernel/KernelA.HPP.Z,1515] OPTf_EXTERNS_TO_IMPORTS will treat _extern
+* [C:/Kernel/KernelA.HPP.Z,1513] OPTf_EXTERNS_TO_IMPORTS will treat _extern
 as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.

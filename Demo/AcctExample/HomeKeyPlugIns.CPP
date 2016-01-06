@@ -33,6 +33,27 @@ U0 InsDirLinks()
   Free(st2);
 }
 
+U0 DocHiddenDel(CDoc *doc=NULL)
+{
+  Bool unlock;
+  CDocEntry *doc_e,*doc_e1;
+  if (!doc) doc=DocPut;
+  if (doc) {
+    unlock=DocLock(doc);
+    DocRecalc(doc);
+    doc_e=doc->root.next;
+    while (doc_e!=doc) {
+      doc_e1=doc_e->next;
+      if (doc_e->de_flags&(DOCEF_FILTER_SKIP|DOCEF_SKIP))
+	DocEntryDel(doc,doc_e);
+      doc_e=doc_e1;
+    }
+    DocRecalc(doc);
+    if (unlock)
+      DocUnlock(doc);
+  }
+}
+
 Bool MyPutKey(I64 ch,I64 sc)
 {//ch=ASCII; sc=scan_code
 
@@ -172,6 +193,12 @@ Bool MyPutKey(I64 ch,I64 sc)
 	  KeyDescSet("Cmd /Tile Horizontally");
 	else
 	  WinTileHorz;
+	return TRUE;
+      case 'H':
+	if (sc&SCF_KEY_DESC)
+	  KeyDescSet("Edit/Del Hidden Doc Entries");
+	else
+	  DocHiddenDel;
 	return TRUE;
       case 'm':
 	if (sc&SCF_KEY_DESC)
