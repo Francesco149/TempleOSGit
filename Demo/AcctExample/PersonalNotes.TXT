@@ -1,10 +1,3 @@
-seven nation
-cage the elephant
-spoonman
-joline
-Sound garden
-black hole
-
 * I'm going to redo all my videos and make them more professional.
 
 * What if you had a [C:/Adam/ADbg.CPP.Z,154] ClassRep() that converted to
@@ -14,13 +7,18 @@ plain text?
 
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
-* 8/20/2015 TAD8, Tour1, then Tour TestSuite was missing #include "TestSuite".
+* 8/20/2015 TAD8, Tour TestSuite was missing #include "TestSuite".
+* 1/03/2016 TAD8 Repeated
+
+* Bug introduced around 11/1/15.  Changed [C:/Kernel/Sched.CPP.Z,1] and now 
+[C:/Adam/WinA.CPP.Z,278] WinToTop is called on Adam task at start-up,
+sometimes.
 
 * Clean-up [C:/Kernel/BlkDev/DskStrA.CPP.Z,144] FileNameAbs().
 
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens
 
-* Bug 12/25/15 Copy-Paste index.html glitch if source window 40 columns.
+* 12/25/15 Copy-Paste index.html glitch if source window 40 columns.
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
 think so.  (Probably not.)
