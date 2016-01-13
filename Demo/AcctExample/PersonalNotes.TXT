@@ -19,7 +19,7 @@ sometimes.
 
 * Clean-up [C:/Kernel/BlkDev/DskStrA.CPP.Z,144] FileNameAbs().
 
-* [C:/Adam/ABlkDev/Mount.CPP.Z,95] Mount() crashes on bad drive.
+* [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() crashes on bad drive.
 
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens
 

@@ -5,7 +5,6 @@ CDoc *BlkDevPmt(U8 boot_drv_let=0,Bool make_free=FALSE,Bool repartition=FALSE)
   U8 blks_buf[STR_LEN],addr_buf[STR_LEN],base0_buf[STR_LEN],base1_buf[STR_LEN];
   CATARep *root=NULL,*tempha;
   CDoc *doc;
-
   "\n****** Mount Drives ******\n"
 	"$GREEN$A$FG$-$GREEN$B$FG$ are RAM drives.\n"
 	"$GREEN$C$FG$-$GREEN$S$FG$ are hard drives.\n"
@@ -59,20 +58,18 @@ CDoc *BlkDevPmt(U8 boot_drv_let=0,Bool make_free=FALSE,Bool repartition=FALSE)
       }
       LinkedLstDel(root);
     }
-    DocPrint(doc,"bd=BlkDevNextFree(%d,%d);"
-	  "bd->unit=%d;",drv_let,type,unit);
+    DocPrint(doc,"bd=BlkDevNextFree(%d,%d);bd->unit=%d;\n",drv_let,type,unit);
     if (type==BDT_RAM) {
       if (!*addr_buf) StrCpy(addr_buf,"0");
-      DocPrint(doc,"bd->RAM_dsk=%s;",addr_buf);
-      DocPrint(doc,"bd->max_blk=(%s)-1;",blks_buf);
+      DocPrint(doc,"bd->RAM_dsk=%s;bd->max_blk=(%s)-1;\n",addr_buf,blks_buf);
     }
     if (type==BDT_ATA || type==BDT_ATAPI) {
       if (type==BDT_ATAPI && !*base0_buf) {
-	DocPrint(doc,"GetBaseUnit(bd);");
+	DocPrint(doc,"GetBaseUnit(bd);\n");
 	if (drv_let==boot_drv_let)
 	  make_free=TRUE;
       } else
-	DocPrint(doc,"bd->base0=%s;bd->base1=%s;",
+	DocPrint(doc,"bd->base0=%s;bd->base1=%s;\n",
 	      base0_buf,base1_buf);
     }
     if (type==BDT_ATA && repartition) {
@@ -80,13 +77,12 @@ CDoc *BlkDevPmt(U8 boot_drv_let=0,Bool make_free=FALSE,Bool repartition=FALSE)
       if (YorN) {
 	DocPrint(doc,"if (!BlkDevAdd(bd,TRUE,TRUE))"
 	      "\"\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n\";"
-	      "else "
-	      "PrtDsk(bd->first_drv_let);");
+	      "else PrtDsk(bd->first_drv_let);\n");
 	return doc;
       }
     }
     DocPrint(doc,"if (!BlkDevAdd(bd,FALSE,%d))"
-	  "\"\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n\";",make_free);
+	  "\"\n\n$BK,1$$RED$Operation Failed$BK,0$$FG$\n\n\";\n",make_free);
     return doc;
   } else
     return NULL;

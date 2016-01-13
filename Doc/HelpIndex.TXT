@@ -72,7 +72,7 @@ Index
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
-  Use [C:/Adam/ABlkDev/Mount.CPP.Z,95] Mount() to mount disk drives, perhaps,
+  Use [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() to mount disk drives, perhaps,
   if you are booted to a LiveCD.
 
 You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]

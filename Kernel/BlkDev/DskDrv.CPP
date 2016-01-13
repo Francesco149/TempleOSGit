@@ -36,7 +36,7 @@ U0 DrvsRelease()
 }
 
 CDrv *DrvMakeFree(U8 drv_let)
-{//Make a slot free for a new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,95] Mount().
+{//Make a slot free for a new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount().
 //!!! drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,188] remapped drv.
   I64 i=ToUpper(drv_let)-'A';
   CDrv *result;
@@ -49,7 +49,7 @@ CDrv *DrvMakeFree(U8 drv_let)
 }
 
 CDrv *DrvNextFree(U8 first_drv_let='C')
-{//Locate free slot for new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,95] Mount().
+{//Locate free slot for new drv, like during [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount().
 //!!! first_drv_let is not a [C:/Kernel/BlkDev/DskDrv.CPP.Z,188] remapped drv.
   I64 i=ToUpper(first_drv_let)-'A';
   if (!(0<=i<NUM_DRVS))
