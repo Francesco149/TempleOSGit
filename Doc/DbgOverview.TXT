@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,636] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,649] U(). [C:/Compiler/UAsm.CPP.Z,649]
-U([C:/Kernel/KernelA.HPP.Z,3374] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3379] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,649] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,247] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3374]
+function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3379]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -59,9 +59,10 @@ AutoFile.)
 window framework.  You pass 
 these routines a count in milliseconds for how long it should be displayed.  
 You can use [C:/Kernel/KMisc.CPP.Z,243] Raw(TRUE) to make all output bypass
-the window framework.  The 
-WinMgr runs on core0 and will overwrite raw text from other cores when it 
-updates the screen.
+the window framework.  The Win
+Mgr runs on core0 and will overwrite raw text from other cores when it
+updates 
+the screen.
 
 * Use [C:/Kernel/KMisc.CPP.Z,233] SysDbg() to set a flag which you can read
 with [C:/Kernel/KMisc.CPP.Z,238] IsSysDbg() when you wish 

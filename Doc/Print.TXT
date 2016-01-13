@@ -108,14 +108,14 @@ attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
 string.  Note: It returns the 
 result of the last executed expression.
 
-[C:/Adam/AutoFile.CPP.Z,25] AFPrint(I64 mS,U8 *fmt,...)
+[C:/Adam/AutoFile.CPP.Z,26] AFPrint(I64 mS,U8 *fmt,...)
 [C:/Kernel/KeyDev.CPP.Z,20] PutChars()s one at a time with a delay.
 
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint(I64 mS,U8 *fmt,...) sends direct to
 screen memory, bypassing window 
 manager.
 
-[C:/Kernel/KTask.CPP.Z,363] User(U8 *fmt,...) Spawns a user and execute a
+[C:/Kernel/KTask.CPP.Z,364] User(U8 *fmt,...) Spawns a user and execute a
 string on start-up.
 
 [C:/Kernel/SrvCmd.CPP.Z,401] PopUpPrint(U8 *fmt,...) compiles and execute a

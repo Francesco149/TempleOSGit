@@ -126,6 +126,24 @@ Bool MyPutKey(I64 ch,I64 sc)
 		"$BLUE$";
 	    }
 	    return TRUE;
+	  case SC_F5:
+	    if (sc&SCF_SHIFT) {
+	      if (sc&SCF_KEY_DESC)
+		KeyDescSet("Edit/Collaborative Fiction");
+	      else
+		"---- Collaborative Fiction ----\n"
+		      "Once upon a time ";
+	    } else {
+	      if (sc&SCF_KEY_DESC)
+		KeyDescSet("Edit/Moses Comic");
+	      else
+		"---- Moses Comic ---- "
+		      "(Set in the Numbers 11 "
+		      "part of the story.)\n"
+		      "Moses says, \"\"\n"
+		      "God says, \"\"\n";
+	    }
+	    return TRUE;
 	  case SC_F6:
 	    if (sc&SCF_SHIFT) {
 	      if (sc&SCF_KEY_DESC)

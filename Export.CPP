@@ -577,7 +577,7 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
   Free(indents);
 }
 
-//Adapted from [C:/Adam/ABlkDev/ADskA.CPP.Z,135] CopyTree2 which is internally used by [C:/Adam/ABlkDev/ADskA.CPP.Z,154] CopyTree
+//Adapted from [C:/Adam/ABlkDev/ADskA.CPP.Z,134] CopyTree2 which is internally used by [C:/Adam/ABlkDev/ADskA.CPP.Z,153] CopyTree
 U0 PutExportTree(CDirEntry *ent,I64 src_dir_len,I64 dst_dir_len,
   U8 *dst_dir,Bool debug=FALSE)
 {
@@ -600,7 +600,7 @@ U0 PutExportTree(CDirEntry *ent,I64 src_dir_len,I64 dst_dir_len,
 }
 
 extern CDirEntry *FilesFind2(U8 *files_find_mask,I64 fuf_flags);
-//Adapted from [C:/Adam/ABlkDev/ADskA.CPP.Z,154] CopyTree
+//Adapted from [C:/Adam/ABlkDev/ADskA.CPP.Z,153] CopyTree
 U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
   Bool debug=FALSE)
 {

@@ -1,5 +1,4 @@
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically)"
-
 public U8 *DBlk(I64 blk,Bool write=FALSE)
 {//Dump disk block. Optionally, write.
 //If you set write to TRUE, the block will
@@ -78,7 +77,7 @@ U0 FOFlatten(CDirEntry *tempde,CDirEntry **a,I64 *i)
 }
 
 public I64 FileCnt(CDirEntry *tempde)
-{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2510] CDirEntry tree.
+{//Cnt of files in [C:/Kernel/KernelA.HPP.Z,2511] CDirEntry tree.
   I64 cnt=0;
   while (tempde) {
     if (tempde->attr&RS_ATTR_DIR)
@@ -261,13 +260,13 @@ U0 TouchFile(U8 *filename,U8 *attr,CDate cdt=MIN_I64)
   } else
     PrintErr("File not found.\n");
 }
-public U0 Touch(U8 *files_find_mask,U8 *attr="+?",
+public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
 	U8 *fu_flags=NULL,CDate cdt=MIN_I64)
 {/*Touch file attributes and DateTime.
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HPP.Z,2483] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HPP.Z,2484] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

@@ -1,10 +1,12 @@
                                Memory Overview
 
-Paging is practically not used.  64-bit mode requires paging to be active, 
-however, so it is identity-mapped, virtual identical to physical.  All tasks 
-on all cores use the same page table map, just as though all addresses are 
-physical addresses.  2 Meg page table entries are used, except the first 2 
-Meg, which uses 4K page tables entries.  Nothing swaps to disk, either.
+Paging is practically not used.  64-bit mode requires paging, however, so it 
+is identity-mapped, virtual identical to physical.  All tasks on all cores
+use 
+the same page table map, just as though all addresses are physical addresses.
+ 
+2 Meg page table entries are used, except the first 2 Meg, which uses 4K page 
+tables entries.  Nothing swaps to disk, either.
 
 In TempleOS, the lowest 2 Gig of memory is called the code heap.  TempleOS's 
 compiler always uses 32-bit signed relative JMP & CALL instructions because 
@@ -23,16 +25,17 @@ Memory alloced by a task will be freed when the task is killed.
 
 Eventually, memory will become fragmented, requiring a reboot.
 
-See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep().
+See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
+[C:/Demo/MemDemo.CPP.Z,1].
 
                           Single System-wide Mem Map
 
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x0000034EBF
+ 0x0000007C00- 0x000003482F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3826] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3831] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -49,7 +52,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep().
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3416] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3421] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF

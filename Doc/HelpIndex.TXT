@@ -40,7 +40,7 @@ Decisions
 [C:/Doc/Mysteries.TXT.Z,1] Mysteries	[C:/Doc/Confuse.TXT.Z,1] Clearing
 Confusions
 [C:/Doc/HolyC.TXT.Z,1] HolyC  		[C:/Doc/CompilerOverview.TXT.Z,1] Compiler
-Directives
+Index
 [C:/Doc/ChangeLog.TXT.Z,1] Change Log	[C:/Doc/Demands.TXT.Z,1] Demands
 	
 +] User Help
@@ -72,8 +72,8 @@ Directives
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
-  Use [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount() to mount disk drives,
-  perhaps, if you are booted to a LiveCD.
+  Use [C:/Adam/ABlkDev/Mount.CPP.Z,95] Mount() to mount disk drives, perhaps,
+  if you are booted to a LiveCD.
 
 You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
   MakeOSDrvBootInstall(), and specify which drives should be mounted at boot. 

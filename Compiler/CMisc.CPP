@@ -1,5 +1,5 @@
 Bool Option(I64 num,Bool val)
-{//Set compiler [C:/Kernel/KernelA.HPP.Z,1508] option to value.
+{//Set compiler [C:/Doc/Options.TXT.Z,1] Option to val.
   return BEqu(&Fs->last_lex->opts,num,val);
 }
 

@@ -99,9 +99,10 @@ preemptiove.  Disk requests
 are not broken-up, so sharing is bad.  It's wonderfully simple.
 
 * [C:/Doc/MultiCore.TXT.Z,1] MultiCore is done master/slave, instead of SMP. 
-Core zero explicitly 
-assigns jobs.  Locks are present allowing multicore file, heap, and hardware 
-access, though.
+Core0 applications 
+explicitly assigns jobs.  Locks are present allowing multicore file, heap,
+and 
+hardware access, though.
 
 * [C:/Adam/Snd/SndMusic.CPP.Z,98] Music is done with an elegant one-voice
 notation.

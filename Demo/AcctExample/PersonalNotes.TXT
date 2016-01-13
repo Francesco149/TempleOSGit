@@ -1,25 +1,31 @@
-* I'm going to redo all my videos and make them more professional.
+* Redo videos, make more professional.
 
-* What if you had a [C:/Adam/ADbg.CPP.Z,154] ClassRep() that converted to
-plain text?
-
-* Why is nontimer [C:/Kernel/KMathB.CPP.Z,122] Rand() so bad?
+* Nontimer [C:/Kernel/KMathB.CPP.Z,122] Rand() is really bad!
 
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
+
+* Add AVL binary tree support or red/black whatever that is.  We have 
+fixed-size stack.  Auto-balancing binary tree is very needed.  I've done 
+everything myself.  I don't want to ruin a perfect record.  I'm in no hurry.
 
 * 8/20/2015 TAD8, Tour TestSuite was missing #include "TestSuite".
 * 1/03/2016 TAD8 Repeated
 
 * Bug introduced around 11/1/15.  Changed [C:/Kernel/Sched.CPP.Z,1] and now 
-[C:/Adam/WinA.CPP.Z,278] WinToTop is called on Adam task at start-up,
+[C:/Adam/WinA.CPP.Z,279] WinToTop is called on Adam task at start-up,
 sometimes.
 
+* 1/12/16 make RAM drive 2288 blks, copy /Home.
+
 * Clean-up [C:/Kernel/BlkDev/DskStrA.CPP.Z,144] FileNameAbs().
+
+* [C:/Adam/ABlkDev/Mount.CPP.Z,95] Mount() crashes on bad drive.
 
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens
 
 * 12/25/2015 Copy-Paste index.html glitch if source window 40 columns.
-
+* 01/10/16 find-replace editor hung on [C:/Home/Wb2/CounterRenaissance.TXT,1]
+CounterRenaissance "Rennaisance"
 * 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
@@ -27,7 +33,7 @@ think so.  (Probably not.)
 
 * God said this is bad.  [C:/Adam/DolDoc/DocFind.CPP.Z,41]
 
-* [C:/Adam/ABlkDev/ChkDsk.CPP.Z,208] ChkDsk alloc unalloced.
+* [C:/Adam/ABlkDev/ChkDsk.CPP.Z,207] ChkDsk alloc unalloced.
 
 * Should we switch to having just C and D drives (and RAM and CD/DVD)?
 
@@ -73,7 +79,7 @@ CTRL-M twice.  (Probably, fixed or not a bug.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3060] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3065] CCtrl.
 
 * Add Redo to editor.
 
@@ -96,17 +102,13 @@ search.
 
 * I think subswitch_start with a break in the preface fails.
 
-* Do [C:/Kernel/KernelA.HPP.Z,3263] CTask->task_flags need to be in separate
+* Do [C:/Kernel/KernelA.HPP.Z,3268] CTask->task_flags need to be in separate
 cache lines?
 
 * Add DeleteHidden checkbox to <CTRL-F> Filter.
 
 * Add change-triangle-color to mesh editor.
 * Add 3D-Mesh Editor make-prism.
-
-* Add AVL binary tree support or red/black whatever that is.  We have 
-fixed-size stack.  Auto-balancing binary tree is very needed.  Where could we 
-use?
 
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
@@ -221,7 +223,7 @@ God says I might want to change to float.
 * clean-up addDev pmt
 
 * [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3456] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3461] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -314,7 +316,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3575] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3580] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -358,7 +360,7 @@ DirContextNew()
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2889] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2894] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -407,9 +409,9 @@ F64.
 * [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * [C:/Adam/AMathODE.CPP.Z,1]?
 * [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* [C:/Kernel/KernelA.HPP.Z,3602] CDC.brush?
+* [C:/Kernel/KernelA.HPP.Z,3607] CDC.brush?
 * [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* [C:/Kernel/KernelA.HPP.Z,2889] ROP_XOR?
+* [C:/Kernel/KernelA.HPP.Z,2894] ROP_XOR?
 ==============================================================================
 ==
 
@@ -428,7 +430,7 @@ Lord does not repeat: Job 33:14
 Offer only in approved place: Deuteronomy 12:13-18
 Jesus' zeal for the Temple: John 2:14-19
 Famine not for bread: Amos 8:11-12
-
+Meek and HUmble of Heart: Matthew 11:29
 TempleOS Logo
 ```
 <img src="http://www.templeos.org/images/Logo128x152.jpg" width="640"
@@ -440,7 +442,13 @@ Cop tying shoe
 src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambri
 dge-county-pd.jpg" width="480" height="376" alt="">
 ```
+Dragon Scale
+```
+<img src="http://i.imgur.com/zUdfEqy.jpg" width="800" height="640" alt="">
+```
 
+Good Time Bad Times Lyrics
+Intel CEO: Brian Krzanich
 WWW.OSDEV.ORG
 Unikernels
 Look at PCI interrupt routing.
@@ -466,5 +474,6 @@ CBS News
 Mapping the Commodore 64
 C64 Users Guide
 C64 Programmers Reference Guide
+8-Bit Pixel Art
 8-Bit Japanese Pixel Art
 Risperdal Shortens Life

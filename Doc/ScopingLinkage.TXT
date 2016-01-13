@@ -1,4 +1,4 @@
-                       Details of Scoping and Linkages
+                             Scoping and Linkage
 
 [C:/Doc/Glossary.TXT.Z,1] JIT Compile Mode makes use of the current task's
 hash sym table and its parent 
