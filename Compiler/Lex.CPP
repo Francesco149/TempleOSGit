@@ -27,7 +27,7 @@ CLexFile *LexFilePop(CCmpCtrl *cc)
 
 CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc and Init CCmpCtrl.
-//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2087] CCF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2088] CCF_DONT_FREE_BUF flag is set.
   //FileName is for error reporting.  If files are #included,
   //new names are used.  See [C:/Apps/Psalmody/PsalmodyFile.CPP,1] Psalmody CmpCtrlNew.
   CCmpCtrl *cc=CAlloc(sizeof(CCmpCtrl));
@@ -228,8 +228,13 @@ lgc_start2:
 	} else {
 	  if (cc->flags & CCF_PMT) {
 	    Free(tempf->buf);
-	    tempf->buf=tempf->buf_ptr=tempf->line_start=
-		  cc->cur_buf_ptr=CmdLinePmt;
+	    ptr=CmdLinePmt;
+	    if (StrCmp(ptr,"\n") && !cc->pmt_line++ && !StrCmp(ptr,"?\n") &&
+		cc->flags & CCF_QUESTION_HELP) {
+	      Free(ptr);
+	      ptr=StrNew("Help;;\n");
+	    }
+	    tempf->buf=tempf->buf_ptr=tempf->line_start=cc->cur_buf_ptr=ptr;
 	    goto lgc_start1;
 	  } else {
 	    if (src)

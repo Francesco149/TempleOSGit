@@ -2084,15 +2084,16 @@ class CLexHashTableContext
 //CmpCtrl flags
 #define CCF_PMT			1
 #define CCf_PMT			0
-#define CCF_DONT_FREE_BUF	2
-#define CCF_NO_DEFINES		4
-#define CCF_IN_IF		8
-#define CCF_JUST_LOAD		16
-#define CCF_KEEP_NEW_LINES	32
-#define CCF_KEEP_DOT		64
-#define CCF_KEEP_NUM_SIGN	128
-#define CCF_KEEP_AT_SIGN	256
-#define CCf_PASS_TRACE_PRESENT	9
+#define CCF_QUESTION_HELP	2
+#define CCF_DONT_FREE_BUF	4
+#define CCF_NO_DEFINES		8
+#define CCF_IN_IF		16
+#define CCF_JUST_LOAD		32
+#define CCF_KEEP_NEW_LINES	64
+#define CCF_KEEP_DOT		128
+#define CCF_KEEP_NUM_SIGN	256
+#define CCF_KEEP_AT_SIGN	512
+#define CCf_PASS_TRACE_PRESENT	10
 #define CCF_NOT_CONST		0x0000010000
 #define CCF_NO_REG_OPT		0x0000020000
 #define CCF_IN_QUOTES		0x0000040000
@@ -2163,7 +2164,7 @@ public class CCmpCtrl
   CCodeCtrl coc;
   CPrsStk *ps;
   CAOTCtrl *aotc;
-  I64	aot_depth;
+  I64	aot_depth,pmt_line;
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
@@ -2530,6 +2531,7 @@ public class CDirEntry
 #define FUf_ALL			3
 #define FUf_CANCEL		4
 #define FUf_REPLACE		5
+#define FUf_RISKY		5
 #define FUf_PUBLIC		6
 #define FUf_MAP			7
 #define FUf_EXPAND		8
@@ -2555,6 +2557,7 @@ public class CDirEntry
 #define FUF_ALL			0x000008 //a
 #define FUF_CANCEL		0x000010 //c
 #define FUF_REPLACE		0x000020 //R
+#define FUF_RISKY		0x000020 //R
 #define FUF_PUBLIC		0x000040 //p
 #define FUF_MAP			0x000080 //m
 #define FUF_EXPAND		0x000100 //x
@@ -2611,7 +2614,7 @@ public class CDirEntry
 //locked flags
 #define BDlf_LOCKED		0
 
-#define NUM_BLKDEVS		32
+#define NUM_BLKDEVS		26
 #define BD_SIGNATURE_VAL	'BDSV'
 public class CBlkDev
 {
@@ -2662,7 +2665,7 @@ class CFreeLst
   I64	start,size;
 };
 
-#define NUM_DRVS		32
+#define NUM_DRVS		26
 
 #define DRV_SIGNATURE_VAL	'DVSV'
 public class CDrv
@@ -2713,7 +2716,7 @@ public class CBlkDevGlbls
   CDrv	*drvs,*let_to_drv[32];
   I64	auto_mount_ide_cnt;
   U8	boot_drv_let,first_hd_drv_let,first_dvd_drv_let;
-  Bool	boot_rescue_drv_pmt,dvd_boot_is_good,pad[3];
+  Bool	dvd_boot_is_good,pad[4];
 };
 
 #help_index "File/Internal"
@@ -2782,8 +2785,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2827] PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2827] PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2830] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2830] MEM_PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2823,18 +2826,20 @@ class CMemRange
   I64	size;
 };
 
-#define PAGE_BITS		9
-#define PAGE_SIZE		(1<<PAGE_BITS)
+#define MEM_PAGE_BITS		9
+#define MEM_PAGE_SIZE		(1<<MEM_PAGE_BITS)
+#define MEM_HEAP_HASH_SIZE	1024
+#define MEM_FREE_PAGE_HASH_SIZE	0x100
+//It is common to [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() exact powers of two.  There is some overhead.
+//We add 2 pages, so a request is not rounded-up to next power of two.
+#define MEM_EXTRA_HASH2_PAGES	2
 
-#define HEAP_HASH_SIZE		1024
-#define FREE_PAGE_HASH_SIZE	0x100
+#define MEM_ADAM_STK		(MEM_PAGE_SIZE*512) //Like 16384*MEM_PAGE_SIZE
+#define MEM_SETH_STK		(MEM_PAGE_SIZE*512)
+#define MEM_INTERRUPT_STK	(MEM_PAGE_SIZE*512)
+#define MEM_DFT_STK		(MEM_PAGE_SIZE*512)
 
-#define ADAM_STK		(PAGE_SIZE*512) //limit of like 16384*PAGE_SIZE
-#define SETH_STK		(PAGE_SIZE*512)
-#define INTERRUPT_STK		(PAGE_SIZE*512)
-#define DFT_STK			(PAGE_SIZE*512)
-
-#define TASK_HASH_SIZE		(1<<10)
+#define TASK_HASH_TABLE_SIZE	(1<<10)
 
 //locked flags
 #define BPlf_LOCKED		0
@@ -2842,8 +2847,8 @@ public class CBlkPool
 {
   I64	locked_flags,alloced_u8s,used_u8s;
   CMemBlk *mem_free_lst,*mem_free_2meg_lst,
-	*free_page_hash[FREE_PAGE_HASH_SIZE],
-	*free_page_hash2[64-PAGE_BITS];
+	*free_page_hash[MEM_FREE_PAGE_HASH_SIZE],
+	*free_page_hash2[64-MEM_PAGE_BITS];
 };
 
 #help_index "Memory/HeapCtrl"
@@ -2860,7 +2865,7 @@ public class CHeapCtrl
   CMemBlk *next_mem_blk,*last_mem_blk;
   CMemUnused *malloc_free_lst;
   CMemUsed *next_um,*last_um;
-  CMemUnused *heap_hash[HEAP_HASH_SIZE/sizeof(U8 *)];
+  CMemUnused *heap_hash[MEM_HEAP_HASH_SIZE/sizeof(U8 *)];
 };
 
 #help_index "Devices"
@@ -2890,7 +2895,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2900] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2990,7 +2995,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2989] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2990] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2994] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2995] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3170,8 +3175,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3430] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3430] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3435] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3435] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3423,7 +3428,7 @@ public class CSysFixedArea
   CTask	adam;
   CBlkPool adam_bp;
   CHeapCtrl adam_hc;
-  $=($+PAGE_SIZE-1)&-PAGE_SIZE;
+  $=($+MEM_PAGE_SIZE-1)&-MEM_PAGE_SIZE;
 };
 
 #help_index "Char"
@@ -3610,12 +3615,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2890] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2895] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2900] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3647,7 +3652,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3586] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3591] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3833,7 +3838,7 @@ public class CDbgGlbls
 #define BOOT_SRC_DVD		3
 
 // [C:/Kernel/SrvCmd.CPP.Z,486] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
-#define STD_DISTRO_DVD_CFG	"Tb1\nScale2Mem(2048,0x40000)\nt3 \n\n\n\n"
+#define STD_DISTRO_DVD_CFG	"Tb\nScale2Mem(2048,0x40000)\nt \n\n\n\n"
 
 #help_index "Misc/Registry"
 //Registry sys_msg_flags. [C:/Adam/ARegistry.CPP.Z,87] RegOneTimePopUp()

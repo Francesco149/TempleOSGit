@@ -86,7 +86,7 @@ U0 BlkDevsRelease()
 }
 
 CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type)
-{//Locate free slot for new BlkDev, like during [C:/Kernel/BlkDev/DskAddDev.CPP.Z,173] Mount().
+{//Locate free slot for new BlkDev, like during [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount().
   I64 i=0;
   CBlkDev *result;
   do {

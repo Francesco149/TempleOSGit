@@ -1,5 +1,5 @@
  <1> (image)
-[C:/Kernel/SrvCmd.CPP.Z,401] PopUpPrint[C:/Kernel/KTask.CPP.Z,363] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
+[C:/Kernel/SrvCmd.CPP.Z,401] PopUpPrint[C:/Kernel/KTask.CPP.Z,364] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
 
 
 
@@ -7,14 +7,14 @@
 
 
 
- [C:/Kernel/KEnd.CPP.Z,134] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,392] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/KTask.CPP.Z,352] UserCmdLine
+ [C:/Kernel/KEnd.CPP.Z,134] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,393] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,211] AP SethTask[C:/Kernel/KTask.CPP.Z,353] UserCmdLine
 
 
 
 
 
 
-[C:/Kernel/KTask.CPP.Z,376] SrvTaskCont[C:/Kernel/KTask.CPP.Z,330] UserTaskCont
+[C:/Kernel/KTask.CPP.Z,377] SrvTaskCont[C:/Kernel/KTask.CPP.Z,331] UserTaskCont
 
 
 
@@ -27,8 +27,8 @@
 
 
 
-[C:/Kernel/KernelA.HPP.Z,3142] CSrvCmd nodes are one of
-[C:/Kernel/KernelA.HPP.Z,3135] five types.  User applications deal with text
+[C:/Kernel/KernelA.HPP.Z,3147] CSrvCmd nodes are one of
+[C:/Kernel/KernelA.HPP.Z,3140] five types.  User applications deal with text
 or 
 msgs.  [C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRun() will call a function, spawn a
 task or execute some text src 

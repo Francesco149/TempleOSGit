@@ -2,11 +2,33 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----01/12/16 16:17:49----
+* Overhauled [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() and
+[C:/Kernel/KCfg.CPP.Z,1].
+
+----01/12/16 10:06:18----
+* **TempleOS version 4.01 Released**
+* Standardized drive letters.  Your [C:/Kernel/SrvCmd.CPP.Z,486] Auto()
+config scripts for compiling the 
+kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
+be changed.
+* Added [C:/Kernel/KernelA.HPP.Z,2087] CCF_QUESTION_HELP.
+
+----01/11/16 00:04:38----
+* [C:/Home/HomeWrappers.CPP.Z,13] R("PAGE_SIZE","MEM_PAGE_SIZE"); etc.
+* [C:/Home/HomeWrappers.CPP.Z,13] R("DFT_STK","MEM_DFT_STK"); etc.
+* Added [C:/Demo/MemDemo.CPP,1].
+
+----01/08/16 17:04:58----
+* Added [C:/Kernel/KernelA.HPP.Z,2560] FUF_RISKY to
+[C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
+* Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
+
 ----01/06/16 11:01:57----
 * Got rid of DOCEF_HARD_SKIP.
 
 ----01/03/16 17:15:41----
-* Updated [C:/Misc/PCIDevices.TXT.Z,1].
+* Updated [C:/Misc/PCIDevices.TXT,1].
 * Added null case option.  Next higher integer with "case:" in switch 
 statements.  See  [C:/Demo/NullCase.CPP,1].
 
@@ -107,7 +129,7 @@ R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite");
 
 ----08/05/15 13:49:10----
 * Fixed bug in [C:/Kernel/SrvCmd.CPP.Z,350] SrvCmdsHandler() &&
-[C:/Kernel/KTask.CPP.Z,376] SrvTaskCont().
+[C:/Kernel/KTask.CPP.Z,377] SrvTaskCont().
 
 ----08/03/15 18:09:33----
 * Improved [C:/Demo/Games/FlapBat.CPP,1].
@@ -169,7 +191,7 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2720] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2723] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,148] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]

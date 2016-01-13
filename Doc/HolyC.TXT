@@ -1,10 +1,10 @@
                                     HolyC
 
-* See [C:/Doc/ImportExports.TXT.Z,1] Scoping and Linkages for details on
+* See [C:/Doc/CompilerOverview.TXT.Z,1].
+
+* See [C:/Doc/ScopingLinkage.TXT.Z,1] Scoping and Linkage for details on
 extern, import, _extern, _import, 
 etc.
-
-* See [C:/Doc/CompilerOverview.TXT.Z,1].
 
 * Built-in types include I0,I8,I16,I32,I64 for signed 0-8 byte ints and U0,U8,
 U16,U32,U64 for unsigned 0-8 byte ints and F64 for 8 byte floats.
@@ -330,7 +330,7 @@ HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2835] DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2840] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,205]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See

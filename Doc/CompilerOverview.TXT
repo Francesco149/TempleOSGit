@@ -1,125 +1,13 @@
-                             Compiler Directives
+                                Compiler Index
 
-The compiler looks-ahead a token most of the time, so you might throw an
-extra 
-semicolon after the directive if it's not taking affect right away.
+[C:/Doc/Asm.TXT.Z,1]
 
-#include "" 	There is no angle bracket <> form of this directive.
-#exe {}		Will execute code at compile-time and can be used to insert 
-code into the stream being compiled using [C:/Compiler/CMisc.CPP.Z,29]
-StreamPrint().
-#define		Define string const
-#assert		Print a warning during compilation if an expression is not 
-true. 
-#if		Include code if an expresion is true.
-#else
-#endif
-#ifdef,#ifndef	Include code if a sym is defined.
-#ifaot,#ifjit	Include code if in AOT compiler mode.
-defined()	Is a function that can be used in expressions.
-#help_index, #help_file See [C:/Doc/HelpSystem.TXT.Z,1] Help System.
+[C:/Doc/Directives.TXT.Z,1]
 
-#define __DATE__ #exe{StreamPrint("\"%D\"",Now);}
-#define __TIME__ #exe{StreamPrint("\"%T\"",Now);}
-#define __LINE__ #exe{StreamPrint("%d",Fs->last_lex->lex_include_stk->line_num);}
-#define __DEPTH__ #exe{StreamPrint("%d",Fs->last_lex->lex_include_stk->depth);}
-#define __FILE__ #exe{StreamPrint("\"%s\"",Fs->last_lex->lex_include_stk->full_name);}
-#define __DIR__  #exe{StreamDir;}
+[C:/Doc/Options.TXT.Z,1]
 
-See [C:/Demo/Directives.CPP,1], [C:/Doc/ImportExports.TXT.Z,1] Scoping and
-Linkages, and [C:/Compiler/Lex.CPP.Z,1] preprocessor.
+[C:/Doc/PreProcessor.TXT.Z,1]
 
+[C:/Doc/ScopingLinkage.TXT.Z,1]
 
-                               Compiler Options
-
-Use [C:/Compiler/CMisc.CPP.Z,1] Option().  You might need to do #exe
-{Option();}.
-
-[C:/Kernel/KernelA.HPP.Z,1516] OPTf_GLBLS_ON_DATA_HEAP without this option,
-global vars are placed in the 
-code heap which is limited to 2 Gig.  In AOT modules, global vars take-up
-room 
-in the .BIN file, so you might want to use this option, instead.  You might 
-wish to turn it on and off around specific vars.  A disadvantage of data heap 
-global vars in AOT modules is they can't be initialized.
-
-[C:/Kernel/KernelA.HPP.Z,1513] OPTf_EXTERNS_TO_IMPORTS and
-[C:/Kernel/KernelA.HPP.Z,1514] OPTf_KEEP_PRIVATE are strange options, you'll 
-never need.  They're to allow the same header file for Kernel to act as extern
-s when compiling itself and imports when compiled by AOT modules.
-
-[C:/Kernel/KernelA.HPP.Z,1510] OPTf_WARN_UNUSED_VAR	warning if unused var. 
-It is applied to functions.
-
-[C:/Kernel/KernelA.HPP.Z,1511] OPTf_WARN_PAREN		warning if parenthesis are
-not needed.
-
-[C:/Kernel/KernelA.HPP.Z,1512] OPTf_WARN_DUP_TYPES	warning if dup local var
-type statements.
-
-[C:/Kernel/KernelA.HPP.Z,1515] OPTf_NO_REG_VAR forces all function local vars
-to the stk not regs.  Applied 
-to functions.
-
-[C:/Kernel/KernelA.HPP.Z,1518] OPTf_NO_BUILTIN_CONST Disable 10-byte float
-consts for pi, log2_10, log10_2, 
-loge_2.  Applied to functions.
-
-
-                             Assembler Directives
-
-See [C:/Compiler/OpCodes.TXT.Z,1] for opcodes.  They're not standard.  Some
-invalid 
-instructions are not flagged and some valid instructions are not implemented. 
-16-bit asm support is limited.
-
-Here are example instruction formats:
-	ADD	RAX,I64 FS:DISP[RSI+RDI*8]
-	ADD	RAX,I64 [DISP]
-
-$ Current compiler output pos (instruction ptr).  Even works in HolyC 
-expressions.
-
-$ works in classes.
-  class MyFun
-  {
-    $=-16;
-    I64 local1;
-    I64 local2;
-    $=$+256;
-    I64 crazy;
-  };
-
-LABEL::
-  Defines an exported glbl label.
-
-LABEL:
-  Defines an non-exported glbl label.
-
-@@LABEL:
-  Defines a local label with scope valid between two global labels.
-
-DU8, DU16, DU32, DU64
-  Define BYTE, WORD, DWORD or QWORD. Can be used with DUP() and ASCII
-strings. 
- For your convenience, the ASCII strings do not have terminating zeros.  
-Define cmds must end with a semicolon.
-
-USE16, USE32, USE64
-
-IMPORT sym1name, sym2name;
-
-LIST, NOLIST
-
-ALIGN num, fill_byte
-  Align to num boundary and fill with fill_byte.
-
-MODULE_ORG num
-  Set code addr for JIT or set module [C:/Kernel/KLoad.CPP.Z,181] Load() addr
--- has 16-byte [C:/Kernel/KernelA.HPP.Z,370] CBinFile 
-header and patch table trailing.
-
-BINFILE "FileName.BIN";
-
-See [C:/Demo/Asm/AsmAndC1.CPP,1], [C:/Demo/Asm/AsmAndC2.CPP,1] and 
-[C:/Demo/Asm/AsmAndC3.CPP,1].
+See [C:/Doc/HelloWorld.TXT.Z,1] Hello World.

@@ -214,6 +214,7 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/DolDoc/TreeDemo.CPP,1]
   [C:/Demo/Exceptions.CPP,1]
   [C:/Demo/Dsk/SerializeTree.CPP,1]
+  [C:/Demo/MemDemo.CPP,1]
   [C:/Demo/StkGrow.CPP,1]
   [C:/Demo/DolDoc/TextDemo.CPP,1]
   [C:/Demo/DolDoc/CursorMove.CPP,1]

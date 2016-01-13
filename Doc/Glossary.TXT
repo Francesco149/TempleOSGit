@@ -142,8 +142,8 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3263]
-  CTask.  There is only one window per task, and only core#0 tasks can have
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3268]
+  CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
 +] Adam Task
@@ -158,8 +158,8 @@ Wiz	Wizard
   [C:/Kernel/SrvCmd.CPP.Z,410] Adam(""), creating system-wide code and data
   which don't disappear when any particular task ends.
 +] Seth Task
-  Seth is Adam and Eve's child.  Each CPU core has a special task which is
-  immortal and which is special.  The Adam task on CPU#0 is also it's Seth task.
+  Seth is Adam and Eve's child.  Each CPU core has an executive task called
+  Seth that is immortal.  The Adam task on CPU#0 is also it's Seth task.
 +] Code and Data Heaps
   TempleOS uses the asm CALL instruction, exclusively, and that instruction
   is limited to calling routines +/-2 Gig from the current code location.  To
@@ -272,11 +272,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2249] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2248] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2247] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2246] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2250] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2250] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2249] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2248] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2247] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2251] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -315,10 +315,10 @@ result is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3263] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3268] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3388] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3393] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc().  They must
@@ -335,8 +335,8 @@ result is reserved for local variables that hold the function return val.
   values.  You are on your own managing these with multiple applications and
   libraries.
 +] Multicore Core0/CoreAP
-  Core#0, has the Adam task, and it is the master.  The application
-  processors have Seth tasks and are the slave processors.  Only core#0 tasks
+  Core0, has the Adam task, and it is the master.  The application processors
+  have an executive Seth tasks and are the slave processors.  Only core0 tasks
   can have windows and can launch applications.  Slave cores are used if the
   application explicitly [C:/Kernel/KTask.CPP.Z,205] Spawns() a task or
   [C:/Kernel/MultiProc.CPP.Z,232] JobQue() a job on them.
