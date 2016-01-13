@@ -13,7 +13,7 @@ U0 TOSBootRescueDrv1()
 
 U0 TOSBootRescueDrv2()
 {
-  DefinePrint("CFG_BOOT_RESCUE_DRV","\"a10x%X\n0x%X\n\"",TOS_BOOT_RESCUE_DRV,
+  DefinePrint("CFG_BOOT_RESCUE_DRV","\"a0x%X\n0x%X\n\"",TOS_BOOT_RESCUE_DRV,
 	(TOS_BOOT_RESCUE_DRV_END-TOS_BOOT_RESCUE_DRV)/BLK_SIZE);
   DefinePrint("CFG_BOOT_RESCUE_DRV_START","\"0x%X\"",TOS_BOOT_RESCUE_DRV);
 } TOSBootRescueDrv2;

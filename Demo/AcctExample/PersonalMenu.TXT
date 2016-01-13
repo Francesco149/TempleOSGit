@@ -311,35 +311,35 @@ PreBackUp;
 `
 
 Make TOS Distro ISO
-`MakeTOSDistro; Copy(TOS_ISO_NAME,"D:TempleOSTOS.ISO");
+`MakeTOSDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSTOS.ISO");
 `
  Burn TOS Distro DVD
 `MakeTOSDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Dbg Distro ISO
-`MakeDbgDistro; Copy(TOS_ISO_NAME,"D:TempleOSDbg.ISO");
+`MakeDbgDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSDbg.ISO");
 `
  Burn Dbg Distro DVD
 `MakeDbgDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Std Distro ISO
-`MakeStdDistro; Copy(TOS_ISO_NAME,"D:TempleOSCD.ISO");
+`MakeStdDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSCD.ISO");
 `
  Burn Std Distro DVD
 `MakeStdDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Lite Distro ISO
-`MakeLiteDistro; Copy(TOS_ISO_NAME,"D:TempleOSLite.ISO");
+`MakeLiteDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSLite.ISO");
 `
  Burn Lite Distro DVD
 `MakeLiteDistro;DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Ultra Distro ISO
-`MakeUltraDistro; Copy(TOS_ISO_NAME,"D:TempleOSUltra.ISO");
+`MakeUltraDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO");
 `
  Burn Ultra Distro DVD
 `MakeUltraDistro;DVDImageWrite('T',TOS_ISO_NAME);

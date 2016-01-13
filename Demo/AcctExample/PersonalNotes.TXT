@@ -8,6 +8,9 @@
 fixed-size stack.  Auto-balancing binary tree is very needed.  I've done 
 everything myself.  I don't want to ruin a perfect record.  I'm in no hurry.
 
+* 1/12/16 [C:/Kernel/BlkDev/DskATAId.CPP.Z,90] ATARepEntry shows corrupted
+buttons.
+
 * 8/20/2015 TAD8, Tour TestSuite was missing #include "TestSuite".
 * 1/03/2016 TAD8 Repeated
 

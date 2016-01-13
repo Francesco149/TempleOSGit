@@ -170,7 +170,7 @@ U0 MakeBootRescueDrvFile()
 
   MkDir("A:/Adam");
   Copy("C:/Home/Wb2/Files/DbgMakeAdam.CPP.Z","A:/Adam/MakeAdam.CPP.Z");
-  Copy("C:/Adam/AExts.HPP.Z",	"A:/Adam");
+  Copy("C:/Adam/AExts.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/AMath.CPP.Z",	"A:/Adam");
   Copy("C:/Adam/Training.CPP.Z","A:/Adam");
   Copy("C:/Adam/AMem.CPP.Z",	"A:/Adam");
