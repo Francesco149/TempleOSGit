@@ -58,7 +58,8 @@ To update with a new TempleOS kernel, you must create a binary file and patch
 the boot loader so it knows the LBA blocks to load.  Therefore, you usually 
 recompile the kernel and update the boot sector at the same time.  
 [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() does this. 
-[C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootIntall() will install a master 
+[C:/Adam/Opt/Boot/BootIns.CPP.Z,148] MasterBootInstall() will install a
+master 
 boot loader.
 
 With TempleOS , the Kernel module loads the Compiler module so it can process 

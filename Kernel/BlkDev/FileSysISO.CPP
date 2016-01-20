@@ -13,7 +13,7 @@ Bool ISODrvInit(CDrv *dv,I64 blk)
 
   try {
     unlock=DrvLock(dv);
-    dv->type=DVT_ISO9660; //default
+    dv->fs_type=FSt_ISO9660; //default
     dv->spc=spc;
     dv->base_offset=dv->data_area=dv->root_cluster=dv->size=0;
     while (TRUE) {
@@ -24,7 +24,7 @@ Bool ISODrvInit(CDrv *dv,I64 blk)
       switch (LstMatch(buf,"CD001\0CDW02\0BEA01\0BOOT2\0NSR02\0NSR03\0TEA01\0",
 	    LMF_EXACT)) {
 	case 0:
-	  dv->type=DVT_ISO9660;
+	  dv->fs_type=FSt_ISO9660;
 	  switch (iso->type) {
 	    case ISO1T_SUPPLEMENTARY_DESC:
 	      dv->data_area=0;
@@ -48,7 +48,7 @@ ipi_done:
     if (unlock)
       DrvUnlock(dv);
   } catch {
-    dv->type=DVT_ISO9660;
+    dv->fs_type=FSt_ISO9660;
     dv->spc=spc;
     dv->base_offset=dv->data_area=dv->root_cluster=0;
     Free(iso);
@@ -129,7 +129,7 @@ Bool ISO1CDirFill(CDirEntry *tempde,CISO1DirEntry *de)
 
 Bool ISO1FileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,
 	CDirEntry *_result,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2565] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2566] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2563] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool result=FALSE,unlock;
@@ -137,7 +137,7 @@ Bool ISO1FileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,
   if (fuf_flags&~FUG_FILE_FIND)
     throw('FUF');
   DrvChk(dv);
-  if (dv->type!=DVT_ISO9660)
+  if (dv->fs_type!=FSt_ISO9660)
     PrintErr("Not ISO9660 Drv\n");
   else
     try {
@@ -195,7 +195,7 @@ U8 *ISO1FileRead(CDrv *dv,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
   DrvChk(dv);
   *_size=0;
   *_attr=0;
-  if (dv->type!=DVT_ISO9660)
+  if (dv->fs_type!=FSt_ISO9660)
     PrintErr("Not ISO9660 Drv\n");
   else
     try {
@@ -219,7 +219,7 @@ U8 *ISO1FileRead(CDrv *dv,U8 *cur_dir,U8 *filename,I64 *_size,I64 *_attr)
 Bool ISO1Cd(U8 *name,I64 cur_dir_cluster)
 {
   CDirEntry de;
-  if (Fs->cur_dv->type!=DVT_ISO9660)
+  if (Fs->cur_dv->fs_type!=FSt_ISO9660)
     PrintErr("Not ISO9660 Drv\n");
   else if (ISO1FileFind(Fs->cur_dv,cur_dir_cluster,name,&de,FUF_JUST_DIRS))
     return TRUE;

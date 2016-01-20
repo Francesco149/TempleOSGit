@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=164;
+  progress4_max=165;
   *progress4_desc=0;
 }
 U0 TSEnd()
@@ -2211,13 +2211,17 @@ U0 DoReps()
   TS; XTalkWait(task,"ZipRep;Sleep(750);\n");
   TS; XTalkWait(task,"ProfRep;Sleep(750);\n");
   TS; XTalkWait(task,"HeapLogRep; HeapLog(OFF);Sleep(750);\n");
-  TS; XTalkWait(task,"ChkDsk;Sleep(750);\n");
-  TS; XTalkWait(task,"DrvView;\n");
-  Sleep(750);
-  PostMsgWait(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  XTalkWait(task,"DskView;\n");
-  Sleep(250); //Short because ATARep takes time.
-  PostMsgWait(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  TS; if (DrvIsWritable(':')) XTalkWait(task,"ChkDsk;Sleep(750);\n");
+  TS; if (DrvIsWritable(':')) {
+    XTalkWait(task,"DrvView;\n");
+    Sleep(750);
+    PostMsgWait(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  }
+  TS; if (DrvIsWritable(':')) {
+    XTalkWait(task,"DskView;\n");
+    Sleep(250); //Short because ATARep takes time.
+    PostMsgWait(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
+  }
   TS; XTalkWait(task,"ATARep;\npSleep(750);\n");
   TS; XTalkWait(task,"HashDepthRep(adam_task->hash_table);Sleep(750);\n");
   TS; XTalkWait(task,"Who;Sleep(750);\n");
@@ -2360,7 +2364,7 @@ U0 OSTestSuite()
   TS; DoData;
   TS; DoCallBack;
   TS; DoClassMeta;
-  TS; DoNumBible;
+  TS; if (DrvIsWritable(':')) DoNumBible;
   TS; DoForm;
   TS; DoClickCallBack;
   TS; DoMenuButton;

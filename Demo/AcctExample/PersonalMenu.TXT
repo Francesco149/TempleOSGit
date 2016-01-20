@@ -89,7 +89,7 @@ Cd("/Adam/Snd");Dir;
 `
 
 TADRant
-`if (Ed("::/Home/Wb2/TADRant.TXT",EDF_WAS_WRITE)) MakeWebSitePartial;
+`if (Ed("::/Home/Web/TAD/TADRant.TXT",EDF_WAS_WRITE)) MakeWebSitePartial;
 `
  TempleOSTheme;
 
@@ -129,24 +129,29 @@ Cd("/Home");Dir;
 `Cd("/Home");Dir;
 `
 
-Cd("/Home/Blog");Dir;
+Cd("/Home/Web");Dir;
 
-`Cd("/Home/Blog");Dir;
+`Cd("/Home/Web");Dir;
 `
 
-Cd("/Home/Wb2");Dir;
+Cd("/Home/Web/TAD");Dir;
 
-`Cd("/Home/Wb2");Dir;
+`Cd("/Home/Web/TAD");Dir;
 `
 
-Cd("/Home/Wb2/Files");Dir;
+Cd("/Home/Downloads");Dir;
 
-`Cd("/Home/Wb2/Files");Dir;
+`Cd("/Home/Downloads");Dir;
 `
 
-Cd("/Home/Wb2/Files/Psalmody");Dir;
+Cd("/Home/Downloads/Blog");Dir;
 
-`Cd("/Home/Wb2/Files/Psalmody");Dir;
+`Cd("/Home/Downloads/Blog");Dir;
+`
+
+Cd("/Home/Downloads/Psalmody");Dir;
+
+`Cd("/Home/Downloads/Psalmody");Dir;
 `
 
 Cd("/Apps");Dir;
@@ -280,29 +285,29 @@ ChgDsk('T');
 `
 
 LinuxDict
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/LinuxDict.TXT**\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/LinuxDict.TXT**\");");
 `
  AugustWords
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/AugustWords.TXT**\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/AugustWords.TXT**\");");
 `
  HappyWords
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/HappyWords.TXT*\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/HappyWords.TXT*\");");
 `
  BibleWords
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/BibleWords.TXT*\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/BibleWords.TXT*\");");
 `
  HuckWords
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/HuckWords.TXT*\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/HuckWords.TXT*\");");
 `
  Ingredients
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/Ingredients.TXT*\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/Ingredients.TXT*\");");
 `
  Chess
-`Adam("GodInit(\"::/Home/Wb2/Files/Words/Chess.TXT*\");");
+`Adam("GodInit(\"::/Home/Downloads/Words/Chess.TXT*\");");
 `
 
 SortHeaders
-`#include "::/Home/Wb2/Files/SortHeaders.CPP.Z";
+`#include "::/Home/Downloads/SortHeaders.CPP.Z";
 `
 
 PreBackUp;
@@ -408,8 +413,8 @@ JukeBox <21> (image) Psalmody <22> (image) Logic <23> (image) Models <24> (image
 
 BigGuns <26> (image) Budget <27> (image) Digits <28> (image) Checkers <29> (image)
 
-Psalmody Wb2/Files
-`#include "::/Apps/Psalmody/Load";Psalmody("::/Home/Wb2/Files/Psalmody");`
+Psalmody Downloads
+`#include "::/Apps/Psalmody/Load";Psalmody("::/Home/Downloads/Psalmody");`
 
 RAMReboot("D:/Kernel.BIN.C");
 `RAMReboot("D:/Kernel.BIN.C");`

@@ -9,12 +9,7 @@ U0 UserStartUp()
   WinToTop;
   WinZBufUpdate;
   Dir;
-  switch (tos_cid) {
-    case CID_DFT:
-      "$PURPLE$DFT$FG$:";
-      break;
-  }
-  "80,867LOC:";
+  "80,891LOC:";
   CPURep;
 }
 
@@ -42,8 +37,10 @@ U0 StartUpTasks()
   "AutoComplete Time:%7.3fs\n",tS;
 }
 
-DelTree("::/Temp/ScreenShots");
-MkDir("::/Temp/ScreenShots");
+if (DrvIsWritable(':')) {
+  DelTree("::/Temp/ScreenShots");
+  MkDir("::/Temp/ScreenShots");
+}
 
 StartUpTasks;
 

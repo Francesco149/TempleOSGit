@@ -6,7 +6,7 @@ which keeps track of bullets.  When a new bullet is
 fired, the bullets_in val is increased by one.
 When a bullet expires, the bullets_out val is increased
 by one.  The in and out vals loop-around, back to
-the start of the arrays.
+the start of the arrays.  It is known as a ring-buffer.
 */
 #define MAX_BULLETS 32
 I64 bullets_in=0,bullets_out=0,bx[MAX_BULLETS],by[MAX_BULLETS];
@@ -39,7 +39,7 @@ is controled by the editor.
 
 
 
-//Called by the window mgr bystem task 30fps.
+//Called by the Window Mgr system task 30fps.
 //The task arg is the task owning the window.
 U0 DrawIt(CTask *task,CDC *dc)
 {

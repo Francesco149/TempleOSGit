@@ -38,8 +38,8 @@ public U8 *FileNameNumNext(U8 *files_find_mask,U8 *fmt)
 
 U0 DCImgWrite(CDC *dc)
 {
-  U8 *st1=FileNameNumNext("::/Home/Wb2/Imgs/Img*",
-	"::/Home/Wb2/Imgs/Img%03d.BMP"),
+  U8 *st1=FileNameNumNext("::/Home/Web/Imgs/Img*",
+	"::/Home/Web/Imgs/Img%03d.BMP"),
 	*st2=MStrPrint("http://www.templeos.org/Wb%s",st1+2);
   BMPWrite(st1,dc);
   Free(st1);
@@ -64,7 +64,7 @@ U0 BlogScreenShot()
   DocCursor(old_cursor);
 }
 
-U8 *WebBookMarks(U8 *filename="::/Home/Wb2/Files/Bookmarks.html")
+U8 *WebBookMarks(U8 *filename="::/Home/Downloads/Blog/Bookmarks.html")
 {
   U8 *st;
   CDocEntry *doc_e;
@@ -93,7 +93,7 @@ U8 *WebBookMarks(U8 *filename="::/Home/Wb2/Files/Bookmarks.html")
   return st;
 }
 
-U8 *YouTubeGet(U8 *filename="C:/Home/Wb2/Files/YouTube.TXT.Z",U8 *needle)
+U8 *YouTubeGet(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",U8 *needle)
 {
   I64 i=0,line=MIN_I64;
   CDoc	*doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS),
@@ -130,7 +130,7 @@ U8 *YouTubeGet(U8 *filename="C:/Home/Wb2/Files/YouTube.TXT.Z",U8 *needle)
   return result;
 }
 
-U0 YouTubeAdd(U8 *filename="C:/Home/Wb2/Files/YouTube.TXT.Z",
+U0 YouTubeAdd(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",
 	U8 *title,U8 *code)
 {
   CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS);
@@ -483,14 +483,14 @@ U0 InsMyURL()
 	NIST_TIME_TO_SWITCH,60);
   switch (PopUpPickLst("NISTBeacon5Bible\0NISTBeacon8Passage\0"
 	"BibleGatewaySearch\0BibleGatewayVerse\0"
-	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0Random.org\0PassWord\0"
-	"VirtualNotary\0ANU_NIST\0HotBits\0GenerateData\0WebBookMark\0"
-	"Roulette\0Movie\0Metallica\0")) {
+	"YouTube\0Imgur\0Wikipedia\0RandomNumbers.info\0"
+	"Random.org\0PassWord\0VirtualNotary\0ANU_NIST\0HotBits\0"
+	"GenerateData\0WebBookMark\0Roulette\0Movie\0Metallica\0")) {
     case:
       if (DocForm(url(CRandHexBeacon5Form *))) {
 	"$BG,LTGRAY$";
-	if (FileFind("::/Home/Wb2/Files/NISTPassage.TXT.Z"))
-	  Type("::/Home/Wb2/Files/NISTPassage.TXT.Z",0);
+	if (FileFind("::/Home/Downloads/Blog/NISTPassage.TXT.Z"))
+	  Type("::/Home/Downloads/Blog/NISTPassage.TXT.Z",0);
 	"$TX,\"Guidelines for Talking with God.\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);
@@ -502,14 +502,14 @@ U0 InsMyURL()
     case:
       if (DocForm(url(CRandHexBeacon8Form *))) {
 	"$BG,LTGRAY$";
-	if (FileFind("::/Home/Wb2/Files/NISTPick.TXT.Z"))
-	  Type("::/Home/Wb2/Files/NISTPick.TXT.Z",0);
+	if (FileFind("::/Home/Downloads/Blog/NISTPick.TXT.Z"))
+	  Type("::/Home/Downloads/Blog/NISTPick.TXT.Z",0);
 	"$TX,\"Guidelines for Talking with God.\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);
 	"$TX,\"%Q\",HTML=\"%Q\"$\n$BG$",tag,tag;
 	Free(tag);
-	GodBooksPassage("C:/Home/Wb2/Files/Text/*",,
+	GodBooksPassage("C:/Home/Downloads/Text/*",,
 	      Str2I64(url->special,16),TRUE);
       }
       break;
@@ -673,17 +673,17 @@ U0 InsMyURL()
     case:
       if (DocForm(url(CTopMoviesForm *)))
 	RandVideo("Top 100 Movies","http://www.afi.com/100years/movies10.aspx",
-	      url,"C:/Home/Wb2/Files/Movies.TXT.Z");
+	      url,"C:/Home/Downloads/Blog/Movies.TXT.Z");
       break;
     case:
       if (DocForm(url(CMetallicaForm *)))
 	RandVideo("Metallica Song",
 	      "http://home.hccnet.nl/a.r.adams/lyrics/metallica/songindex.html",
-	      url,"C:/Home/Wb2/Files/Metallica.TXT.Z");
+	      url,"C:/Home/Downloads/Blog/Metallica.TXT.Z");
       break;
   }
   Free(url);
 }
 
-if (FileFind("::/Home/Wb2/Files/Words/LinuxDict.TXT"))
-  GodInit("::/Home/Wb2/Files/Words/LinuxDict.TXT");
+if (FileFind("::/Home/Downloads/Words/LinuxDict.TXT"))
+  GodInit("::/Home/Downloads/Words/LinuxDict.TXT");

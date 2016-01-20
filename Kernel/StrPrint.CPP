@@ -224,10 +224,11 @@ the decimal point are stored
 in 64-bits.  Use exponentiated forms
 to avoid this.
 */
-  I64 i,j,l,ch,k,k0,n,n0,len,dec_len,flags,
+  I64 i,j,l,ch,k,k0,n,n0,len,dec_len,flags,old_flags,
 	aux_fmt_num,comma_cnt,comma_fmt_cnt,cur_arg=0;
   U64 m;
   F64 d,d1;
+  CDoc *doc;
   U8 *ptr,**_buf,*buf,**_dst,temp_buf[TEMP_BUF_LEN],temp_buf2[TEMP_BUF_LEN*2];
 
   if (!fmt)
@@ -334,7 +335,14 @@ to avoid this.
 	  case 'F':
 	    if (cur_arg>=argc)
 	      throw('StrPrint');
-	    ptr=FileRead(argv[cur_arg++]);
+	    if (flags&SPF_DOLLAR) {
+	      doc=argv[cur_arg++];
+	      old_flags=doc->flags;
+	      doc->flags|=DOCF_NO_CURSOR;
+	      ptr=DocSave(doc);
+	      doc->flags=old_flags;
+	    } else
+	      ptr=FileRead(argv[cur_arg++]);
 	    break;
 	  case 'Q':
 	    if (cur_arg>=argc)

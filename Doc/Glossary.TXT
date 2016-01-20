@@ -142,7 +142,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3268]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3266]
   CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -167,7 +167,7 @@ Wiz	Wizard
   code within the lowest 2 Gig of memory, addresses 00000000-7FFFFFFF.  The
   compiler and [C:/Kernel/KLoad.CPP.Z,181] Load()er alloc memory from the code
   heap to store code and glbl vars, unless the compiler option
-  [C:/Kernel/KernelA.HPP.Z,1516] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  [C:/Kernel/KernelA.HPP.Z,1513] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() is from the data
   heap, which in not limited in size, except by physical RAM memory.  You can
   alloc from any heap in any task at any time on any core, even making
@@ -272,11 +272,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2250] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2249] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2248] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2247] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2251] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2247] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2246] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2245] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2244] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2248] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -315,10 +315,10 @@ result is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3268] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3266] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3393] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3391] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc().  They must

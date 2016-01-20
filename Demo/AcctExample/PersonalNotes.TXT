@@ -22,13 +22,13 @@ sometimes.
 
 * Clean-up [C:/Kernel/BlkDev/DskStrA.CPP.Z,144] FileNameAbs().
 
-* [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() crashes on bad drive.
+* [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount() crashes on bad drive.
 
 * $DA fixed width string: <Del> or <BACKSPACE> permanently shortens
 
 * 12/25/2015 Copy-Paste index.html glitch if source window 40 columns.
-* 01/10/16 find-replace editor hung on [C:/Home/Wb2/CounterRenaissance.TXT,1]
-CounterRenaissance "Rennaisance"
+* 01/10/16 find-replace editor hung on
+[C:/Home/Web/TAD/CounterRenaissance.TXT,1] CounterRenaissance "Rennaisance"
 * 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
 
 * Get rid of having two terms and pick one, "Disk" and "BlkDev"?  I don't 
@@ -82,7 +82,7 @@ CTRL-M twice.  (Probably, fixed or not a bug.)
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
 
-* More [C:/Kernel/KernelA.HPP.Z,3065] CCtrl.
+* More [C:/Kernel/KernelA.HPP.Z,3063] CCtrl.
 
 * Add Redo to editor.
 
@@ -105,7 +105,7 @@ search.
 
 * I think subswitch_start with a break in the preface fails.
 
-* Do [C:/Kernel/KernelA.HPP.Z,3268] CTask->task_flags need to be in separate
+* Do [C:/Kernel/KernelA.HPP.Z,3266] CTask->task_flags need to be in separate
 cache lines?
 
 * Add DeleteHidden checkbox to <CTRL-F> Filter.
@@ -226,7 +226,7 @@ God says I might want to change to float.
 * clean-up addDev pmt
 
 * [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3461] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3459] CH_CURSOR.
 
 * TRANSPARENT might not work with line ROPF_DITHER
 
@@ -319,7 +319,7 @@ short names.
 
 * lock{} warning on invalid modes.
 * Local array vars-->reg.
-* [C:/Kernel/KernelA.HPP.Z,3580] DCF_SYMMETRY, before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3578] DCF_SYMMETRY, before transformation?
 (Currently it's after) 
 * all graphics clipping -- screen y+top<0 for top<0
 * Maybe convert graphics to float
@@ -363,7 +363,7 @@ DirContextNew()
 * Look for mem leaks.
 * Move stuff out of Kernel module.
 
-* [C:/Kernel/KernelA.HPP.Z,2894] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2892] ROP_XOR with pen_width>1 is broken.
 * BGR wrong in BMP files.
 
 * use width and height in line clipping for pen_width>1 or blot.
@@ -412,9 +412,9 @@ F64.
 * [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * [C:/Adam/AMathODE.CPP.Z,1]?
 * [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* [C:/Kernel/KernelA.HPP.Z,3607] CDC.brush?
+* [C:/Kernel/KernelA.HPP.Z,3605] CDC.brush?
 * [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* [C:/Kernel/KernelA.HPP.Z,2894] ROP_XOR?
+* [C:/Kernel/KernelA.HPP.Z,2892] ROP_XOR?
 ==============================================================================
 ==
 
@@ -444,10 +444,6 @@ Cop tying shoe
 <img
 src="https://goodtimestories.files.wordpress.com/2013/04/cop-tying-shoe-cambri
 dge-county-pd.jpg" width="480" height="376" alt="">
-```
-Dragon Scale
-```
-<img src="http://i.imgur.com/zUdfEqy.jpg" width="800" height="640" alt="">
 ```
 
 Good Time Bad Times Lyrics

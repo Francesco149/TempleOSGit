@@ -14,7 +14,7 @@ so it's easy to tinker with.
  As it turns-out, simplicity makes it faster in some ways, too.  It never 
 switches privilege levels, never changes address maps, tends to load whole 
 contiguous files and other, similar things which boost speed.  It's only 
-80,867 lines of code including the kernel, the 64-bit compiler, the graphics 
+80,891 lines of code including the kernel, the 64-bit compiler, the graphics 
 library and all the tools.  More importantly, it's designed to keep the
 user's 
 line count down -- you can do a [C:/Doc/HelloWorld.TXT.Z,1] Hello World
@@ -117,8 +117,8 @@ TempleOS is geared toward reading and writing whole files.  Since whole files
 are processed, compression is possible.  Filenames ending in ".Z" are 
 automatically compressed or uncompressed when stored and fetched.  TempleOS 
 does support direct block random access into files, however --
-[C:/Kernel/BlkDev/DskCFile.CPP.Z,129] FRBlks() and 
-[C:/Kernel/BlkDev/DskCFile.CPP.Z,181] FWBlks().
+[C:/Kernel/BlkDev/DskCFile.CPP.Z,130] FRBlks() and 
+[C:/Kernel/BlkDev/DskCFile.CPP.Z,182] FWBlks().
 
 If a file is not found, ".Z" is added or removed and a search is done, again.
  
@@ -145,9 +145,9 @@ Hardware graphics acceleration is not used, so this is possible.  See
 
 There is no distinction between the terms task, process or thread.  All have
 a 
-task record, [C:/Kernel/KernelA.HPP.Z,3268] CTask, pointed to by the FS
+task record, [C:/Kernel/KernelA.HPP.Z,3266] CTask, pointed to by the FS
 segment reg and are accessed with Fs-
-> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3393] CCPU for the current
+> while Gs-> points to a [C:/Kernel/KernelA.HPP.Z,3391] CCPU for the current
 CPU core.  Each task can have 
 just one window, but a task can have children with windows.  (The segment
 regs 
@@ -168,7 +168,7 @@ story is that originally I called it the root task and even had a /Root
 directory :-)  Adam executes [C:/StartOS.CPP.Z,1] at boot time.
 
 For easy back-ups, place everything you author in your /Home directory and 
-subdirectories.  Then, use [C:/Adam/ABlkDev/ADskA.CPP.Z,153] CopyTree(). 
+subdirectories.  Then, use [C:/Adam/ABlkDev/ADskA.CPP.Z,120] CopyTree(). 
 That should make upgrading easy, too.  
 Customizable start-up scripts go in your /Home directory.  The default 
 start-up scripts are in the root directory.  Copy the start-up files you wish 
