@@ -2,14 +2,14 @@
 
 A sprite is an ordered list of elements such as lines, rectangles, bitmaps
 and 
-color changes.  In a program's source code, you first make a sprite.  Then, 
-you insert a pointer to it.
+color changes.  In a program's source code, you first make a sprite somewhere 
+outside a function.  Then, you insert a pointer to the sprite as an "*elems" 
+arg when calling [C:/Adam/Gr/GrSpritePlot.CPP.Z,490] Sprite() or
+[C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3().  See [Sprites,1] Sprites.
 
-You can create an icon on your PersonalMenu or in any document by placing a 
-sprite with a payload of [C:/Doc/HolyC.TXT.Z,1] HolyC code to execute.  This
-is a called "sprite 
-macro".  If you check "Pop-Up", it will spawn a new task and run the payload.
- 
-If you have it on your PersonalMenu, you can, optionally, check "Esc" and it 
-will exit to the cmd line shell and print the macro similar to how the Linux 
-history works.
+You can create a sprite macro on your [C:/Home/PersonalMenu.TXT,1]
+PersonalMenu with a payload of [C:/Doc/HolyC.TXT.Z,1] HolyC 
+source code to execute when it ESC's back to the cmd line.  If you check 
+"Pop-Up", it will spawn a new task and run the payload.  A pop-up macro can
+be 
+placed in any document.

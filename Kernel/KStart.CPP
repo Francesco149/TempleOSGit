@@ -46,8 +46,8 @@ GDT_TR:		DU8	MP_MAX_PROCESSORS*16 DUP(0);
 GDT_TR_RING3:	DU8	MP_MAX_PROCESSORS*16 DUP(0);
 #assert $-SYS_GDT==sizeof(CGDT)
 
-SYS_GDT_PTR::		DU16	sizeof(CGDT)-1;
-			DU64	0;
+SYS_GDT_PTR::	DU16	sizeof(CGDT)-1;
+		DU64	0;
 SYS_PCI_BUSES::	DU16	0;
 #assert $-SYS_KERNEL==sizeof(CKernel)-sizeof(CBinFile)
 
