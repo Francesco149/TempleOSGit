@@ -1,8 +1,8 @@
-[C:/Kernel/KernelA.HPP.Z,3607] CDC's have a 4x4 matrix for rotating, scaling,
+[C:/Kernel/KernelA.HPP.Z,3605] CDC's have a 4x4 matrix for rotating, scaling,
 skewing and shifting in 3 
 dimensions.  To make the graphics routines use the transform, you must set
 the 
-[C:/Kernel/KernelA.HPP.Z,3577] DCF_TRANSFORMATION flag.
+[C:/Kernel/KernelA.HPP.Z,3575] DCF_TRANSFORMATION flag.
 
 The matrix consists of integers that have been scaled 32 bits
 ([C:/Adam/Gr/GrDC.CPP.Z,4] GR_SCALE).  See 
@@ -16,7 +16,7 @@ Mat4x4RotY(), [C:/Adam/Gr/GrMath.CPP.Z,146] Mat4x4RotZ() and
 [C:/Adam/Gr/GrMath.CPP.Z,161] Mat4x4Scale() to rotate about 
 axes and scale.  Combine them with [C:/Adam/Gr/GrMath.CPP.Z,83]
 Mat4x4MulMat4x4Equ()/[C:/Adam/Gr/GrMath.CPP.Z,99] Mat4x4MulMat4x4New() 
-and assign them to the [C:/Kernel/KernelA.HPP.Z,3607] CDC.dc with
+and assign them to the [C:/Kernel/KernelA.HPP.Z,3605] CDC.dc with
 [C:/Adam/Gr/GrDC.CPP.Z,47] DCMat4x4Set().  See 
 [C:/Demo/Graphics/Box.CPP,1].
 
@@ -29,11 +29,11 @@ to combine rotation/shift operations.  Normally, you can't combine pos shift
 operations.  See [C:/Adam/Gr/GrMath.CPP.Z,182] Mat4x4TranslationEqu() and
 [C:/Demo/Graphics/Transform.CPP,1].
 
-Finally, [C:/Kernel/KernelA.HPP.Z,3607] CDC's have an x, y and z which is an
+Finally, [C:/Kernel/KernelA.HPP.Z,3605] CDC's have an x, y and z which is an
 additional shift (translation).
 
 The transformation is implemented as a callback on the
-[C:/Kernel/KernelA.HPP.Z,3607] CDC's transform() 
+[C:/Kernel/KernelA.HPP.Z,3605] CDC's transform() 
 member.  The default transform() callback is [C:/Adam/Gr/GrDC.CPP.Z,15]
 DCTransform().  See 
 [C:/Demo/Games/EagleDive.CPP,1] or [C:/Demo/Games/CastleFrankenstein.CPP,1]

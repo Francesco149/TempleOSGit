@@ -10,13 +10,13 @@ be used as a tutorial if you start at the beginning and work your way fwd.
 +] Games: Beginner
   [C:/Demo/Graphics/NetOfDots.CPP,1]
   [C:/Demo/Graphics/InputPointer.CPP,1]
+  [C:/Demo/Graphics/Lines.CPP,1]
   [C:/Demo/Graphics/SunMoon.CPP,1]
-  [C:/Demo/Games/ElephantWalk.CPP,1]
   [C:/Demo/Graphics/LowPassFilter.CPP,1]
   [C:/Demo/Graphics/MathAudioDemo.CPP,1]
-  [C:/Demo/Graphics/Lines.CPP,1]
   [C:/Demo/Games/TicTacToe.CPP,1]
   [C:/Demo/Graphics/SpritePlot.CPP,1]
+  [C:/Demo/Games/ElephantWalk.CPP,1]
   [C:/Demo/Graphics/SpritePut.CPP,1]
   [C:/Demo/Graphics/SpritePutExt.CPP,1]
   [C:/Demo/Snd/ASCIIOrgan.CPP,1]
@@ -38,16 +38,16 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Graphics/ScreenCapture.CPP,1]
   [C:/Demo/Graphics/EdSprite.CPP,1]
   [C:/Demo/PullDownMenu.CPP,1]
-  ::/Demo/Games/Stadium
-`Cd("::/Demo/Games/Stadium");Dir;View;
-`
-
   [C:/Demo/Graphics/Palette.CPP,1]
   [C:/Demo/Games/CircleTrace.CPP,1]
   [C:/Demo/Games/Halogen.CPP,1]
   [C:/Demo/Games/TheDead.CPP,1]
   [C:/Demo/Games/RainDrops.CPP,1]
   [C:/Demo/Snd/MorseCode.CPP,1]
+  ::/Demo/Games/Stadium
+`Cd("::/Demo/Games/Stadium");Dir;View;
+`
+
   [C:/Demo/Graphics/Lattice.CPP,1]
   [C:/Demo/Graphics/Collision.CPP,1]
   [C:/Demo/Games/BlackDiamond.CPP,1]

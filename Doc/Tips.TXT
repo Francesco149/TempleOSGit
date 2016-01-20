@@ -28,11 +28,11 @@ reboot to make them take effect.  (You don't compile anything.)  You should
 have two TempleOS partitions on your hard drive because a syntax error in a 
 start-up file will make the partition unbootable.  Boot to the second 
 partition or boot to a standard TempleOS CD/DVD and use
-[C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() to mount your 
+[C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount() to mount your 
 hard drive.
 
 * I copy my files to a mirrored identical partition, periodically with 
-[C:/Adam/ABlkDev/ADskA.CPP.Z,153] CopyTree() commands in scripts.  I do merge
+[C:/Adam/ABlkDev/ADskA.CPP.Z,120] CopyTree() commands in scripts.  I do merge
 commands with a menu entry like 
 this:
 Merge(\"C:/*\",\"D:/*\",\"+r+d\"); to check my changes.
@@ -101,26 +101,26 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP,1].
 
 * Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1326] CDoc 
+the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1323] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3268] CTask,
-[C:/Kernel/KernelA.HPP.Z,1161] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2511]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3266] CTask,
+[C:/Kernel/KernelA.HPP.Z,1158] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2508]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,205] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2840] MEM_DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2838] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to 
 reduce the cmd line buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
 when read or written.  The compression method is not supported by other 
 operating systems.  You can store files uncompressed by
-[C:/Adam/ABlkDev/ADskA.CPP.Z,125] Move()ing them to a 
+[C:/Adam/ABlkDev/ADskA.CPP.Z,92] Move()ing them to a 
 filename not ending in ".Z".  See [C:/Doc/TOSZ.TXT.Z,1] if you want to
 uncompress 
 while in Linux.
@@ -135,16 +135,16 @@ will check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1511] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1508] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1512] OPTf_WARN_DUP_TYPES,ON) to find
+Option([C:/Kernel/KernelA.HPP.Z,1509] OPTf_WARN_DUP_TYPES,ON) to find
 unnecessary local var 
 type statements.
 
-* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1508]
+* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1505]
 OPTf_ECHO,ON) can be placed in [C:/StartOS.CPP.Z,1] StartOS.CPP to echo
 start-up scripts.
 
@@ -210,18 +210,14 @@ view data, you can use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View().
 the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1458]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1455]
 ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
-* You can set a color for different drives with
-[C:/Adam/ABlkDev/ADskA.CPP.Z,302] DrvTextAttrSet().  Place calls 
-to this in [C:/Home/HomeLocalize.CPP,1].
-
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1326] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1323] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -286,10 +282,10 @@ cnts.jiffies.
 
 * Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog() and
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,111] HeapLogRep() to find leaks.  Don't be
-confused by [C:/Kernel/KernelA.HPP.Z,1326] CDoc 
+confused by [C:/Kernel/KernelA.HPP.Z,1323] CDoc 
 allocations.  Those are generated when text is written to the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2749]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2747]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,346] Type() to display .BMP or

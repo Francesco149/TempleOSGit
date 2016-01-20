@@ -203,6 +203,8 @@ U0 KernelMain()
   try ExeFile("StartOS"); //Continues [D:/StartOS.CPP.Z,1] /StartOS.CPP
   catch {
     Raw(ON);
+    Silent(OFF);
+    GetOutOfDollar;
     PutExcept;
     Dbg;
   }

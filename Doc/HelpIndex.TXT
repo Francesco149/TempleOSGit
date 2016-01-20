@@ -72,8 +72,8 @@ Index
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
-  Use [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() to mount disk drives, perhaps,
-  if you are booted to a LiveCD.
+  Use [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount() to mount disk drives,
+  perhaps, if you are booted to a LiveCD.
 
 You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
   MakeOSDrvBootInstall(), and specify which drives should be mounted at boot. 

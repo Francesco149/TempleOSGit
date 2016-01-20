@@ -16,7 +16,7 @@ scraping-by, found the time to devote even all free-time to God!
 
 1 Kings 6:21 (King James)
 
-6:21 So Solomon overlaid the house within with pure gold: and he made
+     6:21 So Solomon overlaid the house within with pure gold: and he made
 a partition by the chains of gold before the oracle; and he overlaid
 it with gold.
 
@@ -63,7 +63,7 @@ example, is better than many file systems.
 
 * There is a limit of 100,000 lines of code for all time, not including 
 applications and demos.  Code comments count, however.  Currently, there are 
-80,867 lines of code.  3rd party libraries are banned because they circumvent 
+80,891 lines of code.  3rd party libraries are banned because they circumvent 
 the intent of this limit.  The vision is a Commodore 64 ROM -- a fixed core 
 API that is the only dependency of applications.  Dependency on components
 and 

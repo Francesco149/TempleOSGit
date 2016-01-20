@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1518] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1515] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1917] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1914] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -1110,10 +1110,7 @@ public class CDocBin
 #define DOCSS_COMMENT		3
 #define DOCSS_CPP_Z_COMMENT	4
 
-#define TERM_ATTR_TEXT		WHITE<<4+BLUE
-#define TERM_ATTR_BORDER	WHITE<<4+LTBLUE
 #define DOC_ATTR_DFT_TEXT	WHITE<<4+BLACK
-
 #define DOC_COLOR_ALT_TEXT	LTGRAY
 #define DOC_COLOR_LINK		RED
 #define DOC_COLOR_MACRO		LTBLUE
@@ -1199,7 +1196,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1224] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1221] Editor Flags
 
 class CEdFindText
 {
@@ -1225,7 +1222,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1195] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1192] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1531,7 +1528,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1317] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1314] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2620,8 +2617,8 @@ public class CBlkDev
 {
   CBlkDev *lock_fwding; //If two blkdevs on same controller, use just one lock
   I64	locked_flags;
-  U32	type,flags,
-	bd_signature;
+  U32	bd_signature,
+	type,flags;
   U8	first_drv_let,unit,pad[2];
   U32	base0,base1,
 	blk_size;
@@ -2633,21 +2630,22 @@ public class CBlkDev
   U32	max_reads,max_writes;
 };
 
-//Drive locked flags
+//Drive locked_flags
 #define DVlf_LOCKED	0
 
 //See [C:/Kernel/KDefine.CPP.Z,114] ST_DRV_TYPES
-#define DVT_NULL	0
-#define DVT_REDSEA	1 //Supported
-#define DVT_FAT32	2 //Supported except for short names, to some degree
-#define DVT_ISO9660	3 //Supported (CD/DVD)
-#define DVT_ISO13490	4 //Not Supported (CD/DVD)
-#define DVT_ISO13346	5 //Not Supported (CD/DVD)
-#define DVT_NTFS	6 //Not Supported
-#define DVT_UNKNOWN	7
-#define DVT_NUM_TYPES	8
-
-#define DVTf_DISABLE	31 //High bit of type is disable
+#define FSt_NULL	0
+#define FSt_REDSEA	1 //Supported
+#define FSt_FAT32	2 //Supported except for short names, to some degree
+#define FSt_ISO9660	3 //Supported (CD/DVD)
+#define FSt_ISO13490	4 //Not Supported (CD/DVD)
+#define FSt_ISO13346	5 //Not Supported (CD/DVD)
+#define FSt_NTFS	6 //Not Supported
+#define FSt_UNKNOWN	7
+#define FSt_NUM_TYPES	8
+#define FSG_TYPE_MASK	0x7FFF
+//File system type flags
+#define FStf_DISABLE	15
 
 #define MBR_PT_FAT12	0x01
 #define MBR_PT_FAT32a	0x0B
@@ -2671,11 +2669,11 @@ class CFreeLst
 public class CDrv
 {
 //Don't access ->drv_let directly in case a drive has been remapped.
-  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,123] Drv2Let().
+  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,129] Drv2Let().
   I64	locked_flags;
-  U32	type,  //Bit31 is used as a disable, since it will be unknown
-	dv_signature;
-  U8	drv_let,text_attr,pad[6];
+  U32	dv_signature;
+  U8	drv_let,pad;
+  U16	fs_type;
   I64	base_offset,
 	size,
 	file_system_info_sect,
@@ -2785,8 +2783,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2830] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2830] MEM_PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2828] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2828] MEM_PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2895,7 +2893,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2903] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2995,7 +2993,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2994] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2995] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2992] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2993] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3175,8 +3173,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3435] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3435] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3433] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3433] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3615,12 +3613,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2895] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2893] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2905] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2903] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3652,7 +3650,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3591] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3589] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

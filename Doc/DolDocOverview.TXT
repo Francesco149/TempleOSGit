@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2909] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2907] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -121,10 +121,10 @@ The expressions are relative to the current cursor location, unless you make
 See [C:/Demo/DolDoc/CursorMove.CPP,1].
 
 +] AN Anchor
-  The [C:/Kernel/KernelA.HPP.Z,1161] CDocEntry.aux_str arg A="" is used for
+  The [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str arg A="" is used for
   the anchor.  I don't use these very often, but they're good sometimes. 
 +] LK Link
-  The [C:/Kernel/KernelA.HPP.Z,1161] CDocEntry.aux_str arg A="" is used for
+  The [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str arg A="" is used for
   the link text.  With no aux the tag becomes the link text, as in example 3.
 
 See [C:/Adam/DolDoc/DocLink.CPP.Z,29] Link Types.
@@ -136,7 +136,7 @@ Examples: <CTRL-t> to see
 3)File link with same tag str.  [C:/Doc/HelpIndex.TXT.Z,1]
 4)[C:/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
 5)[C:/Kernel/KernelA.HPP.Z,5] File find link searching for 5th 'CTRL'
-6)[C:/Kernel/StrPrint.CPP.Z,898] Manual page link
+6)[C:/Kernel/StrPrint.CPP.Z,906] Manual page link
 7)[C:/Kernel/KernelA.HPP.Z,200] File line num link
 8)[C:/Kernel/KEnd.CPP.Z,1] File anchor link -- <CTRL-t> to see anchor after
   you click
@@ -162,7 +162,7 @@ The default data-type for the $DA...$ command is I64.  You can change it to
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
   [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 
-The [C:/Kernel/KernelA.HPP.Z,1161] CDocEntry.aux_str arg A="" is used for the
+The [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str arg A="" is used for the
   format string.
 
 If there is a ':', the space after the first ':' in the format string marks
@@ -173,7 +173,7 @@ If there is a ':', the space after the first ':' in the format string marks
   the text you need in your "fmtstr" cmd in a class.  If you add it directly
   with [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(), you'll need to fill-in
   the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm(),
-  [C:/Kernel/KernelA.HPP.Z,1204] CEdFindText and [C:/Demo/DolDoc/Form.CPP,1].
+  [C:/Kernel/KernelA.HPP.Z,1201] CEdFindText and [C:/Demo/DolDoc/Form.CPP,1].
 
 The default data-type for the $CB...$ command is I8 which is Bool.  You can
   change it to I8, U8, I16, U16, I32, U32, I64, or U64.  See
@@ -256,7 +256,7 @@ The reason for the $IB...$ cmd is to pass a arg to
   Inserts a number into the compiled stream describing the size of binary
   data associated with a bin number.  I never use this.
 +] SO Song
-  See [C:/Adam/Snd/SndMusic.CPP.Z,98] Play().  [C:/Kernel/KernelA.HPP.Z,1161]
+  See [C:/Adam/Snd/SndMusic.CPP.Z,98] Play().  [C:/Kernel/KernelA.HPP.Z,1158]
   CDocEntry.aux_str A="" stores the song note text.
 +] HL Highlighting
   Include a 1 or 0.
@@ -311,7 +311,7 @@ A +C flag on a tree will start it collapsed.
   continuously.
 +] +UD Update Data
   The Update Data flag on a DA or a CB makes the value in the
-  [C:/Kernel/KernelA.HPP.Z,1161] CDocEntry updated when keys are typed on it.
+  [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry updated when keys are typed on it.
 +] +TC Tag CallBack
   See [C:/Demo/DolDoc/CallBack.CPP,1].
 +] +LC Left CallBack
@@ -326,7 +326,7 @@ A +C flag on a tree will start it collapsed.
   TX+T.  You can code T="tag_text" as just "tag_text" with no T=. 
 +] A="" Auxilliary Str
   Some cmds need auxilliary strings.  A="str" means an
-  [C:/Kernel/KernelA.HPP.Z,1161] CDocEntry.aux_str is present.  aux_str is used
+  [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str is present.  aux_str is used
   for song note text, link text, anchor text, and $DA...$ format string text.
 +] D="" Define Str
   A D="" means either a [Define,1] define str indirection is present on a

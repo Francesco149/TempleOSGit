@@ -2,8 +2,31 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----01/18/16 17:06:24----
+
+----01/18/16 15:19:43----
+* Added except arg to [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,131] Let2BlkDev(),
+[C:/Kernel/BlkDev/DskBlkDev.CPP.Z,119] BlkDevChk(),
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,149] Let2Drv(),
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,118] DrvChk() and 
+[C:/Kernel/BlkDev/DskDrv.CPP.Z,169] DrvIsWritable().
+
+----01/16/16 08:20:00----
+* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,281] DrvTextAttrGet().
+* Removed DrvTextAttrSet().
+
+----01/15/16 00:47:31----
+* [C:/HomeKeyPlugIns.CPP.Z,1] KeyboardPlug-Ins '9','0'.
+* [C:/Home/HomeWrappers.CPP.Z,13] R("$$LM,5$$","$$ID,5$$");
+
+----01/15/16 00:12:02----
+* Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,137] Let2BlkDevType().
+* Added [C:/Kernel/KernelA.HPP.Z,1378] WIF_SELF_FOCUS to
+[C:/Misc/OSInstall.CPP.Z,1].
+* Added %$F to [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
+
 ----01/12/16 19:17:12----
-* Overhauled [C:/Adam/ABlkDev/Mount.CPP.Z,91] Mount() and
+* Overhauled [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount() and
 [C:/Kernel/KCfg.CPP.Z,1].
 
 ----01/12/16 10:06:18----
@@ -12,7 +35,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 config scripts for compiling the 
 kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
 be changed.
-* Added [C:/Kernel/KernelA.HPP.Z,2087] CCF_QUESTION_HELP.
+* Added [C:/Kernel/KernelA.HPP.Z,2084] CCF_QUESTION_HELP.
 
 ----01/11/16 00:04:38----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("PAGE_SIZE","MEM_PAGE_SIZE"); etc.
@@ -20,7 +43,7 @@ be changed.
 * Added [C:/Demo/MemDemo.CPP,1].
 
 ----01/08/16 17:04:58----
-* Added [C:/Kernel/KernelA.HPP.Z,2560] FUF_RISKY to
+* Added [C:/Kernel/KernelA.HPP.Z,2557] FUF_RISKY to
 [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 
@@ -158,7 +181,7 @@ WinMgrTask().
 * Added [C:/Kernel/Display.CPP.Z,126] WinInside().
 * Added [C:/Kernel/KernelA.HPP.Z,606] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1419] WIf_SELF_KEY_DESC.
+* Added [C:/Kernel/KernelA.HPP.Z,1416] WIf_SELF_KEY_DESC.
 
 ----07/26/15 06:57:29----
 * Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
@@ -191,9 +214,9 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2723] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2721] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,148] DrvIsWritable");
+R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,169] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("CDFileCreate","[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate");
 

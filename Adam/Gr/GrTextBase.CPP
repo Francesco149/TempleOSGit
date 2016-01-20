@@ -320,7 +320,7 @@ I64 attr); //Plot attrs with len.  30fps in Fs->draw_it() callback.
 
 public U0 TextPrint(CTask *task,I64 x,I64 y,I64 attr,U8 *fmt,...)
 {//Plot chars. 30fps in Fs->draw_it() callback.
-//You probably want [C:/Adam/Gr/GrBitMap.CPP.Z,891] GrPrint() or just [C:/Kernel/StrPrint.CPP.Z,898] Print().
+//You probably want [C:/Adam/Gr/GrBitMap.CPP.Z,891] GrPrint() or just [C:/Kernel/StrPrint.CPP.Z,906] Print().
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   TextLenStr(task,x,y,StrLen(buf),attr<<8,buf);
   Free(buf);

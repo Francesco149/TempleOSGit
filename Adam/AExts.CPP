@@ -56,6 +56,7 @@ extern CMenuEntry *MenuEntryFind(CMenu *m,U8 *full_name);
 extern CMenu *MenuFilePush(U8 *filename);
 extern U0 MenuPop();
 extern CMenu *MenuPush(U8 *st);
+extern I64 Mount(Bool repartition=FALSE);
 extern CTask *Noise(I64 mS,I64 min_freq,I64 max_freq);
 extern Bool Plain(U8 *filename,I64 edf_dof_flags=0);
 extern Bool PopUpCancelOk(U8 *header=NULL,U8 *footer=NULL);

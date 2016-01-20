@@ -34,7 +34,9 @@ letters.
 
 "%h*c",25,'\n'; 25 new-lines.
 
-"%F" text file.
+"%F" text file by filename.
+
+"%$F" [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc file in memory.
 
 "%p" ptr.
 
@@ -60,13 +62,13 @@ strs in strs.)
 
                                  Print Family
 
-[C:/Kernel/StrPrint.CPP.Z,906] MStrPrint(U8 *fmt,...) is like
-[C:/Kernel/StrPrint.CPP.Z,884] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
+[C:/Kernel/StrPrint.CPP.Z,914] MStrPrint(U8 *fmt,...) is like
+[C:/Kernel/StrPrint.CPP.Z,892] StrPrint(U8 *dst,U8 *fmt,...) but it returns a 
 [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAllocated str.  It is vary handy
 because you don't have to worry about 
 overflow.
 
-[C:/Kernel/StrPrint.CPP.Z,889] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
+[C:/Kernel/StrPrint.CPP.Z,897] CatPrint(U8 *_dst,U8 *fmt,...) concatenates a
 formated string.
 
 [C:/Kernel/SrvCmd.CPP.Z,486] Auto(U8 *fmt,...) sends text to the current
