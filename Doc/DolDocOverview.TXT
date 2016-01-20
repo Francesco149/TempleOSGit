@@ -248,7 +248,7 @@ You can, optionally, include tag text to be displayed for the $IB...$ cmd.
   tag if the BI= number changes.
 
 The reason for the $IB...$ cmd is to pass a arg to
-  [C:/Adam/Gr/GrSpritePlot.CPP.Z,489] Sprite() and
+  [C:/Adam/Gr/GrSpritePlot.CPP.Z,490] Sprite() and
   [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3().  See
   [C:/Demo/Graphics/SpritePlot.CPP,1].
 
