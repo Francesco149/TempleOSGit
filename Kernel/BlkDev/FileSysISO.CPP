@@ -129,7 +129,7 @@ Bool ISO1CDirFill(CDirEntry *tempde,CISO1DirEntry *de)
 
 Bool ISO1FileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,
 	CDirEntry *_result,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2563] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HPP.Z,2561] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool result=FALSE,unlock;
@@ -269,16 +269,18 @@ CDirEntry *ISO1FilesFind(U8 *files_find_mask,
 	    tempde->sub=ISO1FilesFind(files_find_mask,fuf_flags,tempde);
 	    Cd("..");
 	  }
-	} else if ((tempde->attr & RS_ATTR_DIR ||
-	      !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
-	      !(Bt(&fuf_flags,FUf_RECURSE) &&
-	      *tempde->name=='.' && tempde->attr&RS_ATTR_DIR) &&
-	      FilesFindMatch(tempde->name,files_find_mask,fuf_flags)) {
-	  tempde->next=result;
-	  result=tempde;
+	} else {
 	  tempde->full_name=FileNameAbs(tempde->name);
-	} else
-	  DirEntryDel(tempde);
+	  if ((tempde->attr & RS_ATTR_DIR ||
+		!Bt(&fuf_flags,FUf_JUST_DIRS)) &&
+		!(Bt(&fuf_flags,FUf_RECURSE) &&
+		*tempde->name=='.' && tempde->attr&RS_ATTR_DIR) &&
+		FilesFindMatch(tempde->full_name,files_find_mask,fuf_flags)) {
+	    tempde->next=result;
+	    result=tempde;
+	  } else
+	    DirEntryDel(tempde);
+	}
       } else
 	DirEntryDel(tempde);
       i-=buf->len;

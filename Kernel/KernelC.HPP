@@ -280,7 +280,6 @@ public extern I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
 	Bool del_dir=FALSE,Bool print_msg=TRUE);
 public extern I64 Dir(U8 *files_find_mask="*",Bool full=FALSE);
 public extern Bool Drv(U8 drv_let);
-public extern U8 DrvTextAttrGet(U8 drv_let=0);
 public extern Bool MkDir(U8 *filename);
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically);Install"
@@ -298,7 +297,7 @@ public extern U8 *FileExtDot(U8 *src);
 public extern U8 *FileExtRem(U8 *src,U8 *dst=NULL);
 public extern U8 *FileNameAbs(U8 *filename,I64 fuf_flags=0);
 public extern Bool FileNameChk(U8 *filename);
-public extern Bool FilesFindMatch(U8 *test_filename,
+public extern Bool FilesFindMatch(U8 *_test_name,
 	U8 *files_find_mask,I64 fuf_flags=0);
 public extern Bool IsDir(U8 *dir_name);
 public extern Bool IsDotC(U8 *filename);
@@ -338,6 +337,7 @@ public extern CDrv *DrvMakeFree(U8 drv_let);
 public extern U8 *DrvModelNum(U8 drv_let=0);
 public extern CDrv *DrvNextFree(U8 first_drv_let='C');
 public extern U8 *DrvSerialNum(U8 drv_let=0);
+public extern U8 DrvTextAttrGet(U8 drv_let=0);
 public extern Bool DrvUnlock(CDrv *dv,Bool rst=FALSE);
 public extern U0 DrvsRelease();
 extern U0 FAT32FreeClusters(CDrv *dv,I64 c);
@@ -477,7 +477,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_util_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3731] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3730] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);

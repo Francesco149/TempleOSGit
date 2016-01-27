@@ -297,7 +297,7 @@ Bool FAT32DirFill(CFAT32DirEntry *de,
 
 Bool FAT32FileFind(CDrv *dv,I64 cur_dir_cluster,
 	U8 *name,CDirEntry *_result,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2563] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HPP.Z,2561] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_FILES
   Bool result=FALSE,unlock;
   CFAT32DirEntry *buf;
   I64 xsum=0,attr,cur_dir_entry,entries_per_cluster;
@@ -891,15 +891,18 @@ CDirEntry *FAT32FilesFind(U8 *files_find_mask,
 		  Cd("..");
 		}
 		DrvLock(dv);
-	      } else if ((attr&RS_ATTR_DIR || !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
-		    !(Bt(&fuf_flags,FUf_RECURSE) &&
-		    *tempde->name=='.' && attr&RS_ATTR_DIR) &&
-		    FilesFindMatch(tempde->name,files_find_mask,fuf_flags)) {
-		tempde->next=result;
-		result=tempde;
+	      } else {
 		tempde->full_name=FileNameAbs(tempde->name);
-	      } else
-		DirEntryDel(tempde);
+		if ((attr&RS_ATTR_DIR || !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
+		      !(Bt(&fuf_flags,FUf_RECURSE) &&
+		      *tempde->name=='.' && attr&RS_ATTR_DIR) &&
+		      FilesFindMatch(tempde->full_name,files_find_mask,
+		      fuf_flags)) {
+		  tempde->next=result;
+		  result=tempde;
+		} else
+		  DirEntryDel(tempde);
+	      }
 	    } else
 	      DirEntryDel(tempde);
 	  }

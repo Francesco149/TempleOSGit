@@ -208,7 +208,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3266] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3265] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -299,7 +299,7 @@ I64 ExeCmdLine(CCmpCtrl *cc)
 	  MemCpy(ptr2,ptr,TASK_TITLE_LEN);
     }
     cc->flags&=~CCF_HAS_MISC_DATA;
-    machine_code=LexStatement2Bin(cc,&type);
+    machine_code=LexStmt2Bin(cc,&type);
     if (machine_code!=INVALID_PTR) {
       if (!(cc->flags&CCF_JUST_LOAD)) {
 	t0=tS;

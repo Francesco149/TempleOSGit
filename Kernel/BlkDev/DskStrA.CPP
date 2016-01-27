@@ -37,39 +37,54 @@ Bool IsDotC(U8 *filename)
     return FALSE;
 }
 
-Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
+Bool FilesFindMatch(U8 *_test_name,U8 *files_find_mask,I64 fuf_flags=0)
 {//Does filename meet [C:/Doc/FileUtils.TXT.Z,1] Files Find mask?
-  U8 *st1=StrNew(files_find_mask),
-	*st2=MAlloc(StrLen(files_find_mask)+1);
+  I64 tn_len=StrLen(_test_name),mask_len=StrLen(files_find_mask);
+  U8 *mask1=MAlloc(mask_len+1),*mask2=MAlloc(mask_len+1),
+	*ptr,*test_name1,*test_name2;
   Bool result=FALSE;
+  StrCpy(mask1,files_find_mask);
+  if (StrOcc(_test_name,'/')) {
+    test_name1=MAlloc(tn_len+1);
+    test_name2=MAlloc(tn_len+1);
+    StrCpy(test_name1,_test_name);
+    StrLastRem(test_name1,"/",test_name2);
+  } else {
+    test_name1=NULL;
+    test_name2=NULL;
+  }
   while (TRUE) {
-    StrFirstRem(st1,";",st2);
-    if (*st2) {
-      if (*st2=='~') {
-	if (WildMatch(test_filename,st2+1)) {
+    StrFirstRem(mask1,";",mask2);
+    if (!test_name2 || StrOcc(mask2,'/'))
+      ptr=_test_name;
+    else
+      ptr=test_name2;
+    if (*mask2) {
+      if (*mask2=='~') {
+	if (WildMatch(ptr,mask2+1)) {
 	  result=FALSE;
 	  break;
 	}
       } else {
-	if (WildMatch(test_filename,st2)) {
+	if (WildMatch(ptr,mask2)) {
 	  if (Bt(&fuf_flags,FUf_JUST_TXT) &&
-		!FilesFindMatch(test_filename,FILEMASK_TXT)) {
+		!FilesFindMatch(_test_name,FILEMASK_TXT)) {
 	    result=FALSE;
 	    break;
 	  } else if (Bt(&fuf_flags,FUf_JUST_SRC) &&
-		!FilesFindMatch(test_filename,FILEMASK_SRC)) {
+		!FilesFindMatch(_test_name,FILEMASK_SRC)) {
 	    result=FALSE;
 	    break;
 	  } else if (Bt(&fuf_flags,FUf_JUST_AOT) &&
-		!FilesFindMatch(test_filename,FILEMASK_AOT)) {
+		!FilesFindMatch(_test_name,FILEMASK_AOT)) {
 	    result=FALSE;
 	    break;
 	  } else if (Bt(&fuf_flags,FUf_JUST_JIT) &&
-		!FilesFindMatch(test_filename,FILEMASK_JIT)) {
+		!FilesFindMatch(_test_name,FILEMASK_JIT)) {
 	    result=FALSE;
 	    break;
 	  } else if (Bt(&fuf_flags,FUf_JUST_GRA) &&
-		!FilesFindMatch(test_filename,FILEMASK_GRA)) {
+		!FilesFindMatch(_test_name,FILEMASK_GRA)) {
 	    result=FALSE;
 	    break;
 	  } else
@@ -79,8 +94,10 @@ Bool FilesFindMatch(U8 *test_filename,U8 *files_find_mask,I64 fuf_flags=0)
     } else
       break;
   }
-  Free(st1);
-  Free(st2);
+  Free(test_name1);
+  Free(test_name2);
+  Free(mask1);
+  Free(mask2);
   return result;
 }
 
@@ -142,7 +159,7 @@ U8 *DirNameAbs(U8 *_dirname)
 }
 
 U8 *FileNameAbs(U8 *_filename,I64 fuf_flags=0)
-{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2569] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2571] FUF_SCAN_PARENTS.
+{//Absolute filename. Accepts [C:/Kernel/KernelA.HPP.Z,2568] FUF_Z_OR_NOT_Z, [C:/Kernel/KernelA.HPP.Z,2570] FUF_SCAN_PARENTS.
   U8 *result,*filename,*buf,*buf_file,*buf_dir,*free_filename,*free_buf;
   CDirEntry de;
   free_filename=filename=MStrUtil(_filename,

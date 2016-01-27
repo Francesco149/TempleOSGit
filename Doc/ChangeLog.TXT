@@ -2,7 +2,13 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----01/20/16 05:10:18----
+----01/26/16 15:55:28----
+
+----01/26/16 14:09:45----
+* Changed [C:/Kernel/BlkDev/DskDirContext.CPP.Z,21] DirContextNew(),
+[C:/Kernel/BlkDev/DskStrA.CPP.Z,40] FilesFindMatch() and
+[C:/Kernel/BlkDev/DskFind.CPP.Z,30] FilesFind() to use full_name.
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Statement","Stmt");
 
 ----01/18/16 15:19:43----
 * Added except arg to [C:/Kernel/BlkDev/DskBlkDev.CPP.Z,131] Let2BlkDev(),
@@ -21,7 +27,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
 ----01/15/16 00:12:02----
 * Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,137] Let2BlkDevType().
-* Added [C:/Kernel/KernelA.HPP.Z,1378] WIF_SELF_FOCUS to
+* Added [C:/Kernel/KernelA.HPP.Z,1377] WIF_SELF_FOCUS to
 [C:/Misc/OSInstall.CPP.Z,1].
 * Added %$F to [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
 
@@ -35,7 +41,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 config scripts for compiling the 
 kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
 be changed.
-* Added [C:/Kernel/KernelA.HPP.Z,2084] CCF_QUESTION_HELP.
+* Added [C:/Kernel/KernelA.HPP.Z,2083] CCF_QUESTION_HELP.
 
 ----01/11/16 00:04:38----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("PAGE_SIZE","MEM_PAGE_SIZE"); etc.
@@ -43,7 +49,7 @@ be changed.
 * Added [C:/Demo/MemDemo.CPP,1].
 
 ----01/08/16 17:04:58----
-* Added [C:/Kernel/KernelA.HPP.Z,2557] FUF_RISKY to
+* Added [C:/Kernel/KernelA.HPP.Z,2556] FUF_RISKY to
 [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 
@@ -52,8 +58,8 @@ be changed.
 
 ----01/03/16 17:15:41----
 * Updated [C:/Misc/PCIDevices.TXT,1].
-* Added null case option.  Next higher integer with "case:" in switch 
-statements.  See  [C:/Demo/NullCase.CPP,1].
+* Added null case option.  Next higher integer with "case:" in switch stmts.  
+See  [C:/Demo/NullCase.CPP,1].
 
 ----12/31/15 00:44:44----
 * Made [C:/Compiler/OpCodes.TXT.Z,1] ASM_KEYWORDs usable in HolyC outside
@@ -181,7 +187,7 @@ WinMgrTask().
 * Added [C:/Kernel/Display.CPP.Z,126] WinInside().
 * Added [C:/Kernel/KernelA.HPP.Z,606] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1416] WIf_SELF_KEY_DESC.
+* Added [C:/Kernel/KernelA.HPP.Z,1415] WIf_SELF_KEY_DESC.
 
 ----07/26/15 06:57:29----
 * Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
@@ -214,7 +220,7 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2721] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2720] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,169] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]

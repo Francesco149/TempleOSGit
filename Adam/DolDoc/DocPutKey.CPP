@@ -577,7 +577,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Edit/Find Misspelled");
 	    else
-	      ACFindMisspelled(doc);
+	      ACMisspelledFind(doc);
 	  } else {
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Edit/Save");
