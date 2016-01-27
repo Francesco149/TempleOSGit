@@ -646,7 +646,7 @@ sw_cont:
 		}
 		goto sw_cont;
 	      default:
-		PrsStmt(cc,try_cnt,root.last->last->lb_break);
+		PrsStmt(cc,try_cnt);
 	    }
 	  }
 	  break;

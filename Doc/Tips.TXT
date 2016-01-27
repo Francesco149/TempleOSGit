@@ -291,7 +291,7 @@ _CFG_HEAP_DBG.  You're on your own.
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,346] Type() to display .BMP or
 .GRA files.
 
-* Use [C:/Kernel/PSect.CPP.Z,284] Man() to jump to short sym name src code.
+* Use [C:/Kernel/FunSeg.CPP.Z,284] Man() to jump to short sym name src code.
 
 * Use [C:/Kernel/EdLite.CPP.Z,337] Fix() to edit and fix the last compiler
 err.

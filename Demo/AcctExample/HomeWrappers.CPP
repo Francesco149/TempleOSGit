@@ -1,21 +1,22 @@
-//Place this file in /Home and change
-//anything you want.
-
 #help_index "Cmd Line (Typically)"
 
-//These are customized quick commands.
-//Feel free to add more or change.
+#define FILEMASK_OFF_LIMITS "~*/Misc/PCIDevices.TXT*;~*/Misc/Bible.TXT*;"\
+	"~*/Downloads/Text/*;~*/Downloads/Words/*;~*/Downloads/Bin/*;"\
+	"~*/God/Vocab.TXT*"
+
 public I64 F(U8 *needle_str,U8 *fu_flags=NULL)
 {//Find text in all text files.
   return Find(needle_str,"/*",fu_flags);
 }
 
+public I64 F2(U8 *needle_str,U8 *fu_flags=NULL)
+{//Find text in most text files.
+  return Find(needle_str,"/*;" FILEMASK_OFF_LIMITS,fu_flags);
+}
+
 public I64 R(U8 *needle_str,U8 *replace_text=NULL,U8 *fu_flags="+l-i")
-{//Find text and replace in all text files.
-  return Find(needle_str,
-	"/*;~*/Misc/PCIDevices.TXT*;~*/Misc/Bible.TXT*;"
-	"~*/Downloads/Text/*;~*/Downloads/Words/*;~*/Downloads/Bin/*",
-	fu_flags,replace_text);
+{//Find text and replace in most text files.
+  return Find(needle_str,"/*;" FILEMASK_OFF_LIMITS,fu_flags,replace_text);
 }
 
 public I64 FD(U8 *needle_str,U8 *fu_flags=NULL)
@@ -23,10 +24,12 @@ public I64 FD(U8 *needle_str,U8 *fu_flags=NULL)
   return Find(needle_str,"*",fu_flags);
 }
 
+public I64 FD2(U8 *needle_str,U8 *fu_flags=NULL)
+{//Find text in most cur dir text files.
+  return Find(needle_str,"*;" FILEMASK_OFF_LIMITS,fu_flags);
+}
+
 public I64 RD(U8 *needle_str,U8 *replace_text=NULL,U8 *fu_flags="+l-i")
-{//Find text and replace in cur dir text files.
-  return Find(needle_str,
-	"*;~*/Misc/PCIDevices.TXT*;~*/Misc/Bible.TXT*;"
-	"~*/Downloads/Text/*;~*/Downloads/Words/*;~*/Downloads/Bin/*",
-	fu_flags,replace_text);
+{//Find text and replace in most cur dir text files.
+  return Find(needle_str,"*;" FILEMASK_OFF_LIMITS,fu_flags,replace_text);
 }

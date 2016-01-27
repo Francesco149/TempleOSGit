@@ -1,6 +1,7 @@
+
                                      TODO
-* Redo videos, make more professional.  Mostly finished.  Could raise to 
-higher level of professionalism.
+* Might want [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog() x Cnt.  Fix
+[C:/Misc/OSTestSuite.CPP.Z,1] TestSuite.
 
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
@@ -8,8 +9,6 @@ higher level of professionalism.
 stack. 
  Auto-balancing binary tree is very needed.  I've done everything myself.  I 
 don't want to ruin a perfect record.  I'm in no hurry.
-
-* [C:/Home/HomeWrappers.CPP.Z,13] R("PSect","Fun-something"); 
 
 * In <CTRL-r> menu, transform individual elements.
 
@@ -41,24 +40,14 @@ search string.
 
 * No way to clear [C:/Kernel/KernelA.HPP.Z,1082] DOCEf_HOLD entries.
 
-* [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() might be better not saving
-[C:/Kernel/KernelA.HPP.Z,3458] CH_CURSOR.  Perhaps, I did this already?
-
 * [C:/Kernel/KernelA.HPP.Z,1237] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.CPP.Z,413] Reindention.
 
-* Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
-"DN:word".
-
-* [C:/Doc/Mysteries.TXT.Z,1] FAQ1, [C:/Doc/Confuse.TXT.Z,1] FAQ2, cleaned-up,
-front-loaded?
-
-* Compiler: subswitch_start with a break in the preface?  Give compiler err.
-
 * Compiler: Warn unnecessary typecast.
 
-* Might want [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog() x Cnt.  Fix
-[C:/Misc/OSTestSuite.CPP.Z,1] TestSuite.
+* Compiler Optimization: Local array vars --> reg.  Might exist.
+
+* Compiler Optimization: heap_glbls with added offset.  Might exist.
 
 * AfterEgypt: [C:/Misc/Bible.TXT.Z,12005] Numbers,13:33 scouts?
 [C:/Misc/Bible.TXT.Z,12005] Numbers,21:8 snakes?
@@ -68,10 +57,6 @@ front-loaded?
 * 01/10/2016 find-replace editor hung on
 [C:/Home/Web/TAD/CounterRenaissance.TXT,1] CounterRenaissance "Rennaisance"
 * 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
-
-* Add <F2> Macro in [C:/Misc/OSTestSuite.CPP.Z,1] TestSuite.
-
-* Demo [C:/Adam/Opt/Utils/ToHtml.CPP.Z,300] ToHtml().
 
 * Document $DA zero terminator.  Explain str or not.
 
@@ -100,7 +85,7 @@ Free old task memory?
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
-* Num lock comes on with break key
+* NumLock comes on with break key.
 
 
                                   TODO? Meh
@@ -108,12 +93,20 @@ others need to be in separate cache lines?
 
 * Compiler: Warn recurse class define?
 
+* Asm could support R4u8 by adding 0x40 byte.
+
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() is broken.  Devices
+should be in free spot of E820 report.
+
 * [C:/Adam/Gr/SpriteEd.CPP.Z,1] SpriteEd: Strip [C:/Adam/Gr/Gr.HPP.Z,124]
 SPT_SHIFT origin cmds?
 
 * Clean-up ASCII #127 delete char?  (No. Maybe, we want a new usage for 127
 in 
 future centuries.)
+
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2121] CCmpCtrl
+stuff.
 
 * Unhandled exception msgs from MP's get overwritten by WinMgr.
 
@@ -129,7 +122,7 @@ Diff("C:/Misc/Bible.TXT","D:/Misc/Bible.TXT"); Takes too long.
 
 
                      TODO: Too Hard, or Not Worth Doing.
-* AutoComplete/[C:/Kernel/PSect.CPP.Z,284] Man() Jmp for user code.
+* AutoComplete/[C:/Kernel/FunSeg.CPP.Z,284] Man() Jmp for user code.
 
 * [C:/Adam/DolDoc/DocRecalc.CPP.Z,1] Bible sized nodes
 
@@ -199,6 +192,12 @@ I fixed this.
 * 1/?/2015,8/10/2015 Macro select in Menu did not go to shell?  No, I think 
 just <CTRL-m> twice.  Not a bug.
 
+* 5/7/14:Something like [C:/Adam/AutoFile.CPP.Z,117] AFSetIP caused hang,
+then reboot in TestSuite.
+* 5/7/14:#63 Maybe, [C:/Demo/Graphics/Pick3D.CPP.Z,1] crashed in TestSuite.
+* 6/8/14:After or in [C:/Misc/OSTestSuite.CPP.Z,1] PageTableEntries2 in
+TestSuite crash.
+
 * [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(,st); With st="\n\\"; (Forgot
 what this is talking about.)
 
@@ -215,6 +214,8 @@ CHashGlblVar?
      CArrayDim dim;
 CHashFun *fun_ptr;
 
+* extern of fun with dft arg of str?
+
 * Might want to warn switch() dup case numbers.
 
 * Make [C:/Kernel/KMathB.CPP.Z,1] Clamp(), [C:/Kernel/KMathB.CPP.Z,10] Min(),
@@ -223,8 +224,6 @@ CHashFun *fun_ptr;
 * Add local vars to sym table in [C:/Kernel/KDbg.CPP.Z,636] Dbg()?
 
 * Compiler: Prints two error messages for expressions in stmts.
-
-* Compiler: More use of more floating-point stk?
 
 * [C:/Compiler/UAsm.CPP.Z,649] U() negative byte displacement, neg 32-bit
 disp.
@@ -253,10 +252,11 @@ no choice.
 
 
                                Committee Needed
-* Make binary tree look-up using PSECT symbol addresses, so we can eliminate 
-psect cache and wall-paper kludge?  All HolyC functions and glbl vars would 
+* Make binary tree look-up using FUN_SEG symbol addresses, so we can
+eliminate 
+fun_seg cache and wall-paper kludge?  All HolyC functions and glbl vars would 
 have left-right for address search.
-* PSect does not scan all task tables.
+* FunSeg does not scan all task tables.
 
 * Improve editor undo, add redo.
 
@@ -285,6 +285,12 @@ Every country make own version?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,2891] ROP_XOR?
 
+* [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
+[C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
+works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
+
+* Should Msgs in PopUp queue get fwded to parent when task dies?
+
 * Import Intel datasheets so we can use links in
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
@@ -297,8 +303,14 @@ tried a PDF-to-text convertor and it wasn't acceptible.
 * Compiler Optimization: Postpone LocalVar init until last possible moment in 
 case of return.
 
+* Compiler: Local var array/struct initialization.
+
 * Compiler Optimization: Bools use r,rm in [C:/Compiler/BackB.CPP.Z,136]
 ICCmp() like in [C:/Compiler/BackB.CPP.Z,556] ICCmpAndBranch()?
+
+* Compiler: !F64 ~F64
+
+* Compiler: &=, |= can overflow with Bts Btr on small data types?
 
 * Since no true preprocessor, [C:/Home/HomeWrappers.CPP.Z,13]
 R("#define","StrMap");  [C:/Home/HomeWrappers.CPP.Z,13] R("#include",...);
@@ -337,6 +349,8 @@ any aux_font?
 
 
                              Inspirational Ideas
+* Redo videos, make more professional.
+
 * Use standard terminology from "the literature".
 
 * Get rid of BYTE, WORD, DWORD in opcode and replace with U8, U16, U32.
@@ -376,6 +390,11 @@ once.
 
 * More [C:/Kernel/KernelA.HPP.Z,3062] Controls?
 
+* Compiler: More use of more floating-point stk?
+
+* Compiler: More aggressive in [C:/Compiler/OptLib.CPP.Z,536] CmpF2PushPop()
+with types besides MOV and F64. 
+
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
 [C:/Kernel/KernelA.HPP.Z,3265] CTask?
      $=-CTASK_NEG_OFFSET
@@ -398,11 +417,13 @@ GrPutChar?
 [C:/Adam/Gr/GrBitMap.CPP.Z,910] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,631]
 GrPutChar?
 
-* [C:/Kernel/SerialDev/Message.CPP.Z,193] GetStr or
+* [C:/Kernel/SerialDev/Message.CPP.Z,193] GetStr() or
 [C:/Kernel/SerialDev/Message.CPP.Z,182] GetChar() in
 [C:/Misc/OSInstall.CPP.Z,1] OSInstall didn't like focus change.
 
 * Test on Dad's computer or other people's?
+
+* [C:/Compiler/BackA.CPP.Z,452] ICDivEqu() assumes RBX.  Is it okay?
 
 * Autofile PopUp of PopUp?
 
@@ -413,79 +434,48 @@ window.
 exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 0x9FC30?
 
+* VirtualBox MP reboot?
+
+* Compiler: Err/Warn line nums?
+* Asm branch-out-of-range warn by one line?
+
+* Make sure queue links safe in one direction.  Task
+[C:/Kernel/KernelB.HPP.Z,67] QueIns and [C:/Kernel/KernelB.HPP.Z,71] QueRem
+for 
+multicore cycling fwd through tasks.
+
 * Test removable media id and [C:/Kernel/KernelA.HPP.Z,2490]
 RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,230] Touch("","+T");
 
 
                                 Uncategorized
-* DiskCache during FileRead. <CTRL-ALT-C>, [C:/Kernel/KTask.CPP.Z,28] Kill().
+* DiskCache during FileRead. <CTRL-ALT-c>, [C:/Kernel/KTask.CPP.Z,28] Kill().
  
 
-* 5/7/14:Something like AFSetIP.CPP caused hang, then reboot in TestSuite.
-* 5/7/14:#63 Maybe, [C:/Demo/Graphics/Pick3D.CPP.Z,1] crashed in TestSuite.
-* 6/8/14:After or in PageEntries2 in TestSuite crash.
-
 * MOV U8 [RSP+RCX],DL
-
-* Nice song "3sGCGCqCCe2G3EE2G3qDetDEFsDBDB"
-* Nice song? 
-"3qDe2G3AetGD2G3sBDBDqCeDFetABDeFB3qDe2G3AetGD2G3sBDBDqCeDFetABDeFB3e2G3GDGqDe
-EADDqACB3e2G3GDGqDeEADDqACB"
-
-* [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() is broken. Devices
-should be in free spot of E820 report.
-
-* It would be nice if [C:/Compiler/UAsm.CPP.Z,649] U() NOP were better.
 
 * [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.screen_image
   >Might want to do ZOOM in U8 graphics and convert screen capture to U8
   >Might want to reverse bit order
 
-* {Lock|Rep}{Seg|2E=NotBr|3E=Br}{OP}{ADD}{REX}
-* Virtual Box MP reboot
-
-* extern of fun with dft arg of str?
-
 * This [C:/Kernel/SrvCmd.CPP.Z,1] Fs->catch_except=TRUE causes problems
 because it
 catches divide and out-of-mem.  Not sure what to do, yet.
 
-* Window mgr needs to do DOC operations on posted messages from mouse.
-Works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet(), though.
-
-* Compiler exceptions and restoring lex.hash tables.
 * Release semaphores or break lock sema,usb_td
 
-* Compiler: Local var array/struct initialization.
-
-* Local array vars-->reg.
-* Compiler Optimization: heap_glbls with added offset
 * Might make CSprite flood fill operate on a separate bitmap
 and blotted at the end.
 * <CTRL-r> delete subsprite in menu near others
-* consider changing domenu so a real <ESC> on menu item doesn't select
-(<SPACE> sends <ESC> followed by <SPACE> or something)
-* make task queins and querem safe for multicore cycling through tasks (fwd).
-* make better heapwalk, do something with _CFG_HEAP_DBG.
-* APIC2
+* make better heapwalk, do something with [C:/Kernel/KernelA.HPP.Z,1]
+_CFG_HEAP_DBG.
 
-* support r4u8 by adding 0x40 byte
 * static var off of data heap.
 * could add "const" to not set CCF_NOT_CONST flag for trig, etc.
 * could make glblvar imports use TY_RIP_DISP32.
 * PUSH_CMP allocs reg R9 or whatever
 * Might be problem with NOP in OPT pass1 for NO_PUSH in expressions besides
 assignments.  Is ShiftNoPush fully implemented?
-* NOP1 might need to have diff ic_data's
-* in divequal, it assumes about ebx
-* error/warning line nums
-* ASM branch out warning of range off by 1 line--use cc->last_line_num?
-
-* More aggressive in this routine [C:/Compiler/OptLib.CPP.Z,536]
-CmpF2PushPop() with types besides MOV and 
-F64. 
-* !dbl ~dbl
-* &=, |= can overflow with Bts Btr on small data types
 
 
                                 Bible Passages

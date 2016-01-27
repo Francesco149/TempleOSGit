@@ -8,7 +8,7 @@ in the tag quotes or none.  The text doesn't matter,
 but the BI=num does.  The num identifies
 the sprite and can't be changed by you.
 
-Make use of a sprite by entering "insert binary",
+Make use of a sprite by entering "insert bin",
 $IB...$ cmds by hand after pressing
 <CTRL-t> or using <CTRL-r> and
 selecting "Pointer to Sprite".

@@ -2,7 +2,25 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----01/26/16 15:55:28----
+----01/27/16 06:40:46----
+* Added <F2> macro to [C:/Misc/OSTestSuite.CPP.Z,1] TestSuite.
+* Added compiler err for break; in a subswitch preface.
+
+----01/27/16 04:14:08----
+* Added [C:/Demo/ToHtmlToTXTExample/HtmlGen.CPP.Z,1] and 
+[C:/Demo/ToHtmlToTXTExample/TXTGen.CPP.Z,1].
+* Now, [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() doesn't save with
+[C:/Kernel/KernelA.HPP.Z,3458] CH_CURSOR.
+* [C:/Home/HomeWrappers.CPP.Z,13]
+R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
+* Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
+"DN:word".
+* Merged documentation into [C:/Doc/FAQ.TXT.Z,1].
+
+----01/26/16 17:51:45----
+* [C:/Home/HomeWrappers.CPP.Z,13] R("PSect","FunSeg"); 
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Equal","Equ");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Binary","Bin");
 
 ----01/26/16 14:09:45----
 * Changed [C:/Kernel/BlkDev/DskDirContext.CPP.Z,21] DirContextNew(),

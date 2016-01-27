@@ -12,6 +12,8 @@
       F64 best_score=9999.0000;
       +] BlackDiamond
       I64 best_score=9;
+      +] EagleDive
+      I64 best_score=4;
       +] DunGen
       F64 best_score=20.5295;
       +] CastleFrankenstein
@@ -35,11 +37,9 @@
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=175;
-      +] EagleDive
-      I64 best_score=4;
       +] DemoCompany
   +] Game1
-      F64 best_score=168.39623;
+      F64 best_score=166.76649;
     +] SimpleVal
-          1275;
+          1278;
             

@@ -425,18 +425,18 @@ to avoid this.
 	  if (cur_arg>=argc)
 	    throw('StrPrint');
 	  if (flags&SPF_TRUNCATE)
-	    StrPrintPSect(temp_buf,argv[cur_arg++],len);
+	    StrPrintFunSeg(temp_buf,argv[cur_arg++],len);
 	  else
-	    StrPrintPSect(temp_buf,argv[cur_arg++],0);
+	    StrPrintFunSeg(temp_buf,argv[cur_arg++],0);
 	  OutStr(temp_buf,_buf,_dst,len,flags);
 	  break;
 	case 'P':
 	  if (cur_arg>=argc)
 	    throw('StrPrint');
 	  if (flags&SPF_TRUNCATE)
-	    StrPrintPSect(temp_buf,argv[cur_arg],len);
+	    StrPrintFunSeg(temp_buf,argv[cur_arg],len);
 	  else
-	    StrPrintPSect(temp_buf,argv[cur_arg],0);
+	    StrPrintFunSeg(temp_buf,argv[cur_arg],0);
 	  if (!IsRaw || !_buf) {
 	    StrPrint(temp_buf2,"$LK,\"%s\",A=\"AD:0x%X\"$",
 		  temp_buf,argv[cur_arg]);

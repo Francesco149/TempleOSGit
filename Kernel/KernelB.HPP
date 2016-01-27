@@ -25,13 +25,13 @@ public _intern IC_LBTR Bool LBtr(
 public _intern IC_LBTS Bool LBts(
 	U8 *bit_field,I64 bit); //Locked bit test and set to one.
 public _extern _BEQU Bool BEqu(
-	U8 *bit_field,I64 bit,Bool val);//Set bit equal to val.
+	U8 *bit_field,I64 bit,Bool val);//Set bit equ to val.
 public _extern _BIT_FIELD_EXTRACT_U32 U32 BFieldExtU32(
 	U8 *bit_field,I64 bit,I64 size); //Extract U32 from bit field.
 public _extern _BIT_FIELD_OR_U32 U0 BFieldOrU32(
 	U8 *bit_field,I64 bit,U32 pattern); //Or U32 into bit field.
 public _extern _LBEQU Bool LBEqu(
-	U8 *bit_field,I64 bit,Bool val); //Locked Set bit equal to val.
+	U8 *bit_field,I64 bit,Bool val); //Locked Set bit equ to val.
 
 #help_index "Boot"
 _extern SYS_BOOT_BASE U32 sys_boot_base;

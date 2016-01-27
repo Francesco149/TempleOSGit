@@ -87,7 +87,7 @@ extern U0 SrvCmdQueDel(CSrvCmd *root);
 extern I64 SrvCmdsHandler(I64 run_flags,CTask *task=NULL);
 extern U0 SrvCtrlInit(CSrvCtrl *ctrl);
 extern U8 *StrPrint(U8 *dst,U8 *fmt,...);
-extern U0 StrPrintPSect(U8 *buf,I64 addr,I64 field_len);
+extern U0 StrPrintFunSeg(U8 *buf,I64 addr,I64 field_len);
 extern Bool Suspend(CTask *task=NULL,Bool state=TRUE);
 extern CSrvCmd *TaskMsg(CTask *_srv,CTask *master,
 	I64 code,I64 a1,I64 a2,I64 flags);

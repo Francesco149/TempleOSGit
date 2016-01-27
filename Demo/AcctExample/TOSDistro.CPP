@@ -109,6 +109,7 @@ U0 DistroPrep()
 {
   Del("/Demo/WebLogExample/WebLogRep.TXT*");
   Del("/Demo/ReverseFileExample/PoemForeward.TXT*");
+  Del("/Demo/ToHtmlToTXTExample/Out*");
   Del("/Home/NumBible.TXT.Z");
   DelTree("/Home/*Temp.TXT.Z");
   if (FileFind("/Home/Downloads/Psalmody"))

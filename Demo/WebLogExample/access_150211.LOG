@@ -897,7 +897,7 @@
 98.20.198.134 - - [10/Feb/2015:23:09:51 -0800] "GET /Wb/Home/Web/TempleOSVideos.html HTTP/1.1" 200 40440 "http://www.templeos.org/" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36" "www.templeos.org"
 178.0.187.99 - - [10/Feb/2015:23:13:04 -0800] "GET /favicon.ico HTTP/1.1" 200 1078 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36" "www.templeos.org"
 78.19.21.206 - - [10/Feb/2015:23:17:41 -0800] "GET /TempleOSCD.ISO HTTP/1.1" 200 720896 "-" "Mozilla/5.0 Gecko/20100115 Firefox/3.6" "www.templeos.org"
-129.226.244.66 - - [10/Feb/2015:23:25:01 -0800] "GET /Wb/Kernel/PSect.html HTTP/1.1" 200 151686 "-" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)" "www.templeos.org"
+129.226.244.66 - - [10/Feb/2015:23:25:01 -0800] "GET /Wb/Kernel/FunSeg.html HTTP/1.1" 200 151686 "-" "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)" "www.templeos.org"
 228.141.141.213 - - [10/Feb/2015:23:25:24 -0800] "GET /Wb/Apps/AfterEgypt/Comics/Moses45.html HTTP/1.1" 200 3130 "-" "Mozilla/5.0 (compatible; DotBot/1.1; http://www.opensiteexplorer.org/dotbot, help@moz.com)" "www.templeos.org"
 240.128.130.130 - - [10/Feb/2015:23:27:02 -0800] "GET / HTTP/1.1" 200 6329 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:35.0) Gecko/20100101 Firefox/35.0" "www.templeos.org"
 207.203.88.11 - - [10/Feb/2015:23:28:13 -0800] "HEAD /fckeditor/editor/filemanager/connectors/aspx/upload.aspx HTTP/1.1" 404 0 "-" "-" "www.templeos.org"

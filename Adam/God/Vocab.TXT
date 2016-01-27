@@ -6282,7 +6282,7 @@ startles
 state
 stated
 stateliness
-stmt
+statement
 states
 station
 statue

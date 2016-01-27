@@ -1,3 +1,3 @@
-Use %p to print a pointer with PSect+Offset or use %P to print a link to a 
-PSect+Offset.
+Use %p to print a pointer with FunSeg+Offset or use %P to print a link to a 
+FunSeg+Offset.
  

@@ -96,7 +96,7 @@ U8 *WebBookMarks(U8 *filename="::/Home/Downloads/Blog/Bookmarks.html")
 U8 *YouTubeGet(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",U8 *needle)
 {
   I64 i=0,line=MIN_I64;
-  CDoc	*doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS),
+  CDoc	*doc=DocRead(filename,DOCF_PLAIN_TEXT_TABS|DOCF_NO_CURSOR),
 	*doc2=DocNew;
   U8 *title,*code,*result;
   while (DocFind(doc,line,needle)) {
@@ -133,7 +133,7 @@ U8 *YouTubeGet(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",U8 *needle)
 U0 YouTubeAdd(U8 *filename="C:/Home/Downloads/Blog/YouTube.TXT.Z",
 	U8 *title,U8 *code)
 {
-  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS);
+  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_TABS|DOCF_NO_CURSOR);
   if (!DocFind(doc,,title)) {
     DocBottom(doc);
     DocPrint(doc,"%s\n%s\n",title,code);
@@ -269,7 +269,7 @@ class CRandHexBeacon8Form
 U8 *RandVideoRead(U8 *filename,I64 line)
 {
   U8 *result=NULL;
-  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS);
+  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_TABS|DOCF_NO_CURSOR);
   if (DocLineNumGoTo(doc,line-1) && doc->cur_entry->type_u8==DOCT_TEXT)
     result=StrNew(doc->cur_entry->tag);
   DocDel(doc);
@@ -279,7 +279,7 @@ U8 *RandVideoRead(U8 *filename,I64 line)
 U8 *RandVideoWrite(U8 *filename,I64 line,U8 *st)
 {
   U8 *result=NULL;
-  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_WITH_TABS);
+  CDoc *doc=DocRead(filename,DOCF_PLAIN_TEXT_TABS|DOCF_NO_CURSOR);
   if (DocLineNumGoTo(doc,line-1)) {
     if (doc->cur_entry->type_u8==DOCT_TEXT) {
       Free(doc->cur_entry->tag);

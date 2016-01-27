@@ -926,8 +926,8 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCT_HEX_ED		33
 #define DOCT_TREE		34
 #define DOCT_SPRITE		35
-#define DOCT_INS_BINARY		36
-#define DOCT_INS_BINARY_SIZE	37
+#define DOCT_INS_BIN		36
+#define DOCT_INS_BIN_SIZE	37
 #define DOCT_SONG		38
 #define DOCT_HIGHLIGHT		39
 #define DOCT_HTML_CODE		40
@@ -948,7 +948,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEt_UNDERLINE		ATTRf_UNDERLINE
 
 #define DOCG_DBL_BUF_FLAGS	(DOCF_OVERSTRIKE|DOCF_PLAIN_TEXT|\
-		DOCF_PLAIN_TEXT_WITH_TABS|DOCF_MIN_SIZE|DOCF_NO_CURSOR|\
+		DOCF_PLAIN_TEXT_TABS|DOCF_MIN_SIZE|DOCF_NO_CURSOR|\
 		DOCF_FORM|DOCF_DBL_DOLLARS|DOCF_DONT_SWAP_OUT|\
 		DOCF_DO_FULL_REFRESH|DOCF_BORDER_DOC|DOCF_HIDE_CURSOR|\
 		DOCF_CARRIAGE_RETURN)
@@ -1231,7 +1231,7 @@ class CEdFileName
 
 // DOC header flags
 #define DOCF_PLAIN_TEXT 	0x1
-#define DOCF_PLAIN_TEXT_WITH_TABS 0x2 //has '\t', not DOCT_TAB
+#define DOCF_PLAIN_TEXT_TABS	0x2 //has '\t', not DOCT_TAB
 #define DOCF_NO_CURSOR		0x4
 #define DOCF_CARRIAGE_RETURN	0x8
 #define DOCF_DBL_DOLLARS	0x10
@@ -1266,7 +1266,7 @@ class CEdFileName
 #define DOCF_UNDO_DIRTY		0x1000000000
 
 #define DOCf_PLAIN_TEXT 	0
-#define DOCf_PLAIN_TEXT_WITH_TABS 1 //has '\t', not DOCT_TAB
+#define DOCf_PLAIN_TEXT_TABS	1 //has '\t', not DOCT_TAB
 #define DOCf_NO_CURSOR		2
 #define DOCf_CARRIAGE_RETURN	3
 #define DOCf_DBL_DOLLARS	4
@@ -2020,50 +2020,50 @@ class CAOTCtrl
 };
 
 //Tokens
-#define TK_EOF			0
-#define TK_SUPERSCRIPT		0x001
-#define TK_SUBSCRIPT		0x002
-#define TK_NORMALSCRIPT		0x003
-#define TK_IDENT		0x100
-#define TK_STR			0x101
-#define TK_INTEGER		0x102
-#define TK_CHAR_CONST		0x103
-#define TK_F64			0x104
-#define TK_PLUS_PLUS		0x105
-#define TK_MINUS_MINUS		0x106
-#define TK_DEREFERENCE		0x107
-#define TK_DBL_COLON		0x108
-#define TK_SHL			0x109
-#define TK_SHR			0x10A
-#define TK_EQUAL_EQUAL		0x10B
-#define TK_NOT_EQUAL		0x10C
-#define TK_LESS_EQUAL		0x10D
-#define TK_GREATER_EQUAL	0x10E
-#define TK_AND_AND		0x10F
-#define TK_OR_OR		0x110
-#define TK_XOR_XOR		0x111
-#define TK_SHL_EQUAL		0x112
-#define TK_SHR_EQUAL		0x113
-#define TK_MUL_EQUAL		0x114
-#define TK_DIV_EQUAL		0x115
-#define TK_AND_EQUAL		0x116
-#define TK_OR_EQUAL		0x117
-#define TK_XOR_EQUAL		0x118
-#define TK_ADD_EQUAL		0x119
-#define TK_SUB_EQUAL		0x11A
-#define TK_IF			0x11B
-#define TK_IFDEF		0x11C
-#define TK_IFNDEF		0x11D
-#define TK_IFAOT		0x11E
-#define TK_IFJIT		0x11F
-#define TK_ENDIF		0x120
-#define TK_ELSE			0x121
-#define TK_MOD_EQUAL		0x122
-#define TK_DOT_DOT		0x123
-#define TK_DOT_DOT_DOT		0x124
-#define TK_INS_BINARY		0x125
-#define TK_INS_BINARY_SIZE	0x126
-#define TK_NUM_TK		0x127
+#define TK_EOF		0
+#define TK_SUPERSCRIPT	0x001
+#define TK_SUBSCRIPT	0x002
+#define TK_NORMALSCRIPT	0x003
+#define TK_IDENT	0x100
+#define TK_STR		0x101
+#define TK_INTEGER	0x102
+#define TK_CHAR_CONST	0x103
+#define TK_F64		0x104
+#define TK_PLUS_PLUS	0x105
+#define TK_MINUS_MINUS	0x106
+#define TK_DEREFERENCE	0x107
+#define TK_DBL_COLON	0x108
+#define TK_SHL		0x109
+#define TK_SHR		0x10A
+#define TK_EQU_EQU	0x10B
+#define TK_NOT_EQU	0x10C
+#define TK_LESS_EQU	0x10D
+#define TK_GREATER_EQU	0x10E
+#define TK_AND_AND	0x10F
+#define TK_OR_OR	0x110
+#define TK_XOR_XOR	0x111
+#define TK_SHL_EQU	0x112
+#define TK_SHR_EQU	0x113
+#define TK_MUL_EQU	0x114
+#define TK_DIV_EQU	0x115
+#define TK_AND_EQU	0x116
+#define TK_OR_EQU	0x117
+#define TK_XOR_EQU	0x118
+#define TK_ADD_EQU	0x119
+#define TK_SUB_EQU	0x11A
+#define TK_IF		0x11B
+#define TK_IFDEF	0x11C
+#define TK_IFNDEF	0x11D
+#define TK_IFAOT	0x11E
+#define TK_IFJIT	0x11F
+#define TK_ENDIF	0x120
+#define TK_ELSE		0x121
+#define TK_MOD_EQU	0x122
+#define TK_DOT_DOT	0x123
+#define TK_DOT_DOT_DOT	0x124
+#define TK_INS_BIN	0x125
+#define TK_INS_BIN_SIZE 0x126
+#define TK_NUM_TK	0x127
 
 class CLexHashTableContext
 {
@@ -3790,16 +3790,16 @@ public class CSndGlbls
   Bool	record;
 };
 
-#help_index "Debugging/PSect"
-#define PSECT_CACHE_SIZE	256
-class CPSectCache
+#help_index "Debugging/FunSeg"
+#define FUN_SEG_CACHE_SIZE	256
+class CFunSegCache
 {
   I64	base,limit;
   F64	time_stamp;
-  U8	str[1]; //PSECT_CACHE_STR_LEN
+  U8	str[1]; //FUN_SEG_CACHE_STR_LEN
 $=64;
 };
-#define PSECT_CACHE_STR_LEN	(sizeof(CPSectCache)-offset(CPSectCache.str))
+#define FUN_SEG_CACHE_STR_LEN	(sizeof(CFunSegCache)-offset(CFunSegCache.str))
 
 #help_index "Debugging"
 class CMPCrash
@@ -3819,8 +3819,8 @@ public class CDbgGlbls
   CMPCrash *mp_crash;
   U8	*int_fault_code,
 	*fix_file_line;
-  CPSectCache *psect_cache;
-  I64	psect_cache_index;
+  CFunSegCache *fun_seg_cache;
+  I64	fun_seg_cache_index;
 };
 
 #help_index "Boot"

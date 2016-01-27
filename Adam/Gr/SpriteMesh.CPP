@@ -385,7 +385,7 @@ U0 MPDrawIt(CMeshFrame *e)
   CMeshEdTri *tempt=e->tri_root.next;
   I64 i,*old_r=dc->r;
 
-  //[C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() alllocs a new identity rotation matrix.
+  //[C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() allocs a new identity rotation matrix.
   //We want e->dc's rotation matrix.
   dc->r=e->dc->r;
 

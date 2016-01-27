@@ -52,8 +52,8 @@ API, so developer's code is not like a frayed rope end.
 
 * Everything runs in kernel, ring 0, mode.
 
-* One memory map for all tasks on all cores with virtual addresses set equal 
-to physical, just as though paging is not used.
+* One memory map for all tasks on all cores with virtual addresses set equ to 
+physical, just as though paging is not used.
 
 * One platform -- x86_64 PC's, no 32-bit support.
 

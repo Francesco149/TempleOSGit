@@ -440,14 +440,14 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
         } else
           out=StrAdd(out,cl->tag);
         break;
-      case DOCT_INS_BINARY_SIZE:
+      case DOCT_INS_BIN_SIZE:
         if (is_code)
           buf=MStrPrint("%s__BIN_%d_SIZE",out,cl->bin_data->num);
         else
           buf=MStrPrint("%s%d",out,cl->bin_data->size);
         Free(out); out=buf;
         break;
-      case DOCT_INS_BINARY:
+      case DOCT_INS_BIN:
         if (is_code) {
           buf=MStrPrint("%s__BIN_%d",out,cl->bin_data->num);
           Free(out); out=buf;

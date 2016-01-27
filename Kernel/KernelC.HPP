@@ -203,15 +203,15 @@ public extern U0 Dr(CTask *task=NULL);
 public extern U0 StkRep(CTask *task=NULL);
 extern I64 *TaskRegAddr(CTask *task,I64 reg_num);
 
-#help_index "Debugging/PSect"
-#help_file "::/Doc/DbgPSect"
+#help_index "Debugging/FunSeg"
+#help_file "::/Doc/DbgFunSeg"
 public extern Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL);
 public extern U8 *SrcEdLink(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern U8 *SrcFileName(U8 *addr,I64 cnt=1,CTask *mem_task=NULL);
 public extern I64 SrcLineNum(U8 *addr,I64 cnt=1);
 
-#help_index "Debugging/PSect;Hash/System"
-public extern CHash *PSectFind(U8 *addr,I64 *_offset);
+#help_index "Debugging/FunSeg;Hash/System"
+public extern CHash *FunSegFind(U8 *addr,I64 *_offset);
 
 #help_index "Debugging/Raw Output"
 public extern Bool IsRaw();
@@ -474,7 +474,7 @@ public extern CKeyDevEntry *KeyDevAdd(Bool (*fp_put_key)(I64 ch,I64 sc),
 public extern U0 KeyDevRem(CKeyDevEntry *tempp);
 extern CKeyDevGlbls keydev;
 extern CSrvCmd sys_macro_root;
-extern CTask *sys_macro_util_task;
+extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
 extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3730] Flags
@@ -721,6 +721,7 @@ public extern CTask *Spawn(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 #help_index "Time/CPU Cycles"
 #help_file "::/Doc/TimeCycles"
 public extern I64 TaskTotalTime();
+
 #help_index "Time/CPU Cycles;Time/HPET;Time/Jiffies"
 public extern CCntsGlbls cnts;
 

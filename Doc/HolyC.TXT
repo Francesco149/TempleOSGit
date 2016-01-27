@@ -204,8 +204,9 @@ else clobbered.
 * interrupt, haserrcode, public, argpop or noargpop are function flags. See 
 [C:/Demo/Lectures/PageTableEntries2.CPP.Z,1].
 
-* A single quote can encompass multiple characters.  'ABC' is equal to 0x43424
-1.  [C:/Kernel/KeyDev.CPP.Z,20] PutChars() takes multiple characters.
+* A single quote can encompass multiple characters.  'ABC' is equ to
+0x434241. 
+ [C:/Kernel/KeyDev.CPP.Z,20] PutChars() takes multiple characters.
 
   asm {
 HELLO_WORLD::
