@@ -13,9 +13,9 @@ Option(OPTf_WARN_PAREN,ON);
 //Just in case the filesystem gets corrupted while I develop it
 U0 BackupExport()
 {
-  Copy("D:/Export.CPP","C:/Export.CPP");
-  Copy("D:/Export.CPP","D:/ExportB.CPP");
-  Copy("D:/Export.CPP","C:/ExportB.CPP");
+  Copy("D:/Export401.CPP","C:/Export401.CPP");
+  Copy("D:/Export401.CPP","D:/Export401B.CPP");
+  Copy("D:/Export401.CPP","C:/Export401B.CPP");
 }
 
 //Appears to hang on this version...
@@ -440,14 +440,14 @@ U0 ExportSingle(U8 *in_path,U8 *out_path,Bool debug=FALSE)
         } else
           out=StrAdd(out,cl->tag);
         break;
-      case DOCT_INS_BINARY_SIZE:
+      case DOCT_INS_BIN_SIZE:
         if (is_code)
           buf=MStrPrint("%s__BIN_%d_SIZE",out,cl->bin_data->num);
         else
           buf=MStrPrint("%s%d",out,cl->bin_data->size);
         Free(out); out=buf;
         break;
-      case DOCT_INS_BINARY:
+      case DOCT_INS_BIN:
         if (is_code) {
           buf=MStrPrint("%s__BIN_%d",out,cl->bin_data->num);
           Free(out); out=buf;
@@ -630,9 +630,9 @@ U0 ExportTreeImpl(U8 *src_mask="T:/*",U8 *dst_mask="D:/Git",
 //to start the export.
 
 U0 ExportTree() {
-  CTask *task=User("#include \"D:/Export.CPP\"
+  CTask *task=User("#include \"D:/Export401.CPP\"
 ExportTreeImpl;
-ExportSingle(\"D:/Export.CPP\",\"D:/Git/Export.CPP\");
+ExportSingle(\"D:/Export401.CPP\",\"D:/Git/Export401.CPP\");
 ");
   WinToTop(task);
 }

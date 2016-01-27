@@ -25,7 +25,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 	doc->cur_bin_num=tempb->num+1;
     }
   }
-  if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_WITH_TABS)))
+  if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS)))
     DocBinsValidate(doc);
   DocTop(doc); //DOCT_CURSOR will set it in recalc
   DocRecalc(doc);
@@ -64,7 +64,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
   else
     cnt=2; //cursor + terminator
 
-  if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_WITH_TABS)))
+  if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS)))
     DocBinsValidate(doc);
   DocRecalc(doc);
   for (doc_e=doc->root.next;doc_e!=doc;doc_e=doc_e->next) {
@@ -85,7 +85,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 		DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_FILTER_SKIP))&&
 		!(doc_e->type&DOCG_BL_IV_UL)) {
 	    cnt+=StrLen(doc_e->tag);
-	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS)) ||
+	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_TABS)) ||
 		  doc->flags&DOCF_DBL_DOLLARS)
 	      cnt+=StrOcc(doc_e->tag,'$');
 	  } else {
@@ -125,7 +125,7 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	    *dst++=CH_CURSOR;
 	  *dst++=ch;
 	  if (ch=='$') {
-	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_WITH_TABS)) ||
+	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_TABS)) ||
 		  doc->flags&DOCF_DBL_DOLLARS)
 	      *dst++=ch;
 	  }

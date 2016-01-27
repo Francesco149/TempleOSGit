@@ -45,6 +45,7 @@ Dsk	Disk
 Dst	Destination
 Ed	Edit, Editor
 Elem	Element
+Equ	Equal
 Evt	Event
 Exe	Execute
 Ext	Extern, Extended
@@ -101,7 +102,7 @@ Prod	Product, Production
 Prof	Profile, Profiler
 Prs	Parse, Parser
 Prt	Partition
-PSect	Program Section
+FunSeg	Program Section
 Pt	Point
 Ptr	Pointer
 Que	Queue

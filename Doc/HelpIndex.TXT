@@ -37,8 +37,7 @@ TempleOS
 [C:/Doc/Features.TXT.Z,1] Features	[C:/Doc/Requirements.TXT.Z,1] Requirements
 [C:/Doc/Charter.TXT.Z,1] Charter		[C:/Doc/Strategy.TXT.Z,1] Strategic
 Decisions
-[C:/Doc/Mysteries.TXT.Z,1] Mysteries	[C:/Doc/Confuse.TXT.Z,1] Clearing
-Confusions
+[C:/Doc/FAQ.TXT.Z,1] F.A.Q.		[C:/Doc/Glossary.TXT.Z,1] Glossary
 [C:/Doc/HolyC.TXT.Z,1] HolyC  		[C:/Doc/CompilerOverview.TXT.Z,1] Compiler
 Index
 [C:/Doc/ChangeLog.TXT.Z,1] Change Log	[C:/Doc/Demands.TXT.Z,1] Demands
@@ -46,7 +45,6 @@ Index
 +] User Help
   
 [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
-[C:/Doc/Glossary.TXT.Z,1] Glossary
 [C:/Doc/GuideLines.TXT.Z,1] /Home Files
 [C:/Doc/TOSZ.TXT.Z,1] TOSZ Linux Utility
 [C:/Doc/Tips.TXT.Z,1] Tips
