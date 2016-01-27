@@ -9,7 +9,7 @@ U0 UserStartUp()
   WinToTop;
   WinZBufUpdate;
   Dir;
-  "80,899LOC:";
+  "80,928LOC:";
   CPURep;
 }
 
@@ -32,7 +32,7 @@ U0 StartUpTasks()
   "Boot     Time:%7.3fs\n",tS;
   XTalk(user1,"Cd(\"::/Home\");#include \"DoOnce\";\n");
   Silent;
-  ACInit("/*;~*Bible.TXT*;~*.TXT*"); //No Bible, no uncompressed TXT.
+  ACInit("/*;~*/Bible.TXT*;~*.TXT*"); //No Bible, no uncompressed TXT.
   Silent(OFF);
   "AutoComplete Time:%7.3fs\n",tS;
 }

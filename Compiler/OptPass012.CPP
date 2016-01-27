@@ -10,7 +10,7 @@ Constant expressions are simplified.
 Eliminated opcodes are set to NOP.
 Types are determined by reconstructing an
 expression tree for operators
-[C:/Kernel/KernelA.HPP.Z,1612] CIntermediateCode.[C:/Kernel/KernelA.HPP.Z,1596] CICTreeLinks.
+[C:/Kernel/KernelA.HPP.Z,1611] CIntermediateCode.[C:/Kernel/KernelA.HPP.Z,1595] CICTreeLinks.
 
 Pointer arithmetic size is set, once
 the type is determined.

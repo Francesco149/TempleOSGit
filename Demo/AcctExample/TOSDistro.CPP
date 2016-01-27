@@ -90,7 +90,7 @@ public U0 CopySongs(U8 threshold='7')
 {
   CDoc *s;
   CDocEntry *doc_e;
-  CDirEntry *tempde=FilesFind("::/Home/Downloads/Psalmody/*.CPP*",
+  CDirEntry *tempde=FilesFind("/Home/Downloads/Psalmody/*.CPP*",
 	FUF_CLUSTER_ORDER),
 	*tempde1=tempde;
   DelTree("/Apps/Psalmody/Examples");
@@ -111,7 +111,7 @@ U0 DistroPrep()
   Del("/Demo/ReverseFileExample/PoemForeward.TXT*");
   Del("/Home/NumBible.TXT.Z");
   DelTree("/Home/*Temp.TXT.Z");
-  if (FileFind("::/Home/Downloads/Psalmody"))
+  if (FileFind("/Home/Downloads/Psalmody"))
     CopySongs;
 
   DelTree("/Temp");
@@ -129,9 +129,13 @@ U0 DistroPrep()
   DelTree("/Demo/AcctExample/Web");
   Del("/Demo/AcctExample/Test*");
 
-  //Once in a while, do these:
-  //  SortHeaders;
-  //  DblSpaceScan("/*");
+  if (FileFind("/Home/Downloads/Utils/SortHeaders.CPP.Z"))
+    ExeFile("/Home/Downloads/Utils/SortHeaders.CPP.Z");
+
+  if (FileFind("/Home/Downloads/Blog/YouTube.TXT.Z"))
+    Sort("/Home/Downloads/Blog/YouTube.TXT.Z",,2);
+
+  //Once in a while, do [C:/Home/Downloads/Utils/DblSpaceScan.CPP,1].
 
   CursorRem("/*");
   DelTree("/Demo/*.BI*");
@@ -287,7 +291,6 @@ U0 MakeTOSDistro()
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
-
 
 U0 DbgDistroPrep()
 {/*This is a debug distro.  The CD/DVD bootloader uses BIOS INT 0x13 0x42 to

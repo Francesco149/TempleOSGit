@@ -152,7 +152,7 @@ U0 RedSeaFmt(U8 drv_let,Bool quick=TRUE)
 
 Bool RedSeaFileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,
 	CDirEntry *_result,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2563] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HPP.Z,2561] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2562] FUF_JUST_FILES
   CDirEntry *buf,*buf2,*ptr;
   U8 dname[CDIR_FILENAME_LEN];
   I64 ch;
@@ -577,16 +577,18 @@ CDirEntry *RedSeaFilesFind(U8 *files_find_mask,I64 fuf_flags,
 	    Cd("..");
 	  }
 	  DrvLock(dv);
-	} else if ((tempde->attr&RS_ATTR_DIR ||
-	      !Bt(&fuf_flags,FUf_JUST_DIRS)) &&
-	      !(Bt(&fuf_flags,FUf_RECURSE) && *tempde->name=='.' &&
-	      tempde->attr&RS_ATTR_DIR) &&
-	      FilesFindMatch(tempde->name,files_find_mask,fuf_flags)) {
-	  tempde->next=result;
-	  result=tempde;
+	} else {
 	  tempde->full_name=FileNameAbs(tempde->name);
-	} else
-	  DirEntryDel(tempde);
+	  if ((tempde->attr&RS_ATTR_DIR ||
+		!Bt(&fuf_flags,FUf_JUST_DIRS)) &&
+		!(Bt(&fuf_flags,FUf_RECURSE) && *tempde->name=='.' &&
+		tempde->attr&RS_ATTR_DIR) &&
+		FilesFindMatch(tempde->full_name,files_find_mask,fuf_flags)) {
+	    tempde->next=result;
+	    result=tempde;
+	  } else
+	    DirEntryDel(tempde);
+	}
       }
       ptr(U8 *)+=CDIR_SIZE;
     }

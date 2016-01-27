@@ -22,8 +22,8 @@ rating number, shown in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox().  You
 can set the song rating in [C:/Apps/Psalmody/JukeBox.CPP.Z,1] JukeBox() 
 by pressing 0-9.  You can press <DELETE> to delete songs.
 
-* You can take the [C:/Adam/Snd/SndMusic.CPP.Z,98] Play() statements out of a
-song file and place them in your 
+* You can take the [C:/Adam/Snd/SndMusic.CPP.Z,98] Play() stmts out of a song
+file and place them in your 
 programs.  You can also add a song to a document with <CTRL-l>, but you
 should 
 do it after pressing <CTRL-t> because the clipboard-insert in <CTRL-l> is 
@@ -35,7 +35,7 @@ tCAGqFC after pressing <CTRL-t>, now.
 JukeBox("::/Home/Psalmody"); to play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HPP.Z,3787] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HPP.Z,3786] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 

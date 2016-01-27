@@ -1,7 +1,7 @@
-/*lock{} is a compiler statement
+/*lock{} is a compiler stmt
 which places asm LOCK instruction
 prefixes on code.  Only use it on
-read-modify-write statements.
+read-modify-write stmts.
 It will generate invalid instructions
 if you misuse it and it will crash.
 [C:/Compiler/UAsm.CPP.Z,649] U() to see what code was generated.

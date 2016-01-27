@@ -1,7 +1,7 @@
                             Command Line Overview
 
 The cmd line feeds into the [C:/Doc/HolyC.TXT.Z,1] HolyC compiler as you
-type.  A statement outside a 
+type.  A stmt outside a 
 function executes immediately.  Remember to add a semicolon.
 
 Look-up the function headers with AutoComplete by hitting <CTRL-SHIFT-F1> 

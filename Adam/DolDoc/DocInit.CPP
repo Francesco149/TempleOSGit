@@ -50,7 +50,7 @@ U0 DocInit()
     if (Bt(&doldoc.dft_de_flags[i],DOCEf_TAG) && i!=DOCT_TEXT || i==DOCT_HEX_ED)
       Bts(doldoc.type_flags_form,i);
 
-      //Don't forget [C:/Compiler/Lex.CPP.Z,328] cmp_type_flags_src_code.
+      //Don't forget [C:/Compiler/Lex.CPP.Z,327] cmp_type_flags_src_code.
   doldoc.type_flags_nontag_invisible[0]=
 	1<<DOCT_PAGE_LEN|
 	1<<DOCT_LEFT_MARGIN|

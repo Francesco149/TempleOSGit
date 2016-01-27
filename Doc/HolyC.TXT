@@ -129,12 +129,13 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
 if (13<=age<20)
   "Teen-ager";
 
-* switch statements always use a jump table.  Don't use them with cases with 
-really big, sparse ranges.
+* switch stmts always use a jump table.  Don't use them with cases with
+really 
+big, sparse ranges.
 
-* Allows ranges like "case 4...7:" in switch statements.
+* Allows ranges like "case 4...7:" in switch stmts.
 
-* A no case number causes next higher integer case in switch statements.  See 
+* A no case number causes next higher integer case in switch stmts.  See 
 [C:/Demo/NullCase.CPP.Z,1].
 
   I64 i;
@@ -148,9 +149,8 @@ for (i=0;i<20;i++)
     case: "Eleven\n";	break; //One plus previous case.
   }
 
-* nobound_switch can be used if you know a switch statement will not exceed 
-the lowest or highest case values.  It's a little faster because it doesn't 
-check.
+* nobound_switch can be used if you know a switch stmt will not exceed the 
+lowest or highest case values.  It's a little faster because it doesn't check.
 
 * sub_switch_start/sub_switch_end allow a new type of nested-switch control 
 flow.  (Don't goto, throw exception or return out of sub_switch_start front 
@@ -174,7 +174,7 @@ for (i=0;i<10;i++)
 OutPut:
 >Zero [One] Two [Three] Four [Five]
 
-* A nounusedwarn statement will suppress an unused var warning.
+* A nounusedwarn stmt will suppress an unused var warning.
 
 * You can have multiple member vars of a class named "pad" or "reserved", and 
 it won't issue warnings. 
@@ -184,8 +184,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1751] REGG_C_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1752] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1750] REGG_C_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1751] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
 else clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -241,14 +241,13 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1508] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1507] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1509] OPTf_WARN_DUP_TYPES,ON) to find dup
-local var type 
-statements.
+Option([C:/Kernel/KernelA.HPP.Z,1508] OPTf_WARN_DUP_TYPES,ON) to find dup
+local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
 insert 
@@ -305,7 +304,7 @@ inside as in offset(classname.membername).  It has nothing to do with 16-bit
 code.  Both sizeof and offset only accept one level of member vars.  That is, 
 you can't do sizeof(classname.membername.submembername).
 
-* There is no continue statement.  Use goto.
+* There is no continue stmt.  Use goto.
 
 * lock{} can be used to apply asm LOCK prefixes to code for safe multicore 
 read-modify-write accesses.  The code bracked with have LOCK asm prefix's 
@@ -330,7 +329,7 @@ HeapCtrlBPInit().
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2838] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2837] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,205]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See

@@ -258,7 +258,6 @@ Expressions are evaluated with a stack machine.
 
 1+(2+3)*4
 
-
 STK[2]: 1    1	 1   1	 1   1	 21
 STK[1]:      2	 2   5	 5  20
 STK[0]: 	 3	 4

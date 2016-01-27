@@ -489,8 +489,8 @@ U0 InsMyURL()
     case:
       if (DocForm(url(CRandHexBeacon5Form *))) {
 	"$BG,LTGRAY$";
-	if (FileFind("::/Home/Downloads/Blog/NISTPassage.TXT.Z"))
-	  Type("::/Home/Downloads/Blog/NISTPassage.TXT.Z",0);
+//	if (FileFind("::/Home/Web/TAD/NISTPassage.TXT.Z"))
+//	  Type("::/Home/Web/TAD/NISTPassage.TXT.Z",0);
 	"$TX,\"Guidelines for Talking with God.\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);
@@ -502,8 +502,8 @@ U0 InsMyURL()
     case:
       if (DocForm(url(CRandHexBeacon8Form *))) {
 	"$BG,LTGRAY$";
-	if (FileFind("::/Home/Downloads/Blog/NISTPick.TXT.Z"))
-	  Type("::/Home/Downloads/Blog/NISTPick.TXT.Z",0);
+//	if (FileFind("::/Home/Web/TAD/NISTPick.TXT.Z"))
+//	  Type("::/Home/Web/TAD/NISTPick.TXT.Z",0);
 	"$TX,\"Guidelines for Talking with God.\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag=MStrPrint("https:/beacon.nist.gov/rest/record/%d",url->timestamp);

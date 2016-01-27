@@ -4,7 +4,7 @@ public U0 DocProfile(U8 *filename,I64 flags)
 	*flags_stats=CAlloc(sizeof(I64)*64),
 	*type_flags_stats=CAlloc(sizeof(I64)*64);
 //Note: word wrap is determined by
-  //doc->win_task when a [C:/Kernel/KernelA.HPP.Z,1323] CDoc is recalculated
+  //doc->win_task when a [C:/Kernel/KernelA.HPP.Z,1322] CDoc is recalculated
   //use [C:/Adam/DolDoc/DocRecalc.CPP.Z,254] DocRecalc().
   CDoc *doc=DocRead(filename,flags);
 

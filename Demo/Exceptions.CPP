@@ -1,7 +1,7 @@
 //**WARNING:** Don't return out of a catch{}.  This
 //might get fixed.
 
-//You can use [C:/Kernel/KExcept.CPP.Z,45] PutExcept() in a catch statement
+//You can use [C:/Kernel/KExcept.CPP.Z,45] PutExcept() in a catch stmt
 //and it will report args.
 Bool Prompt(I64 i)
 {

@@ -269,14 +269,14 @@ MakeDistrosAndBackUp;
 `MakeDistrosAndBackUp;
 `
 
-Merge("C:/*;~*LineRep*","D:/*;~*LineRep*","+r+d");
+Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
 
-`Merge("C:/*;~*LineRep*","D:/*;~*LineRep*","+r+d");
+`Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
 `
 
-Merge("C:/*;~*LineRep*","T:/*;~*LineRep*","+r+d");
+Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
 
-`Merge("C:/*;~*LineRep*","T:/*;~*LineRep*","+r+d");
+`Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
 `
 
 ChgDsk('T');
@@ -304,10 +304,6 @@ LinuxDict
 `
  Chess
 `Adam("GodInit(\"::/Home/Downloads/Words/Chess.TXT*\");");
-`
-
-SortHeaders
-`#include "::/Home/Downloads/SortHeaders.CPP.Z";
 `
 
 PreBackUp;

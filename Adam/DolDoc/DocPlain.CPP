@@ -219,7 +219,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 }
 
 CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
-{//Uses [C:/Compiler/Lex.CPP.Z,443] Lex() to parse a string and make Doc entries.
+{//Uses [C:/Compiler/Lex.CPP.Z,442] Lex() to parse a string and make Doc entries.
   I64 i,j,de_flags,processed_flags,attr=DOC_DFT;
   U8 *ptr,*st2;
   CDocEntry *doc_e=NULL;

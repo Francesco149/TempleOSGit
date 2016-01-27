@@ -46,7 +46,7 @@ public extern U0 LexPutLine(CCmpCtrl *cc,U8 *start);
 public extern U0 LexPutPos(CCmpCtrl *cc);
 public extern U0 LexPutToken(CCmpCtrl *cc);
 public extern U0 LexSkipEol(CCmpCtrl *cc);
-public extern U8 *LexStatement2Bin(
+public extern U8 *LexStmt2Bin(
 	CCmpCtrl *cc,I64 *_type,I64 cmp_flags=CMPF_PRS_SEMICOLON);
 public extern U0 LexWarn(CCmpCtrl *cc,U8 *str=NULL);
 extern CMemberLst *MemberClassBaseFind(

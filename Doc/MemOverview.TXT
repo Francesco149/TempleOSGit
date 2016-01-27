@@ -33,9 +33,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x000003496F
+ 0x0000007C00- 0x0000034A8F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3829] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3828] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -52,7 +52,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3419] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3418] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF

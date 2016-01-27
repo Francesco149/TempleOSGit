@@ -81,7 +81,7 @@
 [C:/Compiler/BackA.CPP.Z,545] ICAddSubEctEqual
 [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression
 [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew
-[C:/Compiler/Lex.CPP.Z,373] LexInStr
+[C:/Compiler/Lex.CPP.Z,372] LexInStr
 [C:/Compiler/CInit.CPP.Z,6] internal_types_table
 [C:/Compiler/OptPass3.CPP.Z,1] OptPass3
 [C:/Compiler/OptPass4.CPP.Z,171] OptPass4
@@ -123,6 +123,7 @@
 [C:/Compiler/BackLib.CPP.Z,354] ICPop
 [C:/Compiler/BackLib.CPP.Z,139] MDR_RIP_REL
 [C:/Compiler/BackLib.CPP.Z,264] SLASH_OP_FADD
+[C:/Compiler/CMain.CPP.Z,1] LexStmt2Bin
 [C:/Compiler/BackA.CPP.Z,207] ICSub
 [C:/Compiler/PrsLib.CPP.Z,164] COCFloatConstFind
 [C:/Compiler/CExcept.CPP.Z,186] ICPut
@@ -190,7 +191,6 @@
 [C:/Compiler/BackLib.CPP.Z,132] MDR_REG
 [C:/Compiler/CMisc.CPP.Z,6] GetOption
 [C:/Compiler/PrsStmt.CPP.Z,503] PrsDoWhile
-[C:/Compiler/CMain.CPP.Z,1] LexStatement2Bin
 [C:/Compiler/BackA.CPP.Z,693] ICShift
 [C:/Compiler/BackFA.CPP.Z,249] ICFMod
 [C:/Compiler/PrsLib.CPP.Z,121] COCPop
@@ -224,10 +224,9 @@
 [C:/Compiler/OptPass4.CPP.Z,1] OptIC4
 [C:/Compiler/OptPass6.CPP.Z,1] OptIC6
 [C:/Compiler/BackB.CPP.Z,556] ICCmpAndBranch
-[C:/Compiler/PrsStmt.CPP.Z,893] PrsStatement
 [C:/Compiler/PrsStmt.CPP.Z,483] PrsWhile
 [C:/Compiler/BackFB.CPP.Z,306] ICFCmpAndBranch
-[C:/Compiler/Lex.CPP.Z,443] Lex
+[C:/Compiler/Lex.CPP.Z,442] Lex
 [C:/Compiler/BackB.CPP.Z,736] ICTestAndBranch
 [C:/Compiler/Compiler.PRJ.Z,21] uasm
 [C:/Compiler/BackLib.CPP.Z,138] MDR_SIB_D32_INDIRECT_REG
@@ -281,11 +280,12 @@
 [C:/Compiler/CMisc.CPP.Z,11] PassTrace
 [C:/Compiler/PrsLib.CPP.Z,21] PrsPopDeref
 [C:/Compiler/BackFA.CPP.Z,75] ICCopyTemplate
+[C:/Compiler/PrsStmt.CPP.Z,893] PrsStmt
 [C:/Compiler/PrsStmt.CPP.Z,132] PrsFun
 [C:/Compiler/Lex.CPP.Z,298] LexIncludeStr
 [C:/Compiler/PrsVar.CPP.Z,287] PrsType
 [C:/Compiler/Lex.CPP.Z,28] CmpCtrlNew
-[C:/Compiler/Lex.CPP.Z,328] cmp_type_flags_src_code
+[C:/Compiler/Lex.CPP.Z,327] cmp_type_flags_src_code
 [C:/Compiler/PrsVar.CPP.Z,123] PrsVarInit2
 [C:/Compiler/PrsLib.CPP.Z,6] PrsPop
 [C:/Compiler/Asm.CPP.Z,388] asm_seg_prefixes
@@ -328,7 +328,7 @@
 [C:/Compiler/OptLib.CPP.Z,485] OptFixSizeOf
 [C:/Compiler/CExts.CPP.Z,45] cmp_templates_dont_push
 [C:/Compiler/CExts.CPP.Z,46] cmp_templates_dont_push_pop
-[C:/Compiler/Lex.CPP.Z,331] LexAttachDoc
+[C:/Compiler/Lex.CPP.Z,330] LexAttachDoc
 [C:/Compiler/PrsStmt.CPP.Z,794] PrsStreamBlk
 [C:/Compiler/CExts.CPP.Z,44] cmp_templates_dont_push2
 [C:/Compiler/UAsm.CPP.Z,66] InstEntryFind
