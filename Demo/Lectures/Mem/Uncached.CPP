@@ -1,5 +1,9 @@
-#define SAMPLE_SIZE	100000
+// Requires [C:/Demo/Lectures/Mem/Mem2Meg.CPP.Z,1].
 
+Cd(__DIR__);;
+#include "Mem2Meg"
+
+#define SAMPLE_SIZE	100000
 U0 TimeIns()
 {
   I64 i,start,end;
@@ -40,12 +44,3 @@ U0 TimeIns()
 }
 
 TimeIns;
-
-/*Program Output
-8 Cores 2.660GHz
-  Cached Cycles:    202,220
-Uncached Cycles: 14,357,016
-
-The difference is even greater
-because the loop overhead was not subtracted.
-*/

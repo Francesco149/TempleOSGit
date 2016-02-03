@@ -274,14 +274,14 @@ MakeDistrosAndBackUp;
 `MakeDistrosAndBackUp;
 `
 
-Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
+S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
 
-`Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
+`S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","D:/*;~*/LineRep*","+r+d");
 `
 
-Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
+S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
 
-`Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
+`S2T("C:/*","+r+S");Merge("C:/*;~*/LineRep*","T:/*;~*/LineRep*","+r+d");
 `
 
 ChgDsk('T');

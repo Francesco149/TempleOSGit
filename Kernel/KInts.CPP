@@ -46,12 +46,15 @@ IRQ_TIMER::  //I_TIMER
 	MOV	U32 [RAX],0
 	JMP	@@25
 @@20:	CALL	&IntCore0TimerHandler	//Only Core 0 calls this.
-@@25:	JMP	I32 RESTORE_RSI_TASK
+@@25:	XOR	RAX,RAX
+	CMP	RSI,U64 GS:CCPU.idle_task[RAX]
+	JE	I32 RESTORE_SETH_TASK_IF_READY
+	JMP	I32 RESTORE_RSI_TASK
 //************************************
 INT_FAULT::
 	PUSH	RBX
 	PUSH	RAX
-	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,156] IntFaultHandlersNew().
+	MOV	BL,U8 16[RSP]	//We pushed fault_num [C:/Kernel/KInts.CPP.Z,159] IntFaultHandlersNew().
 	XOR	RAX,RAX
 	MOV	FS:U8 CTask.fault_num[RAX],BL
 	POP	RAX
@@ -171,7 +174,7 @@ U0 IntInit1()
 {//Interrupt descriptor table part1.
   I64 i;
   CSysLimitBase temp_ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3390] CCPU struct
+  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3409] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);
@@ -193,7 +196,7 @@ U0 IntInit2()
 /*In theory, we use the PIC mask reg to insure we don't get
 anything but keyboard, mouse and timer IRQs.  In practice, I've
 gotten IRQ 0x27, perhaps because I didn't initialize the APIC.
-I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,133] IntNop().
+I go ahead and ACK PIC in [C:/Kernel/KInts.CPP.Z,136] IntNop().
 I have no idea why I got a IRQ 0x27.
 */
   IntEntrySet(I_NMI,_SYS_HLT);

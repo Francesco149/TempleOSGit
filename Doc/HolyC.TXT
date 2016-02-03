@@ -38,7 +38,7 @@ Test(,3);
 
 * A char const all alone is sent to [C:/Kernel/KeyDev.CPP.Z,20] PutChars(). 
 A string with or without args 
-is sent to [C:/Kernel/StrPrint.CPP.Z,906] Print().  An empty string literal
+is sent to [C:/Kernel/StrPrint.CPP.Z,907] Print().  An empty string literal
 signals a variable fmt_str 
 follows.
 
@@ -112,8 +112,8 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
   
   public U0 GrPrint(CDC *dc,I64 x,I64 y,U8 *fmt,...)
   {
-    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc()ed string.
-    [C:/Adam/Gr/GrBitMap.CPP.Z,848] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
+    U8 *buf=[C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin(NULL,fmt,argc,argv);//SPrintF() with [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc()ed string.
+    [C:/Adam/Gr/GrBitMap.CPP.Z,863] GrPutS(dc,x,y,buf); //Plot string at x,y pixels. GrPutS is not public.
     Free(buf);
   }
   
@@ -184,8 +184,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1750] REGG_C_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1751] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1760] REGG_C_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1761] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
 else clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -202,7 +202,7 @@ else clobbered.
 }
 
 * interrupt, haserrcode, public, argpop or noargpop are function flags. See 
-[C:/Demo/Lectures/PageTableEntries2.CPP.Z,1].
+[C:/Demo/Lectures/Mem/PageTableEntries2.CPP.Z,1].
 
 * A single quote can encompass multiple characters.  'ABC' is equ to
 0x434241. 
@@ -242,12 +242,12 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1507] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1517] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1508] OPTf_WARN_DUP_TYPES,ON) to find dup
+Option([C:/Kernel/KernelA.HPP.Z,1518] OPTf_WARN_DUP_TYPES,ON) to find dup
 local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -312,7 +312,7 @@ read-modify-write accesses.  The code bracked with have LOCK asm prefix's
 applied to relevant instructions within.  It's a little shoddy.  See 
 [C:/Demo/MultiCore/Lock.CPP.Z,1].
 
-* There is a function called [C:/Kernel/Mem/MAllocFree.CPP.Z,370] MSize()
+* There is a function called [C:/Kernel/Mem/MAllocFree.CPP.Z,384] MSize()
 which gives the size of an object alloced 
 off the heap.  For larger size allocations, the system rounds-up to a power
 of 
@@ -320,18 +320,19 @@ two, so MSize() lets you know the real size and you can take full advantage
 of 
 it.
 
-* You can [C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free() a NULL ptr.  Useful
-variants of [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() can be found
-[C:/Kernel/Mem/MAllocFree.CPP.Z,381] Here.  
-Each task has a heap and you can MAlloc and Free off of other task's heaps,
+* You CAN [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free() a NULL ptr.  Useful
+variants of [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() can be found
+[C:/Kernel/Mem/MAllocFree.CPP.Z,395] Here.  
+Each task has a heap and you can MAlloc and Free off-of other task's heaps,
 or 
-make an independent heap with [C:/Kernel/Mem/HeapCtrl.CPP.Z,13]
-HeapCtrlBPInit().
+make an independent heap with [C:/Kernel/Mem/HeapCtrl.CPP.Z,1]
+HeapCtrlInit().  See [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog() for an
+example.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2837] MEM_DFT_STK and 
-recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,205]
+[C:/Kernel/KernelA.HPP.Z,2847] MEM_DFT_STK and 
+recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,208]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See
 [C:/Demo/StkGrow.CPP.Z,1]. 

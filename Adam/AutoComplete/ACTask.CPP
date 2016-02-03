@@ -260,19 +260,22 @@ U0 ACTask(I64)
 public Bool AutoComplete(Bool val=OFF)
 {//Turn AutoComplete OFF or ON.
   Bool	old_autocomplete=FALSE;
+  while (Bt(&ac.flags,ACf_INIT_IN_PROGRESS))
+    Sleep(10);
   if (val) {
-    while (Bt(&ac.flags,ACf_INIT_IN_PROGRESS))
-      Sleep(10);
-    if (TaskValidate(ac.task))
-      old_autocomplete=TRUE;
-    else {
-      ac.task=Spawn(&ACTask,NULL,"AutoComplete");
-      TaskWait(ac.task);
+    if (Bt(&sys_run_level,RLf_AUTO_COMPLETE)) {
+      if (TaskValidate(ac.task))
+	old_autocomplete=TRUE;
+      else {
+	ac.task=Spawn(&ACTask,NULL,"AutoComplete");
+	TaskWait(ac.task);
+      }
+      WinToTop(ac.task);
     }
-    WinToTop(ac.task);
   } else {
     if (TaskValidate(ac.task)) {
-      old_autocomplete=TRUE;
+      if (Bt(&sys_run_level,RLf_AUTO_COMPLETE))
+	old_autocomplete=TRUE;
       Kill(ac.task);
       while (TaskValidate(ac.task))
 	Yield;
@@ -280,4 +283,3 @@ public Bool AutoComplete(Bool val=OFF)
   }
   return old_autocomplete;
 }
-

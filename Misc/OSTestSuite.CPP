@@ -1257,7 +1257,7 @@ U0 DoRadixSort()
 U0 DoPageTableEntries2()
 {
   CTask *task=User;
-  XTalkWait(task,"#include \"::/Demo/Lectures/PageTableEntries2\";\n");
+  XTalkWait(task,"#include \"::/Demo/Lectures/Mem/PageTableEntries2\";\n");
   Sleep(750);
   XTalk(task,"Exit;\n");
 }
@@ -2256,7 +2256,7 @@ U0 DoReps()
   TS; XTalkWait(task,"MemRep;Sleep(750);\n");
   TS; XTalkWait(task,"ZipRep;Sleep(750);\n");
   TS; XTalkWait(task,"ProfRep;Sleep(750);\n");
-  TS; XTalkWait(task,"HeapLogRep; HeapLog(OFF);Sleep(750);\n");
+  TS; XTalkWait(task,"HeapLogSizeRep;Sleep(750);\n");
   TS; if (DrvIsWritable(':')) XTalkWait(task,"ChkDsk;Sleep(750);\n");
   TS; if (DrvIsWritable(':')) {
     XTalkWait(task,"DrvView;\n");

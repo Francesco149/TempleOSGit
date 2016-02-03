@@ -135,7 +135,7 @@ U8 Drv2Let(CDrv *dv=NULL)
 }
 
 I64 Let2BlkDevType(U8 drv_let)
-{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HPP.Z,2584] BDT_NULL.
+{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HPP.Z,2594] BDT_NULL.
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='B')
     return BDT_RAM;

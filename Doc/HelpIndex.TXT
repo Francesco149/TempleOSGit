@@ -89,7 +89,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [C:/Demo/Lectures/AndNotMod.CPP.Z,1] Lectures/AndNotMod.CPP
 [C:/Demo/Lectures/FixedPoint.CPP.Z,1] Lectures/FixedPoint.CPP
 [C:/Demo/Lectures/NegDisp.CPP.Z,1] Lectures/NegDisp.CPP
-[C:/Demo/Lectures/Uncached.CPP.Z,1] Lectures/Uncached.CPP
+[C:/Demo/Lectures/Mem/Uncached.CPP.Z,1] Lectures/Mem/Uncached.CPP
 [C:/Demo/Lectures/Optimization.CPP.Z,1] Lectures/Optimization.CPP
 [C:/Demo/Lectures/ScreenMemory.CPP.Z,1] Lectures/ScreenMemory.CPP
 [C:/Demo/Lectures/GraphicsCPULoad.CPP.Z,1] Lectures/GraphicsCPULoad.CPP
@@ -99,8 +99,8 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [Hash,1] Hash Tables
 [C:/Doc/FileLowLevel.TXT.Z,1] Dsk Stk
 [Keyboard Devices/System,1] Keyboard Devices
-[C:/Demo/Lectures/PageTableEntries1.CPP.Z,1] Page Table Entries 1
-[C:/Demo/Lectures/PageTableEntries2.CPP.Z,1] Page Table Entries 2
+[C:/Demo/Lectures/Mem/PageTableEntries1.CPP.Z,1] Page Table Entries 1
+[C:/Demo/Lectures/Mem/PageTableEntries2.CPP.Z,1] Page Table Entries 2
 [C:/Demo/Lectures/PCIInterrupts.CPP.Z,1] PCIInterrupts.CPP
 [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper

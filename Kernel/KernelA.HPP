@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1514] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1524] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1913] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1923] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -447,7 +447,8 @@ class CKernel
 #define RLf_WINMGR		13
 #define RLf_REGISTRY		14
 #define RLf_HOME		15
-#define RLf_ADAM_SERVER		16
+#define RLf_AUTO_COMPLETE	16
+#define RLf_ADAM_SERVER		17
 
 #define RLF_16BIT		0x00001
 #define RLF_VGA			0x00002
@@ -465,7 +466,8 @@ class CKernel
 #define RLF_WINMGR		0x02000
 #define RLF_REGISTRY		0x04000
 #define RLF_HOME		0x08000
-#define RLF_ADAM_SERVER		0x10000
+#define RLF_AUTO_COMPLETE	0x10000
+#define RLF_ADAM_SERVER		0x20000
 
 #help_index "Processor"
 #define LAPIC_BASE		0xFEE00000
@@ -530,8 +532,8 @@ class CAP16BitInit
 
 public class CCntsGlbls
 {
-  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,544] JIFFY_FREQ
-	timer,		//[C:/Kernel/KernelA.HPP.Z,546] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
+  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,546] JIFFY_FREQ
+	timer,		//[C:/Kernel/KernelA.HPP.Z,548] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
 	time_stamp_freq,
 	time_stamp_kHz_freq,
 	time_stamp_freq_initial, //Initial freq, sampled once at boot time.
@@ -824,7 +826,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,849] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,851] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -951,7 +953,7 @@ public class CHashGlblVar:CHashSrcSym
 		DOCF_PLAIN_TEXT_TABS|DOCF_MIN_SIZE|DOCF_NO_CURSOR|\
 		DOCF_FORM|DOCF_DBL_DOLLARS|DOCF_DONT_SWAP_OUT|\
 		DOCF_DO_FULL_REFRESH|DOCF_BORDER_DOC|DOCF_HIDE_CURSOR|\
-		DOCF_CARRIAGE_RETURN)
+		DOCF_DONT_HIGHLIGHT_CURSOR|DOCF_CARRIAGE_RETURN)
 
 //CDocEntry.de_flags.  These first 15 are arg=
 #define DOCEF_TAG		1
@@ -970,10 +972,12 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_SCROLLING_X	0x2000
 #define DOCEF_USER_DATA		0x4000
 
-#define DOCEG1_HAS_ARG		(DOCEF_TAG|DOCEF_AUX_STR|DOCEF_DEFINE|\
-  DOCEF_HTML_LINK|DOCEF_LEFT_EXP|DOCEF_LEFT_MACRO|DOCEF_RIGHT_EXP|\
-  DOCEF_RIGHT_MACRO|DOCEF_HAS_BIN|DOCEF_BIN_PTR_LINK|DOCEF_RAW_TYPE|\
-  DOCEF_SHIFTED_X|DOCEF_SHIFTED_Y|DOCEF_SCROLLING_X|DOCEF_USER_DATA)\
+#define DOCEG_HAS_ALLOC		(DOCEF_TAG|DOCEF_AUX_STR|DOCEF_DEFINE|\
+  DOCEF_HTML_LINK|DOCEF_LEFT_MACRO|DOCEF_RIGHT_MACRO|DOCEF_BIN_PTR_LINK)
+
+#define DOCEG_HAS_ARG		(DOCEG_HAS_ALLOC|DOCEF_LEFT_EXP|\
+  DOCEF_RIGHT_EXP|DOCEF_HAS_BIN|DOCEF_RAW_TYPE|DOCEF_SHIFTED_X|\
+  DOCEF_SHIFTED_Y|DOCEF_SCROLLING_X|DOCEF_USER_DATA)
 
 //CDocEntry.de_flags.  These are +/- flags
 #define DOCEF_LEFT_CB		0x8000
@@ -1015,7 +1019,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_NO_CLICK_ON	0x100000000000000
 #define DOCEF_DONT_DRAW		0x200000000000000 //only works on sprites
 
-#define DOCEG1_DONT_EDIT	(DOCEF_DEFINE|DOCEF_HTML_LINK|\
+#define DOCEG_DONT_EDIT	(DOCEF_DEFINE|DOCEF_HTML_LINK|\
   DOCEF_AUX_STR|DOCEF_BIN_PTR_LINK|DOCEF_SCROLLING_X|DOCEF_TAG_CB)
 
 //These are identical to Doc flags
@@ -1196,7 +1200,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1221] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1225] Editor Flags
 
 class CEdFindText
 {
@@ -1222,7 +1226,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1192] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1196] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1241,17 +1245,18 @@ class CEdFileName
 #define DOCF_FORM		0x200
 #define DOCF_MIN_SIZE		0x400
 #define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,133] DocCursor
-#define DOCF_NO_SCROLL_BARS	0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocScroll
-#define DOCF_ALLOW_UNDO		0x2000
-#define DOCF_DONT_SHOW		0x4000
-#define DOCF_HAS_SONG		0x8000
-#define DOCF_MORE		0x10000
-#define DOCF_BWD_MOVEMENT	0x20000
-#define DOCF_NULL_GRAB_SCROLL	0x40000
-#define DOCF_DONT_SWAP_OUT	0x80000
-#define DOCF_DO_FULL_REFRESH	0x100000
-#define DOCF_BREAK_UNLOCKED	0x200000
-//Reserved x2
+#define DOCF_DONT_HIGHLIGHT_CURSOR 0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocHighlightCursor
+#define DOCF_NO_SCROLL_BARS	0x2000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,147] DocScroll
+#define DOCF_ALLOW_UNDO		0x4000
+#define DOCF_DONT_SHOW		0x8000
+#define DOCF_HAS_SONG		0x10000
+#define DOCF_MORE		0x20000
+#define DOCF_BWD_MOVEMENT	0x40000
+#define DOCF_NULL_GRAB_SCROLL	0x80000
+#define DOCF_DONT_SWAP_OUT	0x100000
+#define DOCF_DO_FULL_REFRESH	0x200000
+#define DOCF_BREAK_UNLOCKED	0x400000
+//Reserved x1
 #define DOCF_HIGHLIGHT		DOCEF_HIGHLIGHT
 #define DOCF_WORD_WRAP		DOCEF_WORD_WRAP
 #define DOCF_BLINK		DOCEF_BLINK
@@ -1276,17 +1281,18 @@ class CEdFileName
 #define DOCf_FORM		9
 #define DOCf_MIN_SIZE		10
 #define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,133] DocCursor
-#define DOCf_NO_SCROLL_BARS	12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocScroll
-#define DOCf_ALLOW_UNDO		13
-#define DOCf_DONT_SHOW		14
-#define DOCf_HAS_SONG		15
-#define DOCf_MORE		16
-#define DOCf_BWD_MOVEMENT	17
-#define DOCf_NULL_GRAB_SCROLL	18
-#define DOCf_DONT_SWAP_OUT	19
-#define DOCf_DO_FULL_REFRESH	20
-#define DOCf_BREAK_UNLOCKED	21
-//Reserved x2
+#define DOCf_DONT_HIGHLIGHT_CURSOR 12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocHighlightCursor
+#define DOCf_NO_SCROLL_BARS	13  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,147] DocScroll
+#define DOCf_ALLOW_UNDO		14
+#define DOCf_DONT_SHOW		15
+#define DOCf_HAS_SONG		16
+#define DOCf_MORE		17
+#define DOCf_BWD_MOVEMENT	18
+#define DOCf_NULL_GRAB_SCROLL	19
+#define DOCf_DONT_SWAP_OUT	20
+#define DOCf_DO_FULL_REFRESH	21
+#define DOCf_BREAK_UNLOCKED	22
+//Reserved x1
 
 #define DOCf_HIGHLIGHT		DOCEf_HIGHLIGHT
 #define DOCf_WORD_WRAP		DOCEf_WORD_WRAP
@@ -1315,9 +1321,13 @@ class CDocUndo
 
 #define DOC_SIGNATURE_VAL	'DocS'
 
-#define DOC_RECALC		0
-#define DOC_RECALC_FIND_CURSOR	1
-#define DOC_RECALC_TO_SCREEN	2
+#define RECALCt_NORMAL		0x00
+#define RECALCt_FIND_CURSOR	0x01
+#define RECALCt_TO_SCREEN	0x02
+#define RECALCG_MASK		0xFF
+
+#define RECALCF_HAS_CURSOR	0x100
+#define RECALCF_ADD_CURSOR	0x200
 
 public class CDoc //Linked Text File header
 {//See [Doc,1] Doc for documentation.
@@ -1527,7 +1537,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1314] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1320] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2782,8 +2792,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2827] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2827] MEM_PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2837] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2837] MEM_PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2827,7 +2837,7 @@ class CMemRange
 #define MEM_PAGE_SIZE		(1<<MEM_PAGE_BITS)
 #define MEM_HEAP_HASH_SIZE	1024
 #define MEM_FREE_PAGE_HASH_SIZE	0x100
-//It is common to [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() exact powers of two.  There is some overhead.
+//It is common to [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() exact powers of two.  There is some overhead.
 //We add 2 pages, so a request is not rounded-up to next power of two.
 #define MEM_EXTRA_HASH2_PAGES	2
 
@@ -2843,7 +2853,8 @@ class CMemRange
 public class CBlkPool
 {
   I64	locked_flags,alloced_u8s,used_u8s;
-  CMemBlk *mem_free_lst,*mem_free_2meg_lst,
+  CMemBlk *mem_free_lst,
+	*mem_free_2meg_lst, //This is for [C:/Demo/Lectures/Mem/Mem2Meg.CPP.Z,1]
 	*free_page_hash[MEM_FREE_PAGE_HASH_SIZE],
 	*free_page_hash2[64-MEM_PAGE_BITS];
 };
@@ -2860,6 +2871,7 @@ public class CHeapCtrl
   I64	locked_flags,alloced_u8s,used_u8s;
   CTask *mem_task;
   CMemBlk *next_mem_blk,*last_mem_blk;
+  CMemBlk *last_mergable;
   CMemUnused *malloc_free_lst;
   CMemUsed *next_um,*last_um;
   CMemUnused *heap_hash[MEM_HEAP_HASH_SIZE/sizeof(U8 *)];
@@ -2870,7 +2882,6 @@ public class CDevGlbls
 {
   I64	*idt;
   U8	*mem64_ptr;
-  CHeapCtrl *uncached_heap;
   U8	mp_apic_ids[MP_MAX_PROCESSORS];
   CMemRange mem32_root;
   CPCIDev pci_root;
@@ -2892,7 +2903,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2902] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2913] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -2992,7 +3003,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,2991] IP_NULL or [C:/Kernel/KernelA.HPP.Z,2992] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3002] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3003] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3138,8 +3149,8 @@ class CFPU
 #define SVCT_MSG		1 //[C:/Kernel/SrvCmd.CPP.Z,119] TaskMsg()	Post msg
 #define SVCT_EXE_STR		2 //[C:/Kernel/SrvCmd.CPP.Z,39] TaskExe()	Compile & execute src code text
 //MP cmds
-#define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,232] JobQue()	Tell MP to call function
-#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,205] Spawn()	Tell MP to spawn task
+#define SVCT_CALL		3 //[C:/Kernel/MultiProc.CPP.Z,213] JobQue()	Tell MP to call function
+#define SVCT_SPAWN_TASK		4 //[C:/Kernel/KTask.CPP.Z,208] Spawn()	Tell MP to spawn task
 
 class CSrvCmd
 {
@@ -3163,8 +3174,8 @@ class CSrvCmd
 #define SVCRf_LOCKED		0
 class CSrvCtrl
 {
-  CSrvCmd *next_waiting,*last_waiting,
-	*next_done,*last_done;
+  CSrvCmd *next_waiting,*last_waiting;
+  CSrvCmd *next_done,*last_done;
   I64	flags;
 };
 
@@ -3172,8 +3183,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3432] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3432] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3452] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3452] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3212,7 +3223,7 @@ public class CTaskSettings
   U8	text_attr,title_src,
 	border_attr,border_src,
 	task_title[TASK_TITLE_LEN+1];
-  Bool	border,cursor,scroll,autocomplete,pad[4];
+  Bool	border,hide_cursor,highlight_cursor,scroll,autocomplete,pad[3];
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
@@ -3262,12 +3273,20 @@ class CTaskStk
   U0	stk_base;
 };
 
+#define DYING_JIFFIES	ToI64(JIFFY_FREQ/5)
+class CTaskDying
+{
+  CTask *next,*last;
+  I64	wake_jiffy;
+};
+
 public class CTask //The Fs segment reg points to current CTask.
 {
   CTask *addr; //Self-addressed ptr
-  U32	task_signature;
-  U32	task_flags,display_flags,win_inhibit;
+  U32	task_signature,win_inhibit;
+U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
   I64	wake_jiffy;
+  U32	task_flags,display_flags;
 
   CHeapCtrl *code_heap,*data_heap;
 
@@ -3384,8 +3403,8 @@ class CTSS
 #define _R15 Fs->r15
 
 #help_index "MultiCore"
-#define CPUf_RAN_A_TASK			0
-#define CPUf_SETH_SLEEP			1
+#define CPUf_RAN_A_TASK		0
+#define CPUf_DYING_TASK_QUE	1
 
 public class CCPU //The Gs segment reg points to current CCPU.
 {
@@ -3399,7 +3418,8 @@ public class CCPU //The Gs segment reg points to current CCPU.
   I64	tr,   //task reg
 	swap_cnter;
   U0	(*profiler_timer_irq)(CTask *task);
-  CTask *dying_task_lst;
+  CTaskDying *next_dying,*last_dying;
+  I64	kill_jiffy;
   CTSS	*tss;
   I64	start_stk[16];
   U0 pad;#assert !($&7) //(compiler lags one token)
@@ -3569,7 +3589,7 @@ public class CTextGlbls
 //Low 8 bits reserved for flags that go into saved bitmaps
 #define DCF_COMPRESSED		1
 #define DCF_PALETTE		2
-#define DCF_NO_TRANSPARENTS	4 //Can be used to optimized [C:/Adam/Gr/GrBitMap.CPP.Z,66] GrBlot().
+#define DCF_NO_TRANSPARENTS	4 //Can be used to optimized [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot().
 
 #define DCF_TRANSFORMATION	0x100
 
@@ -3612,12 +3632,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2892] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2903] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2902] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2913] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3626,7 +3646,7 @@ public class CDC
 
   CDC *brush;
 
-  //Set with [C:/Adam/Gr/GrDC.CPP.Z,47] DCMat4x4Set().  [C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free() before setting.
+  //Set with [C:/Adam/Gr/GrDC.CPP.Z,47] DCMat4x4Set().  [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free() before setting.
   I64	*r, //rotation matrix of quads decimal in lo
 	r_norm; //shifted 32 bits.  Used for scaling pen width
 
@@ -3643,13 +3663,14 @@ public class CDC
   //Set by [C:/Adam/Gr/GrMath.CPP.Z,200] DCSymmetrySet() or [C:/Adam/Gr/GrMath.CPP.Z,222] DCSymmetry3Set()
   CGrSym sym;
 
-  I64	dist,nearest_dist,
+  I64	nearest_dist,
+	cur_sprite_elem_num,
 	nearest_sprite_elem_num; //num in a CSprite elem lst
 
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3588] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3608] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3834,19 +3855,18 @@ public class CDbgGlbls
 #define BOOT_SRC_HARDDRV	2
 #define BOOT_SRC_DVD		3
 
-// [C:/Kernel/SrvCmd.CPP.Z,486] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
+// [C:/Kernel/SrvCmd.CPP.Z,483] Auto("") StdIn for call to [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().
 #define STD_DISTRO_DVD_CFG	"Tb\nScale2Mem(2048,0x40000)\nt \n\n\n\n"
 
 #help_index "Misc/Registry"
 //Registry sys_msg_flags. [C:/Adam/ARegistry.CPP.Z,87] RegOneTimePopUp()
 #define ARf_FLOODFILL			0
 #define ARf_CSPRITE_INS_CLIPBOARD	1
-#define ARf_CSPRITE_PICK_GRAPHICALLY	2
-#define ARf_PLANAR_SYMMETRY		3
-#define ARf_PSALMODY_JUKEBOX		4
-#define ARf_MESH_ED			5
-#define ARf_CSPRITE_PTS_RECTANGLES	6
-#define ARf_MANAGE_SLIDER		7
+#define ARf_PLANAR_SYMMETRY		2
+#define ARf_PSALMODY_JUKEBOX		3
+#define ARf_MESH_ED			4
+#define ARf_CSPRITE_PTS_RECTANGLES	5
+#define ARf_MANAGE_SLIDER		6
 
 #help_index "Misc/Progress Bars"
 #define NUM_PROGRESS_BARS	4

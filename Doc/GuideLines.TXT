@@ -91,12 +91,12 @@ tall.CPP.Z or Install.AUT.Z to create the /Home subdirectory.
 * Virtual mem/Paging is not used -- it is identity mapped in x86_64 mode. 
 The 
 stk does not grow, so alloc enough when the task (process) is
-[C:/Kernel/KTask.CPP.Z,205] Spawned and use 
+[C:/Kernel/KTask.CPP.Z,208] Spawned and use 
 the heap for most things.  (The heap refers to
-[C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() and
-[C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free().)
+[C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() and
+[C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free().)
 
-* You can [C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free(NULL).
+* You can [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free(NULL).
 
 * See [C:/Doc/Glossary.TXT.Z,1] Naming Convention and
 [C:/Doc/Glossary.TXT.Z,1] Abbreviations.
@@ -151,7 +151,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3463] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3483] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -176,7 +176,7 @@ they
 are still there.  Periodically, kill the TASK and start fresh when mem is
 low. 
  If you wish your applications to free themselves instead of staying in mem, 
-spawn or [C:/Kernel/SrvCmd.CPP.Z,380] PopUp() a task to run the application
+spawn or [C:/Kernel/SrvCmd.CPP.Z,377] PopUp() a task to run the application
 and kill it when it's done.
 
 * To display the contents of a hash table, use the [C:/Adam/AHash.CPP.Z,149]
@@ -191,9 +191,9 @@ case you wish to make hash table sizes bigger.
 
 See [C:/Doc/Asm.TXT.Z,1].
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3265] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3283] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3390] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3409] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
@@ -202,9 +202,9 @@ anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and
 * When interacting with [C:/Doc/HolyC.TXT.Z,1] HolyC compiled code, preserve
 RBP, RSI, RDI, R10-R15 
 because the compiler uses these for reg vars.  You are free to clobber RAX, 
-RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1750] Compiler Reg
-Masks, [C:/Kernel/KernelA.HPP.Z,1723] PUSH_C_REGS and
-[C:/Kernel/KernelA.HPP.Z,1724] POP_C_REGS
+RBX, RCX, RDX, R8 and R9.  See [C:/Kernel/KernelA.HPP.Z,1760] Compiler Reg
+Masks, [C:/Kernel/KernelA.HPP.Z,1733] PUSH_C_REGS and
+[C:/Kernel/KernelA.HPP.Z,1734] POP_C_REGS
 
 * I recommend using the standard stk frame for functions because
 [C:/Kernel/KDbg.CPP.Z,60] Caller() is 

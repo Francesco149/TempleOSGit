@@ -49,7 +49,7 @@ public _extern _CALLIND I64 CallInd(
 
 #help_index "Call/System Extern Num"
 public _extern SYS_EXTERN_TABLE /*argpop*/
-	I64 (**ext)(...); //Array of fun ptrs.	See [C:/Kernel/KernelA.HPP.Z,574] Extern Num Definitions
+	I64 (**ext)(...); //Array of fun ptrs.	See [C:/Kernel/KernelA.HPP.Z,576] Extern Num Definitions
 public _extern _CALLEXTNUM
 	I64 CallExtNum(I64 num,...); //Call ext num with fixed number of args.
 
@@ -230,14 +230,14 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,240] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3390] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,240] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3409] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
-_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,301] Core0StartMP
+_extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3390] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3409] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSES U16 sys_pci_busses; //Number of PCI buses.
@@ -261,7 +261,7 @@ public _extern _LXCHG_U16 U16 LXchgU16(U16 *dst,U16 d); //Locked eXchange U16s.
 public _extern _LXCHG_U32 U32 LXchgU32(U32 *dst,U32 d); //Locked eXchange U32s.
 public _extern _LXCHG_U8  U8 LXchgU8(U8 *dst,U8 d); //Locked eXchange U8s.
 public _extern _SET_MSR U0 SetMSR(
-	I64 model_specific_reg,I64 val); //Model Specific Reg See [C:/Kernel/KernelA.HPP.Z,515] MSRs.
+	I64 model_specific_reg,I64 val); //Model Specific Reg See [C:/Kernel/KernelA.HPP.Z,517] MSRs.
 public _extern _SYS_HLT U0 SysHlt(); //Loops doing HLT instruction.
 public _extern _XCHG_I64 I64 XchgI64(I64 *dst,I64 d); //eXchange I64s.
 public _extern _XCHG_U16 U16 XchgU16(U16 *dst,U16 d); //eXchange U16s.
@@ -279,7 +279,7 @@ public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr instruction.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3265] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3283] CTask.
 
 #help_index "Time/CPU Cycles"
 public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.

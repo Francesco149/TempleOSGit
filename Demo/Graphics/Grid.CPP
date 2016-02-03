@@ -13,7 +13,7 @@ U0 GridDemo()
   U0 (*old_draw_input_ptr)(CDC *dc,I64 x,I64 y); //Can't init this type of var.
   MemCpy(&old_grid,&ip_grid,sizeof(CGridGlbls));
   GridInit;
-  ip_grid.snap=TRUE; //You can set other [C:/Kernel/KernelA.HPP.Z,3018] stuff.
+  ip_grid.snap=TRUE; //You can set other [C:/Kernel/KernelA.HPP.Z,3029] stuff.
   ip_grid.x=GRID;
   ip_grid.y=GRID;
   old_draw_input_ptr=gr.fp_draw_input_ptr;

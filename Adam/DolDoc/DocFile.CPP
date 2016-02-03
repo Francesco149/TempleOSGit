@@ -8,7 +8,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
   CDocBin *tempb;
   doc->find_replace->filter_lines=0;
   if (src2) {
-    DocPutS(doc,src2); //Too big [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint() is wasteful.
+    DocPutS(doc,src2); //Too big [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint() is wasteful.
     src=src2+StrLen(src2)+1;
     i=size-(offset(CDocBin.end)-offset(CDocBin.start));
     while (src<=src2+i) {
@@ -27,14 +27,13 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
   }
   if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS)))
     DocBinsValidate(doc);
-  DocTop(doc); //DOCT_CURSOR will set it in recalc
-  DocRecalc(doc);
+  DocTop(doc); //Calls [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().  DOCT_CURSOR will be set.
   if (unlock)
     DocUnlock(doc);
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1233] flags.
+{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1237] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;
@@ -53,25 +52,27 @@ public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
 
 public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 {//Store doc to raw mem buf.
-  CDocEntry *doc_e;
+  CDocEntry *doc_e,*doc_e1;
   CDocBin *b;
   Bool unlock=DocLock(doc);
-  I64 ch,i,cnt;
+  I64 ch,cnt=1;//terminator
   U8 *st,*result,*dst,*src;
-
-  if (doc->flags&DOCF_NO_CURSOR || doc->root.next==doc)
-    cnt=1; //terminator
-  else
-    cnt=2; //cursor + terminator
 
   if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS)))
     DocBinsValidate(doc);
-  DocRecalc(doc);
+  if (doc->flags&DOCF_NO_CURSOR)
+    DocRecalc(doc);
+  else {
+    DocRecalc(doc,RECALCF_ADD_CURSOR);
+    if (doc->root.next->type_u8==DOCT_CURSOR)
+      DocEntryDel(doc,doc->root.next); //If no cursor, [C:/Adam/DolDoc/DocFile.CPP.Z,3] DocLoad() puts at top.
+  }
   for (doc_e=doc->root.next;doc_e!=doc;doc_e=doc_e->next) {
     if (!Bt(doldoc.type_flags_data,doc_e->type_u8)) {
       switch (doc_e->type_u8) {
 	case DOCT_TAB:
 	case DOCT_PAGE_BREAK:
+	case DOCT_CURSOR:
 	  cnt++;
 	  break;
 	case DOCT_NEW_LINE:
@@ -80,97 +81,76 @@ public U8 *DocSave(CDoc *doc,I64 *_size=NULL)
 	  else
 	    cnt++;
 	  break;
-	case DOCT_TEXT://**Update [D:/Compiler/Lex.CPP.Z,1] DOCT_TEXT**
+	case DOCT_SOFT_NEW_LINE:
+	  break;
+	case DOCT_TEXT:
 	  if (!(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|
 		DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_FILTER_SKIP))&&
 		!(doc_e->type&DOCG_BL_IV_UL)) {
 	    cnt+=StrLen(doc_e->tag);
-	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_TABS)) ||
+	    if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS)) ||
 		  doc->flags&DOCF_DBL_DOLLARS)
 	      cnt+=StrOcc(doc_e->tag,'$');
-	  } else {
-	    st=Doc2PlainText(doc,doc_e);
-	    cnt+=StrLen(st)+2;
-	    Free(st);
+	    break;
 	  }
-	  break;
 	default:
-	  if (doc_e->type_u8!=DOCT_SOFT_NEW_LINE &&
-		doc_e->type_u8!=DOCT_CURSOR) {
-	    st=Doc2PlainText(doc,doc_e);
-	    cnt+=StrLen(st)+2;
-	    Free(st);
-	  }
+	  st=Doc2PlainText(doc,doc_e);
+	  cnt+=StrLen(st)+2;
+	  Free(st);
       }
     }
   }
-  for (b=doc->bin_root.next;b!=&doc->bin_root;b=b->next) {
+  for (b=doc->bin_root.next;b!=&doc->bin_root;b=b->next)
     if (b->use_cnt>b->temp_use_cnt)
-      cnt+=offset(CDocBin.end)-
-	    offset(CDocBin.start)+b->size;
-  }
+      cnt+=offset(CDocBin.end)-offset(CDocBin.start)+b->size;
   result=MAlloc(cnt);
   dst=result;
-  for (doc_e=doc->root.next;doc_e!=doc;doc_e=doc_e->next) {
-    if (!Bt(doldoc.type_flags_data,doc_e->type_u8)) {
-      if (doc_e->type_u8==DOCT_TEXT &&
-	    !(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|
-	    DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_FILTER_SKIP)) &&
-	    !(doc_e->type&DOCG_BL_IV_UL)) {
-	src=doc_e->tag;
-	i=0;
-	while (ch=*src++) {
-	  if (doc_e==doc->cur_entry && i++==doc->cur_col &&
-		!(doc->flags&DOCF_NO_CURSOR))
-	    *dst++=CH_CURSOR;
-	  *dst++=ch;
-	  if (ch=='$') {
-	    if (!(doc->flags & (DOCF_PLAIN_TEXT | DOCF_PLAIN_TEXT_TABS)) ||
-		  doc->flags&DOCF_DBL_DOLLARS)
+  doc_e=doc->root.next;
+  while (doc_e!=doc) {
+    doc_e1=doc_e->next;
+    if (!Bt(doldoc.type_flags_data,doc_e->type_u8))
+      switch (doc_e->type_u8) {
+	case DOCT_CURSOR:
+	  DocEntryDel(doc,doc_e);
+	  *dst++=CH_CURSOR;
+	  break;
+	case DOCT_TAB:
+	  *dst++='\t';
+	  break;
+	case DOCT_PAGE_BREAK:
+	  *dst++=CH_FORM_FEED;
+	  break;
+	case DOCT_NEW_LINE:
+	  if (doc->flags&DOCF_CARRIAGE_RETURN)
+	    *dst++='\r';
+	  *dst++='\n';
+	  break;
+	case DOCT_SOFT_NEW_LINE:
+	  break;
+	case DOCT_TEXT:
+	  if (!(doc_e->de_flags & ~(DOCEF_TAG|DOCG_BL_IV_UL|DOCEF_WORD_WRAP|
+		DOCEF_HIGHLIGHT|DOCEF_SKIP|DOCEF_FILTER_SKIP)) &&
+		!(doc_e->type&DOCG_BL_IV_UL)) {
+	    src=doc_e->tag;
+	    while (ch=*src++) {
 	      *dst++=ch;
-	  }
-	}
-	if (doc_e==doc->cur_entry && i++==doc->cur_col &&
-	      !(doc->flags&DOCF_NO_CURSOR))
-	  *dst++=CH_CURSOR;
-      } else {
-	if (doc_e==doc->cur_entry && !(doc->flags&DOCF_NO_CURSOR))
-	  *dst++=CH_CURSOR;
-	switch (doc_e->type_u8) {
-	  case DOCT_TAB:
-	    *dst++='\t';
-	    break;
-	  case DOCT_PAGE_BREAK:
-	    *dst++=CH_FORM_FEED;
-	    break;
-	  case DOCT_NEW_LINE:
-	    if (doc->flags&DOCF_CARRIAGE_RETURN)
-	      *dst++='\r';
-	    *dst++='\n';
-	    break;
-	  default:
-	    if (doc_e->type_u8!=DOCT_SOFT_NEW_LINE &&
-		  doc_e->type_u8!=DOCT_CURSOR) {//(Cursor is set by cur_entry)
-	      *dst++='$';
-	      st=Doc2PlainText(doc,doc_e);
-	      StrCpy(dst,st);
-	      dst+=StrLen(st);
-	      *dst++='$';
-	      Free(st);
+	      if (ch=='$' && (!(doc->flags & (DOCF_PLAIN_TEXT|
+		    DOCF_PLAIN_TEXT_TABS)) || doc->flags&DOCF_DBL_DOLLARS))
+		*dst++=ch;
 	    }
-	}
+	    break;
+	  }
+	default:
+	  *dst++='$';
+	  st=Doc2PlainText(doc,doc_e);
+	  StrCpy(dst,st);
+	  dst+=StrLen(st);
+	  *dst++='$';
+	  Free(st);
       }
-    }
+    doc_e=doc_e1;
   }
-  if (doc->cur_entry==doc && doc->root.next!=doc &&
-	!(doc->flags&DOCF_NO_CURSOR))
-    *dst++=CH_CURSOR;
   *dst++=0;
-  if (*result==CH_CURSOR) {
-    MemCpy(result,result+1,dst-result-1);
-    cnt--;
-    dst--;
-  }
   b=doc->bin_root.next;
   if (b!=&doc->bin_root) {
     do {
@@ -206,7 +186,7 @@ public Bool DocWrite(CDoc *doc,Bool prompt=FALSE)
 #help_index "DolDoc"
 public U0 DocInsDoc(CDoc *doc=NULL,CDoc *doc2)
 {//Insert copy of doc2 into doc at insert pt, cur_entry.
-//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,219] DocRst
+//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,230] DocRst
   U8 *dst;
   Bool unlock_doc,unlock_doc2=DocLock(doc2);
   CDocEntry *doc_ne,*doc_e=doc2->root.next,*doc_ce;
@@ -217,7 +197,7 @@ public U0 DocInsDoc(CDoc *doc=NULL,CDoc *doc2)
   if (doc_ce->type_u8==DOCT_TEXT && doc->cur_col>doc_ce->min_col) {
     if (doc->cur_col<doc_ce->max_col) {
       dst=doc_ce->tag+doc->cur_col;
-      doc_ne=DocEntryNew(doc,doc_ce,StrNew(dst,doc->mem_task));
+      doc_ne=DocEntryNewTag(doc,doc_ce,dst);
       *dst=0;
       doc_ne->type=DOCT_TEXT | doc_ce->type & 0xFFFFFF00;
       doc_ce->max_col=doc->cur_col;
@@ -245,7 +225,7 @@ public U0 DocInsDoc(CDoc *doc=NULL,CDoc *doc2)
 #help_index "DolDoc/Compiler;Compiler/Directive"
 public U0 StreamDoc(CDoc *doc)
 {//Inject doc into compile stream. Use inside #exe{}.
-//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,219] DocRst
+//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,230] DocRst
   Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -265,7 +245,7 @@ public U0 StreamDoc(CDoc *doc)
 Bool DocCaptureUndo(CDoc *doc,Bool force=FALSE)
 {
   Bool result=FALSE,unlock;
-  I64 time_stamp;
+  I64 time_stamp,flags;
   CDocUndo *u;
   if (doc->flags&DOCF_ALLOW_UNDO) {
     unlock=DocLock(doc);
@@ -275,7 +255,10 @@ Bool DocCaptureUndo(CDoc *doc,Bool force=FALSE)
 	  force) {
       u=CAlloc(sizeof(CDocUndo),doc->mem_task);
       u->time_stamp=time_stamp;
+      flags=doc->flags;
+      doc->flags&=~DOCF_NO_CURSOR;
       u->body=DocSave(doc,&u->size);
+      doc->flags=flags;
       QueIns(u,doc->undo_root.last);
       doc->flags&=~DOCF_UNDO_DIRTY;
       doc->undo_cnt++;
@@ -298,8 +281,9 @@ U0 DocUndoRestore(CDoc *doc)
     u_last=doc->undo_root.last;
     QueInit(&doc->undo_root);
     DocRst(doc,TRUE);
-    doc->flags=u->doc_flags;
+    doc->flags=u->doc_flags&~DOCF_NO_CURSOR;
     DocLoad(doc,u->body,u->size);
+    doc->flags=u->doc_flags;
     DocUndoDel(doc,u);
     doc->undo_root.next=u_next;
     doc->undo_root.last=u_last;

@@ -26,7 +26,7 @@ foreground color.
 See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] TwoLetterCmd>  See
-[C:/Kernel/KernelA.HPP.Z,893] Type Defines and
+[C:/Kernel/KernelA.HPP.Z,895] Type Defines and
 [C:/Adam/DolDoc/DocPlain.CPP.Z,221] PrsDollarCmd().
 +] TX Text
   Normally, text is not bracketed with '$', but if you wish to specify flag
@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT.Z,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2906] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2917] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -121,11 +121,12 @@ The expressions are relative to the current cursor location, unless you make
 See [C:/Demo/DolDoc/CursorMove.CPP.Z,1].
 
 +] AN Anchor
-  The [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str arg A="" is used for
+  The [C:/Kernel/KernelA.HPP.Z,1162] CDocEntry.aux_str arg A="" is used for
   the anchor.  I don't use these very often, but they're good sometimes. 
-+] LK Link
-  The [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str arg A="" is used for
-  the link text.  With no aux the tag becomes the link text, as in example 3.
+-] LK Link
+  The [C:/Kernel/KernelA.HPP.Z,1162] CDocEntry.aux_str arg A="" is used for
+  the link text.  With no aux the 
+tag becomes the link text, as in example 3.
 
 See [C:/Adam/DolDoc/DocLink.CPP.Z,29] Link Types.
 
@@ -136,16 +137,16 @@ Examples: <CTRL-t> to see
 3)File link with same tag str.  [C:/Doc/HelpIndex.TXT.Z,1]
 4)[C:/Doc/HelpIndex.TXT.Z,1] File find link searching for 'Admin'
 5)[C:/Kernel/KernelA.HPP.Z,5] File find link searching for 5th 'CTRL'
-6)[C:/Kernel/StrPrint.CPP.Z,906] Manual page link
+6)[C:/Kernel/StrPrint.CPP.Z,907] Manual page link
 7)[C:/Kernel/KernelA.HPP.Z,200] File line num link
 8)[C:/Kernel/KEnd.CPP.Z,1] File anchor link -- <CTRL-t> to see anchor after
   you click
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/KLoad.CPP.Z,158] Address Link.
+11) [C:/Kernel/StrPrint.CPP.Z,352] Address Link.
 
-12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,613]
+12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,647]
   SpriteEdText().
 
 +] BT Button
@@ -153,7 +154,7 @@ Examples: <CTRL-t> to see
 +] DA Data
   Used for forms that prompt for data.  Use <CTRL-l> as a text widgets editor
   to help you generate the text you need in your "fmtstr" cmd in a class.  If
-  you add it directly with [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(),
+  you add it directly with [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint(),
   you'll need to fill-in the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181]
   DocForm() and [C:/Demo/DolDoc/Form.CPP.Z,1].
 
@@ -162,7 +163,7 @@ The default data-type for the $DA...$ command is I64.  You can change it to
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
   [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
 
-The [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str arg A="" is used for the
+The [C:/Kernel/KernelA.HPP.Z,1162] CDocEntry.aux_str arg A="" is used for the
   format string.
 
 If there is a ':', the space after the first ':' in the format string marks
@@ -171,9 +172,9 @@ If there is a ':', the space after the first ':' in the format string marks
 +] CB Check Box
   Used for forms.  Use <CTRL-l> as a text widgets editor to help you generate
   the text you need in your "fmtstr" cmd in a class.  If you add it directly
-  with [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(), you'll need to fill-in
+  with [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint(), you'll need to fill-in
   the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm(),
-  [C:/Kernel/KernelA.HPP.Z,1201] CEdFindText and [C:/Demo/DolDoc/Form.CPP.Z,1].
+  [C:/Kernel/KernelA.HPP.Z,1205] CEdFindText and [C:/Demo/DolDoc/Form.CPP.Z,1].
 
 The default data-type for the $CB...$ command is I8 which is Bool.  You can
   change it to I8, U8, I16, U16, I32, U32, I64, or U64.  See
@@ -183,7 +184,7 @@ The default data-type for the $CB...$ command is I8 which is Bool.  You can
   Used for forms that prompt for data.  You must specify a define list, D="".
    Use <CTRL-l> as a text widgets editor to help you generate the text you need
   in your "fmtstr" cmd in a class.  If you add it directly with
-  [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint(), you'll need to fill-in the
+  [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint(), you'll need to fill-in the
   data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm() and
   [C:/Demo/DolDoc/Form.CPP.Z,1].
 
@@ -195,8 +196,8 @@ The default data-type for the $LS...$ command is I64.  You can change it to
   A left macro arg, LM="", will send text when the left mouse is clicked.
 
 A left auto string, +LA, flag will cause text to be sent to
-  [C:/Kernel/SrvCmd.CPP.Z,468] AutoStr() instead of
-  [C:/Kernel/SrvCmd.CPP.Z,486] Auto().  An AutoStr runs code.  Literal text is
+  [C:/Kernel/SrvCmd.CPP.Z,465] AutoStr() instead of
+  [C:/Kernel/SrvCmd.CPP.Z,483] Auto().  An AutoStr runs code.  Literal text is
   in quotes and messages are sent with [C:/Kernel/SrvCmd.CPP.Z,257] Msg().  See
   Dir("::/Demo/AutoFile");View;
 `Dir("::/Demo/AutoFile");View;`
@@ -213,13 +214,13 @@ Macro's are usually in your [C:/Home/PersonalMenu.TXT,1] and have the '+X'
 
 See [C:/Adam/DolDoc/DocPopUp.CPP.Z,202] PopUpRangeI64().
 +] HX Hex Edit
-  See [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD().
+  See [C:/Adam/DolDoc/DocPutS.CPP.Z,334] DocD().
 +] TR Tree Widget
   A tree widget is a branch in a collapsable tree.  The domain of the branch
   extends from the first +indent until enough -indents bring it back to where
   it started.  Tree's begin collapsed unless a -C flag is present.
 
-You might want to use [C:/Adam/DolDoc/DocPutS.CPP.Z,254] DocPrintAtomic().
+You might want to use [C:/Adam/DolDoc/DocPutS.CPP.Z,241] DocPrintAtomic().
 
 See [C:/Demo/DolDoc/TreeDemo.CPP.Z,1].
 +] SP Sprite
@@ -248,7 +249,7 @@ You can, optionally, include tag text to be displayed for the $IB...$ cmd.
   tag if the BI= number changes.
 
 The reason for the $IB...$ cmd is to pass a arg to
-  [C:/Adam/Gr/GrSpritePlot.CPP.Z,490] Sprite() and
+  [C:/Adam/Gr/GrSpritePlot.CPP.Z,486] Sprite() and
   [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3().  See
   [C:/Demo/Graphics/SpritePlot.CPP.Z,1].
 
@@ -256,7 +257,7 @@ The reason for the $IB...$ cmd is to pass a arg to
   Inserts a number into the compiled stream describing the size of binary
   data associated with a bin number.  I never use this.
 +] SO Song
-  See [C:/Adam/Snd/SndMusic.CPP.Z,98] Play().  [C:/Kernel/KernelA.HPP.Z,1158]
+  See [C:/Adam/Snd/SndMusic.CPP.Z,98] Play().  [C:/Kernel/KernelA.HPP.Z,1162]
   CDocEntry.aux_str A="" stores the song note text.
 +] HL Highlighting
   Include a 1 or 0.
@@ -271,7 +272,7 @@ $HL,1$ will turn syntax highlighting on.
   When errors are detected in DolDoc cmds, an ER entry is generated.
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] FlagCode>  See
-[C:/Kernel/KernelA.HPP.Z,1053] Flag Defines and [C:/Doc/Widget.TXT.Z,1]
+[C:/Kernel/KernelA.HPP.Z,1057] Flag Defines and [C:/Doc/Widget.TXT.Z,1]
 Simple Flags.
 +] +H Hold
   Causes not to delete this cmd when cleared with CL or when the
@@ -311,7 +312,7 @@ A +C flag on a tree will start it collapsed.
   continuously.
 +] +UD Update Data
   The Update Data flag on a DA or a CB makes the value in the
-  [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry updated when keys are typed on it.
+  [C:/Kernel/KernelA.HPP.Z,1162] CDocEntry updated when keys are typed on it.
 +] +TC Tag CallBack
   See [C:/Demo/DolDoc/CallBack.CPP.Z,1].
 +] +LC Left CallBack
@@ -320,13 +321,13 @@ A +C flag on a tree will start it collapsed.
   See [C:/Demo/DolDoc/ClickCallBack.CPP.Z,1].
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] ArgCode>  See
-[C:/Kernel/KernelA.HPP.Z,1036] Arg Defines.
+[C:/Kernel/KernelA.HPP.Z,1040] Arg Defines.
 +] T="" Tag Str
   Some cmds have a tag by default.  See [C:/Adam/DolDoc/DocInit.CPP.Z,1]
   TX+T.  You can code T="tag_text" as just "tag_text" with no T=. 
 +] A="" Auxilliary Str
   Some cmds need auxilliary strings.  A="str" means an
-  [C:/Kernel/KernelA.HPP.Z,1158] CDocEntry.aux_str is present.  aux_str is used
+  [C:/Kernel/KernelA.HPP.Z,1162] CDocEntry.aux_str is present.  aux_str is used
   for song note text, link text, anchor text, and $DA...$ format string text.
 +] D="" Define Str
   A D="" means either a [Define,1] define str indirection is present on a

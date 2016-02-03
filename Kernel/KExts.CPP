@@ -68,7 +68,7 @@ extern U0 Msg(I64 code,I64 a1,I64 a2,I64 flags=0);
 extern I64 PopUp(U8 *buf,CTask *parent=NULL,CTask **_pu_task=NULL);
 extern U0 Print(U8 *fmt,...);
 extern U0 PutChars(U64 ch);
-extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,906] Print()
+extern U0 PutS(U8 *st); //Use [C:/Kernel/StrPrint.CPP.Z,907] Print()
 extern Bool RBlks(CDrv *dv,U8 *buf, I64 blk, I64 cnt);
 extern I64 RedSeaAllocClusters(CDrv *dv,I64 cnt);
 extern Bool RedSeaDirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempdee,

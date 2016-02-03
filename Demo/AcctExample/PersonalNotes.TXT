@@ -1,16 +1,11 @@
 
                                      TODO
-* Might want [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog() x Cnt.  Fix
-[C:/Misc/OSTestSuite.CPP.Z,1] TestSuite.
-
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
 * Add AVL or red/black binary tree library support.  We have fixed-size
 stack. 
  Auto-balancing binary tree is very needed.  I've done everything myself.  I 
 don't want to ruin a perfect record.  I'm in no hurry.
-
-* In <CTRL-r> menu, transform individual elements.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,1] SpriteEd shift pts, Ctrl pt for
 ellipse/polygon w,h is off when rotated.
@@ -30,7 +25,7 @@ R("Mesh",...);?
 * Editor overstrike mode at cmd line with menu macro?  Probably, many other 
 overstrike issues.
 
-* [C:/Kernel/KernelA.HPP.Z,926] DOCT_HEX_ED with odd size, ASCII cannot be
+* [C:/Kernel/KernelA.HPP.Z,928] DOCT_HEX_ED with odd size, ASCII cannot be
 edited.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
@@ -38,12 +33,10 @@ edited.
 * Cannot include ':' in [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
 search string.
 
-* No way to clear [C:/Kernel/KernelA.HPP.Z,1082] DOCEf_HOLD entries.
+* No way to clear [C:/Kernel/KernelA.HPP.Z,1086] DOCEf_HOLD entries.
 
-* [C:/Kernel/KernelA.HPP.Z,1237] DOCF_DBL_DOLLARS in
+* [C:/Kernel/KernelA.HPP.Z,1241] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.CPP.Z,413] Reindention.
-
-* Compiler: Warn unnecessary typecast.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
 
@@ -52,7 +45,7 @@ search string.
 * AfterEgypt: [C:/Misc/Bible.TXT.Z,12005] Numbers,13:33 scouts?
 [C:/Misc/Bible.TXT.Z,12005] Numbers,21:8 snakes?
 
-* Find-and-replace text on $PT$ line before it.
+* Bug: Find-and-replace text on $PT$ line before it.
 * 12/25/2015 Copy-Paste index.html glitch if source window 40 columns.
 * 01/10/2016 find-replace editor hung on
 [C:/Home/Web/TAD/CounterRenaissance.TXT,1] CounterRenaissance "Rennaisance"
@@ -73,7 +66,7 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 
 * [C:/Demo/Games/EagleDive.CPP.Z,1] doesn't make sense or look real.  Bad.
 
-* Reset MPs with [C:/Kernel/MultiProc.CPP.Z,301] Core0StartMP() after boot. 
+* Reset MPs with [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP() after boot. 
 Free old task memory?
 
 * Use pen_width and pen_height when clipping with pen_width>1.
@@ -81,7 +74,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3265] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3283] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
@@ -105,8 +98,10 @@ SPT_SHIFT origin cmds?
 in 
 future centuries.)
 
-* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2121] CCmpCtrl
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2131] CCmpCtrl
 stuff.
+
+* [C:/Adam/DolDoc/DocHighlight.CPP.Z,1] for code comments at top of documents.
 
 * Unhandled exception msgs from MP's get overwritten by WinMgr.
 
@@ -150,8 +145,7 @@ plan a big alloc.  This is doable, depending on how.
 
 
                                      Bugs
-* 8/20/2015 Old machine, Tour TestSuite was missing #include "TestSuite".
-* 1/03/2016 Old Machine, Repeated
+* 1/28/16 [C:/Demo/Graphics/Pick3D.CPP.Z,1] crashed in TestSuite.
 
 * 1/12/16 make RAM drive 2288 blks, CopyTree("C:/Home","B:/Home");   Disk 
 runs-out of space and hangs instead of reporting errors.
@@ -159,7 +153,8 @@ runs-out of space and hangs instead of reporting errors.
 * Bug introduced around 11/1/15.  Changed [C:/Kernel/Sched.CPP.Z,1] and now 
 [C:/Adam/WinA.CPP.Z,279] WinToTop is called on Adam task at start-up,
 sometimes.  Might be user's fault 
-because of bad keys pressed during VMware power-on init.
+because of bad keys pressed during VMware power-on init.  Might be fixed by 
+[C:/Kernel/KernelA.HPP.Z,1462] ACf_INIT_IN_PROGRESS.
 
 * 1/12/16 [C:/Kernel/BlkDev/DskATAId.CPP.Z,90] ATARepEntry shows corrupted
 buttons.  Weird.  Perhaps, my 
@@ -198,7 +193,7 @@ then reboot in TestSuite.
 * 6/8/14:After or in [C:/Misc/OSTestSuite.CPP.Z,1] PageTableEntries2 in
 TestSuite crash.
 
-* [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin(,st); With st="\n\\"; (Forgot
+* [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin(,st); With st="\n\\"; (Forgot
 what this is talking about.)
 
 * [C:/Adam/Opt/Utils/FileBMP.CPP.Z,65] BMPRLE4To() has files_size too big by
@@ -208,8 +203,8 @@ what this is talking about.)
                         TODO? Not really, just angst.
 * Nontimer [C:/Kernel/KMathB.CPP.Z,122] Rand() is really bad!
 
-* Should these be moved into [C:/Kernel/KernelA.HPP.Z,826] CHashClass from
-[C:/Kernel/KernelA.HPP.Z,790] CMemberLst and [C:/Kernel/KernelA.HPP.Z,866]
+* Should these be moved into [C:/Kernel/KernelA.HPP.Z,828] CHashClass from
+[C:/Kernel/KernelA.HPP.Z,792] CMemberLst and [C:/Kernel/KernelA.HPP.Z,868]
 CHashGlblVar?
      CArrayDim dim;
 CHashFun *fun_ptr;
@@ -233,7 +228,7 @@ disp.
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.CPP.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HPP.Z,2550] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HPP.Z,2560] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -262,28 +257,28 @@ have left-right for address search.
 
 * Compiler: F32?
 
-* International Date output: [C:/Kernel/StrPrint.CPP.Z,61] MPrintDate(). 
+* International Date output: [C:/Kernel/StrPrint.CPP.Z,62] MPrintDate(). 
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.CPP.Z,138] Str2Date().
 
 * Might want to move kernel code out of low 2Meg.  Might be faster.
 
-* [C:/Kernel/KernelA.HPP.Z,3577] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3597] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HPP.Z,2905] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HPP.Z,2901] ROPF_DITHER.
+* [C:/Kernel/KernelA.HPP.Z,2916] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HPP.Z,2912] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HPP.Z,2891] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2902] ROP_XOR with pen_width>1 is broken.
 
-* [C:/Adam/Gr/GrPrimatives.CPP.Z,560] GrPutChar3() with depth buf?
+* [C:/Adam/Gr/GrPrimatives.CPP.Z,565] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3604] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3624] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2891] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2902] ROP_XOR?
 
 * [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
@@ -295,7 +290,7 @@ works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
 
-* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2938] CBGR24's wrong? 
+* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2949] CBGR24's wrong? 
 [C:/Adam/Opt/Utils/FileBMP.CPP.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
@@ -318,7 +313,7 @@ also?
 
 * Compiler: [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag for local vars?
 
-* Implement [C:/Kernel/KernelA.HPP.Z,2493] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HPP.Z,2503] RS_ATTR_FIXED fixed pos files?
 
 * Editor page formatting is FUBAR.
 
@@ -352,6 +347,8 @@ any aux_font?
 * Redo videos, make more professional.
 
 * Use standard terminology from "the literature".
+
+* Striped and other dither patterns.  Brushes?
 
 * Get rid of BYTE, WORD, DWORD in opcode and replace with U8, U16, U32.
 
@@ -388,7 +385,7 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HPP.Z,3062] Controls?
+* More [C:/Kernel/KernelA.HPP.Z,3073] Controls?
 
 * Compiler: More use of more floating-point stk?
 
@@ -396,11 +393,11 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3265] CTask?
+[C:/Kernel/KernelA.HPP.Z,3283] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
-TaskFinishOff(): Free()
+TaskDel(): Free()
 CSysFixedArea.adam
 Looks like task_flags,locked_flags cause problems with neg offset.
 
@@ -410,11 +407,11 @@ Looks like task_flags,locked_flags cause problems with neg offset.
                                      Test
 * [C:/Adam/Gr/SpriteBitMap.CPP.Z,1] SpriteBitMap: Grabscroll? 
 
-* Return results for [C:/Adam/Gr/GrBitMap.CPP.Z,66] GrBlot,
-[C:/Adam/Gr/GrBitMap.CPP.Z,910] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,631]
+* Return results for [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot,
+[C:/Adam/Gr/GrBitMap.CPP.Z,925] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,641]
 GrPutChar?
-* Collision cnts for [C:/Adam/Gr/GrBitMap.CPP.Z,66] GrBlot,
-[C:/Adam/Gr/GrBitMap.CPP.Z,910] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,631]
+* Collision cnts for [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBlot,
+[C:/Adam/Gr/GrBitMap.CPP.Z,925] GrRect, [C:/Adam/Gr/GrBitMap.CPP.Z,641]
 GrPutChar?
 
 * [C:/Kernel/SerialDev/Message.CPP.Z,193] GetStr() or
@@ -444,8 +441,8 @@ exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2490]
-RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,230] Touch("","+T");
+* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2500]
+RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,232] Touch("","+T");
 
 
                                 Uncategorized

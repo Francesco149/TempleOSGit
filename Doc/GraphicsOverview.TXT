@@ -50,7 +50,7 @@ callback being called.  Only
 tasks on core0 are allowed to have windows.  There is one window per task, no 
 child windows.  You can have pop-up child tasks.
 
-* [C:/Kernel/KernelA.HPP.Z,3604] CDCs (device contexts) are a data type for
+* [C:/Kernel/KernelA.HPP.Z,3624] CDCs (device contexts) are a data type for
 controlling graphics on the 
 screen or graphics in mem.  The device context structure has pen width and 
 color.  You use [C:/Adam/Gr/GrDC.CPP.Z,168] DCAlias() to create your own
@@ -63,7 +63,7 @@ be redrawn.  You create an alias for this by using
 that.  See [C:/Demo/Graphics/NetOfDots.CPP.Z,1].
 
 * There are various flavors of line and point plotting routines. 
-[C:/Adam/Gr/GrPrimatives.CPP.Z,437] GrLine() and 
+[C:/Adam/Gr/GrPrimatives.CPP.Z,442] GrLine() and 
 [C:/Adam/Gr/GrPrimatives.CPP.Z,51] GrPlot() are the simplest.  The others
 allow 3D graphics and rotations.
 
@@ -76,7 +76,7 @@ and over again.  See [C:/Demo/Graphics/Box.CPP.Z,1].
 
 * Use the graphic sprite resource editor, <CTRL-r>, to create a sprite that 
 can be plotted with [C:/Adam/Gr/GrSpritePlot.CPP.Z,18] Sprite3() or output to
-the cmd line with [C:/Adam/Gr/GrSpritePlot.CPP.Z,490] Sprite().  Use $I
+the cmd line with [C:/Adam/Gr/GrSpritePlot.CPP.Z,486] Sprite().  Use $I
 B,"",BI=1$ in a src program to insert the addr of sprite binary data item #1.
  
 To learn how the numbers work, after creating a sprite with <CTRL-r>, toggle 
@@ -90,43 +90,43 @@ sprite is
 defined by the cursor location when you pressed <CTRL-r> to make it.  You can 
 edit a sprite by clicking the cursor on it and pressing <CTRL-r> again.
 
-* Set [C:/Kernel/KernelA.HPP.Z,3577] DCF_SYMMETRY in the
-[C:/Kernel/KernelA.HPP.Z,3604] CDC.flags and call
+* Set [C:/Kernel/KernelA.HPP.Z,3597] DCF_SYMMETRY in the
+[C:/Kernel/KernelA.HPP.Z,3624] CDC.flags and call
 [C:/Adam/Gr/GrMath.CPP.Z,200] DCSymmetrySet() or 
 [C:/Adam/Gr/GrMath.CPP.Z,222] DCSymmetry3Set().  This will plot a mirror
 image in addition to the primary 
-image.  Set [C:/Kernel/KernelA.HPP.Z,3581] DCF_JUST_MIRROR to plot just the
+image.  Set [C:/Kernel/KernelA.HPP.Z,3601] DCF_JUST_MIRROR to plot just the
 image, but this required 
-[C:/Kernel/KernelA.HPP.Z,3577] DCF_SYMMETRY to be set at the same time. 
+[C:/Kernel/KernelA.HPP.Z,3597] DCF_SYMMETRY to be set at the same time. 
 Note: You can only have one symmetry 
 active at a time including in [C:/Adam/Gr/Gr.HPP.Z,153] CSprites.
 
 * Use [C:/Adam/Gr/GrDC.CPP.Z,186] DCNew() to create a mem bitmap which can be
 used to work off-screen and 
-which can be [C:/Adam/Gr/GrBitMap.CPP.Z,66] GrBloted onto the screen.  If you
+which can be [C:/Adam/Gr/GrBitMap.CPP.Z,71] GrBloted onto the screen.  If you
 set brush member of CDC to 
-another CDC, all the graphic routines will [C:/Adam/Gr/GrBitMap.CPP.Z,66]
+another CDC, all the graphic routines will [C:/Adam/Gr/GrBitMap.CPP.Z,71]
 GrBlot() the brush instead of 
 [C:/Adam/Gr/GrPrimatives.CPP.Z,51] GrPlot().  See
 [C:/Demo/Graphics/Blot.CPP.Z,1].
 
-* There are a few [C:/Kernel/KernelA.HPP.Z,2890] raster operations available.
+* There are a few [C:/Kernel/KernelA.HPP.Z,2901] raster operations available.
  They go in bits 8-11 of the dc
-->color member var which is a [C:/Kernel/KernelA.HPP.Z,2931] CColorROPU32. 
-[C:/Kernel/KernelA.HPP.Z,2892] ROP_COLLISION is special.  It 
+->color member var which is a [C:/Kernel/KernelA.HPP.Z,2942] CColorROPU32. 
+[C:/Kernel/KernelA.HPP.Z,2903] ROP_COLLISION is special.  It 
 counts the num of pixs drawn on non-background locations.  Using 
-[C:/Kernel/KernelA.HPP.Z,2892] ROP_COLLISION with vector
+[C:/Kernel/KernelA.HPP.Z,2903] ROP_COLLISION with vector
 [C:/Adam/Gr/Gr.HPP.Z,153] CSprite's is tricky because overlapping pixs from 
 lines in the [C:/Adam/Gr/Gr.HPP.Z,153] CSprite reg as collisions.  You can
 either work with a nonzero 
 count or convert your [C:/Adam/Gr/Gr.HPP.Z,153] CSprite to a bitmap if your
 subelements draw on top of 
 each other.  Be sure to set ->bkcolor before using
-[C:/Kernel/KernelA.HPP.Z,2892] ROP_COLLISION.  See 
+[C:/Kernel/KernelA.HPP.Z,2903] ROP_COLLISION.  See 
 [C:/Demo/Graphics/Collision.CPP.Z,1] and [C:/Apps/TimeOut/TimeOut.CPP.Z,1]
 TimeOut.
  
-* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3604] CDC
+* The ->dither_probability_u16 member of [C:/Kernel/KernelA.HPP.Z,3624] CDC
 is a U16 used to statistically 
 select between two colors to get something resembling more shades of color.  
 See [C:/Demo/Graphics/SunMoon.CPP.Z,1] and

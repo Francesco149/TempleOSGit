@@ -43,6 +43,5 @@ U0 PageTableDemo1()
 
 PageTableDemo1;
 
-//See [C:/Kernel/Mem/Mem2Meg.CPP.Z,1] Mem2MegAlloc(), [C:/Kernel/Mem/Mem2Meg.CPP.Z,154] Mem2MegFree() for page aligned allocations.
-//See [C:/Kernel/KernelA.HPP.Z,2843] CBlkPool, [C:/Kernel/KernelA.HPP.Z,2856] CHeapCtrl, [C:/Kernel/KernelB.HPP.Z,195] sys_code_bp and [C:/Kernel/KernelB.HPP.Z,196] sys_data_bp.
+//See [C:/Kernel/KernelA.HPP.Z,2853] CBlkPool, [C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl, [C:/Kernel/KernelB.HPP.Z,195] sys_code_bp and [C:/Kernel/KernelB.HPP.Z,196] sys_data_bp.
 //See [C:/Doc/MemOverview.TXT.Z,1] Memory Overview and [Memory,1] Memory Routines.

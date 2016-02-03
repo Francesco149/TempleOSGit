@@ -7,7 +7,7 @@ public Bool DocLineNumGoTo(CDoc *doc,I64 line_num) //one based
     unlock=DocLock(doc);
     doc->x=0;
     doc->y=line_num-1;
-    DocRecalc(doc,FALSE,DOC_RECALC_FIND_CURSOR);
+    DocRecalc(doc,RECALCt_FIND_CURSOR);
     DocCenter(doc);
     if (doc->cur_entry->y==line_num-1)
       result=TRUE;
@@ -105,7 +105,7 @@ public U0 EdFindNext(CDoc *doc)
   do {
     if (doc_e!=doc) {
       if (doc_e->de_flags&DOCEF_TAG && doc_e->tag &&
-	    !(doc_e->de_flags&(DOCEG1_DONT_EDIT|DOCEF_FILTER_SKIP))) {
+	    !(doc_e->de_flags&(DOCEG_DONT_EDIT|DOCEF_FILTER_SKIP))) {
 	if (doc_e->type & DOCET_SELECTED ||
 	      !doc->find_replace->scan_selected_text) {
 	  if (doc->find_replace->scan_fwd) {
@@ -168,7 +168,7 @@ fn_skip:
 }
 
 public U0 EdSelectAll(CDoc *doc,Bool select)
-{//Set state of [C:/Kernel/KernelA.HPP.Z,941] DOCET_SELECTED on all entries.
+{//Set state of [C:/Kernel/KernelA.HPP.Z,943] DOCET_SELECTED on all entries.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -320,7 +320,7 @@ public Bool EdGoToFun(CDoc *doc,Bool fwd,Bool abort_on_dbl_colon)
 }
 
 public U0 EdSelectFun(CDoc *doc,Bool abort_on_dbl_colon=FALSE)
-{//Set [C:/Kernel/KernelA.HPP.Z,941] DOCET_SELECTED on all entries in cur fun.
+{//Set [C:/Kernel/KernelA.HPP.Z,943] DOCET_SELECTED on all entries in cur fun.
   Bool unlock=DocLock(doc);
   U8 *ptr;
   I64 ch,levels=0,colons=0;
@@ -473,7 +473,7 @@ I64 EdFindReplace(CDoc *doc)
 	    break;
 	}
 	if (doc_e->type_u8==DOCT_TEXT &&
-	      !(doc_e->de_flags&(DOCEG1_DONT_EDIT|DOCEF_FILTER_SKIP)) &&
+	      !(doc_e->de_flags&(DOCEG_DONT_EDIT|DOCEF_FILTER_SKIP)) &&
 	      (doc_e->type & DOCET_SELECTED ||
 	      !doc->find_replace->scan_selected_text&&
 	      !doc->find_replace->local_var)) {

@@ -88,18 +88,18 @@ U0 Uncollapse(U8 *files_find_mask="*",U8 *fu_flags=NULL)
 
 public U0 CopySongs(U8 threshold='7')
 {
-  CDoc *s;
+  CDoc *doc;
   CDocEntry *doc_e;
   CDirEntry *tempde=FilesFind("/Home/Downloads/Psalmody/*.CPP*",
-	FUF_CLUSTER_ORDER),
-	*tempde1=tempde;
+	FUF_CLUSTER_ORDER),*tempde1=tempde;
   DelTree("/Apps/Psalmody/Examples");
   MkDir("/Apps/Psalmody/Examples");
   while (tempde) {
-    s=DocRead(tempde->full_name);
-    doc_e=s->root.next;
+    doc=DocRead(tempde->full_name);
+    doc_e=doc->root.next;
     if (doc_e->type_u8==DOCT_TEXT && doc_e->tag[2]>=threshold)
       Copy(tempde->full_name,"/Apps/Psalmody/Examples");
+    DocDel(doc);
     tempde=tempde->next;
   }
   DirTreeDel(tempde1);
@@ -288,7 +288,7 @@ U0 MakeTOSDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
-	"Download TempleOS V4.01 - T.S. Company Internal Distro (%0.1f MB)",
+	"Download TempleOS V4.02 - T.S. Company Internal Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -323,7 +323,7 @@ U0 MakeDbgDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSDBG_SIZE",
-	"Download TempleOS V4.01 - Debug Distro (%0.1f MB)",
+	"Download TempleOS V4.02 - Debug Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -371,7 +371,7 @@ U0 MakeLiteDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSLITE_SIZE",
-	"Download TempleOS V4.01 - Lite Distro (%0.1f MB)",
+	"Download TempleOS V4.02 - Lite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -404,7 +404,7 @@ U0 MakeUltraDistro()
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	"Download TempleOS V4.01 - UltraLite Distro (%0.1f MB)",
+	"Download TempleOS V4.02 - UltraLite Distro (%0.1f MB)",
 	0.1*(10*Size(TOS_ISO_NAME,"+s")/1024/1024));
   Drv('C');
 }
@@ -490,12 +490,12 @@ U0 UpdateISODocDefines()
 {
   try {
     DefinePrint("DD_TEMPLEOSCD_SIZE",
-	  "Download TempleOS V4.01 - Standard Distro (%0.1f MB)",
+	  "Download TempleOS V4.02 - Standard Distro (%0.1f MB)",
 	  0.1*(10*Size("D:/Wb/TempleOSCD.ISO","+s")/1024/1024));
     DefinePrint("DD_TEMPLEOSCD_K_SIZE",
 	  "%d KB",Size("D:/Wb/TempleOSCD.ISO","+s")/1024);
     DefinePrint("DD_TEMPLEOSULTRA_SIZE",
-	  "Download TempleOS V4.01 - UltraSmall Distro (%0.1f MB)",
+	  "Download TempleOS V4.02 - UltraSmall Distro (%0.1f MB)",
 	  0.1*(10*Size("D:/Wb/TempleOSUltra.ISO","+s")/1024/1024));
     DefinePrint("DD_TEMPLEOSULTRA_K_SIZE",
 	  "%d KB",Size("D:/Wb/TempleOSUltra.ISO","+s")/1024);

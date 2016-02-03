@@ -26,13 +26,13 @@ U0 DoIt()
   DocLock(bdoc);
   DocBottom(bdoc);  //Ins at the bottom
   DocPrint(bdoc,"$RED$$CM+BY+LX,5,-3$");
-//The [C:/Adam/DolDoc/DocPutS.CPP.Z,169] DocPrint() routine returns the addr of the last entry.
+//The [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint() routine returns the addr of the last entry.
   doc_e=DocPrint(bdoc,"$TX+TC,\" \"$");
 //The TC flag is "has tag callback".
 
   //Flags are explained here:
   //[C:/Doc/DolDocOverview.TXT.Z,1]	[C:/Doc/Widget.TXT.Z,1]
-  //[C:/Kernel/KernelA.HPP.Z,1036] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
+  //[C:/Kernel/KernelA.HPP.Z,1040] Dollar Flags		[C:/Adam/DolDoc/DocInit.CPP.Z,1] ST_DOC_FLAGS
   doc_e->tag_cb=&tSCB;
   DocPrint(bdoc,"$FG$");
   DocUnlock(bdoc);

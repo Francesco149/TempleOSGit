@@ -21,6 +21,7 @@ U0 SPutChar(U8 **_dst,U8 ch,U8 **_buf)
     if (i>=MSize(buf)) {
       buf=MAlloc(i<<1+1);
       MemCpy(buf,*_buf,i);
+      Free(*_buf);
       dst=buf+i;
       *_buf=buf;
     }
@@ -890,12 +891,12 @@ sp_out_eng: //Engineering notation
 }
 
 U8 *StrPrint(U8 *dst,U8 *fmt,...)
-{//See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
+{//See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
   return StrPrintJoin(dst,fmt,argc,argv);
 }
 
 U8 *CatPrint(U8 *_dst,U8 *fmt,...)
-{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
+{//StrCat().  See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
   U8 *dst=_dst;
   while (*dst)
     dst++;
@@ -904,7 +905,7 @@ U8 *CatPrint(U8 *_dst,U8 *fmt,...)
 }
 
 U0 Print(U8 *fmt,...)
-{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
+{//[C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.  See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
 //Don't use this.  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
   U8 *buf=StrPrintJoin(NULL,fmt,argc,argv);
   PutS(buf);//Don't use PutS().  [C:/Doc/HolyC.TXT.Z,1] See Print() shortcut.
@@ -912,7 +913,7 @@ U0 Print(U8 *fmt,...)
 }
 
 U8 *MStrPrint(U8 *fmt,...)
-{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,218] StrPrintJoin().
+{//MAlloc StrPrint.  See [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin().
   U8 *result,*buf=StrPrintJoin(NULL,fmt,argc,argv);
   result=StrNew(buf);
   Free(buf);

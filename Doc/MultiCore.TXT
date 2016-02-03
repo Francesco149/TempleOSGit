@@ -11,10 +11,10 @@ Only tasks on core0 can have windows, but other cores can help render them.
 Each core has an executive seth task which is the father of all tasks on that 
 core.  Adam is the seth task on core 0.
 
-You give a job to a seth task with [C:/Kernel/MultiProc.CPP.Z,232] JobQue()
+You give a job to a seth task with [C:/Kernel/MultiProc.CPP.Z,213] JobQue()
 and get the result with 
 [C:/Kernel/SrvCmd.CPP.Z,198] JobResultGet().  You spawn a task on another
-core with [C:/Kernel/KTask.CPP.Z,205] Spawn().
+core with [C:/Kernel/KTask.CPP.Z,208] Spawn().
 
 Note: You must use the LOCK asm prefix when changing shared structures in a 
 multicore environment.  The [C:/Kernel/KernelB.HPP.Z,26] LBts(),

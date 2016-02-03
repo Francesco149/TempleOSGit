@@ -17,9 +17,9 @@ The scheduler checks if a task is
 waiting for a certain time or waiting
 on a message and skips if not ready.
 A task runs until it voluntarily yields ctrl
-with a call to [C:/Kernel/Sched.CPP.Z,312] Yield().  Tasks waiting on I/O
+with a call to [C:/Kernel/Sched.CPP.Z,295] Yield().  Tasks waiting on I/O
 often loop, checking for a status and
-[C:/Kernel/Sched.CPP.Z,312] Yielding.  This does not really degrade
+[C:/Kernel/Sched.CPP.Z,295] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
 
 The scheduler checks for a few keys:
@@ -32,7 +32,7 @@ The scheduler checks for a few keys:
 Each core has its own circular task queue.
 For AP processors, they have a "Seth" task
 which stays in a loop waiting for jobs or
-requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,211] CoreAPSethTask().
+requests to spawn tasks.  See [C:/Kernel/MultiProc.CPP.Z,194] CoreAPSethTask().
 */
 
 U0 TaskFocusNext()
@@ -167,29 +167,12 @@ _TASK_END_NOW::
 _YIELD::
 	PUSHFD
 	TEST	U8 [SYS_SEMAS+SYS_SEMA_SINGLE_USER*SEMA_STRUCT_SIZE],1
-	JNZ	@@05	//If single user, don't change task.
-
-	CLI
-	PUSH	RSI
-	XOR	RSI,RSI
-	MOV	RSI,FS:CTask.addr[RSI]
-	CMP	U64 CTask.next_task[RSI],RSI
-	JNE	@@15	//Jmp if not just one task on core.
-
-	PUSH	RAX
-	MOV	RAX,U64 [&cnts.jiffies]
-	CMP	U64 CTask.wake_jiffy[RSI],RAX
-	JG	@@10	//If needs to sleep, jmp and swap-out.
-
-	POP	RAX
-	POP	RSI
-@@05:	POPFD
+	JZ	@@05
+	POPFD		//If single user, don't change task.
 	RET
 
-@@10:	POP	RAX
-@@15:	POP	RSI
+@@05:	CLI
 	CALL	TASK_CONTEXT_SAVE
-
 	MOV	EBX,U32 _RET
 	MOV	U64 CTask.rip[RSI],RBX
 	POP	U64 CTask.rflags[RSI]
@@ -203,7 +186,7 @@ RESTORE_RSI_TASK:
 
 RESTORE_RSI_TASK2:
 @@20:	BT	U64 CTask.task_flags[RSI],TASKf_KILL_TASK
-	JC	I32 END_RSI_TASK
+	JC	END_RSI_TASK
 	TEST	U64 CTask.task_flags[RSI],
 		1<<TASKf_AWAITING_MSG|1<<TASKf_SUSPENDED
 	JNZ	@@25

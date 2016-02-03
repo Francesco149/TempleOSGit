@@ -32,14 +32,14 @@ partition or boot to a standard TempleOS CD/DVD and use
 hard drive.
 
 * I copy my files to a mirrored identical partition, periodically with 
-[C:/Adam/ABlkDev/ADskA.CPP.Z,120] CopyTree() commands in scripts.  I do merge
+[C:/Adam/ABlkDev/ADskA.CPP.Z,122] CopyTree() commands in scripts.  I do merge
 commands with a menu entry like 
 this:
 Merge(\"C:/*\",\"D:/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-m> at the cmd line to access your PersonalMenu.  Place macros there 
 with <CTRL-l>, or icon-like sprites with <CTRL-r>.  Use the Pop-Up option on 
-macros to [C:/Kernel/KTask.CPP.Z,205] Spawn() a task to run a file.  It dies
+macros to [C:/Kernel/KTask.CPP.Z,208] Spawn() a task to run a file.  It dies
 when it is finished.  This 
 returns mem to the system.  Be sure to press <CTRL-s> to save your macro/menu 
 area after making changes.
@@ -56,7 +56,7 @@ start-up file.  See [D:/Home/HomeLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the [C:/Kernel/KGlbls.CPP.Z,14]
 local_time_offset global var 
-in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,545] CDATE_FREQ.
+in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,547] CDATE_FREQ.
  See [D:/Home/HomeLocalize.CPP,1] local time.
 
 * <CTRL-SHIFT-L> in the editor to reindent a [C:/Doc/HolyC.TXT.Z,1] HolyC
@@ -72,7 +72,7 @@ C>.
 * You can recompile and reinstall the kernel with
 [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall().  
 You'll probably want to make a function for recompiling that uses the
-[C:/Kernel/SrvCmd.CPP.Z,486] Auto() 
+[C:/Kernel/SrvCmd.CPP.Z,483] Auto() 
 function to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP.Z,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] Update Funs.
@@ -100,27 +100,27 @@ was to indicate how far along operations were.  There's no coordination, so
 different apps might interfere.  I use them most for debugging--just values 
 easily viewed.  See [C:/Demo/Progress.CPP.Z,1].
 
-* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1322] CDoc 
+* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to adjust the size of
+the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1332] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3265] CTask,
-[C:/Kernel/KernelA.HPP.Z,1158] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2507]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3283] CTask,
+[C:/Kernel/KernelA.HPP.Z,1162] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2517]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
-smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,205] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2837] MEM_DFT_STK, and using
-[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to 
+smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,208] Spawn(), chang
+[C:/Kernel/KernelA.HPP.Z,2847] MEM_DFT_STK, and using
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to 
 reduce the cmd line buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 
 when read or written.  The compression method is not supported by other 
 operating systems.  You can store files uncompressed by
-[C:/Adam/ABlkDev/ADskA.CPP.Z,92] Move()ing them to a 
+[C:/Adam/ABlkDev/ADskA.CPP.Z,94] Move()ing them to a 
 filename not ending in ".Z".  See [C:/Doc/TOSZ.TXT.Z,1] if you want to
 uncompress 
 while in Linux.
@@ -135,16 +135,16 @@ will check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1507] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1517] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1508] OPTf_WARN_DUP_TYPES,ON) to find
+Option([C:/Kernel/KernelA.HPP.Z,1518] OPTf_WARN_DUP_TYPES,ON) to find
 unnecessary local var 
 type stmts.
 
-* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1504]
+* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1514]
 OPTf_ECHO,ON) can be placed in [C:/StartOS.CPP.Z,1] StartOS.CPP to echo
 start-up scripts.
 
@@ -210,14 +210,14 @@ view data, you can use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View().
 the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1454]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1464]
 ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1322] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1332] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP.Z,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -246,7 +246,7 @@ so you can edit the ctrl points.  Then, convert them to bitmaps, so the flood
 fills work well.  If you are doing interpolation, however, they must be vect.
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill() is slow. 
-[C:/Adam/Gr/GrBitMap.CPP.Z,910] GrRect() is fast.
+[C:/Adam/Gr/GrBitMap.CPP.Z,925] GrRect() is fast.
 
 * You can customize the wallpaper.  See
 [C:/Demo/Graphics/WallPaperFish.CPP.Z,1].
@@ -271,24 +271,26 @@ resources are put together.
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
-* [C:/Kernel/KernelA.HPP.Z,531] cnts.time_stamp_freq is continuously
+* [C:/Kernel/KernelA.HPP.Z,533] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
 timeout=[C:/Kernel/KernelB.HPP.Z,285] GetTSC+
-[C:/Kernel/KernelA.HPP.Z,531] cnts.time_stamp_freq x seconds; and compare
+[C:/Kernel/KernelA.HPP.Z,533] cnts.time_stamp_freq x seconds; and compare
 against [C:/Kernel/KernelB.HPP.Z,285] GetTSC().  I recommend 
-just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,531]
+just using [C:/Kernel/KMisc.CPP.Z,122] tS or [C:/Kernel/KernelA.HPP.Z,533]
 cnts.jiffies.
 
-* Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog() and
-[C:/Adam/Opt/Utils/HeapLog.CPP.Z,111] HeapLogRep() to find leaks.  Don't be
-confused by [C:/Kernel/KernelA.HPP.Z,1322] CDoc 
-allocations.  Those are generated when text is written to the cmd line buffer.
+* Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog(),
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,115] HeapLogAddrRep() and
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,146] HeapLogSizeRep() to find leaks.  Don't 
+be confused by [C:/Kernel/KernelA.HPP.Z,1332] CDoc allocations.  Those are
+generated when text is written to 
+the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2746]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2756]
 _CFG_HEAP_DBG.  You're on your own.
 
-* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,346] Type() to display .BMP or
+* You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or
 .GRA files.
 
 * Use [C:/Kernel/FunSeg.CPP.Z,284] Man() to jump to short sym name src code.
