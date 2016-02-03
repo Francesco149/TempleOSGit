@@ -2,6 +2,9 @@
                                      TODO
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
+* [C:/Adam/Gr/SpriteMain.CPP.Z,167] SMLine(),etc. Color is not up-to-date
+with insert point color.
+
 * Add AVL or red/black binary tree library support.  We have fixed-size
 stack. 
  Auto-balancing binary tree is very needed.  I've done everything myself.  I 

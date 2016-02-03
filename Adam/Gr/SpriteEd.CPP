@@ -257,7 +257,7 @@ CSprite *SpriteTransformRect(I64 *r,CSprite *tempg,F64 theta)
   return tempg1;
 }
 
-CSprite *SpriteTransformBitmap(I64 *r,CSprite *tempg)
+CSprite *SpriteTransformBitMap(I64 *r,CSprite *tempg)
 {
   CDC *img,*tempb;
   U8 *elems;
@@ -372,7 +372,7 @@ U0 SpriteTransform(I64 *r,CSprite *root)
 	  tempg->p.y1=y;
 	  break;
 	case SPT_BITMAP:
-	  tempg1=SpriteTransformBitmap(r,tempg);
+	  tempg1=SpriteTransformBitMap(r,tempg);
 	  QueIns(tempg1,tempg);
 	  QueRem(tempg);
 	  Free(tempg);

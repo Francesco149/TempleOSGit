@@ -560,13 +560,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	      if (!(doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS))) {
 		DocUnlock(doc);
 		if (doc_ce->type_u8==DOCT_SPRITE)
-		  EdSpriteEd(doc,
-			(doc_ce->x-doc->line_start_col+doc_ce->max_col)*
-			FONT_WIDTH,(doc_ce->y-doc->top_line_num)*FONT_HEIGHT);
+		  EdSpriteEd(doc);
 		else
-		  EdSpriteIns(doc,
-			(doc_ce->x+doc->cur_col-doc->line_start_col)*FONT_WIDTH,
-			(doc_ce->y-doc->top_line_num)*FONT_HEIGHT);
+		  EdSpriteIns(doc);
 		DocLock(doc);
 	      }
 	    }
