@@ -2,6 +2,10 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----02/03/16 07:05:55----
+* Refactored [C:/Adam/Gr/SpriteMain.CPP.Z,583] SpriteMainEd().
+* Added tag edit to main sprite edit menu.
+
 ----02/01/16 21:01:15----
 * Cleaned-up [C:/Kernel/KTask.CPP.Z,496] TaskKillDying().
 * Made multicore more professional.

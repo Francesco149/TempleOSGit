@@ -1057,15 +1057,6 @@ I64 PopUpSpriteType()
   return i;
 }
 
-class CEdJustSprite
-{
-  U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text       :%s\"$\n",
-	exp[512];
-  Bool	escape,
-	popup,
-	is_auto;
-};
-
 class CEdMacroSprite
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text       :%s\"$\n",
@@ -1106,9 +1097,7 @@ U8 *EdSprite(I64 bin_num)
   *buf=0;
   switch (type) {
     case EST_SPRITE:
-      StrPrint(e->tag,"<%d>",bin_num);
-      if (DocForm(e,"CEdJustSprite",,,ctrl_L_footer))
-	st1=MStrPrint("\"%Q\"",e->tag);
+      st1=MStrPrint("\"<%d>\"",bin_num);
       break;
     case EST_SPRITE_MACRO:
       e->escape=TRUE;
