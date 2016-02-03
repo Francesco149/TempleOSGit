@@ -58,7 +58,7 @@ the drive letter of the partition in place of 'D'.
   /0000Adam/Opt/
 Boot/OldMBR.BIN.C.
 
-3) [C:/Adam/ABlkDev/ADskA.CPP.Z,120] CopyTree("T:/","D:/")
+3) [C:/Adam/ABlkDev/ADskA.CPP.Z,122] CopyTree("T:/","D:/")
   This command is used to copy files onto a hard drive partition from the 
 CD/DVD.  Use the drive letter of the partition in place of 'D'.
 

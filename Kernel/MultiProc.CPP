@@ -3,7 +3,7 @@ asm {
 USE16
 //See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
-//This code gets copied to [C:/Kernel/KernelA.HPP.Z,500] MP_VECT_ADDR.
+//This code gets copied to [C:/Kernel/KernelA.HPP.Z,502] MP_VECT_ADDR.
 //See [C:/Kernel/MultiProc.CPP.Z,2] MemCpy(MP_VECT_ADDR.
 COREAP_16BIT_INIT::
 	JMP	@@05
@@ -119,6 +119,7 @@ CCPU *CPUStructInit(I64 num,CCPU *c,CTask *seth_task)
   c->addr=c;
   c->num=num;
   c->idle_factor=0.01;
+  QueInit(&c->next_dying);
   if (Bt(&sys_run_level,RLf_BOOT_HEAP)) {
     c->idle_task=Spawn(0,NULL,"Idle Task",,Fs,,0);
     LBts(&c->idle_task->task_flags,TASKf_IDLE);
@@ -167,28 +168,10 @@ U0 MPHalt()
   BusyWait(10000);
 }
 
-U0 MPWake(I64 target_cpu)
-{//Send wake-up interupt to core.
-  if (0<=target_cpu<mp_cnt) {
-    PUSHFD
-    CLI
-    if (Bt(&cpu_structs[target_cpu].cpu_flags,CPUf_SETH_SLEEP))
-      cpu_structs[target_cpu].seth_task->wake_jiffy=0;
-    if (!target_cpu)
-      LBtr(&adam_task->task_flags,TASKf_AWAITING_MSG);
-    MPInt(I_WAKE,target_cpu);
-    if (Bt(&cpu_structs[target_cpu].cpu_flags,CPUf_SETH_SLEEP))//back to sleep?
-      cpu_structs[target_cpu].seth_task->wake_jiffy=0;
-    if (!target_cpu)
-      LBtr(&adam_task->task_flags,TASKf_AWAITING_MSG);
-    POPFD
-  }
-}
-
 U0 MPAPICInit()
 {//Called by adam during start-up
 //and other cores during initialization
-  //after [C:/Kernel/MultiProc.CPP.Z,301] Core0StartMP().
+  //after [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP().
   *LAPIC_SVR(U32 *)|=LAPICF_APIC_ENABLED;
   dev.mp_apic_ids[Gs->num]=*LAPIC_APIC_ID(U32 *)>>24;
   *LAPIC_LDR(U32 *)=dev.mp_apic_ids[Gs->num]<<24;
@@ -210,22 +193,20 @@ U0 MPAPICInit()
 
 U0 CoreAPSethTask()
 {
-  CSrvCtrl *my_ctrl=&Fs->srv_ctrl;
-  CSrvCmd *tempc,*tempc1=&my_ctrl->next_waiting;
-  STI
+  CSrvCtrl *ctrl=&Fs->srv_ctrl;
   while (TRUE) {
-    TaskFinishOffDying;
-    if (!LBts(&my_ctrl->flags,SVCRf_LOCKED)) {
-      tempc=tempc1->next;
-      if (tempc==tempc1 || !SrvCmdRun(GetRFlags,tempc)) {
-	LBtr(&my_ctrl->flags,SVCRf_LOCKED) ;
-	if (my_ctrl->next_waiting==my_ctrl) {
-	  Bts(&Gs->cpu_flags,CPUf_SETH_SLEEP);
-	  Sleep(20);
-	  Btr(&Gs->cpu_flags,CPUf_SETH_SLEEP);
-	}
-      }
-    }
+    STI
+    do {
+      TaskKillDying;
+      do PAUSE
+      while (LBts(&ctrl->flags,SVCRf_LOCKED));
+    } while (ctrl->next_waiting!=ctrl && SrvCmdRunOne(GetRFlags,ctrl));
+    CLI
+    LBts(&Fs->task_flags,TASKf_AWAITING_MSG);
+    LBtr(&ctrl->flags,SVCRf_LOCKED);
+    LBts(&Fs->task_flags,TASKf_IDLE);
+    Yield;
+    LBtr(&Fs->task_flags,TASKf_IDLE);
   }
 }
 
@@ -237,6 +218,7 @@ CSrvCmd *JobQue(I64 (*fp_addr)(U8 *data),U8 *data=NULL,
   //See [C:/Demo/MultiCore/Lock.CPP,1]
   CSrvCtrl *ctrl;
   CSrvCmd *tempc;
+  CTask *seth;
   if (!(0<=target_cpu<mp_cnt))
     throw('MultCore');
   tempc=ACAlloc(sizeof(CSrvCmd));
@@ -249,15 +231,17 @@ CSrvCmd *JobQue(I64 (*fp_addr)(U8 *data),U8 *data=NULL,
   tempc->flags=flags;
   tempc->aux1=aux1;
   tempc->aux2=aux2;
-  tempc->ctrl=ctrl=&cpu_structs[target_cpu].seth_task->srv_ctrl;
+  seth=cpu_structs[target_cpu].seth_task;
+  tempc->ctrl=ctrl=&seth->srv_ctrl;
   PUSHFD
   CLI
   while (LBts(&ctrl->flags,SVCRf_LOCKED))
     Yield;
+  if (ctrl->next_waiting==ctrl && LBtr(&seth->task_flags,TASKf_AWAITING_MSG))
+    MPInt(I_WAKE,target_cpu);
   QueIns(tempc,ctrl->last_waiting);
   LBtr(&ctrl->flags,SVCRf_LOCKED);
   POPFD
-  MPWake(target_cpu);
   return tempc;
 }
 
@@ -290,7 +274,7 @@ CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 }
 
 U0 CoreAPSethInit()
-{//Called by multicore's seth task after [C:/Kernel/MultiProc.CPP.Z,301] Core0StartMP()
+{//Called by multicore's seth task after [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP()
 //as the first thing a CPU does before waiting for jobs.
   MPAPICInit;
   Fs->rip=&CoreAPSethTask;
@@ -325,8 +309,8 @@ U0 Core0StartMP()
   MemSet(&cpu_structs[1],0,sizeof(CCPU)*(MP_MAX_PROCESSORS-1));
 
   //When you start-up other cores, they jump to an addr
-  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,499] MPN_VECT which corresponds
-  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,500] MP_VECT_ADDR.
+  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,501] MPN_VECT which corresponds
+  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,502] MP_VECT_ADDR.
   MemCpy(mp,COREAP_16BIT_INIT,COREAP_16BIT_INIT_END-COREAP_16BIT_INIT);
   MemCpy(&mp->ap_gdt_ptr,SYS_GDT_PTR,sizeof(CSysLimitBase));
   mp_cnt_initial=mp_cnt=1;
@@ -354,17 +338,15 @@ U0 Core0StartMP()
     StrPrint(buf,"Seth Task CPU#%d",i);
     task=Spawn(&CoreAPSethInit,NULL,buf,,,MEM_SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HPP.Z,3265] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HPP.Z,3283] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }
 
   //Make sure they're all up-and-running
-  for (i=1;i<my_mp_cnt;i++) {
-    c=&cpu_structs[i];
-    while (!Bt(&c->cpu_flags,CPUf_SETH_SLEEP))
-      PAUSE
-  }
+  for (i=1;i<my_mp_cnt;i++)
+    while (!Bt(&cpu_structs[i].seth_task->task_flags,TASKf_AWAITING_MSG))
+      PAUSE;
 
   POPFD
   mp_cnt=my_mp_cnt; //Finalize cnt

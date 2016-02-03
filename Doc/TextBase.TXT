@@ -1,24 +1,24 @@
 [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base must be updated 30fps in your
 Fs->draw_it() callback.  You 
-probably want [C:/Adam/Gr/GrBitMap.CPP.Z,891] GrPrint() or just
-[C:/Kernel/StrPrint.CPP.Z,906] Print().  The [C:/Doc/DolDocOverview.TXT.Z,1]
+probably want [C:/Adam/Gr/GrBitMap.CPP.Z,906] GrPrint() or just
+[C:/Kernel/StrPrint.CPP.Z,907] Print().  The [C:/Doc/DolDocOverview.TXT.Z,1]
 DolDoc code takes care of 
 plotting text to [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base.
 
 Bits 0-7	8-Bit ASCII Screen Code
-Bits 8-11	Foreground [C:/Kernel/KernelA.HPP.Z,2906] color
-Bits 12-15	Background [C:/Kernel/KernelA.HPP.Z,2906] color
+Bits 8-11	Foreground [C:/Kernel/KernelA.HPP.Z,2917] color
+Bits 12-15	Background [C:/Kernel/KernelA.HPP.Z,2917] color
 Bits 16-20	Signed X pos shift val
 Bits 21-25	Signed Y pos shift val
-Bit  28		[C:/Kernel/KernelA.HPP.Z,882] Blink
-Bit  29		[C:/Kernel/KernelA.HPP.Z,883] Inverted (Swap foreground and
+Bit  28		[C:/Kernel/KernelA.HPP.Z,884] Blink
+Bit  29		[C:/Kernel/KernelA.HPP.Z,885] Inverted (Swap foreground and
 background)
-Bit  30		[C:/Kernel/KernelA.HPP.Z,884] Selected (XOR colors with FF)
-Bit  31		[C:/Kernel/KernelA.HPP.Z,885] Underline
+Bit  30		[C:/Kernel/KernelA.HPP.Z,886] Selected (XOR colors with FF)
+Bit  31		[C:/Kernel/KernelA.HPP.Z,887] Underline
 
 [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin() calls
-[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,183] DocUpdateTaskDocs() which calls
-[C:/Adam/DolDoc/DocRecalc.CPP.Z,254] DocRecalc() where the 
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,190] DocUpdateTaskDocs() which calls
+[C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc() where the 
 document text is plotted into [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base. 
 Then, [C:/Adam/Gr/GrScreen.CPP.Z,166] GrUpdateTextBG() and 
 [C:/Adam/Gr/GrScreen.CPP.Z,255] GrUpdateTextFG() render the

@@ -15,11 +15,11 @@ only call a function within 2 Gig distance.  Therefore, TempleOS keeps all
 code in the lowest 2 Gig memory addresses including what would normally be 
 called "the kernel".  Two Gig is plenty for code, don't worry.
 
-You can create new, independent heaps by first allocating mem with 
-[C:/Kernel/Mem/Mem2Meg.CPP.Z,106] Mem2MegUncachedAlloc() or
-[C:/Kernel/Mem/Mem512.CPP.Z,11] Mem512Alloc(), then calling
-[C:/Kernel/Mem/HeapCtrl.CPP.Z,13] HeapCtrlBPInit() and, 
-then, using [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc().
+You can create new, independent heaps using [C:/Kernel/Mem/HeapCtrl.CPP.Z,1]
+HeapCtrlInit().  Then, use the 
+[C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl as the 2nd arg to
+[C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  See
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog() for an example.
 
 Memory alloced by a task will be freed when the task is killed.
 
@@ -32,9 +32,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x0000034A8F
+ 0x0000007C00- 0x00000344FF
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3828] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3849] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -42,7 +42,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
 [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x0000097030
-  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,499] MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,501] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -51,7 +51,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3418] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3438] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF
@@ -81,7 +81,7 @@ but no PCI devices are actually supported.
 
 * Note: There is a break in the data-heap block pool.  This has no effect 
 except the obvious effect that fragmentation has on contiguous requests.  I 
-can [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() an 8 Gig chunk on my 12 Gig
+can [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() an 8 Gig chunk on my 12 Gig
 machine.
 
 * Note: For systems with less than 2 Gig RAM, the code and data heap block 

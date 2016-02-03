@@ -7,7 +7,7 @@ the current routine, as well.
 
 When done collecting statistics, use [C:/Adam/Opt/Utils/Profiler.CPP.Z,57]
 ProfRep() for a report.  You might need a 
-[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,166] DocMax() to expand the command line
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to expand the command line
 window buffer to fit it all.
 
 Study the code.  The profiler is very simple.  You might want to enhance it

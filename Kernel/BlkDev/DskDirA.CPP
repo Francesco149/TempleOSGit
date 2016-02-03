@@ -1,5 +1,5 @@
 Bool DirNew(CDrv *dv,U8 *cur_dir,CDirEntry *tempde,Bool free_old_chain=TRUE)
-{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2507] CDirEntry node.
+{//Makes a directory entry in the directory from a [C:/Kernel/KernelA.HPP.Z,2517] CDirEntry node.
   switch (dv->fs_type) {
     case FSt_REDSEA:
       return RedSeaDirNew(dv,cur_dir,tempde,free_old_chain);
@@ -91,14 +91,10 @@ I64 DirEntryCompareCluster(CDirEntry *e1,CDirEntry *e2)
 
 U0 DirFilesSort(CDirEntry **_tempde,I64 key)
 {
-  I64 i,cnt=0;
+  I64 i,cnt;
   CDirEntry *tempde=*_tempde,*tempde1,**sort_buf;
   if (tempde) {
-    tempde1=tempde;
-    while (tempde1) {
-      cnt++;
-      tempde1=tempde1->next;
-    }
+    cnt=LinkedLstCnt(tempde);
     if (cnt>1) {
       sort_buf=MAlloc(cnt*sizeof(U8 *));
       i=0;
@@ -176,7 +172,7 @@ U0 PutFileLink(U8 *filename,I64 line=0,Bool plain_text=FALSE)
   } else {
 //LK_DOC,LK_DOC_ANCHOR,LK_DOC_FIND,LK_DOC_LINE
     if (filename[0]=='A'&&filename[2]==':') {
-      if (line) //See [C:/Adam/Gr/SpriteEd.CPP.Z,613] SpriteEdText()
+      if (line) //See [C:/Adam/Gr/SpriteEd.CPP.Z,647] SpriteEdText()
 	"$LK,\"%s,%04d\",A=\"AL:%s,%d\"$",filename+3,line,filename+3,line;
       else
 	"$LK,\"%s\",A=\"AI:%s\"$",filename+3,filename+3;

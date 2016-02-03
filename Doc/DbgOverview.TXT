@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,636] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,649] U(). [C:/Compiler/UAsm.CPP.Z,649]
-U([C:/Kernel/KernelA.HPP.Z,3376] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3395] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,649] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,247] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3376]
+function. [C:/Compiler/UAsm.CPP.Z,649] U([C:/Kernel/KernelA.HPP.Z,3395]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -24,18 +24,18 @@ functions as in &Print+0x10.
 progress4 for debugging because they show on the wallpaper.  
 They're just global integer vars.
 
-* You can use [C:/Kernel/SrvCmd.CPP.Z,427] AdamLog() to send text to the Adam
+* You can use [C:/Kernel/SrvCmd.CPP.Z,424] AdamLog() to send text to the Adam
 task window.  It works like 
-[C:/Kernel/StrPrint.CPP.Z,906] Print().  I never use that.  Instead, I use
+[C:/Kernel/StrPrint.CPP.Z,907] Print().  I never use that.  Instead, I use
 [C:/Kernel/KDbg.CPP.Z,217] RawPrint().
 
-* [C:/Kernel/KDbg.CPP.Z,172] D(), [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD(),
+* [C:/Kernel/KDbg.CPP.Z,172] D(), [C:/Adam/DolDoc/DocPutS.CPP.Z,334] DocD(),
 [C:/Kernel/KDbg.CPP.Z,234] RawD() to do 16 column hex dump mem with numbering
 from zero.  
-With [C:/Adam/DolDoc/DocPutS.CPP.Z,347] DocD the values are updated
+With [C:/Adam/DolDoc/DocPutS.CPP.Z,334] DocD the values are updated
 continually and you can alter mem by editing.
 
-* [C:/Kernel/KDbg.CPP.Z,204] Dm(), [C:/Adam/DolDoc/DocPutS.CPP.Z,334]
+* [C:/Kernel/KDbg.CPP.Z,204] Dm(), [C:/Adam/DolDoc/DocPutS.CPP.Z,321]
 DocDm(), [C:/Kernel/KDbg.CPP.Z,250] RawDm() to do 16 column hex dump mem with
 addresses showing.
 
@@ -84,11 +84,14 @@ ctrl which passes are displayed.
 
 
 * There is a heap check utility which can find leaks.  Use
-[C:/Adam/Opt/Utils/HeapLog.CPP.Z,69] HeapLog(), and 
-[C:/Adam/Opt/Utils/HeapLog.CPP.Z,111] HeapLogRep().  It's a really simple
-program which intercepts [C:/Kernel/Mem/MAllocFree.CPP.Z,373] MAlloc() and 
-[C:/Kernel/Mem/MAllocFree.CPP.Z,369] Free().  You can customize the code to
-find other heap issues.
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog(), 
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,115] HeapLogAddrRep() and
+[C:/Adam/Opt/Utils/HeapLog.CPP.Z,146] HeapLogSizeRep().  It's a really simple
+program which 
+intercepts [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() and
+[C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free().  You can customize the code to
+find other heap 
+issues.
 
 * You can define handler functions for <CTRL-ALT-letter> keys with 
 [C:/Kernel/KeyDev.CPP.Z,176] CtrlAltCBSet().  They operate either in a

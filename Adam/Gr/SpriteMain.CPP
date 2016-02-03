@@ -235,7 +235,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	i=PopUpColor(,,FALSE);
 	if (i>=0) {
 	  color=i;
-	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
+	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
 	  tempg->type=SPT_COLOR;
 	  tempg->c.color=color;
 	  QueIns(tempg,insert_pt->last);
@@ -250,7 +250,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	i=PopUpColorDither;
 	if (i>=0) {
 	  color=i;
-	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_DITHER_COLOR));
+	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_DITHER_COLOR));
 	  tempg->type=SPT_DITHER_COLOR;
 	  tempg->d.dither_color=color.c0.color|color.c1.color<<8;
 	  QueIns(tempg,insert_pt->last);
@@ -293,7 +293,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	} else
 	  old_mesh=NULL;
 	if (mesh=SpriteMeshEd(old_mesh,&size,TRUE)) {
-	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_MESH)-sizeof(I32)*2+size);
+	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_MESH)-sizeof(I32)*2+size);
 	  tempg->type=SPT_MESH;
 	  MemCpy(&tempg->mu.vertex_cnt,mesh,size);
 	  Free(mesh);
@@ -378,7 +378,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	i=PopUpRangeI64(1,16,1,"Pen Width\n");
 	if (i>=1) {
 	  width=i;
-	  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_WIDTH));
+	  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_WIDTH));
 	  tempg->type=SPT_WIDTH;
 	  tempg->w.width=width;
 	  QueIns(tempg,insert_pt->last);
@@ -390,7 +390,7 @@ I64 SpriteMainEd(CDoc *doc,CDocEntry *doc_e,I64 x,I64 y)
 	break;
       case SPT_TRANSFORM_ON:
       case SPT_TRANSFORM_OFF:
-	tempg=MAlloc(SpriteElemQuedBaseSize(SPT_TRANSFORM_ON));
+	tempg=CAlloc(SpriteElemQuedBaseSize(SPT_TRANSFORM_ON));
 	if (eletype==SPT_TRANSFORM_ON)
 	  tempg->type=SPT_TRANSFORM_ON;
 	else
@@ -521,7 +521,7 @@ ei_restart:
 	    dc3=DCScreenCapture(FALSE);
 	    color=GrPeek(dc3,ip.pos.x,ip.pos.y)^15;//Mouse cursor is XORed.
 	    DCDel(dc3);
-	    tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
+	    tempg=CAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
 	    tempg->type=SPT_COLOR;
 	    tempg->c.color=color;
 	    QueIns(tempg,insert_pt->last);
@@ -529,7 +529,7 @@ ei_restart:
 	    cur_elem_num++;
 	    break;
 	  case 't': //Set to transparent color
-	    tempg=MAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
+	    tempg=CAlloc(SpriteElemQuedBaseSize(SPT_COLOR));
 	    tempg->type=SPT_COLOR;
 	    tempg->c.color=TRANSPARENT;
 	    QueIns(tempg,insert_pt->last);
@@ -555,7 +555,7 @@ ei_restart:
 		} while (msg_code!=MSG_IP_L_UP);
 		dc->color=color&COLORROP_NO_ROP0_MASK;
 		GrLine3(dc,x1,y1,0,x2,y2,0);
-		tempg=MAlloc(SpriteElemQuedBaseSize(SPT_LINE));
+		tempg=CAlloc(SpriteElemQuedBaseSize(SPT_LINE));
 		tempg->type=SPT_LINE;
 		break;
 	      case SPT_ARROW:
@@ -569,7 +569,7 @@ ei_restart:
 		} while (msg_code!=MSG_IP_L_UP);
 		dc->color=color&COLORROP_NO_ROP0_MASK;
 		GrArrow3(dc,x1,y1,0,x2,y2,0);
-		tempg=MAlloc(SpriteElemQuedBaseSize(SPT_ARROW));
+		tempg=CAlloc(SpriteElemQuedBaseSize(SPT_ARROW));
 		tempg->type=SPT_ARROW;
 		break;
 	      case SPT_PLANAR_SYMMETRY:
@@ -588,7 +588,7 @@ ei_restart:
 		dc->flags=old_flags&DCF_SYMMETRY|dc->flags&~DCF_SYMMETRY;
 		dc->pen_width=old_width;
 		eletype=SPT_MENU;
-		tempg=MAlloc(SpriteElemQuedBaseSize(SPT_PLANAR_SYMMETRY));
+		tempg=CAlloc(SpriteElemQuedBaseSize(SPT_PLANAR_SYMMETRY));
 		tempg->type=SPT_PLANAR_SYMMETRY;
 		break;
 	    sub_switch_end:
@@ -620,7 +620,7 @@ ei_restart:
 	      } while (msg_code!=MSG_IP_L_UP);
 	      dc->color=color&COLORROP_NO_ROP0_MASK;
 	      GrRect3(dc,xx1,yy1,0,xx2-xx1,yy2-yy1);
-	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_RECT));
+	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_RECT));
 	      tempg->type=SPT_RECT;
 	      tempg->pp.x1=xx1-x;
 	      tempg->pp.y1=yy1-y;
@@ -695,7 +695,7 @@ ei_restart:
 	      } while (msg_code!=MSG_IP_L_UP);
 	      dc->color=color&COLORROP_NO_ROP0_MASK;
 	      GrCircle3(dc,x1,y1,0,Sqrt(SqrI64(x1-x2)+SqrI64(y1-y2)));
-	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_CIRCLE));
+	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_CIRCLE));
 	      tempg->type=SPT_CIRCLE;
 	      tempg->pr.x1=x1-x;
 	      tempg->pr.y1=y1-y;
@@ -711,7 +711,7 @@ ei_restart:
 		SpriteScreenInit(dc,x,y);
 		x2=a1; y2=a2;
 	      } while (msg_code!=MSG_IP_L_UP);
-	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_ELLIPSE));
+	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_ELLIPSE));
 	      tempg->type=SPT_ELLIPSE;
 	      tempg->pwha.x1=(x1+x2)>>1-x;
 	      tempg->pwha.y1=(y1+y2)>>1-y;
@@ -760,7 +760,7 @@ ei_restart:
 		SpriteScreenInit(dc,x,y);
 		x2=a1; y2=a2;
 	      } while (msg_code!=MSG_IP_L_UP);
-	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_POLYGON));
+	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_POLYGON));
 	      tempg->type=SPT_POLYGON;
 	      tempg->pwhas.x1=(x1+x2)>>1-x;
 	      tempg->pwhas.y1=(y1+y2)>>1-y;
@@ -800,7 +800,7 @@ ei_restart:
 	    case SPT_PT:
 	    case SPT_FLOOD_FILL:
 	    case SPT_FLOOD_FILL_NOT:
-	      tempg=MAlloc(SpriteElemQuedBaseSize(eletype));
+	      tempg=CAlloc(SpriteElemQuedBaseSize(eletype));
 	      tempg->type=eletype;
 	      tempg->p.x1=x1-x;
 	      tempg->p.y1=y1-y;
@@ -825,7 +825,7 @@ ei_restart:
 		if (msg_code==MSG_IP_L_UP) {
 		  if (num)
 		    GrLine3(dc,x1,y1,0,x2,y2,0);
-		  tempg=MAlloc(SpriteElemQuedBaseSize(SPT_PT));
+		  tempg=CAlloc(SpriteElemQuedBaseSize(SPT_PT));
 		  tempg->type=SPT_PT;
 		  tempg->p.x1=x2-x;
 		  tempg->p.y1=y2-y;
@@ -1059,7 +1059,7 @@ ei_shiftable_mesh:
 	      old_mesh=NULL;
 	    }
 	    if (mesh=SpriteMeshEd(old_mesh,&size,TRUE)) {
-	      tempg=MAlloc(SpriteElemQuedBaseSize(SPT_SHIFTABLE_MESH)
+	      tempg=CAlloc(SpriteElemQuedBaseSize(SPT_SHIFTABLE_MESH)
 	      -sizeof(I32)*2+size);
 	      tempg->type=SPT_SHIFTABLE_MESH;
 	      MemCpy(&tempg->pmu.vertex_cnt,mesh,size);

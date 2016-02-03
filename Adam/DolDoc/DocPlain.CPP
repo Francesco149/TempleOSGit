@@ -61,7 +61,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
     for (i=0;i<DOCEf_NUM_FLAGS;i++)
       if (Bt(&f1,i)!=Bt(&de_flags,i)) {
 	if (Bt(&de_flags,i)) {
-	  if (!(1<<i&DOCEG1_HAS_ARG)) {
+	  if (!(1<<i&DOCEG_HAS_ARG)) {
 	    buf2=MStrPrint("%s+%Z",buf,i,"ST_DOC_FLAGS");
 	    Free(buf); buf=buf2;
 	  }
@@ -124,7 +124,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
       case DOCT_NUM_TYPES-1: //nobound_switch
 	break;
     }
-    de_flags=doc_e->de_flags & DOCEG1_HAS_ARG;
+    de_flags=doc_e->de_flags & DOCEG_HAS_ARG;
     while (de_flags) {
       j=Bsf(de_flags);
       Btr(&de_flags,j);
@@ -308,7 +308,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	  Lex(cc);
 	cc->htc.hash_table_lst=old_hash_table_lst;
 	j=PrsDocFlagSingle(cc,&doc_e->de_flags,&doc_e->type,TRUE);
-	if (!(de_flags=~processed_flags & doc_e->de_flags & DOCEG1_HAS_ARG))
+	if (!(de_flags=~processed_flags & doc_e->de_flags & DOCEG_HAS_ARG))
 	  break;
 	if (cc->token=='=')
 	  Lex(cc);
@@ -604,8 +604,9 @@ U0 DocFlagsToggle(CDoc *doc,I64 tog_flags)
   doc->undo_root.next=u_next;
   doc->undo_root.last=u_last;
   DocUndoCntSet(doc);
-  doc->flags=flags & ~(DOCG_BL_IV_UL|DOCF_WORD_WRAP);
+  doc->flags=flags&~(DOCF_NO_CURSOR|DOCG_BL_IV_UL|DOCF_WORD_WRAP);
   DocLoad(doc,st,size);
+  doc->flags|=flags&DOCF_NO_CURSOR;
   DocCenter(doc);
   if (unlock)
     DocUnlock(doc);

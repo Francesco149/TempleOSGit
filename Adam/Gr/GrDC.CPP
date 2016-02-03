@@ -45,7 +45,7 @@ public I64 Mat4x4NormSqr65536(I64 *r)
 }
 
 public U0 DCMat4x4Set(CDC *dc=NULL,I64 *r)
-{//Set device context's rot matrix. Will be [C:/Kernel/Mem/MAllocFree.CPP.Z,369] Freed() in [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel().Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
+{//Set device context's rot matrix. Will be [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Freed() in [C:/Adam/Gr/GrDC.CPP.Z,208] DCDel().Uses [C:/Demo/Lectures/FixedPoint.CPP,1] fixed-point.
 //The main purpose is to set matrix norm for pen width scaling.
   //NULL as dc means gr.dc
   if (!dc)   dc=gr.dc;
@@ -132,7 +132,7 @@ public U0 DCClear(CDC *dc=NULL)
 }
 
 public U0 DCRst(CDC *dc)
-{//Reset [C:/Kernel/KernelA.HPP.Z,3604] CDC structure members but not image body, itself.
+{//Reset [C:/Kernel/KernelA.HPP.Z,3624] CDC structure members but not image body, itself.
   dc->color=BLACK;
   dc->color2=BLACK;
   dc->bkcolor=BLACK;

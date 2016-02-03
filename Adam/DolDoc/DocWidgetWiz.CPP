@@ -1059,7 +1059,11 @@ I64 PopUpSpriteType()
 
 class CEdJustSprite
 {
-  U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text       :%s\"$\n";
+  U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text       :%s\"$\n",
+	exp[512];
+  Bool	escape,
+	popup,
+	is_auto;
 };
 
 class CEdMacroSprite
@@ -1075,7 +1079,9 @@ class CEdMenuSprite
 {
   U8	tag[512]	fmtstr "$DA-P,511,A=\"Tag Text       :%s\"$\n",
 	exp[512]	fmtstr "$DA-P,511,A=\"Expression     :%s\"$\n";
-  Bool	escape		fmtstr "$CB,\"Escape\"$\n";
+  Bool	escape		fmtstr "$CB,\"Escape\"$\n",
+	popup,
+	is_auto;
 };
 
 U8 *EdSpriteLink(Bool *_pop_up,U8 **_html_link)
@@ -1108,7 +1114,7 @@ U8 *EdSprite(I64 bin_num)
       e->escape=TRUE;
       if (DocForm(e,,,,ctrl_L_footer)) {
 	CatPrint(buf,"+UL");
-	if (e->is_auto)CatPrint(buf,"+LA");
+	if (e->is_auto) CatPrint(buf,"+LA");
 	if (e->popup)	CatPrint(buf,"+PU");
 	if (e->escape)	CatPrint(buf,"+X");
 	st=MStrPrint("%q",e->exp);
