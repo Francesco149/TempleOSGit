@@ -27,7 +27,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT,1].
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] TwoLetterCmd>  See
 [C:/Kernel/KernelA.HPP.Z,895] Type Defines and
-[C:/Adam/DolDoc/DocPlain.CPP.Z,221] PrsDollarCmd().
+[C:/Adam/DolDoc/DocPlain.CPP.Z,220] PrsDollarCmd().
 +] TX Text
   Normally, text is not bracketed with '$', but if you wish to specify flag
   attr, such as centering text, you can bracket them with '$' and enter flags
@@ -155,13 +155,13 @@ Examples: <CTRL-t> to see
   Used for forms that prompt for data.  Use <CTRL-l> as a text widgets editor
   to help you generate the text you need in your "fmtstr" cmd in a class.  If
   you add it directly with [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint(),
-  you'll need to fill-in the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181]
+  you'll need to fill-in the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,205]
   DocForm() and [C:/Demo/DolDoc/Form.CPP,1].
 
 The default data-type for the $DA...$ command is I64.  You can change it to
   I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
-  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,127] DocDataScan().
 
 The [C:/Kernel/KernelA.HPP.Z,1164] CDocEntry.aux_str arg A="" is used for the
   format string.
@@ -173,25 +173,25 @@ If there is a ':', the space after the first ':' in the format string marks
   Used for forms.  Use <CTRL-l> as a text widgets editor to help you generate
   the text you need in your "fmtstr" cmd in a class.  If you add it directly
   with [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint(), you'll need to fill-in
-  the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm(),
+  the data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,205] DocForm(),
   [C:/Kernel/KernelA.HPP.Z,1207] CEdFindText and [C:/Demo/DolDoc/Form.CPP,1].
 
 The default data-type for the $CB...$ command is I8 which is Bool.  You can
   change it to I8, U8, I16, U16, I32, U32, I64, or U64.  See
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
-  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,127] DocDataScan().
 +] LS List Widget
   Used for forms that prompt for data.  You must specify a define list, D="".
    Use <CTRL-l> as a text widgets editor to help you generate the text you need
   in your "fmtstr" cmd in a class.  If you add it directly with
   [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint(), you'll need to fill-in the
-  data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm() and
+  data addr.  See [C:/Adam/DolDoc/DocForm.CPP.Z,205] DocForm() and
   [C:/Demo/DolDoc/Form.CPP,1].
 
 The default data-type for the $LS...$ command is I64.  You can change it to
   I8, U8, I16, U16, I32, U32, I64, or U64.  See
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
-  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,127] DocDataScan().
 +] MA Macro
   A left macro arg, LM="", will send text when the left mouse is clicked.
 
@@ -370,7 +370,7 @@ $SP,"<1>",BI=1,BP="::/Demo/Graphics/Mountain.CPP.Z,Mountain"$ will import bin
 
 You can change it to I8, U8, I16, U16, I32, U32, I64, U64, or F64.  See
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
-  [C:/Adam/DolDoc/DocForm.CPP.Z,111] DocDataScan().
+  [C:/Adam/DolDoc/DocForm.CPP.Z,127] DocDataScan().
 +] SX=<Exp> Shift X
   Shift tag text +/- 7 X pixels off the grid.
 +] SY=<Exp> Shift Y

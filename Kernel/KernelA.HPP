@@ -1194,7 +1194,7 @@ public class CDocEntry:CDocEntryBase
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
-//[C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,235] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,273] PopUpMenu()
+//[C:/Adam/DolDoc/DocForm.CPP.Z,205] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,259] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,297] PopUpMenu()
 #define	DOF_MIN_SIZE		0x01
 #define	DOF_INTERCEPT_TASK_END	0x02
 #define DOF_DONT_HOME		0x04
@@ -1318,7 +1318,7 @@ class CDocUndo
   U8	*body;
 };
 
-//See [C:/Adam/DolDoc/DocForm.CPP.Z,235] DocMenu()
+//See [C:/Adam/DolDoc/DocForm.CPP.Z,259] DocMenu()
 #define DOCM_CANCEL		(-1)
 
 #define DOC_SIGNATURE_VAL	'DocS'

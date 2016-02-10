@@ -483,7 +483,8 @@ U0 EdCharIns(I64 ch,I64 sc,CDoc *doc)
     goto ic_done;
   }
   if (doc_ce->type_u8==DOCT_HEX_ED) {
-    if (doc_ce->de_flags & DOCEF_DATA_IS_PTR)
+    if (doc_ce->de_flags&DOCEF_DATA_IS_PTR &&
+	  !(doc_ce->de_flags&DOCEF_REMALLOC_DATA))
       st=doc_ce->data;
     else
       st=&doc_ce->data;

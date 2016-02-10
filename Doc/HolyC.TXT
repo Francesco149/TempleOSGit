@@ -282,11 +282,11 @@ is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1].
 * class member vars can have meta data. fmtstr and fmtdata are two meta data 
 types now used.  All compiler structures are saved and you can access the 
 compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP,1] and  
-[C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm().
+[C:/Adam/DolDoc/DocForm.CPP.Z,205] DocForm().
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
 name of the previous arg.  See [C:/Demo/LastClass.CPP,1],
-[C:/Adam/ADbg.CPP.Z,154] ClassRep(), [C:/Adam/DolDoc/DocForm.CPP.Z,181]
+[C:/Adam/ADbg.CPP.Z,154] ClassRep(), [C:/Adam/DolDoc/DocForm.CPP.Z,205]
 DocForm()  
 and [C:/Demo/Dsk/BlkDevRep.CPP,1].
 

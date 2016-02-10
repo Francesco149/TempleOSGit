@@ -2,6 +2,8 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----02/09/16 15:30:40----
+
 ----02/09/16 09:34:32----
 * **TempleOS version 4.03 Released**
 * Added [C:/Kernel/KernelA.HPP.Z,1010] DOCEF_REMALLOC_DATA.
@@ -11,7 +13,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 * Added [C:/Demo/AcctExample/TOSToHtml.CPP,1].
 
 ----02/03/16 18:47:00----
-* Refactored [C:/Adam/Gr/SpriteMain.CPP.Z,810] SpriteMainEd().
+* Refactored [C:/Adam/Gr/SpriteMain.CPP.Z,809] SpriteMainEd().
 * Added tag edit to main sprite edit menu.
 
 ----02/01/16 21:01:15----

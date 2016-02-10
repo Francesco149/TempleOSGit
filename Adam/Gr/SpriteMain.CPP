@@ -10,16 +10,15 @@ I64 PopUpSpriteMain(CSprite **_root,I64 *_cur_elem_num,
 	CDoc *_doc,CDocEntry *_doc_e)
 {
   CTask	*pu_task;
-  I64	i=StrLen(_doc_e->tag);
+  I64	i;
   CDoc *doc=DocNew;
   CDocEntry *doc_de;
   U8	*st;
 
   doc_de=DocPrint(doc,"$PURPLE$$TX+CX,\"Sprite Main Menu\"$\n"
 	"$LK+PU+CX,\"Click for Help\",A=\"FI:::/Doc/SpriteMain.TXT.Z\"$\n"
-	"\n$LTBLUE$$DA-P+M,%d,A=\"Tag Text:%%s\"$\n\n",i+7);
-  doc_de->data=MAlloc(i+8,doc->mem_task);
-  StrCpy(doc_de->data,_doc_e->tag);
+	"\n$LTBLUE$$DA+M,A=\"Tag Text:%%s\"$\n\n");
+  doc_de->data=StrNew(_doc_e->tag,doc->mem_task);
   DocDataFmt(doc,doc_de);
 
   DocPrint(doc,"$MU-UL,\"Color (4-bit)\",LE=SPT_COLOR$\n"
