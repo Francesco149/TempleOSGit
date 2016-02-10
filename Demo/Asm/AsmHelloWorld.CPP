@@ -31,7 +31,7 @@ MY_WORLD_MSG:
 //My convention is to put an underscore
 //on C callable asm routines.
 _HELLO_WORLD::
-	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1763] REGG_C_LOCAL_VARS & [C:/Kernel/KernelA.HPP.Z,1764] REGG_C_LOCAL_NON_PTR_VARS
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1772] REGG_C_LOCAL_VARS & [C:/Kernel/KernelA.HPP.Z,1773] REGG_C_LOCAL_NON_PTR_VARS
 	MOV	RCX,10
 @@05:	MOV	RAX,RCX
 	CALL	PUT_HEX_U8

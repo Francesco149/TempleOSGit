@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1527] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1536] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1926] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1935] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -955,36 +955,29 @@ public class CHashGlblVar:CHashSrcSym
 		DOCF_DO_FULL_REFRESH|DOCF_BORDER_DOC|DOCF_HIDE_CURSOR|\
 		DOCF_DONT_HIGHLIGHT_CURSOR|DOCF_CARRIAGE_RETURN)
 
-//CDocEntry.de_flags.  These first 15 are arg=
+//CDocEntry.de_flags.  These first 16 are arg=
 #define DOCEF_TAG		1
-#define DOCEF_AUX_STR		2
-#define DOCEF_DEFINE		4
-#define DOCEF_HTML_LINK		8
-#define DOCEF_LEFT_EXP		0x10
-#define DOCEF_LEFT_MACRO	0x20
-#define DOCEF_RIGHT_EXP		0x40
-#define DOCEF_RIGHT_MACRO	0x80
-#define DOCEF_HAS_BIN		0x100
-#define DOCEF_BIN_PTR_LINK	0x200
-#define DOCEF_RAW_TYPE		0x400
-#define DOCEF_SHIFTED_X		0x800
-#define DOCEF_SHIFTED_Y		0x1000
-#define DOCEF_SCROLLING_X	0x2000
-#define DOCEF_USER_DATA		0x4000
-
-#define DOCEG_HAS_ALLOC		(DOCEF_TAG|DOCEF_AUX_STR|DOCEF_DEFINE|\
-  DOCEF_HTML_LINK|DOCEF_LEFT_MACRO|DOCEF_RIGHT_MACRO|DOCEF_BIN_PTR_LINK)
-
-#define DOCEG_HAS_ARG		(DOCEG_HAS_ALLOC|DOCEF_LEFT_EXP|\
-  DOCEF_RIGHT_EXP|DOCEF_HAS_BIN|DOCEF_RAW_TYPE|DOCEF_SHIFTED_X|\
-  DOCEF_SHIFTED_Y|DOCEF_SCROLLING_X|DOCEF_USER_DATA)
+#define DOCEF_LEN		2
+#define DOCEF_AUX_STR		4
+#define DOCEF_DEFINE		8
+#define DOCEF_HTML_LINK		0x10
+#define DOCEF_LEFT_EXP		0x20
+#define DOCEF_LEFT_MACRO	0x40
+#define DOCEF_RIGHT_EXP		0x80
+#define DOCEF_RIGHT_MACRO	0x100
+#define DOCEF_HAS_BIN		0x200
+#define DOCEF_BIN_PTR_LINK	0x400
+#define DOCEF_RAW_TYPE		0x800
+#define DOCEF_SHIFTED_X		0x1000
+#define DOCEF_SHIFTED_Y		0x2000
+#define DOCEF_SCROLLING_X	0x4000
+#define DOCEF_USER_DATA		0x8000
 
 //CDocEntry.de_flags.  These are +/- flags
-#define DOCEF_LEFT_CB		0x8000
-#define DOCEF_LEFT_AUTO		0x10000
-#define DOCEF_RIGHT_CB		0x20000
-#define DOCEF_RIGHT_AUTO	0x40000
-#define DOCEF_TAG_CB		0x80000
+#define DOCEF_LEFT_CB		0x10000
+#define DOCEF_LEFT_AUTO		0x20000
+#define DOCEF_RIGHT_CB		0x40000
+#define DOCEF_RIGHT_AUTO	0x80000
 #define DOCEF_LEFT_X		0x100000
 #define DOCEF_CENTER_X		0x200000
 #define DOCEF_RIGHT_X		0x400000
@@ -992,33 +985,44 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_CENTER_Y		0x1000000
 #define DOCEF_BOTTOM_Y		0x2000000
 //HL...UL
-#define DOCEF_PAGE_REL_Y	0x100000000
-#define DOCEF_MARGIN_REL_X	0x200000000
-#define DOCEF_WIN_REL		0x400000000
-#define DOCEF_LINK		0x800000000
-#define DOCEF_ESC		0x1000000000 //Send <ESC> (Exit and Save)
-#define DOCEF_QUIT		0x2000000000 //Send <SHIFT-ESC> (Abort)
-#define DOCEF_FROM_START	0x4000000000
-#define DOCEF_HAS_BORDER	0x8000000000
-#define DOCEF_SOLID_BORDER	0x10000000000
-#define DOCEF_BORDER_PLOT	0x20000000000
-#define DOCEF_CHECKED_COLLAPSED 0x40000000000 //Checked or Collapsed
-#define DOCEF_CHECK_COLLAPSABLE 0x80000000000
-#define DOCEF_REFRESH_DATA	0x100000000000
-#define DOCEF_UPDATE_DATA	0x200000000000
-#define DOCEF_DATA_IS_PTR	0x400000000000
-#define DOCEF_REMALLOC_DATA	0x800000000000
-#define DOCEF_HAS_TERMINATOR	0x1000000000000
-#define DOCEF_ZERO_BASED	0x2000000000000
-#define DOCEF_HOLD		0x4000000000000
-#define DOCEF_TREE		0x8000000000000
-#define DOCEF_LST		0x10000000000000
-#define DOCEF_SKIP		0x20000000000000
-#define DOCEF_POPUP		0x40000000000000
-#define DOCEF_SKIP_IN_FORM	0x80000000000000
-#define DOCEF_FILTER_SKIP	0x100000000000000
-#define DOCEF_NO_CLICK_ON	0x200000000000000
-#define DOCEF_DONT_DRAW		0x400000000000000 //only works on sprites
+#define DOCEF_TAG_CB		0x100000000
+#define DOCEF_PAGE_REL_Y	0x200000000
+#define DOCEF_MARGIN_REL_X	0x400000000
+#define DOCEF_WIN_REL		0x800000000
+#define DOCEF_LINK		0x1000000000
+#define DOCEF_ESC		0x2000000000 //Send <ESC> (Exit and Save)
+#define DOCEF_QUIT		0x4000000000 //Send <SHIFT-ESC> (Abort)
+#define DOCEF_FROM_START	0x8000000000
+#define DOCEF_HAS_BORDER	0x10000000000
+#define DOCEF_SOLID_BORDER	0x20000000000
+#define DOCEF_BORDER_PLOT	0x40000000000
+#define DOCEF_CHECKED_COLLAPSED 0x80000000000 //Checked or Collapsed
+#define DOCEF_CHECK_COLLAPSABLE 0x100000000000
+#define DOCEF_REFRESH_DATA	0x200000000000
+#define DOCEF_UPDATE_DATA	0x400000000000
+//[C:/Kernel/KernelA.HPP.Z,1005] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
+//of class. For ints, it derefs doc_e->data as a ptr.  For strings, it doesn't.
+#define DOCEF_DEREF_DATA	0x800000000000
+#define DOCEF_REMALLOC_DATA	0x1000000000000
+#define DOCEF_HAS_TERMINATOR	0x2000000000000
+#define DOCEF_ZERO_BASED	0x4000000000000
+#define DOCEF_HOLD		0x8000000000000
+#define DOCEF_TREE		0x10000000000000
+#define DOCEF_LST		0x20000000000000
+#define DOCEF_SKIP		0x40000000000000
+#define DOCEF_POPUP		0x80000000000000
+#define DOCEF_SKIP_IN_FORM	0x100000000000000
+#define DOCEF_FILTER_SKIP	0x200000000000000
+#define DOCEF_NO_CLICK_ON	0x400000000000000
+#define DOCEF_DONT_DRAW		0x800000000000000 //only works on sprites
+
+#define DOCEG_HAS_ALLOC		(DOCEF_TAG|DOCEF_AUX_STR|DOCEF_DEFINE|\
+  DOCEF_HTML_LINK|DOCEF_LEFT_MACRO|DOCEF_RIGHT_MACRO|DOCEF_BIN_PTR_LINK|\
+  DOCEF_REMALLOC_DATA)
+
+#define DOCEG_HAS_ARG		((DOCEG_HAS_ALLOC&~DOCEF_REMALLOC_DATA)|\
+  DOCEF_LEN|DOCEF_LEFT_EXP|DOCEF_RIGHT_EXP|DOCEF_HAS_BIN|DOCEF_RAW_TYPE|\
+  DOCEF_SHIFTED_X|DOCEF_SHIFTED_Y|DOCEF_SCROLLING_X|DOCEF_USER_DATA)
 
 #define DOCEG_DONT_EDIT	(DOCEF_DEFINE|DOCEF_HTML_LINK|\
   DOCEF_AUX_STR|DOCEF_BIN_PTR_LINK|DOCEF_SCROLLING_X|DOCEF_TAG_CB)
@@ -1037,29 +1041,29 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEf_SELECTED		ATTRf_SELECTED
 #define DOCEf_UNDERLINE		ATTRf_UNDERLINE
 
-//CDocEntry.de_flags.  These first 15 are arg=
+//CDocEntry.de_flags.  These first 16 are arg=
 #define DOCEf_TAG		0
-#define DOCEf_AUX_STR		1
-#define DOCEf_DEFINE		2
-#define DOCEf_HTML_LINK		3
-#define DOCEf_LEFT_EXP		4
-#define DOCEf_LEFT_MACRO	5
-#define DOCEf_RIGHT_EXP		6
-#define DOCEf_RIGHT_MACRO	7
-#define DOCEf_HAS_BIN		8
-#define DOCEf_BIN_PTR_LINK	9
-#define DOCEf_RAW_TYPE		10
-#define DOCEf_SHIFTED_X		11
-#define DOCEf_SHIFTED_Y		12
-#define DOCEf_SCROLLING_X	13
-#define DOCEf_USER_DATA		14
+#define DOCEf_LEN		1
+#define DOCEf_AUX_STR		2
+#define DOCEf_DEFINE		3
+#define DOCEf_HTML_LINK		4
+#define DOCEf_LEFT_EXP		5
+#define DOCEf_LEFT_MACRO	6
+#define DOCEf_RIGHT_EXP		7
+#define DOCEf_RIGHT_MACRO	8
+#define DOCEf_HAS_BIN		9
+#define DOCEf_BIN_PTR_LINK	10
+#define DOCEf_RAW_TYPE		11
+#define DOCEf_SHIFTED_X		12
+#define DOCEf_SHIFTED_Y		13
+#define DOCEf_SCROLLING_X	14
+#define DOCEf_USER_DATA		15
 
 //CDocEntry.de_flags.  These are +/- flags
-#define DOCEf_LEFT_CB		15
-#define DOCEf_LEFT_AUTO		16
-#define DOCEf_RIGHT_CB		17
-#define DOCEf_RIGHT_AUTO	18
-#define DOCEf_TAG_CB		19
+#define DOCEf_LEFT_CB		16
+#define DOCEf_LEFT_AUTO		17
+#define DOCEf_RIGHT_CB		18
+#define DOCEf_RIGHT_AUTO	19
 #define DOCEf_LEFT_X		20
 #define DOCEf_CENTER_X		21
 #define DOCEf_RIGHT_X		22
@@ -1067,34 +1071,35 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEf_CENTER_Y		24
 #define DOCEf_BOTTOM_Y		25
 //HL...UL
-#define DOCEf_PAGE_REL_Y	32
-#define DOCEf_MARGIN_REL_X	33
-#define DOCEf_WIN_REL		34
-#define DOCEf_LINK		35
-#define DOCEf_ESC		36 //Send <ESC> (Exit and Save)
-#define DOCEf_QUIT		37 //Send <SHIFT-ESC> (Abort)
-#define DOCEf_FROM_START	38
-#define DOCEf_HAS_BORDER	39
-#define DOCEf_SOLID_BORDER	40
-#define DOCEf_BORDER_PLOT	41
-#define DOCEf_CHECKED_COLLAPSED 42 //Checked or Collapsed
-#define DOCEf_CHECK_COLLAPSABLE 43
-#define DOCEf_REFRESH_DATA	44
-#define DOCEf_UPDATE_DATA	45
-#define DOCEf_DATA_IS_PTR	46
-#define DOCEf_REMALLOC_DATA	47
-#define DOCEf_HAS_TERMINATOR	48
-#define DOCEf_ZERO_BASED	49
-#define DOCEf_HOLD		50
-#define DOCEf_TREE		51
-#define DOCEf_LST		52
-#define DOCEf_SKIP		53
-#define DOCEf_POPUP		54
-#define DOCEf_SKIP_IN_FORM	55
-#define DOCEf_FILTER_SKIP	56
-#define DOCEf_NO_CLICK_ON	57
-#define DOCEf_DONT_DRAW		58 //only works on sprites
-#define DOCEf_NUM_FLAGS		59
+#define DOCEf_TAG_CB		32
+#define DOCEf_PAGE_REL_Y	33
+#define DOCEf_MARGIN_REL_X	34
+#define DOCEf_WIN_REL		35
+#define DOCEf_LINK		36
+#define DOCEf_ESC		37 //Send <ESC> (Exit and Save)
+#define DOCEf_QUIT		38 //Send <SHIFT-ESC> (Abort)
+#define DOCEf_FROM_START	39
+#define DOCEf_HAS_BORDER	40
+#define DOCEf_SOLID_BORDER	41
+#define DOCEf_BORDER_PLOT	42
+#define DOCEf_CHECKED_COLLAPSED 43 //Checked or Collapsed
+#define DOCEf_CHECK_COLLAPSABLE 44
+#define DOCEf_REFRESH_DATA	45
+#define DOCEf_UPDATE_DATA	46
+#define DOCEf_DEREF_DATA	47
+#define DOCEf_REMALLOC_DATA	48
+#define DOCEf_HAS_TERMINATOR	49
+#define DOCEf_ZERO_BASED	50
+#define DOCEf_HOLD		51
+#define DOCEf_TREE		52
+#define DOCEf_LST		53
+#define DOCEf_SKIP		54
+#define DOCEf_POPUP		55
+#define DOCEf_SKIP_IN_FORM	56
+#define DOCEf_FILTER_SKIP	57
+#define DOCEf_NO_CLICK_ON	58
+#define DOCEf_DONT_DRAW		59 //only works on sprites
+#define DOCEf_NUM_FLAGS		60
 
 public class CDocBin
 {
@@ -1161,6 +1166,8 @@ public class CDocEntryBase
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
+#define DOCE_LEN_DFT	64
+
 public class CDocEntry:CDocEntryBase
 {
   union {
@@ -1186,7 +1193,7 @@ public class CDocEntry:CDocEntryBase
 	*my_fmt_data;
   I64	hex_ed_width;
   I32	scroll_len,
-	len,
+	len, //[C:/Kernel/KernelA.HPP.Z,1169] DOCE_LEN_DFT
 	bin_num;
   U8	raw_type,pad[3];
   CDocBin *bin_data;
@@ -1194,7 +1201,7 @@ public class CDocEntry:CDocEntryBase
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
-//[C:/Adam/DolDoc/DocForm.CPP.Z,205] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,259] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,297] PopUpMenu()
+//[C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,275] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,313] PopUpMenu()
 #define	DOF_MIN_SIZE		0x01
 #define	DOF_INTERCEPT_TASK_END	0x02
 #define DOF_DONT_HOME		0x04
@@ -1202,12 +1209,14 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1227] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1236] Editor Flags
 
 class CEdFindText
 {
-  U8	find_text[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Find        :%s\"$\n",
-	replace_text[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Replace     :%s\"$\n";
+  U8	find_text[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,"
+	"A=\"Find        :%s\"$\n",
+	replace_text[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,"
+	"A=\"Replace     :%s\"$\n";
   Bool	replace			fmtstr "$CB,\"Replace\"$\n",
 	scan_fwd		fmtstr "$CB,\"Fwd\"$\n",
 	scan_selected_text	fmtstr "$CB,\"Selection\"$\n",
@@ -1215,20 +1224,20 @@ class CEdFindText
 	whole_labels		fmtstr "$CB,\"Whole Labels\"$\n",
 	local_var		fmtstr "$CB,\"Rename Local Var\"$\n",
 	pmt,pad;
-  I64	filter_lines		fmtstr "$DA,131,A=\"Filter Lines:%d\"$\n";
+  I64	filter_lines		fmtstr "$DA,A=\"Filter Lines:%d\"$\n";
 };
 
 class CEdFileName
 {
-  U8	name[256] fmtstr "$DA-P,255,A=\"FileName:%s\"$";
+  U8	name[256] fmtstr "$DA-P,LEN=255,A=\"FileName:%s\"$";
 };
 
-//[C:/Adam/DolDoc/DocEd.CPP.Z,188] Ed()
+//[C:/Adam/DolDoc/DocEd.CPP.Z,189] Ed()
 #define EDF_BAIL		0x100
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1198] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1205] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1318,7 +1327,7 @@ class CDocUndo
   U8	*body;
 };
 
-//See [C:/Adam/DolDoc/DocForm.CPP.Z,259] DocMenu()
+//See [C:/Adam/DolDoc/DocForm.CPP.Z,275] DocMenu()
 #define DOCM_CANCEL		(-1)
 
 #define DOC_SIGNATURE_VAL	'DocS'
@@ -1540,7 +1549,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1322] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1331] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2795,8 +2804,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2840] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2840] MEM_PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2849] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2849] MEM_PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2906,7 +2915,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2916] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2925] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3006,7 +3015,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3005] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3006] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3014] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3015] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3034,15 +3043,15 @@ public class CGridGlbls
   Bool	snap	fmtstr "$CB,\"Snap Grid\"$\n",
 	show	fmtstr "$CB,\"Show Grid\"$\n";
   U8	pad[6];
-  F64	x	fmtstr "$DA-TRM,32,RT=F64,A=\"X Spacing:%6.3f\"$\n",
-	y	fmtstr "$DA-TRM,32,RT=F64,A=\"Y Spacing:%6.3f\"$\n",
-	z	fmtstr "$DA-TRM,32,RT=F64,A=\"Z Spacing:%6.3f\"$\n",
-	x_offset fmtstr "$DA-TRM,32,RT=F64,A=\"X Offset :%6.3f\"$\n",
-	y_offset fmtstr "$DA-TRM,32,RT=F64,A=\"Y Offset :%6.3f\"$\n",
-	z_offset fmtstr "$DA-TRM,32,RT=F64,A=\"Z Offset :%6.3f\"$\n",
-	x_speed	fmtstr "$DA-TRM,32,RT=F64,A=\"X Speed  :%6.3f\"$\n",
-	y_speed	fmtstr "$DA-TRM,32,RT=F64,A=\"Y Speed  :%6.3f\"$\n",
-	z_speed	fmtstr "$DA-TRM,32,RT=F64,A=\"Z Speed  :%6.3f\"$\n";
+  F64	x	fmtstr "$DA-TRM,RT=F64,A=\"X Spacing:%6.3f\"$\n",
+	y	fmtstr "$DA-TRM,RT=F64,A=\"Y Spacing:%6.3f\"$\n",
+	z	fmtstr "$DA-TRM,RT=F64,A=\"Z Spacing:%6.3f\"$\n",
+	x_offset fmtstr "$DA-TRM,RT=F64,A=\"X Offset :%6.3f\"$\n",
+	y_offset fmtstr "$DA-TRM,RT=F64,A=\"Y Offset :%6.3f\"$\n",
+	z_offset fmtstr "$DA-TRM,RT=F64,A=\"Z Offset :%6.3f\"$\n",
+	x_speed	fmtstr "$DA-TRM,RT=F64,A=\"X Speed  :%6.3f\"$\n",
+	y_speed	fmtstr "$DA-TRM,RT=F64,A=\"Y Speed  :%6.3f\"$\n",
+	z_speed	fmtstr "$DA-TRM,RT=F64,A=\"Z Speed  :%6.3f\"$\n";
 };
 
 #help_index "Ctrls"
@@ -3186,8 +3195,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3455] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3455] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3461] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3461] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3207,9 +3216,6 @@ class CSrvCtrl
 #define MSG_IP_R_DOWN_UP	-9  //Down & Up
 #define MSG_IP_R_D_DOWN_UP	-11 //Down & Up
 
-#help_index "Task"
-#define TASK_TITLE_LEN	127
-
 #help_index "Task/Settings"
 #define TSF_SAME_SONG	1
 public class CTaskSettings
@@ -3225,7 +3231,7 @@ public class CTaskSettings
   U32	win_inhibit;;
   U8	text_attr,title_src,
 	border_attr,border_src,
-	task_title[TASK_TITLE_LEN+1];
+	task_title[STR_LEN];
   Bool	border,hide_cursor,highlight_cursor,scroll,autocomplete,pad[3];
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
@@ -3268,7 +3274,7 @@ public class CTaskSettings
 #define DISPLAYf_CHILDREN_NOT_ON_TOP	5
 
 #define TASK_SIGNATURE_VAL		'TskS'
-#define TASK_NAME_LEN			31
+#define TASK_NAME_LEN			32
 class CTaskStk
 {
   CTaskStk *next_stk;
@@ -3327,8 +3333,8 @@ U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
 
   U0	(*draw_it)(CTask *task,CDC *dc);
 
-  U8	task_title[TASK_TITLE_LEN+1],
-	task_name[TASK_NAME_LEN+1],
+  U8	task_title[STR_LEN],
+	task_name[TASK_NAME_LEN],
 	wallpaper_data[STR_LEN],
 
 	title_src,border_src,
@@ -3635,12 +3641,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2906] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2915] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2916] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2925] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3673,7 +3679,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3611] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3617] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3873,11 +3879,11 @@ public class CDbgGlbls
 
 #help_index "Misc/Progress Bars"
 #define NUM_PROGRESS_BARS	4
-#define PROGRESS_DESC_LEN	(64-8-8-1)
+#define PROGRESS_DESC_LEN	(64-8-8)
 class CProgress
 {
   I64	val,max;
-  U8	desc[PROGRESS_DESC_LEN+1];
+  U8	desc[PROGRESS_DESC_LEN];
 };
 
 #help_index ""

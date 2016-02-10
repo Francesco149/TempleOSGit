@@ -115,7 +115,7 @@ class CTopMoviesForm
   U8	tag[STR_LEN];
   U8	special[STR_LEN];
   I64	timestamp;
-  I64	cert		fmtstr "$DA-TRM,2,A=\"Movie #1-100:%02d\"$\n";
+  I64	cert		fmtstr "$DA-TRM,LEN=2,A=\"Movie #1-100:%02d\"$\n";
   I64	min;
   I64	sec;
 };
@@ -125,14 +125,14 @@ class CMetallicaForm
   U8	tag[STR_LEN];
   U8	special[STR_LEN];
   I64	timestamp;
-  I64	cert		fmtstr "$DA-TRM,2,A=\"Song #1-99:%02d\"$\n";
+  I64	cert		fmtstr "$DA-TRM,LEN=2,A=\"Song #1-99:%02d\"$\n";
   I64	min;
   I64	sec;
 };
 
 class CWebBookMarkForm
 {
-  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text:%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Tag Text:%s\"$\n";
   U8	special[STR_LEN];
   I64	timestamp;
   I64	cert;
@@ -142,8 +142,8 @@ class CWebBookMarkForm
 
 class CWebBibleForm
 {
-  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text:%s\"$\n";
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Bible Passage:%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Tag Text:%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Bible Passage:%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -152,28 +152,28 @@ class CWebBibleForm
 
 class CYouTubeForm
 {
-  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Title:%s\"$\n";
-  U8	special[STR_LEN] fmtstr "$DA-P-TRM,11,A=\"SerialNum:%11s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Title:%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P-TRM,LEN=11,A=\"SerialNum:%11s\"$\n";
   I64	timestamp;
   I64	cert;
-  I64	min		fmtstr "$DA,32,A=\"Minutes  :%d\"$\n";
-  I64	sec		fmtstr "$DA,32,A=\"Seconds  :%d\"$\n";
+  I64	min		fmtstr "$DA,A=\"Minutes  :%d\"$\n";
+  I64	sec		fmtstr "$DA,A=\"Seconds  :%d\"$\n";
 };
 
 class CImgurForm
 {
   U8	tag[STR_LEN];
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"SerialNum:%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,A=\"SerialNum:%s\"$\n";
   I64	timestamp;
   I64	cert;
-  I64	min		fmtstr "$DA,32,A=\"Width    :%d\"$\n";
-  I64	sec		fmtstr "$DA,32,A=\"Height   :%d\"$\n";
+  I64	min		fmtstr "$DA,A=\"Width    :%d\"$\n";
+  I64	sec		fmtstr "$DA,A=\"Height   :%d\"$\n";
 };
 
 class CWikipediaForm
 {
-  U8	tag[STR_LEN]	fmtstr "$DA-P,STR_LEN-1,A=\"Tag Text:%s\"$\n";
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Index   :%s\"$\n";
+  U8	tag[STR_LEN]	fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Tag Text:%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Index   :%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -183,7 +183,7 @@ class CWikipediaForm
 class CRandDecForm
 {
   U8	tag[STR_LEN];
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Line (Dec):%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Line (Dec):%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -193,7 +193,7 @@ class CRandDecForm
 class CRandHexForm
 {
   U8	tag[STR_LEN];
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Line (Hex):%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Line (Hex):%s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -203,9 +203,9 @@ class CRandHexForm
 class CRandCertForm
 {
   U8	tag[STR_LEN];
-  U8	special[STR_LEN] fmtstr "$DA-P,STR_LEN-1,A=\"Line (Dec) :%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,A=\"Line (Dec) :%s\"$\n";
   I64	timestamp;
-  I64	cert		fmtstr "$DA,32,A=\"Certificate:%d\"$\n";
+  I64	cert		fmtstr "$DA,A=\"Certificate:%d\"$\n";
   I64	min;
   I64	sec;
 };
@@ -214,8 +214,9 @@ class CRandHexBeacon5Form
 {
   U8	tag[STR_LEN];
   U8	special[STR_LEN]
-			fmtstr "$DA-P-TRM,5,A=\"Line (5-Digit Hex):%5s\"$\n";
-  I64	timestamp	fmtstr "$DA,32,A=\"TimeStamp :%d\"$\n";
+			fmtstr "$DA-P-TRM,LEN=5,"
+	"A=\"Line (5-Digit Hex):%5s\"$\n";
+  I64	timestamp	fmtstr "$DA,A=\"TimeStamp :%d\"$\n";
   I64	cert;
   I64	min;
   I64	sec;
@@ -225,8 +226,9 @@ class CRandHexBeacon8Form
 {
   U8	tag[STR_LEN];
   U8	special[STR_LEN]
-			fmtstr "$DA-P-TRM,8,A=\"Line (8-Digit Hex):%8s\"$\n";
-  I64	timestamp	fmtstr "$DA,32,A=\"TimeStamp :%d\"$\n";
+			fmtstr "$DA-P-TRM,LEN=8,"
+	"A=\"Line (8-Digit Hex):%8s\"$\n";
+  I64	timestamp	fmtstr "$DA,A=\"TimeStamp :%d\"$\n";
   I64	cert;
   I64	min;
   I64	sec;

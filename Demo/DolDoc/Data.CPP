@@ -11,7 +11,7 @@
 	See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
 
    ,RT=I16 means the val is 2 bytes.
-	See [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and [C:/Adam/DolDoc/DocForm.CPP.Z,127] DocDataScan().
+	See [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and [C:/Adam/DolDoc/DocForm.CPP.Z,131] DocDataScan().
 */
 
 I16 i=0;
@@ -36,7 +36,7 @@ U0 DataDemo()
   //doc_e->data before it is set.
   Bool unlock=DocLock(doc);
 
-  //You might set the [C:/Kernel/KernelA.HPP.Z,1247] DOCF_FORM flag.
+  //You might set the [C:/Kernel/KernelA.HPP.Z,1256] DOCF_FORM flag.
   //  doc->flags|=DOCF_FORM
   //if you wish.
 
@@ -47,11 +47,11 @@ U0 DataDemo()
 	"However, changes happen immediately,\n"
 	"so it's tricky.\n\n";
 //Use <CTRL-l> for the $DA...$ format.
-  doc_e=DocPrint(doc,"$DA-TRM+RD+UD,32,RT=I16,A=\"%%7d\"$\n");
+  doc_e=DocPrint(doc,"$DA-TRM+RD+UD,RT=I16,A=\"%%7d\"$\n");
   doc_e->data=&i;
 
   StrCpy(buf,"Terry");
-  doc_e=DocPrint(doc,"$DA-P+RD+UD,7,A=\"Str:%%s\"$\n");
+  doc_e=DocPrint(doc,"$DA-P+RD+UD,LEN=7,A=\"Str:%%s\"$\n");
   doc_e->data=buf;
 
   if (unlock)

@@ -483,7 +483,7 @@ U0 EdCharIns(I64 ch,I64 sc,CDoc *doc)
     goto ic_done;
   }
   if (doc_ce->type_u8==DOCT_HEX_ED) {
-    if (doc_ce->de_flags&DOCEF_DATA_IS_PTR &&
+    if (doc_ce->de_flags&DOCEF_DEREF_DATA &&
 	  !(doc_ce->de_flags&DOCEF_REMALLOC_DATA))
       st=doc_ce->data;
     else
@@ -511,7 +511,7 @@ U0 EdCharIns(I64 ch,I64 sc,CDoc *doc)
   }
   if (doc->flags & DOCF_OVERSTRIKE) {
     if (Bt(chars_bmp_displayable,ch)) {
-ic_overstrike_char:
+ic_overstrike:
       if (IsEditableText(doc_ce)) {
 	if (doc->cur_col<doc_ce->max_col) {
 	  if (doc_ce->tag[doc->cur_col]) {
@@ -522,7 +522,7 @@ ic_overstrike_char:
 	  doc_ce=doc_ce->next;
 	  doc->cur_entry=doc_ce;
 	  doc->cur_col=doc_ce->min_col;
-	  goto ic_overstrike_char;
+	  goto ic_overstrike;
 	}
       } else if (doc_ce->type_u8==DOCT_DATA) {
 	if (doc_ce->de_flags & DOCEF_HAS_TERMINATOR) {
@@ -533,7 +533,8 @@ ic_overstrike_char:
 	      doc_ce->tag[doc->cur_col]='_';
 	      doc_ce->tag[doc->cur_col+1]=0;
 	    }
-	  }
+	  } else if (doc_ce->de_flags & DOCEF_REMALLOC_DATA)
+	    goto ic_not_overstrike;
 	} else if (doc_ce->tag[doc->cur_col])
 	  doc_ce->tag[doc->cur_col++]=ch;
 	goto ic_done;
@@ -552,6 +553,7 @@ ic_overstrike_char:
     }
     goto ic_done;
   }
+ic_not_overstrike:
   if (ch=='\n') {
     if (sc&SCF_CTRL && !(sc&SCF_SHIFT)) {
       doc_ne=DocEntryNewBase(doc,
@@ -589,7 +591,7 @@ ic_form_tab:
 	      st[i]=st[i-1];
 	    st[doc->cur_col++]=ch;
 	    break;
-	  } else if (doc_ce->de_flags & DOCEF_REMALLOC_DATA) { //Doesn't work
+	  } else if (doc_ce->de_flags & DOCEF_REMALLOC_DATA) {
 	    st=MAlloc(doc_ce->max_col+8,doc->mem_task);
 	    MemCpy(st,doc_ce->tag,doc_ce->max_col+1);
 	    Free(doc_ce->tag);

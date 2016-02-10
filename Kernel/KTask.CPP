@@ -211,7 +211,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3286] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3292] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -236,7 +236,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
   task->rsp(U8 *)-=8;
   *task->rsp=&Exit;
   task->hash_table->next=parent->hash_table;
-  MemCpy(task->task_name,task_name,TASK_NAME_LEN+1);
+  MemCpy(task->task_name,task_name,TASK_NAME_LEN);
   StrCpy(task->task_title,task->task_name);
   task->title_src=TTS_TASK_NAME;
   PUSHFD
@@ -278,7 +278,7 @@ I64 ExeCmdLine(CCmpCtrl *cc)
 	(cc->token!='}' || !(cc->flags & CCF_EXE_BLK)) ) {
     if (Fs->title_src==TTS_CUR_LEX) {
       ptr2=&Fs->task_title;
-      ptr3=ptr2+TASK_TITLE_LEN;
+      ptr3=ptr2+STR_LEN-1;
       if (cc->lex_include_stk->flags & LFSF_DOC) {
 	doc_e=cc->lex_include_stk->cur_entry;
 	doc=cc->lex_include_stk->doc;
@@ -299,7 +299,7 @@ I64 ExeCmdLine(CCmpCtrl *cc)
 	if (ptr2<ptr3) *ptr2=0;
       } else
 	if ((ptr=cc->lex_include_stk->line_start) && *ptr)
-	  MemCpy(ptr2,ptr,TASK_TITLE_LEN);
+	  MemCpy(ptr2,ptr,STR_LEN-1);
     }
     cc->flags&=~CCF_HAS_MISC_DATA;
     machine_code=LexStmt2Bin(cc,&type);
@@ -338,7 +338,7 @@ U0 SrvTaskCont()
   while (TRUE) {
     CLI
     if (SrvCmdsHandler(old_flags) && Fs->title_src==TTS_TASK_NAME)
-      MemCpy(Fs->task_title,Fs->task_name,TASK_NAME_LEN+1);
+      MemCpy(Fs->task_title,Fs->task_name,TASK_NAME_LEN);
     FlushMsgs;
     LBts(&Fs->task_flags,TASKf_IDLE);
     LBts(&Fs->task_flags,TASKf_AWAITING_MSG);

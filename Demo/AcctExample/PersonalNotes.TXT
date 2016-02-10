@@ -33,13 +33,11 @@ edited.
 * Cannot include ':' in [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
 search string.
 
-* Document $DA+M [C:/Kernel/KernelA.HPP.Z,1010] DOCEF_REMALLOC_DATA.  See
-[C:/Adam/Gr/SpriteMain.CPP.Z,1] DA+M.
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
-* No way to clear [C:/Kernel/KernelA.HPP.Z,1088] DOCEf_HOLD entries.
+* No way to clear [C:/Kernel/KernelA.HPP.Z,1093] DOCEf_HOLD entries.
 
-* [C:/Kernel/KernelA.HPP.Z,1243] DOCF_DBL_DOLLARS in
+* [C:/Kernel/KernelA.HPP.Z,1252] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.CPP.Z,413] Reindention.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
@@ -78,7 +76,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3286] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3292] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
@@ -102,7 +100,7 @@ SPT_SHIFT origin cmds?
 in 
 future centuries.)
 
-* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2134] CCmpCtrl
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2143] CCmpCtrl
 stuff.
 
 * [C:/Adam/DolDoc/DocHighlight.CPP.Z,1] for code comments at top of documents.
@@ -158,7 +156,7 @@ runs-out of space and hangs instead of reporting errors.
 [C:/Adam/WinA.CPP.Z,279] WinToTop is called on Adam task at start-up,
 sometimes.  Might be user's fault 
 because of bad keys pressed during VMware power-on init.  Might be fixed by 
-[C:/Kernel/KernelA.HPP.Z,1465] ACf_INIT_IN_PROGRESS.
+[C:/Kernel/KernelA.HPP.Z,1474] ACf_INIT_IN_PROGRESS.
 
 * 1/12/16 [C:/Kernel/BlkDev/DskATAId.CPP.Z,90] ATARepEntry shows corrupted
 buttons.  Weird.  Perhaps, my 
@@ -232,7 +230,7 @@ disp.
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.CPP.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HPP.Z,2563] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HPP.Z,2572] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -267,22 +265,22 @@ Every country make own version?
 
 * Might want to move kernel code out of low 2Meg.  Might be faster.
 
-* [C:/Kernel/KernelA.HPP.Z,3600] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3606] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HPP.Z,2919] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HPP.Z,2915] ROPF_DITHER.
+* [C:/Kernel/KernelA.HPP.Z,2928] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HPP.Z,2924] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HPP.Z,2905] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2914] ROP_XOR with pen_width>1 is broken.
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,565] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3627] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3633] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2905] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2914] ROP_XOR?
 
 * [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
@@ -294,7 +292,7 @@ works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
 
-* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2952] CBGR24's wrong? 
+* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2961] CBGR24's wrong? 
 [C:/Adam/Opt/Utils/FileBMP.CPP.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
@@ -317,7 +315,7 @@ also?
 
 * Compiler: [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag for local vars?
 
-* Implement [C:/Kernel/KernelA.HPP.Z,2506] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HPP.Z,2515] RS_ATTR_FIXED fixed pos files?
 
 * Editor page formatting is FUBAR.
 
@@ -389,7 +387,7 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HPP.Z,3076] Controls?
+* More [C:/Kernel/KernelA.HPP.Z,3085] Controls?
 
 * Compiler: More use of more floating-point stk?
 
@@ -397,7 +395,7 @@ once.
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3286] CTask?
+[C:/Kernel/KernelA.HPP.Z,3292] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
@@ -445,7 +443,7 @@ exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2503]
+* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2512]
 RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,232] Touch("","+T");
 
 

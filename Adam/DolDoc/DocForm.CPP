@@ -64,7 +64,7 @@ U0 DocDataFmt(CDoc *doc,CDocEntry *doc_e,I64 d=DOCM_CANCEL)
   if (doc_e->type_u8==DOCT_DATA && doc_e->de_flags&DOCEF_AUX_STR ||
 	doc_e->type_u8==DOCT_CHECK_BOX || doc_e->de_flags & DOCEF_LST) {
     if (d==DOCM_CANCEL) {
-      if (doc_e->de_flags&DOCEF_DATA_IS_PTR &&
+      if (doc_e->de_flags&DOCEF_DEREF_DATA &&
 	    !(doc_e->de_flags&DOCEF_REMALLOC_DATA)) {
 	if (!(ptr=doc_e->data)) return;
       } else
@@ -85,11 +85,15 @@ U0 DocDataFmt(CDoc *doc,CDocEntry *doc_e,I64 d=DOCM_CANCEL)
       if (doc_e->de_flags & DOCEF_REMALLOC_DATA) {
 	ptr=MStrPrint(doc_e->aux_str,d,doc_e->my_fmt_data);
 	i=StrLen(ptr);
+	if (!doc_e->data) {
+	  doc_e->data=CAlloc(2,doc->mem_task);
+	  doc_e->len=MSize(doc_e->data)-2;
+	}
 	if (doc_e->len+doc_e->min_col>i)
 	  MemCpy(doc_e->tag,ptr,i+1);
 	else {
-	  ptr2=MAlloc(i+2,doc->mem_task);
-	  doc_e->len=i-doc_e->min_col;	 //See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] DataTagWidth
+	  ptr2=MAlloc(i+8,doc->mem_task);
+	  doc_e->len=MSize(ptr2)-doc_e->min_col-2;	 //See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] DataTagWidth
 	  MemCpy(ptr2,ptr,i+1);
 	  Free(doc_e->tag);
 	  doc_e->tag=ptr2;
@@ -131,7 +135,7 @@ U0 DocDataScan(CDoc *doc,CDocEntry *doc_e)
   CHashDefineStr *temph;
   if (doc_e->type_u8==DOCT_DATA && doc_e->de_flags&DOCEF_AUX_STR ||
 	doc_e->type_u8==DOCT_CHECK_BOX || doc_e->de_flags & DOCEF_LST) {
-    if (doc_e->de_flags&DOCEF_DATA_IS_PTR &&
+    if (doc_e->de_flags&DOCEF_DEREF_DATA &&
 	  !(doc_e->de_flags&DOCEF_REMALLOC_DATA)) {
       if (!(ptr=doc_e->data)) return;
     } else
@@ -148,11 +152,11 @@ U0 DocDataScan(CDoc *doc,CDocEntry *doc_e)
 	  doc_e->tag[i]='_';
       } else if (RT_I64<=doc_e->raw_type<=RT_UF64) {
 	if (doc_e->de_flags & DOCEF_REMALLOC_DATA) {
-	  ptr=MAlloc(i-doc_e->min_col+8,doc->mem_task);//We have a little slop.
-	  StrCpy(ptr,doc_e->tag+doc_e->min_col);
+	  ptr=MAlloc(i-doc_e->min_col+8,doc->mem_task);
+	  MemCpy(ptr,doc_e->tag+doc_e->min_col,i-doc_e->min_col+1);
 	  Free(doc_e->data);
 	  doc_e->data=ptr;
-	  doc_e->len=MSize(ptr)-doc_e->min_col-2; //See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] DataTagWidth
+	  doc_e->len=MSize(ptr)-1;
 	} else
 	  StrScan(doc_e->tag,doc_e->aux_str,ptr,doc_e->my_fmt_data);
 	if (doc_e->de_flags & DOCEF_HAS_TERMINATOR)
@@ -225,7 +229,11 @@ public Bool DocForm(U8 *_d,U8 *class_name=lastclass,
   while (ml) {
     if (fmtstr=MemberMetaData("fmtstr",ml)) {
       doc_e=DocPrint(doc,"%s",fmtstr);
-      doc_e->data=_d+ml->offset;
+      if (doc_e->de_flags&DOCEF_REMALLOC_DATA) {
+	doc_e->user_data=_d+ml->offset;
+	doc_e->data=*doc_e->user_data(U8 **);
+      } else
+	doc_e->data=_d+ml->offset;
       doc_e->my_fmt_data=MemberMetaData("fmtdata",ml);
       DocDataFmt(doc,doc_e);
     }
@@ -244,6 +252,14 @@ public Bool DocForm(U8 *_d,U8 *class_name=lastclass,
 	DocUnlock(doc);
       }
     }
+  }
+  doc_e=doc->root.next;
+  while (doc_e!=doc) {
+    if (doc_e->de_flags&DOCEF_REMALLOC_DATA) {
+      *doc_e->user_data(U8 **)=doc_e->data;
+      doc_e->data=NULL;
+    }
+    doc_e=doc_e->next;
   }
   DocDel(doc);
   Fs->border_src=old_border_src;

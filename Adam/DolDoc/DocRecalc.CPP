@@ -628,7 +628,7 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
 	  del_cl=TRUE;
 	break;
       case DOCT_HEX_ED:
-	if (doc_e->de_flags&DOCEF_DATA_IS_PTR &&
+	if (doc_e->de_flags&DOCEF_DEREF_DATA &&
 	      !(doc_e->de_flags&DOCEF_REMALLOC_DATA))
 	  bptr=doc_e->data;
 	else

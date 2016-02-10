@@ -57,10 +57,10 @@ public extern I64 MemberMetaData(U8 *st,CMemberLst *ml);
 public extern CMemberLstMeta *MemberMetaFind(U8 *st,CMemberLst *ml);
 public extern CHashClass *OptClassFwd(CHashClass *tempc);
 public extern I64 PrsKeyWord(CCmpCtrl *cc);
-
 #help_index "Compiler;Cmd Line (Typically)"
 extern I64 Cmp(U8 *filename,
 	U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv_let=0);
+
 #help_index "Debugging/Unassemble"
 public extern U8 *U(U8 *ip,I64 cnt=20,I64 seg_size=64);
 public extern U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,
