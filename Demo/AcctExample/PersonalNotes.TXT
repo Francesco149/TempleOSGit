@@ -33,7 +33,8 @@ edited.
 * Cannot include ':' in [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links
 search string.
 
-* Document $DA-P+M [C:/Kernel/KernelA.HPP.Z,1010] DOCEF_REMALLOC_DATA.
+* Document $DA+M [C:/Kernel/KernelA.HPP.Z,1010] DOCEF_REMALLOC_DATA.  See
+[C:/Adam/Gr/SpriteMain.CPP.Z,1] DA+M.
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
 * No way to clear [C:/Kernel/KernelA.HPP.Z,1088] DOCEf_HOLD entries.

@@ -82,19 +82,18 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
     buf2=MStrPrint("%s,",buf);
     Free(buf); buf=buf2;
     nobound_switch (doc_e->type_u8) {
-      sub_switch_start:
-	case DOCT_DATA:
-	  buf2=MStrPrint("%s%d,",buf,doc_e->len);
-	  break;
-	case DOCT_HEX_ED:
+      case DOCT_DATA:
+	if (!(doc_e->de_flags&DOCEF_REMALLOC_DATA)) {
 	  buf2=MStrPrint("%s%d,",buf,doc_e->len);
 	  Free(buf); buf=buf2;
-	  buf2=MStrPrint("%s%d,",buf,doc_e->hex_ed_width);
-	  break;
-      sub_switch_end:
+	}
+	break;
+      case DOCT_HEX_ED:
+	buf2=MStrPrint("%s%d,",buf,doc_e->len);
+	Free(buf); buf=buf2;
+	buf2=MStrPrint("%s%d,",buf,doc_e->hex_ed_width);
 	Free(buf); buf=buf2;
 	break;
-
       case DOCT_FOREGROUND:
       case DOCT_BACKGROUND:
       case DOCT_DFT_FOREGROUND:
@@ -248,12 +247,14 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
       cc->htc.hash_table_lst=old_hash_table_lst;
       nobound_switch (i) {
 	case DOCT_DATA:
-	  while (cc->token==',')
-	    Lex(cc);
-	  if (cc->token)
-	    doc_e->len=LexExpressionI64(cc);
-	  else
-	    goto pd_err;
+	  if (!(doc_e->de_flags&DOCEF_REMALLOC_DATA)) {
+	    while (cc->token==',')
+	      Lex(cc);
+	    if (cc->token)
+	      doc_e->len=LexExpressionI64(cc);
+	    else
+	      goto pd_err;
+	  }
 	  break;
 	case DOCT_CHECK_BOX:
 	  doc_e->raw_type=RT_I8;
@@ -474,7 +475,8 @@ pd_err:
       doc_e->type=DOCT_ERROR;
       doc_e->de_flags=0;
     }
-    if (doc_e->de_flags & DOCEF_LST && !(doc_e->de_flags & DOCEF_DATA_IS_PTR)) {
+    if (doc_e->de_flags&DOCEF_LST && (doc_e->de_flags&DOCEF_REMALLOC_DATA ||
+	  !(doc_e->de_flags&DOCEF_DATA_IS_PTR))) {
       DocDataScan(doc,doc_e);
       DocDataFmt(doc,doc_e);
     }

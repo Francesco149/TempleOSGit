@@ -65,7 +65,7 @@ CMemberLstMeta *MemberMetaFind(U8 *needle_str,CMemberLst *haystack_member_lst)
 }
 
 CMemberLst *MemberFind(U8 *needle_str,CHashClass *haystack_class)
-{//Find class member. See [C:/Adam/ADbg.CPP.Z,154] ClassRep() and [C:/Adam/DolDoc/DocForm.CPP.Z,181] DocForm().
+{//Find class member. See [C:/Adam/ADbg.CPP.Z,154] ClassRep() and [C:/Adam/DolDoc/DocForm.CPP.Z,205] DocForm().
   I64 i;
   CMemberLst *tempm;
   do {
