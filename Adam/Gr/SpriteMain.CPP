@@ -80,16 +80,16 @@ Bool PopUpExtents(I64 *_x1,I64 *_x2,I64 *_y1,I64 *_y2)
   I64 i;
   CDoc *doc=DocNew;
   CDocEntry *doc_e;
-  doc_e=DocPrint(doc,"  $DA,32,A=\"x1:%%d\"$\n");
+  doc_e=DocPrint(doc,"  $DA,A=\"x1:%%d\"$\n");
   doc_e->data=_x1;
   DocDataFmt(doc,doc_e);
-  doc_e=DocPrint(doc,"  $DA,32,A=\"x2:%%d\"$\n");
+  doc_e=DocPrint(doc,"  $DA,A=\"x2:%%d\"$\n");
   doc_e->data=_x2;
   DocDataFmt(doc,doc_e);
-  doc_e=DocPrint(doc,"  $DA,32,A=\"y1:%%d\"$\n");
+  doc_e=DocPrint(doc,"  $DA,A=\"y1:%%d\"$\n");
   doc_e->data=_y1;
   DocDataFmt(doc,doc_e);
-  doc_e=DocPrint(doc,"  $DA,32,A=\"y2:%%d\"$\n\n");
+  doc_e=DocPrint(doc,"  $DA,A=\"y2:%%d\"$\n\n");
   doc_e->data=_y2;
   DocDataFmt(doc,doc_e);
 

@@ -41,7 +41,7 @@
 [C:/Compiler/BackLib.CPP.Z,41] ICU24
 [C:/Compiler/BackLib.CPP.Z,35] ICU16
 [C:/Compiler/BackLib.CPP.Z,260] SLASH_OP_DIV
-[C:/Compiler/CInit.CPP.Z,236] CmpFillTables
+[C:/Compiler/CInit.CPP.Z,240] CmpFillTables
 [C:/Compiler/AsmLib.CPP.Z,30] AOTStoreCodeU32
 [C:/Compiler/BackLib.CPP.Z,53] ICU64
 [C:/Compiler/BackLib.CPP.Z,254] SLASH_OP_INC

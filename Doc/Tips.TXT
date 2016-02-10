@@ -101,19 +101,19 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP,1].
 
 * Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1335] CDoc 
+the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1344] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3286] CTask,
-[C:/Kernel/KernelA.HPP.Z,1164] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2520]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3292] CTask,
+[C:/Kernel/KernelA.HPP.Z,1171] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2529]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,208] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2850] MEM_DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2859] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -135,20 +135,20 @@ will check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1520] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1529] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1521] OPTf_WARN_DUP_TYPES,ON) to find
+Option([C:/Kernel/KernelA.HPP.Z,1530] OPTf_WARN_DUP_TYPES,ON) to find
 unnecessary local var 
 type stmts.
 
-* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1517]
+* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1526]
 OPTf_ECHO,ON) can be placed in [C:/StartOS.CPP.Z,1] StartOS.CPP to echo
 start-up scripts.
 
-* Use [C:/Adam/DolDoc/DocEd.CPP.Z,233] Plain() to edit a plain text file. 
+* Use [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() to edit a plain text file. 
 You'll need this if your file has $'
 s.  Use the [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() utility to
 convert plain text to DolDoc's by doubling $
@@ -210,14 +210,14 @@ view data, you can use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View().
 the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1467]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1476]
 ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1335] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1344] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -283,11 +283,11 @@ cnts.jiffies.
 * Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog(),
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,115] HeapLogAddrRep() and
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,146] HeapLogSizeRep() to find leaks.  Don't 
-be confused by [C:/Kernel/KernelA.HPP.Z,1335] CDoc allocations.  Those are
+be confused by [C:/Kernel/KernelA.HPP.Z,1344] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2759]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2768]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or

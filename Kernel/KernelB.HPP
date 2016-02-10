@@ -211,33 +211,33 @@ _extern SYS_CTRL_ALT_FLAGS
 #help_index "Misc/Progress Bars"
 public _extern SYS_PROGRESS1 I64 progress1; //Current progress 1.
 public _extern SYS_PROGRESS1_DESC
-	U8 progress1_desc[PROGRESS_DESC_LEN+1]; //Progress 1 desc.
+	U8 progress1_desc[PROGRESS_DESC_LEN]; //Progress 1 desc.
 public _extern SYS_PROGRESS1_MAX I64 progress1_max; //Max progress 1.
 public _extern SYS_PROGRESS2 I64 progress2; //Current progress 2.
 public _extern SYS_PROGRESS2_DESC
-	U8  progress2_desc[PROGRESS_DESC_LEN+1]; //Progress 2 desc.
+	U8  progress2_desc[PROGRESS_DESC_LEN]; //Progress 2 desc.
 public _extern SYS_PROGRESS2_MAX I64 progress2_max; //Max progress 2.
 public _extern SYS_PROGRESS3 I64 progress3; //Current progress 3.
 public _extern SYS_PROGRESS3_DESC
-	U8  progress3_desc[PROGRESS_DESC_LEN+1]; //Progress 3 desc.
+	U8  progress3_desc[PROGRESS_DESC_LEN]; //Progress 3 desc.
 public _extern SYS_PROGRESS3_MAX I64 progress3_max; //Max progress 3.
 public _extern SYS_PROGRESS4 I64 progress4; //Current progress 4.
 public _extern SYS_PROGRESS4_DESC
-	U8  progress4_desc[PROGRESS_DESC_LEN+1]; //Progress 4 desc.
+	U8  progress4_desc[PROGRESS_DESC_LEN]; //Progress 4 desc.
 public _extern SYS_PROGRESS4_MAX I64 progress4_max; //Max progress 4.
 public _extern SYS_PROGRESSES
 	CProgress sys_progresses[NUM_PROGRESS_BARS]; //All progress bars.
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,240] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3412] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,240] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3418] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3412] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3418] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSES U16 sys_pci_busses; //Number of PCI buses.
@@ -279,7 +279,7 @@ public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr instruction.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3286] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3292] CTask.
 
 #help_index "Time/CPU Cycles"
 public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.

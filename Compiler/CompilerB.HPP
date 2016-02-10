@@ -8,7 +8,6 @@ public extern I64 ExePutS(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE,
 	CLexHashTableContext *htc=NULL);
 public extern I64 ExePutS2(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE);
 public extern CCmpGlbls cmp;
-
 #help_index "Compiler/Directive"
 #help_file "::/Doc/Directives"
 public extern Bool Echo(Bool val);

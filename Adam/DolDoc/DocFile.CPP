@@ -33,7 +33,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1239] flags.
+{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1248] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;

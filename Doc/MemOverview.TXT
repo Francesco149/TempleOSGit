@@ -17,7 +17,7 @@ called "the kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps using [C:/Kernel/Mem/HeapCtrl.CPP.Z,1]
 HeapCtrlInit().  Then, use the 
-[C:/Kernel/KernelA.HPP.Z,2870] CHeapCtrl as the 2nd arg to
+[C:/Kernel/KernelA.HPP.Z,2879] CHeapCtrl as the 2nd arg to
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  See
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog() for an example.
 
@@ -34,7 +34,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
 
  0x0000007C00- 0x00000344FF
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3852] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3858] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -51,7 +51,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3441] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3447] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF

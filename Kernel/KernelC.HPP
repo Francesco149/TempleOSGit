@@ -477,7 +477,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3754] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3760] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -704,7 +704,6 @@ public extern U0 PostMsgWait(CTask *task,I64 msg_code,
 	I64 a1,I64 a2,I64 flags=0);
 public extern CSrvCmd *TaskMsg(CTask *srv,CTask *master,
 		     I64 msg_code,I64 a1,I64 a2,I64 flags);
-
 #help_index "Task;Task/Srv/Exe;MultiCore"
 public extern CTask *Spawn(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	U8 *task_name=NULL,I64 target_cpu=-1,	//-1 means current CPU

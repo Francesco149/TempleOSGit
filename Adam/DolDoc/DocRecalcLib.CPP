@@ -199,7 +199,7 @@ U0 DocUpdateTaskDocs(CTask *task)
     if (task->border_src==BDS_ED_FILENAME_DRV)
       task->border_attr=DrvTextAttrGet(*doc->filename.name);
     if (task->title_src==TTS_ED_FILENAME)
-      MemCpy(task->task_title,doc->filename.name,TASK_TITLE_LEN);
+      MemCpy(task->task_title,doc->filename.name,STR_LEN-1);
     DocRecalc(doc,RECALCt_TO_SCREEN|RECALCF_HAS_CURSOR);
   }
   if ((doc=DocBorder(task)) && !(doc->flags&DOCF_DONT_SHOW)) {

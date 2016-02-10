@@ -571,7 +571,7 @@ Bool selected=TRUE,Bool match_case=TRUE,Bool whole_labels=FALSE)
 
 class CEdLineGoTo
 {
-  I64 line fmtstr "$DA,256,A=\"Go to Line:%d\"$";
+  I64 line fmtstr "$DA,A=\"Go to Line:%d\"$";
 };
 
 U0 EdGoToLine(CDoc *doc)

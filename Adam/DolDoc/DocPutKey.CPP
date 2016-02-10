@@ -448,12 +448,12 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  if (sc.u8[0]!=SC_TAB) {
 	    if (sc&SCF_SHIFT) {
 	      if (sc&SCF_KEY_DESC)
-		KeyDescSet("Dol /Indent Out");
+		KeyDescSet("Dol /Unindent 2");
 	      else
 		DocPrint(doc,"$ID,-2$");
 	    } else {
 	      if (sc&SCF_KEY_DESC)
-		KeyDescSet("Dol /Indent In");
+		KeyDescSet("Dol /Indent 2");
 	      else
 		DocPrint(doc,"$ID,2$");
 	    }
