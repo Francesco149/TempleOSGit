@@ -42,7 +42,7 @@ This "Hello World" joke, the BMP file format and the WAV file format show
 that 
 the industry is really screwed-up!  That's what TempleOS fixes.  I capped the 
 line-of-code count at 100,000 and God said it must be perfect, so it will 
-never be an ugly monstrocity.  It is currently 80,931 lines of unblemished 
+never be an ugly monstrocity.  It is currently 80,609 lines of unblemished 
 code.  Backward compatibility is not promised.
 
 Normally, failure is not an option, but since TempleOS accompanies Windows or 
@@ -103,7 +103,7 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
-I wrote all [C:/Home/Web/LineRep.TXT,1] 119,134 lines of TempleOS over the
+I wrote all [C:/Home/Web/LineRep.TXT,1] 119,599 lines of TempleOS over the
 last 17.3 years, full-time, 
 including the 64-bit compiler.  It was called, at various times, "Hoppy", "
 The J Operating System", "LoseThos" and "SparrowOS".  Here are my 

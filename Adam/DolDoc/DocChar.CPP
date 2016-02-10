@@ -385,7 +385,7 @@ public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
     DocUnlock(doc);
 }
 
-U0 EdDelChar(CDoc *doc)
+U0 EdCharDel(CDoc *doc)
 {
   Bool unlock=DocLock(doc);
   CDocEntry *doc_ce=doc->cur_entry;
@@ -435,7 +435,7 @@ U0 ChkDollarBufSize(CDoc *doc)
   }
 }
 
-U0 EdInsChar(I64 ch,I64 sc,CDoc *doc)
+U0 EdCharIns(I64 ch,I64 sc,CDoc *doc)
 {
   Bool unlock=DocLock(doc);
   U8 *st,*src,*dst;
@@ -577,15 +577,27 @@ ic_form_tab:
   } else {
     if (Bt(chars_bmp_displayable,ch)) {
       if (doc_ce->type_u8==DOCT_DATA) {
-	i=doc_ce->len+doc_ce->min_col;
-	if (doc_ce->de_flags & DOCEF_HAS_TERMINATOR)
-	  i++;
-	if (i>doc_ce->max_col) {
-	  st=doc_ce->tag;
-	  doc_ce->max_col++;
-	  for (i=doc_ce->max_col;i>doc->cur_col;i--)
-	    st[i]=st[i-1];
-	  st[doc->cur_col++]=ch;
+	while (TRUE) {
+	  i=doc_ce->len+doc_ce->min_col;
+	  if (doc_ce->de_flags & DOCEF_HAS_TERMINATOR)
+	    i++;
+	  if (doc_ce->max_col<i) {
+	    st=doc_ce->tag;
+	    doc_ce->max_col++;
+	    for (i=doc_ce->max_col;i>doc->cur_col;i--)
+	      st[i]=st[i-1];
+	    st[doc->cur_col++]=ch;
+	    break;
+	  } else if (doc_ce->de_flags & DOCEF_REMALLOC_DATA) { //Doesn't work
+	    st=MAlloc(doc_ce->max_col+8,doc->mem_task);
+	    MemCpy(st,doc_ce->tag,doc_ce->max_col+1);
+	    Free(doc_ce->tag);
+	    doc_ce->tag=st;
+	    doc_ce->len=MSize(st)-doc_ce->min_col-2; //See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] DataTagWidth
+	    Free(doc_ce->data);
+	    doc_ce->data=MAlloc(doc_ce->len+2,doc->mem_task);
+	  } else
+	    break;
 	}
       } else if (IsEditableText(doc_ce)) {
 	dst=st=MAlloc(doc_ce->max_col+2,doc->mem_task);
@@ -618,7 +630,7 @@ ic_done:
     DocUnlock(doc);
 }
 
-U0 EdDelLine(CDoc *doc)
+U0 EdLineDel(CDoc *doc)
 {
   CDocEntry *doc_ce=doc->cur_entry,*doc_ce2;
   I64 y;

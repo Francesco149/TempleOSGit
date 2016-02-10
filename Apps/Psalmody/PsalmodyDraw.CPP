@@ -388,7 +388,7 @@ U0 DrawDC2()
 U0 PsmMenu(I64 psm_octave)
 {
   DocClear;
-  "$BD,WHITE$$FD,GREEN$$CM,0,12$\n";
+  "$BG,WHITE$$FD,GREEN$$CM,0,12$\n";
   Sprite(__BIN_17);
   '\n\n\n\n\n';
 

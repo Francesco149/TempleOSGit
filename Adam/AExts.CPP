@@ -25,6 +25,7 @@ extern U0 DocDel(CDoc *doc);
 extern CDoc *DocDisplay(CTask *task=NULL);
 extern U0 DocDump(CDoc *doc,I64 uS_delay=0);
 extern CDocEntry *DocEntryCopy(CDoc *doc,CDocEntry *doc_e);
+extern U0 DocEntryDel(CDoc *doc,CDocEntry *doc_e);
 extern Bool DocForm(U8 *_d,U8 *class_name=lastclass,
 	I64 dof_flags=0,U8 *header=NULL,U8 *footer=NULL);
 extern U0 DocHelpIndex(CDoc *doc,U8 *index);

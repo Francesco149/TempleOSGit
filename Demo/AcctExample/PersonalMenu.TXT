@@ -88,8 +88,8 @@ Cd("/Adam/Snd");Dir;
 `Cd("/Adam/Snd");Dir;
 `
 
-TADRant
-`if (Ed("::/Home/Web/TAD/TADRant.TXT",EDF_WAS_WRITE)) MakeWebSitePartial;
+Blog
+`Blog;
 `
  TempleOSTheme;
 

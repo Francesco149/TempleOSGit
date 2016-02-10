@@ -1036,6 +1036,11 @@ rc_adjust_xy:
       case DOCT_CLEAR:
 	next_clear_found=doc_e;
 	break;
+      case DOCT_HTML_CODE:
+	if (recalc_flags&RECALCF_TO_HTML &&
+	      doc_e->de_flags&DOCEF_TAG && doc_e->tag)
+	  x-=StrLen(doc_e->tag);
+	break;
       case DOCT_NUM_TYPES-1: //nobound_switch
       default:
 	break;

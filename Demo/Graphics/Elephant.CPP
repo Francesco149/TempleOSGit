@@ -159,6 +159,7 @@
 
     /* <6> <6> (image) */
 
+
 U0 DrawIt(CTask *task,CDC *dc)
 {
   CSprite *temps;

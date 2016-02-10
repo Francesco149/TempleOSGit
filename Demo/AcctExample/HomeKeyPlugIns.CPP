@@ -319,7 +319,7 @@ Bool MyPutKey(I64 ch,I64 sc)
 	return TRUE;
       case 'p':
 	if (sc&SCF_KEY_DESC)
-	  KeyDescSet("Cmd /JukeBox(TAD)");
+	  KeyDescSet("Cmd /JukeBox(Home/Downloads)");
 	else
 	  JukeBox("::/Home/Downloads/Psalmody");
 	return TRUE;

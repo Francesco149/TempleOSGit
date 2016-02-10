@@ -118,7 +118,7 @@ CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags)
 
 CSrvCmd *TaskMsg(CTask *_srv,CTask *master,I64 msg_code,I64 a1,I64 a2,I64 flags)
 {//Post message to servant task.  Tell who the master task is.
-//See [C:/Kernel/KernelA.HPP.Z,3137] flags and [C:/Kernel/KernelA.HPP.Z,3185] msg_code.
+//See [C:/Kernel/KernelA.HPP.Z,3140] flags and [C:/Kernel/KernelA.HPP.Z,3188] msg_code.
   CSrvCmd *tempc1,*tempc;
   CTask *srv=_srv;
   if (!TaskValidate(srv) || master && !TaskValidate(master)||
@@ -238,7 +238,7 @@ U0 TaskWait(CTask *task=NULL)
 }
 
 U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
-{//Post message to a task and return immediately.  See [C:/Kernel/KernelA.HPP.Z,3185] msg_code.
+{//Post message to a task and return immediately.  See [C:/Kernel/KernelA.HPP.Z,3188] msg_code.
   if (TaskValidate(task)) {
     if (Bt(&task->task_flags,TASKf_INPUT_FILTER_TASK))
       TaskMsg(task->last_input_filter_task,NULL,msg_code,a1,a2,
@@ -249,14 +249,14 @@ U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 }
 
 U0 PostMsgWait(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0)
-{//Post message to a task and wait until task is idle.See [C:/Kernel/KernelA.HPP.Z,3185] msg_code.
+{//Post message to a task and wait until task is idle.See [C:/Kernel/KernelA.HPP.Z,3188] msg_code.
   PostMsg(task,msg_code,a1,a2,flags);
   TaskWait(task);
 }
 
 U0 Msg(I64 msg_code,I64 a1,I64 a2,I64 flags=0)
 {//Post message to current task and return immediately.
-//See [C:/Kernel/KernelA.HPP.Z,3185] msg_code.
+//See [C:/Kernel/KernelA.HPP.Z,3188] msg_code.
   PostMsg(Fs,msg_code,a1,a2,flags);
 }
 

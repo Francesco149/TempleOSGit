@@ -1,3 +1,5 @@
+#help_index "TOS"
+
 U0 BadCodeJump()
 {//[C:/Adam/God/HSNotes.TXT.Z,1]
   CDirEntry *tempde1=FilesFind("/*",
@@ -26,42 +28,6 @@ U0 BadCodeJump()
   DirTreeDel(tempde1);
   Ed(st);
   Free(st);
-}
-
-public U8 *FileNameNumNext(U8 *files_find_mask,U8 *fmt)
-{
-  CDirEntry *tempde=FilesFind(files_find_mask);
-  U8 *result=MStrPrint(fmt,FileCnt(tempde));
-  DirTreeDel(tempde);
-  return result;
-}
-
-U0 DCImgWrite(CDC *dc)
-{
-  U8 *st1=FileNameNumNext("::/Home/Web/Imgs/Img*",
-	"::/Home/Web/Imgs/Img%03d.BMP"),
-	*st2=MStrPrint("http://www.templeos.org/Wb%s",st1+2);
-  BMPWrite(st1,dc);
-  Free(st1);
-  "$HC,\"<img src=\\\"%s\\\" width=\\\"%d\\\" "
-	"height=\\\"%d\\\" alt=\\\"\\\">\"$\n",st2,dc->width,dc->height;
-  Free(st2);
-}
-
-U0 BlogScreenShot()
-{
-  Bool old_cursor=DocCursor;
-  CDC *dc1,*dc2;
-  U8 *old_fp_draw_input_ptr=gr.fp_draw_input_ptr;
-  gr.fp_draw_input_ptr=NULL;
-  WinMgrSync(2);
-  dc1=DCScreenCapture;
-  dc2=DCExtract(dc1,0,FONT_HEIGHT,GR_WIDTH-1,GR_HEIGHT-1);
-  DCImgWrite(dc2);
-  gr.fp_draw_input_ptr=old_fp_draw_input_ptr;
-  DCDel(dc1);
-  DCDel(dc2);
-  DocCursor(old_cursor);
 }
 
 U8 *WebBookMarks(U8 *filename="::/Home/Downloads/Blog/Bookmarks.html")
@@ -456,7 +422,7 @@ public U0 GodBooksPassage(U8 *files_find_mask,I64 len=512,
   DirTreeDel(tempde1);
 }
 
-#define NIST_TIME_OFFSET	(-7879-local_time_offset/CDATE_FREQ)
+#define NIST_TIME_OFFSET	(-7884-local_time_offset/CDATE_FREQ)
 #define NIST_TIME_TO_SWITCH	3
 
 public U0 NISTSync()
@@ -569,8 +535,8 @@ U0 InsMyURL()
       break;
     case:
       if (DocForm(url(CImgurForm *))) {
-	"$HC,\"<img src=\\\"http://i.imgur.com/%s\\\" "
-	      "width=\\\"%d\\\" height=\\\"%d\\\" alt=\\\"\\\">\"$\n",
+	"$HC,\"<center><img src=\\\"http://i.imgur.com/%s\\\" "
+	      "width=\\\"%d\\\" height=\\\"%d\\\" alt=\\\"\\\"></center>\"$\n",
 	      url->special,url->min,url->sec;
       }
       break;

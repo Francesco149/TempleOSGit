@@ -22,7 +22,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
       KeyDescSet("Char  /'%s'",st);
       Free(st);
     } else
-      EdInsChar(ch,sc,doc);
+      EdCharIns(ch,sc,doc);
   } else {
     doc_ce=doc->cur_entry;
     x=doc->x; y=doc->y;
@@ -189,7 +189,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  if (sc&SCF_SHIFT)
 		    EdCutToClipboard(doc);
 		  else
-		    EdDelChar(doc);
+		    EdCharDel(doc);
 		}
 	      }
 	      break;
@@ -435,11 +435,11 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  doc->cur_col=doc_ce->max_col;
 		  if (doc->cur_col>doc_ce->min_col)
 		    doc->cur_col--;
-		  EdDelChar(doc);
+		  EdCharDel(doc);
 		}
 	      } else {
 		doc->cur_col--;
-		EdDelChar(doc);
+		EdCharDel(doc);
 	      }
 	    }
 	  }
@@ -466,7 +466,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	    else
 	      KeyDescSet("Char  /Page Break");
 	  } else
-	    EdInsChar(ch,sc,doc);
+	    EdCharIns(ch,sc,doc);
 	  break;
 	case CH_CTRLK:
 	  if (sc&SCF_SHIFT) {
@@ -556,8 +556,9 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  if (!(sc&SCF_SHIFT)) {
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Cmd /Sprite Graphic Resource");
-	    else {
-	      if (!(doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS))) {
+	    else
+	      if (!(doc->flags&DOCF_FORM) &&
+		    !(doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS))) {
 		DocUnlock(doc);
 		if (doc_ce->type_u8==DOCT_SPRITE)
 		  EdSpriteEd(doc);
@@ -565,7 +566,6 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 		  EdSpriteIns(doc);
 		DocLock(doc);
 	      }
-	    }
 	  }
 	  break;
 	case CH_CTRLS:
@@ -585,15 +585,13 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	  if (sc&SCF_SHIFT) {
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Edit/Single Entry Toggle Plain Text");
-	    else
+	    else if (!(doc->flags&DOCF_FORM))
 	      DocEntryToggle(doc);
 	  } else {
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Edit/Toggle Plain Text Display");
-	    else
-	      if (!(doc->flags&DOCF_FORM) ||
-		    doc->flags&(DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS))
-		DocFlagsToggle(doc,DOCF_PLAIN_TEXT);
+	    else if (!(doc->flags&DOCF_FORM))
+	      DocFlagsToggle(doc,DOCF_PLAIN_TEXT);
 	  }
 	  break;
 	case CH_CTRLU:
@@ -643,7 +641,7 @@ public U0 DocPutKey(CDoc *doc,I64 ch=0,I64 sc=0)
 	    if (sc&SCF_KEY_DESC)
 	      KeyDescSet("Edit/Delete Line");
 	    else
-	      EdDelLine(doc);
+	      EdLineDel(doc);
 	  }
 	  break;
 	case CH_CTRLZ:
