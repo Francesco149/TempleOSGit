@@ -33,7 +33,7 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1237] flags.
+{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1239] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;
@@ -186,7 +186,7 @@ public Bool DocWrite(CDoc *doc,Bool prompt=FALSE)
 #help_index "DolDoc"
 public U0 DocInsDoc(CDoc *doc=NULL,CDoc *doc2)
 {//Insert copy of doc2 into doc at insert pt, cur_entry.
-//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,230] DocRst
+//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,236] DocRst
   U8 *dst;
   Bool unlock_doc,unlock_doc2=DocLock(doc2);
   CDocEntry *doc_ne,*doc_e=doc2->root.next,*doc_ce;
@@ -225,7 +225,7 @@ public U0 DocInsDoc(CDoc *doc=NULL,CDoc *doc2)
 #help_index "DolDoc/Compiler;Compiler/Directive"
 public U0 StreamDoc(CDoc *doc)
 {//Inject doc into compile stream. Use inside #exe{}.
-//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,230] DocRst
+//TODO: [C:/Adam/DolDoc/DocNew.CPP.Z,236] DocRst
   Bool unlock_doc=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {

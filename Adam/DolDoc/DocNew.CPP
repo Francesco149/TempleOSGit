@@ -86,6 +86,8 @@ public U0 DocEntryDel(CDoc *doc,CDocEntry *doc_e)
       Free(doc_e->bin_ptr_link);
     if (doc_e->de_flags & DOCEF_HAS_BIN)
       DocBinDel(doc,doc_e->bin_data);
+    if (doc_e->de_flags & DOCEF_REMALLOC_DATA)
+      Free(doc_e->data);
     Free(doc_e);
   }
 }
@@ -109,6 +111,8 @@ public I64 DocEntrySize(CDoc *,CDocEntry *doc_e)
     result+=MSize2(doc_e->right_macro);
   if (doc_e->de_flags & DOCEF_BIN_PTR_LINK)
     result+=MSize2(doc_e->bin_ptr_link);
+  if (doc_e->de_flags & DOCEF_REMALLOC_DATA)
+    result+=MSize2(doc_e->data);
   return result;
 }
 
@@ -165,6 +169,8 @@ public CDocEntry *DocEntryCopy(CDoc *doc,CDocEntry *doc_e)
       tempb->tag=NULL;
     QueIns(tempb,doc->bin_root.last);
   }
+  if (doc_e->de_flags & DOCEF_REMALLOC_DATA)
+    doc_ne->data=MAllocIdentical(doc_e->data,task);
   return doc_ne;
 }
 

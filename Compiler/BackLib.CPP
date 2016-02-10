@@ -5,7 +5,7 @@ each intermediate code's output code.
 However, intermediate codes must be
 coupled together based on the arg and
 result type specifications in the
-[C:/Kernel/KernelA.HPP.Z,1598] CICArg.  RAX is the most common reg
+[C:/Kernel/KernelA.HPP.Z,1601] CICArg.  RAX is the most common reg
 for coupling intermediate codes.
 
 Internal calculations take place on

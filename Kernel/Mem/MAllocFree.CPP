@@ -257,7 +257,7 @@ _FREE::
 	MOV	RAX,U64 CMemUsed.size-CMemUsed.start[RSI]
 	TEST	RAX,RAX
 	JGE	@@20	//Aligned alloced chunks have neg size.
-			//The neg size is offset to start of [C:/Kernel/KernelA.HPP.Z,2782] CMemUsed struct.
+			//The neg size is offset to start of [C:/Kernel/KernelA.HPP.Z,2785] CMemUsed struct.
 	ADD	RSI,RAX
 
 @@20:	PUSHFD
@@ -383,9 +383,9 @@ _MHEAP_CTRL::
 _extern _FREE U0 Free(U8 *addr); //Free [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc()ed memory chunk.
 _extern _MSIZE I64 MSize(U8 *src); //Size of heap object.
 _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size of heap object.
-_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl of object.
+_extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src); //[C:/Kernel/KernelA.HPP.Z,2870] CHeapCtrl of object.
 _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL); //Alloc memory chunk.
-//Accepts a [C:/Kernel/KernelA.HPP.Z,3283] CTask or [C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl. NULL allocs off current task's heap.
+//Accepts a [C:/Kernel/KernelA.HPP.Z,3286] CTask or [C:/Kernel/KernelA.HPP.Z,2870] CHeapCtrl. NULL allocs off current task's heap.
 
 U8 *AMAlloc(I64 size)
 {//Alloc memory in Adam's heap.
@@ -393,7 +393,7 @@ U8 *AMAlloc(I64 size)
 }
 
 U8 *CAlloc(I64 size,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/KernelA.HPP.Z,3283] CTask or [C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/KernelA.HPP.Z,3286] CTask or [C:/Kernel/KernelA.HPP.Z,2870] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result=MAlloc(size,mem_task);
   MemSet(result,0,size);
   return result;
@@ -405,7 +405,7 @@ U8 *ACAlloc(I64 size)
 }
 
 U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/KernelA.HPP.Z,3283] CTask or [C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/KernelA.HPP.Z,3286] CTask or [C:/Kernel/KernelA.HPP.Z,2870] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (!src) return NULL;
@@ -444,7 +444,7 @@ U8 *CAllocAligned(I64 size,I64 alignment,
 }
 
 U8 *StrNew(U8 *buf,CTask *mem_task=NULL)
-{//Accepts a [C:/Kernel/KernelA.HPP.Z,3283] CTask or [C:/Kernel/KernelA.HPP.Z,2867] CHeapCtrl.  NULL allocs off current task's heap.
+{//Accepts a [C:/Kernel/KernelA.HPP.Z,3286] CTask or [C:/Kernel/KernelA.HPP.Z,2870] CHeapCtrl.  NULL allocs off current task's heap.
   U8 *result;
   I64 size;
   if (buf) {

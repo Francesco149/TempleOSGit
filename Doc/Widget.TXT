@@ -54,5 +54,4 @@ Refresh Data  updates $DA...$ entry continuously.
 
 Html Link  stores a link which will be embedded if you generate a html
 version 
-of a document with [C:/Adam/Opt/Utils/ToHtml.CPP.Z,300] ToHtml() or
-[C:/Adam/Opt/Utils/ToHtml.CPP.Z,121] Doc2Html().
+of a document with [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP,1].

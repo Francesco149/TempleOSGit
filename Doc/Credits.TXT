@@ -3,7 +3,7 @@
 1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.  It's public 
 domain.
 
-2) [C:/Kernel/KernelA.HPP.Z,2222] ATA Reg and Cmd Definitions are originally
+2) [C:/Kernel/KernelA.HPP.Z,2225] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 
@@ -33,7 +33,7 @@ O.S.) and Unix inspiration, too, such as drive letters, command names, etc.
 
 10) Thanks to whoever wrote this CppHtml.CPP.Z.  I'm a novice on web stuff
 and 
-you helped me with html.  See [C:/Adam/Opt/Utils/ToHtml.CPP.Z,1] ToHtml.
+you helped me with html.  See [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP,1].
 
 11) I used MagicISO to burn test CD's to help me understand the ISO9660 file 
 system format.  I mostly used the ISO9660 spec.

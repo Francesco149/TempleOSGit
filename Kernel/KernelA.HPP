@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1524] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1527] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -386,7 +386,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1923] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1926] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -1007,17 +1007,18 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_REFRESH_DATA	0x100000000000
 #define DOCEF_UPDATE_DATA	0x200000000000
 #define DOCEF_DATA_IS_PTR	0x400000000000
-#define DOCEF_HAS_TERMINATOR	0x800000000000
-#define DOCEF_ZERO_BASED	0x1000000000000
-#define DOCEF_HOLD		0x2000000000000
-#define DOCEF_TREE		0x4000000000000
-#define DOCEF_LST		0x8000000000000
-#define DOCEF_SKIP		0x10000000000000
-#define DOCEF_POPUP		0x20000000000000
-#define DOCEF_SKIP_IN_FORM	0x40000000000000
-#define DOCEF_FILTER_SKIP	0x80000000000000
-#define DOCEF_NO_CLICK_ON	0x100000000000000
-#define DOCEF_DONT_DRAW		0x200000000000000 //only works on sprites
+#define DOCEF_REMALLOC_DATA	0x800000000000
+#define DOCEF_HAS_TERMINATOR	0x1000000000000
+#define DOCEF_ZERO_BASED	0x2000000000000
+#define DOCEF_HOLD		0x4000000000000
+#define DOCEF_TREE		0x8000000000000
+#define DOCEF_LST		0x10000000000000
+#define DOCEF_SKIP		0x20000000000000
+#define DOCEF_POPUP		0x40000000000000
+#define DOCEF_SKIP_IN_FORM	0x80000000000000
+#define DOCEF_FILTER_SKIP	0x100000000000000
+#define DOCEF_NO_CLICK_ON	0x200000000000000
+#define DOCEF_DONT_DRAW		0x400000000000000 //only works on sprites
 
 #define DOCEG_DONT_EDIT	(DOCEF_DEFINE|DOCEF_HTML_LINK|\
   DOCEF_AUX_STR|DOCEF_BIN_PTR_LINK|DOCEF_SCROLLING_X|DOCEF_TAG_CB)
@@ -1081,18 +1082,19 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEf_REFRESH_DATA	44
 #define DOCEf_UPDATE_DATA	45
 #define DOCEf_DATA_IS_PTR	46
-#define DOCEf_HAS_TERMINATOR	47
-#define DOCEf_ZERO_BASED	48
-#define DOCEf_HOLD		49
-#define DOCEf_TREE		50
-#define DOCEf_LST		51
-#define DOCEf_SKIP		52
-#define DOCEf_POPUP		53
-#define DOCEf_SKIP_IN_FORM	54
-#define DOCEf_FILTER_SKIP	55
-#define DOCEf_NO_CLICK_ON	56
-#define DOCEf_DONT_DRAW		57 //only works on sprites
-#define DOCEf_NUM_FLAGS		58
+#define DOCEf_REMALLOC_DATA	47
+#define DOCEf_HAS_TERMINATOR	48
+#define DOCEf_ZERO_BASED	49
+#define DOCEf_HOLD		50
+#define DOCEf_TREE		51
+#define DOCEf_LST		52
+#define DOCEf_SKIP		53
+#define DOCEf_POPUP		54
+#define DOCEf_SKIP_IN_FORM	55
+#define DOCEf_FILTER_SKIP	56
+#define DOCEf_NO_CLICK_ON	57
+#define DOCEf_DONT_DRAW		58 //only works on sprites
+#define DOCEf_NUM_FLAGS		59
 
 public class CDocBin
 {
@@ -1200,7 +1202,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1225] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1227] Editor Flags
 
 class CEdFindText
 {
@@ -1226,7 +1228,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1196] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1198] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1328,6 +1330,7 @@ class CDocUndo
 
 #define RECALCF_HAS_CURSOR	0x100
 #define RECALCF_ADD_CURSOR	0x200
+#define RECALCF_TO_HTML		0x400
 
 public class CDoc //Linked Text File header
 {//See [Doc,1] Doc for documentation.
@@ -1537,7 +1540,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1320] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1322] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2792,8 +2795,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2837] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2837] MEM_PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2840] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2840] MEM_PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2903,7 +2906,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2913] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2916] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3003,7 +3006,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3002] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3003] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3005] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3006] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3183,8 +3186,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3452] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3452] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3455] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3455] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3632,12 +3635,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2903] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2906] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2913] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2916] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3670,7 +3673,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3608] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3611] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

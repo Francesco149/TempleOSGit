@@ -8,8 +8,8 @@ Owner/President:
 Terry A. Davis
 
 ```
-<img src="http://www.templeos.org/images/140414TerryADavis.jpg" width="432"
-height="324" alt="">
+<center><img src="http://www.templeos.org/images/140414TerryADavis.jpg"
+width="432" height="324" alt=""></center>
 ```
 
 8144 Sickle Lane
@@ -36,8 +36,8 @@ CAD/CAM package for a company I started called Home Automation and Robotic
 Equipment.
 
 ```
-<img src="http://www.templeos.org/images/Machine.jpg" width="600"
-height="400" alt="">
+<center><img src="http://www.templeos.org/images/Machine.jpg" width="600"
+height="400" alt=""></center>
 ```
 
 I worked for a company named Xytec Corp. 1997-1999.  We made FPGA-based image 

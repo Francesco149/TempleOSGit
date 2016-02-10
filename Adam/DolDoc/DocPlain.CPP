@@ -474,8 +474,7 @@ pd_err:
       doc_e->type=DOCT_ERROR;
       doc_e->de_flags=0;
     }
-    if (doc_e->de_flags & DOCEF_LST &&
-	  !(doc_e->de_flags & DOCEF_DATA_IS_PTR)) {
+    if (doc_e->de_flags & DOCEF_LST && !(doc_e->de_flags & DOCEF_DATA_IS_PTR)) {
       DocDataScan(doc,doc_e);
       DocDataFmt(doc,doc_e);
     }

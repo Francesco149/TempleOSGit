@@ -18,15 +18,15 @@ and [C:/Kernel/SrvCmd.CPP.Z,475] AutoFile()
 handling.
 0x60000000 [C:/Kernel/KeyDev.CPP.Z,86] KDRawPutKey() nonwindowed direct to
 video mem debug output. 
-0x80000000 [C:/Adam/DolDoc/DocPutKey.CPP.Z,719] KDDocPutKey() standard
+0x80000000 [C:/Adam/DolDoc/DocPutKey.CPP.Z,717] KDDocPutKey() standard
 document cmds
 
 Since handling individual keys is slow, TempleOS supports PutS() as well.  If 
 no puts handler is defined, individual keys are sent.
 
-[C:/Kernel/KernelA.HPP.Z,1332] CDoc.user_put_key and
-[C:/Kernel/KernelA.HPP.Z,1332] CDoc.user_put_s are call back routines which
+[C:/Kernel/KernelA.HPP.Z,1335] CDoc.user_put_key and
+[C:/Kernel/KernelA.HPP.Z,1335] CDoc.user_put_s are call back routines which
 offer some 
 neat tricks.  See [C:/Apps/Psalmody/JukeBox.CPP,1].  There is a var
-[C:/Kernel/KernelA.HPP.Z,1332] CDoc.user_put_
+[C:/Kernel/KernelA.HPP.Z,1335] CDoc.user_put_
 data which gets passed to them.
