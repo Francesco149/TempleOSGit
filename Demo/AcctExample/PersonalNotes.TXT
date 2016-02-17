@@ -35,8 +35,6 @@ search string.
 
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
-* No way to clear [C:/Kernel/KernelA.HPP.Z,1093] DOCEf_HOLD entries.
-
 * [C:/Kernel/KernelA.HPP.Z,1252] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.CPP.Z,413] Reindention.
 
@@ -52,8 +50,6 @@ search string.
 * 01/10/2016 find-replace editor hung on
 [C:/Home/Web/TAD/CounterRenaissance.TXT,1] CounterRenaissance "Rennaisance"
 * 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
-
-* Document $DA zero terminator.  Explain str or not.
 
 * Document, perhaps with video, [C:/Kernel/SerialDev/Message.CPP.Z,193]
 GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.

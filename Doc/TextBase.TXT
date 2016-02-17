@@ -17,7 +17,7 @@ Bit  30		[C:/Kernel/KernelA.HPP.Z,886] Selected (XOR colors with FF)
 Bit  31		[C:/Kernel/KernelA.HPP.Z,887] Underline
 
 [C:/Adam/Gr/GrScreen.CPP.Z,18] GrUpdateTaskWin() calls
-[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,190] DocUpdateTaskDocs() which calls
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,193] DocUpdateTaskDocs() which calls
 [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc() where the 
 document text is plotted into [C:/Adam/Gr/GrGlbls.CPP.Z,3] gr.text_base. 
 Then, [C:/Adam/Gr/GrScreen.CPP.Z,166] GrUpdateTextBG() and 

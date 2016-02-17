@@ -100,7 +100,7 @@ was to indicate how far along operations were.  There's no coordination, so
 different apps might interfere.  I use them most for debugging--just values 
 easily viewed.  See [C:/Demo/Progress.CPP.Z,1].
 
-* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to adjust the size of
+* Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to adjust the size of
 the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1344] CDoc 
 entries, not lines.
 
@@ -114,7 +114,7 @@ them.  You shouldn't encounter conflicts with TempleOS using them.
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,208] Spawn(), chang
 [C:/Kernel/KernelA.HPP.Z,2859] MEM_DFT_STK, and using
-[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,173] DocMax() to 
+[C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to 
 reduce the cmd line buffer size.
 
 * Filenames ending in ".Z" will be automatically compressed and uncompressed 

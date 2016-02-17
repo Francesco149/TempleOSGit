@@ -20,35 +20,36 @@ F64 gate_theta,gate_t;
 #define GE_COW		0
 
 
-/* <1> <1> (image) */
+/* <1> <1> (image) */	/* <2> <2> (image) */	/* <3> <3> (image) */
 #define GE_BULL		1
 
 
-/* <2> <2> (image) */
+/* <4> <4> (image) */	/* <5> <5> (image) */	/* <6> <6> (image) */
 #define GE_HORSE	2
 
 
-/* <3> <3> (image) */
+/* <7> <7> (image) */	/* <8> <8> (image) */
 #define GE_NUM		3
 
 
-/* <4> <4> (image) */
+/* <9> <9> (image) */
 
-class RHCSprite
-{
-  U8 *img;
-  I64 min_x,max_x,min_y,max_y;
-} rh_sprite[GE_NUM];
+#define ANIMAL_WIDTH	20
+#define ANIMAL_HEIGHT	16
+
+U8 *cow_imgs[4]  ={__BIN_1,__BIN_2,__BIN_3,__BIN_2},
+   *bull_imgs[4] ={__BIN_4,__BIN_5,__BIN_6,__BIN_5},
+   *horse_imgs[4]={__BIN_7,__BIN_8,__BIN_7,__BIN_8};
 
 #define NUM_ANIMALS	100
 
 class Animal
 {
-  I64 num,x,y,dx,dy;
-  RHCSprite *ge;
-  U32 buddy;
-  U8 type;
-  Bool dead,pad[2];
+  I64	num,x,y,dx,dy;
+  U8	**imgs;
+  U32	buddy;
+  U8	type,frame0;
+  Bool	dead,pad;
 } *a;
 
 //************************************
@@ -199,7 +200,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   static I64 last_pos_x=0;
   static Bool left=TRUE;
   F64 t;
-  I64 i,
+  I64 i,frame=4*tS,
 	cx=(MAP_WIDTH -task->pix_width)/2,
 	cy=(MAP_HEIGHT-task->pix_height)/2;
   if (task->scroll_x+cx<0)
@@ -222,7 +223,8 @@ U0 DrawIt(CTask *task,CDC *dc)
 	dc->flags|=DCF_JUST_MIRROR|DCF_SYMMETRY;
 	DCSymmetrySet(dc,a[i].x.i32[1]-cx,0,a[i].x.i32[1]-cx,1);
       }
-      Sprite3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,a[i].ge->img);
+      Sprite3(dc,a[i].x.i32[1]-cx,a[i].y.i32[1]-cy,0,
+	    a[i].imgs[(frame+a[i].frame0)&3]);
       dc->flags&=~(DCF_JUST_MIRROR|DCF_SYMMETRY);
     }
 
@@ -235,9 +237,8 @@ U0 DrawIt(CTask *task,CDC *dc)
     DCSymmetrySet(dc,ip.pos.x-task->pix_left-task->scroll_x,0,
 	  ip.pos.x-task->pix_left-task->scroll_x,1);
   }
-  Sprite3(dc,
-	ip.pos.x-task->pix_left-task->scroll_x,
-	ip.pos.y-task->pix_top -task->scroll_y,0,rh_sprite[GE_HORSE].img);
+  Sprite3(dc,ip.pos.x-task->pix_left-task->scroll_x,
+	     ip.pos.y-task->pix_top -task->scroll_y,0,horse_imgs[frame&3]);
   dc->flags&=~(DCF_JUST_MIRROR|DCF_SYMMETRY);
   last_pos_x=ip.pos.x;
 
@@ -393,13 +394,13 @@ U0 AnimateTask(CTask *parent)
 	}
 
 	//Keep on map
-	if (!(MAP_BORDER-tempa->ge->min_x
-	      <=tempa->x.i32[1]<MAP_WIDTH-MAP_BORDER-tempa->ge->max_x)) {
+	if (!(MAP_BORDER+ANIMAL_WIDTH/2
+	      <=tempa->x.i32[1]<MAP_WIDTH-MAP_BORDER-ANIMAL_WIDTH/2)) {
 	  tempa->x -=tempa->dx;
 	  tempa->dx=-tempa->dx;
 	}
-	if (!(MAP_BORDER-tempa->ge->min_y
-	      <=tempa->y.i32[1]<MAP_HEIGHT-MAP_BORDER-tempa->ge->max_y)) {
+	if (!(MAP_BORDER+ANIMAL_HEIGHT
+	      <=tempa->y.i32[1]<MAP_HEIGHT-MAP_BORDER)) {
 	  tempa->y -=tempa->dy;
 	  tempa->dy=-tempa->dy;
 	}
@@ -464,7 +465,7 @@ U0 ReInit()
 
   //Plot fence
   for (i=FENCE_WIDTH;i>0;i-=16)
-    Sprite3(map_dc,i,FENCE_HEIGHT,0,__BIN_4);
+    Sprite3(map_dc,i,FENCE_HEIGHT,0,__BIN_9);
   map_dc->pen_width=1;
   map_dc->color=BROWN;
   for (i=0;i<FENCE_HEIGHT-16;i+=16)
@@ -489,9 +490,10 @@ U0 ReInit()
       a[i].y=(64+RandU32%(MAP_WIDTH-128))<<32;
     } while (!CheckMap(a[i].x>>32,a[i].y>>32));
     if (i&1)
-      a[i].ge=&rh_sprite[GE_COW];
+      a[i].imgs=cow_imgs;
     else
-      a[i].ge=&rh_sprite[GE_BULL];
+      a[i].imgs=bull_imgs;
+    a[i].frame0=RandU16&3;
     BuddySelect(i);
   }
   outside_cnt=NUM_ANIMALS;
@@ -504,16 +506,6 @@ U0 ReInit()
 U0 Init()
 {
   I64 i;
-  RHCSprite *ge;
-
-  rh_sprite[0].img=__BIN_1;
-  rh_sprite[1].img=__BIN_2;
-  rh_sprite[2].img=__BIN_3;
-  for (i=0;i<GE_NUM;i++) {
-    ge=&rh_sprite[i];
-    SpriteExtents(ge->img,&ge->min_x,&ge->max_x,&ge->min_y,&ge->max_y);
-  }
-
   RiverNew;
   rd_lock=0;
   QueInit(&rd_root);

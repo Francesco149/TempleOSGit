@@ -411,12 +411,6 @@ U0 FreshenWebDir(U8 *dirname)
   CDirEntry *tempde,*tempde1;
   U8 *src,*dst;
 
-  MkDir("D:/Wb");
-  MkDir("D:/Wb/Home");
-  MkDir("D:/Wb/Home/Web");
-  MkDir("D:/Wb/Home/Web/TAD");
-  MkDir("D:/Wb/Home/Web/TAD/Blog");
-
   src=MStrPrint("D:/Wb%s",dirname);
   MkDir(src);
   Free(src);
@@ -439,3 +433,4 @@ U0 FreshenWebDir(U8 *dirname)
   }
   DirTreeDel(tempde1);
 }
+

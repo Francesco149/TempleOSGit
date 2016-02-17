@@ -221,7 +221,7 @@ Bool MapDrv(U8 drv_let,CDrv *dv)
 }
 
 Bool Drv(U8 drv_let)
-{//Set drive.  You can set drive with [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() as well.
+{//Change drive.  You can set drive with [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() as well.
   CDrv *dv=Let2Drv(drv_let);
   CBlkDev *bd;
   bd=BlkDevChk(dv->bd);

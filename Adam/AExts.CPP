@@ -17,7 +17,7 @@ extern U0 DocBinDel(CDoc *doc,CDocBin *b);
 extern U0 DocBinsValidate(CDoc *doc);
 extern U0 DocBottom(CDoc *doc=NULL);
 extern U0 DocCenter(CDoc *doc=NULL,I64 recalc=RECALCt_NORMAL);
-extern U0 DocClear(CDoc *doc=NULL);
+extern U0 DocClear(CDoc *doc=NULL,Bool clear_holds=FALSE);
 extern Bool DocCursor(Bool show=OFF,CDoc *doc=NULL);
 extern U0 DocD(U8 *buf,I64 cnt=0x80);
 extern U0 DocDataFmt(CDoc *doc,CDocEntry *doc_e,I64 d=DOCM_CANCEL);

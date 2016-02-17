@@ -91,6 +91,9 @@ Cd("/Adam/Snd");Dir;
 Blog
 `Blog;
 `
+ WebPartial
+`MakeWebSitePartial;
+`
  TempleOSTheme;
 
 `TempleOSTheme;

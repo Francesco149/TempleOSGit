@@ -85,6 +85,12 @@ U0 BlogScreenShot()
 
 public U0 MakeWebSitePartial()
 {
+  MkDir("D:/Wb");
+  MkDir("D:/Wb/Home");
+  MkDir("D:/Wb/Home/Web");
+  MkDir("D:/Wb/Home/Web/TAD");
+  MkDir("D:/Wb/Home/Web/TAD/Blog");
+
   FreshenWebDir("/Home/Web");
   FreshenWebDir("/Home/Web/" PERSONAL_INITIALS);
   FreshenWebDir(BlogLocalDir+2);
@@ -101,7 +107,9 @@ U0 Blog()
   Msg(MSG_KEY_DOWN_UP,0,SC_F6|SCF_ALT);
   Msg(MSG_KEY_DOWN_UP,'\n',0);
   if (Ed(BlogLocalFile,EDF_WAS_WRITE)) {
-    Copy(BlogLocalFile,"::Home/Web/" PERSONAL_INITIALS "/DailyBlog.TXT.Z");
-    MakeWebSitePartial;
+    Copy(BlogLocalFile,"::/Home/Web/" PERSONAL_INITIALS "/DailyBlog.TXT.Z");
+    Copy(BlogLocalFile,"D:/Home/Web/" PERSONAL_INITIALS "/DailyBlog.TXT.Z");
+    Copy(BlogLocalFile,"D:/Wb/Home/Web/"PERSONAL_INITIALS "/DailyBlog.TXT.Z");
+    TOSWebFile("D:/Wb/Home/Web/" PERSONAL_INITIALS "/DailyBlog.TXT.Z");
   }
 }
