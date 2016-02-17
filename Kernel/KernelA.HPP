@@ -1255,9 +1255,9 @@ class CEdFileName
 #define DOCF_BORDER_DOC		0x100
 #define DOCF_FORM		0x200
 #define DOCF_MIN_SIZE		0x400
-#define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,133] DocCursor
-#define DOCF_DONT_HIGHLIGHT_CURSOR 0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocHighlightCursor
-#define DOCF_NO_SCROLL_BARS	0x2000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,147] DocScroll
+#define DOCF_HIDE_CURSOR	0x800  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,136] DocCursor
+#define DOCF_DONT_HIGHLIGHT_CURSOR 0x1000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,143] DocHighlightCursor
+#define DOCF_NO_SCROLL_BARS	0x2000 //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,150] DocScroll
 #define DOCF_ALLOW_UNDO		0x4000
 #define DOCF_DONT_SHOW		0x8000
 #define DOCF_HAS_SONG		0x10000
@@ -1291,9 +1291,9 @@ class CEdFileName
 #define DOCf_BORDER_DOC		8
 #define DOCf_FORM		9
 #define DOCf_MIN_SIZE		10
-#define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,133] DocCursor
-#define DOCf_DONT_HIGHLIGHT_CURSOR 12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocHighlightCursor
-#define DOCf_NO_SCROLL_BARS	13  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,147] DocScroll
+#define DOCf_HIDE_CURSOR	11  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,136] DocCursor
+#define DOCf_DONT_HIGHLIGHT_CURSOR 12  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,143] DocHighlightCursor
+#define DOCf_NO_SCROLL_BARS	13  //use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,150] DocScroll
 #define DOCf_ALLOW_UNDO		14
 #define DOCf_DONT_SHOW		15
 #define DOCf_HAS_SONG		16

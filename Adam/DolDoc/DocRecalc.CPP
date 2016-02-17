@@ -258,7 +258,7 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
   CDocBin *tempb;
   CDocSettings *s;
   Bool del_cl,skipped_update,tree_collapsed,same_win,more=FALSE,
-	find_cursor=FALSE,blink_flag,full_refresh=TRUE,unlock;
+	find_cursor=FALSE,blink_flag,full_refresh=TRUE,unlock,clear_holds;
   CTask *win_task,*mem_task;
   CDC *dc;
   U8 *bptr,*ptr,buf[STR_LEN],ch;
@@ -1036,6 +1036,10 @@ rc_adjust_xy:
 	break;
       case DOCT_CLEAR:
 	next_clear_found=doc_e;
+	if (doc_e->de_flags&DOCEF_HOLD)
+	  clear_holds=TRUE;
+	else
+	  clear_holds=FALSE;
 	break;
       case DOCT_HTML_CODE:
 	if (recalc_flags&RECALCF_TO_HTML &&
@@ -1309,7 +1313,7 @@ rc_skip:
   if (full_refresh) {
     i=num_entries-doc->max_entries;
     if (next_clear_found) {
-      DocDelToEntry(doc,next_clear_found);
+      DocDelToEntry(doc,next_clear_found,clear_holds);
       DocRecalc(doc,recalc_flags);
     } else if (i>1024) {
       DocDelToNum(doc,i);

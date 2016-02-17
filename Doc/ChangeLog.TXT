@@ -2,7 +2,13 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----02/10/16 09:54:56----
+----02/16/16 00:36:08----
+
+----02/15/16 23:31:15----
+* Improved [C:/Demo/Games/RawHide.CPP,1].
+
+----02/13/16 17:02:34----
+* Added $CL+H$ to clear all, including hold entries.
 
 ----02/10/16 08:56:49----
 * Improved <CTRL-l> prompting.
@@ -48,7 +54,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 ----01/28/16 20:45:35----
 * Fixed bug in locate sprite elem code.
 * Overhauled <CTRL-r> sprite editor.
-* Added [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,140] DocHighlightCursor() and
+* Added [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,143] DocHighlightCursor() and
 [C:/Kernel/KernelA.HPP.Z,1295] DOCf_DONT_HIGHLIGHT_CURSOR.
 
 ----01/28/16 14:05:52----
