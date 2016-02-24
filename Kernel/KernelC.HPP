@@ -152,6 +152,7 @@ public extern I64	LinkedLstCnt(U8 **_lst);
 public extern U8	*LinkedLstCopy(U8 **_lst,CTask *mem_task=NULL);
 public extern U0	LinkedLstDel(U8 **_lst);
 public extern I64	LinkedLstSize(U8 **_lst);
+
 #help_index "Data Types/Queue Vector"
 public extern U0	QueVectU8Del(CQueVectU8 *v);
 public extern I64	QueVectU8Get(CQueVectU8 *v,I64 index);
@@ -401,7 +402,6 @@ public _extern _HASH_SINGLE_TABLE_FIND CHash *HashSingleTableFind(
 	U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 public _extern _HASH_STR I64 HashStr(U8 *st);
 public extern CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL);
-
 #help_index "Hash/Frame"
 #help_file "::/Doc/Frame"
 public extern I64 FramePtr(U8 *name,CTask *task=NULL);

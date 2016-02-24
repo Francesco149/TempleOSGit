@@ -10,8 +10,6 @@
       F64 best_score=4.9425;
       +] DiningStars
       F64 best_score=9999.0000;
-      +] BlackDiamond
-      I64 best_score=9;
       +] DunGen
       F64 best_score=20.5295;
       +] CastleFrankenstein
@@ -37,6 +35,8 @@
       I64 best_score=4;
       +] RawHide
       F64 best_score=96.1279;
+      +] BlackDiamond
+      I64 best_score=9;
       +] DemoCompany
   +] Game1
       F64 best_score=180.17166;
