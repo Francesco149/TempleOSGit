@@ -103,7 +103,7 @@ type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
 height="520"></embed></object>
 ```
 
-I wrote all [C:/Home/Web/LineRep.TXT,1] 119,691 lines of TempleOS over the
+I wrote all [C:/Home/Web/LineRep.TXT,1] 119,702 lines of TempleOS over the
 last 17.3 years, full-time, 
 including the 64-bit compiler.  It was called, at various times, "Hoppy", "
 The J Operating System", "LoseThos" and "SparrowOS".  Here are my 

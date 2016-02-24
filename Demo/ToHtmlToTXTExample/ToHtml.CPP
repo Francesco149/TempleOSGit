@@ -171,14 +171,14 @@ public CDoc *Doc2Html(CDoc *doc_in,U8 *html_header=NULL,U8 *body_header=NULL,
   y=doc_e->y;
   while (doc_e!=doc_in) {
     if (!(doc_e->de_flags&DOCEF_SKIP)) {
-      if (line_anchors && y!=old_y) {
+      if (y!=old_y && line_anchors) {
 	DocPrint(doc_out,"<a name=\"l%d\"></a>",y+1);
 	old_y=y;
       }
       while (y<doc_e->y) {
 	HtmlPutS(doc_out,doc_e->settings.final_u32_attr,
 	      &old_u32_attr,"\n",&col,style_bitmap);
-	if (line_anchors && ++y!=old_y) {
+	if (++y!=old_y && line_anchors) {
 	  DocPrint(doc_out,"<a name=\"l%d\"></a>",y+1);
 	  old_y=y;
 	}

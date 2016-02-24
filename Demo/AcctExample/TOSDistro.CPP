@@ -230,10 +230,6 @@ U0 TOSDistroPrep()
 virtual machine, not bare metal hardware because it's settings could cause
 problems.  The hard drive must be partitioned.	Install Std Distro, then
 install this on top.
->[C:/Demo/AcctExample/TOSDistro.CPP.Z,1] TSInstall;
->[C:/Demo/AcctExample/TOSDistro.CPP.Z,1] TSUpgrade;
-See [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] MakeDistrosAndBackUp() to reproduce the ISO's in E:/Wb.  It makes this
-website, too.
 */
   Drv('C');
   DistroPrep;
