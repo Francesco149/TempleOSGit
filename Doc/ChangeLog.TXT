@@ -2,7 +2,10 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----02/16/16 00:36:08----
+----02/22/16 12:06:41----
+
+----02/19/16 18:48:51----
+* Fixed bug in [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP,1].
 
 ----02/15/16 23:31:15----
 * Improved [C:/Demo/Games/RawHide.CPP,1].

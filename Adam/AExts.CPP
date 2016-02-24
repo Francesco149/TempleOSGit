@@ -35,7 +35,7 @@ extern U0 DocInsEntry(CDoc *doc,CDocEntry *doc_e);
 extern Bool DocLock(CDoc *doc);
 extern U0 DocMax(I64 i=MAX_I32);
 extern CDoc *DocNew(U8 *filename=NULL,CTask *task=NULL);
-extern CDocEntry *DocPrint(CDoc *doc,U8 *src,...);
+extern CDocEntry *DocPrint(CDoc *doc=NULL,U8 *src,...);
 extern CDoc *DocPut(CTask *task=NULL);
 extern CDoc *DocRead(U8 *name=NULL,I64 flags=0);
 extern Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL);
