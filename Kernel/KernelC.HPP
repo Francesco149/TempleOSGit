@@ -551,7 +551,6 @@ public extern Bool MemLowPagesProtect(Bool val=TRUE);
 public extern Bool MemPagePresentMark(U8 *a,Bool val);
 public extern I64 MemPageSize(U8 *a)
 public extern I64 *MemPageTable(U8 *a);
-
 #help_index "Messages"
 #help_file "::/Doc/Msgs"
 public extern I64 FlushMsgs(CTask *task=NULL);
@@ -738,6 +737,7 @@ public extern I64 LastDayOfYear(I64 i);
 public extern I64 YearStartDate(I64 year);
 public extern U16 mon_start_days1[12];
 public extern U16 mon_start_days2[12];
+
 #help_index "Time/Jiffies"
 #help_file "::/Doc/TimeJiffy"
 public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
