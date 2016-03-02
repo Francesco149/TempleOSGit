@@ -16,8 +16,6 @@
       F64 best_score=33.8405;
       +] ZoneOut
       F64 best_score=8.1373;
-      +] Varoom
-      F64 best_score=46.2643;
       +] FlapBat
       F64 best_score=16.4090;
       +] TimeOut
@@ -27,8 +25,6 @@
       +] XCaliber
       I64 best_score=248;
     I64 msg_flags=1;
-      +] BomberGolf
-      I64 best_score=175;
       +] Wenceslas
       F64 best_score=49.8074;
       +] EagleDive
@@ -37,6 +33,10 @@
       F64 best_score=96.1279;
       +] BlackDiamond
       I64 best_score=9;
+      +] Varoom
+      F64 best_score=46.2643;
+      +] BomberGolf
+      I64 best_score=175;
       +] DemoCompany
   +] Game1
       F64 best_score=180.17166;

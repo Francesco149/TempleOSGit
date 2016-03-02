@@ -512,11 +512,21 @@ CottonTail	```
 TempleOS Logo	```
 <center><img src="http://www.templeos.org/images/Logo128x152.jpg" width="640" height="760" alt=""></center>
 ```
+Pew Pew Pew	```
+<center><img src="http://i.imgur.com/sMpJ0ch.jpg" width="640" height="480" alt=""></center>
+```
+Iceberg		```
+<center><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Blue_ice_in_South_Greenland_-_Visit_Greenland.jpg" width="640" height="480" alt=""></center>
+```
+I made dis	```
+<center><img src="http://i.imgur.com/cZKkxTX.jpg" width="640" height="800" alt=""></center>
+```
 SimStructure
 ASU_Transcripts      ASU Course Catalog (See page 261)
 Dr. David Pheanis	Dr. Konstantinos S. Tsakalis	Dr. Walter Higgins
 Peter Gadwa
 Tom Foley
+Graphic Technologies	Lexmark vs Static Control
 
 
                                 Web Bookmarks
@@ -530,12 +540,15 @@ Look at PCI interrupt routing.
 The sins of Newton
 Stalin's Tanks
 Lamp shades
+The Original Jewish Temple
 KingJamesBible with LineNums
 Higgs 5-Sigma Proof
 Dwight: Nerd torture
 ATA/ATAPI spec
 
 WWW.OSDEV.ORG
+NIST Beacon
+The Perfect Coin Toss
 BBC
 KNPR
 BBC_News_24
