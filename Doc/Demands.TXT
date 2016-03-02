@@ -12,6 +12,15 @@ with
 Disability Act -- I make commands, God signs-off with a miraculous 
 authentication from an oracle, and Intel, Microsoft or VMware obeys.
 
+```
+<object width="640" height="520"><param name="movie"
+value="http://www.youtube.com/v/RvL7T4gIJN8"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/RvL7T4gIJN8"
+type="application/x-shockwave-flash" allowscriptaccess="always" width="640"
+height="520"></embed></object>
+```
+
 * Windows, Linux and VMware (because of mounted drives) must support
 [C:/Doc/RedSea.TXT.Z,1] RedSea 
 file system so I can get rid of 2,000 lines of redundant, blemished code -- 

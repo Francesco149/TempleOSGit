@@ -551,6 +551,7 @@ public extern Bool MemLowPagesProtect(Bool val=TRUE);
 public extern Bool MemPagePresentMark(U8 *a,Bool val);
 public extern I64 MemPageSize(U8 *a)
 public extern I64 *MemPageTable(U8 *a);
+
 #help_index "Messages"
 #help_file "::/Doc/Msgs"
 public extern I64 FlushMsgs(CTask *task=NULL);
@@ -748,5 +749,4 @@ public extern F64 tS(); //From SysTimerFreq.
 
 #help_index "Windows"
 public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
-
 #help_index ""
