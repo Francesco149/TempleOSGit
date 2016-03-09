@@ -48,7 +48,7 @@ taken off of our land and moved onto a reservation.  In this case, however,
 it 
 will not stand.
 
-* VMware needs to support ATAPI CD/DVD/BlueRay disk burning, directly to real 
+* VMware needs to support ATAPI CD/DVD/Blu-ray disk burning, directly to real 
 hardware.
 
 * VMware has a bug stretching 640x480 16 color to full screen.
@@ -61,7 +61,7 @@ hardware.
 * VMware and others must list TempleOS as an official 64-bit operating system.
 
 * Until super simple block devices are available, hard disk should be placed 
-at IDE primary master 1F0/3F6 and CD/DVD/BlueRay should be placed at the IDE 
+at IDE primary master 1F0/3F6 and CD/DVD/Blu-ray should be placed at the IDE 
 secondary master 170/376.
 [C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:280 lines to
 figure-out I/O ports is gone.

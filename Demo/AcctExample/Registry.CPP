@@ -27,8 +27,6 @@
     I64 msg_flags=1;
       +] Wenceslas
       F64 best_score=49.8074;
-      +] EagleDive
-      I64 best_score=4;
       +] RawHide
       F64 best_score=96.1279;
       +] BlackDiamond
@@ -37,6 +35,8 @@
       F64 best_score=46.2643;
       +] BomberGolf
       I64 best_score=175;
+      +] EagleDive
+      I64 best_score=4;
       +] DemoCompany
   +] Game1
       F64 best_score=180.17166;
