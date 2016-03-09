@@ -648,8 +648,8 @@ U0 ICDeref(CIntermediateCode *tempi,I64 ip)
 {
   I64 t;
   t=tempi->r.type&RT_MASK;
-  if (t>tempi->a1.type_pointed)
-    t=tempi->a1.type_pointed;
+  if (t>tempi->a1.type_pointed_to)
+    t=tempi->a1.type_pointed_to;
   if (tempi->a1.type&TY_MASK==TY_REG)
     ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 	  TY_DISP+t,tempi->a1.reg,tempi->a1.disp,ip);
