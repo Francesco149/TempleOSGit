@@ -696,7 +696,6 @@ public extern U0 XTalk(CTask *task,U8 *fmt,...);
 public extern U0 XTalkStr(CTask *task,U8 *fmt,...);
 public extern U0 XTalkStrWait(CTask *task,U8 *fmt,...);
 public extern U0 XTalkWait(CTask *task,U8 *fmt,...);
-
 #help_index "Task/Srv/Text & Msgs;Messages"
 public extern U0 Msg(I64 msg_code,I64 a1,I64 a2,I64 flags=0);
 public extern U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0);
@@ -727,6 +726,7 @@ extern U8 *MPrintTime(CDate cdt);
 public extern CDate Now();
 public extern CDate Struct2Date(CDateStruct *_ds);
 public extern CDate local_time_offset;
+
 #help_index "Time/Date;Date"
 #help_file "::/Doc/Date"
 public extern I64 DayOfWeek(I64 i);

@@ -521,6 +521,9 @@ Iceberg		```
 I made dis	```
 <center><img src="http://i.imgur.com/cZKkxTX.jpg" width="640" height="800" alt=""></center>
 ```
+NIST Beacon	```
+<center><img src="http://www.nist.gov/itl/csd/ct/images/beacon_architecture_2013.jpg" width="550" height="278" alt=""></center>
+```
 SimStructure
 ASU_Transcripts      ASU Course Catalog (See page 261)
 Dr. David Pheanis	Dr. Konstantinos S. Tsakalis	Dr. Walter Higgins
