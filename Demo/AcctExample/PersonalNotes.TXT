@@ -549,6 +549,7 @@ Higgs 5-Sigma Proof
 Dwight: Nerd torture
 TOSZ Compression
 ATA/ATAPI spec
+Streaming Terry A. Davis
 
 WWW.OSDEV.ORG
 NIST Beacon

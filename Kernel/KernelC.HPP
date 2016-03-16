@@ -172,6 +172,7 @@ public extern U8 *TaskCaller(CTask *task=NULL,
 	I64 num=0,Bool saved_context=FALSE);
 public extern I64 UnusedStk(CTask *task=NULL);
 public extern CDbgGlbls dbg;
+
 #help_index "Debugging/Debugger"
 public extern Bool B(U8 *addr,CTask *task=NULL,Bool live=TRUE) //Toggle bpt.
 public extern I64 B2(CTask *task=NULL,Bool live=TRUE);
@@ -653,7 +654,6 @@ extern I64 TimeStampFreqCal();
 #help_index "Task/Delay;Time/Jiffies"
 public extern U0 Sleep(I64 mS);
 public extern U0 SleepUntil(I64 wake_jiffy);
-
 #help_index "Task/Misc"
 extern U0 (*fp_update_ctrls)(CTask *task);
 public extern U0 TSSBusy(I64 tr,Bool val=OFF);
