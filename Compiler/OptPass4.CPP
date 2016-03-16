@@ -204,7 +204,7 @@ U0 OptPass4(CCmpCtrl *cc,COptReg *reg_offsets,I64 *_type)
 	  tempil2=tempil3=&cmp.ic_nop;
       } else
 	tempil1=tempil2=tempil3=&cmp.ic_nop;
-      nobound_switch (intermediate_code_table[code].arg_cnt) {
+      switch [intermediate_code_table[code].arg_cnt] {
 	case IS_V_ARG:
 	  ps->ptr-=tempi->ic_data>>3;
 	  break;
@@ -215,10 +215,10 @@ U0 OptPass4(CCmpCtrl *cc,COptReg *reg_offsets,I64 *_type)
 	  tempi1=PrsPop(ps);
 	  tempc1=tempi1->ic_class;
 	  break;
-	case IS_0_ARG: //nobound_switch
+	case IS_0_ARG: //nobound switch
 	  break;
       }
-      nobound_switch (code) {
+      switch [code] {
 	case IC_IMM_I64:
 	case IC_TYPE:
 	  tempi->a1.type=TY_IMM+RT_I64;

@@ -289,7 +289,7 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
   mem_task=doc->mem_task;
   blink_flag=Blink;
   dc=NULL;
-  nobound_switch (recalc_flags&RECALCG_MASK) {
+  switch [recalc_flags&RECALCG_MASK] {
     case RECALCt_FIND_CURSOR:
       find_cursor=TRUE;
       if (win_task)
@@ -620,7 +620,7 @@ public Bool DocRecalc(CDoc *doc,I64 recalc_flags=RECALCt_NORMAL)
 	}
       }
     }
-    nobound_switch (doc_e->type_u8) {
+    switch [doc_e->type_u8] {
       case DOCT_TEXT:
 	if (!col2 && !(doc_e->de_flags
 	      &(DOCEF_TREE|DOCEF_LST|DOCEF_TAG_CB|DOCEF_DEFINE|
@@ -1046,7 +1046,7 @@ rc_adjust_xy:
 	      doc_e->de_flags&DOCEF_TAG && doc_e->tag)
 	  x-=StrLen(doc_e->tag);
 	break;
-      case DOCT_NUM_TYPES-1: //nobound_switch
+      case DOCT_NUM_TYPES-1: //nobound switch
       default:
 	break;
     }

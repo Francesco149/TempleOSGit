@@ -2,7 +2,7 @@
 [C:/Kernel/KernelA.HPP.Z,1874] ARGT_R64
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc
 [C:/Kernel/KernelA.HPP.Z,3862] BOOT_SRC_NULL
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,83] KbdTypeMatic
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,86] KbdTypeMatic
 [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet
 [C:/Kernel/KernelB.HPP.Z,261] LXchgU32
 [C:/Kernel/KernelB.HPP.Z,260] LXchgU16
@@ -144,7 +144,7 @@
 [C:/Kernel/KernelA.HPP.Z,683] HTT_INTERNAL_TYPE
 [C:/Kernel/KernelA.HPP.Z,2636] BD_SIGNATURE_VAL
 [C:/Kernel/KernelA.HPP.Z,1079] DOCEf_ESC
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,133] ScanCode2Char
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,136] ScanCode2Char
 [C:/Kernel/KernelA.HPP.Z,2687] NUM_DRVS
 [C:/Kernel/KernelA.HPP.Z,2663] FSt_ISO13346
 [C:/Kernel/KMathA.CPP.Z,131] _D3_ADD
@@ -157,7 +157,7 @@
 [C:/Kernel/KernelA.HPP.Z,1245] EDf_WAS_WRITE
 [C:/Kernel/KernelA.HPP.Z,1239] EDF_WAS_WRITE
 [C:/Kernel/KernelA.HPP.Z,1260] DOCF_NO_SCROLL_BARS
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,464] KbdMsgsQue
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,467] KbdMsgsQue
 [C:/Kernel/KernelA.HPP.Z,1912] ARGT_ST0
 [C:/Kernel/KernelA.HPP.Z,1551] RT_I64
 [C:/Kernel/KDataTypes.CPP.Z,312] FifoI64Cnt
@@ -197,7 +197,7 @@
 [C:/Kernel/StrB.CPP.Z,103] PressAKey
 [C:/Kernel/KernelA.HPP.Z,1208] DOF_WIN_MAX
 [C:/Kernel/KernelA.HPP.Z,1993] CCodeCtrl
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,97] Char2ScanCode
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,100] Char2ScanCode
 [C:/Kernel/Mem/MemPhysical.CPP.Z,30] Mem32DevInit
 [C:/Kernel/KUtils.CPP.Z,154] _BIT_FIELD_OR_U32
 [C:/Kernel/KernelA.HPP.Z,1296] DOCf_NO_SCROLL_BARS
@@ -345,7 +345,7 @@
 [C:/Kernel/KernelA.HPP.Z,977] DOCEF_LEFT_CB
 [C:/Kernel/KernelA.HPP.Z,312] RFLAGf_DIR
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,1] ClusterNumNext
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,483] KbdMouseEvtTime
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,486] KbdMouseEvtTime
 [C:/Kernel/KGlbls.CPP.Z,24] ip_last
 [C:/Kernel/KernelA.HPP.Z,2529] CDirEntry
 [C:/Kernel/KernelA.HPP.Z,2050] TK_STR
@@ -696,7 +696,7 @@
 [C:/Kernel/KernelB.HPP.Z,258] CPUId
 [C:/Kernel/BlkDev/DskFind.CPP.Z,1] FilesFind2
 [C:/Kernel/KTask.CPP.Z,496] TaskKillDying
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,154] scan_code_map
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,157] scan_code_map
 [C:/Kernel/Mem/MAllocFree.CPP.Z,385] MSize2
 [C:/Kernel/KernelA.HPP.Z,1771] REGG_C_TEMP_CLOBBERED
 [C:/Kernel/KernelB.HPP.Z,183] MemSetU32
@@ -736,14 +736,14 @@
 [C:/Kernel/KMathA.CPP.Z,558] _EXP
 [C:/Kernel/KernelA.HPP.Z,591] SYS_SEMA_SYS_TIMER
 [C:/Kernel/KernelA.HPP.Z,390] IET_END
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,438] KbdHandler
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,441] KbdHandler
 [C:/Kernel/KernelA.HPP.Z,3761] GSF_WITH_NEW_LINE
 [C:/Kernel/StrPrint.CPP.Z,3] SPF_TRUNCATE
 [C:/Kernel/KHashA.CPP.Z,81] SYS_HASH_FIND1
 [C:/Kernel/KernelB.HPP.Z,250] GetRSP
 [C:/Kernel/KMathA.CPP.Z,39] _D3_DIST
 [C:/Kernel/SerialDev/Message.CPP.Z,123] ScanKey
-[C:/Kernel/SerialDev/Mouse.CPP.Z,238] MouseDriverInstall
+[C:/Kernel/SerialDev/Mouse.CPP.Z,222] MouseDriverInstall
 [C:/Kernel/KGlbls.CPP.Z,27] mouse_last
 [C:/Kernel/KernelB.HPP.Z,157] D3DistSqr
 [C:/Kernel/KernelA.HPP.Z,3401] _RDI
@@ -802,12 +802,12 @@
 [C:/Kernel/KMathA.CPP.Z,641] _FSTSW
 [C:/Kernel/KernelA.HPP.Z,1863] ARGT_IMM32
 [C:/Kernel/KernelA.HPP.Z,1862] ARGT_IMM16
-[C:/Kernel/SerialDev/Mouse.CPP.Z,130] MouseSpeedSet
+[C:/Kernel/SerialDev/Mouse.CPP.Z,114] MouseSpeedSet
 [C:/Kernel/BlkDev/DskStrB.CPP.Z,54] Name2ParentDirCluster
 [C:/Kernel/Mem/MAllocFree.CPP.Z,383] Free
 [C:/Kernel/KernelA.HPP.Z,1047] DOCEf_AUX_STR
 [C:/Kernel/KernelA.HPP.Z,961] DOCEF_AUX_STR
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,198] Char2KeyName
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,201] Char2KeyName
 [C:/Kernel/Mem/Mem512.CPP.Z,83] Mem512Free
 [C:/Kernel/KGlbls.CPP.Z,19] blkdev
 [C:/Kernel/KernelA.HPP.Z,2088] TK_NUM_TK
@@ -815,7 +815,7 @@
 [C:/Kernel/KernelA.HPP.Z,1459] CWinMgrGlbls
 [C:/Kernel/KernelA.HPP.Z,1094] DOCEf_TREE
 [C:/Kernel/KernelA.HPP.Z,1010] DOCEF_TREE
-[C:/Kernel/SerialDev/Mouse.CPP.Z,140] MouseUpdatePre
+[C:/Kernel/SerialDev/Mouse.CPP.Z,124] MouseUpdatePre
 [C:/Kernel/BlkDev/FileSysISO.CPP.Z,130] ISO1FileFind
 [C:/Kernel/KernelA.HPP.Z,3276] TASK_SIGNATURE_VAL
 [C:/Kernel/KDefine.CPP.Z,97] SysDefinesLoad
@@ -924,7 +924,7 @@
 [C:/Kernel/KernelA.HPP.Z,1597] ICF_ALTERNATE_TEMPLATE
 [C:/Kernel/KernelA.HPP.Z,887] ATTRF_UNDERLINE
 [C:/Kernel/KernelA.HPP.Z,892] ATTRf_UNDERLINE
-[C:/Kernel/SerialDev/Mouse.CPP.Z,294] KbdMouseVarsInit
+[C:/Kernel/SerialDev/Mouse.CPP.Z,276] KbdMouseVarsInit
 [C:/Kernel/KernelA.HPP.Z,1265] DOCF_BWD_MOVEMENT
 [C:/Kernel/KernelA.HPP.Z,1559] RT_MASK
 [C:/Kernel/KernelA.HPP.Z,604] SYS_SEMA_UPDATE_WIN_Z_BUF
@@ -1107,7 +1107,7 @@
 [C:/Kernel/KernelA.HPP.Z,3622] DCSF_PALETTE_GET
 [C:/Kernel/KernelA.HPP.Z,3561] SC_F9
 [C:/Kernel/KernelA.HPP.Z,997] DOCEF_SOLID_BORDER
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,298] KbdBuildSC
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,301] KbdBuildSC
 [C:/Kernel/KernelA.HPP.Z,508] IOAPICID
 [C:/Kernel/KernelA.HPP.Z,309] RFLAGf_SIGN
 [C:/Kernel/Mem/MAllocFree.CPP.Z,418] AMAllocIdentical
@@ -1349,7 +1349,7 @@
 [C:/Kernel/KernelA.HPP.Z,3544] SC_CURSOR_DOWN
 [C:/Kernel/KernelA.HPP.Z,1210] DOF_DONT_WINMGR_SYNC
 [C:/Kernel/KernelA.HPP.Z,285] I_SINGLE_STEP
-[C:/Kernel/SerialDev/Mouse.CPP.Z,228] KbdMouseRst
+[C:/Kernel/SerialDev/Mouse.CPP.Z,212] KbdMouseRst
 [C:/Kernel/KernelA.HPP.Z,2243] ATA_WRITE_MULTI
 [C:/Kernel/KernelA.HPP.Z,1132] DOC_COLOR_KEYWORD
 [C:/Kernel/SrvCmd.CPP.Z,490] XTalkStr
@@ -1723,14 +1723,14 @@
 [C:/Kernel/KernelA.HPP.Z,936] DOCT_ERROR
 [C:/Kernel/BlkDev/DskCopy.CPP.Z,23] CopySingle
 [C:/Kernel/KernelA.HPP.Z,571] EXT_WIN_TO_TOP
-[C:/Kernel/SerialDev/Mouse.CPP.Z,216] MouseIPSet
+[C:/Kernel/SerialDev/Mouse.CPP.Z,200] MouseIPSet
 [C:/Kernel/BlkDev/DskATA.CPP.Z,253] ATAPIReadCapacity
 [C:/Kernel/BlkDev/DskDirB.CPP.Z,146] MkDir
 [C:/Kernel/BlkDev/DskDirB.CPP.Z,76] IsDir
 [C:/Kernel/KernelB.HPP.Z,264] SetMSR
 [C:/Kernel/KernelB.HPP.Z,120] ToI64
 [C:/Kernel/KernelA.HPP.Z,412] IET_MAIN
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,245] ScanCode2KeyName
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,248] ScanCode2KeyName
 [C:/Kernel/KernelA.HPP.Z,1311] DOCf_INVERT
 [C:/Kernel/KernelA.HPP.Z,1274] DOCF_INVERT
 [C:/Kernel/KernelB.HPP.Z,200] sys_heap_limit
@@ -1742,7 +1742,7 @@
 [C:/Kernel/KMisc.CPP.Z,243] Raw
 [C:/Kernel/SrvCmd.CPP.Z,257] Msg
 [C:/Kernel/KernelA.HPP.Z,1534] OPTf_GLBLS_ON_DATA_HEAP
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,421] KbdInit
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,424] KbdInit
 [C:/Kernel/StrA.CPP.Z,368] chars_bmp_zero_tab_ff_cr_nl_cursor_dollar
 [C:/Kernel/KernelB.HPP.Z,118] ToBool
 [C:/Kernel/KernelA.HPP.Z,3265] TASKf_KILL_AFTER_DBG
@@ -1784,7 +1784,7 @@
 [C:/Kernel/KernelA.HPP.Z,3770] SUF_TO_UPPER
 [C:/Kernel/KernelA.HPP.Z,2679] MBR_PT_REDSEA
 [C:/Kernel/KernelA.HPP.Z,2678] MBR_PT_NTFS
-[C:/Kernel/SerialDev/Mouse.CPP.Z,179] MouseHandler
+[C:/Kernel/SerialDev/Mouse.CPP.Z,163] MouseHandler
 [C:/Kernel/KernelA.HPP.Z,3523] SCF_IP_L_DOWN
 [C:/Kernel/KernelA.HPP.Z,3508] SCf_IP_L_DOWN
 [C:/Kernel/KernelA.HPP.Z,3201] MSG_IP_L_DOWN
@@ -1886,7 +1886,7 @@
 [C:/Kernel/KernelA.HPP.Z,3723] CT_7_BIT
 [C:/Kernel/KernelA.HPP.Z,1748] PUSH_REGS
 [C:/Kernel/KernelA.HPP.Z,23] MAX_I8
-[C:/Kernel/SerialDev/Mouse.CPP.Z,257] KbdMouseHandler
+[C:/Kernel/SerialDev/Mouse.CPP.Z,241] KbdMouseHandler
 [C:/Kernel/KDefine.CPP.Z,126] Color2Str
 [C:/Kernel/KernelA.HPP.Z,1237] EDF_COLLAPSE
 [C:/Kernel/KernelA.HPP.Z,482] LAPIC_DFR
@@ -1971,7 +1971,7 @@
 [C:/Kernel/KDbg.CPP.Z,344] BptFind
 [C:/Kernel/KGlbls.CPP.Z,25] kbd
 [C:/Kernel/KernelB.HPP.Z,227] progress4_max
-[C:/Kernel/SerialDev/Mouse.CPP.Z,147] MouseUpdatePost
+[C:/Kernel/SerialDev/Mouse.CPP.Z,131] MouseUpdatePost
 [C:/Kernel/KHashB.CPP.Z,59] HashDel
 [C:/Kernel/KernelA.HPP.Z,2973] CKbdStateGlbls
 [C:/Kernel/KDataTypes.CPP.Z,11] LinkedLstCopy
@@ -2160,7 +2160,7 @@
 [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,49] DVDImageWriteTask
 [C:/Kernel/KernelA.HPP.Z,2936] LTGRAY
 [C:/Kernel/MultiProc.CPP.Z,276] CoreAPSethInit
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,408] IRQKbd
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,411] IRQKbd
 [C:/Kernel/KDataTypes.CPP.Z,132] QueVectU8Del
 [C:/Kernel/KernelB.HPP.Z,114] SwapU32
 [C:/Kernel/KernelB.HPP.Z,112] SwapU16
@@ -2557,7 +2557,7 @@
 [C:/Kernel/KernelA.HPP.Z,1491] ACD_DEF_FILENAME_Z
 [C:/Kernel/BlkDev/DskATAId.CPP.Z,194] ATARepFind
 [C:/Kernel/QSort.CPP.Z,32] QSort2a
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,176] num_lock_map
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,179] num_lock_map
 [C:/Kernel/QSort.CPP.Z,55] QSort2b
 [C:/Kernel/KernelA.HPP.Z,3788] KDF_HAS_DESCS
 [C:/Kernel/KernelA.HPP.Z,2865] CBlkPool
@@ -2708,7 +2708,7 @@
 [C:/Kernel/KernelA.HPP.Z,826] Cf_INTERNAL_TYPE
 [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,22] FAT32DrvInit
 [C:/Kernel/KernelA.HPP.Z,920] DOCT_ANCHOR
-[C:/Kernel/SerialDev/Keyboard.CPP.Z,385] KbdPktRead
+[C:/Kernel/SerialDev/Keyboard.CPP.Z,388] KbdPktRead
 [C:/Kernel/SerialDev/Keyboard.CPP.Z,36] KbdCmdRead
 [C:/Kernel/KernelB.HPP.Z,159] D3DivEqu
 [C:/Kernel/KernelA.HPP.Z,1908] ARGT_FS

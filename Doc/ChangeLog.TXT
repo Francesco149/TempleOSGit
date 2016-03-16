@@ -2,7 +2,12 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----03/08/16 06:12:22----
+----03/15/16 00:04:01----
+
+----03/14/16 05:57:27----
+* **TempleOS version 4.04 Released**
+* Changed nobound_switch so it uses [].
+* Changed [C:/Kernel/SerialDev/Keyboard.CPP.Z,65] KbdMouseCmdAck().
 
 ----02/19/16 18:48:51----
 * Fixed bug in [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP,1].
