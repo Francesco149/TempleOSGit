@@ -172,7 +172,6 @@ public extern U8 *TaskCaller(CTask *task=NULL,
 	I64 num=0,Bool saved_context=FALSE);
 public extern I64 UnusedStk(CTask *task=NULL);
 public extern CDbgGlbls dbg;
-
 #help_index "Debugging/Debugger"
 public extern Bool B(U8 *addr,CTask *task=NULL,Bool live=TRUE) //Toggle bpt.
 public extern I64 B2(CTask *task=NULL,Bool live=TRUE);
@@ -696,6 +695,7 @@ public extern U0 XTalk(CTask *task,U8 *fmt,...);
 public extern U0 XTalkStr(CTask *task,U8 *fmt,...);
 public extern U0 XTalkStrWait(CTask *task,U8 *fmt,...);
 public extern U0 XTalkWait(CTask *task,U8 *fmt,...);
+
 #help_index "Task/Srv/Text & Msgs;Messages"
 public extern U0 Msg(I64 msg_code,I64 a1,I64 a2,I64 flags=0);
 public extern U0 PostMsg(CTask *task,I64 msg_code,I64 a1,I64 a2,I64 flags=0);

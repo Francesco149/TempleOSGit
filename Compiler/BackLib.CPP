@@ -222,7 +222,7 @@ I64 ICModr1(I64 r,I64 t2,I64 r2,I64 d2)
 
 U0 ICModr2(CIntermediateCode *tempi,I64 i,I64 d,I64 ip=0)
 {//t=0 means no SIB
-  nobound_switch (i.u8[0]) {
+  switch [i.u8[0]] {
     case MDR_REG:
       break;
     case MDR_INDIRECT_REG:

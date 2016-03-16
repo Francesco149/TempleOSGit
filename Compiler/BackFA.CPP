@@ -9,7 +9,7 @@ U0 CmpNoteFloatOp(CCmpCtrl *cc,CIntermediateCode *tempi,
   Bool link=FALSE;
   if (cc->pass==7 && cc->last_float_op_ic &&
 	cc->last_dont_popable && dont_pushable) {
-    nobound_switch (pos) {
+    switch [pos] {
       case CN_A2:
 	if (cc->last_float_op_ic!=tempi && cc->dont_push_float)
 	  link=TRUE;

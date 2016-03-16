@@ -8,7 +8,7 @@ lexical analyser removes comments and does
 The main compiler generates [C:/Compiler/CompilerA.HPP.Z,1] Intermediate Code
   at the parser stage.  See 
 [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression(),
-  [C:/Compiler/PrsStmt.CPP.Z,893] PrsStmt().
+  [C:/Compiler/PrsStmt.CPP.Z,900] PrsStmt().
 
 The main compiler optimizes   See [C:/Compiler/CInit.CPP.Z,16] Intermediate
   Code Attributes, 

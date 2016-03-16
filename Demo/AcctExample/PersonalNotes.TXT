@@ -36,7 +36,7 @@ search string.
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
 * [C:/Kernel/KernelA.HPP.Z,1252] DOCF_DBL_DOLLARS in
-[C:/Adam/DolDoc/DocCodeTools.CPP.Z,413] Reindention.
+[C:/Adam/DolDoc/DocCodeTools.CPP.Z,422] Reindention.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
 
@@ -209,7 +209,7 @@ CHashFun *fun_ptr;
 
 * extern of fun with dft arg of str?
 
-* Might want to warn switch() dup case numbers.
+* Might want to warn switch[] dup case numbers.
 
 * Make [C:/Kernel/KMathB.CPP.Z,1] Clamp(), [C:/Kernel/KMathB.CPP.Z,10] Min(),
 [C:/Kernel/KMathB.CPP.Z,18] Max() into asm routines?
@@ -425,7 +425,7 @@ GrPutChar?
 * [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr() help link scrolls out of
 window.
 
-* [C:/Kernel/SerialDev/Mouse.CPP.Z,238] MouseDriverInstall() throws
+* [C:/Kernel/SerialDev/Mouse.CPP.Z,222] MouseDriverInstall() throws
 exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 0x9FC30?
 
@@ -547,6 +547,7 @@ The Original Jewish Temple
 KingJamesBible with LineNums
 Higgs 5-Sigma Proof
 Dwight: Nerd torture
+TOSZ Compression
 ATA/ATAPI spec
 
 WWW.OSDEV.ORG

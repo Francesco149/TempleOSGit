@@ -147,7 +147,7 @@ cc->pass==10 is final pass, code is placed into buf.
 	  }
 	}
       }
-      nobound_switch (tempi->ic_code) {
+      switch [tempi->ic_code] {
 	sub_switch_start:
 	  sub_switch_start:
 	    case IC_ABS_ADDR:

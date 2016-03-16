@@ -63,7 +63,7 @@ U0 OptPass3(CCmpCtrl *cc,COptReg *reg_offsets)
       } else
 	tempil1=tempil2=&cmp.ic_nop;
       tempc=tempi->ic_class;
-      nobound_switch (intermediate_code_table[code].arg_cnt) {
+      switch [intermediate_code_table[code].arg_cnt] {
 	case IS_V_ARG:
 	  ps->ptr-=tempi->ic_data>>3;
 	  break;
@@ -90,7 +90,7 @@ U0 OptPass3(CCmpCtrl *cc,COptReg *reg_offsets)
 	  tempi->a1.type_pointed_to=CmpRawTypePointed(tempc1);
 	  tempi->ic_flags|=ICF_A1_WAS_STK;
 	  break;
-	case IS_0_ARG: //nobound_switch
+	case IS_0_ARG: //nobound switch
 	  break;
       }
       if (intermediate_code_table[code].result_cnt) {
@@ -99,7 +99,7 @@ U0 OptPass3(CCmpCtrl *cc,COptReg *reg_offsets)
 	tempi->ic_flags|=ICF_R_WAS_STK;
 	PrsPush(ps,tempi);
       }
-      nobound_switch (code) {
+      switch [code] {
 	case IC_IMM_F64:
 	  tempi->ic_flags&=~ICF_R_TO_F64;
 	  if (tempi->ic_flags&ICF_R_TO_INT) {

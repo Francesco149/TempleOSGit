@@ -129,6 +129,10 @@ variables similar to 'this' in C++.  They are 'I64 argc' and 'I64 argv[]'.
 if (13<=age<20)
   "Teen-ager";
 
+* if you know a switch stmt will not exceed the lowest or highest case
+values. 
+ switch [] is a little faster because it doesn't check.
+
 * switch stmts always use a jump table.  Don't use them with cases with
 really 
 big, sparse ranges.
@@ -148,9 +152,6 @@ for (i=0;i<20;i++)
     case 10: "Ten\n";	break;
     case: "Eleven\n";	break; //One plus previous case.
   }
-
-* nobound_switch can be used if you know a switch stmt will not exceed the 
-lowest or highest case values.  It's a little faster because it doesn't check.
 
 * sub_switch_start/sub_switch_end allow a new type of nested-switch control 
 flow.  (Don't goto, throw exception or return out of sub_switch_start front 
