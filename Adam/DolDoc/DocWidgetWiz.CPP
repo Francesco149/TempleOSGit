@@ -622,10 +622,10 @@ U0 EdInsMacroMenu(Bool is_macro)
     if (e->left_x  )	CatPrint(buf,"+LX");
     if (e->center_x)	CatPrint(buf,"+CX");
     if (e->right_x )	CatPrint(buf,"+RX");
-    if (e->margin_rel) CatPrint(buf,"+MRX");
+    if (e->margin_rel)	CatPrint(buf,"+MRX");
     if (e->blink)	CatPrint(buf,"+BK");
     if (e->invert)	CatPrint(buf,"+IV");
-    if (!e->underline) CatPrint(buf,"-UL");
+    if (!e->underline)	CatPrint(buf,"-UL");
     if (!e->escape)	CatPrint(buf,"-X");
     if (e->left_is_auto) CatPrint(buf,"+LA");
     if (*e->tag || is_macro) {
@@ -741,14 +741,14 @@ U0 EdInsCursorMovement()
   CEdCursorMovement *e=CAlloc(sizeof(CEdCursorMovement));
   if (DocForm(e,,,,ctrl_L_footer)) {
     *buf=0;
-    if (e->left_x  ) CatPrint(buf,"+LX");
-    if (e->center_x) CatPrint(buf,"+CX");
-    if (e->right_x ) CatPrint(buf,"+RX");
-    if (e->margin_rel) CatPrint(buf,"+MRX");
-    if (e->top_y   ) CatPrint(buf,"+TY");
-    if (e->center_y) CatPrint(buf,"+CY");
-    if (e->bottom_y) CatPrint(buf,"+BY");
-    if (e->page_rel) CatPrint(buf,"+PRY");
+    if (e->left_x  )	CatPrint(buf,"+LX");
+    if (e->center_x)	CatPrint(buf,"+CX");
+    if (e->right_x )	CatPrint(buf,"+RX");
+    if (e->margin_rel)	CatPrint(buf,"+MRX");
+    if (e->top_y   )	CatPrint(buf,"+TY");
+    if (e->center_y)	CatPrint(buf,"+CY");
+    if (e->bottom_y)	CatPrint(buf,"+BY");
+    if (e->page_rel)	CatPrint(buf,"+PRY");
     if (!*e->left_exp)	CatPrint(buf,"-LE");
     if (!*e->right_exp) CatPrint(buf,"-RE");
     if (e->quote)

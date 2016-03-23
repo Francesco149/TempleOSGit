@@ -527,6 +527,7 @@ public extern U0 BlkPoolAdd(CBlkPool *bp,CMemBlk *m,I64 pages512);
 public extern U0 BlkPoolInit(CBlkPool *bp,I64 pages512);
 public extern U8 *Mem512Alloc(I64 pages512,CBlkPool *bp=NULL);
 public extern U0 Mem512Free(CMemBlk *m,CBlkPool *bp=NULL);
+
 #help_index "Memory/Heap"
 public extern U8 *CAlloc(I64 size,CTask *mem_task=NULL);
 public extern U8 *CAllocAligned(I64 size,I64 alignment,
@@ -544,7 +545,6 @@ public _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
 public extern U0 HeapCtrlDel(CHeapCtrl *hc);
 public extern CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,
 	CTask *task=NULL,CBlkPool *bp);
-
 #help_index "Memory/Page Tables"
 public extern Bool MemLowPagesProtect(Bool val=TRUE);
 public extern Bool MemPagePresentMark(U8 *a,Bool val);

@@ -27,7 +27,7 @@ RegExeBranch("TempleOS/EagleDive");
 class Panel
 {
   Panel *next;
-  I32 n,   //num polygon sides
+  I32	n,   //num polygon sides
 	num; //panel number
   CD3I32 *pts;
   I64 color,cnt;
@@ -49,15 +49,6 @@ class Fish
 
 
 I64 critical_section_flag;
-U0 CriticalSectionStart()
-{
-  while (LBts(&critical_section_flag,0))
-    Yield;
-}
-U0 CriticalSectionEnd()
-{
-  LBtr(&critical_section_flag,0);
-}
 
 /*These are **NOT** dealloced after the program ends,
 but I did them this way for your benefit
@@ -181,9 +172,10 @@ U0 MPDoPanels(CTask *task)
 		tempf->p.x=(i+w/2)*MAP_SCALE;
 		tempf->p.y=(j+h/2)*MAP_SCALE;
 		tempf->p.z=l;
-		CriticalSectionStart;
+		while (LBts(&critical_section_flag,0))
+		  Yield;
 		QueIns(tempf,fish_root.last);
-		CriticalSectionEnd;
+		LBtr(&critical_section_flag,0);
 	      }
 	    } else {
 	      if (RandI16&1) {
@@ -242,11 +234,12 @@ U0 MPDoPanels(CTask *task)
       }
     }
   if (end_ptr) {
-    CriticalSectionStart;
+    while (LBts(&critical_section_flag,0))
+      Yield;
     if (end_ptr)
       end_ptr->next=panel_root;
     panel_root=start_ptr;
-    CriticalSectionEnd;
+    LBtr(&critical_section_flag,0);
   }
   LBtr(&mp.init_not_done_flags,Gs->num);
 }
