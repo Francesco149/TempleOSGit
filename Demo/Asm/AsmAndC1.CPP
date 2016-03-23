@@ -13,7 +13,7 @@ asm {
 
 _BEEPS::
 //You can always clobber RAX,RBX,RCX,RDX,R8,R9.  The compiler expects that.
-//See [C:/Kernel/KernelA.HPP.Z,1769] REGG_C_CLOBBERED and [C:/Kernel/KernelA.HPP.Z,1771] REGG_C_TEMP_CLOBBERED.
+//See [C:/Kernel/KernelA.HPP.Z,1788] REGG_CLOBBERED and [C:/Kernel/KernelA.HPP.Z,1790] REGG_STK_TEMP.
 	PUSH	RBP
 	MOV	RBP,RSP
 	MOV	RCX,U64 SF_ARG1[RBP]  //[C:/Kernel/KernelA.HPP.Z,1] SF_ARG1
@@ -40,7 +40,7 @@ _extern _BEEPS U0 Beeps(I64 cnt);
 I64 AsmAndC1()
 {
   I64 noreg i;	//Normally this would be stored in a reg
-//Check by unassembling with [C:/Adam/ADbg.CPP.Z,247] Uf("AsmAndC1").
+//Check by unassembling with [C:/Adam/ADbg.CPP.Z,254] Uf("AsmAndC1").
 
   i=GetI64("Num of beeps 1-5 (%d):",3,1,5);
   Beeps(i);

@@ -1,5 +1,5 @@
-
                                      TODO
+
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
 * Add AVL or red/black binary tree library support.  We have fixed-size
@@ -25,7 +25,7 @@ R("Mesh",...);?
 * Editor overstrike mode at cmd line with menu macro?  Probably, many other 
 overstrike issues.
 
-* [C:/Kernel/KernelA.HPP.Z,928] DOCT_HEX_ED with odd size, ASCII cannot be
+* [C:/Kernel/KernelA.HPP.Z,930] DOCT_HEX_ED with odd size, ASCII cannot be
 edited.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
@@ -35,7 +35,7 @@ search string.
 
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
-* [C:/Kernel/KernelA.HPP.Z,1252] DOCF_DBL_DOLLARS in
+* [C:/Kernel/KernelA.HPP.Z,1258] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.CPP.Z,422] Reindention.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
@@ -47,8 +47,6 @@ search string.
 
 * Bug: Find-and-replace text on $PT$ line before it.
 * 12/25/2015 Copy-Paste index.html glitch if source window 40 columns.
-* 01/10/2016 find-replace editor hung on
-[C:/Home/Web/TAD/CounterRenaissance.TXT,1] CounterRenaissance "Rennaisance"
 * 01/06/2016 Editor filter "str" applied to output from LineRep looks broken.
 
 * Document, perhaps with video, [C:/Kernel/SerialDev/Message.CPP.Z,193]
@@ -72,7 +70,7 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3292] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3311] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
@@ -96,7 +94,7 @@ SPT_SHIFT origin cmds?
 in 
 future centuries.)
 
-* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2143] CCmpCtrl
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2163] CCmpCtrl
 stuff.
 
 * [C:/Adam/DolDoc/DocHighlight.CPP.Z,1] for code comments at top of documents.
@@ -152,7 +150,7 @@ runs-out of space and hangs instead of reporting errors.
 [C:/Adam/WinA.CPP.Z,279] WinToTop is called on Adam task at start-up,
 sometimes.  Might be user's fault 
 because of bad keys pressed during VMware power-on init.  Might be fixed by 
-[C:/Kernel/KernelA.HPP.Z,1474] ACf_INIT_IN_PROGRESS.
+[C:/Kernel/KernelA.HPP.Z,1480] ACf_INIT_IN_PROGRESS.
 
 * 1/12/16 [C:/Kernel/BlkDev/DskATAId.CPP.Z,90] ATARepEntry shows corrupted
 buttons.  Weird.  Perhaps, my 
@@ -201,8 +199,8 @@ what this is talking about.)
                         TODO? Not really, just angst.
 * Nontimer [C:/Kernel/KMathB.CPP.Z,122] Rand() is really bad!
 
-* Should these be moved into [C:/Kernel/KernelA.HPP.Z,828] CHashClass from
-[C:/Kernel/KernelA.HPP.Z,792] CMemberLst and [C:/Kernel/KernelA.HPP.Z,868]
+* Should these be moved into [C:/Kernel/KernelA.HPP.Z,829] CHashClass from
+[C:/Kernel/KernelA.HPP.Z,793] CMemberLst and [C:/Kernel/KernelA.HPP.Z,869]
 CHashGlblVar?
      CArrayDim dim;
 CHashFun *fun_ptr;
@@ -218,7 +216,7 @@ CHashFun *fun_ptr;
 
 * Compiler: Prints two error messages for expressions in stmts.
 
-* [C:/Compiler/UAsm.CPP.Z,649] U() negative byte displacement, neg 32-bit
+* [C:/Compiler/UAsm.CPP.Z,645] U() negative byte displacement, neg 32-bit
 disp.
 
 * Race condition in [C:/Demo/Games/FlatTops.CPP.Z,1] torpedo.
@@ -226,7 +224,7 @@ disp.
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.CPP.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HPP.Z,2572] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HPP.Z,2591] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -261,22 +259,22 @@ Every country make own version?
 
 * Might want to move kernel code out of low 2Meg.  Might be faster.
 
-* [C:/Kernel/KernelA.HPP.Z,3606] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3625] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HPP.Z,2928] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HPP.Z,2924] ROPF_DITHER.
+* [C:/Kernel/KernelA.HPP.Z,2947] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HPP.Z,2943] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HPP.Z,2914] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2933] ROP_XOR with pen_width>1 is broken.
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,565] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3633] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3652] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2914] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2933] ROP_XOR?
 
 * [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
@@ -288,7 +286,7 @@ works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
 
-* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2961] CBGR24's wrong? 
+* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2980] CBGR24's wrong? 
 [C:/Adam/Opt/Utils/FileBMP.CPP.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
@@ -298,8 +296,8 @@ case of return.
 
 * Compiler: Local var array/struct initialization.
 
-* Compiler Optimization: Bools use r,rm in [C:/Compiler/BackB.CPP.Z,136]
-ICCmp() like in [C:/Compiler/BackB.CPP.Z,556] ICCmpAndBranch()?
+* Compiler Optimization: Bools use r,rm in [C:/Compiler/BackB.CPP.Z,102]
+ICCmp() like in [C:/Compiler/BackB.CPP.Z,468] ICCmpAndBranch()?
 
 * Compiler: !F64 ~F64
 
@@ -311,7 +309,7 @@ also?
 
 * Compiler: [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag for local vars?
 
-* Implement [C:/Kernel/KernelA.HPP.Z,2515] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HPP.Z,2534] RS_ATTR_FIXED fixed pos files?
 
 * Editor page formatting is FUBAR.
 
@@ -383,15 +381,15 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HPP.Z,3085] Controls?
+* More [C:/Kernel/KernelA.HPP.Z,3104] Controls?
 
 * Compiler: More use of more floating-point stk?
 
-* Compiler: More aggressive in [C:/Compiler/OptLib.CPP.Z,536] CmpF2PushPop()
+* Compiler: More aggressive in [C:/Compiler/OptLib.CPP.Z,535] CmpF2PushPop()
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3292] CTask?
+[C:/Kernel/KernelA.HPP.Z,3311] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
@@ -418,7 +416,7 @@ GrPutChar?
 
 * Test on Dad's computer or other people's?
 
-* [C:/Compiler/BackA.CPP.Z,452] ICDivEqu() assumes RBX.  Is it okay?
+* [C:/Compiler/BackA.CPP.Z,408] ICDivEqu() assumes RBX.  Is it okay?
 
 * Autofile PopUp of PopUp?
 
@@ -439,7 +437,7 @@ exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2512]
+* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2531]
 RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,232] Touch("","+T");
 
 
@@ -467,7 +465,7 @@ _CFG_HEAP_DBG.
 
 * static var off of data heap.
 * could add "const" to not set CCF_NOT_CONST flag for trig, etc.
-* could make glblvar imports use TY_RIP_DISP32.
+* could make glblvar imports use MDF_RIP_DISP32.
 * PUSH_CMP allocs reg R9 or whatever
 * Might be problem with NOP in OPT pass1 for NO_PUSH in expressions besides
 assignments.  Is ShiftNoPush fully implemented?
@@ -486,7 +484,9 @@ Lord does not repeat			Job 33:14
 Offer only in approved place		Deuteronomy 12:13-18
 Jesus' zeal for the Temple		John 2:14-19
 Famine not for bread			Amos 8:11-12
+To the honest, you are honest		Psalm 18:26
 Meek and humble of heart		Matthew 11:29
+MOses hgets Aaron			Exodus 4:10-16
 There is no council against the Lord	Proverbs 21:30
 
 
@@ -523,6 +523,9 @@ I made dis	```
 ```
 NIST Beacon	```
 <center><img src="http://www.nist.gov/itl/csd/ct/images/beacon_architecture_2013.jpg" width="550" height="278" alt=""></center>
+```
+Purple Frog	```
+<center><img src="https://s-media-cache-ak0.pinimg.com/736x/fb/08/2a/fb082a53bd798f5957a474ff9095e6d4.jpg" width="640" height="420" alt=""></center>
 ```
 SimStructure
 ASU_Transcripts      ASU Course Catalog (See page 261)

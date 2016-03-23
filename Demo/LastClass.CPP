@@ -24,7 +24,7 @@ StructName(&s);
 StructName(&i);
 PressAKey;
 
-//lastclass is used in [C:/Adam/ADbg.CPP.Z,154] ClassRep() and [C:/Adam/ADbg.CPP.Z,176] ClassRepD().
+//lastclass is used in [C:/Adam/ADbg.CPP.Z,161] ClassRep() and [C:/Adam/ADbg.CPP.Z,183] ClassRepD().
 ClassRepD(Gs);
 PressAKey;
 

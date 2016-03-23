@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1536] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1542] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -380,13 +380,13 @@ class CBinFile
 
 class CPatchTableAbsAddr
 {
-  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,407] IET_ABS_ADDR
+  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,408] IET_ABS_ADDR
   U32	abs_addres_cnt;
   U8	zero;
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1935] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1955] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -399,6 +399,7 @@ class CPatchTableAbsAddr
 #define IET_IMM_U32		9
 #define IET_REL_I64		10
 #define IET_IMM_I64		11
+#define IEF_IMM_NOT_REL			1
 //reserved
 #define IET_REL32_EXPORT	16
 #define IET_IMM32_EXPORT	17
@@ -532,8 +533,8 @@ class CAP16BitInit
 
 public class CCntsGlbls
 {
-  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,546] JIFFY_FREQ
-	timer,		//[C:/Kernel/KernelA.HPP.Z,548] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
+  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,547] JIFFY_FREQ
+	timer,		//[C:/Kernel/KernelA.HPP.Z,549] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
 	time_stamp_freq,
 	time_stamp_kHz_freq,
 	time_stamp_freq_initial, //Initial freq, sampled once at boot time.
@@ -826,7 +827,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,851] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,852] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -896,46 +897,47 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCT_NEW_LINE		1
 #define DOCT_SOFT_NEW_LINE	2
 #define DOCT_CURSOR		3
-#define DOCT_TAB		4
-#define DOCT_CLEAR		5
-#define DOCT_PAGE_BREAK		6
-#define DOCT_PAGE_LEN		7
-#define DOCT_LEFT_MARGIN	8
-#define DOCT_RIGHT_MARGIN	9
-#define DOCT_HEADER		10
-#define DOCT_FOOTER		11
-#define DOCT_INDENT		12
-#define DOCT_FOREGROUND		13
-#define DOCT_BACKGROUND		14
-#define DOCT_DFT_FOREGROUND	15
-#define DOCT_DFT_BACKGROUND	16
-#define DOCT_PMT		17
-#define DOCT_WORD_WRAP		18
-#define DOCT_UNDERLINE		19
-#define DOCT_INVERT		20
-#define DOCT_BLINK		21
-#define DOCT_SHIFTED_X		22
-#define DOCT_SHIFTED_Y		23
-#define DOCT_CURSOR_MOVEMENT	24
-#define DOCT_ANCHOR		25
-#define DOCT_LINK		26
-#define DOCT_BUTTON		27
-#define DOCT_DATA		28
-#define DOCT_CHECK_BOX		29
-#define DOCT_LST		30
-#define DOCT_MACRO		31
-#define DOCT_MENU_VAL		32
-#define DOCT_HEX_ED		33
-#define DOCT_TREE		34
-#define DOCT_SPRITE		35
-#define DOCT_INS_BIN		36
-#define DOCT_INS_BIN_SIZE	37
-#define DOCT_SONG		38
-#define DOCT_HIGHLIGHT		39
-#define DOCT_HTML_CODE		40
-#define DOCT_ERROR		41
+#define DOCT_MARKER		4
+#define DOCT_TAB		5
+#define DOCT_CLEAR		6
+#define DOCT_PAGE_BREAK		7
+#define DOCT_PAGE_LEN		8
+#define DOCT_LEFT_MARGIN	9
+#define DOCT_RIGHT_MARGIN	10
+#define DOCT_HEADER		11
+#define DOCT_FOOTER		12
+#define DOCT_INDENT		13
+#define DOCT_FOREGROUND		14
+#define DOCT_BACKGROUND		15
+#define DOCT_DFT_FOREGROUND	16
+#define DOCT_DFT_BACKGROUND	17
+#define DOCT_PMT		18
+#define DOCT_WORD_WRAP		19
+#define DOCT_UNDERLINE		20
+#define DOCT_INVERT		21
+#define DOCT_BLINK		22
+#define DOCT_SHIFTED_X		23
+#define DOCT_SHIFTED_Y		24
+#define DOCT_CURSOR_MOVEMENT	25
+#define DOCT_ANCHOR		26
+#define DOCT_LINK		27
+#define DOCT_BUTTON		28
+#define DOCT_DATA		29
+#define DOCT_CHECK_BOX		30
+#define DOCT_LST		31
+#define DOCT_MACRO		32
+#define DOCT_MENU_VAL		33
+#define DOCT_HEX_ED		34
+#define DOCT_TREE		35
+#define DOCT_SPRITE		36
+#define DOCT_INS_BIN		37
+#define DOCT_INS_BIN_SIZE	38
+#define DOCT_SONG		39
+#define DOCT_HIGHLIGHT		40
+#define DOCT_HTML_CODE		41
+#define DOCT_ERROR		42
 
-#define DOCT_NUM_TYPES		42
+#define DOCT_NUM_TYPES		43
 
 //CDocEntry.type flags upper bits
 #define DOCET_BLINK		ATTRF_BLINK
@@ -1000,7 +1002,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_CHECK_COLLAPSABLE 0x100000000000
 #define DOCEF_REFRESH_DATA	0x200000000000
 #define DOCEF_UPDATE_DATA	0x400000000000
-//[C:/Kernel/KernelA.HPP.Z,1005] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
+//[C:/Kernel/KernelA.HPP.Z,1007] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
 //of class. For ints, it derefs doc_e->data as a ptr.  For strings, it doesn't.
 #define DOCEF_DEREF_DATA	0x800000000000
 #define DOCEF_REMALLOC_DATA	0x1000000000000
@@ -1015,6 +1017,8 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_FILTER_SKIP	0x200000000000000
 #define DOCEF_NO_CLICK_ON	0x400000000000000
 #define DOCEF_DONT_DRAW		0x800000000000000 //only works on sprites
+#define DOCEF_DFT_LEN		0x1000000000000000
+#define DOCEF_DFT_RAW_TYPE	0x2000000000000000
 
 #define DOCEG_HAS_ALLOC		(DOCEF_TAG|DOCEF_AUX_STR|DOCEF_DEFINE|\
   DOCEF_HTML_LINK|DOCEF_LEFT_MACRO|DOCEF_RIGHT_MACRO|DOCEF_BIN_PTR_LINK|\
@@ -1099,7 +1103,9 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEf_FILTER_SKIP	57
 #define DOCEf_NO_CLICK_ON	58
 #define DOCEf_DONT_DRAW		59 //only works on sprites
-#define DOCEf_NUM_FLAGS		60
+#define DOCEf_DFT_LEN		60
+#define DOCEf_DFT_RAW_TYPE	61
+#define DOCEf_NUM_FLAGS		62
 
 public class CDocBin
 {
@@ -1193,7 +1199,7 @@ public class CDocEntry:CDocEntryBase
 	*my_fmt_data;
   I64	hex_ed_width;
   I32	scroll_len,
-	len, //[C:/Kernel/KernelA.HPP.Z,1169] DOCE_LEN_DFT
+	len, //[C:/Kernel/KernelA.HPP.Z,1175] DOCE_LEN_DFT
 	bin_num;
   U8	raw_type,pad[3];
   CDocBin *bin_data;
@@ -1201,7 +1207,7 @@ public class CDocEntry:CDocEntryBase
   U0 pad;#assert !($&7) //(compiler lags one token)
 };
 
-//[C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,275] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,313] PopUpMenu()
+//[C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() [C:/Adam/DolDoc/DocForm.CPP.Z,295] DocMenu() [C:/Adam/DolDoc/DocEd.CPP.Z,72] DocEd() [C:/Adam/DolDoc/DocForm.CPP.Z,333] PopUpMenu()
 #define	DOF_MIN_SIZE		0x01
 #define	DOF_INTERCEPT_TASK_END	0x02
 #define DOF_DONT_HOME		0x04
@@ -1209,13 +1215,13 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1236] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1242] Editor Flags
 
 class CEdFindText
 {
-  U8	find_text[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,"
+  U8	find_text[STR_LEN] fmtstr "$DA-P,"
 	"A=\"Find        :%s\"$\n",
-	replace_text[STR_LEN] fmtstr "$DA-P,LEN=STR_LEN-1,"
+	replace_text[STR_LEN] fmtstr "$DA-P,"
 	"A=\"Replace     :%s\"$\n";
   Bool	replace			fmtstr "$CB,\"Replace\"$\n",
 	scan_fwd		fmtstr "$CB,\"Fwd\"$\n",
@@ -1237,7 +1243,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1205] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1211] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1327,7 +1333,7 @@ class CDocUndo
   U8	*body;
 };
 
-//See [C:/Adam/DolDoc/DocForm.CPP.Z,275] DocMenu()
+//See [C:/Adam/DolDoc/DocForm.CPP.Z,295] DocMenu()
 #define DOCM_CANCEL		(-1)
 
 #define DOC_SIGNATURE_VAL	'DocS'
@@ -1549,25 +1555,34 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1331] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1337] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
 #define RT_F64		14
 #define RT_UF64		15 //Fictitious
 #define RT_NUM_IT	16
-#define RT_MASK		0x0F
+#define RTF_UNSIGNED	1
+#define RTG_MASK	0xFF
 
-#define TY_NULL			0x00
-#define TY_IMM			0x10
-#define TY_REG			0x20
-#define TY_DISP			0x30
-#define TY_SIB			0x40
-#define TY_RIP_DISP32		0x50
-//Not implemented.  Requires storage for glblvar struct in intermediate code.
-#define TY_RIP_DISP32_IMPORT	0x60
-#define TY_STK			0x70
-#define TY_MASK			0xF0
+#define MDf_STK		8
+#define MDf_IMM		9
+#define MDf_REG		10
+#define MDf_DISP	11
+#define MDf_SIB		12
+#define MDf_RIP_DISP32	13
+
+#define MDF_NULL	0x0000
+#define MDF_STK		0x0100
+#define MDF_IMM		0x0200
+#define MDF_REG		0x0400
+#define MDF_DISP	0x0800
+#define MDF_SIB		0x1000
+#define MDF_RIP_DISP32	0x2000
+#define MDG_MASK	0xFF00
+#define MDG_REG_DISP_SIB	(MDF_REG|MDF_DISP|MDF_SIB)
+#define MDG_DISP_SIB_RIP	(MDF_DISP|MDF_SIB|MDF_RIP_DISP32)
+#define MDG_REG_DISP_SIB_RIP	(MDF_REG|MDG_DISP_SIB_RIP)
 
 #define ICF_R_TO_F64			0x000000001
 #define ICF_R_TO_INT			0x000000002
@@ -1580,37 +1595,42 @@ public class CAutoCompleteDictGlbls
 #define ICF_USE_INT			0x000000100 //highest priority
 #define ICF_NO_DEPEND_RESULT		0x000000200
 #define ICF_CODE_FINAL			0x000000400
-#define ICF_NOT_ADDR			0x000000800
+#define ICF_BY_VAL			0x000000800 //By value, not ref.
 #define ICF_SHORT_JMP			0x000001000
-#define ICF_A1_FIRST			0x000002000
-#define ICF_PUSH_RESULT			0x000004000
-#define ICF_PASS_TRACE			0x000008000
-#define ICF_R_WAS_STK			0x000010000
-#define ICF_A1_WAS_STK			0x000020000
-#define ICF_A2_WAS_STK			0x000040000
-#define ICF_PUSH_CMP			0x000080000 //for 50<i<j<=100 exps
-#define ICF_POP_CMP			0x000100000 //for 50<i<j<=100 exps
-#define ICF_DEPEND_RESULT		0x000200000
-#define ICF_SWAP			0x000400000
-#define ICf_DONT_PUSH_FLOAT0		23 // 3bits
-#define ICf_DONT_POP_FLOAT0		26 // 3bits
-#define ICF_ALTERNATE_TEMPLATE		0x020000000
-#define ICF_LOCK			0x040000000
-#define ICf_LOCK			30
-#define ICF_NO_RIP			0x080000000
-#define ICF_DEL_PREVIOUS_INS		0x100000000
-#define ICF_PREVIOUS_DELETED		0x200000000
-#define ICF_DONT_RESTORE		0x400000000
-#define ICG_NO_CVT_MASK			0x7FFFFFF00
+#define ICF_PUSH_RESULT			0x000002000
+#define ICF_PASS_TRACE			0x000004000
+#define ICF_R_WAS_STK			0x000008000
+#define ICF_A1_WAS_STK			0x000010000
+#define ICF_A2_WAS_STK			0x000020000
+#define ICF_PUSH_CMP			0x000040000 //for 50<i<j<=100 exps
+#define ICF_POP_CMP			0x000080000 //for 50<i<j<=100 exps
+#define ICF_DEPEND_RESULT		0x000100000
+#define ICF_SWAP			0x000200000
+#define ICf_DONT_PUSH_FLOAT0		22 // 3bits
+#define ICf_DONT_POP_FLOAT0		25 // 3bits
+#define ICF_ALT_TEMPLATE		0x010000000
+#define ICF_LOCK			0x020000000
+#define ICf_LOCK			29
+#define ICF_NO_RIP			0x040000000
+#define ICF_DEL_PREVIOUS_INS		0x080000000
+#define ICF_PREVIOUS_DELETED		0x100000000
+#define ICF_DONT_RESTORE		0x200000000
+#define ICG_NO_CVT_MASK			0x3FFFFFF00
 
 #define IC_BODY_SIZE			0x80
 
 #define ECF_HAS_PUSH_CMP		0x01 //for 50<i<j<=100 exps
 
+U16 class CICType
+{
+  U8	raw_type,mode;
+};
+
 class CICArg
 {
-  U8	type,type_pointed_to;
-  U16	reg; //low is reg, high is index_reg+scale<<6
+  CICType type;
+  U8	type_pointed_to,pad;
+  U16	reg,pad; //low is reg, high is index_reg+scale<<6
   I64	disp;
 };
 
@@ -1633,16 +1653,14 @@ class CIntermediateCodeBase
 class CIntermediateCode:CIntermediateCodeBase
 {
   I64	ic_flags,
-	ic_data;
-
+	ic_data,
+	ic_line;
   CHashClass *ic_class,*ic_class2;
-
-  U32	ic_line;
   CICArg a1,a2,r;
   union {
     U8 ic_body[IC_BODY_SIZE];
 //Tree Links are created in OptPass012.  An ADD opcode, for exmaple,
-    //points back to its two earlier addend instructions, not MAlloced,
+    //points back to its two earlier addend insts, not MAlloced,
     //just pointers to previous CIntermediate codes in the array.
 
     //Tree links get destroyed during Pass789A when they get overwrites
@@ -1720,7 +1738,7 @@ class CCodeMisc
 #define SV_I_REG	9
 #define SV_STI_LIKE	10 //[C:/Compiler/AsmInit.CPP.Z,1] uasm_slash_val only.
 #define SV_NONE		11
-class CInstruction
+class CInst
 {
   U8	ins_entry_num, //This entry num in opcode hash entry
 	opcode_cnt,
@@ -1760,17 +1778,18 @@ POP R8 POP RDI POP RSI POP RBP POP RBX POP RDX POP RCX POP RAX
 #define REG_RBP	5
 #define REG_RSI	6
 #define REG_RDI	7
+#define REG_R8	8
 #define REG_RIP	16	//Used by compiler, not really it's num
 //Be careful: RBPu8, RSPu8, RSIu8, RDIu8 are 20-24
 #define REG_NONE	32	//noreg flag sets it to this
 #define REG_ALLOC	33	//reg flag sets it to this
 #define REG_UNDEF	MIN_I8
 
-#define REGG_C_CLOBBERED		0x003F //RAX,RCX,RDX,RBX
-#define REGG_SAVED			0x0030 //RBP,RSP
-#define REGG_C_TEMP_CLOBBERED		0x0300 //R8,R9
-#define REGG_C_LOCAL_VARS		0xCCC0 //RSI,RDI,R10,R11,R14,R15
-#define REGG_C_LOCAL_NON_PTR_VARS	0x3000 //R12,R13
+#define REGG_CLOBBERED		0x013F //RAX,RCX,RDX,RBX,R8
+#define REGG_SAVED		0x0030 //RBP,RSP
+#define REGG_STK_TEMP		0x0200 //R9
+#define REGG_LOCAL_VARS		0xCCC0 //RSI,RDI,R10,R11,R14,R15
+#define REGG_LOCAL_NON_PTR_VARS	0x3000 //R12,R13
 
 #define AOT_BIN_BLK_BITS 16
 #define AOT_BIN_BLK_SIZE (1<<AOT_BIN_BLK_BITS)
@@ -1811,7 +1830,7 @@ class CAsmNum2
 
 class CAsmIns
 {
-  CInstruction *tempi;
+  CInst *tempi;
   CAsmNum2 imm,disp;
   I64	U8_cnt,last_opcode_U8,
 	REX,ModrM,SIB;
@@ -1923,11 +1942,12 @@ class CAsmUnresolvedRef
 #define ARGT_XMM0	55 // Not implemented
 
 #help_index "Compiler/Internal;Hash/System"
+#define OCF_ALIAS	1
 public class CHashOpcode:CHash
 {
-  U8	instruction_entry_cnt,
-	pad[7];
-  CInstruction ins[1];
+  U16	inst_entry_cnt,
+	oc_flags,pad[2];
+  CInst ins[1];
 };
 
 #help_index "Compiler/Intermediate Code"
@@ -2026,7 +2046,7 @@ class CLexFile
 
 class CAOTCtrl
 {
-  I64	ip; //Instruction ptr
+  I64	ip; //Inst ptr
   CAsmArg arg1,arg2;
   CAOTBinBlk *bin;
   I64	num_bin_U8s,
@@ -2048,7 +2068,7 @@ class CAOTCtrl
 #define TK_NORMALSCRIPT	0x003
 #define TK_IDENT	0x100
 #define TK_STR		0x101
-#define TK_INTEGER	0x102
+#define TK_INT		0x102
 #define TK_CHAR_CONST	0x103
 #define TK_F64		0x104
 #define TK_PLUS_PLUS	0x105
@@ -2194,10 +2214,9 @@ public class CCmpGlbls
   CIntermediateCode ic_nop;
   U32	*dual_U16_tokens1,*dual_U16_tokens2,*dual_U16_tokens3,
 	*binary_ops;
-  I64	num_stk_temps,num_reg_vars,num_non_ptr_vars,
+  I64	num_reg_vars,num_non_ptr_vars,
 	stk_temps_mask,reg_vars_mask,non_ptr_vars_mask;
-  U8	*to_stk_temps_map_odd,*to_stk_temps_map_even,
-	*to_reg_vars_map,*non_ptr_vars_map;
+  U8	*to_reg_vars_map,*non_ptr_vars_map;
   I64	size_arg_mask[9],
 	compiled_lines;
 };
@@ -2205,7 +2224,7 @@ public class CCmpGlbls
 #help_index "Debugging/Unassemble"
 class CUAsmGlbls
 {
-  CInstruction **table_16_32,**table_64;
+  CInst **table_16_32,**table_64;
   I64	table_16_32_entries,
 	table_64_entries,
 	ins64_arg_mask,
@@ -2804,8 +2823,8 @@ class CMemUsed
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
 identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
-[C:/Kernel/KernelA.HPP.Z,2849] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2849] MEM_PAGE_SIZE".
+[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
+I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE".
 
 All virtual addresses are identical to physical, always.
 There is no high kernel memory because RAM's physical
@@ -2820,7 +2839,7 @@ and identity-mapped!	Do I need to repeat?
 Ring-0-only and 100% identity-mapped, all the time.
 
 All code is placed in just the lowest 2 Gig, so the CALL REL32
-instruction always works.  It never changes out of ring-0, remember,
+inst always works.  It never changes out of ring-0, remember,
 so I don't need to waste cycles on use SYSCALL or software interrupts.
 Everything just uses CALL REL32.
 */
@@ -2915,7 +2934,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2925] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2944] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3015,7 +3034,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3014] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3015] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3033] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3034] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3043,15 +3062,15 @@ public class CGridGlbls
   Bool	snap	fmtstr "$CB,\"Snap Grid\"$\n",
 	show	fmtstr "$CB,\"Show Grid\"$\n";
   U8	pad[6];
-  F64	x	fmtstr "$DA-TRM,RT=F64,A=\"X Spacing:%6.3f\"$\n",
-	y	fmtstr "$DA-TRM,RT=F64,A=\"Y Spacing:%6.3f\"$\n",
-	z	fmtstr "$DA-TRM,RT=F64,A=\"Z Spacing:%6.3f\"$\n",
-	x_offset fmtstr "$DA-TRM,RT=F64,A=\"X Offset :%6.3f\"$\n",
-	y_offset fmtstr "$DA-TRM,RT=F64,A=\"Y Offset :%6.3f\"$\n",
-	z_offset fmtstr "$DA-TRM,RT=F64,A=\"Z Offset :%6.3f\"$\n",
-	x_speed	fmtstr "$DA-TRM,RT=F64,A=\"X Speed  :%6.3f\"$\n",
-	y_speed	fmtstr "$DA-TRM,RT=F64,A=\"Y Speed  :%6.3f\"$\n",
-	z_speed	fmtstr "$DA-TRM,RT=F64,A=\"Z Speed  :%6.3f\"$\n";
+  F64	x	fmtstr "$DA-TRM,A=\"X Spacing:%6.3f\"$\n",
+	y	fmtstr "$DA-TRM,A=\"Y Spacing:%6.3f\"$\n",
+	z	fmtstr "$DA-TRM,A=\"Z Spacing:%6.3f\"$\n",
+	x_offset fmtstr "$DA-TRM,A=\"X Offset :%6.3f\"$\n",
+	y_offset fmtstr "$DA-TRM,A=\"Y Offset :%6.3f\"$\n",
+	z_offset fmtstr "$DA-TRM,A=\"Z Offset :%6.3f\"$\n",
+	x_speed	fmtstr "$DA-TRM,A=\"X Speed  :%6.3f\"$\n",
+	y_speed	fmtstr "$DA-TRM,A=\"Y Speed  :%6.3f\"$\n",
+	z_speed	fmtstr "$DA-TRM,A=\"Z Speed  :%6.3f\"$\n";
 };
 
 #help_index "Ctrls"
@@ -3195,8 +3214,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3461] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3461] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3480] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3480] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3641,12 +3660,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2915] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2934] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2925] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2944] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3679,7 +3698,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3617] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3636] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

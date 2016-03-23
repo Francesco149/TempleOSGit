@@ -2,7 +2,7 @@
 -] Main Compiler
   The mini compiler is like the main compiler, except the main compiler's 
 lexical analyser removes comments and does
-  preprocessing.  [C:/Compiler/Lex.CPP.Z,442]
+  preprocessing.  [C:/Compiler/Lex.CPP.Z,443]
   Lex(),[C:/Compiler/CMisc.CPP.Z,24] Echo(ON).
 
 The main compiler generates [C:/Compiler/CompilerA.HPP.Z,1] Intermediate Code
@@ -18,7 +18,7 @@ The main compiler optimizes   See [C:/Compiler/CInit.CPP.Z,16] Intermediate
 optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/Kernel/KernelA.HPP.Z,1633] IC Struct, 
+  [C:/Kernel/KernelA.HPP.Z,1653] IC Struct, 
 [C:/Compiler/PrsLib.CPP.Z,249] COCCompile and
   [C:/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [C:/Compiler/BackA.CPP.Z,1]
   BackEnd.  Set [C:/Compiler/CMisc.CPP.Z,19] Trace(ON) to see the output of 
@@ -27,8 +27,8 @@ the backend.
 +] Mini Compiler
   For this mini compiler, some things you should know about 64-bit asm:
 
-* Putting a 0x48, known as the REX byte, in front of an instruction makes it
-  64-bit size.
+* Putting a 0x48, known as the REX byte, in front of an inst makes it 64-bit
+  size.
 
 * "PUSH EAX", "POP EAX" and "XOR EAX,EAX" will behave as 64-bit even without
   REX because the stk is always 64 bit and because the XOR clears the upper
@@ -50,7 +50,7 @@ It is okay in TempleOS to change RAX, RBX, RCX, RDX, R8 and R9 without
 #define OP_SUB		4
 
 I64 Lex(U8 **_src,I64 *num)
-{//See [C:/Compiler/Lex.CPP.Z,442] Lex().
+{//See [C:/Compiler/Lex.CPP.Z,443] Lex().
   U8 *src=*_src;
   I64 i;
   while (TRUE) {
@@ -132,7 +132,7 @@ U0 PrsTerm(U8 **_src,U8 **_dst,I64 prec)
 
 I64 Parse(U8 **_src,U8 **_dst)
 {//See [C:/Compiler/PrsExp.CPP.Z,264] PrsExpression().
-//See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm instructions.
+//See [C:/Compiler/OpCodes.TXT.Z,1] Opcode Fmts for details on asm insts.
   I64 i;
   U8 *dst=*_dst;
   switch (Lex(_src,&i)) {
@@ -224,7 +224,7 @@ U0 Main()
 
   while (TRUE) {
     "This will compile an expression\n"
-	  "consisting of integers, parentheses\n"
+	  "consisting of ints, parentheses\n"
 	  "and the operators +,-,* and /.\n";
     src=GetStr;
     if (*src) {

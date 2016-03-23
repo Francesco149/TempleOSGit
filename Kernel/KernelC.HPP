@@ -463,7 +463,6 @@ public extern U0 Fmt(U8 drv_let,Bool quick=TRUE,
 
 #help_index "Install;Memory/BlkPool"
 public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
-
 #help_index "Keyboard Devices/System;Char/System"
 #help_file "::/Doc/KeyDev"
 public extern U0 CtrlAltCBSet(U8 ch,U0 (*fp_handler)(I64 sc),
@@ -477,7 +476,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3760] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3779] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -654,6 +653,7 @@ extern I64 TimeStampFreqCal();
 #help_index "Task/Delay;Time/Jiffies"
 public extern U0 Sleep(I64 mS);
 public extern U0 SleepUntil(I64 wake_jiffy);
+
 #help_index "Task/Misc"
 extern U0 (*fp_update_ctrls)(CTask *task);
 public extern U0 TSSBusy(I64 tr,Bool val=OFF);

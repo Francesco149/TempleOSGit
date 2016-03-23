@@ -19,7 +19,7 @@ core with [C:/Kernel/KTask.CPP.Z,208] Spawn().
 Note: You must use the LOCK asm prefix when changing shared structures in a 
 multicore environment.  The [C:/Kernel/KernelB.HPP.Z,26] LBts(),
 [C:/Kernel/KernelB.HPP.Z,24] LBtr() and [C:/Kernel/KernelB.HPP.Z,22] LBtc()
-instructions have LOCK 
+insts have LOCK 
 prefixes.  The compiler has a lock{} feature but it doesn't work well.  See 
 [C:/Demo/MultiCore/Lock.CPP.Z,1].
 

@@ -443,7 +443,7 @@ U0 MPDrawIt(CTask *task,CDC *dc)
     yy+=y3;
   }
 
-  if (Gs->num&1) {//alternate left-right,right-left
+  if (Gs->num&1) {//alt left-right,right-left
     yh2=-yh;
     xh2=-xh;
   } else {

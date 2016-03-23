@@ -47,9 +47,9 @@ accessed
 by all tasks on all cores at all times.
 
 * Ring-0-only.  Highest CPU privileged mode at all times.  No off-limits 
-instructions.  No time lost changing modes or address maps.  Switches tasks
-in 
-half a microsecond.
+insts.  No time lost changing modes or address maps.  Switches tasks in half
+a 
+microsecond.
 
 * 2D/3D graphics library
 

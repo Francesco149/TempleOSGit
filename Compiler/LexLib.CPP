@@ -65,7 +65,7 @@ CMemberLstMeta *MemberMetaFind(U8 *needle_str,CMemberLst *haystack_member_lst)
 }
 
 CMemberLst *MemberFind(U8 *needle_str,CHashClass *haystack_class)
-{//Find class member. See [C:/Adam/ADbg.CPP.Z,154] ClassRep() and [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm().
+{//Find class member. See [C:/Adam/ADbg.CPP.Z,161] ClassRep() and [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm().
   I64 i;
   CMemberLst *tempm;
   do {
@@ -216,7 +216,7 @@ I64 MemberLstSize(CHashClass *tempc)
 }
 
 U8 *LexExtStr(CCmpCtrl *cc,I64 *_size=NULL,Bool lex_next=TRUE)
-{//Lex [C:/Kernel/KernelA.HPP.Z,2050] TK_STR's to one combined str. _size includes terminator.
+{//Lex [C:/Kernel/KernelA.HPP.Z,2070] TK_STR's to one combined str. _size includes terminator.
   I64 len=cc->cur_str_len,len1,len2;
   U8 *st=cc->cur_str,*st1,*st2;
   cc->cur_str=NULL;

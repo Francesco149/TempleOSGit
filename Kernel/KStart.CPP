@@ -15,7 +15,7 @@ This file is first in the Kernel image
 because it is #included first.  [C:/Kernel/Kernel.PRJ.Z,1] Kernel.PRJ
 */
 USE16
-SYS_KERNEL:: //This must match [C:/Kernel/KernelA.HPP.Z,415] CKernel.
+SYS_KERNEL:: //This must match [C:/Kernel/KernelA.HPP.Z,416] CKernel.
 	JMP	U16 CORE0_16BIT_INIT
 
 //************************************

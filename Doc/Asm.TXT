@@ -2,15 +2,14 @@
 
 See [C:/Compiler/OpCodes.TXT.Z,1] for opcodes.  They're not standard.  Some
 invalid 
-instructions are not flagged and some valid instructions are not implemented. 
-16-bit asm support is limited.
+insts are not flagged and some valid insts are not implemented. 16-bit asm 
+support is limited.
 
-Here are example instruction formats:
+Here are example inst formats:
 	ADD	RAX,I64 FS:DISP[RSI+RDI*8]
 	ADD	RAX,I64 [DISP]
 
-$ Current compiler output pos (instruction ptr).  Even works in HolyC 
-expressions.
+$ Current compiler output pos (inst ptr).  Even works in HolyC expressions.
 
 $ works in classes.
   class MyFun

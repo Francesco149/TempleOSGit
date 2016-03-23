@@ -8,7 +8,7 @@ asm {
 _BUZZ_FIZZ::
 	PUSH	RBP
 	MOV	RBP,RSP	//Always set-up stk frame.  (Stack Gets Traced)
-	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1772] REGG_C_LOCAL_VARS & [C:/Kernel/KernelA.HPP.Z,1773] REGG_C_LOCAL_NON_PTR_VARS
+	PUSH	RSI	//See [C:/Kernel/KernelA.HPP.Z,1791] REGG_LOCAL_VARS & [C:/Kernel/KernelA.HPP.Z,1792] REGG_LOCAL_NON_PTR_VARS
 	PUSH	RDI
 	MOV	RSI,FIZZ_SPAN-RANGE_START%FIZZ_SPAN+1
 	MOV	RDI,BUZZ_SPAN-RANGE_START%BUZZ_SPAN+1
@@ -35,7 +35,7 @@ _BUZZ_FIZZ::
 	CALL	PUT_CHARS
 	POP	RAX
 	INC	RAX
-	CMP	RAX,RANGE_END	//Actually only a 32-bit instruction.
+	CMP	RAX,RANGE_END	//Actually only a 32-bit inst.
 	JBE	@@05
 
 	POP	RDI

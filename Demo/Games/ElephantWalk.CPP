@@ -34,7 +34,7 @@
 U0 ElephantWalk()
 {
   I64 sc,
-	x=Fs->pix_width>>1,y=Fs->pix_height>>1, //Fs is current [C:/Kernel/KernelA.HPP.Z,3292] CTask struct.
+	x=Fs->pix_width>>1,y=Fs->pix_height>>1, //Fs is current [C:/Kernel/KernelA.HPP.Z,3311] CTask struct.
 	x_last=x;
   AutoComplete;
   WinBorder;

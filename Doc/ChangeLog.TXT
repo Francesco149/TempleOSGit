@@ -2,7 +2,36 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----03/16/16 08:16:39----
+----03/22/16 16:58:25----
+* Added [C:/Kernel/KernelA.HPP.Z,1021] DOCEF_DFT_RAW_TYPE.  Modified
+[C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() to look-up raw type 
+automatically from the compiler's class information.
+* Added [C:/Kernel/KernelA.HPP.Z,1020] DOCEF_DFT_LEN.  Modified
+[C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() to look-up string length 
+automatically from the compiler's class information.
+
+----03/21/16 07:28:35----
+* Added [C:/Kernel/KernelA.HPP.Z,1945] OCF_ALIAS.
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Integer","Int");
+* Added aliases to [C:/Compiler/OpCodes.TXT.Z,1].
+
+----03/21/16 02:12:08----
+* Added [C:/Kernel/KernelA.HPP.Z,900] DOCT_MARKER.
+* Added [C:/Kernel/KernelA.HPP.Z,1624] CICType.
+* Optimized [C:/Kernel/KernelA.HPP.Z,1582] MDG_MASK and
+[C:/Kernel/KernelA.HPP.Z,1566] RTG_MASK values.
+
+----03/19/16 09:15:11----
+* Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,383] EdFindReplace().
+
+----03/19/16 06:22:36----
+* Fixed [C:/Compiler/UAsm.CPP.Z,238] UAsm() bug.
+* Got rids of ICF_A1_FIRST.
+* Cleaned-up compiler [C:/Kernel/KernelA.HPP.Z,1788] REGG_CLOBBERED and
+[C:/Kernel/KernelA.HPP.Z,1790] REGG_STK_TEMP.
+
+----03/18/16 09:53:33----
+* Made [C:/Adam/Gr/SpriteEd.CPP.Z,1079] SpriteEd() select forground elem.
 
 ----03/14/16 05:57:27----
 * **TempleOS version 4.04 Released**
@@ -22,12 +51,12 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 * Improved <CTRL-l> prompting.
 
 ----02/09/16 23:54:23----
-* Created [C:/Kernel/KernelA.HPP.Z,960] DOCEF_LEN with arg. 
-[C:/Kernel/KernelA.HPP.Z,923] DOCT_DATA has default 64 len.
+* Created [C:/Kernel/KernelA.HPP.Z,962] DOCEF_LEN with arg. 
+[C:/Kernel/KernelA.HPP.Z,925] DOCT_DATA has default 64 len.
 
 ----02/09/16 09:34:32----
 * **TempleOS version 4.03 Released**
-* Added [C:/Kernel/KernelA.HPP.Z,1006] DOCEF_REMALLOC_DATA.
+* Added [C:/Kernel/KernelA.HPP.Z,1008] DOCEF_REMALLOC_DATA.
 
 ----02/05/16 23:00:53----
 * Moved [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP.Z,1].
@@ -57,13 +86,13 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
 ----01/29/16 02:44:38----
 * Overhauled [C:/Adam/DolDoc/DocFile.CPP.Z,53] DocSave() and
-[C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().
+[C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().
 
 ----01/28/16 20:45:35----
 * Fixed bug in locate sprite elem code.
 * Overhauled <CTRL-r> sprite editor.
 * Added [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,143] DocHighlightCursor() and
-[C:/Kernel/KernelA.HPP.Z,1295] DOCf_DONT_HIGHLIGHT_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,1301] DOCf_DONT_HIGHLIGHT_CURSOR.
 
 ----01/28/16 14:05:52----
 * Fixed bug in [C:/Adam/AutoComplete/ACTask.CPP.Z,260] AutoComplete() init.
@@ -80,7 +109,7 @@ Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 * Added [C:/Demo/ToHtmlToTXTExample/HtmlGen.CPP.Z,1] and 
 [C:/Demo/ToHtmlToTXTExample/TXTGen.CPP.Z,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3487] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3506] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -115,7 +144,7 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 
 ----01/15/16 00:12:02----
 * Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,137] Let2BlkDevType().
-* Added [C:/Kernel/KernelA.HPP.Z,1399] WIF_SELF_FOCUS to
+* Added [C:/Kernel/KernelA.HPP.Z,1405] WIF_SELF_FOCUS to
 [C:/Misc/OSInstall.CPP.Z,1].
 * Added %$F to [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
 
@@ -129,7 +158,7 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 config scripts for compiling the 
 kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
 be changed.
-* Added [C:/Kernel/KernelA.HPP.Z,2105] CCF_QUESTION_HELP.
+* Added [C:/Kernel/KernelA.HPP.Z,2125] CCF_QUESTION_HELP.
 
 ----01/11/16 00:04:38----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("PAGE_SIZE","MEM_PAGE_SIZE"); etc.
@@ -137,7 +166,7 @@ be changed.
 * Added [C:/Demo/MemDemo.CPP.Z,1].
 
 ----01/08/16 17:04:58----
-* Added [C:/Kernel/KernelA.HPP.Z,2578] FUF_RISKY to
+* Added [C:/Kernel/KernelA.HPP.Z,2597] FUF_RISKY to
 [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 
@@ -146,8 +175,9 @@ be changed.
 
 ----01/03/16 17:15:41----
 * Updated [C:/Misc/PCIDevices.TXT.Z,1].
-* Added null case option.  Next higher integer with "case:" in switch stmts.  
-See  [C:/Demo/NullCase.CPP.Z,1].
+* Added null case option.  Next higher int with "case:" in switch stmts.  See
+ 
+[C:/Demo/NullCase.CPP.Z,1].
 
 ----12/31/15 00:44:44----
 * Made [C:/Compiler/OpCodes.TXT.Z,1] ASM_KEYWORDs usable in HolyC outside
@@ -273,9 +303,9 @@ WinMgrTask().
 * Improved [C:/Linux/TOSZ.CPP,1].
 * Rearranged AutoComplete and [C:/Adam/Training.CPP.Z,146] KeyMap() code.
 * Added [C:/Kernel/Display.CPP.Z,126] WinInside().
-* Added [C:/Kernel/KernelA.HPP.Z,608] SYS_SEMA_JUST_PUMP_MSGS.
+* Added [C:/Kernel/KernelA.HPP.Z,609] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1437] WIf_SELF_KEY_DESC.
+* Added [C:/Kernel/KernelA.HPP.Z,1443] WIf_SELF_KEY_DESC.
 
 ----07/26/15 06:57:29----
 * Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
@@ -308,7 +338,7 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2742] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2761] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,169] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]

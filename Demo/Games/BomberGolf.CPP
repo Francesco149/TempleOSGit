@@ -60,8 +60,8 @@ I64 target_cnt,key_cnt;
 
 #define NUM_TARGETS	10
 
-#define TY_TANK		0
-#define TY_BUNKER	1
+#define MDF_TANK		0
+#define MDF_BUNKER	1
 
 #define TANK_V		10.0
 
@@ -208,7 +208,7 @@ I64 AnimateTask(CTask *parent)
 
     for (i=0;i<NUM_TARGETS;i++) {
       tempt=&targets[i];
-      if (!tempt->dead && tempt->type==TY_TANK) {
+      if (!tempt->dead && tempt->type==MDF_TANK) {
 	tempt->x+=0.01*TANK_V*Cos(tempt->theta);
 	tempt->y+=0.01*TANK_V*Sin(tempt->theta);
 	if (i&1)
@@ -259,13 +259,13 @@ U0 Init()
     tempt->x=RandU32%MAP_WIDTH -MAP_WIDTH >>1;
     tempt->y=RandU32%MAP_HEIGHT-MAP_HEIGHT>>1;
     if (i<NUM_TARGETS/3) {
-      tempt->type=TY_BUNKER;
+      tempt->type=MDF_BUNKER;
       tempt->theta=(RandU16&3)*pi/2;
       tempt->alive_img=__BIN_6;
       tempt->dead_img1=__BIN_7;
       tempt->dead_img2=__BIN_8;
     } else {
-      tempt->type=TY_TANK;
+      tempt->type=MDF_TANK;
       tempt->theta=Rand*2*pi;
       tempt->alive_img=__BIN_3;
       tempt->dead_img1=__BIN_4;

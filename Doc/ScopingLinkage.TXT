@@ -16,13 +16,13 @@ developing it.  Or, so you can repeatedly declare a function with a standard
 name, like DrawIt().  This case might occur when the adam task is starting-up 
 loading-in many little utilities.
 
-extern binds a new [C:/Kernel/KernelA.HPP.Z,684] HTT_FUN or
-[C:/Kernel/KernelA.HPP.Z,681] HTT_GLBL_VAR sym to an existing sym of the same 
+extern binds a new [C:/Kernel/KernelA.HPP.Z,685] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,682] HTT_GLBL_VAR sym to an existing sym of the same 
 name if it exists in the sym table (just in just-in-time code).  It also can 
 be used to generate a fwd reference.
 
-import binds a new [C:/Kernel/KernelA.HPP.Z,684] HTT_FUN or
-[C:/Kernel/KernelA.HPP.Z,681] HTT_GLBL_VAR sym to a sym of the same name 
+import binds a new [C:/Kernel/KernelA.HPP.Z,685] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,682] HTT_GLBL_VAR sym to a sym of the same name 
 imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,181] Load()
 time.  If no sym exists to bind 
 to at [C:/Kernel/KLoad.CPP.Z,181] Load() time, the code using this sym will
@@ -30,14 +30,14 @@ be left incomplete until the
 sym is defined.
 
 
-_extern binds a new [C:/Kernel/KernelA.HPP.Z,684] HTT_FUN or
-[C:/Kernel/KernelA.HPP.Z,681] HTT_GLBL_VAR sym to an existing sym, of a
+_extern binds a new [C:/Kernel/KernelA.HPP.Z,685] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,682] HTT_GLBL_VAR sym to an existing sym, of a
 **diffe
 rent** name.  It must exists in the sym table.  Basically, this binds C to
 asm.
 
-_import binds a new [C:/Kernel/KernelA.HPP.Z,684] HTT_FUN or
-[C:/Kernel/KernelA.HPP.Z,681] HTT_GLBL_VAR sym to a sym, of a **different**
+_import binds a new [C:/Kernel/KernelA.HPP.Z,685] HTT_FUN or
+[C:/Kernel/KernelA.HPP.Z,682] HTT_GLBL_VAR sym to a sym, of a **different**
 name 
 imported from the task's sym table at [C:/Kernel/KLoad.CPP.Z,181] Load()
 time.  If no sym exists to bind 
@@ -158,10 +158,10 @@ force it to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/Kernel/KernelA.HPP.Z,1534] OPTf_GLBLS_ON_DATA_HEAP.  They may in
+of the [C:/Kernel/KernelA.HPP.Z,1540] OPTf_GLBLS_ON_DATA_HEAP.  They may in
 the future.
 
-* [C:/Kernel/KernelA.HPP.Z,1531] OPTf_EXTERNS_TO_IMPORTS will treat _extern
+* [C:/Kernel/KernelA.HPP.Z,1537] OPTf_EXTERNS_TO_IMPORTS will treat _extern
 as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.

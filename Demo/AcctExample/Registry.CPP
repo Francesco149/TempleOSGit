@@ -16,6 +16,8 @@
       I64 best_score=4;
       +] DunGen
       F64 best_score=20.5295;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
       +] ZoneOut
       F64 best_score=8.1373;
       +] Varoom
@@ -35,11 +37,9 @@
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=175;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
       +] DemoCompany
   +] Game1
-      F64 best_score=1344.86889;
+      F64 best_score=167.56160;
     +] SimpleVal
-          1300;
+          1308;
             

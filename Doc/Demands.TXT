@@ -31,9 +31,9 @@ count.
  More than one file system type is actually bad, just as more than one driver 
 for the same type of device is bad.
 [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1]
-[C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:965 lines for FAT32 gets eliminated.
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:284 lines for ISO9660 gets eliminated.
-[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,1]	:536 lines for making ISO files gets
+[C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:973 lines for FAT32 gets eliminated.
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:293 lines for ISO9660 gets eliminated.
+[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,1]	:535 lines for making ISO files gets
 reduced.
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,1]	:152 All the cluster operations become
 blk.
@@ -54,7 +54,7 @@ hardware.
 * VMware has a bug stretching 640x480 16 color to full screen.
 
 * VMware has a bug starting-up multicore, sometimes. 
-[C:/Kernel/MultiProc.CPP.Z,1] APIC MP Start
+[C:/Kernel/MultiProc.CPP.Z,1] APIC MP Start Fixed?
 
 * VMware PC speaker's distortion is a good idea, but it is too much for hymns.
 
@@ -63,7 +63,7 @@ hardware.
 * Until super simple block devices are available, hard disk should be placed 
 at IDE primary master 1F0/3F6 and CD/DVD/Blu-ray should be placed at the IDE 
 secondary master 170/376.
-[C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:280 lines to
+[C:/Kernel/BlkDev/DskATAId.CPP.Z,1] /Kernel/BlkDev/DskATAId.CPP	:285 lines to
 figure-out I/O ports is gone.
 [C:/Kernel/PCIBIOS.CPP.Z,1] /Kernel/PCIBIOS.CPP		:290 could be eliminated,
 but maybe we will 
@@ -75,8 +75,9 @@ mouse must work.  The BIOS must enable these.
 * The x86 IN/OUT port instructions, normally have a delay.  Perhaps, VMware & 
 Intel can enable faster x86 IN/OUT instruction timing for ATA/ATAPI PIO, so 
 bandwidth isn't bad when doing port I/O.  See
-[C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetResult().  Perhaps, x86 
-CPU chips need a new TempleOS mode for fast IN/OUT instructions?
+[C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetResult().  We don't want 
+to do DMA.  Perhaps, x86 CPU chips need a new TempleOS mode for fast IN/OUT 
+instructions?
 
 * Perhaps, a new interrupt descriptor table entry type or a new x86 CPU mode 
 can be made that cause fast software interrupts, doing exactly what the CALL 

@@ -215,7 +215,7 @@ U8 *Doc2PlainText(CDoc *doc,CDocEntry *doc_e)
 }
 
 CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
-{//Uses [C:/Compiler/Lex.CPP.Z,442] Lex() to parse a string and make Doc entries.
+{//Uses [C:/Compiler/Lex.CPP.Z,443] Lex() to parse a string and make Doc entries.
   I64 i,j,de_flags,processed_flags,attr=DOC_DFT;
   U8 *ptr,*st2;
   CDocEntry *doc_e=NULL;
@@ -338,9 +338,10 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	    }
 	    break;
 	  case DOCEf_LEN:
-	    if (cc->token)
+	    if (cc->token) {
 	      doc_e->len=LexExpression(cc);
-	    else
+	      doc_e->de_flags&=~DOCEF_DFT_LEN;
+	    } else
 	      goto pd_err;
 	    break;
 	  case DOCEf_AUX_STR:
@@ -349,7 +350,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	      doc_e->aux_str=StrNew(st2,doc->mem_task);
 	      Free(st2);
 //Anchor
-	      if (i==DOCT_DATA) {
+	      if (i==DOCT_DATA) { //See [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm()
 		if (ptr=StrMatch(":",doc_e->aux_str))
 		  doc_e->min_col=ptr-doc_e->aux_str+1;
 		doc_e->tag=MAlloc(doc_e->len+doc_e->min_col+2,
@@ -430,6 +431,7 @@ CDocEntry *PrsDollarCmd(CDoc *doc,U8 *st)
 	      if (j<0)
 		goto pd_err;
 	      doc_e->raw_type=j;
+	      doc_e->de_flags&=~DOCEF_DFT_RAW_TYPE;
 	      Lex(cc);
 	    } else
 	      goto pd_err;

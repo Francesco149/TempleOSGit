@@ -1,6 +1,6 @@
 /*TempleOS has a feature that allows
 access to bytes and words of larger
-integers.
+ints.
 
 See [C:/Kernel/KernelA.HPP.Z,1] U64i union.
  

@@ -1,15 +1,12 @@
 class FDStruct
-{//Use <CTRL-l> and select "Data" to generate the fmtstrs
-
-  //The number is the field from after the ':' to the end.
-  //See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
-
-  F64 num1	fmtstr "$DA-TRM,RT=F64,A=\"F64   1:%12.8f\"$\n";
-  F64 num2	fmtstr "$DA-TRM,RT=F64,A=\"F64   2:%12e\"$\n";
+{//Use <CTRL-l> and select "Data", "List" or "Check Box"
+//to generate the fmtstrs.
+  F64 num1	fmtstr "$DA-TRM,A=\"F64   1:%12.8f\"$\n";
+  F64 num2	fmtstr "$DA-TRM,A=\"F64   2:%12e\"$\n";
   I64 num3	fmtstr "$DA-TRM,A=\"I64   1:0x%016X\"$\n";
   I64 num4	fmtstr "$DA-TRM,A=\"I64   2:%12d\"$\n";
   I64 type	fmtstr "$LS,D=\"ST_PERSON_TYPE\"$\n";
-  U8  name[32]	fmtstr "$DA-P,LEN=31,A=\"Name   :%s\"$\n";
+  U8  name[32]	fmtstr "$DA-P,A=\"Name   :%s\"$\n";
   U8  *address1	fmtstr "$DA+M,A=\"Address:%s\"$\n"; //+M is unlimited len U8 *.
   U8  *address2	fmtstr "$DA+M,A=\"Address:%s\"$\n"; //+M is unlimited len U8 *.
   CDate datetime fmtstr "$DA-TRM,A=\"Date   :%8D\"$\n";
@@ -48,7 +45,7 @@ U0 FormDemo()
   ClassRep(&fds);
   Free(fds.address1);
   Free(fds.address2);
-  //See also [C:/Adam/ADbg.CPP.Z,176] ClassRepD().
+  //See also [C:/Adam/ADbg.CPP.Z,183] ClassRepD().
 }
 
 FormDemo;

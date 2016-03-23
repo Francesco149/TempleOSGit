@@ -19,7 +19,7 @@ public I64 EdCurU8(CDoc *doc)
 }
 
 public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
-{//Move cursor left. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().
+{//Move cursor left. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().
 //See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,387] EdRenumAsm for an example.
   U8 *dst;
   Bool unlock=DocLock(doc);
@@ -91,7 +91,7 @@ public U0 EdCursorLeft(CDoc *doc,I64 sc=MIN_I64)
 }
 
 public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
-{//Move cursor right. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().
+{//Move cursor right. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().
 //See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,387] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
@@ -167,7 +167,7 @@ public U0 EdCursorRight(CDoc *doc,I64 sc=MIN_I64)
 }
 
 public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
-{//Move cursor up. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().
+{//Move cursor up. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().
 //See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,387] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;
@@ -278,7 +278,7 @@ public U0 EdLineUp(CDoc *doc,I64 sc=MIN_I64)
 }
 
 public U0 EdLineDown(CDoc *doc,I64 sc=MIN_I64)
-{//Move cursor down. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().
+{//Move cursor down. Might need a call to [C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().
 //See [C:/Adam/DolDoc/DocCodeTools.CPP.Z,387] EdRenumAsm for an example.
   Bool unlock=DocLock(doc);
   U8 *dst;

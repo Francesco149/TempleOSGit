@@ -1,10 +1,10 @@
 /*lock{} is a compiler stmt
-which places asm LOCK instruction
+which places asm LOCK inst
 prefixes on code.  Only use it on
 read-modify-write stmts.
-It will generate invalid instructions
+It will generate invalid insts
 if you misuse it and it will crash.
-[C:/Compiler/UAsm.CPP.Z,649] U() to see what code was generated.
+[C:/Compiler/UAsm.CPP.Z,645] U() to see what code was generated.
 */
 
 #define CNT	0x1000000

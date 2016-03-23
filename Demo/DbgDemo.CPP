@@ -8,8 +8,8 @@ Press <CTRL-ALT-d> to enter Dbg.
 > [C:/Kernel/KDbg.CPP.Z,469] G2;	//Cont program
 
 Press <CTRL-ALT-d> to enter Dbg.
-> [C:/Adam/ADbg.CPP.Z,247] Uf("DbgDemo");
-> [C:/Compiler/UAsm.CPP.Z,649] U(_RIP);
+> [C:/Adam/ADbg.CPP.Z,254] Uf("DbgDemo");
+> [C:/Compiler/UAsm.CPP.Z,645] U(_RIP);
 
 See [Debugging,1] Debugging
 */

@@ -41,7 +41,7 @@ U0 DumpStruct(U8 *_d,U8 *class_name=lastclass)
     "%s:",ml->str;
 
     //All our items are I64's.	If you want, you can check
-    //the data type of the member var.  See [C:/Adam/ADbg.CPP.Z,154] ClassRep().
+    //the data type of the member var.  See [C:/Adam/ADbg.CPP.Z,161] ClassRep().
     q=_d+ml->offset;
 
     if (print_str=MemberMetaData("print_str",ml))
@@ -53,7 +53,7 @@ U0 DumpStruct(U8 *_d,U8 *class_name=lastclass)
 
       //This corrects for the ambiguity, allowing zero percentile.
     if (MemberMetaFind("percentile",ml)) {//check if it exists
-//We could use the [C:/Kernel/KernelA.HPP.Z,784] CMemberLstMeta structure returned by
+//We could use the [C:/Kernel/KernelA.HPP.Z,785] CMemberLstMeta structure returned by
       //[C:/Compiler/LexLib.CPP.Z,56] MemberMetaFind() and save a search.
       percentile=MemberMetaData("percentile",ml)(F64);
       " percentile: %5.2f",percentile;
