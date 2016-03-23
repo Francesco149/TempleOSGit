@@ -139,7 +139,7 @@ big, sparse ranges.
 
 * Allows ranges like "case 4...7:" in switch stmts.
 
-* A no case number causes next higher integer case in switch stmts.  See 
+* A no case number causes next higher int case in switch stmts.  See 
 [C:/Demo/NullCase.CPP,1].
 
   I64 i;
@@ -185,9 +185,9 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1772] REGG_C_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1773] REGG_C_LOCAL_NON_PTR_VARS for reg vars or 
-else clobbered.
+  //Only use [C:/Kernel/KernelA.HPP.Z,1791] REGG_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1792] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
+clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
   asm {
@@ -243,12 +243,12 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1529] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1535] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1530] OPTf_WARN_DUP_TYPES,ON) to find dup
+Option([C:/Kernel/KernelA.HPP.Z,1536] OPTf_WARN_DUP_TYPES,ON) to find dup
 local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -270,8 +270,8 @@ conclusion of the #exe{} blk.
 
 * "$" is an escape character.  Two dollar signs signify an ordinary $.  See 
 [C:/Doc/DolDocOverview.TXT.Z,1] DolDoc.  In asm or [C:/Doc/HolyC.TXT.Z,1]
-HolyC code, it also refers to the instruction's address or 
-the offset in a class definition. 
+HolyC code, it also refers to the inst's address or the 
+offset in a class definition. 
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
@@ -287,7 +287,7 @@ compiler's info about classes and vars.  See [C:/Demo/ClassMeta.CPP,1] and
 
 * There is a keyword lastclass you use as a dft arg.  It is set to the class 
 name of the previous arg.  See [C:/Demo/LastClass.CPP,1],
-[C:/Adam/ADbg.CPP.Z,154] ClassRep(), [C:/Adam/DolDoc/DocForm.CPP.Z,209]
+[C:/Adam/ADbg.CPP.Z,161] ClassRep(), [C:/Adam/DolDoc/DocForm.CPP.Z,209]
 DocForm()  
 and [C:/Demo/Dsk/BlkDevRep.CPP,1].
 
@@ -310,7 +310,7 @@ you can't do sizeof(classname.membername.submembername).
 
 * lock{} can be used to apply asm LOCK prefixes to code for safe multicore 
 read-modify-write accesses.  The code bracked with have LOCK asm prefix's 
-applied to relevant instructions within.  It's a little shoddy.  See 
+applied to relevant insts within.  It's a little shoddy.  See 
 [C:/Demo/MultiCore/Lock.CPP,1].
 
 * There is a function called [C:/Kernel/Mem/MAllocFree.CPP.Z,384] MSize()
@@ -332,7 +332,7 @@ example.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2859] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2878] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,208]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See

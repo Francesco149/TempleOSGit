@@ -7,6 +7,7 @@ Acct	Account
 ACD	AutoComplete Dictionary
 Addr	Address
 Alloc	Allocate
+Alt	Alternate
 AOT	Ahead-of-Time
 AP	ApplicationProcessor (Core1 - Core7)
 Arg	Argument
@@ -65,7 +66,8 @@ Ident	Identifier, Identity
 IDT	Interrupt Descriptor Table
 Init	Initialize
 Ins	Insert
-Int	Interrupt
+Inst	Instruction
+Int	Interrupt, Integer
 ip_	Input Pointer.  See [C:/Kernel/SerialDev/InputPointer.CPP.Z,1]
   InputPointer.CPP.
 Irq	Interrupt (Request)
@@ -144,7 +146,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3292]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3311]
   CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -163,13 +165,13 @@ Wiz	Wizard
   Seth is Adam and Eve's child.  Each CPU core has an executive task called
   Seth that is immortal.  The Adam task on CPU#0 is also it's Seth task.
 +] Code and Data Heaps
-  TempleOS uses the asm CALL instruction, exclusively, and that instruction
-  is limited to calling routines +/-2 Gig from the current code location.  To
-  prevent out-of-range issues, I decided to separate code and data, placing all
-  code within the lowest 2 Gig of memory, addresses 00000000-7FFFFFFF.  The
-  compiler and [C:/Kernel/KLoad.CPP.Z,181] Load()er alloc memory from the code
-  heap to store code and glbl vars, unless the compiler option
-  [C:/Kernel/KernelA.HPP.Z,1534] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  TempleOS uses the asm CALL inst, exclusively, and that inst is limited to
+  calling routines +/-2 Gig from the current code location.  To prevent
+  out-of-range issues, I decided to separate code and data, placing all code
+  within the lowest 2 Gig of memory, addresses 00000000-7FFFFFFF.  The compiler
+  and [C:/Kernel/KLoad.CPP.Z,181] Load()er alloc memory from the code heap to
+  store code and glbl vars, unless the compiler option
+  [C:/Kernel/KernelA.HPP.Z,1540] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() is from the data
   heap, which in not limited in size, except by physical RAM memory.  You can
   alloc from any heap in any task at any time on any core, even making
@@ -186,8 +188,8 @@ Wiz	Wizard
 +] HolyC
   [C:/Doc/HolyC.TXT.Z,1] HolyC is more than C and less than C++.  It has the
   default args of C++ and uses class in place of struct.  It uses
-  U0,U8,U16,U32,I64 and I0,I8,I16,I32,I64 for signed and unsigned integers.  It
-  has different [C:/Doc/HolyC.TXT.Z,1] operator precedence.  It has PASCAL-like
+  U0,U8,U16,U32,I64 and I0,I8,I16,I32,I64 for signed and unsigned ints.  It has
+  different [C:/Doc/HolyC.TXT.Z,1] operator precedence.  It has PASCAL-like
   function calls with no parens, but requires an & when referring to function
   addresses.
 +] AOT Compile Mode
@@ -214,13 +216,13 @@ There is no main() routine.  Instead, stmts outside functions are
   can be used in programs.  [C:/Compiler/CMain.CPP.Z,607] ExePrint() routine
   will compile and run a string.
 +] Compiler Intermediate Code
-  The compiler generates instructions one step before making actual assembly
-  (machine) language instructions.  This code is reverse polish stack machine
-  in nature and can be viewed with [C:/Compiler/CMisc.CPP.Z,11] PassTrace(). 
-  The compiler does not interpret code, except in the process of optimization
-  to make the final machine code.  Assembly language output can be viewed when
+  The compiler generates insts one step before making actual assembly
+  (machine) language insts.  This code is reverse polish stack machine in
+  nature and can be viewed with [C:/Compiler/CMisc.CPP.Z,11] PassTrace().  The
+  compiler does not interpret code, except in the process of optimization to
+  make the final machine code.  Assembly language output can be viewed when
   code is compiled with the [C:/Compiler/CMisc.CPP.Z,19] Trace(), or,
-  afterward, with [C:/Compiler/UAsm.CPP.Z,649] U() or [C:/Adam/ADbg.CPP.Z,247]
+  afterward, with [C:/Compiler/UAsm.CPP.Z,645] U() or [C:/Adam/ADbg.CPP.Z,254]
   Uf("").
 +] Drive/Partition
   There is no distinction between drive or partition.  They are specified
@@ -240,7 +242,7 @@ For commands taking a drive letter as an argument, char 0 is the current
 [C:/Doc/RedSea.TXT.Z,1] RedSea File System
 [Graphics/Sprite,1] Sprite
 +] CLI, STI, PUSHFD, POPFD
-  These are x86 assembly instructions.
+  These are x86 assembly insts.
 CLI disable interrupts.
 STI enable interrupts.
 PUSHFD pushes the CPU flags.
@@ -274,11 +276,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2268] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2267] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2266] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2265] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2269] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2287] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2286] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2285] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2284] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2288] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -317,10 +319,10 @@ result is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3292] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3311] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3418] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3437] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must

@@ -41,8 +41,8 @@
   I am an evolutionist.  Adam is a better term for the first father of all
   tasks than root was!
 +] Is 'Bt()' in the code Bit Torrent?
-  [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 instruction,
-  not bit torrent.
+  [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 inst, not bit
+  torrent.
 +] Is 'Fs->' in the code file system?
   [C:/Kernel/KernelB.HPP.Z,282] Fs is a segment reg, not file system. 
   ([C:/Kernel/KernelB.HPP.Z,282] Fs is kept pointing to the current task's
@@ -130,12 +130,12 @@
   [C:/Doc/Glossary.TXT.Z,1] Code Heap, so that the REL32 addressing mode can be
   used.  TempleOS is 64-bit, but 2 Gig is enough for code.  It actually puts
   global variables there, too, but you can turn that off with
-  [C:/Kernel/KernelA.HPP.Z,1534] OPTf_GLBLS_ON_DATA_HEAP. 
+  [C:/Kernel/KernelA.HPP.Z,1540] OPTf_GLBLS_ON_DATA_HEAP. 
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() allocs higher memory.
 +] How does it SYSCALL?
-  TempleOS doesn't use software interrupts or SYSCALL instructions because it
-  never needs to change out of ring-0, even running user programs.  Calls are
-  always CALL REL32 instructions.
+  TempleOS doesn't use software interrupts or SYSCALL insts because it never
+  needs to change out of ring-0, even running user programs.  Calls are always
+  CALL REL32 insts.
 +] How do you fault-in stack?
   The stack does not grow, so do not do deep recursion.  In theory, memory
   gets fragmented, too.
@@ -166,12 +166,12 @@
   temporarily drop-out-of 64-bit mode for that and stop multi-tasking.
 +] Why are you pushing 32-bit values on the stack?
   PUSH EAX : All stack operations in 64-bit mode are 64-bits.
-+] Why are you using 32-bit instructions and not setting high 32-bits?
++] Why are you using 32-bit insts and not setting high 32-bits?
   XOR EAX,EAX : Operations on 32-bit regs clear the high 32-bits.
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HPP.Z,3292] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3418]
+  [C:/Kernel/KernelA.HPP.Z,3311] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3437]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is
@@ -195,7 +195,7 @@
   .
 +] How does the debugger do source debugging?
   When compilation takes place, the structures used by the compiler stick
-  around.  Data on classes can be accessed.  See [C:/Adam/ADbg.CPP.Z,154]
+  around.  Data on classes can be accessed.  See [C:/Adam/ADbg.CPP.Z,161]
   ClassRep().
 +] What are the ASCII 5 and ASCII 31 chars doing in my text files?
   The cursor location is stored as an ASCII 5 in files.  ASCII 31 is

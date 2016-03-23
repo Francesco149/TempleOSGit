@@ -4,7 +4,7 @@ start-up file.  See [D:/Home/HomeLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the local_time_offset global
 var 
-in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,547] CDATE_FREQ.
+in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,548] CDATE_FREQ.
  See [D:/Home/HomeLocalize.CPP,1] local time.
 
 * Get rid of this msg [D:/Home/DoOnce.CPP,1] here.

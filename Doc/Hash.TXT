@@ -34,16 +34,16 @@ into the array of linked-lists.
 Multiple strings can generate the same num, so linked-lists are built.  Newer 
 entries overshadow older ones.
 
-There are various types of entries.  See [C:/Kernel/KernelA.HPP.Z,678] Hash
+There are various types of entries.  See [C:/Kernel/KernelA.HPP.Z,679] Hash
 Entry Types.
 
 Symbol Look-up (Used many places including the [C:/Compiler/Lex.CPP.Z,1] JIT
 Compiler and [C:/Kernel/KLoad.CPP.Z,1] Loader.)
 1) Symbol name is [C:/Kernel/KHashA.CPP.Z,4] hashed by adding and shifting
 the ASCII of all chars.
-2) [C:/Kernel/KernelA.HPP.Z,638] hash table->body[] array is indexed.
+2) [C:/Kernel/KernelA.HPP.Z,639] hash table->body[] array is indexed.
 3) Linked-lst is traversed until match of text and type of entry.
-4) If not found, [C:/Kernel/KernelA.HPP.Z,638] hash table->next table is
+4) If not found, [C:/Kernel/KernelA.HPP.Z,639] hash table->next table is
 searched.
 
 Duplicate entries are allowed -- they overshadow old entries.

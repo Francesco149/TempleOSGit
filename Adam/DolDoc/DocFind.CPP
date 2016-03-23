@@ -168,7 +168,7 @@ fn_skip:
 }
 
 public U0 EdSelectAll(CDoc *doc,Bool select)
-{//Set state of [C:/Kernel/KernelA.HPP.Z,943] DOCET_SELECTED on all entries.
+{//Set state of [C:/Kernel/KernelA.HPP.Z,945] DOCET_SELECTED on all entries.
   Bool unlock=DocLock(doc);
   CDocEntry *doc_e=doc->root.next;
   while (doc_e!=doc) {
@@ -320,7 +320,7 @@ public Bool EdGoToFun(CDoc *doc,Bool fwd,Bool abort_on_dbl_colon)
 }
 
 public U0 EdSelectFun(CDoc *doc,Bool abort_on_dbl_colon=FALSE)
-{//Set [C:/Kernel/KernelA.HPP.Z,943] DOCET_SELECTED on all entries in cur fun.
+{//Set [C:/Kernel/KernelA.HPP.Z,945] DOCET_SELECTED on all entries in cur fun.
   Bool unlock=DocLock(doc);
   U8 *ptr;
   I64 ch,levels=0,colons=0;
@@ -385,7 +385,7 @@ I64 EdFindReplace(CDoc *doc)
   Bool found,unlock;
   I64 cmd,i,j,plen,rlen,dlen,result=-1,sf_flags;
   U8 *src,*dst,*dst2;
-  CDocEntry *doc_ce=doc->cur_entry,*doc_e;
+  CDocEntry *doc_ce,*doc_e,*doc_marker=NULL;
   if (doc->find_replace->pmt)
     cmd=RSAC_REPLACE;
   else
@@ -448,10 +448,8 @@ I64 EdFindReplace(CDoc *doc)
       goto fr_unlock_done;
     }
 
-    if (doc->find_replace->local_var) {
+    if (doc->find_replace->local_var)
       EdSelectFun(doc);
-      doc_ce=doc->cur_entry;
-    }
 
     if (!doc->find_replace->replace && !doc->find_replace->local_var) {
       EdFindNext(doc);
@@ -462,14 +460,15 @@ I64 EdFindReplace(CDoc *doc)
       goto fr_unlock_done;
     rlen=StrLen(doc->find_replace->replace_text);
     if (doc->root.next!=doc) {
-      doc_e=doc_ce;
+      doc_e=doc_marker=DocSplitTag(doc,doc->cur_entry,doc->cur_col,
+	    doc->cur_entry->x+doc->cur_col,doc->cur_entry->y,DOCT_MARKER);
       do {
 	if (doc_e==doc) {
 	  if (doc->find_replace->scan_fwd)
 	    doc_e=doc_e->next;
 	  else
 	    doc_e=doc_e->last;
-	  if (doc_e==doc_ce)
+	  if (doc_e==doc_marker)
 	    break;
 	}
 	if (doc_e->type_u8==DOCT_TEXT &&
@@ -527,9 +526,11 @@ I64 EdFindReplace(CDoc *doc)
 	  doc_e=doc_e->next;
 	else
 	  doc_e=doc_e->last;
-      } while (doc_e!=doc_ce);
+      } while (doc_e!=doc_marker);
     }
 fr_unlock_done:
+    if (doc_marker)
+      DocEntryDel(doc,doc_marker);
     DocRemSoftNewLines(doc,NULL);
     DocRecalc(doc);
     DocCenter(doc);

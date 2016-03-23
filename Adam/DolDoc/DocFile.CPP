@@ -27,13 +27,13 @@ public U0 DocLoad(CDoc *doc,U8 *src2,I64 size)
   }
   if (!(doc->flags & (DOCF_PLAIN_TEXT|DOCF_PLAIN_TEXT_TABS)))
     DocBinsValidate(doc);
-  DocTop(doc); //Calls [C:/Adam/DolDoc/DocRecalc.CPP.Z,250] DocRecalc().  DOCT_CURSOR will be set.
+  DocTop(doc); //Calls [C:/Adam/DolDoc/DocRecalc.CPP.Z,256] DocRecalc().  DOCT_CURSOR will be set.
   if (unlock)
     DocUnlock(doc);
 }
 
 public CDoc *DocRead(U8 *name=NULL,I64 flags=0)
-{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1248] flags.
+{//Fetch doc from disk. See [C:/Kernel/KernelA.HPP.Z,1254] flags.
   CDoc *doc=DocNew;
   U8 *src,*name2;
   I64 size=0;

@@ -9,15 +9,15 @@ the same page table map, just as though all addresses are physical addresses.
 tables entries.  Nothing swaps to disk, either.
 
 In TempleOS, the lowest 2 Gig of memory is called the code heap.  TempleOS's 
-compiler always uses 32-bit signed relative JMP & CALL instructions because 
-64-bit CALLs take two instructions.  With signed +/- 32-bit values, code can 
-only call a function within 2 Gig distance.  Therefore, TempleOS keeps all 
-code in the lowest 2 Gig memory addresses including what would normally be 
-called "the kernel".  Two Gig is plenty for code, don't worry.
+compiler always uses 32-bit signed relative JMP & CALL insts because 64-bit 
+CALLs take two insts.  With signed +/- 32-bit values, code can only call a 
+function within 2 Gig distance.  Therefore, TempleOS keeps all code in the 
+lowest 2 Gig memory addresses including what would normally be called "the 
+kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps using [C:/Kernel/Mem/HeapCtrl.CPP.Z,1]
 HeapCtrlInit().  Then, use the 
-[C:/Kernel/KernelA.HPP.Z,2879] CHeapCtrl as the 2nd arg to
+[C:/Kernel/KernelA.HPP.Z,2898] CHeapCtrl as the 2nd arg to
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  See
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog() for an example.
 
@@ -32,9 +32,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
  0x0000000000- 0x0000006FFF
   Pages marked not present so NULL ptr dereference causes a fault.
 
- 0x0000007C00- 0x00000344FF
+ 0x0000007C00- 0x00000349AF
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3858] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3877] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -42,7 +42,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
 [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x0000097030
-  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,501] MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,502] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -51,7 +51,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and [C:/Demo/MemDemo.CPP,1].
   VGA graphics mem, marked as write-through cache.
 
  0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3447] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3466] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000184600- 0x007FFDFFFF

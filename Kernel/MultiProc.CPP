@@ -3,7 +3,7 @@ asm {
 USE16
 //See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
-//This code gets copied to [C:/Kernel/KernelA.HPP.Z,502] MP_VECT_ADDR.
+//This code gets copied to [C:/Kernel/KernelA.HPP.Z,503] MP_VECT_ADDR.
 //See [C:/Kernel/MultiProc.CPP.Z,2] MemCpy(MP_VECT_ADDR.
 COREAP_16BIT_INIT::
 	JMP	@@05
@@ -309,8 +309,8 @@ U0 Core0StartMP()
   MemSet(&cpu_structs[1],0,sizeof(CCPU)*(MP_MAX_PROCESSORS-1));
 
   //When you start-up other cores, they jump to an addr
-  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,501] MPN_VECT which corresponds
-  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,502] MP_VECT_ADDR.
+  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,502] MPN_VECT which corresponds
+  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,503] MP_VECT_ADDR.
   MemCpy(mp,COREAP_16BIT_INIT,COREAP_16BIT_INIT_END-COREAP_16BIT_INIT);
   MemCpy(&mp->ap_gdt_ptr,SYS_GDT_PTR,sizeof(CSysLimitBase));
   mp_cnt_initial=mp_cnt=1;
@@ -338,7 +338,7 @@ U0 Core0StartMP()
     StrPrint(buf,"Seth Task CPU#%d",i);
     task=Spawn(&CoreAPSethInit,NULL,buf,,,MEM_SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HPP.Z,3292] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HPP.Z,3311] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }
