@@ -3597,7 +3597,7 @@ public class CTextGlbls
 {
   I64	raw_col,raw_flags;
   U8	*raw_screen_image;
-  I64	rows,cols;	//Use TEXT_ROWS,TEXT_COLS
+  I64	rows,cols;		//Use TEXT_ROWS,TEXT_COLS
   U64	*font,*aux_font;
 };
 

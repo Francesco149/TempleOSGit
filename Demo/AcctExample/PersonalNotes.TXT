@@ -124,6 +124,9 @@ plan a big alloc.  This is doable, depending on how.
 
 * Log-to-file is inefficient because we load and save whole file.
 
+* [C:/Compiler/BackLib.CPP.Z,430] ICMov() [C:/Compiler/BackLib.CPP.Z,1]
+PUSH_CMP and [C:/Kernel/KernelA.HPP.Z,1568] MDf_STK?  Perhaps, it's okay.
+
 * Short FAT32 ~ names.
 
 * Compiler: Inline functions?
@@ -488,7 +491,7 @@ To the honest, you are honest		Psalm 18:26
 Meek and humble of heart		Matthew 11:29
 MOses hgets Aaron			Exodus 4:10-16
 There is no council against the Lord	Proverbs 21:30
-
+Human help is worthless			Psalm 108:12
 
                                   Misc Notes
 Intel CEO's name: Brian Krzanich

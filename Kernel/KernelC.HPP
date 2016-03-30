@@ -463,6 +463,7 @@ public extern U0 Fmt(U8 drv_let,Bool quick=TRUE,
 
 #help_index "Install;Memory/BlkPool"
 public extern I64 Scale2Mem(I64 min,I64 max,I64 limit=2*1024*1024*1024);
+
 #help_index "Keyboard Devices/System;Char/System"
 #help_file "::/Doc/KeyDev"
 public extern U0 CtrlAltCBSet(U8 ch,U0 (*fp_handler)(I64 sc),

@@ -2,7 +2,11 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----03/23/16 02:42:11----
+----03/29/16 05:53:45----
+* **TempleOS version 4.05 Released**
+
+----03/24/16 16:26:50----
+* Added [C:/Demo/Games/CharDemo.CPP.Z,1].
 
 ----03/22/16 16:58:25----
 * Added [C:/Kernel/KernelA.HPP.Z,1021] DOCEF_DFT_RAW_TYPE.  Modified
@@ -33,7 +37,7 @@ automatically from the compiler's class information.
 [C:/Kernel/KernelA.HPP.Z,1790] REGG_STK_TEMP.
 
 ----03/18/16 09:53:33----
-* Made [C:/Adam/Gr/SpriteEd.CPP.Z,1079] SpriteEd() select forground elem.
+* Made [C:/Adam/Gr/SpriteEd.CPP.Z,1079] SpriteEd() select foreground elem.
 
 ----03/14/16 05:57:27----
 * **TempleOS version 4.04 Released**

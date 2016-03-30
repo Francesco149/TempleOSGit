@@ -30,7 +30,7 @@ U0 SrcExample()
 }
 
 SrcExample;
-//See [C:/Demo/ScreenCodes.CPP.Z,1], [C:/Demo/Graphics/CharGraphics.CPP.Z,1],
-//and [C:/Demo/Graphics/FontEd.CPP.Z,1].
+//See [C:/Demo/ScreenCodes.CPP.Z,1], [C:/Demo/Graphics/CharAnimation.CPP.Z,1],
+//[C:/Demo/Games/CharDemo.CPP.Z,1] and [C:/Demo/Graphics/FontEd.CPP.Z,1].
 
 //See [C:/Kernel/StrA.CPP.Z,325] chars_bmp_alpha and [C:/Kernel/StrA.CPP.Z,330] chars_bmp_alpha_numeric.
