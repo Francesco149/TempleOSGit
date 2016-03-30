@@ -26,8 +26,6 @@
       F64 best_score=16.4090;
       +] TimeOut
       I64 best_score=22202;
-      +] RawHide
-      F64 best_score=96.1279;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
       +] XCaliber
@@ -37,6 +35,8 @@
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=175;
+      +] RawHide
+      F64 best_score=96.1279;
       +] DemoCompany
   +] Game1
       F64 best_score=481.84264;
