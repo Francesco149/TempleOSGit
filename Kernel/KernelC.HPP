@@ -545,6 +545,7 @@ public _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
 public extern U0 HeapCtrlDel(CHeapCtrl *hc);
 public extern CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,
 	CTask *task=NULL,CBlkPool *bp);
+
 #help_index "Memory/Page Tables"
 public extern Bool MemLowPagesProtect(Bool val=TRUE);
 public extern Bool MemPagePresentMark(U8 *a,Bool val);
@@ -748,5 +749,4 @@ public extern F64 tS(); //From SysTimerFreq.
 
 #help_index "Windows"
 public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
-
 #help_index ""
