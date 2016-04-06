@@ -77,11 +77,6 @@ I64 SysTimerRead()
   return result;
 }
 
-I64 TaskTotalTime()
-{//Total CPU cycles given to current task.
-  return GetTSC-Fs->time_slice_start+Fs->total_time;
-}
-
 I64 TimeStampFreqCal()
 {
   static I64 time_stamp_start=0,timer_start=0,HPET_start=0;

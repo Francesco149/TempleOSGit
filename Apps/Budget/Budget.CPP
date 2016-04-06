@@ -17,7 +17,7 @@ class CBgtEntry
   U0 start;
   CDate date;
   U16 type,flags;
-  U32 credit_index,debit_index,desc_index;
+  U32 credit_idx,debit_idx,desc_idx;
   F64 amount;
   U0 end;
 

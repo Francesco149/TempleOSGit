@@ -161,7 +161,7 @@ public class CD3 //Three dimensional F64 pt
 public class CQueVectU8
 {
   CQueVectU8	*next,*last;
-  I64	total_cnt,node_cnt,min_index;
+  I64	total_cnt,node_cnt,min_idx;
   U8	body[QUE_VECT_U8_CNT];
 };
 
@@ -721,7 +721,7 @@ class CDbgInfo
 public class CHashSrcSym:CHash
 {
   U8	*src_link,
-	*index;
+	*idx;
   CDbgInfo *dbg_info;
   U8	*import_name;
   CAOTImportExport *ie_lst;
@@ -819,7 +819,7 @@ class CExternUsage
 #help_index "Hash/System;Compiler/Internal"
 public class CHashDefineStr:CHashSrcSym
 {
-  U8	*data,**sub_lst;
+  U8	*data,**sub_idx;
   I64	cnt;
 };
 
@@ -2172,7 +2172,7 @@ public class CCmpCtrl
 	class_ip;
   U8	*dollar_buf;
   I64	dollar_cnt;
-  U8	*cur_help_index;
+  U8	*cur_help_idx;
   I64	last_U16,
 	min_line,max_line,last_line_num,
 	lock_cnt;
@@ -2822,7 +2822,7 @@ class CMemUsed
 
 #help_index "Memory/BlkPool"
 /*TempleOS does not mess with page tables after it
-identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_MEM.
+identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 [C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
 I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE".
 
@@ -3214,8 +3214,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3480] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3480] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3247,7 +3247,7 @@ public class CTaskSettings
   CTask *song_task,*animate_task;
   I64	scroll_x,scroll_y,scroll_z;
   CBGR48 palette[NUM_COLORS];
-  U32	win_inhibit;;
+  U32	win_inhibit;
   U8	text_attr,title_src,
 	border_attr,border_src,
 	task_title[STR_LEN];
@@ -3346,9 +3346,7 @@ U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
 	r8,r9,r10,r11,r12,r13,r14,r15;
   CCPU	*gs;
   CFPU	*fpu_mmx;
-  I64	time_slice_start,
-	total_time, //Cycles
-	swap_cnter;
+  I64	swap_cnter;
 
   U0	(*draw_it)(CTask *task,CDC *dc);
 
@@ -3698,7 +3696,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3636] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3634] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;
@@ -3722,7 +3720,7 @@ public class CDC
 #define VGAP_ATTR_DATA_WRITE	0x03C0 //alias
 #define VGAP_ATTR_DATA_READ	0x03C1
 #define VGAP_MISC_OUTPUT	0x03C2
-#define VGAP_INDEX		0x03C4
+#define VGAP_IDX		0x03C4
 #define VGAP_DATA		0x03C5
 #define VGAP_PALETTE_MASK	0x03C6
 #define VGAP_REG_READ		0x03C7
@@ -3758,7 +3756,7 @@ public class CArcCtrl
   CArcEntry *cur_entry,*next_entry;
   I64	cur_bits_in_use,next_bits_in_use;
   U8	*stk_ptr,*stk_base;
-  I64	free_index,free_limit,
+  I64	free_idx,free_limit,
 	saved_basecode,
 	entry_used,
 	last_ch;

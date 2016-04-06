@@ -167,7 +167,7 @@ U0 DrawIt(CTask *task,CDC *dc)
   Sprite3(dc,194,task->pix_height-140,0,__BIN_4);
   Sprite3(dc,400,task->pix_height-10,0,__BIN_5);
   Sprite3(dc,50,task->pix_height-160,0,__BIN_6);
-  temps=SpriteInterpolate(__BIN_1,__BIN_2,Tri(tS,2.0));
+  temps=SpriteInterpolate(Tri(tS,2.0),__BIN_1,__BIN_2);
   Sprite3(dc,0,task->pix_height,0,temps);
   Free(temps);
 }

@@ -99,7 +99,7 @@ class Flake
 class Tree
 {
   U16 x,y;
-  I64 fire_frame_index;
+  I64 fire_frame_idx;
 } trees[NUM_TREES];
 
 I64 snow_x,snow_y;
@@ -135,8 +135,8 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->pen_width=1;
   for (i=0;i<NUM_TREES;i++) {
     if (trees[i].y<=h/2) {//Draw trees behind house
-      if (trees[i].fire_frame_index) {
-	if (trees[i].fire_frame_index++&1)
+      if (trees[i].fire_frame_idx) {
+	if (trees[i].fire_frame_idx++&1)
 	  img=__BIN_8;
 	else
 	  img=__BIN_9;
@@ -152,8 +152,8 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   for (i=0;i<NUM_TREES;i++) {
     if (trees[i].y>h/2) {//Draw trees in front of house
-      if (trees[i].fire_frame_index) {
-	if (trees[i].fire_frame_index++&1)
+      if (trees[i].fire_frame_idx) {
+	if (trees[i].fire_frame_idx++&1)
 	  img=__BIN_8;
 	else
 	  img=__BIN_9;
@@ -185,10 +185,9 @@ U0 DrawIt(CTask *task,CDC *dc)
     if (tempp->stopped)
       SpriteMat3B(dc,tempp->x,tempp->y,GR_Z_ALL,peasant_imgs[0],r);
     else {
-      temps=SpriteInterpolate(
+      temps=SpriteInterpolate(Saw(animate_mS/250.0,1.0),
 	    peasant_imgs[ animate_phase   &3],
-	    peasant_imgs[(animate_phase+1)&3],
-	    Saw(animate_mS/250.0,1.0));
+	    peasant_imgs[(animate_phase+1)&3]);
       SpriteMat3B(dc,tempp->x,tempp->y,GR_Z_ALL,temps,r);
       Free(temps);
     }
@@ -202,10 +201,9 @@ U0 DrawIt(CTask *task,CDC *dc)
   if (tS>king_timeout)
     SpriteMat3B(dc,king_x,king_y,GR_Z_ALL,king_imgs[0],r);
   else {
-    temps=SpriteInterpolate(
+    temps=SpriteInterpolate(Saw(king_mS/250.0,1.0),
 	  king_imgs[ king_phase   &3],
-	  king_imgs[(king_phase+1)&3],
-	  Saw(king_mS/250.0,1.0));
+	  king_imgs[(king_phase+1)&3]);
     SpriteMat3B(dc,king_x,king_y,GR_Z_ALL,temps,r);
     Free(temps);
   }
@@ -282,7 +280,7 @@ U0 Init()
   for (i=0;i<NUM_TREES;i++) {
     trees[i].x=RandU16%(w-2*BORDER-(max_x-min_x+1))+BORDER-min_x;
     trees[i].y=RandU16%(h-2*BORDER-(max_y-min_y+1))+BORDER-min_y;
-    trees[i].fire_frame_index=0;
+    trees[i].fire_frame_idx=0;
   }
 
   QueInit(&step_root);
@@ -379,7 +377,7 @@ U0 AnimateTask(I64)
 	  tempp->door_opened_t0=door_open_t0=tS;
 	}
 	for (i=0;i<NUM_TREES;i++) //Hang-out by fire
-	  if (trees[i].fire_frame_index &&
+	  if (trees[i].fire_frame_idx &&
 		Sqr(tempp->x-trees[i].x)+Sqr(tempp->y-trees[i].y)<20*20) {
 	    tempp->stopped=TRUE;
 	    break;
@@ -436,7 +434,7 @@ U0 BurnTrees()
   I64 i;
   for (i=0;i<NUM_TREES;i++)
     if (Sqr(king_x-trees[i].x)+Sqr(king_y-trees[i].y)<10*10)
-      trees[i].fire_frame_index=1;
+      trees[i].fire_frame_idx=1;
 }
 
 U0 SongTask(I64)

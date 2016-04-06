@@ -323,7 +323,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	  SpriteMat3B(dc,x,y,0,__BIN_2,r2);
 	else {
 	  tt=Tri(tS,1.0);
-	  temps=SpriteInterpolate(__BIN_3,__BIN_4,tt);
+	  temps=SpriteInterpolate(tt,__BIN_3,__BIN_4);
 	  SpriteMat3B(dc,x,y,0,temps,r1);
 	  Free(temps);
 	}

@@ -342,7 +342,7 @@ public CDC *Sprite2DC(U8 *elems)
   return result;
 }
 
-public U8 *SpriteInterpolate(U8 *elems0,U8 *elems1,F64 t)
+public U8 *SpriteInterpolate(F64 t,U8 *elems0,U8 *elems1)
 {//The two CSprite should be identical except for points shifted around.
 //t ranges from 0.0 to 1.0.
   I64 i,t1=GR_SCALE*t,t0=GR_SCALE-t1;

@@ -783,7 +783,7 @@ U0 FireShot(Unit *tempu,Unit *target)
       }
     }
   }
-  while (snd.freq) //see [C:/Kernel/KMisc.CPP.Z,163] Snd()
+  while (snd.freq) //see [C:/Kernel/KMisc.CPP.Z,158] Snd()
     Yield;
   target_unit=NULL;
 }
@@ -905,7 +905,7 @@ U0 IndirectFireResolve()
     }
     Noise(2000*ANIMATION_DELAY,800,1000);
     Sleep(2000*ANIMATION_DELAY);
-    while (snd.freq) //see [C:/Kernel/KMisc.CPP.Z,163] Snd()
+    while (snd.freq) //see [C:/Kernel/KMisc.CPP.Z,158] Snd()
       Yield;
     indirect_explosion=FALSE;
 

@@ -93,7 +93,7 @@ U0 CircleTrace()
 	  avg_error=total_error/total_distance;
 	  score=elapsed_time*avg_error;
 
-	  //[C:/Kernel/KMisc.CPP.Z,155] Sleep()s until the next time the
+	  //[C:/Kernel/KMisc.CPP.Z,150] Sleep()s until the next time the
 	  //window mgr task runs.  The
 	  //window mgr calls the UpdateWin() routine
 	  //and places msgs in the que, so there's

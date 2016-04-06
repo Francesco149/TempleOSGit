@@ -35,11 +35,11 @@ tCAGqFC after pressing <CTRL-t>, now.
 JukeBox("::/Home/Psalmody"); to play your songs.
 
 * To create a .SND file which can be exported and played under Windows, set 
-the Bool [C:/Kernel/KernelA.HPP.Z,3835] snd.record to TRUE, play music, and
+the Bool [C:/Kernel/KernelA.HPP.Z,3833] snd.record to TRUE, play music, and
 set it to FALSE.  Then, call 
 [C:/Adam/Snd/SndFile.CPP.Z,19] SndFileCreate().  You might wish to make a
 <CTRL-ALT-key> to toggle this 
-system level recording feat.  See [C:/Kernel/KMisc.CPP.Z,163] Snd().  Add
+system level recording feat.  See [C:/Kernel/KMisc.CPP.Z,158] Snd().  Add
 this code to your 
 [C:/Home/HomeKeyPlugIns.CPP,1] file.
 

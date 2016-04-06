@@ -73,7 +73,7 @@ U0 SysGrInit()
   } else { //if 640x480 16 color
     text.cols=GR_WIDTH/FONT_WIDTH;
     text.rows=GR_HEIGHT/FONT_HEIGHT;
-    OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+    OutU8(VGAP_IDX,VGAR_MAP_MASK);
     OutU8(VGAP_DATA,0x0F);
     MemSet(VGAM_GRAPHICS,0,GR_WIDTH*GR_HEIGHT>>3);
     text.raw_screen_image=CAlloc(GR_WIDTH*GR_HEIGHT/8);
@@ -150,7 +150,7 @@ U0 KernelMain()
   Core0Init;
   IntInit1;
 
-  //Before this point use [C:/Kernel/KMisc.CPP.Z,163] Snd() and [C:/Kernel/KMisc.CPP.Z,136] BusyWait()
+  //Before this point use [C:/Kernel/KMisc.CPP.Z,158] Snd() and [C:/Kernel/KMisc.CPP.Z,131] BusyWait()
   //to debug.  After this point, use [C:/Kernel/KDbg.CPP.Z,217] RawPrint()
   LBts(&sys_run_level,RLf_RAW);
   TimersInit;

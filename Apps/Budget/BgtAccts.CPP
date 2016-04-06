@@ -5,18 +5,18 @@ U0 BgtAcctsUpdate()
   tempb=b_root.next;
   while (tempb!=&b_root) {
     if (tempb->type!=BE_TEMPLATE_COPY) {
-      tempb->credit_index=StrFileAdd(tempb->credit,
+      tempb->credit_idx=StrFileAdd(tempb->credit,
 	    &accts_table_strs,accts_table);
-      tempb->debit_index =StrFileAdd(tempb->debit,
+      tempb->debit_idx =StrFileAdd(tempb->debit,
 	    &accts_table_strs,accts_table);
     }
     tempb=tempb->next;
   }
   tempt=t_root.next;
   while (tempt!=&t_root) {
-    tempt->b.credit_index=StrFileAdd(tempt->b.credit,
+    tempt->b.credit_idx=StrFileAdd(tempt->b.credit,
 	  &accts_table_strs,accts_table);
-    tempt->b.debit_index =StrFileAdd(tempt->b.debit,
+    tempt->b.debit_idx =StrFileAdd(tempt->b.debit,
 	  &accts_table_strs,accts_table);
     tempt=tempt->next;
   }

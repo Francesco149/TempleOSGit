@@ -34,7 +34,7 @@ class CArcCtrl //control structure
   CArcEntry *cur_entry,*next_entry;
   DWORD cur_bits_in_use,next_bits_in_use;
   BYTE *stk_ptr,*stk_base;
-  DWORD free_index,free_limit,
+  DWORD free_idx,free_limit,
 	saved_basecode,
 	entry_used,
 	last_ch;
@@ -82,7 +82,7 @@ void ArcEntryGet(CArcCtrl *c)
   CArcEntry *temp,*temp1;
 
   if (c->entry_used) {
-    i=c->free_index;
+    i=c->free_idx;
 
     c->entry_used=FALSE;
     c->cur_entry=c->next_entry;
@@ -104,7 +104,7 @@ void ArcEntryGet(CArcCtrl *c)
       if (temp1)
 	temp1->next=temp->next;
     }
-    c->free_index=i;
+    c->free_idx=i;
   }
 }
 
@@ -178,7 +178,7 @@ CArcCtrl *ArcCtrlNew(DWORD expand,DWORD compression_type)
   else
     c->min_bits=8;
   c->min_table_entry=1<<c->min_bits;
-  c->free_index=c->min_table_entry;
+  c->free_idx=c->min_table_entry;
   c->next_bits_in_use=c->min_bits+1;
   c->free_limit=1<<c->next_bits_in_use;
   c->saved_basecode=0xFFFFFFFFl;

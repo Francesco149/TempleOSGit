@@ -58,10 +58,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=DKGRAY;
   GrCircle(dc,bird_x+5+20*Saw(15*tS,2),bird_y,10+20*Saw(15*tS,2),5,-pi/4,pi/2);
 
-  temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  temps=SpriteInterpolate(tt,__BIN_1,__BIN_2);
   if (eat_timeout && tS<eat_timeout) {
-    temps2=SpriteInterpolate(__BIN_3,__BIN_4,tt);
-    temps3=SpriteInterpolate(temps2,temps,1.0-(eat_timeout-tS)/AAT_TIME);
+    temps2=SpriteInterpolate(tt,__BIN_3,__BIN_4);
+    temps3=SpriteInterpolate(1.0-(eat_timeout-tS)/AAT_TIME,temps2,temps);
     Free(temps);
     Free(temps2);
     temps=temps3;

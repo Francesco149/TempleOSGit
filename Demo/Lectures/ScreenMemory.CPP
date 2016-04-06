@@ -11,21 +11,21 @@ U0 Main()
 {
   I64 i;
   //This makes all 4 color planes active.
-  OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+  OutU8(VGAP_IDX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,WHITE);
   MemSet(VGAM_GRAPHICS,0,GR_WIDTH*GR_HEIGHT/8);
 
-  OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+  OutU8(VGAP_IDX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,RED);
   for (i=0;i<200;i++)
     PlotXY(i,i);
 
-  OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+  OutU8(VGAP_IDX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,GREEN);
   for (i=0;i<200;i++)
     PlotXY(100,i);
 
-  OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+  OutU8(VGAP_IDX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,BLUE);
   for (i=0;i<200;i++)
     PlotXY(200-i,i);

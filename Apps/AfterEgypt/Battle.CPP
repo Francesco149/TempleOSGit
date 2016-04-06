@@ -60,7 +60,7 @@ U0 DrawBattle(CTask *task,CDC *dc)
     tt*=tt;
     if (tt>1.0) tt=1.0;
   }
-  temps=SpriteInterpolate(__BIN_3,__BIN_4,tt);
+  temps=SpriteInterpolate(tt,__BIN_3,__BIN_4);
   Sprite3(dc,cx,cy+SPACING,0,temps);
   Free(temps);
 
@@ -73,19 +73,19 @@ U0 DrawBattle(CTask *task,CDC *dc)
 
   tt=Saw(tS+0.0*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  temps=SpriteInterpolate(tt,__BIN_1,__BIN_2);
   Sprite3(dc,xx+cx+SPACING,cy-SPACING,0,temps);
   Free(temps);
 
   tt=Saw(tS+0.333*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  temps=SpriteInterpolate(tt,__BIN_1,__BIN_2);
   Sprite3(dc,xx+cx+2*SPACING,cy-SPACING,0,temps);
   Free(temps);
 
   tt=Saw(tS+0.666*HACK_PERIOD,HACK_PERIOD);
   tt*=2; if (tt>1.0) tt=2.0-tt;
-  temps=SpriteInterpolate(__BIN_1,__BIN_2,tt);
+  temps=SpriteInterpolate(tt,__BIN_1,__BIN_2);
   Sprite3(dc,xx+cx+SPACING,cy-2*SPACING,0,temps);
   Free(temps);
 

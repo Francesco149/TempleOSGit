@@ -62,7 +62,7 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 
 * [C:/Demo/Games/EagleDive.CPP.Z,1] doesn't make sense or look real.  Bad.
 
-* Reset MPs with [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP() after boot. 
+* Reset MPs with [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP() after boot. 
 Free old task memory?
 
 * Use pen_width and pen_height when clipping with pen_width>1.
@@ -262,7 +262,7 @@ Every country make own version?
 
 * Might want to move kernel code out of low 2Meg.  Might be faster.
 
-* [C:/Kernel/KernelA.HPP.Z,3625] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3623] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
 * [C:/Kernel/KernelA.HPP.Z,2947] TRANSPARENT does not work with
@@ -275,7 +275,7 @@ Every country make own version?
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3652] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3650] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,2933] ROP_XOR?
 

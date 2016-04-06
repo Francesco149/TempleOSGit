@@ -155,10 +155,9 @@ public extern I64	LinkedLstSize(U8 **_lst);
 
 #help_index "Data Types/Queue Vector"
 public extern U0	QueVectU8Del(CQueVectU8 *v);
-public extern I64	QueVectU8Get(CQueVectU8 *v,I64 index);
-public extern CQueVectU8 *QueVectU8New(I64 min_index=0);
-public extern U0	QueVectU8Put(CQueVectU8 *v,I64 index,U8 ch);
-
+public extern I64	QueVectU8Get(CQueVectU8 *v,I64 idx);
+public extern CQueVectU8 *QueVectU8New(I64 min_idx=0);
+public extern U0	QueVectU8Put(CQueVectU8 *v,I64 idx,U8 ch);
 #help_index "Debugging"
 public extern U8 *Caller(I64 num=1);
 public extern Bool ChkCodePtr(U8 *ptr);
@@ -228,15 +227,15 @@ public extern U0 Dbg(U8 *msg=NULL,I64 msg_num=0);
 
 #help_index "Define;Char/Define"
 #help_file "::/Doc/Define"
-public extern U8 *Define(U8 *name);
-public extern CHashDefineStr *DefineLoad(U8 *name,U8 *st);
-public extern U0 DefinePrint(U8 *name,U8 *src,...);
+public extern U8 *Define(U8 *dname);
+public extern CHashDefineStr *DefineLoad(U8 *dname,U8 *st);
+public extern U0 DefinePrint(U8 *dname,U8 *src,...);
 
 #help_index "Define;Char/Define;Char/Lists"
-public extern I64 DefineCnt(U8 *name);
-public extern CHashDefineStr *DefineLstLoad(U8 *name,U8 *st);
-public extern I64 DefineMatch(U8 *needle,U8 *haystack_lst_name,I64 flags=0);
-public extern U8 *DefineSub(I64 sub,U8 *name);
+public extern I64 DefineCnt(U8 *dname);
+public extern CHashDefineStr *DefineLstLoad(U8 *dname,U8 *lst);
+public extern I64 DefineMatch(U8 *needle,U8 *haystack_lst_dname,I64 flags=0);
+public extern U8 *DefineSub(I64 sub,U8 *dname);
 
 #help_index "Devices"
 public extern U8 *Mem32DevAlloc(I64 size,I64 alignment);
@@ -427,7 +426,7 @@ extern U0 SysSymImportsResolve(U8 *sptr,I64 ld_flags=0);
 public extern I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table);
 
 #help_index "Hash/System;Define;Char/Define;Char/Lists"
-public extern I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table);
+public extern I64 HashDefineLstAdd(U8 *dname,I64 type,CHashTable *table);
 
 #help_index "Help System;Debugging/Debugger"
 public extern U0 Help();
@@ -477,7 +476,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3779] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3777] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -710,10 +709,6 @@ public extern CTask *Spawn(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	U8 *task_name=NULL,I64 target_cpu=-1,	//-1 means current CPU
 	CTask *parent=NULL, //NULL means adam
 	I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
-
-#help_index "Time/CPU Cycles"
-#help_file "::/Doc/TimeCycles"
-public extern I64 TaskTotalTime();
 
 #help_index "Time/CPU Cycles;Time/HPET;Time/Jiffies"
 public extern CCntsGlbls cnts;

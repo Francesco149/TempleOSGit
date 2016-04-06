@@ -63,7 +63,7 @@ U0 HashDel(CHashSrcSym *temph)
     Free(temph->str);
   if (temph->type & HTG_SRC_SYM) {
     Free(temph->src_link);
-    Free(temph->index);
+    Free(temph->idx);
     Free(temph->import_name);
     LinkedLstDel(temph->ie_lst);
     if (temph->type & (HTT_FUN | HTT_EXPORT_SYS_SYM))
@@ -160,11 +160,11 @@ U0 HashSrcFileSet(CCmpCtrl *cc,CHashSrcSym *h,I64 line_num_offset=0)
   h->src_link=MStrPrint("FL:%s,%d",tempf->full_name,line_num);
   if (Bt(&cc->opts,OPTf_KEEP_PRIVATE))
     h->type|=HTF_PRIVATE;
-  Free(h->index);
-  if (cc->cur_help_index && *cc->cur_help_index)
-    h->index=StrNew(cc->cur_help_index);
+  Free(h->idx);
+  if (cc->cur_help_idx && *cc->cur_help_idx)
+    h->idx=StrNew(cc->cur_help_idx);
   else
-    h->index=NULL;
+    h->idx=NULL;
 }
 
 CHashGeneric *HashPublic(U8 *st,I64 mask,Bool val=TRUE)
@@ -203,10 +203,10 @@ I64 HashLstAdd(U8 *lst,I64 type,CHashTable *table)
   return i;
 }
 
-I64 HashDefineLstAdd(U8 *name,I64 type,CHashTable *table)
+I64 HashDefineLstAdd(U8 *dname,I64 type,CHashTable *table)
 {//Add define list to a hash table. See [C:/Adam/DolDoc/DocInit.CPP.Z,1] ::/Adam/DolDoc/DocInit.CPP.
   CHashDefineStr *temph;
-  if (temph=HashFind(name,Fs->hash_table,HTT_DEFINE_STR))
+  if (temph=HashFind(dname,Fs->hash_table,HTT_DEFINE_STR))
     return HashLstAdd(temph->data,type,table);
   else
     return 0;
