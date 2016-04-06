@@ -143,7 +143,7 @@ Examples: <CTRL-t> to see
 9)[C:/Misc/Bible.TXT.Z,87803] Bible Link The chapter:verse actually just does
   a text search.
 10) [Doc,1] Help Index Link.
-11) [C:/Kernel/StrPrint.CPP.Z,344] Address Link.
+11) [C:/Kernel/StrPrint.CPP.Z,346] Address Link.
 
 12) For in-memory document address links, see [C:/Adam/Gr/SpriteEd.CPP.Z,680]
   SpriteEdText().

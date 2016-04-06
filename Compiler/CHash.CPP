@@ -38,7 +38,7 @@ I64 HashEntrySize2(CHashSrcSym *temph)
     result+=MSize2(temph->str);
   if (temph->type & HTG_SRC_SYM) {
     result+=MSize2(temph->src_link);
-    result+=MSize2(temph->index);
+    result+=MSize2(temph->idx);
     result+=MSize2(temph->import_name);
     result+=LinkedLstSize(temph->ie_lst);
     if (temph->type & (HTT_FUN | HTT_EXPORT_SYS_SYM))

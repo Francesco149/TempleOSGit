@@ -2,7 +2,7 @@ asm {
 // [C:/Doc/MemOverview.TXT.Z,1]
 
 USE32
-SYS_INIT_MEM::
+SYS_INIT_PAGE_TABLES::
 //Set page tables to identity map everything.
 	MOV	EDI,SYS_FIXED_AREA
 	XOR	EAX,EAX

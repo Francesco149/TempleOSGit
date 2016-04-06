@@ -54,7 +54,7 @@ AP_32BIT_INIT:
 	PUSH	U32 RFLAGG_START
 	POPFD
 	PUSH	U32 0	//Return from next call will be 64-bit
-	CALL	SYS_EM64T
+	CALL	SYS_ENTER_LONG_MODE
 USE64
 	FNINIT
 	MOV	RAX,RSI
@@ -171,7 +171,7 @@ U0 MPHalt()
 U0 MPAPICInit()
 {//Called by adam during start-up
 //and other cores during initialization
-  //after [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP().
+  //after [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP().
   *LAPIC_SVR(U32 *)|=LAPICF_APIC_ENABLED;
   dev.mp_apic_ids[Gs->num]=*LAPIC_APIC_ID(U32 *)>>24;
   *LAPIC_LDR(U32 *)=dev.mp_apic_ids[Gs->num]<<24;
@@ -274,11 +274,10 @@ CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 }
 
 U0 CoreAPSethInit()
-{//Called by multicore's seth task after [C:/Kernel/MultiProc.CPP.Z,285] Core0StartMP()
+{//Called by multicore's seth task after [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP()
 //as the first thing a CPU does before waiting for jobs.
   MPAPICInit;
   Fs->rip=&CoreAPSethTask;
-  Fs->time_slice_start=GetTSC;
   TaskContextRestore;
 }
 
@@ -365,7 +364,6 @@ U0 Core0Init()
   //Must be in code heap because init code uses 32 bit addr of cpu_struct
   adam_task->gs=cpu_structs=
 	CAlloc(sizeof(CCPU)*MP_MAX_PROCESSORS,Fs->code_heap);
-  adam_task->time_slice_start=GetTSC;
   CPUStructInit(0,cpu_structs,adam_task);
   asm {//RAX has GS
     IMPORT SET_GS_BASE;

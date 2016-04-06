@@ -17,9 +17,9 @@ The scheduler checks if a task is
 waiting for a certain time or waiting
 on a message and skips if not ready.
 A task runs until it voluntarily yields ctrl
-with a call to [C:/Kernel/Sched.CPP.Z,295] Yield().  Tasks waiting on I/O
+with a call to [C:/Kernel/Sched.CPP.Z,284] Yield().  Tasks waiting on I/O
 often loop, checking for a status and
-[C:/Kernel/Sched.CPP.Z,295] Yielding.  This does not really degrade
+[C:/Kernel/Sched.CPP.Z,284] Yielding.  This does not really degrade
 performance, but pegs the CPU Load.
 
 The scheduler checks for a few keys:
@@ -83,12 +83,6 @@ It's a little faster.
 	PUSH	RCX
 	MOV	RSP,RAX
 
-	RDTSC
-	SHL	RDX,32
-	ADD	RAX,RDX
-	SUB	RAX,U64 CTask.time_slice_start[RSI]
-	ADD	U64 CTask.total_time[RSI],RAX
-
 	MOV	RAX,U64 CTask.fpu_mmx[RSI]
 	FXSAVE	U64 [RAX]
 
@@ -123,11 +117,6 @@ _TASK_CONTEXT_RESTORE::
 
 	MOV	RAX,U64 CTask.fpu_mmx[RSI]
 	FXRSTOR	U64 [RAX]
-
-	RDTSC
-	SHL	RDX,32
-	ADD	RAX,RDX
-	MOV	U64 CTask.time_slice_start[RSI],RAX
 
 	MOV	RAX,RSP
 	LEA	RSP,U64 CTask.rcx[RSI]

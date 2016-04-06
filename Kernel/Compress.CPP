@@ -1,5 +1,5 @@
 //See [C:/Doc/Credits.TXT.Z,1].
-//See [C:/Kernel/KernelA.HPP.Z,3770] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3744] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3752] CArcCtrl
+//See [C:/Kernel/KernelA.HPP.Z,3768] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3742] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3750] CArcCtrl
 
 asm {
 /****
@@ -9,7 +9,7 @@ U0 ArcEntryGet(CArcCtrl *c)
   CArcEntry *temp,*temp1;
 
   if (c->entry_used) {
-    i=c->free_index;
+    i=c->free_idx;
 
     c->entry_used=FALSE;
     c->cur_entry=c->next_entry;
@@ -35,7 +35,7 @@ U0 ArcEntryGet(CArcCtrl *c)
 	  temp1=temp1->next;
       }
     }
-    c->free_index=i;
+    c->free_idx=i;
   }
 }
 ****/
@@ -47,7 +47,7 @@ _ARC_ENTRY_GET::
 	MOV	RSI,U64 SF_ARG1[RBP]
 	BTR	U64 CArcCtrl.entry_used[RSI],0
 	JNC	I32 @@30
-	MOV	RDX,U64 CArcCtrl.free_index[RSI]
+	MOV	RDX,U64 CArcCtrl.free_idx[RSI]
 	MOV	RAX,U64 CArcCtrl.next_entry[RSI]
 	MOV	U64 CArcCtrl.cur_entry[RSI],RAX
 	MOV	RCX,U64 CArcCtrl.next_bits_in_use[RSI]
@@ -90,7 +90,7 @@ _ARC_ENTRY_GET::
 	JMP	@@25
 @@20:	MOV	RCX,RAX
 	JMP	@@15
-@@25:	MOV	U64 CArcCtrl.free_index[RSI],RDX
+@@25:	MOV	U64 CArcCtrl.free_idx[RSI],RDX
 @@30:	POP	RDI
 	POP	RSI
 	POP	RBP
@@ -231,7 +231,7 @@ CArcCtrl *ArcCtrlNew(Bool expand,I64 compression_type=CT_8_BIT)
   else
     c->min_bits=8;
   c->min_table_entry=1<<c->min_bits;
-  c->free_index=c->min_table_entry;
+  c->free_idx=c->min_table_entry;
   c->next_bits_in_use=c->min_bits+1;
   c->free_limit=1<<c->next_bits_in_use;
   c->saved_basecode=MAX_U32;

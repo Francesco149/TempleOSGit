@@ -54,7 +54,7 @@ See also [C:/Adam/Gr/GrScreen.CPP.Z,401] GrUpdateScreen().
       ptr[0]=ch;
       ptr[1]=BLACK<<4+WHITE;
     } else {
-      OutU8(VGAP_INDEX,VGAR_MAP_MASK);
+      OutU8(VGAP_IDX,VGAR_MAP_MASK);
       OutU8(VGAP_DATA,0x0F); //All planes -- WHITE
       if (text.raw_flags&RWF_SCROLL && text.raw_col && !row && !col) {
 //Scroll cached image

@@ -112,9 +112,9 @@ public U8 *PopUpPickLst(U8 *lst)
   return i;
 }
 
-public U8 *PopUpPickDefineSub(U8 *st)
+public U8 *PopUpPickDefineSub(U8 *dname)
 {//Prompt for [Define,1] Define lst entry in PopUp win task.
-  return PopUpPickLst(Define(st));
+  return PopUpPickLst(Define(dname));
 }
 
 #help_index "DolDoc/Input;StdIn/DolDoc"

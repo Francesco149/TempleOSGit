@@ -30,7 +30,7 @@ U0 EdReplaceTroubleAll(CDoc *doc,Bool to_safe,Bool select)
 #define ASM_RENUM_SPACING	5
 
 #define EF_REINDENT	0
-#define EF_CHK_COMPILE	1
+#define EF_CMP_CHK	1
 #define EF_RENUM_ASM	2
 #define EF_CTRL_SLIDER	3
 #define EF_CH_SC	4
@@ -39,7 +39,7 @@ I64 PopUpEdFmt()
 {
   I64 i;
   CDoc *doc=DocNew;
-  DocPrint(doc,"$LTBLUE$$MU,\"Check Compile\",LE=EF_CHK_COMPILE$\n"
+  DocPrint(doc,"$LTBLUE$$MU,\"Compile Check\",LE=EF_CMP_CHK$\n"
 	"$MU,\"Reindent CPP.Z Fun (Beware braces in strings.)\","
 	"LE=EF_REINDENT$\n"
 	"$MU,\"Renum Asm Local @@ Labels for Fun\",LE=EF_RENUM_ASM$\n"
@@ -434,7 +434,7 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action,Bool beep=TRUE)
 
   DocCaptureUndo(doc,TRUE);
   switch (tool_action) {
-    case EF_CHK_COMPILE:
+    case EF_CMP_CHK:
       okay=FALSE;
       if (doc->flags&DOCF_PLAIN_TEXT)
 	DocFlagsToggle(doc,DOCF_PLAIN_TEXT);
@@ -642,7 +642,7 @@ U0 EdCodeTools(CDoc *doc)
 {
   I64 tool_action=PopUpEdFmt;
   switch (tool_action) {
-    case EF_CHK_COMPILE:
+    case EF_CMP_CHK:
     case EF_REINDENT:
     case EF_RENUM_ASM:
       EdCodeTools2(doc,tool_action);

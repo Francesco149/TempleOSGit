@@ -25,7 +25,7 @@ public I64 TaskMemUsed(CTask *task=NULL,Bool override_validate=FALSE)
     return 0;
 }
 
-#help_index "Memory/Task;Debugging/Heap"
+#help_index "Memory/Task;Debugging/Heap;Memory/Debugging"
 public Bool HeapRep(CTask *task)
 {//Report status of task's heap.
   I64 i,cnt;
@@ -85,7 +85,7 @@ public Bool HeapRep(CTask *task)
   '\n';
 }
 
-#help_index "Memory/HeapCtrl;Debugging/Heap"
+#help_index "Memory/HeapCtrl;Debugging/Heap;Memory/Debugging"
 public Bool IsInHeapCtrl(U8 *a,CHeapCtrl *hc,Bool lock=TRUE)
 {//Check addr if in HeapCtrl.
   CMemBlk *m;
@@ -156,7 +156,7 @@ public Bool HeapCtrlWalk(CHeapCtrl *hc)
   return FALSE;
 }
 
-#help_index "Memory/Task;Debugging/Heap"
+#help_index "Memory/Task;Debugging/Heap;Memory/Debugging"
 public Bool IsInHeap(U8 *a,CTask *task=NULL,Bool lock=TRUE)
 {//Check addr if in task's heaps.
   if (!task) task=Fs;

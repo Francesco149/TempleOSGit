@@ -31,8 +31,8 @@ CHashClass *PrsClass(CCmpCtrl *cc,I64 keyword,I64 fsp_flags,Bool is_extern)
     if (tempc) {
       Free(tempc->src_link);
       tempc->src_link=NULL;
-      Free(tempc->index);
-      tempc->index=NULL;
+      Free(tempc->idx);
+      tempc->idx=NULL;
     } else {
       tempc=PrsClassNew;
       tempc->str=cc->cur_str;
@@ -94,8 +94,8 @@ CHashFun *PrsFunJoin(CCmpCtrl *cc,
     tempf->used_reg_mask=REGG_CLOBBERED+REGG_SAVED+REGG_STK_TEMP;
     Free(tempf->src_link);
     tempf->src_link=NULL;
-    Free(tempf->index);
-    tempf->index=NULL;
+    Free(tempf->idx);
+    tempf->idx=NULL;
     Free(name);
     MemberLstDel(tempf);
   } else {

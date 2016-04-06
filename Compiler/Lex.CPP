@@ -62,7 +62,7 @@ U0 CmpCtrlDel(CCmpCtrl *cc)
   LinkedLstDel(cc->htc.next);
   Free(cc->ps);
   Free(cc->cur_str);
-  Free(cc->cur_help_index);
+  Free(cc->cur_help_idx);
   Free(cc->dollar_buf);
   Free(cc);
 }
@@ -1020,8 +1020,8 @@ lex_ifjit:
 	  case KW_HELP_INDEX:
 	    if (Lex(cc)!=TK_STR)
 	      goto lex_end;
-	    Free(cc->cur_help_index);
-	    cc->cur_help_index=LexExtStr(cc,,FALSE);
+	    Free(cc->cur_help_idx);
+	    cc->cur_help_idx=LexExtStr(cc,,FALSE);
 	    break;
 	  case KW_HELP_FILE:
 	    if (Lex(cc)!=TK_STR)

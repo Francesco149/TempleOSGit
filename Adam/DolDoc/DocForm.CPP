@@ -111,7 +111,7 @@ U0 DocDataFmt(CDoc *doc,CDocEntry *doc_e,I64 d=DOCM_CANCEL)
     } else if (doc_e->de_flags & DOCEF_LST) {
       if (doc_e->de_flags & DOCEF_DEFINE && (temph=HashFind(doc_e->define_str,
 	    doc->win_task->hash_table,HTT_DEFINE_STR)) && 0<=d<temph->cnt) {
-	ptr=MStrPrint("[%s]",temph->sub_lst[d]);
+	ptr=MStrPrint("[%s]",temph->sub_idx[d]);
 	Free(doc_e->tag);
 	doc_e->tag=StrNew(ptr,doc->mem_task);
 	Free(ptr);

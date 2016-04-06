@@ -2,7 +2,15 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----03/29/16 17:59:14----
+----04/04/16 13:21:50----
+
+----04/01/16 14:59:49----
+* Changed [C:/Adam/Gr/GrSpritePlot.CPP.Z,342] SpriteInterpolate() args.
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Index","Idx");
+
+----03/31/16 11:20:13----
+* Changed [C:/Adam/WallPaper.CPP.Z,1].
+* Got rid of CTask.time_slice_start and CTask.total_time.
 
 ----03/29/16 05:53:45----
 * **TempleOS version 4.05 Released**
@@ -117,7 +125,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTExample/HtmlGen.CPP,1] and 
 [C:/Demo/ToHtmlToTXTExample/TXTGen.CPP,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3506] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3504] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to

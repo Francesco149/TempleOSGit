@@ -84,32 +84,32 @@ I64 QueSize(CQue *root)
   return result;
 }
 
-CQueVectU8 *QueVectU8New(I64 min_index=0)
+CQueVectU8 *QueVectU8New(I64 min_idx=0)
 {//Create new queue vecter.
   CQueVectU8 *result=MAlloc(sizeof(CQueVectU8));
   QueInit(result);
   result->total_cnt=result->node_cnt=0;
-  result->min_index=min_index;
+  result->min_idx=min_idx;
   return result;
 }
 
-U0 QueVectU8Put(CQueVectU8 *v,I64 index,U8 ch)
-{//Put U8 at index i.
+U0 QueVectU8Put(CQueVectU8 *v,I64 idx,U8 ch)
+{//Put U8 at idx i.
   CQueVectU8 *tempv;
-  index-=v->min_index;
-  if (index<0) return;
-  if (index<v->total_cnt) {
+  idx-=v->min_idx;
+  if (idx<0) return;
+  if (idx<v->total_cnt) {
     tempv=v;
     do {
-      index-=tempv->node_cnt;
-      if (index<0) {
-	tempv->body[index+tempv->node_cnt]=ch;
+      idx-=tempv->node_cnt;
+      if (idx<0) {
+	tempv->body[idx+tempv->node_cnt]=ch;
 	return;
       }
       tempv=tempv->next;
     } while (tempv!=v);
   } else
-    index-=v->total_cnt;
+    idx-=v->total_cnt;
 
   while (TRUE) {
     tempv=v->last;
@@ -118,7 +118,7 @@ U0 QueVectU8Put(CQueVectU8 *v,I64 index,U8 ch)
       tempv->node_cnt=0;
       QueIns(tempv,v->last);
     }
-    if (index--) {
+    if (idx--) {
       tempv->body[tempv->node_cnt++]=0;
       v->total_cnt++;
     } else {
@@ -137,16 +137,16 @@ U0 QueVectU8Del(CQueVectU8 *v)
   }
 }
 
-I64 QueVectU8Get(CQueVectU8 *v,I64 index)
-{//Get U8 at index i.
+I64 QueVectU8Get(CQueVectU8 *v,I64 idx)
+{//Get U8 at idx i.
   CQueVectU8 *tempv;
-  index-=v->min_index;
-  if (!(0<=index<v->total_cnt)) return 0;
+  idx-=v->min_idx;
+  if (!(0<=idx<v->total_cnt)) return 0;
   tempv=v;
   do {
-    index-=tempv->node_cnt;
-    if (index<0)
-      return tempv->body[index+tempv->node_cnt];
+    idx-=tempv->node_cnt;
+    if (idx<0)
+      return tempv->body[idx+tempv->node_cnt];
     tempv=tempv->next;
   } while (tempv!=v);
   return 0;
