@@ -56,6 +56,8 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 * Good [C:/Adam/AutoComplete/ACFill.CPP.Z,207] spell checker.
 * Good Bible search.
 
+* Can [C:/Kernel/KernelA.HPP.Z,2873] MEM_EXTRA_HASH2_PAGES be just one?
+
 * Bible ranges in [C:/Adam/God/GodBible.CPP.Z,233] BibleVerse(). 
 
 * [C:/Demo/Games/FlatTops.CPP.Z,1] is torpedo, not bombs.
@@ -538,6 +540,9 @@ Peter Gadwa
 Tom Foley
 Graphic Technologies	Lexmark vs Static Control
 
+
+3qEeEGCAsBABAqFDBeE2G33qEeEGCAsBABAqFDBeE2G33qCsBDBDq2G3s2G3F2G3FqAet2G32G3AEDAqF3qCsBDBDq2G3s2G3F2G3FqAet2G32G3AEDAqF
+qFeDAsBDeDqCeF2G3sGGeF2sG3C2G3CBCeF
 
                                 Web Bookmarks
 Cop tying shoe	```

@@ -367,7 +367,6 @@ public extern I64 FileWrite(U8 *filename,
 
 #help_index "File/Program Routines;File/FileNames"
 public extern CDirEntry *FilesFind(U8 *files_find_mask,I64 fuf_flags=0);
-
 #help_index "File/System"
 public extern CATARep *ATAIDDrvs(CATARep *root,
 	I64 _sys_boot_drv,CATARep **_ata_drv,CATARep **_atapi_drv);
@@ -475,6 +474,7 @@ public extern U0 KeyDevRem(CKeyDevEntry *tempp);
 extern CKeyDevGlbls keydev;
 extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
+
 #help_index "Keyboard Devices;Char/Input;StdIn"
 extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3777] Flags
 public extern Bool AreYouSure();

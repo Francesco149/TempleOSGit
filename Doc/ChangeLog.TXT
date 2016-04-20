@@ -2,7 +2,11 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----04/08/16 20:54:10----
+----04/19/16 00:24:05----
+
+----04/15/16 13:39:25----
+* Fixed bug in [C:/Adam/DolDoc/DocCodeTools.CPP.Z,641] EdCodeTools().
+* Fixed double ASCII#5 cursor bug.
 
 ----04/01/16 14:59:49----
 * Changed [C:/Adam/Gr/GrSpritePlot.CPP.Z,342] SpriteInterpolate() args.
