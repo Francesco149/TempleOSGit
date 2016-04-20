@@ -188,6 +188,7 @@
 [C:/Kernel/KernelA.HPP.Z,1449] WIf_FOCUS_TASK_IP_R_D
 [C:/Kernel/KDbg.CPP.Z,172] D
 [C:/Kernel/StrPrint.CPP.Z,893] StrPrint
+[C:/Kernel/KernelA.HPP.Z,1463] WINMGR_FPS
 [C:/Kernel/FunSeg.CPP.Z,270] E
 [C:/Kernel/KernelA.HPP.Z,1592] ICF_A2_TO_INT
 [C:/Kernel/KernelA.HPP.Z,1236] CEdFileName
@@ -581,7 +582,6 @@
 [C:/Kernel/KernelA.HPP.Z,3424] _R10
 [C:/Home/Temp.TXT.Z,1] SYS_MEM_INIT_VAL
 [C:/Kernel/KernelA.HPP.Z,3425] _R11
-[C:/Kernel/KernelA.HPP.Z,1463] WMG_FPS
 [C:/Kernel/KernelA.HPP.Z,3876] BOOT_RAM_LIMIT
 [C:/Kernel/KernelA.HPP.Z,3426] _R12
 [C:/Kernel/BlkDev/DskDirA.CPP.Z,90] SK_CLUSTER

@@ -270,7 +270,7 @@ I64 WinMgrSleep(Bool flush_msgs=FALSE)
   WinIPUpdate;
 
   if (!LBtr(&sys_semas[SYS_SEMA_JUST_PUMP_MSGS],0)) {
-    timeout_val=cnts.jiffies+JIFFY_FREQ/WMG_FPS;
+    timeout_val=cnts.jiffies+JIFFY_FREQ/WINMGR_FPS;
     LBts(&sys_semas[SYS_SEMA_REFRESH_IN_PROGRESS],0);
     GrUpdateScreen;
     LBtr(&sys_semas[SYS_SEMA_REFRESH_IN_PROGRESS],0);

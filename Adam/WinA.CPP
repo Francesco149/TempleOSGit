@@ -7,7 +7,7 @@ CIPStateGlbls old_ip={IP_NULL,{-1000,-1000,0},{-1000,-1000,0},{-1000,-1000,0},
   FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
 };
 
-public CWinMgrGlbls winmgr={0,0,0,WMG_FPS,tS,NULL,NULL,FALSE,FALSE,FALSE};
+public CWinMgrGlbls winmgr={0,0,0,WINMGR_FPS,tS,NULL,NULL,FALSE,FALSE,FALSE};
 winmgr.t=CAlloc(sizeof(CWinMgrTimingGlbls));
 winmgr.t->last_calc_idle_time=tS;
 

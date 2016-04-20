@@ -1460,7 +1460,7 @@ class CWinMgrTimingGlbls
   I64	calc_idle_cnt;
 };
 
-#define WMG_FPS			30
+#define WINMGR_FPS			30
 
 public class CWinMgrGlbls
 {
