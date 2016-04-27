@@ -32,9 +32,9 @@ F64 F(Complex *x)
   F64 m,a;
   Complex num,denom,n1;
 
-  CPoly(&num,  x,zeros,NUM_ZEROS);
-  CPoly(&denom,x,poles,NUM_POLES);
-  CDiv(&num,&denom,&n1);
+  CPoly(&num,  NUM_ZEROS,zeros,x);
+  CPoly(&denom,NUM_POLES,poles,x);
+  CDiv(&n1,&num,&denom);
 
   R2P(&m,&a,n1.x,n1.y);
   if (ip.rb)

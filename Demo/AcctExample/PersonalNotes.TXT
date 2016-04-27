@@ -25,7 +25,7 @@ R("Mesh",...);?
 * Editor overstrike mode at cmd line with menu macro?  Probably, many other 
 overstrike issues.
 
-* [C:/Kernel/KernelA.HPP.Z,930] DOCT_HEX_ED with odd size, ASCII cannot be
+* [C:/Kernel/KernelA.HPP.Z,931] DOCT_HEX_ED with odd size, ASCII cannot be
 edited.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,789] Resize bitmap?
@@ -35,7 +35,7 @@ search string.
 
 * [C:/Adam/DolDoc/DocChar.CPP.Z,1] DOCEF_REMALLOC_DATA HexEdit Remalloc.
 
-* [C:/Kernel/KernelA.HPP.Z,1258] DOCF_DBL_DOLLARS in
+* [C:/Kernel/KernelA.HPP.Z,1259] DOCF_DBL_DOLLARS in
 [C:/Adam/DolDoc/DocCodeTools.CPP.Z,422] Reindention.
 
 * Compiler Optimization: Local array vars --> reg.  Might exist.
@@ -86,7 +86,7 @@ others need to be in separate cache lines?
 
 * Asm could support R4u8 by adding 0x40 byte.
 
-* [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() is broken.  Devices
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,78] Mem32DevAlloc() is broken.  Devices
 should be in free spot of E820 report.
 
 * [C:/Adam/Gr/SpriteEd.CPP.Z,1] SpriteEd: Strip [C:/Adam/Gr/Gr.HPP.Z,124]
@@ -96,7 +96,7 @@ SPT_SHIFT origin cmds?
 in 
 future centuries.)
 
-* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2163] CCmpCtrl
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2164] CCmpCtrl
 stuff.
 
 * [C:/Adam/DolDoc/DocHighlight.CPP.Z,1] for code comments at top of documents.
@@ -127,7 +127,7 @@ plan a big alloc.  This is doable, depending on how.
 * Log-to-file is inefficient because we load and save whole file.
 
 * [C:/Compiler/BackLib.CPP.Z,430] ICMov() [C:/Compiler/BackLib.CPP.Z,1]
-PUSH_CMP and [C:/Kernel/KernelA.HPP.Z,1568] MDf_STK?  Perhaps, it's okay.
+PUSH_CMP and [C:/Kernel/KernelA.HPP.Z,1569] MDf_STK?  Perhaps, it's okay.
 
 * Short FAT32 ~ names.
 
@@ -155,7 +155,7 @@ runs-out of space and hangs instead of reporting errors.
 [C:/Adam/WinA.CPP.Z,279] WinToTop is called on Adam task at start-up,
 sometimes.  Might be user's fault 
 because of bad keys pressed during VMware power-on init.  Might be fixed by 
-[C:/Kernel/KernelA.HPP.Z,1480] ACf_INIT_IN_PROGRESS.
+[C:/Kernel/KernelA.HPP.Z,1481] ACf_INIT_IN_PROGRESS.
 
 * 1/12/16 [C:/Kernel/BlkDev/DskATAId.CPP.Z,90] ATARepEntry shows corrupted
 buttons.  Weird.  Perhaps, my 
@@ -177,7 +177,7 @@ imagination.
 
 * 1/1/2015 Bug messing-up keyboard, like no CTRL key.  Was working on Sprites.
 
-* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HPP.Z,191]
+* 4/13/14 Strut or RawHide crashed when [C:/Kernel/KernelB.HPP.Z,185]
 sys_var_init_flag was set during 
 testsuite.  Perhaps, floodfill?
 * 3/19/14: RESET during RawHide. 
@@ -191,7 +191,7 @@ just <CTRL-m> twice.  Not a bug.
 * 5/7/14:Something like [C:/Adam/AutoFile.CPP.Z,117] AFSetIP caused hang,
 then reboot in TestSuite.
 * 5/7/14:#63 Maybe, [C:/Demo/Graphics/Pick3D.CPP.Z,1] crashed in TestSuite.
-* 6/8/14:After or in [C:/Misc/OSTestSuite.CPP.Z,1] PageTableEntries2 in
+* 6/8/14:After or in [C:/Misc/OSTestSuite.CPP.Z,1] PageTableEntries in
 TestSuite crash.
 
 * [C:/Kernel/StrPrint.CPP.Z,219] StrPrintJoin(,st); With st="\n\\"; (Forgot
@@ -204,8 +204,8 @@ what this is talking about.)
                         TODO? Not really, just angst.
 * Nontimer [C:/Kernel/KMathB.CPP.Z,122] Rand() is really bad!
 
-* Should these be moved into [C:/Kernel/KernelA.HPP.Z,829] CHashClass from
-[C:/Kernel/KernelA.HPP.Z,793] CMemberLst and [C:/Kernel/KernelA.HPP.Z,869]
+* Should these be moved into [C:/Kernel/KernelA.HPP.Z,830] CHashClass from
+[C:/Kernel/KernelA.HPP.Z,794] CMemberLst and [C:/Kernel/KernelA.HPP.Z,870]
 CHashGlblVar?
      CArrayDim dim;
 CHashFun *fun_ptr;
@@ -229,7 +229,7 @@ disp.
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.CPP.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HPP.Z,2591] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HPP.Z,2592] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -262,9 +262,7 @@ have left-right for address search.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.CPP.Z,138] Str2Date().
 
-* Might want to move kernel code out of low 2Meg.  Might be faster.
-
-* [C:/Kernel/KernelA.HPP.Z,3623] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3622] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
 * [C:/Kernel/KernelA.HPP.Z,2947] TRANSPARENT does not work with
@@ -277,7 +275,7 @@ Every country make own version?
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3650] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3649] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,2933] ROP_XOR?
 
@@ -312,9 +310,9 @@ ICCmp() like in [C:/Compiler/BackB.CPP.Z,468] ICCmpAndBranch()?
 R("#define","StrMap");  [C:/Home/HomeWrappers.CPP.Z,13] R("#include",...);
 also?
 
-* Compiler: [C:/Kernel/KernelB.HPP.Z,191] sys_var_init_flag for local vars?
+* Compiler: [C:/Kernel/KernelB.HPP.Z,185] sys_var_init_flag for local vars?
 
-* Implement [C:/Kernel/KernelA.HPP.Z,2534] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HPP.Z,2535] RS_ATTR_FIXED fixed pos files?
 
 * Editor page formatting is FUBAR.
 
@@ -428,7 +426,7 @@ GrPutChar?
 * [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr() help link scrolls out of
 window.
 
-* [C:/Kernel/SerialDev/Mouse.CPP.Z,222] MouseDriverInstall() throws
+* [C:/Kernel/SerialDev/Mouse.CPP.Z,217] MouseDriverInstall() throws
 exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 0x9FC30?
 
@@ -442,7 +440,7 @@ exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2531]
+* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2532]
 RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,232] Touch("","+T");
 
 

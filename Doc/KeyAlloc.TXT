@@ -9,7 +9,7 @@ See Key Map
 
 When you are at the cmd line, editing documents, browsing documentation and 
 help, entering items in forms or in menu's, the
-[C:/Kernel/KernelA.HPP.Z,1350] DolDoc editor handles keys.  
+[C:/Kernel/KernelA.HPP.Z,1351] DolDoc editor handles keys.  
 It allows you to define your own key handlers in a
 [C:/Home/HomeKeyPlugIns.CPP.Z,11] MyPutKey() function.  If 
 you choose, you can catch keys, overriding the default handlers.  See 
@@ -22,7 +22,7 @@ ALT-BACKSPACE (undo).  There are a few examples
 pre-defined, but you can change them if you wish.
 
 <CTRL-ALT-keys> and <CTRL-ALT-SHIFT-keys>  Handled at a system level, NOT by 
-the [C:/Kernel/KernelA.HPP.Z,1350] CDoc editor.  I reserve the right to alloc
+the [C:/Kernel/KernelA.HPP.Z,1351] CDoc editor.  I reserve the right to alloc
 these, but in the mean time, 
 you can define your own handlers with [C:/Kernel/KeyDev.CPP.Z,176]
 CtrlAltCBSet().  They operate either in 

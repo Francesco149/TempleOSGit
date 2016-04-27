@@ -31,21 +31,21 @@ Drv() or [C:/Kernel/BlkDev/DskDrv.CPP.Z,200] ChgDsk() twice.
 which 
 binds a HolyC definition to a asm sym.  This, too, can only be done once.
 
-* A terminal task has a [C:/Kernel/KernelA.HPP.Z,1350] CDoc document
+* A terminal task has a [C:/Kernel/KernelA.HPP.Z,1351] CDoc document
 structure that remains active even when 
 you change Fs->draw_it.  To prevent links in the
-[C:/Kernel/KernelA.HPP.Z,1350] CDoc from being activated 
+[C:/Kernel/KernelA.HPP.Z,1351] CDoc from being activated 
 when the user clicks in the window, do one of three things:
   
 A) [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,107] DocBottom() followed by
   [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,120] DocClear() to clear the
-  [C:/Kernel/KernelA.HPP.Z,1350] CDoc so it has no active 
+  [C:/Kernel/KernelA.HPP.Z,1351] CDoc so it has no active 
 widgets.
 
 B) Disable window mgr button click checking with Fs->win_inhibit set to mask 
-[C:/Kernel/KernelA.HPP.Z,1408] WIF_SELF_IP_L|[C:/Kernel/KernelA.HPP.Z,1422]
-  WIF_FOCUS_TASK_IP_L_D|[C:/Kernel/KernelA.HPP.Z,1410]
-  WIF_SELF_IP_R|[C:/Kernel/KernelA.HPP.Z,1424] WIF_FOCUS_TASK_IP_R_D.  
+[C:/Kernel/KernelA.HPP.Z,1409] WIF_SELF_IP_L|[C:/Kernel/KernelA.HPP.Z,1423]
+  WIF_FOCUS_TASK_IP_L_D|[C:/Kernel/KernelA.HPP.Z,1411]
+  WIF_SELF_IP_R|[C:/Kernel/KernelA.HPP.Z,1425] WIF_FOCUS_TASK_IP_R_D.  
 This inhibits window mgr operations but still generates messages from button 
 clicks.
 
@@ -57,7 +57,7 @@ ranges of case values.
 * A goto label name must not match a global scope object's name.  (It's not 
 worth slowing-down the compiler to handle this case.)
 
-* [C:/Kernel/KernelB.HPP.Z,175] MemCpy() only goes fwd.
+* [C:/Kernel/KernelB.HPP.Z,169] MemCpy() only goes fwd.
 
 * A [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() cmd must be followed by two
 semicolons if a #include is after it.  

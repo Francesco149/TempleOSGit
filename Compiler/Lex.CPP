@@ -27,7 +27,7 @@ CLexFile *LexFilePop(CCmpCtrl *cc)
 
 CCmpCtrl *CmpCtrlNew(U8 *buf=NULL,I64 flags=0,U8 *filename=NULL)
 {//MAlloc and Init CCmpCtrl.
-//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2126] CCF_DONT_FREE_BUF flag is set.
+//Frees buf in [C:/Compiler/Lex.CPP.Z,58] CmpCtrlDel unless [C:/Kernel/KernelA.HPP.Z,2127] CCF_DONT_FREE_BUF flag is set.
   //FileName is for error reporting.  If files are #included,
   //new names are used.  See [C:/Apps/Psalmody/PsalmodyFile.CPP.Z,1] Psalmody CmpCtrlNew.
   CCmpCtrl *cc=CAlloc(sizeof(CCmpCtrl));
@@ -530,7 +530,7 @@ lex_ident:
 	    } else {
 	      cc->cur_i64=i;
 	      cc->flags|=CCF_USE_LAST_U16;
-	      cc->token=TK_INT;
+	      cc->token=TK_I64;
 	      goto lex_end;
 	    }
 	  }
@@ -544,7 +544,7 @@ lex_ident:
 	    else {
 	      cc->cur_i64=i;
 	      cc->flags|=CCF_USE_LAST_U16;
-	      cc->token=TK_INT;
+	      cc->token=TK_I64;
 	      goto lex_end;
 	    }
 	  }
@@ -557,7 +557,7 @@ lex_ident:
 lex_is_int:
 	    cc->cur_i64=i;
 	    cc->flags|=CCF_USE_LAST_U16;
-	    cc->token=TK_INT;
+	    cc->token=TK_I64;
 	    goto lex_end;
 	  }
 	  ch=LexGetChar(cc);

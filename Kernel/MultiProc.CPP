@@ -3,7 +3,7 @@ asm {
 USE16
 //See [C:/Doc/MultiCore.TXT.Z,1] TempleOS MultiCore.
 
-//This code gets copied to [C:/Kernel/KernelA.HPP.Z,503] MP_VECT_ADDR.
+//This code gets copied to [C:/Kernel/KernelA.HPP.Z,504] MP_VECT_ADDR.
 //See [C:/Kernel/MultiProc.CPP.Z,2] MemCpy(MP_VECT_ADDR.
 COREAP_16BIT_INIT::
 	JMP	@@05
@@ -308,15 +308,15 @@ U0 Core0StartMP()
   MemSet(&cpu_structs[1],0,sizeof(CCPU)*(MP_MAX_PROCESSORS-1));
 
   //When you start-up other cores, they jump to an addr
-  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,502] MPN_VECT which corresponds
-  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,503] MP_VECT_ADDR.
+  //specified by a byte vect number, [C:/Kernel/KernelA.HPP.Z,503] MPN_VECT which corresponds
+  //to a location 4096*vect number, [C:/Kernel/KernelA.HPP.Z,504] MP_VECT_ADDR.
   MemCpy(mp,COREAP_16BIT_INIT,COREAP_16BIT_INIT_END-COREAP_16BIT_INIT);
   MemCpy(&mp->ap_gdt_ptr,SYS_GDT_PTR,sizeof(CSysLimitBase));
   mp_cnt_initial=mp_cnt=1;
   mp_cnt_lock=0;
 
   *LAPIC_LVT_ERR(U32 *)=*LAPIC_LVT_ERR(U32 *)&0xFFFFFF00+MPN_VECT;
-  WBINVD //Not sure why this is needed.	Might just need delay. [C:/Kernel/KernelB.HPP.Z,175] MemCpy above?
+  WBINVD //Not sure why this is needed.	Might just need delay. [C:/Kernel/KernelB.HPP.Z,169] MemCpy above?
 
   *LAPIC_ICR_LOW(U32 *)=0xC4500; //assert init IPI
   BusyWait(10000);

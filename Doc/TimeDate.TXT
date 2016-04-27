@@ -5,4 +5,4 @@ which works out to 49710ths of a second.  You can subtract two
 [C:/Kernel/KernelA.HPP.Z,184] CDate's to get 
 a time span.
 
-Use [C:/Kernel/KernelA.HPP.Z,548] CDATE_FREQ to convert.
+Use [C:/Kernel/KernelA.HPP.Z,549] CDATE_FREQ to convert.

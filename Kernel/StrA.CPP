@@ -320,7 +320,7 @@ _extern _STRIMATCH U8 *StrIMatch(
 _extern _STRCPY U0 StrCpy(
 	U8 *dst,U8 *src); //Copy string.
 
-//These bitmaps go to 0-511 so that [C:/Compiler/Lex.CPP.Z,443] Lex() can use them with [C:/Kernel/KernelA.HPP.Z,2065] Token Codes.
+//These bitmaps go to 0-511 so that [C:/Compiler/Lex.CPP.Z,443] Lex() can use them with [C:/Kernel/KernelA.HPP.Z,2066] Token Codes.
 U32
   chars_bmp_alpha[16]=
   {0x0000000,0x00000000,0x87FFFFFF,0x07FFFFFE,
@@ -522,7 +522,7 @@ I64 Spaces2Tabs(U8 *dst,U8 *src)
 }
 
 U8 *StrUtil(U8 *_src,I64 flags)
-{//Modifies in place. See [C:/Kernel/KernelA.HPP.Z,3785] flags for all the options.
+{//Modifies in place. See [C:/Kernel/KernelA.HPP.Z,3784] flags for all the options.
   U8 *src=_src,*dst=_src;
   I64 ch;
 

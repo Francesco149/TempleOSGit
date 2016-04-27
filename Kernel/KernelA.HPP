@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1542] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1543] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -207,7 +207,8 @@ public class COrder2D3
 public class CMass
 {
   CMass	*next,*last;
-  COrder2D3 *state,*DstateDt;
+  COrder2D3 *state, //Point to entries in [C:/Kernel/KernelA.HPP.Z,243] CMathODE.state[]
+	*DstateDt;  //Point to entries in [C:/Kernel/KernelA.HPP.Z,243] CMathODE.DstateDt[]
 
   U0	start;
   U32	flags,num;
@@ -380,13 +381,13 @@ class CBinFile
 
 class CPatchTableAbsAddr
 {
-  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,408] IET_ABS_ADDR
+  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,409] IET_ABS_ADDR
   U32	abs_addres_cnt;
   U8	zero;
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1955] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1956] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -533,8 +534,8 @@ class CAP16BitInit
 
 public class CCntsGlbls
 {
-  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,547] JIFFY_FREQ
-	timer,		//[C:/Kernel/KernelA.HPP.Z,549] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
+  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,548] JIFFY_FREQ
+	timer,		//[C:/Kernel/KernelA.HPP.Z,550] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
 	time_stamp_freq,
 	time_stamp_kHz_freq,
 	time_stamp_freq_initial, //Initial freq, sampled once at boot time.
@@ -827,7 +828,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,852] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,853] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -1002,7 +1003,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_CHECK_COLLAPSABLE 0x100000000000
 #define DOCEF_REFRESH_DATA	0x200000000000
 #define DOCEF_UPDATE_DATA	0x400000000000
-//[C:/Kernel/KernelA.HPP.Z,1007] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
+//[C:/Kernel/KernelA.HPP.Z,1008] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
 //of class. For ints, it derefs doc_e->data as a ptr.  For strings, it doesn't.
 #define DOCEF_DEREF_DATA	0x800000000000
 #define DOCEF_REMALLOC_DATA	0x1000000000000
@@ -1199,7 +1200,7 @@ public class CDocEntry:CDocEntryBase
 	*my_fmt_data;
   I64	hex_ed_width;
   I32	scroll_len,
-	len, //[C:/Kernel/KernelA.HPP.Z,1175] DOCE_LEN_DFT
+	len, //[C:/Kernel/KernelA.HPP.Z,1176] DOCE_LEN_DFT
 	bin_num;
   U8	raw_type,pad[3];
   CDocBin *bin_data;
@@ -1215,7 +1216,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1242] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1243] Editor Flags
 
 class CEdFindText
 {
@@ -1243,7 +1244,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1211] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1212] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1555,7 +1556,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1337] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1338] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2068,7 +2069,7 @@ class CAOTCtrl
 #define TK_NORMALSCRIPT	0x003
 #define TK_IDENT	0x100
 #define TK_STR		0x101
-#define TK_INT		0x102
+#define TK_I64		0x102
 #define TK_CHAR_CONST	0x103
 #define TK_F64		0x104
 #define TK_PLUS_PLUS	0x105
@@ -2821,22 +2822,21 @@ class CMemUsed
 #endif
 
 #help_index "Memory/BlkPool"
-/*TempleOS does not mess with page tables after it
-identity-maps them during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
-[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE is arbitrary, and is not related to CPU hardware.
-I need some unit for memory allocation so I invented "[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE".
+/*TempleOS does not mess with page tables after setting them up
+during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-All virtual addresses are identical to physical, always.
+[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+and is not related to CPU hardware.
+
+All virtual addresses are identical to physical at all times.
+text.vga_alias is not identity-mapped, however.
+
 There is no high kernel memory because RAM's physical
 addresses are low.  (All motherboards that I know of
 put RAM in low addresses of 64-bit address space.)
 It's ring-0-only so all (or none) is kernel, remember.
-
-2 Meg hardware pages are use except the first 2 Meg.
-0xA0000-0xBFFFF must be write thru.  Hardware pages
-don't matter except the caching bit.	Remember, it is ring-0-only
-and identity-mapped!	Do I need to repeat?
-Ring-0-only and 100% identity-mapped, all the time.
+2 Meg hardware pages are used. Only the caching bits matter.
+Remember, it is ring-0-only and identity-mapped!
 
 All code is placed in just the lowest 2 Gig, so the CALL REL32
 inst always works.  It never changes out of ring-0, remember,
@@ -3214,8 +3214,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP.Z,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3476] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3476] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3454,17 +3454,15 @@ public class CCPU //The Gs segment reg points to current CCPU.
 #help_index "Memory/Page Tables"
 #define MEM_MIN_MEG		512 //512 Meg minimum.
 #define MEM_MAPPED_SPACE	0x2000000000 //Arbitrarily set to 128 Gig.
-#define MEM_NUM_PML1		1 //First 2 Meg are 4K resolution.
 #define MEM_NUM_PML2		(MEM_MAPPED_SPACE>>(9+21))
 #define MEM_NUM_PML3		1
 #define MEM_NUM_PML4		1
-#define MEM_PROTECTED_LOW_LIMIT	0x6FFF
 
 #define SYS_FIXED_AREA	0x100000
 public class CSysFixedArea
 {
-  U8	pml1[MEM_NUM_PML1*0x1000],pml2[MEM_NUM_PML2*0x1000],
-	pml3[MEM_NUM_PML3*0x1000],pml4[MEM_NUM_PML4*0x1000];
+  U8	pml2[MEM_NUM_PML2*0x1000],pml3[MEM_NUM_PML3*0x1000],
+	pml4[MEM_NUM_PML4*0x1000];
   $=($+15)&-16;
   CFPU	init_fpu_mmx;
   CCPU	boot_cpu;
@@ -3597,6 +3595,7 @@ public class CTextGlbls
   U8	*raw_screen_image;
   I64	rows,cols;		//Use TEXT_ROWS,TEXT_COLS
   U64	*font,*aux_font;
+  U8	*vga_alias;
 };
 
 #define FONT_WIDTH	8
@@ -3696,7 +3695,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3634] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3633] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

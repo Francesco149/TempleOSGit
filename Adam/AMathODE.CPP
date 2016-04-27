@@ -28,7 +28,7 @@ U0 ODERstPtrs(CMathODE *ode)
 }
 
 public CMathODE *ODENew(I64 n,F64 max_tolerance=1e-6,I64 flags=0)
-{//Make differential equation ctrl struct. See [C:/Kernel/KernelA.HPP.Z,238] flags.
+{//Make differential equation ctrl struct. See [C:/Kernel/KernelA.HPP.Z,239] flags.
 
   //The tolerance is not precise.
   //You can min_tolerance and it will
@@ -263,7 +263,7 @@ U0 ODECalcSprings(CMathODE *ode)
     } else {
       e1=temps->end1;
       e2=temps->end2;
-      d=D3Norm(D3Sub(&e2->state->x,&e1->state->x,&p));
+      d=D3Norm(D3Sub(&p,&e2->state->x,&e1->state->x));
       temps->displacement=d-temps->rest_len;
       temps->f=temps->displacement*temps->const;
       if (temps->f>0 && temps->flags&SSF_NO_TENSION)
@@ -297,7 +297,7 @@ U0 ODECalcDrag(CMathODE *ode)
 	if (ode->drag_v3)
 	  d+=dd*ode->drag_v3;
 	D3SubEqu(&tempm->DstateDt->DxDt,
-	      D3Mul(d*tempm->drag_profile_factor,&tempm->state->DxDt,&p));
+	      D3Mul(&p,d*tempm->drag_profile_factor,&tempm->state->DxDt));
       }
       tempm=tempm->next;
     }

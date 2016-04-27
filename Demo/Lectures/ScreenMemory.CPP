@@ -4,7 +4,7 @@
 U0 PlotXY(I64 x,I64 y)
 {
 //Screen bits are reversed
-  LBts(VGAM_GRAPHICS,y*GR_WIDTH+x^7);
+  LBts(text.vga_alias,y*GR_WIDTH+x^7);
 }
 
 U0 Main()
@@ -13,7 +13,7 @@ U0 Main()
   //This makes all 4 color planes active.
   OutU8(VGAP_IDX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,WHITE);
-  MemSet(VGAM_GRAPHICS,0,GR_WIDTH*GR_HEIGHT/8);
+  MemSet(text.vga_alias,0,GR_WIDTH*GR_HEIGHT/8);
 
   OutU8(VGAP_IDX,VGAR_MAP_MASK);
   OutU8(VGAP_DATA,RED);

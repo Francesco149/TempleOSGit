@@ -232,6 +232,11 @@ Cd("/Demo/Snd");Dir;
 `Cd("/Demo/Snd");Dir;
 `
 
+Cd("/Demo/Templates");Dir;
+
+`Cd("/Demo/Templates");Dir;
+`
+
 Cd("/Demo/ToHtmlToTXTExample");Dir;
 
 `Cd("/Demo/ToHtmlToTXTExample");Dir;

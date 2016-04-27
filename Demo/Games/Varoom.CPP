@@ -646,12 +646,12 @@ U0 Varoom()
 	"Play {"
 	"  Restart(,'\n');"
 	"  Accelerator(,,SC_CURSOR_UP);"
-	"  Break(,,SC_CURSOR_DOWN);"
+	"  Brake(,,SC_CURSOR_DOWN);"
 	"  Left(,,SC_CURSOR_LEFT);"
 	"  Right(,,SC_CURSOR_RIGHT);"
 	"}"
 	);
-  SettingsPush(,TSF_SAME_SONG); //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
+  SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
     Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
@@ -695,7 +695,7 @@ vr_done: //Don't goto out of try
   } catch
     PutExcept;
   CleanUp;
-  SettingsPop(,TSF_SAME_SONG);
+  SettingsPop;
   MenuPop;
   RegWriteBranch("TempleOS/Varoom","F64 best_score=%5.4f;\n",best_score);
 }

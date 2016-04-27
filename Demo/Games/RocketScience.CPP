@@ -117,7 +117,7 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
   CD3 p,p_target,p_body;
 
   //Unit vect pointing to top of rocket from bottom.
-  D3Sub(&m2.state->x,&m1.state->x,&p_body);
+  D3Sub(&p_body,&m2.state->x,&m1.state->x);
   D3Unit(&p_body);
 
   //DthetaDt lets us prevent too much spin.
@@ -126,7 +126,7 @@ U0 MyDerivative(CMathODE *,F64,F64 *state,F64 *DstateDt)
 	m1.state->DyDt*p_body.x+m1.state->DxDt*p_body.y)/ROCKET_HEIGHT;
 
   //p_target is vect from top of rocket to plane.
-  D3Sub(&m3.state->x,&m2.state->x,&p_target);
+  D3Sub(&p_target,&m3.state->x,&m2.state->x);
 
   //d=0.5at^2+vt
   d=D3Norm(&p_target);

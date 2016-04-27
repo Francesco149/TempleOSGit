@@ -260,7 +260,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/Kernel/KernelA.HPP.Z,242] CMathODE feat,
+I also didn't use the [C:/Kernel/KernelA.HPP.Z,243] CMathODE feat,
 just to be different.
 */
 

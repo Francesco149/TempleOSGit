@@ -671,7 +671,7 @@ I64 PrsUnaryTerm(CCmpCtrl *cc,CPrsStk *ps,CMemberLst **_local_var,
       return PE_UNARY_TERM2;
 
     sub_switch_start:
-      case TK_INT:
+      case TK_I64:
       case TK_CHAR_CONST:
       case TK_INS_BIN_SIZE:
 	if (cc->cur_i64<0)

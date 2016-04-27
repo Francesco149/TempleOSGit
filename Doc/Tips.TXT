@@ -56,7 +56,7 @@ start-up file.  See [D:/Home/HomeLocalize.CPP,1] mouse scale.
 
 * You can set your local time zone by setting the [C:/Kernel/KGlbls.CPP.Z,14]
 local_time_offset global var 
-in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,548] CDATE_FREQ.
+in a start-up file.  It's units are [C:/Kernel/KernelA.HPP.Z,549] CDATE_FREQ.
  See [D:/Home/HomeLocalize.CPP,1] local time.
 
 * <CTRL-SHIFT-L> in the editor to reindent a [C:/Doc/HolyC.TXT.Z,1] HolyC
@@ -77,7 +77,7 @@ function to answer the cfg questions.  See my technique
 [C:/Demo/AcctExample/TOSCfg.CPP.Z,1] Cfg Strs,
 [C:/Demo/AcctExample/TOSDistro.CPP.Z,1] Update Funs.
 
-* [C:/Kernel/Mem/MemPhysical.CPP.Z,187]
+* [C:/Kernel/Mem/MemPhysical.CPP.Z,182]
 Scale2Mem(min,max,limit=2*1024*1024*1024) can be used for cfg questions when 
 recompiling.  The [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall()
 cfg prompts accept expressions, not 
@@ -91,8 +91,8 @@ just numbers.  The dft disk cache is Scale2Mem(0x80000,0x8000000).
 are 
 compiled inefficiently.
 
-* You can use [C:/Kernel/KernelB.HPP.Z,212]
-progress1-[C:/Kernel/KernelB.HPP.Z,224] progress4 in your programs for
+* You can use [C:/Kernel/KernelB.HPP.Z,206]
+progress1-[C:/Kernel/KernelB.HPP.Z,218] progress4 in your programs for
 whatever you like.  
 They're just global vars that are shown on the wallpaper.  The original
 intent 
@@ -101,12 +101,12 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP.Z,1].
 
 * Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1350] CDoc 
+the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1351] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
 to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3311] CTask,
-[C:/Kernel/KernelA.HPP.Z,1177] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2548]
+[C:/Kernel/KernelA.HPP.Z,1178] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2549]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
@@ -135,16 +135,16 @@ will check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1535] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1536] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1536] OPTf_WARN_DUP_TYPES,ON) to find
+Option([C:/Kernel/KernelA.HPP.Z,1537] OPTf_WARN_DUP_TYPES,ON) to find
 unnecessary local var 
 type stmts.
 
-* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1532]
+* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1533]
 OPTf_ECHO,ON) can be placed in [C:/StartOS.CPP.Z,1] StartOS.CPP to echo
 start-up scripts.
 
@@ -210,14 +210,14 @@ view data, you can use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View().
 the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1482]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1483]
 ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1350] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1351] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP.Z,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -271,23 +271,23 @@ resources are put together.
 * The editor's select-text mechanism allows for disjoint portions of selected 
 text.  This is a feature, not a bug -- you can cut-and-paste disjoint text.
 
-* [C:/Kernel/KernelA.HPP.Z,534] cnts.time_stamp_freq is continuously
+* [C:/Kernel/KernelA.HPP.Z,535] cnts.time_stamp_freq is continuously
 calibrated.  Be careful because 
 expressions might decrease.  Take a snap-shot, like this:
-timeout=[C:/Kernel/KernelB.HPP.Z,286] GetTSC+
-[C:/Kernel/KernelA.HPP.Z,534] cnts.time_stamp_freq x seconds; and compare
-against [C:/Kernel/KernelB.HPP.Z,286] GetTSC().  I recommend 
-just using [C:/Kernel/KMisc.CPP.Z,117] tS or [C:/Kernel/KernelA.HPP.Z,534]
+timeout=[C:/Kernel/KernelB.HPP.Z,280] GetTSC+
+[C:/Kernel/KernelA.HPP.Z,535] cnts.time_stamp_freq x seconds; and compare
+against [C:/Kernel/KernelB.HPP.Z,280] GetTSC().  I recommend 
+just using [C:/Kernel/KMisc.CPP.Z,117] tS or [C:/Kernel/KernelA.HPP.Z,535]
 cnts.jiffies.
 
 * Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog(),
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,115] HeapLogAddrRep() and
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,146] HeapLogSizeRep() to find leaks.  Don't 
-be confused by [C:/Kernel/KernelA.HPP.Z,1350] CDoc allocations.  Those are
+be confused by [C:/Kernel/KernelA.HPP.Z,1351] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2787]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2788]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or

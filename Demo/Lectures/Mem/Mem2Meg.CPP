@@ -98,7 +98,7 @@ am_done:
     pte=MemPageTable(m);
     *pte &= ~0x18;
     InvlPg(m);
-    m(U8 *)+=MemPageSize(m);
+    m(U8 *)+=0x200000;
   }
   LBtr(&bp->locked_flags,BPlf_LOCKED);
   POPFD
@@ -123,7 +123,7 @@ Return: NULL if out of memory.
       pte=MemPageTable(m);
       *pte= *pte& ~0x18 |0x10;
       InvlPg(m);
-      m(U8 *)+=MemPageSize(m);
+      m(U8 *)+=0x200000;
     }
   }
   return result;
@@ -147,7 +147,7 @@ Return: NULL if out of memory.
       pte=MemPageTable(m);
       *pte= *pte& ~0x18 |8;
       InvlPg(m);
-      m(U8 *)+=MemPageSize(m);
+      m(U8 *)+=0x200000;
     }
   }
   return result;
@@ -165,7 +165,7 @@ U0 Mem2MegFree(CMemBlk *m,I64 pages2Meg,CBlkPool *bp=NULL)
       pte=MemPageTable(m2);
       *pte=*pte & ~0x18;
       InvlPg(m2);
-      m2(U8 *)+=MemPageSize(m2);
+      m2(U8 *)+=0x200000;
     }
     PUSHFD
     CLI

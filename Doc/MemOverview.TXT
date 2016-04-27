@@ -5,8 +5,7 @@ is identity-mapped, virtual identical to physical.  All tasks on all cores
 use 
 the same page table map, just as though all addresses are physical addresses.
  
-2 Meg page table entries are used, except the first 2 Meg, which uses 4K page 
-tables entries.  Nothing swaps to disk, either.
+2 Meg page table entries are used.  Nothing swaps to disk.
 
 In TempleOS, the lowest 2 Gig of memory is called the code heap.  TempleOS's 
 compiler always uses 32-bit signed relative JMP & CALL insts because 64-bit 
@@ -30,12 +29,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
 
                           Single System-wide Mem Map
 
- 0x0000000000- 0x0000006FFF
-  Pages marked not present so NULL ptr dereference causes a fault.
-
- 0x0000007C00- 0x000003491F
+ 0x0000007C00- 0x000003481F
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3875] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3874] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -43,19 +39,20 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
 [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x0000097030
-  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,502] MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,503] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
 
  0x00000A0000- 0x00000BFFFF
-  VGA graphics mem, marked as write-through cache.
+  VGA graphics mem, marked as write-through cache in
+  [C:/Kernel/KGlbls.CPP.Z,29] text.vga_alias.
 
- 0x0000100000- 0x00001845FF
-  [C:/Kernel/KernelA.HPP.Z,3464] CSysFixedArea for page tables and misc.  128
+ 0x0000100000- 0x00001835FF
+  [C:/Kernel/KernelA.HPP.Z,3462] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
- 0x0000184600- 0x007FFDFFFF
+ 0x0000183600- 0x007FFDFFFF
   Code Heap mem.
 
              - 0x007FFFFFFF
@@ -65,7 +62,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
   32-bit devices could alloc memory at 0xF0000000 going up, but this is
   wrong, 
 since some PCs already have devices at 0xF0000000.  No PCI devices are 
-supported, so [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() flaws are
+supported, so [C:/Kernel/Mem/MemPhysical.CPP.Z,78] Mem32DevAlloc() flaws are
   not an issue.
 
  0x0080000000-~0x00DFFFFFFF
@@ -74,7 +71,7 @@ supported, so [C:/Kernel/Mem/MemPhysical.CPP.Z,91] Mem32DevAlloc() flaws are
 heap.)
 
              - 0x1FFFFFFFFF
-  64-bit devices are alloced with [C:/Kernel/Mem/MemPhysical.CPP.Z,141]
+  64-bit devices are alloced with [C:/Kernel/Mem/MemPhysical.CPP.Z,128]
   Mem64DevAlloc() counting bwd from 128 Gig, 
 but no PCI devices are actually supported.
   

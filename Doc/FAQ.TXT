@@ -44,8 +44,8 @@
   [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 inst, not bit
   torrent.
 +] Is 'Fs->' in the code file system?
-  [C:/Kernel/KernelB.HPP.Z,282] Fs is a segment reg, not file system. 
-  ([C:/Kernel/KernelB.HPP.Z,282] Fs is kept pointing to the current task's
+  [C:/Kernel/KernelB.HPP.Z,276] Fs is a segment reg, not file system. 
+  ([C:/Kernel/KernelB.HPP.Z,276] Fs is kept pointing to the current task's
   record.)  There is no memory segmentation.  It is 64-bit and flat. FS and GS
   are used as general purpose regs, more or less.
 +] Is it Pascal?
@@ -130,7 +130,7 @@
   [C:/Doc/Glossary.TXT.Z,1] Code Heap, so that the REL32 addressing mode can be
   used.  TempleOS is 64-bit, but 2 Gig is enough for code.  It actually puts
   global variables there, too, but you can turn that off with
-  [C:/Kernel/KernelA.HPP.Z,1540] OPTf_GLBLS_ON_DATA_HEAP. 
+  [C:/Kernel/KernelA.HPP.Z,1541] OPTf_GLBLS_ON_DATA_HEAP. 
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() allocs higher memory.
 +] How does it SYSCALL?
   TempleOS doesn't use software interrupts or SYSCALL insts because it never

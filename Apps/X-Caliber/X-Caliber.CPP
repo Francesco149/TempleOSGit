@@ -125,7 +125,7 @@ Bool CheckOverlap()
     tempm1=ode->next_mass;
     while (tempm1!=&ode->next_mass) {
       if (tempm!=tempm1) {
-	D3Sub(&tempm->x,&tempm1->x,&p);
+	D3Sub(&p,&tempm->x,&tempm1->x);
 	if (D3NormSqr(&p)<=Sqr(tempm->radius+tempm1->radius))
 	  return TRUE;
       }
@@ -323,12 +323,12 @@ I64 Tweaked()
 {
   CD3 p,p1,p2;
   if (human) {
-    D3Sub(&human->p[0].x,&human->p[1].x,&p1);
-    D3Sub(&human->p[0].x,&human->p[2].x,&p2);
-    D3Add(&p1,&p2,&p);
+    D3Sub(&p1,&human->p[0].x,&human->p[1].x);
+    D3Sub(&p2,&human->p[0].x,&human->p[2].x);
+    D3Add(&p,&p1,&p2);
     D3Unit(&p);
-    D3Sub(&human->p[0].x,&human->p[3].x,&p1);
-    D3Sub(&human->p[0].x,&human->p[4].x,&p2);
+    D3Sub(&p1,&human->p[0].x,&human->p[3].x);
+    D3Sub(&p2,&human->p[0].x,&human->p[4].x);
     D3Unit(&p1);
     D3Unit(&p2);
     if (!(human->s[3].flags&SSF_INACTIVE) && D3Dot(&p,&p1)>Cos(20*pi/180))
@@ -415,18 +415,18 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    t_left=0;
 	    t_right=0;
 	  } else {
-	    if (d=D3Norm(D3Sub(&tempsp->p[0].x,&tempsp->p[1].x,&p1))) {
-	      D3Sub(&tempsp->p[0].DxDt,&tempsp->p[1].DxDt,&p2);
-	      D3Cross(&p1,&p2,&p);
+	    if (d=D3Norm(D3Sub(&p1,&tempsp->p[0].x,&tempsp->p[1].x))) {
+	      D3Sub(&p2,&tempsp->p[0].DxDt,&tempsp->p[1].DxDt);
+	      D3Cross(&p,&p1,&p2);
 	      spin=p.z/d;
 	    } else
 	      spin=0;
 	    t_left =Clamp(human_t_left+SPIN_GAIN*spin*human_antispin,
 		  0,MAX_THRUST);
 
-	    if (d=D3Norm(D3Sub(&tempsp->p[0].x,&tempsp->p[2].x,&p1))) {
-	      D3Sub(&tempsp->p[0].DxDt,&tempsp->p[2].DxDt,&p2);
-	      D3Cross(&p1,&p2,&p);
+	    if (d=D3Norm(D3Sub(&p1,&tempsp->p[0].x,&tempsp->p[2].x))) {
+	      D3Sub(&p2,&tempsp->p[0].DxDt,&tempsp->p[2].DxDt);
+	      D3Cross(&p,&p1,&p2);
 	      spin=p.z/d;
 	    } else
 	      spin=0;
@@ -434,13 +434,13 @@ U0 DrawIt(CTask *task,CDC *dc)
 		  0,MAX_THRUST);
 	  }
 
-	  D3Sub(&tempsp->p[1].x,&tempsp->p[0].x,&p1);
-	  D3Sub(&tempsp->p[2].x,&tempsp->p[0].x,&p2);
-	  D3Unit(D3Add(&p1,&p2,&p));
+	  D3Sub(&p1,&tempsp->p[1].x,&tempsp->p[0].x);
+	  D3Sub(&p2,&tempsp->p[2].x,&tempsp->p[0].x);
+	  D3Unit(D3Add(&p,&p1,&p2));
 
 	  if (!(tempsp->s[3].flags&SSF_INACTIVE)) {
 	    dc->color=YELLOW;
-	    D3AddEqu(D3Mul(t_left/25,&p,&p1),&tempsp->p[3].x);
+	    D3AddEqu(D3Mul(&p1,t_left/25,&p),&tempsp->p[3].x);
 	    GrLine(dc,tempsp->p[1].x,tempsp->p[1].y,p1.x,p1.y);
 	    arg=Arg(p.x,p.y);
 	    SpriteZ3B(dc,tempsp->p[3].x,tempsp->p[3].y,0,__BIN_1,arg);
@@ -448,7 +448,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
 	  if (!(tempsp->s[5].flags&SSF_INACTIVE)) {
 	    dc->color=YELLOW;
-	    D3AddEqu(D3Mul(t_right/25,&p,&p2),&tempsp->p[4].x);
+	    D3AddEqu(D3Mul(&p2,t_right/25,&p),&tempsp->p[4].x);
 	    GrLine(dc,tempsp->p[2].x,tempsp->p[2].y,p2.x,p2.y);
 	    arg=Arg(p.x,p.y);
 	    SpriteZ3B(dc,tempsp->p[4].x,tempsp->p[4].y,0,__BIN_1,arg);
@@ -522,9 +522,9 @@ U0 DrawIt(CTask *task,CDC *dc)
 	    GrCircle(dc,tempsp->p[i].x,tempsp->p[i].y,tempsp->p[i].radius);
 	  }
 	case ST_ENEMY1:
-	  D3DivEqu(D3Sub(&tempsp->p[1].x,&tempsp->p[0].x,&p1),2.0);
-	  D3DivEqu(D3Sub(&tempsp->p[2].x,&tempsp->p[0].x,&p2),2.0);
-	  D3Unit(D3Add(&p1,&p2,&p));
+	  D3DivEqu(D3Sub(&p1,&tempsp->p[1].x,&tempsp->p[0].x),2.0);
+	  D3DivEqu(D3Sub(&p2,&tempsp->p[2].x,&tempsp->p[0].x),2.0);
+	  D3Unit(D3Add(&p,&p1,&p2));
 	  if (tS>tempsp->reload_timeout)
 	    img=__BIN_2;
 	  else
@@ -589,9 +589,9 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 
   if (human && draw_laser_line) {
-    D3Sub(&human->p[1].x,&human->p[0].x,&p1);
-    D3Sub(&human->p[2].x,&human->p[0].x,&p2);
-    D3Unit(D3Add(&p1,&p2,&p));
+    D3Sub(&p1,&human->p[1].x,&human->p[0].x);
+    D3Sub(&p2,&human->p[2].x,&human->p[0].x);
+    D3Unit(D3Add(&p,&p1,&p2));
     dc->color=LTBLUE;
     Line(dc,human->p[0].x-10*p.x,human->p[0].y-10*p.y,0,
 	  human->p[0].x-800*p.x,human->p[0].y-800*p.y,0,&LaserPlot);
@@ -607,7 +607,7 @@ U0 Explosion(MyMass *tempm1,F64 r)
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
     if (tempm!=tempm1) {
-      D3Sub(&tempm->state->x,&tempm1->state->x,&p1);
+      D3Sub(&p1,&tempm->state->x,&tempm1->state->x);
       d=D3NormSqr(&p1)-tempm->radius*tempm->radius;
       if (d<100.0*100.0) {
 	if (d<1)
@@ -650,7 +650,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
     tempm1=ode->next_mass;
     while (tempm1!=&ode->next_mass) {
       if (tempm!=tempm1) {
-	D3Sub(&tempm->state->x,&tempm1->state->x,&p);
+	D3Sub(&p,&tempm->state->x,&tempm1->state->x);
 	dd=D3NormSqr(&p);
 	dd2=Sqr(tempm->radius+tempm1->radius);
 	if (dd<=dd2) {
@@ -678,7 +678,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
 	    t_right=0;
 	    d=1.0-(tempsp->spacewalk_timeout-tS)/SPACEWALK_TIME;
 	    if (0.485<d<0.515) {
-	      D3Unit(D3Sub(&tempsp->p[2].state->x,&tempsp->p[1].state->x,&p));
+	      D3Unit(D3Sub(&p,&tempsp->p[2].state->x,&tempsp->p[1].state->x));
 	      if (tempsp->spacewalk_side==3) {
 		tempsp->p[3].DstateDt->DxDt-=10*MAX_THRUST*p.x;
 		tempsp->p[3].DstateDt->DyDt-=10*MAX_THRUST*p.y;
@@ -692,35 +692,35 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
 	      }
 	    }
 	  } else {
-	    if (d=D3Norm(D3Sub(&tempsp->p[0].state->x,
-		  &tempsp->p[1].state->x,&p1))) {
-	      D3Sub(&tempsp->p[0].state->DxDt,&tempsp->p[1].state->DxDt,&p2);
-	      D3Cross(&p1,&p2,&p);
+	    if (d=D3Norm(D3Sub(&p1,&tempsp->p[0].state->x,
+		  &tempsp->p[1].state->x))) {
+	      D3Sub(&p2,&tempsp->p[0].state->DxDt,&tempsp->p[1].state->DxDt);
+	      D3Cross(&p,&p1,&p2);
 	      spin=p.z/d;
 	    } else
 	      spin=0;
 	    t_left =Clamp(human_t_left+SPIN_GAIN*spin*human_antispin,
 		  0,MAX_THRUST);
 
-	    if (d=D3Norm(D3Sub(&tempsp->p[0].state->x,
-		  &tempsp->p[2].state->x,&p1))) {
-	      D3Sub(&tempsp->p[0].state->DxDt,&tempsp->p[2].state->DxDt,&p2);
-	      D3Cross(&p1,&p2,&p);
+	    if (d=D3Norm(D3Sub(&p1,&tempsp->p[0].state->x,
+		  &tempsp->p[2].state->x))) {
+	      D3Sub(&p2,&tempsp->p[0].state->DxDt,&tempsp->p[2].state->DxDt);
+	      D3Cross(&p,&p1,&p2);
 	      spin=p.z/d;
 	    } else
 	      spin=0;
 	    t_right=Clamp(human_t_right-SPIN_GAIN*spin*human_antispin,
 		  0,MAX_THRUST);
 
-	    D3Sub(&tempsp->p[0].state->x,&tempsp->p[1].state->x,&p1);
-	    D3Sub(&tempsp->p[0].state->x,&tempsp->p[2].state->x,&p2);
-	    D3Unit(D3Add(&p1,&p2,&p));
+	    D3Sub(&p1,&tempsp->p[0].state->x,&tempsp->p[1].state->x);
+	    D3Sub(&p2,&tempsp->p[0].state->x,&tempsp->p[2].state->x);
+	    D3Unit(D3Add(&p,&p1,&p2));
 	    if (!(tempsp->s[3].flags&SSF_INACTIVE)) {
-	      D3Mul(t_left,&p,&p1);
+	      D3Mul(&p1,t_left,&p);
 	      D3AddEqu(&tempsp->p[3].DstateDt->DxDt,&p1);
 	    }
 	    if (!(tempsp->s[5].flags&SSF_INACTIVE)) {
-	      D3Mul(t_right,&p,&p2);
+	      D3Mul(&p2,t_right,&p);
 	      D3AddEqu(&tempsp->p[4].DstateDt->DxDt,&p2);
 	    }
 	  }
@@ -764,9 +764,9 @@ U0 CheckDamage()
 	Snd(0);
       } else {
 	human->laser_temperature+=1.0;
-	D3Sub(&human->p[0].x,&human->p[1].x,&p1);
-	D3Sub(&human->p[0].x,&human->p[2].x,&p2);
-	D3Unit(D3Add(&p1,&p2,&p));
+	D3Sub(&p1,&human->p[0].x,&human->p[1].x);
+	D3Sub(&p2,&human->p[0].x,&human->p[2].x);
+	D3Unit(D3Add(&p,&p1,&p2));
 	p2.x=p.y;
 	p2.y=-p.x;
 	p2.z=0;
@@ -774,7 +774,7 @@ U0 CheckDamage()
 	best_distance=MAX_F64;
 	tempm=ode->next_mass;
 	while (tempm!=&ode->next_mass) {
-	  D3Sub(&human->p[0].x,&tempm->x,&p1);
+	  D3Sub(&p1,&human->p[0].x,&tempm->x);
 	  if (Abs(D3Dot(&p1,&p2))<tempm->radius &&
 		D3Dot(&p1,&p)<0.0) {
 	    d=D3NormSqr(&p1);
@@ -867,9 +867,9 @@ U0 FireOneGun(Ship *tempsp,I64 g,F64 r,F64 fuse_time)
   temps->fuse_time=tS+1.5*fuse_time;
   temps->die_timeout=temps->fuse_time+0.125;
   temps->p.mass=0.3*r*r*r;
-  D3Sub(&tempsp->p[0].x,&tempsp->p[1].x,&p1);
-  D3Sub(&tempsp->p[0].x,&tempsp->p[2].x,&p2);
-  D3Add(&p1,&p2,&p);
+  D3Sub(&p1,&tempsp->p[0].x,&tempsp->p[1].x);
+  D3Sub(&p2,&tempsp->p[0].x,&tempsp->p[2].x);
+  D3Add(&p,&p1,&p2);
   D3AddEqu(&temps->p.x,
 	D3MulEqu(D3Copy(&p1,D3Unit(&p)),r+tempsp->p[0].radius+5));
   D3AddEqu(D3MulEqu(&p,1000/(r+1)),&tempsp->p[g].DxDt);
@@ -948,10 +948,10 @@ U0 AI()
   Ship *tempsp=ship_root.next;
   if (human && !human->exploding) {
     while (tempsp!=&ship_root) {
-      D3Sub(&tempsp->p[0].x,&tempsp->p[1].x,&p1);
-      D3Sub(&tempsp->p[0].x,&tempsp->p[2].x,&p2);
-      D3Add(&p1,&p2,&p);
-      D3Sub(&human->p[0].x,&tempsp->p[0].x,&p1);
+      D3Sub(&p1,&tempsp->p[0].x,&tempsp->p[1].x);
+      D3Sub(&p2,&tempsp->p[0].x,&tempsp->p[2].x);
+      D3Add(&p,&p1,&p2);
+      D3Sub(&p1,&human->p[0].x,&tempsp->p[0].x);
       if (D3Dot(D3Unit(&p),D3Unit(&p1))>0.995 &&
 	    tS>tempsp->reload_timeout) {
 	FireOneGun(tempsp,0,1.5+.5,.4);

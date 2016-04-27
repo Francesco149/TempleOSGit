@@ -113,7 +113,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 
   //You could make it much more efficient
   //if you did it like [C:/Demo/Games/BigGuns.CPP.Z,1]
-  //with a [C:/Kernel/KernelA.HPP.Z,3650] CDC.
+  //with a [C:/Kernel/KernelA.HPP.Z,3649] CDC.
 
   for (y=-SCREEN_HEIGHT/2;y<SCREEN_HEIGHT/2;y++) {
     yy=y+screen_y;

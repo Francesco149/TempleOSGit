@@ -7,7 +7,7 @@
 
 
 
- [C:/Kernel/KEnd.CPP.Z,131] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,372] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,381] UserCmdLine
+ [C:/Kernel/KEnd.CPP.Z,130] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,372] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,381] UserCmdLine
 
 
 

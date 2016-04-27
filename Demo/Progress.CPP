@@ -1,6 +1,6 @@
-/*[C:/Kernel/KernelB.HPP.Z,212] progress1-[C:/Kernel/KernelB.HPP.Z,224] progress4 are just global vars
+/*[C:/Kernel/KernelB.HPP.Z,206] progress1-[C:/Kernel/KernelB.HPP.Z,218] progress4 are just global vars
 shown on the wallpaper. I use them in debugging a lot.
-If you set [C:/Kernel/KernelB.HPP.Z,215] progress1_max-[C:/Kernel/KernelB.HPP.Z,227] progress4_max,
+If you set [C:/Kernel/KernelB.HPP.Z,209] progress1_max-[C:/Kernel/KernelB.HPP.Z,221] progress4_max,
 then a bar will display.
 */
 
