@@ -238,7 +238,7 @@ public extern CHashDefineStr *DefineLstLoad(U8 *dname,U8 *lst);
 public extern I64 DefineMatch(U8 *needle,U8 *haystack_lst_dname,I64 flags=0);
 public extern U8 *DefineSub(I64 sub,U8 *dname);
 
-#help_index "Devices"
+#help_index "Devices;Memory/Page Tables"
 public extern U8 *Mem32DevAlloc(I64 size,I64 alignment);
 public extern U0 Mem32DevFree(U8 *base);
 public extern U8 *Mem64DevAlloc(I64 *_pages2Meg);
@@ -283,7 +283,7 @@ public extern Bool Drv(U8 drv_let);
 public extern Bool MkDir(U8 *filename);
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically);Install"
-public extern Bool MapDrv(U8 drv_let,CDrv *dv);
+public extern Bool DrvMap(U8 drv_let,CDrv *dv);
 
 #help_index "File/FileNames"
 extern CDirEntry *Cd2DirEntry(CDirEntry *tempde,U8 *abs_name);
@@ -477,7 +477,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3777] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3776] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -547,9 +547,7 @@ public extern CHeapCtrl *HeapCtrlInit(CHeapCtrl *hc=NULL,
 	CTask *task=NULL,CBlkPool *bp);
 
 #help_index "Memory/Page Tables"
-public extern Bool MemLowPagesProtect(Bool val=TRUE);
 public extern Bool MemPagePresentMark(U8 *a,Bool val);
-public extern I64 MemPageSize(U8 *a)
 public extern I64 *MemPageTable(U8 *a);
 
 #help_index "Messages"
@@ -742,6 +740,7 @@ public extern I64 SysTimerRead();//18.33333*65536Hz (SYS_TIMER_FREQ)
 #help_index "Time/Seconds"
 public extern Bool Blink(F64 Hz=2.5);
 public extern F64 tS(); //From SysTimerFreq.
+
 #help_index "Windows"
 public extern Bool WinInside(I64 x,I64 y,CTask *task=NULL,Bool border=FALSE);
 

@@ -3,7 +3,7 @@
 1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.  It's public 
 domain.
 
-2) [C:/Kernel/KernelA.HPP.Z,2253] ATA Reg and Cmd Definitions are originally
+2) [C:/Kernel/KernelA.HPP.Z,2254] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 

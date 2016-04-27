@@ -146,7 +146,7 @@ pa_asm_direct_imm:
 	    goto pa_asm_indirect_imm;
 	} else if (cc->token=='*') {
 	  Lex(cc);
-	  if (cc->token!=TK_INT)
+	  if (cc->token!=TK_I64)
 	    LexExcept(cc,"Expecting scale factor at ");
 	  arg->scale=cc->cur_i64;
 	  Lex(cc); //skip scale

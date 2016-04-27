@@ -135,7 +135,7 @@ U8 Drv2Let(CDrv *dv=NULL)
 }
 
 I64 Let2BlkDevType(U8 drv_let)
-{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HPP.Z,2625] BDT_NULL.
+{//Drv letter to BlkDev Type. drv_let=0 not allowed. See [C:/Kernel/KernelA.HPP.Z,2626] BDT_NULL.
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='B')
     return BDT_RAM;
@@ -209,7 +209,7 @@ U0 ChgDsk(U8 drv_let=0)
   RedSeaFreeFreeLst(dv);
 }
 
-Bool MapDrv(U8 drv_let,CDrv *dv)
+Bool DrvMap(U8 drv_let,CDrv *dv)
 {//Make drive letter map to another.
   drv_let=ToUpper(drv_let);
   if ('A'<=drv_let<='Z') {

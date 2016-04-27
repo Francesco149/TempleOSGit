@@ -3,7 +3,7 @@ U0 LexPutToken(CCmpCtrl *cc)
   '"';
   if (cc->token==TK_IDENT || cc->token==TK_STR)
     "%s",cc->cur_str;
-  else if (cc->token==TK_INT)
+  else if (cc->token==TK_I64)
     "INT:%X",cc->cur_i64;
   else if (cc->token==TK_CHAR_CONST)
     "U8:%X",cc->cur_i64;

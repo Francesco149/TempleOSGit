@@ -11,13 +11,12 @@ U0 LoadDocDefines()
   //This is cut and replaced when I generate a distro.
   //See [C:/Demo/AcctExample/TOSDistro.CPP,1] DD_TEMPLEOS_LOC.
   -] LineRep
-      DefinePrint("DD_TEMPLEOS_LOC","119,226");
-    DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","79,877");
+      DefinePrint("DD_TEMPLEOS_LOC","119,362");
+    DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","79,808");
     
   DefinePrint("DD_KERNEL","%08X",bfh);
   bfh(I64)+=bfh->file_size-1;
   DefinePrint("DD_KERNEL_END","%08X",bfh);
-  DefinePrint("DD_PROTECTED_LOW","%08X",MEM_PROTECTED_LOW_LIMIT);
 
   //[C:/Adam/Opt/Boot/BootDVD.CPP.Z,1] DD_BOOT_HIGH_LOC_DVD
 

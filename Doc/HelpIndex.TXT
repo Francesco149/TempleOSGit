@@ -99,8 +99,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [Hash,1] Hash Tables
 [C:/Doc/FileLowLevel.TXT.Z,1] Dsk Stk
 [Keyboard Devices/System,1] Keyboard Devices
-[C:/Demo/Lectures/Mem/PageTableEntries1.CPP,1] Page Table Entries 1
-[C:/Demo/Lectures/Mem/PageTableEntries2.CPP,1] Page Table Entries 2
+[C:/Demo/Lectures/Mem/PageTableEntries.CPP,1] Page Table Entries
 [C:/Demo/Lectures/PCIInterrupts.CPP,1] PCIInterrupts.CPP
 [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep
 [C:/Adam/WallPaper.CPP.Z,1] WallPaper

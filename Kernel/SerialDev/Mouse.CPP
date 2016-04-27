@@ -37,22 +37,17 @@ U0 MouseGetDevType()
 Bool MouseRst()
 {
   U8 b,*_b;
-  U16 *_w;
   F64 timeout;
-  Bool result=FALSE,present;
+  Bool result=FALSE;
 
   mouse.has_wheel=FALSE;
   mouse.has_ext_buttons=FALSE;
 
-  _w=0x40E;
-  present=MemPagePresentMark(_w,TRUE);
-  if (*_w==0x9FC0) {
+  if (*0x40E(U16 *)==0x9FC0) {
     _b=0x9FC00+0x30;
     *_b=1; //This enables my mouse.  It might be for one machine.
 //USB DMA packets, set-up by BIOS to make legacy PS/2?
   }
-  if (!present)
-    MemPagePresentMark(_w,FALSE);
 
   try {
     KbdCmdFlush;

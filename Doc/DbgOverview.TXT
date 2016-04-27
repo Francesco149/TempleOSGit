@@ -20,7 +20,7 @@ label, as in _MALLOC+0x20.  You specify [C:/Doc/HolyC.TXT.Z,1] HolyC function
 names with & before 
 functions as in &Print+0x10.
 
-* I use [C:/Kernel/KernelB.HPP.Z,212] progress1-[C:/Kernel/KernelB.HPP.Z,224]
+* I use [C:/Kernel/KernelB.HPP.Z,206] progress1-[C:/Kernel/KernelB.HPP.Z,218]
 progress4 for debugging because they show on the wallpaper.  
 They're just global int vars.
 
@@ -106,6 +106,6 @@ MakeOSDrvBootInstall(), you can set the MemInit
 cause 
 mem alloced off the heap to be initialized or VarInit option so both global 
 and local vars will be initialized to a value.  Pick a non-zero value to 
-discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,191]
+discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,185]
 sys_var_init_flag, and 
-[C:/Kernel/KernelB.HPP.Z,187] sys_heap_init_flag directly after booting.
+[C:/Kernel/KernelB.HPP.Z,181] sys_heap_init_flag directly after booting.

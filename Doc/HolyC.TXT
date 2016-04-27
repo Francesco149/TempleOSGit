@@ -185,8 +185,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1791] REGG_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1792] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1792] REGG_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1793] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -203,7 +203,7 @@ clobbered.
 }
 
 * interrupt, haserrcode, public, argpop or noargpop are function flags. See 
-[C:/Demo/Lectures/Mem/PageTableEntries2.CPP,1].
+[C:/Demo/Lectures/Mem/PageTableEntries.CPP,1].
 
 * A single quote can encompass multiple characters.  'ABC' is equ to
 0x434241. 
@@ -243,12 +243,12 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1535] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1536] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1536] OPTf_WARN_DUP_TYPES,ON) to find dup
+Option([C:/Kernel/KernelA.HPP.Z,1537] OPTf_WARN_DUP_TYPES,ON) to find dup
 local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
