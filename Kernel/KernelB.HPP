@@ -121,9 +121,9 @@ public _intern IC_TO_I64 I64 ToI64(F64 d);  //Convert to I64. Truncates.
 public _extern _ARG F64 Arg(F64 x,F64 y); //Polar coordinate angle.
 public _extern _CEIL F64 Ceil(F64 d); //Ceiling of F64.
 public _extern _CLAMP_I64 I64 ClampI64(
-	I64 dv,I64 lo,I64 hi); //Clamp to I64 [] range.
+	I64 num,I64 lo,I64 hi); //Clamp to I64 [] range.
 public _extern _CLAMP_U64 U64 ClampU64(
-	U64 dv,U64 lo,U64 hi); //Clamp to U64 [] range.
+	U64 num,U64 lo,U64 hi); //Clamp to U64 [] range.
 public _extern _EXP F64 Exp(F64 d); //Exponential function.
 _extern _FCLEX U0 Fclex();
 _extern _FLDCW U0 Fldcw(U16 w);
@@ -224,14 +224,14 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,234] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3435] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,234] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3435] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSES U16 sys_pci_busses; //Number of PCI buses.
@@ -249,7 +249,7 @@ public _intern IC_SET_RBP U0 SetRBP(U8 *d); //Set RBP register value.
 public _intern IC_SET_RFLAGS U0 SetRFlags(I64 d); //Set RFlags register value.
 public _intern IC_SET_RSP U0 SetRSP(U8 *d); //Set RSP register value.
 public _extern _CPUID U0 CPUId(
-	U32 rax,CRAXRBCRCXRDX *result); //Do CPUID inst.
+	U32 rax,CRAXRBCRCXRDX *res); //Do CPUID inst.
 public _extern _LXCHG_I64 I64 LXchgI64(I64 *dst,I64 d); //Locked eXchange I64s.
 public _extern _LXCHG_U16 U16 LXchgU16(U16 *dst,U16 d); //Locked eXchange U16s.
 public _extern _LXCHG_U32 U32 LXchgU32(U32 *dst,U32 d); //Locked eXchange U32s.
@@ -273,7 +273,7 @@ public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr inst.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3311] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3312] CTask.
 
 #help_index "Time/CPU Cycles"
 #help_file "::/Doc/TimeCycles"

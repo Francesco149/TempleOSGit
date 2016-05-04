@@ -62,7 +62,7 @@ Glbl	Global
 Gr	Graphic
 IDE	Integrated Drive Electronics, Integrated Development Environment
 Id	Identification
-Ident	Identifier, Identity
+Ident	Identifier, Identity, Identical
 IDT	Interrupt Descriptor Table
 Idx	Index
 Init	Initialize
@@ -100,12 +100,13 @@ Poly	Polygon
 Pos	Position
 Pow	Power
 Prec	Precedence
+Prev	Previous
 Pri	Primary
 Prod	Product, Production
 Prof	Profile, Profiler
 Prs	Parse, Parser
 Prt	Partition
-FunSeg	Program Section
+FunSeg Program Section
 Pt	Point
 Ptr	Pointer
 Que	Queue
@@ -114,6 +115,7 @@ Ref	Reference
 Reg	Register, Registry, Regular
 Rem	Remove
 Rep	Report, Repeat
+Res	Result
 Rqst	Request
 Rst	Reset
 Rot	Rotation
@@ -147,7 +149,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3311]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3312]
   CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -172,7 +174,7 @@ Wiz	Wizard
   within the lowest 2 Gig of memory, addresses 00000000-7FFFFFFF.  The compiler
   and [C:/Kernel/KLoad.CPP.Z,181] Load()er alloc memory from the code heap to
   store code and glbl vars, unless the compiler option
-  [C:/Kernel/KernelA.HPP.Z,1541] OPTf_GLBLS_ON_DATA_HEAP is used.  When
+  [C:/Kernel/KernelA.HPP.Z,1542] OPTf_GLBLS_ON_DATA_HEAP is used.  When
   programs call [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() is from the data
   heap, which in not limited in size, except by physical RAM memory.  You can
   alloc from any heap in any task at any time on any core, even making
@@ -277,11 +279,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2288] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2287] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2286] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2285] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2289] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2289] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2288] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2287] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2286] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2290] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -304,8 +306,8 @@ lower_case
 
 _lower_case
   Function args which are outputs (passed as ptrs) have leading underscores. 
-  Also, args which have identically named local variable counterparts have
-  leading underscores. 
+  Also, args which have idently named local variable counterparts have leading
+  underscores. 
 
 DOCf_????
   Flags bit nums instead of bit values are designated with a lower case f.
@@ -313,17 +315,17 @@ DOCf_????
 DOCG_????
   Flag groups are designated with "G".
 
-result is reserved for local variables that hold the function return val.
+res is reserved for local variables that hold the function return val.
 
 * I used C++ like naming.  I place New, Del, Init, Rst, ect. on the end of a
   function name instead of at the beginning.  RstMusicSettings should be
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3311] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3312] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3435] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must

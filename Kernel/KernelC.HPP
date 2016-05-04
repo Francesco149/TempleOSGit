@@ -83,7 +83,6 @@ public extern U8 *StrPrintJoin(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *StrUtil(U8 *_src,I64 flags);
 public extern U8 *Tabs2Spaces(U8 *src);
 public extern Bool WildMatch(U8 *test_str,U8 *wild_str);
-
 #help_index "Char/Operations;Memory/Adam Heap"
 public extern U8 *AStrNew(U8 *buf);
 
@@ -451,6 +450,7 @@ extern U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool r);
 #help_index "Input Pointer/Mouse"
 public extern CMouseStateGlbls mouse;
 extern CMouseStateGlbls mouse_last;
+
 #help_index "Install"
 #help_file "::/Doc/Install"
 extern CATARep *ATARepFind(CATARep *haystack_root,I64 needle_num);
@@ -476,7 +476,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3776] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3777] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -500,7 +500,7 @@ public extern CKbdStateGlbls	kbd;
 #help_index "Math"
 public extern I64 CeilI64(I64 num,I64 to);
 public extern U64 CeilU64(U64 num,U64 to);
-public extern F64 Clamp(F64 num,F64 lo,F64 hi);
+public extern F64 Clamp(F64 d,F64 lo,F64 hi);
 public extern I64 FloorI64(I64 num,I64 to);
 public extern U64 FloorU64(U64 num,U64 to);
 public extern F64 Max(F64 n1,F64 n2);
@@ -519,7 +519,7 @@ public extern I64 Seed(I64 seed=0,CTask *task=NULL);
 #help_index "Memory/Adam Heap"
 public extern U8 *ACAlloc(I64 size);
 public extern U8 *AMAlloc(I64 size);
-public extern U8 *AMAllocIdentical(U8 *src);
+public extern U8 *AMAllocIdent(U8 *src);
 
 #help_index "Memory/BlkPool"
 public extern U0 BlkPoolAdd(CBlkPool *bp,CMemBlk *m,I64 pages512);
@@ -535,7 +535,7 @@ public _extern _FREE U0 Free(U8 *addr);
 public _extern _MALLOC U8 *MAlloc(I64 size,CTask *mem_task=NULL);
 public extern U8 *MAllocAligned(I64 size,I64 alignment,
 	CTask *mem_task=NULL,I64 misalignment=0);
-public extern U8 *MAllocIdentical(U8 *src,CTask *mem_task=NULL);
+public extern U8 *MAllocIdent(U8 *src,CTask *mem_task=NULL);
 public _extern _MHEAP_CTRL CHeapCtrl *MHeapCtrl(U8 *src);
 public _extern _MSIZE I64 MSize(U8 *src);   //size of heap object
 public _extern _MSIZE2 I64 MSize2(U8 *src); //Internal size
@@ -679,8 +679,8 @@ public extern I64 ExeCmdLine(CCmpCtrl *cc);
 public extern U0 UserTaskCont();
 
 #help_index "Task/Srv/Exe;MultiCore"
-public extern I64 JobResultGet(CSrvCmd *rqst=NULL);
-public extern Bool JobResultScan(CSrvCmd *rqst=NULL,I64 *_result=NULL);
+public extern I64 JobResGet(CSrvCmd *rqst=NULL);
+public extern Bool JobResScan(CSrvCmd *rqst=NULL,I64 *_res=NULL);
 
 #help_index "Task/Srv/Text & Msgs"
 public extern CSrvCmd *TaskText(CTask *srv,CTask *master,U8 *data,I64 flags);

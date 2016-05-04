@@ -45,7 +45,7 @@ I64 HelpIndexCnt(U8 *ptr,U8 *idx)
 
 U8 *HelpIndexStr(U8 **_ptr,U8 *idx)
 {
-  U8 *ptr=*_ptr,*ptr2,*result;
+  U8 *ptr=*_ptr,*ptr2,*res;
   I64 ch,idx_len=StrLen(idx);
   while (*ptr) {
     ptr2=ptr;
@@ -59,9 +59,9 @@ U8 *HelpIndexStr(U8 **_ptr,U8 *idx)
       if (ch==';')
 	ptr--;
       *ptr=0;
-      result=StrNew(ptr2);
+      res=StrNew(ptr2);
       *ptr=ch;
-      return result;
+      return res;
     }
   }
   return NULL;
@@ -71,7 +71,7 @@ U8 *HelpComment(CTask *task,CHash *temph,U8 *_src_link)
 {
   CDoc *doc;
   CDocEntry *doc_e;
-  U8 *result=NULL,*ptr,*ptr2,*src_link=StrNew(_src_link);
+  U8 *res=NULL,*ptr,*ptr2,*src_link=StrNew(_src_link);
 
   if (*src_link=='F' && src_link[2]==':')
     *src_link='P';
@@ -102,29 +102,29 @@ U8 *HelpComment(CTask *task,CHash *temph,U8 *_src_link)
 	ptr+=6;
       while (*ptr==CH_SPACE)
 	ptr++;
-      result=StrNew(ptr);
+      res=StrNew(ptr);
       doc_e=doc_e->next;
     }
     while (doc_e!=doc && doc_e->type_u8!=DOCT_NEW_LINE) {
       if (doc_e->type_u8==DOCT_TAB) {
-	ptr=MStrPrint("%s ",result);
-	Free(result);
-	result=ptr;
+	ptr=MStrPrint("%s ",res);
+	Free(res);
+	res=ptr;
       } else if (doc_e->de_flags&DOCEF_TAG) {
-	ptr=MStrPrint("%s%s",result,doc_e->tag);
-	Free(result);
-	result=ptr;
+	ptr=MStrPrint("%s%s",res,doc_e->tag);
+	Free(res);
+	res=ptr;
       }
       doc_e=doc_e->next;
     }
   }
   XTalkWait(task,"%c",CH_SHIFT_ESC);
-  if (result) {
-    ptr=MStrUtil(result,SUF_REM_TRAILING|SUF_REM_LEADING|SUF_SINGLE_SPACE);
-    Free(result);
-    result=ptr;
+  if (res) {
+    ptr=MStrUtil(res,SUF_REM_TRAILING|SUF_REM_LEADING|SUF_SINGLE_SPACE);
+    Free(res);
+    res=ptr;
   }
-  return result;
+  return res;
 }
 
 I64 HashEntriesCompare3(CWho *h1,CWho *h2)

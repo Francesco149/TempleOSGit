@@ -60,17 +60,17 @@ I64 accts_table_strs=0;
 CDate MyStr2Date(U8 *st)
 {
   CDateStruct	ds;
-  CDate		result;
+  CDate		res;
   if (st&&*st) {
     if (StrOcc(st,'['))
-      result=b_root.next->date;
+      res=b_root.next->date;
     else if (StrOcc(st,']'))
-      result=b_root.last->date;
+      res=b_root.last->date;
     else
-      result=Str2Date(st);
+      res=Str2Date(st);
   } else
-    result=Now;
-  Date2Struct(&ds,result);
+    res=Now;
+  Date2Struct(&ds,res);
   if (ds.year>2050)
     ds.year-=100;
   return Struct2Date(&ds);

@@ -4,11 +4,11 @@
 
 U8 TOSGetDrv()
 {
-  I64 result;
+  I64 res;
   "Drive (%s):",TOS_HDS;
-  result=ToUpper(GetChar);
+  res=ToUpper(GetChar);
   '\n';
-  return result;
+  return res;
 }
 
 U0 TOSMakeOSDrvBootInstall(U8 drv_let)
@@ -175,7 +175,7 @@ I64 MakeLineRepFile()
 {
   U8 *st;
   CDoc *doc;
-  I64 result,official;
+  I64 res,official;
   CDocEntry *tree_branch,*start_indent,*end_indent;
 
   DocClear;
@@ -189,7 +189,7 @@ I64 MakeLineRepFile()
 
   DocMax;
   DocClear;
-  result=LineRep;
+  res=LineRep;
   if (doc=DocPut) {
     st=StrNew(doc->filename.name);
     StrCpy(doc->filename.name,"B:/TOS/Web/LineRep.TXT.Z");
@@ -212,17 +212,17 @@ I64 MakeLineRepFile()
   doc->cur_entry=start_indent->next;
   doc->cur_col=0;
 
-  DocPrint(doc,"DefinePrint(\"DD_TEMPLEOS_LOC\",\"%,d\");\n",result);
+  DocPrint(doc,"DefinePrint(\"DD_TEMPLEOS_LOC\",\"%,d\");\n",res);
   DocPrint(doc,"DefinePrint(\"DD_TEMPLEOS_LOC_OFFICIAL\",\"%,d\");\n",official);
 
-  DefinePrint("DD_TEMPLEOS_LOC","%,d",result);
+  DefinePrint("DD_TEMPLEOS_LOC","%,d",res);
   DefinePrint("DD_TEMPLEOS_LOC_OFFICIAL","%,d",official);
 
   DocWrite(doc);
   DocDel(doc);
 
-  "Total LOC:%12,d\n\n",result;
-  return result;
+  "Total LOC:%12,d\n\n",res;
+  return res;
 }
 
 U0 TOSDistroPrep()

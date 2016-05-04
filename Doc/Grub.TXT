@@ -13,8 +13,8 @@ Backup TempleOS 'E' and a Transfer 'I' partition for transferring between
 Windows and TempleOS.  "hd0" is 1st hard drive, zero-based numbering.
 "msdos1" 
 is partition #1, traditional msdos partitioning.  I keep 'D', 'E', and 'I' 
-identical by frequently copying all files and I use 'I' to transfer files.  
-They only need to be a couple Gig in size.  Every time I copy files, use 
+ident by frequently copying all files and I use 'I' to transfer files.  They 
+only need to be a couple Gig in size.  Every time I copy files, use 
 [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() to
 [C:/Adam/Opt/Boot/BootIns.CPP.Z,13] MakeAll and prepare the partition
 [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] boot sector for 

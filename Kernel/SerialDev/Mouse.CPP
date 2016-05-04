@@ -38,7 +38,7 @@ Bool MouseRst()
 {
   U8 b,*_b;
   F64 timeout;
-  Bool result=FALSE;
+  Bool res=FALSE;
 
   mouse.has_wheel=FALSE;
   mouse.has_ext_buttons=FALSE;
@@ -75,7 +75,7 @@ Bool MouseRst()
     KbdMouseCmdAck(0xF3,10);
     MouseGetDevType;
     KbdMouseCmdAck(0xE8,0x03,0xE6,0xF3,100,0xF4);
-    result=TRUE;
+    res=TRUE;
 
     //Enable IRQ 12
     KbdCmdSend(KBD_CTRL,0x20);
@@ -88,7 +88,7 @@ Bool MouseRst()
 
     //This is been added to override failure
     //because the mouse sometimes still works.
-  result=TRUE;
+  res=TRUE;
 
   try
 	  KbdCmdSend(KBD_CTRL,0xAE); //Enable Keyboard
@@ -98,12 +98,12 @@ Bool MouseRst()
     mouse.pkt_size=4;
   else
     mouse.pkt_size=3;
-  if (!result)
+  if (!res)
     try
 	    KbdCmdSend(KBD_CTRL,0xA7); //Disable Mouse
     catch
       Fs->catch_except=TRUE;
-  return result;
+  return res;
 }
 
 U0 MouseSpeedSet()

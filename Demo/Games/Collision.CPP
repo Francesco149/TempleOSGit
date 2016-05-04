@@ -30,7 +30,7 @@ U0 DrawIt(CTask *,CDC *dc)
 
 Initial and final velocity vects
 with normal and tangential components.
-All masses are identical, so they
+All masses are ident, so they
 have been dropped from the equations.
 
 Conservation of Momentum:
@@ -82,7 +82,7 @@ U0 AnimateTask(I64)
 
 	//We shift 16 because multiplying
 	//two 32 shifted would yield 64 shifted
-	//and we want a 32 shifted result.
+	//and we want a 32 shifted res.
 	distdist=SqrI64(delta_x>>16)+SqrI64(delta_y>>16);
 
 	//We work with square instead of sqrt

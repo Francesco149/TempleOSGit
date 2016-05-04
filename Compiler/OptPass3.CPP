@@ -91,7 +91,7 @@ U0 OptPass3(CCmpCtrl *cc,COptReg *reg_offsets)
 	case IS_0_ARG: //nobound switch
 	  break;
       }
-      if (intermediate_code_table[code].result_cnt) {
+      if (intermediate_code_table[code].res_cnt) {
 	tempi->r.type=MDF_STK+CmpRawType(tempc);
 	tempi->r.type_pointed_to=CmpRawTypePointed(tempc);
 	tempi->ic_flags|=ICF_R_WAS_STK;

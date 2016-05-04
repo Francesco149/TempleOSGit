@@ -152,8 +152,8 @@ F64 Diptheta(I64 x,I64 z,F64 theta)
 
 Track *TrackFind(Track *_tempt,I64 x,I64 z)
 {
-  Track *result=_tempt,*tempt;
-  I64 dd,best=SqrI64(result->x-x)+SqrI64(result->z-z);
+  Track *res=_tempt,*tempt;
+  I64 dd,best=SqrI64(res->x-x)+SqrI64(res->z-z);
 
   tempt=_tempt;
   while (TRUE) {
@@ -163,7 +163,7 @@ Track *TrackFind(Track *_tempt,I64 x,I64 z)
     dd=SqrI64(tempt->x-x)+SqrI64(tempt->z-z);
     if (dd<best) {
       best=dd;
-      result=tempt;
+      res=tempt;
     } else
       break;
   }
@@ -175,11 +175,11 @@ Track *TrackFind(Track *_tempt,I64 x,I64 z)
     dd=SqrI64(tempt->x-x)+SqrI64(tempt->z-z);
     if (dd<best) {
       best=dd;
-      result=tempt;
+      res=tempt;
     } else
       break;
   }
-  return result;
+  return res;
 }
 
 U0 TrackSlice(F64 *_x,F64 *_z,F64 theta,F64 d)

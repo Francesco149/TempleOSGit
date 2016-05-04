@@ -132,7 +132,7 @@ U0 MPRadixSortDemo(I64 dummy=0)
 
 MPRadixSortDemo;
 
-/* Results on 8 Cores 3.397GHz Core i7:
+/* Ress on 8 Cores 3.397GHz Core i7:
 QSort
 Time: 0.759998
 QSortU32

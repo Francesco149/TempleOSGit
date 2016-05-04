@@ -8,6 +8,7 @@ public extern I64 ExePutS(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE,
 	CLexHashTableContext *htc=NULL);
 public extern I64 ExePutS2(U8 *buf,U8 *filename=NULL,Bool just_load=FALSE);
 public extern CCmpGlbls cmp;
+
 #help_index "Compiler/Directive"
 #help_file "::/Doc/Directives"
 public extern Bool Echo(Bool val);
@@ -60,7 +61,6 @@ public extern I64 PrsKeyWord(CCmpCtrl *cc);
 #help_index "Compiler;Cmd Line (Typically)"
 extern I64 Cmp(U8 *filename,
 	U8 *map_name=NULL,U8 *out_name=NULL,U8 mapfile_drv_let=0);
-
 #help_index "Debugging/Unassemble"
 public extern U8 *U(U8 *ip,I64 cnt=20,I64 seg_size=64);
 public extern U0 Ui(U8 *buf,U8 **_ip,I64 seg_size=64,

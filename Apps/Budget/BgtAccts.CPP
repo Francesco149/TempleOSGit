@@ -54,7 +54,7 @@ I64 BgtAcctColor(U8 *st)
 U8 *BgtPopUpAcct(U8 *header=NULL,U8 *dft=NULL)
 {
   I64 i;
-  U8 *result;
+  U8 *res;
   CDoc *doc=DocNew;
   CDocEntry *doc_e,*doc_dft=NULL;
   CHashGeneric *temph;
@@ -77,7 +77,7 @@ U8 *BgtPopUpAcct(U8 *header=NULL,U8 *dft=NULL)
     doc->cur_entry=doc_dft;
     doc->cur_col=0;
   }
-  result=PopUpMenu(doc,DOF_DONT_HOME);
+  res=PopUpMenu(doc,DOF_DONT_HOME);
   DocDel(doc);
-  return result;
+  return res;
 }

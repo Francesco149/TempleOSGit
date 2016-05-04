@@ -1,5 +1,5 @@
 //See [C:/Doc/Credits.TXT.Z,1].
-//See [C:/Kernel/KernelA.HPP.Z,3767] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3741] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3749] CArcCtrl
+//See [C:/Kernel/KernelA.HPP.Z,3768] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3742] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3750] CArcCtrl
 
 asm {
 /****
@@ -250,17 +250,17 @@ U0 ArcCtrlDel(CArcCtrl *c)
 U8 *ExpandBuf(CArcCompress *arc,CTask *mem_task=NULL)
 {//See [C:/Demo/Dsk/SerializeTree.CPP.Z,1].
   CArcCtrl *c;
-  U8 *result;
+  U8 *res;
 
   if (!(CT_NONE<=arc->compression_type<=CT_8_BIT) ||
 	arc->expanded_size>MEM_MAPPED_SPACE)
     throw('Compress');
 
-  result=MAlloc(arc->expanded_size+1,mem_task);
-  result[arc->expanded_size]=0; //terminate
+  res=MAlloc(arc->expanded_size+1,mem_task);
+  res[arc->expanded_size]=0; //terminate
   switch [arc->compression_type] {
     case CT_NONE:
-      MemCpy(result,&arc->body,arc->expanded_size);
+      MemCpy(res,&arc->body,arc->expanded_size);
       break;
     case CT_7_BIT:
     case CT_8_BIT:
@@ -269,13 +269,13 @@ U8 *ExpandBuf(CArcCompress *arc,CTask *mem_task=NULL)
       c->src_pos=sizeof(CArcCompress)<<3;
       c->src_buf=arc;
       c->dst_size=arc->expanded_size;
-      c->dst_buf=result;
+      c->dst_buf=res;
       c->dst_pos=0;
       ArcExpandBuf(c);
       ArcCtrlDel(c);
       break;
   }
-  return result;
+  return res;
 }
 
 CArcCompress *CompressBuf(U8 *src,I64 size,CTask *mem_task=NULL)

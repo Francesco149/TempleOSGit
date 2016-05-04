@@ -8,7 +8,7 @@ public U0 ClipboardDel()
 }
 
 public U0 EdCopyToClipboard(CDoc *doc)
-{//Copy [C:/Kernel/KernelA.HPP.Z,946] DOCET_SELECTED flagged entries to clipboard.
+{//Copy [C:/Kernel/KernelA.HPP.Z,947] DOCET_SELECTED flagged entries to clipboard.
   CDoc *doc2=sys_clipboard_doc;
   Bool unlock_doc=DocLock(doc),
 	unlock_doc2=DocLock(doc2);

@@ -214,7 +214,7 @@ CSrvCmd *JobQue(I64 (*fp_addr)(U8 *data),U8 *data=NULL,
        I64 target_cpu=1,I64 flags=1<<SVCf_FREE_ON_COMPLETE,
        I64 cmd_code=SVCT_CALL,U8 *aux_str=NULL,I64 aux1=0,I64 aux2=0)
 {//Queue multicore jobs, handled by Seth tasks.
-//Set flags to zero if you wish to get the result.
+//Set flags to zero if you wish to get the res.
   //See [C:/Demo/MultiCore/Lock.CPP.Z,1]
   CSrvCtrl *ctrl;
   CSrvCmd *tempc;
@@ -249,7 +249,7 @@ CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 target_cpu, CTask *parent=NULL, //NULL means adam
 	I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE)
 {
-  CTask *result;
+  CTask *res;
   CSrvCmd *tempc=JobQue(fp_addr,data,target_cpu,
 	flags,SVCT_SPAWN_TASK,task_name,parent,stk_size);
   CSrvCtrl *ctrl;
@@ -260,7 +260,7 @@ CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
   }
   LBtr(&Fs->task_flags,TASKf_IDLE);
 
-  result=tempc->spawned_task;
+  res=tempc->spawned_task;
   ctrl=tempc->ctrl;
   PUSHFD
   CLI
@@ -270,7 +270,7 @@ CTask *SpawnQue(U0 (*fp_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
   LBtr(&ctrl->flags,SVCRf_LOCKED);
   POPFD
   SrvCmdDel(tempc);
-  return result;
+  return res;
 }
 
 U0 CoreAPSethInit()
@@ -337,7 +337,7 @@ U0 Core0StartMP()
     StrPrint(buf,"Seth Task CPU#%d",i);
     task=Spawn(&CoreAPSethInit,NULL,buf,,,MEM_SETH_STK,0);
     task->rflags=RFLAGG_START;
-//[C:/Kernel/KernelA.HPP.Z,3311] CTask alloced off this core's seth_task's heap (Which is Adam)
+//[C:/Kernel/KernelA.HPP.Z,3312] CTask alloced off this core's seth_task's heap (Which is Adam)
     CPUStructInit(i,&cpu_structs[i],task);
     WBINVD //Not sure why this is needed.  Might just need delay.
   }

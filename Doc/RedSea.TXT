@@ -16,7 +16,7 @@ U32 chars_bmp_filename[8]=
 
 public class CDirEntry //64-byte fixed-size
 {
-  U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2526] RS_ATTR_DIR.  I would like
+  U16 attr;	//See [C:/Kernel/KernelA.HPP.Z,2527] RS_ATTR_DIR.  I would like
 to change these.
   U8 name[CDIR_FILENAME_LEN]; //See [C:/Kernel/StrA.CPP.Z,345]
 chars_bmp_filename, [C:/Kernel/BlkDev/DskStrA.CPP.Z,239] FileNameChk

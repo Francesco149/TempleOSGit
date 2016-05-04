@@ -1,48 +1,48 @@
 I64 MyUtilDoc(CDoc *doc,I64 fuf_flags)
 {
   Bool unlock=DocLock(doc);
-  I64 result=0;
+  I64 res=0;
   CDocEntry *doc_e;
   DocRecalc(doc);
   doc_e=doc->root.next;
   while (doc_e!=doc) {
-    result++;
+    res++;
     doc_e=doc_e->next;
   }
   DocRecalc(doc);
   if (unlock)
     DocUnlock(doc);
-  return result;
+  return res;
 }
 
 I64 MyUtilFile(U8 *filename,I64 fuf_flags)
 {//Optimize File.
-  I64 result;
+  I64 res;
   CDoc *doc=DocRead(filename);
-  if (result=MyUtilDoc(doc,fuf_flags)) {
-    "%8d:%s\n",result,doc->filename.name;
+  if (res=MyUtilDoc(doc,fuf_flags)) {
+    "%8d:%s\n",res,doc->filename.name;
     DocWrite(doc);
   }
   DocDel(doc);
-  return result;
+  return res;
 }
 I64 MyUtilLst(CDirEntry *tempde,I64 fuf_flags)
 {
-  I64 result=0;
+  I64 res=0;
   CDirEntry *tempde1;
   while (tempde) {
     tempde1=tempde->next;
     if (tempde->attr & RS_ATTR_DIR) {
       if (tempde->sub) {
 	"Processing Directory: %s\n",tempde->full_name;
-	result+=MyUtilLst(tempde->sub,fuf_flags);
+	res+=MyUtilLst(tempde->sub,fuf_flags);
       }
     } else
-      result+=MyUtilFile(tempde->full_name,fuf_flags);
+      res+=MyUtilFile(tempde->full_name,fuf_flags);
     DirEntryDel(tempde);
     tempde=tempde1;
   }
-  return result;
+  return res;
 }
 I64 MyUtil(U8 *files_find_mask="*",U8 *fu_flags=NULL)
 {

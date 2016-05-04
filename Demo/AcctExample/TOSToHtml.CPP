@@ -69,28 +69,45 @@ U0 HtmlPutS(CDoc *doc,I64 u32_attr,I64 *_old_u32_attr,
 U8 *TOSLinkCvt2(U8 *filename,I64 line_num)
 {// ::/  --> http://www.templeos.org/Wb/
 //Make your own LinkCvt routine
-  U8 *result=NULL,*st;
+  U8 *res=NULL,*st;
   if (filename) {
     st=ChgExt(filename,"html");
     if (st && StrLen(st)>3 && !StrNCmp(st+1,":/",2))
-      result=MStrPrint(PERSONAL_WEB "/%s#l%d",st+3,line_num);
+      res=MStrPrint(PERSONAL_WEB "/%s#l%d",st+3,line_num);
     Free(st);
   }
-  return result;
+  return res;
+}
+
+U8 *URLBibleGateway(U8 *src)
+{
+  U8 buf[STR_LEN],*dst=buf;
+  if (!MemCmp(src,"BF:",3))
+   src+=3;
+  while (*src) {
+    if (*src==CH_SPACE || *src==',')
+      *dst++='+';
+    else
+      *dst++=*src;
+    src++;
+  }
+  *dst=0;
+  return MStrPrint(
+	"http://www.biblegateway.com/passage/?search=%s&version=NIV",buf);
 }
 
 U8 *TOSLinkCvt1(U8 *link_st)
 {
   static CDoc *bible=NULL;
   static I64 locks=0;
-  U8 *result=NULL,*filename,*needle;
+  U8 *res=NULL,*filename,*needle;
   I64 i,num;
   if (link_st) {
     switch (i=EdLinkCvt(link_st,&filename,&needle,&num)) {
       case LK_FILE_LINE:
       case LK_PLAIN_LINE:
       case LK_FILE:
-	result=TOSLinkCvt2(filename,num);
+	res=TOSLinkCvt2(filename,num);
 	break;
       case -1:
       case LK_DEF:
@@ -105,18 +122,22 @@ U8 *TOSLinkCvt1(U8 *link_st)
 	  Yield;
 	if (!bible)
 	  bible=Adam("DocRead(\"%s\");",filename);
-	if (DocFind(bible,num,needle))
-	  result=TOSLinkCvt2(filename,bible->cur_entry->y+1);
+	if (DocFind(bible,num,needle)) {
+	  if (StrOcc(link_st,'-'))
+	    res=URLBibleGateway(link_st);
+	  else
+	    res=TOSLinkCvt2(filename,bible->cur_entry->y+1);
+	}
 	LBtr(&locks,0);
 	break;
       default:
 	if (DocFileEd(i,filename,needle,&num,EDF_UNCOLLAPSE|EDF_BAIL))
-	  result=TOSLinkCvt2(filename,num);
+	  res=TOSLinkCvt2(filename,num);
     }
     Free(filename);
     Free(needle);
   }
-  return result;
+  return res;
 }
 
 

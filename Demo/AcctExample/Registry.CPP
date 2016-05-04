@@ -12,12 +12,16 @@
       F64 best_score=9999.0000;
       +] BlackDiamond
       I64 best_score=9;
+      +] EagleDive
+      I64 best_score=4;
       +] DunGen
       F64 best_score=20.5295;
       +] CastleFrankenstein
       F64 best_score=33.8405;
       +] ZoneOut
       F64 best_score=8.1373;
+      +] Varoom
+      F64 best_score=46.2643;
       +] FlapBat
       F64 best_score=16.4090;
       +] TimeOut
@@ -26,21 +30,17 @@
       F64 best_score=96.1279;
       +] KeepAway
       I64 best_score0=0,best_score1=9999;
-      +] XCaliber
-      I64 best_score=248;
-    I64 msg_flags=1;
       +] Wenceslas
       F64 best_score=49.8074;
       +] BomberGolf
       I64 best_score=175;
-      +] EagleDive
-      I64 best_score=4;
-      +] Varoom
-      F64 best_score=46.2643;
+      +] XCaliber
+      I64 best_score=248;
+    I64 msg_flags=1;
       +] DemoCompany
   
   +] Game1
-      F64 best_score=181.71464;
+      F64 best_score=190.66292;
     +] SimpleVal
-          1311;
+          1313;
             

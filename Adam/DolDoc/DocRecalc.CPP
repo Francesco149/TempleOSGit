@@ -134,7 +134,7 @@ CDocEntry *DocSplitTag(CDoc *doc,CDocEntry *doc_e,I64 i,I64 x,I64 y,I64 type_u8)
   CDocEntry *doc_e2;
   if (doc_e->type_u8==DOCT_TEXT && i) {
     if (i<StrLen(doc_e->tag)) {
-      doc_e2=MAllocIdentical(doc_e,doc->mem_task);
+      doc_e2=MAllocIdent(doc_e,doc->mem_task);
       doc_e2->tag=StrNew(doc_e->tag+i,doc->mem_task);
       doc_e2->de_flags=doc_e->de_flags&~DOCEG_HAS_ALLOC|DOCEF_TAG;
       QueIns(doc_e2,doc_e);

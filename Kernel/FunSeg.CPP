@@ -9,7 +9,7 @@ I64 HasLower(U8 *src)
 
 CHash *FunSegFind(U8 *addr,I64 *_offset)
 {//See [Hash,1] Hash.
-  CHash *result=NULL;
+  CHash *res=NULL;
   CHashExport *tempex;
   Bool has_lower=FALSE;
   CHashTable *h=Fs->hash_table;
@@ -36,14 +36,14 @@ CHash *FunSegFind(U8 *addr,I64 *_offset)
 	      if (j<best || j==best && !has_lower) {
 		has_lower=HasLower(tempex->str);
 		best=j;
-		result=tempex;
+		res=tempex;
 	      }
 	    } else if (tempex->type&HTT_FUN) {
 	      if (j<best || j==best &&
-		    (result && result->type&HTT_EXPORT_SYS_SYM||!has_lower)) {
+		    (res && res->type&HTT_EXPORT_SYS_SYM||!has_lower)) {
 		has_lower=HasLower(tempex->str);
 		best=j;
-		result=tempex;
+		res=tempex;
 	      }
 	    }
 	  }
@@ -54,7 +54,7 @@ CHash *FunSegFind(U8 *addr,I64 *_offset)
     h=h->next;
   }
   *_offset=best;
-  return result;
+  return res;
 }
 
 U0 FunSegCacheAdd(CHash *temps,U8 *addr)
@@ -270,29 +270,29 @@ Bool PutSrcLink(U8 *addr,I64 cnt=1,U8 *buf=NULL)
 Bool E(U8 *addr,I64 cnt=512,I64 edf_dof_flags=0)
 {//Edit src at addr.
   U8 *st;
-  Bool result=FALSE;
+  Bool res=FALSE;
   if (st=SrcEdLink(addr,cnt)) {
     if (IsRaw)
-      result=EdLiteFileLine(st,edf_dof_flags);
+      res=EdLiteFileLine(st,edf_dof_flags);
     else
-      result=Ed(st,edf_dof_flags);
+      res=Ed(st,edf_dof_flags);
     Free(st);
   }
-  return result;
+  return res;
 }
 
 Bool Man(U8 *st,I64 edf_dof_flags=0)
 {//Owner's manual for symbol.  Edit src code for symbol.
-  Bool result=FALSE;
+  Bool res=FALSE;
   U8 **st2;
   CHashSrcSym *temph;
   if (IsRaw) {
     if ((temph=HashFind(st,Fs->hash_table,HTG_SRC_SYM)) && temph->src_link)
-      result=EdLiteFileLine(temph->src_link,edf_dof_flags);
+      res=EdLiteFileLine(temph->src_link,edf_dof_flags);
   } else {
     st2=MStrPrint("MN:%s",st);
-    result=Ed(st2,edf_dof_flags);
+    res=Ed(st2,edf_dof_flags);
     Free(st2);
   }
-  return result;
+  return res;
 }

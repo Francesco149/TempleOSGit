@@ -38,8 +38,8 @@ Collapsed The tree or hidden widget will begin collapsed.
 Define Str will substitute a #define or [C:/Kernel/KDefine.CPP.Z,1]
 DefineLoad() string for the tag.
 
-Quote Make the result suitable for including in a program, in quotes, 
-especially fmtstr entries in class definitions.
+Quote Make the res suitable for including in a program, in quotes, especially 
+fmtstr entries in class definitions.
 
 X Expression For cursor movements, the horizontal value.
 Y Expression For cursor movements, the vertical value.

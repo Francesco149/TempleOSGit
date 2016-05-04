@@ -107,8 +107,8 @@ mode.
 attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
 
 [C:/Compiler/CMain.CPP.Z,607] ExePrint(U8 *fmt,...) compiles and execute a
-string.  Note: It returns the 
-result of the last executed expression.
+string.  Note: It returns the res 
+of the last executed expression.
 
 [C:/Adam/AutoFile.CPP.Z,26] AFPrint(I64 mS,U8 *fmt,...)
 [C:/Kernel/KeyDev.CPP.Z,20] PutChars()s one at a time with a delay.
@@ -122,7 +122,7 @@ string on start-up.
 
 [C:/Kernel/SrvCmd.CPP.Z,398] PopUpPrint(U8 *fmt,...) compiles and execute a
 string in a pop-up win.  Note: 
-It returns the result of the last executed expression.
+It returns the res of the last executed expression.
 [C:/Adam/DolDoc/DocPopUp.CPP.Z,17] PopUpViewPrint(U8 *fmt,...) creates a
 pop-up window and views text.
 

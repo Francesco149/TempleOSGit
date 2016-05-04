@@ -151,7 +151,7 @@ kernel.  It's just a bit you can set and test.
 
 * I don't use U0 * because the size is zero for ptr arithmetic.
 
-* Use [C:/Kernel/KernelA.HPP.Z,3507] CH_SHIFT_SPACE for spaces in quotes in
+* Use [C:/Kernel/KernelA.HPP.Z,3508] CH_SHIFT_SPACE for spaces in quotes in
 source code because I run 
 [C:/Adam/Opt/Utils/StrUtils.CPP.Z,1] Spaces-to-Tabs on source code.
 
@@ -168,16 +168,16 @@ chained to parents.  This provides scopes for vars and functions.
 on start-up.
 
 * Fs->hash_table holds user HolyC syms and if a sym is not found, it checks 
-parents.  When a duplicate sym is added to the table, it overshadows the 
-previous sym.  When developing software, typically you include the file at
-the 
-cmd prompt, make changes and reinclude it.  Old syms are overshadowed but
-they 
-are still there.  Periodically, kill the TASK and start fresh when mem is
-low. 
- If you wish your applications to free themselves instead of staying in mem, 
-spawn or [C:/Kernel/SrvCmd.CPP.Z,377] PopUp() a task to run the application
-and kill it when it's done.
+parents.  When a duplicate sym is added to the table, it overshadows the prev 
+sym.  When developing software, typically you include the file at the cmd 
+prompt, make changes and reinclude it.  Old syms are overshadowed but they
+are 
+still there.  Periodically, kill the TASK and start fresh when mem is low. 
+If 
+you wish your applications to free themselves instead of staying in mem,
+spawn 
+or [C:/Kernel/SrvCmd.CPP.Z,377] PopUp() a task to run the application and
+kill it when it's done.
 
 * To display the contents of a hash table, use the [C:/Adam/AHash.CPP.Z,149]
 Who() routine or the 
@@ -191,9 +191,9 @@ case you wish to make hash table sizes bigger.
 
 See [C:/Doc/Asm.TXT.Z,1].
 
-* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3311] CTask.
+* FS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3312] CTask.
 
-* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3435] CCPU.
+* GS must always point to the cur [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
 
 * Don't change the segment regs unless interrupts are off.  It's hard to do, 
 anyway.  [C:/Kernel/KUtils.CPP.Z,446] SET_FS_BASE and

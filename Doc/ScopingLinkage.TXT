@@ -8,7 +8,7 @@ in the current task's table and it places new syms in the current task's
 table.  Conceptually, syms are at the scope of environment vars in other 
 operating systems.
 
-When a sym is placed into a table, older syms with identical names will be 
+When a sym is placed into a table, older syms with ident names will be 
 overshadowed if they exist.  Duplicates are not allowed in many cases, 
 especially in asm blks.  Dupicates are allowed, by design in other cases, so 
 that you can repeatedly #include the same file from the cmd line while 
@@ -158,10 +158,10 @@ force it to noreg.
 
 * Note: static function vars do not go on the data heap, no matter the
 setting 
-of the [C:/Kernel/KernelA.HPP.Z,1541] OPTf_GLBLS_ON_DATA_HEAP.  They may in
+of the [C:/Kernel/KernelA.HPP.Z,1542] OPTf_GLBLS_ON_DATA_HEAP.  They may in
 the future.
 
-* [C:/Kernel/KernelA.HPP.Z,1538] OPTf_EXTERNS_TO_IMPORTS will treat _extern
+* [C:/Kernel/KernelA.HPP.Z,1539] OPTf_EXTERNS_TO_IMPORTS will treat _extern
 as _import and extern as import.  
 This allows a header to be used either as a JIT compiled or AOT compiled 
 header.
