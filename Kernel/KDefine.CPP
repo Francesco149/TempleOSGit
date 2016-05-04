@@ -124,7 +124,7 @@ U0 SysDefinesLoad()
 }
 
 U8 *Color2Str(U8 *buf,CColorROPU32 c)
-{//[C:/Kernel/KernelA.HPP.Z,2973] CColorROPU32 with flags to [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting str.
+{//[C:/Kernel/KernelA.HPP.Z,2974] CColorROPU32 with flags to [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting str.
   *buf=0;
   if (c.c0.rop&ROPBF_TWO_SIDED)
     CatPrint(buf,"TWO|");
@@ -155,14 +155,14 @@ U8 *Color2Str(U8 *buf,CColorROPU32 c)
 U8 *str2color_lst="/,)}>";
 
 CColorROPU16 Str2ColorU16(U8 *st)
-{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2969] CColorROPU16.
-  CColorROPU16 result=COLOR_INVALID;
+{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2970] CColorROPU16.
+  CColorROPU16 res=COLOR_INVALID;
   I64 i;
   U8 *ptr,*ptr2,*st2;
   if (!st) return COLOR_INVALID;
   while (TRUE) {
     if (!*st||StrOcc(str2color_lst,*st))
-      return result;
+      return res;
     if (Bt(chars_bmp_alpha,*st)) {
       ptr=st;
       while (Bt(chars_bmp_alpha_numeric,*ptr))
@@ -172,13 +172,13 @@ CColorROPU16 Str2ColorU16(U8 *st)
 	*ptr2++=*st++;
       *ptr2++=0;
       if (!StrICmp(st2,"TWO"))
-	result.rop|=ROPBF_TWO_SIDED;
+	res.rop|=ROPBF_TWO_SIDED;
       else if (!StrICmp(st2,"HALF"))
-	result.rop|=ROPBF_HALF_RANGE_COLOR;
+	res.rop|=ROPBF_HALF_RANGE_COLOR;
       else if ((i=DefineMatch(st2,"ST_COLORS",LMF_IGNORE_CASE))>=0)
-	result.color=i;
+	res.color=i;
       else if (!StrICmp(st2,"TRANSPARENT"))
-	result.color=TRANSPARENT;
+	res.color=TRANSPARENT;
       else {
 	Free(st2);
 	return COLOR_INVALID;
@@ -189,7 +189,7 @@ CColorROPU16 Str2ColorU16(U8 *st)
     else if ('0'<=*st<='9') {
       i=Str2I64(st,10,&ptr);
       if (0<=i<=0xFF) {
-	result.color=i;
+	res.color=i;
 	st=ptr;
       } else
 	return COLOR_INVALID;
@@ -199,19 +199,19 @@ CColorROPU16 Str2ColorU16(U8 *st)
 }
 
 CColorROPU32 Str2ColorU32(U8 *st)
-{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2973] CColorROPU32.
+{//[C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting color str with flags to [C:/Kernel/KernelA.HPP.Z,2974] CColorROPU32.
   U8 *st2;
-  CColorROPU32 result=0;
+  CColorROPU32 res=0;
   if (!st) return COLOR_INVALID;
   st2=MAlloc(StrLen(st)+1);
   StrFirstRem(st,str2color_lst,st2);
-  result.c0=Str2ColorU16(st2);
+  res.c0=Str2ColorU16(st2);
   if (*st) {
-    result.c1=Str2ColorU16(st);
-    result|=ROPF_DITHER;
+    res.c1=Str2ColorU16(st);
+    res|=ROPF_DITHER;
   }
-  if (result.c0.color==COLOR_INVALID||result.c1.color==COLOR_INVALID)
+  if (res.c0.color==COLOR_INVALID||res.c1.color==COLOR_INVALID)
     return COLOR_INVALID;
   else
-    return result;
+    return res;
 }

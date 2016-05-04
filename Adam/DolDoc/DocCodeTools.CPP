@@ -48,7 +48,7 @@ I64 PopUpEdFmt()
 	"LE=EF_CH_SC$\n\n"
 	"$MU,\"CANCEL\",LE=DOCM_CANCEL$\n\n"
 	"$GREEN$<ALT-BACKSPACE>$FG$ to undo if not happy\n"
-	"with the results.\n");
+	"with the ress.\n");
   i=PopUpMenu(doc);
   DocDel(doc);
   return i;
@@ -243,7 +243,7 @@ U0 EdRIStmt(CRILex *rx,Bool indent)
 
 CQueVectU8 *EdRICode(CDoc *doc)
 {
-  CQueVectU8 *result;
+  CQueVectU8 *res;
   CRILex *rx=CAlloc(sizeof(CRILex));
 
   rx->cc1=CmpCtrlNew(,CCF_KEEP_NEW_LINES|CCF_DONT_FREE_BUF,doc->filename.name);
@@ -263,9 +263,9 @@ CQueVectU8 *EdRICode(CDoc *doc)
 
   CmpCtrlDel(rx->cc1);
   CmpCtrlDel(rx->cc2);
-  result=rx->indent;
+  res=rx->indent;
   Free(rx);
-  return result;
+  return res;
 }
 
 U0 EdRemFunLeadingSpace(CDoc *doc)
@@ -334,13 +334,13 @@ class CRenum
 
 I64 EdRAGetU8(CDoc *doc)
 {
-  I64 result=-1;
+  I64 res=-1;
   while (doc->cur_entry!=doc &&
-	doc->cur_entry->type&DOCET_SELECTED && result<0) {
-    result=EdCurU8(doc);
+	doc->cur_entry->type&DOCET_SELECTED && res<0) {
+    res=EdCurU8(doc);
     EdCursorRight(doc);
   }
-  return result;
+  return res;
 }
 
 U0 EdRACollect(CDoc *doc,CRenum *root)
@@ -447,7 +447,7 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action,Bool beep=TRUE)
       Free(st);
       WinHorz(Fs->win_left,Fs->win_right, task);
       WinVert(Fs->win_top, Fs->win_bottom,task);
-      if (JobResultScan(tempc,&r)) {
+      if (JobResScan(tempc,&r)) {
 	st=DirFile(doc->filename.name,,"PRJ.Z");
 	prj_file=FileNameAbs(st,FUF_Z_OR_NOT_Z);
 	Free(st);
@@ -462,17 +462,17 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action,Bool beep=TRUE)
 		prj_file);
 	  tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	  Free(st);
-	  if (JobResultScan(tempc,&r))
+	  if (JobResScan(tempc,&r))
 	    if (!r) {
 	      tempc=TaskExe(task,Fs,
 		    "Load(\"SysTemp\",LDF_JUST_LOAD);",
 		    1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
-	      if (JobResultScan(tempc,&r))
+	      if (JobResScan(tempc,&r))
 		okay=TRUE;
 	    }
 	  tempc=TaskExe(task,Fs,"Del(\"SysTemp.*\");",
 		1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
-	  JobResultScan(tempc,&r);
+	  JobResScan(tempc,&r);
 	} else {
 	  Free(prj_file);
 	  st=DirFile(doc->filename.name,"Load","CPP.Z");
@@ -484,7 +484,7 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action,Bool beep=TRUE)
 	    st=MStrPrint("\"$WW,1$\";ExeFile(\"%s\",TRUE);",doc->filename.name);
 	  tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	  Free(st);
-	  if (JobResultScan(tempc,&r) && r)
+	  if (JobResScan(tempc,&r) && r)
 	    okay=TRUE;
 	}
 	Free(prj_file);

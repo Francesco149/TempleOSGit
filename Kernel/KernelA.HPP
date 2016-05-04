@@ -39,7 +39,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1543] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1544] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -387,7 +387,7 @@ class CPatchTableAbsAddr
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1956] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1957] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -733,14 +733,15 @@ public class CHashGeneric:CHash
   I64	user_data0,user_data1,user_data2;
 };
 
-#define REGT_R8		0
-#define REGT_R16	1
-#define REGT_R32	2
-#define REGT_R64	3
-#define REGT_SEG	4
-#define REGT_FSTK	5
-#define REGT_MM		6
-#define REGT_XMM	7
+#define REGT_NONE	0
+#define REGT_R8		1
+#define REGT_R16	2
+#define REGT_R32	3
+#define REGT_R64	4
+#define REGT_SEG	5
+#define REGT_FSTK	6
+#define REGT_MM		7
+#define REGT_XMM	8
 
 public class CHashReg:CHash
 {
@@ -828,7 +829,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,853] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,854] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -1003,7 +1004,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_CHECK_COLLAPSABLE 0x100000000000
 #define DOCEF_REFRESH_DATA	0x200000000000
 #define DOCEF_UPDATE_DATA	0x400000000000
-//[C:/Kernel/KernelA.HPP.Z,1008] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
+//[C:/Kernel/KernelA.HPP.Z,1009] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
 //of class. For ints, it derefs doc_e->data as a ptr.  For strings, it doesn't.
 #define DOCEF_DEREF_DATA	0x800000000000
 #define DOCEF_REMALLOC_DATA	0x1000000000000
@@ -1032,7 +1033,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEG_DONT_EDIT	(DOCEF_DEFINE|DOCEF_HTML_LINK|\
   DOCEF_AUX_STR|DOCEF_BIN_PTR_LINK|DOCEF_SCROLLING_X|DOCEF_TAG_CB)
 
-//These are identical to Doc flags
+//These are ident to Doc flags
 #define DOCEF_HIGHLIGHT		0x4000000
 #define DOCEF_WORD_WRAP		0x8000000
 #define DOCEF_BLINK		ATTRF_BLINK
@@ -1200,7 +1201,7 @@ public class CDocEntry:CDocEntryBase
 	*my_fmt_data;
   I64	hex_ed_width;
   I32	scroll_len,
-	len, //[C:/Kernel/KernelA.HPP.Z,1176] DOCE_LEN_DFT
+	len, //[C:/Kernel/KernelA.HPP.Z,1177] DOCE_LEN_DFT
 	bin_num;
   U8	raw_type,pad[3];
   CDocBin *bin_data;
@@ -1216,7 +1217,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1243] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1244] Editor Flags
 
 class CEdFindText
 {
@@ -1244,7 +1245,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1212] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1213] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1556,7 +1557,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1338] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1339] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -1594,29 +1595,28 @@ public class CAutoCompleteDictGlbls
 #define ICF_USE_F64			0x000000040
 #define ICF_USE_UNSIGNED		0x000000080
 #define ICF_USE_INT			0x000000100 //highest priority
-#define ICF_NO_DEPEND_RESULT		0x000000200
+#define ICF_RES_NOT_USED		0x000000200
 #define ICF_CODE_FINAL			0x000000400
 #define ICF_BY_VAL			0x000000800 //By value, not ref.
 #define ICF_SHORT_JMP			0x000001000
-#define ICF_PUSH_RESULT			0x000002000
+#define ICF_PUSH_RES			0x000002000
 #define ICF_PASS_TRACE			0x000004000
 #define ICF_R_WAS_STK			0x000008000
 #define ICF_A1_WAS_STK			0x000010000
 #define ICF_A2_WAS_STK			0x000020000
 #define ICF_PUSH_CMP			0x000040000 //for 50<i<j<=100 exps
 #define ICF_POP_CMP			0x000080000 //for 50<i<j<=100 exps
-#define ICF_DEPEND_RESULT		0x000100000
-#define ICF_SWAP			0x000200000
-#define ICf_DONT_PUSH_FLOAT0		22 // 3bits
-#define ICf_DONT_POP_FLOAT0		25 // 3bits
-#define ICF_ALT_TEMPLATE		0x010000000
-#define ICF_LOCK			0x020000000
-#define ICf_LOCK			29
-#define ICF_NO_RIP			0x040000000
-#define ICF_DEL_PREVIOUS_INS		0x080000000
-#define ICF_PREVIOUS_DELETED		0x100000000
-#define ICF_DONT_RESTORE		0x200000000
-#define ICG_NO_CVT_MASK			0x3FFFFFF00
+#define ICF_SWAP			0x000100000
+#define ICf_DONT_PUSH_FLOAT0		21 // 3bits
+#define ICf_DONT_POP_FLOAT0		24 // 3bits
+#define ICF_ALT_TEMPLATE		0x008000000
+#define ICF_LOCK			0x010000000
+#define ICf_LOCK			28
+#define ICF_NO_RIP			0x020000000
+#define ICF_DEL_PREV_INS		0x040000000
+#define ICF_PREV_DELETED		0x080000000
+#define ICF_DONT_RESTORE		0x100000000
+#define ICG_NO_CVT_MASK			0x1FFFFFF00
 
 #define IC_BODY_SIZE			0x80
 
@@ -1662,7 +1662,7 @@ class CIntermediateCode:CIntermediateCodeBase
     U8 ic_body[IC_BODY_SIZE];
 //Tree Links are created in OptPass012.  An ADD opcode, for exmaple,
     //points back to its two earlier addend insts, not MAlloced,
-    //just pointers to previous CIntermediate codes in the array.
+    //just pointers to prev CIntermediate codes in the array.
 
     //Tree links get destroyed during Pass789A when they get overwrites
     //by machine code.	(Saves room to union the output machine code buffer
@@ -1845,7 +1845,8 @@ class CAsmArg
 {
   CAsmNum num;
   I64	seg,size, //Size in bytes
-	reg1,reg2,fstk,
+	reg1,reg2,
+	reg1_type,reg2_type,
 	scale;
   Bool	indirect,imm_or_off_present,just_seg,pad[5];
 };
@@ -1873,7 +1874,7 @@ class CAsmUnresolvedRef
 #define OM_IW 6
 #define OM_ID 7
 
-#define ARGT_NO		0
+#define ARGT_NONE	0
 #define ARGT_REL8	1
 #define ARGT_REL16	2
 #define ARGT_REL32	3
@@ -2159,7 +2160,7 @@ class CLexHashTableContext
 #define CCF_PAREN		0x1000000000
 #define CCf_PAREN		36
 #define CCF_CLASS_IP		0x2000000000
-#define CCF_DONT_MAKE_RESULT	0x4000000000
+#define CCF_DONT_MAKE_RES	0x4000000000
 
 public class CCmpCtrl
 {
@@ -2825,10 +2826,10 @@ class CMemUsed
 /*TempleOS does not mess with page tables after setting them up
 during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-[C:/Kernel/KernelA.HPP.Z,2868] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+[C:/Kernel/KernelA.HPP.Z,2869] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
 and is not related to CPU hardware.
 
-All virtual addresses are identical to physical at all times.
+All virtual addresses are ident to physical at all times.
 text.vga_alias is not identity-mapped, however.
 
 There is no high kernel memory because RAM's physical
@@ -2934,7 +2935,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2944] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2945] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3034,7 +3035,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3033] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3034] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3034] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3035] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3196,7 +3197,7 @@ class CSrvCmd
 
   U8	*aux_str;
   I64	aux1,aux2, //Sometimes called arg1 and arg2. (Windows msg param1 param2)
-	result;
+	res;
 
   CTask	*spawned_task,
 	*master_task;
@@ -3214,8 +3215,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3476] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3476] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3477] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3477] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3657,12 +3658,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2934] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2935] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2944] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2945] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3695,7 +3696,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3633] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3634] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

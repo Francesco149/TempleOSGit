@@ -74,9 +74,9 @@ U0 AsmHashLoad()
   while (cc->token) {
     if (cc->token!=TK_IDENT)
       LexExcept(cc,"Expecting identifier at ");
-    i=LstMatch(cc->cur_str,"R8\0R16\0R32\0R64\0SEG\0FSTK\0"
+    i=LstMatch(cc->cur_str,"NONE\0R8\0R16\0R32\0R64\0SEG\0FSTK\0"
 	  "MM\0XMM\0OPCODE\0KEYWORD\0ASM_KEYWORD\0");
-    if (i<0)
+    if (i<=0)
       LexExcept(cc,"Unknown Stmt");
     Lex(cc); //skip keyword
     if (cc->token!=TK_IDENT)
@@ -161,7 +161,7 @@ U0 AsmHashLoad()
 	//Parse aliases.
 	if (cc->token==':') {
 	  while (Lex(cc)==TK_IDENT) {
-	    tempo2=MAllocIdentical(tempo);
+	    tempo2=MAllocIdent(tempo);
 	    tempo2->str=cc->cur_str;
 	    cc->cur_str=0;
 	    tempo2->oc_flags|=OCF_ALIAS;
@@ -180,7 +180,7 @@ U0 AsmHashLoad()
 	if (cc->token!=TK_I64)
 	  LexExcept(cc,"Expecting int at ");
 	temph->user_data0=cc->cur_i64;
-	if (i==9)
+	if (i==10)
 	  temph->type=HTT_KEYWORD;
 	else
 	  temph->type=HTT_ASM_KEYWORD;

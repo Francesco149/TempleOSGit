@@ -416,7 +416,7 @@ U0 MPDrawIt(CTask *task,CDC *dc)
   dc->x=cx;
   dc->y=cy;
 
-  //dc->x and the translation part of dc->r are identical in effect,
+  //dc->x and the translation part of dc->r are ident in effect,
   //but we use both to show-off.	We could add offsets together and
   //use one or the other.
 

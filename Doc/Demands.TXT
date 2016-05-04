@@ -75,8 +75,8 @@ mouse must work.  The BIOS must enable these.
 * The x86 IN/OUT port instructions, normally have a delay.  Perhaps, VMware & 
 Intel can enable faster x86 IN/OUT instruction timing for ATA/ATAPI PIO, so 
 bandwidth isn't bad when doing port I/O.  See
-[C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetResult().  We don't want 
-to do DMA.  Perhaps, x86 CPU chips need a new TempleOS mode for fast IN/OUT 
+[C:/Kernel/BlkDev/DskATA.CPP.Z,67] ATAGetRes().  We don't want to 
+do DMA.  Perhaps, x86 CPU chips need a new TempleOS mode for fast IN/OUT 
 instructions?
 
 * Perhaps, a new interrupt descriptor table entry type or a new x86 CPU mode 

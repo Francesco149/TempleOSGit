@@ -7,7 +7,7 @@ hash table with a list using [C:/Kernel/KHashB.CPP.Z,206] HashDefineLstAdd().
 [C:/Adam/DolDoc/DocInit.CPP.Z,1] ::/Adam/DolDoc/DocInit.CPP.
 
 If you have an @ as the first char of a define list entry, it is an alias for 
-the previous entry num.
+the prev entry num.
 
 Each task can load its own Define strings.  Remember, when a [Hash,1] Hash
 table is 

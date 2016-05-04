@@ -2,6 +2,17 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----05/03/16 15:45:18----
+* Added missiles to [C:/Apps/X-Caliber/X-Caliber.CPP,1].
+* Fixed bug in [C:/Kernel/KernelB.HPP.Z,162] D3Unit().
+
+----05/01/16 15:12:31----
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Identical","Ident");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Previous","Prev");
+* [C:/Home/HomeWrappers.CPP.Z,13] R("Result","Res");
+* Started assembler MMX/SSE.  Not done.
+* Changed a couple Bible related things.
+
 ----04/26/16 01:18:57----
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("MapDrv","[C:/Kernel/BlkDev/DskDrv.CPP.Z,212] DrvMap");
@@ -50,23 +61,23 @@ size.
 * Added [C:/Demo/Games/CharDemo.CPP,1].
 
 ----03/22/16 16:58:25----
-* Added [C:/Kernel/KernelA.HPP.Z,1022] DOCEF_DFT_RAW_TYPE.  Modified
+* Added [C:/Kernel/KernelA.HPP.Z,1023] DOCEF_DFT_RAW_TYPE.  Modified
 [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() to look-up raw type 
 automatically from the compiler's class information.
-* Added [C:/Kernel/KernelA.HPP.Z,1021] DOCEF_DFT_LEN.  Modified
+* Added [C:/Kernel/KernelA.HPP.Z,1022] DOCEF_DFT_LEN.  Modified
 [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() to look-up string length 
 automatically from the compiler's class information.
 
 ----03/21/16 07:28:35----
-* Added [C:/Kernel/KernelA.HPP.Z,1946] OCF_ALIAS.
+* Added [C:/Kernel/KernelA.HPP.Z,1947] OCF_ALIAS.
 * [C:/Home/HomeWrappers.CPP.Z,13] R("Integer","Int");
 * Added aliases to [C:/Compiler/OpCodes.TXT.Z,1].
 
 ----03/21/16 02:12:08----
-* Added [C:/Kernel/KernelA.HPP.Z,901] DOCT_MARKER.
+* Added [C:/Kernel/KernelA.HPP.Z,902] DOCT_MARKER.
 * Added [C:/Kernel/KernelA.HPP.Z,1625] CICType.
-* Optimized [C:/Kernel/KernelA.HPP.Z,1583] MDG_MASK and
-[C:/Kernel/KernelA.HPP.Z,1567] RTG_MASK values.
+* Optimized [C:/Kernel/KernelA.HPP.Z,1584] MDG_MASK and
+[C:/Kernel/KernelA.HPP.Z,1568] RTG_MASK values.
 
 ----03/19/16 09:15:11----
 * Fixed bug in [C:/Adam/DolDoc/DocFind.CPP.Z,383] EdFindReplace().
@@ -98,12 +109,12 @@ automatically from the compiler's class information.
 * Improved <CTRL-l> prompting.
 
 ----02/09/16 23:54:23----
-* Created [C:/Kernel/KernelA.HPP.Z,963] DOCEF_LEN with arg. 
-[C:/Kernel/KernelA.HPP.Z,926] DOCT_DATA has default 64 len.
+* Created [C:/Kernel/KernelA.HPP.Z,964] DOCEF_LEN with arg. 
+[C:/Kernel/KernelA.HPP.Z,927] DOCT_DATA has default 64 len.
 
 ----02/09/16 09:34:32----
 * **TempleOS version 4.03 Released**
-* Added [C:/Kernel/KernelA.HPP.Z,1009] DOCEF_REMALLOC_DATA.
+* Added [C:/Kernel/KernelA.HPP.Z,1010] DOCEF_REMALLOC_DATA.
 
 ----02/05/16 23:00:53----
 * Moved [C:/Demo/ToHtmlToTXTExample/ToHtml.CPP,1].
@@ -139,7 +150,7 @@ automatically from the compiler's class information.
 * Fixed bug in locate sprite elem code.
 * Overhauled <CTRL-r> sprite editor.
 * Added [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,143] DocHighlightCursor() and
-[C:/Kernel/KernelA.HPP.Z,1302] DOCf_DONT_HIGHLIGHT_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,1303] DOCf_DONT_HIGHLIGHT_CURSOR.
 
 ----01/28/16 14:05:52----
 * Fixed bug in [C:/Adam/AutoComplete/ACTask.CPP.Z,260] AutoComplete() init.
@@ -156,7 +167,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTExample/HtmlGen.CPP,1] and 
 [C:/Demo/ToHtmlToTXTExample/TXTGen.CPP,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3502] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3503] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -191,7 +202,7 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 
 ----01/15/16 00:12:02----
 * Added [C:/Kernel/BlkDev/DskDrv.CPP.Z,137] Let2BlkDevType().
-* Added [C:/Kernel/KernelA.HPP.Z,1406] WIF_SELF_FOCUS to
+* Added [C:/Kernel/KernelA.HPP.Z,1407] WIF_SELF_FOCUS to
 [C:/Misc/OSInstall.CPP.Z,1].
 * Added %$F to [C:/Doc/Print.TXT.Z,1] Print("") Fmt Strings.
 
@@ -205,7 +216,7 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 config scripts for compiling the 
 kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
 be changed.
-* Added [C:/Kernel/KernelA.HPP.Z,2126] CCF_QUESTION_HELP.
+* Added [C:/Kernel/KernelA.HPP.Z,2127] CCF_QUESTION_HELP.
 
 ----01/11/16 00:04:38----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("PAGE_SIZE","MEM_PAGE_SIZE"); etc.
@@ -213,7 +224,7 @@ be changed.
 * Added [C:/Demo/MemDemo.CPP,1].
 
 ----01/08/16 17:04:58----
-* Added [C:/Kernel/KernelA.HPP.Z,2598] FUF_RISKY to
+* Added [C:/Kernel/KernelA.HPP.Z,2599] FUF_RISKY to
 [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 
@@ -244,7 +255,7 @@ from 32-bit to 64-bit.
 ----11/03/15 22:40:18----
 * Added CTRL-ALT-f to toggle an aux font.
 * CTRL-ALT-v is now flush VGA cache.
-* Added [C:/Adam/God/GodBible.CPP.Z,273] BibleDoc to present Bible with tree
+* Added [C:/Adam/God/GodBible.CPP.Z,279] BibleDoc to present Bible with tree
 widgets.
 * Fixed CTRL-ALT-C bug.
 
@@ -274,7 +285,7 @@ common fault vector.
 * **TempleOS version 3.11 Released**
 
 ----08/28/15 01:50:15----
-*  Added [C:/Adam/God/GodBible.CPP.Z,329] BibleView() and <CTRL-ALT-b>.
+*  Added [C:/Adam/God/GodBible.CPP.Z,335] BibleView() and <CTRL-ALT-b>.
 
 ----08/25/15 23:29:48----
 * Moved [C:/Adam/Opt/Utils/ToDolDoc.CPP.Z,3] ToDolDoc() to /Adam/Opt/Utils.
@@ -352,7 +363,7 @@ WinMgrTask().
 * Added [C:/Kernel/Display.CPP.Z,126] WinInside().
 * Added [C:/Kernel/KernelA.HPP.Z,610] SYS_SEMA_JUST_PUMP_MSGS.
 * Added help for <ALT> & <CTRL> keys.
-* Added [C:/Kernel/KernelA.HPP.Z,1444] WIf_SELF_KEY_DESC.
+* Added [C:/Kernel/KernelA.HPP.Z,1445] WIf_SELF_KEY_DESC.
 
 ----07/26/15 06:57:29----
 * Cleaned-up [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind() and
@@ -385,7 +396,7 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2762] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2763] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,169] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]

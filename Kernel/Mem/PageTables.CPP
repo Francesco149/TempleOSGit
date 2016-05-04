@@ -123,12 +123,12 @@ I64 *MemPageTable(U8 *a)
 Bool MemPagePresentMark(U8 *a,Bool val)
 {//Mark an addr's page present or not-present.
   I64 *pte=MemPageTable(a);
-  Bool result=*pte&1;
+  Bool res=*pte&1;
   if (val)
     *pte=*pte|1;  //Mark present
   else
     *pte=*pte&~1; //Mark not present
   InvlPg(a);
-  return result;
+  return res;
 }
 

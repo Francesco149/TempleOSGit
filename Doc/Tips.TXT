@@ -31,10 +31,9 @@ partition or boot to a standard TempleOS CD/DVD and use
 [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount() to mount your 
 hard drive.
 
-* I copy my files to a mirrored identical partition, periodically with 
-[C:/Adam/ABlkDev/ADskA.CPP.Z,122] CopyTree() commands in scripts.  I do merge
-commands with a menu entry like 
-this:
+* I copy my files to a mirrored ident partition, periodically with
+[C:/Adam/ABlkDev/ADskA.CPP.Z,122] CopyTree() 
+commands in scripts.  I do merge commands with a menu entry like this:
 Merge(\"C:/*\",\"D:/*\",\"+r+d\"); to check my changes.
 
 * <CTRL-m> at the cmd line to access your PersonalMenu.  Place macros there 
@@ -44,9 +43,10 @@ when it is finished.  This
 returns mem to the system.  Be sure to press <CTRL-s> to save your macro/menu 
 area after making changes.
 
-* You can use ans in cmd line expressions.  It holds the result the last cmd 
-line operation.  You can use the cmd prompt as a calculator by just entering 
-expressions like 1+2*3;.  F64 results can be accessed with ansf.
+* You can use ans in cmd line expressions.  It holds the res the last cmd
+line 
+operation.  You can use the cmd prompt as a calculator by just entering 
+expressions like 1+2*3;.  F64 ress can be accessed with ansf.
 
 * Use the PullDown menu at the top of the screen to learn commands, or for 
 finding the keyboard controls to games.
@@ -101,19 +101,19 @@ different apps might interfere.  I use them most for debugging--just values
 easily viewed.  See [C:/Demo/Progress.CPP,1].
 
 * Use [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to adjust the size of
-the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1351] CDoc 
+the cmd line buf.  It counts [C:/Kernel/KernelA.HPP.Z,1352] CDoc 
 entries, not lines.
 
 * Many data structures have a user_data member.  Those are available for you 
-to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3311] CTask,
-[C:/Kernel/KernelA.HPP.Z,1178] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2549]
+to store a data item, for convenience.  [C:/Kernel/KernelA.HPP.Z,3312] CTask,
+[C:/Kernel/KernelA.HPP.Z,1179] CDocEntry and [C:/Kernel/KernelA.HPP.Z,2550]
 CDirEntry have 
 them.  You shouldn't encounter conflicts with TempleOS using them.
 
 * If, for some strange reason, you wanted to reduce mem usage, make a smaller 
 disk cache when you recompile the kernel; disabling AutoComplete; Specify 
 smaller stk sizes when doing [C:/Kernel/KTask.CPP.Z,208] Spawn(), chang
-[C:/Kernel/KernelA.HPP.Z,2878] MEM_DFT_STK, and using
+[C:/Kernel/KernelA.HPP.Z,2879] MEM_DFT_STK, and using
 [C:/Adam/DolDoc/DocRecalcLib.CPP.Z,176] DocMax() to 
 reduce the cmd line buffer size.
 
@@ -135,16 +135,16 @@ will check for broken links in
 documentation.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1536] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1537] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1537] OPTf_WARN_DUP_TYPES,ON) to find
+Option([C:/Kernel/KernelA.HPP.Z,1538] OPTf_WARN_DUP_TYPES,ON) to find
 unnecessary local var 
 type stmts.
 
-* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1533]
+* [C:/Compiler/CMisc.CPP.Z,1] Option([C:/Kernel/KernelA.HPP.Z,1534]
 OPTf_ECHO,ON) can be placed in [C:/StartOS.CPP.Z,1] StartOS.CPP to echo
 start-up scripts.
 
@@ -210,14 +210,14 @@ view data, you can use [C:/Adam/DolDoc/DocEd.CPP.Z,3] View().
 the user presses <ESC> or <SHIFT
 -ESC>.
 
-* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1483]
+* You can access the word under the cursor at [C:/Kernel/KernelA.HPP.Z,1484]
 ac.cur_word.
 
 * You can reactivate AutoComplete after closing it by pressing <CTRL-Fun Key> 
 or <ALT-w> if you have it defined.
 
 * <CTRL-SHIFT-T> to toggle to/from plain text just the
-[C:/Kernel/KernelA.HPP.Z,1351] CDoc cmd under the 
+[C:/Kernel/KernelA.HPP.Z,1352] CDoc cmd under the 
 cursor.  See [C:/Demo/DolDoc/TextDemo.CPP,1].
  
 * If you toggle to plain text when you are working with graphics in a 
@@ -283,11 +283,11 @@ cnts.jiffies.
 * Use [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog(),
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,115] HeapLogAddrRep() and
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,146] HeapLogSizeRep() to find leaks.  Don't 
-be confused by [C:/Kernel/KernelA.HPP.Z,1351] CDoc allocations.  Those are
+be confused by [C:/Kernel/KernelA.HPP.Z,1352] CDoc allocations.  Those are
 generated when text is written to 
 the cmd line buffer.
 
-* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2788]
+* For advanced heap debugging, play with [C:/Kernel/KernelA.HPP.Z,2789]
 _CFG_HEAP_DBG.  You're on your own.
 
 * You can use [C:/Adam/DolDoc/DocFile.CPP.Z,330] Type() to display .BMP or

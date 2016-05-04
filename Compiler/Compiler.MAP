@@ -1,5 +1,5 @@
 [C:/Compiler/CExcept.CPP.Z,50] LexPutPos
-[C:/Compiler/BackB.CPP.Z,429] ICAssignPostIncDec
+[C:/Compiler/BackB.CPP.Z,430] ICAssignPostIncDec
 [C:/Compiler/BackFA.CPP.Z,62] CmpSetFloatOpPushPop
 [C:/Compiler/BackFA.CPP.Z,169] ICFCvt2
 [C:/Compiler/OptLib.CPP.Z,517] CmpRawTypePointed
@@ -17,7 +17,7 @@
 [C:/Compiler/BackLib.CPP.Z,28] ICOpSizeRex
 [C:/Compiler/PrsVar.CPP.Z,117] CVI2
 [C:/Compiler/BackLib.CPP.Z,17] ICU8
-[C:/Compiler/Asm.CPP.Z,263] AsmStoreNum
+[C:/Compiler/Asm.CPP.Z,268] AsmStoreNum
 [C:/Compiler/OptPass012.CPP.Z,23] OptPass012
 [C:/Compiler/LexLib.CPP.Z,191] MemberLstSize
 [C:/Compiler/BackC.CPP.Z,355] ICQueIns
@@ -49,7 +49,7 @@
 [C:/Compiler/CMain.CPP.Z,607] ExePrint
 [C:/Compiler/BackLib.CPP.Z,251] SLASH_OP_NEG
 [C:/Compiler/PrsVar.CPP.Z,416] PrsVarLst
-[C:/Compiler/Asm.CPP.Z,809] PrsAsmDefine
+[C:/Compiler/Asm.CPP.Z,814] PrsAsmDefine
 [C:/Compiler/PrsExp.CPP.Z,15] PrsAddOp
 [C:/Compiler/CExcept.CPP.Z,65] LexWarn
 [C:/Compiler/PrsExp.CPP.Z,12] PE_POP_ALL1
@@ -96,8 +96,8 @@
 [C:/Compiler/CMain.CPP.Z,157] CmpBuf
 [C:/Compiler/Templates.CPP.Z,394] CMP_TEMPLATES_DONT_PUSH_POP
 [C:/Compiler/BackA.CPP.Z,1] ICAddEct
-[C:/Compiler/BackB.CPP.Z,283] ICToF64
-[C:/Compiler/Asm.CPP.Z,883] PrsBinFile
+[C:/Compiler/BackB.CPP.Z,284] ICToF64
+[C:/Compiler/Asm.CPP.Z,888] PrsBinFile
 [C:/Compiler/CHash.CPP.Z,72] HashTableSize2
 [C:/Compiler/CHash.CPP.Z,33] HashEntrySize2
 [C:/Compiler/UAsm.CPP.Z,238] Ui
@@ -105,14 +105,14 @@
 [C:/Compiler/OptLib.CPP.Z,230] OptBrZero
 [C:/Compiler/UAsm.CPP.Z,660] Un
 [C:/Compiler/PrsExp.CPP.Z,298] PrsSizeOf
-[C:/Compiler/BackB.CPP.Z,277] ICToI64
+[C:/Compiler/BackB.CPP.Z,278] ICToI64
 [C:/Compiler/BackA.CPP.Z,461] ICMod
 [C:/Compiler/OptLib.CPP.Z,17] OptSetNOP1
 [C:/Compiler/OptPass789A.CPP.Z,1] OptPass789A
 [C:/Compiler/OptLib.CPP.Z,25] OptSetNOP2
 [C:/Compiler/OptLib.CPP.Z,94] FBO1_F64
 [C:/Compiler/BackC.CPP.Z,582] ICXorEqu
-[C:/Compiler/BackB.CPP.Z,266] ICToUpper
+[C:/Compiler/BackB.CPP.Z,267] ICToUpper
 [C:/Compiler/AsmLib.CPP.Z,127] AsmLexExpression
 [C:/Compiler/BackLib.CPP.Z,430] ICMov
 [C:/Compiler/BackB.CPP.Z,10] ICNot
@@ -151,7 +151,7 @@
 [C:/Compiler/BackLib.CPP.Z,139] ICModr1
 [C:/Compiler/BackLib.CPP.Z,217] ICModr2
 [C:/Compiler/BackLib.CPP.Z,261] SLASH_OP_FMUL
-[C:/Compiler/BackB.CPP.Z,304] ICPreIncDec
+[C:/Compiler/BackB.CPP.Z,305] ICPreIncDec
 [C:/Compiler/PrsExp.CPP.Z,588] PrsUnaryTerm
 [C:/Compiler/LexLib.CPP.Z,157] MemberLstDel
 [C:/Compiler/BackLib.CPP.Z,259] SLASH_OP_FSUB
@@ -164,7 +164,7 @@
 [C:/Compiler/BackFB.CPP.Z,502] ICFAdd
 [C:/Compiler/PrsExp.CPP.Z,2] PE_UNARY_TERM2
 [C:/Compiler/CMisc.CPP.Z,88] CmdLinePmt
-[C:/Compiler/Asm.CPP.Z,172] AsmMakeArgMask
+[C:/Compiler/Asm.CPP.Z,177] AsmMakeArgMask
 [C:/Compiler/PrsLib.CPP.Z,229] COCHeaderPut
 [C:/Compiler/PrsVar.CPP.Z,206] PrsGlblInit
 [C:/Compiler/BackC.CPP.Z,540] ICAndEqu
@@ -212,7 +212,7 @@
 [C:/Compiler/Lex.CPP.Z,91] lex_zeros
 [C:/Compiler/PrsStmt.CPP.Z,567] CSwitchCase
 [C:/Compiler/AsmResolve.CPP.Z,1] AsmResolve
-[C:/Compiler/Asm.CPP.Z,390] PrsAsmInst
+[C:/Compiler/Asm.CPP.Z,395] PrsAsmInst
 [C:/Compiler/PrsLib.CPP.Z,249] COCCompile
 [C:/Compiler/CMain.CPP.Z,419] Cmp
 [C:/Compiler/PrsLib.CPP.Z,11] PrsPush2
@@ -220,12 +220,12 @@
 [C:/Compiler/CExcept.CPP.Z,98] UndefinedExtern
 [C:/Compiler/OptPass4.CPP.Z,1] OptIC4
 [C:/Compiler/OptPass6.CPP.Z,1] OptIC6
-[C:/Compiler/BackB.CPP.Z,468] ICCmpAndBranch
+[C:/Compiler/BackB.CPP.Z,469] ICCmpAndBranch
 [C:/Compiler/BackA.CPP.Z,408] ICDivEqu
 [C:/Compiler/PrsStmt.CPP.Z,482] PrsWhile
 [C:/Compiler/BackFB.CPP.Z,217] ICFCmpAndBranch
 [C:/Compiler/Lex.CPP.Z,443] Lex
-[C:/Compiler/BackB.CPP.Z,634] ICTestAndBranch
+[C:/Compiler/BackB.CPP.Z,635] ICTestAndBranch
 [C:/Compiler/Compiler.PRJ.Z,21] uasm
 [C:/Compiler/BackLib.CPP.Z,131] MODR_INDIRECT_REG
 [C:/Compiler/PrsExp.CPP.Z,3] PE_MAYBE_MODIFIERS
@@ -242,14 +242,14 @@
 [C:/Compiler/PrsLib.CPP.Z,16] PrsPop2
 [C:/Compiler/Templates.CPP.Z,4] CMP_TEMPLATES
 [C:/Compiler/BackLib.CPP.Z,132] MODR_D8_INDIRECT_REG
-[C:/Compiler/Asm.CPP.Z,899] PrsAsmBlk
+[C:/Compiler/Asm.CPP.Z,904] PrsAsmBlk
 [C:/Compiler/Asm.CPP.Z,35] PrsAsmArg
 [C:/Compiler/Lex.CPP.Z,277] LexFirstRem
 [C:/Compiler/LexLib.CPP.Z,87] MemberClassBaseFind
 [C:/Compiler/LexLib.CPP.Z,67] MemberFind
 [C:/Compiler/Compiler.PRJ.Z,16] cmp
 [C:/Compiler/OptLib.CPP.Z,40] OptLag
-[C:/Compiler/BackB.CPP.Z,345] ICPostIncDec
+[C:/Compiler/BackB.CPP.Z,346] ICPostIncDec
 [C:/Compiler/BackFB.CPP.Z,580] ICFPostIncDec
 [C:/Compiler/BackLib.CPP.Z,398] ICTest
 [C:/Compiler/BackC.CPP.Z,464] ICModU64
@@ -286,7 +286,7 @@
 [C:/Compiler/Lex.CPP.Z,328] cmp_type_flags_src_code
 [C:/Compiler/PrsVar.CPP.Z,123] PrsVarInit2
 [C:/Compiler/PrsLib.CPP.Z,6] PrsPop
-[C:/Compiler/Asm.CPP.Z,388] asm_seg_prefixes
+[C:/Compiler/Asm.CPP.Z,393] asm_seg_prefixes
 [C:/Compiler/BackC.CPP.Z,419] ICMinMax
 [C:/Compiler/CInit.CPP.Z,205] CmpLoadDefines
 [C:/Compiler/PrsStmt.CPP.Z,455] PrsIf
@@ -297,7 +297,7 @@
 [C:/Compiler/PrsLib.CPP.Z,114] COCPopNoFree
 [C:/Compiler/CExcept.CPP.Z,110] ParenWarning
 [C:/Compiler/PrsExp.CPP.Z,378] PrsFunCall
-[C:/Compiler/BackB.CPP.Z,384] ICDerefPostIncDec
+[C:/Compiler/BackB.CPP.Z,385] ICDerefPostIncDec
 [C:/Compiler/CMisc.CPP.Z,1] Option
 [C:/Compiler/CMain.CPP.Z,655] ExeFile2
 [C:/Compiler/OptLib.CPP.Z,549] COptMemberVar
@@ -309,7 +309,7 @@
 [C:/Compiler/BackLib.CPP.Z,133] MODR_D32_INDIRECT_REG
 [C:/Compiler/Lex.CPP.Z,107] LexGetChar
 [C:/Compiler/Lex.CPP.Z,270] LexSkipEol
-[C:/Compiler/BackB.CPP.Z,682] ICFlagBranch
+[C:/Compiler/BackB.CPP.Z,683] ICFlagBranch
 [C:/Compiler/BackLib.CPP.Z,260] SLASH_OP_FSUBR
 [C:/Compiler/BackFB.CPP.Z,560] ICFPreIncDec
 [C:/Compiler/BackLib.CPP.Z,134] MODR_SIB_INDIRECT_REG
@@ -321,7 +321,7 @@
 [C:/Compiler/CMain.CPP.Z,665] StreamExePrint
 [C:/Compiler/PrsLib.CPP.Z,152] COCGoToLabelFind
 [C:/Compiler/OptLib.CPP.Z,555] OptMVCompare
-[C:/Compiler/BackB.CPP.Z,289] ICToBool
+[C:/Compiler/BackB.CPP.Z,290] ICToBool
 [C:/Compiler/PrsStmt.CPP.Z,68] PrsFunJoin
 [C:/Compiler/PrsStmt.CPP.Z,787] PrsNoUnusedWarn
 [C:/Compiler/OptLib.CPP.Z,484] OptFixSizeOf

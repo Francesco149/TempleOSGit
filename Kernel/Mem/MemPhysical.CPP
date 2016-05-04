@@ -127,7 +127,7 @@ U0 Mem32DevFree(U8 *base)
 
 U8 *Mem64DevAlloc(I64 *_pages2Meg)
 {//Alloc 64-bit addr space for device.
-  U8 *result;
+  U8 *res;
   I64 i=*_pages2Meg,*pte;
   while (LBts(&sys_semas[SYS_SEMA_DEV_MEM],0))
     Yield;
@@ -137,9 +137,9 @@ U8 *Mem64DevAlloc(I64 *_pages2Meg)
     *pte=*pte&~0x18 |0x11; //Uncached and present
     InvlPg(dev.mem64_ptr);
   }
-  result=dev.mem64_ptr;
+  res=dev.mem64_ptr;
   LBtr(&sys_semas[SYS_SEMA_DEV_MEM],0);
-  return result;
+  return res;
 }
 
 U0 Mem64DevFree(U8 *base,I64 pages2Meg)

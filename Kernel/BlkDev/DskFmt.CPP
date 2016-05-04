@@ -52,9 +52,9 @@ Bool DrvTypeSet(U8 drv_let,I64 type=FSt_REDSEA)
 
 U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=FSt_FAT32)
 {//Format hard drive or RAM drive.
-//**Warning:** Destroys all previous info.
+//**Warning:** Destroys all prev info.
   //quick=FALSE means fill entire drive with zeros.
-  //Choose [C:/Kernel/KernelA.HPP.Z,2680] FSt_FAT32 or [C:/Kernel/KernelA.HPP.Z,2679] FSt_REDSEA.
+  //Choose [C:/Kernel/KernelA.HPP.Z,2681] FSt_FAT32 or [C:/Kernel/KernelA.HPP.Z,2680] FSt_REDSEA.
   //You don't format a CD/DVD with this.
   CDrv *dv=Let2Drv(drv_let);
   Bool old_silent=IsSilent;

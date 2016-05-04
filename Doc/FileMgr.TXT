@@ -44,14 +44,14 @@ RIGHT-CLICK or <ENTER>
 
 'M'
   Make CD/DVD ISO file.  This creates a file image of the dir the cursor is 
-on.  The name of the ISO file is [C:/Kernel/KernelA.HPP.Z,2748]
+on.  The name of the ISO file is [C:/Kernel/KernelA.HPP.Z,2749]
   blkdev.dft_iso_filename and can be 
 redefined in your start-up scripts.  You may wish to place it on a different 
 drive.
 
 'B'
   Burn CD/DVD ISO file.  This burns a CD/DVD using the image file, 
-[C:/Kernel/KernelA.HPP.Z,2748] blkdev.dft_iso_filename to the drive the
+[C:/Kernel/KernelA.HPP.Z,2749] blkdev.dft_iso_filename to the drive the
   cursor is on.
 
 
@@ -68,7 +68,7 @@ Instructions on Burning CD/DVD's
   Create a temporary dir to hold files and copy files into the holding dir.  
 Make an ISO image of the dir by pressing 'M' when on top of the dir.  Press 
 'B' when on top of the CD/DVD ROM drive to burn the ISO, 
-[C:/Kernel/KernelA.HPP.Z,2748] blkdev.dft_iso_filename, to disk.  If you have
+[C:/Kernel/KernelA.HPP.Z,2749] blkdev.dft_iso_filename, to disk.  If you have
   not recompiled Kernel and 
 defined your CD/DVD drive, exit the file mgr and use
   [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount.

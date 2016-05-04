@@ -852,8 +852,8 @@ U0 PrsTryBlk(CCmpCtrl *cc,I64 try_cnt)
   lb_untry=COCMiscNew(cc,CMT_LABEL);
 
   ICAdd(cc,IC_CALL_START,0,0);
-  ICAdd(cc,IC_GET_LABEL,lb_untry,tempc,ICF_PUSH_RESULT);
-  ICAdd(cc,IC_GET_LABEL,lb_catch,tempc,ICF_PUSH_RESULT);
+  ICAdd(cc,IC_GET_LABEL,lb_untry,tempc,ICF_PUSH_RES);
+  ICAdd(cc,IC_GET_LABEL,lb_catch,tempc,ICF_PUSH_RES);
   if (Bt(&temp_try->flags,Cf_EXTERN)) {
     cc->abs_cnts.externs++;
     if (cc->flags&CCF_AOT_COMPILE)
@@ -868,7 +868,7 @@ U0 PrsTryBlk(CCmpCtrl *cc,I64 try_cnt)
   else
     ICAdd(cc,IC_ADD_RSP,16,tempc);
   ICAdd(cc,IC_CALL_END,0,tempc);
-  ICAdd(cc,IC_END_EXP,0,0,ICF_NO_DEPEND_RESULT);
+  ICAdd(cc,IC_END_EXP,0,0,ICF_RES_NOT_USED);
 
   PrsStmt(cc,try_cnt+1);
 
@@ -883,7 +883,7 @@ U0 PrsTryBlk(CCmpCtrl *cc,I64 try_cnt)
   } else
     ICAdd(cc,IC_CALL,temp_untry->executable_addr,tempc);
   ICAdd(cc,IC_CALL_END,0,tempc);
-  ICAdd(cc,IC_END_EXP,0,0,ICF_NO_DEPEND_RESULT);
+  ICAdd(cc,IC_END_EXP,0,0,ICF_RES_NOT_USED);
 
   ICAdd(cc,IC_JMP,lb_done,0);
 

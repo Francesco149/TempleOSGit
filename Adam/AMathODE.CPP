@@ -190,7 +190,7 @@ public CSpring *SpringFind(CMathODE *ode,F64 x,F64 y,F64 z=0)
 }
 
 public U0 MassOrSpringFind(
-	CMathODE *ode,CMass **result_mass,CSpring **result_spring,
+	CMathODE *ode,CMass **res_mass,CSpring **res_spring,
 	F64 x,F64 y,F64 z=0)
 {//Find spring or mass nearest x,y,z.
   CMass   *tempm,*best_mass=NULL;
@@ -219,8 +219,8 @@ public U0 MassOrSpringFind(
     }
     temps=temps->next;
   }
-  if (result_mass)   *result_mass  =best_mass;
-  if (result_spring) *result_spring=best_spring;
+  if (res_mass)   *res_mass  =best_mass;
+  if (res_spring) *res_spring=best_spring;
 }
 
 public CMass *MassFindNum(CMathODE *ode,I64 num)
@@ -501,7 +501,7 @@ F64 ode_alloced_factor=0.75;
 U0 ODEsUpdate(CTask *task)
 {/* This routine is called by the [C:/Adam/Gr/GrScreen.CPP.Z,1] window mgr on a continuous
 basis to allow real-time simulation.  It is intended
-to provide results good enough for games.  It uses a runge-kutta
+to provide ress good enough for games.  It uses a runge-kutta
 integrator which is a better algorithm than doing it with Euler.
 
 It is adaptive step-sized, so it slows down when an important
