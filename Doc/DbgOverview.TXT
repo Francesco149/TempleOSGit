@@ -1,10 +1,10 @@
                               Debugging Overview
 
-* You can enter the debugger with [C:/Kernel/KDbg.CPP.Z,636] Dbg() or
+* You can enter the debugger with [C:/Kernel/KDbg.CPP.Z,634] Dbg() or
 <CTRL-ALT-d>.  You might enter the 
 debugger through a fault.  Enter [C:/Kernel/KDbg.CPP.Z,444] G() or
 [C:/Kernel/KDbg.CPP.Z,469] G2() to continue execution.  Place a 
-call to [C:/Kernel/KDbg.CPP.Z,636] Dbg() in your code at fatal error points
+call to [C:/Kernel/KDbg.CPP.Z,634] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,645] U(). [C:/Compiler/UAsm.CPP.Z,645]

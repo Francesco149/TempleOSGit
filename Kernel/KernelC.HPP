@@ -83,6 +83,7 @@ public extern U8 *StrPrintJoin(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *StrUtil(U8 *_src,I64 flags);
 public extern U8 *Tabs2Spaces(U8 *src);
 public extern Bool WildMatch(U8 *test_str,U8 *wild_str);
+
 #help_index "Char/Operations;Memory/Adam Heap"
 public extern U8 *AStrNew(U8 *buf);
 
@@ -401,7 +402,6 @@ public _extern _HASH_SINGLE_TABLE_FIND CHash *HashSingleTableFind(
 	U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 public _extern _HASH_STR I64 HashStr(U8 *st);
 public extern CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL);
-
 #help_index "Hash/Frame"
 #help_file "::/Doc/Frame"
 public extern I64 FramePtr(U8 *name,CTask *task=NULL);

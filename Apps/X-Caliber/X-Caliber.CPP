@@ -719,15 +719,14 @@ U0 DrawIt(CTask *task,CDC *dc)
   while (tempmi!=&missile_root) {
     if (tempsp=tempmi->target) {
       dc->color=LTRED;
-      dc->pen_width=2;
-      GrCircle3(dc,tempsp->p[0].x,tempsp->p[0].y,0,10);
+      GrCircle(dc,tempsp->p[0].x,tempsp->p[0].y,10);
       GrPrint(dc,tempsp->p[0].x+12,tempsp->p[0].y-4,tempmi->label);
     }
     tempmi=tempmi->next;
   }
 }
 
-U0 Explosion(MyMass *tempm1,F64 r)
+U0 Explosion(MyMass *tempm1,MyMass *tempm2,F64 r)
 {
   MyMass *tempm;
   CD3 p1;
@@ -735,7 +734,7 @@ U0 Explosion(MyMass *tempm1,F64 r)
 
   tempm=ode->next_mass;
   while (tempm!=&ode->next_mass) {
-    if (tempm!=tempm1) {
+    if (tempm!=tempm1 && tempm!=tempm2) {
       D3Sub(&p1,&tempm->state->x,&tempm1->state->x);
       d=D3NormSqr(&p1)-tempm->radius*tempm->radius;
       if (d<100.0*100.0) {
@@ -826,7 +825,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
   while (tempsp!=&ship_root) {
     if (tempsp->exploding && tempsp->die_time<=tS<=tempsp->die_timeout)
       for (i=0;i<tempsp->masses;i++)
-	Explosion(&tempsp->p[i],tempsp->p[i].radius/3.0);
+	Explosion(&tempsp->p[i],NULL,tempsp->p[i].radius/3.0);
     switch (tempsp->type) {
       case ST_HUMAN1:
 	if (!tempsp->exploding) {
@@ -890,7 +889,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
   temps=shot_root.next;
   while (temps!=&shot_root) {
     if (temps->exploding)
-      Explosion(&temps->p,temps->explosion_radius);
+      Explosion(&temps->p,NULL,temps->explosion_radius);
     temps=temps->next;
   }
 
@@ -899,7 +898,7 @@ U0 MyDerivative(CMathODE *ode,F64,COrder2D3 *,COrder2D3 *)
     if (tempmi->active) {
       if (tempmi->launched) {
 	if (tempmi->exploding)
-	  Explosion(&tempmi->p_front,tempmi->explosion_radius);
+	  Explosion(&tempmi->p_front,&tempmi->p_back,tempmi->explosion_radius);
 	else {
 //Guide missile
 	  if (tempsp=tempmi->target) {
@@ -994,8 +993,13 @@ U0 CheckDamage()
 	  }
 	} else
 	  for (i=0;i<tempsp->springs;i++) {
-	    if (Abs(tempsp->s[i].f)>tempsp->s[i].strength)
+	    if (Abs(tempsp->s[i].f)>tempsp->s[i].strength) {
 	      tempsp->s[i].flags|=SSF_INACTIVE;
+	      if (i==4)
+		MissileDel(&tempsp->missiles[0]);
+	      else if (i==5)
+		MissileDel(&tempsp->missiles[1]);
+	    }
 	    if (tempsp->s[i].flags&SSF_INACTIVE) {
 	      if (i<3) {
 		if (!tempsp->exploding) {

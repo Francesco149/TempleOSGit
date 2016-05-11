@@ -188,7 +188,7 @@
 [C:/Kernel/KDbg.CPP.Z,172] D
 [C:/Kernel/StrPrint.CPP.Z,893] StrPrint
 [C:/Kernel/KernelA.HPP.Z,1465] WINMGR_FPS
-[C:/Kernel/FunSeg.CPP.Z,270] E
+[C:/Kernel/FunSeg.CPP.Z,302] E
 [C:/Kernel/KernelA.HPP.Z,1594] ICF_A2_TO_INT
 [C:/Kernel/KernelA.HPP.Z,1238] CEdFileName
 [C:/Kernel/KernelA.HPP.Z,907] DOCT_LEFT_MARGIN
@@ -628,7 +628,7 @@
 [C:/Kernel/KernelB.HPP.Z,126] ClampU64
 [C:/Kernel/KernelA.HPP.Z,3737] ARC_MAX_BITS
 [C:/Kernel/KernelA.HPP.Z,2105] TK_MOD_EQU
-[C:/Kernel/FunSeg.CPP.Z,10] FunSegFind
+[C:/Kernel/FunSeg.CPP.Z,54] FunSegFind
 [C:/Kernel/KDefine.CPP.Z,49] Define
 [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,60] FAT32Fmt
 [C:/Kernel/KTask.CPP.Z,372] SrvCmdLine
@@ -647,7 +647,7 @@
 [C:/Kernel/KernelA.HPP.Z,1018] DOCEF_SKIP_IN_FORM
 [C:/Kernel/KernelA.HPP.Z,2128] CCF_DONT_FREE_BUF
 [C:/Kernel/KernelA.HPP.Z,411] IET_ZEROED_CODE_HEAP
-[C:/Kernel/FunSeg.CPP.Z,238] SrcEdLink
+[C:/Kernel/FunSeg.CPP.Z,270] SrcEdLink
 [C:/Kernel/KernelB.HPP.Z,242] GetRBP
 [C:/Kernel/KernelA.HPP.Z,2951] GREEN
 [C:/Kernel/KernelA.HPP.Z,1350] RECALCF_TO_HTML
@@ -690,6 +690,7 @@
 [C:/Kernel/BlkDev/DskStrA.CPP.Z,202] DftExt
 [C:/Kernel/KernelB.HPP.Z,14] Bt
 [C:/Kernel/KernelA.HPP.Z,1539] OPTf_EXTERNS_TO_IMPORTS
+[C:/Kernel/FunSeg.CPP.Z,10] HashFunSegFind
 [C:/Kernel/KDbg.CPP.Z,328] Dr
 [C:/Kernel/KernelB.HPP.Z,252] CPUId
 [C:/Kernel/BlkDev/DskFind.CPP.Z,1] FilesFind2
@@ -885,7 +886,7 @@
 [C:/Kernel/KMisc.CPP.Z,250] SingleUser
 [C:/Kernel/KDate.CPP.Z,39] Date2Struct
 [C:/Kernel/KernelA.HPP.Z,2779] CFile
-[C:/Kernel/KDbg.CPP.Z,595] Fault2
+[C:/Kernel/KDbg.CPP.Z,592] Fault2
 [C:/Kernel/KLoad.CPP.Z,181] Load
 [C:/Kernel/KGlbls.CPP.Z,24] ip
 [C:/Kernel/KernelA.HPP.Z,2702] CFreeLst
@@ -904,7 +905,7 @@
 [C:/Kernel/StrPrint.CPP.Z,213] sys_pos_pows_lst
 [C:/Kernel/StrPrint.CPP.Z,915] MStrPrint
 [C:/Kernel/KernelA.HPP.Z,2676] DVlf_LOCKED
-[C:/Kernel/FunSeg.CPP.Z,199] SrcFileName
+[C:/Kernel/FunSeg.CPP.Z,231] SrcFileName
 [C:/Kernel/KDbg.CPP.Z,234] RawD
 [C:/Kernel/KMisc.CPP.Z,255] IsSingleUser
 [C:/Kernel/KGlbls.CPP.Z,8] adam_task
@@ -1060,7 +1061,7 @@
 [C:/Kernel/KernelA.HPP.Z,3261] BDS_CONST
 [C:/Kernel/KernelA.HPP.Z,302] MP_MAX_PROCESSORS
 [C:/Kernel/KEnd.CPP.Z,1] SysGlblsInit
-[C:/Kernel/FunSeg.CPP.Z,255] PutSrcLink
+[C:/Kernel/FunSeg.CPP.Z,287] PutSrcLink
 [C:/Kernel/KernelA.HPP.Z,3139] CMenu
 [C:/Kernel/KernelA.HPP.Z,2630] BDT_ATAPI
 [C:/Kernel/KernelA.HPP.Z,2601] FUF_MAP
@@ -1557,12 +1558,12 @@
 [C:/Kernel/KernelA.HPP.Z,769] MAX_PTR_STARS
 [C:/Kernel/KernelA.HPP.Z,997] DOCEF_ESC
 [C:/Kernel/Mem/MAllocFree.CPP.Z,224] _FREE
-[C:/Kernel/FunSeg.CPP.Z,144] SrcLineNum
+[C:/Kernel/FunSeg.CPP.Z,176] SrcLineNum
 [C:/Kernel/BlkDev/DskATA.CPP.Z,521] ATAPIClose
 [C:/Kernel/KernelA.HPP.Z,930] DOCT_MACRO
 [C:/Kernel/KernelA.HPP.Z,3507] CH_SHIFT_ESC
 [C:/Kernel/KMisc.CPP.Z,260] InDbg
-[C:/Kernel/KDbg.CPP.Z,636] Dbg
+[C:/Kernel/KDbg.CPP.Z,634] Dbg
 [C:/Kernel/KernelB.HPP.Z,95] Abs
 [C:/Kernel/KernelA.HPP.Z,181] CDATE_YEAR_DAYS
 [C:/Kernel/KernelA.HPP.Z,314] RFLAGf_OVERFLOW
@@ -1654,7 +1655,7 @@
 [C:/Kernel/KernelB.HPP.Z,20] Bts
 [C:/Kernel/KernelA.HPP.Z,2850] CMemBlk
 [C:/Kernel/KernelA.HPP.Z,1015] DOCEF_LST
-[C:/Kernel/FunSeg.CPP.Z,284] Man
+[C:/Kernel/FunSeg.CPP.Z,316] Man
 [C:/Kernel/Mem/Mem512.CPP.Z,11] Mem512Alloc
 [C:/Kernel/KernelA.HPP.Z,2090] TK_SHR_EQU
 [C:/Kernel/KernelA.HPP.Z,549] CDATE_FREQ
@@ -1963,7 +1964,7 @@
 [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead
 [C:/Kernel/KGlbls.CPP.Z,22] dev
 [C:/Kernel/KernelA.HPP.Z,3224] MSG_IP_L_D_UP
-[C:/Kernel/FunSeg.CPP.Z,82] FunSegCacheFind
+[C:/Kernel/FunSeg.CPP.Z,114] FunSegCacheFind
 [C:/Kernel/KernelA.HPP.Z,692] HTT_REG
 [C:/Kernel/StrA.CPP.Z,582] StrFirstRem
 [C:/Home/Temp.TXT.Z,1] SYS_VAR_INIT_VAL
@@ -2131,7 +2132,7 @@
 [C:/Kernel/KernelA.HPP.Z,2150] CCF_PREINC
 [C:/Kernel/KernelA.HPP.Z,681] HTT_IMPORT_SYS_SYM
 [C:/Kernel/KernelA.HPP.Z,680] HTT_EXPORT_SYS_SYM
-[C:/Kernel/FunSeg.CPP.Z,60] FunSegCacheAdd
+[C:/Kernel/FunSeg.CPP.Z,92] FunSegCacheAdd
 [C:/Kernel/KernelA.HPP.Z,3078] CTRLT_GENERIC
 [C:/Kernel/KernelA.HPP.Z,2135] CCF_KEEP_AT_SIGN
 [C:/Kernel/KernelA.HPP.Z,2527] RS_ATTR_DIR
@@ -2144,7 +2145,7 @@
 [C:/Kernel/MultiProc.CPP.Z,248] SpawnQue
 [C:/Kernel/KernelA.HPP.Z,488] LAPIC_SVR
 [C:/Kernel/KernelA.HPP.Z,3014] CMouseStateGlbls
-[C:/Kernel/FunSeg.CPP.Z,102] StrPrintFunSeg
+[C:/Kernel/FunSeg.CPP.Z,134] StrPrintFunSeg
 [C:/Kernel/KernelA.HPP.Z,2519] ISO1_ATTR_DIR
 [C:/Kernel/KHashB.CPP.Z,9] HashVal
 [C:/Kernel/KernelB.HPP.Z,227] C:/Doc/MultiCore.TXT.Z

@@ -1257,7 +1257,7 @@ args.
 	LexExcept(cc,"Compiler Optimization Error at ");
     }
     if (intermediate_code_table[code].arg_cnt==IS_2_ARG) {
-      if (tempi_push->ic_precedence.u8[0]&~ASSOC_MASK==PREC_ASSIGN)
+      if (tempi_push->ic_precedence&~ASSOC_MASK==PREC_ASSIGN)
 	OptFixSizeOf(tempi2,tempi_push,tempi1->ic_class-1);
       else {
 	OptFixSizeOf(tempi1,tempi_push,tempi2->ic_class);

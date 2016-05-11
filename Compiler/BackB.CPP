@@ -257,7 +257,6 @@ U0 ICBitOps(CIntermediateCode *tempi,CICArg *a1,CICArg *a2,
   }
   if (!res_not_used) {
     ICU24(tempi,0xC0920F); //SETC AL
-progress3++;
     if (tempi->r.type.mode)
       ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 	    MDF_REG+RT_I64,REG_RAX,0,ip);

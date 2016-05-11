@@ -42,8 +42,8 @@ cc->pass==10 is final pass, code is placed into buf.
 
   cc->last_float_op_ic=NULL;
   tempi=&cc->coc.coc_root;
+  tempi->ic_last_start=-1;
   tempi->ic_cnt=0;
-  tempi->ic_last_cnt=-1;
   tempi=tempi->next;
   while (tempi->ic_code) {
     tempi_next=tempi->next;
@@ -62,7 +62,7 @@ cc->pass==10 is final pass, code is placed into buf.
 	cc->dont_push_float=Btr(&tempi->ic_flags,ICf_DONT_PUSH_FLOAT0);
       MemCpy(saved_p123,&tempi->a1,3*sizeof(CICArg));
       tempi->ic_cnt=0;
-      tempi->ic_last_cnt=-1;
+      tempi->ic_last_start=-1;
       if (tempi->a2.type.mode) {
 	if (tempi->ic_flags & ICF_A2_TO_F64) {
 	  ICFCvt(cc,tempi,REG_RAX,
@@ -1069,7 +1069,7 @@ cc->pass==10 is final pass, code is placed into buf.
     cnt=tempi->ic_cnt;
     if (tempi->ic_flags&ICF_DEL_PREV_INS) {
       if (cc->pass>8)
-	cnt=tempi->ic_last_cnt;
+	cnt=tempi->ic_last_start;
       tempi->ic_flags&=~ICF_DEL_PREV_INS;
     }
     if (cnt && buf)

@@ -7,51 +7,83 @@ I64 HasLower(U8 *src)
   return FALSE;
 }
 
+U0 HashFunSegFind(CHashTable *h,U8 *addr,
+	Bool *_has_lower,U64 *_best,CHash **_res)
+{
+  Bool *has_lower=*_has_lower;
+  CHashExport *tempex;
+  U64 i,j,best=*_best;
+  CHash *res=*_res;
+  for (i=0;i<=h->mask;i++) {
+    tempex=h->body[i];
+    while (tempex) {
+      j=0;
+      if (tempex->type&HTT_FUN) {
+	if (!Bt(&tempex(CHashFun *)->flags,Cf_EXTERN) &&
+	      !Bt(&tempex(CHashFun *)->flags,Ff_INTERNAL))
+	  j=tempex(CHashFun *)->executable_addr;
+      } else if (tempex->type&HTT_EXPORT_SYS_SYM)
+	j=tempex->val;
+      if (j) {
+	j=addr(I64)-j;
+	if (0<=j<=best) {
+	  if (tempex->type&HTT_EXPORT_SYS_SYM) {
+	    if (j<best || j==best && !has_lower) {
+	      has_lower=HasLower(tempex->str);
+	      best=j;
+	      res=tempex;
+	    }
+	  } else if (tempex->type&HTT_FUN) {
+	    if (j<best || j==best &&
+		  (res && res->type&HTT_EXPORT_SYS_SYM||!has_lower)) {
+	      has_lower=HasLower(tempex->str);
+	      best=j;
+	      res=tempex;
+	    }
+	  }
+	}
+      }
+      tempex=tempex->next;
+    }
+  }
+  *_has_lower=has_lower;
+  *_best=best;
+  *_res =res;
+}
+
 CHash *FunSegFind(U8 *addr,I64 *_offset)
 {//See [Hash,1] Hash.
   CHash *res=NULL;
-  CHashExport *tempex;
   Bool has_lower=FALSE;
-  CHashTable *h=Fs->hash_table;
-  U64 i,j,best=0xFFFF;
+  CTask *task;
+  CHashTable *h;
+  CCPU *c;
+  U64 i,best=0xFFFF;
   if (!ChkCodePtr(addr)) {
     *_offset=best;
     return NULL;
   }
-  while (h) {
-    for (i=0;i<=h->mask;i++) {
-      tempex=h->body[i];
-      while (tempex) {
-	j=0;
-	if (tempex->type&HTT_FUN) {
-	  if (!Bt(&tempex(CHashFun *)->flags,Cf_EXTERN) &&
-		!Bt(&tempex(CHashFun *)->flags,Ff_INTERNAL))
-	    j=tempex(CHashFun *)->executable_addr;
-	} else if (tempex->type&HTT_EXPORT_SYS_SYM)
-	  j=tempex->val;
-	if (j) {
-	  j=addr(I64)-j;
-	  if (0<=j<=best) {
-	    if (tempex->type&HTT_EXPORT_SYS_SYM) {
-	      if (j<best || j==best && !has_lower) {
-		has_lower=HasLower(tempex->str);
-		best=j;
-		res=tempex;
-	      }
-	    } else if (tempex->type&HTT_FUN) {
-	      if (j<best || j==best &&
-		    (res && res->type&HTT_EXPORT_SYS_SYM||!has_lower)) {
-		has_lower=HasLower(tempex->str);
-		best=j;
-		res=tempex;
-	      }
-	    }
-	  }
+  if (IsDbg)
+    for (i=0;i<mp_cnt;i++) {
+      c=&cpu_structs[i];
+      task=c->seth_task;
+      do {
+	if (!TaskValidate(task)) goto fs_abort_task;
+	h=task->hash_table;
+	while (h) {
+	  HashFunSegFind(h,addr,&has_lower,&best,&res);
+	  h=h->next;
 	}
-	tempex=tempex->next;
-      }
+	task=task->next_task;
+      } while (task!=c->seth_task);
+fs_abort_task:
     }
-    h=h->next;
+  else {
+    h=Fs->hash_table;
+    while (h) {
+      HashFunSegFind(h,addr,&has_lower,&best,&res);
+      h=h->next;
+    }
   }
   *_offset=best;
   return res;

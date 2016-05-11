@@ -2,7 +2,7 @@
   +] SysMsgFlags
       sys_msg_flags[0]=0xFF;
       +] SysRegVer
-      registry_version=4.050;
+      registry_version=4.060;
       +] TempleOS
   +] TOS
       I64 tos_code_walk_thru=105,tos_after_egypt_in_action=46;
@@ -40,7 +40,7 @@
       +] DemoCompany
   
   +] Game1
-      F64 best_score=190.66292;
+      F64 best_score=224.65250;
     +] SimpleVal
-          1313;
+          1316;
             
