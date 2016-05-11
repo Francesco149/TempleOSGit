@@ -246,7 +246,8 @@ U0 OptPass4(CCmpCtrl *cc,COptReg *reg_offsets,I64 *_type)
 		OptFree(tempi1);
 	      }
 	    }
-	  } else if ((tempi1->ic_code==IC_ABS_ADDR || tempi1->ic_code==IC_MOV &&
+	  } else if ((tempi1->ic_code==IC_ABS_ADDR ||
+		tempi1->ic_code==IC_MOV &&
 		tempi1->a1.type==MDF_IMM+RT_I64 &&
 		0<=tempi1->a1.disp<=MAX_I32)&& !(tempi1->ic_flags&ICF_NO_RIP)) {
 	    if (tempi1->ic_code==IC_ABS_ADDR)
@@ -391,6 +392,7 @@ p4_sib:
 	case IC_SUB_EQU:
 	  if (tempi1->ic_code==IC_LEA) {
 	    if (tempi1->a1.type&(MDF_DISP|MDF_SIB)) {
+	      tempi2=tempi->next;
 	      if (tempi1->a1.type&MDF_DISP && tempi1->a1.reg==REG_RBP) {
 		i=CmpOffset2Reg(tempi1->a1.disp,reg_offsets);
 		if (i>=0) {
@@ -406,12 +408,32 @@ p4_sib:
 		  tempi->a1.disp=tempi1->a1.disp;
 		  OptSetNOP2(tempi1);
 		}
+		if (FALSE && tempi->r.type&MDF_STK && tempi2->a2.type&MDF_STK) {
+		  tempi->r.type=tempi->a1.type;
+		  tempi->r.type_pointed_to=tempi->a1.type_pointed_to;
+		  tempi->r.reg=tempi->a1.reg;
+		  tempi->r.disp=tempi->a1.disp;
+		  tempi2->a2.type=tempi->a1.type;
+		  tempi2->a2.type_pointed_to=tempi->a1.type_pointed_to;
+		  tempi2->a2.reg=tempi->a1.reg;
+		  tempi2->a2.disp=tempi->a1.disp;
+		}
 	      } else {
-		tempi->a1.type=tempi1->a1.type&MDG_MASK+tempi->a1.type.raw_type;
 		tempi->ic_flags|=tempi1->ic_flags;
+		tempi->a1.type=tempi1->a1.type&MDG_MASK+tempi->a1.type.raw_type;
 		tempi->a1.reg=tempi1->a1.reg;
 		tempi->a1.disp=tempi1->a1.disp;
 		OptSetNOP2(tempi1);
+		if (FALSE && tempi->r.type&MDF_STK &&tempi2->a2.type&MDF_STK) {
+		  tempi->r.type=tempi->a1.type;
+		  tempi->r.type_pointed_to=tempi->a1.type_pointed_to;
+		  tempi->r.reg=tempi->a1.reg;
+		  tempi->r.disp=tempi->a1.disp;
+		  tempi2->a2.type=tempi->a1.type;
+		  tempi2->a2.type_pointed_to=tempi->a1.type_pointed_to;
+		  tempi2->a2.reg=tempi->a1.reg;
+		  tempi2->a2.disp=tempi->a1.disp;
+		}
 	      }
 	      tempi->ic_flags|=ICF_BY_VAL;
 	    }

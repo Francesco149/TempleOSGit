@@ -2,7 +2,15 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----05/03/16 15:45:18----
+----05/10/16 06:23:05----
+* Compiler bug fixes and optimizations.
+
+----05/07/16 08:55:59----
+* **TempleOS version 4.06 Released**
+
+----05/03/16 19:26:45----
+* Made [C:/Kernel/FunSeg.CPP.Z,54] FunSegFind() search all hash tables when
+[C:/Kernel/KMisc.CPP.Z,265] IsDbg.
 * Added missiles to [C:/Apps/X-Caliber/X-Caliber.CPP,1].
 * Fixed bug in [C:/Kernel/KernelB.HPP.Z,162] D3Unit().
 

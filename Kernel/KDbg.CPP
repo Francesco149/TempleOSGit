@@ -561,10 +561,8 @@ U0 Dbg2()
 U0 Fault3(I64 fault_num,I64 fault_err_code)
 {
   nounusedwarn fault_err_code;
-  Bool was_in_dbg;
   PUSHFD
   CLI
-  was_in_dbg=InDbg(ON);
   if (Gs->num && dbg.mp_crash) {
     mp_cnt=1;
     dbg.mp_crash->cpu_num=Gs->num;
@@ -588,14 +586,13 @@ U0 Fault3(I64 fault_num,I64 fault_err_code)
   }
   CallerRep;
   Dbg2;
-  InDbg(was_in_dbg);
   POPFD
 }
 
 U0 Fault2(I64 fault_num,I64 fault_err_code)
 {//Called from [C:/Kernel/KInts.CPP.Z,1] Fault2.
 //**Be careful not to swap-out and ruin the saved context**
-  Bool was_raw,was_single_user,was_silent;
+  Bool was_raw,was_single_user,was_silent,was_in_dbg;
   I64  i,old_raw_flags=text.raw_flags;
   was_single_user=SingleUser(ON);
   if (!IsDbg)
@@ -615,6 +612,7 @@ U0 Fault2(I64 fault_num,I64 fault_err_code)
     "\"\n";
     "Fault:0x%02X %Z\t\tErr Code:%08X\n",
 	  fault_num,fault_num,"ST_INT_NAMES",fault_err_code;
+    was_in_dbg=InDbg(ON);
     "RIP:%08X",Fs->rip; //Sometimes crashes on %p, so do this first
     ":%p  RSP:%08X\n",Fs->rip,Fs->rsp;
     if (fault_num==I_PAGE_FAULT) {
@@ -623,7 +621,7 @@ U0 Fault2(I64 fault_num,I64 fault_err_code)
       "Fault Addr:%08X:%p\n",i,i;
     }
     Fault3(fault_num,fault_err_code);
-
+    InDbg(was_in_dbg);
     Silent(was_silent);
     Raw(was_raw);
     text.raw_flags=old_raw_flags;

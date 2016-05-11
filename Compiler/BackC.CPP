@@ -163,15 +163,11 @@ U0 ICAssign(CIntermediateCode *tempi,I64 ip)
     ICMov(tempi,tempi->a1.type&MDG_MASK+tempi->a1.type_pointed_to,
 	  tempi->a1.reg,tempi->a1.disp,
 	  tempi->a2.type,tempi->a2.reg,tempi->a2.disp,ip);
-    if (tempi->r.type.mode) {
-      if (tempi->a1.type&MDF_REG)
-	ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	      tempi->a1.type&MDG_MASK+tempi->a1.type_pointed_to,
-	      tempi->a1.reg,tempi->a1.disp,ip);
-      else
-	ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
-	      tempi->a2.type,tempi->a2.reg,tempi->a2.disp,ip);
-    }
+    if (tempi->r.type.mode)
+      ICMov(tempi,tempi->r.type&MDG_MASK+tempi->r.type_pointed_to,
+	    tempi->r.reg,tempi->r.disp,
+	    tempi->a1.type&MDG_MASK+tempi->a1.type_pointed_to,
+	    tempi->a1.reg,tempi->a1.disp,ip);
   } else {
     if (tempi->a1.type&MDF_REG) {
       if (!(tempi1=OptLag1(tempi)) || tempi1->ic_code!=IC_ADD_CONST ||

@@ -1648,7 +1648,7 @@ class CIntermediateCodeBase
   U16	ic_code,
 	ic_precedence;
   I16	ic_cnt,
-	ic_last_cnt;
+	ic_last_start;
 };
 
 class CIntermediateCode:CIntermediateCodeBase

@@ -181,7 +181,7 @@
   Binary executable files have export syms which are loaded into the sym
   tables.  The operating system Kernel has such an export table.  In addition,
   some map files are processed to provide more information on syms -- src file
-  links.  This is how the [C:/Kernel/FunSeg.CPP.Z,284] Man()/AutoComplete
+  links.  This is how the [C:/Kernel/FunSeg.CPP.Z,316] Man()/AutoComplete
   feature can find src lines.
 +] Why doesn't assert work?
   #assert might print a message at COMPILE time, not run time.

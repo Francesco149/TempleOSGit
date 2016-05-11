@@ -49,5 +49,5 @@ searched.
 Duplicate entries are allowed -- they overshadow old entries.
 
 Address-to-Symbol Look-up (Slow because not important. We could use trees.)
-1) FunSeg Cache is [C:/Kernel/FunSeg.CPP.Z,82] scanned.
-2) Hash Tables are [C:/Kernel/FunSeg.CPP.Z,10] scanned.
+1) FunSeg Cache is [C:/Kernel/FunSeg.CPP.Z,114] scanned.
+2) Hash Tables are [C:/Kernel/FunSeg.CPP.Z,54] scanned.
