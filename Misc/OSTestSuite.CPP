@@ -6,7 +6,7 @@ U0 TSStart()
 U0 TS()
 {
   progress4=ts_num++;
-  progress4_max=168;
+  progress4_max=167;
   *progress4_desc=0;
 }
 U0 TSEnd()
@@ -279,16 +279,6 @@ U0 DoMountain()
   XTalk(task,"#include \"::/Demo/Graphics/Mountain\";\n");
   Sleep(1500);
   Kill(task);
-}
-
-U0 DoCoach()
-{
-  CTask *task=User;
-  XTalkWait(task,"#include \"::/Demo/Games/Coach\";\n");
-  PostMsgWait(task,MSG_KEY_DOWN_UP,CH_SPACE,0);
-  Sleep(1000);
-  PostMsgWait(task,MSG_KEY_DOWN_UP,CH_SHIFT_ESC,0);
-  XTalk(task,"Exit;\n");
 }
 
 U0 DoDigits()
@@ -2346,7 +2336,6 @@ U0 OSTestSuite()
   TS; DoSpeedLine;
   TS; DoKeyBitMap;
   TS; DoMountain;
-  TS; DoCoach;
   TS; DoBSpline;
   TS; DoGrModels;
   TS; DoBlot;

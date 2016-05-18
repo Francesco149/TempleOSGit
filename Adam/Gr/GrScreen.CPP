@@ -327,11 +327,10 @@ U0 DCBlotColor8(CDC *dc,CDC *img)
 U0 GrUpdateTextModeText()
 {
   U32 *src=gr.text_base;
-  I64 cur_ch,i,d0=TEXT_COLS*TEXT_ROWS;
-  U16 *dst=VGAM_TEXT,*dst2=gr.vga_text_cache;
+  I64 cur_ch,i=TEXT_COLS*TEXT_ROWS;
+  U16 *dst=text.vga_text_alias,*dst2=gr.vga_text_cache;
   Bool blink_flag=Blink;
   if (LBtr(&sys_semas[SYS_SEMA_FLUSH_VGA_IMAGE],0)) {
-    i=d0;
     while (i--) {
       cur_ch=*src++;
       if (cur_ch & ATTRF_SELECTED)
@@ -340,12 +339,10 @@ U0 GrUpdateTextModeText()
 	cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
       if (cur_ch & ATTRF_BLINK)
 	if (blink_flag)
-	  cur_ch.u8[1]= cur_ch.u8[1]<<4+ cur_ch.u8[1]>>4;
-      cur_ch&=0x7FFF;
-      *dst++=*dst2++=cur_ch;
+	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
+      *dst++=*dst2++=cur_ch&0x7FFF;
     }
   } else {
-    i=d0;
     while (i--) {
       cur_ch=*src++;
       if (cur_ch & ATTRF_SELECTED)
@@ -354,7 +351,7 @@ U0 GrUpdateTextModeText()
 	cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
       if (cur_ch & ATTRF_BLINK)
 	if (blink_flag)
-	  cur_ch.u8[1]= cur_ch.u8[1]<<4+ cur_ch.u8[1]>>4;
+	  cur_ch.u8[1]=cur_ch.u8[1]<<4+cur_ch.u8[1]>>4;
       cur_ch&=0x7FFF;
       if (*dst2!=cur_ch)
 	*dst++=*dst2++=cur_ch;

@@ -60,7 +60,6 @@ public extern I64 LstMatch(U8 *needle, U8 *haystack_lst,I64 flags=0);
 public extern U8 *LstSub(I64 sub, U8 *lst);
 
 #help_index "Char/Operations"
-public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 public extern U8 *MStrPrint(U8 *fmt,...);
 public extern U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0);
 public extern U8 *ScaleIndent(U8 *src,F64 indent_scale_factor);
@@ -83,6 +82,9 @@ public extern U8 *StrPrintJoin(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *StrUtil(U8 *_src,I64 flags);
 public extern U8 *Tabs2Spaces(U8 *src);
 public extern Bool WildMatch(U8 *test_str,U8 *wild_str);
+
+#help_index "Char/Operations;Memory"
+public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 
 #help_index "Char/Operations;Memory/Adam Heap"
 public extern U8 *AStrNew(U8 *buf);
@@ -402,6 +404,7 @@ public _extern _HASH_SINGLE_TABLE_FIND CHash *HashSingleTableFind(
 	U8 *needle_str,CHashTable *haystack_table,I64 mask,I64 instance=1);
 public _extern _HASH_STR I64 HashStr(U8 *st);
 public extern CHashTable *HashTableNew(I64 size,CTask *mem_task=NULL);
+
 #help_index "Hash/Frame"
 #help_file "::/Doc/Frame"
 public extern I64 FramePtr(U8 *name,CTask *task=NULL);
@@ -476,7 +479,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3777] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3778] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -707,7 +710,6 @@ public extern CTask *Spawn(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	U8 *task_name=NULL,I64 target_cpu=-1,	//-1 means current CPU
 	CTask *parent=NULL, //NULL means adam
 	I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
-
 #help_index "Time/CPU Cycles;Time/HPET;Time/Jiffies"
 public extern CCntsGlbls cnts;
 

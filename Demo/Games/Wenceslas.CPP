@@ -89,11 +89,6 @@ RegExeBranch("TempleOS/Wenceslas");
 CSprite *king_imgs[4]={__BIN_2,__BIN_1,__BIN_2,__BIN_3};
 CSprite *peasant_imgs[4]={__BIN_5,__BIN_4,__BIN_5,__BIN_6};
 
-#define NUM_FLAKES	0x8000
-class Flake
-{
-  U16 x,y;
-} flakes[NUM_FLAKES];
 
 #define NUM_TREES	8
 class Tree
@@ -102,7 +97,10 @@ class Tree
   I64 fire_frame_idx;
 } trees[NUM_TREES];
 
-I64 snow_x,snow_y;
+U64 snow_x,snow_y,new_snow_mS;
+#define SNOW_TILE_SIZE	128
+CDC *snow_tile;
+
 I64 king_x,king_y,king_mS,king_phase,
     not_stopped_cnt;
 F64 king_timeout,king_theta,t0,tf,door_open_t0;
@@ -125,7 +123,7 @@ class Step
 
 U0 DrawIt(CTask *task,CDC *dc)
 {
-  I64 r[16],i,w=task->pix_width,h=task->pix_height;
+  I64 r[16],i,w=task->pix_width,h=task->pix_height,x,y;
   U8 *img;
   CSprite *temps;
   Step *tempst;
@@ -209,10 +207,10 @@ U0 DrawIt(CTask *task,CDC *dc)
   }
 
   dc->pen_width=1;
-  dc->color=WHITE;
-  for (i=0;i<NUM_FLAKES;i++)
-    GrPlot(dc,(flakes[i].x+snow_x)%task->pix_width,
-	  (flakes[i].y+snow_y)%task->pix_height);
+  dc->color=ROP_MONO|WHITE;
+  for (y=snow_y%SNOW_TILE_SIZE-SNOW_TILE_SIZE;y<=h;y+=SNOW_TILE_SIZE)
+    for (x=snow_x%SNOW_TILE_SIZE-SNOW_TILE_SIZE;x<=w;x+=SNOW_TILE_SIZE)
+      GrBlot(dc,x,y,snow_tile);
 
   if (tf) {
     dc->color=LTRED;
@@ -269,12 +267,10 @@ U0 Init()
   I64 i,min_x,max_x,min_y,max_y,
 	w=Fs->pix_width,h=Fs->pix_height;
   Peasant *tempp;
-  snow_x=0;
-  snow_y=0;
-  for (i=0;i<NUM_FLAKES;i++) {
-    flakes[i].x=RandU16;
-    flakes[i].y=RandU16;
-  }
+
+  snow_x=snow_y=0;
+  new_snow_mS=0;
+  snow_tile=DCNew(SNOW_TILE_SIZE,SNOW_TILE_SIZE);
 
   SpriteExtents(__BIN_7,&min_x,&max_x,&min_y,&max_y);
   for (i=0;i<NUM_TREES;i++) {
@@ -312,6 +308,7 @@ U0 Init()
 
 U0 CleanUp()
 {
+  DCDel(snow_tile);
   QueDel(&peasant_root,TRUE);
   QueDel(&step_root,TRUE);
   QueDel(&king_step_root,TRUE);
@@ -413,15 +410,19 @@ U0 AnimateTask(I64)
 
     snow_x+=RandU16%3-1;
     snow_y+=1-SignI64(RandU16&3);
+    if (new_snow_mS++>8) {
+      new_snow_mS=0;
+      snow_tile->color=WHITE;
+      GrPlot(snow_tile,RandU16&(SNOW_TILE_SIZE-1),RandU16&(SNOW_TILE_SIZE-1));
+    }
+
     Sleep(1);
-    animate_mS++;
-    if (animate_mS>=250) {
+    if (animate_mS++>=250) {
       animate_mS=0;
       animate_phase=(animate_phase+1)&3;
     }
     if (tS<king_timeout) {
-      king_mS++;
-      if (king_mS>=250) {
+      if (king_mS++>=250) {
 	king_mS=0;
 	king_phase|=1;
       }

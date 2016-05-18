@@ -4,7 +4,7 @@ U0 RawPutChar(I64 ch)
 See [C:/Adam/Gr/GrScreen.CPP.Z,255] GrUpdateTextFG for
 the normal screen text output routine.
 
-See also [C:/Adam/Gr/GrScreen.CPP.Z,401] GrUpdateScreen().
+See also [C:/Adam/Gr/GrScreen.CPP.Z,398] GrUpdateScreen().
 */
   I64 i,row,col;
   U8 *ptr,*ptr1,*ptr2;
@@ -44,13 +44,13 @@ See also [C:/Adam/Gr/GrScreen.CPP.Z,401] GrUpdateScreen().
     col=text.raw_col%text.cols;
     if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
       if (text.raw_flags&RWF_SCROLL && text.raw_col && !row && !col) {
-	MemCpy(VGAM_TEXT,VGAM_TEXT+text.cols,
+	MemCpy(text.vga_text_alias,text.vga_text_alias+text.cols*2,
 	      text.cols*(text.rows-1)*2);
-	MemSet(VGAM_TEXT+text.cols*(text.rows-1)*2,0,text.cols*2);
+	MemSet(text.vga_text_alias+text.cols*(text.rows-1)*2,0,text.cols*2);
 	text.raw_col-=text.cols;
 	row=text.rows-1;
       }
-      ptr=VGAM_TEXT+(row*text.cols+col)*2;
+      ptr=text.vga_text_alias+(row*text.cols+col)*2;
       ptr[0]=ch;
       ptr[1]=BLACK<<4+WHITE;
     } else {

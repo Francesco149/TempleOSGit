@@ -526,10 +526,6 @@ U0 RawHide()
 {
   I64 msg_code,a1,a2;
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  PopUpOk(
-	"Coral the cattle.  The coral is in the\n"
-	"upper-left corner if you scroll.\n\n"
-	"Scroll with $GREEN${CTRL-Left Grab}$FG$.\n");
   MenuPush(
 	"File {"
 	"  Abort(,CH_SHIFT_ESC);"
@@ -540,6 +536,13 @@ U0 RawHide()
 	"}"
 	);
   Fs->song_task=Spawn(&SongTask,NULL,"Song",,Fs);
+
+  PopUpOk(
+	"Coral the cattle.  The coral is in the\n"
+	"upper-left corner if you scroll.\n\n"
+	"Keep holding the $GREEN$<CTRL>$FG$ key and\n"
+	"scroll with $GREEN${CTRL-Left Grab}$FG$.");
+
   Fs->win_inhibit=WIG_TASK_DFT-WIF_SELF_FOCUS
 	-WIF_SELF_BORDER-WIF_SELF_GRAB_SCROLL-WIF_FOCUS_TASK_MENU;
   AutoComplete;

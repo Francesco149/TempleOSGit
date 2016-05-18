@@ -3,7 +3,7 @@
 1) The font, [C:/Kernel/Font8x8.CPP.Z,1], is taken from FreeDOS.  It's public 
 domain.
 
-2) [C:/Kernel/KernelA.HPP.Z,2255] ATA Reg and Cmd Definitions are originally
+2) [C:/Kernel/KernelA.HPP.Z,2256] ATA Reg and Cmd Definitions are originally
 from Linux.  Later, I got the 
 spec.
 
@@ -65,7 +65,7 @@ simplify my Frames-Per-Second code.
 19) Bill Gates inspired me to add comments to my [C:/Doc/HelpIndex.TXT.Z,1]
 Help & Index.
 
-20) I hired and artist, Cody Rigby, for $3,000 worth of pixel art.
+20) I hired an artist, Cody Rigby, for $3,000 worth of pixel art.
 
 21) Erik van der Karbargenbok made [C:/Linux/TempleBot,1] TempleBot.
 

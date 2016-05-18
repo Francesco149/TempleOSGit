@@ -144,18 +144,18 @@ U0 DrawIt(CTask *task,CDC *dc)
   dc->color=LTGREEN;
   GrLine(dc,cx-5,cy,cx+5,cy);
   GrLine(dc,cx,cy-5,cx,cy+5);
-  dc->color=LTPURPLE;
   if (tf) {
-    dc->color=LTRED;
+    dc->color=RED;
     if (Blink)
       GrPrint(dc,cx-(FONT_WIDTH*14)/2,cy-FONT_HEIGHT/2,"Game Completed");
     tt=tf;
   } else {
-    dc->color=LTGREEN;
+    dc->color=BLACK;
     GrLine(dc,cx-5,cy,cx+5,cy);
     GrLine(dc,cx,cy-5,cx,cy+5);
     tt=tS;
   }
+  dc->color=BLACK;
   GrPrint(dc,0,0,"Enemy:%d Time:%3.2f Best:%3.2f",num_them,tt-t0,best_score);
 }
 
@@ -206,7 +206,7 @@ U0 Init()
 {
   I64 i;
   DocClear;
-  "$BG,DKGRAY$%h12c",'\n';
+  "$BG,LTCYAN$%h12c",'\n';
   QueInit(&shots);
   MemSet(&us,0,sizeof(us));
   MemSet(them,0,sizeof(them));
@@ -265,7 +265,7 @@ U0 ZoneOut()
 	);
 
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
-  Fs->text_attr=BLACK<<4+WHITE;
+  Fs->text_attr=YELLOW<<4+WHITE;
   AutoComplete;
   WinBorder;
   WinMax;

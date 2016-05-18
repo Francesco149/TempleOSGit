@@ -2,6 +2,16 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
+----05/17/16 07:16:38----
+* Worked on compiler [C:/Kernel/KernelA.HPP.Z,1630] CICArg.a1_type_pointed_to.
+
+----05/13/16 14:35:14----
+* Improved [C:/Demo/Games/Wenceslas.CPP.Z,1].
+
+----05/12/16 05:18:56----
+* Added [C:/Kernel/KernelA.HPP.Z,2125] CCF_CMD_LINE
+* Replaced __DEPTH__ with [C:/Kernel/KernelA.HPP.Z,2027] __CMD_LINE__.
+
 ----05/10/16 06:23:05----
 * Compiler bug fixes and optimizations.
 
@@ -51,7 +61,7 @@ text.vga_alias.  All pages are 2Meg
 size.
 
 ----04/15/16 13:39:25----
-* Fixed bug in [C:/Adam/DolDoc/DocCodeTools.CPP.Z,641] EdCodeTools().
+* Fixed bug in [C:/Adam/DolDoc/DocCodeTools.CPP.Z,642] EdCodeTools().
 * Fixed double ASCII#5 cursor bug.
 
 ----04/01/16 14:59:49----
@@ -175,7 +185,7 @@ automatically from the compiler's class information.
 * Added [C:/Demo/ToHtmlToTXTExample/HtmlGen.CPP.Z,1] and 
 [C:/Demo/ToHtmlToTXTExample/TXTGen.CPP.Z,1].
 * Now, [C:/Adam/DolDoc/DocEd.CPP.Z,234] Plain() doesn't save with
-[C:/Kernel/KernelA.HPP.Z,3503] CH_CURSOR.
+[C:/Kernel/KernelA.HPP.Z,3504] CH_CURSOR.
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS"); 
 * Change [C:/Adam/DolDoc/DocLink.CPP.Z,1] Document Links "DF:word" to
@@ -224,7 +234,7 @@ R("DOCF_PLAIN_TEXT_WITH_TABS","DOCF_PLAIN_TEXT_TABS");
 config scripts for compiling the 
 kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() must
 be changed.
-* Added [C:/Kernel/KernelA.HPP.Z,2127] CCF_QUESTION_HELP.
+* Added [C:/Kernel/KernelA.HPP.Z,2128] CCF_QUESTION_HELP.
 
 ----01/11/16 00:04:38----
 * [C:/Home/HomeWrappers.CPP.Z,13] R("PAGE_SIZE","MEM_PAGE_SIZE"); etc.
@@ -232,7 +242,7 @@ be changed.
 * Added [C:/Demo/MemDemo.CPP.Z,1].
 
 ----01/08/16 17:04:58----
-* Added [C:/Kernel/KernelA.HPP.Z,2599] FUF_RISKY to
+* Added [C:/Kernel/KernelA.HPP.Z,2600] FUF_RISKY to
 [C:/Adam/DolDoc/DocOpt.CPP.Z,99] DocOpt().
 * Fixed [C:/Doc/CompilerOverview.TXT.Z,1].
 
@@ -404,7 +414,7 @@ Option(,OFF)");
 * Added args to [C:/Kernel/BlkDev/DskCopy.CPP.Z,82] Del().
 * Rearranged disk code.
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2763] CDirContext");
+R("CFileAccess","[C:/Kernel/KernelA.HPP.Z,2764] CDirContext");
 * [C:/Home/HomeWrappers.CPP.Z,13]
 R("IsDrvWritable","[C:/Kernel/BlkDev/DskDrv.CPP.Z,169] DrvIsWritable");
 * [C:/Home/HomeWrappers.CPP.Z,13]

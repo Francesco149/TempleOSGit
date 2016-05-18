@@ -182,9 +182,9 @@ U0 DoInstructions()
   }
 }
 
-U0 DoInstall()
+Bool DoInstall(Bool pmt_reboot)
 {
-  I64 vm_install,pmt_reboot;
+  I64 result=FALSE,vm_install;
   "\n\n\n\n\nAre you installing inside VMware, QEMU, VirtualBox "
 	"or a similar virtual machine? ";
   vm_install=YorN;
@@ -192,21 +192,32 @@ U0 DoInstall()
 
   if (vm_install) {
     VMInstallWiz();
-    pmt_reboot=TRUE;
+    result=TRUE;
   } else {
     "\n\nThis wizard works if you have a partition ready.  "
 	  "You can partition the drive or MakeOSDrvBootInstall() "
 	  "with more options if you do it by hand, not using this wizard.\n\n"
 	  "Continue Install Wizard ";
-    if (pmt_reboot=YorN)
+    if (YorN) {
       RegularInstallWiz();
+      result=TRUE;
+    } else
+      pmt_reboot=FALSE;
   }
   if (pmt_reboot) {
     "Reboot Now ";
     if (YorN)
       Reboot;
   }
+  return result;
 }
 
-DoInstructions;
-DoInstall;
+Bool OSInstall(Bool pmt_reboot=TRUE)
+{
+  DoInstructions;
+  return DoInstall(pmt_reboot);
+}
+
+#if __CMD_LINE__
+OSInstall(TRUE);
+#endif

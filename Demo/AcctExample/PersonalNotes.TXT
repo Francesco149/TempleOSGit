@@ -1,8 +1,8 @@
                                      TODO
 
-* [C:/Compiler/OptPass4.CPP.Z,1] (FALSE
-* [C:/Compiler/OptPass4.CPP.Z,2] (FALSE
-* [C:/Compiler/BackC.CPP.Z,159] ICAssign()
+* [C:/Apps/KeepAway/KeepAway.CPP.Z,1]: Add intelligence to passing, both
+throwing 
+and catching.
 
 * Investigate why packet loss [C:/Adam/Training.CPP.Z,1] Training Sleep(1).
 
@@ -60,7 +60,7 @@ GetStr() all the way down into [C:/Kernel/KeyDev.CPP.Z,1] PutKey() code.
 * Good [C:/Adam/AutoComplete/ACFill.CPP.Z,207] spell checker.
 * Good Bible search.
 
-* Can [C:/Kernel/KernelA.HPP.Z,2874] MEM_EXTRA_HASH2_PAGES be just one?
+* Can [C:/Kernel/KernelA.HPP.Z,2875] MEM_EXTRA_HASH2_PAGES be just one?
 
 * Bible ranges in [C:/Adam/God/GodBible.CPP.Z,239] BibleVerse(). 
 
@@ -76,11 +76,13 @@ Free old task memory?
 * Asm LIST NOLIST bugs.
 
 * Review writing to same cache-line from multicore.  Do
-[C:/Kernel/KernelA.HPP.Z,3312] CTask->task_flags and 
+[C:/Kernel/KernelA.HPP.Z,3313] CTask->task_flags and 
 others need to be in separate cache lines?
 
 * Fix [C:/Kernel/SerialDev/Keyboard.CPP.Z,52] KbdLEDsSet().
 * NumLock comes on with break key.
+
+* Hymns: mightest, finger
 
 
                                   TODO? Meh
@@ -100,7 +102,7 @@ SPT_SHIFT origin cmds?
 in 
 future centuries.)
 
-* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2165] CCmpCtrl
+* Compiler: Exceptions don't free [C:/Kernel/KernelA.HPP.Z,2166] CCmpCtrl
 stuff.
 
 * [C:/Adam/DolDoc/DocHighlight.CPP.Z,1] for code comments at top of documents.
@@ -233,7 +235,7 @@ disp.
 * Links to self document if empty file name? [C:/Adam/DolDoc/DocLink.CPP.Z,1]
 Document Links
 
-* [C:/Kernel/KernelA.HPP.Z,2593] FUF_RECURSE would be nice if capital "+R".
+* [C:/Kernel/KernelA.HPP.Z,2594] FUF_RECURSE would be nice if capital "+R".
 
 * Sprites in cmd line code.
 
@@ -265,22 +267,22 @@ have left-right for address search.
 Every country make own version?
 * International Date input: [C:/Kernel/StrScan.CPP.Z,138] Str2Date().
 
-* [C:/Kernel/KernelA.HPP.Z,3623] DCF_SYMMETRY before transformation?
+* [C:/Kernel/KernelA.HPP.Z,3624] DCF_SYMMETRY before transformation?
 (Currently, it's after.) 
 
-* [C:/Kernel/KernelA.HPP.Z,2948] TRANSPARENT does not work with
-[C:/Kernel/KernelA.HPP.Z,2944] ROPF_DITHER.
+* [C:/Kernel/KernelA.HPP.Z,2949] TRANSPARENT does not work with
+[C:/Kernel/KernelA.HPP.Z,2945] ROPF_DITHER.
 
-* [C:/Kernel/KernelA.HPP.Z,2934] ROP_XOR with pen_width>1 is broken.
+* [C:/Kernel/KernelA.HPP.Z,2935] ROP_XOR with pen_width>1 is broken.
 
 * [C:/Adam/Gr/GrPrimatives.CPP.Z,565] GrPutChar3() with depth buf?
 
 * Eliminate?  [C:/Adam/Ctrls/CtrlsA.CPP.Z,1]?
 * Eliminate?  [C:/Adam/AMathODE.CPP.Z,1]?
 * Eliminate?  [C:/Kernel/KernelA.HPP.Z,114] Complex?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3650] CDC.brush?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,3651] CDC.brush?
 * Eliminate?  [C:/Adam/Gr/GrDC.CPP.Z,6] Mat4x4MulXYZ() change to 3x3?
-* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2934] ROP_XOR?
+* Eliminate?  [C:/Kernel/KernelA.HPP.Z,2935] ROP_XOR?
 
 * [C:/Adam/WinB.CPP.Z,421] WinMgrTask needs to do doc operations on
 [C:/Kernel/SrvCmd.CPP.Z,240] PostMsg() msgs for mouse.  Already 
@@ -292,7 +294,7 @@ works for [C:/Kernel/SerialDev/InputPointer.CPP.Z,43] IPSet()?
 [C:/Kernel/Mem/PageTables.CPP.Z,1] Code for documentation.  I 
 tried a PDF-to-text convertor and it wasn't acceptible.
 
-* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2981] CBGR24's wrong? 
+* Why are BMP file [C:/Kernel/KernelA.HPP.Z,2982] CBGR24's wrong? 
 [C:/Adam/Opt/Utils/FileBMP.CPP.Z,1].
 
 * Switch stmt with sparse cases?  Maybe, ban sparse switch stmts.
@@ -315,7 +317,7 @@ also?
 
 * Compiler: [C:/Kernel/KernelB.HPP.Z,185] sys_var_init_flag for local vars?
 
-* Implement [C:/Kernel/KernelA.HPP.Z,2536] RS_ATTR_FIXED fixed pos files?
+* Implement [C:/Kernel/KernelA.HPP.Z,2537] RS_ATTR_FIXED fixed pos files?
 
 * Editor page formatting is FUBAR.
 
@@ -387,15 +389,15 @@ DirContextNew().
 * DCF_TRANSFORMATION|DCF_SYMMETRY|DCF_JUST_MIRROR -- maybe not both needed at 
 once.
 
-* More [C:/Kernel/KernelA.HPP.Z,3105] Controls?
+* More [C:/Kernel/KernelA.HPP.Z,3106] Controls?
 
 * Compiler: More use of more floating-point stk?
 
-* Compiler: More aggressive in [C:/Compiler/OptLib.CPP.Z,535] CmpF2PushPop()
+* Compiler: More aggressive in [C:/Compiler/OptLib.CPP.Z,542] CmpF2PushPop()
 with types besides MOV and F64. 
 
 * Playing with [C:/Demo/Lectures/NegDisp.CPP.Z,1] on
-[C:/Kernel/KernelA.HPP.Z,3312] CTask?
+[C:/Kernel/KernelA.HPP.Z,3313] CTask?
      $=-CTASK_NEG_OFFSET
 offset(CTask.addr)==0
 Spawn(): CAlloc()
@@ -443,7 +445,7 @@ exceptions?  Doesn't work?  Why mouse [C:/Kernel/SerialDev/Mouse.CPP.Z,1]
 for 
 multicore cycling fwd through tasks.
 
-* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2533]
+* Test removable media id and [C:/Kernel/KernelA.HPP.Z,2534]
 RS_ATTR_RESIDENT.  [C:/Adam/ABlkDev/ADskA.CPP.Z,232] Touch("","+T");
 
 

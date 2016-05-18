@@ -149,7 +149,7 @@ Win	Window
 Wiz	Wizard
 +] Task/Process/Thread
   There is no distinction between task, process or thread.  The Fs segment
-  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3312]
+  reg is kept pointing to the current task's [C:/Kernel/KernelA.HPP.Z,3313]
   CTask.  There is only one window per task, and only core0 tasks can have
   windows.  Each task has a code and data heap so memory is returned when it
   dies.  Each task has a [Hash,1] hash symbol table.
@@ -215,8 +215,8 @@ There is no main() routine.  Instead, stmts outside functions are
   execution.  This mode is used during cmd line operations.  When you #include
   a file, it is compiled function by function and code ends-up all over in the
   memory, at least in the first 2Gig of memory.  The
-  [C:/Compiler/CMain.CPP.Z,616] ExeFile() routine is the same as #include but
-  can be used in programs.  [C:/Compiler/CMain.CPP.Z,607] ExePrint() routine
+  [C:/Compiler/CMain.CPP.Z,614] ExeFile() routine is the same as #include but
+  can be used in programs.  [C:/Compiler/CMain.CPP.Z,605] ExePrint() routine
   will compile and run a string.
 +] Compiler Intermediate Code
   The compiler generates insts one step before making actual assembly
@@ -279,11 +279,11 @@ POPFD pops the CPU flags.
 *.GRA.Z;*.GRA
   Graphics file
 
-[C:/Kernel/KernelA.HPP.Z,2289] FILEMASK_TXT
-[C:/Kernel/KernelA.HPP.Z,2288] FILEMASK_SRC
-[C:/Kernel/KernelA.HPP.Z,2287] FILEMASK_AOT
-[C:/Kernel/KernelA.HPP.Z,2286] FILEMASK_JIT
-[C:/Kernel/KernelA.HPP.Z,2290] FILEMASK_GRA
+[C:/Kernel/KernelA.HPP.Z,2290] FILEMASK_TXT
+[C:/Kernel/KernelA.HPP.Z,2289] FILEMASK_SRC
+[C:/Kernel/KernelA.HPP.Z,2288] FILEMASK_AOT
+[C:/Kernel/KernelA.HPP.Z,2287] FILEMASK_JIT
+[C:/Kernel/KernelA.HPP.Z,2291] FILEMASK_GRA
 +] Naming Convention
   Since there are no namespaces and I don't plan to implement name spaces, I
   highly recommend putting a 2-3 character module code prefix on syms. e.g. WS,
@@ -322,10 +322,10 @@ res is reserved for local variables that hold the function return val.
   MusicSettingsRst.
 +] Fs
   The CPU FS segment reg.  This reg points to the current task's
-  [C:/Kernel/KernelA.HPP.Z,3312] CTask.
+  [C:/Kernel/KernelA.HPP.Z,3313] CTask.
 +] Gs
   The CPU GS segment reg.  This reg points to the current core's
-  [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
+  [C:/Kernel/KernelA.HPP.Z,3437] CCPU.
 +] Heap
   Programs can dynamically request chunks of memory alloced from a heap using
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  They must

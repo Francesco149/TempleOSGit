@@ -710,8 +710,8 @@ U0 ICDeref(CIntermediateCode *tempi,I64 ip)
 {
   CICType t;
   t=tempi->r.type.raw_type;
-  if (t>tempi->a1.type_pointed_to)
-    t=tempi->a1.type_pointed_to;
+  if (t>tempi->a1_type_pointed_to)
+    t=tempi->a1_type_pointed_to;
   if (tempi->a1.type&MDF_REG)
     ICMov(tempi,tempi->r.type,tempi->r.reg,tempi->r.disp,
 	  MDF_DISP+t,tempi->a1.reg,tempi->a1.disp,ip);

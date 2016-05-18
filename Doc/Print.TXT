@@ -106,7 +106,7 @@ mode.
 [C:/Adam/Gr/GrTextBase.CPP.Z,321] TextPrint(CTask *task,I64 x,I64 y,I64
 attr,U8 *fmt,...) plots to [TextBase Layer,1] gr.text_base.
 
-[C:/Compiler/CMain.CPP.Z,607] ExePrint(U8 *fmt,...) compiles and execute a
+[C:/Compiler/CMain.CPP.Z,605] ExePrint(U8 *fmt,...) compiles and execute a
 string.  Note: It returns the res 
 of the last executed expression.
 

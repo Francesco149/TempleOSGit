@@ -211,7 +211,7 @@ CTask *Spawn(U0 (*fp_start_addr)(U8 *data),U8 *data=NULL,U8 *task_name=NULL,
 	I64 stk_size=0,		//0=default
 	I64 flags=1<<SVCf_ADD_TO_QUE)
 {//Create task on core running at address.
-//Alloc [C:/Kernel/KernelA.HPP.Z,3312] CTask structure from code heap so addr will be short.
+//Alloc [C:/Kernel/KernelA.HPP.Z,3313] CTask structure from code heap so addr will be short.
   //Could be alloced off of data heap.
   CTask *task;
   if (target_cpu>=0)
@@ -353,7 +353,7 @@ U0 UserTaskCont()
   CDoc *doc;
   Bool cont=TRUE;
   do {
-    cc=CmpCtrlNew(,CCF_PMT|CCF_QUESTION_HELP);
+    cc=CmpCtrlNew(,CCF_CMD_LINE|CCF_PMT|CCF_QUESTION_HELP);
     QueIns(cc,Fs->last_lex);
     try {
       Lex(cc);

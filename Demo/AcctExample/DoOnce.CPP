@@ -9,6 +9,39 @@
 
 U0 DoOnce()
 {
+  if (sys_boot_src.u16[0]==BOOT_SRC_DVD) {
+    "\nIf you answer 'No' you can play with\n"
+	  "the live CD without installing.\n\n"
+	  "Install onto hard drive ";
+    if (YorN) {
+      DocBottom;
+      ExeFile("::/Misc/OSInstall");
+      if (ExePrint("OSInstall(FALSE);")) {
+	*sys_registry_doc->filename.name='C';
+	"\n\n1) TAD\n2) DLC\n\n";
+	switch (GetI64("Staff Member Number:")) {
+	  case 1:
+	    RegWriteBranch("TempleOS/Staff",
+		  "#define PERSONAL_INITIALS \"TAD\"\n"
+		  "#define MACHINE_CFG %d\n",
+		  GetI64("Machine Cfg Number:")
+	    );
+	    break;
+	  case 2:
+	    RegWriteBranch("TempleOS/Staff",
+		  "#define PERSONAL_INITIALS \"DLC\"\n"
+		  "#define MACHINE_CFG 0\n"
+		  );
+	    break;
+	}
+	Del("C:/Home/DoDistro.CPP.Z");
+	Del("D:/Home/DoDistro.CPP.Z");
+	"\n\n\nAfter Reboot be sure to run MakeDistrosAndBackUp.\n\n";
+	PressAKey;
+	Reboot; //Too dangerous for amateurs until reboot.
+      }
+    }
+  }
   if (FileFind("D:/Temp/Logs/access.log")) {
     Auto("\n\n%C",CH_ESC);
     WebLogRep("D:/Temp/Logs/*.log","D:/Temp/LogRep.TXT");

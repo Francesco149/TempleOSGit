@@ -57,7 +57,7 @@ U0 GrSetUpTables()
 	  GrPlot0(dc,x-1,y-1);
   }
   if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
-    MemSet(VGAM_TEXT,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
+    MemSet(text.vga_text_alias,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
     MemSet(gr.vga_text_cache,0,TEXT_ROWS*TEXT_COLS*sizeof(U16));
   } else {
     OutU8(VGAP_IDX,VGAR_MAP_MASK);

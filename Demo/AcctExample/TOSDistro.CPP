@@ -223,7 +223,7 @@ I64 MakeLineRepFile()
   return res;
 }
 
-U0 TOSDistroPrep()
+U0 StaffDistroPrep()
 {/*This is the TempleOS internal distro.  Only run this on a
 virtual machine, not bare metal hardware because it's settings could cause
 problems.  The hard drive must be partitioned.	Install Std Distro, then
@@ -237,9 +237,9 @@ install this on top.
   CopyTree("C:/",TOS_DISTRO_DIR "/");
   Del(TOS_DISTRO_DIR "/" KERNEL_BIN_C);
 }
-U0 MakeTOSDistro()
+U0 MakeStaffDistro()
 {
-  TOSDistroPrep;
+  StaffDistroPrep;
   ISOFileCreate(TOS_ISO_NAME,TOS_DISTRO_DIR "/*",,
 	TOS_DISTRO_DIR BOOT_DIR_KERNEL_BIN_C);
   DefinePrint("DD_TEMPLEOSTS_SIZE",
@@ -387,7 +387,7 @@ public U0 MakeDistrosAndBackUp()
 {
   SettingsPush; //See [C:/Adam/TaskSettings.CPP.Z,3] SettingsPush
   progress4=*progress4_desc=0;
-  progress4_max=14;
+  progress4_max=16;
   AutoComplete;
   WinBorder;
   WinMax;
@@ -406,6 +406,10 @@ public U0 MakeDistrosAndBackUp()
   MakeUltraDistro; progress4++;
   DocClear;
   Copy(TOS_ISO_NAME,"D:/Wb/TempleOSUltra.ISO"); progress4++;
+
+  MakeStaffDistro; progress4++;
+  DocClear;
+  Copy(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO"); progress4++;
 
   UpdateISODocDefines;
 

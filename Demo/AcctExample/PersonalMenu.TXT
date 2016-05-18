@@ -137,6 +137,11 @@ Cd("/Home/Web");Dir;
 `Cd("/Home/Web");Dir;
 `
 
+Cd("/Home/Web/DLC");Dir;
+
+`Cd("/Home/Web/DLC");Dir;
+`
+
 Cd("/Home/Web/TAD");Dir;
 
 `Cd("/Home/Web/TAD");Dir;
@@ -324,11 +329,11 @@ PreBackUp;
 `PreBackUp;
 `
 
-Make TOS Distro ISO
-`MakeTOSDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSTOS.ISO");
+Make Staff Distro ISO
+`MakeStaffDistro; MkDir("D:/Wb"); Copy(TOS_ISO_NAME,"D:/Wb/TempleOSStaff.ISO");
 `
- Burn TOS Distro DVD
-`MakeTOSDistro; DVDImageWrite('T',TOS_ISO_NAME);
+ Burn Staff Distro DVD
+`MakeAStaffDistro; DVDImageWrite('T',TOS_ISO_NAME);
 `
 
 Make Dbg Distro ISO

@@ -1,6 +1,6 @@
 Bool OptIC4(CIntermediateCode *tempi)
 {
-  I64 i,ty,pt,ty1,pt1;
+  I64 i;
   CIntermediateCode *tempil1,*tempil2;
 
   if (tempi->ic_code<IC_IMM_I64) return FALSE;
@@ -57,25 +57,9 @@ Bool OptIC4(CIntermediateCode *tempi)
 	  else
 	    tempil1->ic_flags|=ICF_A2_TO_F64;
 	}
-
-	ty=tempil1->a2.type.raw_type;
-	ty1=tempil2->a1.type.raw_type;
-	if (ty1 && ty1<ty)
-	  ty=ty1;
-	ty1=tempil2->r.type.raw_type;
-	if (ty1 && ty1<ty)
-	  ty=ty1;
-	tempil1->a2.type=tempil2->a1.type&MDG_MASK+ty;
-
-	pt=tempil1->a2.type_pointed_to;
-	pt1=tempil2->a1.type_pointed_to;
-	if (pt1 && pt1<pt && pt!=RT_F64)
-	  pt=pt1;
-	pt1=tempil2->r.type_pointed_to;
-	if (pt1 && pt1<pt && pt!=RT_F64)
-	  pt=pt1;
-	tempil1->a2.type_pointed_to=pt;
-
+	tempil1->a2.type=tempil2->a1.type&MDG_MASK+
+	      MinI64(tempil1->a2.type.raw_type,
+	      MinI64(tempil2->r.type.raw_type,tempil2->a1.type.raw_type));
 	tempil1->a2.reg=tempil2->a1.reg;
 	tempil1->a2.disp=tempil2->a1.disp;
 	tempil1->ic_flags|=tempil2->ic_flags&ICG_NO_CVT_MASK;
@@ -97,25 +81,10 @@ Bool OptIC4(CIntermediateCode *tempi)
 	  } else
 	    tempil1->ic_flags|=ICF_A1_TO_F64;
 	}
-
-	ty=tempil1->a1.type.raw_type;
-	ty1=tempil2->a1.type.raw_type;
-	if (ty1 && ty1<ty)
-	  ty=ty1;
-	ty1=tempil2->r.type.raw_type;
-	if (ty1 && ty1<ty)
-	  ty=ty1;
-	tempil1->a1.type=tempil2->a1.type&MDG_MASK+ty;
-
-	pt=tempil1->a1.type_pointed_to;
-	pt1=tempil2->a1.type_pointed_to;
-	if (pt1 && pt1<pt && pt!=RT_F64)
-	  pt=pt1;
-	pt1=tempil2->r.type_pointed_to;
-	if (pt1 && pt1<pt && pt!=RT_F64)
-	  pt=pt1;
-	tempil1->a1.type_pointed_to=pt;
-
+	tempil1->a1.type=tempil2->a1.type&MDG_MASK+
+	      MinI64(tempil1->a1.type.raw_type,
+	      MinI64(tempil2->r.type.raw_type,tempil2->a1.type.raw_type));
+	CmpMinTypePointed(tempil1,tempil2->a1_type_pointed_to);
 	tempil1->a1.reg=tempil2->a1.reg;
 	tempil1->a1.disp=tempil2->a1.disp;
 	tempil1->ic_flags|=tempil2->ic_flags&ICG_NO_CVT_MASK;
@@ -131,7 +100,7 @@ Bool OptIC4(CIntermediateCode *tempi)
 	      !Bt(&cmp.non_ptr_vars_mask,tempil2->a1.reg)) {
 	  tempil1->ic_flags|=tempil2->ic_flags;
 	  tempil1->ic_code=IC_MOV;
-	  tempil1->a1.type=MDF_DISP+tempil1->a1.type_pointed_to;
+	  tempil1->a1.type=MDF_DISP+tempil1->a1_type_pointed_to;
 	  tempil1->a1.reg=tempil2->a1.reg;
 	  tempil1->a1.disp=i;
 	  OptSetNOP2(tempil2,-1);
@@ -141,7 +110,7 @@ Bool OptIC4(CIntermediateCode *tempi)
       if (tempil2->ic_code==IC_LEA && tempil1->a1.type&MDF_STK) {
 	tempil1->ic_flags|=tempil2->ic_flags;
 	tempil1->ic_code=IC_MOV;
-	tempil1->a1.type=tempil2->a1.type&MDG_MASK+tempil1->a1.type_pointed_to;
+	tempil1->a1.type=tempil2->a1.type&MDG_MASK+tempil1->a1_type_pointed_to;
 	tempil1->a1.reg=tempil2->a1.reg;
 	tempil1->a1.disp=tempil2->a1.disp;
 	OptFree(tempil2);
@@ -151,7 +120,7 @@ Bool OptIC4(CIntermediateCode *tempi)
   }
   if (tempil1->ic_code==IC_DEREF) {
     if (tempil1->a1.type&MDF_REG) {
-      tempil1->a1.type=MDF_DISP+tempil1->a1.type_pointed_to;
+      tempil1->a1.type=MDF_DISP+tempil1->a1_type_pointed_to;
       tempil1->a1.disp=0;
       tempil1->ic_code=IC_MOV;
       return TRUE;
@@ -220,7 +189,7 @@ U0 OptPass4(CCmpCtrl *cc,COptReg *reg_offsets,I64 *_type)
 	case IC_IMM_F64:
 	  tempi->a1.type=MDF_IMM+RT_I64;
 	  tempi->a1.disp=tempi->ic_data;
-	  tempi->a1.type_pointed_to=RT_F64;
+	  tempi->a1_type_pointed_to=RT_F64;
 	  tempi->ic_code=IC_MOV;
 	  break;
 	case IC_MOV:
@@ -256,7 +225,7 @@ U0 OptPass4(CCmpCtrl *cc,COptReg *reg_offsets,I64 *_type)
 	      tempi->a1.disp=tempi1->a1.disp;
 	    tempi->ic_flags|=tempi1->ic_flags;
 	    tempi->ic_code=IC_MOV;
-	    tempi->a1.type=MDF_RIP_DISP32+tempi->a1.type_pointed_to;
+	    tempi->a1.type=MDF_RIP_DISP32+tempi->a1_type_pointed_to;
 	    tempi->a1.reg=REG_RIP;
 	    OptFree(tempi1);
 	  }
@@ -299,7 +268,7 @@ p4_lea_gone:
 	      tempi->a1.disp=tempi1->ic_data;
 	    else
 	      tempi->a1.disp=tempi1->a1.disp;
-	    tempi->a1.type=MDF_RIP_DISP32+tempi->a1.type_pointed_to;
+	    tempi->a1.type=MDF_RIP_DISP32+tempi->a1_type_pointed_to;
 	    tempi->a1.reg=REG_RIP;
 	    tempi->ic_flags|=ICF_BY_VAL;
 	    OptFree(tempi1);
@@ -325,7 +294,7 @@ p4_sib:
 
 		tempi->ic_code=IC_LEA;
 		tempi->a1.type=MDF_SIB+RT_I64;
-		tempi->a1.type_pointed_to=RT_I64;
+		tempi->a1_type_pointed_to=RT_I64;
 
 		tempi->a2.type=MDF_NULL+tempi->a2.type.raw_type;
 	      }
@@ -408,32 +377,22 @@ p4_sib:
 		  tempi->a1.disp=tempi1->a1.disp;
 		  OptSetNOP2(tempi1);
 		}
-		if (FALSE && tempi->r.type&MDF_STK && tempi2->a2.type&MDF_STK) {
-		  tempi->r.type=tempi->a1.type;
-		  tempi->r.type_pointed_to=tempi->a1.type_pointed_to;
-		  tempi->r.reg=tempi->a1.reg;
-		  tempi->r.disp=tempi->a1.disp;
-		  tempi2->a2.type=tempi->a1.type;
-		  tempi2->a2.type_pointed_to=tempi->a1.type_pointed_to;
-		  tempi2->a2.reg=tempi->a1.reg;
-		  tempi2->a2.disp=tempi->a1.disp;
-		}
 	      } else {
 		tempi->ic_flags|=tempi1->ic_flags;
 		tempi->a1.type=tempi1->a1.type&MDG_MASK+tempi->a1.type.raw_type;
 		tempi->a1.reg=tempi1->a1.reg;
 		tempi->a1.disp=tempi1->a1.disp;
 		OptSetNOP2(tempi1);
-		if (FALSE && tempi->r.type&MDF_STK &&tempi2->a2.type&MDF_STK) {
-		  tempi->r.type=tempi->a1.type;
-		  tempi->r.type_pointed_to=tempi->a1.type_pointed_to;
-		  tempi->r.reg=tempi->a1.reg;
-		  tempi->r.disp=tempi->a1.disp;
-		  tempi2->a2.type=tempi->a1.type;
-		  tempi2->a2.type_pointed_to=tempi->a1.type_pointed_to;
-		  tempi2->a2.reg=tempi->a1.reg;
-		  tempi2->a2.disp=tempi->a1.disp;
-		}
+	      }
+	      if (tempi->r.type&MDF_STK && tempi2->a2.type&MDF_STK &&
+		    code!=IC_ASSIGN_PP && code!=IC_ASSIGN_MM) {
+		tempi->r.type=tempi->a1.type;
+		tempi->r.reg=tempi->a1.reg;
+		tempi->r.disp=tempi->a1.disp;
+		tempi2->a2.type=tempi->a1.type;
+		tempi2->a2.reg=tempi->a1.reg;
+		tempi2->a2.disp=tempi->a1.disp;
+		CmpMinTypePointed(tempi2,tempi->a1_type_pointed_to);
 	      }
 	      tempi->ic_flags|=ICF_BY_VAL;
 	    }

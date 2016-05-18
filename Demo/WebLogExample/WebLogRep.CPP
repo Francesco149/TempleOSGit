@@ -509,9 +509,7 @@ U0 WebLogRep(U8 *mask,U8 *output_filename)
   LogLstDel(root);
 }
 
-//This is so I can use this file stand alone
-//or as a component of a program.
-#if __DEPTH__<1
+#if __CMD_LINE__
 Cd(__DIR__);;
 WebLogRep("*.LOG*","WebLogRep.TXT.Z");
 #endif

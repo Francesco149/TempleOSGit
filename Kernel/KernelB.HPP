@@ -224,14 +224,14 @@ public _extern SYS_PROGRESSES
 
 #help_index "MultiCore"
 #help_file "::/Doc/MultiCore"
-public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,234] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
+public _extern SYS_CPU_STRUCTS CCPU *cpu_structs; //[C:/Kernel/KernelB.HPP.Z,234] Gs points to cur [C:/Kernel/KernelA.HPP.Z,3437] CCPU.
 public _extern SYS_MP_CNT I64 mp_cnt; //Count of cores
 _extern SYS_MP_CNT_INITIAL I64 mp_cnt_initial; //only used during [C:/Kernel/MultiProc.CPP.Z,284] Core0StartMP
 _extern SYS_MP_CNT_LOCK I64 mp_cnt_lock;
 _extern SYS_SEMAS CSema sys_semas[NUM_SYS_SEMAS];
 
 #help_index "MultiCore;Processor"
-public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3436] CCPU.
+public _intern IC_GS CCPU *Gs(); //GS points to current [C:/Kernel/KernelA.HPP.Z,3437] CCPU.
 
 #help_index "PCI"
 public _extern SYS_PCI_BUSES U16 sys_pci_busses; //Number of PCI buses.
@@ -273,7 +273,7 @@ public _intern IC_INVLPG
 	U0 InvlPg(U8 *a); //Invalidate page at addr inst.
 
 #help_index "Task;Processor"
-public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3312] CTask.
+public _intern IC_FS CTask *Fs(); //FS seg reg points to the current [C:/Kernel/KernelA.HPP.Z,3313] CTask.
 
 #help_index "Time/CPU Cycles"
 #help_file "::/Doc/TimeCycles"
