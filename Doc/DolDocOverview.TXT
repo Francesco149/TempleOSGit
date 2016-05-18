@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2949] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2950] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -239,7 +239,7 @@ Macro's are usually in your [C:/Home/PersonalMenu.TXT,1] and have the '+X'
   A left expression arg, LE=<Exp>, will return a number when clicked with the
   left mouse.
 
-See [C:/Adam/DolDoc/DocPopUp.CPP.Z,202] PopUpRangeI64().
+See [C:/Adam/DolDoc/DocPopUp.CPP.Z,203] PopUpRangeI64().
 +] HX Hex Edit
   See [C:/Adam/DolDoc/DocPutS.CPP.Z,335] DocD().
 +] TR Tree Widget

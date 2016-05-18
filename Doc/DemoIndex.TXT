@@ -29,7 +29,6 @@ be used as a tutorial if you start at the beginning and work your way fwd.
   [C:/Demo/Graphics/WinZBuf.CPP,1]
   [C:/Demo/Graphics/Elephant.CPP,1]
   [C:/Demo/Graphics/Mountain.CPP,1]
-  [C:/Demo/Games/Coach.CPP,1]
   [C:/Demo/Graphics/WallPaperFish.CPP,1] //Press SHIFT-F5 to Adam Include
   [C:/Demo/Games/Digits.CPP,1]
   [C:/Demo/Progress.CPP,1] //has some ASM, just ignore

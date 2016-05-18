@@ -129,7 +129,7 @@ Bool ISO1CDirFill(CDirEntry *tempde,CISO1DirEntry *de)
 
 Bool ISO1FileFind(CDrv *dv,I64 cur_dir_cluster,U8 *name,
 	CDirEntry *_res,I64 fuf_flags=0)
-{//[C:/Kernel/KernelA.HPP.Z,2604] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2605] FUF_JUST_FILES
+{//[C:/Kernel/KernelA.HPP.Z,2605] FUF_JUST_DIRS, [C:/Kernel/KernelA.HPP.Z,2606] FUF_JUST_FILES
   CISO1DirEntry *isoptr,*buf;
   U8 dname[CDIR_FILENAME_LEN];
   Bool res=FALSE,unlock;

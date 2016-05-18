@@ -525,6 +525,13 @@ I64 CmpRawTypePointed(CHashClass *tempc)
   return 0;
 }
 
+U0 CmpMinTypePointed(CIntermediateCode *tempi,I64 pt1)
+{
+  I64 pt;
+  if ((pt=tempi->a1_type_pointed_to) && pt!=RT_F64 && 0<pt1<pt)
+    tempi->a1_type_pointed_to=pt;
+}
+
 U0 CmpF1PushPop(CIntermediateCode *tempi,CIntermediateCode *tempi2)
 {
   if (intermediate_code_table[tempi2->ic_code].fpop||

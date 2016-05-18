@@ -63,14 +63,16 @@ U0 SysGlblsInit()
 
 U0 SysGrInit()
 {
+  U8 *vga_page=MemVGAAlloc;
   text.font=sys_font_8x8;
   text.aux_font=MAlloc(256*FONT_HEIGHT);
   MemCpy(text.aux_font,text.font,256*FONT_HEIGHT);
-  text.vga_alias=MemVGAAlloc+VGAM_GRAPHICS;
+  text.vga_alias	=vga_page+VGAM_GRAPHICS;
+  text.vga_text_alias	=vga_page+VGAM_TEXT;
   if (!Bt(&sys_run_level,RLf_VGA)) { //if text mode
     text.cols=80;
     text.rows=25;
-    MemSet(VGAM_TEXT,0,text.rows*text.cols<<1);
+    MemSet(text.vga_text_alias,0,text.rows*text.cols<<1);
   } else { //if 640x480 16 color
     text.cols=GR_WIDTH/FONT_WIDTH;
     text.rows=GR_HEIGHT/FONT_HEIGHT;

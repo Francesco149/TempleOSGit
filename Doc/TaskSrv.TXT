@@ -1,5 +1,5 @@
  <1> (image)
-[C:/Kernel/SrvCmd.CPP.Z,398] PopUpPrint[C:/Kernel/KTask.CPP.Z,392] User[C:/Compiler/CMain.CPP.Z,607] ExePrint
+[C:/Kernel/SrvCmd.CPP.Z,398] PopUpPrint[C:/Kernel/KTask.CPP.Z,392] User[C:/Compiler/CMain.CPP.Z,605] ExePrint
 
 
 
@@ -7,7 +7,7 @@
 
 
 
- [C:/Kernel/KEnd.CPP.Z,130] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,372] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,381] UserCmdLine
+ [C:/Kernel/KEnd.CPP.Z,132] Core0 AdamTask[C:/Kernel/KTask.CPP.Z,372] SrvCmdLine[C:/Kernel/MultiProc.CPP.Z,194] AP SethTask[C:/Kernel/KTask.CPP.Z,381] UserCmdLine
 
 
 
@@ -27,8 +27,8 @@
 
 
 
-[C:/Kernel/KernelA.HPP.Z,3187] CSrvCmd nodes are one of
-[C:/Kernel/KernelA.HPP.Z,3180] five types.  User applications deal with text
+[C:/Kernel/KernelA.HPP.Z,3188] CSrvCmd nodes are one of
+[C:/Kernel/KernelA.HPP.Z,3181] five types.  User applications deal with text
 or 
 msgs.  [C:/Kernel/SrvCmd.CPP.Z,267] SrvCmdRunOne() will call a function,
 spawn a task or execute some text 

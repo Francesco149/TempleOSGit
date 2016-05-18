@@ -16,6 +16,7 @@ U0 DoOnce()
     if (YorN) {
       DocBottom;
       ExeFile("::/Misc/OSInstall");
+      ExePrint("OSInstall(TRUE);");
     }
   } else {
     "$PURPLE$$TX+CX,\"Tip of the Day\"$$FG$\n";

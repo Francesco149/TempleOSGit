@@ -156,7 +156,7 @@ U0 Mem64DevFree(U8 *base,I64 pages2Meg)
 U8 *MemVGAAlloc()
 {
   I64 i=1,*a=Mem64DevAlloc(&i),*pte=MemPageTable(a);
-  *pte=0x18F;
+  *pte=0x197;
   InvlPg(a);
   return a;
 }

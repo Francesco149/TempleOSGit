@@ -479,9 +479,10 @@ U0 EdCodeTools2(CDoc *doc,I64 tool_action,Bool beep=TRUE)
 	  prj_file=FileNameAbs(st,FUF_Z_OR_NOT_Z);
 	  Free(st);
 	  if (FileFind(prj_file))
-	    st=MStrPrint("\"$WW,1$\";ExeFile(\"%s\",TRUE);",prj_file);
+	    st=MStrPrint("\"$WW,1$\";ExeFile(\"%s\",CCF_JUST_LOAD);",prj_file);
 	  else
-	    st=MStrPrint("\"$WW,1$\";ExeFile(\"%s\",TRUE);",doc->filename.name);
+	    st=MStrPrint("\"$WW,1$\";ExeFile(\"%s\",CCF_JUST_LOAD);",
+		  doc->filename.name);
 	  tempc=TaskExe(task,Fs,st,1<<SVCf_WAKE_MASTER|1<<SVCf_FOCUS_MASTER);
 	  Free(st);
 	  if (JobResScan(tempc,&r) && r)

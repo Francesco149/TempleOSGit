@@ -1618,7 +1618,7 @@ public class CAutoCompleteDictGlbls
 #define ICF_DONT_RESTORE		0x100000000
 #define ICG_NO_CVT_MASK			0x1FFFFFF00
 
-#define IC_BODY_SIZE			0x80
+#define IC_BODY_SIZE			0x83
 
 #define ECF_HAS_PUSH_CMP		0x01 //for 50<i<j<=100 exps
 
@@ -1630,8 +1630,7 @@ U16 class CICType
 class CICArg
 {
   CICType type;
-  U8	type_pointed_to,pad;
-  U16	reg,pad; //low is reg, high is index_reg+scale<<6
+  U16	reg; //low is reg, high is index_reg+scale<<6
   I64	disp;
 };
 
@@ -1658,9 +1657,10 @@ class CIntermediateCode:CIntermediateCodeBase
 	ic_line;
   CHashClass *ic_class,*ic_class2;
   CICArg a1,a2,r;
+  U8	a1_type_pointed_to; //Used for [C:/Compiler/CompilerA.HPP.Z,10] IST_ASSIGN and [C:/Compiler/CompilerA.HPP.Z,9] IST_DEREF [C:/Compiler/CInit.CPP.Z,16] ic_codes.
   union {
     U8 ic_body[IC_BODY_SIZE];
-//Tree Links are created in OptPass012.  An ADD opcode, for exmaple,
+    //Tree Links are created in OptPass012.  An ADD opcode, for example,
     //points back to its two earlier addend insts, not MAlloced,
     //just pointers to prev CIntermediate codes in the array.
 
@@ -2024,8 +2024,8 @@ class CCodeCtrl
 #define __TIME__ #exe{StreamPrint("\"%T\"",Now);}
 #define __LINE__ #exe{StreamPrint("%d",\
 	Fs->last_lex->lex_include_stk->line_num);}
-#define __DEPTH__ #exe{StreamPrint("%d",\
-	Fs->last_lex->lex_include_stk->depth);}
+#define __CMD_LINE__ #exe{StreamPrint("%d",Fs->last_lex->flags&CCF_CMD_LINE &&\
+	Fs->last_lex->lex_include_stk->depth<2);}
 #define __FILE__ #exe{StreamPrint("\"%s\"",\
 	Fs->last_lex->lex_include_stk->full_name);}
 #define __DIR__  #exe{StreamDir;}
@@ -2122,18 +2122,19 @@ class CLexHashTableContext
 };
 
 //CmpCtrl flags
-#define CCF_PMT			1
-#define CCf_PMT			0
-#define CCF_QUESTION_HELP	2
-#define CCF_DONT_FREE_BUF	4
-#define CCF_NO_DEFINES		8
-#define CCF_IN_IF		16
-#define CCF_JUST_LOAD		32
-#define CCF_KEEP_NEW_LINES	64
-#define CCF_KEEP_DOT		128
-#define CCF_KEEP_NUM_SIGN	256
-#define CCF_KEEP_AT_SIGN	512
-#define CCf_PASS_TRACE_PRESENT	10
+#define CCF_CMD_LINE		0x001
+#define CCF_PMT			0x002
+#define CCf_PMT			1
+#define CCF_QUESTION_HELP	0x004
+#define CCF_DONT_FREE_BUF	0x008
+#define CCF_NO_DEFINES		0x010
+#define CCF_IN_IF		0x020
+#define CCF_JUST_LOAD		0x040
+#define CCF_KEEP_NEW_LINES	0x080
+#define CCF_KEEP_DOT		0x100
+#define CCF_KEEP_NUM_SIGN	0x200
+#define CCF_KEEP_AT_SIGN	0x400
+#define CCf_PASS_TRACE_PRESENT	11
 #define CCF_NOT_CONST		0x0000010000
 #define CCF_NO_REG_OPT		0x0000020000
 #define CCF_IN_QUOTES		0x0000040000
@@ -2826,7 +2827,7 @@ class CMemUsed
 /*TempleOS does not mess with page tables after setting them up
 during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-[C:/Kernel/KernelA.HPP.Z,2869] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+[C:/Kernel/KernelA.HPP.Z,2870] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
 and is not related to CPU hardware.
 
 All virtual addresses are ident to physical at all times.
@@ -2935,7 +2936,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2945] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2946] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3035,7 +3036,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3034] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3035] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3035] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3036] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3215,8 +3216,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3477] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3477] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3596,7 +3597,7 @@ public class CTextGlbls
   U8	*raw_screen_image;
   I64	rows,cols;		//Use TEXT_ROWS,TEXT_COLS
   U64	*font,*aux_font;
-  U8	*vga_alias;
+  U8	*vga_alias,*vga_text_alias;
 };
 
 #define FONT_WIDTH	8
@@ -3658,12 +3659,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2935] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2936] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2945] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2946] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3696,7 +3697,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3634] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3635] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

@@ -60,7 +60,6 @@ public extern I64 LstMatch(U8 *needle, U8 *haystack_lst,I64 flags=0);
 public extern U8 *LstSub(I64 sub, U8 *lst);
 
 #help_index "Char/Operations"
-public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 public extern U8 *MStrPrint(U8 *fmt,...);
 public extern U8 *MStrUtil(U8 *src,I64 flags,F64 indent_scale_factor=0);
 public extern U8 *ScaleIndent(U8 *src,F64 indent_scale_factor);
@@ -83,6 +82,9 @@ public extern U8 *StrPrintJoin(U8 *dst,U8 *fmt,I64 argc,I64 *argv);
 public extern U8 *StrUtil(U8 *_src,I64 flags);
 public extern U8 *Tabs2Spaces(U8 *src);
 public extern Bool WildMatch(U8 *test_str,U8 *wild_str);
+
+#help_index "Char/Operations;Memory"
+public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 
 #help_index "Char/Operations;Memory/Adam Heap"
 public extern U8 *AStrNew(U8 *buf);
@@ -447,6 +449,7 @@ extern CIPStateGlbls ip_last;
 #help_index "Input Pointer/Displayed Image"
 extern U0 IPVarsInit();
 extern U0 IPVarsUpdate(I64 x,I64 y,I64 z,Bool l,Bool r);
+
 #help_index "Input Pointer/Mouse"
 public extern CMouseStateGlbls mouse;
 extern CMouseStateGlbls mouse_last;
@@ -476,7 +479,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3777] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3778] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -660,7 +663,6 @@ public extern U0 WinDerivedValsUpdate(CTask *task=NULL);
 
 #help_index "Task/Srv"
 #help_file "::/Doc/TaskSrv"
-
 #help_index "Task/Srv/Exe"
 public extern I64 Adam(U8 *fmt,...);
 public extern U0 AdamErr(U8 *fmt,...);

@@ -10,7 +10,7 @@ Constant expressions are simplified.
 Eliminated opcodes are set to NOP.
 Types are determined by reconstructing an
 expression tree for operators
-[C:/Kernel/KernelA.HPP.Z,1654] CIntermediateCode.[C:/Kernel/KernelA.HPP.Z,1638] CICTreeLinks.
+[C:/Kernel/KernelA.HPP.Z,1653] CIntermediateCode.[C:/Kernel/KernelA.HPP.Z,1637] CICTreeLinks.
 
 Pointer arithmetic size is set, once
 the type is determined.
@@ -43,7 +43,8 @@ args.
     tempc=tempi->ic_class;
     tempi->ic_class2=tempc;
     tempi_push=tempi;
-    MemSet(&tempi->a1,0,sizeof(CICArg)*4);
+    MemSet(&tempi->a1,0,3*sizeof(CICArg));
+    tempi->a1_type_pointed_to=0;
     switch [intermediate_code_table[code].arg_cnt] {
       case IS_V_ARG:
 	ps->ptr-=tempi->ic_data>>2;
