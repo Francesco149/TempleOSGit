@@ -5,7 +5,7 @@
 Bool ISODrvInit(CDrv *dv,I64 blk)
 {
   CBlkDev *bd=dv->bd;
-  I64 spc=bd->blk_size>>BLK_SIZE_BITS,i=blk/spc;
+  I64 spc=bd->blk_size>>BLK_SIZE_BITS,i=blk/spc,drv_offset=0;
   CISO1PriDesc *iso=MAlloc(bd->blk_size);
   CISO1DirEntry *de;
   Bool unlock,res=FALSE;
@@ -15,7 +15,7 @@ Bool ISODrvInit(CDrv *dv,I64 blk)
     unlock=DrvLock(dv);
     dv->fs_type=FSt_ISO9660; //default
     dv->spc=spc;
-    dv->base_offset=dv->data_area=dv->root_cluster=dv->size=0;
+    dv->drv_offset=bd->drv_offset=dv->data_area=dv->root_cluster=dv->size=0;
     while (TRUE) {
       dv->size=MaxI64(dv->size,(i+1)*spc);
       RBlks(dv,iso,i*spc,spc);
@@ -24,13 +24,21 @@ Bool ISODrvInit(CDrv *dv,I64 blk)
       switch (LstMatch(buf,"CD001\0CDW02\0BEA01\0BOOT2\0NSR02\0NSR03\0TEA01\0",
 	    LMF_EXACT)) {
 	case 0:
-	  dv->fs_type=FSt_ISO9660;
 	  switch (iso->type) {
+	    case ISO1T_BOOT_RECORD:
+	      drv_offset+=(2*DVD_BLK_SIZE+DVD_BLK_SIZE)/BLK_SIZE;
+	      break;
 	    case ISO1T_SUPPLEMENTARY_DESC:
-	      dv->data_area=0;
 	      de=&iso->root_dir_record;
 	      dv->root_cluster=de->loc.little;
 	      dv->size=iso->vol_space_size.little*bd->blk_size>>BLK_SIZE_BITS;
+	      if (!StrCmp(iso->publisher_id,"TempleOS RedSea")) {
+		dv->fs_type=FSt_REDSEA;
+		bd->drv_offset=dv->drv_offset=19<<2+drv_offset;
+		bd->max_blk=dv->size-1;
+		dv->size-=bd->drv_offset;
+		RedSeaDrvInit(dv);
+	      }
 	      res=TRUE;
 	      goto ipi_done;
 	    case ISO1T_TERMINATOR:
@@ -50,7 +58,7 @@ ipi_done:
   } catch {
     dv->fs_type=FSt_ISO9660;
     dv->spc=spc;
-    dv->base_offset=dv->data_area=dv->root_cluster=0;
+    dv->drv_offset=bd->drv_offset=dv->data_area=dv->root_cluster=0;
     Free(iso);
     if (unlock)
       DrvUnlock(dv);

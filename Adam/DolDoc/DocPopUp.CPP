@@ -29,7 +29,7 @@ public CTask *PopUpViewPrint(U8 *fmt,...)
 
 #help_index "DolDoc/Input;File/FileNames;StdIn/DolDoc"
 public U8 *PopUpPickFile(U8 *dir=NULL)
-{//Filename chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr().
+{//Filename chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr().
   U8 *res,*st,*st2;
   if (dir)
     st=MStrPrint("Cd(\"%Q\");FileMgr(FM_PICK_FILE,Fs->parent_task);",dir);
@@ -44,7 +44,7 @@ public U8 *PopUpPickFile(U8 *dir=NULL)
 }
 
 public U8 *PopUpPickDir(U8 *dir=NULL)
-{//File dir name chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr().
+{//File dir name chooser.  Uses [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr().
   U8 *res,*st,*st2;
   if (dir)
     st=MStrPrint("Cd(\"%Q\");FileMgr(FM_PICK_DIR,Fs->parent_task);",dir);
@@ -72,7 +72,7 @@ public U8 *FileNameForm(U8 *dft=NULL,I64 dof_flags=0,CTask *mem_task=NULL)
 }
 
 public U8 *PopUpFileName(U8 *dft=NULL,I64 dof_flags=0)
-{//Filename chooser. Uses form, not [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr().
+{//Filename chooser. Uses form, not [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr().
   U8 *st=MStrPrint("FileNameForm(\"%Q\",0x%X,Fs->parent_task);",
 	dft,dof_flags|DOF_MIN_SIZE),*res=PopUp(st,Fs);
   Free(st);

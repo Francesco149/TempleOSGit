@@ -157,6 +157,11 @@ Cd("/Home/Downloads/Blog");Dir;
 `Cd("/Home/Downloads/Blog");Dir;
 `
 
+Cd("/Home/Downloads/CodeScraps");Dir;
+
+`Cd("/Home/Downloads/CodeScraps");Dir;
+`
+
 Cd("/Home/Downloads/Psalmody");Dir;
 
 `Cd("/Home/Downloads/Psalmody");Dir;

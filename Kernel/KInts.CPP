@@ -100,7 +100,7 @@ U8 *IntEntryGet(I64 irq)
 }
 
 U8 *IntEntrySet(I64 irq,U0 (*fp_new_handler)(),I64 type=IDTET_IRQ,I64 dpl=0)
-{//Set interrupt vector. See [C:/Kernel/KernelA.HPP.Z,280] IDTET_IRQ.
+{//Set interrupt vector. See [C:/Kernel/KernelA.HPP.Z,281] IDTET_IRQ.
 //See [C:/Demo/Lectures/InterruptDemo.CPP.Z,1].
   //See [C:/Demo/MultiCore/Interrupts.CPP.Z,1].
   I64 fp=fp_new_handler;
@@ -174,7 +174,7 @@ U0 IntInit1()
 {//Interrupt descriptor table part1.
   I64 i;
   CSysLimitBase temp_ptr;
-  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3437] CCPU struct
+  if (!Gs->num) {//Gs cur [C:/Kernel/KernelA.HPP.Z,3441] CCPU struct
     dev.idt=CAlloc(16*256);
     for (i=0;i<256;i++)
       IntEntrySet(i,&IntNop);

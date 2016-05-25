@@ -28,7 +28,7 @@ letters.
 
 "%S" [C:/Kernel/KDefine.CPP.Z,49] Define() entry.
 
-"%C" [C:/Kernel/KernelB.HPP.Z,57] ToUpper() character.
+"%C" [C:/Kernel/KernelB.HPP.Z,58] ToUpper() character.
 
 "%h25c",'\n'; 25 new-lines.
 
@@ -42,9 +42,9 @@ letters.
 
 "%P" link to ptr.
 
-"%D" date.  Pass a [C:/Kernel/KernelA.HPP.Z,184] CDate.
+"%D" date.  Pass a [C:/Kernel/KernelA.HPP.Z,185] CDate.
 
-"%T" time.  Pass a [C:/Kernel/KernelA.HPP.Z,184] CDate.
+"%T" time.  Pass a [C:/Kernel/KernelA.HPP.Z,185] CDate.
 
 "%z" sub_entry of an enumerated list of text entries.  See
   [C:/Kernel/StrA.CPP.Z,402] LstSub().  Pass 

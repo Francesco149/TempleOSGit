@@ -1,6 +1,6 @@
 #help_index "Install;File/Cmd Line (Typically);Cmd Line (Typically);"
 I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
-{//If _doc, called by [C:/Kernel/KCfg.CPP.Z,1] else called by [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount().
+{//If _doc, called by [C:/Kernel/KCfg.CPP.Z,1] else called by [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount().
   I64 cnt,res=0,num_hints,drv_let,type,unit;
   U8 blks_buf[STR_LEN],addr_buf[STR_LEN],base0_buf[STR_LEN],base1_buf[STR_LEN];
   CATARep *root=NULL,*tempha;
@@ -13,7 +13,8 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
       DrvRep;
     "\n****** Mount Drives ******\n"
 	  "$GREEN$A$FG$-$GREEN$B$FG$ are RAM drives.\n"
-	  "$GREEN$C$FG$-$GREEN$S$FG$ are ATA hard drives.\n"
+	  "$GREEN$C$FG$-$GREEN$L$FG$ are ATA hard drives.\n"
+	  "$GREEN$M$FG$-$GREEN$S$FG$ are file drives.\n"
 	  "$GREEN$T$FG$-$GREEN$Z$FG$ are ATAPI CD/DVD drives.\n"
 	  "\nDrive Letter ($PURPLE$<ENTER>$FG$ to exit):";
     drv_let=ToUpper(GetChar);
@@ -23,7 +24,7 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
       if (_doc) { //Called by [C:/Kernel/KCfg.CPP.Z,1]
 	doc=_doc;
 	make_free=FALSE;
-      } else { //Called by [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount()
+      } else { //Called by [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount()
 	doc=DocNew;
 	DocPrint(doc,"CBlkDev *bd;\n");
 	make_free=TRUE;
@@ -31,9 +32,9 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
       unit=0;
       switch (type) {
 	case BDT_RAM:
-	  type=BDT_RAM;
 	  "Addr of RAM disk ($PURPLE$<ENTER>$FG$ to MAlloc):";
 	  GetS(addr_buf,STR_LEN);
+	case BDT_FILE:
 	  "Blks of 512 bytes:";
 	  GetS(blks_buf,STR_LEN);
 	  break;
@@ -77,8 +78,10 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
       switch (type) {
 	case BDT_RAM:
 	  if (!*addr_buf) StrCpy(addr_buf,"0");
-	  DocPrint(doc,"bd->RAM_dsk=%s;bd->max_blk=(%s)-1;\n",
-		addr_buf,blks_buf);
+	  DocPrint(doc,"bd->RAM_dsk=%s;\n",addr_buf);
+	case BDT_FILE:
+	  if (!*blks_buf) StrCpy(blks_buf,"0");
+	  DocPrint(doc,"bd->max_blk=(%s)-1;\n",blks_buf);
 	  break;
 	case BDT_ATA:
 	case BDT_ATAPI:
@@ -97,7 +100,7 @@ I64 Mount2(U8 boot_drv_let,CDoc *_doc,Bool repartition)
       DocPrint(doc,"BlkDevAdd(bd,%d,%d);\n",one_drv,make_free);
       if (_doc) //Called by [C:/Kernel/KCfg.CPP.Z,1]
 	cnt++;
-      else { //Called by [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount()
+      else { //Called by [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount()
 	if ((cnt=ExeDoc(doc)) && one_drv)
 	  PrtDsk(drv_let);
 	DocDel(doc);

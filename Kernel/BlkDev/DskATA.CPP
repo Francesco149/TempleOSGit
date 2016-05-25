@@ -421,8 +421,8 @@ U0 ATAPIReadBlks(CBlkDev *bd,U8 *buf, I64 blk, I64 cnt)
       blk2=0;
     else
       blk2=FloorU64(blk-bd->max_reads,spc);
-    if (blk2+l2>dv->size)
-      l2=dv->size-blk2;
+    if (blk2+l2>dv->size+dv->drv_offset)
+      l2=dv->size+dv->drv_offset-blk2;
     n=(l2+spc-1)/spc;
 
     retry=4;

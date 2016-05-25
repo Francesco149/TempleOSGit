@@ -1,7 +1,7 @@
 #help_index "DolDoc"
 
 U0 DocInit()
-{//[C:/Kernel/KernelA.HPP.Z,898] CMD Defines
+{//[C:/Kernel/KernelA.HPP.Z,900] CMD Defines
   CCmpCtrl *cc;
   I64 i;
   CHashGeneric *temph;

@@ -15,7 +15,7 @@ kernel".  Two Gig is plenty for code, don't worry.
 
 You can create new, independent heaps using [C:/Kernel/Mem/HeapCtrl.CPP.Z,1]
 HeapCtrlInit().  Then, use the 
-[C:/Kernel/KernelA.HPP.Z,2900] CHeapCtrl as the 2nd arg to
+[C:/Kernel/KernelA.HPP.Z,2904] CHeapCtrl as the 2nd arg to
 [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc().  See
 [C:/Adam/Opt/Utils/HeapLog.CPP.Z,73] HeapLog() for an example.
 
@@ -28,9 +28,9 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
 
                           Single System-wide Mem Map
 
- 0x0000007C00- 0x000003498F
+ 0x0000007C00- 0x0000034EBF
   Kernel module, placed here by the boot-loader,
-  [C:/Kernel/KernelA.HPP.Z,3876] BOOT_RAM_BASE.
+  [C:/Kernel/KernelA.HPP.Z,3880] BOOT_RAM_BASE.
 
  0x0000096600- 0x0000096FFF
   Boot block relocated here before loading the Kernel module,
@@ -38,7 +38,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
 [C:/Adam/Opt/Boot/BootHD.CPP.Z,1] BootHD.
 
  0x0000097000- 0x0000097030
-  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,503] MPN_VECT.
+  Multicore start-up vect code, [C:/Kernel/KernelA.HPP.Z,505] MPN_VECT.
 
 ~0x000009F000- 0x000009FFFF
   Extended BIOS data area.
@@ -48,7 +48,7 @@ See [C:/Adam/Opt/Utils/MemRep.CPP.Z,191] MemRep() and
   [C:/Kernel/KGlbls.CPP.Z,29] text.vga_alias.
 
  0x0000100000- 0x00001835FF
-  [C:/Kernel/KernelA.HPP.Z,3464] CSysFixedArea for page tables and misc.  128
+  [C:/Kernel/KernelA.HPP.Z,3468] CSysFixedArea for page tables and misc.  128
   Gig of address space mapped.
 
  0x0000183600- 0x007FFDFFFF

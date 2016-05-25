@@ -19,7 +19,7 @@ U0 DrawIt(CTask *,CDC *dc)
     Sprite3(dc,x[i],y[i],0,__BIN_1);
     if (dc->nearest_dist<=best_dist) {
 //Distance to nearest pix, squared
-      //[C:/Kernel/KernelB.HPP.Z,108] Sqrt() is expensive so we work with distance squared.
+      //[C:/Kernel/KernelB.HPP.Z,109] Sqrt() is expensive so we work with distance squared.
       best_dist=dc->nearest_dist;
       best_apple=i;
 //Elements are the individual lines or whatever of the CSprite.u.

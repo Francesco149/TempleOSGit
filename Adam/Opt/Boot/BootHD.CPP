@@ -86,7 +86,8 @@ BHD_HISTART:
 @@10:	POP	CX
 	LOOP	@@05
 
-	MOV	EBX,BOOT_SRC_HARDDRV //See sys_boot_src
+	XOR	EBX,EBX
+	MOV	EAX,BOOT_SRC_HARDDRV //See sys_boot_src
 `Find("sys_boot_src","/*");View;
 `
 

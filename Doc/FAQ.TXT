@@ -44,8 +44,8 @@
   [C:/Kernel/KernelB.HPP.Z,14] Bt() is bit test, like the x86 inst, not bit
   torrent.
 +] Is 'Fs->' in the code file system?
-  [C:/Kernel/KernelB.HPP.Z,276] Fs is a segment reg, not file system. 
-  ([C:/Kernel/KernelB.HPP.Z,276] Fs is kept pointing to the current task's
+  [C:/Kernel/KernelB.HPP.Z,277] Fs is a segment reg, not file system. 
+  ([C:/Kernel/KernelB.HPP.Z,277] Fs is kept pointing to the current task's
   record.)  There is no memory segmentation.  It is 64-bit and flat. FS and GS
   are used as general purpose regs, more or less.
 +] Is it Pascal?
@@ -130,7 +130,7 @@
   [C:/Doc/Glossary.TXT.Z,1] Code Heap, so that the REL32 addressing mode can be
   used.  TempleOS is 64-bit, but 2 Gig is enough for code.  It actually puts
   global variables there, too, but you can turn that off with
-  [C:/Kernel/KernelA.HPP.Z,1542] OPTf_GLBLS_ON_DATA_HEAP. 
+  [C:/Kernel/KernelA.HPP.Z,1544] OPTf_GLBLS_ON_DATA_HEAP. 
   [C:/Kernel/Mem/MAllocFree.CPP.Z,387] MAlloc() allocs higher memory.
 +] How does it SYSCALL?
   TempleOS doesn't use software interrupts or SYSCALL insts because it never
@@ -153,7 +153,7 @@
 +] How do I get Kernel.BIN to boot?
   The boot-loaders must be patched by you running
   [C:/Adam/Opt/Boot/BootIns.CPP.Z,24] MakeOSDrvBootInstall() or
-  [C:/Adam/Opt/Boot/BootIns.CPP.Z,148] MasterBootInstall().  Those will write
+  [C:/Adam/Opt/Boot/BootIns.CPP.Z,149] MasterBootInstall().  Those will write
   the block address into the boot-loader because the boot-loaders do not
   navigate file systems to find the [C:/Kernel/KStart.CPP.Z,1] Stage2 if you
   relocate it.
@@ -171,7 +171,7 @@
 +] How do you use the FS and GS segment registers.
   MOV RAX,FS:[RAX] : FS can be set with a WRMSR, but displacement is RIP
   relative, so it's tricky to use.  FS is used for the current
-  [C:/Kernel/KernelA.HPP.Z,3313] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3437]
+  [C:/Kernel/KernelA.HPP.Z,3317] CTask, GS for [C:/Kernel/KernelA.HPP.Z,3441]
   CCPU.
 +] How do I set ORG for position of code?
   The compiler creates pos independent code.  Don't create code which is

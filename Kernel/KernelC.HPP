@@ -227,7 +227,6 @@ public extern U0 VGAFlush();
 
 #help_index "Debugging;Debugging/Debugger"
 public extern U0 Dbg(U8 *msg=NULL,I64 msg_num=0);
-
 #help_index "Define;Char/Define"
 #help_file "::/Doc/Define"
 public extern U8 *Define(U8 *dname);
@@ -282,7 +281,7 @@ public extern I64 Del(U8 *files_find_mask,Bool make_mask=FALSE,
 	Bool del_dir=FALSE,Bool print_msg=TRUE);
 public extern I64 Dir(U8 *files_find_mask="*",Bool full=FALSE);
 public extern Bool Drv(U8 drv_let);
-public extern Bool MkDir(U8 *filename);
+public extern Bool MkDir(U8 *filename,I64 entry_cnt=0);
 
 #help_index "File/Cmd Line (Typically);Cmd Line (Typically);Install"
 public extern Bool DrvMap(U8 drv_let,CDrv *dv);
@@ -323,6 +322,7 @@ extern I64 FileAttr(U8 *name,I64 old_attr=0);
 #help_index "File/Low Level"
 #help_file "::/Doc/FileLowLevel"
 public extern CBlkDev *BlkDevChk(CBlkDev *bd,Bool except=TRUE);
+public extern U0 BlkDevDel(CBlkDev *bd);
 public extern Bool BlkDevLock(CBlkDev *bd);
 public extern CBlkDev *BlkDevNextFree(U8 first_drv_let,I64 type);
 public extern Bool BlkDevUnlock(CBlkDev *bd,Bool rst=FALSE);
@@ -334,6 +334,7 @@ public extern I64 ClustersAlloc(CDrv *dv,I64 c=0,
 extern Bool CopySingle(U8 *f1,U8 *f2); //Just one file
 public extern U8 Drv2Let(CDrv *dv=NULL);
 public extern CDrv *DrvChk(CDrv *dv,Bool except=TRUE);
+public extern U0 DrvDel(CDrv *dv);
 public extern Bool DrvLock(CDrv *dv);
 public extern CDrv *DrvMakeFree(U8 drv_let);
 public extern U8 *DrvModelNum(U8 drv_let=0);
@@ -479,7 +480,7 @@ extern CSrvCmd sys_macro_root;
 extern CTask *sys_macro_task;
 
 #help_index "Keyboard Devices;Char/Input;StdIn"
-extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3778] Flags
+extern U8  *(*fp_getstr2)(I64 flags=0); //GetStr [C:/Kernel/KernelA.HPP.Z,3782] Flags
 public extern Bool AreYouSure();
 public extern I64 GetChar(I64 *_scan_code=NULL,Bool echo=TRUE,
 	Bool raw_cursor=FALSE);
@@ -710,6 +711,7 @@ public extern CTask *Spawn(U0 (*fp_addr)(U8 *data),U8 *data=NULL,
 	U8 *task_name=NULL,I64 target_cpu=-1,	//-1 means current CPU
 	CTask *parent=NULL, //NULL means adam
 	I64 stk_size=0,I64 flags=1<<SVCf_ADD_TO_QUE);
+
 #help_index "Time/CPU Cycles;Time/HPET;Time/Jiffies"
 public extern CCntsGlbls cnts;
 

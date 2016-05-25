@@ -4,7 +4,7 @@ Bool Option(I64 num,Bool val)
 }
 
 Bool GetOption(I64 num)
-{//Get state of compiler [C:/Kernel/KernelA.HPP.Z,1534] option.
+{//Get state of compiler [C:/Kernel/KernelA.HPP.Z,1536] option.
   return Bt(&Fs->last_lex->opts,num);
 }
 

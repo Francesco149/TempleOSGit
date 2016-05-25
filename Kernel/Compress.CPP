@@ -1,5 +1,5 @@
 //See [C:/Doc/Credits.TXT.Z,1].
-//See [C:/Kernel/KernelA.HPP.Z,3769] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3743] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3751] CArcCtrl
+//See [C:/Kernel/KernelA.HPP.Z,3773] CArcCompress, [C:/Kernel/KernelA.HPP.Z,3747] CArcEntry, and [C:/Kernel/KernelA.HPP.Z,3755] CArcCtrl
 
 asm {
 /****

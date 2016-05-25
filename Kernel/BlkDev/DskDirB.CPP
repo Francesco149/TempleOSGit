@@ -143,8 +143,9 @@ I64 Dir(U8 *files_find_mask,Bool full)
   return res;
 }
 
-Bool MkDir(U8 *filename)
+Bool MkDir(U8 *filename,I64 entry_cnt=0)
 {//Make directory. [C:/Kernel/BlkDev/DskDirB.CPP.Z,1] Cd() can also make directories.
+//entry_cnt is for preallocating dir blks, leave it zero if you like.
   U8 *name;
   CDirContext *dirc;
   Bool res=FALSE;
@@ -160,10 +161,10 @@ Bool MkDir(U8 *filename)
 	      SUF_REM_LEADING|SUF_REM_TRAILING|SUF_REM_CTRL_CHARS);
 	switch (dirc->dv->fs_type) {
 	  case FSt_REDSEA:
-	    res=RedSeaMkDir(dirc->dv,Fs->cur_dir,name);
+	    res=RedSeaMkDir(dirc->dv,Fs->cur_dir,name,entry_cnt);
 	    break;
 	  case FSt_FAT32:
-	    res=FAT32MkDir(dirc->dv,Fs->cur_dir,name);
+	    res=FAT32MkDir(dirc->dv,Fs->cur_dir,name,entry_cnt);
 	    break;
 	  case FSt_ISO9660:
 	    PrintErr("Not Writable\n");

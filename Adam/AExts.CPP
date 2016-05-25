@@ -52,7 +52,7 @@ extern I64 ExeDoc(CDoc *doc,I64 ccf_flags=0);
 extern I64 FindWiz();
 extern I64 GetI64(U8 *msg,I64 dft,I64 lo=MIN_I64,I64 hi=MAX_I64);
 extern U0 GrPlot0(CDC *dc,I64 x,I64 y);
-extern I64 ISOFileCreate(U8 *_filename=NULL,U8 *src_files_find_mask,
+extern I64 ISO9660ISO(U8 *_filename=NULL,U8 *src_files_find_mask,
 	U8 *fu_flags=NULL,U8 *_stage2_filename=NULL);
 extern CMenuEntry *MenuEntryFind(CMenu *m,U8 *full_name);
 extern CMenu *MenuFilePush(U8 *filename);

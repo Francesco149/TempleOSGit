@@ -18,7 +18,7 @@ The main compiler optimizes   See [C:/Compiler/CInit.CPP.Z,16] Intermediate
 optimization stages.
 
 The main compiler makes machine code in the back end.  See
-  [C:/Kernel/KernelA.HPP.Z,1653] IC Struct, 
+  [C:/Kernel/KernelA.HPP.Z,1655] IC Struct, 
 [C:/Compiler/PrsLib.CPP.Z,249] COCCompile and
   [C:/Compiler/OptPass789A.CPP.Z,1] OptPass789A(), [C:/Compiler/BackA.CPP.Z,1]
   BackEnd.  Set [C:/Compiler/CMisc.CPP.Z,19] Trace(ON) to see the output of 
@@ -236,8 +236,8 @@ U0 Main()
 	  throw;
 	"$RED$This code is not efficient, but the compiler is simple.$FG$\n";
 	Un(code,dst-code); //Unassemble the code we created.
-//[C:/Kernel/KernelB.HPP.Z,43] Call() is a function.  See [C:/Kernel/KUtils.CPP.Z,1] _CALL::
-	//See also [C:/Kernel/KernelB.HPP.Z,48] CallInd().  See [C:/Kernel/KUtils.CPP.Z,1] _CALLIND::
+//[C:/Kernel/KernelB.HPP.Z,44] Call() is a function.  See [C:/Kernel/KUtils.CPP.Z,1] _CALL::
+	//See also [C:/Kernel/KernelB.HPP.Z,49] CallInd().  See [C:/Kernel/KUtils.CPP.Z,1] _CALLIND::
 	"$LTBLUE$Answer:%d$FG$\n",Call(code);
       } catch {
 	"$RED$Error$FG$\n";

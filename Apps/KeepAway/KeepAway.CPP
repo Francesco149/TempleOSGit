@@ -260,7 +260,7 @@ have to make all my men taller.
 This is a little simpler, and faster,
 but adds lots of factor 2 vals.
 
-I also didn't use the [C:/Kernel/KernelA.HPP.Z,243] CMathODE feat,
+I also didn't use the [C:/Kernel/KernelA.HPP.Z,244] CMathODE feat,
 just to be different.
 */
 
@@ -330,7 +330,7 @@ U0 DrawIt(CTask *task,CDC *dc)
 	if (o->has_ball && (ball->z+ball->radius*2>=o->z+HAND_Z_OFFSET ||
 	      Abs(ball->DzDt)<30)) {
 //This is an approximation.  My instinct tells me the viscosity term
-	  //needs an [C:/Kernel/KernelB.HPP.Z,127] Exp().  However, we should be syncronized to img frames,
+	  //needs an [C:/Kernel/KernelB.HPP.Z,128] Exp().  However, we should be syncronized to img frames,
 	  //so we don't have to be perfect.
 	  d_down=1.0;
 	  d_up	=1.0/COLLISION_DAMP;
