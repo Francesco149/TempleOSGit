@@ -217,17 +217,15 @@ U0 FMRebuildDoc(CDoc **_doc,CDirEntry **_root,I64 mode)
   DocPrint(doc,"$LTBLUE$");
   for (i=0;i<NUM_DRVS;i++) {
     dv=&blkdev.drvs[i];
-    if (dv->fs_type==FSt_REDSEA||dv->fs_type==FSt_FAT32)
-      FMRebuildDocDrv(Drv2Let(dv),doc,_root,TRUE);
-    else if (dv->fs_type==FSt_ISO9660) {
+    if (dv->bd->type==BDT_ATAPI) {
       if (dv->bd->flags&BDF_INITIALIZED)
 	tempde=FMRebuildDocDrv(Drv2Let(dv),doc,_root,TRUE);
       else {
 	tempde=FMRebuildDocDrv(Drv2Let(dv),doc,_root,FALSE);
 	tempde->flags|=DEF_NOT_INITIALIZED;
       }
-      tempde->flags|=DEF_REMOVABLE;
-    }
+    } else if (dv->fs_type==FSt_REDSEA || dv->fs_type==FSt_FAT32)
+      FMRebuildDocDrv(Drv2Let(dv),doc,_root,TRUE);
   }
   DocTop(doc);
   FMMarkUncollapsed(doc,tempc,cur_entry,next_entry);
@@ -382,7 +380,7 @@ U0 FMMakeISO(CDoc *doc)
 	st=MStrPrint("%s*",tempde->full_name);
       else
 	st=MStrPrint("%s/*",tempde->full_name);
-      ISOFileCreate(,st);
+      ISO9660ISO(,st);
       Free(st);
       Silent(OFF);
     }

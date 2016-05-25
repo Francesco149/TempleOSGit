@@ -65,9 +65,9 @@ name
 with "&".
 
 * Type casting is postfix.  To typecast int or F64, use
-[C:/Kernel/KernelB.HPP.Z,120] ToI64(), [C:/Kernel/KernelB.HPP.Z,118] ToBool()
+[C:/Kernel/KernelB.HPP.Z,121] ToI64(), [C:/Kernel/KernelB.HPP.Z,119] ToBool()
 or 
-[C:/Kernel/KernelB.HPP.Z,119] ToF64(). (TempleOS follows normal C
+[C:/Kernel/KernelB.HPP.Z,120] ToF64(). (TempleOS follows normal C
 float<-->int conversion, but sometimes you 
 want to override.  These functions are better than multiplying by "1.0" to 
 convert to float.) 
@@ -77,7 +77,7 @@ upon start-up, in order.
 
 * There are no bit fields, but there are [Bit,1] bit access routines and you
 can 
-access bytes or words within any int.  See [C:/Kernel/KernelA.HPP.Z,103] I64
+access bytes or words within any int.  See [C:/Kernel/KernelA.HPP.Z,104] I64
 declaration.  A class can be 
 accessed as a whole are subints, if you put a type in front of the class 
 declaration.
@@ -185,8 +185,8 @@ optionally, specify a reg after the reg keyword.
 
   U0 Main()
 {
-  //Only use [C:/Kernel/KernelA.HPP.Z,1792] REGG_LOCAL_VARS or
-  [C:/Kernel/KernelA.HPP.Z,1793] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
+  //Only use [C:/Kernel/KernelA.HPP.Z,1794] REGG_LOCAL_VARS or
+  [C:/Kernel/KernelA.HPP.Z,1795] REGG_LOCAL_NON_PTR_VARS for reg vars or else 
 clobbered.
   I64 reg R15 i=5, noreg j=4;
   nounusedwarn i;
@@ -243,12 +243,12 @@ PutChars('World\n');
   =,<<=,>>=,*=,/=,&=,|=,^=,+=,-=
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1537] OPTf_WARN_PAREN,ON) to find unnecessary
+Option([C:/Kernel/KernelA.HPP.Z,1539] OPTf_WARN_PAREN,ON) to find unnecessary
 parentheses in 
 code.
 
 * You can use [C:/Compiler/CMisc.CPP.Z,1]
-Option([C:/Kernel/KernelA.HPP.Z,1538] OPTf_WARN_DUP_TYPES,ON) to find dup
+Option([C:/Kernel/KernelA.HPP.Z,1540] OPTf_WARN_DUP_TYPES,ON) to find dup
 local var type stmts.
 
 * With the #exe{} feature in your src code, you can place programs that
@@ -275,7 +275,7 @@ offset in a class definition.
 
 * union is more like a class, so you don't reference it with a union label 
 after you define it.  Some common unions are declared in
-[C:/Kernel/KernelA.HPP.Z,65] KernelA.HPP for 1,2,4 
+[C:/Kernel/KernelA.HPP.Z,66] KernelA.HPP for 1,2,4 
 and 8 byte objects.  If you place a type in front of a union declaration,
 that 
 is the type when used by itself.  See [C:/Demo/SubIntAccess.CPP,1]. 
@@ -332,7 +332,7 @@ example.
 
 * The stk does not grow because virtual mem is not used.  I recommend 
 allocating large local vars from the heap.  You can change
-[C:/Kernel/KernelA.HPP.Z,2880] MEM_DFT_STK and 
+[C:/Kernel/KernelA.HPP.Z,2884] MEM_DFT_STK and 
 recompile Kernel or request more when doing a [C:/Kernel/KTask.CPP.Z,208]
 Spawn().  You can use 
 [C:/Kernel/KTask.CPP.Z,78] CallStkGrow(), but it's odd.  See

@@ -4,7 +4,7 @@
 
 U0 MakeMyISO(U8 *out_iso_filename)
 {//Does everything with current drive.
-//If you have not recompiled Kernel and defined your CD/DVD drive, use [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount.
+//If you have not recompiled Kernel and defined your CD/DVD drive, use [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount.
   if (!DrvIsWritable) {
     "Drive must be writable.  Install on Hard drive, first.\n";
     return;
@@ -34,7 +34,10 @@ U0 MakeMyISO(U8 *out_iso_filename)
   CopyTree("/Linux","/Distro/Linux");	  //You can leave this out.
   MkDir("/Distro/Temp");
   MkDir("/Distro/Temp/ScreenShots");
-  ISOFileCreate(out_iso_filename,"/Distro/*",,"/Distro" BOOT_DIR_KERNEL_BIN_C);
+  ISO9660ISO(out_iso_filename,"/Distro/*",,"/Distro" BOOT_DIR_KERNEL_BIN_C);
+
+  //If you want [C:/Doc/RedSea.TXT.Z,1] RedSea filesystem, use this instead but make it ISO.C.
+  //RedSeaISO(out_iso_filename,"/Distro","/Distro" BOOT_DIR_KERNEL_BIN_C);
 
   //If CD-ROM use MT_CD instead of MT_DVD.
   //DVDImageWrite('T',out_iso_filename,MT_DVD); //Uncomment to burn.

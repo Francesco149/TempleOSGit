@@ -1,11 +1,11 @@
-One jiffy is one time slice.  [C:/Kernel/KernelA.HPP.Z,535] cnts.jiffies
+One jiffy is one time slice.  [C:/Kernel/KernelA.HPP.Z,537] cnts.jiffies
 returns time slices since boot.
 
 [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead reads the timer ticks since boot. 
-It's not as fast as [C:/Kernel/KernelB.HPP.Z,280] GetTSC.
+It's not as fast as [C:/Kernel/KernelB.HPP.Z,281] GetTSC.
 
-Use [C:/Kernel/KernelA.HPP.Z,548] JIFFY_FREQ to convert
-[C:/Kernel/KernelA.HPP.Z,535] cnts.jiffies.
+Use [C:/Kernel/KernelA.HPP.Z,550] JIFFY_FREQ to convert
+[C:/Kernel/KernelA.HPP.Z,537] cnts.jiffies.
 
-Use [C:/Kernel/KernelA.HPP.Z,550] SYS_TIMER_FREQ to convert
+Use [C:/Kernel/KernelA.HPP.Z,552] SYS_TIMER_FREQ to convert
 [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead.

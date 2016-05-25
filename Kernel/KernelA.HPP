@@ -1,18 +1,19 @@
 // Main TempleOS header
 
 #help_index ""
-extern class CTask;
-extern class CDoc;
+extern class CAOT;
+extern class CAOTHeapGlbl;
+extern class CAOTImportExport;
 extern class CCPU;
+extern class CDC;
+extern class CDoc;
+extern class CFile;
 extern class CHashClass;
 extern class CHashFun;
-extern class CAOTImportExport;
 extern class CHeapCtrl;
-extern class CAOTHeapGlbl;
-extern class CAOT;
-extern class CDC;
-extern class CSrvCtrl;
 extern class CIntermediateCode;
+extern class CSrvCtrl;
+extern class CTask;
 
 #define NULL	0
 #define TRUE	1
@@ -39,7 +40,7 @@ extern class CIntermediateCode;
 #define STR_LEN 144
 
 //(Int to F64 conversion is signed)
-//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1544] OPTf_NO_BUILTIN_CONST.
+//Turn off 80-bit float constants with [C:/Kernel/KernelA.HPP.Z,1546] OPTf_NO_BUILTIN_CONST.
 #define MAX_U64_F64 (0x43F0000000000000(F64))
 #define MAX_F64 (0x7FEFFFFFFFFFFFFF(F64))
 #define MIN_F64 (0xFFEFFFFFFFFFFFFF(F64))
@@ -207,8 +208,8 @@ public class COrder2D3
 public class CMass
 {
   CMass	*next,*last;
-  COrder2D3 *state, //Point to entries in [C:/Kernel/KernelA.HPP.Z,243] CMathODE.state[]
-	*DstateDt;  //Point to entries in [C:/Kernel/KernelA.HPP.Z,243] CMathODE.DstateDt[]
+  COrder2D3 *state, //Point to entries in [C:/Kernel/KernelA.HPP.Z,244] CMathODE.state[]
+	*DstateDt;  //Point to entries in [C:/Kernel/KernelA.HPP.Z,244] CMathODE.DstateDt[]
 
   U0	start;
   U32	flags,num;
@@ -381,13 +382,13 @@ class CBinFile
 
 class CPatchTableAbsAddr
 {
-  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,409] IET_ABS_ADDR
+  U8	eit_abs_addr;	//[C:/Kernel/KernelA.HPP.Z,410] IET_ABS_ADDR
   U32	abs_addres_cnt;
   U8	zero;
   U32	abs_addres[1];
 };
 
-//[C:/Kernel/KernelA.HPP.Z,1957] CAOTImportExport Types. Used in PatchTable.
+//[C:/Kernel/KernelA.HPP.Z,1959] CAOTImportExport Types. Used in PatchTable.
 #define IET_END			0
 //reserved
 #define IET_REL_I0		2 //Fictitious
@@ -419,6 +420,7 @@ class CKernel
   CBinFile h;
   U32	jmp,
 	boot_src,
+	boot_blk,
 	boot_patch_table_base,
 	sys_run_level;
   CDate	compile_time;
@@ -427,9 +429,9 @@ class CKernel
   U32	boot_base;
   U16	sys_mem_E801[2];
   CMemE820 sys_mem_E820[MEM_NUM_E820_ENTRIES];
-  CGDT	sys_gdt;
   CSysLimitBase sys_gdt_ptr;
   U16	sys_pci_busses;
+  CGDT	sys_gdt;
 };
 
 //Run-Levels
@@ -534,8 +536,8 @@ class CAP16BitInit
 
 public class CCntsGlbls
 {
-  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,548] JIFFY_FREQ
-	timer,		//[C:/Kernel/KernelA.HPP.Z,550] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
+  I64	jiffies,	//[C:/Kernel/KernelA.HPP.Z,550] JIFFY_FREQ
+	timer,		//[C:/Kernel/KernelA.HPP.Z,552] SYS_TIMER_FREQ. Use [C:/Kernel/KMisc.CPP.Z,61] SysTimerRead().
 	time_stamp_freq,
 	time_stamp_kHz_freq,
 	time_stamp_freq_initial, //Initial freq, sampled once at boot time.
@@ -569,7 +571,7 @@ class CRAXRBCRCXRDX
 };
 
 //Asm callable function pointers.
-//They work with [C:/Kernel/KernelB.HPP.Z,54] CallExtNum() when calling from HolyC.
+//They work with [C:/Kernel/KernelB.HPP.Z,55] CallExtNum() when calling from HolyC.
 #define EXT_WIN_TO_TOP		0
 #define EXT_WIN_FOCUS		1
 #define EXT_HEAPLOG_MALLOC	2
@@ -829,7 +831,7 @@ public class CHashDefineStr:CHashSrcSym
 #define Cf_INTERNAL_TYPE	1
 
 public class CHashClass:CHashSrcSym
-{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,854] CHashFun
+{//See [C:/Compiler/PrsLib.CPP.Z,40] PrsClassNew().	base_class of [C:/Kernel/KernelA.HPP.Z,856] CHashFun
   I64	size,neg_offset;
   U32	member_cnt;
   U8	ptr_stars_cnt,raw_type;
@@ -1004,7 +1006,7 @@ public class CHashGlblVar:CHashSrcSym
 #define DOCEF_CHECK_COLLAPSABLE 0x100000000000
 #define DOCEF_REFRESH_DATA	0x200000000000
 #define DOCEF_UPDATE_DATA	0x400000000000
-//[C:/Kernel/KernelA.HPP.Z,1009] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
+//[C:/Kernel/KernelA.HPP.Z,1011] DOCEF_DEREF_DATA is confusing. [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm() makes doc_e->data point to members
 //of class. For ints, it derefs doc_e->data as a ptr.  For strings, it doesn't.
 #define DOCEF_DEREF_DATA	0x800000000000
 #define DOCEF_REMALLOC_DATA	0x1000000000000
@@ -1201,7 +1203,7 @@ public class CDocEntry:CDocEntryBase
 	*my_fmt_data;
   I64	hex_ed_width;
   I32	scroll_len,
-	len, //[C:/Kernel/KernelA.HPP.Z,1177] DOCE_LEN_DFT
+	len, //[C:/Kernel/KernelA.HPP.Z,1179] DOCE_LEN_DFT
 	bin_num;
   U8	raw_type,pad[3];
   CDocBin *bin_data;
@@ -1217,7 +1219,7 @@ public class CDocEntry:CDocEntryBase
 #define DOF_DONT_TEXT_ATTR	0x10
 #define DOF_DONT_WINMGR_SYNC	0x20
 #define DOF_DONT_SHOW		0x40
-//Combines with  [C:/Kernel/KernelA.HPP.Z,1244] Editor Flags
+//Combines with  [C:/Kernel/KernelA.HPP.Z,1246] Editor Flags
 
 class CEdFindText
 {
@@ -1245,7 +1247,7 @@ class CEdFileName
 #define EDF_COLLAPSE		0x200
 #define EDF_UNCOLLAPSE		0x400
 #define EDF_WAS_WRITE		0x800 //Was exit ESC or SHIFT_ESC?
-//Combines with [C:/Kernel/KernelA.HPP.Z,1213] Document Flags
+//Combines with [C:/Kernel/KernelA.HPP.Z,1215] Document Flags
 
 #define EDf_BAIL		8
 #define EDf_COLLAPSE		9
@@ -1557,7 +1559,7 @@ public class CAutoCompleteDictGlbls
 #define RT_I32		8
 #define RT_U32		9
 #define RT_I64		10
-#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1339] DOCM_CANCEL
+#define RT_PTR		10 //Signed to allow negative err codes. [C:/Kernel/KernelA.HPP.Z,1341] DOCM_CANCEL
 #define RT_U64		11
 #define RT_F32		12 //Not implemented
 #define RT_UF32		13 //Not implemented, Fictitious
@@ -2294,7 +2296,6 @@ public class CATARep
 #define BLK_SIZE_BITS	9
 #define BLK_SIZE	(1<<BLK_SIZE_BITS)
 #define DVD_BLK_SIZE	(4*BLK_SIZE)
-#define DVD_FILE_OFFSET	80
 #define INVALID_CLUSTER (-1)
 
 class CMBRPrt
@@ -2322,7 +2323,7 @@ class CRedSeaBoot
 {
   U8	jump_and_nop[3],
 	signature,reserved[4]; //MBR_PT_REDSEA=0x88. Distinguish from real FAT32
-  I64	base_offset,	//For CD/DVD image copy.
+  I64	drv_offset,	//For CD/DVD image copy.
 	sects,
 	root_cluster,
 	bitmap_sects,
@@ -2542,10 +2543,9 @@ class CISO1PriDesc
 #define MT_DVD		2
 
 #help_index "File/Low Level;File/Program Routines"
-//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,547] FileMgr())
+//CDirEntry flags (Used by [C:/Adam/ABlkDev/FileMgr.CPP.Z,545] FileMgr())
 #define DEF_PROCESSED		1
-#define DEF_REMOVABLE		2
-#define DEF_NOT_INITIALIZED	4
+#define DEF_NOT_INITIALIZED	2
 
 #define CDIR_FILENAME_LEN	38 //Must include terminator zero
 public class CDirEntry
@@ -2628,8 +2628,9 @@ public class CDirEntry
 #define BDT_NULL		0
 #define BDT_RAM			1
 #define BDT_ATA			2
-#define BDT_ATAPI		3
-#define BDT_NUM_TYPES		4
+#define BDT_FILE		3
+#define BDT_ATAPI		4
+#define BDT_NUM_TYPES		5
 
 #define BDF_REMOVABLE		0x001
 #define BDF_INITIALIZED		0x002
@@ -2665,9 +2666,12 @@ public class CBlkDev
   U8	first_drv_let,unit,pad[2];
   U32	base0,base1,
 	blk_size;
-  I64	min_blk,max_blk;
+  I64	drv_offset,init_root_dir_blks,
+	max_blk;
   U16	*dev_id_record;
-  U8	*RAM_dsk;
+  U8	*RAM_dsk,
+	*file_dsk_name;
+  CFile *file_dsk;
   CTask *owning_task;
   F64	last_time;
   U32	max_reads,max_writes;
@@ -2712,12 +2716,12 @@ class CFreeLst
 public class CDrv
 {
 //Don't access ->drv_let directly in case a drive has been remapped.
-  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,129] Drv2Let().
+  //Use [C:/Kernel/BlkDev/DskDrv.CPP.Z,138] Drv2Let().
   I64	locked_flags;
   U32	dv_signature;
   U8	drv_let,pad;
   U16	fs_type;
-  I64	base_offset,
+  I64	drv_offset,
 	size,
 	file_system_info_sect,
 	fat1,fat2,
@@ -2827,7 +2831,7 @@ class CMemUsed
 /*TempleOS does not mess with page tables after setting them up
 during boot -- [C:/Kernel/Mem/PageTables.CPP.Z,6] SYS_INIT_PAGE_TABLES.
 
-[C:/Kernel/KernelA.HPP.Z,2870] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
+[C:/Kernel/KernelA.HPP.Z,2874] MEM_PAGE_SIZE, the unit size for alloications, is arbitrary,
 and is not related to CPU hardware.
 
 All virtual addresses are ident to physical at all times.
@@ -2936,7 +2940,7 @@ public class CDevGlbls
 #define ROP_COLLISION			(ROPB_COLLISION<<8)
 #define ROP_MONO			(ROPB_MONO<<8)
 
-//These are just for [C:/Kernel/KernelA.HPP.Z,2946] ROPF_PROBABILITY_DITHER
+//These are just for [C:/Kernel/KernelA.HPP.Z,2950] ROPF_PROBABILITY_DITHER
 //See [C:/Adam/Gr/GrDC.CPP.Z,57] DCLighting().
 #define ROPF_HALF_RANGE_COLOR		0x1000
 #define ROPF_TWO_SIDED			0x2000
@@ -3036,7 +3040,7 @@ public class CMouseStateGlbls
 #define IP_MOUSE	1
 public class CIPStateGlbls
 {
-  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3035] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3036] IP_MOUSE
+  I64	dev;		//[C:/Kernel/KernelA.HPP.Z,3039] IP_NULL or [C:/Kernel/KernelA.HPP.Z,3040] IP_MOUSE
   CD3I64 pos,		//Position in pixels
 	pos_text,	//Position in text rows,cols
 	presnap,
@@ -3216,8 +3220,8 @@ class CSrvCtrl
 //See [C:/Demo/MsgLoop.CPP,1]
 #define MSG_NULL		0
 #define MSG_CMD			1
-#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
-#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3478] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_DOWN		2  //([C:/Kernel/KernelA.HPP.Z,3482] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
+#define MSG_KEY_UP		3  //([C:/Kernel/KernelA.HPP.Z,3482] ASCII,[C:/Doc/CharOverview.TXT.Z,1] scan code) Press <CTRL-SHIFT-L>
 #define MSG_IP_MOVE		4  //(x,y)
 #define MSG_IP_L_DOWN		5  //(x,y)
 #define MSG_IP_L_UP		6  //(x,y)
@@ -3365,7 +3369,7 @@ U0 pad;#assert $==offset(CTaskDying.wake_jiffy)
   CExcept *next_except,*last_except;
   I64	except_rbp,	//throw routine's RBP
 	except_ch;	//throw(ch)
-  U8	*except_caller1,*except_caller2;
+  U8	*except_caller1,*except_caller2,*except_caller3,*except_caller4;
 
   Bool	catch_except;
   Bool	new_answer;
@@ -3659,12 +3663,12 @@ public class CDC
 
   //public (Change directly)
   CColorROPU32 color,
-	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2936] ROP_COLLISION
+	bkcolor, //Set for use with [C:/Kernel/KernelA.HPP.Z,2940] ROP_COLLISION
 	color2; //Internally used for [C:/Adam/Gr/GrPrimatives.CPP.Z,239] GrFloodFill()
   CD3I32 ls; //Light source (should be normalized to 65536).
 
   //dither_probability_u16 is basically a U16.
-  //It is activated by [C:/Kernel/KernelA.HPP.Z,2946] ROPF_PROBABILITY_DITHER.
+  //It is activated by [C:/Kernel/KernelA.HPP.Z,2950] ROPF_PROBABILITY_DITHER.
   //0x0000 =100% color.c0
   //0x8000 =50%  color.c0   50% color.c1
   //0x10000=100% color.c1
@@ -3697,7 +3701,7 @@ public class CDC
   I32	cur_x,cur_y,cur_z,pad;
   I64	collision_cnt;
 
-  //Set by [C:/Kernel/KernelA.HPP.Z,3635] DCF_RECORD_EXTENTS
+  //Set by [C:/Kernel/KernelA.HPP.Z,3639] DCF_RECORD_EXTENTS
   I64	min_x,max_x,min_y,max_y; //screen coordinates
 
   U32	dc_signature,pad;

@@ -62,7 +62,7 @@ Index
   +] Burning CD/DVDs
     * Prepare a directory with the files you wish to burn.
 
-* Use [C:/Adam/Opt/Boot/DskISOFile.CPP.Z,331] ISOFileCreate() to make an ISO
+* Use [C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO() to make an ISO
     image file.
 
 * Use [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite() to burn an ISO
@@ -70,7 +70,7 @@ Index
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
   +] Admin Help
-  Use [C:/Adam/ABlkDev/Mount.CPP.Z,111] Mount() to mount disk drives,
+  Use [C:/Adam/ABlkDev/Mount.CPP.Z,114] Mount() to mount disk drives,
   perhaps, if you are booted to a LiveCD.
 
 You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]

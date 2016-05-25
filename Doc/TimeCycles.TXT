@@ -1,6 +1,6 @@
 Intel/AMD have an inst that returns the num of CPU cycles since boot.  This
 is 
 not a steady, calibrated real time value.  TempleOS measures it and you can 
-convert with [C:/Kernel/KernelA.HPP.Z,535] cnts.time_stamp_freq, a value
+convert with [C:/Kernel/KernelA.HPP.Z,537] cnts.time_stamp_freq, a value
 continuously calibrated from other 
 cnts.

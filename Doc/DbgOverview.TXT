@@ -8,11 +8,11 @@ call to [C:/Kernel/KDbg.CPP.Z,634] Dbg() in your code at fatal error points
 to enter the debugger.  If 
 you see a stk dump, record the label+offset and unassemble,
 [C:/Compiler/UAsm.CPP.Z,645] U(). [C:/Compiler/UAsm.CPP.Z,645]
-U([C:/Kernel/KernelA.HPP.Z,3423] _RIP); 
+U([C:/Kernel/KernelA.HPP.Z,3427] _RIP); 
 
 * [C:/Compiler/UAsm.CPP.Z,645] U(&FunName+offset) to unassemble mem or
 [C:/Adam/ADbg.CPP.Z,254] Uf("FunName") to unassemble a 
-function. [C:/Compiler/UAsm.CPP.Z,645] U([C:/Kernel/KernelA.HPP.Z,3423]
+function. [C:/Compiler/UAsm.CPP.Z,645] U([C:/Kernel/KernelA.HPP.Z,3427]
 _RIP-16);
 
 * While debugging, you specify addresses of assembly routines with just the 
@@ -20,7 +20,7 @@ label, as in _MALLOC+0x20.  You specify [C:/Doc/HolyC.TXT.Z,1] HolyC function
 names with & before 
 functions as in &Print+0x10.
 
-* I use [C:/Kernel/KernelB.HPP.Z,206] progress1-[C:/Kernel/KernelB.HPP.Z,218]
+* I use [C:/Kernel/KernelB.HPP.Z,207] progress1-[C:/Kernel/KernelB.HPP.Z,219]
 progress4 for debugging because they show on the wallpaper.  
 They're just global int vars.
 
@@ -106,6 +106,6 @@ MakeOSDrvBootInstall(), you can set the MemInit
 cause 
 mem alloced off the heap to be initialized or VarInit option so both global 
 and local vars will be initialized to a value.  Pick a non-zero value to 
-discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,185]
+discover uninitialized var bugs.  You can set [C:/Kernel/KernelB.HPP.Z,186]
 sys_var_init_flag, and 
-[C:/Kernel/KernelB.HPP.Z,181] sys_heap_init_flag directly after booting.
+[C:/Kernel/KernelB.HPP.Z,182] sys_heap_init_flag directly after booting.

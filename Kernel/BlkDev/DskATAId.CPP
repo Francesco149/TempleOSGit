@@ -1,6 +1,6 @@
 Bool BootDVDProve(CBlkDev *bd)
 {
-  CKernel *img=CAlloc(DVD_BLK_SIZE);
+  U8 *img=CAlloc(DVD_BLK_SIZE);
   I64 i;
   Bool res=FALSE;
   "Port: %04X,%04X Unit: %02X  ",bd->base0,bd->base1,bd->unit;
@@ -9,8 +9,9 @@ Bool BootDVDProve(CBlkDev *bd)
     if (ATAPIStartStop(bd,tS+5.0,TRUE)) {
       " Started";
       for (i=0;i<2;i++) {//Retry
-	if (ATAPIReadBlks2(bd,tS+7.0,img,sys_boot_src.u16[1],1,FALSE)) {
-	  if (img->compile_time==sys_compile_time) {
+	if (ATAPIReadBlks2(bd,tS+7.0,img,sys_boot_blk,1,FALSE)) {
+	  if ((img+sys_boot_src.u16[1]<<BLK_SIZE_BITS)(CKernel *)
+		->compile_time==sys_compile_time) {
 	    " Found";
 	    return TRUE;
 	  } else

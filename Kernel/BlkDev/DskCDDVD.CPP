@@ -1,7 +1,7 @@
 U0 DVDImageRead(U8 dvd_drv_let,U8 *out_name)
 {//Read entire CD/DVD image into ISO file.
-  CBlkDev *bd=Let2BlkDev(dvd_drv_let);
   CDrv *dv=Let2Drv(dvd_drv_let);
+  CBlkDev *bd=dv->bd;
   U8 *buf=MAlloc(COPY_BUF_BLKS<<BLK_SIZE_BITS),
 	*out_name2=DftExt(out_name,"ISO");
   CFile *f=FOpen(out_name2,"w");

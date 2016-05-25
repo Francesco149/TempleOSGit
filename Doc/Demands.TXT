@@ -33,7 +33,7 @@ for the same type of device is bad.
 [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1]
 [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:973 lines for FAT32 gets eliminated.
 [C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:293 lines for ISO9660 gets eliminated.
-[C:/Adam/Opt/Boot/DskISOFile.CPP.Z,1]	:535 lines for making ISO files gets
+[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,1]	:535 lines for making ISO files gets
 reduced.
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,1]	:152 All the cluster operations become
 blk.

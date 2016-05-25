@@ -109,7 +109,7 @@ I64 CopyTree2(CDirEntry *tempde,I64 src_dir_len,I64 dst_dir_len,U8 *dst_dir)
     MemCpy(st,dst_dir,dst_dir_len);
     StrCpy(st+dst_dir_len,tempde->full_name+src_dir_len);
     if (tempde->attr & RS_ATTR_DIR) {
-      MkDir(st);
+      MkDir(st,LinkedLstCnt(tempde->sub));
       res+=CopyTree2(tempde->sub,src_dir_len,dst_dir_len,dst_dir);
     } else
       if (CopySingle(tempde->full_name,st))
@@ -235,7 +235,7 @@ public U0 Touch(U8 *files_find_mask="*",U8 *attr="+?",
 Default lists attributes.
 attr: "+?" =show current
 "+T" =resident
-[C:/Kernel/KernelA.HPP.Z,2524] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
+[C:/Kernel/KernelA.HPP.Z,2525] RS_ATTR_READ_ONLY  [C:/Kernel/KDefine.CPP.Z,109] ST_FILE_ATTRS
 To Set DateL:
 Touch(filename,"",,datetime);
 */

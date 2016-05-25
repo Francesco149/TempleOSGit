@@ -26,7 +26,7 @@ foreground color.
 See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT,1].
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] TwoLetterCmd>  See
-[C:/Kernel/KernelA.HPP.Z,898] Type Defines and
+[C:/Kernel/KernelA.HPP.Z,900] Type Defines and
 [C:/Adam/DolDoc/DocPlain.CPP.Z,217] PrsDollarCmd().
 +] TX Text
   Normally, text is not bracketed with '$', but if you wish to specify flag
@@ -65,7 +65,7 @@ See [C:/Doc/Widget.TXT.Z,1] and [C:/Demo/DolDoc/DemoDoc.TXT,1].
 $ID,2$ indents 2 columns.
 +] Text Colors
   You place an expression(usually a color define--see
-  [C:/Kernel/KernelA.HPP.Z,2950] color defines) to indicate which of the 16
+  [C:/Kernel/KernelA.HPP.Z,2954] color defines) to indicate which of the 16
   colors to use. If you enter no num, color returns to the default.
 
 FD Default Foreground Color
@@ -121,10 +121,10 @@ The expressions are relative to the current cursor location, unless you make
 See [C:/Demo/DolDoc/CursorMove.CPP,1].
 
 +] AN Anchor
-  The [C:/Kernel/KernelA.HPP.Z,1179] CDocEntry.aux_str arg A="" is used for
+  The [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry.aux_str arg A="" is used for
   the anchor.  I don't use these very often, but they're good sometimes. 
 +] LK Link
-  The [C:/Kernel/KernelA.HPP.Z,1179] CDocEntry.aux_str arg A="" is used for
+  The [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry.aux_str arg A="" is used for
   the link text.  With no aux the tag becomes the link text, as in example 3.
 
 See [C:/Adam/DolDoc/DocLink.CPP.Z,29] Link Types.
@@ -171,7 +171,7 @@ The default raw data type for the $DA...$ command is RT=I64.
   [C:/Adam/DolDoc/DocForm.CPP.Z,59] DocDataFmt() and
   [C:/Adam/DolDoc/DocForm.CPP.Z,131] DocDataScan().
 
-The [C:/Kernel/KernelA.HPP.Z,1179] CDocEntry.aux_str arg A="" is used for the
+The [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry.aux_str arg A="" is used for the
   print/scan format string.
 
 The default field length is LEN=64 characters.  For U8 arrays[],
@@ -186,7 +186,7 @@ The space after the first ':' in the format string marks the first valid
   Used for forms.  Use <CTRL-l> to help you generate the DolDoc command text
   you need in your [C:/Doc/HolyC.TXT.Z,1] HolyC class member's fmtstr meta-data
   for [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm().  See
-  [C:/Demo/DolDoc/Form.CPP,1] and [C:/Kernel/KernelA.HPP.Z,1222] CEdFindText.
+  [C:/Demo/DolDoc/Form.CPP,1] and [C:/Kernel/KernelA.HPP.Z,1224] CEdFindText.
 
 If you are not using [C:/Adam/DolDoc/DocForm.CPP.Z,209] DocForm(), make a
   $CB...$ statement with [C:/Adam/DolDoc/DocPutS.CPP.Z,158] DocPrint() and
@@ -284,7 +284,7 @@ The reason for the $IB...$ cmd is to pass a arg to
   Inserts a number into the compiled stream describing the size of binary
   data associated with a bin number.  I never use this.
 +] SO Song
-  See [C:/Adam/Snd/SndMusic.CPP.Z,98] Play().  [C:/Kernel/KernelA.HPP.Z,1179]
+  See [C:/Adam/Snd/SndMusic.CPP.Z,98] Play().  [C:/Kernel/KernelA.HPP.Z,1181]
   CDocEntry.aux_str A="" stores the song note text.
 +] HL Highlighting
   Include a 1 or 0.
@@ -298,7 +298,7 @@ $HL,1$ will turn syntax highlighting on.
   When errors are detected in DolDoc cmds, an ER entry is generated.
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] FlagCode>  See
-[C:/Kernel/KernelA.HPP.Z,1069] Flag Defines and [C:/Doc/Widget.TXT.Z,1]
+[C:/Kernel/KernelA.HPP.Z,1071] Flag Defines and [C:/Doc/Widget.TXT.Z,1]
 Simple Flags.
 +] +H Hold
   Causes not to delete this cmd when cleared with CL or when the
@@ -338,7 +338,7 @@ A +C flag on a tree will start it collapsed.
   continuously.
 +] +UD Update Data
   The Update Data flag on a DA or a CB makes the value in the
-  [C:/Kernel/KernelA.HPP.Z,1179] CDocEntry updated when keys are typed on it.
+  [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry updated when keys are typed on it.
 +] +TC Tag CallBack
   See [C:/Demo/DolDoc/CallBack.CPP,1].
 +] +LC Left CallBack
@@ -347,7 +347,7 @@ A +C flag on a tree will start it collapsed.
   See [C:/Demo/DolDoc/ClickCallBack.CPP,1].
 
 <[C:/Adam/DolDoc/DocInit.CPP.Z,1] ArgCode>  See
-[C:/Kernel/KernelA.HPP.Z,1051] Arg Defines.
+[C:/Kernel/KernelA.HPP.Z,1053] Arg Defines.
 +] T="" Tag Str
   Some cmds have a tag by default.  See [C:/Adam/DolDoc/DocInit.CPP.Z,1]
   TX+T.  You can code T="tag_text" as just "tag_text" with no T=. 
@@ -362,7 +362,7 @@ The space after the first ':' in the format string marks the first valid
   cursor pos.  See [C:/Adam/DolDoc/DocPlain.CPP.Z,1] Data Tag Width.
 +] A="" Auxilliary Str
   Some cmds need auxilliary strings.  A="str" means an
-  [C:/Kernel/KernelA.HPP.Z,1179] CDocEntry.aux_str is present.  aux_str is used
+  [C:/Kernel/KernelA.HPP.Z,1181] CDocEntry.aux_str is present.  aux_str is used
   for song note text, link text, anchor text, and $DA...$ format string text.
 +] D="" Define Str
   A D="" means either a [Define,1] define str indirection is present on a
