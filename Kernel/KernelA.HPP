@@ -2538,7 +2538,7 @@ class CISO1PriDesc
 #define RS_ATTR_FIXED		0x1000 //F
 
 #help_index "File/CD DVD"
-//Media types for [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite()
+//Media types for [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite()
 #define MT_CD		1
 #define MT_DVD		2
 

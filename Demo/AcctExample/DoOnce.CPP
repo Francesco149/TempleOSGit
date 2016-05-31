@@ -18,7 +18,7 @@ U0 DoOnce()
       ExeFile("::/Misc/OSInstall");
       if (ExePrint("OSInstall(FALSE);")) {
 	*sys_registry_doc->filename.name='C';
-	"\n\n1) TAD\n2) DLC\n\n";
+	"\n\n1) TAD\n\n";
 	switch (GetI64("Staff Member Number:")) {
 	  case 1:
 	    RegWriteBranch("TempleOS/Staff",
@@ -26,12 +26,6 @@ U0 DoOnce()
 		  "#define MACHINE_CFG %d\n",
 		  GetI64("Machine Cfg Number:")
 	    );
-	    break;
-	  case 2:
-	    RegWriteBranch("TempleOS/Staff",
-		  "#define PERSONAL_INITIALS \"DLC\"\n"
-		  "#define MACHINE_CFG 0\n"
-		  );
 	    break;
 	}
 	Del("C:/Home/DoDistro.CPP.Z");

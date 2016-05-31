@@ -194,10 +194,11 @@ class CRandDecForm
   I64	sec;
 };
 
-class CRandHexForm
+class CRandHex5Form
 {
   U8	tag[STR_LEN];
-  U8	special[STR_LEN] fmtstr "$DA-P,A=\"Line (Hex):%s\"$\n";
+  U8	special[STR_LEN] fmtstr "$DA-P-TRM,LEN=5,"
+	"A=\"Line (5-Digit Hex):%5s\"$\n";
   I64	timestamp;
   I64	cert;
   I64	min;
@@ -622,7 +623,7 @@ U0 InsMyURL()
       }
       break;
     case:
-      if (DocForm(url(CRandHexForm *))) {
+      if (DocForm(url(CRandHex5Form *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="http://qrng.anu.edu.au/NIST.php";
@@ -631,7 +632,7 @@ U0 InsMyURL()
       }
       break;
     case:
-      if (DocForm(url(CRandHexForm *))) {
+      if (DocForm(url(CRandHex5Form *))) {
 	"$TX,\"Guidelines for Talking with God\","
 	      "HTML=\"http://www.templeos.org/Wb/Adam/God/HSNotes.html\"$\n";
 	tag="https://www.fourmilab.ch/hotbits/secure_generate.html";

@@ -34,6 +34,15 @@ F64 gate_theta,gate_t;
 
 /* <9> <9> (image) */
 
+	/* <10> <10> (image) */
+
+
+
+
+
+
+
+
 #define ANIMAL_WIDTH	20
 #define ANIMAL_HEIGHT	16
 
@@ -53,62 +62,93 @@ class Animal
 } *a;
 
 //************************************
-#define COURSE_LEN	(MAP_HEIGHT*2)
-I32 *r_x,*r_y,*r_width;
-I64 river_lo,river_hi;
+#define WATERFALL_HEIGHT	(MAP_HEIGHT/20)
+#define WATERFALL_DROPS		512
+#define WATERFALL_ACCELERATION	10
+#define COURSE_LEN		(MAP_HEIGHT*2)
+I32 *r_x,*r_y,*r_width,*wfd_x;
+F64 *wfd_t0,waterfall_tf;
+I64 river_lo,river_hi,waterfall_x,waterfall_y,waterfall_width;
 U0 RiverNew()
 {
   r_x=MAlloc(COURSE_LEN*sizeof(I32));
   r_y=MAlloc(COURSE_LEN*sizeof(I32));
   r_width=MAlloc(COURSE_LEN*sizeof(I32));
   river_lo=river_hi=COURSE_LEN/2;
+  wfd_x=MAlloc(WATERFALL_DROPS*sizeof(I32));
+  wfd_t0=MAlloc(WATERFALL_DROPS*sizeof(F64));
+  waterfall_tf=Sqrt(2*WATERFALL_HEIGHT/WATERFALL_ACCELERATION);
 }
 
 U0 RiverMake()
 {
-  I64 i,x,y,dx,dy,w,old_x,old_y;
+  I64 i,j,k,x,y,dx,dy,w,old_x,old_y;
 //Plan lower course of river
   old_x=-1;old_y=-1;
-  x=MAP_WIDTH<<32/2; y=MAP_HEIGHT<<32/2;
+  x=MAP_WIDTH<<32/2; y=(MAP_HEIGHT+WATERFALL_HEIGHT)<<32/2;
   dx=0; dy=1<<32;
-  w=20<<32;
-  i=COURSE_LEN/2;
+  w=15<<32;
+  i=(COURSE_LEN+WATERFALL_HEIGHT)/2;
   while (y.i32[1]<MAP_HEIGHT-MAP_BORDER && i<COURSE_LEN) {
     if (old_x.i32[1]!=x.i32[1]||old_y.i32[1]!=y.i32[1]) {
       r_x[i]=x.i32[1]; r_y[i]=y.i32[1]; r_width[i]=w.i32[1];
       river_hi=i++;
       old_x=x; old_y=y;
     }
-    dx=ClampI64(dx+RandI32/64,-MAX_I32,MAX_I32);
+    dx=ClampI64(dx+RandI32/64,-MAX_I32,MAX_I32)-MAX_I32/256;
     dy=ClampI64(dy+RandI32/64,0,MAX_I32);
-    x+=dx; y+=dy;
     w=ClampI64(w+RandI32*2,10*MAX_U32,150*MAX_U32);
+    x+=dx; y+=dy;
   }
+
+//Plan waterfall
+  i=(COURSE_LEN-WATERFALL_HEIGHT)/2;
+  for (j=0;j<6;j++) {
+    x=MAP_WIDTH<<32/2; y=(MAP_HEIGHT-WATERFALL_HEIGHT)<<32/2;
+    for (k=0;k<WATERFALL_HEIGHT/4;k++) {
+      r_x[i]=x.i32[1]; r_y[i]=y.i32[1]; r_width[i]=15;
+      i++;
+      y+=6<<32;
+    }
+  }
+  waterfall_width=r_width[COURSE_LEN/2];
+  waterfall_x=r_x[COURSE_LEN/2]-waterfall_width/2;
+  waterfall_y=(MAP_HEIGHT-WATERFALL_HEIGHT)/2;
+  for (i=0;i<WATERFALL_DROPS;i++) {
+    wfd_x[i]=Rand*waterfall_width+waterfall_x;
+    wfd_t0[i]=tS-Rand*waterfall_tf;
+  }
+
 //Plan upper course of river
   old_x=-1;old_y=-1;
-  x=MAP_WIDTH<<32/2; y=MAP_HEIGHT<<32/2;
+  x=MAP_WIDTH<<32/2; y=(MAP_HEIGHT-WATERFALL_HEIGHT)<<32/2;
   dx=0; dy=-1<<32;
-  w=20<<32;
-  i=COURSE_LEN/2-1;
+  w=15<<32;
+  i=(COURSE_LEN-WATERFALL_HEIGHT)/2-1;
   while (y.i32[1]>=MAP_BORDER && i>=0) {
     if (old_x.i32[1]!=x.i32[1]||old_y.i32[1]!=y.i32[1]) {
       r_x[i]=x.i32[1]; r_y[i]=y.i32[1]; r_width[i]=w.i32[1];
       river_lo=i--;
       old_x=x; old_y=y;
     }
-    dx=ClampI64(dx+RandI32/64,-MAX_I32,MAX_I32);
+    dx=ClampI64(dx+RandI32/64,-MAX_I32,MAX_I32)+MAX_I32/256;
     dy=ClampI64(dy+RandI32/64,-MAX_I32,0);
-    x+=dx; y+=dy;
     w=ClampI64(w+RandI32*2,10*MAX_U32,150*MAX_U32);
+    x+=dx; y+=dy;
   }
+
+  //Plot waterfall cliff
+  Sprite3B(map_dc,waterfall_x,waterfall_y,0,__BIN_10);
 
   //Plot sand bar
   x=0; y=0;
   for (i=river_lo;i<=river_hi;i++) {
-    map_dc->color=YELLOW;
-    map_dc->pen_width=r_width[i]+5;
-    GrPlot3(map_dc,r_x[i]+x.i32[1],r_y[i]+y.i32[1],0);
-
+    if (!((MAP_HEIGHT-WATERFALL_HEIGHT)/2-9<r_y[i]<
+	  (MAP_HEIGHT+WATERFALL_HEIGHT)/2+9)) {
+      map_dc->color=YELLOW;
+      map_dc->pen_width=r_width[i]+5;
+      GrPlot3(map_dc,r_x[i]+x.i32[1],r_y[i]+y.i32[1],0);
+    }
     x=ClampI64(x+RandI32,-6*MAX_U32,6*MAX_U32);
     y=ClampI64(y+RandI32,-6*MAX_U32,6*MAX_U32);
   }
@@ -126,6 +166,8 @@ U0 RiverDel()
   Free(r_x);
   Free(r_y);
   Free(r_width);
+  Free(wfd_x);
+  Free(wfd_t0);
 }
 
 //************************************
@@ -182,16 +224,27 @@ U0 RiverDropsNext(CTask *mem_task)
 
 U0 RiverDropsDraw(CDC *dc,I64 cx,I64 cy)
 {
+  I64 i;
+  F64 t=tS;
   RiverDrop *tempr;
-  dc->color=LTBLUE;
   while (LBts(&rd_lock,0))
     Yield;
   tempr=rd_root.next;
   while (tempr!=&rd_root) {
+    if ((MAP_HEIGHT-WATERFALL_HEIGHT)/2<r_y[tempr->idx]
+	  <(MAP_HEIGHT+WATERFALL_HEIGHT)/2)
+      dc->color=WHITE;
+    else
+      dc->color=LTBLUE;
     GrPlot(dc,r_x[tempr->idx]+tempr->dx-cx,r_y[tempr->idx]+tempr->dy-cy);
     tempr=tempr->next;
   }
   LBtr(&rd_lock,0);
+
+  dc->color=WHITE;
+  for (i=0;i<WATERFALL_DROPS;i++)
+    GrPlot(dc,wfd_x[i]-cx,waterfall_y+0.5*WATERFALL_ACCELERATION*
+	  Sqr(waterfall_tf*Saw(t-wfd_t0[i],waterfall_tf))-cy);
 }
 
 //************************************
@@ -312,6 +365,9 @@ U0 RedrawGate()
 Bool CheckMap(I64 x,I64 y)
 {
   I64 i,j,c;
+  if (SqrI64(x-(waterfall_x+waterfall_width/2))>>1+
+	SqrI64(y-(waterfall_y+WATERFALL_HEIGHT/2))<2500)
+    return FALSE;
   for (j=-4;j<=2;j++)
     for (i=-4;i<=4;i++) {
       c=GrPeek(map_dc,x+i,y+j);
@@ -505,7 +561,6 @@ U0 ReInit()
 
 U0 Init()
 {
-  I64 i;
   RiverNew;
   rd_lock=0;
   QueInit(&rd_root);

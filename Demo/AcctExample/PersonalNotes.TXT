@@ -84,6 +84,10 @@ others need to be in separate cache lines?
 
 * Hymns: mightest, finger
 
+* Get rid of JIFFY and HPET and just use tS.
+
+* Change %h*c so the character is not a arg?
+
 
                                   TODO? Meh
 * Compiler: lock{} needs warn on invalid modes or something.

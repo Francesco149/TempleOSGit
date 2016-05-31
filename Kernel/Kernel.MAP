@@ -169,7 +169,7 @@
 [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,511] RedSeaFileWrite
 [C:/Kernel/SrvCmd.CPP.Z,465] AutoStr
 [C:/Kernel/KernelA.HPP.Z,383] CPatchTableAbsAddr
-[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,1] DVDImageRead
+[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,69] DVDImageRead
 [C:/Kernel/KernelA.HPP.Z,2688] FSt_ISO13490
 [C:/Kernel/KernelA.HPP.Z,411] IET_CODE_HEAP
 [C:/Kernel/KernelA.HPP.Z,2932] ROPB_MONO
@@ -309,10 +309,10 @@
 [C:/Kernel/KernelA.HPP.Z,1046] DOCEf_WORD_WRAP
 [C:/Kernel/KernelA.HPP.Z,1040] DOCEF_WORD_WRAP
 [C:/Kernel/BlkDev/DskDrv.CPP.Z,102] DrvFATBlkSet
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,5] ISODrvInit
+[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,5] ISODrvInit
 [C:/Kernel/KernelA.HPP.Z,3504] CH_CTRLW
 [C:/Kernel/KernelA.HPP.Z,2775] FFB_NEXT_BLK
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,96] ISO1FromName
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,28] ISO1FromName
 [C:/Kernel/MultiProc.CPP.Z,149] MPIntAll
 [C:/Kernel/Sched.CPP.Z,283] TaskContextRestore
 [C:/Kernel/KernelA.HPP.Z,3524] SCf_ALT
@@ -335,7 +335,7 @@
 [C:/Kernel/KernelA.HPP.Z,905] DOCT_TAB
 [C:/Kernel/KernelA.HPP.Z,698] HTT_FRAME_PTR
 [C:/Kernel/KernelA.HPP.Z,668] HTt_FRAME_PTR
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,241] ISO1FilesFind
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,173] ISO1FilesFind
 [C:/Kernel/KeyDev.CPP.Z,156] CtrlAltM
 [C:/Kernel/KDefine.CPP.Z,13] DefineLstLoad
 [C:/Kernel/KernelA.HPP.Z,1940] ARGT_MM64
@@ -637,7 +637,7 @@
 [C:/Kernel/KernelA.HPP.Z,913] DOCT_INDENT
 [C:/Kernel/KMathA.CPP.Z,366] _ARG
 [C:/Kernel/KernelA.HPP.Z,2984] COLORROP_NO_ROP0_MASK
-[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,41] CDualBuf
+[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,109] CDualBuf
 [C:/Kernel/SrvCmd.CPP.Z,75] TaskText
 [C:/Kernel/KernelA.HPP.Z,2985] COLORROP_BITS
 [C:/Kernel/KernelA.HPP.Z,2960] BROWN
@@ -816,7 +816,7 @@
 [C:/Kernel/KernelA.HPP.Z,1102] DOCEf_TREE
 [C:/Kernel/KernelA.HPP.Z,1016] DOCEF_TREE
 [C:/Kernel/SerialDev/Mouse.CPP.Z,119] MouseUpdatePre
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,138] ISO1FileFind
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,70] ISO1FileFind
 [C:/Kernel/KernelA.HPP.Z,3301] TASK_SIGNATURE_VAL
 [C:/Kernel/KDefine.CPP.Z,97] SysDefinesLoad
 [C:/Kernel/Mem/Mem512.CPP.Z,114] Mem512TaskAlloc
@@ -979,7 +979,7 @@
 [C:/Kernel/KernelA.HPP.Z,1095] DOCEf_REFRESH_DATA
 [C:/Kernel/KernelA.HPP.Z,1058] DOCEf_LEFT_EXP
 [C:/Kernel/KernelA.HPP.Z,970] DOCEF_LEFT_EXP
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,198] ISO1FileRead
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,130] ISO1FileRead
 [C:/Kernel/BlkDev/DskATA.CPP.Z,334] ATAPIWaitReady
 [C:/Kernel/KernelA.HPP.Z,3588] SC_PRTSCRN1
 [C:/Kernel/KernelA.HPP.Z,2597] FUF_ALL
@@ -1191,7 +1191,7 @@
 [C:/Kernel/KernelA.HPP.Z,654] HTt_DEFINE_STR
 [C:/Kernel/KDbg.CPP.Z,102] STK_REP_LEN
 [C:/Kernel/KernelA.HPP.Z,288] I_NMI
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,69] Date2ISO1
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,1] Date2ISO1
 [C:/Kernel/KernelB.HPP.Z,103] ModU64
 [C:/Kernel/KernelA.HPP.Z,3176] SVCf_EXIT_ON_COMPLETE
 [C:/Kernel/KernelA.HPP.Z,958] DOCG_DBL_BUF_FLAGS
@@ -1335,7 +1335,7 @@
 [C:/Kernel/KernelA.HPP.Z,3566] SC_CURSOR_LEFT
 [C:/Kernel/KMisc.CPP.Z,213] IsMute
 [C:/Kernel/KernelA.HPP.Z,906] DOCT_CLEAR
-[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite
+[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite
 [C:/Kernel/SerialDev/Mouse.CPP.Z,37] MouseRst
 [C:/Kernel/KHashB.CPP.Z,1] HashTypeNum
 [C:/Kernel/KernelA.HPP.Z,3439] CPUf_DYING_TASK_QUE
@@ -1714,7 +1714,7 @@
 [C:/Kernel/KernelB.HPP.Z,128] Exp
 [C:/Kernel/KernelA.HPP.Z,3639] DCF_RECORD_EXTENTS
 [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,846] FAT32FilesFind
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,227] ISO1Cd
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,159] ISO1Cd
 [C:/Kernel/KHashA.CPP.Z,191] _HASH_ADD_AFTER
 [C:/Kernel/KernelB.HPP.Z,66] QueInit
 [C:/Kernel/KTask.CPP.Z,334] SrvTaskCont
@@ -1995,7 +1995,7 @@
 [C:/Kernel/KernelA.HPP.Z,474] RLF_ADAM_SERVER
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,87] RClusters
 [C:/Kernel/KernelA.HPP.Z,3728] VGAP_IDX
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,124] ISO1CDirFill
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,56] ISO1CDirFill
 [C:/Kernel/KernelA.HPP.Z,455] RLf_ADAM_SERVER
 [C:/Kernel/SrvCmd.CPP.Z,265] SCR_EXIT
 [C:/Kernel/KDataTypes.CPP.Z,41] QueDel
@@ -2166,7 +2166,7 @@
 [C:/Kernel/KernelA.HPP.Z,2604] FUF_SINGLE
 [C:/Kernel/KernelA.HPP.Z,2578] FUf_SINGLE
 [C:/Kernel/KernelA.HPP.Z,1111] DOCEf_DFT_RAW_TYPE
-[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,49] DVDImageWriteTask
+[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,117] DVDImageWriteTask
 [C:/Kernel/KernelA.HPP.Z,2961] LTGRAY
 [C:/Kernel/MultiProc.CPP.Z,276] CoreAPSethInit
 [C:/Kernel/SerialDev/Keyboard.CPP.Z,411] IRQKbd
@@ -2511,7 +2511,7 @@
 [C:/Kernel/KernelA.HPP.Z,1735] IEF_REX_XOR_LIKE
 [C:/Kernel/KernelA.HPP.Z,1447] WIf_SELF_KEY_DESC
 [C:/Kernel/KernelA.HPP.Z,446] RLf_INTERRUPTS
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,82] ISO1DateStruct2CDate
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,14] ISO1DateStruct2CDate
 [C:/Kernel/KernelA.HPP.Z,471] RLF_REGISTRY
 [C:/Kernel/KernelA.HPP.Z,452] RLf_REGISTRY
 [C:/Kernel/KernelA.HPP.Z,3572] SC_INS

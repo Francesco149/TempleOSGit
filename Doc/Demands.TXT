@@ -32,9 +32,8 @@ count.
 for the same type of device is bad.
 [C:/Kernel/BlkDev/FileSysRedSea.CPP.Z,1]
 [C:/Kernel/BlkDev/FileSysFAT.CPP.Z,1]	:973 lines for FAT32 gets eliminated.
-[C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:293 lines for ISO9660 gets eliminated.
-[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,1]	:535 lines for making ISO files gets
-reduced.
+[C:/Kernel/BlkDev/FileSysISO.CPP.Z,1]	:233 lines for ISO9660 gets eliminated.
+[C:/Adam/Opt/Boot/DskISO9660.CPP.Z,1]	:507 lines for making ISO files.
 [C:/Kernel/BlkDev/DskCluster.CPP.Z,1]	:152 All the cluster operations become
 blk.
 
@@ -86,7 +85,7 @@ levels or stacks.
 
 * Since I don't use paging (for anything), Intel should have an option for  
 no-paging long mode, and optimize it!
-[C:/Kernel/Mem/PageTables.CPP.Z,1]	:153 lines to identity-map gets eliminated.
+[C:/Kernel/Mem/PageTables.CPP.Z,1]	:135 lines to identity-map gets eliminated.
 
 * Desktop computers must have a reset switch and a fast reboot option, 
 skipping diagnostics.  I recommend booting TempleOS when the reset button is 

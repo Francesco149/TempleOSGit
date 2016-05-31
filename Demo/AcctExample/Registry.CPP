@@ -13,33 +13,33 @@
       +] Staff
       #define PERSONAL_INITIALS "TAD"
     #define MACHINE_CFG 0
-      +] BlackDiamond
-      I64 best_score=9;
       +] DunGen
       F64 best_score=20.5295;
-      +] Varoom
-      F64 best_score=46.2643;
       +] FlapBat
       F64 best_score=16.4090;
-      +] TimeOut
-      I64 best_score=22202;
-      +] RawHide
-      F64 best_score=96.1279;
-      +] KeepAway
-      I64 best_score0=20,best_score1=14;
-      +] Wenceslas
-      F64 best_score=49.8074;
       +] ZoneOut
       F64 best_score=8.1373;
       +] BomberGolf
       I64 best_score=175;
-      +] CastleFrankenstein
-      F64 best_score=33.8405;
+      +] TimeOut
+      I64 best_score=22202;
+      +] KeepAway
+      I64 best_score0=20,best_score1=14;
+      +] BlackDiamond
+      I64 best_score=9;
+      +] Wenceslas
+      F64 best_score=49.8074;
       +] EagleDive
       I64 best_score=4;
+      +] CastleFrankenstein
+      F64 best_score=33.8405;
+      +] Varoom
+      F64 best_score=46.2643;
       +] XCaliber
       I64 best_score=248;
     I64 msg_flags=1;
+      +] RawHide
+      F64 best_score=96.1279;
       +] DemoCompany
   
   +] Game1

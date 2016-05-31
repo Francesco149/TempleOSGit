@@ -137,11 +137,6 @@ Cd("/Home/Web");Dir;
 `Cd("/Home/Web");Dir;
 `
 
-Cd("/Home/Web/DLC");Dir;
-
-`Cd("/Home/Web/DLC");Dir;
-`
-
 Cd("/Home/Web/TAD");Dir;
 
 `Cd("/Home/Web/TAD");Dir;

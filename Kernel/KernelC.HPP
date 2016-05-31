@@ -227,6 +227,7 @@ public extern U0 VGAFlush();
 
 #help_index "Debugging;Debugging/Debugger"
 public extern U0 Dbg(U8 *msg=NULL,I64 msg_num=0);
+
 #help_index "Define;Char/Define"
 #help_file "::/Doc/Define"
 public extern U8 *Define(U8 *dname);
@@ -318,7 +319,6 @@ public extern CDirContext *DirContextNew(U8 *mask,
 public extern Bool DirNew(CDrv *dv,U8 *cur_dir,
 	CDirEntry *tempde,Bool free_old_chain=TRUE);
 extern I64 FileAttr(U8 *name,I64 old_attr=0);
-
 #help_index "File/Low Level"
 #help_file "::/Doc/FileLowLevel"
 public extern CBlkDev *BlkDevChk(CBlkDev *bd,Bool except=TRUE);
