@@ -65,7 +65,7 @@ Index
 * Use [C:/Adam/Opt/Boot/DskISO9660.CPP.Z,304] ISO9660ISO() to make an ISO
     image file.
 
-* Use [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite() to burn an ISO
+* Use [C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite() to burn an ISO
     file onto a CD or DVD.
 
 * See [C:/Misc/DoDistro.CPP.Z,1] Making a Distro ISO.
@@ -133,7 +133,6 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [File,1] Disk
 [C:/Doc/DolDocOverview.TXT.Z,1] Doc Overview
 [DolDoc,1] Doc Routines
-[C:/Adam/DolDoc/DocLink.CPP.Z,29] Editor Link Types
 [Exceptions,1] Exceptions
 [File,1] File
 [C:/Doc/FileUtils.TXT.Z,1] File Utils
@@ -150,6 +149,7 @@ You recompile the kernel with [C:/Adam/Opt/Boot/BootIns.CPP.Z,24]
 [I/O,1] I/O
 [C:/Doc/KeyAlloc.TXT.Z,1] Key Allocations
 [Keyboard Devices,1] Keyboard Devices
+[C:/Adam/DolDoc/DocLink.CPP.Z,29] Link Types
 [Math,1] Math
 [C:/Doc/MemOverview.TXT.Z,1] Memory Overview
 [Memory,1] Memory Routines

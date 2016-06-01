@@ -2,7 +2,10 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----05/24/16 15:03:22----
+----05/31/16 01:24:26----
+
+----05/30/16 21:16:44----
+* Added waterfall to [C:/Demo/Games/RawHide.CPP,1].
 
 ----05/23/16 01:30:28----
 * Added [C:/Adam/Opt/Boot/DskISORedSea.CPP.Z,132] RedSeaISO().
@@ -321,7 +324,7 @@ common fault vector.
 
 ----08/22/15 20:38:15----
 * [C:/Home/HomeWrappers.CPP.Z,13]
-R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,79] DVDImageWrite");
+R("CDImageWrite","[C:/Kernel/BlkDev/DskCDDVD.CPP.Z,147] DVDImageWrite");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("MakeDistro","DoDistro");
 * [C:/Home/HomeWrappers.CPP.Z,13] R("::/Home/Adam*.CPP","::/Home/Home*.CPP");
 * Created Make*.CPP make dir files.
