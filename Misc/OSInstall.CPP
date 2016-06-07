@@ -184,7 +184,7 @@ U0 DoInstructions()
 
 Bool DoInstall(Bool pmt_reboot)
 {
-  I64 result=FALSE,vm_install;
+  I64 res=FALSE,vm_install;
   "\n\n\n\n\nAre you installing inside VMware, QEMU, VirtualBox "
 	"or a similar virtual machine? ";
   vm_install=YorN;
@@ -192,7 +192,7 @@ Bool DoInstall(Bool pmt_reboot)
 
   if (vm_install) {
     VMInstallWiz();
-    result=TRUE;
+    res=TRUE;
   } else {
     "\n\nThis wizard works if you have a partition ready.  "
 	  "You can partition the drive or MakeOSDrvBootInstall() "
@@ -200,7 +200,7 @@ Bool DoInstall(Bool pmt_reboot)
 	  "Continue Install Wizard ";
     if (YorN) {
       RegularInstallWiz();
-      result=TRUE;
+      res=TRUE;
     } else
       pmt_reboot=FALSE;
   }
@@ -209,7 +209,7 @@ Bool DoInstall(Bool pmt_reboot)
     if (YorN)
       Reboot;
   }
-  return result;
+  return res;
 }
 
 Bool OSInstall(Bool pmt_reboot=TRUE)

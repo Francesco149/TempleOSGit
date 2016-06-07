@@ -2,7 +2,11 @@
 
 Use [C:/Home/HomeWrappers.CPP.Z,13] R() to rename if I change a label.
 
-----05/31/16 01:24:26----
+----06/04/16 05:06:41----
+
+----06/02/16 03:20:56----
+* **TempleOS version 4.07 Released**
+* Added claws to [C:/Demo/Games/EagleDive.CPP.Z,1].
 
 ----05/30/16 21:16:44----
 * Added waterfall to [C:/Demo/Games/RawHide.CPP.Z,1].

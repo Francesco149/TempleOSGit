@@ -88,7 +88,6 @@ public extern U8 *CatPrint(U8 *dst,U8 *fmt,...);
 
 #help_index "Char/Operations;Memory/Adam Heap"
 public extern U8 *AStrNew(U8 *buf);
-
 #help_index "Char/Operations;Memory/Heap"
 public extern U8 *StrNew(U8 *buf,CTask *mem_task=NULL);
 
@@ -319,6 +318,7 @@ public extern CDirContext *DirContextNew(U8 *mask,
 public extern Bool DirNew(CDrv *dv,U8 *cur_dir,
 	CDirEntry *tempde,Bool free_old_chain=TRUE);
 extern I64 FileAttr(U8 *name,I64 old_attr=0);
+
 #help_index "File/Low Level"
 #help_file "::/Doc/FileLowLevel"
 public extern CBlkDev *BlkDevChk(CBlkDev *bd,Bool except=TRUE);
